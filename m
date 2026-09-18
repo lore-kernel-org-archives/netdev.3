@@ -1,171 +1,209 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659B63839A9
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 05:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789709849; cv=pass; b=m01TISGPZCr6++fYVT9ItPK4PniqwhQbz9UVzM9RUgMgQR+o2R7FQcjTYouFuydcS3AXPZ2Niz2hjsvUvKr6asegzDQH19ysiBCUchyA7b6HXdOOqKXh+MSboWtoFa6GV/utfY7fhoNyQ8ed0Dbh5JfuxZ6LBljiWNNaUxrmD0Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789709849; c=relaxed/simple;
-	bh=Mvrna4jvxkFVgS1b64bAUhxq+n8ulTPOweBBUkKg7uE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FTbxtftTQqeE2u6nnrZUTb2vCGe1Fe/gidKc5vaS3qE290t4X+iP5dLZkmnHwp+LeVPA9Q0vlLUaNz6e88aJu7J72B6uEpvE/dQzByli5/uiHYr9zqNRNn8Kma2AZ3yS2zC2Y2WbWao4EguQgsg5+a+23F9A7fsI8fZCOE5896w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DiwRBBFN; arc=pass smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F3948593D
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 05:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789710776; cv=none; b=dCxUcDVTD7oMpjVwUshPvAcLwDXO1Xl0cuGZtivmnjsiwnsk65VJCdQBnhiWu42Xo0sy1LLqujhVD5N8S4OG3ntjX+749Gm2weZk2HuGTEKcVT5AjLHu8sXz6E+l6xkpiQzTf+zvJ6rmQBaQzgSDbUMITZ86eMycNQ41Fa+YegU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789710776; c=relaxed/simple;
+	bh=V99jLj2gEYsH462fTqhUwsqP0GqMQkk41b67V5dynz0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=cew8uqL0VC+yJppy+LUc/UBdnxNjOnqEXY8Ig2/VNtUUO/3Vwk5s9dF9msqe/n4+bmVGLQoaNjnJnXO/b63LswpjR3crlhQ1mEbCsAIuLmHkceGcsEcqrCKtPRge+MXUFbqByB0qT1liyMddxEntq5Hs6tVGGx9Rc3IbeOcxh8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LH1/Yndx; arc=none smtp.client-ip=74.125.228.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DiwRBBFN"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-853e2610bb4so925660b3a.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:37:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789709848; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X59iAyjYgfiOAlVLg2zUpBqJpp/dJZcfS4RYReDPb6DdxuDLds0h9gDl/gxcU532cl
-         11+yeDNeRO4XD6l/yiAn9gqrNWzDpEtkvAHE/FfzCAO/sQnapbT0HuRV4JFihShi6E85
-         Mj/A6akUoSGa0zomb/+3SKssUI6/MRole1w3wx8EaUzLcj1SwkxXGhIQb9VGU1eKfi9N
-         XJn03emmTYHY4pmgJv4GiaNXF/vtPBwft5gsirl7BP47Kb19yFFYB+tN/gZ71C2BdS4c
-         gf/zP2DPeNyy0V1GR50lD049AtniGfgBqXHdHI2pXj0wYJBS31QdkHj/P+odYQ6PxSK3
-         03Qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jEMZq46+kEkOwx/obMONIAwhlN1wF5UDPG1BZpx3PqU=;
-        fh=PvCJjGnTDwQqIe7H6F6QzAukBXvNMERTec5mOyz7dao=;
-        b=kTVVcyUjCyiueY/ZPMmmIG/TooUI5TjqbEFr2/C2LfE/OkyuBnyghPU5imQXZLaf28
-         /AVB/VNcypOejfSrW98c0XJq0m1yloJt7giwlelmThzQ1jPWtmDvHq6FdE+CoVGW02Io
-         sK3IREN0/vwwfPiyHVKDHBFbCsVZ2ALy9XoJhPOTEbR2IXQmiaezuLVgJ5gOH41lXySr
-         Rzf5mGdGH9uqqlaM5oIecBHup+rTx5AZgbQVKLAeOxkqqJBeh8/H9OpymLAhuWHkumPf
-         0d29LQ9SJEEIPD/X2Q/gF8Hni6XdbdUlbhSCL5xMtXItsI0D9RJIw3xCuVYNwK9Xw+b/
-         7JgQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LH1/Yndx"
+Received: by mail-pz2-f41.google.com with SMTP id 41be03b00d2f7-cc50b9e8a45so148738a12.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:52:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789709848; x=1790314648; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jEMZq46+kEkOwx/obMONIAwhlN1wF5UDPG1BZpx3PqU=;
-        b=DiwRBBFNK4YOXB2DOfqWr0onpPWqYHSoc4nRj9CHk2riON8FT4AfOx3It1kERuAskk
-         +1bA1EXypi1e3m29pPSg86kqZhfuBvo2N25/r7VJk+GtTMNzLvOXvrx4Ki6XLnCmpOEJ
-         iMk68JQSleLguihObSVWAe5ZxcmyUss3K9Xje3DdjiZqemHliyPWoaHl6f2f7KpWLtsj
-         LBE53FOHaNaiIR3kn1AokAIqtc9tlsN+qCYloMmgNl/51Kl+0WTGr6Xmc122waQ1XaDy
-         ioF9J0N/kGmw8XMk56+wp0M06Hb+O/E7mn36LwwPWPQBZ3JOlnD0b0blEWnXpGhatM3P
-         bQcA==
+        d=gmail.com; s=20251104; t=1789710773; x=1790315573; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RoqQBX0V764x0A/v/amZwGuN9suY1fEbdmSCiYW1k5w=;
+        b=LH1/YndxdKdTqJTRoOSlt0kiCmgEVtwTVWQ2dNzfDSEY9XCp7y4XkQQsRQsO5sGLdv
+         u4MsRZUs9PrK9+cdV4t88JtvJCAHyKi7lNtx55zWSiC5jvb5+vGABqO1ZZumgYbJtFfJ
+         hY4c6wdKEssCOyGYKh06SJaa/wuFCT8ZXM07tBmeEZ8bfCdXgVdRoxZk4hnY9hIbiwDQ
+         KzveBiurcVwDtjShw5SNupSOCA/2HmuyCAD/Gc8sxGi23g7IZ1kBi4MTd8At3tM73xaK
+         AAeJV9jgE6XlxjBVIofS387c2mof0UM1QiHLKWeCk3NUhc00RRKMxAcZyHpxohn3BaN7
+         XU9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789709848; x=1790314648;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789710773; x=1790315573;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jEMZq46+kEkOwx/obMONIAwhlN1wF5UDPG1BZpx3PqU=;
-        b=goTwclkx0TYzT1ed5k1gMhDLUgyJ6CILyGfQ6BSSArclnbfs5agKGEhWECqCQ7NbOC
-         Un/TBIltuFxeuuC7awzSL9CZeKuXX2wGWe1SOqXnIj5MiFE9eaZ5kSiceLXjzQyPheIN
-         zyTgATZgNYixeWeRnBj4F/sxyuNDht+wGADKUduynkNnWzZ4DsRQ7HYvwVO0R/HzbKh0
-         XEyldKykRNhv+B4S8LSnnx/fV/f5PWNcS68LEsp1ZUg39BIo+UdRi81TNuQMLbgTDaYt
-         1j5192CSrdPrnK5dfCFeCQbwaUcNvnpsc8ZmzeKOEOrZ6GZLUf489baVFS83Knvw3408
-         vgPg==
-X-Forwarded-Encrypted: i=1; AKwUvBwI4/Cf4BB4no4HJRAcszllDwRamY6HoFQpHvgOqTYB3DMQgnT3BKN8P6kXGteCzN055som/0o=@vger.kernel.org
-X-Gm-Message-State: AFuF++lyWYCpzvdtFQwD04yqybMd+7V2TGpSJl5iKWparjMz8yrSFsVC
-	kKKf63wUwD5skoPd2FeWLxkinq3sNstQfxicuFtc1u3Uhyfd2mp+9+X10HYOnArvAFagUrJQX5G
-	pddgNusQnbDBeqZIjaaqUp0irvugtUPQ=
-X-Gm-Gg: AYBFou0+e9bPI4zr8Mq/tpJ4EqDoUUqDmDsTFnNHyBQkOelupNgl/JmvJ5rTJ4I0LEZ
-	YnnqG4GA+ryMn0aGEGKTq1+MsI70DN795oTEVWzKoI1yon1aPj8DWVTIvBPvqY0oAjA45NC4jvF
-	kwAT0jVBCapU02AuZKo4xwr+SurPP5qlM1e7Qyq/L6DoyvkB0VdeyUVa7Dqn0/BJCrvGWtpTfo2
-	nlyjoNhvd24sDIUsbyHsMOaNT48PA+jQzAtgrwurzJAvMN91yw6pJYHeL6TIJN+2M6PyZPW0QKl
-	hzVAhiiTVqRwHG3+wMoYFEPbx6iISPeGdMgY1FuvzLDlOSR4hKamvbLYkh9yELp0k6uaoRfHBVe
-	dUNT/hojQqH+oo2Sq6WlHFwkBbjdANF0yWVSXBUKRrgbaTg==
-X-Received: by 2002:a05:6a20:9192:b0:3b3:a66e:3911 with SMTP id
- adf61e73a8af0-3dd726822e4mr8491471637.19.1789709847642; Thu, 17 Sep 2026
- 22:37:27 -0700 (PDT)
+        bh=RoqQBX0V764x0A/v/amZwGuN9suY1fEbdmSCiYW1k5w=;
+        b=A6bWhdgsOAGx8gUUg6lQeOo4We1sm0pSUKjqyNqPAwl3g6ONhrObb7XuNMRAOI9Zn3
+         EF1/suBDrbFD36RnoyVxGV6kMP5aMqCubBUJYTXTQX2rnHUDtca4So3DjkZoJ1j/nqS5
+         CSVO+B5WcwuEDUxRHoLVkc5aWJNKj78uNFD3fjVAfD/Stl6eNq5AKB6Q4ZtGQzmiELOJ
+         7z2qoCgvEgimoNsGXieIq0MkG5IaLK5wInIJLvtyidz2Ofi9VeCcxtuG5t82WRBtpQdb
+         eg0KU6K22rd+OV5I3s6fGFGIw8gtehjaDVRpXoBFtEyZxenoef21BjqWGIi8JwzrxKBY
+         BoCA==
+X-Forwarded-Encrypted: i=1; AKwUvByiQ9Ygfg6U5DO8If7OmMNKPBIFEHVDgQm3Qne9Hv8tgAy6W5k+Q+UzSM16/3V8gMJLwLmc4JI=@vger.kernel.org
+X-Gm-Message-State: AFuF++n3Mrx3eMVGAExWCstnC+amKDBfvuh+lGH60Z4XhDG/HG9mEQph
+	kmXrr46E0Pff6fiF5/9q8KB8pQSYShGEXpoKZfR04TvJ8lHvI6Bty4Kt
+X-Gm-Gg: AYBFou3pOnhcA+z9aFvt9kIqg+9j6E/mncBe/gq7Fu4pyz20awXYoxtvft3QRXDLNWN
+	AJyi6i+R2U/r8u0wtAkH8RFXJvBX8uMHXMvTRvQ8NjBBdkUkdCMJDiwQ2/8UxnqMoIhdAVyaf7T
+	mxTpVfR0Mli728hb2PJ6r0E3SPXrPMsqr9FfE2qY8y1LKJE/URUO9drxEgbztyX6B03KmhgHxGp
+	Mg2D7HlCmLa4LgcM8NFe7yv2zjc97atJ5qKgcxXl52xl1jaYCJFc6YdAZSjWiSJ848ziYd956ir
+	rMS2s0QCAjfhm+d2jy1YacjtPz1/0mjGjoJzrQrNqtstMti0I27k2tBnM1xsCZDdhX0G3RUZPHW
+	HQ9aWuVhOAQI08DW7j6DGJ6umA7Gq6FuuelyKbrllTW2jv7mb3E4lyE0cEM9jKUyDUlIwgmZKV+
+	1/2sFxLlg1v0zuRsTFqfLNVE/Ni+7bBvodSHcAc6jnAzzBUAy23YXF7U5xT/YV5Ze8LDoDtidqs
+	LelZH8ORfFWHokl2HjcO9ggqw==
+X-Received: by 2002:a05:6a21:9e0f:b0:3dd:85a8:caca with SMTP id adf61e73a8af0-3dd8c47d1c6mr2792351637.33.1789710773192;
+        Thu, 17 Sep 2026 22:52:53 -0700 (PDT)
+Received: from localhost ([13.93.150.60])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c28721895sm1518873eec.13.2026.09.17.22.52.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 22:52:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com> <20260917120801.GA51261@horms.kernel.org>
-In-Reply-To: <20260917120801.GA51261@horms.kernel.org>
-From: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-Date: Fri, 18 Sep 2026 07:37:16 +0200
-X-Gm-Features: AcwNN1XuOOFlVfui2KqsTshS0VrgY9RyzdlgQl-KYZ1_KJDbJwuAG01QqdpO8CE
-Message-ID: <CAKYWH0RMJ+sxMku8UGmmcujnO9fJBg3Ok_ofbvyh5eTJm=2uTQ@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net/sched: cls_u32: fix manual hash table handle
- IDR aliasing
-To: Simon Horman <horms@kernel.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, stable@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, Victor Nogueira <victor@mojatatu.com>, 
-	hybris <hybris@mojatatu.ai>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 18 Sep 2026 05:52:50 +0000
+Message-Id: <DLI7IPF4DIYX.3BAFFWR52DHUY@gmail.com>
+Subject: Re: [PATCH net-next v2 2/2] selftests: net: test untracked NA
+ recovery of FAILED neighbors
+From: "Lawrence Lee" <lfqlee314@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>
+Cc: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
+ <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+ <horms@kernel.org>, <rdunlap@infradead.org>, <netdev@vger.kernel.org>,
+ <aajith@arista.com>, <roopa@nvidia.com>, <jhpark1013@gmail.com>,
+ <corbet@lwn.net>, <skhan@linuxfoundation.org>, <shuah@kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <alex.aring@gmail.com>,
+ <linux-wpan@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <3f33052571409614b953a3dc7778114c51c43669.1789448374.git.lfqlee314@gmail.com> <178966456270.22033.8952247046783062389@kernel.org>
+In-Reply-To: <178966456270.22033.8952247046783062389@kernel.org>
 
-Le jeu. 17 sept. 2026 =C3=A0 14:08, Simon Horman <horms@kernel.org> a =C3=
-=A9crit :
+> [Severity: Low]
+> Should verify_ndisc() also check the link-layer address that the
+> advertisement carried?
 >
-> On Wed, Sep 16, 2026 at 06:01:14AM -0400, Jamal Hadi Salim wrote:
-> > A u32 hash table created with an explicit handle ('tc filter add ...
-> > handle 801: u32 divisor N') keys its IDR entry on the raw handle, while
-> > the destroy paths free it under handle2id(handle). The two key domains
-> > disagree for handles in the 0x800..0xFFF htid range:
-> > handle2id() folds them back into the auto-allocated id space (1..0x7FF)=
+> The seed in test_unsolicited_na_common() deliberately creates the entry
+> without one:
+>
+> 	${IP_ROUTER} neigh replace "${HOST_ADDR}" dev "${ROUTER_INTF}" \
+> 		nud failed extern_learn
+>
+> while the recovery path in net/ipv6/ndisc.c:ndisc_recv_na() pulls the tar=
+get
+> link-layer address out of the options and passes it down:
+>
+> 	lladdr =3D ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr, dev);
+> 	...
+> 	__ndisc_update(dev, neigh, lladdr,
+> 		       new_state, update_flags, neigh_failed,
+> 		       NDISC_NEIGHBOUR_ADVERTISEMENT, &ndopts);
+>
+> Since the only assertions here are the state substring and extern_learn,
+> would a change that moves FAILED -> STALE but installs no lladdr, or an
+> incorrect one, still report OK?  Comparing the resulting lladdr against t=
+he
+> host veth MAC would close that gap.
+>
+I will update the tests to verify the lladdr
+
+
+> [Severity: Low]
+> Can this switch actually isolate the mode 2 in-prefix gate?
+>
+> Moving HOST_ADDR from 2000:20::2 to 2000:21::2 changes the source address=
+ of
+> the advertisement, its target address, and the key of the seeded neighbou=
+r
+> entry all at once, while the router keeps 2000:20::1/64.
+>
+> The advertisement under test comes from addrconf_dad_completed(), and
+> ndisc_send_na() uses the same address for both fields when it is local:
+>
+> net/ipv6/ndisc.c:ndisc_send_na() {
+> 	ifp =3D ipv6_get_ifaddr(dev_net(dev), solicited_addr, dev, 1);
+> 	if (ifp) {
+> 		src_addr =3D solicited_addr;
+> 	...
+> 		.target =3D *solicited_addr,
+> }
+>
+> so saddr =3D=3D target for every packet this test generates.  The kernel =
+gate is
+> source based:
+>
+> net/ipv6/ndisc.c:accept_untracked_na() {
+> 	case 2:
+> 		return !!ipv6_chk_prefix(saddr, idev->dev);
+> }
+>
+> and Documentation/networking/ip-sysctl.rst describes mode 2 in terms of "=
+the
+> source IP address".  Would a change that tested msg->target instead of sa=
+ddr
+> leave both new mode 2 rows green?  Keeping HOST_ADDR fixed and instead
+> varying the prefix configured on the router side would exercise the gate
+> without also moving the target and the entry key.
+>
+Will update the tests to cover one source address outside the prefix and=20
+one inside.
+
+> [Severity: Medium]
+> The comment says "add a delay to ensure neighbour processing is done", bu=
+t
+> link_up, start_tcpdump and verify_ndisc run back to back with no sleep an=
+d no
+> retry.  Where is the delay?
+>
+> start_tcpdump() blocks on:
+>
+> 	${IP_ROUTER_EXEC} timeout 15s \
+> 		tcpdump --immediate-mode -tpni ${ROUTER_INTF} -c 1 \
+> 		"icmp6 && icmp6[0] =3D=3D 136 && src ${HOST_ADDR}"
+>
+> but the AF_PACKET tap that satisfies -c 1 is fed from ptype_all delivery =
+in
+> __netif_receive_skb_core(), which runs ahead of the state change the test
+> looks at:
+>
+> ipv6_rcv() -> icmpv6_rcv() -> ndisc_recv_na() -> __ndisc_update() ->
+> neigh_update()
+>
+> Does tcpdump exiting really order against that update, given verify_ndisc=
+()
+> takes a single un-retried snapshot of ip neigh show?
+>
+> There is a second effect for the new rows.  In the four expect-FAILED=20
+> cases:
+>
+> 	test_unsolicited_na_combination 0 0 1 failed
+> 	test_unsolicited_na_combination 0 1 0 failed
+> 	test_unsolicited_na_combination 1 1 1 failed
+> 	test_unsolicited_na_combination 0 2 1 failed 0
+>
+> the expected value FAILED is exactly the state the entry was seeded with,=
+ so
+> "still FAILED" and "the advertisement was never processed" look identical=
 .
-> >
-> > A manual table therefore leaves its raw-keyed IDR entry unreachable on
-> > delete (a permanent leak), and its delete can drop the idr entry of an
-> > unrelated live auto table. A later auto allocation can then hand out a
-> > handle that aliases the live manual table; u32_lookup_ht() first-match
-> > routes lookups and TCA_U32_LINK for that htid to the wrong table.
-> >
-> > Key the divisor-path alloc on handle2id(handle) so allocation and
-> > removal share one key domain. A manual handle that maps onto an id
-> > already in use is rejected with -ENOSPC, and auto allocation skips ids
-> > held by live manual tables.
-> >
-> > Conditions to recreate:
-> >   ip link add test0 type dummy
-> >   tc qdisc add dev test0 clsact
-> >   tc filter add dev test0 ingress protocol ip pref 1 \
-> >           handle 801: u32 divisor 16
-> >   tc filter add dev test0 ingress protocol ip pref 2 u32 divisor 16
-> >   tc -d filter show dev test0 ingress | grep 'fh 801:'
-> >   # unpatched: two live tables with handle 0x80100000 (the pref 2 root
-> >   # hnode is auto-allocated id 1); patched: the auto hnode takes id 2.
-> >
-> > Also tested with a poc with a live u32 table on the block, add/delete a=
- manual
-> > table 'handle 901: u32 divisor 1' twice; unpatched, the re-add fails wi=
-th
-> > -ENOSPC because the raw key leaked on the first delete.
-> >
-> > Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic failure=
- to free IDR entries for hnodes.")
-> > Reported-by: Sashiko (gemini + nipa) <sashiko-bot@kernel.org>
-> > Closes: https://sashiko.dev/#/patchset/20260822222049.114526-1-jhs@moja=
-tatu.com
-> > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> > Tested-by: hybris <hybris@mojatatu.ai>
-> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Would a bounded poll for the expected state, or an explicit settle, make
+> these rows able to distinguish the two?
 >
-> Reviewed-by: Simon Horman <horms@kernel.org>
+> Related question on ordering of the capture: tcpdump is started after
+> link_up, so can the single unsolicited advertisement emitted at DAD
+> completion be missed if the fork and exec are slow?  In that case timeout
+> exits 124 while set -e is in effect inside start_tcpdump, which aborts th=
+e
+> whole script rather than failing one row.  Would arming the capture befor=
+e
+> link_up avoid that?
 >
+Will change the tests to start the capture prior to bringing up the host=20
+side
 
-Hi Jamal, Simon,
-
-Thanks a lot for the fix.
-One nit I'd like to pick is the "Fixes:" header.
-Specifically, it mentions my patch:
-
-     Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic
-failure to free IDR entries for hnodes.")
-
-However, what this does fix is *not* a regression introduced by the
-above patch, but an age-old inconsistency between handle encodings.
-So, It would be more accurate to mention an earlier commit:
-
-    Fixes: e7614370d6f0 ("net_sched: use idr to allocate u32 filter handles=
-")
-
-What do you think ?
-
--Alex
