@@ -1,95 +1,73 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3083AE189;
-	Fri, 18 Sep 2026 01:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5A43A9D83;
+	Fri, 18 Sep 2026 01:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789696344; cv=none; b=JmAFOxPbUIzT3nQlWRbX2Fe2QYz8GZKYJp18md42S0cLhNqva4jY+4RVJR7aAmj4njxVtbPNl1+iTRHPIgP92gwe3pV1xiKciAnUR7f1KpjuA1+P5+dGJBZtmLVEoh3ZV3ra08CGVNWI6j797pV3lWwKrm/sivqAsulk2V/Xp5E=
+	t=1789696410; cv=none; b=An1T+p7zI6oaMmpQ+DQ0nxn3tC58DusFIUwSArqim2sJmdVAScJjYqUeLzGmP79lshFFkwAIhYzy0Pi5xtU2NxCvlvbdVfC3RC5DwQHJvcJgbJ5Pg3VfGAU5US34z4xLW10nL++S2LDdo1lcX/t9qULw5kF/ni+azZJ9Fgwis6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789696344; c=relaxed/simple;
-	bh=e/lRjJ3+0ylDa5qqKZe3WO1iGQ/o0RNmydhQSJdETcg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=skl1oPIiL5h4x2jVvVcMqm8BhZbJl8EWtP7XlUgmdy/XCOuL0CM2JB2CKJiEapwat8KU+Uqhi2iRF07og5HRFHny7RjgiK71hbw1BQCwfaXpr8vz/jS4NABJWnDRdGqtupXYA6ROzXVHXkFefyOFxYTlyjKDi8PMBqd7WCR4vcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 8e99a290b30311f19a56ed5b684f684d-20260918
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:743c455c-ddcc-4a3f-90c8-a9647306c3b1,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:3acd2fdb907b06de407f209f64066ba7,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|136|865|898,TC:nil,Content:0|15|52
-	|99,EDM:-3|-100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
-	,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8e99a290b30311f19a56ed5b684f684d-20260918
-X-User: fuqingshuang@kylinos.cn
-Received: from [10.42.20.11] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <fuqingshuang@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1751355845; Fri, 18 Sep 2026 09:52:08 +0800
-Message-ID: <b33bba50-38ce-477a-be0d-ec4eeb0703b1@kylinos.cn>
-Date: Fri, 18 Sep 2026 09:52:05 +0800
+	s=arc-20240116; t=1789696410; c=relaxed/simple;
+	bh=mPPqfh3PnTxFru32WxJ4lVJ3g4NfSLC4xy+6D4GP/u8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O9HerlvXHxyhE25BxpqQLW87nHKeJS/KWw4184hJcLrSaFf42boS0HBeGWIfoazDRs3fIRafe+OLX5gRyCUMYQUubojhWgdiklzcIVmy+1XltJjYhAdI7X5ww3xPjWQe7vNukpg/ZPqqA9BY1DRuziYatsQysYfkdlJucC57xmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=26j69VBm; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="26j69VBm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=QEW9lDN/vnBvzIBFpAIPbkoyudlyt1kwkJ46y6KTBgk=; b=26
+	j69VBmvfCfkxS3GddrbUAWqSKSj2TdmPcs8e3TsUoJp/rdmCz8kbMJ47rOSpNrQvADxDHEmwtf6ra
+	PUoW4nG8Mrwlwgp6E6188EbOEA7tK2WpFvE/OjIVAfaiaQiZwPEP2A3P/nOrH+bua3uLNo9u3RqVT
+	F6O2Rr2hM3vowbY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x7Nml-005mYL-LV; Fri, 18 Sep 2026 03:53:07 +0200
+Date: Fri, 18 Sep 2026 03:53:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Wentao Liang <vulab@iscas.ac.cn>, davem@davemloft.net,
+	edumazet@google.com, f.fainelli@gmail.com, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	olteanv@gmail.com, pabeni@redhat.com, paweldembicki@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: vitesse-vsc73xx: Fix SPI device reference leak
+ in vsc73xx_spi_probe()
+Message-ID: <26e9c43d-74a8-4d70-ba71-f50c2ac77e65@lunn.ch>
+References: <20260917104920.2147568-1-vulab@iscas.ac.cn>
+ <CAD++jLn8zuuBQKXTp_-Z9An2Qb-axBet5jwtyp+iecyUR_c0Og@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: net: fou_mcast_encap: conditionally load fou
- module and skip IPv4 case
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Anton Danilov <littlesmilingcloud@gmail.com>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260911100158.854183-1-fuqingshuang@kylinos.cn>
- <20260916174029.78939f6b@kernel.org>
- <14cff809-d338-4a95-8e7d-10759615b394@kylinos.cn>
- <20260917152439.64d14833@kernel.org>
-Content-Language: en-US
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
-In-Reply-To: <20260917152439.64d14833@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jLn8zuuBQKXTp_-Z9An2Qb-axBet5jwtyp+iecyUR_c0Og@mail.gmail.com>
 
-在 2026/9/18 06:24, Jakub Kicinski 写道:
-
+On Fri, Sep 18, 2026 at 12:22:12AM +0200, Linus Walleij wrote:
+> On Thu, Sep 17, 2026 at 12:49 PM Wentao Liang <vulab@iscas.ac.cn> wrote:
 > 
-> I did not ask about FOU
-
-Apologies, I completely misread the scope.
-
-I've now done a systematic check across tools/testing/selftests/net/.
-FOU is the only relevant module lacking any auto-load mechanism
-in these tests:
-
-All other tunnel/encap modules (bareudp, vxlan, geneve, gre, ip_gre,
-ip6_gre, amt, ifb, xfrm, l2tp) have proper module aliases and can be
-auto-loaded via netlink or rtnetlink requests.
-
-In contrast, the fou module has no MODULE_ALIAS_GENL_FAMILY, no
-rtnl link alias, and no net-pf-proto alias, so it never auto-loads.
-
-Among the three selftests using FOU, pmtu.sh and rtnetlink.sh already
-load the module explicitly, while fou_mcast_encap.sh is the only missing
-case.
-
-A naive grep for "encap|tunnel" across the net selftests returns 23
-scripts, all of which rely on auto-loading and require no fixes.
-
+> > spi_dev_get() takes a reference on the SPI device, but neither the
+> > probe error paths nor vsc73xx_spi_remove() ever release it, so the
+> > spi_device can never be freed after the driver has been unbound.
+> >
+> > Release the reference on both probe error paths and in remove().
+> >
+> > Fixes: 95711cd5f0b4 ("net: dsa: vsc73xx: Split vsc73xx driver")
+> > Cc: stable@vger.kernel.org
 > 
-> I guess I wasn't clear enough. When I say "before posting v2"
-> I was hoping you'd give me a chance to respond too :/
-> 
-Noted, and sorry for jumping the gun. Won't happen again.
+> I think we don't set this on networking patches, the network maintainer
+> decides himself what is stable material.
 
+That was true when DaveM did all the Maintainer work. But it is no
+longer true. Please follow the normal stable rules.
+
+	Andrew
