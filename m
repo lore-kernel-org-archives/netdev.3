@@ -1,137 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD78502546;
-	Fri, 18 Sep 2026 16:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FE651A73C;
+	Fri, 18 Sep 2026 16:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789750529; cv=none; b=ISn1kAMUrIE/D6o4Hu7ULaxOnm0x1ly4OVB+Ipmr7TDJ5+9vp1kMDGhWCiRXK7XTmyqfg4QpYgpwIQSWWrVFg93jywJembFjZbMsoP0HYFLOIjMVucWUrlJXnEvXQ/tD6BuCutpd/GnoS5SbJd+xURL26lkJ2FJ0PDHDvR4zEnk=
+	t=1789750594; cv=none; b=GeFkE5IdhiRXS8K9xQaykqz5jGgL1jwlh49tju9plZX0LANnY+6iKaFkgCnaoSJp3am/KUVCBUcSmIlldGAZBAYiVyM4K0xdjNA78P0bb6ozOdbzfOlAhZ1ZKh/rUf9wQmSkPI3a8T4WlCQlMTRYcD+xHXZKx8AFTAGX7Hq99Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789750529; c=relaxed/simple;
-	bh=BkrTBUWgtEY3ZSDZV8TWluEgqo3j0w8r8xpczDpSQ8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CxT5JQI8JiMLtuOklC6zFASZY6wm6wFaijA5hf2m7BpMXzDEtGFPKgPax9/2YcLHmb7+2XIgcQNOpKoXo7eVjA69Zc6l3ctL2CD4gxOopNkVVQR3fBw1UhZ5kQ5swPYW70xEeCb8zVZEJF/5ef0UWfD+SMQ6v039Xp3Nv2C08zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6BpMVdL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789750594; c=relaxed/simple;
+	bh=XojK1aH6MJS/F4EwychKrgpBrWRhiK+a+PkzJpETGJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lAqAz0RQ/PUnTAcxrK9m2fJokEC/GDpmtGeifdQT053896hqNHIa+WsRpnev37RWsn3SJtH+Dl4KhbuGpK6AWHYuVuJHcWoGpxup17IYwaMb5c2IGUuBCgh0ZlQZtDBaXf9u+jJ9ti4PPD1qI2mdizJvx4MeCekstEfLO8ESvwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=JHtwdE0R; arc=none smtp.client-ip=188.68.63.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6BpMVdL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D4B1F000FF;
-	Fri, 18 Sep 2026 16:55:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789750527;
-	bh=PvwBJ7+u8wV5by4QEYGYKiQPXw9/Ehg40Xjxdr7Muyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E6BpMVdL81jmC7IBcPG67lnce8x94k97ydWHTrsA8eoEV+P8rKu0DRpo3tvVFZcu5
-	 IXEJXJkXcio0bnBnZiSFUoBa6Z1Ebt0FKmBlcPWIwlfE6XcOXQgwyaHXmXe76L6clI
-	 vLzbljjppIW3bnB9W7N69Ox7YLexvc7GfwsLsDlYuNdbDf8TF3gzkUnSuRj8o/OZak
-	 JshdBOUDm0FR0GU2HxfTgpevHuxTwF9lP/FKQ9pu6fWzADu+CPCjlsnpScN+nuKdLB
-	 fOrPGrqoN6qG+ACLyeHqi6nt/efIA1wI328uj+HcU5OE2fhorZ/AXRlffelBKyHnDf
-	 7txM+/X/ytTNg==
-Date: Fri, 18 Sep 2026 18:55:21 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] selftests: net: fix CONFIG_SYSCTL sort order in
- configs
-Message-ID: <lf2colzrbojg7ob4qg5z2wldikuitjkls5x47m535h2zgr5ffy@2iqctneklykj>
-References: <20260918-selftests-net-config-sort-v1-1-968ea6e8c1b7@gmail.com>
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="JHtwdE0R"
+Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4hmf0X0NG9z6LmM;
+	Fri, 18 Sep 2026 18:56:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1789750588;
+	bh=XojK1aH6MJS/F4EwychKrgpBrWRhiK+a+PkzJpETGJc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JHtwdE0Ro0nfZfESGhetZliNaMXZJlll83bNUMjUk4Uw4qgzTCRrDobrFfkNphgdU
+	 ORz9sK3Zfphhcu5iCUeCSCvf1zYJYB6yL40lHI5/WiYa83NoTOFeigJhJcCN8w7qfW
+	 hSWJSDbl6vbZfVondy0HpnOcnPH3Tx9wt+xKnrWfQsQO/5ZqhDJPtBJ5LwY6x86X/i
+	 t+LIdy6668sHd4ghJjC1X0PFXM9GNJ1f0ZwH9t60rnn7L/wZ4zuKOLs0JVYdpws79m
+	 Y4SEtHkNLdJX29PQ4dWUBcsudlK9Na5eu74aqiG0QaNTq78lap/ezdpeuNRd1hWkR1
+	 nOKOvtkTcocvA==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4hmf0W6ksVz4y71;
+	Fri, 18 Sep 2026 18:56:27 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hmf0V3cJ5z8svY;
+	Fri, 18 Sep 2026 18:56:26 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id E7D6A5FA75;
+	Fri, 18 Sep 2026 18:56:20 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <85c50e6f-a270-4755-8576-c4ba2b961e26@leemhuis.info>
+Date: Fri, 18 Sep 2026 18:56:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zvjvgykwrsi2inxe"
-Content-Disposition: inline
-In-Reply-To: <20260918-selftests-net-config-sort-v1-1-968ea6e8c1b7@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] Revert "net: qrtr: Send HELLO message on endpoint
+ register"
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, Chris Lew <christopher.lew@oss.qualcomm.com>,
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+ Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>,
+ Daniel J Blueman <daniel@quora.org>, Takashi Iwai <tiwai@suse.de>,
+ Vlastimil Babka <vbabka@suse.com>,
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+References: <20260918101621.2848322-1-linux@leemhuis.info>
+ <lgyho3avi65edtr4xggbsrja47cjhqbamrnmchnfh4blmyygd6@bhotovqqqubj>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <lgyho3avi65edtr4xggbsrja47cjhqbamrnmchnfh4blmyygd6@bhotovqqqubj>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <178975058160.2895271.1887392753712195921@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: E7D6A5FA75
+X-NC-CID: JT6oaaAe5xXcb6MDvAu5WoBsYUw6B6puDrFY4xUydwv4Kb1OK3k=
 
+On 9/18/26 18:37, Manivannan Sadhasivam wrote:
+> On Fri, Sep 18, 2026 at 12:16:21PM +0200, Thorsten Leemhuis wrote:
+>> This reverts commit 544d85de4dc22c01badfd8cefa59829ce35c4858.
+>>
+>> It causes suspend and resume problems for numerous people, including
+>> maintainers and developers of ath wifi drivers. A fix was proposed[1],
+>> but did not get any traction, so go for a revert instead.
+>>
+>> Cc: Chris Lew <christopher.lew@oss.qualcomm.com>
+>> Cc: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+>> Cc: Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>
+>> Reported-by: Daniel J Blueman <daniel@quora.org>
+>> Link: https://lore.kernel.org/all/20260909055846.16539-1-daniel@quora.org/ [1]
+>> Reported-by: Takashi Iwai <tiwai@suse.de>
+>> Link: https://lore.kernel.org/all/87a4plsg4w.wl-tiwai@suse.de/
+>> Reported-by: Vlastimil Babka <vbabka@suse.com>
+>> Link: https://lore.kernel.org/all/ab1491bb-cca5-4145-ac7d-31c966abf7b4@suse.com/
+>> Reported-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+>> Link: https://lore.kernel.org/all/6257c447-788d-4362-851e-0d552bcf7c56@oss.qualcomm.com/
+>> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+>> ---
+>>
+>> I'm not affected by this, but due to all those reporters mentioned above
+>> it seems it would be good to get this fixed for 7.3-rc4, as Linus' rule
+>> of thumb wrt to fixing regressions is "generally be 'within a week',
+>> preferably before the next rc". Which is why I currently plan to ask
+>> Linus to pull this directly. If this is a bad idea, just tell me.
+>>
+>> The patch from Daniel linked above[1] could have fixed the problem, but
+>> none of the developers of the culprit or the maintainers for this area
+>> commented on it within a week
+> 
+> Really?
+> https://lore.kernel.org/all/hcr4woicsnz3pbhzlguuwjlego7yli3znhjmsx4cdz66xa74zd@wjtle2yslc4b/
 
---zvjvgykwrsi2inxe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Apologies, I had forgotten about that one.
+> FWIW, I don't mind a revert too, but the comment was misleading.
+Just tell me what you would prefer, you are likely the best one to judge
+here. I just think it would be great to get this resolved for -rc4 and
+your option would really help there. Sounds like you would prefer that
+fix, is that right?
 
-On Fri, Sep 18, 2026 at 10:49:30PM +0900, Yuya Kusakabe wrote:
-> Commit 8d75c338f0bc ("sysctl: remove CONFIG_PROC_SYSCTL, it just mirrors
-> CONFIG_SYSCTL") renamed CONFIG_PROC_SYSCTL to CONFIG_SYSCTL in place,
-> which left the entry out of alphabetical order in the net and
-> packetdrill configs. The netdev CI check for sorted selftest configs
-> now fails for every patch that touches either file.
->=20
-> Fixes: 8d75c338f0bc ("sysctl: remove CONFIG_PROC_SYSCTL, it just mirrors =
-CONFIG_SYSCTL")
-> Assisted-by: LLM
-> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-> ---
->  tools/testing/selftests/net/config             | 2 +-
->  tools/testing/selftests/net/packetdrill/config | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests=
-/net/config
-> index 30d5fcb09a83..737e7e6327b3 100644
-> --- a/tools/testing/selftests/net/config
-> +++ b/tools/testing/selftests/net/config
-> @@ -118,10 +118,10 @@ CONFIG_NFT_NAT=3Dm
->  CONFIG_NUMA=3Dy
->  CONFIG_OPENVSWITCH=3Dm
->  CONFIG_PAGE_POOL_STATS=3Dy
-> -CONFIG_SYSCTL=3Dy
->  CONFIG_PSAMPLE=3Dm
->  CONFIG_RPS=3Dy
->  CONFIG_SYN_COOKIES=3Dy
-> +CONFIG_SYSCTL=3Dy
->  CONFIG_SYSFS=3Dy
->  CONFIG_TAP=3Dm
->  CONFIG_TCP_CONG_DCTCP=3Dy
-> diff --git a/tools/testing/selftests/net/packetdrill/config b/tools/testi=
-ng/selftests/net/packetdrill/config
-> index 83dde525c53c..b7df8bf30920 100644
-> --- a/tools/testing/selftests/net/packetdrill/config
-> +++ b/tools/testing/selftests/net/packetdrill/config
-> @@ -4,8 +4,8 @@ CONFIG_IPV6=3Dy
->  CONFIG_NET_NS=3Dy
->  CONFIG_NET_SCH_FIFO=3Dy
->  CONFIG_NET_SCH_FQ=3Dy
-> -CONFIG_SYSCTL=3Dy
->  CONFIG_SYN_COOKIES=3Dy
-> +CONFIG_SYSCTL=3Dy
->  CONFIG_TCP_CONG_CUBIC=3Dy
->  CONFIG_TCP_MD5SIG=3Dy
->  CONFIG_TUN=3Dy
->=20
-> ---
-> base-commit: 46bc52d13594848023e681860df8700c8db14354
-> change-id: 20260918-selftests-net-config-sort-4d13ed1f4927
->=20
-> Best regards,
-> -- =20
-> Yuya Kusakabe <yuya.kusakabe@gmail.com>
->=20
-
-This LGTM in the sense that it has no direct consequence for sysctl.
-Reviewed-by: Joel Granados <joel.granados@kernel.org>
-
---zvjvgykwrsi2inxe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqtbO8ACgkQupfNUreW
-QU9L0wwAgpoP6YFACelPgtPRto4VMmIq9V6bG1FQaf+nbGhE4PZOFoVwe7Xj+LPK
-hZeEhcsNAWTU+GmGQGI6OmV8p7Dq0V6zSspyB/pI7TN2RMZQXIrLEdXtizeLLCbW
-zlXylPdvwz/EALdPgjGYymgBWNB1aOG1KsDyViBftQDsj4Q2uPf2wZyJKM1P17Yd
-Njxa5iHycmW6RM7z1ckDUNHnDlVQGhBa5aWh1o+mBVyOXnMvdKW1gJ+8haIzUf4R
-2FzmNNvAS74LOmagILuHUE4BXTWMiPTrIYbrFfdPWhr0aUaOgQ85ggYJMiaIi9Z9
-JcJA2CeTgcX4wEtN8wY5yE71Jx4SE9vmYbjNnZcG2aOeDItbL1SlZJAh5kI3W+uC
-YApQfri1i+rHoEltVFdvnA3P7X0msL1wjv+W8EEcKwa//spM85Y5FMbey4FgIA9a
-7FSt5qJj/2BIXZxr48mqI/2fhhMBh+b44nwwsH5UXL8zscAmkoLD1GMPsvS8U6VD
-hFaHh3mv
-=gKQZ
------END PGP SIGNATURE-----
-
---zvjvgykwrsi2inxe--
+Ciao, Thorsten
