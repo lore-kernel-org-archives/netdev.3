@@ -1,40 +1,29 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52299499F0C
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7688749D594;
+	Fri, 18 Sep 2026 07:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789715512; cv=none; b=DXyHb/ghjdmhozVKmlpZF4cW/wz3DVqmA3U7iYixAwTPaC/fm4y/8H/8qs7joY07PGA2fMKYYaz/e4IXmF6bu120qesVn73dj1/RZ824+6wDKkLJb1Fxmjn1yqGuGfhoNfq/qwmVV9/fgRz/p6Rv5He3cOFU8QZ8Az+EckVG8jo=
+	t=1789715547; cv=none; b=T7dCicBK0StFjPg367YCbdRrFGAcXMuG6a6VhlZ9JWzmPwzmhshYGyiOPNbFtkFAT0mTAQDeR5Ao92fl1stLgoJrlMSa4tnClF/aQfyK+cKD779c7ZTNTHbUrhBplKYapqnQjzvGEngJmhnZ5tTrCRskbxRPa9lOHqG/y+Fkcbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789715512; c=relaxed/simple;
-	bh=RZtsoVxa1xJ+1U2wH9GbRQgtGgSK3nZ1kCLsz2PhByg=;
+	s=arc-20240116; t=1789715547; c=relaxed/simple;
+	bh=qbeZlVy+5SBEKTSymSb/qxfJ9QW/jVvvGlezIyaiUGc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m0nbzlzvPLcwt6LjPuGstRQziRokPKEb2Lv5sggeGpPy4/xcX7bj8sLQ2d1iovwWga336vpRu6+16Ie21Qke7Fo9U3UWkjMBAKtukDp942rVkdexHnMqMUPATbqfWfJkdgaybUaleruE8I38g9+Sku+SSH25KzdU7AxOPAkYafM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BOn559NG; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=a71w0FohgVvHAy6mGbsxlopdMrW275rENXpTlQwUHpUmpx6vPJvpABm/DH0XmvXJ6SY1BCznl9v4n4YqZd08EFIwk+wq6mg1QAuGlKCPsqBbPgdh9coCLxtFJB0elFoOY/1dXjQqdAfm1/bbZLg4D0MW8cYksAjPhGQtc8g87ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=gxOCxE8s; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BOn559NG"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 2D4211A0975;
-	Fri, 18 Sep 2026 07:11:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E270960649;
-	Fri, 18 Sep 2026 07:11:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8FDDB11C7B021;
-	Fri, 18 Sep 2026 09:11:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789715503; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=ONcQ26rozGTeYTFN4AmRp548glZjumb6wG79sSd/wGw=;
-	b=BOn559NGFM4JJTDaDZomXpW+HeR6L1FpzuDZcpegacC0EWH17CgOUh8GaZeLbsSQA+OKgI
-	YJqBv3xsMKPOjMOSHWrbzoJz6mPq8JbhfWjuIQhyAJOi23et+j6/9UkTWFXjrVbEo+DXBA
-	LAHVKlG8pvIOHGBjNnC8FqtxEt6J2+/6uHVGmb2y5eHgB1/ziSBondVCal7Tk1qz3mhkpx
-	roCnuoCqnGySL7UjrqsowJSlJEqVDnviYjtCb7Rt0e71lCmECtuljGFyXLbqKlKmp+HlbT
-	zlpmRCdB42oHn9bH3HrcRcJC6LclwNeN7n8bUBjVSUtQXqS+mt3VqKtAijKPrA==
-Message-ID: <986afd25-f69d-4b73-9e7d-f1403a1c6e6e@bootlin.com>
-Date: Fri, 18 Sep 2026 09:11:32 +0200
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="gxOCxE8s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=aBmuyDYC6BL0NuO22P/UKnyiVKMdfpL2R0mfPFPf/BQ=;
+	b=gxOCxE8sPuNKysXsbS8wQRqJ9f+QjQpyHrOrdCDl8Ov3ZIhrUFtKok2X5Zxagr
+	BeGM2ed0XtxHyPPWez4vSLRjhSSlfKeSJK+W1y4utwprJu87rWIRk4wopUndl/4Z
+	PCUpZ7SAtAna82fL8jlCahXOqn1RahLRZPuHlGDJFE1jQ=
+Message-ID: <6b00a649-8672-47c2-ab31-8b7d68ce1dcc@126.com>
+Date: Fri, 18 Sep 2026 15:10:45 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,75 +31,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/3] net: stmmac: advertise integrated PCS
- interfaces to phylink
-To: Thomas Karpiniec <tom.karpiniec@outlook.com>, netdev@vger.kernel.org
-Cc: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Choong Yong Liang <yong.liang.choong@linux.intel.com>,
- Bartosz Golaszewski <brgl@kernel.org>, Coia Prant <coiaprant@gmail.com>,
- linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <SJ2PR11MB8401F5C3A075DE2A0013E063E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
- <SJ2PR11MB8401D53F5519472525156BA9E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
+Subject: Re: [PATCH net] net: stmmac: fix the invalid VID programmed by VLAN
+ perfect filtering
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+References: <20260917122245.1338365-1-xiaolinkui@126.com>
+ <b521308c-34b8-40dc-831a-757a163902d6@bootlin.com>
 Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <SJ2PR11MB8401D53F5519472525156BA9E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <b521308c-34b8-40dc-831a-757a163902d6@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-CM-TRANSID:_____wD3H6z146xqSl3ZBQ--.23835S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uFyrJF15tF45Xw45Jw1rXrb_yoW8AFyxpa
+	y3uFnakayqqr1fXFsFqF18X34jqw4fAr45KrZ8tFWUAw15C3saqFW8Ka95urW8ZF9Ygr1j
+	ywsFy343GayvqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4Vb9UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlRb70mqs4-Z0FQAA3Y
 
-Hello Thomas,
+Hi Maxime,
 
-On 9/18/26 06:50, Thomas Karpiniec wrote:
-> From: Thomas Karpiniec <tom@wendy.sh>
+On 2026/9/17 23:57, Maxime Chevallier wrote:
+> Hi,
 > 
-> stmmac_phylink_setup() adds interfaces reported by platform
-> get_interfaces() and non-integrated PCS instances to
-> config->supported_interfaces, but omits the integrated PCS.
+> +Ovidiu
 > 
-> On qcom-ethqos with 2500BASE-X selected by firmware, this leaves SGMII
-> out of the supported interface bitmap, causing phylink to remove the
-> lower-speed modes of a switching PHY such as QCA8081.
+> On 9/17/26 14:22, Linkui Xiao wrote:
+>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>>
+>> for_each_set_bit() leaves its iterator equal to the bitmap size once the
+>> loop terminates, so the 'vid' read after the loop in stmmac_vlan_update()
+>> is always VLAN_N_VID (4096) and never the last VLAN ID that was found.
+>>
+>> Cores that do not support VLAN hash filtering (dma_cap.vlhash == 0) fall
+>> back to the single VID perfect match filter and hand that value straight
+>> to the MAC. vlan_update_hash() therefore programs MAC_VLAN_Tag with
+>> VID 4096, a value that can never match an incoming 802.1Q tag, so the
+>> perfect filter ends up discarding all VLAN tagged traffic. Both
+>> stmmac_test_vlanfilt_perfect() and stmmac_test_dvlanfilt_perfect() walk
+>> this path and fail as a result.
+>>
+>> Remember the VID while iterating so that the last active VLAN ID is the
+>> one passed to the perfect match filter. When hash filtering is available
+>> 'hash' is non-zero as soon as at least one VID is active, so
+>> vlan_update_hash() keeps ignoring 'pmatch' and nothing changes there.
+>>
+>> Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 > 
-> Add the integrated PCS interface bitmap to config->supported_interfaces.
+> Thank you for proposing this fix, however this code is currently being removed :
 > 
-> Fixes: 68cff4fff61f ("net: stmmac: add BASE-X support to integrated PCS")
-> Cc: stable@vger.kernel.org # 7.0+
-> Assisted-by: LLM sparse
-> Signed-off-by: Thomas Karpiniec <tom@wendy.sh>
-
-Looks good to me, thanks !
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> https://lore.kernel.org/r/20260908164309.59282-1-ovidiu.panait.rb@renesas.com
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 1350e92943ac..f956e0d2ec64 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1414,6 +1414,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
->  		__set_bit(priv->plat->phy_interface,
->  			  config->supported_interfaces);
->  
-> +	/* If we have an integrated PCS, add the interfaces it supports. */
-> +	if (priv->integrated_pcs)
-> +		phy_interface_or(config->supported_interfaces,
-> +				 config->supported_interfaces,
-> +				 priv->integrated_pcs->pcs.supported_interfaces);
-> +
->  	/* If we have an xpcs, it defines which PHY interfaces are supported. */
->  	if (priv->hw->xpcs)
->  		pcs = xpcs_to_phylink_pcs(priv->hw->xpcs);
+> So no need for this patch :)
+
+Thanks for the heads-up. I'll drop this patch then.
+
+Ovidiu, I'll keep an eye on your series. If the fallback path
+still needs a valid VID after the removal, feel free to ping me.
+
+Thanks,
+Linkui
+> 
+> Maxime
 
