@@ -1,99 +1,91 @@
-Received: from mout-b-202.mailbox.org (mout-b-202.mailbox.org [195.10.208.62])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ACA48E0D9
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4E31E857;
+	Fri, 18 Sep 2026 07:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789714288; cv=none; b=CeczoA/prl+ZyAln5BApLbNX0CLN6zxmpvnI78kzNWQiIa38Wm7ZcUR7ruI6A3l/CTHbKsDumZqt3Z2L1PG4N2CV7IfR/TeToF6wgkqwADLxTFSCPOx0r3Ek1e0k6QTrCvWCPCZZp0l/cizLp/DMzo4qDH9IhXQmchOEfqvblYE=
+	t=1789714995; cv=none; b=ffseEx7BoiLJ7/kVuWkFVA/iYEegIBlj3y8BsoRe5zwo8idV31rTtlc4bcQc5jvqwA5fbbKYy0OgLYHZTmuPK4ZydNRtDjDopdjlRI2UmosH7ZnuXiiGk9anIYM1M/DQ5OiW16T939yCupQ/FG4uGyqiLm+l7QOEy04LsML1ya8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789714288; c=relaxed/simple;
-	bh=RHtzJR7WskfdjVof3aPbjbXcWE4vjmhx37iZ6kmmDtc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fqpj/KUc0WhkM6XFSU5G644TrqQC9I1VzSAOira1hG1UHbNem9xAc8NpBy+ll93UCsRw6yKr1nszUqW8zx++9gpD5wNcQdIaIXI8d3PjQzkLzg7V09Z4a2tk1Dma6spTw3CB4Y36hjkurQwqpYgU03qu2l5Q1ofJEC8KflKs8IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=GSryW+kJ; arc=none smtp.client-ip=195.10.208.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1789714995; c=relaxed/simple;
+	bh=qKgn4VfjpM1+mtgs8P9dnXzjLcJPeaMJrhazv9TUqVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NAvjLp7Prglyectl+VlF0QxIpJT834REG6Qot66msGAa9zaL0kZ2yuJ3JYMJOWgY/DIagqzsDv8+TXo+s/r8wcdFHFByjW3C2BmYz5fRtN1FuKr6Kfn7QyNwkizwrkcotI3UxgwlYDck1gqBroQx5tiG8lGYxtfchmMqnrVAI0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=FYDKqqzf; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="GSryW+kJ"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-202.mailbox.org (Postfix) with ESMTPS id 4hmNZB1PXZzKnnH;
-	Fri, 18 Sep 2026 08:51:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1789714274;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QlFy7Bt1NG013BI2d1YwG67HMU9z0civ++3vM8YPt9A=;
-	b=GSryW+kJR2+UH05b4Jc8DKjVRoc1Ji9CXEObB4nZKucSRYcPpGQD4qEjam39m7B0P+dSUu
-	dM5UTg813pvxnEN3JJR0+eYhFDUZ/+ZyuAQdcKTB73zrXCc7EGN8Z08apmqXaORC2SFN1S
-	0TsOGCU+OqOiTaBHtbNSpQOwV5hfZZnAzd4+YakvKp/pHsbMfUXQiolb3rn1Bk9Yxk6jUe
-	pkaLdBJM2eFTmU6eRdJmpZt1ny3oG6W1QZPJakFS7JH/PuSsTfIcnYeYVPT87FNnWENezZ
-	JxsPdsiSyB9ZFty7kNEw2u0ftdYbCVBn9oltQFR1kxtNvnY6TqV4GEZOdFcR+A==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
-From: Ralf Lici <ralf@mandelbit.com>
-To: David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: Re: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB changes
-Date: Fri, 18 Sep 2026 08:51:03 +0200
-Message-ID: <20260918065103.28295-1-ralf@mandelbit.com>
-In-Reply-To: <58147155-1763-4e10-a3af-f8751c1505d5@kernel.org>
-References: <58147155-1763-4e10-a3af-f8751c1505d5@kernel.org>
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="FYDKqqzf"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B41E3EF8B;
+	Fri, 18 Sep 2026 07:03:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1789714985; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=GumGYp+cZSxuCV/vggU6CfFLl2osu3Yi7rq4u6xZB40=;
+	b=FYDKqqzfI1/+QmURCALbya+IA+a2XFEbhIRo17LICNpQ+8wkEYGhLoXcW5ctzp8bIv3PwZ
+	vOxVHg4bGmUqag6GP+/ZICgNNDxINxWJHtO+iAqGBnx13n59SX4a9U//0yoWUEXicpR1m8
+	+Hf9v/1T5WmdPB7pHMTYKWUVZyNYuKxfI01J3Lgg1asJKwIVOQbmOvC3HGHPcCuo9VzsC8
+	LFLTW7+EyoIGjmzV5B1X0iqotxwjSVRSrQXQW4lJE3j1lmVhYslcZCOFeXHutAgLrx8AD0
+	Me65WlIVo49WJWaDDgW05RUMTyq5SiLyVoGCrRwmBg9MSiD+Tp3reticC6b31g==
+Date: Fri, 18 Sep 2026 09:03:01 +0200
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v8 1/3] dt-bindings: net: wiznet,w5100: convert
+ to DT schema
+Message-ID: <20260918070301.GA21010@marmottus.net>
+Reply-To: arthur@marmottus.net
+References: <20260915-wiznet-link-gpio-v8-1-d173622474cc@marmottus.net>
+ <178967572953.22033.7825853149442957564@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4hmNZB1PXZzKnnH
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <178967572953.22033.7825853149442957564@kernel.org>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: dmFkZTG0WQYNJKjuTrZ7Jv8Q2MRe38byAzd4dVJebt3ZtAEPlfpgKrYdTS91pVnnM3Y85X9cS0VNpaaXXoocY/wzwmeDfS+MW5oBHdtRnUCADAqUuBVYUjKEzA3fVW+lcMOwVjvbC1C3lFKpq2s2kQjLvddX/w1Y3ulQmvZJR2O6wAIf/SBJ0PqWih2LJ1pOg0O3TYuLAfobQV3Sm6CApjYlU7F8CAI4y0eWcZ3yhP41mrrQgariGskOoByt6FlxiPUweaMaNc5z4N6cJK+h3gbVvSTOh/5ye7AFcNmIeN4C2Nkq4AQZJ3c37NCphFuMWg4xpcnpjZDctOaeqO5zvutgiEgmpLKctVwhNnZLm1+w1jNB2kAUmaM6UYUn3IuwnZG932HDvW9VBhOAV9KglywrEU5SoHlcv34P9sQ+1cc/iFGmcQ2KJz2PmMO7VU0hNnN2CBS7rjlEwY9Bp+YUE9HdMz8QJ1DbFmCHyJ8j8Jk2n+5JNiK8fePH++TwjTro/AuCLjcyuVe14Y5wlAFo+x2D3MVugFVv42yMSy24tnpTRNxuj0lFest6lhJX2NIzAwkMDOtW4T5DHKjJYlr9ndgDbmF6gZkfvd6lYXAyptk5OH8uSC/2S/W1E861nBM85i1/Evf9gWPTByjjmK8QdtV9PNHqEWacLnsdf803IQmKy58WVg
 
-On Thu, 17 Sep 2026 13:09:10 -0600, David Ahern <dsahern@kernel.org> wrote:
-> On 9/17/26 4:09 AM, Ralf Lici wrote:
-> > diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-> > index 7f69e8890b5b..a28974cc36e8 100644
-> > --- a/drivers/net/ovpn/udp.c
-> > +++ b/drivers/net/ovpn/udp.c
-> > @@ -250,7 +252,11 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
-> >  		dst_cache_reset(cache);
-> >  	}
-> >  
-> > -	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
-> > +	gen0 = rt_genid_ipv6(net);
->
-> this detail about routes should not be buried here. rt_genid_ipv6 really
-> should be local to net/ipv6/route.c
->
+On Thu, Sep 17, 2026 at 08:08:49PM +0000, netdev-bot+sashiko@kernel.org wrote:
+>[Severity: Low]
+>The description says the 14 MHz limit applies only to w5100 while 80 MHz
+>applies to w5200/w5500, but the single maximum: 80000000 is applied to all
+>three compatibles.  Should the w5100 limit be expressed as a conditional so
+>dt_binding_check can enforce it?
 >
 
-I agree. Keeping this detail inside the IPv6 routing code is exactly why
-I sent the RFC linked from the cover letter, and I would appreciate your
-thoughts on the proposed approach:
+The user should know which SPI speed to use here. I don't think
+leaving the scheme open to higher speeds is a real issue.
 
-https://lore.kernel.org/netdev/20260901122501.482920-1-ralf@mandelbit.com/
+>[Severity: Low]
+>This changes the recommended trigger type from IRQ_TYPE_EDGE_FALLING in the
+>removed .txt binding to IRQ_TYPE_LEVEL_LOW, and the deleted text also
+>claimed "w5x00 natively generates falling edge interrupts".  Could the
+>commit message mention this correction?
+>
+>The new value agrees with the driver, which requests the device interrupt
+>level-low in w5100_probe():
+>
+>    err = request_threaded_irq(priv->irq, NULL, w5100_interrupt,
+>                               IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+>                               netdev_name(ndev), ndev);
+>
+>The commit message body only says the binding is converted from plain text
+>to DT schema.  The only record of the trigger change is the v8 changelog
+>line "Change edge-falling to level-low" below the --- separator, which git
+>does not keep.
+>
 
-The pattern of obtaining a dst and only later sampling its validation
-cookie when publishing it into a persistent cache is widespread in both
-drivers and the networking core. It is racy for IPv6 routes with
-rt6_info::sernum == 0, because rt6_get_cookie then reads the current
-fib6_node::fn_sernum, not necessarily the value corresponding to the
-lookup which returned that dst.
+Nitpicky but I can add a line in the commit body.
 
--- 
-Ralf Lici
-Mandelbit Srl
+Arthur
