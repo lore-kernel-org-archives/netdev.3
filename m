@@ -1,153 +1,146 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f22.google.com (mail-wr2-f22.google.com [74.125.225.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DC135201B;
-	Fri, 18 Sep 2026 21:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5369935201B
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 21:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789767993; cv=none; b=Fu1BBznx+D4s6gzaontxNzEpN5GTHTDBbryEsXkqyQAaxXlwvm+wXM4HsMSPcolpgBZcQ5rgrmdetUj1+vUyWPEITd1PSFF7ovG9ACnoSY0Ka9z1vJnqDb9tCFXjHoZhFNLJUvHk/yWK/N4A2/FZ5VZbJNa1Xj889WL4rfRM8z8=
+	t=1789768031; cv=none; b=S1fRq0BhhCYrQ8PCDFujz5lpCUpQtoar8Hxbq92Y6A2HWZ6PrJM1wkRhxIFuoNYi0OWsL+jZwevGRVPJ8R73hkssm+w/AgEd+yrSTeqCCQ+kmrBMPQhNjHEElcZ8zjkm0cx9Ed/Vf1iZKCZjiN4ERAfICL82WgwCwwezHNQUulA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789767993; c=relaxed/simple;
-	bh=n2nWGp/DtkyQvp3yejQb6P6ED3ksQYxrnI7Dx8zIsT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pw4EbviDdK89DX75HjAP11DaZUeypSjFRUgWtQVIFjr1BSpB3v4rCIjYHKBciUisjifBSDf4bcJKJYwUXnstszXhRK4xqPRnjru+yuwk0u4zZc6DRjWza7N+enLbDC5AFC8UNvQZEqiyXWItX1QaRwoFT0q15HgTeMzvm6DiwBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de; spf=pass smtp.mailfrom=jonasjelonek.de; dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b=atNMC9h8; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
+	s=arc-20240116; t=1789768031; c=relaxed/simple;
+	bh=3f7g3bR00ng/Tc3oO4+2cJdqY2qayCdHr7YSAaWNT/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DKAWN/mC5IZAaZSqfQfhBN4h2L52GAUJ+Rks1HDUXESGAlrQJNG6s0RUQBVJ44RzKlKo5GxKIvOZgKbPyoWSdG9ab21IGKvv1mJBr0GJZc7lznKU4yfQNeXpqEdyLS9llqAf2xHKHVgzktEQHeTONbQqR3eH2cgGOam8Wk+0y0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOVcWlF8; arc=none smtp.client-ip=74.125.225.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b="atNMC9h8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
-	s=s1-ionos; t=1789767989; x=1790372789; i=jonas@jonasjelonek.de;
-	bh=T7VjXcGLNEp/PsjeylEWb75dAKLZ6LRRe6ugNMaNiXc=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=atNMC9h8Xt6gHPSEDj9lp27CXVEHRxZ8M0GM88jLXzAaeJjRjFy5rdcrpW1F3vZl
-	 fEMtSoLQHD9U3+gumvo8FsBog+AR+kI64vccMkXGczzj/kg2J+m2pm0ZfxLxwBtlX
-	 VBDuJFoLOGxu9SqeiZVNC6x7btnEqO4l86QI2qGwRm+ngJvPIztaDJ9zfUGqKVxjk
-	 H8ulEYawObSITHVqpuAAE0AU8AHkRlAg8Y4t+5r7wYg2NDQRyM2ub9Nhjm34kqjEA
-	 Rae7/bsNJOWPY6va11+Rxpf75sYePr0Fn1vkB8XtU5hphMV42R3XrObUk2wq0STnS
-	 GNoIgR6MDz5N4mjNaQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue010
- [213.165.67.97]) with ESMTPSA (Nemesis) id 1M6DnM-1x9svl2Wm8-00FJ5z; Fri, 18
- Sep 2026 23:20:05 +0200
-From: Jonas Jelonek <jonas@jonasjelonek.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonas Jelonek <jonas@jonasjelonek.de>
-Subject: [PATCH net] net: mdio: realtek-rtl9300: fix RTL931x C22 extended page selection
-Date: Fri, 18 Sep 2026 21:19:55 +0000
-Message-ID: <20260918211955.3955777-1-jonas@jonasjelonek.de>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOVcWlF8"
+Received: by mail-wr2-f22.google.com with SMTP id ffacd0b85a97d-485ac8990caso128913f8f.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:47:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789768028; x=1790372828; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4kF3kCqnenPmPclF7uOFxJbCVONn+n/x6kt5/bRZ8cs=;
+        b=SOVcWlF8uxRJsPnebPFJtLFtAhcltlnRWIw7bvdxhl9WGnecGh42Hf563JX4x+zGG6
+         RV95aig81LDU5I6H5agskz2dSOGMdd6/tOhQriNOWmQJgmKznM7WW+nQRHkwgVxQY0QX
+         4GsWpg7W6HeRj6Lkdg3AjsWMc9d7MstVE8ehsrbVzioaNPSXy3ftwAc+mlDHpJTqkqv0
+         sJ405U6Zxy/FLtBufDFwsKfajRAMlBjqbalgXbw8zNh1UHrPUW56PEtgbICxBJoYP5MK
+         uOiR2hcO0uK9b9zqqU6Qt/XbjSCz3izGJByY7c7WbOqqmCAFhX5c+B5H09oxBt/PAk9U
+         dZSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789768028; x=1790372828;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4kF3kCqnenPmPclF7uOFxJbCVONn+n/x6kt5/bRZ8cs=;
+        b=rgepvqzm5aZLjHp8Quc2MzNqomGWiSSK0Qp4HhIbTE8qzXlq1favtsrKty6C1K3i4n
+         6n6oii44f2JDAJ7Hz9GEN2DOqcAWf0DpBg9rB1/NQDljInpTKh1VnIsWZHf+9jgxfbZm
+         Tokn8qOzTtHOqrNLHDzoDCtnYnQzzkzvLcML0MXGKG82jDx2BpEy4ulERF8FQpZW4Z+G
+         4ZUuV6i9zAARTgPodVCEbjPPM2dXPpSG7KSBx0oRPanEgWBdq2Ir+uQHzw8BCmidlgqm
+         ohPWHvPBsvtVOfxaOYyq6TscER+Tc4rjjF2fLEfgPMrE6SBRe5J4i4SGJm5SsIor4aVb
+         TKBQ==
+X-Forwarded-Encrypted: i=1; AKwUvByUHtx2gGx507QxzEJ/pz0/B7Dyf4A340y1wwZ7w5RavNO42EW3readUlZY0Ywsa3udTmJR1xo=@vger.kernel.org
+X-Gm-Message-State: AFuF++myXdUtrVmf+6n0CO1T0fa9URGOxM4xna44u/soVFdpGXVIGh8J
+	VFxD5h8El6UAw0KE1euZt/dsZqVM9/d5MrNY1QxSOMm9oQPGpNZeXFwW
+X-Gm-Gg: AYBFou1St9BwMFJPrKrtiNH3UYiHalmzcYNAJ5ZpPDvtnT3BgVptoXnTL84cVYpXwkg
+	2Ba8CZScge9cjyERVCmraiApH+vlvkc19+BEO8GT0YLic7gThnoQjfz9DVbHkTVx3u2zTQoMaiX
+	X7LoZKlrlSRRbBVeUiRrytUJQnfyaGA+/R/zNoNt4gKuSzhe/44pm33mg35zxI8bGPCQuPOnpCK
+	bRKzOSr6Kuu+M6Mb8b4GtogyaI0YGlZM/eutNdFZG+bp1W1ceLwRfeDMKbNsoup1y/ABRkKf7NJ
+	zLl9B4YLJiFIp3he/0cL73V6u7ky0d9qqO26nvmZ0TYZIykw3qwswl437P+SgxVOfyCWaCj5XkH
+	DuSJ04dIoPAm5KQ1KKcgXlAG8bKKyBeqR8tFn2vCf9FXZ1HQf6JmudZf7KanuMsOP1rrr+5uFdv
+	BV/4+4Yn8mR5EJVaXR0Wi2bmgSf2SPElQ9CZAAHvmR/8uRoi24pSpz/OqSEf05n0qTi6MOfuvNV
+	oA8fbf22OqyVSr+BnPP+9sCyL152Y8/c/m5n9z9K/n8Wh41P7Gg70ShzgkosmXH/5Ul71d27uQy
+	xZLJcHF3UbQ/VqG7iCWEvXPqPDV+AllNgIPdSaW4bBU46EnOJOi4Tn7KMiA5hhKGWCk2hrM7Mlz
+	iKUa2nQ1FkwBtn87Edw==
+X-Received: by 2002:a05:600c:3b99:b0:49e:6683:d227 with SMTP id 5b1f17b1804b1-49fc7bbfe4bmr50760085e9.0.1789768027874;
+        Fri, 18 Sep 2026 14:47:07 -0700 (PDT)
+Received: from ?IPV6:2a02:3100:59ae:19fc:400:b6b0:efdd:810c? (dynamic-2a02-3100-59ae-19fc-0400-b6b0-efdd-810c.310.pool.telefonica.de. [2a02:3100:59ae:19fc:400:b6b0:efdd:810c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd086ce9sm33996685e9.12.2026.09.18.14.47.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Sep 2026 14:47:07 -0700 (PDT)
+Message-ID: <d1aad031-6670-44ae-84d4-dc02ec23ba8f@gmail.com>
+Date: Fri, 18 Sep 2026 23:47:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6s+eZMirCmmbXGVkcVKDj9D5cbWlJQExptG3AHo5Ge9Gm5RpiDj
- k9dF0MpZU2BAkBEdjoSkwhDsnuT9/Z/IFtubXtaGubGDP/qyvAgNftNORof5/kSc6AeSjz5
- o8O0WPyEvJ0Nwnw+OjK1z3DDQ7fykvDrDIzvKUHa95dQpEHmXOPVOun4/QFXYeaPFi1hGRR
- BbXZ/SDC62Haib+Z5irhQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:4hiqyQPUj4o=;fJcYdgt82Vsr7AcCxRibT05Bzip
- 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
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/3] net: hsr: privatize interlink-bound skbs
+ before address mutation
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ horms@kernel.org, shuah@kernel.org, lukma@denx.de, m-karicheri2@ti.com,
+ fmaurer@redhat.com, luka.gejak@linux.dev, bigeasy@linutronix.de,
+ ali@iusegentoo.com, qingfang.deng@linux.dev, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260808004525.1551-2-xiexinet@gmail.com>
+ <20260814012736.2805965-1-kuba@kernel.org>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20260814012736.2805965-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The RTL931x indirect access engine has a separate nine-bit extended page
-field. The driver leaves it at zero, and otto_emdio_run_cmd() therefore
-programs extended page zero for every Clause 22 transaction. This
-overrides page selection made through PHY register 30, causing accesses
-to private PHY pages to hit extended page zero instead.
+On 14/08/2026 03:27, Jakub Kicinski wrote:
+> [Severity: Medium]
+> Is the enumeration in this comment complete?  The unconditional interlink
+> source-address rewrite is pre-existing and was not introduced by this
+> patch, but the new guard and the commit message claim ("Other interlink
+> traffic keeps its zero-copy behavior") assert that the uncovered cases are
+> safe, and there looks to be one that isn't.
+> ... 
+> Since skb_cow(skb, 0) is a no-op for a non-cloned skb (__skb_cow() only
+> calls pskb_expand_head() when skb_cloned() or extra headroom is needed),
+> could the call be keyed on the actual sharing state, or simply made
+> unconditional for HSR_PT_INTERLINK, instead of on the topology predicate?
+Correct, the enumeration is incomplete. For TAG_RM ingress retained
+in frame->skb_std, a queued packet-socket clone can still share its data
+even when the frame is not locally destined. The interlink source rewrite
+can then change that clone.
 
-Set the field to its 0x1ff "do not change" value for RTL931x Clause 22
-reads and writes. This preserves extended page selection made through
-PHY register 30 and restores access to its private register pages.
+I'll remove the topology-based assumption when revising the COW handling
+for v4.
 
-Fixes: 5ebdcac59aff ("net: mdio: realtek-rtl9300: Add support for RTL931x"=
-)
-Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
-=2D--
- drivers/net/mdio/mdio-realtek-rtl9300.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
-io-realtek-rtl9300.c
-index afd52a1cd7f8..9ce2b7807532 100644
-=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-+++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -88,6 +88,8 @@
- #define RTL9310_SMI_INDRT_ACCESS_BC_PHYID_CTRL	0x0c14
- #define   RTL9310_BC_PORT_ID			GENMASK(10, 5)
- #define RTL9310_SMI_INDRT_ACCESS_CTRL_1		0x0c04
-+#define   RTL9310_SMI_INDRT_EXT_PAGE		GENMASK(8, 0)
-+#define   RTL9310_SMI_INDRT_EXT_PAGE_NO_CHANGE	0x1ff
- #define RTL9310_SMI_INDRT_ACCESS_CTRL_2_LOW	0x0c08
- #define RTL9310_SMI_INDRT_ACCESS_CTRL_2_HIGH	0x0c0c
- #define RTL9310_SMI_INDRT_ACCESS_CTRL_3		0x0c10 /* I/O fields flipped */
-@@ -325,6 +327,8 @@ static int otto_emdio_9310_read_c22(struct mii_bus *bu=
-s, int port, int regnum, u
- 		.broadcast	=3D FIELD_PREP(RTL9310_BC_PORT_ID, port),
- 		.c22_data	=3D FIELD_PREP(RTL9310_PHY_CTRL_REG_ADDR, regnum) |
- 				  FIELD_PREP(RTL9310_PHY_CTRL_MAIN_PAGE, RAW_PAGE(priv)),
-+		.ext_page	=3D FIELD_PREP(RTL9310_SMI_INDRT_EXT_PAGE,
-+					     RTL9310_SMI_INDRT_EXT_PAGE_NO_CHANGE),
- 	};
-=20
- 	return otto_emdio_read_cmd(bus, RTL9310_PHY_CTRL_TYPE_C22, &cmd_data,
-@@ -337,6 +341,8 @@ static int otto_emdio_9310_write_c22(struct mii_bus *b=
-us, int port, int regnum,
- 	struct otto_emdio_cmd_regs cmd_data =3D {
- 		.c22_data	=3D FIELD_PREP(RTL9310_PHY_CTRL_REG_ADDR, regnum) |
- 				  FIELD_PREP(RTL9310_PHY_CTRL_MAIN_PAGE, RAW_PAGE(priv)),
-+		.ext_page	=3D FIELD_PREP(RTL9310_SMI_INDRT_EXT_PAGE,
-+					     RTL9310_SMI_INDRT_EXT_PAGE_NO_CHANGE),
- 		.io_data	=3D FIELD_PREP(RTL9310_PHY_CTRL_INDATA, value),
- 		.port_mask_high	=3D (u32)(BIT_ULL(port) >> 32),
- 		.port_mask_low	=3D (u32)(BIT_ULL(port)),
-
-base-commit: 46bc52d13594848023e681860df8700c8db14354
-=2D-=20
-2.53.0
-
+-- 
+Xin
