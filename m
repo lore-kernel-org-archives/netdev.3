@@ -1,74 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC311522699;
-	Fri, 18 Sep 2026 19:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37A75221E4;
+	Fri, 18 Sep 2026 19:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789760752; cv=none; b=Y125aNHgUixOU/yu3TvzXfKen9j9TPiOZdCHJfssk2afrz1OFCUq8aDniKWlBxfcVxpL9YQGZtpj6LyDTkXbrrO3xBYYqUQUAdxbpZODIHafSjNjEqi67ZF1RL0ONmyqFyKaZ/CG3BQgMMLfYdtjz+FXqh7oePl7DhbP4Kqsz5w=
+	t=1789760785; cv=none; b=FjCrR6DZvvNZUq5JH2K0kh09KNR0gQjYXDayVfFXAiRyZQYBKOBW2ViRGySpFBhp1xepuBq3PySLDgHWlKf70eEKrHVwHoVTxFVZzk/g5QWdIGzb4GsqmFhJ86QHRLqAtHP8KTLRxzaCT9ZskpfwqYK9Nmxg89QZDG4AqX5mnbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789760752; c=relaxed/simple;
-	bh=Buk2H4UGWd1HKKhaku9nG/8YiPC1RZu+XniqN9Z4+V0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpF1yc1OjioHZkVEd2NT8brgECaiJK4aKCMwEpDsKHxjt+paT2etm9ByI/OSSgXH2LOUGonmKprmkurJl+BbjLWG1mhGxZGcsiA8TwAXwLz08eJzQGeGJNN1w2UvestyBfGBCk3moFautV+neXCPjR7MJRJ0/npRWLiLXeVA4rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UO3MeYxT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789760785; c=relaxed/simple;
+	bh=f0JU1pyxHZVmz6TgK6400JtLaWcqGYzGch+FcIDdcKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eG9U7wUspVStgBsLY6410QCm36s95BBXjrwbElNMliyTfN3VZxmauwu7xvIHMYcEQ78XOL+ytxzPlbpAH0Ru6aDFpyniViNmvGHigmyCYQcKEGz/3j4jr0mJpb6nUqaYGpzzIQ57XTQ3iFtrhj7pSyGeB3UsJRGWIBcKff5JtgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCgqvQSg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UO3MeYxT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099B71F00898;
-	Fri, 18 Sep 2026 19:45:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCgqvQSg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136491F000FF;
+	Fri, 18 Sep 2026 19:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789760748;
-	bh=vYQ6BtbbVgXXP8MV1veSsvM8EhJvgEGrwFCTi1zmUXo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UO3MeYxTHGJ5KmoTPW4UdkTh2wsEnScnQv/m8Ws7iFif5wgHpEHMrpd8ku1ZSOFMJ
-	 Oyk8sZAM73SDN7Dm9RieRI4gyMHxw69FUUzVs0JEKgtZwkcEsyb45K1CRE7JiiF/Re
-	 n5d1L34EjQE7Scr1iejMlUKilm5SqlO6pCkuRcZFuYaItlteZrbm0dZUDUSOXRfeNA
-	 D/BMWkLL56M24STXKAH5gxEC+D6HlH5YlxrC3bSnjPwWgD5sMYy2++idnDAXo9/K1m
-	 v0eW2pNpb8lxgQiGjbO5dXVB4uRD38UKmauxSFSolFnUid7dR48L5kLCOjVhtwmwgU
-	 Qsaa/3B5oLYTg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	gregkh@linuxfoundation.org,
-	guangguan.wang@linux.alibaba.com,
-	alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com,
-	mjambigi@linux.ibm.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Junjie Cao <junjie.cao@intel.com>
-Subject: Re: [PATCH 6.1.y] net/smc: check v2_ext_offset/eid_cnt/ism_gid_cnt when receiving proposal msg
-Date: Fri, 18 Sep 2026 15:45:29 -0400
-Message-ID: <2026-09-18-daily-reply-0002-re-net-smc-proposal-msg@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260918045353.686837-1-junjie.cao@intel.com>
-References: <20260918045353.686837-1-junjie.cao@intel.com>
+	s=k20260515; t=1789760783;
+	bh=0xKONjRtCurc8WbnVsXxctUnGulmYkSraLp8ZuykmOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lCgqvQSgcziEjU4PZtqtEprTy6iKuFyOEE9BW3tqy44D9VL04HVsRwqvwKmKyGPZE
+	 NwXHSur8WSM1IPdNOmQP+APLeUJ1RgNieNoT1ANmj/YhATUjVAcPfRgrYZM7TZM+N+
+	 bMcfMFu0SMYn3hjJ7O9KN5RVCaf7IcpOhjjBsP+dzV3ywNB7ghaQOrg8gutdNiu1k0
+	 3CNauiux7L+ru4TiIBlqXV3+OrXmwOHNXonb0u4a1KKeHVKyatPX6HGHjJif/WeWei
+	 deOCnWZK7ivR8UQYr8Q9r/ovO/8j6VpqEaUN+qwysGhODUQPRDPqCsR7gIx3J3phz2
+	 s2ZawkkrqOC2g==
+Date: Fri, 18 Sep 2026 14:46:21 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Ricardo Pardini <ricardo@pardini.net>
+Cc: Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-rockchip@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org, nic_swsd@realtek.com,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v5 1/7] dt-bindings: net: add Realtek RTL8125 PCIe
+ Ethernet
+Message-ID: <178976078089.1640411.4176382061491076376.robh@kernel.org>
+References: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net>
+ <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-1-c1b9e5f10cd6@pardini.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-1-c1b9e5f10cd6@pardini.net>
 
-> Backport of the CVE-2024-49568 fix to 6.1.y. The CNA record lists
-> 6.6.68, 6.12.7 and 6.13 as fixed and nothing for 6.1; the affected
-> code (v2 CLC proposal parsing) dates from 5.10. The other five fixes
-> from the same series are in 6.1.y since v6.1.122; this is the only
-> one missing.
 
-Queued for 6.1, thanks.
+On Thu, 10 Sep 2026 22:07:51 +0200, Ricardo Pardini wrote:
+> Add a binding for fixed/soldered Realtek RTL8125 PCIe Ethernet
+> controller. As a PCIe device, its "pci10ec,8125" compatible is the
+> Open Firmware spelling auto-derived from its PCI-SIG vendor/device IDs
+> and is already covered by the generic dtschema pci-device.yaml. The
+> compatible itself therefore needs no binding to be valid.
+> 
+> A dedicated binding is needed because board DTs describe these
+> soldered function nodes in order to attach ethernet-controller
+> properties to them: a placeholder local-mac-address that the bootloader
+> fills in today, and potentially nvmem-cells, phy-handle, etc. in the
+> future. This binding references ethernet-controller.yaml so those
+> properties are validated on the RTL8125 PCI function nodes.
+> 
+> Suggested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
+> ---
+>  .../devicetree/bindings/net/realtek,rtl8125.yaml   | 43 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  1 +
+>  2 files changed, 44 insertions(+)
+> 
 
-> 5.15.y and 5.10.y are in the affected range as well; the commit
-> conflicts in af_smc.c there and needs a separate backport.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Send those along when you have them and I will queue them too.
-
--- 
-Thanks,
-Sasha
