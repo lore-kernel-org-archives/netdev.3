@@ -1,90 +1,78 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086E2125A0
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 23:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C84741A571;
+	Fri, 18 Sep 2026 23:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789773953; cv=none; b=mKF9XgmjluknCyhHtBR1OioThAT6NKIsWjMyjLUATB6aqy4qTibchd22wFZBOB0+O9LrwiWhX++AVAW4X2d/HFBINXBxdq9n/+7yboTB4PwzP88BwybHgJOkhRNDHuyH7N/oOdudK0g700ibeSKkLTOkq4Ij77HW9fi1nmepZSk=
+	t=1789774873; cv=none; b=ce0D7tEomqtg5A7YCEbdGPv1VnvDIFjKVbxZuVAVXxono4QabmGBV5WpScDL8cyUmq7xpufGhcpuT2IW4zFC79sXMYMlK+5BHOUP74bR58FxhjgR7sChgEM3IuH18KuMk3Pu6+eDkDq2HjaQ6JAuPpfDn0fT0VntZIXSy4DU58I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789773953; c=relaxed/simple;
-	bh=mozxaWzeQSTf+AjlwLSlCums2lVIvxk1d3n3QIpfoSM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uqig+DmlQnQBS1qjAeAOKXHOkjunQOVMqK+AwnBaMH7gMvq4DVAZD1JXjAvx8r2FIPP08Y4HB+OXvcew9OSxmNsWK0gsodUTbb6E8PGtd8bKQeh75hL0dXwMcxtoCSh9AwQxhokSskbqkbI2pMDJCtQnhFGNive78tHqvTW2cjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=n8BoP8UU; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789774873; c=relaxed/simple;
+	bh=lFYIUBuU/nTNgYx/kpR+u3mxkxgZf4kpEbiw3xLJs58=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lOEDVoFhpKp9eDWlVgVymFY24BHe7zb33UEOBa2iLynO9QUxRssjZsM4N/rhR4QlqCsBHK47t7q9WewnT3gjTkTDlPOFvEg7QErIHyHQ9+A8T81CoBw/2X9ELZyFWeQ5GjCJuKHn0PMhtRboDhBOGjnCuXS+f0guAUUgR8EHN1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F7k/o+rT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="n8BoP8UU"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id BC1FBC5847E;
-	Fri, 18 Sep 2026 23:26:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8036E60649;
-	Fri, 18 Sep 2026 23:25:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C16810329084;
-	Sat, 19 Sep 2026 01:25:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789773942; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=USxaILco5raa3NmA/VsBziY7iG/PgANTyDl6+4eSBZY=;
-	b=n8BoP8UU2UgqXaqxWJQe0+95itZoZV1IsM4sTOx4je1wmh5DjqQX8K/f1UK0XgK6QF1lC7
-	At2O0xrcVJdI/HR81QkUF1IZEJWaAbN7fyLXQcPLqQ0Zg2N7gl0l985foPR/4edjciRgKn
-	oG+ZN851pOAxGgq2GeWW/mbsEF7cdhge/X6eQwiQi3/tZ2b0A3c4SZJYis44cBgCQYjv5M
-	/ANZpi1LhBaI6bcQIYH4CzNOr4olMvO9C2Y2WFKfXNwwHGcGYpJ44Lizq9ofsJSjK3C6M3
-	gbL0qFITdhX0hqiQd9GviN+Y/LoiXhCPTI5qwkficePhDNYuozpIuE5j/ikO0Q==
-Message-ID: <e0d76f75-28fe-4699-bc5d-cdb929691e5b@bootlin.com>
-Date: Sat, 19 Sep 2026 01:25:35 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7k/o+rT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E034F1F000FF;
+	Fri, 18 Sep 2026 23:41:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789774871;
+	bh=TnctOyKpE5/oxuc1Ps0Qta/8S+5cl5VX9qneGpJ3tbE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=F7k/o+rTci9VtOCyHiSrJ8ncqP7Tt6VIXI4/nBh3Ix71Ew5PdfyBVQ9qA7Cm6ggos
+	 QvXHmkLPIp0wdGWhROXISfE4DImRZj4Du5YmXi72wr7hrT990/bY4wlaQFbsx1+agm
+	 /ICIC078xN9xoktJ/BcXtM1cJjCBSIwKGV1DOcWthR2CKNb4kuKVXCdPaWp99TzPWm
+	 NlR9H9yEvJ2pQkbp5bpEmeWPsFntZYgpsZ6aBTzTP3WylPRTTV1BWrhr/7Dtyp+woz
+	 MrDnSXjgEYuNQ0ZJa1rZoIO98P7VUj8QhGKTnagd2QJNGsBCfoR2XyAPGDZMB1klGk
+	 LAd1f3Nr9vM7w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198C23811977;
+	Fri, 18 Sep 2026 23:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net] net: don't require the hwtstamp NDOs when a PHY
- provides timestamping
-To: Nicolai Buchwitz <nb@tipi-net.de>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: James Clark <jjc@jclark.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Doug Berger <opendmb@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260918095540.34286-1-nb@tipi-net.de>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260918095540.34286-1-nb@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: Re: [PATCH net] net/sched: act_ct: don't WARN on benign
+ flow_offload_alloc() failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178977480490.1188948.5274904800302804627.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 23:40:04 +0000
+References: <20260915150816.36487-1-ngocthang2710.1999@gmail.com>
+In-Reply-To: <20260915150816.36487-1-ngocthang2710.1999@gmail.com>
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, paulb@mellanox.com, linux-kernel@vger.kernel.org,
+ syzbot+6cc37aba98dac721c415@syzkaller.appspotmail.com
 
+Hello:
 
-On 9/18/26 11:55, Nicolai Buchwitz wrote:
-> Removing the legacy ioctl fallback made both hwtstamp NDOs mandatory. A
-> device that only timestamps in its PHY implements neither, so
-> SIOCSHWTSTAMP fails with EOPNOTSUPP before anything looks at the PHY and
-> PTP stops working there.
-> 
-> The check only ever picked the legacy path. That path is gone, so drop it
-> and test where the NDOs are actually called.
-> 
-> SIOCGHWTSTAMP is new here, not restored. The old path went through
-> phy_mii_ioctl(), which only handled SIOCSHWTSTAMP.
-> 
-> Such a device now returns -ENODEV while absent instead of -EOPNOTSUPP,
-> like the ones that do implement the NDOs.
-> 
-> Fixes: 5062245a5a7f ("net: remove legacy way to get/set HW timestamp config")
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+On Tue, 15 Sep 2026 22:08:16 +0700 you wrote:
+> flow_offload_alloc() returns NULL when the conntrack entry is dying
+> (e.g. raced with a conntrack flush) or when the GFP_ATOMIC allocation
+> fails; both are expected under load and neither is a kernel bug. This
+> path runs from softirq on every committed packet, so with
+> panic_on_warn=1 an unprivileged user can panic the box just by racing
+> a conntrack flush against a `tc ... action ct commit` classifier.
+> 
+> [...]
 
-Thank you!
+Here is the summary with links:
+  - [net] net/sched: act_ct: don't WARN on benign flow_offload_alloc() failure
+    https://git.kernel.org/netdev/net/c/47abe7a5c4eb
+
+You are awesome, thank you!
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
