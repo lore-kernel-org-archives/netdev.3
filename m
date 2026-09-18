@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C0A4FDA45
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE466511E7E
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789747969; cv=none; b=SAc29wGj3Wy6WBEOKIjR7+Wu+cMzXISBxUvTGnTfAaLg8GVN2yXyiRWSDWNxHmIujxDNKp+SycYB+xqDNBaGgsHkgYNVUFEmmmROPR3CQxSWiShdN/GQk8LAHakYny15X9JC6wJTfAGrEiKH4ia8a5xufPZlfCBDZprk9cgRMZU=
+	t=1789748097; cv=none; b=LWtWBUw8QRrWQeQizbiel+TDjhAD2+95tSPYedZDreCOfLJS/j23MsAH6dUFn4bSRjw7uJH7LwW3fjsmmvb9nxV6Ng0bMWkQlWvFOZDujsgKVWufqELxSMBTb/WzZPol+0vjWcDWclGOWPjDgwyQNwTIKkkUJnoraNN+G5Rvs3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789747969; c=relaxed/simple;
-	bh=yQzG4GtlCEjyiKKmsLn+Iv2QufLeiSYViUgUZ9NHFD4=;
+	s=arc-20240116; t=1789748097; c=relaxed/simple;
+	bh=bFp+EXRjbodHLK7YXfpdqCEEkZtwzgjrFXgpcFW3BuA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CXn16oqDBXNAx5e9coPS1ZSnxK5qxtV9wVCrq+uf1C5iQJ6EI70de3+PIrXS/nsk43+lzETfnKkWkDruS7BAYn8KFnM9AjzUbDZ+SP9khnnOTyUhmvOpnlqmBhoj6eST9PVJ0nR+tN7vHUUAqxIpeY2+UlGqoRO76w7TsCIr++g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNlv65aZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=AMZxRz0PflD1lySJmjGFHgAoFmqpgK5Z9gGTJDZZiIlWiT5XCXqp/7diINH5Hu2hCbfhDiBYSjIYRt7hj5B7lDNthSIy1tR6MkcuiemGaSE4T2gj3pEcfpOVudZultEmggxQskRuk+k8Lz67FQN8aR9PMy6U4+dl/EMkZvT9tAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AuA1r+Xg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNlv65aZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457381F000FF;
-	Fri, 18 Sep 2026 16:12:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AuA1r+Xg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A350C1F000FF;
+	Fri, 18 Sep 2026 16:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789747967;
-	bh=cjhXqMPgaWKyjZyYAiLQjiB/XVBE4T2YOCBR+Sj0dkc=;
+	s=k20260515; t=1789748095;
+	bh=nuDJmR7ZuiY8ldekJiLAdEyyeGn5S8iUUxFuWoF7QKE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HNlv65aZCMign731nwnyL9oaef0wq+zZQcELOdTX+Idewsp67rN65LQBaocKFYvjh
-	 GSNWu+OUoKB4XmWMu3hdz1GdfYIKhIg9Vlwkd9w2fnZktyyNDlCpNdOzHh4Z37dZDS
-	 nszvLRQiLiXC+rnRs8u65IRE9X9C776jQ7ZusGXQvMddNn47ElPIpNNkU7J20g0ixf
-	 FfHakbd0Cyz4CjZFbrgVbB+sbTtW8b9vgvs03ds183RZhXZxnkPJefLr7He7mDtbV7
-	 yukkggul3SKYgFovADTYaWCxYaTApsHYj6JAGGKBHggRdCbIUGLeWlOPGFoT5okpkI
-	 /CrtWVHEFvkow==
-Date: Fri, 18 Sep 2026 17:12:44 +0100
+	b=AuA1r+XgprVK9aLY1Kg+m9Hrum+Z+J1nD7OV26cHpP29469DfzJgKn7TqY+lj1+iS
+	 mW9G6TbmSkjbjRRU0fdcZD5/qvaqqRCqNjcy+Q4h2QCqgbQRLpScWbzc7F63Erai1R
+	 D//FeBlMA306ZZbvrImbh5RqvfEmw3PftHrvHXfkbQs0jKjmL5MnyJC0Aex0RhJu7+
+	 C1MPNKmSDo4/uwHv4IWOthSKYTo0TBlRaAzMmMKsBfn/PtVIMgTSYelJy62gLgwdAI
+	 HyMcXoLikvqLBiT49qQMjMDcYHMoFqs9fTxLC1UfhpnNylZFgDf7fDuQbMGE8Mk0/z
+	 LfPQGK80jGeOQ==
+Date: Fri, 18 Sep 2026 17:14:51 +0100
 From: Simon Horman <horms@kernel.org>
 To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel-team@meta.com
-Subject: Re: [net PATCH v2 2/6] eth: fbnic: Handle maximum standalone channels
-Message-ID: <20260918161244.GR51261@horms.kernel.org>
-References: <178941996343.7700.9376081102002673062.stgit@ahduyck-xeon-server.home.arpa>
- <178942020457.7700.13129750616387075931.stgit@ahduyck-xeon-server.home.arpa>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, kernel-team@meta.com
+Subject: Re: [net PATCH v2 3/6] eth: fbnic: use the Rx queue napi pointer to
+ find the napi vector
+Message-ID: <20260918161451.GS51261@horms.kernel.org>
+References: <178942021136.7700.4391219358260544104.stgit@ahduyck-xeon-server.home.arpa>
+ <178967952944.22033.10329187569173798096@kernel.org>
+ <CAKgT0Uf2xJr5hD_yAtNg67-2t5XS5d-QBf+gPscPJe+L1Miydg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,20 +47,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178942020457.7700.13129750616387075931.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: <CAKgT0Uf2xJr5hD_yAtNg67-2t5XS5d-QBf+gPscPJe+L1Miydg@mail.gmail.com>
 
-On Mon, Sep 14, 2026 at 02:10:04PM -0700, Alexander Duyck wrote:
-> From: Björn Töpel' via fbnic <fbnic@meta.com>
+On Fri, Sep 18, 2026 at 08:11:04AM -0700, Alexander Duyck wrote:
+> On Thu, Sep 17, 2026 at 2:12 PM <netdev-bot+sashiko@kernel.org> wrote:
+> >
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider:
+
+...
+
+> I agree that this is a pre-existing bug, but I wouldn't fix it in this
+> patch. I would probably introduce yet another patch to resolve it.
 > 
-> Standalone channels use one NAPI vector for each Tx and Rx queue.
-> fbnic's allocation path excludes FBNIC_MAX_TXQS from that layout. A
-> 64-Tx/64-Rx configuration therefore records 128 vectors but allocates
-> only 64, leaving NULL entries that resource setup dereferences.
-> 
-> Include the maximum vector count in standalone allocation.
-> 
-> Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
-> Signed-off-by: Björn Töpel <bjorn@kernel.org>
+> By my count we have 3 pre-existing issues that aren't directly related
+> to the original problem. If possible I would prefer to address them
+> separately, otherwise I can tack on 3 additional diffs to the set and
+> resubmit.
+
+Yes, I agree that is a good approach.
+
+I think that in the age of AI-generated reviews finding related bugs it is
+best to adhere to a strict scope for a patch(set) combined with follow-up
+fixes. Else a patchset may drown in scope creep.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 
+...
