@@ -1,81 +1,78 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6473E5A0C
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 03:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AA03A4F33
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 03:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789702777; cv=none; b=mJXMc0hR4oedjJGet1A1zrmaSfV8Joeu3EfaMt24SbkKLic/1n1PQ6D1yJH5eXgIsC1DLCm0XxGEKzezv19I/HdPVvdT0yVVlHWErgtmVcDglI+LEe9VWRPCuMNA9s7jO3hA2+CPvweg0rdlyzurnRHWJbwTCKEam0JAFLNEk8E=
+	t=1789702793; cv=none; b=LQRUFAE0g3Pn33gUDZNgs4PzrxnMEYqsm3cbVOBQZXYt0eTtmeAlw/hZVJ7G5+32Gw3hbLQO3TE9uT6MknWK1pX+3SIAVM5kZstEtjFUrgjxzMylHPdfYKPzBtSy/Q7n7mY/93Xmdon7D/tQZdGcdNBzrfy8U7xiBV/c82rjX1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789702777; c=relaxed/simple;
-	bh=5DGBMHNqKO8hBWMRpZeiWO/8gLuazINjem6KokRy5sc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgZTSqGwqS7O02TVtqv63BtdUb8kB1UBihcRkehtcxIRB1r0nqppGCqivI2uGI9jnIgLBjDwFpnWRdk0UpgiT4cvvatKGnZ/yGPNTTifjnfKU3rWlw6CK9PFq5xtgfIIvEz25m2Dbd7rUu3gPKrfNGNvsX7NhhGv1NbHA9UXrOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCmw+uO/; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1789702793; c=relaxed/simple;
+	bh=9zyfsMStqHCzcyLPXjxWLHVGXBONiRoKF6UKjmqzzSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ADtaAEF7g+mzz6fXqOtUl4Cgu84pKBGVBG7a8kKB/Fl6MTjeeJAn7vKGHfvZNOWgiFl+x0zpAGqtaebvRoEqH41/Q0/FQDrViL52E/VKg+5K/QcSH2vVoKsx89zvsCnPfvFX0i9Q8y8geUw3OPYpqJ74Ywc3aBQuw2LRYgwxVbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=htfvsjFH; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCmw+uO/"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2db710396ffso11458265ad.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:39:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="htfvsjFH"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-398b1e63c49so1147923a91.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:39:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789702774; x=1790307574; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ILawRzLN/r3LsyBAHOfYBFFSxWw7SDBmyvoLxd7dlsc=;
-        b=hCmw+uO/iWOXQCGKQhPQgLYqUhfkfPD9uEvIzd0WB3jIAUXuh0Lo7jy6z8yCQGXCdr
-         qt6E+l8vtJqW2tWWQRxyGlNLdLa9fgzq2Y2Sd9jgQYEHwXYOjMKpk4VF9BfqZFenWAm3
-         MdIK/8+A2tNygA8ohdzLjNKZDRAJKrlJPYSQw3OmZHR6xX2pTZwrT7dXU+Pj+LLhuCeK
-         /FRagWmWX39WtGY6sDiZXqpM1i55zt/QXlKwplz7ZzgSbE05CyYEyLeHu5HOQBF2jqJ5
-         OjmOZjFIKfl63DuqIIES+hxb6fmKtv6OunbxIphhUdN5tONwRu0wm7fFLnJfTpGqewC9
-         oNqA==
+        d=gmail.com; s=20251104; t=1789702791; x=1790307591; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SKq4v+7ohiq5ZxcfqZ+UYd2lyYbuemEMf0RmoykBXpw=;
+        b=htfvsjFHk+5g6a00eSg5PqaVap1JkBzT2oo2k1m+WbArVZAXewOyOm3NSn0ZqaPkS+
+         XzmQTdFOBDLM18wCeHOLrxowasFH+UMgEzPsCVtu4PJSuTjUH2upMfbbYNa5Xa1QfUqi
+         9HKM/G04zws3cwHIeR5iEqvYe/1v4sznHYpJfGoMZUXUPsf14yNwhj9DtJDbie5CDoIQ
+         rJ8ljrS2ScZJEfea5Ve2lpLYTUOoesndQKC1hSmyF95P5ZxUSGecqsQjEWBCGP8FLe4N
+         q1onxT0H0aLR/k+wVt7b9qHgNDs63bJK9B9StTu6XZ6SKp/vcGBjr/hMLLwBjAw6gCkW
+         d7oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789702774; x=1790307574;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ILawRzLN/r3LsyBAHOfYBFFSxWw7SDBmyvoLxd7dlsc=;
-        b=yyykahyYpXqg9RLdqvfiibftFwdM865GN3bi6JuWjVpAFKgJZbzB/OA4/7wvVUVSXj
-         O6v2r6Ks/hKFMS2GFOM89EGLC4466P5sllcpPsPIJ2gp4k65hra/kA0yLaFqZiNcMEWW
-         30XM3r0xu6X57qnfmnvLNVLSeZ1AHu7sLn9/SGiEgX8QH/5HOmnWNmtcQyZxqJePt/pf
-         b4p3x9DQmIY2wY2K2hcF+DZbipoEKt9sPFbRN7rFTwka/9tY4oV96X1FFXnbe5wkU7Gu
-         TErVpNpN9HS2VHq+7tc5aWOpAwA5zH9SILlQfeBGqrd07fDUs6IYZrbPk04TTLGkBFy1
-         ItZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz9qhr67g76/xguYzyNXxasoMv8jl90O5PRTmWGbYrOfjDNzRfVi6Y4bdB4R9BGQWXeYEXrl/o=@vger.kernel.org
-X-Gm-Message-State: AFuF++mkCaKnnCDPBb6g0gFrGgAWHfVF3Rf/qu+H16CjpfcdBSEp05q2
-	kHwUKD8g31M9QVONImwyQN5ygzteDDtQc3iicLnokvN0LzWo7Gd1FfYAhT40sv+Y51cRgg==
-X-Gm-Gg: AYBFou3x7twd/1lJZP+QWSYFpo176asdDfffyPf4+P4lkDvDJgCK4Uapf39otRPZDLz
-	kRadndQ0dzFzqiLviI3dczxDI87+XUKvFM4Wtb30Pel1uK+XAjGQYkR5+OQr3wENLbKaSCX3TOI
-	vATw009Nfa401bXvsALkWZnKJJUHR7d+BxJ1rNt5GSJb4f7+ChCapnj4nZ7jnuUVfykn2EMTUDW
-	9f5VpzNAfuICOAI18RbEp2LYxs4vLzye8SfCeeHdAbke8yVuEgIKpU2j4rw8PBKcadHIb0+M+AE
-	UxuamgqaLeB3Xd7+7g/xhzeizOaQ8gYtWJrJTZplK6ch1NnZhINqJ1TQn2xOavdNN2peLsKezdb
-	yC1SbIJjf2FQo4H5XORRT/p317CHlxPYVGaX4Owuo2I7kSZRd+MiY0JM/K86zErJa2iHMycYtO3
-	4ifDF4M9eXVK+vOWn/WGbhJdhua+WgDjIrnd4wvZE1VoRNGICksOLqJ1s9w22N8ZxLZvzHPr1q2
-	8gVWNqWNKXbe3e2ZPXK/gGs7RcHlOT0BDMmkgU=
-X-Received: by 2002:a17:90b:4b11:b0:39e:4c97:ce0a with SMTP id 98e67ed59e1d1-39e4c97ceebmr3098526a91.43.1789702773711;
-        Thu, 17 Sep 2026 20:39:33 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789702791; x=1790307591;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SKq4v+7ohiq5ZxcfqZ+UYd2lyYbuemEMf0RmoykBXpw=;
+        b=twNTP2J1p22xdCeMLT9z8+8B4J1BxQOdTZivHf81lU33Nuc7JgxACeBPWgk3iFHawz
+         nQzI7jUzdaCyNviO6eNiz2xLSm4WfXO3jHpgoVW2asmAFcVS/WvUxaG/O8q8WSjrQK/y
+         QsJohHMh4FG6juSXvbCOVuJSRTwDSwJk94n7VLEfrtyWKQGwqx4GLCxxAmEE6hVrWu9o
+         abfYPPv7cAXx2bfWShKQ4RSNcRlLAc58OMRgKAQMnKH4eqDKMuyd9URNySsxIQYI2H4V
+         3wc662aPamxKmsn9NDVEbat6HUStU/9Ged8cIbgtw6QhKf2MuNxrtT9QpZEU0zq4m+K3
+         0tWA==
+X-Forwarded-Encrypted: i=1; AKwUvByzlkt3k+nxHOmnahjl/V3t4PhTI9A4m0nmyJHE8zlErzi/GQhAyhCZeXMaKaBxX6UsUg07A2g=@vger.kernel.org
+X-Gm-Message-State: AFuF++l/l7pSy36ENq2hRn6OrR7MiFOTh3s+EHobMJbE8O9ht1A/RMDA
+	+RCyHDBVnDR81gm8Vh0XgGrX3x1cLvf6YWM35cie30975M8gDqJt0AQE
+X-Gm-Gg: AYBFou1q3O14a2SL7L4JtOGu4QcbHEk1dAgKM4I0dbhFAiSu9e5sXsAFM2r9AnHLxUo
+	I/TE82my4nL985A/H2+Raa8CELWKjs6tpNa170N2mZqYhNTxNeZPvqcEAX5syXNi1yRzTTHpvuG
+	NqGKp/BT0VhjB9oMF1RAeLDC7XvKMwFUXtrEjvCDlAR/Hq4pEvQ0sO7w8Ja+4wjK2zG7Sl/2v/u
+	YU6qNTlNbx9f/2aq1KAV0brjSnA5St7Q908ghxAR8j+kGTTxL5HJOonXb6MXBs3YN6wOKmmoLYG
+	cGbutOiXrUb1L9PJq8jnm5Q9roraa6svtVRJik8upQswwppT8w0uq3Ravphp/mjm9VeOb+vSbvh
+	b6bIDykFrtqiNrMdShWXarNk2oyAlapKYWVxz39YHcDjUfpNHD/+x7Od6D5/pNrooeFFpCDIBTQ
+	JT67TBsTtg/DGxBstS4nQmrMaeZlDq9fwqJjFWkauCDtCHG//vkNtasDYR8kZdfOhf4ebNx3riB
+	Ebf4Gvjp0U6XDQmurLM+vvxPwV6b7W2rHCrwqvYajeIlWsK4Q==
+X-Received: by 2002:a17:90b:4a4b:b0:39d:e7c7:8044 with SMTP id 98e67ed59e1d1-39e36106e8dmr8461939a91.17.1789702791461;
+        Thu, 17 Sep 2026 20:39:51 -0700 (PDT)
 Received: from localhost.localdomain ([2409:8a1e:2e81:7320:79da:8b9b:16b2:8431])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144cdfe957asm1039280c88.7.2026.09.17.20.39.28
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c287aab5fsm608065eec.22.2026.09.17.20.39.47
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 17 Sep 2026 20:39:33 -0700 (PDT)
+        Thu, 17 Sep 2026 20:39:51 -0700 (PDT)
 From: Yuchao Zhang <ndaugoing@gmail.com>
-To: David Heidelberg <david@ixit.cz>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
 Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	oe-linux-nfc@lists.linux.dev,
+	linux-sctp@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yuchao Zhang <ndaugoing@gmail.com>
-Subject: [PATCH 1/1] nfc: llcp: reject connect() on sockets not in LLCP_CLOSED state
-Date: Fri, 18 Sep 2026 11:39:20 +0800
-Message-ID: <20260918033920.85025-2-ndaugoing@gmail.com>
+Subject: [PATCH 0/1] sctp: check return value of sctp_get_af_specific in sctp_process_init
+Date: Fri, 18 Sep 2026 11:39:41 +0800
+Message-ID: <20260918033942.85061-1-ndaugoing@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260918033920.85025-1-ndaugoing@gmail.com>
-References: <20260918033920.85025-1-ndaugoing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,75 +81,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a socket is bound via llcp_sock_bind(), its state transitions to
-LLCP_BOUND and it is linked into the local->sockets hlist via
-nfc_llcp_sock_link().
+This patch fixes a NULL pointer dereference in sctp_process_init()
+that a remote peer can trigger on kernels built with CONFIG_IPV6=n.
 
-Currently, llcp_sock_connect() only checks if the socket is already
-connected (LLCP_CONNECTED) or in progress (LLCP_CONNECTING):
+Problem description:
+In sctp_process_init(), when a COOKIE ECHO arrives from a source
+address different from the one recorded in its cookie, the embedded
+address parameters of the INIT chunk carried in the cookie are walked
+to re-validate the source:
 
-	if (sk->sk_state == LLCP_CONNECTED) {
-		ret = -EISCONN;
-		goto error;
-	}
-	if (sk->sk_state == LLCP_CONNECTING) {
-		ret = -EINPROGRESS;
-		goto error;
-	}
+	af = sctp_get_af_specific(param_type2af(param.p->type));
+	if (!af->from_addr_param(&addr, param.addr,
+				 chunk->sctp_hdr->source, 0))
+		continue;
 
-Crucially, it does not check for the LLCP_BOUND (or LLCP_LISTEN) state.
-Previous fixes addressing CVE-2020-25670 / CVE-2020-25673 added the check
-for LLCP_CONNECTING to prevent duplicate in-flight connection attempts
-from corrupting the connecting_sockets list. However, they assumed any
-other non-connected socket was in LLCP_CLOSED, leaving the LLCP_BOUND
-state window unhandled.
+On CONFIG_IPV6=n kernels the IPv6 address family is never registered
+and sctp_get_af_specific(AF_INET6) returns NULL.  A peer that completes
+the INIT/INIT ACK exchange over IPv4 with an SCTP_PARAM_IPV6_ADDRESS
+parameter embedded in its INIT, and then sends the COOKIE ECHO from a
+different source address (as a multihomed peer legitimately may), makes
+the walk dereference NULL, crashing the kernel in softirq context
+without any authentication.
 
-If connect() is invoked on a socket that has already been bound:
-1. llcp_sock_connect() silently overwrites llcp_sock->dev and
-   llcp_sock->local without releasing previous references or freeing the
-   bound service_name, leading to refcount and memory leaks.
-2. The socket remains linked in local->sockets, while llcp_sock_connect()
-   links it again into local->connecting_sockets via nfc_llcp_sock_link().
-3. When connection confirmation (CC) arrives, nfc_llcp_recv_cc() executes:
+Fix:
+Add an explicit NULL check for af in sctp_process_init() to skip
+unsupported address family parameters, aligning with the other
+from_addr_param call sites in net/sctp/input.c and
+net/sctp/sm_make_chunk.c.
 
-	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-	nfc_llcp_sock_link(&local->sockets, sk);
+Tested and verified style-compliant with checkpatch.pl
+(0 errors, 0 warnings).
 
-   Because sk was never unlinked from local->sockets, the head.first of
-   local->sockets still points to &sk->sk_node. The second
-   hlist_add_head() sets sk->sk_node.next = sk->sk_node, producing a
-   self-referential loop. Subsequent traversals of local->sockets
-   (e.g. nfc_llcp_sock_get(), nfc_llcp_socket_release()) enter an
-   infinite loop with spinlocks held, resulting in kernel soft-lockups.
-4. Furthermore, if connect() specifies a different NFC device index than
-   bind(), the socket remains linked on device A's socket list while
-   being assigned to device B, causing cross-device socket confusion.
+Yuchao Zhang (1):
+  sctp: check return value of sctp_get_af_specific in sctp_process_init
 
-Fix this by ensuring that llcp_sock_connect() only accepts sockets in the
-LLCP_CLOSED state, returning -EBADFD otherwise, matching the state check
-behavior in llcp_sock_bind().
+ net/sctp/sm_make_chunk.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
----
- net/nfc/llcp_sock.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-index 5558d8a4d48b..66f12e9af2fd 100644
---- a/net/nfc/llcp_sock.c
-+++ b/net/nfc/llcp_sock.c
-@@ -689,6 +689,10 @@ static int llcp_sock_connect(struct socket *sock, struct sockaddr_unsized *_addr
- 		ret = -EINPROGRESS;
- 		goto error;
- 	}
-+	if (sk->sk_state != LLCP_CLOSED) {
-+		ret = -EBADFD;
-+		goto error;
-+	}
- 
- 	dev = nfc_get_device(addr->dev_idx);
- 	if (dev == NULL) {
 -- 
 2.53.0
 
