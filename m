@@ -1,203 +1,139 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF134FD7B5
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789744667; cv=pass; b=HI4hAaVsRixtUIJtworZGbbSdkaHDHTkMPaoh1UWfWEvqKTs2ooOIOO7FXLh36hwa7gSQFlHeSD/3Pxw4qZfNtypOFRbsWtvOOkC40nOV2IPmWpNXMlckrrlI6K2TOV4cLKseX/Tnpe5+KrehZxzAP1YcEvNrrm7OCbPGd+97KU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789744667; c=relaxed/simple;
-	bh=iGYNwJUPmcx1Hz50XBiDUkDETULCL8cN7cZj2G+psWg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DHvamhhvljqA0q226qSKc82tzMuVTavzK/n6YNxyAQH4AXHEwfwSb9gJn3UboktVR2MT/wOEf/kQxNse3mvg66Tcoc380KNru3UxSciNjPn33db348JrxAIwd4+TSR8wG4QNQo4Gg2LzKrbWF2QckyMyfkLyvWGkTtm2pSsdXMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLbh1444; arc=pass smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7C33B774B;
+	Fri, 18 Sep 2026 15:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789744982; cv=none; b=GqrEl4ldW73+1R7vrVy/Tx+21/dTmheZ0F9URG8wv/L0jdzbrCHHOO9j3/fnrOWdeQ5daw9FCnoH+rokLdThqD0QHiD8oMas7nIPyse9fOWxqcv6JmIawt3+zjDJK3Xn1gqYuwQrUWq6t1cB08CTNTWyHBFttdmW21JBCS4kVwk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789744982; c=relaxed/simple;
+	bh=A0XsLMYpFvVUHG3YpC8n4NO8S2r6vxPhQ2H+eRf9bWQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=mIwbxWRPBuaJGUOUifxtDzjpEBsOrg5/3Fcdai1JAE5YpMFu5HkwnFQ1n2F6IMb+gVXYeEwQ7/jm+8gXUSZ4KdK4eH2qgWZe4uxs+3zF51ZKE4phpPwL7QaTr3W7pYxEXE7TPvj/9tTrvCXVT/sih114HGd6foFk/Enn/qz7qdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cg6ZBC5W; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLbh1444"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6351831so469273f8f.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:17:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789744663; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jkvAec5R4IstJvvd4WZTI9v45Q+N/Sw4wyrcJhugpAyUO/ZW9BWY3Llj2bKLVzL0wL
-         nN1n+mMPhDFjclpob9TDE4KkplnXUClXhYCLpRRodkb0Oz4kxrVplKFivfxc9Fz1CxS1
-         /iO+8lexJhPWRfwscH4dFcih3cdH6oXZ+19ugjsq2fyZ86pcL+GdhkIUCwreWDKRhPRz
-         Fai1SsEPB9qk+ldq0JIIWCM3utz4ibFTpbOGLWIbBw2K5e+ckELuVbyGInqE/QH9oP0j
-         ue2iCAwUmaYe+7ktTjoqhYLlJds+ga9d2leo5OM5cQ+eTnCekJQ+gjTXaswU2/xzNopg
-         gVtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gRByL8RFLB+WknNpJm2Ipy80IzPzlbzp7esp8aa/gnU=;
-        fh=iV6JIq2XCdEGzMbsv/k6Vz5yMtQ5WvkueSO8IP3csDg=;
-        b=i8huBxqCwt+jGk/hQ74E76UHdeQm9S9KUC5bSyddNH44QvYlPNBYyq5f+D0l721nWI
-         2znm0b3BefmaNv/Nz6g0CLUcP68WVvhyaaq95IGZ1KiDSm2T1D8XIk57y0m/5cVyj8o7
-         6G3y4brwg8gbsE0S+qE3Z/QOj5hF6NFs8iz6owPoXWIMPps6yjZplhXGn8uDd0Uv5hdI
-         UDHb2FquDNLdhxILtnaDLmm+OnY/lb61Mmke4XgauUSrXXJvat/P9bK9YfX1GsU8uqwd
-         KraRwXiWkjMRbhuA8YX2DhZxm9pCE/V0K+uFskWwm8RtD+zbTR96rMG+ytgYd+TMNkmA
-         y5kQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789744663; x=1790349463; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gRByL8RFLB+WknNpJm2Ipy80IzPzlbzp7esp8aa/gnU=;
-        b=BLbh1444+eNx0hGXZZkrzTP7k9je5h8Zu7cthFP8a7uITnknXDJwz1ZSNA8MNW24BR
-         eJya3q/taOmKYUYGaRKjhW4v0logZTIMVJJbmGhQS5DIzV+XMifwej3P3YWaGLSXbVRC
-         m4zQ9VWFHNbVDjKvDwJEwX1UkZIxZ+A9re6C8f61Y18O7PMamOAb+JdZ+jVe8xXvLyhI
-         fogvWSgfYTByma42xtUJ6bjlKuIzD4/D39aZUH8vrM2O5sdLWyffRfCrglt26rlf7fRy
-         zm7BFdfgGFPVpHl/4uFCHtaVkbKRYrYyhGuOWsuMK/dy7hNjt17k496NLafVZNlTNgmV
-         UoDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789744663; x=1790349463;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gRByL8RFLB+WknNpJm2Ipy80IzPzlbzp7esp8aa/gnU=;
-        b=UwxQp+ci94uEwnybueNnjQe/fcOjZAaTR0MjWXalDZdXxeatGHXLrlR19s33MJPCVW
-         Y77nxDBSAUr+idBqws/spwbpmiWOLOeoC5cw+uv4aTom8N8ZzQLHCuL95FxuQCagHWaT
-         Zc0gV5WjjmfbIIWGCTgIPszv6RL7bRX4Y2ijE7UoMF8lJmiJEV16P8emoOLynsiODX4+
-         MIL0m1qLXIsqjVHaYZxWwzB4DrhDdv0lzxCpp0CYABEzMzOiH25jZpYis/ke1yuIHqhL
-         DgNAii5rDTRAvYFjzcksuEpq9uMEkODnaKAVWMaroN4R4KrAKNf+i7zbh0Xg2dUJ/ZUy
-         v6kQ==
-X-Gm-Message-State: AFuF++lq1fUwbx556OJ+pjZVZAHaC5G/Wp8IAMOXCm58m6k65hxn3cVg
-	umGvtQdMTD/hXyuhqxIkOXyDlm1OSSBVcFbr+lcpuFj+IGjuEuwipPnry833+5LajrZB07Ob4SC
-	VksiuuQOVhDF+sjFxkepBii7CmJb14NQ=
-X-Gm-Gg: AYBFou2h6b3ncLKpCRnSWHx6uq7fFlHKN5aQhq0coyYNELj7p3e7+7H+PPZ7eed9RH5
-	2roa/BJG5/cu6VBe/CyQsgS08aTLV3V6IPt6OHIOm7Mq90erZlPhbHbxk26gukI8gJ5VFa8ggFG
-	FsPqyx//NfPDSFio7+rTu+SgMWAzRqOB+Qm2GYaxnlBELtlhuG2a3nUnlKzZju+x2tMwMdgeNPY
-	bzVGhS73h0p6ufLe59RzfcCm4cxPQpfkbdlGMKDeM6eumb5Z+5SboFhPjzHSji/2oGnObmxbwUF
-	lwvBbxpkhX593atVpGgYt8O/0tQ0DB0TuwY8Tnelq+i7R2H0HDUZPOl9WNNOKcBqxNFPqHuCyRc
-	VnKUbxGXbO2SazlOLM42Sh1jICxKBNwu98ANQccDQIBBgJY4XDeWdrLeWEZeZd1n9iJtrr30Msg
-	==
-X-Received: by 2002:a5d:64e4:0:b0:487:172:6293 with SMTP id
- ffacd0b85a97d-4871e21319cmr4476824f8f.3.1789744663401; Fri, 18 Sep 2026
- 08:17:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cg6ZBC5W"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id DC2F6C58475;
+	Fri, 18 Sep 2026 15:23:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 018BD60649;
+	Fri, 18 Sep 2026 15:22:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E965110328FD9;
+	Fri, 18 Sep 2026 17:22:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789744975; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ri8MoCutLUnAxAJvx/W7d6M2QnpZ79h8pcccg60WaOM=;
+	b=cg6ZBC5WDILhswpSgON8oRSwmK/S8wqQRKQmx7TRN6JCs9US64BvsaQYq9DSkjFFAGTnVH
+	S7umg7XDZscGtph1aZjbzeVU3uqFZVCH3suMEQfLLFHqaDVi/k8MN6rQyijpct5j7Vgzjz
+	S3+WUoi92vFTtl4ZEmbumeEzL7fXe6f55NtEcHLr9msBCb1zT562hPRhFGeTI1jyLvYFht
+	FZmoGz6h9gE+VkBkOuLISfunIGOea/hNpD3GZKLILfYLvjugtkAjLVhudKcNXYIvV6FpJj
+	a4dYiXzEGw+7mDxHJV4hz9u6qF/+PTjv4PayBd2txng68vGzkIZseRrvtTsjMg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <178942023343.7700.9423398932961964439.stgit@ahduyck-xeon-server.home.arpa>
- <178967953049.22033.7278929297475041564@kernel.org>
-In-Reply-To: <178967953049.22033.7278929297475041564@kernel.org>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Fri, 18 Sep 2026 08:17:06 -0700
-X-Gm-Features: AcwNN1W4RPuzEdrcspXzteAuc-jBJwQV-7B_d-6bBpHEHD8def1K4AhumRaY30E
-Message-ID: <CAKgT0Ud_RezDQC0PVav6OOX_ha8ErkVMs_SWqn8_Xk5dSUrTzA@mail.gmail.com>
-Subject: Re: [net PATCH v2 6/6] eth: fbnic: Handle FW mailbox completions
- flagged with an error
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, kernel-team@meta.com, 
-	horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 18 Sep 2026 17:22:49 +0200
+Message-Id: <DLIJN4CDS11K.RVJGK3UALMJE@bootlin.com>
+Subject: Re: [PATCH v2] net: macb: add TX stall timeout callback to recover
+ from lost TSTART write
+Cc: "Lukasz Raczylo" <lukasz@raczylo.com>, "Steffen Jaeckel"
+ <sjaeckel@suse.de>, "Drew Streib" <dtype@dtype.org>
+To: "Andrea della Porta" <andrea.porta@suse.com>, <netdev@vger.kernel.org>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rpi-kernel@lists.infradead.org>, "Nicolai Buchwitz"
+ <nb@tipi-net.de>, "Conor Dooley" <conor.dooley@microchip.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <468f480454a314303bac6a54780b153f689f2267.1781598350.git.andrea.porta@suse.com>
+In-Reply-To: <468f480454a314303bac6a54780b153f689f2267.1781598350.git.andrea.porta@suse.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Sep 17, 2026 at 2:12=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> - [Medium] FW_ERR handling does not release the outstanding-request
->   bookkeeping: when the firmware completes a Tx descriptor with=E2=80=A6
->
-> --
->
-> eth: fbnic: Handle FW mailbox completions flagged with an error
->
-> The patch adds a check for FBNIC_IPC_MBX_DESC_FW_ERR on both the Tx and
-> Rx firmware mailboxes, counts the occurrences per mailbox in
-> fbnic_fw_mbx.resp_error (also exported via debugfs), emits a rate limited
-> warning, and drops the Rx page instead of parsing it. It also re-issues
-> the bring-up capabilities request in fbnic_mbx_poll_tx_ready() when
-> either resp_error counter advances.
->
-> > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/=
-ethernet/meta/fbnic/fbnic_csr.h
-> > index 14af30e189d6c..baba3471bf5a4 100644
-> > --- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-> > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-> > @@ -1216,6 +1216,10 @@ enum {
-> >  #define FBNIC_IPC_MBX_DESC_LEN_MASK  DESC_GENMASK(63, 48)
-> >  #define FBNIC_IPC_MBX_DESC_EOM               DESC_BIT(46)
-> >  #define FBNIC_IPC_MBX_DESC_ADDR_MASK DESC_GENMASK(45, 3)
-> > +/* Set with FW_CMPL when the FW completed a descriptor without success=
-fully
-> > + * processing it (e.g. a mailbox DMA error); the completion has no val=
-id data.
-> > + */
-> > +#define FBNIC_IPC_MBX_DESC_FW_ERR    DESC_BIT(2)
-> >  #define FBNIC_IPC_MBX_DESC_FW_CMPL   DESC_BIT(1)
-> >  #define FBNIC_IPC_MBX_DESC_HOST_CMPL DESC_BIT(0)
-> >
->
-> [ ... ]
->
+Hello all,
 
-[...]
+On Tue Jun 16, 2026 at 3:23 PM CEST, Andrea della Porta wrote:
+> From: Lukasz Raczylo <lukasz@raczylo.com>
+>
+> The MACB found in the Raspberry Pi RP1 suffers from sporadic stalls on
+> the TX queue.
+> While the exact root cause is not yet fully understood, it is likely
+> related to a hardware issue where a TSTART write to the NCR register
+> is missed, preventing the transmission from being kicked off.
+>
+> Implement a timeout callback to handle TX queue stalls, triggering the
+> existing restart mechanism to recover.
 
-> but that is only reached from fbnic_mbx_evict_all_cmpl() in
-> fbnic_mbx_flush_tx() during mailbox teardown, never from the new
-> per-descriptor FW_ERR handling. Could the FW_ERR path look up the
-> matching completion (the TLV, and therefore its msg type, is still in
-> tx_mbx->buf_info[head].msg at this point) and complete it with an error?
->
-> > @@ -1673,6 +1679,13 @@ static void fbnic_mbx_process_rx_msgs(struct fbn=
-ic_dev *fbd)
-> >               if (!(desc & FBNIC_IPC_MBX_DESC_FW_CMPL))
-> >                       break;
-> >
-> > +             if (desc & FBNIC_IPC_MBX_DESC_FW_ERR) {
-> > +                     rx_mbx->resp_error++;
-> > +                     dev_warn_ratelimited(fbd->dev,
-> > +                                          "FW reported an error on an =
-Rx mailbox message; dropping\n");
-> > +                     goto next_page;
-> > +             }
-> > +
-> >               dma_sync_single_for_cpu(fbd->dev, rx_mbx->buf_info[head].=
-addr,
-> >                                       FBNIC_RX_PAGE_SIZE, DMA_FROM_DEVI=
-CE);
-> >
->
-> [Severity: Medium]
-> The same question applies on the Rx side: when the dropped descriptor was
-> the response to a request with a completion installed, nothing wakes the
-> waiter either, so callers such as fbnic_flash_start():
->
->         if (fbnic_mbx_wait_for_cmpl(cmpl))
->                 err =3D cmpl->result;
->         else
->                 err =3D -ETIMEDOUT;
->
-> burn the full FBNIC_MBX_RX_TO_SEC wait and report -ETIMEDOUT rather than
-> an error.
->
-> The retry added in fbnic_mbx_poll_tx_ready() covers the bring-up
-> capabilities exchange, but the QSFP EEPROM read, coredump info/read and
-> the FW upgrade start/write/finish requests all run after bring-up and are
-> not covered. Is that intentional for this patch, or should the completion
-> bookkeeping be released for those too?
+Any news on this topic?
 
-The modification this way was intentional. Basically the most likely
-place for us to ever encounter an issue with  DMA is on mailbox
-initialization. Doing it this way reduces the driver init time as
-instead of waiting 10s for the mailbox polling to fail we just burn
-through the DMA failures and get to the result quickly indicating that
-the mailbox is dead.
+There was a guess that a "flush PCIe posted write after TSTART
+doorbell" patch [0] could solve it but I was sceptical [1]. We never
+landed that and only took the Tx timeout implementation. If it ever
+triggers then the kernel log gets a "NETDEV WATCHDOG: ..." critical
+line appended [2].
 
-Doing the same for the other paths adds extra complexity as they are
-interrupt driver versus the mailbox init which is synchronous. In
-addition at mailbox init we can only have one completion in flight,
-whereas for the other calls we can actually have multiple so without
-context we won't know which completion it is we need to release.
+I got reminded because I came across on this wiki page [3] about the
+issue, whose author is in Cc. As an aside, I landed there by testing out
+the Marginalia search engine and queried "macb driver" (as one does).
+
+Main discovery of the day: it happens on EyeQ5 & latest net/main
+(46bc52d13594) as well. Thanks to Andrea for the quick reproducer.
+
+	# udhcpc -i eth1
+	...
+	# iperf3 -c $IP -P10 -t3000
+	...
+	^C
+	# dmesg | grep eth1
+	[    2.182191] macb 2b00000.ethernet eth1: Cadence GEM rev 0x00070200 at 0=
+x02b00000 irq 35 (00:28:f8:94:24:69)
+	[   23.570335] macb 2b00000.ethernet eth1: PHY [2b00000.ethernet-ffffffff:=
+0e] driver [Marvell 88E1510] (irq=3DPOLL)
+	[   23.570981] macb 2b00000.ethernet eth1: configuring for phy/rgmii-id li=
+nk mode
+	[   27.783260] macb 2b00000.ethernet eth1: Link is Up - 1Gbps/Full - flow =
+control tx
+	[   42.182370] macb 2b00000.ethernet eth1: NETDEV WATCHDOG: CPU: 0: transm=
+it queue 0 timed out 5088 ms
+	[   51.158331] macb 2b00000.ethernet eth1: NETDEV WATCHDOG: CPU: 0: transm=
+it queue 0 timed out 5004 ms
+	[   56.262381] macb 2b00000.ethernet eth1: NETDEV WATCHDOG: CPU: 0: transm=
+it queue 0 timed out 10108 ms
+	[   61.126317] macb 2b00000.ethernet eth1: NETDEV WATCHDOG: CPU: 3: transm=
+it queue 0 timed out 14972 ms
+	[   67.206322] macb 2b00000.ethernet eth1: NETDEV WATCHDOG: CPU: 0: transm=
+it queue 0 timed out 5004 ms
+
+Note: the initial reproducer was `iperf3 -c $IP -P10 -t3000 -w4M`.
+I can reproduce without -w4M but -P10 is required even though we reach
+line rate with a single stream. This points to a race/mb issue in
+macb_start_xmit?
+
+I'm posting to see if anyone has theories. I'll be posting some race
+fixes soon but they don't fix it (not surprising as they are unrelated).
+I have many ideas but I need more time for testing; it'll be much easier
+now with a reproduction setup.
+
+[0]: https://lore.kernel.org/netdev/20260514215459.36109-2-lukasz@raczylo.c=
+om/
+[1]: https://lore.kernel.org/netdev/DIK002QFFNBY.31C3KUX2SQC6W@bootlin.com/
+[2]: https://elixir.bootlin.com/linux/v7.2.5/source/net/sched/sch_generic.c=
+#L563-L569
+[3]: https://dtype.org/wiki/Cm5_macb_network_hang
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
