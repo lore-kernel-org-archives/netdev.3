@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A4F33D4F3;
-	Fri, 18 Sep 2026 00:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8183D36B934
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 00:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789689677; cv=none; b=ZqfDyEi0rHHKHjC850Yb4Ye5zt/+uOJjDpPBzTArFg7zYBVKPu42K36+ieRqu7EN+DDBqlDgNw4G2Jtw96ToSKDfIAFm9EGMRjqSoC7fmdeilyrA0hncE4zDyMxkcKbkF6j+/vJCk3mAfuxPEDrZiyZ+moOVqzfZOUBWaTqqX+I=
+	t=1789689679; cv=none; b=GEHIzfQdZA35MNuQaXvucasucLNNJ9/MFruDo6FEip9S+twTJt2XaCWuBF4D657KUMdKOLLluaqhdAo9KTNV6v7qilpBx4ZWUc8dg5ZUgaMyXE4saxK+XIidulGIfy/XGro6ek80KAW953WnMXSy3KnoEnsBAIjz2ejLwubOi2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789689677; c=relaxed/simple;
-	bh=lQ1mda/bxKlrYadLTbtckswVSV6KLK5jn5JG9KzYyYM=;
+	s=arc-20240116; t=1789689679; c=relaxed/simple;
+	bh=eXg9vsW1zSoEQBo3rkQ9eW3UyLf0JBMsWuhysWzP02w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gfVNwexeCHi3RN/BO5AFDYc8e/3wDGIK89WC8enAZraLht4jKAIcKuz59LRCr2rkuJrKX5ue1uDojTXWJxlYRis53nNDDLN8fmk7RVfweh1zsuc5Cz+K4cd0mhV38M2a3fNE0/KSMPltIirkeniTP38Q388kgt2sUy8NhndlK5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvqcQBnE; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=VLnHi1cS78SewnD3xzPre62VJ0iX/slFllfnUdchS2tbOPtQ/IPl5jaG0g8DTIiIw7PWuo14kkVDdrxUO2Ihr8cImshW1sjzw0d1RxZMtqLePvz94EwQ4xapk3qMyPh3/3StX/KjcMLC53usA7j7O94YsqClcEB3MgSzIs3fEvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrbxrsnd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvqcQBnE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C101F00893;
-	Fri, 18 Sep 2026 00:01:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrbxrsnd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD09C1F000FF;
+	Fri, 18 Sep 2026 00:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789689675;
-	bh=N630KvaHBATeUU1PEVGbc5SjI1TuyG7Z7N/HXl5rJfw=;
+	s=k20260515; t=1789689676;
+	bh=n6LQGYCCkmUFLGaSf/F7E3XUObv+0jXeA1KEc9uszEU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nvqcQBnEZTaBRJc5OILcE48ImB1eN/kgJzGjmJ4YdH8RfplBuS7EuU2Sh/Ucm3q0m
-	 HWfMHmidUmwon6lMQHGDQZy6BjNMQTlqPaPWQVXjIamrIRnkm0BDuFQLF1nXEdUSuq
-	 NaJIlA0dHlwuXG7Lf8qZHbAueyvEpvg+TDlQJQUccAN61EWKB2ShqJJUcJN/5ZZ0lU
-	 dXJ6tDqqP7YZQ9WIqARhXmYuJQZbjanavRHhS2v+lB2ggqLb5GhlYP0U8eYY8iHF2D
-	 7kmodaiiUF4CbEYaYua8eC89E13NUffVDMzbTYn5G3SVqLgQL6Re2Vd+ruYEuTerDr
-	 jLYS9YrHfWp9A==
+	b=nrbxrsnd6E2YBNJikFAEJZvQ7mjNCdeC9fqms9OuEGyKH+AjmTUhuOrvsfz+18o9k
+	 AYVTV/WJucUEEzsdwjUydJvTDzPpMskCy/AA1Rvlsr6WPz8/tUu7F7vCc6m5/34Dus
+	 rswo4LJmst7a/xtC3oqp4o23tvAcdWCilhwgHgwshSPc0WEqeUbkm8CecET23bGpVy
+	 uJ1fXyEf2kBT7FzchdrdW7eLvC2MplEt6aLxkMfaqg4I2r0iCyL0F3pWRiK7UAykU8
+	 RRLGu7fLfj6IlNYWpMVSVbH7tFnKXJi7jzjkuBiDZRUIFhsLqSWDkfnfMSlcgSXtjZ
+	 pe/rpCjclUWqw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D08C2380820D;
-	Fri, 18 Sep 2026 00:00:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A78380820D;
+	Fri, 18 Sep 2026 00:00:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] netlink: specs: netdev: update doc for xsk
- tx-checksum and zc-max-segs
+Subject: Re: [PATCH net-next] netkit: no longer rely on RTNL in
+ netkit_fill_info()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178968960837.187564.13298642054405181183.git-patchwork-notify@kernel.org>
-Date: Fri, 18 Sep 2026 00:00:08 +0000
-References: <20260916021608.1702731-1-kuba@kernel.org>
-In-Reply-To: <20260916021608.1702731-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- razor@blackwall.org, dw@davidwei.uk, bpf@vger.kernel.org
+ <178968960987.187564.11512146067041073613.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 00:00:09 +0000
+References: <20260916111953.1611574-1-edumazet@google.com>
+In-Reply-To: <20260916111953.1611574-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, daniel@iogearbox.net, razor@blackwall.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 15 Sep 2026 19:16:08 -0700 you wrote:
-> Minor touch ups to the XSK-related doc strings in the netdev spec.
+On Wed, 16 Sep 2026 11:19:53 +0000 you wrote:
+> netkit_fill_info() used rtnl_dereference() to fetch nk->peer,
+> and thus required RTNL.
 > 
-> Tx checksum is (obviously?) Layer 4 (TCP/UDP), not Layer 3 (IP).
-> 
-> The xdp_zc_max_segs change is more subtle, I guess, but to kernel devs
-> saying "frags" may sound like the number of skb frags. The value includes
-> the head in this case. The default of 1 means single buffer, XDP_USE_SG
-> sockets are refused when it is 1. Let's use the word "buffer" instead
-> of "frag".
+> nk->peer is already an RCU protected pointer, updated with
+> rcu_assign_pointer() and read from the fast path with
+> rcu_dereference(). Simply use rcu_dereference() under
+> rcu_read_lock() instead.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] netlink: specs: netdev: update doc for xsk tx-checksum and zc-max-segs
-    https://git.kernel.org/netdev/net-next/c/8050e0efd4cf
+  - [net-next] netkit: no longer rely on RTNL in netkit_fill_info()
+    https://git.kernel.org/netdev/net-next/c/aea70e81be7f
 
 You are awesome, thank you!
 -- 
