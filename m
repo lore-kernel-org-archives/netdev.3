@@ -1,70 +1,70 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62500348C5D
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 21:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9D1522EE7
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 21:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789768247; cv=none; b=uDOAepElhYpuWnRBbXI8Fgobb+V4pV7AnQLdBll6hk1n3ZYBPmLLhWT1/Rh1zSBsnhFBXzlLjO0v/5PSOk/BeHUa2eQ0/GYxC/kcyHHsXxR9s6qxnLVUitIwPkV3g26ae8phdnzxgfg/n4p0J2pojVq9SG5RuTJQWxY/TFfRApc=
+	t=1789768758; cv=none; b=dqL1QFcNMlW4q3T5dvwC/t+qLQBnANrnXv9PWNedv7T3GGJN0cnFS2jc3kR3DH3xW8B+kCFMOZ55teNKg5lR0mSyeduUubYvXczJB2h2UXw3e2qLVhcVKZoFhCGTF44fxqwbFGWJgjKcHuz2V1kTZY8gbK6kFaeHloBmjvsM9p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789768247; c=relaxed/simple;
-	bh=8lFK5oAIN3UPCIPodD7oNRYoewM6xA0f85WZD5FvR4o=;
+	s=arc-20240116; t=1789768758; c=relaxed/simple;
+	bh=3ig1oj0ucAknrG7KmJfScqO7st+Sj4aA3FThIeKv09g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ixNOiZH9lzLdimSUDtFLwbeRZ/0zWJbJIbshqdZSZOXTVYwQRqzmdsQnM1kpeFKetjRXXLuRCpQl0Tw0KUQeVoeNGkyE4hw8xrz8cqJNOtByFthZsZDGOE/Me3QYO0NGIYXz8ouNnMHqUGvInaSELCu+344SXXMLLv2Ly3t9Kh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JznJLopL; arc=none smtp.client-ip=74.125.225.141
+	 In-Reply-To:Content-Type; b=Y3qbZcg5xirSmw1d2pLhGRefA7RYnb68DcYQSVkj0JQdH/HNYwODOg05TpdiFxH6Szgj2i5lBRyBQDbAN2Y+9wP73yJK283SVspMUTaBCBYoSsEjVfPb4yzzk3HxLikNSRKDTkesuDyvHRMOiDRqwG9jYuh15InhNvbYsb1zZYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DLHbH4qu; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JznJLopL"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7c6dbc60so884485e9.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:50:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DLHbH4qu"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48436686a40so148680f8f.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789768245; x=1790373045; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789768755; x=1790373555; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hRu9WFQ43wFkJswy5poP93mM4ID1VlyzM9+cjmFxTAM=;
-        b=JznJLopLmD1v/ZNdN8N+DlCoAhGbI5VlSDgtdYbUSi/ed3pUnb60RXKH+wbzTKBSp9
-         Dh4Y/bYQWa9s20a/p8R1j6ungz14eTurX+GKkzIOQ2VKgcwNCfAijgaZs/dANfhycJs9
-         0rvc95ZHQ9mZXfoQmVV9ONx9VaQMphxym0kCg4Ef4qYZP7GCMu0qK/Tu0nzy8wlnYHn9
-         Mj+1xFJ4+kdFCd1YWcA34X5VspQ8A7j+PlpVtwwgk0kNeZt0nRF3Ix1ERmORTLRDc30k
-         deM8UNHB8R+U+5kIhjqP1lhS5CfwK5AO9OH3fCThNdLBkHfYvnQEoCNjVn+TMZYifKMJ
-         +IOA==
+        bh=zobxd8dDfc3X9MOmFn6Ig1Mve7PgRgvEMzrNYO/gZLw=;
+        b=DLHbH4qu14uW0p97sznhdxRVrgG2b/EbOAKviRNT0jLlrPfYd1NBJyq+hsU2rX9AVU
+         W/t5rB79tda/MhA3quV3PX4Ro/edJ5KpueX9jtSukeuhWrXyQprWGc15rnjcHL3oyOtF
+         qRm39cFHKsoIlCvyxYYvsUVMk/zY5Sy+Si3h5bTepuGOYKH48oLBCjdeZ3554ZsiXXMm
+         zmicYcpMDe3Pt/Fj0pPc3IhPWGY65GYxoulXXQVCBmv5jzVQoOgjZ6tgSMLjuyMkBAQ4
+         el6BVZYXQwLyw9k1FDf/U8PICKq+z01OmOpqzfao4fRePSbJWCgPqtA3v72Pwd5X3l6x
+         0h6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789768245; x=1790373045;
+        d=1e100.net; s=20260707; t=1789768755; x=1790373555;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hRu9WFQ43wFkJswy5poP93mM4ID1VlyzM9+cjmFxTAM=;
-        b=zGrPFK9PRWJXjReTYKZ9s5KNt9te9r94HFbesq0iVvdTrKTlNKY5rLRv/n5b67F/mv
-         m1IkKMZKiP94RfoMWwhAgk1j6LdgeX1DdADctrqdIEwzrjW8IvYyTTmaDJWUX9EHyLc/
-         ajwK0x4spifMmO3j5x+f/v24woujUMjgSINcciMU+F6GR+cMMofV8B/hYnsh+wmNu9ne
-         iz9wl5q5g7ks8MofwnVdBtO5b0Zy1cPtnpY/8wWvtjRVw5mCCkcWKy87xLQDuCiiNEKn
-         NE8VClLnCpDhZQa1MiP0h/Iajr5d30W8qh3DKTowthotj2X+vsSadfT7VAN+TESFUT8T
-         CLEw==
-X-Forwarded-Encrypted: i=1; AKwUvByvgGN+asqHnzq3n662GkF9HMOhBiXPejDy8Hi2l0CG0fitLmsSrAvWJBSt18qGz+jG/YGx2pc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nMOL0GVBB402fxUBvhiBFA86xVdiDvfx8OL9bNY30/LFWMn20Z
-	JMXNx+DBuME9/Nly7C6O7NYEfZUj9Ruz7HxB/afZpYjjW+b/+yx7zl7e
-X-Gm-Gg: AYBFou0HwN3dqBbHqOjyX/Rpj4zmTuiIgjzcLySJ953H7raWkNgG4covyBXksUdwDHq
-	XsHSoweVZb4XUchWQ4+NXgZ1ldmXPeBI7ndHORuXt2a3wH+iOApbyLrI24sJAZoosyWrvf5Yof5
-	5oEyndkrGu/sxR2Hpx4zz1XLM4mlS5Rm8pXi/QXyAnxzO/dMyFYZTFrBJQy0TqSnFezE4YKEgjq
-	J/yCdNGwm6CcwDnnVbv3MeEk3CBxMTv3qj2GJJedelXGvnJCLreT1fdaERwTS8eyRqAT26plHEl
-	ezhMlLqDiJh/FdySxIoJmqgNaWTtaNDGI5OMevM4pKFed13kesX4mo6c0b+6iJbLKwTnP+yAvnn
-	pd58LTHvXlD6FiXOfXy/o345Kvk5Egn6VjraxkN0dsSq6CpqV76QmBqKtyq5dvEeHfd67dGEDQS
-	ParYLR773HY6jGI59FAWHD8tew2OJqz7+1/RsXHWuaYCZd+uw2AsihMIVekIs20zVrUph9i2aPZ
-	dsZ4PGkf14Ak5rp1QR6dniFFbL+uIfzJthArCL5nCOFjJpZpn2YPVou/pR5+GDa0QlQ49PFY/KG
-	XLpKbCGf5QzTfDjrkeeSazq37nwVDMzlUiJMCoxK4U1wMJpBewq9dLrPVEvlykuRo3Cco/r53nA
-	7CtWN4NeWVgwaiw1vRg==
-X-Received: by 2002:a05:600c:35c2:b0:49d:1da4:511b with SMTP id 5b1f17b1804b1-49fc7dd94c0mr46884445e9.1.1789768244519;
-        Fri, 18 Sep 2026 14:50:44 -0700 (PDT)
+        bh=zobxd8dDfc3X9MOmFn6Ig1Mve7PgRgvEMzrNYO/gZLw=;
+        b=F3vePoQMAV+urpLaN4Ljm6CbydELut9rg9IPZYwA7EkKqHitEU0IDn1K6UWZOBRHs6
+         C2YY18J7FCI31YRycX1kd0si9zU9DNQ/rfJ0D0JyLT6KkuNCX8ULkw7qJFdnboiWha+2
+         Y1mAnrixQ9aqB/8lwh8oqwjN5KtD5mmag/zU0HA9Oytb9ncI+4156l9mGymjfw+UzkBn
+         DEHs8cEpKN7R0KavNHyTvvEhkFsxpt3cj2o5WGvfXmtxKaQymdOshckDGztAzLfGmPv9
+         9pyACiLli6kN0vJqpgRpPiPNJTeX5a1iac9pzmLKRG7Uf59qWHV/8/axr59EGVcpACN3
+         XzRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzbOUYolrpR3ftaIk46uyEJLlaLKBNeTSzH2AnBX4mYjnQnriqlGJaZ7KdcOdTanQ6eyYRLvJA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kZYwRBC19hwxhopZbg5VeI1Ybz0Mqm3z+WpoTtjwvNc8/DAWvt
+	xCE4cdFBbSVO6RYNXogSAuTlJtBheYX/WyROyxJJ8hluIcL1ZuVHyTj0
+X-Gm-Gg: AYBFou06eHraPWIJxa/ZcYFiveme1RCN1QAGEGU8Nq5N0k9P8VpPCNF6lQi6NgTv3xK
+	LYjQMfOv63J7z/yaA33nGnKwh1v6lXSSGEdASyDPMncucCNOkMZWzeqefeZJHgpgBGParpSD2X6
+	JktjOZcw65fL7ijxPKth/7pi0lzueABYqSOZWFjt3wPY7GRO/s3SCL0g2K5Gb6m0veutE7zaanE
+	LOq7SqhHUGdWjcBFdU97iiENCnIvuQZ+fC4YG7sRqzMu05KKDuDOYwqSuf5pi85Y4zxci1wjcX5
+	BCUFZHXgE4v5b8cV+4TGn3Zwd7tLOmwtH5Y++TJpVXrais+k0F6j92Hou1Xak/Tr5h8Jtu3XFv1
+	4ldopkVa8tjtJdDf8J2qK5hujHpgC5pxFzeyXhuLpetBISLT6V6XeerO4IAUhqaMBUJUVyvC9XG
+	X9uzOrMO0gUtWl79fW/S55U2UiKkSUlmrkao+SiMcbEyx1ujFl+7rNtMrHXmjp1G655oL4eLNkk
+	wlzIwL4Oez1gE+qwZzxjOdCbbV2hzvHRturVmkhmyP4SUQ44p9wvTPwqHfsZ5l2GY3cLZ3H9CtU
+	qBvgcgQuH4jUZ3tz6nSuR39IyjRF847jax2PIzOopStnBXW9ZCVN4p1z+0MOW34mjWEFTdO2Wsv
+	wJbrkzEtjI7/9l+TKkw==
+X-Received: by 2002:a05:600c:609b:b0:49c:f9b8:bae0 with SMTP id 5b1f17b1804b1-49fc7f2bdc8mr55491205e9.2.1789768755473;
+        Fri, 18 Sep 2026 14:59:15 -0700 (PDT)
 Received: from ?IPV6:2a02:3100:59ae:19fc:400:b6b0:efdd:810c? (dynamic-2a02-3100-59ae-19fc-0400-b6b0-efdd-810c.310.pool.telefonica.de. [2a02:3100:59ae:19fc:400:b6b0:efdd:810c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd1149e0sm20470715e9.13.2026.09.18.14.50.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd0f8563sm26575855e9.6.2026.09.18.14.59.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 14:50:43 -0700 (PDT)
-Message-ID: <f36f2ae7-9c48-4663-b3ba-7eb45c0bb977@gmail.com>
-Date: Fri, 18 Sep 2026 23:50:42 +0200
+        Fri, 18 Sep 2026 14:59:14 -0700 (PDT)
+Message-ID: <c6bcd422-ae6c-40d4-a8ed-3261ccc3dd7b@gmail.com>
+Date: Fri, 18 Sep 2026 23:59:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,16 +72,17 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/3] net: hsr: return private clones from the
- tagged-frame helpers
+Subject: Re: [PATCH net v3 3/3] selftests: net: hsr: add shared-mutation
+ regression test
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
  horms@kernel.org, shuah@kernel.org, lukma@denx.de, m-karicheri2@ti.com,
  fmaurer@redhat.com, luka.gejak@linux.dev, bigeasy@linutronix.de,
  ali@iusegentoo.com, qingfang.deng@linux.dev, netdev@vger.kernel.org,
  linux-kselftest@vger.kernel.org
-References: <20260808004525.1551-3-xiexinet@gmail.com>
- <20260814012738.2806035-1-kuba@kernel.org>
+References: <20260808004525.1551-1-xiexinet@gmail.com>
+ <20260808004525.1551-4-xiexinet@gmail.com>
+ <20260813183008.31e14297@kernel.org>
 Content-Language: en-GB
 From: Xin Xie <xiexinet@gmail.com>
 Autocrypt: addr=xiexinet@gmail.com; keydata=
@@ -118,25 +119,20 @@ Autocrypt: addr=xiexinet@gmail.com; keydata=
  +ZmcHnCzsuo6uuNYX8VvmWqYsVajykjnpjdCGmU89QUsVmrtnDPBrfr8VVJcZPnCJhE595Pk
  LO29Oj0au9kr7kMW5Q+fBeHj5zz6VggAaRRU74/sgtwLODBWESPZ9LqUUdB5L/XbrSq2VDlD
  sNySbH3veZ/55EtlXA==
-In-Reply-To: <20260814012738.2806035-1-kuba@kernel.org>
+In-Reply-To: <20260813183008.31e14297@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14/08/2026 03:27, Jakub Kicinski wrote:
-> [Severity: High]
-> This isn't a bug introduced by this patch, but should the sibling
-> get_untagged_frame() callbacks be privatized the same way?
-> ... 
-> One more consumer of the same bytes: an AF_PACKET listener on the slave
-> device gets its clone in packet_rcv() before hsr_handle_frame() runs, so
-> does it also observe the rewritten h_source?
-Yes. Master delivery can rewrite frame->skb_std through its clone before
-the later slave copies it. When the learned A and B addresses differ,
-that copy preserves the substituted address rather than the original
-source. An earlier packet-socket clone can also be affected.
+On 14/08/2026 03:30, Jakub Kicinski wrote:
+> It's a "no" on embedded Python in bash scripts.
+> Where do people get that from? Did AI generate it or are there projects
+> in which this is common practice?
+> 
+> Please write the whole test in Python (see .../net/lib/py/ helpers),
+> or move the python code out to its own scrip under TEST_FILES
+Yes, that snippet was AI-generated, I should have properly separated it. My bad! 
 
-I'll compare private untagged returns with COW at the writers before
-settling the v4 ownership changes.
+I will extract the Python logic into its own helper script, put it under TEST_FILES, and clean this up for v4. 
 
 -- 
 Xin
