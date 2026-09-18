@@ -1,200 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f19.google.com (mail-wr2-f19.google.com [74.125.225.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF354B404D;
-	Fri, 18 Sep 2026 08:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9844A9D4D
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789719409; cv=none; b=RodOGiDo4Pn0Lm/cukRq+yYN5G1cdjH82W5nb2OiW3+9UhTGvNMXKBlsVLCN3NrJfBHslJCGZyxXngYY3st7O7Ox4ms77g82okqhlBmnJsdBQaldt1exwZyUepJXceuVPDjdKnW4bFDHiUyrSSKxF+Y51NP5p7ghfUG+iuRPJXQ=
+	t=1789719633; cv=none; b=tzGqdtjX1KqO9Q31UwCFZdhDHp9tYAGMi9LcR7YyoVQ9RXGHL9KdMxtxGf5KScRcpCvksJHiabYUXqSOhNwlGpJg5yKSKshTaBxcjD+E7pFWQu44W8wzRKk9OFUg6FJvxId6aBIjna02iGR2OyhIPX7ZZNe3NJdXFl0fO7+/njo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789719409; c=relaxed/simple;
-	bh=GR0NmSqALrm/08vrADHp2Eq5wgJAf7oqAp268BfYiSo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FpkHPCf5telK1x0FRJW8uPpXR53zpSBg184Qzr007RnTaRlcyykKne0S0emzaH98l00l405RtYHtHSvz6Lqz/+dNwFl5gXYJEVg1MWWDnXXPXVCI74khPRlhtxXF+vfsi8y1Xhrm96k+NfxLhKmxd4aMDP+oOaWeqf3PsJrAa0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/eLT/ns; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789719633; c=relaxed/simple;
+	bh=kLk/qXepwU+Sdk80TMQeIbWMJ2U8WIHPfybN4YV+JME=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jp2bLE5hRngpSG9y4xb4sYAURgtWMW55X/hMFaoXvujHyDxR6QlgqFhfPA3wR40SmPWsYjV+5eNS7OA+gsdkFvrMWjLtn2o++fuKfprXL++Z0G0kfepupe67W1RdlGK4HJqjWQRl12u2N/0osUPQHnawsXfpNZZHCBIpTB/hMlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=GfZhkueG; arc=none smtp.client-ip=74.125.225.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/eLT/ns"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B661F00899;
-	Fri, 18 Sep 2026 08:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789719402;
-	bh=svdWVUPfCuWhOFdW/xeAYqd+z0yB/y3Z+wfB7qlDPO4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=m/eLT/ns+slOrb1n85TMEHxDTZoQkevtdbDaKJ2Jy3pv5iCOH1cvsvQAlaUV/PwDV
-	 0SVQHT8qrHZp/TG+FvAxktsH8J/Y4C8TH2QjvP6p1AcCRqhgBmadouC1Mixbk8X5Z2
-	 iKUsuOHCLstPquhEso+bRb6nhZLND+gfXH3Nd1j6njaah+yvlU4zYoo/s6D80hZgBZ
-	 Lu39YJCmX0ZD9eA2w+uA9LPNgqQmww3icv/A8hl+b4l6u2MbM88YJkaSlTDOskhO66
-	 dVj1mQYq/eUlQX5g5RnD7orNK6NLQh88B8pNCkjSXpNKEzdmMoVlMJihlQwo+zQoUo
-	 vlSW0dUTTK8kw==
-Subject:
- Re: [PATCH net-next v1 2/3] net: phy: realtek: add firmware for RTL8261D
-From: netdev-bot+sashiko@kernel.org
-To: javen_xu@realsil.com.cn
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- freddy_gu@realsil.com.cn, nb@tipi-net.de, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, daniel@makrotopia.org,
- vladimir.oltean@nxp.com
-Date: Fri, 18 Sep 2026 08:16:41 +0000
-Message-ID: <178971940160.22033.15376845467031606521@kernel.org>
-In-Reply-To: <20260916081444.497-3-javen_xu@realsil.com.cn>
-References: <20260916081444.497-3-javen_xu@realsil.com.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="GfZhkueG"
+Received: by mail-wr2-f19.google.com with SMTP id ffacd0b85a97d-48583cc7ab1so190942f8f.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:20:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lex.la; s=google; t=1789719629; x=1790324429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kLk/qXepwU+Sdk80TMQeIbWMJ2U8WIHPfybN4YV+JME=;
+        b=GfZhkueG67ji7CUb0Rfltx208ZVE+73rhV67eFSK58cn0I5oYNQ4nXdy+WeM25JB9X
+         3pIItIIWfGqLRQCJulU9NCd8I/lgoAFp45CVR+5kET/WhYB8SQiuhbJWqzGL9/6TfAxn
+         JM1iSHyIILuMVYKwjDYmRqhyRNJMwhtX4zt6pF51fySAdlcx8BiPK5lxiIzvffiq/m7E
+         4ZZ4lVLBBjAEyZDWEefLquUF8rgAuZ4SPSyeTKpoPwJEJIY+jOujjfJeg9XzPXRJyzLy
+         lFjzK7YrO02G4TuvrQa8jZQaIlJRHkrrNvtUSRSCmpt+NfxU7U1K8pkWFzz42EQstIun
+         F9jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789719629; x=1790324429;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kLk/qXepwU+Sdk80TMQeIbWMJ2U8WIHPfybN4YV+JME=;
+        b=LEIbJwVRCXsQyjZGN8EMb4GpM1RJS1A7Jc4b95xBSVSBZyF1WJ9vSqybnAjUiuOOjZ
+         DsRIdL8ujSBg9BQY8q5WnlUexILqGXGkaCse1l9Ajj6B+278+bnnrGAvdhbyKw62ffVj
+         ++pgxvd6v8TV856QTyq48N62DyDys9QiTzQwooVSsqDDRP0WtB7246iuJUBFNyatAo6H
+         NjEobUKJXafOYI6cNqgUql88brJEa98xp2+rkz2gdWmeOnoO0WqJ10njpC338PAq9B8o
+         b921GrkOjSov52tC+rdKR5dCtN3xAn+QXxyv9A96Rbfbv3J6N+sZHKLHxFQcW6WlYpC6
+         cPLw==
+X-Gm-Message-State: AFuF++nt8dOuzHNSpwNnRl8CK5dgGJ46EQ3n0dA/Y+9pWhueUJ3a0S7p
+	hqc+9cyTtd0WhPQncdWe2c+r6MmIjtMQS+SmxnRM9Ksp3iwd8HgTz7pbq3txvcMgXv4=
+X-Gm-Gg: AYBFou0K7bD47X+et728JArAnysflFz+Vw+/1gwpg3jDzSJfWF6PsKZ0B32ouo4o1HI
+	Bp7yw2cU4suRqv67u69FXxQ6ywahgGp7uSk5DX+lkKWMT/pEYaxoiVdULUKXcRlLOMV9AWUb5P5
+	h+cLLdyFiSFOOGlYXq53/gIAThZZ35tKp1f5nxC7rTwBq8OD0+DkqsPbnpg4EpqIBv6ngdVbrFB
+	1lnRcO19j/6qcLk9KPQPIB4T8QgsVenEK26HFWLG8AAU9b+bvdIRGzA9Smtzgnb2kfhgnO8MNJ7
+	eKGmg0cpj+9fBVJMNKE2OmS549kufUDbYo7e0E900faSjbiM1LuxLntA5uMAngiqsAGpBR+ajoj
+	A3SxGrEOeImPhd21dntcNVFnkL150jrjVgM2seC/t9+JcBv0wYNhhPzGe3mqhxgRkKI8PqXq86N
+	Qb1szr5Xjv6Jq/18EENyqTpnh2Cd9Rk74oYkqpZ+EVDZQwv5E0og==
+X-Received: by 2002:a05:6000:603:b0:487:41c:515b with SMTP id ffacd0b85a97d-4871e25e2a9mr2371051f8f.30.1789719629172;
+        Fri, 18 Sep 2026 01:20:29 -0700 (PDT)
+Received: from remote-01 ([84.17.55.229])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4871ff56905sm2152472f8f.20.2026.09.18.01.20.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 01:20:28 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: andrew@lunn.ch
+Cc: netdev@vger.kernel.org,
+	chester.a.unal@arinc9.com,
+	daniel@makrotopia.org,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	gerg@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net v2 1/2] net: dsa: mt7530: fix NULL dereference on unbind of MT7531 and MT7621
+Date: Fri, 18 Sep 2026 11:20:23 +0300
+Message-ID: <20260918082024.2697569-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <857a7395-4741-4d2c-abb0-b806e8f9bd78@lunn.ch>
+References: <20260918015020.2518315-1-f@lex.la> <20260918015020.2518315-2-f@lex.la> <857a7395-4741-4d2c-abb0-b806e8f9bd78@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+> Did you consider using devm_regulator_get_enable()?
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+No. Looking at it now, it is the better shape, but not for this patch.
 
-- [High] net: phy: realtek: making rtl_nic/rtl8261d.bin a hard
-  requirement silently breaks RTL8261D hardware that works today.
+Two things stop it from being a swap. The driver sets the voltages before
+it enables, 1.0 V on core and 3.3 V on io, and get_enable returns an int,
+so no handle is left for regulator_set_voltage(). On the BPI-R2, which is
+also the example in the binding, both supplies are MT6323 regulators with
+a range, vpa 0.5 to 3.65 V and vemc3v3 3.0 to 3.3 V, so those calls are
+not decoration. The other is placement: the get is in probe and the enable
+is in mt7530_setup(), which DSA calls much later and which resets the chip
+on the next lines, so get_enable would bring the rails up at a different
+point.
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the RTL8261D
-  path newly enabled here inherits it: priv->fw_loaded is never…
+It is still worth doing, for a reason this patch deliberately leaves
+alone. mt7530_remove() disables the supplies before
+mt7530_remove_common() calls dsa_unregister_switch(), which still writes
+switch registers over MDIO, so on a board where those rails really drop
+the teardown is talking to a switch that is already off. A devres disable
+runs after .remove returns and would fix that too.
 
---
-
-net: phy: realtek: add firmware for RTL8261D
-
-This adds a firmware file name and a per-part sub magic value for the
-RTL8261D, and makes rtl8261x_verify_firmware() compare the header sub
-magic against the value stored in the driver private data instead of the
-hardcoded RTL8261C value.
-
-> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-> index d0d09e8e8f5c5..61e6029489313 100644
-> --- a/drivers/net/phy/realtek/realtek_main.c
-> +++ b/drivers/net/phy/realtek/realtek_main.c
-> @@ -286,11 +286,15 @@
->  
->  #define FW_MAIN_MAGIC			0x52544C38
->  #define FW_SUB_MAGIC_8261C		0x32363143
-> +#define FW_SUB_MAGIC_8261D		0x32363144
->  #define RTL8261X_POLL_TIMEOUT_MS	100
->  #define RTL8261X_MAX_MMD_DEV		31
->  
->  #define RTL8261C_CE_FW_NAME	"rtl_nic/rtl8261c.bin"
-> +#define RTL8261D_FW_NAME	"rtl_nic/rtl8261d.bin"
-> +
->  MODULE_FIRMWARE(RTL8261C_CE_FW_NAME);
-> +MODULE_FIRMWARE(RTL8261D_FW_NAME);
-
-[ ... ]
-
-> @@ -411,10 +416,13 @@ static int rtl8261x_probe(struct phy_device *phydev)
->  	switch (sub_phy_id) {
->  	case RTL8261C_CE_MODEL:
->  		priv->fw_name = RTL8261C_CE_FW_NAME;
-> +		priv->fw_sub_magic = FW_SUB_MAGIC_8261C;
->  		phydev_info(phydev, "RTL8261C detected (sub_id 0x%02x)\n", sub_phy_id);
->  		break;
->  
->  	case RTL8261D_MODEL:
-> +		priv->fw_name = RTL8261D_FW_NAME;
-> +		priv->fw_sub_magic = FW_SUB_MAGIC_8261D;
->  		phydev_info(phydev, "RTL8261D detected (sub_id 0x%02x)\n", sub_phy_id);
->  		break;
-
-[Severity: High]
-Does setting priv->fw_name for RTL8261D turn rtl_nic/rtl8261d.bin into a
-hard requirement for the part to work at all?
-
-Before this patch this switch arm only printed the info line, so fw_name
-stayed NULL from the devm_kzalloc() in rtl8261x_probe() and
-rtl8261x_config_init() returned 0 without touching the firmware loader:
-
-	/* The firmware parameters are preserved across IEEE soft resets and
-	 * suspend/resume cycles. ...
-	 */
-	if (priv->fw_name && !priv->fw_loaded)
-		return rtl8261x_fw_load(phydev);
-
-	return 0;
-
-With fw_name set, rtl8261x_fw_load() returns the request_firmware() error
-verbatim:
-
-	ret = request_firmware(&fw, priv->fw_name, &phydev->mdio.dev);
-	if (ret) {
-		phydev_err(phydev, "Failed to load firmware %s: %d\n", priv->fw_name, ret);
-		return ret;
-	}
-
-and that error is fatal all the way up:
-
-rtl8261x_config_init() -> phy_init_hw() -> phy_attach_direct()
-
-phy_init_hw() does "ret = phydev->drv->config_init(phydev); if (ret < 0)
-return ret;" and phy_attach_direct() does "err = phy_init_hw(phydev); if
-(err) goto error;".
-
-So on a board with an RTL8261D that links today, is a missing or unreadable
-rtl8261d.bin (-ENOENT, or -EAGAIN when the loader/rootfs is not ready yet)
-now enough to fail PHY attach so the interface never comes up?  MODULE_FIRMWARE()
-only advertises the name to initramfs tooling, it does not make the blob exist.
-
-Two follow-ups:
-
-Has rtl8261d.bin been accepted into linux-firmware?  The commit message
-("Add support for RTL8261D to load firmware") does not mention it.
-
-Would firmware_request_nowarn() plus treating -ENOENT as non-fatal be
-preferable here, so the part keeps falling back to its power-on/OTP defaults
-as it does today?
-
-For reference, the later patch in the series ("net: phy: realtek: add support
-for RTL8261D_VM") does not change this behaviour: the RTL8261D_FW_NAME
-assignment stays unconditional and config_init() still returns the loader
-error.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but routing RTL8261D through the
-same mechanism extends it to the D part: priv->fw_loaded is never
-invalidated across a PHY hardware reset, so the reload that the comment in
-rtl8261x_config_init() calls for never happens.
-
-rtl8261x_fw_load() sets the flag on success:
-
-	priv->fw_loaded = true;
-
-and nothing clears it again; the only zeroing is the devm_kzalloc() in
-rtl8261x_probe(), i.e. once per driver bind.  Meanwhile
-rtl8261x_config_init() states:
-
-	/* The firmware parameters are preserved across IEEE soft resets and
-	 * suspend/resume cycles. Reloading is only necessary after a power
-	 * cycle or hard reset.
-	 */
-	if (priv->fw_name && !priv->fw_loaded)
-		return rtl8261x_fw_load(phydev);
-
-On boards that describe a PHY reset line, phy_detach_internal() only calls
-device_release_driver() when phydev->is_genphy_driven is set, so a dedicated
-driver such as this one stays bound with its private data intact, and then:
-
-phy_detach_internal()
-	phy_device_reset(phydev, 1);	/* reset asserted, fw_loaded survives */
-
-A later re-attach goes:
-
-phy_attach_direct() -> phy_init_hw()
-	phy_device_reset(phydev, 0);
-	ret = phydev->drv->config_init(phydev);
-
-and config_init() sees fw_loaded still true and skips the load, so the PHY
-runs on power-on defaults while initialization is reported as successful.
-
-Should fw_loaded be cleared where the reset is asserted, or dropped in favour
-of always loading in config_init()?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916081444.497-1-javen_xu%40realsil.com.cn
+So I would keep this one as the NULL check with a Fixes tag, and send the
+conversion to net-next, where the voltage handling and the power-up
+ordering can be argued on their own.
