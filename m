@@ -1,79 +1,79 @@
-Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9E043F0BB
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7042051C076
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789753253; cv=none; b=tR7gf62TZCRkunUkLuDawXpkpm3leIQkhtb3DUlndba3PvonKagWahG8S/cEs0//4wY4TM/26vMQFnqN1C+4cxpQSMe2Thu2sYEYpkUMi7w+hB5WyyBuVYV+hMepbQ/qKh3dczjMNM3s9ZbFq4Upot4ZD92tpGMlyftoQ1LkvZI=
+	t=1789753321; cv=none; b=r4A/z4VlhdOqhG680+Ut/KQ/6dmN/+eueQhkYKvk8k2Kr+U2IdR73vAdaS3bp+K6/HBGYuaQz7o7VksgRg6isRCf7k8Q/Jw8CkP5wOyEGvMu0iZCLCmWMMzpoGJFlQhtimbOFRV4NqJoplPdIDjtAHNRPLGvz5UjW/1k8zs9As0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789753253; c=relaxed/simple;
-	bh=DmNUWwz/nsHmjIa42SJBChbIdcVeCse5wNu4dk/5vIE=;
+	s=arc-20240116; t=1789753321; c=relaxed/simple;
+	bh=+isudBCsCI+8QRhr/NaUqSPzjNiQcWhaERtf4h61Jmk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hkB54ubDhIWQMMD05Z09hs3kYYBtnT1b9brwJsk30M7S0wHjRE+NmTcjuU3hdrzZRweFvuVKVkYRxWNUrdVffJ9Ku/TucANFY2qBEnF0boMvr0O1rCJF0zBHi04Zl3qhjvuNZkqVtK86nlhUxZq5YIwvgsQ4kfgxfwMx/B7HBr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=e6c5HIXS; arc=none smtp.client-ip=209.85.216.100
+	 In-Reply-To:Content-Type; b=pYuBxbz+c4+9pJ4nFohnaTlE2PXz5WsQe0mcm0PG44uaAQVY0aoapti2VGHhkqmmK2HKqJQFN8eFlAGCqIgv5EMYtCBPjcNa2gVwmtYObfvvk6Ze6e4g5BPdqeHAqBSRqtTBMUuIgOdi6YjqV96Cm8TAZYHYZCcW8Si8N5EZffw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=eg3H6TfT; arc=none smtp.client-ip=209.85.216.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="e6c5HIXS"
-Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so254860a91.2
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:40:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="eg3H6TfT"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso230658a91.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:41:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789753247; x=1790358047;
+        d=1e100.net; s=20260707; t=1789753318; x=1790358118;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=XvJ2uzQiITp0BmLWCz/dXZ+391cWZWj8DaoZe0xZarQ=;
-        b=pXaeuM0EhcxLkDlIpgdL4wGce3KCFkBv9KDlZIhN8G69LlzNqQ8Si4kOS51St5SUnK
-         zJO5a/bgpkGeQkUSbQlOVtnbiAV5pUKVuj7A3sxqgRyj/L76S6tEFu279Sab1IkmCCzT
-         5Ixx5cw0bgZUlAVTcha9JmxwFox16yU1tMAtS2ZabgSrn9iguWel9GYZLC5RtG7Ih1Pj
-         Z3rGMuYz58QFXD152vs37B/q4an5EJTC3o5bs92V9LHyHGPfbYrzVdo7f2iuMBQJr+uu
-         Q7jOMxdXhdFoAtFweLpEp3akAyoOXGoeW6bvguyp0PsCdRV+yljH67kitHXegfQtGvgS
-         qnHQ==
-X-Gm-Message-State: AFuF++nl/9+OubXMyY7J8gxzm0iWxHmDobKeug87JKjsxIPzBk8sCGN+
-	MgIJxc2twOlHQ+oFMm+AHuIV/IkXNwDiGz4YHV3fLIRbxhK3qMl3nf4DnipbRIDvFw66VwSgVpU
-	b6R9khdt475Kgf9ASd49K3nb6/mj08vT7c3yEoevV5FLApc6yFMUG9ecj4XNr+YhCSwcdPc6Y4o
-	yRPzAt2NIAAmjGVpaVUQE6S89/UTWbnPXlRY5WyEPnDDw37D78t4Y3FIGbgKl9TPSN9fMpbxd8w
-	Ho+BRcYmnWJDTZX
-X-Gm-Gg: AYBFou1GB4pAOrK87wktxXfhZBeG1CGOBjTCcQ4bC4TazRWJNz9QVFrsP2F86YbSZqv
-	17oadTptimRB4SMVdTPiqcdICLot6WffVyCI6f/CQE4S5TtVWDtIjKqkNKvVIYUuwgQJ7/ne02N
-	6MBvMuTSixyK5q/vyAqnHhGVAARe3+JxzczDHfPU7z7mcvsz06eZhxJLWOFosLWcu5pJzS2TezE
-	+BGDTc8iPhdOmIQDl5HbFILtrwjnMGDOQ/BnvAGMr3rF7g2hzoi6KCHVgBOQQ0ZHxxmTA5PxoRe
-	O1U2XZHwf/zZCcufYgLJ0f1xr+pE2vlZlTj9eUoBOKI2rUhyGqlMkY7QD5DCqpUoiGGP1JHWou4
-	6HLbAfE45bV7w4eFu3hOV15c+mRBxqsdYd89RmmV3aFuwms13o+W4t6kJadkKX8OaNQCHJE/N9I
-	heJhj+0758kmsmg3v/CV3iNyaXRUBhoY6nIwwPiCyV
-X-Received: by 2002:a17:90b:280c:b0:39e:6c6a:209b with SMTP id 98e67ed59e1d1-39e6c6a2338mr460069a91.60.1789753246956;
-        Fri, 18 Sep 2026 10:40:46 -0700 (PDT)
+        bh=LTw8O/yK91y4RheqROz1F5sp+F9hbbCwTxlZ78Kfrtk=;
+        b=uDEHzSizDd2AiVvnoxXkFDETa4mMylgWxtSSZI8qtVZGfB3cKRFUxqrwY3bfVQXox/
+         gos6Z0WS+3nT0O1TKeSSfurU53O5PePvENsO8kqxiyN7bpRU52EZLYdUBIDdQYD9jvWy
+         wE9ZDBY+NEyBeYUOGrhd7NBtmSUJh7doXr9FEzPDlrr9aF0N5e0D69jqRdsdzugze0U1
+         B3yaVEsnD1wbEaTMEyIK9Mp7SOw99dBNo514HOeSChr+3duETzQsis1vNVSF25F8UG7Q
+         9M6V+aKz/qzXQ5/OoMrAWM9Vbq4KQiSqzFFO5A21myn8NmF+uSD0WQbFo8VRNVDe3HQr
+         yj5Q==
+X-Gm-Message-State: AFuF++mbm2J3b5UrGEfrIocCA1d5MhDugL3RQjm6BGAdffzO9uHTDuS0
+	/lGwdwKA8NFrN6C2l/EuFDvWkFE/Dzok6InFdOrLbl/PCLRChmD1U7HjvDS4kg8v7EN1Eewkw24
+	o6n+v1Ox3TPQu84Z1Xb78eX1OB+xG3uQ955Pa8j/AMbBrkz2J1BrW/KSIecrtvq8YUl4W/22Sti
+	tUOEwFxS5c+zglm1z8Kj2s8p8hbMti9N//W9WkaYabHXPsxB+/a33Vixy7I38USbODmOzFFhMAy
+	pfhZIFS0W6zXf0r
+X-Gm-Gg: AYBFou3bEyi3MmA/tKUwROak2bzbH8prcAqajhE1AUUHJoo6RUQNnpG+jRXW4ZmsSRY
+	2lCfStFmDwAPHPP5ToML4xXEP68bE3ydhl3CH4MJTjPtLdbqXn7bVQNfC9i7O/1eE0d+Hw4n8IP
+	JKVW6foYqQBUjfxC1aTpZtiTPpjJac8LnEFA8DSoZ/OJSwb8P8PrUHrwO7Bko4YxkllkPH2rUWb
+	Lov9odTJ235O71W0pc9RmTvzxr3HQ0aB5pMAYscRykzO42OirOJbyhTrI3ZTfsWZ/Y6rjS+czXY
+	PG5UJ9itu5+wYBN1D92apsG1biDfqZpr0lfPlVTN7olXecGsnyATYL45z4McU+bUauA8oksU7mM
+	qIIAo6F/Vt761x5B9Eri/MRzVX5mKOFBOSvBXTWd5U+i/Q+ID7DSBMENShW6I5x7herZhpcMCQ4
+	bD1h0D2eOeNbGx2GEkXS0FpIXTuVWUyvBaDxK2b7NS
+X-Received: by 2002:a17:90b:56c5:b0:39e:4c81:6c66 with SMTP id 98e67ed59e1d1-39e54dc1a3emr7367228a91.33.1789753317877;
+        Fri, 18 Sep 2026 10:41:57 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e6c895ae2sm148337a91.2.2026.09.18.10.40.46
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e6c61c8fbsm156964a91.8.2026.09.18.10.41.57
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 18 Sep 2026 10:40:46 -0700 (PDT)
+        Fri, 18 Sep 2026 10:41:57 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-530f5e827c6so21701971cf.0
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:40:46 -0700 (PDT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dc7337e2a7so13245285ad.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:41:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789753246; x=1790358046; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1789753316; x=1790358116; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XvJ2uzQiITp0BmLWCz/dXZ+391cWZWj8DaoZe0xZarQ=;
-        b=e6c5HIXSZTXrpO/RFhc6nE4gu77Z2RQYiZSqjAlaCSqjfGnCLYeepF75UcP3Okqwb8
-         dcFYZry7vOj0k41zX4FBLKkMxpny6LZcteQYr3I0IdfnoIQi4k2ruyUCG5bvdwqcU8KW
-         3Xh8AY2S2NuJy+FXhAYr9e5G2InWZ8H7BAvQs=
-X-Received: by 2002:a05:622a:109:b0:532:8e31:d281 with SMTP id d75a77b69052e-5329e38ab0bmr52230861cf.17.1789753245755;
-        Fri, 18 Sep 2026 10:40:45 -0700 (PDT)
-X-Received: by 2002:a05:622a:109:b0:532:8e31:d281 with SMTP id d75a77b69052e-5329e38ab0bmr52230401cf.17.1789753245174;
-        Fri, 18 Sep 2026 10:40:45 -0700 (PDT)
+        bh=LTw8O/yK91y4RheqROz1F5sp+F9hbbCwTxlZ78Kfrtk=;
+        b=eg3H6TfTNektoKL+Gi8E2YXI57wi7+N57S1K0cYyjneuyyBR/LMhecpOF+SV92dgjj
+         MX19CFpdDKSa/U2/vk7QdqAg5gYpOIFH1gspSFenivd5z+pMukYOWCuKNCocS734WVLA
+         qRGLE6YDvX196FGWZwihms6BMffca0zpZliuU=
+X-Received: by 2002:a17:902:f611:b0:2db:2376:6e8a with SMTP id d9443c01a7336-2ddb1ab5841mr69288835ad.9.1789753316085;
+        Fri, 18 Sep 2026 10:41:56 -0700 (PDT)
+X-Received: by 2002:a17:902:f611:b0:2db:2376:6e8a with SMTP id d9443c01a7336-2ddb1ab5841mr69288345ad.9.1789753315540;
+        Fri, 18 Sep 2026 10:41:55 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ae618698sm2152411cf.16.2026.09.18.10.40.42
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc17ba30dsm322255ad.46.2026.09.18.10.41.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 10:40:44 -0700 (PDT)
-Message-ID: <90c88857-634c-4b2d-8a21-54c8d3ceb436@broadcom.com>
-Date: Fri, 18 Sep 2026 10:40:41 -0700
+        Fri, 18 Sep 2026 10:41:54 -0700 (PDT)
+Message-ID: <d954c225-ed1f-4849-90c8-51891b1976e9@broadcom.com>
+Date: Fri, 18 Sep 2026 10:41:53 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 5/8] net: bcmgenet: acquire ring lock with BH disabled
- in bcmgenet_dump_tx_queue
+Subject: Re: [PATCH net 7/8] net: bcmgenet: zero-initialize Transmit Status
+ Block in bcmgenet_add_tsb
 To: Nicolai Buchwitz <nb@tipi-net.de>
 Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>,
  Doug Berger <opendmb@gmail.com>,
@@ -94,8 +94,8 @@ Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>,
  Simon Horman <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
  linux-kernel@vger.kernel.org
 References: <20260918000732.276506-1-florian.fainelli@broadcom.com>
- <20260918000732.276506-6-florian.fainelli@broadcom.com>
- <f00892b2a993b3cd333f54660c53632c@tipi-net.de>
+ <20260918000732.276506-8-florian.fainelli@broadcom.com>
+ <f8918542ababe3af39ce6f2f5ee55948@tipi-net.de>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -130,23 +130,30 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <f00892b2a993b3cd333f54660c53632c@tipi-net.de>
+In-Reply-To: <f8918542ababe3af39ce6f2f5ee55948@tipi-net.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 9/18/26 03:57, Nicolai Buchwitz wrote:
+On 9/18/26 04:03, Nicolai Buchwitz wrote:
 > Hi Florian
 > 
 > On 18.9.2026 02:07, Florian Fainelli wrote:
->> bcmgenet_dump_tx_queue() is called from bcmgenet_timeout() in process or
->> timer context and acquires ring->lock using spin_lock(). If a softirq
->> such as TX NAPI (bcmgenet_tx_poll()) fires on the same CPU while the lock
->> is held, it will deadlock trying to acquire ring->lock.
+>> bcmgenet_add_tsb() pushes 64 bytes of headroom onto the skb to form the
+>> Transmit Status Block (TSB) but only assigns status->tx_csum_info when
+>> skb->ip_summed == CHECKSUM_PARTIAL. For packets without checksum offload,
+>> or for other fields within struct status_64, the status block contains
+>> uninitialized stack/heap memory from previous skb operations.
 > 
-> AFAIU bcmgenet_timeout() only runs from dev_watchdog(), so BH is already
-> disabled and no deadlock?
+> The MAC only reads tx_csum_info when the descriptor has DMA_TX_DO_CSUM,
+> and bcmgenet_xmit() sets that only for CHECKSUM_PARTIAL.
+> The stale value seems to be never used?
+> 
+> Did you hit an actual failure?  Otherwise this would be a 64 byte memset
+> on every transmitted packet.
 
-Yes indeed, not sure what I was on with that.
+Nope this is entirely theoretical, and one could argue that this could 
+create a slight drop in performance, happy to drop that one as well 
+since we never really experienced any actual issue.
 -- 
 Florian
