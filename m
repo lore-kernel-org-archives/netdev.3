@@ -1,64 +1,64 @@
 Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C1C439340
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ED843F08F
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789725596; cv=none; b=osqsf5IOdGDKpnot4FwoWffzVwai9oLCIwNKBQFUHEFfVRRcnMn6qNhZK3nKS2djzXJqxV5G1aEDCbN9Z8dZjoxN24+/EeN6H10jE8/z8qua4SOY/qiUxEIwCGD7V1Y71poTo1WRhGmeh+RfLL3qKiQbObuhi3kyPDXRFjmdu7Y=
+	t=1789725599; cv=none; b=l2m6nBvNMFn6JbOI55u+Or/V2E1zYvbxyPcuOCRt+FflFfWi7ArMHUsxDazu44BAfBLd08CSEfRG0TQ0F/RSaSIIdvrhCG/+zp58FLB+QaCpjm9i2ls9qNBAXl9LAv9HdqJ4N9IFwZm5tVuB3o9ThQCKP7+WhjtR0skD90gk9T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789725596; c=relaxed/simple;
-	bh=QQM7Nr5Sh5F7elvNnwBMJJBFiB8aRONr/cYokr58l+Q=;
+	s=arc-20240116; t=1789725599; c=relaxed/simple;
+	bh=Ah+HpZKfJRLcEAV9WsvdW3BhbyK36TwEm+aAqaUEp1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DusYGoLH/CzFEUYb990bsL93ooerUE4644cW9SCAAmA2XC2/YPFJFx1miTNPXxeXeyXRCm6C/6YbVMpP9u7VFzfxnTIrXEAuTwMKpue8xzqqkrpIrI1KmdrrWmABQ6Bxma5x6nJ4V9hlKfd3/I8Sj4qaOUDQHlvVQ0SsZu1daN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oNrZkCwH; arc=none smtp.client-ip=74.125.228.140
+	 MIME-Version; b=h32TgZU8whQGahQQ5vCBoOrl/HQpd2jf/yle2HmIi4xDsif+EERGZ0kW+o+NXsKWkjoQ/1+zLwV5+hkitUdMMNIZn1C6RfOVLZ+/KXym2hxRXVuPceE2aW1iwC6GrXqAPDaz6Qi8RXE6O5pZTouw1PjVFI0hfS70PWUUQ4EO/xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4SdalIs; arc=none smtp.client-ip=74.125.228.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oNrZkCwH"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f55efe7so78791566b.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:59:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4SdalIs"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c264788fd58so78666766b.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:59:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789725590; x=1790330390; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789725592; x=1790330392; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Skcngj3xltd7I66fo+kUEQph4TyUSbQVnDmtiBBF2mA=;
-        b=oNrZkCwH2iLWZUZ3YsqaHdrVuLgYCbiI83BYo5bYj1qVithxYNeFWRQOCuJNzkEo3C
-         aqAW44/9PuoOQaYjdB2A6q+FgMCF12+rzIR4rLQG1y+ZnV3eyVrUeXhkL90Z7STMfiTA
-         CQRqqBP6O8hJOxwBA2atcBsHB1bIlDpePM9cKR8pRSarx5WsY+wHALEouKFyBTlKfwLn
-         z+ifZ6gOlWpK89HBARS35Bwgs/7z5qAE+YnCnP5jXfoearJ4Xg011hV6tYX8TfFIVCIY
-         TqMrlemwHsKk5TYwZr5PYPBe8QMxVRw0K6ldo/NLinr4+isZRIP7a6LEzgU3D7SSsV/k
-         dcxQ==
+        bh=mYKndkjI/RjT1U+TjeldxMYaMxagatd1Lyv0wl6mHW8=;
+        b=O4SdalIsKHKtn2vaesfxWuiGOtQ5IM1+QJV8Yljidx2qs1mtcUUfrZTDJ6cP0HrRYS
+         stlBF7uqeATcS4bJ2grO6gvAap5BBXBoOBOzIf6vY4SKsuUlmHfVnXh8WQG6wUeXJAu2
+         x2aNvPDJPDuQ8vzi/WIUbRu6EfIncls/L88iHaYD9zBQmoxWd2ej/i/g5928+Joy13Ze
+         iIng2zERHK2R4amY80+esh3Rh/gn7e1cTbTiM5/GH9PVx4pl7GGncd41c4htOtLXRu1S
+         McLC9xnYAy2NmHQD4TtPM7iFHL579cnBqYbvlDjUDqeFidqQ1Jzky4JiQ5MKIyqT0Xt8
+         tfhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789725590; x=1790330390;
+        d=1e100.net; s=20260707; t=1789725592; x=1790330392;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Skcngj3xltd7I66fo+kUEQph4TyUSbQVnDmtiBBF2mA=;
-        b=fuDyof04ChLx3GFVN7mM73um0uO5STsIoDsSO09RswoXLvR+ZlikqJOQvOIB2sC39n
-         N2GHzdJ8t9ofs7M9JJ9dwbAAr8FOxv1+QMdyWhfSDbNMwx/X7bUdcGhI6mADhH1vzLsf
-         pMMY90KY58BPpp2fn9Y6kSbdFa9npV/0MfPJ06HTVhZE6aTvZRARav/h3f8qnUX/KCEZ
-         UgpqBie1tsG9rFngSwFkz4cnCPHrqJXO0eqYrFYhD1wVFvXOUS5HJ3dEHcB3glIs9VAn
-         XDrRsGFWgz4BOgvLgZxpy+JNrWjVdBfoHguTzcrc/yjVUFiJZvtWd+Ithh+Kg0bHEsj1
-         Zsaw==
-X-Forwarded-Encrypted: i=1; AKwUvBxGn6a2Sy5c5la/1p1g6l11xDcJY35XGZRha26kbrpubm+44tufVfbXxAhRofx2WOknXW9gs6E=@vger.kernel.org
-X-Gm-Message-State: AFuF++kJXyxUGf6C48+88LFgVDsG/S9wynadMfYn4++5UfDmAcNheuCe
-	Up1U4Gge5p04ZlWJwkcV3XCYDrdONa1/g2HfWXPThZNaHZa148X0nhAhKnNqAWP8g0w=
-X-Gm-Gg: AYBFou2Z35CgQzL/cQ8Umgt4YzuGXFy/73IFvts8XAoWjIEyi6VL6ydUQF0vWbL/gPt
-	OWNcE8CZROCN9sdK6G56SWr9sfqhJtFocFj6caEsyn5Q22tHlzH76Un1It3obPs0WHDhMoSPVAQ
-	SBy6b1KItM0SHrm1ptuEkbsPuZFOcSBaDoIe1Uw1Z9OCNorfstae9ZjAvi96JOsGkcHgfzrqRFa
-	Rxk9ivCwHIQrhhR2T50Ew9vBVYbzd2aOGMkN0W4n8SoVTaAJZ3eX26ByvAAfMYAa+XwAQU+4rnv
-	FirIbQy120LeLbksjPaBkawcKeOjgQPIkoRGgCktYVS1v4C/tGEbMgIhi95jWvLFH9RUvWIS8S8
-	0kFzxOvavaGjdy6gIbOEHaQlN8pesxnVcJp68e2FRDBl8GgxBFocKV4+INgSZ4kjsXTFD6/CoHK
-	HpceQ08gda3jW7YYa7P8jHpvM+/hLWfHlG4V0j2PKSAaIvUdB+482Ys1UM6VSNHOu2RH2Q9ohi4
-	RaeeM3DEnxWMpqMSoX9vbiwig9lENvYl3X64e0T5fRey57vK58Ip9lk
-X-Received: by 2002:a17:907:1c0f:b0:c29:d62b:fcfa with SMTP id a640c23a62f3a-c2a156590b7mr208809466b.2.1789725589331;
-        Fri, 18 Sep 2026 02:59:49 -0700 (PDT)
+        bh=mYKndkjI/RjT1U+TjeldxMYaMxagatd1Lyv0wl6mHW8=;
+        b=z9jyN1Tzd11sruDmrgBIE1zSskCMBfLYihgjxDdPCNM8yCO8IjrJO9Cnox+hhgkhOr
+         Z36iuZTG1oV4TlfedX9UfHc5VRwvoHcPdWkEmYxRX3WH0RMEDI+Pm8/Bq2VysqxmADe7
+         6mLNZ4ycTfbKg5V9GATMyTH19YJPIJZSiepoBRsKQz5H8M3Dr5ow6RAi/eWKkJClhMMF
+         SB1aFt3u9oG3DmL44ma90gt+j7BDYh/7IAfZVRdSduTQkfutG/CD4CZ2MzQ9VvmcLfi/
+         Pj2EdP36uidQE800nC1JRnPQr4XVQ9gEio/CeRYr93gbFEBp0v+lJS5MNfaOUJYODYB5
+         hYxA==
+X-Forwarded-Encrypted: i=1; AKwUvBwdPqyQBbS3MnpeH3FYaTxoFgn0XmPu30Fs10V6n6VRoMvz9OF6H7V75xPsLH3Xnbc+zwZJkw0=@vger.kernel.org
+X-Gm-Message-State: AFuF++neYl1mm8h3jCUbCyRTymjqjXVn9Wczs34b0kvx3n7ddXnyxEJd
+	X6iBOLdo7mdk9gw50L4juNXCr9GSOm/h+SijRhtX6Qys+aF1WTR9YXTZ
+X-Gm-Gg: AYBFou2e1fBnoS+vHeUuUttUJCDGynetWOcuvbIhBuFhWdfHQkndQXVf3wTagm/OdwL
+	zSPEhtvjuHEFyyZyVcc0RO1w1gC1UqCJDNghUZDCCKhb6holzDLFKNZ8tZ9h0EoJup+kxEva81e
+	/Ka+3PqlGNzHE+0+zFBt/lrxPuUnkE1VqQGy6CS6WfXj/saruar4xanaV6xkvMqn1R+a+/ofOaf
+	7shxkf5mNDwFe8bHhxCrV+2jFq3utrMnfq5d8TLileijjMy6f8Pp1AOL+ywpqz6FJtkjTBfz4Aw
+	sjWFsB/zmQnalh+oS7auEyMKkKscL/TWVJJ6/vF1iSaf+uUEwDTsHbjrSv2g8RseFZUAcwTR4vF
+	mXI3oPhv6zm7NZOa2Fp8mDgVkGdrsuzG8/BlRtl0y5fQ2mWAbWAgKpvqpcbrWJ02DSceet3Fpep
+	+7xQEdbY6l8tPjCFAiQZkEo5AdcBRmKc3E1qco2D30rvYk1pJNufYo9jF2oD/hkqDeWkW9b71z8
+	qsUjRFMJDqlGeasWCzZEgxp/2hXjkppdfhEp33JNdri1eL1muVoWNUu
+X-Received: by 2002:a17:907:7286:b0:c25:c954:faf2 with SMTP id a640c23a62f3a-c2a159ae00cmr198378466b.21.1789725592083;
+        Fri, 18 Sep 2026 02:59:52 -0700 (PDT)
 Received: from BERSOARE-M-K4D5.cisco.com ([2603:5004:20a0:100a:561b:120d:754d:a140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a1bbc6a99sm38313166b.59.2026.09.18.02.59.47
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a1bbc6a99sm38313166b.59.2026.09.18.02.59.50
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 18 Sep 2026 02:59:48 -0700 (PDT)
+        Fri, 18 Sep 2026 02:59:51 -0700 (PDT)
 From: Bernardo Soares <bsoares.it@gmail.com>
 To: Mark Bloch <mbloch@nvidia.com>
 Cc: Daniel Borkmann <daniel@iogearbox.net>,
@@ -66,9 +66,9 @@ Cc: Daniel Borkmann <daniel@iogearbox.net>,
 	saeedm@nvidia.com,
 	Vlad Buslov <vladbu@nvidia.com>,
 	Bernardo Soares <bsoares.it@gmail.com>
-Subject: [PATCH net v4 1/2] net/mlx5: Bridge, don't fail switchdev events of sibling eswitch ports
-Date: Fri, 18 Sep 2026 10:59:30 +0100
-Message-ID: <20260918095931.29792-2-bsoares.it@gmail.com>
+Subject: [PATCH net v4 2/2] net/mlx5: Bridge, don't fail unlink of untracked/unsupported peer ports
+Date: Fri, 18 Sep 2026 10:59:31 +0100
+Message-ID: <20260918095931.29792-3-bsoares.it@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260918095931.29792-1-bsoares.it@gmail.com>
 References: <20260918095931.29792-1-bsoares.it@gmail.com>
@@ -80,163 +80,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mlx5 registers the bridge offload switchdev notifiers once per eswitch
-instance, but the notifier chains are global, so every instance sees
-every event and must filter out the ones that aren't its own. The
-existing filter, mlx5_esw_bridge_dev_same_hw(), only checks that the
-event netdevice sits on the same HCA - intentional for merged eswitch,
-where one bridge can span representors of several eswitches on one
-HCA - but same-HCA doesn't mean the instance actually has that port:
-peer ports are only created reactively from NETDEV_CHANGEUPPER, so an
-instance brought up after a sibling PF's port was already enslaved has
-none. The port object and attribute handlers claim the event anyway
-once same-HW passes, then fail the port lookup and return -EINVAL,
-which gets reported to user space even though the owning instance
-already handled it (e.g. "bridge vlan add ... RTNETLINK answers:
-Invalid argument"). Fix by filtering on the tracked port instead.
+mlx5_esw_bridge_vport_unlink() returns -EINVAL when the port isn't
+tracked by this instance's br_offloads. This is reachable on a sibling
+instance that registered its notifier after the port was already
+enslaved: it never saw the NETDEV_CHANGEUPPER link event, so
+peer_link() never created a peer port for it, but it does see the
+later unlink event and fails. Return 0 instead, and give
+mlx5_esw_bridge_vport_peer_unlink() the same merged_eswitch capability
+guard peer_link() already has, since without it peer_link() likewise
+never creates a port to unlink.
 
-The same gap exists in the generic recursive lower-device walk used by
-attribute changes on a bridge with more than one representor enslaved
-directly: mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get() is entered
-with the bridge master netdevice, falls through to its generic
-netdev_for_each_lower_dev() loop, and returns as soon as the recursion
-into any one lower device yields a non-NULL rep - the underlying base
-case, mlx5_esw_bridge_rep_vport_num_vhca_id_get(), only checks
-mlx5_esw_bridge_dev_same_hw(), not ownership by the calling instance's
-br_offloads. mlx5_esw_bridge_lag_rep_get(), used for the LAG-master
-case, already filters on mlx5_esw_bridge_dev_same_esw() per candidate
-and so cannot select a sibling's rep; it is not the source of this bug.
-On a merged-eswitch HCA with a bridge spanning representors of more
-than one eswitch instance directly, the walk can return a sibling's rep
-instead of continuing to the one the calling instance actually owns, so
-the attribute change fails the same way as above. Fix by checking
-mlx5_esw_bridge_port_exists() at the point each rep is picked, same as
-the previous fix did for the notifier filter.
+This also matters beyond the -EINVAL itself:
+mlx5_esw_bridge_switchdev_port_event() runs on the per-netns
+netdev_chain, and notifier_from_errno(-EINVAL) sets NOTIFY_STOP_MASK,
+which call_netdevice_notifiers_info() checks to stop calling further
+listeners on that chain - so the old -EINVAL silently dropped the
+event for any listener registered later on the same chain, even
+though none of it was visible to user space since
+__netdev_upper_dev_unlink() discards the return value.
 
 Fixes: c358ea1741bc ("net/mlx5: Bridge, allow merged eswitch connectivity")
 Signed-off-by: Bernardo Soares <bsoares.it@gmail.com>
-Cc: Vlad Buslov <vladbu@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>
 ---
- .../mellanox/mlx5/core/en/rep/bridge.c        | 45 +++++++++++++++----
- .../ethernet/mellanox/mlx5/core/esw/bridge.c  |  6 +++
- .../ethernet/mellanox/mlx5/core/esw/bridge.h  |  2 +
- 3 files changed, 44 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-index baac38bece14..4b7b0a0fc2b2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-@@ -85,9 +85,16 @@ mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get(struct net_device *dev, struct m
- 	struct net_device *lower_dev;
- 	struct list_head *iter;
- 
--	if (netif_is_lag_master(dev) || mlx5e_eswitch_rep(dev))
--		return mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, esw, vport_num,
--								 esw_owner_vhca_id);
-+	if (netif_is_lag_master(dev) || mlx5e_eswitch_rep(dev)) {
-+		struct net_device *rep;
-+
-+		rep = mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, esw, vport_num,
-+								esw_owner_vhca_id);
-+		if (rep && !mlx5_esw_bridge_port_exists(*vport_num, *esw_owner_vhca_id,
-+							esw->br_offloads))
-+			return NULL;
-+		return rep;
-+	}
- 
- 	netdev_for_each_lower_dev(dev, lower_dev, iter) {
- 		struct net_device *rep;
-@@ -104,6 +111,28 @@ mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get(struct net_device *dev, struct m
- 	return NULL;
- }
- 
-+static bool mlx5_esw_bridge_rep_port_lookup(struct net_device *dev,
-+					    struct mlx5_esw_bridge_offloads *br_offloads,
-+					    u16 *vport_num, u16 *esw_owner_vhca_id)
-+{
-+	if (!mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, br_offloads->esw, vport_num,
-+						       esw_owner_vhca_id))
-+		return false;
-+
-+	return mlx5_esw_bridge_port_exists(*vport_num, *esw_owner_vhca_id, br_offloads);
-+}
-+
-+static bool mlx5_esw_bridge_lower_rep_port_lookup(struct net_device *dev,
-+						  struct mlx5_esw_bridge_offloads *br_offloads,
-+						  u16 *vport_num, u16 *esw_owner_vhca_id)
-+{
-+	if (!mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get(dev, br_offloads->esw, vport_num,
-+							     esw_owner_vhca_id))
-+		return false;
-+
-+	return mlx5_esw_bridge_port_exists(*vport_num, *esw_owner_vhca_id, br_offloads);
-+}
-+
- static bool mlx5_esw_bridge_is_local(struct net_device *dev, struct net_device *rep,
- 				     struct mlx5_eswitch *esw)
- {
-@@ -218,8 +247,7 @@ mlx5_esw_bridge_port_obj_add(struct net_device *dev,
- 	u16 vport_num, esw_owner_vhca_id;
- 	int err;
- 
--	if (!mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, br_offloads->esw, &vport_num,
--						       &esw_owner_vhca_id))
-+	if (!mlx5_esw_bridge_rep_port_lookup(dev, br_offloads, &vport_num, &esw_owner_vhca_id))
- 		return 0;
- 
- 	port_obj_info->handled = true;
-@@ -251,8 +279,7 @@ mlx5_esw_bridge_port_obj_del(struct net_device *dev,
- 	const struct switchdev_obj_port_mdb *mdb;
- 	u16 vport_num, esw_owner_vhca_id;
- 
--	if (!mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, br_offloads->esw, &vport_num,
--						       &esw_owner_vhca_id))
-+	if (!mlx5_esw_bridge_rep_port_lookup(dev, br_offloads, &vport_num, &esw_owner_vhca_id))
- 		return 0;
- 
- 	port_obj_info->handled = true;
-@@ -283,8 +310,8 @@ mlx5_esw_bridge_port_obj_attr_set(struct net_device *dev,
- 	u16 vport_num, esw_owner_vhca_id;
- 	int err = 0;
- 
--	if (!mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get(dev, br_offloads->esw, &vport_num,
--							     &esw_owner_vhca_id))
-+	if (!mlx5_esw_bridge_lower_rep_port_lookup(dev, br_offloads, &vport_num,
-+						   &esw_owner_vhca_id))
- 		return 0;
- 
- 	port_attr_info->handled = true;
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-index 87b5fd349594..ac90ccda1272 100644
+index ac90ccda1272..b4cf3c5ac0dd 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-@@ -1686,6 +1686,12 @@ int mlx5_esw_bridge_vport_peer_unlink(struct net_device *br_netdev, u16 vport_nu
+@@ -1649,10 +1649,8 @@ int mlx5_esw_bridge_vport_unlink(struct net_device *br_netdev, u16 vport_num,
+ 	int err;
+ 
+ 	port = mlx5_esw_bridge_port_lookup(vport_num, esw_owner_vhca_id, br_offloads);
+-	if (!port) {
+-		NL_SET_ERR_MSG_MOD(extack, "Port is not attached to any bridge");
+-		return -EINVAL;
+-	}
++	if (!port)
++		return 0;
+ 	if (port->bridge->ifindex != br_netdev->ifindex) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Port is attached to another bridge");
+ 		return -EINVAL;
+@@ -1682,6 +1680,9 @@ int mlx5_esw_bridge_vport_peer_unlink(struct net_device *br_netdev, u16 vport_nu
+ 				      struct mlx5_esw_bridge_offloads *br_offloads,
+ 				      struct netlink_ext_ack *extack)
+ {
++	if (!MLX5_CAP_ESW(br_offloads->esw->dev, merged_eswitch))
++		return 0;
++
+ 	return mlx5_esw_bridge_vport_unlink(br_netdev, vport_num, esw_owner_vhca_id, br_offloads,
  					    extack);
  }
- 
-+bool mlx5_esw_bridge_port_exists(u16 vport_num, u16 esw_owner_vhca_id,
-+				 struct mlx5_esw_bridge_offloads *br_offloads)
-+{
-+	return mlx5_esw_bridge_port_lookup(vport_num, esw_owner_vhca_id, br_offloads);
-+}
-+
- int mlx5_esw_bridge_port_vlan_add(u16 vport_num, u16 esw_owner_vhca_id, u16 vid, u16 flags,
- 				  struct mlx5_esw_bridge_offloads *br_offloads,
- 				  struct netlink_ext_ack *extack)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h
-index d6f539161993..a4e59cc21089 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h
-@@ -80,6 +80,8 @@ int mlx5_esw_bridge_vlan_proto_set(u16 vport_num, u16 esw_owner_vhca_id, u16 pro
- 				   struct mlx5_esw_bridge_offloads *br_offloads);
- int mlx5_esw_bridge_mcast_set(u16 vport_num, u16 esw_owner_vhca_id, bool enable,
- 			      struct mlx5_esw_bridge_offloads *br_offloads);
-+bool mlx5_esw_bridge_port_exists(u16 vport_num, u16 esw_owner_vhca_id,
-+				 struct mlx5_esw_bridge_offloads *br_offloads);
- int mlx5_esw_bridge_port_vlan_add(u16 vport_num, u16 esw_owner_vhca_id, u16 vid, u16 flags,
- 				  struct mlx5_esw_bridge_offloads *br_offloads,
- 				  struct netlink_ext_ack *extack);
 -- 
 2.43.0
 
