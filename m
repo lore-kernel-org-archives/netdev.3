@@ -1,162 +1,169 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f7.google.com (mail-oo2-f7.google.com [74.125.231.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A0D52842F;
-	Fri, 18 Sep 2026 21:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A634C49BD86
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 21:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789765938; cv=none; b=Gg4sUXyo5cBxs90TWujLPBpGsbDl7oaxtaVjQMIrmMPo8wLolHDnh1oYICuc7HPc9LS7mFxZJSFOUR8Y5WhQiLviKoP6PUiOVJIKVQ8HZZqynN8OGfTY/BW1OrAADh+62G1I0eIA7SXKNKzAYqcu0W7sru/yNUQUVc2x5YdZqeU=
+	t=1789766678; cv=none; b=UFTsdG4CA8db/NevvyFNl7YVJSERmLeQYfjnIbF4YeFrt0pGOADQGGysSsz/qMMHsSUkWDoI+DvBshUrkIVcJbCIBTLmKoCOHLM4UsEVKOKjXqxzS/fnwJMm91ILSHL5p/VSrtj0qHcdj/t8QfBYdY5bnbe6bfHf3LPihpml0Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789765938; c=relaxed/simple;
-	bh=cIfSR1CMii8h1MA9LWF4cboCuUSevhIysbC5246uSiU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bWyn7wS6+P+P2MpDyErOZN77kIapzfApk6xMBHWq3uTBzeNI91r5jlU8Oo7r3fasPCIfLHFSrSGHgAJn6nVuMRr31MDB3snnplgZh2JhZhi3LgLPuMRa8W4U8puoR6thCnBg8dLYKKh3BaT6LCkAcrx640OSCD6q8IszehC7mb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tF3vRl3D; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tF3vRl3D"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IKVPRX2272748;
-	Fri, 18 Sep 2026 21:12:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Y7faeOI1LJz6yQ1ktdAskhdUjRuOohiVpln3WNI1J
-	Us=; b=tF3vRl3DwaJcrkyn0CS01tZgJVreriJgnKjbJjbQ4AQ5y5RHFUl7Hr+pe
-	SyjsvFqbtELXDToFlf18VMBdmkFLzQhx/sTfVgnQUvA4vRr69aO54bpjvOdlvhcr
-	pyc1bSDmU/uWy9MJ+oeV/HZ8UUAPaFn8s8a6usFeuSqm/UR3Hcnim78WaXwq5xfV
-	eXTtm4CWt2YySRrMld5bq8Xd/LdCRweYEIfGhTFJcpmqCF3x7vkH6i9nTO2PTqpd
-	fwy/sXyq4fv+Lm5EiFic5Qngsdxrvq6a3Lqi60ANsNv+zN2Kc272jDAQ8pYeqoJf
-	SX23Y2Ag/aYMRNqmSexDjgmIcZZGg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf5jc05-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 21:12:00 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IKK3pn2177907;
-	Fri, 18 Sep 2026 21:12:00 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gs4tva22k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 21:12:00 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68ILBwSJ61931910
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 21:11:58 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EBC758060;
-	Fri, 18 Sep 2026 21:11:58 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10DD35805E;
-	Fri, 18 Sep 2026 21:11:58 +0000 (GMT)
-Received: from li-4c4c4544-004d-3310-8032-b2c04f503334.atx-us.ibm.com (unknown [9.16.51.119])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2026 21:11:58 +0000 (GMT)
-From: David Dai <zdai@linux.ibm.com>
-To: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: jarod@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hangbin.liu@linux.dev, pradeeps@linux.ibm.com, zdai@linux.ibm.com
-Subject: [PATCH net v2 1/1] bonding: crypto offload enabled, non-offload slave failover, rekey failed
-Date: Fri, 18 Sep 2026 16:11:55 -0500
-Message-ID: <20260918211155.1664493-1-zdai@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1789766678; c=relaxed/simple;
+	bh=vysW34Y5MuVI7mh8rvcO+tz1BNsiP2Tm2MaYv/6cUS0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=O2/CE4uUYlt9tW4YrkLfnThuicGKklvDhFwfxt6j5cPJJFBeXCj4GaXp7C8T9Et1adTHGSZVdzDhrzaBcVaOWN4RUP+yLBSRMdlLz5kpyGNabPtaLdbxMKhDDcnxj9H2Uyi5XdJ3e5XV61ABKwLnJrATXC8Ur6xxaYSCJhw9RsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f7.google.com with SMTP id 006d021491bc7-6b1bebb3ae8so497388eaf.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:24:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789766675; x=1790371475;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=u1u3CHkcCfNdtkHpr2f6Q8I6xzAzYCLm9kLKPD5T5jo=;
+        b=ecYqMJHZannJTrqjcMpuKZ6K+7J/7SdaCQWaL2UNnLDG/s/2PCfjup4kd74LNA1CpT
+         BWh+VcbqcQANDeikR2kBFmlArbFwC96oc12DAbyPbnKBcihFyKzPvJCrpMzSpVfbewhB
+         pdZyT4QLbRE3eFjlO2ZworxKk9EMc2H/MJR3dP8B42dSe+394i2OfxZJzLEvco9xa2s4
+         IIUDNKYj9wYxEKWigdpBc4khK6vIeASTLcHK4hplv+bLILMyWVZ16yM9fdS37OVftGVB
+         7dy09xsdFGJUy6IfVaM8pgyXUe/2oSqw/E4lqANdsSfT/pJnA0a7aVJwKIlMgzJ+YDC+
+         kpQg==
+X-Forwarded-Encrypted: i=1; AKwUvByUJ2/d1NQKLIbep6aL/fAYkdGy9pi8j3ple0gXqN5PkYZGGH/oS909E1UID/6SDgkcM19EtrY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nCJ7IDdp52LJEDKMVtTneaav0zDtAZ9cm8T/XAsJZujB+oeXKF
+	B6eFYDbP3Csf3voeTi45LJpY4mITZmQylPYr9Jv+vZKiN54NOm7JYdjAUJnjVB3QnOiz02gsiL4
+	edyE5OZB+bvzOyeOHpqJ0VqZbYSCw6LB2155RogYGwHjHPedQuvIXmWqNqFE=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: YVVw5WEEXYrbP-_QDp9CoBijfzORgWO3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDMwNCBTYWx0ZWRfX00fH7VcyUusq
- BsSaCaJd7JhgleaMvEjslwfiBn9Hlm4osC+X5MXRaF7Ec3VMTczmt27naDcLTeoiFutJqEMuo7M
- Tr7gdNSjtU2r9Tu09oHRRGvcm6mAteI=
-X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aada921 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=90oEQoJImY1yxsAiUqMA:9
-X-Proofpoint-ORIG-GUID: _PFMqiUmwdFaMYAwCXkGy1oO-30Rg3k9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDMwNCBTYWx0ZWRfX0Wh1AnbeYHiC
- WADClSc295joDbfpKM7Rpkpoy47l0aLAuD+rLn5+RjmA2vS/hDkr7b5+EhvqWs+JG2QPuWa6An7
- BnT0skmep8Q2yDK+RLfXPiaRGoMtZb8jtjcW424iCyjr/RpEy8JOW2zrzEXnHILZHI9KBCViNEt
- cSVS6mTsi6IV0qkbJWX6iB8JAG/kIEgvR9JQrOjQfeAkawr/v+VlPk75B0Ukh8A0hyN4RCeYTAD
- uY7SJItujTQILnRluYrEj5LB4DGyzaJvO28XK8Q9O1aPQOBWbZyenurcQurlGVyYKdD8KrNuFeJ
- al/2ps16Ot14SXYVNeCX4w2NmeM00LxTxZjCJA3wuvMNnqz/TW5G9SwDwy2NGKGXuGYhdfLwaey
- MMqc5kpQgNxrAduFDkBsI2Je+RuEWxRaCXtiqJ5yc+rSKxY5SrZb+9cRY5zhFELkIDX3F7sfKyV
- rd87JV5PcDIeYiG489Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_06,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180304
+X-Received: by 2002:a05:6820:a284:20b0:6cd:3fdb:fa6a with SMTP id
+ 006d021491bc7-6cd3fdbfe8dmr588537eaf.85.1789766675670; Fri, 18 Sep 2026
+ 14:24:35 -0700 (PDT)
+Date: Fri, 18 Sep 2026 14:24:35 -0700
+In-Reply-To: <6aa3307a.6e6c5f9e.28f11f.003a.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aadac13.b398a7c9.1f86be.003c.GAE@google.com>
+Subject: Re: [syzbot] [net?] WARNING: locking bug in finish_task_switch (3)
+From: syzbot <syzbot+b5ddc2aecb8d1b29c871@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org, 
+	luto@kernel.org, ncardwell@google.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, peterz@infradead.org, syzkaller-bugs@googlegroups.com, 
+	tglx@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Create a bonding device (i.e. bond0) in active-backup mode, 2 slaves.
-Active slave: offload capable interface (i.e. eth1), primary interface.
-Backup slave: non-offload capable interface(i.e. eth2).
-Configure strongswan service swantl.conf child SA "hw_offload = crypto"
-Start strongswan service
-IPSec Crytpo Offload is enabled on top of bond0. i.e. 
-ip xfrm state |grep offload
-        crypto offload parameters: dev bond0 dir out mode crypto
-	crypto offload parameters: dev bond0 dir in mode crypto
+syzbot has found a reproducer for the following issue on:
 
-Active slave eth1 takes adavantage of IPSec Crypto Offload capability. 
+HEAD commit:    50d05c7c76c9 Merge tag 'landlock-7.3-rc3' of git://git.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b5f8c9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=b5ddc2aecb8d1b29c871
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: i386
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12ab4525580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14d4e915580000
 
-If active slave eth1 is down for any reason (i.e. eth1 link down):
-ip link set down dev eth1
-non-offload capable interface eth2 failover to becomes active slave. 
-The existing SAs can continue use software IPsec after failover.
-Traffic still keeps going properly.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/daf497619736/disk-50d05c7c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/748fbd82f647/vmlinux-50d05c7c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e61c59099d07/bzImage-50d05c7c.xz
 
-However if eth1 link had not recovered yet, strongswan service does
-new child SA rekey, or uses swanctl command to do new child SA rekey, 
-it will fail because active slave eth2 doesn't support crypto offload.
-In bond_ipsec_add_sa routine, it returns -EINVAL now, which is 
-treated as fatal error by xfrm_dev_state_add routine in kernel xfrm.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b5ddc2aecb8d1b29c871@syzkaller.appspotmail.com
 
-To make the non-offload active slave survive the child SA rekey, need 
-to make bond_ipsec_add_sa routine returns -EOPNOTSUPP instead when 
-active slave doesn't support IPsec Crypto offload, the xfrm will 
-gracefully fallback to create new SA using Software IPsec. 
-Network traffic can keep going.
+------------[ cut here ]------------
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: kernel/locking/lockdep.c:238 at hlock_class kernel/locking/lockdep.c:238 [inline], CPU#0: syz.1.28/6067
+WARNING: kernel/locking/lockdep.c:238 at check_wait_context kernel/locking/lockdep.c:4923 [inline], CPU#0: syz.1.28/6067
+WARNING: kernel/locking/lockdep.c:238 at __lock_acquire+0x5f0/0x2de0 kernel/locking/lockdep.c:5238, CPU#0: syz.1.28/6067
+Modules linked in:
+CPU: 0 UID: 0 PID: 6067 Comm: syz.1.28 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:hlock_class kernel/locking/lockdep.c:238 [inline]
+RIP: 0010:check_wait_context kernel/locking/lockdep.c:4923 [inline]
+RIP: 0010:__lock_acquire+0x5f7/0x2de0 kernel/locking/lockdep.c:5238
+Code: 83 3d bc f2 fa 18 00 75 27 90 e8 94 e8 37 03 85 c0 74 1c 83 3d ed 29 d7 0e 00 75 13 48 8d 3d e0 32 da 0e 48 c7 c6 29 f3 59 8e <67> 48 0f b9 3a 90 31 c9 0f b6 81 c4 00 00 00 84 c0 0f 84 76 ff ff
+RSP: 0000:ffffc90003a6e538 EFLAGS: 00010046
+RAX: 0000000000000001 RBX: ffff88802f13e9b8 RCX: ffff88802f13ddc0
+RDX: 0000000040000000 RSI: ffffffff8e59f329 RDI: ffffffff907d6580
+RBP: ffff88802f13e9c0 R08: ffffffff907a5c83 R09: 1ffffffff20f4b90
+R10: dffffc0000000000 R11: fffffbfff20f4b91 R12: 0000000000000004
+R13: 0000000000000000 R14: ffff88802f13ddc0 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff888124cd2000(0063) knlGS:00000000f67c3b40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00000000f71c8c10 CR3: 00000000711ba000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
+ finish_lock_switch kernel/sched/core.c:5254 [inline]
+ finish_task_switch+0x16e/0xc60 kernel/sched/core.c:5375
+ context_switch kernel/sched/core.c:5529 [inline]
+ __schedule+0x17e3/0x58f0 kernel/sched/core.c:7276
+ __schedule_loop kernel/sched/core.c:7353 [inline]
+ schedule+0x164/0x2b0 kernel/sched/core.c:7368
+ __lock_sock+0x162/0x2c0 net/core/sock.c:3238
+ __lock_sock_fast+0x94/0xe0 net/core/sock.c:3900
+ lock_sock_fast include/net/sock.h:1746 [inline]
+ tcp_get_info+0x26d/0x2b70 net/ipv4/tcp.c:4250
+ inet_sk_diag_fill+0xdb6/0x18c0 net/ipv4/inet_diag.c:330
+ sk_diag_fill+0x2e6/0xd50 net/ipv4/tcp_diag.c:284
+ tcp_diag_dump+0x1ba6/0x2020 net/ipv4/tcp_diag.c:538
+ __inet_diag_dump net/ipv4/inet_diag.c:823 [inline]
+ inet_diag_dump_compat+0x274/0x490 net/ipv4/inet_diag.c:927
+ netlink_dump+0x711/0xee0 net/netlink/af_netlink.c:2331
+ __netlink_dump_start+0x589/0x7b0 net/netlink/af_netlink.c:2446
+ netlink_dump_start include/linux/netlink.h:341 [inline]
+ inet_diag_rcv_msg_compat+0x214/0x420 net/ipv4/inet_diag.c:962
+ sock_diag_rcv_msg+0x4b0/0x5f0 net/core/sock_diag.c:-1
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+ __sys_sendmsg+0x177/0x240 net/socket.c:2799
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:79 [inline]
+ __do_fast_syscall_32+0x27a/0x6a0 arch/x86/entry/syscall_32.c:291
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/syscall_32.c:316
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+RIP: 0023:0xf700f0ec
+Code: 90 85 d2 74 0a 89 ce 81 e6 ff 0f 00 00 89 32 85 c0 74 05 c1 e9 0c 89 08 31 c0 5e 5d c3 90 0f 1f 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 58 b8
+RSP: 002b:00000000f67c350c EFLAGS: 00000206 ORIG_RAX: 0000000000000172
+RAX: ffffffffffffffda RBX: 0000000000000008 RCX: 0000000080000240
+RDX: 0000000004004010 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	83 3d bc f2 fa 18 00 	cmpl   $0x0,0x18faf2bc(%rip)        # 0x18faf2c3
+   7:	75 27                	jne    0x30
+   9:	90                   	nop
+   a:	e8 94 e8 37 03       	call   0x337e8a3
+   f:	85 c0                	test   %eax,%eax
+  11:	74 1c                	je     0x2f
+  13:	83 3d ed 29 d7 0e 00 	cmpl   $0x0,0xed729ed(%rip)        # 0xed72a07
+  1a:	75 13                	jne    0x2f
+  1c:	48 8d 3d e0 32 da 0e 	lea    0xeda32e0(%rip),%rdi        # 0xeda3303
+  23:	48 c7 c6 29 f3 59 8e 	mov    $0xffffffff8e59f329,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	90                   	nop
+  30:	31 c9                	xor    %ecx,%ecx
+  32:	0f b6 81 c4 00 00 00 	movzbl 0xc4(%rcx),%eax
+  39:	84 c0                	test   %al,%al
+  3b:	0f                   	.byte 0xf
+  3c:	84 76 ff             	test   %dh,-0x1(%rsi)
+  3f:	ff                   	.byte 0xff
 
-After offload capable interface eth1 link is up, becomes active slave,
-next time strongswan child SA rekey will create a new SA which enables
-crypto offload again.
 
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: David Dai <zdai@linux.ibm.com>
 ---
-Changes in v2:
-- Add "Fixes: 18cb261afd7b ("bonding: support hardware encryption
-  offload to slaves")" in v2 patch comment.
-- Remove last line in v1 patch comment "This way, network traffic 
-  is never interrupted, always keeps going." to avoid confusion.
-- Link to v1: https://lore.kernel.org/lkml/20260903220123.475685-1-zdai@linux.ibm.com/
----
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a9bff7663eec..de2489c3d9bf 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -490,7 +490,7 @@ static int bond_ipsec_add_sa(struct net_device *bond_dev,
- 	    !real_dev->xfrmdev_ops->xdo_dev_state_add ||
- 	    netif_is_bond_master(real_dev)) {
- 		NL_SET_ERR_MSG_MOD(extack, "Slave does not support ipsec offload");
--		err = -EINVAL;
-+		err = -EOPNOTSUPP;
- 		goto out;
- 	}
- 
--- 
-2.55.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
