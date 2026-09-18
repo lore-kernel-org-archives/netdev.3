@@ -1,48 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593B62931EF;
-	Fri, 18 Sep 2026 02:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1063ABD8C
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789697062; cv=none; b=NLMz+1xPlrPX7tiOhHQZJW/CSDkFZJFLYmJ4HaiZmd3l68gld12h63WSWo8EnD8XggFsm+mZpwaLrM6LXDMDSZQ7RHrU/AkzNCf9AItq4vb7m+17BLdi6G5P2U6g6ZwjcliP4Z96G53wX1dUe2Tn4PLZ3hTg1abF04GQzvhKZN4=
+	t=1789697069; cv=none; b=Gut/FnjBxZGZ8zqcGcaFSqpnkRHLPD8hnL5P2ssW/+/R+vVGpDqwD3rsAgvsp7rF+QcMFI7dm3ibKtjVb1ZE5IGWAUZLURnnq1BOkNXhBhDvFR0jJTrnVnwwlYPw7kKUltXSj1R7+dk7GpggDXIgWfvZ1SBxGE7XfvWut6OCfyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789697062; c=relaxed/simple;
-	bh=G21A8Qyzai/Mk6FwTo6oxBcHDApmDc3HP/vFX5s0PRs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/ZbjaeL36KLJ0sm+KBorTqdgOs61C20l3kALVzpSCr/le8reQ3PzJi6Md0SnlbTMwabSMlZEUcq9j5ylvPkUmRutySv0uQeJWyvq/H2vtzHaY9PDUWdWXiYMSh/Sz6S73h49WITcQmLSwnJzdbEzPsfam3g77Rf8vBno3ZUW6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6iuLxNs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789697069; c=relaxed/simple;
+	bh=GqEmDjbmlD43nKcKkz3682LJMrGqtTA7m5Mhi4U8TjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jbRvNEdHTB63OUCojv6zP5v0gI3qPEZiEYgJUIC0yYOhjqKaaSMx6nZIdXoLQSK+TO5/IXjoEpCUZQoCgR8c5tmlAdn8ZfoNCp7yBNiMNDQSSnFTygQxmWZbAa7jzRNNfKnDomPvW7dFGin5dQ12FecNx7+SnXnkpeTv8UYnjiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DQI9n4X8; arc=none smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6iuLxNs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E021F00899;
-	Fri, 18 Sep 2026 02:04:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789697052;
-	bh=qsbu5YRwyymhBZJDeN8qNvDtaokVu/uDHMOaXOb1RmA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S6iuLxNsLy/XZhuDpFA+kk5/OE9MpgSZX4s1T+RvLbm4Gey2PY6Demu1ceZzOoGlN
-	 LeVJoJYqUjNWxSvi9v4ygJDVm1XDnwmSV64v2z+ARemysrS62DVyryE0NL53PSAlO1
-	 RFUWNh3LOgxNyXCYHnpN31tBRBOpf7E4ceN4yEdaUVhw6i8GS39nuTKZQjAsO3UIbM
-	 X9m1xpt8WbUv1Y2TRoG8SjmPlPsFZ/JaTRInHe6LwtXiGn4MpQaLq+68PX6HoHGZXW
-	 o21DgKNYQ2cnE6nVmP8mPLMf6exf9YLOyLT0FNOQyuBk7/9ZoSy0L3c0jK5rx/gWcB
-	 i6tZJwPZLd8FQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: pablo@netfilter.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DQI9n4X8"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8692a856865so249501b3a.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:04:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789697061; x=1790301861; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=y8IHVPQTh4E48RsfYHS1AOxQ6DrEMP7aqWgbccraUDI=;
+        b=DQI9n4X8v9uHILIdBUDpz7OpGvJXBhMGCjM/mESEz1FeDQvp+nySIgdM5uS3LCgjvu
+         8bvZumz4fBHcd0MjRZX/nOV2kUFLBWB8BIhOGQv1HLzhVvEO2NRpTRBCp6wB6XRGCRzu
+         dHN1k1Kh4w/YTpc5iExFUuFn9KqOUkYFX9Mt/T4ARATwICip7sYunMN1sqx6fR5oPfo2
+         C/2CFBgThuGRuPfjEAVYiMgEubZNnArsRxp4B+xE9IyonJqUkXPsmxVHmEUxEH8DOVhB
+         Wk2QB56tiWgQRvnlIq7YILvmrThyPVv3YsX9zMo7C6oiC/ivwBpxGAdKHC3L7NZaNO9x
+         DWfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789697061; x=1790301861;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y8IHVPQTh4E48RsfYHS1AOxQ6DrEMP7aqWgbccraUDI=;
+        b=b8bdHm4hr841ZJ05bFVQ05Sd9TtfJTC/Z5ffHu4mrtHmonTRUH+606PIbr9YIYPu6r
+         +hOFOHuRJxcGjQhFUNqZVqpf2rafQEnO9Ir65A18ZUNPCjISlnRry8SvWs1oEeyY2Bkw
+         rFPiA0lnTBz3SSMXwypDNy3/PnxnnpJGpx4SfQTOxeQEBYS8JY0VzGKyCV6/JgsPjEFz
+         4uyU/PxFXB856/gKOm2GKRrR+5F43OjsyYQf7dV0f/3O6UewprEge6r+LfklTe8OICYY
+         Q3kG2ds3A5EimbAOSmzThVtPdD4+RF6ISSW8o4M2phgEJuWRM75Z7+ZqT1sp4lIBehzu
+         d/5g==
+X-Forwarded-Encrypted: i=1; AKwUvBxgCB/wtIyjHAT5vR4QDvnM5XnJbGJQ5ueNAGYk1PZEBrKnXChec7KPLAf1CqnKyLeui8iE4rI=@vger.kernel.org
+X-Gm-Message-State: AFuF++m0DyGbNU9eccKM0AqlASdlBBaL3iTC23WrGHQ2V6rkXlL+Behf
+	TaO7qG70Q1LUkvMuvzwyOc67PnW+QnYO76Uut6NgQfrmaL0h68FAK2om
+X-Gm-Gg: AYBFou0VqeqcpyHftdaB8ZXCS6Yl1KtGyBdzJWHR6QMn/gn1yOB/32uAsEuz2V+MTZR
+	aWOIQzCzFrrJjpxkSZZHFq/stbI+/496eUQspIpN6Gl+BQrqyzxokNcv1YlLB9UsGKj39dbZ7h2
+	IQA2ytm5gqy97F7s8/bcVNuDVigxPDzpCHYu3LtgK1UcZG059oGEVB8gXBnC/rVUYTOCsHTg/+p
+	/GTNSAHDlsSBCQb39Vd7+oeTKEpZD16KmFYWYJCGhtLohFoy38NBAi43+eoaGTA1I1lBwOFOIzD
+	bc4GA3fEoc0ye07J0h0Bc3eDA2vXiVpphbYTs65m28NAF44HigOXxnzanCNcYw5ac2F6C3kYKpH
+	S7PzLSqjuw9fVPzKrjvu6m01ZsBnZyXSqpGSi7Nv7vMtn/n9KzXaz9T63+G9PrzexCJr45trPlo
+	EysmpLBlpPaUU5ZeuAQl6yMX68QeW5FxO7RBVl9bHBuAnyxgrPhL2UJyeD9BRfm9WsMjik5GOdF
+	aVcr0z82sG6fFd9QuTTtzDKTfc0UKlcRGEAreE=
+X-Received: by 2002:a05:6a20:a11d:b0:3d0:ba81:79b9 with SMTP id adf61e73a8af0-3dd8c41fd70mr1660945637.12.1789697061119;
+        Thu, 17 Sep 2026 19:04:21 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8a1e:2e81:7320:79ca:7a54:4576:24ac])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c2890b915sm136049eec.30.2026.09.17.19.04.18
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 17 Sep 2026 19:04:20 -0700 (PDT)
+From: zjamg <ndaugoing@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Christophe Ricard <christophe.ricard@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	oe-linux-nfc@lists.linux.dev,
 	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: Re: [PATCH net 07/10] ipvs: filter some flags received in the backup server
-Date: Thu, 17 Sep 2026 19:04:11 -0700
-Message-ID: <20260918020411.3513416-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260916231652.127456-8-pablo@netfilter.org>
-References: <20260916231652.127456-8-pablo@netfilter.org>
+	linux-kernel@vger.kernel.org,
+	Yuchao Zhang <ndaugoing@gmail.com>
+Subject: [PATCH 0/1] nfc: nci: do not process unexpected or invalid CORE_CONN_CREATE_RSP
+Date: Fri, 18 Sep 2026 10:04:11 +0800
+Message-ID: <20260918020412.82878-1-ndaugoing@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,222 +81,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-ipvs: filter some flags received in the backup server
+From: Yuchao Zhang <ndaugoing@gmail.com>
 
-This adds ip_vs_sync_validate_flags() to the backup receive path so that
-sync records carrying the NO_CPORT+TEMPLATE combination or ONE_PACKET are
-dropped, and it also applies IP_VS_CONN_F_BACKUP_MASK to the flags taken
-from version 0 messages for consistency with version 1.
+Hello,
 
-A few questions about the new validation below.
+This patch addresses several issues in the NCI core logical connection
+handling where an unsolicited or malformed CORE_CONN_CREATE_RSP packet
+can corrupt connection tracking, shadow the static RF connection, and
+cause TX queue stalls or hung waiters.
 
-> diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-> index 5383aeafb0aed..69dc28153ec12 100644
-> --- a/net/netfilter/ipvs/ip_vs_sync.c
-> +++ b/net/netfilter/ipvs/ip_vs_sync.c
-> @@ -949,6 +949,21 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
->  	ip_vs_conn_put(cp);
->  }
->  
-> +/* Check for incompatible flags */
-> +static bool ip_vs_sync_validate_flags(u32 flags)
-> +{
-> +	/* We do not expect NO_CPORT, especially to allow lookups
-> +	 * to hit templates
-> +	 */
+Problem Overview:
+=================
+In the NCI core stack, logical connections can be created by sending
+NCI_OP_CORE_CONN_CREATE_CMD to the NFCC, which answers with
+NCI_OP_CORE_CONN_CREATE_RSP. nci_core_conn_create_rsp_packet() parses
+this response and adds a new struct nci_conn_info to ndev->conn_info_list.
 
-[Severity: Low]
-This isn't a bug, but does the comment describe what the code does?  The
-text reads as an unconditional statement that NO_CPORT is not expected,
-while the code below only rejects it when TEMPLATE is set, and both call
-sites then keep the bit:
+However, nci_core_conn_create_rsp_packet() had several vulnerabilities:
+1. No Pending Command Check:
+   It did not check whether a connection creation command was actually
+   pending. An unsolicited or delayed CORE_CONN_CREATE_RSP packet
+   unconditionally allocated and inserted a connection into
+   ndev->conn_info_list, and called nci_req_complete(ndev, status),
+   prematurely completing whatever unrelated request was in-flight.
+2. Connection ID Collision & Shadowing:
+   Dynamic logical connections allocated by the NFCC must not use
+   NCI_STATIC_RF_CONN_ID (0x00) or collide with existing connections.
+   Furthermore, nci_core_conn_create_rsp_packet() used list_add() to
+   prepend the new connection to ndev->conn_info_list. Because
+   connection lookups (e.g. in nci_tx_work() and
+   nci_data_exchange_complete()) use first-match semantics, prepending
+   allowed an injected connection with conn_id = 0 to shadow
+   ndev->rf_conn_info. This caused:
+   - Cross-connection credit accounting in nci_tx_work().
+   - TX queue stall when credits == 0 (frame wedged without timer).
+   - Dropped RX completion (cb == NULL on the rogue connection, hanging
+     the real waiter registered by nci_transceive()).
+3. Missing Length Validation:
+   The handler accessed payload fields without checking whether
+   skb->len >= sizeof(struct nci_core_conn_create_rsp), risking
+   out-of-bounds reads.
+4. Spurious HCI conn_info Assignment:
+   ndev->hci_dev->conn_info was updated whenever cur_params.id matched
+   hci_dev->nfcee_id. Because both default to 0, non-NFCEE connections
+   (such as loopback) erroneously updated ndev->hci_dev->conn_info.
 
-	flags &= IP_VS_CONN_F_BACKUP_MASK;
+Solution:
+=========
+- Add an NCI_CONN_CREATE_PENDING flag in enum nci_flag to track
+  in-flight connection creation commands, and reject unsolicited or
+  delayed responses.
+- Validate packet length before reading payload fields.
+- Reject responses that allocate NCI_STATIC_RF_CONN_ID or duplicate
+  existing connection IDs.
+- Append new connections with list_add_tail() instead of list_add().
+- Restrict ndev->hci_dev->conn_info assignment to NFCEE destination
+  types.
 
-IP_VS_CONN_F_BACKUP_MASK in include/uapi/linux/ip_vs.h is documented as
-"Initial bits allowed in backup server" and it lists
-IP_VS_CONN_F_NO_CPORT, so bare NO_CPORT is expected here.  It is also
-needed: ip_vs_conn_new() accounts NO_CPORT entries in
-ipvs->no_cport_conns[] and ip_vs_conn_in_get() relies on that counter for
-the cport-zero retry used by the FTP/persistence connections referenced by
-the Fixes: tag.
+Non-overlap with adjacent fixes:
+================================
+This issue does not overlap with the adjacent upstream fixes in this
+area: Lin Ma's commit 1b1499a817c9 ("nfc: nci: fix the UAF of
+rf_conn_info object") addresses a use-after-free in the conn_close
+path, and Yun Zhou's commit d56575a2595e ("nfc: nci: fix use of
+uninitialized memory in CORE_INIT_RSP parsing") addresses a different
+packet. The problem fixed here is the list_add() head-insertion
+combined with first-match lookup semantics (core.c:43-54), which lets
+a forged connection shadow the real one.
 
-Could the comment be reworded to say that it is the NO_CPORT+TEMPLATE
-combination that is not expected?
+Testing:
+========
+Verified with QEMU arm64 empirical test harness. Unsolicited
+CORE_CONN_CREATE_RSP frames were rejected with a rate-limited warning;
+conn_count remained 1, and the static RF connection was not shadowed.
+Verified with module compilation and checkpatch.pl (0 errors, 0 warnings).
 
-> +	if (flags & IP_VS_CONN_F_NO_CPORT) {
-> +		if (flags & IP_VS_CONN_F_TEMPLATE)
-> +			return false;
-> +	}
+Thanks,
+Yuchao Zhang
 
-[Severity: High]
-Does this close the case described in the changelog as "the NO_CPORT+TEMPLATE
-combination allows lookups for normal connections to hit template"?
+Yuchao Zhang (1):
+  nfc: nci: do not process unexpected or invalid CORE_CONN_CREATE_RSP
 
-A record with IP_VS_CONN_F_TEMPLATE set, NO_CPORT clear and a non-zero
-cport passes this test, survives flags &= IP_VS_CONN_F_BACKUP_MASK (TEMPLATE
-is part of that mask) and reaches ip_vs_proc_conn() -> ip_vs_conn_new() with
-the cport taken from the wire (ip_vs_conn_fill_param_sync() copies
-s->v4.cport, ip_vs_process_message_v0() copies s->cport).
+ include/net/nfc/nci_core.h |  1 +
+ net/nfc/nci/core.c         |  2 ++
+ net/nfc/nci/rsp.c          | 37 ++++++++++++++++++++++++++++++-------
+ 3 files changed, 33 insertions(+), 7 deletions(-)
 
-ip_vs_conn_hash() hashes templates into the same dir-0 key space as normal
-connections, and __ip_vs_conn_in_get() has no TEMPLATE test:
-
-net/netfilter/ipvs/ip_vs_conn.c:__ip_vs_conn_in_get() {
-	...
-			if (p->cport == cp->cport &&
-			    p->vport == cp->vport && cp->af == p->af &&
-			    ip_vs_addr_equal(p->af, p->caddr, &cp->caddr) &&
-			    ip_vs_addr_equal(p->af, p->vaddr, &cp->vaddr) &&
-			    (!p->cport ^
-			     (!(cp->flags & IP_VS_CONN_F_NO_CPORT))) &&
-			    p->protocol == cp->protocol) {
-	...
-}
-
-For a packet whose client port matches the injected cport, the XOR term is
-(0 ^ 1), so the template is returned as if it were a normal connection.
-Legitimate templates never hit this only because ip_vs_sched_persist()
-always creates them with cport == 0 and without NO_CPORT, which is the
-invariant this helper does not enforce.
-
-Once that happens, ip_vs_in() has no template guard, so live traffic is
-forwarded through the template's packet_xmit and daddr/dport, and
-set_tcp_state() then adjusts dest->activeconns:
-
-net/netfilter/ipvs/ip_vs_proto_tcp.c:set_tcp_state() {
-	...
-		if (dest) {
-			if (!(cp->flags & IP_VS_CONN_F_INACTIVE) &&
-			    !tcp_state_active(new_state)) {
-				atomic_dec(&dest->activeconns);
-	...
-}
-
-while ip_vs_bind_dest() counted that entry under persistconns and
-ip_vs_unbind_dest() only decrements persistconns for templates, so
-dest->activeconns stays skewed and affects lc/wlc scheduling for the real
-service.  The timeout is taken from the message (bounded only by
-MAX_SCHEDULE_TIMEOUT / HZ in ip_vs_proc_conn()), so the bogus template can
-be long lived.
-
-Would rejecting TEMPLATE records with a non-zero cport, or excluding
-templates in __ip_vs_conn_in_get(), be needed for the stated goal to hold?
-
-[Severity: Low]
-This is a pre-existing issue and not introduced by this patch, but since
-the helper is the new place where flag combinations are screened: a record
-with NO_CPORT set and a non-zero cport is still accepted, because only the
-flags word is inspected and never cross-checked against the record's cport.
-
-ip_vs_conn_new() hashes such an entry under the non-zero cport and bumps
-ipvs->no_cport_conns[af]:
-
-net/netfilter/ipvs/ip_vs_conn.c:ip_vs_conn_new() {
-	...
-	if (unlikely(flags & IP_VS_CONN_F_NO_CPORT)) {
-		int af_id = ip_vs_af_index(cp->af);
-
-		atomic_inc(&ipvs->no_cport_conns[af_id]);
-	}
-	...
-}
-
-The entry can then never be matched: the direct lookup fails the
-(!p->cport ^ !(cp->flags & IP_VS_CONN_F_NO_CPORT)) test, and the cport-zero
-retry in ip_vs_conn_in_get() hashes a different bucket than the one the
-entry sits in, so ip_vs_conn_fill_cport() never runs and the counter stays
-elevated until the entry expires.  While one such entry exists, every
-conn-table miss in that address family does a second full hash lookup.
-
-Is it worth also requiring cport == 0 when NO_CPORT is set?
-
-> +	if (flags & IP_VS_CONN_F_ONE_PACKET)
-> +		return false;
-> +	return true;
-> +}
-
-[Severity: Low]
-The changelog says:
-
-  "2. ONE_PACKET: it is not sent by master, so we do not expect it in
-  backup."
-
-Is that accurate for controller connections?  ip_vs_sync_conn() tests
-ONE_PACKET only for the connection it is entered with, and the test sits
-above the sloop label:
-
-net/netfilter/ipvs/ip_vs_sync.c:ip_vs_sync_conn() {
-	...
-	/* Do not sync ONE PACKET */
-	if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
-		goto control;
-sloop:
-	...
-	s->v4.flags = htonl(cp->flags & ~IP_VS_CONN_F_HASHED);
-	...
-control:
-	/* synchronize its controller if it has */
-	cp = cp->control;
-	if (!cp)
-		return;
-	...
-	goto sloop;
-}
-
-The controller path re-enters below the ONE_PACKET test and the serializer
-clears only IP_VS_CONN_F_HASHED, so a controller carrying ONE_PACKET is
-sent on the wire with that bit.  A persistence template can carry it:
-ip_vs_bind_dest() strips the dest ONE_PACKET only for non-UDP and for
-SYNC-created entries, and IP_VS_CONN_F_DEST_MASK includes
-IP_VS_CONN_F_ONE_PACKET, which the legacy setsockopt path copies verbatim.
-
-For a UDP persistent service configured that way, the master emits a
-TEMPLATE|ONE_PACKET record which the backup now drops with retc = 25
-instead of masking ONE_PACKET off and creating or refreshing the template,
-so that template is no longer replicated.  The practical effect looks small
-since ip_vs_conn_hash() returns early for ONE_PACKET on the master too, and
-only the single record is skipped, but could the changelog wording be
-adjusted, or the controller be masked in ip_vs_sync_conn()?
-
-> @@ -972,8 +987,7 @@ static void ip_vs_process_message_v0(struct netns_ipvs *ipvs, const char *buffer
->  			return;
->  		}
->  		s = (struct ip_vs_sync_conn_v0 *) p;
-> -		flags = ntohs(s->flags) | IP_VS_CONN_F_SYNC;
-> -		flags &= ~IP_VS_CONN_F_HASHED;
-> +		flags = ntohs(s->flags);
->  		if (flags & IP_VS_CONN_F_SEQ_MASK) {
->  			opt = (struct ip_vs_sync_conn_options *)&s[1];
->  			p += FULL_CONN_SIZE;
-> @@ -986,6 +1000,13 @@ static void ip_vs_process_message_v0(struct netns_ipvs *ipvs, const char *buffer
->  			p += SIMPLE_CONN_SIZE;
->  		}
->  
-> +		if (!ip_vs_sync_validate_flags(flags)) {
-> +			IP_VS_DBG(2, "BACKUP v0, Invalid flags 0x%X\n", flags);
-> +			continue;
-> +		}
-> +		flags &= IP_VS_CONN_F_BACKUP_MASK;
-> +		flags |= IP_VS_CONN_F_SYNC;
-> +
-
-[ ... ]
-
-> @@ -1141,7 +1162,13 @@ static inline int ip_vs_proc_sync_conn(struct netns_ipvs *ipvs, __u8 *p, __u8 *m
->  	}
->  
->  	/* Get flags and Mask off unsupported */
-> -	flags  = ntohl(s->v4.flags) & IP_VS_CONN_F_BACKUP_MASK;
-> +	flags = ntohl(s->v4.flags);
-> +	if (!ip_vs_sync_validate_flags(flags)) {
-> +		IP_VS_DBG(3, "BACKUP, Invalid flags 0x%X\n", flags);
-> +		retc = 25;
-> +		goto out;
-> +	}
-> +	flags &= IP_VS_CONN_F_BACKUP_MASK;
->  	flags |= IP_VS_CONN_F_SYNC;
->  	state = ntohs(s->v4.state);
+-- 
+2.53.0
