@@ -1,73 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04D250B8D3
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789748193; cv=none; b=VL2c75ZSGRafQwl9P7l4scxZRyjxtdsYN+UOSTEmyULzxQkgTGY8BcxDrJUWBKh3SYnrENEqy5vOWyJfnzwGwFPh82D9x+LaskePOMA47yI+B0xYvF9cn0DfQpgyhr+n/sqig+TKUmq5+wWxJBg1nU48vvzWLuHIoz6CCoAX7HM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789748193; c=relaxed/simple;
-	bh=V1Vgw189PewUkkXY6PoxTrR+sEzVvdtR/WWvrXH2D5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DMuG+VSaQ+cyTup2SAAmV50cO5W5DUWWFWD2U7gJVFAayzqq/mFlZQoY0HMQnP57sYbj2wBlbm6NL7ewtZmyEAQUCcyMe56reKJZH7kaeOnQTNV033Q+wYdvPA9KVjBvdPNFrhG7rPlNqo7jsW9aerEmwpAWm1lkypALixycuyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBPY6hWp; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E4D514754
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789748538; cv=pass; b=o6YtR8tsCdcfJbLvgp+irbmVIxBH5qiGzvRBcVlEpP+yHCjsBi580JuoK/guVi/GOFY1QmRq0fITt7+zX4G+ig/NEXEcPuiSjxa/vpx6VYd0iesG4XSQWXtYV3DLBP1j+x7YD1RbXYDclE9YUrHPwh643I17sbf486Up2bsH7uc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789748538; c=relaxed/simple;
+	bh=+bv28cFDp1hCz4ppO/3tdotk7KxDsNEhJCDiI4kXg1I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UdoFKnXnxm6B4lv8xfW/MkkLn6KyloQvRxX67Z2rmVIBpk1E4KAHgjFqW2vzsg/LkrFJsby14RMQuUpK2PS8R1d0OI9mreWszd2KJhduQP0A5s4u1Jiu7zbF9K278o+PP49PYI49B7Lt2triSidAQbf7SZVKqnc1ElOAZf952Ro=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mBjPH9wG; arc=pass smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBPY6hWp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1D41F000FF;
-	Fri, 18 Sep 2026 16:16:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789748191;
-	bh=6fL7cO5tVIM63eK54R/RaNxjdlVzu8HQPC6LBeqWH7c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NBPY6hWpIIh63wlILctVZKOkKUPwh4jN/hvbxi9HlzyZSlGGu+AVbbR3m9GH5k2Fm
-	 SkM/hIH1RP09vBUuyvQg6cpwi1hc35Dm9EsChX37XeZ7D6tHP0S/Hjxd09ZpDs3mkb
-	 j7lWnCsXkPLoJCFQqkh4RKVryWWu6kvCJ0P+xdD6JO2E4h8yZD3i9TgUCvVoTXc255
-	 78zyGxtvamdS03MJojU2k1qJyN0TMiVG6oh8GrsF4YqEnD/aOYh4KcWrL57r58+Q8r
-	 +PCzEM5kFz0u+l3ZV35L5C8/rFfdJZKzHdoWlF0Iz29lDeL2ViZbnLKlfkEUhv1qvp
-	 ZwRq8DbqaK1Ng==
-Date: Fri, 18 Sep 2026 17:16:27 +0100
-From: Simon Horman <horms@kernel.org>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, kernel-team@meta.com
-Subject: Re: [net PATCH v2 6/6] eth: fbnic: Handle FW mailbox completions
- flagged with an error
-Message-ID: <20260918161627.GV51261@horms.kernel.org>
-References: <178942023343.7700.9423398932961964439.stgit@ahduyck-xeon-server.home.arpa>
- <178967953049.22033.7278929297475041564@kernel.org>
- <CAKgT0Ud_RezDQC0PVav6OOX_ha8ErkVMs_SWqn8_Xk5dSUrTzA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mBjPH9wG"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccda24a3so813807a91.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:22:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789748532; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eqUIiuAP7dx4DjaW5FKf1mD365HDFAOybHxa09nyxrlqaXMbHJvTpt9puJubvd7esQ
+         jww0GhAydWmBzrB3DQI2DvS4Hr+sP7QrMBrba0RdvNIKIu/S6tlfO42L8/b3xkmtU3Vw
+         QtdKIjbhE6p/abPS0qFP9qXYsBgDLzKE4dgn6n9ffRoeSv6FyrSafewVpZE3qtDva2gI
+         63vepHmkfz07IKXUdqoMZwD7YKFn8lnTIuabohPNXzyHycY5qh2u4OcVo6QukBzaFnBK
+         fThSqpfFfHgRy30PmaDbGZ9hE5sKK5DdkKH0ExtVOu+Zgc7J0BOXndGx6LB7FIaHatTb
+         JcTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/LYEEUEJCTSCEc5A+NjwjIdHJqSahq7aUmXdkpcbW1s=;
+        fh=fMum1S7uX31FUbtjCTk0QGbuIIBSaUeyTCrm1M9dGfI=;
+        b=jot9lymQBMnkljB/BAHLMra9KoRWwLgcgyrY7OvBqoFpmO1dt/p+e8kfpwLnS7zM5c
+         l9czFh9F38ZQtu8IE1Gi4K1ORxBP2zSzzlmpVrdbUQin3mcXoktTTk5ZUiHtVn0od9eT
+         OpDJm6RxOXLt7HkMm+u4LTvZzC8nPV8qEjrAYLuIULxiAsbaFqBgLFkp6+QxXGRX3vq+
+         SZ8AKKYAsR8QUqf9Ff92b0hB8ToGhBUjH8NKk+zayAq8NwVDfrMXsBIfiBGaNydIqwjH
+         A14oJ/QlidZ3Uc7dLssMoo1b0LvoTSwnl/nNmqkihfa0Jhk/ZPT9p3T0G3TaAmHgi3Sh
+         qWpQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789748532; x=1790353332; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/LYEEUEJCTSCEc5A+NjwjIdHJqSahq7aUmXdkpcbW1s=;
+        b=mBjPH9wGjONCeViqiT5D2zmXHfmK6speUucqdfRzwSzgwSBX6hlY/W1ixV+lZoh2nr
+         NPOPLpkz8YPMT1Q3aXYVsfcU/x5LzsfDvQm/jIRkWqIjnHjT/E7N/c03yfIgAuqpzZLm
+         FPB/DtaaF0R9DjZB06AofdNV4gREzNhb2tCXZYfxakHAnlizZIPilc48x6XeJzdRJoJC
+         m1VRer+JxOoggOkVzNZfXPwhlCWTtT6Pgi4AsFW6yy1VDf6ZdeoSG0FmQnn+y8OyqhNp
+         cTeqC7TDiNsFAv5dMEa3SByc1OqOD46jFL0qKGKCZpyEWp1aaOB89OmfsjUF2HfC8vOt
+         L1XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789748532; x=1790353332;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/LYEEUEJCTSCEc5A+NjwjIdHJqSahq7aUmXdkpcbW1s=;
+        b=GCbbCpTNjlpA8q/m7QZSRfsWXEfK8aIGFGomBTqdAS7JUEluPEJPHs88XRchy9r3OQ
+         x5mWcqYGT/gAdK15pl1ph9oq3bxEdK0Tb89QrKu+KU+mCmOc1NSZhkld7307GlPxQSGW
+         vP4BbAwSSXdluTGYHw/OnC9QNCdnf8FOgo32J6F/tWRqzHu2f5VaX+1/3UrzqvMIGudn
+         zE7K/ctUJBalcAA9OnLtSz7Yif1Z0NJ7hfuJP/EsQBpSHk4impE4SCiZjNx2wgsLDaCH
+         tUeWZjHjmNrc869GexF6BHw+a6Umt2aT75LkJ+BHtyKCprnZnFZevY7qvBOIn11Bc6nx
+         LQaw==
+X-Forwarded-Encrypted: i=1; AKwUvBzg47r3oHovdlwO7sTrCY9R84Rk22NLPHje7IszO2qZFDmo6h28Is2oXrj0e0thMLM4jH77kMU=@vger.kernel.org
+X-Gm-Message-State: AFuF++myozUrvUDYsyt45V6fBtvWeUh0h+yUmkdA0TobVwvZJrlrEa51
+	8+QfycyPXP9+kTNFNFDm82OHxDY/lfSJ7mBYV5qFBoaIJbb+oRqUb5Tkf38Bs4iEzhE0rg7ZbHb
+	8/wVoFr088fySCFV4hrk1K9KMRCG6+tWC6afPK5ar
+X-Gm-Gg: AYBFou37Y1gCXvo2KfZZydFlwuGqYdZq9aLbhy3dJaVKHu7SCeIRtO1IyqAw1XgKqg5
+	xGKgGXWUD0MV8tA7UohtAfoDXbDWT4jeZEL1uqtvrQFfPv+Rz43sgrLbYBMrdbKQ3EvtaSDJjlI
+	sBELlk76YFuvK/felEZDEp45QL0fIVz/nUPVm+LGNlQI/qTnqhEe6KvJIv0WYc+lebA/SoQ2Ffi
+	fgrDAVCd4HAsLRE57ZJuztDghxIuUFOapmyQmv2pK/v6VGbl3fGckqTkkYhagG2aC4ru6CgOAdC
+	XxbjWIQjCdBomeJ31ZuvJculDEmi6QUtKBKcVFCw7AcOtVHnojzqvs2WeRNQwkTkbAcecPDD5R7
+	mFLlPjOvamceOy/sSfLbMATf0JEOQARixELu8GSkabz6yy8TDClfXXgR5sirXca9OEIE5jCFgrt
+	zWrjoBDvobx1E5pJDZ4jbz/aRwG+IBObre
+X-Received: by 2002:a17:90b:2f50:b0:39d:f08e:e6e7 with SMTP id
+ 98e67ed59e1d1-39e54e3c71emr12155781a91.9.1789748531262; Fri, 18 Sep 2026
+ 09:22:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKgT0Ud_RezDQC0PVav6OOX_ha8ErkVMs_SWqn8_Xk5dSUrTzA@mail.gmail.com>
+References: <20260918153604.579277-1-mbaragiola@linux.com>
+In-Reply-To: <20260918153604.579277-1-mbaragiola@linux.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 18 Sep 2026 09:21:59 -0700
+X-Gm-Features: AcwNN1VLKD08fJfVArzYhHKcjg0xdqCCPzeVi9-zbMxkS2fHkhyMYFmnbx_lVPs
+Message-ID: <CAAVpQUAmGAACd1rBomaY-B2vRiE-VX9u4JRCteVB-940RhRtbg@mail.gmail.com>
+Subject: Re: [PATCH net] udp: resubmit encap packets for secondary mcast sockets
+To: Mariano Baragiola <mbaragiola@linux.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Anton Danilov <littlesmilingcloud@gmail.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 18, 2026 at 08:17:06AM -0700, Alexander Duyck wrote:
-> On Thu, Sep 17, 2026 at 2:12 PM <netdev-bot+sashiko@kernel.org> wrote:
+On Fri, Sep 18, 2026 at 8:36=E2=80=AFAM Mariano Baragiola <mbaragiola@linux=
+.com> wrote:
+>
+> Multicast delivery clones packets for listeners after the first one.
+> Commit 3cb8d4b9bfeb ("udp: fix encapsulation packet resubmit in multicast
+> deliver") fixed encapsulation packet resubmission for the primary
+> listener by propagating positive return values from udp_queue_rcv_skb()
+> to the outer IP layer. However, it left the loop over secondary matching
+> sockets unchanged.
 
-...
+Did you see a real problem or is this triggered by an AI report?
 
-> The modification this way was intentional. Basically the most likely
-> place for us to ever encounter an issue with  DMA is on mailbox
-> initialization. Doing it this way reduces the driver init time as
-> instead of waiting 10s for the mailbox polling to fail we just burn
-> through the DMA failures and get to the result quickly indicating that
-> the mailbox is dead.
-> 
-> Doing the same for the other paths adds extra complexity as they are
-> interrupt driver versus the mailbox init which is synchronous. In
-> addition at mailbox init we can only have one completion in flight,
-> whereas for the other calls we can actually have multiple so without
-> context we won't know which completion it is we need to release.
+https://lore.kernel.org/netdev/20260415203624.4057135-1-kuniyu@google.com/
 
-Thanks for responding to Sashiko with your reasoning.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+>
+> When an encapsulation receive handler requests protocol resubmission for
+> a clone (ret > 0), the secondary delivery loop currently calls
+> consume_skb(nskb), silently dropping the packet.
+>
+> Resubmit cloned IPv4 and IPv6 packets directly to the returned protocol
+> via ip_protocol_deliver_rcu() and ip6_protocol_deliver_rcu(..., true),
+> matching the ownership and resubmission conventions used in the
+> segmented GSO paths.
+>
+> Fixes: 3cb8d4b9bfeb ("udp: fix encapsulation packet resubmit in multicast=
+ deliver")
+> Signed-off-by: Mariano Baragiola <mbaragiola@linux.com>
+> ---
+>  net/ipv4/udp.c | 5 +++--
+>  net/ipv6/udp.c | 5 +++--
+>  2 files changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index bb8cfc62cb00..d79be57854e3 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -2522,8 +2522,9 @@ static int __udp4_lib_mcast_deliver(struct net *net=
+, struct sk_buff *skb,
+>                         __UDP_INC_STATS(net, UDP_MIB_INERRORS);
+>                         continue;
+>                 }
+> -               if (udp_queue_rcv_skb(sk, nskb) > 0)
+> -                       consume_skb(nskb);
+> +               ret =3D udp_queue_rcv_skb(sk, nskb);
+> +               if (ret > 0)
+> +                       ip_protocol_deliver_rcu(net, nskb, ret);
+>         }
+>
+>         /* Also lookup *:port if we are using hash2 and haven't done so y=
+et. */
+> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+> index 93478d1ad576..ca8d0a1844d2 100644
+> --- a/net/ipv6/udp.c
+> +++ b/net/ipv6/udp.c
+> @@ -1001,8 +1001,9 @@ static int __udp6_lib_mcast_deliver(struct net *net=
+, struct sk_buff *skb,
+>                         continue;
+>                 }
+>
+> -               if (udpv6_queue_rcv_skb(sk, nskb) > 0)
+> -                       consume_skb(nskb);
+> +               ret =3D udpv6_queue_rcv_skb(sk, nskb);
+> +               if (ret > 0)
+> +                       ip6_protocol_deliver_rcu(net, nskb, ret, true);
+>         }
+>
+>         /* Also lookup *:port if we are using hash2 and haven't done so y=
+et. */
+> --
+> 2.55.0
+>
