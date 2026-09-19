@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E183BB110
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586BA3B9DA7;
+	Sat, 19 Sep 2026 01:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789780885; cv=none; b=D3ulmlINZkfGXIvheKJFdc69ctWedrznFUE0w9NaZJXkB5rpenHjjUBw4dqXx4q2goz75BQDrTiRTbNo+EvKwU7mazB/BUjCtWAnxYaLRretxRpJ7hA2XmVRRt0mRSW8gccFShD89ol9yLsif2qw6P1+errC7/8S8/8gZrWY/Wc=
+	t=1789780889; cv=none; b=QdTZ5kALwTACjHd8CESEjotvLsS1ZcFsh1bEILfd/0cmYTwFIM2wEkqnXFzfwTwd6D0PbGYtejenE5fpThIB+2mIw0HW5lSOhNgsG5L0PsXfsR9rUSJGLX/STJSsE5P9E13HYMJoDd/7cZSjL2KAoS1BPTVVUUx8WQ26l+hbQwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789780885; c=relaxed/simple;
-	bh=R/J+60cmgTifL/lsGdQ6WvokKTU56ekkmz/tlJ1xjd0=;
+	s=arc-20240116; t=1789780889; c=relaxed/simple;
+	bh=OYdMBBiyMG0yAA7jK+T8oYaNQizfScsWVE59F9Ha8m8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bJfZRsTUBoOd2P10bH9FQZqt7p7kUMxIFxJSYoEEA4SgmpeT5kFqGAyIf1ipNy0lBM0oDtwKqD7Xq+FeHIkRKEh4lxDKGCeVIaeE8fBe7dpINKg3ZMOt/ma6Wabt9fW3NrQod0dxzu/SNTAWHixqjL42Fn28QMtRtE0tEQxYwLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PR2OFEsk; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=LzsmZHXibr9jG6bELMJFSJFOrOjUD9Ht3pELXf0tgSD20TbS5T/GMcL64JrhApcX78wkSZL08Akbt2+whFKN2AXYqbW5OXYD1C0IeGQCpFO+P8A/kG/n+P8EROzzDdHdrUO93/mdDikL4fz/pZd5HGkY+EajIX26KPCNWgFcNF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIikHbkK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PR2OFEsk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E5B1F00898;
-	Sat, 19 Sep 2026 01:21:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIikHbkK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6DD1F000FF;
+	Sat, 19 Sep 2026 01:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789780877;
-	bh=vI4HooZ0Rdhh+RM3oa4tFZta9tTk57F4tf1X83TAdBo=;
+	s=k20260515; t=1789780872;
+	bh=sLkauqrG9cJJazGhRAmL1C5dD6B5Im/JEJm/qQv759M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PR2OFEsktlG3vUWLis1Bo4VhJ3ijkxPOS1xqvXgVwIOY0gD0+t8Xhppbok4M0igG7
-	 VLkLwv21XlDQhLMOR4+W/gjRt0Dqa7KgVFOR4SrovkrD/GDgLRFR9sQYFYybxkKGR4
-	 IZ+lpitMQCzoRbIQEUeN5g+el02nHVoM7qNReG4zH2HVZgCykdbl0LWFz48sUOB6sV
-	 eIm2eL2eB3mFRQElhHqaQIoHEy9OKdkrurdeRMoTrbwpTZQ8VVwhQSWZLoxCq6EReN
-	 6s4DmPLCVn2rI8jyf4JQVniIH1xIjoXs42iqsS3sf1x339SYNhrQelk8uDwDqhsrzR
-	 2di3AYV/dOQyA==
+	b=WIikHbkKCVuruURgVsTLBYcRg1Fu5hHTalv+l9gMJWD7Btw7+gA0KxFywbMshdthc
+	 NaU4UiMBf90enqZAytGC+iAwdYcK2MIE/YvBmVAF61vL+EbUS2w+aDY5UzmXUo1om3
+	 T8cRJ5yPzG0teYTyhslz+TXFc6RhNIKDSF8zCjAmdjDIc8/fFRjq9KTD+/tH+Vgox1
+	 +XvHD7eLU2c8Pp2j2WvTDKgXdMGhA6cx3XwWoFpcDjAGgexEZUGQJCKMKtiQqYGxcA
+	 VKjzEY8+50qHULuqlYzOiCfP/6WNOrYAioyYU1REgaWx4QXnPBdpNu0Ln/+yM/KQ1l
+	 Yw3yhMRpd484A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5685C381197A;
-	Sat, 19 Sep 2026 01:20:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1980F381197A;
+	Sat, 19 Sep 2026 01:20:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net-next 0/6] ip6_gre: Support per-netns device
- unregistration.
+Subject: Re: [PATCH net v3] net/mlx5e: advertise MACsec offload only when
+ supported
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178978080989.1218950.5121197637169322926.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 01:20:09 +0000
-References: <20260916230353.367014-1-kuniyu@google.com>
-In-Reply-To: <20260916230353.367014-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
- kuni1840@gmail.com, netdev@vger.kernel.org
+ <178978080490.1218950.811303206106717319.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 01:20:04 +0000
+References: <20260917122724.654639-1-ralf@mandelbit.com>
+In-Reply-To: <20260917122724.654639-1-ralf@mandelbit.com>
+To: Ralf Lici <ralf@mandelbit.com>
+Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+ netdev@vger.kernel.org, leon@kernel.org, borisp@nvidia.com,
+ sd@queasysnail.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ehakim@nvidia.com,
+ sbhatta@marvell.com, horms@kernel.org, stable@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 16 Sep 2026 23:02:19 +0000 you wrote:
-> Patch 1 & 2 convert ip6gre_net.tunnels[][] to hlist as a prep.
+On Thu, 17 Sep 2026 14:27:23 +0200 you wrote:
+> Commit 339ccec8d43d ("net/mlx5: Enable MACsec offload feature for VLAN
+> interface") added NETIF_F_HW_MACSEC unconditionally to vlan_features so
+> that VLAN devices could inherit MACsec offload support.
 > 
-> Patch 3 & 4 unlink devices from ip6gre_net.tunnels[][] in
->  ->dellink().
-> 
-> Patch 5 & 6 adds mutex and support per-netns device unregistration.
+> mlx5e_build_nic_netdev subsequently copies vlan_features into
+> hw_features and features. As a result, all mlx5e NIC netdevices
+> advertise MACsec hardware offload, even when the firmware does not
+> support it and the driver does not install macsec_ops.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v1,net-next,1/6] ip6_gre: Initialise ign->tunnels_wc[0] before register_netdev().
-    https://git.kernel.org/netdev/net-next/c/3e6af2e485e4
-  - [v1,net-next,2/6] ip6_gre: Convert ip6gre_net.tunnels[][] to hlist.
-    https://git.kernel.org/netdev/net-next/c/3b2813cc6b1f
-  - [v1,net-next,3/6] ip6_gre: Clear ign->fb_tunnel_dev in ip6gre_exit_rtnl_net().
-    https://git.kernel.org/netdev/net-next/c/28328796e0b4
-  - [v1,net-next,4/6] ip6_gre: Unlink ip6gre_tunnel_unlink() from ->dellink().
-    https://git.kernel.org/netdev/net-next/c/b7c0d393e108
-  - [v1,net-next,5/6] ip6_gre: Protect ip6gre_net.tunnels[][] with mutex.
-    https://git.kernel.org/netdev/net-next/c/cce829e2aa1d
-  - [v1,net-next,6/6] ip6_gre: Support per-netns device unregistration.
-    https://git.kernel.org/netdev/net-next/c/b27a8c62875e
+  - [net,v3] net/mlx5e: advertise MACsec offload only when supported
+    https://git.kernel.org/netdev/net/c/4581c3d2adc3
 
 You are awesome, thank you!
 -- 
