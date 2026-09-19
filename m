@@ -1,79 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BEC1ACEDE;
-	Sat, 19 Sep 2026 23:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D92547048;
+	Sat, 19 Sep 2026 23:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789860075; cv=none; b=GB78BYNmVbVyPlJXfhnBNFIHfzKurpXVtuO3ahXLwz6Ts9z2QsR97DDC56TjIU+lcc/JgfljnfPGvTxr+dAsNuWtuuXh+r8S8ykcMoPNk+CrJCxtH73fsjvJ9i+PVebybKlhl5sW3fUBYVp6QBMsbxQkvbyYn6Bh12Hs+wydDdk=
+	t=1789860185; cv=none; b=XrCLAhROsfSlJ3MjFK4auZvRc/aK97y4wWHjQx2h8mo2OttZUSCnTgkqTTmd+9P4VONoHGSOFPfJiIaY0uLbPyLI70kX2lXx0WfEM4iRSEk3FWqu0mhjfDiacqg+5Q5SRqMgrPsjmDWNR7em94mLQ2ircw5CgM4CJY2qii/77VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789860075; c=relaxed/simple;
-	bh=AZb+kScGG4PiiruSgXKlU3T7M3DKD2mW+8q/vno4rMc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Luft+FcUj+CyYjPMlEWxeURvqHuj4tBcIHTUykiy7dzCWH50coFD13AJ9JkrjMwm/ePMzkrTHnz1bvS5P6fhK6XUryVM9SJxQbj3aJawXXPqfVSAjBwgqMTUiu5DvfmDPxFTvn6LXzCkgp9NJAGbtRX3ffENQDS8M1CJoMoMw8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/mBXBMa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789860185; c=relaxed/simple;
+	bh=kTpjt+oZf7kkSvGB9GmG+y1XN315W4DQoZc9HtXaEIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eu3xBKMdR/0WDW0nuykRrowP9urW+gzeE31lemjZatVlL0vO0Ef5T04CS+GB9hhiYwacX3mrSiWaKSr8msEkvue3HPatzbGi8VHcYPxQFzjIsM49EXrTnyXEPz2y1vPlsv/SDKuyL13JLGb6++nrX4CqEg8qtDby2hWp4knYj1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=X9XJ7fk4; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=EGJU8pTK; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/mBXBMa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629FF1F000FF;
-	Sat, 19 Sep 2026 23:21:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789860074;
-	bh=iq5dAyUVLkaFGRL8cxxr6glqE0y8QGW2cBUUD1enuwQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=B/mBXBMa56uwxFfA5ic92suV9u1k5JIGgSgGgP6yeNUJbOPY09uIOKQX2Nb39Gntc
-	 Epqca4GFEBOIGczJvwhg0squzRDKpONl3hwBcrQE9qkOzCxkMP0SU4l2BhSBNpgjcc
-	 6BwHxZjJtLnC8JWnyLckW8kYZTa7LbeMpI6iN56sljxt4462+pCHiZK+sLZHLj/sbP
-	 C1PgOqCdH6mXXTwpztLYcIfkcC3+Pws0sqis1bPxm4JcSZq+T+beDqzy4oeNTjrRJB
-	 jtr18LA3Qq3jXhalNid/x/NcgJqTekrKAwBRHdrAPAjShVA8Y+2flg7uY5cnZAhlxi
-	 ptx8FlVWNqwQQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19731392447F;
-	Sat, 19 Sep 2026 23:20:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="X9XJ7fk4";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="EGJU8pTK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1789860176;
+	bh=kTpjt+oZf7kkSvGB9GmG+y1XN315W4DQoZc9HtXaEIQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=X9XJ7fk4c9Fab3IABKdQGTL5jGZFsaVPCMSif6NYh68C2IG20UFnE29r1OazW2a0j
+	 HN+lZFkRV50IghBDsVNzs33jRbL61+EPxUH/haySAIZZteGWSKCJCQaSMvwLZB1c9J
+	 YXuCV5ck4UfwacLVIKuwK2ZM0+QjB1jMAxaljHV7hRznTl5stUUF6qitcVLbzzid66
+	 l9KBIzKIvnsNcsG2JDwb8Jrpxcdcxm7qLSzoB6tgNrIIt+Upx7Z33xL+TDtPDZbg3B
+	 cVzsZeLaQVas+mDesQktgM5gVQ/FwRCGQtIUOSDG+BZpZiGfybyy4HVBVn8V1UmnrC
+	 a8MdlNbYhOFNg==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 107733FDAF; Sat, 19 Sep 2026 23:22:56 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1789860175;
+	bh=kTpjt+oZf7kkSvGB9GmG+y1XN315W4DQoZc9HtXaEIQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EGJU8pTKRjQ6meDIYcqtT0m+bsywkRorvqX5K6+rmW7nScTDxIna/HXeFgY3NWXgq
+	 kHh7PywrOmZl8O8OZTPFn33F3Wz8mi7LTthbf6KnlxEpDUIOGLi4ypmXbGW1Y7rrHq
+	 NfENDqW2Wo4XjNQc6Y2BZ1IOQimA2wbwmcbb/rXxkQ2Iq3FJb4Vkkl/71tjrakDZEO
+	 LkMDrFSaXNZ8DsRwgfG7peeZin1y4BjkhmlE58ryGUgs89Jb9LJfAyfMkMcQFAHgSt
+	 X7qqVlqomyoC05hiOc5vAh0vqIaE+Q2P/p5VaGv3IhrEInsoYCLJR9pYuZtREpBfHI
+	 suCVL9oTJ4rKg==
+Received: from [192.168.100.219] (unknown [183.222.73.25])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 438213FD93;
+	Sat, 19 Sep 2026 23:22:50 +0000 (UTC)
+Message-ID: <7039c9b9-a365-4481-be36-f7bdfff040ef@birger-koblitz.de>
+Date: Sun, 20 Sep 2026 01:22:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] vlan: require the MAC header to be present in
- __vlan_insert_inner_tag()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178986000690.1491217.13452537576986378858.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 23:20:06 +0000
-References: <20260915083152.705309-1-xmei5@asu.edu>
-In-Reply-To: <20260915083152.705309-1-xmei5@asu.edu>
-To: Xiang Mei <xmei5@asu.edu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v12 06/15] ax88179_178a: Add HW support for
+ AX179A-based chips
+To: Jakub Kicinski <kuba@kernel.org>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org, jakub@cloudflare.com,
- stable@vger.kernel.org, co+0ea1ac045375cf05@bugs.sh
+ pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
+ hkallweit1@gmail.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, neuromoments@gmail.com
+References: <20260916-ax88179a-v12-6-60c04c9924a2@birger-koblitz.de>
+ <178968029668.22033.6092490845837885048@kernel.org>
+ <20260919151524.6a65c24b@kernel.org>
+Content-Language: en-US
+From: Birger Koblitz <mail@birger-koblitz.de>
+In-Reply-To: <20260919151524.6a65c24b@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello:
+Hi Jakub,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 15 Sep 2026 01:31:52 -0700 you wrote:
-> __vlan_insert_inner_tag() only guarantees head room via skb_cow_head(),
-> never that mac_len bytes of MAC header are present.  Its ETH_HLEN
-> wrappers - __vlan_insert_tag() under skb_vlan_push(), and
-> vlan_insert_tag() under validate_xmit_vlan() on the generic transmit
-> path - therefore rewrite the first 16 bytes at skb->data: a 12-byte
-> memmove plus two 2-byte stores at +12 and +14.  No caller supplies the
-> bound, while the pop helpers use skb_ensure_writable()/pskb_may_pull().
+On 9/20/26 00:15, Jakub Kicinski wrote:
+> On Thu, 17 Sep 2026 21:24:56 +0000 netdev-bot+sashiko@kernel.org wrote:
+>> Critical: 0 · High: 4 · Medium: 19 · Low: 4
 > 
-> [...]
+> Per subsystem documentation we ask that submitters review
+> the AI feedback and confirm / refute it. If you think that
+> none of it is correct one email is enough. But I really doubt
+> that AI was wrong 13 times (counting just High and Critical issues).
 
-Here is the summary with links:
-  - [net] vlan: require the MAC header to be present in __vlan_insert_inner_tag()
-    https://git.kernel.org/netdev/net/c/ab888242fce4
+I was traveling the whole week and have only managed to go through about 
+half of the AI comments so far. There are several that do not make 
+sense, some which fall under "better safe than sorry" and others where
+it is definitely "oops, should have seen that". I will reply to the AI 
+findings in detail and definitely send a new round of patches in about 
+2-3 days.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Birger
