@@ -1,145 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02F1331EB4
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD59E1E7C18;
+	Sat, 19 Sep 2026 15:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789832848; cv=none; b=BjOOpJRK6EdsZkxorTAwOUyjq8BUhrb/hHkcSuJX9YvmbDfdg69h9Xti/O8m0l2Jp8EVHgmD9hl3QsbpTlpKiao6O+kgtvyXKumcdK+KRhRT/d9mHYmmkbPvN5hoec6N4cusOTR8GM9l/EDx7V6ubGa0PFyktkNOqaw0m9702E0=
+	t=1789833331; cv=none; b=iCvDWmdHFUT5EW/mVj4YuWk+HaiuyooRlVuMqkR7omSLk4b8EDtC/xEUH6Qd1W0OIVQ4m19s8aT17e5ieEFHZ2zcYP4FG52Ufag8Wi9vpHa5kcLIOgWOEvZMIV/AQC7c/IVX4YidWqgcacT9ljsZTHq6GTzvp/KS+0DC72Zykvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789832848; c=relaxed/simple;
-	bh=aQwBW/J4ZINdvadr0XdeF7bmZtIw6fMwqTv8ouYq5ns=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=U0VLARwyjpXjMEm0pzCaorDOF8tbTGQbzZOArUN9WbpqVrRGcapnBM2XQ0ThLAnWt9Byyk2XoEa/P69SX2CXG/SMYaR2corPBBzzeLfc4LymXBLrtsxQA/NXbWjGRNFGPGvIrti1P1Mgbz+bNL8HDWjQ3tJbAXBk1cyN6Cqy+t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AiVVo1Zy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789833331; c=relaxed/simple;
+	bh=adUDFqO22StJ6ilTA57a3K94u917eEMrpj1AlJLZDrE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eUO6W6OI6DynnuUi5t+eUxUE4liFyXPVSBxpLEsO3jhfXWFaJCUP++8ssa0yMNgAob83ra4vi3yplBpcVfTbircQgueWrkRv5aq+vcxONtYp7ijCKnbkiv1ZBpLC97YuDDC79ZjPCllMKRtQwfl5k0M4Db/A5MPFt1WmAZV1Mw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=MHqaz3MO; arc=none smtp.client-ip=145.239.234.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ionic.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AiVVo1Zy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D241F00893;
-	Sat, 19 Sep 2026 15:47:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789832847;
-	bh=mODAfFhrA/MwRkrgaakjZKRIyNrtunWJQx8N1zGq8SE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=AiVVo1Zyfo3O7oZ9prZcnoQpuCM4Fq5bSXnUEbchPY5TelE+fucj8a2sb9FMfKTw0
-	 PeJmC6f2Y3oXhwmiuOu8RRJ6qiJYhI3CpbuuOa4oYSjnanbuMZ/0WHiuBhLlxMQjzE
-	 gjs3V1QsFFzpBvAW6CKhI1TAj9ZZDAMLY4l7pG2eNOlcN8CfE6F5UkIFEGuhCVMVJu
-	 lDP6kQFNW7QWT7EVfEvaCo6agVNgRb4fJTWHTyqnxzB2YVyGrrvhpm1PtSVmB6hmVy
-	 EqdaMHSqMTbroC6atNWqXWrTO1ehmDMPmH2/K/R51yv+sa3ptrg3WXcIiChpqwrNZ1
-	 gsAmjyQTrdBQw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1626FF40066;
-	Sat, 19 Sep 2026 11:47:26 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sat, 19 Sep 2026 11:47:26 -0400
-X-ME-Sender: <xms:ja6uahvGbAPIicBSV5zgxL03tCk3pzMJeZgSto4sdetuBsrClWyCdw>
-    <xme:ja6ualRvvxXHzDIdaEiI52K5S7M41AhSeOEMI3UU6KS5zKX7pXHXWm4887bNr9XBX
-    h2bRK-9eHcUUzN38-B7v4uxl49987E1eUJev1wbUrnc9u80hta547Cc>
-X-ME-Proxy-Cause: dmFkZTGoh0mOmlRrlZ5GwR88ixO4iXB664+VWrJRNYFNenTomUqh+UiXgCxhBQgewE69EB
-    u+/YkKFO1As/lBVEJQ451JM1sJvyf1ZvBzhi6FFto0bGxVVjmt8302FLdCZoxuRgPq95L2
-    4Lz4W/F+AOfdw82DwB29GbOWs2pBeMqjccVYEfOkScn6BBf+d2HCztV5Fx5tqN4XdKRvef
-    DZ5VuZ4jgE23hRhCEh5SBuUpl9JDPZ/SXptnYbKRqVsIVHcxQ7oKIL3veMptizQ3NqJ4/h
-    WVxDebWTiRtsueNzSp0U5+Zc+T/OrkOHqdOUbbSkERiRLpnJgQCF5AaqAnYwexW/3eYJF2
-    +JTnHJvoGIUoRQaJ0nzCX02A1fA8p7b2gnbVnuep0NII67zSuLvx77btmtQgCyAVTZvCku
-    jAnWjaYolVyzXVBnikdhzMUNpy8S+SrMftnN3N1Iu3LMIl/5y0quD+Pv2xTEmgbnZuDPRV
-    sKx66SVYI8wNgck06AxkyYofiYBDYjWCMmZ4Ia0SESHmvChl21HrDltylwJq6cYtx7WQSK
-    /ya1VEKKWwoLcArdP2CpmzJyNEJRYp3DMygppBhXzfcCCf/p7vX8YnwPR7iCctvNLYCbB1
-    dreR9yw6xq0jO3w7Tv+6cnFfRhmEnTmGKwvN8TQtPy/qG1P2zOs3veZD8U3A
-X-ME-Proxy: <xmx:jq6uaskhqz_lp97X450jwcAa9l9PKee_kK4-Y4HHNAYyiEss6I40tg>
-    <xmx:jq6uagvQVcyGjyIw_uQFixL_fUW3vr3CybcQsk3u7HQgZ2yN5QETTw>
-    <xmx:jq6uajO_46CUtCEOlBI-hb32rBETMT0SzAPeZ-CgGYhPoAoJdQdz8g>
-    <xmx:jq6uap2Jx3fKJ8fy77h2DqyusiNqzMSnIK460QGA2Lm82RQtVvcoAA>
-    <xmx:jq6uatyMaFF4JCAcizmCeCGW7zUFcBLEn4dOyEZ1yWeUA0Vu8ZcHjXom>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DD94D780070; Sat, 19 Sep 2026 11:47:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="MHqaz3MO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
+	t=1789832738; bh=adUDFqO22StJ6ilTA57a3K94u917eEMrpj1AlJLZDrE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MHqaz3MOS0UJVLgEDnlQ0sUPeaydyOSC8WzdXtCWrEQwlUAL+C/I2KMthIoGENSOP
+	 uDwWLSddV34njdRoxXiBUGoL9/opSYuroBEXHhtRpncCZfFnjSyeTz0O174TcqzQkp
+	 CwlaGNYfCSVyjJ39li9HkDfARb8gaw4hY49OdNIE=
+Received: from [172.24.215.49] (unknown [185.102.219.57])
+	by mail.ionic.de (Postfix) with ESMTPSA id 9FBCC1480E15;
+	Sat, 19 Sep 2026 17:45:38 +0200 (CEST)
+Message-ID: <a13e783a-1c55-4e9d-92e0-634f8fbb10d1@ionic.de>
+Date: Sat, 19 Sep 2026 17:45:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Atqj05nf2p3o
-Date: Sat, 19 Sep 2026 11:46:57 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Benjamin Coddington" <ben.coddington@hammerspace.com>
-Cc: "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>,
- "Randy Dunlap" <rdunlap@infradead.org>,
- "Christian Brauner" <brauner@kernel.org>,
- "David Howells" <dhowells@redhat.com>, "Sagi Grimberg" <sagi@grimberg.me>,
- linux-nfs@vger.kernel.org, keyrings@vger.kernel.org,
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org
-Message-Id: <5a2b6bac-bcdc-479d-a8ae-8b670f78d80b@app.fastmail.com>
-In-Reply-To: <2FBF57B6-FBB6-498F-A1F4-695D52EB89E9@hammerspace.com>
-References: <20260918-nfs-mtls-identity-v1-0-197e568d78a7@kernel.org>
- <2FBF57B6-FBB6-498F-A1F4-695D52EB89E9@hammerspace.com>
-Subject: Re: [PATCH RFC 0/5] NFS: isolate mTLS client credentials by network namespace
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] wifi: ath12k: Connect to the QMI server belonging to
+ the device owned by this driver
+To: Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Chris Lew <christopher.lew@oss.qualcomm.com>,
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+ Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, david@3adesign.co.uk,
+ nakonechnij.sergsj@gmail.com
+References: <20260918-qrtr-multi-ep-v1-0-8a06caa368d3@oss.qualcomm.com>
+ <20260918-qrtr-multi-ep-v1-4-8a06caa368d3@oss.qualcomm.com>
+ <cb6766f8-54b9-435f-a69a-e712727dabdb@app.fastmail.com>
+Content-Language: en-US
+From: Mihai Moldovan <ionic@ionic.de>
+Autocrypt: addr=ionic@ionic.de; keydata=
+ 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
+ tS48DBVD
+In-Reply-To: <cb6766f8-54b9-435f-a69a-e712727dabdb@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+* On 9/18/26 18:51, Juha-Matti Tilli wrote:
+>> But now, QRTR provides each MHI endpoint a unique node id which is
+>> different from the node id announced by the device. So use the same id to
+>> pick the correct server. Add a get_qrtr_node_id() HIF callback that returns
+>> the node id derived from the MHI controller index and zero for transports
+>> that do not assign one. In the new_server callback, skip any service whose
+>> node id does not match. A node id of zero disables the check, so transports
+>> that do not assign one keep their current behavior.
+>>
+>> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> CC'ing Mihai. He is known to have a platform with two ath12k cards,
+> but he said he's been busy recently, so his testing input is uncertain.
+
+I probably could change the setup to use 2 x ath12k modules, yes, but really I 
+have always been testing with one module using ath11k and the other module using 
+ath12k. Never tested two ath11k or ath12k at a time. There might be even more 
+obstacles to getting that to work correctly.
+
+My "test setup" is in the new flat where I don't have a proper networking setup, 
+though, so... meh. Don't count on me testing it this year still.
+
+The proposed code looks simple enough, though, and generally makes sense. It 
+also does away with aux data on the qrtr socket, and if both endpoints can 
+access the same MHI data, it probably makes sense to let them both determine the 
+node ID via the shared MHI controller index (the important part here is that the 
+node ID knowledge is not stored or passed through anywhere in a common qrtr data 
+structure, but essentially becomes a "shared secret" that both end points 
+determine individually, but also in a deterministic, matching way).
+
+Since this changes the endpoint ID completely, this might even make the 
+user-space qrtr tools work transparently with multiple devices, i.e., not 
+requiring any changes to that part. That would be my hope at least. Definitely 
+needs testing, though. It would be great if the user-space tools could directly 
+communicate with the servers on the modules, but I'm not quite sure how the 
+user-space tools would come to the correct node ID conclusion. This might be one 
+drawback of the "shared knowledge" architecture - it might be difficult to make 
+it work outside of the driver realm.
 
 
-On Fri, Sep 18, 2026, at 1:21 PM, Benjamin Coddington wrote:
-> On 18 Sep 2026, at 10:05, Chuck Lever wrote:
->
->> An xprtsec=mtls mount names its client certificate and private key
->> by keyring serial, and tlshd reads those keys with its own
->> credentials. Each key therefore has to grant user read permission,
->> and any tlshd on the host that learns a serial can read it. Nothing
->> separates one network namespace's credentials from another's.
->>
->> This series makes the network namespace the isolation domain. The
->> RFC thread asked whether the user or mount namespace is the better
->> binding. tlshd services the handshake socket of one network
->> namespace, so that is the namespace it already lives in.
->>
->>   https://lore.kernel.org/linux-nfs/20260602154740.49861-1-cel@kernel.org/
->>
->> The keyring is held in struct nfs_net rather than found by name,
->> because /proc/keys is not namespace scoped. Its serial travels with
->> each handshake instead (patches 3-4), and tlshd's possession of that
->> keyring is what lets a provisioned key grant no user read permission
->> at all. Both ends of the link exist today, in tls_handshake_accept()
->> and in tlshd. The handshake genetlink ABI and the cert_serial= and
->> privkey_serial= mount options do not change.
->>
->> Still open is how userspace names the kernel-held keyring. Patch 5
->> prototypes a request_key type handled in the kernel and tagged
->> KEY_TYPE_NET_DOMAIN. A keyctl modeled on KEYCTL_GET_PERSISTENT, or a
->> read-only attribute on the netns-tagged nfs_client sysfs kobject,
->> would do the same job if the keyrings maintainers prefer one. Keys
->> that userspace adds are quota-charged by user namespace while the
->> keyring lives in nfs_net. Confirmation that this is sane when the
->> two boundaries differ would be welcome.
->>
->> nfstlskey, the provisioning tool that consumes the key type, is
->> merged in https://github.com/oracle/ktls-utils/ .
->>
->> Tested on one Fedora VM acting as both NFS client and NFSD, with
->> tlshd from ktls-utils 1.4.0: NFSv4.2 mounts with xprtsec=tls, with
->> xprtsec=mtls using the identity in tlshd.conf, and with xprtsec=mtls
->> using serials that nfstlskey provisioned.
->
-> I think this is the old upcall/namespace problem that's never been generally
-> solved (as far as I know).  Here's a shameless plug to potentially revive
-> the original "key agent" concept which solves this in a general way.
->
-> The idea is - user space processes (tlshd) register themselves as key-agents
-> that can satisfy request-key.  A key agent represents itself as a key-type,
-> and the appropriate key agent is consulted for request-key if the calling
-> process has that agent's key in its keyrings.
->
-> Otherwise, this solution looks good - but without a general solution to this
-> problem, other folks building on keyrings will keep trying to solve this
-> problem.
+Indeed a cleaner and more simple approach, though.
 
-Thanks for having a look! Your idea sounds a lot like how tlshd uses
-netlink.
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+
+Mihai
