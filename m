@@ -1,297 +1,257 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13A63845A9;
-	Sat, 19 Sep 2026 01:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3F930C35F
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789782726; cv=none; b=O/VTxrNaSR+MnIqL3NuJPJVZeoSXTshCaG1feuU0u+Le84BS/cA9IRontV533EYHNiHXNDs/BL+5hFLjk8MBfJmIBWZOGu3KQqPMGhLCcdCdU3rKHkyOISIf5kNG/okWSuL3ES9+NkCaq54R0J4Y506URwBRD8VlHUzsAzRM70M=
+	t=1789782815; cv=none; b=G3K/cPK3W5tlz9skxaNiknG6fCQG7fHrLqiK3Yf2O0iAYylhSXo6oCiHlZ7FKKOUDlEWWnTAEkz19RGpqKNdd7YBWc9Xa7HtE+oRnSB3bLbNZSgDl5k5HAK19yxzhbAoBA/w1ALtQsoxSsrn5gC0PpiJbtTNCgCV346scb82AQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789782726; c=relaxed/simple;
-	bh=BKDwmxZyG427fBX4Zj5kcGuFrymo+EnbVXlqDujJGy0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D9E5jxN2cuFK1woT+DW5p3Vb3BG1SMwTN+4xQoA3NQTqoNrdb/BvM7IJYdUVBA8wUSL074lyLzKp7bs+OzS00ZSpwjENEVj6DNH9obAC5jQTeJ2G+CBcjDAEXRu8mjk29K1b6RApjDYIUBPujil8xKTy/H3RNDPVB0ctlovth1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D37jtAzN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789782815; c=relaxed/simple;
+	bh=sok6ZbvG2oYK/j21SYwCUAYKowsHuwpobv2udZM6K18=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eVVEBApM4tcO5xIu+Th2QDSlAg1XudTaRp8skrU8fCcNw3V8onZyV38ylBpAsDFAP4CG2CQVkqB6L7rI1erM0qiCLy2IvPYbRwOI0TYulwD6F1tiWSvHJN+qavM40oRzK0wTuwZIHn1dc4j8rxNKTy9HmVzpk54GzGxCeDB/59s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=GtZtctMZ; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D37jtAzN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146141F000FF;
-	Sat, 19 Sep 2026 01:52:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789782722;
-	bh=56W3DOkX0vqueaZcbxVw3WduROW9mjeTn3uyRN4ew+A=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D37jtAzNWEgNibrm/aXz3DtCbASKtwXIrKhwMLWivQocf5Xqs6fCOHS+mrF3jhnz3
-	 BlL2sdYKh3KyoNwNWtHXlrKS/njMabrM3iowDGjEmGiKZUHPN+w2LAtBWzm+YOt6uA
-	 3qmbVwDhWiCGCtQz7XVmQ1/20y3DKDwmhoCyMDxth4ysN4R4kbvFQldBLkw4+qRhNc
-	 vyns81M2QdCaLcDbZuxlmBawApWviCB6sJOrjlN7YrADoDm6NCGDRNnfP+0Nn8iYC3
-	 xsMyH26sCZPUuNdzlKWKcUFAO0V5wYSQCfRW/pT4m/42mAxlUnn9AWj8fnQARB/COk
-	 KQptSHP2bcSPA==
-Subject: Re: [PATCH] net: ethernet: mtk_eth_soc: allocate dummy netdev before
- registering netdevs
-From: netdev-bot+sashiko@kernel.org
-To: sandeeph@loljews.com
-Cc: netdev@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Sat, 19 Sep 2026 01:52:01 +0000
-Message-ID: <178978272167.22033.8490745955078913632@kernel.org>
-In-Reply-To: <patch-12c1a57b1d914b28b89455f24de55ee4@loljews.com>
-References: <patch-12c1a57b1d914b28b89455f24de55ee4@loljews.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="GtZtctMZ"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccfd61ecaso11595045e9.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lex.la; s=google; t=1789782812; x=1790387612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RpQg1/jWZmhf3sNxkzE4wIZy2eU9EXWek6LxmzsP1F4=;
+        b=GtZtctMZB+ly/I1GkrTg7Ji06x8sWjV2/65SgtJRqSaTJ5csfPw91OyIWgzPvhlN69
+         vgWZha2GRp3ZO8GNlQeQqbtVg22fK+zUy38q8JRRXhFULQQzMHzZqRi52PJwcwYLksYD
+         qCHxWRlQ8BjSBi0eSGvL3JhNi4uPHENsVG+Kmm/AeEZSM5clkRsKs29hrVipuCCFgope
+         yAowzW1cVlJ0nvy2jhXwvI9UGTmmuKUQhcbAiGa/yI3Gaao7eaenq+ECQLvs/r/fatK+
+         n/x3fEIMYN8jewc9aOJlxQI2YKUPHlbKG2TbD68ziGzV667pjajqAm+JaJupBwwNCMf3
+         ts+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789782812; x=1790387612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RpQg1/jWZmhf3sNxkzE4wIZy2eU9EXWek6LxmzsP1F4=;
+        b=hB89+jmKThzkBjsqM87DOvdoNta1a23camfwQrvvGpfe+IORvwlrce7YPHaUqhjz6J
+         YA0s+SQuLHXkqBh9Z5eh6IcJ+QhNsBpqWlHncKUlOLLO1giAFNz2vCkCmKJkatfXalXs
+         g6x62M+TYh1wqT8yfHXCKM+yjtl3YGMOMlOX5NwzhIY06HHc+YupzHroDE13PEfM8HrL
+         tZ795VOzghE3I0ceKbsLTDysCKDqPaYdC6PZoMhJ+GsgD2H6DixlcCS0xtbfiVjSyfus
+         K6hf9VfNKex116thPD8Yg4pkeEv3BKO6bpe49PN6OWFfyexOAm99c8DwbECWPqIxoshh
+         b01w==
+X-Gm-Message-State: AFuF++kqfuhu0cWwzg3Sngv/0syH/owyRH2E7pG9Kd7fax+7ihqsLDnt
+	tWpPKqXkDzeqBYgTO0MxEGzTrBW3CBTxHHiUX/ICBJlh09FgNEjU5lmnfO+ztkrKEujjuC3sY3u
+	Wsrypa7CZOM7Z
+X-Gm-Gg: AYBFou0H09c/TdjD/Xc9/LfdeoSaRVkie+FqWIRQ+M30STSeN3O9soRujzyRzfsoWxk
+	kKS8NozkC7de/wazrPh3Iay3WFF5LOME/zdiZV7iRz+64xFaClaP0haif3T5idrVtlYaj9qq7aQ
+	ZXABWtT+DXyL6gXdhpf2SUV3CRwOaGWUkgNLFn2rVNvRf+OyGVWvZEN4W5X3wQ7YtQhduvMb4nr
+	DFbFomMGx10L2oC8Tuu2r95PZyYW00+F6W9puRE6H0NUqr7SuwAJ8l50KRmtofMTPQKYLE44WVd
+	DDthQioq075V0jPFGXV4zgv79EUL3QFb7cx6FKXbhcu1LdxEcoT1nuVQw6MEc3+voVkqek+ISMp
+	ohYK5vldoYPy1jAL3HIB4nr4/N2wyGUOtdhayC69H2f+Xu829xPmQ5GYSzn5hm3Sq0H6VsSOi6k
+	ymYJxcqy5dLDjy6PqSgBVM0OsingWQ1Qt6o5QP0pZfDA/Tkkwwbj8=
+X-Received: by 2002:a05:600c:530f:b0:49d:243a:e4f9 with SMTP id 5b1f17b1804b1-49fc56cb197mr54635195e9.10.1789782811921;
+        Fri, 18 Sep 2026 18:53:31 -0700 (PDT)
+Received: from remote-01 ([84.17.55.229])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd10d174sm34946045e9.11.2026.09.18.18.53.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 18:53:31 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: netdev@vger.kernel.org
+Cc: andrew@lunn.ch,
+	andrew+netdev@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	olteanv@gmail.com,
+	Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	steve.glendinning@shawell.net,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aleksei Sviridkin <f@lex.la>
+Subject: [PATCH net v9 0/4] net: phy: keep a PHY interrupt across a generic bind cycle
+Date: Sat, 19 Sep 2026 04:53:22 +0300
+Message-ID: <20260919015326.499479-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider:
+On an MT7981B board with an MT7531 switch, the Airoha EN8811H behind
+lan4 has its PHY driver as a module on the root filesystem. The switch
+brings its user ports up before that filesystem is mounted, so the PHY
+attaches to the generic driver first. phy_probe() replaces phydev->irq
+with PHY_POLL because genphy has no interrupt callbacks, nothing puts
+the number back, and the PHY polls for the rest of the uptime once its
+real driver takes over. The devicetree describes a working interrupt for
+it and the number is never used again. On this particular board the port
+does not come up at all while that happens, because phylink rejects
+2500base-x against the generic driver and DSA drops the port; it is the
+PHY that carries the lost number across the cycle.
 
-Critical: 0 · High: 3 (1) · Medium: 1 · Low: 2
+Patch 3 takes the number back from mdiobus->irq[] at the end of the bind
+cycle. Patch 4 covers the other end of the same cycle: a genphy bind
+that fails inside phy_attach_direct() unwinds on a label that does not
+reach phy_detach(). Patches 1 and 2 put two USB drivers' interrupt
+numbers into the bus table, so that there is something to take back for
+them as well.
 
-- [High] New use-after-free window on mtk_probe()'s error path:
-  eth->dummy_dev now carries eth->tx_napi/eth->rx_napi *before* the…
-- [High] New leak of a registered notifier into freed memory when
-  alloc_netdev_dummy() fails.
-- [High] Frame engine can be left armed while probe tears down clocks and
-  power.
-- [Medium] Commit message and new in-code comment do not match the
-  implementation.
-- [Low] mtk_probe(): the patch fixes a user-visible regression (first
-  netdev cannot be brought up during the probe window because…
-- [Low] Cosmetic artifact of the code motion: after removing the
-  dummy_dev allocation block that used to sit after the…
+On the board above the number reaches that table through
+fwnode_mdiobus_phy_device_register(), which writes phydev->irq and
+mdiobus->irq[addr] together when the PHY node carries an interrupt; the
+EN8811H hangs off the SoC MDIO bus, at the devicetree node
+/soc/ethernet@15100000/mdio-bus/ethernet-phy@d. A driver that owns its
+bus can fill the table itself instead, and several do - mt7530 writes
+irq_create_mapping() results into ds->user_mii_bus->irq[] before
+registering the bus, which is where the switch ports' own numbers in the
+notes to patch 3 come from, and mlxbf_gige writes an ACPI GPIO interrupt
+into its bus table the same way.
 
-Pre-existing issues:
-- [High] mtk_probe(): if register_netdev() fails for the second or later
-  MAC (mtk_eth_soc.c:5360-5363), control jumps to err_deinit_ppe and…
+Andrew asked [2] for the full set of drivers that keep the interrupt
+outside the bus, "so that the bus is the source of truth" [3]. Going
+through that list against net/main, in his grouping:
 
---
+  - lan78xx and smsc95xx write a live interrupt into phydev->irq only.
+    Those are patches 1 and 2.
+  - ucc_geth never writes the field at all; its single use is a read on
+    the WoL path, so nothing to change, as he said.
+  - ixp4xx_eth, ax88796c and emac-mac force PHY_POLL into phydev->irq
+    around their connect, and each keeps doing it. ixp4xx and ax88796c
+    store it in probe just after the connect succeeds, and their only
+    detaches are their own probe error path and remove. emac-mac stores
+    it early in emac_mac_up(), on the line before the connect, and that
+    runs on every bringup. No attach in any of the three follows
+    a detach without the driver forcing PHY_POLL again, so a restore in
+    between cannot cost them anything.
+  - stmmac_mdio already writes mdiobus->irq[] next to phydev->irq, so
+    it is on the right side of this. The block is also unreachable in
+    tree: it is guarded by probed_phy_irq > 0 and nothing sets that
+    field, in stmmac or in sxgbe's copy of it.
+  - mlxbf_gige likewise writes the bus table, from ACPI.
+  - bcmasp_intf, bcmmii and tsnep set PHY_MAC_INTERRUPT, and genphy does
+    not touch it: phy_interrupt_is_valid() is false for both PHY_POLL
+    and PHY_MAC_INTERRUPT, and it guards the substitution, so the
+    generic driver never demotes a MAC-served interrupt. They also set
+    it after connect - tsnep unconditionally, bcmasp and genet for their
+    internal PHY only - so what a restore hands back is replaced again.
+    icplus sets it from ip175c_read_status() for its switch ports and is
+    safe for the same reason.
 
-net: ethernet: mtk_eth_soc: allocate dummy netdev before registering netdevs
+The v7 commit message also named sxgbe as losing the interrupt. That
+was wrong - the same dead probed_phy_irq guard - and it is gone.
 
-This moves the eth->dummy_dev allocation and the netif_napi_add() calls for
-the shared tx/rx NAPI ahead of the register_netdev() loop in mtk_probe(), so
-a concurrent ndo_open cannot observe eth->dummy_dev == NULL and fail in
-__xdp_rxq_info_reg().  The err_unreg_netdev label and its mtk_unreg_dev()
-call are removed, and the dummy netdev is freed from err_deinit_ppe instead.
+The review [4] asked how this sits with Documentation/networking/phy.rst
+telling MAC drivers to set phydev->irq directly. That contract is
+per-connect: set it "before you call phy_start". The restore happens in
+phy_detach(), between connections, so the value a MAC installs after a
+connect still stands when phy_start() runs.
 
-A few questions about the reordering and the new unwind path below.
+One behaviour change worth naming. phy_request_interrupt() falls back to
+PHY_POLL when request_threaded_irq() fails, and that fallback no longer
+survives a detach. A board with a broken interrupt line still ends up
+polling, exactly as before, but it now says so once per attach instead
+of once per boot.
 
->     Allocate the dummy netdev and add the shared tx/rx NAPI to it before
->     registering the MAC netdevs, and free it from the probe error path instead
->     of the now-unneeded err_unreg_netdev cleanup.
->
->     Signed-off-by: Sandeep Haemoon <sandeeph@loljews.com>
+Longer term the substitution itself is what wants removing. There are
+two of them and they are identical - phy_probe() and phy_attach_direct()
+both do "if the bound driver has no interrupt callbacks and the number
+looks valid, replace it with PHY_POLL" - so phy_interrupt_is_valid()
+could ask whether the bound driver can service the interrupt and neither
+site would need to write anything. That reaches every caller of the
+helper, so it belongs in net-next and not here.
 
-[Severity: Low]
-Should this carry a Fixes: tag?
+v7 1/2 ("net: phylink: unwind the PHY binding when bringup fails late")
+has nothing to do with the interrupt and is posted for net on its own
+alongside this series, which is why the patch count changed.
 
-The NULL window described in the changelog was created by commit
-b209bd6d0bff ("net: mediatek: mtk_eth_sock: allocate dummy net_device
-dynamically"), which turned the embedded struct net_device dummy_dev into a
-pointer allocated only after the register_netdev() loop.  Before that commit
-the object was embedded, so mtk_create_page_pool() could never pass NULL to
-__xdp_rxq_info_reg().
+Changes since v8 [5]:
 
-Without the tag, will stable tooling pick this up for the affected kernels?
+ - Patch 1 fills the lan78xx bus table before the bus is registered
+   rather than one entry after the scan, and drops the write to
+   phydev->irq that phylib now does from the table itself [6]. The
+   netdev_dbg() that printed the field goes with it -
+   phylink_bringup_phy() prints the same number, at info level, as this
+   driver connects.
+ - Patch 2 does the same for smsc95xx, and drops its phydev->irq write
+   [7].
 
-> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> index fd7a49ae88d01..ae6a19bb3a418 100644
-> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> @@ -5337,6 +5337,22 @@ static int mtk_probe(struct platform_device *pdev)
->  		}
->  	}
->  
-> +	/* we run 2 devices on the same DMA ring so we need a dummy device
-> +	 * for NAPI to work. Allocate it before registering the netdevs so a
-> +	 * concurrent ndo_open (e.g. netifd bringing the first netdev up) never
-> +	 * observes eth->dummy_dev == NULL, which would make mtk_rx_alloc() ->
-> +	 * __xdp_rxq_info_reg() warn ("Missing net_device from driver",
-> +	 * net/core/xdp.c) and leave the interface down on boot.
-> +	 */
+Changes since v7 [1]:
 
-[Severity: Medium]
-Do the changelog and this comment match what the code does?
+ - The restore moved above device_release_driver(). After that call the
+   mdio device is bindable and the device lock is dropped, so a
+   phy_probe() on another CPU writes the same field. Holding the lock
+   across both, as the review [4] asked, is not available:
+   device_release_driver_internal() takes it itself. Ordering the store
+   ahead of the release gives the same guarantee, since the generic
+   driver is still bound there and a driver registering meanwhile is
+   turned away with -EBUSY before it reaches phy_probe().
+ - New patch 4 for the phy_attach_direct() failure path. The v7 commit
+   message claimed detach covered every substitution; it does not cover
+   that one.
+ - v7 2/2 carried no Fixes: tag at all. It does now, and patch 4 has
+   its own.
+ - New patches 1 and 2, for lan78xx and smsc95xx.
+ - The sxgbe claim dropped.
+ - The phylink patch split out, see above.
 
-The changelog says the dummy netdev is freed "from the probe error path
-instead of the now-unneeded err_unreg_netdev cleanup", but mtk_unreg_dev()
-was the only netdev-unregistration step reachable from any mtk_probe() error
-label, and the register_netdev() failure path still jumps into that unwind:
+Patch 3 is measured on that board. The one condition arranged for the
+run is that the PHY driver module loads after the root filesystem
+instead of from the early boot list the distribution normally uses -
+that early list is also why a shipped image does not trip over this.
+The distribution's own late-PHY handling was also removed, that being the
+one patch which could have changed the outcome; upstream has nothing like
+it. The unwind block of the phylink patch posted alongside this series is
+in the kernel too and is not reached on either path: the -EINVAL failure
+returns from phylink_bringup_phy() at its validate call, before
+pl->phydev is assigned, and the -EIO failure returns from
+phy_attach_direct() before phylink_bringup_phy() runs. The kernel is
+still a distribution one and its remaining patches to phylink and
+phy_device do run on these paths; none of them writes phydev->irq. The
+generic driver then binds at 1.87 s and the real one between 13.4 and
+13.6 s depending on the boot, and phydev->irq afterwards reads -1 without
+the patch and 15 with it, 15 being the number the devicetree gave that
+PHY.
 
-	err = register_netdev(eth->netdev[i]);
-	if (err) {
-		dev_err(eth->dev, "error bringing up device\n");
-		goto err_deinit_ppe;
+Patch 4 needs a generic probe that fails, which the board does not
+produce on its own, so it went through a debug-only module parameter
+that fails it once for one address. The connect then ends in -EIO rather
+than the -EINVAL of the validation path, and the unwind takes the label
+that patch touches; the same reading is -1 with patch 3 alone and 15
+with both.
 
-What remains on that path is mtk_free_dev(), which only frees:
+Patches 1 and 2 are compile-tested only - I have no LAN78xx or LAN95xx
+device, and a Tested-by from someone who has one would be welcome.
 
-	for (i = 0; i < MTK_MAX_DEVS; i++) {
-		if (!eth->netdev[i])
-			continue;
-		free_netdev(eth->netdev[i]);
-	}
+[1] https://lore.kernel.org/r/20260909204306.2374562-1-f@lex.la/
+[2] https://lore.kernel.org/r/8f67d3ba-ce25-49bf-8378-c76d748879a9@lunn.ch/
+[3] https://lore.kernel.org/r/a2a2a8fb-97c3-498f-9bf4-e0c44be2eff6@lunn.ch/
+[4] https://lore.kernel.org/r/20260915005946.823736-1-kuba@kernel.org/
+[5] https://lore.kernel.org/r/20260918015029.2518425-1-f@lex.la/
+[6] https://lore.kernel.org/r/df5d4af1-a86a-4820-9aeb-b1449a60f37e@lunn.ch/
+[7] https://lore.kernel.org/r/6e14d6b7-2a5a-40e2-920e-fc69a6e85173@lunn.ch/
 
-Is the cleanup really "now-unneeded", or was it still required by that path?
+Aleksei Sviridkin (4):
+  net: usb: lan78xx: register the PHY interrupt with the MDIO bus
+  net: usb: smsc95xx: register the PHY interrupt with the MDIO bus
+  net: phy: take the interrupt back from the bus on detach
+  net: phy: restore the interrupt when the generic bind cycle fails
 
-The new comment also states that pre-allocating dummy_dev makes a concurrent
-ndo_open safe.  Is that the whole story, given that the same concurrent open
-is what leaves the shared NAPI enabled when the new error path frees its
-carrier?
+ drivers/net/phy/phy_device.c |  5 +++++
+ drivers/net/usb/lan78xx.c    | 12 +++++-------
+ drivers/net/usb/smsc95xx.c   |  6 ++++--
+ 3 files changed, 14 insertions(+), 9 deletions(-)
 
-> +	eth->dummy_dev = alloc_netdev_dummy(0);
-> +	if (!eth->dummy_dev) {
-> +		err = -ENOMEM;
-> +		dev_err(eth->dev, "failed to allocated dummy device\n");
-> +		goto err_deinit_ppe;
-> +	}
 
-[Severity: High]
-Can this allocation failure leave a registered notifier_block pointing at
-freed memory?
-
-On MTK_QDMA SoCs mtk_add_mac() registers a notifier embedded in the MAC
-private area:
-
-	mac->device_notifier.notifier_call = mtk_device_event;
-	register_netdevice_notifier(&mac->device_notifier);
-
-Previously an alloc_netdev_dummy() failure went to err_unreg_netdev ->
-mtk_unreg_dev(), which does:
-
-	if (MTK_HAS_CAPS(eth->soc->caps, MTK_QDMA))
-		unregister_netdevice_notifier(&mac->device_notifier);
-	unregister_netdev(eth->netdev[i]);
-
-Now it goes to err_deinit_ppe and falls through to mtk_free_dev(), which
-free_netdev()s the MAC netdevs without any unregister_netdevice_notifier()
-call.  Does the notifier then stay on the global chain, so that the next
-NETDEV_* event calls mtk_device_event() with container_of() on freed
-netdev_priv() storage?
-
-> +	netif_napi_add(eth->dummy_dev, &eth->tx_napi, mtk_napi_tx);
-> +	netif_napi_add(eth->dummy_dev, &eth->rx_napi, mtk_napi_rx);
-> +
-
-[Severity: High]
-Attaching the shared NAPI here means it is live before the netdevs become
-openable.  Can the error path then free it underneath an enabled NAPI?
-
-Per the changelog's own premise, netifd can open netdev[0] as soon as
-register_netdev() returns, and with this patch that open now succeeds and
-runs the first-open path in mtk_open():
-
-	napi_enable(&eth->tx_napi);
-	napi_enable(&eth->rx_napi);
-	mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
-	mtk_rx_irq_enable(eth, soc->rx.irq_done_mask);
-
-If register_netdev() for a later MAC fails, err_deinit_ppe frees the carrier:
-
-	free_netdev(eth->dummy_dev)
-	  netdev_napi_exit()
-	    __netif_napi_del_locked()
-	      /* Make sure NAPI is disabled (or was never enabled). */
-	      WARN_ON(!test_bit(NAPI_STATE_SCHED, &napi->state));
-
-Does this trip that WARN_ON and leave eth->tx_napi.dev / eth->rx_napi.dev
-pointing at freed memory while the devm-managed FE interrupts are still
-installed and unmasked, so the next RX/TX interrupt schedules a poll on the
-freed dummy netdev?
-
->  	for (i = 0; i < MTK_MAX_DEVS; i++) {
->  		if (!eth->netdev[i])
->  			continue;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the register loop's jump to
-err_deinit_ppe was already there before the change, and this patch removes
-the label that could have fixed it.
-
-On a multi-MAC SoC, if register_netdev(eth->netdev[0]) succeeds and
-register_netdev(eth->netdev[1]) fails, the unwind reaches mtk_free_dev(),
-which calls free_netdev() on netdev[0] while it is still NETREG_REGISTERED:
-
-	BUG_ON(dev->reg_state != NETREG_UNREGISTERED);
-
-mtk_cleanup() documents the expected ordering:
-
-	mtk_unreg_dev(eth);
-	mtk_free_dev(eth);
-
-Since this patch deletes the only probe-side mtk_unreg_dev() call, could the
-unregister step be kept between the register loop and the dummy_dev free
-instead?
-
-> @@ -5351,17 +5367,6 @@ static int mtk_probe(struct platform_device *pdev)
->  				   eth->netdev[i]->base_addr, eth->irq[MTK_FE_IRQ_SHARED]);
->  	}
->  
-> -	/* we run 2 devices on the same DMA ring so we need a dummy device
-> -	 * for NAPI to work
-> -	 */
-> -	eth->dummy_dev = alloc_netdev_dummy(0);
-> -	if (!eth->dummy_dev) {
-> -		err = -ENOMEM;
-> -		dev_err(eth->dev, "failed to allocated dummy device\n");
-> -		goto err_unreg_netdev;
-> -	}
-> -	netif_napi_add(eth->dummy_dev, &eth->tx_napi, mtk_napi_tx);
-> -	netif_napi_add(eth->dummy_dev, &eth->rx_napi, mtk_napi_rx);
->  
->  	platform_set_drvdata(pdev, eth);
-
-[Severity: Low]
-This isn't a bug, but removing the block leaves two consecutive blank lines
-between the closing brace of the register loop and platform_set_drvdata(),
-which checkpatch.pl flags as "CHECK: Please don't use multiple blank lines".
-
->  	schedule_delayed_work(&eth->reset.monitor_work,
-> @@ -5369,9 +5374,9 @@ static int mtk_probe(struct platform_device *pdev)
->  
->  	return 0;
->  
-> -err_unreg_netdev:
-> -	mtk_unreg_dev(eth);
->  err_deinit_ppe:
-> +	if (eth->dummy_dev)
-> +		free_netdev(eth->dummy_dev);
->  	mtk_ppe_deinit(eth);
->  	mtk_mdio_cleanup(eth);
->  err_free_dev:
-
-[Severity: High]
-With no unregister step left on this path, can the frame engine stay armed
-while probe gates its clocks and power?
-
-Because the concurrent open now succeeds, mtk_open() -> mtk_start_dma() can
-set MTK_TX_DMA_EN|MTK_RX_DMA_EN, program the rings, start the PPE and unmask
-the TX/RX interrupts.  The only code that undoes that is mtk_stop():
-
-	mtk_tx_irq_disable(eth, MTK_TX_DONE_INT);
-	mtk_rx_irq_disable(eth, eth->soc->rx.irq_done_mask);
-	napi_disable(&eth->tx_napi);
-	napi_disable(&eth->rx_napi);
-	...
-	mtk_stop_dma(eth, eth->soc->reg_map->pdma.glo_cfg);
-	mtk_dma_free(eth);
-
-Nothing on this unwind triggers ndo_stop, and it continues into
-mtk_ppe_deinit() (rhashtable_destroy with the PPE still started) and
-mtk_hw_deinit():
-
-	mtk_clk_disable(eth);
-
-	pm_runtime_put_sync(eth->dev);
-	pm_runtime_disable(eth->dev);
-
-Does this drop the FE clocks and power domain with DMA still enabled and
-interrupts still unmasked, and leak the descriptor rings and page-pool
-buffers?  Since platform_set_drvdata() was never reached, mtk_remove()
-cannot clean up afterwards either.
-
+base-commit: 3b95a04eb5f95bf6a016a1bb9ff37d3eee48de63
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/patch-12c1a57b1d914b28b89455f24de55ee4%40loljews.com
+2.53.0
+
