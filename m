@@ -1,317 +1,331 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2118.outbound.protection.partner.outlook.cn [139.219.146.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B2F3ACA75
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789811685; cv=none; b=St4AYpqy6kKZsCVAPq/Ttx8GC6M1I1YFrO+iWXRWVHBY8JvNUh3oTEKRDGGLAAhszmAyabIqkBhMsxCN889U/BlLvoIU/8qs++dtvg0i88ziMVq/TYBnjUQeeYLIGuZJB69GTloIP2RfvmYiRn8h05ZhIK/pFSe00vJ5w39zcuI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789811685; c=relaxed/simple;
-	bh=z/qQL0CPK3fkdmYWyHcS9nuOhJqJmsrxtpGJPsiPrxg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uT/Rb0vpn+8EJs6nZSbtRojlzi7/XjiHHGTIzHwTgq9IGPJvEibWs2gdcoSaL4wYSEAjd77fG6Gk7SRbnAgZHHJ/AQwrQsCDZF92NC9b5ZlYptFc0xJ/A9fK/oG/uanXXVw+miH4xlQQYhxzDPegDggzrmvb/1HK/8qyuRQvvjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kHHgbV8X; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=U5IUZO7f; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kHHgbV8X";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="U5IUZO7f"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68J6dw8K3101448
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:54:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	53ePU/EqYBKQnQJgkF/MFGCIZg32zoI4VYtyTC3M5fU=; b=kHHgbV8XW4BLQhwR
-	zhwf8R2pzBNi0nMPRSWluKnWhOR5SaFGHIaE3NhNxRofWIsnIcqj/efXEKyUwlZu
-	9fGHhf/1rih7ZrN4SjHVVntrX+tnDM/FLVorSEDFA05otRPX0kRz5G4GB/n++5W5
-	G2liyMqDBG5BPG1aiOQyrOYi/cjlYmDnXwpfP/RjGVHtBi0HncuwWTLYTgsS9SGJ
-	XhgxwqRp33OfjqFQ/CTb8Ua+vokjppBzyZtDJL0IC346edBPHiPhTEXGCwIoaSmB
-	wkPzOlpqnTGhNMWINX4pH8yuYT6W1PJCV8p+3aOmpDw3gs7yhqbfE8TAYD1EYyOM
-	Oei6Yg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gsjm30mny-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:54:36 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39e25a5f6e8so3031015a91.0
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 02:54:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789811676; x=1790416476; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=53ePU/EqYBKQnQJgkF/MFGCIZg32zoI4VYtyTC3M5fU=;
-        b=U5IUZO7fTE1AxCC9rKBOG3furOaEcWddXHITeFe2ayPr9JANW4qEuoOoGy6vQP0Ncs
-         4bQIj5QPDgYymUpsUF8xbRuc7GYh2FzLqxady7iMQcHXQg0836fptsZPyb7Y4PDf0FTW
-         rp/7m3bvf/6D+oqMk0GCvGSTIlg0pPjlUBUeQ/sTE8cDxB6n3wme1PTa9uA1GhVItJCP
-         niuoklfLi59IJPa9rbZEK0SLK5F/nxupw4NKW5+lyeB6WBMcxUaCxCGg/9k72P27z5yN
-         jlG/dXaY558UJFKyXtG01iOBUUQLNQymUtLa0I1gK9lBTM5ULf/ZCA271UqM83pvOBp/
-         sHWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789811676; x=1790416476;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=53ePU/EqYBKQnQJgkF/MFGCIZg32zoI4VYtyTC3M5fU=;
-        b=Kwa5WAX8oe5db6VoD5LIrV7Tsf/mUJL3QmKx/JccTmRBHtNNPoM90NMoTk2glgFGYq
-         lF0eLfnx+V95+APSG7+1XLKFQsGGPR1BTv8W891HToJMwVs9jKsZQrlVNO+rX0zOhfii
-         JYMqCXOMGnSykzLK6UwFo+E3AUdy2DuKPbns0kR6u4NXTbtz9A+JZl0Kj6zL1q0DKH1g
-         x513I6jFWewRADwF8AMYbQ5ddH7+079wPDA464JxocNKia1yURLCrEyo9sq5BV2Cb1Hf
-         xIJfKEI5f4el6A5X7GV1Ui37gqfHE08upnKKXIXEvaiZiUDA3LXeUnSDvTXPQO6AfldZ
-         egEw==
-X-Forwarded-Encrypted: i=1; AKwUvByogc04CZ8URQ/gmr8FAP0AcrgZ7LrsWg4864nML7AzNxqZ00AXgPBb8gAbeVUj9eJd2JuFb+c=@vger.kernel.org
-X-Gm-Message-State: AFuF++nJ5Rrph0ZWYu8TqGTPfB+EusBXZQOoBbKstiWwxxUUx/6SkSIi
-	T4tbf+/AsT9FGMcBovUiUobd1RvJSMLWGA73bcaUHK/VJUndhLohyDiibNu4uL8H7qnsiAXRy8Q
-	dQHtx/jQv2l+5xaMRt5Hng75pLCou5hI5MdFsTzsSdlU86PQxajgvkZ9agSI=
-X-Gm-Gg: AYBFou2xzpS02hYdlnEuS/wdrPa8L0oj0/bDLVo4s1Y0z8btCS+OUIXN7W27ptcwNoK
-	StmJeIGNaXBWVfO/ZvUCDG896dW3hDrwU3YGbz59hQPsogojAAgwIqBbr41enhPMOYDsA2g6wZx
-	/wmIZFQkYUY9AwuICAgpA5l7PSk2X5GYVMavdr6AyUoXyS2Dg5e5xq3NwoZ2KqE5QqKwqpWyObD
-	ec4UBSuR1/TkAfy9hjbia8PItr6k/Lrq1uqTwzGliSr/uzfPxZqXFTdaCB2+rQ01pWzig/rITdp
-	a7Ub6EhJYLbf5HvxSTMeXKx409l1XBNcOHGd+9bVQ/ntnkIn2p0LpbtWclAdULgrUTzPEssKxTk
-	Cp1PylN3jbS4Ks4a9FndTPImGjf5vviOfxYN+
-X-Received: by 2002:a17:90a:bd6:b0:39e:6a81:5a97 with SMTP id 98e67ed59e1d1-39e6a815e70mr2667643a91.43.1789811675942;
-        Sat, 19 Sep 2026 02:54:35 -0700 (PDT)
-X-Received: by 2002:a17:90a:bd6:b0:39e:6a81:5a97 with SMTP id 98e67ed59e1d1-39e6a815e70mr2667631a91.43.1789811675424;
-        Sat, 19 Sep 2026 02:54:35 -0700 (PDT)
-Received: from [192.168.0.116] ([124.123.146.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144d55d45a6sm4526951c88.9.2026.09.19.02.54.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Sep 2026 02:54:34 -0700 (PDT)
-Message-ID: <697a7c7b-5bf7-4279-898d-a8310f5a0a64@oss.qualcomm.com>
-Date: Sat, 19 Sep 2026 15:24:26 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E682E2B9BA;
+	Sat, 19 Sep 2026 09:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.118
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789811962; cv=fail; b=cAkG0uwDE7NcyT500pRkXPyEC2g45+mz0uDYyjDclWWp9S0nqCUFCvbTmGxfqP65Z1UnV55r8MtTHES8E4pfmcPiCPP38JQPdny5fdqk6kXPTlgIVYILXajGE9QOj+SJDtOhnebvPsWAbWjKMleRd2EWgz9jJqFUwRe454QI9uU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789811962; c=relaxed/simple;
+	bh=j0hlyjYyIjgjL+Yq7LBxc3oEJgXP7gKUREc9W/QYoMc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aqqtRs7VstjpEBTKX3AjemGd78IOBu2od27K5jrGs9zJOT+kCBL2pua9V7Qm9pl5DYc6Tq+73ec08kqyUJDr0FpZpvxcQg40ir225QNWLj9Mc3tkuXSOcFN49JJUWovJFDIf7JjaiG9BN9bAidiBJlGOg2dRt0s8j3fUaxxtRaE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mWUANzW1vBjxuVTNXEADX09OCMTu6CG3qFSkQ9C+ii6nM/O1Ks7subBYcEM5/r4qlBlts0lIi87Go0Fe8vC6WXRTEhBKix7wUB1mwuyj4rWUqL4HQSsEyYACK8avorgljHCFPzDplcnfKlKQajcvM2sfXWgmmLTRS4uZpHVVCfXjEF7dG+JbwLEITNJFl+LyhG4MTFlWu4U7FIkZGA8bmQKgyUdsixZscyZuDfG1hjVgoXPyPJVU1FqQZ0Y+pRFK4RMkSPoGNvfMnpLgNs9UATmu9ZWuUf/4tklfvuZD61IG6H9Eo250fNXaqGnYxjtspPh84T0qKHkyXo2eoukhXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ada0BsBMLhTWoyMyz6qAFbKAeXcqhDS5cNiPl5e7V+M=;
+ b=U57Fbl+WQ/3l6Z4pszZByfylliiJ6XVPLjIqzH4scpOG/3t7j/kkCVHuNmHJa3FxECzX/7JkjPnnxs79G1kGVOmD9iFuUBGAD/5D17peCAvYGE/8BogSzRoqa3qu1OHCYhOKE7MmcLC4C5AtHsrM0eSVfOP34dBl+CSTtU9JIdHh52RaLLAjU42aiqqBZYMrRtWxXnZb+Cf3u0aMetwXg8+AlGqy1uAzrE/bsmUCat4P3JIIwRgmhcO6eZuEyASJIlZ1wYtbEhhwsYUmIKa1j+irxhArr29Rxa/Nd0FYfeBpghCZ5L9I5T2aQeH7iPKie1KeWY14DP3ELBItSrYskA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:17::6) by ZQ4PR01MB1283.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:15::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.14; Sat, 19 Sep
+ 2026 09:59:06 +0000
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e7d4:256c:b066:850d]) by
+ ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
+ with mapi id 15.21.0428.014; Sat, 19 Sep 2026 09:59:06 +0000
+From: Changhuang Liang <changhuang.liang@starfivetech.com>
+To: Hal Feng <hal.feng@starfivetech.com>, Michael Turquette
+	<mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Stephen Boyd
+	<sboyd@kernel.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+	<palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
+	<alex@ghiti.fr>, Philipp Zabel <p.zabel@pengutronix.de>, Emil Renner Berthing
+	<kernel@esmil.dk>, Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
+	<gustavoars@kernel.org>, Richard Cochran <richardcochran@gmail.com>
+CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH v3 21/22] reset: starfive: Add StarFive JHB100 reset
+ driver
+Thread-Topic: [PATCH v3 21/22] reset: starfive: Add StarFive JHB100 reset
+ driver
+Thread-Index: AQHdJmAYveuIyf3zqU2+QbYV4aA7jrbSlDuAgANaB9A=
+Date: Sat, 19 Sep 2026 09:59:06 +0000
+Message-ID:
+ <ZQ4PR01MB1202963BF92C33795AAA0A08F2862@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
+References: <20260807112923.191627-1-changhuang.liang@starfivetech.com>
+ <20260807112923.191627-22-changhuang.liang@starfivetech.com>
+ <NT0PR01MB110298B34F8DFB2791A129FCE6B82@NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn>
+In-Reply-To:
+ <NT0PR01MB110298B34F8DFB2791A129FCE6B82@NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1283:EE_
+x-ms-office365-filtering-correlation-id: 526d7e8c-2431-42a7-4617-08df1634a498
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|7416014|1800799024|23010399003|38070700021|921020|10067099003|56012099006|4143699003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ g5dgt/ICs7X4cqMlEtHOPaz+kg3QyD4tggzvoicnI0b8k5hIOgoDJpNd19lTqxBNkEoUyaEhsBby7c3R+H7g+W4/9QQ4pS1itwXZ8m39WEHmHXWYHyim3qnBrGufkVWF6R5ROCGA+kC5hqkP3D4nYsmduYZXVj3zHCZnRYhQrdOhPoNOqZyyYjcVgMyrnS6fACa4iYeAo9B2J70NR7U0e9TkXy4PR99wLvtQdTBW1FwYFthvcwfF3YIEzG4FqVWx5uwXr/wNijkHXwZKTXXMW0PO7BpaBHGgwJsfWdSCWq+oUS7qIb9nID90dP01KuGX1/8ETIExSGOSUo6wkGgAPjn9FOdxuhWmNoxmv1uG7J415Ookq6XAP1tbI4F0uxfLoQfgGuFkhNYMLiLR8PRAV2wsiuxnPxPSBmqoWQZJrys4rgNVP2VTgEVVix0LSlNtpsVpWJIAC9iul9oblQK2vc1zf9BL42OolNWhwdQpmZoEGVTyvMehpWuCCgd0QZNTOFCaOIOYsHSeXzVgX9U8huRu56iGidHQDZVc5ATglb08yivPpOEkvTHHfr/kUrPee4tj/t3FDaNeHxa5ArJRHQ==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(23010399003)(38070700021)(921020)(10067099003)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?4+ew0yvHYQktnB/OZ+mKn75wedFWZbNmIEV5KBFfeebVnDQBgXXMUvsyj2EY?=
+ =?us-ascii?Q?rD/k8Gzf3OYYLysxjRtaby0RC6/XgBF1ls8DnPERdgKR3HJAu2bKOKlx/wzf?=
+ =?us-ascii?Q?mCvjK+ByttQ6QvsqSa+ntgFdYVrRcQHNnnOzizseWnuwUuW0uOJyHT9wRMrU?=
+ =?us-ascii?Q?bz6HN/QLrK82HukSynSK6+FS1wt2Z6RW9Q46feCD0T7GsCto1KkHF9ASXHZn?=
+ =?us-ascii?Q?6/xSnyFXUT6BUvQKVHRpTGLfkN5QPENYbvweKl3CIYmjR7QMaWBnonwMAcL+?=
+ =?us-ascii?Q?AFvWoQrqCVBCRH78Cic0zAwt4Q7EvxJVnwS48pnT6Cy6f13gVlVOHToUtLoT?=
+ =?us-ascii?Q?pFyr7UXYwXLWplaYjfRMtGrndj4P/G8WhZiTyb1stK0X5IG8u0/Lt+VcocOB?=
+ =?us-ascii?Q?tysvKKB47KLSxqtY32Rrok54JRXRgSY8f2e/lpwYfuhDLdg8fupwUW1wOAx6?=
+ =?us-ascii?Q?Fv0EQZDB5IrEKopMEk34EIdvmw/eOaU28ssqKT70TvYdW/phbHr49pnvAr1N?=
+ =?us-ascii?Q?wwsTMcH8C8K/S5QoeCv+wb1CqGJUBDB3DJ4Sq8EC26w+HOJe09I7a4+iRXLw?=
+ =?us-ascii?Q?FGXruoDcA+FNnIK0rNbejTsv7+ZHArzOR6gboSrPFajKRqUTshSPbmcluduE?=
+ =?us-ascii?Q?C3Ib5gXMlNWyqHN/yrSZxgQCx1fjrmzveONekurdQ3p3J9b3Vz6zkJMoPKjZ?=
+ =?us-ascii?Q?8jkcw65XapJ15nr20bXSp5lwF2Iosv9gn66a7xodGtDpJlmn41Z1jVyRH0XN?=
+ =?us-ascii?Q?bGmEDWgR8jdPMZwsSZX3pFKpd5EY/i62NETOSg9VOvhaRXwHW4l7poeXoOHF?=
+ =?us-ascii?Q?jDFsIpyitNzrpwBTUAwTx4CDDMPYtgqoSLr4NondyoMFNcAjDg2/NTKkE0JY?=
+ =?us-ascii?Q?3RR91PQJYW7fmSFcD9le3mfxftd+VuzmsQiQNm55bfzwwe3kNic2LxxYfIwk?=
+ =?us-ascii?Q?6MImHq1SANezQUD/GX0YnhmhSEzb44tUghVfbhTQWwdO1boFkDYGcumX7pqr?=
+ =?us-ascii?Q?riJZY1Xx0ODYGOEOHjy0zBfPDtbkJgCbonmenNsE0dZwQ8d0pY43Yj3l+oMu?=
+ =?us-ascii?Q?GdlukG31VKGLYG/PZjdxq0q4xu8rLv1QzlY7HXD6yb4jnS+JLT1M3wQKbxuU?=
+ =?us-ascii?Q?iRBmKbm6j2A4dwz4a1FEVXJytlvuUAAKw0vj5miCQHL7L1O82vrQi0QIJ130?=
+ =?us-ascii?Q?AbPlAW0jfxFVWv1pViWpxlJ+OPTYvZH2M14VM7BLFE85+9Lv62IfU5cgPkzY?=
+ =?us-ascii?Q?6F/Cc/TINIoCdz9DrKvFJDXFls6gz9VOo2jDyT7l5A72fqsgXpfhMep5Ab9d?=
+ =?us-ascii?Q?QNEqZYnLbpXp/CDADovCLffpqB62Xow2sxnWkKswlRk7/3cd/c7BdhHjjzaA?=
+ =?us-ascii?Q?bcvaWmD9FCD4iOpdgPdeVzXJ6LB7zH7HDhFPPLFlFpQn3ktPjNj8Bvc4TCv5?=
+ =?us-ascii?Q?PS0g+Z8LDElLsh+JQ1DBtErEuny7pc6Aa9u7RsrK/OZTfLzj0eQ2drwMgTbr?=
+ =?us-ascii?Q?tAg19uP5d/UDSXvNluEH+/t0VWY2j2+1oe0ZgjFUbKGf5OMBEz2BKCogrjOb?=
+ =?us-ascii?Q?886yy1pfQ7hUCbB8eGyT+z0zMlxe+LRQoVokjtMMnARBJlXkK1+Q/1H2IpLk?=
+ =?us-ascii?Q?7AEP0leJI8LmbE/yVUXSlHehgbEm+gEHxlMqAWB20ON11K8bGSNvze4ET3Xu?=
+ =?us-ascii?Q?qsa3LJ11vHUVGq8pXMtGUnt3qwYmDDwBG9LimdKwCbspKBTWBMVyypTege1t?=
+ =?us-ascii?Q?lGnwwyGlFFzjFm28OfLqdBOc5tTW9sk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] net: wwan: qcom_bam_dmux: Alloc RX buffers as a
- single coherent block
-To: Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: Stephan Gerhold <stephan@gerhold.net>,
-        Andrew Lunn
- <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        chris.lew@oss.qualcomm.com,
-        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
- <20260714-qcom-bam-dmux-vmid-ext-v1-2-3f29da7cca76@oss.qualcomm.com>
- <alXm0rp3NK62G3-3@linaro.org>
- <c8417ff3-db92-446a-acf8-8c73c83b85de@oss.qualcomm.com>
- <amMxkrW3mu48HIOr@linaro.org>
- <63bae39b-1256-4e19-a9de-840d8752ec69@oss.qualcomm.com>
- <an27PVxkCpD09xSR@linaro.org>
-Content-Language: en-US
-From: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-In-Reply-To: <an27PVxkCpD09xSR@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: UEa9ayyImELD0x4bXPbvNLJH63vSlelD
-X-Proofpoint-GUID: UEa9ayyImELD0x4bXPbvNLJH63vSlelD
-X-Authority-Analysis: v=2.4 cv=DtfDa2/+ c=1 sm=1 tr=0 ts=6aae5bdc cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=K/78aEDNEn2Q/Yuv7mVN5Q==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=07d9gI8wAAAA:8 a=EUspDBNiAAAA:8 a=vzY3hVqx5U8Bfi6rXLEA:9 a=QEXdDO2ut3YA:10
- a=mQ_c8vxmzFEMiUWkPHU9:22 a=e2CUPOnPG4QKp8I52DXD:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDE0MSBTYWx0ZWRfXxjO3d62jJpP8
- z5IKcGTRAi5oHqw7gVs4badxNIxWoogtdn2yLPQTwBOicD1SCg5jKIBIPXLSvB2k37XF5yrI26X
- HUkv7l0lCj2hlGuLUqLtJ5IdFFcCuE0F57u3zmCU7FcuyRmQRTR8deYyJuVVqRXJBeaVAypoDay
- VQVG8wxqNayy9jjph7ELmf7BWA9pyAq6mJQlxIudESwvwHAy5bcdHJLpgoyLXZ/alUV/mX6TfeX
- vLL745k0rMrRgOFLj6sj3he29sTh75LC/66J42K799uqJiW+6lVTmz0iOyKckNOLZxtggHp3D/B
- KWPYcnX7UolAVn94q9E+A6lqlK6z4WfACgarJDXFL/1S+nTvhmprx2bEr5BdB3DJO7pzlqnlqHE
- Lh55kAad2c/1sXk8iOhHvqYmD7wtLDPJsF8qYgNrogISOXdqlt93DJAxjjFq/VtdoB5mAgABhKb
- aJ0nyIZlMxlmqfO45Nw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDE0MSBTYWx0ZWRfX1j6rkpeoTglB
- Kdxc8rcz+fdSA9SaVtW5W+fmnw9fe1MNDo4RrOXqGeT51YaZkDjOh1X7dnF4cxLKvL9EMOTmNWa
- DhwVa2wWHBZP5vihWZokFkWSqkVvgrM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-19_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 adultscore=0 spamscore=0
- suspectscore=0 clxscore=1015 phishscore=0 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190141
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 526d7e8c-2431-42a7-4617-08df1634a498
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2026 09:59:06.4905
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +ixbkMPCzc8yesmbdFEL8rQTVeVedwX6691mWVpIw/piHz5wVv9zPqhxS5S9jLuyEP6MtAGnsX72hNtWg2oeZJv/IrXkH9Zh0rZEl6tlvFtGR+7RlU+S0LWWRHMPuK0x
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1283
 
+Hi, Hal
 
-On 13-08-2026 06:10 pm, Stephan Gerhold wrote:
-> On Thu, Aug 13, 2026 at 02:35:01PM +0530, Vishnu Santhosh wrote:
->> On 24-07-2026 03:04 pm, Stephan Gerhold wrote:
->>> On Fri, Jul 24, 2026 at 10:16:31AM +0530, Vishnu Santhosh wrote:
->>>> On 14-07-2026 01:05 pm, Stephan Gerhold wrote:
->>>>> On Tue, Jul 14, 2026 at 11:02:32AM +0530, Vishnu Santhosh wrote:
->>>>>> On Qualcomm SoCs where the modem (e.g. the mDSP on Shikra, VMID 43 /
->>>>>> NAV) is the AXI master for BAM-DMUX RX transfers and the XPU enforces
->>>>>> per-region access control, each individually DMA-mapped RX buffer
->>>>>> requires its own XPU resource group (RG). With ~16 RGs available, the
->>>>>> 32 per-buffer dma_map_single() calls exhaust the table and the first
->>>>>> inbound transfer faults with an XPU violation.
->>>>>>
->>>>>> BAM-DMUX is a singleton (exactly one instance per SoC), so the
->>>>>> destination VMID does not need to be a DT property; it is looked up
->>>>>> from the compatible string's match data instead. Add struct
->>>>>> bam_dmux_data with a single vmid field, and a shikra_data instance
->>>>>> hardcoding QCOM_SCM_VMID_NAV for qcom,shikra-bam-dmux.
->>>>>>
->>>>>> When match data is present, allocate all BAM_DMUX_NUM_SKB RX buffers as
->>>>>> a single contiguous dma_alloc_coherent() block and SCM-assign that
->>>>>> block to HLOS plus the VMID once at probe. This reduces RG consumption
->>>>>> from 32 to 1. The block is never reclaimed across a modem power cycle
->>>>>> (bam_dmux_power_off() does not touch it), so the probe-time assignment
->>>>>> covers every subsequent restart without re-assigning or reclaiming. It
->>>>>> is reclaimed to HLOS only once, at remove or on a probe error, and if
->>>>>> that reclaim fails it is leaked rather than returned to the page
->>>>>> allocator.
->>>>>>
->>>>>> Each rx_skbs[] slot is pre-assigned its virtual and DMA address from
->>>>>> the block, so no per-buffer mapping is needed at power-on. Because the
->>>>>> coherent block is not page-backed, received payload is copied into a
->>>>>> regular netdev skb before handoff to the network stack; this is an
->>>>>> unavoidable extra copy on the XPU-enforced RX path.
->>>>>>
->>>>>> Platforms without match data are unaffected: rx_virt stays NULL, no
->>>>>> coherent memory is allocated, and the per-buffer dma_map_single() path
->>>>>> is unchanged.
->>>>>>
->>>>>> Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
->>>>>> Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
->>>>>> Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
->>>>> So how do you handle TX buffers? Right now, they are just passed on from
->>>>> the net subsystem. There can be up to 32 TX buffers in progress as well.
->>>>>
->>>>> Overall, I have mixed feelings about this patch. It looks reasonably
->>>>> simple, but fundamentally I don't understand why we need to go back to
->>>>> the old days of implementing protection using a highly limited MPU (in
->>>>> your case: the xPU).
->>>>>
->>>>> Why does the setup of BAM-DMUX differ e.g. from the setup for the crypto
->>>>> engine? Crypto is also using bam-dma, but it avoids this inflexibility
->>>>> by making use of the &apps_smmu. Is BAM-DMUX not covered by the SMMU? Or
->>>>> did you just decide to bypass the SMMU in this case? (If so: Why?)
->>>> I checked with secure systems team on this. Crypto BAM is
->>>> behind apps_smmu, so protection is enforced through the SMMU's Stage-2
->>>> page tables.
->>>>
->>>> A2 BAM (used by BAM-DMUX) is present in secure domain and does not
->>>> support Stage-2 translation on this SoC, and there is no IOMMU domain
->>>> that can be attached to it. The only protection mechanism available is
->>>> the xPU.
->>>>
->>> Thanks for investigating this!
->>>
->>> So is this a hardware limitation or something you could change with a
->>> firmware update? Could you move the A2 BAM out of the secure domain and
->>> protect it via the IOMMU instead of the xPU mechanism? The other modern
->>> platforms with IPA do not have this limitation, they can use the IOMMU
->>> for this.
->>>
->>> We can try to support the xPU protection mechanism in the BAM-DMUX
->>> driver, but it's pretty bad from a performance and memory usage point of
->>> view if you need to copy buffers around multiple times. So if you have
->>> some way to change this in the firmware (and there is still time to do
->>> so before production boards ship), I would strongly recommend to
->>> investigate that.
->>>
->> Based on what we confirmed with the Secure Systems team, this is a limitation
->> of the current Shikra platform rather than something that can be addressed
->> through a firmware-only update.
->>
->> The A2 BAM used by BAM-DMUX is not connected to an SMMU/IOMMU domain on Shikra,
->> which means Stage-2 translation is not available for this path. As a result,
->> it is not possible to move this path behind an IOMMU.
->>
->> Modern IPA-based platforms differ because their data paths are physically routed
->> through SMMU interfaces and therefore do not rely on VMID/xPU ownership assignment
->> for this type of access control. On Shikra, the A2 BAM path is protected using the
->> xPU3 VM-based access-control model, where DDR memory access is restricted and
->> granted through the request-based Hypervisor VM assignment framework. In contrast,
->> older targets relied on the earlier xPU2 resource-sharing model, in which modem
->> access did not require this type of explicit VM ownership configuration. This
->> architectural difference explains why the issue does not occur on those older platforms.
->>
->> So, for this path on Shikra, SCM-driven VMID assignment remains the only practical solution.
->>
-> Ok, thanks for looking into this further.
->
-> Can you please try the following as alternative for the implementation?
->
-> 1. Make sure that you have CONFIG_DMA_RESTRICTED_POOL=y.
-> 2. Define a restricted DMA pool for BAM-DMUX, e.g.:
->
-> &{/reserved-memory} {
->          bam_dmux_pool: restricted-dma-pool {
-> 	    compatible = "restricted-dma-pool";
->              size = <0x40000>;	/* 32*2K*2 = 128K minimum, but 256K might be safer */
-> 	    alignment = <...>;	/* Check xPU alignment requirements */
->          };
-> };
->
-> 3. Assign to BAM-DMUX together with the qcom,vmid:
->
-> &bam_dmux {
-> 	memory-region = <&bam_dmux_pool>;
-> 	qcom,vmid = <QCOM_SCM_VMID_NAV>;
-> };
->
-> 4. Extend qcom_bam_dmux.c to look up the DMA pool address and make it
->     accessible using SCM: Call of_reserved_mem_lookup() to get the
->     region, then invoke qcom_scm_assign_mem() with that.
->
-> 5. Keep RX/TX DMA code paths in qcom_bam_dmux.c unchanged.
->
-> 6. When testing, make sure the kernel log contains
->     "Reserved memory: created restricted DMA pool at %pa, size %ld MiB"
->
-> 7. Add memory-region and qcom,vmid as optional in dt-bindings.
->     Add dependency: if qcom,vmid is specified, memory-region must be
->     specified.
->
-> In a quick test (without the VMID stuff) this worked quite well for me,
-> SWIOTLB should handle the copying behind the scenes without further
-> changes to the qcom_bam_dmux driver.
->
-> I would prefer that over complicating the driver with two separate ways
-> of buffer management. AFAICT, the restricted DMA feature is meant for
-> this kind of setup where there is no IOMMU but the firmware can still
-> restrict memory accesses to a limited amount of regions, see
-> https://lwn.net/Articles/841916/ for a short introduction.
->
-> Thanks,
-> Stephan
+> > On 26.08.07 19:29, Changhuang Liang wrote:
+> > Add auxiliary reset driver to support StarFive JHB100 SoC.
+> > The StarFive JHB100 SoC has discontiguous reset IDs. A new function
+> > reset_starfive_register_with_info() is introduced to support both
+> > contiguous and discontiguous hardware designs.
+> >
+> > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+> > ---
+> >  MAINTAINERS                                   |   6 +
+> >  drivers/reset/starfive/Kconfig                |   9 +
+> >  drivers/reset/starfive/Makefile               |   1 +
+> >  .../reset/starfive/reset-starfive-common.c    |  99 +++++-
+> >  .../reset/starfive/reset-starfive-common.h    |  19 ++
+> >  .../reset/starfive/reset-starfive-jhb100.c    | 302
+> ++++++++++++++++++
+> >  6 files changed, 425 insertions(+), 11 deletions(-)  create mode
+> > 100644 drivers/reset/starfive/reset-starfive-jhb100.c
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS index
+> > c48b56d0ab94..709600e80951 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -26088,6 +26088,12 @@ S:	Supported
+> >  F:
+> >
+> > Documentation/devicetree/bindings/interrupt-controller/starfive,jhb100
+> > -intc.yaml
+> >  F:	drivers/irqchip/irq-starfive-jhb100-intc.c
+> >
+> > +STARFIVE JHB100 RESET CONTROLLER DRIVERS
+> > +M:	Changhuang Liang <changhuang.liang@starfivetech.com>
+> > +S:	Maintained
+>=20
+> 'Supported' is better.
+>=20
+> > +F:	drivers/reset/starfive/reset-starfive-jhb1*
+> > +F:	include/dt-bindings/reset/starfive,jhb1*.h
+> > +
+> >  STATIC BRANCH/CALL
+> >  M:	Peter Zijlstra <peterz@infradead.org>
+> >  M:	Josh Poimboeuf <jpoimboe@kernel.org>
+> > diff --git a/drivers/reset/starfive/Kconfig
+> > b/drivers/reset/starfive/Kconfig index 29fbcf1a7d83..ce00495be6ad
+> > 100644
+> > --- a/drivers/reset/starfive/Kconfig
+> > +++ b/drivers/reset/starfive/Kconfig
+> > @@ -19,3 +19,12 @@ config RESET_STARFIVE_JH7110
+> >  	default ARCH_STARFIVE
+> >  	help
+> >  	  This enables the reset controller driver for the StarFive JH7110 So=
+C.
+> > +
+> > +config RESET_STARFIVE_JHB100
+> > +	bool "StarFive JHB100 Reset Driver"
+> > +	depends on CLK_STARFIVE_COMMON || COMPILE_TEST
+> > +	select AUXILIARY_BUS
+> > +	select RESET_STARFIVE_COMMON
+> > +	default ARCH_STARFIVE
+> > +	help
+> > +	  This enables the reset controller driver for the StarFive JHB100 So=
+C.
+> > diff --git a/drivers/reset/starfive/Makefile
+> > b/drivers/reset/starfive/Makefile index 582e4c160bd4..217002302a9f
+> > 100644
+> > --- a/drivers/reset/starfive/Makefile
+> > +++ b/drivers/reset/starfive/Makefile
+> > @@ -3,3 +3,4 @@ obj-$(CONFIG_RESET_STARFIVE_COMMON)		+=3D
+> > reset-starfive-common.o
+> >
+> >  obj-$(CONFIG_RESET_STARFIVE_JH7100)		+=3D
+> reset-starfive-jh7100.o
+> >  obj-$(CONFIG_RESET_STARFIVE_JH7110)		+=3D
+> reset-starfive-jh7110.o
+> > +obj-$(CONFIG_RESET_STARFIVE_JHB100)		+=3D
+> reset-starfive-jhb100.o
+> > diff --git a/drivers/reset/starfive/reset-starfive-common.c
+> > b/drivers/reset/starfive/reset-starfive-common.c
+> > index 772bdf6763d1..86dbb33bb216 100644
+> > --- a/drivers/reset/starfive/reset-starfive-common.c
+> > +++ b/drivers/reset/starfive/reset-starfive-common.c
+> > @@ -14,6 +14,8 @@
+> >
+> >  #include "reset-starfive-common.h"
+> >
+> > +#define STARFIVE_RESET_ID_INVALID	ULONG_MAX
+> > +
+> >  struct starfive_reset {
+> >  	struct reset_controller_dev rcdev;
+> >  	/* protect registers against concurrent read-modify-write */ @@
+> > -21,6
+> > +23,11 @@ struct starfive_reset {
+> >  	void __iomem *assert;
+> >  	void __iomem *status;
+> >  	const u32 *asserted;
+> > +
+> > +	/* Only exists in reset controllers that use the
+> > +	 * reset_starfive_register_with_info helper.
+> > +	 */
+> > +	const struct starfive_reset_info *info;
+> >  };
+> >
+> >  static inline struct starfive_reset * @@ -29,19 +36,40 @@
+> > starfive_reset_from(struct reset_controller_dev
+> > *rcdev)
+> >  	return container_of(rcdev, struct starfive_reset, rcdev);  }
+> >
+> > +static unsigned long
+> > +starfive_reset_id_to_hw_id(const struct starfive_reset_map *map,
+> > +unsigned
+> > int nr_resets,
+> > +			   unsigned long reset_id)
+> > +{
+> > +	for (u32 i =3D 0; i < nr_resets; i++) {
+> > +		if (map[i].reset_id =3D=3D reset_id)
+> > +			return map[i].hw_id;
+> > +	}
+> > +
+> > +	return STARFIVE_RESET_ID_INVALID;
+> > +}
+> > +
+> >  static int starfive_reset_update(struct reset_controller_dev *rcdev,
+> >  				 unsigned long id, bool assert)
+> >  {
+> >  	struct starfive_reset *data =3D starfive_reset_from(rcdev);
+> > -	unsigned long offset =3D id / 32;
+> > -	u32 mask =3D BIT(id % 32);
+> > -	void __iomem *reg_assert =3D data->assert + offset * sizeof(u32);
+> > -	void __iomem *reg_status =3D data->status + offset * sizeof(u32);
+> > -	u32 done =3D data->asserted ? data->asserted[offset] & mask : 0;
+> > -	u32 value;
+> > -	unsigned long flags;
+> > +	unsigned long offset, flags;
+> > +	void __iomem *reg_assert;
+> > +	void __iomem *reg_status;
+> > +	u32 mask, done, value;
+> >  	int ret;
+> >
+> > +	if (data->info && data->info->discontiguous) {
+> > +		id =3D starfive_reset_id_to_hw_id(data->info->map,
+> > data->info->nr_resets, id);
+> > +		if (id =3D=3D STARFIVE_RESET_ID_INVALID)
+> > +			return -EINVAL;
+> > +	}
+> > +
+> > +	offset =3D id / 32;
+> > +	mask =3D BIT(id % 32);
+> > +	reg_assert =3D data->assert + offset * sizeof(u32);
+> > +	reg_status =3D data->status + offset * sizeof(u32);
+> > +	done =3D data->asserted ? data->asserted[offset] & mask : 0;
+> > +
+> >  	if (!assert)
+> >  		done ^=3D mask;
+> >
+> > @@ -89,10 +117,20 @@ static int starfive_reset_status(struct
+> > reset_controller_dev *rcdev,
+> >  				 unsigned long id)
+> >  {
+> >  	struct starfive_reset *data =3D starfive_reset_from(rcdev);
+> > -	unsigned long offset =3D id / 32;
+> > -	u32 mask =3D BIT(id % 32);
+> > -	void __iomem *reg_status =3D data->status + offset * sizeof(u32);
+> > -	u32 value =3D readl(reg_status);
+> > +	void __iomem *reg_status;
+> > +	unsigned long offset;
+> > +	u32 mask, value;
+> > +
+> > +	if (data->info && data->info->discontiguous) {
+> > +		id =3D starfive_reset_id_to_hw_id(data->info->map,
+> > data->info->nr_resets, id);
+> > +		if (id =3D=3D STARFIVE_RESET_ID_INVALID)
+> > +			return -EINVAL;
+> > +	}
+> > +
+> > +	offset =3D id / 32;
+> > +	mask =3D BIT(id % 32);
+> > +	reg_status =3D data->status + offset * sizeof(u32);
+> > +	value =3D readl(reg_status);
+> >
+> >  	if (!data->asserted)
+> >  		return !(value & mask);
+> > @@ -132,3 +170,42 @@ int reset_starfive_register(struct device *dev,
+> > struct device_node *of_node,
+> >  	return devm_reset_controller_register(dev, &data->rcdev);  }
+> > EXPORT_SYMBOL_GPL(reset_starfive_register);
+> > +
+> > +int reset_starfive_register_with_info(struct device *dev, struct
+> > +device_node
+>=20
+> Also, you add reset_starfive_register_with_info() but a very similar
+> reset_starfive_register() still remains. I think we can merge them.
 
-Thanks for the detailed steps. I tested this approach on the Qualcomm Shikra
-platform, and it works as expected.
+The current series is quite large. To reduce the review burden of the curre=
+nt series,
+I plan to release a separate series later for JH7110 to reduce these simila=
+r interfaces.
 
-With CONFIG_DMA_RESTRICTED_POOL enabled, following the approach, the kernel reports:
-
-software IO TLB: Reserved memory: created restricted DMA pool at 0x00000000fffc0000, size 0 MiB
-OF: reserved mem: initialized node restricted-dma-pool, compatible id restricted-dma-pool
-OF: reserved mem: 0x00000000fffc0000..0x00000000ffffffff (256 KiB) map non-reusable restricted-dma-pool
-
-
-The BAM DMA controller also reports:
-
-bam-dma-engine 6044000.dma-controller: assigned reserved memory node restricted-dma-pool
-
-The BAM-DMUX TX/RX DMA paths are working with this configuration. I will update
-v2 to use the restricted DMA pool approach as suggested.
-
-
-Thanks,
-Vishnu
-
+Best Regards,
+Changhuang
