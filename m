@@ -1,73 +1,77 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986C738A70B
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192E337CD20
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789853342; cv=none; b=m+rpXQqkoojpblj5+6qypzRptQxgsr3L/zwlMtyhHp30DmLAwxk5db4uSWvGJH6hYLyDcdi9LrF4YajSrPcphP076QS3FSe9R/c7lA8e9njkUeAG+w2o6Ni3wAaqXC176OBoeITTKdacxGvB+auCAlyHbFw6OVU52d+sgmnlXdY=
+	t=1789853343; cv=none; b=Scpi4xMN0ZbNfFdf0VTV0g7LQA57vNQc259pNLi+XXIuD83/dkmhCC0AJIc+YalnVe+qD/BqLcobhZ26illkTILsrVn87XdEnIIstk8t4P7S7cSdM50qHbY2Dszt91z/Q+3RiAhVM0l6D93VwhNf+qNySrxhxdktiu/uQzJidfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789853342; c=relaxed/simple;
-	bh=prjDMLVmFu3EaYvVl6i2BgtEyldcdqRrMc/3t9zL6bc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dqQzVsbo40Bk+23pWxtdE8Vg6wFq2SaknoDPEjkgVjVyA96FH4CSHEHK44spZKm6BDE1GfK5oNSUcCbm8F4XRpJECkv+29PsHV4mL+4aoVPDcdJUURR3cfdscQtr/unsVyh8K574L2Bb6z76SK8BTEQWTe4NlUjShv8YBObnQdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWIDi4BY; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1789853343; c=relaxed/simple;
+	bh=KcQIxrjjYKOPt7VPc3GR8Ypvb9JGlM8cc1l2/4kyu9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fSCJh+mCOvLEo7rGJ2UbN+Hu1JqL6QMk0jJqwtpOoj1sVmt2SzHD+s7O7yTlrOSDlCGvOccMsj6weOui+826ikJjZBhbmjbPu5VdG/cRri8hZjLjupDeMeAIGEYdFlTGK29oONZ1NtKl7rqfqgwIZ8Y+NrVv70USQAnJPmakdgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZaOoANm; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWIDi4BY"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8692a856865so1768669b3a.2
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:28:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZaOoANm"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccb1a98dso1440927a91.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:28:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789853337; x=1790458137; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789853338; x=1790458138; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IYFViyQge7tf8m2KJ5gBNtr9+PNFnUOuNQpW8AAs1R4=;
-        b=gWIDi4BYOzkiYNVc/t4a84aNa/xJJBrJlZZzyQs/D0Bki8js38cwua2BQRetrfQY95
-         T/AGWO4+ddHR7PyqST7QxhiNhPl75tEItExsAJarX6BIzUgTklA5WttQhSVmv0JxyX2S
-         KaINKVhsxJz3JqVrJ5Qgg0DRfqEMMIlDDgp3lLnvO/Qzx9Nz73mvSvPrbfm5+FZtzulx
-         jdZQj1G2mlZAXI7y+LKEJoOMOoKxFigCXgL3IO4Qyo0N6zAE5QEPFFK77sawhpzDDN7w
-         PfOkCkOJkEDqyVX3DdJIvjKXBY6B3LnGWhMl5aqsRSvg2lnm4iTFpTkkScLXcNRyoD72
-         WnSQ==
+        bh=yGJIKW1WUZIXfYGv7StzLwvHtFQ/N+sc5vtFtFfdCwo=;
+        b=eZaOoANmYxN02/Ll3CCd7mzVhr9nww8WmS0ZZ75M1wzB1ltuDQa1AFBFAmo5J6RQET
+         w1EATVXGQ2ny0UWhc7BGp4WEvzWRdIDgtRF4jBjkN2+BVtyg7GF6jUESvHVq7zC/uraa
+         hlMYtNFQUrFV8WFiaen0CHuFzDW5nVDmyiZ2c3QIpcazPJqKB+Squ+uCG+hJzP6DCtrB
+         8AaJFOqM6CaXhUunTA4FL/pSfpITuGja+lB84TVAPDv+q97/Axlu89H9VGLzpLOQxRvk
+         69GZ4H6mRCPZCuyTLiCbS96C/hZlpYMVwrzOk4kAMpFJ+oQtQW3oq/L9C+Q+WG2ag+L3
+         u2oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789853337; x=1790458137;
+        d=1e100.net; s=20260707; t=1789853338; x=1790458138;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IYFViyQge7tf8m2KJ5gBNtr9+PNFnUOuNQpW8AAs1R4=;
-        b=PRAp+G48J9RW2UH5/Mb72dwKCbDEqfqH9BsSrbC0y7ICG8GI/LtcKkWFhC641OU53S
-         O1u4ih1T2IzraHo+nsj+ivP14v4gLglGyyzATIo29cjN0YZ+IzGj7z7qysxfKzL9pYDg
-         amaFYeX0E9dpHAzqaBJtOnbH5DIJptlHUjWRwH7ATtYgdyok41qPpW+0rqVqu08pum9f
-         8Ytuj4+t5I64ZZt3RymaKC/C+xKTnB0OrgUzlgFGrlMlqj3cnRlZjVNzD8C6YubJFCSR
-         jSetCJU5FjUNDKY56D8QWAJK6tayHaTtZXurLSCkb5jlz8S6liCcLEeZntcsSyuFe/ta
-         +8bQ==
-X-Gm-Message-State: AFuF++k3+9pTq0e4YujrCE/mIbe7y2zXbuXmaox31LNlkwZjfo422DMO
-	k4xDlNqchoUhWD0BIKzwyuCWQgrG/Cvc3JaPUlNlJwAYPTTusn2n/ehy
-X-Gm-Gg: AYBFou0Wf+f9yceiX0A4fnH9sp7Z0YFOKuGMv1PzZaSr0ubrJxVubB1N5EF4qq/uQro
-	1a0ASyNeqS7CCGjUQ4D1xLLqSca04iDC9Y0LdQoVzz9DUEJvb0JzuAgE+9cfqKQsC9akiWv9Xz1
-	seVfa1oq8BofCI7lTIPTgFHSKqP6A3H6eI+p3FpTWGmdm20zlB44gRAsy1TE+QcjtAAqCHwnQ61
-	0XF8IWHz0Ff8fPxVOWx7FVzf41/oDKyU0KxgxiTUTPA4sxNqe5BegMVN4dhT598B4s8UBelytwR
-	+0DZTo6udAD4iVQ7JEV5/QqnOvefd8iwXOIbw2S+OrWBe3kFtUSZGlSh7bVo71vVBsPE2IR/6yn
-	bvnLZu9i7OYRodGIINzgYfUgxGiV5LeV96yBj/RIyP8h5i1iMdSAj73+ZKSMegq06Oqx/VUvtPo
-	7dJiCfPmHFSd8nWYRZ06+dfydO/8YoIVoLR/eAFEA8n4AZBMZBh3vNrlx8H9is5UBBFHdO3B6J0
-	S2QlTJEPprOwTbZbVo/lwvThHDgXHikDznYT9gGGd71V5s1lV053Bg6Tm349izdoEug66yHZv/2
-	HgV0vSQ/Gg==
-X-Received: by 2002:a05:6a20:72a1:b0:3c3:a3fd:db0a with SMTP id adf61e73a8af0-3dd8c44c5c6mr9467932637.16.1789853337043;
+        bh=yGJIKW1WUZIXfYGv7StzLwvHtFQ/N+sc5vtFtFfdCwo=;
+        b=fhThOxjqyQQr0I3Rp3iVdLSsx6zJZcdyd9VLBGxpdzz94Zevs9XrP+4sPqzsIhJGmh
+         W9rYXUqfyuSp6tQbyDP2SFXJe2NzrqtAoKpCgkggO2feUARLn+9od2h+FFxiJpUdrTza
+         JjdYpvhuLuEIgmvk61Dag//k7i3kYinp2QP2FCNVjtlJYev9uOe5I2YGc/SoLErDOQ3T
+         l1Yy8xPgWi2reLUVqCk43P11nUolqKC3VIO8nAEGniG8X5quYjCpik3sMZxxGt2kZWto
+         7ypwb2jpKnbz3kS3ZmwleOmxnT1b174Jkth4/EtpHergm4/I36/ZCBQ0nbpJeNy4Fmrj
+         BZQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxyQz4WrFYOINQf20yrqZr3XapLQ+EuUTJg1odEXVVTCmSPOb0fSGunK4gS2mMtVxiK5YQhllM=@vger.kernel.org
+X-Gm-Message-State: AFuF++m6JjuhPaFYQGiTkdTkQHsTVWiEOEXz4ZF0jGhu39iDi0rnXznZ
+	ozi2qT2T5O4S5pjNLfyMdQpoEy5cK/cEeLWk8Zoxps7HsDm5DH07ZOqX
+X-Gm-Gg: AYBFou1oW6Ukk7fPJ8Sc8Qqg7YyqfLe8l8BRo5JmtHtPTxwtcziHkBje1nPKMKLmd8W
+	fGemdl0zd+CV8rl4lKasW5kUttJHQmlLk68UbxJprCxEGUEKc8asB0hCO/7/PbOKsTh2IjOzVbF
+	TzdFv16B8qLZyKGXsfp7uZTVs5OD+cNUhXrCWSZdMdErcGgGtwoj6o+mWnUhb751tTonAaEBo6K
+	rCUPs1AndHAp0SBAVUWS0wFyeKLu1fz/vZWEiLCGs5qNlPPcj6mKUmwQzI68nnGS2FNW9YXUz4T
+	6imn2Uft9LljSltWswcaxVyYSu3k8b4ayiC7/T0VmxCoQDQ5uBkbWqGPbqB3gTATTUurwUQaKP4
+	1NHNmj8LlOsFWFjPsQmg0rlcjzWReGLYzmDjah0nSjJgMBtGlt6INijPSJk6r1mUrne1K5nJG/C
+	WJYu7R5d2/PCFj9xObCKukROx6o1sqX1DJt6NUJWyMeQX5ZZwUUPoypzkZRK1a1TT1wAYnHH1Yv
+	nY+jGQYUq0ecnYvVZMuv6bAjfqz2EsP5L+IL0bYQ1FRKt7Wg0/tz/Yl4ufl1kzZ6l8+yMfXtijn
+	g9+JX8vEpg==
+X-Received: by 2002:a17:90b:56c5:b0:39d:f247:bab with SMTP id 98e67ed59e1d1-39e54b66f85mr12104378a91.6.1789853337992;
         Sat, 19 Sep 2026 14:28:57 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc72aefa9c0sm1224118a12.29.2026.09.19.14.28.56
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6caefa5esm6021149a91.12.2026.09.19.14.28.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 14:28:56 -0700 (PDT)
+        Sat, 19 Sep 2026 14:28:57 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
-To: andrew+netdev@lunn.ch,
+To: jmaloy@redhat.com,
+	tung.quang.nguyen@est.tech,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] ppp: pptp: fix out-of-bounds read on short payload_len in pptp_rcv_core()
-Date: Sat, 19 Sep 2026 21:28:55 +0000
-Message-ID: <20260919212856.3241262-1-benquike@gmail.com>
+Subject: [PATCH] tipc: fix TLV out-of-bounds read in tipc_nl_compat_net_set() and depth mask
+Date: Sat, 19 Sep 2026 21:28:57 +0000
+Message-ID: <20260919212857.3241483-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -77,60 +81,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In `pptp_rcv_core()`, `pskb_may_pull(skb, headersize + payload_len)`
-only verifies that `skb->len >= headersize + payload_len` without
-checking that `payload_len` itself is large enough for the subsequent
-PPP header accesses.
+Fix two validation flaws in `net/tipc/netlink_compat.c`:
 
-When a GRE packet arrives with `payload_len == 0` (or `1`) and `skb->len
-   == headersize + payload_len`, `pskb_may_pull()` succeeds and `payload
-   = skb->data + headersize` points to `skb->tail`. Immediately
-   afterwards:
-1. If `seq` is out-of-window, `pptp_rcv_core()` reads `payload[0]`,
-   `payload[1]`, `PPP_PROTOCOL(payload)` (`payload[2..3]`), and
-   `payload[4]` (up to 5 bytes past `skb->tail`) to check for an LCP
-   Echo packet.
-2. If `seq` is in-window, `pptp_rcv_core()` reads `payload[0]` and
-   `payload[1]` (up to 2 bytes past `skb->tail`) to check for the PPP
-   address and control bytes.
+1. `tipc_nl_compat_net_set()` (`TIPC_CMD_SET_NETID` /
+   `TIPC_CMD_SET_NODE_ADDR`) unconditionally dereferences `*(__be32
+   *)TLV_DATA(msg->req)` without verifying that
+   `TLV_GET_DATA_LEN(msg->req) >= sizeof(__be32)` (4 bytes), reading 4
+   bytes past the end of a 0-byte TLV payload (`tlv_len == 4`).
+2. In `tipc_nl_compat_name_table_dump_header()` and
+   `tipc_nl_compat_name_table_dump()`, `ntq->depth` can contain the high
+   flag bit `TIPC_NTQ_ALLTYPES` (`0x80000000`).
+   `tipc_nl_compat_name_table_dump_header()` compares `depth > 4`
+   without masking off `TIPC_NTQ_ALLTYPES` first (always clamping
+   `depth` to 4 whenever `TIPC_NTQ_ALLTYPES` is set, even if the low
+   depth bits are `1`), and `tipc_nl_compat_name_table_dump()` checks
+   `depth > 1` and `depth > 2` with `TIPC_NTQ_ALLTYPES` still set in
+   `depth`. Mask off `TIPC_NTQ_ALLTYPES` after testing it.
 
-Require `payload_len >= 2` before pulling the payload, and require
-`payload_len >= 5` before inspecting `payload[0..4]` for LCP Echo
-frames.
-
-Fixes: 00959ade36ac ("PPTP: PPP over IPv4 (Point-to-Point Tunneling Protocol)")
+Fixes: d7cc75d3cb6b ("tipc: convert legacy nl node addr set to nl compat")
+Fixes: 44a8ae94fd55 ("tipc: convert legacy nl name table dump to nl compat")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 
 ---
- drivers/net/ppp/pptp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/tipc/netlink_compat.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index a797a0606f6b..2f979294490d 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -310,6 +310,8 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
- 	payload_len = ntohs(header->payload_len);
- 	seq         = ntohl(header->seq);
+diff --git a/net/tipc/netlink_compat.c b/net/tipc/netlink_compat.c
+index d9a4f94ea2d4..9b2d93704e23 100644
+--- a/net/tipc/netlink_compat.c
++++ b/net/tipc/netlink_compat.c
+@@ -881,7 +881,7 @@ static int tipc_nl_compat_name_table_dump_header(struct tipc_nl_compat_msg *msg)
+ 	if (TLV_GET_DATA_LEN(msg->req) < (int)sizeof(struct tipc_name_table_query))
+ 		return -EINVAL;
  
-+	if (payload_len < 2)
-+		goto drop;
- 	/* check for incomplete packet (length smaller than expected) */
- 	if (!pskb_may_pull(skb, headersize + payload_len))
- 		goto drop;
-@@ -317,9 +319,11 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
- 	payload = skb->data + headersize;
- 	/* check for expected sequence number */
- 	if (seq < opt->seq_recv + 1 || WRAPPED(opt->seq_recv, seq)) {
--		if ((payload[0] == PPP_ALLSTATIONS) && (payload[1] == PPP_UI) &&
--				(PPP_PROTOCOL(payload) == PPP_LCP) &&
--				((payload[4] == PPP_LCP_ECHOREQ) || (payload[4] == PPP_LCP_ECHOREP)))
-+		if (payload_len >= 5 &&
-+		    payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI &&
-+		    PPP_PROTOCOL(payload) == PPP_LCP &&
-+		    (payload[4] == PPP_LCP_ECHOREQ ||
-+		     payload[4] == PPP_LCP_ECHOREP))
- 			goto allow_packet;
- 	} else {
- 		opt->seq_recv = seq;
+-	depth = ntohl(ntq->depth);
++	depth = ntohl(ntq->depth) & ~TIPC_NTQ_ALLTYPES;
+ 
+ 	if (depth > 4)
+ 		depth = 4;
+@@ -932,6 +932,7 @@ static int tipc_nl_compat_name_table_dump(struct tipc_nl_compat_msg *msg,
+ 	if (!(depth & TIPC_NTQ_ALLTYPES) &&
+ 	    (type != nla_get_u32(publ[TIPC_NLA_PUBL_TYPE])))
+ 		return 0;
++	depth &= ~TIPC_NTQ_ALLTYPES;
+ 	if (lowbound && (lowbound > nla_get_u32(publ[TIPC_NLA_PUBL_UPPER])))
+ 		return 0;
+ 	if (upbound && (upbound < nla_get_u32(publ[TIPC_NLA_PUBL_LOWER])))
+@@ -1139,6 +1140,9 @@ static int tipc_nl_compat_net_set(struct tipc_nl_compat_cmd_doit *cmd,
+ 	u32 val;
+ 	struct nlattr *net;
+ 
++	if (TLV_GET_DATA_LEN(msg->req) < (int)sizeof(__be32))
++		return -EINVAL;
++
+ 	val = ntohl(*(__be32 *)TLV_DATA(msg->req));
+ 
+ 	net = nla_nest_start_noflag(skb, TIPC_NLA_NET);
+-- 
+2.55.0.1082.g2b9226bbc0-goog
+
