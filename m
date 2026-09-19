@@ -1,134 +1,69 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638F0345725;
-	Sat, 19 Sep 2026 21:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DF933B6FB;
+	Sat, 19 Sep 2026 21:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789852892; cv=none; b=axbwCM8Cwmc1WioB4+uUO6o+1Xr49vZdR6sUxM6je3eGS9I7O7oR3fp1k9BUL5YycfwnXmZWdZHuzsMfD42HeMiDTdjud6/pGZ3PxEPek0QkfgipGPMi5KAR4r0VMHa1PEbuBKd2y9+K4EJKKVont0Q/ip1K7YzQPM0czKb5d64=
+	t=1789853267; cv=none; b=efiYXCD6diQLs3mo7iONbD0mTh9p0J4v2OSmDsPwq1/dj7Hpfsxpx7dBqAo109cHhJEKuQEKzV3WbU7Ytw+8rpyAdVLpzsBM89LATOv3TAr2NR59OpuZU1hQcpCsBPvAsqzE3tWu0mUBQ1Jwpp0+L5THQ7bKxGcvN8aK09hCuUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789852892; c=relaxed/simple;
-	bh=/CFkfMpBF8fyzBHjid3b4/eX04QmMQDYl53ld049TOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W7mUKFYkqiAFMegH0gaSFAS6uMXt014HWf8yRcKyq91IpUSomyQWrazMEzpO9Q3TOnoWI7K1B5o6lwARz2s4aN5Z//OI4JVzf4NTXuc8UohWy9dHpO+RClAm7D3wzvflazJLS0uh6DmQBrOzTmenEhfVCizOCRvhKWzKIYSV+MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=qgyEcQKt; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1789853267; c=relaxed/simple;
+	bh=nnKOL8NqdPAdR4FH+0ayTXxIoDFud+zD3rLOQKsvwVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SL6LmmMwVzjHffzh3yfPfiRXA6+csAJjNqwLhVZP4RizoakBqME/N1gWERN75IK6fOp+iYcGAOkqXXaeeTPbMjGPsCNNZmcFCnU3TuDf+KJR+D7V1JHNr23MHr/Trh/c6twAsmvYEM/4pCqVk6Svl1ICTf4td2UjHjfZpbvpUck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXn5UcrP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="qgyEcQKt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=VGlVhVkMT0o9ZTra6qrIGvE2wdfs8kYNNB8oz6/+LZE=; b=qgyEcQKtBtUrqZxiTZfW53qNuY
-	3ff5cmSuVpSuY/8+WS+TLvOH8gGg/jswlQWwCgB+alhndB9JfIiB2wm3wvDrbQxF+FudBwKV+v95S
-	kDuZMBvI5h6vYvhtpQylpTcAdnIaZkp6gXOZmpjVNUPoW6xOKrhhGtCPbhuqw7WAQ1AgzfirnAbAi
-	8x/WBCuGRhgvEGqCEayUnTAIgIFcN9SfqYMeMQnPPtWqQPlP/7Q9KgLts0q3Q8EfNNZjcGKdRoytq
-	AhQMRInvCfipjuhJGl6PURz/9xiXb/p8pNdr6VXof34R7pZh1Xk6XMKVJKJSc8r2psbzOBwKZCoRp
-	62Zw2hIA==;
-Received: from [151.115.150.205] (port=49996 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1x82Uz-00000004vfW-3Go1;
-	Sat, 19 Sep 2026 23:21:27 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: cel@kernel.org,
-	jlayton@kernel.org,
-	trondmy@kernel.org,
-	anna@kernel.org
-Cc: linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: [PATCH] SUNRPC: restrict integrity replies to authenticated payload
-Date: Sat, 19 Sep 2026 21:20:25 +0000
-Message-ID: <20260919212024.2335794-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXn5UcrP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229FE1F000FF;
+	Sat, 19 Sep 2026 21:27:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789853265;
+	bh=AO/Eu04UJkHc6pSrEXmXrNXJ1w9izsPoCjtzx+eKB7k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eXn5UcrPIov2YLgAUEs+GRTC+8uCr5IM1DP0vyBA2qlxh4fQK5tnoOvoWEaWgR4r2
+	 U/3B5j/NxoS4SYFOzCfZ+gtTKqk9+7Op29pUVISKgjWk7qCuorDXWhZnVkkLH9CKW0
+	 uoDNfzqFSVDROb47QsFnROg++blphKnKeKjHxk8IpvXIH1xDAHaCs+0r/KK0qBKkV2
+	 /G5qb4/iOsUX/fkIj5XRMtJViPm7MtNpC+IOLqu1m+8naqg0UyOrjJRAap4wX5AyvO
+	 /kcQ1jMEovLfvEO4ebv0Pl48VmcHlPV3WWjwyC5oLd6RwjYKnecyeqXxM4EMLRGvlL
+	 REvYJP39Ig8zg==
+Date: Sat, 19 Sep 2026 14:27:44 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
+Cc: "Manivannan Sadhasivam" <mani@kernel.org>,
+ linux-arm-msm@vger.kernel.org, "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>,
+ "Jeff Johnson" <jjohnson@kernel.org>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Eric
+ Dumazet" <edumazet@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Willem de Bruijn" <willemb@google.com>,
+ "David S . Miller" <davem@davemloft.net>, "Simon Horman"
+ <horms@kernel.org>, "Mihai Moldovan" <ionic@ionic.de>, "Denis Kenzior"
+ <denkenz@gmail.com>, "Marcel Holtmann" <marcel@holtmann.org>, "Andy Gross"
+ <agross@kernel.org>, linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ ath12k@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v7 00/15] QRTR Multi-endpoint support
+Message-ID: <20260919142744.12982b1d@kernel.org>
+In-Reply-To: <9837273a-c62f-456e-9aa0-567b0d3a6f29@app.fastmail.com>
+References: <20260915054207.2513877-1-juha-matti.tilli@iki.fi>
+	<20260915154705.67cfb94f@kernel.org>
+	<da6003cf-515b-4d97-8059-3f4553d0251d@app.fastmail.com>
+	<9837273a-c62f-456e-9aa0-567b0d3a6f29@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-gss_unwrap_resp_integ() authenticates only databody_integ. The checksum
-object and any bytes after it are not covered by the integrity check, but
-remain visible to the XDR decoder.
+On Fri, 18 Sep 2026 09:22:40 +0300 Juha-Matti Tilli wrote:
+> Some positive news. There will be no next version, as Qualcomm is going
+> to provide a superior patchset that I tested. It's easier to backport,
+> cleaner design, fewer lines changed, has 1 author as opposed to 3, and
+> most importantly, it worked just fine on my 2x card setup. 
+> 
+> Thus, I'm going to abandon this patchset.
 
-This makes RPCSEC_GSS reply payloads malleable by bypassing crypto
-integrity. A modified reply can contain only the RPCSEC_GSS sequence
-number in databody_integ, reuse the reply verifier MIC as the body MIC,
-and append bytes that the decoder consumes without invalidating the MIC.
-
-Decode the checksum length into mic.len and truncate the decode stream
-after MIC verification so only the authenticated payload remains visible.
-Reject bodies shorter than the mandatory sequence number before using the
-body length.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Assisted-by: Codex:gpt-5
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
- net/sunrpc/auth_gss/auth_gss.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 8ddc65e894da..bd0457abc5fe 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -2001,7 +2001,7 @@ gss_unwrap_resp_integ(struct rpc_task *task, struct rpc_cred *cred,
- 	/* opaque databody_integ<>; */
- 	if (xdr_stream_decode_u32(xdr, &len))
- 		goto unwrap_failed;
--	if (len & 3)
-+	if (len < XDR_UNIT || len & 3)
- 		goto unwrap_failed;
- 	offset = rcv_buf->len - xdr_stream_remaining(xdr);
- 	if (xdr_stream_decode_u32(xdr, &seqno))
-@@ -2021,13 +2021,12 @@ gss_unwrap_resp_integ(struct rpc_task *task, struct rpc_cred *cred,
- 
- 	/* opaque checksum<>; */
- 	offset += len;
--	if (xdr_decode_word(rcv_buf, offset, &len))
-+	if (xdr_decode_word(rcv_buf, offset, &mic.len))
- 		goto unwrap_failed;
- 	offset += sizeof(__be32);
--	if (offset + len > rcv_buf->len)
-+	if (offset + mic.len > rcv_buf->len)
- 		goto unwrap_failed;
--	mic.len = len;
--	mic.data = kmalloc(len, GFP_KERNEL);
-+	mic.data = kmalloc(mic.len, GFP_KERNEL);
- 	if (ZERO_OR_NULL_PTR(mic.data))
- 		goto unwrap_failed;
- 	if (read_bytes_from_xdr_buf(rcv_buf, offset, mic.data, mic.len))
-@@ -2038,6 +2037,12 @@ gss_unwrap_resp_integ(struct rpc_task *task, struct rpc_cred *cred,
- 		clear_bit(RPCAUTH_CRED_UPTODATE, &cred->cr_flags);
- 	if (maj_stat != GSS_S_COMPLETE)
- 		goto bad_mic;
-+	if (xdr_stream_remaining(xdr) < len - XDR_UNIT)
-+		goto unwrap_failed;
-+
-+	/* Expose only the authenticated payload to the decoder. */
-+	xdr_truncate_decode(xdr, xdr_stream_remaining(xdr) -
-+			    (len - XDR_UNIT));
- 
- 	gss_update_rslack(task, cred, 2, 2 + 1 + XDR_QUADLEN(mic.len));
- 	ret = 0;
--- 
-2.47.3
-
+Man, "superior" and "Qualcomm" in one sentence is really testing 
+my resolution to be less sarcastic.
