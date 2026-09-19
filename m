@@ -1,257 +1,119 @@
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020136.outbound.protection.outlook.com [52.101.229.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A8130C37A;
-	Sat, 19 Sep 2026 13:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.136
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789823175; cv=fail; b=FSU2Jh0XAXlQIo8zVcda4xrV0QZ3TLEkVwAyqwi5TUqH1hG+cKIx6EuzaAMUwGoUF1l8GgbNaRmCyt8Uc+xfgN1/zWrOGVpNljpfH+/iGn5RFy1ryuPt9taj2yZ7ByXHIN6rhr+fG94EF+YjH/k3mWNuuBc7UhklBZbK6FsB07Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789823175; c=relaxed/simple;
-	bh=b//uZ26kSUxFIHdhFUIaMnsixkWPD+rNaPcNqrTC+ys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=T3yR6eZOT6+p+HQW07grccgix5S9fPEmVOhJmaLikCdTHIRm2G5cZLT+6WkReIl0V+nSvUdmIk9bTkdI4YcJaMK/eWZKsgyInBSAARJXasCK7hOfOlZ0EYSdsDI5F0Du+sfu1LwjRWwjbDw8CTSyTtr2Gc52dUMDiKc6tqnnlqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=wvuQqKW2; arc=fail smtp.client-ip=52.101.229.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE512C0F6D
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 13:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789823892; cv=none; b=Yp5CEvAfaeDwieIEiG2fWkwYlEKSvzy+UiNy4YbdRa0HyXv5AcytalSheQAuFloP8D92gjjC3w7r0z3GBf93n51RCAEKNzv5HApPOij/wiXMkg1aKvk4j6T+hoG39X4bScwCOYmOLHMoILi27kZzlgAdjGQhu+LN5XC6Mua9njo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789823892; c=relaxed/simple;
+	bh=CsmY2C0LUhQFV2xkI5Vula3YY7rYEiZTWt4OODXOZMg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZvbyCtfF+YagurAk0cqPEmEPD3D2K+h6q2MN+sTe/i5s9cwf3hlTvJDgVx+kTOXMMMbL40ctT0qJ32i7dmKZN0JU8FRY+TcLB0WV35Gq8XAU/zvv8gcF8d9G/LiqhgJM9bY6nxMp0H1bFo3+t5ZJi80/dD38VPmiZAj3W11koTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5T4SkdM; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="wvuQqKW2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M8t1axjkQ1F+6NsyBTEKIkueSI3yeuJAETRfkC1jBApsSiZI/JaAWHJavNbDNyMZPGK52gtZNkaCF+nQR8N5mnbCCSAg5dxtolVT9cFYPhAMY476aICcUnyz2cCjeg1MoGDJkXCF65coCXZQMyyTu2kCu1qfjvCs19lCQ+jUgSQMkkDz1bPCK8DZtOJ0Ia31RGuqN2Y1Hhe+i6A83BnoSrfc5u3W9asB04776KmeZ6OR8qBkKTnQYbdvEhWJo6AVp13BBEx6c3D/fH4isMEzfwInHmWzYdaxncEzCYOeumgWoC+KoenU31aC2SF9bHINmf92ssWOLfPgbx1VN/Y0cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rkICNCTT2/nsRmPJGwbSRv0c3ijJVQCVhi2J3TNm/bY=;
- b=JN+Gtb1/ro782oo93U1LKmSLQaKfb7dJsS7RhM7AF6wKUb2mAWrGRfUuCjhssYMBnhP2TNkrxyNZTCT9cHMzDbYlX6zJ0aChNMDka9h+Lj/NHcQF3iae6uO/C7ylSCzeNn6fd5HQE70BhtSO0FdOgTTqKG0yDY7ytYY44FFQ+JZrDhmKdGAEH753D0XL7ffFJUR1JEggKm7NE1/1222IYgSdVe2VlFfszY5l0k3MfeGwKT/KDzCgFTstl5rZF0WdL3bwXbtgEKMxZrs3HsSMTLz3TtE5t0uuc3RW3evTcm+b25J4wXU3qi4npvMfHELbARyH5hnJKTk2PzgQ/yxtdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rkICNCTT2/nsRmPJGwbSRv0c3ijJVQCVhi2J3TNm/bY=;
- b=wvuQqKW2fIFoHZuRsLUQsswUl0MEfoxssM+eltDBpGIqoZH3N5KY+Y5GmQS+X31I/39qckGsqbu7qM8JjYhI9eLmDZjvQNKpw7fLQUN4nVjbVHZiysVs8cT+9VFNfazORdOw6iCdZAkgNTPU+4rn0bMo4sNkoWckY/yGlDUBEZc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
- by OS3P286MB2405.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:156::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Sat, 19 Sep
- 2026 13:06:10 +0000
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0428.014; Sat, 19 Sep 2026
- 13:06:10 +0000
-Date: Sat, 19 Sep 2026 22:06:09 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Joe Damato <joe@dama.to>
-Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
-	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 02/10] NTB: ntb_transport: Use little-endian
- shared fields
-Message-ID: <ji5b44c5mnxugcfpwplajmfucncf32h4j5rd36creeip4ruml3@ls5qzhkwgmem>
-References: <20260914084838.2158249-1-den@valinux.co.jp>
- <20260914084838.2158249-3-den@valinux.co.jp>
- <aq3dSqE2euoxQeQr@devvm20253.cco0.facebook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aq3dSqE2euoxQeQr@devvm20253.cco0.facebook.com>
-X-ClientProxiedBy: TY4P286CA0072.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:36d::11) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:325::11)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5T4SkdM"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4c7a0so849935a12.1
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:18:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789823889; x=1790428689; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JsTGylBrKeTBmgAOYV6+2j7T7Vnx2su+clGWmC3zkts=;
+        b=I5T4SkdMoeg+bxeMvG5McZrykI2Poa08KbsvifYwWq+TYVoL9fB/y/qsEEORnF5QmA
+         MjgaaxhJMT9bRZb3eIXVpRLSFHV1DPZw7LRKEdsfCtlLdvy4fFlMCzESs8v9Lm9Qjyhm
+         SPi1thXSJ0vYYg1d/L0fhUzzo10gtT4OAKgylP6uIxWI50yk2RnIAQI6Sb0onhsOOtyY
+         X3d2pFU4TZGnOzm2PKycIUKKxYJSb9H8biM+PSKdyGioE23LV0o4sR7cqvjRIaW1Z17n
+         fItzu3tjyVDmezvW4HcnMoVaquIgjRc/NBLre01b1arThe+BwbsTKylZnnUyPYrw0i8p
+         HNfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789823889; x=1790428689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JsTGylBrKeTBmgAOYV6+2j7T7Vnx2su+clGWmC3zkts=;
+        b=RuqVbr7Y8HmkPXElAcFvVZrV8NKSlQKRXNGBUZ5dFeBWKaeRHXbyKHNAh8PdZPswbv
+         edb2J8TT1hiV+B7J+lnyUVFGrY2FHswOfPu13se/c59WBbnsNH4iY54kkCCTj/uxhAwS
+         /cueTcVVnZKffjofxI+SsrzMo9sYYN36SObccQxdy5p1sJoSNSxyD5lp74H8QAI2VAnR
+         s6sT4hBufRapBx/ophsUV5MGvQhcxLrKrGIFiTZjf8qZVDFjl01P7P8Uf3WlzASrZQWB
+         coxnK3rrfzdVwfwZjZRCoNFwIkldnpSzJyFTAeDC7HIb/jO80GLnkVV+MqdBbh2YxNzb
+         NNsw==
+X-Forwarded-Encrypted: i=1; AKwUvBw8jaasYuUmobfT24P9PsV936WcB1nXRso5452dqA/V9bUerKuzV562KczQDZ6S7UXcssTZvTM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kD/aLLln87rrWCQ8Zu6FDxR5jCP7tLEYZRh6yEtp/5fO+/4V4h
+	v4aA6QtpQH3WmGZ/DpagUtVrVTN82gCC5iQLR7ip91ZgXk+MkQiGuNhY
+X-Gm-Gg: AYBFou3+lBeOXtW6r51ckO3PlVibnOovF4XJ8USywXH3/i/IK/WSae1agn8ky5CAkZD
+	12H3XUFRChLFqewtESFwfbSyLicJsSNP9pXOYni0OJON2pCUaSw0h2JCGEr3b52gQ+i3G5OjnOF
+	74z0Xhymru0e579B9/HbKG4cntKUZ4AQwxmXExTwiIoWNkCU5jzxzFZF78w7rCSNghJHKGBYzB4
+	jFqMpx3LxUlwHi+THuA8ujkgFSpjmB0gTmmDijAecQq9bWM0jzRgQ1uArC3UeBaFjNOE2JLX2fL
+	aHvgbBtP5k6t852KFNpetzdy4X6EK0RtXK8p/qyTq/yTef7Jfdtkf0Gt2Ut8iJEKhleyXI4CkNm
+	O9PHcEe3FLvHqn75eLUIfS+BDCvAWS80b2Dux4WHg8XPKeoI5lHL79yNJnMChiwR6Q8wUjnJDos
+	hXLZHYEiqMbIQQba/gheggreY8kSahPEAehsQP/y6+0G0lKTcLM7Q3jga/wejgNxD8kCQVsg==
+X-Received: by 2002:a17:90b:5706:b0:39e:6c6a:209e with SMTP id 98e67ed59e1d1-39e6c6a234emr3242069a91.63.1789823888812;
+        Sat, 19 Sep 2026 06:18:08 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a023cf10bbsm1276314a91.3.2026.09.19.06.18.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 06:18:08 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Nicholas Bellinger <nab@linux-iscsi.org>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost: keep vring addresses stable while the backend is attached
+Date: Sat, 19 Sep 2026 21:17:44 +0800
+Message-Id: <20260919131744.131030-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|OS3P286MB2405:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef07b363-64c2-433e-40ff-08df164ec642
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|23010399003|7416014|376014|1800799024|56012099006|4143699003|10067099003|22082099003|6133799003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Pg2zNGcJ8M+o1STQXJL1iadbxJejyssDSPj0jCmESQgt5BUmSofHbJI8L/g+4RcYHo503pd8FHRi1/6wWaj8QUis9nXHWDI1FK3nirwu9XUqgd9MTbD3WmTir8XkD+rm59H08bU2UOtqWZuBuL/lvVhs+CpZZwebASrJ76E7FqbF/I0rLgJhoMTve1SJ4hZTUnaWaU1PrN/3yC4OwLvD+x0NB3tUjiZ9YSAdOaliUW6coUncmkhDC1ZyrGPJ58GZ8hD2gx5sBCorqQAlwUmkRE1u5jo9VLjevrrjoYbjrapwcoEsagNPtAtiFUjui0nvL36u3qcqQdt4tFhRrGkG+2GmRcWOT2HJPNgkXG4osrl17CE3f2etb+eg6mJDotr5vngmK9+iaSdjGg9SsXXraF8t3fptH4Lu6q6td7lg2sg12NxM+UP7EQsk7uGrCkIthxcioL6aV0X70K+50Rj1D3/HH6BUdJasHDODpZb17z3Fz2qhEhmaWhx2dROhEOehoJzEUYuyCRXkkpds9Vir5uxlZn3QI2CifbFDgL6il2vdtc6S2inPEV15vlLZIfUDjBheyuegPOFRB94hunGptchQGnAXfqeF85baXO7vnhH9Y7Brxw6TyP8RK5BHYG8T
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(23010399003)(7416014)(376014)(1800799024)(56012099006)(4143699003)(10067099003)(22082099003)(6133799003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nkbJkLyZPkqmQeY4lj+7ZdcaYFcMjEsXhSstO9y3A3SLI3WQmEiedbopq/4u?=
- =?us-ascii?Q?RgRCYsXicXPoyLNXlPFLVX7/PfwJzSelMQAvKKZX4QsWARvV+KRiO5lrfnHH?=
- =?us-ascii?Q?fLVvnF8yQysQXj4oopbcNf8srIlFEq73kba9+rYJJYRwR5SAdwVfFKECVxyk?=
- =?us-ascii?Q?vBtzNZ0h25LnBVupjJqFs6DOy3/+6UfUIb5yStyUfV1b02dcLHf6YJhEnC7g?=
- =?us-ascii?Q?9+VpnF5nK1SdjdKhb1H8mBfF1YJYsMZAUAF24BITO+6PeMRsF97sTaPQlKsh?=
- =?us-ascii?Q?2T53hcQJWOerQrVaCvVFmTcOYw5eV8bi0qP7t62O6LMVbHRaqhEY4WQan4rZ?=
- =?us-ascii?Q?v91lLEvQZ6nCZ4DMIXvtpB/i4DYjMAQ2QpjIYOQQlMbVvC4I25p3cstQBHGI?=
- =?us-ascii?Q?YYmHjBmDEMziyMI+PIkTTlzgl6KTyLY29/9ZPnz2I2o6sXb3PMRmpGb+7RUw?=
- =?us-ascii?Q?vXUEXA0DrQCEY2MVgZY4/a7kkxV8VtnOsX1a7K+zozzikfzfneH9JM0kBBoh?=
- =?us-ascii?Q?EUQB10QaaOeVg9ZcTchT8SjZUy2zFcYpVXJALpJqxbmV9xvCXiVtyVdsNOLo?=
- =?us-ascii?Q?bDiZGecXv/bMxbVjxnfcNwyCTVQjheaFTpRIuHiDOhY1ezJMilPyGYadLvX+?=
- =?us-ascii?Q?ZjMyGCtfNEwWZQhVQiCwpciMtBVRfJNSzOlzRgB/s8YsoGoBu2C7GnNxm7Cu?=
- =?us-ascii?Q?JTvAuUU3UBMq6puV6mh/obwmXlGR5FggjwS6Cc49W1ph44UULN0GiltnKqtN?=
- =?us-ascii?Q?/Pvupp8lKZbBScDx2KUTcn+DYlNCHavI6ev2r6t5qCCHwOaN18q2xMpMQNZc?=
- =?us-ascii?Q?nQuQmGNv40wQbIFTrECqmETL88rkZN6GqSHPChrptDetJMrk9IKDEA4GLjNJ?=
- =?us-ascii?Q?sR9cTSXoeicbXsxIM78RyqHQuS+VHsLTo2Hz0QM5Fd4vqInaswP/G2DsQ+LT?=
- =?us-ascii?Q?cC3ZVfLddT+vsWrlCFoAWe0ADM8nbTRlRfFi5Gx0K1VbQTIP/fULoxEZcG+q?=
- =?us-ascii?Q?GMQwm4eAWgUiTLN8rMRfEOXbpnIAxb6692/7lrHVspz/tcv7dJUL4Vg2jMRq?=
- =?us-ascii?Q?UNOpniL/9papvsguEpMaihq7/GXtUHeMFpO4TA0hKixl6cBzw+jNnIziZD0O?=
- =?us-ascii?Q?9PtkqpUYcPt0WZDF/eIPQpRi5EDlhb7bz8o1SX/EeViSs8u8tJI89U6B4C0z?=
- =?us-ascii?Q?nueWcPVQZ8CN/QwjbbLhkgZ66OvEsKml1lATqW2TPLKDqCVVNAPWuvmjzQrx?=
- =?us-ascii?Q?gOUB8eoVFdFCoiagQc3JomU7dHtpFl1bQPI8GhHoI9qECb+zSqSJWrn7cznV?=
- =?us-ascii?Q?5vyfgld5h3q3rTrDYQhFYnXYNUPFi/EoxmvNxuPNzv9TDZzBHYHUM9HtbPyO?=
- =?us-ascii?Q?Pt/wwYcuaWLpVhN7jr0VP49iLy6GbwWdeeZH3FootPG9/qfHQARIWXeCz9B7?=
- =?us-ascii?Q?Zh4NSOGWqNasAuYXDIZj83caOX/JF23VjcDYqVvDk0S2IMb5Kx9Cqke2Jj0L?=
- =?us-ascii?Q?QrZIFZfsztiHJ8secr6A0RTP21R7rNX42zmT0JVV68HFEYP8UATYF1EWiPTn?=
- =?us-ascii?Q?lcNlvwVOHfcfvAiuzWxjoTwqunPfd0WhoIT1HZ2nNqR0nY+HpRBC03vVvLFs?=
- =?us-ascii?Q?TOhbWHLnHt+7h9ClT1r0dvFEJYMhhg02rqh2mWEyuWFW3tujj6eSb+4LRPLV?=
- =?us-ascii?Q?GFZeIFEx9Nm0Gem7XKTKzrtQl/RNxRcD2nxBhc6X8vIxB4sq8bxTYMdC56f4?=
- =?us-ascii?Q?4GNvZmv6pURBzjexrfP2suaIDkxpIMuy53nRBD3uH2kIJM2lm+AA?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef07b363-64c2-433e-40ff-08df164ec642
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2026 13:06:10.0081
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JUNEpMKf4/tl0jetsX/EHrDDrrkN9+RQU7zhNYwAoC4wjV65uXe/Q3kR41TZFDrnj7CM3HnFW9I1gHgOdOox/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB2405
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 18, 2026 at 05:54:34PM -0700, Joe Damato wrote:
-> On Mon, Sep 14, 2026 at 05:48:30PM +0900, Koichiro Den wrote:
-> > ntb_transport writes payload headers and the RX ring tail with
-> > iowrite32(), but reads peer-written copies from coherent memory as native
-> > integers. The values are therefore byte-swapped when read on a big-endian
-> > system.
-> > 
-> > Mark the shared fields as __le32 and convert coherent-memory accesses
-> > accordingly. Read hdr->ver and hdr->len once so their checks and later
-> > uses see the same values.
-> > 
-> > Fixes: 74465645cdb4 ("NTB: Fix Sparse Warnings")
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Link: https://lore.kernel.org/r/20260815032932.151F11F000E9@smtp.kernel.org/
-> > Link: https://lore.kernel.org/r/20260818064951.7EA231F000E9@smtp.kernel.org/
-> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> > Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> > ---
-> > Changes in v4:
-> >   - No changes.
-> > 
-> >  drivers/ntb/ntb_transport.c | 47 +++++++++++++++++++++----------------
-> >  1 file changed, 27 insertions(+), 20 deletions(-)
-> > 
-> > diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-> > index 74f4f8c1c7be..3f497a62673f 100644
-> > --- a/drivers/ntb/ntb_transport.c
-> > +++ b/drivers/ntb/ntb_transport.c
-> 
-> [...]
-> 
-> > @@ -514,7 +514,8 @@ static int ntb_qp_debugfs_stats_show(struct seq_file *s, void *v)
-> >  	seq_printf(s, "tx_err_no_buf - %llu\n", qp->tx_err_no_buf);
-> >  	seq_printf(s, "tx_mw - \t0x%p\n", qp->tx_mw);
-> >  	seq_printf(s, "tx_index (H) - \t%u\n", qp->tx_index);
-> > -	seq_printf(s, "RRI (T) - \t%u\n", qp->remote_rx_info->entry);
-> > +	seq_printf(s, "RRI (T) - \t%u\n",
-> > +		   le32_to_cpu(qp->remote_rx_info->entry));
-> 
-> it looks like the code READ_ONCE's this field below.... is that needed here
-> too?
+vhost-scsi keeps the response and bounce-buffer iovecs until the backend
+completes the command.  If userspace changes the vring addresses while the
+command is in flight, the completion data is copied through the old iovecs
+while vhost_add_used() updates the new used ring.  The guest then no longer
+sees the completion.
 
-This is only a debugfs snapshot. But using the same helper that you suggested
-below makes sense.
+Reject changes to the vring addresses while a backend is attached to the
+queue.  Keep accepting the current addresses so userspace can update
+VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
+that have not been attached retain the existing setup behavior; userspace
+must detach the backend before changing their addresses.
 
-> 
-> 
-> >  	seq_printf(s, "tx_max_entry - \t%u\n", qp->tx_max_entry);
-> >  	seq_printf(s, "free tx - \t%u\n", ntb_transport_tx_free_entry(qp));
-> >  	seq_putc(s, '\n');
-> > @@ -633,7 +634,7 @@ static int ntb_transport_setup_qp_mw(struct ntb_transport_ctx *nt,
-> >  		qp->rx_alloc_entry++;
-> >  	}
-> >  
-> > -	qp->remote_rx_info->entry = qp->rx_max_entry - 1;
-> > +	qp->remote_rx_info->entry = cpu_to_le32(qp->rx_max_entry - 1);
-> 
-> you read_once below, do you need a write_once too ?
+Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+ drivers/vhost/vhost.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-This initializes the local tail before normal QP operation. The READ_ONCE() in
-ntb_transport_tx_free_entry() is for updates from the peer via iowrite32(), not 
-this initialization.
-
-> 
-> i wonder if the read_once / write_once with endian conversion can be wrapped
-> up in a helper or something to simplify? not sure, it might introduce more
-> code than really necessary.
-> 
-> >  	/* setup the hdr offsets with 0's */
-> >  	for (i = 0; i < qp->rx_max_entry; i++) {
-> > @@ -919,7 +920,7 @@ static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-> >  {
-> >  	ntb_qp_link_context_reset(qp);
-> >  	if (qp->remote_rx_info)
-> > -		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
-> > +		qp->remote_rx_info->entry = cpu_to_le32(qp->rx_max_entry - 1);
-> 
-> same as above with the onces ?
-
-Looks like this one deserves more care. Local readers can possibly overlap the
-reset, so WRITE_ONCE() would make sense here.
-
-Thanks for spotting this. But simply adding WRITE_ONCE() here wouldn't fix such
-a race with late peer writes, though. That would need a separate lifecycle fix.
-
-> 
-> >  }
-> >  
-> >  static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
-> > @@ -1445,7 +1446,7 @@ static void ntb_complete_rxc(struct ntb_transport_qp *qp)
-> >  		if (!(entry->flags & DESC_DONE_FLAG))
-> >  			break;
-> >  
-> > -		entry->rx_hdr->flags = 0;
-> > +		entry->rx_hdr->flags = cpu_to_le32(0);
-> 
-> this looked weird to me but grep says this is a common idiom, so TIL
-> cpu_to_le32(0) is a thing.
-> 
-> [...]
-> 
-> > @@ -2490,7 +2495,9 @@ EXPORT_SYMBOL_GPL(ntb_transport_max_size);
-> >  unsigned int ntb_transport_tx_free_entry(struct ntb_transport_qp *qp)
-> >  {
-> >  	unsigned int head = qp->tx_index;
-> > -	unsigned int tail = qp->remote_rx_info->entry;
-> > +	unsigned int tail;
-> > +
-> > +	tail = le32_to_cpu(READ_ONCE(qp->remote_rx_info->entry));
-> 
-> see above re: read_once and write_once on this field...
-
-Here READ_ONCE() keeps the comparison and calculation on the same tail value
-while the peer updates it. (Perhaps this READ_ONCE() addition should belong in a
-separate patch?)
-
-> 
-> i didn't really try prototyping anything but seeing this repeated pattern
-> makes me wonder if
-> 
-> static inline u32 ntb_remote_rx_entry(blah)
-> {
->   return le32_to_cpu(READ_ONCE(....));
-> }
-
-Thanks, this seems reasonable.
-
-Best regards,
-Koichiro
-
-> 
-> would make the code clearer ... or less clear. not sure.
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 44cac11b68d2..074590838de5 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
+ 				a.flags & (0x1 << VHOST_VRING_F_LOG),
+ 				a.log_guest_addr))
+ 			return -EINVAL;
++
++		/*
++		 * Commands may retain iovecs derived from the current ring
++		 * addresses.  Keep the addresses unchanged while the backend
++		 * is attached.
++		 */
++		if ((vq->desc || vq->avail || vq->used) &&
++		    (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
++		     vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
++		     vq->used != (void __user *)(unsigned long)a.used_user_addr))
++			return -EBUSY;
+ 	}
+ 
+ 	vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
