@@ -1,79 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FBB3254BD;
-	Sat, 19 Sep 2026 00:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CEC34DCF3
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 00:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789778910; cv=none; b=ED1xYbYQelbbSHE3zCeAuC1eqaJF2GlVFpLlaRx7MUgTo/1FvoY44dmO3cZYh3uHJSffCU5H6SBASJ7Oz9M1Flme8MIPVHqU6qs9ffX4I5gYOit7DwfbphZCDkg7JLZ9PhOo4bRaSTj9UbvP6ZMalKXXh/KO2vF0QrBkDcZlNpE=
+	t=1789779078; cv=none; b=nAgz5e3msxDa5KRdtTIk6quTHrAshr0u1eKhO9gZVrQDJDx6lx+zhr3luVdaGT2Thsm45OkGjAyG9GfumKg3ngt6I14DNhN+yzY6JIeoWbI3fsOJwCgmKMoLaWjutMwW2fMtnFfMKSP3I7JxG0C6A/cUUHluuRqtUtI4VfYGSu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789778910; c=relaxed/simple;
-	bh=MCbmQ6WJDGdCzQN4mYg04ADyk1fF1OC+DJiGEgxhAdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=abeqpBpkOJJLyVA8cOPSPhQEFRGrtCTbFPDLD3stXiZgyLMZnHq8+FuvYo7s9sypLCVnDyLLZgmdeOMsM+c56rc47jjZ9CEod7FiXcL5Tl4PIHKrGzA6igfzRCVvQRfsHJAcJ2dzAxUy//XKggZ0KctfGwDZEn6EhfiPqPr8UME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUw5HGvE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789779078; c=relaxed/simple;
+	bh=GnHoQouOvKMTbjCRHCeTOAaL7sSvKR+hwVSWJC1isZI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=i1lCjykOFQysVMOqo/WoNMlSiVYHZtHkGRTQ9NfZ024E6e/a4U+CiPZT1m7c/CoEvZ0bE7KjrN1T18GMPOiCrw7uqxIh2WnRbbzcoe3/WMuofJMe8/w8FI39fQqoz48LMNo9P0oR/r8jMtLrHUM0BBITtY2pB0yJ5xfVj8Z4vpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXsk0L6x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUw5HGvE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB8D1F000FF;
-	Sat, 19 Sep 2026 00:48:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXsk0L6x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB741F000FF;
+	Sat, 19 Sep 2026 00:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789778898;
-	bh=MCbmQ6WJDGdCzQN4mYg04ADyk1fF1OC+DJiGEgxhAdw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=RUw5HGvE4NOuabChT6omhbwuPsmkFw8sBJTVrHIa3igoep+FaodwCNFN3Qzj+gYie
-	 DtsRevJzMoPULHVcNHKA8n7W29O1tlxdkmxxX0mCI7ExijWvKuBiUI3YrrAmhYxFAW
-	 CuBYZknAPhdL2q3gYT27jA+wMGqXK1YyavBKEWrJI0bfn6DNZ+GcF9Sg7wuGlugTwD
-	 S+IykXDZNXW8RKtdTumDSVr1meeQjJTWgIOCYSEuDCfB9duWGZtaWagVpNGLnW7ASn
-	 XhB2fYu2ItAwUo7gZJT0uPf2WMvBi9ZiH7/lOVq2C3tO2umtpz/GyK1Qjhq1cYMiyk
-	 OWqmT/Ai/7Hag==
-Date: Fri, 18 Sep 2026 17:48:16 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, woojung.huh@microchip.com,
- UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, marex@denx.de,
- horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v15 2/4] net: dsa: tag_ks8995: Add the KS8995
- tag handling
-Message-ID: <20260918174816.0d77d5dd@kernel.org>
-In-Reply-To: <CAD++jLm7UQGiS9C=HnAUGOmnjA0AvjLc_qOUTRCK0PeRsVn0JA@mail.gmail.com>
-References: <20260916-ks8995-to-ksz8-v15-2-8825ff5fd4be@kernel.org>
-	<178965134740.22033.13313484925246996796@kernel.org>
-	<CAD++jLm7UQGiS9C=HnAUGOmnjA0AvjLc_qOUTRCK0PeRsVn0JA@mail.gmail.com>
+	s=k20260515; t=1789779074;
+	bh=X/QdDfpU3vJpG9XQOeMpE+8D2F2aDi3Wd9qfYZLs3q8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FXsk0L6xx6M6zIBbOGwxdOY7OBHWTm+ZQIwzSqawWK9ivbqSIx7arczNnIXwo6NMS
+	 /RXGO+Vb8GzxIwLzrV52zcXRol4RYq43e+se9dBDoXw+T4grTZUsp0tiAKC3P17OS6
+	 LE/v+YdVx/aVOG5u3244zCyq7ypW9KC2lrW/1EmhJ2zq8fZg7gIo8RasVctpMksAvu
+	 dv6cWAetfVehDHu4APgwtO3XqfXGcRmVMssquUdvPlSdwsp9CjHw/ZjbxxS16kyQXN
+	 4ahhAeprWfufvHyGi1ZwRvo5WFI/TztAThxXxdWvNfCQ6tTA3OIHSfAr5mZkviQOPY
+	 vN8TgmB5FTILw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B593811978;
+	Sat, 19 Sep 2026 00:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [net PATCH v2 0/6] eth: fbnic: a collection of fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178977900764.1211687.7729513962292415375.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 00:50:07 +0000
+References: 
+ <178941996343.7700.9376081102002673062.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <178941996343.7700.9376081102002673062.stgit@ahduyck-xeon-server.home.arpa>
+To: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ kernel-team@meta.com, horms@kernel.org
 
-On Thu, 17 Sep 2026 23:18:42 +0200 Linus Walleij wrote:
-> On Thu, Sep 17, 2026 at 3:22=E2=80=AFPM <netdev-bot+sashiko@kernel.org> w=
-rote:
->=20
-> > Two details worth noting: this only happens with a conduit MAC that str=
-ips
-> > the non-standard 0x810X TPID into metadata while preserving the port bi=
-ts,
-> > which was not demonstrated here, and the same OUT_BAD outcome already
-> > applies to other VLAN-metadata DSA taggers such as the tag_8021q family,
-> > where proto becomes ETH_P_XDSA and also has no case in the switch. Shou=
-ld
-> > the receive path here rely only on the in-band tag, or is degraded hash=
-ing
-> > on the conduit acceptable for this configuration? =20
->=20
-> This is just getting too fringe. What about we merge this and look into t=
-his
-> when we have a user who actually want to do these things on this
-> old chip?
->=20
-> I don't think this is a blocker.
+Hello:
 
-Yes, sorry, I need to modify the emails to call it out more clearly.
-We only really care about issues >=3DMedium severity, but if there are
-any such issues found we send out the low ones too just in case.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 14 Sep 2026 14:09:48 -0700 you wrote:
+> This series collects a handful of independent fbnic fixes for issues on
+> released kernels, plus one core ethtool fix needed by the fbnic offline
+> self test.
+> 
+> The first patch keeps rtnl_lock held on the ethtool ioctl path for the self
+> test. Since the ioctl path became rtnl-optional for ops-locked drivers,
+> fbnic's offline self test (which brings the interface down and up via
+> netif_close()/netif_open()) runs holding only the instance lock, tripping a
+> lockdep splat / ASSERT_RTNL and reconfiguring the device without the lock
+> it requires. A similar issue was found with Broadcom drivers so we expanded
+> the scope for v2 to just have the rtnl lock held for all selftest calls.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2,1/6] net: ethtool: keep rtnl_lock for the ioctl self test
+    https://git.kernel.org/netdev/net/c/1b82958f3f03
+  - [net,v2,2/6] eth: fbnic: Handle maximum standalone channels
+    https://git.kernel.org/netdev/net/c/1f4c73064a50
+  - [net,v2,3/6] eth: fbnic: use the Rx queue napi pointer to find the napi vector
+    https://git.kernel.org/netdev/net/c/b5d9e9d4d0c1
+  - [net,v2,4/6] eth: fbnic: reset num_napi when the napi vectors are freed
+    https://git.kernel.org/netdev/net/c/4bcc4a92c603
+  - [net,v2,5/6] eth: fbnic: Set AW_FLUSH_MODE alongside AW_FLUSH when flushing the mailbox
+    https://git.kernel.org/netdev/net/c/8947f13e436a
+  - [net,v2,6/6] eth: fbnic: Handle FW mailbox completions flagged with an error
+    https://git.kernel.org/netdev/net/c/1b97a269a5bd
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
