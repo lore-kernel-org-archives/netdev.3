@@ -1,138 +1,181 @@
-Received: from mail-pz2-f7.google.com (mail-pz2-f7.google.com [74.125.228.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021090.outbound.protection.outlook.com [52.101.125.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFE53E4C88
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 12:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789822396; cv=none; b=iiH7Hno5TAcTTMQgjbtf1ZzCq/0el7WYQNCAxuwQWu7ptgU0V/Q8K+GMYnfDEIN4YMknH7k4VUcDbMRHNhX3XuZrD5Ktj8qJQEq7ZDOY5hzPxjAHiZPAiwMWhWVLqMi6W1Bh9sYgo/9e7IBBi1N3KwbOP/hVy7KCXAx2TyHf4Mo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789822396; c=relaxed/simple;
-	bh=tCrgHNTqayWFj1XRarWJorXnl2XIBvQrDCQv89fV94M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b61eZ8TWBPJW9HtgS0uuGrYyMc+UevqXqDDuC8KtrhHTdF2jDqKd3dMlxECm+j3tql26hEQJZP4cr6Mdfe7SFcc/WougEYZDFN0PeEFXtwD9Y4hnRtsqVBJaLxHCV0iAb884vwNPWsh5PTtXkimd1mKFwt6YP6QsdHX9dgkmKgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYRJkC55; arc=none smtp.client-ip=74.125.228.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADC5370ADA;
+	Sat, 19 Sep 2026 12:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.90
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789822426; cv=fail; b=JiDvSF6oF7mhccUgPPnPgd/BOYBBDkHRYwIoUQ8xLlA+dd71jxVy0CxnjlUg2xkOFAl+2gx5C4YtNSqlg/vbt9nGMm2z08/naJe/niX3L4YO8k4xKBWc6vNiY/rdlH9bk5VPA21YfDw/HD9ce5NH80qVi1cd+1UHn3Bf71ajPbY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789822426; c=relaxed/simple;
+	bh=DTvvlm13K7FEYVK8XXHFjGsyY4vnTXXYzK8wjWIpkoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=AuvHi1q9S3lduOUyuZTIQ0+aDcYb8bSfB9ICcexvhG+SS9OvqFIXW3MNRDuejJFoMWLHHFljZH/UMZd1ZLcKVQM4jRNWTkXOKi0+WXq8sSwT0y+b9d0Vpihuc1Kh2IK5mcPeGL3H+tuFB/piQoxtj4Rl9gAu3lziFMKE3Fj+hmk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=pHPIILjC; arc=fail smtp.client-ip=52.101.125.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYRJkC55"
-Received: by mail-pz2-f7.google.com with SMTP id 41be03b00d2f7-cc1ddb3ba3eso836676a12.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 05:53:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789822393; x=1790427193; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rQei+xFrWR/8tHZU0Qo/Qb7KMibEAMjL/DUhroeeXK4=;
-        b=MYRJkC55yHwhHoONtGB5ttuGAyN5MCrfpYjCb1B2hzqkTPZ51muAILPGY/Nu/IwOb8
-         dVCo8fyIH9bxEfRit6buo/MBTw+cA1lWDGVrzRz8eGIdzUgE9lq78U1RUcwmC4k5sMqy
-         2QKZg/mn0r62aonntu/exwVXyEXYxfAY2MEM02f90Xa898AdqMZpJRe7gq5WhnqOCgik
-         J94NQPk8o5SsbldFG6Igv27/a+vqb2g+Fm7xlMw2Lt2xYp8VysBP1zlFTsGfk575zrNa
-         veF7VeSMu4iqddGsywnxxDcZmrtQH33m3RCivWj6FGuy31MuS4xtUvj12b8hwohb7BLc
-         e/vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789822393; x=1790427193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rQei+xFrWR/8tHZU0Qo/Qb7KMibEAMjL/DUhroeeXK4=;
-        b=r9k9idUmNJvoU5kEFPs6JCO7bidG0V7SjZzE96WZML0ERIQa5Ei/tMJyeBK98l0n8+
-         6aD+rt9BcoQVl38NFa3YlkTfo0CszrB57UG1G02UKJGLungIYiKXSxrMw5WjpA3EJ6MS
-         5YZhxGomywG5FIFsVzBMdX1xe1GS2j00kP1NMlJgyq1mjNBVEGCxjJlEuGd42m3wDJe8
-         dThQFerKUb7Hla5mIkhioSXxz1iHLq4+q00uXby0lSLlkZ4pQJ+VnMDhVl+zv/AAGlwL
-         hxzuUGCYKHCXRig0L3qpx6jEE26fDT18u1PX52LneU5gK3SQAfzsVq+qqivMf9z5h3+P
-         4WFg==
-X-Forwarded-Encrypted: i=1; AKwUvBwho63a59NVDsnHpSYKld5ety9pLYbxWQdoN9pQUGE7raXAT72RLWKdktH9udmK2K2KGv+nfgg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kCUztZ7TTV1AwOCwYrdxHpvzTDIFvEPdj2V7X7UP8Bm5YCKYDj
-	YHWn82FYyLoo8cJh2GgxbgUT6W5y+v9l7k6Eb551PdqSQG/yg9x3+9f4
-X-Gm-Gg: AYBFou1ygAGU24tToh1yT4GB0YhsnxoK6oDU+anBshMUb49v/jDZTVyDddmQvsWGXoN
-	/5UAFGe63MpqqfBJLIvR78mIr1nhfyBNyWRI63a55XTikRKYr9zVhbNLaoAXZfB0FqzhIiLe5k2
-	gNeYz1Isz1mm0B1EvEPAEfsngRq+ZL0e3eFds4tOKowruvSFXc3Lw171ukpmIQOtVFXdFIdvjN8
-	b63oxQzApr8SPeahpyNW9XdHbSVRTgzYWdHximkqtLV2eYGZ2wyXmLvRbtYkMQ0vvNoDNBs5tUD
-	Ji+orX2kIoFQJGovOrAcibneyOUTIZknXumW0QpfY85P5d+sy+FG4NF+viLvXGf6KnDYb5rqoJZ
-	nWvPvZKkbuLIW87cwGhvlX4rAnqrYTVVPYEv/eQQ/5Bf1jr+/S+Bo3UDqU/I8O/azuWl6PfBHZP
-	KfS3IBKty+jFAJIY0N6eKTHczAh8gj4DOe1oX8hywbPXCThD6U7XByHNlSnfoYP37P3QYGfA==
-X-Received: by 2002:a05:6a00:1796:b0:874:706d:8573 with SMTP id d2e1a72fcca58-874ddef6806mr9062175b3a.27.1789822392717;
-        Sat, 19 Sep 2026 05:53:12 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877aa0026b2sm991805b3a.44.2026.09.19.05.53.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 05:53:11 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Coia Prant <coiaprant@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH net-next v8 11/11] MAINTAINERS: add entry for Rockchip XPCS driver
-Date: Sat, 19 Sep 2026 20:51:18 +0800
-Message-ID: <20260919125119.2107089-12-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260919125119.2107089-1-coiaprant@gmail.com>
-References: <20260919125119.2107089-1-coiaprant@gmail.com>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="pHPIILjC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rqja18C9cMUD0809LXlmJPPWFBPB7zGYdLXdyHpjiwXoko2wYXW0BKQ6WTri+FKK/WFutzQ/ErH28JQo7+nEtaBCPUyMVDBK4hT62uUNMFe5IuYvSuCtutf1CRCAQJPvMX1EEjMBC5W6lEJI9YrSzAb8Ixxn/cXjbfewHGWSXnvWN5hEusXoJAwQjvwXmYAlQDvvMXFXCpGGbKmoXfN0JtGL1XcoX+dTBgoV+GiuoMFuRc5nG2U0LfJsSVHe+Pxcpwh2y3MjBkhwInomYS6A7BDYT00NVEQNkogU1fJlfS5j/wZOHs8t/WiyY9tIc4WDg+e8nfL97wd4rFZ/eFDhYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8RA5V3k/gF97vMnooWlCDwSpBf8zAFiHh8xSu1/JoY4=;
+ b=PuiW59rREUZKq5j9i1X6RRYcH7CIijqmcqgl9FFX4PH+trl0wMk2G0KDLEuzX9AooXkyTDKr7iRKMKc+VNmM1N7xzmYcsbZY1lRNubErubV6Q2+XwksDTztM9U3bsATdC1gy1uhzZ/riF+YrQY3Z8QMazEtQrc4oYzvQKujx6FQ7ouPYHnoI8iiM0/pa8rCe3TCxRU6wQg0trNfLSf+/DnfieESmG1u87xKYj7j5K4oMdxHHBcSdyyyq6/ILqNY0NmbsqQYdiINnlmAeX+15NsS1trzDL9NpKns5DrMRHi2/xagYgpR/o1u2l3/cLIzNl1PSQakHLAY6gEe/L6JkqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8RA5V3k/gF97vMnooWlCDwSpBf8zAFiHh8xSu1/JoY4=;
+ b=pHPIILjCQzlvxJvKgP48m5BnOUIWBE8Ybst2Ph8Q0MNtJIqJybemJufBH+krgzYUOwnF0AsSvxhBMXA3KVN/us6CRR7dA7d5ridWEyWuxTyqxQNPuVtKKY8NyCi61fJnrDV5Na2RYwqP/TqcZDP0GMGLTDN3clnxF+FJEyPE8ZI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
+ by TYWP286MB2971.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2ff::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Sat, 19 Sep
+ 2026 12:53:43 +0000
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0428.014; Sat, 19 Sep 2026
+ 12:53:42 +0000
+Date: Sat, 19 Sep 2026 21:53:41 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Joe Damato <joe@dama.to>
+Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
+	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 03/10] NTB: ntb_transport: Order RX entry
+ completion
+Message-ID: <wecjjkz7m4uk737tymgpk4y3o2a5a2tpkepojyyosgrmonuib6@mtmqftofk2w2>
+References: <20260914084838.2158249-1-den@valinux.co.jp>
+ <20260914084838.2158249-4-den@valinux.co.jp>
+ <aq3hD4D+VfMUd7vq@devvm20253.cco0.facebook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq3hD4D+VfMUd7vq@devvm20253.cco0.facebook.com>
+X-ClientProxiedBy: TYCPR01CA0137.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b7::13) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:325::11)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|TYWP286MB2971:EE_
+X-MS-Office365-Filtering-Correlation-Id: a0ada99a-efe1-4033-3e01-08df164d08f3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|10070799003|1800799024|4143699003|10067099003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	x/5PngfzMLczApuOWcGZhGLD9setXtthJreBFkwh6Z78tXTAlrx34yvCkiCY4XEMOy6CikCMnGLBDKSy4lyY3PPKaW9YtCF6OMl5TZvfdW32ejxEvz4De+S1x9aPp40dDHm8WzuGAopA/sGywkRJ9tf4HcknIjFpbCIupAFRsJKCvB2c+hQS/e5JHgdxFn8fQ7q1WBleQTynSDjynpMlNF9d9zeL5ZqnCcRmnsF4xMq63NscwqqpAvYnBvdW3+09z3o/ry97oMQbqzBHNFNp0AyegIX2WHSkQR+MQ2BRSALK9hHYZvJoqWteyDYnW6+XcYRvs0QwHdbOzDgrsvArGrDEZrs/EPPmfwf4JYZsdeUrrOdGh5z+Tv4SdTH1/RHdRvnCSP+PoKGe+/kvWRk9pjF51eYSStV3B6XsP2g14KAkIEYOEhf9J5zjtyoIBynna0PpL7+/sr8e+8Bf13qSnx0MOlMIOm6Cr+84SIQXJ/9R48KxlSfGg5mDMHmyJWElWn3Q9uqvzWTVKGmBm8Jmo7KXklurSkiD4L9D6wlk0AfFkoJ1utNnhm7kWgRF7sGGgV9ulWaqlBc6pyf2kPinqRjdVDYb/Bw+6QQ6LQ9th8zTYfG39U4YgY0M0cw4Ou73
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(10070799003)(1800799024)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?J/dRHFGnBqAE+q+pTZYOR+d2Ulk2bJyFnSg06I2kuE/0AXrnlSRhHn5UfFIS?=
+ =?us-ascii?Q?R/07Rab2CYB2+n0kGADkSkbRw/TSdLBxv9qrFMNh2SbaP9jYWYg0ve7/oXkG?=
+ =?us-ascii?Q?vYPk2gu+shkzKg1kxOCRuQLAfikoKOHlLrBakxLpFhf1xZf0DE7qDME9F0yE?=
+ =?us-ascii?Q?gdUSBGpHgWS3aSAhwidOl3SyveOXqNQ45+uqek9Oxs0wydJ7pwj34c4XP20e?=
+ =?us-ascii?Q?rTLXBI/35LyoUeMyQe40H2vSxQOVje6F69adQT+FRj2AK7tVzxKCVvBcQ/UZ?=
+ =?us-ascii?Q?g69mYpOQ7PY1rjfiJXUqUtbXXxw2p8pCre+K2n36qrSbthTxDaJicdJVlFku?=
+ =?us-ascii?Q?usaYW4WOSPZGbvm74CiaFgVljdq3NbXHvABBDxQnkuPOx3JQeqMY7BOY1VCW?=
+ =?us-ascii?Q?OSsbyIqJBylAww0VWh6XNIxfma7T8qN3yMqgGn0C5MwaPh22DGPat5mrZ0n7?=
+ =?us-ascii?Q?mh3RYf+jg1FYws2Geo/YvUSHWPrxrz87LkDk0smvj3x0cg5s9ww4QgJmwW0k?=
+ =?us-ascii?Q?l7TwR3+4+LXsDzmI5FsLSp1DCmGycBbqdigVSQq5dXPeUSPiB5SpEY/ifelH?=
+ =?us-ascii?Q?8jpLpOl0Vs46K8PzQ/izn34hq1snRRYivvJNO9OsCXv8xhPcWI9n0RjSWOgB?=
+ =?us-ascii?Q?X32mckYZe8ltxdN8bFOXItOU/5V07I7BxXPVXtCT4ENZ0tcxZE8wxeb4kDML?=
+ =?us-ascii?Q?tOUWwUW6wZXPy+KexCgRbXRfw9P0CsVKVsBoUzveDKJ8CeCE02KDKdhZhxZk?=
+ =?us-ascii?Q?9ByEoXo/V37Rh+3WVWvZL937IMWwIuldZmlRh+hpz5TwKfveLlZW7N7QBEnd?=
+ =?us-ascii?Q?jX7XYurebFT3al6F2bVcVxd+ShH8srBoafKT7UA+X/AyNo5h6fDvMfMFQf+S?=
+ =?us-ascii?Q?bW2nVZLUqXPpu0qJoriKyZ5iXJf4HxBh6J6gJ+rTu3k34P9/fYhU0WQykBzX?=
+ =?us-ascii?Q?ejg5ewuHI8GTrhSxhk0cYK43aMufmoq6LD3DBeb1xYTtq466GH0t2UWFl0Kb?=
+ =?us-ascii?Q?thklVBBcbxVojWKV8QXjUgzki8CDKLBL2TX0SEyF8nGAGhyRaEfoxObAv94Q?=
+ =?us-ascii?Q?wRFCQuMs5pMyia3ctVYD/GHYt7ERhC7AY14x/XHo+XGMmOOMNnhFrkN41Kr/?=
+ =?us-ascii?Q?wUaq7uWue7/LQtgUYwUzviXe5Kgm2SA75tti1i5n5UBdn0yoWzfU6pR3DU5s?=
+ =?us-ascii?Q?qxW4OmvOyDnnd3JKPiCQi8Vn22jTlcEWeA69004eUPldN6TaECXkmhndDv1x?=
+ =?us-ascii?Q?Sh4bbjjFCozTiSsDmqzxZ9lWIi1C5bpJR8rd1wCk9bjuXRyXMzo30EMQruFX?=
+ =?us-ascii?Q?BE7KUF0ZdK9jhzz/xPqXMmftbxPa6/xrmfXC0HhFcMhwNr5ahXvM/S3NlhDr?=
+ =?us-ascii?Q?9HAzsafRUGuIFX8zbfL4fsZB3JCNMFczaWe4+HMW4g5YsmORYAjD3CIAugkG?=
+ =?us-ascii?Q?5C183xnfCmuu58OIRUObb8SbyPXDzcDVEViRXJJu8gSCXz8592f9B/2HqxHQ?=
+ =?us-ascii?Q?1TpiSVO/L7klwizieXPW6sWVVO+slxPED9f6dAYsvTqFPWr77OISfhksN4/4?=
+ =?us-ascii?Q?u1Q5lGuvDtWxBXUNxMHTrP0WKGMguYZUiL+pz5OOExRfAH4GwIIAgT5mBwsj?=
+ =?us-ascii?Q?RZt+W/MY92EAh/o4sSFxdqx87UBrdTtqq8lajQHgLDybAD/4gdP66OU0NLuk?=
+ =?us-ascii?Q?9RZAHibzMKv7ikhUcHS3Vsr3lOsrugRUzVwuZPCTZHaNwacKtIlrbO8tI7rc?=
+ =?us-ascii?Q?lI4KOk8SlWR/DNUNn2N07+cEQ18sjEvTcNpWu5WbzcW1oEjvJI9e?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0ada99a-efe1-4033-3e01-08df164d08f3
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2026 12:53:42.8927
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cNcJ9xTMerVwuKPOoCZM8jX+YS7CKx7KEbXiOX199tURlaVq9gbCc0LrLpiI6zIvk8SCgC5+yrX/+kThnqzstQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2971
 
-Add a MAINTAINERS entry for the Rockchip RK3568 XPCS platform driver
-and its device tree binding.
+On Fri, Sep 18, 2026 at 06:10:39PM -0700, Joe Damato wrote:
+> On Mon, Sep 14, 2026 at 05:48:31PM +0900, Koichiro Den wrote:
+> > RX entries are added to rx_post_q before their fields are filled in.
+> > The overflow path sets DONE without a write barrier, and
+> > ntb_complete_rxc() has no read barrier after checking DONE. A concurrent
+> > completion can therefore consume stale entry fields.
+> > 
+> > Publish DONE with release ordering and check it with acquire ordering in
+> > ntb_complete_rxc(). Use the same publication rule in the copy callback.
+> > 
+> > Fixes: da2e5ae56164 ("NTB: Fix ntb_transport out-of-order RX update")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904052134.2970111-1-den%40valinux.co.jp?part=3
+> > Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> > ---
+> > Changes in v4:
+> >   - New patch (Sashiko)
+> > 
+> >  drivers/ntb/ntb_transport.c | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> > index 3f497a62673f..b69e8ac8047d 100644
+> > --- a/drivers/ntb/ntb_transport.c
+> > +++ b/drivers/ntb/ntb_transport.c
+> 
+> [...]
+> 
+> > -	entry->flags |= DESC_DONE_FLAG;
+> > +	/* Pair with the acquire load in ntb_complete_rxc(). */
+> > +	smp_store_release(&entry->flags, entry->flags | DESC_DONE_FLAG);
+>                                           ^^^^^^^^^^^
+> 
+> 
+> >  
+> >  	ntb_complete_rxc(entry->qp);
+> >  }
+> > @@ -1664,7 +1666,8 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+> >  		qp->rx_err_oflow++;
+> >  
+> >  		entry->len = -EIO;
+> > -		entry->flags |= DESC_DONE_FLAG;
+> > +		/* Pair with the acquire load in ntb_complete_rxc(). */
+> > +		smp_store_release(&entry->flags, entry->flags | DESC_DONE_FLAG);
+>                                                  ^^^^^^^^^^^^
+> 
+> are these two smp_store_release lines right? i am asking because it looks like
+> they do a load ? i honestly have no idea if there is a race here but it looks
+> sus to me
 
-Include the relevant mailing lists (netdev and linux-rockchip) so that
-future patches are properly distributed.
+There are no concurrent writers to entry->flags here, so I think the plain load
+on the right hand side is fine.
 
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3b2eb2a7a89a8..f53a519da6298 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23739,6 +23739,15 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/sound/rockchip,rk3576-sai.yaml
- F:	sound/soc/rockchip/rockchip_sai.*
- 
-+ROCKCHIP XPCS DRIVER
-+M:	Coia Prant <coiaprant@gmail.com>
-+L:	netdev@vger.kernel.org
-+L:	linux-rockchip@lists.infradead.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
-+F:	drivers/net/pcs/pcs-xpcs-rk.c
-+F:	include/linux/pcs/pcs-xpcs-rk.h
-+
- ROCKER DRIVER
- M:	Jiri Pirko <jiri@resnulli.us>
- L:	netdev@vger.kernel.org
--- 
-2.47.3
-
+Best regards,
+Koichiro
