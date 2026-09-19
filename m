@@ -1,77 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95EF59B56;
-	Sat, 19 Sep 2026 00:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08461419A4;
+	Sat, 19 Sep 2026 00:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789776690; cv=none; b=nGQ7qg0hZEMxFowcoxTo0RrUAHmYVNz5QBCMSaYVWTn8WOXVqzF8ta0SV7D/yxqpMay8N1it9GzGx61Qc6IIJB8xFFKdSUgEbtOBsVqoAOdbejKN9EIL5DeZwJlv9Ui5PA7MXNKfOsGdZkQhNhmcNgfJ+n1UK/NUDnYB3eqT7Q8=
+	t=1789776805; cv=none; b=eAqvUYPKFUi8OKs3beJN79iZDWUMDdFnsBDD/18wud+3CsBQk/b8vN73ENRfiMfmplqkTkDxPL+qndNi1E3w0XuCmqKacniOO2uQCuGNO6YYZDmxN16GUqWvgBU737N+6QY+xT1/s+UXEdCQH0bunpOA7QNhnHdw3tCgmJPyWDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789776690; c=relaxed/simple;
-	bh=zlnNvibZ9UECBOhcxsqRmSALx8GJ4J/HotslRkKs6Dc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VlF6wzzO1S6w6O0GnKhkO7WIiOsxTSJqrc1Ohvf11ejtXTHCYb059DbjP7ZQDSYYl6TM90FQoqC0GxONsUEPE2hhbDTSN1WJ2nr8fn6h0FX6YT0iMbd0nHNHFw8zxipp2jB3tJlBC9Ax8A7scfRsEtVfb55gD+ZzhCZ+EXRLyZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0JvA1Ez; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789776805; c=relaxed/simple;
+	bh=buyHeG3UJwEPWEU6g8byIvd3wYSdKE6fEpTsElr/UlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=nIhpW2AqfIUPIU+ddcfuJUQTAE9C1sNShTaG2XY5PvVhZB90YqXBXwsYuKcGl45cLbGySW33IQVsM+aHqr8LrlBkudnHJ1SmEHcZrzq0i5VlPTJ4LNz707pHX/jwVT5hvHLCV9lzYR3+PPp4qIXX4BzykISSzfG0NZDWcyiZODA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7sIrOME; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0JvA1Ez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690DF1F00898;
-	Sat, 19 Sep 2026 00:11:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7sIrOME"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDC81F000FF;
+	Sat, 19 Sep 2026 00:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789776689;
-	bh=lhf5uqL5K15bNYATsjdroq30RYPaV17sToVOTYUPIVk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=D0JvA1Ez8GvKLnHpfL9Fd6apsvbE/2cW6FGj0MHi+qP6nUfq6Q6LDUU3loXnLnh+S
-	 aKrMbDvdg6Bg7QbJE2fDgzVS/+5FSbn0SkDuNSV68bEGhkKYV2ItwLsbJgNzh9FjQS
-	 t7db3gmfKdZt170CqMYQB227F4mRmtnthcCa3k8qjQr5HuujO0rhaN3G1yJP0KFvKu
-	 6fiE8UZWXi12v8/8wAD4bEiHReQ4dOLxeVwdVQX8iMJA1MChc4PVsozKd9hAYqqB4S
-	 e71jvwbiAKE9nC8KQg4rhe54eo4U5PoYdMhguQTtehRwX/fqfRcgcL3ECjcFjqtnzz
-	 GwZ/gEx+M1VGQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939133811977;
-	Sat, 19 Sep 2026 00:10:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1789776803;
+	bh=2ppZlK0eCWJAiVjrFR6hYO6tChrakKqueSRWUM6kGCM=;
+	h=Date:From:To:Cc:Subject:Reply-To;
+	b=J7sIrOMEDrUZw+8MgmxFnj51FwCBuEfRap2bXSSckja/UEeleJbIDAYMYWBftqD+H
+	 uaZk6QxMdwKdTnRNLdlMP3Ig9HHjHSNWcBl+Q3qRE+85OGcofBVw4X3i+TiVC7YIuz
+	 nUBBcRIHPUbueWbGmLhDR/E4xlJHoJCS+yVz8m4Y4wMPt2zZS1bcK7zxlpAqhyEfLf
+	 Lma+YDtpinl2sLOypYjt7hLyEHMwJMKueWG+CDDVEx4Q2kdB//JBsJqYIvwHAYAZte
+	 PlTqv21tRSQSQVlYVobSUYXDz2F5RnBINaY1FiBg4iJavVBwEeT6BPUR4dok7i+PBM
+	 AwRzHSDdWNDdA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 4F071CE00F0; Fri, 18 Sep 2026 17:13:23 -0700 (PDT)
+Date: Fri, 18 Sep 2026 17:13:23 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+	io-uring@vger.kernel.org, netdev@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v2] Fix data races on hrtimer_sleeper ->task field
+Message-ID: <5dca353c-6b3f-4d01-8808-bef2c0dd7af7@paulmck-laptop>
+Reply-To: paulmck@kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: ionic: free VF resources on remove
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178977662214.1197442.13036951567761793356.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 00:10:22 +0000
-References: <20260916053117.2906446-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260916053117.2906446-1-lgs201920130244@gmail.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: brett.creeley@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, tglx@kernel.org,
- kees@kernel.org, tiwai@suse.de, wangruikang@iscas.ac.cn, sln@onemain.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello:
+Hello!
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+In CONFIG_KCSAN_STRICT=y mode, KCSAN finds data races on the
+hrtimer_sleeper structure's ->task field.  This field is used to indicate
+owner of this structure, and also to signal the sleeper that the sleep
+is over through use of a store of NULL.
 
-On Wed, 16 Sep 2026 13:31:17 +0800 you wrote:
-> ionic_probe() allocates VF tracking data and maps a statistics buffer
-> for each already enabled VF with ionic_vf_alloc().
-> 
-> The probe failure path releases these resources with
-> ionic_vf_dealloc(). However, after a successful probe, ionic_remove()
-> tears down the LIF and device without releasing the VF resources.
-> 
-> [...]
+Because access to the ->task field is open-coded across several kernel
+subsystems, this series creates accessor functions creatively named
+hrtimer_sleeper_task_get() and hrtimer_sleeper_task_set(), and uses
+these throughout.
 
-Here is the summary with links:
-  - net: ionic: free VF resources on remove
-    https://git.kernel.org/netdev/net-next/c/9f1c440f9283
+While in the area, also apply READ_ONCE() to lockless loads from
+base->running.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+A key goal of this and similar serieses is to reduce KCSAN noise in
+strict mode so that new data races are more visible.
 
+The series is as follows:
 
+1.	Mark data-racy accesses to hrtimer_sleeper ->task field.
+
+2.	Use accessor for hrtimer_sleeper ->task field.
+
+3.	Use accessor for hrtimer_sleeper ->task field.
+
+4.	Use accessor for hrtimer_sleeper ->task field.
+
+5.	Use accessor for hrtimer_sleeper ->task field in waitwake.c.
+
+6.	Use accessor for hrtimer_sleeper ->task field in sleep_timeout.c.
+
+7.	pktgen: Use accessor for hrtimer_sleeper ->task field.
+
+8.	Use accessor for hrtimer_sleeper ->task field.
+
+9.	Use accessor for hrtimer_sleeper ->task field in requeue.
+
+10.	Update hrtimer_resolution only if value changes.
+
+11.	Mark the hrtimer_sleeper structure's ->task field __private.
+
+12.	Apply READ_ONCE() to lockless base->running loads.
+
+						Thanx, Paul
+
+Changes since RFC v1:
+
+o	Add patch 10 to avoid both cache misses and KCSAN false positives
+	when updating hrtimer_resolution.
+
+o	Add patch 11 to mark the hrtimer_sleeper structure's ->task
+	field __private, as suggested by Thomas Gleixner.
+
+o	Add patch 12 for a similar KCSAN issue involving lockless
+	loads from base->running.
+
+------------------------------------------------------------------------
+
+ b/fs/aio.c                    |    2 +-
+ b/include/linux/hrtimer.h     |    8 ++++++++
+ b/include/linux/wait.h        |    2 +-
+ b/io_uring/rw.c               |    2 +-
+ b/kernel/futex/requeue.c      |    2 +-
+ b/kernel/futex/waitwake.c     |    8 ++++----
+ b/kernel/locking/rtmutex.c    |    2 +-
+ b/kernel/time/hrtimer.c       |   14 +++++++-------
+ b/kernel/time/sleep_timeout.c |    4 ++--
+ b/net/core/pktgen.c           |    4 ++--
+ include/linux/hrtimer.h       |    6 +++---
+ kernel/time/hrtimer.c         |    9 +++++----
+ 12 files changed, 36 insertions(+), 27 deletions(-)
