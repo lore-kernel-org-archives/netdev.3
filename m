@@ -1,103 +1,109 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A0130C152
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 05:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0070525B090;
+	Sat, 19 Sep 2026 05:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789795816; cv=none; b=Q+J3m8YJmC9CkoZn4tL2SVSQGx7/xVBs4LH4PmQTQ5T9O0QtS0qJ6asyUc78f6w0XP1VbZrHKF+JLs4L63i18nTF3xU6Snxop56cC80AT/fAVNBF5ElJlkHGthIYAyGvOooPf2OzpqVz46pwAf03hS42YgNeigMhaHhHeeRXoNY=
+	t=1789796479; cv=none; b=n4mEE0+7x+U253QX1J8kSWa+emhi1z0SkZzmKLBoG2Rvi38uyVZLF31xBHl38i5YmvmiHtRk4gce4QbTU9OSGk6x64EEl9NWJ3zreYOxOA1n24RYcnNrpnrYqRLUham+N2TqLtHyfslLR56SMybgsXwGAJzEdZyejKlztB++dVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789795816; c=relaxed/simple;
-	bh=7Bv/tRzHIIX1nxDFQ6yrnEW0jrJAUENMoZyb0TZoQYw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n9+pFL0ur3OxnA8xO8Tjziss8b2gVEw0XgI9EzeTLkJzyA3kJIZkYp5uXrEVt/66dXcZxh1uuMJ33ugKfEtcdQh9/LK7AuZkjsTSs8Xt561bMGlMTZ0bKK3SKao7A17BGmkNRjoFCt71j8H3QjGsAflKCZncsxHV5JnXkt6dBLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ojWO55EH; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789796479; c=relaxed/simple;
+	bh=PL/D+o+ZESzAdUsIYaJLQtexbMp3AjWc6YEvF6S2s5s=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=U6xvUgAzAY3CYQZMFkDZ/bNZkXHrzX2MgT93YpNlScjCZmaVKdiD8VPflNOxjZvBn6Da9CCGXItfNPtxGHxufuKGMhZYJvthEFz2MxH8ipsc2gAV5tGsQZGQooiYp+e/RTqXq9zRhSsS7XW/Le0BkidBCQF/Kd5KejHeQjusEu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK87OeS1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ojWO55EH"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso7935025e9.2
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:30:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789795813; x=1790400613; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7Bv/tRzHIIX1nxDFQ6yrnEW0jrJAUENMoZyb0TZoQYw=;
-        b=ojWO55EHv5TMcFaUZ+O6ganieh0E1ZUWmRMERpDnhHlnt+symQlltJr943+sKv3cmZ
-         Vl5+VuHe/GRmRyzd9ZZ/UcGSImAjFBdc3qNG9XvrdjT08r21Exn2pMq5oVNligNT/RHr
-         RtygomwifXsj693OSri98WBORfdWwWxfTea57aeKYq7VSKT2wGGXSI/M/mgSUQrUcINm
-         IjjQNzSr4dQfVM3+gn/X9Z22WdQzXyQA3zeWojQQp6iIyhipbPtImCnxKqRWrPrFe1xQ
-         dxLQsORuehV615FDVfpGL/zOixHqPQYF+RBqpdS2rTMD7Zcrge0exXE3eS7rCUeYKkdq
-         clMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789795813; x=1790400613;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7Bv/tRzHIIX1nxDFQ6yrnEW0jrJAUENMoZyb0TZoQYw=;
-        b=z0M5OxKAJyD/TJPX5qiGKPaibFEOeCX8e9nbtZ4Mn512AEw1BEBs06n2RM6Z63+ns4
-         2Gb1sXQWRwG3VoFrug8WWX7LK6ujEFFMtL8CgSmx1pWsZZDGAfYNAokWp1/t4LIcKPfz
-         ZfI/3jFVz9Nlaeh6pACsvhfkPTKfV8BdXh0jofFjjRu30523pwTiW4uGdMHEdX/iAClf
-         /nN+QbDHUTrD4VlLj6AVFRHbBtAk9YqmoXg7OgQzTperOsjUhpfM5OTU0ATs/dsSIP7M
-         SvBfpvf1bHcdyH1Qir6kLYeqA8Ptkaz27u8yuxQSnDpDuZhicKCxgmxqmFlgDsP3dJab
-         wIrA==
-X-Forwarded-Encrypted: i=1; AKwUvBwLbXBfAirdP7FC0FmFaTO9fDt5R/MbU9nmdJqtbmfUDYIih6+/L7zlpLlXfRcHyxTwJcjc1/Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++miaSvrqq23f9XOKZgORszFphRdpNrLQNKfeyE/n7G0dsTDbk2V
-	unwswM+lKOv1kGw++oy1PCWbYZ/dfXISWM0VVL60FM+mL5ys0+xn+JSjZg9/u8nA
-X-Gm-Gg: AYBFou3eYE9q1NJdODRBCIszh5D7ASYlCMAtx51Sekj+CqfGdQ+HsnK1RxTDQWIPB6M
-	dCxAFrxY7ppEQOuVomqYM7vJ1Ji8CCDTQuBi6B4rSnCh6HMf4tV/PsSif+iDfDIKUpNxCPj26tv
-	kEG+1YkyCvA3AteWTVSeCi2ckSRHyfzNLN9RZftwliGyFCLCCC33RmxW19cA8KQdkCJfJt/Jr0u
-	9jVRrhCUA1w7XHoJhr4Dw2tV1Ns+3/VMdIxCDUZqj0YPDuDEqC2xFW9utoGbv7mHk7E5oRqN21l
-	rshSck5EcOb83KrYLCqJydsRveVKzOZd+DUpMb73ZtM4lupCsUBxvk9RlsuH1FQlYSpOdRId+Vn
-	7Kuj/lNpImkzNgs7YEUb4H5W7H6Kga8qx/yssrMG7kU9huHscYNvuehDx9hR/9kjLGt62oB3lRf
-	RCm7G8GQrG1tzHFhHGmadvnA+iOEyBHCMRU8FutjMC6mIk/FR397lBSiTFdiylni4JyZiBheaEO
-	SCcfa1YJlPJ1yE58tZYcl7Ih10rz63ShkAXNdvQVS5qOwpmX1hbvhy+acSsPqc8FDZ4KqjVZLNh
-	tf2lodSjurjASRbkiagq3LDXjYx4FIulTC4hbSiSSeZEG32HkdfptsemmSrN/Ej0nkUH3c+O/sA
-	+FLvtAnWqjLOyQ0Q=
-X-Received: by 2002:a05:600c:8b61:b0:49d:e0c:e55e with SMTP id 5b1f17b1804b1-49fc574a635mr67008715e9.23.1789795812998;
-        Fri, 18 Sep 2026 22:30:12 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a017-2b01-05fe-203b-7cd2-a640.310.pool.telefonica.de. [2a02:3100:a017:2b01:5fe:203b:7cd2:a640])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724583250sm4045214f8f.22.2026.09.18.22.30.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 18 Sep 2026 22:30:12 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Simon Horman <horms@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] docs: kerneldoc.py: preserve headings in kernel-doc output
-Date: Sat, 19 Sep 2026 07:30:10 +0200
-Message-Id: <20260919053010.26104-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <335fec1cd5a3449687f8b1ee8cd46a0f3e455aa5.1786751700.git.kmehltretter@gmail.com>
-References: <cover.1786751700.git.kmehltretter@gmail.com> <335fec1cd5a3449687f8b1ee8cd46a0f3e455aa5.1786751700.git.kmehltretter@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK87OeS1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898421F000FF;
+	Sat, 19 Sep 2026 05:41:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789796477;
+	bh=bjZmcNI5FA7SBAJaHY0Qr8fU0zq6hfuv3Cg60N7CNgo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=gK87OeS1RUggbbzZc2Jkz4vZLAKBi0iTBNwGQcRnHv3/5vT4Ymt9WPxJbYxfpaQDN
+	 h/3/DfsaZHdOHub02OanVF4c5Q50qevNNUhHdAopP7npqmxF6ssCl9Behg/vDvX93h
+	 ysItBqRRUBB5R1g8KQD0JOyQm0tUlWDYvFfX/dh4FG51CdtfSaXkVWRLPBatFtZs/k
+	 5g7JX5D5Cj5KJKsvONsTMe8j6kXy7/EEGsgNXkACeczY2olHMVtjUwLTjJYima37Qv
+	 9WdZUoNt4255DLQOPjUKah0edVwBoJNeZAl1r/xwj49QZqCC+3EFxZJKOvEIIGAcaH
+	 MPS35lAdirDAw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9393E3924440;
+	Sat, 19 Sep 2026 05:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v4 00/15] bpf: A common way to attach struct_ops
+ to a
+ cgroup
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178979641040.1277927.5226384464308914139.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 05:40:10 +0000
+References: <20260917200542.3689605-1-ameryhung@gmail.com>
+In-Reply-To: <20260917200542.3689605-1-ameryhung@gmail.com>
+To: Amery Hung <ameryhung@gmail.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com,
+ andrii@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, memxor@gmail.com,
+ martin.lau@kernel.org, shakeel.butt@linux.dev, roman.gushchin@linux.dev,
+ kuniyu@google.com, kerneljasonxing@gmail.com, kernel-team@meta.com
 
-On Sat, 15 Aug 2026 03:32:29 +0200, I wrote:
-> Use nested_parse_with_titles() to give kernel-doc output an independent
-> title hierarchy.
+Hello:
 
-Friendly ping on v2. It already has Acked-by and Tested-by tags.
+This series was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-Is anything else needed from my side before this can be picked up?
+On Thu, 17 Sep 2026 13:05:26 -0700 you wrote:
+> Hi,
+> 
+> I am continuing Martin's work to support attaching struct_ops to cgroup.
+> 
+> At LSF/MM/BPF 2025, Martin presented [1] the need for a new interface
+> to extend tcp_sock operations instead of adding more BPF_SOCK_OPS_*CB
+> enum values. The need for predictable ordering when attaching struct_ops
+> to a cgroup was also briefly discussed.
+> 
+> [...]
 
-Thanks,
-Karl
+Here is the summary with links:
+  - [bpf-next,v4,01/15] bpf: Remove __rcu tagging in st_link->map
+    https://git.kernel.org/bpf/bpf-next/c/012089512144
+  - [bpf-next,v4,02/15] bpf: Make struct_ops tasks_rcu grace period optional
+    https://git.kernel.org/bpf/bpf-next/c/5db69b0fbdc8
+  - [bpf-next,v4,03/15] bpf: Add bpf_struct_ops accessor helpers
+    https://git.kernel.org/bpf/bpf-next/c/3668bc410260
+  - [bpf-next,v4,04/15] bpf: Remove unnecessary prog_list_prog() check
+    https://git.kernel.org/bpf/bpf-next/c/1ef6cb2cc587
+  - [bpf-next,v4,05/15] bpf: Replace prog_list_prog() check with direct pl->prog and pl->link check
+    https://git.kernel.org/bpf/bpf-next/c/c6dde091dc12
+  - [bpf-next,v4,06/15] bpf: Add prog_list_init_item(), prog_list_replace_item(), and prog_list_id()
+    https://git.kernel.org/bpf/bpf-next/c/4d71b3e0821f
+  - [bpf-next,v4,07/15] bpf: Move LSM trampoline unlink into bpf_cgroup_link_auto_detach()
+    https://git.kernel.org/bpf/bpf-next/c/2ef54525d2fc
+  - [bpf-next,v4,08/15] bpf: Add a few bpf_cgroup_array_* helper functions
+    https://git.kernel.org/bpf/bpf-next/c/e176821b68d8
+  - [bpf-next,v4,09/15] bpf: Add infrastructure to support attaching struct_ops to cgroups
+    https://git.kernel.org/bpf/bpf-next/c/369d9dcd8fb8
+  - [bpf-next,v4,10/15] bpf: Allow all struct_ops to use bpf_dynptr_from_skb()
+    https://git.kernel.org/bpf/bpf-next/c/6d4ce907665d
+  - [bpf-next,v4,11/15] bpf: tcp: Support selected sock_ops callbacks as struct_ops
+    https://git.kernel.org/bpf/bpf-next/c/5ac77ae32940
+  - [bpf-next,v4,12/15] bpf: tcp: Support parse/len/write header option hooks in bpf_tcp_ops
+    https://git.kernel.org/bpf/bpf-next/c/3bb54768fe3e
+  - [bpf-next,v4,13/15] libbpf: Support attaching struct_ops to a cgroup
+    https://git.kernel.org/bpf/bpf-next/c/6bad848e3f70
+  - [bpf-next,v4,14/15] selftests/bpf: Test attaching struct_ops to a cgroup
+    https://git.kernel.org/bpf/bpf-next/c/ae7b5234fa8b
+  - [bpf-next,v4,15/15] selftests/bpf: Add test for bpf_tcp_ops header option hooks
+    https://git.kernel.org/bpf/bpf-next/c/d7399d91417b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
