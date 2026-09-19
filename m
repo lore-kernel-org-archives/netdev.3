@@ -1,128 +1,76 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5097C38D3FD
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12980547041;
+	Sat, 19 Sep 2026 21:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789851996; cv=none; b=awo8+td077I1bxDmOogteLXfiNEoV+XljZazub7ZVOiN0iwDGIrq5ePDZ5UbMdqbZuqrR+vMwWrMASGCPbla2i1l2q5YgrTxwGLo5KQDg/FHT4A+Ms3DV57U69Q3YygmyM70WTzy0Q3lrDnWikuFK4Z8tpIVbKXA4d5YvHzmbYk=
+	t=1789852838; cv=none; b=YYlXUWDCa+RM3vpTcl9EiZrsr5QC0xN/DkD3/DaLxTcpOnk92BfSSj+vY3WTyEOocWhIId0LgZCXDyEMyo7XLYBUl2ReVQEuuBugmPA3CFIMKqDksr4f1xl3fHQPAvba1ouyXB0oc+SZiZxL3EhAyQvfLCpkJOxnCzTEV74Zp6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789851996; c=relaxed/simple;
-	bh=rkeu4ZpR3DudTk78RdWRd/sRhVqmLJntTwWFB3VgecU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KbNeDBSyJgNrEAACj45QuiFnJmvTVmbHKJJO8tKo/nsXHKIhjUHJbZw+mNZ4SLcVysKW3UnrXAdpQvHRxlYO1ZHkNJgIMnAZVfIYX1txI3hJdL/ugdREK/MKeo2n+OonUD6Y9GNNCWELPi8wy+Bt6vKw+QC2gwYhFRe7EZU4A7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QlFoj5GJ; arc=none smtp.client-ip=74.125.228.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789852838; c=relaxed/simple;
+	bh=QSYCpy6aGg/XfwkSF+LhfAxFm+Ju/6PLbQnktNFBfbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Duk9L/tTCjFcqUUsWMnYuBM/Tsi+X3CaSwCl8G9D+sh6b1f21HHRDXKNe7oBhazMctPsvLqDxnPmpskri3/u2ZuLxD214wK/IVO241TLVdLp8Oxv4Y0PdcYH1onDqi4UlrAXIYmrk8cWiAYrN1fVkPa6UIIRQnMhBmND7dyS+t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2NwDFqP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QlFoj5GJ"
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8674704dab1so2671873b3a.2
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789851985; x=1790456785; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eIqO3FqVB1dK7+YBAaOuu1DEyH3i0oVt3LwyqRR/sIQ=;
-        b=QlFoj5GJwxpEizbuZzT8pElrNwtby1pgly3SiP1Wegtg+VFVPulmw2CjpZR3nn0p+i
-         Ma3BRoc6JXVIIoPAJdhcufvSCD1UEgnFS0zfozHhur505J6KyM3+lfAFUUxBhqf6jaSB
-         gIrUQoVRmt6qwzJqQyFTin4KN8tRwSgcljACeHhQVmkdBJyyOLFcdBZx0PlFTpFfDoIA
-         bcnhJ/LD6XQaYdNb4XF5W7H/8qn5h0yOKPug0RoRvQTVDTht7AU5oUQG3ZqCN4cfE53t
-         Dh+JN/xGXX04Y5oB1oxLm9BHUw2xdnuAjQJGQYtWwHCm9BBRvpS5gbBkL5AHDja2EO/+
-         89Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789851986; x=1790456786;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eIqO3FqVB1dK7+YBAaOuu1DEyH3i0oVt3LwyqRR/sIQ=;
-        b=hb3iCJnnqKxToemjq8ZsZgYXgqNibxVo0pn8HzNvT3Va1xrk9G+eRczn1AxoOY1hv4
-         hllnPZXHNCdwcxFCUtSfIzjStQZ8t21zoZQA++mlYFX+DW+nMhwZFU7T7LL4AY9FcY38
-         MOdDs/rj1DWxFSe0F07bwSkga0NabQlgRUUnu6Rwkxsu1WUE0/qMCyYS4geokQ0R7OfY
-         RsoALfvd0OQzAV30hQXI0fbYv14sK1v2o5/IesSOULmGd2yzM2S1efJPptwroZjzaiuD
-         9Wsabwpn4fEqpn5BF+qZaJiaIA2n5xZ6tCDY91iLH/32xPj9+8nje2viuvmbcspF82Ax
-         dpSw==
-X-Forwarded-Encrypted: i=1; AKwUvBy8ALGrEaRX78LiEAiq4Tsrlyl+zKTzcaFaWW/e0x8rF1oqc8CyW4e+qSnfqL3Ki+8Oq5Az7fE=@vger.kernel.org
-X-Gm-Message-State: AFuF++k/hhffmxCqLYQRm2Et1XlPNwJLCeIFp6a5p0uXJJgZwERygtPA
-	TT2HBJFMrOFSCmU0m4sRshcC53BX5U2bIT5PkFDTX85aWjij9vjA9gdD
-X-Gm-Gg: AYBFou06hPKeIo94cK0HGWhicAlGUL7Q9GKXEBPliCeuNd1kv4E6zVWUUE2Pzq4Wzsn
-	amkqEtjJ/qVCJ81J4oQAjdPhr7emHXkcyJ0wocYkjcRGPJSPZ8wlERQbCnZDLPCPcjYpS7yFFyt
-	Fws/HLzP3bZf5lyMoLAx69ECDHHO/HuZb0WRfDVDcinawabNkQtnWn49RPOj3zqtXkBw9I2e5La
-	fRzr510UQyYajmC25yey9ujNb5A95J8Erirryk5nLp4eBF/sQSC3wQrBz7uiD1GLNNRF4QNSQCk
-	uj5a1dIYoRaaz7/oXBF0dFu12WPZRZCJXa1uwP1cir1iPoLyoZwRO/JvpQwoaptSJWNMkkUJaWz
-	v8LNkbW1qY5KWtk2FdLxzJ9ann91U0ANA3M1fD5NXNfOJQ45TZvVwEzdgS4tWi2D9A0SJJyYM4L
-	VzLL+GZcQQNflNZmAsUpgODBEe0e2rkYy7fLrl8Jpb5o3m8h9TI8Wc19VDHAaJQJFQc9CeFXQ+2
-	w49btd3ON/EbfWABsP6vaufk7kBpWMCyLOIiM0ebumncrI2hB/hKbjOFXDYJlmhBRx4weuEQGVR
-	Rj2DlAp7Nw==
-X-Received: by 2002:a05:6a00:bd88:b0:870:8e80:3ac0 with SMTP id d2e1a72fcca58-874dc7ee0b6mr9710984b3a.11.1789851985650;
-        Sat, 19 Sep 2026 14:06:25 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a94f8c39sm1278054b3a.28.2026.09.19.14.06.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 14:06:25 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net/sched: ematch: check nla_put_nohdr() return value in tcf_em_tree_dump()
-Date: Sat, 19 Sep 2026 21:06:24 +0000
-Message-ID: <20260919210624.3030344-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2NwDFqP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB841F000FF;
+	Sat, 19 Sep 2026 21:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789852836;
+	bh=WWRhvzt1bxKb4a4PKfjNZNSEMlhwEztRWLoE+Q+ZkgE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=E2NwDFqP9gHk6Fh20z8ijN4A580Sn4bSZTVQN+tDavInvxBVVWfXSv2XewqdfuLNp
+	 PuQ/mJaGkCaFRRDChNlSgKnTbzeytJrzQUmw2n28W3YkEV3ZT47/jcf6+H8wVVIxwI
+	 KmaaWOGe5xgQSKr/lqoOG8bzoXI9JHS7XUGqVteGEGIk37Ds0jltOGTMJe/kE0DPxw
+	 W4e/43u6r161OREP0iB4M3f0t3VRwp6hy44bY5USTxO85YSPIrPzuT5w8YiKRzo7Qp
+	 vLthtABFUKMym4tljuUY0khHNNixgy3jTzCG/NvEYhy4bikknE+B7ZUHTdT4zbl0FU
+	 NdC+U2e4DErNA==
+Date: Sat, 19 Sep 2026 14:20:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hyunwoo Kim <imv4bel@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, Willem de Bruijn
+ <willemb@google.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuni1840@gmail.com>, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1 net-next 0/2] net: Disallow buggy TCP transitions and
+ IPV6_ADDRFORM.
+Message-ID: <20260919142035.4d0e11a8@kernel.org>
+In-Reply-To: <aq28mdNpi3ssjgXz@v4bel>
+References: <20260904033543.2635540-1-kuniyu@google.com>
+	<aq28mdNpi3ssjgXz@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When tcf_em_tree_dump() was converted from the legacy rtnetlink
-`RTA_PUT_NOHDR` macro (which contained an implicit `goto
-rtattr_failure;`) to `nla_put_nohdr()`, the return value check on
-`nla_put_nohdr()` was omitted for container/simple matches and raw match
-payloads.
+On Sat, 19 Sep 2026 07:35:05 +0900 Hyunwoo Kim wrote:
+> >   Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")  
+> 
+> Hi netdev maintainers,
+> 
+> What is the plan for stable backports here? Does the uapi change rule
+> this series out for stable?
 
-If the netlink dump skb runs out of tailroom at `nla_put_nohdr()`, the
-error is silently ignored and `match_start->nla_len` is finalized
-without the match payload, emitting a malformed/truncated
-TCA_EMATCH_TREE_LIST attribute to userspace instead of returning `-1`
-via `nla_put_failure` so rtnetlink can reallocate and retry the dump.
+Not super well defined to be completely honest.
+My gut feeling is that we should wait for it to reach Linus, and ~rc3
+then pull it to LTS. Which would mean 2 months from now (mid Nov).
 
-Check the return value of `nla_put_nohdr()` in both branches and jump to
-`nla_put_failure` on error.
+That said, I am personally pretty unbothered about local exploits.
+There's too many of them. And because of the serious exploits
+(remote, VM escape etc) I think people are not deploying stable
+much more rapidly and with less testing. I don't want to inject 
+a de-feature under such condition.
 
-Fixes: add93b610a4e ("[NET_SCHED]: Convert classifiers from rtnetlink to new netlink API")
-Assisted-by: LLM
-Signed-off-by: Hui Peng <benquike@gmail.com>
+Adding Greg and stable in case they have a stronger stomach.
 
----
- net/sched/ematch.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/net/sched/ematch.c b/net/sched/ematch.c
-index 5c1235e6076a..563feb1011f2 100644
---- a/net/sched/ematch.c
-+++ b/net/sched/ematch.c
-@@ -470,9 +470,12 @@ int tcf_em_tree_dump(struct sk_buff *skb, struct tcf_ematch_tree *tree, int tlv)
- 				goto nla_put_failure;
- 		} else if (tcf_em_is_container(em) || tcf_em_is_simple(em)) {
- 			u32 u = em->data;
--			nla_put_nohdr(skb, sizeof(u), &u);
--		} else if (em->datalen > 0)
--			nla_put_nohdr(skb, em->datalen, (void *) em->data);
-+			if (nla_put_nohdr(skb, sizeof(u), &u))
-+				goto nla_put_failure;
-+		} else if (em->datalen > 0) {
-+			if (nla_put_nohdr(skb, em->datalen, (void *)em->data))
-+				goto nla_put_failure;
-+		}
- 
- 		tail = skb_tail_pointer(skb);
- 		match_start->nla_len = tail - (u8 *)match_start;
--- 
-2.55.0.1082.g2b9226bbc0-goog
-
+Also FWIW I believe that Eric D is AFK at the moment, and he's the only
+netdev maintainer subscribed to security@, AFAIU, so y'all may be aware
+of more things than I am...
