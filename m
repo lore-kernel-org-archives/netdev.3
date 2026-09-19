@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5117D13D891;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB21419A4;
 	Sat, 19 Sep 2026 00:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789776872; cv=none; b=d4J289mqtjBU20Z4TgdlFMcWnQ0ga7kA0ObUVsTOQ5wvvVoEVH/t/xNKaJ4Aw/oYm0X21WYsHiixKh0mX6u2yaL9vbQBKKi3HPE5HJJYapKKqiOaV5EX8byS8GZDFGFU38z1ASIK3IPdKPNGRQ4sU9YBa3Pa4D7Gd7+TZOspLSo=
+	t=1789776872; cv=none; b=BTgK0wFz8jWP///Z0jumr3Sg+RaT7lrdUdf4xRZtRfusgS46JLtaWBFRU36be2144phV/cStu0VfqbFx/INB+DNELx62SUJf+7cDkwmZkQGRDa6jsEiHfCkqoWKdLCq5pY/C3YaTOtIoko6sHsfXRnA2hbNqB3ImS32CcO1w6NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789776872; c=relaxed/simple;
-	bh=/t3p1MK2MQCYAfYT4vQ6UOuagLKqaozUfy/bsZc2/ho=;
+	bh=9oW+ILsQfNGwMx9MLR3WFtT2cu7h74dmOW3ViubBX8U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rNkg1uPibo6duwyYo45bu06qf5j9co7tNBzTYlI4MK1eeSj+pmpe6vlL80W8E+aB3AH4tRq0MglF7vCC5WunG4XSkAsh6NcWj5eOZ1qP7yivtCcn7X2RE9cGSxvszt8XwJbfayGBIIQXo+p0iUzL148LCjDci6jtGlLE/SSzQ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UW1Q+ye9; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=RZXkCzgx88w7XA6NN4UDiXpRoLfJMLzndqrLcwjKwDHTzgsH/ACMx2bjiXr579nzOI8x6zam2uT68xcZYej4pcPx/zA17WFSUm9qGZGe/hHULv82XN8bJN8ZxvQyHxjYG9/nOQuXfcblo1T/FTxPAxrGafwLc45ahxczyoQF+94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTEiZOCc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UW1Q+ye9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA361F00899;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTEiZOCc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A511F008A1;
 	Sat, 19 Sep 2026 00:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789776871;
-	bh=wGeXmGSU0hQFjCRhnOoobLOSq8+j0qaPj9BL2WAHKUE=;
+	bh=PknkRwPvvBeYfYi2D4CKC2RzvbganFXZNEUr/0BCVBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UW1Q+ye9Z84bwOQHXz39fQegOb+4TNv/11c/6UuUtyKNil05sL/Tw31oPb4eMTKEW
-	 PPt9sNMy3Xsik/0p7zoHoXEQf8l+m0D7glOQBesQTvywKQRYSjrxK1eJH7xQWn4tFy
-	 86ru/tik9cvRPWYHdUk7AVZohq0MXwM2uziXHk1gqVp2HQTOF7vYpCF6PLonHupRN3
-	 gtJS5DVAUQ2+3yMuM/np153WxaSrbRSZPsStwxD+I/li6I+DBeK1w39D4fkTb14tUI
-	 Zs/0iHyJQf38JfVHpKJckfjqLw3H3aJ0QmOYzK6k/jF/sKRNHu59GlYLXrWMU7XXRD
-	 sQhtpkz2sZPSQ==
+	b=lTEiZOCcTzHv8ebJLOHtNscylp9Yhyv0mygMl8+8izw1mX/kjjcNpYxN4owxGWWNp
+	 GKPrg+VjBySRTyhUWvs4qzsKNPRnCrKqHBZXoFH2nTN+A84uuShWcOMsK1wZ4XbZSh
+	 7jC4SfrWBmozp1J3ihqBzd5/0MathwiUva+qu1n7XPRQrbr5Kgeqo3RTX7hJC38DLJ
+	 VtuV7xq+wUK9wIp2lsDa3dFsK1GkZihfHI/FYkSPzbbNaMiHMeLlzSW0JtE9iPV0XO
+	 oFUOVVo/E1GMM7kt0rMjhpy+Gn+T9llBJE+2aZDW1/VTdicuzrssnrkrgNccLKqXHg
+	 wqS482zhxGqhQ==
 Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id D09AECE17BD; Fri, 18 Sep 2026 17:14:30 -0700 (PDT)
+	id D6D58CE1853; Fri, 18 Sep 2026 17:14:30 -0700 (PDT)
 From: "Paul E. McKenney" <paulmck@kernel.org>
 To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -40,18 +40,14 @@ Cc: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	kernel-team@meta.com,
 	"Paul E. McKenney" <paulmck@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
 	Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: [PATCH 03/12] wait: Use accessor for hrtimer_sleeper ->task field
-Date: Fri, 18 Sep 2026 17:14:19 -0700
-Message-Id: <20260919001428.3133388-3-paulmck@kernel.org>
+	Darren Hart <dvhart@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>
+Subject: [PATCH 05/12] futex: Use accessor for hrtimer_sleeper ->task field in waitwake.c
+Date: Fri, 18 Sep 2026 17:14:21 -0700
+Message-Id: <20260919001428.3133388-5-paulmck@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <5dca353c-6b3f-4d01-8808-bef2c0dd7af7@paulmck-laptop>
 References: <5dca353c-6b3f-4d01-8808-bef2c0dd7af7@paulmck-laptop>
@@ -61,6 +57,7 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The hrtimer_sleeper structure's ->task field is used as a flag to indicate
@@ -72,21 +69,18 @@ is no reason to let the compiler introduce additional confusion, and to
 this end, the hrtimer_sleeper_task_get() was introduced, use of which also
 has the benefit of avoiding open-code access to hrtimer_sleeper innards.
 
-Therefore, apply this accessor to the __wait_event_hrtimeout() macro.
+Therefore, apply this accessor to kernel/futex/waitwake.c.
 
 KCSAN located this issue.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: André Almeida <andrealmeid@igalia.com>
+Reviewed-by: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: "André Almeida" <andrealmeid@igalia.com>
 Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Cc: Frederic Weisbecker <frederic@kernel.org>
 Cc: Thomas Gleixner <tglx@kernel.org>
@@ -95,22 +89,49 @@ Cc: <linux-fsdevel@vger.kernel.org>
 Cc: <io-uring@vger.kernel.org>
 Cc: <netdev@vger.kernel.org>
 ---
- include/linux/wait.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/futex/waitwake.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/wait.h b/include/linux/wait.h
-index 7e215330199c..c2af98b0074d 100644
---- a/include/linux/wait.h
-+++ b/include/linux/wait.h
-@@ -556,7 +556,7 @@ do {										\
- 	}									\
- 										\
- 	__ret = ___wait_event(wq_head, condition, state, 0, 0,			\
--		if (!__t.task) {						\
-+		if (!hrtimer_sleeper_task_get(&__t)) {				\
- 			__ret = -ETIME;						\
- 			break;							\
- 		}								\
+diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
+index d4483d15d30a..cf18309e5770 100644
+--- a/kernel/futex/waitwake.c
++++ b/kernel/futex/waitwake.c
+@@ -383,7 +383,7 @@ void futex_do_wait(struct futex_q *q, struct hrtimer_sleeper *timeout)
+ 		 * flagged for rescheduling. Only call schedule if there
+ 		 * is no timeout, or if it has yet to expire.
+ 		 */
+-		if (!timeout || timeout->task)
++		if (!timeout || hrtimer_sleeper_task_get(timeout))
+ 			schedule();
+ 	}
+ 	__set_current_state(TASK_RUNNING);
+@@ -539,7 +539,7 @@ int futex_wait_multiple_setup(struct futex_vector *vs, int count, int *woken)
+ static void futex_sleep_multiple(struct futex_vector *vs, unsigned int count,
+ 				 struct hrtimer_sleeper *to)
+ {
+-	if (to && !to->task)
++	if (to && !hrtimer_sleeper_task_get(to))
+ 		return;
+ 
+ 	for (; count; count--, vs++) {
+@@ -590,7 +590,7 @@ int futex_wait_multiple(struct futex_vector *vs, unsigned int count,
+ 		if (ret >= 0)
+ 			return ret;
+ 
+-		if (to && !to->task)
++		if (to && !hrtimer_sleeper_task_get(to))
+ 			return -ETIMEDOUT;
+ 		else if (signal_pending(current))
+ 			return -ERESTARTSYS;
+@@ -725,7 +725,7 @@ int __futex_wait(u32 __user *uaddr, unsigned int flags, u32 val,
+ 	if (!futex_unqueue(&q))
+ 		return 0;
+ 
+-	if (to && !to->task)
++	if (to && !hrtimer_sleeper_task_get(to))
+ 		return -ETIMEDOUT;
+ 
+ 	/*
 -- 
 2.40.1
 
