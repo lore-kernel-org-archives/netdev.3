@@ -1,147 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38273331EB0
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 19:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E69428B4E2;
+	Sat, 19 Sep 2026 19:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789845885; cv=none; b=QGZuCPFu3rO4d/uwzAdCP2GF156b2MLX0JDfmMQRrbkppyJAe6g1Nifh4LFD+K+NuRUL5UmhgoVOs24Nwb5mqjRxFsKg6WcfgX7sJWxm/HzuepVKm9Rdf9dnZwXEcmfithE2iFaROYB3C+tTgam/AdeWTXTZk/VHX9zmKes0L9E=
+	t=1789847528; cv=none; b=Wh7Z/DVf6NwLCvwYvig/dPGsOmpKNcHqAS5yTf2z0XqJ0IiDwd6ppMVFENIU6ZGkKMeAYwy3jq85iCPrbY/mnTinG3QkvxDWrEv51ufk/or3NUMNAY0229rZczPr2CW9okHh1D8HhGjfx2uQYwM9jQ2FPCHvPNIznxa+l4tqAMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789845885; c=relaxed/simple;
-	bh=NeHshQNFCGwJF2ysi+RWsWuwph5Ge0ieMHHyeUv2SS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fOoibsptVOcBztKSA4a4q7j2+GI2A8gNnXrTjpH2BSCjidTk5IKLug3CG+kU77nqvYge4+CWHpMRmBwgjgzrOfz8Ej4xd0RjQNAF8s3T0orqGBIxqSIjgchV1yxmgRJlTMBI4myOpfrwxLCJrj0fseJWnN+BqmLQhqTyi3dIS8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VGzD+gLl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YD5FrD8L; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789847528; c=relaxed/simple;
+	bh=UdvNW9CpQT7IK6dnytR92a9xtlB2N2AO8AUh3oGnVO8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XNY10/s+UgLie55ok6ibsr4Kk7Eg6kHip0GBvMRw4cVas8alydU7AzcpZv4koqmpLpceWLXNTGFb3lDLFkx3qFg0ch8NjjVVtdxiQFuIi5hp5Oz+r4IDEZSqw9IgitO0RcF5l9KthfbRTdUYQMbb3KmkEtePSMZWXeyFUeDH94s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONLPz5xs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VGzD+gLl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YD5FrD8L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789845882;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
-	b=VGzD+gLlsQrMifF3+CMMRFj6AhU9LHFoULnB0WVC6DkdNAAilC57HBfz/M3b7/4ea449qV
-	eTu2ubozrffDgvbJ5ZVP4hem0peLofHY5AaxfAnZZdSH1hSMaPMBF4l9w0xN3M2k4ws1m0
-	pFcGiKatmM92Gfb22eiWpO7YEHJvcio=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-6asEQDQbOm6VzkrRrsJe4g-1; Sat, 19 Sep 2026 15:24:40 -0400
-X-MC-Unique: 6asEQDQbOm6VzkrRrsJe4g-1
-X-Mimecast-MFC-AGG-ID: 6asEQDQbOm6VzkrRrsJe4g_1789845880
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e65f2f1baso21207235e9.3
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 12:24:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789845879; x=1790450679; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
-        b=YD5FrD8L8ro6jkww6Zaehi5NslkKMNn5fdErK2+YRYDdiZGDijDXGu2dWZQbpOnf6L
-         l6vFvEUCbL9tXggZRuinaZKPr/0AcEZWwD71mcOZzlfBxirqyPXBAMWrbLG0sfj/zn0l
-         U5dcgZlX1dzIo6EHiKSNRSBTR9taTopsHkCgVCOKfUngynr7+Uj4+PaRNeCZAA7VQO2v
-         Fw7VBCFNwa2mDatKaWOgGBkv6w8WNBziNrSwqV4kTrHS2I61iZwieu+LFgMvw8+4uUAY
-         YK0BvW56/M+lH/vt6HBqJl1yrRNawiaJpunUl6VfHvxeJZC9OzVKPXAXYThBPY6XOO/7
-         iNmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789845879; x=1790450679;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
-        b=25B46ZCl5v5Os5cEv+PA+nDzqJBfq0TsjYzVfaVKmlb1ZafIrtD1j0B62mUJNKKaWV
-         jusiXCNrMNbKUtI1JlK68sI2OsxZPlLdZRg41tjysbKllIefHTYz6TOeGZg0Xspk3h2a
-         sIVxqdIEeAny+JfJyIjoLeLGGGtkyO4T61OmD/Q9qJkYq3cyr2Wbak/Uk6eH3+hM+snP
-         Y38HbIKH20c+CGPC+h9bFjt2H9MHszvtQB322eilEb9lYPDhJYwBgwatB6TuYKtkQR2k
-         MJ+iYhyg7y2MsPu58RfngMjBwrY/f0GjRY50maMNa4YtoJphKEa2lHo1vhp81qA/Yz6q
-         bqrA==
-X-Forwarded-Encrypted: i=1; AKwUvBz5dfepVoommIL9LP8rZSoJMCs3/R+eOEMwFyepLX1+HmxEjq6Dnl5Xewr9x9jWt37w8vny8UY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lAjGxhZSwPdTpqS5fYxHPToWKTnGBfsQL9GcSSsPT7CkMcC4JP
-	QVnIy7K1Ua3/8fTw73/J/RiKZvpKgY49XQFu8q3dGb3Wi1e0MwZ5KLP7nOKOn0OBq2Jza+Oam6U
-	gMjAxmUKmYAav75lEX0AZL2zAdkfpGdwtNTBJkV3PzRStmEZ41wqRl3VOyg==
-X-Gm-Gg: AYBFou1fSfwXn2si66KHdrFsBNZhN8k0/AoMj3sIYkyJJuAY51BankvNz9D9wLkQfqS
-	00P0g6a8kfKaCuQTBWXY1MH/fzkUupVai3ROTA+j5/sGxXGsNk9S+arwsf/XWx48AGa8nxLrNh3
-	D+IU9Fee/Vd3DNmfiu2rzzDhoVZxQbGdTzeGLWoYSR23EeiBajVRRmx7iW+cvFV2aOE0gCWb3Ma
-	w68mFpBtYh4n/iN3GkujKF9Ck3yAMKOInMsj4fu7NzoJDYH/9DoxApTvT5rSs9p2a+CRwTuAncg
-	uT4Jg5rIXKT17btLsS44XPI9qy0czHQXzHHXt0fge20Gw6M1d+ZwMBZZ1qyKHQzJBqDDipssGMi
-	6VMwus0F7h+r7cH7x3FU8haQ=
-X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr78443175e9.23.1789845879499;
-        Sat, 19 Sep 2026 12:24:39 -0700 (PDT)
-X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr78442915e9.23.1789845879068;
-        Sat, 19 Sep 2026 12:24:39 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd0874c3sm138399065e9.14.2026.09.19.12.24.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 12:24:38 -0700 (PDT)
-Date: Sat, 19 Sep 2026 15:24:35 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost: keep vring addresses stable while the backend is
- attached
-Message-ID: <20260919152336-mutt-send-email-mst@kernel.org>
-References: <20260919131744.131030-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONLPz5xs"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DCE8C2BCB9;
+	Sat, 19 Sep 2026 19:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789847528;
+	bh=UdvNW9CpQT7IK6dnytR92a9xtlB2N2AO8AUh3oGnVO8=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ONLPz5xsBFEAJeKb0JylrQwdjXHIQSJiK93LMmQm2MpUMjsZx9S0LmlgSkzdy5PiL
+	 AJTZ+gbq80Y6hiC/pIM2vJo3R5mKzBnstNhk9FiYbcaGc/8eLC9wnjMh2cAPCIP8VI
+	 X98XMQKdS7ApqskxIc368a+0RD4oN+QNVvc/scPq0a7DxmHunU7JWx5lkedJ+PN2Ht
+	 K+AVWxliafn11vz85OgDf5gBwpMc+pHMxKIbecB+GGdrAm2cKZSbq78P0/PMhmsIHr
+	 w+FlfmBVhsCVErpX04MBuD0MWOqAIKkfz7z2pq3x4r5SxVaFZo66120Zvao8/M6CA/
+	 ZxeiovTq+ofZQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29003C982D8;
+	Sat, 19 Sep 2026 19:52:08 +0000 (UTC)
+From: Nicolo Giuliani via B4 Relay <devnull+nicolo.giuliani6.studio.unibo.it@kernel.org>
+Date: Sat, 19 Sep 2026 21:52:07 +0200
+Subject: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if the TAI
+ period is invalid
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260919131744.131030-1-physicalmtea@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260919-send-net-v1-1-4355c72465ee@studio.unibo.it>
+X-B4-Tracking: v=1; b=H4sIAObnrmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDS0NL3eLUvBTdvNQSXUvzxERTM1PjxGQTCyWg8oKi1LTMCrBR0UpABUq
+ xEMHi0qSs1OQSkCFKtbUAyPl0X3EAAAA=
+X-Change-ID: 20260919-send-net-97aa5653ac48
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789847526; l=4280;
+ i=nicolo.giuliani6@studio.unibo.it; s=20260919; h=from:subject:message-id;
+ bh=haUUtbJie+EjEYk90JGwrIsIrQgUGbrvgziB9gbyIW8=;
+ b=w2vPGeC+6ZP61hNrUcRrizJlSyJkisrIAWxRnyt4sEGyBEd1yu7TE44TpkQUqvxoO0xNImE6d
+ /TqD/ni2PcgDxJKKdVPAppiC4HUJpLUGoSYZRanQwUF5LS9uHunMH1v
+X-Developer-Key: i=nicolo.giuliani6@studio.unibo.it; a=ed25519;
+ pk=D652ecdT01GkA1eoFWNFNX85xIg5ZnFwUWyjfestgQw=
+X-Endpoint-Received: by B4 Relay for
+ nicolo.giuliani6@studio.unibo.it/20260919 with auth_id=1040
+X-Original-From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+Reply-To: nicolo.giuliani6@studio.unibo.it
 
-On Sat, Sep 19, 2026 at 09:17:44PM +0800, Jia Jia wrote:
-> vhost-scsi keeps the response and bounce-buffer iovecs until the backend
-> completes the command.  If userspace changes the vring addresses while the
-> command is in flight, the completion data is copied through the old iovecs
-> while vhost_add_used() updates the new used ring.  The guest then no longer
-> sees the completion.
+From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
 
-I do not get what all this is trying to say. if you break it you get to
-keep both pieces. when is this a real problem?
+Since commit 7e3c18097a70 ("net: dsa: mv88e6xxx: read cycle counter
+period from hardware"), mv88e6xxx_ptp_setup() reads the TAI clock period
+register and fails with -ENODEV if the value is not one of the supported
+periods. mv88e6xxx_setup() propagates the error, so the switch does not
+probe at all, although it is fully usable without PTP. Before that commit
+the register was not read and the probe did not depend on its value.
 
-> 
-> Reject changes to the vring addresses while a backend is attached to the
-> queue.  Keep accepting the current addresses so userspace can update
-> VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
-> that have not been attached retain the existing setup behavior; userspace
-> must detach the backend before changing their addresses.
-> 
-> Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> ---
->  drivers/vhost/vhost.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 44cac11b68d2..074590838de5 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
->  				a.flags & (0x1 << VHOST_VRING_F_LOG),
->  				a.log_guest_addr))
->  			return -EINVAL;
-> +
-> +		/*
-> +		 * Commands may retain iovecs derived from the current ring
-> +		 * addresses.  Keep the addresses unchanged while the backend
-> +		 * is attached.
-> +		 */
-> +		if ((vq->desc || vq->avail || vq->used) &&
-> +		    (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
-> +		     vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
-> +		     vq->used != (void __user *)(unsigned long)a.used_user_addr))
-> +			return -EBUSY;
->  	}
->  
->  	vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
+The 88E6193X on the Sophos XGS 107w reads 0 in that register, so its
+probe fails with:
+
+  mv88e6xxx ...: unexpected cycle counter period of 0 ps
+
+Treat -ENODEV from mv88e6xxx_ptp_setup() as the absence of a usable PTP
+clock: warn, skip the hardware timestamping setup and carry on without
+registering a PHC. -ENODEV can only come from mv88e6xxx_cc_coeff_get(),
+which runs before ptp_setup changes any state, so there is nothing to
+undo, and all other errors still fail the probe.
+
+Without a PHC chip->ptp_clock stays NULL, and the timestamping entry
+points dereference it (ptp_clock_index() in get_ts_info,
+ptp_schedule_worker() in the rx and tx paths). Make get_ts_info,
+port_hwtstamp_set/get and mv88e6xxx_should_tstamp() treat a missing
+clock like a chip without ptp_support. Switches that register a PHC are
+unaffected.
+
+Fixes: 7e3c18097a70 ("net: dsa: mv88e6xxx: read cycle counter period from hardware")
+Assisted-by: LLM
+Signed-off-by: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+---
+ drivers/net/dsa/mv88e6xxx/chip.c     | 19 ++++++++++++++-----
+ drivers/net/dsa/mv88e6xxx/hwtstamp.c |  8 ++++----
+ 2 files changed, 18 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 7f68a0c55..2d6de43f2 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -4106,12 +4106,21 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
+ 	/* Setup PTP Hardware Clock and timestamping */
+ 	if (chip->info->ptp_support) {
+ 		err = mv88e6xxx_ptp_setup(chip);
+-		if (err)
+-			goto unlock;
+-
+-		err = mv88e6xxx_hwtstamp_setup(chip);
+-		if (err)
++		if (err == -ENODEV) {
++			/* The TAI clock period is not one that the driver
++			 * supports: run the switch without PTP rather than
++			 * failing the whole probe.
++			 */
++			dev_warn(chip->dev,
++				 "PTP clock unavailable, hardware timestamping disabled\n");
++			err = 0;
++		} else if (err) {
+ 			goto unlock;
++		} else {
++			err = mv88e6xxx_hwtstamp_setup(chip);
++			if (err)
++				goto unlock;
++		}
+ 	}
+ 
+ 	err = mv88e6xxx_stats_setup(chip);
+diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.c b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
+index 6e6472a3b..847f9dd44 100644
+--- a/drivers/net/dsa/mv88e6xxx/hwtstamp.c
++++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
+@@ -72,7 +72,7 @@ int mv88e6xxx_get_ts_info(struct dsa_switch *ds, int port,
+ 	chip = ds->priv;
+ 	ptp_ops = chip->info->ops->ptp_ops;
+ 
+-	if (!chip->info->ptp_support)
++	if (!chip->info->ptp_support || !chip->ptp_clock)
+ 		return -EOPNOTSUPP;
+ 
+ 	info->so_timestamping =
+@@ -176,7 +176,7 @@ int mv88e6xxx_port_hwtstamp_set(struct dsa_switch *ds, int port,
+ 	struct mv88e6xxx_port_hwtstamp *ps = &chip->port_hwtstamp[port];
+ 	int err;
+ 
+-	if (!chip->info->ptp_support)
++	if (!chip->info->ptp_support || !chip->ptp_clock)
+ 		return -EOPNOTSUPP;
+ 
+ 	err = mv88e6xxx_set_hwtstamp_config(chip, port, config);
+@@ -195,7 +195,7 @@ int mv88e6xxx_port_hwtstamp_get(struct dsa_switch *ds, int port,
+ 	struct mv88e6xxx_chip *chip = ds->priv;
+ 	struct mv88e6xxx_port_hwtstamp *ps = &chip->port_hwtstamp[port];
+ 
+-	if (!chip->info->ptp_support)
++	if (!chip->info->ptp_support || !chip->ptp_clock)
+ 		return -EOPNOTSUPP;
+ 
+ 	*config = ps->tstamp_config;
+@@ -213,7 +213,7 @@ static struct ptp_header *mv88e6xxx_should_tstamp(struct mv88e6xxx_chip *chip,
+ 	struct mv88e6xxx_port_hwtstamp *ps = &chip->port_hwtstamp[port];
+ 	struct ptp_header *hdr;
+ 
+-	if (!chip->info->ptp_support)
++	if (!chip->info->ptp_support || !chip->ptp_clock)
+ 		return NULL;
+ 
+ 	hdr = ptp_parse_header(skb, type);
+
+---
+base-commit: 6c096bb08de97cdca051fecddad22cac6a1fd275
+change-id: 20260919-send-net-97aa5653ac48
+
+Best regards,
+--  
+Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+
 
