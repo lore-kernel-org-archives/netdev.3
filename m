@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3453C314A90;
-	Sat, 19 Sep 2026 23:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F69339BFED;
+	Sat, 19 Sep 2026 23:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789862092; cv=none; b=A/V6WFAucUkXk5wUc1KdWX6Ny/mjdylW0rgiTTRoVvVi1mWH3mNtZiwxIrU1SCXp2/GNPtN83wHzbCia9HpqKhxlrIf1IHrMxJ2KD6xPEdVpccXnK41IMlQcnd2tZjk0xAHgnPWE9zq1iSrQUnuHARXPkVdq7rQVIXXKJ3mxx3I=
+	t=1789862095; cv=none; b=dK61+NgvXjpeoVP6JkUHFishUe7V+4RoGx/E7HqZBb+qJSMF6pyK2Lubaqu2JA5Yw1CvKxxfCGxPKLIpqejxuVEhsMMWQ33tYvwN0x4w8Re1n8jiwa0VCHTn4y1ZgsJW6kW3IvvaQ8vrnCjQFfdYP2nnVkpTkbkj3zhkSSg9oiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789862092; c=relaxed/simple;
-	bh=Bw+ab6sGk/mpytIlT1WE5QkAYGSTA8tHg60l9Qx0qM0=;
+	s=arc-20240116; t=1789862095; c=relaxed/simple;
+	bh=pgob9BG6pjlGkfDSml2C3jTe5dmh7RRvVXW2hZ2tA6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snWCifmqM66sCcMFGSwyAO2FoM38gCvJFNlVHW46f24RtKRZ0surWeJ+k4DgTWPxLjUGvAFszb1S1mhIB7lZRH4V2PAX+vnez8h8uAmGLy8P6dN4Vf1DnQ0ERNAyYqXYQsMMkBt0Kf4K/e0B+Yp/XBJv5bwqIZuAJkAWWSUypI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Csd0zJx3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=QMdI4giW7RDugtlGP+KLUcTcXZ4P86ejJXGooAv0vl9I3637yiort4Qu4ujnciguc0PLB+ETn0IWY9gEGm0Ksy0lxlGs2yUreaSa/7AKAibHWdHcMUmODttwjYydrEAXYn7sSC0W4uKRiJj9oe5FURRo520dToRajy0LWaWEjJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXfGH2RA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Csd0zJx3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF1C1F00898;
-	Sat, 19 Sep 2026 23:54:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXfGH2RA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4D91F000FF;
+	Sat, 19 Sep 2026 23:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789862090;
-	bh=Ks218AcebVpION5XJyOQUnNqOhWIRHLgeLn8S/kBrk4=;
+	s=k20260515; t=1789862093;
+	bh=eQCqGG9Fza6Jic+ROJWwegFMOT6jRABBQZzOA5Yx8gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Csd0zJx30//YYYxZtQykiIYLxfTZ52zKawyiEUT50a9JX/TfZUOiszd2hekUwO62z
-	 qYYmihy7qw5/980h+t90A+Q7mgPzIbRN2+52bH00+hUP0khLrWx7BoyOZf6611XnxL
-	 9WIysuiHMBeQn0p1fdxFt/DYsDeLNmAhgmqEOzROYaEfT206nSQN3PMKCNwZj7ngSg
-	 4GvTjkIoDucRV1XoXUjSRWCKaeb/IokQ1YYueVrCoAs+1tVg0TarRl585e/ZcMEufv
-	 wg956kCeUVOwD1L/s332gu/NZSFcNX6xY/YBAY2eQg3O7yF3yvFtReNIVTRcO65Kbn
-	 kr2dMJ1kn0Z5w==
+	b=eXfGH2RAOTk3Hw8qQzpecaiAXDxfP3VMZ6/WUfsJjjKV4v4OVQ3oEuDfGLQUr3w9z
+	 6sd+DroMXWjtwXL3Pd7WqV6jUYeKiAlqM5hzI6G35zzWuON8mt49kmyfpvGFCWbuWH
+	 oc8ICbRsGyA76vwMZLxUOw56yqM7VbHfLPdp8pH+CZJKcZjWJ4fPbMICx7wVKdSv4+
+	 HrPcvb4Bjadztv8Vf36OEY9HEAHKwfbvQdbrwBZB2kFDULFo5SXrNQ0OoRmLn2Ui1T
+	 5p4GBxCx3IDMfHUHPPFKvRFCSbZj7lljD1HtSGJ1qTYumSddIfp1z9sMdOGEkXSIeL
+	 8sDmoUdlDR01Q==
 From: Jakub Kicinski <kuba@kernel.org>
 To: jackbb_wu@compal.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -51,12 +51,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org,
 	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v8 1/6] net: wwan: t9xx: Add PCIe core
-Date: Sat, 19 Sep 2026 16:54:48 -0700
-Message-ID: <20260919235449.839711-1-kuba@kernel.org>
+Subject: Re: [PATCH v8 4/6] net: wwan: t9xx: Add control port
+Date: Sat, 19 Sep 2026 16:54:51 -0700
+Message-ID: <20260919235451.839752-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260914-t9xx_driver_v1-v8-1-5206c2e6bea0@compal.com>
-References: <20260914-t9xx_driver_v1-v8-1-5206c2e6bea0@compal.com>
+In-Reply-To: <20260914-t9xx_driver_v1-v8-4-5206c2e6bea0@compal.com>
+References: <20260914-t9xx_driver_v1-v8-4-5206c2e6bea0@compal.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,408 +68,368 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: wwan: t9xx: Add PCIe core
+net: wwan: t9xx: Add control port
 
-This adds the T9xx PCIe layer: probe/remove, MSI-X setup and teardown,
-the MHCCIF doorbell channels used for the boot handshake, and the modem
-register/interrupt helpers.  Removal resets the endpoint by evaluating
-MRST._RST on the device's ACPI node, falling back to the MHCCIF reset
-doorbell.
+This adds the t9xx control port layer: a port manager that creates and
+destroys ports, keeps them in a global "stale list" across driver
+re-creation, and moves data between port I/O and CLDMA via TRBs. It also
+adds the internal port operations (open, close, write, recv_register) and
+wires the port configuration into the control plane init path.
 
-A few questions on the interrupt teardown ordering, the reset path and a
-couple of smaller items below.
+A few questions about the new code below.
 
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+> diff --git a/drivers/net/wwan/t9xx/mtk_port.c b/drivers/net/wwan/t9xx/mtk_port.c
 > new file mode 100644
-> index 0000000000000..eb72efc19652d
+> index 0000000000000..d2a5db11afd6b
 > --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
-> @@ -0,0 +1,1020 @@
+> +++ b/drivers/net/wwan/t9xx/mtk_port.c
+> @@ -0,0 +1,873 @@
 
 [ ... ]
 
-> +int mtk_pci_get_virq_id(struct mtk_md_dev *mdev, int irq_id)
+> +static int mtk_port_tbl_add(struct mtk_port_mngr *port_mngr, struct mtk_port *port)
 > +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
+> +	int ret;
 > +
-> +	if (irq_id < 0 || irq_id >= priv->irq_cnt)
-> +		return -EINVAL;
-> +
-> +	return pci_irq_vector(pdev, irq_id);
-> +}
-
-[ ... ]
-
-> +int mtk_pci_unregister_irq(struct mtk_md_dev *mdev, int irq_id)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	int virq_id;
-> +
-> +	if (irq_id < 0 || irq_id >= MTK_IRQ_CNT_MAX)
-> +		return -EINVAL;
-> +
-> +	if (!READ_ONCE(priv->irq_cb_list[irq_id])) {
-> +		dev_err(mdev->dev, "irq_id=%d has not been registered\n", irq_id);
-> +		return -EFAULT;
-> +	}
-> +
-> +	/* Stop the source and wait for in-flight handlers
-> +	 * before the callback or its data can disappear.
-> +	 */
-> +	mtk_pci_mask_irq(mdev, irq_id);
-
-[Severity: Low]
-Should the three helpers agree on what makes an irq_id valid?
-
-mtk_pci_mask_irq(), mtk_pci_unmask_irq() and mtk_pci_clear_irq() bound
-irq_id by MTK_IRQ_CNT_MAX and additionally require
-priv->irq_type == PCI_IRQ_MSIX, while mtk_pci_get_virq_id() bounds the
-same value by priv->irq_cnt.  mtk_pci_unregister_irq() has to satisfy
-both.
-
-On the probe failure path that jumps to free_mhccif, either
-pci_alloc_irq_vectors() or mtk_pci_request_irq_msix() failed, so
-priv->irq_type is 0 and priv->irq_cnt is 0.  mtk_mhccif_exit() then
-calls mtk_pci_unregister_irq() -> mtk_pci_mask_irq(), which logs
-
-	dev_err(mdev->dev, "Failed to mask irq: input irq_id=%d\n", irq_id);
-
-for irq_id 28 during otherwise correct cleanup, and
-mtk_pci_get_virq_id() rejects the id the other helpers consider in
-range.  Would it be clearer to document the irq_type precondition and
-have the mask/unmask/clear helpers return quietly (or use dev_dbg) when
-no vectors are allocated?
-
-> +	virq_id = mtk_pci_get_virq_id(mdev, irq_id);
-> +	if (virq_id >= 0)
-> +		synchronize_irq(virq_id);
-> +
-> +	spin_lock(&priv->irq_cb_lock);
-> +	WRITE_ONCE(priv->irq_cb_list[irq_id], NULL);
-> +	priv->irq_cb_data[irq_id] = NULL;
-> +	spin_unlock(&priv->irq_cb_lock);
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +int mtk_pci_send_ext_evt(struct mtk_md_dev *mdev, u32 ch)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	u32 rc_base, hw_bits;
-> +
-> +	rc_base = priv->cfg->mhccif_rc_base_addr;
-> +
-> +	/* Only allow one ch to be triggered at a time */
-> +	if (!is_power_of_2(ch)) {
-> +		dev_err(mdev->dev, "Unsupported ext evt ch=0x%08x\n", ch);
-> +		return -EINVAL;
-> +	}
-> +
-> +	hw_bits = mtk_pci_ext_h2d_evt_hw_bits(ch);
-> +	if (!hw_bits) {
-> +		dev_err(mdev->dev, "Unmapped ext evt ch=0x%08x\n", ch);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_BSY, hw_bits);
-> +	mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_TCHNUM, ffs(hw_bits) - 1);
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +int mtk_pci_pldr(struct mtk_md_dev *mdev)
-> +{
-> +	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-> +	acpi_status acpi_ret;
-> +	acpi_handle handle;
-
-[ ... ]
-
-> +	acpi_ret = acpi_evaluate_object(handle, "MRST._RST", NULL, &buffer);
-> +	if (ACPI_FAILURE(acpi_ret)) {
-> +		dev_err(mdev->dev, "Failed to execute MRST._RST method: %s\n",
-> +			acpi_format_exception(acpi_ret));
-> +		return -EIO;
-> +	}
-> +	acpi_os_free(buffer.pointer);
-
-[Severity: Low]
-Can this error return leak buffer.pointer?
-
-The result object is never used here, but ACPI_ALLOCATE_BUFFER is
-requested, and acpi_evaluate_object() can fail with the caller buffer
-already allocated:
-
-drivers/acpi/acpica/nsxfeval.c:acpi_evaluate_object() {
-	...
-	status = acpi_ut_initialize_buffer(return_buffer, buffer_space_needed);
-	if (ACPI_FAILURE(status)) {
-		...
-	} else {
-		status = acpi_ut_copy_iobject_to_eobject(info->return_object, return_buffer);
-	}
-	...
-}
-
-If acpi_ut_copy_iobject_to_eobject() fails after the buffer was
-allocated (for example AE_NO_MEMORY while building a package), the
--EIO return here skips acpi_os_free().  Since the returned object is
-unused, would passing NULL as the return buffer be simpler?
-
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +static void mtk_mhccif_isr_work(struct work_struct *work)
-> +{
-
-[ ... ]
-
-> +	chs = mtk_pci_ext_d2h_evt_chs(stat);
-> +	/* Callbacks must not sleep or modify mhccif_cb_list */
-> +	spin_lock_bh(&priv->mhccif_lock);
-> +	list_for_each_entry(cb, &priv->mhccif_cb_list, entry) {
-> +		if (cb->chs & chs)
-> +			cb->evt_cb(cb->chs & chs, cb->data);
-> +	}
-> +	spin_unlock_bh(&priv->mhccif_lock);
-> +
-> +	mtk_pci_clear_irq(mdev, priv->mhccif_irq_id);
-> +	mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
-> +}
-
-[Severity: Medium]
-Can this tail re-enable the MSI-X source after teardown has masked it?
-
-Nothing appears to serialize the worker against removal:
-
-CPU0                              CPU1
-mtk_mhccif_isr_work()
-  ... past spin_unlock_bh()
-                                  mtk_pci_remove()
-                                    write REG_IMASK_HOST_MSIX_CLR_GRP0_0 = U32_MAX
-                                    mtk_mhccif_exit()
-                                      mtk_pci_unregister_irq()
-                                        mtk_pci_mask_irq()
-                                        synchronize_irq(virq)
-  mtk_pci_clear_irq()
-  mtk_pci_unmask_irq()
-    write REG_IMASK_HOST_MSIX_SET_GRP0_0 = BIT(28)
-                                      cancel_work_sync()
-
-synchronize_irq() only waits for the hardirq handler, not for the
-already-running work item, and priv->irq_type is still PCI_IRQ_MSIX at
-that point so the unmask write goes through.  cancel_work_sync() then
-returns with the source enabled, and the rest of mtk_pci_remove()
-(pci_free_irq(), pci_free_irq_vectors(), the reset) runs without the
-"Silence every source before tearing anything down" property it
-assumes.  A later assertion in that window reaches
-mtk_pci_irq_handler() with no registered callback and only produces
-dev_err_ratelimited("Unhandled irq_id=28").
-
-Would a re-mask after cancel_work_sync(), or a teardown flag checked
-before the clear/unmask pair, close this?
-
-[ ... ]
-
-> +static int mtk_pci_bar_init(struct mtk_md_dev *mdev)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(mdev->dev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +
-> +	priv->mac_reg_base = pcim_iomap_region(pdev, MTK_BAR_0_1_IDX,
-> +					       mdev->dev_str);
-> +	if (IS_ERR(priv->mac_reg_base)) {
-> +		dev_err(mdev->dev, "Failed to map BAR0/1\n");
-> +		return PTR_ERR(priv->mac_reg_base);
-> +	}
-> +
-> +	priv->bar23_addr = pcim_iomap_region(pdev, MTK_BAR_2_3_IDX,
-> +					     mdev->dev_str);
-> +	if (IS_ERR(priv->bar23_addr)) {
-> +		dev_err(mdev->dev, "Failed to map BAR2/3\n");
-> +		return PTR_ERR(priv->bar23_addr);
-> +	}
-> +
-> +	/* We use MD view base address "0" to observe registers */
-> +	priv->ext_reg_base = priv->bar23_addr - ATR_PCIE_REG_TRSL_ADDR;
-> +
-> +	return 0;
-> +}
-
-[Severity: Low]
-This isn't a bug, but would a pci_resource_len() sanity check here be
-worth adding?
-
-Both mappings are used with fixed offsets afterwards, for example
-REG_IMASK_HOST_MSIX_CLR_GRP0_0 (0x3080) on BAR0/1 in mtk_pci_probe(),
-and mhccif_rc_base_addr 0x1000A000 relative to the biased
-ext_reg_base (bar23_addr + 0xA030) in mtk_mhccif_init().  The
-mtk_pci_mac_write32() and mtk_pci_write32() accessors in mtk_pci.h add
-those offsets without any range enforcement, so a device reporting
-undersized BARs would be written outside the ioremap mapping.  The
-sibling t7xx driver has the same pattern, so this is hardening rather
-than a defect.
-
-[ ... ]
-
-> +static void mtk_mhccif_exit(struct mtk_md_dev *mdev)
-> +{
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct mtk_mhccif_cb *cb, *tmp;
-> +
-> +	mtk_pci_unregister_irq(mdev, priv->mhccif_irq_id);
-> +	cancel_work_sync(&priv->mhccif_work);
-> +
-> +	list_for_each_entry_safe(cb, tmp, &priv->mhccif_cb_list, entry) {
-> +		list_del(&cb->entry);
-> +		kfree(cb);
-> +	}
-> +}
-
-[ ... ]
-
-> +static int mtk_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> +{
-
-[ ... ]
-
-> +	ret = pcim_enable_device(pdev);
-> +	if (ret) {
-> +		dev_err(mdev->dev, "Failed to enable pci device.\n");
-> +		goto log_err;
-> +	}
-
-[ ... ]
-
-> +	return 0;
-> +
-> +clear_master:
-> +	pci_clear_master(pdev);
-> +	mtk_pci_free_irq(mdev);
-> +free_mhccif:
-> +	mtk_mhccif_exit(mdev);
-> +log_err:
-> +	dev_err(dev, "Failed to probe device, ret=%d\n", ret);
+> +	ret = radix_tree_insert(&port_mngr->port_tbl[MTK_PORT_TBL_TYPE(port->info.rx_ch)],
+> +				port->info.rx_ch & 0xFFF, port);
+> +	if (ret)
+> +		dev_err(port_mngr->ctrl_blk->mdev->dev,
+> +			"port(%s) add to port_tbl failed, return %d\n",
+> +			port->info.name, ret);
+> +	else
+> +		port_mngr->port_cnt++;
 > +
 > +	return ret;
 > +}
-
-[Severity: Medium]
-On the clear_master path, is the ordering here inverted with respect to
-mtk_pci_remove()?
-
-mtk_pci_free_irq() runs before mtk_mhccif_exit(), so an MHCCIF work
-item queued by mtk_mhccif_irq_cb() just before the failure can still
-be running when pci_free_irq() and pci_free_irq_vectors() complete.
-Its tail then does
-
-	mtk_pci_clear_irq(mdev, priv->mhccif_irq_id);
-	mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
-
-touching the interrupt mask registers after the IRQ action and the
-MSI-X vectors are gone.  Should this path call mtk_mhccif_exit() (which
-unregisters the callback and cancels the work) before
-mtk_pci_free_irq(), the way mtk_pci_remove() does?
-
 > +
-> +static void mtk_pci_remove(struct pci_dev *pdev)
+> +static void mtk_port_tbl_del(struct mtk_port_mngr *port_mngr, struct mtk_port *port)
 > +{
-> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
-> +	struct mtk_pci_priv *priv = mdev->hw_priv;
-> +	struct device *dev = &pdev->dev;
+> +	radix_tree_delete(&port_mngr->port_tbl[MTK_PORT_TBL_TYPE(port->info.rx_ch)],
+> +			  port->info.rx_ch & 0xFFF);
+> +	port_mngr->port_cnt--;
+> +}
+> +
+> +static struct mtk_port *mtk_port_restore_from_stale_list(struct mtk_port_mngr *port_mngr,
+> +							 struct mtk_stale_list *s_list)
+> +{
+> +	struct mtk_port *port, *next_port;
 > +	int ret;
 > +
-> +	/* Silence every source before tearing anything down. */
-> +	mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, U32_MAX);
+> +	mutex_lock(&port_mngr_grp_mtx);
+> +	list_for_each_entry_safe(port, next_port, &s_list->ports, stale_entry) {
+> +		kref_get(&port->kref);
+> +		list_del(&port->stale_entry);
+> +		ret = mtk_port_tbl_add(port_mngr, port);
+> +		if (ret) {
+> +			list_add_tail(&port->stale_entry, &s_list->ports);
+> +			kref_put(&port->kref, mtk_port_release);
+> +			mutex_unlock(&port_mngr_grp_mtx);
+> +			dev_err(port_mngr->ctrl_blk->mdev->dev,
+> +				"Failed when adding (%s) to port mngr\n",
+> +				port->info.name);
+> +			return ERR_PTR(ret);
+> +		}
+
+[ ... ]
+
+> +static int mtk_port_tbl_create(struct mtk_port_mngr *port_mngr, struct mtk_port_cfg *cfg,
+> +			       const int port_cnt, struct mtk_stale_list *s_list)
+> +{
+> +	struct mtk_port_cfg *dflt_port;
+> +	struct mtk_port *port;
+> +	int i;
 > +
-> +	/* Unregisters the callback (masks and synchronises the vector),
-> +	 * then cancels the work.  With the callback gone the work cannot
-> +	 * be requeued.
-> +	 */
-> +	mtk_mhccif_exit(mdev);
-> +	mtk_pci_free_irq(mdev);
-> +	pci_clear_master(pdev);
+> +	INIT_RADIX_TREE(&port_mngr->port_tbl[PORT_TBL_SAP], GFP_KERNEL);
+> +	INIT_RADIX_TREE(&port_mngr->port_tbl[PORT_TBL_MD], GFP_KERNEL);
 > +
-> +	/* Reset last: the endpoint comes back at power-on defaults,
-> +	 * so no MMIO, config write or MSI-X teardown may follow it.
-> +	 */
-> +	ret = mtk_pci_pldr(mdev);
-> +	if (ret && mtk_pci_link_check(mdev)) {
-> +		dev_warn(dev, "PLDR failed (%d), trying MHCCIF reset\n", ret);
-> +		if (mtk_pci_send_ext_evt(mdev, DEV_EVT_H2D_DEVICE_RESET))
-> +			dev_err(dev, "MHCCIF reset failed\n");
-> +	}
+> +	mtk_port_restore_from_stale_list(port_mngr, s_list);
 
 [Severity: Medium]
-Can the "no MMIO, config write or MSI-X teardown may follow it"
-invariant hold while probe uses pcim_enable_device()?
 
-pcim_enable_device() installs a devres action that the driver core runs
-in devres_release_all(), after remove() returns:
+mtk_port_restore_from_stale_list() reports failure through ERR_PTR(), but
+mtk_port_tbl_create() discards the result. Should this be checked with
+IS_ERR(), keeping in mind the success return is NULL rather than a port?
 
-drivers/pci/devres.c:pcim_enable_device() {
-	...
-	devm_add_action(&pdev->dev, pcim_disable_device, pdev);
-	...
-}
+When mtk_port_tbl_add() -> radix_tree_insert() fails (-ENOMEM for a tree
+node, or -EEXIST), the helper re-queues the current port, drops the extra
+kref and returns early, so the remaining stale ports are never restored:
+they keep PORT_S_ON_STALE_LIST set and port->port_mngr == NULL.
 
-and that action reaches do_pci_disable_device(), which does a
-PCI_COMMAND config read and, if the read shows PCI_COMMAND_MASTER, a
-config write.  On an endpoint that was just reset the read can return
-0xFFFF (which has that bit set), so a config write of 0xFFFB is then
-attempted on a possibly link-down device.  Would moving the reset out
-of the tail of remove(), or using the non-managed pci_enable_device()
-with an explicit disable before the reset, keep the stated ordering?
+Since the error is swallowed, the loop below then finds nothing for those
+rx_ch values:
 
-A second question on the same path: neither reset waits for
-completion.  mtk_pci_send_ext_evt() only performs two posted BAR
-writes (MHCCIF_RC2EP_SW_BSY and MHCCIF_RC2EP_SW_TCHNUM) with no
-readback, and there is no delay or presence poll after either reset
-before remove() returns.  An immediate re-bind then runs
-mtk_pci_probe() -> atr_init() -> mtk_pci_atr_disable(), which
-read-modify-writes the BAR0 ATR registers:
+	if (!mtk_port_search_by_id(port_mngr, dflt_port->rx_ch)) {
+		port = mtk_port_alloc_and_add(port_mngr, dflt_port);
 
-	val = mtk_pci_mac_read32(priv, REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB + offset);
-	val = val & (~BIT(0));
-	mtk_pci_mac_write32(priv, REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB + offset, val);
+and creates a second port object for the same channel, while
+mtk_port_mngr_init() still returns 0.
 
-On a still-resetting device the reads come back as all ones and the
-writes are dropped, yet probe treats this as success; mtk_pci_link_check()
-is only consulted later, after MSI-X setup.  For comparison, t7xx sleeps
-FASTBOOT_RESET_DELAY_MS after its equivalent doorbell in
-t7xx_modem_ops.c.  Should this path wait for the endpoint to settle?
+Does the user still holding the stale handle then end up with a port whose
+port_mngr is NULL and PORT_S_ENABLE clear, so every mtk_port_send_data()
+on it fails in mtk_port_status_check() with -ENODEV?
 
 > +
-> +	pci_load_and_free_saved_state(pdev, &priv->saved_state);
+> +	/* copy ports from static port cfg table */
+> +	for (i = 0; i < port_cnt; i++) {
+> +		dflt_port = cfg + i;
+> +		if (!mtk_port_search_by_id(port_mngr, dflt_port->rx_ch)) {
+> +			port = mtk_port_alloc_and_add(port_mngr, dflt_port);
+> +			if (IS_ERR(port))
+> +				return PTR_ERR(port);
+> +		}
+> +	}
+> +
+> +	return 0;
 > +}
 > +
-> +static pci_ers_result_t mtk_pci_error_detected(struct pci_dev *pdev,
-> +					       pci_channel_state_t state)
+> +static void mtk_port_tbl_destroy(struct mtk_port_mngr *port_mngr, struct mtk_stale_list *s_list)
 > +{
-> +	struct mtk_md_dev *mdev = pci_get_drvdata(pdev);
+> +	struct radix_tree_iter iter;
+> +	struct mtk_port *port;
+> +	void __rcu **slot;
+> +	int tbl_type;
 > +
-> +	dev_err(mdev->dev, "AER detected: pci_channel_state_t=%d\n", state);
+> +	tbl_type = PORT_TBL_SAP;
+> +	do {
+> +		radix_tree_for_each_slot(slot, &port_mngr->port_tbl[tbl_type], &iter, 0) {
+> +			port = radix_tree_deref_slot(slot);
+> +			if (!port)
+> +				continue;
+> +			ports_ops[port->info.type]->disable(port);
+> +		}
+
+[Severity: Medium]
+
+radix_tree_deref_slot() is rcu_dereference(*slot), and this loop runs in
+plain process context (driver removal and the mtk_port_mngr_init() error
+path) with no rcu_read_lock() held. With CONFIG_PROVE_RCU=y, does this
+produce a "suspicious rcu_dereference_check() usage" splat on every
+teardown?
+
+Wrapping the loop in rcu_read_lock() would not work either, since
+ports_ops[]->disable() sleeps: mtk_port_ch_disable() does a GFP_KERNEL
+skb allocation and then wait_event_timeout() for up to
+MTK_DFLT_TRB_TIMEOUT.
+
+More generally, the synchronisation the radix-tree API asks callers to
+provide looks incomplete here. The mutators run under port_mngr_grp_mtx
+from mtk_port_restore_from_stale_list() and mtk_port_free_or_backup(), but
+with no lock at all from mtk_port_tbl_create() -> mtk_port_alloc_and_add()
+-> mtk_port_tbl_add(); the readers mtk_port_search_by_id() and
+mtk_port_search_by_name() hold neither the mutex nor rcu_read_lock(), and
+mtk_port_release() frees a tree-published object with a plain kfree():
+
+	ports_ops[port->info.type]->exit(port);
+	kfree(port);
+
+Would a single writer lock covering all mutators (including the port_cnt
+updates) plus RCU-deferred freeing be more appropriate?
+
+[ ... ]
+
+> +static struct mtk_stale_list *mtk_port_stale_list_init(struct mtk_ctrl_blk *ctrl_blk, int *dev_id)
+> +{
+> +	struct mtk_stale_list *s_list;
+> +
+> +	s_list = mtk_port_stale_list_search(ctrl_blk->mdev->dev_str);
+> +	if (!s_list) {
+> +		s_list = mtk_port_stale_list_create(ctrl_blk);
+> +		if (unlikely(!s_list))
+> +			return NULL;
+> +	}
+> +
+> +	mutex_lock(&port_mngr_grp_mtx);
+> +	if (s_list->dev_id < 0) {
+> +		*dev_id = ida_alloc_range(&ccci_dev_ids, 0, MTK_DFLT_MAX_DEV_CNT - 1, GFP_KERNEL);
 
 [Severity: Low]
-This isn't a bug, but pci_channel_state_t is declared in
-include/linux/pci.h as
 
-	typedef unsigned int __bitwise pci_channel_state_t;
+The ida_alloc_range() return value is stored in *dev_id without being
+tested, and mtk_port_stale_list_init() still reports success. On -ENOMEM,
+or -ENOSPC once MTK_DFLT_MAX_DEV_CNT (10) devices are bound, does an errno
+end up in port_mngr->dev_id while mtk_port_mngr_init() returns 0?
 
-so %d degrades the sparse-restricted unsigned type to signed int, which
-make C=1 reports as "restricted pci_channel_state_t degrades to
-integer".  Would %u with an explicit cast be preferable here?
+That value is later passed to ida_free() unconditionally in
+mtk_port_stale_list_exit() below, while the other two ida_free() call
+sites in this file guard it, in mtk_port_release():
 
+	list_empty(&s_list->ports) && s_list->dev_id >= 0) {
+		ida_free(&ccci_dev_ids, s_list->dev_id);
+
+and in mtk_port_stale_list_grp_cleanup():
+
+	if (s_list->dev_id >= 0)
+		ida_free(&ccci_dev_ids, s_list->dev_id);
+
+The bogus free itself is harmless, since ida_free() starts with
+"if ((int)id < 0) return;", so this is about the unchecked allocation and
+the inconsistency with the guarded call sites.
+
+> +	} else {
+> +		*dev_id = s_list->dev_id;
+> +		s_list->dev_id = -1;
+> +	}
+> +	mutex_unlock(&port_mngr_grp_mtx);
 > +
-> +	/* AER recovery not supported, disconnect the device */
-> +	return PCI_ERS_RESULT_DISCONNECT;
+> +	return s_list;
 > +}
+> +
+> +static void mtk_port_stale_list_exit(struct mtk_ctrl_blk *ctrl_blk,
+> +				     struct mtk_stale_list *s_list, int dev_id)
+> +{
+> +	if (!s_list)
+> +		return;
+> +	mutex_lock(&port_mngr_grp_mtx);
+> +	if (list_empty(&s_list->ports)) {
+> +		ida_free(&ccci_dev_ids, dev_id);
+
+[ ... ]
+
+> diff --git a/drivers/net/wwan/t9xx/mtk_port.h b/drivers/net/wwan/t9xx/mtk_port.h
+> new file mode 100644
+> index 0000000000000..a0248d7f939ae
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/mtk_port.h
+> @@ -0,0 +1,150 @@
+
+[ ... ]
+
+> +enum mtk_port_flag {
+> +	PORT_F_DFLT = 0,
+> +	PORT_F_BLOCKING = BIT(1),
+> +	PORT_F_ALLOW_DROP = BIT(2),
+
+[Severity: Low]
+
+This isn't a bug, but PORT_F_ALLOW_DROP has no reader anywhere. It is set
+on every entry of port_cfg_m9xx[], yet the only runtime consumer of
+port->info.flags is mtk_port_internal_write():
+
+	return mtk_port_send_data(port, skb,
+				  !!(port->info.flags & PORT_F_BLOCKING),
+				  !!(port->info.flags &
+				     (PORT_F_BLOCKING | PORT_F_FORCE_SEND)));
+
+Ports with and without the flag behave identically. Could it be dropped
+until the code that honours it is added?
+
+> +	PORT_F_FORCE_SEND = BIT(6),
+> +};
+
+[ ... ]
+
+> diff --git a/drivers/net/wwan/t9xx/mtk_port_io.c b/drivers/net/wwan/t9xx/mtk_port_io.c
+> new file mode 100644
+> index 0000000000000..27b490fde40f2
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/mtk_port_io.c
+> @@ -0,0 +1,247 @@
+
+[ ... ]
+
+> +static void mtk_port_internal_enable(struct mtk_port *port)
+> +{
+> +	int ret;
+> +
+> +	if (test_bit(PORT_S_ENABLE, &port->status))
+> +		return;
+> +
+> +	ret = mtk_port_ch_enable(port);
+> +	if (ret && ret != -EBUSY) {
+> +		/* On -ETIMEDOUT the ENABLE trb may still be queued; queue a
+> +		 * DISABLE behind it so the channel does not end up armed with
+> +		 * no software owner.
+> +		 */
+> +		mtk_port_ch_disable(port);
+> +		return;
+> +	}
+> +
+> +	set_bit(PORT_S_WR, &port->status);
+> +	set_bit(PORT_S_ENABLE, &port->status);
+> +}
+> +
+> +static void mtk_port_internal_disable(struct mtk_port *port)
+> +{
+> +	if (!test_and_clear_bit(PORT_S_ENABLE, &port->status))
+> +		return;
+> +
+> +	clear_bit(PORT_S_WR, &port->status);
+> +	mtk_port_ch_disable(port);
+> +}
+
+[Severity: High]
+
+mtk_port_internal_disable() clears PORT_S_ENABLE and then discards the
+return value of mtk_port_ch_disable(), which can fail with -ENOMEM (skb
+allocation), -EIO (mtk_pcie_hif_submit_skb() whenever
+atomic_read(&trans->available) == 0) or -ETIMEDOUT after
+MTK_DFLT_TRB_TIMEOUT. Can this leave the software state claiming the
+channel is down while trans->usr_cnt[hif_id][txqno] still counts a user?
+
+The only decrement is in mtk_ch_status_check():
+
+	case TRB_CMD_DISABLE:
+		if (trans->usr_cnt[que->hif_id][que->txqno] > 0) {
+			trans->usr_cnt[que->hif_id][que->txqno]--;
+			if (!trans->usr_cnt[que->hif_id][que->txqno])
+				break;
+		}
+		trb->status = -EBUSY;
+
+and mtk_ctrl_ch_flush() / mtk_ctrl_chs_flush() complete queued
+ENABLE/DISABLE TRBs with
+
+	trb->status = -EIO;
+	trb->trb_complete(skb);
+
+without passing through mtk_ch_status_check() at all.
+
+For a modem that stops responding during teardown:
+
+FSM_STATE_OFF
+  mtk_port_disable() -> mtk_port_ch_disable() returns -ETIMEDOUT, the
+  DISABLE skb is still queued
+  mtk_port_internal_disable() ignores it and clears PORT_S_ENABLE
+ops->exit() -> mtk_pcie_hif_exit()
+  mtk_cldma_exit() frees drv_info->txq[]/rxq[]
+  mtk_ctrl_trb_srv_exit() -> kthread_stop() -> mtk_ctrl_chs_flush()
+  completes the queued DISABLE with -EIO, usr_cnt stays at 1
+
+On the next bootup the ENABLE raises usr_cnt to 2, so
+mtk_ch_status_check() takes the "already open" branch,
+mtk_cldma_check_ch_cfg() finds drv_info->txq/rxq == NULL and returns
+-EINVAL, and mtk_port_ch_enable() fails. The compensating
+mtk_port_ch_disable() in mtk_port_internal_enable() then only takes
+usr_cnt from 2 back to 1, never to 0.
+
+Does that make the control channel unusable for the rest of the probe, so
+the MD/SAP handshake never completes and the modem never reaches
+FSM_STATE_READY, with every later boot cycle repeating it?
+
+Related question on the same function: is -EBUSY safe to treat as a
+successful enable without distinguishing where it came from?
+mtk_cldma_open() rolls the usr_cnt reference back at its out: label when
+it returns -EBUSY, while mtk_ch_status_check() keeps it.
+
+[ ... ]
+
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_ctrl_cfg_m9xx.c b/drivers/net/wwan/t9xx/pcie/mtk_ctrl_cfg_m9xx.c
+> index 0019b64b037af..050416e0b914d 100644
+> --- a/drivers/net/wwan/t9xx/pcie/mtk_ctrl_cfg_m9xx.c
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_ctrl_cfg_m9xx.c
+> @@ -21,7 +22,24 @@ static const struct queue_info mtk_queue_info_m9xx[] = {
+>  	 Q_MTU_3_5K, Q_MTU_3_5K, TX_GPD_NUM, RX_GPD_NUM, Q_FRAG_3_5K, Q_FRAG_3_5K, 0},
+>  };
+>  
+> +static const struct mtk_port_cfg port_cfg_m9xx[] = {
+> +	{CCCI_CONTROL_TX, CCCI_CONTROL_RX, PORT_TYPE_INTERNAL, "MDCTRL",
+> +		PORT_F_ALLOW_DROP},
+> +	{CCCI_SAP_CONTROL_TX, CCCI_SAP_CONTROL_RX, PORT_TYPE_INTERNAL, "SAPCTRL",
+> +		PORT_F_ALLOW_DROP},
+> +};
+
+These are the two descriptors that request the PORT_F_ALLOW_DROP behaviour
+mentioned above.
 
 [ ... ]
