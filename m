@@ -1,35 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f27.google.com (mail-pz2-f27.google.com [74.125.228.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BAF23ABBE;
-	Sat, 19 Sep 2026 22:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8E5327BEC
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789858286; cv=none; b=dffYtwjKHQ5GQbdEBTVL3vzzRj2myYe4czGH6/8fCuxuBao2OAjTDzLvNgmlPKQZ07JJ/80oOrIArN1/Rv3hV4jlSuGSmwXTBs+tDpnpSoi8EQ3DrAwQ3Ejo9AgEylqGtlPQguWJ29MRusKBZdfYhqu2EfVWd8pN3SXur+LhS5c=
+	t=1789859081; cv=none; b=RlBuTMFlERnUv3BYXow9aUTJS6SFqQQqkxMM53ZdPqTiZP0tvGLyg9/VRT5xzN1ImllA8Bg7aF/Rap80gOg6CHw+K9kWbNsKPHQZ3+npftbj1r4kOBcLkHCBss8GZy318prhGaJ+9Alig53D7k8JRVUge/4zPautNTsYsFhkevk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789858286; c=relaxed/simple;
-	bh=kBRXeyi1c960O0fjGn+dRjGZxaOtzC69lWF1dPLPo0U=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nuIS5GmgOoKayXltGh2lK0tq/gXrRR3jD6ChbF9ZUCdf0pB3qytJc74XbuQSF/9o+TTtGcYsDWGtyOuyfpFRCFYi6Wbeb3HWi7QJ9nf6U7OX+lMFIC9OhnA76NapFsMkeRQhoTW2P0PFQT3+jo+xey7kxOoID98ntuu5Cbn4Brc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hatEdKN4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789859081; c=relaxed/simple;
+	bh=6KNhT31o5zRZlBikaD83+Uhw1ackzuUh5nI4RX6iEm0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jbmm5m58byxcQRkD6t0j/l08qh7booachtAY9YiUGnSg2lUuPLuLmCpw1VHV1hCOq2VtY2M8lmfd5+W65nDLvRmDScRsSu4TtULlnBC6zBLFZDhFqQfgWlrZsOm2+pesAuAviTnX9OUupitzCu1hBhqRy5vAexjsFeupaHUhWFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=bgxa0EXC; arc=none smtp.client-ip=74.125.228.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hatEdKN4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7941F000FF;
-	Sat, 19 Sep 2026 22:51:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789858284;
-	bh=A18i1OW/ltxUwpqhu4EQwXsBuim28AyuTsWVQH/1Ejc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hatEdKN4mjmRS/xEAhKGTTOTXH38pFPlndVuwXK8Uw/M5rVj0KwThYVH5uiOgkCjr
-	 NFPTe+Wo9OvbrZ72oWV4GWv1nA5/uOJ6si0/hkPSIgJEsXcjE1cueHCC7PhMrFwxZL
-	 yRVNTWb99RsyNnNqj9p0D7wyZcR1Jbrkg15piNwKDLuY6boissZEadMZ6UEu+92SR5
-	 rj9Hs+/DMECRmNNl3k3uhbMs3DLosLeVh/3HdhSMHdeaDNiCUnFwZggAIS4t0cRUbU
-	 J1wzqCTA6NLcF/sY2sI/yu/WP289fScDd9gn0UjU6YGuvJXBiUvPS8gF+sBdX1EI6y
-	 i/YAIoHOLYPvA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56853392447D;
-	Sat, 19 Sep 2026 22:50:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="bgxa0EXC"
+Received: by mail-pz2-f27.google.com with SMTP id 41be03b00d2f7-cc1cea50dc3so1262946a12.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:04:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789859079; x=1790463879; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vOgQMCXk7YRJ+fy9ep1+G1HisvU5nbN7UnWeqV3aj6k=;
+        b=bgxa0EXCrnPs951IJu4Oxuh+fnByZb3tWvqQdTyyFSI2bYA3cGpMds48I5eczvPvux
+         qUvchHQnm3Qu6gVCl6C0kjv7JXcqawVc+/RBR/+j+xHyThgvvwHedSTPLcnTtk6/CRyL
+         mOM1zoOA2FBac/BhQQbR3Fs9ZgDjVQid6VcxU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789859079; x=1790463879;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vOgQMCXk7YRJ+fy9ep1+G1HisvU5nbN7UnWeqV3aj6k=;
+        b=sF3Yoq+2piFFGNE05KwcXbcGShSBmfRlxVGlJ/FftNMsN9Ki2qZTaj0Os1Tsiuapr3
+         udInEq/BE4ggcQHd6t3wtLxOvzfoIcPMdb6lYO5w68ILbHsaoQtZaKMWOV6iqIjv3J1H
+         dWwjmvoFruOATGkT5eaSgrtFuiBc/sLySaG6gGV0CGM3nOZFywEMn55mLaPJTZD8eRek
+         dhWoyZih17bKL+BxbZmnNjJr0uJ2IWN2dxVfBHsRcqRORs+wz+qqkYUhFUhDXvOxpq6L
+         KlBvVOzKm7npU4TkGhrVYCeRb2YwEpkY7crRehuw/iqgtWTI7gtiEpXfPwDNtFhH365L
+         4nSg==
+X-Forwarded-Encrypted: i=1; AKwUvBx4nVVzIfUAH+plhiOZqd0KG0oBDzw2f6r4ljSwDxi5z9L5JrKRsCU85IsExjwR9Bofi6PrfWg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mzMRBbgZErZgnLMiiTas3J+01qIOBCwvl5KqymZQLtwn+/l5SY
+	ZLwIi4VtIqUv0QMBSNuXufOSkhn20Ti2LMv0r9dMfLRBVSRkmrwzmJ9d2/XrCXGMLA==
+X-Gm-Gg: AYBFou0rHbXpm49ROhvPy4V6bnRF7TtdYWgu8d1iRQEW0XA0GLwEUOGjpwo5h/4Q+Nj
+	L/znBPD/8rgmjdDqHUHQmYmKsGtR0C9NXEbZkLcAMJXJ6uTePjUjZtcLi3dl8FwKXUtWgDNEm3N
+	LRsfOXNeu47MAx+dgdj2YHctmrbyA4kDciXhqtFWAgBuun3CPqDsf6UThHlHoV+AZaUNluBLKR8
+	/VqQhpPi/tQuCXOQWSNLZJ2sv/3yvZZU6C1TLgaGtrM+92+OSHIxecW+q1MggXANnk5YVAemfqG
+	x+kqyV4OL1OcxDbwBE4PHttzY0h3Vi9FCcbYuCA89ZrSBnwwRgumftbN0JNMfh44ItzSOfozPoC
+	2v+KgsIU5JhKlTr1oLbRdVLaLZT98rSmreEITLSkQGw14OYMRlgaoiOZ5jQAWv7PYqxb9NfcDJn
+	xHhrUgKiyrsHqf4DbacSqLfe8jl85UE9Vde+WxXAlC3mrlEbGcRw6v24iIduBPRNPnllxGBQq3J
+	NCtdMIT13RCTAM=
+X-Received: by 2002:a17:90b:4fcf:b0:39e:6a7e:ee17 with SMTP id 98e67ed59e1d1-39e6a7eef23mr5369344a91.35.1789859079497;
+        Sat, 19 Sep 2026 16:04:39 -0700 (PDT)
+Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144d55aaf1csm8804599c88.3.2026.09.19.16.04.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 16:04:38 -0700 (PDT)
+From: Victor Nogueira <victor@mojatatu.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	hybris@mojatatu.ai,
+	sashiko-bot@kernel.org
+Subject: [PATCH net-next 0/3] net/sched: complete action notification accounting
+Date: Sat, 19 Sep 2026 20:04:26 -0300
+Message-ID: <QDISC-RYTB.v1.20260918093205@mojatatu.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,48 +76,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: usb: catc: bound the RX packet length in
- catc_rx_done()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178985821686.1485891.10612665362689761603.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 22:50:16 +0000
-References: 
- <AS8P251MB00015FD7716F38C345619B56C8BB2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-In-Reply-To: 
- <AS8P251MB00015FD7716F38C345619B56C8BB2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-To: Aamir Ahmed <elb12345@hotmail.co.uk>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, peter@korsgaard.com,
- n7l8m4@u.northwestern.edu, enelsonmoore@gmail.com, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+The action notification paths size their skb from each action's
+get_fill_size() callback, but three gaps remain: one callback undercounts
+(TCA_MIRRED_BLOCKID), five actions have no callback at all, and the
+TCA_ROOT_EXT_WARN_MSG attribute is unbudgeted.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Patch 1 fixes the mirred callback for TCA_MIRRED_BLOCKID.
+Patch 2 adds get_fill_size() to act_simple, act_mpls, act_nat, act_skbmod
+and act_connmark, the five actions that still lack one.
+Patch 3 budgets TCA_ROOT_EXT_WARN_MSG.
 
-On Tue, 15 Sep 2026 00:06:58 +0100 you wrote:
-> catc_rx_done() walks a multi-packet URB, reading a two-byte length from
-> each packet header. Its bound, pkt_len > urb->actual_length, ignores the
-> header offset and compares against the whole transfer rather than the
-> bytes left from pkt_start, so a crafted packet header makes
-> skb_copy_to_linear_data() read past the buffer.
-> 
-> A length below ETH_HLEN is also accepted, including zero, and
-> eth_type_trans() then reads a MAC header from the uninitialised tailroom
-> of a shorter skb. The is_f5u011 branch takes its length straight from
-> the transfer, so a zero-length URB reaches the same path.
-> 
-> [...]
+Victor Nogueira (3):
+  net/sched: act_mirred: account for TCA_MIRRED_BLOCKID in get_fill_size
+  net/sched: add get_fill_size() to the five actions that lack one
+  net/sched: act_api: budget TCA_ROOT_EXT_WARN_MSG in notify skbs
 
-Here is the summary with links:
-  - [net,v2] net: usb: catc: bound the RX packet length in catc_rx_done()
-    https://git.kernel.org/netdev/net/c/9d565b6b72fe
+ net/sched/act_api.c      | 15 +++++++++++++--
+ net/sched/act_connmark.c |  6 ++++++
+ net/sched/act_mirred.c   |  3 ++- 
+ net/sched/act_mpls.c     | 11 +++++++++++
+ net/sched/act_nat.c      |  6 ++++++
+ net/sched/act_simple.c   |  7 +++++++
+ net/sched/act_skbmod.c   |  9 +++++++++
+ 7 files changed, 54 insertions(+), 3 deletions(-) 
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
