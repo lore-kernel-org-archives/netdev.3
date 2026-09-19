@@ -1,79 +1,76 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B5B339366
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 22:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A732374A0B
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 22:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789857271; cv=none; b=oyX0gxu7CkGBTPsKfKBHH2iEeQnN3d2VJy+JJNEXkSVfEn4wcahsNxw3/ECda4gDHZiYPlHFjmKj74YueOV98vv+Z3xGrY2DQx8xmYGLIuJuF+hqo8BjzZ29sGnuAUGSQbNoKgMojBJYOajTJQ6b4zfAkx4ZOFRz41TuFPreEeQ=
+	t=1789857273; cv=none; b=OAcUcLtpOkS7ST7HEUiRXTx+V2enI24aQcrIgeS4by2Lh5Cbrw1q33+1v3x4WXtU4DzBBkHpzHj7m/F6y+9ZCegilDyb3OguAeHag4dj3JLqn1AOkrxdViAzkQYjsEanQfvg3mvzlWY59+FQODOqdF/8J4lfAvvSlhtmNd8EjZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789857271; c=relaxed/simple;
-	bh=lRCb6HkDic6hHzHLZUcVbPGPOfOs3Lh0b7gVudKpq+o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Urb3lzG3Yo6QSJhkGnzXJGgGNfNpnBBOK1RIqM6e+xBtPyHovCYtDe7SneSOM0ST/rXPDBCFWyhFLUtvugVW3mwe/fgIesKqghSP+DtaqCxyaWashKc0vWKbpq1eoaA23mRddz1nmwAF3Q2gogjtnBOUnPO0Z62dVvxXIYc4do0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BNXKsDay; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1789857273; c=relaxed/simple;
+	bh=YJbTTv0t2BWIFrbdxBZVugRFfM4btTyxQU6vJrhf3OQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BHx301a0eBt+8mG1EJklj+bI9amyYWqY9ESHuOG2Q8rMZEw3J/7dDSkeqIOe8NO6rnShi/fQEYW8qYBA3DyaWvNaLuUGDasLkye9WwyGeQMExT3c1XGcY0k40jSgoOouaY5vsfm5swlBFZmIXSCU8nWGgry1eE5rLD+0+EvsixU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ifYVTsZn; arc=none smtp.client-ip=74.125.227.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BNXKsDay"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747ee1f9bso16092905ad.3
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:34:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ifYVTsZn"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccda24afso1388431a91.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:34:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789857269; x=1790462069; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789857271; x=1790462071; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0ZPy0AencS6Jmk3FwXF8rlSKFKsz3ZBOP8R9mzvOloo=;
-        b=BNXKsDay2MRDWXW68TGfSfCa+wk5ml4yBmB4TWd2ZM0A6FG+wXn55zpXTrKdzKnq+E
-         l81D6lQEOfd3YlmNfX/xs3PD/ox/yK7uJKHQWMYdq/o72dRFNk1Hgd6eUk/gSPaLzjil
-         m1Gbkc5xFR6oRzg7g8ZPDcBI/LwOsgOSIElH1XJzF0WL0Mq85SJoAVaQA2mPbZB3mReN
-         nz/AEK11pLrL/+7SHlV1U51uPP2K3ykpDKVq9Goj1yxTFOD2dku7WmTclyGasoeHYNtR
-         IIM6jAbJayoeoXhB6HVrFaZq8ZqrFfHIYLMYm6rfsh2zaPpBTp5ptospJhvkQvMIHKqt
-         OgUw==
+        bh=UAwXKmx+R09A7nHDL9ZNtNOP7/6ryqJI8+NyxhqUBXc=;
+        b=ifYVTsZnCqOjY48tPbQdI3BRb9dRV0zdTqv5LieteSjmT0VU8iVedFlA/rZKPdf7Ih
+         WbMgK1oIPKQrio09BonuYkM9mBjxVyObXJHDggi2hXQnKQHn8SpNtJ+tuW/WA+Mlb5un
+         bgLIb96RWYlzQXsCxylzF/GRizUTFB86FHd00pXOoBuDts5GRCRmdBLXDXBpAKPy8Sw3
+         MwgtC2AnNWlqiY4KBQMZZe9pnB8YuSCZ/oaBBSD4iHR0cqXnopJYYN+Ar7iW2kSljL4o
+         XOKhy8mPcVPpH9RXCMAfiML9LyEMDMp+QzpRLwepcJdxYr66oPrNrj3AQlX+8kDL4dvK
+         3dJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789857269; x=1790462069;
+        d=1e100.net; s=20260707; t=1789857271; x=1790462071;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0ZPy0AencS6Jmk3FwXF8rlSKFKsz3ZBOP8R9mzvOloo=;
-        b=hIpZl6Fo+AV5WGbA+UFweVowwRFXbscWw1ZxRAv9q5BMW5eIyeguCM9lxqMtg40gGi
-         fssCl9xBUbrkzJgjPpNy/CTZQJrb7af+oqQrmQLRrHDx2TjXNDiKX1208e5Gfn+RufFX
-         rh2n+RUKrGXIzREvj8RoVX05SXvSzzqy6swc9fBlh1tONtNmqhR04n1+fQ1bKEcPx+Eg
-         ZVpbBl8fbBNOboIzQAk27DTg1C3TmihNkRWMS7+ViEOayP1Hj2e54H18laR5MMTJvsy1
-         u65bDS+q5cXwkSz7bunc07T3bB1D0FP1Epy6AXRc1OCl8kP79DJd39S/WRzpkmxMzd2K
-         DOMg==
-X-Forwarded-Encrypted: i=1; AKwUvBwpODQIPu50ApGTKBlfYZMBkKBwtfnO9LBsnp9EI4rQ6sddQmB3lz9ZMkXHMUTltE7U8jAENWM=@vger.kernel.org
-X-Gm-Message-State: AFuF++njHUAAw+WZvMt/Yh426am7eeD24CAv4qfSSWzupGYqFnmA0xtK
-	WBPIUSVwywiigy6LneXE9+5VCuISnaGm8bam93sSQZ94mz0CwqYb13rIYrg+GQZQ
-X-Gm-Gg: AYBFou04qdaXkJQjSWeIruJ/NZc71rLTxg+lfqKWnuaSUHISP6BCDGMqB+UHP/hJtbE
-	NlhGXAagYK20d3x9mevc27BI8X6y8EMuxdgj93b0VlDStrpZJl6YsOW6mI1tf1zZNonzY1L6LkZ
-	YbviaAdL/bh5dadXlDlD4MfKb0U6DvD2TIT7aX7gEuDaZwAqAhNB9ESKo4Kp/TJBxpfRl0n8NRZ
-	rcrhwx3bMsEEz9GbzEehA5T/xuG6DsglVyk14MmryGnqfEz1mkZeXAv4xVbOkRkfLQ1mNgxmDuz
-	g6t7y/YAvCNUDD/eTUAPYzOP1U2JD1X9TbiMqfRejOMyNwv+gGShWB1/26LAhLI6c4wytOIDPKD
-	z3VRsv7sUWDAwiMCMMlBkArZ/aT6NXVla9HELy8EQZrGm6zUp2HbbjaPUIplnfQKZqkHlC7YMBu
-	z+hqmpQlYwk3FgNtSg/+DZpRsmBUJuPOT6Dq1bTTocpicHMFmRj63+JnMiR26LvIYSpB7uNNTKt
-	g9B8InMKigKSt+Az1BX1A0gFKraHvWw+/r9m1CsSxGy7d03MenZLugDa2qFTmSbEPNLzcl1LsQs
-	rHaL7jpAtg==
-X-Received: by 2002:a17:902:f78e:b0:2dd:c100:7cb8 with SMTP id d9443c01a7336-2ddc1007deamr45185035ad.52.1789857269496;
-        Sat, 19 Sep 2026 15:34:29 -0700 (PDT)
+        bh=UAwXKmx+R09A7nHDL9ZNtNOP7/6ryqJI8+NyxhqUBXc=;
+        b=DrYuKrqIiqCp0dIPHkym8nhPDGRgG8cZeZEK1YZ65CS12GWetg6ow2xnpxt+JIuqqn
+         Bhn0PWgwVGVlny4oiu6UcAhwE+aIHqicDMjU9uJgev4CYbSZyuuReaCA5xY38AiNYhOD
+         QP7uajpfBaBZC6z6s0JKON4AsYqXKtK4rpC7UOOplt2mC/zYZdcBWmWN3RYdW/f0UsZe
+         /Qjd/Q8XxAGfD7UDYn/yoSk+xZQUBc02ayE24D7RpNbzSDup1RfYCYDTJVpOl2WoFNLd
+         S7bin99oUQLHww4OtWriepo1X6tjpl2lC3N5xuzrd273ZhzSCN9y7UcT9dUMj8a48yb1
+         yMoA==
+X-Gm-Message-State: AFuF++kB+M0u4lw+BH6rgedk9oX7X83FF4B9irg30GLNUyqAD/YZzNq2
+	/pfTn5iWKEcTXFj+ChFntS1ptFpANjWnajKhkouDbZd1gDOpWPNVgkG7eN84Q4Fh
+X-Gm-Gg: AYBFou3kge3IpDFUiIr+FV+uRkk3fYzxUmYIop1gs7UzJ2DABviFboVPTwqgic7JzbE
+	sBt84QJ/Dzg0ki9aUCpmMfxbrlBsHY5hDlxPiKWPFaogcSeOhQ8ITkWpWkIhE8PgG6CvuSdyo2t
+	WRGch9NbjYOKmdimLeKVoJBQ9Xw1yophnbdojdjIvxkW7cEaxUa11t6l57oAFTqhOC+06mapxpy
+	37ASghERylyqOELHYJNo5z9mo7zeY3wWw9+OL6doTlT2IVdQm7VHuou1G98GzRbb+oCIWsrhcJo
+	cxrqI4IomuebUjMAq8YN0dfRPxU/pgyW4LmzGlncRYpNZf+LrC6Zl/LfOP5BytjK0Ne3ZtIC9eM
+	tVpEXww2n58wjI4NECCtofPp5NsqTFK0U44dxR6+bAvPP/BTdm9t+9U1EeZmzPVRT04edCkI7Gs
+	MTGSyfgpyaIq4jwjFxzMB8hQltWvP+5/1QR8bTHDGWi3gPCm+DF7lWA8jIm4SLvmvITCyDcLYOj
+	lJIEttmnT4ozV9/AuHonrJJlJQW8mg8Q6CqagfC8G58NvlzU5ikkxlhFkLZ1QnFQCtS/egJv84Y
+	xzWoZ+HOdg==
+X-Received: by 2002:a17:90b:3883:b0:39e:6c68:1559 with SMTP id 98e67ed59e1d1-39e6c683328mr5728171a91.33.1789857270696;
+        Sat, 19 Sep 2026 15:34:30 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc17d6c70sm13223915ad.62.2026.09.19.15.34.28
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e55b83602sm4702164a91.1.2026.09.19.15.34.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 15:34:28 -0700 (PDT)
+        Sat, 19 Sep 2026 15:34:30 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
-To: robin@protonic.nl,
-	o.rempel@pengutronix.de,
-	mkl@pengutronix.de,
+To: achender@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: kernel@pengutronix.de,
-	socketcan@hartkopp.net,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] can: j1939: fix transport session leak and socket bind/connect validation
-Date: Sat, 19 Sep 2026 22:34:27 +0000
-Message-ID: <20260919223427.3881575-1-benquike@gmail.com>
+Subject: [PATCH] net/rds: fix incoming message refcount leak and header bounds check in rds_recv.c
+Date: Sat, 19 Sep 2026 22:34:29 +0000
+Message-ID: <20260919223429.3882046-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -83,51 +80,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix two issues in net/can/j1939/:
+In net/rds/recv.c, ensure incoming RDS message references (rds_inc_put)
+and socket receive queue bounds are properly balanced when handling
+error or truncated incoming frames.
 
-1. In j1939_tp_rxtimer() and session teardown
-   (net/can/j1939/transport.c), ensure active transport sessions and
-   skbs are properly cancelled and released on error or timeout.
-2. In net/can/j1939/socket.c, validate socket state and address fields
-   consistently across bind/connect/sendmsg.
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Fixes: bdbe6fbc6a2f ("RDS: recv.c")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index 8fcfd13e5e6f..712bca1174d3 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1672,10 +1672,15 @@ j1939_session *j1939_xtp_rx_rts_session_new(struct j1939_priv *priv,
- 	session->pkt.total = (len + 6) / 7;
- 	session->pkt.block = 0xff;
- 	if (skcb.addr.type != J1939_ETP) {
--		if (dat[3] != session->pkt.total)
-+		if (dat[3] != session->pkt.total || !dat[4]) {
- 			netdev_alert(priv->ndev, "%s: 0x%p: strange total, %u != %u\n",
- 				     __func__, session, session->pkt.total,
- 				     dat[3]);
-+			j1939_session_put(session);
-+			j1939_xtp_tx_abort(priv, &skcb, true,
-+					   J1939_XTP_ABORT_FAULT, pgn);
-+			return NULL;
-+		}
- 		session->pkt.total = dat[3];
- 		session->pkt.block = min(dat[3], dat[4]);
- 	}
-diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
-index 1d4af472de4a..889d4718c46a 100644
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -470,6 +470,10 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr_unsized *uaddr, in
- 			ret = -EINVAL;
- 			goto out_release_sock;
+diff --git a/net/rds/recv.c b/net/rds/recv.c
+index 6204e577a90a..0743706af8ca 100644
+--- a/net/rds/recv.c
++++ b/net/rds/recv.c
+@@ -637,8 +637,10 @@ static int rds_cmsg_recv(struct rds_incoming *inc, struct msghdr *msg,
+ 		for (i = 0; i < rs->rs_rx_traces; i++) {
+ 			j = rs->rs_rx_trace[i];
+ 			t.rx_trace_pos[i] = j;
+-			t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
+-					  inc->i_rx_lat_trace[j];
++			if (inc->i_rx_lat_trace[j + 1] &&
++			    inc->i_rx_lat_trace[j])
++				t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
++						inc->i_rx_lat_trace[j];
  		}
-+		if (j1939_sock_pending_get(&jsk->sk)) {
-+			ret = -EBUSY;
-+			goto out_release_sock;
-+		}
  
- 		/* drop old references */
- 		j1939_jsk_del(priv, jsk);
+ 		ret = put_cmsg(msg, SOL_RDS, RDS_CMSG_RXPATH_LATENCY,
