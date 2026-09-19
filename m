@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCEA175A62
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 00:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CAD34CCE
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 00:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789776676; cv=none; b=iHWR0gPiCYqhYV8VKHp0KXBydN17qlzMmo2aE/ObzsD5vXNSkqBzJdfaaHm0O4b4molH6OASuGDkRw8ca4SneZQXej/42+XPQwsVz5BJTqBoilmKsj1uISgthCI/GGsE4rmio2dbRmmsy3gdSGklRRwqGc9bq/GA7sQ/pi7hdDc=
+	t=1789776678; cv=none; b=asrKTux6CIA3gbW09f71lP/OaTqAEusGT8cF6qeRV6czi3JKOezx4SAXlKxsus7lGo/SnbgkHRMp/zilTkg6gs85i1r2lwb0CB8qvC9QQW5seHxAxq4+bpFRNa6J457ReLO4/o8IdkIqIXA8v6HDnkX2soths9O2sYecDxpwH3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789776676; c=relaxed/simple;
-	bh=XaARnh7sMZwmP+BV7XdWpC005rK+AoRBFmtuencUSvc=;
+	s=arc-20240116; t=1789776678; c=relaxed/simple;
+	bh=VTERgfpPTBdX1Wxk35hSGdOxifhUzdxvTcH/HPmhmbQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BmrlzdOpsGKVzeYrHTTYA3iSpSR1nod8rmMv0VzrIAUCEFiM9oovgJe01uvGoODGLig/3HwBKYb9zA7H6RUNNXF4jPt+McYJyMsiyA0uDioMYlym7KLjVv1hAaHVsGoijheQp2uJ0Yz+DOOynb8QuDfo5R19QzrpwMuAUySJgeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHVwhOt4; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=OyBxa4ZCWOT5Put+xzB0DBDXklnvOlmnSRtghc10zRXMscZlthvVdSEQYzGD/BBdK/1ayyD1JJKc7KD/LffD11L5rOe+C9ViI4wi881bRXs+Px53sPhySDxpXqarteP6qnTYTSRUD5o32CTmGLS1rpLRTbUW2OsiuUdsNpieSTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQJT6Ksa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHVwhOt4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA6C1F00898;
-	Sat, 19 Sep 2026 00:11:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQJT6Ksa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C09F1F00898;
+	Sat, 19 Sep 2026 00:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789776674;
-	bh=oNsC/tQeO4Z2q9Gr+EzNpNBfohb764BQYC5T8GbHjuc=;
+	s=k20260515; t=1789776677;
+	bh=WYSmmvWran4eH7ol8sXXvahMVK9O7Yrxoafa3gM6OhQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ZHVwhOt4T/8yFYuI/TFbaANyEu03xeeoqWrPtrCZShwzKOaWoS7onZ5GfFlIDwqMt
-	 hkQ/TFweqS4kdi6GKE6v0yMPSV5YqUp5VRmBQNSw4fd2X+AKJm03UR2SkFTs/xw4j/
-	 Ke8r6DdTE6fyd8I5wivJzQU7thDOuGrH/caxxpxfF3Y3t+nBsD0Vh+VblXhc90kYqb
-	 Gw1NtUVLil3s+ozCbTlEGJ4jpsyg+WRN76qIOvMRwfbQRmNhXWFyAEIlGnXmpYeyiS
-	 stsV2nFA1a4T2gQnDwnbc68crROur7Iu4OfPYshBuamZ3IV1JHLQsTbrHMHThuaGKo
-	 52P15XOhDOo4Q==
+	b=IQJT6KsaXDUc5DOZBLdOWgPe8bLJuv3XVZdhjjQqI/scvRbT367VLYKLE7uLlSlJw
+	 kE3qGw0GxWH7C5yB4GLGVfPsBEIUSAEpEFI/YcgTI1lguIBQojLGiUDJektS32Syyk
+	 bGyoYjnJ5ehrzEvmJ3DbKfaYY8cFCPYfQmOs7yDFQGLKfppL3mCjNywaWJO4w8q5aA
+	 ZdJ8EPqz9Yd971mshIo4IVmSzSK71Q2RrPv4jO8hXR9AeIaacN0ulkN163GlPlDBKa
+	 7Yz3ZcxcEn4M87zg1lOMcvja4tK0Ar1BTrBEVDW7+weoleSW5vq3yDwgLmBmt6beEG
+	 sqEVl7Rikaozw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A423811977;
-	Sat, 19 Sep 2026 00:10:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A8A3811977;
+	Sat, 19 Sep 2026 00:10:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: ethernet: mtk_eth_soc: unregister net_devices in
- case of probe failure
+Subject: Re: [PATCH v1 net] ip6_gre: Call ip6erspan_tunnel_unlink_md() in
+ ip6erspan_changelink().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178977660689.1197442.4867572793099583443.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 00:10:06 +0000
-References: 
- <20260916-mtk_eth_soc-netdev-fix-v1-1-5dac50eb65b1@oss.qualcomm.com>
-In-Reply-To: 
- <20260916-mtk_eth_soc-netdev-fix-v1-1-5dac50eb65b1@oss.qualcomm.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- sean.wang@mediatek.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+ <178977660989.1197442.5379934704610078750.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 00:10:09 +0000
+References: <20260916230927.378957-1-kuniyu@google.com>
+In-Reply-To: <20260916230927.378957-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
+ u9012063@gmail.com, kuni1840@gmail.com, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 16 Sep 2026 15:30:13 +0200 you wrote:
-> If register_netdev() fails for one of the MTK_MAX_DEVS devices in
-> mtk_probe(), the error path jumps to err_deinit_ppe, skipping
-> mtk_unreg_dev(). The previously registered net_devices are then freed by
-> mtk_free_dev() while still in NETREG_REGISTERED state, hitting the
-> BUG_ON(dev->reg_state != NETREG_UNREGISTERED).
+On Wed, 16 Sep 2026 23:09:24 +0000 you wrote:
+> The cited commit accidentally added ip6gre_tunnel_unlink_md()
+> in ip6erspan_changelink().
 > 
-> Route the register_netdev() failure to err_unreg_netdev so the net_devices
-> registered so far are properly unregistered before being freed.
+> Let's correct it to ip6erspan_tunnel_unlink_md().
+> 
+> Fixes: b80d0b93b991 ("net: ip6_gre: fix tunnel metadata device sharing.")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: ethernet: mtk_eth_soc: unregister net_devices in case of probe failure
-    https://git.kernel.org/netdev/net/c/310d1ac61a4d
+  - [v1,net] ip6_gre: Call ip6erspan_tunnel_unlink_md() in ip6erspan_changelink().
+    https://git.kernel.org/netdev/net/c/dd47bcf279f1
 
 You are awesome, thank you!
 -- 
