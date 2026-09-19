@@ -1,121 +1,103 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AB9376A05
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 05:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A0130C152
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 05:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789795700; cv=none; b=tK67k7YD1l1pF0y+u3hg+yxy0draZijPEelpaY+yot+5lMBmD+pB1CAlvE9lUu5QglT+aQV3ghrB1rn63ngnU+9TpfDymq2f+E+Abq+oTiwz2w3tKmlBikCclQxSI2pdBj0j9TXT/e6B8jk/NLS7A0n18gyR2x4MZ4Rx4EF4Iws=
+	t=1789795816; cv=none; b=Q+J3m8YJmC9CkoZn4tL2SVSQGx7/xVBs4LH4PmQTQ5T9O0QtS0qJ6asyUc78f6w0XP1VbZrHKF+JLs4L63i18nTF3xU6Snxop56cC80AT/fAVNBF5ElJlkHGthIYAyGvOooPf2OzpqVz46pwAf03hS42YgNeigMhaHhHeeRXoNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789795700; c=relaxed/simple;
-	bh=XGSV+AS7zo+eJ8siol0hx4qHIx/7630SuzlQSpM+jTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D74/B1sInG5KGb05wrjf2Jv4arh0MtfOtoB4aW+fjfPPBM7jk7aktF4CJaYadBWMDKy0ctOKzoB6oEdct7168Zph4GPeydPvNEGblltLdwKhdbZT7edg0nHTqaToN/rBhD+7p0j8RXU+qDD5ZODLTeBBvTuMDScSDGB0PavI4LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FNz0F4LA; arc=none smtp.client-ip=74.125.227.140
+	s=arc-20240116; t=1789795816; c=relaxed/simple;
+	bh=7Bv/tRzHIIX1nxDFQ6yrnEW0jrJAUENMoZyb0TZoQYw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n9+pFL0ur3OxnA8xO8Tjziss8b2gVEw0XgI9EzeTLkJzyA3kJIZkYp5uXrEVt/66dXcZxh1uuMJ33ugKfEtcdQh9/LK7AuZkjsTSs8Xt561bMGlMTZ0bKK3SKao7A17BGmkNRjoFCt71j8H3QjGsAflKCZncsxHV5JnXkt6dBLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ojWO55EH; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FNz0F4LA"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ec6188so9087505ad.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ojWO55EH"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso7935025e9.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:30:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789795699; x=1790400499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XGSV+AS7zo+eJ8siol0hx4qHIx/7630SuzlQSpM+jTw=;
-        b=FNz0F4LAv8/Otzb4JIJWhwJWjSADMcM/P3aCbQ0hMeXa98oRqpPFDg5e9pHCi3Re2l
-         bp/63VvKDeEiv29uwP6yXnjlPGmYvlf6TPqbYXc7faCcLo9ZM1jtFPC8RaMMNGQ8FTFt
-         kddKklIXO+AmobnlvzJPkzhc4I8xwRvRlwgOk/1M+N3YzH5mVD0sJQBQ4LQ/5fI9Tu+N
-         NlD8k3McR02W6icyCrSAe46fd2+7QRfsa1wy2Tj24B9emGAfqsaoNLRo3uDlg9kYFs0l
-         AzC8/S+7uhUN4yqy8zOKLIWtJO1cd91mo/877LbIHpbcVjM4ABI4VX8Y984U/Jcqc1kZ
-         Nlkg==
+        d=gmail.com; s=20251104; t=1789795813; x=1790400613; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7Bv/tRzHIIX1nxDFQ6yrnEW0jrJAUENMoZyb0TZoQYw=;
+        b=ojWO55EHv5TMcFaUZ+O6ganieh0E1ZUWmRMERpDnhHlnt+symQlltJr943+sKv3cmZ
+         Vl5+VuHe/GRmRyzd9ZZ/UcGSImAjFBdc3qNG9XvrdjT08r21Exn2pMq5oVNligNT/RHr
+         RtygomwifXsj693OSri98WBORfdWwWxfTea57aeKYq7VSKT2wGGXSI/M/mgSUQrUcINm
+         IjjQNzSr4dQfVM3+gn/X9Z22WdQzXyQA3zeWojQQp6iIyhipbPtImCnxKqRWrPrFe1xQ
+         dxLQsORuehV615FDVfpGL/zOixHqPQYF+RBqpdS2rTMD7Zcrge0exXE3eS7rCUeYKkdq
+         clMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789795699; x=1790400499;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XGSV+AS7zo+eJ8siol0hx4qHIx/7630SuzlQSpM+jTw=;
-        b=l7SAiGLcT+BEAAbzVL8g93GETP8s1ujRYewaSwdWJ35Yc5hFY/8NTxbZI9gtb0ukAP
-         FeAYC5Mbi+rQhAUtgZHkpOIOeC0hFVBtWDDREQwcMsoR9iOEX+7UfbiKfbpswZdBUgvX
-         TpOZ3L90d14nli+A+MD0YxrPJAM9n2UI3PN0VG/oWwzyXoICPvttHeATjgONqbPwYhDH
-         NKF4QqsGANKzRdMV/al7ktZjh4Ssfx2VDNseQb+AAKqIVdiiBqSzQsO6HBFU58BT94eM
-         7swtiZ6SbyJtmsuE8kk4RFkHtuSJ3/NKAVUIhrgW7N94RSF+MFtRF5denuaQ4t40u8Ri
-         dkfg==
-X-Forwarded-Encrypted: i=1; AKwUvBzlgkEkXIx8sLwbvEMcBPcj5IivYsL3yTfmNIxBNwiYT5OuuVVQxKSEuEZOZZVsQJM/eP7XleY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lBWdsWQknNxg8BD/g/dqqyvBUjjM8/AWMrz5xeND5hwWP+vSgF
-	qAPcj1WkUPD88vlHRWnCuOPSa5KS9w6nFkiTHq/19uvUYOj0RucPafiq
-X-Gm-Gg: AYBFou3/LeakZ+STOWlMafVNr0ySDuolIQPgArl202tZCnqvXVJV+skOn/dIY1WkxPI
-	kHykQCP5IIQOsOxGkaOaUmP9HJ5xyWh5PNJlOkxMEGmjUOwaqFcd9hJZtVX5c2LL5xl9QD8pfVJ
-	gidE9K32KNQWpDs29DwNI743OonOX3JuFYnJbfItJAIgucuQ1mXzZe5pC47OJSBh2NXbfnSo0hm
-	Vj4JN5/3Hsab1obbxmu83hPONLhmo73n3zkxL1Duao+4FOF6U9JrPRaxlA5beQkIe09xZ2yLBdT
-	W5+oQYLgawapa/sUau6GHsHotYRgCOk2bl1ngkTaoTFM1SLQcpC6M+TryxNoBFFDvqVc0PzGoag
-	IKWCOmtEWBF4bWCF7panYP4ljCaKzyDBmBKHO7LhHagFJ9m+P1BarhLpql2cjGi6+bN+2DUGhn0
-	rCg1GJKKvnBNUHovfBHVzNwLAl2t4oDa+aw8hFkhtTIAmGuxk3nJWiHhqiESXwgeE+alzwXjTqj
-	emCJoUymgukLA352GOC9t1wgl//M9WS6zMuGVJ+QkIKc16+ZMQ=
-X-Received: by 2002:a17:903:2f8c:b0:2dd:c100:4250 with SMTP id d9443c01a7336-2ddc10044ccmr24575385ad.52.1789795698846;
-        Fri, 18 Sep 2026 22:28:18 -0700 (PDT)
-Received: from Inspiron5409 ([2a09:bac5:4437:2791::3f1:16])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc179dc83sm5367555ad.33.2026.09.18.22.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 22:28:17 -0700 (PDT)
-From: Jianhui Xu <neuromoments@gmail.com>
-To: mail@birger-koblitz.de
-Cc: andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux@armlinux.org.uk,
-	nb@tipi-net.de,
+        d=1e100.net; s=20260707; t=1789795813; x=1790400613;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7Bv/tRzHIIX1nxDFQ6yrnEW0jrJAUENMoZyb0TZoQYw=;
+        b=z0M5OxKAJyD/TJPX5qiGKPaibFEOeCX8e9nbtZ4Mn512AEw1BEBs06n2RM6Z63+ns4
+         2Gb1sXQWRwG3VoFrug8WWX7LK6ujEFFMtL8CgSmx1pWsZZDGAfYNAokWp1/t4LIcKPfz
+         ZfI/3jFVz9Nlaeh6pACsvhfkPTKfV8BdXh0jofFjjRu30523pwTiW4uGdMHEdX/iAClf
+         /nN+QbDHUTrD4VlLj6AVFRHbBtAk9YqmoXg7OgQzTperOsjUhpfM5OTU0ATs/dsSIP7M
+         SvBfpvf1bHcdyH1Qir6kLYeqA8Ptkaz27u8yuxQSnDpDuZhicKCxgmxqmFlgDsP3dJab
+         wIrA==
+X-Forwarded-Encrypted: i=1; AKwUvBwLbXBfAirdP7FC0FmFaTO9fDt5R/MbU9nmdJqtbmfUDYIih6+/L7zlpLlXfRcHyxTwJcjc1/Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++miaSvrqq23f9XOKZgORszFphRdpNrLQNKfeyE/n7G0dsTDbk2V
+	unwswM+lKOv1kGw++oy1PCWbYZ/dfXISWM0VVL60FM+mL5ys0+xn+JSjZg9/u8nA
+X-Gm-Gg: AYBFou3eYE9q1NJdODRBCIszh5D7ASYlCMAtx51Sekj+CqfGdQ+HsnK1RxTDQWIPB6M
+	dCxAFrxY7ppEQOuVomqYM7vJ1Ji8CCDTQuBi6B4rSnCh6HMf4tV/PsSif+iDfDIKUpNxCPj26tv
+	kEG+1YkyCvA3AteWTVSeCi2ckSRHyfzNLN9RZftwliGyFCLCCC33RmxW19cA8KQdkCJfJt/Jr0u
+	9jVRrhCUA1w7XHoJhr4Dw2tV1Ns+3/VMdIxCDUZqj0YPDuDEqC2xFW9utoGbv7mHk7E5oRqN21l
+	rshSck5EcOb83KrYLCqJydsRveVKzOZd+DUpMb73ZtM4lupCsUBxvk9RlsuH1FQlYSpOdRId+Vn
+	7Kuj/lNpImkzNgs7YEUb4H5W7H6Kga8qx/yssrMG7kU9huHscYNvuehDx9hR/9kjLGt62oB3lRf
+	RCm7G8GQrG1tzHFhHGmadvnA+iOEyBHCMRU8FutjMC6mIk/FR397lBSiTFdiylni4JyZiBheaEO
+	SCcfa1YJlPJ1yE58tZYcl7Ih10rz63ShkAXNdvQVS5qOwpmX1hbvhy+acSsPqc8FDZ4KqjVZLNh
+	tf2lodSjurjASRbkiagq3LDXjYx4FIulTC4hbSiSSeZEG32HkdfptsemmSrN/Ej0nkUH3c+O/sA
+	+FLvtAnWqjLOyQ0Q=
+X-Received: by 2002:a05:600c:8b61:b0:49d:e0c:e55e with SMTP id 5b1f17b1804b1-49fc574a635mr67008715e9.23.1789795812998;
+        Fri, 18 Sep 2026 22:30:12 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a017-2b01-05fe-203b-7cd2-a640.310.pool.telefonica.de. [2a02:3100:a017:2b01:5fe:203b:7cd2:a640])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724583250sm4045214f8f.22.2026.09.18.22.30.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 18 Sep 2026 22:30:12 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Simon Horman <horms@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	netdev@vger.kernel.org,
-	neuromoments@gmail.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH v12 0/15] ax88179_178a: Add support for AX88179A-based chips
-Date: Sat, 19 Sep 2026 13:28:11 +0800
-Message-ID: <20260919052811.2059672-1-neuromoments@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
-References: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] docs: kerneldoc.py: preserve headings in kernel-doc output
+Date: Sat, 19 Sep 2026 07:30:10 +0200
+Message-Id: <20260919053010.26104-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <335fec1cd5a3449687f8b1ee8cd46a0f3e455aa5.1786751700.git.kmehltretter@gmail.com>
+References: <cover.1786751700.git.kmehltretter@gmail.com> <335fec1cd5a3449687f8b1ee8cd46a0f3e455aa5.1786751700.git.kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Birger,
+On Sat, 15 Aug 2026 03:32:29 +0200, I wrote:
+> Use nested_parse_with_titles() to give kernel-doc output an independent
+> title hierarchy.
 
-I tested v12 on the same ASIX AX88179B adapter. All 15 patches applied to
-the declared base 1bb784eb6e38fd73143f021608e4ef3095d0c0d7. The full
-kernel/modules build and focused W=1 builds for phylink.o, phy.o,
-ax88179.o, and ax88796b.o passed.
+Friendly ping on v2. It already has Acked-by and Tested-by tags.
 
-For QEMU runtime testing I again applied Chen-Yu Tsai's `usb: xhci: Fix
-HCS_ERST_MAX conversion` patch. Without it, this base cannot initialize
-QEMU's xHCI controller. No AX88179 or PHY source was changed.
-
-The fresh functional run completed cold DHCP at 1000baseT/Full without
-a reload and passed the 1000/100/10/1000 Mbit/s matrix, EEE
-disable/restore, pause enable/restore, EEPROM read, module reload, and QEMU
-USB detach/reattach. Ten additional 100/full-to-1000/full cycles passed
-both endpoints with bound traffic and RX growth; I did not reproduce the
-earlier carrier-loss or carrier-without-RX failures.
-
-I also directly exercised the new phylink MII ioctl path. Read-only
-SIOCGMIIPHY and SIOCGMIIREG requests both succeeded and returned PHY
-address 3 and register 0 value 0x1040.
-
-One fresh `wol d` and three independent fresh `wol g` QEMU deep-S3 cycles
-all passed. Every cycle was monitor-confirmed suspended, resumed at
-1000baseT/Full, and passed immediate, +10-second, and +20-second traffic/RX
-checks.
-
-Tested-by: Jianhui Xu <neuromoments@gmail.com>
+Is anything else needed from my side before this can be picked up?
 
 Thanks,
-Jianhui
+Karl
