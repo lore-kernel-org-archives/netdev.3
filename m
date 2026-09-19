@@ -1,75 +1,75 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0224F3859CB
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B4437BE9C
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789854762; cv=none; b=hlLq7wBi3itJmK3LFO56zdPm/0D4F3bjsvW4PrInBo1Lod9Z3YzZEzFB71+l7fuHbPT9bPC2GUYsczqVuBQtBbADZMzwclVoUDq09QSKhRWds6HgUTPlW8fPG4QSHKHiVSbD8da9de5jgr0cGqCtjDD58iLI0waNXEnIqTtLxk8=
+	t=1789854765; cv=none; b=NyJX/HrzI/tu96LCr09sYYLFV3jvdsEZmTW+kLgCDzeOh8CoPPpA+l9e1O0SdBcwaaQW8iVGvTcApXPs251tBOs/8xahcEuVamD+BqbYTo77ZNZY8qXXPV207oR+rw7TocCnLVPAiRfG0r3Px3DR8QeYA/SGhVkA3K8D5nFIreE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789854762; c=relaxed/simple;
-	bh=4xTEqjENj8W0AbFeRvCf4WTp2q0CqRG4Z36EfYgUrtw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZLNvcRFw5WeaXfPv77JPvk+jn/TDjHAnhDkmf9cMyhy6szn4GwcUSSWqgmMsnimY02iaQ0m1yVfKQf4ots+E+zeLr5Y/YbJZY82uFSsHuiFlmI+eS7wm22VSfgbaChp4WwETGrTpuPpuGVDUvk9oqE/7DyZXeJP9FOOBB0UaK0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SitnLXH7; arc=none smtp.client-ip=74.125.227.140
+	s=arc-20240116; t=1789854765; c=relaxed/simple;
+	bh=SSPkRM0WzfBTi0eIJHbJXjPIs6gJOKdjQWdjuukdecA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L2VYrDBlZ2AwgbzLHoyN6D3a/DogNOXlpNxeCI6kT+EwNap5QzpggcgUKH5MWA91792x8xeh17KqfIP/ktMpF4/O0hYd6RdW8+OavpAMqmirO7I4+kmSxpUciPjVBVvTJAvMK6b6QeqeDKa8zhy0mYEWC1R1baPtXkLRw+RcEms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+eV4opM; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SitnLXH7"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb1a990so1629092a91.3
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:52:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+eV4opM"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39e03468a5fso1665299a91.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:52:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789854756; x=1790459556; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789854759; x=1790459559; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=964xTJiqd48XXXm2a84vCQd27k8HJCQdSNXcIUxtnYc=;
-        b=SitnLXH7Ct76/pDoXWbVLauz0Evy4s6I3nvUnQZZfNV1BRWmjYLjM5HU40crPwME63
-         iimqiMi0XxkEElcVSoz/d7/WyWIkeO3j+iq8q3yFp2U5+K2r6EtyqjBxPU+0U3fSuY+k
-         frNoi43ood7y6dR1BfEQtNhMFxTnuU0bHrJOwRZrGL02jTTu9DArquKM6IWbhEJr/umo
-         5Sh3kmD7yXU0raEMn4zKD4ayLvaruzr/+ONOf1dL0nHspCt+YT0y2uwz2VBWFppoQvGi
-         Gr4BM/ykaVREDIfjD8j6kkUTGFDF6RO//WrOoAQtBr8BBcy4V3FWsBmUO7izmwmdeBlT
-         Uc4g==
+        bh=FiIS2HG9Xt+NjPTHwM6X6IVVzmDXuxKrK9MYOq1fq70=;
+        b=Z+eV4opMXp4wzh7l1hVsNLYidrXkGzoZSrV/zvM27yW8ktr9MKiSXD2zXH4Py5DWB0
+         XnZxAIC5y1jB+GyIpiynlfIsoDG4hDCZcZ5RKP+29ArF2eXS9tLIxuyBLISThpnySmWa
+         ZbmIYgkCJkYtnY26vp+PhN9o5ica0Kk02YqiqYG/A2HJbdMyZvOJJrJABPOZ0E24X3t4
+         LvuodhNKEIXeJwyBfkLEmvIvyFza0LM1MC5/3MomOAa8oLvISXu4Yyq0yzAIyGBrxf3z
+         G5paFMujPvmzG9Mbh8htkGRjs1q2sjJaRunLDKd8mSI6gtVjmdbOsXC05VpzWEpPrbqk
+         nrUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789854756; x=1790459556;
+        d=1e100.net; s=20260707; t=1789854759; x=1790459559;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=964xTJiqd48XXXm2a84vCQd27k8HJCQdSNXcIUxtnYc=;
-        b=G/RS7AY4RhlE9fyB41FQSUmlrYdG6IgIGu1gNrNsgakLKIqzVaCmNAesE3MU5hCuBG
-         svzgyS8+pQBH8+S8zBqRTUYWhF2g0RJnIJ/N3R9yJwLjD5eckHOiXDRUpm1AtqkOYMd8
-         hsBkRNSlvWDstCRwf9++XY2eDarJjWH67YlNWdkrYFyWx+hnLc49elMNnmq6jV3RPSaO
-         zyAYnn8gSNyVpknNFScJF1/WwxoCg562K4EYIDtP6oNUOAIk/uvvlMLBUpzMb5/ndFk3
-         PXTunQN+m/tksvLNMyUJJUGjYUmIJcqEk3GPigpPTSqemWwEojyDQzc7Bn1L6/b4ANvO
-         aUEA==
-X-Gm-Message-State: AFuF++l6zspySHcI8TD4AQIfS+ohEa1Uzr6PMDJpxtuMjXhznRIOkXo9
-	nIw4BhQWCckh0b7zYO18iMtqKUI2dr2Y2bTbm2xM3c3BuNOeR9UJw0rVHw7NKNOe
-X-Gm-Gg: AYBFou1pB9BHB3IB98uU48iWMXaynDabRVqqcCIZbYF5ru1A21TJpXNNPTd2ki5VswO
-	s8ub+YHk8Ol5DuTZW8Z5D1A+8UFBhuSpXo2T1oxtdVdC2s1acLRIXmvvYxMOA+G4GNVVAzSArHL
-	1fBkGn4JaDGWQ/bv+cb3Xw8hhnhkhTWvgdTMBZ1RVar5NgVNpOLysMsJ/ii2weoMd0Wj9FCcttg
-	ASW4Z3pxoaHgZLJoD+NjqGZSBvkm5RVy5GnfkfnzJ7V0jJK/ICdgHMWwRzarL9ILJhnGY52zVkL
-	VEUNKW0sOZgAdpOZtpdNxs2A8HmvD13UYeAmnb5YIAtzDZS+pWHgJe1HxmxrMdT55nLXPc4KOuC
-	mQuYnjnCZNLyfNlVRmawj1te072yNn897XqL6pPneBNlk6zMQ1IFatPyjBx1a+OH3dxr/sOkAJZ
-	jCqVsFWWwZR4Ps5e5F2M9sQQVk3tkCUP1W1nk+sQypW4Wqdg3on5F9WysZ8ajYFI0zVVBbh7opg
-	Ow9PpUOX5iiUBhH46igQsxrABuSlyPPMWhC3ac5gvBpZOMtyfbo16loNKo4FY1NyvmAZ0qOyHIf
-	byn/6TQz1A==
-X-Received: by 2002:a17:90a:602:b0:39e:6c6a:657f with SMTP id 98e67ed59e1d1-39e6c6a67edmr3341928a91.66.1789854755924;
-        Sat, 19 Sep 2026 14:52:35 -0700 (PDT)
+        bh=FiIS2HG9Xt+NjPTHwM6X6IVVzmDXuxKrK9MYOq1fq70=;
+        b=PN0ecQzk23JN9Efb+FvEpbsOrmfNCmlxgkvt0kPaQwd03JxK7OHfAllU0VQSiuYzwo
+         oCU6x/K7F1w6Vul3LoQH7IEWukdOivz8P5wRhr/agwOb4JOLyew9uk85OkblXPQM0Pou
+         06aU2+isveBwpk374phgKDDsuBrodhDjR3PwpsdH31YBBW7z4WBHqMiX9e5jGteSgIpj
+         cknjV1hVqRgc13MOvCMMOeCRFUFLscxTCph5prGmh+KRmCte+B9EyXqLKEFyFDcoe1G0
+         S7TO8iqsfnxUh6rKIjGAv4p5leMmsHT5xZOEvm8Bv+eJJ+gSwkJ1LRdGUuRMJawxLt+C
+         LfBQ==
+X-Gm-Message-State: AFuF++k0MEDKyZVDf0cyXiwKuwwK6VBgD4KtgW2O+SI/t5PMqcE1Xedc
+	fFz3YHkU7elBvkrylIAxBtOlU9zNumUdz1EVUtHyjiVMr5qlTuy+kuA/
+X-Gm-Gg: AYBFou2f6PW+xKxVIl9zpVh7Gnf2jAQyOk4M/NZ0mNsQW2kPYjEDdom0es5AbR2vH7T
+	3ta6Hp9ZjaHI677HwqozlV3rpGV/OjZhLGrrWmeGTytYBLkhcSnb9HgViPrwd9f/UBn3hQ2QiQZ
+	651GIRw6hZN2ySOi4W1AGjFbeboNVV9AOWXvL8T4oT2yDlxaAiiGNeZdVbiYlRCtFJMxGv4swVW
+	inI8tfOUHw3wG3troI6xfvneFpPjIqbCHKo7govzRzcnEjVy0AYGPDGxqMGwa0DoKVet/LMlyHf
+	MT7LKPRQeD8H4tR0axeP4mJ3jvBuJ4DWC1dm+xJV7r9d3/WsJ+gullFpFaqOQJf/EclBhk8TWJj
+	4zAM2UtpKPZK9tfENWZEAz2yJYbvDBchi+Ubi+nefNoeWJwA2/MptZ4hQuAOS1IDxKMv3gxC7uE
+	skdFhrC2VrJsfZB9jXaX8afh8Ytj2ZvGfEKe9lpgZdoOMPszpBSrUmGIuEj7gqUz4zbHOUzlJK8
+	cqclSoTanyC8u6lpx93WkhhayaRPeWBXF3DPfd4Nwa4wRTv45LNcHTBTWAK8kA2SxSGxyFzVX2y
+	26n9t5fwSQ==
+X-Received: by 2002:a17:90a:1c96:b0:39e:6bec:9eee with SMTP id 98e67ed59e1d1-39e6beca109mr3160708a91.12.1789854759475;
+        Sat, 19 Sep 2026 14:52:39 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0320b6ad5sm621499a91.0.2026.09.19.14.52.35
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a023e44854sm1830886a91.4.2026.09.19.14.52.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 14:52:35 -0700 (PDT)
+        Sat, 19 Sep 2026 14:52:39 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
-To: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
+To: davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org
+	horms@kernel.org,
+	kuniyu@google.com,
+	willemb@google.com
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] ipv6: tcp: restore ipv6_specific icsk_af_ops when reconnecting IPv6 after v4-mapped
-Date: Sat, 19 Sep 2026 21:52:34 +0000
-Message-ID: <20260919215234.3470646-1-benquike@gmail.com>
+Subject: [PATCH] fou: reject FOU_ENCAP_DIRECT with protocol 0 to prevent sk_buff leak
+Date: Sat, 19 Sep 2026 21:52:38 +0000
+Message-ID: <20260919215238.3471141-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -79,43 +79,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When an AF_INET6 TCP socket connects to an IPv4-mapped IPv6 address
-(::ffff:a.b.c.d), tcp_v6_connect() switches icsk->icsk_af_ops to
-&ipv6_mapped, sk->sk_backlog_rcv to tcp_v4_do_rcv, and tp->af_specific to
-&tcp_sock_ipv4_specific. If the connection fails or is disconnected with
-AF_UNSPEC and the socket subsequently connects to a native IPv6 address,
-tcp_v6_connect() leaves icsk_af_ops set to &ipv6_mapped, causing IPv4
-operations (such as ip_queue_xmit() and IPv4 setsockopt handlers) to run on
-an IPv6 flow and corrupt the socket/routing state.
+In fou_udp_recv(), returning -fou->protocol to udp_queue_rcv_one_skb()
+triggers IP protocol resubmission when fou->protocol > 0, whereas returning
+0 tells the UDP tunnel layer that the skb was consumed without freeing it.
+When a FOU_ENCAP_DIRECT socket is configured with FOU_ATTR_IPPROTO == 0,
+every received packet returns 0 from fou_udp_recv() and leaks the sk_buff.
 
-Restore icsk_af_ops to &ipv6_specific, sk_backlog_rcv to tcp_v6_do_rcv,
-tp->af_specific to &tcp_sock_ipv6_specific, and notify MPTCP when
-tcp_v6_connect() connects to a native IPv6 destination after ipv6_mapped.
+Reject FOU_ENCAP_DIRECT configurations with protocol 0 in parse_nl_config()
+and drop packets if !fou->protocol in fou_udp_recv().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 31484d56ca95 ("mptcp: Fix undefined mptcp_handle_ipv6_mapped for modular IPV6")
+Fixes: 08d323234d10 ("net: fou: rename the source for linking")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 7fa4ed2fd4f1..49a6f89481cb 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -255,6 +255,17 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 		return err;
- 	}
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 5e867f1b5c1d..3fc087c808bc 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -77,6 +77,9 @@ static int fou_udp_recv(struct sock *sk, struct sk_buff *skb)
+ 	if (!fou)
+ 		return 1;
  
-+	if (icsk->icsk_af_ops == &ipv6_mapped) {
-+		/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
-+		WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
-+		if (sk_is_mptcp(sk))
-+			mptcpv6_handle_mapped(sk, false);
-+		sk->sk_backlog_rcv = tcp_v6_do_rcv;
-+#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
-+		tp->af_specific = &tcp_sock_ipv6_specific;
-+#endif
-+	}
++	if (unlikely(!fou->protocol))
++		goto drop;
 +
- 	if (!ipv6_addr_any(&sk->sk_v6_rcv_saddr))
- 		saddr = &sk->sk_v6_rcv_saddr;
+ 	if (fou_recv_pull(skb, fou, sizeof(struct udphdr)))
+ 		goto drop;
+ 
+@@ -696,6 +699,9 @@ static int parse_nl_config(struct genl_info *info,
+ 	if (info->attrs[FOU_ATTR_TYPE])
+ 		cfg->type = nla_get_u8(info->attrs[FOU_ATTR_TYPE]);
+ 
++	if (cfg->type == FOU_ENCAP_DIRECT && !cfg->protocol)
++		return -EINVAL;
++
+ 	if (info->attrs[FOU_ATTR_REMCSUM_NOPARTIAL])
+ 		cfg->flags |= FOU_F_REMCSUM_NOPARTIAL;
  
