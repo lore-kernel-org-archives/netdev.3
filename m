@@ -1,118 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f7.google.com (mail-ed2-f7.google.com [74.125.228.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A953F35E1BC
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789835004; cv=none; b=CqjbCG7/tvBmPE/HgyN3MqmtAFSYjxsJtmwf0Udw3vyOVGKxrQbVnLdvLtYxika225imWl9ZGTcNbwyJp5sr7hzlYXCIMi9GXbjME9SeWnzvvUB3a7N/meo+Sn/UnMbd74KFpFG0qD3lIxOrJh3HVKKxYFSq9k8Jeoc4pDeJkso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789835004; c=relaxed/simple;
-	bh=rCfku23NV4rHOcA4C6xP0o0XxycvahRnuUmJxepMU10=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Qu9zpX2vz4nXigJ+EUb+/qLjs0qv3RkB5YY1GZqZYO/Zog+0bGZU76BVnD8Cjzd5MRevT9AfLwNKqB0Y72gu9Zq1NZ2auu2HruW1m332DEjWLeFZ2a4af7Z1JauJLlJIDLpHe9ad1X/br6kMZbGN2IhDVxTE6HmaZuzHrAefpAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DP6wtNOV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0C837D104
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789835511; cv=pass; b=O2y29mSezlIyWWSPZFGNCKnrwVuBe2ruu15/gu4oeKkqfPh2tgShuSD3XLkn773IJ9k20CNruuCwFyLYSUdNQ7FKfnrsnnqt1XcSF2BdD+qjefhqNpEufc3uy80F6Fc54ycNydmiNcPg/sjm8/33TUZvfCTnVluu6oJygV8B2Ts=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789835511; c=relaxed/simple;
+	bh=FoBb+MCNrssOL4O5BLzYqYW9vzpXkaseLuESacaKWDE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cf8x0WF1hLBIbolf8lqxpVZZfA1id31mRpOEzqHFNQMy2xZMuPai4JhvClGHnYl0yYbBD0zA5Fq3xHd6gzh2/j4yZ0lhpyd2o7biqDe8VG3FRTMSnXNhR2JhHwREDRQH5CxSXeFdfhL8/x2bbfnuUbkwKDBEXAmeTdHEdjE7x0U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YU/fQkKx; arc=pass smtp.client-ip=74.125.228.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DP6wtNOV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C521F000FF;
-	Sat, 19 Sep 2026 16:23:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789835003;
-	bh=C4lRm3RTYNV9mhdEEDcZuzTAV6oSYrE2Pr2mgjuhYUs=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=DP6wtNOViiARae2q4SCrhAyAjFH8KgPwEw8WLAjQbJOmdm/ox8AuLydIJPBO14wzF
-	 HFAChnG/jXzQrTMR5ZK6knAFEquuyvHrYDZAwcFqYUvi1EjMCI+X5rzt6VY5ZL/iHG
-	 0z1aQ23qMJldHrWn9H92GNf/ye+WhPPjhGW20uydqgrUskzcrrmCuDSoVhP46a2LZh
-	 HHBa8M1cx6qDFj4tXSRS6F9xeEjIhmvnHd8Y27NoBO76AWVxuIK516mD/JsaprktZ3
-	 MW3uhHSmeYwS9+x6syOn5B9fjrZRnMchpUbr/cu7/vdqI/FfxOlPWDC10YfPkZPNJ1
-	 pADuEyXzxvOww==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3CD09F40066;
-	Sat, 19 Sep 2026 12:23:22 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sat, 19 Sep 2026 12:23:22 -0400
-X-ME-Sender: <xms:-rauao4lVNwNJfYCW_uP-vocWLYXA57nbVKefMKFSueq83qGmQNR0g>
-    <xme:-rauaktlCAjPoyAVKnoGlmCs-uiF8aJELr9aOxjX_GfQZ0u0oAvLRmMqOMEtIsfjr
-    I6OklI6iYn2IlD3A2gCrUwiQ2TN2N5EtY9AsFQS7-M5cvesT_tPGIK1>
-X-ME-Proxy-Cause: dmFkZTEthDnEnTNzGgkWQatgFds47X3LBSfUEYm0c0ZV4go8jNCGUPTrclDhUI/156RFd1
-    /El8fx5I9rXFPLoY0rOdO+CyvUB20WNDyuUvNd2rs4whvxrwYkFwqFWAmZgOmYRfacooGf
-    Hsno+CrK28XrP4pQiCXO6I6fHLBpX/OBZF+5vqlcEnKmpro4D07Z2TnxgKtKoOSx/EeJDk
-    Glh7d3bJXB4TtCB4mrfUOOjA1WR4nLQRvqMBgn54Es+OSfZ189mocfqS/A9z+Kd5oWwiwW
-    86mNzGJRzE9jVo6E5PFLeFEEOUwbtSi/ySCoXWBN2XGCZ3xIfVvCq4ajWkUJmBxFEmQimT
-    yC+8CFFp++nh1Gpgkl715haFfzOTVJ/BzvU8Gx+DnRZCcTYqkgydL48eoVhKA/T5FilLjA
-    Dlt7oirURHzjF0M82ZLTxtGLHyauKFB/8HnR8JfpLOvtcGwV5uM34/lP0Sq+0vVf69FBq+
-    maWUY544pdxmFhCrzgofqT+an5vcltd5DUBUZMUVergbT/Ys4m587z0p2E4/sMF0MPt8Za
-    GU8LWqsNyXiXI/Ds6McbcCRBFCGuIEnCV9pp+L3pjJJPEXC7iiQJrtRFC+udc9dhm+nkQa
-    zbeHlIr8F7p0/KKumF2T33Ufu5AYehf5+PnQLasaD8Sbf+3/hPH8b3AkzhXA
-X-ME-Proxy: <xmx:-rauakSPik5hohjS6WVR9oHq5r_BBrZPo3dvSwBB-finccobpzOMRQ>
-    <xmx:-rauamrvN3Uo0LBKIxAWvTdijVNQPYe3GQ23koadj-FULtE5n7XeJg>
-    <xmx:-rauaqZ07v50s4_DfQGFKTF3emwXKCRee_eK2NpO97SdwAHO-gFQiw>
-    <xmx:-rauapQdYCHkzEQghnYFCbsUHPZJVlE3gM29Y4e4-3NHaZQmIXRwqQ>
-    <xmx:-rauagd3AzYaAnJtbeI88yDbi6C35PSvLiLIFpVbc0bNx1vNO-i5QQpW>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1A66E780070; Sat, 19 Sep 2026 12:23:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YU/fQkKx"
+Received: by mail-ed2-f7.google.com with SMTP id 4fb4d7f45d1cf-6aa70a9f847so110804a12.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:31:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789835507; cv=none;
+        d=google.com; s=arc-20260327;
+        b=O4kKcxeMpBJ14pB73+6cHiqEUUp6mdDXQYBiq6C7fcDOUxmHl44dAEjG+K3AHDleF/
+         QjusR8STejQr1KKKz2j4GgVRKckUZuSpp+o3RBT+RW4X6NHUQHT++KBsey+wlC4yjv6i
+         esKxk6k34xXXBZCWDX9UVt4klwm1h6nzp/oJQsihdSLO7W4iqwLizTqrlpb2a/j+u1fk
+         wtrpScQ7GhI5SY2cj8p/3qbifuzTbuYELeA3k7ChKkiSz+y1ZtGNZuzgzUKCe2SMdqSK
+         gyAS87gbOZGGD2ahxYzFAr0UJYgl7lU9RkAD8rGVO1xvNuP/RjSu66L2EvjGPatExzoJ
+         yUbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FoBb+MCNrssOL4O5BLzYqYW9vzpXkaseLuESacaKWDE=;
+        fh=Ho+hiAQF0PB9zKGOMudjIZ0FEB+kxYmDuP/B6Rn/x/s=;
+        b=RAa3BGLpQnzZw+YWOmAwUC5MF7wgg6B8jinq1uh7DCpzNV5qy292dyfwboGjnxsPGw
+         uzDARy4p8GperifQU2P1WLGl0Kv8vddnuFn8SDc+Zlky4ppz4IAhDw2OckYVNKtG1VAB
+         A3t3e7cuSzrYP7O0SEfJthH21p33O7WjdFC5yCogpvc7MVY2JqXF7BmsYilFUzC7HM6n
+         9wcGX/bZ1JpzkDOFAGH1XHezmc2KbqeJX7+Wxcry7BDUefnCF6vyIdsP7yXZuPqcqpcs
+         dg6uvockd0NdunKvSr8nehPUZBxdvHUAULkeG+DgfzPOkpAzCkug7zCkKp/E/AETUZe+
+         3H2A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789835507; x=1790440307; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FoBb+MCNrssOL4O5BLzYqYW9vzpXkaseLuESacaKWDE=;
+        b=YU/fQkKxZBFfeuL0PGdGq3LjQ+oGDTtEzHOZ+0rIHnMzsi3vSc+JT71del9bTYy/rz
+         LJgUNA+YIQilqfvSwJ6pMO+lgpF2PF3ATJkf94+9Tq2yPN/q+dJRpbxW/ofuRWocity3
+         8bRmBK0OTDng+YWqpxdHepX/eWrG4XA9YlfRQiuxuwJiHcGujv5pwoaORG8QKcn2Xfqm
+         BMMJwGKf1UO/pyNN+Y1iDoJj0bA0pXTKS2Z6bw4XmTKruwb6CXNMhdO5vSfZzU3ZDKSa
+         inIvUdTWW6VjOLu2LwdFeatX90srS/r6fpmUiV0LaDtpqlIIwp4W+S2ghJih+HMd44j6
+         0rCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789835507; x=1790440307;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FoBb+MCNrssOL4O5BLzYqYW9vzpXkaseLuESacaKWDE=;
+        b=cAFZnCmY9PvFtHy5maCYLWP08xbhqApQ99FiPrC98K/R1mF75LdkQ8tpmtoHah69Us
+         1fm5sE8pCHIZEBB1DkaG1qYLfn3ficR9NeXwUlyoMMRL5t0jIvRn0eIB3Fx4fI4SkiuU
+         X85XrSwWhD4ndt47DhCmDUw+LBOyIgDK6rMirmY/CP6KioyF2Lysa8fZjudIUeQJs97D
+         uqTRQq1kHCSMKqMtEQ6Djd4IeyFWAYPqW444OgVEo/F6nkw5h9EBqPHp38mMN+GBSo8T
+         vGqYF6Kf7xAqZp7skaQqGbuLjO7F9q/Crakqmm4t+7JYBEXlc6W8RbnNDg/3WJiBKIW9
+         /YxA==
+X-Forwarded-Encrypted: i=1; AKwUvBw8SNeNqCATn2R2Rv9yp8LFNSRPdfX+78N9zP+4WdPlMtmDJIMP5v9jumRSMfDGZCHhfRne2rI=@vger.kernel.org
+X-Gm-Message-State: AFuF++kurXWUW3VTR8Jzq7u6cD2RnCmON6dmmZK7xAly7ORT4rpxP4jL
+	dtVb7xCL8rwt5CQ7l3pHo1Ib6rcdaX2Pum9D8j2HfkkAocF6Df8sNj2Rqt8pmo2kZpgKJnEvTts
+	q3XuzeHXKzQT7FeFB5PzUmqE09pk9hSY=
+X-Gm-Gg: AYBFou08ItIJZV+YE0v/Wpt2erQ3z5gSyvIBY9sgFV0/7ASzJlMtBjN/sUpyXbNbdyv
+	rtSwDr0QBPJDmTwPYoQfTH+ZIzpOVsrVXaeNDDPvumPWdBaCxq9xHB6Znm3ehQmjfsWXHoyx2Ig
+	Ty2k1I7KIRdKoPDCFFgnpNnC+I7qjVm1FAL8uonokDuo8/ssjvNQqKGwlnTMAovQjtgmY5JGGz8
+	Q7QP1tc4f4+F80zoRhYeLKYdaTZ6JyWsZUQi6UN5/1DpVrw4RSCMVEs+o46jEBqx3iEn1q4OAnj
+	/FS4RlVGn3rmobJXCf3bZNU8zWhfQZCS4+FxNF0IAeBtptEq+3JfX1XEuA==
+X-Received: by 2002:a17:906:2099:b0:c29:c575:de84 with SMTP id
+ a640c23a62f3a-c2a164422b2mr337838566b.8.1789835507327; Sat, 19 Sep 2026
+ 09:31:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Ak1fuKNIJ_kR
-Date: Sat, 19 Sep 2026 12:22:53 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Hannes Reinecke" <hare@suse.de>
-Cc: "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>,
- "Randy Dunlap" <rdunlap@infradead.org>,
- "Christian Brauner" <brauner@kernel.org>,
- "David Howells" <dhowells@redhat.com>, "Sagi Grimberg" <sagi@grimberg.me>,
- linux-nfs@vger.kernel.org, keyrings@vger.kernel.org,
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org
-Message-Id: <ebaeb3c9-839c-4ad7-8573-baa68e8c64d0@slotpi15m67>
-In-Reply-To: <bbc4ff6f-aa38-4862-96fe-518c3b4df4d6@suse.de>
-References: <20260918-nfs-mtls-identity-v1-0-197e568d78a7@kernel.org>
- <20260918-nfs-mtls-identity-v1-2-197e568d78a7@kernel.org>
- <bbc4ff6f-aa38-4862-96fe-518c3b4df4d6@suse.de>
-Subject: Re: [PATCH RFC 2/5] NFS: allocate the .nfs keyring per network namespace
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com> <6aabb56e-406f-4d13-9fd8-54822202039f@bootlin.com>
+In-Reply-To: <6aabb56e-406f-4d13-9fd8-54822202039f@bootlin.com>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Sun, 20 Sep 2026 00:31:35 +0800
+X-Gm-Features: AcwNN1VbQyHS1-cJU3SdJ4oOQkYk_cjiBlklhRFTetXHOgzYOSwzbp6stXuvGvc
+Message-ID: <CALj3r0g2FtxRRUDnG80SZJGSbpyBekTkd0R1ek-z-1h-d830ig@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 04/12] net: pcs: add NXP SerDes XPCS shared core
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: jan.petrous@oss.nxp.com, 
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
+	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Bogdan Hamciuc <bogdan.hamciuc@nxp.com>, 
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-pci@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	Vincent Guittot <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/18/26 10:44 AM, Hannes Reinecke wrote:
-> Thing is, when running within a container (eg a docker one) access
-> access to /proc/keys might be restricted, and from what I've
-> gathered each container gets its own, _empty_ keyring.
-> (certainly an empty session keyring ...).
+Maxime Chevallier <maxime.chevallier@bootlin.com> =E4=BA=8E2026=E5=B9=B49=
+=E6=9C=8819=E6=97=A5=E5=91=A8=E5=85=AD 23:31=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi Jan,
+>
+> On 9/19/26 08:54, Jan Petrous via B4 Relay wrote:
+> > From: Clark Wang <xiaoning.wang@nxp.com>
+> >
+> > The SerDes subsystems found on NXP S32G and i.MX SoCs integrate a
+> > Synopsys DesignWare Ethernet XPCS and an Ethernet PHY (PMA) with an
+> > identical register layout. Only the register transport differs: indirec=
+t
+> > memory mapped access on S32G, Clause 45 MDIO on i.MX.
+> >
+> > Add a transport agnostic phylink PCS core which operates on regmaps
+> > provided by the platform glue. It implements the phylink PCS operations=
+,
+> > the Clause 37 SGMII / 2500BASE-X / USXGMII / 10GBASE-R configuration an=
+d
+> > link state handling, soft reset and polling helpers, and the common
+> > feature sets. The platform specific register sequences, compatibility
+> > tables and quirks are supplied through a per revision descriptor by the
+> > platform drivers selecting this core.
+> >
+> > The register sequences and the feature lists are derived from the
+> > Synopsys pcs-xpcs driver, so its copyright is retained. A separate driv=
+er
+> > is needed because struct dw_xpcs is built around an mdio_device and own=
+s
+> > the transport, the reset and the identification of a standalone PCS,
+> > while here the PMA can be shared with a PCIe controller, the bring-up i=
+s
+> > sequenced across both XPCS instances by the SerDes PHY driver, and the
+> > transport is not always MDIO.
+>
+> Is there a way to avoid code duplication by wrapping the accesses into
+> a mii_bus ?
+>
+> This is what the Rockchip submission does :
+>
+> https://lore.kernel.org/r/20260919125119.2107089-8-coiaprant@gmail.com
+>
+> Maxime
 
-IMO, neither one affects patch 5. The key type has its own request_key
-handler, so construct_key() calls it in the requesting task's context.
-There's no upcall, no /proc/keys. It reports the .nfs keyring of
-current->nsproxy->net_ns, and KEY_TYPE_NET_DOMAIN keeps a key
-instantiated in one netns from answering another. An empty session
-keyring is a fine destination, and with no session keyring at all
-look_up_user_keyrings() creates a per-user-namespace one on demand.
+Hi Maxime,
 
-What does break is add_key() into the .nfs keyring from a container
-with its own user namespace. Patch 2 allocates it owned by global
-root with no OTH permissions, so a root mapped to a non-zero kuid
-gets EACCES. A netns-only container (Docker's default) works end to
-end. NFS is not FS_USERNS_MOUNT either, so whoever mounts on behalf
-of a user-ns container can provision the keyring too. If a
-netns-owned keyring is wanted anyway, patch 2 can allocate it with
-net->user_ns->owner instead of GLOBAL_ROOT_UID. I'd like the
-keyrings folks to weigh in on that, please.
+The Rockchip approach (wrapping MMIO into a virtual mii_bus and reusing
+pcs-xpcs.c) is indeed relevant here. Alex Elder's pcs-xpcs-regmap does
+exactly that for the TC956x: it registers the XPCS through a regmap and
+creates the virtual MDIO bus internally, with both direct and indirect
+(page viewport) access modes.
 
-Regarding the idea of letting each container create its own keyring,
-the kernel still has to learn which keyring to link into tlshd for a
-handshake, and the serial number in the handshake request already
-carries that. The per-namespace allocation decides only who creates
-the keyring and who owns it, not how it is named on the wire.
+https://lore.kernel.org/all/20260605010022.968612-4-elder@riscstar.com/
 
+The indirect mode is very close to what S32G needs. For i.MX the C45
+MDIO transport is different, but the bus wrapper could still be shared.
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+That said, I think there is a broader gap in pcs-xpcs.c: it hardcodes
+behaviors that vary between integrations. RK3568 cannot use out-of-band
+SGMII (fixed 125 MHz MAC clock), so its in-band caps should be
+LINK_INBAND_ENABLE only. Today that means editing xpcs_inband_caps() or
+duplicating it. NXP is hitting the same kind of problem with soft reset,
+poll and EEE quirks.
+
+A callback in dw_xpcs would let platform glues express those differences wi=
+thout
+copying the register sequences. That's the same pattern stmmac uses with
+plat->pcs_init/pcs_exit.
+
+Once that callback mechanism lands, I'll send a separate patch to wire
+it up in pcs-xpcs-rk.c. Since the Rockchip driver is not even merged
+yet, there is nothing to change there for now.
+
+Coia
