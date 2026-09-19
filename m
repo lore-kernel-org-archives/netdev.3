@@ -1,449 +1,303 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7CF47CA86
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 11:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C322282F0C;
+	Sat, 19 Sep 2026 12:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789816502; cv=none; b=FZuRsdQfy7/kgyZ3wL1xlogwdEqta4Ct6auXSUByfG6QtwWvBkdeHR4GB79Leyc7tkAGehJZFBF5uGHIsv+l7D1JVjJGUJJCKuVMmJuQrhfR0Luif4cKwJOgfwMfZfkZ5/heDWBxTctd0Srt3Js5mK98Ive8MtPUAJXLvsPqtAM=
+	t=1789819509; cv=none; b=juG88jOmvZIXorvsLUrMA9BtNhQCk8tgfO3pL3FVeoF5bl5ep0UL35dmskWpe24Ixgp7TH4Nvoznt/t/g/8hBMxceH5BPDzsJZOYcTn0MdN95SMGvRx5xiBdmSST7BuklNZfjTn5eGkGVHdjwRdUNoGSfmMuzf6vQWigajSOhNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789816502; c=relaxed/simple;
-	bh=dDiCOwJir3Eow7H+h3CMZcFK5UZECcB7tDkkWLhriEU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIR7QrNph4lpjtuKYHYukUWKzmWMaJiuIY0L/z3PXzGFdnqUdI69FQ+fbAMz2Xs1u4YYEAUImdh3YJmYQOYdnxOSkhUt8r70YfMGe+oZ5ZYBevYQWk5oE14usLMInF+DoGdbETGLrxZoWbQs3EfyrCJkMax1CatOSeilqT/1qdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=CcQAWZ5q; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1789819509; c=relaxed/simple;
+	bh=qT0uHq50xuDhbsDO5hHlQBOwDv2Zr0eCRbEkzMG7I3A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rxk3rLX8x8njHUjzAfCqwdQr0Icovbg83fCJvHgYgmVlN+FNGPdAofmt2CCA2qh8w89yIe7fSOq4XzQrLHM7rakxWQCN8JoGRTBMmmXRHUaIck/Wt+z4KUXF8LakFYpwDMvM5V6NsFJaX4R2AiHhXv5BkIIBveMw87fCYih0i3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i6MQZccq; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="CcQAWZ5q"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398b3b189e0so1386959a91.2
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 04:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789816500; x=1790421300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Rc6fcGKG41jrJsPUXiJFHSOZ1LLRuaRlU1RnZpipMiU=;
-        b=CcQAWZ5q+k45DDZiJLKdclVYXOc+6E6Cd4nX+bfBmyixaqSO8SsrWxGMsNE/ikI4re
-         anMBx30NPgExDMaLxVTHttDEMROp6cxE/AH6MB51TOfeZogiw8Txi+vJ8PHBdWgTDc3E
-         iRntSgh6PafZRHPpv7xlNbC5B4LbkQr66MWuTck8TkocUEPfaxtavBIN48V24OQrVhIl
-         DcmC6gVsW4QOQyiivOsZTMJMJHKU72fD1uVALG1XFxP1iTJXqVEsOPe6PEkYD9Yw7uil
-         wabf0oS6keCG5Bpq6fK6AKX0CDch0locRVkMrr9ji22ocvSxNR/NqofcX4gl4RU84HD4
-         opGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789816500; x=1790421300;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Rc6fcGKG41jrJsPUXiJFHSOZ1LLRuaRlU1RnZpipMiU=;
-        b=UYwmWx6XjaFKohYfS4PW+3vT3QCGeW+/k2oNqlrq1US4rjPhAdXRx+6bLyBm7/8NBL
-         X6W1MvkPAcD0lehP8AvFRnWPwduYb4eLqy9UUjTeHEgcXXILMuhv4Gghuvs4CeCF9+Rs
-         4XT4gJet9QkPNVjCcPGpcNErkpBcdIP7MG+4U7yZQIrkn/Mdlwzo1AW9ZCSTbGPMGGyn
-         D6+c/nfNvL7Q85cuwBNJ/5dVF/sMoN4qNgV7y6Q8SA51a/SVY9tipt5T/5rbW8s0DApa
-         +mWl5bK2/yiYwcdcWpN6mNCsg9kEWasGr7VWDcSNdjSCwi8cO0jQ3x7FQ9fblo9nz8wG
-         GBag==
-X-Gm-Message-State: AFuF++mL4O7yhbDhhRyHHH7Tvqsavk8TcpcuNHOnK4sitGw2A4UO99gr
-	ZTQ8N/pzmG4YhqbhO2ctFVP0povcR8ONSWyZaULSzQcMOFv5W+dsdYjl49ZDvBWFJHeIG4phH2C
-	WanGA8lIR
-X-Gm-Gg: AYBFou1Ur5f7jKZxT8wOGxhgJc+Mootd0I/b0AaZ70JqsXOKXzozbW0VS8Zvgf0UoS6
-	0v3OvtEPq+7Kfiko/HE70xt4SyFsmowVuB7rKyTvZSJj25TeUHhRiy6sL+tfpQmYwKfLbf5PwLd
-	+2YGNPTkvOfyu2z8Zv8/b3vOEIEPjFzXmCy4XV+vgKA+p33nl5avWO7wyzuv//XawSF3hDq35aG
-	Ak0+wnjIzo8vGr9NsnrVHDh9XEU3X0eypkSSfSteqYZ31QzrvzbQVEb0x3t99xfLJDzmTWGy/OC
-	rXT8oMJNG+swo/+rtlZetH3xVV2fdd2tmhgRoL9pOas2eLZEsnqcL0D7L8WGStLYH7i9g6g6cGS
-	xP7/BVOMOBAwQT4hKjVt+SdPm4QAaOENRw9d77P4LwMrbtCsUbQHYlBgbzipjC9zGFtXXsMInJO
-	+GSpGn/LOWpVSZ01pq3rwTTIdgEVBYvgn3jyzciuYMDI7JS/GNsmEVRutDHbMg9514jfwrUBZWH
-	JiIwkV73XU+HUcNNEu+24pmOlTxWQ==
-X-Received: by 2002:a17:90a:da8d:b0:39e:6a81:5a92 with SMTP id 98e67ed59e1d1-39e6a815df2mr3737041a91.38.1789816500229;
-        Sat, 19 Sep 2026 04:15:00 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0290e844esm531163a91.2.2026.09.19.04.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 04:14:59 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: zihanx@nebusec.ai,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	willemb@google.com,
-	kuniyu@google.com,
-	kees@kernel.org,
-	richardbgobert@gmail.com,
-	alice.kernel@fastmail.im,
-	gal@nvidia.com,
-	jibin.zhang@mediatek.com,
-	luoxuanqiang@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH net v3 1/1] net: gso: limit recursive IP-in-IP segmentation
-Date: Sat, 19 Sep 2026 11:14:40 +0000
-Message-ID: <43510074c063f57e5738ecc55057e7fbbcdb1fbc.1789802623.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789802623.git.zihanx@nebusec.ai>
-References: <cover.1789802623.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i6MQZccq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 55BB6C5145A;
+	Sat, 19 Sep 2026 12:05:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DB431606CA;
+	Sat, 19 Sep 2026 12:05:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1195E1032802B;
+	Sat, 19 Sep 2026 14:04:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789819500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=SFMPcolUh4zpvmGrKEAW5fnqAUuQ8Gy43QODCsF/j7o=;
+	b=i6MQZccqtvleTOJOc2xjeW74ER3MJIHhkShL13MtzMohMMbitlY+MYOeRapQZv1FRiszrs
+	zsf1Pv/lOh5OT6jSrSMJ4+EokPhsjhR2nNW0DzbFOFsB7Cz6h7q8KceiPVEr8c/hVjzTQE
+	nqWaJ3jUnxndGN+Av5Y/zTKlPIozQ9H0inoQiaosndiodGrV9KAbI4uoJd7zMc8ncYo6Zk
+	P6PzdTlsRqie0aGyDM4ExXIMsVaonLvOTTS6NvT3XEezxcxgwTD/wUnrR/f5DLEmh6snZn
+	cRuCQZNwoa0sUcWwmZASNz92J0cRcRQihCO++rAu2wDZgfruuPhVucTt1phM4g==
+Message-ID: <7b0a957d-f770-4bad-b3b9-aeb7a61bfb49@bootlin.com>
+Date: Sat, 19 Sep 2026 14:04:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 07/12] net: stmmac: dwmac-s32: Add SGMII support
+To: jan.petrous@oss.nxp.com,
+ Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+ NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Bogdan Hamciuc
+ <bogdan.hamciuc@nxp.com>, Ionut Vicovan <ionut.vicovan@nxp.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Clark Wang <xiaoning.wang@nxp.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ imx@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Vincent Guittot <vincent.guittot@linaro.org>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-7-9d68868c1e89@oss.nxp.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260919-s32g_serdes-v3-7-9d68868c1e89@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-IPIP GSO/TSO support makes IP-in-IP GSO dispatch re-enter
-inet_gso_segment() or ipv6_gso_segment() for every nested IP header. The
-only state that tracks this nesting is encap_level, which records header
-bytes and has no recursion bound. A sufficiently deep chain can consume the
-kernel stack before a transport GSO callback is reached.
+Hi Jan,
 
-The unbounded callback nesting was introduced when inet_gso_segment() was
-made stackable by "ipv4: gso: make inet_gso_segment() stackable". GRE GSO
-support predated that change, and IP-in-IP GSO/TSO support later made the
-affected path reachable.
+On 9/19/26 08:54, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> 
+> Wire the NXP S32G SerDes XPCS PCS into the dwmac-s32 glue layer so the
+> MAC can run SGMII over a SerDes lane.
+> 
+> Changes:
+> - s32_gmac_write_phy_intf_select: replace the hard-coded RGMII selector
+>   with a switch on phy_interface so SGMII (0x01), RGMII, RMII and MII
+>   all programme the SoC control register correctly.
+> - Add s32_gmac_pcs_init: obtain the phylink_pcs handle from the SerDes
+>   subsystem via s32g_serdes_pcs_create(), keyed by the standard
+>   pcs-handle property on the GMAC node pointing at the SerDes XPCS lane
+>   child. Propagates -EPROBE_DEFER if the SerDes driver has not probed
+>   yet. There is no matching exit hook: the device link created by
+>   s32g_serdes_pcs_create() covers the lifetime.
+> - Add s32_gmac_select_pcs: return the stored PCS handle when the
+>   negotiated interface is SGMII.
+> - Hook pcs_init and select_pcs into plat_stmmacenet_data.
+> 
+> Note that installing a select_pcs callback suppresses the core's
+> integrated_pcs fallback, because stmmac treats a NULL return from
+> select_pcs as "no PCS" rather than "fall through". This matches what
+> dwmac-rzn1 and dwmac-intel already do.
+> 
+> Both negotiation modes are supported by the PCS. The board device
+> trees added later in this series describe the MAC-side link as fixed,
+> so they exercise the out-of-band path.
+> 
+> The XPCS header guards its s32g_serdes_pcs_create() declaration with
+> IS_REACHABLE(CONFIG_PHY_S32G_SERDES) and provides a static-inline stub
+> returning -ENODEV otherwise. IS_REACHABLE is false both when the SerDes
+> driver is disabled and in the built-in-consumer / modular-provider case
+> (DWMAC_S32=y with PHY_S32G_SERDES=m), so this driver links in all four
+> combinations of the two symbols.
+> 
+> Linking is not sufficient on its own, though. In the DWMAC_S32=y with
+> PHY_S32G_SERDES=m case the stub makes s32_gmac_pcs_init() return
+> -ENODEV, and stmmac treats a failing plat->pcs_init() as fatal, so a
+> built-in MAC would refuse to probe on any device tree describing
+> pcs-handle. Add a Kconfig dependency forbidding that combination
+> rather than letting it build into a MAC that cannot probe.
+> 
+> Tested on an S32G3-VNP-RDB3 board: GMAC0 links at 1G over SGMII and
+> passes traffic, both in SerDes mode 1 (alongside two active PCIe root
+> complexes) and in mode 3.
+> 
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/Kconfig     |  6 ++
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 74 ++++++++++++++++++++++++-
+>  2 files changed, 78 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> index e3dd5adda5ac..1443ff4149b4 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> @@ -192,6 +192,12 @@ config DWMAC_S32
+>  	tristate "NXP S32G/S32R GMAC support"
+>  	default ARCH_S32
+>  	depends on OF && (ARCH_S32 || COMPILE_TEST)
+> +	# SGMII needs the PCS from the SerDes driver. The header falls back
+> +	# to a stub returning -ENODEV when that driver is not reachable, and
+> +	# stmmac makes a failing plat->pcs_init() fatal, so a built-in MAC
+> +	# with a modular SerDes would refuse to probe on any DT describing
+> +	# pcs-handle. Forbid that combination instead.
+> +	depends on PHY_S32G_SERDES || PHY_S32G_SERDES=n
 
-The corresponding IPv6 stackable path was introduced separately by
-"ipv6: gso: make ipv6_gso_segment() stackable". This patch uses the same
-budget for IPv6, but the Fixes tag covers the IPv4 root cause only.
+select PHY_S32G_SERDES ? This is what other glues that require PCS do,
+or there's a catch that prevents using it ?
 
-Limit the cumulative header budget for a GSO operation to GSO_MAX_HEADER
-(256 bytes). Keep the consumed budget in skb_gso_cb and charge each header
-before dispatching the next GSO callback. The callback wrapper checks the
-same state, so direct IP handler re-entry and nested tunnel dispatch share
-one monotonic budget. GRE and UDP context resets cannot restart it before
-an inner GSO callback; other GSO tunnel and extension handlers charge their
-stripped headers before inner dispatch as well.
+>  	help
+>  	  Support for ethernet controller on NXP S32CC SOCs.
+>  
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> index 024d8e10e918..a3a56b21181a 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> @@ -16,12 +16,14 @@
+>  #include <linux/of_mdio.h>
+>  #include <linux/of_address.h>
+>  #include <linux/phy.h>
+> +#include <linux/phy/nxp-s32g-serdes.h>
+>  #include <linux/phylink.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/regmap.h>
+>  #include <linux/stmmac.h>
+>  
+>  #include "stmmac_platform.h"
+> +#include "stmmac.h"
+>  
+>  #define GMAC_INTF_RATE_125M	125000000	/* 125MHz */
+>  
+> @@ -40,23 +42,89 @@ struct s32_priv_data {
+>  	phy_interface_t *intf_mode;
+>  	struct clk *tx_clk;
+>  	struct clk *rx_clk;
+> +	/* SGMII PCS provided by the SerDes subsystem (NULL if not SGMII) */
+> +	struct phylink_pcs *pcs;
 
-GSO_MAX_HEADER is a practical header budget, not a measured stack-overflow
-threshold or an architecture-independent stack-safety proof. With a zero
-initial offset, 12 minimum-sized IPv4 headers consume 240 bytes; the next
-header is rejected. IPv6 base headers, extension headers, and tunnel
-headers use the budget faster. Validation of the preceding
-implementation on x86_64 used a 16 KiB task stack and completed without a
-stack-guard fault, but this does not establish a uniform margin for
-architectures with smaller stacks.
+There's already a phylink_pcs pointer in priv->hw, you shouldn't have to
+store your own here.
 
-Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+>  };
+>  
+>  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+>  {
+> +	u32 intf_sel;
+>  	int ret = 0;
+>  
+> +	switch (*gmac->intf_mode) {
+> +	case PHY_INTERFACE_MODE_SGMII:
+> +		intf_sel = S32_PHY_INTF_SEL_SGMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RGMII:
+> +	case PHY_INTERFACE_MODE_RGMII_ID:
+> +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> +		intf_sel = S32_PHY_INTF_SEL_RGMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RMII:
+> +		intf_sel = S32_PHY_INTF_SEL_RMII;
+> +		break;
+> +	case PHY_INTERFACE_MODE_MII:
+> +		intf_sel = S32_PHY_INTF_SEL_MII;
+> +		break;
+> +	default:
+> +		dev_err(gmac->dev, "Unsupported phy interface mode: %s\n",
+> +			phy_modes(*gmac->intf_mode));
+> +		return -EINVAL;
+> +	}
 
----
-changes in v3:
-  - Treat an exhausted 256-byte budget as a callback-entry failure, including
-    the zero-length check used by the common callback wrapper and IP handlers.
-  - v2 Link: https://lore.kernel.org/all/cover.1789618203.git.zihanx@nebusec.ai/
-changes in v2:
-  - Replace the callback counter with a cumulative 256-byte header budget
-    carried in skb_gso_cb.
-  - Apply the budget at common callback entry and across IP, GRE, UDP, MPLS,
-    NSH, ESP, and IPv6 extension dispatch, including GRE/UDP context resets.
-  - Rebase the UDP hunk onto selected revision c9151088f167 and rerun both
-    IPv4 PoCs; use the decoded crash evidence from unpatched 88c17de85ddb.
-  - v1 Link: https://lore.kernel.org/all/cover.1789302084.git.zihanx@nebusec.ai/
- include/net/gso.h       | 29 +++++++++++++++++++++++++++++
- net/core/gso.c          |  7 +++++--
- net/ipv4/af_inet.c      |  7 ++++++-
- net/ipv4/esp4_offload.c |  9 +++++++--
- net/ipv4/gre_offload.c  |  2 ++
- net/ipv4/udp_offload.c  |  4 +++-
- net/ipv6/esp6_offload.c |  9 +++++++--
- net/ipv6/ip6_offload.c  | 11 ++++++++++-
- net/mpls/mpls_gso.c     |  2 ++
- net/nsh/nsh.c           |  2 ++
- 10 files changed, 73 insertions(+), 9 deletions(-)
+We go from supporting RGMII only to RGMII + RMII + MII + SGMII.
 
-diff --git a/include/net/gso.h b/include/net/gso.h
-index 2997544..bd3b3eb 100644
---- a/include/net/gso.h
-+++ b/include/net/gso.h
-@@ -19,10 +19,39 @@ struct skb_gso_cb {
- 	int	encap_level;
- 	__wsum	csum;
- 	__u16	csum_start;
-+	/* Bytes charged to the current GSO callback chain. */
-+	u16	gso_header_len;
- };
- #define SKB_GSO_CB_OFFSET	32
- #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
- 
-+#define GSO_MAX_HEADER	256
-+
-+static inline bool gso_header_len_add(struct sk_buff *skb,
-+					       unsigned int len)
-+{
-+	struct skb_gso_cb *cb = SKB_GSO_CB(skb);
-+
-+	if (unlikely(cb->gso_header_len >= GSO_MAX_HEADER ||
-+		     len > GSO_MAX_HEADER - cb->gso_header_len))
-+		return true;
-+
-+	cb->gso_header_len += len;
-+	return false;
-+}
-+
-+static inline struct sk_buff *
-+skb_gso_segment_cb(struct sk_buff *skb,
-+			struct sk_buff *(*gso_segment)(struct sk_buff *,
-+						netdev_features_t),
-+			netdev_features_t features)
-+{
-+	if (unlikely(gso_header_len_add(skb, 0)))
-+		return ERR_PTR(-EINVAL);
-+
-+	return gso_segment(skb, features);
-+}
-+
- static inline int skb_tnl_header_len(const struct sk_buff *inner_skb)
- {
- 	return (skb_mac_header(inner_skb) - inner_skb->head) -
-diff --git a/net/core/gso.c b/net/core/gso.c
-index bcd1563..4b6cba2 100644
---- a/net/core/gso.c
-+++ b/net/core/gso.c
-@@ -19,7 +19,8 @@ struct sk_buff *skb_eth_gso_segment(struct sk_buff *skb,
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(ptype, &net_hotdata.offload_base, list) {
- 		if (ptype->type == type && ptype->callbacks.gso_segment) {
--			segs = ptype->callbacks.gso_segment(skb, features);
-+			segs = skb_gso_segment_cb(skb, ptype->callbacks.gso_segment,
-+						    features);
- 			break;
- 		}
- 	}
-@@ -50,7 +51,8 @@ struct sk_buff *skb_mac_gso_segment(struct sk_buff *skb,
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(ptype, &net_hotdata.offload_base, list) {
- 		if (ptype->type == type && ptype->callbacks.gso_segment) {
--			segs = ptype->callbacks.gso_segment(skb, features);
-+			segs = skb_gso_segment_cb(skb, ptype->callbacks.gso_segment,
-+						    features);
- 			break;
- 		}
- 	}
-@@ -117,6 +119,7 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
- 
- 	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
- 	SKB_GSO_CB(skb)->encap_level = 0;
-+	SKB_GSO_CB(skb)->gso_header_len = 0;
- 
- 	skb_reset_mac_header(skb);
- 	skb_reset_mac_len(skb);
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 32d006c..1a4aa95 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1375,6 +1375,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
- 	int id;
- 
- 	skb_reset_network_header(skb);
-+	if (unlikely(gso_header_len_add(skb, 0)))
-+		goto out;
- 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
- 	if (unlikely(!pskb_may_pull(skb, sizeof(*iph))))
- 		goto out;
-@@ -1390,6 +1392,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
- 	/* Warning: after this point, iph might be no longer valid */
- 	if (unlikely(!pskb_may_pull(skb, ihl)))
- 		goto out;
-+	if (unlikely(gso_header_len_add(skb, ihl)))
-+		goto out;
- 	__skb_pull(skb, ihl);
- 
- 	encap = SKB_GSO_CB(skb)->encap_level > 0;
-@@ -1408,7 +1412,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
- 
- 	ops = rcu_dereference(inet_offloads[proto]);
- 	if (likely(ops && ops->callbacks.gso_segment)) {
--		segs = ops->callbacks.gso_segment(skb, features);
-+		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
-+					   features);
- 		if (!segs)
- 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
- 	}
-diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
-index abd7716..11311c7 100644
---- a/net/ipv4/esp4_offload.c
-+++ b/net/ipv4/esp4_offload.c
-@@ -141,7 +141,8 @@ static struct sk_buff *xfrm4_transport_gso_segment(struct xfrm_state *x,
- 	skb->transport_header += x->props.header_len;
- 	ops = rcu_dereference(inet_offloads[xo->proto]);
- 	if (likely(ops && ops->callbacks.gso_segment))
--		segs = ops->callbacks.gso_segment(skb, features);
-+		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
-+					   features);
- 
- 	return segs;
- }
-@@ -182,7 +183,8 @@ static struct sk_buff *xfrm4_beet_gso_segment(struct xfrm_state *x,
- 	__skb_pull(skb, skb_transport_offset(skb));
- 	ops = rcu_dereference(inet_offloads[proto]);
- 	if (likely(ops && ops->callbacks.gso_segment))
--		segs = ops->callbacks.gso_segment(skb, features);
-+		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
-+					   features);
- 
- 	return segs;
- }
-@@ -229,6 +231,9 @@ static struct sk_buff *esp4_gso_segment(struct sk_buff *skb,
- 
- 	if (!pskb_may_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead)))
- 		return ERR_PTR(-EINVAL);
-+	if (unlikely(gso_header_len_add(skb,
-+				 sizeof(*esph) + crypto_aead_ivsize(aead))))
-+		return ERR_PTR(-EINVAL);
- 
- 	__skb_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead));
- 
-diff --git a/net/ipv4/gre_offload.c b/net/ipv4/gre_offload.c
-index 5028c72..a973b55 100644
---- a/net/ipv4/gre_offload.c
-+++ b/net/ipv4/gre_offload.c
-@@ -32,6 +32,8 @@ static struct sk_buff *gre_gso_segment(struct sk_buff *skb,
- 
- 	if (unlikely(!pskb_may_pull(skb, tnl_hlen)))
- 		goto out;
-+	if (unlikely(gso_header_len_add(skb, tnl_hlen)))
-+		goto out;
- 
- 	/* setup inner skb. */
- 	skb->encapsulation = 0;
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index cf07c3c..bcba85c 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -188,6 +188,8 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
- 
- 	if (unlikely(!pskb_may_pull(skb, tnl_hlen)))
- 		goto out;
-+	if (unlikely(gso_header_len_add(skb, tnl_hlen)))
-+		goto out;
- 
- 	uh = udp_hdr(skb);
- 
-@@ -242,7 +244,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
- 	}
- 
- 	/* segment inner packet. */
--	segs = gso_inner_segment(skb, features);
-+	segs = skb_gso_segment_cb(skb, gso_inner_segment, features);
- 	if (IS_ERR_OR_NULL(segs)) {
- 		skb_gso_error_unwind(skb, protocol, tnl_hlen, mac_offset,
- 				     mac_len);
-diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-index 2289552..ab86136 100644
---- a/net/ipv6/esp6_offload.c
-+++ b/net/ipv6/esp6_offload.c
-@@ -177,7 +177,8 @@ static struct sk_buff *xfrm6_transport_gso_segment(struct xfrm_state *x,
- 	skb->transport_header += x->props.header_len;
- 	ops = rcu_dereference(inet6_offloads[xo->proto]);
- 	if (likely(ops && ops->callbacks.gso_segment))
--		segs = ops->callbacks.gso_segment(skb, features);
-+		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
-+					   features);
- 
- 	return segs;
- }
-@@ -222,7 +223,8 @@ static struct sk_buff *xfrm6_beet_gso_segment(struct xfrm_state *x,
- 	__skb_pull(skb, skb_transport_offset(skb));
- 	ops = rcu_dereference(inet6_offloads[proto]);
- 	if (likely(ops && ops->callbacks.gso_segment))
--		segs = ops->callbacks.gso_segment(skb, features);
-+		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
-+					   features);
- 
- 	return segs;
- }
-@@ -269,6 +271,9 @@ static struct sk_buff *esp6_gso_segment(struct sk_buff *skb,
- 
- 	if (!pskb_may_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead)))
- 		return ERR_PTR(-EINVAL);
-+	if (unlikely(gso_header_len_add(skb,
-+				 sizeof(*esph) + crypto_aead_ivsize(aead))))
-+		return ERR_PTR(-EINVAL);
- 
- 	__skb_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead));
- 
-diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
-index 78f50c9..b53c542 100644
---- a/net/ipv6/ip6_offload.c
-+++ b/net/ipv6/ip6_offload.c
-@@ -79,6 +79,8 @@ static int ipv6_gso_pull_exthdrs(struct sk_buff *skb, int proto)
- 
- 		if (unlikely(!pskb_may_pull(skb, len)))
- 			break;
-+		if (unlikely(gso_header_len_add(skb, len)))
-+			return -EINVAL;
- 
- 		opth = (void *)skb->data;
- 		proto = opth->nexthdr;
-@@ -104,9 +106,13 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
- 	bool gso_partial;
- 
- 	skb_reset_network_header(skb);
-+	if (unlikely(gso_header_len_add(skb, 0)))
-+		goto out;
- 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
- 	if (unlikely(!pskb_may_pull(skb, sizeof(*ipv6h))))
- 		goto out;
-+	if (unlikely(gso_header_len_add(skb, sizeof(*ipv6h))))
-+		goto out;
- 
- 	encap = SKB_GSO_CB(skb)->encap_level > 0;
- 	if (encap)
-@@ -118,6 +124,8 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
- 	segs = ERR_PTR(-EPROTONOSUPPORT);
- 
- 	proto = ipv6_gso_pull_exthdrs(skb, ipv6h->nexthdr);
-+	if (unlikely(proto < 0))
-+		goto out;
- 
- 	if (skb->encapsulation &&
- 	    skb_shinfo(skb)->gso_type & (SKB_GSO_IPXIP4 | SKB_GSO_IPXIP6))
-@@ -132,7 +140,8 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
- 		if (!skb_reset_transport_header_careful(skb))
- 			goto out;
- 
--		segs = ops->callbacks.gso_segment(skb, features);
-+		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
-+					   features);
- 		if (!segs)
- 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
- 	}
-diff --git a/net/mpls/mpls_gso.c b/net/mpls/mpls_gso.c
-index 34ab659..a535f49 100644
---- a/net/mpls/mpls_gso.c
-+++ b/net/mpls/mpls_gso.c
-@@ -36,6 +36,8 @@ static struct sk_buff *mpls_gso_segment(struct sk_buff *skb,
- 		goto out;
- 	if (unlikely(!pskb_may_pull(skb, mpls_hlen)))
- 		goto out;
-+	if (unlikely(gso_header_len_add(skb, mpls_hlen)))
-+		goto out;
- 
- 	/* Setup inner SKB. */
- 	mpls_protocol = skb->protocol;
-diff --git a/net/nsh/nsh.c b/net/nsh/nsh.c
-index bfb7758..49d1628 100644
---- a/net/nsh/nsh.c
-+++ b/net/nsh/nsh.c
-@@ -95,6 +95,8 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
- 		goto out;
- 	if (unlikely(!pskb_may_pull(skb, nsh_len)))
- 		goto out;
-+	if (unlikely(gso_header_len_add(skb, nsh_len)))
-+		goto out;
- 
- 	proto = tun_p_to_eth_p(nsh_hdr(skb)->np);
- 	if (!proto)
--- 
-2.55.0.windows.3
+Are RMII and MII actually supported on that platform ? if so, can you split
+that into 2 commits : one for proper inft_sel support with RMII + MII added,
+the another one for SGMII ? 
+
+> +
+>  	if (gmac->ctrl_sts)
+> -		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> +		writel(intf_sel, gmac->ctrl_sts);
+>  	else
+>  		ret = regmap_write(gmac->sts_regmap, gmac->sts_offset,
+> -				   S32_PHY_INTF_SEL_RGMII);
+> +				   intf_sel);
+>  
+>  	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
+>  
+>  	return ret;
+>  }
+>  
+> +static int s32_gmac_pcs_init(struct stmmac_priv *priv)
+> +{
+> +	struct s32_priv_data *gmac = priv->plat->bsp_priv;
+> +	struct device_node *pcs_node;
+> +
+> +	/*
+> +	 * pcs-handle points at the SerDes XPCS lane child node; its
+> +	 * nxp,xpcs-instance property is what identifies the XPCS instance.
+> +	 */
+> +	pcs_node = of_parse_phandle(gmac->dev->of_node, "pcs-handle", 0);
+> +	if (!pcs_node) {
+> +		dev_dbg(gmac->dev, "no 'pcs-handle' property, SGMII PCS unavailable\n");
+> +		return 0;
+> +	}
+> +
+> +	gmac->pcs = s32g_serdes_pcs_create(gmac->dev, pcs_node);
+> +	of_node_put(pcs_node);
+> +
+> +	if (IS_ERR(gmac->pcs)) {
+> +		int err = PTR_ERR(gmac->pcs);
+> +
+> +		gmac->pcs = NULL;
+> +		/* SerDes may not be probed yet - defer probe. */
+> +		return err;
+> +	}
+> +
+> +	dev_dbg(gmac->dev, "SGMII PCS created via SerDes XPCS\n");
+> +	return 0;
+> +}
+> +
+> +static struct phylink_pcs *s32_gmac_select_pcs(struct stmmac_priv *priv,
+> +					       phy_interface_t interface)
+> +{
+> +	struct s32_priv_data *gmac = priv->plat->bsp_priv;
+> +
+> +	if (interface == PHY_INTERFACE_MODE_SGMII && gmac->pcs)
+> +		return gmac->pcs;
+
+No need for the && gmac->pcs here, if it's NULL we return NULL anyway so you
+can return priv->hw->phylink_pcs
+
+> +
+> +	return NULL;
+> +}
+> +
+>  static int s32_gmac_init(struct device *dev, void *priv)
+>  {
+>  	struct s32_priv_data *gmac = priv;
+> @@ -204,6 +272,8 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+>  
+>  	plat->init = s32_gmac_init;
+>  	plat->exit = s32_gmac_exit;
+> +	plat->pcs_init = s32_gmac_pcs_init;
+> +	plat->select_pcs = s32_gmac_select_pcs;
+>  
+>  	plat->clk_tx_i = gmac->tx_clk;
+>  	plat->set_clk_tx_rate = stmmac_set_clk_tx_rate;
+> 
+
+Thanks,
+
+Maxime
