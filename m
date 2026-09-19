@@ -1,117 +1,127 @@
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0AF2C15A0
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 17:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C71C332EBC
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 18:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789839756; cv=none; b=M931mw193wexSj9B8Fn6W8ECTWZj+OOToEU7Sa6UyM8guPeSL6JOaTzI0CQgnmawFmmV0+sFYpcAgCxRgLNRlsT7DsTCO2vry9MOj3DUUmBkBm667lnaz7gzko/8n5QK+HlerCh00lSr/+ri/AEd8oY24OBlm4PzdABarSdbsgE=
+	t=1789841274; cv=none; b=X1l1Hf4ZhtBatN20HL0DQKl4yMDLGExzcNYzV8pVIo+leN22/hf/EAKtnmCvn0FFgS6CEtrApIMS+msNe5UC1mGbgWj3hOIFkxO0TyaRHCdrsVVR8ombcOX3oKnlMuRQU6Mi94jW+X3qQ5RnIhxHVTGL9a4cJUwfbqWatOkCZAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789839756; c=relaxed/simple;
-	bh=ERVYNPfubS1lL7XJj8hGOUw4uQFg9cuUwbGKdJsaNUQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MaTVLgApAvBfDaPokuKxjZeQRTFJJNoJoVTPuVmuNyWbsmUL/MJvfliJTEj+wxaZ+fg2iGuJLI2oZXZ63Jge8hkG4PP4aMQhZ2o204lWkeyYvcaB79zFNapF1TST/IR4Xy630ZtIcNoBuwZexM1Gc8vRyqNb06D0km7pZZOjh2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yr89mYWe; arc=none smtp.client-ip=74.125.227.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789841274; c=relaxed/simple;
+	bh=zZ+Qj6Es0NnBBB/krCM072RlGUjbGN1xFNtnJKtKur8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nRkXm3ONOf5sjnwH5ETS6iS66MkNM5cARRjqE7bSYfmd/wRgxoLp4/AN2CAhwvYGMtLBTX1Vbk/niQQZzHtCsvEIGQtjSBJFRmxD1Yf46c64EtWEEOhf+8BaGng1kYzSvMGBNaS3jlpZ2lf2Colg2lrRH8DQPb5rDdFJYVjkTrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=ihD+X2Uo; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yr89mYWe"
-Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-39e501442e2so1224390a91.0
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 10:42:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="ihD+X2Uo"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso14484555e9.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 11:07:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789839754; x=1790444554; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wqtGKu4ehtoV9DVHcDQz0i0Wul1TLpZRrMxi7IKUvp4=;
-        b=Yr89mYWeUB8aXyJmU5tGNiLWRx6H40u++exYmhiCcYrJwHhbyNYK1HyulcZkr/KT4E
-         9gfnJ9tDMZsxgAe68BIBmvqGCR8FyAC5+SKSY9so48H+1Xrl6qOizQGLdF//bv5Wlqzz
-         PWVjlIRWZgGGtJL6OUAe9cAHFiBjeUwgMyiKKObogYt6spPf73A8VKwuKaueEYMUKCae
-         LwlTBftCVR4CgQewFA1qK7zRnqkZmHbHqnE/rkakhKujIQmUVsOUz44kzyXujxDxt1US
-         hnFHOgCJaTwjbx4bD98Mo+lh7qVw39ncO3uiUBH90GtC2XdW51cX4ClFzEtPT91lgxBO
-         P+pA==
+        d=blackwall.org; s=google; t=1789841270; x=1790446070; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jaIZI05s3E2LLLYS99VJR5T7zbgwyUaaN0d4bzMK8Qg=;
+        b=ihD+X2Uor/BaheJRzGIDFkYS2zOQN1zE640fNCoxbvX3Y9NIGf0MZCkTNP52ObRXVc
+         C5WH7NR+kRTeHJk18NNlaYyiZCBWsectBKGDWRjsOl62JQBXd//jApbNvZrFKcKAb/Uo
+         mHhVPlGynkc7wT3o90P+JNgZLnuxf+tiCfdYU9QrBcf5Pp58ydSInvZ1fAhPNO0ESehO
+         BeMSMai44TuXPATxkEBVl1OldCwlvvgOYsYbSM/+i2bdPnRboDl9m6RN74xcUzilewVh
+         I5zBjAgfzpZGAug2CiewhbpSuH32YyCveiIjnOVEDOTKEh5Ni9tDrTsekNrJ8++gWYX/
+         j7IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789839754; x=1790444554;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789841270; x=1790446070;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wqtGKu4ehtoV9DVHcDQz0i0Wul1TLpZRrMxi7IKUvp4=;
-        b=VJR+3YnTvsnORcicePoyG4idn79frgaCxpb+fDuR6SJ64ZLfJVGQc4ey1bCDWvaIf5
-         FgYJr5GMiiMhzXgYzKwbwgIfYCWnO/uxOIU+D8JMai/w29WfR6xcrnVUv2WUwSEQwm0h
-         Tl5R6GzvukuUnknqpvQ/i+ZDApXntdszMGFCugykZHyrlskxTSTzvTBAQUOzsa/oNPD+
-         7+mP8tKXidBvTQs2J1w7U5mB6wxeqQapd2c9JqFITp4aDtzQPyeONz9Q9D1+HEPmpU9g
-         M2b08hdnKJ0T0x59K6Il8s5KapxjdCd+WWKuGaAIePd9OxEdO7IKdYAZtLnAE9R80P7b
-         vMNg==
-X-Forwarded-Encrypted: i=1; AKwUvBxnwj2rDBkZ+ZZgTwVEJuIfmHTNpekCbX6c9uCC1qiJa9s5EkbmAQmoVo9fKgHF7xmSOU9Th3s=@vger.kernel.org
-X-Gm-Message-State: AFuF++l6PeS1qbaDRlFGf+ipwrcNLC7eXp7EiiZDvtKxNDxkkr4kK37l
-	F8yXJWiz1ler4xU1OFUqmmrGUpfJCXiFlTwjVSYfsHtdZYgGchZlsEIQ
-X-Gm-Gg: AYBFou3srQ6hJ6V3YDxcjr9dOMl5NnMEEOZsBVhStOEyTc8NFG/4XkVS8Y46spSd0hn
-	jyYzUYad0N+vzzJUZDJmnsGHPaVXH1nkJ6Uo7Z86si4fRWAwahJAwDTkxV17tWrWS00iQrhGdP4
-	a93Khh6xY/PVp/mRIB5JY4HsaRXrXrfGvJEATRM/FsmZF1X83XVsQKnmM7uJEEwuarh+sa05CiX
-	CzS3ynf0TOGGTfeca0oXvAXFzaYjU1RDsfdU50baO0BQ4TClQ7hK2vWIec52Nvn00D4zYJf5yC8
-	5ok9BTKTLtc+6YBEGUZOWhShdEX0ShYDpfmNETkVIwtP9oVKiKyCXbDrcdRMwUAAiqYqbqDuhfC
-	cg9caPN0RNnjEFuydgKVdm7Q5rXMzCMtioHL1qkyGqSISoNkg1/tTUbbbSC/Nk11gdg5lCh7mBQ
-	ZkBZrP+diJGqfueqpu6VdkL2miuoeoAhZJPIXkb+/TCv+eS/l2L2TN9VSFJqD+NpMx1bmNoszXP
-	/13/6ho
-X-Received: by 2002:a17:90b:384d:b0:39e:6c6a:656d with SMTP id 98e67ed59e1d1-39e6c6a6757mr4257438a91.48.1789839754436;
-        Sat, 19 Sep 2026 10:42:34 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6f1835adsm5144018a91.6.2026.09.19.10.42.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 10:42:32 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Coia Prant <coiaprant@gmail.com>
-Subject: [PATCH net] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak when the PHY clock fails
-Date: Sun, 20 Sep 2026 01:42:23 +0800
-Message-ID: <20260919174223.2356964-1-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        bh=jaIZI05s3E2LLLYS99VJR5T7zbgwyUaaN0d4bzMK8Qg=;
+        b=sclcuhxY6sWnitCIMtSM2C13zCiJUPd8R0DUPDcK1GjN8k5VWZewiBZTiQTj4UAUav
+         3DxF5+i+PpgChQgQisiTKrUomcLmWwtrpFn6rdGSFIzRn2upfE5Pbj3tjyET1XE4xaSE
+         pQwFX97dn1+jtV5ppk+93cN1U13QIXlujNyXRcohtJKiSMcNM9bzUQ2zm2ua77RkuLRp
+         YyA0E8bJ8impG9hGQLdz+sCQ02nVqJyQX73deOqAWfTxTbyvARF5Xj6jbNfFRnghRasa
+         oKQq+stoD415xHNNbrV/tTOXrbs4md6ml4o0F2/StRPpCBSi64pPo3GylTJUMt6yq3Qi
+         4ZAw==
+X-Gm-Message-State: AFuF++lgHnXwIIT5YdhsaguqQ6B3Y80f/l1kulXhb+GncD2u9+XyjZJ0
+	3O0H87/JZ8QGkJQ6pWlShbs6uK91mJMT0QkxI8jA1ak8NMZLxdqzOnBEiUZsXvAs3fcbcWK4hKN
+	qkDvV
+X-Gm-Gg: AYBFou1Wjk5uEhZMdy5pcPafmHYnqIt8XqBz7dttYmLG79Ff3mTtWpMLO3AdoA6aOPZ
+	edm4ekPUloVnBalKSUJMpdIMtzgEXtZpPSTuCc3pmCxOrCz69XZhLpbpq3OZMRxz3nd76Bg9KnM
+	+rkSHp2PLmkGNvfsjvp0RYEB6XyJxDZ+Bk616YveYj3MPeKg0XVdeH5benHmpvPxzBhVFYQKjLV
+	1lX0YolncdFYQUZgUADUCj3GIvqgxEKHgUwyY182NAm3cfM5WB/oWYwLDRpcH2FxFX8HDI0tDuF
+	zeafLqJ8WT+NWMOIOFMa3kQebUKzTp2f21AnQ7s6uJS/aUSK2uHSnz06eWYo6hj5TrCgGIiuXmA
+	MhIV4kS4dz6VLNO7g1x1EdcTjZWLumQP/dVxIhlyfuLRhPFdNMtnklVffvd0h0zVk9167DokOAG
+	79cspn4Ss1XTxrk6Lfvw878b235cc/EsnFuVPGktx4N8XZTK3x4Eur6tPgiH7EzUk6vFWLWZv2z
+	YtQrBnGoPR1O8vciTm9OyaKzWs/RA==
+X-Received: by 2002:a05:600c:c493:b0:49c:fa20:cc02 with SMTP id 5b1f17b1804b1-49fc573697bmr79722755e9.25.1789841269149;
+        Sat, 19 Sep 2026 11:07:49 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc585920fsm333932115e9.4.2026.09.19.11.07.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Sep 2026 11:07:48 -0700 (PDT)
+Message-ID: <859a23ef-81a5-4bba-a728-49dbfc8a575e@blackwall.org>
+Date: Sat, 19 Sep 2026 21:07:47 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/9] net: bridge: vlan: cache the pvid vlan entry
+ directly
+Content-Language: en-US, bg
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
+References: <20260918152950.1938259-1-razor@blackwall.org>
+ <20260918152950.1938259-4-razor@blackwall.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260918152950.1938259-4-razor@blackwall.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-gmac_clk_enable() enables the bulk clocks first and then the optional
-PHY clock. If clk_prepare_enable() on the PHY clock fails, the function
-returns without rolling back the bulk clocks, and bsp_priv->clk_enabled
-stays false, so the later gmac_clk_enable(bsp_priv, false) becomes a
-no-op and the bulk clock references are leaked.
+On 18/09/2026 18:29, Nikolay Aleksandrov wrote:
+> VLAN groups cache the pvid and its state separately requiring state
+> updates to keep both copies synchronized. Lockless readers can also
+> observe the pvid and state from different updates. Cache an rcu protected
+> pointer to the pvid vlan entry instead. This makes the vlan entry the
+> single source of truth and lets the ingress path reuse it without another
+> lookup. It also makes the vlan entry always available at the ingress path
+> for subsequent forwarding-path optimizations.
+> 
+> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+> ---
+>   net/bridge/br_mst.c          | 13 ++----
+>   net/bridge/br_private.h      | 25 +++++-------
+>   net/bridge/br_vlan.c         | 76 ++++++++++++++----------------------
+>   net/bridge/br_vlan_options.c | 12 ++----
+>   4 files changed, 46 insertions(+), 80 deletions(-)
+> 
 
-Add the missing clk_bulk_disable_unprepare() on that failure path.
+for this patch Sashiko says:
+  Does this code introduce a memory corruption regression due to a missing
+  release barrier?
+  RCU_INIT_POINTER() publishes the pointer to the datapath without an
+  smp_store_release() barrier, unlike rcu_assign_pointer().
+  If a lockless reader observes the new vg->pvid pointer before the VLAN
+  fields are fully initialized (due to CPU out-of-order execution), it might
+  read an uninitialized v->stats pointer in __allowed_ingress() when an
+  untagged packet arrives.
+  Calling this_cpu_ptr() on an uninitialized v->stats pointer could resolve
+  to the base of the per-cpu memory region or an invalid address, causing
+  subsequent u64_stats_add() increments to silently corrupt per-cpu variables
+  or cause a kernel oops.
+  Could rcu_assign_pointer() be used instead to ensure prior initialization
+  is visible to readers?
 
-Fixes: ea449f7fa0bf ("net: ethernet: stmmac: dwmac-rk: rework optional clock handling")
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 8d7042e689261..f3a98bd9d6ead 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1163,7 +1163,10 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- 
- 			ret = clk_prepare_enable(bsp_priv->clk_phy);
- 			if (ret)
-+				clk_bulk_disable_unprepare(bsp_priv->num_clks,
-+							   bsp_priv->clks);
- 				return ret;
-+			}
- 
- 			rk_configure_io_clksel(bsp_priv);
- 			rk_ungate_rmii_clock(bsp_priv);
--- 
-2.47.3
+Nik says: No, if that could happen we would be in trouble even today. These
+           fields are initialized before the VLAN is published, i.e. before
+           inserting it in the VLAN rhashtable and linking it to the VLAN
+           list, only after that the pvid is applied by __vlan_flags_commit()
+
+Cheers,
+  Nik
 
