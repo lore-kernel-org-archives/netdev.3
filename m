@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFFB156C6A;
-	Sat, 19 Sep 2026 00:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA961A3A80;
+	Sat, 19 Sep 2026 00:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789776873; cv=none; b=J6dynlLecBt9TgKGjht5piZxvWL/0AzPLL1a3s7DTcvJQUFqI4Dp1Kmwn9SFyWyEReNclg/3JLaujHoWazMFtnhBm1m5bmZEvENv3axB+SriJtC95LFpfQzSfQuo+seIW9Ef1HPyfoF1pLjOhx5uVCMEDUX60ncPrBytu8+Dfe0=
+	t=1789776874; cv=none; b=LpjG7dpnAQyIyiZM3l3fVaRz7Qoj7RBSjHidwErcry67i4jjsAUDnJsfY40fdLyUcKunpJIXtyiY3K+2YDEPl5mgxa8WiDXVoLhsvSck8ZOPFUNyFoV/5kFKS1agXk4phKLiXh4D8aKY6X6U6qwNkXhWDAEIZhEDJ7LaEdbdTRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789776873; c=relaxed/simple;
-	bh=v+ZaxiWnoeOv5V1TUsSJCEIwiuynh2GEfQw75nHBCPg=;
+	s=arc-20240116; t=1789776874; c=relaxed/simple;
+	bh=fxC1nyZn01EId/OqHZTU0Hv4ID9wGWmwsuIT9fhDHX4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t/rUX4gQYfHDUFzKkPt1blViZa+wMp0IRiRftIoT1vxWWzqzoR41m8f6DbF+3X0NInHGsCoSj6aFYloieieqmA20FFLeRmFNgR+77KA9+K1A6J7CeO64xrvZfZJGamv5nQK/0fcKYKciVIP1Yw1DaVXxE5S5w3gr/EfzwxVYBN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jIgIWE7k; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=GDE5Ct2nRXWCmJRV18nwY1E0e8AzVJCjyROKtVFHNvBx3dMb1GyLbUaxfdl+lR68DnNIsy5SvB5ngrzHATuyfHup1z4Jmt/YV3Ua2ZJTY+yJLzpAtKC52EnPcDG6elPkgRRRDUBc2lQ1lotO13a4o7dAYgsrMPTPlFw/8F3C1/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CeIzmPj/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jIgIWE7k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296C11F0089D;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeIzmPj/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D501F008A3;
 	Sat, 19 Sep 2026 00:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789776871;
-	bh=nrf4PVA632AohFceVt31TLXePWhHXHnaJl6XXJyTHyQ=;
+	bh=NTCQLayrSQzpVB0r4X9Jwtyc50fnjrA/EIJm2xS4qUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jIgIWE7k+IFqTPqk+PY0hieYs1SkOr8XSkPbd6KxPLzZeKZcumqn+c4ipEUgzpACu
-	 28cU7Wyz90ofHiyL1/zvg3rsRutr47K5QB2F5PDrSFDBjNazhHZnsaKS1/SEUfsk5r
-	 HT5HQKoPVOXp34FSpngGM5GhH/6nxXVeoLE0gKRuPGB2JUsmLVnEO67GSEZcxV5mpt
-	 5rjvIZGs06SutHmWJP5nVDxZz2dCc+++uREOfpeAN94RpTf4C+Di2agYKSlxc5R4iP
-	 yaxNMX5jR5oYE6EfCAA3NZOplzcwn91MGBYx6pIpi0v2+wbbcbBlvlCBXzvSncPMGa
-	 n31krMUnRukoA==
+	b=CeIzmPj/mEbPxmD5X8+r5sH1vR8VRzZrK6AJ5JIi6o0mvrtZEnRY+LYOm8PaFG/eQ
+	 25T78E21ua0aEcza1YtcWuXKCRdH+spB0STrnvgpX6asV261QvWZYleOjz6LeE+bDO
+	 EZ27FS4yr+gtM6l1oYW33kLsn04Crn8VleHprOwTuuACRMzCgEebAPEZb9W8pr5L3x
+	 SiCHzYxgmOP80vnxsksxkzp6BAPgNPDCBuYgCSiiKthgZ4eoWpO2FET9irVPS+NQz3
+	 wLi1sDPYvm7d/Uc57sVDM18o/ilbQh0ICOVxtjJQTeiesS56iqLSp+6mqz2Fx16NLH
+	 LZxzbT7bfIT0w==
 Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id D3B49CE17C1; Fri, 18 Sep 2026 17:14:30 -0700 (PDT)
+	id DCFBACE1855; Fri, 18 Sep 2026 17:14:30 -0700 (PDT)
 From: "Paul E. McKenney" <paulmck@kernel.org>
 To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -40,10 +40,14 @@ Cc: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	kernel-team@meta.com,
 	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 04/12] io-uring/rw: Use accessor for hrtimer_sleeper ->task field
-Date: Fri, 18 Sep 2026 17:14:20 -0700
-Message-Id: <20260919001428.3133388-4-paulmck@kernel.org>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 07/12] net: pktgen: Use accessor for hrtimer_sleeper ->task field
+Date: Fri, 18 Sep 2026 17:14:23 -0700
+Message-Id: <20260919001428.3133388-7-paulmck@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <5dca353c-6b3f-4d01-8808-bef2c0dd7af7@paulmck-laptop>
 References: <5dca353c-6b3f-4d01-8808-bef2c0dd7af7@paulmck-laptop>
@@ -64,36 +68,45 @@ is no reason to let the compiler introduce additional confusion, and to
 this end, the hrtimer_sleeper_task_get() was introduced, use of which also
 has the benefit of avoiding open-code access to hrtimer_sleeper innards.
 
-Therefore, apply this accessor to the io_hybrid_iopoll_delay() function.
+Therefore, apply this accessor to the pktgen spin() function.
 
 KCSAN located this issue.
 
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
 Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Cc: Frederic Weisbecker <frederic@kernel.org>
 Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: <io-uring@vger.kernel.org>
+Cc: <netdev@vger.kernel.org>
 Cc: <linux-aio@kvack.org>
 Cc: <linux-fsdevel@vger.kernel.org>
-Cc: <netdev@vger.kernel.org>
+Cc: <io-uring@vger.kernel.org>
 ---
- io_uring/rw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/pktgen.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 95106dd1d7eb..3f4cbdb8b2be 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -1285,7 +1285,7 @@ static u64 io_hybrid_iopoll_delay(struct io_ring_ctx *ctx, struct io_kiocb *req)
- 	set_current_state(TASK_INTERRUPTIBLE);
- 	hrtimer_sleeper_start_expires(&timer, mode);
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 7f81aed46672..784d8398fb7a 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -2346,11 +2346,11 @@ static void spin(struct pktgen_dev *pkt_dev, ktime_t spin_until)
+ 			set_current_state(TASK_INTERRUPTIBLE);
+ 			hrtimer_sleeper_start_expires(&t, HRTIMER_MODE_ABS);
  
--	if (timer.task)
-+	if (hrtimer_sleeper_task_get(&timer))
- 		io_schedule();
+-			if (likely(t.task))
++			if (likely(hrtimer_sleeper_task_get(&t)))
+ 				schedule();
  
- 	hrtimer_cancel(&timer.timer);
+ 			hrtimer_cancel(&t.timer);
+-		} while (t.task && pkt_dev->running && !signal_pending(current));
++		} while (hrtimer_sleeper_task_get(&t) && pkt_dev->running && !signal_pending(current));
+ 		__set_current_state(TASK_RUNNING);
+ 		end_time = ktime_get();
+ 	}
 -- 
 2.40.1
 
