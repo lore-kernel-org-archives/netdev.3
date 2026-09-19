@@ -1,78 +1,73 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F973363C72
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986C738A70B
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789853342; cv=none; b=a+hX5T9LkAmfX5pyb+/AYES2VOCCgBsYgQ2mzSnR3ezmluaNinSdvjS8kNkW2GMlxFisR7ozphyp8v3UU5Ho9f0zy45xMBR9TDgbgQCNjTl01EqFSgbDiaVtJRb5Z4Tq7BJZNY8fj3xgBam8seBzHCuSn5VOge1UFq+Gf+w6i6o=
+	t=1789853342; cv=none; b=m+rpXQqkoojpblj5+6qypzRptQxgsr3L/zwlMtyhHp30DmLAwxk5db4uSWvGJH6hYLyDcdi9LrF4YajSrPcphP076QS3FSe9R/c7lA8e9njkUeAG+w2o6Ni3wAaqXC176OBoeITTKdacxGvB+auCAlyHbFw6OVU52d+sgmnlXdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789853342; c=relaxed/simple;
-	bh=uzB8kYqSwZvvHWdVSonXqwgcJ53XrnKH2GGFgTD34aw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=osvpMd6rd3Ykutl5tFsXNhQ58tXEUjKa6aNzzAnh1uMyDA7nXajrR2LhUTyZo4t+gCy6vZsIKWcJnR6wwrI0wDBJVGoMIT2w1tEjhJ5LR5aB826YsZeG1I1MUQJwMyNQjDMyY5mbLX6X8xnq8H0TCz3JDZi5aRNahFJWO2Sdhmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HPgjUUNG; arc=none smtp.client-ip=74.125.227.140
+	bh=prjDMLVmFu3EaYvVl6i2BgtEyldcdqRrMc/3t9zL6bc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dqQzVsbo40Bk+23pWxtdE8Vg6wFq2SaknoDPEjkgVjVyA96FH4CSHEHK44spZKm6BDE1GfK5oNSUcCbm8F4XRpJECkv+29PsHV4mL+4aoVPDcdJUURR3cfdscQtr/unsVyh8K574L2Bb6z76SK8BTEQWTe4NlUjShv8YBObnQdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWIDi4BY; arc=none smtp.client-ip=74.125.228.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HPgjUUNG"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccd5cf03so1852403a91.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:28:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWIDi4BY"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8692a856865so1768669b3a.2
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789853336; x=1790458136; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789853337; x=1790458137; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2ysTxERdXo3UK3i3xCiazMgzFqeboSXwQYQC9nO77h0=;
-        b=HPgjUUNGiawKAiSzn5NHo2pAbh0y4wrQAIo4pyQRcu5yM+e94lVjkXUmgNEMyKQWVY
-         Ssyqy+iwtce2U1cw17Q6WxS5la3sM8W3ybY7YQ5R25W5UBE1iuXNLFr6v2bzNrCEwrn9
-         RDNsBRm4S875g+dzhKtmLh8DwzizlagHLJm6f47Ad6qptP6LQPmn49WXxf69rDrJCLz+
-         eg5G+8icGwvTlIHjS7FJS2MHtKF0a0TgpR/9q+LcfbKmsFsH/kZz1KJmETJQW2ehWGeT
-         J1Uqgy37TtyBdbWFbx5ms2+0/BF0PSrsXHYTJMv2DnVg/E1CztbcNY5BsooJAFrByvsb
-         E0Ww==
+        bh=IYFViyQge7tf8m2KJ5gBNtr9+PNFnUOuNQpW8AAs1R4=;
+        b=gWIDi4BYOzkiYNVc/t4a84aNa/xJJBrJlZZzyQs/D0Bki8js38cwua2BQRetrfQY95
+         T/AGWO4+ddHR7PyqST7QxhiNhPl75tEItExsAJarX6BIzUgTklA5WttQhSVmv0JxyX2S
+         KaINKVhsxJz3JqVrJ5Qgg0DRfqEMMIlDDgp3lLnvO/Qzx9Nz73mvSvPrbfm5+FZtzulx
+         jdZQj1G2mlZAXI7y+LKEJoOMOoKxFigCXgL3IO4Qyo0N6zAE5QEPFFK77sawhpzDDN7w
+         PfOkCkOJkEDqyVX3DdJIvjKXBY6B3LnGWhMl5aqsRSvg2lnm4iTFpTkkScLXcNRyoD72
+         WnSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789853336; x=1790458136;
+        d=1e100.net; s=20260707; t=1789853337; x=1790458137;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2ysTxERdXo3UK3i3xCiazMgzFqeboSXwQYQC9nO77h0=;
-        b=elz6x0fttxbsrbHSsnbwPY9J7mzJ5PueSHAD55+Wfb9bvmTQWJ9Vdhj5W0ylSmDRgs
-         eiid3dJ65de/wn0/Y5ghJ6YsdUOpUzCrQ6m7TAx+2QVLcCFy9ot0BpNYtYhueJlkh1xo
-         6SGcPeRuhqoW1MpqUyQK6JKLN3a7VEUOo5VFZo5qWZSql3lLLlmmlrCSYjtQ/K23YzmZ
-         NlYIjPvJjJAJjwRBdu0oUG/IKnWauLU8WDiE5BAsXTelY12V6HoNhNkNGLVFJX0eNKsH
-         oMS2GoonIwEgm5UQExaoIfNDiJhew501oTHRGShPLcHODSpc+UkMEJxop0ky21qCOO3U
-         OQHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzRQCpauiePr3LXlfR2uSNuRci+BVaGbuKg+NeOZ3deOMz/Vluyh/9jlGlQ8THB2XMlLEKlRqY=@vger.kernel.org
-X-Gm-Message-State: AFuF++laMg7NcCsbfFq8Q59ohgBs0mN7nEnjtEJ7dnMV9z6YkmXjCXGv
-	J29INywCHIhjI/v1W6219nIzNlh6ZfkaNQsh0UM2snn8bBGbP2BqbJ3x
-X-Gm-Gg: AYBFou2ANJ+lyDvUfUQ9d4+zYKWgfPZf25mGwWqFsxTYqPG/wjG22uHiu3UB5RfrRKi
-	5csxF/yoVyK7YwWrsrmMzZdV0qm0k+zJMg8Zl6YCTdaV/li42iTnWUgfZmXLyAqMkUpAF38vb8m
-	DDrA1e2lu9WXdW7D+6sZs63h5FAtX0FL2mWdxeK07yztRQV1ZM3/9ekwZrFxp/qbvGjE/8eEiUs
-	l6xeHrBxZObCb0gQEfSVJ/f7Zyga1FDYXiO8046Jh/GSh0mMvDXMZChjI1MT7EFwGpnnSB3wQ8p
-	H8MimR0ct0N66R7XEhjx62kqpnrtZ/v2D++Ei+oVp2zVTwV3afXdzjqZteH4o0r1T5Tupfv929U
-	bpjwDLuvOyP3q/9TNqgCWab6gvw/a3QMHn3YM/Oz7tlW/iilYIntYMDZ9+Lf0xWaI5Y8bTNRVVw
-	rf/ExLmu87AMMcaWoEYMne1cUcZV8xJ5xfOjepDHlF4ZVtkI3w46yr9jZ2pAAPSfP8f2xh86gJN
-	BBYOWeHJrkf9eZm4nKtBVQpQgWlvuBXNX4yMSYm8/1GczI8c8nhpG9mdoICsV74j6X2xoA3Qq8k
-	0mGsG6rC9g==
-X-Received: by 2002:a17:90a:c105:b0:39e:6a81:f350 with SMTP id 98e67ed59e1d1-39e6a81fcc4mr4626297a91.42.1789853335756;
-        Sat, 19 Sep 2026 14:28:55 -0700 (PDT)
+        bh=IYFViyQge7tf8m2KJ5gBNtr9+PNFnUOuNQpW8AAs1R4=;
+        b=PRAp+G48J9RW2UH5/Mb72dwKCbDEqfqH9BsSrbC0y7ICG8GI/LtcKkWFhC641OU53S
+         O1u4ih1T2IzraHo+nsj+ivP14v4gLglGyyzATIo29cjN0YZ+IzGj7z7qysxfKzL9pYDg
+         amaFYeX0E9dpHAzqaBJtOnbH5DIJptlHUjWRwH7ATtYgdyok41qPpW+0rqVqu08pum9f
+         8Ytuj4+t5I64ZZt3RymaKC/C+xKTnB0OrgUzlgFGrlMlqj3cnRlZjVNzD8C6YubJFCSR
+         jSetCJU5FjUNDKY56D8QWAJK6tayHaTtZXurLSCkb5jlz8S6liCcLEeZntcsSyuFe/ta
+         +8bQ==
+X-Gm-Message-State: AFuF++k3+9pTq0e4YujrCE/mIbe7y2zXbuXmaox31LNlkwZjfo422DMO
+	k4xDlNqchoUhWD0BIKzwyuCWQgrG/Cvc3JaPUlNlJwAYPTTusn2n/ehy
+X-Gm-Gg: AYBFou0Wf+f9yceiX0A4fnH9sp7Z0YFOKuGMv1PzZaSr0ubrJxVubB1N5EF4qq/uQro
+	1a0ASyNeqS7CCGjUQ4D1xLLqSca04iDC9Y0LdQoVzz9DUEJvb0JzuAgE+9cfqKQsC9akiWv9Xz1
+	seVfa1oq8BofCI7lTIPTgFHSKqP6A3H6eI+p3FpTWGmdm20zlB44gRAsy1TE+QcjtAAqCHwnQ61
+	0XF8IWHz0Ff8fPxVOWx7FVzf41/oDKyU0KxgxiTUTPA4sxNqe5BegMVN4dhT598B4s8UBelytwR
+	+0DZTo6udAD4iVQ7JEV5/QqnOvefd8iwXOIbw2S+OrWBe3kFtUSZGlSh7bVo71vVBsPE2IR/6yn
+	bvnLZu9i7OYRodGIINzgYfUgxGiV5LeV96yBj/RIyP8h5i1iMdSAj73+ZKSMegq06Oqx/VUvtPo
+	7dJiCfPmHFSd8nWYRZ06+dfydO/8YoIVoLR/eAFEA8n4AZBMZBh3vNrlx8H9is5UBBFHdO3B6J0
+	S2QlTJEPprOwTbZbVo/lwvThHDgXHikDznYT9gGGd71V5s1lV053Bg6Tm349izdoEug66yHZv/2
+	HgV0vSQ/Gg==
+X-Received: by 2002:a05:6a20:72a1:b0:3c3:a3fd:db0a with SMTP id adf61e73a8af0-3dd8c44c5c6mr9467932637.16.1789853337043;
+        Sat, 19 Sep 2026 14:28:57 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c6dd585sm5802399a91.0.2026.09.19.14.28.55
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc72aefa9c0sm1224118a12.29.2026.09.19.14.28.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 14:28:55 -0700 (PDT)
+        Sat, 19 Sep 2026 14:28:56 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
-To: alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
+To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] ieee802154: socket: fix shared skb BUG_ON and double header subtraction in dgram_ioctl()
+Subject: [PATCH] ppp: pptp: fix out-of-bounds read on short payload_len in pptp_rcv_core()
 Date: Sat, 19 Sep 2026 21:28:55 +0000
-Message-ID: <20260919212855.3241205-1-benquike@gmail.com>
+Message-ID: <20260919212856.3241262-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -82,47 +77,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In `dgram_ioctl()` (`SIOCINQ`), the queued skb at the head of
-`sk->sk_receive_queue` has already had its MAC header stripped by
-`ieee802154_subif_frame()` prior to `dgram_deliver()`, so `skb->len` is
-already the exact payload length that `dgram_recvmsg()` will return to
-userspace.
+In `pptp_rcv_core()`, `pskb_may_pull(skb, headersize + payload_len)`
+only verifies that `skb->len >= headersize + payload_len` without
+checking that `payload_len` itself is large enough for the subsequent
+PPP header accesses.
 
-However, `dgram_ioctl()` computes `*karg = skb->len -
-ieee802154_hdr_length(skb)`. Calling `ieee802154_hdr_length(skb)`
-re-parses the payload bytes as an 802.15.4 MAC header and calls
-`pskb_may_pull(skb, ...)` while holding `sk->sk_receive_queue.lock`.
-When multiple `SOCK_DGRAM` sockets receive a cloned copy of the frame
-(`skb_shared(skb)` is true) and the payload is non-linear,
-`pskb_may_pull()` calls `pskb_expand_head()`, which triggers
-`BUG_ON(skb_shared(skb))`. Even on unshared linear skbs, subtracting
-`ieee802154_hdr_length(skb)` a second time underflows `*karg` to a
-negative value when the payload is shorter than the bogus parsed header
-length.
+When a GRE packet arrives with `payload_len == 0` (or `1`) and `skb->len
+   == headersize + payload_len`, `pskb_may_pull()` succeeds and `payload
+   = skb->data + headersize` points to `skb->tail`. Immediately
+   afterwards:
+1. If `seq` is out-of-window, `pptp_rcv_core()` reads `payload[0]`,
+   `payload[1]`, `PPP_PROTOCOL(payload)` (`payload[2..3]`), and
+   `payload[4]` (up to 5 bytes past `skb->tail`) to check for an LCP
+   Echo packet.
+2. If `seq` is in-window, `pptp_rcv_core()` reads `payload[0]` and
+   `payload[1]` (up to 2 bytes past `skb->tail`) to check for the PPP
+   address and control bytes.
 
-Set `*karg = skb->len` directly in `dgram_ioctl()`.
+Require `payload_len >= 2` before pulling the payload, and require
+`payload_len >= 5` before inspecting `payload[0..4]` for LCP Echo
+frames.
 
-Fixes: e1d001fa5b47 ("net: ioctl: Use kernel memory on protocol ioctl callbacks")
+Fixes: 00959ade36ac ("PPTP: PPP over IPv4 (Point-to-Point Tunneling Protocol)")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 
 ---
- net/ieee802154/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ppp/pptp.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-index 5a36e87893f6..8d660fe87d4e 100644
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -552,7 +552,7 @@ static int dgram_ioctl(struct sock *sk, int cmd, int *karg)
- 			 * of this packet since that is all
- 			 * that will be read.
- 			 */
--			*karg = skb->len - ieee802154_hdr_length(skb);
-+			*karg = skb->len;
- 		}
- 		spin_unlock_bh(&sk->sk_receive_queue.lock);
- 		return 0;
--- 
-2.55.0.1082.g2b9226bbc0-goog
-
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index a797a0606f6b..2f979294490d 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -310,6 +310,8 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
+ 	payload_len = ntohs(header->payload_len);
+ 	seq         = ntohl(header->seq);
+ 
++	if (payload_len < 2)
++		goto drop;
+ 	/* check for incomplete packet (length smaller than expected) */
+ 	if (!pskb_may_pull(skb, headersize + payload_len))
+ 		goto drop;
+@@ -317,9 +319,11 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
+ 	payload = skb->data + headersize;
+ 	/* check for expected sequence number */
+ 	if (seq < opt->seq_recv + 1 || WRAPPED(opt->seq_recv, seq)) {
+-		if ((payload[0] == PPP_ALLSTATIONS) && (payload[1] == PPP_UI) &&
+-				(PPP_PROTOCOL(payload) == PPP_LCP) &&
+-				((payload[4] == PPP_LCP_ECHOREQ) || (payload[4] == PPP_LCP_ECHOREP)))
++		if (payload_len >= 5 &&
++		    payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI &&
++		    PPP_PROTOCOL(payload) == PPP_LCP &&
++		    (payload[4] == PPP_LCP_ECHOREQ ||
++		     payload[4] == PPP_LCP_ECHOREP))
+ 			goto allow_packet;
+ 	} else {
+ 		opt->seq_recv = seq;
