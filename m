@@ -1,82 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F233603E9
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 08:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B50E37F74A
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 08:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789806319; cv=none; b=rWlY2weHzdBT4bSivezwf52W6BucsI+kbMV0xNRsErfGs83OVQZkC4zHiPT5enuyzsBHy6zskaFAg8grWKrBLySLlCOmfbCV0jR0ldISMi+78if+8vYAQk10bkpSl06IA35t0ASgF91L9V+Htaw+Xw7uGMPsYx4sROmlczZZPJs=
+	t=1789807551; cv=none; b=cutcU/Cm6j+PzfnB6BncDdouqjGS94FnohSZOww0nppr0IWGJPTkBT8rzqM8nTQxiJj+U4Gsq/81Rndke9s0adoAOsqMEr/M3NCupT9s23AlzjW3Nqw1jefa5rr495zCuKSg99zSUI4Sqx7cGJfCgRFuH8FVQtyjpfZ63rB1YfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789806319; c=relaxed/simple;
-	bh=ju4x+ltUec78wE1Yltu+0EQFOC8grjb7bI38pDbA9YY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IfDwcxmbI9/EQLcbluiHwJpHW9dW8TOt5TWd/UaCNzjGvoUqHZCY6xFVZlKpETIxJlCwrz7iuXP80iWDSSOhss82EFvOYxcksdo+tXYu/+osm9zE1Oo6yeshHyb5X0OSyBydjtiRzl3TVcZnDWdgjB993poIPzZAgHVXWKz3KHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXDpGaZQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789807551; c=relaxed/simple;
+	bh=43gdm0Nnpkz3bJkYMRpVvXqQJooqOxG/D7hwUBNzYN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cyfdmr5XkGDJXxWAR6cES9HU1j9c9USdiw2bqgq67hv9xsb6L8Ykx9l2pUy3wwbTMguUbwjZG51TTEWPaNpsG8XbKU3DYsiB2HB51KLd0HEqoVvyHlb8s5Ls0H8YgJIq4NpxckKJLEPbwxPFrttJsG2NMktiIEcecr3DUCmMEpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldmw6Ygv; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXDpGaZQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3412A1F000FF;
-	Sat, 19 Sep 2026 08:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789806317;
-	bh=7f65Kjoq2Mzp5OZ3sSQzMoRcXyheHfcaYSKBdqbJTS4=;
-	h=From:Date:Subject:To:Cc;
-	b=XXDpGaZQzOYMgkwqnfM7WSLPqzbR6hdIK18sfj/4EU4f6Z87JvwHgH9u9N1VzUZvH
-	 Dnc3lD2rvshQ5wL4KuNFKmrtgxbbs+EmG8kPnahRts1YbqJICrNhjeZGuamiImZkHA
-	 2ONQkjudy3GF4d21Acov08SrV/w59TfzDndAfMVVrJQrvBIIrqHRMvoxJ9fltfmkvW
-	 Qz1Ft3PFfc71Y/pQmsZ1dOLevV1+Dd0TtcEam8KB2f//g7NVMVYSIjLc6zNYZwSStR
-	 51zdKzVhzEHD09POrJf68AK+LaXJV4af4fajNQ4LFcsh19rP8nixgcrs4qKrxuSGN2
-	 iavkV7JB3VtSw==
-From: Simon Horman <horms@kernel.org>
-Date: Sat, 19 Sep 2026 09:24:19 +0100
-Subject: [PATCH net-next] MAINTAINERS: chtls: remove entry for removed
- driver
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldmw6Ygv"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccda24a3so1216074a91.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:45:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789807550; x=1790412350; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fZw6BN7peM6OKAlthhp4XpSn/Dy2zIL86nDdON0s4nU=;
+        b=ldmw6YgvFt79yKXmkbtdavnsfeKbft/e6SeoVz4yLodESOiYfwbUhU+avPtRzukYUJ
+         YJay3H6ID9HjJ3QeM1Cs7tKwXASUFcDAlTe976Q2DrQGCB+vFCav1DWRiffjE1tbnKls
+         6rzd5HIMP6P7grxB97Lj29qLANc4fFw0AqV6hHA4S8PJ/JCCACMNYL9gGGDSJsqNDtj1
+         S4RjOq+uYr076SnX0dZP3zWMuRzGsJz1bF7f87h9Tbal1pF/s0JMDKqhhE1GIqpM7QO7
+         KfR1IbyBBB2gnCn2rLf9cl24LRHYrp0mB2kQLInpjoJiIZOxqtZN9bpAxUJVP9E4gPfP
+         P3lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789807550; x=1790412350;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fZw6BN7peM6OKAlthhp4XpSn/Dy2zIL86nDdON0s4nU=;
+        b=FKPkGZ7kcyGZWGsfCK+hXrWzcx6YkZzbFiQ5xV/z2j4FFUAl1MwXuwejsPeh/Qdwwo
+         Pzof3J+jHmRga17LkImv1zVC5phjRxeRgMoYsclh1blnbtoptS/rqvZQcfPACr5O0AO8
+         rQ+1QD4vYIdXQCN+TXx8+g8upsh6LyTSpzHVQOnPbhCrz6TptH+zy0scQf/Fa8raytVd
+         e4FcDs52/lvj1wmoxlewSYscgi3TPcGgoTrJxjloP6A6Q/TTJjxJfxTtXsMobGQDuMTY
+         zTOMdEmVs7rTYTy2IA0eKDQLN8xFbJXZLslp003KJd5Vc93tPLrfQK3ioORV4xJQ+RV7
+         ANcg==
+X-Gm-Message-State: AFuF++nSdE1hwQXOyOAyovEGw6XTidAG78XeXwbmZaAIRxZgZypX92II
+	ZDAffQKkT0BOX2c54wEcMVyOVza/hhEWjjjkysKsatr7spRMuEMDBkXSrflo7xSUSVdJIw5s
+X-Gm-Gg: AYBFou1NOkML0038dXf4+gCjyGrp8rlcPavTrjmFtjRUDn1hs8fDtDI4d/gFZnPU66W
+	Ofj8Bev1wGTSeS4LiG/36s72kDvA2CzcC+sfBE1KUS2MAop1fq5SGLI0zT2dVZ14CHeMo9BT7BB
+	yFIn/3EoVIPRnl2TkRJuz0dVBJ6j2bhlPvHV07/TEQ9O44kZMzNh70i0OcHRvaPIPlLWHd5G62c
+	ugXtvtSF6TdG//i2UhVtUrjvvI7BSPdiGhduudD1Vp2aemT30bOeaaxjzq+RJiPkgu5tKW1Rx3Z
+	7GnIHJUDxnJcl9/fQlDHB3SHZYDsv7Hp8lK84MdTti3+/R4ZYPIDppkHAZyprioOoK2ccviquie
+	eDSrcPiPRePnXbrm8D5TeN6FU1ww/znlU8P9Yi9OgZGWq82AMnw+PFvidboZZXNlkTLVI5Uu75B
+	Fw+c5FrecdMMyvI3eeugpMmqKQKPh0fNnNF7Z+Zerr8wV3NFdkw7iv0NYZaJU0M+3doZ2vBXoNR
+	BM2OAgP2ExvUCA2EJJRIHsmn2Ow37SjwvAK1Lxkb5IpcqOfPauxvdMU9qXRgWw709GVDg==
+X-Received: by 2002:a17:90b:4b86:b0:39e:21a7:5dfe with SMTP id 98e67ed59e1d1-39e54c5a1ecmr15157325a91.3.1789807549695;
+        Sat, 19 Sep 2026 01:45:49 -0700 (PDT)
+Received: from lenovo-thinkbook (42-2-127-248.static.netvigator.com. [42.2.127.248])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c6dd585sm3346698a91.0.2026.09.19.01.45.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 01:45:47 -0700 (PDT)
+From: Yuqi Xu <xuyuqiabc@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Ren Wei <weir@nebusec.ai>,
+	xuyq21@lenovo.com
+Subject: [PATCH net 0/1] net: ipconfig: bound DHCP option construction
+Date: Sat, 19 Sep 2026 16:45:26 +0800
+Message-ID: <cover.1789798023.git.xuyuqiabc@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260919-ch-maint-v1-1-76af77aca5a4@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQqAIBBA4avErBuwIvu5SrQQnWoWTaESgnT3p
- OUHj5chkGcKMFcZPD0c+JKCpq7AHkZ2QnbF0KpWq6mZ0B54GpaIuhsH6o1T1vVQ8tvTxulfLSA
- UUShFWN/3A2Hwt9BkAAAA
-X-Change-ID: 20260919-ch-maint-6387e5ad0cd5
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Ayush Sawal <ayush.sawal@chelsio.com>, Sabrina Dubroca <sd@queasysnail.net>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-The chtls driver was removed in the v7.2 development cycle by
-commit cdae65fc43f2 ("tls: remove tls_toe and the related driver").
+Hi Linux kernel maintainers,
 
-Remove it's entry in MAINTAINERS which was left behind.
+We found and validated an issue in net/ipv4/ipconfig.c.  Triggering it
+requires control over the kernel command line (the ip= and dhcpclass=
+boot parameters), so it is not reachable by an unprivileged user; a
+root-controlled boot or a malicious boot configuration can still turn
+it into a boot-time panic.
 
-Signed-off-by: Simon Horman <horms@kernel.org>
----
- MAINTAINERS | 7 -------
- 1 file changed, 7 deletions(-)
+We've tested it, and it should not affect any other functionality.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d1a3ec390096..59ee1cff04ed 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7091,13 +7091,6 @@ S:	Maintained
- W:	http://www.chelsio.com
- F:	drivers/net/ethernet/chelsio/cxgb4/
- 
--CXGB4 INLINE CRYPTO DRIVER
--M:	Ayush Sawal <ayush.sawal@chelsio.com>
--L:	netdev@vger.kernel.org
--S:	Maintained
--W:	http://www.chelsio.com
--F:	drivers/net/ethernet/chelsio/inline_crypto/
--
- CXGB4 ISCSI DRIVER (CXGB4I)
- M:	Varun Prakash <varun@chelsio.com>
- L:	linux-scsi@vger.kernel.org
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
+
+---- details below ----
+
+Bug details:
+
+ic_dhcp_init_options() builds the DHCP options for a request inside the
+fixed 312-byte bootp_pkt.exten[] buffer.  It writes the hostname
+(option 12) and the vendor-class (option 60) options by appending
+type/length/value bytes without checking how much room is left; only the
+client-ID (option 61) branch looked at the remaining space.
+
+The hostname comes from the ip= boot parameter (up to 64 bytes) and the
+vendor-class from dhcpclass= (up to 252 bytes after strscpy).  Together
+with the 18 bytes already emitted (magic cookie, message type and
+parameter request list) they need 18 + (2 + 64) + (2 + 252) = 338 bytes,
+more than the 312 available even before the terminating END marker
+(255).  The vendor-class memcpy() therefore writes past the end of
+exten[].  CONFIG_FORTIFY_SOURCE reports this as a field-spanning write
+and, with panic_on_warn=1, the warning becomes a panic during boot.
+
+The patch routes the three optional options through a common helper that
+checks that the option, its 2-byte header and the END marker all fit,
+and drops an option that does not fit.  The helper also rejects a length
+that does not fit in the one-byte DHCP option length field.  With short
+options the emitted bytes are unchanged.
+
+Reproducer:
+
+Build a kernel with CONFIG_IP_PNP=y, CONFIG_IP_PNP_DHCP=y,
+CONFIG_IP_PNP_BOOTP=y and CONFIG_FORTIFY_SOURCE=y, then boot it in QEMU
+with one NIC (e1000) and the crafted command line below.
+ip_auto_config() runs from a late_initcall and builds the DHCPDISCOVER
+packet before any server reply is needed, so no DHCP server is required.
+
+  HOST=$(printf 'h%.0s' {1..64})
+  CLASS=$(printf 'v%.0s' {1..252})
+  qemu-system-x86_64 -m 2048 -smp 2 -nographic -no-reboot \
+    -kernel arch/x86/boot/bzImage -initrd initramfs.cpio.gz \
+    -append "console=ttyS0 panic_on_warn=1 oops=panic panic=1 \
+             ip=::::${HOST}::dhcp dhcpclass=${CLASS}" \
+    -nic user,model=e1000
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.  It is a
+boot-time trigger: CONFIG_FORTIFY_SOURCE plus panic_on_warn=1 is what
+turns the out-of-bounds write into the observed panic.
+
+----BEGIN crash log----
+
+[    2.349975] e1000: eth0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+[    2.383902] Sending DHCP requests .
+[    2.384513] DHCP: sending class identifier "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+[    2.385144] ------------[ cut here ]------------
+[    2.385241] memcpy: detected field-spanning write (size 252) of single field "e" at net/ipv4/ipconfig.c:736 (size 226)
+[    2.385345] WARNING: net/ipv4/ipconfig.c:736 at ip_auto_config+0x924/0x1120, CPU#0: swapper/0/1
+[    2.387029] Modules linked in:
+[    2.387710] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.3.0-rc3-00339-g6c096bb08de9 #1 PREEMPT(lazy) 
+[    2.388052] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-10.fc44 06/10/2025
+[    2.388442] RIP: 0010:ip_auto_config+0x938/0x1120
+[    2.388743] Code: 8d 4e 02 49 39 c7 73 35 4c 89 8d 50 ff ff ff 48 8d 3d bc 67 ac ff 48 c7 c2 a0 c0 4a 85 4c 89 f9 48 89 c6 48 89 85 58 ff ff ff <67> 48 0f b9 3a 4c 8b 8d 50 ff ff ff 48 8b 85 58 ff ff ff 48 c7 c6
+[    2.389258] RSP: 0018:ffffb79f40013dd0 EFLAGS: 00010293
+[    2.389478] RAX: 00000000000000fc RBX: ffff971101181000 RCX: 00000000000000e2
+[    2.389664] RDX: ffffffff854ac0a0 RSI: 00000000000000fc RDI: ffffffff85913240
+[    2.389847] RBP: ffffb79f40013e80 R08: 0000000000000000 R09: ffff971101dd316e
+[    2.390026] R10: ffffb79f40013bc0 R11: ffffb79f40013bb8 R12: ffff971101d56000
+[    2.390235] R13: ffff971101dd3010 R14: ffff971101dd316c R15: 00000000000000e2
+[    2.390542] FS:  0000000000000000(0000) GS:ffff9711f7b6f000(0000) knlGS:0000000000000000
+[    2.390755] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    2.390910] CR2: ffff97111d555000 CR3: 000000001ca30000 CR4: 00000000000006f0
+[    2.391206] Call Trace:
+[    2.391913]  <TASK>
+[    2.392196]  ? __pfx_ip_auto_config+0x10/0x10
+[    2.392453]  ? do_one_initcall+0x84/0x3c0
+[    2.392580]  do_one_initcall+0x84/0x3c0
+[    2.392800]  kernel_init_freeable+0x202/0x260
+[    2.392955]  ? __pfx_kernel_init+0x10/0x10
+[    2.393086]  kernel_init+0x1a/0x130
+[    2.393204]  ret_from_fork+0x177/0x240
+[    2.393328]  ? __pfx_kernel_init+0x10/0x10
+[    2.393551]  ret_from_fork_asm+0x1a/0x30
+[    2.393711]  </TASK>
+
+-----END crash log-----
+
+With the patch applied the same command line boots without the
+field-spanning warning and without a panic; a normal configuration with
+short options still sends the class identifier as before.
+
+Best regards,
+Yuqi Xu
 
 
+Yuqi Xu (1):
+  net: ipconfig: bound DHCP option construction
+
+ net/ipv4/ipconfig.c | 45 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
+
+
+base-commit: 6c096bb08de97cdca051fecddad22cac6a1fd275
+-- 
+2.55.0
 
