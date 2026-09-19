@@ -1,63 +1,63 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651B8340282
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B762B38F255
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789800739; cv=none; b=f2lADwI5OrrHtsW0+SpZ9xezeVuCPy6lbqa2DMJiIhp7NWWfk9bl77YQEZQ791d2LjkkmDbecRlOzX8v4tT1/6fr1nqMmJ/xTuun+auERDIpYziJLYTcyGeUASLuQW9hfTbO5zvVXIzH4qz4vrXjLgzLQZ/MChOun3poYEVBnRU=
+	t=1789800740; cv=none; b=P1n94gbPQ37ReehyZ9m2/vlABmbbUhn1yGjsKXCYRH4xG4qxFhpIuXDNSaBolsir/cKdpw5tKOSij2AVZLyuJBANDHZSsXwfg6+awNGpFqYv+cw7YJfjQZlLHZR/lPQq0oRIeTuUrt/guXbYXAb3Q9g81LsfSOhL5Tj69JqdQjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789800739; c=relaxed/simple;
-	bh=WZ0ZRhan8lsrqK8t27uFdghXGLPk3AZWuDzdY70eeCQ=;
+	s=arc-20240116; t=1789800740; c=relaxed/simple;
+	bh=xIacHn5f4ZLdoUT+AHk7QKDEnIui8s82/68l1Pivobo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvMAzEcOrQQiFCQLnlfWpgPMUHvb+0qNz2GEsWoDxh0Fo3eYQisgjlInMG9Ohwt+1k2ofhlzpUkaauwyfvm3K7AxjMWMy0cyfU/ZYbP/0KaR+8tC8poLzgANHFDBPytOks+0svCb06Ht6DpG9ZaPm42pRAsFXolaAdWCn3b1rRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoYNJa7g; arc=none smtp.client-ip=209.85.210.178
+	 MIME-Version; b=Yzqxm70OHYvTi71yovm8d6NAueRX47zU2iy8PPd3xc9KepzWN1LwMjRNyhuOlzFTF+U5KeHUZj/aCWEYOgyKaHwyBAYBaEt1FOzCMzVljbOVH/WcDDs7aik78OUFSG6r7PlNoHPoGtQffF4rdqJqUvb06HNCxxCaN/QnyUgj4bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TazIoc9l; arc=none smtp.client-ip=74.125.228.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoYNJa7g"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-86ec25cf7ecso2379837b3a.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 23:52:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TazIoc9l"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8631d0023daso1085086b3a.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 23:52:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789800738; x=1790405538; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789800739; x=1790405539; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DhDYniwbZK/cLIuF0+kBZ9daKL8rPuxnkEwAZ8qtlXY=;
-        b=RoYNJa7gqWJwFbv9/xLXnL7aq0q+LOGxD3H4MsrAuxzY+KTENQvvEOD3l2OG1YtVDc
-         +MBTjKbmLFl7UwkfIf9fiTAo9qpd1+7ou5ZyoH652IgcR8rBzeL4YcPAYp7+/qrpJ99k
-         lq3/BGoRR974nSk/+xYCCaMX7SFdjAYz+9wMrabqWuUbxklrkCxqjb+rP6GMLPOK/sb7
-         Pjj+rLWWuFsguTMmEE+OqF/cIt7wp82i7CZCF6Uf9YgBj15mtnZaOGBYrMKEwxMHEBwd
-         t6XAbfgTdN9D+dSpQV7AHzBeIeOwQ927xMmfip/EiEqdRUr6ZQuw6FJHomqp/Yoj/pCF
-         oNvQ==
+        bh=K14gEIiwRJ26lA+Mkn6qqcGlhkPWo02FPF9k8+47c18=;
+        b=TazIoc9lqAxRxK5U6qO1Vcgn9ReoWfYqCs+c8a9YueCFILgq4P9JtZhxe4Tt1ouS2w
+         SQvZqF2BZsthPraEgW6DnuxO5lixpg2jmFoFlQi5bKVASozKu+oG2pyy3xBf2kUf5g47
+         YFdsUmlTnEh2ZIUNx2cDw66zxlP5YeBIQcPDxEkKvq7JQq8wNRUqg23BH2luy6GwiHJe
+         uquI3yjpjj6o/yyZoQ8RyC1E2V8s0qujO9EATYvU7wkoDhSD70l1XmhNzYHiSCvxDeWQ
+         e1jgENAVtZYT1iOuRcaM1zld/wgK2V2qioBID1qFd1NOQXPdCCTklF9iArNajOBnG6Gg
+         Movw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789800738; x=1790405538;
+        d=1e100.net; s=20260707; t=1789800739; x=1790405539;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DhDYniwbZK/cLIuF0+kBZ9daKL8rPuxnkEwAZ8qtlXY=;
-        b=wUdT7za7oeqRX58Lc0bcex2YA3e7pu21aMwXbhOrFN0VqWFyweFrvQoV70DZPpprBO
-         RGTjWd1k6pUxqKf6oTVsHx/wIinLZbUBJ987t6holVpulXHSWYVSOgefiUsb8p6tIfwJ
-         35quxlhuTzK7NCIjQJ+pe3hcvmRPVxOjn4xszM8/E84srOZHagWZENkAg2TD/ILN1MFH
-         GBirFdtQSqWz8npqwY0sIsBDh7N95VjXhC9iDu15mvnw5MG5DKAJjkB27t9Zuc7ahJ48
-         0El8GywoFIZbYceKt0FLshDoK4Eby4Vrf8fCVVGT6YpZwtekK4xPPB2Z6YJTH21iV0Oi
-         AAhw==
-X-Gm-Message-State: AFuF++mVsC9NM2ehommBGtJFF5wL0CxUXaLkvLzbxe3q10bymba+CqD/
-	ASIC7yiU7DIiCS1eHVmmTUcTLzVctcBibQKBB6h5tBohfycrlIKPuMqlysureytF
-X-Gm-Gg: AYBFou3fkJx5ZJy4rFKlsow9vwuqOLocE1O6XGVvJnzxhvW8qNYryvW6VSD2or5g3nX
-	i36VyejKeBRRoyAMMcNCjzpXIWBltIiqMtKfe/eS0ir3LupWOjv0M4zlomJup81RVZjz/4Ksq11
-	AHxMDMqS84zbfqkVq2vaPpWpaLbQMo2jNJuQRR9/dqznMKZbHsT5hfeo28XZ0ZzZD8dpDraDfPX
-	rnDI5JODTqYG9sFCFpX51PxRTj+5fkk90X5PFphnu4zkAI7bJdFf/8iB9r15inbL3TWauSzAPr0
-	SEOYUBGw17y3fhwRrPeiV/t34n2nCDT+fctDKC0pI2YRev/m++zNTkvH7PGSBWBLrkYguHcehse
-	FnCz7glVKt0TLP/CPv7sjTIzHhBsVHk6abd+eOCQbgl1agHtQgzxpTv4ggJ0shpzmANJxbY/non
-	PpL5j0fZWAuommw2SNG6vXa2AubyZ/1Jjw69BAYrXu/2AqK0VMIqQanEup3rN7ngJjx9kzs4lyv
-	oEkad0YHXuw5j4sSdWXLajxFGJa2I6a7Q==
-X-Received: by 2002:a05:6a00:3905:b0:874:72b6:7da4 with SMTP id d2e1a72fcca58-87472b680f6mr7159549b3a.31.1789800737620;
-        Fri, 18 Sep 2026 23:52:17 -0700 (PDT)
+        bh=K14gEIiwRJ26lA+Mkn6qqcGlhkPWo02FPF9k8+47c18=;
+        b=gOB8GY3ZsDY16RQy42auewijsO5Whnb62GiURJl+16CwQGpK7pKyjOmLpxp/kaGtPr
+         UUT0uKabDOpUqGlIq1RffEMMsqWKezOGCacL87itz/vXA1Ix67uWqw3V1b/eBAlnV2dd
+         9rqCmOQZdHh07cIknJjFNI6NhpaFA4QAjU1xQUerD+9HRcBkz9C+i7M0IJ+teCkxBNXG
+         A2+U6TG3K/ol5AMiisVvHPTUgwVpId6UgunBnoSWoTdh9IvDAPBydTgIOdd+3uX3JsLq
+         C4BZKdA92SHekoXiDVUgCu84GCv1BPsqcvJ7oYTSh4wL+w8arjtA8HHeW89SrCMsb5hC
+         WQ1A==
+X-Gm-Message-State: AFuF++lT1/XF2zOaYVrnqpnNFMQ2OzIoAQ27YK33U8twFYnGMism2Hbr
+	UJjOPPBkOM7nwv/lkBce91LJBy1uTtPORsrPWdfgeJDhQupjAtDHAzOCtSj5ndDW
+X-Gm-Gg: AYBFou14r3XYO54o0zasN6nurUVqn1io5kogbTPS9rqyXNYnFCuT2wZMvQXJwRtsjNE
+	gadfiu2ZBcV1jF/ziw3CyjmUTSOVR3h3ihs4OXSEz465TuPIVzxtN8PRMAU3xma4XT5z1XjHeB7
+	9HmBRAv0w8QRB5z+HspeQvGk3GDgZ2vv5laVZBNitB1oyNlUbD1I9AzMxpZTeVCWAJ5MD9vOs6P
+	ie334X66dXhxmqkr2rv69F0s/4H0fDc6AUpkWfmVP00sA0H1+9MHjHvvlMXHJLLgB0KS/kJTyev
+	IQsze1lXAJwTMgilbPEbqCH8ECfAobs3vHHHETlsQ3sEE/8023Nkc4PpiU9mbxX+Cy2VfqMNYPD
+	7XQ2BhO4eXt/uaWCWLXFQ6ILSBmXqFkHPqBWTKMhmZIcnCJiKKQs86W94J5Wr8GrK1P2GmDgZu/
+	96vYysAB2cyTUU1U4sa8dzU6fK/vJPEvoVubh0jTu8CLpo7wfVUSQ6L91vfzUV7tZM7EdqDGN7Y
+	faCgqA0Or3yFbCKoMFDwczvAsAxPFGyUg==
+X-Received: by 2002:a05:6a00:2e11:b0:878:34d7:6995 with SMTP id d2e1a72fcca58-87834d76d70mr625344b3a.37.1789800738978;
+        Fri, 18 Sep 2026 23:52:18 -0700 (PDT)
 Received: from abs.sf.dndws.com ([50.35.86.68])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a94f5464sm678077b3a.27.2026.09.18.23.52.16
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a94f5464sm678077b3a.27.2026.09.18.23.52.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 23:52:17 -0700 (PDT)
+        Fri, 18 Sep 2026 23:52:18 -0700 (PDT)
 From: Tao <gongtao0607@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Tao <gongtao0607@gmail.com>,
@@ -71,12 +71,15 @@ Cc: Tao <gongtao0607@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net 1/2] net: dsa: mt7530: use consistent egress tag for trapped link-local frames
-Date: Sat, 19 Sep 2026 06:52:11 +0000
-Message-ID: <20260919065214.31604-2-gongtao0607@gmail.com>
+Subject: [PATCH net 2/2] net: dsa: mt7530: trap frames to conduit in MFC on EN7581 and AN7583
+Date: Sat, 19 Sep 2026 06:52:12 +0000
+Message-ID: <20260919065214.31604-3-gongtao0607@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260919065214.31604-1-gongtao0607@gmail.com>
 References: <20260919065214.31604-1-gongtao0607@gmail.com>
@@ -88,92 +91,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 3ac85bcfd404 ("net: dsa: mt7530: preserve VLAN tags on trapped
-link-local frames") changed the egress VLAN tag attribute for trapped
-link-local frames in BPC, RGAC1, and RGAC2 from MT7530_VLAN_EG_UNTAGGED
-to MT7530_VLAN_EG_DISABLED, with the intention of passing frames
-through without VLAN tag modification.
+On MT7531 and MT7988 switches, trapped frames forwarding is directed to
+CPU ports specified in the MT7531_CFC (0x04) CPU_PMAP bitmap. When support
+for EN7581 was introduced, it was assumed to follow the MT7531 model.
 
-However, in MT7530 hardware, MT7530_VLAN_EG_DISABLED disables the
-protocol-level egress tagging override, causing trapped frames to
-fall back to the egress port's active VLAN table (VAWD2) rule. When a
-bridge with VLAN filtering is active, the CPU port is configured with
-stack mode, causing the switch to insert a VLAN tag into incoming
-untagged BPDUs (01:80:C2:00:00:00) and other link-local frames before
-delivering them to the CPU conduit.
+However, on Airoha EN7581 and AN7583 switch IP, setting MT7531_CFC alone
+is not sufficient for trapped control frames (such as STP BPDUs) to exit
+towards the CPU port. The switch forwarding hardware also requires the
+MT7530_CPU_EN bit and MT7530_CPU_PORT field to be enabled in MT753X_MFC
+(0x10). Without this, trapped frames are dropped by the switch forwarding
+logic and never reach the CPU conduit.
 
-Because BPDUs arrive at the CPU with a VLAN tag (EtherType 0x8100
-at offset 12 instead of 802.3 length <= 1500), userspace STP daemons
-(such as ustpd) and the kernel bridge drop or ignore them, breaking
-STP convergence.
+Include ID_EN7581 and ID_AN7583 in mt753x_conduit_state_change() to set
+MT7530_CPU_EN and MT7530_CPU_PORT in MT753X_MFC when the conduit becomes
+operational, matching the handling for MT7530, MT7621, and EN7528.
 
-Use MT7530_VLAN_EG_CONSISTENT instead. This instructs the hardware to
-keep egress tagging consistent with the ingress wire format: frames
-received untagged on the wire remain untagged when forwarded to the
-CPU, while VLAN-tagged frames preserve their original VLAN tag.
-
-Fixes: 3ac85bcfd404 ("net: dsa: mt7530: preserve VLAN tags on trapped link-local frames")
+Fixes: 2b0229f67932 ("net: dsa: mt7530: Add EN7581 support")
 Signed-off-by: Tao <gongtao0607@gmail.com>
 ---
- drivers/net/dsa/mt7530.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/dsa/mt7530.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 14692497e1a6..863f2079833f 100644
+index 863f2079833f..9693a55f553e 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -1245,39 +1245,39 @@ static void
- mt753x_trap_frames(struct mt7530_priv *priv)
- {
- 	/* Trap 802.1X PAE frames and BPDUs to the CPU port(s) and egress
--	 * them with the EG_TAG attribute set to disabled (system default)
--	 * so that any VLAN tags in the frame are not modified by the
--	 * switch egress VLAN tag processing. This preserves VLAN tags
--	 * for reception on VLAN sub-interfaces.
-+	 * them with the EG_TAG attribute set to consistent so that any
-+	 * VLAN tags in the frame are not modified by the switch egress
-+	 * VLAN tag processing. This preserves VLAN tags for reception
-+	 * on VLAN sub-interfaces.
+@@ -3309,7 +3309,8 @@ mt753x_conduit_state_change(struct dsa_switch *ds,
+ 	 * interface is up.
  	 */
- 	regmap_update_bits(priv->regmap, MT753X_BPC,
- 			   PAE_BPDU_FR | PAE_EG_TAG_MASK | PAE_PORT_FW_MASK |
- 				   BPDU_EG_TAG_MASK | BPDU_PORT_FW_MASK,
--			   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_DISABLED) |
-+			   PAE_BPDU_FR | PAE_EG_TAG(MT7530_VLAN_EG_CONSISTENT) |
- 				   PAE_PORT_FW(TO_CPU_FW_CPU_ONLY) |
--				   BPDU_EG_TAG(MT7530_VLAN_EG_DISABLED) |
-+				   BPDU_EG_TAG(MT7530_VLAN_EG_CONSISTENT) |
- 				   TO_CPU_FW_CPU_ONLY);
+ 	if (priv->id != ID_MT7530 && priv->id != ID_MT7621 &&
+-	    priv->id != ID_EN7528)
++	    priv->id != ID_EN7528 &&
++	    priv->id != ID_EN7581 && priv->id != ID_AN7583)
+ 		return;
  
- 	/* Trap frames with :01 and :02 MAC DAs to the CPU port(s) and
--	 * egress them with EG_TAG disabled.
-+	 * egress them with EG_TAG consistent.
- 	 */
- 	regmap_update_bits(priv->regmap, MT753X_RGAC1,
- 			   R02_BPDU_FR | R02_EG_TAG_MASK | R02_PORT_FW_MASK |
- 				   R01_BPDU_FR | R01_EG_TAG_MASK | R01_PORT_FW_MASK,
--			   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_DISABLED) |
-+			   R02_BPDU_FR | R02_EG_TAG(MT7530_VLAN_EG_CONSISTENT) |
- 				   R02_PORT_FW(TO_CPU_FW_CPU_ONLY) | R01_BPDU_FR |
--				   R01_EG_TAG(MT7530_VLAN_EG_DISABLED) |
-+				   R01_EG_TAG(MT7530_VLAN_EG_CONSISTENT) |
- 				   TO_CPU_FW_CPU_ONLY);
- 
- 	/* Trap frames with :03 and :0E MAC DAs to the CPU port(s) and
--	 * egress them with EG_TAG disabled.
-+	 * egress them with EG_TAG consistent.
- 	 */
- 	regmap_update_bits(priv->regmap, MT753X_RGAC2,
- 			   R0E_BPDU_FR | R0E_EG_TAG_MASK | R0E_PORT_FW_MASK |
- 				   R03_BPDU_FR | R03_EG_TAG_MASK | R03_PORT_FW_MASK,
--			   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_DISABLED) |
-+			   R0E_BPDU_FR | R0E_EG_TAG(MT7530_VLAN_EG_CONSISTENT) |
- 				   R0E_PORT_FW(TO_CPU_FW_CPU_ONLY) | R03_BPDU_FR |
--				   R03_EG_TAG(MT7530_VLAN_EG_DISABLED) |
-+				   R03_EG_TAG(MT7530_VLAN_EG_CONSISTENT) |
- 				   TO_CPU_FW_CPU_ONLY);
- }
- 
+ 	mask = BIT(cpu_dp->index);
 -- 
 2.55.0
 
