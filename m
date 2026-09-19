@@ -1,89 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52AD379C46;
-	Sat, 19 Sep 2026 01:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD91365A19
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789779691; cv=none; b=MhVkcD5ISGxlh+nQ25m325d13B1qpyYvqYzJX+sQRWVjlyu8ePhUuiPGUdPJJZb2FKXmyYTCbbJ0IZOrQ8L0HOqoTqpFRGheQizblZRBjS25gDe5G5qCoqhH/3zFcGWfqYtTRqjRIEjZeXXuqMKPed1Xt8ChcCLdy6TRXRYiiZI=
+	t=1789779889; cv=none; b=mLXh3092jyy8pwKK0GD/+JV7CDyOQLZ+CUm/W2w5iyFKvc5kCeYh9uQ2GMmDYCgNSP/OpLi6V4naXxxxU5X7msbnkWIJih7OiSXOvHjMtbufO3WDsNY6r8ND79wzTK2iSOUIzSjkf/MCQUF9KFVbnjyEacz2dei7XP/fxQ3b5kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789779691; c=relaxed/simple;
-	bh=tB58EVgfy0/5KYj84zuUO88RYwQ509SqkS1ppN0TSJ8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GQrEh5Owv3wxldcvYRRpL7l8c/0K4++WVkHePVR+UYXYacIJer1X99lLLJZkZk3Fz6kz0ziGEB2v3N3HbL88I1AO/LkbKZgVSBO2G6i2mOhUnzZzJYCg/ZPJW86lA57N2NhBdzpYc0iBaPDdphHH2ZuKCR5EYNzYYLk6yUZzgeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3X1cgsn; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3X1cgsn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA30A1F00898;
-	Sat, 19 Sep 2026 01:01:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789779676;
-	bh=qK7mrY3OuW5ru9HkHZRVxNwKLylrgUS+oQ1Mt6LVVg0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=K3X1cgsnnf0eIdaMpZCsAvjsvMxjlyYA42fLQz9Dx71qi8MT9Vp7WiuEsA8M+nnPj
-	 IxPG8GN7eJxjzJ8GnFeJGUoyCSqW7Pa88MJSPrNxvIJj3NMGjCdSzGdCGAeoVls/vJ
-	 c2NEBlRHeZIzzOfbQSo4fcicCRCuBPzzfiWm6aROomWlTPnqm9lXTLiMm5/sRxjjjv
-	 qOTqDGGZakqwTnoUm97hyP5Pv+VwJq9fMvca2esYpbx+V8JWgy0kLCi6uasFxcX15O
-	 GBa8R0P5HzEiRS/tfCAVsAxwxDxWPkMVcDtEkuI33Td3GSnPzZzDuZQFNSk51W907t
-	 7QwmMTUPkqwsQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198493811978;
-	Sat, 19 Sep 2026 01:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1789779889; c=relaxed/simple;
+	bh=ikDf+TJBNZ7uNCFwJDN73m8xKhgFm0huORbGGJ5wLPs=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KRKRqgS+YWJJmwlCzCBHrn3/MwVOKwSVrSLhTH5VHReoiGeiIB5Hq8auVnjbjSjJ3q0LtZFEoz27lwMusHE/PutMc6dNhRtkav0q6/JxtrbWbmgtT0EFGfKszYJ8FxYdokMnp0tQgaSOWBQpSnvSDPo8XGAT4oMkYBdDpOvYTjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6b1b8b593a4so1627375eaf.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:04:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789779877; x=1790384677;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yVSgU5+TPWUvlYb6Rq+BVY3j9T8HbLsdyAn+NYiX5k0=;
+        b=gYZ9xe38r7DNgaFjjUpE0+Zx9J2y8DMLZjooDQGeKMb+dQmqvhPlbBYY0qBwOJ+cCu
+         WtTKe9/wF2M++UET5Dp9THj40giOiJys5kp/1lzcS0nFzCXWcHWQDcZb9OORoEC5Lsyw
+         CztSh57CqrkVjq+YezmTqSamtOpANOLHVZpNy12phkSGb2ePGWtAyatN6gZFloUUOkp2
+         AvU6WtEZRMZQ8KphjILpPLMm7Wpi43h8A2nC5OeLnb82d0L3YvhtMbvmlBEAk2fofcji
+         2LHVv38RlJI7NNRjwW2wt6lMmcKn0Ie2mw85DZkDkhezTgTWbDe36Pop+P17C/fKgjSV
+         /7mw==
+X-Forwarded-Encrypted: i=1; AKwUvBxjihhs02i7h/DaQepMwxeTJT3WrtPicikmflUZM/J3ED0fgv3Whwfutj4752bRy5w3ryVrDXQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++k1Rk7Nb+fQMsRS1pePTjWWaOkA2y0tN2HLK1jVkIRxXDsQb5D4
+	4Zvg9mbrZclL435dNrhpRSV7/yIX4ER9tlpPOpDkXEurqoemFRbJT/Pvw+nVaYuPjab2q9OLhQP
+	WsG5ee7DT3XtF07e7rORJ2R5Hn6xK7OxvJ9r3+3kM5syqoIGqeXTBdZIqj3U=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/6] net/mlx5: more HWS misc enhancements
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178977960889.1214202.9969611467837827041.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 01:00:08 +0000
-References: <20260915111912.3926585-1-tariqt@nvidia.com>
-In-Reply-To: <20260915111912.3926585-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- erezsh@nvidia.com, gal@nvidia.com, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
- saeedm@nvidia.com, kliteyn@nvidia.com
+X-Received: by 2002:a05:6820:2604:b0:6c9:e0d0:2064 with SMTP id
+ 006d021491bc7-6ca9b03a36dmr3936797eaf.27.1789779876917; Fri, 18 Sep 2026
+ 18:04:36 -0700 (PDT)
+Date: Fri, 18 Sep 2026 18:04:36 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aaddfa4.e548f532.1ca396.0000.GAE@google.com>
+Subject: [syzbot] net-next build error (6)
+From: syzbot <syzbot+73463506b30826d442a1@syzkaller.appspotmail.com>
+To: davem@davemloft.net, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+Hello,
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+syzbot found the following issue on:
 
-On Tue, 15 Sep 2026 14:19:06 +0300 you wrote:
-> Hi,
-> 
-> This series by Yevgeny brings more misc improvements to the mlx5 HWS
-> driver.
-> 
-> Regards,
-> Tariq
-> 
-> [...]
+HEAD commit:    c0bb05f2d19e tools: ynl: Fix out-of-tree build for ynltool
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=10edb905580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ba53f227359c9d59
+dashboard link: https://syzkaller.appspot.com/bug?extid=73463506b30826d442a1
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-Here is the summary with links:
-  - [net-next,1/6] net/mlx5: HWS, Return meaningful error code in hws_send_wqe_fw
-    https://git.kernel.org/netdev/net-next/c/0ca19b9fdcb0
-  - [net-next,2/6] net/mlx5: HWS, Fix error message in mlx5hws_cmd_generate_wqe
-    https://git.kernel.org/netdev/net-next/c/59da9e5163e9
-  - [net-next,3/6] net/mlx5: HWS, Replace kzalloc with kzalloc_obj
-    https://git.kernel.org/netdev/net-next/c/23aacde37804
-  - [net-next,4/6] net/mlx5: HWS, Add timeout mechanism to draining send queues
-    https://git.kernel.org/netdev/net-next/c/7bf7c4367db6
-  - [net-next,5/6] net/mlx5: HWS, Handle timeout draining the send queue for FW STEs
-    https://git.kernel.org/netdev/net-next/c/03d41926d03a
-  - [net-next,6/6] net/mlx5: HWS, Remove unneeded WRITE_ONCE in post send
-    https://git.kernel.org/netdev/net-next/c/889f1d8c0eb2
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+73463506b30826d442a1@syzkaller.appspotmail.com
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+mv: cannot stat 'arch/x86/include/generated/asm/.tmp_cpufeaturemasks.h': No such file or directory
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
