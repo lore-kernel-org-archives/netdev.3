@@ -1,61 +1,64 @@
 Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90E12D73B6
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 13:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5513033F8
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 13:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789825431; cv=none; b=XY2M4c2AE3NRxgHGFyiAaHcsPBAMMj1hk2hI/3g0l/b7iHFvYVe2mtoaFHvH68YpMIFvbtpxzhvgYj2pxNygJ+FtnEXakmnXYIQL2MTig3+cCkB1GYqN/UJ8VstQ6d7d3zbAFQP5mPM6erAkbBh73sQY0CkIXRzXGlmGQE+XX1E=
+	t=1789825433; cv=none; b=n54y48gaM6eLNR19O7Yhv84WChiyHRyMlkCnai0uzDPM69Zfz5IpTpkicjC7x1IRbikUEPINwFabg0a6UwGjXa092ASlrA6VqM+KsAOWCw73hkPIZDvsiNsYNUJ7HtD9Mm9X6Yfm/MryDltUp/hNOHPcwFycWiqgBoVXa+Ns0uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789825431; c=relaxed/simple;
-	bh=dFZ63T3zvOowaEIbbYHyNeo31i69lA6u+JkTJ9+rQeY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S1lq4ypPlGRWCN3hIKcveAwvLfnbyQtoQJhLS6Lfe0BVoIU06IkYgutCHMsUOz3BzWPUXQ7gtkraZDCOsjkLygTVHIQZbo06xbhde/FQ+yocu6kPPbuxx+F0mdQ5W7ttyPFE7l9C+1KZyudz+Hx1SbyI3SEJuZazJnVcKMM+YnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/zngkOn; arc=none smtp.client-ip=74.125.230.76
+	s=arc-20240116; t=1789825433; c=relaxed/simple;
+	bh=Neh/FDQ2RY8OrFxtlIC/w3H0LG+CLOhi6pdfv56r7oE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ut4EGA555R51H7n7mPJo5mOh4EezZw2CIuCO8XNzCMAQgIjRukSuf1nBax+vtjKqxsKvut0kJzkyNvafz08v6qLSnsedA3Y8/jC2LIK7Muz5shAhFDhfKtho1F4kQ1yIDvc6K9cuA7MCcv3Tj5+CoXXzPlDzdDymL6wCJsEFYLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IxwaexRx; arc=none smtp.client-ip=74.125.230.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/zngkOn"
-Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a5d4688decso16487981fa.2
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:43:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IxwaexRx"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a5d4688decso16488211fa.2
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789825428; x=1790430228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HuHF/oDZVPSpibhsK+iPHeV9FkZXWA2uFO4o60iu8z0=;
-        b=H/zngkOncThpID1/pMXMVInlk7OkTPlKuJk5fdWven3hX8/TIEcozwB2K1Dz8XNdRj
-         pq6ysDnx+Cz5VmuoIm0q891L2OhMcX9l+wGIHAeIgrE+ho4F1TPWM0XmpwBu1n+BgLIa
-         LlrLHexOZyXo0r8tIujIGvQkwVz738I25ovWMZc+ZTFYQs8DUWjWYnZ+5HReb3nfD8Fz
-         FdNLFUybxbouKAPqslPUrY42xdKgp++U2y//2UN45u83YmK0yRYcpKgINF7nY1LHiYz+
-         MDS7gvJtxYtE5X+jlrHOk4byiTTWdklQf6QUJPgGkSIuUU+Zq4CJ7YOQFEu7ldqwajdK
-         b9hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789825428; x=1790430228;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789825429; x=1790430229; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HuHF/oDZVPSpibhsK+iPHeV9FkZXWA2uFO4o60iu8z0=;
-        b=kIkOQugqFih0k/vHhLulu5Pe/VwKI1xlTsXALpAFRmtKfJHITVv+9Kx6mlfyyjlEpy
-         ONSAIQd7YckQlYL3EAuRTKANM+ioGph9d0bZv/SYY0dashEHFdENNJBgpEG9k4YTfFfV
-         qoHPr4mntT9gPrkD9Hpq8FCQ24YdVPSTmPLMGXSRwrJuFcQ6ZT4+aAKbmh0Ua/igtXcA
-         p1WOTK+BiTpY4mpq1p7S7NxZw6KGU1lBXkws97kyTUnngDsU+4RLh6Xq70+dhA/2TKIz
-         jz6RH7SX49smkWX8OK0jQPktJBrmL/59+EAdSGmHmZ6hC1InixakyytuuSDxKWtx11rM
-         BreA==
-X-Gm-Message-State: AFuF++kzDuRzL1lzH7RobAfYMNUCbPJr9H2gAuwDQFUoD67o7OfEVGPF
-	ME2A1L1ImLUHVfjwudEO0yuSjxkyMXfYrUF3nhbdwO4x22CGBlL5/yHQ1T1ONiS8
-X-Gm-Gg: AYBFou2nZ2i1I1D/1e529ZdCcaS2seBq102JJJOzCcl+GyyJtPWX5HYIQmhR7HlHEdi
-	OxqC8vbFA5iJMXnEbENz+SqAxX7q2zIu6LM4iScmWaeBBxf/n1nNsWdOEErTAcvqtUrJc+POT6K
-	qlAoLoRXSKj+iwtujrWtGjh3AheUDauS8iWfNK8FaGNX6H0EstZcrl8uesv2Vr6Y3Bqvp5BYl2C
-	RXOB27NwtAA2NWbVp56HokGkN6NmVyUCzokj+YuaK+m36RdrgeMyYu6FSR/MtbcWbk4N0OVpzj9
-	3TZ7YgMnE6KkJ52E9yRiLnM2/XDd5tGBFE/4J0S6ihY8/UU2/KA/9RLUutMuf6ZJ2yLKNhJs6MD
-	dB66y82v78C+kJeOvqzXLWb9UYlTsj5xoLAsaCaQqcHg720D6VRGTzolYDpblD+MFCnIxZWp9zk
-	dBq3kYCEzwNMMpa7POqxLgMoYDvoGlNtuK27rf8m2FQJPu3PhT+Vo25jyr3omcYXx9qcPVcZgT6
-	9ZzhPemdj5YyTgKglEPM5VFoTW/+DaB58EnkSIvvpbYH4fSxbaOCgS9U4vxuT22ijCG
-X-Received: by 2002:a05:651c:2213:b0:3a3:314d:1169 with SMTP id 38308e7fff4ca-3a5fbf05908mr10726771fa.1.1789825427681;
-        Sat, 19 Sep 2026 06:43:47 -0700 (PDT)
+        bh=fQI3S0LyGyRRUcXsOa75Z3ymY28haXHCQF4fW8+TIHQ=;
+        b=IxwaexRxk8nhueOqezCpnlkFN5pe0wJz1jaquqqS7BdSxR12jxwht0Ebaf48DpL38w
+         hNhAcqgg9ym5TTVu5T7HktTx0QHTqkMWeGDTZUmnPYHQH7MhOL4n2n0JvqXklU9nj195
+         4LI9pv79kZRC7lxoCYtmoW0ibMX3lp8QUFQ3/5RZCQIkdGtT4gVqVm6GYUV3DGGYIL4f
+         8EHOkePMFl0qXLzlG5Ws3muK3LxRMyphitpd8Tz+J+c5FhrFfCA0kaIGpZ/UokMgSs1Z
+         D6aDyEIBUMEgdllrjtN/QrJWI+0LkUQjiYJWQRBYODyGrJ4K9Vb8j5o32EZ3f7uEkQKP
+         9V4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789825429; x=1790430229;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fQI3S0LyGyRRUcXsOa75Z3ymY28haXHCQF4fW8+TIHQ=;
+        b=lLqYlGaN2Rdv/XjM1Ju/6fIPAwWqyDe8Y+8lDVbmKYzleR88HPbWCJ4CheRQeeEJTg
+         E//K1C8Is58wFR5O08hbsuMrAbidW6BLZqSx9tw2pwdCTUX1WkuLtF8t9F20gVDE2vMM
+         E//parnaJvspyhtGk2hQehbLNuun3vMwy52aGdcK9QIbRHIsV1LUdezdHuCqK0Qnrl4n
+         xLhBBUerFN96ZsMpdT0YyLf1Szd8mz3W6hosj06lxlC2efhL0IgRkUNSbhKKdSrXl1WW
+         y1X3bgqJj5pEi2HG5tT2xr7w3JZJpfXMURXt1ZxHO9UiMS83vKL5UJLVlg7ROWOCx6ih
+         MOlA==
+X-Gm-Message-State: AFuF++kI/20vStRK1Kot0jcBymw6dW9Ag2M/gbGp5wHl0PMHmLQLfFpM
+	ZhzU949hVzF0BNIzRnq2/U+w5TrMbFPWjvt2TvbELdwkMS/pW8PNwvFoPW2yNYCu
+X-Gm-Gg: AYBFou2fvFAYRSw+78jABeBleUomrCNAgDti2OsAVEwlstpG1By7UItLoFVWs3F9j/2
+	DGHu6RM97U8rmkKWM+GEFrNiANikrlCean/PTOgkR92Nk28n9nQaDFiF0ccTvuLo2BVIm2aXExa
+	QFk9i9gRwISHJzRL6jm8gNa4+R15L+JyRiiG5/ujeDvcDaugorcN3THUmEVONfGORwZP/KVUBdg
+	JkK83jQS986a5uL4vdgxTbfeheP95+YqmoWmkyEx8K8qV+Ei3D9IKg+qNSFLm2pt3KxZtN1AlQR
+	ci/tPrbaJ6rIhA1cAUmuOgwS8dBIW3LsdOxPqUPAipMD64t1Eq3n88qllFh2UmOvNyB36hn87QI
+	uq6NqURsUOQYGArOLF/+4CDQMa/9qxKZnD9RWR9YYOg3PK4WyH2Sei1wEsIDZjAHujK0/Z9mSR/
+	RGwu60CkrddjnasngHKGwBkeY52k+plwtocxco9Rty81rmF4pkNDMhn2CEVxza+03SUCwNaU0Sm
+	VKu/SgFviJZJow5I6BQrqn5PGPzDg2j+I3U37ZYIw/XaPRZcC/SBQMrqv0SLbt0ahrxiO2i5soc
+	nZk=
+X-Received: by 2002:a05:651c:509:b0:3a3:7682:49a0 with SMTP id 38308e7fff4ca-3a5fc0a87b3mr11118821fa.21.1789825429162;
+        Sat, 19 Sep 2026 06:43:49 -0700 (PDT)
 Received: from localhost.localdomain (46-138-187-224.dynamic.spd-mgts.ru. [46.138.187.224])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a60767aa6asm6220941fa.40.2026.09.19.06.43.46
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a60767aa6asm6220941fa.40.2026.09.19.06.43.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 06:43:47 -0700 (PDT)
+        Sat, 19 Sep 2026 06:43:48 -0700 (PDT)
 From: Artem Lytkin <iprintercanon@gmail.com>
 To: netdev@vger.kernel.org
 Cc: bridge@lists.linux.dev,
@@ -82,10 +85,12 @@ Cc: bridge@lists.linux.dev,
 	wintera@linux.ibm.com,
 	aswin@linux.ibm.com,
 	linux-s390@vger.kernel.org
-Subject: [PATCH net-next v3 0/2] bridge: report an oversized IFLA_AF_SPEC nest instead of truncating
-Date: Sat, 19 Sep 2026 16:43:31 +0300
-Message-ID: <20260919134333.49379-1-iprintercanon@gmail.com>
+Subject: [PATCH net-next v3 1/2] rtnetlink: pass extack to ndo_bridge_getlink()
+Date: Sat, 19 Sep 2026 16:43:32 +0300
+Message-ID: <20260919134333.49379-2-iprintercanon@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260919134333.49379-1-iprintercanon@gmail.com>
+References: <20260919134333.49379-1-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,35 +99,352 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Patch 1 adds extack to ndo_bridge_getlink(), patch 2 returns -E2BIG
-when the AF_SPEC nest, or the MST/CFM nest inside it, overflows nla_len.
+So the bridge can say why filling the link info failed.
+No functional change.
 
-v3: handle the MST and CFM nests too, use nla_nest_end_safe() (Nikolay)
-v2: https://lore.kernel.org/netdev/20260912135022.1701-1-iprintercanon@gmail.com/
-v1: https://lore.kernel.org/netdev/20260906224246.21719-1-iprintercanon@gmail.com/
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c      |  4 ++--
+ drivers/net/ethernet/emulex/benet/be_main.c    |  4 ++--
+ drivers/net/ethernet/intel/i40e/i40e_main.c    |  6 ++++--
+ drivers/net/ethernet/intel/ice/ice_main.c      |  6 ++++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c  |  5 +++--
+ .../net/ethernet/mellanox/mlx5/core/en_main.c  |  4 ++--
+ .../ethernet/netronome/nfp/nfp_net_common.c    |  4 ++--
+ drivers/s390/net/qeth_l2_main.c                |  4 ++--
+ include/linux/netdevice.h                      |  5 +++--
+ include/linux/rtnetlink.h                      |  3 ++-
+ net/bridge/br_netlink.c                        |  3 ++-
+ net/bridge/br_private.h                        |  2 +-
+ net/core/rtnetlink.c                           | 18 +++++++++++-------
+ 13 files changed, 40 insertions(+), 28 deletions(-)
 
-
-Artem Lytkin (2):
-  rtnetlink: pass extack to ndo_bridge_getlink()
-  net: bridge: fail link info that does not fit in a netlink attribute
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  4 +--
- drivers/net/ethernet/emulex/benet/be_main.c   |  4 +--
- drivers/net/ethernet/intel/i40e/i40e_main.c   |  6 ++--
- drivers/net/ethernet/intel/ice/ice_main.c     |  6 ++--
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  5 ++--
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  4 +--
- .../ethernet/netronome/nfp/nfp_net_common.c   |  4 +--
- drivers/s390/net/qeth_l2_main.c               |  4 +--
- include/linux/netdevice.h                     |  5 ++--
- include/linux/rtnetlink.h                     |  3 +-
- net/bridge/br_netlink.c                       | 28 +++++++++++++------
- net/bridge/br_private.h                       |  2 +-
- net/core/rtnetlink.c                          | 18 +++++++-----
- 13 files changed, 57 insertions(+), 36 deletions(-)
-
-
-base-commit: e3bfd25626b44b6fa61a13c17178922171d519ce
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index ca99f4b1a63c3..a752e66bf6368 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -16154,12 +16154,12 @@ static const struct udp_tunnel_nic_info bnxt_udp_tunnels = {
+ 
+ static int bnxt_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 			       struct net_device *dev, u32 filter_mask,
+-			       int nlflags)
++			       int nlflags, struct netlink_ext_ack *extack)
+ {
+ 	struct bnxt *bp = netdev_priv(dev);
+ 
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, bp->br_mode, 0, 0,
+-				       nlflags, filter_mask, NULL);
++				       nlflags, filter_mask, NULL, extack);
+ }
+ 
+ static int bnxt_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
+index ed302f5ec4768..cc9c87539a429 100644
+--- a/drivers/net/ethernet/emulex/benet/be_main.c
++++ b/drivers/net/ethernet/emulex/benet/be_main.c
+@@ -5011,7 +5011,7 @@ static int be_ndo_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+ 
+ static int be_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				 struct net_device *dev, u32 filter_mask,
+-				 int nlflags)
++				 int nlflags, struct netlink_ext_ack *extack)
+ {
+ 	struct be_adapter *adapter = netdev_priv(dev);
+ 	int status = 0;
+@@ -5037,7 +5037,7 @@ static int be_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       hsw_mode == PORT_FWD_TYPE_VEPA ?
+ 				       BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB,
+-				       0, 0, nlflags, filter_mask, NULL);
++				       0, 0, nlflags, filter_mask, NULL, extack);
+ }
+ 
+ static struct be_cmd_work *be_alloc_work(struct be_adapter *adapter,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index abbc71e815ae3..52c2b393aacd2 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -13151,6 +13151,7 @@ static int i40e_ndo_bridge_setlink(struct net_device *dev,
+  * @dev: the netdev being configured
+  * @filter_mask: unused
+  * @nlflags: netlink flags passed in
++ * @extack: netlink extended ack
+  *
+  * Return the mode in which the hardware bridge is operating in
+  * i.e VEB or VEPA.
+@@ -13158,7 +13159,8 @@ static int i40e_ndo_bridge_setlink(struct net_device *dev,
+ static int i40e_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				   struct net_device *dev,
+ 				   u32 __always_unused filter_mask,
+-				   int nlflags)
++				   int nlflags,
++				   struct netlink_ext_ack *extack)
+ {
+ 	struct i40e_netdev_priv *np = netdev_priv(dev);
+ 	struct i40e_vsi *vsi = np->vsi;
+@@ -13175,7 +13177,7 @@ static int i40e_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 		return 0;
+ 
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, veb->bridge_mode,
+-				       0, 0, nlflags, filter_mask, NULL);
++				       0, 0, nlflags, filter_mask, NULL, extack);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 707c7431b91a6..f98295438df78 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -8095,12 +8095,14 @@ int ice_set_rss_hfunc(struct ice_vsi *vsi, u8 hfunc)
+  * @dev: the netdev being configured
+  * @filter_mask: filter mask passed in
+  * @nlflags: netlink flags passed in
++ * @extack: netlink extended ack
+  *
+  * Return the bridge mode (VEB/VEPA)
+  */
+ static int
+ ice_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+-		   struct net_device *dev, u32 filter_mask, int nlflags)
++		   struct net_device *dev, u32 filter_mask, int nlflags,
++		   struct netlink_ext_ack *extack)
+ {
+ 	struct ice_pf *pf = ice_netdev_to_pf(dev);
+ 	u16 bmode;
+@@ -8108,7 +8110,7 @@ ice_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	bmode = pf->first_sw->bridge_mode;
+ 
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, bmode, 0, 0, nlflags,
+-				       filter_mask, NULL);
++				       filter_mask, NULL, extack);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index f91856498eb2d..77dfd80a6e368 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -10726,7 +10726,8 @@ static int ixgbe_ndo_bridge_setlink(struct net_device *dev,
+ 
+ static int ixgbe_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				    struct net_device *dev,
+-				    u32 filter_mask, int nlflags)
++				    u32 filter_mask, int nlflags,
++				    struct netlink_ext_ack *extack)
+ {
+ 	struct ixgbe_adapter *adapter = ixgbe_from_netdev(dev);
+ 
+@@ -10735,7 +10736,7 @@ static int ixgbe_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       adapter->bridge_mode, 0, 0, nlflags,
+-				       filter_mask, NULL);
++				       filter_mask, NULL, extack);
+ }
+ 
+ static void *ixgbe_fwd_add(struct net_device *pdev, struct net_device *vdev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index fc110a7d16e8d..53bf79dbe08de 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5277,7 +5277,7 @@ static int mlx5e_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+ #ifdef CONFIG_MLX5_ESWITCH
+ static int mlx5e_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				struct net_device *dev, u32 filter_mask,
+-				int nlflags)
++				int nlflags, struct netlink_ext_ack *extack)
+ {
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+@@ -5288,7 +5288,7 @@ static int mlx5e_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	mode = setting ? BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB;
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       mode,
+-				       0, 0, nlflags, filter_mask, NULL);
++				       0, 0, nlflags, filter_mask, NULL, extack);
+ }
+ 
+ static int mlx5e_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+index 7928e76da723e..cb751dddb6887 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -2257,7 +2257,7 @@ static int nfp_net_set_mac_address(struct net_device *netdev, void *addr)
+ 
+ static int nfp_net_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				  struct net_device *dev, u32 filter_mask,
+-				  int nlflags)
++				  int nlflags, struct netlink_ext_ack *extack)
+ {
+ 	struct nfp_net *nn = netdev_priv(dev);
+ 	u16 mode;
+@@ -2269,7 +2269,7 @@ static int nfp_net_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	       BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB;
+ 
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, mode, 0, 0,
+-				       nlflags, filter_mask, NULL);
++				       nlflags, filter_mask, NULL, extack);
+ }
+ 
+ static int nfp_net_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+diff --git a/drivers/s390/net/qeth_l2_main.c b/drivers/s390/net/qeth_l2_main.c
+index 2935c2ecc314b..f960cf5a97a29 100644
+--- a/drivers/s390/net/qeth_l2_main.c
++++ b/drivers/s390/net/qeth_l2_main.c
+@@ -935,7 +935,7 @@ static void qeth_l2_br2dev_put(void)
+ 
+ static int qeth_l2_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				  struct net_device *dev, u32 filter_mask,
+-				  int nlflags)
++				  int nlflags, struct netlink_ext_ack *extack)
+ {
+ 	struct qeth_priv *priv = netdev_priv(dev);
+ 	struct qeth_card *card = dev->ml_priv;
+@@ -949,7 +949,7 @@ static int qeth_l2_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       mode, priv->brport_features,
+ 				       priv->brport_hw_features,
+-				       nlflags, filter_mask, NULL);
++				       nlflags, filter_mask, NULL, extack);
+ }
+ 
+ static const struct nla_policy qeth_brport_policy[IFLA_BRPORT_MAX + 1] = {
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 1f0710eef185b..02238b1e33453 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1360,7 +1360,7 @@ struct netdev_net_notifier {
+  *			     u16 flags, struct netlink_ext_ack *extack)
+  * int (*ndo_bridge_getlink)(struct sk_buff *skb, u32 pid, u32 seq,
+  *			     struct net_device *dev, u32 filter_mask,
+- *			     int nlflags)
++ *			     int nlflags, struct netlink_ext_ack *extack)
+  * int (*ndo_bridge_dellink)(struct net_device *dev, struct nlmsghdr *nlh,
+  *			     u16 flags);
+  *
+@@ -1659,7 +1659,8 @@ struct net_device_ops {
+ 						      u32 pid, u32 seq,
+ 						      struct net_device *dev,
+ 						      u32 filter_mask,
+-						      int nlflags);
++						      int nlflags,
++						      struct netlink_ext_ack *extack);
+ 	int			(*ndo_bridge_dellink)(struct net_device *dev,
+ 						      struct nlmsghdr *nlh,
+ 						      u16 flags);
+diff --git a/include/linux/rtnetlink.h b/include/linux/rtnetlink.h
+index 95729339e7a54..a408c36a7b558 100644
+--- a/include/linux/rtnetlink.h
++++ b/include/linux/rtnetlink.h
+@@ -222,7 +222,8 @@ extern int ndo_dflt_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 				   u32 filter_mask,
+ 				   int (*vlan_fill)(struct sk_buff *skb,
+ 						    struct net_device *dev,
+-						    u32 filter_mask));
++						    u32 filter_mask),
++				   struct netlink_ext_ack *extack);
+ 
+ extern void rtnl_offload_xstats_notify(struct net_device *dev);
+ 
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index ae76df0de05a0..855a46aec3a89 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -680,7 +680,8 @@ void br_ifinfo_notify(int event, const struct net_bridge *br,
+  * Dump information about all ports, in response to GETLINK
+  */
+ int br_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+-	       struct net_device *dev, u32 filter_mask, int nlflags)
++	       struct net_device *dev, u32 filter_mask, int nlflags,
++	       struct netlink_ext_ack *extack)
+ {
+ 	struct net_bridge_port *port = br_port_get_rtnl(dev);
+ 
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 09c397e303307..edbe7a1f57363 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -2179,7 +2179,7 @@ int br_setlink(struct net_device *dev, struct nlmsghdr *nlmsg, u16 flags,
+ 	       struct netlink_ext_ack *extack);
+ int br_dellink(struct net_device *dev, struct nlmsghdr *nlmsg, u16 flags);
+ int br_getlink(struct sk_buff *skb, u32 pid, u32 seq, struct net_device *dev,
+-	       u32 filter_mask, int nlflags);
++	       u32 filter_mask, int nlflags, struct netlink_ext_ack *extack);
+ int br_process_vlan_info(struct net_bridge *br,
+ 			 struct net_bridge_port *p, int cmd,
+ 			 struct bridge_vlan_info *vinfo_curr,
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index e3444fd240615..a341e06f47d31 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -5420,7 +5420,8 @@ int ndo_dflt_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 			    u32 filter_mask,
+ 			    int (*vlan_fill)(struct sk_buff *skb,
+ 					     struct net_device *dev,
+-					     u32 filter_mask))
++					     u32 filter_mask),
++			    struct netlink_ext_ack *extack)
+ {
+ 	struct nlmsghdr *nlh;
+ 	struct ifinfomsg *ifm;
+@@ -5596,7 +5597,8 @@ static int rtnl_bridge_getlink(struct sk_buff *skb, struct netlink_callback *cb)
+ 			if (idx >= cb->args[0]) {
+ 				err = br_dev->netdev_ops->ndo_bridge_getlink(
+ 						skb, portid, seq, dev,
+-						filter_mask, NLM_F_MULTI);
++						filter_mask, NLM_F_MULTI,
++						cb->extack);
+ 				if (err < 0 && err != -EOPNOTSUPP) {
+ 					if (likely(skb->len))
+ 						break;
+@@ -5612,7 +5614,8 @@ static int rtnl_bridge_getlink(struct sk_buff *skb, struct netlink_callback *cb)
+ 				err = ops->ndo_bridge_getlink(skb, portid,
+ 							      seq, dev,
+ 							      filter_mask,
+-							      NLM_F_MULTI);
++							      NLM_F_MULTI,
++							      cb->extack);
+ 				if (err < 0 && err != -EOPNOTSUPP) {
+ 					if (likely(skb->len))
+ 						break;
+@@ -5646,7 +5649,8 @@ static inline size_t bridge_nlmsg_size(void)
+ 		+ nla_total_size(sizeof(u16));	/* IFLA_BRIDGE_MODE */
+ }
+ 
+-static int rtnl_bridge_notify(struct net_device *dev)
++static int rtnl_bridge_notify(struct net_device *dev,
++			      struct netlink_ext_ack *extack)
+ {
+ 	struct net *net = dev_net(dev);
+ 	struct sk_buff *skb;
+@@ -5661,7 +5665,7 @@ static int rtnl_bridge_notify(struct net_device *dev)
+ 		goto errout;
+ 	}
+ 
+-	err = dev->netdev_ops->ndo_bridge_getlink(skb, 0, 0, dev, 0, 0);
++	err = dev->netdev_ops->ndo_bridge_getlink(skb, 0, 0, dev, 0, 0, extack);
+ 	if (err < 0)
+ 		goto errout;
+ 
+@@ -5752,7 +5756,7 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			/* Generate event to notify upper layer of bridge
+ 			 * change
+ 			 */
+-			err = rtnl_bridge_notify(dev);
++			err = rtnl_bridge_notify(dev, extack);
+ 		}
+ 	}
+ 
+@@ -5827,7 +5831,7 @@ static int rtnl_bridge_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			/* Generate event to notify upper layer of bridge
+ 			 * change
+ 			 */
+-			err = rtnl_bridge_notify(dev);
++			err = rtnl_bridge_notify(dev, extack);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
