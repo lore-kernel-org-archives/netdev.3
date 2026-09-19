@@ -1,63 +1,63 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14B737F001
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 22:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB2D3A3E68
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 22:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789857279; cv=none; b=iazteJXBCUgESXqbGiUAUQb6GraHOgM2PBOgjr9cQZGwFds0TeiexfEB8iB1Li2VAlfx84fcf1ZQqTpCiSw9X89mxAv23z5i1qWqZAqvhYpHwB1cBFUzz7p5l2417JBhFGyKIE9MDQ/1qkdlS5Dzj0XHFN3jbhflh89NfyYNYVk=
+	t=1789857280; cv=none; b=HYGHeHOLLzZ45B2HWYybJw9bsae+CKgO7GsOwDh+HYLUvlssgLS1qzYQtiMw5BGeV1E0m+n514+Tu7MmVQu+tO1ld8E1/+Xb9u1zMBj8pfJycyiCG4od2kTzQkr143oMgHWKJO4fH18qhQ4jpGIIr9ALLtH+a0YpXdKFjaUBlFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789857279; c=relaxed/simple;
-	bh=ft0Di8pJXd1cV0IPnAYGRlU6/sR1zWIgqXD+009XfSM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hT/VF9IovCWKw/X9hAY9vlySCq41mtIYimaMI7sYOHtMFG5eTDhcd9Zs1np/0izD8UQk11FxSn6mvCpb/hcyArmJC3Ya9mMPqLsdKccm9p+4qgw+izD+DDycBjXcLVsHqAfh0RWtgJX8XGzm7CBWqJL4oxEBE8Zd8aKdGD78Dbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ssyWOiWQ; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1789857280; c=relaxed/simple;
+	bh=YJzIm5QA/CHQO6n6vteWNo/Y1kHnMLjMisvbzcEtMco=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VP3xCrX19SY+5ZfkO1FBrmQlh0V5ifvwqhGtpFd+YLB6numKlC60oAUqi1L3OQgeFyCudNUpYtF9EytOUXDIUfnetrdcOUFDKGl3ZNtwMxliVT7MemJMMLnmGkaK3Om/jJ+50YUX/w/YVp6b0RSoLPUswbxC+w3BDxwavr16udo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pFFLTC2I; arc=none smtp.client-ip=74.125.228.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ssyWOiWQ"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-86ec25cf7ecso2685763b3a.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:34:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pFFLTC2I"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-85469e211a3so1625038b3a.2
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:34:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789857277; x=1790462077; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789857278; x=1790462078; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=20+tpjFi3yTqUHE14mXh3LEyPwl3PLKFcJJxppA0avk=;
-        b=ssyWOiWQm6fSZGsa41AA70A9EiXrG3z18ZLY6NQP4Khk5VrCRkaXMdKfwd7aeD+YI4
-         k+PWQuCDxZ7e0RCzEy6i8xiCqOk40/iipXGSUcd9M1bkhExBEVybQCE5ZGFScyj4uW2s
-         iNjA9fPsXFeFgBpfIESFd9jxxSKgErAcNaeB9DwXvXke54CpA677lbqeOyPWGpOWCMw4
-         6QThKG98PZLKby5eLeSC9t9s0+W/dHVmaBrHV3jbAMGgPl2DkLcODClfrAbARCWFTIs2
-         hQRfRx+HP+CzhHbPvJauHHV5HuVsDa+v7a2Wzb0s+ZouqGUxWpfN6p2POiLHbNBVG1BJ
-         edQw==
+        bh=ZPaps3uZw3+pSOsVulPRPw9JNmYOgWQLZSyhTH36qMY=;
+        b=pFFLTC2INjED/CG7b4vrIABeK9tfcCeOqbsqZRsl0IlL1uFKuZk4S7pLCGC6+cWLp3
+         Rs8x2D9I1QEmVN/PLwoeXseHE6AYP1z87CmL/4Bo22EjBE8A9BDlqxvHYXTJjoz4Awd9
+         KYKoGIWC6yd3fJgv6q0rO5OYiCe8ijSOO241gdvxaX++AH2BVVv8i5eZ5MB1IrLXGLsZ
+         QFGLRo2Xouj8MyXJb3ak+r+ApwYpeMIU4FT5MEiBARnChf9qJI8HjvbZ88rkgzSz7tT8
+         5cfmYE8JOwRE+dN/PDLDkvr8eI8+pO6h8zWZ9vWvxpQWEplrkVoZwsPGb1yOdnUwtu+D
+         VS5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789857277; x=1790462077;
+        d=1e100.net; s=20260707; t=1789857278; x=1790462078;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=20+tpjFi3yTqUHE14mXh3LEyPwl3PLKFcJJxppA0avk=;
-        b=V8SIQfO9rDXSX7jLEMbRtSe8O6c/qc3RT+7Dh2oL3bdAa5WdhurdFf1TtuOaOvT93g
-         3wOZqed5346+ooUdOlp/nXgyntVTy+W6qkRlMF59APvqJMH6bv5dm/C0LN7Gp53iaRw2
-         c4t1EzarfHcHehWf+hf+rDK3dR0EDveSUqHSQupkIdhoe4zVOBQUjbr/b2eLrXjMfrAP
-         Gpfpwwt8L3ma3SsWPsXWBY5zdIDn6DUTxM/S/HCk/59nQytZQEyeQAaByT7atY6xSyHU
-         NhOASoAHfIJZ4kwkMWI57jJFIhMtGOdKkmGnwTKsKXK+uuSrz8vrFW957PQzgNJ2e2Y1
-         WUEA==
-X-Forwarded-Encrypted: i=1; AKwUvBzsBXkNJFsZcl8aWn2NXLzH5QgOq/lE/6oreKcVm1RH/j9FvjKfPB4oZj0m8fIE+gKDsJlW7+Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++kmg+gEBi+nSsQloVAKbfkxHcIh0qmgYAsXYjKtQskSIizN7ciO
-	2j/4nuaDuAygfF46GLbojX9qsc2kcrL9d6Rpt5c6FWhlPiuwAhHXZiJ+/vqWt5nH
-X-Gm-Gg: AYBFou0XRFjVPVVvu0rHt+WCUuOHA2g63JkvCJ6DD45CKi+Wy+keyjV4IQD8OIAitNW
-	/Eq1NWiSrzzQyr79lMk6GiZH5dYM1XT4TVQrcpihW3xGRKIOmPGTUKmf0rM6RUSVPTvvwJREEUL
-	T6hWX5QK9qmZicPpfppxOktuI4ol3DeJhv0bubQpHffF3ARCcq/UywdwCiOwZ6NgThoxXWIdtkE
-	LJhJx+LnXIzrsrk+4JcjHpa2r3Lc4JFhkiWh/tNGjB4jUK8+t9a5EI7eYY7n6YdveL1RtqN5Rhp
-	9xpKFsttXB7SyyHpsSXQuBYfmF6nyCQsWtJl0dqPByI1jUvyuIfI5q+mH6SoB7d3QKjLVNn6nt8
-	ez3esem3Zq0Lk2tNOe2+gDtZsfQBcM7B9vF3XNsUb4XZKS4E26fnzyah/n43BwtgDqMJXUF5lN4
-	WNOPUdBaJQG29Tu0RV3m42mLGfzwjqT+O68k+MZQGWsm3bDoj0Fqh463BfKNi2mWKs1R6hO2W8t
-	Jccgd2Vd5B0swlPWgKrmLNGEolc1z6bKogdjaOZO78gvnCWJuO3E7OK/kPZPoGtIo9n0zqOcWqX
-	MKWcFqzgWw==
-X-Received: by 2002:a05:6a00:194d:b0:858:ea6a:4415 with SMTP id d2e1a72fcca58-87341085f89mr12763659b3a.2.1789857276921;
-        Sat, 19 Sep 2026 15:34:36 -0700 (PDT)
+        bh=ZPaps3uZw3+pSOsVulPRPw9JNmYOgWQLZSyhTH36qMY=;
+        b=seVgBKsTbJBkE+uNOiw55Xwm0G4sQcTGTHkiSr77yGvu3/K09YI5GUGs63cKq3NwSu
+         OF3N9OUDy1nCAz+iHtafmQo/QA16WCq78uqqkqti2mRwa1LoqBre2P4SI4/LW9yaDw1G
+         CGN+WvWe2MM1AF5/RfgdkQKaTvSzM2DqyPiHClBWblBSYwCpK8tjAN9Y73vd7qx5BXTS
+         QxcUDsePCrpqKAgVCtWhOOUllDgWDpFLbKNZnIAZHBRE9+ejG2fmurQzMMgFaqLWF5K5
+         wvTvnGVHVgte/YigNFG6hY/9JNe3/7n//C4mPKynMpy5jY/TvfiB94P58Yd2My/ZPIC7
+         +7Nw==
+X-Forwarded-Encrypted: i=1; AKwUvBz/E+5NY96za7Cei5FJQ4WQYeCNQqRu5gRMbu12x36wWMTEz8ewuTjINirVyJuh1vQQL6SzDYw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mB02GGTgI3oYVrL257AkfeXhAV+Dp5YRBHnL61dOF5P95fZsBI
+	dA4pZvxLv4jBdSDGycVr+8n+aPqJEHd7Up0SAEixsSoKd01GeLpnuJaT
+X-Gm-Gg: AYBFou1HDMvAn9CMHkatHq9TZdMGlbEgjrKfsCV9VEE8vjfoKFk0piAej3hI3NMWKjm
+	NMT5cydbZUP09tCzyrfhDbUP0c7cxd4ZCuf+tlgmo0sQvJeoRuiiuchJUIs/CEmWN6D4S9RS1A3
+	xmvmMccRmOaaBN+O1gr3j8VTWgVJpVK/2cHuBWRpe20xm+Ftjn+/a3n2FZWkJlOwHpS29ca7Qmj
+	QfJfGG9ejELKqOwGALxp9VfmdVakttZcidjkiPuatcKVh3wPORWfM7r/roJwtJaOOSlTQghg/UI
+	oX/bbA7p5iHID3mV4hD7lruRY7LIG3Y1kPDZerh5UvGqjJhdF+Nvi0fF+MrDfVnztm1dKMsXbM8
+	nJ3ICIe83BJtGRcqti90DCUDFTA6uLvNva909gbKOaHJgP372RbUsdOyIdmHCs7h+ScuGhWIWGL
+	98TFHGxL/n8VfWnyhDQsdcjNhXw/D5WSZsVIf851GRqUo+fl8hlHU9Pf21z5mM+pWD7ZihyEoti
+	yZNYs70Wmxnya9Z1gz6mPOmyeUOLipxzUKEuX8y66Y8EoRr8jbPtqOAHgtzQ7Nt1z65FHw1pIOc
+	RVRg3yOkwg==
+X-Received: by 2002:a05:6a00:3982:b0:878:3811:237 with SMTP id d2e1a72fcca58-87838110992mr2854371b3a.51.1789857278259;
+        Sat, 19 Sep 2026 15:34:38 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc72acd1813sm1361390a12.4.2026.09.19.15.34.36
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a94f4a10sm1362241b3a.22.2026.09.19.15.34.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 15:34:36 -0700 (PDT)
+        Sat, 19 Sep 2026 15:34:37 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
 To: alex.aring@gmail.com,
 	stefan@datenfreihafen.org,
@@ -69,9 +69,9 @@ To: alex.aring@gmail.com,
 Cc: linux-wpan@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] ieee802154: ca8210: fix SPI RX length validation and FIFO out-of-bounds read
-Date: Sat, 19 Sep 2026 22:34:35 +0000
-Message-ID: <20260919223435.3883048-1-benquike@gmail.com>
+Subject: [PATCH] ieee802154: cc2520, mcr20a: reject invalid RX frame lengths from SPI FIFO
+Date: Sat, 19 Sep 2026 22:34:37 +0000
+Message-ID: <20260919223437.3883127-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -81,101 +81,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In drivers/net/ieee802154/ca8210.c, validate MAC command/data frame
-lengths received over SPI before copying payload bytes or indexing MAC
-header fields.
+In drivers/net/ieee802154/cc2520.c and drivers/net/ieee802154/mcr20a.c,
+validate the RX frame length byte read from the radio FIFO before
+subtracting the 2-byte FCS or allocating/trimming the skb so len < 2
+cannot underflow.
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Fixes: 0da6bc8cc341 ("ieee802154: cc2520: adds driver for TI CC2520 radio")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 01af4f9cf7f2..d3205275741a 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -697,7 +697,8 @@ static void ca8210_rx_done(struct cas_control *cas_ctl)
+diff --git a/drivers/net/ieee802154/cc2520.c b/drivers/net/ieee802154/cc2520.c
+index abfcfe07246a..d2c8484d8fea 100644
+--- a/drivers/net/ieee802154/cc2520.c
++++ b/drivers/net/ieee802154/cc2520.c
+@@ -482,8 +482,14 @@ cc2520_tx(struct ieee802154_hw *hw, struct sk_buff *skb)
+ 	 * values on RX. This means we need to manually add the CRC on TX.
+ 	 */
+ 	if (priv->promiscuous) {
+-		u16 crc = crc_ccitt(0, skb->data, skb->len);
++		u16 crc;
  
- 	if (buf[0] & SPI_SYN) {
- 		if (priv->sync_command_response) {
--			memcpy(priv->sync_command_response, buf, len);
-+			memcpy(priv->sync_command_response, buf,
-+			       min_t(size_t, len, sizeof(struct mac_message)));
- 			complete(&priv->sync_exchange_complete);
- 		} else {
- 			if (cascoda_api_upstream)
-@@ -1677,6 +1678,9 @@ static u8 hwme_get_request_sync(
- 		return IEEE802154_SYSTEM_ERROR;
- 
- 	if (response.pdata.hwme_get_cnf.status == IEEE802154_SUCCESS) {
-+		if (response.pdata.hwme_get_cnf.hw_attribute_length >
-+		    sizeof(response.pdata.hwme_get_cnf.hw_attribute_value))
-+			return IEEE802154_SYSTEM_ERROR;
- 		*hw_attribute_length =
- 			response.pdata.hwme_get_cnf.hw_attribute_length;
- 		memcpy(
-@@ -1755,13 +1759,17 @@ static int ca8210_skb_rx(
- 	u8                    *data_ind
- )
- {
--	struct ieee802154_hdr hdr;
-+	struct ieee802154_hdr hdr = { };
- 	int msdulen;
- 	int hlen;
--	u8 mpdulinkquality = data_ind[23];
-+	u8 mpdulinkquality;
- 	struct sk_buff *skb;
- 	struct ca8210_priv *priv = hw->priv;
- 
-+	if (len < 30)
-+		return -EINVAL;
-+	mpdulinkquality = data_ind[23];
-+
- 	/* Allocate mtu size buffer for every rx packet */
- 	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
- 	if (!skb)
-@@ -1770,7 +1778,7 @@ static int ca8210_skb_rx(
- 	skb_reserve(skb, sizeof(hdr));
- 
- 	msdulen = data_ind[22]; /* msdu_length */
--	if (msdulen > IEEE802154_MTU) {
-+	if (msdulen > IEEE802154_MTU || len < 30 + msdulen) {
- 		dev_err(
- 			&priv->spi->dev,
- 			"received erroneously large msdu length!\n"
-@@ -1787,6 +1795,10 @@ static int ca8210_skb_rx(
- 	hdr.sec.level = data_ind[29 + msdulen];
- 	dev_dbg(&priv->spi->dev, "security level: %#03x\n", hdr.sec.level);
- 	if (hdr.sec.level > 0) {
-+		if (len < 40 + msdulen) {
-+			kfree_skb(skb);
-+			return -EINVAL;
++		if (skb_tailroom(skb) < 2 &&
++		    pskb_expand_head(skb, 0, 2, GFP_KERNEL)) {
++			rc = -ENOMEM;
++			goto err_tx;
 +		}
- 		hdr.sec.key_id_mode = data_ind[30 + msdulen];
- 		memcpy(&hdr.sec.extended_src, &data_ind[31 + msdulen], 8);
- 		hdr.sec.key_id = data_ind[39 + msdulen];
-@@ -1801,6 +1813,7 @@ static int ca8210_skb_rx(
- 	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
- 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
- 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
-+	hdr.seq = data_ind[24];
++		crc = crc_ccitt(0, skb->data, skb->len);
+ 		put_unaligned_le16(crc, skb_put(skb, 2));
+ 		pkt_len = skb->len;
+ 	} else {
+@@ -1147,8 +1153,8 @@ static int cc2520_probe(struct spi_device *spi)
+ 	return 0;
  
- 	/* Fill in FC implicitly */
- 	hdr.fc.type = 1; /* Data frame */
-@@ -2028,11 +2041,14 @@ static int ca8210_xmit_async(struct ieee802154_hw *hw, struct sk_buff *skb)
- static int ca8210_get_ed(struct ieee802154_hw *hw, u8 *level)
- {
- 	u8 lenvar;
-+	u8 buf[sizeof(((struct hwme_get_confirm_pset *)0)->hw_attribute_value)] = { 0 };
-+	u8 status;
- 	struct ca8210_priv *priv = hw->priv;
- 
--	return link_to_linux_err(
--		hwme_get_request_sync(HWME_EDVALUE, &lenvar, level, priv->spi)
--	);
-+	status = hwme_get_request_sync(HWME_EDVALUE, &lenvar, buf, priv->spi);
-+	if (status == IEEE802154_SUCCESS)
-+		*level = buf[0];
-+	return link_to_linux_err(status);
+ err_hw_init:
+-	mutex_destroy(&priv->buffer_mutex);
+ 	flush_work(&priv->fifop_irqwork);
++	mutex_destroy(&priv->buffer_mutex);
+ 	return ret;
  }
  
- /**
+diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+index 020d392a98b6..d7e076397550 100644
+--- a/drivers/net/ieee802154/mcr20a.c
++++ b/drivers/net/ieee802154/mcr20a.c
+@@ -790,7 +790,8 @@ mcr20a_handle_rx_read_buf_complete(void *context)
+ 
+ 	if (!ieee802154_is_valid_psdu_len(len)) {
+ 		dev_vdbg(&lp->spi->dev, "corrupted frame received\n");
+-		len = IEEE802154_MTU;
++		mcr20a_request_rx(lp);
++		return;
+ 	}
+ 
+ 	len = len - 2;  /* get rid of frame check field */
+@@ -866,8 +867,7 @@ mcr20a_handle_tx(struct mcr20a_local *lp)
+ 	/* add 2 bytes of FCS */
+ 	lp->tx_len[0]		= lp->tx_skb->len + 2;
+ 	lp->tx_xfer_buf.tx_buf	= lp->tx_skb->data;
+-	/* add 1 byte psduLength */
+-	lp->tx_xfer_buf.len	= lp->tx_skb->len + 1;
++	lp->tx_xfer_buf.len	= lp->tx_skb->len;
+ 
+ 	ret = spi_async(lp->spi, &lp->tx_buf_msg);
+ 	if (ret) {
