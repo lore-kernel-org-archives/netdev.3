@@ -1,186 +1,317 @@
-Received: from mail-qv2-f39.google.com (mail-qv2-f39.google.com [74.125.230.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520AD3DBD51
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B2F3ACA75
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789811502; cv=none; b=M5ab6+y0InAQhFTXjbMXhR6Zen+Dm1zEOoGAbEw63pTj2TlEhL4at1Oc/I8conWNPh+yFZqY0aFBmHrHo/57qqf3E4LMkBXhlaleGC/g6X41ewDpI1nlqIwu+5PSOQaQ7JHrG9MmbtZTsROfiK+oX/wva3fc19gOd2eDZ12Eo3Q=
+	t=1789811685; cv=none; b=St4AYpqy6kKZsCVAPq/Ttx8GC6M1I1YFrO+iWXRWVHBY8JvNUh3oTEKRDGGLAAhszmAyabIqkBhMsxCN889U/BlLvoIU/8qs++dtvg0i88ziMVq/TYBnjUQeeYLIGuZJB69GTloIP2RfvmYiRn8h05ZhIK/pFSe00vJ5w39zcuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789811502; c=relaxed/simple;
-	bh=AbBsRpv9UzXwVWK/zqyx+jwn9qkbp85YmQirOeM5e4s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fxjZ9g8vtUNnWFL5AF3HUDYf7eGlX5mnDrcpWb70/0utOaVK7qMPJ8/6v5U3t3+ExyvFbEqVx8vZm6kD9cxaWlHWYRAUO5KbBTa5Dvr9KPh+RC/RrDKzWDJAMSi+G+9IMemJzNh4CpQAw/hyyZHHQx5Y849k3+Kkv9Xqw9IJ57Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=WjL9ilHI; arc=none smtp.client-ip=74.125.230.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1789811685; c=relaxed/simple;
+	bh=z/qQL0CPK3fkdmYWyHcS9nuOhJqJmsrxtpGJPsiPrxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uT/Rb0vpn+8EJs6nZSbtRojlzi7/XjiHHGTIzHwTgq9IGPJvEibWs2gdcoSaL4wYSEAjd77fG6Gk7SRbnAgZHHJ/AQwrQsCDZF92NC9b5ZlYptFc0xJ/A9fK/oG/uanXXVw+miH4xlQQYhxzDPegDggzrmvb/1HK/8qyuRQvvjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kHHgbV8X; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=U5IUZO7f; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="WjL9ilHI"
-Received: by mail-qv2-f39.google.com with SMTP id 6a1803df08f44-90cdfe60d5fso16026506d6.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 02:51:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kHHgbV8X";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="U5IUZO7f"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68J6dw8K3101448
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:54:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	53ePU/EqYBKQnQJgkF/MFGCIZg32zoI4VYtyTC3M5fU=; b=kHHgbV8XW4BLQhwR
+	zhwf8R2pzBNi0nMPRSWluKnWhOR5SaFGHIaE3NhNxRofWIsnIcqj/efXEKyUwlZu
+	9fGHhf/1rih7ZrN4SjHVVntrX+tnDM/FLVorSEDFA05otRPX0kRz5G4GB/n++5W5
+	G2liyMqDBG5BPG1aiOQyrOYi/cjlYmDnXwpfP/RjGVHtBi0HncuwWTLYTgsS9SGJ
+	XhgxwqRp33OfjqFQ/CTb8Ua+vokjppBzyZtDJL0IC346edBPHiPhTEXGCwIoaSmB
+	wkPzOlpqnTGhNMWINX4pH8yuYT6W1PJCV8p+3aOmpDw3gs7yhqbfE8TAYD1EYyOM
+	Oei6Yg==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gsjm30mny-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:54:36 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39e25a5f6e8so3031015a91.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 02:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789811500; x=1790416300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rN7kbYEmkQBis/ObAIpJGpKUuIJ4yTdvvj9OToUbhYQ=;
-        b=WjL9ilHItDi1CpiP5jMQX9Md6LytFUDWTX1Qr7dnf/l8Gyy7aWH2WmfsFFJErBXw54
-         CCO+PptFNk1OxVN82dLwx8DFpYGcxenRWmk+Q+u8ogKrMFmfe5+vu9dRyEJplgoGJMXy
-         ClTiFmAL8GV75O9Hk3xIEA/JMPAO8NfhGXHUs=
+        d=oss.qualcomm.com; s=google; t=1789811676; x=1790416476; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=53ePU/EqYBKQnQJgkF/MFGCIZg32zoI4VYtyTC3M5fU=;
+        b=U5IUZO7fTE1AxCC9rKBOG3furOaEcWddXHITeFe2ayPr9JANW4qEuoOoGy6vQP0Ncs
+         4bQIj5QPDgYymUpsUF8xbRuc7GYh2FzLqxady7iMQcHXQg0836fptsZPyb7Y4PDf0FTW
+         rp/7m3bvf/6D+oqMk0GCvGSTIlg0pPjlUBUeQ/sTE8cDxB6n3wme1PTa9uA1GhVItJCP
+         niuoklfLi59IJPa9rbZEK0SLK5F/nxupw4NKW5+lyeB6WBMcxUaCxCGg/9k72P27z5yN
+         jlG/dXaY558UJFKyXtG01iOBUUQLNQymUtLa0I1gK9lBTM5ULf/ZCA271UqM83pvOBp/
+         sHWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789811500; x=1790416300;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789811676; x=1790416476;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rN7kbYEmkQBis/ObAIpJGpKUuIJ4yTdvvj9OToUbhYQ=;
-        b=gRgMTlfr/Q92bcBatNrUmzXsx+QjZzFJK/UdzFMJC1r7AbSzw1rl48bipmGPOgDuJT
-         h59U67bO5koJtTZFxNmkzES6loSYJ6ZKLGRZ0U484rAp5h+CC0+XMV0XPvQ9Gni8T7/2
-         56yfefIydYHArn71xv9n1fZCsj0afhd/ZU0tidDhaBaJUk3H1e9Oavu1rP0aYn8bv7HC
-         d1SlE7N0VFXDJ2VBrTeJhXPHtqDWgh7GYUcwYKYTChbJnNqBULX6Ze6I3cmssWJV7dZH
-         NpUYkSwOGNVzvfqDw3Y3p1xKYCXqevUM7CThcMHo/QQ0D0MeyW0xh4zHcA2e0tBEjVK1
-         UhgA==
-X-Gm-Message-State: AFuF++mEGN7n9CXz86WwBGapClZvUO7Gr4EGXOFwv/G84D4yUZBTeWE2
-	wXBmw+zlZTSMMWvesZqbPZe9JgBUwIwpjSIza/ZudV4A6lDjzw39DcHCwT2Pc3zWojLVDiL3HzK
-	/lCokVg==
-X-Gm-Gg: AYBFou3mu/agtf9mgvntn3cmayJpypFT+Fc3q8leEt3l/nJww0pP/9rkr+PoOJuvwQP
-	3QAcuN2VJw6lEnszpTv2aJd6la64ISflzKnee+iJ/fiFYzd3Qe6MhxXsg7sz6PDKGIdGWF197g5
-	XVjb16KrvuMbL8kx4UVbkgk0joKPJuXvauFRfUdS7UZD6PexzxPzNxY0KZQuM4XqpjESUYTI6dH
-	Jh3McY2HwhPtVYeqa/1KRFyZNW1e5bb8L3ik3l7KMI2Zr+BQ+h9/VA3si3hOfggaZH7eE3VIWow
-	AEDHk3a3LABTTS+cjwRUUqud0lzICP9VGGs0FCWXU9aRs/IXd638GaWlrLSamJ+qek+WjVyGRbL
-	xXv3oHql1cQQl/xcPzcZ9jvvW+2Uw6ET2eGW7zMwHG1B/9+xRSo/RTml5HCCmYjzz09yn7vvMlz
-	7oCSU0TKDg3AAfc23rtkovAnUPvwfHsjnmQH7Ee4hq9qO+uyKZDX0gj23fRznTaLfx9u6Rj+8ma
-	H+hG4lEIj/Kg/ZWRlInuGx7r99u6CToGaFjNhNXqeLn/Xa3edFcGS8NpL0/wpHJEh0xKzXoP9dn
-	fU3FgclGPg5+azF76YGK7azMdoLcRuLRpQ==
-X-Received: by 2002:a05:6214:4108:b0:912:517b:40e4 with SMTP id 6a1803df08f44-912a8039725mr10025936d6.43.1789811500025;
-        Sat, 19 Sep 2026 02:51:40 -0700 (PDT)
-Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260aa15cdsm17150986d6.41.2026.09.19.02.51.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 02:51:39 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Xin Long <lucien.xin@gmail.com>,
-	stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	hybris <hybris@mojatatu.ai>
-Subject: [PATCH net] net/sched: cls_flower: exact-match ERSPAN key when no mask supplied
-Date: Sat, 19 Sep 2026 05:51:35 -0400
-Message-Id: <QDISC-4CSL.v1.20260917072652@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+        bh=53ePU/EqYBKQnQJgkF/MFGCIZg32zoI4VYtyTC3M5fU=;
+        b=Kwa5WAX8oe5db6VoD5LIrV7Tsf/mUJL3QmKx/JccTmRBHtNNPoM90NMoTk2glgFGYq
+         lF0eLfnx+V95+APSG7+1XLKFQsGGPR1BTv8W891HToJMwVs9jKsZQrlVNO+rX0zOhfii
+         JYMqCXOMGnSykzLK6UwFo+E3AUdy2DuKPbns0kR6u4NXTbtz9A+JZl0Kj6zL1q0DKH1g
+         x513I6jFWewRADwF8AMYbQ5ddH7+079wPDA464JxocNKia1yURLCrEyo9sq5BV2Cb1Hf
+         xIJfKEI5f4el6A5X7GV1Ui37gqfHE08upnKKXIXEvaiZiUDA3LXeUnSDvTXPQO6AfldZ
+         egEw==
+X-Forwarded-Encrypted: i=1; AKwUvByogc04CZ8URQ/gmr8FAP0AcrgZ7LrsWg4864nML7AzNxqZ00AXgPBb8gAbeVUj9eJd2JuFb+c=@vger.kernel.org
+X-Gm-Message-State: AFuF++nJ5Rrph0ZWYu8TqGTPfB+EusBXZQOoBbKstiWwxxUUx/6SkSIi
+	T4tbf+/AsT9FGMcBovUiUobd1RvJSMLWGA73bcaUHK/VJUndhLohyDiibNu4uL8H7qnsiAXRy8Q
+	dQHtx/jQv2l+5xaMRt5Hng75pLCou5hI5MdFsTzsSdlU86PQxajgvkZ9agSI=
+X-Gm-Gg: AYBFou2xzpS02hYdlnEuS/wdrPa8L0oj0/bDLVo4s1Y0z8btCS+OUIXN7W27ptcwNoK
+	StmJeIGNaXBWVfO/ZvUCDG896dW3hDrwU3YGbz59hQPsogojAAgwIqBbr41enhPMOYDsA2g6wZx
+	/wmIZFQkYUY9AwuICAgpA5l7PSk2X5GYVMavdr6AyUoXyS2Dg5e5xq3NwoZ2KqE5QqKwqpWyObD
+	ec4UBSuR1/TkAfy9hjbia8PItr6k/Lrq1uqTwzGliSr/uzfPxZqXFTdaCB2+rQ01pWzig/rITdp
+	a7Ub6EhJYLbf5HvxSTMeXKx409l1XBNcOHGd+9bVQ/ntnkIn2p0LpbtWclAdULgrUTzPEssKxTk
+	Cp1PylN3jbS4Ks4a9FndTPImGjf5vviOfxYN+
+X-Received: by 2002:a17:90a:bd6:b0:39e:6a81:5a97 with SMTP id 98e67ed59e1d1-39e6a815e70mr2667643a91.43.1789811675942;
+        Sat, 19 Sep 2026 02:54:35 -0700 (PDT)
+X-Received: by 2002:a17:90a:bd6:b0:39e:6a81:5a97 with SMTP id 98e67ed59e1d1-39e6a815e70mr2667631a91.43.1789811675424;
+        Sat, 19 Sep 2026 02:54:35 -0700 (PDT)
+Received: from [192.168.0.116] ([124.123.146.251])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144d55d45a6sm4526951c88.9.2026.09.19.02.54.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Sep 2026 02:54:34 -0700 (PDT)
+Message-ID: <697a7c7b-5bf7-4279-898d-a8310f5a0a64@oss.qualcomm.com>
+Date: Sat, 19 Sep 2026 15:24:26 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] net: wwan: qcom_bam_dmux: Alloc RX buffers as a
+ single coherent block
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: Stephan Gerhold <stephan@gerhold.net>,
+        Andrew Lunn
+ <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        chris.lew@oss.qualcomm.com,
+        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
+ <20260714-qcom-bam-dmux-vmid-ext-v1-2-3f29da7cca76@oss.qualcomm.com>
+ <alXm0rp3NK62G3-3@linaro.org>
+ <c8417ff3-db92-446a-acf8-8c73c83b85de@oss.qualcomm.com>
+ <amMxkrW3mu48HIOr@linaro.org>
+ <63bae39b-1256-4e19-a9de-840d8752ec69@oss.qualcomm.com>
+ <an27PVxkCpD09xSR@linaro.org>
+Content-Language: en-US
+From: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
+In-Reply-To: <an27PVxkCpD09xSR@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: UEa9ayyImELD0x4bXPbvNLJH63vSlelD
+X-Proofpoint-GUID: UEa9ayyImELD0x4bXPbvNLJH63vSlelD
+X-Authority-Analysis: v=2.4 cv=DtfDa2/+ c=1 sm=1 tr=0 ts=6aae5bdc cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=K/78aEDNEn2Q/Yuv7mVN5Q==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=07d9gI8wAAAA:8 a=EUspDBNiAAAA:8 a=vzY3hVqx5U8Bfi6rXLEA:9 a=QEXdDO2ut3YA:10
+ a=mQ_c8vxmzFEMiUWkPHU9:22 a=e2CUPOnPG4QKp8I52DXD:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDE0MSBTYWx0ZWRfXxjO3d62jJpP8
+ z5IKcGTRAi5oHqw7gVs4badxNIxWoogtdn2yLPQTwBOicD1SCg5jKIBIPXLSvB2k37XF5yrI26X
+ HUkv7l0lCj2hlGuLUqLtJ5IdFFcCuE0F57u3zmCU7FcuyRmQRTR8deYyJuVVqRXJBeaVAypoDay
+ VQVG8wxqNayy9jjph7ELmf7BWA9pyAq6mJQlxIudESwvwHAy5bcdHJLpgoyLXZ/alUV/mX6TfeX
+ vLL745k0rMrRgOFLj6sj3he29sTh75LC/66J42K799uqJiW+6lVTmz0iOyKckNOLZxtggHp3D/B
+ KWPYcnX7UolAVn94q9E+A6lqlK6z4WfACgarJDXFL/1S+nTvhmprx2bEr5BdB3DJO7pzlqnlqHE
+ Lh55kAad2c/1sXk8iOhHvqYmD7wtLDPJsF8qYgNrogISOXdqlt93DJAxjjFq/VtdoB5mAgABhKb
+ aJ0nyIZlMxlmqfO45Nw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDE0MSBTYWx0ZWRfX1j6rkpeoTglB
+ Kdxc8rcz+fdSA9SaVtW5W+fmnw9fe1MNDo4RrOXqGeT51YaZkDjOh1X7dnF4cxLKvL9EMOTmNWa
+ DhwVa2wWHBZP5vihWZokFkWSqkVvgrM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-19_02,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 adultscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 phishscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190141
 
-Commit 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
-removed the unconditional memset of the erspan_metadata mask in
-fl_set_erspan_opt(). On the mask-parse pass, when userspace supplies the
-encap option key but no mask (TCA_FLOWER_KEY_ENC_OPTS without
-TCA_FLOWER_KEY_ENC_OPTS_MASK), the !depth early return leaves the mask
-zeroed -- a wildcard. A filter keyed on an ERSPAN index (v1), or dir/hwid
-(v2), then matches every ERSPAN packet's values instead of exact-matching.
 
-Mirror the with-mask per-version defaults on the no-mask path, keyed off
-the key's own version: v1 index to 0xff, v2 dir and hwid to their
-exact-match masks. The mask cannot just memset the whole union -- that
-would re-mask the overlapping timestamp/sgt bytes of the v2 header that
-the fix (292207809486) deliberately left to 0 in erspan_opt.
+On 13-08-2026 06:10 pm, Stephan Gerhold wrote:
+> On Thu, Aug 13, 2026 at 02:35:01PM +0530, Vishnu Santhosh wrote:
+>> On 24-07-2026 03:04 pm, Stephan Gerhold wrote:
+>>> On Fri, Jul 24, 2026 at 10:16:31AM +0530, Vishnu Santhosh wrote:
+>>>> On 14-07-2026 01:05 pm, Stephan Gerhold wrote:
+>>>>> On Tue, Jul 14, 2026 at 11:02:32AM +0530, Vishnu Santhosh wrote:
+>>>>>> On Qualcomm SoCs where the modem (e.g. the mDSP on Shikra, VMID 43 /
+>>>>>> NAV) is the AXI master for BAM-DMUX RX transfers and the XPU enforces
+>>>>>> per-region access control, each individually DMA-mapped RX buffer
+>>>>>> requires its own XPU resource group (RG). With ~16 RGs available, the
+>>>>>> 32 per-buffer dma_map_single() calls exhaust the table and the first
+>>>>>> inbound transfer faults with an XPU violation.
+>>>>>>
+>>>>>> BAM-DMUX is a singleton (exactly one instance per SoC), so the
+>>>>>> destination VMID does not need to be a DT property; it is looked up
+>>>>>> from the compatible string's match data instead. Add struct
+>>>>>> bam_dmux_data with a single vmid field, and a shikra_data instance
+>>>>>> hardcoding QCOM_SCM_VMID_NAV for qcom,shikra-bam-dmux.
+>>>>>>
+>>>>>> When match data is present, allocate all BAM_DMUX_NUM_SKB RX buffers as
+>>>>>> a single contiguous dma_alloc_coherent() block and SCM-assign that
+>>>>>> block to HLOS plus the VMID once at probe. This reduces RG consumption
+>>>>>> from 32 to 1. The block is never reclaimed across a modem power cycle
+>>>>>> (bam_dmux_power_off() does not touch it), so the probe-time assignment
+>>>>>> covers every subsequent restart without re-assigning or reclaiming. It
+>>>>>> is reclaimed to HLOS only once, at remove or on a probe error, and if
+>>>>>> that reclaim fails it is leaked rather than returned to the page
+>>>>>> allocator.
+>>>>>>
+>>>>>> Each rx_skbs[] slot is pre-assigned its virtual and DMA address from
+>>>>>> the block, so no per-buffer mapping is needed at power-on. Because the
+>>>>>> coherent block is not page-backed, received payload is copied into a
+>>>>>> regular netdev skb before handoff to the network stack; this is an
+>>>>>> unavoidable extra copy on the XPU-enforced RX path.
+>>>>>>
+>>>>>> Platforms without match data are unaffected: rx_virt stays NULL, no
+>>>>>> coherent memory is allocated, and the per-buffer dma_map_single() path
+>>>>>> is unchanged.
+>>>>>>
+>>>>>> Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+>>>>>> Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+>>>>>> Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
+>>>>> So how do you handle TX buffers? Right now, they are just passed on from
+>>>>> the net subsystem. There can be up to 32 TX buffers in progress as well.
+>>>>>
+>>>>> Overall, I have mixed feelings about this patch. It looks reasonably
+>>>>> simple, but fundamentally I don't understand why we need to go back to
+>>>>> the old days of implementing protection using a highly limited MPU (in
+>>>>> your case: the xPU).
+>>>>>
+>>>>> Why does the setup of BAM-DMUX differ e.g. from the setup for the crypto
+>>>>> engine? Crypto is also using bam-dma, but it avoids this inflexibility
+>>>>> by making use of the &apps_smmu. Is BAM-DMUX not covered by the SMMU? Or
+>>>>> did you just decide to bypass the SMMU in this case? (If so: Why?)
+>>>> I checked with secure systems team on this. Crypto BAM is
+>>>> behind apps_smmu, so protection is enforced through the SMMU's Stage-2
+>>>> page tables.
+>>>>
+>>>> A2 BAM (used by BAM-DMUX) is present in secure domain and does not
+>>>> support Stage-2 translation on this SoC, and there is no IOMMU domain
+>>>> that can be attached to it. The only protection mechanism available is
+>>>> the xPU.
+>>>>
+>>> Thanks for investigating this!
+>>>
+>>> So is this a hardware limitation or something you could change with a
+>>> firmware update? Could you move the A2 BAM out of the secure domain and
+>>> protect it via the IOMMU instead of the xPU mechanism? The other modern
+>>> platforms with IPA do not have this limitation, they can use the IOMMU
+>>> for this.
+>>>
+>>> We can try to support the xPU protection mechanism in the BAM-DMUX
+>>> driver, but it's pretty bad from a performance and memory usage point of
+>>> view if you need to copy buffers around multiple times. So if you have
+>>> some way to change this in the firmware (and there is still time to do
+>>> so before production boards ship), I would strongly recommend to
+>>> investigate that.
+>>>
+>> Based on what we confirmed with the Secure Systems team, this is a limitation
+>> of the current Shikra platform rather than something that can be addressed
+>> through a firmware-only update.
+>>
+>> The A2 BAM used by BAM-DMUX is not connected to an SMMU/IOMMU domain on Shikra,
+>> which means Stage-2 translation is not available for this path. As a result,
+>> it is not possible to move this path behind an IOMMU.
+>>
+>> Modern IPA-based platforms differ because their data paths are physically routed
+>> through SMMU interfaces and therefore do not rely on VMID/xPU ownership assignment
+>> for this type of access control. On Shikra, the A2 BAM path is protected using the
+>> xPU3 VM-based access-control model, where DDR memory access is restricted and
+>> granted through the request-based Hypervisor VM assignment framework. In contrast,
+>> older targets relied on the earlier xPU2 resource-sharing model, in which modem
+>> access did not require this type of explicit VM ownership configuration. This
+>> architectural difference explains why the issue does not occur on those older platforms.
+>>
+>> So, for this path on Shikra, SCM-driven VMID assignment remains the only practical solution.
+>>
+> Ok, thanks for looking into this further.
+>
+> Can you please try the following as alternative for the implementation?
+>
+> 1. Make sure that you have CONFIG_DMA_RESTRICTED_POOL=y.
+> 2. Define a restricted DMA pool for BAM-DMUX, e.g.:
+>
+> &{/reserved-memory} {
+>          bam_dmux_pool: restricted-dma-pool {
+> 	    compatible = "restricted-dma-pool";
+>              size = <0x40000>;	/* 32*2K*2 = 128K minimum, but 256K might be safer */
+> 	    alignment = <...>;	/* Check xPU alignment requirements */
+>          };
+> };
+>
+> 3. Assign to BAM-DMUX together with the qcom,vmid:
+>
+> &bam_dmux {
+> 	memory-region = <&bam_dmux_pool>;
+> 	qcom,vmid = <QCOM_SCM_VMID_NAV>;
+> };
+>
+> 4. Extend qcom_bam_dmux.c to look up the DMA pool address and make it
+>     accessible using SCM: Call of_reserved_mem_lookup() to get the
+>     region, then invoke qcom_scm_assign_mem() with that.
+>
+> 5. Keep RX/TX DMA code paths in qcom_bam_dmux.c unchanged.
+>
+> 6. When testing, make sure the kernel log contains
+>     "Reserved memory: created restricted DMA pool at %pa, size %ld MiB"
+>
+> 7. Add memory-region and qcom,vmid as optional in dt-bindings.
+>     Add dependency: if qcom,vmid is specified, memory-region must be
+>     specified.
+>
+> In a quick test (without the VMID stuff) this worked quite well for me,
+> SWIOTLB should handle the copying behind the scenes without further
+> changes to the qcom_bam_dmux driver.
+>
+> I would prefer that over complicating the driver with two separate ways
+> of buffer management. AFAICT, the restricted DMA feature is meant for
+> this kind of setup where there is no IOMMU but the firmware can still
+> restrict memory accesses to a limited amount of regions, see
+> https://lwn.net/Articles/841916/ for a short introduction.
+>
+> Thanks,
+> Stephan
 
-This is a follow-up to commit fee10655709c ("net/sched: cls_flower:
-validate mask pointer after nla_next()").
+Thanks for the detailed steps. I tested this approach on the Qualcomm Shikra
+platform, and it works as expected.
 
-Conditions to recreate the bug: add an ERSPAN encap-opts flower filter
-with a key but no mask (raw netlink, TCA_FLOWER_KEY_ENC_OPTS present,
-TCA_FLOWER_KEY_ENC_OPTS_MASK absent); dump the filter and observe the
-match mask is zero (wildcard) instead of exact for the supplied fields.
+With CONFIG_DMA_RESTRICTED_POOL enabled, following the approach, the kernel reports:
 
-Fixes: 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
-Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826025123.62758-1-ljp1205831794@gmail.com
-Link: https://lore.kernel.org/netdev/20260826025123.62758-1-ljp1205831794@gmail.com/
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Tested-by: hybris <hybris@mojatatu.ai>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/cls_flower.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+software IO TLB: Reserved memory: created restricted DMA pool at 0x00000000fffc0000, size 0 MiB
+OF: reserved mem: initialized node restricted-dma-pool, compatible id restricted-dma-pool
+OF: reserved mem: 0x00000000fffc0000..0x00000000ffffffff (256 KiB) map non-reusable restricted-dma-pool
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 1cefea571efd..f5acdeb0e2a6 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -1358,17 +1358,29 @@ static int fl_set_vxlan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 
- static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 			     int depth, int option_len,
--			     struct netlink_ext_ack *extack)
-+			     struct netlink_ext_ack *extack, u8 key_ver)
- {
- 	struct nlattr *tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_MAX + 1];
- 	struct erspan_metadata *md;
- 	int err;
- 
- 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
--	md->version = 1;
-+	md->version = key_ver;
- 
--	if (!depth)
-+	if (!depth) {
-+		/* No mask attribute supplied: exact-match every field the
-+		 * key set, keyed off the key's own version so the v2 dir/hwid
-+		 * bytes are masked without touching the overlapping
-+		 * timestamp/sgt bytes of the union (see 292207809486).
-+		 */
-+		if (md->version == 1) {
-+			memset(&md->u.index, 0xff, sizeof(md->u.index));
-+		} else if (md->version == 2) {
-+			md->u.md2.dir = 1;
-+			set_hwid(&md->u.md2, 0xff);
-+		}
- 		return sizeof(*md);
-+	}
- 
- 	if (nla_type(nla) != TCA_FLOWER_KEY_ENC_OPTS_ERSPAN) {
- 		NL_SET_ERR_MSG(extack, "Non-erspan option type for mask");
-@@ -1509,6 +1521,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- {
- 	const struct nlattr *nla_enc_key, *nla_opt_key, *nla_opt_msk = NULL;
- 	int err, option_len, key_depth, msk_depth = 0;
-+	u8 key_ver = 1;
- 
- 	err = nla_validate_nested_deprecated(tb[TCA_FLOWER_KEY_ENC_OPTS],
- 					     TCA_FLOWER_KEY_ENC_OPTS_MAX,
-@@ -1607,9 +1620,11 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- 			key->enc_opts.dst_opt_type = IP_TUNNEL_ERSPAN_OPT_BIT;
- 			option_len = fl_set_erspan_opt(nla_opt_key, key,
- 						       key_depth, option_len,
--						       extack);
-+						       extack, 1);
- 			if (option_len < 0)
- 				return option_len;
-+			key_ver = ((struct erspan_metadata *)
-+				  &key->enc_opts.data[key->enc_opts.len])->version;
- 
- 			key->enc_opts.len += option_len;
- 			/* At the same time we need to parse through the mask
-@@ -1618,7 +1633,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- 			mask->enc_opts.dst_opt_type = IP_TUNNEL_ERSPAN_OPT_BIT;
- 			option_len = fl_set_erspan_opt(nla_opt_msk, mask,
- 						       msk_depth, option_len,
--						       extack);
-+						       extack, key_ver);
- 			if (option_len < 0)
- 				return option_len;
- 
--- 
-2.43.0
+
+The BAM DMA controller also reports:
+
+bam-dma-engine 6044000.dma-controller: assigned reserved memory node restricted-dma-pool
+
+The BAM-DMUX TX/RX DMA paths are working with this configuration. I will update
+v2 to use the restricted DMA pool approach as suggested.
+
+
+Thanks,
+Vishnu
 
