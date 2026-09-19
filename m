@@ -1,127 +1,131 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-pj2-f14.google.com (mail-pj2-f14.google.com [74.125.227.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C71C332EBC
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 18:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0F538F920
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 18:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789841274; cv=none; b=X1l1Hf4ZhtBatN20HL0DQKl4yMDLGExzcNYzV8pVIo+leN22/hf/EAKtnmCvn0FFgS6CEtrApIMS+msNe5UC1mGbgWj3hOIFkxO0TyaRHCdrsVVR8ombcOX3oKnlMuRQU6Mi94jW+X3qQ5RnIhxHVTGL9a4cJUwfbqWatOkCZAU=
+	t=1789841557; cv=none; b=A3WKRPTWMCUNqVcUOK5o5aet8CgfNPdtXgpNf3fvzgnhyujCakyKVpmNeIXIUg4YYNdyuRi11kNH+EtbSHy9PjdxynyJu05n1uxE3QOxQpPjYF9oxCNhG7S2L4P7zWldQ3WKa4/5T9QdvcX2R8EiLps1SYoM/B3tML2zfuqNANI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789841274; c=relaxed/simple;
-	bh=zZ+Qj6Es0NnBBB/krCM072RlGUjbGN1xFNtnJKtKur8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nRkXm3ONOf5sjnwH5ETS6iS66MkNM5cARRjqE7bSYfmd/wRgxoLp4/AN2CAhwvYGMtLBTX1Vbk/niQQZzHtCsvEIGQtjSBJFRmxD1Yf46c64EtWEEOhf+8BaGng1kYzSvMGBNaS3jlpZ2lf2Colg2lrRH8DQPb5rDdFJYVjkTrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=ihD+X2Uo; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1789841557; c=relaxed/simple;
+	bh=/2hT6zgP+mOS8MJpGIqUTtaf0kM1o48RlJDVs7oiUU8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=aAbyus5/yJaCsf8h0W3q9zCwV48qhaNw2qS1thiZzlLbF7iATeLG8ogSNK6jlALjrDCJ0PuMqTtKLISRJDuXvAzNkjNcaBWKsUvDKmTx5BMH3O5chZajZSNRsJ1aBAZOEzoaqhXXRsyfncP7Uuempg6ERI/pRKpEqDCkikYc25M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hlj+FH5p; arc=none smtp.client-ip=74.125.227.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="ihD+X2Uo"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso14484555e9.3
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 11:07:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hlj+FH5p"
+Received: by mail-pj2-f14.google.com with SMTP id d9443c01a7336-2d747f0135fso17175355ad.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 11:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789841270; x=1790446070; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jaIZI05s3E2LLLYS99VJR5T7zbgwyUaaN0d4bzMK8Qg=;
-        b=ihD+X2Uor/BaheJRzGIDFkYS2zOQN1zE640fNCoxbvX3Y9NIGf0MZCkTNP52ObRXVc
-         C5WH7NR+kRTeHJk18NNlaYyiZCBWsectBKGDWRjsOl62JQBXd//jApbNvZrFKcKAb/Uo
-         mHhVPlGynkc7wT3o90P+JNgZLnuxf+tiCfdYU9QrBcf5Pp58ydSInvZ1fAhPNO0ESehO
-         BeMSMai44TuXPATxkEBVl1OldCwlvvgOYsYbSM/+i2bdPnRboDl9m6RN74xcUzilewVh
-         I5zBjAgfzpZGAug2CiewhbpSuH32YyCveiIjnOVEDOTKEh5Ni9tDrTsekNrJ8++gWYX/
-         j7IA==
+        d=gmail.com; s=20251104; t=1789841538; x=1790446338; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=091mGJb963fZm7TN81QDLSJJlLLidQRDCWzb3G3L/U4=;
+        b=Hlj+FH5pty3MgW9dhXqZ4rezBLYI9J1ybtdgEvkGYQuFV9gd5xWcQpxYB1uMlnKHYc
+         7v+osd5n1XNmTBdcfYJSDWQma371G1Z0KeYo8bkuv50CYJ1a3Q70vRTQWgB6wnJQjhjz
+         I8s3Il6wiIkQm1GACBuzn6tBbPqxMiCK1vQ6wibbuHTfkZHqsjc7Ou483h+K6485x5ZX
+         TlyAgyMLrorDwvtMqfPR0pW0S2UAm4g6npucd+Ai10OgS1Y/Rb/gA0k9nlm+gawDMf2I
+         DkqnKumGLjhk728cJhyMJlIeeJm6GB4TVDc6XpoVNznu8FxGbKsI2zMZ8Gbut3kilgdf
+         vpeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789841270; x=1790446070;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jaIZI05s3E2LLLYS99VJR5T7zbgwyUaaN0d4bzMK8Qg=;
-        b=sclcuhxY6sWnitCIMtSM2C13zCiJUPd8R0DUPDcK1GjN8k5VWZewiBZTiQTj4UAUav
-         3DxF5+i+PpgChQgQisiTKrUomcLmWwtrpFn6rdGSFIzRn2upfE5Pbj3tjyET1XE4xaSE
-         pQwFX97dn1+jtV5ppk+93cN1U13QIXlujNyXRcohtJKiSMcNM9bzUQ2zm2ua77RkuLRp
-         YyA0E8bJ8impG9hGQLdz+sCQ02nVqJyQX73deOqAWfTxTbyvARF5Xj6jbNfFRnghRasa
-         oKQq+stoD415xHNNbrV/tTOXrbs4md6ml4o0F2/StRPpCBSi64pPo3GylTJUMt6yq3Qi
-         4ZAw==
-X-Gm-Message-State: AFuF++lgHnXwIIT5YdhsaguqQ6B3Y80f/l1kulXhb+GncD2u9+XyjZJ0
-	3O0H87/JZ8QGkJQ6pWlShbs6uK91mJMT0QkxI8jA1ak8NMZLxdqzOnBEiUZsXvAs3fcbcWK4hKN
-	qkDvV
-X-Gm-Gg: AYBFou1Wjk5uEhZMdy5pcPafmHYnqIt8XqBz7dttYmLG79Ff3mTtWpMLO3AdoA6aOPZ
-	edm4ekPUloVnBalKSUJMpdIMtzgEXtZpPSTuCc3pmCxOrCz69XZhLpbpq3OZMRxz3nd76Bg9KnM
-	+rkSHp2PLmkGNvfsjvp0RYEB6XyJxDZ+Bk616YveYj3MPeKg0XVdeH5benHmpvPxzBhVFYQKjLV
-	1lX0YolncdFYQUZgUADUCj3GIvqgxEKHgUwyY182NAm3cfM5WB/oWYwLDRpcH2FxFX8HDI0tDuF
-	zeafLqJ8WT+NWMOIOFMa3kQebUKzTp2f21AnQ7s6uJS/aUSK2uHSnz06eWYo6hj5TrCgGIiuXmA
-	MhIV4kS4dz6VLNO7g1x1EdcTjZWLumQP/dVxIhlyfuLRhPFdNMtnklVffvd0h0zVk9167DokOAG
-	79cspn4Ss1XTxrk6Lfvw878b235cc/EsnFuVPGktx4N8XZTK3x4Eur6tPgiH7EzUk6vFWLWZv2z
-	YtQrBnGoPR1O8vciTm9OyaKzWs/RA==
-X-Received: by 2002:a05:600c:c493:b0:49c:fa20:cc02 with SMTP id 5b1f17b1804b1-49fc573697bmr79722755e9.25.1789841269149;
-        Sat, 19 Sep 2026 11:07:49 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc585920fsm333932115e9.4.2026.09.19.11.07.48
+        d=1e100.net; s=20260707; t=1789841538; x=1790446338;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=091mGJb963fZm7TN81QDLSJJlLLidQRDCWzb3G3L/U4=;
+        b=pnbokbqAqf6VPl2SYhggtumDHAFbOloLAytZoIpgtXqG5rWt3mRzg2+DrUf09rkR07
+         lQUvKx2pvSOMYtAR44lgot9mabyQBAX+C3QiaS1tFqnz68Dfqz3DEysdYYKuEzp8slvJ
+         1vGUiUBdV1rXzAEyhXt+lUAjS4FrUTokbpXD6iOTMgA4c0Ugnlp4urY3kxeyoCJoy667
+         2CeHRQVFjEurtl0B/hNRnd/RWhFQ6HIcYcvME0eBkhKwOf44EV9chvmNDYWKLZazhIl+
+         A/efO/ej+0Iw1Yaf06znkM/cJ61ooxed1N7sahYZv/C6NhQcvHGgHvvkqyggw/27OWu9
+         TDnQ==
+X-Gm-Message-State: AFuF++k1C1xzjt2erbWGd4V8LqxpTxLTI8UqsoKy820Ap2Iog0ypplpw
+	M/bjfDF86tlT8mPh9qLGLCOsuKFlONrCjP7bcbarmS2eB+EKJ+E6GOC8
+X-Gm-Gg: AYBFou3/6fVEVFCejAhpOnmWyOfFBGakWB+aQQXMkLO755VCQdHrHKAbji09/oVf2L/
+	vb90la/Wcq86285d+7i6aXJY52pi5/lAmwb8OhQ6CYi2oNGgxxDMNh1oodaf+WeLdA8yE/TLU9d
+	tW3/t8g5nRwIDtfLA1skE67Shf65ul3sTCbqljIBU5HFMHzNMwIym1zkLS6b3BjkhGXN4jiJBgB
+	rcJAC+EHj8erfjOrntOT7XIRhO6bBOPAz6OJFyzpFaeGAaJeJEar3mf/CsKPt0DRbNEoxoNHgqB
+	2A2rvwF3bmYqYOa5ST01vu6I08adRR/lKcjCHwTlLHBQHd9xOizUfegJM2d809GV1b53EWDoHO1
+	pn8Pr2NcIIUNeoUWP10T+r9aTxzYyPUBMZhnUe41TfttpN/3ZLg3aQ+Srtrw2EcmpJGPR83qtPR
+	lnbgVxzFQrbpdsstZMQ2VnOPPltRMO8anNuWZoYXl0g5aAjriS+Bq6rn+5sapwj4iVf/Pz7JyAb
+	25YYrmVn+OlXhet8+hg7JXLyJhf89YKQtDF3K5sHZMvZx4aXUOA3kCpYg7Tb90Rd2kBnd5GX3a+
+	kQ7f
+X-Received: by 2002:a17:90b:2681:b0:39e:6c6a:657d with SMTP id 98e67ed59e1d1-39e6c6a67c0mr4274816a91.64.1789841538426;
+        Sat, 19 Sep 2026 11:12:18 -0700 (PDT)
+Received: from localhost ([153.61.198.251])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a02738654csm3624279a91.3.2026.09.19.11.12.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Sep 2026 11:07:48 -0700 (PDT)
-Message-ID: <859a23ef-81a5-4bba-a728-49dbfc8a575e@blackwall.org>
-Date: Sat, 19 Sep 2026 21:07:47 +0300
+        Sat, 19 Sep 2026 11:12:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/9] net: bridge: vlan: cache the pvid vlan entry
- directly
-Content-Language: en-US, bg
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
-References: <20260918152950.1938259-1-razor@blackwall.org>
- <20260918152950.1938259-4-razor@blackwall.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260918152950.1938259-4-razor@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 19 Sep 2026 18:12:17 +0000
+Message-Id: <DLJHVEYXMZ6R.1YX59HGMRMYO0@gmail.com>
+Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>, "Jason Xing"
+ <kernelxing@gmail.com>
+Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jason Xing" <kerneljasonxing@gmail.com>, <davem@davemloft.net>,
+ <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+ <horms@kernel.org>, <willemb@google.com>, <kuniyu@google.com>
+X-Mailer: aerc 0.17.0
+References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
+In-Reply-To: <20260919143732.11772-1-kerneljasonxing@gmail.com>
 
-On 18/09/2026 18:29, Nikolay Aleksandrov wrote:
-> VLAN groups cache the pvid and its state separately requiring state
-> updates to keep both copies synchronized. Lockless readers can also
-> observe the pvid and state from different updates. Cache an rcu protected
-> pointer to the pvid vlan entry instead. This makes the vlan entry the
-> single source of truth and lets the ingress path reuse it without another
-> lookup. It also makes the vlan entry always available at the ingress path
-> for subsequent forwarding-path optimizations.
-> 
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-> ---
->   net/bridge/br_mst.c          | 13 ++----
->   net/bridge/br_private.h      | 25 +++++-------
->   net/bridge/br_vlan.c         | 76 ++++++++++++++----------------------
->   net/bridge/br_vlan_options.c | 12 ++----
->   4 files changed, 46 insertions(+), 80 deletions(-)
-> 
+On Sat Sep 19, 2026 at 2:37 PM UTC, Jason Xing wrote:
+> From: Jason Xing <kernelxing@gmail.com>
+>
+> Greeting,
+>
+> It's BPF Timestamping 2.0 that aims to observe the packet latency
+> more efficiently and simply for different protocols. The current
+> series is only focused on TCP protocol.
+>
+> At Netdev 0x1a/Netconf 2026, the history, background, motivation and
+> rough implementation of the feature were exhaustively introduced[1].
+>
+> History
+> =3D=3D=3D=3D=3D=3D=3D
+> - In 2009, Patrick Ohly implemented the basic infrastructure
+> - In 2014, Willem de Bruijn enhanced the TCP latency observation
+> - In 2024, Jason Xing proposed its lightweight BPF version
+> Detailed slides from 28 to 32 [1].
+>
+> Background
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Even though BPF Timetamping 1.0 is comparatively low-overhead,
+> transparent, it's still complicated due to a few points inherited
+> from the design:
+> - Inflexible/fixed reporting phases (qdisc/driver/ack)
+>   When we confirm the issue arises from the kernel by using attribution
+>   ability of timestamping feature, we need to further minimize the scope
+>   until the issue is fixed. That means, we then have to resort to write
+>   a few complex BPF progs with the similar functionalities (like skb
+>   level tag) which should not happen.
+> - Not enough low-overhead
+>   Serving the sensitive applications, an always-on latency observation
+>   platform should mitigate the self-impact as much as possible. As we
+>   can conclude from BPF Timestamping selftests, there are some blocking
+>   and time-consuming points like where reading/writing BPF maps happen
+>   in the extremely hot paths.
+> - Minor flaws
+>   There are a few minor flaws inherited from the initial design, like
+>   missing tagging the last packet[2][3][4].
 
-for this patch Sashiko says:
-  Does this code introduce a memory corruption regression due to a missing
-  release barrier?
-  RCU_INIT_POINTER() publishes the pointer to the datapath without an
-  smp_store_release() barrier, unlike rcu_assign_pointer().
-  If a lockless reader observes the new vg->pvid pointer before the VLAN
-  fields are fully initialized (due to CPU out-of-order execution), it might
-  read an uninitialized v->stats pointer in __allowed_ingress() when an
-  untagged packet arrives.
-  Calling this_cpu_ptr() on an uninitialized v->stats pointer could resolve
-  to the base of the per-cpu memory region or an invalid address, causing
-  subsequent u64_stats_add() increments to silently corrupt per-cpu variables
-  or cause a kernel oops.
-  Could rcu_assign_pointer() be used instead to ensure prior initialization
-  is visible to readers?
 
+All these "issues" sound minor and on their own do not warrant new uapi.
 
-Nik says: No, if that could happen we would be in trouble even today. These
-           fields are initialized before the VLAN is published, i.e. before
-           inserting it in the VLAN rhashtable and linking it to the VLAN
-           list, only after that the pvid is applied by __vlan_flags_commit()
+This RFC don't even have an example of how it could be used end-to-end.
 
-Cheers,
-  Nik
+So soft nack from me for now.
 
+pw-bot: cr
