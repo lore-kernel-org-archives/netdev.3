@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAF827B340;
-	Sat, 19 Sep 2026 22:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9355D17B50F;
+	Sat, 19 Sep 2026 22:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789857696; cv=none; b=DkC8EXKewyaZbpYInhpKdT9g+zIslW5T47Ub6a9cVUxDK9WuJ1fZwKn3wdzJd7dcK3r4l33ftPTxa8cGXfnv3I9Nfr61wB2pP4FF4q1DpkfJjVjFzxvzZCK03w6+aY4oT9gl+YviMFkDPj71do40+WKhyurigHfoPmjMt6DfHSk=
+	t=1789857939; cv=none; b=grc8cBINWy7hASNiRKBnUj9h60dG8x5k9tOETIOiTlhEzX9vf24bRiI9t4k50mzZOuGix/9iSQSmHFzGnY/O9MaxuTVWhPC9udx1STRwo8jm3FZx/1NTdwYD9vSAzcMBDJJM8uSEpqDzuoxMNLYg/NUx8gc4i5cowsSNzJBib2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789857696; c=relaxed/simple;
-	bh=GWuuOvf1JPHsAV53AHQ4cVkBj7+GWC4kkbhJwdwxn4Y=;
+	s=arc-20240116; t=1789857939; c=relaxed/simple;
+	bh=yFCQ8WzNYJBFC7+uDyTD06P6CArclROZkBWqqF/W3k4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ISF/BoPJ+Lja5s0vC1pzD1Rz52MHUVBF9McP/EJafgPv+VgsMy2tg5+5lZ3hQVdUXiifAyG1jABCjhwXdA62GccFf4F8vJUVNNUfLsbws5arGLyOnjreaRKDfRc3oyHRI+7Fyxlymowj9qxUEi34DlSjNkOb5JC6Q6VM8jDjq/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4PP+K8Q; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=u7fJnI6GDgIzU++LZi1mWATXp7l3fMXz6DcRSWaVJunoaCldHFdtT+Efy4tjZAsWmgzx/KQvbYK+Uy71Jo7l/9ihAE/dwqqSLXwilaBx8iGDhXu7vwG/d5fEUkcwtEU88eZC6BUQxNjd4Ji53a2UGajrvtTDlvKG4Jc8jeT8H0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kSP7LdAp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4PP+K8Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575D21F000FF;
-	Sat, 19 Sep 2026 22:41:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kSP7LdAp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BB91F000FF;
+	Sat, 19 Sep 2026 22:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789857694;
-	bh=QxdajoRUbpisH/niCr3vIjGevbK/r5JxIfffAEufKjc=;
+	s=k20260515; t=1789857938;
+	bh=yFCQ8WzNYJBFC7+uDyTD06P6CArclROZkBWqqF/W3k4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=c4PP+K8QLpz4cohUTDzXbn/czVPlWQNSwfPSzIv0YXJrmpYbiGBolkkC2btAzYM4Z
-	 G98ICq0DfYd6BnMYSC8yFcXu3ZKPa0oK+2opv77fKKu1AUVbkROUPehibYwHXS/Sbw
-	 w1BSsDi2zJSTok1DCp0NeE7kGR+PSPgfwg7eKeeAss6rXkocUt05kzDIGna/2osyWj
-	 jyrLY9ZLG/TtwxF03u0fO52TmuqNvdnGtw7CfwXcSaH1/Fyp6nPhlXLb1o2jayUs8u
-	 j2s0HE1OG7mtLn58xTbKMN8Qz4wp2Iymz6Gm90LcHXZlYdksTGQ/OkW5JIrW9V34qm
-	 +2/lFOPn/Sj5A==
-Date: Sat, 19 Sep 2026 15:41:33 -0700
+	b=kSP7LdApt0TyYFUyR1kIJzmrZj0A7VN3ZWT85w/fYR3OaIqBzRPT8f3DisBH3OuM0
+	 5/hSiFKOEiXEo8YmnIyzqlIF4Nzu4ke7H1rMdzMK2mL+m2bwMnmYn35Ga9s1/uZBZq
+	 +/Ct4vgwsywKkPseZKVz6rzhIYz4PSidYDDJYxbf0ITpdF4CXITDSUOTFJWplLIG14
+	 jArStFhJuOsNQEUDgLPHmi5Tr//R2oTSj/YHjDVk2NL/me++PS8Ak9eFi6opuMc3fF
+	 PQ5T12e0I+MfmE41dW+/psj8Dmq2lRbBL57wgLXj4jDyllPYL2ArSqFbr/ENsIwlQD
+	 nznDXEHypRLpQ==
+Date: Sat, 19 Sep 2026 15:45:37 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Michael Stapelberg <michael@stapelberg.de>,
- linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCHv2 net] net: phy: marvell: undo WoL setup when
- Wake-on-LAN is disabled
-Message-ID: <20260919154133.3fd41455@kernel.org>
-In-Reply-To: <20260914212409.74539-1-rosenp@gmail.com>
-References: <20260914212409.74539-1-rosenp@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Aamir Ahmed <elb12345@hotmail.co.uk>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Peter Korsgaard <peter@korsgaard.com>, Ziyi
+ Guo <n7l8m4@u.northwestern.edu>, Ethan Nelson-Moore
+ <enelsonmoore@gmail.com>, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: usb: catc: bound the RX packet length in
+ catc_rx_done()
+Message-ID: <20260919154537.15c6296f@kernel.org>
+In-Reply-To: <ab569155-f779-427e-8c8f-1dc5315fb0ff@redhat.com>
+References: <AS8P251MB00015FD7716F38C345619B56C8BB2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+	<ab569155-f779-427e-8c8f-1dc5315fb0ff@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,29 +50,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 14 Sep 2026 14:24:09 -0700 Rosen Penev wrote:
-> Fully disabling Wake-on-LAN on the 88E1318S/88E1510 used to leave
-> the WoL interrupt enable bit (CSIER.WOL_EIE) set and LED[2]
-> configured as the INTn pin. A magic packet arriving after "wol d"
-> would still assert INTn, and a later "wol g" re-enabled WoL from a
-> dirty register state.
-> 
-> Fully disabling WoL clears CSIER.WOL_EIE on the copper page. The
-> LED[2]/INTn pin mux is disposed of only when this driver forced it to
-> the INTn function: the INTn enable and polarity bits read at arming
-> time are saved, and restored once all WoL options are cleared, so PHYs
-> serving the MAC interrupt, strap configs, or marvell,reg-init values
-> are never touched. The FORCE_INT bit is not set while disposing of the
-> pin: it holds the interrupt line asserted and turns the shared PHY
-> interrupt into a "nobody cared" IRQ storm when the PHY interrupt is in
-> use.
+On Thu, 17 Sep 2026 15:00:23 +0200 Paolo Abeni wrote:
+> I'm sorry, but no minor fixes for legacy drivers.
 
-Oof, this is pretty hard to read. The paragraph is pretty much 2
-run-on sentences.
+I could be wrong, but I _think_ usb is "special" because
+it's much easier to plug in a fake USB device into a phone
+or laptop than a PCI one, and do malicious things?
 
-Please add info about how the issue was discovered and how it was
-tested. If you don't have HW back to net-next without Fixes it goes.
-The AI is pretty bad at judging severity, I need to find time to tune
-the Fixes suggestions further :/
--- 
-pw-bot: cr
+I'd be happy to hear otherwise
