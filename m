@@ -1,85 +1,42 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD2236EAB0
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88622D595B;
+	Sat, 19 Sep 2026 06:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789797758; cv=none; b=g3xOeLO7oTu7k621YG+xTRp2MgH02wV1VlbGfDOz32MurWU69HoYSz3oj0EhVUrhZZe6tiW+CGgu+21z3utlpQ9Pd0ePzgBF6Kt/g0yJjWfultu6mimztk/S9gPx6jLpAhwHxcaSUqktjp5bZH7bg7uQgd79u5AxzuPxuD3lF24=
+	t=1789798245; cv=none; b=rBzeUut3JmfFMM2/BJVpr0toDeYtWYQzC5haUTiJKaJ8JMJaJDyvQEgMv+VgnLpZW2ya0DF4oj2GkZCyss0i/mFYLNu5spNF2+nHVV2oT6fEpd5oDWPo4w/pIPe2Mrvilt3HWkU6cLe9UCUq+HlGPqLo6mAbt9XXGNeZe36GBJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789797758; c=relaxed/simple;
-	bh=PdVRLb7GRzBVxCJFmMCDmmlX6OQvcOJy1oofp4XQXSg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EoANN847ZMgFAkb4G+H86ySPakkOg3tNOUhH0magM+OkISWAKRYBnjh8UueaWFV79stqBNyXjyuAFfTqjss83XLQBqGydn6+unmnjRJQ2zsyBiMlQXCCp+GtYjSb6pqz1uHiahXAFF1oA+VXqBnLE2imNjbtECvnZgQDump0fy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jQUelV8b; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789798245; c=relaxed/simple;
+	bh=Ibgxl9ldEqgAy5mvKOIhkdqx+UUVk7PH+lwc3etHZCQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O41uiw4g4ze9ylFN83NdPKLctuYuJ5FCt/SPyHJgI9gDQ+Jx83iwvg1MXPgv2TQ9NhVRVMWTU43CZr2BIZcFOKdOjjXvqk0SiH8b4gvNefOpcrPEYale6+2aVjJl1lIpkFJP+U2xavBXOcflI9KYyKTj1WZfS+2pyvJh+5XU7ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GahkGHlv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jQUelV8b"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c3304833so979285a12.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 23:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789797756; x=1790402556; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Lzk8mK/iT/BPyFt9MlH11eEoXuVD23efCIvfZoVKpnQ=;
-        b=jQUelV8bzbZjwBqVqsA6Ln+c8m7yvB+TNIfLJoP6UUqEOAQ7Tiv7+CgPFx9trdQRV2
-         z4/i2/1uZZ1Xz0lHvdOkKE/pXa5Nuc/YloFaej8Pbzf7QnAg8p+7Ngu4mRoQDNmn2vV3
-         NEX1wpL4ixgauKzrlbC+j6cUQV5hINgdlbu2tBRbpVB78c8p6Ds69tTSUXI8pTzqZYYP
-         2p4ASIvVxDR7RwPwJ5UyUgJAutLH/zNSYum6cQej3ClAvy580bJfbPFvJ08UME47SyWp
-         n7KQjXcWd3zUxBjYDoK6Hq3XlvTqVH5aNmK5UtOu/ucsrRqGkup1scTOCoB3NcZoQ1Qq
-         LpIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789797756; x=1790402556;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Lzk8mK/iT/BPyFt9MlH11eEoXuVD23efCIvfZoVKpnQ=;
-        b=MG1GqFM0qzSHDAcoPS3HkAV9c1LJz/Sbpy+GIyrqykkcaBZu+8L07gCmWrvRL2rdrR
-         ntv+ONhll4tIrW1geozvihKMeD5cB0QdVaxkY/I/ladVqOJ66jXibntdyRX9zTUFXQah
-         UxdrBu5NuaVOliIeOTgvac5B82A4C21gI6fTfnMuZWyo2P64oxLHjiLNaUFzDhBFnkVw
-         t/KkGi8q9IDEMSzvXn+qUzRYGCbAhhmjFWzuP5HcePpfsrSbjRklBH1vZCWbU7VUz0qK
-         +I+yeve6OyNkNuDcLDtnhOHypqXkMF3jMf5WDWT+xXn19qdj2o0vdZ64q6U8VZaLXyqt
-         C/pw==
-X-Gm-Message-State: AFuF++nKFpvcTAYDw0RtbIO5orVW1Ej+0NZUb0LCn8PGiDkHGUMPjlo9
-	6dAvop9QSx0I/rj5h17qelyTgDg5kHLaKxbQZgvyXAb7klbrFuAhMkmrE4pUytiTG9w=
-X-Gm-Gg: AYBFou0Ni1Sqah85WF256AyaABgXzN4iVuneYjcMQP0zap+I70q5nLNr0LeNCQpjKqZ
-	I3T24zIKaQahkIZyM/wzKJVnsSpjQELjPH8Kua2ye1uWGGcnqOti9dZtApAOUQgLASmBKZco5c4
-	j4bhkhBrgvtPq48lUgU4rIJ5IBCHKClrxY5VzF7fP3/IDDkSR821OXwJFFg829OADJDHNnl4YdJ
-	onVCkIdKgpeMUjeHNpfxHqQ9AlHvwWoWRYaoa81PwqwjM11FfzVLmZ4pdTkqxk3K/Ntx8Gc6nBq
-	HTqrIEHd5hzhNfQhGcn+9jqENhI8Q0rbpcn57eQtvnWq+gZqtJcBRAjq/Zqz5CixmPNWfp0+O4z
-	kVFRJPp+i+f6lsQqv/BCNHbStAqRAVlKaKLH84D9MnmO6SWgIOxnJsT0Vt9GqwRqP6bJ4xqNj/J
-	nLPQQpkpMblJyT8CR52yMZEiyF7lBNgHSlcsnPSQRxloor5JcYqyZeZA9/M/qHyEyatcRW98xBw
-	wzBnLon/2fSURN85/aDA0AmtFgzZ6tLAPFR/AtUgMvssNEGrRuDeo3tRsVNa/V19J276xmMQAjM
-	xhUZZaIUNw==
-X-Received: by 2002:a17:90b:440e:b0:39e:6c69:34da with SMTP id 98e67ed59e1d1-39e6c693706mr2631042a91.62.1789797756533;
-        Fri, 18 Sep 2026 23:02:36 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:d11b:773b:fa83:c49a])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c33140f7fsm3658321eec.13.2026.09.18.23.02.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 23:02:36 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GahkGHlv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D641F000FF;
+	Sat, 19 Sep 2026 06:10:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789798243;
+	bh=uy4L0wNfa7HGJN5jW6Qg9LORi285S6cAAvWPAYZiEJg=;
+	h=From:To:Cc:Subject:Date;
+	b=GahkGHlvfEPqJPZfPQ5UradMlr+CTe4z1f2aLCdzKdvjnCnjmQm/ve8j8i3Z+RBRY
+	 /j4SJ47WDIpTx93Z+F6Q9rWGiNMV0YjLOwMVKOk7zTfOWfS17ketMqrslO9Xhdrod8
+	 MYAH6o7goj1Uxxzw23QZMGirqbGOk0CVp7jcUXvK/WxmxbqxRehlqE+cSGLa2FGTN8
+	 UkMuKcTj5UlHlnujfLt7LVjQBfg6t8lDlUk98Bv54fc4M6FdT30clzuYWHM/uy0pql
+	 DELAFWezsY92bYtEwk8LdSIn0yX0Nj8U5SPQpUv9QgKeJk/aUeSTjp9pzXa4rys0gK
+	 hHdPzoI5X+rDQ==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	jhs@mojatatu.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	vishy0777@gmail.com,
-	tahiliani@nitk.edu.in,
-	"Hemendra M. Naik" <hemendranaik@gmail.com>
-Subject: [PATCH net-next v7 3/3] net/sched: pie: correct tc_pie_xstats field documentation
-Date: Sat, 19 Sep 2026 11:31:25 +0530
-Message-Id: <20260919060125.38063-4-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260919060125.38063-1-hemendranaik@gmail.com>
-References: <20260919060125.38063-1-hemendranaik@gmail.com>
+	horms@kernel.org
+Cc: achender@kernel.org
+Subject: [PATCH net-next v2] net/rds: restrict the rdma_cm ids to IB devices
+Date: Fri, 18 Sep 2026 23:10:42 -0700
+Message-Id: <20260919061042.250462-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,39 +45,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The comments describing struct tc_pie_xstats do not match the values
-exported by the kernel.
+RDS only has an IB transport, but it never tells the rdma_cm so.  The
+listener created in rds_rdma_listen_init() is therefore installed on
+every RDMA device in the system, including iWARP RNICs, and the id an
+outgoing connection resolves through in rds_ib_conn_path_connect()
+may be bound to whichever device the address resolution picks:
+rds_ib_laddr_check() only vouched for the local address being served
+by one of RDS's IB devices, while cma_acquire_dev_by_src_ip() walks
+every RDMA device for the same address, so a software iWARP device
+attached to the same netdev can win.  The event handler then runs
+the IB transport's callbacks against a device that is not one.
 
-Update the delay field comment to microseconds (PSCHED_TICKS2NS() /
-NSEC_PER_USEC). Update avg_dq_rate to bytes/second (avg_dq_rate *
-PSCHED_TICKS_PER_SEC >> PIE_SCALE).
+The rdma_cm has an API for exactly this since commit a760e80e90f5
+("RDMA/core: introduce rdma_restrict_node_type()").  Restrict all
+three ids RDS creates - the listener, the per-connection id and the
+probe id in rds_ib_laddr_check_cm() - to RDMA_NODE_IB_CA before they
+are bound, so that the listener is only installed on IB devices, an
+outgoing connection can only bind one, and the address check's bind
+fails outright on anything else (its explicit node_type test now only
+guards against a device with no node type at all).
 
-Documentation-only; no UAPI layout or runtime change. Touch
-include/uapi/linux/pkt_sched.h only
+With that, the connect-request rejection for non-IB devices in the
+event handler becomes unreachable; it stays as the last line of
+defence and is what stable kernels without the new API rely on.
 
-Signed-off-by: Hemendra M. Naik <hemendranaik@gmail.com>
-Signed-off-by: Vishal Kamath <vishy0777@gmail.com>
-Signed-off-by: Mohit P. Tahiliani <tahiliani@nitk.edu.in>
+Assisted-by: Claude-Code:claude-fable-5
+Signed-off-by: Allison Henderson <achender@kernel.org>
 ---
- include/uapi/linux/pkt_sched.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v2: destroy the freshly created cm_id, and clear ic->i_cm_id, when
+    rdma_restrict_node_type() fails in rds_ib_conn_path_connect(), as
+    the rdma_resolve_addr() failure path below it does (review of v1).
+v1: https://lore.kernel.org/netdev/20260917074108.174262-1-achender@kernel.org/
+ net/rds/ib.c             | 11 +++++------
+ net/rds/ib_cm.c          | 12 ++++++++++++
+ net/rds/rdma_transport.c |  8 ++++++++
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/include/uapi/linux/pkt_sched.h b/include/uapi/linux/pkt_sched.h
-index 9c0c9787f0c32..969fa30efae7f 100644
---- a/include/uapi/linux/pkt_sched.h
-+++ b/include/uapi/linux/pkt_sched.h
-@@ -920,9 +920,9 @@ enum {
+diff --git a/net/rds/ib.c b/net/rds/ib.c
+index 786f39169bc1..6d367518aafb 100644
+--- a/net/rds/ib.c
++++ b/net/rds/ib.c
+@@ -414,13 +414,14 @@ static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
+ 	bool isv4;
  
- struct tc_pie_xstats {
- 	__u64 prob;			/* current probability */
--	__u32 delay;			/* current delay in ms */
-+	__u32 delay;			/* current delay in microseconds */
- 	__u32 avg_dq_rate;		/* current average dq_rate in
--					 * bits/pie_time
-+					 * bytes/second
- 					 */
- 	__u32 dq_rate_estimating;	/* is avg_dq_rate being calculated? */
- 	__u32 packets_in;		/* total number of packets enqueued */
+ 	isv4 = ipv6_addr_v4mapped(addr);
+-	/* Create a CMA ID and try to bind it. This catches both
+-	 * IB and iWARP capable NICs.
+-	 */
++	/* Create a CMA ID restricted to IB devices and try to bind it. */
+ 	cm_id = rdma_create_id(&init_net, rds_rdma_cm_event_handler,
+ 			       NULL, RDMA_PS_TCP, IB_QPT_RC);
+ 	if (IS_ERR(cm_id))
+ 		return PTR_ERR(cm_id);
++	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
++	if (ret)
++		goto out;
+ 
+ 	if (isv4) {
+ 		memset(&sin, 0, sizeof(sin));
+@@ -473,10 +474,8 @@ static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
+ #endif
+ 	}
+ 
+-	/* rdma_bind_addr will only succeed for IB & iWARP devices */
++	/* the restriction above means this only succeeds for IB devices */
+ 	ret = rdma_bind_addr(cm_id, sa);
+-	/* due to this, we will claim to support iWARP devices unless we
+-	   check node_type. */
+ 	if (ret || !cm_id->device ||
+ 	    cm_id->device->node_type != RDMA_NODE_IB_CA)
+ 		ret = -EADDRNOTAVAIL;
+diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+index 4feb0edc360c..d64dad317ebe 100644
+--- a/net/rds/ib_cm.c
++++ b/net/rds/ib_cm.c
+@@ -999,6 +999,18 @@ int rds_ib_conn_path_connect(struct rds_conn_path *cp)
+ 		goto out;
+ 	}
+ 
++	/* rds_ib_laddr_check() only vouched for the local address being
++	 * on an IB device; the address resolution below picks the device
++	 * on its own, so restrict it to the same kind.
++	 */
++	ret = rdma_restrict_node_type(ic->i_cm_id, RDMA_NODE_IB_CA);
++	if (ret) {
++		rdsdebug("rdma_restrict_node_type() failed: %d\n", ret);
++		rdma_destroy_id(ic->i_cm_id);
++		ic->i_cm_id = NULL;
++		goto out;
++	}
++
+ 	rdsdebug("created cm id %p for conn %p\n", ic->i_cm_id, conn);
+ 
+ 	if (ipv6_addr_v4mapped(&conn->c_faddr)) {
+diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
+index b15cf316b23a..91ff1dde26af 100644
+--- a/net/rds/rdma_transport.c
++++ b/net/rds/rdma_transport.c
+@@ -210,6 +210,14 @@ static int rds_rdma_listen_init_common(rdma_cm_event_handler handler,
+ 		return ret;
+ 	}
+ 
++	/* Only the IB transport is left, so only listen on IB devices */
++	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
++	if (ret) {
++		pr_err("RDS/RDMA: failed to setup listener, rdma_restrict_node_type() returned %d\n",
++		       ret);
++		goto out;
++	}
++
+ 	/*
+ 	 * XXX I bet this binds the cm_id to a device.  If we want to support
+ 	 * fail-over we'll have to take this into consideration.
 -- 
-2.34.1
+2.25.1
 
