@@ -1,188 +1,427 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB0736215E;
-	Sat, 19 Sep 2026 15:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2F53446CA;
+	Sat, 19 Sep 2026 15:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789830171; cv=none; b=pqRB6xkDfQVtNs/JRAgN4bHldAQlYxLLSSNBNnXHcKc4DSg3ITEvOqjbd6H9LdAmLLSj8I8QSeUYzc2P6hh7zum/K2TBRYImjg//kofijtDY3XxHUFcbh3PGfQ/L/A37zCgjjOqQxGwXYRpYJDCmcLqzbi3sGdTokLL50omNRDc=
+	t=1789831649; cv=none; b=uhWffB1mY8SmoRuvws358w2R9nblXqtaMPJUw86oOV+JS391/RLosffkpM6UUdvdW0vIkhCoN+0xpAC6lhM+Z7x50noihK39uqkq9BBEm505H1YxTzksLuWUEGfbddkZMpWN+KFHy0O7XMihumwMelD+PYc6C++w/xJmr9d3nbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789830171; c=relaxed/simple;
-	bh=nR3YZ04akHUoyNVdoBerCNgz8XUSb8qUTbtC19klQKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NoCnXYvk8NDDlgLgY0hI4iVIOoiVwO2pWsIOeXLqeKTgjbz+9qeBbIr5h8Epw7SsRnC6aA/VPaHnJIQAEv7vN+pI2LTU43yxOFPxm6H9MtARNHOTvjbvYyQrTVVt7nZ+Xh50KGm44WimlMWoi+F/4FgkuDcbnSD+fetKp2/lVu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=knLx2nb6; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789831649; c=relaxed/simple;
+	bh=LaFptG8u1fDasWAdrbrl/o4MxF50OpJx609eQR4CYm0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gfxmBULdp1+ZTrKF9F/d1KkIYfyzpGhb0YN6enLwmYupobcHC+KJbSf9RPXGYqoSlwY7/ASXu9lqWE7gbYQrj1CLBjMk4bL2xxeVBYKn86QGuP0Au+CdkmIOPZ8akNTo2yZKL2tpWawh1w/AenvTuMg3xUj8xvGbVqEqLjquc4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LNowP5FA; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="knLx2nb6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789830166;
-	bh=li+de4tFpfLExK0quVJsnK/mWXwkab4AONrGvjgUlHI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=knLx2nb60zD+WeoKMhgi474tVhIWykjPBK+jHhwojswlgN1b/aONDXPExzGJys0lS
-	 wT8tRpC/1Iu3/R59eEpMvDsNytwWg7HwtwJh3rPiL50Y0uKxtVdvs/S51SD8nWiiJT
-	 WCRzn1vXbh+iAnwRyiKqOe8Mo2ZkbljMD4JjODPjrKnmdXv7jFn78CbtJDmwRjO2RI
-	 MlOnvHR77t7HyWPXxAK/RTY5+zU7TOYO6We8chYugQxMMaGKmA7jEK/W0Nbo/MvR/q
-	 nKhAkdKlF2iMBEPDEv5DDR6Su6f+P+3mTb0BGZnCq6TFeBZZkLICimYhRZQtFUYKe5
-	 cnoYfiiVO3wfA==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 88C8B60079;
-	Sat, 19 Sep 2026 17:02:46 +0200 (CEST)
-Date: Sat, 19 Sep 2026 17:02:44 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: kuba@kernel.org
-Cc: netdev-bot+sashiko@kernel.org, netfilter-devel@vger.kernel.org,
-	davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, horms@kernel.org,
-	fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 4/8] netfilter: ip6t_rt: fix zero-address non-strict
- match out-of-bounds read
-Message-ID: <aq6kFM8gT_DRunm8@chamomile>
-References: <20260918112844.194503-5-pablo@netfilter.org>
- <178982488999.22033.1436563513682437520@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LNowP5FA"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F120EC58475;
+	Sat, 19 Sep 2026 15:28:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 81392606CA;
+	Sat, 19 Sep 2026 15:27:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D250510328325;
+	Sat, 19 Sep 2026 17:27:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789831635; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=5jQoTITZBemOLjk7Ud0MHWlrFyo2Xd2UPLX1phND9tk=;
+	b=LNowP5FAcSYglPQUAc7pzK0ZGvGiL2r05WAbCYHxDWgkHUuQgnwFdcQ3TuUeRRv5r19sS+
+	VEW+zZAGkfQKeY2BbCtj+AGce9bzJnGbuqRy8ui8m2kAjvyn6E0J0d+JWU551pW7BPwY3L
+	TvlWFZtXCQTCG8tgra972l27kKl15LcRvaDcK41jUdLHYHlJzf3dUxpScPT1VhT5do4idP
+	Ugzxy/srfDxWXCqQ5jaqNw3AbkL2DF3WlX1Bvpz8HXExDj/+mmXZORrXaG/0P3xwkwmYix
+	r+HBmd9x+w+B/wGx4x1mH/+lYmt2PWRfw0n2iVMNTAXJ+QUXRMbUboHHuqMV5g==
+Message-ID: <fd6612bc-a7fd-407a-869a-8660f8fcc3a7@bootlin.com>
+Date: Sat, 19 Sep 2026 17:27:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178982488999.22033.1436563513682437520@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 09/11] net: stmmac: dwmac-rk: add SGMII
+ support for RK3568
+To: Coia Prant <coiaprant@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Vinod Koul <vkoul@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Russell King <linux@armlinux.org.uk>, Shawn Lin <shawn.lin@rock-chips.com>,
+ David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-renesas-soc@vger.kernel.org
+References: <20260919125119.2107089-1-coiaprant@gmail.com>
+ <20260919125119.2107089-10-coiaprant@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260919125119.2107089-10-coiaprant@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Jakub,
+Hi,
 
-IP6T_RT_FST_MASK is just fine.
+On 9/19/26 14:51, Coia Prant wrote:
+> The RK3568 SoC integrates a Synopsys DesignWare XPCS that can be
+> connected to GMAC0 or GMAC1 in SGMII mode.  Add the necessary glue
+> logic to support this configuration.
+> 
+> The current dwmac-rk driver does not support SGMII mode.  SGMII
+> requires a PCS to handle auto-negotiation and link state reporting,
+> but the existing driver only supports RGMII and RMII.
+> 
+> Add a set_to_sgmii() callback to configure the GMAC GRF register for
+> SGMII mode (bit 7 set, interface selection bits 4:6 ignored when set).
+> Also add a set_to_rmii() callback for rk3568 to explicitly clear bit 7,
+> since the new SGMII path leaves it set and the RMII branch previously
+> relied on the SoC reset value.
+> 
+> Provide pcs_init/pcs_exit callbacks to create/destroy the XPCS via
+> xpcs_rk_create() from the Rockchip XPCS platform driver, and a
+> select_pcs callback to return the XPCS to phylink. SGMII is not added
+> to rk_get_interfaces(): it comes from the XPCS's own
+> supported_interfaces, merged by stmmac_phylink_setup().
+> 
+> The SerDes PHY and the PD_PIPE power domain are owned by the XPCS
+> driver rather than managed through the stmmac
+> serdes_poweron/serdes_poweroff callbacks, which are legacy and meant
+> for single-MAC platforms. On RK3568 the XPCS is the natural owner of
+> the shared SerDes.
+> 
+> DWMAC_ROCKCHIP selects PCS_XPCS_ROCKCHIP. PCS_XPCS itself is already
+> selected by STMMAC_ETH, and PM is selected by ARCH_ROCKCHIP, so no
+> further selects are needed.
+> 
+> Reorder rk_gmac_powerup() so that gmac_clk_enable() is called before
+> the SGMII check.  The SGMII path skips rk_get_phy_intf_sel(), so the
+> clock must be enabled earlier to cover all register accesses in that
+> path.  While at it, unify the error unwinding into a single
+> clk_disable label and add error handling for the default (unhandled
+> interface) case.
+> 
+> SGMII In-band vs Out-of-band
+> ============================
+> On RK3568, the MAC clock is fixed at 125 MHz and cannot be dynamically
+> changed by the stmmac core's set_clk_tx_rate callback.  In-band mode
+> works because the PCS handles rate adaptation internally.  Out-of-band
+> mode does not work because the MAC would need to change the clock rate
+> to 125/12.5/1.25 MHz for 1000/100/10 Mbps respectively, and the clock
+> is fixed.
+> 
+> Enable default_an_inband for SGMII and disable the generic stmmac
+> set_clk_tx_rate callback.  This forces phylink to use in-band mode,
+> where the PCS is responsible for speed/duplex negotiation.
+> 
+> Note that default_an_inband can be overridden by a fixed-link node,
+> and phylink may also fall back to out-of-band if the PHY does not
+> support in-band signalling.  Out-of-band SGMII is not supported by
+> this driver: the MAC clock would stay at 125 MHz for 10/100 Mbps,
+> giving working TX but failing RX.  Boards must use in-band mode
+> (managed = "in-band-status" or an in-band capable PHY).
+> 
+> Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 386)
+> Signed-off-by: Coia Prant <coiaprant@gmail.com>
 
-On Sat, Sep 19, 2026 at 01:34:49PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 0 · Low: 1
-> 
-> - [Low] Validator/matcher flag-semantics disagreement in
->   net/ipv6/netfilter/ip6t_rt.c.
-> 
-> --
-> 
-> netfilter: ip6t_rt: fix zero-address non-strict match out-of-bounds read
-> 
-> This adds a loop-header bound (i < rtinfo->addrnr) to the non-strict
-> address matching loop in rt_mt6(), removing the backwards break at the
-> bottom of the loop.  It also adds a rt_mt6_check() rejection for rules
-> that set IP6T_RT_FST_MASK with rtinfo->addrnr == 0.
-> 
-> > diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
-> > index 8051425213dd..9880faf3cc7d 100644
-> > --- a/net/ipv6/netfilter/ip6t_rt.c
-> > +++ b/net/ipv6/netfilter/ip6t_rt.c
-> > @@ -96,7 +96,8 @@ static bool rt_mt6(const struct sk_buff *skb, struct xt_action_param *par)
-> >  			unsigned int i = 0;
-> >  
-> >  			for (temp = 0;
-> > -			     temp < (unsigned int)((hdrlen - 8) / 16);
-> > +			     temp < (unsigned int)((hdrlen - 8) / 16) &&
-> > +			     i < rtinfo->addrnr;
-> >  			     temp++) {
-> >  				ap = skb_header_pointer(skb,
-> >  							ptr
-> > @@ -112,8 +113,6 @@ static bool rt_mt6(const struct sk_buff *skb, struct xt_action_param *par)
-> >  
-> >  				if (ipv6_addr_equal(ap, &rtinfo->addrs[i]))
-> >  					i++;
-> > -				if (i == rtinfo->addrnr)
-> > -					break;
-> >  			}
-> >  			if (i == rtinfo->addrnr)
-> >  				return ret;
-> 
-> [ ... ]
-> 
-> > @@ -162,6 +161,12 @@ static int rt_mt6_check(const struct xt_mtchk_param *par)
-> >  		pr_info_ratelimited("too many addresses specified\n");
-> >  		return -EINVAL;
-> >  	}
-> > +
-> > +	if ((rtinfo->flags & IP6T_RT_FST_MASK) && !rtinfo->addrnr) {
-> > +		pr_info_ratelimited("address list match requested but addrnr is 0\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> 
-> [Severity: Low]
-> Is the mask used here wider than the flag the matcher actually keys on?
-> IP6T_RT_FST_MASK is 0x30, covering both bits:
-> 
-> include/uapi/linux/netfilter_ipv6/ip6t_rt.h:
->     #define IP6T_RT_FST_MASK	0x30
->     #define IP6T_RT_FST 		0x10
->     #define IP6T_RT_FST_NSTRICT	0x20
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com
 
-This is from iptables:
+Maxime
 
-        case O_RT0NSTRICT:
-                if (!(cb->xflags & F_RT0ADDRS))
-                        xtables_error(PARAMETER_PROBLEM,
-                                   "`--rt-0-addr ...' required before `--rt-0-not-strict'");
-                rtinfo->flags |= IP6T_RT_FST_NSTRICT;
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/Kconfig   |   1 +
+>  .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 130 +++++++++++++++---
+>  2 files changed, 111 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> index e3dd5adda5aca..5088acc06982e 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+> @@ -170,6 +170,7 @@ config DWMAC_ROCKCHIP
+>  	default ARCH_ROCKCHIP
+>  	depends on OF && (ARCH_ROCKCHIP || COMPILE_TEST)
+>  	select MFD_SYSCON
+> +	select PCS_XPCS_ROCKCHIP
+>  	help
+>  	  Support for Ethernet controller on Rockchip RK3288 SoC.
+>  
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> index 8d7042e689261..88f09014e3a69 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/mfd/syscon.h>
+>  #include <linux/regmap.h>
+> +#include <linux/pcs/pcs-xpcs-rk.h>
+>  #include <linux/pm_runtime.h>
+>  
+>  #include "stmmac_platform.h"
+> @@ -47,6 +48,7 @@ struct rk_gmac_ops {
+>  	void (*set_to_rgmii)(struct rk_priv_data *bsp_priv,
+>  			     int tx_delay, int rx_delay);
+>  	void (*set_to_rmii)(struct rk_priv_data *bsp_priv);
+> +	void (*set_to_sgmii)(struct rk_priv_data *bsp_priv);
+>  	int (*set_speed)(struct rk_priv_data *bsp_priv,
+>  			 phy_interface_t interface, int speed);
+>  	void (*integrated_phy_powerup)(struct rk_priv_data *bsp_priv);
+> @@ -63,6 +65,7 @@ struct rk_gmac_ops {
+>  	bool clock_grf_reg_in_php;
+>  	bool supports_rgmii;
+>  	bool supports_rmii;
+> +	bool supports_sgmii;
+>  	bool php_grf_required;
+>  	bool regs_valid;
+>  	u32 regs[];
+> @@ -98,6 +101,7 @@ struct rk_priv_data {
+>  	bool integrated_phy;
+>  	bool supports_rgmii;
+>  	bool supports_rmii;
+> +	bool supports_sgmii;
+>  
+>  	struct clk_bulk_data *clks;
+>  	int num_clks;
+> @@ -809,6 +813,8 @@ static const struct rk_gmac_ops rk3528_ops = {
+>  #define RK3568_GRF_GMAC1_CON1		0x038c
+>  
+>  /* RK3568_GRF_GMAC0_CON1 && RK3568_GRF_GMAC1_CON1 */
+> +#define RK3568_GMAC_MODE_RMII_RGMII		GRF_CLR_BIT(7)
+> +#define RK3568_GMAC_MODE_SGMII_QSGMII		GRF_BIT(7)
+>  #define RK3568_GMAC_FLOW_CTRL			GRF_BIT(3)
+>  #define RK3568_GMAC_FLOW_CTRL_CLR		GRF_CLR_BIT(3)
+>  #define RK3568_GMAC_RXCLK_DLY_ENABLE		GRF_BIT(1)
+> @@ -836,6 +842,16 @@ static int rk3568_init(struct rk_priv_data *bsp_priv)
+>  	}
+>  }
+>  
+> +static void rk3568_set_to_rmii(struct rk_priv_data *bsp_priv)
+> +{
+> +	u32 con1;
+> +
+> +	con1 = (bsp_priv->id == 1) ? RK3568_GRF_GMAC1_CON1 :
+> +				     RK3568_GRF_GMAC0_CON1;
+> +
+> +	regmap_write(bsp_priv->grf, con1, RK3568_GMAC_MODE_RMII_RGMII);
+> +}
+> +
+>  static void rk3568_set_to_rgmii(struct rk_priv_data *bsp_priv,
+>  				int tx_delay, int rx_delay)
+>  {
+> @@ -851,19 +867,31 @@ static void rk3568_set_to_rgmii(struct rk_priv_data *bsp_priv,
+>  		     RK3568_GMAC_CLK_TX_DL_CFG(tx_delay));
+>  
+>  	regmap_write(bsp_priv->grf, con1,
+> +		     RK3568_GMAC_MODE_RMII_RGMII |
+>  		     RK3568_GMAC_RXCLK_DLY_ENABLE |
+>  		     RK3568_GMAC_TXCLK_DLY_ENABLE);
+>  }
+>  
+> +static void rk3568_set_to_sgmii(struct rk_priv_data *bsp_priv)
+> +{
+> +	u32 con1;
+> +
+> +	con1 = (bsp_priv->id == 1) ? RK3568_GRF_GMAC1_CON1 :
+> +				     RK3568_GRF_GMAC0_CON1;
+> +
+> +	regmap_write(bsp_priv->grf, con1, RK3568_GMAC_MODE_SGMII_QSGMII);
+> +}
+> +
+>  static const struct rk_gmac_ops rk3568_ops = {
+>  	.init = rk3568_init,
+> +	.set_to_rmii = rk3568_set_to_rmii,
+>  	.set_to_rgmii = rk3568_set_to_rgmii,
+> +	.set_to_sgmii = rk3568_set_to_sgmii,
+> +
+>  	.set_speed = rk_set_clk_mac_speed,
+>  
+>  	.gmac_phy_intf_sel_mask = GENMASK_U16(6, 4),
+>  
+> -	.supports_rmii = true,
+> -
+>  	.regs_valid = true,
+>  	.regs = {
+>  		0xfe2a0000, /* gmac0 */
+> @@ -1208,6 +1236,43 @@ static void rk_phy_powerdown(struct rk_priv_data *bsp_priv)
+>  		dev_err(bsp_priv->dev, "fail to disable phy-supply\n");
+>  }
+>  
+> +static int rk_pcs_init(struct stmmac_priv *priv)
+> +{
+> +	struct device_node *np = priv->device->of_node;
+> +	struct device_node *pcs_node;
+> +	struct dw_xpcs *xpcs;
+> +
+> +	pcs_node = of_parse_phandle(np, "pcs-handle", 0);
+> +	if (!pcs_node)
+> +		return -ENODEV;
+> +
+> +	xpcs = xpcs_rk_create(priv->device, pcs_node);
+> +	of_node_put(pcs_node);
+> +	if (IS_ERR(xpcs))
+> +		return PTR_ERR(xpcs);
+> +
+> +	priv->hw->xpcs = xpcs;
+> +	return 0;
+> +}
+> +
+> +static void rk_pcs_exit(struct stmmac_priv *priv)
+> +{
+> +	if (!priv->hw->xpcs)
+> +		return;
+> +
+> +	xpcs_destroy(priv->hw->xpcs);
+> +	priv->hw->xpcs = NULL;
+> +}
+> +
+> +static struct phylink_pcs *rk_select_pcs(struct stmmac_priv *priv,
+> +					 phy_interface_t interface)
+> +{
+> +	if (!priv->hw->xpcs)
+> +		return NULL;
+> +
+> +	return xpcs_to_phylink_pcs(priv->hw->xpcs);
+> +}
+> +
+>  static struct rk_priv_data *rk_gmac_setup(struct platform_device *pdev,
+>  					  struct plat_stmmacenet_data *plat,
+>  					  const struct rk_gmac_ops *ops)
+> @@ -1330,6 +1395,7 @@ static struct rk_priv_data *rk_gmac_setup(struct platform_device *pdev,
+>  
+>  	bsp_priv->supports_rgmii = ops->supports_rgmii || !!ops->set_to_rgmii;
+>  	bsp_priv->supports_rmii = ops->supports_rmii || !!ops->set_to_rmii;
+> +	bsp_priv->supports_sgmii = ops->supports_sgmii || !!ops->set_to_sgmii;
+>  
+>  	if (ops->init) {
+>  		ret = ops->init(bsp_priv);
+> @@ -1361,6 +1427,10 @@ static int rk_gmac_check_ops(struct rk_priv_data *bsp_priv)
+>  		if (!bsp_priv->supports_rmii)
+>  			return -EINVAL;
+>  		break;
+> +	case PHY_INTERFACE_MODE_SGMII:
+> +		if (!bsp_priv->supports_sgmii)
+> +			return -EINVAL;
+> +		break;
+>  	default:
+>  		dev_err(bsp_priv->dev,
+>  			"unsupported interface %d", bsp_priv->phy_iface);
+> @@ -1379,16 +1449,19 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = gmac_clk_enable(bsp_priv, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (bsp_priv->phy_iface == PHY_INTERFACE_MODE_SGMII)
+> +		goto set_mode;
+> +
+>  	ret = rk_get_phy_intf_sel(bsp_priv->phy_iface);
+>  	if (ret < 0)
+> -		return ret;
+> +		goto clk_disable;
+>  
+>  	intf = ret;
+>  
+> -	ret = gmac_clk_enable(bsp_priv, true);
+> -	if (ret)
+> -		return ret;
+> -
+>  	if (bsp_priv->gmac_phy_intf_sel_mask ||
+>  	    bsp_priv->gmac_rmii_mode_mask) {
+>  		/* If defined, encode the phy_intf_sel value */
+> @@ -1399,10 +1472,8 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  				      bsp_priv->gmac_rmii_mode_mask);
+>  
+>  		ret = rk_write_gmac_grf_reg(bsp_priv, val);
+> -		if (ret < 0) {
+> -			gmac_clk_enable(bsp_priv, false);
+> -			return ret;
+> -		}
+> +		if (ret < 0)
+> +			goto clk_disable;
+>  	}
+>  
+>  	if (bsp_priv->clock.rmii_mode_mask) {
+> @@ -1410,13 +1481,12 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  				     bsp_priv->clock.rmii_mode_mask);
+>  
+>  		ret = rk_write_clock_grf_reg(bsp_priv, val);
+> -		if (ret < 0) {
+> -			gmac_clk_enable(bsp_priv, false);
+> -			return ret;
+> -		}
+> +		if (ret < 0)
+> +			goto clk_disable;
+>  	}
+>  
+> -	/*rmii or rgmii*/
+> +set_mode:
+> +	/* rmii, rgmii, sgmii */
+>  	switch (bsp_priv->phy_iface) {
+>  	case PHY_INTERFACE_MODE_RGMII:
+>  		dev_info(dev, "init for RGMII\n");
+> @@ -1447,15 +1517,20 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  		if (bsp_priv->ops->set_to_rmii)
+>  			bsp_priv->ops->set_to_rmii(bsp_priv);
+>  		break;
+> +	case PHY_INTERFACE_MODE_SGMII:
+> +		dev_info(dev, "init for SGMII\n");
+> +		if (bsp_priv->ops->set_to_sgmii)
+> +			bsp_priv->ops->set_to_sgmii(bsp_priv);
+> +		break;
+>  	default:
+>  		dev_err(dev, "NO interface defined!\n");
+> +		ret = -EINVAL;
+> +		goto clk_disable;
+>  	}
+>  
+>  	ret = rk_phy_powerup(bsp_priv);
+> -	if (ret) {
+> -		gmac_clk_enable(bsp_priv, false);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		goto clk_disable;
+>  
+>  	pm_runtime_get_sync(dev);
+>  
+> @@ -1463,6 +1538,10 @@ static int rk_gmac_powerup(struct rk_priv_data *bsp_priv)
+>  		bsp_priv->ops->integrated_phy_powerup(bsp_priv);
+>  
+>  	return 0;
+> +
+> +clk_disable:
+> +	gmac_clk_enable(bsp_priv, false);
+> +	return ret;
+>  }
+>  
+>  static void rk_gmac_powerdown(struct rk_priv_data *gmac)
+> @@ -1602,6 +1681,17 @@ static int rk_gmac_probe(struct platform_device *pdev)
+>  	plat_dat->suspend = rk_gmac_suspend;
+>  	plat_dat->resume = rk_gmac_resume;
+>  
+> +	if (plat_dat->phy_interface == PHY_INTERFACE_MODE_SGMII) {
+> +		/* SGMII clock always runs at 125 MHz */
+> +		plat_dat->set_clk_tx_rate = NULL;
+> +
+> +		/* SGMII requires a PCS */
+> +		plat_dat->default_an_inband = true;
+> +		plat_dat->pcs_init = rk_pcs_init;
+> +		plat_dat->pcs_exit = rk_pcs_exit;
+> +		plat_dat->select_pcs = rk_select_pcs;
+> +	}
+> +
+>  	plat_dat->bsp_priv = rk_gmac_setup(pdev, plat_dat, data);
+>  	if (IS_ERR(plat_dat->bsp_priv))
+>  		return PTR_ERR(plat_dat->bsp_priv);
 
-The error message says that --rt-0-not-strict needs --rt-0-addr,
-which is IP6T_RT_FST.
-
-... that is IP6T_RT_FST_MASK.
-
-> But rt_mt6() gates every access to rtinfo->addrs[] and rtinfo->addrnr on
-> IP6T_RT_FST alone:
-> 
-> net/ipv6/netfilter/ip6t_rt.c:rt_mt6() {
-> 	if (!(rtinfo->flags & IP6T_RT_FST)) {
-> 		return ret;
-> 	} else if (rtinfo->flags & IP6T_RT_FST_NSTRICT) {
-> 	...
-> }
-> 
-> So a rule with only IP6T_RT_FST_NSTRICT set and addrnr == 0 never touches
-> addrs[] at match time, yet it is now rejected with -EINVAL at load time.
-
-Yes, but IP6T_RT_FST_NSTRICT set and addrnr == 0 should not ever
-happen.
-
-This LLM is lacking userspace context.
-
-> Would narrowing the new test to IP6T_RT_FST avoid that load-time behaviour
-> change?  Such blobs can only come from direct IP6T_SO_SET_REPLACE or
-> nft_compat callers, since libip6t_rt requires --rt-0-addrs before
-> --rt-0-not-strict, so no ruleset produced by iptables appears to be
-> affected.
-> 
-> Does the new check also make the strict branch's addrnr == 0 case
-> unreachable?  That branch has a meaningful zero-address semantic, matching
-> a routing header that carries no addresses at all (hdrlen == 8):
-> 
-> net/ipv6/netfilter/ip6t_rt.c:rt_mt6() {
-> 	...
-> 			if (temp == rtinfo->addrnr &&
-> 			    temp == (unsigned int)((hdrlen - 8) / 16))
-> 				return ret;
-> 	...
-> }
-> 
-> With addrnr == 0 now refused at load time, that comparison can no longer be
-> satisfied with addrnr == 0.
-> 
-> One more thing worth noting: is the new checkentry test needed for memory
-> safety at all?  The loop-header change bounds i to addrnr, and addrnr is
-> already capped at IP6T_RT_HOPS by the preceding test, so &rtinfo->addrs[i]
-> stays inside the 16-entry array on its own.
-> 
-> Separately, and not something this patch introduces: a rule with
-> IP6T_RT_TYP | IP6T_RT_FST_NSTRICT, rt_type 0 and addrnr > 0 still passes
-> rt_mt6_check() as an address list match, but rt_mt6() returns at the
-> !(rtinfo->flags & IP6T_RT_FST) test and silently ignores every configured
-> address.  Should the validator and the matcher agree on which flag means
-> "match the address list"?
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918112844.194503-2-pablo%40netfilter.org
