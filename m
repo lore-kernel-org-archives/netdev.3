@@ -1,82 +1,85 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D694A45038
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 08:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8180357D0B
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 08:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789807558; cv=none; b=Kx9mtQN8unxmorfPSUOtVES0mW1dJAwVbJaKJUsPwcCctTf7eM639p74HYR0FwaDsK27Jdu+Yum+yjdErupBxxORTfju8+kQ+yfoARNgyqZJGPxwBU2rTqSBI/oEi0kEIzRMBT6SSmqCsgTxbbbkvDCbDr9JV8vQZCghumg2tyA=
+	t=1789808061; cv=none; b=k705MMqlv8fwaThnM+z7FUOmsNAFuD4EH9/G5vz1pEcNL/PMRTHfpmJt2RwkkWWoRpQMz5sQvdiix98xXuqWRteHGB+9JmQADniFR9kauy2sP/WuLyA/uxNtJX3j3qdDiBHUWja//m+DMFqIJS2NCJlOj37Cwb5SgyLlmsfAdjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789807558; c=relaxed/simple;
-	bh=UEI2LGlCAzpNZZbvRBnIqxjWunRyp9kHL11PSVrSEBg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaENw0ale+qNMaVan2qZQBnjcZtNYzSFXSrerqHMiahMbJeEhNITqjOGSEhTH+AxjPpeFnbP8O9Z3W3U2SilMwybd+bt8Ay0/sN1aRYwCOKgz8b6OKH64ABF7s8tk0gwrlJjFTw4gWSN0SpdQepH0kPPxTP728uaSR0EkhFeTVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3U5sA3U; arc=none smtp.client-ip=74.125.227.171
+	s=arc-20240116; t=1789808061; c=relaxed/simple;
+	bh=c34bA274rDOkL+YzQsrkmI4B6CAXTcZ3HUERhawzQJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WBCMdrVs2LK5UM5Pjj+EWbO9g/tUPE+ySbHnCBoZnc9TBeLza4+W48LsIQoEmLBf9TVQzskDP46ZJ2yXsQLKmoQgk7xpqEf6MSsB7k3D5M4g4XbchETIxAwon+mG2lDuV437Lqw93dSshRd4j9+lSI8tz4qlTXDLZSqWf5FAFmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2UJKo3O; arc=none smtp.client-ip=74.125.228.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3U5sA3U"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccb1a98fso1400986a91.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:45:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2UJKo3O"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f56039dso203041266b.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:54:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789807556; x=1790412356; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fIT34fzAp20QfA3W3/wrFzqoA5JH29tRSqgsBN01jXI=;
-        b=h3U5sA3UEtza8RiEKIOcHOBOXmXD59BXH6octAMNx2UfxiJ1a38OzZ9Ab5ZTAUWPQt
-         4M6d/jFgnZUzXdhGfMBfIR1OROWMZ2iPIsL1ejnrLHN+AkDq9T2WVlR58RMtCv8nXJQF
-         d9JOQidLpFPkB3dJW3X+FxQSx4GkJD2BUehQmV0MgHczbN0Y+FVr2l+y9yky5TmGT6ex
-         IE/hTrKX1regi/83NWvWDnd2PpBsF6zMReJktreo7SE7uVmQF51K7uqR1ZMPl/k9a86G
-         fJuEwVKAmnm4H421HgiH/2EeOeepi1Jqq+0S8ZXD4f3EAHjUG6nBhDGTX1qitXdiHGm1
-         TGYw==
+        d=gmail.com; s=20251104; t=1789808058; x=1790412858; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OfnLSG5yNDxYZ/H/GH7hb4ofWQcWDQyvGNAStGIjNUk=;
+        b=L2UJKo3O29Tqp2YumXyJcVzLYPMS968qcO/z7RE5EonqHqLUKjOnT0vHssRS6inAye
+         wOZXNiP7K+I9b5pZe32k6SxpIwhjA+qOvYlMSqpvizmhsNVS9qpTGumCWubbyRcM4SSh
+         fmEesHCvkXWhBKsUnllF3EsW9kFwYKC69nNhu2/lKPGML7e32I3/OGKToj/xKBoA8Hl9
+         8Gc5j0IS5w+buvO8vJ64tntBGInvjz3qZPga0Y7t2mOV2S1hBIaoHnaLeC3ZlyGolfJ9
+         zed6kYhcJoYO7KZZS9seF4ickvxbzC3xgJgrwUlA+6CyaTvY4HH2499OgT+G88YNxkat
+         8rdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789807556; x=1790412356;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fIT34fzAp20QfA3W3/wrFzqoA5JH29tRSqgsBN01jXI=;
-        b=lecAaNpgWahWa89nzvLnNZWFjkWMzN1srhvbDn4jrbdMfShFOR8wiyKUiNfVjx7QkR
-         o/6FNoXPikLEYY6vCltLiFAHcnZimki2U20LQL3uV44sjEy2lPx4HmexOcUTyHwKnuRw
-         tNnbxD24LE9MS44A9BN/XsNpYsRl3GoJ5bgqH/n4hnftg5GL2kur6B/OYUjStK46T6GD
-         vomRMD0QeXD9d80aazXIG13k8sqo8A0MXsvwsqAGc1r4IYHGJlDWtlfsv/84c9/Z/GOS
-         fNQFlUdc4tj5KQwUFK32ZzFsuzj5azAfMokysvDLxjiikzIIHglkpo4zds6ANl2p/PeF
-         22Fg==
-X-Gm-Message-State: AFuF++nUeNqtS3PAbxs1FILo/SgC96mE8HhwFgxLyhFaDJwv7U6w9d16
-	64u6JFH+UBr7NkmN7MqDHojyJtGHGVo/ZS9jKxm0SgiTE014sT9LLEXHp3Ri4NNFFA8YFi+E
-X-Gm-Gg: AYBFou05NT0VnPfYbezzgF6yQ5r7lnnhNwCLqoR7Ri0HSh8YUWdC2HCi/AppU/5clBK
-	BU+ajY45lho/mtM0eCSZtcGENosj89m4P4i2rzuyE6rNDGVE+HK7nY8zLXGCC+JhuGTYqJ88/9x
-	V3CnygMVtaqh9wMEXTnq++a2wwypk9Xw/zK3HTtHiYRR7JcnjsW8OD77Cg0TuAdWBzfczrovxd3
-	ltejnD/D0BrQNA5ZEVa/u+A/YTVbgD9zci3bHGJARZOkppsfJBiDAwWRfZUbHmWOWpIqlOQfJSj
-	oEN3MKbWuf9MjPE1/NGBgu4v7twDYNF6bflb2c2sLLi+uYU5wcn9QAUvVvF3i1aJ/H+seWBx17q
-	Gm5jpMAXrxOM9mKUDMah39SWvgCXusynATzOz2Yj59loTgFqHJz+VWH3Yv0c5LoWahlHjpbeGJG
-	rwGJbY5KNAx/4bouIvyKheHq9S1hoBUcDguR5ly0+ALzb+NpzFGHc0SSNI7Tg1/59lZYxeZaD4K
-	YF0F4Wch5ND33A+3zogSlAdlCrVu/K4+Yw56YBFrGqVfxkxOPatyWpv6wV3TMWUzbIF9A==
-X-Received: by 2002:a17:90b:4f81:b0:39e:4d1e:d47c with SMTP id 98e67ed59e1d1-39e54d8b8c9mr8697331a91.25.1789807556095;
-        Sat, 19 Sep 2026 01:45:56 -0700 (PDT)
-Received: from lenovo-thinkbook (42-2-127-248.static.netvigator.com. [42.2.127.248])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c6dd585sm3346698a91.0.2026.09.19.01.45.49
+        d=1e100.net; s=20260707; t=1789808058; x=1790412858;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OfnLSG5yNDxYZ/H/GH7hb4ofWQcWDQyvGNAStGIjNUk=;
+        b=OSDU5uEWRtFfTcC9eL+WqINoijmnpHHD3NizklMD/jkWzgg6u0xgN+/HCvxziQ5U62
+         Bbjb6BEYs/vcDt0muPCtb5EJS+bBPqx618B735Vx6NgMjpIbPv52eAZXMA/QRyFDWS8W
+         qLXCzDI+Drlw1uN2qyluRslPY5MA7NmIE6LIq7X/S1IkGy7W8EWOVLSjVJEPOpnb1vuX
+         SFl3HdL5t/ihBoSAuC7HLEdgU26+RZuX6pIOujT1r2o3hT+Hiyy3jiQGpYqSdLiCAHGm
+         KAXiFOOMD4dYKm8DvFEvxvtN5UPL06+2yekrpZTXtyhaDH3nnU9o+AF5W3Ione35KDgw
+         w5LA==
+X-Gm-Message-State: AFuF++mW8bee9SgvEL9+w56N29orZzcFXdgM52gm6OKZNpI/cBGjxpES
+	Awy/tdX74OfzzCRdssg8CaYYAuIilX/ZbWy0Bqz0DvqfC6D0a44oSj9fpttkTF/ZfwA=
+X-Gm-Gg: AYBFou1vZ/eljVkLeAAhkemqoFUWYAOleownGSfur81qd8jBwicj8xCSPbZ95ryFrUo
+	KnIeo551Q0i8YocLu3KIZvriUPcYMjai3odVJCjvvaDR9UOC7DuFYbDLUe9FZemn4af113bUqjB
+	fM7E1WOthNHz71D8GZQ3l+kqbPPymsKpJpjKdU0YyjDiLMoz6ZLT+be/u/12kp9zpYU6Dne5iTR
+	OaVvSd2yK1RIWSw/C7wTCb5iB1lNMuf0MSq39VBTp7cjltnMDH6QjAUieX4U7RVpo6yCX0Nukj5
+	uMnz2VeLUFLaa0ndmSLAGR52yWqSAwjX8MI/pT+jG/OL8BHfIVhxIAg+UeXvk0iM1wXNLY0UcfS
+	hJiEsx9jezit8PtBbVzucoA/Toe7NJj+IywCIzV4XNWDV5d0aFt7fG/GgapqvenT2Nhsp5FlueN
+	iF0SH0ZDIbcDpnchYbbdUKSU/bADhikQ00GPilYZSplpyCgD04v892kSYTjh+Vp5HwO9ndskiAi
+	DYrFhzZT4foZYTHP+Jhuu0fmwrHpVMORaj2tz6Mbc4ty+sWajHF0Ak0kNNlOw5hMzJrX9F/Fk/0
+	wV4dn9kbd4RBU35tG/bl
+X-Received: by 2002:a17:906:6a1c:b0:c29:6184:5e13 with SMTP id a640c23a62f3a-c2a15cd5b73mr428764966b.40.1789808057658;
+        Sat, 19 Sep 2026 01:54:17 -0700 (PDT)
+Received: from localhost.localdomain (83-233-130-25.cust.bredband2.com. [83.233.130.25])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a3572d4d5sm64731766b.33.2026.09.19.01.54.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 01:45:54 -0700 (PDT)
-From: Yuqi Xu <xuyuqiabc@gmail.com>
+        Sat, 19 Sep 2026 01:54:17 -0700 (PDT)
+From: Yongzhao Chen <yongzhao.derek@gmail.com>
 To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Ren Wei <weir@nebusec.ai>,
-	xuyq21@lenovo.com
-Subject: [PATCH net 1/1] net: ipconfig: bound DHCP option construction
-Date: Sat, 19 Sep 2026 16:45:27 +0800
-Message-ID: <7808dfbfa2162dfd0b19f59aff5742d6e0db2abb.1789798023.git.xuyuqiabc@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1789798023.git.xuyuqiabc@gmail.com>
-References: <cover.1789798023.git.xuyuqiabc@gmail.com>
+Cc: andrew@lunn.ch,
+	olteanv@gmail.com,
+	florian.fainelli@broadcom.com,
+	jonas.gorski@gmail.com,
+	woojung.huh@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux@armlinux.org.uk,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC net-next] net: dsa: pass PHY flags when connecting shared ports
+Date: Sat, 19 Sep 2026 10:54:06 +0200
+Message-ID: <20260919085406.1395-1-yongzhao.derek@gmail.com>
+X-Mailer: git-send-email 2.45.2.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,109 +88,156 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ic_dhcp_init_options() appends the hostname (option 12), vendor-class
-(option 60) and client-ID (option 61) options into the fixed 312-byte
-bootp_pkt.exten[] buffer.  Only the client-ID branch checked the
-remaining space; the hostname and vendor-class writes were unbounded.
+DSA calls get_phy_flags() when attaching user-port PHYs, but passes zero
+when connecting shared (CPU and DSA) ports. Shared ports backed by PHYs
+can also need switch-specific initialization data. The motivating case is
+qca8k PHY-to-PHY CPU-port support carried by OpenWrt, where the internal
+PHY driver needs the switch revision. That support is absent from this
+net-next baseline.
 
-A 64-byte hostname together with the maximum 252-byte dhcpclass=
-identifier needs 18 + (2 + 64) + (2 + 252) = 338 of the 312 available
-bytes even before the terminating END marker, so the vendor-class memcpy
-runs past the end of exten[].  With CONFIG_FORTIFY_SOURCE this is
-reported as a field-spanning write and, when the kernel is booted with
-panic_on_warn=1, aborts boot with a panic.
+Call the existing callback before connecting shared-port PHYs and document
+its expanded scope. Drivers without the callback continue to pass zero.
+Preserve the existing PHY connection error handling.
 
-Route the optional options through a common helper that makes sure the
-option, its 2-byte header and the END marker all fit and drops an option
-that would not.  Configurations with short options keep sending exactly
-the same bytes as before.
+Make bcm_sf2 and ksz88xx return zero for non-user ports. This avoids newly
+passing their PHY power-management and erratum flags to shared ports,
+while retaining their existing user-port values.
 
-Fixes: 130c0f47fdf9 ("ipconfig: send host-name in DHCP requests")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
+Link: https://github.com/openwrt/openwrt/pull/25225
 Assisted-by: LLM
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Reviewed-by: Ren Wei <weir@nebusec.ai>
+Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
 ---
- net/ipv4/ipconfig.c | 45 ++++++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+This RFC proposes using get_phy_flags() for PHY-backed shared DSA ports,
+with bcm_sf2 and ksz88xx guards to preserve their existing behavior.
+The callback already carries switch-specific initialization data to PHYs;
+the shared-port path should provide it before PHY initialization too.
 
-diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
-index 155db067eaec..1b8585404a41 100644
---- a/net/ipv4/ipconfig.c
-+++ b/net/ipv4/ipconfig.c
-@@ -676,6 +676,24 @@ static const u8 ic_bootp_cookie[4] = { 99, 130, 83, 99 };
+The use case comes from qca8k PHY-to-PHY CPU-port support carried by
+OpenWrt. That support is absent from this net-next baseline. The downstream
+PHY driver needs the switch revision and a flag for a QCA8337 CPU-link
+SmartSpeed quirk. This patch covers the generic flag propagation and
+compatibility guards; the PHY-to-PHY support and quirk are outside its
+scope. The complete RA74 fix would need those changes as well.
+
+Reusing the callback keeps one interface for switch-to-PHY information.
+The guards make bcm_sf2 and ksz88xx return zero for non-user ports,
+preserving their previous contribution on those paths. They do not clear
+flags already held by the PHY. qca8k continues to supply its revision for
+internal PHYs. The pinned tree has no other callback implementations.
+
+The patch is based on net-next
+26ee8cd69d46a14b37ba5e512084fe80d730127a. Validation:
+
+- Four fresh x86_64 builds compare baseline and candidate allyesconfig
+  and allmodconfig with GCC 13.3.0, W=1 and KCFLAGS=-Wno-error. All builds
+  produce vmlinux, bzImage and every expected module: 66 for allyesconfig
+  and 11,173 for allmodconfig. Paired configurations are byte-identical;
+  source, configuration and toolchain checks remain stable throughout.
+  Complete warning/note comparisons, including repetition counts and
+  compiler targets, show no new code diagnostics. Allmodconfig matches
+  exactly. Allyesconfig differs only by four baseline make clock-skew
+  diagnostics. Their two empty module lists were checked, and full-target
+  replays reached stable dependencies with no new diagnostics. Raw logs
+  and the review are retained. The default CONFIG_WERROR=y builds had
+  stopped on warnings reproduced in the unpatched baseline: all 48 and
+  12 initial error diagnostics, respectively. The common -Wno-error
+  setting enables the complete comparison; these are not warning-free
+  builds. Earlier affected-object COMPILE_TEST/W=1 builds also passed.
+- A standalone C harness compiles actual DSA and driver function bodies
+  with stubbed PHY/phylink operations under ASan/UBSan. All 52 cases pass,
+  covering BCM/KSZ compatibility, qca8k revision propagation, all flag
+  bits, callback arguments and call count, missing callbacks, and
+  attachment errors. Removing either guard or disabling propagation
+  makes the corresponding assertion fail. Earlier compiled-function
+  checks also cover the OpenWrt 6.12 and 6.18 adaptations.
+- Runtime testing used an OpenWrt 6.18 image on Redmi AX5400 (RA74), with
+  the PHY-to-PHY support and QCA quirk. It passed sysupgrade and warm
+  reboots, a physical 20-second power cycle, WAN/LAN DHCP, wired traffic
+  and LAN VLAN isolation. These results cover the combined downstream
+  changes. This net-next patch has not been runtime-tested on hardware;
+  BCM SF2 and KSZ hardware have not been tested.
+
+Codex assisted with the implementation, test harnesses and draft text.
+The work addressed OpenWrt PR 25225 review, preserving other drivers'
+behavior and preparing the generic change for upstream discussion.
+Gemini 3.8 Flash, through agy, reviewed the design and an earlier draft.
+The paired whole-tree build experiment was completed after those reviews.
+
+ Documentation/networking/dsa/dsa.rst | 2 ++
+ drivers/net/dsa/bcm_sf2.c            | 4 ++++
+ drivers/net/dsa/microchip/ksz8.c     | 4 ++++
+ net/dsa/port.c                       | 6 +++++-
+ 4 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/networking/dsa/dsa.rst b/Documentation/networking/dsa/dsa.rst
+index 42a99f5df..9bb7a8f75 100644
+--- a/Documentation/networking/dsa/dsa.rst
++++ b/Documentation/networking/dsa/dsa.rst
+@@ -668,6 +668,8 @@ PHY devices and link management
+   on its own (e.g.: coming from switch memory mapped registers), this function
+   should return a 32-bit bitmask of "flags" that is private between the switch
+   driver and the Ethernet PHY driver in ``drivers/net/phy/\*``.
++  It is called when connecting PHYs for user, CPU and DSA ports. Drivers
++  should return zero for ports that do not need switch-specific PHY flags.
  
- #ifdef IPCONFIG_DHCP
- 
-+static bool __init
-+ic_dhcp_add_option(u8 **options, const u8 *end, u8 type, const void *value,
-+		   int len)
-+{
-+	u8 *e = *options;
-+
-+	/* leave room for the option header and the END marker */
-+	if (len > U8_MAX || end - e < len + 3)
-+		return false;
-+
-+	*e++ = type;
-+	*e++ = len;
-+	memcpy(e, value, len);
-+	*options = e + len;
-+
-+	return true;
-+}
-+
- static void __init
- ic_dhcp_init_options(u8 *options, struct ic_device *d)
+ - ``phy_read``: Function invoked by the DSA user MDIO bus when attempting to read
+   the switch port MDIO registers. If unavailable, return 0xffff for each read.
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index 9e5713015..f516fc396 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -709,6 +709,10 @@ static u32 bcm_sf2_sw_get_phy_flags(struct dsa_switch *ds, int port)
  {
-@@ -691,6 +709,7 @@ ic_dhcp_init_options(u8 *options, struct ic_device *d)
- 		42,	/* NTP servers */
- 	};
- 	u8 mt = (ic_servaddr == NONE) ? DHCPDISCOVER : DHCPREQUEST;
-+	u8 *end = options + sizeof(((struct bootp_pkt *)0)->exten);
- 	u8 *e = options;
- 	int len;
+ 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
  
-@@ -721,31 +740,19 @@ ic_dhcp_init_options(u8 *options, struct ic_device *d)
- 	e += sizeof(ic_req_params);
++	/* Shared ports previously received no PHY flags. */
++	if (!dsa_is_user_port(ds, port))
++		return 0;
++
+ 	/* The BCM7xxx PHY driver expects to find the integrated PHY revision
+ 	 * in bits 15:8 and the patch level in bits 7:0 which is exactly what
+ 	 * the REG_PHY_REVISION register layout is.
+diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+index 941ae9f66..d284c199f 100644
+--- a/drivers/net/dsa/microchip/ksz8.c
++++ b/drivers/net/dsa/microchip/ksz8.c
+@@ -2953,6 +2953,10 @@ static u32 ksz88xx_get_phy_flags(struct dsa_switch *ds, int port)
+ {
+ 	struct ksz_device *dev = ds->priv;
  
- 	if (ic_host_name_set) {
--		*e++ = 12;	/* host-name */
- 		len = strlen(utsname()->nodename);
--		*e++ = len;
--		memcpy(e, utsname()->nodename, len);
--		e += len;
-+		ic_dhcp_add_option(&e, end, 12, utsname()->nodename, len);
- 	}
- 	if (*vendor_class_identifier) {
--		pr_info("DHCP: sending class identifier \"%s\"\n",
--			vendor_class_identifier);
--		*e++ = 60;	/* Class-identifier */
- 		len = strlen(vendor_class_identifier);
--		*e++ = len;
--		memcpy(e, vendor_class_identifier, len);
--		e += len;
-+		if (ic_dhcp_add_option(&e, end, 60, vendor_class_identifier, len))
-+			pr_info("DHCP: sending class identifier \"%s\"\n",
-+				vendor_class_identifier);
- 	}
- 	len = strlen(dhcp_client_identifier + 1);
--	/* the minimum length of identifier is 2, include 1 byte type,
--	 * and can not be larger than the length of options
--	 */
--	if (len >= 1 && len < 312 - (e - options) - 1) {
--		*e++ = 61;
--		*e++ = len + 1;
--		memcpy(e, dhcp_client_identifier, len + 1);
--		e += len + 1;
--	}
-+	/* the minimum length of identifier is 2, include 1 byte type */
-+	if (len >= 1)
-+		ic_dhcp_add_option(&e, end, 61, dhcp_client_identifier, len + 1);
++	/* Shared ports previously received no PHY flags. */
++	if (!dsa_is_user_port(ds, port))
++		return 0;
++
+ 	switch (dev->chip_id) {
+ 	case KSZ88X3_CHIP_ID:
+ 		/* Silicon Errata Sheet (DS80000830A):
+diff --git a/net/dsa/port.c b/net/dsa/port.c
+index 1f5536c0d..4db7e6f9c 100644
+--- a/net/dsa/port.c
++++ b/net/dsa/port.c
+@@ -1666,6 +1666,7 @@ static int dsa_shared_port_phylink_register(struct dsa_port *dp)
+ {
+ 	struct dsa_switch *ds = dp->ds;
+ 	struct device_node *port_dn = dp->dn;
++	u32 phy_flags = 0;
+ 	int err;
  
- 	*e++ = 255;	/* End of the list */
- }
+ 	dp->pl_config.dev = ds->dev;
+@@ -1675,7 +1676,10 @@ static int dsa_shared_port_phylink_register(struct dsa_port *dp)
+ 	if (err)
+ 		return err;
+ 
+-	err = phylink_of_phy_connect(dp->pl, port_dn, 0);
++	if (ds->ops->get_phy_flags)
++		phy_flags = ds->ops->get_phy_flags(ds, dp->index);
++
++	err = phylink_of_phy_connect(dp->pl, port_dn, phy_flags);
+ 	if (err && err != -ENODEV) {
+ 		pr_err("could not attach to PHY: %d\n", err);
+ 		goto err_phy_connect;
+
+base-commit: 26ee8cd69d46a14b37ba5e512084fe80d730127a
 -- 
-2.55.0
+2.43.0
 
