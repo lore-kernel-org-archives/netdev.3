@@ -1,131 +1,201 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020072.outbound.protection.outlook.com [52.101.229.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F60364E89
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 12:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789821141; cv=none; b=EDuQoPoC5m6qZZyaILM6p7YBfQxhCzX4Godp5/24MySbXJIKBM9XIf24fUBj/7gzS6lnQs/KpN3fxGX2TwsHJc3WXG9i03s3Hn+54+lhoFF4NpBlUMi65Malxv3nMjcXZeN0emcz3JDvo+il6z6gYS3L9ZGTBpFbCXwVeYIkkTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789821141; c=relaxed/simple;
-	bh=ohMLhoHsIhyrQR++saiVhSXMuKOsrbcqrQpd5HS7woc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNjiidK+hMPo2N5cB6cyRP3Qzq5DKxzgUS81nw+pAhZb8wlR5qV7twSyDhTLOdBhA+2WL76Vfl0L3+O+PObDqsSD2tF+k4YRs46vAV3/KCYNi1cm9QGV/X+Es5xmzAjSJ9o23Ja5Te8BhJ6YZ47o2x0Eqhj5Hr+H9k3rj2Dn5CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isec.pl; spf=pass smtp.mailfrom=isec.pl; dkim=pass (2048-bit key) header.d=isec.pl header.i=@isec.pl header.b=VEHKZ/ei; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isec.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isec.pl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75531CAA92;
+	Sat, 19 Sep 2026 12:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789821469; cv=fail; b=JiV0vraOlsveVUOfTn25ASGVPRxRr6F4pXvvMXa3wpoh0B07d4CMGd6XFO+hCNRWytkfDttz5YrhTQoBPUBPwLEE6iGwE+MuviKA6Ipa+vlVaUrdmX5yXPtFmys87OTcb4IG/27JgEMQRdvYiIcLPPIxB1kpv4t6MMhDFm/l+tc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789821469; c=relaxed/simple;
+	bh=5ib429JjPMBouAFgSJFftFOu2ax4YCjwNtY3gjBbboI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QxWpy8j8tjbVnwPuR9uItCcdMhndT+LHp1PfuEZwUh3dJ+WSLBh/eRQicYQpfVTiTP7ddYb8i//dblEv6DgTzTqwvtI89UlLDa3A7J3clbo7ycDySEEY1wzln5BgDldSkzYZu5+UqvFXEtimIo5N11HQ0YzTGGLAqLwxpl5/vTI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=gPK3Q/WA; arc=fail smtp.client-ip=52.101.229.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isec.pl header.i=@isec.pl header.b="VEHKZ/ei"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccf3ca626so7448745e9.0
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 05:32:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isec.pl; s=google; t=1789821138; x=1790425938; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UwlcS9+bFUXKkO5ovoMUYQeBuvELj6Lvx0WboaUWawc=;
-        b=VEHKZ/eirlNE3GqF6ljgbufpC1whZ7Ox06fewUk23pQGYZulQ5419SF3E1i+tYTLFt
-         IIgeZNUjZR9StsPxqAvhYTMxd4omBw84doRKzizA75mlvt/5nx397opG0u+CtBTK54dZ
-         PJRQEZEv6A5OY2PGyBViaxOQ5zey2/zKFt5gdJILTD7LZXggjV48ZjEhsJFVXGbFBKQP
-         4LiTcahUy75vtiLr0hv8D+ulJNlXFoIkzQgMqOs/S72ajV13612e2tNNmkrl3mjgKfN7
-         1BHcKVTL8CH0G1v2BPpsHKWsYyXPq6PWaMO7xj0CZj2u2cTnp+RMU7RDjSmxxWwAdkDz
-         KLoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789821138; x=1790425938;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UwlcS9+bFUXKkO5ovoMUYQeBuvELj6Lvx0WboaUWawc=;
-        b=ot51bGRAWcd9mjum93z4vceemywtWKQZeVTBNgCNgs5iqI0UU9mh9uyMX8BqUYS7Ww
-         2g0ELGnUq/M5k3itkDBRU9OfMquM56THtJJHd27Bc1ELiF/qx33W+F5ciFmKe3Zhw4SA
-         HSG4TytwqRpa/mjN+kMOGqPEckjgM7GFUE5PsE0vyMnR9SihWMP+HOhxSt4j4qOv/i89
-         v7z0YHYkQ7P5FFtnRj5JWCmdDq9JCv0XFJ2p0zSV3fWTCjTGTSbDWucaqWpqZvAId2DC
-         /KF/O29r06R2kSwoeTVgRVQYJhSy2RVY4b65r+garrIWsOxYPkkQV/BhnI5FyA9Tuy7l
-         39Dw==
-X-Forwarded-Encrypted: i=1; AKwUvBw0P6WYfSPk/RdpARCL1g10TsioiaC41EQUZSbkSzW7SrIgs/g0LHuM2O/FEPnHeiFNdWDsCew=@vger.kernel.org
-X-Gm-Message-State: AFuF++nWLjw18Du6YbsHlHDoqMDjRyEpMz276RZHKUAnQoz7grrmsN9X
-	1YCgsIS/EohBk8cdSFhhnncitRQ3Kv60OJRUGM9egD92WyBlGUjbIeiJdijcGigUA0w=
-X-Gm-Gg: AYBFou0pGSlpd/3pUgOtHlcxqyZRQi/O1IomBHZtGjVm8NqcF9fDGkOFGLag03hLs/E
-	eDQf2Sk5ztvkYeWGyVcdImZCip9wrCpyLX0hu6IXy+VbQBZ00abTikrRC16ongbfMr+3Jz5TRHr
-	yxvPZBAZ4V/ye5ALBAz4h3zMq8boAlqYbJ72mt1eNAyG+0dTNZnCwikew8wefzQLXybRj3QwkPD
-	QIGS5LS2QGfBhgUfjFqJ14rnNemvMU3P+Sw/Zv6mQ8v3lhulgQRryA0cDK5AqqCmxoNqp7rNrjn
-	38Ej1VZr6/qDb44/mA5eyGSMMzeF3BghKQA4nebfQejQnyb42zJOmyDen/pOMtAOpCIMQz+VRwW
-	lNo4cEMkfW1wpICXuYnHdeoSeOu6Zc3+GeSBMbZ+2ZlDvVNoP9ZxmkDfG0sKJddA8IKmln8mjOj
-	Ct9ZBT0kmVoIdwB3LZtQRkddDM1Fj0CKZHM3QdTknCjQTa0grAVSNHsE8+gqE9R5Cm+gyhw91KB
-	JLTbhm7Teed4HAWKgSYCf+aSIckIrIZhEcU4C+woF8Ne6o=
-X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr67615405e9.23.1789821138247;
-        Sat, 19 Sep 2026 05:32:18 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:a318:80b3:9080:dcd8:ca10:f229:8aed])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd10d21asm88593265e9.12.2026.09.19.05.32.17
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 19 Sep 2026 05:32:18 -0700 (PDT)
-From: =?UTF-8?q?Bart=C5=82omiej=20Dmitruk?= <bartlomiej.dmitruk@isec.pl>
-To: Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Stefano Garzarella <sgarzare@redhat.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] vsock/vmci: enforce per-netns mode on the datagram receive path
-Date: Sat, 19 Sep 2026 14:31:57 +0200
-Message-ID: <20260919123208.29032-2-bartlomiej.dmitruk@isec.pl>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20260919123208.29032-1-bartlomiej.dmitruk@isec.pl>
-References: <20260919123208.29032-1-bartlomiej.dmitruk@isec.pl>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="gPK3Q/WA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dsF4Q4lXGA+yEgIrO7Ln20Q00FbTe2y0axOH+eyg8PUS8sdVM86Pyue4RK0//ZUTKrWl6YU+ZqAI607/+F5noqVvmKJDanCdt+7h1n3MS0rE+vMG4E/tY4dVmuot5lBFUdSKZ4XHaMUJ4AOuS4Mbo7Bc2Svqq8xzJAWdx4wNt3KpCVzvKjJC+YcMSERmpF2xS5rt2g2dPM3Y6nCtBLoW2ylDD5NhMDilKoixoYc/mYeVgQXz/PydQOwuAcODtKTbZOQCSPYHhyME45yqvETJOgv5r0AyTrVpemvvtbRoLcYFu3qKv1RyomvdL+kcpajWSEL9x8R0l7NHDMz8Njk5gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N2UCp8neR70EFIprSQSbBJwVWoFHYtaw0LaYNUx6oGA=;
+ b=jFizeOo4h61/D5ouWEUaQulIOYD7VvG9AF9eGwJSPeEAFk0TpgCqpB1W2quPuvhH3sROQ0v7PWEkmp9aeqNfBZBuePgCjdT6OLxPV/ZtZvs2vYjP5iNDbSf8zK1IcE2ULBT6hFoL8GZcor6PPjLMjc/LM0D9I776dXB1I/oLsXDyNavVIFoXDnIBT8m9ZND4et3WntnG5u68Z98vj/y6xcptUkqd+3E4eLITW3qQqfpH/mN2prRj066kvK5PKMkUwNJ7In/cOOr+9aPe50UaJZCgRbrS3Z9YfedDbCrVw97sx1SW8g6K3XSOdc0A2zUN6fjmiREsCFzrYtv77eAd1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N2UCp8neR70EFIprSQSbBJwVWoFHYtaw0LaYNUx6oGA=;
+ b=gPK3Q/WAKyPFS4WrdEvQF7qi2lYmZCn+GT8+HNYINexyQUpDeU7nalV0BJY/KL+JRCASw6EgjkFhprPrAWWLgS1HkUvHFdn96M/e82odMRcZf0x2h7855oVtRSRRd2llJJHWo11QuyXIQS7k/J9IhRVeyI0SdvvPp6C7GGgzBl4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
+ by TYWP286MB2601.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:248::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Sat, 19 Sep
+ 2026 12:37:44 +0000
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0428.014; Sat, 19 Sep 2026
+ 12:37:44 +0000
+Date: Sat, 19 Sep 2026 21:37:43 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Joe Damato <joe@dama.to>
+Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
+	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 01/10] NTB: ntb_transport: Order RX
+ descriptor reads after completion
+Message-ID: <zr76ct7tmugvmnpisjqd5szxw4cbm7iza354ijnzb5n2bn46hu@24ij5ubx56yg>
+References: <20260914084838.2158249-1-den@valinux.co.jp>
+ <20260914084838.2158249-2-den@valinux.co.jp>
+ <aq3ZG222WqEDp1Je@devvm20253.cco0.facebook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq3ZG222WqEDp1Je@devvm20253.cco0.facebook.com>
+X-ClientProxiedBy: TYCP286CA0139.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:31b::7) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:325::11)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|TYWP286MB2601:EE_
+X-MS-Office365-Filtering-Correlation-Id: 972b4ea8-acb5-496e-7f4d-08df164acda7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|7416014|10070799003|1800799024|4143699003|56012099006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	BH5hk22lOjDzFsyqfaa953BFnw67WRtkqjc1CjQu7i1lCOi+skeMsUclv3/S2rhBD7KoFN/srXQYk02jh+GAiWRQ0TzvZL5NTaK1D0Qr1oNbICRMUO18RlbXqPcq9w5qzAnXteftCDDqOckhCEYF+Y2M7uDLf/dvQHub3kp8Lfvz7ThLCMGnkFLh3MhF5BSmWb3RNoZeIguBCYvzOudyQ5j/SA2NJUHeMjFB+6VaJO8a5ijzodjENrKr2vo3j/eOdjfrsEoiYVJRW1wbVO0heW9VoQ/1h5NN9BJybA0uxWqco1EYm0C4MMafsc7HjWPV31qLjEwo3WDXq48ImgTe5aP3EZISRpu1dVSSZCL6PBRtperxEsbH+tGIfQ7X8CgiVjPpsWWfzYkORLiCehfkoz/Cf98hZwVykNH8vPzWC68TG2Y+I84zQuoqI46r+Yzyf98Fy2/0EXDajPCv9oRTg1ZBQbPt/qFelXIcixfQOleo4jpuFhmiEmXruaMX9NKcQTBDP1hRvcRHWgftYJkFrmicfOTyJq7IjPl1XYXnw0alr4XOPcE0x+sU+mA8z6yzYDGiTUHGv+ZyziHvIG9lxtb76uMzqOblyEi+uO7stw+9GAfAe9rjzqyOcqebbNfU
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(10070799003)(1800799024)(4143699003)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2GIkx/lytUo0YBoFCH8PJQZH5MzHi5jSwREjKbMD4eUJHvGRR5FHi7oxxplP?=
+ =?us-ascii?Q?vsI1dRBeE5Tdyyay3s3S6w0QAzXRc7RHbLs8mXpi8nMA1b1+yz0W9RGp+OBG?=
+ =?us-ascii?Q?ncgmoybkQMY3WA+puqW9MQiFmbMvZ1WCjMosTKfXCPzMYSU9AXXpImKUQahQ?=
+ =?us-ascii?Q?uX72V/F9k2N46E69Gn1RXghC9BARKjLRwX1Pe0+IYMU4G55iPB0Q1SyL4H1o?=
+ =?us-ascii?Q?cC1Hvv485GypYkYLIWCDzwWSW236oQ0si8d53OiBFF04u9lRnQgCW15whEWQ?=
+ =?us-ascii?Q?KrrYIy0SojYU2AH5Pmgjz9gjOC1OnOOveTGB+DURG440ifzk9XoYIPIYaAEG?=
+ =?us-ascii?Q?otz9MXR2dh6/j5e0dduXRCvX5HKrAuVbW6Gl0bHk1MaGhZ/vsTH+2mg50fJh?=
+ =?us-ascii?Q?+4UoN5+ThWMrIyxuIiqn7W2yHeyqg4toyqvIqLUccOQ6eQh0zb5AqQHZYNn0?=
+ =?us-ascii?Q?NWoi1as69DpX7O/ChjSdFYmwnE7VmaqyKUirtmcbNDo3sMZp1cbrNI0rXvg2?=
+ =?us-ascii?Q?QPRxptv4qr8Xd0+Z7bsh00hZC+YuYHYgUFM6EvHghQm6Kxl9A7rDGtZpc6FV?=
+ =?us-ascii?Q?drE2jewbQGhkY/cE43gV9H23NoT6UKukk7eaFx80AqchZ1QCmI4zHuwXbx0J?=
+ =?us-ascii?Q?9PRsr/zZxagOCGWWyjyk8tVDED+cfkN9rbI18Z4PuyAcL51vcZIST27Byrc8?=
+ =?us-ascii?Q?+154preogniwuW90QN24martizLOsyfYqGCaX9pSGDV5CuVHbzUskSEPbYZC?=
+ =?us-ascii?Q?RPkXIhMvWutInrLGn+FHCbo9j9DahS+55tRQcVzhWyUjsq48RI4/HEazpfV4?=
+ =?us-ascii?Q?Byf6MY4YP0X6DaRZgX/r+SKv7pB6XMq7qi7/Fnjlzy+PJiolrOtqqgt+29Qg?=
+ =?us-ascii?Q?Hgv+mQUpdbgtnbNUS8NMAXsVdeMSJD0YfIAWEjLUK7As1Cw/swa1ML3MqwV+?=
+ =?us-ascii?Q?Jjxa+/PEZq07d5aIjTiqUksFVSC8Cfz/t/MmAiEc8YmkzjrKfRNYlPKW6ijc?=
+ =?us-ascii?Q?n4+qxpvdIhn+tU5YCJGrxByi7IEAbqEu2xHrULimAmn5s8th0H8yGImuD19D?=
+ =?us-ascii?Q?p53zbQBHdQPBxVxWW0hNHzc0dHSUsRH1rj5dtqYsBY9yho2U5aM3S3yA8WQz?=
+ =?us-ascii?Q?K7jXFfhl64jfs2lgQVs+amNBrR45NRpfxhH+71TEu4bR+YzdJ+EDreovv7QG?=
+ =?us-ascii?Q?zNfKxFR5Dl1qiByCugaWn3UYmKkBzs/MkgBVAcVqEB4A7yt6CVklRoXK/Ch8?=
+ =?us-ascii?Q?maV5TwV+pP2biivCmEAKEmjxdgyuVnxksV3LTTFKoAZ1G3debU3mkD1wGL0J?=
+ =?us-ascii?Q?54JFlDytM098J5ySaMR/HXX1xa9MBGJVlfPG28K3PNyLA1HoT0XO1mGm0Qht?=
+ =?us-ascii?Q?JEcKz1WHSwSxAsptfaBpg2lO85EnHOwjAp/mSOnocK0cqUrMHA+ALWWs+Rso?=
+ =?us-ascii?Q?IcPZFd8RoOvTmnaLQNDLi3kh7irw2iCOHqfUO19TMoHLwCxkpCO6UNtYaBXE?=
+ =?us-ascii?Q?Qekcz3E5W6gVRbvzV8khbWhCoPZXJ46IDuJQr3bJKe5XhL3mkT+CmNIcNIwj?=
+ =?us-ascii?Q?7VFtMoJtoRyzMSTQ2tvwC195y8SwUirA3FfD1F1W1xqhZczkQI9FbX+f36Eq?=
+ =?us-ascii?Q?5vqQrQ0NGVSWoWCF0HOb9DFm17q9DTgMdElnVtWGk4A31ySxTvkQBU78zXNo?=
+ =?us-ascii?Q?A5BVsBjoYNCjnBC6ufDvMMHzF+eqCwYC13AdaY00+thNuH8Fa9rS5cuJrPue?=
+ =?us-ascii?Q?l3HYwcNFoDjZqTnipLjMyQtrpH2+pEojtki8E2QTY/3zIJTkJSxR?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 972b4ea8-acb5-496e-7f4d-08df164acda7
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2026 12:37:44.5049
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E4Cv0AjfqC4ogrgXTDVmrQmvm3fqQOmH0s6ml2s7IrGcHwFM4B8NCmXDYtMfJuDjfDytu42P3/ixwrofs3Fiyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2601
 
-The send hook vmci_transport_dgram_allow() refuses datagrams when the socket's
-netns is not in global mode (vsock_net_mode_global()), but the receive path
-(vmci_transport_recv_dgram_cb() -> vmci_transport_allow_dgram()) did not, so a
-socket bound in a non-global (local) netns received datagrams from peers it
-could never send to, defeating namespace isolation.
+On Fri, Sep 18, 2026 at 05:36:43PM -0700, Joe Damato wrote:
+> On Mon, Sep 14, 2026 at 05:48:29PM +0900, Koichiro Den wrote:
+> > The peer writes payloads and descriptors into a DMA-coherent memory
+> > window. ntb_process_rxc() checks DESC_DONE_FLAG before consuming the
+> > descriptor and payload, but coherent memory alone does not order those
+> > reads on weakly ordered CPUs.
+> > 
+> > Read the completion word once and issue dma_rmb() after DONE is observed.
+> > Use the saved word for subsequent transport flag checks.
+> > 
+> > Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
+> > Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > Link: https://lore.kernel.org/r/20260815032932.151F11F000E9@smtp.kernel.org/
+> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> > Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> > ---
+> > Changes in v4:
+> >   - No changes.
+> > 
+> >  drivers/ntb/ntb_transport.c | 14 +++++++++-----
+> >  1 file changed, 9 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> > index f9caa1a653c5..74f4f8c1c7be 100644
+> > --- a/drivers/ntb/ntb_transport.c
+> > +++ b/drivers/ntb/ntb_transport.c
+> > @@ -1609,21 +1609,25 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+> >  {
+> >  	struct ntb_payload_header *hdr;
+> >  	struct ntb_queue_entry *entry;
+> > +	unsigned int flags;
+> >  	void *offset;
+> >  
+> >  	offset = qp->rx_buff + qp->rx_max_frame * qp->rx_index;
+> >  	hdr = offset + qp->rx_max_frame - sizeof(struct ntb_payload_header);
+> >  
+> > -	dev_dbg(&qp->ndev->pdev->dev, "qp %d: RX ver %u len %d flags %x\n",
+> > -		qp->qp_num, hdr->ver, hdr->len, hdr->flags);
+> > -
+> > -	if (!(hdr->flags & DESC_DONE_FLAG)) {
+> > +	flags = READ_ONCE(hdr->flags);
+> > +	if (!(flags & DESC_DONE_FLAG)) {
+> >  		dev_dbg(&qp->ndev->pdev->dev, "done flag not set\n");
 
-Add the check at the start of the receive decision, before the
-VMADDR_CID_HYPERVISOR short-circuit, so the hypervisor CID is covered too
-(matching the send side).
+Hi Joe, thank you for taking the time to review this series.
 
-This was found by code inspection; I do not have VMCI hardware to test on
-(compile-tested only).
+> 
+> I get why the dev_dbg line above was moved down, but i feel like if this case
+> is hit, you lose some of the debugability that the debug line intended?
+> 
+> idk maybe this dev_dbg should be something like
+> 
+> dev_dbg(blah->dev, "qp %d: done flag not set, flags %x\n", qp->qp_num, flags)
+> 
+> so that some of the debuggability is still preserved when this case is hit ?
 
-Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
-Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
-Assisted-by: Claude (Anthropic)
----
-v2: perform the netns check first (before the hypervisor early return) so
-    hypervisor datagrams are also gated in local mode -- the Sashiko AI review
-    noted v1 left that path partially bypassed.
-v1: https://lore.kernel.org/netdev/20260917220225.56200-1-bartlomiej.dmitruk@isec.pl/
+That makes sense. I'll follow your suggestion in the next revision. I think I
+need to respin anyway.
 
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -532,6 +532,14 @@
- static bool vmci_transport_allow_dgram(struct vsock_sock *vsock, u32 peer_cid)
- {
- 	u64 access;
-+
-+	/* Enforce the per-netns mode first, symmetrically with the send hook
-+	 * vmci_transport_dgram_allow(): a socket in a non-global (local) netns
-+	 * must not receive datagrams it could never send (this also covers the
-+	 * hypervisor CID).
-+	 */
-+	if (!vsock_net_mode_global(vsock))
-+		return false;
- 
- 	if (VMADDR_CID_HYPERVISOR == peer_cid)
- 		return true;
+Best regards,
+Koichiro
+
+> 
+> >  		qp->rx_ring_empty++;
+> >  		return -EAGAIN;
+> >  	}
+> >  
+> > -	if (hdr->flags & LINK_DOWN_FLAG) {
+> > +	dma_rmb();
+> > +
+> > +	dev_dbg(&qp->ndev->pdev->dev, "qp %d: RX ver %u len %d flags %x\n",
+> > +		qp->qp_num, hdr->ver, hdr->len, flags);
+> 
+> I guess the above is a nit, so 
+> 
+> Reviewed-by: Joe Damato <joe@dama.to>
