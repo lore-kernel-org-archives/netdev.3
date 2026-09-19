@@ -1,61 +1,61 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D097345ED8
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E399F388E7E
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789859087; cv=none; b=XLqH+PUxlGV33TZOZDQGHGbP1W86SBU7dThUlBPTmji3dYTbjb6GWLanHQCofQmrlwbDxpkZX3W8CicC92++FyjHXWqL+k+EiVh97mT5asRnm0wvkzjEoOUmr8yNfYgP5mvOgfeyPX5h2lyRhCEtmhObqsX6Jb4qIEA0QrDqvz8=
+	t=1789859091; cv=none; b=ra+9wCfhBItUPM6xuuBSb9nCWlOPS2aMpzSJcGGpxBdLM5E3tVGFGSsMAcu187HykHqHhcSeLPTdXe/NbmizXphxGmLQZZW9IOXjmKfY7sBfs3zkIfsFIGCELttwJOYmVCx2pX9w2+NSakUT9rpVmNcCDzSAHqRaPG0i2HnYv40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789859087; c=relaxed/simple;
-	bh=nBanjkjcG/wDoAb+v74CuGW/tXZbYRxXEOkv5OKObHc=;
+	s=arc-20240116; t=1789859091; c=relaxed/simple;
+	bh=o7eyzul9Ohto3SjJ1TjrNru05AlMn/q7uF2xYm0ObJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0t+2nvFviqaRLFdtp0dHhpzPcaVeOofvJBMKd8pDa4THO7m2LiOO3aR+JRqPXzz+MFuMNrelZKFN+RVOJHcicxL+Xv1iv7ipVddBbrXl3tmQyIvBbsYVRRceOpcj7wxVtY0OFyoADsU2iPJAMdJr69THfRlgNBx+P5Vc9cnPWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=YzTJRW6W; arc=none smtp.client-ip=74.125.227.170
+	 MIME-Version; b=hoGfwYaemabj4c4yZlWYDnjMHhxKkT74hhSvJyA19fVT4rR8mGDGFhv4h13F0L9eeaNeh3wxmooY+49Ehyx9Hq4AnD3E7OFoyZc/8Xgyt3p8jkyiJSCvNdPnJl3tjX1zr4efnk1PhUG+Nqjq8+5y1B6ODv4SRPhDWP8eK/zuVBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=QVHW8wIW; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="YzTJRW6W"
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-3a02902dce2so286196a91.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:04:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="QVHW8wIW"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccafb751so1557516a91.2
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:04:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789859085; x=1790463885; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1789859089; x=1790463889; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jiqVo6e3n16UvaR+X0mgkt0I5vYupJ5RzA/vaa7zqCg=;
-        b=YzTJRW6Wwxib5+gFuImysbsz7yKTEEda8zje/oBMf095hYT1Bu9kGgNwPZXqmICp8x
-         O2riITcv/UUzuYbEGbuAd9vOPfyiFtMH77MnkTRceITip7kOKxWDZGycYAaw1qGB01MK
-         ipJ8aVhZ1FTeV2Nhr4+w4DyKTSb4kILvA8lto=
+        bh=jc3gDMyaBCto+VsuPbgbYFUXbxOxRWBOoYdGU5Q+cSQ=;
+        b=QVHW8wIWPpBUDyd93nUxd9O+AN+yY58lACdLmRlKNnU5l4sFMJ3Ym4n/e+nik5r/o8
+         jOSHmI1Qgh9HmI7MrzHCvvybAowhx+7Xfr58B8MvbemeoOLdfJNas0XYhPBUGRmqd0Zu
+         DVVD2+bgAqkWa/nQ/sJm+gtL/SBKmCjO0EnTw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789859085; x=1790463885;
+        d=1e100.net; s=20260707; t=1789859089; x=1790463889;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jiqVo6e3n16UvaR+X0mgkt0I5vYupJ5RzA/vaa7zqCg=;
-        b=rcoxVO+4vT1h9BuFhCOz490I1ZponXWyZ37TTjG8B7VLByq8+Yn+kq5mixgMJrisUI
-         Tc5cEBCXlF+im6R1nzjHub8pPCLIUDOWa9Er0mRwThRD7kGgZu9xr6ocaavhSQksupXY
-         UmhzrOBPNn+zw/FsVQQ5M+Zz+ICdjCEoqNhUrtam7wLUvQgSj2N0+YPLLI2oX93kwQOV
-         9gz67Yx24ULCTQLJIqKwlEazc9nu835+tsFiPKijhftGZvpnCfhqPbWBsMZ4yCnc4YdU
-         kcZpZ6xGcB8QAcJlPY3Ebxj6TWOBB30j/iOWPG21Cth+co25+9qwxjDqHScbejZTI+5X
-         VDlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxWXfrcpeyDIj7bX6w52qVeAeNqye5zgxc68RCFF7K/W4x+eilrA0qVBse+5pw3qmgo0oaO7Pc=@vger.kernel.org
-X-Gm-Message-State: AFuF++np7gJVa+D0SsqIRRZfIz5HGO5Zm61dSqBmp0RXynbyg2IwsKVA
-	WGIlFPdWnZoAzHJiDYkOb3t2pKCJ0j80mFGF38l/1Rc/GC6OScgzhwbKOygcmSIpdQ==
-X-Gm-Gg: AYBFou3mCHQCsdUW5MlGBc+EQYa/vTNQLnMZzw5cC+BnyNU+eznKqxPuuUNYJcbLIvP
-	4DkTf62SxBGciXKxiaM8C+KbBMFSR7Q1W1Itw6RddSpfz8bYwi+Boz6AUVDL7+Zy8+5VnQTCJz7
-	OegfxehGp+ZG2Psf/ZYC20QNtaq0GOd0Vv+62DQu5790N7GVciBf9nZ4RZnqO8p/1niyrudICwE
-	UQQWOKLHwwDL3sOVmyW2XN9fE0ueQsZG30l9/rJ5H3+uAo45yBASp1L51+WZp7wKix7tJUs/lLn
-	dDpSyIBo/g/Pl9Ct6muLX7JWL3QQtxUWL+wdGJEnuWUK8Iyp1R3WvIo1UUKq/FnVs+tIrL2xDum
-	9C3G3VhMEz7lHzJd5y5VBWwUdgctajGcrm6xNfhPO84QxB6zCNK4V/ieDCkTJ3QYjnW/Jl5yDWh
-	sJnBwuesUZL+iRgv1KDkW/k6przbp9mPoAO53Vfe4uSuCEzd3c1Yr2X+8LBccru7b2DJWLxCP1i
-	CXB
-X-Received: by 2002:a17:90b:3b85:b0:39e:4c7f:7305 with SMTP id 98e67ed59e1d1-39e5504d3d9mr10932214a91.28.1789859085448;
-        Sat, 19 Sep 2026 16:04:45 -0700 (PDT)
+        bh=jc3gDMyaBCto+VsuPbgbYFUXbxOxRWBOoYdGU5Q+cSQ=;
+        b=I1MdaKjmcSGHMIpEeaq8WafUIPkKHhVE6vMlVXYH6CjFpGzMR7NvGwgQ44rq80/yNI
+         CFZdi/Is590ocSeBqLPNBIuyCierPlfUQVnFBDT76pDbjJfokOaH0/67Cqf9DA+xXOSB
+         rmuVuq4CiQUNzuuIE23j+d+y+DuF5f9qOQ3w58FXH8vMF/vq3CFQmiW0M/6r0OoEE4AR
+         B8fS6sXuDPFxPQJJ7kYvNBGD5JcYtGfZlAeaVh6Kr5bq96xGRIJvO+TDsl+njT6Tt/Td
+         Pd8sDkyCc9fh9VQzgd5KoFjs7uLfZjYEtIwCe7YV3YV7Gh8ZS3Zavg4oH0uhg43SrC44
+         r/Pw==
+X-Forwarded-Encrypted: i=1; AKwUvBwFto9gev3NAs0nPYsDs+qhEXm9Iw415uQC5PZdeWaAA3qvZSZonxu+9rOFAva6mDw8uIejByI=@vger.kernel.org
+X-Gm-Message-State: AFuF++n8PVGaW/+bneAaRXbP5SNLqpb5nHTFCYeL448NDB+gmdkwkh2L
+	wpOMBH1/xznXkyLzNiL1Uv+4mDyNPDfivZcX+XMCERqw7wTtKfuML/7U/N8Y5oJXQw==
+X-Gm-Gg: AYBFou3RBvjud4eFkc99ZYLP8C9E2OtWBQoDco3yd4C7oNPPUwW8kF/UuinbrtcxzlM
+	r9IjJ5nfDimabTHXFSp6n5/+uoor7A3/dy2VkV2v+W40Vnuyba/8c+Fcu8sgzubl8nei6n7ICjs
+	U8AbLpOTv8vzSSkggQLrUkGQhndkfFq6Jn5feDWn0T09PMScX3qutxejQc980A2M+ebKawFFfNV
+	gp68LYIqrZxKmJL7ossoZzUZpEISj9SBewm3J1aDPBwcLQuAEl0lktqBi4isP4GdwFOYoULwdvo
+	qWwqpqFf5bysrKrrQ4eLvh/gwNJWaTs3YCFj6wXrg8KNR/w8L09vIWfcrJFn30aDixRq64/Ufo4
+	AhTdvdNvIazi/+PJmas7gTDnwhwTbNMgLrx5ktXDYIN4QNvW+FVgDupuFt7YkOG6BBbO8YUuCY3
+	ew7CBYvL+xJm1l6OeR7G8t7RFL/pio8AOXu2PHvIk2g6DBTVTLN8Tpc5FQlt7nBCkIBGqvvOLZ6
+	fhH
+X-Received: by 2002:a17:90b:4cc3:b0:39e:6a7f:eeee with SMTP id 98e67ed59e1d1-39e6a7ff08amr6657476a91.19.1789859088893;
+        Sat, 19 Sep 2026 16:04:48 -0700 (PDT)
 Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144d55aaf1csm8804599c88.3.2026.09.19.16.04.42
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144d55aaf1csm8804599c88.3.2026.09.19.16.04.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 16:04:45 -0700 (PDT)
+        Sat, 19 Sep 2026 16:04:48 -0700 (PDT)
 From: Victor Nogueira <victor@mojatatu.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -67,9 +67,9 @@ To: davem@davemloft.net,
 Cc: horms@kernel.org,
 	hybris@mojatatu.ai,
 	sashiko-bot@kernel.org
-Subject: [PATCH net-next 2/3] net/sched: add get_fill_size() to the five actions that lack one
-Date: Sat, 19 Sep 2026 20:04:28 -0300
-Message-ID: <QDISC-RYTB.v1.20260918093205@mojatatu.com.2>
+Subject: [PATCH net-next 3/3] net/sched: act_api: budget TCA_ROOT_EXT_WARN_MSG in notify skbs
+Date: Sat, 19 Sep 2026 20:04:29 -0300
+Message-ID: <QDISC-RYTB.v1.20260918093205@mojatatu.com.3>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <QDISC-RYTB.v1.20260918093205@mojatatu.com>
 References: <QDISC-RYTB.v1.20260918093205@mojatatu.com>
@@ -81,15 +81,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-act_simple, act_mpls, act_nat, act_skbmod and act_connmark each have a
-tcf_*_dump but no .get_fill_size callback, so tcf_action_fill_size
-budgets only the shared attributes and omits the per-action
-TCA_*_PARMS and option bytes the dump emits.
+tca_get_fill may emit TCA_ROOT_EXT_WARN_MSG from extack->_msg.
+The string is whatever NL_SET_ERR_MSG and friends stored, so its
+length is bounded only by the caller, and nothing in the budget that
+tcf_add_notify_msg and tcf_del_notify_msg hand to alloc_skb
+accounts for it. The notify skb can therefore be sized smaller than
+what tca_get_fill goes on to write into it.
 
-Add a callback to each, sized from the attributes its dump emits. Size
-every optional attribute unconditionally: reading the current flags to
-size it conditionally would race a concurrent replace, which can flip
-the attributes between sizing and dumping.
+The attribute reaches a successful add because tcf_action_init keeps
+going when an action that is not skip_sw fails to offload:
+
+	err = tcf_action_offload_add(act, extack);
+	if (tc_act_skip_sw(act->tcfa_flags) && err)
+		goto err;
+
+The action is created while extack->_msg still holds the offload
+diagnostic, and tcf_add_notify echoes it back. A pedit action with mixed
+key commands (one SET and one ADD) takes that path: the non-bind
+tcf_pedit_offload_act_setup sets "Unsupported pedit command offload" and
+returns -EOPNOTSUPP.
+
+In practice, no underbudgeting has been observed because of this, and the
+gap is not easy to reach given some other spots account for more than
+necessary. However, for correctness, budget the attribute so the size
+handed to alloc_skb covers what tca_get_fill can write.
 
 Reported-by: Sashiko <sashiko-bot@kernel.org>
 Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.4143642-1-victor@mojatatu.com
@@ -97,138 +112,49 @@ Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 ---
- net/sched/act_connmark.c |  6 ++++++
- net/sched/act_mpls.c     | 11 +++++++++++
- net/sched/act_nat.c      |  6 ++++++
- net/sched/act_simple.c   |  7 +++++++
- net/sched/act_skbmod.c   |  9 +++++++++
- 5 files changed, 39 insertions(+)
+ net/sched/act_api.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
-index c634af5edfcd..0b6ac6be60d2 100644
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -236,12 +236,18 @@ static void tcf_connmark_cleanup(struct tc_action *a)
- 		kfree_rcu(parms, rcu);
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 3f653721c45f..db06ddcf6ae6 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -475,6 +475,15 @@ static size_t tcf_action_full_attrs_size(size_t sz)
+ 		+ sz;
  }
  
-+static size_t tcf_connmark_get_fill_size(const struct tc_action *act)
++/* tca_get_fill() may append TCA_ROOT_EXT_WARN_MSG from extack->_msg */
++static size_t tcf_action_warn_attr_size(const struct netlink_ext_ack *extack)
 +{
-+	return nla_total_size(sizeof(struct tc_connmark)); /* TCA_CONNMARK_PARMS */
++	if (unlikely(extack && extack->_msg))
++		return nla_total_size(strlen(extack->_msg) + 1);
++
++	return 0;
 +}
 +
- static struct tc_action_ops act_connmark_ops = {
- 	.kind		=	"connmark",
- 	.id		=	TCA_ID_CONNMARK,
- 	.owner		=	THIS_MODULE,
- 	.act		=	tcf_connmark_act,
- 	.dump		=	tcf_connmark_dump,
-+	.get_fill_size	=	tcf_connmark_get_fill_size,
- 	.init		=	tcf_connmark_init,
- 	.cleanup	=	tcf_connmark_cleanup,
- 	.size		=	sizeof(struct tcf_connmark_info),
-diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
-index 4ea8b2e08c3a..aa56521b7179 100644
---- a/net/sched/act_mpls.c
-+++ b/net/sched/act_mpls.c
-@@ -438,12 +438,23 @@ static int tcf_mpls_offload_act_setup(struct tc_action *act, void *entry_data,
- 	return 0;
- }
+ static size_t tcf_action_fill_size(const struct tc_action *act)
+ {
+ 	size_t sz = tcf_action_shared_attrs_size(act);
+@@ -1980,7 +1989,8 @@ static struct sk_buff *tcf_del_notify_msg(struct net *net, struct nlmsghdr *n,
+ {
+ 	struct sk_buff *skb;
  
-+static size_t tcf_mpls_get_fill_size(const struct tc_action *act)
-+{
-+	return nla_total_size(sizeof(struct tc_mpls)) /* TCA_MPLS_PARMS */
-+		+ nla_total_size(sizeof(u32)) /* TCA_MPLS_LABEL */
-+		+ nla_total_size(sizeof(u8)) /* TCA_MPLS_TC */
-+		+ nla_total_size(sizeof(u8)) /* TCA_MPLS_TTL */
-+		+ nla_total_size(sizeof(u8)) /* TCA_MPLS_BOS */
-+		+ nla_total_size(sizeof(u16)); /* TCA_MPLS_PROTO */
-+}
-+
- static struct tc_action_ops act_mpls_ops = {
- 	.kind		=	"mpls",
- 	.id		=	TCA_ID_MPLS,
- 	.owner		=	THIS_MODULE,
- 	.act		=	tcf_mpls_act,
- 	.dump		=	tcf_mpls_dump,
-+	.get_fill_size	=	tcf_mpls_get_fill_size,
- 	.init		=	tcf_mpls_init,
- 	.cleanup	=	tcf_mpls_cleanup,
- 	.offload_act_setup =	tcf_mpls_offload_act_setup,
-diff --git a/net/sched/act_nat.c b/net/sched/act_nat.c
-index abb332dee836..a201979ac7cf 100644
---- a/net/sched/act_nat.c
-+++ b/net/sched/act_nat.c
-@@ -313,12 +313,18 @@ static void tcf_nat_cleanup(struct tc_action *a)
- 		kfree_rcu(parms, rcu);
- }
+-	skb = alloc_skb(max(attr_size, NLMSG_GOODSIZE), GFP_KERNEL);
++	skb = alloc_skb(max(attr_size + tcf_action_warn_attr_size(extack),
++			    NLMSG_GOODSIZE), GFP_KERNEL);
+ 	if (!skb)
+ 		return ERR_PTR(-ENOBUFS);
  
-+static size_t tcf_nat_get_fill_size(const struct tc_action *act)
-+{
-+	return nla_total_size(sizeof(struct tc_nat)); /* TCA_NAT_PARMS */
-+}
-+
- static struct tc_action_ops act_nat_ops = {
- 	.kind		=	"nat",
- 	.id		=	TCA_ID_NAT,
- 	.owner		=	THIS_MODULE,
- 	.act		=	tcf_nat_act,
- 	.dump		=	tcf_nat_dump,
-+	.get_fill_size	=	tcf_nat_get_fill_size,
- 	.init		=	tcf_nat_init,
- 	.cleanup	=	tcf_nat_cleanup,
- 	.size		=	sizeof(struct tcf_nat),
-diff --git a/net/sched/act_simple.c b/net/sched/act_simple.c
-index 8e69a919b4fe..80e5084b4dbd 100644
---- a/net/sched/act_simple.c
-+++ b/net/sched/act_simple.c
-@@ -79,6 +79,12 @@ static int reset_policy(struct tc_action *a, const struct nlattr *defdata,
- 	return 0;
- }
+@@ -2078,7 +2088,8 @@ static struct sk_buff *tcf_add_notify_msg(struct net *net, struct nlmsghdr *n,
+ {
+ 	struct sk_buff *skb;
  
-+static size_t tcf_simp_get_fill_size(const struct tc_action *act)
-+{
-+	return nla_total_size(sizeof(struct tc_defact)) /* TCA_DEF_PARMS */
-+		+ nla_total_size(SIMP_MAX_DATA); /* TCA_DEF_DATA */
-+}
-+
- static const struct nla_policy simple_policy[TCA_DEF_MAX + 1] = {
- 	[TCA_DEF_PARMS]	= { .len = sizeof(struct tc_defact) },
- 	[TCA_DEF_DATA]	= { .type = NLA_STRING, .len = SIMP_MAX_DATA },
-@@ -204,6 +210,7 @@ static struct tc_action_ops act_simp_ops = {
- 	.owner		=	THIS_MODULE,
- 	.act		=	tcf_simp_act,
- 	.dump		=	tcf_simp_dump,
-+	.get_fill_size	=	tcf_simp_get_fill_size,
- 	.cleanup	=	tcf_simp_release,
- 	.init		=	tcf_simp_init,
- 	.size		=	sizeof(struct tcf_defact),
-diff --git a/net/sched/act_skbmod.c b/net/sched/act_skbmod.c
-index 7579cf1e0ff3..09e9dcf58253 100644
---- a/net/sched/act_skbmod.c
-+++ b/net/sched/act_skbmod.c
-@@ -279,12 +279,21 @@ static int tcf_skbmod_dump(struct sk_buff *skb, struct tc_action *a,
- 	return -1;
- }
+-	skb = alloc_skb(max(attr_size, NLMSG_GOODSIZE), GFP_KERNEL);
++	skb = alloc_skb(max(attr_size + tcf_action_warn_attr_size(extack),
++			    NLMSG_GOODSIZE), GFP_KERNEL);
+ 	if (!skb)
+ 		return ERR_PTR(-ENOBUFS);
  
-+static size_t tcf_skbmod_get_fill_size(const struct tc_action *act)
-+{
-+	return nla_total_size(sizeof(struct tc_skbmod)) /* TCA_SKBMOD_PARMS */
-+		+ nla_total_size(ETH_ALEN) /* TCA_SKBMOD_DMAC */
-+		+ nla_total_size(ETH_ALEN) /* TCA_SKBMOD_SMAC */
-+		+ nla_total_size(sizeof(u16)); /* TCA_SKBMOD_ETYPE */
-+}
-+
- static struct tc_action_ops act_skbmod_ops = {
- 	.kind		=	"skbmod",
- 	.id		=	TCA_ACT_SKBMOD,
- 	.owner		=	THIS_MODULE,
- 	.act		=	tcf_skbmod_act,
- 	.dump		=	tcf_skbmod_dump,
-+	.get_fill_size	=	tcf_skbmod_get_fill_size,
- 	.init		=	tcf_skbmod_init,
- 	.cleanup	=	tcf_skbmod_cleanup,
- 	.size		=	sizeof(struct tcf_skbmod),
 -- 
-2.43.0
+2.55.0
 
