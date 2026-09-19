@@ -1,35 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0070525B090;
-	Sat, 19 Sep 2026 05:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209A0547055;
+	Sat, 19 Sep 2026 05:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789796479; cv=none; b=n4mEE0+7x+U253QX1J8kSWa+emhi1z0SkZzmKLBoG2Rvi38uyVZLF31xBHl38i5YmvmiHtRk4gce4QbTU9OSGk6x64EEl9NWJ3zreYOxOA1n24RYcnNrpnrYqRLUham+N2TqLtHyfslLR56SMybgsXwGAJzEdZyejKlztB++dVM=
+	t=1789796988; cv=none; b=VgvA+QFh1pkWHgN8P1fkzU2gXKVHLZak8yjO3jsDyPUJGdeUB6P2GZn5vHRIKY4FQfqVH3PZd47Pz4cDaudZ86H34dVVvrD5hl1PKwNY9gFVlVVrsk6NojCwSbR+NXiwu6ZXhiEbDuZf1QrgzxCNrG1b2HbxW/PJPyDJo4WGDu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789796479; c=relaxed/simple;
-	bh=PL/D+o+ZESzAdUsIYaJLQtexbMp3AjWc6YEvF6S2s5s=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=U6xvUgAzAY3CYQZMFkDZ/bNZkXHrzX2MgT93YpNlScjCZmaVKdiD8VPflNOxjZvBn6Da9CCGXItfNPtxGHxufuKGMhZYJvthEFz2MxH8ipsc2gAV5tGsQZGQooiYp+e/RTqXq9zRhSsS7XW/Le0BkidBCQF/Kd5KejHeQjusEu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK87OeS1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789796988; c=relaxed/simple;
+	bh=bMmgKzBF78SHTxUQv1F4w1xY0Pp6sO+Czmhr1P38ZfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vtc9lZQn2GPoUhyPlmeAF1gYHhZgmhf8scSn/fMuwgHCwu7mOjGf5lhKLdeebWpNZFfvsf+HVkGo/RKu4+zoZuWjI86M0wymZBRgDlnqU55O4AcqlwlkeHDL7dHSD4euzMsK0/8SnyMI0OnQY4n/EWLt6lrN+UsQKrKKdViWP7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=nqdH4hND; arc=none smtp.client-ip=115.124.28.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK87OeS1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898421F000FF;
-	Sat, 19 Sep 2026 05:41:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789796477;
-	bh=bjZmcNI5FA7SBAJaHY0Qr8fU0zq6hfuv3Cg60N7CNgo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gK87OeS1RUggbbzZc2Jkz4vZLAKBi0iTBNwGQcRnHv3/5vT4Ymt9WPxJbYxfpaQDN
-	 h/3/DfsaZHdOHub02OanVF4c5Q50qevNNUhHdAopP7npqmxF6ssCl9Behg/vDvX93h
-	 ysItBqRRUBB5R1g8KQD0JOyQm0tUlWDYvFfX/dh4FG51CdtfSaXkVWRLPBatFtZs/k
-	 5g7JX5D5Cj5KJKsvONsTMe8j6kXy7/EEGsgNXkACeczY2olHMVtjUwLTjJYima37Qv
-	 9WdZUoNt4255DLQOPjUKah0edVwBoJNeZAl1r/xwj49QZqCC+3EFxZJKOvEIIGAcaH
-	 MPS35lAdirDAw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9393E3924440;
-	Sat, 19 Sep 2026 05:40:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="nqdH4hND"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1789796973; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=MbpWXWbyUiGYCNruzUaTkx1Gle7IUutRJNOmCgXfr6k=;
+	b=nqdH4hNDo71QvhztPoOSu3wXiIgW3ssfe9WjtpfGDOpSfBEy6CWHVvj1RBZDcd0uFw279j4laLQ6DZgJZHVao2MobFxSGhy7NpT1Kqge9JHDowuVdvmUxGibq2S9hnnobcA6/p1qZ7oURY+SrNpMOTKBi30ZEugQOIaq/ckPQgQ=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07466451|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0082232-0.00508614-0.986691;FP=18370472093206318729|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.jHKXW7N_1789796971;
+Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jHKXW7N_1789796971 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sat, 19 Sep 2026 13:49:32 +0800
+From: Liu Chao <liuc63@xiaopeng.com>
+To: netdev@vger.kernel.org
+Cc: linux-nfc@lists.debian.org,
+	sameo@linux.intel.com,
+	krzysztof.kozlowski@linaro.org,
+	simon.horman@coderberg.com,
+	stable@vger.kernel.org
+Subject: [PATCH net] nfc: nci: reject unusable max payload limits
+Date: Sat, 19 Sep 2026 13:49:31 +0800
+Message-ID: <20260919054931.2157758-1-liuc63@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,73 +42,119 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v4 00/15] bpf: A common way to attach struct_ops
- to a
- cgroup
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178979641040.1277927.5226384464308914139.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 05:40:10 +0000
-References: <20260917200542.3689605-1-ameryhung@gmail.com>
-In-Reply-To: <20260917200542.3689605-1-ameryhung@gmail.com>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com,
- andrii@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, memxor@gmail.com,
- martin.lau@kernel.org, shakeel.butt@linux.dev, roman.gushchin@linux.dev,
- kuniyu@google.com, kerneljasonxing@gmail.com, kernel-team@meta.com
 
-Hello:
+nci_core_conn_create_rsp_packet() copies the controller-supplied
+max_ctrl_pkt_payload_len into the new connection without any
+validation, and nci_hci_send_data() sizes its fragments from it.
+When the controller reports 0 or 1, the subtraction in the loop
+underflows (skb->len is unsigned), the "last packet" branch is
+always taken, and skb_put_data() runs past skb->end into
+skb_over_panic(). A limit of 2 still works: the first packet
+carries the two HCP header bytes, and every chained packet one
+payload byte.
 
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+Reject a zero limit at parse time, before the conn_info is
+allocated and published, so there is nothing to unwind. A
+zero-payload connection cannot carry any data anyway, and both
+in-tree creators start sending right after the connection comes
+up: st-nci sets up its HCI session, fdp downloads firmware
+through the generic data path.
 
-On Thu, 17 Sep 2026 13:05:26 -0700 you wrote:
-> Hi,
-> 
-> I am continuing Martin's work to support attaching struct_ops to cgroup.
-> 
-> At LSF/MM/BPF 2025, Martin presented [1] the need for a new interface
-> to extend tcp_sock operations instead of adding more BPF_SOCK_OPS_*CB
-> enum values. The need for predictable ordering when attaching struct_ops
-> to a cgroup was also briefly discussed.
-> 
-> [...]
+A limit of 1 stays legal at the NCI layer, since
+nci_queue_tx_data_frags() can ship one-byte fragments over such
+a connection. Only HCI needs two bytes for the HCP header, so
+that check lives in nci_hci_send_data(), which snapshots the
+limit the same way nci_queue_tx_data_frags() does and returns
+-EPROTO below 2.
 
-Here is the summary with links:
-  - [bpf-next,v4,01/15] bpf: Remove __rcu tagging in st_link->map
-    https://git.kernel.org/bpf/bpf-next/c/012089512144
-  - [bpf-next,v4,02/15] bpf: Make struct_ops tasks_rcu grace period optional
-    https://git.kernel.org/bpf/bpf-next/c/5db69b0fbdc8
-  - [bpf-next,v4,03/15] bpf: Add bpf_struct_ops accessor helpers
-    https://git.kernel.org/bpf/bpf-next/c/3668bc410260
-  - [bpf-next,v4,04/15] bpf: Remove unnecessary prog_list_prog() check
-    https://git.kernel.org/bpf/bpf-next/c/1ef6cb2cc587
-  - [bpf-next,v4,05/15] bpf: Replace prog_list_prog() check with direct pl->prog and pl->link check
-    https://git.kernel.org/bpf/bpf-next/c/c6dde091dc12
-  - [bpf-next,v4,06/15] bpf: Add prog_list_init_item(), prog_list_replace_item(), and prog_list_id()
-    https://git.kernel.org/bpf/bpf-next/c/4d71b3e0821f
-  - [bpf-next,v4,07/15] bpf: Move LSM trampoline unlink into bpf_cgroup_link_auto_detach()
-    https://git.kernel.org/bpf/bpf-next/c/2ef54525d2fc
-  - [bpf-next,v4,08/15] bpf: Add a few bpf_cgroup_array_* helper functions
-    https://git.kernel.org/bpf/bpf-next/c/e176821b68d8
-  - [bpf-next,v4,09/15] bpf: Add infrastructure to support attaching struct_ops to cgroups
-    https://git.kernel.org/bpf/bpf-next/c/369d9dcd8fb8
-  - [bpf-next,v4,10/15] bpf: Allow all struct_ops to use bpf_dynptr_from_skb()
-    https://git.kernel.org/bpf/bpf-next/c/6d4ce907665d
-  - [bpf-next,v4,11/15] bpf: tcp: Support selected sock_ops callbacks as struct_ops
-    https://git.kernel.org/bpf/bpf-next/c/5ac77ae32940
-  - [bpf-next,v4,12/15] bpf: tcp: Support parse/len/write header option hooks in bpf_tcp_ops
-    https://git.kernel.org/bpf/bpf-next/c/3bb54768fe3e
-  - [bpf-next,v4,13/15] libbpf: Support attaching struct_ops to a cgroup
-    https://git.kernel.org/bpf/bpf-next/c/6bad848e3f70
-  - [bpf-next,v4,14/15] selftests/bpf: Test attaching struct_ops to a cgroup
-    https://git.kernel.org/bpf/bpf-next/c/ae7b5234fa8b
-  - [bpf-next,v4,15/15] selftests/bpf: Add test for bpf_tcp_ops header option hooks
-    https://git.kernel.org/bpf/bpf-next/c/d7399d91417b
+Fixes: 4aeee6871e8c ("NFC: nci: Add dynamic logical connections support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
+Link: https://lore.kernel.org/netdev/20260918185458.2711284-1-liuc63@xiaopeng.com
+---
+ net/nfc/nci/hci.c | 22 +++++++++++++++++-----
+ net/nfc/nci/rsp.c |  9 +++++++++
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
-You are awesome, thank you!
+diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+index c03e8a0bd..d68fe55b6 100644
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -144,6 +144,7 @@ static int nci_hci_send_data(struct nci_dev *ndev, u8 pipe,
+ 			     size_t data_len)
+ {
+ 	const struct nci_conn_info *conn_info;
++	u8 max_pkt_payload_len;
+ 	struct sk_buff *skb;
+ 	int len, i, r;
+ 	u8 cb = pipe;
+@@ -152,8 +153,20 @@ static int nci_hci_send_data(struct nci_dev *ndev, u8 pipe,
+ 	if (!conn_info)
+ 		return -EPROTO;
+ 
++	/* Snapshot the limit like nci_queue_tx_data_frags() does; the
++	 * conn_info is published before this field is written.
++	 */
++	max_pkt_payload_len = READ_ONCE(conn_info->max_pkt_payload_len);
++
++	/* Below 2 the unsigned fragment arithmetic wraps and the first
++	 * skb_put_data() runs past skb->end; 2 is the smallest working
++	 * limit.
++	 */
++	if (max_pkt_payload_len < 2)
++		return -EPROTO;
++
+ 	i = 0;
+-	skb = nci_skb_alloc(ndev, conn_info->max_pkt_payload_len +
++	skb = nci_skb_alloc(ndev, max_pkt_payload_len +
+ 			    NCI_DATA_HDR_SIZE, GFP_ATOMIC);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -163,12 +176,11 @@ static int nci_hci_send_data(struct nci_dev *ndev, u8 pipe,
+ 
+ 	do {
+ 		/* If last packet add NCI_HFP_NO_CHAINING */
+-		if (i + conn_info->max_pkt_payload_len -
+-		    (skb->len + 1) >= data_len) {
++		if (i + max_pkt_payload_len - (skb->len + 1) >= data_len) {
+ 			cb |= NCI_HFP_NO_CHAINING;
+ 			len = data_len - i;
+ 		} else {
+-			len = conn_info->max_pkt_payload_len - skb->len - 1;
++			len = max_pkt_payload_len - skb->len - 1;
+ 		}
+ 
+ 		*(u8 *)skb_push(skb, 1) = cb;
+@@ -184,7 +196,7 @@ static int nci_hci_send_data(struct nci_dev *ndev, u8 pipe,
+ 
+ 		if (i < data_len) {
+ 			skb = nci_skb_alloc(ndev,
+-					    conn_info->max_pkt_payload_len +
++					    max_pkt_payload_len +
+ 					    NCI_DATA_HDR_SIZE, GFP_ATOMIC);
+ 			if (!skb)
+ 				return -ENOMEM;
+diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
+index b0ab4f5ac..70aafe0da 100644
+--- a/net/nfc/nci/rsp.c
++++ b/net/nfc/nci/rsp.c
+@@ -314,6 +314,15 @@ static void nci_core_conn_create_rsp_packet(struct nci_dev *ndev,
+ 	if (status == NCI_STATUS_OK) {
+ 		rsp = (struct nci_core_conn_create_rsp *)skb->data;
+ 
++		/* A zero payload limit cannot carry any data; reject before
++		 * the conn_info is published. A limit of 1 still works for
++		 * one-byte generic data fragments.
++		 */
++		if (!rsp->max_ctrl_pkt_payload_len) {
++			status = NCI_STATUS_REJECTED;
++			goto exit;
++		}
++
+ 		conn_info = devm_kzalloc(&ndev->nfc_dev->dev,
+ 					 sizeof(*conn_info), GFP_KERNEL);
+ 		if (!conn_info) {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1
 
