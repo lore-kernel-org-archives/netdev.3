@@ -1,79 +1,131 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C24325495;
-	Sat, 19 Sep 2026 21:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C898391E43
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789854211; cv=none; b=LkxtW3g2dMJidJUX+Kiwwa5CENm1YyEmjW8Msp1e2VVzszsZfw9UmxKN18iEpMnu9J72ljP1G/5MIYm27tCYMvUL2Z5QgN+nRTLFcsjGA/vL9WRcBZyZoTxZm80RvtcRFSGzDFLBMEQmm83Ko8ONdUn9VHtSv4rkJyaYv+yh4SI=
+	t=1789854761; cv=none; b=Wr9mWJrrI329OvKfU+obZYufH9JEZnmqnD4dS+CHaqe3ZOPVVqYKYyiw/HOX+4wOQrTRBYYfjJ66f8KnA9ZVHD9eDAL8UA3MwpPkNGnIF7flp0EnTnk9ghvfnWandQ6vHYc7sj/H7ZsNSUDgB8tTw189E/DoqAbmYiqu6cYbaaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789854211; c=relaxed/simple;
-	bh=y8T7uKwp88RKw458oX43TjgLBPGw7XCPF08vtPwEaM0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=hP9hc5yLKSbPB6mWUgG0H6IXD7Nxf6usvVlsG4kaup2rs5h4i83GgOsni2Sx1rvErsu0ZxsETyXdp217xDW32IjXDOuqOq9SzfMVgQ4dfEw3vm+2CdKEqPzX5vPcmQt8j59M7qwlRU4lNL3JPYVsj5daNTknWncl32ENiKBxmnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=dacEkFVf; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789854761; c=relaxed/simple;
+	bh=VQ9Ha0Kv35OQUZIpcPbivRupE8x247MSqdoR4m67+Ho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DACZJyLihmYSZLKQDodRvZle6vznd9DaYxsop7AqTz8tlP1Nu5hrOW7TLNta0ii6fIzQFyc+ou6/RLphNRgFrXJNQGM4md1E00dbPhOuZmJwXwsOqWJoZ2XU+nSfxj7QevaTvEg9iexek0ht+DGOAPEDSLE226dtY6uZ04jcHI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9A5fMSf; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="dacEkFVf"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81E88A02B3;
-	Sat, 19 Sep 2026 23:43:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789854197; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Dsyp/2bxguVs04v4lLYBK6hkBkZbr47ghJs3bwtV7oA=;
-	b=dacEkFVf7LzHPxs1J8hrFjwsDbzrHN6G+DPQrY+l1vQofUVaK8RmkUigp+a/oK0eRBiQ6A
-	G3fnLvkQ3U7KBYl4yYgZc6ljEqcq4fitMNwExP4Q5HLPCnhOTnlijiAhVbyvQMlyNH6a0p
-	f9EFW/y+rnr1XrlLSMRo/u+ckMQdv9/x8u0z1+t4zeSLUmq7Dr/sOIN3+XDN1yv5h+up1x
-	zrcWXE0kk//gZ3sNOcToHqKt+WMv68VMnknICJkX/do9Mtxys0na5lSVr9Orw3HkuvtAzj
-	/QGUuGJlKW4k190eFJXgZEBEH/QA1HtGy2PXvJyqkszH70GpWflYXjcjqoa2+g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9A5fMSf"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39d654f02baso1612209a91.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789854755; x=1790459555; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9aJFCfj2LQ5guspfVFESmNOnFBxFScArLrkp4w4HDqo=;
+        b=X9A5fMSf6Ey7j1lhELdG149NMTlNwd1aYMVzCjjErg3oC//sGLBGsDNxovof9rXB0j
+         fj1PiEp4qtAYSJn1+7C/FsjFgPDEmRkj2rHt0t/PcvtWdLfpmQny7OanLzpePEK4Cy8L
+         YQzIFNL2MR0hn9ekLlOK5qAmfMF8RAFqLYQyn6YfJdCeq03S44En+3wnAxVsiOaparZr
+         D61+UX/X2UNXJIJWTKFMgeNq9D+b+RVkLjp4z2MYlw+kRMwtEaxD77Vhf92R+Vqqoba9
+         /Yd3vfwWaEMqrGw1+Mt84JM/DnCJpFa2CQoW9ugv37CVgHDkgVCjCmeUWpFZITQ+9i2L
+         8aRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789854755; x=1790459555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9aJFCfj2LQ5guspfVFESmNOnFBxFScArLrkp4w4HDqo=;
+        b=CmxjFSPLgMfwPgJ/6d05gWEPa/aTbCqP5lkkZAXCvkw0TOlobJ8sSTTxWBWmdaQm9M
+         TfdMMJEFPHZlhPWlTzZrkMbsOF5xDAfrbEQl9WcQrF78JVS7LLcGAkxot/pBGoJ2Ys+K
+         tztpmK4iTDVZI6JCcNGgi8kQqNHflGFhTWRMQjRC8ozx0vzIdzfzsA6LvjsSYzBe/X/d
+         RmiGihzg0Bil/oEw8g4ccSCz8KCDegAz/I3NBGQdN5OkSEU3NgUt+/cvP0watnIadGbh
+         GnfItV6IsOCgKoHR7h3X/mIxxfXiKZ//iUpRv14m5gFHaPrJIA3WjiaafRvtdmgeC8/3
+         Eozg==
+X-Forwarded-Encrypted: i=1; AKwUvBwe4p4Ogz7t438pbIr3xcdQVXk+d5GMeI42BvKIJXjHBJQZTegPff8jHIx3Z+NpwLl+svfHnFQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mdqGDwuvQQMLW1EqPhr/h216UGwo5XmdpDTwb1rjYWeSosViwA
+	8BXudZ133ZWNUUQ2KvV0pc7o3g59OaYafUjnsxqvULeIpyq/voyDBdRQ
+X-Gm-Gg: AYBFou2YRYSS4sWaVCLKNUWNSQYkgJI3RB+fK1hbIGDb8mwDrXZKlEXY3nnUq3M7zDn
+	h/fNgVbbrK6vxwplCa2S97feb+tsALMVnZgFEISpnV8JuniS6ushD8RqCgcuV0+xn/Cjjpk+ywW
+	Ab4y1MTEIM5VRYeKu9OHSKZlMR8L1ZaSEzbHFHascH8fu1qdsrrryvXv2RpoqgjgqvgxE3MjQ7S
+	OoDAfUn3c8S+cDfhVHkA8qXfHd7u5GKj3qJz3xBi+jTeKNhn2/xVvMkVfqRDrUo753Prbz5ZhMm
+	pUJ2XAayQt7X/usUeRxiWwCcEGU3mL2QHxvesNEVRfwelgJwZuNMP5VX88xAUykec/jKVzyi17B
+	gCIROFkajZzwzJShPlw8LBRFYvRcnQi1TyE2+valBudQTrSlp19H481H9Ny+LLweP5NTXNN33W4
+	CyRzd+ZwAsze3tNvW2BtGrF6l+/zCn3NwW2ffkblf8wCPM9ueASJzfp8NeWOHdfBT+CwVGEUGlo
+	2D2KWOF9mUL3EF4wBOsrFuzCU3wEXJo9sBRk5U+r1l+NeadGNHb5tSgq3HPEVmIwwJA4F2SAyzK
+	GPARVj6FZg==
+X-Received: by 2002:a17:90b:5690:b0:398:bee5:61d6 with SMTP id 98e67ed59e1d1-39e54cfabf6mr11253729a91.24.1789854754661;
+        Sat, 19 Sep 2026 14:52:34 -0700 (PDT)
+Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0309d5760sm862843a91.4.2026.09.19.14.52.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 14:52:34 -0700 (PDT)
+From: Hui Peng <benquike@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux-ppp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ppp: fix bsd_decompress() OOB read and ppp_decompress_frame() headroom check
+Date: Sat, 19 Sep 2026 21:52:33 +0000
+Message-ID: <20260919215233.3470411-1-benquike@gmail.com>
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 19 Sep 2026 23:43:15 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- shuah@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/3] selftests: drv-net: Add VLAN test
-In-Reply-To: <20260918151225.304410cf@kernel.org>
-References: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
- <20260918112529.96039-4-ovidiu.panait.rb@renesas.com>
- <5be2136e4142427285566f01d95c1b7b@tipi-net.de>
- <20260918151225.304410cf@kernel.org>
-Message-ID: <ff8435132a6b0fbc0f92187e1d9b0f18@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 19.9.2026 00:12, Jakub Kicinski wrote:
-> On Fri, 18 Sep 2026 14:04:13 +0200 Nicolai Buchwitz wrote:
->> > +LOCAL_IP = os.environ.get("VLAN_LOCAL_V4", "198.51.100.1")
->> > +REMOTE_IP = os.environ.get("VLAN_REMOTE_V4", "198.51.100.2")
->> 
->>    LOCAL_IP = "198.51.100.1"
->>    REMOTE_IP = "198.51.100.2"
-> 
-> LOCAL_IP / REMOTE_IP are in the default network segment (vlan 0)
-> Here we need some "unused" IP subnet that we can assign without
-> conflicts. Getting it from the config would indeed be good, but
-> since this is the first use perhaps we should defer until it actually
-> bothers someone?
+In ppp_decompress_frame(), skb->data - 2 is passed to the decompressor
+assuming at least 2 bytes of headroom exist for the PPP Address/Control
+fields, and the returned decompressed length is only checked for len < 0
+before indexing ns->data[2..3] and calling skb_pull_rcsum(skb, 2).
 
-Fine with me. Having the the selftest in place is probably more useful
-than re-spinning for sole config issues. Let's fix this once someone 
-needs it.
+Ensure 2 bytes of headroom via pskb_expand_head(skb, 2, 0, GFP_ATOMIC),
+reject decompressed frames shorter than PPP_HDRLEN (4 bytes), and check
+isize >= PPP_HDRLEN + BSD_OVHD in bsd_decompress() before reading the
+sequence number and header bytes.
 
-> [...]
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks,
-Nicolai
+Fixes: 224cf5ad14c0 ("ppp: Move the PPP drivers")
+Assisted-by: LLM
+Signed-off-by: Hui Peng <benquike@gmail.com>
+---
+diff --git a/drivers/net/ppp/bsd_comp.c b/drivers/net/ppp/bsd_comp.c
+index 63a6d251c746..03ee4ff4ec1b 100644
+--- a/drivers/net/ppp/bsd_comp.c
++++ b/drivers/net/ppp/bsd_comp.c
+@@ -847,6 +847,8 @@ static int bsd_decompress (void *state, unsigned char *ibuf, int isize,
+     int extra;
+ 
+     db       = (struct bsd_db *) state;
++	if (isize < PPP_HDRLEN + BSD_OVHD)
++		return DECOMP_ERROR;
+     max_ent  = db->max_ent;
+     accm     = 0;
+     bitno    = 32;		/* 1st valid bit in accm */
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 1a610a18893b..f7af328b7bf8 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2552,7 +2552,8 @@ ppp_decompress_frame(struct ppp *ppp, struct sk_buff *skb)
+ 	/* Until we fix all the decompressor's need to make sure
+ 	 * data portion is linear.
+ 	 */
+-	if (!pskb_may_pull(skb, skb->len))
++	if (!pskb_may_pull(skb, skb->len) ||
++	    pskb_expand_head(skb, 2, 0, GFP_ATOMIC))
+ 		goto err;
+ 
+ 	if (proto == PPP_COMP) {
+@@ -2576,7 +2577,7 @@ ppp_decompress_frame(struct ppp *ppp, struct sk_buff *skb)
+ 		/* the decompressor still expects the A/C bytes in the hdr */
+ 		len = ppp->rcomp->decompress(ppp->rc_state, skb->data - 2,
+ 				skb->len + 2, ns->data, obuff_size);
+-		if (len < 0) {
++		if (len < PPP_HDRLEN) {
+ 			/* Pass the compressed frame to pppd as an
+ 			   error indication. */
+ 			if (len == DECOMP_FATALERROR)
