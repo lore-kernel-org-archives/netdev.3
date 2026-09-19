@@ -1,145 +1,133 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
+Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11866395D9F
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789780247; cv=none; b=XYNcPALV6z3btpW4eSzZUsx6xWfN6nK3+uX6P84coFJAtMbjbGwjQZ7qCKY1rbvQuzfPd3ahIkfHgU8UqZMgZxh2KU2hjdVOU7y2yji+QeBovpycLvCBolz3UIgobXTakIgGTofVFmVoIHVUSJWsWveW/7WeSaKMTMB6Otu+NMA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789780247; c=relaxed/simple;
-	bh=PD17Y3XeERkph6rr6sHZAKy4DsdPrdxQEx/QDmuRqzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EFJyasaZzZFo1xwCE61GaG9dUDHEwaVmGNJJITenBj5LsdZTGhPbdLxogSSkrRtJ5eaSosiK6LchcELTdjmmshJinNtDXhBvL2gnMEqChN1HClVLX0RTvahGzmX2hk03Mb+nDf7236gAOaOhH7GxnoxvM+z1l3BdBik+2kuzD6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=ZepgU0e/; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F9A37F007
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789780252; cv=pass; b=puJReIbTkOmgDcOw0JTRJU2CYnJ8E+9Sg40NnOGbn/YT50D3Blo4u9Ysi02Ioe4peI4/m/4bTo8i1iDtSi2oyeHzVKWo8zqEkh5wS8bjJpen31bEaq6eMUz5+puhgmBy9km2fWlgov+tTsdKZ9TmEM81czaV7zz3XItM1N6zDWI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789780252; c=relaxed/simple;
+	bh=iGzdbSllr8QjJeo+SoUN85/5fREjJOEUukH1vTN+KoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gDt6jynaqLQd8p6N+R2QER408tdgmqk84mJNrtSEEynXKMO4dZFA7vQyDdFMI+/GgUuALjCOEt4ZQWNLlZgURsiBYv20XeQuvLg5jjBSPE1zxRTrIzgBg4mmQHQkqbJCl3ztCdzi2xdoQrglEfUjO79r8FgS9cH05Q6rXl/WUnc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ku5ZZPbI; arc=pass smtp.client-ip=74.125.229.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="ZepgU0e/"
-Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc5256c2a4bso931670a12.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:10:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ku5ZZPbI"
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b79784a6edso1389729e87.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:10:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789780247; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nmjEDh+cFBoYEt0Yb5EQiHNeNkC6oxNZ6Zl5hoeJ2i8XVOEuc6QZE400Wd0xGkxLqn
+         az5FYFfSKNm3qzngppyJUsHEFfIxW1vWv7o990IPL4Lea881nznssaJmlShUJ1Cvzcnc
+         cxNPld5VaRp5BJJ0IYocFQtFfD8CQ9WJULLRo8OObSbFIey9bhfQF6ERwxhShMwLfAR1
+         xANa4pncQjyZhqCJ1u/+gbfMwbCjMceRt6d3q3iIyZCa+e/8nA3ckm0d95MK2cXlO02K
+         txg+FEdPtYjITQl6CbNAy9JbaDJZKUgE0wIPgSb5iHrBt7jFX5q6U7rFDfw7HC6CVtgS
+         uluA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DGdaTY1YJtwZ1uBv2RCa5jny+whMo/kcQ9jtBIf3Fls=;
+        fh=AMb1tmK/KjBhdo4pr4uX9NVLF5DYoGBzliP4r7ykaPg=;
+        b=nyUD8QHofzISTCIj4fyLIjBdPONfOVW9XEvnfEHKBXsOK+MkIJYI18ru984m1Etr7D
+         xjVNwzylOHMJcN7JJxiaia5AGHjbmlChLRBsUq6tfbfUv8ju79xMPu6gkmMDuaylx5CF
+         5m2GSmFiClbsEc1LmvySUpgwOExUBVRACq4xXCFSr4CTMqZR2xRYYnfIneZZSq2vNPAy
+         U7okUMym22uVOiMmSL9HymEE/ULsyeU3CY67c/N4riqE3b/MHwMzdkM0s47Q4KAhuEmd
+         Mv/GgqCPvApKt4iS5NzfpWbglo3aF+5BE8VYNfUY4FFOZ4rMIJxJ7fBrItO3BUY58iKk
+         VVBw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1789780241; x=1790385041; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a49yaJ/GGjwIg6ibC7aTwVaBRLcdBDhKbI1sakT8d8k=;
-        b=ZepgU0e/N1D6q0ctVm6zTa7r3afmQs8d3DOKLGauufQCKMaRNxOwS47dKxRCHL4ExQ
-         JWAZJAzsca+tVJWUIzv3Rtdxq6osoiHWf5OQJzsbtP4akf+RLEXaXblEaVDkvCFJBODF
-         c4u6nvTmRHajn5SjNfiJbJWBfXyXHKaDNHlU4vMtMBq0Q1efUOIaGTxGsYbIilsQR9YY
-         0Ji/x/W4fwOBadlAgMRSuVceYYYvGk9QdqljvRDDtTxTRQYkSoKtrwaM4q1AebkqaMVO
-         4DUS0K1nG0rEVJgE/AATkQnmxzG1fOn+W7t8LQ/EzE95h3BfmOq3KZ+bErQWSVHVU+CK
-         FgUg==
+        d=gmail.com; s=20251104; t=1789780247; x=1790385047; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DGdaTY1YJtwZ1uBv2RCa5jny+whMo/kcQ9jtBIf3Fls=;
+        b=Ku5ZZPbIm91w7kzyXvKcmdkfmlSKPDj+ikn3KeiK/GwOGSBJ9mpq3nBJSMHiNnbYPt
+         jyvMl0IoC8odxWRjDmCAXDRycZmZ2CocvDLMlm/tWUGO4AnE8jyB5KrDg5qKVYyPBfiU
+         QBncdpuJhP0zSi2lsJUhfKphm6zsyLbw4MEMCOh9wqzNGEACdz+tpekBeMPb75WaHsx7
+         8ZZFNBJKwmZUsjroh7HXTWscFxfrrfdphl+Z/Z2WCEDAvozgjb5q/9IcVtadvjAfTykn
+         azh900vhnQ2ZhpP9jPgu6C5PG3g0TSRClPqhk0iKVbKXwsuBY9nAOVj6P6+h6SMSUJYa
+         vxWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789780241; x=1790385041;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=a49yaJ/GGjwIg6ibC7aTwVaBRLcdBDhKbI1sakT8d8k=;
-        b=G2HNCBPsjsXWIKQgyTqaqTVRpOI4aVhh3RQdICQHO5wTdxW30a5Z+NgKStVKjy2VOP
-         sKNAim42g3TR8aHuIYaEzjdGOdxavX14bzciQNCvVqtQUzNjkNQUqLKkOCKq8GJmTM6f
-         /vcJE+rmoc7k+xID6C6Q5cVyQ9JGiNzVnRpyU58rY8d2hmyVT88nUmxjbhQ/d4c68mhU
-         ec4eRaeCYZCL6a68FZahW7GNjG30QNASxCVG+ZGZZLocMwcAWtM0oK66xLdxXyMbmIoj
-         WsIDZJXlTDqXMUuhFhrmgEimXt4XnWLwKV2vgPT3WScCMsw5xSKwnz08/+ocYe+KAkBI
-         2EAQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz7o28lvD2IoAqcrK/6kHI5RyI2XI3c9SKC/arG73sQ+r6EgOVubwOuqAM3UWDM34N5sEjX7dc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kKT0JZIHIYViRKxfz7IUFgxJ9k7LzaAvHZVBFFVuQlyCK8/Omm
-	c4If30607FcvXohGBPV18qfVRpF/U+C2mj8/g6C1wV8RaMGTLVmeSaZEZ4D4beRPoFk=
-X-Gm-Gg: AYBFou0Ev/vQjffOX1t4OUou5wurHFaHkqlQ2S7JTr+nvGjikbECHBWnYmhiAnzWK3n
-	CpDYY5rb8jnxVPXqtXSLaLOaQJH+EcpAjruviVtehrOOWEODCkuQaO74HVqMdzW+aSo9A2aZt67
-	t9ka4/wHSvVMVN+B2Q4/fqccsLCjb9uXtgxAbd1DPCtg03pG9DkdQxB/TrL5U7t7fGFguo/Q8aO
-	5krXVVt9tLlkWTN9vcevVK8yyv51t20Kk7pqL02CB5PUJGN6wz8OrBUB5NUWXFPrmTGmA2qJAjm
-	3+dNxWKYpnVS8lZCvLTH6nzpz3zH+z7F8LWQRX2Z+4mHwImbTT9bh4DKdfqIgSwW+drY1ehQuoW
-	+dyKXunU0A8qV+bPh5K9gdX0sUTDY1yJAUDeVARK70xdKi/g1//kUwEVJSKTm8F05ahGx7V4vDJ
-	/VXvFR44VI6M1QnshNMwRYZWMNHCRB66euFrf9BPELJeckv3cNGb04
-X-Received: by 2002:a17:90b:57d0:b0:39e:6c69:f470 with SMTP id 98e67ed59e1d1-39e6c69f4d2mr1917003a91.47.1789780240973;
-        Fri, 18 Sep 2026 18:10:40 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:40::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c6dd585sm1680612a91.0.2026.09.18.18.10.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 18:10:40 -0700 (PDT)
-Date: Fri, 18 Sep 2026 18:10:39 -0700
-From: Joe Damato <joe@dama.to>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	ntb@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 03/10] NTB: ntb_transport: Order RX entry
- completion
-Message-ID: <aq3hD4D+VfMUd7vq@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	ntb@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260914084838.2158249-1-den@valinux.co.jp>
- <20260914084838.2158249-4-den@valinux.co.jp>
+        d=1e100.net; s=20260707; t=1789780247; x=1790385047;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DGdaTY1YJtwZ1uBv2RCa5jny+whMo/kcQ9jtBIf3Fls=;
+        b=GDgzMBRzoPANa5mTfrfSje1gnTiKCYSRmS9asOCx8lWMfiNY7RQMb9xAvZVLw79n/y
+         dbyjbICF2uSQZxcO8n5asGJrQ5utIf7UKklIRegTMPso+8g10rSP2HTnADL/22X4/Uq1
+         QKjF2KzNTwDClWw2COxOibbEOeEN55mSdDcKNPa11uwQgEVAS7JXTlhGv8JftmTQ+HaE
+         ufBCBwEcn9VY0mnTFcx7NUyqIC3GvIyKnTFSYOdYr2tYPvJoj/n+IL8px7L6p8JzddbI
+         nk3Jb/vTF/aauaANNH6OLEuULk+6Qk7n8iJNOgqAmDCOSac6EFqKn6iaEbp/nSvapnZW
+         hS1g==
+X-Forwarded-Encrypted: i=1; AKwUvBz27bsttKnz33AETgmFeF61O0QE2Q5zhRPLs31DJFL011dMj0XwtuXduZcpUifdF4ctDHxJ+8Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++l6BuOr+pinjKlm67a5eJGX6EOW3WpQ6FoQkj1iHtlysZiVS8km
+	vCuJDYsF2sAsTvuY0YPDF3oab9UH7vGsdOm/vnMLroAHZsIfedy5YqgUlrFdqgmM+sQPcMf9S9U
+	TUCywUdJso9FXb1mVUU06GLg7nXYZCTI=
+X-Gm-Gg: AYBFou1KlHncUNJUr2NGtV5H6O6zNvRWX6Nq4a8j+aj8hZxHK2DECBl04VoY7ebCZWb
+	aNXekYwdxgkV2digbR0rKyWf0wzj+s6ZCAjVfy3XcpN6nK9QRILe1RQ1aFmWsSsRZfPDtxxiwHJ
+	xLoRQVXZFdIbXD+soISGiHpaz+d9uGru6lrLP74LMxCciAXR1rT6m8QagZRBVtGVJUhWbGxDVLT
+	4f5H1CVEouVsrabkXnTUuchUQ69alfvoOMkiK8aFEc9LyHVwN68UldFUltVwCd/cf30pcjbBXlc
+	i6fFELVgBq7nE9F6cDyc11zG2NTZd7cUu87ETwFM6xr4Wc9kSE1DHas54ohZMZwC4STplbyggXq
+	DKvN3HU0JhEkZVz3BPivKz2fpfLIUOz3zAPxCmSgftt7F3xXdtvWskgQ=
+X-Received: by 2002:a05:6512:3e14:b0:5b4:a8c3:d26f with SMTP id
+ 2adb3069b0e04-5b8c1809b8cmr1360063e87.23.1789780246375; Fri, 18 Sep 2026
+ 18:10:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914084838.2158249-4-den@valinux.co.jp>
+References: <20260914014539.5015-1-sigefriedhyy@gmail.com> <20260914014539.5015-5-sigefriedhyy@gmail.com>
+ <20260916185405.2ccc6aa3@kernel.org>
+In-Reply-To: <20260916185405.2ccc6aa3@kernel.org>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Sat, 19 Sep 2026 10:10:36 +0900
+X-Gm-Features: AcwNN1V9shfXHkJcE1WXlFxXnTZCibrBttUB3lePMBgN9N4dGzTVVWcdAubNumo
+Message-ID: <CA+7S2vJXBAz61SOu+rUt5aqbnsZ-_G_KYt8wXXbqzD0FCSh5eQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 4/4] selftests: net: test AF_PACKET multicast dumps
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>, Nikolaos Gkarlis <nickgarlis@gmail.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 05:48:31PM +0900, Koichiro Den wrote:
-> RX entries are added to rx_post_q before their fields are filled in.
-> The overflow path sets DONE without a write barrier, and
-> ntb_complete_rxc() has no read barrier after checking DONE. A concurrent
-> completion can therefore consume stale entry fields.
-> 
-> Publish DONE with release ordering and check it with acquire ordering in
-> ntb_complete_rxc(). Use the same publication rule in the copy callback.
-> 
-> Fixes: da2e5ae56164 ("NTB: Fix ntb_transport out-of-order RX update")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904052134.2970111-1-den%40valinux.co.jp?part=3
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
-> Changes in v4:
->   - New patch (Sashiko)
-> 
->  drivers/ntb/ntb_transport.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-> index 3f497a62673f..b69e8ac8047d 100644
-> --- a/drivers/ntb/ntb_transport.c
-> +++ b/drivers/ntb/ntb_transport.c
+On Thu, Sep 17, 2026 at 10:54=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Mon, 14 Sep 2026 10:45:39 +0900 Yuyang Huang wrote:
+> > +        try:
+> > +            addresses =3D rtnl.getmulticast(
+> > +                {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx}=
+,
+> > +                dump=3DTrue)
+> > +        except NlError as e:
+> > +            if e.error =3D=3D errno.EOPNOTSUPP:
+> > +                raise KsftSkipEx(
+> > +                    "kernel does not support AF_PACKET multicast dump"=
+)
+>
+> What's the point of catching this exception?
+> The error for ENOPNOTSUPP will be both very rare (not sure I understand
+> where you expect it to come from TBH), and also about as meaningful as
+> the skip. Just let the exception propagate, it's fine.
+>
+> Otherwise Pylint complains:
+> W0707: Consider explicitly re-raising using 'raise KsftSkipEx('kernel doe=
+s not support AF_PACKET multicast dump') from e' (raise-missing-from)
+>
+>
+> > +            raise
 
-[...]
-
-> -	entry->flags |= DESC_DONE_FLAG;
-> +	/* Pair with the acquire load in ntb_complete_rxc(). */
-> +	smp_store_release(&entry->flags, entry->flags | DESC_DONE_FLAG);
-                                          ^^^^^^^^^^^
-
-
->  
->  	ntb_complete_rxc(entry->qp);
->  }
-> @@ -1664,7 +1666,8 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
->  		qp->rx_err_oflow++;
->  
->  		entry->len = -EIO;
-> -		entry->flags |= DESC_DONE_FLAG;
-> +		/* Pair with the acquire load in ntb_complete_rxc(). */
-> +		smp_store_release(&entry->flags, entry->flags | DESC_DONE_FLAG);
-                                                 ^^^^^^^^^^^^
-
-are these two smp_store_release lines right? i am asking because it looks like
-they do a load ? i honestly have no idea if there is a race here but it looks
-sus to me
+Thanks for the review, I will fix it in the next patchset.
