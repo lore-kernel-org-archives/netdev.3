@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3268F34041B;
-	Sat, 19 Sep 2026 00:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE750331EBE;
+	Sat, 19 Sep 2026 00:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789779081; cv=none; b=jcxRa5T8KYtnftv+L3klmjoURt0wSmIa6Y61SrH3/4FdE+HPGpvGJh/Kfbrl98K/saOrntbMdOzxGRhMi9eF+Jd/OYLYoxP/U3OJdP0M1yn4iPNnDK4wgNVPAOiMvV5HXCEGW0cxyuVmXplbPQL8xHSqxEJ+ARhHKBs5EQ+dZzs=
+	t=1789779089; cv=none; b=JyeJddXI1UeHxGlkchBQG7aIyy+fiXicbY3v18g3dJ1xVTOdnKjuLj5FTQXU2jfrlgAeFSM3r+Kqixq0DjrBlYTl2/UpCqL84LTWmIHPIj+RMwbBAlOOvODr8H+2BoDEp1AfaRchyN+i/ssppzru5zp0xPIkQ5Es7zGuGf4plD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789779081; c=relaxed/simple;
-	bh=DyVehS0txZ7oFOo+S0bMk7v9RZOvRvFwjkMQ3VSSDUE=;
+	s=arc-20240116; t=1789779089; c=relaxed/simple;
+	bh=bU3/YO4pZoVrp5vJebtHT7tn0bmo/c5C2cO3b4IQjyY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hipLW9IbZHTeVH8N+PVagPfmhe+Ww2dwoHbYbJwn/RRGwEXi2mnlxXPKTeQ30qw16d4CwM4DpK6crxSDg/2F/ZFJUn/nLlYvLmzR67Efvp8alN3Fi+HtzT0lHm7llqPIua/XIvjvlBtKd1Y7NVIyMTSPg3NrmjexOJDfNPI+LKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWu4wBpC; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=AmFo3FIoRy/fLALJwxAYKkGEORuZVMdQD1iEGfmupiXyfmH6OiwucJo3M+vJFR3mq5ksirIlxftuykE2sp3glxzoIZ7hL7+x/UIGMiZgS96UY2pQ25s4LcjHhHEji1xsc/c3KlZymK2gFARP33lhRI6nroinPZ2zo80sUmG7/qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ3Es+2Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWu4wBpC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA29C1F00899;
-	Sat, 19 Sep 2026 00:51:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ3Es+2Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B2E1F00898;
+	Sat, 19 Sep 2026 00:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789779077;
-	bh=rc7y5122sbWh1tOA4lDgYnN7hntOUg/sYT6sc2pWEpk=;
+	s=k20260515; t=1789779082;
+	bh=S4FW45p6sDiphXqXfQ0jW7p5Ux6nOtpllq9+lFLzF4w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jWu4wBpCq+qHMcVf+CrPyi+Fh8bwoQW32qpdpCsS4QyzwEGKn3dm+FGoSqA1s2bER
-	 lEDXSqLe8nw8kGJj7/E6oQln1gJTh9dwgzO2M2z1RtL1ecoO6dRXxTY/s4L8SwJCwm
-	 owQNuU1IwvygGhHFSKemW7zD9ISe5JJ6aL30lmlyFHOjHRBlaPXL3qVyFad91ib9ef
-	 zpwOtymU4YzcXpZ/TJ8zQyVzEeJFtvSsi/m4DTHUikCywewj3D9M1ufhChALNLZLpW
-	 HXJDvoTSg9IZMUxYLRolDUEWd+J2bZakhE4eBi+6WQKCILOp+eq2AtrUOBvvv7JUgl
-	 aSBGXaRlY03EQ==
+	b=HZ3Es+2Q2qvCsv+oMINR+jaMK9nIykd/LbdcQJMLsas3WNyY9aEYHtBhfkilZSjSL
+	 pOQW7NYxsfNQ/c2KzEy72mDnhetLuMybRAj9EspkMc2suDJw/fXDfbhrzUqlGgzPhM
+	 Df3i6GbR5TredI7XxyjosHomd1kl1QYm7+/xLhURIr44jYpfM56kVOrnzSqWSbWb9a
+	 E9KtZs4gee2EjPrYiqpj7qC5jxkKDrCpA7UMLYbJ8sMBHOg+KnRwo8oWLFLXDV0l10
+	 gMGU0WeIO6KmHJoH/CluSEjipLiZFaCqZPUEFtfMCovv70nVxnZ202MdQUhNPiLW8d
+	 HFqALdEXRUUEQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A353811978;
-	Sat, 19 Sep 2026 00:50:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198EA3811978;
+	Sat, 19 Sep 2026 00:50:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net] sctp: avoid livelock while updating retransmit
- path
+Subject: Re: [PATCH net v2] net: phy: Fix device_set_wakeup_enable() reference
+ in
+ kernel-doc
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178977901039.1211687.5015867154963492333.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 00:50:10 +0000
-References: <20260915095017.942213-1-sunyiqixm@gmail.com>
-In-Reply-To: <20260915095017.942213-1-sunyiqixm@gmail.com>
-To: Yiqi Sun <sunyiqixm@gmail.com>
-Cc: lucien.xin@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, kuba@kernel.org,
- linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org,
- sunyiqixm@hotmai.com
+ <178977901564.1211687.16161357006295677908.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 00:50:15 +0000
+References: <20260917063051.52727-1-kmehltretter@gmail.com>
+In-Reply-To: <20260917063051.52727-1-kmehltretter@gmail.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ kuba@kernel.org, florian.fainelli@broadcom.com,
+ maxime.chevallier@bootlin.com, rmk+kernel@armlinux.org.uk,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 15 Sep 2026 17:50:17 +0800 you wrote:
-> sctp_assoc_update_retran_path() can loop forever when every remaining
-> transport, including retran_path, is SCTP_UNCONFIRMED: the state check
-> runs before the wraparound test, so the loop cannot observe that it has
-> completed a full pass.
+On Thu, 17 Sep 2026 08:30:51 +0200 you wrote:
+> The phy_may_wakeup() documentation refers to
+> device_set_wakeup_enabled(), but the function is named
+> device_set_wakeup_enable(). Correct the reference.
 > 
-> Fix this by considering a transport only when it is not UNCONFIRMED,
-> then checking whether the walk has returned to retran_path. This makes
-> the full-pass termination independent of the transport state while
-> preserving the existing fallback selection semantics.
+> Fixes: b344bfacf1de ("net: phy: add phy_may_wakeup()")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [v3,net] sctp: avoid livelock while updating retransmit path
-    https://git.kernel.org/netdev/net/c/d2c31b837406
+  - [net,v2] net: phy: Fix device_set_wakeup_enable() reference in kernel-doc
+    https://git.kernel.org/netdev/net-next/c/d4f90143b9ff
 
 You are awesome, thank you!
 -- 
