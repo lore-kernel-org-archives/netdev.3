@@ -1,132 +1,147 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A8B2931F4
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 19:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38273331EB0
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 19:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789845592; cv=none; b=OPBf0/KbfIR7LLDf8qbIRgYsVO9CGjbaedK//K8X9L93vpUXk8oPeW7efmmVnM2NUJQBR0hosxkGzljToPyHhXTOWoijL3G9wTHV6qyV2uyUtj/THfbTKlxk9YkIdnm9OzBa2unNRDQW8Pp9BzE12tdcEaaMZilBU4EuO+drbAg=
+	t=1789845885; cv=none; b=QGZuCPFu3rO4d/uwzAdCP2GF156b2MLX0JDfmMQRrbkppyJAe6g1Nifh4LFD+K+NuRUL5UmhgoVOs24Nwb5mqjRxFsKg6WcfgX7sJWxm/HzuepVKm9Rdf9dnZwXEcmfithE2iFaROYB3C+tTgam/AdeWTXTZk/VHX9zmKes0L9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789845592; c=relaxed/simple;
-	bh=7eA14pkMyRijHLSluOg7mImGg2JgMqno00/5HbUy+ug=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FTLqAOsMf1h43LaSNn8SmWqoXC2obpx6N+oKvG+OXapnO0N36xWHhjac57Y4oDvobXKYb3JVqKipKkupQ8oFi4Af3osmXYVgLMTl8BKR43a2Q2fad3coFtpQd+RV3GXZculQof9Q7XeDXGvpXoYpjd/VDJl+C8ucabsmxJKCMEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iaIJ6n/z; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789845885; c=relaxed/simple;
+	bh=NeHshQNFCGwJF2ysi+RWsWuwph5Ge0ieMHHyeUv2SS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fOoibsptVOcBztKSA4a4q7j2+GI2A8gNnXrTjpH2BSCjidTk5IKLug3CG+kU77nqvYge4+CWHpMRmBwgjgzrOfz8Ej4xd0RjQNAF8s3T0orqGBIxqSIjgchV1yxmgRJlTMBI4myOpfrwxLCJrj0fseJWnN+BqmLQhqTyi3dIS8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VGzD+gLl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YD5FrD8L; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iaIJ6n/z"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f62ccdb1so606055f8f.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 12:19:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VGzD+gLl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YD5FrD8L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789845882;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
+	b=VGzD+gLlsQrMifF3+CMMRFj6AhU9LHFoULnB0WVC6DkdNAAilC57HBfz/M3b7/4ea449qV
+	eTu2ubozrffDgvbJ5ZVP4hem0peLofHY5AaxfAnZZdSH1hSMaPMBF4l9w0xN3M2k4ws1m0
+	pFcGiKatmM92Gfb22eiWpO7YEHJvcio=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-6asEQDQbOm6VzkrRrsJe4g-1; Sat, 19 Sep 2026 15:24:40 -0400
+X-MC-Unique: 6asEQDQbOm6VzkrRrsJe4g-1
+X-Mimecast-MFC-AGG-ID: 6asEQDQbOm6VzkrRrsJe4g_1789845880
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e65f2f1baso21207235e9.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 12:24:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789845589; x=1790450389; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DNn5LfmzIp0Qiso4NKlxppBej7z4xYBUzlf1B0pA+mk=;
-        b=iaIJ6n/zHZeWTzuP2gE5ZsxtT8MKkcx2CYcDnf79Lc4dSRxi8oUKDgrvz38rz/AukK
-         jt+GuCGHOOLozo2p6CZh5tgnBN3INqnuHheCctPcbqHE+O6cKyHmW0742ZIRqQwwNe/H
-         v5RhqInYwmTYHwRFVajiJS2NbKAFUA802vFyD4HAaPDkQqOQglJVU+GK0kLW9aGhM4Wd
-         jS3vl4+a29Kh0h5p6ifyJPhzTRzH0TvesKkf1y/Fe+bq+F12cqMp8E3Rr+dNPyxii/zA
-         ehnF8zAbM+QtLtu5ohM+q6I51R41FIhak5rZ+AZcCExjpunUQFDek+cVdYBclu82UCFG
-         bryA==
+        d=redhat.com; s=google; t=1789845879; x=1790450679; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
+        b=YD5FrD8L8ro6jkww6Zaehi5NslkKMNn5fdErK2+YRYDdiZGDijDXGu2dWZQbpOnf6L
+         l6vFvEUCbL9tXggZRuinaZKPr/0AcEZWwD71mcOZzlfBxirqyPXBAMWrbLG0sfj/zn0l
+         U5dcgZlX1dzIo6EHiKSNRSBTR9taTopsHkCgVCOKfUngynr7+Uj4+PaRNeCZAA7VQO2v
+         Fw7VBCFNwa2mDatKaWOgGBkv6w8WNBziNrSwqV4kTrHS2I61iZwieu+LFgMvw8+4uUAY
+         YK0BvW56/M+lH/vt6HBqJl1yrRNawiaJpunUl6VfHvxeJZC9OzVKPXAXYThBPY6XOO/7
+         iNmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789845589; x=1790450389;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DNn5LfmzIp0Qiso4NKlxppBej7z4xYBUzlf1B0pA+mk=;
-        b=S+iPEm3ObjiMFrDjiKTkryn4rYK3KPFGbZDIS41A8+Me/R6B8g+G7Npzm8ldQvXDch
-         3IBjxUvhWfYsPZ4RiEQWMMoSF94pj1Xa16jxFlVT9CKP89Y2d7lPJsAGLHgDo+wV/R/U
-         0hAy4QnTjybEcAplUEMJQtMITZXrFIpLXvzdDCcdLJDPRJJ/gq+sK3VKMMYfwayLeY6k
-         yqAMwUyAQIS2IWbk6iZtEZJoRsrSlDxFRRPjAvLsOoFhP/xwJl2S2juYe6ug4Ek/OfhH
-         dfaxurI91AYRxPVn152fZjnqQV1Fx0owHjU6M0fLt26x08bOalJO7ESqLixwtnsI+e2s
-         hWlw==
-X-Forwarded-Encrypted: i=1; AKwUvBxANb8xJcMxUXfPtOVy/ABJIPM3vbs37z6gjNxuOorSa4ndi4fFozJBNiaEa9fP4N5Ligc39H0=@vger.kernel.org
-X-Gm-Message-State: AFuF++l1nQqUrdqbqinTKdbMfhJRNtOUDgJyPd88c5z+1tuHdTg8/wYR
-	zZtozcQbcIKzMxroNaIHXH4YofRX8vfuSOsQsPYVw5m8YEI9Xv1pOziYKfCmSWAB69Ms15G5
-X-Gm-Gg: AYBFou1gTC/lToO8R94CyZgxoYxTj0QX0sAzeBwleceFjkboEeBIpTRlPjPG/SIn7Hy
-	tbxWYLQd2T5R8oPsN1t1AQJbkeMxFPdt8vjQKVoQjP2c9oA2P60eoZpojoyrwwfQGHuKfL9QG9w
-	EyoYqo4UhZGX9qc5Gw99+OWov7cB1BKoJnrcxLD8GNwvHK8SK1a6YTYJvBS4yFMTfW7gBXLocTj
-	ZiMrU5blXDJcFc5mWIY2GUYRVqAvbr6H510g7F/OTuYIU2d1taHSzReSWXW36UeWl1tuWi8RSrc
-	paM+WuvoIJDcTjMlD5u1nQ6/PoaipMZ5+7Wjl/n+viwEO5g4/VIxta6p7qRVNVbGIQQa1lDj9KB
-	cFcgN9ZPingqAQarIh/ofweRLU59p3OFsvPTLVjWOsLQrq1icKSY2oTs6V8A4DnDXWn6yKUAgon
-	PND/EwcbAvIFIs4zAby6wKd+V8Rcnh/qmLD5H3cucHxMox7nLiinxsn4mJzSI2mmg1/hA7EMkIi
-	fdwdsDR3UeZ5VOxTUIh29rxNvwkkCVuKk8q3KpTnxv5Fv/8E6j3
-X-Received: by 2002:a05:6000:41cb:b0:486:fed6:d7e with SMTP id ffacd0b85a97d-4871db11bbfmr10180389f8f.22.1789845589033;
-        Sat, 19 Sep 2026 12:19:49 -0700 (PDT)
-Received: from fedora ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724593bbfsm8097078f8f.27.2026.09.19.12.19.45
+        d=1e100.net; s=20260707; t=1789845879; x=1790450679;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
+        b=25B46ZCl5v5Os5cEv+PA+nDzqJBfq0TsjYzVfaVKmlb1ZafIrtD1j0B62mUJNKKaWV
+         jusiXCNrMNbKUtI1JlK68sI2OsxZPlLdZRg41tjysbKllIefHTYz6TOeGZg0Xspk3h2a
+         sIVxqdIEeAny+JfJyIjoLeLGGGtkyO4T61OmD/Q9qJkYq3cyr2Wbak/Uk6eH3+hM+snP
+         Y38HbIKH20c+CGPC+h9bFjt2H9MHszvtQB322eilEb9lYPDhJYwBgwatB6TuYKtkQR2k
+         MJ+iYhyg7y2MsPu58RfngMjBwrY/f0GjRY50maMNa4YtoJphKEa2lHo1vhp81qA/Yz6q
+         bqrA==
+X-Forwarded-Encrypted: i=1; AKwUvBz5dfepVoommIL9LP8rZSoJMCs3/R+eOEMwFyepLX1+HmxEjq6Dnl5Xewr9x9jWt37w8vny8UY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lAjGxhZSwPdTpqS5fYxHPToWKTnGBfsQL9GcSSsPT7CkMcC4JP
+	QVnIy7K1Ua3/8fTw73/J/RiKZvpKgY49XQFu8q3dGb3Wi1e0MwZ5KLP7nOKOn0OBq2Jza+Oam6U
+	gMjAxmUKmYAav75lEX0AZL2zAdkfpGdwtNTBJkV3PzRStmEZ41wqRl3VOyg==
+X-Gm-Gg: AYBFou1fSfwXn2si66KHdrFsBNZhN8k0/AoMj3sIYkyJJuAY51BankvNz9D9wLkQfqS
+	00P0g6a8kfKaCuQTBWXY1MH/fzkUupVai3ROTA+j5/sGxXGsNk9S+arwsf/XWx48AGa8nxLrNh3
+	D+IU9Fee/Vd3DNmfiu2rzzDhoVZxQbGdTzeGLWoYSR23EeiBajVRRmx7iW+cvFV2aOE0gCWb3Ma
+	w68mFpBtYh4n/iN3GkujKF9Ck3yAMKOInMsj4fu7NzoJDYH/9DoxApTvT5rSs9p2a+CRwTuAncg
+	uT4Jg5rIXKT17btLsS44XPI9qy0czHQXzHHXt0fge20Gw6M1d+ZwMBZZ1qyKHQzJBqDDipssGMi
+	6VMwus0F7h+r7cH7x3FU8haQ=
+X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr78443175e9.23.1789845879499;
+        Sat, 19 Sep 2026 12:24:39 -0700 (PDT)
+X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr78442915e9.23.1789845879068;
+        Sat, 19 Sep 2026 12:24:39 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd0874c3sm138399065e9.14.2026.09.19.12.24.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 12:19:48 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: andrew+netdev@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dlan@kernel.org,
-	wangruikang@iscas.ac.cn,
-	vadim.fedorenko@linux.dev,
-	maxime.chevallier@bootlin.com,
-	troy.mitchell@linux.spacemit.com,
-	netdev@vger.kernel.org,
-	linux-riscv@infradead.org,
-	spacemit@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH] net: spacemit: clear TX descriptor on fragment mapping failure
-Date: Sun, 20 Sep 2026 00:19:37 +0500
-Message-ID: <20260919191937.271202-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Sat, 19 Sep 2026 12:24:38 -0700 (PDT)
+Date: Sat, 19 Sep 2026 15:24:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Nicholas Bellinger <nab@linux-iscsi.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost: keep vring addresses stable while the backend is
+ attached
+Message-ID: <20260919152336-mutt-send-email-mst@kernel.org>
+References: <20260919131744.131030-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260919131744.131030-1-physicalmtea@gmail.com>
 
-emac_tx_mem_map() writes TX_DESC_0_OWN into the ring descriptor for
-every slot beyond old_head as soon as that slot's memset()'d local
-copy is committed with "*tx_desc_addr = tx_desc", i.e. before the
-buffers for that slot have necessarily all been mapped successfully.
-If emac_tx_map_frag() then fails on a later fragment, the err_free_skb
-path calls emac_free_tx_buf() to unmap and drop the skb, but leaves
-the already-written descriptor memory untouched, and tx_ring->head is
-never advanced past old_head (the "tx_ring->head = head" store is
-skipped by the goto).
+On Sat, Sep 19, 2026 at 09:17:44PM +0800, Jia Jia wrote:
+> vhost-scsi keeps the response and bounce-buffer iovecs until the backend
+> completes the command.  If userspace changes the vring addresses while the
+> command is in flight, the completion data is copied through the old iovecs
+> while vhost_add_used() updates the new used ring.  The guest then no longer
+> sees the completion.
 
-So a slot between old_head and the rolled-back head can be left with
-TX_DESC_0_OWN set and buffer_addr_{1,2} pointing at DMA mappings that
-emac_free_tx_buf() just tore down, while software considers that slot
-free again. The next successful emac_tx_mem_map() call only rebuilds
-old_head itself; if the DMA engine auto-advances into the following
-descriptor once it finishes old_head's packet, it will fetch that
-stale, already-unmapped address.
+I do not get what all this is trying to say. if you break it you get to
+keep both pieces. when is this a real problem?
 
-emac_tx_clean_desc() already treats emac_free_tx_buf() and clearing
-the descriptor as a pair when reclaiming completed descriptors; do
-the same in the mapping failure path.
-
-Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
----
- drivers/net/ethernet/spacemit/k1_emac.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-index f7f16397a2c2..d641ac26a1e8 100644
---- a/drivers/net/ethernet/spacemit/k1_emac.c
-+++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@ -803,6 +803,9 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
- 	while (i != head) {
- 		emac_free_tx_buf(priv, i);
- 
-+		tx_desc_addr = &((struct emac_desc *)tx_ring->desc_addr)[i];
-+		memset(tx_desc_addr, 0, sizeof(*tx_desc_addr));
-+
- 		if (++i == tx_ring->total_cnt)
- 			i = 0;
- 	}
--- 
-2.55.0
+> 
+> Reject changes to the vring addresses while a backend is attached to the
+> queue.  Keep accepting the current addresses so userspace can update
+> VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
+> that have not been attached retain the existing setup behavior; userspace
+> must detach the backend before changing their addresses.
+> 
+> Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> ---
+>  drivers/vhost/vhost.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 44cac11b68d2..074590838de5 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
+>  				a.flags & (0x1 << VHOST_VRING_F_LOG),
+>  				a.log_guest_addr))
+>  			return -EINVAL;
+> +
+> +		/*
+> +		 * Commands may retain iovecs derived from the current ring
+> +		 * addresses.  Keep the addresses unchanged while the backend
+> +		 * is attached.
+> +		 */
+> +		if ((vq->desc || vq->avail || vq->used) &&
+> +		    (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
+> +		     vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
+> +		     vq->used != (void __user *)(unsigned long)a.used_user_addr))
+> +			return -EBUSY;
+>  	}
+>  
+>  	vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
 
