@@ -1,64 +1,64 @@
-Received: from mail-pj2-f18.google.com (mail-pj2-f18.google.com [74.125.227.146])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B7302753
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520BE360EF6
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789828751; cv=none; b=q+/iakK4ofnVpys5BzXmnufAmgil/Q0CUIVW8YuCYTlq2VeFK/cd90rLHAdFUxfMF8QuEmjI+eGY3NA2XOFsDBkC3HFqCaErqtPqKUCqkhi8/3aN+3M2Vshbcte5kqpSN5ZmTCBAcKRaZyhJmBhcwQ9U3EPGhqxjE4s6i6XwqM8=
+	t=1789828755; cv=none; b=A9YV3gyhwW55w//SqLHBZ8jeJyHHiyhDFCUfvIYtmczG/cVc9hahLwYVYOZee3DMzS7kgSOM1YauNimmATOLsAY7FBKpYef7riaNiHoNeZb347L/40TGRoOS8ohJHmsWp6mi/x+DAJ7Ao1eAUc5WzXi0LTEu8+4vdh8Xb0+NHO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789828751; c=relaxed/simple;
-	bh=hE1cVQyQt2OU6ibt8nyDkD4ZukailLQ60/Lsgbzd9KM=;
+	s=arc-20240116; t=1789828755; c=relaxed/simple;
+	bh=Mhp9R0MCJnTDusbMi0FJ0eO35srlQlW9YSNrSMYga/U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MJScVN0K8bO7G7CvJtjXu2PrQLSg/ukuAd5ffqnJsdFwXR+8gF1oM78jPEURbSs5uV+arKjodoZRAm6d3EdXulBEu3w4QQF9lIKVv3chHcgviG93h7UjCxIHCZS66kY/kdkxx+taU6B1o0LHcKy57cg/8VavDQ2IJ3huyRY0clw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h7K+MwaF; arc=none smtp.client-ip=74.125.227.146
+	 MIME-Version; b=utDqiP2c7Tp5dpOFR+P6lSC3mOMpxzERs0nZXigB8wEGVAJQOTQ7br5nD+iQM7mDZGIg84tv4+4l8eHD+tD2qx8R2U/nDNB+Zks3jON97jJnGkqzKVwbvzdoZSyphrI7emNR4wbn+AfxyktTMdhSLedOlGABF/S+61m0iqV+rSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TeCerQc5; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h7K+MwaF"
-Received: by mail-pj2-f18.google.com with SMTP id d9443c01a7336-2db22383fe8so10865165ad.2
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 07:39:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TeCerQc5"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d8fdc579daso18904705ad.1
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 07:39:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789828749; x=1790433549; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789828753; x=1790433553; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Xl99vzI4+2TnnI65ZZD8Z3YjYIk3m3LZhJLmHUA4G0M=;
-        b=h7K+MwaFaxlRtmxd5+/AHQz3quQ9CjjtN3UJh6rBeDoc+U+6lE+/i1xwUC0sUSt6BA
-         ljZl+rx1Jh3SkerTYD0llg32vj2g5vA1W6vkNypi0re8sQJMWFxlo1ooYX1YFcy7c20a
-         Q41lLrimPT/RAU9jIgP13Ixry+QYPH0k3to7El7wutZMhouXS+SCJyxAigIenObKObLu
-         3k+LLoBIjSLd4/QG3a8v0DCFtEtskgMthTg9Ry3sXjVqz95lPilNm8itY5OhjOV3PWim
-         Ml5XD5so/6mr+ZF1v39EmQKGc4ZN0754csI7QIYWDydWQzIr4QZWZZzU3m8M90xD9z5c
-         bFrQ==
+        bh=9LRQZ57qeaendWDYofTy5iNhQaGS0Bdj4+bJU5zeKFs=;
+        b=TeCerQc5TmVIsPH4E306TqildhkF7hx/cjv2m+dPqRE4FvBaofUVvTovVhviubO9uE
+         2rbMZEi7vouYQpGgUKHco5qdLl8axLjXfjKjDzOCYukEXK1tTwBfp/QJfHJo/7sQHYLv
+         KR+IAO5Ur8qqo3X8IfNNl0UeN0XMeDhY+A4X3OIqN+MpXHEIngtRM7ZpBAmwL/n62Hc/
+         FAWoQTEFNkNhbKRgJIg+HcXYOg8gLC/ZOFVHY0DyR2jiI68OvO06SDNDsT5kvLNDBKKu
+         h1ZOvxU+T0H3pd0piaBESAZTvn+Y77aOu6+wTB2CBfRhPgr93R8sbz77mbCVGNMzf9pX
+         dY+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789828749; x=1790433549;
+        d=1e100.net; s=20260707; t=1789828753; x=1790433553;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xl99vzI4+2TnnI65ZZD8Z3YjYIk3m3LZhJLmHUA4G0M=;
-        b=Pbg/mVsoEiBvoaX4FSRReBbSngg6hzPqIedL4KCj+2sKThli8KIZ+SiuUUT8lwvlJ0
-         W7nb4iIV73sjTxvF7qQdfWFjIxPUtenUwdWXooQ35hGl5p97GuzboQQl3eauqpc0of/n
-         1LkijeIbg5mL7k1Y1kxo8QcyEOwQnwZbR06VFLYswA94IdGeZUJDU+R8nRIICk7S9nDL
-         5YaWlXsGNw24U5lImYZ2wjg7zsHcEcB3+ZwzGhKIh9Yo1LIdnC2D5Rd7Dl9ni87IcsMx
-         T7ns9X9TZ3PXtXN4eBohayVquMf0PkWOEw5kiUSA0R00E47LwdHo781XUPVC7N6YldPD
-         EDnw==
-X-Gm-Message-State: AFuF++m4XLh0AH3a4rB9HARZgIXP9zvbEItO2TBEnllDe1JpkXGfYDnK
-	fdSbWaXaLWK0lhYhL8r61yikaP5D8r2wdx0EYrhdamjY8/lQmllsRsKJ
-X-Gm-Gg: AYBFou0YQ/QgnB4phn8shLRdp0OdaVZ6yZl869h4EBqwI7ZQj3UbWSXJHlAaCg/omtu
-	s9QnA9C5pEg3+QVEj39sQCTKYwSyy423UL8wpMjMWVgIgEsueT4oxk1FtCoeSc+wx3CmPkEF6lx
-	ZippQPlwMTiSq8YcxR+Lc9gcB2y7wDTVucFYguh5LKeY/g9v131H9IY/eivVcFR08x6Wy+v2Kku
-	ZRSgIR6PYukBgoJ3mDVCAso6vjwg6GOtXhDbma9NIUdSf0ea2V6Q6uWZVBnljfiYOjdCJ5WRFeZ
-	x+zqS92L2o4/T6VsbjkyvRttke2/y6kHLdGHr9K1rzDHidX0/Z9XE8M/Y35hzCpwdCZKrjQX8Hl
-	ZJZW/UtIwY+gsq/ld5Ywe/X1dX52D7+lUASfTPHGMsY8uqal5eVIAuOdSaVcC2yuHoOI9A7wPxl
-	/NDw3lkdPiTTSXpL5n0f3q6FCwgzkjIDdaT3Owqn9s8wIIqPpVnaxVthrUAqmxQxeWB3QXh3Uxe
-	rSUoP568X7hUsY5eFPvj6A8yIsA1sgYsZW4JL38yw3Pnvs+iCOfmrfnGYuceuQwHt5A+Nt4MHP5
-	XdXMRW211lgwfHmnT3RbCsP2PzzW8xyBudreL2bOCuqQbbZMhoazpUeG4bfrPue6912Ukg==
-X-Received: by 2002:a17:902:ce0c:b0:2dd:ad73:c989 with SMTP id d9443c01a7336-2ddb1bc360emr93215125ad.33.1789828749395;
-        Sat, 19 Sep 2026 07:39:09 -0700 (PDT)
+        bh=9LRQZ57qeaendWDYofTy5iNhQaGS0Bdj4+bJU5zeKFs=;
+        b=IxwIbDTc5gW+LPAaTAojToP2MgK0DrwQvuL37eiIrHwuaRo8C126KV4nMXiYM7SGB7
+         4P1J1BPMbc53zxeY1kvNt+L5SxJrFelI+v7ievwIfxHxo0c3ENKG2K6hZ3jTTSyqxz3X
+         mYPDauTWJ0pUbAks53PA7giQkOQtnt7tMVDloklpY1VyVoENDxgGBD6VmpqvvhI6yLee
+         jFhTQCoruN1+lqZlWzWJGEyb4dVBeJ59V/3vqJ1HQ4Cm7GtR6eAXBLOYhDEV5I0Skczv
+         dUFsJe0DeD5J5EuqiRbPR5Cd1WQ1ILznWpd/1cA2WVwpyGa9m/uOX8BeoD5xzeqB2+Y2
+         TcGw==
+X-Gm-Message-State: AFuF++ln8X+zW+IJMnT68BYHhBfoBDUreX5eSVRZ3Ohp6Yv/Bqg9ED2F
+	JQRLVjEp8jXXD3XX2OQrwBAmv2H0zCh1HZtDfYdNjIooHDJqewL52FaV
+X-Gm-Gg: AYBFou25oRD/iQbSUF1OI7Q5ipJJtuOvEfSUu75aD7zzDBR2yXcs29tRCfSb1UiG9tu
+	FV+Nvv4pCvrqTiP3HKX7oi0xoTFd2O6qoyrspZyS3ZPmhOMQv4DwO1xgiqqE8rJSlkDEFxflbR6
+	xqm4++e+1Eomw7w0AXV/vTbTqSWfeV9lrdX/lPRZ4fjdDSxWru3NNbgomzu7IjnOpUz1WIYiN2a
+	z5gEvrJ4O6YXXWYhuP/0zUhMRxu01cJAcE7SSLDbcuwqQ1YlJK04mkDUrs2lcfnIhw5AVpMp7aS
+	Wwc7mTp7OcFLLRZxyOv4rKdyzJ7guXXuAMbfTRuEYjoDizG7UIpD0ezkzE/OZr+gzo3e9/cM8+O
+	gMv0b96SExkOUUQj4EbOS+bxlM0yqYU96xbx9Gqu3LQjSgNpIoRl+jGPazlmghC/NWFtatWjwID
+	QuHXJy/+1QDHKdlcm8JRxpErLZyEd3Ow1+i7++tWcyAAGSEqKz5sLdlphhUHS+1NGHXD/FvQQO6
+	50oGKsvz1GDLusJfM8cQYxgAXToswH63xVijPk74o7MLTvuhu/kdp9t93GTUmhgANHHXHJxgJIW
+	QpW0ADvC8UtVbvDbqbsZG+ec6+KuylGCwM+2VZi+a7cBXVzpJHGXEHgcVz0=
+X-Received: by 2002:a17:903:1b45:b0:2dd:c100:3142 with SMTP id d9443c01a7336-2ddc1003253mr39175395ad.62.1789828752736;
+        Sat, 19 Sep 2026 07:39:12 -0700 (PDT)
 Received: from KERNELXING-MC1.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc179ed79sm10711715ad.43.2026.09.19.07.39.06
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc179ed79sm10711715ad.43.2026.09.19.07.39.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 07:39:08 -0700 (PDT)
+        Sat, 19 Sep 2026 07:39:11 -0700 (PDT)
 From: Jason Xing <kerneljasonxing@gmail.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -70,9 +70,9 @@ To: davem@davemloft.net,
 Cc: netdev@vger.kernel.org,
 	bpf@vger.kernel.org,
 	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH RFC net-next 6/9] bpf-timestamping: restore skb hwtstamp if it is used by start time
-Date: Sat, 19 Sep 2026 22:37:29 +0800
-Message-Id: <20260919143732.11772-7-kerneljasonxing@gmail.com>
+Subject: [PATCH RFC net-next 7/9] tcp: propagate the start time onto every skb in the tx path
+Date: Sat, 19 Sep 2026 22:37:30 +0800
+Message-Id: <20260919143732.11772-8-kerneljasonxing@gmail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20260919143732.11772-1-kerneljasonxing@gmail.com>
 References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
@@ -84,54 +84,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When BPF Timestamping V1 (SKBTX_BPF) and V2 are both active,
-skb_tstamp_tx_report_bpf_timestamping() writes the hardware
-timestamp into orig_skb:
+Now that sendmsg() records a start time in sk->sk_start_time within
+the socket lock protection, copy that value into the shared hwtstamps
+of each skb.
 
-    *skb_hwtstamps(skb) = *hwtstamps;
-
-Since orig_skb shares skb_shared_info with the retransmit-queue
-original via skb_clone(), this clobbers V2's start_time on the
-retransmit-queue skb.
-
-Save start_time before the write and restore it after the V1 callback
-returns, so both timestamping generations can coexist.
+The timing is tcp_skb_entail() runs once per newly allocated skb
+in the sendmsg() loop, every segment produced by a single sendmsg()
+carries the same start time.
 
 Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
 ---
- net/core/skbuff.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/tcp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 44aeea713da7..98cd813006b8 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5686,6 +5686,7 @@ static void skb_tstamp_tx_report_bpf_timestamping(struct sk_buff *skb,
- 						  struct sock *sk,
- 						  int tstype)
- {
-+	ktime_t start = 0;
- 	int op;
- 
- 	switch (tstype) {
-@@ -5695,6 +5696,8 @@ static void skb_tstamp_tx_report_bpf_timestamping(struct sk_buff *skb,
- 	case SCM_TSTAMP_SND:
- 		if (hwtstamps) {
- 			op = BPF_SOCK_OPS_TSTAMP_SND_HW_CB;
-+			if (static_branch_unlikely(&bpfts_v2_needed_key))
-+				start = skb_hwtstamps(skb)->start_time;
- 			*skb_hwtstamps(skb) = *hwtstamps;
- 		} else {
- 			op = BPF_SOCK_OPS_TSTAMP_SND_SW_CB;
-@@ -5708,6 +5711,8 @@ static void skb_tstamp_tx_report_bpf_timestamping(struct sk_buff *skb,
- 	}
- 
- 	bpf_skops_tx_timestamping(sk, skb, op);
-+	if (static_branch_unlikely(&bpfts_v2_needed_key) && start)
-+		skb_hwtstamps(skb)->start_time = start;
- }
- 
- void __skb_tstamp_tx(struct sk_buff *orig_skb,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 28730a3e4473..85e3bae3569d 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -702,6 +702,9 @@ void tcp_skb_entail(struct sock *sk, struct sk_buff *skb)
+ 	tcb->tcp_flags = TCPHDR_ACK;
+ 	__skb_header_release(skb);
+ 	psp_enqueue_set_decrypted(sk, skb);
++	if (static_branch_unlikely(&bpfts_v2_needed_key) &&
++	    SK_BPF_CB_FLAG_TEST(sk, SK_BPF_CB_TIMESTAMPING_V2))
++		skb_hwtstamps(skb)->start_time = sk->sk_start_time;
+ 	tcp_add_write_queue_tail(sk, skb);
+ 	sk_wmem_queued_add(sk, skb->truesize);
+ 	sk_mem_charge(sk, skb->truesize);
 -- 
 2.43.7
 
