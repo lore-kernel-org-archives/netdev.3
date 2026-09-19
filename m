@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE750331EBE;
-	Sat, 19 Sep 2026 00:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DD23546F4
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 00:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789779089; cv=none; b=JyeJddXI1UeHxGlkchBQG7aIyy+fiXicbY3v18g3dJ1xVTOdnKjuLj5FTQXU2jfrlgAeFSM3r+Kqixq0DjrBlYTl2/UpCqL84LTWmIHPIj+RMwbBAlOOvODr8H+2BoDEp1AfaRchyN+i/ssppzru5zp0xPIkQ5Es7zGuGf4plD8=
+	t=1789779090; cv=none; b=tn699lL4l6QMfQAdhmE/5hBEYEuxTBkU6xzV8Jj7p77+eKZQU5CMXezkfmHqTASpScMBs8p4auC8jIRuOD2e7UfWCC5RmslQQz5Ilg5iVLev1t3kzIocFQWc/10hIJFtSGiGN83QW4VtULKjoM1wv1Ci94zwmiQQjgN4lkNmJVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789779089; c=relaxed/simple;
-	bh=bU3/YO4pZoVrp5vJebtHT7tn0bmo/c5C2cO3b4IQjyY=;
+	s=arc-20240116; t=1789779090; c=relaxed/simple;
+	bh=tB/5AYGChxsdD4KFZAchs9rFSVs/aWnbdSyQXAwg3qM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AmFo3FIoRy/fLALJwxAYKkGEORuZVMdQD1iEGfmupiXyfmH6OiwucJo3M+vJFR3mq5ksirIlxftuykE2sp3glxzoIZ7hL7+x/UIGMiZgS96UY2pQ25s4LcjHhHEji1xsc/c3KlZymK2gFARP33lhRI6nroinPZ2zo80sUmG7/qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ3Es+2Q; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CQOiLHre5wiKb8vyJWlFIIXGjeFSdpaPNWKdLjjZgfEfMyvWOpJSGwcWotazMhmfklib4EkBORwmK0RdSQhTIQebFlDzlZt4cRUlxqclkcCNsFnPt1Knio0Ksadd2MThae4QWvwf0y5bwZphkfu5LzOV2HeAQBid0vemeY04i0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A6Lt4iub; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ3Es+2Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B2E1F00898;
-	Sat, 19 Sep 2026 00:51:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A6Lt4iub"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EACE1F000FF;
+	Sat, 19 Sep 2026 00:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789779082;
-	bh=S4FW45p6sDiphXqXfQ0jW7p5Ux6nOtpllq9+lFLzF4w=;
+	s=k20260515; t=1789779081;
+	bh=xXYVjLLt4QNICLL4Xo7n8hKzrCiXngxaW+lTkBtSHd8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HZ3Es+2Q2qvCsv+oMINR+jaMK9nIykd/LbdcQJMLsas3WNyY9aEYHtBhfkilZSjSL
-	 pOQW7NYxsfNQ/c2KzEy72mDnhetLuMybRAj9EspkMc2suDJw/fXDfbhrzUqlGgzPhM
-	 Df3i6GbR5TredI7XxyjosHomd1kl1QYm7+/xLhURIr44jYpfM56kVOrnzSqWSbWb9a
-	 E9KtZs4gee2EjPrYiqpj7qC5jxkKDrCpA7UMLYbJ8sMBHOg+KnRwo8oWLFLXDV0l10
-	 gMGU0WeIO6KmHJoH/CluSEjipLiZFaCqZPUEFtfMCovv70nVxnZ202MdQUhNPiLW8d
-	 HFqALdEXRUUEQ==
+	b=A6Lt4iub+nvtj1fG+ziEfhjieuAzUh1mTXOUo8xDpC2oh5sL1Fu6hW745vyp8L/YC
+	 hiKc8B9yM0sPNMZ6qz48gJWFNdxnjELxnkb7eHQAUVJpZgiM6qwHBDFspaUW2SFqAD
+	 Hd0+351FLxv/yTBN6V7vOptb6W7JnVJBr0Hs0PCgIAWhY+iyOO9hnKb/eRbtqUPflX
+	 wKiOHfPNI6io/OsjmaIezO5+flKMH/715YNbmMU7rEF2keFBu6EopEXMrsvSwRu9dC
+	 wqpN0FfUDs90YugMo+Uqq/sVbh4fdob3odEab3jo2M4Vfkgo96rjMCCE6vwhuBiXzx
+	 jplK2uvT3xd5A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198EA3811978;
-	Sat, 19 Sep 2026 00:50:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93D863811978;
+	Sat, 19 Sep 2026 00:50:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: phy: Fix device_set_wakeup_enable() reference
- in
- kernel-doc
+Subject: Re: [PATCH v1 net-next] tcp: Set unhashed_state in
+ inet_twsk_hashdance_schedule().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178977901564.1211687.16161357006295677908.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 00:50:15 +0000
-References: <20260917063051.52727-1-kmehltretter@gmail.com>
-In-Reply-To: <20260917063051.52727-1-kmehltretter@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- kuba@kernel.org, florian.fainelli@broadcom.com,
- maxime.chevallier@bootlin.com, rmk+kernel@armlinux.org.uk,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178977901414.1211687.8227210808199457040.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 00:50:14 +0000
+References: <20260917191554.1600494-1-kuniyu@google.com>
+In-Reply-To: <20260917191554.1600494-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, ncardwell@google.com, horms@kernel.org,
+ kuni1840@gmail.com, netdev@vger.kernel.org, daniel.zahka@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 17 Sep 2026 08:30:51 +0200 you wrote:
-> The phy_may_wakeup() documentation refers to
-> device_set_wakeup_enabled(), but the function is named
-> device_set_wakeup_enable(). Correct the reference.
+On Thu, 17 Sep 2026 19:15:52 +0000 you wrote:
+> inet_unhash() sets inet_csk(sk)->unhashed_state only when the
+> socket is hashed because tcp_set_state(sk, TCP_CLOSE) could be
+> called multiple times, e.g. tcp_abort() calls it directly and
+> tcp_done_with_error().
 > 
-> Fixes: b344bfacf1de ("net: phy: add phy_may_wakeup()")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> However, inet_twsk_hashdance_schedule() also unhashes a socket
+> when replacing it with twsk, allowing the socket to bypass
+> checks for inet_csk(sk)->unhashed_state.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: phy: Fix device_set_wakeup_enable() reference in kernel-doc
-    https://git.kernel.org/netdev/net-next/c/d4f90143b9ff
+  - [v1,net-next] tcp: Set unhashed_state in inet_twsk_hashdance_schedule().
+    https://git.kernel.org/netdev/net-next/c/404381b4f105
 
 You are awesome, thank you!
 -- 
