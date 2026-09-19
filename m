@@ -1,342 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673752C15A0;
-	Sat, 19 Sep 2026 15:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9483B2ED141
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789832252; cv=none; b=GMkkrRtOMdbApTX2tURekBH+cx9DJyIDt4QRU/lHM7OY93Hhy8BE+nM9f1yvp9IepjP15zPuYduDvOvW/3rF4L5hkBrhSRl+P8FM7Bs2Svi/Tmns3A/d40r1rXZIxDxvFE5NeWMvrekD43sx+54OJYXAqUbKA+qLqa0g5Yrd4v8=
+	t=1789832270; cv=none; b=hf2UXjAKg1jslI8sBPZVg6/BqiVwJqP2Q9aGzplNCuZfx6Vyh/KNP8x52xHD1owWZY5qY20gTjHyfGlEbAG+6x6UiY354T9jvCaMpKVrFOlel0xOtcu/6q+GXQRk6NODfgw2wJX7b45B4IDSTncAIqirT/cwXl0/1g5kqo67PYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789832252; c=relaxed/simple;
-	bh=XyrJ/ItGLY5LbzVglxXN9KgAnbwnWFUtisdPNtYP+VI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GkyZoHraDLDv5RTNbz+HIso3WQ2Auii0uzKMvXhxPgJnStxLGkpMfJ3p2/6DFQ30aMPdHDHFiE923jvtI+PawYTUh48iKVik4R2w37M3aMa187D5dH5mOn5W9mEZYg3I37JS/xs0rC4F3Z6VCJeB4rU9J3Lt5WRMvsyExRwLGW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9eIiLoL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789832270; c=relaxed/simple;
+	bh=mfUJiTi+gGbpVlqo3GpBKnEnp6I3eaFOLIpYsMT/0Us=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=BKzh4QSjOk0u5O331fFwr04rp075x0AsbQ3LLQ51RrTvAWzQOq3LnBecIuaJPQZq8oOfaRHWL9HRn2/G1ugJxBL7n3Nv6yK0xWsmQj3iefIOcGs6y9w/TWqEa5qC+1QM7V7GjR6HiaRGow6lK0Vc9u0xAZwmMHbvzZ4yXookW0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODTL0UNO; arc=none smtp.client-ip=74.125.224.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9eIiLoL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A781F00893;
-	Sat, 19 Sep 2026 15:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789832251;
-	bh=Ozhr7Bl7+OI3yvBH2f7CBswUfvMmVh5zYqoDgnzm+eQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=C9eIiLoLRo8v27ZTffUumcgfmmzihqdXAnRR06HAlP1GthIYFG9UWt9MWi5S0TwY/
-	 2LOPH3RNBQDlSIuqmHiC/K2Q2rfvUyDpGMxAIvlBiHirfBbZNTHGvV9uFTIZn72mth
-	 k1NiVuSxUos45Y1GwKxO/Hce8DZWRlZNr7L3UMH9XIAVIsnNwzEg/JWQZH6rodJxCj
-	 +9WrIBYBWnk5l+8FgubBSRm8TcjvER/N6XFHM20R+Ati5eGIiEu1MA+1KACznCQ/Sm
-	 eZ9g2FoGAE9ZoHjf2kmRr1dtZKnZfxPxLwYet1+qst1QGuJVEOXGOtC4fq4R/7z1cp
-	 w9NmkPZMRNGZw==
-Subject: Re: [PATCH net 3/3] net: hns3: fix use-after-free in debugfs read
- during reset/unload
-From: netdev-bot+sashiko@kernel.org
-To: shaojijie@huawei.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- shenjian15@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
- yangshuaisong@h-partners.com, ningwei15@huawei.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 19 Sep 2026 15:37:29 +0000
-Message-ID: <178983224991.22033.11290112238743369174@kernel.org>
-In-Reply-To: <20260915132434.1141742-4-shaojijie@huawei.com>
-References: <20260915132434.1141742-4-shaojijie@huawei.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODTL0UNO"
+Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-89666ee9b3bso10647897b3.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 08:37:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789832267; x=1790437067; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RVj3rO42m1M7ZOjQMlG+l8AKpOheIGneKdCx5lNnpyE=;
+        b=ODTL0UNOQE/tfDnURzattmZ+IHj0kALtiWca+sjUeHDcGqZFVdMDoKBvYX7CoC7xJa
+         8nZBbcaBwgFUFvBX9OjgfRL7psYCqrtIzaazCxrRXXuR4QQTBK/J6J3f89h6NHhfGRRB
+         LaVjgmudgauW1h17flf2lq0knObhJnfPSHOFOVSHC7DZVZFXAZ5NCJCDUSjEu+Co6q2M
+         rHD7HuVDOXzbhYBk3/kHT0DYXW24IXVOkEk5L9SyGpv1qxthq0kJHr19DJ0NLTRozLsY
+         XCqz00O2IdTJxLR5xg+16lgm66L+FB9JGLswOLqnRbz6RFWyC1az5YQrwjhai0JYIYoC
+         l2jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789832267; x=1790437067;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RVj3rO42m1M7ZOjQMlG+l8AKpOheIGneKdCx5lNnpyE=;
+        b=mdX169lCs1TiA8uwfUbLXKs+gDtVob8oZypE1NLz78Zn0uR3FoAxcFmJGT/4vh7Uob
+         46+FUROz8nf40ZEuEVkmXwejvc0wlV320K2ruS83wVDlWA4YWXyk08zXy2fazIpKYDz8
+         4JBGRrwtFfXK2Jv3z6U3MMhcLetFWtGwMIEz+pEh7yRGMeBvUtqrftYP8soRQNxpgdp3
+         EHVxDDy176cgamA8e5WGYEVAWJZcsznvzLpDzAh6n4T2P39MgHzLSZQ9ahZAFgK1Rzdy
+         1+LRm0CTGQWwnzZzwD15hqGQqMJKMcL8Nlu56qJ72OJ2Dzt/J2O2SgPlIByfG6ibWwii
+         TqUA==
+X-Forwarded-Encrypted: i=1; AKwUvBzvq6+iIznAGKTbJCdlgjJeOMy89/KVZ881uYIyoSFMfT2xMwZtAwVmhj5CqaC5y+NI4AU72qE=@vger.kernel.org
+X-Gm-Message-State: AFuF++n9A5Mjm/j6zTp5NXiN8hy6RKmZJCxSlH5NIScGC69NxhQyMqpM
+	1CnGcAntZXScFwmAoWrfL28hTNdb48z5tMIocC4jAo7DvmluH9ZJ0mWA
+X-Gm-Gg: AYBFou3q1WErBIhoEf+b71kl3d59JPW4N0584gd+GdotsPauiyKXzS3LOGc+AcAJMyC
+	njKf8Q+nfcbiWRfcKh7/Wayk5cSmo7yzUiAm2rvKL1nJe+t/Ezn9Bso8sY/tNRYJdjPy2wyYEj5
+	N+5WCzgVGrbj+68Ent9Z0Fe4R6D60vxLubx5i2CXYRIjfzLgncbBgd+oLj7sxQ7iWQ/26GNQC0e
+	eeVEgeLb2c6Mtjk0RW7rE9mbu19PtNvvaPa7bUgsQsBM2UxHhvnET6J2tGcQQaOL1j2UA/HXq1s
+	LBOwDcV9/z6dfaXgNVwO3+dtEZYcizKjejoa+wvzaA1jhFSjgPVl9SwiF3ZFaqt3PPeQyvwMf+B
+	BJDMgbFMCiARue5vyNrLxs6gM+2onzDDbftUHbO1M8gy5fbBpRYzuLs7RcKV3BnzgaNd2mkwvR8
+	DXiw66qJlyHeeHTnr2fSl6HhOdLGQKaupNR+b5CLHoEua56VKmF34m0l/sxAgB0vyGFNp7lZCXs
+	MEAV/CM/A+nBSSg25m9mEk1syS0QnFdNCG5N16zTdRTIBXVoLBi
+X-Received: by 2002:a05:690c:e68d:20b0:89a:63da:cbea with SMTP id 00721157ae682-89a63daccc7mr8047557b3.48.1789832267217;
+        Sat, 19 Sep 2026 08:37:47 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a46c43cecsm9677177b3.22.2026.09.19.08.37.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 08:37:46 -0700 (PDT)
+Date: Sat, 19 Sep 2026 11:37:45 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Wang Zhan <wang.zhan@smartx.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ keyong.sun@smartx.com, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ dev@openvswitch.org, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Alice Mikityanska <alice@isovalent.com>, 
+ Wang Zhan <wang.zhan@smartx.com>
+Message-ID: <willemdebruijn.kernel.32be703ea17ab@gmail.com>
+In-Reply-To: <20260918084651.3022878-4-wang.zhan@smartx.com>
+References: <20260918084651.3022878-1-wang.zhan@smartx.com>
+ <20260918084651.3022878-4-wang.zhan@smartx.com>
+Subject: Re: [PATCH net-next v2 3/4] net: core: resegment oversized TCP GSO
+ skbs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider:
-
-Critical: 0 · High: 1 · Medium: 3 · Low: 1
-
-- [High] On the PF side the new locking is inoperative.
-- [Medium] The commit message justifies the change with "The seq_file
-  refactoring of hns3 debugfs removed the per-file entry state checks"…
-- [Medium] The new device-busy gate is added to only one of the two
-  helpers that produce the output of the single `vlan_config` debugfs…
-- [Medium] The reader/writer handshake the patch relies on has no
-  publication ordering on the reset-reinitialization side.
-- [Low] The Fixes: tag cites only eced3d1c41db ("net: hns3: use seq_file
-  for files in queue/ in debugfs"), which is the correct origin for the…
-
---
-
-net: hns3: fix use-after-free in debugfs read during reset/unload
-
-This adds a new mutex (dbg_mutex) to struct hnae3_handle, has the debugfs
-show callbacks take it plus a device-busy state check at entry and per
-loop iteration, and has the enet teardown/ring-resize paths take it before
-freeing rings and vectors. Two hclge (PF layer) debugfs callbacks also
-take the same mutex through hdev->vport[0].nic.
-
-Closes: https://lore.kernel.org/all/a0853cd9-cab5-441d-b181-8ba97f2f58b0@huawei.com/
-
-A few questions on the commit message and the code below.
-
->     The seq_file refactoring of hns3 debugfs removed the per-file entry
->     state checks. Without them, debugfs show callbacks can access
->     priv->ring, priv->tqp_vector, and ring->desc while these resources
->     are being freed by reset, driver unload, or ethtool ring resize.
-
-[Severity: Medium]
-Does this description cover the hclge_debugfs.c part of the patch?  At the
-baseline, grepping hclge_debugfs.c for HCLGE_STATE_RST_HANDLING or any
-test_bit(HCLGE_STATE...) returns no matches, so there were no per-file
-state checks there to be removed by the seq_file conversion.  The two
-guarded PF callbacks also do not touch priv->ring, priv->tqp_vector or
-ring->desc; they read hdev->* and hdev->vport[] and issue firmware
-commands, and hdev->vport is only freed in hclge_uninit_ae_dev().
-
-The selection also looks arbitrary.  Of the roughly fifty
-hclge_dbg_dump_* seq_file callbacks registered in hclge_dbg_cmd_func[],
-only hclge_dbg_dump_umv_info() and hclge_dbg_dump_vlan_offload_config()
-gained the new guard, while structurally identical ones that read
-hdev-owned state during reset (hclge_dbg_dump_tm_*, hclge_dbg_dump_fd_*,
-hclge_dbg_dump_mng_table, hclge_dbg_dump_mac_uc/mc, the register dumps)
-were left alone.
-
-If the PF layer needs this protection, should the rest of the callbacks
-get it too?  If it does not, could the hclge_debugfs.c hunks be dropped?
-
->     Fixes: eced3d1c41db ("net: hns3: use seq_file for files in queue/ in debugfs")
-
-[Severity: Low]
-This tag matches the hns3_debugfs.c (enet) change, but the seq_file
-conversion of hclge_dbg_dump_umv_info() blames to 9e1545b48818e0
-("net: hns3: use seq_file for debugfs in umv_info and vlan_config"-era
-sibling commit by Yonglong Liu), not to eced3d1c41db.  Should a second
-Fixes: tag be added so the hclge_debugfs.c hunks can be mapped to the
-commit that introduced them?
-
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-> index 4286af9239b01..e94cc33da8643 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-> @@ -944,6 +944,7 @@ struct hnae3_handle {
+Wang Zhan wrote:
+> A GSO skb which exceeds an egress device limit loses its GSO feature mask
+> and is segmented into individual packets. This is unnecessarily expensive
+> when the device can still offload smaller TCP GSO skbs, which is easy to
+> hit once one hop of a BIG TCP path raises gso_max_size and the next one
+> does not.
+> 
+> For an unencapsulated TCP GSO skb which exceeds gso_max_size or
+> gso_max_segs, work out how many MSS segments each output skb may carry and
+> resegment the skb with that bound instead. Keep the features computed
+> without the GSO limit checks, which say whether the device offloads the
+> GSO type at all. Encapsulated and frag-list skbs, GSO types the device
+> cannot offload, and bounds below two segments keep the existing full
+> segmentation path. The result obeys the GSO feature and limit contract the
+> device already advertises, so apply it automatically, without extra device
+> state or a userspace control.
+> 
+> The check runs on the skb which is handed to the driver, after
+> validate_xmit_vlan() and sk_validate_xmit_skb(), and costs one extra
+> ndo_features_check() on the oversized path, against segmenting the skb
+> into individual packets. That position is also why the limit follows the
+> L3 protocol rather than skb->protocol: validate_xmit_vlan() replaces the
+> latter with the VLAN ethertype when it pushes the tag inside the skb.
+> 
+> Measured on a veth -> bridge -> TAP -> guest virtio-net path, with BIG TCP
+> enabled on the veth endpoints and left off in the guest, so the skbs which
+> the veth hop accepts have to be segmented before the TAP device. A single
+> iperf3 TCP flow, six alternating runs per state (`-t 15 -O 5`, fixed CPU
+> affinity and port tuple). The middle column is the same tree with the
+> resegmentation disabled:
+> 
+>   protocol  no BIG TCP   mixed, no reseg  mixed, resegmented
+>   TCP/IPv4  51.550 Gbps  15.850 Gbps      52.617 Gbps
+>   TCP/IPv6  52.050 Gbps  15.783 Gbps      51.933 Gbps
+> 
+> Coefficient of variation for the two mixed columns was 0.48% and 0.82%
+> for IPv4 and 0.44% and 0.44% for IPv6. A BIG TCP hop which feeds a 64 KiB
+> hop loses 69% of the throughput of a path which never enables BIG TCP at
+> all; bounded resegmentation recovers it, 3.3x over the existing
+> segmentation path and within noise of the no BIG TCP baseline.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+> ---
+>  net/core/dev.c | 113 ++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 106 insertions(+), 7 deletions(-)
+> 
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 16685888b2812..548db4d4e874c 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -3834,18 +3834,24 @@ static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
+>  			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
+>  }
 >  
->  	u8 netdev_flags;
->  	struct dentry *hnae3_dbgfs;
-> +	struct mutex dbg_mutex;	/* protect debugfs against reset/unload */
->  
->  	/* Network interface message level enabled bits */
->  	u32 msg_enable;
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> index 1347edac76993..7d913302f4424 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-> @@ -389,6 +389,12 @@ static const char * const dim_state_str[] = { "START", "IN_PROG", "APPLY" };
->  static const char * const
->  dim_tune_stat_str[] = { "ON_TOP", "TIRED", "RIGHT", "LEFT" };
->  
-> +static bool hns3_dbg_is_device_busy(struct hns3_nic_priv *priv)
+> +/*
+> + * Does @skb fit the GSO limits of @dev?  The size limit depends on the L3
+> + * protocol, which validate_xmit_vlan() replaces with the VLAN ethertype when
+> + * it pushes the tag inside the skb, so look behind the tag.
+> + */
+>  static bool gso_within_device_limits(const struct sk_buff *skb,
+>  				     const struct net_device *dev)
+>  {
+>  	return skb_shinfo(skb)->gso_segs <= READ_ONCE(dev->gso_max_segs) &&
+> -	       skb->len < netif_get_gso_max_size(dev, skb->protocol);
+> +	       skb->len < netif_get_gso_max_size(dev, vlan_get_protocol(skb));
+
+If this change is needed, it is not new for this feature and should be
+a separate commit.
+
+> +static bool skb_can_gso_resegment(struct sk_buff *skb,
+> +				  netdev_features_t features)
 > +{
-> +	return !test_bit(HNS3_NIC_STATE_INITED, &priv->state) ||
-> +	       test_bit(HNS3_NIC_STATE_RESETTING, &priv->state);
+> +	__be16 protocol;
+> +
+> +	if (!net_gso_ok(features | NETIF_F_GSO_ROBUST,
+> +			skb_shinfo(skb)->gso_type))
+> +		return false;
+> +
+> +	if (!(features & NETIF_F_SG))
+> +		return false;
+> +
+> +	protocol = skb_network_protocol(skb, NULL);
+> +	if (!protocol || !can_checksum_protocol(features, protocol))
+> +		return false;
+> +
+> +	/*
+> +	 * The TCP frag-list path does not carry the bounded segment
+> +	 * limit through skb_segment_list(). Keep bounded resegmentation
+> +	 * on the regular skb path until that support is added.
+> +	 */
+> +	if (skb_has_frag_list(skb))
+> +		return false;
+> +
+> +	return true;
 > +}
 > +
-
-[ ... ]
-
-> @@ -504,22 +524,16 @@ static int hns3_dbg_rx_queue_info(struct seq_file *s, void *data)
->  	struct hns3_enet_ring *ring;
->  	u32 i;
->  
-> -	if (!priv->ring) {
-> -		dev_err(&h->pdev->dev, "priv->ring is NULL\n");
-> -		return -EFAULT;
-> -	}
-> +	guard(mutex)(&priv->ae_handle->dbg_mutex);
-> +	if (hns3_dbg_is_device_busy(priv))
-> +		return -EBUSY;
-
-[ ... ]
-
-> @@ -604,9 +612,14 @@ static int hns3_dbg_queue_map(struct seq_file *s, void *data)
->  
->  	seq_puts(s, "local_queue_id  global_queue_id  vector_id\n");
->  
-> +	guard(mutex)(&priv->ae_handle->dbg_mutex);
-> +	if (hns3_dbg_is_device_busy(priv))
-> +		return -EBUSY;
-> +
->  	for (i = 0; i < h->kinfo.num_tqps; i++) {
-> -		if (!priv->ring || !priv->ring[i].tqp_vector)
-> -			continue;
-> +		if (hns3_dbg_is_device_busy(priv))
-> +			return -EBUSY;
-> +
->  		seq_printf(s, "%-16u%-17u%d\n", i,
->  			   h->ae_algo->ops->get_global_queue_id(h, i),
->  			   priv->ring[i].tqp_vector->vector_irq);
-
-[Severity: Medium]
-Is the reader/writer handshake ordered on the reinitialization side?
-
-The teardown side does what the changelog describes:
-
-hns3_reset_notify_uninit_enet()
-	test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state);
-	guard(mutex)(&handle->dbg_mutex);
-	...
-	hns3_put_ring_config(priv);	/* priv->ring = NULL */
-
-But the reinit side never takes dbg_mutex and publishes with a plain
-bitop:
-
-hns3_reset_notify_init_enet()
-	... rebuilds priv->ring, priv->tqp_vector, descriptors ...
-	set_bit(HNS3_NIC_STATE_INITED, &priv->state);
-
-hns3_reset_notify_up_enet()
-	clear_bit(HNS3_NIC_STATE_RESETTING, &priv->state);
-
-Non-returning bitops carry no memory barriers
-(Documentation/atomic_bitops.txt), and since the initializer never holds
-dbg_mutex, the reader's mutex acquisition pairs only with the teardown
-release, which stored priv->ring = NULL.  On a weakly ordered machine can
-a reader observe INITED set and RESETTING clear while still reading the
-stale priv->ring, and then dereference priv->ring[i].tqp_vector here?
-
-The "!priv->ring || !priv->ring[i].tqp_vector" test that used to absorb
-that case is being deleted in this hunk, as are the "if (!priv->ring)"
-guards in hns3_dbg_rx_queue_info(), hns3_dbg_tx_queue_info() and
-hns3_dbg_page_pool_info().  Would either keeping those NULL checks or
-having hns3_reset_notify_init_enet() publish under dbg_mutex (or with
-release/acquire semantics) close this?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index 0c088feae03ca..bae8b32ffc5b8 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-
-[ ... ]
-
-> @@ -5875,6 +5880,7 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
->  		return 0;
->  	}
->  
-> +	guard(mutex)(&handle->dbg_mutex);
->  	hns3_free_rx_cpu_rmap(netdev);
->  	hns3_nic_uninit_irq(priv);
->  	hns3_clear_all_ring(handle, true);
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-> index 9a4e29bfa1666..1e9d3e08b7ded 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-> @@ -15,6 +15,12 @@
->  #define hclge_seq_file_to_hdev(s)	\
->  		(((struct hnae3_ae_dev *)hnae3_seq_file_to_ae_dev(s))->priv)
->  
-> +static bool hclge_dbg_is_device_busy(struct hclge_dev *hdev)
+> +static unsigned int
+> +skb_gso_resegment_max_segs(struct sk_buff *skb, struct net_device *dev,
+> +			   netdev_features_t features)
 > +{
-> +	return test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) ||
-> +	       test_bit(HCLGE_STATE_RST_FAIL, &hdev->state);
+> +	unsigned int mss = skb_shinfo(skb)->gso_size;
+> +	unsigned int hdr_len, max_segs;
+> +	unsigned int gso_max_size;
+> +	struct tcphdr _tcph, *th;
+> +
+> +	gso_max_size = netif_get_gso_max_size(dev, vlan_get_protocol(skb));
+> +
+> +	if (!skb_is_gso(skb) || !skb_is_gso_tcp(skb) ||
+> +	    skb->encapsulation || mss == GSO_BY_FRAGS ||
+> +	    !skb_mac_header_was_set(skb) ||
+> +	    !skb_transport_header_was_set(skb) ||
+> +	    !skb_can_gso_resegment(skb, features))
+> +		return 0;
+
+Is this duplicating/extending skb_can_gso_resegment
+
+> +
+> +	th = skb_header_pointer(skb, skb_transport_offset(skb), sizeof(_tcph),
+> +				&_tcph);
+> +	if (!th || th->doff < sizeof(*th) / 4)
+> +		return 0;
+> +
+> +	hdr_len = skb_transport_header(skb) - skb_mac_header(skb) +
+> +		  th->doff * 4;
+> +	if (gso_max_size <= hdr_len + mss)
+> +		return 0;
+> +
+> +	/*
+> +	 * gso_within_device_limits() accepts gso_segs == gso_max_segs but
+> +	 * rejects skb->len >= gso_max_size, so only the size bound needs - 1.
+> +	 */
+> +	max_segs = (gso_max_size - hdr_len - 1) / mss;
+> +	max_segs = min_t(unsigned int, max_segs,
+> +			 READ_ONCE(dev->gso_max_segs));
+> +
+> +	return max_segs > 1 ? max_segs : 0;
 > +}
 > +
->  static const char * const hclge_mac_state_str[] = {
->  	"TO_ADD", "TO_DEL", "ACTIVE"
->  };
-> @@ -2621,6 +2627,10 @@ static int hclge_dbg_dump_umv_info(struct seq_file *s, void *data)
->  	struct hclge_vport *vport;
->  	u8 i;
+>  static int xmit_one(struct sk_buff *skb, struct net_device *dev,
+>  		    struct netdev_queue *txq, bool more)
+>  {
+> @@ -4073,6 +4152,7 @@ static struct sk_buff *validate_xmit_unreadable_skb(struct sk_buff *skb,
+>   */
+>  static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device *dev, bool *again)
+>  {
+> +	unsigned int resegment_max_segs = 0;
+>  	netdev_features_t features;
 >  
-> +	guard(mutex)(&hdev->vport[0].nic.dbg_mutex);
-> +	if (hclge_dbg_is_device_busy(hdev))
-> +		return -EBUSY;
+>  	skb = validate_xmit_unreadable_skb(skb, dev);
+> @@ -4088,10 +4168,29 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
+>  	if (unlikely(!skb))
+>  		goto out_null;
+>  
+> -	if (netif_needs_gso(skb, features)) {
+> +	/*
+> +	 * An oversized skb loses its GSO feature bits and is segmented
+> +	 * down to MSS sized skbs below.  A TCP skb can instead be split
+> +	 * into GSO skbs which do fit the device, so keep the bits and
+> +	 * bound the resegmentation.  The features computed without the
+> +	 * limit checks say whether the device offloads the GSO type at
+> +	 * all.
+> +	 */
+> +	if (skb_is_gso(skb) && skb_is_gso_tcp(skb) && !skb->encapsulation &&
+> +	    !gso_within_device_limits(skb, dev)) {
+> +		netdev_features_t offload = __netif_skb_features(skb, false);
+> +
+> +		resegment_max_segs =
+> +			skb_gso_resegment_max_segs(skb, dev, offload);
+> +		if (resegment_max_segs)
+> +			features = offload;
+> +	}
 > +
 
-[Severity: High]
-Does this mutex exclude anything on the PF side?
+This is a lot to put in the hot path for a rare use case. Consider how
+to make this less expensive.
 
-Grepping the driver for dbg_mutex after this patch gives:
-
-  hnae3.h:1
-  hns3_debugfs.c:6
-  hns3_enet.c:6
-  hns3_ethtool.c:1
-  hns3pf/hclge_debugfs.c:2
-
-hclge_main.c has no matches, so no writer of the state these two
-callbacks read ever takes dbg_mutex:
-
-hclge_reset_service_task()
-	down(&hdev->reset_sem);
-	set_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
-	hclge_reset_subtask(hdev);
-	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
-
-and hclge_reset_err_handle() sets HCLGE_STATE_RST_FAIL the same way.  The
-only reset-side acquisition is hns3_reset_notify_uninit_enet(), which
-covers priv->ring and priv->tqp_vector, not the UMV counters or the
-per-function VLAN offload registers read here.
-
-So isn't hclge_dbg_is_device_busy() here exactly the check-then-use
-window the changelog says the mutex removes?  A reader admitted before
-RST_HANDLING is set keeps issuing cmdq queries across the reset boundary
-and prints values sampled from both sides of it.
-
-Two follow-on questions:
-
-Does the comment on the new struct member, "protect debugfs against
-reset/unload", hold for hclge state given the above?
-
-Does taking dbg_mutex and then hdev->vport_lock here create a new lock
-order that the writer side is not aware of?
-
-> @@ -2831,6 +2841,10 @@ static int hclge_dbg_dump_vlan_offload_config(struct hclge_dev *hdev,
->  	int ret;
->  	u8 i;
+> +	if (resegment_max_segs || netif_needs_gso(skb, features)) {
+>  		struct sk_buff *segs;
 >  
-> +	guard(mutex)(&hdev->vport[0].nic.dbg_mutex);
-> +	if (hclge_dbg_is_device_busy(hdev))
-> +		return -EBUSY;
-> +
+> -		segs = skb_gso_segment(skb, features);
+> +		segs = __skb_gso_segment(skb, features, true,
+> +					 resegment_max_segs);
+>  		if (IS_ERR(segs)) {
+>  			goto out_kfree_skb;
+>  		} else if (segs) {
+> -- 
+> 2.47.3
+> 
 
-[Severity: Medium]
-Should the gate be in the show callback instead of in this helper?
 
-Both halves of the single vlan_config file run from one callback:
-
-hclge_dbg_dump_vlan_config()
-	ret = hclge_dbg_dump_vlan_filter_config(hdev, s);
-	if (ret)
-		return ret;
-
-	return hclge_dbg_dump_vlan_offload_config(hdev, s);
-
-hclge_dbg_dump_vlan_filter_config() issues
-hclge_get_vlan_filter_state() and
-hclge_get_port_vlan_filter_bypass_state() for every function and emits
-its section with no mutex and no state check, so reading vlan_config
-during a reset still runs that half against the resetting device and only
-then returns -EBUSY from the second half.  Since seq_read_iter() resets
-m->count to the record offset on a negative show() return, the output the
-first half produced is discarded and the read fails anyway.
-
-Also, unlike the enet readers, this loop holds dbg_mutex across
-2 * (pci_num_vf() + 1) synchronous firmware commands with no
-per-iteration busy re-check.  Given that the reset path reaches
-guard(mutex)(&handle->dbg_mutex) via
-
-  hclge_reset_rebuild() -> rtnl_lock() -> hclge_reset_stack() ->
-  hclge_notify_client(HNAE3_UNINIT_CLIENT) ->
-  hns3_reset_notify_uninit_enet()
-
-can a PF debugfs reader stall the reset, and rtnl_lock with it, for the
-duration of the dump?  The changelog says the per-iteration check keeps
-reset latency bounded, which does not appear to apply to these two PF
-callbacks.
-
->  	seq_puts(s, "FUNC_ID  PVID  ACCEPT_TAG1  ACCEPT_TAG2 ACCEPT_UNTAG1  ");
->  	seq_puts(s, "ACCEPT_UNTAG2  INSERT_TAG1  INSERT_TAG2  SHIFT_TAG  ");
->  	seq_puts(s, "STRIP_TAG1  STRIP_TAG2  DROP_TAG1  DROP_TAG2  ");
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915132434.1141742-1-shaojijie%40huawei.com
