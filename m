@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2F823A564;
-	Sat, 19 Sep 2026 07:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4213812DE;
+	Sat, 19 Sep 2026 07:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789801646; cv=none; b=IGZSh/ND+GUU4o8YBkoZEaeTqWgcAkj5F0Dx8/+djiydoHZHrbs0zzZMslSM8iDTlue1Agd2JFFh+T6j2JVUBNRTH1eRVThe1EF9u/FjdgcoacEiid0oiFkglsS/N+i9whb0lPYgkO2cBEDnoxhx7CJL3ZEKkxhtdW3z0KcOdwE=
+	t=1789801650; cv=none; b=q04AJJbR5S+h2qBhdzcSxcDUm0ysVRfL2E06KKPth8B50dWZ9u27AOVq0BYb59CCudoTNrT1zfU8WF2u1iY8jC5ro8h7RiCTOrJXZG6r/yyPNZtdATc8q/FcfTrCIkcQ2VpKFgSh1+2V/SjZi3WAFEpI50exLvTSXBgWdnhftKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789801646; c=relaxed/simple;
-	bh=UuAiziJQ7jUR9Hs4MfZ2fDx01IZDG0HMPDzgeBCK8jo=;
+	s=arc-20240116; t=1789801650; c=relaxed/simple;
+	bh=8Vp2ZJCcLCwpL0RKsgNVkhqpqvwmGPcXlA49NlnMDsA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oW1x6YIthXdb6rUFmL85fODxDawh90abmyai2zxiGyGEfGm/ePeKCB3dRUyoFw7SkTV9nY7oLKUrmob8x9lYXj6JRr+xArHHNyitxftLul/r1qOQVDrfI0P5qdsL796usmfoI7q9pIrXMhygl1Kufki4YpVsUD/rGqqw1IUIqEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbbIolUW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=sTAxi3UKWc81fk5ReJ6RTyL3oRpGdEDzoW6gpdC8Wll6ybg8EZnMTKaS1dlz4ZfsAhePTMIXJenNeGj4/YIKRDexB0A9Vc34BOl1PNhPSIEgi4zuhLjASFqQIKj1KXBueqtlMjswWpFHWfaniOPpx0kwWFIoSjoAtxeEMAf6OJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2W3USAE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbbIolUW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3521F000FF;
-	Sat, 19 Sep 2026 07:07:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2W3USAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714761F00898;
+	Sat, 19 Sep 2026 07:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789801643;
-	bh=fg9pzTRQqTxGPeP+l+DNgdI7aLXlmCXgMH31d30VGAw=;
+	s=k20260515; t=1789801645;
+	bh=h5inKVcc7b2yeVLU9GhFHj0zEGu8yv3b/rV1ccxh99g=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gbbIolUWpEI055o3LOXb9tXISz5bNot5E1nCK2SHCPtNwqyhp5ycV5K57c43JtxF7
-	 weQwoC0JdEUsHA4j8kZBtZDwp35YRquJ3O/MyjI6/ILGL4+SrBXZ2uEKunC0/o6sWQ
-	 CASFDh0smW2wbLdqdaxzVdO05HViTqLE9w0ADA3Ou2keOG6U4YZk03NyVacm/JlT1K
-	 2OUn8xfRGnerSrqokV/szGJ7MqNTbLS1O0pzTRBRRWzMhvnMdRzADfHPM7Svsk5Uue
-	 98n96/UdRiiOsVuPt/9DGv5mFNBMes5rAcDftwFbexwF/AFBBH/Swt9TaA+AJEJsXo
-	 jT+b+38h66Mkg==
-Subject: Re: [PATCH net-next v8 1/2] net: ti: icssg-prueth: Add Frame
- Preemption MAC Merge support
+	b=B2W3USAElpJzjKGZmI4irdLNQPSPe3AeT2/imu2tzSBkvgCicLNc2DXHv9dok0edn
+	 zXM9i2Kh7pXLIz9305Zzt+Vj3szGWNHdLON3WUXImsknGLqxAXo6drYZ84LeG38mZw
+	 MjWFm1B1Z3rh0a47eb29mK4ghea6CicGy6BI92uUihC2cRrAZgY1Gff3yQBg9aq0EU
+	 cJKo1UwKszDE2eG3KkdNrh9lOJgGz0fatCv1tWAGwdlch/LA1eMdRVP5r/pP6HWOdu
+	 j0yx4AVpT0LnTgSVGziryuTyPNMdVpMcq/0zv2/tToSEX0Z6MycDWaHoX2UuYB6CFX
+	 Y0Xyh1NQRULEA==
+Subject: Re: [PATCH net-next v8 2/2] net: ti: icssg-prueth: Add ethtool ops
+ for Frame Preemption MAC Merge
 From: netdev-bot+sashiko@kernel.org
 To: m-malladi@ti.com
 Cc: elfring@users.sourceforge.net, philippe.schenker@impulsing.ch,
@@ -38,11 +38,11 @@ Cc: elfring@users.sourceforge.net, philippe.schenker@impulsing.ch,
  davem@davemloft.net, andrew+netdev@lunn.ch,
  linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, srk@ti.com
-Date: Sat, 19 Sep 2026 07:07:22 +0000
-Message-ID: <178980164223.22033.3811733445292602987@kernel.org>
-In-Reply-To: <20260915063052.2274986-2-m-malladi@ti.com>
-References: <20260915063052.2274986-2-m-malladi@ti.com>
-X-sashiko-severity: Medium
+Date: Sat, 19 Sep 2026 07:07:24 +0000
+Message-ID: <178980164403.22033.14823088508390223417@kernel.org>
+In-Reply-To: <20260915063052.2274986-3-m-malladi@ti.com>
+References: <20260915063052.2274986-3-m-malladi@ti.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,383 +52,450 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 2
+Critical: 0 · High: 1 · Medium: 3 (1) · Low: 2
 
-- [Medium] emac_tc_setup_mqprio() commits all software state (netdev TC
-  mapping via netdev_set_num_tc()/netdev_set_tc_queue(),…
-- [Medium] icssg_iet_set_preempt_mask() builds EXPRESS_PRE_EMPTIVE_Q_MASK
-  (0x0029) from scratch (`int prempt_mask = 0`) and only ORs in BIT(i)…
-- [Medium] icssg_config_ietfpe() and icssg_qos_link_state_update() gate
-  all FPE work on a single lockless READ_ONCE(emac->link) check, but…
-- [Low] Concern (validated as a FALSE POSITIVE for the series): the FPE
-  enable path added in icssg_qos.c (icssg_config_ietfpe() enable branch,…
-- [Low] Unbalanced mutex lifecycle across the two ICSSG drivers:
-  mutex_init(&emac->qos.iet.fpe_lock) is performed only by…
+- [High] emac_set_mm()
+  (drivers/net/ethernet/ti/icssg/icssg_ethtool.c:378-386) restores all…
+- [Medium] emac_set_mm() stores cfg->tx_min_frag_size verbatim
+  (icssg_ethtool.c:374) and icssg_config_ietfpe() programs…
+- [Medium] The commit message justifies the emac_get_stat_by_name()
+  signature change as preventing "invalid stat lookups from corrupting…
+- [Medium] iet->verify_status is never initialized to
+  ICSSG_IETFPE_STATE_DISABLED.
+- [Low] The patch inverts the header dependency to make the stat counts
+  ARRAY_SIZE()-derived: icssg_stats.h drops its `#include…
+- [Low] The shared teardown helper prueth_netdev_exit()
+  (icssg_common.c:1757) unconditionally calls…
+
+Pre-existing issues:
+- [Medium] emac->stats[]/emac->pa_stats[] are 64-bit accumulators written
+  by icssg_stats_work_handler() -> emac_update_hardware_stats() under…
 
 --
 
-net: ti: icssg-prueth: Add Frame Preemption MAC Merge support
+net: ti: icssg-prueth: Add ethtool ops for Frame Preemption MAC Merge
 
-This adds a QoS submodule to the ICSSG driver that programs IET Frame
-Preemption in firmware, tracks the MAC Merge verify state machine, and
-maps mqprio traffic classes to express/preemptible queues.  FPE state is
-re-driven on link up/down and serialized with a new per-port fpe_lock.
+Adds .get_mm(), .set_mm() and .get_mm_stats() to the icssg ethtool ops,
+along with new PA stats registers for the preemption counters. Also
+changes emac_get_stat_by_name() to return u64 and 0 instead of -EINVAL,
+and moves the stat table sizes to ARRAY_SIZE().
 
-A few questions about the new code below.
+No Link: tags present in the commit header.
 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
-> index 4a7d1a6f470b1..d59eef61e7012 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_common.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
-> @@ -1754,6 +1754,7 @@ void prueth_netdev_exit(struct prueth *prueth,
->  
->  	netif_napi_del(&emac->napi_rx);
->  
-> +	mutex_destroy(&emac->qos.iet.fpe_lock);
+A few questions on the new code below.
 
-[Severity: Low]
-prueth_netdev_exit() is shared by both ICSSG drivers, but the matching
-mutex_init() only happens in icssg_qos_init(), which is called from
-prueth_netdev_init() in icssg_prueth.c.
-
-icssg_prueth_sr1.c has its own static prueth_netdev_init() that never
-calls icssg_qos_init(), yet it reaches this teardown from both its probe
-unwind path and prueth_remove().  Does that mean every SR1 emac has its
-fpe_lock destroyed without ever being initialized?
-
-Since alloc_etherdev_mq() zeroes the private area, mutex_destroy() only
-sees owner == 0 today (and it is an empty inline without
-CONFIG_DEBUG_MUTEXES), so nothing warns.  Would it be cleaner to
-initialize the lock in the same layer that destroys it, so that any
-future shared code in icssg_common.c taking fpe_lock does not end up
-locking an uninitialized mutex on SR1?
-
->  	pruss_release_mem_region(prueth->pruss, &emac->dram);
->  	free_netdev(emac->ndev);
->  	prueth->emac[mac] = NULL;
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_ethtool.c b/drivers/net/ethernet/ti/icssg/icssg_ethtool.c
+> index b715af21d23ac..dc25361afe989 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_ethtool.c
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_ethtool.c
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> index 591be5c8056b4..283be27a240e9 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> @@ -357,11 +357,11 @@ static void emac_adjust_link(struct net_device *ndev)
->  		}
->  		if (!emac->link) {
->  			new_state = true;
-> -			emac->link = 1;
-> +			WRITE_ONCE(emac->link, 1);
->  		}
->  	} else if (emac->link) {
->  		new_state = true;
-> -		emac->link = 0;
-> +		WRITE_ONCE(emac->link, 0);
+> @@ -114,7 +116,8 @@ static void emac_get_ethtool_stats(struct net_device *ndev,
 >  
->  		/* f/w should support 100 & 1000 */
->  		emac->speed = SPEED_1000;
-> @@ -392,6 +392,8 @@ static void emac_adjust_link(struct net_device *ndev)
->  		} else {
->  			icssg_set_port_state(emac, ICSSG_EMAC_PORT_DISABLE);
->  		}
-> +
-> +		icssg_qos_link_state_update(ndev);
->  	}
+>  	if (emac->prueth->pa_stats)
+>  		for (i = 0; i < ARRAY_SIZE(icssg_all_pa_stats); i++)
+> -			*(data++) = emac->pa_stats[i];
+> +			if (!icssg_all_pa_stats[i].standard_stats)
+> +				*(data++) = emac->pa_stats[i];
+>  }
 
 [Severity: Medium]
-emac->link is written here from the phylib state machine under
-phydev->lock only, while the FPE path gates on it with a single lockless
-read in icssg_config_ietfpe():
+This is a pre-existing issue and not introduced by this patch, but the
+new emac_get_mm_stats() added further down takes prueth->stats_lock for
+the pa_stats[] reads and documents why, while emac_get_ethtool_stats()
+here, icssg_ndo_get_stats64() and emac_get_rmon_stats() read the same
+accumulators with no lock held (emac_update_hardware_stats() has already
+dropped it by then).
 
-	if (!READ_ONCE(emac->link)) {
-		netdev_dbg(ndev, "cannot change IET/FPE state when interface is down\n");
-		return 0;
-	}
+The writer accumulates under the lock:
 
-Can the link drop while icssg_config_ietfpe() is mid-transaction?
-
-CPU0 (tc mqprio or ethtool) holds fpe_lock, observes link == 1, writes
-PRE_EMPTION_ENABLE_TX = 1 and PRE_EMPTION_ENABLE_VERIFY = 1, sends
-ICSSG_EMAC_PORT_PREMPT_TX_ENABLE and then sleeps in
-icssg_iet_verify_wait() for up to ICSSG_IET_VERIFY_ATTEMPTS *
-verify_time_ms (384 ms at the default of 128).
-
-CPU1 (phylib work) runs emac_adjust_link():
-
-	WRITE_ONCE(emac->link, 0);
+drivers/net/ethernet/ti/icssg/icssg_stats.c:emac_update_hardware_stats() {
+	spin_lock(&prueth->stats_lock);
 	...
-	icssg_set_port_state(emac, ICSSG_EMAC_PORT_DISABLE);
-	icssg_qos_link_state_update(ndev);	/* blocks on fpe_lock */
-
-so CPU0 keeps enabling FPE on a port that firmware has already disabled,
-and if PRE_EMPTION_ACTIVE_TX still reads 1 it sets fpe_active = true.
-
-When CPU1 finally takes fpe_lock, icssg_qos_link_state_update() only
-clears fpe_active and verify_status and resets the queue maps.  Should it
-also clear PRE_EMPTION_ENABLE_TX and PRE_EMPTION_ENABLE_VERIFY, so the
-firmware configuration and the driver's view do not diverge?
-
-Also, prueth_emac_common_start() still contains a plain
-
-	emac->link = 0;
-
-store outside both phydev->lock and fpe_lock, so the annotations added
-here do not cover every writer.  Was that store meant to be converted
-too?
-
->  
->  	if (emac->link) {
-
-[ ... ]
-
-> @@ -1686,6 +1689,8 @@ static int prueth_netdev_init(struct prueth *prueth,
->  
->  	INIT_DELAYED_WORK(&emac->stats_work, icssg_stats_work_handler);
->  
-> +	icssg_qos_init(ndev);
-> +
->  	ret = pruss_request_mem_region(prueth->pruss,
->  				       port == PRUETH_PORT_MII0 ?
->  				       PRUSS_MEM_DRAM0 : PRUSS_MEM_DRAM1,
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_qos.c b/drivers/net/ethernet/ti/icssg/icssg_qos.c
-> new file mode 100644
-> index 0000000000000..27a953d981538
-> --- /dev/null
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_qos.c
-> @@ -0,0 +1,305 @@
-
-[ ... ]
-
-> +static void icssg_iet_set_preempt_mask(struct prueth_emac *emac)
-> +{
-> +	void __iomem *config = emac->dram.va + ICSSG_CONFIG_OFFSET;
-> +	struct prueth_qos_mqprio *p_mqprio = &emac->qos.mqprio;
-> +	struct tc_mqprio_qopt *qopt = &p_mqprio->qopt;
-> +	struct prueth_qos_iet *iet = &emac->qos.iet;
-> +	int prempt_mask = 0, i;
-> +	u8 tc, num_tc;
-> +
-> +	if (!iet->preemptible_tcs)
-> +		goto reset_hw;
-> +
-> +	if (iet->fpe_active) {
-> +		/* Reset all Q_MAP entries first to clear any stale preemptible
-> +		 * entries from a prior wider TC mapping.
-> +		 */
-> +		for (i = 0; i < ICSSG_MAX_TC_QUEUES; i++)
-> +			writeb(0, config + EXPRESS_PRE_EMPTIVE_Q_MAP + i);
-> +
-> +		/* Configure queues for user requested preemptible tc map */
-> +		num_tc = p_mqprio->qopt.num_tc;
-> +		for (tc = 0; tc < num_tc; tc++) {
-> +			/* check if the tc is preemptive or not */
-> +			if (iet->preemptible_tcs & BIT(tc)) {
-> +				/* Set the queues as preemptive queues */
-> +				for (i = qopt->offset[tc]; i < qopt->offset[tc] + qopt->count[tc]; i++) {
-> +					writeb(BIT(4),
-> +					       config + EXPRESS_PRE_EMPTIVE_Q_MAP + i);
-> +				}
-> +			} else {
-> +				/* Accumulate express queue bits for the mask */
-> +				for (i = qopt->offset[tc]; i < qopt->offset[tc] + qopt->count[tc]; i++)
-> +					prempt_mask |= BIT(i);
-> +			}
-> +		}
-> +		writeb(prempt_mask, config + EXPRESS_PRE_EMPTIVE_Q_MASK);
-
-[Severity: Medium]
-prempt_mask starts at zero and only accumulates queues belonging to
-non-preemptible traffic classes, but this writeb() replaces the whole
-eight-bit queue mask.  Are the queues that no traffic class maps to
-handled correctly here?
-
-With the default emac->tx_ch_num == 1 (real_num_tx_queues == 1) and
-preemptible_tcs == BIT(0), the sequence programmed is:
-
-	Q_MAP[0]  = BIT(4)	/* preemptible */
-	Q_MAP[1..7] = 0		/* express */
-	Q_MASK    = 0x00	/* no queue is express */
-
-The reset path a few lines below defines the opposite encoding for the
-same registers:
-
-	/* Reset to default: all queues as express */
-	for (i = 0; i < ICSSG_MAX_TC_QUEUES; i++)
-		writeb(0, config + EXPRESS_PRE_EMPTIVE_Q_MAP + i);
-	writeb(ICSSG_EXPRESS_Q_MASK_ALL, config + EXPRESS_PRE_EMPTIVE_Q_MASK);
-
-so Q_MAP == 0 together with Q_MASK == 0xFF means express, while the
-active path leaves those same entries at Q_MAP == 0 with their Q_MASK bit
-cleared.  Should the bits for queues outside the mqprio map stay set?
-
-Gaps below real_num_tx_queues are reachable as well.
-mqprio_validate_queue_counts() in net/sched/sch_mqprio_lib.c only
-requires counts to be non-zero, within real_num_tx_queues and
-non-overlapping:
-
-	if (qopt->offset[i] >= dev->real_num_tx_queues ||
-	    last > dev->real_num_tx_queues) {
-
-It does not require the map to start at queue 0 or to be contiguous.
-Queues used outside the TC map (QUEUE_NUM_UNTAGGED,
-SPL_PKT_DEFAULT_PRIORITY, and the XDP/XSK path which picks
-cpu % emac->tx_ch_num) are the ones that end up with a Q_MAP and Q_MASK
-that disagree.
-
-> +		return;
-> +	}
-> +
-> +reset_hw:
-> +	/* Reset to default: all queues as express */
-> +	for (i = 0; i < ICSSG_MAX_TC_QUEUES; i++)
-> +		writeb(0, config + EXPRESS_PRE_EMPTIVE_Q_MAP + i);
-> +	writeb(ICSSG_EXPRESS_Q_MASK_ALL, config + EXPRESS_PRE_EMPTIVE_Q_MASK);
-> +}
-
-[ ... ]
-
-> +void icssg_qos_init(struct net_device *ndev)
-> +{
-> +	struct prueth_emac *emac = netdev_priv(ndev);
-> +	struct prueth_qos_iet *iet = &emac->qos.iet;
-> +
-> +	mutex_init(&iet->fpe_lock);
-> +	/* Set default values to prevent garbage values during .get_mm() */
-
-[Severity: Low]
-This isn't a bug, but this comment (and the similar one in
-icssg_qos_link_state_update()) refers to .get_mm(), which is only added
-to icssg_ethtool_ops by the following patch in the series.
-
-Within this patch alone nothing writes iet->fpe_enabled or
-iet->mac_verify_configure, and mqprio_parse_tc_entries() rejects
-TC_FP_PREEMPTIBLE while ethtool_dev_mm_supported() is false, so the
-enable side of icssg_config_ietfpe() is not yet reachable.
-
-Could the changelog mention that the MAC Merge uAPI arrives in the next
-patch, so the forward reference in these comments is not confusing on its
-own?
-
-> +	iet->verify_time_ms = ICSSG_IET_MAX_VERIFY_TIME;
-> +	iet->tx_min_frag_size = ETH_ZLEN;
-> +}
-> +EXPORT_SYMBOL_GPL(icssg_qos_init);
-> +
-> +static int icssg_iet_change_preemptible_tcs(struct prueth_emac *emac)
-> +{
-> +	struct prueth_qos_iet *iet = &emac->qos.iet;
-> +	int ret;
-> +
-> +	mutex_lock(&iet->fpe_lock);
-> +	if (!iet->fpe_enabled && !iet->preemptible_tcs) {
-> +		mutex_unlock(&iet->fpe_lock);
-> +		return 0;
-> +	}
-> +	ret = icssg_config_ietfpe(emac->ndev, iet->fpe_enabled);
-> +	mutex_unlock(&iet->fpe_lock);
-> +
-> +	return ret;
-> +}
-
-[ ... ]
-
-> +static int emac_tc_setup_mqprio(struct net_device *ndev, void *type_data)
-> +{
-
-[ ... ]
-
-> +	if (!qopt->num_tc) {
-> +		netdev_reset_tc(ndev);
-> +	} else {
-> +		netdev_set_num_tc(ndev, qopt->num_tc);
-> +
-> +		for (tc = 0; tc < qopt->num_tc; tc++) {
-> +			count = qopt->count[tc];
-> +			offset = qopt->offset[tc];
-> +			netdev_set_tc_queue(ndev, tc, count, offset);
-> +		}
-> +	}
-> +
-> +	mutex_lock(&iet->fpe_lock);
-> +	if (!qopt->num_tc) {
-> +		iet->preemptible_tcs = 0;
-> +	} else {
-> +		memcpy(&p_mqprio->qopt, qopt, sizeof(*qopt));
-> +		iet->preemptible_tcs = mqprio->preemptible_tcs;
-> +	}
-> +	mutex_unlock(&iet->fpe_lock);
-> +
-> +	netdev_dbg(ndev, "dev->num_tc %u dev->real_num_tx_queues %u\n",
-> +		   ndev->num_tc, ndev->real_num_tx_queues);
-> +
-> +	return icssg_iet_change_preemptible_tcs(emac);
-
-[Severity: Medium]
-By the time this runs, the netdev TC mapping, p_mqprio->qopt and
-iet->preemptible_tcs have all been committed, and a failure is returned
-straight to mqprio_init() with no rollback.
-
-icssg_config_ietfpe() can genuinely fail:
-
-  - icssg_set_port_state() returns -ETIMEDOUT when the firmware R30
-    command is not acknowledged within the read_poll_timeout() window
-  - the function returns -EIO when PRE_EMPTION_ACTIVE_TX != 1, or when
-    icssg_iet_verify_wait() reports ICSSG_IETFPE_STATE_FAILED or times
-    out
-
-On that failure path mqprio_init() aborts, and since priv->hw_offload was
-never set, mqprio_destroy() takes the non-offload branch:
-
-net/sched/sch_mqprio.c:mqprio_destroy() {
-	if (priv->hw_offload && dev->netdev_ops->ndo_setup_tc)
-		mqprio_disable_offload(sch);
-	else
-		netdev_set_num_tc(dev, 0);
+		emac->stats[i] += val;
+	...
+			emac->pa_stats[i] += val;
+	...
+	spin_unlock(&prueth->stats_lock);
 }
 
-so the driver is never called back.  Does emac->qos.iet.preemptible_tcs
-and emac->qos.mqprio.qopt then describe a qdisc that does not exist?
+and icssg_stats_work_handler() runs that from system_long_wq on another
+CPU. Can ethtool -S or ip -s link observe a torn u64 on 32-bit ARM, or a
+multi-term sum such as the rx_dropped accumulation in
+icssg_ndo_get_stats64() built from two different update generations?
 
-If so, icssg_qos_link_state_update() -> icssg_iet_change_preemptible_tcs()
-will re-apply that state on every subsequent link-up, using offsets and
-counts that were validated against a real_num_tx_queues value which may
-have changed since (ethtool -L).  Should the software state be rolled
-back when the firmware configuration fails?
+Would it make sense to give these readers the same one-line treatment as
+emac_get_mm_stats(), or to convert the accumulators to u64_stats_t?
 
-> +}
-
-[ ... ]
-
-> +void icssg_qos_link_state_update(struct net_device *ndev)
+> @@ -294,6 +297,126 @@ static int emac_set_per_queue_coalesce(struct net_device *ndev, u32 queue,
+>  	return 0;
+>  }
+>  
+> +static int emac_get_mm(struct net_device *ndev, struct ethtool_mm_state *state)
 > +{
 > +	struct prueth_emac *emac = netdev_priv(ndev);
 > +	struct prueth_qos_iet *iet = &emac->qos.iet;
-> +	int ret;
+> +	enum icssg_ietfpe_verify_states verify_status;
 > +
-> +	if (!READ_ONCE(emac->link)) {
-> +		/* Clear FPE active state on link-down so get_mm() reports
-> +		 * accurate tx_active and verify_status while link is down.
-> +		 */
-> +		mutex_lock(&iet->fpe_lock);
-> +		iet->fpe_active = false;
-> +		iet->verify_status = ICSSG_IETFPE_STATE_DISABLED;
-> +		icssg_iet_set_preempt_mask(emac);
-> +		mutex_unlock(&iet->fpe_lock);
-> +		return;
+> +	if (emac->is_sr1)
+> +		return -EOPNOTSUPP;
+
+[Severity: Low]
+This asymmetry comes from the earlier patch in the series, "net: ti:
+icssg-prueth: Add Frame Preemption MAC Merge support", rather than from
+this one, but fpe_lock is initialized only by icssg_qos_init(), whose
+sole caller is the SR2 prueth_netdev_init(). The SR1 prueth_netdev_init()
+in icssg_prueth_sr1.c never calls it, yet both teardown paths land in the
+shared helper:
+
+drivers/net/ethernet/ti/icssg/icssg_common.c:prueth_netdev_exit() {
+	mutex_destroy(&emac->qos.iet.fpe_lock);
+	pruss_release_mem_region(prueth->pruss, &emac->dram);
+	free_netdev(emac->ndev);
+}
+
+Nothing observable happens, since mutex_destroy() on a zeroed, never
+locked mutex only does DEBUG_LOCKS_WARN_ON(mutex_is_locked(lock)) and
+clears magic, and SR1 never takes fpe_lock because the three new ops all
+return early on emac->is_sr1.
+
+Would it be cleaner to pair the two, either by calling icssg_qos_init()
+from the SR1 netdev init or by skipping the destroy when emac->is_sr1?
+
+> +
+> +	mutex_lock(&iet->fpe_lock);
+> +	state->tx_enabled = iet->fpe_enabled;
+> +	state->tx_min_frag_size = iet->tx_min_frag_size;
+> +	state->verify_enabled = iet->mac_verify_configure;
+> +	state->verify_time = iet->verify_time_ms;
+> +	state->tx_active = iet->fpe_active;
+> +	verify_status = iet->verify_status;
+> +	mutex_unlock(&iet->fpe_lock);
+> +
+> +	state->rx_min_frag_size = ETH_ZLEN;
+> +	state->pmac_enabled = true;
+> +
+> +	switch (verify_status) {
+
+[ ... ]
+
+> +	default:
+> +		state->verify_status = ETHTOOL_MM_VERIFY_STATUS_UNKNOWN;
+> +		break;
+> +	}
+
+[Severity: Medium]
+Is iet->verify_status ever given an initial value? icssg_qos_init() seeds
+the other fields this function reads, but not this one:
+
+drivers/net/ethernet/ti/icssg/icssg_qos.c:icssg_qos_init() {
+	mutex_init(&iet->fpe_lock);
+	/* Set default values to prevent garbage values during .get_mm() */
+	iet->verify_time_ms = ICSSG_IET_MAX_VERIFY_TIME;
+	iet->tx_min_frag_size = ETH_ZLEN;
+}
+
+so it stays at the zero value ICSSG_IETFPE_STATE_UNKNOWN from the
+zero-filled netdev private area. It is only assigned in
+icssg_config_ietfpe()/icssg_iet_verify_wait() and in the link-down branch
+of icssg_qos_link_state_update(), and simply bringing a fresh interface up
+returns before any of them:
+
+icssg_iet_change_preemptible_tcs() {
+	if (!iet->fpe_enabled && !iet->preemptible_tcs) {
+		mutex_unlock(&iet->fpe_lock);
+		return 0;
+	}
+}
+
+Does ethtool --show-mm on a freshly probed interface then report
+verify-status UNKNOWN together with verify-enabled off, where other MM
+implementations report DISABLED?
+
+> +
+> +	/* 802.3-2018 clause 30.14.1.6, says that the aMACMergeVerifyTime
+> +	 * variable has a range between 1 and 128 ms inclusive. Limit to that.
+> +	 */
+> +	state->max_verify_time = ETHTOOL_MM_MAX_VERIFY_TIME_MS;
+> +
+> +	return 0;
+> +}
+> +
+> +static int emac_set_mm(struct net_device *ndev, struct ethtool_mm_cfg *cfg,
+> +		       struct netlink_ext_ack *extack)
+> +{
+> +	struct prueth_emac *emac = netdev_priv(ndev);
+> +	struct prueth_qos_iet *iet = &emac->qos.iet;
+> +	u32 old_verify_time_ms, old_tx_min_frag_size;
+> +	bool old_fpe_enabled, old_mac_verify_configure;
+> +	int err;
+> +
+> +	if (emac->is_sr1)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (!cfg->pmac_enabled) {
+> +		NL_SET_ERR_MSG_MOD(extack, "preemptible MAC is always enabled");
+> +		return -EOPNOTSUPP;
 > +	}
 > +
-> +	ret = icssg_iet_change_preemptible_tcs(emac);
-> +	if (ret)
-> +		netdev_dbg(ndev, "IET FPE %s failed\n",
-> +			   str_enable_disable(iet->fpe_enabled));
+> +	mutex_lock(&iet->fpe_lock);
+> +	old_verify_time_ms = iet->verify_time_ms;
+> +	old_tx_min_frag_size = iet->tx_min_frag_size;
+> +	old_fpe_enabled = iet->fpe_enabled;
+> +	old_mac_verify_configure = iet->mac_verify_configure;
+> +
+> +	iet->verify_time_ms = cfg->verify_time;
+> +	iet->tx_min_frag_size = cfg->tx_min_frag_size;
+
+[Severity: Medium]
+Should cfg->tx_min_frag_size be run through
+ethtool_mm_frag_size_min_to_add() before being stored? The netlink policy
+only range checks it:
+
+net/ethtool/mm.c:
+	[ETHTOOL_A_MM_TX_MIN_FRAG_SIZE]	= NLA_POLICY_RANGE(NLA_U32, 60, 252),
+
+so a value like 61 reaches the driver, icssg_config_ietfpe() writes
+tx_min_frag_size + ETH_FCS_LEN, i.e. 65 octets, into
+PRE_EMPTION_ADD_FRAG_SIZE_LOCAL, and get_mm() echoes 61 back as the
+effective setting with no extack error.
+
+The sibling TI driver validates the same field:
+
+drivers/net/ethernet/ti/am65-cpsw-ethtool.c:am65_cpsw_set_mm() {
+	err = ethtool_mm_frag_size_min_to_add(cfg->tx_min_frag_size,
+					      &add_frag_size, extack);
+	if (err)
+		return err;
+}
+
+whose kernel-doc states only the addFragSize-representable values
+60/124/188/252 are accepted.
+
+The commit message also says:
+
+    The minimum size of non-final mPacket fragments supported by the
+    firmware without leading errors is 64 Bytes (including FCS).
+
+Should sizes the firmware cannot honour be rejected with an extack
+message rather than silently programmed?
+
+> +	iet->fpe_enabled = cfg->tx_enabled;
+> +	iet->mac_verify_configure = cfg->verify_enabled;
+> +	err = icssg_config_ietfpe(ndev, cfg->tx_enabled);
+> +	if (err) {
+> +		/* icssg_config_ietfpe's fallback path already cleared fpe_active.
+> +		 * Restore all config fields so get_mm() reports the configuration
+> +		 * that is actually reflected in hardware.
+> +		 */
+> +		iet->verify_time_ms = old_verify_time_ms;
+> +		iet->tx_min_frag_size = old_tx_min_frag_size;
+> +		iet->fpe_enabled = old_fpe_enabled;
+> +		iet->mac_verify_configure = old_mac_verify_configure;
+> +	}
+
+[Severity: High]
+Does this restore really leave get_mm() reporting the configuration that
+is in hardware?
+
+icssg_config_ietfpe() programs the new fragment size before any failure
+point:
+
+drivers/net/ethernet/ti/icssg/icssg_qos.c:icssg_config_ietfpe() {
+	writeb(enable ? 1 : 0, config + PRE_EMPTION_ENABLE_TX);
+	writew(iet->tx_min_frag_size + ETH_FCS_LEN,
+	       config + PRE_EMPTION_ADD_FRAG_SIZE_LOCAL);
+	...
+}
+
+and neither error exit puts that register back:
+
+disable_tx:
+	icssg_set_port_state(emac, ICSSG_EMAC_PORT_PREMPT_TX_DISABLE);
+fallback:
+	writeb(0, config + PRE_EMPTION_ENABLE_TX);
+	writeb(0, config + PRE_EMPTION_ENABLE_VERIFY);
+	iet->verify_status = ICSSG_IETFPE_STATE_DISABLED;
+	iet->fpe_active = false;
+	icssg_iet_set_preempt_mask(emac);
+	return ret;
+
+So after a failed set_mm, PRE_EMPTION_ADD_FRAG_SIZE_LOCAL keeps the
+rejected size while get_mm() reports old_tx_min_frag_size, and TX
+preemption has been switched off in hardware while iet->fpe_enabled is
+republished as true whenever FPE was previously running.
+
+Can that also turn an identical retry into a silent no-op? ethnl_set_mm()
+seeds cfg from get_mm() and skips the driver when nothing changed:
+
+net/ethtool/mm.c:ethnl_set_mm() {
+	ret = dev->ethtool_ops->get_mm(dev, &state);
+	...
+	mm_state_to_cfg(&state, &cfg);
+	...
+	if (!mod)
+		return 0;
+}
+
+so re-running ethtool --set-mm <dev> tx-enabled on returns success with
+PRE_EMPTION_ENABLE_TX still 0.
+
+And can the restored fpe_enabled == true be consumed later without any
+user request, on the next link event?
+
+drivers/net/ethernet/ti/icssg/icssg_qos.c:icssg_iet_change_preemptible_tcs() {
+	mutex_lock(&iet->fpe_lock);
+	if (!iet->fpe_enabled && !iet->preemptible_tcs) {
+		mutex_unlock(&iet->fpe_lock);
+		return 0;
+	}
+	ret = icssg_config_ietfpe(emac->ndev, iet->fpe_enabled);
+}
+
+The failure paths are ordinary runtime conditions: verification rejected
+by the link partner or timing out, firmware not setting
+PRE_EMPTION_ACTIVE_TX, or the port state command failing.
+
+> +	mutex_unlock(&iet->fpe_lock);
+> +
+> +	return err;
 > +}
-> +EXPORT_SYMBOL_GPL(icssg_qos_link_state_update);
+> +
+> +static void emac_get_mm_stats(struct net_device *ndev,
+> +			      struct ethtool_mm_stats *s)
+> +{
+> +	struct prueth_emac *emac = netdev_priv(ndev);
+> +
+> +	if (emac->is_sr1)
+> +		return;
+> +
+> +	if (!emac->prueth->pa_stats)
+> +		return;
+> +
+> +	emac_update_hardware_stats(emac);
+> +
+> +	/* Hold stats_lock to prevent icssg_stats_work_handler from updating
+> +	 * pa_stats[] between reads, which could yield a torn u64 value on
+> +	 * 32-bit architectures.
+> +	 */
+> +	spin_lock(&emac->prueth->stats_lock);
+> +	/* MACMergeHoldCount stats is not tracked by the firmware */
+> +	s->MACMergeFrameAssOkCount = emac_get_stat_by_name(emac, "FW_PREEMPT_ASSEMBLY_OK");
+> +	s->MACMergeFrameAssErrorCount = emac_get_stat_by_name(emac, "FW_PREEMPT_ASSEMBLY_ERR");
+> +	s->MACMergeFragCountRx = emac_get_stat_by_name(emac, "FW_PREEMPT_FRAG_CNT_RX");
+> +	s->MACMergeFragCountTx = emac_get_stat_by_name(emac, "FW_PREEMPT_FRAG_CNT_TX");
+> +	s->MACMergeFrameSmdErrorCount = emac_get_stat_by_name(emac, "FW_PREEMPT_BAD_FRAG");
+> +	spin_unlock(&emac->prueth->stats_lock);
+> +}
+> +
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+> index f73b8f5fca956..ad9061408050e 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+> @@ -45,6 +45,7 @@
+>  #include "icss_iep.h"
+>  #include "icssg_switch_map.h"
+>  #include "icssg_qos.h"
+> +#include "icssg_stats.h"
+>  
+>  #define PRUETH_MAX_MTU		(2000 - ETH_HLEN - ETH_FCS_LEN)
+>  #define PRUETH_MIN_PKT_SIZE	(VLAN_ETH_ZLEN)
+> @@ -58,12 +59,16 @@
+>  
+>  #define ICSSG_MAX_RFLOWS	8	/* per slice */
+>  
+> -#define ICSSG_NUM_PA_STATS	32
+> -#define ICSSG_NUM_MIIG_STATS	60
+> +#define ICSSG_NUM_PA_STATS	ARRAY_SIZE(icssg_all_pa_stats)
+> +#define ICSSG_NUM_MIIG_STATS	ARRAY_SIZE(icssg_all_miig_stats)
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.c b/drivers/net/ethernet/ti/icssg/icssg_stats.c
+> index 7159baa0155cf..cfdb6f5dc5da1 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_stats.c
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_stats.c
+> @@ -74,7 +74,7 @@ void icssg_stats_work_handler(struct work_struct *work)
+>  }
+>  EXPORT_SYMBOL_GPL(icssg_stats_work_handler);
+>  
+> -int emac_get_stat_by_name(struct prueth_emac *emac, char *stat_name)
+> +u64 emac_get_stat_by_name(struct prueth_emac *emac, char *stat_name)
+>  {
+>  	int i;
+>  
+> @@ -91,5 +91,5 @@ int emac_get_stat_by_name(struct prueth_emac *emac, char *stat_name)
+>  	}
+>  
+>  	netdev_err(emac->ndev, "Invalid stats %s\n", stat_name);
+> -	return -EINVAL;
+> +	return 0;
+>  }
+
+[Severity: Medium]
+The commit message describes this hunk as:
+
+    Fix emac_get_stat_by_name() to return u64 instead of int and return
+    0 on error instead of -EINVAL. This prevents invalid stat lookups
+    from corrupting output stats with signed error codes cast to u64.
+
+Is that path reachable? Every caller passes a literal name that exists in
+icssg_all_miig_stats[] or icssg_all_pa_stats[], and each caller that uses
+PA names is guarded, e.g. in emac_get_mm_stats():
+
+	if (!emac->prueth->pa_stats)
+		return;
+
+so the netdev_err()/-EINVAL branch never runs.
+
+The change does look like it fixes something else that the message does
+not mention: the old int return truncated the u64 accumulators built by
+emac_update_hardware_stats() and sign-extended them into the u64 fields
+of rtnl_link_stats64 and ethtool_rmon_stats:
+
+drivers/net/ethernet/ti/icssg/icssg_common.c:icssg_ndo_get_stats64() {
+	stats->rx_bytes       = emac_get_stat_by_name(emac, "rx_bytes");
+	...
+}
+
+Once rx_bytes or tx_bytes crosses 2^31, would ip -s link have reported
+roughly 1.8e19 before this patch?
+
+Should this be split out as its own patch with a Fixes: tag and a
+description of the truncation, so that it can be picked up for stable,
+rather than being bundled into the MAC Merge feature patch?
+
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.h b/drivers/net/ethernet/ti/icssg/icssg_stats.h
+> index 5ec0b38e0c67d..b86da8da23a18 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_stats.h
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_stats.h
+> @@ -8,8 +8,6 @@
+>  #ifndef __NET_TI_ICSSG_STATS_H
+>  #define __NET_TI_ICSSG_STATS_H
+>  
+> -#include "icssg_prueth.h"
+> -
+>  #define STATS_TIME_LIMIT_1G_MS    25000    /* 25 seconds @ 1G */
+
+[Severity: Low]
+With this include gone, icssg_stats.h has no includes of its own, yet it
+still uses ETH_GSTRING_LEN, offsetof() and the FW_* offsets from
+icssg_switch_map.h. It compiles today only because icssg_prueth.h
+includes linux/ethtool.h and icssg_switch_map.h ahead of the new
+"#include icssg_stats.h".
+
+Would it be worth making icssg_stats.h self-contained by including
+linux/ethtool.h and icssg_switch_map.h directly, so a future .c file that
+includes it first still builds?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915063052.2274986-1-m-malladi%40ti.com
