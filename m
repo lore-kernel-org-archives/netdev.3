@@ -1,160 +1,79 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9E53921E6
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C24325495;
+	Sat, 19 Sep 2026 21:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789853806; cv=none; b=WFvEfH9dwQs2axX7+IYnNVwwHrRjkm2AD71Jl4N41eoMpirIap9MrqP8OkmPHcahtsR7yuqTLwQWt3G3b4KKHe5LUuzU2WEp192cO4g+ocz/ga9nM3BR6Oc8R1zcnXoiFGd3u1AJBiSSwsy8/VR0ZatRhGAxKh7cUdKSycZCpBc=
+	t=1789854211; cv=none; b=LkxtW3g2dMJidJUX+Kiwwa5CENm1YyEmjW8Msp1e2VVzszsZfw9UmxKN18iEpMnu9J72ljP1G/5MIYm27tCYMvUL2Z5QgN+nRTLFcsjGA/vL9WRcBZyZoTxZm80RvtcRFSGzDFLBMEQmm83Ko8ONdUn9VHtSv4rkJyaYv+yh4SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789853806; c=relaxed/simple;
-	bh=ylIbZgKsiNrIwpSIWxBnwwtC6dQOGngNLUyTzMPDsPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rdWYHHCERJDMrhYcKcKvQ3GT8hKLHFCjmvsOKiJtVNU3lScv7PucIxNEqn/lql4pv0d3ny3WY6vNSaVPPkADjIZ41NOhtO6iYJhzc5JDlKLElW9JWtMSuQ4WKaWdCaVnQStnzZAmALY0oDZ7sutO9c2MoxSEBo+OPf08MDQ5uD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dh22EdDh; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789854211; c=relaxed/simple;
+	bh=y8T7uKwp88RKw458oX43TjgLBPGw7XCPF08vtPwEaM0=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=hP9hc5yLKSbPB6mWUgG0H6IXD7Nxf6usvVlsG4kaup2rs5h4i83GgOsni2Sx1rvErsu0ZxsETyXdp217xDW32IjXDOuqOq9SzfMVgQ4dfEw3vm+2CdKEqPzX5vPcmQt8j59M7qwlRU4lNL3JPYVsj5daNTknWncl32ENiKBxmnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=dacEkFVf; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dh22EdDh"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396cccbba91so1270426a91.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:36:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789853800; x=1790458600; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2j7v0Gfm1mzC7ZOfmDBTrSr3Zc/OVo6Hpw1JferQnEU=;
-        b=Dh22EdDh0UblCqQrVFJlrRnXe5i3GujtQ01GJbijTagJjmQ3fqGBdV1OaZVOVm9F79
-         G0y8fV5JAtFcMpMQZrfEZWpNBbo5uLc+TtfVc7HO/T58uesahn5csB7+fYqAEtuoPIoG
-         aaP49+NasMI0vXt5w/Obmcq/YjRllQ2xvjNPs38TcwRy0R1F65ogE2jKbJqQ0GPMXr6C
-         v8E0daC1woNDY9Ql71lgn8LYFsewPRruf7KoFZ3599qgMGlqHtjvv/0GtrHFlso5Jmow
-         VbA4aa4rSsE1kETBZzCSaGJ+m3JZUwid3e/qRDgHF4w9ipC7pV4IL8AJq3vTad4V+gO8
-         iTiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789853800; x=1790458600;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2j7v0Gfm1mzC7ZOfmDBTrSr3Zc/OVo6Hpw1JferQnEU=;
-        b=f6WwtUIEXxzOSEkuifnzQQO8HvApwLZYxOGb+EWCugfC4mgTZIYbcM0EG6wrE5M44l
-         TUCBivQxyY+WfDWan2CdKqRt1S/TkNvM4/N7hZlOMjsgsxP65qYGhtsLe7izhHXpbeIs
-         WDZQmuFnCTVghza0lFvQT6qa6ktC4z7kwzFMI5Xems9i8580l7OjLW83YDoFUelhVsw/
-         P1kkU/WQrXTfA9IzpN1o4EBxQf1ZFjt16wNjo5Y8CTtMaSLOpVhw2zTJPGgAnxIa99Vi
-         ORhXY05NADR4SfB6YPVWtELCGcZKy3/YPjoM8LLp18VtROBhk7X/THb24HT/8FaHN0yC
-         bseQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwZiHmDfiNd88SNTrh+1c0nRM0z4xQmlYkrpbO//EKChI0VmNsR+w+vUdf4Pk4LzK51nbvISI4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nZw0dIMJNXCsvJskx5/PJUpN5cV5xD+hmZPcECXY2VovU4fChi
-	ajUULVidtpcWfvULkau8lybbZV+uEXXKHl0/g/UAPN+PLjrH1zgVgSLE
-X-Gm-Gg: AYBFou2OJMweYhh77skKEjIALu5vjGZx4t07WWl5CF2eeZwTsiLWQFShM9UBETPhOf1
-	z5pVkse3XnfmNOmKccDvaOJkCgyohwDPMpASRI0n1WYn5C9NYpk323lCjkrZiVr28+ha+IaWDW/
-	vRx3SBWA4IxKONmKVTwZpanwO300ibFCC2lvRF+DDi/fgsCOoxXeUcTzRntFECNX+vlVnV/8MoO
-	CVduWBeFrQy2u5fe4eA8k4qO7m6Lfrv+6JuV2pykIYyyje1W0FJhZ3NblWSjmOtx6zNM+63Q4FO
-	bKuJA7E6qSvYuAhZpVFE60m3hXexRSBbnGxrPvf6jF1i8ZE1azAU0RlggdYBsbz+aVjDkKUEDUI
-	GIxpdIciLusxst+3Yapy4u5g6AICDaaPRO9172xF8Rp/yw9bHLQLEzUzsqlfjeaygZ7vMX7KW1B
-	B9nOHXO2zjN9mfUc+H7mGAcDb0Wua2bTxwxsfuy3eyn8oVsv9WvXYF0HpRNHerKzFNdgeej64k2
-	juya/9dVH6xBoNujusRrhuNr9jEF2mqTei7Qg7FnvTicvwfefdNl3FmclmstfVIXF6I9ppcuelq
-	lkSuFmDJQcstq8ppe71N
-X-Received: by 2002:a17:90b:4cce:b0:3a0:2646:7495 with SMTP id 98e67ed59e1d1-3a026467c7cmr2912646a91.53.1789853800393;
-        Sat, 19 Sep 2026 14:36:40 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a038fffaa8sm59595a91.1.2026.09.19.14.36.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 14:36:39 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: ms@dev.tdt.de,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux-x25@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: lapb: fix uninitialized stack frame fields in lapb_decode()
-Date: Sat, 19 Sep 2026 21:36:39 +0000
-Message-ID: <20260919213639.3314894-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="dacEkFVf"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81E88A02B3;
+	Sat, 19 Sep 2026 23:43:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789854197; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Dsyp/2bxguVs04v4lLYBK6hkBkZbr47ghJs3bwtV7oA=;
+	b=dacEkFVf7LzHPxs1J8hrFjwsDbzrHN6G+DPQrY+l1vQofUVaK8RmkUigp+a/oK0eRBiQ6A
+	G3fnLvkQ3U7KBYl4yYgZc6ljEqcq4fitMNwExP4Q5HLPCnhOTnlijiAhVbyvQMlyNH6a0p
+	f9EFW/y+rnr1XrlLSMRo/u+ckMQdv9/x8u0z1+t4zeSLUmq7Dr/sOIN3+XDN1yv5h+up1x
+	zrcWXE0kk//gZ3sNOcToHqKt+WMv68VMnknICJkX/do9Mtxys0na5lSVr9Orw3HkuvtAzj
+	/QGUuGJlKW4k190eFJXgZEBEH/QA1HtGy2PXvJyqkszH70GpWflYXjcjqoa2+g==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Sat, 19 Sep 2026 23:43:15 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ shuah@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v2 3/3] selftests: drv-net: Add VLAN test
+In-Reply-To: <20260918151225.304410cf@kernel.org>
+References: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
+ <20260918112529.96039-4-ovidiu.panait.rb@renesas.com>
+ <5be2136e4142427285566f01d95c1b7b@tipi-net.de>
+ <20260918151225.304410cf@kernel.org>
+Message-ID: <ff8435132a6b0fbc0f92187e1d9b0f18@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-`lapb_decode()` populates a caller-allocated `struct lapb_frame frame`
-on the stack of `lapb_data_input()`, but does not zero-initialize
-`*frame`.
+On 19.9.2026 00:12, Jakub Kicinski wrote:
+> On Fri, 18 Sep 2026 14:04:13 +0200 Nicolai Buchwitz wrote:
+>> > +LOCAL_IP = os.environ.get("VLAN_LOCAL_V4", "198.51.100.1")
+>> > +REMOTE_IP = os.environ.get("VLAN_REMOTE_V4", "198.51.100.2")
+>> 
+>>    LOCAL_IP = "198.51.100.1"
+>>    REMOTE_IP = "198.51.100.2"
+> 
+> LOCAL_IP / REMOTE_IP are in the default network segment (vlan 0)
+> Here we need some "unused" IP subnet that we can assign without
+> conflicts. Getting it from the config would indeed be good, but
+> since this is the first use perhaps we should defer until it actually
+> bothers someone?
 
-1. When `skb->data[0]` is not a valid LAPB address byte (`LAPB_ADDR_A`,
-   `LAPB_ADDR_B`, `LAPB_ADDR_C`, or `LAPB_ADDR_D`), `frame->cr` is left
-   uninitialized on the stack while `lapb_decode()` continues parsing
-   and copies `frame->cr` into `lapb->frmr_data.cr` via
-   `lapb_transmit_frmr()`, leaking 1 bit of kernel stack memory over the
-   network.
-2. When decoding an unnumbered (`LAPB_U`) or illegal frame in
-   `LAPB_EXTENDED` mode, `frame->control[1]` is left uninitialized on
-   the stack and copied into the outgoing `FRMR` frame by
-   `lapb_transmit_frmr()`.
+Fine with me. Having the the selftest in place is probably more useful
+than re-spinning for sole config issues. Let's fix this once someone 
+needs it.
 
-Zero-initialize `*frame` at the start of `lapb_decode()` and return `-1`
-when `skb->data[0]` is not a valid LAPB address byte.
+> [...]
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: LLM
-Signed-off-by: Hui Peng <benquike@gmail.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
----
- net/lapb/lapb_subr.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/net/lapb/lapb_subr.c b/net/lapb/lapb_subr.c
-index 592a22d86a97..8150f3583f15 100644
---- a/net/lapb/lapb_subr.c
-+++ b/net/lapb/lapb_subr.c
-@@ -106,6 +106,7 @@ int lapb_validate_nr(struct lapb_cb *lapb, unsigned short nr)
- int lapb_decode(struct lapb_cb *lapb, struct sk_buff *skb,
- 		struct lapb_frame *frame)
- {
-+	memset(frame, 0, sizeof(*frame));
- 	frame->type = LAPB_ILLEGAL;
- 
- 	lapb_dbg(2, "(%p) S%d RX %3ph\n", lapb->dev, lapb->state, skb->data);
-@@ -120,25 +121,33 @@ int lapb_decode(struct lapb_cb *lapb, struct sk_buff *skb,
- 		if (lapb->mode & LAPB_DCE) {
- 			if (skb->data[0] == LAPB_ADDR_D)
- 				frame->cr = LAPB_COMMAND;
--			if (skb->data[0] == LAPB_ADDR_C)
-+			else if (skb->data[0] == LAPB_ADDR_C)
- 				frame->cr = LAPB_RESPONSE;
-+			else
-+				return -1;
- 		} else {
- 			if (skb->data[0] == LAPB_ADDR_C)
- 				frame->cr = LAPB_COMMAND;
--			if (skb->data[0] == LAPB_ADDR_D)
-+			else if (skb->data[0] == LAPB_ADDR_D)
- 				frame->cr = LAPB_RESPONSE;
-+			else
-+				return -1;
- 		}
- 	} else {
- 		if (lapb->mode & LAPB_DCE) {
- 			if (skb->data[0] == LAPB_ADDR_B)
- 				frame->cr = LAPB_COMMAND;
--			if (skb->data[0] == LAPB_ADDR_A)
-+			else if (skb->data[0] == LAPB_ADDR_A)
- 				frame->cr = LAPB_RESPONSE;
-+			else
-+				return -1;
- 		} else {
- 			if (skb->data[0] == LAPB_ADDR_A)
- 				frame->cr = LAPB_COMMAND;
--			if (skb->data[0] == LAPB_ADDR_B)
-+			else if (skb->data[0] == LAPB_ADDR_B)
- 				frame->cr = LAPB_RESPONSE;
-+			else
-+				return -1;
- 		}
- 	}
- 
--- 
-2.55.0.1082.g2b9226bbc0-goog
-
+Thanks,
+Nicolai
