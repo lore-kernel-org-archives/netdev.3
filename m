@@ -1,532 +1,186 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2124.outbound.protection.partner.outlook.cn [139.219.146.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv2-f39.google.com (mail-qv2-f39.google.com [74.125.230.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD44913D51E;
-	Sat, 19 Sep 2026 09:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789811453; cv=fail; b=Vo86Nx6xK2C3/TzF+VBrvZXMLd6U5kgF9epZYHiPScbwgdfzfEeykp5GMr8tIUpU6jRgsuWsnbnYZh11SZzhch2ZhrLtolNahjvEYE89stsOFJIi9YpAt3UJ9WVXtNfJV11m7kK2Y+JfLmhOz+07IkCuZMs2KRUTSIldIuaaXVs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789811453; c=relaxed/simple;
-	bh=5628H7uG3PgV4wzWxh96MpalpcfqLYrFlXCoArRcFEU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UZe9KVKCXd29URCzoC0nC9+96eE/eEjRCn5my3u/w8yF/pztUNS7Jgmg5u8tyBcDEXs4LIuhryso0BonLObHqvZ0TuUWNjd4T36IQQtcye2fV5OiNsqTIy0DlgvpTjMmfg1M000OY1Rn2AzL43wpkO78Qj0/M9a5uJC7aZTsyZ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JOTePNji6lLF+9eusknmTaZRwo1Kfxql7WYhdElcfGQTddc8kG3OoU1Cj/oIg57RE/ta3kCwrzUzUHZ424ZtUkovzJYCLNTMg994RxiNrkJDrKCVjHLn9a8f/fhJJ5lCkCdK+dcaoQDDnnDQEiLHqMOHl9Nc9NAUkqNKIaalm29636TEPyi/VVbxiySqJ1dGQkx4XQHw7p22LttS5pAtN5sc+B+9CwKVnay9SYyIDQPwMqL4UtimmHCqEqhe65rGRXOMqQIUFLYOSFlPwo/Eoq99bKoWHNKQGmpe7bDb1OXqy4PhudDqq246RhsbT67vjuK1Cm7aiWrzJHSwwVyHGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TyZaVw9wxLCsApLWkPAEgsUAgtG9AwbscEiaG942Gr4=;
- b=eSShHYT59GaV+lfe8ZPox4xI3vZN1cp2Y57ozUqvhNqoJEErf4+5kwjnBB63+tnHR3rcmwVkWS5yEFdgouv/lUgQ4HQJiRFdeMHZeeRlNUTDHrZoocQBAx0N+I9AB1bunSYEyx1qnZaPYG49TlGRASd2ym7xlTh2vHGPbj1o15PFMTVQrh7OYvS8a4rE0x2HljGu9xsGUZeYDvawyFLQ5uEgaJLZv230rJBkpD2eYB9nQ40udQZ28BsaIBTsMr9fp2sCCksaZ6bW0kLTccSWyzu0YMxVdgyXhBsfdY3W/60NlNAg0xGeSpkQdRUZRJHxzzyEgnp5TyMDgzjXMBf3Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:17::6) by ZQ4PR01MB1329.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:16::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.14; Sat, 19 Sep
- 2026 09:50:38 +0000
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- ([fe80::e7d4:256c:b066:850d]) by
- ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
- with mapi id 15.21.0428.014; Sat, 19 Sep 2026 09:50:38 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Hal Feng <hal.feng@starfivetech.com>, Michael Turquette
-	<mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Stephen Boyd
-	<sboyd@kernel.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
-	<palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
-	<alex@ghiti.fr>, Philipp Zabel <p.zabel@pengutronix.de>, Emil Renner Berthing
-	<kernel@esmil.dk>, Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
-	<gustavoars@kernel.org>, Richard Cochran <richardcochran@gmail.com>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH v3 06/22] clk: starfive: Add JHB100 System-0 clock
- generator driver
-Thread-Topic: [PATCH v3 06/22] clk: starfive: Add JHB100 System-0 clock
- generator driver
-Thread-Index: AQHdJmAKp/CXNkJMgU61cKgC1AMm37bSWzKAgAOQspA=
-Date: Sat, 19 Sep 2026 09:50:38 +0000
-Message-ID:
- <ZQ4PR01MB12029A0067C12837C502A712F2862@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
-References: <20260807112923.191627-1-changhuang.liang@starfivetech.com>
- <20260807112923.191627-7-changhuang.liang@starfivetech.com>
- <NT0PR01MB110298F21FF8FC06DB4EAE34E6B82@NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn>
-In-Reply-To:
- <NT0PR01MB110298F21FF8FC06DB4EAE34E6B82@NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1329:EE_
-x-ms-office365-filtering-correlation-id: 70059de2-5735-4e1c-36db-08df163375b1
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|56012099006|4143699003|10067099003|3023799007|921020|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info:
- XcfhDZGTwUv/p5gjKcXGTHuy9iIUFo6G5DkoCOB9iz0eecC680+5faWyvd/gU2TtXg+tnK9SpMKBa54J7t9S2x/XWOQLsUHiGncAMIWQme7zjbbaX4smKyFuoC6N1W4LydJ3sNXMd1irKiSN0jzAbNR4vUInOx61jqNnLTa0gaV4lFXoOHj5nto1UBEyYd8SSwBvj7BLhS4LiuQJ0Ky734yetmVAyek6bU0x/GVvgJ5+9mHFL+L0G3/FzcITEspCnHfru3XLPBuro0gwIzlOcCMhCKpsasFexwKZRaFnLbAIEvI5QZKAOa9TrALZo/rttyoKmrvDt8ISYckDwpzTBGeeBJyg226eC2NYZXR1rTYOQWD6g2mLgUWO/QoJrTsf79Xusq59fQ8nA2W8hT8WnttBDv9tRfyTaz+ofHsSKFqnYtXVNIWveuYgAw5IY1UdZ14fsGHojkv1NiLtQ1niChkGoJsrpSfPWl55HgsZlQZAfP5+Vlk8W9FP0AngLJosMWRhj4QEezCtdujTbLPaXPN09wji3oClf6MIQ+KG45insTwNSQs7fd8j7bgc1WSZDrdhJ1oiSR5HOQLWVn0nJw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(56012099006)(4143699003)(10067099003)(3023799007)(921020)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?JnPg95b7RDrj53trAGDpbPEuWAcuaT4Drhym5xbnaVT3rqj1AfgmI9OWQ8R2?=
- =?us-ascii?Q?ijEqboTNmsb20Mg9ixI9cPnO67kDiugGxBPZpf3Tzf4/ZE34CeUFG33NMdAV?=
- =?us-ascii?Q?+zodSQPGzFVDQN881OxASWZGJfkUbOEd0uFUDDzrlDu1JAc/QzKZnk06h06H?=
- =?us-ascii?Q?1smP2jhd8ile02f4UxlLt7RSRLLonGN+RivTM7rsag0Rtlxx04e13XNkspJr?=
- =?us-ascii?Q?KT3wZtmUEsYRI0jYoxPanJEFnXeCzCZL58nzbPSa+tPBu1Hm4UXN1X1i9oai?=
- =?us-ascii?Q?VHI3Ps1/0jUytCL/uVyN7ysCs6mNilg3uRovN/YV3Kn8JeKFRD4nBfXQfNgB?=
- =?us-ascii?Q?MfLUJBGetDBTVVURKvGBSAHTsHrLHSYVKuBfxYh5jTPu2tkY/g6T/1r9tlIQ?=
- =?us-ascii?Q?BCnDXXbvVSCJWEAfE0AzhMKJbgCIFJMXKI9BsKLJNGCqDbfSkiOBT5FfhMaO?=
- =?us-ascii?Q?pbugIXF4VX6r006PXdInukKMAEJ+dIu2XU+g6TmHjAY02/2z1lPKh13O43uF?=
- =?us-ascii?Q?T5/k0fVit6/6JvMl19BCLTAdDvoZ7OSwx7+5sSgMy7mPCiWRgGzsjAdgD+0T?=
- =?us-ascii?Q?/0JUI4vYuK8SnI8xUUCL1jQtF1uK7gFvYkvDeLa/qVB/4A1rX2Pm5P9WavmT?=
- =?us-ascii?Q?CfeoBJ+sKwj3d9C96kAhYUZKGIj67oeVJ4Ql8/09PFU/XdPXridWw0L7aIAC?=
- =?us-ascii?Q?sNopKmS1GLQo0y5WY7rX21+4y5sBuBTuelfoRFTDuRI+nzYR7q09yioBHKEn?=
- =?us-ascii?Q?ttUMYWYgoLC4bjc3k+n1pt4Dm3cfNolUF7+/LGM/BY5Hjxit9bDKw3Dztjge?=
- =?us-ascii?Q?KgQ+yImhWFNlMwyjy5B1CV6eX11PyClU2lmZEkrYKU6qRmyEBAi826TWQmtR?=
- =?us-ascii?Q?qwys9qVoYxusYmeuehI8VHA3+3BP2PmTbNj/rhu99FdqJUTPKtaXU4Y9uX01?=
- =?us-ascii?Q?pVnK0PI0EUWKK0wHXAIubB5ul1fBujAgjJ1ablG8kV5QdyujsnVprEFxsPxY?=
- =?us-ascii?Q?lixuXmF7B+5aj+/S78fttIDQ7Y46+vmWCJChG3G7gYQRFK/RdviA2wvPL1sB?=
- =?us-ascii?Q?t+lWFMJ9AVxe8Vq37PdvJOcagsYDpKwFFICy2h9+OQhQhzh68gPOMdBwvHpG?=
- =?us-ascii?Q?0SNC0jvcpw9dU6VtURZHr9A6F54VErcUlzXqwYmlnqoNDdPVpgS3FtBd5glT?=
- =?us-ascii?Q?Q1uu2aMDGNIDhPMQij3GOh2i17W8+8q0SB3eSUfHKXTb5Lsx1sfb9rHiJEF4?=
- =?us-ascii?Q?MZL10LhGr8MN1Vlrn4aWnSVMPrf+1h5rqsD54hWx8gjRykRU1Pyzsb6HgD4l?=
- =?us-ascii?Q?17hM5Xemwiiikddc1RfqvmaCjcMyjkobH11jV9j6mHeZzZYEhJ8h8vlaQA6R?=
- =?us-ascii?Q?GOFQOyf9FlvQoHT4+/+kIGZI2/qKbvCS7q/qOCljA9UFtShz4FMtK+n7JUfr?=
- =?us-ascii?Q?TnU3bVPT0zxC7e8wwq9oLdzmLG/JRR563kRcxifPjcC6bylNZgFDXwcQIzpL?=
- =?us-ascii?Q?7HIiEQ4q7d/5LoLcQJAxfq/A+5KHAd74Y8perQR1IITkQVxmE1b9Po8O3hhw?=
- =?us-ascii?Q?mgBNKYLr9yakVIG07IgIrug6lM57Pi4xm7b6/e0OvNYad5xwWfBNCJ4PTHr2?=
- =?us-ascii?Q?0sk4YNytHdBICYPFWRMF73dGW2F5IT1pQCtWVnw4R5ip41vBrMqupcdjw4YE?=
- =?us-ascii?Q?6qCSll278LyXWcCQ3ux060r7st2A2J5V8W1pUMoeqte1JVKdXgPBkhXtxuP4?=
- =?us-ascii?Q?uCJYbPKTtszLKncxuwvy6d/18NHn2Rg=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520AD3DBD51
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 09:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.167
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789811502; cv=none; b=M5ab6+y0InAQhFTXjbMXhR6Zen+Dm1zEOoGAbEw63pTj2TlEhL4at1Oc/I8conWNPh+yFZqY0aFBmHrHo/57qqf3E4LMkBXhlaleGC/g6X41ewDpI1nlqIwu+5PSOQaQ7JHrG9MmbtZTsROfiK+oX/wva3fc19gOd2eDZ12Eo3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789811502; c=relaxed/simple;
+	bh=AbBsRpv9UzXwVWK/zqyx+jwn9qkbp85YmQirOeM5e4s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fxjZ9g8vtUNnWFL5AF3HUDYf7eGlX5mnDrcpWb70/0utOaVK7qMPJ8/6v5U3t3+ExyvFbEqVx8vZm6kD9cxaWlHWYRAUO5KbBTa5Dvr9KPh+RC/RrDKzWDJAMSi+G+9IMemJzNh4CpQAw/hyyZHHQx5Y849k3+Kkv9Xqw9IJ57Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=WjL9ilHI; arc=none smtp.client-ip=74.125.230.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="WjL9ilHI"
+Received: by mail-qv2-f39.google.com with SMTP id 6a1803df08f44-90cdfe60d5fso16026506d6.1
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 02:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789811500; x=1790416300; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rN7kbYEmkQBis/ObAIpJGpKUuIJ4yTdvvj9OToUbhYQ=;
+        b=WjL9ilHItDi1CpiP5jMQX9Md6LytFUDWTX1Qr7dnf/l8Gyy7aWH2WmfsFFJErBXw54
+         CCO+PptFNk1OxVN82dLwx8DFpYGcxenRWmk+Q+u8ogKrMFmfe5+vu9dRyEJplgoGJMXy
+         ClTiFmAL8GV75O9Hk3xIEA/JMPAO8NfhGXHUs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789811500; x=1790416300;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rN7kbYEmkQBis/ObAIpJGpKUuIJ4yTdvvj9OToUbhYQ=;
+        b=gRgMTlfr/Q92bcBatNrUmzXsx+QjZzFJK/UdzFMJC1r7AbSzw1rl48bipmGPOgDuJT
+         h59U67bO5koJtTZFxNmkzES6loSYJ6ZKLGRZ0U484rAp5h+CC0+XMV0XPvQ9Gni8T7/2
+         56yfefIydYHArn71xv9n1fZCsj0afhd/ZU0tidDhaBaJUk3H1e9Oavu1rP0aYn8bv7HC
+         d1SlE7N0VFXDJ2VBrTeJhXPHtqDWgh7GYUcwYKYTChbJnNqBULX6Ze6I3cmssWJV7dZH
+         NpUYkSwOGNVzvfqDw3Y3p1xKYCXqevUM7CThcMHo/QQ0D0MeyW0xh4zHcA2e0tBEjVK1
+         UhgA==
+X-Gm-Message-State: AFuF++mEGN7n9CXz86WwBGapClZvUO7Gr4EGXOFwv/G84D4yUZBTeWE2
+	wXBmw+zlZTSMMWvesZqbPZe9JgBUwIwpjSIza/ZudV4A6lDjzw39DcHCwT2Pc3zWojLVDiL3HzK
+	/lCokVg==
+X-Gm-Gg: AYBFou3mu/agtf9mgvntn3cmayJpypFT+Fc3q8leEt3l/nJww0pP/9rkr+PoOJuvwQP
+	3QAcuN2VJw6lEnszpTv2aJd6la64ISflzKnee+iJ/fiFYzd3Qe6MhxXsg7sz6PDKGIdGWF197g5
+	XVjb16KrvuMbL8kx4UVbkgk0joKPJuXvauFRfUdS7UZD6PexzxPzNxY0KZQuM4XqpjESUYTI6dH
+	Jh3McY2HwhPtVYeqa/1KRFyZNW1e5bb8L3ik3l7KMI2Zr+BQ+h9/VA3si3hOfggaZH7eE3VIWow
+	AEDHk3a3LABTTS+cjwRUUqud0lzICP9VGGs0FCWXU9aRs/IXd638GaWlrLSamJ+qek+WjVyGRbL
+	xXv3oHql1cQQl/xcPzcZ9jvvW+2Uw6ET2eGW7zMwHG1B/9+xRSo/RTml5HCCmYjzz09yn7vvMlz
+	7oCSU0TKDg3AAfc23rtkovAnUPvwfHsjnmQH7Ee4hq9qO+uyKZDX0gj23fRznTaLfx9u6Rj+8ma
+	H+hG4lEIj/Kg/ZWRlInuGx7r99u6CToGaFjNhNXqeLn/Xa3edFcGS8NpL0/wpHJEh0xKzXoP9dn
+	fU3FgclGPg5+azF76YGK7azMdoLcRuLRpQ==
+X-Received: by 2002:a05:6214:4108:b0:912:517b:40e4 with SMTP id 6a1803df08f44-912a8039725mr10025936d6.43.1789811500025;
+        Sat, 19 Sep 2026 02:51:40 -0700 (PDT)
+Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260aa15cdsm17150986d6.41.2026.09.19.02.51.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 02:51:39 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Xin Long <lucien.xin@gmail.com>,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	hybris <hybris@mojatatu.ai>
+Subject: [PATCH net] net/sched: cls_flower: exact-match ERSPAN key when no mask supplied
+Date: Sat, 19 Sep 2026 05:51:35 -0400
+Message-Id: <QDISC-4CSL.v1.20260917072652@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70059de2-5735-4e1c-36db-08df163375b1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2026 09:50:38.3467
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O7ZqFEQuSyegMacONDShf+s4VXY+Rc8S6vXuBO7ZLKjgAIGsX/s/e5qDsf0bJhA4yYZFNoPqu+zsDVLtf1QnKET9WgfId49Hd+ZcnoK58Jp+PA6FYUD+kFbe9Hf37LS2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1329
+Content-Transfer-Encoding: 8bit
 
-Hi, Hal
+Commit 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
+removed the unconditional memset of the erspan_metadata mask in
+fl_set_erspan_opt(). On the mask-parse pass, when userspace supplies the
+encap option key but no mask (TCA_FLOWER_KEY_ENC_OPTS without
+TCA_FLOWER_KEY_ENC_OPTS_MASK), the !depth early return leaves the mask
+zeroed -- a wildcard. A filter keyed on an ERSPAN index (v1), or dir/hwid
+(v2), then matches every ERSPAN packet's values instead of exact-matching.
 
-> > On 26.08.07 19:29, Changhuang Liang wrote:
-> > Add support for JHB100 System-0 clock generator (SYS0CRG).
-> >
-> > The StarFive JHB100 SoC has multiple CRGs with similar probe flows, so
-> > a generic starfive_crg_probe() function is introduced to facilitate
-> > the registration process of other CRGs in the future.
-> >
-> > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-> > ---
-> >  MAINTAINERS                                   |   7 +
-> >  drivers/clk/starfive/Kconfig                  |  11 ++
-> >  drivers/clk/starfive/Makefile                 |   2 +
-> >  drivers/clk/starfive/clk-starfive-common.c    | 142
-> ++++++++++++++++-
-> >  drivers/clk/starfive/clk-starfive-common.h    |  12 ++
-> >  .../clk/starfive/clk-starfive-jhb100-sys0.c   | 150 ++++++++++++++++++
-> >  6 files changed, 321 insertions(+), 3 deletions(-)  create mode
-> > 100644 drivers/clk/starfive/clk-starfive-jhb100-sys0.c
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS index
-> > ce97de46e610..c48b56d0ab94 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -26069,6 +26069,13 @@ F:
-> > 	Documentation/devicetree/bindings/phy/starfive,jh7110-usb-phy.yaml
-> >  F:	drivers/phy/starfive/phy-jh7110-pcie.c
-> >  F:	drivers/phy/starfive/phy-jh7110-usb.c
-> >
-> > +STARFIVE JHB100 CLOCK DRIVERS
-> > +M:	Changhuang Liang <changhuang.liang@starfivetech.com>
-> > +S:	Maintained
-> > +F:	Documentation/devicetree/bindings/clock/starfive,jhb1*.yaml
-> > +F:	drivers/clk/starfive/clk-starfive-jhb1*
-> > +F:	include/dt-bindings/clock/starfive,jhb1*.h
-> > +
-> >  STARFIVE JHB100 DEVICETREES
-> >  M:	Changhuang Liang <changhuang.liang@starfivetech.com>
-> >  L:	linux-riscv@lists.infradead.org
-> > diff --git a/drivers/clk/starfive/Kconfig
-> > b/drivers/clk/starfive/Kconfig index ff8eace36e64..7926e02ccd7d 100644
-> > --- a/drivers/clk/starfive/Kconfig
-> > +++ b/drivers/clk/starfive/Kconfig
-> > @@ -72,3 +72,14 @@ config CLK_STARFIVE_JH7110_VOUT
-> >  	help
-> >  	  Say yes here to support the Video-Output clock controller
-> >  	  on the StarFive JH7110 SoC.
-> > +
-> > +config CLK_STARFIVE_JHB100_SYS0
-> > +	bool "StarFive JHB100 system-0 clock support"
-> > +	depends on ARCH_STARFIVE || COMPILE_TEST
-> > +	select AUXILIARY_BUS
-> > +	select CLK_STARFIVE_COMMON
-> > +	select RESET_STARFIVE_JHB100 if RESET_CONTROLLER
-> > +	default ARCH_STARFIVE
-> > +	help
-> > +	  Say yes here to support the system-0 clock controller on the
-> > +	  StarFive JHB100 SoC.
-> > diff --git a/drivers/clk/starfive/Makefile
-> > b/drivers/clk/starfive/Makefile index 012f7ee83f8e..2c5e66d1d44e
-> > 100644
-> > --- a/drivers/clk/starfive/Makefile
-> > +++ b/drivers/clk/starfive/Makefile
-> > @@ -10,3 +10,5 @@ obj-$(CONFIG_CLK_STARFIVE_JH7110_AON)	+=3D
-> > clk-starfive-jh7110-aon.o
-> >  obj-$(CONFIG_CLK_STARFIVE_JH7110_STG)	+=3D clk-starfive-jh7110-stg.o
-> >  obj-$(CONFIG_CLK_STARFIVE_JH7110_ISP)	+=3D clk-starfive-jh7110-isp.o
-> >  obj-$(CONFIG_CLK_STARFIVE_JH7110_VOUT)	+=3D
-> clk-starfive-jh7110-vout.o
-> > +
-> > +obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS0)		+=3D
-> > clk-starfive-jhb100-sys0.o
-> > diff --git a/drivers/clk/starfive/clk-starfive-common.c
-> > b/drivers/clk/starfive/clk-starfive-common.c
-> > index 9c0eb7a50d1e..1b5e56af4138 100644
-> > --- a/drivers/clk/starfive/clk-starfive-common.c
-> > +++ b/drivers/clk/starfive/clk-starfive-common.c
-> > @@ -9,6 +9,8 @@
-> >  #include <linux/debugfs.h>
-> >  #include <linux/device.h>
-> >  #include <linux/io.h>
-> > +#include <linux/pm_runtime.h>
-> > +#include <soc/starfive/reset-starfive-common.h>
-> >
-> >  #include "clk-starfive-common.h"
-> >
-> > @@ -331,9 +333,143 @@ struct clk_hw *starfive_clk_get(struct
-> > of_phandle_args *clkspec, void *data)
-> >  	struct starfive_clk_priv *priv =3D data;
-> >  	unsigned int idx =3D clkspec->args[0];
-> >
-> > -	if (idx < priv->num_reg)
-> > -		return &priv->reg[idx].hw;
-> > +	if (idx >=3D priv->num_reg)
-> > +		return ERR_PTR(-EINVAL);
-> >
-> > -	return ERR_PTR(-EINVAL);
-> > +	/* Index space is sparse: reject holes that were never registered. */
-> > +	if (priv->info && !priv->info->clk_data[idx].name)
-> > +		return ERR_PTR(-ENOENT);
-> > +
-> > +	return &priv->reg[idx].hw;
-> >  }
-> >  EXPORT_SYMBOL_GPL(starfive_clk_get);
-> > +
-> > +static void starfive_reset_unregister_adev(void *_adev) {
-> > +	struct auxiliary_device *adev =3D _adev;
-> > +
-> > +	auxiliary_device_delete(adev);
-> > +	auxiliary_device_uninit(adev);
-> > +}
-> > +
-> > +static void starfive_reset_adev_release(struct device *dev) {
-> > +	struct auxiliary_device *adev =3D to_auxiliary_dev(dev);
-> > +	struct starfive_reset_adev *rdev =3D to_starfive_reset_adev(adev);
-> > +
-> > +	kfree(rdev);
-> > +}
-> > +
-> > +static int starfive_reset_controller_register(struct starfive_clk_priv=
- *priv,
-> > +					      const char *adev_name,
-> > +					      u32 adev_id)
-> > +{
-> > +	struct starfive_reset_adev *rdev;
-> > +	struct auxiliary_device *adev;
-> > +	int ret;
-> > +
-> > +	rdev =3D kzalloc_obj(*rdev);
-> > +	if (!rdev)
-> > +		return -ENOMEM;
-> > +
-> > +	rdev->base =3D priv->base;
-> > +
-> > +	adev =3D &rdev->adev;
-> > +	adev->name =3D adev_name;
-> > +	adev->dev.parent =3D priv->dev;
-> > +	adev->dev.release =3D starfive_reset_adev_release;
-> > +	adev->id =3D adev_id;
-> > +
-> > +	ret =3D auxiliary_device_init(adev);
-> > +	if (ret) {
-> > +		kfree(rdev);
-> > +		return ret;
-> > +	}
-> > +
-> > +	ret =3D auxiliary_device_add(adev);
-> > +	if (ret) {
-> > +		auxiliary_device_uninit(adev);
-> > +		return ret;
-> > +	}
-> > +
-> > +	return devm_add_action_or_reset(priv->dev,
-> > +					starfive_reset_unregister_adev, adev); }
->=20
-> You add starfive_reset_controller_register() but a most similiar
-> jh7110_reset_controller_register()
-> remains in drivers/clk/starfive/clk-starfive-jh7110-sys.c. Can we merge
-> them?
->=20
+Mirror the with-mask per-version defaults on the no-mask path, keyed off
+the key's own version: v1 index to 0xff, v2 dir and hwid to their
+exact-match masks. The mask cannot just memset the whole union -- that
+would re-mask the overlapping timestamp/sgt bytes of the v2 header that
+the fix (292207809486) deliberately left to 0 in erspan_opt.
 
-The current series is quite large. To reduce the review burden of the curre=
-nt series,
-I plan to release a separate series later for JH7110 to reduce these simila=
-r interfaces.
+This is a follow-up to commit fee10655709c ("net/sched: cls_flower:
+validate mask pointer after nla_next()").
 
-Same with other comments.
+Conditions to recreate the bug: add an ERSPAN encap-opts flower filter
+with a key but no mask (raw netlink, TCA_FLOWER_KEY_ENC_OPTS present,
+TCA_FLOWER_KEY_ENC_OPTS_MASK absent); dump the filter and observe the
+match mask is zero (wildcard) instead of exact for the supplied fields.
 
-> > +
-> > +int starfive_crg_probe(struct platform_device *pdev) {
->=20
-> This function name is too generic and we know not all starfive SoCs use i=
-t to
-> probe.
->=20
-> > +	const struct starfive_crg_domain_info *info;
-> > +	struct starfive_clk_priv *priv;
-> > +	unsigned int idx;
-> > +	int ret;
-> > +
-> > +	info =3D of_device_get_match_data(&pdev->dev);
-> > +	if (!info)
-> > +		return -ENODEV;
-> > +
-> > +	priv =3D devm_kzalloc(&pdev->dev, struct_size(priv, reg, info->num_cl=
-k),
-> > +			    GFP_KERNEL);
-> > +	if (!priv)
-> > +		return -ENOMEM;
-> > +
-> > +	spin_lock_init(&priv->rmw_lock);
-> > +	priv->info =3D info;
-> > +	priv->num_reg =3D info->num_clk;
-> > +	priv->dev =3D &pdev->dev;
-> > +	priv->base =3D devm_platform_ioremap_resource(pdev, 0);
-> > +	if (IS_ERR(priv->base))
-> > +		return PTR_ERR(priv->base);
-> > +
-> > +	if (info->power_domain) {
-> > +		ret =3D devm_pm_runtime_enable(priv->dev);
-> > +		if (ret)
-> > +			return dev_err_probe(priv->dev, ret,
-> > +					     "failed to enable runtime PM\n");
-> > +	}
-> > +
-> > +	for (idx =3D 0; idx < info->num_clk; idx++) {
-> > +		u32 max =3D info->clk_data[idx].max;
-> > +		struct clk_parent_data parents[4] =3D {};
-> > +		struct clk_init_data init =3D {
-> > +			.name =3D info->clk_data[idx].name,
-> > +			.ops =3D starfive_clk_ops(max),
-> > +			.parent_data =3D parents,
-> > +			.num_parents =3D
-> > +				((max & STARFIVE_CLK_MUX_MASK) >>
-> > STARFIVE_CLK_MUX_SHIFT) + 1,
-> > +			.flags =3D info->clk_data[idx].flags,
-> > +		};
-> > +		struct starfive_clk *clk =3D &priv->reg[idx];
-> > +		unsigned int i;
-> > +
-> > +		if (!init.name)
-> > +			continue;
-> > +
-> > +		for (i =3D 0; i < init.num_parents; i++) {
-> > +			unsigned int pidx =3D info->clk_data[idx].parents[i];
-> > +
-> > +			if (pidx < info->num_clk) {
-> > +				parents[i].hw =3D &priv->reg[pidx].hw;
-> > +			} else {
-> > +				if (pidx - info->num_clk >=3D info->num_ext_clk)
-> > +					return -EINVAL;
-> > +
-> > +				parents[i].fw_name =3D info->ext_clk[pidx - info->num_clk];
-> > +			}
-> > +		}
-> > +
-> > +		clk->hw.init =3D &init;
-> > +		clk->idx =3D idx;
-> > +		clk->max_div =3D max & STARFIVE_CLK_DIV_MASK;
-> > +
-> > +		ret =3D devm_clk_hw_register(&pdev->dev, &clk->hw);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	ret =3D devm_of_clk_add_hw_provider(&pdev->dev, starfive_clk_get,
-> priv);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return starfive_reset_controller_register(priv, info->rst_name, 0);
-> > +} EXPORT_SYMBOL_GPL(starfive_crg_probe);
-> > diff --git a/drivers/clk/starfive/clk-starfive-common.h
-> > b/drivers/clk/starfive/clk-starfive-common.h
-> > index a03824e9e75f..4cd4357f8366 100644
-> > --- a/drivers/clk/starfive/clk-starfive-common.h
-> > +++ b/drivers/clk/starfive/clk-starfive-common.h
-> > @@ -5,6 +5,7 @@
-> >  #include <linux/bits.h>
-> >  #include <linux/clk-provider.h>
-> >  #include <linux/device.h>
-> > +#include <linux/platform_device.h>
-> >  #include <linux/spinlock.h>
-> >
-> >  /* register fields */
-> > @@ -109,6 +110,15 @@ struct starfive_clk {
-> >  	unsigned int max_div;
-> >  };
-> >
-> > +struct starfive_crg_domain_info {
-> > +	const struct starfive_clk_data *clk_data;
-> > +	unsigned int num_clk;
-> > +	const char * const *ext_clk;
-> > +	unsigned int num_ext_clk;
-> > +	const char *rst_name;
-> > +	bool power_domain;
-> > +};
->=20
-> Is the starfive_crg_domain_info struct introduced only for JHB100? Could =
-we
-> also use it for JH7110?
+Fixes: 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
+Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826025123.62758-1-ljp1205831794@gmail.com
+Link: https://lore.kernel.org/netdev/20260826025123.62758-1-ljp1205831794@gmail.com/
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Tested-by: hybris <hybris@mojatatu.ai>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/sched/cls_flower.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-Some domains can reuse it.
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 1cefea571efd..f5acdeb0e2a6 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -1358,17 +1358,29 @@ static int fl_set_vxlan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 
+ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 			     int depth, int option_len,
+-			     struct netlink_ext_ack *extack)
++			     struct netlink_ext_ack *extack, u8 key_ver)
+ {
+ 	struct nlattr *tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_MAX + 1];
+ 	struct erspan_metadata *md;
+ 	int err;
+ 
+ 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
+-	md->version = 1;
++	md->version = key_ver;
+ 
+-	if (!depth)
++	if (!depth) {
++		/* No mask attribute supplied: exact-match every field the
++		 * key set, keyed off the key's own version so the v2 dir/hwid
++		 * bytes are masked without touching the overlapping
++		 * timestamp/sgt bytes of the union (see 292207809486).
++		 */
++		if (md->version == 1) {
++			memset(&md->u.index, 0xff, sizeof(md->u.index));
++		} else if (md->version == 2) {
++			md->u.md2.dir = 1;
++			set_hwid(&md->u.md2, 0xff);
++		}
+ 		return sizeof(*md);
++	}
+ 
+ 	if (nla_type(nla) != TCA_FLOWER_KEY_ENC_OPTS_ERSPAN) {
+ 		NL_SET_ERR_MSG(extack, "Non-erspan option type for mask");
+@@ -1509,6 +1521,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
+ {
+ 	const struct nlattr *nla_enc_key, *nla_opt_key, *nla_opt_msk = NULL;
+ 	int err, option_len, key_depth, msk_depth = 0;
++	u8 key_ver = 1;
+ 
+ 	err = nla_validate_nested_deprecated(tb[TCA_FLOWER_KEY_ENC_OPTS],
+ 					     TCA_FLOWER_KEY_ENC_OPTS_MAX,
+@@ -1607,9 +1620,11 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
+ 			key->enc_opts.dst_opt_type = IP_TUNNEL_ERSPAN_OPT_BIT;
+ 			option_len = fl_set_erspan_opt(nla_opt_key, key,
+ 						       key_depth, option_len,
+-						       extack);
++						       extack, 1);
+ 			if (option_len < 0)
+ 				return option_len;
++			key_ver = ((struct erspan_metadata *)
++				  &key->enc_opts.data[key->enc_opts.len])->version;
+ 
+ 			key->enc_opts.len += option_len;
+ 			/* At the same time we need to parse through the mask
+@@ -1618,7 +1633,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
+ 			mask->enc_opts.dst_opt_type = IP_TUNNEL_ERSPAN_OPT_BIT;
+ 			option_len = fl_set_erspan_opt(nla_opt_msk, mask,
+ 						       msk_depth, option_len,
+-						       extack);
++						       extack, key_ver);
+ 			if (option_len < 0)
+ 				return option_len;
+ 
+-- 
+2.43.0
 
->=20
-> Best regards,
-> Hal
->=20
-> > +
-> >  struct starfive_clk_priv {
-> >  	/* protect clk enable and set rate/parent from happening at the same
-> > time */
-> >  	spinlock_t rmw_lock;
-> > @@ -116,6 +126,7 @@ struct starfive_clk_priv {
-> >  	void __iomem *base;
-> >  	struct clk *original_clk;
-> >  	struct notifier_block pll_clk_nb;
-> > +	const struct starfive_crg_domain_info *info;
-> >  	struct clk_hw *pll[3];
-> >  	unsigned int num_reg;
-> >  	struct starfive_clk reg[] __counted_by(num_reg); @@ -123,5 +134,6
-> @@
-> > struct starfive_clk_priv {
-> >
-> >  const struct clk_ops *starfive_clk_ops(u32 max);  struct clk_hw
-> > *starfive_clk_get(struct of_phandle_args *clkspec, void *data);
-> > +int starfive_crg_probe(struct platform_device *pdev);
-> >
-> >  #endif
-> > diff --git a/drivers/clk/starfive/clk-starfive-jhb100-sys0.c
-> > b/drivers/clk/starfive/clk-starfive-jhb100-sys0.c
-> > new file mode 100644
-> > index 000000000000..eb3cd33e2309
-> > --- /dev/null
-> > +++ b/drivers/clk/starfive/clk-starfive-jhb100-sys0.c
-> > @@ -0,0 +1,150 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * StarFive JHB100 System-0 Clock Driver
-> > + *
-> > + * Copyright (C) 2024 StarFive Technology Co., Ltd.
-> > + *
-> > + * Author: Changhuang Liang <changhuang.liang@starfivetech.com>
-> > + *
-> > + */
-> > +
-> > +#include <dt-bindings/clock/starfive,jhb100-crg.h>
-> > +#include <linux/init.h>
-> > +#include <linux/platform_device.h>
-> > +
-> > +#include "clk-starfive-common.h"
-> > +
-> > +#define JHB100_SYS0CLK_NUM_CLKS
-> > 	(JHB100_SYS0CLK_GPU1_NCNOC_INIT + 1)
-> > +
-> > +/* external clocks */
-> > +#define JHB100_SYS0CLK_OSC
-> 	(JHB100_SYS0CLK_NUM_CLKS +
-> > 0)
-> > +#define JHB100_SYS0CLK_PLL0
-> 	(JHB100_SYS0CLK_NUM_CLKS +
-> > 1)
-> > +#define JHB100_SYS0CLK_PLL1
-> 	(JHB100_SYS0CLK_NUM_CLKS +
-> > 2)
-> > +#define JHB100_SYS0CLK_PLL2
-> 	(JHB100_SYS0CLK_NUM_CLKS +
-> > 3)
-> > +
-> > +static const char * const jhb100_sys0_ext_clk[] =3D {
-> > +	"osc",
-> > +	"pll0",
-> > +	"pll1",
-> > +	"pll2",
-> > +};
-> > +
-> > +static const struct starfive_clk_data jhb100_sys0crg_clk_data[] =3D {
-> > +	/* bmcpcierp */
-> > +	STARFIVE__DIV(JHB100_SYS0CLK_BMCPCIERP_NCNOC_MAIN,
-> > "bmcpcierp_ncnoc_main", 6,
-> > +		      JHB100_SYS0CLK_PLL0),
-> > +	STARFIVE__DIV(JHB100_SYS0CLK_BMCPCIERP_NCNOC_CFG,
-> > "bmcpcierp_ncnoc_cfg", 12,
-> > +		      JHB100_SYS0CLK_PLL1),
-> > +	STARFIVE__DIV(JHB100_SYS0CLK_PCIE_REF_CML, "pcie_ref_cml", 24,
-> ...
-> > +	/* gpu1 */
-> > +	STARFIVE__DIV(JHB100_SYS0CLK_GPU1_NCNOC_INIT,
-> > "gpu1_ncnoc_init", 10,
-> > +		      JHB100_SYS0CLK_PLL0),
-> > +};
-> > +
-> > +static const struct starfive_crg_domain_info jhb100_sys0crg_info =3D {
-> > +	.clk_data	=3D jhb100_sys0crg_clk_data,
-> > +	.num_clk	=3D ARRAY_SIZE(jhb100_sys0crg_clk_data),
-> > +	.ext_clk	=3D jhb100_sys0_ext_clk,
-> > +	.num_ext_clk	=3D ARRAY_SIZE(jhb100_sys0_ext_clk),
-> > +	.rst_name	=3D "jhb100-r-sys0",
-> > +	.power_domain	=3D false,
-> > +};
-> > +
-> > +static const struct of_device_id jhb100_sys0crg_match[] =3D {
-> > +	{
-> > +		.compatible =3D "starfive,jhb100-sys0crg",
-> > +		.data =3D &jhb100_sys0crg_info,
-> > +	},
-> > +	{ /* sentinel */ }
-> > +};
-> > +
-> > +static struct platform_driver jhb100_sys0crg_driver =3D {
-> > +	.probe =3D starfive_crg_probe,
-> > +	.driver =3D {
-> > +		.name =3D "clk-starfive-jhb100-sys0",
-> > +		.of_match_table =3D jhb100_sys0crg_match,
-> > +		.suppress_bind_attrs =3D true,
-> > +	},
-> > +};
-> > +builtin_platform_driver(jhb100_sys0crg_driver);
-> > --
-> > 2.25.1
