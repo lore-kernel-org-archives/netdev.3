@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC86288C0;
-	Sat, 19 Sep 2026 00:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBA61DF261;
+	Sat, 19 Sep 2026 00:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789777295; cv=none; b=nfUe/n6NGAp9oZ08mdLbKL2pXT7jxwOHCZlCecg+H5vfLktvyT4O6cPL9o6b70Lcr11ZCYp6kOjx4kcbLcMALlUuHG6V0EoFfOnnvPSXE0sUo92x2vjFSkLRTsmjxMGeZYJqWdkhMZycDqGSoUquHO4ATE4lxntTn1N3/Ul/Qvo=
+	t=1789777296; cv=none; b=Bwu+OkvEGBjeeJ7yQThHeS0OjX4MNgcx2CA+EwNzu64mE/CjkiQX9i6YkLk0o6GWW55BhqarrHFlxSbP3QpN2r1xBWnIvlMDlvXqHCs2lJ9pkKFXkxq6BUY+z+/lcR7Tlm4Q0nmnqsJzDrhybJfb/QVgMwqFn4HQz5oTts3hFbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789777295; c=relaxed/simple;
-	bh=dLcg8FMRNBbFqtwTxYoZJx0LlIxo+EPgppryzxDb5MU=;
+	s=arc-20240116; t=1789777296; c=relaxed/simple;
+	bh=1EO/dGRjm6Y4B4HUXDkLZTqawYnOPjV6vOpjR7sIqxU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QqJBe92HsL57NqvqLQvbs4J2/qTIjeMOYoWLnpq28xSxtiZaHiEd/kLwMlwUx58QlVdeGk2Rdl0aPLWGeSTARZlIHFAIJpWRonDCMq2lUjGdTEz5AS6w1zuJQGvJbbtAhfNlgiYHJcsVkw3L8KIa+fXsR4jaVrI2PMlRb5IPCOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4H330Pn; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=n+OCi6ZGa7Bx5i5wx7khhP+F3xlj4G5PnjkEQRcswCrqPMwY+QC4oU3ZvQQp7UJve7FOD/lAZoMiSok+TymbOamHgvAvRPI03z09/Kn4vVDa1IyBkwR7eGbWwRx04eKOHFjazbX8K5LexPqBH3F/vDJMQ+ew8QKXEsNELEh/+cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jwi8EhvU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4H330Pn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CB51F00899;
-	Sat, 19 Sep 2026 00:21:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jwi8EhvU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668161F000FF;
+	Sat, 19 Sep 2026 00:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789777293;
-	bh=xgH3biHy5t7OBbuIo8qVWpHv4CzRfPKd4gz8cj7F4V8=;
+	s=k20260515; t=1789777295;
+	bh=oCHNE/wb9SG8U8pLhk/HJgT9bIWRhteW83fZeZ5Gcn0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H4H330PnERbOmRxpKdHjtkzGtgv+oUpB89jwsQy5+ELP0vfCSTEmUvjpfkyWecRPY
-	 y8S1MJj1Q7njCc0emoXyBetjm2xwoR4sgRlrbKrosaV7ugY4R61Y7nIgNi1euEVh05
-	 0fpCjl3HFH8I5sAqQi9BFFfHTyGffxgvbd4Izw9leVoyg3AWE2Hr6EvthJN9Xtr0vl
-	 FOYx8GkoDEE73ZfC+5f0SCvrT5IyOuIYB1AE2f9rqpsxDwMzz4zHFK2YkcJgKZFdft
-	 hdbDf8MdtIiVN7Ty27k+mm+MqnRPKCK8jm4HnHZVIl0WXU+K3L/FZS8L0rLHZzFkw/
-	 0LDTP/Uq0kUbA==
+	b=Jwi8EhvUawm+ehv8QMypJXO8verN0uKG/800Nnl0dVJKnUCtWb77LslPV5Ww/jViU
+	 OAsrhp5vRlBzt8cUWMPoVfygAmyysPXc4odB3H6rHxqt94HnRqOgEcWVFJks9HzRR8
+	 kudl55/V42ZRRw4iTssMkqTiPF8ATJcd3tytjPxEH1nkJ8egMOZYjxrUWBREpYtzo6
+	 gcJ3lfYVx4enPPM8s0ZV4w7/40lKX6ayiNDQfUvW3OGTLnQnmnbLTxk2rkn7ykqJ3M
+	 UN41GC0WpElrcXC3qxyqcX+9mZOAWfaZejL93XRZbVVPaYi1Yci51qmNPbbbkEiFUl
+	 srK+zkF/If3Qg==
 Subject:
- Re: [PATCH net-next v2 3/5] net: account per-CPU netdev stats to memcg
+ Re: [PATCH net-next v2 4/5] vxlan: vnifilter: account the VNI node to memcg
 From: netdev-bot+sashiko@kernel.org
 To: alishmery18@gmail.com
 Cc: netdev@vger.kernel.org, idosch@nvidia.com, kuba@kernel.org,
  pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
  andrew+netdev@lunn.ch, horms@kernel.org, razor@blackwall.org,
  roopa@nvidia.com, linux-kernel@vger.kernel.org
-Date: Sat, 19 Sep 2026 00:21:32 +0000
-Message-ID: <178977729260.22033.10416984208482997217@kernel.org>
-In-Reply-To: <20260916193449.2552039-4-alishmery18@gmail.com>
-References: <20260916193449.2552039-4-alishmery18@gmail.com>
-X-sashiko-severity: Medium
+Date: Sat, 19 Sep 2026 00:21:33 +0000
+Message-ID: <178977729399.22033.3228962563095615567@kernel.org>
+In-Reply-To: <20260916193449.2552039-5-alishmery18@gmail.com>
+References: <20260916193449.2552039-5-alishmery18@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,107 +51,55 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
 
-- [Medium] The accounting change only covers the plain
-  `netdev_alloc_pcpu_stats()` form, so per-CPU stats belonging to one…
-
-Pre-existing issues:
-- [Low] Concern that the change is a memcg-isolation bug fix and
-  therefore lacks a required `Fixes:` tag identifying the commit that…
+- [Low] Missing Fixes: tag — the concern asserts that because the patch
+  corrects observable memory-controller behavior for a long-lived per-…
 
 --
 
-net: account per-CPU netdev stats to memcg
+vxlan: vnifilter: account the VNI node to memcg
 
-This changes the plain netdev_alloc_pcpu_stats() macro to allocate with
-GFP_KERNEL_ACCOUNT instead of GFP_KERNEL, so the per-CPU stats block is
-charged to the memcg of the task that created the object.  The devm_ and
-explicit-gfp variants of the macro are unchanged.
+This switches the struct vxlan_vni_node allocation in vxlan_vni_alloc()
+from plain GFP_KERNEL to GFP_KERNEL_ACCOUNT, so the per-VNI node is
+charged to the caller's cgroup like the per-CPU stats block that follows
+it.
 
-v1: https://lore.kernel.org/netdev/20260909092645.3105263-1-alishmery18@gmail.com/
+Link: https://lore.kernel.org/netdev/20260909092645.3105263-1-alishmery18@gmail.com/
 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 1f0710eef185b..7c659012355dd 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -3171,7 +3171,7 @@ static inline void dev_dstats_tx_dropped(struct net_device *dev)
->  })
+> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+> index 9a1baca39d8b0..fbff52c450c07 100644
+> --- a/drivers/net/vxlan/vxlan_vnifilter.c
+> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
+> @@ -710,7 +710,7 @@ static struct vxlan_vni_node *vxlan_vni_alloc(struct vxlan_dev *vxlan,
+>  {
+>  	struct vxlan_vni_node *vninode;
 >  
->  #define netdev_alloc_pcpu_stats(type)					\
-> -	__netdev_alloc_pcpu_stats(type, GFP_KERNEL)
-> +	__netdev_alloc_pcpu_stats(type, GFP_KERNEL_ACCOUNT)
-
-[Severity: Medium]
-Does this move the accounting asymmetry rather than remove it?  Several
-callers allocate more than one per-CPU stats block for the same object,
-and only the ones going through this macro become charged.
-
-net/sched/sch_generic.c:qdisc_alloc() does:
-
-	sch->cpu_bstats =
-		netdev_alloc_pcpu_stats(struct gnet_stats_basic_sync);
-	if (!sch->cpu_bstats)
-		goto errout1;
-
-	sch->cpu_qstats = alloc_percpu(struct gnet_stats_queue);
-
-so cpu_bstats is now charged while cpu_qstats stays uncharged for the same
-qdisc created by tc qdisc add.
-
-net/sched/act_api.c:tcf_idr_create() has the same split:
-
-	p->cpu_bstats_hw = netdev_alloc_pcpu_stats(struct gnet_stats_basic_sync);
-	if (!p->cpu_bstats_hw)
-		goto err2;
-	p->cpu_qstats = alloc_percpu(struct gnet_stats_queue);
-
-Two of the three per-CPU blocks of one tc action get charged, the third
-does not.
-
-The commit message says:
-
-    The devm_ and explicit-gfp forms of the macro are left alone.
-
-but it does not mention these adjacent alloc_percpu() companions inside the
-same functions.  Were they deliberately left out, or just missed?
-
-Related, the same net_device field ends up charged or not depending on which
-macro a driver picks: dev->tstats is charged when it comes from
-netdev_do_alloc_pcpu_stats() in net/core/dev.c, and uncharged when a driver
-uses devm_netdev_alloc_pcpu_stats(), as in liteeth_probe()
-(drivers/net/ethernet/litex/litex_liteeth.c), stmmac_dvr_probe()
-(drivers/net/ethernet/stmicro/stmmac/stmmac_main.c) and
-ax88796c_probe() (drivers/net/ethernet/asix/ax88796c_main.c).
-
-And the user-triggered netlink path in net/ipv6/seg6_local.c still builds
-per-CPU SRv6 counters with plain GFP_KERNEL:
-
-	#define seg6_local_alloc_pcpu_counters(__gfp)			\
-		__netdev_alloc_pcpu_stats(struct pcpu_seg6_local_counters,	\
-					  ((__gfp) | __GFP_ZERO))
-
-	...
-	pcounters = seg6_local_alloc_pcpu_counters(GFP_KERNEL);
-
-reached from parse_nla_counters() during route parsing.  Should that wrapper
-add __GFP_ACCOUNT too, or is leaving it out intentional?
+> -	vninode = kzalloc_obj(*vninode);
+> +	vninode = kzalloc_obj(*vninode, GFP_KERNEL_ACCOUNT);
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but the missing accounting in
-netdev_alloc_pcpu_stats() is a pre-existing condition, and one review pass
-asked whether a Fixes: tag pointing at 3c7be18ac9a0 ("mm: memcg/percpu:
-account percpu memory to memory cgroups") is needed here.
+This isn't a bug, but one review pass suggested this change in
+vxlan_vni_alloc() should carry:
 
-Checking the closest precedent argues against it: commit c948f51c1654
-("memcg: enable accounting for net_device and Tx/Rx queues"), which
-introduced the GFP_KERNEL_ACCOUNT usage in alloc_netdev_mqs() and
-netif_alloc_rx_queues() that this patch cites as its parity target, carries
-no Fixes: tag and went in through net-next as an enhancement.  3c7be18ac9a0
-also never claimed to charge allocations that omit __GFP_ACCOUNT, so it does
-not look like a valid Fixes: target.
+  Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
 
-Is treating this as an enhancement without a Fixes: tag the intent?
+on the grounds that it changes observable memory-controller behaviour for a
+long-lived per-VNI allocation.
+
+Is a Fixes tag wanted here?  The comparable precedent, commit c948f51c1654
+("memcg: enable accounting for net_device and Tx/Rx queues"), added
+GFP_KERNEL_ACCOUNT to the netdev allocations this builds on and carries no
+Fixes tag, and the sibling patch accounting the per-CPU netdev stats in this
+series does not carry one either.
+
+There is also a behavioural side to it: with GFP_KERNEL_ACCOUNT, VNI
+creation that previously succeeded can now return -ENOMEM once the calling
+cgroup hits its limit, which may not be desirable to backport to stable.
+
+>  	if (!vninode)
+>  		return NULL;
+>  	vninode->stats = netdev_alloc_pcpu_stats(struct vxlan_vni_stats_pcpu);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916193449.2552039-1-alishmery18%40gmail.com
