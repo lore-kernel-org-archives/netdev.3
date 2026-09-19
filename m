@@ -1,131 +1,132 @@
-Received: from mail-pj2-f14.google.com (mail-pj2-f14.google.com [74.125.227.142])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0F538F920
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 18:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A8B2931F4
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 19:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789841557; cv=none; b=A3WKRPTWMCUNqVcUOK5o5aet8CgfNPdtXgpNf3fvzgnhyujCakyKVpmNeIXIUg4YYNdyuRi11kNH+EtbSHy9PjdxynyJu05n1uxE3QOxQpPjYF9oxCNhG7S2L4P7zWldQ3WKa4/5T9QdvcX2R8EiLps1SYoM/B3tML2zfuqNANI=
+	t=1789845592; cv=none; b=OPBf0/KbfIR7LLDf8qbIRgYsVO9CGjbaedK//K8X9L93vpUXk8oPeW7efmmVnM2NUJQBR0hosxkGzljToPyHhXTOWoijL3G9wTHV6qyV2uyUtj/THfbTKlxk9YkIdnm9OzBa2unNRDQW8Pp9BzE12tdcEaaMZilBU4EuO+drbAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789841557; c=relaxed/simple;
-	bh=/2hT6zgP+mOS8MJpGIqUTtaf0kM1o48RlJDVs7oiUU8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=aAbyus5/yJaCsf8h0W3q9zCwV48qhaNw2qS1thiZzlLbF7iATeLG8ogSNK6jlALjrDCJ0PuMqTtKLISRJDuXvAzNkjNcaBWKsUvDKmTx5BMH3O5chZajZSNRsJ1aBAZOEzoaqhXXRsyfncP7Uuempg6ERI/pRKpEqDCkikYc25M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hlj+FH5p; arc=none smtp.client-ip=74.125.227.142
+	s=arc-20240116; t=1789845592; c=relaxed/simple;
+	bh=7eA14pkMyRijHLSluOg7mImGg2JgMqno00/5HbUy+ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FTLqAOsMf1h43LaSNn8SmWqoXC2obpx6N+oKvG+OXapnO0N36xWHhjac57Y4oDvobXKYb3JVqKipKkupQ8oFi4Af3osmXYVgLMTl8BKR43a2Q2fad3coFtpQd+RV3GXZculQof9Q7XeDXGvpXoYpjd/VDJl+C8ucabsmxJKCMEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iaIJ6n/z; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hlj+FH5p"
-Received: by mail-pj2-f14.google.com with SMTP id d9443c01a7336-2d747f0135fso17175355ad.0
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 11:12:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iaIJ6n/z"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f62ccdb1so606055f8f.1
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 12:19:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789841538; x=1790446338; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=091mGJb963fZm7TN81QDLSJJlLLidQRDCWzb3G3L/U4=;
-        b=Hlj+FH5pty3MgW9dhXqZ4rezBLYI9J1ybtdgEvkGYQuFV9gd5xWcQpxYB1uMlnKHYc
-         7v+osd5n1XNmTBdcfYJSDWQma371G1Z0KeYo8bkuv50CYJ1a3Q70vRTQWgB6wnJQjhjz
-         I8s3Il6wiIkQm1GACBuzn6tBbPqxMiCK1vQ6wibbuHTfkZHqsjc7Ou483h+K6485x5ZX
-         TlyAgyMLrorDwvtMqfPR0pW0S2UAm4g6npucd+Ai10OgS1Y/Rb/gA0k9nlm+gawDMf2I
-         DkqnKumGLjhk728cJhyMJlIeeJm6GB4TVDc6XpoVNznu8FxGbKsI2zMZ8Gbut3kilgdf
-         vpeQ==
+        d=gmail.com; s=20251104; t=1789845589; x=1790450389; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DNn5LfmzIp0Qiso4NKlxppBej7z4xYBUzlf1B0pA+mk=;
+        b=iaIJ6n/zHZeWTzuP2gE5ZsxtT8MKkcx2CYcDnf79Lc4dSRxi8oUKDgrvz38rz/AukK
+         jt+GuCGHOOLozo2p6CZh5tgnBN3INqnuHheCctPcbqHE+O6cKyHmW0742ZIRqQwwNe/H
+         v5RhqInYwmTYHwRFVajiJS2NbKAFUA802vFyD4HAaPDkQqOQglJVU+GK0kLW9aGhM4Wd
+         jS3vl4+a29Kh0h5p6ifyJPhzTRzH0TvesKkf1y/Fe+bq+F12cqMp8E3Rr+dNPyxii/zA
+         ehnF8zAbM+QtLtu5ohM+q6I51R41FIhak5rZ+AZcCExjpunUQFDek+cVdYBclu82UCFG
+         bryA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789841538; x=1790446338;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=091mGJb963fZm7TN81QDLSJJlLLidQRDCWzb3G3L/U4=;
-        b=pnbokbqAqf6VPl2SYhggtumDHAFbOloLAytZoIpgtXqG5rWt3mRzg2+DrUf09rkR07
-         lQUvKx2pvSOMYtAR44lgot9mabyQBAX+C3QiaS1tFqnz68Dfqz3DEysdYYKuEzp8slvJ
-         1vGUiUBdV1rXzAEyhXt+lUAjS4FrUTokbpXD6iOTMgA4c0Ugnlp4urY3kxeyoCJoy667
-         2CeHRQVFjEurtl0B/hNRnd/RWhFQ6HIcYcvME0eBkhKwOf44EV9chvmNDYWKLZazhIl+
-         A/efO/ej+0Iw1Yaf06znkM/cJ61ooxed1N7sahYZv/C6NhQcvHGgHvvkqyggw/27OWu9
-         TDnQ==
-X-Gm-Message-State: AFuF++k1C1xzjt2erbWGd4V8LqxpTxLTI8UqsoKy820Ap2Iog0ypplpw
-	M/bjfDF86tlT8mPh9qLGLCOsuKFlONrCjP7bcbarmS2eB+EKJ+E6GOC8
-X-Gm-Gg: AYBFou3/6fVEVFCejAhpOnmWyOfFBGakWB+aQQXMkLO755VCQdHrHKAbji09/oVf2L/
-	vb90la/Wcq86285d+7i6aXJY52pi5/lAmwb8OhQ6CYi2oNGgxxDMNh1oodaf+WeLdA8yE/TLU9d
-	tW3/t8g5nRwIDtfLA1skE67Shf65ul3sTCbqljIBU5HFMHzNMwIym1zkLS6b3BjkhGXN4jiJBgB
-	rcJAC+EHj8erfjOrntOT7XIRhO6bBOPAz6OJFyzpFaeGAaJeJEar3mf/CsKPt0DRbNEoxoNHgqB
-	2A2rvwF3bmYqYOa5ST01vu6I08adRR/lKcjCHwTlLHBQHd9xOizUfegJM2d809GV1b53EWDoHO1
-	pn8Pr2NcIIUNeoUWP10T+r9aTxzYyPUBMZhnUe41TfttpN/3ZLg3aQ+Srtrw2EcmpJGPR83qtPR
-	lnbgVxzFQrbpdsstZMQ2VnOPPltRMO8anNuWZoYXl0g5aAjriS+Bq6rn+5sapwj4iVf/Pz7JyAb
-	25YYrmVn+OlXhet8+hg7JXLyJhf89YKQtDF3K5sHZMvZx4aXUOA3kCpYg7Tb90Rd2kBnd5GX3a+
-	kQ7f
-X-Received: by 2002:a17:90b:2681:b0:39e:6c6a:657d with SMTP id 98e67ed59e1d1-39e6c6a67c0mr4274816a91.64.1789841538426;
-        Sat, 19 Sep 2026 11:12:18 -0700 (PDT)
-Received: from localhost ([153.61.198.251])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a02738654csm3624279a91.3.2026.09.19.11.12.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Sep 2026 11:12:17 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789845589; x=1790450389;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DNn5LfmzIp0Qiso4NKlxppBej7z4xYBUzlf1B0pA+mk=;
+        b=S+iPEm3ObjiMFrDjiKTkryn4rYK3KPFGbZDIS41A8+Me/R6B8g+G7Npzm8ldQvXDch
+         3IBjxUvhWfYsPZ4RiEQWMMoSF94pj1Xa16jxFlVT9CKP89Y2d7lPJsAGLHgDo+wV/R/U
+         0hAy4QnTjybEcAplUEMJQtMITZXrFIpLXvzdDCcdLJDPRJJ/gq+sK3VKMMYfwayLeY6k
+         yqAMwUyAQIS2IWbk6iZtEZJoRsrSlDxFRRPjAvLsOoFhP/xwJl2S2juYe6ug4Ek/OfhH
+         dfaxurI91AYRxPVn152fZjnqQV1Fx0owHjU6M0fLt26x08bOalJO7ESqLixwtnsI+e2s
+         hWlw==
+X-Forwarded-Encrypted: i=1; AKwUvBxANb8xJcMxUXfPtOVy/ABJIPM3vbs37z6gjNxuOorSa4ndi4fFozJBNiaEa9fP4N5Ligc39H0=@vger.kernel.org
+X-Gm-Message-State: AFuF++l1nQqUrdqbqinTKdbMfhJRNtOUDgJyPd88c5z+1tuHdTg8/wYR
+	zZtozcQbcIKzMxroNaIHXH4YofRX8vfuSOsQsPYVw5m8YEI9Xv1pOziYKfCmSWAB69Ms15G5
+X-Gm-Gg: AYBFou1gTC/lToO8R94CyZgxoYxTj0QX0sAzeBwleceFjkboEeBIpTRlPjPG/SIn7Hy
+	tbxWYLQd2T5R8oPsN1t1AQJbkeMxFPdt8vjQKVoQjP2c9oA2P60eoZpojoyrwwfQGHuKfL9QG9w
+	EyoYqo4UhZGX9qc5Gw99+OWov7cB1BKoJnrcxLD8GNwvHK8SK1a6YTYJvBS4yFMTfW7gBXLocTj
+	ZiMrU5blXDJcFc5mWIY2GUYRVqAvbr6H510g7F/OTuYIU2d1taHSzReSWXW36UeWl1tuWi8RSrc
+	paM+WuvoIJDcTjMlD5u1nQ6/PoaipMZ5+7Wjl/n+viwEO5g4/VIxta6p7qRVNVbGIQQa1lDj9KB
+	cFcgN9ZPingqAQarIh/ofweRLU59p3OFsvPTLVjWOsLQrq1icKSY2oTs6V8A4DnDXWn6yKUAgon
+	PND/EwcbAvIFIs4zAby6wKd+V8Rcnh/qmLD5H3cucHxMox7nLiinxsn4mJzSI2mmg1/hA7EMkIi
+	fdwdsDR3UeZ5VOxTUIh29rxNvwkkCVuKk8q3KpTnxv5Fv/8E6j3
+X-Received: by 2002:a05:6000:41cb:b0:486:fed6:d7e with SMTP id ffacd0b85a97d-4871db11bbfmr10180389f8f.22.1789845589033;
+        Sat, 19 Sep 2026 12:19:49 -0700 (PDT)
+Received: from fedora ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724593bbfsm8097078f8f.27.2026.09.19.12.19.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 12:19:48 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: andrew+netdev@lunn.ch
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dlan@kernel.org,
+	wangruikang@iscas.ac.cn,
+	vadim.fedorenko@linux.dev,
+	maxime.chevallier@bootlin.com,
+	troy.mitchell@linux.spacemit.com,
+	netdev@vger.kernel.org,
+	linux-riscv@infradead.org,
+	spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH] net: spacemit: clear TX descriptor on fragment mapping failure
+Date: Sun, 20 Sep 2026 00:19:37 +0500
+Message-ID: <20260919191937.271202-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 19 Sep 2026 18:12:17 +0000
-Message-Id: <DLJHVEYXMZ6R.1YX59HGMRMYO0@gmail.com>
-Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>, "Jason Xing"
- <kernelxing@gmail.com>
-Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jason Xing" <kerneljasonxing@gmail.com>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <horms@kernel.org>, <willemb@google.com>, <kuniyu@google.com>
-X-Mailer: aerc 0.17.0
-References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
-In-Reply-To: <20260919143732.11772-1-kerneljasonxing@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sat Sep 19, 2026 at 2:37 PM UTC, Jason Xing wrote:
-> From: Jason Xing <kernelxing@gmail.com>
->
-> Greeting,
->
-> It's BPF Timestamping 2.0 that aims to observe the packet latency
-> more efficiently and simply for different protocols. The current
-> series is only focused on TCP protocol.
->
-> At Netdev 0x1a/Netconf 2026, the history, background, motivation and
-> rough implementation of the feature were exhaustively introduced[1].
->
-> History
-> =3D=3D=3D=3D=3D=3D=3D
-> - In 2009, Patrick Ohly implemented the basic infrastructure
-> - In 2014, Willem de Bruijn enhanced the TCP latency observation
-> - In 2024, Jason Xing proposed its lightweight BPF version
-> Detailed slides from 28 to 32 [1].
->
-> Background
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Even though BPF Timetamping 1.0 is comparatively low-overhead,
-> transparent, it's still complicated due to a few points inherited
-> from the design:
-> - Inflexible/fixed reporting phases (qdisc/driver/ack)
->   When we confirm the issue arises from the kernel by using attribution
->   ability of timestamping feature, we need to further minimize the scope
->   until the issue is fixed. That means, we then have to resort to write
->   a few complex BPF progs with the similar functionalities (like skb
->   level tag) which should not happen.
-> - Not enough low-overhead
->   Serving the sensitive applications, an always-on latency observation
->   platform should mitigate the self-impact as much as possible. As we
->   can conclude from BPF Timestamping selftests, there are some blocking
->   and time-consuming points like where reading/writing BPF maps happen
->   in the extremely hot paths.
-> - Minor flaws
->   There are a few minor flaws inherited from the initial design, like
->   missing tagging the last packet[2][3][4].
+emac_tx_mem_map() writes TX_DESC_0_OWN into the ring descriptor for
+every slot beyond old_head as soon as that slot's memset()'d local
+copy is committed with "*tx_desc_addr = tx_desc", i.e. before the
+buffers for that slot have necessarily all been mapped successfully.
+If emac_tx_map_frag() then fails on a later fragment, the err_free_skb
+path calls emac_free_tx_buf() to unmap and drop the skb, but leaves
+the already-written descriptor memory untouched, and tx_ring->head is
+never advanced past old_head (the "tx_ring->head = head" store is
+skipped by the goto).
 
+So a slot between old_head and the rolled-back head can be left with
+TX_DESC_0_OWN set and buffer_addr_{1,2} pointing at DMA mappings that
+emac_free_tx_buf() just tore down, while software considers that slot
+free again. The next successful emac_tx_mem_map() call only rebuilds
+old_head itself; if the DMA engine auto-advances into the following
+descriptor once it finishes old_head's packet, it will fetch that
+stale, already-unmapped address.
 
-All these "issues" sound minor and on their own do not warrant new uapi.
+emac_tx_clean_desc() already treats emac_free_tx_buf() and clearing
+the descriptor as a pair when reclaiming completed descriptors; do
+the same in the mapping failure path.
 
-This RFC don't even have an example of how it could be used end-to-end.
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+---
+ drivers/net/ethernet/spacemit/k1_emac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-So soft nack from me for now.
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index f7f16397a2c2..d641ac26a1e8 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -803,6 +803,9 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
+ 	while (i != head) {
+ 		emac_free_tx_buf(priv, i);
+ 
++		tx_desc_addr = &((struct emac_desc *)tx_ring->desc_addr)[i];
++		memset(tx_desc_addr, 0, sizeof(*tx_desc_addr));
++
+ 		if (++i == tx_ring->total_cnt)
+ 			i = 0;
+ 	}
+-- 
+2.55.0
 
-pw-bot: cr
