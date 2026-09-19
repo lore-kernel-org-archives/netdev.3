@@ -1,63 +1,63 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pz2-f28.google.com (mail-pz2-f28.google.com [74.125.228.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC8230C164
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79253783C5
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789853331; cv=none; b=mUsxUMrzOkXiwPk/XG9T2MD2StqZZHEGDqcwxD9bL9z3+IXvzw5LENhicDH/1g8TvE+ndpbSRbl3epB19TTfX09MfXsNEPTxhDp5uw5n7QCfvylNJv+DxJs4kLAt3iCC5+8Ok2MXhL/91u73MRy6QkEN3/qkNApOQ8U3Olwohe0=
+	t=1789853333; cv=none; b=Eld3SbeUn1VMYULPFGyiabm8iQM/gjeN6hsObGVPM9ze5NMwXLdK+Y/0pbkN17eGf88m7JppTdgZ7UVlgLy+o2pkLDmKX7cFHtVIQ4O3iFz6Og1npZQ8td7ZczWn2NR0mlqrhRgS74w8TB9sHLtgVTzbp8v14MOpUXlOvXtC/tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789853331; c=relaxed/simple;
-	bh=29cNs/juRNC0M4hpw8e7kSBi1mL82XHAqXpYfgtHysY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Phptun2pSL98yODGFwixgIQkIihQhD37hJMSVfr4I/d1x6IuwJqRGtKNRf3uRwNvP4SxjNsbAtxBf5/atmgBHoDqwkIeRQS/P0v2H4v75pOpdpl1PqaSsaaYjG4xNTQjtgatZs0bFyq26YCHsqW9xtWV2JWXascjwAUgUjVv8Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uf/vWVhi; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1789853333; c=relaxed/simple;
+	bh=qi+8UfjOHnuyvfYtoqMX/7Q8LuPSKEg1QIzac8Ia9Ko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X8kz20x4/qwgnEqitFTBL2/JoUo5aaeIRKnQYYrxI82d9C+wr64hGzBr0ea9IEN+UvfVg24pozhNt03iP5jDmoZN4rvcck49v4qZU6bbO0b2xPquDMuSmEZIEYwu7xnEQIQwdAzmaF+tV5cX8rpnbW6k0IhHe4ddaqZc+M2EKkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U9q2cbN6; arc=none smtp.client-ip=74.125.228.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uf/vWVhi"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469f20513so1562491b3a.0
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:28:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U9q2cbN6"
+Received: by mail-pz2-f28.google.com with SMTP id 41be03b00d2f7-cc4ab4fe290so519775a12.1
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 14:28:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789853330; x=1790458130; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789853331; x=1790458131; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pqTVypEDQvnt8igDXJ4umo5MPYQdKNJ/mfw7e+Zzmf8=;
-        b=Uf/vWVhijI7Q055W2aM5P3ecoSnYYGNj8a3JmiDjKOxf6UxDWgksB/ahuZXaZQadnN
-         ih71NvyCDn/5Q7KcQZAoUI1Yd6/Zgtr4k/V1RttgosstT+81e932hVh9H33hrDPKZn6n
-         pspl+4WQzjSoFVqv1PLtxVNXbFSGtksBd/U5t1SNUEHfQ7ywBpl1Ls5kCle1H3v68RiR
-         NErn/9Q5OTmBDRtDPoNE+ix09GkEbWXkB5BGk+G2IUzDt59OvWi69rJPnFoGnkQWMsAr
-         vnQvPz/vM+pBMnJ3V/NHUZH6haQFSIyX8nONrRM4sdBYkr8UEsn35dkTbXRbzt7nngXA
-         j7tQ==
+        bh=AV643nCtB/hqzvQNISm7doHVXi7iv2eQBCiZ3N3vJaE=;
+        b=U9q2cbN6xDeijWvU4MSlyLbavSnMLfP1I/ryc16wfW9CjoVZ812oQUoSbeQiBYRkWh
+         hnssi6huPOjxR74pa61XWbST8DdNOueEgQbZFQ4n2/OSl8Ca5uB0hH3GC8H0oqxyb9Ba
+         5dWBr8lC/J1GDezpPYMjdttOu9g32FmNI0gpGE6rSe7TT3gZz2pdDY3QGvvkJS5q9tdV
+         ZfY392Kctre4OVzRNEonhdu/xe+8/+Os1Kl+5YExz8geqEQTdlVlsLfH6l0oWkEYX+2s
+         jjRyUE5lHOg0eDPH0kmUIVj1oq/cQYImyKfy4WBuY/IqpHkz0YQZZWsog49KE/CdZXWE
+         Ow8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789853330; x=1790458130;
+        d=1e100.net; s=20260707; t=1789853331; x=1790458131;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pqTVypEDQvnt8igDXJ4umo5MPYQdKNJ/mfw7e+Zzmf8=;
-        b=oXM8TaEkzgzRBqBBTXCKTroIA+SKVjkc1N+WkE4xj/Mw/bF8ZA3EVk8QHwjYohc43U
-         yjAJZBA6ZV9fMHHMkIlBIKAqZMaOr2pucxMPeMeurgBPA2NMTYWwzC8yiiHu7oBpVfbh
-         ih0O5eK+34YXmO8ZXmwhVq2QQk+U0ws0JCE1drnDzDuwQzKwPpGudGJq26Sw7TLyDpz5
-         dEd7sKPAHBemGZj7RTFvDp+H3nrAOXyVTl8p+PcxbBIOZBtaBXxffEDhb4u38upLTslD
-         r4ROpgbG+ME/B3NOboj0XraJEahK5si7WKWZRvqHPBUKz5ZgAE9OZ3OBKlWJ86BLxzR4
-         r6fA==
-X-Forwarded-Encrypted: i=1; AKwUvByRpgMNbESmFto+BTaosy9tE/10KPfbs2gNlZ4wKA3TlZq0Q5J8/bJFtM5J0UIhNsK+qre2Um8=@vger.kernel.org
-X-Gm-Message-State: AFuF++loxS5Nrj3FS/C2NsUvvQwlNa7/NXUCiyTbSvk3Tt/+rEym4VMG
-	HdgJ7T3pLrTFwtmliSX+XEz9Zba2z2n2eV6qcnoZfbgFKKieh2TAD3vJ
-X-Gm-Gg: AYBFou0UOCiC/keBoNdJeQtMb+4PZX4FN3Y5QWXTZHtO5eKIPFLisPY5fRZxST0iItz
-	RHMSgzIz9sFHLzMYz5jfynkNs0R7NFOXlo3Ha2GJfKmgSoQXSeOJcaMeqInFVYl/Ld76fX10+r8
-	8c/pqpVc5KKvv4+hq2gBThqk+FdWl+BnJBHlZBc51QQcAoXegToQQc/QBKxgLcdrJHynrhbcQOT
-	UHPwxvyspwTDAshjoL213S22Ao0B/Rman7krvgLMA+80YZQqUKCFZSeLm3M6nBz4G7+8FcfgGDx
-	hkD7TWGGl0HEbXQQ/UxfeARVISjisOnANjU9V24bc0tKMWcAzb5CefawJvSrKH0JRE20RvWArm9
-	xyEgCmsoAC8qzbcsw4VYcVzJuezNuAfpqh3ksPsl65rxsBmYS+ge6xCnIXWqKFB73a9lFIje4LE
-	1ChGeuvNgsCJbt4jzrwIWFC0OwNkkDg1+YUbW6v9bMJi4UCTSl6ZDE6BnzU/x/jZ7Plki32MEG1
-	Zl/TNtrPp5ixP7W+7sluKpe/qgZzauuNNEcUwtUUet6bPF+1T2Iq1/jWhVAYjE9+FPusxPjj4SU
-	AZ/VffZXJQ==
-X-Received: by 2002:a05:6a00:2d20:b0:845:ba94:a56 with SMTP id d2e1a72fcca58-874dc5eb6c5mr10065458b3a.5.1789853329884;
-        Sat, 19 Sep 2026 14:28:49 -0700 (PDT)
+        bh=AV643nCtB/hqzvQNISm7doHVXi7iv2eQBCiZ3N3vJaE=;
+        b=OeXDLqhFEq4RVSSCCwVLL4lnZPxz3c/QEYY+MTFhh20JeVV6tP35IKWIStTiAqw1NR
+         kW9GiopNCfP2GxrKUL8utRR/hJ0yZPsbXjvNImBksjKupOO4hrVxW2/33Nfqp0QClwsG
+         MAbd8CKXfmPRIzMy735G9h8rjJH86bB/nMsY4tBL6K7Ai1mqURCBjF5iL8JMUtUNo2gr
+         1A4/T9RjpdgHacH6pfyQERg0o8XYh62ZIhpVdrFJkB9rJhc/7lNj3KjWU9D9X/B6ArR5
+         QF0h8/lXS3DIF28w/9VhwBtT2KwruggwOo+nU5mwbf5PVhxWA1uFLg0ENI2Z236lRgJf
+         +Y8w==
+X-Forwarded-Encrypted: i=1; AKwUvBxGQRmP1yovUVkVju33N8sncMcpXenvdSt1AJ+w1rYPaWHr1bvDtb8H10nz3GFY5pZpZFb4c5w=@vger.kernel.org
+X-Gm-Message-State: AFuF++kfp7rqCs37vz/BWp3Actv22GNlBmCCortPQbVNmmNuOp8PA6E/
+	jircdHTwuEksnL4zSFJJjdaAzt21cshV+wGDVtXmkV+T9UZQYDr2SB1t
+X-Gm-Gg: AYBFou0O3LER0DqYh4JgnK2Fe+U6IoIUYOu3i9keTpa7pjEgznQnBKHR+Hmh5/sJtXi
+	VkuwA6AzfDXITBQweozoKpHGCPVb7+WNpYd6gXAkjxG51iHiXzAvfaL8jBj9kKYjUUCe7GXgv2I
+	7lNlATi043729ycu+QQi/h5Gj7arwpAr/JZ1BHKnGgadnYHZO6UvdXCnNtkr3M93sABMyEibtLP
+	mwYTuTxw/wNYC5ukjfAEdRLSZCy/mEHa0mZk2YefTiYE37GWh6TPleX4j+NRCg6qz+k7wBLdjm7
+	/J5x0XaDxG3V6jgyBx3NBoWyP7rfI3SP0c9nxZrZ7XslXF9repZeOcFE95vFkPnp0PLAtlOhDWB
+	298/rodc6b+QCkHnPEOJpkImByTSH3zmULoJrY5ouGUuIKBEDljYRwySD7cdJDim1WuI27GllPW
+	7H0SmlpSVgRC0XT6vSg9f1Ab7oIr8x2nn/quCKO5lojqSjKXxDQiXfLZijED4WQx4Wni/UiS9Aa
+	c++yivuBS7mzDqQDTUHWTC/4zCWenFwdoo2coeraGL5rTHL9x69Xli1MgTcy7qpxu8aCUhMJHTc
+	IT0lZyV9FA==
+X-Received: by 2002:a17:90b:2b8e:b0:39e:4c7e:bc5 with SMTP id 98e67ed59e1d1-39e5572d5a2mr6755750a91.19.1789853330851;
+        Sat, 19 Sep 2026 14:28:50 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a94f8c39sm1287929b3a.28.2026.09.19.14.28.49
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cb3284asm6107715a91.14.2026.09.19.14.28.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 14:28:49 -0700 (PDT)
+        Sat, 19 Sep 2026 14:28:50 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
 To: mani@kernel.org,
 	davem@davemloft.net,
@@ -68,9 +68,9 @@ Cc: horms@kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: qrtr: fix kernel stack infoleak in qrtr_getname() and qrtr_ioctl()
-Date: Sat, 19 Sep 2026 21:28:49 +0000
-Message-ID: <20260919212849.3240271-1-benquike@gmail.com>
+Subject: [PATCH] net: qrtr: ns: validate msglen and sq_port in qrtr_ns_worker() and ctrl_cmd_bye()
+Date: Sat, 19 Sep 2026 21:28:50 +0000
+Message-ID: <20260919212850.3240353-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,69 +80,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-struct sockaddr_qrtr contains a 2-byte alignment padding hole between
-`sq_family` (u16) and `sq_node` (u32).
+Two validation checks are missing in the QRTR in-kernel nameservice
+(`net/qrtr/ns.c`):
 
-In qrtr_getname(), declaring `struct sockaddr_qrtr qaddr;` on the stack
-and assigning `qaddr = ipc->peer` or `qaddr = ipc->us` can leave the
-2-byte padding hole uninitialized when copying `qaddr` to userspace via
-`memcpy(saddr, &qaddr, sizeof(qaddr))`. Similarly, in qrtr_ioctl()
-(`SIOCGIFADDR`), writing the 12-byte `struct sockaddr_qrtr` into the
-16-byte `ifr.ifr_addr` without clearing `ifr.ifr_addr` leaves both the
-2-byte padding hole and the trailing 4 bytes of `ifr.ifr_addr`
-uninitialized before `put_user_ifreq()`.
+1. `qrtr_ns_worker()` receives control packets into a single reused
+   4096-byte `recv_buf` via `kernel_recvmsg()` without checking that
+   `msglen >= sizeof(*pkt)` (20 bytes). If a short packet arrives on
+   `qrtr_ns.sock`, `qrtr_ns_worker()` reads stale bytes from previous
+   control messages (or uninitialized heap memory on the first packet)
+   when parsing `pkt->cmd` and its union fields.
+2. Unlike `ctrl_cmd_del_client()`, `ctrl_cmd_bye()` does not verify that
+   `from->sq_port == QRTR_PORT_CTRL`, allowing any unprivileged local
+   `AF_QIPCRTR` socket to send a `QRTR_TYPE_BYE` packet and purge all
+   registered services for the local node.
 
-Zero-initialize `qaddr` in qrtr_getname() and `ifr.ifr_addr` in
-qrtr_ioctl(), and copy the explicit struct members.
+Check `msglen < sizeof(*pkt)` in `qrtr_ns_worker()` and require
+`from->sq_port == QRTR_PORT_CTRL` in `ctrl_cmd_bye()`.
 
-Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 
 ---
- net/qrtr/af_qrtr.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/qrtr/ns.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index cae7af5b9229..8c14c0434b2b 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -1178,7 +1178,7 @@ static int qrtr_getname(struct socket *sock, struct sockaddr *saddr,
- 			int peer)
- {
- 	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
--	struct sockaddr_qrtr qaddr;
-+	struct sockaddr_qrtr qaddr = {};
- 	struct sock *sk = sock->sk;
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index bcb090ee79d4..d7e1a37f0717 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -347,6 +347,9 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+ 	iv.iov_base = &pkt;
+ 	iv.iov_len = sizeof(pkt);
  
- 	lock_sock(sk);
-@@ -1188,9 +1188,11 @@ static int qrtr_getname(struct socket *sock, struct sockaddr *saddr,
- 			return -ENOTCONN;
- 		}
- 
--		qaddr = ipc->peer;
-+		qaddr.sq_node = ipc->peer.sq_node;
-+		qaddr.sq_port = ipc->peer.sq_port;
- 	} else {
--		qaddr = ipc->us;
-+		qaddr.sq_node = ipc->us.sq_node;
-+		qaddr.sq_port = ipc->us.sq_port;
- 	}
- 	release_sock(sk);
- 
-@@ -1233,8 +1235,11 @@ static int qrtr_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
++	if (from->sq_port != QRTR_PORT_CTRL)
++		return -EINVAL;
++
+ 	node = node_get(from->sq_node);
+ 	if (!node)
+ 		return 0;
+@@ -639,6 +642,9 @@ static void qrtr_ns_worker(struct work_struct *work)
  			break;
  		}
  
-+		memset(&ifr.ifr_addr, 0, sizeof(ifr.ifr_addr));
- 		sq = (struct sockaddr_qrtr *)&ifr.ifr_addr;
--		*sq = ipc->us;
-+		sq->sq_family = ipc->us.sq_family;
-+		sq->sq_node = ipc->us.sq_node;
-+		sq->sq_port = ipc->us.sq_port;
- 		if (put_user_ifreq(&ifr, argp)) {
- 			rc = -EFAULT;
- 			break;
++		if (msglen < sizeof(*pkt))
++			continue;
++
+ 		pkt = recv_buf;
+ 		cmd = le32_to_cpu(pkt->cmd);
+ 		if (cmd < ARRAY_SIZE(qrtr_ctrl_pkt_strings) &&
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
