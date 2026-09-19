@@ -1,135 +1,298 @@
-Received: from mail-lr2-f32.google.com (mail-lr2-f32.google.com [74.125.230.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF133BBFDE
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 01:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789781163; cv=pass; b=eGSz6mwcUwxcWc+klnL2XqXXsKLeM3P9hnEBGGk29neeIUY/VPrJTO3Iq5+IzY9l/KlwO4/Ka1Bmzbt5BFC8IL7ysMx8CzPOgO3v3VzUhi+Q3nbPPycpRCvdK4PxGlXmse9IyFpsCa/H02nqN8kb30fyOka5EwMfMP9/L8b4RKE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789781163; c=relaxed/simple;
-	bh=XSgdQN2yictpDS59TUHTRXPj7NA5/+Qdu1X4xC4oFhw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T4Sl2EdxhlWKcZ25OOc15oNpUAcUv5UHLP5smSABZRWqejsDucgd0IR/1LBikcq1lyte10yRDdCwv6t1EQ9FzC1538y80DiRMWh0bqctmXMV0r8WYoJqoiHiMJDm8NMQIcutqyP59tfSn2BerbPzNxdqZoMYxYHuOT8v1TKovMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IFlcyJbK; arc=pass smtp.client-ip=74.125.230.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B72341057;
+	Sat, 19 Sep 2026 01:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789781195; cv=none; b=cZ+siPkttDR/NDkblga3EAWVqOUvUvG3kjHGQ+ludm9k3H9QxfPvTseHnlubm5Baxl4wtO5JB55Ag1shkU/aVr6Ut+1HweNwX1BXFrugdpZJ0daZFUx312KYA1kmxI5l/9ldD7F9n3nK/m92rO7crDwGV2kntpqz+eMoEJpuTc0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789781195; c=relaxed/simple;
+	bh=l/MN9t6mROeXSjlCQ74rUjZIYcNfbkNUjBS6l6EWYJA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kfLxgd5QdBVSXjesaquBvERs0GpkE96GmQ2jURq+gwYgmVFhn38MHA4b4X/aNfyIs1694WSfm66uZbIfUUUfLgf4q5GCmCEC0lq1RzQJM6KXB5cD6kiu3ARSAf2cxmsUlv4G6NESHIlMEwQaOXL1Y6CLoyZ5wTvPWffwWC9cAMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZmutLaD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IFlcyJbK"
-Received: by mail-lr2-f32.google.com with SMTP id 38308e7fff4ca-3a3156692e3so4256861fa.0
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:26:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789781158; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DK7EmUzQGoCUpF7mU4YPIAmdaGTZrYkaKks/WfaAiMTnPFx3LSECrzJN4zUO2JhKqN
-         wYCSdTMPEYmc1ekQhS52xXygwyrPxfcxlAYH4kp2qtHHuIc6cQ7zsItLHbofZx2dJn2n
-         JXu+Ypou7X1hsgnsyvmYuWS7tp/wN3p4VmfPCMJmfG39jjaxXRm/vufOAQBeSrQ8ErP9
-         2n5ZX44vI8DpEoN13G0FTpOfetNvFWHjCmKJNpuE6UByH7QeSCMjMT0VZCKue6cv/Nb1
-         qMzQff986P1eRa51AuvvKZZAj23vZbe/WMgIiYbXHWpKSv+U6Q5xUQCMDZ1fcqPMnsa6
-         HkSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WAjkQmQffedcstioBR/bPz7WWF/kUAkcKil242Qiu6U=;
-        fh=1FR7jRFOGYos4hLHrVz9ID7H27ILHvkvVeRS1JmJWIk=;
-        b=oRnqvnOJGT/yA6WIgR9RSyZHEMkTOx9qWGO5TfT7uc9LGkOxehlb+k0PcMxflRXxNF
-         bTUylhqdE6Hd+9A3qDjQYeJd336p43cgBSo9sXJjWrTqOFLTJkrhGndcVTHJBLZ5UmTa
-         bc1Gx7TSdd5N9gBjmzfDLKvyFkEClyTO0BbSOl4h7Ix8RzbH+iNkLqtAfxaUEryNZscG
-         OyuJP6qN5mUARMCyk43JZ9G8w4lZyH3BNM4UVMHdyDxzZ4wCjUI/Zw2gp25AmmnrUJ71
-         /jP6kHeTexEDzwOLzruY01YCGfy4VwQl1GfHWXbcFCp5nitcEnLOJ7tYjJz5yP1zctwB
-         vR3A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789781158; x=1790385958; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WAjkQmQffedcstioBR/bPz7WWF/kUAkcKil242Qiu6U=;
-        b=IFlcyJbKQZ1ErOnOi0LDEaqgvPiYJArojrTtIKp4QVqlRaXW45OnoOWbTiPaHtx1FT
-         4IvSzcMkAxYHUhhvR6o3O/CKLNUXTN1waf8AU1UyidwjQT2yLv4ZsDdQQQML8qUJhTVc
-         +sUb+5AMYmeaWLt05vdQKMVQs4/cDHRU+h4fUG0ijzIvaFXc33amookTzvGPWs2W6kpl
-         5xyGKESlfKwhIK7D+v/DD+4Z00tjiR4yR94O2CW9tbWQ9T/yYPNNtmXYwvIlzhiYCoc6
-         s29mix6pd2Rym4fXaXnyNC25wp2SQbhIO+P0mGtzWcF3YlrMfkoAonE9nf+T8krb6KXV
-         STUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789781158; x=1790385958;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WAjkQmQffedcstioBR/bPz7WWF/kUAkcKil242Qiu6U=;
-        b=VqTU8brCyAZqnr3QqWRKc4tgNQy0TsUaBi/i+apAxTZ6NQzEOdvtKe9X7Ud34z6LJs
-         hQlP9w9ZJ/wd+bPRE3/FJnWvVxnCfJB164gsxhdVZ7sZ/McoUnG0BzZEtvQg7Ev4ZeVC
-         x5p222d4LOetKMR5M5HSvSCrDZjZ7MwESDycgbRJPn5w/4+wAAPOKhBZ9WK8NpRDXDG7
-         5+7mBnndVbAHPA10vUFaO6QW+nHvX/LFiSSO9Eku28rHFsiGbmtfyKQM6YfLqzipfNXd
-         pCZv0tVTack9kRbz4eeX9jE/5mzBEave3HmNL71U6VoerAOFsNnP1xHsMsArA6/zuz+N
-         1d7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwe/axzLTziE4L58DpYe6nEuo4UvavsFWI3HFf/J8jSfd5riVP8fZast5T5ewfC5F9tZxIYPqw=@vger.kernel.org
-X-Gm-Message-State: AFuF++llaXPs4rlY72amvb5LsWdugtIUGho0qWfr+wPDUtHlbgFxdFUm
-	cA++LezrlwyK6N7JqeGJ77Vt95X2CSsxmuL+rWmUxYyhg0OZdrRXhOu5QOkfeL0yinuPa6rsUa/
-	bYank2cO84wqFgKrnbra9gj4CIl6IXq9rRvoySB0=
-X-Gm-Gg: AYBFou1JNrVHKZw2sxpXBywhyamnTbtH6zxulv/KvuPwGj0yLsd9EnlQj5iue9PAhXf
-	/dMDsF47t3r9beL5LmVqP/41BasO4+LfYNEkTMLJ1aDOoSUN/8vqLTi32Eo9tXzaaGANW4e9GCo
-	+yC11XvtzB88gPj0NN61bDbGtOcNyAelBB2D9d+zbzcmia+H0QvjHmAP9kuG2owMYW7NX5/dHM8
-	GqaPE76C3tHYd2vV6IhjNU7tvRSvq8mWrW8w5L2qBXtnpg8NhtiNgCoRSHbtekvBSKKnd9OSnb+
-	F8nqmhmEKbeQZhWnzmqX7M1t12N4Aqa9y5daqYWngkG2ylQ3lGhjqV+D4GuDnEVbRzV4tugCZvX
-	yZvQ13Pe/yABoUwkEQR6BXGNI6LSsMNqIL1X9ekfCgVxJ
-X-Received: by 2002:a05:651c:2213:b0:3a5:a4bd:bff6 with SMTP id
- 38308e7fff4ca-3a5faeb291emr7755411fa.0.1789781157892; Fri, 18 Sep 2026
- 18:25:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZmutLaD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9001F000FF;
+	Sat, 19 Sep 2026 01:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789781193;
+	bh=p3L0rxgEAbtQEbqFgNrv4RPCI8jZ2s9hpAeajLJYIjo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JZmutLaDrSSvKwpF1bXOQJe7FHYCACfDGfh9tPLD0ct/BOu7xu82Yf8weJ2jrUYCu
+	 B48diOYBirxOGBxXxWAKon7jDJapAWg+UuatBmElf4plCW7Lko98zfmmiClcwkWWJO
+	 zqpCG/XYFaiC8K+fFK08rV0uQFmCHLtZo2KkOiiZM3KZhTAI5Vurl5AQpVnQ0OlAvh
+	 8z7KVjhxAkXaU+YKqW9yqeDUYOpqvx4ol3Lgo2LOrVJOnDfG1YOZlPeQpL9qoau1te
+	 MPeb8i0jCHJW9kwhhgQRGZmlhiOuYerK4qLyrJH2NtrgBlkSg2IK7yyJ6B8pGxgZwq
+	 jyi62okAMtTSw==
+Subject: Re: [PATCH net v4 2/7] net: stmmac: selftests: Validate EEE based on
+ the actual LPI timer value
+From: netdev-bot+sashiko@kernel.org
+To: maxime.chevallier@bootlin.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+ hkallweit1@gmail.com, alexis.lothore@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, kernel@esmil.dk, minda.chen@starfivetech.com,
+ neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com,
+ martin.blumenstingl@googlemail.com, jan.petrous@oss.nxp.com,
+ ovidiu.panait.rb@renesas.com, Jose.Abreu@synopsys.com, nb@tipi-net.de,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
+ david.laight.linux@gmail.com
+Date: Sat, 19 Sep 2026 01:26:31 +0000
+Message-ID: <178978119141.22033.4149996295411788008@kernel.org>
+In-Reply-To: <20260917215339.2022523-3-maxime.chevallier@bootlin.com>
+References: <20260917215339.2022523-3-maxime.chevallier@bootlin.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914014539.5015-1-sigefriedhyy@gmail.com> <20260916184748.52ae812d@kernel.org>
-In-Reply-To: <20260916184748.52ae812d@kernel.org>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Sat, 19 Sep 2026 10:25:47 +0900
-X-Gm-Features: AcwNN1VKSMsHXXhl9wsuuXYQn2cCHvXHrr3pGmCERUzA0N73AkVzctfHurZKado
-Message-ID: <CA+7S2vKmeaPRBqu84FtVWUjo=U8jTm+LGO04BW6M9h2nRzkHkg@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 0/4] rtnetlink: dump link-layer multicast addresses
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>, Nikolaos Gkarlis <nickgarlis@gmail.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 17, 2026 at 10:47=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-> You compare the situation to IP but for L2 the UC addresses
-> are not exposed via RTM_GETADDR. Are you going to add it?
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-I'm not sure exposing dev->uc via RTM_GETADDR is useful: I haven't
-found a use case, and iproute2 does not dump it today either ("ip
-addr" only shows IFLA_ADDRESS). If you think
-it is worth having for consistency, I'm happy to do it as a follow-up.
+- [Medium] In stmmac_test_eee() the deadline of both new polling loops is
+  derived exclusively from priv->tx_lpi_timer (max_duration =…
+- [Medium] stmmac_test_eee() infers the *current* LPI state from
+  monotonic event counters instead of the actual MAC state.
+- [Medium] stmmac_test_eee() validates priv->tx_lpi_timer against
+  STMMAC_SFT_MAX_LPI (5 s) at stmmac_selftests.c:473 but never caches…
 
-> Is that the only justification? To avoid reading proc?
-> Are you planning to extend this interface with new features?
+--
 
-For more background:  we have some hardware offload control logic in
-userspace that
-needs the L2 and L3 multicast state of devices. L3 already comes
-over netlink; dev->mc is the last piece read from procfs, so we have to
-maintain two copies of the code, one for netlink and one for procfs,
-and parsing procfs has none of the benefits netlink gives (e.g. per
-interface filtering).
+net: stmmac: selftests: Validate EEE based on the actual LPI timer value
 
-The same split exists in iproute2, where "ip maddr" parses
-/proc/net/dev_mcast for the link-layer entries. I already updated
-iproute2 to get rid of the procfs parsing for IPv4/IPv6 multicast; L2
-multicast is the final piece, and I have something working locally.
-Once this patchset is merged, I plan to send the iproute2 patchset.
+The EEE selftest now sends a frame, waits up to roughly twice the configured
+LPI timer for the enter-LPI interrupt counter to increase, then sends a
+second frame and waits the same amount of time for the exit-LPI counter.
+It also bails out with -EOPNOTSUPP when the configured LPI timer exceeds
+five seconds.
+
+A few questions below.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> index 614b5995dec5f..2f9f7746c40ae 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> @@ -30,6 +30,7 @@ struct stmmachdr {
+>  			      sizeof(struct stmmachdr))
+>  #define STMMAC_TEST_PKT_MAGIC	0xdeadcafecafedeadULL
+>  #define STMMAC_LB_TIMEOUT	msecs_to_jiffies(200)
+> +#define STMMAC_SFT_MAX_LPI	(5 * USEC_PER_SEC)
+>  
+>  struct stmmac_packet_attrs {
+>  	int vlan;
+> @@ -462,12 +463,16 @@ static int stmmac_test_mmc(struct stmmac_priv *priv)
+>  static int stmmac_test_eee(struct stmmac_priv *priv)
+>  {
+>  	struct stmmac_extra_stats *initial, *final;
+> -	int retries = 10;
+> +	unsigned long timeout, max_duration;
+>  	int ret;
+>  
+>  	if (!priv->dma_cap.eee || !priv->eee_active)
+>  		return -EOPNOTSUPP;
+>  
+> +	/* Bail out if the configured LPI timer is too long */
+> +	if (priv->tx_lpi_timer > STMMAC_SFT_MAX_LPI)
+> +		return -EOPNOTSUPP;
+> +
+
+[Severity: Medium]
+Is it intentional that priv->tx_lpi_timer is read twice here, once for the
+bound check and again later for max_duration, without caching the checked
+value?
+
+Between the two reads stmmac_test_eee() allocates two stats buffers and runs
+a full loopback transmit/receive, which can take up to STMMAC_LB_TIMEOUT
+(200 ms).
+
+priv->tx_lpi_timer is written outside the selftest by
+stmmac_mac_enable_tx_lpi() in stmmac_main.c:
+
+	priv->tx_lpi_timer = timer;
+	priv->eee_active = true;
+
+That path is reached from phylink_link_up()->phylink_activate_lpi() inside
+the phylink_resolve() work item, which takes only pl->phydev_mutex,
+phy->lock and pl->state_mutex, not rtnl. The selftest itself runs with
+rtnl_lock held from __dev_ethtool(), so the resolve work can update
+priv->tx_lpi_timer in the middle of the test.
+
+Given that neither ethnl_set_eee() nor phy_ethtool_set_eee() range-check
+ETHTOOL_A_EEE_TX_LPI_TIMER, can the value used for max_duration therefore be
+one that was never validated against STMMAC_SFT_MAX_LPI? For example, a
+timer of 60000000 us gives 120 s per wait loop, and 4000000000 us wraps in
+the u32 multiplication below to 3705032704 us, i.e. around 3705 s per loop,
+all spent in msleep(100) with rtnl_lock held.
+
+Would reading priv->tx_lpi_timer once into a local u32 and validating and
+using that single copy (with 64-bit or otherwise bounded arithmetic for the
+doubling) address this?
+
+>  	initial = kzalloc_obj(*initial);
+>  	if (!initial)
+>  		return -ENOMEM;
+> @@ -478,14 +483,21 @@ static int stmmac_test_eee(struct stmmac_priv *priv)
+>  		goto out_free_initial;
+>  	}
+>  
+> +	/* Snapshot stats, we want to count the in_lpi events. We may enter
+> +	 * LPI just after the packet was sent.
+> +	 */
+>  	memcpy(initial, &priv->xstats, sizeof(*initial));
+>  
+> +	/* Send a frame, then wait to enter LPI */
+>  	ret = stmmac_test_mac_loopback(priv);
+>  	if (ret)
+>  		goto out_free_final;
+>  
+> +	max_duration = usecs_to_jiffies(2 * priv->tx_lpi_timer);
+> +
+
+[Severity: Medium]
+Does this deadline hold for small LPI timer values?
+
+The patch adds an upper bail-out for priv->tx_lpi_timer but no lower bound,
+and the value is user-configurable via ethtool --set-eee tx-lpi-timer, and
+can also be 0 via the eee_timer module parameter used in stmmac_open().
+
+For a timer of 0 us, _usecs_to_jiffies(0) is 0, so "timeout = jiffies" is
+already at the boundary and the loop body may run zero or one time. For any
+timer below ~200 ms the budget is smaller than the loop's own msleep(100)
+granularity, so the loop degenerates to a single sample.
+
+Independently of the granularity, stmmac_mac_enable_tx_lpi() programs the
+link-status gate on every EEE enable:
+
+	stmmac_set_eee_timer(priv, priv->hw, STMMAC_DEFAULT_LIT_LS,
+			     STMMAC_DEFAULT_TWT_LS);
+
+with STMMAC_DEFAULT_LIT_LS defined as 0x3E8 in common.h, and
+dwmac4_set_eee_timer() documents it as:
+
+	/* LS: minimum time (ms) for which the link
+	 *  status from PHY should be ok before transmitting
+	 *  the LPI pattern. */
+
+So 1000 ms of stable link is required before LPI may be transmitted at all.
+With a configured LPI timer below roughly 400 ms and a recent link-up (the
+usual bring-link-up-then-run-ethtool-t sequence), does the enter-LPI
+deadline expire before the hardware is even permitted to enter LPI, making
+stmmac_test_eee() return -ETIMEDOUT and stmmac_selftest_run() set
+ETH_TEST_FL_FAILED on working hardware? The previous fixed ~900 ms budget
+covered those cases.
+
+Would a floor on max_duration, or a lower bail-out mirroring the new upper
+one, be appropriate?
+
+>  	/* We have no traffic in the line so, sooner or later it will go LPI */
+> -	while (--retries) {
+> +	timeout = jiffies + max_duration;
+> +	while (!time_after(jiffies, timeout)) {
+>  		memcpy(final, &priv->xstats, sizeof(*final));
+>  
+>  		if (final->irq_tx_path_in_lpi_mode_n >
+> @@ -494,20 +506,38 @@ static int stmmac_test_eee(struct stmmac_priv *priv)
+>  		msleep(100);
+>  	}
+>  
+> -	if (!retries) {
+> +	memcpy(final, &priv->xstats, sizeof(*final));
+> +	if (final->irq_tx_path_in_lpi_mode_n <=
+> +	    initial->irq_tx_path_in_lpi_mode_n) {
+>  		ret = -ETIMEDOUT;
+>  		goto out_free_final;
+>  	}
+>  
+> -	if (final->irq_tx_path_in_lpi_mode_n <=
+> -	    initial->irq_tx_path_in_lpi_mode_n) {
+> -		ret = -EINVAL;
+> +	/* Re-snapshot, as we want to measure exit_lpi events. We should be
+> +	 * in LPI right now.
+> +	 */
+> +	memcpy(initial, &priv->xstats, sizeof(*initial));
+> +
+> +	/* TX something so we go out of LPI */
+> +	ret = stmmac_test_mac_loopback(priv);
+> +	if (ret)
+>  		goto out_free_final;
+
+[Severity: Medium]
+Can the "We should be in LPI right now" assumption be established from
+irq_tx_path_in_lpi_mode_n?
+
+That counter is a monotonic per-event counter bumped from the IRQ handler
+and never decremented on exit, see dwmac4_irq_status():
+
+	if (status & LPI_CTRL_STATUS_TLPIEN) {
+		ret |= CORE_IRQ_TX_PATH_IN_LPI_MODE;
+		x->irq_tx_path_in_lpi_mode_n++;
+	}
+
+The enter baseline is taken before the first loopback frame, so an entry
+event that occurred in the window between the memcpy() and the transmit
+inside stmmac_test_mac_loopback() satisfies the first comparison even though
+the frame itself terminated that LPI interval:
+
+stmmac_xmit()
+	if (priv->tx_path_in_lpi_mode && priv->eee_sw_timer_en)
+		stmmac_stop_sw_lpi(priv);
+
+stmmac_stop_sw_lpi()
+	timer_delete_sync(&priv->eee_ctrl_timer);
+	stmmac_set_lpi_mode(priv, priv->hw, STMMAC_LPI_DISABLE, false, 0);
+	priv->tx_path_in_lpi_mode = false;
+
+The same applies when unrelated stack traffic (ARP/ND/MLD on an up
+interface) wakes the TX path during the up-to-100 ms poll interval, and for
+the LPITXA hardware path where queuing a frame leaves LPI immediately.
+
+In that case the re-snapshot folds the matching exit event into the new exit
+baseline, the second frame is sent while the MAC is already awake, no new TX
+exit-LPI event is generated, and with no further traffic the second loop
+drains its full budget and returns -ETIMEDOUT, which stmmac_selftest_run()
+reports as ETH_TEST_FL_FAILED.
+
+The driver already tracks the current state in priv->tx_path_in_lpi_mode
+(and LPI_CTRL_STATUS is readable). Would checking the actual state, or
+waiting for a fresh entry event after taking the exit baseline and before
+sending the wake frame, make the two phases deterministic? As written, phase
+one can also pass on an entry event that predates the test frame, so the
+enter-after-frame sequence described in the commit message is not strictly
+verified.
+
+> +
+> +	/* Wait for the exit LPI interrupt */
+> +	timeout = jiffies + max_duration;
+> +	while (!time_after(jiffies, timeout)) {
+> +		memcpy(final, &priv->xstats, sizeof(*final));
+> +
+> +		if (final->irq_tx_path_exit_lpi_mode_n >
+> +		    initial->irq_tx_path_exit_lpi_mode_n)
+> +			break;
+> +		msleep(100);
+>  	}
+>  
+> +	memcpy(final, &priv->xstats, sizeof(*final));
+>  	if (final->irq_tx_path_exit_lpi_mode_n <=
+>  	    initial->irq_tx_path_exit_lpi_mode_n) {
+> -		ret = -EINVAL;
+> +		ret = -ETIMEDOUT;
+>  		goto out_free_final;
+>  	}
+>  
 
 Thanks,
 
-Yuyang
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917215339.2022523-1-maxime.chevallier%40bootlin.com
