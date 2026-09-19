@@ -1,160 +1,109 @@
 Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E399F388E7E
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376213218BA
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789859091; cv=none; b=ra+9wCfhBItUPM6xuuBSb9nCWlOPS2aMpzSJcGGpxBdLM5E3tVGFGSsMAcu187HykHqHhcSeLPTdXe/NbmizXphxGmLQZZW9IOXjmKfY7sBfs3zkIfsFIGCELttwJOYmVCx2pX9w2+NSakUT9rpVmNcCDzSAHqRaPG0i2HnYv40=
+	t=1789859909; cv=none; b=icjl2rlo3DszEAyEF+gClMBTMDVKzy/PwBHb6h3enFTV9EkopJ7OBIC2xvUVOyxc2ehtzB1vwSt61zp0TFpWEtepKFhtUQAWghs26R+RgzdihrxDPoKRn4J19odYAMzIrK7BnhF0j4tnoVFITsqpBnkP2RVK8KJMHHhfs3QhA24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789859091; c=relaxed/simple;
-	bh=o7eyzul9Ohto3SjJ1TjrNru05AlMn/q7uF2xYm0ObJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoGfwYaemabj4c4yZlWYDnjMHhxKkT74hhSvJyA19fVT4rR8mGDGFhv4h13F0L9eeaNeh3wxmooY+49Ehyx9Hq4AnD3E7OFoyZc/8Xgyt3p8jkyiJSCvNdPnJl3tjX1zr4efnk1PhUG+Nqjq8+5y1B6ODv4SRPhDWP8eK/zuVBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=QVHW8wIW; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1789859909; c=relaxed/simple;
+	bh=afubjmtK6J69d9gjWzx00ieDaqApuKhjmcImG5ymlNQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:MIME-Version; b=AZywS7KFXBYkcKHNzefR+QwC8Sc7473EKZHNyd4Yg5vH7c3GLXVRRj5xFl8eg6eAzKTACaAQvRo9FK2hL0eBJjg8xb23SrLNLV3kXudI4udcnqf0FCMduur/kIJ3EtN+0aNXrpPZi+Fq0Ku06C4F+HRhth5zqeg+6yJccy8qvRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JxqgL+89; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="QVHW8wIW"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccafb751so1557516a91.2
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:04:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JxqgL+89"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398b3b189e0so1624357a91.2
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 16:18:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789859089; x=1790463889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jc3gDMyaBCto+VsuPbgbYFUXbxOxRWBOoYdGU5Q+cSQ=;
-        b=QVHW8wIWPpBUDyd93nUxd9O+AN+yY58lACdLmRlKNnU5l4sFMJ3Ym4n/e+nik5r/o8
-         jOSHmI1Qgh9HmI7MrzHCvvybAowhx+7Xfr58B8MvbemeoOLdfJNas0XYhPBUGRmqd0Zu
-         DVVD2+bgAqkWa/nQ/sJm+gtL/SBKmCjO0EnTw=
+        d=gmail.com; s=20251104; t=1789859907; x=1790464707; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sUuoRL2/TITlGn0R3prNUIqDwgNFzk2wNFbE6aU/ybs=;
+        b=JxqgL+89t+ENA8TbE3a9gpcPYolq0+DKEIYpBu7SK/0p1F0V/dRsYEeZBBYKWHP+gm
+         qciIgVyuXllKAeHHMxGWtIF6546WUBGjvus1rS68gpmTWJSythf/kj9HNtpUpxP/pD89
+         bHO0eErW9C29GVzCHHvQJCwTQwdHL8/Da7Li6gzw75mt/GkarUIJdmq9aZeepWyWvCjD
+         pc4a0bni3Z0sK/+i6o8+m/etYsS0B+SSHLJPPmGLWugoyg/1gbZLTzBZnmAWc2n2zIei
+         O0kfnWJjyZROzQR8kBuYot6au+sOO9VACQkOCQIgEO4/g+A0EJWlOtkwc40mZH8YyKUN
+         2P0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789859089; x=1790463889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jc3gDMyaBCto+VsuPbgbYFUXbxOxRWBOoYdGU5Q+cSQ=;
-        b=I1MdaKjmcSGHMIpEeaq8WafUIPkKHhVE6vMlVXYH6CjFpGzMR7NvGwgQ44rq80/yNI
-         CFZdi/Is590ocSeBqLPNBIuyCierPlfUQVnFBDT76pDbjJfokOaH0/67Cqf9DA+xXOSB
-         rmuVuq4CiQUNzuuIE23j+d+y+DuF5f9qOQ3w58FXH8vMF/vq3CFQmiW0M/6r0OoEE4AR
-         B8fS6sXuDPFxPQJJ7kYvNBGD5JcYtGfZlAeaVh6Kr5bq96xGRIJvO+TDsl+njT6Tt/Td
-         Pd8sDkyCc9fh9VQzgd5KoFjs7uLfZjYEtIwCe7YV3YV7Gh8ZS3Zavg4oH0uhg43SrC44
-         r/Pw==
-X-Forwarded-Encrypted: i=1; AKwUvBwFto9gev3NAs0nPYsDs+qhEXm9Iw415uQC5PZdeWaAA3qvZSZonxu+9rOFAva6mDw8uIejByI=@vger.kernel.org
-X-Gm-Message-State: AFuF++n8PVGaW/+bneAaRXbP5SNLqpb5nHTFCYeL448NDB+gmdkwkh2L
-	wpOMBH1/xznXkyLzNiL1Uv+4mDyNPDfivZcX+XMCERqw7wTtKfuML/7U/N8Y5oJXQw==
-X-Gm-Gg: AYBFou3RBvjud4eFkc99ZYLP8C9E2OtWBQoDco3yd4C7oNPPUwW8kF/UuinbrtcxzlM
-	r9IjJ5nfDimabTHXFSp6n5/+uoor7A3/dy2VkV2v+W40Vnuyba/8c+Fcu8sgzubl8nei6n7ICjs
-	U8AbLpOTv8vzSSkggQLrUkGQhndkfFq6Jn5feDWn0T09PMScX3qutxejQc980A2M+ebKawFFfNV
-	gp68LYIqrZxKmJL7ossoZzUZpEISj9SBewm3J1aDPBwcLQuAEl0lktqBi4isP4GdwFOYoULwdvo
-	qWwqpqFf5bysrKrrQ4eLvh/gwNJWaTs3YCFj6wXrg8KNR/w8L09vIWfcrJFn30aDixRq64/Ufo4
-	AhTdvdNvIazi/+PJmas7gTDnwhwTbNMgLrx5ktXDYIN4QNvW+FVgDupuFt7YkOG6BBbO8YUuCY3
-	ew7CBYvL+xJm1l6OeR7G8t7RFL/pio8AOXu2PHvIk2g6DBTVTLN8Tpc5FQlt7nBCkIBGqvvOLZ6
-	fhH
-X-Received: by 2002:a17:90b:4cc3:b0:39e:6a7f:eeee with SMTP id 98e67ed59e1d1-39e6a7ff08amr6657476a91.19.1789859088893;
-        Sat, 19 Sep 2026 16:04:48 -0700 (PDT)
-Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144d55aaf1csm8804599c88.3.2026.09.19.16.04.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 16:04:48 -0700 (PDT)
-From: Victor Nogueira <victor@mojatatu.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	hybris@mojatatu.ai,
-	sashiko-bot@kernel.org
-Subject: [PATCH net-next 3/3] net/sched: act_api: budget TCA_ROOT_EXT_WARN_MSG in notify skbs
-Date: Sat, 19 Sep 2026 20:04:29 -0300
-Message-ID: <QDISC-RYTB.v1.20260918093205@mojatatu.com.3>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <QDISC-RYTB.v1.20260918093205@mojatatu.com>
-References: <QDISC-RYTB.v1.20260918093205@mojatatu.com>
+        d=1e100.net; s=20260707; t=1789859907; x=1790464707;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sUuoRL2/TITlGn0R3prNUIqDwgNFzk2wNFbE6aU/ybs=;
+        b=Fo8BxsoKIxJjwQEZYRHsT6yhWSVdaSEb/NO625IapeMWpfakWM3lg9oQao8rD6iG9e
+         z7xKWElkdn6HMmtaQ1hYfY68hK4I5bpqAzWyJ5Au8FEiJpbptHnJng08wuOifCt9DUWA
+         nXGakXajsWCQ/HFIbaSdxpJpFQ8JXI9Kmq2M+LgwJegTCoa1J1ILsSDU1znCJ/xq/9mw
+         1sLFxl39GHnK1ceIabWpgKJy4Hproy/KU7I7WZj56wyGUX5YEC2K+3ufVkjuXv05uP38
+         kM+gjHZnOWgldqt6vuNLXYrrc9DEaDTbt9SZ5pYDtQnQOZhfmFZWAJVf8LDQCy0BBlmB
+         TB+g==
+X-Forwarded-Encrypted: i=1; AKwUvBzLbksaXX0M+Rz+lxoCllSo1+iPGL0coXjCqsxuS+K2O66zZxUhJfdNlzTC281BgYBUr0mN7DU=@vger.kernel.org
+X-Gm-Message-State: AFuF++mzByWSZH6Q9Xa373oYaXlS5ErE2Yapy3dpBvJCFM5zhpyp0hD7
+	w4jQ3NzUcIgp/AGN4TRycH8okop0rCiC8YCUIBTFedH+QLC+PAJula2M
+X-Gm-Gg: AYBFou35wTGl4u0O4Y+4Z1FILZGpiWcjOzURQ4dRcQ7mKGVRCiT01VUkeqEJpGUUUaR
+	GNHoq2ISKEoxMi2EeFqy7lrZnFArNjIrC5+OV4sRs8Rx0PBp11bjMbB8oIH+mWA1BOZh6UVFILa
+	QhCCa5JIccYedWfqzxHR/xesYfnWsM8fZZ1om2bAkyCRg15wuzPP48IGjXjfjieksyFUGuz2AMH
+	bO9uaW97YQ4XAX93qbV2gKP/Jn6pGLSGJthp6/kA8r+VDGhJucJUVD7/QBnyNkugUwcxUE5nwVZ
+	06dlmskeFfJ4e/JrT+M/p6Cv8+ihnJZg+JCoPzcrhYLVjTC70zc5yV/HAVfmTkQdisgX1NKTunv
+	JwSfrJVACkcJ/sunH4xTDaGnaRIrCogY6469E5vah88vUukcDwiESQh5hhKw7hIMmDKin5SBf3P
+	sicSbOJO9SuzluO8TmLLMsRsAOD6rriCcDR/U5dzT/VybEMiwLOmVe3rkjF0PvbL0JcFoZfGhKB
+	8sWK1aVnJvJv/p7W9z9xVbrL9TO8Yz8GW9E6NfHAKuRWiePp2fgQs++jboiZFIxi7Udpi2NSJQ8
+	Sq35
+X-Received: by 2002:a17:90b:2d47:b0:39d:f4fd:8075 with SMTP id 98e67ed59e1d1-39e54c9c7b7mr11531713a91.19.1789859907264;
+        Sat, 19 Sep 2026 16:18:27 -0700 (PDT)
+Received: from localhost ([153.61.198.255])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c164c18sm6403791a91.1.2026.09.19.16.18.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Sep 2026 16:18:26 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 19 Sep 2026 23:18:26 +0000
+Message-Id: <DLJODTPSL3IT.1LQ0SJ80PGO1M@gmail.com>
+Cc: "Willem de Bruijn" <willemb@google.com>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] bpf: reject unset network_header for SKF_NET_OFF in
+ cBPF load helper
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Hui Peng" <benquike@gmail.com>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>
+In-Reply-To: <20260919203517.2581484-1-benquike@gmail.com>
+References: <20260919203517.2581484-1-benquike@gmail.com>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-tca_get_fill may emit TCA_ROOT_EXT_WARN_MSG from extack->_msg.
-The string is whatever NL_SET_ERR_MSG and friends stored, so its
-length is bounded only by the caller, and nothing in the budget that
-tcf_add_notify_msg and tcf_del_notify_msg hand to alloc_skb
-accounts for it. The notify skb can therefore be sized smaller than
-what tca_get_fill goes on to write into it.
+On Sat, Sep 19, 2026 at 08:35 PM Hui Peng <benquike@gmail.com> wrote:
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -231,8 +231,14 @@ static int bpf_skb_load_helper_convert_offset(const struct sk_buff *skb, int off
+>  	if (likely(offset >= 0))
+>  		return offset;
+>
+> -	if (offset >= SKF_NET_OFF)
+> +	if (offset >= SKF_NET_OFF) {
+> +		if (skb_mac_header_was_set(skb) ?
+> +		    skb->network_header < skb->mac_header :
+> +		    (skb_network_offset(skb) < 0 ||
+> +		     (!skb->protocol && !skb->network_header)))
+> +			return INT_MIN;
 
-The attribute reaches a successful add because tcf_action_init keeps
-going when an action that is not skip_sw fails to offload:
+No. network_header == 0 is a valid value when there is no headroom and
+skb->protocol says nothing about it.
 
-	err = tcf_action_offload_add(act, extack);
-	if (tc_act_skip_sw(act->tcfa_flags) && err)
-		goto err;
+When netlink_dump() had this problem it was fixed by
+skb_reset_network_header() after skb_reserve(). See
+commit 99c07327ae11 ("netlink: reset network and mac headers in netlink_dump()").
 
-The action is created while extack->_msg still holds the offload
-diagnostic, and tcf_add_notify echoes it back. A pedit action with mixed
-key commands (one SET and one ADD) takes that path: the non-bind
-tcf_pedit_offload_act_setup sets "Unsupported pedit command offload" and
-returns -EOPNOTSUPP.
-
-In practice, no underbudgeting has been observed because of this, and the
-gap is not easy to reach given some other spots account for more than
-necessary. However, for correctness, budget the attribute so the size
-handed to alloc_skb covers what tca_get_fill can write.
-
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.4143642-1-victor@mojatatu.com
-Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
----
- net/sched/act_api.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index 3f653721c45f..db06ddcf6ae6 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -475,6 +475,15 @@ static size_t tcf_action_full_attrs_size(size_t sz)
- 		+ sz;
- }
- 
-+/* tca_get_fill() may append TCA_ROOT_EXT_WARN_MSG from extack->_msg */
-+static size_t tcf_action_warn_attr_size(const struct netlink_ext_ack *extack)
-+{
-+	if (unlikely(extack && extack->_msg))
-+		return nla_total_size(strlen(extack->_msg) + 1);
-+
-+	return 0;
-+}
-+
- static size_t tcf_action_fill_size(const struct tc_action *act)
- {
- 	size_t sz = tcf_action_shared_attrs_size(act);
-@@ -1980,7 +1989,8 @@ static struct sk_buff *tcf_del_notify_msg(struct net *net, struct nlmsghdr *n,
- {
- 	struct sk_buff *skb;
- 
--	skb = alloc_skb(max(attr_size, NLMSG_GOODSIZE), GFP_KERNEL);
-+	skb = alloc_skb(max(attr_size + tcf_action_warn_attr_size(extack),
-+			    NLMSG_GOODSIZE), GFP_KERNEL);
- 	if (!skb)
- 		return ERR_PTR(-ENOBUFS);
- 
-@@ -2078,7 +2088,8 @@ static struct sk_buff *tcf_add_notify_msg(struct net *net, struct nlmsghdr *n,
- {
- 	struct sk_buff *skb;
- 
--	skb = alloc_skb(max(attr_size, NLMSG_GOODSIZE), GFP_KERNEL);
-+	skb = alloc_skb(max(attr_size + tcf_action_warn_attr_size(extack),
-+			    NLMSG_GOODSIZE), GFP_KERNEL);
- 	if (!skb)
- 		return ERR_PTR(-ENOBUFS);
- 
--- 
-2.55.0
-
+pw-bot: cr
