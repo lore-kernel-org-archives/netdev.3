@@ -1,295 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5268B3B47F3;
-	Sat, 19 Sep 2026 02:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96DE30C35F
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 03:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789786137; cv=none; b=jD/D5kg/DCyUCMmtuYCBV/FWF+wXwnR8uWukMZnvcB9Da1+GLU/6iM5801YB3xxtDWQd9fWa47cqS48xcgQOyPF6OEzPqxbT/+EjeNqhF7c5cx46dLhTqTi6ZpMKlIu+poqcxrp0ghYClZb36yG3bcODX/WRjvp4GBx4yZuSFvU=
+	t=1789788579; cv=none; b=Ar7v+9F/PGbLvafpg+VHv3wH8P2n79TWjybLR/0kHCATPPf9gmxkpHLNLdr4v4sNVzIlFx7h+JrIYMG4AfTDgErekcEbZElE7E+1hanKt9ePwsJwJko/6qvBbdsc3fars3qN2QVJ7vkYrdpR0F41s3eNHvpcn296oWOmkte3EcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789786137; c=relaxed/simple;
-	bh=hmK1KmJnPGtFZiSqwkb8jUmFtgTVb6VkH8huqrCAcd4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ynw2Bj6WlslWrzd/KvNBUWGAitro7BPHtHdb6fJwqdwmEJZkiaOorN4mKYbxJ/wN9MUMFfQEZLfmKgs2OvYQSq88Wy5kkAScIXhSRfcDoOvizyUYdhVwVBRnFcsC0NUec9MVOfMrIHti5MTVUJJw2nvqhwBOymM2UE5ZV4IDF1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cb3bG/Wt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789788579; c=relaxed/simple;
+	bh=Kpjx1RIkavXK32hKs8VpAOoak/OwV60NfDZF48LiohY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FfdFt/ThyCmoVTbTzGeHsT1VChvP0/JZK/xoJnBr450rGiID/p0/q75WaNV7KOPLqg4G969pdA1vj2qxpxnxyHn7ss7joDUkM7m8eC30umX3Ve0fpHUqB3au5JEANBAcXp7c1cm+UdFqcqbh5/ScZ5xe0gwi5S2Jto8u47p4S50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wz0v+fZa; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cb3bG/Wt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327BE1F000FF;
-	Sat, 19 Sep 2026 02:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789786135;
-	bh=Lzb//P0FRNtOAyMRhQ6NZyCRfipS3HuTWg658oFykSw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cb3bG/Wt/qyKy8ky0hjVCYl5vf7V+Dyfh2ZgLVLxTnIVGrzNzA6sv5CJc44qMLKQi
-	 Zp3AEUPZphftRw87pMibsiyHDU/N/54Uygly/DTiWc3bMbDB/IsIcKqG2w0zwqftuo
-	 HKp/Zw8DhPgOedO7SXsQ0zFjMwZ7+z+iDPqGGapagCcNBxhTUO0gGIj29/bwJtuSaV
-	 NIUkM116mpvsk43YBFru2Aiu0JV/fetfK1jdCQkPaDh3qEIzjkJvNBGIVj4X8AW2EW
-	 I1RVOCra4SIP8kBxWSJpCfxfINFF3O2Gwy9KFUNs6jKhMMCaFtaVNq/gzAuOOWxRAE
-	 HovmYhRlZuyjg==
-Subject: Re: [PATCH net-next v2 3/3] selftests: net: cover IPv6 uncached route
- device mismatch
-From: netdev-bot+sashiko@kernel.org
-To: carges@cloudflare.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kernel-team@cloudflare.com
-Date: Sat, 19 Sep 2026 02:48:54 +0000
-Message-ID: <178978613474.22033.16435022861441934492@kernel.org>
-In-Reply-To:
- <20260914-hash-bucket-route-lists-v2-3-29f6297d8a5a@cloudflare.com>
-References:
- <20260914-hash-bucket-route-lists-v2-3-29f6297d8a5a@cloudflare.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wz0v+fZa"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b35611so930428b3a.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 20:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789788576; x=1790393376; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=muMIYjiiSeBsL1eUzeEwgPRRBWkaPT6ZobNvYIG+NcA=;
+        b=Wz0v+fZa12YeWq9CupoXbd4g3Heuy2vo9dBdZTECWgIqd8MCQF10K48hf5g8FZK/S0
+         daeOvREp/qm0QJt87mvmmbD5jQjoSLpr6BhjJYr2USmeaR4K1E8ZT2G2jd/eJI6Ts+9Q
+         7I/jvtO8erNqdru1r4k+MzVlazxOwctuXs6Ceczsl1RYDUs0bcWqKE5zyVEP4/qautnZ
+         rVeUiuej1QX9EIzRz4U0NTxjNnUVFlIOeIQFPVhOyLbpeQz9cdFfhTmGmXLKEWdwCEXe
+         kwwigLQg43umaGHHqnOcG7nLuxhJkFKLy0tlAOugi8ZNKXtWLEmsfq0ulnGck+OTKBJc
+         O16Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789788576; x=1790393376;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=muMIYjiiSeBsL1eUzeEwgPRRBWkaPT6ZobNvYIG+NcA=;
+        b=paom+E56lOHpskh9ZMGD31fHep84bhWML/ncFP0h5LES/cy+Knesg/5v/gH4Y08e6H
+         vYkPnerzNPeR1+U+1YHcOpcViwxe2MW8ug6EoTjkWxK2rPadfesidMdseTYrxs/kSCZ9
+         Hvb57OWiMGu5zON90P0mgAlAL6u+aP360g1IZRE8t9UeO/LPC26pWHk2Kth58AA1Lvdm
+         uSddc+/4WrrOHYlGdEYru95T26e8f2/mugBG08Qb2lcU1oI2xKlGQDl2tXWsLT/gv5lW
+         GnsHzlw2gRJ3Wgpw2dT5m/lOS3fEFkxV9JR0WvIgplHHvlmXyfjMLE/ldb9v/izBn+MY
+         N2/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxoChYAbM7JgL/AYHGXRhWVdymuOJsVo6UlYevH8iFdfBr/ZhyitRAL4R9FcVqKg+UHw0Nd5Wc=@vger.kernel.org
+X-Gm-Message-State: AFuF++m84iZ2Lk9xRqLi66yxQrUTJCNfJ09jHPTwRFv+4IOQ7PWmoKXn
+	yS98StPEgmKzZ6j66wWG7BxEYZW0wP6Bu6wTPv+rUSMTyNFwxDAGRzl0
+X-Gm-Gg: AYBFou0sVSE+o/DX5KR7+vgWm/9GHaSqYDz7NlXFFT8xnz5+bM3xfIfZKiTmo1zg4r4
+	T0/1B3mT7OO0R8l79MQwA+XXSloJ0iORryKaLXz7/2LfueBCuLMjwf8LQtwvUHfQXUBM3Jl0FOM
+	MIHv+SYA8Zelsn3DjgKA/i66XdYPZXNVNyHQyM3I5ADK3PwWatigv4Y1+3r12wiO6q5oFCPm6cE
+	BFYrfslG9ssxYdqRTFo3krlO2jWEIDOGQU9ikIKD5rpjKHAtTiSOlTnH6eSS95ITbkqBQwq6kYS
+	1Q2bZEMPtCi5GVaxCNdoNV7bndcKeb5vd1lsPUhxhpmrifunYFyG64qlkI7r8KKs1iw1I9CW28F
+	5Ax2BWWrGeNdQZBjfxdbi7lXAqAIZ8ayRPn6tmH2+ZCh4CTdvB95SfeTEWAJCtrn7zKOKsFQ74/
+	6thF9Ve64efJWEm/WWwsauNfaCcL0pB2qDX6cPAlnJQ66qGQwboeAgQPux+2+9oWdFyBdwfZ9Wl
+	0KQYQIXtqqCHdF7
+X-Received: by 2002:a05:6a00:3e22:b0:851:8394:1696 with SMTP id d2e1a72fcca58-874dbfee622mr7775440b3a.12.1789788576058;
+        Fri, 18 Sep 2026 20:29:36 -0700 (PDT)
+Received: from thangnn-ASUS.. ([2405:4802:1d4a:e90:814e:e9d3:767e:9a2a])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a6be0d58sm489281b3a.7.2026.09.18.20.29.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 20:29:35 -0700 (PDT)
+From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+83439cb981624bd8d068@syzkaller.appspotmail.com
+Subject: [PATCH] netfilter: nf_tables: defer object destruction on abort past commit_mutex
+Date: Sat, 19 Sep 2026 10:29:28 +0700
+Message-ID: <20260919032928.78841-1-ngocthang2710.1999@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider:
+__nf_tables_abort() calls synchronize_rcu() while holding
+nft_net->commit_mutex, on every aborted batch. The commit path had
+the same problem and was already fixed by deferring destruction to
+nft_net->destroy_work so the mutex is dropped before waiting for the
+grace period (see the comment in nf_tables_commit_release()). The
+abort path was never given the same treatment.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 2
+On syzbot's images every synchronize_rcu() runs as
+synchronize_rcu_expedited(), because CONFIG_CMDLINE bakes in
+rcupdate.rcu_expedited=1. Under fuzzing-rate aborted batches this
+turns each abort into an expedited grace-period wait taken while
+commit_mutex is held, serializing every other nf_tables netlink
+request behind it. syzbot reports this as a hung task in
+nf_tables_valid_genid(), whose lockdep "locks held" dump shows the
+commit_mutex owner parked inside synchronize_rcu_expedited() rather
+than deadlocked on a lock.
 
-- [High] test_ipv6_uncached_mismatch() (tools/testing/selftests/net/vrf-
-  xfrm-tests.sh:388-417) asserts that `timeout 2 ip link del eth0`…
-- [Medium] Both setup steps of the new test are unchecked.
-- [Medium] `run_cmd_host1 timeout 2 ip link del eth0`
-  (tools/testing/selftests/net/vrf-xfrm-tests.sh:415) is used as the…
-- [Low] test_ipv6_uncached_mismatch() mutates and then destroys the
-  shared fixture without any teardown: it replaces the VRF root qdisc…
-- [Low] The retention of the uncached route depends solely on a 10 s
-  netem timer armed at enqueue, and nothing re-verifies that the packet…
+Reuse the existing destroy_work machinery for the abort path too:
+splice the still-mutex-protected commit_list onto destroy_list and
+schedule the work, instead of waiting for the grace period inline.
+Since abort transactions carry NEW*-type objects (versus DEL*/DESTROY*
+for commits), nf_tables_abort_release() gains the put_net() handling
+nft_commit_release() already had, and a new trans->aborted bit tells
+the shared work function which of the two release paths to use for
+each transaction.
 
---
+nft_trans_list_del() also unlinks bindable NEWSET/NEWCHAIN
+transactions from nft_net->binding_list, a list only ever walked
+under commit_mutex. That unlink is kept synchronous, under the mutex,
+in __nf_tables_abort() itself; only the RCU-gated free is deferred to
+the workqueue.
 
-selftests: net: cover IPv6 uncached route device mismatch
+Root cause identified from syzbot's crash report (lockdep holder vs.
+waiter pair) and code inspection, cross-checked against syzkaller's
+own dashboard/config/linux/bits/base.yml for the rcu_expedited=1
+CONFIG_CMDLINE.
 
-This adds a new test case to vrf-xfrm-tests.sh that creates a local IPv6
-route through a VRF so that dst.dev is the VRF while rt6i_idev stays on the
-member interface, holds the resulting uncached route in a netem queue, and
-then deletes the member interface. A few questions below about the new test
-function and about the commit message.
+Verified by booting both the unpatched and patched kernel in QEMU
+(2 vCPUs, rcupdate.rcu_expedited=1, CONFIG_DEFAULT_HUNG_TASK_TIMEOUT=140
+to match syzbot's environment) and driving nf_tables abort with a
+script that forces a guaranteed abort-with-content every iteration
+(a freshly-named table + chain + rule, then a delete of a nonexistent
+chain in the same nft(8) batch, so the whole batch is always rolled
+back with a brand-new, never-committed table/chain transaction still
+on commit_list). Measuring the time commit_mutex is held across this
+path, same script and iteration count on both kernels:
 
-> diff --git a/tools/testing/selftests/net/vrf-xfrm-tests.sh b/tools/testing/selftests/net/vrf-xfrm-tests.sh
-> index b64dd891699d3..4f409d135a99a 100755
-> --- a/tools/testing/selftests/net/vrf-xfrm-tests.sh
-> +++ b/tools/testing/selftests/net/vrf-xfrm-tests.sh
-> @@ -385,6 +385,37 @@ run_tests()
->  	cleanup_xfrm_dev
->  }
->  
-> +test_ipv6_uncached_mismatch()
-> +{
-> +	local sender_pid
-> +	local backlog
-> +	local rc
-> +
-> +	# A local route through a VRF uses the VRF as dst.dev while retaining
-> +	# the VRF member interface in rt6i_idev. Raw header sends create uncached
-> +	# routes, and netem keeps them referenced while the interface is deleted.
-> +	run_cmd_host1 tc qdisc replace dev ${VRF} root netem limit 1 delay 10s
-> +	ip -6 -netns "$host1" route add local ${HOST1_6}/128 dev eth0
+                  unpatched          patched
+  avg               72.8 us            20.2 us
+  max                2.2 ms             1.4 ms
+  min               18.1 us             8.1 us
 
-[Severity: Medium]
-Should the exit status of these two setup steps be checked?
+The unpatched number is the full inline synchronize_rcu_expedited()
+wait; the patched number is what's left once that wait is off the
+mutex (splice + schedule_work() only), which is scheduling noise in a
+2-vCPU VM, not a grace-period wait -- the deferred path never calls
+synchronize_rcu() while holding commit_mutex, by construction.
 
-The tc qdisc replace status is discarded, and the route add is not run
-through run_cmd_host1 at all, so it is invisible under -v and has no
-log_test either.
+Reported-by: syzbot+83439cb981624bd8d068@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=83439cb981624bd8d068
+Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+---
+ include/net/netfilter/nf_tables.h |  1 +
+ net/netfilter/nf_tables_api.c     | 55 +++++++++++++++++++++++++++----
+ 2 files changed, 49 insertions(+), 7 deletions(-)
 
-If CONFIG_NET_SCH_NETEM is not built, the qdisc is never installed, but
-msg_zerocopy still exits 0 because rawv6_send_hdrinc() in net/ipv6/raw.c
-masks -ENOBUFS:
-
-	err = ip6_push_pending_frames(sk);
-	...
-	if (err == -ENOBUFS && !inet6_test_bit(RECVERR6, sk))
-		err = 0;
-
-So the first log_test passes and the failure instead shows up later as
-"Retain uncached IPv6 routes in VRF qdisc" FAIL, which reads as a kernel
-route-retention regression rather than a missing scheduler. Would a check
-plus a skip be clearer here?
-
-The same applies to the route add: it is the precondition that creates the
-dst.dev(VRF) versus rt6i_idev(eth0) mismatch the test is named after. If it
-fails (EEXIST, table/rule differences, older iproute2), the test either
-fails at the sender assertion or silently exercises an unrelated path. The
-later "[ $rc -ne 0 ] && return" guard cannot help, since rc only carries
-msg_zerocopy's status.
-
-Related to this, the commit message says:
-
-	verify route creation, qdisc retention, and prompt interface
-	deletion.
-
-Is "verify route creation" accurate?  No assertion covers the route add; the
-first log_test only reports the sender program's exit status.
-
-> +	ip netns exec "$host1" ./msg_zerocopy -6 \
-> +		-S ${HOST1_6} -D ${HOST1_6} -s 1200 -t 0 raw_hdrincl \
-> +		>/dev/null 2>&1 &
-> +	sender_pid=$!
-> +	wait "$sender_pid"
-> +	rc=$?
-> +	log_test $rc 0 "Create uncached IPv6 routes with mismatched devices"
-> +	[ $rc -ne 0 ] && return
-> +
-> +	backlog=$(ip netns exec "$host1" tc -s qdisc show dev ${VRF})
-> +	if ! echo "$backlog" | grep -Eq 'backlog .* [1-9][0-9]*p'; then
-> +		log_test 1 0 "Retain uncached IPv6 routes in VRF qdisc"
-> +		return
-> +	fi
-> +	log_test 0 0 "Retain uncached IPv6 routes in VRF qdisc"
-
-[Severity: Low]
-Is the retention window here deterministic?
-
-The only thing holding the uncached route is the 10s netem timer armed at
-enqueue, and the backlog is sampled once and then assumed to still hold at
-the ip link del below.  Between enqueue and the delete the script runs
-msg_zerocopy for its full runtime (cfg_runtime_ms is 200 + 0 * 1000 with
--t 0, see tools/testing/selftests/net/msg_zerocopy.c), one ip netns exec tc
--s qdisc show, and two more process spawns.
-
-If the timer fires before the grep, the result is a spurious FAIL. If it
-fires after the grep but before the delete, all three checks pass while
-nothing is actually exercised. Would a much longer netem delay, or a
-re-check of the backlog immediately before the delete, make this
-deterministic?
-
-> +
-> +	run_cmd_host1 timeout 2 ip link del eth0
-> +	log_test $? 0 "Flush uncached IPv6 routes with mismatched devices"
-
-[Severity: High]
-Can this assertion pass on the tree the patch applies to?
-
-The uncached dst created via ip6_pol_route() -> ip6_rt_cache_alloc() ->
-rt6_uncached_list_add() holds a reference on the local route's fib6_info
-through ip6_rt_copy_init() -> rt6_set_from(). That fib6_info's nexthop holds
-a tracked netdev reference on eth0:
-
-net/ipv6/route.c:fib6_nh_init() {
-	...
-	dev = netdev_get_by_index(net, cfg->fc_ifindex,
-				  dev_tracker, gfp_flags);
-	...
-}
-
-and that reference is only dropped by fib6_nh_release(), which runs from
-fib6_info_destroy_rcu(), i.e. after the last fib6_info reference goes away.
-
-The teardown path does not break that chain:
-
-net/ipv6/route.c:rt6_disable_ip() {
-	...
-	rt6_sync_down_dev(dev, event);
-	rt6_uncached_list_flush_dev(dev);
-	neigh_ifdown(nd_table(net), dev);
-	...
-}
-
-and rt6_uncached_list_flush_dev() only swaps rt6i_idev/dst.dev to
-blackhole_netdev:
-
-	if (rt_idev && rt_idev->dev == dev) {
-		rt->rt6i_idev = in6_dev_get(blackhole_netdev);
-		in6_dev_put(rt_idev);
-		handled = true;
-	}
-
-It never touches rt->from. The xchg(&rt->from, NULL) in ip6_dst_ifdown() is
-only reached through dst->ops->ifdown from dst_dev_put(), which is not
-called for this dst because ip6_rt_get_dev_rcu() gives the VRF master as
-dst.dev for an RTF_LOCAL route on an enslaved device - the very mismatch
-described in the commit message.
-
-So eth0's refcount stays elevated until netem dequeues the skb roughly 10s
-later, ip link del blocks in netdev_wait_allrefs_any() for that long,
-timeout 2 returns non-zero, and this log_test reports FAIL. The commit
-message does not name a kernel fix this test accompanies and does not
-mention an expected failure. Is a corresponding kernel change meant to be
-part of this series?
-
-[Severity: Medium]
-Separately, can timeout bound this operation at all?
-
-RTM_DELLINK finishes unregistration synchronously in the caller's syscall
-context via rtnl_unlock() -> netdev_run_todo() -> netdev_wait_allrefs_any(),
-whose loop is:
-
-net/core/dev.c:netdev_wait_allrefs_any() {
-	...
-		} else {
-			msleep(wait);
-			wait = min(wait << 1, WAIT_REFS_MAX_MSECS);
-		}
-	...
-}
-
-There is no signal check there, so the SIGTERM that timeout 2 queues cannot
-be delivered until the syscall returns, and killing ip would not roll back
-the in-kernel unregistration either. During that window the half-removed
-device also emits the periodic "unregister_netdevice: waiting for eth0 to
-become free" messages.
-
-That makes the verdict of this log_test depend on signal delivery timing
-rather than on the outcome of the delete, and if a reference were genuinely
-never released the script would block indefinitely and never reach the
-summary printf and exit $ret.
-
-The test also never removes the retaining netem qdisc, which is the one
-action that would release the pinning skb immediately. Would deleting the
-qdisc before the link delete, and checking device refcounts instead of
-wrapping ip in timeout, be a more reliable detector?
-
-> +}
-> +
-
-[Severity: Low]
-Does test_ipv6_uncached_mismatch() need to restore what it changes?
-
-It replaces the VRF root qdisc with netem limit 1 delay 10s, adds
-local ${HOST1_6}/128 dev eth0, and then deletes eth0, which is the veth
-carrying the whole host1/host2 topology built once by setup().
-
-Neither early return ("[ $rc -ne 0 ] && return" and the backlog-grep
-return) removes the qdisc or the added route, and the success path also
-leaves the 10s qdisc on the VRF.
-
-Because the shared fixture is consumed, the file also gains an implicit
-ordering constraint: the test only works while it is the last thing invoked.
-Adding anything after it, or repeating run_tests, would fail.
-
-> @@ -425,6 +456,10 @@ echo
->  echo "netem qdisc on VRF device"
->  run_tests
->  
-> +echo
-> +echo "Uncached IPv6 route with mismatched devices"
-> +test_ipv6_uncached_mismatch
-> +
-
-Continuing the point above: the earlier phase leaves netem delay 100ms on the
-same VRF device, so if the replace in the new test fails the leftover qdisc
-can still produce a non-zero backlog and satisfy the grep without holding the
-route past the two-second timeout.
-
-The script also has no final cleanup and no EXIT trap. The existing
-"cleanup 2>/dev/null" runs before setup() while $host1/$host2 are still
-unset, so cleanup_ns gets no arguments. That part is pre-existing and not
-introduced by this patch, but with eth0 now deleted and the qdisc and route
-left in place the namespaces are leaked in a modified state.
-
->  printf "\nTests passed: %3d\n" ${nsuccess}
->  printf "Tests failed: %3d\n"   ${nfail}
->
-
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 9d597482363d..e77831e3494c 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1672,6 +1672,7 @@ struct nft_trans {
+ 	u16				flags;
+ 	u8				report:1;
+ 	u8				put_net:1;
++	u8				aborted:1;
+ };
+ 
+ /**
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index c0b754a2d45b..04bb3d4f16ad 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -146,6 +146,7 @@ static bool nft_chain_vstate_valid(const struct nft_ctx *ctx,
+ }
+ 
+ static void nf_tables_trans_destroy_work(struct work_struct *w);
++static void nf_tables_abort_release(struct nft_trans *trans);
+ 
+ static void nft_trans_gc_work(struct work_struct *work);
+ static DECLARE_WORK(trans_gc_work, nft_trans_gc_work);
+@@ -10288,8 +10289,19 @@ static void nf_tables_trans_destroy_work(struct work_struct *w)
+ 	synchronize_rcu();
+ 
+ 	list_for_each_entry_safe(trans, next, &head, list) {
+-		nft_trans_list_del(trans);
+-		nft_commit_release(trans);
++		/*
++		 * binding_list is already unlinked here: for commit-origin
++		 * transactions it was never linked to begin with, and for
++		 * abort-origin ones nft_trans_list_del() unlinked it under
++		 * commit_mutex before this trans was queued (see
++		 * __nf_tables_abort()) since that list is only ever walked
++		 * under that mutex. Only detach from the local work list.
++		 */
++		list_del(&trans->list);
++		if (trans->aborted)
++			nf_tables_abort_release(trans);
++		else
++			nft_commit_release(trans);
+ 	}
+ }
+ 
+@@ -11278,6 +11290,10 @@ static void nf_tables_abort_release(struct nft_trans *trans)
+ 			nf_tables_flowtable_destroy(nft_trans_flowtable(trans));
+ 		break;
+ 	}
++
++	if (trans->put_net)
++		put_net(trans->net);
++
+ 	kfree(trans);
+ }
+ 
+@@ -11482,12 +11498,37 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 
+ 	nft_set_abort_update(nft_net);
+ 
+-	synchronize_rcu();
++	/*
++	 * Defer destruction past an RCU grace period, same as the commit
++	 * path (see nf_tables_commit_release()): an abort must not block
++	 * on synchronize_rcu() while holding commit_mutex, since every
++	 * other nf_tables netlink request queues up behind that mutex.
++	 *
++	 * nft_trans_list_del() also unlinks bindable NEWSET/NEWCHAIN
++	 * transactions from nft_net->binding_list, which is only ever
++	 * walked under commit_mutex (see nf_tables_commit()), so that
++	 * unlink has to happen here and not from the unlocked workqueue.
++	 */
++	if (!list_empty(&nft_net->commit_list)) {
++		LIST_HEAD(head);
++
++		list_for_each_entry_safe_reverse(trans, next,
++						 &nft_net->commit_list, list) {
++			trans->aborted = 1;
++			nft_trans_list_del(trans);
++			list_add_tail(&trans->list, &head);
++		}
++
++		trans = list_last_entry(&head, struct nft_trans, list);
++		get_net(trans->net);
++		WARN_ON_ONCE(trans->put_net);
++		trans->put_net = true;
++
++		spin_lock(&nf_tables_destroy_list_lock);
++		list_splice_tail(&head, &nft_net->destroy_list);
++		spin_unlock(&nf_tables_destroy_list_lock);
+ 
+-	list_for_each_entry_safe_reverse(trans, next,
+-					 &nft_net->commit_list, list) {
+-		nft_trans_list_del(trans);
+-		nf_tables_abort_release(trans);
++		schedule_work(&nft_net->destroy_work);
+ 	}
+ 
+ 	return err;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914-hash-bucket-route-lists-v2-0-29f6297d8a5a%40cloudflare.com
+2.43.0
+
