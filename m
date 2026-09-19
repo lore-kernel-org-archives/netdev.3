@@ -1,64 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021273FFAA4;
-	Fri, 18 Sep 2026 23:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DEB1CFA2;
+	Sat, 19 Sep 2026 00:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789775758; cv=none; b=j2rk6JlNug/L2Fn4bISNXrH+h/vy95DyO3uDU8631k76lCy7Nf5Goe26OYVAd2mqJtpWgIBfpCV+zbD+pE5Gz0dkUvJbVhzT3FuJKuWob99y9gloRf4oXcWQ9M3i+pKZLcj6XQU88Bs75h8bDwgatdJFGu9CI2CUZInL7SEIH3s=
+	t=1789776674; cv=none; b=j0xTaES78zkIk5x1dGk1oZoBVY66Kejy9cISMQr1lnHjAfpRx0rR1BBGttDntH+ksLL4BEArQH1diiAMZsB9HGr0K+tXvuiQ/9ECBB8z3SiElfF9ca16kpjredUL8mVxBq9QTAessgkTuO2CcdZHRZgBfxLJK/GwaiETYCyinvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789775758; c=relaxed/simple;
-	bh=IZjgsioofP6mEB0HjIeoG/NJqCekguLttEz4/HPlwGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XzBBt1TN6NQMFX9z2laYYG+zc5+1EQr7Og4cIcrYpdintga1Uh4gpfmn3PR2hn2fNpmFjZtddGbGrMYekuBbAQwQvzbaJA6vZLqmAXFjZRVhITe4nEYiaPgVlnspCYd3KwFoDqISmfEuKNqKx3Ya0NYAsHTyxLYchnSxyOzau9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoHFroeg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789776674; c=relaxed/simple;
+	bh=GqJC12ePMsdfqrsaUwEoqJNdJTuH8oEBdAN4MS5/Khg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QLyXlzF0qIdPTCzHlB7Kxh2RiTksFoaMOA4TvfL6JdjJRV5vMZS8YMoruFqC0w3oWl6aJG3LHOjr9jxCnEFKfXkn/oM9l2SOm+fqwSNVr+02rqI+cGpfdy6kldyPxcwGafSAHwZNlNyDHKdwrU/5GbQrc1EnnhQqHVeQ+hoG0Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9NhQUlY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoHFroeg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB231F00898;
-	Fri, 18 Sep 2026 23:55:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9NhQUlY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A605A1F000FF;
+	Sat, 19 Sep 2026 00:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789775756;
-	bh=VU0n0fb/ImTWy2/iDVAElKp7yccMyh1tca355nHr6VU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UoHFroeg6L3WkLGMSF/bnNmcN3Xmhv3BakLwyl4y4TwzXPxF5YTXb449kzRLr79mY
-	 uZitANbGjXX3x/rQXqlPTNvkZQ5GOtx6YX11P40A+djeG/cGJF8oPWvhWFWBzgbpTo
-	 9UOeyig9CkoNWGZUGqhHw/XRwcborwt1UNf6z1l+f6D2zMb7SnFeJia3V73WMarWCy
-	 gnDytR81u/NgFUZ0gyaUcZqkqPmUCUUJE22YXf4fhuU6GMMYJ28Jz3S3iSd866tm1l
-	 fMcFTfiOrr75iN5IrYbTZ2K2SPBx0k1g86otqaZZfUHmKM8IisONJjJuE1bvi8/WbY
-	 KoaGGPH6MEFGg==
-Date: Fri, 18 Sep 2026 16:55:55 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Kevin Curtis <kevin.curtis@farsite.co.uk>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] net: wan: farsync: disable PCI device on removal
-Message-ID: <20260918165555.2ed3bf2d@kernel.org>
-In-Reply-To: <20260916063118.2924049-1-lgs201920130244@gmail.com>
-References: <20260916063118.2924049-1-lgs201920130244@gmail.com>
+	s=k20260515; t=1789776672;
+	bh=tkDu9Uo/AU2uwzm28usz30zQ0fcywqUXhusN2fxLOrA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=n9NhQUlYWqBn6ZcpFHRSvph7N3ipGhmZH+HBwU2eCdukjMF0PeCTufRk0jcFNHeXs
+	 aoZeSQBfT9c/lEDbeVQBcXpJEoURfSq6NYGccSiaUAXt3ThE51KCbfKa2PumNEA7V+
+	 Ot2RLHeg3C3JKzs/2D8vdR46v2t84gatVQYqkcpoho6I0I3YmP9zpTp2w1F/jBCpkr
+	 2i+6BSDttRe5yz4gxzUCRE8luL6dBDDWdc8OHIMvMqo76wenTcySfBfHSfWNW49vH2
+	 edNDzFC5HiVEHiuHquFN7xeKYgneEnbXkl7nKhmvPccPEZJl5HDdYIiwmhtKPrR/FU
+	 8InJcXTgWLO6A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AD13811977;
+	Sat, 19 Sep 2026 00:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] ipv6: do not let ipv6_find_hdr() return an offset
+ past
+ the packet end
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178977660565.1197442.13371805244391689666.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 00:10:05 +0000
+References: <8F80BA1A-DDFD-432D-9075-242A3435FEB5@doyensec.com>
+In-Reply-To: <8F80BA1A-DDFD-432D-9075-242A3435FEB5@doyensec.com>
+To: Norbert Szetei <norbert@doyensec.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, i.maximets@ovn.org, aconole@redhat.com,
+ echaudro@redhat.com, dev@openvswitch.org, linux-kernel@vger.kernel.org
 
-On Wed, 16 Sep 2026 14:31:18 +0800 Guangshuo Li wrote:
-> fst_add_one() calls pci_enable_device() to enable the PCI device. The
-> probe failure paths call pci_disable_device() to release the matching
-> enable reference, but fst_remove_one() does not disable the device
-> after a successful probe.
-> 
-> As a result, the PCI device enable reference remains unbalanced after
-> the driver is removed.
-> 
-> Call pci_disable_device() after the existing interrupt, tasklet,
-> mapping, DMA and PCI region cleanup to release the enable reference.
-> 
-> This issue was found by manual code inspection.
+Hello:
 
-Ancient stuff, no point.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 16 Sep 2026 21:57:53 +0200 you wrote:
+> ipv6_find_hdr() walks the extension header chain, skipping each header by
+> the length that header itself declares.  ipv6_optlen() returns up to 2048,
+> and the skip is never checked against skb->len, so the offset stored in
+> *offset can point past the end of the packet.
+> 
+> openvswitch installs that offset as the transport header, and
+> update_ipv6_checksum() then reads and writes the transport checksum field
+> out of bounds:
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] ipv6: do not let ipv6_find_hdr() return an offset past the packet end
+    https://git.kernel.org/netdev/net/c/ee319bd3a0e9
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
