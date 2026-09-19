@@ -1,119 +1,190 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE512C0F6D
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 13:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5B4292B2E;
+	Sat, 19 Sep 2026 13:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789823892; cv=none; b=Yp5CEvAfaeDwieIEiG2fWkwYlEKSvzy+UiNy4YbdRa0HyXv5AcytalSheQAuFloP8D92gjjC3w7r0z3GBf93n51RCAEKNzv5HApPOij/wiXMkg1aKvk4j6T+hoG39X4bScwCOYmOLHMoILi27kZzlgAdjGQhu+LN5XC6Mua9njo=
+	t=1789824891; cv=none; b=sj7PoUqp6fz0+4dNiTFqg3tNRvYJVgf7pXNJaaisBmaeXUIWdFFCyh4qO9chjZHxvaDk7J1qDxdNZX/LFcUgtaQ/3QDcNAvGdXebcdgCtWP4AfTZFUk/5R5+tzEUzVYrrzZu423X6wPw4me90PW5PKW1MsQUI560K0uDXj7o+yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789823892; c=relaxed/simple;
-	bh=CsmY2C0LUhQFV2xkI5Vula3YY7rYEiZTWt4OODXOZMg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZvbyCtfF+YagurAk0cqPEmEPD3D2K+h6q2MN+sTe/i5s9cwf3hlTvJDgVx+kTOXMMMbL40ctT0qJ32i7dmKZN0JU8FRY+TcLB0WV35Gq8XAU/zvv8gcF8d9G/LiqhgJM9bY6nxMp0H1bFo3+t5ZJi80/dD38VPmiZAj3W11koTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5T4SkdM; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789824891; c=relaxed/simple;
+	bh=amOa4ik1PTVWeYvFkEtA4dL+9mgJHFzDJB5ZnPokJcs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=euLsZpu3iyTlCiHPSvX5eZMtzaQWAc7NIkQrG7hMYQemKqQzNqrUX/5DhuBwL+ytOqIuzviwmt/65U3Hxbz2TPFveI7W5126nLhxsfOVnCOu3Rk28fIvipsIIpGad9GBeQt0/WfzU0M6UEKBfqjdC1xWR+IgdOs5dwm4e35gQpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SOsm1Uno; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5T4SkdM"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4c7a0so849935a12.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 06:18:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789823889; x=1790428689; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JsTGylBrKeTBmgAOYV6+2j7T7Vnx2su+clGWmC3zkts=;
-        b=I5T4SkdMoeg+bxeMvG5McZrykI2Poa08KbsvifYwWq+TYVoL9fB/y/qsEEORnF5QmA
-         MjgaaxhJMT9bRZb3eIXVpRLSFHV1DPZw7LRKEdsfCtlLdvy4fFlMCzESs8v9Lm9Qjyhm
-         SPi1thXSJ0vYYg1d/L0fhUzzo10gtT4OAKgylP6uIxWI50yk2RnIAQI6Sb0onhsOOtyY
-         X3d2pFU4TZGnOzm2PKycIUKKxYJSb9H8biM+PSKdyGioE23LV0o4sR7cqvjRIaW1Z17n
-         fItzu3tjyVDmezvW4HcnMoVaquIgjRc/NBLre01b1arThe+BwbsTKylZnnUyPYrw0i8p
-         HNfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789823889; x=1790428689;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JsTGylBrKeTBmgAOYV6+2j7T7Vnx2su+clGWmC3zkts=;
-        b=RuqVbr7Y8HmkPXElAcFvVZrV8NKSlQKRXNGBUZ5dFeBWKaeRHXbyKHNAh8PdZPswbv
-         edb2J8TT1hiV+B7J+lnyUVFGrY2FHswOfPu13se/c59WBbnsNH4iY54kkCCTj/uxhAwS
-         /cueTcVVnZKffjofxI+SsrzMo9sYYN36SObccQxdy5p1sJoSNSxyD5lp74H8QAI2VAnR
-         s6sT4hBufRapBx/ophsUV5MGvQhcxLrKrGIFiTZjf8qZVDFjl01P7P8Uf3WlzASrZQWB
-         coxnK3rrfzdVwfwZjZRCoNFwIkldnpSzJyFTAeDC7HIb/jO80GLnkVV+MqdBbh2YxNzb
-         NNsw==
-X-Forwarded-Encrypted: i=1; AKwUvBw8jaasYuUmobfT24P9PsV936WcB1nXRso5452dqA/V9bUerKuzV562KczQDZ6S7UXcssTZvTM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kD/aLLln87rrWCQ8Zu6FDxR5jCP7tLEYZRh6yEtp/5fO+/4V4h
-	v4aA6QtpQH3WmGZ/DpagUtVrVTN82gCC5iQLR7ip91ZgXk+MkQiGuNhY
-X-Gm-Gg: AYBFou3+lBeOXtW6r51ckO3PlVibnOovF4XJ8USywXH3/i/IK/WSae1agn8ky5CAkZD
-	12H3XUFRChLFqewtESFwfbSyLicJsSNP9pXOYni0OJON2pCUaSw0h2JCGEr3b52gQ+i3G5OjnOF
-	74z0Xhymru0e579B9/HbKG4cntKUZ4AQwxmXExTwiIoWNkCU5jzxzFZF78w7rCSNghJHKGBYzB4
-	jFqMpx3LxUlwHi+THuA8ujkgFSpjmB0gTmmDijAecQq9bWM0jzRgQ1uArC3UeBaFjNOE2JLX2fL
-	aHvgbBtP5k6t852KFNpetzdy4X6EK0RtXK8p/qyTq/yTef7Jfdtkf0Gt2Ut8iJEKhleyXI4CkNm
-	O9PHcEe3FLvHqn75eLUIfS+BDCvAWS80b2Dux4WHg8XPKeoI5lHL79yNJnMChiwR6Q8wUjnJDos
-	hXLZHYEiqMbIQQba/gheggreY8kSahPEAehsQP/y6+0G0lKTcLM7Q3jga/wejgNxD8kCQVsg==
-X-Received: by 2002:a17:90b:5706:b0:39e:6c6a:209e with SMTP id 98e67ed59e1d1-39e6c6a234emr3242069a91.63.1789823888812;
-        Sat, 19 Sep 2026 06:18:08 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a023cf10bbsm1276314a91.3.2026.09.19.06.18.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 06:18:08 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vhost: keep vring addresses stable while the backend is attached
-Date: Sat, 19 Sep 2026 21:17:44 +0800
-Message-Id: <20260919131744.131030-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SOsm1Uno"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B751F000FF;
+	Sat, 19 Sep 2026 13:34:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789824889;
+	bh=PRlwBBwix2SI9u8sQAIJulPQFFMLUXw1J4AP0vddEmc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SOsm1UnoVpAJs7n4Db/5VJSFZ0NstGfrxbzmV5fRYAHLKEm34jyRUvoKEPV3aLYgx
+	 VdrpJnwOjX+Lo1VgWy3L/GN0cy+rsR5G+yi717EoodENqGq80pX+JjqQ888eNN4nE0
+	 GRC0BoRkwV4Rhpe0pqZkhmGgnciNDs58uEDNCSyBEbEEUhZJl8E1DfnoIqSWc4hWCh
+	 tFVy3sJj/JoguU3L6xC3MnePuCDfKjUQplQHjRQ81NWN0ndd2ZE2ABRn2qGVGKFYrP
+	 ouBet0S9uEWE+Su4Pa2na9dMESOsBZWJipHP68VKkdjk/aUDdQwFnZ3FKzS8Wdbmz5
+	 pEPex3CuQre2g==
+Subject: Re: [PATCH net 1/8] netfilter: flowtable: publish HW_DEAD after
+ worker is done
+From: netdev-bot+sashiko@kernel.org
+To: pablo@netfilter.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Date: Sat, 19 Sep 2026 13:34:48 +0000
+Message-ID: <178982488874.22033.15959147673465185831@kernel.org>
+In-Reply-To: <20260918112844.194503-2-pablo@netfilter.org>
+References: <20260918112844.194503-2-pablo@netfilter.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-vhost-scsi keeps the response and bounce-buffer iovecs until the backend
-completes the command.  If userspace changes the vring addresses while the
-command is in flight, the completion data is copied through the old iovecs
-while vhost_add_used() updates the new used ring.  The guest then no longer
-sees the completion.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Reject changes to the vring addresses while a backend is attached to the
-queue.  Keep accepting the current addresses so userspace can update
-VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
-that have not been attached retain the existing setup behavior; userspace
-must detach the backend before changing their addresses.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- drivers/vhost/vhost.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+- [High] Incomplete fix: the FLOW_CLS_STATS (and, in a narrower window,
+  FLOW_CLS_REPLACE) offload work items still hold an unreferenced, non-…
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 44cac11b68d2..074590838de5 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
- 				a.flags & (0x1 << VHOST_VRING_F_LOG),
- 				a.log_guest_addr))
- 			return -EINVAL;
-+
-+		/*
-+		 * Commands may retain iovecs derived from the current ring
-+		 * addresses.  Keep the addresses unchanged while the backend
-+		 * is attached.
-+		 */
-+		if ((vq->desc || vq->avail || vq->used) &&
-+		    (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
-+		     vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
-+		     vq->used != (void __user *)(unsigned long)a.used_user_addr))
-+			return -EBUSY;
- 	}
- 
- 	vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
+--
+
+netfilter: flowtable: publish HW_DEAD after worker is done
+
+The NF_FLOW_HW_DEAD publication is moved out of flow_offload_work_del()
+into the common flow_offload_work_handler() epilogue, after
+NF_FLOW_HW_PENDING is cleared, so that the destroy work item does not
+touch the flow after garbage collection is allowed to free it.
+
+> diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+> index 801a3dd9ceea..6757fd89c1f1 100644
+> --- a/net/netfilter/nf_flow_table_offload.c
+> +++ b/net/netfilter/nf_flow_table_offload.c
+> @@ -995,7 +995,6 @@ static void flow_offload_work_del(struct flow_offload_work *offload)
+>  	flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_ORIGINAL);
+>  	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
+>  		flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_REPLY);
+> -	set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
+>  }
+>  
+>  static void flow_offload_tuple_stats(struct flow_offload_work *offload,
+> @@ -1059,6 +1058,12 @@ static void flow_offload_work_handler(struct work_struct *work)
+>  	}
+>  
+>  	clear_bit(NF_FLOW_HW_PENDING, &offload->flow->flags);
+> +	if (offload->cmd == FLOW_CLS_DESTROY) {
+> +		/* Publish after the worker's last flow access. */
+> +		smp_mb__before_atomic();
+> +		set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
+> +	}
+> +
+>  	kfree(offload);
+>  }
+
+[Severity: High]
+Does this reordering also cover the FLOW_CLS_STATS and FLOW_CLS_REPLACE work
+items?  The clear_bit() above runs for every command, and for stats work the
+flow can already be gone by the time the worker reaches it.
+
+The sequence I think is still possible, all on a flow that has NF_FLOW_HW set:
+
+A remote FIN/RST marks the flow closing in nf_flow_state_check():
+
+net/netfilter/nf_flow_table_ip.c:nf_flow_state_check() {
+	if ((tcph->fin || tcph->rst) &&
+	    !test_bit(NF_FLOW_CLOSING, &flow->flags))
+		set_bit(NF_FLOW_CLOSING, &flow->flags);
+}
+
+nf_flow_offload_gc_step() then queues the destroy work, and the flow stays
+linked in the rhashtable:
+
+net/netfilter/nf_flow_table_core.c:nf_flow_offload_gc_step() {
+	} else if (test_bit(NF_FLOW_CLOSING, &flow->flags) &&
+		   test_bit(NF_FLOW_HW, &flow->flags) &&
+		   !test_bit(NF_FLOW_HW_DYING, &flow->flags)) {
+		nf_flow_offload_del(flow_table, flow);
+	} else if (test_bit(NF_FLOW_HW, &flow->flags)) {
+		nf_flow_offload_stats(flow_table, flow);
+	}
+}
+
+The destroy worker now clears NF_FLOW_HW_PENDING and publishes
+NF_FLOW_HW_DEAD.  Since NF_FLOW_HW, NF_FLOW_HW_DYING and NF_FLOW_HW_DEAD are
+never cleared again anywhere in the tree, a later garbage collection pass on
+the same flow falls through to the last branch above and queues a stats work
+item, because nf_flow_offload_work_alloc() only gates on the pending bit:
+
+net/netfilter/nf_flow_table_offload.c:nf_flow_offload_work_alloc() {
+	if (test_and_set_bit(NF_FLOW_HW_PENDING, &flow->flags))
+		return NULL;
+	...
+	offload->flow = flow;
+}
+
+So a stats work item can exist for a flow that already has HW_DYING and
+HW_DEAD set.  When NF_FLOW_TEARDOWN is then set (expiry, ct dying, dst
+invalid, netdev down, or a SYN on the closing flow via
+nf_flow_state_check() -> flow_offload_teardown()), the next pass frees it:
+
+net/netfilter/nf_flow_table_core.c:nf_flow_offload_gc_step() {
+	if (teardown) {
+		if (test_bit(NF_FLOW_HW, &flow->flags)) {
+			if (!test_bit(NF_FLOW_HW_DYING, &flow->flags))
+				nf_flow_offload_del(flow_table, flow);
+			else if (test_bit(NF_FLOW_HW_DEAD, &flow->flags))
+				flow_offload_del(flow_table, flow);
+	...
+}
+
+flow_offload_del() -> flow_offload_free() -> call_rcu(&flow->rcu_head,
+flow_offload_free_rcu) waits only for RCU readers.  The stats worker holds no
+reference and no RCU read lock, and it sleeps in
+down_read(&flowtable->flow_block_lock) and in the driver callbacks, so can
+the grace period elapse while flow_offload_work_stats() is still using the
+flow here?
+
+net/netfilter/nf_flow_table_offload.c:flow_offload_work_stats() {
+	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
+	...
+	offload->flow->timeout = max_t(u64, offload->flow->timeout,
+				       lastused + flow_offload_get_timeout(offload->flow));
+}
+
+and then in the shared epilogue:
+
+	clear_bit(NF_FLOW_HW_PENDING, &offload->flow->flags);
+
+That looks like the same "worker writes flow flags after the flow may have
+been freed" pattern the commit message describes, just reached through the
+stats work item instead of the destroy one.
+
+The ordering in nf_flow_table_gc_cleanup() seems to make this explicit on the
+netdev-down and flowtable-delete paths:
+
+net/netfilter/nf_flow_table_core.c:nf_flow_table_gc_cleanup() {
+	nf_flow_table_iterate(flowtable, nf_flow_table_do_cleanup, dev);
+	flush_delayed_work(&flowtable->gc_work);
+	nf_flow_table_offload_flush(flowtable);
+}
+
+Teardown is set, the gc flush frees the HW_DEAD flows, and only afterwards
+are the add/del/stats workqueues drained.  Should the flush of the offload
+workqueues happen before the gc flush here?
+
+Would it make sense for the free decision in nf_flow_offload_gc_step() to
+also consult NF_FLOW_HW_PENDING, or for the work items to take a reference
+on the flow (or for work admission to be refused once NF_FLOW_HW_DYING is
+set), rather than only reordering the two bit operations in the destroy
+worker?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918112844.194503-2-pablo%40netfilter.org
