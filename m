@@ -1,74 +1,74 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF70A391E57
-	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 22:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6813911C1
+	for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 22:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789856262; cv=none; b=i+ui43HWsg556luwynrwnsxgI8s7S8IY+gkteYHE7xEtN75BUpGl5bhEWFyWK5PxM5MINVGzB2OisgcrynsBDGiKEPtm05cyOswbvIMzI9zvAZKMOOy726tmDSJbu4gl+9YmnhB9O3J6h3NY40lRv78Q2P5Odwj3IN7GD1/LxZ0=
+	t=1789856265; cv=none; b=QHjGAFQfPoVwuReLwML8x/HhMjQgQFCrTHuCgM9NBdm3jBjUH9ipZnaPQxkr0eF9NAMfTG5j24CvtkfKwNM0xha1riERkqS1U2b2cfiTQo00X3SiT2pJCOecnoZ0OHQeh6d/4fo0JgddJkHCXHbDk/enpFqCpT45YNl5KXFavN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789856262; c=relaxed/simple;
-	bh=a5Y2KWWWwAi4V/RQWwZJd/MSE+q2UPPC+lrYmqC0FlI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dNnguSkp0QQOHepSOqyq7I68KBcDBheNnnHmD8m7yhfBORyX5hoLVCRSnPisj7avNxXsfcbwGkD13Jar8pRHbruKZPrhbLdQ4BtS2YhCTbXGX/O3CzKYwZZ26aowE1Uht9NfgwjPrijrwX+2aIEt7aojOBoxR2NOS2ApIZzkDH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLRMjMQH; arc=none smtp.client-ip=74.125.228.41
+	s=arc-20240116; t=1789856265; c=relaxed/simple;
+	bh=hnfvSXlQm0H4LxGfOJPKpiwmvKO3zvxJVZsdPHu3oY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OCn/i3rNWT5YMR8xEAv9Ny/L4JRNvb/ZLi24ON7k8fNE57H/NgEePS4solsVSQqE9uhBzqUgqhGbXHbXBj3hlAmKqUGYm6NZyBYgcFu0pJTLhvqZgv6Jnh2FyQCPM7rAbv1vBksTawtGJPkbreuGDQhAQjNxsRVNvdKpmTCyAlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKZE0TZA; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLRMjMQH"
-Received: by mail-pz2-f41.google.com with SMTP id 41be03b00d2f7-cc50d1b048eso1590575a12.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:17:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKZE0TZA"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b5b07ec78so1285898a91.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 15:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789856257; x=1790461057; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789856258; x=1790461058; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zj1nZb9yBa52W3cqUr6hajKJjyJRC/rB8Hcxjxs1Pyg=;
-        b=BLRMjMQH5e+t9Co4fUn+HTuo2zmqpvQUnRLkmUFbcDce+YdIaN/t4OGvYZimZF3z5g
-         kqqKgm3cJcH4+JcolWRHbH/wxFsVFdsuXtGyjGn88E8vB7v7b/IAPZAHBL0FxodGQy7N
-         XqcQG5vtLyBvFI5d/Rp3JwjdCxhcJfqD/oK+o67h1/b8K9UPxUdKCKhCXcPCQKkPxgJM
-         siMG4HqiQhdEhznsNS/y5WEQGXONQ16tQOhY0sIMApfw9Kbhd5fABJX+ujpnmUhOIpZ5
-         DuiRm0ojyR+cCOLP/NZ/Fg9228llnQw4Rn3BpOMqda4r3uN9JQFVmXkVThwtZQ+KHfgZ
-         CCxA==
+        bh=sIPd6MKwiqO1KHtDcJOHCxhNbUyXr9QmbbtW99agFhc=;
+        b=kKZE0TZAw9b+wzKn8AtdWqO57+JO18j1O5dShEufghGDHqgBRvRxiTgaF+rPcfTHBL
+         mfGWOQJzF5dGJ2fi8o94oNBpyXjO16XhEM9sH7SUFwxlCpNZdBEGAMVJz/WshmjVNkr6
+         KeEFjLH+g43m/D4Gg81zij8Tf3fJhoGeCcq08j12hMV9paxtrno2kw5WZvIQhjwRgWgx
+         UZCrpF2NcJEI3OuZ4drc7UuM22OqRGbSSOPMsa7SxmZAhvO/zpNx+THfqU59gjdhmQWE
+         tB7QPqXJ6vPF8BUYYkuPMmVYMKrDPRDMc+bzpfPWDFMhOOITrncS4dl54wDzAmjvF5/O
+         x8gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789856257; x=1790461057;
+        d=1e100.net; s=20260707; t=1789856258; x=1790461058;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zj1nZb9yBa52W3cqUr6hajKJjyJRC/rB8Hcxjxs1Pyg=;
-        b=ZYyHfCLZsyK0ytsPopwWxbSEWo3y05ijAf1uoxmUWA6SFqh5kx07CxutYW9TDjAwY5
-         L/+ncsgzj1G6vL6fOngEofJ4mvcWtgN+qtMS0kiUa8eFS3cm6RRuwtsmP+zRw3a/7mU9
-         cq31t13JIhvLtZaBqao8riDYzkmmzunvsOno/WNjPLLLMG69vuZpKjV0Df2VaWjs9tbV
-         ycUvi8iBrzapeTdylUXejZvM76OMXc1RbvAHv11DLwsXa0ByMMQ/JY0dnTHWtffOye41
-         npCJb6/94PFtlRG0NankB25vMfAMS10BYNKKI0qNfSQnxeaVUzgjaqtdoYWlfeO7N0Jb
-         coLA==
-X-Gm-Message-State: AFuF++nVYGiljpp+fEQDaDqVWL92W+sRgSfbdEKBwK1jbdnP6H3XuNuQ
-	PqxRJkrImvTpROem8Er40X/jJqGsTjknrW04RdB9HUd14oNlIx4uoeyu
-X-Gm-Gg: AYBFou1FedZQBxGDflbFlCl+ZnMIUgSdt+dFZnEtkMp+FNu3/3oeWxhNV04GqlixC/8
-	ZW4GfAf6riDvXpPv8js8Ny4B72rDF/YbRVt98HwIvqz6KN8A/2TD6wlQFdKDwIseDwuW32EhGwH
-	jBmNXFxAOjUCJVEYt/HER656LNr10zVkyswYd35870MqoDjNcJ6i2mGqRPujutKIahHjJsTB3mA
-	KqXAFq1doSwpCUPrno96+k0lvAanuumRtUDDO4QY9+IuJgnc+QtmPopwtOiRnHzRUq6GnLpj5AE
-	vXgJfrMTlpkzdrzYFRgousNu9/Zd3/ur5uiPvgwWyib8dnXk1IBaELAkDZRS6sl0A53KV5qUwBp
-	7RM9p/My86NtVYY3EAwmc/NsuwTHCvprk5i3bBeaTaHCuO83dSlqAnaL3WKXIYyqe0C75cj2hpS
-	iO2FFfMgwvgCi/LHKR710MxFcaQBP2dRRV1RhgmRMlzkJvlE1+v9l0FXAAdKs2nukfE1+nOAjb8
-	zAn7U7c2PjWeBm1/k0Lzb7Uns+5X4bpEqWOPlG1BWNqbnQM7yRj3KPHPMZSdPsk3qDaPgq48I25
-	Va2n0FD/vw==
-X-Received: by 2002:a17:90a:4c82:b0:39e:6c6a:6580 with SMTP id 98e67ed59e1d1-39e6c6a67d7mr3165966a91.67.1789856256925;
-        Sat, 19 Sep 2026 15:17:36 -0700 (PDT)
+        bh=sIPd6MKwiqO1KHtDcJOHCxhNbUyXr9QmbbtW99agFhc=;
+        b=ROBa2XMhA4fgDoiE2LAVtGmc8LcWQm3WB7mf9bJqQOmMnmVVZOCCmX5UWDqg5aAtlw
+         IR8ZReMH78sb+3HEnl976uWm01DBu0pvMLKETmpXKX24/bOAzxt0DmxUSU1ViZI8CBE3
+         r6tK3y9EOlCPkzhIypTo49cixEsMnEgyP6X82huClFCoWAM+HuJek5YQDi6ZTiJga44O
+         HVUkvwpU5P0c73ofCnOQpqRMP3ZmE4gCkoSCirRlVN3WyMSODJDpwwfBbFw6sz7BxSy/
+         0y+RJszjkGHv0JI+vDmdaWaePwbufUWDNGfmbtuLRmhE0s+BtfPnxJp/3l2+kuhhbvDH
+         4LSQ==
+X-Gm-Message-State: AFuF++nPbsBuAGYxSWQZk+gxi8Ax7/zMs5uumFeFYgBDfWw0ngCRs7sL
+	m5gFbvfi1YEgd/B/7kXJOeCV+7jnaJzGpDtoer/UJcq26Lsm9c6aQk/1
+X-Gm-Gg: AYBFou2vbXSu4rC/0Q6TNnaVLIRRwBTuPoYn6YKmlMFvVzxXBWwbbm+XeuxbjnFa3kU
+	OU/sxJO6VLNP9gAzARf1KWt/5dTlB3SQ1yisg6hc5BzPEIaFsTEXdth+HgWbKfX0X/smioSOpjS
+	jD80cnR4Mwb+4Qn7cmCMc6F/vTc2bcP8Y/IribxuCXpGY/ymNibWzPypDLhZIBwysujZCP7aNEU
+	L/H8YunUHJudtwrTi6VmUhncl/1uGoMjUlrm6lxv45pDPLJ5Xz+Ug0kaAr0WzfaEK8Rb/PeR91w
+	NFtAuxvmOMhfo4wofUmn6sItIn1lLboOMpE44WCt2Rv4fJs/M5qe2csE3GUfMk/x61jIds/18Hh
+	sNzty2swWDuhW0a/iJ22Mf7hgJPDBG076csCQ527uV2/Zg8VZkMOAVTAl1IyYBYBMLQkPZq8OSK
+	Uzo1fJxCEnO4WMWxwQ7qP5eN1We4xX0fhMUjsIbpVQ1YmlEN3corl8ka1Y+tsVK2jFE+ZC1mBkd
+	kLIyQYJz3DdZqneBxJvMO4eSDJr7hJyYx4Ma1XsHP5qmnlLBrkL6A3IC+rePeE+WyyQMTOd3AG4
+	3Z374AVmQYhmKvFki8Zu
+X-Received: by 2002:a17:90b:3fcc:b0:39e:4c81:6c61 with SMTP id 98e67ed59e1d1-39e54d54a6amr12357036a91.28.1789856258131;
+        Sat, 19 Sep 2026 15:17:38 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cb3284asm6236175a91.14.2026.09.19.15.17.36
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c379c4bsm6632934a91.7.2026.09.19.15.17.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 15:17:36 -0700 (PDT)
+        Sat, 19 Sep 2026 15:17:37 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
-To: kuniyu@google.com,
+To: dsahern@kernel.org,
+	idosch@nvidia.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
+	pabeni@redhat.com
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] af_unix: fix u->inq_len accounting in manage_oob() and unix_stream_read_skb()
-Date: Sat, 19 Sep 2026 22:17:35 +0000
-Message-ID: <20260919221735.3708237-1-benquike@gmail.com>
+Subject: [PATCH] ipmr: validate IPv4 header length in reg_vif_xmit() and zero iphdr in ipmr_get_route()
+Date: Sat, 19 Sep 2026 22:17:37 +0000
+Message-ID: <20260919221737.3708462-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -78,59 +78,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When an old OOB skb is replaced and discarded in manage_oob(), or when a
-fully consumed OOB skb is skipped in unix_stream_read_skb(), the
-discarded byte count is not subtracted from u->inq_len (or is subtracted
-inconsistently), causing SIOCINQ / FIONREAD to report stale positive
-byte counts on an empty AF_UNIX stream socket. Properly account
-u->inq_len when dropping or skipping consumed OOB skbs.
+Fix two bugs in IPv4 multicast routing:
 
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+1. In reg_vif_xmit() (net/ipv4/ipmr.c), verify that the skb contains a
+   full IPv4 header with ihl >= 5 before reading ip_hdr(skb) and passing
+   the encapsulated PIM register packet to ipmr_cache_report().
+2. In ipmr_get_route() and inet_rtm_getroute() (net/ipv4/route.c), zero-
+   initialize the synthetic IPv4 header pushed onto the RTM_GETROUTE
+   probe skb so uninitialized slab bytes in iph->ihl / iph->tos /
+   iph->frag_off do not corrupt fib_multipath_hash() or
+   ipmr_cache_alloc().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 42cffeafc8c1..1770af3c2684 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2849,6 +2849,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sk_buff **last,
- 		WRITE_ONCE(u->oob_skb, NULL);
- 
- 		if (!sock_flag(sk, SOCK_URGINLINE)) {
-+			WRITE_ONCE(u->inq_len, u->inq_len - 1);
- 			__skb_unlink(skb, &sk->sk_receive_queue);
- 			unread_skb = skb;
- 			skb = skb_peek(&sk->sk_receive_queue);
-@@ -2884,6 +2885,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index b9c544d48c45..8242ab62d1b3 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -545,6 +545,13 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb, struct net_device *dev)
  		return err;
- 
- 	mutex_lock(&u->iolock);
-+again:
- 	spin_lock(&queue->lock);
- 
- 	skb = __skb_dequeue(queue);
-@@ -2893,6 +2895,12 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 		return -EAGAIN;
  	}
  
-+	if (!unix_skb_len(skb)) {
-+		spin_unlock(&queue->lock);
-+		consume_skb(skb);
-+		goto again;
++	if (!pskb_may_pull(skb, sizeof(struct iphdr))) {
++		DEV_STATS_INC(dev, tx_dropped);
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return NETDEV_TX_OK;
 +	}
 +
- 	WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
+ 	DEV_STATS_ADD(dev, tx_bytes, skb->len);
+ 	DEV_STATS_INC(dev, tx_packets);
  
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-@@ -2908,6 +2916,11 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+@@ -2492,6 +2499,7 @@ int ipmr_get_route(struct net *net, struct sk_buff *skb,
+ 		skb_push(skb2, sizeof(struct iphdr));
+ 		skb_reset_network_header(skb2);
+ 		iph = ip_hdr(skb2);
++		memset(iph, 0, sizeof(*iph));
+ 		iph->ihl = sizeof(struct iphdr) >> 2;
+ 		iph->saddr = saddr;
+ 		iph->daddr = daddr;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 37674d76f90f..1cba70e38507 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -3087,8 +3087,10 @@ static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
+ 							 r, portid);
  
- 	spin_unlock(&queue->lock);
- 
-+	if (UNIXCB(skb).consumed) {
-+		skb_pull(skb, UNIXCB(skb).consumed);
-+		UNIXCB(skb).consumed = 0;
-+	}
-+
- 	unix_orphan_scm(sk, skb);
- 
- 	mutex_unlock(&u->iolock);
+ 				if (err <= 0) {
+-					if (err == 0)
++					if (err == 0) {
++						nlmsg_end(skb, nlh);
+ 						return 0;
++					}
+ 					goto nla_put_failure;
+ 				}
+ 			} else
