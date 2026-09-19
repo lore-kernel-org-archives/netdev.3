@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53A738DC50;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52AD379C46;
 	Sat, 19 Sep 2026 01:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789779692; cv=none; b=HMPGZkzkA1+gZM0FV0za1f7VB+FlOpZfkV7IUwxhYp+7bavHEultK1eYaFIN8sVwjOyX2Gyq6w8ctJD9QJtkPie7mdsxYLdSWHCC2PjIIrwBnSB71b+ikLvUWIaOQaRx3B+8n/N+9hyZoFIJuq6HroMwFGqPENdhAzUo8hHbsfo=
+	t=1789779691; cv=none; b=MhVkcD5ISGxlh+nQ25m325d13B1qpyYvqYzJX+sQRWVjlyu8ePhUuiPGUdPJJZb2FKXmyYTCbbJ0IZOrQ8L0HOqoTqpFRGheQizblZRBjS25gDe5G5qCoqhH/3zFcGWfqYtTRqjRIEjZeXXuqMKPed1Xt8ChcCLdy6TRXRYiiZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789779692; c=relaxed/simple;
-	bh=HWzXUAZiSudXtv+ysyemS4usfyUV9q4TgpEDa7hb46I=;
+	s=arc-20240116; t=1789779691; c=relaxed/simple;
+	bh=tB58EVgfy0/5KYj84zuUO88RYwQ509SqkS1ppN0TSJ8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FrPQ2MUJd70mNB9bHK3yHu0mLJcN7BdAQUPD9GBdF9Za86Xkl4KeUUbL58hphfKkbv2ckoBKQ8rt0iHlUcwOvz4crcm5y4eO2GHJd7ALdq49wgCj5wtkjeXy+zVCw/6ax0YJbCdStdxu3iOUVKBauMYCsRibfrpSm8jtmhjAGQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5BYy7QL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=GQrEh5Owv3wxldcvYRRpL7l8c/0K4++WVkHePVR+UYXYacIJer1X99lLLJZkZk3Fz6kz0ziGEB2v3N3HbL88I1AO/LkbKZgVSBO2G6i2mOhUnzZzJYCg/ZPJW86lA57N2NhBdzpYc0iBaPDdphHH2ZuKCR5EYNzYYLk6yUZzgeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3X1cgsn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5BYy7QL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701201F00899;
-	Sat, 19 Sep 2026 01:01:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3X1cgsn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA30A1F00898;
+	Sat, 19 Sep 2026 01:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789779677;
-	bh=BhWw07RB08Sq10ZxN4JWnZZQuiI8UGuDOAwR8QQWB4k=;
+	s=k20260515; t=1789779676;
+	bh=qK7mrY3OuW5ru9HkHZRVxNwKLylrgUS+oQ1Mt6LVVg0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=I5BYy7QLi0Mgtff/H72pa4MuCNDA1UhLqISosU8jzd+Lz+OE9FX0OZkgoxZuYb6Kr
-	 xyEb4jm2koopdWUXm6YjskY8Hxm7YZfPrw95hZqq8VL7HPfA5h1cqzd/mri5X37CR+
-	 /m1yLKt5toVh5WfM1xz7Yn8xD1WZ27b7xrE5fpgCS+Gh87jX4vrz7bCbvAd9fFBjG5
-	 FfOOgN5GvBcicnwyDDoyszlegDfp0H2DRKFN3gNScvnaoFfn27Ta5i6gWr1/XwMmYR
-	 IxvgDgVd8GahQFmUtNGZxaIqzFUKQR8g77S11HWW3T0csfwkt2FryfRxZnil52PANT
-	 aFXPj9xkcoupg==
+	b=K3X1cgsnnf0eIdaMpZCsAvjsvMxjlyYA42fLQz9Dx71qi8MT9Vp7WiuEsA8M+nnPj
+	 IxPG8GN7eJxjzJ8GnFeJGUoyCSqW7Pa88MJSPrNxvIJj3NMGjCdSzGdCGAeoVls/vJ
+	 c2NEBlRHeZIzzOfbQSo4fcicCRCuBPzzfiWm6aROomWlTPnqm9lXTLiMm5/sRxjjjv
+	 qOTqDGGZakqwTnoUm97hyP5Pv+VwJq9fMvca2esYpbx+V8JWgy0kLCi6uasFxcX15O
+	 GBa8R0P5HzEiRS/tfCAVsAxwxDxWPkMVcDtEkuI33Td3GSnPzZzDuZQFNSk51W907t
+	 7QwmMTUPkqwsQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A043811978;
-	Sat, 19 Sep 2026 01:00:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198493811978;
+	Sat, 19 Sep 2026 01:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v15 0/4] net: dsa: microchip: Add support for
- KSZ8995XA/KS8995XA
+Subject: Re: [PATCH net-next 0/6] net/mlx5: more HWS misc enhancements
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178977961014.1214202.126037338656223815.git-patchwork-notify@kernel.org>
-Date: Sat, 19 Sep 2026 01:00:10 +0000
-References: <20260916-ks8995-to-ksz8-v15-0-8825ff5fd4be@kernel.org>
-In-Reply-To: <20260916-ks8995-to-ksz8-v15-0-8825ff5fd4be@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
- netdev@vger.kernel.org, Woojung.Huh@microchip.com,
- devicetree@vger.kernel.org, krzysztof.kozlowski@oss.qualcomm.com
+ <178977960889.1214202.9969611467837827041.git-patchwork-notify@kernel.org>
+Date: Sat, 19 Sep 2026 01:00:08 +0000
+References: <20260915111912.3926585-1-tariqt@nvidia.com>
+In-Reply-To: <20260915111912.3926585-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ erezsh@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ saeedm@nvidia.com, kliteyn@nvidia.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 16 Sep 2026 12:20:57 +0200 you wrote:
-> This series breaks with the dated attempt to polish the old
-> KS8995 driver, and instead implement support for the KS8995XA
-> in the KSZ driver, and after that delete the old KS8995 driver.
+On Tue, 15 Sep 2026 14:19:06 +0300 you wrote:
+> Hi,
 > 
-> The hardware clearly has the same ancestry, the KSZ8995XA is
-> just a rebrand of the much older Micrel KX8995XA switch.
+> This series by Yevgeny brings more misc improvements to the mlx5 HWS
+> driver.
+> 
+> Regards,
+> Tariq
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v15,1/4] dt-bindings: net: dsa: microchip: Add KSZ8995XA
-    https://git.kernel.org/netdev/net-next/c/7a5e75f64916
-  - [net-next,v15,2/4] net: dsa: tag_ks8995: Add the KS8995 tag handling
-    https://git.kernel.org/netdev/net-next/c/ca30cd47fe7f
-  - [net-next,v15,3/4] net: dsa: microchip: Support Microchip KSZ8995XA / KS8995XA
-    https://git.kernel.org/netdev/net-next/c/a926dc2352a9
-  - [net-next,v15,4/4] net: dsa: ks8995: Delete surplus driver
-    https://git.kernel.org/netdev/net-next/c/744e0256c4a1
+  - [net-next,1/6] net/mlx5: HWS, Return meaningful error code in hws_send_wqe_fw
+    https://git.kernel.org/netdev/net-next/c/0ca19b9fdcb0
+  - [net-next,2/6] net/mlx5: HWS, Fix error message in mlx5hws_cmd_generate_wqe
+    https://git.kernel.org/netdev/net-next/c/59da9e5163e9
+  - [net-next,3/6] net/mlx5: HWS, Replace kzalloc with kzalloc_obj
+    https://git.kernel.org/netdev/net-next/c/23aacde37804
+  - [net-next,4/6] net/mlx5: HWS, Add timeout mechanism to draining send queues
+    https://git.kernel.org/netdev/net-next/c/7bf7c4367db6
+  - [net-next,5/6] net/mlx5: HWS, Handle timeout draining the send queue for FW STEs
+    https://git.kernel.org/netdev/net-next/c/03d41926d03a
+  - [net-next,6/6] net/mlx5: HWS, Remove unneeded WRITE_ONCE in post send
+    https://git.kernel.org/netdev/net-next/c/889f1d8c0eb2
 
 You are awesome, thank you!
 -- 
