@@ -1,71 +1,71 @@
-Received: from mail-oa2-f35.google.com (mail-oa2-f35.google.com [74.125.231.99])
+Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBF1489FBA
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830F548A8A4
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789933548; cv=none; b=tWybGBNx3BO3JhkvJPLdSSSwpzUCJ4MKYab9X1d8jKhlbkm8nc/PW+nurK8ulI/0NJnhhh4h4KI0e/U4YVawGYs15hBbBQVd0lYDxum7ne+rS6VNxtiBipP6ESG1xSCU0bLMiIsQ1Y3g3w2M/f3j3aJWKaX8WGc/NaWOjw+u46A=
+	t=1789933549; cv=none; b=Ej2afd+8FPkfUQyxqumf05iOz7uDysn1HcYj5Y8S9LMiYb/FLvHud2Hte0yUZZsqtFyop+z9ivwbSpDGsrsY3llLAaht0aH3RU+Ndpl53In6ZpLbIgBCeZXaRB63TrilzdZP9Lb3TUZwHWpciaiqb9ATSgthey7cvqW5ojPGRaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789933548; c=relaxed/simple;
-	bh=L/gVslUU4Nj87gMlJ1iN5b89DCxQ3qLLsz8MQD+nnKM=;
+	s=arc-20240116; t=1789933549; c=relaxed/simple;
+	bh=oaAEJTR2oPaosC4rO8wk6R7DRnuHixWUfvmmuYgJ1eA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jARC++Ji3SWCJSmab8/i4egi1QlonvjTcow50bDVmilsn24cCuYQWdhAtB4X70YKY9zwttGoYd15HyTgmTrrubnAOTAGm7CsniH3J2dt7m4Mu8cNq9c1cqu3UX6ZGVYZ2jxSCALAjxbLP2ENXz4PU4cot0+ULBgqnjUutxlkuuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6IxJVgm; arc=none smtp.client-ip=74.125.231.99
+	 In-Reply-To:To:Cc; b=t6/2bXTRT0Q5s15sFMozDONoGJnD1ADF4CDfvIiblAYuAJ0jS99J0+yiMydOOBnIfQwDEgfoiP2Oaf5XTtDiDugiMBFtTBNS2vaGOwDLszv32AnVp8B8cBHr6Jl8SI3ej0gFpwdsn1AK2CVW5KEKGiqgCp3XzdhfNltMfjvIcqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ToNWCfYE; arc=none smtp.client-ip=74.125.231.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6IxJVgm"
-Received: by mail-oa2-f35.google.com with SMTP id 586e51a60fabf-470417e5b52so1709336fac.3
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:45:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ToNWCfYE"
+Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6b4bff33ceaso1432743eaf.0
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789933544; x=1790538344; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789933546; x=1790538346; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3aFq2H0KJohvHytlOdYBRSeWux+yzT03AinuuVRvEmM=;
-        b=b6IxJVgmucYmvO5f9YkZ/mpQlEpApK7Y+SyeTPT2cj6xbyT9maXXXMh9YSut7YGkxv
-         8JyzdzOVXIIyxs7j8UBo2RucuIMQ5DPjvFRJ3DUeZEvq8AL7lsh8JCwqppk7Oo9aXft/
-         P3GlVian8EHjzHZ3ME5mU3zMzPAk9gso/IUfbGWTZk8f9/g5idBOAM+gBzE2S6FxzUeh
-         zfY9z8KQKMI22qch/4ZJG9SO0VWaJ99HBOgBGWepUaXi7pJ28U0NmyqO+pmgQ0kuLu2S
-         kh8DqOe4wYec6c3nZRFwUSfpkcA9MQ7yrki6PJy5MZVB+XeN1rDPKjOY4d3Cy6A94DVV
-         q6cA==
+        bh=GDQtWEdo07Gt04m/i2o6WCXb5iRKSj/hWaaSYGuPoFk=;
+        b=ToNWCfYEJqD4Kf0819oEweAReMris2GXt3UmMsTPb0C57kG3hhz5YnIdF4c37+Sx40
+         k+KhLR7vILOLa4H7mmkkqXSJi3IVm6r6lxs4OkhzHpP2X//DxprU5Nf+V/H7k1j64lV+
+         1PxL/2P8F3i7KLVBOtyBjTPd5neRsrPa8lLNHU0GSWLfAwjTTvw+GgGqEOtE7Tnufn3p
+         iQpGjyaYM+4MFZre64NLpgV/pb7vH7m8Z7TDoNAbeNE2x6H+MHtaI28S4IIg3MVMFvRO
+         aak64uoNXQVZwh2AvMnM/HGfxGctmEimecbo4gY41LkoNtFqJOLgyU39WN1faBKXW2u/
+         dSTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933544; x=1790538344;
+        d=1e100.net; s=20260707; t=1789933546; x=1790538346;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3aFq2H0KJohvHytlOdYBRSeWux+yzT03AinuuVRvEmM=;
-        b=YRHos8vJQcbotNlTu4AfEQnMO9xmfdECPUmuBlUuID8LFCBRGz9T8BY13/T0/TwQy6
-         emIaSLRqkM/yyQpDjFGwBlClt1HVd+48JAoNoiDBWTR7KhW7iPZ01EHYpOF+Gb0cY0SC
-         dIm53vq7omBPIrQv5BXYbEqfwiy5GSDzgQ2AYh7pUpcQuBFy1odDT6QobfBQ6jxDQKzu
-         82Wl2gBdJ2OecuWk2RW2bfKVtMOXZCR3KsXws2xAjuwexpZ/llHTg/YHy5/UU8lINyvE
-         DHZQq/MYIp5mJPjbbtakfjkQWyx1XKgnKuyAnBrpY6a5bCV4vn4be3+kkVXwgq9HoQsh
-         K92w==
-X-Forwarded-Encrypted: i=1; AKwUvBw8k1HagJEmx2P1eRQIAgyNXIPz2allSuHIJlx65USYUDNiVAg9AMx87aoTd5PH9UuJVXb0cq8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kVyK4faSd0m2WQatsa3pHPOBRrwDR7RcojC77xwawZVJouZIp0
-	7yrY/ZZQUHO16cTMySCjfhdVz7oINYLYxv04B92OP+EhzokohAH6CfA2
-X-Gm-Gg: AYBFou3ZasgChVVaulrTixrjocD4AaNR/NGUgAaJ5Clk8gquXA1VWSmFJAUJhThne7z
-	Gq6cxOz8biPGyC/cU3UeA4cMNcZXAtu5k7COuNUjCLCO96KZxiTYxp4SLVYQ4NW+GzqNhhtxQUp
-	oGfzEwQSvmiZYTBxHZUqTYjjJrXIsVqe3rVQyATWCECeb1rpzCzIkr1CV2pfapxLqxhixLSj3i8
-	8wd6/AyoSax+KdlnmEnjNpzI020+kUxUpaDB6Pg6eHT/yOmWN+eTMjeyMy0WaxSuN4VzM5Qspuq
-	dE3V0F08n+q+tZxAocUk1eZ5AFsvGzqQmA++UdnJLYKh4iDEoxJutkClJqkgPNWIDsYrLpdn+or
-	X2RgQwp1BUq8cfwITZw6vg/Gkn3TUTObNou0ZawLZX3d/npLwX7Fnm6pcKF3NZjnQ9HJfGDtoap
-	/kSzj8TqGwWGM/KW9u6KIz0AoLt7QA97q3EPpmwkxoUt9wxRaRVH2fO+8tToFi3tUcGE3SYd1LJ
-	WDQA/J6HtWjkDB8F+iGxXeBMj++9SJEX7Kt6XXrdSVwJzbezdn0Z7boUuptXM9UD1Te5swgGCop
-	9/FFCqbVBzCGcwSrWF0XR8TxTPVKNVN4gQ6bhFTNObKGUL1KkDfhdkT+11B70D+h02AzAsECUb2
-	wTY3XqdyunvsVXjRjjGX9
-X-Received: by 2002:a05:6870:c205:b0:42c:49c7:a499 with SMTP id 586e51a60fabf-486e4ceaa22mr8316127fac.3.1789933544510;
-        Sun, 20 Sep 2026 12:45:44 -0700 (PDT)
+        bh=GDQtWEdo07Gt04m/i2o6WCXb5iRKSj/hWaaSYGuPoFk=;
+        b=BNa/vQ7OxttMOyh8ubX9Infbg651sS3YY6DZEhUgjJ/mIcVFtGlVZcjObsDDKLNdaP
+         LKpQaS3iVSI4uSiEj4SQnANm9GYz/bcHEgr3qJT6OKzDTThzUsZo7UlR/BygSepV0Nvk
+         ITX8GfFUipFM6SFNei/mkjI3LKdW42B2FlotRY2I/559HkAK1XYME3GBPp8VBtBk0NcY
+         u851s2im3grcAD7IQIrUZ+JVvynbJPsmmcrwjYMHypL3C1yMVKn/oNYytKn5cDaTX7rE
+         +fnZMTwkfq6UowtdKYUmXb2535PtBers+FBrP5Ey/2P5ua09IqKj3h3Y6cxZZn+Wr7r4
+         PP/w==
+X-Forwarded-Encrypted: i=1; AKwUvBweLPLkatBJ8dQ2omSPo6VPMJWQjzI34uSwpGSD7QhJu+9XY1cOFEUJ39evHJKxEk7wtsKylXg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nSc1yLd1G9eDtHbeRgNFHJgdF/fzRrikvs8tFtIpNZLeOnlv4a
+	RthsbnjkaXKDbG8bkCUk3bbPIrr72KYXy3gr9IcV0Hf7RKDzHi1C4Pla
+X-Gm-Gg: AYBFou0gc1ghEkh6BM4f0VYpMweBaQ7TuzEMAF+rKUDNGHnGqXlCRRZ1tooFSdAahWd
+	KBLwjUWz/n2nj1ATMmO1Wha909n5Wq8OJ8409HfT6S+l2OXdAwkxeIw7V0+LkYzCNkx1/bx1Wg7
+	2nPTxxwhaoQ0vTj/dfBXKx/FdaNOLX1adKEmBbS41A2wUEabVWltbranM5GsqKZvEFaFG0lvjvS
+	WkmZc/iGfUNWLtDf9xpAVTnn8Sx0CPSkBR3fTXIweeHHRl/zRs+dLms3qb6J8ejUJxszvBReZ02
+	gvdrtNQRSKgwPwtNNbBm5gp8fRqXRT9WPf/D/0xTWkMLN+4L5grhAoppffJc1AFtuzi/wa1Mm7i
+	OGGCgrsPy8BhoJUp3RPuf6ljGF+zHHANZ666AbxOXxtToOX0YRcQmivV+M+Ceqo9bq2zjoBolle
+	wIdmh5FRhOdGGrfhP5jMihCccHhjzvyy8zkF5KnJ119gh5oNvM6F8Zrb6n86RwSULn0YnZWjUUu
+	C+1IkYK/5EJWzLJexrEf8FW3gap8direbK35vmPoRVE3qRErfkH2C09CMw068ZgVf6asyRA+a5s
+	cPtOwhxxlS5HVWahOzA1GEyIBTI7W/3clvMW1TvMwxRLNx389cxQfXFjs3zqziMD4y7EKNjmH/q
+	zAShl4odEDo0f5JwSzSSY
+X-Received: by 2002:a05:6820:160d:b0:6b1:535a:eb8 with SMTP id 006d021491bc7-6ca9a132f99mr8497407eaf.2.1789933546360;
+        Sun, 20 Sep 2026 12:45:46 -0700 (PDT)
 Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4881f4d7861sm6103834fac.1.2026.09.20.12.45.42
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4881f4d7861sm6103834fac.1.2026.09.20.12.45.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:45:43 -0700 (PDT)
+        Sun, 20 Sep 2026 12:45:45 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 20 Sep 2026 13:45:29 -0600
-Subject: [PATCH net-next v4 3/6] net: stmmac: close the interface after
- failed hardware resume
+Date: Sun, 20 Sep 2026 13:45:30 -0600
+Subject: [PATCH net-next v4 4/6] net: stmmac: sun8i: reset the MAC after
+ PHY initialization
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-submit-h616-emac1-v1-v4-3-8347dfe2eb7d@gmail.com>
+Message-Id: <20260920-submit-h616-emac1-v1-v4-4-8347dfe2eb7d@gmail.com>
 References: <20260920-submit-h616-emac1-v1-v4-0-8347dfe2eb7d@gmail.com>
 In-Reply-To: <20260920-submit-h616-emac1-v1-v4-0-8347dfe2eb7d@gmail.com>
 To: Richard Genoud <richard.genoud@bootlin.com>, 
@@ -102,95 +102,125 @@ Cc: Maxime Ripard <mripard@kernel.org>,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-System suspend disables NAPI and suspends phylink but retains the IRQs
-and DMA resources. If hardware setup fails during resume, the interface
-remains administratively up with NAPI still disabled. Closing it later
-calls napi_disable() a second time and can hang indefinitely.
+The MAC software reset needs a running receive clock from the PHY.
+Resetting the MAC at the end of probe therefore fails when the PHY driver
+has not been loaded or its probe has deferred on a missing supplier. The
+failure removes the MAC and its MDIO bus, so loading the missing driver
+later cannot recover the interface without reprobing the MAC.
 
-On hardware-setup or timestamping failure, stop DMA and disable the MAC,
-then release the suspended data path without repeating NAPI disable.
-Stop phylink directly from its suspended state rather than restarting
-the link on hardware which failed to resume. Drop the driver mutex
-before teardown, retaining RTNL across cleanup and network-core close.
+Perform the software reset in the DMA reset callback instead. The stmmac
+core calls it during hardware setup after attaching and initializing the
+PHY, and resumes a suspended PHY before reopening or resuming the MAC.
+Mask interrupts before requesting the reset and retain the existing
+DMA and interrupt-register clearing even if the reset times out. Return
+reset errors through the normal hardware-setup error path.
 
-Close the netdev to detach the PHY, release its runtime-PM reference and
-clear its administrative state. Reattach the now-down netdev so a later
-open can allocate new resources and retry. Preserve the original resume
-error and leave successful resume unchanged.
+Remove the unconditional reset from probe. Keep the separate H3 MDIO-mux
+reset after switching the mux and powering the selected PHY, since it is
+needed to latch the selected interface before MDIO accesses.
 
-Fixes: 6896c2449a18 ("net: stmmac: Check stmmac_hw_setup() in stmmac_resume()")
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 53 +++++++++++------------
+ 1 file changed, 26 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 89b773370894..18630ae62316 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4283,7 +4283,7 @@ static int stmmac_open(struct net_device *dev)
- 	return ret;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index 48c52eb96233..9598c386bb21 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -269,11 +269,33 @@ static const struct emac_variant emac_variant_h6 = {
+ #define SYSCON_ETCS_EXT_GMII	0x1
+ #define SYSCON_ETCS_INT_GMII	0x2
+ 
++static int sun8i_dwmac_reset(void __iomem *ioaddr)
++{
++	u32 v;
++
++	v = readl(ioaddr + EMAC_BASIC_CTL1);
++	writel(v | 0x01, ioaddr + EMAC_BASIC_CTL1);
++
++	/* The timeout was previously set to 10ms, but some board (OrangePI0)
++	 * need more if no cable plugged. 100ms seems OK
++	 */
++	return readl_poll_timeout(ioaddr + EMAC_BASIC_CTL1, v,
++				  !(v & 0x01), 100, 100000);
++}
++
+ /* sun8i_dwmac_dma_reset() - reset the EMAC
+  * Called from stmmac via stmmac_dma_ops->reset
+  */
+ static int sun8i_dwmac_dma_reset(void __iomem *ioaddr)
+ {
++	int ret;
++
++	writel(0, ioaddr + EMAC_INT_EN);
++
++	/* The PHY receive clock must be running for the reset to complete. */
++	ret = sun8i_dwmac_reset(ioaddr);
++
++	/* Leave DMA and interrupts disabled even if the reset timed out. */
+ 	writel(0, ioaddr + EMAC_RX_CTL1);
+ 	writel(0, ioaddr + EMAC_TX_CTL1);
+ 	writel(0, ioaddr + EMAC_RX_FRM_FLT);
+@@ -281,7 +303,7 @@ static int sun8i_dwmac_dma_reset(void __iomem *ioaddr)
+ 	writel(0, ioaddr + EMAC_TX_DESC_LIST);
+ 	writel(0, ioaddr + EMAC_INT_EN);
+ 	writel(0x1FFFFFF, ioaddr + EMAC_INT_STA);
+-	return 0;
++	return ret;
  }
  
--static void __stmmac_release(struct net_device *dev)
-+static void __stmmac_release(struct net_device *dev, bool napi_disabled)
+ /* sun8i_dwmac_dma_init() - initialize the EMAC
+@@ -738,27 +760,6 @@ static void sun8i_dwmac_flow_ctrl(struct mac_device_info *hw,
+ 	writel(v, ioaddr + EMAC_TX_FLOW_CTL);
+ }
+ 
+-static int sun8i_dwmac_reset(struct stmmac_priv *priv)
+-{
+-	u32 v;
+-	int err;
+-
+-	v = readl(priv->ioaddr + EMAC_BASIC_CTL1);
+-	writel(v | 0x01, priv->ioaddr + EMAC_BASIC_CTL1);
+-
+-	/* The timeout was previously set to 10ms, but some board (OrangePI0)
+-	 * need more if no cable plugged. 100ms seems OK
+-	 */
+-	err = readl_poll_timeout(priv->ioaddr + EMAC_BASIC_CTL1, v,
+-				 !(v & 0x01), 100, 100000);
+-
+-	if (err) {
+-		dev_err(priv->device, "EMAC reset timeout\n");
+-		return err;
+-	}
+-	return 0;
+-}
+-
+ /* Search in mdio-mux node for internal PHY node and get its clk/reset */
+ static int get_ephy_nodes(struct stmmac_priv *priv)
  {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	u8 chan;
-@@ -4296,7 +4296,9 @@ static void __stmmac_release(struct net_device *dev)
- 	/* Stop and disconnect the PHY */
- 	phylink_stop(priv->phylink);
- 
--	stmmac_disable_all_queues(priv);
-+	/* Suspend has already disabled NAPI when hardware resume fails. */
-+	if (!napi_disabled)
-+		stmmac_disable_all_queues(priv);
- 
- 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
- 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
-@@ -4335,7 +4337,7 @@ static int stmmac_release(struct net_device *dev)
- 	if (device_may_wakeup(priv->device))
- 		phylink_speed_down(priv->phylink, false);
- 
--	__stmmac_release(dev);
-+	__stmmac_release(dev, false);
- 
- 	stmmac_legacy_serdes_power_down(priv);
- 	phylink_disconnect_phy(priv->phylink);
-@@ -6212,7 +6214,7 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
- 			return PTR_ERR(dma_conf);
+@@ -895,7 +896,9 @@ static int mdio_mux_syscon_switch_fn(int current_child, int desired_child,
+ 		/* After changing syscon value, the MAC need reset or it will
+ 		 * use the last value (and so the last PHY set).
+ 		 */
+-		ret = sun8i_dwmac_reset(priv);
++		ret = sun8i_dwmac_reset(priv->ioaddr);
++		if (ret)
++			dev_err(priv->device, "EMAC reset timeout\n");
+ 	}
+ 	return ret;
+ }
+@@ -1217,10 +1220,6 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev, "Failed to register mux\n");
+ 			goto dwmac_mux;
  		}
- 
--		__stmmac_release(dev);
-+		__stmmac_release(dev, false);
- 
- 		ret = __stmmac_open(dev, dma_conf);
- 		if (ret) {
-@@ -8415,7 +8417,7 @@ int stmmac_resume(struct device *dev)
- 	ret = stmmac_hw_setup(ndev);
- 	if (ret < 0) {
- 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
--		goto error_unlock;
-+		goto error_stop_dma;
+-	} else {
+-		ret = sun8i_dwmac_reset(priv);
+-		if (ret)
+-			goto dwmac_remove;
  	}
  
- 	if (priv->ptp_enabled) {
-@@ -8454,9 +8456,13 @@ int stmmac_resume(struct device *dev)
- error_stop_dma:
- 	stmmac_stop_all_dma(priv);
- 	stmmac_mac_set(priv, priv->ioaddr, false);
--error_unlock:
--	stmmac_legacy_serdes_power_down(priv);
- 	mutex_unlock(&priv->lock);
-+	/* Release the suspended data path before ndo_stop(), which must not
-+	 * disable NAPI or free these resources a second time.
-+	 */
-+	__stmmac_release(ndev, true);
-+	netif_close(ndev);
-+	netif_device_attach(ndev);
- 	rtnl_unlock();
- 
- 	return ret;
+ 	pm_runtime_put(&pdev->dev);
 
 -- 
 2.53.0
