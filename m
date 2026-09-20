@@ -1,63 +1,63 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49562333730
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E12343885
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789865270; cv=none; b=ebNJFP24vX/5LiZNUVJZmR5uPqMw6sf2y2yCc8QjG3N9MYny1+/PJKvJQl4NbX+EldtIKnYle1cpfmdJNmoPInpUHDqyskUfgK/WbujJO30/eVXCGkB3TYQPb6ivu+FocJEoX1lswlABOcMAKONAfbV9H3HNbbfUA1xZ5mK/GJ0=
+	t=1789865271; cv=none; b=rbflbRg5t2S1BTpzgRsoAoQ9aaAgxAmKXvHEQtVvketZovxz4EReLpanQ13TFNysPvNg7UkpmpUgKKj5DtOj9v22NbCOA024AN9/n6uBzqW+R07jyhPO+hQ5vC5CyMy5WM48EX5o4Fr32MBuO8dbyKcaw4lrU3rfJ/mj8tP6/Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789865270; c=relaxed/simple;
-	bh=i0mBiP1JkgHcESHm7CxWXeGEgOSmLAz/z/JCtwsAP8c=;
+	s=arc-20240116; t=1789865271; c=relaxed/simple;
+	bh=wZF2qGAioUkITwtAve0FSWVizpc8AkxtsGOY0RjV8bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFy1xw58yVwvcXg149v8GmDNwpnjAwPOcj/FOICD/oPEaOjAxOapfRcvey2bT3hp3kF0fOumM5wjtLalHrnAjdXON0lFLPBlgft5IbQtaImxU+EFKEdp/2SnB8LvS5GxotjFdmv1DcmIn0tgEWIJkXrbDuIkbyIULt7nQtaboxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeGX/b4/; arc=none smtp.client-ip=74.125.230.140
+	 MIME-Version; b=d8xhj9+BdlT903dC5rbm4JsIitx3L8QuHsiJ9hhTx+onbQKA1i84a+BJU4qJPYn4i73GGMOp+zcII3grgieVyEDGPY+IJJ9oyWii81i9uuvwJ2hxpHCmmg7ZCzZ8tM06vv5dBAZOTAMXZp8ekzENu5BHaW1NG85lk68NcsGo4mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dVPHD8BS; arc=none smtp.client-ip=74.125.230.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeGX/b4/"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-91235f46716so19419286d6.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 17:47:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dVPHD8BS"
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a2a8c29c4so209041585a.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 17:47:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789865268; x=1790470068; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789865269; x=1790470069; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xNRwTnv6INwJTRG/2/luNN9rurp+iuSaljjyDm0JWe8=;
-        b=NeGX/b4/PwWtI9F3DrsGjlaPrG9J3TBpyd5GcR7hqgCW7H5/CPj+rS//0CAtviCUQu
-         Hl4/hL+8cApiR/9BDT+5rK8t0oXMI4IrHhmcW/BVXlhQ1jsPssDeDOMb+d4gKX/6+Fxq
-         E/r77W2nTxUIkWgu8YMnw4jjE9HpXfHjpDPC45tyPlRk7RsCicyTxkJSXARzwqchxWk7
-         KU4rvABJNfT2/cXGal5Xb9qLBaeRkCmcPqpDQhxdSBTWKQypigQtQ5Ag1P0M1SdU5iKX
-         I3dJl9/YWLKL7b+JrFBDPSYbvJJUpajWWt+F8uZngK4FdTsiBsvyNaS1C1uIIqIGub/n
-         0JzA==
+        bh=spIPE+evKRjnl976ChlZC7wECJM7DIX26kp/xsswnVs=;
+        b=dVPHD8BSr5KzXjpJnfHK55PdQG/+ZXxp2Oxvd4CO8pg3l8PO21irhpRFEYKndeAfmD
+         O12JHfVwGkwtHpm3dYl4ZgJ+k8GYsUFI2XmQ/40UIMSajJI1RoulB6lnqeWweu1gcJey
+         UVt4JeL0phtSzEkbhCnWSLk+Z2XLEWkhD4Rfap6eLXAn7HvbLMk4jNwQoJyMgPAQQBzS
+         MExho8VqwgF5/FCit7aJiwwrfBMs6Qb013mXxhspNP+yRI4KGuafOIZy/1xwUAI24oXw
+         xKRuS4xZl5Aw9Kt2D6dhJnjOJBig1c8a2FU09WfdFksrZXYJoI6Jr/EjjJCWrk0wAolV
+         ZT7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789865268; x=1790470068;
+        d=1e100.net; s=20260707; t=1789865269; x=1790470069;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xNRwTnv6INwJTRG/2/luNN9rurp+iuSaljjyDm0JWe8=;
-        b=kBP+qC9+ykoehajX0ouBZx8hsptO1jKsE32bYRBsmyysLBHPA5SgczPp3YjvIuZMcc
-         +9RQkdwyUJKj4H1t7IvyBsWJA+LiGEqqkmtH4sLdQXHUEp4vqbFvbavA5cBTLZxPERuF
-         pUZJILqNh1vbX1s2/oW0ac7HqA0frc0I5yD0e4NYxGADbta7WR7knqAApAkXjfkZF/rr
-         eCaYHZgh0PHfwvLkauLLECmPpOBgVqzLNu/wuAcbo/BT8czX7BlFZhLPNDci0A/FZoCt
-         aBdSHvwDF2Q12bVDNwD2LcFmWidQ+zxJzNZgY55gKLWiXN/oN7OXBg5W8LnJQdQ6Kx3u
-         YDCQ==
-X-Gm-Message-State: AFuF++moCx3QOy5dvv/VQUAsoZpGuLt2KhvjKXoor2/8ZDw/rvy3d7M5
-	1Jbo6EWhJVgMIwBscd2PqVJNgAhQ5cjBEEsw5ieVGXGJKFaiai+VYI+kxLEzTV7rfPY=
-X-Gm-Gg: AYBFou2UMhdAKZU6A6ueJ7neFE7Lg3KBML6xnjyPrV5sXsy187DqdK/wsFsZrOIx1pS
-	ErniecdiVEuGWzb0yQsqBtGqNG+p1EGNULrhHB79qeZt9ubboy5hiobe/iT92yJShh46wXw3cXZ
-	nwrzgl3Vjsf0+voX1ZMOEi21rjjLKuAU0g0Yrqlj2gpMxZJWZSMuX79kymRK1WA7wUqltmU0Nqg
-	F1ygpRkmC1oAQo/VDhK+gQeE9cmwQYakI33baS9Q7OkhatMR1UsOX76wK17VCN2Q1m/TiSTuRA5
-	uhYoioCBnC894UEM87jICL6SdIQXiVrw6pUezQhd7qzINkrr+1k5489VsMX60QSGBGefIaha2TT
-	PEkfDbdlTqOYxFb2kW8TswHh3ObJ0/WckJyyEHIrYcB8W0dFfSq+KhJBdByjabx8D6tnQJORiee
-	g1xTUkUZ0gKW0hckBjZbhyBWW0GhU/8AadSqsd2v1D4Vh5io8rt16p8E3NmphqdYr6n3XbVyNGn
-	wSwXDdu/b+Fp/u7UXJgA5L4natIk6JW52nZIE7EvLpktrv3zFdNvQpjE4bg5gd3k7SrBAxy
-X-Received: by 2002:a05:6214:e81:b0:912:517b:90d with SMTP id 6a1803df08f44-912a9b49deamr40829346d6.44.1789865268273;
-        Sat, 19 Sep 2026 17:47:48 -0700 (PDT)
+        bh=spIPE+evKRjnl976ChlZC7wECJM7DIX26kp/xsswnVs=;
+        b=ZeXb2DxTR+ZeecSCKoTa3QR5nHt52B9aAPI4zqwh6hqWikSpKSpj5q+v28oAd+OOYs
+         KpXwqYRn2kqDteovhEICOZP3OEagixEwKE265t49N80BSuf/9UoMe07SUrnCYo3oUOQH
+         FPi4HUikjn3S3bMT7RQ1xVMd7IdKTvBA2UewXzJ9O/mn5BLKiepJPr00hAf+koa8H9Fj
+         WzS5ZyCCe0QbMBQotEVYo2ggLcyj1NEzRx65y/R6z+ci7C6N6v4kbZKqddee4DaX/aJ9
+         66BqCUkSABeu01Ri6QzsWBOVOFykANv2AP0mU5zKU+21bYBlgQa6gXYXP4enMiFDlFRh
+         Yzpw==
+X-Gm-Message-State: AFuF++nz2RSwq4QB4Tkc10b0ul2mJZYIAoDkkJwiiVatNSdxHpuzjljW
+	B1IfFf0WlkgqZ1s1ybhbo7odnhcLW8kgo6Xbq4jwVPw2nXLzEYU6gsXt81IXPWf/fRc=
+X-Gm-Gg: AYBFou33Suq+kJpcHC9QkIu3KxxpXR9ZtnSIolpe4DEdr6vMenPsnoZXMK/OOPeG8jb
+	Eh3MWq1blFz0umwYzdlx8pRl17wJQo/DRFG9pkeM7I/7rz2fxczhwlztuHbgaZBVMc6at40QO3G
+	QqINsdn+ATrAhtgHpgyzggQKkjbjUzkbZiu8BYiZpeqxM+FBpE588GsFyT5JbPdoBIzlX2zZCag
+	aIy48H0qjQEp4U8MbHL5jGiOKCf1ELvwiZDUmXUWbOeQvIf5CJl1124BHoRPiwxQEitINBM431L
+	+UxDCje17UENpGQ3fx3wPfB68u6vwxLophxjRQFwwN6YkzXyPGntbPYLVcbK+yuPBIqdZfbqQeP
+	TnlMcjhdnkFYKp8mh7mFVbajAbXPNHNETxBHzs3iGod/8oRKwee3K8gm8CRdpdXcuw9f8Go8MhC
+	kYwNBftnrEou9n8MWBFwe41jV7N7pbWBxGDAi6YACeU30HOtU9+vq1KV80xG/fMEXREx92gpwDS
+	SpdNHvDYut9tkd+24Ms/i44DYLh23I9oeEoXAyv70bU+JaU1arW2CehRJDtYcEeOOK3Ff9g
+X-Received: by 2002:a05:620a:bca:b0:939:1483:55c with SMTP id af79cd13be357-93bf552c2e3mr403046385a.19.1789865269267;
+        Sat, 19 Sep 2026 17:47:49 -0700 (PDT)
 Received: from localhost.localdomain ([2601:155:4200:2c80:c8b1:39dc:7ddc:dd0c])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9126078cab2sm32122436d6.0.2026.09.19.17.47.47
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9126078cab2sm32122436d6.0.2026.09.19.17.47.48
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 19 Sep 2026 17:47:47 -0700 (PDT)
+        Sat, 19 Sep 2026 17:47:48 -0700 (PDT)
 From: Paulos Yibelo <habte.yibelo@gmail.com>
 To: netdev@vger.kernel.org
 Cc: mst@redhat.com,
@@ -75,9 +75,9 @@ Cc: mst@redhat.com,
 	willemb@google.com,
 	hannes@stressinduktion.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 1/2] net: validate virtio checksum start after network header
-Date: Sat, 19 Sep 2026 20:47:32 -0400
-Message-ID: <20260920004733.6473-2-habte.yibelo@gmail.com>
+Subject: [PATCH net v4 2/2] ipv4: reject partial checksums covering the IP header
+Date: Sat, 19 Sep 2026 20:47:33 -0400
+Message-ID: <20260920004733.6473-3-habte.yibelo@gmail.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20260920004733.6473-1-habte.yibelo@gmail.com>
 References: <20260920004733.6473-1-habte.yibelo@gmail.com>
@@ -89,22 +89,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-__virtio_net_hdr_to_skb() rejects a CHECKSUM_PARTIAL start smaller than an
-estimated minimum network-header length. The comparison currently uses the
-offset from skb->data rather than the offset from skb_network_header().
-
-For an AF_PACKET frame, skb->data can still point at the Ethernet header
-while skb_network_header() points past nested link-layer headers. A
-checksum start at the network header can therefore pass, then target byte
-zero after those headers are removed.
+ip_do_fragment() completes a CHECKSUM_PARTIAL skb before reading the IPv4
+header length. A virtualization interface can supply a checksum start that
+still points inside the IPv4 header after link-layer removal.
 
 This does not require a virtual-machine guest. A TUN device with
-virtio-net header support can supply the same checksum metadata.
+virtio-net header support is sufficient to reach this path.
 
-Keep the existing data-relative lower bound and also require checksum
-start to follow the estimated minimum relative to skb_network_header().
+skb_checksum_help() can then change iph->ihl after the packet was parsed
+and routed. Fragmentation trusts the changed IHL and can copy beyond the
+skb's logical linear head into transmitted IPv4 options.
 
-Fixes: 49d14b54a527 ("net: test for not too small csum_start in virtio_net_hdr_to_skb()")
+Read and validate IHL before checksum completion, reject a checksum start
+inside that header, retain the validated length, and reacquire iph after
+skb_checksum_help().
+
+Fixes: dbd3393c56a8 ("ipv4: add defensive check for CHECKSUM_PARTIAL skbs in ip_fragment")
 Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
@@ -116,36 +116,58 @@ Changes in v4:
   as noted by Michael S. Tsirkin. No code changes.
 
 Changes in v3:
-- Keep the network-relative comparison on one line for readability, as
-  requested by David Ahern.
+- No code changes.
 
 Changes in v2:
-- Make nh_min_len an int and remove the casts, as suggested by Michael S.
-  Tsirkin.
+- No code changes.
 
- include/linux/virtio_net.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ipv4/ip_output.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index c381b91..a95ad46 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -52,7 +52,7 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
- 					  const struct virtio_net_hdr *hdr,
- 					  bool little_endian, u8 hdr_gso_type)
- {
--	unsigned int nh_min_len = sizeof(struct iphdr);
-+	int nh_min_len = sizeof(struct iphdr);
- 	unsigned int gso_type = 0;
- 	unsigned int thlen = 0;
- 	unsigned int p_off = 0;
-@@ -104,7 +104,8 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index a24cc8e..ff902a2 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -770,17 +770,29 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 	struct ip_frag_state state;
+ 	int err = 0;
  
- 		if (!skb_partial_csum_set(skb, start, off))
- 			return -EINVAL;
--		if (skb_transport_offset(skb) < nh_min_len)
-+		if (skb_transport_offset(skb) < nh_min_len ||
-+		    skb_transport_offset(skb) - skb_network_offset(skb) < nh_min_len)
- 			return -EINVAL;
+-	/* for offloaded checksums cleanup checksum before fragmentation */
+-	if (skb->ip_summed == CHECKSUM_PARTIAL &&
+-	    (err = skb_checksum_help(skb)))
+-		goto fail;
+-
+ 	/*
+ 	 *	Point into the IP datagram header.
+ 	 */
  
- 		nh_min_len = skb_transport_offset(skb);
+ 	iph = ip_hdr(skb);
++	hlen = iph->ihl * 4;
++	if (unlikely(hlen < sizeof(*iph) || hlen > skb_headlen(skb))) {
++		err = -EINVAL;
++		goto fail;
++	}
+ 
++	/* Complete offloaded checksums only after the validated IP header. */
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		if (unlikely(skb_checksum_start_offset(skb) < hlen)) {
++			err = -EINVAL;
++			goto fail;
++		}
++		err = skb_checksum_help(skb);
++		if (err)
++			goto fail;
++		iph = ip_hdr(skb);
++	}
++
+ 	mtu = ip_skb_dst_mtu(sk, skb);
+ 	if (IPCB(skb)->frag_max_size && IPCB(skb)->frag_max_size < mtu)
+ 		mtu = IPCB(skb)->frag_max_size;
+@@ -789,7 +801,6 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 	 *	Setup starting values.
+ 	 */
+ 
+-	hlen = iph->ihl * 4;
+ 	if (mtu < hlen + 8) {
+ 		err = -EMSGSIZE;
+ 		goto fail;
