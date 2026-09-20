@@ -1,498 +1,149 @@
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E2047A86F
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67CF357CF3
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789933640; cv=none; b=U26QeDuNWnE5kyEAjBq9i8KTZw0msJuEYPJTO2oWPRSKnR2SqKrZJwCvDgJRxwORwENUQZln7TFcoTpj9hyf5/bAxXlCgIxk1g+2BcChr/h3ErpPdQz1jqDEZDqALdZAKxKo7ipHGzu76NsLHHx6C21N3e6yrt9OzrB4TMFykl0=
+	t=1789934197; cv=none; b=kPbSfsG12RVp1CESiV9V1miwc3Z5X+9gLBQiSKyHN6NOMFQTD1TFrATV1Xq2jVFm0te7DQen7S6OGPprZZryQNNX8G96uZ9REMb36RNGJ7VMfnRjz/2dIk66zxY6ZsFX5HtnKJR90BaWCYrCGk9DCWq4Ae2Pyi8B7e5eYKRqFKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789933640; c=relaxed/simple;
-	bh=cWgRQUQWzEo+lu6rd7U55/RBFfNxGxycH8Uu34wtpFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iI1Jt+2xMl2QhcuIcMcDdX2DVe/Cx39/bE3ASVEF23Xnv5pnEwS25TiEr57hcwkGL43xQxrYzMA7dHPQ05fyX+treosC05SEJaGKiFVXDDN/pkHgXNTK64SocyKK6YTUync6j6SC01E/dj9EvZgoOwPnjp7o92wDb+dbhm6cnnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+XkIjXG; arc=none smtp.client-ip=74.125.228.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789934197; c=relaxed/simple;
+	bh=2M+zZ46WjDWkuw6jAFwlSuElh82u89s3wPdtIRsEfxI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qbd4xh9H184NMuuSQTHcuMwME0+L1WpJEolz2zhQJVGj+QIPWDz8LmGRBLmUVVnSUJKLKakVUOCFEIcR44J9ZNoZz2as7bjHJGt2Q13xGhKG0YqYWUUgFMpgUF08gg9wbutTg++5CFqcmNBsNcR9uMBqnDNoQUmv71HoIbhK4GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FJemOOAI; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+XkIjXG"
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c254f55efe7so343999366b.3
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:47:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FJemOOAI"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8679cfe5019so3489011b3a.0
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:56:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789933637; x=1790538437; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ixxXkDc5Dv3IY8Mw5lb3/4t7C9pprFjhbghcAb0ryCY=;
-        b=G+XkIjXGd/EcFw3U7xs0Zs+szZWjSsu/9GzcNrluNvBjpHMEmVBPncKNi9Q4MPjU60
-         yl7qJU3lmbONkdMjOIfPIGCZlexiKAX8hUXzyIU3LhvY6Jc7lb7J87x0z1seHyHfS0MI
-         RZm85ILRwP+e5CQMDV1Ufr55xpO9wWOB+uHGklwOzoGIMVFbE/Rd6nzyStXae9T7uYA9
-         0pbDafU22Tpp1qD/hSW7guMkWB+I4yQ8Ch6+R58bG9s/sdqXgHPeuZ7o6VEbjJgsRpB6
-         5Glb3825hkbuvDFC4oWsZJg8PgUB0o4U9R4C/Ck7rG9qZrOgTfpMRxNAMAw1b+/d8Fkt
-         2IQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933637; x=1790538437;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1789934195; x=1790538995; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ixxXkDc5Dv3IY8Mw5lb3/4t7C9pprFjhbghcAb0ryCY=;
-        b=deasXkdyZLo1APgD84BHHfYm/8PLNJlwCX6xTPjv2DqqE9S/E8aRp+XLs62C5/unwY
-         HPdaTeMxVAQGO+Q3mMblWkgz8QHIpiT9Zovc/wsplprQpkB5VdkfGqbqcBlms39cr7eB
-         xVB+zFkBAWzGkUK+E0pRygHx/mPV7ghMrnlfRUglI7qQGYSZ5zFTKG41d7JWovGyxaNt
-         sbkZRMbFrePvh+EUoQEJTG/OJipWhuCjIf1JLxCiQUNu3bvDoNqAWepcgn2xsnPPSG/Q
-         ifEqls1ugZS88LTTQk0O7KoVktngK1PRNVSVXhwSBGVU5NM7NSAfDbNsPnCEA9VJwHoU
-         KHDQ==
-X-Gm-Message-State: AFuF++m0hIAdrPymlzZVkTvZgwEssjla+PKcl+kL6/uvJW2t7VCWGNRK
-	UiEju9a3oMHueODBFS04yolaGujD4cGgfZujd4TuKgA3r5JHdvA1a4JdLLckMw==
-X-Gm-Gg: AYBFou0MFiMKDHp6zx7Bp9ulhpCKBHVcdX6cxXLiWSVSj6yuX4erE5+JqvnCIqPdulq
-	wGEIbS03kX3ctBMxHFnxf105pxmI5irk5tWR87S2s49tDg8p0JLZtCM0FFloE6hXJL9D0KduUdH
-	s4F1c7c5/BOA2Br+3703/N9Ma5sSAnR6jZu2RhAhjqrzPDBG+5OZUruD1a5m+YmPyIOmfCpw0jj
-	ApNny0rX7g6zaL/jlX/tj4e1m4CMT2L/XHEXmstoVPtpA1hJJ6O0di+PEWyl1iy02md3GqsWRNc
-	LlumdfZSxL9iTeT3WleS24hX+fQR6oPF3juc5D85KlJn8pLPqeidSa7Z5dY/EGZIQkHCAn4I4O0
-	8cQHXpCKKT7oyVdJ82/fgZq+C99R5CjycmDkNW6KELHYoB8UBUjChSogAg7qJzT3y6TgY3C1yQm
-	KyV6tZ4fxhwPu10P8+oYQ8gG8R0dW6QPpHBFmTSLOodGeAn1G7tOUQ4raaAh862IyAdf9x98MwV
-	QA/VyWlkFl05QiHwcjeQhyD5z4JzJEVcov0iDeYyp52mu7Kkw7N4+CZvjA=
-X-Received: by 2002:a17:907:9447:b0:c29:1b6f:dd4 with SMTP id a640c23a62f3a-c2a157c2af6mr722685866b.32.1789933637074;
-        Sun, 20 Sep 2026 12:47:17 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a358ff8edsm211768466b.61.2026.09.20.12.47.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:47:16 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: netdev@vger.kernel.org
-Cc: sgarzare@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH net-next 2/2] vsock/test: cover receive queue hints
-Date: Sun, 20 Sep 2026 20:47:10 +0100
-Message-ID: <20260920194710.1114748-3-devnexen@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260920194710.1114748-1-devnexen@gmail.com>
-References: <20260920194710.1114748-1-devnexen@gmail.com>
+        bh=M7xlMcM7k7NmdYoMcu//TATkd+slGsM+tuPmkLctMrQ=;
+        b=FJemOOAIkT0jpCu11wic2PvfOmcgZX694X/FuLdEC8br3OoNTt+YmiJhLTafP8KQ7f
+         6IxrjoTVUGgkWX9xJMJVEc5VO5bweBI+iTixt7YvmhYJFij/Jix/3oj6XZ5JOkMuoRCL
+         MZyQ0GM9FG0VbQ1yyAT0vjoXy44MdHfNCP9582yXcy/rYoGq2xshjdZMiC4zEOzEOxd+
+         /cSTektQJftklDZQAA6+5MGe16cipG6YT7/z3NRpXFhifDou4NLoEf+aVtCh5iAYYPYX
+         DCr+d9HVJjcFk/c487xHwP//u4HlM4jdbbu7bclwIH6HSjplXzQ01mxiDgBM/S+JYx0p
+         S2yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789934195; x=1790538995;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=M7xlMcM7k7NmdYoMcu//TATkd+slGsM+tuPmkLctMrQ=;
+        b=a9s3TuZ9RhW3uzNsLs16A+4G8SA0YrKnpmw8KYtkVZ1NB+Ft3lsn1HIQyxrBXc5Edx
+         L0MBxXYX27Z2ESm9iK/vnp2+WjCVsUPpLqT+cQqsr4FGkAavvuuvpuEXaBIYdu4b+tXj
+         NulzCibBLEWt7JMIpWsN/SfGJmNlISlsfOF7+FN3xhqHZWop/Wlr3V8knP6hurQ11WKu
+         cNKjqE3LlmXtIZM7z/ZQ4VAo16yiu36A0A1gtitS+6MCiTuuCsyIhUqZTdmsDfECwVlY
+         a5aae559hp/y6mXzAl7iDM//vh3Uq5hTdN+5gUF1eggc/Opg4nOR/PjhbQ7BKiU67wVX
+         JJRg==
+X-Forwarded-Encrypted: i=1; AKwUvBwgN8lLpeIJuDqrnYnAqRgFErFwiceVZivBmNCPTAUe6WfRKsjq/A5kS4FZgJ4DJpfr/JP5AYU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxOUXOOSmPMHYFI7Dwjirjl2esl7dS1k08xJWDEIDFNfgrIaMb
+	8GmKaBcZ+TRQMMoV8cDmuJK81QhG6waynMNAj/f5kDfmI+WKstkAUGRnoywLRNoCiE4e7phrBzN
+	eQzjlEA==
+X-Received: from pfiv14.prod.google.com ([2002:aa7:99ce:0:b0:853:9149:8801])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c8e:b0:878:34d7:697a
+ with SMTP id d2e1a72fcca58-87834d7df67mr4963513b3a.40.1789934195003; Sun, 20
+ Sep 2026 12:56:35 -0700 (PDT)
+Date: Sun, 20 Sep 2026 19:56:09 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260920195633.3033620-1-kuniyu@google.com>
+Subject: [PATCH bpf-next 0/7] bpf: Add bpf_tcp_ops hooks for TCP AutoLOWAT.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, 
+	"=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?=" <cleger@meta.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add io_uring receive tests checking IORING_CQE_F_SOCK_NONEMPTY across a
-partial receive, draining while the peer stays connected, EOF, a
-nonblocking receive on an empty queue, a zero-length request, and a
-multishot receive with provided buffers.
+This series introduces two callbacks for bpf_tcp_ops:
 
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- tools/testing/vsock/vsock_uring_test.c | 367 +++++++++++++++++++++++++
- 1 file changed, 367 insertions(+)
+  .enqueue_rcvq(): invoked when TCP stack enqueues skb to
+                   sk->sk_receive_queue
 
-diff --git a/tools/testing/vsock/vsock_uring_test.c b/tools/testing/vsock/vsock_uring_test.c
-index 5c3078969659..318e17bd28bc 100644
---- a/tools/testing/vsock/vsock_uring_test.c
-+++ b/tools/testing/vsock/vsock_uring_test.c
-@@ -13,7 +13,10 @@
- #include <liburing.h>
- #include <unistd.h>
- #include <sys/mman.h>
-+#include <sys/ioctl.h>
- #include <linux/kernel.h>
-+#include <linux/sockios.h>
-+#include <errno.h>
- #include <error.h>
- 
- #include "util.h"
-@@ -28,6 +31,10 @@
- 
- #define VSOCK_TEST_DATA_MAX_IOV 3
- 
-+#define HINT_CHUNK_SIZE		4096
-+#define HINT_BUF_GROUP		1
-+#define HINT_BUF_ENTRIES	4
-+
- struct vsock_io_uring_test {
- 	/* Number of valid elements in 'vecs'. */
- 	int vecs_cnt;
-@@ -211,6 +218,341 @@ void test_stream_uring_msg_zc_client(const struct test_opts *opts)
- 		vsock_io_uring_client(opts, &test_data_array[i], true);
- }
- 
-+struct uring_inq_ctx {
-+	struct io_uring ring;
-+	int fd;
-+};
-+
-+static void inq_server_init(struct uring_inq_ctx *ctx,
-+			    const struct test_opts *opts)
-+{
-+	ctx->fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+	if (ctx->fd < 0) {
-+		perror("accept");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (io_uring_queue_init(RING_ENTRIES_NUM, &ctx->ring, 0))
-+		error(1, errno, "io_uring_queue_init");
-+}
-+
-+static void inq_server_exit(struct uring_inq_ctx *ctx)
-+{
-+	io_uring_queue_exit(&ctx->ring);
-+	close(ctx->fd);
-+}
-+
-+/* Submit a single receive and report both its result and its CQE flags. */
-+static int inq_recv(struct uring_inq_ctx *ctx, void *buf, size_t len,
-+		    int flags, unsigned int *cflags)
-+{
-+	struct io_uring_sqe *sqe;
-+	struct io_uring_cqe *cqe;
-+	int res;
-+
-+	sqe = io_uring_get_sqe(&ctx->ring);
-+	io_uring_prep_recv(sqe, ctx->fd, buf, len, flags);
-+
-+	if (io_uring_submit(&ctx->ring) != 1)
-+		error(1, errno, "io_uring_submit");
-+
-+	if (io_uring_wait_cqe(&ctx->ring, &cqe))
-+		error(1, errno, "io_uring_wait_cqe");
-+
-+	res = cqe->res;
-+	*cflags = cqe->flags;
-+	io_uring_cqe_seen(&ctx->ring, cqe);
-+
-+	return res;
-+}
-+
-+static void expect_res(int res, int expected, const char *what)
-+{
-+	if (res != expected) {
-+		fprintf(stderr, "%s: expected %d, got %d\n", what, expected,
-+			res);
-+		exit(EXIT_FAILURE);
-+	}
-+}
-+
-+static void expect_nonempty(unsigned int cflags, bool expected,
-+			    const char *what)
-+{
-+	bool nonempty = !!(cflags & IORING_CQE_F_SOCK_NONEMPTY);
-+
-+	if (nonempty != expected) {
-+		fprintf(stderr, "%s: expected SOCK_NONEMPTY %d, got %d\n",
-+			what, expected, nonempty);
-+		exit(EXIT_FAILURE);
-+	}
-+}
-+
-+/* Wait until the whole payload is queued, so the hint is deterministic. */
-+static void inq_wait_queued(int fd, int len)
-+{
-+	if (!vsock_ioctl_int(fd, SIOCINQ, len)) {
-+		fprintf(stderr, "SIOCINQ not supported\n");
-+		exit(EXIT_FAILURE);
-+	}
-+}
-+
-+static void inq_send_chunks(const struct test_opts *opts, int chunks)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	int fd, i;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	memset(buf, 0xa5, sizeof(buf));
-+	for (i = 0; i < chunks; i++)
-+		send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-+
-+	control_writeln("SENT");
-+	control_expectln("DONE");
-+	close(fd);
-+}
-+
-+static void test_stream_uring_inq_client(const struct test_opts *opts)
-+{
-+	inq_send_chunks(opts, 2);
-+}
-+
-+static void test_stream_uring_inq_server(const struct test_opts *opts)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	struct uring_inq_ctx ctx;
-+	unsigned int cflags;
-+	int res;
-+
-+	inq_server_init(&ctx, opts);
-+
-+	control_expectln("SENT");
-+	inq_wait_queued(ctx.fd, 2 * HINT_CHUNK_SIZE);
-+
-+	/* Data remains after this receive, so the flag must be set. */
-+	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-+	expect_res(res, HINT_CHUNK_SIZE, "partial receive");
-+	expect_nonempty(cflags, true, "partial receive");
-+
-+	/* This receive drains the queue while the peer stays connected. */
-+	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-+	expect_res(res, HINT_CHUNK_SIZE, "draining receive");
-+	expect_nonempty(cflags, false, "draining receive");
-+
-+	control_writeln("DONE");
-+	inq_server_exit(&ctx);
-+}
-+
-+static void test_stream_uring_inq_eof_client(const struct test_opts *opts)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	int fd;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	memset(buf, 0x5a, sizeof(buf));
-+	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-+	control_writeln("SENT");
-+
-+	control_expectln("DRAINED");
-+	close(fd);
-+	control_writeln("CLOSED");
-+
-+	control_expectln("DONE");
-+}
-+
-+static void test_stream_uring_inq_eof_server(const struct test_opts *opts)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	struct uring_inq_ctx ctx;
-+	unsigned int cflags;
-+	int res;
-+
-+	inq_server_init(&ctx, opts);
-+
-+	control_expectln("SENT");
-+	inq_wait_queued(ctx.fd, HINT_CHUNK_SIZE);
-+
-+	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-+	expect_res(res, HINT_CHUNK_SIZE, "drain before EOF");
-+	expect_nonempty(cflags, false, "drain before EOF");
-+
-+	control_writeln("DRAINED");
-+	control_expectln("CLOSED");
-+
-+	/* The queue is empty and the peer is gone.  The hint stays non-zero
-+	 * so that this receive happens and reports EOF, as TCP does after a
-+	 * FIN.
-+	 */
-+	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-+	expect_res(res, 0, "receive at EOF");
-+	expect_nonempty(cflags, true, "receive at EOF");
-+
-+	control_writeln("DONE");
-+	inq_server_exit(&ctx);
-+}
-+
-+static void test_stream_uring_inq_empty_client(const struct test_opts *opts)
-+{
-+	int fd;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	control_writeln("READY");
-+	control_expectln("DONE");
-+	close(fd);
-+}
-+
-+static void test_stream_uring_inq_empty_server(const struct test_opts *opts)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	struct uring_inq_ctx ctx;
-+	unsigned int cflags;
-+	int res;
-+
-+	inq_server_init(&ctx, opts);
-+
-+	control_expectln("READY");
-+
-+	/* A failed receive must not leave a stale positive hint. */
-+	res = inq_recv(&ctx, buf, sizeof(buf), MSG_DONTWAIT, &cflags);
-+	expect_res(res, -EAGAIN, "empty nonblocking receive");
-+	expect_nonempty(cflags, false, "empty nonblocking receive");
-+
-+	control_writeln("DONE");
-+	inq_server_exit(&ctx);
-+}
-+
-+static void test_stream_uring_inq_zerolen_client(const struct test_opts *opts)
-+{
-+	inq_send_chunks(opts, 1);
-+}
-+
-+static void test_stream_uring_inq_zerolen_server(const struct test_opts *opts)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	struct uring_inq_ctx ctx;
-+	unsigned int cflags;
-+	int res;
-+
-+	inq_server_init(&ctx, opts);
-+
-+	control_expectln("SENT");
-+	inq_wait_queued(ctx.fd, HINT_CHUNK_SIZE);
-+
-+	/* A zero-length request is not an error and still describes the
-+	 * queue behind it.
-+	 */
-+	res = inq_recv(&ctx, buf, 0, 0, &cflags);
-+	expect_res(res, 0, "zero-length receive");
-+	expect_nonempty(cflags, true, "zero-length receive");
-+
-+	control_writeln("DONE");
-+	inq_server_exit(&ctx);
-+}
-+
-+static void test_stream_uring_inq_mshot_client(const struct test_opts *opts)
-+{
-+	char buf[HINT_CHUNK_SIZE];
-+	int fd;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	memset(buf, 0x3c, sizeof(buf));
-+	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-+	control_writeln("SENT");
-+
-+	control_expectln("DRAINED");
-+	close(fd);
-+	control_writeln("CLOSED");
-+
-+	control_expectln("DONE");
-+}
-+
-+static void test_stream_uring_inq_mshot_server(const struct test_opts *opts)
-+{
-+	static char bufs[HINT_BUF_ENTRIES][HINT_CHUNK_SIZE];
-+	struct io_uring_buf_ring *br;
-+	struct uring_inq_ctx ctx;
-+	struct io_uring_sqe *sqe;
-+	struct io_uring_cqe *cqe;
-+	int i, ret;
-+
-+	inq_server_init(&ctx, opts);
-+
-+	br = io_uring_setup_buf_ring(&ctx.ring, HINT_BUF_ENTRIES,
-+				     HINT_BUF_GROUP, 0, &ret);
-+	if (!br) {
-+		fprintf(stderr, "io_uring_setup_buf_ring: %d\n", ret);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	for (i = 0; i < HINT_BUF_ENTRIES; i++)
-+		io_uring_buf_ring_add(br, bufs[i], HINT_CHUNK_SIZE, i,
-+				      io_uring_buf_ring_mask(HINT_BUF_ENTRIES),
-+				      i);
-+	io_uring_buf_ring_advance(br, HINT_BUF_ENTRIES);
-+
-+	sqe = io_uring_get_sqe(&ctx.ring);
-+	io_uring_prep_recv_multishot(sqe, ctx.fd, NULL, 0, 0);
-+	sqe->flags |= IOSQE_BUFFER_SELECT;
-+	sqe->buf_group = HINT_BUF_GROUP;
-+
-+	if (io_uring_submit(&ctx.ring) != 1)
-+		error(1, errno, "io_uring_submit");
-+
-+	control_expectln("SENT");
-+
-+	/* The payload completion drains the queue and keeps the request
-+	 * armed, so the hint must report the queue as empty.
-+	 */
-+	if (io_uring_wait_cqe(&ctx.ring, &cqe))
-+		error(1, errno, "io_uring_wait_cqe");
-+
-+	expect_res(cqe->res, HINT_CHUNK_SIZE, "multishot payload");
-+	expect_nonempty(cqe->flags, false, "multishot payload");
-+	if (!(cqe->flags & IORING_CQE_F_MORE)) {
-+		fprintf(stderr, "multishot payload: request not rearmed\n");
-+		exit(EXIT_FAILURE);
-+	}
-+	io_uring_cqe_seen(&ctx.ring, cqe);
-+
-+	control_writeln("DRAINED");
-+	control_expectln("CLOSED");
-+
-+	/* EOF ends multishot regardless of the hint. */
-+	if (io_uring_wait_cqe(&ctx.ring, &cqe))
-+		error(1, errno, "io_uring_wait_cqe");
-+
-+	expect_res(cqe->res, 0, "multishot EOF");
-+	if (cqe->flags & IORING_CQE_F_MORE) {
-+		fprintf(stderr, "multishot EOF: request still armed\n");
-+		exit(EXIT_FAILURE);
-+	}
-+	io_uring_cqe_seen(&ctx.ring, cqe);
-+
-+	control_writeln("DONE");
-+	io_uring_free_buf_ring(&ctx.ring, br, HINT_BUF_ENTRIES,
-+			       HINT_BUF_GROUP);
-+	inq_server_exit(&ctx);
-+}
-+
- static struct test_case test_cases[] = {
- 	{
- 		.name = "SOCK_STREAM io_uring test",
-@@ -222,6 +564,31 @@ static struct test_case test_cases[] = {
- 		.run_server = test_stream_uring_msg_zc_server,
- 		.run_client = test_stream_uring_msg_zc_client,
- 	},
-+	{
-+		.name = "SOCK_STREAM io_uring receive queue hint",
-+		.run_server = test_stream_uring_inq_server,
-+		.run_client = test_stream_uring_inq_client,
-+	},
-+	{
-+		.name = "SOCK_STREAM io_uring receive hint at EOF",
-+		.run_server = test_stream_uring_inq_eof_server,
-+		.run_client = test_stream_uring_inq_eof_client,
-+	},
-+	{
-+		.name = "SOCK_STREAM io_uring receive hint on empty queue",
-+		.run_server = test_stream_uring_inq_empty_server,
-+		.run_client = test_stream_uring_inq_empty_client,
-+	},
-+	{
-+		.name = "SOCK_STREAM io_uring receive hint zero-length",
-+		.run_server = test_stream_uring_inq_zerolen_server,
-+		.run_client = test_stream_uring_inq_zerolen_client,
-+	},
-+	{
-+		.name = "SOCK_STREAM io_uring multishot receive hint",
-+		.run_server = test_stream_uring_inq_mshot_server,
-+		.run_client = test_stream_uring_inq_mshot_client,
-+	},
- 	{},
- };
- 
+  .dequeue_rcvq(): invoked in tcp_cleanup_rbuf() after data
+                   is dequeued from sk->sk_receive_queue
+
+Those callbacks can be enabled on a per-socket basis by
+bpf_setsockopt():
+
+  int flags = BPF_SOCK_OPS_RCVQ_CB_FLAG;
+
+  bpf_setsockopt(sk, SOL_TCP, TCP_BPF_SOCK_OPS_CB_FLAGS,
+                 &flags, sizeof(flags));
+
+or via the bpf_tcp_ops-specific helper added in the next patch:
+
+  bpf_sock_ops_cb_flags_set(sk, BPF_SOCK_OPS_RCVQ_CB_FLAG);
+
+This allows the BPF prog to dynamically adjust sk->sk_rcvlowat,
+suppressing unnecessary EPOLLIN wakeups until sufficient data
+is available in the receive queue.
+
+This functionality, which we call "TCP AutoLOWAT", was originally
+developed in 2020 by Tenzin Ukyab with the help of Soheil Hassas
+Yeganeh, Arjun Roy, and Eric Dumazet.  It has served Google RPC
+workloads for more than 5 years.
+
+Combined with TCP RX zerocopy, this typically allows us to read an
+entire RPC frame with just a single wakeup and a single system call.
+
+While the original implementation was specialised for our
+internal RPC format, this series introduces a more flexible
+version by leveraging BPF.
+
+The bpf prog in the last selftest patch closely mirrors the core
+logic of the original implementation to provide a real-world
+example.
+
+Note that the new callbacks are not supported on legacy SOCK_OPS.
+
+Legacy SOCK_OPS version:
+  v3: https://lore.kernel.org/bpf/20260523083001.2911931-1-kuniyu@google.com/
+  v2: https://lore.kernel.org/bpf/20260522074601.1658705-1-kuniyu@google.com/
+  v1: https://lore.kernel.org/bpf/20260508073355.3916746-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (7):
+  selftest: bpf: Use BPF_SOCK_OPS_ALL_CB_FLAGS + 1 for bad_cb_test_rv.
+  bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+  bpf: tcp: Support bpf_sock_ops_cb_flags_set() for bpf_tcp_ops.
+  tcp: Split out __tcp_set_rcvlowat().
+  bpf: mptcp: Don't support BPF_SOCK_OPS_RCVQ_CB_FLAG.
+  bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
+  selftest: bpf: Add test for bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+
+ include/net/tcp.h                             |  34 ++
+ include/uapi/linux/bpf.h                      |  13 +-
+ net/core/filter.c                             |  10 +-
+ net/ipv4/bpf_tcp_ops.c                        |  96 ++++-
+ net/ipv4/tcp.c                                |  14 +-
+ net/ipv4/tcp_fastopen.c                       |   2 +
+ net/ipv4/tcp_input.c                          |   4 +
+ tools/include/uapi/linux/bpf.h                |  13 +-
+ .../selftests/bpf/prog_tests/tcp_autolowat.c  | 350 ++++++++++++++++++
+ .../selftests/bpf/prog_tests/tcpbpf_user.c    |   3 +-
+ .../selftests/bpf/progs/bpf_tracing_net.h     |   2 +
+ .../selftests/bpf/progs/tcp_autolowat.c       | 312 ++++++++++++++++
+ .../selftests/bpf/progs/test_tcpbpf_kern.c    |   3 +-
+ 13 files changed, 842 insertions(+), 14 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c
+ create mode 100644 tools/testing/selftests/bpf/progs/tcp_autolowat.c
+
 -- 
-2.55.0
+2.55.0.1082.g2b9226bbc0-goog
 
