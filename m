@@ -1,26 +1,27 @@
 Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3493164C7
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 08:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882163E6DC9
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 08:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789894305; cv=none; b=k0oW/TPdZkOCSxzxCYx7qHs0bnaWhc7/oJBDZD0GlSX6W4bPnpWjs18rAGHCGg6XfmY5aEmYFWGXfq9M6RWSrZXmzR5A3vRVDUQ0AnUpCnOznyvnKzj/tKn+E44K+GkaBypFrFVU9M6NdoXCH1p4njIeLFlvNCAcTSnkLK86LQM=
+	t=1789894306; cv=none; b=feUZQu1tF5pxhHb/k9dyWMbFyIPkWz6jAcp9XAJt1TjMRXkgj+xRrt8FmhygSxDlOR/lk18R2KbJtkr/NAfEahuGowRiHxoNoq8id7/t3huhPfGFwAscp9vvBqTMXtk1TWcIBSNhRtk3cKS6NrjcS+WJ0PLkk7qj9XjlPXS1ySs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789894305; c=relaxed/simple;
-	bh=dPp/TZsdZFvc2cClsr2I00oEATLquhqe8ppxwvSKuKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=klDjJ2aTADsAPiY0FmHfcqWltd6QuiOimx9Syd2J5NDYX5QBPXXOnmbHQKhUeqo2eXcaq94dBsa4XW0sZKfDO77RftXfeQSb2QsFDacO8zixVqMl/DCGSjubTdHeV4Ivf7mCj+dKmXfFt1WC6ErDDyaOsZB3kiBpkYHg4ufmuBE=
+	s=arc-20240116; t=1789894306; c=relaxed/simple;
+	bh=TGAsbbfpuBIHPTeNdWkJPgxwlnr/1br/4PiWBd3A1Vg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BE9CCajnYkAiQq60HnuD0eCV+tclUjyAFd89tbvKCAiP0KH6VkmIozymExzqRekQ/nNDObl7mTiZH0PwslzafacbAdCXoNVoQCSH1gr45p+6u3EN2w50SwUEyS6dbWFmyhuAtDl4ry1FkPI4tEKtThjOeYz/ueGRS6TCtWa278M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz8t1789894289t7c31e086
-X-QQ-Originating-IP: ovZnBVOqb+pRL4ybfYAFWO8DDI7+MEgwxAk/YLWdP6c=
+X-QQ-mid: zesmtpgz8t1789894296tcb4479b4
+X-QQ-Originating-IP: uRNUNN4tU8quGjW/uqIyvac0AZnywNA6GDSqc9ypZQw=
 Received: from w-MS-7E16.trustnetic.com ( [125.118.25.28])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 20 Sep 2026 16:51:20 +0800 (CST)
+	id ; Sun, 20 Sep 2026 16:51:34 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17151452918768759432
+X-BIZMAIL-ID: 12767132841650681202
 EX-QQ-RecipientCnt: 14
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -37,10 +38,12 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net 1/3] net: libwx: keep NGBE OCP cards MAC enabled
-Date: Sun, 20 Sep 2026 16:51:12 +0800
-Message-ID: <7DBD5726DAA21342+20260920085114.1062503-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net 3/3] net: txgbe: keep MAC enabled for NCSI and WoL for AML devices
+Date: Sun, 20 Sep 2026 16:51:14 +0800
+Message-ID: <F0254A6194B2FD5C+20260920085114.1062503-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260920085114.1062503-1-jiawenwu@trustnetic.com>
+References: <20260920085114.1062503-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,57 +53,59 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Nr9+mHXfAFYqxcr3LRuFJjNlwV6+Uljq6kMKuOEwNKipSGTpHPc/5mNJ
-	O2MdDLXJErgrlbXXGEn5RDeQqZmWanp32fl/ygb7K0gQfkm5qZlAW8MtiiRK/MSxbshclg1
-	+qkf8n4Xq4OBQWBZ2SWRIiDv+46VJAZgO2SbpgUTL7FVmtbExFeifSJoUC7NTK3HLZVSLHj
-	VB/bmlFUlQMgBBVop6Sxb8dMB22zCxx/Y31EJttHmn80rCLBP1N9PSasPF76GbqZm919JkC
-	OIvUaXz/m/FAlnLZ2+LlyZn5W+2pjgXzaT7Vqmw1WFlnSy0mcnlkZXnVuFAK7gYrSJeyPET
-	HMqxQ/yqcYP/ZnK/N17KfksVWCEO6yinAusElvvgJMmtkOZgmGW7PorsJhgoACv1vNaO6i2
-	jwKrlN2W1vc838h1lygw0vrk6qJQ+V02kodlkGoz9BMuJq2zIRPf31To3HBSyuk4DzNBy3A
-	QBJyOOqtJ9cJINESU5ThTi/xOac3VlMYzgV0X6pkdO8EUfDs5aNZ/zB2LdGR3GAc19nl/K8
-	KGQcPpK2rO+FFwWRnAKihLG6UO9XwfN+Dabp1YZXhIE5GDcrqB80O5c6HiZzPyZVp5rh42w
-	Nm7ugQepb/NbvrwWQSdKZLTMQRhtHWEkyKSqCwhDWwmDSQzG3C9UloqUn8K4Qtk4XIFIO46
-	akDTa/asD3ZY+PfEwlzvvMz/IBk/r3ZKh8UWGc5PvgGc3PROthOzWOpJ+DDKTwuSz34xrxz
-	i/tTe/wmpWVNtRmHhThi0FElzeztDXnCa/lTpDqIP0NrdOx0Msmm+yU88BBBcinYPJ6wVUv
-	qTMAkwJVqzr9khB8zDaBVZ9qcY0XeGEyUIfXcBggZFxmOv0xipTSfH3jhs6ybF98myJyErk
-	rE3R+0jrfaaQKAfbuZ8YdAracDD1RwdnwSXjWICFXhIUJD3x+CPzox/O+Qw/aFm539+ESw+
-	ftZVlBCuIhBl6sqK59rwqHWcVkBZ/MoK+hU/wqb9AUfzKCF4/DGe2OawJ/kPPewbXpJacio
-	1WPxXHf/UlV02kGB1Fje4XGKU+51BH+jV1XIskh8uOtcrs61DpgTPqPax9kz8=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: MDGUoPnBmw7sE3SjZCMuyaPRfWzQNiKK5Ikp49To7Ua2gpdfFWl0dr/F
+	8YHcUHWrKZMi8lHEgT/sX2ggjCfwqhVIQR59rFtOrYqrLYi05ymAT2H324vuObqycCBvOQ0
+	BKzJ5ZyCjonROEtoOSlWQzNeha7A06zcr9ocBg/aSDkvO/ljmVnqR+VyFg/8hlMiLqfEyaK
+	/Q1Q/k9fuRAEvLTiYkrDRebw1fy8v0TJUx5/4BfDyOyiGWw4k7Ij9ISx6v+K/O9VecqSH7+
+	Im+sA/8jXil9nvaxfZN16DJmfFa7yr86iujY73GOhEPib8e5k1/JyRFxfuYH0kWfB/438yt
+	IhOHdP9aWtYwowSfNLZxF0bl3/UH7aAefRVkRbCudUhfjTrnK6Havh2YSKQX6mbnvdG2uER
+	yMPhheE0VKn2M5aYfEXZMfGGJtWMoNVHPD93teoAecxpwgFoXk6Nwj2B9BgHnTSElHa3gIm
+	Uk3+r73SPkxodvM+J4XzVTQTc9Zeen7KttApkPsG41pp/ldtj7yAIONrEFi4udnwwuWEB4u
+	Le5YdNz0gw1ltQC1ByPp6ofSsYpjt4qV1xhtV2uXyGb+l7GwZGAlPqOR6aT74w3Ei+n02Er
+	LW5Oot0lLBe4N32UDuVhpQPfh2IHhLh4vNMMUxR4hyaCXxwuu6CeIqe7MoEcqZLhOZB4Kbz
+	Jb8lEDfqZxypNoEWJy30F+kvK7DBnT6Sd7sQfRcqII8jCyW/trJfnxHLCCC/AHYDysIFAb1
+	Vk1qEc4GNl/RrmBkMmV6ir4ST26++DWXn8Zdly5NKKB85wLt9CYX/v0ZCNDzhfHVFT7EgU6
+	MOnG5ynaccNLadmVAt+CeduKKBkty5ormuAKJG6kOmR1gyeheZxKLFDzco5uyuEFmv48hHW
+	5rt6RJgysqnKb5rcZfxpTaD3fth6jzMysAIP+eSfLjoGfrqzlCLLl2Bplz4P01fdMP1j4+k
+	7HQFy6FMmegS19CLloyU1ttSldV2/iQNI/73SccYyTRj9V7QiCsjPhx3aoe9p/1r0EWl9d7
+	0qWJLaoSnCpCOt467Ze2sfHLW8g8HPnQUsKy/58YeD7CoOIFiLoLyJlBIHrMPJtuc5USEyy
+	240m7h3fW8ch6LxRUcqmMw=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 
-OCP mezzanine cards are NCSI capable by design, so the NCSI semantics do
-apply to them, and they need the MAC receiver to keep running for
-out-of-band management. The inline test does not cover the OCP card
-type, so on such a card that does not have the NCSI bit set the receiver
-was turned off on every path reaching wx_disable_rx(), and management
-traffic was dropped.
+The .mac_link_down() in phylink callback disable MAC TX and RX
+unconditionally. This is not suitable for devices using NCSI or WoL, where
+the MAC needs to remain enbaled after the link goes down to support the
+corresponding functionality.
 
-'wx->ncsi_enabled' is the correct value for NGBE to determine whether
-MAC RX/TX should be kept enabled. But it is not assigned in TXGBE, so we
-use an explicit subsystem device ID mask in libwx now. We will merge
-TXGBE and NGBE into unified 'wx->ncsi_enabled' as soon as possible.
+Skip disabling MAC TX and RX when the subsystem device ID indicates an
+NCSI or WoL device. Keep the existing link-down handling for other
+devices.
 
-Fixes: 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev")
+Fixes: 6f8b4c01a8cd ("net: txgbe: Implement PHYLINK for AML 25G/10G devices")
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 122c4952d203..3a48380ace43 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1314,7 +1314,8 @@ void wx_disable_rx(struct wx *wx)
- 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index 26d0cfc58ee2..572ad655eb9c 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -458,8 +458,11 @@ static void txgbe_mac_link_down_aml(struct phylink_config *config,
+ {
+ 	struct wx *wx = phylink_to_wx(config);
  
- 		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP) ||
-+		      (wx->mac.type == wx_mac_em && (wx->subsystem_device_id & 0xFF) == 0x40))) {
- 			/* disable mac receiver */
- 			wr32m(wx, WX_MAC_RX_CFG,
- 			      WX_MAC_RX_CFG_RE, 0);
+-	wr32m(wx, TXGBE_AML_MAC_TX_CFG, TXGBE_AML_MAC_TX_CFG_TE, 0);
+-	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
++	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
++	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++		wr32m(wx, TXGBE_AML_MAC_TX_CFG, TXGBE_AML_MAC_TX_CFG_TE, 0);
++		wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
++	}
+ 
+ 	wx->speed = SPEED_UNKNOWN;
+ 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
 -- 
 2.51.0
 
