@@ -1,63 +1,68 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67CF357CF3
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE3E30D3E5
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789934197; cv=none; b=kPbSfsG12RVp1CESiV9V1miwc3Z5X+9gLBQiSKyHN6NOMFQTD1TFrATV1Xq2jVFm0te7DQen7S6OGPprZZryQNNX8G96uZ9REMb36RNGJ7VMfnRjz/2dIk66zxY6ZsFX5HtnKJR90BaWCYrCGk9DCWq4Ae2Pyi8B7e5eYKRqFKc=
+	t=1789934197; cv=none; b=qgLAoWeZ3I0hcwDqN9AQ41B5u9g5XmQjbsDTpADlXOMbyGY7dX5XWsi8nLR9cmS/iYktTYlhm7yEeFurBJvEpXenmFmGVYWz+CBglyZxIxhQfxgPlqWKn6rP6Z0IZm8J0ctIqAfR8riUTinhKiI8wO0BmuMrhGGfiMyo0KApl2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789934197; c=relaxed/simple;
-	bh=2M+zZ46WjDWkuw6jAFwlSuElh82u89s3wPdtIRsEfxI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qbd4xh9H184NMuuSQTHcuMwME0+L1WpJEolz2zhQJVGj+QIPWDz8LmGRBLmUVVnSUJKLKakVUOCFEIcR44J9ZNoZz2as7bjHJGt2Q13xGhKG0YqYWUUgFMpgUF08gg9wbutTg++5CFqcmNBsNcR9uMBqnDNoQUmv71HoIbhK4GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FJemOOAI; arc=none smtp.client-ip=209.85.210.200
+	bh=KNZRFOZlKS3k/6j+Jn6MrH6VV305HMZu9ozPlFqIxlI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YKNFTlk8GFm3Pu/r+FFfS3boHBRg7JeU3F7DFtSS/n6sInGOdmEC4MqnBavCuEFzd9w5FIsJ3zaE28oPEaXmP1H3Nn+d+MG+cH3lUpqSJolPDM+s+Zwu9+o1X4UTwh4QutYij5yjGwooJvKAEnPdYNk4rK72dd9vwlzSO7lFyog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s61Iy2br; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FJemOOAI"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8679cfe5019so3489011b3a.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:56:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s61Iy2br"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2dd1631d291so29011615ad.1
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:56:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789934195; x=1790538995; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M7xlMcM7k7NmdYoMcu//TATkd+slGsM+tuPmkLctMrQ=;
-        b=FJemOOAIkT0jpCu11wic2PvfOmcgZX694X/FuLdEC8br3OoNTt+YmiJhLTafP8KQ7f
-         6IxrjoTVUGgkWX9xJMJVEc5VO5bweBI+iTixt7YvmhYJFij/Jix/3oj6XZ5JOkMuoRCL
-         MZyQ0GM9FG0VbQ1yyAT0vjoXy44MdHfNCP9582yXcy/rYoGq2xshjdZMiC4zEOzEOxd+
-         /cSTektQJftklDZQAA6+5MGe16cipG6YT7/z3NRpXFhifDou4NLoEf+aVtCh5iAYYPYX
-         DCr+d9HVJjcFk/c487xHwP//u4HlM4jdbbu7bclwIH6HSjplXzQ01mxiDgBM/S+JYx0p
-         S2yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789934195; x=1790538995;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789934196; x=1790538996; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=M7xlMcM7k7NmdYoMcu//TATkd+slGsM+tuPmkLctMrQ=;
-        b=a9s3TuZ9RhW3uzNsLs16A+4G8SA0YrKnpmw8KYtkVZ1NB+Ft3lsn1HIQyxrBXc5Edx
-         L0MBxXYX27Z2ESm9iK/vnp2+WjCVsUPpLqT+cQqsr4FGkAavvuuvpuEXaBIYdu4b+tXj
-         NulzCibBLEWt7JMIpWsN/SfGJmNlISlsfOF7+FN3xhqHZWop/Wlr3V8knP6hurQ11WKu
-         cNKjqE3LlmXtIZM7z/ZQ4VAo16yiu36A0A1gtitS+6MCiTuuCsyIhUqZTdmsDfECwVlY
-         a5aae559hp/y6mXzAl7iDM//vh3Uq5hTdN+5gUF1eggc/Opg4nOR/PjhbQ7BKiU67wVX
-         JJRg==
-X-Forwarded-Encrypted: i=1; AKwUvBwgN8lLpeIJuDqrnYnAqRgFErFwiceVZivBmNCPTAUe6WfRKsjq/A5kS4FZgJ4DJpfr/JP5AYU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nxOUXOOSmPMHYFI7Dwjirjl2esl7dS1k08xJWDEIDFNfgrIaMb
-	8GmKaBcZ+TRQMMoV8cDmuJK81QhG6waynMNAj/f5kDfmI+WKstkAUGRnoywLRNoCiE4e7phrBzN
-	eQzjlEA==
-X-Received: from pfiv14.prod.google.com ([2002:aa7:99ce:0:b0:853:9149:8801])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c8e:b0:878:34d7:697a
- with SMTP id d2e1a72fcca58-87834d7df67mr4963513b3a.40.1789934195003; Sun, 20
+        bh=b+TZlQpugj+c9MJLWRaRFzFuVXJdi5re21PKY0fPg3A=;
+        b=s61Iy2brCjZgpruTNmy+hW4Ap+b2tAvm7LD9rE7s8u+wSRiIRv9dx/Wa7H4y3aF6o1
+         uh53JdZ+uHIaIIq08MtDAWSuj+ZOgT4jXFmn+dZspE75pQLNqVeGxlDmdbz3AgqDnK38
+         3syS86zamFAqCjTegsHLeyw/Z/aZw4TZz4e9bCF17H4ea4urg57hoJdE57JYKPz+mpew
+         tYBQIpwEu/FDZCXE6E//PqnJ8xrOa+4QHuULiXsFmc5cx3ix6hZhzm2Hr+vCojKV9pGW
+         ebjK9c34BQukoetq+SmKTGgwOIzRY+2uSrhZGCyaqtao80drHj/n3kyFpuzaxOkj/k+g
+         Ik+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789934196; x=1790538996;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b+TZlQpugj+c9MJLWRaRFzFuVXJdi5re21PKY0fPg3A=;
+        b=O30Ok5mKoIqePJgOIHlgJ2VoYuZEzvLzMhHBiRvKHrlx3RRn7czVk3B4xfyRIk3+dF
+         bye6u8FDbvdkfS9PcvV+J48TgDRaa9QTwr6ZcUFEG0j3+SwIhNNvluQCOWj3YJYcuacs
+         3mYaO6nrw++zjo6j5gKUrOwTy5GTQpbyf8GJhUIiy0jxjCs3suLDpz1lXUuNB/oquWJN
+         CbjfEUMGR4Mx8qzgJHA/LiTwLgJKeTqlNeHM5VR5vMrFvIimA2mO8ovRqr9r6lkjwXr/
+         aTiMoTlzlpKo+oIyeKIi2WP5kng6sThyUFyIsVaRqGmauNyNFksGS4Mskag0R6G6xNzk
+         0cMA==
+X-Forwarded-Encrypted: i=1; AKwUvBwnC5PNrfYdUVqqjSk230QZS5nojQ7+ubR8k/FWm6zkqzDdUQBSii7v41seWBt5UNig2ipeRl8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lNqkAJO/rNyqb6Jja6EWYhS8wjuskLiMZPaSMLvSR3O/4AiWVL
+	zXE0FhrYHb6vcTLvrxzvkwKhWshXD7V3kgowKQ5R6S9wYFIF/dmxVZjxF4/Vfn5z2ZBRK3IxGHx
+	m1jH0hw==
+X-Received: from plat4.prod.google.com ([2002:a17:902:e1c4:b0:2dd:bf24:7d3a])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e751:b0:2c8:2808:3ec9
+ with SMTP id d9443c01a7336-2ddb1ae69b7mr134287945ad.12.1789934195949; Sun, 20
  Sep 2026 12:56:35 -0700 (PDT)
-Date: Sun, 20 Sep 2026 19:56:09 +0000
+Date: Sun, 20 Sep 2026 19:56:10 +0000
+In-Reply-To: <20260920195633.3033620-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260920195633.3033620-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260920195633.3033620-1-kuniyu@google.com>
-Subject: [PATCH bpf-next 0/7] bpf: Add bpf_tcp_ops hooks for TCP AutoLOWAT.
+Message-ID: <20260920195633.3033620-2-kuniyu@google.com>
+Subject: [PATCH bpf-next 1/7] selftest: bpf: Use BPF_SOCK_OPS_ALL_CB_FLAGS + 1
+ for bad_cb_test_rv.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
@@ -70,80 +75,45 @@ Cc: Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmai
 	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-This series introduces two callbacks for bpf_tcp_ops:
+Once bpf_sock_ops_cb_flags_set() supports a new flag,
+tcpbpf_user.c fails due to the hard-coded max value, 0x80.
 
-  .enqueue_rcvq(): invoked when TCP stack enqueues skb to
-                   sk->sk_receive_queue
+Let's replace 0x80 with BPF_SOCK_OPS_ALL_CB_FLAGS + 1.
 
-  .dequeue_rcvq(): invoked in tcp_cleanup_rbuf() after data
-                   is dequeued from sk->sk_receive_queue
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c | 3 ++-
+ tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-Those callbacks can be enabled on a per-socket basis by
-bpf_setsockopt():
-
-  int flags = BPF_SOCK_OPS_RCVQ_CB_FLAG;
-
-  bpf_setsockopt(sk, SOL_TCP, TCP_BPF_SOCK_OPS_CB_FLAGS,
-                 &flags, sizeof(flags));
-
-or via the bpf_tcp_ops-specific helper added in the next patch:
-
-  bpf_sock_ops_cb_flags_set(sk, BPF_SOCK_OPS_RCVQ_CB_FLAG);
-
-This allows the BPF prog to dynamically adjust sk->sk_rcvlowat,
-suppressing unnecessary EPOLLIN wakeups until sufficient data
-is available in the receive queue.
-
-This functionality, which we call "TCP AutoLOWAT", was originally
-developed in 2020 by Tenzin Ukyab with the help of Soheil Hassas
-Yeganeh, Arjun Roy, and Eric Dumazet.  It has served Google RPC
-workloads for more than 5 years.
-
-Combined with TCP RX zerocopy, this typically allows us to read an
-entire RPC frame with just a single wakeup and a single system call.
-
-While the original implementation was specialised for our
-internal RPC format, this series introduces a more flexible
-version by leveraging BPF.
-
-The bpf prog in the last selftest patch closely mirrors the core
-logic of the original implementation to provide a real-world
-example.
-
-Note that the new callbacks are not supported on legacy SOCK_OPS.
-
-Legacy SOCK_OPS version:
-  v3: https://lore.kernel.org/bpf/20260523083001.2911931-1-kuniyu@google.com/
-  v2: https://lore.kernel.org/bpf/20260522074601.1658705-1-kuniyu@google.com/
-  v1: https://lore.kernel.org/bpf/20260508073355.3916746-1-kuniyu@google.com/
-
-
-Kuniyuki Iwashima (7):
-  selftest: bpf: Use BPF_SOCK_OPS_ALL_CB_FLAGS + 1 for bad_cb_test_rv.
-  bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-  bpf: tcp: Support bpf_sock_ops_cb_flags_set() for bpf_tcp_ops.
-  tcp: Split out __tcp_set_rcvlowat().
-  bpf: mptcp: Don't support BPF_SOCK_OPS_RCVQ_CB_FLAG.
-  bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
-  selftest: bpf: Add test for bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-
- include/net/tcp.h                             |  34 ++
- include/uapi/linux/bpf.h                      |  13 +-
- net/core/filter.c                             |  10 +-
- net/ipv4/bpf_tcp_ops.c                        |  96 ++++-
- net/ipv4/tcp.c                                |  14 +-
- net/ipv4/tcp_fastopen.c                       |   2 +
- net/ipv4/tcp_input.c                          |   4 +
- tools/include/uapi/linux/bpf.h                |  13 +-
- .../selftests/bpf/prog_tests/tcp_autolowat.c  | 350 ++++++++++++++++++
- .../selftests/bpf/prog_tests/tcpbpf_user.c    |   3 +-
- .../selftests/bpf/progs/bpf_tracing_net.h     |   2 +
- .../selftests/bpf/progs/tcp_autolowat.c       | 312 ++++++++++++++++
- .../selftests/bpf/progs/test_tcpbpf_kern.c    |   3 +-
- 13 files changed, 842 insertions(+), 14 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c
- create mode 100644 tools/testing/selftests/bpf/progs/tcp_autolowat.c
-
+diff --git a/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c b/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
+index 7e8fe1bad03f..e4849d2a2956 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
++++ b/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
+@@ -26,7 +26,8 @@ static void verify_result(struct tcpbpf_globals *result)
+ 	ASSERT_EQ(result->bytes_acked, 1002, "bytes_acked");
+ 	ASSERT_EQ(result->data_segs_in, 1, "data_segs_in");
+ 	ASSERT_EQ(result->data_segs_out, 1, "data_segs_out");
+-	ASSERT_EQ(result->bad_cb_test_rv, 0x80, "bad_cb_test_rv");
++	ASSERT_EQ(result->bad_cb_test_rv, BPF_SOCK_OPS_ALL_CB_FLAGS + 1,
++		  "bad_cb_test_rv");
+ 	ASSERT_EQ(result->good_cb_test_rv, 0, "good_cb_test_rv");
+ 	ASSERT_EQ(result->num_listen, 1, "num_listen");
+ 
+diff --git a/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c b/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
+index 6935f32eeb8f..e30cb1fab079 100644
+--- a/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
++++ b/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
+@@ -92,7 +92,8 @@ int bpf_testcb(struct bpf_sock_ops *skops)
+ 		break;
+ 	case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:
+ 		/* Test failure to set largest cb flag (assumes not defined) */
+-		global.bad_cb_test_rv = bpf_sock_ops_cb_flags_set(skops, 0x80);
++		global.bad_cb_test_rv = bpf_sock_ops_cb_flags_set(skops,
++								  BPF_SOCK_OPS_ALL_CB_FLAGS + 1);
+ 		/* Set callback */
+ 		global.good_cb_test_rv = bpf_sock_ops_cb_flags_set(skops,
+ 						 BPF_SOCK_OPS_STATE_CB_FLAG);
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
