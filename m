@@ -1,111 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC1A472078;
-	Sun, 20 Sep 2026 18:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE63D3D11;
+	Sun, 20 Sep 2026 18:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789928669; cv=none; b=Q9JqXBvrxqGdlqdWm8+7zIJWxergQbLqXB3LjnP26RjXIXr0OKi3fuSwhq1pAoTf/iPeCBNUnfpvbaYSVXO7X81sJZLxM+hTnYJetcXRcclId1l+oMfiI5k8Z7Jbhns/v0ZxJLeKlPtOd/4GZKZNNVx3EZIpR7GaMeMrd1Ghtco=
+	t=1789929590; cv=none; b=F9s5OmOwfs5ZBiXas2tGezgBSLx4iPdr9wb+h6RGBLydGse887h1yOskLBbuVtjm69TQTBENfTb5ZERGofg0X4F2i7X34eFG7i8ZJ6IUyCD0LUCPzUC/mlEQDUQCnlMcRHsXzSyglMb/KGVqjkAc5GofDoJ6wiP8+AzzkxtFCG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789928669; c=relaxed/simple;
-	bh=OtN3WM4TZ7j22Ot1R8PnWAbAjzbjWegacn22J5Vn9Gc=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=kT0ZvvqLHtgBRR1T2KhvaqXTKhMhhDO3Bf6frknHsDKUBItOs7jsjs9/DE0vY7ly5C+JgiIJYbd1sTl5j1suO8kTY3xuQJ90ZMdtbgUoqWyhMQZOZzgMz7HsvrQBj95Ly6+lH4dkYewrcyXhs9Ceqwj27bxdECGqhJsWQhk2PUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6Lq+nz8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789929590; c=relaxed/simple;
+	bh=XsddRJKzdkiZUyWrpHpYyW361f4IBlV6GQp+muynYOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5zMsuffSTo3voBoa8CpAraVvTc8qweXt3ObHjhAaLhfPblBYKXU7H2W9WHJO4hV6gzykm4+sTsv/Xitl4PBlaui2KgVW89nbN7heJrba6eL4efv6+KGA8g3NdW17BmBISCUIrcoPrLnRtzlKq6xTNemKdVy1S2FZZ43ktJJZBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=nzvzsbyS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6Lq+nz8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2CC1F00893;
-	Sun, 20 Sep 2026 18:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789928665;
-	bh=GirpiP57LoSXI3TsoHXT6mFHUUAI+u4/IhtEm8omttw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=Z6Lq+nz8qmYQ5p8JVZMtuok51Pgu1e6odpnK+oHgND5u32Ry3Gh6sCwf/8o5DUZyV
-	 T3jyUEBlOMKnwIESRa5XQ5qLwH4JucWhj/dRFAnOMUPFaMM/O0lvcbG5QRgkJ4jr1Y
-	 Ao3L/ckJJ8uPqFELfQm4gEvf1TLNCUtBM3c0XuZzn1sEF9vwI2/73gFJdETvJEQ3/o
-	 985JRoQNC4YseygV8nR6QwEh6KeT42Sbv8FgocHbWOGKgaylwZzujqcjm4uoXbVbiJ
-	 7AM/pH1KTqnluCyjvSr+rnjvR0QYfML9uBgL4vgRxqrsJ37g2pyKphayH++k3mHo1N
-	 mdse1SNMM+7Sw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A34B2F40066;
-	Sun, 20 Sep 2026 14:24:24 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sun, 20 Sep 2026 14:24:24 -0400
-X-ME-Sender: <xms:2CSwau-32lPy11h5cqo7TVrgR0XodUK59kktognwQIK1S8f1nWs5VA>
-    <xme:2CSwapjeQ-MnP_Nt2IH65k9KxSt_X2-QmwjjbejKzbvuAUs7QTeWnxoLeqIpqTGUs
-    cBoE6lr75xvzWDb-hcLUzo3AMKdvZ-Iy_XVTVoeYVI9ZGMWUsCOG4Q>
-X-ME-Proxy-Cause: dmFkZTEKfLeK9ddA5o2er4T3A9g7EMScIjM6YAhWCOQaFtcTswbmTypRk5joA0xTpVlGTH
-    I5GILNHkJ4vi+s1o5OrtbCm9YMHrGJRu4W4EHf6JVPnzOhH09T2x9G1/b26FZniz9XzRmY
-    LVK/gmNkv28iYwG7QFppDh3pN7DHM0WwViTAjIwtM2GNjI+1vplNTCdrS2tpcQAN145DXs
-    T8SSEurZU91D2FPlzaRSFEonsiGnB/U1ElGmORBNlkb+Lh58BP8te21gsojlNWfyxdLC8h
-    kY7hZt07KIKaJaDHS6dqqZDJ/iy0kpYrZIm2tnmX3GLUcVdOTlEjeO4VyC28zVYKnKFgsf
-    WuDfLUJlPTZmRJqduS3GIlHKh5KfGfw3Rjy7iY2c8ad4TvABfymcUkr/rARrGJ89h0ruTT
-    Lx5PxdlaxL60z6vfcBM46Hst0V0ocNA80gt0lERkNe3cWsfo48xNFt9zLAKTlFl/1EQWJg
-    HG6QTfmLRYR6o5o+/y+ju1snl79fWsgbfTN6Lw7hm7jAY/M+EK+69Q6usgpCyfufmwk/XP
-    uRTG1ileFdUyjsrZmzB8hc7skzpThLBh4k5WqQSDiqPDrjFuLzmXQeZkKoTH8aj2vULdrq
-    cc+1129ao109Y1tP2Ug2jjUZnZFhIntfcJAKdfy6KfsCTXAcar37hmSVdcJw
-X-ME-Proxy: <xmx:2CSwaofzRIex4HTSYsNA0fWJf-PnlZzku8ZsV09pTNKIb8uj3edlHw>
-    <xmx:2CSwamP4Uv5tF0QmEUMto2MlEOLdjT3-gxBfXjAxPkDDauLfJnWTgw>
-    <xmx:2CSwarsEhCwK_GfarBiqMIG84p2XpusE5cgv2xSdVS16d2pwW6oXSw>
-    <xmx:2CSwavDljUl0lAD8yDyAmTEWcv2Hdxq5rfBwBrxxD6cb6Pe0XUJSag>
-    <xmx:2CSwaiZcXm7F0Ie7YLHbrGHAWZ6A7Z0NyM1yMx975Y2-tvW1zv100dJn>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 80017780070; Sun, 20 Sep 2026 14:24:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nzvzsbyS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=PGAGqvFCwHGZEk2NRMEY90gRI3koAV1XWGGTvnMRxnw=; b=nzvzsbySuWS+Cjkysz0gvo9x8A
+	eFoyFLn9Vu+yHmiXhkGUXAdnng8/b8TpZl6eDNE11GUy7ArHm2wCTXud+T/QqXAAMbxZRy747HVCX
+	tgMMMjg9k4X9uehfknX8sZcYVaQVhDX352A9jRHw2DL++Ylhn785LLuj8zgZBnuyhP9w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x8MRi-006BXd-VL; Sun, 20 Sep 2026 20:39:26 +0200
+Date: Sun, 20 Sep 2026 20:39:26 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: jan.petrous@oss.nxp.com
+Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 04/12] net: pcs: add NXP SerDes XPCS shared core
+Message-ID: <07c5ed86-755a-4094-b45a-6316d10f4515@lunn.ch>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A33QhYTfYD7B
-Date: Sun, 20 Sep 2026 14:23:55 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: jlayton@kernel.org, trondmy@kernel.org, anna@kernel.org,
- linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <b8bf0827-660e-4fad-b90b-21947bc8073e@slotpi15m67>
-In-Reply-To: <20260919212024.2335794-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20260919212024.2335794-2-Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: Re: [PATCH] SUNRPC: restrict integrity replies to authenticated payload
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com>
 
-On 9/19/26 5:20 PM, J=C3=A9r=C3=A9my Jean wrote:
-> Decode the checksum length into mic.len and truncate the decode
-> stream after MIC verification so only the authenticated payload
-> remains visible.
+On Sat, Sep 19, 2026 at 08:54:32AM +0200, Jan Petrous via B4 Relay wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
+> 
+> The SerDes subsystems found on NXP S32G and i.MX SoCs integrate a
+> Synopsys DesignWare Ethernet XPCS and an Ethernet PHY (PMA) with an
+> identical register layout. Only the register transport differs: indirect
+> memory mapped access on S32G, Clause 45 MDIO on i.MX.
+> 
+> Add a transport agnostic phylink PCS core which operates on regmaps
+> provided by the platform glue.
 
-Your analysis holds, and I don't see a relevant fix already queued
-up.
+What is not transport agnostic with the current code.
 
+Think carefully about that, before you answer.
 
-> +	if (xdr_stream_remaining(xdr) < len - XDR_UNIT)
-> +		goto unwrap_failed;
-
-This branch cannot be taken. xdr_buf_subsegment() returns -1 unless
-offset + len <=3D rcv_buf->len, and @offset was computed as
-rcv_buf->len - xdr_stream_remaining(xdr) just above. Decoding the
-sequence number then drops xdr_stream_remaining() by XDR_UNIT, so
-here it is at least len - XDR_UNIT. Nothing in between disturbs
-that: xdr_decode_word(), read_bytes_from_xdr_buf(), and
-gss_verify_mic() only read. The new "len < XDR_UNIT" test already
-keeps the subtraction from wrapping, which is the other input this
-check could have caught.
-
-One observation that needs no change: gss_krb5_verify_mic_v2()
-covers only cksum_len bytes of the token, so an oversized checksum
-length word verifies too, and mic.len still feeds
-gss_update_rslack(). rcv_buf->len bounds the value, so an attacker
-gains nothing but a poor slack estimate.
-
-The rest LGTM.
-
-net/sunrpc/auth_gss/auth_gss.c is NFS client code, so this one goes
-through Trond and Anna rather than the NFSD tree.
-
-
---=20
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+	Andrew
