@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50A447ECEE;
-	Sun, 20 Sep 2026 21:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8461147ECC1;
+	Sun, 20 Sep 2026 21:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789941363; cv=none; b=tcLxdpaoR+pog4wMZsse5ZwmhCwa0N7f3Zrv8r9hYt2qZyVUmSexs1J2F6RLoHFbClf3IgNkKjmUtP6OSxYELln8a2p9XZmdVXY3neXHCKJR6yXlB9JZRw5Tq0Vu/us7T5jPj4TSiJw3xaT3MRyBw3OEparyo4yJX/TfYQ2Kr70=
+	t=1789941369; cv=none; b=dBBt331wax9X+3wGIe+9LD7+wdA3Y4yACMnv9iHClQNxiTAc0S78jQSSpiORq178crFEzhSoSA4rLb1Ba+WfvZ/HP/tAOaay2zBFup+7kh0QRaw42KDYSdC7FJk2DrBLsxOnCzWcwssLB66poraXIROFk8/lYErilE9AaJGu91s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789941363; c=relaxed/simple;
-	bh=/eehDlMbhRbk5jDVDQBsa5RSjdDtAbMeITfWf98ueiQ=;
+	s=arc-20240116; t=1789941369; c=relaxed/simple;
+	bh=CB4o+kFkHxn8PPX9FVAPbaHMh42DPXx33aMCy5heswA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JfuMiBHmMYiJo8c/xaiA6SabgtbQ21dgdNguXAHVQFNzjae+9jJx0B7Q1hN2p2EMUKj3t6W7VXtX6d3dlkVZCyMwv7c0QEXIuAy9yQSbB7rnPwQj1ZnH4V/jrF83T4MAYEVmgofo+Bu0mghPrcDBiL00HvesIcpIb8JB2cGYPmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnEyXTsY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=akhdEyc9Uewo9txKXUQWVr/H6iVH/Xpn8ZfBoyDKM5i6YzxlcvppLEkgIPDz9Uff97rD7ObZnUqauM+2daFwFpcCBhHMnPBDkMx52raxCqIf1qjX0I3KGAtfRPB7PXgqwWfJ18d1Gw4zZEllC1QyoRDYdOZb0RmOIx4fYbnmUSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ze+HcaOP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnEyXTsY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEFA1F00893;
-	Sun, 20 Sep 2026 21:55:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ze+HcaOP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6AF1F00899;
+	Sun, 20 Sep 2026 21:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789941355;
-	bh=gho3XsB+rCMkQouH2sK/QuHGliacTo5BbkjD8cyjXKM=;
+	s=k20260515; t=1789941358;
+	bh=QFsAij/JXESTg11K4+nBq8vZ49HGqOt4fP682OcNRqw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DnEyXTsYW1oYvJ/4cIGBHX1YLLGLvznQV+NG2f/DY54I4Rfnp2UmcJjdmKM2rw9uX
-	 rOhUFKxShZn9lGkt3FgWqJICYmSy7zXRdfl6uy7CT/t5oX7GTKe4XWW7GlA/dtSdd/
-	 YAYFv2WXoT1vEsku+i0qwzXlMsLZ3ULqOi0s2EqRdJhphs2vS8W32MbNiyXmbzSIrQ
-	 BMpIidccpt3f69ogUwyd9U0+/CrDn94nsXmS49dYFUoKpjeN8oQ1CeOjzi/Q4NF2f3
-	 DAuUlljaZQTVUH/GN6uksBnIaYYJACZHL+OlCWR2/bZpgiXqj7UwjVXBUPiJ/4fdxw
-	 qpRCoPxPiV2Dg==
-Subject:
- Re: [PATCH] tcp: drain out_of_order_queue and update SACKs in tcp_send_rcvq()
+	b=Ze+HcaOPnM/S3bm1iACLYsSowx32MUJ/NPn2HY/7yYXnqM4DoZB89I/DABIm+GMIa
+	 2b+SIaij7Vu9II571fUM6i6dcz/mrAOmDTa1z2jT9ThcqdJuIAJ6wJ1niG1fI/mzd2
+	 bXhSzXRK8cEqG25CuRWxmoM/tiNZfIiTmQRqBNN+gLnJviMCnih/7IVGjq/SjGf52S
+	 mTum7Y2dt0uGNXLCfP8kcZdTdFMp3MXWWKuAXQBVRT3MmrYFllkzAYrsUPgfpbvGsH
+	 h2w2ZXbv5P23X5KhBf2wDfLfMQfIRg6+93jqVAS48O3t0BH18ygT2Wx4Kbe5CJlCeO
+	 8LzWfH8OJ89lA==
+Subject: Re: [PATCH] netlabel: cipso_v4: reject empty MLS level/cat lists and
+ zero tail in cipso_v4_delopt()
 From: netdev-bot+sashiko@kernel.org
 To: benquike@gmail.com
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 20 Sep 2026 21:55:54 +0000
-Message-ID: <178994135442.2160803.9245969702755706325@kernel.org>
-In-Reply-To: <20260919215236.3470714-1-benquike@gmail.com>
-References: <20260919215236.3470714-1-benquike@gmail.com>
+Cc: paul@paul-moore.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 20 Sep 2026 21:55:57 +0000
+Message-ID: <178994135732.2160803.15552484711039753590@kernel.org>
+In-Reply-To: <20260919215243.3472150-1-benquike@gmail.com>
+References: <20260919215243.3472150-1-benquike@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 4
+Critical: 0 · High: 2 · Medium: 2 (1) · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,250 +58,277 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] net/ipv4/tcp_input.c, tcp_send_rcvq(): the newly added
-  unconditional `tcp_ofo_queue(sk)` call imports full receive-path…
-- [Low] net/ipv4/tcp_input.c, tcp_send_rcvq() becomes the second caller
-  of the OFO-drain sequence but replicates only two of the five steps…
-- [Low] Commit message factual error: it states that tcp_send_rcvq()
-  "advances tp->copied_seq and tp->rcv_nxt".
-- [Low] The change asserts a bug without any reproducer, warning,
-  syzkaller report or stated user-visible symptom, yet carries `Fixes:…
-- [Low] net/ipv4/tcp_input.c, tcp_send_rcvq(): the new tcp_ofo_queue()
-  call does not establish the per-processing-pass D-SACK precondition…
+- [High] netlbl_cipsov4_remove_cb()
+  (net/netlabel/netlabel_cipso_v4.c:695-703) now deletes the entire…
+- [High] The new ADDRSELECT cleanup in netlbl_cipsov4_remove_cb() can
+  never run for default domain mappings.
+- [Medium] The new `cat.local_size == 0 || cat.cipso_size == 0` check
+  inside the `if (info->attrs[NLBL_CIPSOV4_A_MLSCATLST])` block of…
+- [Medium] The commit squashes three logically independent changes into
+  one patch across two subsystems: (a) netlink input validation in…
+
+Pre-existing issues:
+- [Medium] Asymmetry between the two DOI-teardown walk callbacks: after
+  this patch netlbl_cipsov4_remove_cb() inspects…
+- [Low] The kernel-doc for cipso_v4_delopt() states 'Returns zero on
+  success, negative values on failure', but the implementation returns…
 
 --
 
-tcp: drain out_of_order_queue and update SACKs in tcp_send_rcvq()
+netlabel: cipso_v4: reject empty MLS level/cat lists and zero tail in cipso_v4_delopt()
 
-This adds an out-of-order queue drain plus a SACK block update to
-tcp_send_rcvq(), so that segments in tp->out_of_order_queue which become
-in-order after TCP_REPAIR injects data into the receive queue are
-coalesced and the SACK bookkeeping is pruned.
+This bundles three changes: netlbl_cipsov4_add_std() now rejects zero-sized
+MLS level and category tables before kcalloc(), netlbl_cipsov4_remove_cb()
+also inspects NETLBL_NLTYPE_ADDRSELECT entries, and cipso_v4_delopt() zeroes
+the trailing bytes after the memmove() and shortens the length passed to
+cipso_v4_get_actual_opt_len().
 
-A few questions about the commit message and the new call site follow.
+The changelog describes three independent fixes:
 
-> When TCP_REPAIR injects data into the receive queue via tcp_send_rcvq() and
-> advances tp->copied_seq and tp->rcv_nxt, any segments already sitting in
-                ^^^^^^^^^^^^^^
-
-[Severity: Low]
-Does tcp_send_rcvq() actually advance tp->copied_seq?  Reading the
-function, the only sequence update comes from tcp_queue_rcv():
-
-net/ipv4/tcp_input.c:tcp_queue_rcv() {
-	...
-	tcp_rcv_nxt_update(tcp_sk(sk), TCP_SKB_CB(skb)->end_seq);
-	...
-}
-
-which touches rcv_nxt only.  For the receive repair queue, copied_seq
-appears to be written only by the TCP_QUEUE_SEQ setsockopt:
-
-net/ipv4/tcp.c:do_tcp_setsockopt() {
-	...
-	} else if (tp->repair_queue == TCP_RECV_QUEUE) {
-		if (tp->rcv_nxt != tp->copied_seq) {
-			err = -EPERM;
-		} else {
-			WRITE_ONCE(tp->rcv_nxt, val);
-			WRITE_ONCE(tp->copied_seq, val);
-		}
-	...
-}
-
-and that path additionally requires sk->sk_state == TCP_CLOSE.
-
-Could the changelog also state the user-visible symptom and the
-preconditions to reach it (CAP_NET_ADMIN, TCP_REPAIR enabled on a live
-socket whose out_of_order_queue is already non-empty)?
-
-> tp->out_of_order_queue that are now covered or contiguous with rcv_nxt are
-> not coalesced or removed from tp->rx_opt.num_sacks. Drain
-                               ^^^^^^^^^^^^^^^^^^^^
-> out_of_order_queue via tcp_ofo_queue(sk) and update SACK blocks via
-> tcp_sack_remove(tp) after advancing rcv_nxt in tcp_send_rcvq().
+>     Fix three bugs in NetLabel CIPSOv4 handling:
+>     1. In netlbl_cipsov4_add_std(), ...
+>     2. In netlbl_cipsov4_remove_cb(), ...
+>     3. In cipso_v4_delopt(), ...
 >
-> Fixes: 292e8d8c8538 ("tcp: Move rcvq sending to tcp_input.c")
+>     Fixes: 96cb8e3313c7 ("[NetLabel]: CIPSOv4 and Unlabeled packet integration")
+>     Fixes: 389fb800ac8b ("netlabel: Label incoming TCP connections correctly in SELinux")
+
+[Severity: Medium]
+Could these be split into three patches?  The three hunks touch two
+subsystems and have unrelated triggering conditions: the contents of a
+CIPSOv4 ADD message, the contents of a CIPSOv4 REMOVE message, and the
+socket/request IP option teardown path.
+
+Both Fixes: tags are listed together with no indication of which tag covers
+which hunk, so stable tooling matching either tag pulls the netlink
+validation change and the netlbl_cipsov4_remove_cb() semantics change in
+along with the cipso_v4_delopt() change.  Can each hunk get its own patch
+with its own Fixes: tag?
+
+> diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
+> index a05aa075de1a..4ac1a4965abe 100644
+> --- a/net/ipv4/cipso_ipv4.c
+> +++ b/net/ipv4/cipso_ipv4.c
+> @@ -2025,9 +2025,11 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+>  
+>  		memmove(cipso_ptr, cipso_ptr + cipso_len,
+>  			opt->opt.optlen - cipso_off - cipso_len);
+> +		memset(&opt->opt.__data[opt->opt.optlen - cipso_len],
+> +		       IPOPT_END, cipso_len);
+>  
+>  		optlen_new = cipso_v4_get_actual_opt_len(opt->opt.__data,
+> -							 opt->opt.optlen);
+> +							 opt->opt.optlen - cipso_len);
+>  		hdr_delta = opt->opt.optlen;
+>  		opt->opt.optlen = (optlen_new + 3) & ~3;
+>  		hdr_delta -= opt->opt.optlen;
 
 [Severity: Low]
-Small wording point first: segments are not "removed from
-tp->rx_opt.num_sacks", num_sacks is a count of SACK blocks.
+This is a pre-existing mismatch and not something this patch introduces,
+but while touching this function, would it be worth correcting the
+kernel-doc above cipso_v4_delopt()?  It says:
 
-On the Fixes: tag, is there a reproducer, warning or syzkaller report
-behind this?  The tag targets a 2012 commit, so this pulls a behaviour
-change of the privileged TCP_REPAIR path into stable trees.
+ * adjustments to the IP option structure.  Returns zero on success, negative
+ * values on failure.
 
-The state being fixed also looks transient, since the normal receive path
-already reconciles it on the next in-sequence segment:
+The body only has "return 0" for the no-CIPSO-option case and
+"return hdr_delta" otherwise, where hdr_delta is the number of option bytes
+removed.  There is no negative return path, and the callers
+cipso_v4_sock_delattr() and cipso_v4_req_delattr() consume the byte count.
 
-net/ipv4/tcp_input.c:tcp_data_queue() {
-	...
-		if (!RB_EMPTY_ROOT(&tp->out_of_order_queue)) {
-			tcp_ofo_queue(sk);
-	...
-		if (tp->rx_opt.num_sacks)
-			tcp_sack_remove(tp);
-	...
-}
+> diff --git a/net/netlabel/netlabel_cipso_v4.c b/net/netlabel/netlabel_cipso_v4.c
+> index b080e666523f..9bb28236b8fe 100644
+> --- a/net/netlabel/netlabel_cipso_v4.c
+> +++ b/net/netlabel/netlabel_cipso_v4.c
+> @@ -185,6 +185,9 @@ static int netlbl_cipsov4_add_std(struct genl_info *info,
+>  					break;
+>  				}
+>  		}
+> +	if (doi_def->map.std->lvl.local_size == 0 ||
+> +	    doi_def->map.std->lvl.cipso_size == 0)
+> +		goto add_std_failure;
+>  	doi_def->map.std->lvl.local = kcalloc(doi_def->map.std->lvl.local_size,
+>  					      sizeof(u32),
+>  					      GFP_KERNEL | __GFP_NOWARN);
 
-and tcp_fin(), tcp_prune_ofo_queue(), tcp_close() and tcp_disconnect()
-all purge the tree or reset the SACK state.  In the CRIU restore flow the
-out-of-order tree is empty anyway, because TCP_QUEUE_SEQ only allows
-moving rcv_nxt while sk_state == TCP_CLOSE.
+[ ... ]
 
-Would it make sense to either demonstrate the failure or drop the Fixes:
-tag and present this as hardening?
+> @@ -260,6 +263,9 @@ static int netlbl_cipsov4_add_std(struct genl_info *info,
+>  						break;
+>  					}
+>  			}
+> +		if (doi_def->map.std->cat.local_size == 0 ||
+> +		    doi_def->map.std->cat.cipso_size == 0)
+> +			goto add_std_failure;
+>  		doi_def->map.std->cat.local = kcalloc(
+>  					      doi_def->map.std->cat.local_size,
+>  					      sizeof(u32),
 
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 92bc60716f33..8a7c38a4b1ec 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -5589,6 +5589,11 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *msg, size_t size)
->  		WARN_ON_ONCE(fragstolen); /* should not happen */
->  		__kfree_skb(skb);
->  	}
-> +	if (!RB_EMPTY_ROOT(&tcp_sk(sk)->out_of_order_queue)) {
-> +		tcp_ofo_queue(sk);
+[Severity: Medium]
+Does this change the accepted attribute encodings for NLBL_CIPSOV4_C_ADD?
+
+This check sits inside the "if (info->attrs[NLBL_CIPSOV4_A_MLSCATLST])"
+block, so it only fires when the category list nest is present but carries
+no NLBL_CIPSOV4_A_MLSCAT child.  nla_validate_nested_deprecated() returns 0
+for an empty nest, the first nla_for_each_nested() pass matches nothing, and
+cat.local_size / cat.cipso_size stay at 0, so ADD now returns -EINVAL.
+
+Omitting NLBL_CIPSOV4_A_MLSCATLST entirely produces exactly the same DOI
+state (empty cat.local / cat.cipso, sizes 0) and is still accepted, so only
+one of the two encodings of "no categories" is rejected.
+
+There is also a round-trip asymmetry with the LIST side.
+netlbl_cipsov4_list() starts the nest unconditionally for
+CIPSO_V4_MAP_TRANS:
+
+	nla_a = nla_nest_start_noflag(ans_skb,
+				      NLBL_CIPSOV4_A_MLSCATLST);
+
+and only fills it while iter < cat.local_size, so a category-less DOI is
+reported back with an empty MLSCATLST that ADD would now reject.
+
+Is the zero-size state actually unsafe?  Every category access looks
+size-guarded, for example in cipso_v4_map_cat_rbm_valid():
+
+	if (cat >= cipso_cat_size ||
+	    cipso_array[cat] >= CIPSO_V4_INV_CAT)
+		return -EFAULT;
+
+and the same pattern for host_spot >= host_cat_size in _hton() and
+net_spot >= net_cat_size in _ntoh().  If the sizes already bound all
+accesses, would it be better to only guard the kcalloc() calls rather than
+reject the request?
+
+> @@ -680,10 +686,21 @@ static int netlbl_cipsov4_listall(struct sk_buff *skb,
+>  static int netlbl_cipsov4_remove_cb(struct netlbl_dom_map *entry, void *arg)
+>  {
+>  	struct netlbl_domhsh_walk_arg *cb_arg = arg;
+> +	struct netlbl_af4list *iter4;
+> +	struct netlbl_domaddr4_map *map4;
+>  
+>  	if (entry->def.type == NETLBL_NLTYPE_CIPSOV4 &&
+>  	    entry->def.cipso->doi == cb_arg->doi)
+>  		return netlbl_domhsh_remove_entry(entry, cb_arg->audit_info);
+> +	else if (entry->def.type == NETLBL_NLTYPE_ADDRSELECT) {
+> +		netlbl_af4list_foreach_rcu(iter4, &entry->def.addrsel->list4) {
+> +			map4 = netlbl_domhsh_addr4_entry(iter4);
+> +			if (map4->def.type == NETLBL_NLTYPE_CIPSOV4 &&
+> +			    map4->def.cipso->doi == cb_arg->doi)
+> +				return netlbl_domhsh_remove_entry(entry,
+> +							cb_arg->audit_info);
+> +		}
+> +	}
+>  
+>  	return 0;
+>  }
 
 [Severity: High]
-Can this run the TCP state machine from inside sendmsg()?  If an
-out-of-order segment carrying TCPHDR_FIN becomes in-order because the
-injected bytes closed the hole, tcp_ofo_queue() reaches:
+Can this remove mappings unrelated to the DOI being deleted?
 
-net/ipv4/tcp_input.c:tcp_ofo_queue() {
+One match on a single address selector passes "entry" to
+netlbl_domhsh_remove_entry(), which tears down the whole domain entry:
+
+net/netlabel/netlabel_domainhash.c:netlbl_domhsh_remove_entry() {
 	...
-		if (unlikely(fin)) {
-			tcp_fin(sk);
-			/* tcp_fin() purges tp->out_of_order_queue,
-			 * so we must end this loop right now.
-			 */
-			break;
+	case NETLBL_NLTYPE_ADDRSELECT:
+		netlbl_af4list_foreach_rcu(iter4, &entry->def.addrsel->list4) {
+			map4 = netlbl_domhsh_addr4_entry(iter4);
+			cipso_v4_doi_putdef(map4->def.cipso);
+		}
+		netlbl_af6list_foreach_rcu(iter6, &entry->def.addrsel->list6) {
+			map6 = netlbl_domhsh_addr6_entry(iter6);
+			calipso_doi_putdef(map6->def.calipso);
 		}
 	...
+	call_rcu(&entry->rcu, netlbl_domhsh_free_entry);
 }
 
-and tcp_fin() then does:
+It also clears netlbl_domhsh_def_ipv4 / netlbl_domhsh_def_ipv6 when the
+entry happens to be the default mapping.
 
-net/ipv4/tcp_input.c:tcp_fin() {
-	inet_csk_schedule_ack(sk);
-	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | RCV_SHUTDOWN);
-	sock_set_flag(sk, SOCK_DONE);
+A single ADDRSELECT entry can legitimately aggregate selectors with
+different types and DOIs - netlbl_domhsh_validate() accepts per-selector
+NETLBL_NLTYPE_UNLABELED and NETLBL_NLTYPE_CIPSOV4 in the same list4, and
+netlbl_domhsh_add() merges later selectors into the existing entry without
+requiring a shared DOI.  So does deleting DOI 1 on a domain that also maps
+192.168.0.0/16 to CIPSO DOI 2 and 10.0.0.0/8 to unlbl silently drop those
+other two mappings as well?
+
+Would netlbl_domhsh_remove_af4() be the right granularity here?  It removes
+a single selector and only drops the entry once the selector lists become
+empty.
+
+[Severity: High]
+Can this callback ever be invoked for a default mapping?
+
+netlbl_domhsh_add() stores entries with domain == NULL only in the standalone
+RCU pointers:
+
+net/netlabel/netlabel_domainhash.c:netlbl_domhsh_add() {
 	...
-	skb_rbtree_purge(&tp->out_of_order_queue);
-	if (tcp_is_sack(tp))
-		tcp_sack_reset(&tp->rx_opt);
-	...
-}
-
-The call site here is reached from tcp_sendmsg_locked():
-
-net/ipv4/tcp.c:tcp_sendmsg_locked() {
-	if (unlikely(tp->repair)) {
-		if (tp->repair_queue == TCP_RECV_QUEUE) {
-			copied = tcp_send_rcvq(sk, msg, size);
-			goto out_nopush;
-		}
-	...
-}
-
-sk_stream_wait_connect() confines sk_state to ESTABLISHED/CLOSE_WAIT (or
-SYN_RECV for passive fastopen), so the FIN_WAIT arms and tcp_done() are
-not reachable from here.  The ESTABLISHED -> CLOSE_WAIT transition,
-RCV_SHUTDOWN, SOCK_DONE, the skb_rbtree_purge() of the remaining
-out-of-order peer data, the SACK reset and the sk_state_change()/
-sk_wake_async(POLL_IN) wakeups are reachable though, and
-tcp_send_rcvq() still returns size, so a repair tool sees success with no
-indication that the read side was shut down and queued peer data
-discarded.
-
-Separately, tcp_ofo_queue() computes dsack_high from tp->rcv_nxt as just
-advanced by the locally injected bytes:
-
-net/ipv4/tcp_input.c:tcp_ofo_queue() {
-	__u32 dsack_high = tp->rcv_nxt;
-	...
-		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
-			__u32 dsack = dsack_high;
-			...
-			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
-		}
+	} else {
+		INIT_LIST_HEAD(&entry->list);
+		switch (entry->family) {
+		case AF_INET:
+			rcu_assign_pointer(netlbl_domhsh_def_ipv4,
+					   entry);
 	...
 }
 
-Does that make the socket record and later advertise a D-SACK for a range
-the peer never retransmitted, feeding the peer's spurious-retransmission
-and congestion-undo logic?
+while netlbl_domhsh_walk() - the only iteration netlbl_cipsov4_remove() uses
+- walks the hash buckets only:
 
-Would it be better to reconcile the stale state locally here
-(skb_rbtree_purge() plus tcp_sack_reset()), or to suppress the FIN and
-D-SACK side effects while tp->repair is set, matching the quiescence
-policy TCP_QUEUE_SEQ already enforces?
-
-[Severity: Low]
-On the same call, is tp->rx_opt.dsack guaranteed to be clear here?  The
-existing caller clears it before it can reach tcp_ofo_queue():
-
-net/ipv4/tcp_input.c:tcp_data_queue() {
-	reason = SKB_DROP_REASON_NOT_SPECIFIED;
-	tp->rx_opt.dsack = 0;
+net/netlabel/netlabel_domainhash.c:netlbl_domhsh_walk() {
+	...
+		iter_list = &rcu_dereference(netlbl_domhsh)->tbl[iter_bkt];
+		list_for_each_entry_rcu(iter_entry, iter_list, list)
 	...
 }
 
-Otherwise the flag is only cleared when the option is actually written
-out in tcp_options_write(), or by tcp_disconnect().  With a deferred
-delayed ACK the flag can still be set when the repair write runs, and
-then:
+For a configuration like "netlabelctl map add default address:192.168.1.0/24
+protocol:cipsov4,1", removing DOI 1 would then never reach this new code,
+map4->def.cipso keeps its reference, and cipso_v4_doi_remove() only does:
 
-net/ipv4/tcp_input.c:tcp_dsack_extend() {
-	if (!tp->rx_opt.dsack)
-		tcp_dsack_set(sk, seq, end_seq);
-	else
-		tcp_sack_extend(tp->duplicate_sack, seq, end_seq);
+net/ipv4/cipso_ipv4.c:cipso_v4_doi_remove() {
+	...
+	list_del_rcu(&doi_def->list);
+	spin_unlock(&cipso_v4_doi_list_lock);
+
+	cipso_v4_doi_putdef(doi_def);
 }
 
-takes the else branch against the stale tp->duplicate_sack[0].  For a
-disjoint range tcp_sack_extend() returns false and the return value is
-ignored, so is the D-SACK for the segment processed in this pass silently
-lost while the stale block stays?
+so the DOI object stays allocated and invisible to LIST while the default
+mapping keeps labeling traffic with it.  Isn't that the exact case the
+changelog describes as fixed:
 
-> +		if (tcp_sk(sk)->rx_opt.num_sacks)
-> +			tcp_sack_remove(tcp_sk(sk));
-> +	}
->  	return size;
+>        entries so IPv4 address-selected domain mappings referencing a removed
+>        CIPSOv4 DOI are properly cleaned up.
 
-[Severity: Low]
-This new site performs two of the five steps the pre-existing caller
-performs:
+The same gap looks to apply to plain NETLBL_NLTYPE_CIPSOV4 default mappings
+created through netlbl_cfg_cipsov4_map_add(doi, NULL, NULL, NULL, ...) from
+smackfs.
 
-net/ipv4/tcp_input.c:tcp_data_queue() {
-	...
-		if (!RB_EMPTY_ROOT(&tp->out_of_order_queue)) {
-			tcp_ofo_queue(sk);
-			/* RFC5681. 4.2. SHOULD send immediate ACK, when
-			 * gap in queue is filled.
-			 */
-			if (RB_EMPTY_ROOT(&tp->out_of_order_queue))
-				inet_csk(sk)->icsk_ack.pending |= ICSK_ACK_NOW;
-		}
-		if (tp->rx_opt.num_sacks)
-			tcp_sack_remove(tp);
-		tcp_fast_path_check(sk);
-		...
-		if (!sock_flag(sk, SOCK_DEAD))
-			tcp_data_ready(sk);
-	...
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the peer callback is now
+asymmetric.  netlbl_calipso_remove_cb() still only matches top-level
+entries:
+
+net/netlabel/netlabel_calipso.c:netlbl_calipso_remove_cb() {
+	if (entry->def.type == NETLBL_NLTYPE_CALIPSO &&
+	    entry->def.calipso->doi == cb_arg->doi)
+		return netlbl_domhsh_remove_entry(entry, cb_arg->audit_info);
+
+	return 0;
 }
 
-Is the omission of the ICSK_ACK_NOW hint, tcp_fast_path_check() and the
-data-ready notification intentional?  pred_flags stays zeroed by the
-earlier tcp_data_queue_ofo() until some later in-order segment reaches
-tcp_data_queue(), and bytes moved into sk_receive_queue by this drain
-produce no wakeup.
+netlbl_domhsh_remove_entry() shows ADDRSELECT entries hold per-selector
+CALIPSO references via map6->def.calipso, so "netlabelctl map add domain:X
+address:2001:db8::/32 protocol:calipso,5" followed by "netlabelctl calipso
+del doi:5" leaves that list6 selector referencing the removed DOI - the same
+class of leftover mapping this patch closes on the CIPSOv4 side.  Should the
+CALIPSO callback get the matching list6 walk?
 
-If the divergence is deliberate, could the changelog say so?
-
->  
->  err_free:
+Thanks for looking into these.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919215236.3470714-1-benquike%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919215243.3472150-1-benquike%40gmail.com
