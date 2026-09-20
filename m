@@ -1,145 +1,114 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCC433986F;
-	Sun, 20 Sep 2026 06:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84C3D45C3
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 06:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789885063; cv=none; b=fG1Mcr7BgVe2DZ8E2TCyu0RrwELuSzOnyiPhnqs8Dp2tm+wAZPn5J356uQTeumuZsooYJ5Jmn8j+rk/Dy9zJigo5kEGKwtvM/FPi0d9DwDgGr7TTSCXQiIGCG2zr4yitt0AO2W0jgsMSJR4ANrYBhNcrWPLCqqbXhQe6fDP0G1g=
+	t=1789885169; cv=none; b=pkbbCetMebq97KGBgQHdEdJNHX1uxAatOPykFw13/mp9WKS+fC6WdzCeuh6tYkNi2yxTmjRkbyrhdgz8KoNuc12wICmHJxlARinltkSR6935RiVwMQeKZDV/PsrOOKUEu9brx9FAO30f/mbOS0fa0ktVvEtQam7oS/Cox3Kq41I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789885063; c=relaxed/simple;
-	bh=f04XNksIqZ3jdRrR4QeUbXTOo/hxqhH5+cMqIpcrXBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S2ndx/nbefBq7a25GPmD2NOVP1vqldJZKwAUauACeGKazcL1GHIMZmQRuuT9VF61dv2cC/L0JOlpOysPxNyhVo1B1TdaW38z4VWKZndcNt+Be+NbmE6GHAm6Qy97Ysi6AXuq85l+X4HwssPBOV89Fp6gzxV8FGAVN4KrUkKxGEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=G8T1U/IW; arc=none smtp.client-ip=220.197.31.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789885169; c=relaxed/simple;
+	bh=rnMQbbdgbu32h+ljMvAI3F6b2WvLzvm7YjN6hioE+Yg=;
+	h=To:Date:References:From:Subject:Message-Id:Mime-Version:
+	 In-Reply-To:Cc:Content-Type; b=pbigACzb3bvlbQ1KGZvLQUJPE8M+Uw2PP4xn9lxLXGqoD/aHDqd9m2kG71YXwMufAwJbI2d7cg1zgN0D5cko6bRGITDpQS2GZ75sdN5WgpMXXcBYw/LCAsJw4wbWisqzuaFpX7FOVQRhpXyodx+sAMKkL1GmaDlejDMF1F3jt7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai; spf=pass smtp.mailfrom=moonshot.ai; dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b=XS1u3Rkl; arc=none smtp.client-ip=209.127.231.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moonshot.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="G8T1U/IW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0M
-	JtPJukxDHokGFqPIDOiixqdEoWYSRe1kuishwSmuQ=; b=G8T1U/IWWh3Iq+QoWS
-	Dli0CFPLBlZhIK4dcX3ut2r7eRcPFmWcYJvUbyrARGulY8JDxS7ltH5o+lBMYhBn
-	xTbPici6Nsz0dj92Kvdp0ihNq4YZQXdnQwL2YS2OXlqG420iejsQEmx7SyzEy4z4
-	mXvGzs5sGddTvMeij3qnwlpBI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3xwwqeq9qij3sBg--.31149S2;
-	Sun, 20 Sep 2026 14:16:12 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: maxime.chevallier@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: stmmac: do not cache the new TSO MSS before it reaches the DMA
-Date: Sun, 20 Sep 2026 14:16:09 +0800
-Message-Id: <20260920061609.1919876-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b="XS1u3Rkl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2510091218; d=moonshot.ai; t=1789885154; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=DtcePfBq/Wgxt45Maj0MMOd4M1kW8iYGmPEyk4W6x5I=;
+ b=XS1u3Rkl8A4j0FM3usAKrEN+IkCt10hTy1to+wqPIU4oWiV9pTD8T07jKcaH44RrqnVapT
+ IZAdHj2eAYAHXU0jCIbllec7c2Mru9uMVFJHHfBIN1Z6Q410nl+54laygY3FvVoHUb5tSs
+ 1j4GCHeqRs40LBXxonyuCPONa/ckZhErTTzTP41FyGLfXxjSmWtluZS+hw9GFz6qnWtk3W
+ 3H9An4R4uA0ZO7Gai4PbaBJxokYjbWnzWV7iNWwZPpw1TNqVmDmq8M8XTp4YC/fiOdFZbE
+ H/oWTy+lX+t0bkOzXyh9MtbbIJ6WTnzFaWoW08kdCi262m3/8z84VJs8Ict2ow==
+To: "Mat Martineau" <martineau@kernel.org>, 
+	"Matthieu Baerts" <matttbe@kernel.org>, 
+	"Jiayuan Chen" <jiayuan.chen@linux.dev>, 
+	"Paolo Abeni" <pabeni@redhat.com>
+Date: Sun, 20 Sep 2026 14:19:04 +0800
+X-Lms-Return-Path: <lba+26aaf7ae1+259431+vger.kernel.org+yilinzhang@moonshot.ai>
+References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
+From: "Yilin Zhang" <yilinzhang@moonshot.ai>
+Subject: [PATCH v3] mptcp: do not use Fast Open on MP_JOIN subflows
+Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.34.1
+Message-Id: <20260920061904.3575780-1-yilinzhang@moonshot.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3xwwqeq9qij3sBg--.31149S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr17KFyUur4DJw43Aw13Arb_yoW5KFyDpF
-	4UAa90yr98Jr4fXw48Cw40qa45Ja95tayYkw18G3sxGw4ayryvgryfKrW8G34UCFyrZr1S
-	ka129a43Ar4UXrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UlhFsUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqAwwB2qveixC+wAA35
+Mime-Version: 1.0
+In-Reply-To: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
+X-Original-From: Yilin Zhang <yilinzhang@moonshot.ai>
+Cc: "Yilin Zhang" <yilinzhang@moonshot.ai>, <netdev@vger.kernel.org>, 
+	<mptcp@lists.linux.dev>, "Kimi Security Team" <bug-report@moonshot.ai>
+Received: from dev.msh-dev.svc.cluster.local ([117.157.206.135]) by smtp.feishu.cn with ESMTPS; Sun, 20 Sep 2026 14:19:11 +0800
+Content-Type: text/plain; charset=UTF-8
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+tcp_fastopen_create_child() hands the SYN packet itself to
+subflow_syn_recv_sock(). For an MP_JOIN request this takes the
+fatal fallback: the cloned child is destroyed and handed back with
+drop_req flagged, but tcp_fastopen_create_child() does not check
+the flag and queues it, so accept() can expose the freed child.
 
-stmmac_tso_xmit() fills the MSS context descriptor and stores the new MSS
-in tx_q->mss right away, but the descriptor only gets its OWN bit much
-later, right before the frame is handed to the DMA. Every error path in
-between - the dma_map_single() of the linear part and the
-skb_frag_dma_map() of each fragment - returns with tx_q->mss already
-updated while the MAC is still programmed with the previous MSS; the
-abandoned context descriptor is later reclaimed by stmmac_tx_clean().
+MP_JOIN cannot use Fast Open: data on a subflow requires the
+completed HMAC exchange (RFC 8684, sec. 3.2). Refuse it (only the
+TFO path passes a SYN skb here) and let tcp_conn_request() fall
+back to the regular MP_JOIN handshake; also strip the Fast Open
+cookie from MP_JOIN SYN/ACKs.
 
-The next skb carrying the same MSS then compares equal to the cached
-value, so no context descriptor is emitted and the hardware segments the
-TCP stream with a stale MSS, generating frames whose payload size does
-not match what the stack accounted for.
-
-Update tx_q->mss only once the context descriptor has been given to the
-DMA, so that the cached value always describes what the hardware is
-actually programmed with.
-
-The context descriptor is now handled like the data descriptors are:
-tx_q->cur_tx is not advanced while it is being filled. Whether the frame
-can be queued is only known after every dma_map_single() and
-skb_frag_dma_map() has succeeded, so the descriptor stays at the slot
-tx_q->cur_tx points to and the index moves past it later, together with
-the data descriptors. That also keeps the context descriptor outside the
-range stmmac_tx_clean() walks when the ring is cleaned after a failure,
-so the error paths have to release it explicitly.
-
-Fixes: f748be531d70 ("stmmac: support new GMAC4")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
+Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
 ---
-Changes in v2:
-- Do not advance tx_q->cur_tx while the context descriptor is filled, as
-  for the data descriptors, and release the context descriptor on the
-  error paths instead of leaving it to stmmac_tx_clean(). (Lorenzo Bianconi)
+v3:
+- refuse TFO for MP_JOIN in subflow_syn_recv_sock() and fall back to
+  the regular handshake; the TCP-side hunks from v2 are dropped
+- strip the TFO cookie from MP_JOIN SYN/ACKs
+v2:
+- https://lore.kernel.org/netdev/20260903094010.4066892-1-yilinzhang@moonshot.ai/
+v1:
+- https://lore.kernel.org/netdev/20260902121247.3248539-1-yilinzhang@moonshot.ai/
 
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/mptcp/subflow.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index af2d38a2bb3d..e2e680dd980c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4563,10 +4563,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 			mss_desc = &tx_q->dma_tx[tx_q->cur_tx];
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index af81ad5..2b454d4 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -348,6 +348,10 @@ static void subflow_prep_synack(const struct sock *sk, struct request_sock *req,
+ 	if (foc && foc->len > -1)
+ 		ireq->tstamp_ok = 0;
  
- 		stmmac_set_mss(priv, mss_desc, mss);
--		tx_q->mss = mss;
--		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
--						priv->dma_conf.dma_tx_size);
--		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
- 	}
- 
- 	if (netif_msg_tx_queued(priv)) {
-@@ -4577,6 +4573,9 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	first_entry = tx_q->cur_tx;
-+	if (mss_desc)
-+		first_entry = STMMAC_NEXT_ENTRY(first_entry,
-+						priv->dma_conf.dma_tx_size);
- 	entry = first_entry;
- 
- 	WARN_ON(tx_q->tx_skbuff[entry]);
-@@ -4714,6 +4713,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 		 */
- 		dma_wmb();
- 		stmmac_set_tx_owner(priv, mss_desc);
-+		tx_q->mss = mss;
- 	}
- 
- 	if (netif_msg_pktdata(priv)) {
-@@ -4745,6 +4745,9 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 						priv->dma_conf.dma_tx_size);
- 	}
- error:
-+	if (mss_desc)
-+		stmmac_release_tx_desc(priv, mss_desc, priv->descriptor_mode);
++	/* MP_JOIN cannot use TFO, do not send a cookie in the SYN/ACK */
++	if (foc && mptcp_subflow_rsk(req)->mp_join)
++		foc->len = -1;
 +
- 	dev_err(priv->device, "Tx dma map failed\n");
- 	dev_kfree_skb(skb);
- 	priv->xstats.tx_dropped++;
+ 	if (synack_type == TCP_SYNACK_FASTOPEN)
+ 		mptcp_fastopen_subflow_synack_set_params(subflow, req);
+ }
+@@ -832,6 +836,12 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 	if (fallback)
+ 		goto create_child;
+ 
++	/* a SYN skb here comes from TFO, which MP_JOIN cannot use: just
++	 * fall back to the regular path.
++	 */
++	if (subflow_req->mp_join && (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN))
++		return NULL;
++
+ 	/* if the sk is MP_CAPABLE, we try to fetch the client key */
+ 	if (subflow_req->mp_capable) {
+ 		/* we can receive and accept an in-window, out-of-order pkt,
 -- 
-2.25.1
-
+2.34.1
