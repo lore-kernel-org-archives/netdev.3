@@ -1,111 +1,113 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882163E6DC9
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 08:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789894306; cv=none; b=feUZQu1tF5pxhHb/k9dyWMbFyIPkWz6jAcp9XAJt1TjMRXkgj+xRrt8FmhygSxDlOR/lk18R2KbJtkr/NAfEahuGowRiHxoNoq8id7/t3huhPfGFwAscp9vvBqTMXtk1TWcIBSNhRtk3cKS6NrjcS+WJ0PLkk7qj9XjlPXS1ySs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789894306; c=relaxed/simple;
-	bh=TGAsbbfpuBIHPTeNdWkJPgxwlnr/1br/4PiWBd3A1Vg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BE9CCajnYkAiQq60HnuD0eCV+tclUjyAFd89tbvKCAiP0KH6VkmIozymExzqRekQ/nNDObl7mTiZH0PwslzafacbAdCXoNVoQCSH1gr45p+6u3EN2w50SwUEyS6dbWFmyhuAtDl4ry1FkPI4tEKtThjOeYz/ueGRS6TCtWa278M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz8t1789894296tcb4479b4
-X-QQ-Originating-IP: uRNUNN4tU8quGjW/uqIyvac0AZnywNA6GDSqc9ypZQw=
-Received: from w-MS-7E16.trustnetic.com ( [125.118.25.28])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 20 Sep 2026 16:51:34 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12767132841650681202
-EX-QQ-RecipientCnt: 14
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net 3/3] net: txgbe: keep MAC enabled for NCSI and WoL for AML devices
-Date: Sun, 20 Sep 2026 16:51:14 +0800
-Message-ID: <F0254A6194B2FD5C+20260920085114.1062503-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260920085114.1062503-1-jiawenwu@trustnetic.com>
-References: <20260920085114.1062503-1-jiawenwu@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDB028F5
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 09:04:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789895058; cv=pass; b=D0399hW8lSxnDmY12f/2TegIxA2yKxndWQT/MLO4WoLXtdkr6obIlE0En/E7VTpM4tseuub724zABg9N7UthpYw6V/+wofoRzKFP5pSDkPOPIxOjyuRNfi/CvW6X809f80ih6rTifQdd7q9a10kbSCEk8HwvHpImJmDLVq1BFG8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789895058; c=relaxed/simple;
+	bh=7h7iCtawWBW6zeTXUkzWrN3kEodFol+KDSp3ePBJEV8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Az/dkEeir34wATg1HHtN9efar8SezjGMRoelLy2fk09Rw7pNPhn9q+2vxUsyRw4JQFtqdJd7X1//TEE2L0mh+ubcmI/9kYWPgkdFMkpHkhfEJsRibHmeKdBFL12pzGQA/mKrHkXvtD2WNYd7x13nkVzx3t1CdPlqzEJB6UxVxpw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=khu.ac.kr; spf=pass smtp.mailfrom=khu.ac.kr; dkim=pass (1024-bit key) header.d=khu.ac.kr header.i=@khu.ac.kr header.b=MibyOmlW; arc=pass smtp.client-ip=74.125.230.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=khu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=khu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=khu.ac.kr header.i=@khu.ac.kr header.b="MibyOmlW"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a2ff148dfdso13269801fa.1
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 02:04:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789895053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bGNiNscOZihRIVxYFyxOTtwxGVfTmJKxspV7zeNTmY5nP0dW6iN7/L2cWTULtN7T0S
+         X/NYBzJW666ME2/tcsrHtcI0WABAoIhF3AZSFJ45ojUMvJLH0o2TVsbC/c34oxS52xh+
+         Yov64x+a7cY1VIp5L9YYPesuJB2PVHzd+2nGvwsllU2D8Z6k/aqCwaWoyNw/MTo3EEPZ
+         ruTb6Etd037Nsramcs56IxaOLqcAqvxSiYg8Jkv7QqWus7VLQbZy0kKZBDhWgAga64uk
+         hgDS6Q057Isf1WaN7WR1Qvam59Sfs7tPuInupSgeV9DggMLAgmWsB8GnzozN+E1bXBB5
+         8TTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=7h7iCtawWBW6zeTXUkzWrN3kEodFol+KDSp3ePBJEV8=;
+        fh=v/VeZS+3DYKPd3dHNrpUSNASriqlOkegjRGddTe8epY=;
+        b=gy8SAK3hn357ZJ+6Gi/PmoCUSvxFzaT3MykhGWSlxDMW3Y9inKuwFQcmhjJHVvv/hb
+         lPOH9WToqkTap6nhkhOl7dJq4T+NydrXsiIZaiilO3jhACft7rZu9vQRVGG6eLOG2n1t
+         0K7F45ppgxRz5mMKteWLRHZdsgWFMfcxaJsY4OGAf3AeFj29HM8eH9g+E/rI2DoTdTl3
+         nNcf2+ARokBUJxf9bAr/+e40qWrh/vZPNo21Ow81rhINdMCDtynTZaC/SKOE6xAAI3iw
+         bUrxIVOooI5J/BxLviiIHpQi63ZDvG3zJgc4y7zGGkzDscKNj7ny+9zupWsSauoyRou1
+         9rOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=khu.ac.kr; s=google; t=1789895053; x=1790499853; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7h7iCtawWBW6zeTXUkzWrN3kEodFol+KDSp3ePBJEV8=;
+        b=MibyOmlWKcMM4R37MV0Pv+wS9ERkOK6+NkFUyiXCE73xLHzEqFJBxC4ui/nDGytElB
+         G3LXD9Y7hGXOmV9u2h8j85vqJHRiGhT0vgUGvMWGqUoMTrvRbvWUWYC/6nxb8QTZpEf3
+         u+YIsZxZjzMqFgohsv6qbz64V4L0dSKcel9x0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789895053; x=1790499853;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7h7iCtawWBW6zeTXUkzWrN3kEodFol+KDSp3ePBJEV8=;
+        b=YAqVvBBb+xGkegaKfJU731pJhCyMLTe1UbVKjbomUSqDXCbULtZNiULigKEj4dacaQ
+         RsOXkvt2EL42QsZpgAYv4r4OTwizdfTZs60BsAhxYUkiMTPDyXhOL78APE2LdRJMYHSC
+         tyeaaD2oVybbVe5KsX+PK7OCE6LWidAxlKkgUm0LVfP6RSpaTZkrmwdC7xfggMW+NgLX
+         kyFyEjajkLaj3qBHJDkVI+rn8K9ipdxhERzLm+Gs6STaaZoO1A3DvwFFyTVKMsUNWtZT
+         vm1th7is49FBkhPbd4Jm2MgpOcy8So7gygSZq37ulHJQZ0heNvlz1uVejsFSQb5m+wKO
+         sRKg==
+X-Gm-Message-State: AFuF++ljq9Nu+tjvqLVd3kJQ9lXKc2mVIAEH3GavOtKyLH6eA6S8UsHk
+	x56AKyBbtjsH624h9YNuOavl/n5dQV5u5L78YlJhU6VF5IZSpOWm6Qjp7Q2a/Am6iNwszutOqKY
+	S9/JMhqbY19oahFyDOOTpXlMflOcBYWSXMo19jkyw5YZ5ttssMx19WOaESA==
+X-Gm-Gg: AYBFou0g2Zc5uY4zgh76ITAEi8jmml1P+dAgSJjM3Fp/Qzo5dzW+dLF4AsTtFUUoOLZ
+	08wh2jv15egWD3jWu7BoRJV8xITnU7ZDCSE2ZZDocGx48bBnnOHdKnVEXhuIcLKlFNDC5qRHAfG
+	eK2GsWyiruqVMXWhRWPSXagbsF5lpmb/+LqY7QCU2YZM0mVodO8Q8j4IT/vuz6ocheevRNhsHQn
+	J+j5aubL2A8uzNkhi3NHVQ4OLLaLBchYgc48Qs8O5jsMzkq6TEcmTz+rZLyATCfsLLTtg0GrMWT
+	nnkLPUT+ceQRwljvsYFmHYdSJatGEu+xmRApmnW2/bPgbZvN26CUoSK88wm6zPGjn7M/425Wr6Q
+	Qyh2NUSuMnZjORP1A9DwKtunLvr337fjxMw==
+X-Received: by 2002:a2e:a809:0:b0:3a5:da9c:4661 with SMTP id
+ 38308e7fff4ca-3a5fc0ba103mr16356161fa.26.1789895053440; Sun, 20 Sep 2026
+ 02:04:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MDGUoPnBmw7sE3SjZCMuyaPRfWzQNiKK5Ikp49To7Ua2gpdfFWl0dr/F
-	8YHcUHWrKZMi8lHEgT/sX2ggjCfwqhVIQR59rFtOrYqrLYi05ymAT2H324vuObqycCBvOQ0
-	BKzJ5ZyCjonROEtoOSlWQzNeha7A06zcr9ocBg/aSDkvO/ljmVnqR+VyFg/8hlMiLqfEyaK
-	/Q1Q/k9fuRAEvLTiYkrDRebw1fy8v0TJUx5/4BfDyOyiGWw4k7Ij9ISx6v+K/O9VecqSH7+
-	Im+sA/8jXil9nvaxfZN16DJmfFa7yr86iujY73GOhEPib8e5k1/JyRFxfuYH0kWfB/438yt
-	IhOHdP9aWtYwowSfNLZxF0bl3/UH7aAefRVkRbCudUhfjTrnK6Havh2YSKQX6mbnvdG2uER
-	yMPhheE0VKn2M5aYfEXZMfGGJtWMoNVHPD93teoAecxpwgFoXk6Nwj2B9BgHnTSElHa3gIm
-	Uk3+r73SPkxodvM+J4XzVTQTc9Zeen7KttApkPsG41pp/ldtj7yAIONrEFi4udnwwuWEB4u
-	Le5YdNz0gw1ltQC1ByPp6ofSsYpjt4qV1xhtV2uXyGb+l7GwZGAlPqOR6aT74w3Ei+n02Er
-	LW5Oot0lLBe4N32UDuVhpQPfh2IHhLh4vNMMUxR4hyaCXxwuu6CeIqe7MoEcqZLhOZB4Kbz
-	Jb8lEDfqZxypNoEWJy30F+kvK7DBnT6Sd7sQfRcqII8jCyW/trJfnxHLCCC/AHYDysIFAb1
-	Vk1qEc4GNl/RrmBkMmV6ir4ST26++DWXn8Zdly5NKKB85wLt9CYX/v0ZCNDzhfHVFT7EgU6
-	MOnG5ynaccNLadmVAt+CeduKKBkty5ormuAKJG6kOmR1gyeheZxKLFDzco5uyuEFmv48hHW
-	5rt6RJgysqnKb5rcZfxpTaD3fth6jzMysAIP+eSfLjoGfrqzlCLLl2Bplz4P01fdMP1j4+k
-	7HQFy6FMmegS19CLloyU1ttSldV2/iQNI/73SccYyTRj9V7QiCsjPhx3aoe9p/1r0EWl9d7
-	0qWJLaoSnCpCOt467Ze2sfHLW8g8HPnQUsKy/58YeD7CoOIFiLoLyJlBIHrMPJtuc5USEyy
-	240m7h3fW8ch6LxRUcqmMw=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+References: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+ <20260915083839.71546-1-pabeni@redhat.com> <CAH1Bc_yQYJ6cWyYVvfWK0pAgrXW1TMkpzmNxZvAXAKZJdiOqWQ@mail.gmail.com>
+In-Reply-To: <CAH1Bc_yQYJ6cWyYVvfWK0pAgrXW1TMkpzmNxZvAXAKZJdiOqWQ@mail.gmail.com>
+From: =?UTF-8?B?4oCN6rmA7Jqw7ISdW+2VmeyDnV0o7KCE7J6Q7KCV67O064yA7ZWZIOyghOyekOqzte2VmeqzvA==?=
+	=?UTF-8?B?KQ==?= <5mghybrid@khu.ac.kr>
+Date: Sun, 20 Sep 2026 18:04:01 +0900
+X-Gm-Features: AcwNN1VSKLzUoUYJ6GcIBhVxrZfglX6N1QXd5KkfLl4b4ZnArqwwx8LlaDHcB7M
+Message-ID: <CAH1Bc_z6PFc7N6XVZ2dQEH=7D9mkXwGkXP2KKMW-Emd4zcf3fA@mail.gmail.com>
+Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on
+ rejected timestamp requests
+To: netdev@vger.kernel.org, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, conor.dooley@microchip.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	richardcochran@gmail.com, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-The .mac_link_down() in phylink callback disable MAC TX and RX
-unconditionally. This is not suitable for devices using NCSI or WoL, where
-the MAC needs to remain enbaled after the link goes down to support the
-corresponding functionality.
+Hi all,
 
-Skip disabling MAC TX and RX when the subsystem device ID indicates an
-NCSI or WoL device. Keep the existing link-down handling for other
-devices.
+Following up on my September 15 reply. I noticed that the series is
+still marked "Changes Requested" in Patchwork.
 
-Fixes: 6f8b4c01a8cd ("net: txgbe: Implement PHYLINK for AML 25G/10G devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+This series fixes rejected timestamp requests changing the TX mode and
+the two PTPv1 RX filters disabling receive timestamping. As explained in
+my reply, the additional issues predate this series and are not made
+worse by it. I propose keeping those fixes separate so that this series
+remains focused on the two reported bugs.
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index 26d0cfc58ee2..572ad655eb9c 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -458,8 +458,11 @@ static void txgbe_mac_link_down_aml(struct phylink_config *config,
- {
- 	struct wx *wx = phylink_to_wx(config);
- 
--	wr32m(wx, TXGBE_AML_MAC_TX_CFG, TXGBE_AML_MAC_TX_CFG_TE, 0);
--	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
-+	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
-+	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+		wr32m(wx, TXGBE_AML_MAC_TX_CFG, TXGBE_AML_MAC_TX_CFG_TE, 0);
-+		wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, 0);
-+	}
- 
- 	wx->speed = SPEED_UNKNOWN;
- 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
--- 
-2.51.0
+Could you please reconsider the Changes Requested status in light of
+that reply and continue reviewing the series as posted?
 
+Thanks,
+Wooseok
