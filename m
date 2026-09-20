@@ -1,91 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2D47207E;
-	Sun, 20 Sep 2026 17:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC1A472078;
+	Sun, 20 Sep 2026 18:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789926660; cv=none; b=d8MTgHo+dmOOKswD8Y5TjFTD6WqsbTsVXRNQ84nD8N5CU83Fu1AZeBqd68sB11B4x7c5abuHAXZlaD45wj1q5NFsdGP+IpuU1nuToDDxebDnovnFw+LizkFdd49b9lcHLTx/mb0/pztN+Qhf33DgfsBE+v9s4OMePtcB4xFN3+k=
+	t=1789928669; cv=none; b=Q9JqXBvrxqGdlqdWm8+7zIJWxergQbLqXB3LjnP26RjXIXr0OKi3fuSwhq1pAoTf/iPeCBNUnfpvbaYSVXO7X81sJZLxM+hTnYJetcXRcclId1l+oMfiI5k8Z7Jbhns/v0ZxJLeKlPtOd/4GZKZNNVx3EZIpR7GaMeMrd1Ghtco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789926660; c=relaxed/simple;
-	bh=YIF66qllk6GtYeJ+gCXlEew+S2dXgsn/uJ/jKw126qg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lA+kEaVZ/4ABZHO6zjlQjLIpIA0KhJpQdoySIrdJKDNpUZ7R26uqBphINvTU2cNn7ujDrBd2vgWnT2r1s2e+lc7P87huwK8cyRL5cbum8cz/JezJt0tN9pvfqqhQ4/tZ0/6eVeVlZMI+IjWUpbLcn85oNkOdVrZDfL32oCrQBh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuT6B4IH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789928669; c=relaxed/simple;
+	bh=OtN3WM4TZ7j22Ot1R8PnWAbAjzbjWegacn22J5Vn9Gc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=kT0ZvvqLHtgBRR1T2KhvaqXTKhMhhDO3Bf6frknHsDKUBItOs7jsjs9/DE0vY7ly5C+JgiIJYbd1sTl5j1suO8kTY3xuQJ90ZMdtbgUoqWyhMQZOZzgMz7HsvrQBj95Ly6+lH4dkYewrcyXhs9Ceqwj27bxdECGqhJsWQhk2PUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6Lq+nz8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuT6B4IH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43741F00893;
-	Sun, 20 Sep 2026 17:50:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6Lq+nz8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2CC1F00893;
+	Sun, 20 Sep 2026 18:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789926659;
-	bh=WEiHJJqTfb53NKSiO3STRwLVThzo4igrI6pvysvlz2k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PuT6B4IHXVNDvr43Ky7hmATBjGxsVpCN+yNdTcJ78QdbbIRxQLEwt0PZyAsRZiBKd
-	 nCQabesgz4L0RuXtBBXhRyEChPu/FafWfDrLNXoCnLuphDvW8CL3e5buE4FWHMgfeM
-	 +Nl7awnyaH9I/Re2o2awgM6N/fg79qJaicx4Xsp+blTjfodFK0/wIWT21DeRTt9TOz
-	 pbjuwg1/QLLLNCGuRv48nTusMTe10eyNo3HjFejtFO9Yb690aRRz/opzYv48HmWXUG
-	 Th/0JYHPUIaTpWKc3/nIjS6V6HBlqim9q4nYiTT6iqpsQ4d4WIb7WSf2dqSqJ0RLqx
-	 Qz7mc3XU+LJFw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Benjamin Robin <benjamin.robin@bootlin.com>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Subject: Re: [PATCH 6.12.y 0/3] netfilter: nf_conntrack_expect: use conntrack GC to reap expectations
-Date: Sun, 20 Sep 2026 13:50:40 -0400
-Message-ID: <2026-09-20-daily-reply-0008-re-nf-conntrack-expect-gc@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260918-cve-2026-80668-v2-v1-0-fcefceb49144@bootlin.com>
-References: <20260918-cve-2026-80668-v2-v1-0-fcefceb49144@bootlin.com>
+	s=k20260515; t=1789928665;
+	bh=GirpiP57LoSXI3TsoHXT6mFHUUAI+u4/IhtEm8omttw=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=Z6Lq+nz8qmYQ5p8JVZMtuok51Pgu1e6odpnK+oHgND5u32Ry3Gh6sCwf/8o5DUZyV
+	 T3jyUEBlOMKnwIESRa5XQ5qLwH4JucWhj/dRFAnOMUPFaMM/O0lvcbG5QRgkJ4jr1Y
+	 Ao3L/ckJJ8uPqFELfQm4gEvf1TLNCUtBM3c0XuZzn1sEF9vwI2/73gFJdETvJEQ3/o
+	 985JRoQNC4YseygV8nR6QwEh6KeT42Sbv8FgocHbWOGKgaylwZzujqcjm4uoXbVbiJ
+	 7AM/pH1KTqnluCyjvSr+rnjvR0QYfML9uBgL4vgRxqrsJ37g2pyKphayH++k3mHo1N
+	 mdse1SNMM+7Sw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A34B2F40066;
+	Sun, 20 Sep 2026 14:24:24 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Sun, 20 Sep 2026 14:24:24 -0400
+X-ME-Sender: <xms:2CSwau-32lPy11h5cqo7TVrgR0XodUK59kktognwQIK1S8f1nWs5VA>
+    <xme:2CSwapjeQ-MnP_Nt2IH65k9KxSt_X2-QmwjjbejKzbvuAUs7QTeWnxoLeqIpqTGUs
+    cBoE6lr75xvzWDb-hcLUzo3AMKdvZ-Iy_XVTVoeYVI9ZGMWUsCOG4Q>
+X-ME-Proxy-Cause: dmFkZTEKfLeK9ddA5o2er4T3A9g7EMScIjM6YAhWCOQaFtcTswbmTypRk5joA0xTpVlGTH
+    I5GILNHkJ4vi+s1o5OrtbCm9YMHrGJRu4W4EHf6JVPnzOhH09T2x9G1/b26FZniz9XzRmY
+    LVK/gmNkv28iYwG7QFppDh3pN7DHM0WwViTAjIwtM2GNjI+1vplNTCdrS2tpcQAN145DXs
+    T8SSEurZU91D2FPlzaRSFEonsiGnB/U1ElGmORBNlkb+Lh58BP8te21gsojlNWfyxdLC8h
+    kY7hZt07KIKaJaDHS6dqqZDJ/iy0kpYrZIm2tnmX3GLUcVdOTlEjeO4VyC28zVYKnKFgsf
+    WuDfLUJlPTZmRJqduS3GIlHKh5KfGfw3Rjy7iY2c8ad4TvABfymcUkr/rARrGJ89h0ruTT
+    Lx5PxdlaxL60z6vfcBM46Hst0V0ocNA80gt0lERkNe3cWsfo48xNFt9zLAKTlFl/1EQWJg
+    HG6QTfmLRYR6o5o+/y+ju1snl79fWsgbfTN6Lw7hm7jAY/M+EK+69Q6usgpCyfufmwk/XP
+    uRTG1ileFdUyjsrZmzB8hc7skzpThLBh4k5WqQSDiqPDrjFuLzmXQeZkKoTH8aj2vULdrq
+    cc+1129ao109Y1tP2Ug2jjUZnZFhIntfcJAKdfy6KfsCTXAcar37hmSVdcJw
+X-ME-Proxy: <xmx:2CSwaofzRIex4HTSYsNA0fWJf-PnlZzku8ZsV09pTNKIb8uj3edlHw>
+    <xmx:2CSwamP4Uv5tF0QmEUMto2MlEOLdjT3-gxBfXjAxPkDDauLfJnWTgw>
+    <xmx:2CSwarsEhCwK_GfarBiqMIG84p2XpusE5cgv2xSdVS16d2pwW6oXSw>
+    <xmx:2CSwavDljUl0lAD8yDyAmTEWcv2Hdxq5rfBwBrxxD6cb6Pe0XUJSag>
+    <xmx:2CSwaiZcXm7F0Ie7YLHbrGHAWZ6A7Z0NyM1yMx975Y2-tvW1zv100dJn>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 80017780070; Sun, 20 Sep 2026 14:24:24 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: A33QhYTfYD7B
+Date: Sun, 20 Sep 2026 14:23:55 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: jlayton@kernel.org, trondmy@kernel.org, anna@kernel.org,
+ linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <b8bf0827-660e-4fad-b90b-21947bc8073e@slotpi15m67>
+In-Reply-To: <20260919212024.2335794-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20260919212024.2335794-2-Jeremy.Jean@oss.cyber.gouv.fr>
+Subject: Re: [PATCH] SUNRPC: restrict integrity replies to authenticated payload
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> Backported two other patches in order for the fix to apply cleanly.
+On 9/19/26 5:20 PM, J=C3=A9r=C3=A9my Jean wrote:
+> Decode the checksum length into mic.len and truncate the decode
+> stream after MIC verification so only the authenticated payload
+> remains visible.
 
-Thanks for splitting this per tree, but could you respin? This applies to the
-6.6.y and 6.1.y postings too.
+Your analysis holds, and I don't see a relevant fix already queued
+up.
 
-6.18.y carries the bug and has no series, so all three are blocked behind it.
-Your 6.12 patches 1/3 and 2/3 apply to 6.18 unchanged, and 3/3 fails only three
-hunks, all because 6.18 spells timer_delete() and timer_container_of() where
-6.12 has del_timer() and from_timer(), on
-deleted lines only.
 
-Patch 3/3 has no "[ Upstream commit b8b09dc2bf35a00d4e0556b5d6308c7b917ebda2 ]"
-line, so the CVE fix would land with no upstream reference.
+> +	if (xdr_stream_remaining(xdr) < len - XDR_UNIT)
+> +		goto unwrap_failed;
 
-Patches 2/3 and 3/3 carry no Signed-off-by from you.
+This branch cannot be taken. xdr_buf_subsegment() returns -1 unless
+offset + len <=3D rcv_buf->len, and @offset was computed as
+rcv_buf->len - xdr_stream_remaining(xdr) just above. Decoding the
+sequence number then drops xdr_stream_remaining() by XDR_UNIT, so
+here it is at least len - XDR_UNIT. Nothing in between disturbs
+that: xdr_decode_word(), read_bytes_from_xdr_buf(), and
+gss_verify_mic() only read. The new "len < XDR_UNIT" test already
+keeps the subtraction from wrapping, which is the other input this
+check could have caught.
 
-In 2/3 the new "return false" in nf_ct_gre_keymap_add() is wrong here:
-the function returns int on these trees, where 0 is success, so the
-error path reports success. It needs a negative errno.
+One observation that needs no change: gss_krb5_verify_mic_v2()
+covers only cksum_len bytes of the token, so an oversized checksum
+length word verifies too, and mic.len still feeds
+gss_update_rslack(). rcv_buf->len bounds the value, so an attacker
+gains nothing but a poor slack estimate.
 
-The series is missing 4aa63842fc92 ("netfilter: nf_conntrack_expect: add
-and use nf_ct_expect_related_pair()"), Fixes: b8b09dc2bf35, already in
-7.1.y and 7.2. Without it the SIP and H.323 helpers re-insert
-expectations they have just unexpected.
+The rest LGTM.
 
-The Stable-dep-of: 979c13114c0b trailer on 1/3 and 2/3 names a commit
-the series never applies.
+net/sunrpc/auth_gss/auth_gss.c is NFS client code, so this one goes
+through Trond and Anna rather than the NFSD tree.
 
--- 
-Thanks,
-Sasha
+
+--=20
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
