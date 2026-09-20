@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853BC17993;
-	Sun, 20 Sep 2026 23:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D41479864;
+	Sun, 20 Sep 2026 23:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789946396; cv=none; b=uTi3ixjryUbGDbzXiJKJZNzMwGG+td2Zq9j+gjvoASWxlqIPlHT11mQIDTrgC1pTSbF/oEIqmv1EG2JsOKzdzaDjDljziKiF5uVWsKk9V1eWWIrOIaB5a35BBCXvY8QzaP9J+oeae2Dyr6KZYNzAtvamw075l4JLxQ3vFRkgWWU=
+	t=1789946398; cv=none; b=TtGYKL6V1MzdmbktJ9TqQlA4hZAO92TLPDZnk30x5U4v0ATltwDF8iFlr4oyg1sNryokE+wMtmiA+0hMPXtyhcI+kcxOY9RIlShB3dBsjmcfQIZy55z9EDSwEb95nMhy7XFo4qCt15rwH3wkl17LiR1WhOe58rgsL4FC0SOrCZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789946396; c=relaxed/simple;
-	bh=03Zr9KxeAhddr4YdloeR93XDVOaorlhRh5tb3WPvkr4=;
+	s=arc-20240116; t=1789946398; c=relaxed/simple;
+	bh=IKZIvra1ZfMPltaAIpyiud9Es9nA89TH0Il8eShjymU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F5vYgtVuvCo+Om98eowMSDCmUZ8XyV+GkTQ4OBy+z1qgVniuLmxIFoCdxfOBoUvJtQLVUxFf55+oklMCJJocq/VX6qJhPKsSzmDeYAu/WAjqvT2kTsSSZqHvXOqQsqD1xqdHSiS6XCF5/jEcJyibOCuVxu5TpbakTOTv9X7jCoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwV06Rf4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=EDkYfuA26FyRdiNVVfjoZ97RluhQZn7lBZFodp7aytRVDnmhhGuiXdQbFDngH6+PZQ6ArYbuvZ0ZwwrlrrpFUQehV4JjVFrOthAjGTPCC/cEk0xttzCpxw140g9zL0ehldmj9MapxPLoWir+Og5nrh54E3zA8dcpaK8ygghukmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFKQBIp3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwV06Rf4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D281F1F000FF;
-	Sun, 20 Sep 2026 23:19:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFKQBIp3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2C01F00893;
+	Sun, 20 Sep 2026 23:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789946395;
-	bh=f5JHHIzrrJsl0MAmW3u29Cg5qybvyulN3vFB+ixgo70=;
+	s=k20260515; t=1789946396;
+	bh=q7F2Lg6LeZJySxabI16pZaBhDYVqRkKyhNpE1ljSy7I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DwV06Rf4rdqgo61+KrvCu4wHU94zwpi75qKJVital0V8IEfbGlix0/VqMUmKPmmO4
-	 +iKjGzHqLj68q4r2Y/m2A9EAfbo4Dn/SrpLg+5aZlC3xILWOAVuASauVCMiCik2qXc
-	 vTJoaUIIGJ6DAGLHvxvwvTk1M0emgJBtIAG4sNBf//3+nMNcMb8iNS7KitQVrUyYwA
-	 OIbrP/D+wLyAD55uE5a9O5ABShxAl2NTYtfAe5vkDRok6Vo0lT7Pl1zcFX+/5gtD2A
-	 DpE7+Mx5DhhGyoQN1fDgXzlneVAaA1vwVqY+7oXtRWfX0PXxj5bC2/qtpSuMoLsZwP
-	 yAPeTziiYcG+Q==
-Subject: Re: [PATCH] af_unix: fix u->inq_len accounting in manage_oob() and
- unix_stream_read_skb()
+	b=bFKQBIp35lwSsOOIbTcPz1sIdTxsfVnQSAVjM9gpwIggkqs99dIeQlQxEcU9RNfpV
+	 w81QyrmvM4cdGH2/8p83hC+DFQ5j3hm1z/rgadfTcBRo7IdOIZMYxFX6PSkVkABg7O
+	 XA7P68wljJlGfuZUe6DAqx8Tc0IG0xJSHQa9hCpXepG8zHiLKbZ0OiLygE05zaRieX
+	 f/EHsoUQaQHs75/9Jd6XjIm0QK212MEB+6DLevtYlnwlLXwCGVy+M1qacr4aF6Fm9z
+	 IAVFDE1/ZrNZUUwPDOg8E14Wzo1f8ktUCTtPN32RQZhqc0qEumKSHtTPwhcLPtXQYa
+	 yY7lWfjULslqw==
+Subject: Re: [PATCH] net/rds: fix incoming message refcount leak and header
+ bounds check in rds_recv.c
 From: netdev-bot+sashiko@kernel.org
 To: benquike@gmail.com
-Cc: kuniyu@google.com, davem@davemloft.net, edumazet@google.com,
+Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
  linux-kernel@vger.kernel.org
-Date: Sun, 20 Sep 2026 23:19:54 +0000
-Message-ID: <178994639435.2160803.947828699469290336@kernel.org>
-In-Reply-To: <20260919221735.3708237-1-benquike@gmail.com>
-References: <20260919221735.3708237-1-benquike@gmail.com>
-X-sashiko-severity: Critical
+Date: Sun, 20 Sep 2026 23:19:55 +0000
+Message-ID: <178994639589.2160803.17376356293542307547@kernel.org>
+In-Reply-To: <20260919223429.3882046-1-benquike@gmail.com>
+References: <20260919223429.3882046-1-benquike@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 1 · High: 0 · Medium: 3 · Low: 0
+Critical: 0 · High: 1 · Medium: 2 · Low: 2 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,216 +59,259 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Critical] Kernel BUG() (oops/panic) in the sockmap read path: the
-  newly added `skb_pull(skb, UNIXCB(skb).consumed)` in…
-- [Medium] Commit message does not match the code, and two of the three
-  hunks are unrelated to inq_len accounting (scope creep).
-- [Medium] Incorrect Fixes tag / wrong bug attribution.
-- [Medium] Unbalanced SCM_RIGHTS accounting on the new early-drop path in
-  `unix_stream_read_skb()`: the added block frees the dequeued skb with…
+- [High] Commit message describes a change that the patch does not make.
+- [Medium] Undocumented user-visible change to the
+  RDS_CMSG_RXPATH_LATENCY ancillary-data semantics: after this patch…
+- [Medium] Incomplete guard: the new condition in rds_cmsg_recv()
+  (net/rds/recv.c:640-643) only rejects the case where one of the two…
+- [Low] Incorrect Fixes: tag.
+- [Low] Non-atomic check-then-use on concurrently written timestamps: the
+  new guard performs two separate plain loads of each u64 slot of…
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but the latency-
+  trace block the patch touches reads rs->rs_rx_traces and…
 
 --
 
-af_unix: fix u->inq_len accounting in manage_oob() and unix_stream_read_skb()
+net/rds: fix incoming message refcount leak and header bounds check in rds_recv.c
 
-This adds a u->inq_len decrement when manage_oob() discards a replaced OOB
-skb, makes unix_stream_read_skb() skip and free fully consumed skbs, and
-pulls the already consumed prefix out of the skb before handing it to the
-recv_actor.  No Link: tags are present in the commit header.
+The change adds a guard in rds_cmsg_recv() so that the receive-path latency
+delta is only computed when both of the two timestamps involved are
+non-zero. The commit message describes the change as a refcount and bounds
+fix. No Link: tags are present in the commit header.
 
-A few questions on the changelog and on the two new blocks in
-unix_stream_read_skb().
+> net/rds: fix incoming message refcount leak and header bounds check in rds_recv.c
+>
+> In net/rds/recv.c, ensure incoming RDS message references (rds_inc_put)
+> and socket receive queue bounds are properly balanced when handling
+> error or truncated incoming frames.
 
-> When an old OOB skb is replaced and discarded in manage_oob(), or when a
-> fully consumed OOB skb is skipped in unix_stream_read_skb(), the
-> discarded byte count is not subtracted from u->inq_len (or is subtracted
-> inconsistently), causing SIOCINQ / FIONREAD to report stale positive
-> byte counts on an empty AF_UNIX stream socket.
+[Severity: High]
+Does the changelog match the diff?  The subject and body promise a
+refcount leak fix (rds_inc_put), a header bounds check, and balanced
+socket receive queue accounting on error or truncated frames, but the only
+hunk changes the latency subtraction inside the rs_rx_traces block of
+rds_cmsg_recv().
+
+No rds_inc_addref()/rds_inc_put() call site is touched, no
+rds_recv_rcvbuf_delta()/rs_rcv_bytes accounting is touched, and no header
+length validation is added.
+
+The described bug classes also look absent on the named paths.
+rds_recvmsg() ends with a single unconditional put that every break from
+the receive loop reaches, including the copy error, MSG_TRUNC and
+rds_cmsg_recv() -EFAULT cases:
+
+net/rds/recv.c:rds_recvmsg() {
+	...
+	if (inc)
+		rds_inc_put(inc);
+	...
+}
+
+rds_still_queued() already performs the rcvbuf delta, the list_del_init()
+and the queue reference drop together under rs_recv_lock:
+
+net/rds/recv.c:rds_still_queued() {
+	...
+		if (drop) {
+			rds_recv_rcvbuf_delta(rs, sk, inc->i_conn->c_lcong,
+					      -be32_to_cpu(inc->i_hdr.h_len),
+					      inc->i_hdr.h_dport);
+			list_del_init(&inc->i_item);
+			to_drop = inc;
+		}
+	...
+}
+
+And j is already bounded at store time in rds_recv_track_latency():
+
+net/rds/af_rds.c:rds_recv_track_latency() {
+	if (trace.rx_traces > RDS_MSG_RX_DGRAM_TRACE_MAX)
+		return -EFAULT;
+	...
+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
+			rs->rs_rx_traces = 0;
+			return -EFAULT;
+		}
+	...
+}
+
+with i_rx_lat_trace[] sized RDS_RX_MAX_TRACES (RDS_MSG_RX_DGRAM_TRACE_MAX
++ 1 == 4), so j <= 2 and j + 1 <= 3 are always in range.
+
+Could the changelog be rewritten to describe the latency change that is
+actually made, or could the advertised fixes be implemented?  As written a
+stable backporter would pick this up as a memory-safety fix.
+
+> Fixes: bdbe6fbc6a2f ("RDS: recv.c")
+
+[Severity: Low]
+Is this the right Fixes: tag?  git blame of the lines being modified at the
+baseline attributes the whole rs_rx_traces block, including the
+subtraction, to commit 3289025aedc01 ("RDS: add receive message trace used
+by application"), not to the original file addition:
+
+3289025aedc01 (Santosh Shilimkar 2016-07-04 640) 	t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
+3289025aedc01 (Santosh Shilimkar 2016-07-04 641) 			  inc->i_rx_lat_trace[j];
+
+Pointing the tag at bdbe6fbc6a2f would send this to kernels that predate
+the latency trace feature.
+
+> diff --git a/net/rds/recv.c b/net/rds/recv.c
+> index 6204e577a90a..0743706af8ca 100644
+> --- a/net/rds/recv.c
+> +++ b/net/rds/recv.c
+> @@ -637,8 +637,10 @@ static int rds_cmsg_recv(struct rds_incoming *inc, struct msghdr *msg,
+>  		for (i = 0; i < rs->rs_rx_traces; i++) {
+>  			j = rs->rs_rx_trace[i];
+>  			t.rx_trace_pos[i] = j;
+> -			t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
+> -					  inc->i_rx_lat_trace[j];
+> +			if (inc->i_rx_lat_trace[j + 1] &&
+> +			    inc->i_rx_lat_trace[j])
+> +				t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
+> +						inc->i_rx_lat_trace[j];
+>  		}
 
 [Severity: Medium]
-Is the unix_stream_read_skb() half of this description accurate?
+Is this a user-visible change to the RDS_CMSG_RXPATH_LATENCY semantics?
+When the guard fails, t.rx_trace[i] stays 0 from the earlier memset, but
+t.rx_traces and t.rx_trace_pos[i] still advertise the position as measured.
 
-unix_skb_len() is:
+The uAPI has no per-entry validity encoding:
 
-    static unsigned int unix_skb_len(const struct sk_buff *skb)
-    {
-    	return skb->len - UNIXCB(skb).consumed;
-    }
+include/uapi/linux/rds.h:
+struct rds_cmsg_rx_trace {
+	__u8 rx_traces;
+	__u8 rx_trace_pos[RDS_MSG_RX_DGRAM_TRACE_MAX];
+	__u64 rx_trace[RDS_MSG_RX_DGRAM_TRACE_MAX];
+};
 
-so a fully consumed skb contributes 0 bytes, and the pre-existing
-subtraction already in that function:
+so how does userspace tell "not measured" from a genuine 0 ns delta?
 
-    WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
+The unstamped slots are real.  Only net/rds/ib_recv.c and
+net/rds/tcp_recv.c stamp the early positions, for example:
 
-subtracts exactly 0 for it.  The bytes were already removed either by the
-partial read in unix_stream_read_generic():
+net/rds/tcp_recv.c:rds_tcp_data_recv() {
+	...
+			tinc->ti_inc.i_rx_lat_trace[RDS_MSG_RX_HDR] =
+					local_clock();
+	...
+}
 
-    WRITE_ONCE(u->inq_len, u->inq_len - chunk);
+while the loopback transport calls rds_inc_path_init(), which zeroes the
+array, and then rds_recv_incoming() without stamping anything:
 
-or by unix_stream_recv_urg():
+net/rds/loop.c:rds_loop_xmit() {
+	rds_inc_path_init(&rm->m_inc, &conn->c_path[0], &conn->c_laddr);
+	rds_message_addref(rm);
 
-    WRITE_ONCE(u->inq_len, u->inq_len - 1);
+	rds_recv_incoming(conn, &conn->c_laddr, &conn->c_faddr, &rm->m_inc,
+			  GFP_KERNEL);
+	...
+}
 
-Can a fully consumed skb still hold un-accounted bytes in this path?
-
-The new !unix_skb_len(skb) block contains no inq_len update at all, and the
-new skb_pull() block is not mentioned in the changelog.  Both change what
-the ->read_skb() (BPF sockmap) consumer sees: one stops delivery of a
-zero-payload skb, the other stops re-delivering already consumed bytes.
-Could those two changes be split out with their own justification, so that
-this patch only carries the manage_oob() accounting fix?
-
-> Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-
-[Severity: Medium]
-Is this the right Fixes target?  u->inq_len does not exist at that commit;
-blame on include/net/af_unix.h attributes
-
-    int			inq_len;
-
-to f4e1fb04c1238 ("af_unix: Use cached value for SOCK_STREAM in
-unix_inq_len().").  Before that, unix_inq_len() walked the receive queue:
-
-    skb_queue_walk(&sk->sk_receive_queue, skb)
-    	amount += unix_skb_len(skb);
-
-so a discarded OOB skb could not leave a stale count behind.  f4e1fb04c1238
-added the inq_len increment in queue_oob() and the decrement in
-unix_stream_recv_urg(), but not the manage_oob() discard decrement this
-patch adds.  Should the tag point at f4e1fb04c1238 instead, and should the
-patch carry Cc: stable@vger.kernel.org given it claims a user-visible
-SIOCINQ/FIONREAD fix?
-
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index 42cffeafc8c1..1770af3c2684 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -2849,6 +2849,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sk_buff **last,
->  		WRITE_ONCE(u->oob_skb, NULL);
->  
->  		if (!sock_flag(sk, SOCK_URGINLINE)) {
-> +			WRITE_ONCE(u->inq_len, u->inq_len - 1);
->  			__skb_unlink(skb, &sk->sk_receive_queue);
->  			unread_skb = skb;
->  			skb = skb_peek(&sk->sk_receive_queue);
-> @@ -2884,6 +2885,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
->  		return err;
->  
->  	mutex_lock(&u->iolock);
-> +again:
->  	spin_lock(&queue->lock);
->  
->  	skb = __skb_dequeue(queue);
-> @@ -2893,6 +2895,12 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
->  		return -EAGAIN;
->  	}
->  
-> +	if (!unix_skb_len(skb)) {
-> +		spin_unlock(&queue->lock);
-> +		consume_skb(skb);
-> +		goto again;
-> +	}
-> +
+Would it be better to stamp the missing trace points in the producers, or
+to omit the unavailable entries (shrinking rx_traces and rx_trace_pos) and
+document that in the uAPI header?  Either way, this behaviour change is not
+mentioned in the changelog.
 
 [Severity: Medium]
-Does this new discard path leave u->scm_stat.nr_fds inflated?
+Does this guard cover the reversed-timestamp case?  Both values can be
+non-zero with inc->i_rx_lat_trace[j + 1] < inc->i_rx_lat_trace[j], and the
+u64 subtraction then wraps and reports roughly 1.8e19 ns to userspace.
 
-The normal exit of unix_stream_read_skb() goes through:
+For j == RDS_MSG_RX_DGRAM_DELIVERED the two samples are taken in different
+contexts on possibly different CPUs.  One is taken in transport receive
+context:
 
-    static void unix_orphan_scm(struct sock *sk, struct sk_buff *skb)
-    {
-    	scm_stat_del(sk, skb);
-    	unix_destruct_scm(skb);
-    	skb->destructor = sock_wfree;
-    }
+net/rds/recv.c:rds_recv_incoming() {
+	...
+	inc->i_rx_lat_trace[RDS_MSG_RX_END] = local_clock();
+	...
+}
 
-and scm_stat_del() is the only place that decrements nr_fds:
+and the other in recvmsg() context, in this same function:
 
-    if (unlikely(fp && fp->count)) {
-    	atomic_sub(fp->count, &u->scm_stat.nr_fds);
-    	unix_del_edges(fp);
-    }
+	inc->i_rx_lat_trace[RDS_MSG_RX_CMSG] = local_clock();
 
-The bare consume_skb() here goes through the destructor chain
-unix_wfree() -> unix_destruct_scm() -> unix_detach_fds(), which releases the
-files but never touches scm_stat.nr_fds.
+local_clock() is sched_clock_cpu() of the current CPU and is only
+monotonic per-CPU, so with an unstable sched_clock the later sample can be
+smaller.
 
-A reachable input looks like: sendmsg(MSG_OOB) with SCM_RIGHTS, where
-queue_oob() attaches the fds and calls scm_stat_add(other, skb); then a
-recvmsg(MSG_OOB) without MSG_PEEK in unix_stream_recv_urg() does
+Would comparing the two values instead, and computing the delta only when
+inc->i_rx_lat_trace[j + 1] > inc->i_rx_lat_trace[j], cover this case and
+also subsume the zero check being added here?
 
-    if (!(state->flags & MSG_PEEK))
-    	UNIXCB(oob_skb).consumed += 1;
+[Severity: Low]
+Can the value tested by the guard differ from the value subtracted?  Each
+slot is loaded twice with plain accesses, once for the non-zero test and
+once for the subtraction, while this same function stores into
+inc->i_rx_lat_trace[RDS_MSG_RX_CMSG] with no lock held.
 
-leaving a queued zero-payload skb that still carries UNIXCB(skb).fp.  When
-that skb reaches the head of the queue on a sockmap'd socket, the new branch
-frees it without scm_stat_del(), so unix_show_fdinfo() keeps reporting an
-inflated scm_fds for the life of the socket.  Would calling
-unix_orphan_scm(sk, skb) (or at least scm_stat_del()) before freeing keep
-the accounting balanced?
+Two concurrent recvmsg(MSG_PEEK) callers can hold a reference to the same
+rds_incoming.  rds_next_incoming() takes a reference without dequeuing:
 
->  	WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
->  
->  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-> @@ -2908,6 +2916,11 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
->  
->  	spin_unlock(&queue->lock);
->  
-> +	if (UNIXCB(skb).consumed) {
-> +		skb_pull(skb, UNIXCB(skb).consumed);
-> +		UNIXCB(skb).consumed = 0;
-> +	}
-> +
+net/rds/recv.c:rds_next_incoming() {
+	...
+		if (!list_empty(&rs->rs_recv_queue)) {
+			*inc = list_entry(rs->rs_recv_queue.next,
+					  struct rds_incoming,
+					  i_item);
+			rds_inc_addref(*inc);
+		}
+	...
+}
 
-[Severity: Critical]
-Can this skb_pull() hit the BUG() in __skb_pull() on a paged skb?
+and rds_still_queued() with drop == 0 returns 1 for both callers without
+list_del_init(), releasing rs_recv_lock before rds_cmsg_recv() runs.
 
-UNIXCB(skb).consumed is a logical stream offset, not bounded by
-skb_headlen(skb).  unix_stream_sendmsg() routinely builds non-linear skbs:
+Since a user-selected j == RDS_MSG_RX_END makes j + 1 == RDS_MSG_RX_CMSG,
+the slot being tested is exactly the slot the other thread stores into.  On
+32-bit builds can the u64 store be observed torn between the two loads,
+giving a value below inc->i_rx_lat_trace[j] and the same unsigned
+underflow this check is meant to suppress?
 
-    data_len = max_t(int, 0, size - SKB_MAX_HEAD(0));
-    ...
-    skb = sock_alloc_send_pskb(sk, size - data_len, data_len, ...);
+Would reading each timestamp once into a local with READ_ONCE() and
+validating and subtracting the locals, or keeping the CMSG timestamp in a
+local rather than storing it into the still-queued inc, avoid this?
 
-and on the MSG_SPLICE_PAGES branch the head length is 0.
+[Severity: Low]
+This isn't a bug introduced by this patch, but the block being touched
+reads rs->rs_rx_traces and rs->rs_rx_trace[] with no lock, no READ_ONCE()
+and no barrier, while the writer publishes the count before filling and
+validating the entries:
 
-unix_stream_read_generic() then advances consumed and deliberately leaves
-the skb queued while any payload remains:
+net/rds/af_rds.c:rds_recv_track_latency() {
+	rs->rs_rx_traces = trace.rx_traces;
+	for (i = 0; i < rs->rs_rx_traces; i++) {
+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
+			rs->rs_rx_traces = 0;
+			return -EFAULT;
+		}
+		rs->rs_rx_trace[i] = trace.rx_trace_pos[i];
+	}
+	...
+}
 
-    UNIXCB(skb).consumed += chunk;
-    ...
-    if (unix_skb_len(skb)) {
-    	spin_unlock(&sk->sk_receive_queue.lock);
-    	break;
-    }
+SO_RDS_MSG_RXPATH_LATENCY is the only case in rds_setsockopt() that is not
+wrapped in lock_sock()/release_sock(), and rds_recvmsg() does not take
+lock_sock() either, so the two paths share no lock.
 
-skb_pull() only rejects len > skb->len; __skb_pull() then does:
+Can a concurrent recvmsg() then see rs_rx_traces == 3 together with stale
+rs_rx_trace[] entries, a (count, entries) pair that never existed?  The
+loop bound rs->rs_rx_traces is also re-read on each iteration after
+t.rx_traces was latched, so the reported count and the number of filled
+entries can disagree.
 
-    skb->len -= len;
-    if (unlikely(skb->len < skb->data_len)) {
-    	...
-    	BUG();
-    }
-
-So a peer writing more than SKB_MAX_HEAD(0) bytes (or splicing pages, where
-a single consumed byte is enough), a reader consuming a prefix past the
-linear head with a normal recvmsg(), and then further data arriving on a
-socket with a sockmap verdict program gives
-sk_psock_verdict_data_ready() -> ops->read_skb() -> unix_stream_read_skb() ->
-skb_pull() -> BUG().
-
-The BUG() fires after spin_unlock(&queue->lock) but before
-mutex_unlock(&u->iolock), so the task dies holding u->iolock and further
-readers and MSG_OOB users of that socket block forever; the skb is already
-dequeued and u->inq_len already decremented.
-
-If already consumed bytes need to be hidden from the recv_actor, would a
-paged-safe form such as pskb_pull()/__pskb_pull_tail() with failure handling,
-or passing the offset to the actor, be more appropriate here?
-
->  	unix_orphan_scm(sk, skb);
->  
->  	mutex_unlock(&u->iolock);
+No out-of-bounds index results, since every stored rs_rx_trace[i] was
+validated against RDS_MSG_RX_DGRAM_TRACE_MAX before being stored.  This
+dates back to commit 3289025aedc01 ("RDS: add receive message trace used by
+application").  Publishing the entries before the count, with the count
+written last using WRITE_ONCE(), or serializing both paths under
+lock_sock(), would address it.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919221735.3708237-1-benquike%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919223429.3882046-1-benquike%40gmail.com
