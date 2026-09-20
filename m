@@ -1,38 +1,38 @@
-Received: from mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BDB3F1068
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 10:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCF43F4138
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 10:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789898840; cv=none; b=bA+PBO3/kxN2mxpJE6tzIME3v2CTxOKMPTrKMQgt83Fe5t4AtmPvzaO6dzQM46v3YczrFCE6swK8HLYE+wsu9kfNeg0e39AF7GVw/upGK6PTc68FRQ3C7LNmDRU2MnmI7b+OjTl8f3hWzUkKsxpX/w6Hp5dro8dfAC09ORqRGq4=
+	t=1789898845; cv=none; b=qXrkO0wsrG7F6EcYa+uYPB1Ak1ac6m7A+XbBVpUEcxaAvSB7S4FtRytYqfmo0GIIV+XWYNLOhfNANyScSLpcT2Sl5a61JYXWkPLrj8ua/VtMcRLRMti3GIZVgkvOvkiRvMigiZOnNfDue2Ru+WYbD/Cfu/uPH7lQCFikQvatX+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789898840; c=relaxed/simple;
-	bh=SkOhf961FvRa1o4KrMZv9A+hJDOSCRZN5mUh5n/AvQ4=;
+	s=arc-20240116; t=1789898845; c=relaxed/simple;
+	bh=mgJPAC3v5oZHApxysDsjs7UoU7Ogd9FRsEA5kIrL1JU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b3NXDxq5NJbD351zU5LPVB6QVyajWh8fxv1uGpDZWplZLeQK/xHkzDP3Ms0vqRHxHZ2TY1QeaYDAfGV/1pBWiLkw3rFfdNoLvpxfX2ZjrtpLWbu5kZQ54k9P24NNAH9b7a2Tv6JDJ3keCtNmnMCrnzSLaTjmPCxmvvj+kFc+gNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gDdiXhnB; arc=none smtp.client-ip=91.218.175.181
+	 In-Reply-To:To:Cc; b=HuXLTFBy7EoDurli4IsN0HVu8F+4Fv+h/3cn5+4EsEq9+tRCk/sqbDhnIxqnBmyEwfiBBs6KPhFiqMHCteELDK9ivSOYFROU7xQVumsMJHl13/WW0XLfG/8eQxn+JF/XsgbQvpvhGC7oq2gL30kiADch0mXVoRiVUYXMtfps6aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cS/8/f+t; arc=none smtp.client-ip=95.215.58.153
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gDdiXhnB"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cS/8/f+t"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=SkOhf961FvRa1o4KrMZv9A+hJDOSCRZN5mUh5n/AvQ4=;
+DKIM-Signature: a=rsa-sha256; bh=mgJPAC3v5oZHApxysDsjs7UoU7Ogd9FRsEA5kIrL1JU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789898836; v=1; x=1790503636;
- b=gDdiXhnBsCOTjIDY1YaIzfTA9IfkJAYlxG6P59nCmDklVYGgYTAO7BiciM/2JqCOF2edGvo2
- GbK+//Nfofa859STofpkFyhCr46d83FS4HHRrzBySlEeVwcfRvge48tifmtr1EnsxwEMKvS4fpa
- qxb8nfxoZ8z2t9Ro6AmUj6PY=
+ t=1789898842; v=1; x=1790503642;
+ b=cS/8/f+tSYJAOUrTLdNKvAdSTBUxXpScuYrWW+EMk2r6SakDLRMptxAnPuoaHZwDSW1pvBwk
+ 2PSw4dGcZctDe7UPZm35gDtr0FK1mWE4mj484+H2wi2MDlF5uQlXJ9kwRwOkro/Q1zU2x8O/YQY
+ xGbUAADH67QRuu+92OqwWdKU=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 34cfc2c7803b15d4;
-	Sun, 20 Sep 2026 10:07:16 +0000
-X-Mizu-Trace-ID: 34cfc2c7803b15d4
+Received: by smtp.migadu.com with ESMTPS id 59605f08593950cb;
+	Sun, 20 Sep 2026 10:07:22 +0000
+X-Mizu-Trace-ID: 59605f08593950cb
 X-Migadu-Flow: FLOW_OUT
 From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Sun, 20 Sep 2026 18:06:39 +0800
-Subject: [PATCH net-next v2 4/6] netlink: specs: rt-route: describe
- lwtunnel IP options
+Date: Sun, 20 Sep 2026 18:06:40 +0800
+Subject: [PATCH net-next v2 5/6] netlink: specs: rt-route: describe lwt BPF
+ program options
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-ynl_rt_encap-v2-4-c664a3e726f6@kylinos.cn>
+Message-Id: <20260920-ynl_rt_encap-v2-5-c664a3e726f6@kylinos.cn>
 References: <20260920-ynl_rt_encap-v2-0-c664a3e726f6@kylinos.cn>
 In-Reply-To: <20260920-ynl_rt_encap-v2-0-c664a3e726f6@kylinos.cn>
 To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
@@ -55,99 +55,63 @@ X-Mailer: b4 0.14.3
 
 From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Replace binary opts in lwtunnel-ip and lwtunnel-ip6 with a nested
-lwtunnel-ip-opts set. Add attribute sets for geneve, vxlan, and erspan
-IP options to match linux/lwtunnel.h.
+Replace binary BPF attributes with a nested lwt-bpf-prog to support
+lwt bpf prog options.
 
 Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
- Documentation/netlink/specs/rt-route.yaml | 62 ++++++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 2 deletions(-)
+ Documentation/netlink/specs/rt-route.yaml | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
-index 86fc52f856bf..4b12a8a58652 100644
+index 4b12a8a58652..4a3953c9e978 100644
 --- a/Documentation/netlink/specs/rt-route.yaml
 +++ b/Documentation/netlink/specs/rt-route.yaml
-@@ -377,7 +377,8 @@ attribute-sets:
-         type: pad
+@@ -467,13 +467,16 @@ attribute-sets:
+     attributes:
        -
-         name: opts
--        type: binary  # lwtunnel ip nest options
+         name: in
+-        type: binary  # bpf prog
 +        type: nest
-+        nested-attributes: lwtunnel-ip-opts
-   -
-     name: ila-attrs
-     name-prefix: ila-attr-
-@@ -442,7 +443,8 @@ attribute-sets:
-         type: pad
++        nested-attributes: lwt-bpf-prog
        -
-         name: opts
--        type: binary  # lwtunnel ip nest options
+         name: out
+-        type: binary
 +        type: nest
-+        nested-attributes: lwtunnel-ip-opts
-   -
-     name: seg6-iptunnel
-     name-prefix: seg6-iptunnel-
-@@ -560,6 +562,62 @@ attribute-sets:
++        nested-attributes: lwt-bpf-prog
        -
-         name: link
+         name: xmit
+-        type: binary
++        type: nest
++        nested-attributes: lwt-bpf-prog
+       -
+         name: xmit-headroom
          type: u32
+@@ -508,7 +511,8 @@ attribute-sets:
+         type: u32
+       -
+         name: bpf
+-        type: binary
++        type: nest
++        nested-attributes: lwt-bpf-prog
+       -
+         name: vrftable
+         type: u32
+@@ -618,6 +622,17 @@ attribute-sets:
+       -
+         name: hwid
+         type: u8
 +  -
-+    name: lwtunnel-ip-opts
-+    name-prefix: lwtunnel-ip-opts-
++    name: lwt-bpf-prog
++    name-prefix: lwt-bpf-prog-
++    header: linux/lwtunnel.h
 +    attributes:
 +      -
-+        name: geneve
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opt-geneve
-+      -
-+        name: vxlan
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opt-vxlan
-+      -
-+        name: erspan
-+        type: nest
-+        nested-attributes: lwtunnel-ip-opt-erspan
-+  -
-+    name: lwtunnel-ip-opt-geneve
-+    name-prefix: lwtunnel-ip-opt-geneve-
-+    attributes:
-+      -
-+        name: class
-+        type: u16
-+        byte-order: big-endian
-+      -
-+        name: type
-+        type: u8
-+      -
-+        name: data
-+        type: binary
-+        checks:
-+          max-len: 127
-+  -
-+    name: lwtunnel-ip-opt-vxlan
-+    name-prefix: lwtunnel-ip-opt-vxlan-
-+    attributes:
-+      -
-+        name: gbp
++        name: fd
 +        type: u32
-+  -
-+    name: lwtunnel-ip-opt-erspan
-+    name-prefix: lwtunnel-ip-opt-erspan-
-+    attributes:
 +      -
-+        name: ver
-+        type: u8
-+      -
-+        name: index
-+        type: u32
-+        byte-order: big-endian
-+      -
-+        name: dir
-+        type: u8
-+      -
-+        name: hwid
-+        type: u8
++        name: name
++        type: string
  
  operations:
    enum-model: directional
