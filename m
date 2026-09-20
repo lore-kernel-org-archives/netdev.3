@@ -1,681 +1,334 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2124.outbound.protection.partner.outlook.cn [139.219.146.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CB13FCB10
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 11:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789905532; cv=none; b=m/HBhuNp2k2gvw7BnFsxbIJiedYjx16iAmCiJ/A4shJh/H3emW6hq2wxt+l4MuvMnWjTzIf0b8jy4v+pLSxnyGO31kt9WZdpFY2tLuphu6RqyS7YRjsVxF63NtMwBk/iuzJfGU7HBfO93/90m2LqcaVWgW26OBoPuMlv7MsnWRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789905532; c=relaxed/simple;
-	bh=K2evip5lAYAUyG00/cvTpPdWp2OUU13HAtu556M56Nk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gv7o/Tu8GlhJS9poYyrXMbKegr/SJGEvdLawnibqkJXkfeVQnNtRZdVHyVC7oRZk05FC735pli2IurWmiEc5rTNTdz27BUupAe3atSVmvQwfqqH+z2BHO6Go8bCW95qzBdBib6W+GATgwZe3pPzDihJpt578EmGsRvdB94K5U3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=qC9Tcye+; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="qC9Tcye+"
-Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc52bd91929so1577799a12.2
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 04:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789905530; x=1790510330; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v1FW1MUX7B6vj5sqw5FVAUbuehSAGc/bp168fvHBMyA=;
-        b=qC9Tcye+IhrYk81sMRqeQf+t8wBhZelkVfyorbK2tuy7xSEvMupNpNYJRCVGnPHvTo
-         A8kQ9BqWKMxc3lBdQyDZZtUc5O7w++V40CfYKT1FrEqN5ELDj4f5dbl9pulfzIvfJdGx
-         HYq7H4jzUcCZl4S7rTGEwMLYBfpN/t2CZ2bLl6nspMmGtmrkY5EVQR0COo/SR8fXOnQB
-         jl9KbVHsgRRwK9HEg4jwLC6ew66tfhVEtv+fVjh6g3QloZTS7qZN5uGlmq5U4t/A/+Pj
-         aCdSQiHZZ+S/QXZIxJUT0QKo4rwbJ10ojNYFjrkfwQ3fTHHW5dAHBvqs3oeTyoktEAVw
-         j87Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789905530; x=1790510330;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v1FW1MUX7B6vj5sqw5FVAUbuehSAGc/bp168fvHBMyA=;
-        b=KhUj1SQnWksXl+qVDlo8it8F6BxSVe1dX7bcxVv4OJmijBgC1ODcG1XNkxyeOzeIo9
-         UFoOSQckOEQ4xtfhJ0xgUcpYv7N37lOjhcy1/yRs9o3nbKMJ84UNppQileRbX5/N/XXn
-         wJSv1Q7iVNmBILf+9iIZLw7T4xsBnsm7Vpy0cQ2ku78JUhks9JozFwYgQFULZa/haC5Q
-         7ySsrTD+iv8IBSzs8h+niU/WE0j0/HsIR24hNl/1DtlJ7OfMWXxxOC9Pd44E1Tl+duPg
-         r5rk4mFXmpxRjdFbYcKtPnsCBD1FnV81tTA9OXnd2AVNEiKSkuuTcE1m97bdBwexYGL8
-         16BA==
-X-Forwarded-Encrypted: i=1; AKwUvByGzjhrCZeFZ6tJYLunXg02d4P1iY6dBn/O2wldlzJWa3n9j2QyUESNt0oFQWkysWRHkqGAGoU=@vger.kernel.org
-X-Gm-Message-State: AFuF++k8r+wwTNqO9zwqGp1zJZNdcDj7RevMBgBOprul28Qf7Y7/c1Oi
-	svo0ZvMCIxYn5fWQu36GTDe7g3/J3On5H1UtPirvN/+hFvodD54NGd5YFGvH0FsuZEOi
-X-Gm-Gg: AYBFou0GugG2JWvPB10nmbs1uFtkbLW/IwxZJHhucwslaHkxT+llTPL2l+Xlv/H75Il
-	PjWG6MMTO9uiKkB++6470nIGsBUDM/HXzCZ8Rg7PhK6I6HyHqEcJ5Fp1yxYym8ow9z+EgwcrJk4
-	bfJx7EJdi8pauHjAsMPD7hnUUnevcsYWXDO3w3FqbSKuBUHivYbTHRp55jlsnP+EDwYBjMrFXm5
-	XsitQcRF4UpRRYs40NwmtFa7dAH8v1PlReBtaj/eI4jzU6znyE0s3lQk2AK2wHO11nK72JzNx8R
-	zyh7uD+nkQMqjK6fncfDeAs2JVCW7qt+Vwau24hRdGWp21BIiswDUpkAlg7aGh+ztqirQkk8T8m
-	7dPRuqzfqwW03y/k8UCw0vi7U/xi50Z9pTSpPHyM2CbBw5Q9iGHPpyx50pWJNjuTUQSJ4tcy6yQ
-	ZUrzIMPlun0tIwirezuE+0/uDJOakTrN0KfSI1Qnz1lzjjezmLh9w6yBf7jVPV31P8S3NytJHlt
-	qDkTxvmUDTPPFRctx2I2Nad4vxBKA==
-X-Received: by 2002:a17:90a:d64f:b0:39e:4c80:44b9 with SMTP id 98e67ed59e1d1-39e54dccbb8mr13643541a91.28.1789905530026;
-        Sun, 20 Sep 2026 04:58:50 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c37c8e7sm8736746a91.9.2026.09.20.04.58.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 04:58:49 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netfilter-devel@vger.kernel.org
-Cc: Zihan Xi <zihanx@nebusec.ai>,
-	coreteam@netfilter.org,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	netdev@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763CA3815E1;
+	Sun, 20 Sep 2026 12:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789905682; cv=fail; b=AxVwSKTO6rSFX3qdZ+1Ku+daNGQKVLBdpDqQbZxehd4CU8AyxZ7PfdeW1jxhXzEeRyucRN00NjsfL8q//y1tMUFNuimZiK0PGagfe8qWVR1IXt1sSlyy8YhfVu1geAYWf+B/mfn4szV42NQ7hZMq28jwm4ycQcLjHT4hZWZSpN8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789905682; c=relaxed/simple;
+	bh=hanDe1c2c3BlHoUIFkWE9cTxqCb7cZy4BwQfyAd92pg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VT/sR/9kl6hHEfAET85rDNZZseZ6vdsFP5vzZLijX8riT34gsimAXp8DVjZ75fbbhDDVmIhybZhhC6tiHXXtoPoTm7n83nP8auN+O14dTAU5DvlNKeKSwmHO/mCCrJFDq6+ldptAqZ1xAAd4GHoe69leFDUqZ+bIuxCuB0WlHVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LIsr6uoqjB3xnnhLpGvh2ZSDwjMniy3BtMNfEy0uYYNGsu3FgAypR6WKhCiRSQfi3MN/CQtQX3V1vm+yuWgdjipng3fcH6CXOZ59Y4R3q1bxkvpjRRY9YM8HwiPoOypQQVIy0c7sQs24SGwaCe3jqEm+n7hH5T1jSnCrQPPaSa6G8kosbYHPUqbYG+GJKZVhnvbApQ9zCsz12f9IS0NncOa0EAq593sVNcysaZE0vvA7EP7QOKxV+NwnRDo6wg80d2Pw4Ti1/NVQ5BZEpRgzK9kUnUbV5VW2kLr1/yWQgqWoxcFUhq1hyfm6dO+EB9jIvVJcP2jjLJr84SGDfjRAVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k3VI916n/13B114yV9jTzrZtVJU35fBJa2+1usjnR8Q=;
+ b=KwI4DnldsdDMtIhquwal6rZx2y0nlyWHz5n5S3Vs2x4/2gKcWj7Fzf3i4auk/yqvtbih+6Ht9OOoBCatmibXK85E7ky7dA+XP/RRIQSEd5gShUQN4WLVQAfLK1rKAJzOal2DTM6WbFB3iSjH6gC6yr+CaM04A4XsIBeWNIf/DDjAyjEAGeza2fUVOJ0QM5TEgLHCaxcP/Nqjq6ppkQCcotZLfikxMydE9o0bUEt42iB3z9/ymNdYvTqn0ypfTaPNRFK3Utn2+iQkGJ1KgtGxiGRQFYie95gCQQtFqMW6hJSC4JePBGXiDR3FPFh0v4JEqIM/QFnWmq93ir/Wy5hrtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510:11::9) by NT0PR01MB1040.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510:d::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.15; Sun, 20 Sep
+ 2026 12:01:07 +0000
+Received: from NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
+ ([fe80::1666:48e8:19e9:ad29]) by
+ NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn ([fe80::1666:48e8:19e9:ad29%4])
+ with mapi id 15.21.0428.014; Sun, 20 Sep 2026 12:01:07 +0000
+From: Changhuang Liang <changhuang.liang@starfivetech.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Subject: [PATCH nf v3 1/1] netfilter: x_tables: avoid holding mutex over faultable user copies
-Date: Sun, 20 Sep 2026 11:58:22 +0000
-Message-ID: <f88fc502b17b4022105a99eea407525807ee573e.1789885804.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789885804.git.zihanx@nebusec.ai>
-References: <cover.1789885804.git.zihanx@nebusec.ai>
+	devicetree@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-hardening@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Changhuang Liang <changhuang.liang@starfivetech.com>
+Subject: [PATCH v4 16/22] clk: starfive: Add StarFive JHB100 Peripheral-1 clock driver
+Date: Sun, 20 Sep 2026 05:00:38 -0700
+Message-Id: <20260920120044.194901-17-changhuang.liang@starfivetech.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260920120044.194901-1-changhuang.liang@starfivetech.com>
+References: <20260920120044.194901-1-changhuang.liang@starfivetech.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SHXPR01CA0025.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:1b::34) To NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510:11::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: NT0PR01MB1216:EE_|NT0PR01MB1040:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70b418ee-166a-4372-b281-08df170edac0
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|23010399003|366016|1800799024|921020|38350700014|18002099003|22082099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	VTASDN/BtW1z5fOYeadbK2qBp0o8ff+gw1hMawoJXUfKBQo0V6JiGMjiE+n8SrKQ0PyL+uf+pq/He/A76ssf19a5Pa8tQ/MxHcqHXF/qOqXtbB//byG+6BsqpHZ7q5jlqdihu+hQdLG+qPL4Ch0/KbGXIgpt3kc86Xww6NQ9LShQ5Fx/JNZORiXsJ+WK98cMTM7SJwcfwOhCRdTm00gBHAwHANMx2MxlMCyKjO0ZOBxSZFg907VI+/DBWuXZEHmMj/DhAXl3U8JOTEfTV4fK/iKIYywBgVj/cWEpzGOKg3hxBlJswV64fNLJTsrnAZYBuEpPvBjowKcgOVRgU2QsABOdGhKbPdMNEGxjve2C+4NNsnhK9R9Tlc5Q2ccHozvs12fZxaY6/Z74P9/VoKBi3UhiG6ll9u0kaoahN1mrAjFIbiVrlS3gZurTLnb8ugXP8nD77cFMXtWmSLvyR9xVg0s6tvk76evrTd/+L4feloWbpqIWQIgOIKKzs+y/UaLQd5kjLp4mHM6RfRZSiYvK6RMyl7ziO8jubw94Blp+R9vWi2cwnifO2pdo9meamwXtB/6MW6BeWNfqVE3MSFFayA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(23010399003)(366016)(1800799024)(921020)(38350700014)(18002099003)(22082099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y7/1Szv48p3Je9xx3kvtWEI6xX3QkjjQ+UK6DlzL8QV14+3hxanuLJ8XsMGN?=
+ =?us-ascii?Q?z8fX0p0wTp3FFbCcqaLPM+C9uS/6iR48wB9kGCeSVQjINcryuib3pn8p/mFc?=
+ =?us-ascii?Q?SphiWgwofM07rsmwhB9WyVzLduLwqSlQAqbCkr9XNzOfEuWHAm/YdFXQiWEQ?=
+ =?us-ascii?Q?za/pgNp/N01bVhOutkZxIvUdJH9/e6bc56+27HD4/J81Ro9GwqA5ocLUe+YG?=
+ =?us-ascii?Q?x/XzB0UPFA1EDLv8Fxx0FfrmVhFmTE+HrpsJs7T+WWGTQscooN1Tj49mQlur?=
+ =?us-ascii?Q?HTKUUkOKZaAGzbP7nzI1qdVTDvM34y14kcUhiZ1I6PTHWaUX72xRix8DsPDz?=
+ =?us-ascii?Q?Kpuvx0z/X8YJUQrGhuT35ziu9VKSjuPa54DxGvt/GgWaJxkfArwf3Shf6TXR?=
+ =?us-ascii?Q?EKptJDWWTbJXgbVcqtVhXEzM5hkaqDh64MtkLRw7xQKXVDgADtnYKNxZts1D?=
+ =?us-ascii?Q?W+epyXxIoInWRJUf3QU29wUcfBpD0jWk/Mowhk+ArHQ95aJPNa2Q0GfMgp9S?=
+ =?us-ascii?Q?X+1bl0ThVOX3qlZCxInQjkaOOOij86GJP+QjwFKIHn9H6cB5AVVVMc8Tyc3Z?=
+ =?us-ascii?Q?/Mw51gOv+dOn2hjcqnh8p4tv3O4PO0TQZCUMvyXW6ZsWy7SmFqr+GxPsB1V+?=
+ =?us-ascii?Q?B2MssXYgC9Y3AyptymP0uW/pIOfBc58iKtYTszYl3/ld0tsZifGhM3Q95ZrB?=
+ =?us-ascii?Q?/ROZwDZfa9OIvMuWwJWStzC22EYZaROCpVQfUOe6ubBGrAOZynKRXMTf6djm?=
+ =?us-ascii?Q?sDE58yFSfPRR/J7RKTY5Tb4RCyQPhfP5GO/EBQ94vDSmweFRpnvCdmsQHypn?=
+ =?us-ascii?Q?stGMluKSGdBpBdt94IQex7R1EJTKYaut6pXfmNvcstYsn9HcYSQuNvX7DQEr?=
+ =?us-ascii?Q?9exkWC5Sm2/LouHD0AGppUd0dTMXrSNl0G1mENVuExKwy77XcmNuMZOipQlW?=
+ =?us-ascii?Q?KBYvJuz1Oa8ja0Rs9MyjGsTxhMJOfIicw/GcnXPPGqgtqKrANLsER245MyYp?=
+ =?us-ascii?Q?9YVLR3CV/hqVOQF7yglTDfpqYTjluw7ga3+8Y6jseuFPc55oqfYnzynAU13y?=
+ =?us-ascii?Q?D5vn/mCkl1Rjns1sM6RvXDbIO2k877KOY27dK/x/OCfeejyYE0zLd3j5+8b9?=
+ =?us-ascii?Q?ZQMtOmXxMiGeNtWnE0ixCOd2T2U6HanQcq1mYJjsy/n3acAev5WdYnorf+2A?=
+ =?us-ascii?Q?JrQkdGtHCJeOTq51NpVjaAeFiB5fo6Y/P+whlCeH/PCgrnSCGypptWsQg/e+?=
+ =?us-ascii?Q?duf5BysQ7gW22CWMaa226pzBc5qSzYpP61mQgZxXjK9akdSOYKat4AAUpgtG?=
+ =?us-ascii?Q?jVWArPc2bGXX1M7yPWSeBqoPgC4JpNdcImyahR3uZTuJYZ/NxjxzRQHU7JZI?=
+ =?us-ascii?Q?kaYlNDC4qb21ptztRVRf7B+fcPyQKgJDL4Ml68dw8aw5u4BO0lZSge+4GgdE?=
+ =?us-ascii?Q?/xwvZCEZgkt/gzESsHDqcGiLnx5W9y+ffJHpibvI1ZsrPkUWyNtv1dTZz+Pm?=
+ =?us-ascii?Q?i9NiD4dakNHFpY6HEtUqmSKsIJHQQpQNCeNGBCoySwY24EnBpabWG+e6Apkw?=
+ =?us-ascii?Q?yhWqSUOyeH3zehNb3ubQXaEyEnPzuhaY90lxbNWg9zWAxP42v9Gd5zW7pAt1?=
+ =?us-ascii?Q?YcSjJDrMk+sVR5oIcXbiLNZ7Gz47QcvLVjllmQZ3SVu8Jpgq2z3wZiXluCqs?=
+ =?us-ascii?Q?VKvhgMxO5vZ150w2Lf+l3/DLXKDpsM4kvo+KFHj8hgPCmilB4ZtdSTMTAFbh?=
+ =?us-ascii?Q?tFeLA8QNbYmp/4Xo4sH24ZBBqKLvuSBNFjVC0kaqpGx3fl5Nyu26?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70b418ee-166a-4372-b281-08df170edac0
+X-MS-Exchange-CrossTenant-AuthSource: NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 12:01:07.7736
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FQwO1WsDaOEd2h7fhB7jbBJs3wYaXZBgU+bt1x0O8GbLw6V+6PjV9hNGFsO57VwcvTyy9LWX/sKn1bhCEY4OJdQ30+1BTIaetZWtnaWPsAYkGBtIxflrsPZfUJrf+U8T
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: NT0PR01MB1040
 
-The legacy IPv4, IPv6 and ARP table GET_INFO and GET_ENTRIES paths hold
-the per-family xtables mutexes while copying table data to userspace. A
-faultable destination may sleep indefinitely while the mutex is held,
-blocking unrelated table and registry operations.
+Add driver for the StarFive JHB100 Peripheral-1 clock controller.
 
-Disable page faults while each locked user copy runs. For GET_ENTRIES,
-validate the table and requested size while holding the table mutex, then
-release it before faulting in the output range. Reacquire the mutex and
-revalidate the table and size before the nofault copy. If a nofault copy
-fails, fault the range outside the lock and retry the operation up to three
-times after the initial attempt. A failed fault-in returns -EFAULT;
-repeated nofault failures are limited to four attempts in total and then
-return -EFAULT. This avoids discarding a locked counter snapshot on the
-common first fault. Move GET_INFO's fixed-size copy outside the table locks
-and apply the same fault-safe handling to the IPv4/IPv6 compat GET_ENTRIES
-paths.
-
-The ebtables GET paths use a separate ebt_mutex and are outside this
-IPv4/IPv6/ARP series.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 ---
-changes in v3:
-  - Validate table and requested size before fault-in, then revalidate the
-    table and size after lock reacquisition in native and IPv4/IPv6 compat
-    GET_ENTRIES paths.
-  - Make retry semantics explicit: one initial nofault attempt followed by
-    at most three retries. Keep fault-in and retry decisions outside family
-    mutexes; failed fault-in and exhausted retries return -EFAULT.
-  - Keep the fixed-size GET_INFO copy outside table locks and brace compat
-    lookup error arms.
-  - Clarify ARP-only runtime coverage, privilege scope, helper build,
-    holder/waiter evidence, QEMU configuration, and the NOT RUN
-    crash-log status.
-  - Regenerate the numbered patch and cover with LF line endings; use the
-    standard 0001-*.patch filename.
-  - v2 Link:
-    https://lore.kernel.org/all/cover.1788961415.git.zihanx@nebusec.ai/
-changes in v2:
-  - Rebase onto current nf.git after 0bd7ed1a3263c
-    ("netfilter: arp_tables: remove the 32bit compat interface").
-    ARP GET_INFO and GET_ENTRIES use native paths only; IPv4 and IPv6
-    retain compat handling.
-  - Drop hung_task_panic and the 10-second hung_task timeout from the
-    reproducer, as pointed out by Pablo Neira Ayuso; observe holder/waiter
-    wchan instead.
-  - v1 Link:
-    https://lore.kernel.org/all/cover.1788244146.git.zihanx@nebusec.ai/
+ drivers/clk/starfive/Kconfig                  |  11 ++
+ drivers/clk/starfive/Makefile                 |   1 +
+ .../clk/starfive/clk-starfive-jhb100-per1.c   | 149 ++++++++++++++++++
+ 3 files changed, 161 insertions(+)
+ create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-per1.c
 
- net/ipv4/netfilter/arp_tables.c | 49 ++++++++++++++++---
- net/ipv4/netfilter/ip_tables.c  | 87 +++++++++++++++++++++++++++++----
- net/ipv6/netfilter/ip6_tables.c | 87 +++++++++++++++++++++++++++++----
- 3 files changed, 197 insertions(+), 26 deletions(-)
-
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index db307fa..a857e67 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -23,6 +23,7 @@
- #include <linux/init.h>
- #include <linux/mutex.h>
- #include <linux/err.h>
-+#include <linux/pagemap.h>
- #include <net/sock.h>
- #include <linux/uaccess.h>
+diff --git a/drivers/clk/starfive/Kconfig b/drivers/clk/starfive/Kconfig
+index 8fff853f0c44..8a427e958659 100644
+--- a/drivers/clk/starfive/Kconfig
++++ b/drivers/clk/starfive/Kconfig
+@@ -84,6 +84,17 @@ config CLK_STARFIVE_JHB100_PER0
+ 	  Say yes here to support the peripheral-0 clock controller
+ 	  on the StarFive JHB100 SoC.
  
-@@ -695,6 +696,7 @@ static int copy_entries_to_user(unsigned int total_size,
- 
- 	loc_cpu_entry = private->entries;
- 
-+	pagefault_disable();
- 	/* FIXME: use iterator macros --RR */
- 	/* ... then go back and fix counters and names */
- 	for (off = 0, num = 0; off < total_size; off += e->next_offset, num++){
-@@ -719,12 +721,14 @@ static int copy_entries_to_user(unsigned int total_size,
- 	}
- 
-  free_counters:
-+	pagefault_enable();
- 	vfree(counters);
- 	return ret;
- }
- 
- static int get_info(struct net *net, void __user *user, const int *len)
- {
-+	struct arpt_getinfo info;
- 	char name[XT_TABLE_MAXNAMELEN];
- 	struct xt_table *t;
- 	int ret;
-@@ -738,7 +742,6 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 	name[XT_TABLE_MAXNAMELEN-1] = '\0';
- 	t = xt_request_find_table_lock(net, NFPROTO_ARP, name);
- 	if (!IS_ERR(t)) {
--		struct arpt_getinfo info;
- 		const struct xt_table_info *private = t->private;
- 
- 		memset(&info, 0, sizeof(info));
-@@ -751,15 +754,14 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 		info.size = private->size;
- 		strscpy(info.name, name);
- 
--		if (copy_to_user(user, &info, *len) != 0)
--			ret = -EFAULT;
--		else
--			ret = 0;
-+		ret = 0;
- 		xt_table_unlock(t);
- 		module_put(t->me);
- 	} else
- 		ret = PTR_ERR(t);
- 
-+	if (!ret && copy_to_user(user, &info, *len) != 0)
-+		ret = -EFAULT;
- 	return ret;
- }
- 
-@@ -769,6 +771,7 @@ static int get_entries(struct net *net, struct arpt_get_entries __user *uptr,
- 	int ret;
- 	struct arpt_get_entries get;
- 	struct xt_table *t;
-+	unsigned int retries = 0;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -779,21 +782,51 @@ static int get_entries(struct net *net, struct arpt_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+retry:
-+	t = xt_find_table_lock(net, NFPROTO_ARP, get.name);
-+	if (IS_ERR(t)) {
-+		ret = PTR_ERR(t);
-+		goto out;
-+	}
++config CLK_STARFIVE_JHB100_PER1
++	bool "StarFive JHB100 peripheral-1 clock support"
++	depends on ARCH_STARFIVE || COMPILE_TEST
++	select AUXILIARY_BUS
++	select CLK_STARFIVE_COMMON
++	select RESET_STARFIVE_JHB100 if RESET_CONTROLLER
++	default ARCH_STARFIVE
++	help
++	  Say yes here to support the peripheral-1 clock controller
++	  on the StarFive JHB100 SoC.
 +
-+	if (get.size != t->private->size) {
-+		ret = -EAGAIN;
-+		module_put(t->me);
-+		xt_table_unlock(t);
-+		goto out;
-+	}
+ config CLK_STARFIVE_JHB100_SYS0
+ 	bool "StarFive JHB100 system-0 clock support"
+ 	depends on ARCH_STARFIVE || COMPILE_TEST
+diff --git a/drivers/clk/starfive/Makefile b/drivers/clk/starfive/Makefile
+index 2f605d0fd6da..51511086a727 100644
+--- a/drivers/clk/starfive/Makefile
++++ b/drivers/clk/starfive/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_CLK_STARFIVE_JH7110_ISP)	+= clk-starfive-jh7110-isp.o
+ obj-$(CONFIG_CLK_STARFIVE_JH7110_VOUT)	+= clk-starfive-jh7110-vout.o
+ 
+ obj-$(CONFIG_CLK_STARFIVE_JHB100_PER0)		+= clk-starfive-jhb100-per0.o
++obj-$(CONFIG_CLK_STARFIVE_JHB100_PER1)		+= clk-starfive-jhb100-per1.o
+ obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS0)		+= clk-starfive-jhb100-sys0.o
+ obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS1)		+= clk-starfive-jhb100-sys1.o
+ obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS2)		+= clk-starfive-jhb100-sys2.o
+diff --git a/drivers/clk/starfive/clk-starfive-jhb100-per1.c b/drivers/clk/starfive/clk-starfive-jhb100-per1.c
+new file mode 100644
+index 000000000000..656b17e538d6
+--- /dev/null
++++ b/drivers/clk/starfive/clk-starfive-jhb100-per1.c
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * StarFive JHB100 Peripheral-1 Clock Driver
++ *
++ * Copyright (C) 2024 StarFive Technology Co., Ltd.
++ *
++ * Author: Changhuang Liang <changhuang.liang@starfivetech.com>
++ *
++ */
 +
-+	module_put(t->me);
-+	xt_table_unlock(t);
++#include <dt-bindings/clock/starfive,jhb100-crg.h>
++#include <linux/platform_device.h>
 +
-+	/* Fault in only after validating the table and requested size. */
-+	if (fault_in_safe_writeable((char __user *)uptr->entrytable,
-+				    get.size))
-+		return -EFAULT;
++#include "clk-starfive-common.h"
 +
- 	t = xt_find_table_lock(net, NFPROTO_ARP, get.name);
- 	if (!IS_ERR(t)) {
- 		const struct xt_table_info *private = t->private;
- 
--		if (get.size == private->size)
-+		if (get.size != private->size) {
-+			ret = -EAGAIN;
-+		} else {
- 			ret = copy_entries_to_user(private->size,
- 						   t, uptr->entrytable);
--		else
--			ret = -EAGAIN;
-+		}
- 
- 		module_put(t->me);
- 		xt_table_unlock(t);
- 	} else
- 		ret = PTR_ERR(t);
- 
-+out:
-+	/* Allow three retries after the initial nofault copy. */
-+	if (ret == -EFAULT && retries < 3) {
-+		retries++;
-+		goto retry;
-+	}
++#define JHB100_PER1CLK_NUM_CLKS			(JHB100_PER1CLK_MAIN_ICG_EN_UFS + 1)
 +
- 	return ret;
- }
- 
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 809441c..90f4a26 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -21,6 +21,7 @@
- #include <linux/proc_fs.h>
- #include <linux/err.h>
- #include <linux/cpumask.h>
-+#include <linux/pagemap.h>
- 
- #include <linux/netfilter/x_tables.h>
- #include <linux/netfilter_ipv4/ip_tables.h>
-@@ -824,6 +825,7 @@ copy_entries_to_user(unsigned int total_size,
- 
- 	loc_cpu_entry = private->entries;
- 
-+	pagefault_disable();
- 	/* FIXME: use iterator macros --RR */
- 	/* ... then go back and fix counters and names */
- 	for (off = 0, num = 0; off < total_size; off += e->next_offset, num++){
-@@ -861,6 +863,7 @@ copy_entries_to_user(unsigned int total_size,
- 	}
- 
-  free_counters:
-+	pagefault_enable();
- 	vfree(counters);
- 	return ret;
- }
-@@ -943,6 +946,7 @@ static int compat_table_info(const struct xt_table_info *info,
- 
- static int get_info(struct net *net, void __user *user, const int *len)
- {
-+	struct ipt_getinfo info;
- 	char name[XT_TABLE_MAXNAMELEN];
- 	struct xt_table *t;
- 	int ret;
-@@ -960,7 +964,6 @@ static int get_info(struct net *net, void __user *user, const int *len)
- #endif
- 	t = xt_request_find_table_lock(net, AF_INET, name);
- 	if (!IS_ERR(t)) {
--		struct ipt_getinfo info;
- 		const struct xt_table_info *private = t->private;
- #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
- 		struct xt_table_info tmp;
-@@ -981,10 +984,7 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 		info.size = private->size;
- 		strscpy(info.name, name);
- 
--		if (copy_to_user(user, &info, *len) != 0)
--			ret = -EFAULT;
--		else
--			ret = 0;
-+		ret = 0;
- 
- 		xt_table_unlock(t);
- 		module_put(t->me);
-@@ -994,6 +994,8 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 	if (in_compat_syscall())
- 		xt_compat_unlock(AF_INET);
- #endif
-+	if (!ret && copy_to_user(user, &info, *len) != 0)
-+		ret = -EFAULT;
- 	return ret;
- }
- 
-@@ -1004,6 +1006,7 @@ get_entries(struct net *net, struct ipt_get_entries __user *uptr,
- 	int ret;
- 	struct ipt_get_entries get;
- 	struct xt_table *t;
-+	unsigned int retries = 0;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1013,20 +1016,50 @@ get_entries(struct net *net, struct ipt_get_entries __user *uptr,
- 		return -EINVAL;
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+retry:
-+	t = xt_find_table_lock(net, AF_INET, get.name);
-+	if (IS_ERR(t)) {
-+		ret = PTR_ERR(t);
-+		goto out;
-+	}
++/* external clocks */
++#define JHB100_PER1CLK_PLL7			(JHB100_PER1CLK_NUM_CLKS + 0)
++#define JHB100_PER1CLK_NCNOC_INIT		(JHB100_PER1CLK_NUM_CLKS + 1)
++#define JHB100_PER1CLK_CFG_800			(JHB100_PER1CLK_NUM_CLKS + 2)
++#define JHB100_PER1CLK_NCNOC_TARG		(JHB100_PER1CLK_NUM_CLKS + 3)
++#define JHB100_PER1CLK_CFG_143			(JHB100_PER1CLK_NUM_CLKS + 4)
 +
-+	if (get.size != t->private->size) {
-+		ret = -EAGAIN;
-+		module_put(t->me);
-+		xt_table_unlock(t);
-+		goto out;
-+	}
++static const char * const jhb100_per1_ext_clk[] = {
++	"pll7",
++	"ncnoc_init",
++	"cfg_800",
++	"ncnoc_targ",
++	"cfg_143",
++};
 +
-+	module_put(t->me);
-+	xt_table_unlock(t);
++static const struct starfive_clk_data jhb100_per1crg_clk_data[] = {
++	STARFIVE__DIV(JHB100_PER1CLK_100, "per1_100", 8, JHB100_PER1CLK_NCNOC_INIT),
++	STARFIVE__DIV(JHB100_PER1CLK_1, "per1_1", 100, JHB100_PER1CLK_100),
++	STARFIVE__DIV(JHB100_PER1CLK_200_DIVN0, "200_divn0", 256,
++		      JHB100_PER1CLK_CFG_800),
++	STARFIVE__DIV(JHB100_PER1CLK_200_DIVN1, "200_divn1", 256,
++		      JHB100_PER1CLK_CFG_800),
++	STARFIVE__DIV(JHB100_PER1CLK_200_DIVN2, "200_divn2", 256,
++		      JHB100_PER1CLK_CFG_800),
++	STARFIVE__DIV(JHB100_PER1CLK_200_DIVN3, "200_divn3", 256,
++		      JHB100_PER1CLK_CFG_800),
++	STARFIVE__DIV(JHB100_PER1CLK_200_CCLK_DIV, "200_cclk_div", 2046,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_SGPIO0_PCLK, "sgpio0_pclk", CLK_IGNORE_UNUSED,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_SGPIO0_DCLK, "sgpio0_dclk", CLK_IGNORE_UNUSED,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_SGPIO1_PCLK, "sgpio1_pclk", CLK_IGNORE_UNUSED,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_SGPIO1_DCLK, "sgpio1_dclk", CLK_IGNORE_UNUSED,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_EMMC0_BCLK, "emmc0_bclk", CLK_IGNORE_UNUSED,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_EMMC0_CCLK, "emmc0_cclk", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC1_1CH_CORE, "dmac1_1ch_core", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC1_1CH_ACLK, "dmac1_1ch_aclk", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC2_1CH_CORE, "dmac2_1ch_core", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC2_1CH_ACLK, "dmac2_1ch_aclk", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC3_1CH_CORE, "dmac3_1ch_core", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC3_1CH_ACLK, "dmac3_1ch_aclk", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC0_2CH_CORE, "dmac0_2ch_core", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_DMAC0_2CH_ACLK, "dmac0_2ch_aclk", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_REF, "ufs_ref", 75,
++		      JHB100_PER1CLK_PLL7),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_300, "ufs_300", 2,
++		      JHB100_PER1CLK_NCNOC_INIT),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_150, "ufs_150", 12,
++		      JHB100_PER1CLK_NCNOC_INIT),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_400, "ufs_400", 2,
++		      JHB100_PER1CLK_CFG_800),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_75, "ufs_75", 2,
++		      JHB100_PER1CLK_UFS_150),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_37_5, "ufs_37_5", 2,
++		      JHB100_PER1CLK_UFS_75),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_7_5, "ufs_7_5", 10,
++		      JHB100_PER1CLK_UFS_75),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_1_875, "ufs_1_875", 4,
++		      JHB100_PER1CLK_UFS_7_5),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_7_143, "ufs_7_143", 20,
++		      JHB100_PER1CLK_CFG_143),
++	STARFIVE__DIV(JHB100_PER1CLK_UFS_3_5715, "ufs_3_5715", 2,
++		      JHB100_PER1CLK_UFS_7_143),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SFC0, "main_icg_en_sfc0", CLK_IS_CRITICAL,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SFC1, "main_icg_en_sfc1", CLK_IS_CRITICAL,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SFC2, "main_icg_en_sfc2", CLK_IS_CRITICAL,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SPI0, "main_icg_en_spi0", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_EMMC0, "main_icg_en_emmc0", 0,
++		      JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SGPIO0, "main_icg_en_sgpio0", 0,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SGPIO1, "main_icg_en_sgpio1", 0,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_SENSORS_PERIPH1, "main_icg_en_sensors_periph1", 0,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SFC0, "main_icg_en_dmac_sfc0",
++		      CLK_IS_CRITICAL, JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SFC1, "main_icg_en_dmac_sfc1",
++		      CLK_IS_CRITICAL, JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SFC2, "main_icg_en_dmac_sfc2",
++		      CLK_IS_CRITICAL, JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_DMAC_SPI0, "main_icg_en_dmac_spi0",
++		      CLK_IS_CRITICAL, JHB100_PER1CLK_NCNOC_TARG),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_RAS, "main_icg_en_ras", 0,
++		      JHB100_PER1CLK_100),
++	STARFIVE_GATE(JHB100_PER1CLK_MAIN_ICG_EN_UFS, "main_icg_en_ufs", 0,
++		      JHB100_PER1CLK_100),
++};
 +
-+	/* Fault in only after validating the table and requested size. */
-+	if (fault_in_safe_writeable((char __user *)uptr->entrytable,
-+				    get.size))
-+		return -EFAULT;
++static const struct starfive_crg_domain_info jhb100_per1crg_info = {
++	.clk_data	= jhb100_per1crg_clk_data,
++	.num_clk	= ARRAY_SIZE(jhb100_per1crg_clk_data),
++	.ext_clk	= jhb100_per1_ext_clk,
++	.num_ext_clk	= ARRAY_SIZE(jhb100_per1_ext_clk),
++	.rst_name	= "jhb100-r-per1",
++	.power_domain	= false,
++};
 +
- 	t = xt_find_table_lock(net, AF_INET, get.name);
- 	if (!IS_ERR(t)) {
- 		const struct xt_table_info *private = t->private;
--		if (get.size == private->size)
-+		if (get.size != private->size) {
-+			ret = -EAGAIN;
-+		} else {
- 			ret = copy_entries_to_user(private->size,
- 						   t, uptr->entrytable);
--		else
--			ret = -EAGAIN;
-+		}
- 
- 		module_put(t->me);
- 		xt_table_unlock(t);
- 	} else
- 		ret = PTR_ERR(t);
- 
-+out:
-+	/* Allow three retries after the initial nofault copy. */
-+	if (ret == -EFAULT && retries < 3) {
-+		retries++;
-+		goto retry;
-+	}
++static const struct of_device_id jhb100_per1crg_match[] = {
++	{
++		.compatible = "starfive,jhb100-per1crg",
++		.data = &jhb100_per1crg_info,
++	},
++	{ /* sentinel */ }
++};
 +
- 	return ret;
- }
- 
-@@ -1561,12 +1594,14 @@ compat_copy_entries_to_user(unsigned int total_size, struct xt_table *table,
- 
- 	pos = userptr;
- 	size = total_size;
-+	pagefault_disable();
- 	xt_entry_foreach(iter, private->entries, total_size) {
- 		ret = compat_copy_entry_to_user(iter, &pos,
- 						&size, counters, i++);
- 		if (ret != 0)
- 			break;
- 	}
-+	pagefault_enable();
- 
- 	vfree(counters);
- 	return ret;
-@@ -1579,6 +1614,7 @@ compat_get_entries(struct net *net, struct compat_ipt_get_entries __user *uptr,
- 	int ret;
- 	struct compat_ipt_get_entries get;
- 	struct xt_table *t;
-+	unsigned int retries = 0;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1591,6 +1627,32 @@ compat_get_entries(struct net *net, struct compat_ipt_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+retry:
-+	xt_compat_lock(AF_INET);
-+	t = xt_find_table_lock(net, AF_INET, get.name);
-+	if (!IS_ERR(t)) {
-+		const struct xt_table_info *private = t->private;
-+		struct xt_table_info info;
-+
-+		ret = compat_table_info(private, &info);
-+		if (!ret && get.size != info.size)
-+			ret = -EAGAIN;
-+
-+		xt_compat_flush_offsets(AF_INET);
-+		module_put(t->me);
-+		xt_table_unlock(t);
-+	} else {
-+		ret = PTR_ERR(t);
-+	}
-+	xt_compat_unlock(AF_INET);
-+	if (ret)
-+		goto out;
-+
-+	/* Fault in only after validating the table and requested size. */
-+	if (fault_in_safe_writeable((char __user *)uptr->entrytable,
-+				    get.size))
-+		return -EFAULT;
-+
- 	xt_compat_lock(AF_INET);
- 	t = xt_find_table_lock(net, AF_INET, get.name);
- 	if (!IS_ERR(t)) {
-@@ -1606,10 +1668,17 @@ compat_get_entries(struct net *net, struct compat_ipt_get_entries __user *uptr,
- 		xt_compat_flush_offsets(AF_INET);
- 		module_put(t->me);
- 		xt_table_unlock(t);
--	} else
-+	} else {
- 		ret = PTR_ERR(t);
-+	}
- 
- 	xt_compat_unlock(AF_INET);
-+out:
-+	/* Allow three retries after the initial nofault copy. */
-+	if (ret == -EFAULT && retries < 3) {
-+		retries++;
-+		goto retry;
-+	}
- 	return ret;
- }
- #endif
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index f42fb96..4952bfd 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -25,6 +25,7 @@
- #include <linux/proc_fs.h>
- #include <linux/err.h>
- #include <linux/cpumask.h>
-+#include <linux/pagemap.h>
- 
- #include <linux/netfilter_ipv6/ip6_tables.h>
- #include <linux/netfilter/x_tables.h>
-@@ -840,6 +841,7 @@ copy_entries_to_user(unsigned int total_size,
- 
- 	loc_cpu_entry = private->entries;
- 
-+	pagefault_disable();
- 	/* FIXME: use iterator macros --RR */
- 	/* ... then go back and fix counters and names */
- 	for (off = 0, num = 0; off < total_size; off += e->next_offset, num++){
-@@ -877,6 +879,7 @@ copy_entries_to_user(unsigned int total_size,
- 	}
- 
-  free_counters:
-+	pagefault_enable();
- 	vfree(counters);
- 	return ret;
- }
-@@ -959,6 +962,7 @@ static int compat_table_info(const struct xt_table_info *info,
- 
- static int get_info(struct net *net, void __user *user, const int *len)
- {
-+	struct ip6t_getinfo info;
- 	char name[XT_TABLE_MAXNAMELEN];
- 	struct xt_table *t;
- 	int ret;
-@@ -976,7 +980,6 @@ static int get_info(struct net *net, void __user *user, const int *len)
- #endif
- 	t = xt_request_find_table_lock(net, AF_INET6, name);
- 	if (!IS_ERR(t)) {
--		struct ip6t_getinfo info;
- 		const struct xt_table_info *private = t->private;
- #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
- 		struct xt_table_info tmp;
-@@ -997,10 +1000,7 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 		info.size = private->size;
- 		strcpy(info.name, name);
- 
--		if (copy_to_user(user, &info, *len) != 0)
--			ret = -EFAULT;
--		else
--			ret = 0;
-+		ret = 0;
- 
- 		xt_table_unlock(t);
- 		module_put(t->me);
-@@ -1010,6 +1010,8 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 	if (in_compat_syscall())
- 		xt_compat_unlock(AF_INET6);
- #endif
-+	if (!ret && copy_to_user(user, &info, *len) != 0)
-+		ret = -EFAULT;
- 	return ret;
- }
- 
-@@ -1020,6 +1022,7 @@ get_entries(struct net *net, struct ip6t_get_entries __user *uptr,
- 	int ret;
- 	struct ip6t_get_entries get;
- 	struct xt_table *t;
-+	unsigned int retries = 0;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1030,20 +1033,50 @@ get_entries(struct net *net, struct ip6t_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+retry:
-+	t = xt_find_table_lock(net, AF_INET6, get.name);
-+	if (IS_ERR(t)) {
-+		ret = PTR_ERR(t);
-+		goto out;
-+	}
-+
-+	if (get.size != t->private->size) {
-+		ret = -EAGAIN;
-+		module_put(t->me);
-+		xt_table_unlock(t);
-+		goto out;
-+	}
-+
-+	module_put(t->me);
-+	xt_table_unlock(t);
-+
-+	/* Fault in only after validating the table and requested size. */
-+	if (fault_in_safe_writeable((char __user *)uptr->entrytable,
-+				    get.size))
-+		return -EFAULT;
-+
- 	t = xt_find_table_lock(net, AF_INET6, get.name);
- 	if (!IS_ERR(t)) {
- 		struct xt_table_info *private = t->private;
--		if (get.size == private->size)
-+		if (get.size != private->size) {
-+			ret = -EAGAIN;
-+		} else {
- 			ret = copy_entries_to_user(private->size,
- 						   t, uptr->entrytable);
--		else
--			ret = -EAGAIN;
-+		}
- 
- 		module_put(t->me);
- 		xt_table_unlock(t);
- 	} else
- 		ret = PTR_ERR(t);
- 
-+out:
-+	/* Allow three retries after the initial nofault copy. */
-+	if (ret == -EFAULT && retries < 3) {
-+		retries++;
-+		goto retry;
-+	}
-+
- 	return ret;
- }
- 
-@@ -1570,12 +1603,14 @@ compat_copy_entries_to_user(unsigned int total_size, struct xt_table *table,
- 
- 	pos = userptr;
- 	size = total_size;
-+	pagefault_disable();
- 	xt_entry_foreach(iter, private->entries, total_size) {
- 		ret = compat_copy_entry_to_user(iter, &pos,
- 						&size, counters, i++);
- 		if (ret != 0)
- 			break;
- 	}
-+	pagefault_enable();
- 
- 	vfree(counters);
- 	return ret;
-@@ -1588,6 +1623,7 @@ compat_get_entries(struct net *net, struct compat_ip6t_get_entries __user *uptr,
- 	int ret;
- 	struct compat_ip6t_get_entries get;
- 	struct xt_table *t;
-+	unsigned int retries = 0;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1600,6 +1636,32 @@ compat_get_entries(struct net *net, struct compat_ip6t_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+retry:
-+	xt_compat_lock(AF_INET6);
-+	t = xt_find_table_lock(net, AF_INET6, get.name);
-+	if (!IS_ERR(t)) {
-+		const struct xt_table_info *private = t->private;
-+		struct xt_table_info info;
-+
-+		ret = compat_table_info(private, &info);
-+		if (!ret && get.size != info.size)
-+			ret = -EAGAIN;
-+
-+		xt_compat_flush_offsets(AF_INET6);
-+		module_put(t->me);
-+		xt_table_unlock(t);
-+	} else {
-+		ret = PTR_ERR(t);
-+	}
-+	xt_compat_unlock(AF_INET6);
-+	if (ret)
-+		goto out;
-+
-+	/* Fault in only after validating the table and requested size. */
-+	if (fault_in_safe_writeable((char __user *)uptr->entrytable,
-+				    get.size))
-+		return -EFAULT;
-+
- 	xt_compat_lock(AF_INET6);
- 	t = xt_find_table_lock(net, AF_INET6, get.name);
- 	if (!IS_ERR(t)) {
-@@ -1615,10 +1677,17 @@ compat_get_entries(struct net *net, struct compat_ip6t_get_entries __user *uptr,
- 		xt_compat_flush_offsets(AF_INET6);
- 		module_put(t->me);
- 		xt_table_unlock(t);
--	} else
-+	} else {
- 		ret = PTR_ERR(t);
-+	}
- 
- 	xt_compat_unlock(AF_INET6);
-+out:
-+	/* Allow three retries after the initial nofault copy. */
-+	if (ret == -EFAULT && retries < 3) {
-+		retries++;
-+		goto retry;
-+	}
- 	return ret;
- }
- #endif
++static struct platform_driver jhb100_per1crg_driver = {
++	.probe = starfive_crg_probe,
++	.driver = {
++		.name = "clk-starfive-jhb100-per1",
++		.of_match_table = jhb100_per1crg_match,
++		.suppress_bind_attrs = true,
++	},
++};
++builtin_platform_driver(jhb100_per1crg_driver);
 -- 
-2.55.0.windows.3
+2.25.1
 
