@@ -1,43 +1,38 @@
-Received: from out28-217.mail.aliyun.com (out28-217.mail.aliyun.com [115.124.28.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A733557D
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.217
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88833E40E4;
+	Sun, 20 Sep 2026 07:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789890179; cv=none; b=RPu7VCATrBlPIeJwEDyLm/l3InVMmnRmUlmM3ymyHI0IKqRO3Y1UdaMZzEPTN5oAwodPAuzVhpmTbY79YlN7ebwFXpxgDa1TlwdDKW1XPtj2jAcvCm332wdyB2TIDvp91J9dZoRnuT5VKv9m79ZzVxVds2GTvlR8ugvfapjEAHs=
+	t=1789890308; cv=none; b=qxc6QdE0GjeYcIz6Oxykpuhu3chqWr++eFK5o2zfieP66mJSrMvVA1bumZkeDqmh59mWvZddATJ+hV1GqV2OHv9OJWix5CMREA72TbF9Rc26LN2De2Gyd1mpt1xkO3T941M36ON/P8OK45rKOs/OyoBXQ3JQOl/0fOeTVe0wChQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789890179; c=relaxed/simple;
-	bh=TeR/SPfjdxcP6WVL+nTBzCnu7nNJ7Lnzpml+TCVQWtk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vBWjyK6tb28JBj3LW+Jp6/oK2rw8udfYQxfMb+j/zW+vqD9ebli7MiW0VkkeLGfUClhzWTQlmCp9AcagWFoUg+XUAHdJHCSxXiFtBRP92zXjw4vRG357+WMOa/OBPDzHS5IRhPeLQIsLFwSbpsmO8GKJatqScfANHtPzM0pWEE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=XJmwYyUg; arc=none smtp.client-ip=115.124.28.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="XJmwYyUg"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1789890167; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=6ClCO1rikCE+xXSYx0XHhuqUuxt3KRHtViZyWkQmCMI=;
-	b=XJmwYyUg11y9aF/oJ8iNjHA4jHMV0zcCxaivbYFTOsk0rVF5xYch0J0yd/8ZTwKMrlOPJn5x0VRtSBLLKHEyBxu893skIFrmyHhJ5JyZ8w+0+SJ+xv6wYk3nNLqp4KIG149kUpd0qFsSdqVbbpUK6yvUvdrr/7joVFHE5lkYvX0=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04898971|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0407612-0.000434714-0.958804;FP=11444322088015112353|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jHw1VNB_1789890165;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jHw1VNB_1789890165 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 20 Sep 2026 15:42:47 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: netdev@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1789890308; c=relaxed/simple;
+	bh=10fE2iWtbvNRkibWkIM5wVpvO5z6pmhPHedJTmBlDIk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K9d4VgpF3AJLHZxmE6kQim8wGkl2079y/Zg7ysMR5nV4GFzwexMBT0xnMQkU9zvaVLiG/CAwRTFl3w7MhD7czYdHC5t05w3M6HETZxBdZq1Lb/dNw6cFCWxCrraXWPtXYqMBTR/fQdse0YV9RSSNWowqSVzHr1v751yGxYYyYuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.180.135.190])
+	by gateway (Coremail) with SMTP id _____8BxbdL_jq9q6t4NAA--.41250S3;
+	Sun, 20 Sep 2026 15:45:03 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.180.135.190])
+	by front1 (Coremail) with SMTP id qMiowJCxPs_9jq9qUOwiAA--.8682S2;
+	Sun, 20 Sep 2026 15:45:02 +0800 (CST)
+From: Ming Wang <wangming01@loongson.cn>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ming Wang <wangming01@loongson.cn>,
+	Oliver Neukum <oliver@neukum.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Cong Wang <xiyou.wangcong@gmail.com>
-Subject: [PATCH net] net/sched: act_ife: validate metadata length before decoding
-Date: Sun, 20 Sep 2026 15:42:45 +0800
-Message-ID: <20260920074245.79965-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] net: usb: cdc_mbim: add MeiG Smart SRM821 to ZLP whitelist
+Date: Sun, 20 Sep 2026 15:44:59 +0800
+Message-ID: <20260920074500.826121-1-wangming01@loongson.cn>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,97 +40,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxPs_9jq9qUOwiAA--.8682S2
+X-CM-SenderInfo: 5zdqwzxlqjiio6or00hjvr0hdfq/1tbiAQEQEmqvPvQFYgABsr
+X-Coremail-Antispam: 1Uk129KBj93XoW7WF17ZFyrtw1kKw45XF17XFc_yoW8WFW3pF
+	4rCFyYv39xJFW5Kw1rAw48WFyrZwn3Cay5KFWI93WY93Z0ya4aqFyxGFy5K34kGF45AF12
+	yF93t34xWa1DAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPSb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80
+	ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4
+	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
+	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_
+	Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8N_-P
+	UUUUU==
 
-skbmark_decode(), skbprio_decode() and skbtcindex_decode() read fixed-size
-values from the TLV payload without validating its length.
+The MeiG Smart SRM821 5G module (0x2dee:0x4d53) crashes and drops off
+the USB bus when it receives a Zero Length Packet (ZLP) after sending
+or receiving an NTB of exactly 16384 bytes (tx_max).
 
-A malformed IFE frame can declare a shorter payload, causing the decoders
-to consume bytes beyond the declared metadata value:
+According to the MBIM specification, devices do not require a ZLP
+if the NTB size is exactly dwNtbOutMaxSize. However, the cdc_mbim
+driver defaults to sending ZLPs for devices not explicitly whitelisted
+to accommodate non-conformant hardware. This default behavior breaks
+the strictly conformant MeiG SRM821 module.
 
-[TLV type=IFE_META_SKBMARK len=4]
--> dlen == 0, but decode reads 4 bytes
+Add this device to the ZLP conformance whitelist (cdc_mbim_info) so
+the driver will pad the NTB to avoid sending ZLPs, preventing the
+device firmware from crashing.
 
-The decoder may therefore set skb metadata from unintended input.
-
-Validate the payload length before decoding and return -EINVAL for
-invalid lengths. The caller treats decoder failures as per-TLV errors
-and continues decoding the remaining metadata.
-
-Fixes: 084e2f6566d2 ("Support to encoding decoding skb mark on IFE action")
-Fixes: 200e10f46936 ("Support to encoding decoding skb prio on IFE action")
-Fixes: 408fbc22ef1e ("net sched ife action: Introduce skb tcindex metadata encap decap")
-Assisted-by: Hawkeye:GLM-5.3-flash
-Assisted-by: Qoder:Qwen3.8-Max
-Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Wang <wangming01@loongson.cn>
 ---
+v2: moved MeiG entry below Ericsson for better grouping; added Cc stable
+ drivers/net/usb/cdc_mbim.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Found by auditing the IFE decode path at v6.18-rc7. The malformed
-metadata cases were reproduced with a userspace sanitizer model of
-the decode path, which reported reads of size 4/2 for dlen values
-smaller than the expected metadata size.
-
-Compile-tested on x86_64 with defconfig and NET_ACT_IFE=y: act_ife.o
-and the three act_meta_*.o build warning-free.
-
- net/sched/act_meta_mark.c       | 6 +++++-
- net/sched/act_meta_skbprio.c    | 6 +++++-
- net/sched/act_meta_skbtcindex.c | 6 +++++-
- 3 files changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/net/sched/act_meta_mark.c b/net/sched/act_meta_mark.c
-index ea0573cb8b2d..3a7d568df0da 100644
---- a/net/sched/act_meta_mark.c
-+++ b/net/sched/act_meta_mark.c
-@@ -28,8 +28,12 @@ static int skbmark_encode(struct sk_buff *skb, void *skbdata,
+diff --git a/drivers/net/usb/cdc_mbim.c b/drivers/net/usb/cdc_mbim.c
+index 877fb0ed7d3d..a7010a0664c7 100644
+--- a/drivers/net/usb/cdc_mbim.c
++++ b/drivers/net/usb/cdc_mbim.c
+@@ -635,6 +635,11 @@ static const struct usb_device_id mbim_devs[] = {
+ 	  .driver_info = (unsigned long)&cdc_mbim_info,
+ 	},
  
- static int skbmark_decode(struct sk_buff *skb, void *data, u16 len)
- {
--	u32 ifemark = *(u32 *)data;
-+	u32 ifemark;
- 
-+	if (len != sizeof(ifemark))
-+		return -EINVAL;
++	/* MeiG Smart SRM821 ZLP conformance */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d53, USB_CLASS_COMM, USB_CDC_SUBCLASS_MBIM, USB_CDC_PROTO_NONE),
++	  .driver_info = (unsigned long)&cdc_mbim_info,
++	},
 +
-+	ifemark = *(u32 *)data;
- 	skb->mark = ntohl(ifemark);
- 	return 0;
- }
-diff --git a/net/sched/act_meta_skbprio.c b/net/sched/act_meta_skbprio.c
-index 2df3133ce5ad..fa4ba4269ca0 100644
---- a/net/sched/act_meta_skbprio.c
-+++ b/net/sched/act_meta_skbprio.c
-@@ -33,8 +33,12 @@ static int skbprio_encode(struct sk_buff *skb, void *skbdata,
- 
- static int skbprio_decode(struct sk_buff *skb, void *data, u16 len)
- {
--	u32 ifeprio = *(u32 *)data;
-+	u32 ifeprio;
- 
-+	if (len != sizeof(ifeprio))
-+		return -EINVAL;
-+
-+	ifeprio = *(u32 *)data;
- 	skb->priority = ntohl(ifeprio);
- 	return 0;
- }
-diff --git a/net/sched/act_meta_skbtcindex.c b/net/sched/act_meta_skbtcindex.c
-index 44547caead46..48f001ada8f6 100644
---- a/net/sched/act_meta_skbtcindex.c
-+++ b/net/sched/act_meta_skbtcindex.c
-@@ -28,8 +28,12 @@ static int skbtcindex_encode(struct sk_buff *skb, void *skbdata,
- 
- static int skbtcindex_decode(struct sk_buff *skb, void *data, u16 len)
- {
--	u16 ifetc_index = *(u16 *)data;
-+	u16 ifetc_index;
- 
-+	if (len != sizeof(ifetc_index))
-+		return -EINVAL;
-+
-+	ifetc_index = *(u16 *)data;
- 	skb->tc_index = ntohs(ifetc_index);
- 	return 0;
- }
+ 	/* Some Huawei devices, ME906s-158 (12d1:15c1) and E3372
+ 	 * (12d1:157d), are known to fail unless the NDP is placed
+ 	 * after the IP packets.  Applying the quirk to all Huawei
 -- 
-2.50.1
+2.43.7
 
