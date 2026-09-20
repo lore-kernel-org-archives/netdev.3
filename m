@@ -1,136 +1,88 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A97332EBC;
-	Sun, 20 Sep 2026 10:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878583F3298;
+	Sun, 20 Sep 2026 10:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789898999; cv=none; b=M1OmXhhLhf9i8bnXonPMnC5xZ+MscbjPxQYPF+zEMSDxGtkOBaRMhsRjcaot2YRgGPzcTixGm8uRtUo1SlDE/uhDVFKnaBumUGxVC7A2VSzhxbSCGly9alr6SacY7EdJKj+LN3wB2WivkUCOeuLWMVKAyMwkveAZOdz2e3+gByI=
+	t=1789899071; cv=none; b=fu10CIg0O7Hp7j3sEei88K6E6YT+fprWD5M5InKhbHD3+mf8nI0hlSywEzH6FHm5gw1//LSvF0iLCFvpDxRdpOTgfP/Hkt/tF2wfhNquFRzPDSxruk7mzDd+6cH2VLLp73fuQxoltYRSlkJgCsjHDKeqL3NHiKNGcB2xc388MJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789898999; c=relaxed/simple;
-	bh=x/npxQ535tWZuHg2B7KXwW/Zz9TlD/ybRcXhTqChVCU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BkvVMNubxPCT47SXJDgICF3hCOFqlu1B+0FtXt0praPr0xdpXpMqATTTafuhKinPRnDaHrofl3fhs0LUOAe0tuNxg3sdRkKfyKWp8Ks4YSocgWEe/D+fudnfSgiABf8hfPaIrU/ZQ7dreSo6HHG1y+dVjjpycGxztTSJKhMeMOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hP1SMZnl; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1789899071; c=relaxed/simple;
+	bh=2tIpJtLwgbJnNgwuF5UdNkvi2kLXZt5YsvQ/gOhIPsE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GjIDDsUnf9NDm8IMszsXozAMtyeh/yFVryGrs8XoczFpMtIl7+AJc9FK8oOTOZas7klFHTf6cgG5s+OUj3M4FLVjcC/LZxt7B5hogYwwwDbr1xcaN4mabDPy/DYQ+f7BCKNwCRxEhSV/brE7E3Hm1Vxu7Re5eeQY3D7OvKqCQ68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpCbIOcN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hP1SMZnl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=CV
-	sPfssl+6HOxAMgyg6BRrF6KHas5UQDlse0g4Rk4RQ=; b=hP1SMZnl7xzHPrEGmE
-	Qdqhp/vXXXKWdUNgwMjEg6jPpXH0uOxw4gsjmcJn8w5/30YcY/teh8ky7HnymC9I
-	cBbMCR6c39qw0mMxJyegujGEBRF2JO6tph/KolgOnLZuvBV5z7elGqgA+hND19m4
-	DAiOLblYGpMhIIH/zU0TI6Sdc=
-Received: from lx2.. (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wBHjzXTsK9qNt71Bg--.61547S2;
-	Sun, 20 Sep 2026 18:09:23 +0800 (CST)
-From: Zijin Tao <taozj888@163.com>
-To: maintainer@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	theo.lebrun@bootlin.com,
-	conor.dooley@microchip.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	Zijin Tao <taozj888@163.com>
-Subject: [PATCH] net: macb: rate limit netdev error info print in the data path
-Date: Sun, 20 Sep 2026 18:09:20 +0800
-Message-Id: <20260920100920.65773-1-taozj888@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpCbIOcN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7863D1F000FF;
+	Sun, 20 Sep 2026 10:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1789899070;
+	bh=/26KFgiBxppLZooT5+1vSUzRmBgjxV2CEAJs4q740vg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lpCbIOcNNCOYwjYxt9DBNZ7s8aCkf518UUtFj0cU5MaTuzQ4p7J6p6JNx0JW6y1Ad
+	 H5un1/1p5NzZUqyg/90rBExmll9Isvd9Wu/KimFTTekOAiXoR5Umhb5GVm3e84+2EQ
+	 JMwgoAlDEWZHbYKJRMopXHTs6Gw0UvVwiUDqCw5g=
+Date: Sun, 20 Sep 2026 09:45:14 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Hyunwoo Kim <imv4bel@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 net-next 0/2] net: Disallow buggy TCP transitions and
+ IPV6_ADDRFORM.
+Message-ID: <2026092048-splashed-trespass-d2da@gregkh>
+References: <20260904033543.2635540-1-kuniyu@google.com>
+ <aq28mdNpi3ssjgXz@v4bel>
+ <20260919142035.4d0e11a8@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHjzXTsK9qNt71Bg--.61547S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWrAry3tw18ZF1rGr1xXwb_yoW5CrWDpa
-	yUCa95Ww4kGr47Cas7trWkAr1rAr95KryrW3ykGw13Xw15Ar98WFyIkryYkFW8GFZ3Aw1S
-	kw1UZayDCa1kArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zElksJUUUUU=
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+hPmrmqvsNOzLQAA3Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260919142035.4d0e11a8@kernel.org>
 
-Now the MACB ethernet driver print the netdev error information
-directly by netdev_err(), which would lead to a large number of
-error information print if there was a significant number of
-error or just jumbo packets exceeding the MTU received when booting.
-For example, it would print a large number of:
+On Sat, Sep 19, 2026 at 02:20:35PM -0700, Jakub Kicinski wrote:
+> On Sat, 19 Sep 2026 07:35:05 +0900 Hyunwoo Kim wrote:
+> > >   Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")  
+> > 
+> > Hi netdev maintainers,
+> > 
+> > What is the plan for stable backports here? Does the uapi change rule
+> > this series out for stable?
+> 
+> Not super well defined to be completely honest.
+> My gut feeling is that we should wait for it to reach Linus, and ~rc3
+> then pull it to LTS. Which would mean 2 months from now (mid Nov).
 
-macb PHYT0036:00 eth0: not whole frame pointed by descriptor
-macb PHYT0036:00 eth0: not whole frame pointed by descriptor
-...
+Once it's in a released -rc, why not have it backported then?  Why wait?  :)
 
-in gem_rx() by received a large number of packets without
-RX_SOF or RX_EOF flag set, especially with unknown packet
-type.
+> That said, I am personally pretty unbothered about local exploits.
+> There's too many of them. And because of the serious exploits
+> (remote, VM escape etc) I think people are not deploying stable
+> much more rapidly and with less testing. I don't want to inject 
+> a de-feature under such condition.
+> 
+> Adding Greg and stable in case they have a stronger stomach.
 
-The unlimited prints here would greatly bother and delay
-the system booting process unless the source stop sending
-packets.
+I like to see the stable trees match Linus's whenever possible,
+especially when we have known bugfixes.
 
-So rate limit the netdev error information print in the receive
-and transmit data path.
+> Also FWIW I believe that Eric D is AFK at the moment, and he's the only
+> netdev maintainer subscribed to security@, AFAIU, so y'all may be aware
+> of more things than I am...
 
-Signed-off-by: Zijin Tao <taozj888@163.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Not any more aware of anything other than the normal flood of crud...
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index b8234ac4b602..c32d48d03008 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		count++;
- 
- 		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
--			netdev_err(bp->netdev,
--				   "not whole frame pointed by descriptor\n");
-+			if (net_ratelimit())
-+				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
- 			bp->netdev->stats.rx_dropped++;
- 			queue->stats.rx_dropped++;
- 			break;
- 		}
- 		skb = queue->rx_skbuff[entry];
- 		if (unlikely(!skb)) {
--			netdev_err(bp->netdev,
--				   "inconsistent Rx descriptor chain\n");
-+			if (net_ratelimit())
-+				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
- 			bp->netdev->stats.rx_dropped++;
- 			queue->stats.rx_dropped++;
- 			break;
-@@ -1829,7 +1829,8 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		unsigned long flags;
- 		u32 ctrl;
- 
--		netdev_err(bp->netdev, "RX queue corruption: reset it\n");
-+		if (net_ratelimit())
-+			netdev_err(bp->netdev, "RX queue corruption: reset it\n");
- 
- 		spin_lock_irqsave(&bp->lock, flags);
- 
-@@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
- 
- 	if (status & MACB_BIT(HRESP)) {
- 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
--		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
-+		if (net_ratelimit())
-+			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
- 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
- 	}
- 
-@@ -2511,7 +2513,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
- 		else
- 			hdrlen = skb_tcp_all_headers(skb);
- 		if (skb_headlen(skb) < hdrlen) {
--			netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
-+			if (net_ratelimit())
-+				netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
- 			/* if this is required, would need to copy to single buffer */
- 			return NETDEV_TX_BUSY;
- 		}
--- 
-2.34.1
+thanks,
 
+greg k-h
