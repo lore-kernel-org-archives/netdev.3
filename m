@@ -1,192 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012001.outbound.protection.outlook.com [40.93.195.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686B22E0B5C
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 06:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789886852; cv=none; b=ApwbBAoFFtRDdxFGCSBK89iJORe6qoiGyo5JvNvQUZ7Kvh5d3GgsneaLwTUq09ZLsfgqdE189CKGP2VCfbC9BCtXA+k327CGzRmtZY/n+eD0mZGSOTDBTv44Be5yVqKqnmCA++zYyPdWyD3hlS9jAyUBnNEa1LiEL+0CPP0+1+o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789886852; c=relaxed/simple;
-	bh=YrSRwP2s1pmuAOrFBxHmpaZhHn2RRTZLIe91CofBOQI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jEqPq6dh+LvQviMIYkZ+qXU7687BUfd58sO9MiP/0aVRAXmuOeHxJTMR35xqGDS5Qm5jwbok4Bywmb27BEWz9nmySLmuzz7l7c32Yioo6YVv5htCzxpuLFV9uYskG8+yHVLsipNLW6rzKzpCExzZNZCohcxlZxMdX+wnuvioQUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdQpwkQ6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015DA2E0B5C;
+	Sun, 20 Sep 2026 06:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789886858; cv=fail; b=ezbY04FJXGObdZCDDBTmyWOLxZ5f0CerTQ9OM1NxqvFtaA7EHwjI1jC6/llzEgns0JhFPXxhCfzncAqz4G3xAoi+LMfU6ntlTVD1a6WwvUF6xhv0VP/RvZCSKgme5tmYSWXD3IhBAWGQ0271ybgAwrug9z1A6MyZpl055a1DGh0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789886858; c=relaxed/simple;
+	bh=95tFPlwGvXFAa1OgqBcbciWeiZyhVNtdMI00SiJ8ObI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HDtE9mGE//M4QRCv1Rcz4bNFU45FB/KNI1yJzTaS33env3MSMYib91woAiSIdcgE5xVxv/k13aRf/0vCBAtXPdHY0DgFZ3AUpIF3d8dRfCljR8Ir4HkIwXw4MlT5dRmuyeCg4ScCo6c5DNOXlF7fCqmH6AWrezd5AEvfR4CqxSE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SrrWuhqa; arc=fail smtp.client-ip=40.93.195.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdQpwkQ6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBA61F000FF;
-	Sun, 20 Sep 2026 06:47:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789886851;
-	bh=ZFKMIOR038m40L7CV58QbazcC5zt6f09quaRPy61SMY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VdQpwkQ6kIkRI0r2Ngups+7I02Hfk5u+8IIlZQJX1g/Z/p0e1nrUBKghIKs0XyRx+
-	 wxoh2f14FQKyrAUYTqSsqWJSbczuRMu728c6pWM+cUmlbO5oJ4nKIStG1ROs9jIp+B
-	 J+t5Fg/NyQqCiYO11HYwAFqw5dvjzpNG30IQgzR0EaLWtQt5X9oEwVt6Vxf1FZ0Uau
-	 6P+FQpsvURNn99erYN5oGTaSgrkVR0+KP62b0AsfOo/2+392hA9AGlBHB0R/0VY7/F
-	 DD29RXAvprvktCo3xREbZ1sPT/A2tJMlXfe65PqluAiuzhg+nLedXrE5oQ5sGHr1Q3
-	 LIUv4PKeUbb3A==
-Subject: Re: [PATCH net-next v3] net: wangxun: use cached NCSI and WOL
- capability flags
-From: netdev-bot+sashiko@kernel.org
-To: jiawenwu@trustnetic.com
-Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- jacob.e.keller@intel.com, kees@kernel.org, aleksandr.loktionov@intel.com,
- u.kleine-koenig@baylibre.com, weirongguang@kylinos.cn,
- zhaochenguang@kylinos.cn
-Date: Sun, 20 Sep 2026 06:47:30 +0000
-Message-ID: <178988685001.2160803.3396392479402996467@kernel.org>
-In-Reply-To:
- <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
-References: <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SrrWuhqa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=axbzBob+v189zD4Cog3u29qCWBfY5jrbmOBZ3WXLweEIw54r/0bvSYQ4AO+OIai8QFOXgkHHE+w/xMhXgKcJtYXBpXmPa8YSqdZiEo5JPG3ALpvzeZobqnwVXCDi+bqxcxizkuixuhlOFTZRr74ekPZxPVp+kYrUd9O3XaB9y7ghdRh+/5M6xt7HAaACOOnRZPaePxkQhnrROyZxok5XG3WVA+iEO6Ws24xIsYOq/aIo96NxWwVigtA1DZWOxPPopjATFf3lyQO0AKgogeooiXTiVhaMUVM9l+0MozMG1+hwtwY+HTNXYER0n1MHyHP8b6XQNeGJ0maVbQCh+1PJ0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QQsDZMvudWONqfExXU0dCpMji5EWVHIwz1D9KoLXF4A=;
+ b=AVEK29t24XIFNIq2h6xeWONzBAPd2nb5TzegLmx1sHPoeFLhrvoo2jFCFtBLEHIJj/cO24dQcKeLuPrJ//w/YSvu90LQPDKVcPRovpLxVrPlIQ3JXCHTQz/4x42aMbVWdNW/y2YCGXS9VJA4k4yotZBA108GlOw1X0433Cuj2C2UMtdCdr7zFkEhImWJhwM6KYwonUvkJFVsqT5x7U8/EES9H4FgtfKUwWhBI8xwTRX4EdHNvaJVJYBMj5FvYjnILWu+X3H89SHX+ZySbKNHvvRkvyQMH1gcNnWmuQjNwNRXDkB+kxFNjuSxySSXEwuYR7zXXPkp0Q3+pH1DwyAoWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QQsDZMvudWONqfExXU0dCpMji5EWVHIwz1D9KoLXF4A=;
+ b=SrrWuhqafheBnSdjoUURSKKXQuSkkcYzsAfow/6hUbspuEtVuyL8f046QLztaon4v4JPxNkXGF/NUq3e0MUXI4Dp01s91y08cCbHHH6Bbjr1cMngcREPV12YqOsq9y4030s/6r5NvnYt2TUolUJFzJZTke4ZzeEEzBUJ3I/a270Lma+kD77ifP6v3h9pgm+BLhQIZCjN7ceIgvCtN3X/fLrQb5Ms+r55YsU+O5gd8qw0xStG6Udk4CU9+EaQI0iNeI7r1LfnoYhXSjAu654Qn+qV91ajZxKHbmPvPPKJKAYuGPZ8IVflDP6CbZQAmcmY+rjGMiIzub3Zy7MXecf6mQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW6PR12MB7086.namprd12.prod.outlook.com (2603:10b6:303:238::20)
+ by SA0PR12MB4479.namprd12.prod.outlook.com (2603:10b6:806:95::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.15; Sun, 20 Sep
+ 2026 06:47:32 +0000
+Received: from MW6PR12MB7086.namprd12.prod.outlook.com
+ ([fe80::4eb8:7fcb:fe8d:e95e]) by MW6PR12MB7086.namprd12.prod.outlook.com
+ ([fe80::4eb8:7fcb:fe8d:e95e%5]) with mapi id 15.21.0428.015; Sun, 20 Sep 2026
+ 06:47:32 +0000
+Message-ID: <1ebf7c3a-9c45-4b33-a418-0f37537a411b@nvidia.com>
+Date: Sun, 20 Sep 2026 09:47:26 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5e: fix swapped IPv6 IPsec policy masks
+To: Andrea Parri <parri.andrea@gmail.com>, Boris Pismenny
+ <borisp@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260917115542.177675-1-parri.andrea@gmail.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <20260917115542.177675-1-parri.andrea@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0101.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9c::7) To MW6PR12MB7086.namprd12.prod.outlook.com
+ (2603:10b6:303:238::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR12MB7086:EE_|SA0PR12MB4479:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5ec6a01-a2b1-49b1-804b-08df16e30bfb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|921020|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	dj9Ee2nIzOg4w7cNLfIFX3v7kFDYdbzaPBM3lQby4THOEnSkJqwa6/dk3U814qdbS5J1x1AS70OoeH2+T8ENMVXfh+piUywVHBZF4eTv1Ja5ts+uTu2wNyim/8s5ui+wFvWdRfd3n59SpPUqfETKaVzjT9C7AfJAM7kxkaKeWYeFUOOiTFG0aAy5wog6rKR2w/aD1ixJ8Y5Y/IONIvb4RTjzCb3/uM6vwbnTwR6zegZjcfKO4O+C3eejNRBRkuj9Cjlgdm77bol2KgEcCEMn1WDYyC71spZsGFNkt2A4D56+pFhdI9jXwZJdItC2X2rrTZmBcKGVPt1VnjDI3z8mFgif0O3SZovfor1061xcgu6BI0kp40UdrPTSRPuH2c3/v0dcI4ZlMof3FArFj5MENFBlfv1VWQb1wMF7vwc4aO2CPALKRx5+9RRc4Rpy/px1lHrSb1qz1a//mRWH6P39qg2H28X2cWa6llz85M0nYmQpsfx7REexMjRd0LtHIPClX4GZBQMlSRf0XC8ndaptlv4L4b8HNLqWQ7tZWV00oUhITJRG/Fe1rNW9RiQGVDpqHQfeCiWH64w+i76XF4aiFiwEYGUUAwIdfEzR3StRBKomP/gdyoEcVDoiNKJLEQiHp/acIRTkdpCg92iNrGg6j6Iwkmg1s0/sQcsKle6WEnRl2OCrdf5FQ4koXJMxMcoXU/pQZv9ksyYdxsmQkXUAVA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB7086.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(921020)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SWZ4bGczZzdwaGFWVzVFSXVPNFBTQXNydGo1Qno2RzQrN1FIMXpDbjJGcHYz?=
+ =?utf-8?B?QmtLcExPTmpwU1V0R3NlQlZIcUxFZExJa3h6U2VGdVc2WUdBaXdQU2pTL2Nx?=
+ =?utf-8?B?OGdBMkQxRHVlYVB1WTdiYWhwWS9qZFdTZGI2OWlSdmN0MGkrM1NkczlIYy9U?=
+ =?utf-8?B?T1ZWNGF1TG96Qm82ZUxRTVBjWDBYMFNPVWg4VXlCL25lZ0kyQ3ArWGd2YUpG?=
+ =?utf-8?B?TmxTUHdXY0dvcVQ0OFYyWnYvSHM3d250YkJOMkZnMEFWR3EvQ2NucklqS1pL?=
+ =?utf-8?B?REVlUGlOcUl0RlhaeHJyWDJwa3g2cmVjb3k2TStPOWlJVkpvbG9IYUFacDM2?=
+ =?utf-8?B?NldOd2ZrWUNQOHQ3bm5keU1MTHlaWUdXL01vSGxaNkpmenp4aVltUzJPd1RC?=
+ =?utf-8?B?TnFRZjBCcndYOEIzU0c2UDdwVTEwTkhRdmZTaTdIaDFDOUxsMURFWER5bGJF?=
+ =?utf-8?B?T0FuK25BWHVpY1Z3OEhnN1BDWVBJMGhLRzFMTzhUMVRnQ2I2cE5PMHZsMzQv?=
+ =?utf-8?B?QklCbTI1emhIU053TEtpQnZwR3VsYksxVlBLb1VLY0sxamswUUkxWHFzSjBk?=
+ =?utf-8?B?V1hhTUVaQWZBN01sRnAyZTdPdW42R1dkMExqU29FN1FBMEs2elpvenlwYlVU?=
+ =?utf-8?B?WDh4eDM0eGFuZDFDdlEwTFZlay9iZGNtOE92b1BSK1RxZVhHUFZ6b1dqQW5R?=
+ =?utf-8?B?TUZaYVlrT3NwV2lpY1ZiZEFSUnd2OEdESW9wWXNRRHpienFxM2V4elg4TWJv?=
+ =?utf-8?B?VHQ5SjVwakFuZklBR21KZlVtOW1UN09JNC9zRFJ1MHlJU2dSSnRZYVViMUVP?=
+ =?utf-8?B?MEJCQVJqSlYvd2xibzgvZW5NLzVKZ0hvQ1hjY1hIenpLdGdpZ1Q3ZmE4enZZ?=
+ =?utf-8?B?Z1pLcWluTkZPaC9Ua3JXNVVuVE00ZXczWENQRG1WZmlFQ3dUbDZIdlZQVE1R?=
+ =?utf-8?B?SEhFTHpPeGhCSlJJMURPakdlS2VmdDNQcmxuTlNEZGxidVZ4NlE3Rnk0M1hM?=
+ =?utf-8?B?cVFTU3FGYkpFa082NjVPY21RcmM2R21wVTBuaVJaWE1VOHZIcThEaWFhN1NM?=
+ =?utf-8?B?Z0J2SmpGc3hWVFdvWEZCWi9QZXAxeWx0S0NQRkN5enovLzZqQ1FOVkFKZUZt?=
+ =?utf-8?B?eHQ5YU9BaGVMZm0vQWJNYnRQbTRSVExXckVZUGx5dDRncVJpQUt1Q0pWOWpx?=
+ =?utf-8?B?dW92NldJbEgrajNhT2tENWpOL3NhMU1KbnVocXphQUxTSDhLR3FraUhROGVU?=
+ =?utf-8?B?VW9CUWhMSlJoUE9PcnltclN6KzFiNStmTHlnSkhVZmlkd1FDSEJUemFFbE1p?=
+ =?utf-8?B?Yk5MeVdncHZxaE94bjNkT3FGRUQ0Q05hbWVDUkpxMk1sb05vUkdRcFpxSFh3?=
+ =?utf-8?B?OXIwWXJzbzJ6M2RscCtrbEszMzRLdEpxV3YxRC9RUHZMODc4bU5HS0JIYU5J?=
+ =?utf-8?B?dVlqQk9UTmt0ZVhza1hRWG13NFI2amttNkJBb3ZMZ2tURzdyOFZoZ085aEdm?=
+ =?utf-8?B?WXJjYThDdVB3d1R6dnd0cElVK3FFem9tL1NKbVhFMUZVS1M4MDg0d3QvTlFa?=
+ =?utf-8?B?cVdxaEFqcW16cUpOblRqT0tIVC9JY0drN2NsMVBlNk41ck8wMFRDVE85ZSt3?=
+ =?utf-8?B?M2RVVnlZWUFFNUxLejZMNDB0bnNRUmVQSzFmSk93RGxzVXRiK05EMVZWRFU5?=
+ =?utf-8?B?STdQWjExcTdHeWhpU1RsakRIem12N1YzWGo2U3U1REh5a0RjLzE1U3VYSTJz?=
+ =?utf-8?B?dHBJVVJjYU1nL3I4b1JZaTdmQnZiQnB2eTlHUk44T3ZXaCtrL0cxQUVCeTRk?=
+ =?utf-8?B?bmF4ODRjMFZCMVhCZ28vZ2dqdVJUUXEySUR4dmFyYVRJSjZESU1OM0tGSkRR?=
+ =?utf-8?B?NUdJQmQ5Z0JvTG93R0piaTlnbWxuakhHbU41N256OWRFdHpvRlVJOVFGSGQ5?=
+ =?utf-8?B?elk5NjZYQmxnM1J0OXhqQXdNMjlhZWRFeGYzU2N2c2dHQ00xTEMyY0RFRFg1?=
+ =?utf-8?B?UnEvcDlzV3dGRitBVEZ3WmZ6QXJvVGRtVCtPZll4VDBVT2tKcEkxSTQydUsw?=
+ =?utf-8?B?Unlhb0xWUXRqdk1GamJCMFRtTGNyUWlBREpHb0xmdXJudlNPK2k0Vm4vd0FI?=
+ =?utf-8?B?TXY1dVI0VFJKZi95MFVvcW1VMXFKMSs4RVF3bjRocmd5cjJEOUJzSGpMN3hC?=
+ =?utf-8?B?QkR5TWRTdHN1WGtkVjE2M2E2c2FVWUFBQ2g2SW9OL3NtUWJyYm5NR0dlU0sr?=
+ =?utf-8?B?bm1MU3VVTDh4ZmRlWmE2T1h2bE1KK0VEVE1jVjNMc01ReDQ4N2xqMnpjd3c5?=
+ =?utf-8?B?Ym9IaGZvMHhpbmdwVkRyL0p1bXo0dVNqV2Z1UE8reU4yQmx0Nlptdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5ec6a01-a2b1-49b1-804b-08df16e30bfb
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB7086.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 06:47:32.6884
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uk0ylGRt5AER8VAYTvJBElMJciPmi22x/ewXUojJjFm9sadjWF+CJ8VJtrSnRd/BLnzQyLJMDSOIXXFQ31NgDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4479
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 17/09/2026 14:55, Andrea Parri wrote:
+> IPv6 XFRM policies may use different source and destination prefix
+> lengths. mlx5e_ipsec_policy_mask() builds the corresponding masks
+> independently, but setup_fte_addr6() installs each mask in the opposite
+> address field.
+> 
+> When the prefix lengths differ, this makes the source match use the
+> destination prefix and the destination match use the source prefix. The
+> resulting hardware rule can both miss traffic covered by the policy and
+> match traffic outside it.
+> 
+> Install each mask in its corresponding match field.
+> 
+> Fixes: ca7992f52c2c ("net/mlx5e: Properly match IPsec subnet addresses")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+> index 329608c59313b..8ffa8068e90ac 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+> @@ -1564,14 +1564,14 @@ static void setup_fte_addr6(struct mlx5_flow_spec *spec,
+>   		memcpy(MLX5_ADDR_OF(fte_match_param, spec->match_value,
+>   				    outer_headers.src_ipv4_src_ipv6.ipv6_layout.ipv6), saddr, 16);
+>   		memcpy(MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
+> -				    outer_headers.src_ipv4_src_ipv6.ipv6_layout.ipv6), dmask, 16);
+> +				    outer_headers.src_ipv4_src_ipv6.ipv6_layout.ipv6), smask, 16);
+>   	}
+>   
+>   	if (!addr6_all_zero(daddr)) {
+>   		memcpy(MLX5_ADDR_OF(fte_match_param, spec->match_value,
+>   				    outer_headers.dst_ipv4_dst_ipv6.ipv6_layout.ipv6), daddr, 16);
+>   		memcpy(MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
+> -				    outer_headers.dst_ipv4_dst_ipv6.ipv6_layout.ipv6), smask, 16);
+> +				    outer_headers.dst_ipv4_dst_ipv6.ipv6_layout.ipv6), dmask, 16);
+>   	}
+>   }
+>   
 
-- [Medium] The patch is submitted as a mechanical cleanup ("use cached
-  NCSI and WOL capability flags") but carries a real, user-visible…
+Thanks for your patch.
 
-Pre-existing issues:
-- [Low] Semantic overload of wx->wol_hw_supported: two libwx consumers
-  now read the same field with different meanings.
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
 
---
-
-net: wangxun: use cached NCSI and WOL capability flags
-
-This replaces the open-coded subsystem device ID tests in wx_disable_rx()
-and txgbe_disable_device() with the cached wx->ncsi_enabled and
-wx->wol_hw_supported flags, and initializes both flags in
-txgbe_init_type_code().  For ngbe this changes behaviour, because
-ngbe_init_type_code() also sets ncsi_enabled for OCP cards.
-
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> index 59cdd7d71e446..6fbfbb77646c0 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> @@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
->  		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
->  		wr32(wx, WX_RDB_PB_CTL, rxctrl);
->  
-> -		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
-> -		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-> +		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
->  			/* disable mac receiver */
->  			wr32m(wx, WX_MAC_RX_CFG,
->  			      WX_MAC_RX_CFG_RE, 0);
-
-[Severity: Medium]
-Should the ngbe behaviour change here be a separate patch with a Fixes:
-tag, rather than part of a patch whose subject describes a cleanup?
-
-For txgbe the conversion looks bit-for-bit equivalent: WX_NCSI_SUP ==
-WX_NCSI_MASK == 0x8000 and WX_WOL_SUP == WX_WOL_MASK == 0x4000 in
-libwx/wx_type.h, and txgbe_init_type_code() runs from txgbe_sw_init()
-before the first txgbe_reset_hw() and before any
-txgbe_disable_device()/wx_disable_rx() call.
-
-The whole functional delta comes from ngbe, where ncsi_enabled covers an
-extra card type:
-
-drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:ngbe_init_type_code() {
-	...
-	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
-			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
-	...
-}
-
-So on an OCP card with the 0x8000 NCSI bit clear, WX_MAC_RX_CFG_RE is no
-longer cleared on the paths reaching wx_disable_rx():
-
-  ngbe_close() -> ngbe_down() -> ngbe_disable_device() -> wx_disable_rx()
-  ngbe_reset_hw() -> wx_stop_adapter() -> wx_disable_rx()
-  wx_configure_rx() -> wx_disable_rx()
-
-That is a user-visible fix for dropped out-of-band management traffic.
-Could it be split out and carry a Fixes: tag identifying the introducing
-commit, with the stable exclusion expressed separately (for example
-Cc: stable+noautosel) instead of by omitting the tag?  The commit message
-says:
-
-	No Fixes: tag is added on purpose. The broken behaviour goes back to
-	the initial ngbe support in v6.2, and wx_disable_rx() has since been
-	moved into libwx and reworked several times, so this does not
-	cherry-pick into stable kernels in any useful form.
-
-Without the tag, does the provenance of the fix become hard to recover,
-and does bundling it with the refactor make it hard to revert or bisect
-the two changes independently?
-
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> index eb91c4f28ecd4..0ecbd1c0e5532 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> @@ -267,8 +267,7 @@ static void txgbe_disable_device(struct wx *wx)
->  		wx_set_all_vfs(wx);
->  	}
->  
-> -	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
-> -	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-> +	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
->  		/* disable mac transmiter */
->  		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
->  	}
-
-[Severity: Low]
-This is a pre-existing issue and not introduced by this patch, but is
-wol_hw_supported now being read with two different meanings in libwx?
-
-In wx_get_wol()/wx_set_wol() (libwx/wx_ethtool.c) it is strictly a
-hardware capability gate, with the armed state kept in wx->wol:
-
-	if (!wx->wol_hw_supported)
-		return -EOPNOTSUPP;
-
-	wx->wol = 0;
-	if (wol->wolopts & WAKE_MAGIC)
-		wx->wol = WX_PSR_WKUP_CTL_MAG;
-
-The new tests in wx_disable_rx() and txgbe_disable_device() read the same
-capability flag as "the MAC has to stay alive", so after
-"ethtool -s ethX wol d" leaves wx->wol == 0, the MAC receiver (and the
-txgbe transmitter) is still kept enabled on any WoL-capable board.  This
-matches the removed open-coded test exactly, since WX_WOL_SUP ==
-WX_WOL_MASK == 0x4000, so nothing changes at runtime today.
-
-Would testing wx->ncsi_enabled || wx->wol, or introducing a flag named
-for the actual decision (keep the MAC alive for out-of-band management),
-make the shared-code contract explicit?  Otherwise, narrowing
-wol_hw_supported later, or wiring the WoL ethtool ops into txgbe, would
-silently change whether the MAC stays enabled.
-
-> @@ -381,6 +380,9 @@ static void txgbe_init_type_code(struct wx *wx)
->  		wx->media_type = wx_media_unknown;
->  		break;
->  	}
-> +
-> +	wx->wol_hw_supported = ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP);
-> +	wx->ncsi_enabled = ((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP);
->  }
->  
->  /**
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/E5215E3514E295BA%2B20260916063312.203457-1-jiawenwu%40trustnetic.com
