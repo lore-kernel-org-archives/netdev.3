@@ -1,266 +1,138 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013049.outbound.protection.outlook.com [40.93.201.49])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA7C3CC7CD;
-	Sun, 20 Sep 2026 06:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789885193; cv=fail; b=r316uPAelhEozgMFjM24VcC12pN4wy6mm+26Z67C8xwY8A4z/BeWWG9FWe1qW0tFe4Yd3N0nAVRQ8jJ8/3kFIW993/8jA4aBIhMjzYt7TOe9elOgi6n14Ikim/mxUEZrEL4d02ElouIz/GA2gfb3ol7n3MEMlTb7PafiOXRdHRc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789885193; c=relaxed/simple;
-	bh=Q84gCvcY4NWxnQeMbOZPidNYLQg0/dXdU92jpEn8qIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=slmdJCGCUzxKtLf5d0BoNJaSD2lsEdiu4CbjnbK1WUydEcGKHbFr/LBm1L5VP03WopJzsLixiV4BuTJ8Ze23sdBP/M7DnknmRt8hjt7lovXdHvkqmyUyNQCLeZWgWl0eeinBuAPBMXDwgW7IWiKHDafWxlFYn+z12j9C1niS8Zc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rik53mLr; arc=fail smtp.client-ip=40.93.201.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F416523E334;
+	Sun, 20 Sep 2026 06:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789886054; cv=none; b=vGvG9FxM0ReJyMeeSGiduMy3LbgznKIWGEIe5QKcstowU/tYE1p5XBgIaQCkLhxiCggJ2T0f5i57xMZYwBzGelN/33KDyqPzbQeE5/hTjFN/Ea8Q0lU1x6tJihWPOY9U4rsp90iKcXfZKwSdsiGvpY8LJbAc5R2UwZEo0Yz8KmY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789886054; c=relaxed/simple;
+	bh=YP4pYfD1D1BvOT8NtjzW1Tq1l+5qw+7Z1JJ+aXbZr3M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q7iZVGTZZtBpEDLXhNvBkj6/Po2MtsZoXxjw7sJtpqThLAgX3prikwtCK4Bvzv//ZeqTWwe+M/BvPaIQe/YYB6SOZv8/+Z5bU0pW4/RZmQAed2dYA7PcURpgUYG77g/v71g7pD6BQ0ehfaUT661Weg9yzx+tMNUvt2OPjAUmZ44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=KSRL9z7d; arc=none smtp.client-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rik53mLr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yAobbDmkelKAGKW0GtqcBLXjhWc5yGT9HN6fKfqZk0NVgOqkENkiFClcBOZOc4h/+1SQxAxR/8SdqfrXV9BTvZH8oub7LK96M1rR9J8Y9m/vBn+viwFtbWu9nGuWpXQzLWs2tiiCFe7ZeOj463wQvQ4jBBwNYlmFLamzoghw2ZQ4ZTzGmZlscTKqmjbyoeuglwA2Cst39t4ujxXAeIR5AR25CXvPOdTNQO+zOYzz+WN0EBEd8jwl0dFHlaiaomcjB4SJZVyhAqa/JDcO2sOjjElpzSccR1syHzQ94aTTKN3KjfEB91vZU2gBl9ntlMB3yqSG87jZhbf/sPAc6P0KrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S0t8gQI+nihb0rGzGvIDUsD1AN0vldU0N6Iqo/BX0GY=;
- b=OpqcpFv2hrZa/nOVNHPKj9slYd6kWGvVj7p71qoA0Jmd+W4nMC2sjccPGLCnyHXEa0UTDXQxQ7oiHTTPJLanJ6fHOXqIx/nVFVhrB+fBwEPLV0IE4/uaatLlTf8lKQLBLvo3iW90TLenbWoCVD8u2n4wsYrj9x6wVwXaqUazrl/6ThZpQLTYEtGrdlJbhnuGrzSnnbhTlxqZI06h/ysdt8hmediMvOcDbzZggs6LPN/jaxjgfFkGL1e/74hu30bK+frNhhFQiimrNKkv5jripowGd1lUHLqbWVuFi+QESl+EFtFDlvuacs10xzntZVYSAjIVijEODP0kLCf2NiKxnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S0t8gQI+nihb0rGzGvIDUsD1AN0vldU0N6Iqo/BX0GY=;
- b=rik53mLrc8w3u9CuhUlgGNpXRQ+Vp+hCEGMGU4pxzvtZTqdueUk4dj/hT9PIuhgQZGG8E5SonWv33fEMe/LI9X2Pyf60an2y17t8nbNv6xeqRPX3MhAUsj4J/EFBuikXAKVCYK4vBhOwExVFQm+okZ8Hj94KzaFfljBKo8l2pKYRgQd5LbaeC6pr7kykvqjyj4OzKFebc7Mp/8A3JoHs/ye1gDhBfpIhxa+E1Bzk+l/zW3u2jtBfri9e4pbVL2yhhrjBwe6bmRuf/4FIzeyF72YH2JdWmOkDPHmw60sqLy3H/L+bMc2oCseVcvC54radSxcezZDWB7/rEqDLH6zbGw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by DS7PR12MB9503.namprd12.prod.outlook.com (2603:10b6:8:251::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Sun, 20 Sep
- 2026 06:19:48 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Sun, 20 Sep 2026
- 06:19:48 +0000
-Date: Sun, 20 Sep 2026 09:19:37 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Petr Machata <petrm@nvidia.com>
-Cc: Wentao Liang <vulab@iscas.ac.cn>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mlxsw: spectrum_flower: Fix port range register leak
-Message-ID: <20260920061937.GA1766881@shredder>
-References: <20260917113236.2149095-1-vulab@iscas.ac.cn>
- <87pkyawm2j.fsf@pmachata.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pkyawm2j.fsf@pmachata.org>
-X-ClientProxiedBy: FR4P281CA0016.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::6) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="KSRL9z7d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=XR
+	rulCnqLsf892bb7iyH1RkNTddmsqrQPwO48USUCJ0=; b=KSRL9z7dIwkqL8jO7k
+	0uejCw19nGn2/4w0RFxjlQiypeR2CajanCJYENENoCTR3raTIPboRk5gFeA3DNlP
+	zweitSXk1mxJXRA7te7mITJzCDqbWO2GtA41ftBYOAky1F8Zdw6lzwhBP1/rw9O2
+	XDmv3hVjbg3WhGIWM1rlTAcBA=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PykvCgD3v8MPfq9qoXScAA--.56095S2;
+	Sun, 20 Sep 2026 14:32:49 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [Intel-wired-lan] [PATCH net v2] i40e: limit the DDP profile count returned by the firmware
+Date: Sun, 20 Sep 2026 14:32:44 +0800
+Message-Id: <20260920063244.1927792-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS7PR12MB9503:EE_
-X-MS-Office365-Filtering-Correlation-Id: de09a8ea-df3c-4611-0e84-08df16df2bf9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|6133799003|3023799007|10067099003|11063799006|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	bJLQh0oFis+HwIjuabErIIxpddN42DP9fRfSPlxDHj/KrGnCNOjrWB7SR8ydEP1Tnlc9Y/fNOPkr0PU71dK5DokWO8P9DYKX/aWP8iUg1IW+u7G8zxUcJf6qKAa23JcAfxwly8MyrFrRdAGjog8dcW6VCDzngWC6INXQGGjHiTgmsuKbE6Uzr2RI96zkRLmHARvx9yCpTj6r515x2PbwN1jziJybLQZ25aJ3xl3rshiuemSbN9OMRMKicWMLHi6HsQ7+RVu71rQKYzYZuzIszHSkAPZVekj5tYVIXzcww8AO/GdweNL6ByfqvB31HjcXW0re1uXYc9JcPtMlZvAt4LtNTwwwKLsEdFWQ4tqu5C4tOcE2vjeBuiViu+HSjWOQa0JIw+LuzBKtEjO234Xr7ViJJegXI1BvBYIZByaNmCWQLSbYTHMOOo34cePHzePFc2FS3eYIvMftITU7gDFsf2Zpl1XSERxZYCNZ7YpPwXujVu4JeAf3GubMGaLUjgbpt5vplRIXN9SWHiU83IWY0ll8B0QTFoR1oBpugyOWHRA9BJ20k/zYL0jSCXFJkcCH58N2yJCu11EW+F1p62I6pJHAjFB5b1yntFNWQw9sBnEByavYo257a3ZpX2kdX5ieKd4vxlqpMyfZI1CyUtelQkg/kMtOhgweVmwi6pi9bP0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(6133799003)(3023799007)(10067099003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zU/heLijBPFFg3OhnKr99QTRfOxydXk+8hcGSfulWj0IV73BnOtbdqCeGwKu?=
- =?us-ascii?Q?iVo7LAXPUGpHr7NqTsmKQtbFerH9e6aI5RFkFDhhWQG/+WDjids4cYibfOxE?=
- =?us-ascii?Q?ieIenyVkX/8MsMnC8TJZoJpkkSt5gdpAIix4apgMSXZpjUMxm3Z6nX5aXfv7?=
- =?us-ascii?Q?YdL/xMImPoKOFvspRkaczyCQlrmL91Zyw72DCwIG8/Vf6yH3aA5IYYCYy31I?=
- =?us-ascii?Q?UGPZXMTFjuspLiq8aiVaoNBlqC3ZxdYXUTFqKgHKjrvKoFm9xaBvUHDKIDkr?=
- =?us-ascii?Q?QFxKeMF8CGbLuN8E3zcHN+0Kx2UQ3hVEiVt63uhh0hlgNwtLWH8/BixQLlqo?=
- =?us-ascii?Q?4/M/EuiPvAYLBEtc/PzxCDowGNKbJq04hrRQLMPtJsAdvICwA8071r94KV2s?=
- =?us-ascii?Q?keyrfz66aYDIXVeLUQEpHSIuQ/H7lUS6R9xAE98aGreTA/A4gZbVoftt8Upg?=
- =?us-ascii?Q?mAEoh07lgjuRipsIjJUqe/cLu56zxsyrr2xmCNeI2uqx0EN1Gy/NaYYpka11?=
- =?us-ascii?Q?/BQocWxLOuXW7fl1B+Hwx8m+h8tSKPuWFZcdkhPYZ2NOSq3puUitCJl5TNyh?=
- =?us-ascii?Q?9L1LAcEv3iyxJtHjMbvtrR4+arPl9TaEHazBYViGWzgiJ/SMxJ05HgYtXgBa?=
- =?us-ascii?Q?8UAT7udm+lSQYMsOjmfLS5O1K6G5gp3ccZCVLoTC+xtAXOO/op9oJ+0DUQ7G?=
- =?us-ascii?Q?KLUBfZGRS0+ESyXGRjR8HrGvL08+KkqTFyH5sqgiz8d9QqU34Ja44FqtKtOn?=
- =?us-ascii?Q?G7tRpO4flKUVG9pn48L6ynWy0Ns2l83mmVtYaboCEeJGEttJMsxY8bmO+nS4?=
- =?us-ascii?Q?DJcmPyqy4tiRKAoJRnh0C3MbMMX7Ml11jOEHTSGmy+WIOy5KPb8+xQlCdMIk?=
- =?us-ascii?Q?P05Hq84i1SJu4g5az9UpoJeysxn7SGlx2xCXzpu+eRktuIwNsRxQooIJMR5z?=
- =?us-ascii?Q?R0uLTZl9/Yv8kKb7PVW2faQHpVRWSsn9UjZw+clkxzpgPazfro4ilGAFS8m4?=
- =?us-ascii?Q?q228KWurGiWBntNCcI6JpCqqiLk9SP6pNgAKDg6LXBzO/aCbtAUeIAWy5Gd9?=
- =?us-ascii?Q?xEe0fxysT2yecQmO0PUQUWTTMxqGVIDvgLnkycA9JdkrRcqRD2LRBMYY8L08?=
- =?us-ascii?Q?1xQMdNewlniqGZrz0Iy30be84oamEaKB0hvum3pfUvSbwm/uqSU/ty6ktfD9?=
- =?us-ascii?Q?TA69SYi7GnEDl03RJMNfrYzKposhzYbGEvlZdd0Lmn+WMj2EcN9WxPNLnN1A?=
- =?us-ascii?Q?xWOlw4Jve60HsTQimm7DoyjcxYNbjltXv9TYC/L5iahKcmCdLWMTKP3aFV18?=
- =?us-ascii?Q?VTLENLWcVXzAYJtkUJa5r6Hn+fB7lUUSO2gCdGJthec0I16xmKoLvT87qVzL?=
- =?us-ascii?Q?m8Kk4h1OrCAGi0Lv8dWIYqQg9iHl7nOUzsdQRdxxo4ea8sljFrll+M0+4Ehj?=
- =?us-ascii?Q?CiXLINW268fh0SQcK2lBOXFYSGDzs2+6ES/d5CcLa7Vswq/u/rlnSf2KUdCO?=
- =?us-ascii?Q?P4NQa8iFzoIBPkk5Tz+fjMy4rpJJ0GU5FhSZSPvHoeYAVub3Q1gCsQILvASY?=
- =?us-ascii?Q?smPxu/48kC8wEb1OfndF2xkymhuMDzMzGThOXO/0VCzzCPmXCg59GuPmGUKl?=
- =?us-ascii?Q?vbKbmmUD62XfwrXjMI9fG7Yk4lgw6XPkqIf1yL4xfEmj8q9s/SnzLQOAPRMx?=
- =?us-ascii?Q?Xj8T/8jh263ghm/feS3pLFIbQBL7c8/XBXONhpbgv+kzPBIm2XP0ynel75wu?=
- =?us-ascii?Q?DbVwsNoOXg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de09a8ea-df3c-4611-0e84-08df16df2bf9
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 06:19:48.4309
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IFKsyJSnsIfw/4sx3LFL+Cu24Y8wdVYQw1p46VwDq04r6YdufFwxqsoXb2sQrybD7o3n1id5Vc7wQ6vRMzMHww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9503
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PykvCgD3v8MPfq9qoXScAA--.56095S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGw4UWw1Utw18JF1DKry3urg_yoW5Cw4xpa
+	y5GryDGrykJ3Wqgws8Jay7CF4rua4xZFyYga9Fg3s8urn8tFs5WF95JFWrKF129rWkCrn0
+	yF4kCry8AFsrJrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULVysUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqBEqAWqvfhFmGwAA3F
 
-On Fri, Sep 18, 2026 at 06:39:32PM +0200, Petr Machata wrote:
-> Wentao Liang <vulab@iscas.ac.cn> writes:
-> 
-> > mlxsw_sp_flower_parse_ports_range() acquires the source port range
-> > register before the destination one.  If the destination lookup then
-> > fails, the source register reference is left behind in a partially
-> > filled rule info, and callers that pass a stack allocated rule info
-> > never release it.  Release the source register before returning the
-> > error so that the reference is not leaked.
-> 
-> I think this is fixing the wrong issue in fact.
-> 
-> This does fix something, namely the issue of trying to add a new tc
-> chain filter with both src_port and dst_port ranges in a situation where
-> only one resource is left. Before the fix, we end up with full resource
-> allocation even as the offload fails, because the register for the
-> src_port range is not released. After the fix, the src_port register is
-> correctly released.
-> 
-> But look:
-> 
-> # tc qdisc add dev swp1 ingress
-> # tc chain add dev swp1 ingress chain 90 protocol ip flower ip_proto udp src_port 100-9000 dst_port 200-9000
-> # devlink -j resource show pci/0000:06:00.0  | jq '.resources.[][] | select(.name == "port_range_registers") | .occ'
-> 2
-> # tc chain del dev swp1 ingress chain 90
-> # devlink -j resource show pci/0000:06:00.0  | jq '.resources.[][] | select(.name == "port_range_registers") | .occ'
-> 2
-> 
-> So it's much more broken than just this cleanup path edge case.
-> (Notably, 'tc filter' cleans up properly, it is really just 'tc
-> template' that triggers it.)
-> 
-> I.e. let's not have this.
-> 
-> 
-> I think this is the fix that we need, and it fixes the cleanup path
-> issue as well.
-> 
-> modified   drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> @@ -862,14 +862,24 @@ int mlxsw_sp_flower_tmplt_create(struct mlxsw_sp *mlxsw_sp,
->  	memset(&rulei, 0, sizeof(rulei));
->  	err = mlxsw_sp_flower_parse(mlxsw_sp, block, &rulei, f);
->  	if (err)
-> -		return err;
-> +		goto out;
-> +
->  	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
->  					   f->common.chain_index,
->  					   MLXSW_SP_ACL_PROFILE_FLOWER,
->  					   &rulei.values.elusage);
->  
->  	/* keep the reference to the ruleset */
-> -	return PTR_ERR_OR_ZERO(ruleset);
-> +	err = PTR_ERR_OR_ZERO(ruleset);
-> +
-> +out:
-> +	if (rulei.src_port_range_reg_valid)
-> +		mlxsw_sp_port_range_reg_put(mlxsw_sp,
-> +					    rulei.src_port_range_reg_index);
-> +	if (rulei.dst_port_range_reg_valid)
-> +		mlxsw_sp_port_range_reg_put(mlxsw_sp,
-> +					    rulei.dst_port_range_reg_index);
-> +	return err;
->  }
->  
->  void mlxsw_sp_flower_tmplt_destroy(struct mlxsw_sp *mlxsw_sp,
-> 
-> The template parser just needs to figure out which keys are used (the
-> rulei.values.elusage), it doesn't need to allocate any registers, but it
-> neglects to make the appropriate cleanups.
-> 
-> I'll test the above fix some more and send it sometime next week.
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-The above diff still makes it likely that we will miss similar cleanup in the
-future. It's better if both cleanup paths call the same function. Something
-like:
+i40e_aq_get_ddp_list() writes into a I40E_PROFILE_LIST_SIZE buffer,
+which is sized for I40E_MAX_PROFILE_NUM (16) i40e_profile_info entries
+plus the 4 byte p_count header. i40e_ddp_does_profile_exist() and
+i40e_ddp_does_profile_overlap() then loop over profile_list->p_count
+without bounding it, so a firmware reporting more than 16 profiles makes
+both helpers walk past the end of the on-stack buff[] and compare
+against whatever happens to follow it on the stack.
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-index b03ff9e044f9..48c199bb9e25 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
-@@ -989,6 +989,8 @@ void mlxsw_sp_acl_ruleset_prio_get(struct mlxsw_sp_acl_ruleset *ruleset,
- struct mlxsw_sp_acl_rule_info *
- mlxsw_sp_acl_rulei_create(struct mlxsw_sp_acl *acl,
- 			  struct mlxsw_afa_block *afa_block);
-+void mlxsw_sp_acl_rulei_fini(struct mlxsw_sp *mlxsw_sp,
-+			     struct mlxsw_sp_acl_rule_info *rulei);
- void mlxsw_sp_acl_rulei_destroy(struct mlxsw_sp *mlxsw_sp,
- 				struct mlxsw_sp_acl_rule_info *rulei);
- int mlxsw_sp_acl_rulei_commit(struct mlxsw_sp_acl_rule_info *rulei);
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-index cb232accb296..af287b18deee 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
-@@ -340,8 +340,8 @@ mlxsw_sp_acl_rulei_create(struct mlxsw_sp_acl *acl,
- 	return ERR_PTR(err);
- }
- 
--void mlxsw_sp_acl_rulei_destroy(struct mlxsw_sp *mlxsw_sp,
--				struct mlxsw_sp_acl_rule_info *rulei)
-+void mlxsw_sp_acl_rulei_fini(struct mlxsw_sp *mlxsw_sp,
-+			     struct mlxsw_sp_acl_rule_info *rulei)
+Clamp the count to the number of entries the buffer can actually hold
+and make the loop counter unsigned to match the field type.
+
+Fixes: cdc594e00370 ("i40e: Implement DDP support in i40e driver")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+v2:
+  - Reordered variable declarations per Reverse Christmas Tree convention.
+  - Added Reviewed-by tag from Aleksandr Loktionov.
+
+v1: https://lore.kernel.org/all/20260915120354.610499-1-xiaolinkui@126.com/
+
+ drivers/net/ethernet/intel/i40e/i40e_ddp.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ddp.c b/drivers/net/ethernet/intel/i40e/i40e_ddp.c
+index daa9f2c42f70..26dccd4236c1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ddp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ddp.c
+@@ -54,8 +54,8 @@ static int i40e_ddp_does_profile_exist(struct i40e_hw *hw,
  {
- 	if (rulei->action_created)
- 		mlxsw_afa_block_destroy(rulei->act_block);
-@@ -351,6 +351,12 @@ void mlxsw_sp_acl_rulei_destroy(struct mlxsw_sp *mlxsw_sp,
- 	if (rulei->dst_port_range_reg_valid)
- 		mlxsw_sp_port_range_reg_put(mlxsw_sp,
- 					    rulei->dst_port_range_reg_index);
-+}
+ 	struct i40e_ddp_profile_list *profile_list;
+ 	u8 buff[I40E_PROFILE_LIST_SIZE];
++	u32 i, p_count;
+ 	int status;
+-	int i;
+ 
+ 	status = i40e_aq_get_ddp_list(hw, buff, I40E_PROFILE_LIST_SIZE, 0,
+ 				      NULL);
+@@ -63,7 +63,12 @@ static int i40e_ddp_does_profile_exist(struct i40e_hw *hw,
+ 		return -1;
+ 
+ 	profile_list = (struct i40e_ddp_profile_list *)buff;
+-	for (i = 0; i < profile_list->p_count; i++) {
++	/* Never walk past the end of buff[], the profile count reported by
++	 * the firmware is not guaranteed to fit into the buffer we gave it.
++	 */
++	p_count = min_t(u32, profile_list->p_count, I40E_MAX_PROFILE_NUM);
 +
-+void mlxsw_sp_acl_rulei_destroy(struct mlxsw_sp *mlxsw_sp,
-+				struct mlxsw_sp_acl_rule_info *rulei)
-+{
-+	mlxsw_sp_acl_rulei_fini(mlxsw_sp, rulei);
- 	kfree(rulei);
- }
++	for (i = 0; i < p_count; i++) {
+ 		if (i40e_ddp_profiles_eq(pinfo, &profile_list->p_info[i]))
+ 			return 1;
+ 	}
+@@ -109,8 +114,8 @@ static int i40e_ddp_does_profile_overlap(struct i40e_hw *hw,
+ {
+ 	struct i40e_ddp_profile_list *profile_list;
+ 	u8 buff[I40E_PROFILE_LIST_SIZE];
++	u32 i, p_count;
+ 	int status;
+-	int i;
  
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-index 353fd9ca89a6..3532c4bc7e56 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-@@ -862,14 +862,17 @@ int mlxsw_sp_flower_tmplt_create(struct mlxsw_sp *mlxsw_sp,
- 	memset(&rulei, 0, sizeof(rulei));
- 	err = mlxsw_sp_flower_parse(mlxsw_sp, block, &rulei, f);
- 	if (err)
--		return err;
-+		goto out;
- 	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
- 					   f->common.chain_index,
- 					   MLXSW_SP_ACL_PROFILE_FLOWER,
- 					   &rulei.values.elusage);
-+	err = PTR_ERR_OR_ZERO(ruleset);
+ 	status = i40e_aq_get_ddp_list(hw, buff, I40E_PROFILE_LIST_SIZE, 0,
+ 				      NULL);
+@@ -118,7 +123,12 @@ static int i40e_ddp_does_profile_overlap(struct i40e_hw *hw,
+ 		return -EIO;
  
- 	/* keep the reference to the ruleset */
--	return PTR_ERR_OR_ZERO(ruleset);
-+out:
-+	mlxsw_sp_acl_rulei_fini(mlxsw_sp, &rulei);
-+	return err;
- }
- 
- void mlxsw_sp_flower_tmplt_destroy(struct mlxsw_sp *mlxsw_sp,
+ 	profile_list = (struct i40e_ddp_profile_list *)buff;
+-	for (i = 0; i < profile_list->p_count; i++) {
++	/* Never walk past the end of buff[], the profile count reported by
++	 * the firmware is not guaranteed to fit into the buffer we gave it.
++	 */
++	p_count = min_t(u32, profile_list->p_count, I40E_MAX_PROFILE_NUM);
++
++	for (i = 0; i < p_count; i++) {
+ 		if (i40e_ddp_profiles_overlap(pinfo,
+ 					      &profile_list->p_info[i]))
+ 			return 1;
+-- 
+2.25.1
 
