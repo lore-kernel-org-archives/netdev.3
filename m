@@ -1,48 +1,70 @@
-Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B64D471CED;
-	Sun, 20 Sep 2026 19:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789933539; cv=pass; b=KtCKF3WffnpDoofcxanH2uNgCPjEQieNdMcOWo7d475OKwxYHNz2/GZ4jC/X3iiOgZNyXO1MfKRDu12yEgGwnmJy7+oZpAlXrjlrLxRE2bfcREotWfUrIdkGnxKeymWuaxJHxM1EdfjCB9PGTaW63L0r9aAvbjMz9EbHN/An9Do=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789933539; c=relaxed/simple;
-	bh=5u8zaxPREYZxlq84Fkr7UzG0gA1V2a5MvJVVd04e+Bk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eN9nOTY9KiAF/uMrTT+mgvxlgS++OG19P111Shzc8I11SMwEXo8O0kPSeBM24SQYlMEm2/UvktJZyW/2HZBf4pF931cdOB2wNBhDCwFGkOgoEXWyDWzqxAJazLtUsz+ini/Ztz3bPcuC/ELW8ASVMJR0TsQP1cFSK9UTdtXnA0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=ONCh1drJ; arc=pass smtp.client-ip=165.173.182.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594334825B4
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789933542; cv=none; b=OTC0T5Jkbe8JPzFTklhodl/oIsp3L98AiBPBl4/LVUvveO2xigZco/ctg4ILnovI/MOqO/gfmZwTTJ9Yz006uTM3R/NR434YCQVTc+UwQYhbbralWUUQUdFchZDTdS+a5WVHaBQbnxAKRPeio5bK2fHfXYTQU06WRfvyjNTUsOA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789933542; c=relaxed/simple;
+	bh=lPaUeF7IJpjaq75aykVKQZ2IAKhTtUHjZTkLNARPGUo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JZoM1Es3naJPiB445SxD7Tv91gaMa0AYiBkYl1+mkkFa6bmZjyiujT9vubOs4jIw10vsWBG/No6u/tvjXMRG5EF4aQJlcd5jpYbe52KzXgOn7MbzFL6e6TcGb1kCX0bFpGsgdnllRLiS7VEQp+uilcpixH6mYkZNJg4BzLzEhIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HKkpq16n; arc=none smtp.client-ip=74.125.231.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="ONCh1drJ"
-ARC-Seal: i=1; a=rsa-sha256; t=1789933289; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gmLC1VQOcAI+77m5QhnhhkpC2ur+szOw8SvrEH+GfegLZGuGTC2TM2MCh/+o+69+P3KUW9AlfX8veHZmnkq+0ApJSKrlphB8kmJzKEMLoLJdkKjkYgzEacA8qFbCefvC/w0fTKSM3PXuFN/KMpsT7oiIJtOKX1HxL9aJRZrdBac=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789933289; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=rsOlzcBi+bit3bNNiL4SBRxL2dg7cwN2NXcGIs1niS8=; 
-	b=kWNOoO9BTzYsCDVPYtPVzLqkTsjiU8Iar4NP4kOOKJTceBeeuTdB6EUa/dlFzoGjoqJ2NbGzJyHvHsPCGKklAXP3X+1Owe1puY3ITHwp3ISU86TlIFL6F759iE1m+0L2NxTXcw37+lGfT3XvbvKfB+r4lsBY+okwdA/kBq23Wwc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789933289;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=rsOlzcBi+bit3bNNiL4SBRxL2dg7cwN2NXcGIs1niS8=;
-	b=ONCh1drJZ9biPsCT1kXWz/GIxrghm0X7fTLc1ZgDyTRTA7Paab6c2pvLUO33wtt5
-	owaY2gK5IF0u53m3k0t8dp4gCsy3V8FZ3ThTYkpZXEmV9aajZajHOKhrxAMLoxBNEsG
-	F/891wz9jmS1nus0OW99V6Gy5S8/LplrSb7CTY/UbhMmvU4MkmWlTyc0A7bNIcVp9ut
-	MbpyfoJUsjRT2ZUVCDL8X6Q9pJJw7ssSrsph0SLnS6/i/43JrieK6Cg4ejPR4nS2Z2n
-	0ro7Gg28UcmkltrYSBN/DgCzjusFeJAWwtDBGFVxrYfDjXLZbA76jofAHwqtxX83oRC
-	LE23zY0PNw==
-Received: by smtp.zohomail.com with SMTPS id 1789933287945171.018860174824;
-	Sun, 20 Sep 2026 12:41:27 -0700 (PDT)
-From: Rong Zhang <i@rong.moe>
-Date: Mon, 21 Sep 2026 03:40:27 +0800
-Subject: [PATCH v7 13/13] platform/x86: ideapad-laptop: Fully support auto
- keyboard backlight
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HKkpq16n"
+Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-466cc9b2f1dso1516028fac.0
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:45:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789933539; x=1790538339; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=F5XD7E1guV/vtraPrPS4BySY9EoY0nGlYAqlZQZKu0s=;
+        b=HKkpq16nrPRBi8fW9/7ViGipTKFnIVpnZlbcIA7ZSvift7AHYRcY5nv/LXfFcZ2xzG
+         t+lwoprK4ORt2sK9uAxTCWcfsE1G1SqNBy2FGq4PJdsDN3kdC90TjaFEmYCQtoWIIX5i
+         mdIDOrtGLfzAJ6oGOUpYDKcWYxabMA49jIQtPBiC20jwVoZPohQMDtEFB3pjJqUEKeHf
+         NtP4Eu0NyFPgT+fdiPcTggYRa1L44faa2i+bSgKhk+lC5hziT2diXDOp0qbWfL/AZjY+
+         8t6DYFkLGhUIBiA3cHna1FWaopLS2HUw5OByYzydfTrCh0M2/WtKc09Rl2e1EsDno/e+
+         BFJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789933539; x=1790538339;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=F5XD7E1guV/vtraPrPS4BySY9EoY0nGlYAqlZQZKu0s=;
+        b=Zilhlx1VAVwH697TDLQP397u5pzrS2Gji7lhMYHRvwc/GUZoT69yNHdOgs+GLUO59N
+         4bJLBgUZ0txQz6e73/ZqbabCTsBfkI5YquykU7fhOMU1vEzTWcDYONU1GuTUKjZC/iPd
+         vOUXsHjag6P+NzYOZqBZPs9Jza/4okk3t9boWdj0BI0yRdCX+kAiy9Xq3fK0hoTTxSjX
+         QGr/xJjd+P4pr5ejyjGcADBdFjaUPL7DV5JXO74amIno2Nk+uEMGiydKg9ufDRvpzFEX
+         kUdOZdYabAsB0f1MF4f5P+JeCLB4g1flYcwWKUOo+xW8nEOyMjkWg7jb+XPnJPR7YGvh
+         gzdw==
+X-Forwarded-Encrypted: i=1; AKwUvBysp3wdszyM+91Az9/IIy5q3U9B9OE9tEgPExaqT3MW2+LyXxLdmnp0i8H3ppH4j7NJgOaViG4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lnUbcsI6Dn0emmgtJ68NiCHg9RBzSpd+a6eGHaZONrduFXUBIq
+	VCdNvhjFhDkYfF7QQoZXrQSZjaBeNjbH++Qr28SkuM9GAjaZeD101Nxj
+X-Gm-Gg: AYBFou1qyfXDrKlOE8/jXhF6aBpaqGWlCQXeFu4VgqAZ8LqqelhFjPRHy2VuSNi4g/t
+	Hx5qEGNoxEADC59vfqrHSIUQPIeJ+aOD5mBKAw29DeuHKxD/mqN8iX86mFcCJet9qRSIHa76DYq
+	5I8vppbiYzSiNHo4HcKRlTKsTwkH/JXOwNDIkyk+eAhS9HlUBURYwHRgom+4omOva3J/ZQDCQmN
+	DBlXecT8fHymlL9NXUNd6+U1Gv4U0Aa3QSNDlPcWrk+FwTtfCDg2d56VVh+QBqD/EajNL+Dz7VT
+	X910xY0NyLCPbTYXJZzZVVmbPVoM8aHjJZmr9UUAO3X6gDUCgB0IpZO6tgoO9nV5cs+8TxaZVu7
+	xucarSXGuXB5CKTZiPSIqyYpF9AFeVhIU5ta3iyWhxxRF1grTmy/+egYCzjVfvwp+o1mv0m/Sgp
+	x92E1jL422hl6u5XAtkYX8CAnffI1PS+On1Xrs3+mTBw6nAoGOYHW4ezAjuX8kf4Q6RTcuKLLoB
+	5gNRyiLpHtYnsuTBtqscKFxEwm+3nDsRs70FHiCwDGxp54kRj8IoAr7uzl/ehKkmOaCvNj0SxXG
+	VbwyBDSr/kJmFQtGIZt1IGCqZ+cGbGPSgF0fC2eBJ51AOufF86Iq83NrKgrGmLQmaUlTigvgCcu
+	2CM4aJvy2UIF6W6jCW81bUw==
+X-Received: by 2002:a05:6870:c04:b0:47b:d505:86e8 with SMTP id 586e51a60fabf-486dd636e17mr7766380fac.7.1789933539109;
+        Sun, 20 Sep 2026 12:45:39 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4881f4d7861sm6103834fac.1.2026.09.20.12.45.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 12:45:38 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v4 0/6] net: stmmac: add Allwinner H616 EMAC1
+ support
+Date: Sun, 20 Sep 2026 13:45:26 -0600
+Message-Id: <20260920-submit-h616-emac1-v1-v4-0-8347dfe2eb7d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,310 +72,142 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260921-leds-trigger-hw-changed-v7-13-fe3cdb6dec51@rong.moe>
-References: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
-In-Reply-To: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
- =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
- Mark Pearson <mpearson-lenovo@squebb.ca>, 
- "Derek J. Clark" <derekjohn.clark@gmail.com>, 
- Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Ike Panhc <ikepanhc@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
- Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, 
- linux-leds@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- Rong Zhang <i@rong.moe>
-X-Mailer: b4 0.17-dev-1f2f7
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OwQrCMAwG4FeRnq00aa2bJ99DPDQ1uorbZK1Dk
+ b27dXoQURByCUm+PzcRuQscxXJyEx33IYa2yY2ZToSvXLNnGba5F6jQqhKMjGeqQ5KVBSu5dh5
+ kDxKMXihdGHREIp+eOt6Fy8iuRcNJNnxJYvOcZOHAPj3Ux24VYmq76/hBD+PFK2z+PSyXklDOt
+ 6yIYFe41b524TjzbT1G9PgPghnRiKSRjWIqPxH9jix+IDojFj0VGixDSe/IMAx3ppIpa14BAAA
+ =
+X-Change-ID: 20260914-submit-h616-emac1-v1-143703842abb
+To: Richard Genoud <richard.genoud@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Christian Marangi <ansuelsmth@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
+Cc: Maxime Ripard <mripard@kernel.org>, 
+ Alastair D'Silva <alastair@d-silva.org>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ James Hilliard <james.hilliard1@gmail.com>, 
+ Andre Przywara <andre.przywara@arm.com>
+X-Mailer: b4 0.15.2
 
-Currently, the auto brightness mode of keyboard backlight maps to
-brightness=0 in LED classdev. The only method to switch to such a mode
-is by pressing the manufacturer-defined shortcut (Fn+Space). However, 0
-is a multiplexed brightness value; writing 0 simply results in the
-backlight being turned off.
+The H616 secondary EMAC supports RMII at 10/100 Mbps and uses a separate
+system-control clock register at offset 0x34. Add its binding and a
+sun8i stmmac variant using that register. A distinct compatible without
+an older fallback prevents the driver from using EMAC0's clock register.
 
-With brightness processing code decoupled from LED classdev, we can now
-fully support the auto brightness mode. In this mode, the keyboard
-backlight is controlled by the EC according to the ambient light sensor
-(ALS).
+EMAC1 connects internally to the co-packaged AC200 or AC300 EPHY and has
+no external PHY pins. Leave PHY initialization to the PHY driver instead
+of using the H3 internal-PHY controls. The RMII-only variant does not
+expose the RGMII clock-delay properties.
 
-To utilize this, a private hardware control trigger "ideapad-auto" is
-added, with the event handling procedure calling the
-led_trigger_notify_hw_control_changed() interface to activate/deactivate
-the private trigger according to the current LED trigger state. To align
-with LEDS_BRIGHTNESS_HW_CHANGED, the driver neither depends on
-LEDS_TRIGGERS_HW_CHANGED nor selects it.
+First fix failed MTU-change reopening and hardware-resume cleanup in the
+stmmac core so the interface is closed without repeating NAPI shutdown
+or resource teardown. Allow phylink to stop a suspended instance without
+restarting its link. Then move the MAC software reset from probe to the
+DMA reset callback, after PHY initialization. This lets the MAC and its
+MDIO bus remain registered when the PHY driver or one of its suppliers
+is not ready yet. Clear DMA and interrupt state even if the reset times
+out. Keep the separate H3 MDIO-mux reset sequence unchanged.
 
-Meanwhile, block brightness changes on exit to prevent the side effect
-of LED device unregistration when the private trigger is active from
-resetting the brightness to zero, so that the state of auto mode can
-retain among boots.
+The AC200/AC300 EPHY driver and package bindings are already in
+net-next. This series separates the H616 EMAC1 MAC driver and binding
+support from the earlier combined series. PWM, MFD and device-tree
+enablement are being handled separately.
 
-Acked-by: Ike Panhc <ikepanhc@gmail.com>
-Signed-off-by: Rong Zhang <i@rong.moe>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
-Changes in v7:
-- Rename the offloaded() callback to hw_offloaded() (thanks Lee Jones)
-
-Changes in v6:
-- Simplify the auto mode state preservation logic by converting
-  `priv->kbd_bl.initialized' into a tristate integer
-
 Changes in v4:
-- Add missing #include (Thanks Ilpo Järvinen)
-- Remove needless code alignment (ditto)
-- Address concerns from Sashiko
-  - Do not notify the LED trigger core when the registration of the
-    private trigger has failed
-  - https://sashiko.dev/#/patchset/20260719-leds-trigger-hw-changed-v3-0-5fb55722e36e@rong.moe?part=11
+- Add a prerequisite stmmac core fix closing the interface after a failed
+  MTU-change reopen without repeating DMA, IRQ or NAPI teardown.
+- Close the interface after failed hardware resume, and let phylink
+  finish shutdown directly from its suspended state.
+- Retain DMA and interrupt-register clearing when the sun8i MAC reset
+  times out, and return the original reset error.
+- Link to v3: https://patch.msgid.link/20260917-submit-h616-emac1-v1-v3-0-62cb8316e19b@gmail.com
 
 Changes in v3:
-- Address concerns from Sashiko
-  - Fix a race condition in ideapad_kbd_bl_led_cdev_brightness_set()
-  - Fix trigger re-registration of ideapad_kbd_bl_auto_trigger
-  - https://sashiko.dev/#/patchset/20260618-leds-trigger-hw-changed-v2-0-c28c44053cf3%40rong.moe
-- Make registration failures of ideapad_kbd_bl_auto_trigger non-fatal
+- Add a prerequisite fix moving the MAC software reset to the DMA reset
+  callback, after PHY initialization, so delayed module loading and
+  deferred PHY probes do not tear down the MAC and its MDIO bus.
+- Preserve the H3 MDIO-mux reset and propagate hardware-reset failures
+  through the normal stmmac hardware-setup error path.
+- Add Alastair D'Silva to Cc and rebase onto current net-next.
+- Link to v2: https://patch.msgid.link/20260915-submit-h616-emac1-v1-v2-0-322b32e40eb9@gmail.com
+
+Changes in v2:
+- Drop EMAC1 TX/RX clock-delay property support and keep the existing
+  RGMII-only delay descriptions unchanged, as requested by Maxime Ripard.
+- Clarify that EMAC1 connects internally to a co-packaged PHY, not an
+  external PHY or the H3-style internal-PHY controls.
+- Rebase onto current net-next.
+- Link to v1: https://patch.msgid.link/20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com
+
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Russell King <linux@armlinux.org.uk>
+To: Christian Marangi <ansuelsmth@gmail.com>
+To: Chen-Yu Tsai <wens@kernel.org>
+To: Jernej Skrabec <jernej.skrabec@gmail.com>
+To: Samuel Holland <samuel@sholland.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Maxime Ripard <mripard@kernel.org>
+To: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+To: Jose Abreu <joabreu@synopsys.com>
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+Cc: devicetree@vger.kernel.org
+
 ---
- drivers/platform/x86/lenovo/Kconfig          |   1 +
- drivers/platform/x86/lenovo/ideapad-laptop.c | 119 ++++++++++++++++++++++++---
- 2 files changed, 109 insertions(+), 11 deletions(-)
+James Hilliard (6):
+      net: phylink: allow stopping a suspended instance
+      net: stmmac: close the interface after a failed MTU reopen
+      net: stmmac: close the interface after failed hardware resume
+      net: stmmac: sun8i: reset the MAC after PHY initialization
+      dt-bindings: net: allwinner: add H616 EMAC1
+      net: stmmac: sun8i: add support for Allwinner H616 EMAC1
 
-diff --git a/drivers/platform/x86/lenovo/Kconfig b/drivers/platform/x86/lenovo/Kconfig
-index 516594993073..a97852b0b228 100644
---- a/drivers/platform/x86/lenovo/Kconfig
-+++ b/drivers/platform/x86/lenovo/Kconfig
-@@ -16,6 +16,7 @@ config IDEAPAD_LAPTOP
- 	select INPUT_SPARSEKMAP
- 	select NEW_LEDS
- 	select LEDS_CLASS
-+	select LEDS_TRIGGERS
- 	help
- 	  This is a driver for Lenovo IdeaPad netbooks contains drivers for
- 	  rfkill switch, hotkey, fan control and backlight control.
-diff --git a/drivers/platform/x86/lenovo/ideapad-laptop.c b/drivers/platform/x86/lenovo/ideapad-laptop.c
-index b57c4f18d0ea..db03c0c9e497 100644
---- a/drivers/platform/x86/lenovo/ideapad-laptop.c
-+++ b/drivers/platform/x86/lenovo/ideapad-laptop.c
-@@ -15,6 +15,7 @@
- #include <linux/bug.h>
- #include <linux/cleanup.h>
- #include <linux/compiler.h>
-+#include <linux/container_of.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -32,6 +33,7 @@
- #include <linux/platform_device.h>
- #include <linux/platform_profile.h>
- #include <linux/power_supply.h>
-+#include <linux/printk.h>
- #include <linux/rfkill.h>
- #include <linux/seq_file.h>
- #include <linux/string_choices.h>
-@@ -226,7 +228,10 @@ struct ideapad_private {
- 		bool ymc_ec_trigger       : 1;
- 	} features;
- 	struct {
--		bool initialized;
-+		int initialized; /*  0: initializion pending/ongoing/failed
-+				  * >0: initializion finished
-+				  * <0: unregisteration ongoing/finished
-+				  */
- 		int type;
- 		struct led_classdev led;
- 		unsigned int last_hw_brightness;
-@@ -1716,14 +1721,68 @@ static int ideapad_kbd_bl_led_cdev_brightness_set(struct led_classdev *led_cdev,
- {
- 	struct ideapad_private *priv = container_of(led_cdev, struct ideapad_private, kbd_bl.led);
- 
-+	/*
-+	 * When unregistering: It must be the side effect of LED unregistration
-+	 * when our private trigger is active. We've set LED_RETAIN_AT_SHUTDOWN
-+	 * to retain led_cdev brightness level. To do the same for auto mode,
-+	 * gate changes and return early.
-+	 *
-+	 * It's needless to gate changes when initializing, as there may be a
-+	 * time margin between sysfs attribute creation and state change.
-+	 */
-+	if (unlikely(priv->kbd_bl.initialized < 0))
-+		return 0;
-+
- 	return ideapad_kbd_bl_brightness_set(priv, brightness);
- }
- 
-+static int ideapad_kbd_bl_auto_trigger_activate(struct led_classdev *led_cdev)
-+{
-+	struct ideapad_private *priv = container_of(led_cdev, struct ideapad_private, kbd_bl.led);
-+
-+	return ideapad_kbd_bl_hw_brightness_set(priv, KBD_BL_AUTO_MODE_HW_BRIGHTNESS);
-+}
-+
-+static bool ideapad_kbd_bl_auto_trigger_hw_offloaded(struct led_classdev *led_cdev)
-+{
-+	struct ideapad_private *priv = container_of(led_cdev, struct ideapad_private, kbd_bl.led);
-+
-+	guard(mutex)(&priv->kbd_bl.mutex);
-+
-+	return priv->kbd_bl.last_hw_brightness == KBD_BL_AUTO_MODE_HW_BRIGHTNESS;
-+}
-+
-+static struct led_hw_trigger_type ideapad_kbd_bl_auto_trigger_type;
-+
-+static struct led_trigger ideapad_kbd_bl_auto_trigger = {
-+	.name = "ideapad-auto",
-+	.trigger_type = &ideapad_kbd_bl_auto_trigger_type,
-+	.activate = ideapad_kbd_bl_auto_trigger_activate,
-+	.hw_offloaded = ideapad_kbd_bl_auto_trigger_hw_offloaded,
-+};
-+
-+static bool ideapad_kbd_bl_auto_trigger_registered;
-+
-+static void ideapad_kbd_bl_notify_hw_control(struct ideapad_private *priv,
-+					     unsigned int hw_brightness)
-+{
-+	bool hw_control, last_hw_control;
-+
-+	if (!ideapad_kbd_bl_auto_trigger_registered || priv->kbd_bl.type != KBD_BL_TRISTATE_AUTO)
-+		return;
-+
-+	hw_control = hw_brightness == KBD_BL_AUTO_MODE_HW_BRIGHTNESS;
-+	last_hw_control = priv->kbd_bl.last_hw_brightness == KBD_BL_AUTO_MODE_HW_BRIGHTNESS;
-+
-+	if (hw_control != last_hw_control)
-+		led_trigger_notify_hw_control_changed(&priv->kbd_bl.led, hw_control);
-+}
-+
- static void ideapad_kbd_bl_notify(struct ideapad_private *priv)
- {
- 	int hw_brightness, brightness;
- 
--	if (!priv->kbd_bl.initialized)
-+	if (unlikely(priv->kbd_bl.initialized <= 0))
- 		return;
- 
- 	guard(mutex)(&priv->kbd_bl.mutex);
-@@ -1739,6 +1798,8 @@ static void ideapad_kbd_bl_notify(struct ideapad_private *priv)
- 	if (priv->kbd_bl.last_hw_brightness == hw_brightness)
- 		return;
- 
-+	ideapad_kbd_bl_notify_hw_control(priv, hw_brightness);
-+
- 	priv->kbd_bl.last_hw_brightness = hw_brightness;
- 
- 	led_classdev_notify_brightness_hw_changed(&priv->kbd_bl.led, brightness);
-@@ -1751,9 +1812,11 @@ static int ideapad_kbd_bl_init(struct ideapad_private *priv)
- 	if (!priv->features.kbd_bl)
- 		return -ENODEV;
- 
--	if (WARN_ON(priv->kbd_bl.initialized))
-+	if (WARN_ON(priv->kbd_bl.initialized > 0))
- 		return -EEXIST;
- 
-+	priv->kbd_bl.initialized = 0;
-+
- 	err = devm_mutex_init(&priv->platform_device->dev, &priv->kbd_bl.mutex);
- 	if (err)
- 		return err;
-@@ -1771,6 +1834,24 @@ static int ideapad_kbd_bl_init(struct ideapad_private *priv)
- 
- 	switch (priv->kbd_bl.type) {
- 	case KBD_BL_TRISTATE_AUTO:
-+		priv->kbd_bl.led.max_brightness = 2;
-+
-+		if (!ideapad_kbd_bl_auto_trigger_registered) {
-+			dev_warn(&priv->platform_device->dev,
-+				 "Cannot provide LED trigger %s for keyboard backlight\n",
-+				 ideapad_kbd_bl_auto_trigger.name);
-+			break;
-+		}
-+
-+		priv->kbd_bl.led.flags |= LED_TRIG_HW_CHANGED;
-+		priv->kbd_bl.led.trigger_type = &ideapad_kbd_bl_auto_trigger_type;
-+		priv->kbd_bl.led.hw_control_trigger = ideapad_kbd_bl_auto_trigger.name;
-+
-+		/* Hardware remembers the last brightness level, including auto mode. */
-+		if (hw_brightness == KBD_BL_AUTO_MODE_HW_BRIGHTNESS)
-+			priv->kbd_bl.led.default_trigger = ideapad_kbd_bl_auto_trigger.name;
-+
-+		break;
- 	case KBD_BL_TRISTATE:
- 		priv->kbd_bl.led.max_brightness = 2;
- 		break;
-@@ -1791,17 +1872,17 @@ static int ideapad_kbd_bl_init(struct ideapad_private *priv)
- 	if (err)
- 		return err;
- 
--	priv->kbd_bl.initialized = true;
-+	priv->kbd_bl.initialized = 1;
- 
- 	return 0;
- }
- 
- static void ideapad_kbd_bl_exit(struct ideapad_private *priv)
- {
--	if (!priv->kbd_bl.initialized)
-+	if (priv->kbd_bl.initialized <= 0)
- 		return;
- 
--	priv->kbd_bl.initialized = false;
-+	priv->kbd_bl.initialized = -1;
- 
- 	led_classdev_unregister(&priv->kbd_bl.led);
- }
-@@ -2620,17 +2701,30 @@ static int __init ideapad_laptop_init(void)
- {
- 	int err;
- 
-+	err = led_trigger_register(&ideapad_kbd_bl_auto_trigger);
-+	if (err) {
-+		pr_warn("Failed to register LED trigger %s: %d\n",
-+			ideapad_kbd_bl_auto_trigger.name, err);
-+	} else {
-+		ideapad_kbd_bl_auto_trigger_registered = true;
-+	}
-+
- 	err = ideapad_wmi_driver_register();
- 	if (err)
--		return err;
-+		goto err_ledtrig;
- 
- 	err = platform_driver_register(&ideapad_acpi_driver);
--	if (err) {
--		ideapad_wmi_driver_unregister();
--		return err;
--	}
-+	if (err)
-+		goto err_wmi;
- 
- 	return 0;
-+
-+err_wmi:
-+	ideapad_wmi_driver_unregister();
-+err_ledtrig:
-+	if (ideapad_kbd_bl_auto_trigger_registered)
-+		led_trigger_unregister(&ideapad_kbd_bl_auto_trigger);
-+	return err;
- }
- module_init(ideapad_laptop_init)
- 
-@@ -2638,6 +2732,9 @@ static void __exit ideapad_laptop_exit(void)
- {
- 	platform_driver_unregister(&ideapad_acpi_driver);
- 	ideapad_wmi_driver_unregister();
-+
-+	if (ideapad_kbd_bl_auto_trigger_registered)
-+		led_trigger_unregister(&ideapad_kbd_bl_auto_trigger);
- }
- module_exit(ideapad_laptop_exit)
- 
+ .../bindings/net/allwinner,sun8i-a83t-emac.yaml    | 13 ++++
+ .../devicetree/bindings/net/snps,dwmac.yaml        |  2 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  | 69 +++++++++++++---------
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |  2 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 30 +++++++---
+ drivers/net/phy/phylink.c                          | 16 +++++
+ 6 files changed, 98 insertions(+), 34 deletions(-)
+---
+base-commit: 8830e65ed46de41f849eefb8ba227d4852c460f6
+change-id: 20260914-submit-h616-emac1-v1-143703842abb
 
--- 
-2.55.0
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
