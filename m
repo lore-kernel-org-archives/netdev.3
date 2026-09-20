@@ -1,120 +1,350 @@
-Received: from mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C730F4F5E0
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789864930; cv=none; b=quAyVydw5KWeSYxxi2LFJ54NAJo/2XRft+3GmGqIPifD5FB+IGQd0mGS2uSYi2ONI3ys1lDfWLA40u1d9RFVM2NNY/rgEFBSj4Krwz4eyt3jOiPA2hZf4riStxMm1YyMmRnQ8Q26kZlEYz2EuDpWvrI+V1kHQSg3uuFog8lZxdI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789864930; c=relaxed/simple;
-	bh=QEaVE2m8CGO8U9AP7AKRV19eWj0yHW+Dk2N/YZX+Nj0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvhxthiMfFnEewcTEp4PfvC2ZVNxbPyE3TUDXfCIWhM0qpZmaNKetFaGcIi2Xao4/qtbj2Zkh79LBRk/lp5nASAynt99Xqv3nXFNY1gV/tFKufN7KyXQU+tmZ4rgmwZ/t55y892u3l6bngL784vqSa5hpDJwRH0uDYgCLuNTYOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=f5q5udJt; arc=none smtp.client-ip=91.218.175.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCED31F99A
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789864945; cv=pass; b=bsWSQtXrRtS96qI12f3FpO1Btb8XMvWgA+Gzx9nRWofdd1ANoj4aXtrl5jqCAPfq0hi41WtDrKlAjNh+ylPgc1q6OhUQ8Ol2MJM3lkDUhOak1SanTSYNaTE0OIKevz1j8IwbgSFwiLkCFKu+R68rNWVevSRyvrEAWvFwXAoRCsY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789864945; c=relaxed/simple;
+	bh=k1f1AuHVWSX0iWaYfMIIsqYIji3cQio6kIFlfC9Frk8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sWAFudlx3sJ3g/Uvu3tMos1RaMd+f4RqGA9fDjvYr1ZECIgDntkl5APDQOP9TdT6gUrfnXHUED1b3CsNe9lbUfP0FkTB8PIYYLivupqFVWNjsXi1vK3SgaKEsqjoGg21TdQaUQjvApaN2yd08HMNXefOoYpAJrgkgpzeVJybvDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G15X1BIa; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="f5q5udJt"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=QEaVE2m8CGO8U9AP7AKRV19eWj0yHW+Dk2N/YZX+Nj0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789864924; v=1; x=1790469724;
- b=f5q5udJt7cH7jP+VE+rhRPRDPQT0Vj/qSYe1oFCuUWe3WHAyzWdR1TdHBZBdwtoACa5cQ703
- ZsZHeia0JTU3s/OTzn+PEABSNLzxWCkSgFjnvTCDTfdLVOlcpmXYPtNBqOqTe1ip1ojN+1Mftd+
- xfmbKRVjJX+4h5LhQdJsqVwI=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 8e50ea4228a871cc;
-	Sun, 20 Sep 2026 00:42:04 +0000
-X-Mizu-Trace-ID: 8e50ea4228a871cc
-X-Migadu-Flow: FLOW_OUT
-Date: Sun, 20 Sep 2026 08:41:55 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: David Dai <zdai@linux.ibm.com>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	jarod@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, pradeeps@linux.ibm.com
-Subject: Re: [PATCH net v2 1/1] bonding: crypto offload enabled, non-offload
- slave failover, rekey failed
-Message-ID: <aq8r0zsm8_a7R5vD@fedora>
-References: <20260918211155.1664493-1-zdai@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G15X1BIa"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f13d76so2148914e87.3
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 17:42:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789864941; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OzGzUOWTttgSkMjo+ESFrsm1QHK4MMPs3V1Dpj7qzVlyvQxb+vsEMYiAGscYq21rkD
+         3iZXG79N5aBR63SY/vXieV/7Z162fOjDYKERczMdwQfenC79yAp8LejK7WIoTef5opxg
+         5KhgxVnQVdNeK/wraZZhlrVnSFrelzc60EuRwIhZX7nLRa0VcQeNqEzE+v7HmHVWsjlF
+         /6fXNJZxV9ugBtOLfMWNqKCuK4XdkGF85nKrFxdv6Xq89CwJfJhgTZUJdz5a50WshVkR
+         NqKs1/yzT2C0LFcatnnd64HixxZJKtrRR/gItHp3qtustViU5zXXAz4vu9ydV1VEazvN
+         vtCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=cQU5d/EG0qddsCQBADuhWeJNZr869cXrSlAZdp5FiBQ=;
+        fh=SgGdT+qztqUYtS1vewz7sHe5fPX0zElCHWxrpA3mcgo=;
+        b=ezi/3vtyfwsALWATyHps1Ke2j88L0bH1YSctmH56vYxrx1Kk6fctMoeDRXKxfjKmRf
+         KrbpJNnTJl7dCW6YoGGdic4ZyaniYtzptV0nW4lJ3kbwNLxX75uoIvU9SjLrKsIeaE9C
+         HXR4z+ZCW+hu8WbbO2EZYIPPQqajbhlPKh9XYQeEnb0Zuhizd4GXo+mwvyNe/LoOCIij
+         zhfkYEfXEcvBb3DAYH+DXK+grDBEneZdSO1+PMkiHHDgk9PsySQZUsTRvbfhlsOyruN9
+         bDZrESHduvtkUoVq8uELUiJQdTQ+PkUfOnjRkCdRdwy1fAm22yLbKZ7YrxT03LcabsEI
+         6cGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789864941; x=1790469741; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cQU5d/EG0qddsCQBADuhWeJNZr869cXrSlAZdp5FiBQ=;
+        b=G15X1BIa7k2omih1uE+9lk16ugNl5nCQuESWh32/Hvhzw53+085LfFGJo6y8hbgd+4
+         3ySbpcF9UoS0oMpx5+3lFHwNvVUqG8+236TwNjo4PG+uLSCt+71abEHz2VmT6n4mrfee
+         HzJyaUkzbG/1P2TGlQ1YEwKFlsyQolrnLAHwUqYS2XPEnGrK4nbwF+4VQZQC20KxO9Gh
+         e9nfu606eDVYzZGoNNMav8vYaYmDYO/SVYtgujqpoxi5zcLLIf8ewB8wjp9pR2Q3UMiT
+         6Z0HGft4DDsv0DNlT45wI3VgThTRwE4sOyxcqgcxiqpNPshtVK6Pg9cAWEb0PHXOprFR
+         aXgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789864941; x=1790469741;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cQU5d/EG0qddsCQBADuhWeJNZr869cXrSlAZdp5FiBQ=;
+        b=BTabs6hUVteG5EWbOshfEtEARFz852jpo6MBk8HwSkInlsvXe73UC8QY1/VlJPxN5z
+         YEExf6gyVgcJRIUiVVW/qQoMZbZL4CxPBjNhArq+7tAAwWRbJ2Xo2jgq1Did5iomB5i+
+         LuPX3x71JEHyb7uNXCI70mUFm+c74FfYjLctAqddO0dq5O2C5kEZfVzkY0h4YYxgxrEr
+         GdN04Ofk7MITRs4Xd9cINEzLA7fIu7cGvSJekqRAjbHGuIVbEDhcdiddeCt8KktPliWu
+         Llp7aWRspIBJwYIJhsTOIUt8538BgheYLarevyMoxDUahm5LfRbz/vXqYGESPVyDP4Cn
+         xxUA==
+X-Forwarded-Encrypted: i=1; AKwUvBzIEbXXV3GKsoAsO4yUdNlLKzk9NBgxaGp9PAr0aU4FekQtHJuZzKCFgqi1OJx4zL45iaxHWE4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kgQ5zgLTrgZ0Qvn/Q91+tmWcVrJNOcIPXdDScXFe94VZdPR8HI
+	fFoE0Ok07KTSDtjUR7KahNX/d2YvLl0sJhiPGEJgxsAxP4zk6SMh84vTZUvH+z21bsbpx1TqB9L
+	pa2io6Qx0DYV/DHY/eUd7rmHnA54fH18=
+X-Gm-Gg: AYBFou30HCkvwQ4JBfmKpXtzJgOffjLjtqu5qRa+arjceDkdMskEUiRawmxrs/7kOe7
+	xfyLv8zhrSYra6rbUjG3mUoyxeTKF5TtlA2RKlK4XdiU7erPZD1DwQ7AzBnPUIhFkiNWlusNhNu
+	vLROVET24H7LZP116HvxkbAc8/sNAjpo/m5zmpv+patE0YZjNHDmXuw4di48HVugNmEIAe9Lqu4
+	mYeHVi9S92l9hIYPdC0RbYlyFLNH47sV71RLv4u4A3qwVzIIlvVaM9DWVypDWXExg3ODdFfzOKk
+	RDcQKfA/u8bbYEeW4oylUK96mF+2zZaCLTKJHJuE9Z5truIGbdWBoqu7Tj3mTD6hxcNyvz7oDiZ
+	LWjamGliD3C+gx+nfGQtfyss+Gjhq2ToYpF26EJFqwAVPebwx+E/a336g+F2Pyt7N8vB1hw==
+X-Received: by 2002:a05:6512:3baa:b0:5b7:61d0:ab80 with SMTP id
+ 2adb3069b0e04-5b8c184e3a4mr2293459e87.31.1789864941053; Sat, 19 Sep 2026
+ 17:42:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918211155.1664493-1-zdai@linux.ibm.com>
+References: <20260919143732.11772-1-kerneljasonxing@gmail.com> <DLJHVEYXMZ6R.1YX59HGMRMYO0@gmail.com>
+In-Reply-To: <DLJHVEYXMZ6R.1YX59HGMRMYO0@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Sun, 20 Sep 2026 08:41:40 +0800
+X-Gm-Features: AcwNN1Uv0TdypWH05EZELvNYl9FBDjJSLrTBlPKhVyGR2K_fHkGpIZTzX6tqiJU
+Message-ID: <CAL+tcoD36zA=TYSzKSNWV0Ypo_HRBRU_Qh6rQtPL51aXR54p7Q@mail.gmail.com>
+Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	Jason Xing <kerneljasonxing@gmail.com>
+Content-Type: multipart/mixed; boundary="0000000000000208ba065bdf6849"
 
-On Fri, Sep 18, 2026 at 04:11:55PM -0500, David Dai wrote:
-> Create a bonding device (i.e. bond0) in active-backup mode, 2 slaves.
-> Active slave: offload capable interface (i.e. eth1), primary interface.
-> Backup slave: non-offload capable interface(i.e. eth2).
-> Configure strongswan service swantl.conf child SA "hw_offload = crypto"
-> Start strongswan service
-> IPSec Crytpo Offload is enabled on top of bond0. i.e. 
-> ip xfrm state |grep offload
->         crypto offload parameters: dev bond0 dir out mode crypto
-> 	crypto offload parameters: dev bond0 dir in mode crypto
-> 
-> Active slave eth1 takes adavantage of IPSec Crypto Offload capability. 
-> 
-> If active slave eth1 is down for any reason (i.e. eth1 link down):
-> ip link set down dev eth1
-> non-offload capable interface eth2 failover to becomes active slave. 
-> The existing SAs can continue use software IPsec after failover.
-> Traffic still keeps going properly.
-> 
-> However if eth1 link had not recovered yet, strongswan service does
-> new child SA rekey, or uses swanctl command to do new child SA rekey, 
-> it will fail because active slave eth2 doesn't support crypto offload.
-> In bond_ipsec_add_sa routine, it returns -EINVAL now, which is 
-> treated as fatal error by xfrm_dev_state_add routine in kernel xfrm.
-> 
-> To make the non-offload active slave survive the child SA rekey, need 
-> to make bond_ipsec_add_sa routine returns -EOPNOTSUPP instead when 
-> active slave doesn't support IPsec Crypto offload, the xfrm will 
-> gracefully fallback to create new SA using Software IPsec. 
-> Network traffic can keep going.
-> 
-> After offload capable interface eth1 link is up, becomes active slave,
-> next time strongswan child SA rekey will create a new SA which enables
-> crypto offload again.
-> 
-> Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-> Signed-off-by: David Dai <zdai@linux.ibm.com>
-> ---
-> Changes in v2:
-> - Add "Fixes: 18cb261afd7b ("bonding: support hardware encryption
->   offload to slaves")" in v2 patch comment.
-> - Remove last line in v1 patch comment "This way, network traffic 
->   is never interrupted, always keeps going." to avoid confusion.
-> - Link to v1: https://lore.kernel.org/lkml/20260903220123.475685-1-zdai@linux.ibm.com/
-> ---
->  drivers/net/bonding/bond_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index a9bff7663eec..de2489c3d9bf 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -490,7 +490,7 @@ static int bond_ipsec_add_sa(struct net_device *bond_dev,
->  	    !real_dev->xfrmdev_ops->xdo_dev_state_add ||
->  	    netif_is_bond_master(real_dev)) {
->  		NL_SET_ERR_MSG_MOD(extack, "Slave does not support ipsec offload");
-> -		err = -EINVAL;
-> +		err = -EOPNOTSUPP;
->  		goto out;
->  	}
->  
-> -- 
-> 2.55.0
-> 
+--0000000000000208ba065bdf6849
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
+On Sun, Sep 20, 2026 at 2:12=E2=80=AFAM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> On Sat Sep 19, 2026 at 2:37 PM UTC, Jason Xing wrote:
+> > From: Jason Xing <kernelxing@gmail.com>
+> >
+> > Greeting,
+> >
+> > It's BPF Timestamping 2.0 that aims to observe the packet latency
+> > more efficiently and simply for different protocols. The current
+> > series is only focused on TCP protocol.
+> >
+> > At Netdev 0x1a/Netconf 2026, the history, background, motivation and
+> > rough implementation of the feature were exhaustively introduced[1].
+> >
+> > History
+> > =3D=3D=3D=3D=3D=3D=3D
+> > - In 2009, Patrick Ohly implemented the basic infrastructure
+> > - In 2014, Willem de Bruijn enhanced the TCP latency observation
+> > - In 2024, Jason Xing proposed its lightweight BPF version
+> > Detailed slides from 28 to 32 [1].
+> >
+> > Background
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > Even though BPF Timetamping 1.0 is comparatively low-overhead,
+> > transparent, it's still complicated due to a few points inherited
+> > from the design:
+> > - Inflexible/fixed reporting phases (qdisc/driver/ack)
+> >   When we confirm the issue arises from the kernel by using attribution
+> >   ability of timestamping feature, we need to further minimize the scop=
+e
+> >   until the issue is fixed. That means, we then have to resort to write
+> >   a few complex BPF progs with the similar functionalities (like skb
+> >   level tag) which should not happen.
+> > - Not enough low-overhead
+> >   Serving the sensitive applications, an always-on latency observation
+> >   platform should mitigate the self-impact as much as possible. As we
+> >   can conclude from BPF Timestamping selftests, there are some blocking
+> >   and time-consuming points like where reading/writing BPF maps happen
+> >   in the extremely hot paths.
+> > - Minor flaws
+> >   There are a few minor flaws inherited from the initial design, like
+> >   missing tagging the last packet[2][3][4].
+>
+>
+> All these "issues" sound minor and on their own do not warrant new uapi.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Some of them are minor, some definitely not.
+
+Current BPF timestamping 1.0 is not perfect and __doesn't support
+container scenario__ which is a big thing.
+
+Besides, performance impact and unflexibility are real problems when
+we're trying so hard to deploy the platform. The experience isn't
+limited to us; several of my friends at other companies widely deploy
+the version 1.0 feature.
+
+>
+> This RFC don't even have an example of how it could be used end-to-end.
+
+Sorry, I should've uploaded the examples. Please see the attachment.
+# make && ./bpfts_v2
+
+The usage is simple:
+1. bpf_setsockopt to enable the feature
+2. read out the start time of skb
+3. compute the delta
+
+Please note: my intention here is to initiate a discussion on how it
+looks like in the future. Reusing hwtstamp potentially risks breaking
+some existing applications, which is the point I'm most open to
+discussing.
+
+Thanks,
+Jason
+
+--0000000000000208ba065bdf6849
+Content-Type: application/octet-stream; name=Makefile
+Content-Disposition: attachment; filename=Makefile
+Content-Transfer-Encoding: base64
+Content-ID: <f_mu937vnw2>
+X-Attachment-Id: f_mu937vnw2
+
+Q0xBTkcgICA/PSBjbGFuZwpDQyAgICAgID89IGdjYwpCUEZUT09MID89IGJwZnRvb2wKQVJDSCAg
+ICA/PSAkKHNoZWxsIHVuYW1lIC1tIHwgc2VkICdzL3g4Nl82NC94ODYvJyBcCgkJCXwgc2VkICdz
+L2FhcmNoNjQvYXJtNjQvJyBcCgkJCXwgc2VkICdzL3BwYzY0bGUvcG93ZXJwYy8nIFwKCQkJfCBz
+ZWQgJ3MvbWlwcy4qL21pcHMvJyBcCgkJCXwgc2VkICdzL3Jpc2N2NjQvcmlzY3YvJyBcCgkJCXwg
+c2VkICdzL2xvb25nYXJjaC4qL2xvb25nYXJjaC8nKQoKQ0ZMQUdTICAgOj0gLWcgLU8yIC1XYWxs
+CklOQ0xVREVTIDo9IC1JLgoKLlBIT05ZOiBhbGwgY2xlYW4KCmFsbDogYnBmdHNfdjIKCnZtbGlu
+dXguaDoKCSQoQlBGVE9PTCkgYnRmIGR1bXAgZmlsZSAvc3lzL2tlcm5lbC9idGYvdm1saW51eCBm
+b3JtYXQgYyA+ICRACgpicGZ0c192Mi5icGYubzogYnBmdHNfdjIuYnBmLmMgdm1saW51eC5oCgkk
+KENMQU5HKSAkKENGTEFHUykgLXRhcmdldCBicGYgLURfX1RBUkdFVF9BUkNIXyQoQVJDSCkgXAoJ
+CSQoSU5DTFVERVMpIC1jICQ8IC1vICRACgpicGZ0c192Mi5za2VsLmg6IGJwZnRzX3YyLmJwZi5v
+CgkkKEJQRlRPT0wpIGdlbiBza2VsZXRvbiAkPCA+ICRACgpicGZ0c192MjogYnBmdHNfdjIuYyBi
+cGZ0c192Mi5za2VsLmgKCSQoQ0MpICQoQ0ZMQUdTKSAkKElOQ0xVREVTKSAtbyAkQCAkPCAtbGJw
+ZiAtbGVsZiAtbHoKCmNsZWFuOgoJcm0gLWYgYnBmdHNfdjIgYnBmdHNfdjIuYnBmLm8gYnBmdHNf
+djIuc2tlbC5oIHZtbGludXguaAo=
+--0000000000000208ba065bdf6849
+Content-Type: application/octet-stream; name="bpfts_v2.bpf.c"
+Content-Disposition: attachment; filename="bpfts_v2.bpf.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mu937vng0>
+X-Attachment-Id: f_mu937vng0
+
+Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAKLyoKICogQlBGIFRpbWVzdGFtcGlu
+ZyBWMiDigJQgc3RhbmRhbG9uZSBCUEYgcHJvZ3JhbQogKgogKiBzb2Nrb3BzOiBlbmFibGUgU0tf
+QlBGX0NCX1RJTUVTVEFNUElOR19WMiBvbiBuZXcgVENQIGNvbm5lY3Rpb25zCiAqIGZlbnRyeTog
+IHJlYWQgc2tiIHN0YXJ0X3RpbWUgYW5kIHN1YnRyYWN0IGJwZl9rdGltZV9nZXRfcmVhbF9ucygp
+CiAqCiAqIE5vIEJQRiBtYXAgb24gdGhlIHRpbWluZyBwYXRoLiBDb21waWxlIG91dHNpZGUgdGhl
+IGtlcm5lbCB0cmVlOgogKiAgIG1ha2UgJiYgc3VkbyAuL2JwZnRzX3YyCiAqLwojaW5jbHVkZSAi
+dm1saW51eC5oIgojaW5jbHVkZSA8YnBmL2JwZl9oZWxwZXJzLmg+CiNpbmNsdWRlIDxicGYvYnBm
+X3RyYWNpbmcuaD4KI2luY2x1ZGUgPGJwZi9icGZfY29yZV9yZWFkLmg+CgovKgogKiBicGZfY29y
+ZV9jYXN0KCkgbGFuZGVkIGluIG5ld2VyIGxpYmJwZi4gRGlzdHJvIGhlYWRlcnMgKGxpYmJwZi1k
+ZXYpCiAqIG9mdGVuIGRvIG5vdCBoYXZlIGl0IHlldDsgcHJvdmlkZSB0aGUgc2FtZSBleHBhbnNp
+b24uCiAqLwojaWZuZGVmIGJwZl9jb3JlX3R5cGVfaWRfa2VybmVsCiNkZWZpbmUgYnBmX2NvcmVf
+dHlwZV9pZF9rZXJuZWwodHlwZSkgXAoJX19idWlsdGluX2J0Zl90eXBlX2lkKCoodHlwZW9mKHR5
+cGUpICopMCwgMSkKI2VuZGlmCiNpZm5kZWYgYnBmX2NvcmVfY2FzdApleHRlcm4gdm9pZCAqYnBm
+X3Jkb25seV9jYXN0KGNvbnN0IHZvaWQgKm9ial9fLCBfX3UzMiBidGZfaWRfXykgX19rc3ltIF9f
+d2VhazsKI2RlZmluZSBicGZfY29yZV9jYXN0KHB0ciwgdHlwZSkgXAoJKCh0eXBlb2YodHlwZSkg
+KilicGZfcmRvbmx5X2Nhc3QoKHB0ciksIGJwZl9jb3JlX3R5cGVfaWRfa2VybmVsKHR5cGUpKSkK
+I2VuZGlmCgojZGVmaW5lIFNPTF9TT0NLRVQJCQkxCiNkZWZpbmUgU0tfQlBGX0NCX0ZMQUdTCQkJ
+MTAwOQojZGVmaW5lIFNLX0JQRl9DQl9USU1FU1RBTVBJTkdfVjIJKDEgPDwgMSkKCiNkZWZpbmUg
+RElSX1RYCTAKI2RlZmluZSBESVJfUlgJMQoKZXh0ZXJuIF9fdTY0IGJwZl9rdGltZV9nZXRfcmVh
+bF9ucyh2b2lkKSBfX2tzeW07CgpzdHJ1Y3QgbGF0X2V2ZW50IHsKCV9fdTY0IGRlbHRhX25zOwoJ
+X191MzIgcGlkOwoJX191OCAgZGlyOwoJY2hhciAgY29tbVsxNl07Cn07CgpzdHJ1Y3QgewoJX191
+aW50KHR5cGUsIEJQRl9NQVBfVFlQRV9SSU5HQlVGKTsKCV9fdWludChtYXhfZW50cmllcywgMjU2
+ICogMTAyNCk7Cn0gZXZlbnRzIFNFQygiLm1hcHMiKTsKCl9fdTY0IHR4X2NudCwgcnhfY250Owpf
+X3U2NCB0eF9zdW1fbnMsIHJ4X3N1bV9uczsKX191NjQgdHhfbWF4X25zLCByeF9tYXhfbnM7Cl9f
+dTY0IHNraXBfY250OwoKLyogU29mdHdhcmUgc3RhcnRfdGltZSBpcyBDTE9DS19SRUFMVElNRS4g
+QSBQSEMvaGFyZHdhcmUgc3RhbXAgaW4gdGhlCiAqIHNoYXJlZCB1bmlvbiBpcyBhIGRpZmZlcmVu
+dCBjbG9jazsgc3VidHJhY3Rpbmcga3RpbWVfZ2V0X3JlYWwoKQogKiB5aWVsZHMgfmVwb2NoLXNp
+emVkIGdhcmJhZ2UgKDFlMTUrIHVzKS4gRHJvcCB0aG9zZS4KICovCiNkZWZpbmUgTUFYX0xBVF9O
+UwkoMTBVTEwgKiAxMDAwICogMTAwMCAqIDEwMDApCgpzdGF0aWMgX19hbHdheXNfaW5saW5lIF9f
+dTY0IHNrYl9zdGFydF90aW1lKGNvbnN0IHN0cnVjdCBza19idWZmICpza2IpCnsKCXN0cnVjdCBz
+a2Jfc2hhcmVkX2luZm8gKnNoaW5mbzsKCglpZiAoIXNrYikKCQlyZXR1cm4gMDsKCS8qIHNhbWUg
+c3RvcmFnZSBhcyBzdGFydF90aW1lICh1bmlvbiB3aXRoIGh3dHN0YW1wKSAqLwoJc2hpbmZvID0g
+YnBmX2NvcmVfY2FzdChza2ItPmhlYWQgKyBza2ItPmVuZCwgc3RydWN0IHNrYl9zaGFyZWRfaW5m
+byk7CglyZXR1cm4gKF9fdTY0KXNoaW5mby0+aHd0c3RhbXBzLmh3dHN0YW1wOwp9CgpzdGF0aWMg
+X19hbHdheXNfaW5saW5lIHZvaWQgcmVjb3JkX2xhdChjb25zdCBzdHJ1Y3Qgc2tfYnVmZiAqc2ti
+LCBfX3U4IGRpcikKewoJc3RydWN0IGxhdF9ldmVudCAqZTsKCV9fdTY0IHN0YXJ0LCBkZWx0YTsK
+CglzdGFydCA9IHNrYl9zdGFydF90aW1lKHNrYik7CglpZiAoIXN0YXJ0KQoJCXJldHVybjsKCglk
+ZWx0YSA9IGJwZl9rdGltZV9nZXRfcmVhbF9ucygpIC0gc3RhcnQ7CgkvKiBzdGFydCA+IG5vdyB1
+bmRlcmZsb3dzOyBQSEMvaHcgc3RhbXAgaXMgdXN1YWxseSBhIHNtYWxsIHZhbHVlICovCglpZiAo
+ZGVsdGEgPiBNQVhfTEFUX05TKSB7CgkJX19zeW5jX2ZldGNoX2FuZF9hZGQoJnNraXBfY250LCAx
+KTsKCQlyZXR1cm47Cgl9CgoJaWYgKGRpciA9PSBESVJfVFgpIHsKCQlfX3N5bmNfZmV0Y2hfYW5k
+X2FkZCgmdHhfY250LCAxKTsKCQlfX3N5bmNfZmV0Y2hfYW5kX2FkZCgmdHhfc3VtX25zLCBkZWx0
+YSk7CgkJaWYgKGRlbHRhID4gdHhfbWF4X25zKQoJCQl0eF9tYXhfbnMgPSBkZWx0YTsKCX0gZWxz
+ZSB7CgkJX19zeW5jX2ZldGNoX2FuZF9hZGQoJnJ4X2NudCwgMSk7CgkJX19zeW5jX2ZldGNoX2Fu
+ZF9hZGQoJnJ4X3N1bV9ucywgZGVsdGEpOwoJCWlmIChkZWx0YSA+IHJ4X21heF9ucykKCQkJcnhf
+bWF4X25zID0gZGVsdGE7Cgl9CgoJZSA9IGJwZl9yaW5nYnVmX3Jlc2VydmUoJmV2ZW50cywgc2l6
+ZW9mKCplKSwgMCk7CglpZiAoIWUpCgkJcmV0dXJuOwoJZS0+ZGVsdGFfbnMgPSBkZWx0YTsKCWUt
+PnBpZCA9IGJwZl9nZXRfY3VycmVudF9waWRfdGdpZCgpID4+IDMyOwoJZS0+ZGlyID0gZGlyOwoJ
+YnBmX2dldF9jdXJyZW50X2NvbW0oJmUtPmNvbW0sIHNpemVvZihlLT5jb21tKSk7CglicGZfcmlu
+Z2J1Zl9zdWJtaXQoZSwgMCk7Cn0KClNFQygic29ja29wcyIpCmludCBlbmFibGVfdjIoc3RydWN0
+IGJwZl9zb2NrX29wcyAqc2tvcHMpCnsKCWludCBmbGFncyA9IFNLX0JQRl9DQl9USU1FU1RBTVBJ
+TkdfVjI7CgoJc3dpdGNoIChza29wcy0+b3ApIHsKCWNhc2UgQlBGX1NPQ0tfT1BTX0FDVElWRV9F
+U1RBQkxJU0hFRF9DQjoKCWNhc2UgQlBGX1NPQ0tfT1BTX1BBU1NJVkVfRVNUQUJMSVNIRURfQ0I6
+CgkJYnBmX3NldHNvY2tvcHQoc2tvcHMsIFNPTF9TT0NLRVQsIFNLX0JQRl9DQl9GTEFHUywKCQkJ
+ICAgICAgICZmbGFncywgc2l6ZW9mKGZsYWdzKSk7CgkJYnJlYWs7Cgl9CglyZXR1cm4gMTsKfQoK
+LyogVFg6IHNlbmRtc2cgLT4gZGV2aWNlIHF1ZXVlICovClNFQygiZmVudHJ5L19fZGV2X3F1ZXVl
+X3htaXQiKQppbnQgQlBGX1BST0cob25fZGV2X3htaXQsIHN0cnVjdCBza19idWZmICpza2IsIHN0
+cnVjdCBuZXRfZGV2aWNlICpzYl9kZXYpCnsKCXJlY29yZF9sYXQoc2tiLCBESVJfVFgpOwoJcmV0
+dXJuIDA7Cn0KCi8qIFJYIElQdjQ6IGFycml2YWwgLT4gVENQIHJlY2VpdmUgKi8KU0VDKCJmZW50
+cnkvdGNwX3Y0X3JjdiIpCmludCBCUEZfUFJPRyhvbl90Y3BfdjRfcmN2LCBzdHJ1Y3Qgc2tfYnVm
+ZiAqc2tiKQp7CglyZWNvcmRfbGF0KHNrYiwgRElSX1JYKTsKCXJldHVybiAwOwp9CgovKiBSWCBJ
+UHY2ICovClNFQygiZmVudHJ5L3RjcF92Nl9yY3YiKQppbnQgQlBGX1BST0cob25fdGNwX3Y2X3Jj
+diwgc3RydWN0IHNrX2J1ZmYgKnNrYikKewoJcmVjb3JkX2xhdChza2IsIERJUl9SWCk7CglyZXR1
+cm4gMDsKfQoKY2hhciBMSUNFTlNFW10gU0VDKCJsaWNlbnNlIikgPSAiR1BMIjsK
+--0000000000000208ba065bdf6849
+Content-Type: application/octet-stream; name="bpfts_v2.c"
+Content-Disposition: attachment; filename="bpfts_v2.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mu937vnq1>
+X-Attachment-Id: f_mu937vnq1
+
+Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAKLyoKICogVXNlcnNwYWNlIGxvYWRl
+ciBmb3IgQlBGIFRpbWVzdGFtcGluZyBWMi4KICoKICogICBtYWtlCiAqICAgc3VkbyAuL2JwZnRz
+X3YyCiAqCiAqIFRoZW4gb3BlbiBhIE5FVyBUQ1AgY29ubmVjdGlvbiAoVjIgaXMgZW5hYmxlZCBv
+biBFU1RBQkxJU0hFRCk6CiAqICAgY3VybCAtNCBodHRwOi8vMTI3LjAuMC4xLwogKiAgIHBpbmcg
+aXMgSUNNUCDigJQgaXQgd2lsbCBub3QgcHJvZHVjZSBldmVudHMuCiAqLwojaW5jbHVkZSA8c3Rk
+aW8uaD4KI2luY2x1ZGUgPHN0ZGxpYi5oPgojaW5jbHVkZSA8c3RyaW5nLmg+CiNpbmNsdWRlIDxl
+cnJuby5oPgojaW5jbHVkZSA8ZmNudGwuaD4KI2luY2x1ZGUgPHNpZ25hbC5oPgojaW5jbHVkZSA8
+dW5pc3RkLmg+CiNpbmNsdWRlIDx0aW1lLmg+CiNpbmNsdWRlIDxicGYvbGliYnBmLmg+CiNpbmNs
+dWRlICJicGZ0c192Mi5za2VsLmgiCgojZGVmaW5lIERJUl9UWCAwCiNkZWZpbmUgRElSX1JYIDEK
+CnN0YXRpYyB2b2xhdGlsZSBzaWdfYXRvbWljX3QgZXhpdGluZzsKCnN0cnVjdCBsYXRfZXZlbnQg
+ewoJX191NjQgZGVsdGFfbnM7CglfX3UzMiBwaWQ7CglfX3U4ICBkaXI7CgljaGFyICBjb21tWzE2
+XTsKfTsKCnN0YXRpYyB2b2lkIG9uX3NpZ25hbChpbnQgc2lnKQp7CglleGl0aW5nID0gMTsKfQoK
+c3RhdGljIGludCBsaWJicGZfcHJpbnQoZW51bSBsaWJicGZfcHJpbnRfbGV2ZWwgbGV2ZWwsIGNv
+bnN0IGNoYXIgKmZtdCwKCQkJdmFfbGlzdCBhcmdzKQp7CglpZiAobGV2ZWwgPT0gTElCQlBGX0RF
+QlVHKQoJCXJldHVybiAwOwoJcmV0dXJuIHZmcHJpbnRmKHN0ZGVyciwgZm10LCBhcmdzKTsKfQoK
+c3RhdGljIGludCBoYW5kbGVfZXZlbnQodm9pZCAqY3R4LCB2b2lkICpkYXRhLCBzaXplX3QgbGVu
+KQp7Cgljb25zdCBzdHJ1Y3QgbGF0X2V2ZW50ICplID0gZGF0YTsKCglwcmludGYoIiVzICAlLTE2
+cyBwaWQ9JS02dSAgbGF0PSU4LjNmIHVzXG4iLAoJICAgICAgIGUtPmRpciA9PSBESVJfVFggPyAi
+VFgiIDogIlJYIiwKCSAgICAgICBlLT5jb21tLCBlLT5waWQsIGUtPmRlbHRhX25zIC8gMTAwMC4w
+KTsKCWZmbHVzaChzdGRvdXQpOwoJcmV0dXJuIDA7Cn0KCnN0YXRpYyB2b2lkIHByaW50X3N1bW1h
+cnkoY29uc3Qgc3RydWN0IGJwZnRzX3YyX2JwZiAqc2tlbCkKewoJX191NjQgdHggPSBza2VsLT5i
+c3MtPnR4X2NudDsKCV9fdTY0IHJ4ID0gc2tlbC0+YnNzLT5yeF9jbnQ7CgoJcHJpbnRmKCJcbi0t
+LS0tIHN1bW1hcnkgLS0tLS1cbiIpOwoJaWYgKHR4KQoJCXByaW50ZigiVFggICVsbHUgcGt0cyAg
+YXZnICUuM2YgdXMgIG1heCAlLjNmIHVzXG4iLAoJCSAgICAgICAodW5zaWduZWQgbG9uZyBsb25n
+KXR4LAoJCSAgICAgICBza2VsLT5ic3MtPnR4X3N1bV9ucyAvIChkb3VibGUpdHggLyAxMDAwLjAs
+CgkJICAgICAgIHNrZWwtPmJzcy0+dHhfbWF4X25zIC8gMTAwMC4wKTsKCWVsc2UKCQlwcmludGYo
+IlRYICAwIHBrdHNcbiIpOwoJaWYgKHJ4KQoJCXByaW50ZigiUlggICVsbHUgcGt0cyAgYXZnICUu
+M2YgdXMgIG1heCAlLjNmIHVzXG4iLAoJCSAgICAgICAodW5zaWduZWQgbG9uZyBsb25nKXJ4LAoJ
+CSAgICAgICBza2VsLT5ic3MtPnJ4X3N1bV9ucyAvIChkb3VibGUpcnggLyAxMDAwLjAsCgkJICAg
+ICAgIHNrZWwtPmJzcy0+cnhfbWF4X25zIC8gMTAwMC4wKTsKCWVsc2UKCQlwcmludGYoIlJYICAw
+IHBrdHNcbiIpOwoJaWYgKHNrZWwtPmJzcy0+c2tpcF9jbnQpCgkJcHJpbnRmKCJza2lwcGVkICVs
+bHUgKGh3L1BIQyBzdGFtcCwgbm90IENMT0NLX1JFQUxUSU1FKVxuIiwKCQkgICAgICAgKHVuc2ln
+bmVkIGxvbmcgbG9uZylza2VsLT5ic3MtPnNraXBfY250KTsKCXByaW50ZigiLS0tLS0tLS0tLS0t
+LS0tLS0tLVxuIik7Cn0KCnN0YXRpYyB2b2lkIHVzYWdlKGNvbnN0IGNoYXIgKmFyZ3YwKQp7Cglm
+cHJpbnRmKHN0ZGVyciwKCQkiVXNhZ2U6ICVzIFstYyBjZ3JvdXBfcGF0aF1cbiIKCQkiICAtYyAg
+IGNncm91cCB0byBhdHRhY2ggc29ja29wcyAoZGVmYXVsdDogL3N5cy9mcy9jZ3JvdXApXG4iCgkJ
+IlxuIgoJCSJWMiBpcyBlbmFibGVkIG9uIFRDUCBjb25uZWN0aW9ucyBlc3RhYmxpc2hlZCBBRlRF
+UiBhdHRhY2guXG4iCgkJIlB1dCB0aGUgdHJhZmZpYyBwcm9jZXNzIGludG8gdGhhdCBjZ3JvdXAs
+IG9yIGF0dGFjaCB0aGUgcm9vdFxuIgoJCSJjZ3JvdXAgKGRlZmF1bHQpIHNvIGV2ZXJ5IG5ldyBU
+Q1Agc29ja2V0IGlzIGNvdmVyZWQuXG4iLAoJCWFyZ3YwKTsKfQoKaW50IG1haW4oaW50IGFyZ2Ms
+IGNoYXIgKiphcmd2KQp7Cgljb25zdCBjaGFyICpjZ19wYXRoID0gIi9zeXMvZnMvY2dyb3VwIjsK
+CXN0cnVjdCByaW5nX2J1ZmZlciAqcmIgPSBOVUxMOwoJc3RydWN0IGJwZnRzX3YyX2JwZiAqc2tl
+bCA9IE5VTEw7CglzdHJ1Y3QgYnBmX2xpbmsgKmxpbms7CglpbnQgb3B0LCBlcnIsIGNnX2ZkID0g
+LTE7CgoJd2hpbGUgKChvcHQgPSBnZXRvcHQoYXJnYywgYXJndiwgImM6aCIpKSAhPSAtMSkgewoJ
+CXN3aXRjaCAob3B0KSB7CgkJY2FzZSAnYyc6CgkJCWNnX3BhdGggPSBvcHRhcmc7CgkJCWJyZWFr
+OwoJCWNhc2UgJ2gnOgoJCWRlZmF1bHQ6CgkJCXVzYWdlKGFyZ3ZbMF0pOwoJCQlyZXR1cm4gb3B0
+ID09ICdoJyA/IDAgOiAxOwoJCX0KCX0KCglsaWJicGZfc2V0X3ByaW50KGxpYmJwZl9wcmludCk7
+CglzaWduYWwoU0lHSU5ULCBvbl9zaWduYWwpOwoJc2lnbmFsKFNJR1RFUk0sIG9uX3NpZ25hbCk7
+CgoJc2tlbCA9IGJwZnRzX3YyX2JwZl9fb3Blbl9hbmRfbG9hZCgpOwoJaWYgKCFza2VsKSB7CgkJ
+ZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gb3Blbi9sb2FkIEJQRiBvYmplY3Q6ICVzXG4iLAoJ
+CQlzdHJlcnJvcihlcnJubykpOwoJCXJldHVybiAxOwoJfQoKCS8qIGZlbnRyeSBhdXRvLWF0dGFj
+aDsgc29ja29wcyBuZWVkcyBhIGNncm91cCBmZCAqLwoJYnBmX3Byb2dyYW1fX3NldF9hdXRvYXR0
+YWNoKHNrZWwtPnByb2dzLmVuYWJsZV92MiwgZmFsc2UpOwoJZXJyID0gYnBmdHNfdjJfYnBmX19h
+dHRhY2goc2tlbCk7CglpZiAoZXJyKSB7CgkJZnByaW50ZihzdGRlcnIsICJmYWlsZWQgdG8gYXR0
+YWNoIGZlbnRyeTogJWRcbiIsIGVycik7CgkJZ290byBvdXQ7Cgl9CgoJY2dfZmQgPSBvcGVuKGNn
+X3BhdGgsIE9fUkRPTkxZKTsKCWlmIChjZ19mZCA8IDApIHsKCQlmcHJpbnRmKHN0ZGVyciwgIm9w
+ZW4gY2dyb3VwICVzOiAlc1xuIiwgY2dfcGF0aCwgc3RyZXJyb3IoZXJybm8pKTsKCQlnb3RvIG91
+dDsKCX0KCglsaW5rID0gYnBmX3Byb2dyYW1fX2F0dGFjaF9jZ3JvdXAoc2tlbC0+cHJvZ3MuZW5h
+YmxlX3YyLCBjZ19mZCk7CglpZiAoIWxpbmspIHsKCQlmcHJpbnRmKHN0ZGVyciwgImF0dGFjaCBz
+b2Nrb3BzIHRvICVzOiAlc1xuIiwKCQkJY2dfcGF0aCwgc3RyZXJyb3IoZXJybm8pKTsKCQlnb3Rv
+IG91dDsKCX0KCXNrZWwtPmxpbmtzLmVuYWJsZV92MiA9IGxpbms7CgoJcmIgPSByaW5nX2J1ZmZl
+cl9fbmV3KGJwZl9tYXBfX2ZkKHNrZWwtPm1hcHMuZXZlbnRzKSwKCQkJICAgICAgaGFuZGxlX2V2
+ZW50LCBOVUxMLCBOVUxMKTsKCWlmICghcmIpIHsKCQlmcHJpbnRmKHN0ZGVyciwgImZhaWxlZCB0
+byBjcmVhdGUgcmluZyBidWZmZXJcbiIpOwoJCWdvdG8gb3V0OwoJfQoKCXByaW50ZigiQlBGIFRp
+bWVzdGFtcGluZyBWMiBydW5uaW5nIChjZ3JvdXAgJXMpXG4iLCBjZ19wYXRoKTsKCXByaW50Zigi
+U3RhcnQgYSBORVcgVENQIGNvbm5lY3Rpb24gbm93LCBDdHJsLUMgdG8gc3RvcC5cblxuIik7CgoJ
+d2hpbGUgKCFleGl0aW5nKSB7CgkJZXJyID0gcmluZ19idWZmZXJfX3BvbGwocmIsIDIwMCk7CgkJ
+aWYgKGVyciA9PSAtRUlOVFIpCgkJCWJyZWFrOwoJCWlmIChlcnIgPCAwKSB7CgkJCWZwcmludGYo
+c3RkZXJyLCAicmluZ19idWZmZXJfX3BvbGw6ICVkXG4iLCBlcnIpOwoJCQlicmVhazsKCQl9Cgl9
+CgoJcHJpbnRfc3VtbWFyeShza2VsKTsKCWVyciA9IDA7Cm91dDoKCXJpbmdfYnVmZmVyX19mcmVl
+KHJiKTsKCWJwZnRzX3YyX2JwZl9fZGVzdHJveShza2VsKTsKCWlmIChjZ19mZCA+PSAwKQoJCWNs
+b3NlKGNnX2ZkKTsKCXJldHVybiBlcnIgIT0gMDsKfQo=
+--0000000000000208ba065bdf6849--
