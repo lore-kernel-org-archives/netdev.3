@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D341B47ECD8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50A447ECEE;
 	Sun, 20 Sep 2026 21:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789941363; cv=none; b=h8LFR8ywG0DnTKEcT8ev+WZJSbN05HNhDMXLOvxhNNzy+7nOLxl+x903xuFXXzAsPMEnlYoWY7P489qUGuDozB8vuev92Ioa7HiLynPkpamKnEa2yYfLxwKz4WwBFEidcyRgqv9hCSfnntTBdXHHb/yrHzZ/i8y5nYSiV88DODo=
+	t=1789941363; cv=none; b=tcLxdpaoR+pog4wMZsse5ZwmhCwa0N7f3Zrv8r9hYt2qZyVUmSexs1J2F6RLoHFbClf3IgNkKjmUtP6OSxYELln8a2p9XZmdVXY3neXHCKJR6yXlB9JZRw5Tq0Vu/us7T5jPj4TSiJw3xaT3MRyBw3OEparyo4yJX/TfYQ2Kr70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789941363; c=relaxed/simple;
-	bh=BEQiT5fc6AJC7c/aZf2Ivcxy9ugmzRwSIdGmXiPh7Ac=;
+	bh=/eehDlMbhRbk5jDVDQBsa5RSjdDtAbMeITfWf98ueiQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HHzhuGXAn+pCshYJMm3R3MtawMWQ+z97vtogum3jV4awsOiQFwgzVmDk5qE6nHHxvXwDpRG1Tb8tzaUmTwGsdcgxwBTD5XliQwiAQGHvVBVQMQwgut5cWqBkZjaVDSbFo246r5EysRqOlqx2RP3xW/IJhjLBycHWP78w7xnr6qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpJjBcA6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JfuMiBHmMYiJo8c/xaiA6SabgtbQ21dgdNguXAHVQFNzjae+9jJx0B7Q1hN2p2EMUKj3t6W7VXtX6d3dlkVZCyMwv7c0QEXIuAy9yQSbB7rnPwQj1ZnH4V/jrF83T4MAYEVmgofo+Bu0mghPrcDBiL00HvesIcpIb8JB2cGYPmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnEyXTsY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FpJjBcA6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7A61F00898;
-	Sun, 20 Sep 2026 21:55:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnEyXTsY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEFA1F00893;
+	Sun, 20 Sep 2026 21:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789941356;
-	bh=billbsGtYXP6I0y210sXcMoSAiDZMPR70xpZzm1bUpI=;
+	s=k20260515; t=1789941355;
+	bh=gho3XsB+rCMkQouH2sK/QuHGliacTo5BbkjD8cyjXKM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FpJjBcA6qvytJoD4bpM7GD0Ua+qsv0bfdtTZFtvo9ka5FkQxUWAKrzjiqju3wGvzw
-	 udq5tTw+kbeG/L+eg54eOyFJoZA+LEqLFogsO5OYpcyDVVmpYSbfa0SBAL1iEGK9cb
-	 rCYCNPCtcKNZjCB69l67HkzvnFxXw5DTXQ7gPWdXlK9vGbg1zfXQXwfb+e90cmiPwB
-	 0s/2kHBHi07j+3NgiwS805Xi88TgLhobdM7wPg50iYrhRqsbxtoMEFZW+BD5dC/J30
-	 J/i6Aocmca4U2fD+lzqspimjl4RoufsQIcN7mzkz9WCUC4tLfCKD17MYy+2LXq4PBs
-	 dRa3ro/uKl1SA==
-Subject: Re: [PATCH] net/packet: zero-pad spkt_device and preserve sa.origlen
- across MSG_PEEK
+	b=DnEyXTsYW1oYvJ/4cIGBHX1YLLGLvznQV+NG2f/DY54I4Rfnp2UmcJjdmKM2rw9uX
+	 rOhUFKxShZn9lGkt3FgWqJICYmSy7zXRdfl6uy7CT/t5oX7GTKe4XWW7GlA/dtSdd/
+	 YAYFv2WXoT1vEsku+i0qwzXlMsLZ3ULqOi0s2EqRdJhphs2vS8W32MbNiyXmbzSIrQ
+	 BMpIidccpt3f69ogUwyd9U0+/CrDn94nsXmS49dYFUoKpjeN8oQ1CeOjzi/Q4NF2f3
+	 DAuUlljaZQTVUH/GN6uksBnIaYYJACZHL+OlCWR2/bZpgiXqj7UwjVXBUPiJ/4fdxw
+	 qpRCoPxPiV2Dg==
+Subject:
+ Re: [PATCH] tcp: drain out_of_order_queue and update SACKs in tcp_send_rcvq()
 From: netdev-bot+sashiko@kernel.org
 To: benquike@gmail.com
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 20 Sep 2026 21:55:55 +0000
-Message-ID: <178994135589.2160803.3896990579971629208@kernel.org>
-In-Reply-To: <20260919215237.3470987-1-benquike@gmail.com>
-References: <20260919215237.3470987-1-benquike@gmail.com>
-X-sashiko-severity: Medium
+Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 20 Sep 2026 21:55:54 +0000
+Message-ID: <178994135442.2160803.9245969702755706325@kernel.org>
+In-Reply-To: <20260919215236.3470714-1-benquike@gmail.com>
+References: <20260919215236.3470714-1-benquike@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 1 · Medium: 0 · Low: 4
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,129 +58,250 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Hunk #1 (strscpy() -> strscpy_pad() in packet_rcv_spkt(),
-  net/packet/af_packet.c:1921) is a genuine kernel-memory information…
-- [Low] The commit bundles two independent defects with different bug
-  classes, different code paths and different regression lineages: (a)…
-- [Low] The commit message mis-states the user-visible symptom of fix #2.
+- [High] net/ipv4/tcp_input.c, tcp_send_rcvq(): the newly added
+  unconditional `tcp_ofo_queue(sk)` call imports full receive-path…
+- [Low] net/ipv4/tcp_input.c, tcp_send_rcvq() becomes the second caller
+  of the OFO-drain sequence but replicates only two of the five steps…
+- [Low] Commit message factual error: it states that tcp_send_rcvq()
+  "advances tp->copied_seq and tp->rcv_nxt".
+- [Low] The change asserts a bug without any reproducer, warning,
+  syzkaller report or stated user-visible symptom, yet carries `Fixes:…
+- [Low] net/ipv4/tcp_input.c, tcp_send_rcvq(): the new tcp_ofo_queue()
+  call does not establish the per-processing-pass D-SACK precondition…
 
 --
 
-net/packet: zero-pad spkt_device and preserve sa.origlen across MSG_PEEK
+tcp: drain out_of_order_queue and update SACKs in tcp_send_rcvq()
 
-This changes packet_rcv_spkt() to use strscpy_pad() when filling
-spkt->spkt_device, and moves the sll_family/sll_protocol assignments in
-packet_recvmsg() from PACKET_SKB_CB(skb) into the destination
-msg->msg_name buffer so that the aliased sa.origlen is not clobbered.
+This adds an out-of-order queue drain plus a SACK block update to
+tcp_send_rcvq(), so that segments in tp->out_of_order_queue which become
+in-order after TCP_REPAIR injects data into the receive queue are
+coalesced and the SACK bookkeeping is pruned.
 
-No Link: tags were present in the commit header.
+A few questions about the commit message and the new call site follow.
 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 50cae32ae269..15def2d16806 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1918,7 +1918,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
->  	 */
->  
->  	spkt->spkt_family = dev->type;
-> -	strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
-> +	strscpy_pad(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
->  	spkt->spkt_protocol = skb->protocol;
+> When TCP_REPAIR injects data into the receive queue via tcp_send_rcvq() and
+> advances tp->copied_seq and tp->rcv_nxt, any segments already sitting in
+                ^^^^^^^^^^^^^^
 
-[Severity: Medium]
-Is this hunk actually closing a leak of uninitialized kernel memory to
-userspace rather than just padding a buffer?
+[Severity: Low]
+Does tcp_send_rcvq() actually advance tp->copied_seq?  Reading the
+function, the only sequence update comes from tcp_queue_rcv():
 
-spkt here is PACKET_SKB_CB(skb)->sa.pkt, i.e. it is built in place at
-offset 0 of skb->cb[48], which is never zeroed and carries residue from
-earlier layers (for example qdisc_skb_cb on the transmit capture path via
-dev_queue_xmit_nit()).  strscpy() terminates but does not pad, so for a
-short name like "eth0" the remaining 9 bytes of the 14-byte spkt_device
-keep whatever was in skb->cb.
-
-packet_recvmsg() then copies the whole struct out with no memset of the
-destination on the SOCK_PACKET branch:
-
-	if (sock->type == SOCK_PACKET) {
-		__sockaddr_check_size(sizeof(struct sockaddr_pkt));
-		msg->msg_namelen = sizeof(struct sockaddr_pkt);
-		copy_len = msg->msg_namelen;
-	}
+net/ipv4/tcp_input.c:tcp_queue_rcv() {
 	...
-	memcpy(msg->msg_name, &PACKET_SKB_CB(skb)->sa, copy_len);
+	tcp_rcv_nxt_update(tcp_sk(sk), TCP_SKB_CB(skb)->end_seq);
+	...
+}
 
-so those bytes end up in the source address returned by
-recvmsg()/recvfrom().
+which touches rcv_nxt only.  For the receive repair queue, copied_seq
+appears to be written only by the TCP_QUEUE_SEQ setsockopt:
 
-The sibling accessor packet_getname_spkt() already does:
+net/ipv4/tcp.c:do_tcp_setsockopt() {
+	...
+	} else if (tp->repair_queue == TCP_RECV_QUEUE) {
+		if (tp->rcv_nxt != tp->copied_seq) {
+			err = -EPERM;
+		} else {
+			WRITE_ONCE(tp->rcv_nxt, val);
+			WRITE_ONCE(tp->copied_seq, val);
+		}
+	...
+}
 
-	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data));
-	strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
+and that path additionally requires sk->sk_state == TCP_CLOSE.
 
-which suggests the padding is a deliberate defence in this file rather
-than hygiene.  The commit message only says "so trailing bytes after
-dev->name's NUL terminator in the 14-byte buffer are zeroed" - could it
-name the user-visible disclosure and carry its own Fixes: tag so stable
-triage does not treat the hunk as cleanup?
+Could the changelog also state the user-visible symptom and the
+preconditions to reach it (CAP_NET_ADMIN, TCP_REPAIR enabled on a live
+socket whose out_of_order_queue is already non-empty)?
 
-[Severity: Low]
-Should this hunk be a separate patch?  The single tag in the header:
-
-	Fixes: 2472d7613bd3 ("net: packet: use sockaddr_ll fields as storage for skb original length in recvmsg path")
-
-only describes the packet_recvmsg() change.  Reading 2472d7613bd3, it
-introduced the origlen/sockaddr_ll union and the recvmsg writes, and it
-did not touch packet_rcv_spkt() or this strscpy() call at all.
-
-The two changes affect different socket types (SOCK_PACKET here,
-SOCK_RAW/SOCK_DGRAM in packet_recvmsg()) and have different lineages, so
-as submitted neither can be backported or reverted on its own.  Would
-splitting this into two patches, each with its own Fixes: tag, work
-better?
-
-> @@ -3510,15 +3510,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
->  	if (err)
->  		goto out_free;
->  
-> -	if (sock->type != SOCK_PACKET) {
-> -		struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
-> -
-> -		/* Original length was stored in sockaddr_ll fields */
-> +	if (sock->type != SOCK_PACKET)
->  		origlen = PACKET_SKB_CB(skb)->sa.origlen;
-> -		sll->sll_family = AF_PACKET;
-> -		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
-> -			vlan_get_protocol_dgram(skb) : skb->protocol;
-> -	}
+> tp->out_of_order_queue that are now covered or contiguous with rcv_nxt are
+> not coalesced or removed from tp->rx_opt.num_sacks. Drain
+                               ^^^^^^^^^^^^^^^^^^^^
+> out_of_order_queue via tcp_ofo_queue(sk) and update SACK blocks via
+> tcp_sack_remove(tp) after advancing rcv_nxt in tcp_send_rcvq().
+>
+> Fixes: 292e8d8c8538 ("tcp: Move rcvq sending to tcp_input.c")
 
 [Severity: Low]
-Is the symptom described in the commit message the one this hunk fixes?
-The message says the clobbered value affects:
+Small wording point first: segments are not "removed from
+tp->rx_opt.num_sacks", num_sacks is a count of SACK blocks.
 
-	subsequent recvmsg(MSG_PEEK | MSG_TRUNC) calls
-	on the same skb
+On the Fixes: tag, is there a reproducer, warning or syzkaller report
+behind this?  The tag targets a 2012 commit, so this pulls a behaviour
+change of the privileged TCP_REPAIR path into stable trees.
 
-which reads as though the length reported for MSG_TRUNC is wrong.  The
-return value of packet_recvmsg() does not use origlen:
+The state being fixed also looks transient, since the normal receive path
+already reconciles it on the next in-sequence segment:
 
-	err = vnet_hdr_len + ((flags&MSG_TRUNC) ? skb->len : copied);
+net/ipv4/tcp_input.c:tcp_data_queue() {
+	...
+		if (!RB_EMPTY_ROOT(&tp->out_of_order_queue)) {
+			tcp_ofo_queue(sk);
+	...
+		if (tp->rx_opt.num_sacks)
+			tcp_sack_remove(tp);
+	...
+}
 
-The only consumer in net/packet/ is inside the PACKET_SOCK_AUXDATA block:
+and tcp_fin(), tcp_prune_ofo_queue(), tcp_close() and tcp_disconnect()
+all purge the tree or reset the SACK state.  In the CRIU restore flow the
+out-of-order tree is empty anyway, because TCP_QUEUE_SEQ only allows
+moving rcv_nxt while sk_state == TCP_CLOSE.
 
-	if (packet_sock_flag(pkt_sk(sk), PACKET_SOCK_AUXDATA)) {
+Would it make sense to either demonstrate the failure or drop the Fixes:
+tag and present this as hardening?
+
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 92bc60716f33..8a7c38a4b1ec 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -5589,6 +5589,11 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *msg, size_t size)
+>  		WARN_ON_ONCE(fragstolen); /* should not happen */
+>  		__kfree_skb(skb);
+>  	}
+> +	if (!RB_EMPTY_ROOT(&tcp_sk(sk)->out_of_order_queue)) {
+> +		tcp_ofo_queue(sk);
+
+[Severity: High]
+Can this run the TCP state machine from inside sendmsg()?  If an
+out-of-order segment carrying TCPHDR_FIN becomes in-order because the
+injected bytes closed the hole, tcp_ofo_queue() reaches:
+
+net/ipv4/tcp_input.c:tcp_ofo_queue() {
+	...
+		if (unlikely(fin)) {
+			tcp_fin(sk);
+			/* tcp_fin() purges tp->out_of_order_queue,
+			 * so we must end this loop right now.
+			 */
+			break;
+		}
+	...
+}
+
+and tcp_fin() then does:
+
+net/ipv4/tcp_input.c:tcp_fin() {
+	inet_csk_schedule_ack(sk);
+	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | RCV_SHUTDOWN);
+	sock_set_flag(sk, SOCK_DONE);
+	...
+	skb_rbtree_purge(&tp->out_of_order_queue);
+	if (tcp_is_sack(tp))
+		tcp_sack_reset(&tp->rx_opt);
+	...
+}
+
+The call site here is reached from tcp_sendmsg_locked():
+
+net/ipv4/tcp.c:tcp_sendmsg_locked() {
+	if (unlikely(tp->repair)) {
+		if (tp->repair_queue == TCP_RECV_QUEUE) {
+			copied = tcp_send_rcvq(sk, msg, size);
+			goto out_nopush;
+		}
+	...
+}
+
+sk_stream_wait_connect() confines sk_state to ESTABLISHED/CLOSE_WAIT (or
+SYN_RECV for passive fastopen), so the FIN_WAIT arms and tcp_done() are
+not reachable from here.  The ESTABLISHED -> CLOSE_WAIT transition,
+RCV_SHUTDOWN, SOCK_DONE, the skb_rbtree_purge() of the remaining
+out-of-order peer data, the SACK reset and the sk_state_change()/
+sk_wake_async(POLL_IN) wakeups are reachable though, and
+tcp_send_rcvq() still returns size, so a repair tool sees success with no
+indication that the read side was shut down and queued peer data
+discarded.
+
+Separately, tcp_ofo_queue() computes dsack_high from tp->rcv_nxt as just
+advanced by the locally injected bytes:
+
+net/ipv4/tcp_input.c:tcp_ofo_queue() {
+	__u32 dsack_high = tp->rcv_nxt;
+	...
+		if (before(TCP_SKB_CB(skb)->seq, dsack_high)) {
+			__u32 dsack = dsack_high;
+			...
+			tcp_dsack_extend(sk, TCP_SKB_CB(skb)->seq, dsack);
+		}
+	...
+}
+
+Does that make the socket record and later advertise a D-SACK for a range
+the peer never retransmitted, feeding the peer's spurious-retransmission
+and congestion-undo logic?
+
+Would it be better to reconcile the stale state locally here
+(skb_rbtree_purge() plus tcp_sack_reset()), or to suppress the FIN and
+D-SACK side effects while tp->repair is set, matching the quiescence
+policy TCP_QUEUE_SEQ already enforces?
+
+[Severity: Low]
+On the same call, is tp->rx_opt.dsack guaranteed to be clear here?  The
+existing caller clears it before it can reach tcp_ofo_queue():
+
+net/ipv4/tcp_input.c:tcp_data_queue() {
+	reason = SKB_DROP_REASON_NOT_SPECIFIED;
+	tp->rx_opt.dsack = 0;
+	...
+}
+
+Otherwise the flag is only cleared when the option is actually written
+out in tcp_options_write(), or by tcp_disconnect().  With a deferred
+delayed ACK the flag can still be set when the repair write runs, and
+then:
+
+net/ipv4/tcp_input.c:tcp_dsack_extend() {
+	if (!tp->rx_opt.dsack)
+		tcp_dsack_set(sk, seq, end_seq);
+	else
+		tcp_sack_extend(tp->duplicate_sack, seq, end_seq);
+}
+
+takes the else branch against the stale tp->duplicate_sack[0].  For a
+disjoint range tcp_sack_extend() returns false and the return value is
+ignored, so is the D-SACK for the segment processed in this pass silently
+lost while the stale block stays?
+
+> +		if (tcp_sk(sk)->rx_opt.num_sacks)
+> +			tcp_sack_remove(tcp_sk(sk));
+> +	}
+>  	return size;
+
+[Severity: Low]
+This new site performs two of the five steps the pre-existing caller
+performs:
+
+net/ipv4/tcp_input.c:tcp_data_queue() {
+	...
+		if (!RB_EMPTY_ROOT(&tp->out_of_order_queue)) {
+			tcp_ofo_queue(sk);
+			/* RFC5681. 4.2. SHOULD send immediate ACK, when
+			 * gap in queue is filled.
+			 */
+			if (RB_EMPTY_ROOT(&tp->out_of_order_queue))
+				inet_csk(sk)->icsk_ack.pending |= ICSK_ACK_NOW;
+		}
+		if (tp->rx_opt.num_sacks)
+			tcp_sack_remove(tp);
+		tcp_fast_path_check(sk);
 		...
-		aux.tp_len = origlen;
+		if (!sock_flag(sk, SOCK_DEAD))
+			tcp_data_ready(sk);
+	...
+}
 
-So the observable appears to be a garbage tp_len in the PACKET_AUXDATA
-cmsg on a second recvmsg() of a peeked skb (the old code had written
-AF_PACKET | protocol << 16 over the aliased bytes), and only when
-setsockopt(PACKET_AUXDATA) is enabled.  Could the message mention that
-precondition, so that someone reproducing with MSG_PEEK|MSG_TRUNC alone
-does not conclude the bug is not real?
+Is the omission of the ICSK_ACK_NOW hint, tcp_fast_path_check() and the
+data-ready notification intentional?  pred_flags stays zeroed by the
+earlier tcp_data_queue_ofo() until some later in-order segment reaches
+tcp_data_queue(), and bytes moved into sk_receive_queue by this drain
+produce no wakeup.
 
->  	sock_recv_cmsgs(msg, sk, skb);
+If the divergence is deliberate, could the changelog say so?
 
-[ ... ]
+>  
+>  err_free:
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919215237.3470987-1-benquike%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919215236.3470714-1-benquike%40gmail.com
