@@ -1,77 +1,66 @@
 Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013036.outbound.protection.outlook.com [52.101.72.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBAD3B7B7D;
-	Sun, 20 Sep 2026 02:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099F73BB680;
+	Sun, 20 Sep 2026 02:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789871454; cv=fail; b=qH8RDixXSDhgUrBDxtOq6zG/vsc1RjvBsqoC+4FcHNGHP8HYL7fh4mI8ob8Gy/k/6gPdanwurqgr0kB9WANTDMr8f1xZjXLFzBNt2YFXv7UPt9iI6IEx5+TV5WIi44j5RZVcgY/tDyx1Yu2ciOcTsv3kpA8rKmUtIuzUZy1vc10=
+	t=1789871475; cv=fail; b=KYYE8OO8pO1zRLWzg2l9cm2jK5weJeqrySBx948PiFh5vjpK3UMu7HEDiezMQgzLsV1acfzsy9f1eTRcD3S88JmZOtaRFhwh7JJXFxZLAGr3xCsW7rzaEFHVN1PYxQ0U6DVx05AHrdqpc9kBwFIntzaiTN6aNlIclw68eLwokm4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789871454; c=relaxed/simple;
-	bh=SP3w/7Vp3NhbCGDo5ucP79H2mzyycyNuotOUw2gZQCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DtIOdYwAW+gTCgQE8LXuAeCVRfk1UESQ0/kxRF4LHDRg+Vn1AAMcWObAUeE5M9iOlnOLpHSQedAr1e5FkJ/D+EWG8hRNnWO9whSNOrJBzfNSdMckh/rPM9GZVFcfKyear6EMPK3X7hNGhh1/0toDjbJps5SPp13uyno0ZU6W7r8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xUqoahPh; arc=fail smtp.client-ip=52.101.72.36
+	s=arc-20240116; t=1789871475; c=relaxed/simple;
+	bh=F4/rKK3Lj70eDCShFlZgEL+M6kzyASRLarBWm1E7Zd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UxpVJLG088d+aqmUep/v5J5UNeKaqkCmW7S16hHP1GC6nPYJtOQgko7Y26wOZFxBa8POd1oV7A96xlrlD5pPwj7HoxxKO+xen9Hmkr4N3C216DTEbs66R09cIk08vwKwmPz/jvUKwfNsAze9/uPJMbU0PN3FsVAmyJEgvwKQYH8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fStlc8to; arc=fail smtp.client-ip=52.101.72.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xUqoahPh"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fStlc8to"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MxcA9nrwVTGt6Qik5JNT3xkPAA4sKEevzFDUtfXh7HuovmGMHvjh8BFx2WwcAUEyFfVcNy5+T1+wJIqF83OawbyA0QC7YvTGsrXyuOoUPa738irso21v0LSfnfvkkMJ6cxQRfxxYb0L7FKbj+YB3oNoLQb11k2De4EQwGvF11OpfumDMvAaYklxIKOkDxje0AJul7muc/md6ZerId8DO2Sz82kcAlPnTBP5iVI8j7zR7CRDzudCJyxp6YdC5SNg3mSe0HUG6OajbAwVWdufKNizbEf2/1f1bSt29Ys47xU5G/IxDXOn9uBt82t7A/OpUauLZgIZa2ZbcVOy34s9K8w==
+ b=RVcHc1GZLIJnR9MRq2cmzAmaNFKPs6xBd7hhvvw+Yso+yCavcLad6tvAlv2Pp0pEPQx3OzryuVqCu65FuYwn+2szNYdR6/9jixvcYcvnKSxgj4d/95Ouqai0lnEYJpIQDJdJwvho8IT2mDF0D4NNKL5XWG74gyf4DjbjoNzPDwwdhAg0iZUxcMYjnzx+oJSueTskqE80NiEzbX1EqanJF/NscuoYKxuwUlF7lyxKeifY0ASENzeytlUMz5qKQcxQPuEKPL1FvNsJT0ejk3nIoURtTNryBvUe9Q1nkNUUhQ23r2nRw+UY4RhcjL6mF2lWo4+5MZob3FpWPGgrQ1TQjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vFskB9uxYH0/IoqRfn5UwlZlU/SB+jcOdlfemlMQzgU=;
- b=FGgL48ExWwroQe0dRX1TT/y18F3JTuxVGBrwd+eC8eulm9tgmFnc/VBJ6/Gg6q5wz+811ZNX6QhKWTdjdaZDHlQvbCyIo01fEQEKBRJNHeJd9lAYB8mtXWrmCj/p50wC8e59M1JxchLgvB5JfYJLvxxwwV92h463zb4YSJEqaPgzXWaXXAFz0OraqikxangDByvQDTpFJXS5wnoWPtgGUmDYdJLQXO5l1jTNXJmblmcCVlaedO8WbdAkTXLhYGzEClH5hT/Zix0BXfkb6sOYoPLyGmZ0yX2vLp1gvvcEhnmhFCmlxhOB5VJJv1q2OcG6AWQxzdR0gNqyhyOogjypXw==
+ bh=2khwLgpjnaq75pGjuR14bA0R/S/syXRnf2IaxRmnChA=;
+ b=Iy9izOGIqsp/ShiHhSBGX2JmWbBGdXP3LAe3SVPbk28XoK1o9kxLEIyHr43pIXhomFo8fEBcdGXu6GPxJvcdmurzfxsZGo0DFIGf1kI6xWScJra9xyrecDnQVnEpUh/nToUMk6PnZ+yfytQzhx5kVEp7q6OVau8vzIrOkUd5HVzTDYkyhOB/IRgzEI3lJOa/gpK+kBLyMZXL2+whcFES60qASBCWYWLk1DHGZhliA/YYf1eCXt3PROP2dYTaoW4T682KLC5rPHbVNUBsaxLO/3LWQyklzzazw4iE83Qx1LapqMb/wsAMTnkHj9HTpTBTZVLT6SKlLZ7chdkZ/NlM8A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vFskB9uxYH0/IoqRfn5UwlZlU/SB+jcOdlfemlMQzgU=;
- b=xUqoahPhPlMSJ0LFR3wpZ2ub3hLwJb323M2I2Rbt3Mvm0IYE5n/gPBWxWvDErzsnYOTUc/RevnZR6KqTrx/ZhpU7kII9l5YS+NKH50JSDBWNrvCJFHnRaa2mD0wg+7YWrZNnhOF9RTD6RPCBkxcOQ2635wLQ3jC4Xsf2wkj4mSWnK/2hjdHQ9W9bzDPpkqEmN3tg1xVd/La4wkuS6INiCtmd7ho43RX3rRpRZOHMZe70eeyOHJ9dfah8EwUq+4wfYYWms+5lvaBkeqdGZN8A1oj7VsbPMCRvxSkwLzq0u0VrD6P6x86cnXLC7KFS6WLVyXopn7EGzVGYSBRpdMhOnQ==
+ bh=2khwLgpjnaq75pGjuR14bA0R/S/syXRnf2IaxRmnChA=;
+ b=fStlc8to74GOLtRR8jGcmCqfp9giINQRHGmfYg3FZvmTfdEBzBfLZAc3Umj2cdP4NTGomaArJoKNakvwTNCMMf6FRv5AEiOYZG/9AoFwvNQ4liICvdfXdGIDmDY0ETkMLsLQGmW4qL48afhnV2uDbekwfgX6LMLgjY+CRqjqDf3l99WRJL2qiuINJ+xV20iEQoMkk2b6+TMKgM1LowxrIa/MIdHW4YI6Dzi/Id/jNo3lSVH/t4HvRfaQYyZjewh98QCeG/GsOK41UAc9JIFkAepEzhT+em+VjxJyqeaKUGcFziUpVbKRBQZFNdsL9NOndht3GV5zwYFwB+t20Zqyjg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
  by PAXPR04MB9596.eurprd04.prod.outlook.com (2603:10a6:102:23e::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Sun, 20 Sep
- 2026 02:30:16 +0000
+ 2026 02:30:23 +0000
 Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
  ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
  ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0428.014; Sun, 20 Sep 2026
- 02:30:16 +0000
+ 02:30:23 +0000
 From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Alexander Aring <alex.aring@gmail.com>,
+To: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-	Paul Fertser <fercerpav@gmail.com>,
-	Martin Schiller <ms@dev.tdt.de>
+	Simon Horman <horms@kernel.org>
 Cc: linux-kernel@vger.kernel.org,
 	Peng Fan <peng.fan@nxp.com>,
-	linux-bluetooth@vger.kernel.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bridge@lists.linux.dev,
-	linux-x25@vger.kernel.org
-Subject: [PATCH] net: protocol: use assign_bit() where applicable
-Date: Sun, 20 Sep 2026 10:27:44 +0800
-Message-ID: <20260920022745.3145847-1-peng.fan@oss.nxp.com>
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] rxrpc: use assign_bit() where applicable
+Date: Sun, 20 Sep 2026 10:27:52 +0800
+Message-ID: <20260920022753.3145871-1-peng.fan@oss.nxp.com>
 X-Mailer: git-send-email 2.51.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0021.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::14) To AM8PR04MB7874.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SI1PR02CA0022.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::16) To AM8PR04MB7874.eurprd04.prod.outlook.com
  (2603:10a6:20b:24d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -81,65 +70,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|PAXPR04MB9596:EE_
-X-MS-Office365-Filtering-Correlation-Id: df50fb30-989a-4314-a81e-08df16bf1b20
+X-MS-Office365-Filtering-Correlation-Id: 82fafe4e-0825-4924-b954-08df16bf1fbd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|19092799006|366016|921020|18002099003|56012099006|11063799006|10067099003;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|19092799006|366016|18002099003|56012099006|11063799006|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	7eTIxiONogXszFKJL3vRfDAJD9RWOfaDSuf/DxGYl0U+J1gqe2QPxYz/Qd6eRymP9ZJtUHCVhf/0A3fLublO9qVsf0BDgopAu8D69a5tNzl/g5CQLj7GiL1uFdrxsErFx63iF1FQmxHrp4lo+Y8Ypo6bMHYVbf5NL0rMBqjUPD/wziKsI/zyc4DYSVfUOBcttbJf5QggCTafCtESTE9KQ27Gt7imEO8LefeQ1Jh++d9elTJssPsjnfWZntZJ5HuA33VW+Ueyx4N5aij7TuPcQADYqUSWUOkgFHmVvZ/juQGmi0C6lhAy3xH666HVYwZlOPd1752UV1gWlDHM7QgGq6IYvvUr/rQ3hnuQDN35wl5QfWjCkD9t310r5fnk/62ZGx0ha1Fon/LClrO5mpWCknuCdQHsQtxZVnL0o6aCru8PnJLDuy9a6fWLryw5MbzPh9ToWWyAQL1Mn1/uzwvv3AQc/5eQ5+yPaCPrimRWzgCA2HUiZOSPJj8tNtGCuNxrIzlkwWJeLB8bqQgGOk37sYbzD+UA76SyhgI6WeVAYmI1/l+qyD91VqOIxIPLImwMI8avYKCp4i7JHqGs96IAOsqOtP6V0ICcQizsQyviNth4xH+57xpyAYt1wZ8ly01BhaIEYrPFCIjDLBT32nVNsIZTkteBU9nLQpRkcOkle66QQ6Gz3x6YakTW+Rhl6xfcf7T/m9A/uDrXY/6cG4Upbw==
+	THsM9yhVcNjDf6manOP/P1pa01EX0dXFuOxPk/HO/c4jYwD6u7THhnvnf6YkCzqdTV0FUL+9kOuQS9A9ndknDY+M2PsrB2IvactTS8RkJm7tcAM/ybZNlmdJ9YexlWBgy3TuzxtgxJXEpaZkkd9JjpKXqQ2kaUGKg/CePbN/5DhBrAyH6dEnlL3vsQgjh/7R3RyC0SsyHKufUOndR6ZXVoZ7S9qiLdtv8oHP4SLybrxStuEsXzBsbW5k/UDyFSPPUmesCVVUvryl7s/AMzOaUOFEb2cZnPSBXn8Il1uDNFnErowsuIgWVm24PnJRm12HsLIQl4VPNKEriBQ5X3RlX5Q02LYTIUNswRPz8Zh2ZZwLhNWPt1MF/rETlk2Z6dlYE3q7ShfbDvIv+ZCOjpuRt6TRBSXQQylchx5lZhG9zMCGlxKEQN+4roWNVLdAc92FKttBK70EXaeyVqsEPab/31I7rjil4C5weMwSxiT+7v1a/S5xI2haUwhvFhL2VvGJRxkT/DOKU3SZq5feQe7HtxWzRVtlJIjYflV07L1DcC7FCIlU5yBRGzl67vZzEdbbrLYVS6Swp3ETykkzTiqIkVygfXPLawIcNyxQ74Ngsug6US1jQNmC0f9VlEET3Nm22YOgRBMxXTnJRyAevFSIPubmbWO5G/gmPYWqTWAjGnw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(19092799006)(366016)(921020)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(19092799006)(366016)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Jhh37yoe4+/0KE6q99/8/umLlttSIjhLCJMtE5iTsOhTxh/k3HZjvqrB+Vqz?=
- =?us-ascii?Q?ZXkcSYE26Cs5xNwCKIuttZvYmylMVENwVirrWiB8AeZ+NhjEVEEfKutCdJ24?=
- =?us-ascii?Q?5FE8fxkj4mkaRoEyjLx+BVnPogCeQvZinnSsk2DB+3AJYOtpa+yVXVFLHteX?=
- =?us-ascii?Q?Hx9/JAZbY4b87ED0Z8W3DJlY72h2d8PFniYykRncG6kX6VI3DIm8jlggZ8eA?=
- =?us-ascii?Q?5yj6+Vh9aepSmaoU3HolQ/Qdp6kagS2OtfUr9Eu7ylDJS0TU6v6OHNGomOiO?=
- =?us-ascii?Q?7oi6ncUjznmtWKcL3LDdhIgJUfR5FUtkP6vlNxnCPQqJo9G9Mbeo01I+ieoQ?=
- =?us-ascii?Q?gHTrVmAH9oOgaeGMlvMrLMHc+yg01dlTw7qT1cz0uicrQ592bmL9VqgsggOf?=
- =?us-ascii?Q?NCe2mZRbey3DFeLZVDlc6BJT4D6frp3Nzv8LVF4oP45dCq0D7ZsYLriXbBva?=
- =?us-ascii?Q?Tttb6dvjhReebyk/hIvgxxnI9QaI3xv+jc/dTrtk27sL0uRCg8AvYkb8hRod?=
- =?us-ascii?Q?WvKbxczoic7Klq8h73QmeB1gYUZvIEyxqQvvYb+XejZKzMqZHe8NS2IXp/WL?=
- =?us-ascii?Q?Th8Add5aqD4r1T7t6dKDHKk5tDaOqpzwps6xGVJe7RViZZ49yaylZlyUbeWa?=
- =?us-ascii?Q?Ina+psdQE4QVziIbNkgsbQBRwoAlN/5HJ+7tDLxGRPBv2gqKG9wmR+CU0ySo?=
- =?us-ascii?Q?Rwj5lM75vfctiBRCzXXTrb7tmgVXz/LzaXrLEKbuiPtLaSUJU5OtFiVpnbWe?=
- =?us-ascii?Q?EKN5RjOGQZw15h8j5OMgVcvF7AnwE7KEl2c2anLjix/krYv3tHkZ86M/lCFD?=
- =?us-ascii?Q?t//a68QgpkXWl7SQyTf68xD0n+/gq/7PQiyL51uC5aIp2RJciergC9bQhhG0?=
- =?us-ascii?Q?iRkP7jlHPtXG5TJuWvXE75+RSNsfMZ5w6e3UlbssEK25JSWuizQuXWKlXjhk?=
- =?us-ascii?Q?88dCWR+deAnpHwJHp5X6FHnbcHBaz2X+2bx4nwa564MLXk1HNTJyM1eVlhB4?=
- =?us-ascii?Q?AIEOl1aFqk+AESRhtHgDYEYPdi0KND5MxXBgUIa13p593rcAqZ5vdYCr4DvP?=
- =?us-ascii?Q?UQrwl2XenJwBsyTowVld0cfTFPcH6czsWjsH8Sx2D9ksQWu7F5SZaaNw3o+4?=
- =?us-ascii?Q?f2yHSjIthfZs8HcejXpxPty+JQEq24/3qvcpxZzHqy2v98j+D51MGMykiyyv?=
- =?us-ascii?Q?tlwUROv+ciXz9eEIpordgb416zcMRrhH8QbD80nvetwcIPKUS1dOVQr+YwPT?=
- =?us-ascii?Q?Tx5uER34eTXNvRt68dbx54LUB5ORINdQYKQcI1psBB0UEqlCR7nDc87oSF36?=
- =?us-ascii?Q?OCd8DUygay7zYv+ZuJtoevVPIvMt7M4JMOUXves4qcdkLM+b4VK8QuX9tLdF?=
- =?us-ascii?Q?UdXM/taXzKkPBYRLOYTwaswKTwImxk8z1PR6vGdH4vg3q2yyifn7fgGbSmo/?=
- =?us-ascii?Q?wB+PEeMLBlFxAd9Mr86WVQnYIlJvupHa6JSkX2JgG4QTh1o2T3WFomIWPDNk?=
- =?us-ascii?Q?OhYBKAYSYMeFMblmNBSN72+4QBrvJDExf+bT1k2Ya2EPgwnCTWiUBFTPMLqa?=
- =?us-ascii?Q?sppGSSxLUY7PHdGDceQUUfxBhvGj9s5naLwHbqj7z8zXwN/jpTw8onFteqbc?=
- =?us-ascii?Q?lqLBpwoWooRaoIY2n/IM9XQV8Kg8KFmf3ODEPgIhZLLZo83NkG3/XuvX6OGL?=
- =?us-ascii?Q?bBPT5+k4h5aO6ZCuG2UVgmkHc5sZD5sqjZtKJJ+aaVSdBGF8QFg8cxI7j4m+?=
- =?us-ascii?Q?lCy3ZkRlBz852EpT/wDvPPcIHoFfW0MomA4ttODKMvFY+tnQPrlc?=
+	=?us-ascii?Q?HOqp8SlD/CpW9TKEt0HBYJ88CPM8JPuE4Zdhw7Hdkdeh+5qrQQgdth6Xwj/l?=
+ =?us-ascii?Q?q4/pSUlRU093wCJNgZrH/8Gswkxoua1wvGW0rWtVsEZhCJkGpWdEAg4iv3B7?=
+ =?us-ascii?Q?Hccq4526ddA/cD7hBm48tptUdSDQpn3AaWtMXoEro6VPsDE8ICvN6WMtpasV?=
+ =?us-ascii?Q?wWBodI4T7CKSG3w+UBDTSRcQRzrXdCSQygEtC0YKdhdc2fW50nwk0SUFITNn?=
+ =?us-ascii?Q?27yZRM56XSPBLTGr3ese3Bb5xlud+4B26vPRqv66D968FrdYruZxcNPMj0Y4?=
+ =?us-ascii?Q?yi4DptNr9cqwzKfqsQuFGI9rA8UrZi/HdlygN68YBwEzK0MGhaufAMga6dPM?=
+ =?us-ascii?Q?vGx8V/3n9uubujWYDyb1blxNxVAStCzhkPjsDhNRuuzsOTpwo+mbz87Bj5Es?=
+ =?us-ascii?Q?W7lBL/rZos7Clm7jq+t11PRS6qR6jTjj9I2xS87SLiBH6MoSQxvrlcakkNin?=
+ =?us-ascii?Q?62rxZVRWORAUH1ZKEb2J1EMTVeFi6AgqdnE+XCxLCtod4DZEEbTA2b2W2Z2C?=
+ =?us-ascii?Q?0jXq1gL1hZDyp4rokdOFXge3FeVRkmw3Z4xYrStZ5x7Gw2XSfJDquLHOPfRf?=
+ =?us-ascii?Q?RKFuQo9R4lKhvxpKOM9zES70WfI0HDpuqrfBuKEk9Mb/PZxcnGotAjBVMQzk?=
+ =?us-ascii?Q?9t7NpyHsPaAJ9yI5PqMY7sXimZGuUz2TUM0e+YPc1l+ubkhXLwcLe6sJvzp0?=
+ =?us-ascii?Q?/yizrW5tC/k17G3WtSn9gCBGvclFzbwh9qf8qxsLTpOPZqi19LpeMF1ewD8l?=
+ =?us-ascii?Q?pKKz2kjWqy1h2Ly8b1llpg3Qhmdr1U9O9dgRxSFbtTaD4V/fH3LhIYEcHA48?=
+ =?us-ascii?Q?gyO/Uxrz2VPGRITVorwRIqYpakTjIH/x99yQoYAkC6NJdYhi1zJ/vrt5aLdG?=
+ =?us-ascii?Q?13TiZAEZlesQ4aLyM/ywAt3Ybop6afnKYF3caOSvV5Y0q0Ew/2xWfLwkkRu5?=
+ =?us-ascii?Q?e4hP8fAeRUjk2ADnNyscMWFDI6cVHqWJ+MJEmRBfO2CSORbBj8oJBbQScCG4?=
+ =?us-ascii?Q?ZJvkbuTHFyMSEO2fx2ESfXO/mSRCsj2evjQ1ICSMKvuw/7Av8LY073YHilG2?=
+ =?us-ascii?Q?nWBI6dvZHq91/0gw/hHzVaPKiUTtRAWFDIo7AHcl3YdkoYn/Dpln9lJJ39Z5?=
+ =?us-ascii?Q?d8Wl1n+U/iUaw2C/eDvHduJX/a/ITxUSA0zbBEk/1UOI7bQWAcjsRMy59grT?=
+ =?us-ascii?Q?WjhYDyWbdb7+dVnzJWYGxMiuQEtvm+aex9MSc4BbdaI57Z/4x+flilJ0ZiDx?=
+ =?us-ascii?Q?C1FBKub6ocPDrNEZ8lEOr61/BaY53EoR37RiyDMdLvh3Xd3jOc7bChWNT80E?=
+ =?us-ascii?Q?YzaeclBimcYdjLibEh1/ux53hr2ARfE5cj0D+2iuS+0/6r0Ek2vwcB/jowks?=
+ =?us-ascii?Q?rULhDYOVdOWyfdWAhGtwRvaQVEtXFt3XEjgMAtZ16Gsie0uRxSSOUTXZQTk3?=
+ =?us-ascii?Q?fAUTrI4b8ZMbMwYbnh4fvwcfIzAVOLTzcIQ8+UMRM+ZnQSCRYxDtAKmQnVeR?=
+ =?us-ascii?Q?zz0/C6njszC+KKCSl+DvnHL05O2FznjPGo55YS2YZhPABhojiFHw+3wbLclL?=
+ =?us-ascii?Q?m3j57aU49O4EjNLp8TsPF7GqMjlm08g+2O8NG7KVflJxx4uEcjVRluxXuh+X?=
+ =?us-ascii?Q?GasyfKETMm0/W1T8/kCDufVUxy6mcPvOMiz3nI9mKggmrql2LEzqJiCWca7K?=
+ =?us-ascii?Q?yxA6dHQG2ppHK/BJ8PXlB9mgvdA5D4r2fvPu54dzdNpQPenfx7o0QiinNNUn?=
+ =?us-ascii?Q?4V74U1VZliDbdb0vbyUehv2oCcoaxsrqpeb5P7SFcwCHjuoD986B?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df50fb30-989a-4314-a81e-08df16bf1b20
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82fafe4e-0825-4924-b954-08df16bf1fbd
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 02:30:16.2081
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 02:30:23.8693
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zbt60i/Wizpjd2WpIhump/HqgasGAdVQxxVkAPJsuQd5adkKRU5BNpbgmkFwdzadmoODZ/gvTmTsXyo5muW3VZAKOA6uWFRYhtKVF6MNt0IlgJisXdM3UT3uaExX7hEv
+X-MS-Exchange-CrossTenant-UserPrincipalName: xMb8Ih9vjfl4x/cmBajKkIRh/5eOZiwRPWhiH7UmUT6IElM9BYI8azuF4JOoXEt9HuqUrTO29/0C+jL+mDCEss9TgbByW9zFU3jK731i6fTJMmy+tpZiEigskTocEch4
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9596
 
 From: Peng Fan <peng.fan@nxp.com>
 
-Convert open-coded if/else with set_bit/clear_bit and their
-non-atomic __set_bit/__clear_bit variants to the assign_bit/__assign_bit
-API. Where a bit is toggled based on its own value, use change_bit()
-instead.
+Convert open-coded if/else with set_bit/clear_bit the assign_bit API.
 
 Done with Coccinelle semantic patch:
     // set_bit -> clear_bit => assign_bit
@@ -154,8 +140,6 @@ Done with Coccinelle semantic patch:
     -        clear_bit(bit, addr);
     +assign_bit(bit, addr, cond);
 
-    // clear_bit -> set_bit => assign_bit
-
     @@
     expression cond, bit, addr;
     @@
@@ -166,172 +150,44 @@ Done with Coccinelle semantic patch:
     -        set_bit(bit, addr);
     +assign_bit(bit, addr, !cond);
 
-    // __set_bit -> __clear_bit => __assign_bit
-
-    @@
-    expression cond, bit, addr;
-    @@
-
-    -if (cond)
-    -        __set_bit(bit, addr);
-    -else
-    -        __clear_bit(bit, addr);
-    +__assign_bit(bit, addr, cond);
-
-    // __clear_bit -> __set_bit => __assign_bit
-
-    @@
-    expression cond, bit, addr;
-    @@
-
-    -if (cond)
-    -        __clear_bit(bit, addr);
-    -else
-    -        __set_bit(bit, addr);
-    +__assign_bit(bit, addr, !cond);
-
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- net/6lowpan/debugfs.c    | 10 ++--------
- net/bridge/br.c          |  5 +----
- net/bridge/br_sysfs_if.c | 10 ++--------
- net/dsa/tag_ksz.c        |  5 +----
- net/ncsi/ncsi-rsp.c      | 10 ++--------
- net/x25/af_x25.c         |  5 +----
- 6 files changed, 9 insertions(+), 36 deletions(-)
+ net/rxrpc/af_rxrpc.c   | 5 +----
+ net/rxrpc/server_key.c | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/net/6lowpan/debugfs.c b/net/6lowpan/debugfs.c
-index 600b9563bfc5..d959b132c067 100644
---- a/net/6lowpan/debugfs.c
-+++ b/net/6lowpan/debugfs.c
-@@ -21,10 +21,7 @@ static int lowpan_ctx_flag_active_set(void *data, u64 val)
- 	if (val != 0 && val != 1)
- 		return -EINVAL;
+diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
+index 9ab0f22c881e..61e785b0048f 100644
+--- a/net/rxrpc/af_rxrpc.c
++++ b/net/rxrpc/af_rxrpc.c
+@@ -722,10 +722,7 @@ static int rxrpc_setsockopt(struct socket *sock, int level, int optname,
+ 			ret = -EINVAL;
+ 			if (val > 1)
+ 				goto error;
+-			if (val)
+-				set_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+-			else
+-				clear_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
++			assign_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags, val);
+ 			goto success;
  
--	if (val)
--		set_bit(LOWPAN_IPHC_CTX_FLAG_ACTIVE, &ctx->flags);
+ 		default:
+diff --git a/net/rxrpc/server_key.c b/net/rxrpc/server_key.c
+index 3efe104b1930..726d6f34dd18 100644
+--- a/net/rxrpc/server_key.c
++++ b/net/rxrpc/server_key.c
+@@ -205,10 +205,7 @@ int rxrpc_sock_set_manage_response(struct sock *sk, bool set)
+ 
+ 	lock_sock(sk);
+ 	ret = !!test_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+-	if (set)
+-		set_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
 -	else
--		clear_bit(LOWPAN_IPHC_CTX_FLAG_ACTIVE, &ctx->flags);
-+	assign_bit(LOWPAN_IPHC_CTX_FLAG_ACTIVE, &ctx->flags, val);
- 
- 	return 0;
+-		clear_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
++	assign_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags, set);
+ 	release_sock(sk);
+ 	return ret;
  }
-@@ -46,10 +43,7 @@ static int lowpan_ctx_flag_c_set(void *data, u64 val)
- 	if (val != 0 && val != 1)
- 		return -EINVAL;
- 
--	if (val)
--		set_bit(LOWPAN_IPHC_CTX_FLAG_COMPRESSION, &ctx->flags);
--	else
--		clear_bit(LOWPAN_IPHC_CTX_FLAG_COMPRESSION, &ctx->flags);
-+	assign_bit(LOWPAN_IPHC_CTX_FLAG_COMPRESSION, &ctx->flags, val);
- 
- 	return 0;
- }
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index a5e5b2db110e..09a120b3b76c 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -396,10 +396,7 @@ void br_opt_toggle(struct net_bridge *br, enum net_bridge_opts opt, bool on)
- 	if (cur == on)
- 		return;
- 
--	if (on)
--		set_bit(opt, &br->options);
--	else
--		clear_bit(opt, &br->options);
-+	assign_bit(opt, &br->options, on);
- }
- 
- static void __net_exit br_net_exit_rtnl(struct net *net,
-diff --git a/net/bridge/br_sysfs_if.c b/net/bridge/br_sysfs_if.c
-index bde731c01e10..b9bcafa7f034 100644
---- a/net/bridge/br_sysfs_if.c
-+++ b/net/bridge/br_sysfs_if.c
-@@ -64,10 +64,7 @@ static int store_flag(struct net_bridge_port *p, unsigned long v,
- 	int err;
- 
- 	oflags = flags;
--	if (v)
--		__set_bit(bitnr, &flags);
--	else
--		__clear_bit(bitnr, &flags);
-+	__assign_bit(bitnr, &flags, v);
- 
- 	if (flags == oflags)
- 		return 0;
-@@ -77,10 +74,7 @@ static int store_flag(struct net_bridge_port *p, unsigned long v,
- 		netdev_err(p->dev, "%s\n", extack._msg);
- 		return err;
- 	}
--	if (v)
--		set_bit(bitnr, &p->flags);
--	else
--		clear_bit(bitnr, &p->flags);
-+	assign_bit(bitnr, &p->flags, v);
- 	br_port_flags_change(p, BIT(bitnr));
- 	return 0;
- }
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index b4d70ba930dc..b0340a7be8c9 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -41,10 +41,7 @@ static void ksz_hwtstamp_set_state(struct dsa_switch *ds, bool on)
- {
- 	struct ksz_tagger_private *priv = ksz_tagger_private(ds);
- 
--	if (on)
--		set_bit(KSZ_HWTS_EN, &priv->state);
--	else
--		clear_bit(KSZ_HWTS_EN, &priv->state);
-+	assign_bit(KSZ_HWTS_EN, &priv->state, on);
- }
- 
- static void ksz_disconnect(struct dsa_switch *ds)
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index fbd84bc8026a..9c91872a2921 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -884,10 +884,7 @@ static int ncsi_rsp_handler_gp(struct ncsi_request *nr)
- 	spin_lock_irqsave(&nc->lock, flags);
- 	bitmap = &ncmf->bitmap;
- 	for (i = 0; i < rsp->mac_cnt; i++, pdata += 6) {
--		if (!(enable & (0x1 << i)))
--			clear_bit(i, bitmap);
--		else
--			set_bit(i, bitmap);
-+		assign_bit(i, bitmap, enable & (0x1 << i));
- 
- 		memcpy(&ncmf->addrs[i * ETH_ALEN], pdata, ETH_ALEN);
- 	}
-@@ -899,10 +896,7 @@ static int ncsi_rsp_handler_gp(struct ncsi_request *nr)
- 	bitmap = &ncvf->bitmap;
- 	spin_lock_irqsave(&nc->lock, flags);
- 	for (i = 0; i < rsp->vlan_cnt; i++, pdata += 2) {
--		if (!(enable & (0x1 << i)))
--			clear_bit(i, bitmap);
--		else
--			set_bit(i, bitmap);
-+		assign_bit(i, bitmap, enable & (0x1 << i));
- 
- 		ncvf->vids[i] = ntohs(*(__be16 *)pdata);
- 	}
-diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
-index 033e7d059f58..f45c9ec7d2c6 100644
---- a/net/x25/af_x25.c
-+++ b/net/x25/af_x25.c
-@@ -439,10 +439,7 @@ static int x25_setsockopt(struct socket *sock, int level, int optname,
- 	if (copy_from_sockptr(&opt, optval, sizeof(int)))
- 		goto out;
- 
--	if (opt)
--		set_bit(X25_Q_BIT_FLAG, &x25_sk(sk)->flags);
--	else
--		clear_bit(X25_Q_BIT_FLAG, &x25_sk(sk)->flags);
-+	assign_bit(X25_Q_BIT_FLAG, &x25_sk(sk)->flags, opt);
- 	rc = 0;
- out:
- 	return rc;
 -- 
 2.51.0
 
