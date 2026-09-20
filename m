@@ -1,125 +1,130 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E67A348C52
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 16:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43762D7DF1;
+	Sun, 20 Sep 2026 16:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789921066; cv=none; b=XJnNXVg5aM7n35VU0IVWlNFMxPjcGjacMzpttJBNY8Z5K2nBG2ux2Dl6niUIxangQjGlyN7nlBzVeI7gbjwq7a1ZNO98+i7V39r7q11/Z29zTQXI7C0D0J2MwH2oA2ciorBl0cAIa2LNghY+JqMSJcxN5GNyH73LM2Sse1RZbdA=
+	t=1789921552; cv=none; b=jXCYnxfaFtInggBEAX5o8pCArTWo7cTdaxnxgmBaVFfbJjvJqR6xkoj+kU3z/k74jD0hh4qyptJQPlN3bkq211FgadGRj2uamd+B+pIzC51VTMwchAQ/7Qf9UuWvgwZn/iMO7XMyLxrZqzu/yy3VkrnKFaeiLZzuSzQJW3CSJWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789921066; c=relaxed/simple;
-	bh=q3+uLqBCNGSzkE7tv6YmXIvrM+sKuNRFRAZZq6awJKM=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:In-Reply-To:
-	 References:MIME-Version; b=pMF2TBJ6V7R4uUi5ZLHtHbaOzhUmOgd9V1GYs+erB+3oIvRfcwCpOt5lcmBfxrbqtc9BLEY2QygzFMpH9R1MuURm1MLgzPUgwCy3kExLWPl7Ug8sVvbgPHLxYl5d97H7xe1rI7DouKzBBgcRY6CZtU+UwV7HgqR6M38f6Bg58B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=duKHX4Dt; arc=none smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789921552; c=relaxed/simple;
+	bh=d2MlFTveKjxRY0wtc80I6nUBdByXe0KUB2Rgx7U+510=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BP8rmFw5sxVuaZz2X3wVZ97rmV9PVCJhlb+SGFH2bfM85FtXKcehzBJffZ0uOFfB4X//p/zdI2IhLoOEsb2lCcYNP46ukbV5QQPuJlF9antr/X6BxxLAh3SMPk8+8vNK2nA8QCvY2VvrctfLCIBn2+TbDBFc38pLGfOKR3uQoHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=ngK05mlo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Y5yv9gV8; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="duKHX4Dt"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469a33c9cso3031952b3a.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 09:17:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789921065; x=1790525865; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:cc:to
-         :from:subject:message-id:date:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eDlZ0Axn1IVbcM7wq+/bUYuF1RFbaZNrtATk3Wq6DJU=;
-        b=duKHX4Dt8MebFrNKOBbwKA2zHIAc5hYGd4rZx9EIq/TFka+FWnjzmOfANMEadtVZaa
-         kz1z3TP7YwkYEGG+UFUA//LL3YuQesxIUkNWyvhnr9MS6c6SMrQfRMBdUHX74hHb2Kbu
-         VRbcwEfgS5YO9rD0BTR4oujohJt+MsTbwrY1WYxSPuC//gjd2GN3zUQa+W2bpytcV2bq
-         mUv4FIBOMPlg4SkpDrHihSaZdEQlMpdHxo4e+2i4HS0XRv3tDxjEHFCx/M4otdm5ZElU
-         zUkjvPY1Z26Zppry1wxFyP2neIN1nfe1jGkQGzPHCEkV5UYRRLO2WHX3gx5iO9Ee6g6X
-         InkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789921065; x=1790525865;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:cc:to
-         :from:subject:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eDlZ0Axn1IVbcM7wq+/bUYuF1RFbaZNrtATk3Wq6DJU=;
-        b=AD4hwK28re/HeyFabwpDH5jeuCpc8FV33N7gin2rRCOaEoCgml5PHbzp/BB9rruvcC
-         jUwzU4P/uvdW8oGMqb+PovAwBcXYr0bEwF8/WoHxdkrQw1Em2ghoJof8/cyQ/DXqsihu
-         ViAFgna/mMWE6VSj+u3XqAMOPVDejaT6+RyGQmdbYlB4d3my+raSv1Zp4bx1aFoyVz8r
-         9c3db9RL+T65LguV4anTe79JPW+iwkPK3Jrov7iqGr5R+TWFI+x0vPM6DBLKK/GP+yp5
-         +pFy3PuKmqQaHqZ7ywtgpub0BLISnzT5EAnhPZZU2eyUlr8R4GjWeNS7dfceinpPaLbJ
-         mTWg==
-X-Forwarded-Encrypted: i=1; AKwUvByF3is40se/pfEytWPqUh2SIeO+QejhoLRor3tNurkSnltW6pC0d5nLHbdhCtPk/xyUhk9PlUA=@vger.kernel.org
-X-Gm-Message-State: AFuF++miYfWkrDe89aMVECHDgefOLiW6SeDLKX67g4aS0fGASRtvorJr
-	UMq5MRsQICQqOK0Wp6PUb/1CiB+s4cnEPGKgsK7JO8s0b6q4cFgLmWIi
-X-Gm-Gg: AYBFou03WdFbfv4uPvWQ0dOj0h+gW395Puv1OnosIWZzPhY6R6nCyL+xYlPokyPxoFx
-	mew420fZ4eWhIGgdjPExR65d2BehOf/c1t6TMlwYSH1NUdQ4LqHkMbKY5SWSGdnqahR+R6mLhif
-	EUDALNqAeGIJdTw7Ltfb3pcujZ75NLhPtOhSLzxXndq8j+e08qkiqWiWy1YH+PAp2Dx9y9nn++s
-	zANgxFJCMTsWuXNv5XFrxKHYFHoq+IWcDQ6pQK4aHFMN+VlnM90OhYjeULUHvSy5aAqzFSxLJxc
-	Xx63P4hI+QoMabZMtGK7XTbgfFc1LfhxhNxzsPU29XaM0I+iF9rnW9R7jj6lPVe3OrjwiGr9aoA
-	RVUay9iE+6tLEd8/aPB5+1qP5hPDn2imhMifYKcRdXa2d14TpjRy6i/8rIjBgLHLKGl9/FAFDxJ
-	bwN+AN6dCCShanrpJ1wZLdmYxTSls7S1YM3OYRcpaouUernTfWSZCpDqURm+PdjXeshKp7nCAGh
-	uaeSh7EAWbNUQRM1PYVoypj+4Lxok1gk6bBAiGbc1iglvccaMu5kmjdbMmjka8HufTYCGa6xxrJ
-	NR7M
-X-Received: by 2002:a05:6a00:4b01:b0:848:4faa:480b with SMTP id d2e1a72fcca58-874dccf8702mr13211565b3a.12.1789921064613;
-        Sun, 20 Sep 2026 09:17:44 -0700 (PDT)
-Received: from localhost ([153.61.198.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877aa6fd3ecsm2107269b3a.59.2026.09.20.09.17.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Sep 2026 09:17:44 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 20 Sep 2026 16:17:43 +0000
-Message-Id: <DLKA28VU4GIV.I4EVTT076Y5Q@gmail.com>
-Subject: Re: [PATCH net v1] bpf: cpumap: fix use-after-free of dev_rx on
- netdev unregister
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jiayuan Chen" <jiayuan.chen@linux.dev>, <netdev@vger.kernel.org>
-Cc: "Daniel Borkmann" <daniel@iogearbox.net>, "David S. Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>,
- "Stanislav Fomichev" <sdf@fomichev.me>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong Song"
- <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "Ihor Solodrai"
- <ihor.solodrai@linux.dev>, <bpf@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-In-Reply-To: <20260920133017.248620-1-jiayuan.chen@linux.dev>
-References: <20260920133017.248620-1-jiayuan.chen@linux.dev>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="ngK05mlo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y5yv9gV8"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 85E1A1D000FB;
+	Sun, 20 Sep 2026 12:25:48 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Sun, 20 Sep 2026 12:25:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1789921548; x=
+	1790007948; bh=uKa0UKRyOFRFPJ9hTIM9DrO+qTY1MbP0REohWq4oE+c=; b=n
+	gK05mlow/6hS7w3yfog4jJ0JMljkkYA/6IHouBPRXPCFFN6jRQKR4Yo549vKfX6v
+	N6Jg65G9pga8FrHRhtIFAGBj+GIf6fPYtMrSZQS23ZH70FaodbCw0B6jd6JIPvHO
+	jeIPlzvo8fbo8mf0HAg5/stgm0exXYRa06Kd7SFhRpoPfkRN60ayWsXwNIqvHV83
+	pYRTmlQ3EWJBU22TFy+Ru2vkGjaHYRqZoa+xC4HNiuTW/Y2uTDSkRq04xhcoNhYn
+	FuqLZj1iO7x68RZAA3G87lEMBIfOGnp+3HWSGfSNpUTUD23/cvtlue4fGayKfE09
+	OjMi5hRbdyTbV8pySMoRQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789921548; x=1790007948; bh=uKa0UKRyOFRFPJ9hTIM9DrO+qTY1MbP0REo
+	hWq4oE+c=; b=Y5yv9gV860a9pTOxyImtYmmIlV07rDuq4aMlu2Zj2LoYeFor1xd
+	jwuK0VT8jz7JoekFRVsrpm9SL9CRUTZA5C6pcLND2vXYCALgXJD3NSNHcr4+116M
+	JKjGY8wiF2FVB0XBLo00GD/8+XHoeUcG46NaQe8Z9zLZ8P2msKGq70lYqYMQ9Wkb
+	0bTrbAiNpnPOBhJ2TP5nBnChXBSPikFS+3z7sq4ny6eWNrhXyLPkv3OAMDCb5o9H
+	/ypxCHnVZzcv7OWBDVHUPkmswQSca9I9InxTJbgoofqrbU5b0PgWZKigm1Ttx15/
+	iW9bLvvQEtH5iI8amh+GoeG0FrdH4g50jMg==
+X-ME-Sender: <xms:CwmwaiTgO5Mepgdqf26uDmVKzPSWiP1wz7IYCMCa04EAqAMlTCK8rw>
+    <xme:CwmwauJFeadPzop4HJKHcKnTrm2ZUJGAdOloF135rnV38xcdhGcTcILe2xpkSp9gJ
+    65yVgMgmw65BV22IhDBKJm57OBOOlGUqp2xJO-7f-oab3piHK8hpupD>
+X-ME-Received: <xmr:CwmwasHusygI4-PZThi9kcMMuq989bjNa_UbhLNNzH42z67sj8lDEZc8cHTq>
+X-ME-Proxy-Cause: dmFkZTFBc1TPBpr/LM9c9kHBtWvzNuUjGBUVRa+QYJQpVvspV0TJNc5ATtkHRnnmq6vv+5
+    eK3unvJ4+8cQKt5BexqxPewf8Cr0OhUGwsEDWAajP/7TZIGK+siVNNuWG6Te7Z2pgBh7to
+    olWRSEoBCjO48HVfiRFf6ELXEwYzuiy2iNIxozOJVN2mnE9nyzVU7JFzOMnFMXeK3VJwq+
+    Db4JLXXX8TuHHFC1VqUSutvEB7WEEaQqzW006TKtEY247EFIV8vM+UjNJvHTgM0lIiI/Qb
+    4w7HyHDnZ6tf+ACXfu7GoQWP2g2Q0W0Bm0dMjueaAMIh151ctxCmKllD+18LBhlPQZakh5
+    rlw2oAOgtJnRRvSwLuUZX+Zc5uf1buNrGcSODcn1j0cRF37DS0ELE41SQ+IruhbmXA/EF1
+    W3W3zFgnzKV2ALouRxDPobUBG967VuIfTPd52gNpGTXgjWJ72c4BqQsAqr8pYJp9aC+3+9
+    yOcE6JxoD0oDexcH54lYp2DhIXp3bPNCiw9EcCd/g8LgqNTO9isxMnVQO+qH9z/GTYv2+D
+    KUJeFGSzm1ZJueGgP1rLvQztEkhxDanMrvYsHKRc54VaqesiUoJXXr11ZAeM9O2rr5D/Ug
+    OUGsAaaglMhBBeTPF2EGsA+77qR2K4eIjMDqNnexZugDiRb5gZ9DOgpLIKAQ
+X-ME-Proxy: <xmx:Cwmwar2td9p8JzQijfXenKCFHm6KWJhG0UcrJLI9kljUgiQQ4MKgNA>
+    <xmx:CwmwakLSMjSTv-56ZdEbbbTfl9uXOjkz2h6_PDOX0OcLe1moEoXgrQ>
+    <xmx:Cwmwag0eDQFwnwI4OowdAX3nyMG6xIif2th0nTJIr2SS8erShG289Q>
+    <xmx:Cwmwaolcf6-U539gkABvA8MlllcPdmv9FGDjzj4E41JODBVUwPLCPA>
+    <xmx:DAmwaqroV7oB5DL_PuFL1L93Gq7T73Ztr03gUVfUqW4k8y0TMgIuyRIa>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 20 Sep 2026 12:25:46 -0400 (EDT)
+Date: Sun, 20 Sep 2026 18:25:44 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Simon Horman <horms@kernel.org>
+Cc: Wentao Liang <vulab@iscas.ac.cn>, andrew+netdev@lunn.ch,
+	ayush.sawal@chelsio.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, rohitm@chelsio.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] chtls: Fix skb reference leak in chtls_send_reset()
+Message-ID: <arAJCMpzSVKDiLqe@krikkit>
+References: <20260917105846.2147976-1-vulab@iscas.ac.cn>
+ <20260919080428.GX51261@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260919080428.GX51261@horms.kernel.org>
 
-On Sun, Sep 20, 2026 at 09:30 PM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> So do what the softnet backlog does and use the netdev notifier:
->
-> 1. On NETDEV_UNREGISTER, take the ring size and ask the kthread to
->    consume that many frames, or until the ring is empty. After that,
->    every frame that was in the ring has been handled by the stack or
->    dropped. The device is closed, so no new frames for it can show up.
-
-That's not what the backlog does. flush_backlog() unlinks only the skbs
-with skb->dev->reg_state == NETREG_UNREGISTERING and frees them.
-It doesn't feed them to the stack, doesn't touch packets of other
-devices, and flush_all_backlogs() runs once per
-unregister_netdevice_many(), not once per device.
-
-> @@ -528,6 +576,11 @@ static void __cpu_map_entry_free(struct work_struct *work)
->  	 */
->  	rcpu = container_of(to_rcu_work(work), struct bpf_cpu_map_entry, free_work);
->
-> +	/* Unlink first, so the notifier can't wait on a kthread we stop */
+2026-09-19, 09:04:28 +0100, Simon Horman wrote:
+> > diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
+> > index 0e3e5cf52c2c..a363f20452fa 100644
+> > --- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
+> > +++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
+> > @@ -265,12 +265,14 @@ static void chtls_send_reset(struct sock *sk, int mode, struct sk_buff *skb)
+> >  	chtls_purge_write_queue(sk);
+> >  
+> >  	csk_set_flag(csk, CSK_ABORT_SHUTDOWN);
+> > -	if (sk->sk_state != TCP_SYN_RECV)
+> > +	if (sk->sk_state != TCP_SYN_RECV) {
+> >  		chtls_send_abort(sk, mode, skb);
+> > -	else
+> > +	} else {
+> >  		chtls_set_tcb_field_rpl_skb(sk, TCB_T_FLAGS_W,
+> >  					    TCB_T_FLAGS_V(TCB_T_FLAGS_M), 0,
+> >  					    TCB_FIELD_COOKIE_TFLAG, 1);
+> > +		kfree_skb(skb);
+> > +	}
+> >  
+> >  	return;
+> >  out:
 > 
-+	mutex_lock(&cpu_map_mutex);
-> +	list_del(&rcpu->list);
-> +	mutex_unlock(&cpu_map_mutex);
-> +
->  	/* kthread_stop will wake_up_process and wait for it to complete.
+> This code change looks reasonable to me.
+> But the driver was removed in v7.2 by
+> cdae65fc43f2 ("tls: remove tls_toe and the related driver")
+> And, as a result it didn't run through our CI.
+> 
+> So while I think it could go to stable
+> It probably needs more eyes on it.
 
-After list_del() the ring still has frames and the kthread has to be
-scheduled to consume them. kthread_stop() only wakes it up. When the
-device is unregistered in that window the notifier doesn't see the
-entry, doesn't wait, the netdev is freed and the kthread hits the same
-eth_type_trans() UAF.
+But there isn't anyone around that has even a remote understanding of
+what this driver does... Since stable@ seems willing to take patches
+that remove broken features [1], maybe we should just do that?
 
-pw-bot: cr
+[1] https://lore.kernel.org/netdev/apbqjuv6l20bTjQI@laps/
+
+-- 
+Sabrina
