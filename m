@@ -1,154 +1,268 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA221ABB1
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789865543; cv=pass; b=eZwmbtxSGNLwSjh/FuEXSQQz0Wort088fE1kudPONNgxrXeH9gfU3NB+YPo1Edx49qb9AVkWGV/0kt8L9YOSlBxnIqop/raVT4YdHT+Z/d1ZHOugFEDiJ8Yf5lI90DWWcMgUZRmtTQ+0R951nU7ywEBKEVp3fI3DjotU1M9eXX4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789865543; c=relaxed/simple;
-	bh=3BUK8JAns4D4O94aFHeEQJQLFqjJlmEF8jJnUCFvuW0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d8rXr8+xBB6rACw31L//0rQV+I63Nvey6Bef8P4MskLLOwkZ8YjV2jfiJPmJcSj50zWATO6uuFTo2j/jZnox4wQgHSWCljA84Lr9h44f9ACcoCaDPBsO70kG6NliujvPcnnkW/Y3Le/7ErB4QuRPWIj4vDvnJIzMwy+3RS0FSS8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CJ4o9Jp1; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EB01C8604;
+	Sun, 20 Sep 2026 01:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789866111; cv=none; b=XeuCINAaayOiL/1SMI+9r5tXlYMSvYhZbHtBon5svQ2ZT4H3ZsJBNCNT0+CDWIu24S74bJwZ685DOb2hEHiM6NA/U7fczKIoOq6A6yWp4d0U8/IQMIrSFsYDY0Fx2BQ0vPnGnzKKL/F8YIJufb/oMZWTqX/9gEMRJn8tA+Y82xE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789866111; c=relaxed/simple;
+	bh=mBqso6p9jXaIadDJjxNGRcjzykNgmLSnbRHoLltejyw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=S1ro2QpqdvO7kkVNZezSU8qIFJu4h9QLpj7vLEhQBSOmKc8FFYDiFRVdVmogYS34SQc0PXXXZ8nSHax7PKqX8WdffeCl1bGqNn6BpPLYjSmutSagDVrce05FES8GlP9qR2jjFTaIqoJouc80YFcAn4CpxffrcHhPgcFBf+ZgGyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SOMMl7iX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CJ4o9Jp1"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1eso309522266b.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 17:52:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789865540; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UQPbw8/U7q7qtdMKDFbjlU3RPW9wBreTemL5xsGtlXiM6t3kO1SIyJwyZYlGxGY7Np
-         TV6CtPUc66bceWJhosB8v2BqI1fH+mB6p2Na8uKkUo26oTVIeaPYlHf3Cl3rWiZWfuhX
-         jZzckzMqYSuLn57NDkYnViZHTK8n8ieuXaGg7efFFYcoJONvg91OtG4n2ZgZCVG7wrQE
-         npDuOmD19K6oOj2vokMavCpNne44hxUMwWwifmsh573o7DRbClEvZ0XEC2dwWqubtsM1
-         a+XCzjcqm93eC3uXkIEQe6UpgzkUiIJHKuCRZkwz+LcczgO9524Z102DVVk+scUz/OWW
-         S5+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c3C3doPNU+BbPfNOlvgAp/S4D1VtR06ufBbUBrF8R8M=;
-        fh=0xg1NPAToSfP5cqSr+tZ/g0rHQoAF2A6XjbkmZLnUhY=;
-        b=jmmvcn7A/p/9Nxm1IY/vjiqh75ddeMM+50U8LLXKrRBti+bKJcS52/X9wkYa8KYj8E
-         w0wGVk3DUfR8NVb+NfOdCMLGo5553KG4w7X/dAaQVhVMsHJAYufeiiZ2BNG511nBRolr
-         iQMT9yKHqFaI/t6pmold4voiXKR3Sw4G5IF94wZ/q2WM3fY4Cd3qmxiN+/B4orG35a2W
-         Le8M1cHDRvyTbp0BhefhErvSlVi3yZU7zAsJA79o0HAmvDEWwvFKC4h2eGV7hNYrNyse
-         u1EAuarpIRAZw08SKVKfrpQkQ8QOE9mUDpCtk7OkEth+QXL0/Bj7QFwKeyetKsgx3hFM
-         2CzA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789865540; x=1790470340; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c3C3doPNU+BbPfNOlvgAp/S4D1VtR06ufBbUBrF8R8M=;
-        b=CJ4o9Jp1K88SD9Hp5lpA/U0hecpMozet6Bz3RQEQZGn2TgvaQH2TdK9hll5L6xBGxC
-         AcEb2oYCQQNq8tLfDagMzeMBWmbXg3AfRQMmPk/iscxnzDpww7E/JZeXs1McUB63M6bd
-         WrcE/hn/18DX7ikZ1nrIAiybif4t5RnVh7Xyd57e881oCr6pGn/UFRiwIBo+6KYrchy9
-         rNgrs9qEXVD6xOwjA2/JS++/+KpWAbg9nShRSGEJtOW5h6TppL5QbY6mAzjMgbPj1S++
-         x7NM5BhA9aSTqR+xA+lAGJsPOeWgptb3nluoMnDdOfftlQXyZzR1Ty5ykstqzzuC1p+r
-         Fi9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789865540; x=1790470340;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c3C3doPNU+BbPfNOlvgAp/S4D1VtR06ufBbUBrF8R8M=;
-        b=0pvtUsWWpgr2pbifHudvXsuYcNwWDkKtyXdloP0k/+KDOaRocwqupYtZVrzmwsQZTx
-         AeSz/f39r+gD/hRnlXc5L7x3l4KTPoj9if9GUFqjqO/gZx40Nptj4qMTMKcq8JX7cUfg
-         bO6Wec9TNRcOH25gE/kTqJ0w9TDY+EK0/TPELmdC+yY778L9M7P6mOA3wJfnxyZMVmZn
-         TBq4MuYPb1N/ZdxRqQMYk02dgYrnsHAejgHJjnwMpnwvVGGoXq68QPB3kqkXAlvztQ0w
-         R3jMKzv5b1i7ss5ItWPxWRtLgNoreRa2MOERPDvvuCUYCFZqq7XwJR7kj5qYzESuWBNP
-         8WOQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw2FFujFbjThuW0fKKeUuDPrHa+uwthILLV0pNQ02BOr9NM59lwHc4qwzIqAmHlqPa220CG6Bo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lb6hrEFpUs+4oQDXdy9mLK9Oj7aiQ6+kU1BGYx7pEQW727MaVB
-	xomBFP0hBBiu8K7xEOBgeQT3PciGoaJv+XkGQEeeJ1mNTAOedN5kXu20xAQGUl9wgpf7jrYNvPT
-	yTQAxzKUROlyjT1yiHeMl7tcYas2hkA==
-X-Gm-Gg: AYBFou1YHHenRokCwaSVXUvu1CxzjYzgK1rsicvrWkWFchKG+OLAjIEHEopOLs/FSie
-	2XZyiuI4X311piD7dUGsUdcD4TEz81Ful0RZHoz3QGei8QFZ9grk4/ek5sDsMS3rMZtENRehbE7
-	s6FDl4jUJ5+DqAH/Uzo8HkJe57M+Q9re5cHnS+PvgINPiWlhzrkVLj8FsVA1onL4QqiG7dAbK0n
-	5PhwGig397G2G+hfNSOYMCDXa74pDESVhnPxRfFjvndI70DlH8rvseyuFfCFC7wzqOd8e+NIPgr
-	GQPl7bYhQBMEEACrf+c8SrXqFO7OlZ5vjjw3W3FWfayEi9AEA3td0B3gMIT6PHeklBdI/FPdCZP
-	YIZYDSaC0gYigBNMuKwBvmzPh3EUDFMOjS9GGzEnFAZCBEOqFMtp0aikKtCuiEljdij/i
-X-Received: by 2002:a17:907:97cd:b0:c25:58e:83ff with SMTP id
- a640c23a62f3a-c2a156a3794mr545290166b.10.1789865539670; Sat, 19 Sep 2026
- 17:52:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SOMMl7iX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0861F000FF;
+	Sun, 20 Sep 2026 01:01:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789866109;
+	bh=2GcTJKx+ekMWd5ofFW6bC8RsA5w08X8k/45sHNl/H1s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SOMMl7iXfGuDeFIavjZuKiXvKQRmDeRk81DolkorOvs4Ma0YkBHte9OtmyfHtPeEz
+	 gp8wtru0P3dgbk6rpc+PekYBo6Zy5qVQYp3OEZNnBuVmzDPfWn2520f2LkaK0Tuia1
+	 1UjhXFmK/QOOkVUS77ZcRDwf1BFlCm0e/rbDxzCLGSJFU1EIkSCJ2zRgx5T3aMV3+q
+	 R0qi2+yUdEzfhZeiUwfvgTnf5o8BimFKRo6uRFMgdajhQon78J14/0k9qEo0HGsd//
+	 u4J067/cmRnlNlpliTlqlAPrrC0T38nx9SB5Yiinq4BQBxLz6F+iV2zFIneHhUEXBQ
+	 9I/lGTHuEu/Ag==
+Subject:
+ Re: [PATCH net v3] net: iterate online nodes in skb_defer_free_flush()
+From: netdev-bot+sashiko@kernel.org
+To: kris.pan@intel.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, atomasov@redhat.com,
+ oliver.sang@intel.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 20 Sep 2026 01:01:48 +0000
+Message-ID: <178986610872.2160803.4250787247100119943@kernel.org>
+In-Reply-To: <20260916003430.3612956-1-kris.pan@intel.com>
+References: <20260916003430.3612956-1-kris.pan@intel.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260917192835.58126-1-mhun512@gmail.com> <e544a2bc-79ed-4067-9be8-59453d25acb3@lunn.ch>
-In-Reply-To: <e544a2bc-79ed-4067-9be8-59453d25acb3@lunn.ch>
-From: Myeonghun Pak <mhun512@gmail.com>
-Date: Sat, 19 Sep 2026 20:52:07 -0400
-X-Gm-Features: AcwNN1VWtFS9czLfcxGxhwerswgSwdEW0tGUGqcJxmZSe1Yapk0ciGjwin5ZEjw
-Message-ID: <CAGEsz8EJyv-Ea04gFYysz=6hXD8ehHHtyzvLENpMffKnN85TrQ@mail.gmail.com>
-Subject: Re: [PATCH] net: gemini: Free the shared queue after removing the ports
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Linus Walleij <linusw@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Thanks for the review. You are right on both points. I will keep
-devm_of_platform_populate() and let the parent's devres release the free
-queue instead, and drop the teardown from gemini_ethernet_remove(). I
-will send a v2 with that.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-2026=EB=85=84 9=EC=9B=94 17=EC=9D=BC (=EB=AA=A9) =EC=98=A4=ED=9B=84 10:25, =
-Andrew Lunn <andrew@lunn.ch>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] dev_cpu_dead() drains the per-(cpu,node) deferred-free lists
+  with llist_del_all() but never resets the paired sdn->defer_count.
+- [Medium] The commit folds a pre-existing memory-leak fix into a hot-
+  path NUMA-iteration optimisation and attributes both to Fixes:…
+- [Medium] The new drain in dev_cpu_dead() is a one-shot sweep with no
+  synchronization against skb_attempt_defer_free(), leaving the bug…
+
+--
+
+net: iterate online nodes in skb_defer_free_flush()
+
+The patch switches skb_defer_free_flush() from for_each_node() to
+for_each_online_node() so the softirq flush loop no longer walks per-node
+lists for nodes that are only possible. It also adds two new drain loops to
+dev_cpu_dead() so that skbs queued on the offlining CPU, or queued at the
+offlining CPU's node index on other CPUs, are freed.
+
+Closes: https://lore.kernel.org/oe-lkp/202512112119.5b9829a-lkp@intel.com
+
+A couple of questions on the commit message first:
+
+>     Since the flush now skips offline nodes, also drain the per-node
+>     lists in dev_cpu_dead().  A skb is queued on the alloc CPU's list at
+>     the freeing CPU's node index; if that node is offlined before the
+>     alloc CPU flushes, the skb is stranded.  Likewise, skbs queued on a
+>     CPU that later goes offline are never freed, since its softirq no
+>     longer runs.
 >
-> > Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit et=
-hernet")
-> > Assisted-by: LLM
-> > Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> > Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> > ---
-> >  drivers/net/ethernet/cortina/gemini.c |    6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethern=
-et/cortina/gemini.c
-> > index 4c762229ce42..e493d495f2ef 100644
-> > --- a/drivers/net/ethernet/cortina/gemini.c
-> > +++ b/drivers/net/ethernet/cortina/gemini.c
-> > @@ -2364,7 +2364,6 @@ static void gemini_port_remove(struct gemini_ethe=
-rnet_port *port)
-> >               unregister_netdev(port->netdev);
-> >       }
-> >       clk_disable_unprepare(port->pclk);
-> > -     geth_cleanup_freeq(port->geth);
-> >  }
-> >
-> >  static void gemini_ethernet_init(struct gemini_ethernet *geth)
-> > @@ -2656,7 +2655,10 @@ static void gemini_ethernet_remove(struct platfo=
-rm_device *pdev)
-> >  {
-> >       struct gemini_ethernet *geth =3D platform_get_drvdata(pdev);
-> >
-> > -     geth_cleanup_freeq(geth);
-> > +     devm_of_platform_depopulate(&pdev->dev);
->
-> This seems wrong. If you have to call devm_of_platform_depopulate()
-> why are you using devm?
->
-> > +     writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
-> > +     if (geth->freeq_ring)
-> > +             geth_cleanup_freeq(geth);
->
-> gemini_ethernet_remove() is supposed to do the opposite of
-> gemini_ethernet_probe(). What is the opposite of geth_cleanup_freeq()?
-> Where is it called in gemini_ethernet_probe()?
->
->         Andrew
+>     Fixes: 5628f3fe3b16 ("net: add NUMA awareness to skb_attempt_defer_free()")
+
+[Severity: Medium]
+Is the Fixes tag correct for the second half of this change?
+
+Looking at 5628f3fe3b16, it only moved sd->defer_list / sd->defer_count into
+the per-node net_hotdata.skb_defer_nodes array and adjusted
+skb_defer_free_flush() and skb_attempt_defer_free().  It does not touch
+dev_cpu_dead() at all.
+
+So the "skbs queued on a CPU that later goes offline are never freed" leak
+also existed before 5628f3fe3b16, when the single per-CPU sd->defer_list was
+likewise never drained by dev_cpu_dead().  Only the part about lists indexed
+by a node that may leave node_online_map is a consequence of the
+for_each_online_node() switch here.
+
+Following this Fixes tag, a stable backport would only reach trees that
+already contain 5628f3fe3b16 and would leave the same leak in older trees.
+Would it make sense to split the dev_cpu_dead() drain (stable candidate,
+with its own Fixes tag) from the flush-loop optimisation?
+
+Also, the message states that skb_attempt_defer_free() "only queues skbs on
+the current CPU's node ... which is always online", but the first new loop in
+dev_cpu_dead() iterates for_each_node(), i.e. all possible nodes.  Which of
+the two assumptions is intended?
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index ecfbd72d5d1a4..896498b349500 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -6907,7 +6907,7 @@ static void skb_defer_free_flush(void)
+>  	struct skb_defer_node *sdn;
+>  	int node;
+>  
+> -	for_each_node(node) {
+> +	for_each_online_node(node) {
+>  		sdn = this_cpu_ptr(net_hotdata.skb_defer_nodes) + node;
+>  
+>  		if (llist_empty(&sdn->defer_list))
+
+[ ... ]
+
+> @@ -12957,6 +12960,26 @@ static int dev_cpu_dead(unsigned int oldcpu)
+>  		rps_input_queue_head_incr(oldsd);
+>  	}
+>  
+> +	/* Drain skbs deferred to the offlining CPU: its softirq no longer
+> +	 * runs, so skb_defer_free_flush() would never free them.  Also drain
+> +	 * skbs deferred to this CPU's node, which may leave node_online_map
+> +	 * and thus be skipped by the for_each_online_node() loop in
+> +	 * skb_defer_free_flush().
+> +	 */
+> +	for_each_node(node) {
+> +		sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, oldcpu) + node;
+> +		free_list = llist_del_all(&sdn->defer_list);
+> +		llist_for_each_entry_safe(skb, next, free_list, ll_node)
+> +			dev_consume_skb_any(skb);
+> +	}
+> +	node = cpu_to_node(oldcpu);
+> +	for_each_online_cpu(cpu) {
+> +		sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + node;
+> +		free_list = llist_del_all(&sdn->defer_list);
+> +		llist_for_each_entry_safe(skb, next, free_list, ll_node)
+> +			dev_consume_skb_any(skb);
+> +	}
+> +
+>  	return 0;
+>  }
+
+[Severity: High]
+Should both new loops in dev_cpu_dead() also reset sdn->defer_count when
+they steal the list?
+
+The existing consumer always pairs the two:
+
+net/core/dev.c:skb_defer_free_flush() {
+	...
+		if (llist_empty(&sdn->defer_list))
+			continue;
+		atomic_long_set(&sdn->defer_count, 0);
+		free_list = llist_del_all(&sdn->defer_list);
+	...
+}
+
+The producer increments before the limit test and does not undo the
+increment on the reject path:
+
+net/core/skbuff.c:skb_attempt_defer_free() {
+	...
+	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
+	defer_count = atomic_long_inc_return(&sdn->defer_count);
+
+	if (defer_count >= defer_max)
+		goto nodefer;
+
+	llist_add(&skb->ll_node, &sdn->defer_list);
+	...
+}
+
+so defer_count can already be at or above sysctl_skb_defer_max while skbs
+are queued.
+
+If either new loop empties such a list without clearing the counter, can
+that slot ever recover?  Every later skb_attempt_defer_free() for that
+(cpu, node) increments the counter, sees defer_count >= defer_max, and goes
+to nodefer before llist_add(), so the list stays empty and
+skb_defer_free_flush() skips it on the llist_empty() fast path and never
+runs atomic_long_set().
+
+The second loop does this to lists owned by CPUs that are still online, so
+would a still-running CPU permanently lose deferred freeing for the
+offlined CPU's node index?
+
+There is a milder variant as well: any residual non-zero count makes
+
+	kick = (defer_count - 1) == (defer_max >> 1);
+
+unable to fire for the values it skipped, so an idle target CPU may not get
+the kick_defer_list_purge() IPI and queued skbs would wait for some
+unrelated NET_RX_SOFTIRQ.
+
+Nothing appears to repair this on the way back up either, since the startup
+callback is NULL:
+
+net/core/dev.c:net_dev_init() {
+	...
+	rc = cpuhp_setup_state_nocalls(CPUHP_NET_DEV_DEAD, "net/dev:dead",
+				       NULL, dev_cpu_dead);
+	...
+}
+
+[Severity: Medium]
+Can an skb still be queued onto the dead CPU's list after these loops have
+run?
+
+skb_attempt_defer_free() checks cpu_online() and only later performs the
+llist_add(), with no preempt_disable(), no RCU section and no re-check:
+
+net/core/skbuff.c:skb_attempt_defer_free() {
+	...
+	cpu = skb->alloc_cpu;
+	if (cpu == raw_smp_processor_id() ||
+	    WARN_ON_ONCE(cpu >= nr_cpu_ids) ||
+	    !cpu_online(cpu)) {
+nodefer:	kfree_skb_napi_cache(skb);
+		return;
+	}
+	...
+	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + numa_node_id();
+	...
+	llist_add(&skb->ll_node, &sdn->defer_list);
+	...
+}
+
+Its process-context callers run preemptible, for example
+skb_consume_udp() in net/ipv4/udp.c, tcp_eat_recv_skb() in net/ipv4/tcp.c
+and mptcp_eat_recv_skb() in net/mptcp/protocol.c.
+
+So the sequence would be:
+
+CPU A (recvmsg)                        CPU B offlined
+skb_attempt_defer_free()
+  cpu_online(B) == true
+  <preempted>
+                                       dev_cpu_dead() runs both drain loops
+  llist_add(... B's list ...)
+
+After that, B's softirq never runs skb_defer_free_flush(), and the second
+loop here only sweeps index cpu_to_node(oldcpu) on online CPUs, so that slot
+is not visited again.  Is the skb then leaked for as long as B stays
+offline, and would page_pool pages carried by it hold up
+page_pool_destroy()?
+
+Since the commit message presents "skbs queued on a CPU that later goes
+offline are never freed" as fixed, would some ordering between the producer
+and teardown (a re-check under a hotplug-safe section, or draining from
+another CPU's flush path) be needed rather than a single sweep?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916003430.3612956-1-kris.pan%40intel.com
