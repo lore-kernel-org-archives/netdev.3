@@ -1,231 +1,90 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EC832B13E
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EA334D3B2
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789889693; cv=none; b=TGjbX9f2e8qoe1QM5zECobUaFt96i4nmKFbTad78muyQMXHtFJA5mTKBryZj9eSeoYayksbOjiJormtiGjoeQgZzw0K7zJCHKCegghu5+cDhUMO3kgLp2BW2WcZfwaFiLBnHv90XWgJPbLBF6PtK9OKR6bxRYuGwphQ7wz2F+Ls=
+	t=1789890011; cv=none; b=CZU8MjNHOHeNDNQhiy0nPjbICdDsuLNLVz9SCH2YWuhq+KUeLC8yxZ2FfitvcCeocfppt+qG4YUqyj5xlWCONwW5WPpoiRYDfZdjxN7aDGeq9I9aYjtWAAmc9ES975W1CLPuSlXPdSIPwGMUKc0qXQbAJ2eKpZwNI0wM82bAWdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789889693; c=relaxed/simple;
-	bh=TAj2NX0BalsJBIg90f+gSFK6xjs2mTvRi0degX+efHM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHMQfoJPT5N0hMhSWIycXfU/GJ6JjRqOHQlbZXNDZwx2zSesUDctY1pjq5mPg/GB5kf+5fq5VxGHzJjHGvxeENQOG3b8G50x5jkUZcF8YTat53dzP+enpVQTl3gp+VT/Oe2JtPU4UZpQsPcMxGDRVingGhjshYQZrDQySUniDmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jfqnl6An; arc=none smtp.client-ip=74.125.228.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789890011; c=relaxed/simple;
+	bh=+mwo1lLralubcPriQordmkmkr0DO+tN/QSyWIJ38380=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=j8jMkMHMjUAA/bkCo/1NmT9Ktj/p5FAtH4orbV5GZW+W6IeRjnCXG5DeniJSu4WTKWrURNMIKF1xIpA48TomhB1Xj0Mu9IRO810nS2Hg3Y/7eUP9NMaoMKRMLh+MqtYMZ/f6V1oRNMIcV7zaVKSvPTWYbi0cBXqu6t2j+Zo4Cpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R0QXDTWf; arc=none smtp.client-ip=95.215.58.247
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jfqnl6An"
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8631d0023daso1437687b3a.2
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:34:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789889691; x=1790494491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nzImtRCLEOk3zqgss+ECzroPEOpVx7SLulh8ddX6bHw=;
-        b=Jfqnl6AnnAbY3RFLcpgYnf5JYS1l8SVPRaT2SL25G+mxcP5YWN4oE/HxUa28g4wRX3
-         3mVWW7i/M6gCxftMrgz6F/UJRaSYmO7xSqdPWBuMob1ZSnOo5nvD19zP9HoiuB0leXZh
-         oZF0EB6cneSUt5e4KZqzkSIJ34IwgYHA00Da12UK8QZGNlKqzYoONmQw4dvAYi/m9f+v
-         sWbSXtSjOw0nwMd1y4kbz2bFqC7J5rQpEhs0nbJeT+g5STINgzbXAJzCgfCPlZmfz+qU
-         TO6aiszANdzV6VE9QHDqbB4aRECF6jbfq4lVWmV6ypS8PoLvdcoSnj1pnnd3grNylYMO
-         MOTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789889691; x=1790494491;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nzImtRCLEOk3zqgss+ECzroPEOpVx7SLulh8ddX6bHw=;
-        b=IjCAw/WZyGrwive+09kSEyasWI3t2eDSxaNMOIH6lHFUhJnEcp/USu/MhZuS4YpDdp
-         MHi8s6ckwTaVfTrmdL2kYarIye3qTvKfzzIoimgCGOwRi79J4VVlI20UiIHdhhjI5LZR
-         KOocTODUNBRneq02wb7G3Ufs7EqS9F2f4W/cWeaUJeKzT/a+uo8xQJkfhPM6kp+hnmcz
-         pwLY+OfOo5NM8N9q3iAxaDIGtnkgTsuUOTTo9gPdDKf9P9qv+bnGmbDAcRTxsB13hUUj
-         UDPwlyGOUqx1w3MhBSjXCIxVZBZWT5m4uMZ3u07jMv6ehqgApakKNEAD0B2D7Iet4owp
-         YF9g==
-X-Gm-Message-State: AFuF++kv0DXujFTnOhzNP61h6ew8Fbo90oti5uY+XZqcr/cnpirDSPTv
-	5pSTATuWuP9TW3/QLMRPwWALyQyV10b/XEHhEt650/0Zi7zHqiIyug2e+RyoHYqfDgM+Hl/+
-X-Gm-Gg: AYBFou2E0Gf3STWjjL6KbVEZJayDeikxbLxZMYKU5E1QFUgJpRNeUuJTgGUsQxk7X7A
-	V4fcaT75Pzy4sXP4QP/zMxLODodLR36Vd6tiaHZnW1zgn7pvdPsA3Eh8EO49PPyi5t2BwR6b6Lz
-	DaTkM7edlJ/J1xQKhXtklTJjyUyM3hi2b6Pyl1UtSWWE3zZlwj5kntWn/mXGp9YsW4BBpX9jnP0
-	c2kl6aP2KSuOGbksK2cIwIMdggStv2ETm7p5yfnqnreCgSMAca1OmVl3aCitCsUr3WgzPPNVhAd
-	9afN2xg5orYYEzn6RC036h1aI4s3LsiJjjBDZnQFVDFFMPnz13R77S7zDeezsRAudX26DUKQTfh
-	fvH/EsHgOo064E4jCBzvHoLnRjDO38moJV0BTOvC2IDJUOPRVUjMr71b2qZDC4tkFk2yAw00Uxb
-	Ke3PzEXdzZvf4Gj9O1xKgEyGcU1yHz/k/jCk3+NC66yRvl8Asxq8TnwsxrYhv6NuNcPhFKIAUfW
-	FUu30eFF6i44iUm0NR/Ohz8o8NLhtgarf0hjIEX2Qv2W2tre6m7jlied5Wj7faLCTWzrjOHMT3Y
-	V0kl9voQCvY=
-X-Received: by 2002:a05:6a00:1815:b0:874:919e:d6da with SMTP id d2e1a72fcca58-874dd5f0fd3mr12084288b3a.18.1789889690773;
-        Sun, 20 Sep 2026 00:34:50 -0700 (PDT)
-Received: from lenovo-thinkbook.lenovo.com (awork078078.netvigator.com. [203.198.250.78])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a6ae7d71sm1716959b3a.2.2026.09.20.00.34.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 00:34:49 -0700 (PDT)
-From: Yuqi Xu <xuyuqiabc@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ying Xue <ying.xue@windriver.com>,
-	Parthasarathy Bhuvaragan <parthasarathy.bhuvaragan@ericsson.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Ren Wei <weir@nebusec.ai>,
-	xuyq21@lenovo.com
-Subject: Re: [PATCH net 0/2] tipc: fix connection lifetime during netns teardown
-Date: Sun, 20 Sep 2026 15:34:40 +0800
-Message-ID: <20260920073440.64223-1-xuyuqiabc@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1789722780.git.xuyuqiabc@gmail.com>
-References: <cover.1789722780.git.xuyuqiabc@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R0QXDTWf"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=+mwo1lLralubcPriQordmkmkr0DO+tN/QSyWIJ38380=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789890006; v=1; x=1790494806;
+ b=R0QXDTWfMKZcVor3mTSfXKHMEBjTvLS5YdcbjWrh+ysNmoZu694HRYPKg2whNl4B1tb57YQx
+ 2ERByI8M6Ol2WW4aMFPNG/k05rvaApOBIKrnYJGGnu1dNWqCTT2uSs3ig2H9he6hvx3yous61uH
+ mm82NUF804baTU9fYGG/jKS8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 32a348c164f13f67;
+	Sun, 20 Sep 2026 07:40:04 +0000
+X-Mizu-Trace-ID: 32a348c164f13f67
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <332d9841-e5b3-4273-85da-27816948e79d@linux.dev>
+Date: Sun, 20 Sep 2026 15:39:59 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Subject: Re: [PATCH v1 net] ipv6: Fix dst leak for uncached routes.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Simon Horman <horms@kernel.org>, Wei Wang <weiwan@google.com>,
+ Marc Harvey <marcharvey@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20260918041439.2575935-1-kuniyu@google.com>
+In-Reply-To: <20260918041439.2575935-1-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+在 2026/9/18 12:14, Kuniyuki Iwashima 写道:
+> ip6_route_output_flags(), ip6_rt_put_flags(), and ip6_dst_check()
+> detect an uncached route by list_empty(&rt->dst.rt_uncached),
+> which replaced the static DST_NOCACHE flag check in commit
+> a4c2fd7f7891 ("net: remove DST_NOCACHE flag").
+> 
+> When a device is unregistered, rt6_uncached_list_flush_dev()
+> unlinks uncached routes tied to the device from rt6_uncached_list.
+> 
+> Previously, they were moved to another list with list_move()
+> (__list_del_entry() + list_add()), and since commit 98aa546af5e4
+> ("inet: remove (struct uncached_list)->quarantine"), the routes
+> are just unlinked with list_del_init().
+> 
+> If list_del_init() runs concurrently, list_empty() evaluates to
+> true; ip6_route_output_flags() calls dst_hold_safe() incorrectly
+> and ip6_rt_put_flags() skips ip6_rt_put(), leaking dst, and thus
+> dev tied via rt->from as well.
+> 
+> The same race is partially fixed by commit 9a6f0c4d5796 ("dst:
+> fix races in rt6_uncached_list_del() and rt_del_uncached_list()").
+> 
+> Let's check rt6->dst.rt_uncached_list instead.
+> 
+> Note that IPv4 does not have the same issue.
+> 
+> Fixes: 7d9e5f422150 ("ipv6: convert major tx path to use RT6_LOOKUP_F_DST_NOREF")
+> Fixes: d64a1f574a29 ("ipv6: honor RT6_LOOKUP_F_DST_NOREF in rule lookup logic")
+> Fixes: a4c2fd7f7891 ("net: remove DST_NOCACHE flag")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
 
-Thanks for the review. We verified each point against the tree with
-1/2 and 2/2 applied (net/tipc/topsrv.c line numbers below are from
-that tree).
+Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-=== sashiko: [patch 1/2] infinite spin / softlockup ===
-
-> Infinite spin loop and softlockup in tipc_topsrv_stop() when waiting
-> for connections with pending work items to close: loop
-> `for (id = 0; srv->idr_in_use; id++) { con = idr_find(...) ... }`
-> holds `spin_lock_bh(&srv->idr_lock)`; when `con == NULL` the lock is
-> not dropped before continuing -> spins ~2^32 times.
-> locations: net/tipc/topsrv.c:713 tipc_topsrv_stop;
-> net/tipc/topsrv.c:133 tipc_conn_kref_release.
-
-Correct, and this is precisely the failure this series fixes. In the
-pre-patch code the walk is:
-
-	for (id = 0; srv->idr_in_use; id++) {
-		con = idr_find(&srv->conn_idr, id);
-		if (con) {
-			conn_get(con);
-			spin_unlock_bh(&srv->idr_lock);
-			tipc_conn_close(con);
-			conn_put(con);
-			spin_lock_bh(&srv->idr_lock);
-		}
-	}
-
-When `idr_find()` returns NULL the loop keeps incrementing `id` while
-still holding `idr_lock`. Any connection whose last reference is being
-dropped in tipc_conn_kref_release() then blocks forever on
-spin_lock_bh(&s->idr_lock), so `srv->idr_in_use` never reaches zero
-and the CPU spins under the lock. That is the
-`__radix_tree_lookup -> tipc_topsrv_exit_net` RCU stall in the crash
-log of the cover letter.
-
-2/2 rewrites exactly this walk:
-
-	for (id = 0; srv->idr_in_use;) {
-		con = idr_get_next(&srv->conn_idr, &id);
-		if (!con || !kref_get_unless_zero(&con->kref)) {
-			spin_unlock_bh(&srv->idr_lock);
-			cond_resched();
-			spin_lock_bh(&srv->idr_lock);
-			id = 0;
-			continue;
-		}
-		id++;
-		spin_unlock_bh(&srv->idr_lock);
-		tipc_conn_close(con);
-		conn_put(con);
-		spin_lock_bh(&srv->idr_lock);
-	}
-
-i.e. it uses idr_get_next() and, whenever no entry can be taken, drops
-idr_lock, reschedules and retries, so a pending
-tipc_conn_kref_release() can always make progress and the loop cannot
-spin under the lock. So the finding is correct for 1/2 standing alone
-but is fully addressed by 2/2; no further change is needed for this
-point.
-
-=== sashiko: [patch 2/2] sock_release() in atomic context ===
-
-> `sock_release()` called in atomic/softirq context:
-> `tipc_sub_timeout()` (timer softirq) -> `tipc_topsrv_queue_evt()`
-> -> `conn_put()` -> `tipc_conn_kref_release()` -> `sock_release()`
-> sleeps (`lock_sock()`), sleep-in-atomic.
-> locations: net/tipc/subscr.c:110, net/tipc/topsrv.c:322,
-> net/tipc/topsrv.c:120.
-
-The chain is not quite as drawn. tipc_conn_kref_release() does not
-call sock_release() unconditionally: it already has `if (con->sock)`
-(line 134), so in-kernel connections never take that path.
-
-For socket-backed connections the remaining sleep-in-atomic concern
-is real but narrower than the chain suggests, and this series does
-not change it:
-
-- tipc_topsrv_queue_evt() only calls conn_put() synchronously on its
-  error path (line 340): the connection is no longer connected after
-  the lookup, kmalloc fails, or queue_work() returns false because
-  ->swork is already queued. On the normal path the lookup reference
-  is handed to tipc_conn_send_work(), which runs in process context
-  and does the final conn_put() there.
-- So the remaining sock_release() in timer softirq only happens when
-  that specific conn_put() drops the last reference of a socket-backed
-  connection, i.e. when the connection is being torn down concurrently.
-- Neither 1/2 nor 2/2 touch subscr.c, tipc_topsrv_queue_evt() or
-  tipc_conn_kref_release(). 1/2 only detaches the listener and cancels
-  srv->awork; it does not touch the subscription timer path.
-
-So this is pre-existing and orthogonal to the two patches, not for
-this series. A separate follow-up could avoid dropping the last
-reference for a socket-backed connection from softirq; that would be
-a separate patch.
-
-=== sashiko: [patch 2/2] NULL deref in tipc_conn_close() ===
-
-> Unconditional `con->sock->sk` deref in `tipc_conn_close()` panics for
-> in-kernel subscriptions (`tipc_topsrv_kern_subscr()` passes NULL sock
-> -> `con->sock == NULL`); `tipc_conn_kref_release()` checks
-> `if (con->sock)` but `tipc_conn_close()` does not.
-> locations: net/tipc/topsrv.c:158 tipc_conn_close,
-> net/tipc/topsrv.c:724 tipc_topsrv_stop.
-
-This one is a valid latent bug, and we agree with the asymmetry:
-tipc_conn_close() does `struct sock *sk = con->sock->sk;` (line 158)
-unconditionally, while tipc_conn_kref_release() guards its
-sock_release() with `if (con->sock)` (line 134).
-tipc_topsrv_kern_subscr() really does allocate with sock == NULL
-(line 587) and such a connection is inserted into conn_idr, so if one
-is still there when tipc_topsrv_stop() walks the idr, 2/2's loop calls
-tipc_conn_close() on a connection whose con->sock is NULL.
-
-About reachability in the netns teardown path: the in-kernel
-subscriber is created from tipc_group_create() (net/tipc/group.c:190),
-and it is normally removed synchronously by tipc_group_delete() ->
-tipc_topsrv_kern_unsubscr() when the owning socket is released
-(tipc_release() -> tipc_sk_leave()). Since the socket holds a net
-reference, netns teardown cannot overtake that. The NULL deref
-therefore needs a kernel connection that is still in conn_idr at stop
-time, e.g. when tipc_topsrv_kern_unsubscr()'s two conn_put() calls do
-not drop the last reference because a pending con->swork still holds
-one. That is a narrow race, not the common path.
-
-It is also pre-existing: the pre-patch loop already called
-tipc_conn_close() on every entry found in conn_idr, including
-sock == NULL kernel connections, so 1/2 + 2/2 do not introduce it.
-(kref_get_unless_zero() in 2/2 only narrows the
-already-dropped-reference window; it does not dereference con->sock.)
-
-Orthogonal to this series. A separate follow-up could mirror
-tipc_conn_kref_release()'s check in tipc_conn_close(), i.e. skip the
-con->sock->sk access when con->sock == NULL; that would be a
-separate patch.
-
-Best regards,
-Yuqi Xu
+Thanks,
+Xuanqiang
