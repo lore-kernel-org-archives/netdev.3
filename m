@@ -1,169 +1,329 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648A13E2AD7
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F090C2F7EE4;
+	Sun, 20 Sep 2026 07:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789890938; cv=none; b=n0iRUANnm0oh0kMbXhxCyaZof3RgaaX6qEkOtdtZGotJu5xmA7xWkDkseG8V6L3U/rCQwDfRz9SBBghEqzOxJgNXRLpYYkjrdtN1QpfCh7qXBVWlrQJIYIqHHYb8BYTxNysVkZ1kJfwcEhBsdDphsoHylkgCLK+VXLznmXyroqA=
+	t=1789891090; cv=none; b=Ll65e0e72yBbhwMnnqJhvn5W/8oN15ebygXQL1rpJc2sktBppmhBuatPTfo6SYOvlcpeir6ozaof9CCSuy+kqTgB4lTZ2hVqPGVNBomczo/19TnYfOMa+UwFNnCDhxODkZMXoxCN3wvECy69uLs7QEg+61X9V8y/DjQFwOqvJy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789890938; c=relaxed/simple;
-	bh=b0bDuD1LZgSRiC1UmemKX/tGg2f6GIdP8dzxzMBCLvI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LQo777N/UgKZ2wuuBQGiTjvXhVoW9bRFBZ4H5jw9OToHNnit5DaAfgr/NQ0Jvp9V/LJWAzobkOH9HX7maCek6WIPyzEpZK1stGi1z5kYVdmKnn53OE9ETmfwhzgLTc1RgbTj9KejsxXQByyn3g/LoCpOnao9yfHtBRJaF+5GPKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IATISA/u; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bIjBVGQy; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789891090; c=relaxed/simple;
+	bh=UT6inVBwynblFYlbe6CpL5/Iwkg9DDQnwCzVjcLcUUg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l4FuVoMo6Wcb3VFIKcX3gll1eEvW3HkbuO0fkkOr8VFQv1PD8PfxMWp5OSJLAxeFeT5aqJlHaVJf58EX+JLHso8k/gCXZc5Y+Hy5jWTCM+nIgC6uoIEP0VeL5U2BeZbQTzeL2VG/lCQGDQFzrHh8Lllaiduh5WcWMbwGYsEy7MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ig8cVr94; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IATISA/u";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bIjBVGQy"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68K55uCk1477623
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:55:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=pfx6bFZMERQUrEBTxPu8VU
-	3eqd+xw8Jj7J3BM1EDBcQ=; b=IATISA/uzXCNai6GH7dAEwXGGjFGpgMHOk9YGG
-	weTZJckRXeF9ErvS6FJiHsj9u1fQEJxYB9VFD/Rt3RRrNWkNwsfFWCghByE2d5g0
-	XgiMxzTxKrUtzAoTqI7hiERPSvtEPTl+91r1JDeZSformC9bqP9pdkDMOFezGULX
-	idCJEQMM++szYvkKW1p0lUmO4ty8/LyHPzNKxmYfSjUQsTClVtdy6wsj4UOB/R/N
-	4pRgTJ1S/6dF626xc4OyqSEai8DPp33+iKZql85UfzE7t8IYRxQtinLhPoejx86M
-	8BLZqrQOFcQtZvCLx7xS+fqwvXRYshKbNAcgZpjSyrbnR2BQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gsfrntw2g-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:55:36 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-939f925ba4eso213217585a.3
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:55:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789890936; x=1790495736; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pfx6bFZMERQUrEBTxPu8VU3eqd+xw8Jj7J3BM1EDBcQ=;
-        b=bIjBVGQy+yT3q0yRbAVVVoMxGeEoAOzZXjQ8DD1DGIPurPw7gdGCy+TMLCIa8GNNZY
-         taPs6o3OHV8BMUM6Dinon+MuXyD65icu3Ys7SDitmws8hSufJTt6ln9V/1f0HDkdtKS3
-         A/ycKK5dUKBGppbRjmUIxIpT6JiOSRWDKrL66CWli9v9blV3f1ZmARGlsbhtbAJzuKUY
-         N+uf0mhg7CAynylzzwRCbQIjZZUHCyQeUMZxcz7ULM12Q8a38ddCEmXgU18KitarBTju
-         8hK7dk/7IAajEuIRXmAniPXF7jbQlIDbPEZ/kAYNc1RY/Ji1Ji8o2uwqt/gjhuX2Swqa
-         X3qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789890936; x=1790495736;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=pfx6bFZMERQUrEBTxPu8VU3eqd+xw8Jj7J3BM1EDBcQ=;
-        b=faLKFqJA6iwH2JxDlIpy2aR4ntdoNbpUq5QhYY8NbhTKrqlCl8jpYzKD9G61giAuvQ
-         Eeua+wKYnkmSYS8em0rerFaHCMSqbnJekTB9tPia5o0HE6AGNGDEDSXdE1aKSE++4xlz
-         01rAbSYCKEJYviYT0UXYjamLe7DhpNBgg0XeT5JOsELpAHQlSJ+dHQLm8aEK32ZSUzAX
-         /JFzI6tMjnB2y9yuOFDtyqmojxPPL2Kkokt0AOP+YP3HSx4GnhpTkJW8fOJ9kFb66WA6
-         TOQgGOBBAxHOkNE57CN1niDcBfRkwwtL+HY3ajD4u31oviCu/fM4XxMEqMhrgXP88WzC
-         +RIA==
-X-Gm-Message-State: AFuF++lJgRagfo/C40iw0aZUfBnDA8YHN5SVn01GtODukksKMQLcnHFz
-	NCQctdOg5B3LZLprzciiedsImcI6C6vHkzqLhEjfiu0VG5RCey5w8O3osI04zI6T4hvM2SKM+Q2
-	RR2V1MhcYiSaeFkcwSeBfOq8qz0nC/R8mLMR47haykgoM+mT+UUs3pBisQnQ=
-X-Gm-Gg: AYBFou0kvS+YYN13GzUxh4z087KkeYpaz0nm425DBRtuezAGiGaE/ExdMdysG2n3FJ/
-	bH2Z94uLbOkJ0xGymZrEQ47IeMUL7Cm+XCgdqWnEsLVOGrgGswf+z8ifUPq+De/aFpvo3E6IB14
-	e2x2j68euwVn03b4k3xYHzfRtnVqOgGUBkOWTUyJTu9/bkHtIFMGYrrBCpQprOWiibgHXgPEFpS
-	UJt/fJ146t2b4HeKbchDzF9j7yRKpaeafyhLPoEejKElUyfKJUPUBVzXDvyPyZ9OdPIcmYjkNoO
-	bG6bLfXLhUqJPhS1RbF6PIX+hGcUBohPM0rWdXIw09Sh/8D7MqOuq5+w5mGvR7n4T8gPcPUq0WJ
-	PO88hKJ707UzVmQ==
-X-Received: by 2002:a05:620a:4148:b0:93b:d7a1:ba1a with SMTP id af79cd13be357-93bf57851c9mr458280085a.69.1789890935726;
-        Sun, 20 Sep 2026 00:55:35 -0700 (PDT)
-X-Received: by 2002:a05:620a:4148:b0:93b:d7a1:ba1a with SMTP id af79cd13be357-93bf57851c9mr458277085a.69.1789890935172;
-        Sun, 20 Sep 2026 00:55:35 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd090f0csm178070855e9.15.2026.09.20.00.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 00:55:34 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Sun, 20 Sep 2026 09:55:09 +0200
-Subject: [PATCH net] net: mvneta: clear XDP pfmemalloc flag between frames
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ig8cVr94"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CBD1F000FF;
+	Sun, 20 Sep 2026 07:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789891088;
+	bh=0EyLD0n0lzgtuzYWbeAQDB6+6wN+W+bRt+Kx71uHc5w=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Ig8cVr94HCorS9Duii1U3EczWF1NF4tJGbLzx8Wgm5QKePB+yqJjL99fDpBfUe6Yc
+	 g1f7YeV3Nh10s+HoKs7TJungwkGMah97pi7oqYe+dP5qU7U6pGm/VHBLgGxh9N5UKO
+	 AOxliqVbDoleJOw+mJTVLwckWN4ZhgEoXXKW+5H63GEs4pHguTvf9p1iABggp8hWui
+	 mas8AJdFo9W5rL0qwbPD619CQ9nyNehodqcYF9fXmdmPptjnZAREqOHVD2iFI8cGYV
+	 vD3+iwsxyTwAmjZZLl7mIRpQPMh+SDu/8l7uDPZ51MweCzdVxmmccpOGUl+hPWjq6F
+	 PRFSRC0iFXAtA==
+Subject: Re: [PATCH net] llc: stop connection timers before dropping sap ref
+ on release
+From: netdev-bot+sashiko@kernel.org
+To: miguelgarciaroman8@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com
+Date: Sun, 20 Sep 2026 07:58:07 +0000
+Message-ID: <178989108743.2160803.13247969206014444151@kernel.org>
+In-Reply-To: <20260916074158.3375909-1-miguelgarciaroman8@gmail.com>
+References: <20260916074158.3375909-1-miguelgarciaroman8@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-mvneta-xdp-clear-frag-fix-v1-1-d7efadecf959@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqEMAwAvyI5G7CCXepXxEOs0Q1olVSkIP59w
- x5nYOaBzCqcoa8eUL4ly5EMXF1B/FJaGWU2hrZpfRNcwP1OfBGW+cS4MSkuSisuUvBD0QfHznd
- hAutPZdP/9wAWwfi+P/0hThlwAAAA
-X-Change-ID: 20260919-mvneta-xdp-clear-frag-fix-7ac691e1659b
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Toke Hoiland-Jorgensen <toke@redhat.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=W9mtxhWk c=1 sm=1 tr=0 ts=6aaf9178 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=EUspDBNiAAAA:8 a=GC6wR5CVy_D9Ox6dz04A:9 a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19
- a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIwMDExMyBTYWx0ZWRfX1PMzx+ouuE2B
- nMfWRNaSy1HagM4S+x4oujEXCxocv6O5S6JCjVJF6wDo+UE63mVAbg5ORqnkGi6eulExLdyr8Sr
- KsgfVegjdmNqcznS9gdXIOMkgFQJ/Hk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIwMDExMyBTYWx0ZWRfX69ZIeytD3pdH
- SHyJDnmWx5oaHgY1h81NLxCVSl0LwcqDBw2L5pVJEc/d+KB/lw2Y/yYxSquyUH2g01OqpDtuzw8
- kmAFDL/AGcMvwPj00eOduA78hjpBfyNFFlteKMXwRHBt7M4cR1rK9Ft0eNvJ9Ot9drg+WUETM4f
- BTjL42TkzEzZLip4+kjLA+Pr9Vyg3kXVct1iG+6enIH74NtBADf12dVu7uf6QdPLQBY2OKaWmNY
- db60Su57tCtUoohX4H6rTV9Un+oubKyHSnG0LLU4G3eMkKOQRm6m/k0NsryOYNybVAdwxxMrFvC
- oSiReIBdOyXzt0ytXy2IM4kJF77kndezXmY7gWio/OpmCGErFomAztsnUGeUhEL3csI1C2Ns5+l
- bMx3aTdC7sKmeFnbAvboB1jMJ3H6MfcDS3EFDKd4Je8anhG7nJpG+lXgHDMdmy8OvL/f/MCSu5n
- EjT9P5mxkQB2Jv8nTxQ==
-X-Proofpoint-ORIG-GUID: -DR8UM8GYyCp1OXZafKKrUvoYZqyVk4n
-X-Proofpoint-GUID: -DR8UM8GYyCp1OXZafKKrUvoYZqyVk4n
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-20_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 priorityscore=1501 spamscore=0 suspectscore=0
- impostorscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609200113
 
-In mvneta_swbm_add_rx_fragment() the XDP pfmemalloc flag is set on the
-xdp_buff if the page under pressure is a pfmemalloc one. The xdp_buff is
-reused for the next packet and the flag is never cleared, so a pfmemalloc
-fragment in one packet wrongly marks the skb of a subsequent packet as
-pfmemalloc. Clear the flag in mvneta_swbm_rx_frame(), which is invoked for
-each new frame.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Fixes: ed7a58cb40bd ("net: marvell: rely on xdp_update_skb_shared_info utility routine")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- drivers/net/ethernet/marvell/mvneta.c | 1 +
- 1 file changed, 1 insertion(+)
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 543e566425c1..32416999f3d6 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -2341,6 +2341,7 @@ mvneta_swbm_rx_frame(struct mvneta_port *pp,
- 	/* Prefetch header */
- 	prefetch(data);
- 	xdp_buff_clear_frags_flag(xdp);
-+	xdp_buff_clear_frag_pfmemalloc(xdp);
- 	xdp_prepare_buff(xdp, data, pp->rx_offset_correction + MVNETA_MH_SIZE,
- 			 data_len, true);
- }
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
----
-base-commit: e3bfd25626b44b6fa61a13c17178922171d519ce
-change-id: 20260919-mvneta-xdp-clear-frag-fix-7ac691e1659b
+- [High] Incomplete fix: the new `llc_sk_stop_all_timers(sk, true)` in
+  `llc_ui_release()` (net/llc/af_llc.c:225) cannot guarantee that no…
+- [Low] The comment added by this patch (net/llc/af_llc.c:221-223) and
+  the corresponding commit-message sentence ("timer_delete_sync() must…
 
-Best regards,
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is in the
+  code the patch touches and is a hard out-of-bounds access:…
+
+--
+
+llc: stop connection timers before dropping sap ref on release
+
+The patch adds a synchronous connection-timer cancel in llc_ui_release()
+after release_sock() and before the final llc_sap_put(), so that the ack /
+P / REJ / busy timers are stopped while the sap reference is still held.
+It targets a syzbot slab-use-after-free of the RCU-freed llc_sap from the
+timer softirq path.
+
+Closes: https://syzkaller.appspot.com/bug?extid=44efda9647c52be29d9c
+
+> diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+> index b0447c33dbf09..4fc397fad4d2e 100644
+> --- a/net/llc/af_llc.c
+> +++ b/net/llc/af_llc.c
+> @@ -215,6 +215,14 @@ static int llc_ui_release(struct socket *sock)
+>  		llc_sap_hold(sap);
+>  		llc_sap_remove_socket(llc->sap, sk);
+>  		release_sock(sk);
+> +		/*
+> +		 * Timers dereference llc->sap.  Cancel them while the sap is
+> +		 * still held; llc_sk_free() runs after the final sap put and
+> +		 * would otherwise race with kfree_rcu(sap).  Must run after
+> +		 * release_sock() to avoid deadlock with bh_lock_sock() in the
+> +		 * timer callbacks.
+> +		 */
+
+[Severity: Low]
+This isn't a bug, but is the stated deadlock rationale accurate?  The same
+claim appears in the changelog:
+
+    timer_delete_sync() must not run under lock_sock() (timer callbacks take
+    bh_lock_sock()), so stopping after release_sock() is required.
+
+lock_sock() does not hold sk->sk_lock.slock across its critical section.
+lock_sock_nested() in net/core/sock.c takes the slock only to set the
+ownership flag and drops it again:
+
+	spin_lock_bh(&sk->sk_lock.slock);
+	if (unlikely(sock_owned_by_user_nocheck(sk)))
+		__lock_sock(sk);
+	sk->sk_lock.owned = 1;
+	spin_unlock_bh(&sk->sk_lock.slock);
+
+Since bh_lock_sock() is just spin_lock(&((__sk)->sk_lock.slock)), a timer
+callback can take it while another thread owns the socket lock, and
+llc_process_tmr_ev() then defers rather than blocking:
+
+net/llc/llc_c_ac.c:llc_process_tmr_ev() {
+	...
+		if (!sock_owned_by_user(sk))
+			llc_conn_state_process(sk, skb);
+		else {
+			llc_set_backlog_type(skb, LLC_EVENT);
+			__sk_add_backlog(sk, skb);
+		}
+	...
+}
+
+So timer_delete_sync() under lock_sock() would not deadlock on
+bh_lock_sock().  Placing the cancel after release_sock() still looks
+desirable for a different reason (a callback firing while the socket is
+owned pushes an LLC_EVENT onto the backlog, and release_sock() processing
+of that event can re-arm timers).  Could the comment and changelog be
+reworded to describe that instead?
+
+> +		llc_sk_stop_all_timers(sk, true);
+>  		llc_sap_put(sap);
+
+[Severity: High]
+Can a timer still be pending here when llc_sap_put() drops the last
+reference and queues kfree_rcu(sap)?
+
+Two things differ from the other caller of this helper.  llc_sk_free()
+marks the connection dead first:
+
+net/llc/llc_conn.c:llc_sk_free() {
+	llc->state = LLC_CONN_OUT_OF_SVC;
+	/* Stop all (possibly) running timers */
+	llc_sk_stop_all_timers(sk, true);
+	...
+}
+
+and LLC_CONN_OUT_OF_SVC is the only thing that stops an expiring timer from
+re-entering the state machine:
+
+net/llc/llc_c_ac.c:llc_process_tmr_ev() {
+	if (llc_sk(sk)->state == LLC_CONN_OUT_OF_SVC) {
+	...
+}
+
+The new call site does not set that state, and the helper uses
+timer_delete_sync() rather than timer_shutdown_sync(), so a mod_timer()
+from a callback is not neutralised.
+
+The first re-arm path is inside the helper itself, which deletes in a fixed
+order:
+
+net/llc/llc_conn.c:llc_sk_stop_all_timers() {
+	if (sync) {
+		timer_delete_sync(&llc->pf_cycle_timer.timer);
+		timer_delete_sync(&llc->ack_timer.timer);
+		timer_delete_sync(&llc->rej_sent_timer.timer);
+		timer_delete_sync(&llc->busy_state_timer.timer);
+	...
+}
+
+An ack-timer callback running concurrently takes bh_lock_sock() (free,
+because release_sock() already ran), sees state != LLC_CONN_OUT_OF_SVC, and
+runs the NORMAL state transition whose action list contains:
+
+net/llc/llc_c_st.c:llc_normal_actions_20a[] {
+	[3] = llc_conn_ac_start_p_timer,
+}
+
+net/llc/llc_c_ac.c:llc_conn_ac_start_p_timer() {
+	mod_timer(&llc->pf_cycle_timer.timer,
+		  jiffies + llc->pf_cycle_timer.expire);
+}
+
+pf_cycle was already deleted first, so timer_delete_sync(&ack) only waits
+for that callback and returns with pf_cycle armed again.  The symmetric case
+exists in the other direction, where busy-timer expiry (deleted last)
+re-arms the ack timer (deleted second):
+
+net/llc/llc_c_st.c:llc_common_actions_11d[] {
+	[1] = llc_conn_ac_start_ack_timer,
+}
+
+The second re-arm path is an in-flight receive softirq.
+llc_sap_remove_socket() only unhashes the socket; a lookup that already
+succeeded holds a socket reference via refcount_inc_not_zero() under
+rcu_read_lock(), and after release_sock() the socket is no longer owned:
+
+net/llc/llc_conn.c:llc_conn_handler() {
+	...
+	if (!sock_owned_by_user(sk))
+		llc_conn_rcv(sk, skb);
+	...
+}
+
+llc_conn_rcv() -> llc_conn_state_process() can mod_timer() any of the four
+timers after the new cancel pass has completed.
+
+Both look reachable when the connection is still active at close time, for
+example when llc_send_disc() returns non-zero:
+
+net/llc/llc_if.c:llc_send_disc() {
+	...
+	skb = alloc_skb(0, GFP_ATOMIC);
+	if (!skb)
+		goto out;
+	...
+}
+
+or when sk->sk_state != TCP_ESTABLISHED, e.g. a connect that timed out and
+left the socket in setup state with the ack timer armed.  The socket is not
+SOCK_ZAPPED in that case, so this branch is taken with live timers and a
+live state machine.
+
+The changelog says:
+
+    llc_sk_free() still stops timers again; a second sync delete is
+    harmless.
+
+Can that second pass restore the guarantee?  It runs after the final sap
+put, and its llc->state = LLC_CONN_OUT_OF_SVC is a plain store that a
+concurrent state machine can overwrite via llc->state = trans->next_state
+in llc_conn_service().  If so, the original UAF (a timer action touching
+sap->laddr.lsap in llc_conn_ac_send_sabme_cmd_p_set_x() /
+llc_conn_ac_send_rr_cmd_p_set_1() after the sap was RCU-freed) still looks
+reachable.
+
+Would it work better to make re-arming impossible before the sap reference
+is dropped, by marking the connection out of service under the socket lock
+and/or using timer_shutdown_sync(), or alternatively to keep the extra sap
+reference until after llc_sk_free()?
+
+As a smaller point, the trailing plain stores in the helper:
+
+	llc->ack_must_be_send = 0;
+	llc->ack_pf = 0;
+
+now execute with the socket unlocked while it is still reachable from an
+in-flight softirq.  Is that a new data race on connection state?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but it is in the teardown code
+the patch touches and interacts with any fix for the above, so it seems
+worth raising.
+
+llc_conn_service() validates only the upper bound of llc->state:
+
+net/llc/llc_conn.c:llc_conn_service() {
+	if (llc->state > NBR_CONN_STATES)
+		goto out;
+	...
+}
+
+and llc_qualify_conn_ev() then indexes with state - 1:
+
+net/llc/llc_conn.c:llc_qualify_conn_ev() {
+	struct llc_conn_state *curr_state =
+					&llc_conn_state_table[llc->state - 1];
+	...
+	for (next_trans = curr_state->transitions +
+		llc_find_offset(llc->state - 1, ev->type);
+	     (*next_trans)->ev; next_trans++) {
+	...
+}
+
+With llc->state == LLC_CONN_OUT_OF_SVC (which is 0) both become index -1,
+reading the memory before llc_conn_state_table[] and before
+llc_offset_table[][].  The resulting transitions pointer is then walked and
+its members are invoked as function pointers (ev, ev_qualifiers,
+ev_actions).
+
+Is state 0 reachable from received frames alone?  llc_conn_handler()
+creates and hashes an incoming socket for a frame that reaches a listener,
+then runs the state machine on it.  In ADM state any frame that is not
+SABME/DISC/xxx_cmd_Pbit_1 matches:
+
+net/llc/llc_c_ev.c:llc_conn_ev_rx_any_frame() {
+	return 0;
+}
+
+which selects the transition whose next state is 0:
+
+net/llc/llc_c_st.c:llc_adm_state_trans_5 {
+	.ev	       = llc_conn_ev_rx_any_frame,
+	.next_state    = LLC_CONN_OUT_OF_SVC,
+}
+
+llc_conn_service() writes that into llc->state.  The socket stays hashed,
+and the established lookup filters only on netns and addresses:
+
+net/llc/llc_conn.c:llc_estab_match() {
+	return net_eq(sock_net(sk), net) &&
+		llc->laddr.lsap == laddr->lsap &&
+		llc->daddr.lsap == daddr->lsap &&
+		ether_addr_equal(llc->laddr.mac, laddr->mac) &&
+		ether_addr_equal(llc->daddr.mac, daddr->mac);
+}
+
+so a second frame from the same source MAC/SSAP reaches
+__llc_lookup_established() -> llc_conn_rcv() -> llc_conn_state_process() ->
+llc_conn_service() with state 0.  Unlike llc_backlog_rcv() (which checks
+llc->state > 1) and llc_process_tmr_ev() (explicit OUT_OF_SVC check), the
+direct receive path has no state guard.
+
+llc_sk_free() is the second producer of state 0, and it runs while an
+in-flight receive softirq holding a pre-removal socket reference can still
+drive that unguarded path.  Should llc_conn_service() also reject state 0,
+particularly if the timer fix ends up marking the connection out of service
+earlier while it is still hashed?
+
 -- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916074158.3375909-1-miguelgarciaroman8%40gmail.com
