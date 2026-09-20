@@ -1,175 +1,95 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19011012.outbound.protection.outlook.com [52.103.66.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E22343DEA3
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789908337; cv=fail; b=OUL0/MF0GCESCN4U7ple26WqxLnzA6JQ6dq360vkxpz7FrmGoIacM+c6HETvweK31yFgAoxLubG+SPZPABJzAmocugmf3BYPLZOtrPf4d+ENRKo0n8Qu1k3cLZNps44CBXwgRhkxlCmA/cGpJMHKuyULH4vDYgKJhAnXUNzS2bQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789908337; c=relaxed/simple;
-	bh=wUCcnSGX2OkQ9Dr0uzXzOu1FpFj8ymaU5ypapWNmsAI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sUwVEJJbhikBVHZYIBPZTW+xOAbtRdnX4se+gA7wpszyRm8GIBXzEnKCe7pu7Sn4gmx/yIRhEyMRXbwmWXY3Y03s2kO7P7r5KeLzLpXn5NX3MZgFSGr0mSjo9Kf20MsOycha0iCXDLaTWH1KRDiGCR170neCyV4D5K4iG2R4qJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=lyaujent; arc=fail smtp.client-ip=52.103.66.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFE12D9ECB
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789908646; cv=none; b=b53KrGRTwV30cJcz3axMjXmWF5vIBOHpewJ9WC+2S2veY7G1XjRnircbiNl9pCeFSuYWn2BMvaMniraEDpQiTOgosl+Pghg1UVE3io481x5bSeFGmM3pMiM6PhFDvzeX31QmTK+Y9DP1pK0OMAZDD0U7DuXpGjd/4/EMfL2VD2E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789908646; c=relaxed/simple;
+	bh=OH55odpVMa7sAvz5GT0UGHBaUUgDdOpKNkf9M4wvm7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cMGHb5XuH4CqFrBLie4vzT29pb6Z22U/wszLm4owfwQFsY1C9eGhUjgL+S7FxPt6h2D08PMogsR1OiNs3jJw8wUVE1NwoyBRqapvkmmr40WzgUO/jpGcv3BSM6Z4+H+bS7wKBMsMjDNrNtgkDzBmNLIavlcvEjRdMzD4P3CIIEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=EYphPP4b; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="lyaujent"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ThVMwwKikLUkluVoUp9/bTYI7szxYvo9eldhffilvDo3Z5bSlhDqseblDd0B/YUQ0TPdizIMnyzjZABqmvVf8mOBbW/gQHJtcyK/NyOF02YKfmbIWpvCxTivpfsZfzmiVBq4zHX0hT676PO3k4zs0NyAmjfv2exvy3xYYZp7VeYLwnLwgbco2QCcx9c5+lDhKFSAKfObgavbhRuxgYCl+fi87LqVHBPzliiuRPd7H/ykClKNgjnjmKeq8uf/871QTp6hDM7vEN/xaDtcgFhuC/G3jc2OJXcc1OCX+0bTJlpoKUeUE82D89ddUnXUWYMJrSnN60IYYHjlzInnbQb2kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wUCcnSGX2OkQ9Dr0uzXzOu1FpFj8ymaU5ypapWNmsAI=;
- b=QPAxpQX4jr94Kwq+O+NxmzEng84QkBOOzCQb8BePuMjBRzRMg7wMjFutpIvihBUtkdExTxVgjHcZtTtd2K0rlKz+yloOd3VLhon9qxmIoQp4dho2G+FrWnPPxqKwwK6PlvUlh4btI8z2lyLVNeD4ZK2Jv0RPwgRxYQu70aaWaQBmhwapua+llGJSyMFnVlwj9+rYujAsXwSedyUmOEomM/yFtHKbFcE7UPtmvhQ8OMP5jzoPgkL7HfC/7O1mbIVmgHa00CclRdYtyid/hdvDTuLakThXFBTX4OqeNddy4ItsoX9J/srFQ5X8IK22GROkcZbWjUL2oTzRkLattQBxHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wUCcnSGX2OkQ9Dr0uzXzOu1FpFj8ymaU5ypapWNmsAI=;
- b=lyaujent1AHlxqcawqxN9+wD2F6Aq6t9Rdj7gMpSdAr5ZQqml4dkhhh9Kf7Xc4YUdVePP6YvFcorN6Fo9Dh12k/eoyaChLLFAHsAp1uSbPFweAdePA2odmqihhC3PeL8m8fw5UYbBiSA37GrhDJUk9u3aw3aMRvSOnfBQq2HTVLEtlHy1rZlJ+Jzm1ssmemo0Yc+tFeApvTqxMsoIoPpIX9p2Khc/UN928wSrUPBCD4KuKiiXwcDT387XEEn+F94ZK8sleE1spfTe1oDebUreHLhM62fuQK6gs2BO4q2FZfBPknUa1HE0zEupz0C/t5GFEjlqTpaMQnBVKYvswg9dg==
-Received: from TYWPR01MB8559.jpnprd01.prod.outlook.com (2603:1096:400:170::12)
- by TYRPR01MB12479.jpnprd01.prod.outlook.com (2603:1096:405:1ac::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Sun, 20 Sep
- 2026 12:45:15 +0000
-Received: from TYWPR01MB8559.jpnprd01.prod.outlook.com
- ([fe80::9c39:42d9:c678:8bfe]) by TYWPR01MB8559.jpnprd01.prod.outlook.com
- ([fe80::9c39:42d9:c678:8bfe%6]) with mapi id 15.21.0428.011; Sun, 20 Sep 2026
- 12:45:15 +0000
-Message-ID:
- <TYWPR01MB8559447EBA7586C04E95DFEBBB852@TYWPR01MB8559.jpnprd01.prod.outlook.com>
-Date: Sun, 20 Sep 2026 20:45:07 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] net: arp: reject unterminated device names
-To: Ido Schimmel <idosch@nvidia.com>, Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jiri@resnulli.us, vega@nebusec.ai
-References: <cover.1789648438.git.milkory@outlook.com>
- <7f570426c2fe95743f017cf1a14cdc7ace42851a.1789648438.git.milkory@outlook.com>
- <20260920070314.GA1791430@shredder>
-From: Zijie Huang <milkory@outlook.com>
-In-Reply-To: <20260920070314.GA1791430@shredder>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TP0P295CA0009.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:2::19) To TYWPR01MB8559.jpnprd01.prod.outlook.com
- (2603:1096:400:170::12)
-X-Microsoft-Original-Message-ID:
- <17a174d9-69cd-455b-8855-be8718983230@outlook.com>
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="EYphPP4b"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccd66bb4so1891220a91.1
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 05:50:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1789908631; x=1790513431; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=s0NI5VxCFQynKWeJfcXnLCEZzTHswNnIGNtnh7X+/4c=;
+        b=EYphPP4bKFYU2lT9RCxxV6hQJdlHlFfo82h2aFIhUPTPMZW0UPNM5bOiwvmILiKr4p
+         Hwxo3YT8vJCSpf3uUWalJ0EXJTXlkZDCWdKfGPZ1PpIOSpSjb1smgUvLTkO/CZRwJS0j
+         UrHnh6JF7+QHHQxZIFylvsJpFgwTl9gLFbu35iT7YKp+UIz5JdF1fKp7byh1IJd6PjTK
+         L2xi2W92xh5uSiTHLlGEzN45jt07TELzk+Q++qeD6w9cuu48f3KE4aZEwE4BGMAj2KuG
+         B7kYR6C9tPQYpc00mk6B7MCGBZ69HMUCPrgTfBSDFKtcmWEW+tb9WgHG3l4ShsrXO+MK
+         KOtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789908631; x=1790513431;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s0NI5VxCFQynKWeJfcXnLCEZzTHswNnIGNtnh7X+/4c=;
+        b=cmtEUhf/0m/zPVyv5bhcHuZGv1giWfArU9WSMW6VnUgFsZrR7asfspwdOrfxS3KYDk
+         z6J3/Pk0/fxHuvqwwHGjyrR4zf2JlnKknXP9cqeCh6UoKtsLE9hSAfDySDQ1b7tlDCMM
+         +aXLL0dq664gNlCP5bf5IJ95UPiSBGl05CvWVKxGFTqCDn3Y5NrmR4K2mUgsCknjxCCR
+         r7Q9rasuoe5EDAtgBz8LFB3KWU6oq1zO6tmMPNx0Q124j7/hWU3Ytg/kSbETR9fXGwbc
+         8onP7CS1UChLqLmDG9aQBOFvyRy2jvTgzcOoYCFFIK90Gopd8MFFSWEXAzo7J98UkiWc
+         Y8Tg==
+X-Gm-Message-State: AFuF++nqu3p36MjLDuis/MqdmYFnjpS3ovTHQVWnv038Quy6rRb6cGYn
+	lovvvkXDJy02l57C910hM6h+xDikck4EFnKO/eUAIrlATWRVJngxNU6h93D0NMxWnFAE3bPbBzD
+	lNBpsvCq+AsiFI9RRTEcJdmz54jxrkXSm/lV6OTYSv4WhLrLgs3SQBtFSee/hgUxyL9xhUdDjb4
+	w=
+X-Gm-Gg: AYBFou18yuAiw9UWU0Whe5vcG3nxBIYvLhFYIXXOx+d3fG9bDyCuGfGQtUGDMqmq+Sq
+	v9hHRBFOk9hDu7WJqxGjcySWS2Gx4cMB5i9wgQr/PnWaOIHsBTLIdEMna4Ds6HknT3jS02so2tU
+	zGvC3kIOvunCAt9lmGVYejUESbb4qqe9G1QGt0fcQoq94CdKrwFhlJdC9niwkRolSCeU7O/lYrb
+	a9vNXza/hHbi1SNtl1iZpsRevRG2aCbaAkH2VXUwD6ndz7tzBzzvk0+Ygo3j7vdP04w22ut+dml
+	R/vPc3Cf88MYsuGG7xCm4MUKBypf+fNnPkCaJ51XkHQPfyceOHBujIvP0DmcUFEXO3Uo5v/J/zm
+	c7HE3FVHenlepNazDhFsTYaueZ6XhPIGhcT9s2ohMj24nZbFp/cyEw8fYjiJ7xagh97iBaKYMAn
+	Wzuo7omZhdofe4dUUWIHPBNE2fW/YNy0cTpRPNi8ER94vJKX9shQ/qPFQZ9iOtyyCm03/dJ8jyo
+	RDuoVyFS1k=
+X-Received: by 2002:a17:90a:4cc7:b0:3a0:4384:ae14 with SMTP id 98e67ed59e1d1-3a04393f375mr525178a91.20.1789908630612;
+        Sun, 20 Sep 2026 05:50:30 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.241])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144df9ad683sm4120272c88.6.2026.09.20.05.50.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 05:50:30 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Wang Zhan <wang.zhan@smartx.com>,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	leon@kernel.org,
+	huyn@nvidia.com,
+	raeds@nvidia.com
+Subject: Re: [PATCH net] xfrm: free the whole skb list on the packet offload drop
+Date: Sun, 20 Sep 2026 20:50:19 +0800
+Message-ID: <20260920125019.3609114-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260920115048.3549614-1-wang.zhan@smartx.com>
+References: <20260920115048.3549614-1-wang.zhan@smartx.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYWPR01MB8559:EE_|TYRPR01MB12479:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab043a98-e2a7-4f5a-95ae-08df1715050c
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|23021999003|6090799003|15080799012|5072599009|4140399003|25010399006|8060799015|19110799012|51005399006|24021099003|25031999004|3412199025|440099028|40105399003|2607281247196008;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SS9heEVnSjlDMDBDSE9oYU1XdVgyYTBsSkg2UGQyVFdpSDFybTdhMXpuakxO?=
- =?utf-8?B?dlVaS3ZWMERMeEQ5c25jYjRqMms5ZStEbkVNd2NDTm5PaWc1dkJJK0xKSnFX?=
- =?utf-8?B?VlRkVThscmFiUERvTXlPaXN6NnJCWUFFMGRJNVVOUmN6YURQY1NyWFJVaTlv?=
- =?utf-8?B?Ly9jMVZpai9jb2U2UWtmNmFlYjdLUlc0ZHZKWm51V2c5d0J5WmdxRFNjVXBK?=
- =?utf-8?B?SEtObkpCbTJPelRiZFdkT0o0Y0lacnZqU2UwUU92VUl3Ly9sb05iYUZjQXpH?=
- =?utf-8?B?K0Y1U2xqakRBZVpaUjR3MlVnQ05kMkdhM2EvVmxKdnNqTi9uQ3RiNGkwTTFo?=
- =?utf-8?B?RmRVbkt4QmMydlRSTHd4dCtpaVBMand0Z3dVWjlkTTVjS1cyWlR2akI3MHNo?=
- =?utf-8?B?UTJuT0dSVWtjZk9uem54SSsyemFORFFvenFIWVY3R0M1anBoQzUydVlUYlE4?=
- =?utf-8?B?b0trZ3g5TzlkRmdQZWlvbkRBblFVWStzYmE0UnV3SUp2dnZTYTlSZFhpWWNS?=
- =?utf-8?B?NE9ZUXhlYWZCaUgvY2VodXdObHcvVkVnNUQ1VTVXR2U1MTZ0K3FYaytKdjdX?=
- =?utf-8?B?VFQrZlJGZFJ0SjFtZzI3UjJINGFlRGR6UE5XZTFva1d4SHp1ZkhIbEp6QnpW?=
- =?utf-8?B?bW9rRkpHdC96UHhsbDRTd29Xc0FXa3drUUlUejdjZmdjVEZoVk9uTW5QN2lB?=
- =?utf-8?B?enVCYXJVeGhJRGV1eXdwUVgxODlCaVJXOUYvKzFMbk40VzFxODBWci9lMHVs?=
- =?utf-8?B?TVhFVW1ndVM3VDNLSXpyRGtSbEpocGlFZTBxeXhpcUFncFdhYU8yQVd6V1h2?=
- =?utf-8?B?aEpSOGs0ZkJFaWRVNUQ2eWVlTDZOWDJIbWVoeTZyS21tT0Mvc3htZjFsc3pW?=
- =?utf-8?B?V3pOWUNyN3FjNEtyYmozcXVpdkUwdVp0NWpqd2tZTkc2K21wSXZWOWZYMVJ6?=
- =?utf-8?B?ZkZWMm9kOG9sa2Y3Z3pnUnhkbE1TSktIcXF2RzFEeUcvc1JQQU1kNXVTRmp5?=
- =?utf-8?B?Y0tDS3VJRHdDbXR3ajgvdXRmUGpzQkppOUNIQ1g3OWRWREJRRmhlVW1GR0tr?=
- =?utf-8?B?QU0yeFoyZTljVFJyMW9CQ2pYd3B1UCthM01TeEI0TytnZGQyeUdPWVJoVnd1?=
- =?utf-8?B?SmdqVzIvTlVDTlIvamFNdm5jdjNwS3Z2NTM3NXMzeXAzT1hzbU1BVG1wRGlP?=
- =?utf-8?B?OXdWbi8zZFRPRSttd3JBbTJUd1pCakdYUEdDWkpVL2h6S3ZuM3pJLzhhM2Uy?=
- =?utf-8?B?UEcvOFRwZmMxY2VNNU9qMkhnanRQWEtYRDdqNmtrN3p0NFdUUXJkY3ZINUNU?=
- =?utf-8?Q?gY3AyLvR7XMC/vgOy1G9dmlaKSifbSuvVJ?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UkxnYVNDajNIVTd6UEdmUVpZaTU5NHZRMUx1bXpqZjlhNTlUT083a0RMTGJZ?=
- =?utf-8?B?ZCtHRG14Q0pEbktOd003c3RYTGhJMzIyN2h3b2tXQ3NuNEQ0WGtEWFQzcDdV?=
- =?utf-8?B?Yk1DMzRObCt2TUU5TjdnMEo3K2JIOXVEc3B3TGJwWjkwa1BlRlpBS0RBQlZ1?=
- =?utf-8?B?bTIvenZSa2JCcnRqVDFEdUlmbHMxSU9VZFg4UHhmeTY2UWJJM1RSWk1raml3?=
- =?utf-8?B?VWMxanFUaUJLSkU1MkwrWDBranh3U0lTTStsMDhGWXE0bGJoK2hRdlNOS1lw?=
- =?utf-8?B?dTNUamMwc2ROd2Y0WTR3ckpDcWpzWFBwcGhGUjRkREd1ZzBueUtNd0RqdGdh?=
- =?utf-8?B?eWpRd1hRUkUwMzNIcldEMTFMT1duaHlHQTVWMVBDS2NzYTlHejlHTDJvaTRC?=
- =?utf-8?B?aUtBVU5ncmhaOFVtRnAxdk1kTzI3QU5EaHZ4YWtaVFk0YkNFa0l2Tm9TRkxp?=
- =?utf-8?B?Mjh6SFMwbU1uSU9rOWM3c0kzUHJVendDbzIyRW02bk9zUFlCeTNwa2pIOEQ0?=
- =?utf-8?B?UElqNEVvcUJuL2NSbEpmQ3RJYmdlM2JiMU1TSXlBbE5kRldnaU5QWXFPNjlL?=
- =?utf-8?B?dWM5OUdkNTQwL1RQT3FqZkNzZ3l0cGhDQk0wNmJKTlg5bWRmWUovSGhkU0Np?=
- =?utf-8?B?T2NtVVhoR3ZnN3VPNXU2VDhRZ1NPVGJsNThnd1BlQ3k5dDBmYmxpR1RMSHcv?=
- =?utf-8?B?aUVWaTRmL3pva2VFdnBMRVk1VWxtU1BpWFd1ei8xYWdkeVlQNEp6TEFuS3dr?=
- =?utf-8?B?blM2Sml6ZCtoVjMwV3hUSkFiVi9zSk1IZDE3Q3BuWW9aTzZPOCtvdFZWR2t6?=
- =?utf-8?B?cElhb2NzdlgweWVCL3hjRTljZmtBVW5SbGd1NXptdzBrVlBOUUpGRlI5MGQ2?=
- =?utf-8?B?djNnczRsUVNjbTFyWkh3c0VWb0dqcTRyMTNMRGx3a1A5UjE0dkVXUHJuQmtw?=
- =?utf-8?B?V2lMdXY4QldmTkRUcEZqakRUYmFJSEQwTjlWVm0wbXkyTmQxbVc1bjVtREJ1?=
- =?utf-8?B?anNxSmpOWUkyNTdvYktuY1dpbXJmV2JkK29oQTA2UGJqbEQ4bXBqNXNvb3c5?=
- =?utf-8?B?YTJSalNITGhKRWszTWlQQkVGS0dOenNjUkp3N0s5UUZMczZ2U09pRllieTNt?=
- =?utf-8?B?MVFwbncvWk9WSVVJUHdJYmw3SlMzdDgxajl3eVVPYy9ibTkxUGlDKzNwQnZF?=
- =?utf-8?B?ZTdBYXhRZWRiWDNNNlRyd3BnUGEyeitUV2V4OUVKbitHWVQyR2RGSi8veFpy?=
- =?utf-8?B?ZGhQTTQyTENzTjQwSHh1amJUUGNpRWRqb1RGekdzUWQ4OHdSRS8zY0tMUjhB?=
- =?utf-8?B?S3hhNG9rK3owaUlGdGZqblFxUmN1cGNpYjRzUDJXYWhaendNTjQ5NVNKWExp?=
- =?utf-8?B?c1RlL0J6eXJNZ2JOUWdndlMxbEhmU2cyTE54YXF4NUdtNXJTTWk2ZnBDTjlI?=
- =?utf-8?B?VU9ONFY3VnNOamdnSzB6anVjMVl4ckRYekhXOFh2ZjdUcW1yalFFR1ZCQXpW?=
- =?utf-8?B?d0lSQy9SbnpXWjlrNmpLQ1hlR09uQitpVjlhZS9VdHhTZkF6T1JIODh0MkRJ?=
- =?utf-8?B?TkJEaEozdFI3L1pXTzlZdmxxRWxSNTBZSmwySWJiT2ppVFJQNWlraEQ3S0tD?=
- =?utf-8?B?TEtjQXhHaGZNZGRyekNnNlQyYjJnaHRlY1JyRFk3citHWVhldGpoMmRMblUz?=
- =?utf-8?B?R1djMjB2VWZVa1oyOVlMMWZObDBpbmU4ZmE0VE5iMk43NzBDTlIxR01HejJn?=
- =?utf-8?B?cU8vSHpZL1lYRzlGUUJJR0FDTzcxSXNjOFI0ZS9LK3Y5TlUwSDBUZlMxUWF1?=
- =?utf-8?B?dVVac0dyR2R3dG9jeXVKNkRZM0pSTlpQOVRTNU5OL1dKRGROOEo1emoyRnZi?=
- =?utf-8?B?TmRRZ1pzK0NLTUNHK0hZeERSL3Bzek1MVExJQ2FqSTdjUmc9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab043a98-e2a7-4f5a-95ae-08df1715050c
-X-MS-Exchange-CrossTenant-AuthSource: TYWPR01MB8559.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 12:45:15.8084
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB12479
+Content-Transfer-Encoding: 8bit
 
+Please ignore this patch.  Re-reading the packet offload output path, I
+cannot construct a case where that drop sees a segmented list, so it is
+not fixing a reachable leak.
 
-On 9/20/2026 3:03 PM, Ido Schimmel wrote:
-> On Fri, Sep 18, 2026 at 05:32:16PM +0800, Ren Wei wrote:
->> From: Zijie Huang <milkory@outlook.com>
->>
->> The ARP ioctl copies a user-provided struct arpreq into a stack object. Its
->> arp_dev field may contain IFNAMSIZ bytes without a NUL terminator.
->>
->> Such input is passed to dev_get_by_name_rcu() or __dev_get_by_name(), where
->> strcmp() can read past the end of the stack object when a matching
->> alternative interface name exists.
->>
->> Reject non-terminated device names with -EINVAL before the lookup to
->> prevent the out-of-bounds read.
->
-> Other ioctl handlers (e.g., devinet_ioctl(), dev_ioctl(),
-> br_ioctl_stub()) simply add a NUL at the end. Is there a good reason for
-> doing something different here?
-
-No, I didn't notice that. I will make a v2 patch to be consistent with the
-other ioctl functions.
-
->
->
->>
->> Fixes: ff92741270bf ("net: introduce name_node struct to be used in hashlist")
->
-> Nit: Blaming 36fbf1e52bd3 would be more accurate.
-
-This will also be updated in v2 patch. Thanks for suggestions.
-
+pw-bot: rejected
