@@ -1,99 +1,60 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA606261B71;
-	Sun, 20 Sep 2026 13:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0A83264C8;
+	Sun, 20 Sep 2026 14:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789912149; cv=none; b=FM1sQTO1NFGpbFGYwaqaYTFVN9p586H8auXPPLwnZJAXhPavpPL1VTisVr6nC+llSoA348aGO0dWQCPoBHtWq+nYsDgs/HSpUdsPTUIpBtmFIv/sewflZhUgfJc7AHsW5/QQBZqial91wSLQGlE6KdMtrucNzoQvv4wkQ+BNhqM=
+	t=1789913268; cv=none; b=BZEqAreXUVWHi5Nu6/Hyz2rZ9v5MnfQchIP1QlB6f8U9nyRc+jXAHB8ADjrMskaYeDZEGmEj2RSCk9i+C0pJluV/ZmquXNLbTr4pX6Cb9FAZLiwgUsaR3XWpjwtU8H/kWck/tOcuOVx2xJ5uPBd24pFC+pfk+lzxrRZR19rVxmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789912149; c=relaxed/simple;
-	bh=8iTC9JPtz2vdRM9WQWi2dUzaX2OPQZPuYHgOoaoxIyw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nBY/47U3n215reklspCrb54Ol841oi7cQDZ9YWMNC01GgfRjCwhxMMLxF5sATscvh1EmYmolfOhTzSc89qAvHX1jCVM9bp1qqz3ZP7E5DCRp0FF/hTyHkXuCTijnRYRtRjFSE9TNtTlR4FbSl3ValQSdRbWW9vILcKmkach0Mds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UTB/X/fS; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789913268; c=relaxed/simple;
+	bh=ggDXQml+3AwD7Hw47o9K814Vwfhlxh4e7ksLSjlixVU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
+	 Message-Id:Content-Type; b=hVRpOqlA8holpIEZjeAqkGsp32axpMaqGm3N10zBvKC/J9dqpyAB13xn3i85ohIFcl2kpOb4r6K1KMBVSI3zDS3zQV3wKqXW+I38BoMMKGQOZy3c7BkW70AwxxEAeKOArRhLWeSUsQ5b3TVIyKTRkIxkuu0BT2KSF87X5pwMI2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=NyPvplGO; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UTB/X/fS"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A30ACC51468;
-	Sun, 20 Sep 2026 13:49:50 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D7A426033F;
-	Sun, 20 Sep 2026 13:49:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2997C103286A4;
-	Sun, 20 Sep 2026 15:48:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789912143; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8iTC9JPtz2vdRM9WQWi2dUzaX2OPQZPuYHgOoaoxIyw=;
-	b=UTB/X/fSimERrtJA+QubT29YWdvXZmjGdyjvuyFxudaWyR5aywLobj0LsBENQhH2qoPyYl
-	J0o/ME8vsZ+/+EUEtH/IHtrR+WuS8ixESIB8gi4obLpH2irQ6HGGbTdJn7u6dH+phJxrAa
-	lK5SVNuOPSsR7oyjeNhD70+3uZg8KVTHNAsmbeRmbDm2BDajhXNI4/zg+tppPdKFWBE18R
-	LDwKYxM//w73mzK5g/sMo3XynVS7k7sjZfzOXbq5VEUwN1nRVsqt5/QHt7FyRg6m8/xTI+
-	fDveY6ZfeF/L+F4kWKg2i3PxOzpj2IkLNPINDPLkEyT74atD8nzEal4HI+J6Wg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Jacky Huang <ychuang570808@gmail.com>
-Cc: Jacky Huang <ychuang3@nuvoton.com>,  Shan-Chun Hung
- <schung@nuvoton.com>,  Michael Turquette <mturquette@baylibre.com>,
-  Stephen Boyd <sboyd@kernel.org>,  Brian Masney <bmasney@redhat.com>,
-  Richard Cochran <richardcochran@gmail.com>,  Arnd Bergmann
- <arnd@arndb.de>,  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,  Steam
- Lin <STLin2@winbond.com>,  linux-arm-kernel@lists.infradead.org,
-  linux-clk@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  netdev@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH] clk: nuvoton: ma35d1: Use clk_hw pointers as mux parents
-In-Reply-To: <b8a8a65b-e302-4747-bc90-4920fc48795a@gmail.com> (Jacky Huang's
-	message of "Tue, 15 Sep 2026 13:26:39 +0800")
-References: <20260813-perso-ma35d1-upstream-clk-v1-1-e78e5e6172ea@bootlin.com>
-	<87o6e0nfe4.fsf@bootlin.com>
-	<b8a8a65b-e302-4747-bc90-4920fc48795a@gmail.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Sun, 20 Sep 2026 15:48:55 +0200
-Message-ID: <87o6ds8248.fsf@bootlin.com>
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="NyPvplGO"
+Received: from mail-nwsmtp-mxback-production-main-82.vla.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-82.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:2f23:0:640:4f85:0])
+	by forward500a.mail.yandex.net (postfix) with ESMTPS id BFF46C1223;
+	Sun, 20 Sep 2026 17:07:42 +0300 (MSK)
+Received: from mail.yandex.ru (2a02:6b8:c0f:691:0:640:b58d:0 [2a02:6b8:c0f:691:0:640:b58d:0])
+	by mail-nwsmtp-mxback-production-main-82.vla.yp-c.yandex.net (mxback) with HTTPS id P7aE5u3vjqM0-cwncLNUX;
+	Sun, 20 Sep 2026 17:07:42 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1789913262; bh=ggDXQml+3AwD7Hw47o9K814Vwfhlxh4e7ksLSjlixVU=;
+	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
+	b=NyPvplGOMOwkBXds1ghR95s9Ac8MUST3/qRWYMh0Mdj+iT1neDTJMcdEyI3ZMXqyl
+	 rx9WVDOTmc/21jq1ueGcxN0dX3MZ4/gexGtT5EqPoGBvmvB3zC+Yik+Pnzz8ou0pYc
+	 jEdmGGDpiEPNicpPhOgBO5sttUTu6Ii5TcoHcr7c=
+Authentication-Results: mail-nwsmtp-mxback-production-main-82.vla.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+Received: by mail-sendbernar-production-main-46.vla.yp-c.yandex.net (sendbernar) with HTTPS id 26bebf9f2deb4af9870c5891ce14b963;
+	Sun, 20 Sep 2026 17:07:41 +0300
+From: Ilya K <me@0upti.me>
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+In-Reply-To: <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8> <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
+Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Sun, 20 Sep 2026 17:07:41 +0300
+Message-Id: <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Hi Jacky,
+> I've picked a few more things from the latest mt76-fixes, specifically these three:
+> - https://lore.kernel.org/all/20260729173632.14387-3-enderaoelyther@gmail.com/
+> - https://lore.kernel.org/all/20260823053739.186748-1-gongtao0607@gmail.com/
+> - https://lore.kernel.org/all/20260901092232.461379-1-nbd@nbd.name/
 
-> For example:
->
-> =C2=A0 =C2=A0 static const struct clk_parent_data wdt1_sel_clks[] =3D {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 { .index =3D -1, },
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 { .fw_name =3D "lxt", },
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 { .fw_name =3D "pclk3_div4096",=
- },
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 { .fw_name =3D "lirc", },
-> =C2=A0 =C2=A0 };
->
-> The TRM lists PCLK3/4096 and PCLK4/4096 as valid selectable parent
-> clocks for the WDT/WWDT blocks.
->
-> However, the new conversion changes these entries to -1:
->
-> =C2=A0 =C2=A0 static const int wdt1_parent_idx[] =3D {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 -1, LXT, -1, LIRC
-> =C2=A0 =C2=A0 };
-
-That's indeed correct. Thanks for the proposal below, I will include it
-in the next iteration.
-
-[...]
-
-> I have also tested this version on an MA35D1 board, and the clock
-> parent conversion appears to work correctly for the peripherals I
-> tested.
-
-Nice! If you're happy with v2, don't hesitate to send a formal
-Tested-by!
-
-Thanks,
-Miqu=C3=A8l
+Aaaand it crashed :( I guess I'm officially out of ideas now. Might have to rebase Ben's tree again, but not today...
