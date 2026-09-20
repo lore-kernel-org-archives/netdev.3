@@ -1,139 +1,192 @@
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97703DC856
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 06:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686B22E0B5C
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 06:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789886816; cv=none; b=cS2O/ABBYBANok8IpZJo4JpYsmEabj7Tm2CO7ovNozCVIPjEBxNlOPjx0asIvI4kPkOXxfU87goTv4z7DwZiLQqx/ZHHWL5jHTH3dIFoXsr1KjOcmQlENTiSXqJVdgvRIoadAJE3qLxV81revUgvhBg41QGP93rgZR5HiMHcZOE=
+	t=1789886852; cv=none; b=ApwbBAoFFtRDdxFGCSBK89iJORe6qoiGyo5JvNvQUZ7Kvh5d3GgsneaLwTUq09ZLsfgqdE189CKGP2VCfbC9BCtXA+k327CGzRmtZY/n+eD0mZGSOTDBTv44Be5yVqKqnmCA++zYyPdWyD3hlS9jAyUBnNEa1LiEL+0CPP0+1+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789886816; c=relaxed/simple;
-	bh=BKLHZGPBT1ra9/o3RySzPt6GWmDIvoVinMejtLiDi40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=irTgK4vmoksI3Pxqav8aYha8bVapgFZM3ThiMcUy1oye/EWiQuq9NgZiYjdQLSeVEccPCU7UHkPIgvDMVlSu7ZKtxYhE2BbRhr7h0oU6D959d5mnMyDbuTvs66oFgtiBMM3LkbnHp8pGsEO9JaA1HoKDTNYwvsUiq7JU9hMFMOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=RpNCRhpU; arc=none smtp.client-ip=74.125.229.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1789886852; c=relaxed/simple;
+	bh=YrSRwP2s1pmuAOrFBxHmpaZhHn2RRTZLIe91CofBOQI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jEqPq6dh+LvQviMIYkZ+qXU7687BUfd58sO9MiP/0aVRAXmuOeHxJTMR35xqGDS5Qm5jwbok4Bywmb27BEWz9nmySLmuzz7l7c32Yioo6YVv5htCzxpuLFV9uYskG8+yHVLsipNLW6rzKzpCExzZNZCohcxlZxMdX+wnuvioQUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdQpwkQ6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="RpNCRhpU"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b899413537so3019002e87.1
-        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:46:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1789886809; x=1790491609; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NaOoXMCD5+08vNUZK7B5Sw9F8Wgv/VWmCEv3fUCICio=;
-        b=RpNCRhpUf0euCWxZSxksNGwOXQD3gwl/UtG3sxPbBNbzNGxr5u3l+CGvEAU7mCJ+8F
-         vjIqubp10bYk/trSLHG45OKJxvBGEa60wYA93tY4egC2zN9EC843CAZlcoquZkkaQ4du
-         CVowpR54SAsW5X89fmvmXqPVKBPKBUiOM7WbUzeTgheKnPxANcOhDRu3qaD3bQWAnyXy
-         U8QJe4j6V+JraJ//LJz148kDobS2PZ1VmKWyzx1omeo/GkNi3p5MHVJvi4WQzYo6gGXL
-         u9affkz8g7I5xbhmJVo15yQUkUvIWZHFFX1IHiGAIm/70YJc5RQ11HpfUeShZbotYTNo
-         Twhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789886809; x=1790491609;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NaOoXMCD5+08vNUZK7B5Sw9F8Wgv/VWmCEv3fUCICio=;
-        b=aBQc8NFbRXuYNQx/LaAN5NcQwanv9mbQFKs/irBtL3Vj44Vyp4lOsDdhEDWmoYGTDp
-         r2TuH62Vc0JDHVuaoNOdO9PnWbUjq1TKo3HQGNQWutv7xa0nPPGRiCeYjDPhOaj7HDtT
-         Uop64LsfqNae9PLGG2MzFI+r+7BIBBtGIKeSNgN9ixOsWSm7x4Vq+0/hUiycR9wsFhtO
-         dNQ0J98/r4YdBUHqAAxEsgZLCFMxp+9kWcXxArI34ER482zqKT9hUx9rGcok0CndJQiH
-         WJHSGt9e7CP6m+6u/A29JR4aE4UUH+BCC2F56QYwivlHDjZtY6yWNQgVjEu7owbuEzfu
-         BKew==
-X-Forwarded-Encrypted: i=1; AKwUvBy/szNQB7oxf9qwGRVSV/9aqTvwhFnOkF1kodlq6JTsDaEPlddZvHDrGrE+h0a+MDIT3L03rIs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kSJVrgfXPbuOOo/rV6UM309uOS0i0mMQBBbbfcfXj5kE7qSHO0
-	/QW93KS5EgAnJWdkQPUbZLHc+6PXjbAWjHUskcy8drxzQrDA8XlLfjd1WMchne2iuqI=
-X-Gm-Gg: AYBFou0hZN09ZhG6ZXk0CA8lC4D+P9WZOZWMnh5rGa0NLplyVszi9xL1I9cgp3GXCPf
-	LLoZXEfUGepHqs9qWwwm8U+QCpDqJ2ewPcxc9d8Pb3qtN72BJDXshIY+eefX9ZWuJ5H97jSp1cn
-	eyVdrHQadsTb2Gpj4HNwDTFk2mX0rFC8EwVyl2YIWAzeuJfW/JaV4BA0Vzyo3n3qWR0vVEJyTAt
-	DLX1VVKh+SeaceQP7tU2LI0YFcDH5e9hK8RcRC2k8ih0NjZJozscfxe/rzH+I7vNJlQ5J6bDHMg
-	ctcO0snfQFRZfBiKyTEtR1fuH/2VchG4XesunFRGM7I8+HTmUA7MgPbCBOfKKVJF1Sg/eZe1HYg
-	IArfJaHytoeZeza/Py5aAf9tFdTdEdAkw1wRednNi9TPaHrLJcHjG/HRpzVHAIyXjhAIOxFX6cq
-	50LEUC1cLUucUbhd7vaaV2AeXadbxx8Bx3Ul4B1kennLzbyhO90RWZA5xIB4ihv0ZetRCEAUZPk
-	nfymBXZ
-X-Received: by 2002:a05:6512:3a8d:b0:5b8:c147:f363 with SMTP id 2adb3069b0e04-5b8c19618a8mr1949385e87.64.1789886809102;
-        Sat, 19 Sep 2026 23:46:49 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8c88d537bsm891722e87.45.2026.09.19.23.46.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 23:46:48 -0700 (PDT)
-Date: Sun, 20 Sep 2026 08:46:44 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Konstantin Sinyuk <ksinyuk@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Francois Dugast <francois.dugast@intel.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ilia Levi <ilia.levi@intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jhs@mojatatu.com, jgg@nvidia.com
-Subject: Re: [RFC PATCH 0/12] drm/fabric: vendor-neutral topology
- infrastructure for scale-up accelerator interconnects
-Message-ID: <aq-AwReIVop1qv82@FV6GYCPJ69>
-References: <cover.1787552412.git.ksinyuk@kernel.org>
- <apAsfOowcG0cTvT8@FV6GYCPJ69>
- <fabric-jiri-reply.1788176464.ksinyuk@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdQpwkQ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBA61F000FF;
+	Sun, 20 Sep 2026 06:47:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789886851;
+	bh=ZFKMIOR038m40L7CV58QbazcC5zt6f09quaRPy61SMY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=VdQpwkQ6kIkRI0r2Ngups+7I02Hfk5u+8IIlZQJX1g/Z/p0e1nrUBKghIKs0XyRx+
+	 wxoh2f14FQKyrAUYTqSsqWJSbczuRMu728c6pWM+cUmlbO5oJ4nKIStG1ROs9jIp+B
+	 J+t5Fg/NyQqCiYO11HYwAFqw5dvjzpNG30IQgzR0EaLWtQt5X9oEwVt6Vxf1FZ0Uau
+	 6P+FQpsvURNn99erYN5oGTaSgrkVR0+KP62b0AsfOo/2+392hA9AGlBHB0R/0VY7/F
+	 DD29RXAvprvktCo3xREbZ1sPT/A2tJMlXfe65PqluAiuzhg+nLedXrE5oQ5sGHr1Q3
+	 LIUv4PKeUbb3A==
+Subject: Re: [PATCH net-next v3] net: wangxun: use cached NCSI and WOL
+ capability flags
+From: netdev-bot+sashiko@kernel.org
+To: jiawenwu@trustnetic.com
+Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ jacob.e.keller@intel.com, kees@kernel.org, aleksandr.loktionov@intel.com,
+ u.kleine-koenig@baylibre.com, weirongguang@kylinos.cn,
+ zhaochenguang@kylinos.cn
+Date: Sun, 20 Sep 2026 06:47:30 +0000
+Message-ID: <178988685001.2160803.3396392479402996467@kernel.org>
+In-Reply-To:
+ <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
+References: <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fabric-jiri-reply.1788176464.ksinyuk@kernel.org>
 
-Mon, Aug 31, 2026 at 01:45:15PM +0200, ksinyuk@kernel.org wrote:
->On Thu, Aug 27, 2026 at 02:35:16PM +0200, Jiri Pirko wrote:
->> Using generic netlink instead of sysfs for this makes a lot of sense,
->> but it may be a bit odd to use it outside the networking area.
->> I've been struggling with the same in another non-networking use-case
->> as well.
->
->Agreed, and the series shows the friction. The namespace handling is
->nominal, and CAP_NET_ADMIN as the mutation gate is another borrowed
->part of the model. I went into that in more detail in the reply to
->Jason.
->
->> - One character device per registered instance, not one global family.
->>   Access control is the file: udev rules, ACLs, an fd passed into
->>   a container.
->
->The fd-based access and event model addresses real problems with one
->global family and one multicast group.
->
->The main question is what the CTLV instance would represent. A fabric
->can span multiple devices and has its own lifetime. An endpoint can also
->be detached from a fabric with fabric-id 0 and continue to exist. A
->character device per accelerator would not provide the same global view
->as the current family.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-CTVL is supposed to be just "transport". So however you use it is up to
-you.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->
->Can a CTLV instance represent a multi-device fabric or the global
->fabric registry rather than one physical device?
+- [Medium] The patch is submitted as a mechanical cleanup ("use cached
+  NCSI and WOL capability flags") but carries a real, user-visible…
 
-Yes, whoever creates the ctlv instance is in charge of the lifecycle.
+Pre-existing issues:
+- [Low] Semantic overload of wx->wol_hw_supported: two libwx consumers
+  now read the same field with different meanings.
 
+--
 
->
->> Would this make sense to use for you?
->
->In principle, yes. I cannot base this series on an out-of-tree pre-RFC,
->but the fabric, endpoint, port and peer model is separate from the
->current serialization.
->
->Changing transports would be more than regeneration, so I will read the
->draft before saying more.
->
->Thanks,
->Konstantin
+net: wangxun: use cached NCSI and WOL capability flags
+
+This replaces the open-coded subsystem device ID tests in wx_disable_rx()
+and txgbe_disable_device() with the cached wx->ncsi_enabled and
+wx->wol_hw_supported flags, and initializes both flags in
+txgbe_init_type_code().  For ngbe this changes behaviour, because
+ngbe_init_type_code() also sets ncsi_enabled for OCP cards.
+
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> index 59cdd7d71e446..6fbfbb77646c0 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> @@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
+>  		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
+>  		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+>  
+> -		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+> -		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
+> +		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+>  			/* disable mac receiver */
+>  			wr32m(wx, WX_MAC_RX_CFG,
+>  			      WX_MAC_RX_CFG_RE, 0);
+
+[Severity: Medium]
+Should the ngbe behaviour change here be a separate patch with a Fixes:
+tag, rather than part of a patch whose subject describes a cleanup?
+
+For txgbe the conversion looks bit-for-bit equivalent: WX_NCSI_SUP ==
+WX_NCSI_MASK == 0x8000 and WX_WOL_SUP == WX_WOL_MASK == 0x4000 in
+libwx/wx_type.h, and txgbe_init_type_code() runs from txgbe_sw_init()
+before the first txgbe_reset_hw() and before any
+txgbe_disable_device()/wx_disable_rx() call.
+
+The whole functional delta comes from ngbe, where ncsi_enabled covers an
+extra card type:
+
+drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:ngbe_init_type_code() {
+	...
+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
+			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
+	...
+}
+
+So on an OCP card with the 0x8000 NCSI bit clear, WX_MAC_RX_CFG_RE is no
+longer cleared on the paths reaching wx_disable_rx():
+
+  ngbe_close() -> ngbe_down() -> ngbe_disable_device() -> wx_disable_rx()
+  ngbe_reset_hw() -> wx_stop_adapter() -> wx_disable_rx()
+  wx_configure_rx() -> wx_disable_rx()
+
+That is a user-visible fix for dropped out-of-band management traffic.
+Could it be split out and carry a Fixes: tag identifying the introducing
+commit, with the stable exclusion expressed separately (for example
+Cc: stable+noautosel) instead of by omitting the tag?  The commit message
+says:
+
+	No Fixes: tag is added on purpose. The broken behaviour goes back to
+	the initial ngbe support in v6.2, and wx_disable_rx() has since been
+	moved into libwx and reworked several times, so this does not
+	cherry-pick into stable kernels in any useful form.
+
+Without the tag, does the provenance of the fix become hard to recover,
+and does bundling it with the refactor make it hard to revert or bisect
+the two changes independently?
+
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> index eb91c4f28ecd4..0ecbd1c0e5532 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> @@ -267,8 +267,7 @@ static void txgbe_disable_device(struct wx *wx)
+>  		wx_set_all_vfs(wx);
+>  	}
+>  
+> -	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+> -	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
+> +	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+>  		/* disable mac transmiter */
+>  		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+>  	}
+
+[Severity: Low]
+This is a pre-existing issue and not introduced by this patch, but is
+wol_hw_supported now being read with two different meanings in libwx?
+
+In wx_get_wol()/wx_set_wol() (libwx/wx_ethtool.c) it is strictly a
+hardware capability gate, with the armed state kept in wx->wol:
+
+	if (!wx->wol_hw_supported)
+		return -EOPNOTSUPP;
+
+	wx->wol = 0;
+	if (wol->wolopts & WAKE_MAGIC)
+		wx->wol = WX_PSR_WKUP_CTL_MAG;
+
+The new tests in wx_disable_rx() and txgbe_disable_device() read the same
+capability flag as "the MAC has to stay alive", so after
+"ethtool -s ethX wol d" leaves wx->wol == 0, the MAC receiver (and the
+txgbe transmitter) is still kept enabled on any WoL-capable board.  This
+matches the removed open-coded test exactly, since WX_WOL_SUP ==
+WX_WOL_MASK == 0x4000, so nothing changes at runtime today.
+
+Would testing wx->ncsi_enabled || wx->wol, or introducing a flag named
+for the actual decision (keep the MAC alive for out-of-band management),
+make the shared-code contract explicit?  Otherwise, narrowing
+wol_hw_supported later, or wiring the WoL ethtool ops into txgbe, would
+silently change whether the MAC stays enabled.
+
+> @@ -381,6 +380,9 @@ static void txgbe_init_type_code(struct wx *wx)
+>  		wx->media_type = wx_media_unknown;
+>  		break;
+>  	}
+> +
+> +	wx->wol_hw_supported = ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP);
+> +	wx->ncsi_enabled = ((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP);
+>  }
+>  
+>  /**
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/E5215E3514E295BA%2B20260916063312.203457-1-jiawenwu%40trustnetic.com
