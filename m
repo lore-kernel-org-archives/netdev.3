@@ -1,186 +1,275 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011053.outbound.protection.outlook.com [52.101.57.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E11C8604;
-	Sun, 20 Sep 2026 09:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789895320; cv=fail; b=M1vw4Mu6qVPeKU/9qzKdk1YSidoWy3OpAnMQ0H1eZ8BgRghO0Xk9DcMv9FEj/FS4TIoXzX/PBlsaRRM+ysRYnX/ohVHnPOyc8lxyFrI7N8BMM8V+3JDyZfZwM01Q+wAnGSjGwlhdeAKM4Vg2Sq7X5DBqf0BT20oV9Ryoyzk4p3Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789895320; c=relaxed/simple;
-	bh=unR8VnPsSbIkz18nlKWZ3FDWWppDPMx/n4OFTkH4nTs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tITag/Kk+xZ50I6A4XSrWuzT3SlAySTRl2TXQFXvaZnzsMwP9FsSl+omMe81T+xWFt3zDV8YV/mwP1bEvxjNyzMNrplixll7lm/QST3c83hTnxnvQ9WzI+YEW0zj1Qt4XVBVBWhclQlZXcQlW9ZNquUWhvGKLonaeMbmGu34zvk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=r5F2a4OW; arc=fail smtp.client-ip=52.101.57.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587A437BE71
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 09:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789895338; cv=none; b=CQ13f8sffX014UvDxzkTf/BJ8pFh3sfESZgsOk/0imsUsYcSmUQYoADarV9r17UZKnM3oLwp+3zoxzCwQEqYDa5Div1FnLoHbyuHiH+4lQnif6ljSxjphmC4M3PuvB5n5y9u/o4tBHAXiEghIIq+yLZfUvVAL3AtTgUyenarDuU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789895338; c=relaxed/simple;
+	bh=Kpj/3YYcrWVRQOfZB3Vpm+urkRgZJqiel/b4w8mA/z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OYwSXDfuuiYOdOx5vrd2PhmZcNDuYxsDSaijN89t6PrIl+nKbfhZg8fp1Dd8CNZ9TA0GavYicMaW632s8pwOaLZPwAAwpeIQJgxZdU3ZjL9CkMGjZFRbUD1FhQj9e6JqYoL3SabgHIXsIr7hR6zb7EV85ZVzqmId24E/6x4zjGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LeabTi5s; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="r5F2a4OW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vQG9ZuaosmRnfaVzIzbb3KA9dSqixprZ5l/cc51uUGNJ0aE+z2pr1zDsr+24gHchiu6Td55t/V0kX6cD3jY9WJwDCnxaaedZYMkNCi39RbNbqDc3Nvzp4QymUWMtT2m2rV3Jvk95TVfoCKw9Xe8b9ZIfycW2Kmxt3LMlKhusK5hIPzz7aEzVe5teQlrI7qss+SItfPnnasqxeb2Xz5d2Z5OerbRC0j1AlPV0HtPNHMcRU+awFcljZ0HjrIwdKUenLFhSP3hh805sS1k7WnwPta/NcFba8miVUYGsRMfG7IbOcXjEAQhs03OHRO4BXurLlI9KZ3uSjfnbytjHDkjGEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cb3p4Do+elfXAORN18kYBJ15o0Jk7c0e4Qf6t31Mou4=;
- b=RaVZo2M3f7/K65fFqBJ/O3L5OX80CVFovwqfTsYxI41MSQC++IphPrld5FS5/OByIfpyxSLubZfndH/gJC5zXYoF1+vYVgkZXK0/tSlEK+lUGlMGnREiCwt12MSvUhICD2jbICI+l+ZZ+68p54v4pSWLD97Zn3UnN+E8EznKQBa1Nss9xxvzHihqbnXNb76eMyVtfh2k1pkMfB4OXI+ws7nhNmYasYew8em6w1WbZNxY/n+P/FGx0rIbuE6INWuMmC6Nqw6tfZO95FgplzHinhg93JrXOcKDJ/cLUawzTc6oAGaWl60nf8j9YMs857lY0l3AX5x6tLD5pg5S+ZQ41g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cb3p4Do+elfXAORN18kYBJ15o0Jk7c0e4Qf6t31Mou4=;
- b=r5F2a4OWfPFpwTdOMpwydGRoIowBa9khY1XWh4SQ56wtyw9u5x+7UHvETIyaZD32sIBtjFkecCHkwj4ccKqTqabk5nuLAFaxC3pSQuiSHxvTAEDrjhhSQwQZRbNlHccorWcQAFsL+gMaX99mDmyxCXAyn0I18fRN/0S9S9kcx6OCeicfBIvjMHX8cFrLTe66iwefePeF9SfYnBysDpwnWWEwpTQnD3Y4AiUp2ikZgRBWcONGWV4K5jAkG4EbsHBqv3QSqTjujdjXWwe5P/RjjxcYuBnWH/Wusby20ZtJpj8SO58/SsvhWgjyGRuiXoJfUBZIsHI2MAS+UlfqR3p9eQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by PH0PR12MB5645.namprd12.prod.outlook.com (2603:10b6:510:140::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.15; Sun, 20 Sep
- 2026 09:08:33 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Sun, 20 Sep 2026
- 09:08:28 +0000
-Date: Sun, 20 Sep 2026 12:08:18 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Gabriel Goller <g.goller@proxmox.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Roopa Prabhu <roopa@cumulusnetworks.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipv4: fib: treat an unbuildable encapsulation as a
- nexthop mismatch
-Message-ID: <20260920090818.GA1846216@shredder>
-References: <20260918152836.1173368-1-g.goller@proxmox.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918152836.1173368-1-g.goller@proxmox.com>
-X-ClientProxiedBy: FR2P281CA0014.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a::24) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LeabTi5s"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so1589409f8f.1
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 02:08:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789895334; x=1790500134; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LuoIcNR8M3VmrQ/YOAKp2aarikMbYVcQakxWPsHNlLI=;
+        b=LeabTi5s/d/Ots26bQ144ovQnBC9eyVCJeAym7jI92YkWo+wH+BwT0ouRnBixnQXSB
+         8JOozWbVprLkVsjArHJER+NDHmBF1Bzpg4U+5Gs8YvSWIYcS/dp7wOhBA+v4LQmCAtMl
+         r93xCIMeK8cm0GxiQx6++5fNAQyh9/Dr0pyNaSUlIZggVfyCPd4uKQkz4AljlsGUK17j
+         kKdsWRtxA6W6Wnt6ndkedtHByyWypAu3ERWsmusHh+cCJCfG1+OZCyfBGt6fzGzhqBch
+         +wZQJuTvckfpnuvOsMqsixVxZx1D/+WvtE0aaICkBjkn74ictn3slb+DFGH+zEbkONI7
+         hXdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789895334; x=1790500134;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LuoIcNR8M3VmrQ/YOAKp2aarikMbYVcQakxWPsHNlLI=;
+        b=Zk8zcctQ0r4Vkon52wdrRdxESxMTd5R9O43ZHE3+czD6cJoMLlthqesEy3DlyoGo5d
+         GV+ziihiWBpFPeymdFImXP3thmKLIsqiM3X49YECRVnCTj6qhdLxl8Oy1LRNPwA/cdLJ
+         FUXBJFU06nDX8gE+KQ5yD0hjD94m6Li3cUxQL2URvpgXQcA0qyzJb6a3qWGbZXpzBrJi
+         GBk2TGp5WMRR+Iyv3S2CUquFhNS5jUPJOvn7JjcAsfvixuxu8yG8B2ymuazLFx9RW56F
+         B8TX2u2SXC3jCsXdB6ipBDpnSPDMvsoJIGMgIHQuDJ8k17+Xb3nOBgItfzAgI/6W1C5L
+         lH/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBytUd1kls8oU/s/BUEKRp7gYXt4uzxQcmCFwd0ee3iWirUq0+kJDJtgc1Cybey7GaiD1bNMcZo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lK9+1TolMKhRLdV/wX7qnvu6Zyl7GMJr9MLN4FHipI3bery7Hj
+	mGfOeyTrWguQLVXugyGxMETGVK5y5/lGMftfEF+JPZResE1Y8IUgSlRb
+X-Gm-Gg: AYBFou18EYOt9a4fkydmJYvrmSvoXHeS+hb8FfohbHJI3Y3yPCigUezHOEg8Q3WLDqx
+	P4XVVY2IF8fR5xt6hP8bl2bJPWrsOaZbKab7DtWbsdOngp7Pha6k9qFAdpweoxZhqqa26UH4Ln9
+	c0PCoEXeamFWD1BCJlBFoDphBrheDOOYgnbvVeJlWu0IFVD38vJCMSoUOt9SlENxLRuYzgZGERm
+	Wbn8CcICsGmGqrKTzhyPIEuIDKv5694o30h8nUFNrLqQFDKB5IgPP0lm+a8+izFMbJX5OhrNiRD
+	jsgWSEYkjHIMj2doGBpq931Jf87Dw6yohjSmzl9rGPyJ+d+TaY/R8Ao9GxvBAd1f1IvG2yHmdwn
+	mnotLlFwo6w1sBImhPDFe62iCrcSytBIjKhr/A4w4hCedFjCPNNUtmnAxIrwz+93JE+mFbXQtVH
+	MgG4vmHKOs0ZukgSIFe9q7s4TeX0zUgj2wrLkx61+SuSesjoD82zE6wcLIS29zzVl8ww2UmM43Q
+	wSHiOuyo5JXWwkjcdL5jjyOvveGuauF6AQ=
+X-Received: by 2002:a05:6000:2210:b0:487:b4a:3f54 with SMTP id ffacd0b85a97d-4871e269d90mr11394524f8f.29.1789895334332;
+        Sun, 20 Sep 2026 02:08:54 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-487244229d5sm13813240f8f.2.2026.09.20.02.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 02:08:53 -0700 (PDT)
+Date: Sun, 20 Sep 2026 10:08:52 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: =?UTF-8?B?QmFydMWCb21pZWo=?= Dmitruk <bartlomiej.dmitruk@isec.pl>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang
+ <jasowangio@gmail.com>, Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vsock: keep SOCK_SEQPACKET message boundaries on
+ interrupted send
+Message-ID: <20260920100852.7806895b@pumpkin>
+In-Reply-To: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+References: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH0PR12MB5645:EE_
-X-MS-Office365-Filtering-Correlation-Id: dca4991e-ebfe-42d3-2719-08df16f6bbe5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|18002099003|22082099003|10067099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	HHwXpKU5iYUnGgIBJjbmlitCEe8x8rEPfomKyLUwMY+pLZmvsEunOOEINW0G0w403mMlWGWCr+6V9vdHWtWg/WUZaT6+RAfAkzKDnQny/QxZzEc6HKHuBssS8ArbAuwG0+CaCAQLwJ2+TrNgFmt1tbXtdL4EKn4E33yc8CPI6foF8Sb3TbsTt6Zb+AVRin+rrzWRuGa5sWUddYFv1YaU8JPSSf0OadEj8G402ddkKNgNGC73YhKPp+gcV1JtPl3NHrSXbYL8w58SrVy86M2PPddhHXrvF1qAIg89RiSHFy7BpO+t0Mq+tAKeNgo7QgDvf7TnoGvWThpz24K2EZTBam87IaHSMFz80mFBw+4JRhQl4JRM7wruNJt9ZVs4bTXH02uuWepZibK2yu6rnv333PleIEvYvfcO2CajPO3Izqh9IuisiHLdbWPfKSjt078F7RLCgtnVzeiULD4SD2C8/cAIav4UvlwOLbMACUfYgehDnHuN98JPcrYrm599nvzhHlaWi7r/OdwsQ1RWUuTQc6IChQxeHXfsZmXxqsKgaYrThqX8ph5RsmBgGFOMwOsPx1G2ekLWLOAtmS9m++wgdi6mjeNtwwVSYIza7BKylK+WDUm+URZ14eW5Syj2nKFhjpkuZHAILTn/V/8xZK0O+HlSF/xxiACPPKiAB55tPYw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(18002099003)(22082099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?l0rx0F18LewOtHW4RztEZkfyugZ/4i6htiNryQjITWbbvzODled9Cqnx4VKN?=
- =?us-ascii?Q?/eIo1ngj3bCd6TNM01tkqGsK8Nn9cioXhlKGsQz1PVH+mnpKD7UD3rWxY0W9?=
- =?us-ascii?Q?lsMW0ZVSmUw3YK96MhWhMPggFrYE4NXMavYzPVS/SWm9uL/RMqTwtCQ/ahJw?=
- =?us-ascii?Q?LxZ0giMPznT6lqg/hOdzNg8GTvFUqAZmN5C3IfNo4ipHBbxq5H055TwsaMSe?=
- =?us-ascii?Q?hGLcQKnzfK5VMb0Mscg364Gv1wub1vb1Et65Z55IJ14Ie9PK8yF5Pqp0pO79?=
- =?us-ascii?Q?PNY9tZhVSaj82dShH9HZGD8zoOZrDZ1huMnpaas5BnOtBweP/jddAwRJSJf4?=
- =?us-ascii?Q?UkV/F+uKecNrA3Gmxb6a638ULhNpSkCHFlHIr/AfpFAWCHPFF7pBSft1IDIR?=
- =?us-ascii?Q?J/sGjxyLxoWObJWq5prgrv00urKk8g3ZUqAfM6FBwiMEdoLu1UCohJ/Mvd2q?=
- =?us-ascii?Q?UmueNxe3TNe4KdKtGSQn4eZe7x8RxInG/XqdXWxea9c8yfp3UCcBgSUjlGyy?=
- =?us-ascii?Q?t6IDp6qIpjrtsm1dUMAoGncDyzPzv5QnfpsRRXdhlCUIkghwcg+b53Fx7f5t?=
- =?us-ascii?Q?NuCvhF6ZyFAcZA+Q/1jUTJig9UyrQekvOdMYieFhIl0dDLRphlJ8KjUWV5Nj?=
- =?us-ascii?Q?QOV28Evx8OVqA7V+IEGxhLgXtztWW0b13RM95AGHOynbNUgjbgVaGTbictcx?=
- =?us-ascii?Q?Q4zNogemGbMXxLcYIl4Q0cvfE2nItsUQ0of790iAd7swHbZcY0Izk5LwybvF?=
- =?us-ascii?Q?3Y0AHAtNlQBMRBzkehc/4y7ML/hF60XHfORcPwwlIA0gVxTF6+TYYBJOOb9x?=
- =?us-ascii?Q?0EnM4qHcIqF3obBs5xPak7YjTOTU5kneOAE2xjur28WeCdEfLpYM23YNvSYQ?=
- =?us-ascii?Q?ct5AKMK153h5Bd5DGmA6Tqj/LIIeeutzP3K5yFuWHFhO92az4dnPVEhdo6lp?=
- =?us-ascii?Q?6evn0hRYljIbWGCa6lsBtKT41ESK8FYw2xa7ps0SJ5mSkcLWzgPYxQcvN964?=
- =?us-ascii?Q?2CLFfkJ41eNE/mUI3latpUhyr69wPF4YhTe5btsFJU33SCtTbNN4JeosRLsz?=
- =?us-ascii?Q?l2fTA3KztK3kAR2HY92AYnac0ceNp7pPRVl6QSXenownpZth6nc1FRqoSi9h?=
- =?us-ascii?Q?HIptvBKWvM10lsZQglVcCAtIz8MjPosX648vd3vfaxhbbOG8y2+FIc81TNMv?=
- =?us-ascii?Q?3a0PAWk0AdA9uu/6kWzaVfo+XieypplZmC60SC0N3FD/IVRvkjfV1VJp3cBO?=
- =?us-ascii?Q?6LGaU/qf8p6kYYlVWeV7otar0stLKvgkSw5CvEIgjC3MB82oY4uPDH9DtAhy?=
- =?us-ascii?Q?Fu4s+KK87jZg/SRmD8VkfxdogeAUIsgdgnNuAb9juacmFEHvI7QujjxnhqQr?=
- =?us-ascii?Q?x740UR97Ac8weIGJGmnsvljdsrf/zJ9hE+kFogpiToi0c9pH/3hNPgKkkRNJ?=
- =?us-ascii?Q?Xg+QO0sL3spPA6/dFe9qWZGQTAl+NukaYC735NRPL/DAUZb2hBU5vxMXq6dC?=
- =?us-ascii?Q?+7a3el0wzkb8AlZvfu7JCfdAXd0JDefoDDKSWdzR7VYwpjllWffT6FHcfXep?=
- =?us-ascii?Q?a1GKbPbgEH74iee6E4PCpkQN0YzyI5nCNyeoo4u+/AZOX+noX84QJ+jkckwN?=
- =?us-ascii?Q?O6dDdpoGTv1IvzcMjPW8dHl0x0E0FXESG1sMMbeY7menB+J0OjrVUw4DiZKg?=
- =?us-ascii?Q?0GOF+VWZ6q5VLWezEGlHIhqc22JvvWuXvHhUBZlGfEcYXQGf0uo+SH1rZyoe?=
- =?us-ascii?Q?lJr+ZZ0+2A=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dca4991e-ebfe-42d3-2719-08df16f6bbe5
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 09:08:28.1513
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fE70X+OqiGp0TfrxGriXM9S1qrPs6pqWpNL0cE6AkGM3hPakdpCY8H1EvfY58aQG/vTiECTqQKtVMgLhJ4Ks5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5645
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 18, 2026 at 05:28:33PM +0200, Gabriel Goller wrote:
-> fib_encap_match() builds the requested lwtunnel state and compares it
-> against the nexthop of a candidate route. When lwtunnel_build_state()
-> failed it left result at 0, which is interpreted as "the nexthop
-> matches", so fib_nh_match() continues to compare only oif and gateway.
-> 
-> So if there comes along a RTM_DELROUTE which carries an encapsulation
-> the kernel rejects, it could delete a different route with a different
-> encapsulation.
+On Sat, 19 Sep 2026 14:29:15 +0200
+Bart=C5=82omiej Dmitruk <bartlomiej.dmitruk@isec.pl> wrote:
 
-Did you hit this in practice? Can you share details?
+> A credit-limited SOCK_SEQPACKET send transmits fragments as credit becomes
+> available, and the VIRTIO_VSOCK_SEQ_EOM flag is set only on the fragment
+> where msg_data_left() reaches 0. If vsock_connectible_sendmsg() exits via
+> out_err after a partial send -- notably the non-terminal -EINTR path
+> (signal_pending while blocked for credit), but also sk_err / peer
+> RCV_SHUTDOWN -- the already-transmitted fragments carry no EOM. The recei=
+ver
+> only advances msg_count / sets msg_ready on an EOM skb, so the orphaned
+> fragments are silently merged into the next message, violating SOCK_SEQPA=
+CKET
+> atomicity.
 
-Note that the modern alternative is to install nexthop objects with
-encapsulation and then associate these objects with routes.
+Should the unsent fragments just get requeued with an EOM flag?
+The receiving system will have a partial message (and should be allowed to
+pass that to an application) and will append the fragments to it when
+they arrive.
 
-> 
-> Fixes: 571e722676fe ("ipv4: support for fib route lwtunnel encap attributes")
-> Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+>=20
+> Wait until the whole remaining SEQPACKET message fits before enqueuing, s=
+o a
+> message is committed atomically (with its EOM) or not started; an error w=
+hile
+> waiting then leaves nothing on the wire. SOCK_STREAM behaviour is unchang=
+ed
+> (min_space =3D=3D 1 reproduces the old "wait while space =3D=3D 0").
+
+Why should the message ever fit?
+ISO transport (which no one really uses any more) maps to SEQPACKET.
+It is perfectly valid for a file transfer program to send the entire file
+as one 'message' by not sending EOM until the end of file fragment.
+
+David
+
+>=20
+> To avoid blocking forever on a message that can never fit -- a peer can
+> advertise a small buf_alloc, or the message can simply exceed the transmit
+> buffer -- reject such a message up front with -EMSGSIZE (the same error t=
+he
+> transport already returns for an oversized message) instead of waiting. T=
+his
+> needs the transport's maximum message size, added as a new optional
+> seqpacket_max_size() transport op implemented by the virtio/loopback
+> transports.
+>=20
+> Signed-off-by: Bart=C5=82omiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+> Assisted-by: Claude (Anthropic)
 > ---
->  net/ipv4/fib_semantics.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-> index 50e96f86ca59..951e48ae87da 100644
-> --- a/net/ipv4/fib_semantics.c
-> +++ b/net/ipv4/fib_semantics.c
-> @@ -911,17 +911,17 @@ static int fib_encap_match(struct net *net, u16 encap_type,
->  			   struct netlink_ext_ack *extack)
->  {
->  	struct lwtunnel_state *lwtstate;
-> -	int ret, result = 0;
-> +	int result;
->  
->  	if (encap_type == LWTUNNEL_ENCAP_NONE)
->  		return 0;
-
-This is also "unbuildable", but will match.
-
-lwtunnel_build_state() returns an error in this case, so you can just
-remove this check.
-
->  
-> -	ret = lwtunnel_build_state(net, encap_type, encap, AF_INET,
-> -				   cfg, &lwtstate, extack);
-> -	if (!ret) {
-> -		result = lwtunnel_cmp_encap(lwtstate, nh->fib_nh_lws);
-> -		lwtstate_free(lwtstate);
-> -	}
-> +	if (lwtunnel_build_state(net, encap_type, encap, AF_INET, cfg,
-> +				 &lwtstate, extack))
-> +		return 1;
+> Changes in v2:
+>  - Fix an indefinite wait the v1 approach introduced for oversized
+>    SOCK_SEQPACKET messages (reported by the Sashiko AI review on v1): the
+>    atomic-wait could never be satisfied when len > the transport's max
+>    message size (e.g. a peer advertising a small peer_buf_alloc), so the
+>    sender blocked instead of returning -EMSGSIZE. v2 checks this up front=
+ via
+>    the new seqpacket_max_size() op and returns -EMSGSIZE without waiting.
+>  - v1: https://lore.kernel.org/netdev/20260917220101.55744-1-bartlomiej.d=
+mitruk@isec.pl/
+>=20
+> Testing (vsock_loopback, unprivileged):
+>  - Interrupted partial send (-EINTR) no longer leaks orphan bytes into the
+>    next message (recv() returns only the next message).
+>  - Oversized message and small-peer_buf_alloc cases return -EMSGSIZE prom=
+ptly
+>    instead of blocking.
+>  - Normal SEQPACKET send/recv unaffected.
+>=20
+> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> index f91704731..e96790c03 100644
+> --- a/include/linux/virtio_vsock.h
+> +++ b/include/linux/virtio_vsock.h
+> @@ -219,6 +219,7 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock =
+*vsk,
+>  s64 virtio_transport_stream_has_data(struct vsock_sock *vsk);
+>  s64 virtio_transport_stream_has_space(struct vsock_sock *vsk);
+>  u32 virtio_transport_seqpacket_has_data(struct vsock_sock *vsk);
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk);
+> =20
+>  ssize_t virtio_transport_unsent_bytes(struct vsock_sock *vsk);
+> =20
+> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> index 5549298c1..d94c613ef 100644
+> --- a/include/net/af_vsock.h
+> +++ b/include/net/af_vsock.h
+> @@ -143,6 +143,7 @@ struct vsock_transport {
+>  				 size_t len);
+>  	bool (*seqpacket_allow)(struct vsock_sock *vsk, u32 remote_cid);
+>  	u32 (*seqpacket_has_data)(struct vsock_sock *vsk);
+> +	u32 (*seqpacket_max_size)(struct vsock_sock *vsk);
+> =20
+>  	/* Notification. */
+>  	int (*notify_poll_in)(struct vsock_sock *, size_t, bool *);
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index f840498b5..ac64cb957 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2250,9 +2250,32 @@ static int vsock_connectible_sendmsg(struct socket=
+ *sock, struct msghdr *msg,
+> =20
+>  	while (total_written < len) {
+>  		ssize_t written;
+> +		s64 min_space;
 > +
-> +	result = lwtunnel_cmp_encap(lwtstate, nh->fib_nh_lws);
-> +	lwtstate_free(lwtstate);
->  
->  	return result;
+> +		if (sk->sk_type =3D=3D SOCK_SEQPACKET) {
+> +			/* A SEQPACKET message must be delivered atomically, so
+> +			 * wait until the whole remaining message fits before
+> +			 * enqueuing.  Otherwise a credit-limited partial send that
+> +			 * later errors out (e.g. -EINTR) leaves EOM-less fragments
+> +			 * that the peer merges into the next message.
+> +			 *
+> +			 * Reject a message that can never fit up front so the wait
+> +			 * below cannot block forever (a peer may advertise a small
+> +			 * buf_alloc); this mirrors the -EMSGSIZE the transport
+> +			 * returns for an oversized message.
+> +			 */
+> +			if (transport->seqpacket_max_size &&
+> +			    len > transport->seqpacket_max_size(vsk)) {
+> +				err =3D -EMSGSIZE;
+> +				goto out_err;
+> +			}
+> +			min_space =3D len - total_written;
+> +		} else {
+> +			min_space =3D 1;
+> +		}
+> =20
+>  		add_wait_queue(sk_sleep(sk), &wait);
+> -		while (vsock_stream_has_space(vsk) =3D=3D 0 &&
+> +		while (vsock_stream_has_space(vsk) < min_space &&
+>  		       sk->sk_err =3D=3D 0 &&
+>  		       !(sk->sk_shutdown & SEND_SHUTDOWN) &&
+>  		       !(vsk->peer_shutdown & RCV_SHUTDOWN)) {
+> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_tran=
+sport.c
+> index 4f9aa9c4c..b7d587a20 100644
+> --- a/net/vmw_vsock/virtio_transport.c
+> +++ b/net/vmw_vsock/virtio_transport.c
+> @@ -585,6 +585,7 @@ static struct virtio_transport virtio_transport =3D {
+>  		.seqpacket_enqueue        =3D virtio_transport_seqpacket_enqueue,
+>  		.seqpacket_allow          =3D virtio_transport_seqpacket_allow,
+>  		.seqpacket_has_data       =3D virtio_transport_seqpacket_has_data,
+> +		.seqpacket_max_size       =3D virtio_transport_seqpacket_max_size,
+> =20
+>  		.msgzerocopy_allow        =3D virtio_transport_msgzerocopy_allow,
+> =20
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virt=
+io_transport_common.c
+> index f225f53ed..e10e7b958 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -994,6 +994,19 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock=
+ *vsk,
 >  }
-> -- 
-> 2.47.3
-> 
-> 
+>  EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_enqueue);
+> =20
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk)
+> +{
+> +	struct virtio_vsock_sock *vvs =3D vsk->trans;
+> +	u32 max_size;
+> +
+> +	spin_lock_bh(&vvs->tx_lock);
+> +	max_size =3D virtio_transport_tx_buf_size(vvs);
+> +	spin_unlock_bh(&vvs->tx_lock);
+> +
+> +	return max_size;
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_max_size);
+> +
+>  int
+>  virtio_transport_dgram_dequeue(struct vsock_sock *vsk,
+>  			       struct msghdr *msg,
+> diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopbac=
+k.c
+> index 8068d1b6e..b9a0cc861 100644
+> --- a/net/vmw_vsock/vsock_loopback.c
+> +++ b/net/vmw_vsock/vsock_loopback.c
+> @@ -90,6 +90,7 @@ static struct virtio_transport loopback_transport =3D {
+>  		.seqpacket_enqueue        =3D virtio_transport_seqpacket_enqueue,
+>  		.seqpacket_allow          =3D vsock_loopback_seqpacket_allow,
+>  		.seqpacket_has_data       =3D virtio_transport_seqpacket_has_data,
+> +		.seqpacket_max_size       =3D virtio_transport_seqpacket_max_size,
+> =20
+>  		.msgzerocopy_allow        =3D vsock_loopback_msgzerocopy_allow,
+> =20
+>=20
+
