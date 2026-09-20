@@ -1,446 +1,347 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp10.goneo.de (smtp10.goneo.de [85.220.189.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3194282F1E
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 15:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B4E3AA1BF;
+	Sun, 20 Sep 2026 15:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789918825; cv=none; b=cAe9hPzCom2v7WSIkSdeNZuzDjEQRQfizONtyV1wrjRY1JsG/p+ARdHgJR+ky+t5E+lGpUyXUROfjYqRYM/L+FptWm7BxRShMHckv4pxa7F0v75iepZu3/+H3HlpwpHZOryLIGNqc1HVSk1CGC/IayULmqYn37uqrrjH7tincO4=
+	t=1789919062; cv=none; b=YTAY8na2TbnECISns/32arXOBnPlwIRBH8nUNFAd9kwB5FMe+21noH9hwtCUk7Jzge0Ty8wYVfBXxx+IobkRuumXVhunlKXmK9Fte4eOSaJW0DrZrERDJzlipioNORiybgke3abBHw10oVvfXxUrC/yZgipxW6ESekTYpfFRtSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789918825; c=relaxed/simple;
-	bh=FAIdWrkjH+1qwmC4HE0u3EPWKuVqT87TcL1ARIieMF0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=acSo1tZGRSq+g1e478U3bKZHmv2cUS9YHvzJwdsdzortfYa/JGzJZYpQCiuvz3ZWB2ZmJFb1Bmh/Bfa+SzdxFoQZw3CnaYiqI+jPiXmrP6+iaZUgT3apcg4E8+SPH/TWMIvoTOPBME4WQmdRz0BFb341KJWhbvRD00uUIU7Noyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KX1gTT2M; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789919062; c=relaxed/simple;
+	bh=NXcvxngyirprKDf9xt5cFxOxuDfXXH/UxbKlRb7nn0U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jlr2eDbLSesRS/OYs0G2S/Y7VHXTUGpfctdmkFarv+edEi8xDUguz+Gt7GMoFPqSn6Y1aNDjUisjDat0JE2kQKjGW+TWnWUgsgImI2eKlF0XSzgiCc4GPBQpyHNwxg0nud3B6kNi6Ci83ODdg4NYl0ctApTc2wa321hIwJvaWss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=IHf43IOK; arc=none smtp.client-ip=85.220.189.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KX1gTT2M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAD81F000FF;
-	Sun, 20 Sep 2026 15:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789918823;
-	bh=2J25DW33pib1SsH3iQTO3cjeBEsm3iBnPIHhflbEbrs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KX1gTT2MEy+l9dIOaWncsLwKQcdv7s8tC0Xn4LxRnDnBCMZakzBT1SRrs3QdCdHtR
-	 bNpT8IZrkxvEIin8e/jshS2LLz/Mqu1ohj4pXtYSUAT1zOIpyOw2GrXMahBqF1K1Wr
-	 LFvoK46WS+kfVKy0K4RR7i43ZMht99Fq1KOoXB3wCWggXAAGH2C9MJhyXWmEd11cvp
-	 Ej2tVCh3xQhnNRwvoCLDBiPtjyORucmNZBwPW6EcBBKConfa/vjQ3K+UaBOs2byP5R
-	 sVw4Uiy6YWl0QyrDagH8sG3q3E05BiZBamt/Y7OMn1h6bIm2K8zTZVTOPK0504UNM6
-	 dhWgT9MtSQWjA==
-Subject: Re: [PATCH net] net: stmmac: fix rx Scatter-Gather support
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- Jose.Abreu@synopsys.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Sun, 20 Sep 2026 15:40:22 +0000
-Message-ID: <178991882229.2160803.15018709305891810820@kernel.org>
-In-Reply-To: <20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f@oss.qualcomm.com>
-References: <20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f@oss.qualcomm.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="IHf43IOK"
+Received: from hub2.goneo.de (hub2.goneo.de [IPv6:2001:1640:5::8:53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by smtp10.goneo.de (Postfix) with ESMTPS id D3F9F240875;
+	Sun, 20 Sep 2026 17:44:14 +0200 (CEST)
+Received: from hub2.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPS id 9822F24046F;
+	Sun, 20 Sep 2026 17:44:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
+	t=1789919052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AecNapTxF362oY8rExZxZezRuqvp1u2dtTLC2cyGOGo=;
+	b=IHf43IOKsxj6P1o2SIUddEo/Cckd8cLCRycpgDVjDrjv5WRVZCeIUt4wUHTHFZRIl5nMkj
+	pX/2PjUJcfHFktbABB01Jeiu9Wemam/gFyzgr1Qaau/Bbo3Z1ouKeuGoVxB3jQHSKeN3Hn
+	vibJXJPpmmL+nnH2uf/jTMEOozuxzrW5q2Tei5kzal9Om+TPOKqTOmtD5hud1dc/6f9joo
+	WC6wojI6BCXc6438Uj+NijGEzR8nWHrj49NaWEoxicg8XKV4sM3ZwZCugBIl7DA0P7Kjxk
+	Vi9kW9Hi7mB5xvuAhqU5YY4bO0wO8BINmaroYWnwBagDjhoRd1lb0D+PehnfWg==
+Received: from Til-Notebook.lan (unknown [IPv6:2a00:1f:5743:bc00::d0f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPSA id 63596240350;
+	Sun, 20 Sep 2026 17:44:08 +0200 (CEST)
+From: Til Kaiser <mail@tk154.de>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Til Kaiser <mail@tk154.de>
+Subject: [PATCH net-next 2/2] net: airoha: Add XDP statistics
+Date: Sun, 20 Sep 2026 17:43:29 +0200
+Message-ID: <20260920154329.161755-3-mail@tk154.de>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260920154329.161755-1-mail@tk154.de>
+References: <20260920154329.161755-1-mail@tk154.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 9 potential
-issue(s) to consider.
-
-Critical: 1 · High: 1 (1) · Medium: 6 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Critical] stmmac_rx() strips the FCS with an unchecked unsigned
-  subtraction (`buf2_len -= ETH_FCS_LEN` at stmmac_main.c:5803,…
-- [High] The patch unconditionally allocates a secondary RX page and
-  unconditionally reports a non-zero buffer2 length for every MAC core,…
-- [Medium] The RX page pool is created with `pp_params.offset =
-  stmmac_rx_offset(priv)` and `max_len = dma_conf->dma_buf_sz`, and only…
-- [Medium] For GMAC4 without SPH, stmmac_rx_buf2_len() now assumes every
-  intermediate descriptor's buffer2 is completely filled (returns…
-- [Medium] The patch makes the secondary page-pool page mandatory for
-  every RX descriptor on every stmmac device and configuration…
-- [Medium] With a native XDP program attached, stmmac_xdp_set_prog()
-  explicitly clears priv->sph_active, and this patch now arms buffer2…
-- [Medium] The AF_XDP zero-copy refill path is left untouched:
-  stmmac_rx_refill_zc() still calls `stmmac_set_desc_sec_addr(priv,…
-- [Medium] The new length arithmetic depends on `priv->hw->rx_csum`,
-  which stmmac_set_features() (stmmac_main.c:6210-6214) mutates from…
-- [Low] The descriptor-position comments in the changed RX length helpers
-  no longer describe the code.
-
-Pre-existing issues:
-- [High] In stmmac_rx(), when napi_build_skb() fails the code calls
-  page_pool_recycle_direct(rx_q->page_pool, buf->page) and jumps to…
-
---
-
-net: stmmac: fix rx Scatter-Gather support
-
-The patch always allocates and programs the secondary RX buffer (sec_page)
-instead of doing so only when split-header is active, so that a frame
-overflowing buffer1 does not make the DMA write to an unmapped address.
-stmmac_rx_buf1_len() and stmmac_rx_buf2_len() are adjusted to account for
-buffer2 in the non-SPH case.
-
-A few questions about the buffer2 accounting and the cores/paths that are
-now affected.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 1fb5f804ea234..be7cb0cafeb50 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1659,17 +1659,14 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
->  		buf->page_offset = stmmac_rx_offset(priv);
->  	}
->  
-> -	if (priv->sph_active && !buf->sec_page) {
-> +	if (!buf->sec_page) {
->  		buf->sec_page = page_pool_alloc_pages(rx_q->page_pool, gfp);
->  		if (!buf->sec_page)
->  			return -ENOMEM;
->  
->  		buf->sec_addr = page_pool_get_dma_addr(buf->sec_page);
-> -		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-> -	} else {
-> -		buf->sec_page = NULL;
-> -		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, false);
->  	}
-> +	stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-
-[Severity: High]
-Does the "always mark buffer2 as valid" part hold on the legacy cores?
-Only dwmac4_descs.c and dwxgmac2_descs.c provide a set_sec_addr callback;
-enh_desc_ops (dwmac1000) and ndesc_ops (dwmac100) do not, and the
-dispatch macro silently skips an absent callback:
-
-drivers/net/ethernet/stmicro/stmmac/hwif.h:stmmac_do_void_callback() {
-	int __result = -EINVAL; \
-	if ((__priv)->hw->__module && (__priv)->hw->__module->__cname) { \
-		(__priv)->hw->__module->__cname((__arg0), ##__args); \
-	...
-}
-
-So on those cores buf->sec_addr is never handed to the hardware, and in
-ring mode with 16 KiB buffers the hardware buffer2 is inside the primary
-page anyway:
-
-drivers/net/ethernet/stmicro/stmmac/ring_mode.c:refill_desc3() {
-	if (priv->dma_conf.dma_buf_sz == BUF_SIZE_16KiB)
-		p->des3 = cpu_to_le32(le32_to_cpu(p->des2) + BUF_SIZE_8KiB);
-}
-
-With the "!priv->sph_active" early return gone from stmmac_rx_buf2_len(),
-buf2_len becomes non-zero on those cores too, and stmmac_rx() then does:
-
-	if (buf2_len) {
-		dma_sync_single_for_cpu(priv->device, buf->sec_addr,
-					buf2_len, dma_dir);
-		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-				buf->sec_page, 0, buf2_len,
-				priv->dma_conf.dma_buf_sz);
-
-Can this publish the contents of a page the DMA never wrote to the network
-stack?  On dwmac1000/dwmac100 the intermediate descriptors of a scattered
-frame are discarded by enh_desc_get_rx_status()/ndesc_get_rx_status(), so
-the last descriptor is processed with len = 0 and its FL field is the total
-frame length; a 3000-byte frame with dma_buf_sz = 2048 would give
-buf1_len = 2048 and buf2_len = 952 out of the untouched sec_page.  For
-larger jumbo frames buf2_len (plen - dma_buf_sz) can also exceed the
-order-0 sec_page.  Should buffer2 be gated on the cores that can actually
-program an independently mapped buffer2?
-
-[Severity: Medium]
-The secondary buffer is handed to the DMA at page offset 0, but the page
-pool is only configured with offset 0 when SPH is active:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:__alloc_dma_rx_desc_resources() {
-	pp_params.offset = stmmac_rx_offset(priv);
-	pp_params.max_len = dma_conf->dma_buf_sz;
-
-	if (priv->sph_active) {
-		pp_params.offset = 0;
-		pp_params.max_len += stmmac_rx_offset(priv);
-	}
-}
-
-net/core/page_pool.c:__page_pool_dma_sync_for_device() {
-	dma_sync_size = min(dma_sync_size, pool->p.max_len);
-	__dma_sync_single_for_device(pool->p.dev, dma_addr + pool->p.offset,
-				     dma_sync_size, pool->p.dma_dir);
-}
-
-With !sph_active the pool syncs from dma_addr + NET_SKB_PAD + NET_IP_ALIGN,
-so the first bytes of every secondary page are given to the device without
-a sync-for-device, both on first map and on recycle.  On a non-coherent
-platform, can a dirty cache line in that prefix be written back over data
-the device has already placed there?  The SPH path sets offset = 0 for
-exactly this reason.
-
-> @@ -5097,7 +5094,7 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
->  				break;
->  		}
->  
-> -		if (priv->sph_active && !buf->sec_page) {
-> +		if (!buf->sec_page) {
->  			buf->sec_page = page_pool_alloc_pages(rx_q->page_pool, gfp);
->  			if (!buf->sec_page)
->  				break;
-
-[Severity: Medium]
-This makes a second page-pool page mandatory for every RX descriptor on
-every stmmac device, doubling the RX buffer footprint (order-2/order-3
-pages for the 8/16 KiB bfsize cases), while pp_params.pool_size stays at
-dma_conf->dma_rx_size, i.e. the recycle ring is now sized for half the
-in-flight pages.
-
-For MTU-conformant traffic dma_buf_sz is always above the MTU:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_set_bfsize() {
-	if (mtu >= BUF_SIZE_8KiB)
-		ret = BUF_SIZE_16KiB;
-	...
-	else
-		ret = DEFAULT_BUFSIZE;
-}
-
-so buffer1 alone holds the frame and the second page is unused.  Could the
-commit message state in which configuration an in-spec frame exceeds
-dma_buf_sz, and mention the extra page per descriptor plus the pool_size
-mismatch?
-
-> @@ -5108,10 +5105,7 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
->  		buf->addr = page_pool_get_dma_addr(buf->page) + buf->page_offset;
->  
->  		stmmac_set_desc_addr(priv, p, buf->addr);
-> -		if (priv->sph_active)
-> -			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-> -		else
-> -			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, false);
-> +		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
->  		stmmac_refill_desc3(priv, rx_q, p);
-
-[Severity: Medium]
-Native XDP always runs in the non-SPH mode that this patch now arms
-buffer2 for:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c:stmmac_xdp_set_prog() {
-	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
-}
-
-In stmmac_rx() the program only ever sees buffer1:
-
-	xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
-			 buf->page_offset, buf1_len, true);
-
-and on a TX/redirect verdict the loop leaves before the buf2_len block:
-
-	} else if (xdp_res & (STMMAC_XDP_TX |
-			      STMMAC_XDP_REDIRECT)) {
-		xdp_status |= xdp_res;
-		buf->page = NULL;
-		skb = NULL;
-		count++;
-		continue;
-	}
-
-XDP caps the configured MTU at ETH_DATA_LEN, but GMAC_CORE_INIT in
-dwmac4.h contains GMAC_CONFIG_JE and XGMAC_CORE_INIT_RX programs
-GPSL = XGMAC_JUMBO_LEN, so an oversized frame is still accepted and split.
-Does this silently forward a truncated frame, and should the multi-buffer
-case be rejected instead?
-
-[Severity: Medium]
-The AF_XDP zero-copy refill path is left as it was:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_rx_refill_zc() {
-	stmmac_set_desc_addr(priv, rx_desc, dma_addr);
-	stmmac_set_desc_sec_addr(priv, rx_desc, 0, false);
-}
-
-but on XGMAC the validity argument is ignored and there is no BUF2V bit in
-the RX read descriptor:
-
-drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c:dwxgmac2_set_sec_addr() {
-	p->des2 = cpu_to_le32(lower_32_bits(addr));
-	p->des3 = cpu_to_le32(upper_32_bits(addr));
-}
-
-so buffer2 stays armed at DMA address 0 while RBSZ for a ZC queue is
-xsk_pool_get_rx_frame_size() and GPSL is the jumbo limit.  Is the SMMU
-translation fault quoted in the commit message still reachable on this
-path?  The multi-descriptor rejection in stmmac_rx_zc() happens after the
-DMA write.
-
-> @@ -5160,7 +5154,7 @@ static unsigned int stmmac_rx_buf1_len(struct stmmac_priv *priv,
->  	plen = stmmac_get_rx_frame_len(priv, p, coe);
->  
->  	/* First descriptor and last descriptor and not split header */
-> -	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen);
-> +	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen - len);
->  }
-
-[Severity: Low]
-This isn't a bug, but the descriptor-position comments here no longer
-match the code.  The non-first-descriptor early return at the top of
-stmmac_rx_buf1_len() is gated on priv->sph_active, so with non-SPH
-scatter-gather a continuation descriptor (len != 0) falls through to the
-branches commented "First descriptor, not last descriptor and not split
-header" and "First descriptor and last descriptor and not split header",
-while plen - len only makes sense for a continuation descriptor.
-
-> @@ -5170,10 +5164,6 @@ static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
->  	int coe = priv->hw->rx_csum;
->  	unsigned int plen = 0;
->  
-> -	/* Not split header, buffer is not available */
-> -	if (!priv->sph_active)
-> -		return 0;
-> -
-
-[Severity: Critical]
-With this return gone, the last-descriptor path returns the exact
-remainder plen - len, which can be 1, 2 or 3.  stmmac_rx() then strips the
-FCS with an unchecked unsigned subtraction:
-
-	/* ACS is disabled; strip manually. */
-	if (likely(!(status & rx_not_ls))) {
-		if (buf2_len) {
-			buf2_len -= ETH_FCS_LEN;
-			len -= ETH_FCS_LEN;
-		} else if (buf1_len) {
-			buf1_len -= ETH_FCS_LEN;
-			len -= ETH_FCS_LEN;
-		}
-	}
-
-and passes the result straight on:
-
-	if (buf2_len) {
-		dma_sync_single_for_cpu(priv->device, buf->sec_addr,
-					buf2_len, dma_dir);
-		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-				buf->sec_page, 0, buf2_len,
-				priv->dma_conf.dma_buf_sz);
-
-Can a frame that overflows a buffer boundary by 1..3 bytes wrap this?
-GMAC_CORE_INIT in dwmac4.h sets GMAC_CONFIG_JE unconditionally, so with
-MTU 1500 and dma_buf_sz = DEFAULT_BUFSIZE = 1536 a 1537-byte frame is
-accepted and split as 1536 + 1.  On that first-and-last descriptor
-stmmac_rx_buf1_len() returns min(1536, 1537 - 0) = 1536, then
-stmmac_rx_buf2_len() returns 1537 - 1536 = 1, and 1 - 4 gives 0xfffffffd
-being handed to dma_sync_single_for_cpu() and skb_add_rx_frag().  The
-buf1_len branch is reachable the same way with frames of
-2 * n * dma_buf_sz + 1..3 bytes, and stmmac_rx_zc() also subtracts
-ETH_FCS_LEN from stmmac_rx_buf1_len() unconditionally.  Before this patch
-the non-SPH path returned 0 here, and in SPH mode buffer1 ends at the
-split header so the whole FCS always landed in buffer2.
-
->  	/* For GMAC4, when split header is enabled, in some rare cases, the
->  	 * hardware does not fill buf2 of the first descriptor with payload.
->  	 * Thus we cannot assume buf2 is always fully filled if it is not
-> @@ -5188,8 +5178,9 @@ static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
->  	 * Thus 'plen - len' always gives the correct length of buf2.
->  	 */
->  
-> -	/* Not GMAC4 and not last descriptor */
-> -	if (priv->plat->core_type != DWMAC_CORE_GMAC4 && (status & rx_not_ls))
-> +	/* Not GMAC4, or non-SPH and not last descriptor */
-> +	if ((priv->plat->core_type != DWMAC_CORE_GMAC4 || !priv->sph_active) &&
-> +	    (status & rx_not_ls))
->  		return priv->dma_conf.dma_buf_sz;
->  
->  	/* GMAC4 or last descriptor */
-
-[Severity: Medium]
-For GMAC4 without SPH this now assumes every intermediate descriptor's
-buffer2 is completely filled, discarding the accumulated-PL value that the
-comment just above describes as always giving the correct length of buf2.
-
-The fall-through has no len <= plen guard:
-
-	plen = stmmac_get_rx_frame_len(priv, p, coe);
-
-	return plen - len;
-
-and stmmac_rx_buf1_len() clamps the same wrapped value with
-min_t(unsigned int, dma_buf_sz, plen - len) rather than detecting the
-inconsistency.  One way the assumption can break is the RBSZ field itself:
-DMA_RBSZ_MASK is GENMASK(14, 1) in dwmac4_dma.h and cannot represent
-BUF_SIZE_16KiB, so dwmac4_set_dma_bfsize() writes a truncated RBSZ while
-the driver keeps assuming dma_buf_sz per buffer.  If an intermediate
-buffer2 is short by even one byte, does the accumulated len exceed plen and
-turn buf2_len into a multi-gigabyte fragment length?  Would a
-plen > len ? plen - len : 0 form be safer here?
-
-The commit message says the GMAC4 plus split-header path keeps the
-accumulated payload semantics "since there an intermediate descriptor's
-buffer2 can be only partially filled" - is there a databook statement that
-this cannot happen for GMAC4 outside SPH mode?
-
-[Severity: Medium]
-Both helpers read priv->hw->rx_csum independently for the same descriptor
-(int coe = priv->hw->rx_csum;) and feed it to stmmac_get_rx_frame_len(),
-whose COE_TYPE1 path subtracts 2 from the descriptor frame length.  The
-writer runs from process context with no synchronization against the RX
-NAPI poll:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_set_features() {
-	if (features & NETIF_F_RXCSUM)
-		priv->hw->rx_csum = priv->plat->rx_coe;
-	else
-		priv->hw->rx_csum = 0;
-	...
-	stmmac_rx_ipc(priv, priv->hw);
-}
-
-If ethtool -K ethX rx off/on lands between the stmmac_rx_buf1_len() and
-stmmac_rx_buf2_len() reads on type-1-COE hardware, plen in the second call
-is 2 bytes smaller than the one used to accumulate len, so plen - len
-wraps.  Before this patch the non-SPH path returned 0 here and buf1_len did
-no subtraction, so the worst case was a 2-byte length inaccuracy.  Could
-coe/plen be read once per descriptor?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but while looking at the RX
-buffer lifecycle the patch reworks: in stmmac_rx() the napi_build_skb()
-failure path releases the page without clearing buf->page:
-
-	skb = napi_build_skb(page_address(buf->page),
-			     rx_q->napi_skb_frag_size);
-	if (!skb) {
-		page_pool_recycle_direct(rx_q->page_pool,
-					 buf->page);
-		rx_dropped++;
-		count++;
-		goto drain_data;
-	}
-
-Every other consumption site in the function sets buf->page = NULL after
-handing the page away.  With the stale pointer, stmmac_rx_refill() skips
-the replacement allocation and programs the already-recycled page back
-into the descriptor:
-
-	if (!buf->page) {
-		buf->page = page_pool_alloc_pages(rx_q->page_pool, gfp);
-
-and at teardown stmmac_free_rx_buffer() puts it a second time:
-
-	page_pool_put_full_page(rx_q->page_pool, buf->page, false);
-	buf->page = NULL;
-
-Can this alias one page into two descriptors and underflow the page-pool
-refcount?
-
+Content-Transfer-Encoding: 8bit
+X-Rspamd-UID: 6e5446
+X-Rspamd-UID: 047c72
+
+Track and expose per-device XDP statistics via ethtool, covering both
+the RX and TX sides of the XDP data path.
+
+A new struct airoha_xdp_stats is introduced and embedded in the existing
+struct airoha_hw_stats. It contains the following counters, all protected
+by the existing u64_stats_sync:
+
+  rx_xdp_pass            - frames passed to the networking stack
+  rx_xdp_aborted         - frames with XDP_ABORTED or unknown action
+  rx_xdp_drop            - frames dropped by the BPF program or on error
+  rx_xdp_tx              - frames sent back out via XDP_TX
+  rx_xdp_tx_errors       - XDP_TX failures
+  rx_xdp_redirect        - frames successfully redirected
+  rx_xdp_redirect_errors - XDP_REDIRECT failures
+  tx_xdp_xmit            - frames successfully submitted via ndo_xdp_xmit
+  tx_xdp_xmit_errors     - frames dropped in ndo_xdp_xmit
+
+The airoha_run_xdp() function is reworked to update the appropriate
+counter after each XDP action. The airoha_xdp_xmit() ndo_xdp_xmit handler
+is updated to record the number of successfully transmitted and dropped
+frames.
+
+The ethtool interface is extended with three new callbacks:
+
+- get_strings: emits the XDP counter names followed by the page pool
+  stat strings obtained from page_pool_ethtool_stats_get_strings().
+- get_sset_count: returns the combined count of XDP and page pool stats.
+- get_ethtool_stats: reads the XDP counters under the u64_stats_sync
+  seqcount and appends page pool stats collected from all active RX
+  queues via page_pool_get_stats().
+
+PAGE_POOL_STATS is selected in Kconfig to enable the page pool statistics
+infrastructure required by the ethtool callbacks.
+
+Signed-off-by: Til Kaiser <mail@tk154.de>
+---
+ drivers/net/ethernet/airoha/Kconfig      |   1 +
+ drivers/net/ethernet/airoha/airoha_eth.c | 131 ++++++++++++++++++++---
+ drivers/net/ethernet/airoha/airoha_eth.h |  14 +++
+ 3 files changed, 133 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/ethernet/airoha/Kconfig b/drivers/net/ethernet/airoha/Kconfig
+index 1f6640a15fc9..3fa7683a79e9 100644
+--- a/drivers/net/ethernet/airoha/Kconfig
++++ b/drivers/net/ethernet/airoha/Kconfig
+@@ -20,6 +20,7 @@ config NET_AIROHA
+ 	depends on NET_DSA || !NET_DSA
+ 	select NET_AIROHA_NPU
+ 	select PAGE_POOL
++	select PAGE_POOL_STATS
+ 	help
+ 	  This driver supports the gigabit ethernet MACs in the
+ 	  Airoha SoC family.
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 71b25f225a8a..29b837204842 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -864,6 +864,11 @@ static int airoha_xdp_xmit(struct net_device *netdev, int n,
+ 	spin_unlock(&q->lock);
+ 	rcu_read_unlock();
+ 
++	u64_stats_update_begin(&dev->stats.syncp);
++	dev->stats.xdp_stats.tx_xdp_xmit += n - drops;
++	dev->stats.xdp_stats.tx_xdp_xmit_errors += drops;
++	u64_stats_update_end(&dev->stats.syncp);
++
+ 	return n - drops;
+ }
+ 
+@@ -871,40 +876,56 @@ static bool airoha_run_xdp(struct net_device *netdev, struct bpf_prog *prog,
+ 			   struct xdp_buff *xdp, struct airoha_queue *q,
+ 			   struct airoha_queue_entry *e, struct page *page)
+ {
++	struct airoha_gdm_dev *dev = netdev_priv(netdev);
++	struct airoha_hw_stats *hw_stats = &dev->stats;
+ 	u32 act = bpf_prog_run_xdp(prog, xdp);
++	u64 *count;
+ 
+ 	switch (act) {
+ 	case XDP_PASS:
+-		return false;
++		count = &hw_stats->xdp_stats.rx_xdp_pass;
++		goto update_stats;
+ 	case XDP_TX:
+ 		if (unlikely(airoha_xdp_xmit_back(netdev, xdp, q->qdma) < 0)) {
++			count = &hw_stats->xdp_stats.rx_xdp_tx_errors;
+ 			trace_xdp_exception(netdev, prog, act);
+-			page_pool_put_full_page(q->page_pool, page, true);
+-		} else {
+-			e->buf = NULL;
++			break;
+ 		}
+-		break;
++
++		e->buf = NULL;
++		count = &hw_stats->xdp_stats.rx_xdp_tx;
++		goto update_stats;
+ 	case XDP_REDIRECT:
+ 		if (unlikely(xdp_do_redirect(netdev, xdp, prog) < 0)) {
++			count = &hw_stats->xdp_stats.rx_xdp_redirect_errors;
+ 			trace_xdp_exception(netdev, prog, act);
+-			page_pool_put_full_page(q->page_pool, page, true);
+-		} else {
+-			q->xdp_flush = true;
+-			e->buf = NULL;
++			break;
+ 		}
+-		break;
++
++		e->buf = NULL;
++		q->xdp_flush = true;
++		count = &hw_stats->xdp_stats.rx_xdp_redirect;
++		goto update_stats;
+ 	default:
+ 		bpf_warn_invalid_xdp_action(netdev, prog, act);
+ 		fallthrough;
+ 	case XDP_ABORTED:
++		count = &hw_stats->xdp_stats.rx_xdp_aborted;
+ 		trace_xdp_exception(netdev, prog, act);
+-		fallthrough;
++		break;
+ 	case XDP_DROP:
+-		page_pool_put_full_page(q->page_pool, page, true);
++		count = &hw_stats->xdp_stats.rx_xdp_drop;
+ 		break;
+ 	}
+ 
+-	return true;
++	page_pool_put_full_page(q->page_pool, page, true);
++
++update_stats:
++	u64_stats_update_begin(&hw_stats->syncp);
++	*count = *count + 1;
++	u64_stats_update_end(&hw_stats->syncp);
++
++	return act != XDP_PASS;
+ }
+ 
+ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+@@ -3676,12 +3697,96 @@ static const struct net_device_ops airoha_netdev_ops = {
+ 	.ndo_xdp_xmit		= airoha_xdp_xmit,
+ };
+ 
++#define AIROHA_ETHTOOL_XDP_STAT(x) { #x, \
++				  offsetof(struct airoha_hw_stats, xdp_stats.x) / \
++				  sizeof(u64) }
++
++static const struct {
++	const char name[ETH_GSTRING_LEN];
++	u32 offset;
++} airoha_ethtool_xdp_stats[] = {
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_redirect),
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_redirect_errors),
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_pass),
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_aborted),
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_drop),
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_tx),
++	AIROHA_ETHTOOL_XDP_STAT(rx_xdp_tx_errors),
++	AIROHA_ETHTOOL_XDP_STAT(tx_xdp_xmit),
++	AIROHA_ETHTOOL_XDP_STAT(tx_xdp_xmit_errors),
++};
++
++static void airoha_ethtool_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
++{
++	int i;
++
++	switch (stringset) {
++	case ETH_SS_STATS:
++		for (i = 0; i < ARRAY_SIZE(airoha_ethtool_xdp_stats); i++) {
++			strscpy(data, airoha_ethtool_xdp_stats[i].name, ETH_GSTRING_LEN);
++			data += ETH_GSTRING_LEN;
++		}
++		page_pool_ethtool_stats_get_strings(data);
++		break;
++	}
++}
++
++static int airoha_ethtool_get_sset_count(struct net_device *netdev, int stringset)
++{
++	switch (stringset) {
++	case ETH_SS_STATS:
++		return ARRAY_SIZE(airoha_ethtool_xdp_stats) + page_pool_ethtool_stats_get_count();
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static void airoha_ethtool_get_ethtool_stats(struct net_device *netdev,
++					     struct ethtool_stats *stats,
++					     u64 *data)
++{
++	struct airoha_gdm_dev *dev = netdev_priv(netdev);
++	struct airoha_hw_stats *hw_stats = &dev->stats;
++	u64 *hw_stats_base = (u64 *)hw_stats;
++	struct page_pool_stats pp_stats = {};
++	struct airoha_qdma *qdma;
++	unsigned int start;
++	int i;
++
++	if (netif_running(netdev))
++		airoha_update_hw_stats(dev);
++
++	do {
++		start = u64_stats_fetch_begin(&hw_stats->syncp);
++		for (i = 0; i < ARRAY_SIZE(airoha_ethtool_xdp_stats); i++)
++			data[i] = hw_stats_base[airoha_ethtool_xdp_stats[i].offset];
++	} while (u64_stats_fetch_retry(&hw_stats->syncp, start));
++
++	rcu_read_lock();
++	qdma = rcu_dereference(dev->qdma);
++	if (qdma) {
++		for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
++			struct airoha_queue *q = &qdma->q_rx[i];
++
++			if (q->page_pool)
++				page_pool_get_stats(q->page_pool, &pp_stats);
++		}
++	}
++	rcu_read_unlock();
++
++	page_pool_ethtool_stats_get(data + ARRAY_SIZE(airoha_ethtool_xdp_stats),
++				    &pp_stats);
++}
++
+ static const struct ethtool_ops airoha_ethtool_ops = {
+ 	.get_drvinfo		= airoha_ethtool_get_drvinfo,
+ 	.get_eth_mac_stats      = airoha_ethtool_get_mac_stats,
+ 	.get_rmon_stats		= airoha_ethtool_get_rmon_stats,
+ 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
+ 	.get_link		= ethtool_op_get_link,
++	.get_strings		= airoha_ethtool_get_strings,
++	.get_sset_count		= airoha_ethtool_get_sset_count,
++	.get_ethtool_stats	= airoha_ethtool_get_ethtool_stats,
+ };
+ 
+ static int airoha_metadata_dst_alloc(struct airoha_gdm_port *port)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index cfbc0b8f5bf9..d2ac295c49e9 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -236,6 +236,18 @@ struct airoha_tx_irq_queue {
+ 	u32 *q;
+ };
+ 
++struct airoha_xdp_stats {
++	u64 rx_xdp_redirect;
++	u64 rx_xdp_redirect_errors;
++	u64 rx_xdp_pass;
++	u64 rx_xdp_aborted;
++	u64 rx_xdp_drop;
++	u64 rx_xdp_tx;
++	u64 rx_xdp_tx_errors;
++	u64 tx_xdp_xmit;
++	u64 tx_xdp_xmit_errors;
++};
++
+ struct airoha_hw_stats {
+ 	struct u64_stats_sync syncp;
+ 
+@@ -259,6 +271,8 @@ struct airoha_hw_stats {
+ 	u64 rx_jabber;
+ 	u64 rx_len[7];
+ 
++	struct airoha_xdp_stats xdp_stats;
++
+ 	struct {
+ 		/* Previous HW register values for 32-bit counter delta
+ 		 * tracking. Storing the last seen value and accumulating
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f%40oss.qualcomm.com
+2.55.0
+
