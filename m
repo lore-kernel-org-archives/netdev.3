@@ -1,188 +1,446 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011025.outbound.protection.outlook.com [52.101.125.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6CA42848B;
-	Sun, 20 Sep 2026 15:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789918589; cv=fail; b=QH6B1mjveogFwuzfmZerI7sjfkujYH7x8uXIIlxkBVgV/PkxXRVi1MEu8ynWbFVDCX22UmoZtEDYXYCJzDarDXHAmvVzFIm0k3OUSk+i/TgIWchVw4n9rYOfIpdsLGksgwr6jk00UzqZs3jQs2r3Ph2YFfigfaY2ba3dGlOvEUM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789918589; c=relaxed/simple;
-	bh=0xguq2Bn5GdmV/Uc3sQcw1tljcUsh2gjUbt+7EpBDEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bSjoHbszFCehGsrZ1zUI/+vGWUw/rjNEY5fAG/djEeLypnoQLYb0hCmYcZoqa5zRYXVbeKuUZ4I6cVaquhCTGNjTdak93XOc6jppRPETEw+cJ9PQniOB64lY7H7xkPVGnLIaZQIt9Jj9nmVO88JCXzYXVUfafU1+wsQZVrSUSDE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=A7X6hoEv; arc=fail smtp.client-ip=52.101.125.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3194282F1E
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 15:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789918825; cv=none; b=cAe9hPzCom2v7WSIkSdeNZuzDjEQRQfizONtyV1wrjRY1JsG/p+ARdHgJR+ky+t5E+lGpUyXUROfjYqRYM/L+FptWm7BxRShMHckv4pxa7F0v75iepZu3/+H3HlpwpHZOryLIGNqc1HVSk1CGC/IayULmqYn37uqrrjH7tincO4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789918825; c=relaxed/simple;
+	bh=FAIdWrkjH+1qwmC4HE0u3EPWKuVqT87TcL1ARIieMF0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=acSo1tZGRSq+g1e478U3bKZHmv2cUS9YHvzJwdsdzortfYa/JGzJZYpQCiuvz3ZWB2ZmJFb1Bmh/Bfa+SzdxFoQZw3CnaYiqI+jPiXmrP6+iaZUgT3apcg4E8+SPH/TWMIvoTOPBME4WQmdRz0BFb341KJWhbvRD00uUIU7Noyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KX1gTT2M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="A7X6hoEv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ucQuJslh2+5DjPJu7Br0e9YU8jXkKF/xMIzWAoRE5gDsgNEkWFgyBY8ulyFmK4aefU8RntRfsCnFv+rzGPwnlCZ3Wh1MoanNcqRdLCg29mYgsXFgTwF4ogMuSicbJgWc1XlmHs026mjg32cEuoaB4f5gwjRNUWGJDAO0ukNCcoPAhrEhHmZt5N2/OAZqe1a/528HUxEDbxd4PK28lmTGtws4f2U3UCKnJII0tPzrYZ2orQF3NjlkvI8otT2fFHtWOAI9NscJy4OANtOthfx58QdTa+VRdVqK1rjhbdEJajnC5TBYOIfo8wNpJ7Gck24IRG4lKuk2DPHHpCmXAi8l4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DJ8jzAfJImIZ1eFRsY+R34UkOdbIYdfUDMJDfWp7fvc=;
- b=G/tC6jyCYFjSzR+qMkE8JuTmaMsMFCA5Hrw9ZeqIgwzEtDTsVgIR7JYKWWvyYC6ITZTqY+V61sTL7IOpW9hcjNIlcaSNae4AdNhQr1l8abHdJuuDO5RnB3deZiJCS56VnXlzuIk7efd/K7icuFFFg5EXWrZxeKtT/G1p1Oz4QzvKtZ8dfN9O3JnqJhgkFqzajV2Zat1lZzcsTOPBJpTzmP1bmTyz/XKWAZWxYpyHnaVPxkwXnzSgtvBoGSBwhIMk/anC7S6cg+1MRCWRU8ONdusA1ELO3SEWnEhc63dUC5KiI5hr9BaTrErMIlewrniEesEu0SRfRSSQPTKfeHKE3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 8.62.32.50) smtp.rcpttodomain=bootlin.com smtp.mailfrom=renesas.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=renesas.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DJ8jzAfJImIZ1eFRsY+R34UkOdbIYdfUDMJDfWp7fvc=;
- b=A7X6hoEvjqv5tjqofSzLCnCydF39grf08ch9qgxvoQljyWRZ+rajY6PhtiTLmYCxABpzHPTMnBk5XsB2DjsYw1CG+PvlFsJN9dv1usWZ18eBglG4eTEqwdmzYvr4ZSkJ3lqkIelHXQA0gpGchO9Yvlu/b7vpnFpaW8Mgms+GxMU=
-Received: from OS3P286CA0058.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:200::16)
- by TYCPR01MB8756.jpnprd01.prod.outlook.com (2603:1096:400:10f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Sun, 20 Sep
- 2026 15:36:24 +0000
-Received: from OS1PEPF0000D20E.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:200:cafe::9b) by OS3P286CA0058.outlook.office365.com
- (2603:1096:604:200::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Sun,
- 20 Sep 2026 15:36:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.62.32.50)
- smtp.mailfrom=renesas.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=renesas.com;
-Received-SPF: Pass (protection.outlook.com: domain of renesas.com designates
- 8.62.32.50 as permitted sender) receiver=protection.outlook.com;
- client-ip=8.62.32.50; helo=ejcrelay004p.adwin.renesas.com; pr=E
-Received: from ejcrelay004p.adwin.renesas.com (8.62.32.50) by
- OS1PEPF0000D20E.mail.protection.outlook.com (10.167.240.37) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.8
- via Frontend Transport; Sun, 20 Sep 2026 15:36:22 +0000
-Received: from vm01.adwin.renesas.com (DEU-5CG20946WF.adwin.renesas.com [10.226.92.22])
-	by ejcrelay004p.adwin.renesas.com (Postfix) with ESMTP id 54EF430000BA;
-	Mon, 21 Sep 2026 00:36:17 +0900 (JST)
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-To: maxime.chevallier@bootlin.com,
-	recv.jo@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com,
-	jun.ann.lai@intel.com,
-	yi.fang.gan@intel.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Subject: [PATCH net v5 5/5] net: stmmac: Disable S-Tag processing on dwmac4
-Date: Sun, 20 Sep 2026 15:35:16 +0000
-Message-ID: <20260920153516.103461-6-ovidiu.panait.rb@renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260920153516.103461-1-ovidiu.panait.rb@renesas.com>
-References: <20260920153516.103461-1-ovidiu.panait.rb@renesas.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KX1gTT2M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAD81F000FF;
+	Sun, 20 Sep 2026 15:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789918823;
+	bh=2J25DW33pib1SsH3iQTO3cjeBEsm3iBnPIHhflbEbrs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KX1gTT2MEy+l9dIOaWncsLwKQcdv7s8tC0Xn4LxRnDnBCMZakzBT1SRrs3QdCdHtR
+	 bNpT8IZrkxvEIin8e/jshS2LLz/Mqu1ohj4pXtYSUAT1zOIpyOw2GrXMahBqF1K1Wr
+	 LFvoK46WS+kfVKy0K4RR7i43ZMht99Fq1KOoXB3wCWggXAAGH2C9MJhyXWmEd11cvp
+	 Ej2tVCh3xQhnNRwvoCLDBiPtjyORucmNZBwPW6EcBBKConfa/vjQ3K+UaBOs2byP5R
+	 sVw4Uiy6YWl0QyrDagH8sG3q3E05BiZBamt/Y7OMn1h6bIm2K8zTZVTOPK0504UNM6
+	 dhWgT9MtSQWjA==
+Subject: Re: [PATCH net] net: stmmac: fix rx Scatter-Gather support
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ Jose.Abreu@synopsys.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Sun, 20 Sep 2026 15:40:22 +0000
+Message-ID: <178991882229.2160803.15018709305891810820@kernel.org>
+In-Reply-To: <20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f@oss.qualcomm.com>
+References: <20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f@oss.qualcomm.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS1PEPF0000D20E:EE_|TYCPR01MB8756:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: e3f9e7ff-7e7b-4f04-6394-08df172cecbb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|23010399003|10067099003|56012099006|3023799007|18002099003|22082099003|11063799006|921020;
-X-Microsoft-Antispam-Message-Info:
-	Cxj0rPYCiRH0OMY7CVepQy4VLMmMMotJp6rGL46oj7GtqdVyJVXFmUk/an3BEGYnfLNMBezq3Tku6tHkJEUQN+JvF3gEWaWDv/xmaXkzkM6tKwNVnI7Klnt4dabjFzQjz1hG4v28LBodH7gk6rBGSkcO8htdiOIpDaYJunH2eEJdR5ZW/gUIMPcnko4HI0A4wivnWPb5LsAlysaZNBW+15c95WH2rVXIXWD12p6kXC//XOL+dmTbWWlQz4nni/U/nY1aLPWVu+BjKIE24M6Jah2Yw84k9H55+Y0HxN+EXFeCvMFigsyCUCe5umGRJDAMoQx0EA3GqAllYrUSscisznz93Ji4xTNCstu/Wpro1dX36egPYnOUaAXi7hyb1X+zTvw2HBGm7+I7ryc60CRSafolUBB4D8l8MfCRy8CHwGDcEpXwlqUKaI+9s3XST/OgMRfXd02NWHTTsCXaBJAvzmSrClVPEZDgX2bqYY2yHqi4WgjDXUX5PzGHD2xIdWJ7DkbDeHBTagvFnnXpxPjeNU/QLv44KAlPoNkp6og/Xv0byE3OWZzgOE9cAR+9f9HbnanNu49KHVGv67O/3t6gI2SMAOBYzHE7t1q4T+P99dF0UZ8lu0xQ5WTRjKcRzXLw4AA9i7VVJt009QlKOX0RvDCzlQ1Qyf2YkisJhIucjgCaKl3o8/ukWoYfo9ovp/aA1chTgiIrOzUCmxqQlHpviFtrKo1L663uf6pIZLdQXs7gi93QhMeOo9+tZuGl2t8b
-X-Forefront-Antispam-Report:
-	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay004p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(23010399003)(10067099003)(56012099006)(3023799007)(18002099003)(22082099003)(11063799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	FJGrnQtSYFClD3JXOMvhzq9B4mKmd5VokP3sgkslCSCXaR7+HFJTr3gWjLW2ffq8sstCa0u5aqcD7qO/o1p63dek6KegS91eL0jNT/P6mNvo9nWy0V+xU/SWyZG0FS4ijEyn21YP9PhpX7io4j9aYYdkqhvIkDYiqi4RN5YJHcKoR7HjJZp36XjdSnNUy2DzdIipkLMBv295hdIS4jtmGmZ3ZV9duj3Gz5Glwhce/qd3q8pDUC8G2rPBcox/+ZrSMfabEVgf3ScrYXJICWjIUh05tZT0RrCuQrdCa89D77rKP1bQ+fB8ME7JWbzrbVING5r1eR7UWUBMWgGj7tv0TmtJwYca8DYwlNmjIut05PsfaQSn4/kD4gFElqAQgtBRarcTYHACyzQT7A3+vyCvoCQN8cESswDmQhj/hSyT8bmdVoTEnCT3SYVqw6R5ChFD
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 15:36:22.6962
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3f9e7ff-7e7b-4f04-6394-08df172cecbb
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=53d82571-da19-47e4-9cb4-625a166a4a2a;Ip=[8.62.32.50];Helo=[ejcrelay004p.adwin.renesas.com]
-X-MS-Exchange-CrossTenant-AuthSource: OS1PEPF0000D20E.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB8756
 
-Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
-hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
-than using the actual protocol from the packet. Because of this, packets
-that contain a 802.1ad outer tag are incorrectly passed up the stack as
-having an 802.1Q tag. This causes QinQ ping between two hosts to fail.
+Thank you for your contribution! Sashiko AI review found 9 potential
+issue(s) to consider.
 
-vlan_rx_hw() is shared by dwxgmac2 and dwmac4: on dwxgmac2 the tag type
-is available in the RDES3 write-back descriptor (the ET_LT field), so the
-outer tag type can be determined based on that info. However, dwmac4
-doesn't seem to provide the tag type. The Length/Type field in RDES3 only
-indicates whether the packet is single or double-tagged, not which tag
-type was stripped.
+Critical: 1 · High: 1 (1) · Medium: 6 · Low: 1
 
-Since dwmac4 cannot report the stripped tag type, it cannot support
-hardware S-Tag stripping correctly. Therefore, restrict the
-NETIF_F_HW_VLAN_STAG_RX and NETIF_F_HW_VLAN_STAG_FILTER advertisement
-to dwxgmac2 only.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-With this, 802.1ad tags are left in place and handled by the software
-VLAN path.
+- [Critical] stmmac_rx() strips the FCS with an unchecked unsigned
+  subtraction (`buf2_len -= ETH_FCS_LEN` at stmmac_main.c:5803,…
+- [High] The patch unconditionally allocates a secondary RX page and
+  unconditionally reports a non-zero buffer2 length for every MAC core,…
+- [Medium] The RX page pool is created with `pp_params.offset =
+  stmmac_rx_offset(priv)` and `max_len = dma_conf->dma_buf_sz`, and only…
+- [Medium] For GMAC4 without SPH, stmmac_rx_buf2_len() now assumes every
+  intermediate descriptor's buffer2 is completely filled (returns…
+- [Medium] The patch makes the secondary page-pool page mandatory for
+  every RX descriptor on every stmmac device and configuration…
+- [Medium] With a native XDP program attached, stmmac_xdp_set_prog()
+  explicitly clears priv->sph_active, and this patch now arms buffer2…
+- [Medium] The AF_XDP zero-copy refill path is left untouched:
+  stmmac_rx_refill_zc() still calls `stmmac_set_desc_sec_addr(priv,…
+- [Medium] The new length arithmetic depends on `priv->hw->rx_csum`,
+  which stmmac_set_features() (stmmac_main.c:6210-6214) mutates from…
+- [Low] The descriptor-position comments in the changed RX length helpers
+  no longer describe the code.
 
-Fixes: 750011e239a5 ("net: stmmac: Add support for HW-accelerated VLAN stripping")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
-v5 changes:
-- Rebased on top of latest changes.
-- Added Reviewed-by tag from Maxime.
+Pre-existing issues:
+- [High] In stmmac_rx(), when napi_build_skb() fails the code calls
+  page_pool_recycle_direct(rx_q->page_pool, buf->page) and jumps to…
 
-v4 changes:
-- Dropped all "double VLAN" references from the commit title/message.
-- Rebased on top of the S-VLAN rework.
+--
 
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+net: stmmac: fix rx Scatter-Gather support
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index c06eed76e3d9..e812a9c206ea 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6208,7 +6208,7 @@ static netdev_features_t stmmac_fix_features(struct net_device *dev,
- 	if (priv->plat->bugged_jumbo && (dev->mtu > ETH_DATA_LEN))
- 		features &= ~NETIF_F_CSUM_MASK;
- 
--	if (dwmac_is_xmac(priv->plat->core_type)) {
-+	if (priv->plat->core_type == DWMAC_CORE_XGMAC) {
- 		if (features & NETIF_F_HW_VLAN_CTAG_RX)
- 			features |= NETIF_F_HW_VLAN_STAG_RX;
- 		else
-@@ -7987,14 +7987,18 @@ static int __stmmac_dvr_probe(struct device *device,
- 	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
- #ifdef STMMAC_VLAN_TAG_USED
- 	/* Both mac100 and gmac support receive VLAN tag detection */
--	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
-+	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
-+	if (priv->plat->core_type == DWMAC_CORE_XGMAC)
-+		ndev->features |= NETIF_F_HW_VLAN_STAG_RX;
-+
- 	if (dwmac_is_xmac(priv->plat->core_type)) {
- 		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
- 		priv->hw->hw_vlan_en = true;
- 	}
- 	if (priv->dma_cap.vlhash) {
- 		ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
--		ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
-+		if (priv->plat->core_type == DWMAC_CORE_XGMAC)
-+			ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
- 	}
- 	if (priv->dma_cap.vlins)
- 		ndev->features |= NETIF_F_HW_VLAN_CTAG_TX;
+The patch always allocates and programs the secondary RX buffer (sec_page)
+instead of doing so only when split-header is active, so that a frame
+overflowing buffer1 does not make the DMA write to an unmapped address.
+stmmac_rx_buf1_len() and stmmac_rx_buf2_len() are adjusted to account for
+buffer2 in the non-SPH case.
+
+A few questions about the buffer2 accounting and the cores/paths that are
+now affected.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 1fb5f804ea234..be7cb0cafeb50 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -1659,17 +1659,14 @@ static int stmmac_init_rx_buffers(struct stmmac_priv *priv,
+>  		buf->page_offset = stmmac_rx_offset(priv);
+>  	}
+>  
+> -	if (priv->sph_active && !buf->sec_page) {
+> +	if (!buf->sec_page) {
+>  		buf->sec_page = page_pool_alloc_pages(rx_q->page_pool, gfp);
+>  		if (!buf->sec_page)
+>  			return -ENOMEM;
+>  
+>  		buf->sec_addr = page_pool_get_dma_addr(buf->sec_page);
+> -		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
+> -	} else {
+> -		buf->sec_page = NULL;
+> -		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, false);
+>  	}
+> +	stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
+
+[Severity: High]
+Does the "always mark buffer2 as valid" part hold on the legacy cores?
+Only dwmac4_descs.c and dwxgmac2_descs.c provide a set_sec_addr callback;
+enh_desc_ops (dwmac1000) and ndesc_ops (dwmac100) do not, and the
+dispatch macro silently skips an absent callback:
+
+drivers/net/ethernet/stmicro/stmmac/hwif.h:stmmac_do_void_callback() {
+	int __result = -EINVAL; \
+	if ((__priv)->hw->__module && (__priv)->hw->__module->__cname) { \
+		(__priv)->hw->__module->__cname((__arg0), ##__args); \
+	...
+}
+
+So on those cores buf->sec_addr is never handed to the hardware, and in
+ring mode with 16 KiB buffers the hardware buffer2 is inside the primary
+page anyway:
+
+drivers/net/ethernet/stmicro/stmmac/ring_mode.c:refill_desc3() {
+	if (priv->dma_conf.dma_buf_sz == BUF_SIZE_16KiB)
+		p->des3 = cpu_to_le32(le32_to_cpu(p->des2) + BUF_SIZE_8KiB);
+}
+
+With the "!priv->sph_active" early return gone from stmmac_rx_buf2_len(),
+buf2_len becomes non-zero on those cores too, and stmmac_rx() then does:
+
+	if (buf2_len) {
+		dma_sync_single_for_cpu(priv->device, buf->sec_addr,
+					buf2_len, dma_dir);
+		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+				buf->sec_page, 0, buf2_len,
+				priv->dma_conf.dma_buf_sz);
+
+Can this publish the contents of a page the DMA never wrote to the network
+stack?  On dwmac1000/dwmac100 the intermediate descriptors of a scattered
+frame are discarded by enh_desc_get_rx_status()/ndesc_get_rx_status(), so
+the last descriptor is processed with len = 0 and its FL field is the total
+frame length; a 3000-byte frame with dma_buf_sz = 2048 would give
+buf1_len = 2048 and buf2_len = 952 out of the untouched sec_page.  For
+larger jumbo frames buf2_len (plen - dma_buf_sz) can also exceed the
+order-0 sec_page.  Should buffer2 be gated on the cores that can actually
+program an independently mapped buffer2?
+
+[Severity: Medium]
+The secondary buffer is handed to the DMA at page offset 0, but the page
+pool is only configured with offset 0 when SPH is active:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:__alloc_dma_rx_desc_resources() {
+	pp_params.offset = stmmac_rx_offset(priv);
+	pp_params.max_len = dma_conf->dma_buf_sz;
+
+	if (priv->sph_active) {
+		pp_params.offset = 0;
+		pp_params.max_len += stmmac_rx_offset(priv);
+	}
+}
+
+net/core/page_pool.c:__page_pool_dma_sync_for_device() {
+	dma_sync_size = min(dma_sync_size, pool->p.max_len);
+	__dma_sync_single_for_device(pool->p.dev, dma_addr + pool->p.offset,
+				     dma_sync_size, pool->p.dma_dir);
+}
+
+With !sph_active the pool syncs from dma_addr + NET_SKB_PAD + NET_IP_ALIGN,
+so the first bytes of every secondary page are given to the device without
+a sync-for-device, both on first map and on recycle.  On a non-coherent
+platform, can a dirty cache line in that prefix be written back over data
+the device has already placed there?  The SPH path sets offset = 0 for
+exactly this reason.
+
+> @@ -5097,7 +5094,7 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
+>  				break;
+>  		}
+>  
+> -		if (priv->sph_active && !buf->sec_page) {
+> +		if (!buf->sec_page) {
+>  			buf->sec_page = page_pool_alloc_pages(rx_q->page_pool, gfp);
+>  			if (!buf->sec_page)
+>  				break;
+
+[Severity: Medium]
+This makes a second page-pool page mandatory for every RX descriptor on
+every stmmac device, doubling the RX buffer footprint (order-2/order-3
+pages for the 8/16 KiB bfsize cases), while pp_params.pool_size stays at
+dma_conf->dma_rx_size, i.e. the recycle ring is now sized for half the
+in-flight pages.
+
+For MTU-conformant traffic dma_buf_sz is always above the MTU:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_set_bfsize() {
+	if (mtu >= BUF_SIZE_8KiB)
+		ret = BUF_SIZE_16KiB;
+	...
+	else
+		ret = DEFAULT_BUFSIZE;
+}
+
+so buffer1 alone holds the frame and the second page is unused.  Could the
+commit message state in which configuration an in-spec frame exceeds
+dma_buf_sz, and mention the extra page per descriptor plus the pool_size
+mismatch?
+
+> @@ -5108,10 +5105,7 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
+>  		buf->addr = page_pool_get_dma_addr(buf->page) + buf->page_offset;
+>  
+>  		stmmac_set_desc_addr(priv, p, buf->addr);
+> -		if (priv->sph_active)
+> -			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
+> -		else
+> -			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, false);
+> +		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
+>  		stmmac_refill_desc3(priv, rx_q, p);
+
+[Severity: Medium]
+Native XDP always runs in the non-SPH mode that this patch now arms
+buffer2 for:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c:stmmac_xdp_set_prog() {
+	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
+}
+
+In stmmac_rx() the program only ever sees buffer1:
+
+	xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
+			 buf->page_offset, buf1_len, true);
+
+and on a TX/redirect verdict the loop leaves before the buf2_len block:
+
+	} else if (xdp_res & (STMMAC_XDP_TX |
+			      STMMAC_XDP_REDIRECT)) {
+		xdp_status |= xdp_res;
+		buf->page = NULL;
+		skb = NULL;
+		count++;
+		continue;
+	}
+
+XDP caps the configured MTU at ETH_DATA_LEN, but GMAC_CORE_INIT in
+dwmac4.h contains GMAC_CONFIG_JE and XGMAC_CORE_INIT_RX programs
+GPSL = XGMAC_JUMBO_LEN, so an oversized frame is still accepted and split.
+Does this silently forward a truncated frame, and should the multi-buffer
+case be rejected instead?
+
+[Severity: Medium]
+The AF_XDP zero-copy refill path is left as it was:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_rx_refill_zc() {
+	stmmac_set_desc_addr(priv, rx_desc, dma_addr);
+	stmmac_set_desc_sec_addr(priv, rx_desc, 0, false);
+}
+
+but on XGMAC the validity argument is ignored and there is no BUF2V bit in
+the RX read descriptor:
+
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c:dwxgmac2_set_sec_addr() {
+	p->des2 = cpu_to_le32(lower_32_bits(addr));
+	p->des3 = cpu_to_le32(upper_32_bits(addr));
+}
+
+so buffer2 stays armed at DMA address 0 while RBSZ for a ZC queue is
+xsk_pool_get_rx_frame_size() and GPSL is the jumbo limit.  Is the SMMU
+translation fault quoted in the commit message still reachable on this
+path?  The multi-descriptor rejection in stmmac_rx_zc() happens after the
+DMA write.
+
+> @@ -5160,7 +5154,7 @@ static unsigned int stmmac_rx_buf1_len(struct stmmac_priv *priv,
+>  	plen = stmmac_get_rx_frame_len(priv, p, coe);
+>  
+>  	/* First descriptor and last descriptor and not split header */
+> -	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen);
+> +	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen - len);
+>  }
+
+[Severity: Low]
+This isn't a bug, but the descriptor-position comments here no longer
+match the code.  The non-first-descriptor early return at the top of
+stmmac_rx_buf1_len() is gated on priv->sph_active, so with non-SPH
+scatter-gather a continuation descriptor (len != 0) falls through to the
+branches commented "First descriptor, not last descriptor and not split
+header" and "First descriptor and last descriptor and not split header",
+while plen - len only makes sense for a continuation descriptor.
+
+> @@ -5170,10 +5164,6 @@ static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
+>  	int coe = priv->hw->rx_csum;
+>  	unsigned int plen = 0;
+>  
+> -	/* Not split header, buffer is not available */
+> -	if (!priv->sph_active)
+> -		return 0;
+> -
+
+[Severity: Critical]
+With this return gone, the last-descriptor path returns the exact
+remainder plen - len, which can be 1, 2 or 3.  stmmac_rx() then strips the
+FCS with an unchecked unsigned subtraction:
+
+	/* ACS is disabled; strip manually. */
+	if (likely(!(status & rx_not_ls))) {
+		if (buf2_len) {
+			buf2_len -= ETH_FCS_LEN;
+			len -= ETH_FCS_LEN;
+		} else if (buf1_len) {
+			buf1_len -= ETH_FCS_LEN;
+			len -= ETH_FCS_LEN;
+		}
+	}
+
+and passes the result straight on:
+
+	if (buf2_len) {
+		dma_sync_single_for_cpu(priv->device, buf->sec_addr,
+					buf2_len, dma_dir);
+		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+				buf->sec_page, 0, buf2_len,
+				priv->dma_conf.dma_buf_sz);
+
+Can a frame that overflows a buffer boundary by 1..3 bytes wrap this?
+GMAC_CORE_INIT in dwmac4.h sets GMAC_CONFIG_JE unconditionally, so with
+MTU 1500 and dma_buf_sz = DEFAULT_BUFSIZE = 1536 a 1537-byte frame is
+accepted and split as 1536 + 1.  On that first-and-last descriptor
+stmmac_rx_buf1_len() returns min(1536, 1537 - 0) = 1536, then
+stmmac_rx_buf2_len() returns 1537 - 1536 = 1, and 1 - 4 gives 0xfffffffd
+being handed to dma_sync_single_for_cpu() and skb_add_rx_frag().  The
+buf1_len branch is reachable the same way with frames of
+2 * n * dma_buf_sz + 1..3 bytes, and stmmac_rx_zc() also subtracts
+ETH_FCS_LEN from stmmac_rx_buf1_len() unconditionally.  Before this patch
+the non-SPH path returned 0 here, and in SPH mode buffer1 ends at the
+split header so the whole FCS always landed in buffer2.
+
+>  	/* For GMAC4, when split header is enabled, in some rare cases, the
+>  	 * hardware does not fill buf2 of the first descriptor with payload.
+>  	 * Thus we cannot assume buf2 is always fully filled if it is not
+> @@ -5188,8 +5178,9 @@ static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
+>  	 * Thus 'plen - len' always gives the correct length of buf2.
+>  	 */
+>  
+> -	/* Not GMAC4 and not last descriptor */
+> -	if (priv->plat->core_type != DWMAC_CORE_GMAC4 && (status & rx_not_ls))
+> +	/* Not GMAC4, or non-SPH and not last descriptor */
+> +	if ((priv->plat->core_type != DWMAC_CORE_GMAC4 || !priv->sph_active) &&
+> +	    (status & rx_not_ls))
+>  		return priv->dma_conf.dma_buf_sz;
+>  
+>  	/* GMAC4 or last descriptor */
+
+[Severity: Medium]
+For GMAC4 without SPH this now assumes every intermediate descriptor's
+buffer2 is completely filled, discarding the accumulated-PL value that the
+comment just above describes as always giving the correct length of buf2.
+
+The fall-through has no len <= plen guard:
+
+	plen = stmmac_get_rx_frame_len(priv, p, coe);
+
+	return plen - len;
+
+and stmmac_rx_buf1_len() clamps the same wrapped value with
+min_t(unsigned int, dma_buf_sz, plen - len) rather than detecting the
+inconsistency.  One way the assumption can break is the RBSZ field itself:
+DMA_RBSZ_MASK is GENMASK(14, 1) in dwmac4_dma.h and cannot represent
+BUF_SIZE_16KiB, so dwmac4_set_dma_bfsize() writes a truncated RBSZ while
+the driver keeps assuming dma_buf_sz per buffer.  If an intermediate
+buffer2 is short by even one byte, does the accumulated len exceed plen and
+turn buf2_len into a multi-gigabyte fragment length?  Would a
+plen > len ? plen - len : 0 form be safer here?
+
+The commit message says the GMAC4 plus split-header path keeps the
+accumulated payload semantics "since there an intermediate descriptor's
+buffer2 can be only partially filled" - is there a databook statement that
+this cannot happen for GMAC4 outside SPH mode?
+
+[Severity: Medium]
+Both helpers read priv->hw->rx_csum independently for the same descriptor
+(int coe = priv->hw->rx_csum;) and feed it to stmmac_get_rx_frame_len(),
+whose COE_TYPE1 path subtracts 2 from the descriptor frame length.  The
+writer runs from process context with no synchronization against the RX
+NAPI poll:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_set_features() {
+	if (features & NETIF_F_RXCSUM)
+		priv->hw->rx_csum = priv->plat->rx_coe;
+	else
+		priv->hw->rx_csum = 0;
+	...
+	stmmac_rx_ipc(priv, priv->hw);
+}
+
+If ethtool -K ethX rx off/on lands between the stmmac_rx_buf1_len() and
+stmmac_rx_buf2_len() reads on type-1-COE hardware, plen in the second call
+is 2 bytes smaller than the one used to accumulate len, so plen - len
+wraps.  Before this patch the non-SPH path returned 0 here and buf1_len did
+no subtraction, so the worst case was a 2-byte length inaccuracy.  Could
+coe/plen be read once per descriptor?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but while looking at the RX
+buffer lifecycle the patch reworks: in stmmac_rx() the napi_build_skb()
+failure path releases the page without clearing buf->page:
+
+	skb = napi_build_skb(page_address(buf->page),
+			     rx_q->napi_skb_frag_size);
+	if (!skb) {
+		page_pool_recycle_direct(rx_q->page_pool,
+					 buf->page);
+		rx_dropped++;
+		count++;
+		goto drain_data;
+	}
+
+Every other consumption site in the function sets buf->page = NULL after
+handing the page away.  With the stale pointer, stmmac_rx_refill() skips
+the replacement allocation and programs the already-recycled page back
+into the descriptor:
+
+	if (!buf->page) {
+		buf->page = page_pool_alloc_pages(rx_q->page_pool, gfp);
+
+and at teardown stmmac_free_rx_buffer() puts it a second time:
+
+	page_pool_put_full_page(rx_q->page_pool, buf->page, false);
+	buf->page = NULL;
+
+Can this alias one page into two descriptors and underflow the page-pool
+refcount?
+
 -- 
-2.34.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f%40oss.qualcomm.com
