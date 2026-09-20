@@ -1,45 +1,48 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B15D4F5E0;
-	Sun, 20 Sep 2026 03:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7113C8C71;
+	Sun, 20 Sep 2026 03:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789875454; cv=none; b=WxjQPOQ+OmEkyfD18PtZjlG2eut29xkOIa7by5xf7i8G3BL4P9TAkj5BLUX5eN0AoQ6Fvndsg1aUgdLDL48Pyw06EEBjhW7F6tIL8dT+ozzSA5RPVSYWvmI40h49VoIpgXs4UVn1YS0YA148yLGI3gMAo0Uy1d/9ndbPIroYRiY=
+	t=1789875943; cv=none; b=l8D4FxVJzWb4Q4iutKcqOgsRi+880m0kAUJ/Ef0yl6f8Q6aaEwAtwetJwQbAOQVdBi4AEINOtxyQoqG/dLRkH4AzdBevndPrQPaXLOeniYcveW2+khTY5eqtcpOHT+1BIKn+sQk0N77s7fB3uZsq8YVs9UdEVYbJuhEjoAY3yAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789875454; c=relaxed/simple;
-	bh=mo0ahd/joszVMCHdlgm1xW6x2Mnd4Uwk1LSGs0Ir55w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YpESa10OkGTj4++gJphPYnSg4cTtgSbalRUAP/oba8oMusawzE0R3nIQncFrwxLFYemZQLdLu7FDDtZIF3RySPsS+M6UgFQtsDTMJSbl69QZcffxYD8KLx4gROuuOBDNMYm9yg6bjwFf+QIb2XNzfMKU4ws4U+Up1J2Gox72Lxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BYEHnCwO; arc=none smtp.client-ip=220.197.31.2
+	s=arc-20240116; t=1789875943; c=relaxed/simple;
+	bh=fNDlvv9js+sV2beWReqfxE7Uavey4en9htf6yqVmgUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OOEkGcAELHeKDKCkVQ+WlTa4q0vKzPf0cRXG95c0Y62NtwjpefHvWoGOFRLXZ1mNK1DlQxRfq1wQ5hMCPQtMA8knx1TjlKQiz4q/3TtIA8pDYl24SLH+xLN4PyfiC6BiIiL83RelrCI+EBKdQBSyeYE/7ktQntlX1Bhvk/0owDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HkC6IN9S; arc=none smtp.client-ip=117.135.210.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BYEHnCwO"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HkC6IN9S"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ZG
-	+mDsbpJrojv5EOAhvPgRD7J+oeN29xvYJoRg81qNs=; b=BYEHnCwOsP5y0RYetp
-	v0s/MG7KEUUf5M49X6dds2Il2q3oyEwnyVWeUn3JNzxvAepx49aUGXb3nnopvwu2
-	i8dpc3Q5jSJUxtFQkS4zIo6Bky3V72KkOe2g8xItHqGYGNzvxjitEdgwlWp6NBcg
-	BYPYvsAad7MLf2gL2h5xELCLQ=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7c
+	zii8ADadjJtpJC2iwRVyjneTWNVczRgsww9F8lTRI=; b=HkC6IN9SFXzFmbfUx8
+	UrOWB2mInUNCwt4LMjAgNr7B+Paqi4RgVjFD+4hbpUrViH75vJEyOThwR8pGkfhj
+	rZgiUxBz1CAFSDQEPyp2mRLK4+DXt6HGa8FlZ482EHPUaKD27MEG3kNfAT1iHau9
+	xsBlGiwMAf7BA4CtOG83WpV/U=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgA3aMLLVK9qbz1RAQ--.43010S2;
-	Sun, 20 Sep 2026 11:36:44 +0800 (CST)
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgDnT4bAVq9qBxlxAQ--.5103S2;
+	Sun, 20 Sep 2026 11:45:05 +0800 (CST)
 From: Pengpeng Hou <hppiscas@163.com>
-To: shenjian15@huawei.com
-Cc: shaojijie@huawei.com,
-	andrew+netdev@lunn.ch,
+To: wintera@linux.ibm.com
+Cc: twinkler@linux.ibm.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-s390@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	xiaojiangfeng@huawei.com,
-	horms@kernel.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
 	hppiscas@163.com
-Subject: [PATCH net v2] net: hip04: use 16-bit byte order for HI13X1 TX fields
-Date: Sun, 20 Sep 2026 11:36:41 +0800
-Message-ID: <20260920033641.13590-1-hppiscas@163.com>
+Subject: [PATCH net v3] net/iucv: require IUCV for AF_IUCV sockets
+Date: Sun, 20 Sep 2026 11:45:03 +0800
+Message-ID: <20260920034503.17322-1-hppiscas@163.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -48,63 +51,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgA3aMLLVK9qbz1RAQ--.43010S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr15urWDKFW8Zry5XF48Crg_yoW5GF4Upa
-	1DCay7Cr1Uuw13tF1v93Z2g348uan3Gry3Ga15u343ur1ayr18KF97tFy5CFyUtrs7AFsF
-	g3yFva93AFs8K37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYoGQUUUUU=
-X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbCxQzOl2qvVMxfxQAA3X
+X-CM-TRANSID:QCgvCgDnT4bAVq9qBxlxAQ--.5103S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW7KrWUKw18XFW3tryrJFb_yoW8XryrpF
+	srKryjk3yDJFya9ws5Z3Z3Wr13Xas3Gay7WF1UWw18urZ09348urnxKF4YqFyUAr4ktrW3
+	X3yF934Yya98Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRY0PhUUUUU=
+X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbC7QFMFWqvVsGu6QAA3g
 
-The HI13X1 TX descriptor stores send_size and data_offset in 16-bit
-fields, unlike the 32-bit send_size field in the other descriptor
-layout. The transmit path nevertheless converts both HI13X1 fields with
-cpu_to_be32() before assigning them to u16 members.
+AFIUCV can currently be selected with IUCV disabled. That configuration
+does not build af_iucv.o because the parent Makefile only enters
+net/iucv under CONFIG_IUCV. Independently entering the directory is not
+sufficient: AF_IUCV also relies on the IUCV implementation.
 
-On a little-endian CPU, the conversion moves these small values into the
-upper half of the 32-bit result and the assignment discards that half.
-The descriptor consequently loses the packet size and cache-line offset.
-
-Use cpu_to_be16() for the two HI13X1 fields. Leave the other layout's
-32-bit size conversion unchanged.
+Restore the IUCV dependency for AFIUCV, as proposed during review. This
+also constrains AFIUCV to a module when its IUCV provider is modular,
+without changing the directory traversal rules.
 
 The issue was found by our static-analysis tool.
 
-Fixes: d413779cdd93 ("net: hisilicon: Add an tx_desc to adapt HI13X1_GMAC")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Fixes: c69748d1c9b5 ("iucv: kernel option for z/VM IUCV and HiperSockets")
 Assisted-by: gpt 5
 Signed-off-by: Pengpeng Hou <hppiscas@163.com>
 ---
-Changes since v1:
-https://lore.kernel.org/all/20260905132958.63085-1-hppiscas@163.com/
-Use the full author name. Clarify the HI13X1/little-endian scope in
-response to Simon. The finding came from source analysis; there is no
-established explanation for why it remained unnoticed since 2019.
+Changes since v2:
+https://lore.kernel.org/all/20260815135456.53684-1-pengpeng@iscas.ac.cn/
+Replace the v2 always-descend approach with the IUCV dependency proposed
+by Alexandra. Do not carry the review tag for the superseded
+implementation.
 
- drivers/net/ethernet/hisilicon/hip04_eth.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/iucv/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
-index fc2c47dcfaab..2920985144bf 100644
---- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-+++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-@@ -527,13 +527,14 @@ hip04_mac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	priv->tx_skb[tx_head] = skb;
- 	priv->tx_phys[tx_head] = phys;
+diff --git a/net/iucv/Kconfig b/net/iucv/Kconfig
+index 5cfddc9c6498..2686d795cc2f 100644
+--- a/net/iucv/Kconfig
++++ b/net/iucv/Kconfig
+@@ -9,7 +9,7 @@ config IUCV
+ 	  communication link between VM guests.
  
--	desc->send_size = (__force u32)cpu_to_be32(skb->len);
- #if defined(CONFIG_HI13X1_GMAC)
-+	desc->send_size = (__force u16)cpu_to_be16(skb->len);
- 	desc->cfg = (__force u32)cpu_to_be32(TX_CLEAR_WB | TX_FINISH_CACHE_INV
- 		| TX_RELEASE_TO_PPE | priv->port << TX_POOL_SHIFT);
--	desc->data_offset = (__force u32)cpu_to_be32(phys & SOC_CACHE_LINE_MASK);
-+	desc->data_offset = (__force u16)cpu_to_be16(phys & SOC_CACHE_LINE_MASK);
- 	desc->send_addr =  (__force u32)cpu_to_be32(phys & ~SOC_CACHE_LINE_MASK);
- #else
-+	desc->send_size = (__force u32)cpu_to_be32(skb->len);
- 	desc->cfg = (__force u32)cpu_to_be32(TX_CLEAR_WB | TX_FINISH_CACHE_INV);
- 	desc->send_addr = (__force u32)cpu_to_be32(phys);
- #endif
+ config AFIUCV
+-	depends on S390
++	depends on IUCV
+ 	def_tristate m if QETH_L3 || IUCV
+ 	prompt "AF_IUCV Socket support (S390 - z/VM and HiperSockets transport)"
+ 	help
 
 base-commit: 518e5b794c06c0f0eb40df3e202274a66202c137
 -- 
