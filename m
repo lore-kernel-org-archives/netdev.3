@@ -1,63 +1,72 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A1B471265
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 16:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A23390999
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 16:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789922882; cv=none; b=CKyymwCLE9LVqp8cVYI01tEMLscjgSRHtGyE7c5OIJnJ3eG59X2DaAEYP1FOZhXR9rUc8jl8AYDtrfjg6BfEZqbffFt7hXPKMu+pJuVBWp4LsEIqHr317is9U681HKQ6A223xzdyBLCRQKdqQwDTp/O+omBnksH2/Odi3oB7/p0=
+	t=1789923066; cv=none; b=DKdlbbgx6BvJqC62msRGbSgSWJzyCPb2uep0C2Y+a0R+jnFxI57B2hOipd60zHKYa+vZMpxeWHg46p3PYyOyud2yZfDPVqj7JJt7ZjHo9bz6F0Wg2Goju1un4yKk6BmmvifzjkXFLh0QvcCUmrtyDjJmCTFje0r9i4cGyaV2r7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789922882; c=relaxed/simple;
-	bh=dCJeVwCJtGyq4KQEHLn4KnvG5N+7aQ2twoboc80YdMA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/GOw/xTKn93BfORns+TmyYkk3u0jub2f0T2C35bXzwa46u9382Ey4yRedVdJGmVdjzNa7tYKFtV6X1Zfb6nmGIWaMeP1Z0Mep8QVZVGd2oD56yxUdzFgPShFIfvJz68ZZu53IrmWa87I5dVgnU+3thFERDWequw/vO5WdmHH9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qbV0cJzY; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789923066; c=relaxed/simple;
+	bh=tbd2Eg4QOD8NNjEddaEgnAr5noFlw0X5iAOBeVffgDA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EXzaEf5Mt/gUbwnVJ1GyyJJP06W9/1fopBR/u1xGvcNg/dXhKs89hDmHzkhbQm6cimqN/jiVukoZfgFflEdi6wCTh1wS9FCo1mzslbxyN6SxUdCYZHzbR1/H+haP/UtPhsJZ0ON7yGTnH8wBkZJ0UE/UF1Ead6CvN0jfwH5yvU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m3fwAO1T; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qbV0cJzY"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8E3F31A08D8;
-	Sun, 20 Sep 2026 16:47:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 61EF76033F;
-	Sun, 20 Sep 2026 16:47:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 61589103290A3;
-	Sun, 20 Sep 2026 18:47:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789922877; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ye84wnF/Z0HFxmfZYw5UmurkxYZNKHfK7ubDzp+PuhU=;
-	b=qbV0cJzYk/BZr+Wk9xag4PQkqQGKyUvucsq+cTzI+tRvILtwcgwAvVTiv8kbBVINsyWFKH
-	pZs5LXulMoqS4DYRFqGUpYK7dWwkPdlql4//Ximn2P52PIKgtPbEyeYJVpHT9tcJ5yQa60
-	kZ7XXR439U7ycdXV6GZx6SQwZhP3Ko2clTaUNON5fV9NuHYYuXbm5DfeN8y5lnvK5crL9n
-	zw6PN1rrYh6hZUD5Cerbw6SJzQVF4tcLZtosxIvPJl6HZzXd4TmKIB4AKeXgn2cEtnfZPy
-	bvhj0JJT4r0nVzGrrklnhljaBTDwdu4jmBmPiEeON+no3VK1sOt6Eqy5i74nyg==
-From: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	thomas.petazzoni@bootlin.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next 3/3] selftests: drv-net: pause: Validate pause autoneg interactions with link autoneg
-Date: Sun, 20 Sep 2026 18:47:31 +0200
-Message-ID: <20260920164732.349744-6-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260920164732.349744-1-maxime.chevallier@bootlin.com>
-References: <20260920164732.349744-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m3fwAO1T"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db22383fe8so13862295ad.2
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 09:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789923064; x=1790527864; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GOkhHWyrIL8ES3fC1gwQCcd9SLJNHTZ5yicxilPJ7Is=;
+        b=m3fwAO1T1ip3AaIGxdvEadmvOxsFPP4o20VsFxIS++W0cfsh0BM8/HlUuLMDp/ejVH
+         NV7epz13iLJkcQFkB1gS66NOfpYE0ZrjgIbtRM4XA2qvcWVh+u4A5kgMGknPsqj77miA
+         0HYGJlebJkCclB1bXM4oxBFi4vs0HfWcqquCBgkwT0JXk9PxQ6xXPl+vUaWhP+dEY0Dq
+         1rUbCoCmQ7tUAlfQ5J6U9E7k9gkWnPWzsaLwbPcmGTASrZjcijsj7FaR0O7dYvwiyi2J
+         0osbzqNdxHh3GPpdNSoa/0mR0jok9drkyMIOFZxUVFlFNbNNMLGnT0Q/HSMqfDe/ZwlH
+         0vGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789923064; x=1790527864;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GOkhHWyrIL8ES3fC1gwQCcd9SLJNHTZ5yicxilPJ7Is=;
+        b=gYaCOV9OqUfQxvi9V5emkN9y7o95SAfrHBdGPkMq9OYqs0zyWMnAXRi5BxoW58gPwl
+         gm4JcSt5UF6jDCTUu6RFk/uXHWemxIXpeWkyeJm8QMrkQJFOyYQOL3/tT4LEIX3YO+Vo
+         Ww52+HeYHqLuTjQ3ixWtWOUs3V4YQnAGdadgWn3rBulqbMnXWAiEi76im2N1ZBS38IpY
+         8ulfCxokn+2FrOXef/DCTK1Ji/BOWgtRsHF9UM/E+7UK2a1NIhx6wG5NaOG/HHGoZ0DE
+         j9e5YAi+DioVs6PbUjo8ZyXxjyYJkVw4fwooubsFGUIEZT/ZRLQg5s8KMsM/6jodz4Ok
+         BVsg==
+X-Forwarded-Encrypted: i=1; AKwUvBzIOit4MVoTGyB+YjAgkInxF+7UsEK6h8q3rFh4EJEkqJ02KyMciNQgjWNKAO43iCT5veBFU5A=@vger.kernel.org
+X-Gm-Message-State: AFuF++k4RxdDg1PiBnLgfj6nwYRfjBvG1H0keLIr5IWgXROr40ndycV4
+	u6HWlcn3MUYq8QJvteJZ56Pt+6345zmy2DOWy2WognPbW8AiFB7o4hW8RmF9oA==
+X-Gm-Gg: AYBFou0VqcXrWfqqt/rtZ4ug3JXAAhd444bL59KXEiJF/OCOsL6kQbORNnbelsKSJAj
+	9W+IYDe1jrK/ArceqpumXOiEoAj6N/gtQMVrITnc1DGveCRabwDq9pU2pbu5Aqb040aVe1PBFSw
+	PXhMF0oQyjKy37IqNDW1QATOEB+xPpFC4dTXxX3oQ4aUxktP4rIXaT7kytOzZ0kPy3hphOw9aSM
+	3cCz6iMa/FvzlSOQT3xQTL3VJXtiqNeEED2ngSgTg3Y+E3fbxfBxVnUcLs8QrTaTDYs2SEHQiJn
+	5EGAqdGqi3ZZW6ky6XtHNo+bWYrre/69IXtZ9L7oKw6S/Wp3PBvpsUNOdGrKF+svuSF5lNN0uOD
+	j3y/jrTJiy8fKuy09ueJ6pCFTiAXCP1EKJy4O1uIN5DiP/eCDr8ebI2foVPo7arW0N8sXZgAC24
+	avtG6C730TVDw1xT1MtoEHvPWttd6A5EHcC8oKt3OjaoO31XwTa/AXuDudWBNsh5jUtS4lpydY6
+	obCRdXkDDbN0CM9b4UagAjS
+X-Received: by 2002:a17:902:7005:b0:2dd:c0ff:e734 with SMTP id d9443c01a7336-2ddc0ffe9e7mr49192205ad.70.1789923063841;
+        Sun, 20 Sep 2026 09:51:03 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc178701csm21511905ad.13.2026.09.20.09.50.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 09:51:02 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+To: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: nl802154: GET_WPAN_PHY dump resolves NL802154_ATTR_IFINDEX in init_net
+Date: Mon, 21 Sep 2026 00:50:57 +0800
+Message-Id: <20260920165057.3753458-1-maoyixie.tju@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,417 +74,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Pause autonegotiation happens with the link partner using the same words
-as the link negotiation, used for speed and duplex exchanges. However,
-pause and link autonegotiation can be separately toggled :
+Hi all,
 
-ethtool -s eth0 autoneg on # Enable link negotiation
-ethtool -A eth0 autoneg on # Enable Pause negotiation
+I think nl802154_dump_wpan_phy_parse() looks up NL802154_ATTR_IFINDEX in
+init_net rather than in the caller's network namespace. I would
+appreciate it if you could take a look.
 
-Pause can't be negotiated if the link autoneg isn't enabled.
+The lookup is (net/ieee802154/nl802154.c:584 in 7.1-rc1):
 
-Pause autoneg and link autoneg settings must not interfere with one
-another when user is configuring them :
- - If Pause autoneg is on, it must stay on when link autoneg is disabled
-   (even though Pause won't actually be negotiated)
- - If Pause autoneg is off, it must stay off when link autoneg is
-   enabled
+	netdev = __dev_get_by_index(&init_net, ifidx);
 
-Introduce a set of tests to verify that pause and link autoneg are
-behaving correctly, in particular that the user intent is correctly
-cached when toggling link autoneg.
+The dump loop below it filters phys by sock_net(skb->sk).
 
-Signed-off-by: Maxime Chevallier (Netdev Foundation) <maxime.chevallier@bootlin.com>
----
- .../drivers/net/hw/lib/py/__init__.py         |   2 +-
- .../testing/selftests/drivers/net/hw/pause.py | 284 ++++++++++++++++++
- .../selftests/drivers/net/lib/py/__init__.py  |   4 +-
- .../selftests/drivers/net/lib/py/ethtool.py   |  14 +
- 4 files changed, 301 insertions(+), 3 deletions(-)
+It looks like the same kind of gap as commit 79240f3f6d76 ("wifi:
+nl80211: re-check wiphy netns in nl80211_prepare_wdev_dump()
+continuation"), where a dump looked the wiphy up by its global index
+without checking the caller's netns.
 
-diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-index b23f53bcd3b0..958af4beef38 100644
---- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-@@ -34,7 +34,7 @@ try:
-     from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner
-     from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
-     from drivers.net.lib.py import ethtool_ret, onoff, wait_for_link, wait_for_aneg, \
--        controllable_lp, require_controllable_lp, \
-+        controllable_lp, require_controllable_lp, require_link_autoneg, \
-         forced_link_settings
- 
-     __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev", "UserNetNS",
-diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
-index e291c7d8583e..2358d41a7412 100755
---- a/tools/testing/selftests/drivers/net/hw/pause.py
-+++ b/tools/testing/selftests/drivers/net/hw/pause.py
-@@ -30,6 +30,7 @@ from lib.py import (
-     ksft_variants,
-     onoff,
-     require_controllable_lp,
-+    require_link_autoneg,
-     wait_for_aneg,
-     wait_for_link,
- )
-@@ -242,6 +243,23 @@ def get_peer_pause_lp_advertising(cfg) -> tuple[int, list[str]]:
-         ksft_pr(f"Warning: {cfg.remote_ifname} does not report the LP's advertising")
-         return errno.EOPNOTSUPP, None
- 
-+def require_pause_supported_anyof(cfg, linkmodes) -> None:
-+    """ Checks if the local device supports pause at all, by looking at the
-+        supported bitfield. Raises a skip it's not supported.
-+
-+        :param cfg: test config
-+    """
-+    ret, _ = get_local_pauseparams(cfg)
-+    if ret != 0:
-+        raise KsftSkipEx("device doesn't allow getting pauseparams")
-+
-+    _, pause_support = get_local_pause_supported(cfg)
-+    for lm in linkmodes:
-+        if lm in pause_support:
-+            return
-+
-+    raise KsftSkipEx(f"Local device doesn't support any of {linkmodes}")
-+
- def require_pause_supported_allof(cfg, linkmodes) -> None:
-     """ Checks if the local device supports the passed linkmodes
- 
-@@ -285,6 +303,51 @@ def require_peer_pause_supported_allof(cfg, linkmodes) -> None:
-         if lm not in pause_support:
-             raise KsftSkipEx(f"Remote device doesn't support {lm}")
- 
-+def supported_pauseparams(cfg) -> tuple[int, int]:
-+    """ The rx/tx params covering every mode the local device supports """
-+    _, pause_support = get_local_pause_supported(cfg)
-+    if "Pause" in pause_support:
-+        return 1, 1
-+    if "Asym_Pause" in pause_support:
-+        return 0, 1
-+
-+    raise KsftSkipEx("Local device doesn't support pause")
-+
-+def set_local_pause_autoneg(cfg, aneg) -> int:
-+    """ Enable or disable pause autoneg """
-+    ret, _ = ethtool_ret(f"-A {cfg.ifname} autoneg {onoff(aneg)}",
-+                         is_get=False)
-+    return ret
-+
-+def check_local_pauseparams(cfg, aneg, rx, tx) -> None:
-+    """ Validates that the pauseparams reported from ethtool -a are
-+        exactly the 3 passed parameters.
-+    """
-+    ret, params = get_local_pauseparams(cfg)
-+    ksft_eq(ret, 0)
-+    if ret != 0:
-+        return
-+
-+    ksft_eq(params["autonegotiate"], bool(aneg), "pause autoneg")
-+    ksft_eq(params["rx"], bool(rx), "rx pause")
-+    ksft_eq(params["tx"], bool(tx), "tx pause")
-+
-+def check_local_advertising(cfg, linkmodes) -> None:
-+    """ Verify that the local device advertises exactly the pause modes
-+        passed as parameters
-+    """
-+    _, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(adv, linkmodes, "advertised pause modes")
-+
-+def check_local_lp_advertising(cfg, linkmodes) -> None:
-+    """ Verify that the local device reports exactly the lp_advertised pause
-+        modes passed as parameters
-+    """
-+
-+    ret, adv = get_local_pause_lp_advertising(cfg)
-+    if ret == 0:
-+        ksft_eq(adv, linkmodes, "link partner advertised pause modes")
-+
- def expect_pauseparams_set(ret, linkmodes, supported, note) -> None:
-     """ Whether ethtool -A had to work or to be refused, given what the local
-         device supports
-@@ -674,6 +737,223 @@ def pause_aneg_resolution(cfg, settings) -> None:
-         ksft_eq(remote_pauseparams["negotiated"]["rx"], expected_lp_rx)
-         ksft_eq(remote_pauseparams["negotiated"]["tx"], expected_lp_tx)
- 
-+# Pause autoneg enable/disable vs advertised linkmodes
-+@ksft_disruptive
-+def pause_autoneg_state_adv(cfg) -> None:
-+    """Validate that toggling pause advertising changes the advertised linkmodes
-+
-+    When disabling pause autoneg, we enforce the pause params based on what user
-+    asks, instead of relying on the negociation process (which may not be what
-+    the user asked for). In forced pause settings, we don't advertise pause and
-+    asym_pause bits.
-+
-+    Failing this test means that .set_pauseparam in the MAC driver doesn't
-+    forward to the PHY (in charge of advertising these bits) that we are in
-+    fixed pause mode.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    pause_setup(cfg)
-+
-+    set_peer_pauseparams(cfg, True, True, True)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+
-+    # Enable all possible pauseparams with pause autoneg
-+    ret = set_local_pauseparams(cfg, rx, tx, True)
-+    ksft_eq(ret, 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Make sure we advertise them
-+    ret, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, pause_to_linkmodes(rx, tx))
-+
-+    # Disable pause autoneg
-+    ret = set_local_pauseparams(cfg, rx, tx, False)
-+    ksft_eq(ret, 0)
-+
-+    # This may trigger a link renegociation
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # We shouldn't be advertising anything anymore
-+    ret, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, [])
-+
-+    # Validate on the LP that we aren't advertising anything
-+    ret, adv = get_peer_pause_lp_advertising(cfg)
-+    if ret == errno.EOPNOTSUPP:
-+        return
-+
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, [])
-+
-+# Pause autoneg : Negotiated pause params vs fixed pause params
-+@ksft_disruptive
-+def pause_autoneg_state_params(cfg) -> None:
-+    """Validate the pause params when transitioning between fixed pause
-+       params and negotiated ones. The goal is to make sure that user
-+       intent on the RX and TX pause params are stored when user decides
-+       to use negotiated parameters instead. The main gotcha lies on the
-+       fact that when pause autoneg is used, the autoneg result may differ
-+       from the user intent.
-+
-+    Failing this test means the MAC driver is overwriting the user intent
-+    when switching to forced pause.
-+    """
-+
-+    require_pause_supported_allof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+
-+    # Set peer user intent to RX on TX on, with Pause autoneg on
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Set the local intent to RX on TX off with pause autoneg
-+    ksft_eq(set_local_pauseparams(cfg, 1, 0, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    check_local_pauseparams(cfg, True, 1, 0)
-+    # Peer advertisiong Pause + Asym and us advertising Pause means we are
-+    # actually using RX on TX on here, which is different than the intent.
-+    check_local_advertising(cfg, ["Pause", "Asym_Pause"])
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+    # Disable pause autoneg
-+    ksft_eq(set_local_pause_autoneg(cfg, False), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # The pauseparams must still be what we configured before, and not the
-+    # previously negotiated ones
-+    check_local_pauseparams(cfg, False, 1, 0)
-+
-+    # Re-enable autoneg
-+    ksft_eq(set_local_pause_autoneg(cfg, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    check_local_pauseparams(cfg, True, 1, 0)
-+    # We must be advertising our intent again, and not RX on TX on, which would
-+    # be "Pause" only.
-+    check_local_advertising(cfg, ["Pause", "Asym_Pause"])
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+# Pause autoneg vs Link autoneg
-+
-+@ksft_disruptive
-+def pause_autoneg_off_while_link_autoneg_on(cfg) -> None:
-+    """ Validate that when link autoneg is on but pause autoneg is off, we do
-+        not use negotiated pause parameters.
-+
-+        - Skip if pause not supported.
-+
-+        - Requirements :
-+        - Link partner: link up, link autoneg on, pause autoneg on,
-+          pause tx and rx on
-+        - Local device starting conditions : link on, link autoneg on,
-+          pause autoneg on, pause tx <on if supported> rx <on if supported>
-+
-+        Failing this test means the MAC driver incorrectly accounts for the
-+        negotiated pause parameters even with pause aneg off, likely due to
-+        confusion between link autoneg and pause autoneg.
-+    """
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+
-+    # Enable pause autoneg with all the locally supported modes enabled
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Disable Pause autoneg
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, False), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+    # Pause autoneg must read "disabled"
-+    check_local_pauseparams(cfg, False, rx, tx)
-+
-+    set_peer_pauseparams(cfg, 0, 0, True)
-+    ksft_eq(wait_for_aneg(cfg, link_drop=True), True)
-+
-+    ip(f"link set {cfg.remote_ifname} down", host=cfg.remote)
-+    ip(f"link set {cfg.remote_ifname} up", host=cfg.remote)
-+    ksft_eq(wait_for_aneg(cfg, link_drop=True), True)
-+
-+    # Pause autoneg must still be off even after a link renegotiation
-+    check_local_pauseparams(cfg, False, rx, tx)
-+
-+@ksft_disruptive
-+def pause_autoneg_link_autoneg(cfg) -> None:
-+    """Validate pause autoneg and link autoneg interactions. The link autoneg's
-+       admin status (i.e. do we autoneg link parameters or force them) must not
-+       impact the pause autoneg status. While link autoneg is disabled, we don't
-+       negotiate the pause params, however we must keep pause autoneg on as this
-+       is the user intent. When link autoneg is re-enabled, pause params must be
-+       derived from the negotiation.
-+
-+    Both ends are forced at the speed and duplex the link runs at. A link that
-+    does not come back forced is a skip, not a verdict: 1000BASE-T resolves
-+    master/slave through autoneg and rarely links without it.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_controllable_lp(cfg)
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+    adv = pause_to_linkmodes(rx, tx)
-+
-+    # Enable all possible pause modes and autoneg
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, True), 0)
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    check_local_pauseparams(cfg, True, rx, tx)
-+    check_local_advertising(cfg, adv)
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+    # Disable link autoneg, at the speed and duplex the link runs at
-+    forced = forced_link_settings(cfg)
-+    if not forced:
-+        raise KsftSkipEx("Can't tell what to force the link at")
-+
-+    ret, _ = ethtool_ret(f"-s {cfg.remote_ifname} autoneg off {forced}",
-+                         is_get=False, host=cfg.remote)
-+    if ret != 0:
-+        raise KsftSkipEx(f"Can't force the peer's link at {forced}")
-+
-+    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg off {forced}",
-+                         is_get=False)
-+    if ret != 0:
-+        raise KsftSkipEx(f"Can't force the link at {forced}")
-+
-+    if not wait_for_aneg(cfg):
-+        raise KsftSkipEx(f"No link when forced at {forced}")
-+
-+    # We must have pause autoneg still enabled, even if we don't negotiate pause
-+    check_local_pauseparams(cfg, True, rx, tx)
-+
-+    # Re-enable autoneg
-+    ethtool(f"-s {cfg.remote_ifname} autoneg on", host=cfg.remote)
-+    ethtool(f"-s {cfg.ifname} autoneg on")
-+    ksft_eq(wait_for_aneg(cfg), True)
-+
-+    # Pause autoneg must still be on
-+    check_local_pauseparams(cfg, True, rx, tx)
-+    check_local_advertising(cfg, adv)
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
- def main() -> None:
-     """ The hardware pause tests, on the interface the env names """
-     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-@@ -681,6 +961,10 @@ def main() -> None:
-         ksft_run([pause_test_support,
-                   pause_advertising_test,
-                   pause_aneg_resolution,
-+                  pause_autoneg_state_adv,
-+                  pause_autoneg_state_params,
-+                  pause_autoneg_off_while_link_autoneg_on,
-+                  pause_autoneg_link_autoneg,
-                   ],
-                  args=(cfg, ))
-     ksft_exit()
-diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-index 0486405c5c70..ad0ba71b725a 100644
---- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-@@ -51,13 +51,13 @@ try:
-     from .load import GenerateTraffic, Iperf3Runner
-     from .remote import Remote
-     from .ethtool import ethtool_ret, onoff, wait_for_link, wait_for_aneg, \
--        controllable_lp, require_controllable_lp, \
-+        controllable_lp, require_controllable_lp, require_link_autoneg, \
-         forced_link_settings
- 
-     __all__ += ["NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
-                 "Remote", "Iperf3Runner",
-                 "ethtool_ret", "onoff", "wait_for_link", "wait_for_aneg", "controllable_lp", "require_controllable_lp",
--                "forced_link_settings"]
-+                "require_link_autoneg", "forced_link_settings"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/ethtool.py b/tools/testing/selftests/drivers/net/lib/py/ethtool.py
-index 43e197ac12e5..00d6805ee942 100644
---- a/tools/testing/selftests/drivers/net/lib/py/ethtool.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/ethtool.py
-@@ -175,6 +175,20 @@ def require_controllable_lp(cfg) -> None:
-     if not controllable_lp(cfg):
-         raise KsftSkipEx(f"{cfg.remote_ifname} is not directly connected to {cfg.ifname}")
- 
-+def require_link_autoneg(cfg) -> None:
-+    """ Skip if local or remote don't support link autoneg
-+
-+    :param cfg: test config
-+    """
-+    # Does local device support link aneg
-+    if not ethtool(f"{cfg.ifname}", json=True)[0]["supports-auto-negotiation"]:
-+        raise KsftSkipEx(f"{cfg.ifname} doesn't support link autoneg")
-+
-+    # Does remote device support link aneg
-+    if not ethtool(f"{cfg.remote_ifname}",
-+                   json=True, host=cfg.remote)[0]["supports-auto-negotiation"]:
-+        raise KsftSkipEx(f"Remote {cfg.remote_ifname} doesn't support link autoneg")
-+
- def forced_link_settings(cfg) -> str:
-     """ Returns a string to pass to ethtool -s with speed/duplex corresponding
-         to the current settings.
--- 
-2.55.0
+I found this with a CodeQL check for lookups done in init_net. I
+reproduced it on 7.1-rc1 in qemu with two mac802154_hwsim radios and
+phy1 moved into a netns. The reproduction needed no kernel changes. I do
+not have real 802.15.4 hardware. From inside that netns, as an
+unprivileged user, a GET_WPAN_PHY dump with NL802154_ATTR_IFINDEX set to
+its own wpan1 returns ENODEV. The same dump with init_net's wpan0
+ifindex, which does not exist in that netns, returns an empty dump
+instead of ENODEV.
 
+nl80211_dump_wiphy_parse() does the same lookup with sock_net(skb->sk).
+With sock_net(skb->sk) in place of &init_net on the quoted line, the
+dump with wpan1 returns phy1 and the dump with wpan0 returns ENODEV. The
+tree has no wpan selftest.
+
+Does this look like a real bug? If it does, I am happy to send a patch,
+or to leave the fix to you.
+
+Thanks,
+Maoyi
