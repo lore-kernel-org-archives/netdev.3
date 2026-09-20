@@ -1,317 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D41479864;
-	Sun, 20 Sep 2026 23:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B5730566B
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 23:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789946398; cv=none; b=TtGYKL6V1MzdmbktJ9TqQlA4hZAO92TLPDZnk30x5U4v0ATltwDF8iFlr4oyg1sNryokE+wMtmiA+0hMPXtyhcI+kcxOY9RIlShB3dBsjmcfQIZy55z9EDSwEb95nMhy7XFo4qCt15rwH3wkl17LiR1WhOe58rgsL4FC0SOrCZY=
+	t=1789946833; cv=none; b=LVJTcNgJ/TjnAOikuXw2dzAhreV0jvArFbWVtNX//aBAga5o2+7bhlbf7d/quS4S7xDJZ3FRp9/zz5veImJFl+MezJaybZPCJWdQ05a5NtTWhLhvwq2t8nQjpTES7k5tQXMzDxFdFoiGt9MOp+44dBc8iI9LYfi2hf436HKrjQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789946398; c=relaxed/simple;
-	bh=IKZIvra1ZfMPltaAIpyiud9Es9nA89TH0Il8eShjymU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EDkYfuA26FyRdiNVVfjoZ97RluhQZn7lBZFodp7aytRVDnmhhGuiXdQbFDngH6+PZQ6ArYbuvZ0ZwwrlrrpFUQehV4JjVFrOthAjGTPCC/cEk0xttzCpxw140g9zL0ehldmj9MapxPLoWir+Og5nrh54E3zA8dcpaK8ygghukmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFKQBIp3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789946833; c=relaxed/simple;
+	bh=+ZCrD9TfbuBLeSGTKd7X9CvBgPip0rrnQ/QrjwlgDJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZY/rCo2akJdjZWSx7O+E7hp3wQlQJe3thrFhticgfYNurtiEEhtuHVPELHmOUgvmPoTMOnr7HeKyIJVVgtkZ5SWDOzpw+sfo7BhyqnBcxS6fGQe7PHVpae1G/6tEtNgw+SLS7HRJzmco6M0BJ8TXzupHPtmfPQCf7Lv+WzGghi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=gC4iKAdZ; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFKQBIp3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2C01F00893;
-	Sun, 20 Sep 2026 23:19:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789946396;
-	bh=q7F2Lg6LeZJySxabI16pZaBhDYVqRkKyhNpE1ljSy7I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bFKQBIp35lwSsOOIbTcPz1sIdTxsfVnQSAVjM9gpwIggkqs99dIeQlQxEcU9RNfpV
-	 w81QyrmvM4cdGH2/8p83hC+DFQ5j3hm1z/rgadfTcBRo7IdOIZMYxFX6PSkVkABg7O
-	 XA7P68wljJlGfuZUe6DAqx8Tc0IG0xJSHQa9hCpXepG8zHiLKbZ0OiLygE05zaRieX
-	 f/EHsoUQaQHs75/9Jd6XjIm0QK212MEB+6DLevtYlnwlLXwCGVy+M1qacr4aF6Fm9z
-	 IAVFDE1/ZrNZUUwPDOg8E14Wzo1f8ktUCTtPN32RQZhqc0qEumKSHtTPwhcLPtXQYa
-	 yY7lWfjULslqw==
-Subject: Re: [PATCH] net/rds: fix incoming message refcount leak and header
- bounds check in rds_recv.c
-From: netdev-bot+sashiko@kernel.org
-To: benquike@gmail.com
-Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
-Date: Sun, 20 Sep 2026 23:19:55 +0000
-Message-ID: <178994639589.2160803.17376356293542307547@kernel.org>
-In-Reply-To: <20260919223429.3882046-1-benquike@gmail.com>
-References: <20260919223429.3882046-1-benquike@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="gC4iKAdZ"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 31ACE5340694;
+	Mon, 21 Sep 2026 01:27:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1789946830;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=S5H8DJugfiQqXqE+zucVCQWOxAjqhPaEgOBGdJavRsI=;
+	b=gC4iKAdZYOde9ceZd/2S8t1hXN7ghMF6WhGKg9OOK9ljzsMz0bKehpirHJ1/y5wTWAyu/G
+	E9TkSsd7M3uK56NdYBoOkRDdJEG664y/du8fo3RAUFBXxzOCmd3vPt5YjyAz/pEH/IarGv
+	xIuJxGkZJUHXCpv3XbXu5l+lnsYsZ0A=
+Message-ID: <532cee91-122f-4c71-9b4b-3c48159f501d@ixit.cz>
+Date: Mon, 21 Sep 2026 01:27:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] net: nfc: fix use-after-free in
+ nfc_get_local_general_bytes
+To: Simon Horman <horms@kernel.org>, Ren Wei <weir@nebusec.ai>
+Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, kees@kernel.org, pengpeng@iscas.ac.cn,
+ raoxu@uniontech.com, rosenp@gmail.com, dddddd@hust.edu.cn, joe@dama.to,
+ ian.ray@gehealthcare.com, kuniyu@google.com, linma@zju.edu.cn,
+ vega@nebusec.ai, rakukuip@gmail.com
+References: <cover.1788841682.git.rakukuip@gmail.com>
+ <3cbaac3bee23f8ff3a3284ed32d347696eb1d208.1788841683.git.rakukuip@gmail.com>
+ <20260912101633.GG48209@horms.kernel.org>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260912101633.GG48209@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On 12/09/2026 12:16, Simon Horman wrote:
+> On Wed, Sep 09, 2026 at 01:19:24PM +0800, Ren Wei wrote:
+>> From: Luxiao Xu <rakukuip@gmail.com>
+>>
+>> Commit 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by
+>> nfc_llcp_find_local") attempted to fix a use-after-free (UAF) issue by
+>> invoking nfc_llcp_local_put(local) after accessing local->gb. However,
+>> if the reference count drops to zero, local is freed immediately,
+>> leading to a use-after-free when callers access the returned pointer.
+>> Alternative approaches using dynamic allocation (e.g. kmemdup) introduced
+>> memory leaks because callers consistently treat the returned pointer as
+>> borrowed memory.
+>>
+>> Fix this properly by refactoring nfc_llcp_general_bytes() and
+>> nfc_get_local_general_bytes() to accept a caller-provided output buffer
+>> (out_gb) and its maximum length (gb_max_len). The general bytes are
+>> safely copied into out_gb before calling nfc_llcp_local_put(local),
+>> ensuring safe lifetime management without ownership transfer complications.
+>>
+>> Update all callers across drivers (microread, pn533, pn544, st21nfca,
+>> digital_dep, and nci) to provide their own destination buffers and pass
+>> them to nfc_get_local_general_bytes().
+>>
+>> Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Vega <vega@nebusec.ai>
+>> Assisted-by: LLM
+>> Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+>> Signed-off-by: Ren Wei <weir@nebusec.ai>
+>> ---
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 2 (1)
+[...]
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> As far as I can see the return value of nfc_llcp_general_bytes() is now
+> ignored. And for a bug fix the approach you have taken looks good,
+> as the interface provided by nfc_llcp_general_bytes() is only slightly
+> modified.
+> 
+> But, FWIIW, I think it would be cleaner if nfc_llcp_general_bytes()
+> returned the length, or 0 on error. And the general_bytes_len parameter was
+> passed by value rather than reference.
+> 
+> Something like this:
+> 
+> size_t nfc_llcp_general_bytes(struct nfc_dev *dev, u8 *out_gb,
+> 			      size_t gb_max_len, size_t general_bytes_len)
+> {
+> 	...
+> 
+> 	if (error_condition)
+> 		return 0;
+> 
+> 	...
+> 
+> 	return general_bytes_len;
+> }
+> 
+> Perhaps that approach could be considered as a follow-up.
 
-- [High] Commit message describes a change that the patch does not make.
-- [Medium] Undocumented user-visible change to the
-  RDS_CMSG_RXPATH_LATENCY ancillary-data semantics: after this patch…
-- [Medium] Incomplete guard: the new condition in rds_cmsg_recv()
-  (net/rds/recv.c:640-643) only rejects the case where one of the two…
-- [Low] Incorrect Fixes: tag.
-- [Low] Non-atomic check-then-use on concurrently written timestamps: the
-  new guard performs two separate plain loads of each u64 slot of…
+Yes, that would be really great!
 
-Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but the latency-
-  trace block the patch touches reads rs->rs_rx_traces and…
+Thanks
+David
 
---
-
-net/rds: fix incoming message refcount leak and header bounds check in rds_recv.c
-
-The change adds a guard in rds_cmsg_recv() so that the receive-path latency
-delta is only computed when both of the two timestamps involved are
-non-zero. The commit message describes the change as a refcount and bounds
-fix. No Link: tags are present in the commit header.
-
-> net/rds: fix incoming message refcount leak and header bounds check in rds_recv.c
->
-> In net/rds/recv.c, ensure incoming RDS message references (rds_inc_put)
-> and socket receive queue bounds are properly balanced when handling
-> error or truncated incoming frames.
-
-[Severity: High]
-Does the changelog match the diff?  The subject and body promise a
-refcount leak fix (rds_inc_put), a header bounds check, and balanced
-socket receive queue accounting on error or truncated frames, but the only
-hunk changes the latency subtraction inside the rs_rx_traces block of
-rds_cmsg_recv().
-
-No rds_inc_addref()/rds_inc_put() call site is touched, no
-rds_recv_rcvbuf_delta()/rs_rcv_bytes accounting is touched, and no header
-length validation is added.
-
-The described bug classes also look absent on the named paths.
-rds_recvmsg() ends with a single unconditional put that every break from
-the receive loop reaches, including the copy error, MSG_TRUNC and
-rds_cmsg_recv() -EFAULT cases:
-
-net/rds/recv.c:rds_recvmsg() {
-	...
-	if (inc)
-		rds_inc_put(inc);
-	...
-}
-
-rds_still_queued() already performs the rcvbuf delta, the list_del_init()
-and the queue reference drop together under rs_recv_lock:
-
-net/rds/recv.c:rds_still_queued() {
-	...
-		if (drop) {
-			rds_recv_rcvbuf_delta(rs, sk, inc->i_conn->c_lcong,
-					      -be32_to_cpu(inc->i_hdr.h_len),
-					      inc->i_hdr.h_dport);
-			list_del_init(&inc->i_item);
-			to_drop = inc;
-		}
-	...
-}
-
-And j is already bounded at store time in rds_recv_track_latency():
-
-net/rds/af_rds.c:rds_recv_track_latency() {
-	if (trace.rx_traces > RDS_MSG_RX_DGRAM_TRACE_MAX)
-		return -EFAULT;
-	...
-		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
-			rs->rs_rx_traces = 0;
-			return -EFAULT;
-		}
-	...
-}
-
-with i_rx_lat_trace[] sized RDS_RX_MAX_TRACES (RDS_MSG_RX_DGRAM_TRACE_MAX
-+ 1 == 4), so j <= 2 and j + 1 <= 3 are always in range.
-
-Could the changelog be rewritten to describe the latency change that is
-actually made, or could the advertised fixes be implemented?  As written a
-stable backporter would pick this up as a memory-safety fix.
-
-> Fixes: bdbe6fbc6a2f ("RDS: recv.c")
-
-[Severity: Low]
-Is this the right Fixes: tag?  git blame of the lines being modified at the
-baseline attributes the whole rs_rx_traces block, including the
-subtraction, to commit 3289025aedc01 ("RDS: add receive message trace used
-by application"), not to the original file addition:
-
-3289025aedc01 (Santosh Shilimkar 2016-07-04 640) 	t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
-3289025aedc01 (Santosh Shilimkar 2016-07-04 641) 			  inc->i_rx_lat_trace[j];
-
-Pointing the tag at bdbe6fbc6a2f would send this to kernels that predate
-the latency trace feature.
-
-> diff --git a/net/rds/recv.c b/net/rds/recv.c
-> index 6204e577a90a..0743706af8ca 100644
-> --- a/net/rds/recv.c
-> +++ b/net/rds/recv.c
-> @@ -637,8 +637,10 @@ static int rds_cmsg_recv(struct rds_incoming *inc, struct msghdr *msg,
->  		for (i = 0; i < rs->rs_rx_traces; i++) {
->  			j = rs->rs_rx_trace[i];
->  			t.rx_trace_pos[i] = j;
-> -			t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
-> -					  inc->i_rx_lat_trace[j];
-> +			if (inc->i_rx_lat_trace[j + 1] &&
-> +			    inc->i_rx_lat_trace[j])
-> +				t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
-> +						inc->i_rx_lat_trace[j];
->  		}
-
-[Severity: Medium]
-Is this a user-visible change to the RDS_CMSG_RXPATH_LATENCY semantics?
-When the guard fails, t.rx_trace[i] stays 0 from the earlier memset, but
-t.rx_traces and t.rx_trace_pos[i] still advertise the position as measured.
-
-The uAPI has no per-entry validity encoding:
-
-include/uapi/linux/rds.h:
-struct rds_cmsg_rx_trace {
-	__u8 rx_traces;
-	__u8 rx_trace_pos[RDS_MSG_RX_DGRAM_TRACE_MAX];
-	__u64 rx_trace[RDS_MSG_RX_DGRAM_TRACE_MAX];
-};
-
-so how does userspace tell "not measured" from a genuine 0 ns delta?
-
-The unstamped slots are real.  Only net/rds/ib_recv.c and
-net/rds/tcp_recv.c stamp the early positions, for example:
-
-net/rds/tcp_recv.c:rds_tcp_data_recv() {
-	...
-			tinc->ti_inc.i_rx_lat_trace[RDS_MSG_RX_HDR] =
-					local_clock();
-	...
-}
-
-while the loopback transport calls rds_inc_path_init(), which zeroes the
-array, and then rds_recv_incoming() without stamping anything:
-
-net/rds/loop.c:rds_loop_xmit() {
-	rds_inc_path_init(&rm->m_inc, &conn->c_path[0], &conn->c_laddr);
-	rds_message_addref(rm);
-
-	rds_recv_incoming(conn, &conn->c_laddr, &conn->c_faddr, &rm->m_inc,
-			  GFP_KERNEL);
-	...
-}
-
-Would it be better to stamp the missing trace points in the producers, or
-to omit the unavailable entries (shrinking rx_traces and rx_trace_pos) and
-document that in the uAPI header?  Either way, this behaviour change is not
-mentioned in the changelog.
-
-[Severity: Medium]
-Does this guard cover the reversed-timestamp case?  Both values can be
-non-zero with inc->i_rx_lat_trace[j + 1] < inc->i_rx_lat_trace[j], and the
-u64 subtraction then wraps and reports roughly 1.8e19 ns to userspace.
-
-For j == RDS_MSG_RX_DGRAM_DELIVERED the two samples are taken in different
-contexts on possibly different CPUs.  One is taken in transport receive
-context:
-
-net/rds/recv.c:rds_recv_incoming() {
-	...
-	inc->i_rx_lat_trace[RDS_MSG_RX_END] = local_clock();
-	...
-}
-
-and the other in recvmsg() context, in this same function:
-
-	inc->i_rx_lat_trace[RDS_MSG_RX_CMSG] = local_clock();
-
-local_clock() is sched_clock_cpu() of the current CPU and is only
-monotonic per-CPU, so with an unstable sched_clock the later sample can be
-smaller.
-
-Would comparing the two values instead, and computing the delta only when
-inc->i_rx_lat_trace[j + 1] > inc->i_rx_lat_trace[j], cover this case and
-also subsume the zero check being added here?
-
-[Severity: Low]
-Can the value tested by the guard differ from the value subtracted?  Each
-slot is loaded twice with plain accesses, once for the non-zero test and
-once for the subtraction, while this same function stores into
-inc->i_rx_lat_trace[RDS_MSG_RX_CMSG] with no lock held.
-
-Two concurrent recvmsg(MSG_PEEK) callers can hold a reference to the same
-rds_incoming.  rds_next_incoming() takes a reference without dequeuing:
-
-net/rds/recv.c:rds_next_incoming() {
-	...
-		if (!list_empty(&rs->rs_recv_queue)) {
-			*inc = list_entry(rs->rs_recv_queue.next,
-					  struct rds_incoming,
-					  i_item);
-			rds_inc_addref(*inc);
-		}
-	...
-}
-
-and rds_still_queued() with drop == 0 returns 1 for both callers without
-list_del_init(), releasing rs_recv_lock before rds_cmsg_recv() runs.
-
-Since a user-selected j == RDS_MSG_RX_END makes j + 1 == RDS_MSG_RX_CMSG,
-the slot being tested is exactly the slot the other thread stores into.  On
-32-bit builds can the u64 store be observed torn between the two loads,
-giving a value below inc->i_rx_lat_trace[j] and the same unsigned
-underflow this check is meant to suppress?
-
-Would reading each timestamp once into a local with READ_ONCE() and
-validating and subtracting the locals, or keeping the CMSG timestamp in a
-local rather than storing it into the still-queued inc, avoid this?
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the block being touched
-reads rs->rs_rx_traces and rs->rs_rx_trace[] with no lock, no READ_ONCE()
-and no barrier, while the writer publishes the count before filling and
-validating the entries:
-
-net/rds/af_rds.c:rds_recv_track_latency() {
-	rs->rs_rx_traces = trace.rx_traces;
-	for (i = 0; i < rs->rs_rx_traces; i++) {
-		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
-			rs->rs_rx_traces = 0;
-			return -EFAULT;
-		}
-		rs->rs_rx_trace[i] = trace.rx_trace_pos[i];
-	}
-	...
-}
-
-SO_RDS_MSG_RXPATH_LATENCY is the only case in rds_setsockopt() that is not
-wrapped in lock_sock()/release_sock(), and rds_recvmsg() does not take
-lock_sock() either, so the two paths share no lock.
-
-Can a concurrent recvmsg() then see rs_rx_traces == 3 together with stale
-rs_rx_trace[] entries, a (count, entries) pair that never existed?  The
-loop bound rs->rs_rx_traces is also re-read on each iteration after
-t.rx_traces was latched, so the reported count and the number of filled
-entries can disagree.
-
-No out-of-bounds index results, since every stored rs_rx_trace[i] was
-validated against RDS_MSG_RX_DGRAM_TRACE_MAX before being stored.  This
-dates back to commit 3289025aedc01 ("RDS: add receive message trace used by
-application").  Publishing the entries before the count, with the count
-written last using WRITE_ONCE(), or serializing both paths under
-lock_sock(), would address it.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919223429.3882046-1-benquike%40gmail.com
