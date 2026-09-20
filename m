@@ -1,197 +1,192 @@
-Received: from mail-pz2-f7.google.com (mail-pz2-f7.google.com [74.125.228.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAEC3C456B
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 17:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE3547044C;
+	Sun, 20 Sep 2026 17:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789923774; cv=none; b=DXmohWMvT5cEsqV9obW07RgWmbTucMyQvotNtSCq0oPYQbn18QiPWpY5j4B9mymGuZfhyBVzEu7f8JsF0tx/WGS6oqWDtXWPEAlfMgrBPBIQRUZrh8CWm8aOIc2hHZEG+jBXtriyBOQCKa2yDOk8zhanCUU9BX3qnatAmVEN/4s=
+	t=1789923777; cv=none; b=mzz1JAhVgF/gPf0YBQ9vSCPa+PAdi1d0zB1W9lKX95QF9xUif4WKXVclGoVr0tP7gtkV+IuLAcRUUjlmUlkmMnEF431ELRNdGthgLUYWpleA3jWFUu2QNxLKNWaESe3wgyLnLNQGNa7Q7hAZdkavYmtjzLKPjrXYIQRxQRPYEbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789923774; c=relaxed/simple;
-	bh=eV/MZpigoY7eQVTxB//FZOps8t3Fw+uKiqpIed3H7yU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFiFZIGNis62BMzm+1rYhkDo6laS8vIzD8qQzoOIAB4Gb/+ryjdSI+ubFXMInWs4y/ktEWJx1UEFxbB9Nl1nN6dKA2zwg+Fg7ZRRrsOxsJvX+5C+LwhtwlvZtkmpof1xy0j3FqJRlRfzq/akJILZuipHLsUYvTcuHj6tMnTR2uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CYM0e5TZ; arc=none smtp.client-ip=74.125.228.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789923777; c=relaxed/simple;
+	bh=zNm1UOEyT5VwvvQdjuL4absuX0lqMBhnL3Hqd25VBl0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=siXb4SzrtVVdUzXMZq4ISJ8w6UGBquSU4PD8fL5hGHQ5Z38sH9uF7UW+AX8ycLHoSrDdfZpnE/AtsaOcJMIFEDmNRkI4GKKvwqFFZnqILLu38bOP+R+K1WaF1pCGoc5+rdDBd3c97DaBbKbrnu9hTw9UxvKwfSYfhPVkCrzvtLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfuH4UFX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CYM0e5TZ"
-Received: by mail-pz2-f7.google.com with SMTP id 41be03b00d2f7-cc53988d9f3so1289062a12.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 10:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789923771; x=1790528571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Mg8/YZyIZ3CihMksQCv23yBYBJSGhmM45ppIsWYSP5M=;
-        b=CYM0e5TZCVwoa98/M0TqxxKHtvDo8BA7FhxiJHWSXK66zGBba08pLcOtGzeLuelziS
-         s3TUYmlAuM37Lr823h/A3VzOWlN7/QgDjvg2Hdn8MIrWuPzd1lWqLxfTBvsmhXNWG5at
-         s1Jz09oRT7TvWHy1UPaCNvH6/BvRMs4dcuqO1DraEiB4PQBAqiFpm6g5YhfV8h8TNNXI
-         3vm7dlFlWtDiKuuzwkJEBbuXQURjYQEkvm7qkBtburV5QewwV2JgjEwgiV5UhCse4Qwt
-         h5jPkB7fR9bsVo7IeZjqzqyTYBSoFLDzxBZb+uuCGchEWZyqrFS5+qvQCo+QhA+eCuXB
-         wkoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789923771; x=1790528571;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Mg8/YZyIZ3CihMksQCv23yBYBJSGhmM45ppIsWYSP5M=;
-        b=B5KQghmZxx8U58uODuo5Eo5Zvyt41PC8Ff2NKKoW8dmuoGWG4HlGup7NZrYpA+XI4p
-         wqewo/FEjX7qEr5ulHCfYTUNESC9y8kNJ2oArTje/OS97+wZB5QjZSyYj4WRP8BoWPuC
-         5MRTh5q5Vlz5dkIvedzV9Wr3g4YES1cOgvZHOrKpVgpjMj4zwa4zOILLE8v4rq19OLHl
-         5uHMEhrG4y6kWxu9FTuoQH6FcQamXhAJ9fwrShCr3tsRmi2QqHDGWNdLNGTDECqHRBx3
-         fBbOAvZ49WGPbFIZSs4O2oTqz1UwOQVMmt5N9QLqJDBNmvenVsL3I0JUXLuNSONQ6ILZ
-         CHKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxZkLPxP0JPTH3/HJr5Rh+PqbbavsYSuQfNNJt0ernjuvcib+vHUHgytXQGQaIdnBolwSwUPMw=@vger.kernel.org
-X-Gm-Message-State: AFuF++lJyweg06gKiygpiz3ExoQyU4sJSIeQUpNtJaf0dgqMUbo3uhMP
-	lG/shua7C2zAtpB4yZM+l4ovdFaE/k3I6fM6yERdKANfqdO2+WjyL8Xk
-X-Gm-Gg: AYBFou2m9DwbcKcEW6kDxX4dETwQdrLC7qmlNMnYZL39Ji91wXvI71QHhD7E5WYaH+z
-	ElzQ1PljW3rEcqw2iUpXCQWxpa17HP8/29zJEPBRg3/8kgSByYe5o5e/6ekX1iD3N/8Le3u/2qr
-	nT8wkq+d1B3QvP6sQbCetso+aiJ+9oJvT/dck8A/PAe8sbX4bSo10Y4SZvI7wi7E38NiHArXW8X
-	r5LD56q4k7zpGjWtZM9xwYwXkUpsePm7lEpq9HbcDFuT8gPxOndY/uoz13RPCrGi7XJ866udt8W
-	PAC8W8k5ljRoAhNS8QrFhrLUhKHyPIOL7LBGkOXZUvwfou95kunXM5CZmi4UWWhBKq9eTMTmVoL
-	Ct539RqFwHzS7nniSUbsCAh9MPmDlIstngXFGO5b02CCSLh/sUDzEJZIv+1fm2kO1hTQg1yixjK
-	Lyc/q/jcLCi2vv6rQN1XH+hdF16FonZzalVXcH77ElrSHHPvk2FMqQxVhA2ctDxkMNzZ8W7eqgq
-	s/L7m/D
-X-Received: by 2002:a05:6a00:1ca2:b0:851:8baf:5b26 with SMTP id d2e1a72fcca58-874dc5eb6b5mr12081998b3a.14.1789923771468;
-        Sun, 20 Sep 2026 10:02:51 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a9d07425sm2140646b3a.42.2026.09.20.10.02.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 10:02:50 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Coia Prant <coiaprant@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH net-next v9 05/11] arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
-Date: Mon, 21 Sep 2026 01:01:09 +0800
-Message-ID: <20260920170116.3624104-6-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260920170116.3624104-1-coiaprant@gmail.com>
-References: <20260920170116.3624104-1-coiaprant@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfuH4UFX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891751F00893;
+	Sun, 20 Sep 2026 17:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789923769;
+	bh=Sxi4AzxEIOT2AErdFjZXxdrhgAaTfW/VmGrSAynXI5w=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PfuH4UFXpsMG0D655ancdlsev0JCtjI7KQRw7GqgPSpO+dy30Fn2iWoGHFbCp+6aU
+	 fXwbG0GbisoZSv9t/sWKu4NJ++6ffLmJIxSQ+9vFRlb0GCSSv4YttVg8eAiIPQ54GZ
+	 uEX/wk3ldtUDZQg1VuvVnc3PTUGDeRZr87c1VDv2yzWIvbVbQBWXT8Vnf5YkwXhKx+
+	 3HJN3baOxcuwIoZO/Z9PM6S8sVXJTSnG0/7MNgF2Ko0fPJFQjHva5berYREGiSp82e
+	 Png5BqwN/ZLAXWJrakdJafsbqPlo/9jQkDaQvl7Tr8xw+MoFzrsshzIWuk6Kiuunqx
+	 CXWwEQcPpZh5w==
+Subject: Re: [PATCH net-next v3 3/3] net: stmmac: sun8i: add support for
+ Allwinner H616 EMAC1
+From: netdev-bot+sashiko@kernel.org
+To: james.hilliard1@gmail.com
+Cc: richard.genoud@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, wens@kernel.org,
+ jernej.skrabec@gmail.com, samuel@sholland.org, alexandre.torgue@foss.st.com,
+ peppe.cavallaro@st.com, joabreu@synopsys.com, maxime.chevallier@bootlin.com,
+ mcoquelin.stm32@gmail.com, mripard@kernel.org, alastair@d-silva.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Date: Sun, 20 Sep 2026 17:02:48 +0000
+Message-ID: <178992376814.2160803.7753352020074814044@kernel.org>
+In-Reply-To: <20260917-submit-h616-emac1-v1-v3-3-62cb8316e19b@gmail.com>
+References: <20260917-submit-h616-emac1-v1-v3-3-62cb8316e19b@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The RK3568 SoC integrates a Synopsys DesignWare XPCS that provides
-the Physical Coding Sublayer for 1000BASE-X, SGMII, and QSGMII
-interfaces via its four MII ports.  Add the XPCS device node and
-its pcs-mii sub-nodes to the SoC device tree.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-The XPCS device is accessed via the APB3 bus at 0xfda00000 and
-requires the CSR clock (PCLK_XPCS) for register access and the EEE
-clock (CLK_XPCS_EEE) for Energy Efficient Ethernet operation.  The
-PD_PIPE power domain must be enabled before any register access.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Also add two fixed-clock nodes (clock-xpcs-gmac0 and clock-xpcs-gmac1,
-labelled clk_gmac0_xpcs_mii and clk_gmac1_xpcs_mii) providing the
-125 MHz reference clock for the GMACs when operating with XPCS.  Their
-clock-output-names match the CRU mux parent names in clk-rk3568.c, so
-boards can reparent SCLK_GMAC0_RX_TX / SCLK_GMAC1_RX_TX through
-assigned-clock-parents.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The XPCS node and its mii sub-nodes are disabled by default and
-must be enabled at the board level when 1000BASE-X/SGMII/QSGMII is
-in use.  The fixed-clock nodes are always present and do not have a
-status property, as they are static clock sources.
+- [Medium] The new `emac_variant_h616_emac1` in
+  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c (lines 153-158)…
 
-The XPCS node requires a reference to the appropriate Naneng Combo PHY
-via the phys property.  dtbs_check only validates required properties
-for enabled nodes, so the SoC dtsi does not provide phys/phy-names:
-boards that enable the XPCS must supply them, since the SerDes link is
-a board-level design choice (combphy1 on some boards, combphy2 on
-others).
+--
 
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- arch/arm64/boot/dts/rockchip/rk3568.dtsi | 45 ++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+net: stmmac: sun8i: add support for Allwinner H616 EMAC1
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-index 3bc653f027f1f..227d03e336043 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -110,6 +110,51 @@ sata0: sata@fc000000 {
- 		status = "disabled";
- 	};
- 
-+	xpcs: ethernet-pcs@fda00000 {
-+		compatible = "rockchip,rk3568-xpcs";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		reg = <0x0 0xfda00000 0x0 0x200000>;
-+		clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
-+		clock-names = "csr", "eee";
-+		power-domains = <&power RK3568_PD_PIPE>;
-+		status = "disabled";
-+
-+		xpcs_mii0: ethernet-pcs-mii@0 {
-+			reg = <0>;
-+			status = "disabled";
-+		};
-+
-+		xpcs_mii1: ethernet-pcs-mii@1 {
-+			reg = <1>;
-+			status = "disabled";
-+		};
-+
-+		xpcs_mii2: ethernet-pcs-mii@2 {
-+			reg = <2>;
-+			status = "disabled";
-+		};
-+
-+		xpcs_mii3: ethernet-pcs-mii@3 {
-+			reg = <3>;
-+			status = "disabled";
-+		};
-+	};
-+
-+	clk_gmac0_xpcs_mii: clock-xpcs-gmac0 {
-+		compatible = "fixed-clock";
-+		clock-frequency = <125000000>;
-+		clock-output-names = "clk_gmac0_xpcs_mii";
-+		#clock-cells = <0>;
-+	};
-+
-+	clk_gmac1_xpcs_mii: clock-xpcs-gmac1 {
-+		compatible = "fixed-clock";
-+		clock-frequency = <125000000>;
-+		clock-output-names = "clk_gmac1_xpcs_mii";
-+		#clock-cells = <0>;
-+	};
-+
- 	pipe_phy_grf0: syscon@fdc70000 {
- 		compatible = "rockchip,rk3568-pipe-phy-grf", "syscon";
- 		reg = <0x0 0xfdc70000 0x0 0x1000>;
+Adds a new emac_variant for the H616 secondary EMAC, pointing at a
+dedicated syscon clock register at offset 0x34, and registers the
+allwinner,sun50i-h616-emac1 compatible.  The variant is described as
+RMII-only with the PHY handled by the co-packaged AC200/AC300 driver.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> index 4523a14f5e0c3..1020168f1c3a0 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> @@ -81,6 +81,13 @@ static const struct reg_field sun8i_syscon_reg_field = {
+>  	.msb = 31,
+>  };
+>  
+> +/* EMAC1 clock register @ 0x34 in the "system control" address range */
+> +static const struct reg_field sun8i_syscon_reg_field_emac1 = {
+> +	.reg = 0x34,
+> +	.lsb = 0,
+> +	.msb = 31,
+> +};
+> +
+>  /* EMAC clock register @ 0x164 in the CCU address range */
+>  static const struct reg_field sun8i_ccu_reg_field = {
+>  	.reg = 0x164,
+
+[ ... ]
+
+> @@ -143,6 +150,13 @@ static const struct emac_variant emac_variant_h6 = {
+>  	.tx_delay_max = 7,
+>  };
+>  
+> +static const struct emac_variant emac_variant_h616_emac1 = {
+> +	.syscon_field = &sun8i_syscon_reg_field_emac1,
+> +	/* The co-packaged AC200/AC300 PHY does not use the H3 PHY controls. */
+> +	.soc_has_internal_phy = false,
+> +	.support_rmii = true,
+> +};
+
+[Severity: Medium]
+The commit message says "Add an EMAC1 variant using the dedicated register
+and enable only RMII".  Where is support_rmii actually consumed?
+
+Grepping drivers/net/ethernet/stmicro/stmmac/ at this commit, every
+occurrence of support_mii/support_rmii/support_rgmii is either the
+kernel-doc line for struct emac_variant, the bool member declaration, or a
+per-variant initializer.  There is no variant->support_* read anywhere in
+the tree, so setting only .support_rmii here has no runtime effect.
+
+The one interface-mode gate left in the driver is variant agnostic, in
+sun8i_dwmac_set_syscon():
+
+	switch (plat->phy_interface) {
+	case PHY_INTERFACE_MODE_MII:
+		/* default */
+		break;
+	case PHY_INTERFACE_MODE_RGMII:
+	case PHY_INTERFACE_MODE_RGMII_ID:
+	case PHY_INTERFACE_MODE_RGMII_RXID:
+	case PHY_INTERFACE_MODE_RGMII_TXID:
+		reg |= SYSCON_EPIT | SYSCON_ETCS_INT_GMII;
+		break;
+	case PHY_INTERFACE_MODE_RMII:
+		reg |= SYSCON_RMII_EN | SYSCON_ETCS_EXT_GMII;
+		break;
+	default:
+		dev_err(dev, "Unsupported interface mode: %s",
+			phy_modes(plat->phy_interface));
+		return -EINVAL;
+	}
+
+	regmap_field_write(gmac->regmap_field, reg);
+
+With compatible = "allwinner,sun50i-h616-emac1" and phy-mode = "rgmii",
+does this probe successfully and program SYSCON_EPIT |
+SYSCON_ETCS_INT_GMII into the new EMAC1 clock register at syscon 0x34?
+And with phy-mode = "mii", is SYSCON_RMII_EN simply left clear?  Both
+select a clock/pin routing this instance does not have, with no -EINVAL and
+no message logged.
+
+Nothing downstream re-adds the restriction either: dwmac-sun8i provides no
+get_interfaces callback, so stmmac_phylink_setup() just accepts whatever
+firmware picked:
+
+	if (phy_interface_empty(config->supported_interfaces))
+		__set_bit(priv->plat->phy_interface,
+			  config->supported_interfaces);
+
+That leaves the RMII-only constraint expressed only in the binding added by
+the preceding patch in the series, "dt-bindings: net: allwinner: add H616
+EMAC1" (phy-mode: const: rmii for this compatible), which is checked by
+dtbs_check at build time rather than at probe time.
+
+Would it make sense to reject non-RMII modes for this variant in
+sun8i_dwmac_set_syscon(), or to start reading variant->support_* there?
+
+On a related note, the commit message says the block "supports only RMII at
+10/100 Mbps", but sun8i_dwmac_setup() still advertises gigabit for every
+variant, including this one:
+
+	mac->link.caps = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+			 MAC_10 | MAC_100 | MAC_1000;
+
+Should the H616 EMAC1 variant also limit link.caps to MAC_10 | MAC_100?
+
+> +
+>  #define EMAC_BASIC_CTL0 0x00
+>  #define EMAC_BASIC_CTL1 0x04
+>  #define EMAC_INT_STA    0x08
+> @@ -1276,6 +1290,8 @@ static const struct of_device_id sun8i_dwmac_match[] = {
+>  		.data = &emac_variant_a64 },
+>  	{ .compatible = "allwinner,sun50i-h6-emac",
+>  		.data = &emac_variant_h6 },
+> +	{ .compatible = "allwinner,sun50i-h616-emac1",
+> +		.data = &emac_variant_h616_emac1 },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);
+
 -- 
-2.47.3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917-submit-h616-emac1-v1-v3-0-62cb8316e19b%40gmail.com
