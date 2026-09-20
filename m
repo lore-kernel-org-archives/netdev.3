@@ -1,157 +1,119 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336663C5DC5
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE513C65F4
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789932001; cv=pass; b=Ypenboax9Z3hlx2OMNLiE9GtsfooM7/02FavLgOO9aVk/EVqULROxNV+j9eunF6uAqHRm4RvqhIAcM0Q1wwx/0lHejjG8eP+TeOzN55MqOJdV/QNF7wqFKCk2dYA+BVofcY4L30yv9XKkwCe7v3z4DyPj83Fn483b6AQpgTD5fQ=
+	t=1789932484; cv=pass; b=S/3SiYRK0gRC4FKACRqC6modKi8oJxtbRH3nybeYzsj4c5CASqZzNMBIQr6FlNk7m8cqaa20SOSDnS+xOyJzEuja5lxqcqg3AEZppENLYI535ZLCD+NAP2e28Z3bptIfmQSLK6LIjZBKw54ZH2p7zWj9bczYvcz1KQlWacmtXmw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789932001; c=relaxed/simple;
-	bh=6SpgTwcIIQqjPbDa4mTNcZ8/Jqu2VPFbm+vZpZ7fjkU=;
+	s=arc-20240116; t=1789932484; c=relaxed/simple;
+	bh=5q6nOlmS063SvKK8pwkarrfZeEMnP1Jz3nMYjJ4gwsQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CohAfK6QISXi4Zw1N9MWD7tpHFflTbvAVDgk9QqkEZpDnA+bALc9dfgIvFFLDK/YziHppGN5DC2a0BQPJmulWYfzwTs3hmE61hm5yQNxVUd2IQxuQ7GwHqx52UxdmiZLQuRT0my/wos1+eiQdtXLwFae3Uu3FTIGhXRjbyuGHmM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UHzfCDNk; arc=pass smtp.client-ip=74.125.227.141
+	 To:Cc:Content-Type; b=XWIs6S7fkQ6oGOCbwGLeFava4KFjQuBbnYF6rONw8TTVXci6t+0UTpJpg1CZsNO0rAM3pqiySMY+3m2vUUwiWkexnbgLZmhIRLPulKiZZ8W+jJz+YhgKVoSxvvL38lH19mUh3oyK+A3v46dlO2muO3MuQ/eVo1vmfIYAF5puJ7E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VXeVkbwe; arc=pass smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UHzfCDNk"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccafb74fso2354111a91.3
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:20:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789931999; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VXeVkbwe"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-398b3b189e0so1984638a91.2
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:28:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789932483; cv=none;
         d=google.com; s=arc-20260327;
-        b=PQlGqZs96zlG/O+zzY1QneyAPUUZDjSQKb+oh3wuyX/R1mF/PglpsHg+g0wZSYGjpb
-         zYWBrJK+lu1wK5vES2IDqoLEMpzhWKDuDvfkBB1+zcovZq59Xe4M5N3esjk18a/tyhvY
-         MpIslZvJI3rvUjeRllTTc+dNNIyFcCCoQWg42ed9hhW4TCsTmKl6ChxxAdETSqsum0Sr
-         4qIOT5v270oFPh0eoYTrWkb0rE9kO0CKJj5/iOA7sAktiU/pz2+S9dtOOuRN8yGS7BUG
-         UhZ6oqS4CiQQzxJL8sQFTVyeWhY2tOhQd10LIqDhSmc+GdiXXEhdDXJg6mKdOzU4pz4c
-         ao+g==
+        b=DPvbxxZwm5QzSabe53eyy+ZtroWyb2SlMdN+vqJJB0cJxKeoQ809HMF0TYsxTQTCiO
+         UKF78x2uiGyi/S/Tp45y9DaGb/9CYyrckriSLHGjttL+pDC1mXY8pwwoTpnyBugJJb5v
+         wNDonD+qtmn11LpmUD3FplMGuiQgWZydaVa4eeHm3jKJ674ZFtE4xtvI+wvtz74lMPB4
+         pAVcHqXpLXNoajI9XVAhkbErEFhEGGBUOX2qpQ2kd3xmIz5YkYPLKZcBemeruCC6yWuJ
+         iWgkUFYqm6sGcpQFI734E0hhAOAXQcliV5N1eCef/Bwtw+Cy6lOknmh+PpiXjrSA4h29
+         4ufw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=gWhRaROW89yV5OS3p3Oh/TR8um8lkux/C2SiVG/FN0U=;
-        fh=jXG6vs5HoQTsvPOozeck6AfEAt7z269vB7q/XhYbczE=;
-        b=ecwntpcExfRF2p9m9DgTimxmXmfU+N/YjxbVBihICys41RF0vAa3RZMNHm9cne/S/g
-         CG2h+ycZCfcmcfC69TDOK1ES6gyLu1JE3SVxo1K8I2snhUFmW0Eaap9e5oPL4WirgxDH
-         hwGM8hqCTaPAhS+kexLr1JPcQd6/cNUNqpnj2UfpjNvr8nP3uhotoJJzEnJDMEpLVj15
-         DR+m2NOa2QQHKX0TtMKIBHE4g3QtaGvgxQP2CgSED2caISZylmX/8Zw7M45c9s7tVdRQ
-         e8leLuvRldMjJN+qSEZuyBzYYYIcFeNUXIXgupiXNvLYO/eG+/43HdEH+68d1bgdONFU
-         si6g==;
+        bh=5q6nOlmS063SvKK8pwkarrfZeEMnP1Jz3nMYjJ4gwsQ=;
+        fh=qOzPeyjN0wrRhnfKwoy7ebiVv4AckjnFalEQhmLpWas=;
+        b=GzIrVQ6YR9b7H0ivZPSP7QoWMD9FnSk00Ka551f43XdXo3J6XCdH4H8CaujTzGucI0
+         K1fGlDVjD4S0YdnTgIsUgy0GqaGg/pLn+WmBaHlaP9gWndvueQOZb6j6XJvG3H6E8+Gi
+         m8ZdnO0WCMBYnFhPtf0QfxZj3y7c2DKjvaMusS6erQCYs5OkLyHTZJoqG86j37PwB3cO
+         xAWF2hQFWuDyojPxcyFWz0Gckwy17v0GLGR0HF/lt7fOl8zHFC2qwimwKvc4VUMyDrX4
+         fF4qwSSfUQeMmipMtotPNHQELAMCvYaZvvPd4zbrdMVpF8X/0LScBurADO3LTCRxXvUA
+         6ioQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789931999; x=1790536799; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789932483; x=1790537283; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gWhRaROW89yV5OS3p3Oh/TR8um8lkux/C2SiVG/FN0U=;
-        b=UHzfCDNkUeg8JygLeU7bjSLvlWmWi6ZIEklM0UBEnKAR8ZTh9HxcLwp+heWsyVG4lR
-         71FnwslAXVzqZeZPJS8LqjIfXT1uc045WKQXbiRas3lThtJrdYQwyHmu0qwlt8R0uOX9
-         h/G3000ZuDcFlLp9YIDUeUAK0Y7+RqpIBBXbIS7SuM7aVl5PJGo8lfAm4s77wFGcvbMq
-         md14K+E6sVbL+V/uP2/IbVCt1JQlJmqOmhXqcAhsvLlkkOtyhIM2h8X9bRGeBuW+COya
-         9Xttr6ClXOCHU+e1xXigAlFDnImG2j55q5cA0bIMbtwxJdZLScZ8nDW4wV3XWbL0T1KR
-         dEBg==
+        bh=5q6nOlmS063SvKK8pwkarrfZeEMnP1Jz3nMYjJ4gwsQ=;
+        b=VXeVkbwe79aGtyXnXWCqsikoRMO1Mr1NaeTxA6xPIHJUr56ezUn/f04CQ9SWpjgS01
+         6xZ/+KgClkHDzGkcpgovrfGaPkd0J934TAjUDowAdYn7bctHH7mO2uu88JTI9A1YsyU/
+         YvqoHyxODf5qln+CzHjvPFwEIRwrDCal/8Y4qq3MRI/EAmuMMub1jIP8uulgRgz7AEIi
+         q09JTsE9iF7x7FZWaae5dXxKFMVudGPFpLmAgbuR6csEcTxD+PAF669sLsnxQPkrrTvl
+         SPxbEWcsEzj6COVg+wic+GfACxVjH1xCvlumLmUGeVJUANJL/CTVwcadHhMnWfzDKX0/
+         Oriw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789931999; x=1790536799;
+        d=1e100.net; s=20260707; t=1789932483; x=1790537283;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gWhRaROW89yV5OS3p3Oh/TR8um8lkux/C2SiVG/FN0U=;
-        b=U4Yhp1hOaCVIFNor6cdFF3HKyHuMFfdBzdYd2eOwu6IZZ4Sj1pydJ0BazDExrJbQE/
-         fGLb9AqiQhkhED+7RG0q961qoydpoW+DZttVlq9lvXtfePbFFQbI8HOlDtKwB90tGYKS
-         lWEpkyqrGcCixbdAC8NXSzUAx6EmLpHA9BYXxJJtHo3UBvDHY2VaIhyYECNd2BTWGax+
-         NhrfojzXUPyNX866ewzWmlK0o4w7iBGLj3BtR3a2MxDSPV8R4bo31rYNRMikMGv817lQ
-         dnA8aM1uslJeNwjqgATfw3BbK7K7r9SICk432ETutVjr4rno9e+6JI14y58FfFDwYQS7
-         uJWg==
-X-Forwarded-Encrypted: i=1; AKwUvBw4FmGvxHJaeXH0SS4qhvDug9HA0idKDkIJ7CTFwAuvHKfT9PQUXuzhhUP5sZM6b/FfGXl/Idw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nJo+3udfP//jlAsKCbtBC74RvAgtJmZ6WS0DTbzQMpE7Of713+
-	pfzkVt+BxzopyFpJVa3jK2n9jlVzhSM2zBosFgKFFOLcsJc4MkNwcHg4HmsVNjasI+yfA7+ajvI
-	ag7A7KcxJuupZbpwNpvMKJ2BWn7xWRMqjIuPQVUW5
-X-Gm-Gg: AYBFou0Umumyz2wWAlCOecdpdA+W4uF/NmgmIoerurqCejfWiZ03p/Iy8wkJ0lKJfDO
-	zeSSASAjhUFmakhIiAe5kjutgnM9Fv0Gf2P1eupi1lRJgIENtTsPXhz7f1b9KwL1nCupJ/wK5PN
-	B4mfVSxmJ2/hCpgC3CtYT6lhHYldT33QqfSF6AUfJduX6Zm2QLcEB8mQuZ5RvXC8bRSnIPctxCb
-	ZCWcjDKXar/IMkimmBI9rmvGydROi//v04lNK+B2LTjDYnNhCVzYgUx9lieofdopIMJrb2ZXEsQ
-	ZnBcfcv+MkvWW199xhu+NWOeFtYqLbZdhya1oaVrAEtcaW3D+JvMwg5EaYUfh60xi0p7O+v07cV
-	foZLG+tJNRYbnROMQgx93rn1bTmNhGlZN2TCBk6MJt3gs/FJUOoJ7dHK+PBdk/peJBHYf/1HdQS
-	v+zsZ4KD2rV1+2LgS7vwy1blAXqzXm3qqbAZs=
-X-Received: by 2002:a17:90b:4a01:b0:3a0:4abe:fcbd with SMTP id
- 98e67ed59e1d1-3a04abf0758mr914250a91.19.1789931998859; Sun, 20 Sep 2026
- 12:19:58 -0700 (PDT)
+        bh=5q6nOlmS063SvKK8pwkarrfZeEMnP1Jz3nMYjJ4gwsQ=;
+        b=Mwbk8U+RWPB6jMtvXEitjnHTdlxwubwTaI5nc7AiQRjwn6kzFoFJbZKlH+4nMyYd1Y
+         1lJbYWiIAWGiw7Aa0hEOBOkFRIhArIhiTis/hQ/NdAOzY6d6z/2aVPY6mksNfOxsIP14
+         4sifZFZ5PBxiQCQwbt+00Hfb+ATExqantvSQZcZ4j9xWcd64B9nqGs11qbROZH0GmNzo
+         lol19ygjfDIjjMG8YOB+Sd5iAiBRUijRci2uJd1j22xJnGjiYxoJu6tjq+gaEmT+bZGY
+         WUNaGG5RJ+o8M01+2swOOl6PEK8QkM1DhWqLZD9xQtuNfq4iarquVOpbGP+p3WFYPP8E
+         Ok3A==
+X-Forwarded-Encrypted: i=1; AKwUvBwnZX0H/E2CpeeLV2T4kjf0AqKAFsQFv8STnwrRLWKWPtoDpfCHnjTwbjdfaLFFBlll7N9JfAk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kbVZ2dkjOrVEZefn6tAGpjkeHyB1peeUth4kd3mbsPcLvuxnSH
+	Ub8DNJA0BHSQ7IxBjf0WRW3rz/0HKO0r6V+Igq/A75c+9PQWjA8DOs5KgY/urB8rjGK6/jU9Pc/
+	H0YlbU2uFiskKHyi49qwuuMW9HhG0/UFKH0NPlgj/
+X-Gm-Gg: AYBFou0FLycpzVUAf7A7UAsDWPlg9a1iwsLy17n+8xEtsduK7HrkGtpNnSs+KSCdzjh
+	HzuXAneWL8vN7dxXxq8DQfQJ95UwZx9ySFy8KTmRnSz2o+XKt8rVJlH4sBtFyrtUTyefE8QuapU
+	gQCTrigqOsY53zR/swO1Nac7cF/l4T8o+sbT4v399+QZUqo10OjbarkceVVld0XYrfTEqE0UBmS
+	v97Fup+oegdmeXJhesg5d71luPr8px9dFF1Y0rNq9SSWHxDUTjGMMWpmlRCAEvnd9aJdF+YRy7p
+	bhIZNc4U8z0HtUPShhdu2avFn+f3eVoDUdmdII2nNE0sT3nu3LSRsd7DIGkRG19BupjZ9d8rwIg
+	QptOGs4Ryn2WccPStFVlFiVasajaz3Mm9Xs8R5pxRpAofrZfZrofxf6Ot2529jVVvgwtbKjs3PH
+	KjjgIcdOrkHwTr9ls7IjeK0RS3
+X-Received: by 2002:a17:90b:3fcc:b0:39e:6c69:34d9 with SMTP id
+ 98e67ed59e1d1-39e6c693748mr8339160a91.61.1789932482399; Sun, 20 Sep 2026
+ 12:28:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260919215238.3471141-1-benquike@gmail.com>
-In-Reply-To: <20260919215238.3471141-1-benquike@gmail.com>
+References: <20260919221735.3708237-1-benquike@gmail.com>
+In-Reply-To: <20260919221735.3708237-1-benquike@gmail.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Sun, 20 Sep 2026 12:19:46 -0700
-X-Gm-Features: AcwNN1XNFaIA_FuRm5dvT0DJBzJTY_mCtk-5E27wg2ToTpoFvLwk3Ok8gbD_32g
-Message-ID: <CAAVpQUDwLnRfv1PkkexsC04D8wLSeARekuUDSTOenyRctWG8MA@mail.gmail.com>
-Subject: Re: [PATCH] fou: reject FOU_ENCAP_DIRECT with protocol 0 to prevent
- sk_buff leak
+Date: Sun, 20 Sep 2026 12:27:51 -0700
+X-Gm-Features: AcwNN1WcTcECHeuPJqJUvpb9g7RJVrtN9kMqByZlKkqiNCviuazi6W8b0DYzOYE
+Message-ID: <CAAVpQUARH-vecUojrXJWHp_C_rCpyxkB-HMBhryfxB-S76BAiw@mail.gmail.com>
+Subject: Re: [PATCH] af_unix: fix u->inq_len accounting in manage_oob() and unix_stream_read_skb()
 To: Hui Peng <benquike@gmail.com>
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, willemb@google.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 19, 2026 at 2:52=E2=80=AFPM Hui Peng <benquike@gmail.com> wrote=
+On Sat, Sep 19, 2026 at 3:17=E2=80=AFPM Hui Peng <benquike@gmail.com> wrote=
 :
 >
-> In fou_udp_recv(), returning -fou->protocol to udp_queue_rcv_one_skb()
-> triggers IP protocol resubmission when fou->protocol > 0, whereas returni=
-ng
-> 0 tells the UDP tunnel layer that the skb was consumed without freeing it=
-.
-> When a FOU_ENCAP_DIRECT socket is configured with FOU_ATTR_IPPROTO =3D=3D=
- 0,
-> every received packet returns 0 from fou_udp_recv() and leaks the sk_buff=
-.
+> When an old OOB skb is replaced and discarded in manage_oob(), or when a
+> fully consumed OOB skb is skipped in unix_stream_read_skb(), the
+> discarded byte count is not subtracted from u->inq_len (or is subtracted
+> inconsistently), causing SIOCINQ / FIONREAD to report stale positive
+> byte counts on an empty AF_UNIX stream socket. Properly account
+> u->inq_len when dropping or skipping consumed OOB skbs.
 >
-> Reject FOU_ENCAP_DIRECT configurations with protocol 0 in parse_nl_config=
-()
-> and drop packets if !fou->protocol in fou_udp_recv().
->
-> Fixes: 08d323234d10 ("net: fou: rename the source for linking")
+> Fixes: 314001f0bf92 ("af_unix: Add OOB support")
 > Assisted-by: LLM
 
-Looks hallucinated ?
+Please tell your LLM not to mix different fixes into one.
 
-commit 7a9bc9e3f42391e4c187e099263cf7a1c4b69ff5
-Author: Kuniyuki Iwashima <kuniyu@google.com>
-Date:   Thu Jan 15 17:24:48 2026
+btw I'm tempted to remove OOB support entirely.
 
-    fou: Don't allow 0 for FOU_ATTR_IPPROTO.
-
-
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> ---
-> diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-> index 5e867f1b5c1d..3fc087c808bc 100644
-> --- a/net/ipv4/fou_core.c
-> +++ b/net/ipv4/fou_core.c
-> @@ -77,6 +77,9 @@ static int fou_udp_recv(struct sock *sk, struct sk_buff=
- *skb)
->         if (!fou)
->                 return 1;
->
-> +       if (unlikely(!fou->protocol))
-> +               goto drop;
-> +
->         if (fou_recv_pull(skb, fou, sizeof(struct udphdr)))
->                 goto drop;
->
-> @@ -696,6 +699,9 @@ static int parse_nl_config(struct genl_info *info,
->         if (info->attrs[FOU_ATTR_TYPE])
->                 cfg->type =3D nla_get_u8(info->attrs[FOU_ATTR_TYPE]);
->
-> +       if (cfg->type =3D=3D FOU_ENCAP_DIRECT && !cfg->protocol)
-> +               return -EINVAL;
-> +
->         if (info->attrs[FOU_ATTR_REMCSUM_NOPARTIAL])
->                 cfg->flags |=3D FOU_F_REMCSUM_NOPARTIAL;
->
+---
+pw-bot: cr
