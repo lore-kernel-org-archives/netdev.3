@@ -1,176 +1,222 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2131A2C027F
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 22:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76182397933;
+	Sun, 20 Sep 2026 22:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789942849; cv=none; b=RkMcstD5nEfXaXEmke5Q0FUcKInI9x2pBIzsGED5OchochYxzcBUxrmjPLEBE/S/DsprdfjTrWs+pijXjzthdtoHyQcYJRVOT5e/NiQb/NLUmvaG7UeTqvB2/gsteDdTSpYHf6rrlA+Z8snpcTZHWrA/tYrvl3bhPX9fEAZBBuU=
+	t=1789943687; cv=none; b=WBBNUol30/NhhD6dBqux45QqeahfFYeKSuRm8nzBJzU50addeq+AYhLxfFXXZEp5qcMR5q5VpVsdoUB2uJF8FGs9/gPr8fod2wh6aUr6pCRAKvY91L3P7eTl86dT7Cst7KLwGuUzNWBuOIiZGEuSKH0FcTfNWeIIyxtAFTYRDjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789942849; c=relaxed/simple;
-	bh=jJ3QwRlnW9Vwxdw/1S6Y7JDhcY1bvzYCsw4DmV5r+oA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRqem970kkBHPpCDC65FKV99H0LhjfH/GUteP3ZmYxgKHIXYcJs3D/2PVo2Zr0cpyytwKXV30JRkCzrd3dP9YbE3lMPolj7pu3w+JvMRcWg70h4B+Rm5UOFK3Ihx/hnnOy9fyRNRHVsufEohqEglcoYrZrnhKhW0QPothqareN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=eON9T0uw; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1789943687; c=relaxed/simple;
+	bh=WUTRE50fkf8Opj56sziBPC3Z3IFWM+d+KCp0wCOjgzs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GwL6ddotCRYSZMtxppuEQ/U92DD2CkWGrOBnyG4gb6QRlT5lcS3RVGkxbaD9pktSX7NVY5apGKq20lQxtfkimA+Gc2nxA36+I7P0Yuo+MXYrELLXeqZbZDLALqk2egZStyPExU9ior5PrBbb7bZfUj1rW+qeGSscTl96cAX5re0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5QgXFLB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="eON9T0uw"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so16016315e9.3
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 15:20:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1789942846; x=1790547646; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rGgXUYgvHQ8Fg6J9+hUTqNq3sfh9W+ZtLaGrZCtz8oM=;
-        b=eON9T0uw58DwSzmxG8iYTVsCs5oP2u0/q/xiJN9o5v6B7YBGjHPMVkpD9CHJH6Bxkr
-         gItjSqG/CgYzouWv8jJYHSZ07x4M6Lq2q7y0ANRvQbRlHewrHmXTQR14EYa+6TLZhhy9
-         WxBHkEz2R5n7/SihMwqmG83bW/t9luT92kaByzicKUxmHWbNK5bqzRKlnuOlOn7wHnZw
-         g+DJZJjdoY+vxB62KNcx1+McwlPUmjGb7KvoGNO2Uju7yUkDKygKRBoa0gH7wrUTRfsw
-         sC6Zg4ViB1lLzgCXYruZ9RXTzebBKyXGYiXuwmM/wENtki8giFFT4FtfUlO1dIFyddfn
-         UeCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789942846; x=1790547646;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rGgXUYgvHQ8Fg6J9+hUTqNq3sfh9W+ZtLaGrZCtz8oM=;
-        b=RZ3RPfF1e2fgZyTpXIRActkAKyQsaxP0nlrCe5Syad8XIjpHWAP1/rhtB8YTzjx+vP
-         Vu5uUeQ0bUDcxEmYPrIaq1fonJwflHd+sGJoZKnpSLa4WKvbOyYLDseuHHJo74/UglE0
-         HFY1VnKGgzRszWyAmfl8d9i5GJ6H5m7+IVZGfwdoOXTWsn/TnbYDeSnzXI0eiIvCJgod
-         75ADZRk/9w1Pc1j79MyYpblyEVWxSnt/7SOAAQ5xyTNRSC9G1AuphF6xkAA0Lp5/WBR5
-         DAHpDbnYfU2FFFvuAf1+NoZmNqhoj9ZY6CSsq5qYZfrRRn9UGy4KvPwBaqQMOC4ylPl7
-         n7hw==
-X-Gm-Message-State: AFuF++nUJ7wpVyiwV4uXN5f8rIhafmICnXjHC+GIH8TXnhEQr7c2ZJdw
-	t+fPjiGt7fRwuah80GGKMP+ViqK4Ue/tpaPUwuZ/v6nTJzuozk0kVr1Y6AAqc8LQY042eCKi71e
-	eTzVkrTGXWA==
-X-Gm-Gg: AYBFou3MHoCpiE8C8yUd952C/s8mIKE7s51EyQznzJIE/hkCVYUajfrk1VcNISZ+zSl
-	2NpwTs0TJogKaBlN0LJkGhEjnfS/XkMyH5tg4QkUdWAbwrY3GkuY6gSvQ9njKuh1L9S78PKlwUU
-	4uTUqqSy+eyaM2jEIIcWD7dLRg33vhN/6TwPC7XIA+JEscr2ur94N5X513T8Td/dr3TgwSR732C
-	Y3V3UMBRn12zsJRg0VeHMTx1zI7zf+FAN9WgBNx2hLEJ17HhvDBmXcqKGEgyVY8AfafU8hqL+7l
-	1sBLZs+oOVwKcGQOPtqJFHViG2yXy79Z8rQOFHEHjtljNYlKtQTnGdf1vld3IhYppkAGzxLwSJr
-	PeGaaNhPH7HrrzwmGtb9VKEKzlInMeg838crfj7sudOgBSPrrzC7YkzqCpjWDVQfqNstiRAHbir
-	nvS45Bj0FNImEPkv+O7K1OnQYgsZWtY4V06xGHrk2tOiBjFg0Lyg==
-X-Received: by 2002:a05:600c:19d1:b0:49c:fed6:cd3f with SMTP id 5b1f17b1804b1-49fc5743bc4mr129978595e9.23.1789942846247;
-        Sun, 20 Sep 2026 15:20:46 -0700 (PDT)
-Received: from remote-01 ([84.17.55.230])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd07411fsm188321175e9.7.2026.09.20.15.20.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 15:20:45 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	linux@armlinux.org.uk,
-	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net v3] net: phylink: record the PHY only once bringup cannot fail
-Date: Mon, 21 Sep 2026 01:20:44 +0300
-Message-ID: <20260920222044.1752860-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260919015338.499611-1-f@lex.la>
-References: <20260919015338.499611-1-f@lex.la>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5QgXFLB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B861F000FF;
+	Sun, 20 Sep 2026 22:34:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789943686;
+	bh=U87R++EK1y6Sz1Xb4HBxCZ8MA5p8L+mLjarW01EQyYg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=B5QgXFLBT6KK20Ob1YhtIbJ+Delv2d7VX58j0dpyaTK+JWw2CrccVUD9MydRE/GbR
+	 kv9eGc97VxfoplkXsilme78IXdb7FGJhbh/ofbaGAULivLvX2mY/KNptYKK+wl2MFZ
+	 8n3xCunpOu0UJm3H+CowV8bv5N1QAEfXT9RXGA+pRyi8kwVKIZImRIWsyT9DTk1Lle
+	 uZezVdPl4HooVtlqjBpsNYN2Vmw38xY08BexOPsrz6m9NajwMTtI6LQoymbu2Lnwb1
+	 BIuhXmirh/KoqkCOQYQvVnfN/3iM83Kz2QcpWHvJEZ3rIWNtFRkqZnSULFcNmvcWik
+	 6prjF7MVTL4pw==
+Subject: Re: [PATCH] net: wan: lapbether: validate frame length and headroom
+ in lapbeth_rcv() and xmit
+From: netdev-bot+sashiko@kernel.org
+To: benquike@gmail.com
+Cc: ms@dev.tdt.de, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-x25@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 20 Sep 2026 22:34:45 +0000
+Message-ID: <178994368506.2160803.16241878291781749602@kernel.org>
+In-Reply-To: <20260919223433.3882618-1-benquike@gmail.com>
+References: <20260919223433.3882618-1-benquike@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-phylink_bringup_phy() stores the PHY in pl->phydev before its last
-fallible step: on a MAC whose phylink ops implement LPI,
-phy_eee_rx_clock_stop() can fail with a real MDIO error. The callers
-unwind with phy_detach(), which knows nothing about pl->phydev, so a
-pointer to a PHY that is no longer attached outlives the failed
-connect.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-What that costs depends on how the caller got here.
-phylink_connect_phy() goes through phylink_attach_phy(), which refuses
-to attach while pl->phydev is set, turning a transient MDIO error into
-a permanent -EBUSY. The SFP path is worse than that: sfp_sm_probe_phy()
-answers the failure with phy_device_remove() and phy_device_free(), and
-it assigns sfp->mod_phy only past that error return, so nothing clears
-pl->phydev and it is left pointing at a freed phy_device that
-phylink_resolve() and the ethtool helpers go on reading.
-phylink_fwnode_phy_connect() has no such check, so a later connect
-overwrites the stale pointer and hides the problem. A disconnect does
-not: phylink_disconnect_phy() hands that pointer to phy_disconnect(),
-and the second phy_detach() on the same PHY drops references the first
-one already released.
+Critical: 0 · High: 2 · Medium: 0 (1) · Low: 0
 
-Found while making a DSA port survive a PHY whose driver arrives after
-the switch probes: keeping the port across a failed connect and
-retrying is what makes this window reachable.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Publish the pointer after the last call that can fail instead of
-unwinding it afterwards. Nothing between the two points reads
-pl->phydev, and the registration that follows cannot fail:
-phy_request_interrupt() falls back to polling on its own. The PHY-side
-state keeps the order it had, so no MDIO operation moves relative to
-another.
+- [High] The commit message describes two changes that are not present in
+  the diff.
+- [High] In lapbeth_rcv() (drivers/net/wan/lapbether.c:135-142) the wire-
+  supplied 2-byte length `len = skb->data[0] + skb->data[1] * 256;` is…
 
-Fixes: 03abf2a7c654 ("net: phylink: add EEE management")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
-Changes since v2:
-- Record the PHY after the last call that can fail, as Andrew suggested,
-  which removes the unwind and the helper it shared with
-  phylink_disconnect_phy(). The fallible call keeps its place so no MDIO
-  operation moves.
-- Hardware evidence for the failure this prevents is in the reply to v2.
----
- drivers/net/phy/phylink.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+Pre-existing issues:
+- [Medium] lapbeth_rcv() increments `dev->stats.rx_packets/rx_bytes`
+  (drivers/net/wan/lapbether.c:141-142), where `dev` is the *Ethernet*…
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index a1458da8111b..1bbcf46c8356 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -2129,7 +2129,6 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
- 	mutex_lock(&pl->phydev_mutex);
- 	mutex_lock(&phy->lock);
- 	mutex_lock(&pl->state_mutex);
--	pl->phydev = phy;
- 	pl->phy_state.interface = interface;
- 	pl->phy_state.pause = MLO_PAUSE_NONE;
- 	pl->phy_state.speed = SPEED_UNKNOWN;
-@@ -2196,10 +2195,25 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
- 			ret = 0;
- 	}
- 
--	if (ret == 0 && phy_interrupt_is_valid(phy))
-+	if (ret)
-+		return ret;
-+
-+	/* Nothing below can fail, so the PHY can be recorded now. Doing it
-+	 * here rather than above keeps a failed bringup from leaving
-+	 * pl->phydev pointing at a PHY the caller is about to detach.
-+	 */
-+	mutex_lock(&pl->phydev_mutex);
-+	mutex_lock(&phy->lock);
-+	mutex_lock(&pl->state_mutex);
-+	pl->phydev = phy;
-+	mutex_unlock(&pl->state_mutex);
-+	mutex_unlock(&phy->lock);
-+	mutex_unlock(&pl->phydev_mutex);
-+
-+	if (phy_interrupt_is_valid(phy))
- 		phy_request_interrupt(phy);
- 
--	return ret;
-+	return 0;
- }
- 
- static int phylink_attach_phy(struct phylink *pl, struct phy_device *phy,
+--
+
+net: wan: lapbether: validate frame length and headroom in lapbeth_rcv() and xmit
+
+This changes lapbeth_rcv() to use pskb_trim_rcsum() instead of skb_trim()
+when trimming the received frame to the length carried in the 2-byte
+prefix, drops the frame if the trim fails, and moves the rx_packets and
+rx_bytes accounting to after the trim.
+
+A few questions below about the commit message and about the length
+handling.
+
+[Severity: High]
+The commit message describes two changes that do not appear in the diff:
+
+  "call pskb_may_pull() before reading the 2-byte length prefix in
+   lapbeth_rcv() and ensure sufficient headroom in
+   lapbeth_data_transmit()"
+
+The pskb_may_pull() call is already there before this patch, in
+lapbeth_rcv():
+
+	if (!pskb_may_pull(skb, 2))
+		goto drop;
+
+git blame attributes that to 1da177e4c3f4 ("Linux-2.6.12-rc2"), and the
+diff adds no pskb_may_pull() call at all.
+
+lapbeth_data_transmit() is not touched by the diff either, and the 2 bytes
+it pushes are already accounted for in lapbeth_new_device():
+
+	/* When transmitting data:
+	 * first this driver removes a pseudo header of 1 byte,
+	 * then the lapb module prepends an LAPB header of at most 3 bytes,
+	 * then this driver prepends a length field of 2 bytes,
+	 * then the underlying Ethernet device prepends its own header.
+	 */
+	ndev->needed_headroom = -1 + 3 + 2 + dev->hard_header_len
+					   + dev->needed_headroom;
+
+Could the changelog be rewritten to describe what the patch actually does,
+namely the skb_trim() to pskb_trim_rcsum() conversion, the new drop path
+and the relocated receive counters?
+
+Relatedly, is the Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") tag correct
+here? As written it points at an unchecked length-prefix read that the
+patch does not change, which may lead to this being picked up for stable
+as a memory-safety fix.
+
+> diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
+> index c3630a82913b..3838910ea7bd 100644
+> --- a/drivers/net/wan/lapbether.c
+> +++ b/drivers/net/wan/lapbether.c
+> @@ -133,11 +133,13 @@ static int lapbeth_rcv(struct sk_buff *skb, struct net_device *dev,
+>  		goto drop_unlock;
+>  
+>  	len = skb->data[0] + skb->data[1] * 256;
+> -	dev->stats.rx_packets++;
+> -	dev->stats.rx_bytes += len;
+>  
+>  	skb_pull(skb, 2);	/* Remove the length bytes */
+> -	skb_trim(skb, len);	/* Set the length of the data */
+> +	if (pskb_trim_rcsum(skb, len))
+> +		goto drop_unlock;
+
+[Severity: High]
+Does this actually validate len against what was received?
+
+len comes straight off the wire, and pskb_trim_rcsum() returns success
+without looking at the skb whenever the requested length is not smaller
+than the current one:
+
+include/linux/skbuff.h:pskb_trim_rcsum() {
+	skb_might_realloc(skb);
+	if (likely(len >= skb->len))
+		return 0;
+	return pskb_trim_rcsum_slow(skb, len);
+}
+
+So for a frame whose prefix declares more bytes than were actually
+received, the new check returns 0, no trim happens, and the untrimmed skb
+(including any Ethernet minimum-frame padding) is handed to
+lapb_data_received(). Only the shrink path can fail, via
+pskb_trim_rcsum_slow() returning -EINVAL for CHECKSUM_PARTIAL or -ENOMEM
+from __pskb_trim.
+
+The transmit side in the same file defines the prefix as the real payload
+length:
+
+	int size = skb->len;
+
+	ptr = skb_push(skb, 2);
+
+	*ptr++ = size % 256;
+	*ptr++ = size / 256;
+
+Would an explicit check be closer to what the subject line promises?
+
+	if (len > skb->len)
+		goto drop_unlock;
+
+> +
+> +	dev->stats.rx_packets++;
+> +	dev->stats.rx_bytes += len;
+
+[Severity: High]
+Can a sender on the same Ethernet segment inflate rx_bytes here? len is
+the declared length, not the number of bytes received, and per the above
+it is never rejected when it is too large.
+
+A ~60-byte frame declaring 65535 adds 65535 to dev->stats.rx_bytes, which
+does not match the rtnl_link_stats64 definition of rx_bytes as good
+received bytes corresponding to rx_packets. Would counting skb->len after
+the trim be more accurate?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch (the device selection dates back
+to ea2ebaf822ad7), but since these two lines are being moved anyway: is dev
+the intended netdev here? dev is the Ethernet device the packet_type
+handler was called on, while the transmit counterpart charges the LAPB
+device:
+
+lapbeth_data_transmit() {
+	ndev->stats.tx_packets++;
+	ndev->stats.tx_bytes += size;
+}
+
+The result is that ip -s link show lapb0 reports transmit counters but
+never any rx_packets/rx_bytes, since the receive path reaches the axdev
+only through lapb_data_received() -> lapbeth_data_indication() ->
+netif_receive_skb_core(), which does not touch dev->stats.
+
+There is also the question of who owns that counter block. dev->stats is a
+plain non-atomic struct net_device_stats belonging to the Ethernet driver,
+and this read-modify-write is serialized only by lapbeth->up_lock, which
+that driver does not take:
+
+	spin_lock_bh(&lapbeth->up_lock);
+	...
+	dev->stats.rx_packets++;
+	dev->stats.rx_bytes += len;
+
+Can this lose increments against the Ethernet driver's own dev->stats
+updates, or produce torn rx_bytes on 32-bit? Would lapbeth->axdev->stats be
+the right target?
+
+>  
+>  	err = lapb_data_received(lapbeth->axdev, skb);
+>  	if (err != LAPB_OK) {
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919223433.3882618-1-benquike%40gmail.com
