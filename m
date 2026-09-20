@@ -1,195 +1,114 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2120.outbound.protection.partner.outlook.cn [139.219.17.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5938438490;
-	Sun, 20 Sep 2026 12:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.120
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789906717; cv=fail; b=N3LBbzUxEQfnbpDkLnFcPpPfreN7yOIh4a5lLcBR+0iySSasfbrsK3qTWJ58ykylTIFDPwVu3DP6m84EPT+QVFfakO/OaQ9m5LAPzzyRoPS2Whi3cywpzFS3/7H3nSwh+c+gOZhKWaroVAClTjpPPE0cUvpLsvoMlHRhzsziSiE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789906717; c=relaxed/simple;
-	bh=kcgomHn9aswhhkKpQcItUw+Axf8Psr2r3V5flUQai+Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RBkcTSXUFOgDi5H2kk7HCcNYswv4WF+WSaM9nWyUQ45fyVheHy7OLPrkypiPb2PRu1UO9yvGdHAspmHmg7xOPXvtn2AsjoMd785qpch0DO/uzKcbI/rg7539N4FYGZv7U0xDWfVK2bW8LD/FjxBApGm5qL/ik8Djk8r6gcAouac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=higYAscQNstWymkzPjfMz964SG7D3pbinLVMgBUP5KhQGpjetOzyvUQa+z4gDj4XdvjRhh6BUwAfkmk/LhlM0BmKjn5PYI5pAuiOiI4L1wEvVaDJ50iCZsoE/oSqkid6IMZQSpGl8HsfBSFPG/zjtTfVwtqD4xVwJ4E0NBu4HI0q3wrHzJ0PfBm+tIU35NGZ6tnBN+jH2roQMfJjXsdXxXhXSi5fRZBYiJuYYbPqCHO6XqnwSldtMV0lUn2Va2gH1P1TxC3V9bGAnd4BdEn66t3pM2rPVb1X+Wr/KxM42mp88NcSYq+Qkf+04qsdzqcWYCGPl1s5OPosmOufen30Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=430ZPZ/ZVmmeDsUJou6JbP3Zw1mIA/CIJdaNUYIcFAM=;
- b=Nk+CDnEgQFJnvYHInwgloL7/pO2yvhxWbZUJ6+/sxPflnreZvJv8AfVSXvy2HvHzqUkAK4kueBw1x/RouTij82UG/1LrsEbqqqYbs6iIoDumC0GWkECQdElaovwjj0Qvnv6hKkLJe+OjA6R45bQlcVGBinSBkmtrrckA+z6hPsXBxCc+SpmR7QDWsTZ/Yr2ZT9yK2727wjNjn2VLEJnja5D3uGVktZNlT9FWf/sy33oMWRiQF/hQmCgQmGU6c+SjhJuyC1JgLIBJ2wRswf/aidrHxrEKVVu9nFcEEyVBe7eg3zstWTeicGzCW0uX5nf2OHnP/Hoc6U3EOarmBbZcGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:11::9) by NT0PR01MB1070.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:3::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Sun, 20 Sep
- 2026 12:01:03 +0000
-Received: from NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
- ([fe80::1666:48e8:19e9:ad29]) by
- NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn ([fe80::1666:48e8:19e9:ad29%4])
- with mapi id 15.21.0428.014; Sun, 20 Sep 2026 12:01:03 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Brian Masney <bmasney@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Cc: linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063B2439F77
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789907314; cv=none; b=tHswaZbrJBKDvcdANP5pfacFlXb3sxa8YYnBLWGjG/IaRqxnY81Lp3PlhUETtP9WSMKmKAlFgoTG+8nm2I1mlqXqtAQaF64HfmDAEeDfWFv5ZWm9PntA+aJvscOjU/UhcvZVk1w/hoG7FqUkKfw9MlD3vvy+PNFS+afJv5ZAW/k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789907314; c=relaxed/simple;
+	bh=ug5ivTizQ1N7ESUeK1HC0Ctk7wrSvLsfG5IU53GsVEU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ThUXJYmoUekYtXBOi5c0eIRnq1ZsCXr04kyExp/Vba6naNF9oEEsvDY23MJhTIxgICdIKWIfUUtYmH0VUMx0sRQCBmVmMBMaFbubgWZzHi/+IpyxLIZJpyVpV9rbSjwNteG1NEU/wvg6T/oQ/uCgkgMWHLiQTHYPHrZNBIVsMNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LnkmQBfl; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LnkmQBfl"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db1ca06a25so14285515ad.2
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 05:28:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789907293; x=1790512093; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dV2mf6OjkoqKta420YWVjn2IUO2T2gOHZv0jasF5Urw=;
+        b=LnkmQBflNZn6Ywv9y6nSyxsFWOZhHopQ2Fq8MD0pyTfTS7ob6lHf0VvD7fECVe1Ok6
+         lP6wNnsACmbxjJXrDmvPAzEgjBCDJdbJaMpB/pBnoq76Bzntj6k0neJhSgLsPALTZG/Q
+         JrwbdVItGyWBdw4GyqpE9R7oc9DYsyYzzyh4t3OlDmZac0ryKqcdR8J3syD6mZcJFUdl
+         R3hF29u8G4usOdvv+FzTHT6JuD0OIAjru3cYEzABIrKqd9ib6czw2dTkOCYqgwhhqlW1
+         ebjOvOYLP0fkZiQuRbp+VjGaw+xNdHJuioYddWwrfqt30pTfgouxlY0BzaOnF1tFDeY5
+         Fl2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789907293; x=1790512093;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dV2mf6OjkoqKta420YWVjn2IUO2T2gOHZv0jasF5Urw=;
+        b=0ZyFb3IQ7dOqCJ4hy0EZv5OK5IvKNEwADydFNrK8fwC+CnyyHfKdd2Q9jq5seTKiZx
+         qUDrDpu3kK3NyepzJPXUCLJ+Ropm6t3/cNreCktdLSXlZgkajmw6Cr2Xvw8t7zUkFHhU
+         mkYiOM34SP2fAgywMXh92Yk8TdBNXBJcEAoPmuAqDjkNRoFC6s3Kfh+GuCzc2/IsD5rJ
+         GKsXX+PXO+l59fVqThb/72MjlNg0Zdcq1M/mMNPKn2EKm4DfLUiTbEdj8u+lySbjaOiA
+         ppyIvvfdBTUnfYrTq4lhbLO3X8CsMSLWRKDW0TC65o62jIagfyksLwOJnCJrDZUsPf4Z
+         MXqA==
+X-Forwarded-Encrypted: i=1; AKwUvBwt2ejWrL/hhXrCTjU9v7u4cgThuiIKG4CxLeh9kGnavM2H1ts9sO9yeq6FZ96+coj6S7ICCmM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nSphmAWl3ucURCEkGG0GFCDyjsF5gt+laRWQhvIrJYulF2RRDB
+	Sj4hfaOu2XXSczJ0Y63AdG7WA14wuNPSpQiD+G+ayRK6gWlmIQt+B0/x
+X-Gm-Gg: AYBFou3DqeJttCj17QDZ5iP6AlII4seC0pjptSClTmksnebWG/+RGUlJ2HWplYaHBi7
+	Be687KRKv+Ribt8ffeq/jwnF4Y/rZSCS9rTF/mxd2f/L9FNqvqOi2btgbHHJFKyS+bgDVa2TVAI
+	cXAvjuMFHZmZrQ5yw32tz7VuODOksQ3H4UKfHyUr8hP/A+JyJCPZLGvwjiT5IjSaf+PfsALqSXH
+	31+M3GhLoUM+bwP29yg6AE/vsWTMKCya4vNrxmrVmJ7gSHEpH9NpTk04dQw13UnMAUuBwrzr5jv
+	zKp4IfZ0jg8WX8E4DJzIFNQJqzjpjDVC+T9ivytihBKt1BFDUsPIi3DuouYwnUBtNyVRNqfZ6JB
+	WHglTLss0pJD1Cp77fL0TiXuHFFVUD0wgqIbrWXLN74rp0L4/MkNJY5tl8HuUYfD1YnP3B0Yx10
+	WN6bDl04NQdHY9SvO0QvIUmgOoFGaSkaVZSpwzYnBD7nKDICfW90dcQDxaWnhPe73m22FqqXpFw
+	aWP7tmJci3q7uvcipyo+00GniQM2bPQJRmmobsi6HH+vUrGYSRtUj0pOAXmdnrAmXnI/ihb
+X-Received: by 2002:a17:903:37c8:b0:2dd:c100:80b0 with SMTP id d9443c01a7336-2ddc1008158mr57187955ad.43.1789907293493;
+        Sun, 20 Sep 2026 05:28:13 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:301c:f8cd:2df5:84c3:962:c847])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df36806cdbsm15428845ad.80.2026.09.20.05.28.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 20 Sep 2026 05:28:12 -0700 (PDT)
+From: Aryan Sinha <sinha.aryan03@gmail.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v4 12/22] clk: starfive: Introduce idiv ops for inverted divider clocks
-Date: Sun, 20 Sep 2026 05:00:34 -0700
-Message-Id: <20260920120044.194901-13-changhuang.liang@starfivetech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260920120044.194901-1-changhuang.liang@starfivetech.com>
-References: <20260920120044.194901-1-changhuang.liang@starfivetech.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SHXPR01CA0025.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:1b::34) To NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:11::9)
+	linux-kernel@vger.kernel.org,
+	Aryan Sinha <sinha.aryan03@gmail.com>
+Subject: [PATCH net-next v2] octeontx2-af: remove duplicate SCTP port flags
+Date: Sun, 20 Sep 2026 17:58:02 +0530
+Message-ID: <20260920122803.6277-1-sinha.aryan03@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: NT0PR01MB1216:EE_|NT0PR01MB1070:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3256868-2e02-4e12-2e18-08df170ed84c
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|23010399003|366016|1800799024|921020|6133799003|38350700014|22082099003|18002099003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	6joNCu1oDBrCgyYqOQnKJzNRYrarXGp6+KwLlKOQ+hi8ZlNBv6Lda7Hir0Y1noCHrqBvWYYDf95JnQjbExgUNmibXjBodRszhzZLivWwRENiNEI8EH/ri1eZt8yAqQXIXbC9/AaQq0+mtPqZNX4GTQ+ihSr6MefKw7OROj+TAwJ/iqYLrP0c4nLQdeKtf6tj5hurSqGTnwjcauJuNkyDCp67xYP0YKiNV/GbAo6o835jtRluDhQ46aLUNe+fMWbBUOT3KEUm+jDxQLmIvrKf374Tg9i4vBaCtUO3F7BeFORx1fMHn6dtcS2xuw9CrTv0dhIlkUZU0MtQm/M3Ollk1nog3DoegQjCMWku+QTaEdE1H0asX1jybG5DK4HZxucUApZTqgNG1OOP9Vix2DoX89oT6mO+CvM4aQEPeV9sa6OXEQMLKOBke5sX+5aNVELDn0sG92zVG73NO8LG541Wdl0YoUpwYCXvIutycW0KYDvvgls/3A8hCeoYDPMT8gJBpPpUBraQ+O/w+6xTOuEkuf7RA+6rtrwqeyulEMSJLQKXnpG7BcTZmXSwE3bbRd2X7N8tI+NkncksTaV1NQNzcQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(23010399003)(366016)(1800799024)(921020)(6133799003)(38350700014)(22082099003)(18002099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9sIB/JTTLFyIqZ8jbUP3T1IPWtlJewIoN03US8YdPBSk9RkXxIjPVznLoGI7?=
- =?us-ascii?Q?M4xGUWK1nz16GaoXt9VF+kQRm+KTbrfXk/n+wSQymOddpbdpQmC4F59xMHzX?=
- =?us-ascii?Q?U0l/nWZopGiQa5uxfVOoKrp51TV4E4jIOu0l1WM2h80hKCG8qJXrsI/c7DfZ?=
- =?us-ascii?Q?0pQn4eMHWXFpR7BPZl/l96Yhg6h1DRMda+LsTNLux80Tm7KtrFWjokc3Boku?=
- =?us-ascii?Q?Q+Zxwjt2u6jfgPsJPxFbV+V/0+x3fwHSyrsVOGJl88Qug/0oAiB7lOJaZ4bF?=
- =?us-ascii?Q?QhgLa8f+hVWNUl5pOVvQLF5+SFnt1x9LrgDRbd+Hmn+B/DNiKzSvTa7umoMv?=
- =?us-ascii?Q?Gl8LSxwG1kmglR0Q7imVoEV8j1Zq5znneXgPmPTzFmRNpqnF2KxcF7ysX+3P?=
- =?us-ascii?Q?Xj/AfW6DthtuRC2o8i5jwAbiEOC+yKgmFMq/IK4yR9JxS79g6UMpjLGSjqXS?=
- =?us-ascii?Q?Ywbp6D1Fr8pzCFd7x/50x/RzA7Iyya7kZHTmdt/IcgzG+eKDT0/DWkPvGCp3?=
- =?us-ascii?Q?At2/1sAdP4u8Zs/13MqWP3ZfQBLMtVRzgj6w0M1aWodRQby5FlReqhtjCRRU?=
- =?us-ascii?Q?Ir2R7IBmRHy8Ds+kZK+6S4P/gayz+Ma+dkjOz6E2HM3FGzZhILCqlwaBQ7hq?=
- =?us-ascii?Q?iczB+a+vW2RE5OOKaiAeVroKJONYanmu63KCjthSOxCgf5z4LnfAyA5Q+N2O?=
- =?us-ascii?Q?hq/sltAlVxeN1KwxDWKZOFnYMtzaoA9dYfF8EZG8C3y8fzzG6/Jx0/MdGUh6?=
- =?us-ascii?Q?Iei3dkTd/j+6CKucs8nbgJmW+QkP0fjOInvLfdDJY6h85pnJxlFiuk+XbI3F?=
- =?us-ascii?Q?2wWRm698eEgwLZKA6s3YhGcTs6ICIis/CJqJleHYY/bjgxIuc9yOVZFoAQ5u?=
- =?us-ascii?Q?MVLGsYDslg8irRh2ztk97PSyqiEb5EGbG5S4Pg3wWWGOYRJ6DgZvF/R7cuh4?=
- =?us-ascii?Q?e7HmNJh1RRUzBOB9ZYAxQ6C4HYERXvKYfkPd9wugAE9Ys5hDEnilZeQ4KrLf?=
- =?us-ascii?Q?NzGs3g0LWpl2tXGHmjesVxnXI32erW6RxYvUAld9z6dkRN1lUIovruK0nVHp?=
- =?us-ascii?Q?2gD2Pyb7aV+lLNizLH67iCC2H9Qo5G4ux/oJcNxdjW6FsfY3rKPKkcXXukIF?=
- =?us-ascii?Q?g/SBf4hHFp5ICwnRo4G3IPR4fNndWZnOLDjzXIY6aUEDWQqbaRbEilw1aF91?=
- =?us-ascii?Q?/4uvQeL4b8fAQt7y2YDqM0b3ywI519jRaDZsJncynSn3y30RKXr7p0tdHTDP?=
- =?us-ascii?Q?T9W2OVFic4SBsxuiyqhFdhflkNPUWdZqlhyJcCoz+ehaTb4hHb7dMCFHBNZw?=
- =?us-ascii?Q?61OFEVbIbIdCIjhI9h++Lg6BkjF1JzbR62TQYV5vRuCpUgR7THYpa3ThKVCn?=
- =?us-ascii?Q?bgbc2+PRV7aF5IP+5Sn7bkY97AglvFQ+1vrKhZk2atvyRwF5+QA7CKvQvSUa?=
- =?us-ascii?Q?kltyaVFqufRR/AI+JmD47HWUDFCg32v3epwNfTQv0pOc81pDSAhD1K0X6ryN?=
- =?us-ascii?Q?HpJDHx7zvFirAxVYU2mz51GGnafjA79LcyLGWh1fHXMjUcdz/d2+6kV/lvKz?=
- =?us-ascii?Q?RzL+XpA2tQFKYYEbJRVeFrUDsWx8TN6y6wo+8Iq8cvagdiXUiDgUnDnjZ2fq?=
- =?us-ascii?Q?7AzJeNns21m2O7SNn9UNVjBWiTXSfZMmosNux6bk4Sz9aISlLHOOQ/YpAPxb?=
- =?us-ascii?Q?71r8Oj1WDKRMU/VSZlZQCh4VpQV2eh39jcSbbmH5o7ocNQatZhrfcSZPyGsM?=
- =?us-ascii?Q?OnsxB2tCb574+R3eLz1bk4m9Q4OpTThPx03qnqaJbqvuz+f0TJgh?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3256868-2e02-4e12-2e18-08df170ed84c
-X-MS-Exchange-CrossTenant-AuthSource: NT0PR01MB1216.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 12:01:03.6439
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Oxv1JQUeIMybLvNrUjxo6BjuXnAS/u46pfkN8fm24kY5EdbB3E2DGJwYI4BWEpuDb1sdl5P/kE1oVG++cDRJqhk6lujkjwV5j+XLidEGFBw8OGIC+f3NlsVRPmMTvu+S
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: NT0PR01MB1070
+Content-Transfer-Encoding: 8bit
 
-Some StarFive clocks only advertise the divider and invert capabilities
-(via STARFIVE_CLK_INVERT, without ENABLE). Add the STARFIVE_IDIV() macro
-to declare such clocks, and starfive_clk_idiv_ops, which combines the
-divider rate operations with get_phase/set_phase.
+proto_flags ORs BIT_ULL(NPC_SPORT_SCTP) and BIT_ULL(NPC_DPORT_SCTP)
+twice. The second pair is redundant and does not change the mask.
 
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+Drop it.
+
+Signed-off-by: Aryan Sinha <sinha.aryan03@gmail.com>
+Reviewed-by: Geetha sowjanya <gakula@marvell.com>
 ---
- drivers/clk/starfive/clk-starfive-common.c | 12 ++++++++++++
- drivers/clk/starfive/clk-starfive-common.h |  8 ++++++++
- 2 files changed, 20 insertions(+)
+v2: add the missing net-next subject tag. No Fixes tag, the patch has
+    no functional change. Picked up Geetha's Reviewed-by.
 
-diff --git a/drivers/clk/starfive/clk-starfive-common.c b/drivers/clk/starfive/clk-starfive-common.c
-index 9678616d293d..523e2f816036 100644
---- a/drivers/clk/starfive/clk-starfive-common.c
-+++ b/drivers/clk/starfive/clk-starfive-common.c
-@@ -300,6 +300,15 @@ static const struct clk_ops starfive_clk_inv_ops = {
- 	.debug_init = starfive_clk_debug_init,
- };
+Link to v1: https://lore.kernel.org/netdev/20260918060323.53860-1-sinha.aryan03@gmail.com/
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index d422bdd5e..ec004ea51 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -698,7 +698,6 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
+ 	proto_flags = BIT_ULL(NPC_SPORT_TCP) | BIT_ULL(NPC_SPORT_UDP) |
+ 		       BIT_ULL(NPC_DPORT_TCP) | BIT_ULL(NPC_DPORT_UDP) |
+ 		       BIT_ULL(NPC_SPORT_SCTP) | BIT_ULL(NPC_DPORT_SCTP) |
+-		       BIT_ULL(NPC_SPORT_SCTP) | BIT_ULL(NPC_DPORT_SCTP) |
+ 		       BIT_ULL(NPC_TYPE_ICMP) | BIT_ULL(NPC_CODE_ICMP) |
+ 		       BIT_ULL(NPC_TCP_FLAGS);
  
-+static const struct clk_ops starfive_clk_idiv_ops = {
-+	.get_phase = starfive_clk_get_phase,
-+	.set_phase = starfive_clk_set_phase,
-+	.recalc_rate = starfive_clk_recalc_rate,
-+	.determine_rate = starfive_clk_determine_rate,
-+	.set_rate = starfive_clk_set_rate,
-+	.debug_init = starfive_clk_debug_init,
-+};
-+
- const struct clk_ops *starfive_clk_ops(u32 max)
- {
- 	if (max & STARFIVE_CLK_DIV_MASK) {
-@@ -310,6 +319,9 @@ const struct clk_ops *starfive_clk_ops(u32 max)
- 		}
- 		if (max & STARFIVE_CLK_ENABLE)
- 			return &starfive_clk_gdiv_ops;
-+		else if (max & STARFIVE_CLK_INVERT)
-+			return &starfive_clk_idiv_ops;
-+
- 		if (max == STARFIVE_CLK_FRAC_MAX)
- 			return &starfive_clk_fdiv_ops;
- 		return &starfive_clk_div_ops;
-diff --git a/drivers/clk/starfive/clk-starfive-common.h b/drivers/clk/starfive/clk-starfive-common.h
-index 4cd4357f8366..fd9d13735896 100644
---- a/drivers/clk/starfive/clk-starfive-common.h
-+++ b/drivers/clk/starfive/clk-starfive-common.h
-@@ -104,6 +104,14 @@ struct starfive_clk_data {
- 	.parents = { [0] = _parent },						\
- }
- 
-+#define STARFIVE_IDIV(_idx, _name, _flags, _max, _parent)			\
-+[_idx] = {									\
-+	.name = _name,								\
-+	.flags = _flags,							\
-+	.max = STARFIVE_CLK_INVERT | (_max),					\
-+	.parents = { [0] = _parent },						\
-+}
-+
- struct starfive_clk {
- 	struct clk_hw hw;
- 	unsigned int idx;
 -- 
-2.25.1
+2.46.0
 
