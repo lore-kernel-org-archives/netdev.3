@@ -1,37 +1,86 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FEC34B662;
-	Sun, 20 Sep 2026 07:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EC832B13E
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789889375; cv=none; b=J6QuUZgvBc8MCR7fhzSHGfEf+wwtqxZur3NNw+iqdcx2w3gHi1W9Xe5nWE73BrzkGRiCTTTuow6Cla+AX4i4KmZhy1y8E6rKymj1FAbHTdIgmwK73q99tzE7s/9sXGkONhT4fQBfrpcPgldhDNVuTaBCL354707nKbYkmBM5Whk=
+	t=1789889693; cv=none; b=TGjbX9f2e8qoe1QM5zECobUaFt96i4nmKFbTad78muyQMXHtFJA5mTKBryZj9eSeoYayksbOjiJormtiGjoeQgZzw0K7zJCHKCegghu5+cDhUMO3kgLp2BW2WcZfwaFiLBnHv90XWgJPbLBF6PtK9OKR6bxRYuGwphQ7wz2F+Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789889375; c=relaxed/simple;
-	bh=pBgQ849jDAg8Q305lUVoSgp3uVqS6DnG20M+a5PjCEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oLmnWgeMItHjITooVwvmPp4nvtvXVr6Ztzc1UrUazPTwSRcLAA/CjkGTgMttIRJsLyAR5IGnAgoJub4zvP2HhPEn+oTF9k1pZxxJBFMMVnNnBZDuWqQUA4H65QNUi4FBtw3PNJ113x3qAIwCBziBB1sf54hjeEysBTgD1Fk57sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.180.135.190])
-	by gateway (Coremail) with SMTP id _____8Bx79JZi69qW94NAA--.40882S3;
-	Sun, 20 Sep 2026 15:29:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.180.135.190])
-	by front1 (Coremail) with SMTP id qMiowJAxmM1Xi69qJOsiAA--.7935S2;
-	Sun, 20 Sep 2026 15:29:28 +0800 (CST)
-From: Ming Wang <wangming01@loongson.cn>
+	s=arc-20240116; t=1789889693; c=relaxed/simple;
+	bh=TAj2NX0BalsJBIg90f+gSFK6xjs2mTvRi0degX+efHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gHMQfoJPT5N0hMhSWIycXfU/GJ6JjRqOHQlbZXNDZwx2zSesUDctY1pjq5mPg/GB5kf+5fq5VxGHzJjHGvxeENQOG3b8G50x5jkUZcF8YTat53dzP+enpVQTl3gp+VT/Oe2JtPU4UZpQsPcMxGDRVingGhjshYQZrDQySUniDmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jfqnl6An; arc=none smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jfqnl6An"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8631d0023daso1437687b3a.2
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:34:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789889691; x=1790494491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nzImtRCLEOk3zqgss+ECzroPEOpVx7SLulh8ddX6bHw=;
+        b=Jfqnl6AnnAbY3RFLcpgYnf5JYS1l8SVPRaT2SL25G+mxcP5YWN4oE/HxUa28g4wRX3
+         3mVWW7i/M6gCxftMrgz6F/UJRaSYmO7xSqdPWBuMob1ZSnOo5nvD19zP9HoiuB0leXZh
+         oZF0EB6cneSUt5e4KZqzkSIJ34IwgYHA00Da12UK8QZGNlKqzYoONmQw4dvAYi/m9f+v
+         sWbSXtSjOw0nwMd1y4kbz2bFqC7J5rQpEhs0nbJeT+g5STINgzbXAJzCgfCPlZmfz+qU
+         TO6aiszANdzV6VE9QHDqbB4aRECF6jbfq4lVWmV6ypS8PoLvdcoSnj1pnnd3grNylYMO
+         MOTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789889691; x=1790494491;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nzImtRCLEOk3zqgss+ECzroPEOpVx7SLulh8ddX6bHw=;
+        b=IjCAw/WZyGrwive+09kSEyasWI3t2eDSxaNMOIH6lHFUhJnEcp/USu/MhZuS4YpDdp
+         MHi8s6ckwTaVfTrmdL2kYarIye3qTvKfzzIoimgCGOwRi79J4VVlI20UiIHdhhjI5LZR
+         KOocTODUNBRneq02wb7G3Ufs7EqS9F2f4W/cWeaUJeKzT/a+uo8xQJkfhPM6kp+hnmcz
+         pwLY+OfOo5NM8N9q3iAxaDIGtnkgTsuUOTTo9gPdDKf9P9qv+bnGmbDAcRTxsB13hUUj
+         UDPwlyGOUqx1w3MhBSjXCIxVZBZWT5m4uMZ3u07jMv6ehqgApakKNEAD0B2D7Iet4owp
+         YF9g==
+X-Gm-Message-State: AFuF++kv0DXujFTnOhzNP61h6ew8Fbo90oti5uY+XZqcr/cnpirDSPTv
+	5pSTATuWuP9TW3/QLMRPwWALyQyV10b/XEHhEt650/0Zi7zHqiIyug2e+RyoHYqfDgM+Hl/+
+X-Gm-Gg: AYBFou2E0Gf3STWjjL6KbVEZJayDeikxbLxZMYKU5E1QFUgJpRNeUuJTgGUsQxk7X7A
+	V4fcaT75Pzy4sXP4QP/zMxLODodLR36Vd6tiaHZnW1zgn7pvdPsA3Eh8EO49PPyi5t2BwR6b6Lz
+	DaTkM7edlJ/J1xQKhXtklTJjyUyM3hi2b6Pyl1UtSWWE3zZlwj5kntWn/mXGp9YsW4BBpX9jnP0
+	c2kl6aP2KSuOGbksK2cIwIMdggStv2ETm7p5yfnqnreCgSMAca1OmVl3aCitCsUr3WgzPPNVhAd
+	9afN2xg5orYYEzn6RC036h1aI4s3LsiJjjBDZnQFVDFFMPnz13R77S7zDeezsRAudX26DUKQTfh
+	fvH/EsHgOo064E4jCBzvHoLnRjDO38moJV0BTOvC2IDJUOPRVUjMr71b2qZDC4tkFk2yAw00Uxb
+	Ke3PzEXdzZvf4Gj9O1xKgEyGcU1yHz/k/jCk3+NC66yRvl8Asxq8TnwsxrYhv6NuNcPhFKIAUfW
+	FUu30eFF6i44iUm0NR/Ohz8o8NLhtgarf0hjIEX2Qv2W2tre6m7jlied5Wj7faLCTWzrjOHMT3Y
+	V0kl9voQCvY=
+X-Received: by 2002:a05:6a00:1815:b0:874:919e:d6da with SMTP id d2e1a72fcca58-874dd5f0fd3mr12084288b3a.18.1789889690773;
+        Sun, 20 Sep 2026 00:34:50 -0700 (PDT)
+Received: from lenovo-thinkbook.lenovo.com (awork078078.netvigator.com. [203.198.250.78])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a6ae7d71sm1716959b3a.2.2026.09.20.00.34.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 00:34:49 -0700 (PDT)
+From: Yuqi Xu <xuyuqiabc@gmail.com>
 To: netdev@vger.kernel.org
-Cc: linux-usb@vger.kernel.org,
-	Ming Wang <wangming01@loongson.cn>,
-	Oliver Neukum <oliver@neukum.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+Cc: Jon Maloy <jmaloy@redhat.com>,
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: usb: cdc_mbim: add MeiG Smart SRM821 to ZLP whitelist
-Date: Sun, 20 Sep 2026 15:29:26 +0800
-Message-ID: <20260920072927.825279-1-wangming01@loongson.cn>
-X-Mailer: git-send-email 2.43.7
+	Simon Horman <horms@kernel.org>,
+	Ying Xue <ying.xue@windriver.com>,
+	Parthasarathy Bhuvaragan <parthasarathy.bhuvaragan@ericsson.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Ren Wei <weir@nebusec.ai>,
+	xuyq21@lenovo.com
+Subject: Re: [PATCH net 0/2] tipc: fix connection lifetime during netns teardown
+Date: Sun, 20 Sep 2026 15:34:40 +0800
+Message-ID: <20260920073440.64223-1-xuyuqiabc@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <cover.1789722780.git.xuyuqiabc@gmail.com>
+References: <cover.1789722780.git.xuyuqiabc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,61 +88,144 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxmM1Xi69qJOsiAA--.7935S2
-X-CM-SenderInfo: 5zdqwzxlqjiio6or00hjvr0hdfq/1tbiAQEQEmqvPvQFMAAAs4
-X-Coremail-Antispam: 1Uk129KBj93XoW7WF17ZFyrtw1kKw45XF17XFc_yoW8WrWxpF
-	4rCFyay39xJry5Gw1rA3WfWFy5Zwn3Cay5KFWI93W5Z3Z0ya4aqFyxJFyUKrykAF45AFnF
-	yasxJ3y7Wa1DGwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07
-	x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xf
-	McIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7
-	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jY0PfUUU
-	UU=
 
-The MeiG Smart SRM821 5G module (0x2dee:0x4d53) crashes and drops off
-the USB bus when it receives a Zero Length Packet (ZLP) after sending
-or receiving an NTB of exactly 16384 bytes (tx_max).
+Hi all,
 
-According to the MBIM specification, devices do not require a ZLP
-if the NTB size is exactly dwNtbOutMaxSize. However, the cdc_mbim
-driver defaults to sending ZLPs for devices not explicitly whitelisted
-to accommodate non-conformant hardware. This default behavior breaks
-the strictly conformant MeiG SRM821 module.
+Thanks for the review. We verified each point against the tree with
+1/2 and 2/2 applied (net/tipc/topsrv.c line numbers below are from
+that tree).
 
-Add this device to the ZLP conformance whitelist (cdc_mbim_info) so
-the driver will pad the NTB to avoid sending ZLPs, preventing the
-device firmware from crashing.
+=== sashiko: [patch 1/2] infinite spin / softlockup ===
 
-Signed-off-by: Ming Wang <wangming01@loongson.cn>
----
- drivers/net/usb/cdc_mbim.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> Infinite spin loop and softlockup in tipc_topsrv_stop() when waiting
+> for connections with pending work items to close: loop
+> `for (id = 0; srv->idr_in_use; id++) { con = idr_find(...) ... }`
+> holds `spin_lock_bh(&srv->idr_lock)`; when `con == NULL` the lock is
+> not dropped before continuing -> spins ~2^32 times.
+> locations: net/tipc/topsrv.c:713 tipc_topsrv_stop;
+> net/tipc/topsrv.c:133 tipc_conn_kref_release.
 
-diff --git a/drivers/net/usb/cdc_mbim.c b/drivers/net/usb/cdc_mbim.c
-index 877fb0ed7d3d..bf3e6af7d7c9 100644
---- a/drivers/net/usb/cdc_mbim.c
-+++ b/drivers/net/usb/cdc_mbim.c
-@@ -631,6 +631,10 @@ static const struct usb_device_id mbim_devs[] = {
- 	  .driver_info = (unsigned long)&cdc_mbim_info,
- 	},
- 	/* ZLP conformance whitelist: All Ericsson MBIM devices */
-+	/* MeiG Smart SRM821 ZLP conformance */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d53, USB_CLASS_COMM, USB_CDC_SUBCLASS_MBIM, USB_CDC_PROTO_NONE),
-+	  .driver_info = (unsigned long)&cdc_mbim_info,
-+	},
- 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0bdb, USB_CLASS_COMM, USB_CDC_SUBCLASS_MBIM, USB_CDC_PROTO_NONE),
- 	  .driver_info = (unsigned long)&cdc_mbim_info,
- 	},
--- 
-2.43.7
+Correct, and this is precisely the failure this series fixes. In the
+pre-patch code the walk is:
 
+	for (id = 0; srv->idr_in_use; id++) {
+		con = idr_find(&srv->conn_idr, id);
+		if (con) {
+			conn_get(con);
+			spin_unlock_bh(&srv->idr_lock);
+			tipc_conn_close(con);
+			conn_put(con);
+			spin_lock_bh(&srv->idr_lock);
+		}
+	}
+
+When `idr_find()` returns NULL the loop keeps incrementing `id` while
+still holding `idr_lock`. Any connection whose last reference is being
+dropped in tipc_conn_kref_release() then blocks forever on
+spin_lock_bh(&s->idr_lock), so `srv->idr_in_use` never reaches zero
+and the CPU spins under the lock. That is the
+`__radix_tree_lookup -> tipc_topsrv_exit_net` RCU stall in the crash
+log of the cover letter.
+
+2/2 rewrites exactly this walk:
+
+	for (id = 0; srv->idr_in_use;) {
+		con = idr_get_next(&srv->conn_idr, &id);
+		if (!con || !kref_get_unless_zero(&con->kref)) {
+			spin_unlock_bh(&srv->idr_lock);
+			cond_resched();
+			spin_lock_bh(&srv->idr_lock);
+			id = 0;
+			continue;
+		}
+		id++;
+		spin_unlock_bh(&srv->idr_lock);
+		tipc_conn_close(con);
+		conn_put(con);
+		spin_lock_bh(&srv->idr_lock);
+	}
+
+i.e. it uses idr_get_next() and, whenever no entry can be taken, drops
+idr_lock, reschedules and retries, so a pending
+tipc_conn_kref_release() can always make progress and the loop cannot
+spin under the lock. So the finding is correct for 1/2 standing alone
+but is fully addressed by 2/2; no further change is needed for this
+point.
+
+=== sashiko: [patch 2/2] sock_release() in atomic context ===
+
+> `sock_release()` called in atomic/softirq context:
+> `tipc_sub_timeout()` (timer softirq) -> `tipc_topsrv_queue_evt()`
+> -> `conn_put()` -> `tipc_conn_kref_release()` -> `sock_release()`
+> sleeps (`lock_sock()`), sleep-in-atomic.
+> locations: net/tipc/subscr.c:110, net/tipc/topsrv.c:322,
+> net/tipc/topsrv.c:120.
+
+The chain is not quite as drawn. tipc_conn_kref_release() does not
+call sock_release() unconditionally: it already has `if (con->sock)`
+(line 134), so in-kernel connections never take that path.
+
+For socket-backed connections the remaining sleep-in-atomic concern
+is real but narrower than the chain suggests, and this series does
+not change it:
+
+- tipc_topsrv_queue_evt() only calls conn_put() synchronously on its
+  error path (line 340): the connection is no longer connected after
+  the lookup, kmalloc fails, or queue_work() returns false because
+  ->swork is already queued. On the normal path the lookup reference
+  is handed to tipc_conn_send_work(), which runs in process context
+  and does the final conn_put() there.
+- So the remaining sock_release() in timer softirq only happens when
+  that specific conn_put() drops the last reference of a socket-backed
+  connection, i.e. when the connection is being torn down concurrently.
+- Neither 1/2 nor 2/2 touch subscr.c, tipc_topsrv_queue_evt() or
+  tipc_conn_kref_release(). 1/2 only detaches the listener and cancels
+  srv->awork; it does not touch the subscription timer path.
+
+So this is pre-existing and orthogonal to the two patches, not for
+this series. A separate follow-up could avoid dropping the last
+reference for a socket-backed connection from softirq; that would be
+a separate patch.
+
+=== sashiko: [patch 2/2] NULL deref in tipc_conn_close() ===
+
+> Unconditional `con->sock->sk` deref in `tipc_conn_close()` panics for
+> in-kernel subscriptions (`tipc_topsrv_kern_subscr()` passes NULL sock
+> -> `con->sock == NULL`); `tipc_conn_kref_release()` checks
+> `if (con->sock)` but `tipc_conn_close()` does not.
+> locations: net/tipc/topsrv.c:158 tipc_conn_close,
+> net/tipc/topsrv.c:724 tipc_topsrv_stop.
+
+This one is a valid latent bug, and we agree with the asymmetry:
+tipc_conn_close() does `struct sock *sk = con->sock->sk;` (line 158)
+unconditionally, while tipc_conn_kref_release() guards its
+sock_release() with `if (con->sock)` (line 134).
+tipc_topsrv_kern_subscr() really does allocate with sock == NULL
+(line 587) and such a connection is inserted into conn_idr, so if one
+is still there when tipc_topsrv_stop() walks the idr, 2/2's loop calls
+tipc_conn_close() on a connection whose con->sock is NULL.
+
+About reachability in the netns teardown path: the in-kernel
+subscriber is created from tipc_group_create() (net/tipc/group.c:190),
+and it is normally removed synchronously by tipc_group_delete() ->
+tipc_topsrv_kern_unsubscr() when the owning socket is released
+(tipc_release() -> tipc_sk_leave()). Since the socket holds a net
+reference, netns teardown cannot overtake that. The NULL deref
+therefore needs a kernel connection that is still in conn_idr at stop
+time, e.g. when tipc_topsrv_kern_unsubscr()'s two conn_put() calls do
+not drop the last reference because a pending con->swork still holds
+one. That is a narrow race, not the common path.
+
+It is also pre-existing: the pre-patch loop already called
+tipc_conn_close() on every entry found in conn_idr, including
+sock == NULL kernel connections, so 1/2 + 2/2 do not introduce it.
+(kref_get_unless_zero() in 2/2 only narrows the
+already-dropped-reference window; it does not dereference con->sock.)
+
+Orthogonal to this series. A separate follow-up could mirror
+tipc_conn_kref_release()'s check in tipc_conn_close(), i.e. skip the
+con->sock->sk access when con->sock == NULL; that would be a
+separate patch.
+
+Best regards,
+Yuqi Xu
