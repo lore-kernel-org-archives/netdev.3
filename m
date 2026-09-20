@@ -1,81 +1,41 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9E23BC673
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 09:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980B72E7387;
+	Sun, 20 Sep 2026 09:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789896720; cv=none; b=YxotQKDjc1HlfaljXeMn6puJZDlfWQb4+zLHPjsp+IuC55/5JOGNe2lR9vE+LqZnGTPK+7XT47FcebtG0409NnJfyJ71sdwCH+s7NEbDXmv/xgYiK9E+HCPj1kxV0A7B6p7f3LSr1jAfIBtC3vx7gVRb3pqsz6Wjsvodbm/2AYk=
+	t=1789898368; cv=none; b=pYJK7n6z2d9alPxSVdHVWHNcmaDjHb5LhdWRlG+Sn2iyO/+ecX1pMkjDAvLZiGOLtz7YD3LYgXqkgDBUQp7LwkJdm6pGyHX1TsBlBBiQ5okicm/l2TVf86gxmwq0Nz9VfnhSKwag0JcjIk4P1NiONZMlMaD/HxFyx4xmk2Z5IMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789896720; c=relaxed/simple;
-	bh=DFCad/hdE8IpyPcSDWClzGqWb3Q5eeOIEZMZ4lSwfH8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O81qUxiS1VZ+DSZOBDnG/NFki01WepeI3ADv7YEaBMBfbKuAYUOS9BaMXDTRH999x8CTmhGHRDfpjsSydUYYEL77YjsjL7lqg00IR3Wo9NNQeNjjBwNdSibwz2ocYyJ/ROGQNh3LQLF3jdruZUj3iOFeJbjbDE+u9DpbElS3lx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=KJ0WEgBC; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1789898368; c=relaxed/simple;
+	bh=3mZygXS8hcdF9UOcYnhziL96HcLNndS5lt7/g0olpI0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IkMFqHJ/nQT0bqb3uoJ4P9ntgsMq47eKBlb3jOOuT4eacQD6uRPu1xZXYbpqj48s+usGeULdlJz6WHzq7dtYUzSi83kQvUHfGhcCUyRpL7YWzpFkH1uKaZ3KnUJUBkB+9A/+R9srZJezOkVUNvK347SDlMcULM1e8hY7pSl1zAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WDhsEfd5; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="KJ0WEgBC"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747eb79f7so14015665ad.1
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 02:31:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789896711; x=1790501511; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AC0BwwxocEHWdEgXzu191R0Fu2SszgpaG8S1TYD6ghM=;
-        b=KJ0WEgBC7grVskxFMGrsIAnpCAfK43lh//UevXwE2M69FSD77hYrP934ZjNVXW2gEX
-         M6DPtn/M9G/g4NobkBMQ5sEmDAS0wV7OTfCaFwCLBmvseOxw+qDw1Y9df1GxWFH7d1R6
-         chKnrLkJYY0ICKhXcPtbQLYF22aSnjS2lFzXN9m1Y8okL1V27uf5WEf4msbOqIyPA3rF
-         ZCt7upk+lqbhl2D5M6W92pwPaY8pLP3IUr5LM1oxMvgD4kNyWr8ihwoycfDuAMPxbqZj
-         kxOVQkugBdLXtoiDj8q73d97s3t1DzhiAZl5UMVCEGcGPhA0b1Hex6N+1TFXxGduM6xE
-         eUFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789896711; x=1790501511;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AC0BwwxocEHWdEgXzu191R0Fu2SszgpaG8S1TYD6ghM=;
-        b=AG36KG4qs8Upirr+SkhZgL/boTeOLGhlO4t7RyVEGlJgCz/uH+mWaYiGJ9qyqtinCx
-         LY1pD328qHe/+T4cJOgoXI3uzBnzqvUK5N97znyO6PQ6BIGLEunvLrTaOkl1d+rdsNje
-         rvdfHYfFQZoxNrvk/rr+T3U49/RbhP/+nVE7JK4woeDjR5OMEyaIzE/nLQ7FBncxhOc0
-         uNcaE9ihPvd8AFvR4UoZKQ1mzaW9BX2cviNb3Uyr+ai8GANDraSXQLzJL8lrr3fvwUjy
-         AQFFjnYeVnC3iPwav8kGyA1egyiO++SVLCNALvWhI9mZrLctGSPYO/O9Jx71nXuM4MMi
-         2Ikg==
-X-Forwarded-Encrypted: i=1; AKwUvBzXfGkQo2MBcQCOSakIK7bmCgBCTfGvULVRRdw1B0grCvNHa+959kH4UjMrCAd33ySOHClmmDs=@vger.kernel.org
-X-Gm-Message-State: AFuF++m3lNo2T7y312QSNvvDYueRcFOcOEObvs30U3G9EwqsKZ4r07cD
-	oyLBSzkCJ6DNEvuetyRVAOm2ykGmTMfaYS8lkcD3DtgnZKCKKZAAY8y1yslaqc4QxNfg
-X-Gm-Gg: AYBFou27gE2X3nLkQyd3AaVRc6PROZfsgGQxakQttW7V/MsbCnxZTrYQqksdoflgkhl
-	iXkw1NQUmuJHk3WloCkQTq9H2kGzkFvTMkUTYnTfQ+9L0QEonDYoN8czh7vNe12zM3qbJh8T5Lk
-	5ELzZ0p4c7GfB4Sm/ZCdykYVO+6+k2YGX/z5XY5cE6KFuSAgY8WahgfHTzpI0CWaHgkKgK3fwfz
-	grcCBI8fN2HyCpD5gVfOoBPDbgrATJQh1FSamB2YxfMfxp0xVfoqlM1X68n0CXZ/3ghszsqUc4+
-	dzSGLGlrc5zQSSjgaeJEPNYcc9c8gE3VYbhcnhdnR9wrT0R2Q2G4ymWZirD5q/Lw40nKkdjw6id
-	7mE4J+/kU9LAC6PCn/TfhDWTO4SbexsUjLIR/CPvXvQsSkblJaXwLMG5SPoXtDG0de8lPEc3c7T
-	afJVc2hq0qV/0pLolXVEucouO4kILx1SAJI5B9TA3siRKv7Spi6t908y0HZcDHlKgXMynbtGpTk
-	nbXTiC6aCzPC1ED4SPw/ghrpf46XQ==
-X-Received: by 2002:a17:902:f705:b0:2dd:c053:82f0 with SMTP id d9443c01a7336-2ddc05383e5mr62215595ad.39.1789896711133;
-        Sun, 20 Sep 2026 02:31:51 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc17e17e0sm18435235ad.70.2026.09.20.02.31.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 02:31:49 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: Simon Horman <horms@verge.net.au>,
-	Julian Anastasov <ja@ssi.bg>
-Cc: Zihan Xi <zihanx@nebusec.ai>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WDhsEfd5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=U0
+	N8AvroK2i84JfujNVPvJ5wQkAktO+RLbUeaiRFkgs=; b=WDhsEfd51tjACogpnd
+	GYqp+Pcvrsv6GxPg0jwQKlaV1yauJ2/ijSiac9pniweHfsLcLA3hGughz1O5OG9r
+	R4FogOcFwS6pOzvrKT0YLLw+IqchvMubPW5qBL8Op1zMwt3BLsQx4ut5Fa960JrW
+	WhhyCz9g1souo1gCPRkHnTaEY=
+Received: from lx2.. (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3D0herq9qUuHOBw--.53419S2;
+	Sun, 20 Sep 2026 17:58:55 +0800 (CST)
+From: Zijin Tao <taozj888@163.com>
+To: maintainer@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	theo.lebrun@bootlin.com,
+	conor.dooley@microchip.com,
+	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH nf v3 2/2] ipvs: reject FTP control ports as data ports
-Date: Sun, 20 Sep 2026 09:31:20 +0000
-Message-ID: <4f45973a22e67d5ad1c6f2e5455d8b057be60ae6.1789877273.git.zihanx@nebusec.ai>
-In-Reply-To: <cover.1789877273.git.zihanx@nebusec.ai>
-References: <cover.1789877273.git.zihanx@nebusec.ai>
+	Zijin Tao <taozj888@163.com>
+Subject: [PATCH] net: macb: rate limit netdev error info print in the data path
+Date: Sun, 20 Sep 2026 17:58:39 +0800
+Message-Id: <20260920095839.62852-1-taozj888@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,83 +43,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3D0herq9qUuHOBw--.53419S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWrAry3tw4kuFy5JrWxXrb_yoW5Aw4Upa
+	yUCa95Ww4kGr47Cas7trWkAr1rAr95KryrW3ykGw13Xwn8Ar98WFyIkryYkFW8GFW3Aw1S
+	kr1UZa9rCan5ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_xhldUUUUU=
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+h9JEWqvrl+NcQAA31
 
-ip_vs_ftp_out() creates a wildcard data connection from the
-server-advertised passive port. If that port is one of the configured FTP
-control ports, ip_vs_conn_new() binds the FTP helper to the new connection
-again. A subsequent wildcard lookup can then extend a controlled-connection
-chain.
+Now the MACB ethernet driver print the netdev error information
+directly by netdev_err(), which would lead to a large number of
+error information print if there was a significant number of
+error or just jumbo packets received when booting.
+For example, it would print a large number of:
 
-Reject zero and configured control ports before creating passive
-connections. For active mode, reject a zero client port and a data port
-derived from a configured control port.
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+...
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+in gem_rx() by received a large number of packets without
+RX_SOF or RX_EOF flag set.
+
+The unlimited print here would greatly bother and delay
+the system booting process unless the source stop sending
+packets.
+
+So rate limit the netdev error information print in the receive
+and transmit data path.
+
+Signed-off-by: Zijin Tao <taozj888@163.com>
 ---
-changes in v3:
-  - Resend this FTP helper fix with the generic cleanup fix as one nf
-    series, as requested by the maintainer.
-  - Keep the active-mode guard for configured FTP control ports.
-  - v2 Link:
-    https://lore.kernel.org/all/cover.1789435989.git.zihanx@nebusec.ai/
-changes in v2:
-  - Add the active-mode check for a data port derived from a configured
-    control port.
-  - v1 Link:
-    https://lore.kernel.org/all/cover.1789110326.git.zihanx@nebusec.ai/
+ drivers/net/ethernet/cadence/macb_main.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
- net/netfilter/ipvs/ip_vs_ftp.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index 9e3e005a8263..4822a1a75212 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -62,6 +62,17 @@ static unsigned short ports[IP_VS_APP_MAX_PORTS] = {21, 0};
- module_param_array(ports, ushort, &ports_count, 0444);
- MODULE_PARM_DESC(ports, "Ports to monitor for FTP control commands");
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index b8234ac4b602..c32d48d03008 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		count++;
  
-+static bool is_control_port(u16 port)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ports_count; i++) {
-+		if (ports[i] == port)
-+			return true;
-+	}
-+	return false;
-+}
-+
+ 		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
+-			netdev_err(bp->netdev,
+-				   "not whole frame pointed by descriptor\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+ 		}
+ 		skb = queue->rx_skbuff[entry];
+ 		if (unlikely(!skb)) {
+-			netdev_err(bp->netdev,
+-				   "inconsistent Rx descriptor chain\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+@@ -1829,7 +1829,8 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		unsigned long flags;
+ 		u32 ctrl;
  
- static char *ip_vs_ftp_data_ptr(struct sk_buff *skb, struct ip_vs_iphdr *ipvsh)
- {
-@@ -319,6 +330,10 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
+-		netdev_err(bp->netdev, "RX queue corruption: reset it\n");
++		if (net_ratelimit())
++			netdev_err(bp->netdev, "RX queue corruption: reset it\n");
+ 
+ 		spin_lock_irqsave(&bp->lock, flags);
+ 
+@@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+ 
+ 	if (status & MACB_BIT(HRESP)) {
+ 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+-		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
++		if (net_ratelimit())
++			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+ 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
  	}
  
-+	/* Do not redirect data to control ports */
-+	if (!port || is_control_port(ntohs(port)))
-+		return 0;
-+
- 	/* Now update or create a connection entry for it */
- 	{
- 		struct ip_vs_conn_param p;
-@@ -529,6 +544,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
- 
-+	if (!port || is_control_port(ntohs(cp->vport) - 1))
-+		return 0;
-+
- 	/* Passive mode off */
- 	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
- 
+@@ -2511,7 +2513,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+ 		else
+ 			hdrlen = skb_tcp_all_headers(skb);
+ 		if (skb_headlen(skb) < hdrlen) {
+-			netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
+ 			/* if this is required, would need to copy to single buffer */
+ 			return NETDEV_TX_BUSY;
+ 		}
 -- 
-2.43.0
+2.34.1
 
