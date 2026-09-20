@@ -1,154 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8123DB62A;
-	Sun, 20 Sep 2026 06:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19253DA5B3
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 06:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789886095; cv=none; b=WjFdRERisvdZx7MXNFvEMzy5AydY8aiy2w4gXn7cR1SRpW75H1XC1I6xeLCxTq7LZmIYAMj37LLviaQQ39f9/9iLyaqLN4M5dXcKy7YF5+J9+/5+CgzSnTyDMx1+HGou4zv/we7Au1oMJoq7KlX/j2R0GyCCT8xrDSkf/miJWvA=
+	t=1789886107; cv=none; b=qYPh+5Qq7VR+JglOTMvxK+++bxOuqLDbbqXsdB/tzx1cXN5zCDDsxrGEExN8WuOYlSO9Qj51+jq64qhmRiajcUETQGzsEkJucm0Ib3JI1CR9b7MBOWQ12UPPz1mMruz+KLc5K63S8SCdvwUTr7O6JOxx5fdqvka3k8m9dp4f59I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789886095; c=relaxed/simple;
-	bh=dqD1tyipP1C0RZ4sdem9tb00vtHUsyKnVCSkPeTGfbw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f1wAnmn4oVMDeiNqesB1do7MRhZSO92v3rAyYEoAcerWZrcwJSncHCb7v1ZTE5Mm3AqdCao7dmwwgSngL5fuyOQ/FArnMYLGlBA3kwrLOoareRAzQT83F3hnNwnhTCOz0dk1ltQ9WXUdYMsc4Cz6Ux/C1VZ8uIz7Y6I94NLr0L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyBThb6C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789886107; c=relaxed/simple;
+	bh=BkjCl9PTzmvibgyTAzSEgHagAdnS6n+z9kSRa9z/IJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mZ0hT3WuRI3F1Q5+Jh0ye9Lzp+Vnlk6t33/04jxgc5l//qnwwPGQbNb98NSQ7s1KkSLADFvpEP9ZkjxMqZsBi2gWyxfQMr59yv61/2CuFytzeTUExOWp9JUeNgjVcDMfo1hClTCuae+HpzpoxqPkAeP3fqjDe2aJ6119+wldx2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y4HWaiaH; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyBThb6C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05AF1F000FF;
-	Sun, 20 Sep 2026 06:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789886093;
-	bh=RWLxBIIM4fit7uDmBvuBpWxzsr3AUSu+ht/G3pR/VKE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RyBThb6CzWUPtiTdKDyEJZPon8pUBtzP2s83l3QCvi3QGSZm+DeeHZ7Q1J9oLnlvR
-	 Eu2qF3jY50loI2sa+z+DoraT7KzgtlQbnsmw4wMS0Q3BB7h6qvNL1WGr4CcP8Pu3Gn
-	 zj6E74l5m0IhFRNje4dTJlgwKMB1/Zy+W0aHBGoK1ParMBBuKgr6+xxOmVgvXMfgC6
-	 YtlohCk3rR9W1+Zphw5NMztIuLRCYNKHhv2lRz+QQWS8A8WrQ+TXHCG1V4K334smuo
-	 0t8hq7gm2lUiJK1j7djstUForDccz1bnFfEPPmaUBG+J1WMvYVjGFBLtBkgArE001q
-	 jfSDrArW+wIiA==
-Subject:
- Re: [PATCH net v4] net: erspan: set lltx to avoid sch_direct_xmit deadlock
-From: netdev-bot+sashiko@kernel.org
-To: yun.zhou@windriver.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 20 Sep 2026 06:34:52 +0000
-Message-ID: <178988609227.2160803.11846126417836059113@kernel.org>
-In-Reply-To: <20260916061314.936440-1-yun.zhou@windriver.com>
-References: <20260916061314.936440-1-yun.zhou@windriver.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y4HWaiaH"
+Received: by mail-pz2-f42.google.com with SMTP id d2e1a72fcca58-86dd69a1b15so668117b3a.0
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 23:35:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789886104; x=1790490904; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1mSNs6gpwDbZo1OHe4Pclodm2onA21KdKi2Jq9VQVaA=;
+        b=Y4HWaiaHdhc8jyGzDCHbftM0vp1Eq2jjWDXJWgw6Gj2c0E2BA9S88ygsYF14DrZIy4
+         ACZ8jlQjKDp2VFR0dR7Jy9jAIYwS7qEZk4YZbiWHi5Za+EJt110hZWt7R7Ucc0Pg/CV5
+         VISeGOJmJ4qzVDjLVDPhZNQdhF5YkVH2CPoO+xTg6URDlOhlaaHc/aAO2SKHFQ9JWAV/
+         163TEahcNmQeF76vlgxZ/XvJb1MzJueJqMjQ7FjIfqBFJs0pwmrmPggGImWLrj3UOEEY
+         l3SdQoIMthJVVwY8iLho0EZ2JJ/OwgF8pNUY5u5zfjrNGIuP95GxoFq/Esok1qON6zPa
+         b9Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789886104; x=1790490904;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1mSNs6gpwDbZo1OHe4Pclodm2onA21KdKi2Jq9VQVaA=;
+        b=iaX6HNouUgIpIPRidAGJA5d7ezbJJ9pMpgfIwXptTtZFCB5qDMzLO6rEDchW2tJxzv
+         iefSlvOk55cDDMDMd2PGekIE84dZkOvExtFeFoCsykFhmCPQIrHnQGH57KbH2Xn124sX
+         juZz6/NylvNBbpCT3LAF7ZMc5gqPl01c5eXSYheMT6wdThSgxPWZS3rrAR5N1m8dBjCE
+         D4g5jz16mh0+SfHLuU7rfKx23s2QVlMIGxEe9mSnuw6xv8QgD+5/BG08EY5pAEMgQ1wL
+         VeuoW2C9HvEo3ildl02YeD7v+pPFLKFEvEsEhO+7Niidcoug2oHGTL63JNKCQXsvqtf9
+         hgNA==
+X-Gm-Message-State: AFuF++lBNhgMnlJJ5RufL/OaKAMEt7Bu7TLb9c+DFGuTR42o0pvMly4p
+	xa6sMclnvj5iVNUmvoGUocOTuozIIYl6BLm+weutf7e1v7ez8qC/5gNj1ZqWY8IX6iJwRg==
+X-Gm-Gg: AYBFou0wtoAwMV/ee26hU/O7yYGrwsaCv7gloxFZX7Y0DU+Z886qz72rhEzw62DnSuW
+	GekH6Nm+MtAQ0EtPFsKm47cFkNK2bjgzeJLFbUorLcyzVmgzmZutkfQHmUdTA4I9zuRWqmun0GY
+	ENrLlJgwdhZx+sUKfDxNktnEm5946kF2Bl5SwUU72Pwi93uDa8OlyKuv2U3FhqGEhp5KSFPohWV
+	aGQZAB9aJTiBNO15QW5Ceqwv6oR+adYYVeh92Yhbh+8JNV26owLqM9/BSxK2IxIfZuU/cJAB7Gg
+	mkp1Fd9Fz/uZu4drNQeSy2GPfR+QvzkN+cAsU82MHyusUQkXJ9ERcb6mk3IcPfQwlq+w07D6/D6
+	ZKW4+59IzsbkKnXm2TnBY3zcd/AwXn2o+GRqMtQTya8ql8dfqCR7UEIAAH3UCw3hF9xJIzhcMyG
+	DfZFaqO6XG/OoSKCvJ0Z4g1z3Zt5rCb0pHLKAgGIo5ffXuNIbSJ4JVfmwgdLUFhuINm9BU/AjuM
+	dshP4eOrKSNZqSIIYP3ZFftlFStavu3Fe8=
+X-Received: by 2002:a05:6a00:3a0d:b0:878:3704:e0ee with SMTP id d2e1a72fcca58-8783704f6efmr2520416b3a.20.1789886104157;
+        Sat, 19 Sep 2026 23:35:04 -0700 (PDT)
+Received: from localhost.localdomain ([43.224.245.233])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877a8dfe20dsm1711604b3a.19.2026.09.19.23.35.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 23:35:03 -0700 (PDT)
+From: Dongliang Qin <cccccccccccc777777@gmail.com>
+To: netdev@vger.kernel.org
+Cc: achender@kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Dongliang Qin <cccccccccccc777777@gmail.com>
+Subject: [PATCH net] rds: ib: Clear the sg list when mapping an MR fails
+Date: Sun, 20 Sep 2026 14:34:49 +0800
+Message-ID: <20260920063449.1594203-1-cccccccccccc777777@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+rds_ib_map_frmr() stores the caller's scatterlist in the MR before DMA
+mapping and registration can fail. On failure, __rds_rdma_map() unpins
+the pages and frees the scatterlist, but rds_ib_free_frmr() can still
+return the MR to the pool with the stale pointer set.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+This leaves the pool with a dangling scatterlist and can lead to local
+privilege escalation. KASAN detects the resulting use-after-free when the
+MR is later torn down:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+BUG: KASAN: slab-use-after-free in __rds_ib_teardown_mr
+Read of size 8
 
-- [Medium] The patch enables `dev->lltx = true` for both IPv4 ERSPAN
-  (`erspan_tunnel_init()`, net/ipv4/ip_gre.c:1371) and IPv6 ERSPAN…
+Call Trace:
+ __rds_ib_teardown_mr
+ rds_ib_unreg_frmr
+ rds_ib_flush_mr_pool
+ rds_ib_flush_mrs
+ rds_free_mr
+ rds_setsockopt
 
---
+Clear the scatterlist fields before returning an error so the caller
+retains sole ownership of the scatterlist and its pinned pages. Route a
+zero-length DMA mapping through the same cleanup path, and skip unmap
+when no mapping was created.
 
-net: erspan: set lltx to avoid sch_direct_xmit deadlock
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dongliang Qin <cccccccccccc777777@gmail.com>
+---
+ net/rds/ib_frmr.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-This sets dev->lltx = true for the IPv4 and IPv6 ERSPAN tunnel devices so
-that HARD_TX_LOCK() skips the txq _xmit_lock, avoiding the nested
-_xmit_lock acquisition when erspan_xmit() re-enters the stack through the
-underlay device.  The change is tagged for stable with Fixes tags pointing
-at 84e54fe0a5ea and 5a963eb61b7c.
-
-Closes: https://syzkaller.appspot.com/bug?extid=9bda1b9fbb7fbdf9b62b
-
-> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> index 82309efd417e0..0058cb20e36a1 100644
-> --- a/net/ipv4/ip_gre.c
-> +++ b/net/ipv4/ip_gre.c
-> @@ -1367,6 +1367,8 @@ static int erspan_tunnel_init(struct net_device *dev)
->  	dev->features		|= GRE_FEATURES;
->  	dev->hw_features	|= GRE_FEATURES;
->  	dev->priv_flags		|= IFF_LIVE_ADDR_CHANGE;
-> +	/* Skip TX lock: xmit re-enters stack, risking ABBA with underlay */
-> +	dev->lltx = true;
->  	netif_keep_dst(dev);
->  
->  	return ip_tunnel_init(dev);
-
-[Severity: Medium]
-The commit message justifies the change with:
-
-  "This is safe as erspan_xmit() has no shared mutable state: o_seqno is
-   atomic, TX stats are per-CPU u64_stats, dst_cache is per-CPU, and
-   o_flags is no longer modified in the xmit path since commit 9958e69b9893"
-
-That statement holds in this tree, but the patch also carries Cc:
-stable@vger.kernel.org with Fixes tags on 84e54fe0a5ea and 5a963eb61b7c.
-Commit 9958e69b9893 ("gre: fix ERSPAN o_flags race/corruption in xmit and
-fill_info") has neither a Fixes tag nor Cc: stable, so it is not queued for
-any stable tree.
-
-Both hunks here only touch the *_init() functions, so they apply cleanly to
-any tree that has the dev->lltx bitfield (6.12 and later) even when
-9958e69b9893 is absent.  In such a tree erspan_xmit() still does the
-read-modify-write on the shared per-tunnel word:
-
-net/ipv4/ip_gre.c:erspan_xmit() (pre-9958e69b9893) {
-	...
-	__clear_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags);
-	...
-	__clear_bit(IP_TUNNEL_KEY_BIT, tunnel->parms.o_flags);
-	__gre_xmit(skb, dev, &tunnel->parms.iph, proto);
-	...
-}
-
-Once lltx is set, is anything left serializing two concurrent
-erspan_xmit() calls on the same single-queue device, given that the txq
-_xmit_lock was the only thing keeping those __clear_bit() sequences from
-overlapping?  The same question applies to the race against
-erspan_fill_info(), which in those trees sets IP_TUNNEL_KEY_BIT back into
-tunnel->parms.o_flags under RTNL only.
-
-If a lost update resurrects IP_TUNNEL_KEY_BIT or IP_TUNNEL_SEQ_BIT, can
-gre_build_header() then emit optional GRE fields that tunnel->tun_hlen
-never accounted for, i.e. exactly the header corruption described in
-9958e69b9893?
-
-Would it make sense to name 9958e69b9893 as an explicit stable
-prerequisite in a note below the --- line, or to fold the equivalent
-o_flags localization into this series, so stable maintainers do not apply
-the lltx change on its own?
-
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index 8ebda0b6a78b2..578fb3475f8c2 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -1871,6 +1871,8 @@ static int ip6erspan_tap_init(struct net_device *dev)
->  		dev->mtu -= 8;
->  
->  	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
-> +	/* Skip TX lock: xmit re-enters stack, risking ABBA with underlay */
-> +	dev->lltx = true;
->  	ip6erspan_tnl_link_config(tunnel, 1);
-
-The same concern applies on the IPv6 side: in trees without 9958e69b9893,
-ip6erspan_tunnel_xmit() still runs
-
-	__clear_bit(IP_TUNNEL_KEY_BIT, t->parms.o_flags);
-
-on the shared parms word, and ip6gre_fill_info() reads it.
-
+diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
+index bd8611911..fea387952 100644
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -213,7 +213,8 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
+ 					 DMA_BIDIRECTIONAL);
+ 	if (unlikely(!ibmr->sg_dma_len)) {
+ 		pr_warn("RDS/IB: %s failed!\n", __func__);
+-		return -EBUSY;
++		ret = -EBUSY;
++		goto out_unmap;
+ 	}
+ 
+ 	frmr->sg_byte_len = 0;
+@@ -261,9 +262,13 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
+ 	return ret;
+ 
+ out_unmap:
+-	ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
+-			DMA_BIDIRECTIONAL);
+-	ibmr->sg_dma_len = 0;
++	if (ibmr->sg_dma_len) {
++		ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
++				DMA_BIDIRECTIONAL);
++		ibmr->sg_dma_len = 0;
++	}
++	ibmr->sg = NULL;
++	ibmr->sg_len = 0;
+ 	return ret;
+ }
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916061314.936440-1-yun.zhou%40windriver.com
+2.43.0
+
