@@ -1,160 +1,157 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048373DC4DE
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789931763; cv=none; b=Xn/0hyHOgN0e5jd2ZkQUhLyrnD4BbeiwAyGPz3QohmQFemvDI7NizpYY8OxVGx0NhUoVhLGmDt33GzrADl2eYie91RgmeGRlWyFYPnOfZb7bAxTopJlyTUqMx5vDfqtHMsD8XqLBHagW3ASat7ZCulN3C5c0XoNDHeijYGfOohc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789931763; c=relaxed/simple;
-	bh=549hsFGxjaXP/tsJ0PZxMRBQbUR1FEM5nN/YlvXcRTY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mEJj+vVLqZ2ggoE1ImjgR226DwMTC1dL+W3MkiVksXQYYLSRII0qUVxjXpLDNAS2Ho6DMdZ+kcTrOrOrQN8VwvT/P9Q6ZKOgfyiRX7c01AOv47htmF94t/kbDw9aUKVI5urKA51rvzcZdcDIbmGsCRlglpEKGUs15wq0nu56BU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iGDAipxH; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336663C5DC5
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789932001; cv=pass; b=Ypenboax9Z3hlx2OMNLiE9GtsfooM7/02FavLgOO9aVk/EVqULROxNV+j9eunF6uAqHRm4RvqhIAcM0Q1wwx/0lHejjG8eP+TeOzN55MqOJdV/QNF7wqFKCk2dYA+BVofcY4L30yv9XKkwCe7v3z4DyPj83Fn483b6AQpgTD5fQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789932001; c=relaxed/simple;
+	bh=6SpgTwcIIQqjPbDa4mTNcZ8/Jqu2VPFbm+vZpZ7fjkU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CohAfK6QISXi4Zw1N9MWD7tpHFflTbvAVDgk9QqkEZpDnA+bALc9dfgIvFFLDK/YziHppGN5DC2a0BQPJmulWYfzwTs3hmE61hm5yQNxVUd2IQxuQ7GwHqx52UxdmiZLQuRT0my/wos1+eiQdtXLwFae3Uu3FTIGhXRjbyuGHmM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UHzfCDNk; arc=pass smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iGDAipxH"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a6f4ba619so2314550b3a.1
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:16:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UHzfCDNk"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccafb74fso2354111a91.3
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:20:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789931999; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PQlGqZs96zlG/O+zzY1QneyAPUUZDjSQKb+oh3wuyX/R1mF/PglpsHg+g0wZSYGjpb
+         zYWBrJK+lu1wK5vES2IDqoLEMpzhWKDuDvfkBB1+zcovZq59Xe4M5N3esjk18a/tyhvY
+         MpIslZvJI3rvUjeRllTTc+dNNIyFcCCoQWg42ed9hhW4TCsTmKl6ChxxAdETSqsum0Sr
+         4qIOT5v270oFPh0eoYTrWkb0rE9kO0CKJj5/iOA7sAktiU/pz2+S9dtOOuRN8yGS7BUG
+         UhZ6oqS4CiQQzxJL8sQFTVyeWhY2tOhQd10LIqDhSmc+GdiXXEhdDXJg6mKdOzU4pz4c
+         ao+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gWhRaROW89yV5OS3p3Oh/TR8um8lkux/C2SiVG/FN0U=;
+        fh=jXG6vs5HoQTsvPOozeck6AfEAt7z269vB7q/XhYbczE=;
+        b=ecwntpcExfRF2p9m9DgTimxmXmfU+N/YjxbVBihICys41RF0vAa3RZMNHm9cne/S/g
+         CG2h+ycZCfcmcfC69TDOK1ES6gyLu1JE3SVxo1K8I2snhUFmW0Eaap9e5oPL4WirgxDH
+         hwGM8hqCTaPAhS+kexLr1JPcQd6/cNUNqpnj2UfpjNvr8nP3uhotoJJzEnJDMEpLVj15
+         DR+m2NOa2QQHKX0TtMKIBHE4g3QtaGvgxQP2CgSED2caISZylmX/8Zw7M45c9s7tVdRQ
+         e8leLuvRldMjJN+qSEZuyBzYYYIcFeNUXIXgupiXNvLYO/eG+/43HdEH+68d1bgdONFU
+         si6g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789931761; x=1790536561; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MRHHzZuzTFHdeZZCwVQrfnnYfoUZ+O10/vzVIYuQB8s=;
-        b=iGDAipxHmpQV0+HzqznfMziwFMMMino5CRHFXKSC8yUA1wdpbEKO050adHliTubgjt
-         JIQqoNUb3vWUidkyBwe1gC4wAd4mf5GjeXSZvBijbYdmUH3nz0bpNzHHmkIOUb7iCO2I
-         aavAejRFw8Vn6NaLJ4EY9C4Noy8bmGvlKsbuRfytHjBN5FcbtOnEP83w2ij3BLDayRWj
-         pwkZRtIB+SbXBMfcnZd0jX3mGDpcEdo7zaI6mzeH77VPzjxCY3hkucHmaIvQjO2uH7v7
-         zyM2LbE9g0dPMoACEK4tbf/iR6M8dnFXgPYe0HmkgdkQ9o1k2QAQt1aYZgNDzGSTuory
-         R2bg==
+        d=google.com; s=20251104; t=1789931999; x=1790536799; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gWhRaROW89yV5OS3p3Oh/TR8um8lkux/C2SiVG/FN0U=;
+        b=UHzfCDNkUeg8JygLeU7bjSLvlWmWi6ZIEklM0UBEnKAR8ZTh9HxcLwp+heWsyVG4lR
+         71FnwslAXVzqZeZPJS8LqjIfXT1uc045WKQXbiRas3lThtJrdYQwyHmu0qwlt8R0uOX9
+         h/G3000ZuDcFlLp9YIDUeUAK0Y7+RqpIBBXbIS7SuM7aVl5PJGo8lfAm4s77wFGcvbMq
+         md14K+E6sVbL+V/uP2/IbVCt1JQlJmqOmhXqcAhsvLlkkOtyhIM2h8X9bRGeBuW+COya
+         9Xttr6ClXOCHU+e1xXigAlFDnImG2j55q5cA0bIMbtwxJdZLScZ8nDW4wV3XWbL0T1KR
+         dEBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789931761; x=1790536561;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1789931999; x=1790536799;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MRHHzZuzTFHdeZZCwVQrfnnYfoUZ+O10/vzVIYuQB8s=;
-        b=f3r4G5bcoq1uRxRAcXB9rQwPO82XKHvp/Ca2MNL4Uh23pUvRpWYdLu4AZVnRDvJLTo
-         GGjourkv8leW4rMqffai6N/8Rze6B06HXboffdeEHptKZiP72+prCdLZxU4/e4y5ptks
-         Lv9/sNGfyQfXaSID2xDz8+au1JMcLFGMVUaSErj8BETsT0obVFHk6Bx5Tb2nv93VbysZ
-         xsdD5S0Rj7xqwEQHdnUMshbDGkK5M+PWBzko9GPMffpHgjdnq59b/AWdbdJPVSOV28wY
-         cEazYIP6MlRsLcwTxudX6W5SRfvRKFGdGJBL59vo3rxiEjjQtcn36pZ2ymc3iwBNzmOO
-         +oRw==
-X-Forwarded-Encrypted: i=1; AKwUvBwNgXhbVFI2j1pKyRcCODwIOHmrMxRaHDG83AWcTuS0KuJNqSC6MEoR89pOpdCCsfIOzjFWbrw=@vger.kernel.org
-X-Gm-Message-State: AFuF++l2g40CL894G0SWRGbLNGXIugokByFbvY6hs+dxeBrZb3qP43Nz
-	kuhkuKJbY9xwKzF9t07E1XcUXJiUAwZe+nfXpO+i0Wa+ROAEOpUU5fQCshYBkz+86BRImEKOJMF
-	wlJYpUw==
-X-Received: from pfblr25.prod.google.com ([2002:a05:6a00:7399:b0:851:8e56:35d3])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1588:b0:878:34b8:232a
- with SMTP id d2e1a72fcca58-87834b8255emr4362395b3a.50.1789931760809; Sun, 20
- Sep 2026 12:16:00 -0700 (PDT)
-Date: Sun, 20 Sep 2026 19:14:32 +0000
+        bh=gWhRaROW89yV5OS3p3Oh/TR8um8lkux/C2SiVG/FN0U=;
+        b=U4Yhp1hOaCVIFNor6cdFF3HKyHuMFfdBzdYd2eOwu6IZZ4Sj1pydJ0BazDExrJbQE/
+         fGLb9AqiQhkhED+7RG0q961qoydpoW+DZttVlq9lvXtfePbFFQbI8HOlDtKwB90tGYKS
+         lWEpkyqrGcCixbdAC8NXSzUAx6EmLpHA9BYXxJJtHo3UBvDHY2VaIhyYECNd2BTWGax+
+         NhrfojzXUPyNX866ewzWmlK0o4w7iBGLj3BtR3a2MxDSPV8R4bo31rYNRMikMGv817lQ
+         dnA8aM1uslJeNwjqgATfw3BbK7K7r9SICk432ETutVjr4rno9e+6JI14y58FfFDwYQS7
+         uJWg==
+X-Forwarded-Encrypted: i=1; AKwUvBw4FmGvxHJaeXH0SS4qhvDug9HA0idKDkIJ7CTFwAuvHKfT9PQUXuzhhUP5sZM6b/FfGXl/Idw=@vger.kernel.org
+X-Gm-Message-State: AFuF++nJo+3udfP//jlAsKCbtBC74RvAgtJmZ6WS0DTbzQMpE7Of713+
+	pfzkVt+BxzopyFpJVa3jK2n9jlVzhSM2zBosFgKFFOLcsJc4MkNwcHg4HmsVNjasI+yfA7+ajvI
+	ag7A7KcxJuupZbpwNpvMKJ2BWn7xWRMqjIuPQVUW5
+X-Gm-Gg: AYBFou0Umumyz2wWAlCOecdpdA+W4uF/NmgmIoerurqCejfWiZ03p/Iy8wkJ0lKJfDO
+	zeSSASAjhUFmakhIiAe5kjutgnM9Fv0Gf2P1eupi1lRJgIENtTsPXhz7f1b9KwL1nCupJ/wK5PN
+	B4mfVSxmJ2/hCpgC3CtYT6lhHYldT33QqfSF6AUfJduX6Zm2QLcEB8mQuZ5RvXC8bRSnIPctxCb
+	ZCWcjDKXar/IMkimmBI9rmvGydROi//v04lNK+B2LTjDYnNhCVzYgUx9lieofdopIMJrb2ZXEsQ
+	ZnBcfcv+MkvWW199xhu+NWOeFtYqLbZdhya1oaVrAEtcaW3D+JvMwg5EaYUfh60xi0p7O+v07cV
+	foZLG+tJNRYbnROMQgx93rn1bTmNhGlZN2TCBk6MJt3gs/FJUOoJ7dHK+PBdk/peJBHYf/1HdQS
+	v+zsZ4KD2rV1+2LgS7vwy1blAXqzXm3qqbAZs=
+X-Received: by 2002:a17:90b:4a01:b0:3a0:4abe:fcbd with SMTP id
+ 98e67ed59e1d1-3a04abf0758mr914250a91.19.1789931998859; Sun, 20 Sep 2026
+ 12:19:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260920191558.2990636-1-kuniyu@google.com>
-Subject: [PATCH v2 net] ipv6: Fix dst leak for uncached routes.
+MIME-Version: 1.0
+References: <20260919215238.3471141-1-benquike@gmail.com>
+In-Reply-To: <20260919215238.3471141-1-benquike@gmail.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Hangbin Liu <liuhangbin@kylinos.cn>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Date: Sun, 20 Sep 2026 12:19:46 -0700
+X-Gm-Features: AcwNN1XNFaIA_FuRm5dvT0DJBzJTY_mCtk-5E27wg2ToTpoFvLwk3Ok8gbD_32g
+Message-ID: <CAAVpQUDwLnRfv1PkkexsC04D8wLSeARekuUDSTOenyRctWG8MA@mail.gmail.com>
+Subject: Re: [PATCH] fou: reject FOU_ENCAP_DIRECT with protocol 0 to prevent
+ sk_buff leak
+To: Hui Peng <benquike@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ip6_route_output_flags(), ip6_rt_put_flags(), and ip6_dst_check()
-detect an uncached route by list_empty(&rt->dst.rt_uncached),
-which replaced the static DST_NOCACHE flag check in commit
-a4c2fd7f7891 ("net: remove DST_NOCACHE flag").
+On Sat, Sep 19, 2026 at 2:52=E2=80=AFPM Hui Peng <benquike@gmail.com> wrote=
+:
+>
+> In fou_udp_recv(), returning -fou->protocol to udp_queue_rcv_one_skb()
+> triggers IP protocol resubmission when fou->protocol > 0, whereas returni=
+ng
+> 0 tells the UDP tunnel layer that the skb was consumed without freeing it=
+.
+> When a FOU_ENCAP_DIRECT socket is configured with FOU_ATTR_IPPROTO =3D=3D=
+ 0,
+> every received packet returns 0 from fou_udp_recv() and leaks the sk_buff=
+.
+>
+> Reject FOU_ENCAP_DIRECT configurations with protocol 0 in parse_nl_config=
+()
+> and drop packets if !fou->protocol in fou_udp_recv().
+>
+> Fixes: 08d323234d10 ("net: fou: rename the source for linking")
+> Assisted-by: LLM
 
-When a device is unregistered, rt6_uncached_list_flush_dev()
-unlinks uncached routes tied to the device from rt6_uncached_list.
+Looks hallucinated ?
 
-Previously, they were moved to another list with list_move()
-(__list_del_entry() + list_add()), and since commit 98aa546af5e4
-("inet: remove (struct uncached_list)->quarantine"), the routes
-are just unlinked with list_del_init().
+commit 7a9bc9e3f42391e4c187e099263cf7a1c4b69ff5
+Author: Kuniyuki Iwashima <kuniyu@google.com>
+Date:   Thu Jan 15 17:24:48 2026
 
-If list_del_init() runs concurrently, list_empty() evaluates to
-true; ip6_route_output_flags() calls dst_hold_safe() incorrectly
-and ip6_rt_put_flags() skips ip6_rt_put(), leaking dst, and thus
-dev tied via rt->from as well.
+    fou: Don't allow 0 for FOU_ATTR_IPPROTO.
 
-The same race is partially fixed by commit 9a6f0c4d5796 ("dst:
-fix races in rt6_uncached_list_del() and rt_del_uncached_list()").
 
-Let's check rt6->dst.rt_uncached_list instead.
-
-Note that IPv4 does not have the same issue.
-
-Fixes: 98aa546af5e4 ("inet: remove (struct uncached_list)->quarantine")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
-v2: Add a comment, update stale comments, correct Fixes: tag
-v1: https://lore.kernel.org/netdev/20260918041439.2575935-1-kuniyu@google.com/
----
- include/net/ip6_route.h | 4 ++--
- net/ipv6/route.c        | 7 ++++---
- 2 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index b9e8d2b759e9..0f9b7a260d25 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -101,12 +101,12 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
- }
- 
- /* Only conditionally release dst if flags indicates
-- * !RT6_LOOKUP_F_DST_NOREF or dst is in uncached_list.
-+ * !RT6_LOOKUP_F_DST_NOREF or dst is uncached.
-  */
- static inline void ip6_rt_put_flags(struct rt6_info *rt, int flags)
- {
- 	if (!(flags & RT6_LOOKUP_F_DST_NOREF) ||
--	    !list_empty(&rt->dst.rt_uncached))
-+	    rt->dst.rt_uncached_list)
- 		ip6_rt_put(rt);
- }
- 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 08bd68f1b5bb..70d643336610 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -139,6 +139,7 @@ void rt6_uncached_list_add(struct rt6_info *rt)
- {
- 	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
- 
-+	/* Set once and never cleared: non-NULL marks an uncached route. */
- 	rt->dst.rt_uncached_list = ul;
- 
- 	spin_lock_bh(&ul->lock);
-@@ -2721,8 +2722,8 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
- 	rcu_read_lock();
- 	dst = ip6_route_output_flags_noref(net, sk, fl6, flags);
- 	rt6 = dst_rt6_info(dst);
--	/* For dst cached in uncached_list, refcnt is already taken. */
--	if (list_empty(&rt6->dst.rt_uncached) && !dst_hold_safe(dst)) {
-+	/* For an uncached dst, refcnt is already taken. */
-+	if (!rt6->dst.rt_uncached_list && !dst_hold_safe(dst)) {
- 		dst = &net->ipv6.ip6_null_entry->dst;
- 		dst_hold(dst);
- 	}
-@@ -2831,7 +2832,7 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
- 	from = rcu_dereference(rt->from);
- 
- 	if (from && (rt->rt6i_flags & RTF_PCPU ||
--	    unlikely(!list_empty(&rt->dst.rt_uncached))))
-+	    unlikely(rt->dst.rt_uncached_list)))
- 		dst_ret = rt6_dst_from_check(rt, from, cookie);
- 	else
- 		dst_ret = rt6_check(rt, from, cookie);
--- 
-2.55.0.1082.g2b9226bbc0-goog
-
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> ---
+> diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+> index 5e867f1b5c1d..3fc087c808bc 100644
+> --- a/net/ipv4/fou_core.c
+> +++ b/net/ipv4/fou_core.c
+> @@ -77,6 +77,9 @@ static int fou_udp_recv(struct sock *sk, struct sk_buff=
+ *skb)
+>         if (!fou)
+>                 return 1;
+>
+> +       if (unlikely(!fou->protocol))
+> +               goto drop;
+> +
+>         if (fou_recv_pull(skb, fou, sizeof(struct udphdr)))
+>                 goto drop;
+>
+> @@ -696,6 +699,9 @@ static int parse_nl_config(struct genl_info *info,
+>         if (info->attrs[FOU_ATTR_TYPE])
+>                 cfg->type =3D nla_get_u8(info->attrs[FOU_ATTR_TYPE]);
+>
+> +       if (cfg->type =3D=3D FOU_ENCAP_DIRECT && !cfg->protocol)
+> +               return -EINVAL;
+> +
+>         if (info->attrs[FOU_ATTR_REMCSUM_NOPARTIAL])
+>                 cfg->flags |=3D FOU_F_REMCSUM_NOPARTIAL;
+>
