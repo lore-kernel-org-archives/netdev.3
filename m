@@ -1,75 +1,82 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F55B3D9DA8
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FEC3DD516
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789888894; cv=none; b=fLKJA6f3DtBy/Xv9GnlmLR/zUBte1Onpvs0cYEqQAk13moPGilhUhELBpFape8K742xu6qiX+T1/PfwAJJX6ezN+vUtQ8rAo7TGV7CoLYcsFMTcit7N/CXwcvhcjEM2f9yHJc3cAgYxJZa5dlCQ/CwoEoBPIbACdiAKsEmcaKiU=
+	t=1789889155; cv=none; b=mShIwSsBpPgzIrUHMdB8xVJ5rBV6YNoQjSMJWlPiesP/NLNjdD0wjejZK204Ha9lRYs5ghgEw3HZh/hJkiC/tt1hcPD4O4vCeDw/wN/OsBJcGqjk8t3xrrpOiXI/9cBjktAs27hWfUv6l2v9bRtA7xT2Q2K6VKC0Jv4AzO6husI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789888894; c=relaxed/simple;
-	bh=RjrKH9cGLPoTmBjFTwTydWRSrGDoAmKKPR/JLk2ORh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hyva6nAtNl+G4m5pagBExNyR9/pNTaxtFd5EDaKmuuSNipkxkIXikSHtQDUizlEvtJQZGD78sa/SApd6ihIswAZtocULQBGNGFrfmDK1ggLJQBVRSStWpnKu0YHZSyJ9aEvc73VqRe4cNSPYFDq01tMPjK7DblcjW+/VKkMXEIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hg+0Nb33; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1789889155; c=relaxed/simple;
+	bh=zh5Ol2TuPLH0d4OoeJAaGteSoIwYvBaEbtNs4QWKGvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MZr+dBW2hOJDCPOhKYpB7HFOtoDid9WKAfRXdCfpSH34xUTlSYR1Wq2FVhpI255xvDtX+qLjg+XUEcdhUwMGz8pkZnZkTpwfBevcpl9AX9YFivjeKD4cfr0fr+To5lWYZnzhL3a6srQjTV4UfMAkWGVFQVZ1riS0Rwzj12cFd6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XoARAIA8; arc=none smtp.client-ip=74.125.228.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hg+0Nb33"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2caced6038eso17613155ad.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:21:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XoARAIA8"
+Received: by mail-pz2-f43.google.com with SMTP id 41be03b00d2f7-cc4aa0f1a94so1403639a12.2
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 00:25:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789888893; x=1790493693; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X+N4HCSxx6xxbL7mCL5k/pdd9D0OqiBm4AMjPhjGc6A=;
-        b=Hg+0Nb33Uvusr4Zgb7vNq6UBzZE+c688453PIm3XY7r+qNSEQ0A45DpbTMoOGeI8zL
-         RscAr+Bea1MZyVjU8DVI48y3Irn2vxZtLlmgnwkmBegtAsbT0vr/FtnikyGwsXcWGQXj
-         2aMhU7ZhgHD0heguWdGzVdbsZOVZVqpVpogQUwy8Jl91NTqqriz4mHNnNrRZTxdC9MeL
-         bVjwKWubliPgdThcOs9fdQTUovCLPK2CTNgVkkgF5+VJKQCj83oS0F8dyRpcFhlYO4Yt
-         adwDVmC7Rkn/wVcZ8JcLvQcyNwOGZXxom1Ngv2MPoEo/s0wvjE2tLAchbq6arfojBS79
-         RLFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789888893; x=1790493693;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789889153; x=1790493953; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=X+N4HCSxx6xxbL7mCL5k/pdd9D0OqiBm4AMjPhjGc6A=;
-        b=1ZAhgt08Lbm0/6dB6hNU/d4M1tGXZNJdn22Vaz+z92EgRRwTbO86Pp+d17ZDrZEqsu
-         PEiQOSYPZh+iOA4Z1xLS94APFKJev8+S2RKC/efv8DSenSmzcFu6TE3rC+Ulz2YInHcl
-         d/XzJfwWwezA8OhiyPcHJB+dnr+nCcSXwNcJSz9nqvMb/OIJiX+gCJVp5GuCxZISKEoa
-         gl8wdG6mJ2LgN3K+Eyeqj4v9+E5UrM0Tyz9V98Ku/v8HzrK55W2yHIhvzaL91RDcpxRZ
-         0cvdahE7684OtICkKdJN7lYQ9H4LVm7m5OLv4/zkRAimq8Wo8UVX2W0j5lC58+42fLjO
-         XzxA==
-X-Forwarded-Encrypted: i=1; AKwUvBwdr1LDiisaa8urZqS0Le/3MParClXVDGnYxnbhZX5hHYpu8dNiqoz4+85y73Rd5b+nls2woAs=@vger.kernel.org
-X-Gm-Message-State: AFuF++l5AXLcPkIVTTAC2KmobeV4CnTufbZaVZpqjV6GEifHWARkUMoE
-	7sT6pLSdhWlJ8osT1M3Ut95qHNFVn0Zi6Z5ZgN9uiHB84bBxf4eJnSGh
-X-Gm-Gg: AYBFou2byzS1GoH7L2Gkhrn4dCtiBQ2Ozqysmuewq8g4RA3UFkKKpSLSLYbMgRe1g+Z
-	yDW+ydewLkU/fS+9J3MtRfOUREruHZolUytUsWOxoTgv2HhVBYuh2iQaRZKo7rTFU/xgVq50un2
-	szlaOnf8yHE97a2u0/fp8yLyWp/6bWvyhVvbSNeo5vybZuQ2XR+1ju24LWYR+giIAbAO8rpsp3b
-	bMpy8mzwNRHGJBLDaCzxzR8dq8fTcryHXHV6PREWlBUNcYJVp3K1f8DoYczNfr4XvUdI15LfA/+
-	Tp+P+spLtwnFR6BCKRd3MlmzM87b28U1S4OQ2FgVgp90u04t0xyV7bXeEXBcXd83WmnYDCNfO8c
-	KlXnwIcMX+9Azwu1nUaAc0QJxm0sMgN8p9B5/vGTaNFqY/600i3L6ZR9Oehan5V9jWeI37msMn+
-	mS0iIUpud4tM1amlhw7vxSazrVDxH+dGOyusyxN2FB3v3vlDKEQNID0HqATBdYzoAvavB3wa4p7
-	EdKmnJZZF6fQ6eGYVC/sGZ/VqX6w9rYVHP9nqbFOpeAID4B9q4mergHyRC1lQ+lYMCtkVc/iPyl
-	HSwOxQ==
-X-Received: by 2002:a17:902:db0f:b0:2bd:2c3a:2a36 with SMTP id d9443c01a7336-2dd9c5e9b98mr143166245ad.0.1789888892689;
-        Sun, 20 Sep 2026 00:21:32 -0700 (PDT)
-Received: from lab-kiba-ocxma-dut-01.. (191.68.231.218.rev.ocx2915.net. [218.231.68.191])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2de217b3a97sm16542345ad.31.2026.09.20.00.21.31
+        bh=dW4gs9SAniP9kxUqfZ2XWITnN57K9b7RZGjbG0t6JAs=;
+        b=XoARAIA8VigVO5HCZjH1NGMNoP3hps6yNiwZ3AncyCgViDK7upWcbMp8cwwxBKVNVS
+         n21Mlqpv3jXQrAnzcowYkUD/2voSpPPh+K6eM/LJn3rPs+mG5NN6CutQq0FbtlD9iJHQ
+         Hd9s6Njm2j2YURP3wjcz9u5LQ6t4uxpN0OhCHUasjMk8Nt5JT6kpZVsqr4f11SsU5sKL
+         ZHQlZQYRUMnY5LT+59sohDJNFQBIdURPXxcvTwgrFMspM+Aa9n+MYd0ejBYHX589C9GX
+         m7oG14h6zBICGXRJcaYogeExxJuKLVcLMoA/4W6NSmdV4ggROoO8iQMulLCNhHlSs8r5
+         +BzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789889153; x=1790493953;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dW4gs9SAniP9kxUqfZ2XWITnN57K9b7RZGjbG0t6JAs=;
+        b=aZYD/NpzTUa2+cg8xuyTxKpWNSvuidSGTXqpUBlqhj9AonvUbD0Kl2ZsxAV9S5CVc0
+         eEUgN2AUJlacnLA6HinHlNYzLepKZcHzg1AevY0cxUS2oLTS4v32b4V5ZZeExJ+ifbBM
+         QCQEfdlHeQmk29C2fCkJMkj0Dcx3affB965Sqre7k2PBLmJoAoO8YBhlVvqtd7YmSB2K
+         3OknJFVvPDoPBF4izyfcuo3q+MkIQ/RHodqwdSNBUBnJiIyThKIGN2JbA9Uc3wGXq3G8
+         CWp53Y7OEjwWnFFgwHtys6X50eqhKz2T3S9B1a/fUKb+RU5YQv6gulYC/9KuA6trAyzx
+         7fag==
+X-Gm-Message-State: AFuF++ldx3yDEDxrvvJBG2qUdW7AzCCNbf4YXXHBVjiPTjr7htnIv3vz
+	LKm8P/+dwauYRpVD10IaxlXf7Bdktp76gSrKa4g3CD6zjzqc2Nao3GWEqS2ovpJJzCw=
+X-Gm-Gg: AYBFou0bVil4+2meE1zNKl2qqF9WKMlGudxG58CgxqnfPbGXKmP+YeekygB81jnaek3
+	6mSptFUqg67k9KY08Nw9R4uLBbpR077lOhkF27OuIFLw23Hlzk7xvV4VLE0S0bclubJak77u/aY
+	phvuVuBQTh+Vyy3k/3E/8ll5ary2BstU6NI/0rjWxaZS9ktPOKNLB0hpsUGn2aeMaICfZmGJrD3
+	uDsmoZpFxGbikLescVvu41+VwEDueUwKTRg7ussa4c5Pl0ACbufrLrMpyaWllBcTl44SuTBe2Mv
+	X/kThULZ1IYLAEuP6VdWFoJ3xpN24WoiK5oQN4mqoVnNLyzO+GZPVQoGlabVtlFl/25xbrKwCbU
+	ZuXJH14fH6ZoFGJBTyFBLLo1bCDE1cWr6iR+SW5ZoNCpMYo1OY1enzqVzHrGJ+5VWYurWYYGXHV
+	UIIguX8thQ06K++mCb3CwvL4Kgbptq57H1hXSrO0XIUV8uEkvMKoCDTn1di23plZoltEF9PxyPd
+	GhXDOQzNR7ilEMHIYn2vw2PmLBx92CNRjlXvTcFO1TrGxK77fxB4Etvfc1a
+X-Received: by 2002:a17:90b:4d11:b0:39e:6c69:34cf with SMTP id 98e67ed59e1d1-39e6c69373bmr5984342a91.51.1789889153573;
+        Sun, 20 Sep 2026 00:25:53 -0700 (PDT)
+Received: from lenovo-thinkbook.lenovo.com ([58.247.171.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c379c4bsm8342727a91.7.2026.09.20.00.25.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 00:21:32 -0700 (PDT)
-From: Takeru Hayasaka <hayatake396@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	netdev@vger.kernel.org,
-	marcin.szycik@linux.intel.com,
-	alexander.nowlin@intel.com,
-	Takeru Hayasaka <hayatake396@gmail.com>
-Subject: [PATCH iwl-net v2] ice: fix empty PTYPE set for GTP RSS profiles
-Date: Sun, 20 Sep 2026 07:21:14 +0000
-Message-ID: <20260920072127.1278984-1-hayatake396@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sun, 20 Sep 2026 00:25:52 -0700 (PDT)
+From: Yuqi Xu <xuyuqiabc@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Ren Wei <weir@nebusec.ai>,
+	xuyq21@lenovo.com
+Subject: Re: [PATCH net 1/1] net: ipconfig: bound DHCP option construction
+Date: Sun, 20 Sep 2026 15:25:03 +0800
+Message-ID: <20260920072503.60706-1-xuyuqiabc@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <7808dfbfa2162dfd0b19f59aff5742d6e0db2abb.1789798023.git.xuyuqiabc@gmail.com>
+References: <7808dfbfa2162dfd0b19f59aff5742d6e0db2abb.1789798023.git.xuyuqiabc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,80 +85,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Configuring RSS for GTP flows via ethtool, e.g.
+Sashiko reported the following finding on the patchset page; it has not
+been posted to lore:
 
-  ethtool -N <if> rx-flow-hash gtpu4 sde
+> Blind copies in BOOTP extension parsing (`ic_do_bootp_ext`) cause
+> out-of-bounds reads if an attacker provides a truncated option length.
+> location: net/ipv4/ipconfig.c
 
-is accepted but has no effect: the hash of GTP-U packets does not
-include the TEID, so all traffic between a given SGW/PGW pair lands on
-a single Rx queue. The GTP RSS configurations the driver installs by
-default at VSI init are affected the same way.
+This finding is about the receive path, not the code this patch changes.
+It is a real, pre-existing issue; this series does not introduce it.
 
-ice_flow_set_rss_seg_info() does not set IPV_OTHER on GTP segments, and
-such a segment carries no L4 header bit either. ice_flow_proc_seg_hdrs()
-therefore takes the "no L4" branch and ANDs the PTYPE set with
-ice_ptypes_ipv4_ofos_no_l4, or ice_ptypes_ipv4_il_no_l4 for the inner
-segment. Neither holds a GTP PTYPE, so ANDing with ice_ptypes_gtpu
-leaves the set empty: the profile matches no packet at all and the
-configured TEID field never enters the hash.
+This series only touches the transmit side, ic_dhcp_init_options()
+(net/ipv4/ipconfig.c:698) and the new ic_dhcp_add_option() helper
+(net/ipv4/ipconfig.c:680). The function named in the finding,
+ic_do_bootp_ext() (net/ipv4/ipconfig.c:919), is reached only from
+ic_bootp_recv() (net/ipv4/ipconfig.c:1156) and is not modified here; the
+diff contains no receive-path hunks, so this series neither introduces
+nor worsens the issue.
 
-Set IPV_OTHER on GTP segments so that the tunnel-inclusive PTYPE sets
-are selected instead, which do contain the GTP PTYPEs. Skip segments
-that carry an L4 header bit, because the VF path strips IPV_OTHER from
-those on purpose.
+The receive loop is:
 
-Verified on E810 (kernel 7.2-rc2, COMMS DDP 1.3.63.0) by reading the RSS
-hash from the Rx descriptor: GTP-U traffic varying only the TEID goes
-from one constant hash on a single Rx queue to 4096 distinct hashes
-across all Rx queues. The same holds for inner IPv6 (gtpu6) and for a
-PDU session container extension header (gtpu4e); plain UDP flows are
-unaffected.
+	u8 *opt = ext++;
+	if (*opt == 0)
+		continue;
+	ext += *ext + 1;
+	if (ext < end)
+		ic_do_bootp_ext(opt);
 
-Signed-off-by: Takeru Hayasaka <hayatake396@gmail.com>
----
-v2:
- - Ignore IPV_OTHER in ice_get_rss_cfg() so "ethtool -n" reports the
-   GTP fields again (reported by Intel validation)
- - Do not set IPV_OTHER on GTP segments that carry an L4 header bit
-v1: https://lore.kernel.org/intel-wired-lan/20260714192302.631428-1-hayatake396@gmail.com/
+with end = (u8 *)b + ntohs(b->iph.tot_len) (net/ipv4/ipconfig.c:1078).
+An option whose length byte overruns the remaining space drives ext to
+or past end and is skipped. That is not the case the finding describes.
 
- drivers/net/ethernet/intel/ice/ice_flow.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+The truncated length in the finding is a short option length, not a
+length greater than the remaining space. After switch (*ext++), ext
+points at the length byte; the copies ignore it and memcpy a fixed-size
+value at ext+1. Option 1 and 3 always memcpy 4 bytes
+(net/ipv4/ipconfig.c:935 and :939); option 26 always memcpy 2 bytes
+(:968). When that option still satisfies ext < end, those copies can
+read past the declared option and past end. Options 1 and 3 do so even
+at length 2; option 26 only at length 0 with 3 bytes remaining. With
+skb->len == tot_len that is a real KASAN out-of-bounds read. It
+predates this patch.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
-index 121552c644cd..27de6048ebcc 100644
---- a/drivers/net/ethernet/intel/ice/ice_flow.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flow.c
-@@ -2088,6 +2088,15 @@ ice_flow_set_rss_seg_info(struct ice_flow_seg_info *segs, u8 seg_cnt,
- 
- 	ICE_FLOW_SET_HDRS(seg, cfg->addl_hdrs);
- 
-+	/* A GTP segment without an L4 header bit would select the "no L4"
-+	 * PTYPE sets, which hold no GTP PTYPE at all. VF requests that do
-+	 * carry an L4 bit drop IPV_OTHER on purpose, so leave those alone.
-+	 */
-+	if ((seg->hdrs & (ICE_FLOW_SEG_HDR_GTPU | ICE_FLOW_SEG_HDR_GTPC |
-+			  ICE_FLOW_SEG_HDR_GTPC_TEID)) &&
-+	    !(seg->hdrs & ICE_FLOW_SEG_HDRS_L4_MASK_NO_OTHER))
-+		seg->hdrs |= ICE_FLOW_SEG_HDR_IPV_OTHER;
-+
- 	/* set outer most header */
- 	if (cfg->hdr_type == ICE_RSS_INNER_HEADERS_W_OUTER_IPV4)
- 		segs[ICE_RSS_OUTER_HEADERS].hdrs |= ICE_FLOW_SEG_HDR_IPV4 |
-@@ -3002,9 +3011,10 @@ u64 ice_get_rss_cfg(struct ice_hw *hw, u16 vsi_handle, u32 hdrs, bool *symm)
- 		return ICE_HASH_INVALID;
- 
- 	mutex_lock(&hw->rss_locks);
-+	/* IPV_OTHER is set on GTP segments internally, ethtool never asks for it */
- 	list_for_each_entry(r, &hw->rss_list_head, l_entry)
- 		if (test_bit(vsi_handle, r->vsis) &&
--		    r->hash.addl_hdrs == hdrs) {
-+		    (r->hash.addl_hdrs & ~ICE_FLOW_SEG_HDR_IPV_OTHER) == hdrs) {
- 			rss_hash = r->hash.hash_flds;
- 			*symm = r->hash.symm;
- 			break;
+Since the receive-path issue is independent of the send-side overflow
+addressed here, we have kept it out of this series.
 
-base-commit: 1cd23ca80784223fa2204e16203f754da4e821f8
--- 
-2.43.0
-
+Best regards,
+Yuqi Xu
