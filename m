@@ -1,103 +1,84 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05A41A0B15;
-	Sun, 20 Sep 2026 03:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8662E3515D3
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 04:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789876103; cv=none; b=ahlEWJ+XunxDoh7BgyxwqsjpbrSEFiVNX71nZD/loJ14maR1u8RFbjLFTk+2bTI+uGT5Lxe/PN3pDVrW5VNizOXDwqF/V9hNuf2G6mPtfnizOZv+2BS5fksMX3NCE7G3DjzUX7C4LNzpP58ht4w9prA4jbyHguyn03RLOSraOCU=
+	t=1789878818; cv=none; b=FZ4mQMuOMIf3Eagce38eesmdB5hNKd7BjvAoN8BDyVYPUHQpo3hO2bjeegTELAkZ8IvKh1+YGNdxUen6TXTt1OCFOAQP6/ESKTO+XUJhB5nhcGjLNGMP5DUHgTRVBHjg+OCPV059mwYbEZWK1frpW4kQ3ryLWIUSRxXTOSrTOKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789876103; c=relaxed/simple;
-	bh=d2h7FXY+Z0Ko0oEFu2YEzuKqYCDUZDocdHjJCap76RI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aWoBzuJEwpQr8du9quu3n9SkaGDHloqu0FGl3G9wFOmz2iXBLJbDljtdNTk2IaVxZLiQwFgczn3E7mnp87YCk+UyivWmhBf3TOs9XoqdYGDCde2IlBJkEpISUvg7XcvvZgW+WjgUsRy8XlvP8dAc8kkqtl/dtKwcU1l2eSpQESY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ji/eJWH8; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ji/eJWH8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=zC
-	ZCn/HTbvG7ECS8MrnseKP2fmhceo6WnzmtSb28Ils=; b=ji/eJWH8jJUx2y1NRV
-	4O0lrwzr6L2hX5zSkT1raEF6w2QDxuoWsW5rF6LJktJdWaontCENLTMHXjZmqAnF
-	xrO8PjzsijH9oXNuYysbIIQxBaNk8pQSjqNrh6hKG9dswpFriMT7xC2nq5Xjld98
-	9mv4KdxfTV6kyWSbxMZTHWWOg=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDHlxhjV69qJnc7AQ--.62997S2;
-	Sun, 20 Sep 2026 11:47:48 +0800 (CST)
-From: Pengpeng Hou <hppiscas@163.com>
-To: andrew+netdev@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	enelsonmoore@gmail.com,
-	peter@korsgaard.com,
-	horms@kernel.org,
-	andrew@lunn.ch,
-	hppiscas@163.com
-Subject: [PATCH net v2] net: usb: sr9700: include receive overhead in the length check
-Date: Sun, 20 Sep 2026 11:47:45 +0800
-Message-ID: <20260920034745.18468-1-hppiscas@163.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1789878818; c=relaxed/simple;
+	bh=E0Dm+pkrORbvXJlgKcRmRrJ55F8P9yW28wfmWViwCE4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=B6F19C6TUCLOk0s/gp0YcV8TdG0mwCm5TZglhoh6LsDKXiy1X69WiWYZG6ZztR4JdQqbiqqRdspPEaKLLpv8JLLYOJDX7H2qRPPYMbgsOu3d0JekydoF04btlG12j6b8vkjsj5dDzan21HZZler2sjVMirHCMyCkMjbTsXqtsNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b28d7ffab1so692163b6e.1
+        for <netdev@vger.kernel.org>; Sat, 19 Sep 2026 21:33:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789878815; x=1790483615;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aI02NHQu24Tmhdty9bC8nfkcPgFnIYmwfXJgNNhc/Gs=;
+        b=caatTafUrHzNJPUjhn1mQaXz3OkfzS7rxDCb5Ucj5QVTDaW0um9SEBkz6mobPjlht1
+         HxAc4KW7uDwwJBPhU0i1IoRzT1W8bIzGzwclqWuDsxXoA7ktvDdznBkkQGv4wC2M1JHy
+         6yBMQYl8wVcTTCs1hm0XhOuz+zZj+ADx5oZK/yPfFirlA89eLSLNJj0e4qr5x7O1IUKS
+         kpfUPdqkuj/HWDsAW46RmnmSuLESc9bO0wiays3Yh6VAvJfS1+VPWvpcYZgdv4XZ+hYk
+         vX0EGw7vt++lQALODEgEglFu1z9oa7YoVaKy85aTp9f96u9Io3Zr3K1soi1rr1wvRMnU
+         sevw==
+X-Forwarded-Encrypted: i=1; AKwUvBwtcI7ydTqtIGEXJm4hBj2tOKjgLFbVGCjcMh65d27TS4WsGwdhvRkkjLtVN/LY9UF3i8iPh3Y=@vger.kernel.org
+X-Gm-Message-State: AFuF++nXhhPZAqbDuUBsX7C5vbhl+jw0p0nGQNMNk35my/CuhzFTLy95
+	AbYsM3SlY2TVHrzf73lMqdHO/SvXFCYxU6HVjDVCxSIh1LEMYKXQdgWnNUoeTS45/pVr+pn2b/B
+	Mmvw7RyjFsHfjvHbFq/QdBmxx13BpKUUNklFC1R2pfOBXyyF63Oz6NgrreLU=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDHlxhjV69qJnc7AQ--.62997S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tryktrW8GFyDWr4UJrWrKrg_yoW8AFWrpF
-	ZxWFW7Zr4kJ3W7Jwn0kw4fWayrCas3Jr9xuF9Yq3s5uasIvw1xKa40gF1j9F1DArWrGFW0
-	yrZ8trs7Zan5AwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U59NsUUUUU=
-X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbCxQR1PmqvV2SULgAA3G
+X-Received: by 2002:a05:6808:181e:b0:495:f8a5:8797 with SMTP id
+ 5614622812f47-4cb649b97f6mr8655981b6e.0.1789878815589; Sat, 19 Sep 2026
+ 21:33:35 -0700 (PDT)
+Date: Sat, 19 Sep 2026 21:33:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aaf621f.3179f8cd.1e36b2.0008.GAE@google.com>
+Subject: [syzbot] Monthly bridge report (Sep 2026)
+From: syzbot <syzbot+list2012d6c21a1b1a4e0b74@syzkaller.appspotmail.com>
+To: bridge@lists.linux.dev, idosch@nvidia.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, razor@blackwall.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The receive fixup subtracts the Ethernet CRC from the reported packet
-length, but compares that payload length against the whole remaining
-receive buffer. The following copy starts after the three-byte header,
-and the cursor advance consumes both that header and the four-byte CRC.
+Hello bridge maintainers/developers,
 
-Require the payload to fit after SR_RX_OVERHEAD before copying it or
-advancing to the next packet. The loop already ensures that the
-remaining buffer is larger than the overhead, so the subtraction is
-safe.
+This is a 31-day syzbot report for the bridge subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/bridge
 
-The issue was found by our static-analysis tool.
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 6 issues are still open and 45 have already been fixed.
+There is also 1 low-priority issue.
 
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Reviewed-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Tested-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Assisted-by: gpt 5
-Signed-off-by: Pengpeng Hou <hppiscas@163.com>
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 10      Yes   WARNING in nf_ct_bridge_post
+                  https://syzkaller.appspot.com/bug?extid=a8ba738fe2db6b4bb27f
+<2> 464     Yes   general protection fault in br_del_frame
+                  https://syzkaller.appspot.com/bug?extid=1df7473ef265fe8ba6e1
+<3> 182     Yes   INFO: rcu detected stall in br_handle_frame (6)
+                  https://syzkaller.appspot.com/bug?extid=f8850bc3986562f79619
+
 ---
-Changes since v1:
-https://lore.kernel.org/all/20260705083724.24494-1-pengpeng@iscas.ac.cn/
-Clarify the subject as Andrew and Ethan requested. This is a revision of
-the previously withdrawn queue entry, not a new bug report.
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- drivers/net/usb/sr9700.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 937e6fef3ac6..50981a28376a 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -355,7 +355,8 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 		/* ignore the CRC length */
- 		len = (skb->data[1] | (skb->data[2] << 8)) - 4;
- 
--		if (len > ETH_FRAME_LEN || len > skb->len || len < 0)
-+		if (len > ETH_FRAME_LEN || len < 0 ||
-+		    len > skb->len - SR_RX_OVERHEAD)
- 			return 0;
- 
- 		/* the last packet of current skb */
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-base-commit: 518e5b794c06c0f0eb40df3e202274a66202c137
--- 
-2.50.1 (Apple Git-155)
-
+You may send multiple commands in a single email message.
