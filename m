@@ -1,90 +1,141 @@
-Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-217.mail.aliyun.com (out28-217.mail.aliyun.com [115.124.28.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EA334D3B2
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.247
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A733557D
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 07:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789890011; cv=none; b=CZU8MjNHOHeNDNQhiy0nPjbICdDsuLNLVz9SCH2YWuhq+KUeLC8yxZ2FfitvcCeocfppt+qG4YUqyj5xlWCONwW5WPpoiRYDfZdjxN7aDGeq9I9aYjtWAAmc9ES975W1CLPuSlXPdSIPwGMUKc0qXQbAJ2eKpZwNI0wM82bAWdg=
+	t=1789890179; cv=none; b=RPu7VCATrBlPIeJwEDyLm/l3InVMmnRmUlmM3ymyHI0IKqRO3Y1UdaMZzEPTN5oAwodPAuzVhpmTbY79YlN7ebwFXpxgDa1TlwdDKW1XPtj2jAcvCm332wdyB2TIDvp91J9dZoRnuT5VKv9m79ZzVxVds2GTvlR8ugvfapjEAHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789890011; c=relaxed/simple;
-	bh=+mwo1lLralubcPriQordmkmkr0DO+tN/QSyWIJ38380=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=j8jMkMHMjUAA/bkCo/1NmT9Ktj/p5FAtH4orbV5GZW+W6IeRjnCXG5DeniJSu4WTKWrURNMIKF1xIpA48TomhB1Xj0Mu9IRO810nS2Hg3Y/7eUP9NMaoMKRMLh+MqtYMZ/f6V1oRNMIcV7zaVKSvPTWYbi0cBXqu6t2j+Zo4Cpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R0QXDTWf; arc=none smtp.client-ip=95.215.58.247
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789890179; c=relaxed/simple;
+	bh=TeR/SPfjdxcP6WVL+nTBzCnu7nNJ7Lnzpml+TCVQWtk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vBWjyK6tb28JBj3LW+Jp6/oK2rw8udfYQxfMb+j/zW+vqD9ebli7MiW0VkkeLGfUClhzWTQlmCp9AcagWFoUg+XUAHdJHCSxXiFtBRP92zXjw4vRG357+WMOa/OBPDzHS5IRhPeLQIsLFwSbpsmO8GKJatqScfANHtPzM0pWEE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=XJmwYyUg; arc=none smtp.client-ip=115.124.28.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R0QXDTWf"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+mwo1lLralubcPriQordmkmkr0DO+tN/QSyWIJ38380=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789890006; v=1; x=1790494806;
- b=R0QXDTWfMKZcVor3mTSfXKHMEBjTvLS5YdcbjWrh+ysNmoZu694HRYPKg2whNl4B1tb57YQx
- 2ERByI8M6Ol2WW4aMFPNG/k05rvaApOBIKrnYJGGnu1dNWqCTT2uSs3ig2H9he6hvx3yous61uH
- mm82NUF804baTU9fYGG/jKS8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 32a348c164f13f67;
-	Sun, 20 Sep 2026 07:40:04 +0000
-X-Mizu-Trace-ID: 32a348c164f13f67
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <332d9841-e5b3-4273-85da-27816948e79d@linux.dev>
-Date: Sun, 20 Sep 2026 15:39:59 +0800
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="XJmwYyUg"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1789890167; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=6ClCO1rikCE+xXSYx0XHhuqUuxt3KRHtViZyWkQmCMI=;
+	b=XJmwYyUg11y9aF/oJ8iNjHA4jHMV0zcCxaivbYFTOsk0rVF5xYch0J0yd/8ZTwKMrlOPJn5x0VRtSBLLKHEyBxu893skIFrmyHhJ5JyZ8w+0+SJ+xv6wYk3nNLqp4KIG149kUpd0qFsSdqVbbpUK6yvUvdrr/7joVFHE5lkYvX0=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04898971|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0407612-0.000434714-0.958804;FP=11444322088015112353|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jHw1VNB_1789890165;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jHw1VNB_1789890165 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sun, 20 Sep 2026 15:42:47 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: netdev@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>
+Subject: [PATCH net] net/sched: act_ife: validate metadata length before decoding
+Date: Sun, 20 Sep 2026 15:42:45 +0800
+Message-ID: <20260920074245.79965-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Subject: Re: [PATCH v1 net] ipv6: Fix dst leak for uncached routes.
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Simon Horman <horms@kernel.org>, Wei Wang <weiwan@google.com>,
- Marc Harvey <marcharvey@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-References: <20260918041439.2575935-1-kuniyu@google.com>
-In-Reply-To: <20260918041439.2575935-1-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-在 2026/9/18 12:14, Kuniyuki Iwashima 写道:
-> ip6_route_output_flags(), ip6_rt_put_flags(), and ip6_dst_check()
-> detect an uncached route by list_empty(&rt->dst.rt_uncached),
-> which replaced the static DST_NOCACHE flag check in commit
-> a4c2fd7f7891 ("net: remove DST_NOCACHE flag").
-> 
-> When a device is unregistered, rt6_uncached_list_flush_dev()
-> unlinks uncached routes tied to the device from rt6_uncached_list.
-> 
-> Previously, they were moved to another list with list_move()
-> (__list_del_entry() + list_add()), and since commit 98aa546af5e4
-> ("inet: remove (struct uncached_list)->quarantine"), the routes
-> are just unlinked with list_del_init().
-> 
-> If list_del_init() runs concurrently, list_empty() evaluates to
-> true; ip6_route_output_flags() calls dst_hold_safe() incorrectly
-> and ip6_rt_put_flags() skips ip6_rt_put(), leaking dst, and thus
-> dev tied via rt->from as well.
-> 
-> The same race is partially fixed by commit 9a6f0c4d5796 ("dst:
-> fix races in rt6_uncached_list_del() and rt_del_uncached_list()").
-> 
-> Let's check rt6->dst.rt_uncached_list instead.
-> 
-> Note that IPv4 does not have the same issue.
-> 
-> Fixes: 7d9e5f422150 ("ipv6: convert major tx path to use RT6_LOOKUP_F_DST_NOREF")
-> Fixes: d64a1f574a29 ("ipv6: honor RT6_LOOKUP_F_DST_NOREF in rule lookup logic")
-> Fixes: a4c2fd7f7891 ("net: remove DST_NOCACHE flag")
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
+skbmark_decode(), skbprio_decode() and skbtcindex_decode() read fixed-size
+values from the TLV payload without validating its length.
 
-Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+A malformed IFE frame can declare a shorter payload, causing the decoders
+to consume bytes beyond the declared metadata value:
 
-Thanks,
-Xuanqiang
+[TLV type=IFE_META_SKBMARK len=4]
+-> dlen == 0, but decode reads 4 bytes
+
+The decoder may therefore set skb metadata from unintended input.
+
+Validate the payload length before decoding and return -EINVAL for
+invalid lengths. The caller treats decoder failures as per-TLV errors
+and continues decoding the remaining metadata.
+
+Fixes: 084e2f6566d2 ("Support to encoding decoding skb mark on IFE action")
+Fixes: 200e10f46936 ("Support to encoding decoding skb prio on IFE action")
+Fixes: 408fbc22ef1e ("net sched ife action: Introduce skb tcindex metadata encap decap")
+Assisted-by: Hawkeye:GLM-5.3-flash
+Assisted-by: Qoder:Qwen3.8-Max
+Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+---
+
+Found by auditing the IFE decode path at v6.18-rc7. The malformed
+metadata cases were reproduced with a userspace sanitizer model of
+the decode path, which reported reads of size 4/2 for dlen values
+smaller than the expected metadata size.
+
+Compile-tested on x86_64 with defconfig and NET_ACT_IFE=y: act_ife.o
+and the three act_meta_*.o build warning-free.
+
+ net/sched/act_meta_mark.c       | 6 +++++-
+ net/sched/act_meta_skbprio.c    | 6 +++++-
+ net/sched/act_meta_skbtcindex.c | 6 +++++-
+ 3 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/net/sched/act_meta_mark.c b/net/sched/act_meta_mark.c
+index ea0573cb8b2d..3a7d568df0da 100644
+--- a/net/sched/act_meta_mark.c
++++ b/net/sched/act_meta_mark.c
+@@ -28,8 +28,12 @@ static int skbmark_encode(struct sk_buff *skb, void *skbdata,
+ 
+ static int skbmark_decode(struct sk_buff *skb, void *data, u16 len)
+ {
+-	u32 ifemark = *(u32 *)data;
++	u32 ifemark;
+ 
++	if (len != sizeof(ifemark))
++		return -EINVAL;
++
++	ifemark = *(u32 *)data;
+ 	skb->mark = ntohl(ifemark);
+ 	return 0;
+ }
+diff --git a/net/sched/act_meta_skbprio.c b/net/sched/act_meta_skbprio.c
+index 2df3133ce5ad..fa4ba4269ca0 100644
+--- a/net/sched/act_meta_skbprio.c
++++ b/net/sched/act_meta_skbprio.c
+@@ -33,8 +33,12 @@ static int skbprio_encode(struct sk_buff *skb, void *skbdata,
+ 
+ static int skbprio_decode(struct sk_buff *skb, void *data, u16 len)
+ {
+-	u32 ifeprio = *(u32 *)data;
++	u32 ifeprio;
+ 
++	if (len != sizeof(ifeprio))
++		return -EINVAL;
++
++	ifeprio = *(u32 *)data;
+ 	skb->priority = ntohl(ifeprio);
+ 	return 0;
+ }
+diff --git a/net/sched/act_meta_skbtcindex.c b/net/sched/act_meta_skbtcindex.c
+index 44547caead46..48f001ada8f6 100644
+--- a/net/sched/act_meta_skbtcindex.c
++++ b/net/sched/act_meta_skbtcindex.c
+@@ -28,8 +28,12 @@ static int skbtcindex_encode(struct sk_buff *skb, void *skbdata,
+ 
+ static int skbtcindex_decode(struct sk_buff *skb, void *data, u16 len)
+ {
+-	u16 ifetc_index = *(u16 *)data;
++	u16 ifetc_index;
+ 
++	if (len != sizeof(ifetc_index))
++		return -EINVAL;
++
++	ifetc_index = *(u16 *)data;
+ 	skb->tc_index = ntohs(ifetc_index);
+ 	return 0;
+ }
+-- 
+2.50.1
+
