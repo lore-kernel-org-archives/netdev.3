@@ -1,95 +1,105 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFE12D9ECB
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA56434989
+	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 12:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789908646; cv=none; b=b53KrGRTwV30cJcz3axMjXmWF5vIBOHpewJ9WC+2S2veY7G1XjRnircbiNl9pCeFSuYWn2BMvaMniraEDpQiTOgosl+Pghg1UVE3io481x5bSeFGmM3pMiM6PhFDvzeX31QmTK+Y9DP1pK0OMAZDD0U7DuXpGjd/4/EMfL2VD2E=
+	t=1789908897; cv=none; b=nNh0+dKZFdHiImue6ho8b3TnFmxr1vYGNRHHB9npafqTGOtV9oThwkTT7b6NZ9/X8rcw3q8477UmJl2/zlNzV0jf/PUFQSAYbCuuB0HJdHnlLlQCE6qsURVIgJaACEhQCIlZnnBBPPrgFCV0Vz96X/TEaHnge3lqn4RWCcGfCwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789908646; c=relaxed/simple;
-	bh=OH55odpVMa7sAvz5GT0UGHBaUUgDdOpKNkf9M4wvm7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMGHb5XuH4CqFrBLie4vzT29pb6Z22U/wszLm4owfwQFsY1C9eGhUjgL+S7FxPt6h2D08PMogsR1OiNs3jJw8wUVE1NwoyBRqapvkmmr40WzgUO/jpGcv3BSM6Z4+H+bS7wKBMsMjDNrNtgkDzBmNLIavlcvEjRdMzD4P3CIIEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=EYphPP4b; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	s=arc-20240116; t=1789908897; c=relaxed/simple;
+	bh=o/cKM876TX9eiQRBeaAvXxN4Mv+kMLn7zpTqzr5nFMc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QtWltZoLpZ4eNx0aOAu/1zt8/hedzZOzB2ZY8xDSRIlslbzIl+OlBBH3D0FiwXodZ8AliS5Ag8XCyVffcBwuB2hNSaxnG7agqE3Ic0oh3WQo1ojNBta+Ss+vC2ATy6VDDQSq9+8GmB9eQc1nmSmwiVg3CunsuDxn03W/lg87FsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rdt2s3Q0; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="EYphPP4b"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccd66bb4so1891220a91.1
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 05:50:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1789908631; x=1790513431; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=s0NI5VxCFQynKWeJfcXnLCEZzTHswNnIGNtnh7X+/4c=;
-        b=EYphPP4bKFYU2lT9RCxxV6hQJdlHlFfo82h2aFIhUPTPMZW0UPNM5bOiwvmILiKr4p
-         Hwxo3YT8vJCSpf3uUWalJ0EXJTXlkZDCWdKfGPZ1PpIOSpSjb1smgUvLTkO/CZRwJS0j
-         UrHnh6JF7+QHHQxZIFylvsJpFgwTl9gLFbu35iT7YKp+UIz5JdF1fKp7byh1IJd6PjTK
-         L2xi2W92xh5uSiTHLlGEzN45jt07TELzk+Q++qeD6w9cuu48f3KE4aZEwE4BGMAj2KuG
-         B7kYR6C9tPQYpc00mk6B7MCGBZ69HMUCPrgTfBSDFKtcmWEW+tb9WgHG3l4ShsrXO+MK
-         KOtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789908631; x=1790513431;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=s0NI5VxCFQynKWeJfcXnLCEZzTHswNnIGNtnh7X+/4c=;
-        b=cmtEUhf/0m/zPVyv5bhcHuZGv1giWfArU9WSMW6VnUgFsZrR7asfspwdOrfxS3KYDk
-         z6J3/Pk0/fxHuvqwwHGjyrR4zf2JlnKknXP9cqeCh6UoKtsLE9hSAfDySDQ1b7tlDCMM
-         +aXLL0dq664gNlCP5bf5IJ95UPiSBGl05CvWVKxGFTqCDn3Y5NrmR4K2mUgsCknjxCCR
-         r7Q9rasuoe5EDAtgBz8LFB3KWU6oq1zO6tmMPNx0Q124j7/hWU3Ytg/kSbETR9fXGwbc
-         8onP7CS1UChLqLmDG9aQBOFvyRy2jvTgzcOoYCFFIK90Gopd8MFFSWEXAzo7J98UkiWc
-         Y8Tg==
-X-Gm-Message-State: AFuF++nqu3p36MjLDuis/MqdmYFnjpS3ovTHQVWnv038Quy6rRb6cGYn
-	lovvvkXDJy02l57C910hM6h+xDikck4EFnKO/eUAIrlATWRVJngxNU6h93D0NMxWnFAE3bPbBzD
-	lNBpsvCq+AsiFI9RRTEcJdmz54jxrkXSm/lV6OTYSv4WhLrLgs3SQBtFSee/hgUxyL9xhUdDjb4
-	w=
-X-Gm-Gg: AYBFou18yuAiw9UWU0Whe5vcG3nxBIYvLhFYIXXOx+d3fG9bDyCuGfGQtUGDMqmq+Sq
-	v9hHRBFOk9hDu7WJqxGjcySWS2Gx4cMB5i9wgQr/PnWaOIHsBTLIdEMna4Ds6HknT3jS02so2tU
-	zGvC3kIOvunCAt9lmGVYejUESbb4qqe9G1QGt0fcQoq94CdKrwFhlJdC9niwkRolSCeU7O/lYrb
-	a9vNXza/hHbi1SNtl1iZpsRevRG2aCbaAkH2VXUwD6ndz7tzBzzvk0+Ygo3j7vdP04w22ut+dml
-	R/vPc3Cf88MYsuGG7xCm4MUKBypf+fNnPkCaJ51XkHQPfyceOHBujIvP0DmcUFEXO3Uo5v/J/zm
-	c7HE3FVHenlepNazDhFsTYaueZ6XhPIGhcT9s2ohMj24nZbFp/cyEw8fYjiJ7xagh97iBaKYMAn
-	Wzuo7omZhdofe4dUUWIHPBNE2fW/YNy0cTpRPNi8ER94vJKX9shQ/qPFQZ9iOtyyCm03/dJ8jyo
-	RDuoVyFS1k=
-X-Received: by 2002:a17:90a:4cc7:b0:3a0:4384:ae14 with SMTP id 98e67ed59e1d1-3a04393f375mr525178a91.20.1789908630612;
-        Sun, 20 Sep 2026 05:50:30 -0700 (PDT)
-Received: from localhost.localdomain ([23.148.204.241])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144df9ad683sm4120272c88.6.2026.09.20.05.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 05:50:30 -0700 (PDT)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	keyong.sun@smartx.com,
-	Wang Zhan <wang.zhan@smartx.com>,
-	steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	leon@kernel.org,
-	huyn@nvidia.com,
-	raeds@nvidia.com
-Subject: Re: [PATCH net] xfrm: free the whole skb list on the packet offload drop
-Date: Sun, 20 Sep 2026 20:50:19 +0800
-Message-ID: <20260920125019.3609114-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260920115048.3549614-1-wang.zhan@smartx.com>
-References: <20260920115048.3549614-1-wang.zhan@smartx.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rdt2s3Q0"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9556FC5CD5C;
+	Sun, 20 Sep 2026 12:55:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D44FF604C9;
+	Sun, 20 Sep 2026 12:54:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0A40B1032829C;
+	Sun, 20 Sep 2026 14:54:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789908875; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=qYf5sfpsF5+ikP3rz8etRrzQyPAwoJCwt6EL+6o1iu8=;
+	b=rdt2s3Q0OH1e32XrUcArMpHns6GKnGqYJNDmJvABuzVvT5IgWZdLlcaZqolvsrBS2EYuud
+	mHd/b1O2gISgOl5GV0E97xY/yc2XDlKI08ReUzgiivLP7uN097I9c793dYEtaGqMM6kEXH
+	u7xJg4q1iJfRt6Nou0fPPfDGDEGLkfetMcBJMr9jkyVaJt0DKNH04SJz9tVgncUjijutnc
+	XfpZnO3MNlSSlM5PcNaD1jVdAXoEVN1jnsq7FHJ3Mtc20hDDZu3icsIqPp4FiDKSwMIGyQ
+	VCeOqWZX4s8lZwocN4Wsx7stN4IzP2me7hzzHboBN51lP69ra0p+uVp1gEy9Mw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Hui Peng <benquike@gmail.com>
+Cc: alex.aring@gmail.com,  stefan@datenfreihafen.org,  davem@davemloft.net,
+  edumazet@google.com,  kuba@kernel.org,  pabeni@redhat.com,
+  linux-wpan@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ieee802154: cc2520, mcr20a: reject invalid RX frame
+ lengths from SPI FIFO
+In-Reply-To: <20260919223437.3883127-1-benquike@gmail.com> (Hui Peng's message
+	of "Sat, 19 Sep 2026 22:34:37 +0000")
+References: <20260919223437.3883127-1-benquike@gmail.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Sun, 20 Sep 2026 14:54:31 +0200
+Message-ID: <877bkgaxrs.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Please ignore this patch.  Re-reading the packet offload output path, I
-cannot construct a case where that drop sees a segmented list, so it is
-not fixing a reachable leak.
+On 19/09/2026 at 22:34:37 GMT, Hui Peng <benquike@gmail.com> wrote:
 
-pw-bot: rejected
+> In drivers/net/ieee802154/cc2520.c and drivers/net/ieee802154/mcr20a.c,
+> validate the RX frame length byte read from the radio FIFO before
+> subtracting the 2-byte FCS or allocating/trimming the skb so len < 2
+> cannot underflow.
+>
+> Fixes: 0da6bc8cc341 ("ieee802154: cc2520: adds driver for TI CC2520 radio=
+")
+> Assisted-by: LLM
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> ---
+> diff --git a/drivers/net/ieee802154/cc2520.c b/drivers/net/ieee802154/cc2=
+520.c
+> index abfcfe07246a..d2c8484d8fea 100644
+> --- a/drivers/net/ieee802154/cc2520.c
+> +++ b/drivers/net/ieee802154/cc2520.c
+> @@ -482,8 +482,14 @@ cc2520_tx(struct ieee802154_hw *hw, struct sk_buff *=
+skb)
+>  	 * values on RX. This means we need to manually add the CRC on TX.
+>  	 */
+>  	if (priv->promiscuous) {
+> -		u16 crc =3D crc_ccitt(0, skb->data, skb->len);
+> +		u16 crc;
+>=20=20
+> +		if (skb_tailroom(skb) < 2 &&
+> +		    pskb_expand_head(skb, 0, 2, GFP_KERNEL)) {
+> +			rc =3D -ENOMEM;
+> +			goto err_tx;
+> +		}
+> +		crc =3D crc_ccitt(0, skb->data, skb->len);
+>  		put_unaligned_le16(crc, skb_put(skb, 2));
+>  		pkt_len =3D skb->len;
+>  	} else {
+> @@ -1147,8 +1153,8 @@ static int cc2520_probe(struct spi_device *spi)
+>  	return 0;
+>=20=20
+>  err_hw_init:
+> -	mutex_destroy(&priv->buffer_mutex);
+>  	flush_work(&priv->fifop_irqwork);
+> +	mutex_destroy(&priv->buffer_mutex);
+
+What about this?
+
+Thanks,
+Miqu=C3=A8l
