@@ -1,237 +1,199 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010061.outbound.protection.outlook.com [52.101.85.61])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11021084.outbound.protection.outlook.com [40.107.130.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6EC43AB0
-	for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 17:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D96339394;
+	Sun, 20 Sep 2026 17:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789925210; cv=fail; b=LNvapFkcPNkS0FuBuiaz3OTQDfJlqufIsCp5BCwUTjaGaexKXM8iiYjlJEJnrvOy5AChmgyHqVsgZb6WAGbEOeHZMyfYQ3Nsv4NFNmFX3Ey3z2wMb+jBcuN6eY/3vY6GvODHOnqiknBvivdISTBDZwI6zilMRmceXEpuq6KjrJ4=
+	t=1789925652; cv=fail; b=SJAP9IGSvCk63iIWIoO/IUJfG9EWim80Xu6NKWhsLc/Eby0CWxReCokbSHnpsgJXnCHuWa8Us2G/WaMI7IbWIMn42AOlRGUV1fOSx153BJe73vNY71h9ac5svPOxAc4DyyfJ7lOm6OpS/D1zQWCIeXo4Z+Vi0ZnpMy2rHOKz2q0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789925210; c=relaxed/simple;
-	bh=obL7PnAE0SwAew0FVizRq4n4RF/8euNeNSF9cLOPJyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kyVEhGWciHilAWEEyjbLvPoKT6yUnH7Fr8b84QlsRpHwcVZBI2JXlqwjt9xMItHACi1vMr9RHniWHht6SRx1+yYMJODmJV8gfEcK6y7NqXXrmTFM6S537QcibSd+IoAa5AXHOO0XGgJuSRZ4Lx5LNPatcoqRwte6Qx+cdaapZz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tKgS/EZi; arc=fail smtp.client-ip=52.101.85.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1789925652; c=relaxed/simple;
+	bh=RBLANW31GdYXM6Kzw7r0xZotRzA74QdnfZXoReQ8LUI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ii59EoCb1Y32xHVTnn/ueDEzrKpDGeAlc5d/1ivKCTg+HAzWfFzGYIJRgvRFiJbKq1YWuN/UkSxLg/dczeToqU0+WeoT8oOdFxLEcYyU4/5W8finJXsMOLJl+gV5mjT/fsyFgEifFjZsuOQ7Mj0Z+De37os8ekUQuOpIbOb1jG4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=studio.unibo.it; spf=pass smtp.mailfrom=studio.unibo.it; dkim=pass (2048-bit key) header.d=studio.unibo.it header.i=@studio.unibo.it header.b=yEbPzCUN; arc=fail smtp.client-ip=40.107.130.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=studio.unibo.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=studio.unibo.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tKgS/EZi"
+	dkim=pass (2048-bit key) header.d=studio.unibo.it header.i=@studio.unibo.it header.b="yEbPzCUN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PE9mNTF0gYuaBHTaPvvux/+rj6KuatkuZAYYRU+sqg0VdBqL+Kjm0Z1pYLcB2cH5axHVTkZDgPt75yqLIjVG7y/ELjmZDkmkWGUWNkA0JMgl9nAIqdBkGCqX1EyHiPE/Afu+n5rLvieV0mNbumwBOmYHMz5A39G8VD7P7UvzThG8IdFri6gH/LLVhu7fCM1jaVh7ekutIex+s05Lp1eWVpcjZICqT2pmCvHtaeGt0PHqidD0GVVJemzp9nP0JuiEpj4cnchphyKIxg+45lO5A6CMdFZjQZx9zoGdGJ8LTF7RHvJXFMJF7eIQgkMhANYET73t95nCaGq1AsK1wHsniw==
+ b=k56gmH6M7aQMkANYX7CGAroebW7zPPTM4KARgmiOjoHv1qtLd50m7odaPReKtwwkUA5sdxpmU2HLjSw3A60unTv+Gu8JX90Dd91LeOyVXqXhPpjU7Kpe+h3Ku0JbWL5XNLbFQu62RBK2ieYNp+pIPV3ozUX2JcB5MsgYZT0rpnMtEFM9AerV7ZxnnCa/NOumnhvS+lTJu1QFaW+58RLXu6PKcyeO81P/SaEjOI5aLVvNDe0NVhMdz9kHkpiW/GeXw7AuTZ5g6CQOfNSi+3pi8G289uA3LHldlx36WqTYPZuONQBSnMOpi59ec/W53UFcQDfSSfgvT7+HuaDILJQ2vQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ttT+R0XK+yqphKoayTWrJ9loOLwbOYAHaE+aQ9CkGbY=;
- b=pZToYb2HPmkkH7Tv7wfggQmVQH9kn5SQyIqFfVQ4o5N6FPPSCSeYbcx5C6fYV3q0X5W687uwtUeUIVVMkRBxbyo6tTNf+KoPpvKuSPTpeXpL7TQ0H1YkEfsD12j7c0IHapHbF1L5kZoNSPbCQcuCZlavYytkTjsMH2shSXspS1bO0RWf9XoiTRP2F9w/jHzFTIkFel2A97rJBhrYCfO9qO4OQOfTciYDIipI74R37ncR8ESdU6/hbbTdpALtb5fD/T/47+y+npgpMq4bQ9RI35qc39Xjm230cSEei8VpfIjKwT9vYysp+vJE9arWk5AoG5cEionFs0kdzNkJ96WJVw==
+ bh=nBUn76pYUfA2qQpAq8ZXaC8j8kYIiVl7Lyqd8bdY2ek=;
+ b=BGrNL9oOWQYdsowUhneDhbzMnPx9XKNrop/3dROUOQediqJCq5c6O/KTz0WXhwm6UbP4VBq88gczXMNuIr6PCercPY7fEmtenD1crQhtz8Rin/vrnNxdsRAAQhT0xm0QYWgnFlPK8aogJ9KL6PyQRHj2c8ySpzzTtFVJ6n4hQNGWHxqe9Cjdl9ly7mCV6VNFs98KQUoJjuVGryQi3ueKco0eY4aY/x63rOFWBnePenVah7/yzyLqyTobyXTMFFeZmXTMoST+8u0ubBOKFz3XM3ca8AHFU3XpeXPNmvoRZ868rnL0HYDk0fdaau0CRoOV8fm6A2P9NEKymu3mdfGURg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ smtp.mailfrom=studio.unibo.it; dmarc=pass action=none
+ header.from=studio.unibo.it; dkim=pass header.d=studio.unibo.it; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=studio.unibo.it;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ttT+R0XK+yqphKoayTWrJ9loOLwbOYAHaE+aQ9CkGbY=;
- b=tKgS/EZiOGESxb7QKGZsqNJQMxP244oxJoS2p+jaQnH71cbdGbmaTMn5UlfCot7tV+faigu5RiXYSfvxM7gTg6i31/+rasU8KRpMVZaa/bWVANT6oLV3UMkgWzpObLuteoLugB7KIIGRT0y2yscBcBowLQHgnAfqzuXzKrkHWP/3Jh2vlIt9EvOR8eLD9JTVvEY1QMH42Zf7KBgANF9xl7MhCCw9dJY2zfdZQ6dGZxFMaybSYbvfTTu94SvEtTmsgDL9BJHGvDrTzbnkfSYdN3Sy1bjrYiaS9Jl7k1hsyOPjODJxfMVY1RY/CZOtyCiqhxtMM+xID/84x6T/cULiTQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by PH7PR12MB7793.namprd12.prod.outlook.com (2603:10b6:510:270::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Sun, 20 Sep
- 2026 17:26:45 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Sun, 20 Sep 2026
- 17:26:38 +0000
-Date: Sun, 20 Sep 2026 20:26:28 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Wei Wang <weiwan@google.com>,
-	Marc Harvey <marcharvey@google.com>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net] ipv6: Fix dst leak for uncached routes.
-Message-ID: <20260920172628.GA2051643@shredder>
-References: <20260918041439.2575935-1-kuniyu@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918041439.2575935-1-kuniyu@google.com>
-X-ClientProxiedBy: FR2P281CA0132.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9e::6) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+ bh=nBUn76pYUfA2qQpAq8ZXaC8j8kYIiVl7Lyqd8bdY2ek=;
+ b=yEbPzCUN7RaSGEIZUWKdMFLiZv5LZ+8wVET6C3Uw+LzTVLXh1TxzhZQESEH1vpfDv6rPu3Y9lXMW/dsJh/3FUpD0Bw14wGpzPit6QfECbldSb/u8XLnnzLfwtyEMpAuRRtsIuq69BeSltUE64iKD102oEa6wBEakoWBWougOIejT0hLwlIlgJZwkOLzHIitYDKZUPVT/WdjDvvcSfYCWMbbcbU7jtGD0p2AZWjRL+lrjEw7oLb64IQuwWioFLyZtf0MWfYE6Q6wTJ13lg13pxjZFkcFVEmiAxzxJxwX2NEJVv/2uVEyclkw8VGWam7YqlDliI45sWQTsM3VU5b9D5g==
+Received: from DU4PR01MB12163.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:620::18) by GV1PR01MB11033.eurprd01.prod.exchangelabs.com
+ (2603:10a6:150:212::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Sun, 20 Sep
+ 2026 17:34:02 +0000
+Received: from DU4PR01MB12163.eurprd01.prod.exchangelabs.com
+ ([fe80::bffd:753f:fbcc:c402]) by
+ DU4PR01MB12163.eurprd01.prod.exchangelabs.com ([fe80::bffd:753f:fbcc:c402%6])
+ with mapi id 15.21.0428.015; Sun, 20 Sep 2026 17:34:01 +0000
+From: =?iso-8859-1?Q?Nicol=F2_Giuliani_-_nicolo=2Egiuliani6=40studio=2Eunibo=2E?=
+ =?iso-8859-1?Q?it?= <nicolo.giuliani6@studio.unibo.it>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+	<richardcochran@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if the TAI
+ period is invalid
+Thread-Topic: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if the TAI
+ period is invalid
+Thread-Index: AQHdSHBd+pGZ8FgfBki6KEuSlYSfVLbXjVuAgAAtc+U=
+Date: Sun, 20 Sep 2026 17:34:01 +0000
+Message-ID:
+ <DU4PR01MB12163870875DEF21E5C39DD2D80852@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
+References: <20260919-send-net-v1-1-4355c72465ee@studio.unibo.it>
+ <66937bde-51a0-49d2-9ae7-f27fb4f8ecde@lunn.ch>
+In-Reply-To: <66937bde-51a0-49d2-9ae7-f27fb4f8ecde@lunn.ch>
+Accept-Language: it-IT, en-US
+Content-Language: it-IT
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=studio.unibo.it;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU4PR01MB12163:EE_|GV1PR01MB11033:EE_
+x-ms-office365-filtering-correlation-id: ab752478-77e8-466f-5d07-08df173d5c49
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|786006|23010399003|366016|1800799024|6133799003|22082099003|18002099003|38070700021|56012099006|11063799006|4143699003|10067099003;
+x-microsoft-antispam-message-info:
+ V1lsnytfYz3RdJNhhRGes/Ik4VvY52s9wroVRN0zra0LFih/MiDcFn6pAsP6M2o1gAObOTKa8sQ98mdNVku/5Dj6dkj/muRVSMLMCPmT0R7sgLAqeZS0vRwNeuebQNa/+qhEVWmr8hX4mkiLjXg6A/izd7tSXDlGP2+d7rOhp7jhuZ2XryYcht70KGlQnNbRc48XZeBlco7wyAP64EtIDG6MGYDAtgoaG5EBXQLPfk7KhzTxwgT3AcdR6k1m8IRK7EJNMGo1il5Wu8N7Qi1nBw11x+8UUqLycjHhnDiZilIAxDTPx4R6MZgHMV5FdiTYazZC2Is95Ed9UXiMJJw9HpHnPo8tpCDvR0Z2+Mw2/iVREo1MmDCsJQcU5//yT1b+BuF+LsGUbsxAWSWyffXbbluQnguqru1oidN/HFFwH9PWjpL3G+5USJ6CmanOYImkX4IYgNLRnNIQKW7qa0KwXPfpP4/ZLsAxbYeUBda2R2n9JZWRXOY2Cg9FyurVB3uUElsO0Lti50q2OvZ0K9f6TGGd8/yjQyw2jAzjyM5aqd0XEJAUk6bqtVM1A1WyaHQOv+rVwrvqbDL2+DcRZgx6PHzoR2PTWGHp2ddeaD1pXIeuIFIpERmT7K3UHcrFR/dEg18ZIPRN+UeOuPlOlwBQpXDSlaHKlj1wMR/h3T+sG+FBuew11LI81kpREVMk0B3qoSQ67CF9QQDNXQlqqHTGY4re7lYCv7yndRyzsrsTxcc=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR01MB12163.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(786006)(23010399003)(366016)(1800799024)(6133799003)(22082099003)(18002099003)(38070700021)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?YCL374618CteNDm6v/AjlPbWFg71AYt3wVEn3sLgcbXG7zSPJf/lacdwvP?=
+ =?iso-8859-1?Q?+JEVkmvhqU77TsImITwBaUyzr6j8I4cJh4u/sn2fqw34uuOv35MWEXcTPf?=
+ =?iso-8859-1?Q?iMqJ8cle7JafEL7O5suqu6U+USxvxFPKSE1DLZTBVy4ASvpyS9dneVwXxi?=
+ =?iso-8859-1?Q?qjZLrIHV7YE1zDvEBzF8jQNlNkWl4k7Yp8GNsNQfNBuzsJyOhd1kXImzGH?=
+ =?iso-8859-1?Q?zfYjrmb8FLyfM7f8MwPnDXFp25x0clV2g+O0HaocuCO1qWlrl2ekgjAvsS?=
+ =?iso-8859-1?Q?hRi06/5nC3gwMkhfAlXkwztxAF9ZQjy71upNp9KeCeP/DIuo1T/NVjrLqw?=
+ =?iso-8859-1?Q?VHNoRWS++IeDE2s/JksoipA3dyECEfAYRFlS3nhnYOAitqKP2NKJDJHa9X?=
+ =?iso-8859-1?Q?/8ALzu7dlyX4KtxIEbID/1rRayjIpEPjlqgoVnoIUkVEWB0NGLRZw/QNeG?=
+ =?iso-8859-1?Q?rPtusjxthCLf8Nfn4C9DwaULcOTXr+SGeuBOGnbyEaSdLueuIerdRvczWT?=
+ =?iso-8859-1?Q?1d1VN4JwmYWypHf24uYkbA3uzc6Vrt/XBqXHC95bezwjmI1Mvlz7praSYA?=
+ =?iso-8859-1?Q?Hnh9NuJbDMxAL3YwxZZYTBaMXQ7cu3dCr5gtaqM/FyMqiy0a+dPOAxQc3c?=
+ =?iso-8859-1?Q?iyfRfCljYjsA2JIUBm8SzfTWqjgluNI9VqBaGbtru6YlVLMt54aJtFNHK+?=
+ =?iso-8859-1?Q?gx9YwzWqM/eDNmjPrPHsqshuoRCZtNHK4dr4y8IeKsV6hdX0mN48h3FNpV?=
+ =?iso-8859-1?Q?sk3u9QIMEXL0SaJkPKFk9FBQIbDsKyvdsSZsKqA9VLDLDyc5VrLC9YuCjM?=
+ =?iso-8859-1?Q?yMwdA/STv+QBWt7ZB79qehk87DdcGWTxlhYSTmd6tm73kZLuxSZQXcDpgl?=
+ =?iso-8859-1?Q?pRmhzWapoATtqZeS4T1mL9bKGnpZBzuq0snahSHy+xJEFr3/Mo7pGtT1zA?=
+ =?iso-8859-1?Q?Hy6gtwAWCwZT9EhTInBDq42n5SG1Yme3WXYA7/zlLE14o0Zx2ydgutGNGY?=
+ =?iso-8859-1?Q?a42B+MlSXia04aLxUWZainpCSgGWtVybQx8BThuJkB8zG68l+18fLK1KOB?=
+ =?iso-8859-1?Q?Yb93z8szXDMsry3lmEOba84BR+DU/EgealI1FlwNjVm8lga5RqRZJ9Ww55?=
+ =?iso-8859-1?Q?6cI5CsIJoOznCVT85Sa5XflmH7RDmbnYNVL5ch/bfJDw9l7mQiNl1gVxyt?=
+ =?iso-8859-1?Q?bRL+Ug+O8gwkXA/e4lrw8QoVjHHCT64NWNr2MoKG74F2zuwduuV7GO7EEk?=
+ =?iso-8859-1?Q?Xuzj13ZnI08DE60WhIQOplQnSUvjOunAoevWLAEazREKAkyfoL1iD1qyRx?=
+ =?iso-8859-1?Q?vsYYpuYtObrwbO4zO/PB+3KfQtoYjDWXReoKCLNOO4ZqhTFqLj4TA2W2dk?=
+ =?iso-8859-1?Q?ZtBebc7foNghRV+MBxzPYcT9R740ewNr5dgAU7TjOu6RJl4l7xAokC9aDp?=
+ =?iso-8859-1?Q?ucEjTS4EjCxLrAe7VByEwD+xhvM1Lwqdsal1ib0zv55ipW7THALy5KgT5O?=
+ =?iso-8859-1?Q?+9NZ/vJSlu6TmdKe/Ol5rL23wZ8mHuiVSPqeAt6DD3A4Nkdrv1iCROavWF?=
+ =?iso-8859-1?Q?kVReEk6aLeyq19I2N6ExXlFgJuKvPUK4XZvsUMXpErO4JizkStKHfohrHL?=
+ =?iso-8859-1?Q?kdV8bdJeCWOnngz+biNR149tIaQA6YLr1FoD17NIu1TYurYcCwu2FHfRkx?=
+ =?iso-8859-1?Q?67Pp3Zn0TKcniENJcfpWKBYtNOE7r1ybJiC44Z7Z3IAxYAZsAvD08IiOoE?=
+ =?iso-8859-1?Q?5VUN5w4K8kGOgAlCajkesI3AgDQIhKEhs0+T3MprzemB/EhpR+vAF2rPS7?=
+ =?iso-8859-1?Q?PITycxTx68t5F8RXWey26j3PtE2BMWI=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH7PR12MB7793:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e88c3c8-d47c-4abe-e56e-08df173c5420
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|22082099003|18002099003|11063799006|56012099006|3023799007|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	mWtu1mEzgJf7HhD2T2HJ3K8i0t5Buonc50MMJYXTS4aLjfmvWR6F2Uk99pMOA85qeCfQEhUB8lfhn3QDTqkmza0ZddIRHRQKFk+7IEdneu41+aKRKSuCgH5rBKniseQWbd8Oy+ggkwZWLAqP02HCtbM+VWeqjUE+kPVZVaquHEOWAvY7U9QxvC196SkgIMEWxTfe1oYHNVqHG5zAckRYiBaqh4H01rYqy2oS2yr+MO9lAQg8ytLc17XDmjCLj+Qx94mgj99pGEBAZvW8ukgzFbj4HvI+0W1GWDxwBBC/5tvFTtzDQCspY1n9/2f52a68sYjd5KkYjt56wJUYw6mHFWxHbv8cMeEqFJBbVyeYSis+qByBBpq/8Y2DWTdlrnWNMv6x0qxomBouWBVBAh2PnX7cEd6owS3ER0B7wOSKy3HtNrDfqomT5bhKHIX9VdQqWT/CKm6h0xCzCOneTTqS+VCtwfdkNnqUClgceO/jFByCi3QW9gJvqXO2mPwKC6XStKJ0pOOP82gdR0kXwwC54DwFLceaRKVqGbkot8m0g9MqyNWtKL04OayYSurJuVYz3GOk2KYHRQi1kBEIrI9U1NS1y8qC+9r1MYWgKw2M2HUUDl0ZY6ZRBUP8P2n8J/Li7qaYAO7j2p0HXkCKNZaFvf4c5m+xEgrsWVsSu1nwhow=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(22082099003)(18002099003)(11063799006)(56012099006)(3023799007)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bZHg9pE98CADMQxHDSY4cFmhICwMAnpDOoJd2XbMt8eQ8VH1jI+rozzMrGTo?=
- =?us-ascii?Q?zc8iQjJCNlxGJS2biIrT3GqKqRsV2/HJMtjyUIMSJ+Y122Z+eD5A72bIQaiN?=
- =?us-ascii?Q?v3Psyl9i5biACqkaSjqeJk6J4sgjf54xkCHGvlUcQRMWSr5HgMyhkogkuxhu?=
- =?us-ascii?Q?Snc7AYAHMy0ZzHbzuVHbNoCsss6GMC0M1c6EpDGY7pYiSRxQvGwMLU1LxPD4?=
- =?us-ascii?Q?8kZZdBhM2Q0lO0kelLix2mcMR+8N7sXgkQu051HQEGE32RbeQmgzVBQ2Djyr?=
- =?us-ascii?Q?tmSXsc8sHR/q5W10VGQdUcK4eso1mspWodklR79YcacVesPXnFYKiM7AF4wU?=
- =?us-ascii?Q?XOMphu6ZHdfZ7vgdR5LxnanKhl70Tcfc31FGIDFkqAKMcn8+OmdOzuj8rECW?=
- =?us-ascii?Q?l4tD0h972M9XOIB+x8YUaPiQCTNAPgd4iVMpvL0SF5Mcp7mr8kUlHqCdWLKc?=
- =?us-ascii?Q?c3eAncFgTt0CLy4/KDUuBuyzZ9L4sdPDljWyYdvp7BeMDrmlwAJ6kHa8ZVid?=
- =?us-ascii?Q?2A1iFlPQgqT4Fnvt3+jGI+sjlqLJ3OnCfROyK3riJahWfQHbaFDixLLJ+hXy?=
- =?us-ascii?Q?v9Zua+njkJFnPL2DIXiGd/N1NgFPimMTV8MhThFqA4V4kwuVHcBxhUaXKzlK?=
- =?us-ascii?Q?mTfP62ojWtTItr6ftyW+4Y+yTBG1VCN26s+JvQPaY2lcMWMi8kpmffT3Spn1?=
- =?us-ascii?Q?y9l4Ce6XBVGhRXFu/bFs/Y+bqDvYqfQlcDJtjzbOznGdfAEARwlAnjTAfLHb?=
- =?us-ascii?Q?/vIiVhizFuKIyUI4X3sIlrw5tnSYhM11UUdi7JSY3xFA25GoUsVwZ97xhGwM?=
- =?us-ascii?Q?YA19FArSVZQxK0Sw9ZnnOE7Otkk/hWlWhWztLGq9Q4wJpkGTir7JsqUIfryh?=
- =?us-ascii?Q?ggi/K5RBvkVuzNK+7aISYKJ5VCUmvzTlI4YbNUKrZ3uRhNhdd++coP0QwHW5?=
- =?us-ascii?Q?Jb6qvEIY4rdDAMnq2g+QD1ZeVYZbRDS3NM2rxDWXkJ7sJWzapQeU7zm6WniB?=
- =?us-ascii?Q?A6ro45I7Ndu6Hks2enTXzoJBYnXt1FfqtYoitVPRsNrgzg4102pFAx+YRH2N?=
- =?us-ascii?Q?KmrOmDTK5FYiHd2hyeV5N8nwgrEzhDwHFQcGiznByH1sE+Hwff8g5tVkjNC2?=
- =?us-ascii?Q?7X+oXeQTJ35A12L4vBp9/OE09UnLVGwEH3zt9v4CZcXNVvYGj7w5LAwb7yyU?=
- =?us-ascii?Q?ahnaKKdCzxyir8QqS5LVopHY08atja+0zDoC3OgBGkePOj9ct7aeikwziTvO?=
- =?us-ascii?Q?Qo+pGlG1VRbzCd5xPV6w39dNFf12DPXNKklDafo7fES51QoimJKhqzttFzTw?=
- =?us-ascii?Q?itRL7SzaDhJurEOQqHAQLPu+U2vEldJQd/w52583m8gGP+Tic8wLrOafNrS2?=
- =?us-ascii?Q?WYSuZnGq7xY86biHk2Grb/AhM3U6BxbanJfTWoAaVeWPAx2ry4ji+FMGfLaY?=
- =?us-ascii?Q?L/aYgfynDoBrpMvXaAFdI9wEo1Q0Ovc0jd4camax/H35xRV0wLb6h2YfMzmQ?=
- =?us-ascii?Q?MOqAg1yvC+FzFoAKFl164Kw3EpEuwGCI2u4RClm0UkmjxWn8FmgljtLtxWPh?=
- =?us-ascii?Q?rG5ML0dHGYLrzmJgHWvcqGX5pZQEwAdHKwpnw4PT6XV4Gj0cKlO4BiLnrd6p?=
- =?us-ascii?Q?LedJ4v5xFSdFpVmCyopnQgLFM3pbjWX7fypz2uHUTYO/lOfp6JCbzW8ZaC2H?=
- =?us-ascii?Q?S2nve0f+2T43F1LZoIVCdsailP0LIjocEKkUAc9/cy4NqfhymsTiEo6sTX2r?=
- =?us-ascii?Q?+vqi5bcosg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e88c3c8-d47c-4abe-e56e-08df173c5420
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-OriginatorOrg: studio.unibo.it
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 17:26:38.8307
+X-MS-Exchange-CrossTenant-AuthSource: DU4PR01MB12163.eurprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab752478-77e8-466f-5d07-08df173d5c49
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2026 17:34:01.8640
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: APSPxVIQPJiPJ0qjon1IgR2LfGGtJlXK/rNKSUFdq0Orl3q0huTaWcj81YqCJFg8m8x3wJUyleHZ9jVsLf74lg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7793
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e99647dc-1b08-454a-bf8c-699181b389ab
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BreHIYOhcSi+9BtkuNqi7+5iLgHvOyFpsxpGTh7JWKgYufzGVzajjXateQVqWz0BkrgZ1f5pxP0xpbtm7x35BdzrpLxJHoixCzbFwxnHfbaA3M9+H7lWfWDWhcr1dt+v
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR01MB11033
 
-On Fri, Sep 18, 2026 at 04:14:37AM +0000, Kuniyuki Iwashima wrote:
-> ip6_route_output_flags(), ip6_rt_put_flags(), and ip6_dst_check()
-> detect an uncached route by list_empty(&rt->dst.rt_uncached),
-> which replaced the static DST_NOCACHE flag check in commit
-> a4c2fd7f7891 ("net: remove DST_NOCACHE flag").
-> 
-> When a device is unregistered, rt6_uncached_list_flush_dev()
-> unlinks uncached routes tied to the device from rt6_uncached_list.
-> 
-> Previously, they were moved to another list with list_move()
-> (__list_del_entry() + list_add()), and since commit 98aa546af5e4
-> ("inet: remove (struct uncached_list)->quarantine"), the routes
-> are just unlinked with list_del_init().
-> 
-> If list_del_init() runs concurrently, list_empty() evaluates to
-> true; ip6_route_output_flags() calls dst_hold_safe() incorrectly
-> and ip6_rt_put_flags() skips ip6_rt_put(), leaking dst, and thus
-> dev tied via rt->from as well.
-> 
-> The same race is partially fixed by commit 9a6f0c4d5796 ("dst:
-> fix races in rt6_uncached_list_del() and rt_del_uncached_list()").
-> 
-> Let's check rt6->dst.rt_uncached_list instead.
 
-Please add a comment that we now rely on this field being written once (never
-NULL-ed). Otherwise it's quite fragile. Something like:
+Hi Andrew,
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 36e999b22d42..a6b21edbda29 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -139,6 +139,7 @@ void rt6_uncached_list_add(struct rt6_info *rt)
- {
- 	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
- 
-+	/* Set once and never cleared: non-NULL marks an uncached route. */
- 	rt->dst.rt_uncached_list = ul;
- 
- 	spin_lock_bh(&ul->lock);
+> The point of the failure is to indicate an assumption in the driver is
+> not valid, and we need to examine the assumption.
 
-> 
-> Note that IPv4 does not have the same issue.
-> 
-> Fixes: 7d9e5f422150 ("ipv6: convert major tx path to use RT6_LOOKUP_F_DST_NOREF")
-> Fixes: d64a1f574a29 ("ipv6: honor RT6_LOOKUP_F_DST_NOREF in rule lookup logic")
-> Fixes: a4c2fd7f7891 ("net: remove DST_NOCACHE flag")
+You are right, and my patch only works around it.
 
-The commit message reads as if the problem is only visible since
-98aa546af5e4 (v6.11), so why blame commits going back to v4.13?
+> What does the datasheet for the 88E6193X say about this register? Has
+> its meaning changed? Marvell like moving registers around, is it
+> somewhere else?
 
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
->  include/net/ip6_route.h | 2 +-
->  net/ipv6/route.c        | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-> index b9e8d2b759e9..2c5ded121f54 100644
-> --- a/include/net/ip6_route.h
-> +++ b/include/net/ip6_route.h
-> @@ -106,7 +106,7 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
->  static inline void ip6_rt_put_flags(struct rt6_info *rt, int flags)
->  {
->  	if (!(flags & RT6_LOOKUP_F_DST_NOREF) ||
-> -	    !list_empty(&rt->dst.rt_uncached))
-> +	    rt->dst.rt_uncached_list)
->  		ip6_rt_put(rt);
->  }
->  
-> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> index 08bd68f1b5bb..b18cd0d9148c 100644
-> --- a/net/ipv6/route.c
-> +++ b/net/ipv6/route.c
-> @@ -2722,7 +2722,7 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
->  	dst = ip6_route_output_flags_noref(net, sk, fl6, flags);
->  	rt6 = dst_rt6_info(dst);
->  	/* For dst cached in uncached_list, refcnt is already taken. */
-> -	if (list_empty(&rt6->dst.rt_uncached) && !dst_hold_safe(dst)) {
-> +	if (!rt6->dst.rt_uncached_list && !dst_hold_safe(dst)) {
->  		dst = &net->ipv6.ip6_null_entry->dst;
->  		dst_hold(dst);
->  	}
+I do not have the datasheet for this chip, so I cannot answer that from doc=
+umentation. What I can say from the board: the read of MV88E6XXX_TAI_CLOCK_=
+PERIOD in mv88e6xxx_cc_coeff_get() returns 0 at probe on this 88E6193X, bot=
+h when the boot loader has reset the switch and when the driver has. The ve=
+ndor firmware drives the switch from user space, so I do not know whether i=
+t programs this register.
 
-Nit: The comments here and above ip6_rt_put_flags() are now stale given
-that we no longer check for membership in uncached_list. You can change
-to something like:
+Before I send anything again I will read the register at other points (righ=
+t after a hardware reset, before and after the PTP block is enabled) and ch=
+eck how the other 6390 family entries in the driver get their TAI period, t=
+hen report what I find in this thread. If the period has to be programmed o=
+n this family, that is a different patch, and I will drop this one.
 
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index 2c5ded121f54..0f9b7a260d25 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -101,7 +101,7 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
- }
- 
- /* Only conditionally release dst if flags indicates
-- * !RT6_LOOKUP_F_DST_NOREF or dst is in uncached_list.
-+ * !RT6_LOOKUP_F_DST_NOREF or dst is uncached.
-  */
- static inline void ip6_rt_put_flags(struct rt6_info *rt, int flags)
- {
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 36e999b22d42..515115abe2f0 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2721,7 +2721,7 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
- 	rcu_read_lock();
- 	dst = ip6_route_output_flags_noref(net, sk, fl6, flags);
- 	rt6 = dst_rt6_info(dst);
--	/* For dst cached in uncached_list, refcnt is already taken. */
-+	/* For an uncached dst, refcnt is already taken. */
- 	if (!rt6->dst.rt_uncached_list && !dst_hold_safe(dst)) {
- 		dst = &net->ipv6.ip6_null_entry->dst;
- 		dst_hold(dst);
+Thanks,
+Nicolo Giuliani
+
+________________________________________
+Da: Andrew Lunn <andrew@lunn.ch>
+Inviato: domenica 20 settembre 2026 16:48
+A: Nicol=F2 Giuliani - nicolo.giuliani6@studio.unibo.it
+Cc: Vladimir Oltean; David S. Miller; Eric Dumazet; Jakub Kicinski; Paolo A=
+beni; Richard Cochran; netdev@vger.kernel.org; linux-kernel@vger.kernel.org
+Oggetto: Re: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if the T=
+AI period is invalid
+
+On Sat, Sep 19, 2026 at 09:52:07PM +0200, Nicolo Giuliani via B4 Relay wrot=
+e:
+> From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+>
+> Since commit 7e3c18097a70 ("net: dsa: mv88e6xxx: read cycle counter
+> period from hardware"), mv88e6xxx_ptp_setup() reads the TAI clock period
+> register and fails with -ENODEV if the value is not one of the supported
+> periods. mv88e6xxx_setup() propagates the error, so the switch does not
+> probe at all, although it is fully usable without PTP. Before that commit
+> the register was not read and the probe did not depend on its value.
+
+The point of the failure is to indicate an assumption in the driver is
+not valid, and we need to examine the assumption.
+
+>
+> The 88E6193X on the Sophos XGS 107w reads 0 in that register, so its
+> probe fails with:
+>
+>   mv88e6xxx ...: unexpected cycle counter period of 0 ps
+
+So the assumption is, all devices have valid values here. So the
+correct fix is to refine the assumption. What does the datasheet for
+the 88E6193X say about this register? Has its meaning changed? Marvell
+like moving registers around, is it somewhere else?
+
+    Andrew
+
+---
+pw-bot: cr
