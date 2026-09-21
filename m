@@ -1,130 +1,115 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59B64F648A
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731C44F68C3
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790014571; cv=none; b=GPD2wJiQM6QuC3eWe+2cHF0xRJ9THO+HdFz7TLKkQ/InT2AjGeMbkzuyph1xYc/lXeswg0loXUIhoklSAk55A85q4uJUO+ok8k+CMla5i8D/pWs03oy5K+2quZRgZO+TIVOZtw76mTioyTjmn1WZlEypMGCD4bpszy2cA7SpuQc=
+	t=1790014639; cv=none; b=UmtMVWnUIvJ3twVOUejq6e6sy+SoW7DgMzHIy5ejxph5syNsRGt5fcVECr/rkzfJOsUX2OUOfw8idiVHtUNU0RhbtEPYT3RqZ5f9FGmMTBtoSkK/hn9juCR1tIRIN8bBKslOGOhD6mRWGeW56ufq4tU7HdukH908E6tpg/8Xxyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790014571; c=relaxed/simple;
-	bh=9sO/C+Mw5RPob4eZkpAodclBSGa8oO5zecCGg5bgyHE=;
-	h=From:Subject:To:Cc:MIME-Version:Content-Type:Date:Message-ID; b=PudbmcIt/YGNVTqJp2gl0a7PYgtCX7A/gGuxBGT5a7wgQXVEnFIFEXMWsSxQbXSqJibAVLrucFjE9NKvkeAdMpQN+CEF3QFzVh995Ds7iUMnEqWonecNEw5mK4WMhhfmTSBMk+LxFGvfOr+pPonKCL2zonEEKVHPdHXWj/amaVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hRcenJyf; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790014639; c=relaxed/simple;
+	bh=e1OnODo+uuWbbcApLIlYOF/9/C0z3kAfGZqFpd5dT1s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=a3KN5OSEVR9TEes9orMxzy/PrfX0TPhjyhLM4F/CjvFobAuEhxjFaRdmzhIXYi8GWSmqfFTZ8bCGLaxKXaxhJsMnk0HsQVfSTx/DvVSC6rzDcIHJGYxtMihdAZfsrmf6yql1wsuDRsk7LEo0qqEZd7YJZcWRACkWRItmwnvxRIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WGBqQ2PU; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRcenJyf"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c3304784so2873678a12.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790014569; x=1790619369; darn=vger.kernel.org;
-        h=message-id:date:content-transfer-encoding:content-type:mime-version
-         :cc:to:subject:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ceJBvn0jVpw0gF/+O6f3OrNX6AQyTIdHbztQy6tYQ0c=;
-        b=hRcenJyfl6YL7GXJLB6zn/9mI0QTlyKd4FdA7Wnyibu6RiTDeS1isKWA74u07k8/wg
-         +30POYVV2PLOmGWfa2yS1AxNCG9nbHMfZkjA5tlkkTir8oNDHvOG6fjcC/ZfkMcro3Jh
-         DcMpbLDOf6gOONDU8pOBSM3yaT9PsU4fhQ+i3dT35QSFORSJfUhjCV4aEhmVXN8goY0e
-         hFwNZ7kdOzwT6KrbcGaSnl7GWAr6swFYn0va9luf5BCajvP/8/oy93RswQqAF0DZ+u9J
-         LuwWDnsn5KtJeg84WWstLG31RFHCCIfVyvA0rJBwD8U+jKYfznPE+RrTLyQ1nGEyJA83
-         VP4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790014569; x=1790619369;
-        h=message-id:date:content-transfer-encoding:content-type:mime-version
-         :cc:to:subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ceJBvn0jVpw0gF/+O6f3OrNX6AQyTIdHbztQy6tYQ0c=;
-        b=CuQZMJVS3tJ1nmnS4w2eoIsNVIFv8QPlLdYtIrbAq2FRbyC9WcDGIvDnJIDRWm0QS6
-         7xEFqfnscgpzlFgLCUUpEeF7tGBhV2743gmMlFUm7SBtCXF3ggts+mdQwEVNjLyIy8qM
-         F4tqNvxcQNgPJSSOrGdChMohKSgehS5fCUQiyFfSMmfdJGi/+IZvZnFSVvdEDRgt6yS+
-         Cz/fSauAqOwdemQqLi0EilfJNTmIoKJfcZAQSiNwL5CLpMy1dklu5BzLlGd5Ezwkvm2G
-         S7aXCkNkWrHZ5fyIZJEeSqGfxhEzw+RGmyfIVx0RefN+a3hWpcd11c2IVrzNY/LFQ/9N
-         42eg==
-X-Gm-Message-State: AFuF++lXc5wdp2oNLUQbwkdO51invG3Qngp+TD4WEYmu1H87MFO7mcAh
-	gIWkNrVeW/f4I3OfoV5ZVGFTydurAp8md6rwpcnd/X/2gIXPyVKDn2+VfVNjiah3
-X-Gm-Gg: AYBFou2acPZd+kEiD2fxaWEiTpyo7yc4W8fh4L0BRozZLipTc42SbH2n/Juo+Tbf7uH
-	fLSK84W6AkFosiOUj+EzCWniY77lVV8hKGP723/DZ1yOrpG2BbYEnDPPYKA8SU/dztBD2qSZtPJ
-	uIcYiljOcQGBLO13L61uIxqVp1G3K8qMBDyYfq4V0qplMII7xujFGTDeES8Rg+mKAHkPezfT+RI
-	FlB/VqvA3l8kgPCo5GPsnyyvGs9UkDFH2ZiWcgFtPtKLSoYbzVa2P5FvZy4WoWpWmi5SWqbNgs9
-	HZ3kYaGy6vWiTXoFf5B0bg9zloI7xjOFsx921YyX7mgl6SiLNvcjBCI9iaZO/LynMYV2Pr7AztG
-	rl0NGZg+WreHtqj+Lm7r4oRmOLxRN++cjjuEbxrQNaJqETT1hSN4PyMbNta/LlkZsa2mP1PisVg
-	XVGLk/5V4DfulxCENAFr6jCux/nnQjdTxEKYvlv/uXpLnw50eqMyRHU9XyFrYmlwfsCdmIfniYJ
-	F8gLJOhyomfAhMuOn/r9Yo=
-X-Received: by 2002:a05:6a21:3943:b0:3d0:8abe:9e08 with SMTP id adf61e73a8af0-3dd8c3f2338mr18188576637.3.1790014568927;
-        Mon, 21 Sep 2026 11:16:08 -0700 (PDT)
-Received: from SANGHOON. ([1.220.132.212])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc72ae8eae3sm3902549a12.14.2026.09.21.11.16.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 11:16:08 -0700 (PDT)
-From: Sang-Hoon Choi <csh0052@gmail.com>
-Subject: [PATCH net] nfp: hold IPsec RX state under the XArray lock
-To: netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-    Andrew Lunn <andrew+netdev@lunn.ch>,
-    David S. Miller <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-    oss-drivers@corigine.com, linux-kernel@vger.kernel.org,
-    Changyul Lee <lcy8047@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WGBqQ2PU"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2AD3E4E4075B;
+	Mon, 21 Sep 2026 18:17:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DD56F5FFB2;
+	Mon, 21 Sep 2026 18:17:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 798C2103291F5;
+	Mon, 21 Sep 2026 20:16:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790014622; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=El3dYegPgTZX3qYGBzZbbXTLYxxd2Ka23UQlt3bs7ig=;
+	b=WGBqQ2PUI0fuoEnLpBeVQUUiBcGUgU3IloGNB62kpjlgCbUMeOYf3wAeC/8yQ/Be9gp5Cd
+	Xplf4C/EQZjiLt9qlpLP6w7tqnjBOaL0Fp4sgAxDAFBVI3p1kYaOni/lGBG3rjJNd3IKSa
+	uKRBNhl6dmt7wnUMwxPNiuw/mhTBydAdcACjidEDlfnkEXZYZknirrp5kUpFtuidoY999b
+	KJIMaSGQftYMTVr+S7JcMOzZ70f+2LXTNBIyaqEjufeKvyGkkZ0q5YWED5AD8By6mW++IG
+	qjchP69/705PDJoUsU17ZmDCi+dUfzbY2gHmeaNwrY6WP60ORRcCrHVxjrxVnA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Date: Tue, 22 Sep 2026 03:15:59 +0900
-Message-ID: <179001455912.44752.17153022439349797877.idr-bug-92@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 21 Sep 2026 20:16:57 +0200
+Message-Id: <DLL782VNNCCH.1JND0AEPMQ462@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on
+ rejected timestamp requests
+Cc: <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+ <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <richardcochran@gmail.com>, <linux-kernel@vger.kernel.org>
+To: =?utf-8?b?4oCN6rmA7Jqw7ISdW+2VmeyDnV0o7KCE7J6Q7KCV67O064yA7ZWZIOyghA==?=
+ =?utf-8?b?7J6Q6rO17ZWZ6rO8KQ==?= <5mghybrid@khu.ac.kr>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+ <20260915083839.71546-1-pabeni@redhat.com>
+ <CAH1Bc_yQYJ6cWyYVvfWK0pAgrXW1TMkpzmNxZvAXAKZJdiOqWQ@mail.gmail.com>
+ <CAH1Bc_z6PFc7N6XVZ2dQEH=7D9mkXwGkXP2KKMW-Emd4zcf3fA@mail.gmail.com>
+ <DLL0PZY25HAD.1RWXC61P3MZRV@bootlin.com>
+ <CAH1Bc_yDpY1q3yLH5R+fbr_3=LicRv-qsrcPQYspZHz095TVxg@mail.gmail.com>
+In-Reply-To: <CAH1Bc_yDpY1q3yLH5R+fbr_3=LicRv-qsrcPQYspZHz095TVxg@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hello =EA=B9=80=EC=9A=B0=EC=84=9D,
 
-nfp_net_ipsec_rx() drops the XArray lock before taking a reference to the
-xfrm_state it found. The delete path can erase the entry and drop the last
-state reference in that interval. RX can then try to increment a zero
-refcount after the state has been queued for destruction.
+On Mon Sep 21, 2026 at 5:48 PM CEST, =EA=B9=80=EC=9A=B0=EC=84=9D wrote:
+> Thanks for explaining the approach.
 
-The driver queues firmware invalidation asynchronously; the delete path
-does not wait for the command to complete or drain pending RX processing.
+No worries, doing it especially as you are new according to the lore
+mailing list history. Welcome!
 
-The XFRM garbage collector waits for an RCU grace period before freeing
-the state. That delays reclamation but does not make acquiring a reference
-from zero valid.
+> I found both issues while validating hardware timestamp configuration
+> on the Raspberry Pi 5's Ethernet interface for my research. I reproduced
+> them on the board and tested both fixes there, as described in the
+> cover letter. These were hardware-verified failures, rather than
+> cleanup based only on source inspection.
 
-Take the xfrm_state reference before releasing the XArray lock so
-xa_erase() cannot run between lookup and reference acquisition.
+Great news. Nowadays the difference between "LLM found an issue through
+static analysis, generated bugfix and sent it" versus "someone had a
+real issue and fixed it with the LLM help" is hard to tell, and the
+first approach is sadly more common.
 
-Fixes: 57f273adbcd4 ("nfp: add framework to support ipsec offloading")
-Reported-by: Changyul Lee <lcy8047@gmail.com>
-Assisted-by: LLM
-Signed-off-by: Sang-Hoon Choi <csh0052@gmail.com>
----
-Found during source review at mainline
-5dd1818b15d98d4a20806cd00b1b40320b06004f. The affected source is unchanged
-at 93f51579e7df248780214094418f205253383cc5.
+> I've already applied the fixes locally on my Pi, so there is no
+> immediate urgency on my side. That said, the structure you suggested
+> looks like a cleaner way to handle the configuration path overall, and
+> I think it makes sense to take this opportunity to rework it in that
+> direction rather than keep the changes limited to the current fixes.
+>
+> Rather than posting a v2 limited to the current two fixes, I'll prepare
+> a new series that refactors gem_set_hwtst() along those lines and
+> incorporates both fixes. I'll link back to this series for context and
+> validate the reworked path on the Pi 5.
 
-The modified ipsec.o compiled in an x86 allmodconfig build. I have not
-tested this with NFP IPsec offload hardware or reproduced the race with a
-sanitizer. In particular, firmware invalidation and pending RX processing
-have not been exercised together on hardware.
+Perfect. Make sure to fix your SoB: we require real names in the kernel
+and kimwooseok looks more like a username.
 
- drivers/net/ethernet/netronome/nfp/crypto/ipsec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Side tangent: I wouldn't be surprised if you were even allowed to use
+Hanguls if you preferred. Though there isn't a large precedent, I hope
+we can assume (1) systems have full unicode range support and (2) no
+one expects a name to always be firstname + lastname.
 
-diff --git a/drivers/net/ethernet/netronome/nfp/crypto/ipsec.c b/drivers/net/ethernet/netronome/nfp/crypto/ipsec.c
-index 9e7c285ea..960d7513a 100644
---- a/drivers/net/ethernet/netronome/nfp/crypto/ipsec.c
-+++ b/drivers/net/ethernet/netronome/nfp/crypto/ipsec.c
-@@ -625,11 +625,12 @@ int nfp_net_ipsec_rx(struct nfp_meta_parsed *meta, struct sk_buff *skb)
- 
- 	xa_lock(&nn->xa_ipsec);
- 	x = xa_load(&nn->xa_ipsec, saidx);
-+	if (x)
-+		xfrm_state_hold(x);
- 	xa_unlock(&nn->xa_ipsec);
- 	if (!x)
- 		return -EINVAL;
- 
--	xfrm_state_hold(x);
- 	sp->xvec[sp->len++] = x;
- 	sp->olen++;
- 	xo = xfrm_offload(skb);
+=E2=9F=A9 git log torvalds/master | grep -a -P 'Signed-of.*\p{Hangul}'
+    Signed-off-by: =EC=9D=B4=EC=83=81=ED=98=B8 <...@gmail.com>
+    Signed-off-by: =EB=B0=B0=EC=84=9D=EC=A7=84 <...@samsung.com>
+
+My own "=C3=A9" never caused much trouble.
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
