@@ -1,216 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFFE398902;
-	Mon, 21 Sep 2026 23:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E98A3C1082
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 23:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032645; cv=none; b=bDPeTEJt+9NrjlmtgSj4aRGwB8oZ8qKHRnmv9HvXRBGC0i5H2G4IiikEg1fOcgJgYTTWdcca6ruElOCkbcBU8HZm0qf2XNLq9l2eugMY41+e8E5ZHQ+rQxGNUK6GgMN0WAaafDOxDNiOMabONzimuIbmSrjaWz38PnilwmQNoVU=
+	t=1790032742; cv=none; b=MrCDM4gVp7/Wa3xXdOZq3YZQJZK49vrX2tvYebpaFerwyYTjRYVFlQpP9NYhCaZMqogc09af0qzUTBlEmo7/VP8cARgy5hRYtFpg0tOFxFSsgI6Aqjh7PAKzuLm6tLXBhV2bLF8JHNXsZFYpRd0ec39GfC9o2MmR2365nPyJ8vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032645; c=relaxed/simple;
-	bh=AUFbhEmXlZkVXtSMKv7VlAO0otXxEUML2aBbTl1nVMs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MEBCOxorM6PZkDqmaUaqOpPQsIjxOdqMdtX+ZbHKzhjGWHZfQhOG49ZtYinUEnoa0ftawKIDvFfM+cs1D5BECIjM4AhMn5p0dqEM/ItFWZiwSV18R8Fgonf0+xGP3ZJhhili9XctLUBhu7PjQYPMfWKug7Avv9MptgI4EoxYcbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+oJrMdn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790032742; c=relaxed/simple;
+	bh=inaM+27U3/MAGiRQ3AimAn70uQMMSOfNqIIVPN7MUiI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H4wzc072CBe9Sq3rksDxJrsf9ykLY/SyCrLodEcSKaQB4nknCB1jfBG7PHcMOrhGjcU0/2dp6A0sz/7WNQNJfa3WGjXH2cep+VEzP3V8p8m8ISoHmHCEkq+pjJaQppmxBWPbWCFNZS52RmY0r5DA7CKv4iDJGxL3OtBOPxZxVyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jx7nPxxN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+oJrMdn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F088E1F000FF;
-	Mon, 21 Sep 2026 23:17:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jx7nPxxN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F131F000FF;
+	Mon, 21 Sep 2026 23:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790032641;
-	bh=+wEn3Ak0xk7EOTNfcdfLsG0vOpuUj3SLgH6sSDqmVac=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=X+oJrMdnXu+h3ySDtfxpoOridtFjoYe842E/PQsyzPDq79DbbHydjTTLZtD3s5vST
-	 bjZsQ3byp1ixHxbC1x/dJforJlTKDvQOmP+13lNmaQj3W9msBdrAbtB2+74CIfkdB3
-	 r1rFGWvKu6xWbcFXZ7J3/F79PWYGBtLJk6wZWmKAKyzBInnyJLcPbol7c7xebaG7Qr
-	 uztpDqKmy+h9ootJ1trcyVDqiY5SJo6wpeAAgbXmSEjqPAQKq2SSeyWmiij037A+K1
-	 gJXOhXui0XFMs1DNzlunsh165us9vJMzxrOhq7gSmcEWK5sDlQLcNbqFVjM5ZGFCU7
-	 F5Wt3O8QdxHYQ==
-Subject: Re: [PATCH] vsock/hv_sock: reject incoming connections when the
- listener is being released
-From: netdev-bot+sashiko@kernel.org
-To: bartlomiej.dmitruk@isec.pl
-Cc: decui@microsoft.com, wei.liu@kernel.org, haiyangz@microsoft.com,
- kys@microsoft.com, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- sgarzare@redhat.com, mst@redhat.com, kuba@kernel.org
-Date: Mon, 21 Sep 2026 23:17:20 +0000
-Message-ID: <179003264046.2160803.3176959842906352107@kernel.org>
-In-Reply-To: <20260917220156.56015-1-bartlomiej.dmitruk@isec.pl>
-References: <20260917220156.56015-1-bartlomiej.dmitruk@isec.pl>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1790032739;
+	bh=kNPfaY6M/KntAfvIL3A0HWX6z6fFLRHArBcCfdRKn64=;
+	h=From:To:Cc:Subject:Date;
+	b=jx7nPxxN3Mj3q16duBShgN6ec4tUDc1lWCPjMp1j6yjr9uZxvzCo2m8awqzAFere/
+	 JJ0yKJb2i/qaJU61C3hPS+4S91nZRs1NqEzoxV+gXPdgdDJPv7uxWn/930CK43WWj1
+	 ya2sqzgZEIdvRr0+vrCs15cZY91eSiu+EV+i3jk9QfA3GZQgL7xw4QTe7QC0rT0Ynd
+	 MktMZWQQihNc19RUz/FIpymMoYnGmrwQMDyOfyoboK9nzDVFmxe+oc/tnzPzeKCMYb
+	 5X4O1HmbleYkap6QuvsmIAGr524Cx/ZO4JDoUemWxGkvnLPZ0Nw+Thu1PmHyMPMJiJ
+	 UavyqQXrIiAew==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net v2] veth: manage XDP program pointers during channel resize
+Date: Mon, 21 Sep 2026 16:18:56 -0700
+Message-ID: <20260921231856.1798630-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+veth_set_channels() tears down XDP resources for removed RX queues
+without clearing rq->xdp_prog.  If the program is then detached or
+replaced, those queues keep the old pointer after bpf_prog_put().
+A later channel increase can re-enable NAPI and run the freed program.
 
-Critical: 1 · High: 0 (1) · Medium: 0 · Low: 1
+  BUG: unable to handle page fault for address: ffffc90000256048
+  Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+  RIP: veth_xdp_rcv_skb (include/linux/filter.h:779
+                         include/net/xdp.h:696 drivers/net/veth.c:820)
+  Call Trace:
+   veth_xdp_rcv (drivers/net/veth.c:941)
+   veth_poll (drivers/net/veth.c:986)
+   __napi_poll (net/core/dev.c:7787)
+   net_rx_action (net/core/dev.c:7850 net/core/dev.c:8007)
+   handle_softirqs (kernel/softirq.c:645)
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op")
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+v2:
+ - different placement to avoid extra loops
+v1: https://lore.kernel.org/20260917153923.904124-3-bestswngs@gmail.com
+---
+ drivers/net/veth.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-- [Critical] The new early-exit added to hvs_open_connection() jumps to
-  the `out:` label, which performs `sock_put(sk)`…
-- [Low] The commit fixes a real, user-visible socket and VMBUS-channel
-  leak in hvs_open_connection() (net/vmw_vsock/hyperv_transport.c:334)…
-
-Pre-existing issues:
-- [High] hvs_open_connection() (net/vmw_vsock/hyperv_transport.c): the
-  new released-listener guard `if (sk->sk_shutdown == SHUTDOWN_MASK)…
-
---
-
-vsock/hv_sock: reject incoming connections when the listener is being released
-
-This adds a check for sk_shutdown == SHUTDOWN_MASK in
-hvs_open_connection() so that a host channel offer racing close() of an
-hv_sock listener does not create a child socket and enqueue it onto an
-accept queue that __vsock_release() has already flushed.  The stated goal
-is to stop the child socket and its VMBUS channel from leaking.
-
-No Link: tags are present in the commit header.
-
-A few questions about the change below.
-
-[Severity: Low]
-Should this carry a Fixes: tag?
-
-The unguarded child creation in hvs_open_connection(), and the release
-path that sets sk_shutdown = SHUTDOWN_MASK while leaving sk_state ==
-TCP_LISTEN, both date back to the introduction of the transport, so the
-trailer would be:
-
-Fixes: ae0078fcf0a5 ("hv_sock: implements Hyper-V transport for Virtual Sockets (AF_VSOCK)")
-
-Without it, stable tooling will not pick up what is otherwise a real leak
-fix.
-
-> diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-> index 855b15971c359..19e487ac27263 100644
-> --- a/net/vmw_vsock/hyperv_transport.c
-> +++ b/net/vmw_vsock/hyperv_transport.c
-> @@ -326,6 +326,14 @@ static void hvs_open_connection(struct vmbus_channel *chan)
->  		if (sk_acceptq_is_full(sk))
->  			goto out;
->  
-> +		/* __vsock_release() may have already flushed the accept queue
-> +		 * and set sk_shutdown = SHUTDOWN_MASK while leaving sk_state ==
-> +		 * TCP_LISTEN.  Enqueuing a child now would leak the child socket
-> +		 * and its VMBUS channel.  Mirror virtio_transport_recv_listen().
-> +		 */
-> +		if (sk->sk_shutdown == SHUTDOWN_MASK)
-> +			goto out;
-> +
-
-[Severity: Critical]
-Can this new goto out lead to a use-after-free of the listener?
-
-The out: epilogue in hvs_open_connection() drops the reference before it
-unlocks:
-
-net/vmw_vsock/hyperv_transport.c:hvs_open_connection() {
-	...
-out:
-	/* Release refcnt obtained when we called vsock_find_bound_socket() */
-	sock_put(sk);
-
-	release_sock(sk);
-}
-
-In the exact race this patch targets, is the vsock_find_bound_socket()
-reference the last one left?  The racing close() drops everything else:
-
-net/vmw_vsock/af_vsock.c:__vsock_release() {
-	sock_set_flag(sk, SOCK_DEAD);
-
-	if (vsk->transport)
-		vsk->transport->release(vsk);	/* hvs_release() ->
-						 * vsock_remove_sock() ->
-						 * vsock_remove_bound()
-						 */
-	sock_orphan(sk);
-	sk->sk_shutdown = SHUTDOWN_MASK;
-	...
-	while ((pending = vsock_dequeue_accept(sk)) != NULL) {
-		__vsock_release(pending, SINGLE_DEPTH_NESTING);
-		sock_put(pending);
-	}
-
-	release_sock(sk);
-	sock_put(sk);
-}
-
-vsock_dequeue_accept() also does sock_put(listener) for each queued child,
-and hvs_close_lock_held() returns true immediately for TCP_LISTEN without
-touching sk_state, so once __vsock_release() finishes the listener is only
-kept alive by the lookup reference held by hvs_open_connection().
-
-hvs_open_connection() then takes the lock, sees sk_state == TCP_LISTEN,
-matches the new sk_shutdown == SHUTDOWN_MASK test, and goes to out:, where
-sock_put() drops the count to zero.  vsock_proto sets neither SOCK_RCU_FREE
-nor SLAB_TYPESAFE_BY_RCU, so sk_free() -> __sk_destruct() ->
-kmem_cache_free() runs synchronously and the following release_sock(sk)
-touches sk->sk_lock.slock, the backlog and the wait queue on freed memory.
-
-Before this change the same race normally continued into
-vsock_enqueue_accept(), which does sock_hold(listener), so the leak being
-fixed here is what kept the socket alive past that sock_put().  Should the
-epilogue be reordered to release_sock(sk) followed by sock_put(sk) as part
-of this fix?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but should the new test be
-hoisted above the if (conn_from_host) block so it also covers the
-guest-initiated arm?
-
-As placed, the check only runs for conn_from_host.  For the
-!conn_from_host case hvs_open_connection() accepts sk_state ==
-TCP_SYN_SENT, and hvs_close_lock_held() leaves sk_state alone for that
-state too, so a socket that __vsock_release() has already torn down still
-looks connectable while sock_orphan() has cleared sk->sk_socket.  The else
-branch then does:
-
-net/vmw_vsock/hyperv_transport.c:hvs_open_connection() {
-	...
-	} else {
-		sk->sk_state = TCP_ESTABLISHED;
-		sk->sk_socket->state = SS_CONNECTED;
-
-		vsock_insert_connected(vsock_sk(sk));
-	}
-	...
-}
-
-which writes through a NULL sk_socket, and inserts an already released
-socket into the connected table.
-
-Core vsock already treats that combination as a state where sk_socket must
-not be dereferenced:
-
-net/vmw_vsock/af_vsock.c:vsock_connect_timeout() {
-	...
-	if (sk->sk_state == TCP_SYN_SENT &&
-	    (sk->sk_shutdown != SHUTDOWN_MASK)) {
-		sk->sk_state = TCP_CLOSE;
-		sk->sk_socket->state = SS_UNCONNECTED;
-	...
-}
-
-Moving the new check up to just after the sk_state tests would cover both
-arms.
-
->  		new = vsock_create_connected(sk);
->  		if (!new)
->  			goto out;
-
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 6ed3ee81153f..71227d0389aa 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1054,6 +1054,7 @@ static int __veth_napi_enable_range(struct net_device *dev, int start, int end)
+ 	for (i = start; i < end; i++) {
+ 		struct veth_rq *rq = &priv->rq[i];
+ 
++		rcu_assign_pointer(rq->xdp_prog, priv->_xdp_prog);
+ 		napi_enable(&rq->xdp_napi);
+ 		rcu_assign_pointer(priv->rq[i].napi, &priv->rq[i].xdp_napi);
+ 	}
+@@ -1088,6 +1089,7 @@ static void veth_napi_del_range(struct net_device *dev, int start, int end)
+ 
+ 		rcu_assign_pointer(priv->rq[i].napi, NULL);
+ 		napi_disable(&rq->xdp_napi);
++		rcu_assign_pointer(rq->xdp_prog, NULL);
+ 		__netif_napi_del(&rq->xdp_napi);
+ 	}
+ 	synchronize_net();
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917220156.56015-1-bartlomiej.dmitruk%40isec.pl
+2.55.0
+
