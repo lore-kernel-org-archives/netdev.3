@@ -1,117 +1,133 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-108.mta0.migadu.com [91.218.175.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3D368D79;
-	Mon, 21 Sep 2026 06:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C290330F819
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789972030; cv=none; b=ZZgIc0WKjaF1h8dgXmhwySNUlGtyHSMgDv0MPacR/egqQec3x3MB5Il6vfk+PQcEl7T9pZumpAl1tHmzM+M6h0Ds7LRMpgeEf0CeF1g2TNZjhyzhqkPxstFvhdHQrCnLPNOxzE9Hs9nkMJzC/IHltDOOoBIuTN/YybY//io2Xng=
+	t=1789972249; cv=none; b=EBNuyGT3Jy6MOPgZHHp0MTCdrW1FVKkdjGsOE4U1NsX1IUyzc1B0bCcVZxlQlbaaulr+7wLdf2OjNscELxsr9Kyu2p3qasuO6dXED8X9s3P2t2DEAYxOdlW+L1ElWvl5rD4JJIU4wxWTPNo+swyQhOtbyLF8cNcbu5N9bgZ/Kp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789972030; c=relaxed/simple;
-	bh=h7rAnpRUWdoFO9wRV6G8lhzzaCAWMSLGFjO1ZqeZDg4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gXDU5haSkC1HW5ancriCjW5cQKHIzkEVYr1GVKP9PE2Xj8qU3D7oFo5rAvpcSKXJNoAVVDwr/Ww1CiIQ/RA2QapQ41KMjtqKWBuOCL3k578v/uyi5a5i8Mgv2HqA5EpwaGPJiOcWC7nNK96ovDj0JnR0EdWJKqCs0MLci+bfcS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=dbxYBTGj; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1789972249; c=relaxed/simple;
+	bh=Pw43fiogz5vKadBewsuWAaZ3YGjE5iqf3I+grhtQezc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f6chkbzoXD6QlClkfxhSn37wYv7GpTebg4xzL6gl8CAnMpRqiJC6K0xpCf4smBaTEw5NWv3ytpmjP37dezT+VY0BSL+yOMteAJX1t6MEg5RmR9Jo9mhOQHjs2GcF9tjDFUrypQw0ekVqncpznuLZbtLqAimYVDc6vMi23KPTfq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wybcGsJv; arc=none smtp.client-ip=91.218.175.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="dbxYBTGj"
-Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4e86eb585;
-	Mon, 21 Sep 2026 14:27:00 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	"Denis V . Lunev" <den@openvz.org>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wybcGsJv"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Pw43fiogz5vKadBewsuWAaZ3YGjE5iqf3I+grhtQezc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789972243; v=1; x=1790577043;
+ b=wybcGsJvF+HCH2qTNMozklLEoixdJYHPpvX1lOcFN5MiSCkAE+vP88zxhPsrgzcoE/rQ9keQ
+ znmDx4bFwhtz8j+AyNEn10z3dSWv/B2JeEyZ9WLpXYuyktLnvuvRxHzt4xxut0t5ne5kVt/J/Xq
+ jThKOu6tEVkqOF4MChfnsBys=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id dbd121085093f2de;
+	Mon, 21 Sep 2026 06:30:27 +0000
+X-Mizu-Trace-ID: dbd121085093f2de
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 21 Sep 2026 14:30:17 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Hui Peng <benquike@gmail.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net] net: neighbour: Serialize proxy timer teardown
-Date: Mon, 21 Sep 2026 14:26:50 +0800
-Message-Id: <20260921062650.22461-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260918231954.4049829-1-kuniyu@google.com>
-References: <20260914075604.120183-1-runyu.xiao@seu.edu.cn> <20260918231954.4049829-1-kuniyu@google.com>
+	Willem de Bruijn <willemb@google.com>,
+	Tom Herbert <therbert@google.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] fou: reject omitted FOU_ATTR_IPPROTO on
+ FOU_ENCAP_DIRECT
+Message-ID: <arDOTqytCxWKOyxv@fedora>
+References: <CAAVpQUDwLnRfv1PkkexsC04D8wLSeARekuUDSTOenyRctWG8MA@mail.gmail.com>
+ <20260921045920.1613098-1-benquike@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa0c2a57e9903a1kunm49c0ba5e353f7
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTU5JVh5OTR5MHkwfTx5MGVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUJCSU
-	5LVUpLS1VKQktCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=dbxYBTGjUK2E4uabB6gnW5eRe7l/mpAmFs8w2Mh6zue8IBR+isTrOh++Xkt4DFpH4GwvXiGnLMXWRQSFaj8FfUGwpRDf+bk8fqX3ZBB44CECSMUDcK9/73HUP34w2XeWy66wFNabAjbizxoBmtBXuWz0ZAthE/gZ/hQrI46NOtc=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=uHyHVs2p2BeM204OzQEYRrR5F0lBaEiaKwvTaTbBE4Q=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921045920.1613098-1-benquike@gmail.com>
 
-Hi,
+On Mon, Sep 21, 2026 at 04:59:20AM +0000, Hui Peng wrote:
+> Commit 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.") added
+> NLA_POLICY_MIN(NLA_U8, 1) to fou_nl_policy[FOU_ATTR_IPPROTO], which
+> rejects an explicitly supplied FOU_ATTR_IPPROTO == 0 attribute with
+> -ERANGE.
+> 
+> However, FOU_ATTR_IPPROTO is an optional netlink attribute. When a user
+> sends FOU_CMD_ADD with FOU_ATTR_TYPE set to FOU_ENCAP_DIRECT and omits
+> FOU_ATTR_IPPROTO entirely, nla_policy validation succeeds and
+> parse_nl_config() leaves cfg->protocol as 0 (from memset(cfg, 0,
+> sizeof(*cfg))). fou_create() then creates a FOU_ENCAP_DIRECT socket with
+> fou->protocol == 0.
+> 
+> In fou_udp_recv(), returning -fou->protocol to udp_queue_rcv_one_skb()
+> triggers IP protocol resubmission when fou->protocol > 0, whereas
+> returning 0 tells the UDP tunnel layer that the skb was consumed without
+> freeing it. When fou->protocol == 0, every packet received on the socket
+> returns 0 from fou_udp_recv() and leaks the sk_buff.
+> 
+> Reject FOU_ENCAP_DIRECT when !cfg->protocol in fou_create() so that
+> creating a direct encapsulation port without FOU_ATTR_IPPROTO fails with
+> -EINVAL while leaving FOU_CMD_DEL and FOU_CMD_GET (which share
+> parse_nl_config()) unaffected.
+> 
+> Tested in QEMU against Linux 7.3.0-rc3 by sending a FOU_CMD_ADD Generic
+> Netlink request with FOU_ATTR_PORT = 5555 and FOU_ATTR_TYPE =
+> FOU_ENCAP_DIRECT while omitting FOU_ATTR_IPPROTO. On the unfixed kernel,
+> FOU_CMD_ADD succeeds (err = 0), FOU_CMD_GET reports fou->type = 1 and
+> fou->protocol = 0, and sending 4000 UDP packets to 127.0.0.1:5555 leaks
+> all 4000 sk_buffs (SUnreclaim in /proc/meminfo grows from 41456 kB to
+> 59008 kB, +17552 kB); with this patch applied, FOU_CMD_ADD is rejected
+> with -EINVAL (-22).
+> 
+> Fixes: 23461551c006 ("fou: Support for foo-over-udp RX path")
+> Fixes: 7a9bc9e3f423 ("fou: Don't allow 0 for FOU_ATTR_IPPROTO.")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> ---
+> Changes in v2:
+> - Clarify in the commit message that fou->protocol == 0 is reached on
+>   current kernels by omitting the optional FOU_ATTR_IPPROTO attribute
+>   when FOU_ATTR_TYPE is FOU_ENCAP_DIRECT (whereas an explicit 0
+>   attribute is rejected by commit 7a9bc9e3f423), as noted by Kuniyuki
+>   Iwashima and Sashiko.
+> - Move the !cfg->protocol check from parse_nl_config() into the
+>   FOU_ENCAP_DIRECT branch of fou_create() so FOU_CMD_DEL and FOU_CMD_GET
+>   are not affected, and drop the redundant check in fou_udp_recv(), as
+>   suggested by Sashiko.
+> - Fix the Fixes: commit tags to 23461551c006 and 7a9bc9e3f423, as
+>   pointed out by Hangbin Liu and Kuniyuki Iwashima.
+> 
+>  net/ipv4/fou_core.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+> index 5e867f1b5c1d..f30f22389283 100644
+> --- a/net/ipv4/fou_core.c
+> +++ b/net/ipv4/fou_core.c
+> @@ -600,6 +600,10 @@ static int fou_create(struct net *net, struct fou_cfg *cfg,
+>  	/* Initial for fou type */
+>  	switch (cfg->type) {
+>  	case FOU_ENCAP_DIRECT:
+> +		if (!cfg->protocol) {
+> +			err = -EINVAL;
+> +			goto error;
+> +		}
+>  		tunnel_cfg.encap_rcv = fou_udp_recv;
+>  		tunnel_cfg.gro_receive = fou_gro_receive;
+>  		tunnel_cfg.gro_complete = fou_gro_complete;
+> -- 
+> 2.49.0
 
-Thanks for reviewing this.
+Looks good to me.
 
-On Mon, 14 Sep 2026, Runyu Xiao wrote:
-
-> A controlled QEMU test with explicit 5 ms schedule injection reproduced
-> the orphaned queue state on the unfixed kernel and did not reproduce it
-> with this change. Natural-load runs reached both paths but did not
-> trigger the narrow race.
-
-Could you provide the repro ?
-
-The reproducer uses an x86_64 QEMU guest with three network namespaces and
-veth pairs. Proxy ARP and IP forwarding are enabled on the guest, and an
-AF_PACKET helper sends valid broadcast ARP requests from a source namespace
-through the proxy-ARP ingress interface. The same interface is repeatedly
-brought down and up while the requests are being sent.
-
-For the deterministic run, I built the baseline and fixed kernels from the
-same source and temporarily enabled C0109_POC instrumentation. It adds a
-5 ms delay at both of these points:
-
-  - immediately before arp_process() calls pneigh_enqueue();
-  - after __neigh_ifdown() observes an empty proxy queue and immediately
-    before timer_delete_sync().
-
-The guest was run with two vCPUs and 2 GiB of memory. The trigger performed
-300 down/up cycles while sending the ARP requests. The test-only oracle
-reported a failure when __neigh_ifdown() completed with proxy_queue non-empty
-and proxy_timer not pending.
-
-With the unfixed kernel, the run reached both paths and reported the oracle
-772 times. With the fixed kernel, the same workload reached both paths but
-reported the oracle zero times. The natural-load runs also reached both
-paths, but did not hit the narrow interleaving without the temporary delay.
-The delay is only schedule amplification for this race; it is not a claim
-that a third-party workload triggers it frequently in normal operation.
-
-> Isn't is resolved by simply checking if dev is down here ?
-
-A check of the device state in pneigh_enqueue() alone does not serialize the
-queue insertion with the purge, empty check, and timer deletion. An enqueue
-can pass that check while the device is still up, then be delayed until
-after __neigh_ifdown() has observed an empty queue and before it deletes the
-timer. The newly inserted skb would still be left without a timer.
-
-There is also a second teardown path to consider. __neigh_ifdown() is used
-by neigh_carrier_down(), where the device can remain administratively up and
-netif_running() can still be true. The proxy_timer_lock serializes both the
-per-device and carrier-down teardown paths with proxy queue insertion and
-timer rearming. The timer callback does not take this lock, so
-timer_delete_sync() can still wait for an in-flight callback without a lock
-dependency.
-
-I will include a shorter version of these reproduction details in v2's
-commit message and can provide the complete QEMU harness if needed.
-
-Regards,
-Runyu
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
