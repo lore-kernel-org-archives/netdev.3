@@ -1,210 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D335A496D3B;
-	Mon, 21 Sep 2026 12:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084E5437448
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789995127; cv=none; b=R0h2UH0+ZUmfoSPjvdbcLTiamMrLhZ7TdNQZz3sLpU7MlFAPCnB7DRo7z45j4slj6c6dCpeHHjalUfOAIY7vKTPXN3q/ri3mJB9xr/BVa79Xm+Kfu56wfmnAKhLQYoVuA1O/Z2IlHmCtAvWDhkQ60NgjZRQ+y+Kjii9NtTHhmH8=
+	t=1789995213; cv=none; b=arhGNcAu4FqV/JCuhYxPqqajBP1uvceAHDCzWuuinUWdloHGQ+3UKXWxOUXT8vXMe8X+S8GXMvpP3T7JkpSRKO+HCUPovtysx3qyG4m80rlkQuFNhDrW+Gdrbijg0DxMhcPkXtf7UNma9AHeapajHSSH3Z2TJPSZiYa1dNRfaik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789995127; c=relaxed/simple;
-	bh=wk8WqgVggF8LJTmOp5H6FQx6D/MULWBtpqoasVAAaqM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AqP84pk79HyD9bF13tBvx7R6DXRbEHmVn4Y2hqt1PMZpEZatiU9OWQi3RZOMfYCBf+SD4p55mdcNcIkbtIi5xOoskD22/rYh9Q+qSkKX13W0aX6P8k9LGWGhU+NHMbwnqovvzermx9zOVq90tPHJETbKneZvvI7mc1SsjDKSoko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEoXuMgk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789995213; c=relaxed/simple;
+	bh=8ffHjvO4mRfy8kfn09MFEqN+cz5yscwnFlqeXvW11Lc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X9QpbnCfZiiQT/TDR6rZhM28KBGafc/xfd6OAdKW+goYBTGKZ/Mup9WPNSpG3ETB7guKi1K/HPK5+UpzaknE7JGVfSeF0fjzXO1BIQ3x4MVgMn/C8ogVN2zJKRBiMlEsOqMQ8di7Ne0tbynSLC3iF+oPbVirFH7fwD8HRoXIBpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bpckZpIm; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEoXuMgk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81E81F000FF;
-	Mon, 21 Sep 2026 12:52:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789995125;
-	bh=gBrB4ZvsDxz9T+FKuvYovOtJhOMUC4zhQspG5dCkzqI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UEoXuMgk3tQR7VKss5G7TCH5r2PNVxKIgUqvy03V3f2uk/2Ph6lX19r0ed/+h2e4e
-	 bDVJ8hMF7A6V8+AvzTV0lrEBHMw8lyCzO0N1Xud2ENdLe8BpvuiiBRZz2J/riVAs9r
-	 iliuMt+mIA+BPEmVnZ5Cae07HGJfPl/vOW+t+HSil3Aj4EAQrQTMbVLuyfpp+5d+gX
-	 OhBP10nnepB70F532dZSrX99wGzghWQb63X3l2HQ1Ppk5NFoDDMCGMDH8irTojud2I
-	 qHlMVWV5j2Ty8l4FhvbQDGRFKr7w1lCUTKNByQC7w24IQDeWpshm9HlTaLjQPiUH1i
-	 A5LSb3N8CAV8g==
-Subject: Re: [PATCH] mlxsw: spectrum_flower: Fix port range register leak
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, petrm@nvidia.com,
- stable@vger.kernel.org
-Date: Mon, 21 Sep 2026 12:52:04 +0000
-Message-ID: <178999512438.2160803.8624213916637783363@kernel.org>
-In-Reply-To: <20260917113236.2149095-1-vulab@iscas.ac.cn>
-References: <20260917113236.2149095-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bpckZpIm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Wj6a3pZGer1bcqk6v1Ep26LKjHUmW/0dkV9mW5wrsRc=; b=bpckZpImCIWboJVWLHwCTEzCMQ
+	8qvhGHXfSR66AHulQQ+auGB4hqNtj0FvQVyfWszHL7rn+NPLMRe/yVyQsMSxMmhYWK2ze7sMLn4yq
+	CIyghFpZ8VBApXdvcrI5zjW/BrxRnI3lPZSAvBTM2laUhiPLufFr+432ujgzLQKfuepo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x8dWM-006Ke4-0j; Mon, 21 Sep 2026 14:53:22 +0200
+Date: Mon, 21 Sep 2026 14:53:22 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, 'Mengyuan Lou' <mengyuanlou@net-swift.com>,
+	'Andrew Lunn' <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	'Eric Dumazet' <edumazet@google.com>,
+	'Jakub Kicinski' <kuba@kernel.org>,
+	'Paolo Abeni' <pabeni@redhat.com>,
+	'Jacob Keller' <jacob.e.keller@intel.com>,
+	'Kees Cook' <kees@kernel.org>,
+	'Chenguang Zhao' <zhaochenguang@kylinos.cn>,
+	"'Russell King (Oracle)'" <rmk+kernel@armlinux.org.uk>,
+	'Maciej Fijalkowski' <maciej.fijalkowski@intel.com>,
+	'Simon Horman' <horms@kernel.org>
+Subject: Re: [PATCH net 2/3] net: txgbe: keep MAC enabled for NCSI and WoL
+ for SP devices
+Message-ID: <f8c17a72-ede0-48e7-a870-ed4d1f918bfc@lunn.ch>
+References: <20260920085114.1062503-1-jiawenwu@trustnetic.com>
+ <F55611137A66BAC3+20260920085114.1062503-2-jiawenwu@trustnetic.com>
+ <0b4c65e5-b2c3-4c8b-9db7-d221ffab6ec5@lunn.ch>
+ <065701dd4970$1953a5a0$4bfaf0e0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <065701dd4970$1953a5a0$4bfaf0e0$@trustnetic.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Mon, Sep 21, 2026 at 10:22:49AM +0800, Jiawen Wu wrote:
+> On Sun, Sep 20, 2026 10:56 PM, Andrew Lunn wrote:
+> > On Sun, Sep 20, 2026 at 04:51:13PM +0800, Jiawen Wu wrote:
+> > > The .mac_link_down() in phylink callback disable MAC TX unconditionally.
+> > > This is not suitable for devices using NCSI or WoL, where the MAC needs
+> > > to remain enbaled after the link goes down to support the corresponding
+> > > functionality.
+> > >
+> > > Skip disabling MAC TX when the subsystem device ID indicates an NCSI or
+> > > WoL device. Keep the existing link-down handling for other devices.
+> > 
+> > NCSI i can understand, but phylink knows about WoL. This makes me
+> > think your WoL code is broken. Please review it.
+> 
+> WoL functionality has not been implemented on txgbe.
+> I'll change to fix NCSI first, then support WoL later.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+I actually think we need a better solution for NCSI. At the moment,
+each MAC driver has some sort of hack. It would be much better to just
+tell phylink, so it can do the correct thing, similar to what it does
+for WoL.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Incomplete fix: the port-range register leak the commit message
-  claims to close remains fully reachable.
-
---
-
-mlxsw: spectrum_flower: Fix port range register leak
-
-Adds an unwind to mlxsw_sp_flower_parse_ports_range() so that the source
-port range register is released when acquiring the destination port range
-register fails.  The commit message motivates this by callers that pass a
-stack allocated rule info and never release it.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> index 353fd9ca89a68..4cad6c46b07e9 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> @@ -486,8 +486,14 @@ mlxsw_sp_flower_parse_ports_range(struct mlxsw_sp *mlxsw_sp,
->  
->  		err = mlxsw_sp_port_range_reg_get(mlxsw_sp, &range,
->  						  f->common.extack, &prr_index);
-> -		if (err)
-> +		if (err) {
-> +			if (rulei->src_port_range_reg_valid) {
-> +				mlxsw_sp_port_range_reg_put(mlxsw_sp,
-> +							    rulei->src_port_range_reg_index);
-> +				rulei->src_port_range_reg_valid = false;
-> +			}
->  			return err;
-> +		}
->  
->  		rulei->dst_port_range_reg_index = prr_index;
->  		rulei->dst_port_range_reg_valid = true;
-
-[Severity: High]
-
-Does this hunk actually close the leak the changelog describes?
-
-mlxsw_sp_flower_parse() has two callers.  The first is
-mlxsw_sp_flower_replace(), which uses the heap rulei owned by the rule and
-routes every error through mlxsw_sp_acl_rule_destroy() ->
-mlxsw_sp_acl_rulei_destroy(), which already drops both registers:
-
-drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c:mlxsw_sp_acl_rulei_destroy() {
-	if (rulei->src_port_range_reg_valid)
-		mlxsw_sp_port_range_reg_put(mlxsw_sp,
-					    rulei->src_port_range_reg_index);
-	if (rulei->dst_port_range_reg_valid)
-		mlxsw_sp_port_range_reg_put(mlxsw_sp,
-					    rulei->dst_port_range_reg_index);
-	kfree(rulei);
-}
-
-So on the replace path the new put looks redundant.
-
-The second caller is the stack rulei one named in the changelog,
-mlxsw_sp_flower_tmplt_create():
-
-	struct mlxsw_sp_acl_rule_info rulei;
-	...
-	memset(&rulei, 0, sizeof(rulei));
-	err = mlxsw_sp_flower_parse(mlxsw_sp, block, &rulei, f);
-	if (err)
-		return err;
-	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
-					   f->common.chain_index,
-					   MLXSW_SP_ACL_PROFILE_FLOWER,
-					   &rulei.values.elusage);
-
-	/* keep the reference to the ruleset */
-	return PTR_ERR_OR_ZERO(ruleset);
-
-This never calls mlxsw_sp_acl_rulei_destroy() (it cannot, that function ends
-in kfree(rulei)), and mlxsw_sp_flower_tmplt_destroy() only drops ruleset
-references.  Isn't every port range register recorded in that stack rulei
-still leaked?
-
-The new unwind only covers the narrow window "source acquired, destination
-acquisition failed".  For the template caller the reference is still dropped
-on the floor in these cases:
-
-  - the success path, where one or two registers stay pinned per template
-    (this is the common case)
-  - later failures inside mlxsw_sp_flower_parse() after
-    mlxsw_sp_flower_parse_ports_range() already succeeded, namely
-    mlxsw_sp_flower_parse_tcp() rejecting reserved flags,
-    mlxsw_sp_flower_parse_ip() rejecting a non-IP n_proto, and
-    mlxsw_sp_flower_parse_actions() failing:
-
-	err = mlxsw_sp_flower_parse_ports_range(mlxsw_sp, rulei, f, ip_proto);
-	if (err)
-		return err;
-
-	err = mlxsw_sp_flower_parse_tcp(mlxsw_sp, rulei, f, ip_proto);
-	if (err)
-		return err;
-
-	err = mlxsw_sp_flower_parse_ip(mlxsw_sp, rulei, f, n_proto_key & n_proto_mask);
-	if (err)
-		return err;
-
-	return mlxsw_sp_flower_parse_actions(mlxsw_sp, block, rulei,
-					     &f->rule->action,
-					     f->common.extack);
-
-  - mlxsw_sp_acl_ruleset_get() returning an error in
-    mlxsw_sp_flower_tmplt_create()
-
-Is the template key really non-zero here?  fl_tmplt_create() in
-net/sched/cls_flower.c fills tmplt->dummy_key and tmplt->mask from the user
-attributes via fl_set_key(), fl_set_key_port_range() sets
-mask->tp_range.tp_min.src/dst to all ones for TCP/UDP/SCTP, and
-fl_hw_create_tmplt() hands that dissector, key and mask to the driver.
-FLOW_DISSECTOR_KEY_PORTS_RANGE is in the accepted key mask in
-mlxsw_sp_flower_parse(), so mlxsw_sp_port_range_reg_get() takes a real
-reference for a template such as:
-
-	tc chain add dev swp1 ingress protocol ip \
-		flower ip_proto tcp src_port 100-200
-
-The pool is small and fixed.  mlxsw_sp_port_range_init() sets
-pr_core->prr_ids.max from MLXSW_CORE_RES_GET(core, ACL_MAX_L4_PORT_RANGE)
-and warns above 16 entries:
-
-	max = MLXSW_CORE_RES_GET(core, ACL_MAX_L4_PORT_RANGE);
-
-	/* Each port range register is represented using a single bit in the
-	 * two bytes "l4_port_range" ACL key element.
-	 */
-	WARN_ON(max > BITS_PER_BYTE * sizeof(u16));
-
-Once it is exhausted, mlxsw_sp_port_range_reg_create() fails:
-
-	err = xa_alloc(&pr_core->prr_xa, &prr->index, prr, pr_core->prr_ids,
-		       GFP_KERNEL);
-	if (err) {
-		if (err == -EBUSY)
-			NL_SET_ERR_MSG_MOD(extack, "Exceeded number of port range registers");
-
-Can repeated template add/delete with distinct port ranges therefore pin all
-registers for the lifetime of the device, keep devlink prr_count inflated,
-and make mlxsw_sp_port_range_fini()'s WARN_ON(!xa_empty(&pr_core->prr_xa))
-fire on teardown?
-
-Would it be better to drop this hunk and instead release the rulei's port
-range registers in mlxsw_sp_flower_tmplt_create(), for example through a
-non-freeing rulei cleanup helper that mirrors mlxsw_sp_acl_rulei_destroy(),
-or to skip register acquisition altogether when parsing a template?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917113236.2149095-1-vulab%40iscas.ac.cn
+    Andrew
