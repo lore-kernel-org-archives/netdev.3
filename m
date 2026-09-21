@@ -1,187 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C756648EC8F
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD4B49B462
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789995513; cv=none; b=siozycBiiB6pmGKH+9vcBHD231SoukyrPeEBLQTUdf+YXtFDciaL9Yb9lXuEnIP2C4o1pw9ZjnRdle40z19n24C3jmmcNnqa88v/Rb6jH7ZHfjPjuQ9yqOpPu5kVKWgYVwFM/hRTWHwCUaSfglNuvJz7fLf1sxxvXZR3RkS+81U=
+	t=1789995607; cv=none; b=cdRw9Al4Mj5tVX2xiJh++dlYLtaSz9KcoMPGbEFBCzUIHp44D5r5rbIW9SUfRoLcYkRmjePN7ZnlVdndVIFc9Pk2SOP7y5Yz4fme6zk8VtBE93G0TNuIUgdgcHqmAN5T2xT6bfET9oW6jkZa7enQayuBIY5KcsuG6Vly9cWzX5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789995513; c=relaxed/simple;
-	bh=8Qq6uY0wOjJjqW0nDZ94w4+duWoiGg3MvpwL50/yUoY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U7JryVExftDN0Oaa/4j2WZzDJMjhjtZzWFERL5GaTgdY++tFPEhYMTdH+V02lLrUeWXsu8hm7pwyR8F0kOYIQtvm9e9WiAzxvklbpfHeXftREmeUtl602CcZY1hVuFkmb6e5YSFToQ8zs8vs3hXwM2zdvXbyBOAQYcPxivF9AVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7Xg5UUj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789995607; c=relaxed/simple;
+	bh=ikNEYMx+B/ce1BP4LhNP2vesUaLw9BeI3qM6wtNhxSA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XmU4LjdKlnlSXeWpencvnq7/GBC7X5liEWm0ooufBYIOw4O9VRcnEm9CWCrzxASplfbeSDm0opt1BBJ68WnyIKnZlm4w5uCg8NMrGCEXECU11e1Kl1f8UtLCD58ywPggs1Fq6DU+9awdI3DNgigiTneVQ9Hd82BNqCrS+IVtv30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jMiCVpqQ; arc=none smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7Xg5UUj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548C51F00899;
-	Mon, 21 Sep 2026 12:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789995511;
-	bh=Hp9PMVhcxiOVyBuQt3wRyVKAGDHZYj1R6UQ3CkWOyMo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=X7Xg5UUjjmH6xo4ktaLiPg9sVZAe88uejK+X2QFjo2iF36zlcg9zqIiyefnO5H6ht
-	 21jPpsIogTAqtCNfF9oirIfegZP0aNartJ3QzVt58xc0C15I5tOe8Kpd1WhWG/6JBj
-	 i64Le+HQ+MUHU7zIR1W1wEHZ9Z+X6CUmPZJx6m0ObhlWjbE5shNX852eJ1Yxcc2qgv
-	 Nd3aDfFUF8x6MmzvJzwshy265rKU8qmwptCfj2VGcIx/cJcXzsbfN/6oKFjsWSHSJ+
-	 3ETkGteeACgc4E/E9U+TBxDuwCZi0V9rG+E/0tQg50J7lm6q+1ThuAdid7PrTCDjJD
-	 Ydo1+TOS5prUA==
-Subject: Re: [PATCH net v1] net: emac: move setting of netops to fix crash
-From: netdev-bot+sashiko@kernel.org
-To: chunkeey@gmail.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
- davem@davemloft.net
-Date: Mon, 21 Sep 2026 12:58:30 +0000
-Message-ID: <178999551085.2160803.13630958553679103031@kernel.org>
-In-Reply-To:
- <f11843d8416cb3d94b79a7f224bd4af0bf859c1f.1789644724.git.chunkeey@gmail.com>
-References:
- <f11843d8416cb3d94b79a7f224bd4af0bf859c1f.1789644724.git.chunkeey@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jMiCVpqQ"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a9984f9adcso5007848a12.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:00:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789995603; x=1790600403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gRV8TcWW5ZwNyFZnqA6Ki45Wf1bqD9wRv3NLNzR2dP0=;
+        b=jMiCVpqQVf36pJVxR29Q6I8K7/sLbIt7peFUvCAcykYezqPzZkbUTzexCK7OFA/m9R
+         tnH/2oELxQKtYEMp3QTS7FXg9E4hyjIpCX2xm7xfq6mORHdZ4WKnbZu+c02Hmzj4oAVr
+         98s9NJgpEFzUss9QEGeP01kKYgrUuajFJ0/+/Lf3MQFSm1khhaWZ7jlVpIRapYfJfdeB
+         h+4REURNp09nupRobhviZCbBkYpMMIP37LC6lr5Mylss/UsenNP3BFXaPUXWA093XH6q
+         f3xTj/291D7YcGARjTFvBsG7yUcHV+/i81Fhd5KdtuXs2sJa6nqXccM/1fEKp3EJVl3C
+         js1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789995603; x=1790600403;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gRV8TcWW5ZwNyFZnqA6Ki45Wf1bqD9wRv3NLNzR2dP0=;
+        b=KuQ64spfJUmV/0ZBrrOZEhF0Jzyuo9o7NgES1IbAXq44cqxfzDaeUlMIU6HFVLZ9N6
+         TYJzP5vrL6zVmXk9VBJL3cXCtskBJf3CpMpvUJ8ZqbWdSUVwEF4DOqCGxUXRzs0SMB/Q
+         Hr/AY6gIRPjlqS9xGR4evN8xgg5IUhxnguS75hi7tmi/mT2YnopBLTYivNtwx3Xzywbw
+         QQBG+4x5iRo9BhjIZG3hJZwLruaFMWewutxYHssmnQucKv4GRRRZMomP0KCYxN7noVRy
+         v5cWaDP63oDkvTFNqWYUCXKEYHvGazU7x6NH7yHZHmyAECfJ4QWT6h6XAADJcPkk7EaC
+         nyAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzeoKCQt40wUDPFWLjP5DuVXpnwuNd8d/oOSzuaC5Gt6V3tqLIadQ6VzgUFyIaXIupmAaszSoU=@vger.kernel.org
+X-Gm-Message-State: AFuF++m7rEfK04SqKUW2d4rZIbEwnEI47itWAl0XQlRWXZZE5gBqz1MU
+	LeZ1dU1KB2AXRtZv/JJr8nbEDnzAJPnnBOF7q2OI1ORxWqOTxgnq0lvL
+X-Gm-Gg: AYBFou3G9w6iSLUZO2VbatcjskAetmSaILy/jZMn81WvL1HLi8tjQ/OPDtuTt5oXXf1
+	HYmYQjLMvePV+xE0hzYPw9A4mH5X66zJJxxgYelLavXCCdCWF1SJBj3D2Mp27ZOF83m9qr6Bc8K
+	wK+v85stheRdRd3kKwa3LtfcwZ4/+Lz2tH/SpKhwbLGb+ryYEE5Qe43SRCkHic7TXwLrb2V2DBZ
+	grlvWr7fX9acfCcq4YkE2tOQD3gE0L16tdPDuQTuY2xyrspO1Zbndsb1knMB6v0+PNTuIrKL2yB
+	8MC0brFnonHg/v/6TpSQhsfd+T1HS6DhoWZWlDoMT6G2Fzvv6oJxBHYU9PEiHQHrxBd7KEE67cG
+	4MxvtMYoetdR6v/evGjQtFq3dug0cNqrta8bjTnekrsbuHg3ZpkKCkF5NzCw661Bm5g5blT5zIg
+	sJZy+brMDHFdtLFhv3BG4IEmWpP6zoCH2Z0CqbBEkHUoI4lFOWM25Zq6hU6bnylnWdT2f9sMJJ2
+	ZDEWTLGBj5V1p4ijw==
+X-Received: by 2002:a17:906:9fcc:b0:c26:1648:a070 with SMTP id a640c23a62f3a-c2a15ead5ccmr900804566b.43.1789995603107;
+        Mon, 21 Sep 2026 06:00:03 -0700 (PDT)
+Received: from localhost.localdomain ([94.240.182.136])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a355eb33bsm321193766b.15.2026.09.21.06.00.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 06:00:02 -0700 (PDT)
+From: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Svyatoslav Nikolenko <nsvatoslav515@gmail.com>,
+	syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
+Subject: [PATCH] net: e1000: fix warning in iounmap on probe failure
+Date: Mon, 21 Sep 2026 15:59:32 +0300
+Message-ID: <20260921125932.7943-1-nsvatoslav515@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Reported-by: syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
+Signed-off-by: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
+---
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] In `emac_probe()` (drivers/net/ethernet/ibm/emac/core.c) the
-  relocated Gigabit branch now sets `dev->commac.ops =…
-
---
-
-net: emac: move setting of netops to fix crash
-
-The patch moves the netdev_ops/ethtool_ops assignment in emac_probe() to
-right after emac_init_config(), so that ndev->netdev_ops is populated
-before of_phy_connect() runs the netdev_need_ops_lock() check added by
-commit ded86da4bbb7. The dev->commac.ops selection was moved along with
-it.
-
-> diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
-> index 1d46cf6c2c127..48ece86bcc8e0 100644
-> --- a/drivers/net/ethernet/ibm/emac/core.c
-> +++ b/drivers/net/ethernet/ibm/emac/core.c
-> @@ -3044,6 +3044,14 @@ static int emac_probe(struct platform_device *ofdev)
->  	if (err)
->  		goto err_gone;
->  
-> +	if (emac_phy_supports_gige(dev->phy_mode)) {
-> +		ndev->netdev_ops = &emac_gige_netdev_ops;
-> +		dev->commac.ops = &emac_commac_sg_ops;
-> +	} else {
-> +		ndev->netdev_ops = &emac_netdev_ops;
-> +	}
-> +	ndev->ethtool_ops = &emac_ethtool_ops;
-> +
-
-[Severity: High]
-Does moving dev->commac.ops together with netdev_ops make this store dead?
-Later in emac_probe(), the "Register with MAL" block still overwrites it
-unconditionally:
-
-drivers/net/ethernet/ibm/emac/core.c:emac_probe() {
-	...
-	/* Register with MAL */
-	dev->commac.ops = &emac_commac_ops;
-	dev->commac.dev = dev;
-	dev->commac.tx_chan_mask = MAL_CHAN_MASK(dev->mal_tx_chan);
-	dev->commac.rx_chan_mask = MAL_CHAN_MASK(dev->mal_rx_chan);
-	err = mal_register_commac(dev->mal, &dev->commac);
-	...
-}
-
-Before this patch the gige branch ran after that block, so the scatter/gather
-table won. Now it runs before it, so every gige-capable EMAC appears to be
-registered with mal_register_commac() using emac_commac_ops while
-ndev->netdev_ops is emac_gige_netdev_ops.
-
-The two tables differ only in peek_rx:
-
-static struct mal_commac_ops emac_commac_ops = {
-	.poll_tx = &emac_poll_tx,
-	.poll_rx = &emac_poll_rx,
-	.peek_rx = &emac_peek_rx,
-	.rxde = &emac_rxde,
-};
-
-static struct mal_commac_ops emac_commac_sg_ops = {
-	.poll_tx = &emac_poll_tx,
-	.poll_rx = &emac_poll_rx,
-	.peek_rx = &emac_peek_rx_sg,
-	.rxde = &emac_rxde,
-};
-
-emac_peek_rx() reports work as soon as the current slot is not empty, while
-emac_peek_rx_sg() walks the chain and only reports work when it sees
-MAL_RX_CTRL_LAST:
-
-drivers/net/ethernet/ibm/emac/core.c:emac_peek_rx_sg() {
-	...
-		if (ctrl & MAL_RX_CTRL_EMPTY)
-			return 0;
-		else if (ctrl & MAL_RX_CTRL_LAST)
-			return 1;
-	...
-}
-
-Can that cause mal_poll() to treat a partially received multi-descriptor or
-jumbo frame as a complete "rotting packet"?
-
-drivers/net/ethernet/ibm/emac/mal.c:mal_poll() {
-	...
-		if (unlikely(mc->ops->peek_rx(mc->dev) ||
-			     test_bit(MAL_COMMAC_RX_STOPPED, &mc->flags))) {
-			MAL_DBG2(mal, "rotting packet" NL);
-			if (!napi_schedule(napi))
-				goto more_work;
-
-			spin_lock_irqsave(&mal->lock, flags);
-			mal_disable_eob_irq(mal);
-	...
-}
-
-Would it be enough to hoist only ndev->netdev_ops and ndev->ethtool_ops,
-which is what the netdev_need_ops_lock() check in phy_link_topo_add_phy()
-needs before of_phy_connect(), and leave the commac.ops selection where it
-was, or alternatively set dev->commac.ops = &emac_commac_ops only in the
-non-gige case?
-
-The commit message describes this as moving "the code that sets
-netdev_ops+ethtool_ops", so the change in commac.ops selection for gige
-instances does not seem to be intentional.
-
->  	dev->emacp = devm_platform_ioremap_resource(ofdev, 0);
->  	if (IS_ERR(dev->emacp)) {
->  		err = PTR_ERR(dev->emacp);
-> @@ -3144,12 +3152,6 @@ static int emac_probe(struct platform_device *ofdev)
->  		ndev->features |= ndev->hw_features | NETIF_F_RXCSUM;
->  	}
->  	ndev->watchdog_timeo = 5 * HZ;
-> -	if (emac_phy_supports_gige(dev->phy_mode)) {
-> -		ndev->netdev_ops = &emac_gige_netdev_ops;
-> -		dev->commac.ops = &emac_commac_sg_ops;
-> -	} else
-> -		ndev->netdev_ops = &emac_netdev_ops;
-> -	ndev->ethtool_ops = &emac_ethtool_ops;
->  
->  	/* MTU range: 46 - 1500 or whatever is in OF */
->  	ndev->min_mtu = EMAC_MIN_MTU;
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index d7f5c6f16142..156903089fa6 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -1227,8 +1227,10 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	kfree(adapter->rx_ring);
+ err_dma:
+ err_sw_init:
+-	iounmap(hw->ce4100_gbe_mdio_base_virt);
+-	iounmap(hw->hw_addr);
++	if (hw->ce4100_gbe_mdio_base_virt)
++		iounmap(hw->ce4100_gbe_mdio_base_virt);
++	if (hw->hw_addr)
++		iounmap(hw->hw_addr);
+ err_ioremap:
+ 	disable_dev = !test_and_set_bit(__E1000_DISABLED, &adapter->flags);
+ 	free_netdev(netdev);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/f11843d8416cb3d94b79a7f224bd4af0bf859c1f.1789644724.git.chunkeey%40gmail.com
+2.47.3
+
