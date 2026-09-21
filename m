@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B95221CD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4F8521895;
 	Mon, 21 Sep 2026 22:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790030220; cv=none; b=JLW/ySlDUv/lE3r5zcWr0WRo29oeo1FCdleTmhlQWk4t+k3LRWw8ybIATmKLN0ayoaXpCthP1dJ/Kf4wiSJE42sLPhRUFDTseaVWF4nnahGZ5xUjRxWeou/LxzU2Pewqr11zM8me+pr7ltAbzqAARfbEIXwanXn9j3JLiJ6mqi8=
+	t=1790030220; cv=none; b=qCZvz99HfgZYxBQLtPM6yprJlQeyvB+G3etmogE3/NX7dnNwxPEHe1/08mCDzN0ZtgtyLczzXBhHlwPNOtTg05qT2lN9eZCeHYcq74iiWEya5ChsqUnksRtnouBsjdF896luC06cwMPPDGJmK14ZYJTlvSI5GHWT0tqePQOO1pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790030220; c=relaxed/simple;
-	bh=Naeql9OiEzfqOyE6u/id9baZ/RGQBY/I7mxrxdbWQXQ=;
+	bh=Hdz7OByAd6yZyQJKDJBPsW6XxpBVYa/yXmrF9pFz7Io=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pNe/8RZfq4xt0YUACkXFcRK7nz2qL7fLzXwueLscgJqTGG1Pw19Vnf0oqqS5iMlcbzul8U0hsN9woX8oUd4jNv5oJOm/lu0lctFQ2Ra0yWRYj1ff+QhdoS9dYgEELMGutJnTe5wfDCjIt2W8jcFVshULGc3lcD7x0kJnRNGzlDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXqSjRz+; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=p8TmeZ7upPD6TIzaXofIgTi9wXWC6B1cRf3o1OOfgS2R9F0MMnxoKTdDOznwLOu0ptM7N6xrNKjTZwczpLInGQDdZiiJrRUSGXV8XcIqHd0Mcd7lJPVtztUWjrB2Y2UCoBz8ux+PPugysvIySWu7Pr+W9L/5GejOA4emKjUIJyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZUyPM+4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXqSjRz+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEED21F000FF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZUyPM+4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39C01F008A3;
 	Mon, 21 Sep 2026 22:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790030216;
-	bh=+35S3DBRfXxqbpMMTigxV7Vy0IUXsYs+bPxcBUjGDYA=;
+	s=k20260515; t=1790030217;
+	bh=BBqt0mh6pcap7thNEZ0vvpX8jJ6tpmFAZKqxiel3dQQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=SXqSjRz+0eqDg69e9CJJ1aukC4m7sEgtrGFnxq0kyYV42SRcwi2bowSLjSLMAgZH2
-	 8ZCPK+f/FXqPgRx4POSXIaAS1ReSnu1Nln/eRd4iTmqfN3Ol0nEIAZxJnz+i/oHmRe
-	 AOkGyn4Ml3G/6KTbk9foaRJ/0FXk1UlzkV7079K0qivUvUFKsEpJWHwdU/Tdl3wx7d
-	 rFqBZbVomIplLp2uterCYHIo94mjfV84KwmF+SYt+4Yyxbejd+w/b4/LPQSBL20FPi
-	 eJah1Ok02bjqRxT20v7SEbmU0wNNgo0gn0eq2L9yHGeLMChlZiyGxAU7m0v7Mo0LO3
-	 4hZ0ui13/06ZQ==
+	b=LZUyPM+4AUnm1jMP9gskBVuXFWVxpsC68r/4p97UNpFVYIeJBS8PiccQtMfM9l/FE
+	 kBnRuYLfjzDUeIX1qPl0bBeS+t16BD+rXBmw3/bQSvtgpnonkswSDHJA+a8QErLu5+
+	 13b6fqyxV4TDduKl3AZUPXnd6rXmOPdCbjFR9nGCLRFy1jLLrijyDCy0AL6slnCUsE
+	 zAPxUtYlXsrxQab7dlp7Q66MJ9tsF9OSIFZcSzKzy/JlSr6jyB7Sf+aDiZruktV2F/
+	 VtBXKqx19NASAMT7X4dv7NmAVzUpimF1tPQAjGYHxmayg1virnmIRjlzh8jnI8a22o
+	 Sh6uPkzrx3ZMA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198513930203;
-	Mon, 21 Sep 2026 21:20:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93ACB3930205;
+	Mon, 21 Sep 2026 21:20:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: dsa: motorcomm: fix unused-function warning
+Subject: Re: [PATCH net] net: microchip: vcap: Stop selecting DEBUG_FS for
+ KUnit
+ tests
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179002561264.3241479.8039796755333448352.git-patchwork-notify@kernel.org>
-Date: Mon, 21 Sep 2026 21:20:12 +0000
-References: <20260916082707.3973287-1-arnd@kernel.org>
-In-Reply-To: <20260916082707.3973287-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: mmyangfl@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- arnd@arndb.de, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <179002561414.3241479.7487658463570218195.git-patchwork-notify@kernel.org>
+Date: Mon, 21 Sep 2026 21:20:14 +0000
+References: <20260917064736.77354-1-kmehltretter@gmail.com>
+In-Reply-To: <20260917064736.77354-1-kmehltretter@gmail.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ geert@linux-m68k.org, brendan.higgins@linux.dev, david@davidgow.net,
+ raemoar63@gmail.com, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 16 Sep 2026 10:26:54 +0200 you wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Thu, 17 Sep 2026 08:47:36 +0200 you wrote:
+> VCAP_KUNIT_TEST enables DEBUG_FS even when the kernel configuration
+> leaves it disabled. Remove the selection, following the dependency rule
+> in Documentation/dev-tools/kunit/style.rst.
 > 
-> gcc warns about an unused function here because the __maybe_unused
-> attribute is in the wrong part of the prototype:
-> 
-> drivers/net/dsa/motorcomm/leds.c:352:1: error: 'yt921x_cled_hw_control_get_device' defined but not used [-Werror=unused-function]
->   352 | yt921x_cled_hw_control_get_device(struct led_classdev *led_cdev)
->       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> The debugfs implementation and its tests are already built only with
+> DEBUG_FS. The other VCAP tests can run without it.
 > 
 > [...]
 
 Here is the summary with links:
-  - net: dsa: motorcomm: fix unused-function warning
-    https://git.kernel.org/netdev/net-next/c/cc2d273893db
+  - [net] net: microchip: vcap: Stop selecting DEBUG_FS for KUnit tests
+    https://git.kernel.org/netdev/net-next/c/2fba93180872
 
 You are awesome, thank you!
 -- 
