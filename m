@@ -1,144 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F41442B33D;
-	Mon, 21 Sep 2026 09:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62C245041A
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.215
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789983824; cv=none; b=NCSJ2ex7g9bIFXBjnvGQcdCw7RDPbXryVfYuMAc49Hkz5GnL0YrdhxIJK7QmhT5v7AA3PrWa9GJvHe9V72ALkBa8MbtUvsU4Iu/jwPrweRXkRTR9BEYFbsyliYtr69IycBwHrxujrfYyP6YWlt5/FZhWbDxzlNzU7kOw90kiLZ0=
+	t=1789984030; cv=none; b=X9DFGpqujF6sxrN+KDM0zaj+1X09Nr3ZLia8mvJYLQOmhRdKsH5FQsPIr4Cwqk532WAZZcs0lduVv708nSLXU+xmLPvORuskCAesGVzZaRKa31dDXnktpOHiV62nIsLLE4kO7ZAxDeMIZDq/dXn8qh0nfef31U3FFdSyqavv8ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789983824; c=relaxed/simple;
-	bh=pgeL39ISlMWaWsmKnujIlUIL/Ju+yLUXD1rw3iueAtU=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=R3Grg8mTKN0nnyDtT72L9j6G/Ix5PGvnaZAA1YMCR5DgmhYUvoaO1JZuBJTFoAvcLsRvu405UFx8hD4IT3d8VW2BoyztwbtrmChVmQbB3+lyAhM819rKntq+K44qGYCH2Qtsdo60PY9+2+afz774aALON7nnZVxOsWpOEukN+rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojhsiAGH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789984030; c=relaxed/simple;
+	bh=wecnKx7LkqikUqo4Dhub5mbay8oFhGFKDyVeaaaa/eI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O88Y4lgOthdXxHYCLN0kMc9Qvt5YlInKfacAWu9oxGgtFP8wakHG8CRjMZSMPYJ+xoXii0JqOTLQ+pVg3U2kS0LVKtD58/02k0AICWGP08u0i/tDt0D12ybjwHNU8n8BfGQjIRH3G9fEPCNGn4eK7tESsXvH+XDgih67Rk1GtKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rN34ZI90; arc=none smtp.client-ip=95.215.58.215
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojhsiAGH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED50C1F000FF;
-	Mon, 21 Sep 2026 09:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789983820;
-	bh=pgeL39ISlMWaWsmKnujIlUIL/Ju+yLUXD1rw3iueAtU=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ojhsiAGHfyw7QSfeB6T7h3TzxVkQtRUKsc+O78gcxpLaSs0+X+b7FBp+0WATjdLpR
-	 NtZ9lTkk3CfDAWvNYu7ZGwpy69ouoDbNYnuM8Dr5mjtROlLr5yRcrpqjI++VN0zKef
-	 n31ZVKSGxxMR3qUkZAdXRZO6l5yG8xtiFA8l0BtPdFKn5gKlAfm4vhvci7mZkUN+uL
-	 +lFblDwaya6XlCr2wrPOTc6GuT8xECMfe9h5NQaZAR+78iRkihrTbAcdUwvJrpMvD+
-	 yjYxjnYKbSxzK6Ce66ZjAxlx1J8YIJw4TKzTLSRK3I3WGPsxUbd3OBMAA7mJ+6MTJH
-	 ptVsbhF37WkLQ==
-Date: Mon, 21 Sep 2026 11:43:32 +0200
-From: Matthieu Baerts <matttbe@kernel.org>
-To: Yilin Zhang <yilinzhang@moonshot.ai>
-Cc: Mat Martineau <martineau@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-	mptcp@lists.linux.dev, Kimi Security Team <bug-report@moonshot.ai>
-Message-ID: <aa299737-002e-43b4-ad1e-881720798470@kernel.org>
-In-Reply-To: <20260920061904.3575780-1-yilinzhang@moonshot.ai>
-References: <20260903094010.4066892-1-yilinzhang@moonshot.ai> <20260920061904.3575780-1-yilinzhang@moonshot.ai>
-Subject: Re: [PATCH v3] mptcp: do not use Fast Open on MP_JOIN subflows
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rN34ZI90"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=wecnKx7LkqikUqo4Dhub5mbay8oFhGFKDyVeaaaa/eI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789984024; v=1; x=1790588824;
+ b=rN34ZI905DK9iICF+c0JOplQeLL8kC+oEY4AyTZkst44seFX5tFrzRlfJRdT6aw/CZdtWLEj
+ JZXSbLQE7XbPAFinreLa4b+amWUZHgCEQLTBVEJyZyi8u5F3Bg80z1mJ/MUsdoP5V+5ODGfuhXc
+ 5yUMy8s7ES/JCVzfNHuy/ZN8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 04cc045a125c398a;
+	Mon, 21 Sep 2026 09:47:04 +0000
+X-Mizu-Trace-ID: 04cc045a125c398a
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 21 Sep 2026 17:46:46 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, donald.hunter@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next 5/6] netlink: specs: rt-route: describe lwt BPF
+ program options
+Message-ID: <arD89olLH_d2Y29A@fedora>
+References: <20260917-ynl_rt_encap-v1-5-fbbe6e680571@kylinos.cn>
+ <178997269710.2160803.17529308820161087653@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <aa299737-002e-43b4-ad1e-881720798470@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178997269710.2160803.17529308820161087653@kernel.org>
 
-Hi Yilin,
+On Mon, Sep 21, 2026 at 06:38:17AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] Documentation/netlink/specs/rt-route.yaml re-points the
+>   seg6-local `bpf` attribute (SEG6_LOCAL_BPF) at the newly added `lwt-…
 
-20 Sept 2026 08:19:21 Yilin Zhang <yilinzhang@moonshot.ai>:
+Thanks, I will update the SEG6_LOCAL_BPF attrs in the seg6 update (patch 06).
+in v3.
 
-> tcp_fastopen_create_child() hands the SYN packet itself to
-> subflow_syn_recv_sock(). For an MP_JOIN request this takes the
-> fatal fallback: the cloned child is destroyed and handed back with
-> drop_req flagged, but tcp_fastopen_create_child() does not check
-> the flag and queues it, so accept() can expose the freed child.
->
-> MP_JOIN cannot use Fast Open: data on a subflow requires the
-> completed HMAC exchange (RFC 8684, sec. 3.2). Refuse it (only the
-> TFO path passes a SYN skb here) and let tcp_conn_request() fall
-> back to the regular MP_JOIN handshake; also strip the Fast Open
-> cookie from MP_JOIN SYN/ACKs.
->
-> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows=
-")
-> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
-> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Suggested-by: Paolo Abeni <pabeni@redhat.com>
-> Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
-> ---
-> v3:
-> - refuse TFO for MP_JOIN in subflow_syn_recv_sock() and fall back to
-> =C2=A0 the regular handshake; the TCP-side hunks from v2 are dropped
-> - strip the TFO cookie from MP_JOIN SYN/ACKs
+Hangbin
 
-Thank you for the V3.
-
-Please start a new thread when sending a new version.
-
-> v2:
-> - https://lore.kernel.org/netdev/20260903094010.4066892-1-yilinzhang@moon=
-shot.ai/
-> v1:
-> - https://lore.kernel.org/netdev/20260902121247.3248539-1-yilinzhang@moon=
-shot.ai/
->
-> net/mptcp/subflow.c | 10 ++++++++++
-> 1 file changed, 10 insertions(+)
->
-> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-> index af81ad5..2b454d4 100644
-> --- a/net/mptcp/subflow.c
-> +++ b/net/mptcp/subflow.c
-> @@ -348,6 +348,10 @@ static void subflow_prep_synack(const struct sock *s=
-k, struct request_sock *req,
-> =C2=A0=C2=A0=C2=A0 if (foc && foc->len > -1)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ireq->tstamp_ok =3D 0;
->
-> +=C2=A0=C2=A0 /* MP_JOIN cannot use TFO, do not send a cookie in the SYN/=
-ACK */
-> +=C2=A0=C2=A0 if (foc && mptcp_subflow_rsk(req)->mp_join)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 foc->len =3D -1;
-
-This should go above the previous block, not to disable TCP timestamps
-in this case.
-
-> +
-> =C2=A0=C2=A0=C2=A0 if (synack_type =3D=3D TCP_SYNACK_FASTOPEN)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mptcp_fastopen_subflow_synack_=
-set_params(subflow, req);
-> }
-> @@ -832,6 +836,12 @@ static struct sock *subflow_syn_recv_sock(const stru=
-ct sock *sk,
-> =C2=A0=C2=A0=C2=A0 if (fallback)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto create_child;
->
-> +=C2=A0=C2=A0 /* a SYN skb here comes from TFO, which MP_JOIN cannot use:=
- just
-> +=C2=A0=C2=A0=C2=A0 * fall back to the regular path.
-> +=C2=A0=C2=A0=C2=A0 */
-
-Can be shorter and on one line maybe?
-
-=C2=A0 MP_JOIN + TFO: unsupported now, drop TFO data, back later on
-
-(Or something similar)
-
-> +=C2=A0=C2=A0 if (subflow_req->mp_join && (TCP_SKB_CB(skb)->tcp_flags & T=
-CPHDR_SYN))
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return NULL;
-> +
-> =C2=A0=C2=A0=C2=A0 /* if the sk is MP_CAPABLE, we try to fetch the client=
- key */
-> =C2=A0=C2=A0=C2=A0 if (subflow_req->mp_capable) {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* we can receive and accept a=
-n in-window, out-of-order pkt,
+> - [Low] The new `lwt-bpf-prog` `name` attribute in
+>   Documentation/netlink/specs/rt-route.yaml (lines 624-626) is declared…
+> 
 > --
-> 2.34.1
-
-Cheers,
-Matt
+> 
+> netlink: specs: rt-route: describe lwt BPF program options
+> 
+> This changes the lwt-bpf in/out/xmit attributes and the seg6-local bpf
+> attribute in Documentation/netlink/specs/rt-route.yaml from binary to a
+> nest, and adds a new shared lwt-bpf-prog attribute set with fd and name
+> members.
+> 
+> > diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
+> > index 6030d7cb8d0d1..5e9537f7dfad4 100644
+> > --- a/Documentation/netlink/specs/rt-route.yaml
+> > +++ b/Documentation/netlink/specs/rt-route.yaml
+> 
+> [ ... ]
+> 
+> > @@ -503,7 +506,8 @@ attribute-sets:
+> >          type: u32
+> >        -
+> >          name: bpf
+> > -        type: binary
+> > +        type: nest
+> > +        nested-attributes: lwt-bpf-prog
+> 
+> [Severity: Medium]
+> Should the seg6-local bpf attribute point at the lwt-bpf-prog set?  This
+> attribute lives in the seg6-local set, which carries
+> header: linux/seg6_local.h, but lwt-bpf-prog below uses
+> name-prefix: lwt-bpf-prog-, so its members document and generate as
+> LWT_BPF_PROG_FD / LWT_BPF_PROG_NAME.
+> 
+> Those identifiers come from linux/lwtunnel.h:
+> 
+>     enum {
+>             LWT_BPF_PROG_UNSPEC,
+>             LWT_BPF_PROG_FD,
+>             LWT_BPF_PROG_NAME,
+>             __LWT_BPF_PROG_MAX,
+>     };
+> 
+> while the seg6-local nest is a separate uAPI namespace in
+> linux/seg6_local.h:
+> 
+>     enum {
+>             SEG6_LOCAL_BPF_PROG_UNSPEC,
+>             SEG6_LOCAL_BPF_PROG,
+>             SEG6_LOCAL_BPF_PROG_NAME,
+>             __SEG6_LOCAL_BPF_PROG_MAX,
+>     };
+> 
+> The values (1, 2) and payload types happen to coincide, so the wire format
+> still decodes, but does this end up documenting SRv6 attributes with
+> lwtunnel.h names?  There also seems to be no header: value that can be
+> correct for a set shared between linux/lwtunnel.h and
+> linux/seg6_local.h.
+> 
+> Would a separate seg6-local-bpf-prog set with
+> header: linux/seg6_local.h be more accurate here?
+> 
+> Separately, the commit message says only:
+> 
+>     Replace binary BPF attributes with a nested lwt-bpf-prog to support
+>     lwt bpf prog options.
+> 
+> Could it also mention that the seg6-local bpf attribute is being re-typed,
+> since that is a different attribute space?
+> 
+> > @@ -610,6 +614,16 @@ attribute-sets:
+> >        -
+> >          name: hwid
+> >          type: u8
+> > +  -
+> > +    name: lwt-bpf-prog
+> > +    name-prefix: lwt-bpf-prog-
+> > +    attributes:
+> > +      -
+> > +        name: fd
+> > +        type: u32
+> 
+> [Severity: Medium]
+> Is fd the right name for attribute 1 in both directions?  In requests
+> parse_nla_bpf() in net/ipv6/seg6_local.c does treat it as a descriptor:
+> 
+>     fd = nla_get_u32(tb[SEG6_LOCAL_BPF_PROG]);
+>     p = bpf_prog_get_type(fd, BPF_PROG_TYPE_LWT_SEG6LOCAL);
+> 
+> but on GET/dump put_nla_bpf() emits a program id, not a descriptor:
+> 
+>     if (nla_put_u32(skb, SEG6_LOCAL_BPF_PROG, slwt->bpf.prog->aux->id))
+>             return -EMSGSIZE;
+> 
+> So a spec-driven decoder would print slwt->bpf.prog->aux->id under a field
+> called fd, and feeding that value back into a request would resolve an
+> unrelated descriptor or fail.  On the lwt-bpf side bpf_fill_lwt_prog() in
+> net/core/lwt_bpf.c never emits attribute 1 at all and only puts
+> LWT_BPF_PROG_NAME.
+> 
+> Would it be worth naming this member after the program reference/id, or at
+> least documenting the id-versus-fd asymmetry?
+> 
+> Note this appears unchanged at the end of the series (30e3ec46f708 still
+> has name: bpf with nested-attributes: lwt-bpf-prog and the fd member).
+> 
+> > +      -
+> > +        name: name
+> > +        type: string
+> 
+> [Severity: Low]
+> Should this string carry a max-len?  Both kernel consumers of this nest
+> bound it to MAX_PROG_NAME (256).
+> 
+> net/core/lwt_bpf.c:
+> 
+>     static const struct nla_policy bpf_prog_policy[LWT_BPF_PROG_MAX + 1] = {
+>             [LWT_BPF_PROG_FD]   = { .type = NLA_U32, },
+>             [LWT_BPF_PROG_NAME] = { .type = NLA_NUL_STRING,
+>                                     .len = MAX_PROG_NAME },
+>     };
+> 
+> net/ipv6/seg6_local.c:
+> 
+>     static const struct nla_policy bpf_prog_policy[SEG6_LOCAL_BPF_PROG_MAX + 1] = {
+>             [SEG6_LOCAL_BPF_PROG]      = { .type = NLA_U32, },
+>             [SEG6_LOCAL_BPF_PROG_NAME] = { .type = NLA_NUL_STRING,
+>                                            .len = MAX_PROG_NAME },
+>     };
+> 
+> As written the spec advertises an unbounded string, so tooling generated
+> from it will build a request that the kernel rejects with -EINVAL.
+> MAX_PROG_NAME is a private define in those two .c files, so the numeric
+> bound would need to be spelled out in the spec, and max-len does not count
+> the NUL terminator.
+> 
+> This is also still missing at the end of the series (30e3ec46f708).
+> 
+> >  
+> >  operations:
+> >    enum-model: directional
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917-ynl_rt_encap-v1-0-fbbe6e680571%40kylinos.cn
