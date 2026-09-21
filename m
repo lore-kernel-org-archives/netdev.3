@@ -1,254 +1,140 @@
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5CB4F7CB4
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F744DDB3E;
+	Mon, 21 Sep 2026 18:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790015224; cv=none; b=YbppKMV68jbyKIN8GhMfL7gT6O8UUYLGX217PBVwjDdpuBGWs2r2q47aqJM+pg/NPpycdl8DD3JWGCyxe2rZ9WC9+WJzxF+/59PzRnkK0ylChWoZqulLrpLXw2rhjHWJXfxA5XsRBprvHd4akC1IM07w/DUKUZEoshSgU59mwJc=
+	t=1790015587; cv=none; b=e3pIoidcmyHOEi2pXTdGk+lwVmC8xKv3q6Zmojf8bwn9YEFfiuJkkc49VjTPar/Vq74snHnRl8MwtoIxu6o1qdahmWgYTgJiXmILBoNzHWyaErxbV4PuL07Ur/gNVzUEPy3W9LaLyV/WJqt7+OKUbRGebadnfepWG09RUTE07eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790015224; c=relaxed/simple;
-	bh=FLysMufEGmYn21374P4WnqxYzBI87De/e2lZmMYi4e8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ldJQV0rqV4BWVhNHVWGbX9JFPymsiGVtZfuNAf1BEN+/eSwgLRsOniu/IbPavv7MNUnVYb1AV0JY77YyH0woQRsPDNzJbBuIpLmqIt8b4ZfaEXvlCWsI631VbplnhIwxNnb7xREKjbLRFREAavwZ34HIlffAi0vg7hG/SkYK4Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U5EQM+sQ; arc=none smtp.client-ip=209.85.219.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1790015587; c=relaxed/simple;
+	bh=e7eFgv9Xh1RyPh9o+fXn2SoUQyWtArk/tT//jdV7+R4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eRTmqrnDLxf2M844ZNKpXdpDqkPV0ttbhZNt8PZcGI8sJ6t4rhxG/33Y4/V4iwMoDSIOrNvCJRWlVaPhlblxXha/qz5ICBgf0LEhe1DsAubY2vSkYw+YQ1TgOE/YzRL4CqgNg5etRy3h8EUU6+/f/HLPc+uvy1ICbCZdb8oYRrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=JR+evLmv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BUjgg91O; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U5EQM+sQ"
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90e7de22fddso81138206d6.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790015221; x=1790620021; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bHqvPY4OtFNetg58Oqa3y2Imhq9PsOO0EADs1hIsfag=;
-        b=U5EQM+sQqyKt97i+wwjZXRDS/EIqNDjlf3Dr56VNUsfPxUm4LfuIuHMgX0jWup1jQW
-         QW55Mw6cKWtlvg4Q8wN2RcKa6ETp55g6ljtIeQhQl9H2jP0ve/pk/wy+UDREu+rZv75D
-         kFDqx57CR1J9LUJOSDA+rxI44iwKscSREG7tlInwPkybprDYis4TSjIZfNY95PoKUfc9
-         4/fpiDEBZ0A8NJE6TZKs88R7GYRTkzbVvV8XqqUqG8o6KH814Vs2cKSJz16aLp3DTkAP
-         7Uc9mQiOdszHV+BO5/ciq0KCFihtgAduHkLYZEytrNBzPmFPxY5OSghXgZIhQy2XThgP
-         HlPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790015221; x=1790620021;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bHqvPY4OtFNetg58Oqa3y2Imhq9PsOO0EADs1hIsfag=;
-        b=0ZFbcCZiBN3PLR9MxUfkNW74hYr2AkaLCZKgAUsR2sTy/b3kfY8eCq8+A6Sa8brc+x
-         eTybRps6yrElgVitkTRA4g+NszJQ0N2tKqtT4MBVnSLMOulAkG7mawout+iXEI36pf9M
-         bbeXf66jWs4DARDidWDtE+GSvki8b36eZQcOZf3eljHCIbj/gvqpZUNjKID4y8tprKfM
-         9pwp++8Qy1efMWOO2kBHfNmZDcg5dNWvgS0CNHsU+B5/R1y5CkguhFxBhAkkvmkWUMP4
-         MEgzOwsHkR/ybvKMdH3dOhHKgTHri/20gkFVWBk2oj8AAMRaiRupAQRpsZfC1oyxd5pj
-         T2pA==
-X-Forwarded-Encrypted: i=1; AKwUvByVet1XpLJzBDtIejOFbNHpGPE0CPTwNlB2IPTBmiLQ/JgBjDoyB2tZC1p8ExwXfSOHouGcNEE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kL1+c9HzHb80iRF+MDF0WpkkFeGeWkiE+zt8/n9OT1wqvffGXK
-	RGjC3ijRt5s29podFTEJR6tf4hnHWahW1Za9k3SHle05nGctAo/cNI2AqQN9TzZMb/aJUv+TMyi
-	rNvTTff8mDHtaTg==
-X-Received: from qvsq18.prod.google.com ([2002:ad4:4352:0:b0:913:f8e8:d463])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ad4:5d68:0:b0:907:5460:601d with SMTP id 6a1803df08f44-913fc89c68amr16881316d6.3.1790015220974;
- Mon, 21 Sep 2026 11:27:00 -0700 (PDT)
-Date: Mon, 21 Sep 2026 18:27:00 +0000
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="JR+evLmv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BUjgg91O"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id CFC291D0008A;
+	Mon, 21 Sep 2026 14:33:02 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 21 Sep 2026 14:33:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1790015582; x=
+	1790101982; bh=rT4ym6gamMeO4k+QCVSq/IQs/c+VRLzf2UINvFNoSNo=; b=J
+	R+evLmvJGFATyl+UXWsjHehDdOMqztROlPbQ58+UaxgFrX2NkGCCgYD0uwo1lQvg
+	hGNGKzLWzlFVIPLefP1W5OsqpBdQ/jQpQeV1a7Xu6qi8d3i8yxfRUdZbB6Os7WMX
+	5if8AQvXpWEZTpzXJTYyqmivWk6X7JFKMh+IfUWtT35Y0mjEG/4V3cYzC5/eaV6V
+	+MxNo/44oEfVr8X5kS7tKeCz9ahDNisHNzJgOeuSfQXkUfwZqlApRpk7O3gUcfkR
+	QWkdY1UM7RMgbcYSYR9uTcSDfrGY9BWi8rRtChX9eEMWd+35N0poGj7oTCeMvO7z
+	gMJt8zAEyZX6SMgwAQu+A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790015582; x=1790101982; bh=rT4ym6gamMeO4k+QCVSq/IQs/c+VRLzf2UI
+	NvFNoSNo=; b=BUjgg91OrvCUoMU6A/ou/6VAbBa/6I1UDMQZw02fXs5IXxucqnh
+	MigWe/bCJ1hLw32p7GNWMf5gpQjWRp9+e2R01/NZgzaUpaW+8W0RHsbSROQSn2Pk
+	iTlmtRvE2diqan52C3P4Y4ZKqhvxtsDHFnSjTClb21iCtfUpZMoEc4TaA37v3qNS
+	iVYrfDaSaTswxQ19x7lgwJI+A8F8IBkWkavpdyGIyg9xu6YUNP7xRbCFfuxNklVZ
+	QP/xDfDDyrRvstIV0jbN7IEjXBph4I7RiJ1XNci9xYtoRxa8rhlKAh/fRdFBMBQu
+	VxRlXu1tq2uBozZAGqnjGfTd/sKitScI7ZA==
+X-ME-Sender: <xms:XXixan80oZ2namY-8qWEaEVNeERo4RBz38-nl53hQ-Qwe_MQFb2BoA>
+    <xme:XXixar6EUzxsFfL5EgdwGHV5b7nhy2IXXIPFPrtww3kMCfUR91H5biqpKSEoHCWSl
+    NvCrIWoY6SpGMqSexRnfkbdiTs9Xu-QCUjFotQzJUGy6XN7EHNdcVeZ>
+X-ME-Received: <xmr:XXixagn7dGViSPTPBgQl4OPTurNqWdEQNquNhfqE5eDGESUtuZ7nfxbwdU16>
+X-ME-Proxy-Cause: dmFkZTFtlqAOmzOP88e/ejlp2Qk0G8rG1541p0jCDR/TlBY3ZinmwU0nhubQFSuunnmntH
+    Uh+UcTjpfOBCSclTLC9pFo5fD+3AbLTHdCx69cRuTdk/bzMVb4XDjlngJyYNPsehgPQlwr
+    GoGFtXVgnVzd/RPOdQAG0Cl1oyYqGZJKku+7NPXLybQZDiOvxg4M1G5AjSBQT3foSBqo2p
+    b6rADWbO62xDreiiV/4dlLIYHkfAxDi0sMVfDGT2ktGMbbo6H9f5FnVEkDTVYhf+rNgNgY
+    /l4L2VIlJgvKUkZCDyduITb8kyx323TK7+mK7KetBawFmrS5wkVZKQMQKJEKepB0x6tdJu
+    0QNgQ4KGAp9cCKM4IeLINyX9YYetZ/X2bozpC/WBm5ruo6+Nz9cdEixNk55HHend7+QJ3R
+    h6xA29by+qVa5GL8AR8b6yWph0lYncxS7x/uRCyv+gAjfzCVKhV5tQwdwW2WmEC2aHVWfc
+    qGZEZ3CgVo9hQ8f9qKHaw8QTXDQZE/Yt4OKHXJqRVUOZEhTJZzYj4Oeewvp5Zd/XqG6vgn
+    lkLEydvd+oT4PJHN4HmvLMPbmp1PlCPaLZSYTPxhILDGcbPA2mHhL0DcEItH/Ts5KyyWM3
+    moOKejMs1niyvYA/tIicJl+mnwuDH0ZtAVTjSXS7OxaPkWx5LkxIfj++Gq9g
+X-ME-Proxy: <xmx:XXixauF-Hen9pGiWYoYGhvO9GrbOW6pQ76QqIyGbOAZkSFy_yE3IkA>
+    <xmx:XXixan9vR84q1tc3PRYMhZyZxmXhmucUCoQdlPoVURItAwXRA0AnAw>
+    <xmx:XXixavllj-QjRIuTostG4QfP3eTyg3oMkMog-xLBr21aHIA0E15CYQ>
+    <xmx:XXixaiA8A-Zx5I7L7xNJFRwu57zI2K5ZRrN9QTs7RADcZm6oA6a0gw>
+    <xmx:XnixamBQtC33RkaPmaYutEspP38NJCviL-bPHYx011VLurXb9L1Y50Pu>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Sep 2026 14:33:00 -0400 (EDT)
+Date: Mon, 21 Sep 2026 20:32:59 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Hong In-su <his1415@pribit.com>
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] xfrm: add ARIA CBC and CTR support
+Message-ID: <arF4W6lgjp9ovkVL@krikkit>
+References: <20260916023135.26043-1-his1415@pribit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921182700.1796214-1-edumazet@google.com>
-Subject: [PATCH net] net: flush skb_defer_nodes in dev_cpu_dead()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Kris Pan <kris.pan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260916023135.26043-1-his1415@pribit.com>
 
-When a CPU goes offline, dev_cpu_dead() drains its softnet queues
-(completion_queue, output_queue, poll_list, process_queue, and
-input_pkt_queue), but leaves net_hotdata.skb_defer_nodes untouched.
+Note: for IPsec patches, the subject prefix should be [PATCH ipsec] or
+[PATCH ipsec-next] instead of net/net-next (with the same
+bugfix/feature split).
 
-If oldcpu goes offline while holding pending skbs in its
-skb_defer_nodes lists (e.g. below the sysctl_skb_defer_max >> 1 IPI
-threshold, or if the IPI races with CPU teardown), those skbs remain
-stranded until oldcpu is brought back online. If any of these skbs
-hold page_pool fragments, page_pool_destroy() will stall indefinitely
-waiting for inflight pages to be returned when a netdev or driver is
-torn down while oldcpu is offline.
+2026-09-16, 02:31:35 +0000, Hong In-su wrote:
+> The kernel crypto API already provides ARIA implementations, but XFRM
+> does not have algorithm descriptors for them. Consequently, ARIA cannot
+> be selected for ESP through XFRM.
+> 
+> Add XFRM algorithm descriptors for CBC and RFC3686 CTR modes using the
+> existing cbc(aria) and rfc3686(ctr(aria)) crypto algorithms.
 
-Additionally, if smp_call_function_single_async() fails in
-kick_defer_list_purge() because the target CPU went offline, reset
-defer_ipi_scheduled to 0 so future IPI kicks are not blocked when the
-CPU comes back online.
+Why only those, and not for example gcm(aria)? (just to mention one
+that I know is a "valid" combination, since it's used in ktls, but I
+guess all the combinations that are supported for AES would also be
+valid)
 
-Also, if oldcpu was the last online CPU on its NUMA node, drain that
-node's slot across all CPUs so no skbs deferred from that node remain
-stranded on idle remote CPUs (or if the node itself is subsequently
-offlined).
+> The CBC and CTR modes have been tested with IPsec using strongSwan.
+> 
+> Signed-off-by: Hong In-su <his1415@pribit.com>
+> ---
+> Changes in v2:
+> - Drop the duplicate "aria" compatibility alias from the CTR entry.
+> - Use a 128-bit default key size for CBC.
+> - Document that the CTR default key size includes the 32-bit nonce.
+> 
+> v1: https://lore.kernel.org/netdev/20260909054530.7861-1-his1415@pribit.com/
+> 
+>  net/xfrm/xfrm_algo.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+> 
+> diff --git a/net/xfrm/xfrm_algo.c b/net/xfrm/xfrm_algo.c
+> index 70434495f23f..7ed84220ad5d 100644
+> --- a/net/xfrm/xfrm_algo.c
+> +++ b/net/xfrm/xfrm_algo.c
+> @@ -512,6 +512,33 @@ static struct xfrm_algo_desc ealg_list[] = {
+>  		.sadb_alg_maxbits = 256
+>  	}
+>  },
+> +{
+> +	.name = "cbc(aria)",
+> +	.compat = "aria",
 
-Finally, in skb_attempt_defer_free(), re-check cpu_online(cpu) and
-whether the caller migrated CPUs after llist_add(), flushing the node
-list if so, to close the preemption TOCTOU race against CPU/node
-teardown.
+I missed v1 and the bot's feedback, but I'm wondering: Steffen, do we
+still want to add "compat" names for new algorithms? SM3/SM4 are the
+only additions post-2010 that got an alias. It saves a few characters
+on the way in, and then we get the full name back during dumps, which
+is probably more confusing than helpful.
 
-Fixes: 68822bdf76f1 ("net: generalize skb freeing deferral to per-cpu lists")
-Fixes: 5628f3fe3b16 ("net: add NUMA awareness to skb_attempt_defer_free()")
-Closes: https://lore.kernel.org/netdev/20260916003430.3612956-1-kris.pan@intel.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kris Pan <kris.pan@intel.com>
----
- net/core/dev.c    | 48 +++++++++++++++++++++++++++++++++++------------
- net/core/dev.h    |  2 ++
- net/core/skbuff.c | 12 +++++++++---
- 3 files changed, 47 insertions(+), 15 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c67900354fa64b73de0623112366f485fedeb87b..c4151393cc819617fcf0d6b5abba09d4f6946ce6 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5376,7 +5376,8 @@ void kick_defer_list_purge(unsigned int cpu)
- 		backlog_unlock_irq_restore(sd, flags);
- 
- 	} else if (!cmpxchg(&sd->defer_ipi_scheduled, 0, 1)) {
--		smp_call_function_single_async(cpu, &sd->defer_csd);
-+		if (smp_call_function_single_async(cpu, &sd->defer_csd))
-+			WRITE_ONCE(sd->defer_ipi_scheduled, 0);
- 	}
- }
- 
-@@ -6900,25 +6901,35 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
- }
- EXPORT_SYMBOL(napi_complete_done);
- 
--static void skb_defer_free_flush(void)
-+static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
- {
- 	struct llist_node *free_list;
- 	struct sk_buff *skb, *next;
-+
-+	if (llist_empty(&sdn->defer_list))
-+		return;
-+	atomic_long_set(&sdn->defer_count, 0);
-+	free_list = llist_del_all(&sdn->defer_list);
-+
-+	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
-+		prefetch(next);
-+		napi_consume_skb(skb, budget);
-+	}
-+}
-+
-+void skb_defer_node_flush(struct skb_defer_node *sdn)
-+{
-+	__skb_defer_free_flush(sdn, 0);
-+}
-+
-+static void skb_defer_free_flush(void)
-+{
- 	struct skb_defer_node *sdn;
- 	int node;
- 
- 	for_each_node(node) {
- 		sdn = this_cpu_ptr(net_hotdata.skb_defer_nodes) + node;
--
--		if (llist_empty(&sdn->defer_list))
--			continue;
--		atomic_long_set(&sdn->defer_count, 0);
--		free_list = llist_del_all(&sdn->defer_list);
--
--		llist_for_each_entry_safe(skb, next, free_list, ll_node) {
--			prefetch(next);
--			napi_consume_skb(skb, 1);
--		}
-+		__skb_defer_free_flush(sdn, 1);
- 	}
- }
- 
-@@ -12897,6 +12908,7 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 	struct sk_buff **list_skb;
- 	struct sk_buff *skb;
- 	unsigned int cpu;
-+	int node;
- 	struct softnet_data *sd, *oldsd, *remsd = NULL;
- 
- 	local_irq_disable();
-@@ -12957,6 +12969,18 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 		rps_input_queue_head_incr(oldsd);
- 	}
- 
-+	WRITE_ONCE(oldsd->defer_ipi_scheduled, 0);
-+	for_each_node(node)
-+		skb_defer_node_flush(per_cpu_ptr(net_hotdata.skb_defer_nodes,
-+						 oldcpu) + node);
-+	node = cpu_to_node(oldcpu);
-+	if (node_possible(node) &&
-+	    !cpumask_intersects(cpumask_of_node(node), cpu_online_mask)) {
-+		for_each_possible_cpu(cpu)
-+			skb_defer_node_flush(per_cpu_ptr(net_hotdata.skb_defer_nodes,
-+							 cpu) + node);
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/net/core/dev.h b/net/core/dev.h
-index b757faead4d1a3e445e54d2f468c38c9e09b6762..04fb0e9a571e03f41cac110a0d1dd864d110b339 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -399,6 +399,8 @@ static inline void napi_assert_will_not_race(const struct napi_struct *napi)
- 	WARN_ON(READ_ONCE(napi->list_owner) != -1);
- }
- 
-+struct skb_defer_node;
-+void skb_defer_node_flush(struct skb_defer_node *sdn);
- void kick_defer_list_purge(unsigned int cpu);
- 
- int dev_set_hwtstamp_phylib(struct net_device *dev,
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index b4edbd06655e2ac46fdccc74979295f4a938078f..c3042d822afa7aaaae7cad6aba4d647af0732aeb 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -7360,8 +7360,8 @@ void skb_attempt_defer_free(struct sk_buff *skb)
- 	struct skb_defer_node *sdn;
- 	unsigned long defer_count;
- 	unsigned int defer_max;
-+	int cpu, my_cpu;
- 	bool kick;
--	int cpu;
- 
- 	if (static_branch_unlikely(&skb_defer_disable_key))
- 		goto nodefer;
-@@ -7371,7 +7371,8 @@ void skb_attempt_defer_free(struct sk_buff *skb)
- 		goto nodefer;
- 
- 	cpu = skb->alloc_cpu;
--	if (cpu == raw_smp_processor_id() ||
-+	my_cpu = raw_smp_processor_id();
-+	if (cpu == my_cpu ||
- 	    WARN_ON_ONCE(cpu >= nr_cpu_ids) ||
- 	    !cpu_online(cpu)) {
- nodefer:	kfree_skb_napi_cache(skb);
-@@ -7382,7 +7383,7 @@ nodefer:	kfree_skb_napi_cache(skb);
- 	DEBUG_NET_WARN_ON_ONCE(skb->destructor);
- 	DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
- 
--	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + numa_node_id();
-+	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + cpu_to_node(my_cpu);
- 
- 	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
- 	defer_count = atomic_long_inc_return(&sdn->defer_count);
-@@ -7392,6 +7393,11 @@ nodefer:	kfree_skb_napi_cache(skb);
- 
- 	llist_add(&skb->ll_node, &sdn->defer_list);
- 
-+	if (unlikely(!cpu_online(cpu) || my_cpu != raw_smp_processor_id())) {
-+		skb_defer_node_flush(sdn);
-+		return;
-+	}
-+
- 	/* Send an IPI every time queue reaches half capacity. */
- 	kick = (defer_count - 1) == (defer_max >> 1);
- 
 -- 
-2.55.0.1082.g2b9226bbc0-goog
-
+Sabrina
