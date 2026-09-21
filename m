@@ -1,217 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f38.google.com (mail-pz2-f38.google.com [74.125.228.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FBE157487
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 04:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622E03515CD
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 04:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789964255; cv=none; b=tz4u4txKWiaGvceYEe+PNe1HDvgEGt4zOyf0JS758CxuNEy7VNnoIXvguPqZUTYf80PxSwWuO29x5IiUhJjNYEtJXeczLO741ZYiabbgWfd8DbMJlbcv3T/t7Lo4PJLMzAt3+S0EJCSui/x1NUtpMpQEdNc71T2gSmWCaXEbHSk=
+	t=1789964975; cv=none; b=H/yBfpd9+lvcBCIoIQbbJCKd59wR1GWjTTnYAIdnQQmV5FWVkhgq3wtk45p5oO2/kb6wAkMw/X3HMapXISSw5+p6ZlEf3bhzvnk9k7/EhD0xElVW8oaHfxFGvTquXt/l5C6t/kxduevmcmVLl0CmB9h8Yp4L99XUiOoeLdOTiWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789964255; c=relaxed/simple;
-	bh=GASaJk4gMXSCH7AgvJaoIqbLuhXpEKXlbXXPujL6QpU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LGg1q+Ze6UMHeWjvg42+2d+Fzzb+gzmSQ+n+qqdmHDTPeTwVCRKieoi/kwSS/fMcdkBY5rJYBIV3K3YpSYNSQoGewNGRpAs6Na8NF3X6MLVC55lYOdCzOqmJSr7AzcXad3PmJEn1Cpc2TZz8PiW0oDL5tYmQQxbwO9eHb/p5l4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lX53+69s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789964975; c=relaxed/simple;
+	bh=EZLcDrNg0p7u3xoE2NaBQYfiA5P6zOjGWIsa0ShloL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rw29X2MbYM+nbwh6IiC2+nOxWzauWiDWXArkxHIRknj0xdDx7NIo0qTZZ3SXZy990taTFqjxQ39ygXBew1TgTohCh468Iq2X7pLmLZF+yIfGKyEXfCQjUOuVwldfSJ6bdCfRvbWn2SzF1CUTLredNGM8F5odYA5/mP/3fzvhnuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=ag0UyYwu; arc=none smtp.client-ip=74.125.228.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lX53+69s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D281F000FF;
-	Mon, 21 Sep 2026 04:17:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789964253;
-	bh=ZkwhNUx0ke+7m3F9pjmPZi87bUasInd9oGgPqC/F574=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lX53+69sOyGV1xYJtvWfCX66dwmzve+Eyj0JVj33iGBaGxZHXB1zTobfO/CiPVDRq
-	 FLmtxMcQ202bs3hWb5/uup0P16+4kcxMfw00r2clinVQCT6IZZ0zYs446sx3NTkSbw
-	 5CRXPho0gfWqRZZ52j+/qdGmKjy206tm5Ir66QDbPPp1RYKZ49HCjBQVaHjfbxMHA7
-	 w+N5l7B54gq1Y61YRYlPtNeFv2qgHUcizCTVgWrNbQtERCwbaObtZsNJGCq0jxRhR9
-	 j9lCauoWkWrCC1MUIlmpbkMasFo2haVpKxPN0Nm8igfdfhcDEEQL4XxzxVa5lpgx0O
-	 ImS1Snowb9G7Q==
-Subject: Re: [PATCH v1 net] ipv6: Fix dst leak for uncached routes.
-From: netdev-bot+sashiko@kernel.org
-To: kuniyu@google.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- weiwan@google.com, marcharvey@google.com, kuni1840@gmail.com,
- netdev@vger.kernel.org
-Date: Mon, 21 Sep 2026 04:17:32 +0000
-Message-ID: <178996425243.2160803.4584297902384929765@kernel.org>
-In-Reply-To: <20260918041439.2575935-1-kuniyu@google.com>
-References: <20260918041439.2575935-1-kuniyu@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="ag0UyYwu"
+Received: by mail-pz2-f38.google.com with SMTP id 41be03b00d2f7-cc1cea4c7a0so1188499a12.1
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 21:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1789964972; x=1790569772; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=X+ARZ05U0Ry/4bPhSuYtgrWnaz/OcQpWLrFkKl/prSk=;
+        b=ag0UyYwuzMXRWRrydL2p3etfZ4L4o86Mg19du3tKsa8Ujp7FceO7CVxALCsEJanTM5
+         p2jXA93qJmD+qmCxeX+7vEtAFlobm2qGoXkAAT+nTXVoZyHzPXArbDFWYIYWqCfciRpn
+         nkJWZ1PzCW3RZ+BER5B6Ql55pUXyDAwLKSJv4c4IPIJv8Exy9KiRERDvftn9a7uwrZx+
+         HzddLks6gLFo1xFm0BsJ1I3lSITrHDnKbCAhpr0KJSnhC8W1eubWcEg9Z5XlnrWFxOR6
+         jakSn3ab3yD5MPRfTf17eFHVnJGSiFKSo5Xrsy6YgtWAqwymV5/xl6dkgdugIEmSPOEh
+         LUPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789964972; x=1790569772;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=X+ARZ05U0Ry/4bPhSuYtgrWnaz/OcQpWLrFkKl/prSk=;
+        b=V33oUkyfJeV3s1vwfVEa2zRkKGYxdKo4TKbqtAi2h2jDVV86GXCU7Ze97g0dMNtg9x
+         RlZl9A7LYA1hXIkEZKymGf92hvewKnWLl2ANh5w8FZECo4XWsqai/2WNtXlXInGdTcON
+         c0WjlTQFPClPnlFr09+99pAsd972g8Kh4WI8JKXeatYlQG5eUWk2O/3tMUKdlWDmwf4x
+         I4g5+9L9K7Jywmxavsa0LQc2SgSRYQcA44AkuGwEd3hHqr9Hm/50JqdwYk+f4/EvegUM
+         Ow5hDDVXH3XXMvPgjI2U49kp4SteCnzer95EJGjWmI1lIWdM/atTShryG4olJsHqmQld
+         xKZw==
+X-Gm-Message-State: AFuF++k8CDXy4KSaNrWaTJcCeRdn43t68LND0GZ9isCMzyZoMO/CrVUW
+	1/xlPzN7rAl4p90bBCi2c8C6eSGwDGi/ueMHvg5ZFfJCq7SbiZu4aHFiVy+77Fyj8DmerYh+Dox
+	jkwd+pLLzBYLQQOUTyyz9PZzOlx6aebgG2ocmyDlEZKB+WmIWSOVx/47WN3SdqUirgTRy4QN3Fs
+	2Gaw==
+X-Gm-Gg: AYBFou1WI7C4R771KJA6UFvjkJZOj5eaEWkAyCQc5lJBLBcl6aTafJLnSvRzO8jeWDq
+	VRt4qycpqDOEMysT4rfiQtGSogIR5cjpmuHVlgx9E9Vl4rLNvAgfBh3ZU92O7x4fbwQv1BZjVXN
+	Ig+hE/z7DD6A5sITebcXp9eUl4KdwUkKbg641b9fJLnSwb7ba1SNszpLemEBrCzHaSiYIOT45ES
+	cYT8M14csmV+RMT7C9qbpHta9fFmiA6wa0vXiISAe9l3jL6gks2MvmO6dBrl/IKRDE/Yo7GbzG9
+	8c2AwDdYtVh33fBE6ef26FbzpI28A1ATw+ETqhkV5riphvdEwLbV3esS+1lWswnr4romeb6TmZB
+	EHk2lVF6RVmbDbP8FlSYr0rY9t3sW07xlfP1cDRQa4GU+x5yELWwSG3aMjasyn8XWXtBvFP+lzU
+	AmFp2hLtgHwbZxxoYbKIC6nywY7yZWxHe0iVpRGZkuLPwZrwbMXPQazlOPla6R2y/u18USu9tsX
+	nHjABeJPvk=
+X-Received: by 2002:a17:90b:4d0d:b0:39e:6c6a:208c with SMTP id 98e67ed59e1d1-39e6c6a31edmr8745588a91.45.1789964971912;
+        Sun, 20 Sep 2026 21:29:31 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.241])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144da432647sm25579483c88.5.2026.09.20.21.29.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 21:29:31 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Zihan Xi <zihanx@nebusec.ai>
+Cc: Wang Zhan <wang.zhan@smartx.com>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	willemb@google.com,
+	kuniyu@google.com,
+	kees@kernel.org,
+	richardbgobert@gmail.com,
+	alice.kernel@fastmail.im,
+	gal@nvidia.com,
+	jibin.zhang@mediatek.com,
+	luoxuanqiang@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Luxing Yin <root@tr0jan.top>
+Subject: Re: [PATCH net v3 1/1] net: gso: limit recursive IP-in-IP segmentation
+Date: Mon, 21 Sep 2026 12:29:07 +0800
+Message-ID: <20260921042907.3658794-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <43510074c063f57e5738ecc55057e7fbbcdb1fbc.1789802623.git.zihanx@nebusec.ai>
+References: <cover.1789802623.git.zihanx@nebusec.ai> <43510074c063f57e5738ecc55057e7fbbcdb1fbc.1789802623.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sat, 19 Sep 2026 11:14:40 +0000 Zihan Xi wrote:
+> @@ -19,10 +19,39 @@  struct skb_gso_cb {
+>  	int	encap_level;
+>  	__wsum	csum;
+>  	__u16	csum_start;
+> +	/* Bytes charged to the current GSO callback chain. */
+> +	u16	gso_header_len;
+>  };
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] Incomplete backport metadata: the Fixes: tags select stable
-  trees where the patch is either useless or actively harmful, and the…
-- [Low] Comment vs. code mismatch left by the patch.
-
-Pre-existing issues:
-- [Low] Documented refcount contract of the IPv6 link-scope l3mdev lookup
-  disagrees with the implementation.
-
---
-
-ipv6: Fix dst leak for uncached routes.
-
-This replaces the list_empty(&rt->dst.rt_uncached) test in
-ip6_route_output_flags(), ip6_rt_put_flags() and ip6_dst_check() with a
-check of rt->dst.rt_uncached_list, so a route that was already unlinked
-from rt6_uncached_list by rt6_uncached_list_flush_dev() is still treated
-as holding the reference taken by ip6_rt_cache_alloc().
-
-A couple of questions about the Fixes: tags and about the comments that
-were left behind.
-
-> Fixes: 7d9e5f422150 ("ipv6: convert major tx path to use RT6_LOOKUP_F_DST_NOREF")
-> Fixes: d64a1f574a29 ("ipv6: honor RT6_LOOKUP_F_DST_NOREF in rule lookup logic")
-> Fixes: a4c2fd7f7891 ("net: remove DST_NOCACHE flag")
-
-[Severity: Medium]
-Should this also carry Fixes: 98aa546af5e4 ("inet: remove (struct
-uncached_list)->quarantine")?
-
-The commit message itself says the routes used to be moved with
-list_move() and are only unlinked with list_del_init() since that
-commit.  Before it, rt6_uncached_list_flush_dev() left the entry linked
-on ul->quarantine, so list_empty(&rt->dst.rt_uncached) could not become
-true for a live uncached route.  The other unlinker,
-rt6_uncached_list_del(), only runs from ip6_dst_destroy() and
-xfrm6_dst_destroy(), i.e. after the refcount already dropped to zero.
-
-The three tags listed point at 2018/2019 commits, which selects
-v4.20..v6.10 trees where the misdetection described here cannot happen.
-
-There also seems to be an undisclosed dependency worth a note below the
---- line.  The new predicate uses dst.rt_uncached_list as a "was ever
-added to an uncached list" flag, which only works because 9a6f0c4d5796
-("dst: fix races in rt6_uncached_list_del() and rt_del_uncached_list()")
-added the initialization in dst_init():
-
-net/core/dst.c:dst_init() {
-	...
-	INIT_LIST_HEAD(&dst->rt_uncached);
-	dst->rt_uncached_list = NULL;
-	...
-}
-
-dst_alloc() uses kmem_cache_alloc() without __GFP_ZERO, so on a tree
-without 9a6f0c4d5796 the field is slab garbage for any dst never placed
-on an uncached list.  There, would ip6_route_output_flags() skip
-dst_hold_safe() and return an unreferenced dst, and would
-ip6_rt_put_flags() call ip6_rt_put() on a dst it never referenced?
-
-On top of that, dst.rt_uncached_list only exists since d288a162dd1c
-(v6.4); before that the field lived in rt6_info as rt6i_uncached_list,
-so the patch would not build on the older trees the tags select.
-
-> diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-> index b9e8d2b759e9..2c5ded121f54 100644
-> --- a/include/net/ip6_route.h
-> +++ b/include/net/ip6_route.h
-> @@ -106,7 +106,7 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
->  static inline void ip6_rt_put_flags(struct rt6_info *rt, int flags)
->  {
->  	if (!(flags & RT6_LOOKUP_F_DST_NOREF) ||
-> -	    !list_empty(&rt->dst.rt_uncached))
-> +	    rt->dst.rt_uncached_list)
->  		ip6_rt_put(rt);
->  }
-
-[Severity: Low]
-Should the comment just above ip6_rt_put_flags() be updated too?  It
-still describes list membership:
-
-include/net/ip6_route.h
-/* Only conditionally release dst if flags indicates
- * !RT6_LOOKUP_F_DST_NOREF or dst is in uncached_list.
- */
-
-rt->dst.rt_uncached_list is assigned in rt6_uncached_list_add() and is
-never reset to NULL; both rt6_uncached_list_del() and
-rt6_uncached_list_flush_dev() only list_del_init() the node.  So after
-this change the test means "was ever added to an uncached list", which is
-intentionally still true for routes already unlinked by device flushing.
-
-Leaving the old wording in place makes it easy for someone to later
-"restore" the list_empty() form and bring the leak back.
-
-> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> index 08bd68f1b5bb..b18cd0d9148c 100644
-> --- a/net/ipv6/route.c
-> +++ b/net/ipv6/route.c
-> @@ -2722,7 +2722,7 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
->  	dst = ip6_route_output_flags_noref(net, sk, fl6, flags);
->  	rt6 = dst_rt6_info(dst);
->  	/* For dst cached in uncached_list, refcnt is already taken. */
-> -	if (list_empty(&rt6->dst.rt_uncached) && !dst_hold_safe(dst)) {
-> +	if (!rt6->dst.rt_uncached_list && !dst_hold_safe(dst)) {
-
-[Severity: Low]
-Same question here for the comment sitting directly on the converted
-line, "For dst cached in uncached_list, refcnt is already taken."  The
-condition no longer asks whether the dst is currently on the list, and
-the flushed-but-still-referenced case is exactly the one this fix
-depends on.  Would "for dst that was added to uncached_list" (or
-similar) be more accurate?
-
-[Severity: Low]
-This is a pre-existing inconsistency and not something introduced here,
-but since this is the site that compensates for it: the documented
-refcount contract of the l3mdev link-scope lookup disagrees with what
-the implementation can return.
-
-net/l3mdev/l3mdev.c, kernel-doc for l3mdev_link_scope_lookup():
- *	This function does not hold refcnt on the returned dst.
- *	Caller must hold rcu_read_lock().
-
-drivers/net/vrf.c, above vrf_link_scope_lookup():
- * Note: Caller to this function must hold rcu_read_lock() and no refcnt
- * is taken on the dst by this function.
-
-But vrf_link_scope_lookup() -> vrf_ip6_route_lookup() -> ip6_pol_route()
-passes RT6_LOOKUP_F_DST_NOREF, and the FLOWI_FLAG_KNOWN_NH branch of
-ip6_pol_route() states the opposite rule:
-
-net/ipv6/route.c:ip6_pol_route() {
-	...
-			/* 1 refcnt is taken during ip6_rt_cache_alloc().
-			 * As rt6_uncached_list_add() does not consume refcnt,
-			 * this refcnt is always returned to the caller even
-			 * if caller sets RT6_LOOKUP_F_DST_NOREF flag.
-			 */
-			rt6_uncached_list_add(rt);
-	...
-}
-
-That branch looks reachable from this path: an IPv6 raw socket with
-IPV6_HDRINCL sets FLOWI_FLAG_KNOWN_NH, and with a link-local or
-multicast destination and an oif enslaved to a VRF,
-ip6_route_output_flags_noref() goes through l3mdev_link_scope_lookup();
-if the matched nexthop has no gateway the RTF_CACHE clone is returned
-ref-held.
-
-No leak today, because ip6_route_output_flags() is the only caller and
-encodes the exception in the line this patch changes.  Would it be worth
-correcting the exported kernel-doc and the vrf comment, so a future
-l3mdev_link_scope_lookup() caller does not drop that reference and leak
-the dst along with the device pinned via rt->from?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918041439.2575935-1-kuniyu%40google.com
+Hi, I think skb_gso_cb->mac_offset already has enough information to tell
+whether the budget is exceeded, so adding a field for it is unnecessary.
