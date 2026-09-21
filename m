@@ -1,51 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D0C51A13F;
-	Mon, 21 Sep 2026 23:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518F247987B
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 23:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790034242; cv=none; b=b6JuHhKHHSYGYEKN5HSmJPw1n47qKu/x7gJPeNR5695RbA43ku0NdB6TGEQkl4sm6MjKDBUfDBU0daH+qRKqscm3TcqqJInKFuWIV7itqpYhLk9F+50tMvEpKG4152svW35WeCQAdQgc/LG70AUbHEUIdf90IYDuKvmz1XwgLzY=
+	t=1790034243; cv=none; b=AVpRKfdi3jH5c0KrcNETZyD1wJt7bF+FiLGCDNtmUtIts6gsOe75j2i5PRfab8XTnu8hpk/h02QKAgSdW034QozdqFiU6+mqhoe8Kea8r07oMpXVWnDuitwgxEZkESOQeNj81SNuNMNAc/MsH7N1i4yheUmVr2z+22QvZFbGD+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790034242; c=relaxed/simple;
-	bh=I+VfiP8hGoJQQOdgUTc7/x7yfC/MnLJ0hRhTIx/inrI=;
+	s=arc-20240116; t=1790034243; c=relaxed/simple;
+	bh=VGdBfqJ6kRfHyO2cf83Y1MyEPKRWXHjuwviLQvOE9uY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PD//cADC/VJyrvEmtcjXSk8tB8ZZHFRugQ48O31rjaYOlQayLC6ZtWW3ZEYUumdxrV6h/zF7kIM0uIRSEX8ufQkA26A8VVaSwN7h1BvNSBQV1eKHMcCtJqEHngqY1qUc+KfSTRo9KMRN48CfeSB2SdnzQN6Uj4PJGbvc9STcNGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kN2kcqeg; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=UizD+0VVFjqv9wDLUusvzyshurKe2VsbwK5Fygfpefuqf/ui9A8wTp/L28XBsH6LoUsz8RB7QUlzOCQe8UE3hDfMHc4dlg690XBDqBDIwUEGDEZGriXVvKB8BP2C1n/NjZ1f7pplqYWbvd4/Vei4oYp9Fq2rPp/hV9vns4hGp7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZ9Ckuxm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kN2kcqeg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2B41F00893;
-	Mon, 21 Sep 2026 23:43:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZ9Ckuxm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7907D1F00898;
+	Mon, 21 Sep 2026 23:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790034236;
-	bh=ZG4q1bWR2eMGYdwDsubP8MPzWiDbvYTpOk4BFn7wEjk=;
+	s=k20260515; t=1790034237;
+	bh=5auJ6Ge+mSJ4TXxp3iLHdiVCBAzVEDyaSUBFIplEEMI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kN2kcqegqTrBXWD/LP2j0qpShjoMhypaQ04GgiCeWD/cTHdjADw7IgIxgUCBUpSrJ
-	 HIUKVpRQAECQ3rnpwScVKxCNzCzfYKJ1CfG2sYvvYGAfWUvTzpv7DUZhoeUhbmkU36
-	 OU7PMMYWLGmZEf15yOx7qdoxqLLuJkOXBUMLtNnjfe7sUe91tbTzFHq1DROx+sZe3I
-	 mQH6j5tPUvb/1Q8MbwVEqW291mEa1TGMzy+3NtxOn5nUVrkaufWAQFnWAyayA0MVCI
-	 l0yG5qwCy1TJCRlSX3FJOTXvKT8qMj9zPlM2UqZKxvoU759FW2nWTnQXI74cFI2y/9
-	 Sk/mcIkUcFIPw==
-Subject: Re: [PATCH net-next v7 10/11] arm64: dts: rockchip:
- rk3568-photonicat: enable SGMII LAN port
+	b=JZ9CkuxmLnswxR0euVG0E5n7pmFWrQglRXaziSrXhts5DDexdh0T7TMF4GNKmoFJR
+	 1L9su5Pny5heRi+aINdoNcZ3cPuJ+uJDHJ8LXw+Oq/yUafoP404ac6QyYbIeVwOQOk
+	 b/jqW7iYpfn25JQ1MNx4gXPudFu3a5bWw+Lw2m9Ptxh6qyK3vJcUpRy1DVtglZhSzd
+	 JWq9qoFMQZXakG2sIEVF4El5UjSPRNKvt2dEsBTtfTjh+1s0PnSpYLYUYfu4ICUbqN
+	 R3lPg89qYkzXVU2JTAcjd99cuejRT13FHqJC8uXCZ70SgrnSN6za87eQcSDL6XrIvZ
+	 Ub5twYqSGvNMA==
+Subject: Re: [PATCH net v3] tg3: use random MAC address when
+ tg3_get_device_address fails
 From: netdev-bot+sashiko@kernel.org
-To: coiaprant@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, heiko@sntech.de, vkoul@kernel.org,
- maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
- romain.gantois@bootlin.com, hkallweit1@gmail.com, neil.armstrong@linaro.org,
- linux@armlinux.org.uk, shawn.lin@rock-chips.com, david@ixit.cz,
- netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-renesas-soc@vger.kernel.org
-Date: Mon, 21 Sep 2026 23:43:54 +0000
-Message-ID: <179003423458.2160803.7280358019218159785@kernel.org>
-In-Reply-To: <20260917204624.2427486-11-coiaprant@gmail.com>
-References: <20260917204624.2427486-11-coiaprant@gmail.com>
-X-sashiko-severity: Low
+To: colona@arista.com
+Cc: kuba@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ netdev@vger.kernel.org, vinc@42.fr, atharvatiwarilinuxdev@gmail.com
+Date: Mon, 21 Sep 2026 23:43:57 +0000
+Message-ID: <179003423707.2160803.15146112639455736653@kernel.org>
+In-Reply-To: <20260917223416.GA245819@visor>
+References: <20260917223416.GA245819@visor>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -55,90 +46,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] Unrelated functional DT change bundled into an "enable SGMII LAN
-  port" patch: the hunk under `&mdio1` adds a `leds { led@1; led@2; }`…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new random-MAC fallback is taken on
+  tg3_get_device_address()'s -EINVAL path, which returns *before* the…
 
 --
 
-arm64: dts: rockchip: rk3568-photonicat: enable SGMII LAN port
+tg3: use random MAC address when tg3_get_device_address fails
 
-This enables GMAC0 on the Ariaboard Photonicat by adding the XPCS SGMII
-plumbing (combphy2 mac-sel, xpcs/xpcs_mii0, gmac0 properties) and describing
-the Motorcomm YT8521SC PHY on a new mdio0 node.  It also adds a PHY LED
-description to the existing RGMII PHY on mdio1.
+When tg3_get_device_address() cannot find a valid MAC address, the driver
+now assigns a random address and continues probing instead of failing.
+-EPROBE_DEFER from the address provider is still propagated as a probe
+deferral.
 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-> index 58c1052ba8ef3..fdaa4a2a4328b 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-> +++ b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
+Link: https://lore.kernel.org/netdev/20260909191751.651aa5c4@kernel.org/
 
-[ ... ]
+> diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+> index 73a4b569b03e3..813181590bce9 100644
+> --- a/drivers/net/ethernet/broadcom/tg3.c
+> +++ b/drivers/net/ethernet/broadcom/tg3.c
+> @@ -17914,12 +17914,17 @@ static int tg3_init_one(struct pci_dev *pdev,
+>  	}
+>  
+>  	err = tg3_get_device_address(tp, addr);
+> -	if (err) {
+> -		dev_err(&pdev->dev,
+> -			"Could not obtain valid ethernet address, aborting\n");
+> +	if (err == -EPROBE_DEFER) {
+> +		dev_err_probe(&pdev->dev, err, "ethernet address provider not ready\n");
+>  		goto err_out_apeunmap;
+>  	}
+> -	eth_hw_addr_set(dev, addr);
+> +	if (err) {
+> +		dev_warn(&pdev->dev,
+> +			 "Could not obtain valid ethernet address, using a random address\n");
+> +		eth_hw_addr_random(dev);
+> +	} else {
+> +		eth_hw_addr_set(dev, addr);
+> +	}
 
-> @@ -350,6 +391,25 @@ rgmii_phy: ethernet-phy@3 {
->  		reset-gpios = <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
->  		rx-internal-delay-ps = <1500>;
->  		tx-internal-delay-ps = <1500>;
-> +
-> +		leds {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			led@1 {
-> +				reg = <1>;
-> +				color = <LED_COLOR_ID_AMBER>;
-> +				function = LED_FUNCTION_WAN;
-> +				default-state = "keep";
-> +			};
-> +
-> +			led@2 {
-> +				reg = <2>;
-> +				color = <LED_COLOR_ID_GREEN>;
-> +				function = LED_FUNCTION_WAN;
-> +				default-state = "keep";
-> +			};
-> +		};
->  	};
->  };
+[Severity: Medium]
+Can this randomize the address on a system that does have a MAC available
+through the generic provider infrastructure?
 
-[Severity: Low]
+The tail of tg3_get_device_address() looks like this:
 
-This isn't a bug, but could this hunk go into a separate patch?  It changes
-the pre-existing RGMII WAN PHY (rgmii_phy under &mdio1), which is already
-enabled and working before this patch:
+	if (!is_valid_ether_addr(addr))
+		return -EINVAL;
 
-arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts:
-	&gmac1 {
-		phy-handle = <&rgmii_phy>;
-		phy-mode = "rgmii-id";
-		status = "okay";
-	};
+	if (tg3_is_default_mac_address(addr))
+		return device_get_mac_address(&tp->pdev->dev, addr);
 
-None of the SGMII enablement in this patch (&combphy2
-rockchip,sgmii-mac-sel, &gmac0, &mdio0/sgmii_phy, &xpcs, &xpcs_mii0)
-depends on the mdio1 leds node.
+	return 0;
 
-It is also not purely descriptive - drivers/net/phy/motorcomm.c implements
-the LED callbacks for this PHY (yt8521_led_hw_is_supported(),
-yt8521_led_hw_control_set(), yt8521_led_hw_control_get()), so PHY LED class
-devices get instantiated for the WAN PHY as a result of this change.
+So the -EINVAL return happens before the only device_get_mac_address()
+call in the driver. If the SRAM mailbox has no 0x484b signature (or
+reports the zero address the comment in that function mentions as "Some
+old bootcode may report a 0 MAC address in SRAM"), and NVRAM plus
+MAC_ADDR_0_HIGH/MAC_ADDR_0_LOW also yield an invalid address, the
+function returns -EINVAL and the fwnode "mac-address"/"local-mac-address"/
+"address" properties and the nvmem "mac-address" cell are never consulted.
 
-Split into its own patch, the WAN LED description and the LAN port
-enablement can be bisected and reverted independently, and the subject line
-would reflect that the WAN PHY description changed too.  The commit message
-mentions it:
+tg3_init_one() then skips the new err == -EPROBE_DEFER test and calls
+eth_hw_addr_random(), so the device binds with NET_ADDR_RANDOM and only a
+dev_warn, even when device_get_mac_address() would have supplied the real
+address - or would have returned -EPROBE_DEFER because the nvmem provider
+is not registered yet.
 
-    Also add LED configuration for the existing RGMII PHY on mdio1 for
-    consistency.
+Does the earlier call in tg3_get_device_address() cover that case?
 
-but the subject only mentions the SGMII LAN port.
+	if (!eth_platform_get_mac_address(&tp->pdev->dev, addr))
+		return 0;
 
-[ ... ]
+eth_platform_get_mac_address() in net/ethernet/eth.c only looks at
+dev->of_node and arch_get_platform_mac_address(), and folds every failure
+into -ENODEV:
+
+	ret = of_get_mac_address(dev->of_node, mac_addr);
+	if (!ret)
+		return 0;
+
+	addr = arch_get_platform_mac_address();
+	if (!addr)
+		return -ENODEV;
+
+while device_get_mac_address() is the one that reaches the non-OF fwnode
+properties and the device level nvmem cell:
+
+	if (!fwnode_get_mac_address(dev_fwnode(dev), addr))
+		return 0;
+
+	return nvmem_get_mac_address(dev, addr);
+
+Would it make sense to query device_get_mac_address() on the invalid
+address path too, before falling back to eth_hw_addr_random(), so that a
+firmware supplied MAC and a genuine -EPROBE_DEFER are not lost?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917204624.2427486-1-coiaprant%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917223416.GA245819%40visor
