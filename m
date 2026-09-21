@@ -1,68 +1,67 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2272C43BDC3
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5230D3AC0CD
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789976530; cv=none; b=X/MaS+VXDMownt4t2mfFIBRLQRqEogvcKFqijGVCJRz/pdBm63mUDq4mMrtgmDdhUIKTg9SbAK8mAk2tRu1HTAqZ7c7AE353VHQL3h/gCzuYgBqAOABDLzmpYQAXbzZdf/de3YyE6M3ErrDAHsssyx+RHtHMMFyUVvgMZ1Qls0Y=
+	t=1789976531; cv=none; b=gKcx3qoViMPbZajst4581eUBTHVoyokD7khlawS6YScdLMZ2aRVfgw7fwHNbcJuYie73jZnC+K6RkaPG8jZ1iYPhMSG/V5fxEvyFVtPACU75ZWBC7fNoZdVnx65MxYYfEl5AKw64kHja7YxH6qbPAUZG8Q5c80/2LL0dKKZcGwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789976530; c=relaxed/simple;
-	bh=DRSbsEZlYqRU2ZFuKlgyDsGV2nz0JSOXB6TyqyEq7AI=;
+	s=arc-20240116; t=1789976531; c=relaxed/simple;
+	bh=BbXoi92UlkhlGdeK8JNIhIfmhwJqCOsh6YgHaTnViyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQOmqjKtgg4kZXG85Fn0ljqjWsLclHAtp9wddY+CJzcLvgJDLnvTJDZA87hNxaydZAsX3pivfyP2JqxQh2yrt6H3rrTULvThFox9DqsQV0zvCmXF5bYXG6MIJ+tKu2pg4BNqL6Eh5ad02wmLt+aKnWRr85WZKQT4xhGv/UO89Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A1yJiLDP; arc=none smtp.client-ip=74.125.227.171
+	 MIME-Version; b=SQ9a4fsULk3134quQnC8zxbzONs2RExiAcDX/hNlWhv53dLeFVnxAiznKGQJZDSRGxC4k9tgabSiL+/ll48brSb4bGfWoSFzYtAwZFfIZBOs46dKlDpntK4pjzjHxb4wJLBHjBqSvyoZp6MbWFmOyfkxYr2N7RKxvA7NJI4h6/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=moi0raPl; arc=none smtp.client-ip=74.125.228.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A1yJiLDP"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398a1676000so2086271a91.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 00:42:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="moi0raPl"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-85469e25400so1928230b3a.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 00:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789976527; x=1790581327; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789976528; x=1790581328; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rN2uUWtJbumqwS4fCKzwEsvJLfsBmHBgpfyDhn5UNyE=;
-        b=A1yJiLDP9PGZxGGRtHL1bUKeU11xKVtc7lAoDUBe85brLViJwITGIRezyfTB3uzO2M
-         tdOTF8C5hx5Qe9BM+fVxm3WC1D72z8Z2KCWgxi1YOrXiyf/0n0wEbPIXNrIGCfd3ic38
-         htyNEb38eJpD7j6dgWr9Re9d+/3TvZcs2YMm5S4t1igoR7hTjWphu318p98kJKCcad61
-         gCEJcAP+sxC37v4w33e1/xviZ4NnRKKJPDTEi+vvHn/qcMXNFFt5WhyzdZ53Fmj/0F4Q
-         8X6UCosu1Dy9dM1kbmpXYFVlAeQ6x3h1XnwVzWgQYuFyvLhzJM0k7MDUjL+MmmFQLB4u
-         rnGQ==
+        bh=6lDJohtZHVUp613SJYT+/whB9vC5M06ltf1T0TWT1oQ=;
+        b=moi0raPlQxbFAgSXNf0zQg2PmrJSI1ukF70ufvDo4vFwCYSDkmC/5lRutxILzuk4nf
+         cyXdw6SIT1llOrMsBs9lI3TGDr6XceWtPUdQ/Tbg6Q88I/O5mEXqJ1cuXw2neOZcSrwo
+         l1qoSO1NgEkktM9VQs+tY9i62dy8Vcm9OOM7PTPzciRzLIyoIsKxhV4dDSL/mnlD86x5
+         NrBZARmz3nYuK7jsBsKlKk0HwVlkugL7xzPd5fE/f/j+QC4DXhLevGZiwY1N3yoBWHcA
+         mjyajiBH8A7BknKlNm3s7jc7CmXxPA3mcuWPNAq6ZlvsYKA0BWg+6pasSzbrqdrsl2yk
+         qtnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789976527; x=1790581327;
+        d=1e100.net; s=20260707; t=1789976528; x=1790581328;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rN2uUWtJbumqwS4fCKzwEsvJLfsBmHBgpfyDhn5UNyE=;
-        b=ZpLHzY/Ta+9wmP9bivY/uUiThkDX2xsZQ32oG95VSBnH0CB3tntxIZT5jLpGjGbthv
-         PJXvzdSHCz9qMW8fL/M+jrjUrsAT0I2Q/fWKmXljLMHOTIpVwx8Zqvb5zF4y6QTMTeqw
-         nmgUZ31Ei+qQ3JojrtdUlo8XQnQFP5x2QTFK2PvUIC3FzQ01aLn3qN0zYKkfJmdNbeh6
-         6L+VEgJTh86VlWHz8ao9XOCgd0zgxIyd5+Zood72XU6MmvuPTkHcGDEbKqKl260TYgop
-         HI88tkwUxFeIkQxSoUUj8xFCQw3TiMXDQs2K4DPpMbBRqqQNWpSNPFG1MPvYv1D184vJ
-         JUHA==
-X-Forwarded-Encrypted: i=1; AKwUvBzRUP3WhBGGekdSP2AiF+y8MhDNdlgpi21Rf2q+4P3+B+VgjJDJt9cFOckXV9vRD65m2rag3wk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mzZsqogKuwLyZkcMXOoPMDrzNhv6GiQFdJMvB3nibLNz/Gnny1
-	6oMpyfst/bWTD3eu9e1FS1ZQK1rExYuKBzmD6d0nFrG1Pd3m3W6hpf+i
-X-Gm-Gg: AYBFou3Uv2dzkKlKzKwsckYppIzPhF/bb4EXAcQdBJHDNCA9TAE4tzR5af98+XrVDrv
-	z3htrieCKkztf/7rf+1yOL0p2s4JpOYyM85xE0v5WalWrReT2ddNDJHFiLTuGeJgSClsJshYBp5
-	isfjCqbblKwiX45gZsaeJiQZbDOdVs1rqpOwrsnyvcpeJm74h7P9wabjltF4ca7hOY0bP3s1am3
-	8bjy1pCzt8rjlWEofU0b2/TOY/owFaOporyCbw3fnVjgKZjFYWBie/EVEqeUEUeiTHycNiN2Wk8
-	DrduTazPo/f+zRw784EyaSRAUFqC0j+ncVjYS/96JAQpqfb2+tKziolGbm4xd0ttw2Ft6sPaQrW
-	/ZyUwXbpn0w78k25f/LhFxvZSPfxqBnudkmmCAm5ApEgfeQGNgkkbr+7F8R0zAgGW6wOGzzL93p
-	kpNxcUu8BhX1V7Ye/MTb08DbjjXtlBN7BmWdXMWyjClUyOQePZCs3L/P1OWBGFP/5umEAI79j4g
-	EHltE1HJuGE3hL69qxp493Dw+LRqZvUGSMcioF/nyOO6o3xYVwUGXTsjOOLTJSnAtN9SqD1+tlk
-	6YKODkfR2Q==
-X-Received: by 2002:a17:90a:e7c6:b0:39e:6a81:f34a with SMTP id 98e67ed59e1d1-39e6a81fcf8mr8609680a91.36.1789976527065;
-        Mon, 21 Sep 2026 00:42:07 -0700 (PDT)
+        bh=6lDJohtZHVUp613SJYT+/whB9vC5M06ltf1T0TWT1oQ=;
+        b=zNa37g/1IT7IwSrpTh6yT6vZeoaImDIFNdcjVo5KviCJB6uuRbnSDofCsOiT4yMLSG
+         H/Bu5tzm17/a5xgKPp6p+VyXfzQVDEcZ7QRCtiRyrRCzpBtDB3e7mFeJJMniz7OFATd6
+         RMmB/rzzypDDpDhMM8DNZXfpPReK64Wqc2gUX/16daamu8GZKy4SGFZDKWrd/p0jqgZh
+         wsxtE+EN3j6vNlxRFHa1R7JW+z9FFvcBGthFBAfXyYwa8MfieWD2YF9krvGoREFh+WmT
+         lm9LrHm4bVk43UAGdK5dkGL4IwMUoynJimISrAinMqUUWh6wl7vW2psT9+p5O7EX5kY4
+         izWg==
+X-Forwarded-Encrypted: i=1; AKwUvBzgUsH+aa+QuAfzd5YWxnHfgdCRWgOTdieqmNT8xFk5XJg3T5arSsKaq/J9mahH2HQCBy3bhFo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lojSuirBGkmIHagxMhoa7lcRlyJlAa4sdQUQMqbwtC25HysQhT
+	ASl5LQGIrUYmM9lT8HBeIF+6eDlkVLzLrKgIJs34lGIxuoxpy2lkHSG0
+X-Gm-Gg: AYBFou0ah2cDQhjayZuYtmyD9DBCiLGPgcMupb8FDgDwl3S8kmDFQDfLC3JMzcmu/0g
+	mKrNP4T/A5BDP6KF8HetxJvFZjv4nqSZPanxeRt2Ml8/FZ7Kz5ACVI8bl0xsFXssvCBKwQKGkWp
+	vrqqomnofHevv29ZbT1d9BoqL4n6CgaQ45Wm6qZLAZVAq9/ISJaaZnwsZb6eEVGL2D23uLfk2bw
+	TbY22z5DLVJvPr1K53osPI/VLoGGZ8p/LHzOdFeLlffJBIb3ptNxoEMeT42ooYjeMCR9/QXjJKd
+	uTvJvonjVv5TjOckkVy2oNb4HRtf4t4DvZjR9gpgbjhEKuay8v3h5b2hMweEoqMClHdz7HNYC6H
+	LDhhHymTqNQukHN421dsjOztA83aZgJQ9D9+PB62IGn4fcN8HmUJWxXPgAhUBr0fo51IvLiANP2
+	+aGF3WDj13yAWkVNezgsqsEIAs0LJwywH3XBx4ONZLQzMQz9CYuedQ+PTlVz60oXPZkSVwTii8w
+	8mG+c430QaPiNqNpbaexdGMFIqGqVKHLkl9UgB6nLWF4S3ahP6BNrv3AHJCK1xEFn+OJ/OdrslS
+	8Wfv3vXg5tlLIxb7YiqY
+X-Received: by 2002:a05:6a20:4393:b0:3dd:a00a:7ac6 with SMTP id adf61e73a8af0-3dda00a9e68mr10764183637.51.1789976528200;
+        Mon, 21 Sep 2026 00:42:08 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cabb771sm13015876a91.9.2026.09.21.00.42.06
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc72ae70637sm3048650a12.6.2026.09.21.00.42.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 00:42:06 -0700 (PDT)
+        Mon, 21 Sep 2026 00:42:07 -0700 (PDT)
 From: Hui Peng <benquike@gmail.com>
-To: Harry Morris <h.morris@cascoda.com>,
-	Alexander Aring <alex.aring@gmail.com>,
+To: Alexander Aring <alex.aring@gmail.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Stefan Schmidt <stefan@datenfreihafen.org>
 Cc: linux-wpan@vger.kernel.org,
@@ -70,12 +69,12 @@ Cc: linux-wpan@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hui Peng <benquike@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v2 3/3] ieee802154: ca8210: validate data_ind length upfront in ca8210_skb_rx()
-Date: Mon, 21 Sep 2026 07:42:05 +0000
-Message-ID: <20260921074205.2289211-3-benquike@gmail.com>
+Subject: [PATCH net v2 1/4] ieee802154: cc2520: ensure tailroom before skb_put() in promiscuous TX
+Date: Mon, 21 Sep 2026 07:42:04 +0000
+Message-ID: <20260921074207.2289391-1-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-In-Reply-To: <20260919213637.3316595-1-benquike@gmail.com>
-References: <20260919213637.3316595-1-benquike@gmail.com>
+In-Reply-To: <20260919213639.3316625-1-benquike@gmail.com>
+References: <20260919213639.3316625-1-benquike@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,103 +83,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In ca8210_skb_rx(), data_ind is read at offsets 22 (msdulen), 23
-(mpdulinkquality), 29 + msdulen (hdr.sec.level), 30..39 + msdulen
-(security header), and 29 .. 29 + msdulen (payload) without verifying
-that the received SPI frame length len covers those offsets, causing an
-out-of-bounds read when msdulen exceeds len - 30:
+In cc2520_tx(), when priv->promiscuous is enabled, skb_put(skb, 2) is
+called unconditionally to append the 2-byte software CRC without checking
+whether the skb has at least 2 bytes of tailroom, triggering
+skb_over_panic when skb_tailroom(skb) < 2:
 
-  BUG: KASAN: slab-out-of-bounds in ca8210_skb_rx.constprop.0.isra.0+0x137/0x160
-  Read of size 64 at addr ffff888006453ddd by task init/1
+  skbuff: skb_over_panic: text:ffffffffc080071a len:386 put:2
+  kernel BUG at net/core/skbuff.c:214!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+  RIP: 0010:skb_panic+0x170/0x172
   Call Trace:
    <TASK>
-   dump_stack_lvl+0x70/0xa0
-   print_report+0x153/0x4c6
-   kasan_report+0xf1/0x120
-   kasan_check_range+0x125/0x200
-   __asan_memcpy+0x23/0x60
-   ca8210_skb_rx.constprop.0.isra.0+0x137/0x160
-   ca8210_net_rx+0x96/0xc0
-  ...
-  The buggy address belongs to the object at ffff888006453dc0
-   which belongs to the cache kmalloc-32 of size 32
-  The buggy address is located 29 bytes inside of
-   allocated 32-byte region [ffff888006453dc0, ffff888006453de0)
+   skb_put.cold+0x23/0x23
+   cc2520_tx.constprop.0.isra.0+0x8a/0x1d0
 
-Consolidate all length and msdulen validations into a single upfront check
-at the beginning of ca8210_skb_rx() before allocating the skb.
+Ensure at least 2 bytes of tailroom via pskb_expand_head() before calling
+skb_put(skb, 2).
 
-Tested in QEMU with KASAN enabled by passing a short data_ind buffer with
-msdulen = 64 and len = 30 into ca8210_skb_rx().
+Tested in QEMU with KASAN enabled by passing a zero-tailroom skb to
+cc2520_tx() with promiscuous mode enabled.
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Fixes: 59869ebfe7a7 ("ieee802154: cc2520: Check CRC & add promiscuous")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
 Changes in v2:
-- Split out as patch 3/3.
-- Consolidated all length checks in ca8210_skb_rx() into a single place
-  at the beginning of the function before dev_alloc_skb() and dropped the
-  unrelated hdr.seq assignment as requested by Miquel Raynal.
+- Split the cc2520 and mcr20a fixes into four single-issue patches
+  (1/4..4/4) and documented each change in its own commit message as
+  requested by Miquel Raynal.
 
- drivers/net/ieee802154/ca8210.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ drivers/net/ieee802154/cc2520.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 1de6314..2aa7d8c 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -1759,19 +1759,15 @@ static int ca8210_skb_rx(
- 	u8                    *data_ind
- )
- {
--	struct ieee802154_hdr hdr;
-+	struct ieee802154_hdr hdr = { };
- 	int msdulen;
- 	int hlen;
--	u8 mpdulinkquality = data_ind[23];
-+	u8 mpdulinkquality;
- 	struct sk_buff *skb;
- 	struct ca8210_priv *priv = hw->priv;
+diff --git a/drivers/net/ieee802154/cc2520.c b/drivers/net/ieee802154/cc2520.c
+index abfcfe0..5454872 100644
+--- a/drivers/net/ieee802154/cc2520.c
++++ b/drivers/net/ieee802154/cc2520.c
+@@ -482,8 +482,14 @@ cc2520_tx(struct ieee802154_hw *hw, struct sk_buff *skb)
+ 	 * values on RX. This means we need to manually add the CRC on TX.
+ 	 */
+ 	if (priv->promiscuous) {
+-		u16 crc = crc_ccitt(0, skb->data, skb->len);
++		u16 crc;
  
--	/* Allocate mtu size buffer for every rx packet */
--	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
--	if (!skb)
--		return -ENOMEM;
--
--	skb_reserve(skb, sizeof(hdr));
-+	if (len < 30)
-+		return -EMSGSIZE;
- 
- 	msdulen = data_ind[22]; /* msdu_length */
- 	if (msdulen > IEEE802154_MTU) {
-@@ -1779,9 +1775,25 @@ static int ca8210_skb_rx(
- 			&priv->spi->dev,
- 			"received erroneously large msdu length!\n"
- 		);
--		kfree_skb(skb);
- 		return -EMSGSIZE;
- 	}
-+
-+	if (len < 30 + msdulen ||
-+	    (!priv->promiscuous && data_ind[29 + msdulen] > 0 &&
-+	     len < 29 + msdulen + sizeof(struct secspec))) {
-+		dev_err(&priv->spi->dev,
-+			"received truncated data indication!\n");
-+		return -EMSGSIZE;
-+	}
-+
-+	mpdulinkquality = data_ind[23];
-+
-+	/* Allocate mtu size buffer for every rx packet */
-+	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	skb_reserve(skb, sizeof(hdr));
- 	dev_dbg(&priv->spi->dev, "skb buffer length = %d\n", msdulen);
- 
- 	if (priv->promiscuous)
++		if (skb_tailroom(skb) < 2 &&
++		    pskb_expand_head(skb, 0, 2, GFP_KERNEL)) {
++			rc = -ENOMEM;
++			goto err_tx;
++		}
++		crc = crc_ccitt(0, skb->data, skb->len);
+ 		put_unaligned_le16(crc, skb_put(skb, 2));
+ 		pkt_len = skb->len;
+ 	} else {
 -- 
 2.47.3
