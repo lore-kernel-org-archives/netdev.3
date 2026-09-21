@@ -1,70 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB41442F709;
-	Mon, 21 Sep 2026 12:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5030B495041
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789993956; cv=none; b=ZCeRxOZz5JdsP7ze2Mg9zRXbh9I4EOCVq+riVdiQz0YfZflAhky0a4s6rBMYyvscVYmX05QKsQ02f0MT9JRvmcyapLfJQ5YS1UZlv38/JoLAK1MxzSze4ZSYLSGb1VsxtY9kRFYNrMsz0CRYleT8TJegjLSwL9E5K+q/kILpjpw=
+	t=1789994021; cv=none; b=TGX1ZiKn4GOgiKFJ/rDwiaJ5HzjwqHsFtUTsWDx9OEDRE34om6zQ+snoMerXVTC5dTFs2yrF/6JWv1f/Il+DvWBsoWRJf5mOaYwZ7XDweXMTzXld+zLztN7+GoI82UWAVBYrIOL3+P9fibNEOcnbmzZ0kPkH/n2G2aAmq9rvz2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789993956; c=relaxed/simple;
-	bh=2IG0QG+r8CgOn2v+pNiJiMGTrc8Cjeah/exqAT1s+go=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWrN1oe0G8sGemSka9OFfJFpX6ROIi3czJ1C9MaVkKeUkP43G5gCFc7LN5ykXIwfbCHEiP72mHKJTQio0Bsv3DCP3bEOp7uRrI7DziRZl2fYSOZi3yC2DBqvQjK7lHRn1g69OobKMr61VTgb/7jCOC8X/69aZo/NkHQoOvBkESc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1WTWXrf; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1WTWXrf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F0B1F000FF;
-	Mon, 21 Sep 2026 12:32:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789993955;
-	bh=WK+5JD3aUCohiHM5k4NLIXR0LbkjGu6NUYd2nH0TAxE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e1WTWXrf5sARik8mELVx585UBQ5WHcnwZ2AS3naeLjrZ5Eyk+S/1KjCfWN1XJUhtq
-	 YLMfPxZwWfrMluW7WHP9htk28pwftFhEg1OMZs3J57HYwTKnVzYltoMKCWnmtxIb8G
-	 3hn0raohIf7EIuL7lCc962yZ5CjAviJisEKhSszA7ZkDLbjX0NNgeIm1FXOY7/TvZB
-	 JMTTmRXBs2AJmIAKe0ffEKQFe4hqvoW9DE+OH64kYw5yppHrE8yl6f4y+pmsXnjA+L
-	 4M1ysb3dsAx9StE9Vnru3RMf2dfFBNAzMh4Fh6AaMA3ZflfVUJbtpGqU1olqFF0fvF
-	 Nar2/gGMtpS4A==
-Date: Mon, 21 Sep 2026 13:32:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Toke Hoiland-Jorgensen <toke@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH net] net: mvneta: clear XDP pfmemalloc flag between frames
-Message-ID: <20260921123230.GN13925@horms.kernel.org>
-References: <20260920-mvneta-xdp-clear-frag-fix-v1-1-d7efadecf959@oss.qualcomm.com>
+	s=arc-20240116; t=1789994021; c=relaxed/simple;
+	bh=1j1QU/4naUGwVc988zrlJ6S551c+tqiuwpenUdezBxc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sKCNrDJMgh0PSs+hWZE33V7Ptdw7GiBK9lhHubRZ2TlkXgiuPqKLnXrMd7Fs1EwsYVhgslMJYnS31MJLIkMQvAc2ANznqXy41jP/Ny/G7OUJQe8h7kJnFvv54+VsKFC9U9KG+PLnuas17qbcjRAclVB9Le7qAaYlIMTFDmsMy64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-80d221f75caso3023261a34.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 05:33:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789994017; x=1790598817;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SrWCKhmhwPKk2RRpke7Ort9NY2I0LwsCKnerl92C5Ak=;
+        b=HnzmHv079+ii4MCgo9S+fRzpID2JE4dn1cdGKv/BcNOv2CsxG1sTajpAS5+4U67wLT
+         n/UqjAs4k2dqn2NG5PQIHvbZ/4VHkfVvwUbtTRcfxU38vppSKZNoJmaq1ahmhyX7xigN
+         vBLz8eotwgCJ2S3JL1AQ/df4hPjKZs9tTdpCE4D8dHIQF3JLb5zNW4eRBkBPeTnvPktS
+         cD5CYgAwidqyFH7QTa4sdEdmkslht8jwkEFU/OxWvUAh18KwAXnvYc4CoG9OK2zOj7UG
+         w8lZkAEDjSNDRmJe4KbUhwo2J0Pj4fQqjUvsRH6l8680C01BaC9Xmt+Un1hN6CflmsX8
+         cc0g==
+X-Forwarded-Encrypted: i=1; AKwUvBwqMcLSQxSSL1CjfOvnD7qEJfphEqSsV3/CLDl9vxzXdx2ZjSESm6me40pl9fKh57vEgzeTdgg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mqub6yQfuxHb0t3NMY6gjFBTmHYmWikddRhFdVpP9UVj3pfk5o
+	Y91TJn7A/zbgQzfmECnzYyAhXTPGiOvU8CEnnAjD4XTEiuLlK2VvqTXss5qrFFHb0YhkRBEbxdR
+	qP3TREBYUOYE0vjY4CHN2XBlc43tyq5DiGBD1IEQBoWGO6wnA9w6o+8j0DEE=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920-mvneta-xdp-clear-frag-fix-v1-1-d7efadecf959@oss.qualcomm.com>
+X-Received: by 2002:a05:6820:859a:20b0:6cd:3fdc:a93d with SMTP id
+ 006d021491bc7-6cd3fecc4afmr4491628eaf.90.1789994017290; Mon, 21 Sep 2026
+ 05:33:37 -0700 (PDT)
+Date: Mon, 21 Sep 2026 05:33:37 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ab12421.3179f8cd.1e36b2.001f.GAE@google.com>
+Subject: [syzbot] Monthly wireguard report (Sep 2026)
+From: syzbot <syzbot+list3508dff347594ebfd49c@syzkaller.appspotmail.com>
+To: Jason@zx2c4.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, wireguard@lists.zx2c4.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Sep 20, 2026 at 09:55:09AM +0200, Lorenzo Bianconi wrote:
-> In mvneta_swbm_add_rx_fragment() the XDP pfmemalloc flag is set on the
-> xdp_buff if the page under pressure is a pfmemalloc one. The xdp_buff is
-> reused for the next packet and the flag is never cleared, so a pfmemalloc
-> fragment in one packet wrongly marks the skb of a subsequent packet as
-> pfmemalloc. Clear the flag in mvneta_swbm_rx_frame(), which is invoked for
-> each new frame.
-> 
-> Fixes: ed7a58cb40bd ("net: marvell: rely on xdp_update_skb_shared_info utility routine")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Hello wireguard maintainers/developers,
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This is a 31-day syzbot report for the wireguard subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireguard
 
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 21 have already been fixed.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 9       Yes   BUG: workqueue lockup in wg_packet_decrypt_worker
+                  https://syzkaller.appspot.com/bug?extid=d0d2f1a65f45b319d25d
+<2> 3       No    BUG: soft lockup in wg_packet_decrypt_worker
+                  https://syzkaller.appspot.com/bug?extid=27a6e390f71f14f4fecf
+<3> 20      Yes   INFO: rcu detected stall in wg_packet_handshake_receive_worker (3)
+                  https://syzkaller.appspot.com/bug?extid=48f45f6dd79ca20c3283
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
