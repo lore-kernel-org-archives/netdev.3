@@ -1,152 +1,365 @@
-Received: from mail-wr2-f8.google.com (mail-wr2-f8.google.com [74.125.225.72])
+Received: from mail-yx2-f9.google.com (mail-yx2-f9.google.com [74.125.224.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7206496D43
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0129D51AFF9
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790029441; cv=none; b=cwf2G+/OClWErzOelU/f2sCBF5Qw8jUM6/XixAsHLxd24mCQ6z347ME4gvhz3O17AHJ4+yTiryZlxn/6vXsgsfxSHnCv4N1U3NWXvsHMAxjOmCvm1yHgVO78ZXDONIuP6BpHZHeFjzjgS4tYtxCAXEWo3me4wETZ8jYoyf9mK3M=
+	t=1790029531; cv=none; b=iXS9DJ0jD8JdMswqmtYAMbnLFTSP/jnSem+2hbPkKtj+flo/umdNEq13mpWMoEpE2gr+xtOaOgfZMoNrB0cX0btvwPGN3YvMOd4Sq11X3pVYvsRAKvSOTbYa9KMhHH6Jb3CULtw6g7fyJsNOmRP+I9RP6IqKCcfLmjZ4d22RoXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790029441; c=relaxed/simple;
-	bh=bSLQ8dhyTkMsa0T3MRybn10V2qri87KKmc+w8o1F3xM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U58G29OLLBF5gF/f7x29bgmoO4cZb/EAPNTAtR5CHW3uWii9bk83HWQQak/wz3Uq3zdiuo6iR+dF31aGw2mBlV+rzI3Pg8Cq8iT6XIQeYAONqZekNc4GFSFCir/+ftUjUj1pjMLW0SQmCdATSzYZZto4+n3gDlUH2lN2rJ12eXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f8.google.com with SMTP id ffacd0b85a97d-482e1e7a4f6so1429674f8f.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:23:59 -0700 (PDT)
+	s=arc-20240116; t=1790029531; c=relaxed/simple;
+	bh=PT3W/nO28TBwi5wqZrs3EjZOULa8Pkq0O82+HXOv7bg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qfcl/lD/WNSM0UQYIKg3floXmgelErjPFRDJQ/S2tlq3iymq8bDvpl3rea15usLkrkXynuO1BF+LRU34E19/GLP7P9fXjNi4LRICLjneThD6pgofOKT8zv0ohc/7ePNOo6rLBRA8cEBY7isLSTwCw5acVLyvk+BiSlbn1/Zpys0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com; spf=pass smtp.mailfrom=amutable.com; dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b=dYLFD8ta; arc=none smtp.client-ip=74.125.224.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b="dYLFD8ta"
+Received: by mail-yx2-f9.google.com with SMTP id 00721157ae682-85b8fbb56ceso2294397b3.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:25:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amutable-com.20251104.gappssmtp.com; s=20251104; t=1790029528; x=1790634328; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yHGVqmok/0GVfDYu2EI5EhSCaWnpiCB5OMGPCzXLcFA=;
+        b=dYLFD8taDP+waPb3luhu6g6oxSOEHhlH8EdTMH7rlkTwPvU7xO6on56eNDEoXOTvYe
+         dIGjrWsfI0oEgOSGFBMxejvziW00PCTgzB6YIshNU/1ipQiH+dCaHq6Z1Lnqz54NRC4R
+         YV2wK1q9WwY/ncmdIw7T6briUT8lou8wd7TRLd2+FI3YvvCMzYOO/78J30VlptFUW7dg
+         lK4iJGaB73jVfqP5Le+TMc6qmoEpr967YwCoYqYqo8eIy1T5xQsmWKpGRKQyhyqZwSc8
+         nP5FNv4Gv2HbysRqJaBpepSTrtwW5p7sZ5BWvAWGoyAgvtqvv3Dwl2ckGVCPfPmvzSM/
+         DQjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790029438; x=1790634238;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZWKBhus7Q6cGpJkKuYawt2j9PRf/Qc0mjhsFcNxeZ9c=;
-        b=q4clbKnd1nyEsAPEpf3+FB2wc8ObIRo10PVdKaLKg/m1jb5JXuTQJSZrRDHshwpHgW
-         +COIO4GxNEwK9YBaOabf+MQAveEYn2uF+idIiXIpzRY3ODlP/vbmSJp5gLB14G8R5/Fs
-         J1ovAjNe1sf/5Jvg5DmeKlkCQCCvSQ6fKLTyMHHKUbC0S+fAWBm1Pb7O5Xnwa5Zqxajm
-         bSfmm+H0y0I2wbUYjdJQNhHUy+YaEOUn3v4zQsHfUHNA0er6WKYNDkvAYFw+MKYNbuht
-         x0vXL0HY7Fjl8vtvULwhL1/mQhHIDiKtMv3Y44jj6DNNEdnnb+qjA6HtYUTOFqP2eTr7
-         SvqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBybxUd57cJ63YpCY4x0oAHbUC4TSUX84M3jXuysX1OinG2A583nP5Y8idojdIIfxB0t3TcPyds=@vger.kernel.org
-X-Gm-Message-State: AFuF++leErq6enkzhexPXdFbPRfl62L73KTVAZsoYlzDrPlzbV/4fNmE
-	WEKLlJ4Oss8hm9pAjVvmS/2PAg0v3h1TfDQSZDCsD4wYvPmQC3vlN7fZ
-X-Gm-Gg: AYBFou3Kb2wVMO11W4FPSI+qpZ0hFiovuXEQqDXwULv5mQQA2BBv35RV+etI+//S87n
-	xxbbl/YiLmPl2U/+miZdcd1MCYQs9bfrmGthvJh6y/VCDqQ2KX2PJX9tFSMnFcNF3LHdlbg19Mj
-	mQkR3bDfe0AsiVrV5j6RTWD9190BcjDbZYXYccYuw9/3OV3plygaA0hVFa9Z/w/ZYnGNZE4uNum
-	5bqwntzvR1bhmN9ZXxYlNu52MrkZQTVAHkh++e7p+bkLZn77VXw7jLDgHJgThkvufd32r08PXjH
-	ogUvARJnPeM83DB7FXjNegp4cdSmRqfQpmeUEhA32mszKl2tie9T6zAw5YxPeV7/12fWJgz/PEL
-	JO4iVI9zD3cOfN44bwstrwO3baPZR/1SRbspDlmfhEmQgb6bnXHRKxIPe+CaarjLIlcJETlryHo
-	XVpzr0/Qmw1gxheB9A7b6ILgmf+FyTyark+P4CSRgNk+uezB0GZFMFVFCbXlFBE5cVGFv3N7wXk
-	ql3b9SD7BInFumF8L3idueU1kIvW4lZYQLAHAHidyqqoh3JrQ==
-X-Received: by 2002:a05:6000:2301:b0:487:a3f:1ea6 with SMTP id ffacd0b85a97d-4871e211724mr18432556f8f.11.1790029437903;
-        Mon, 21 Sep 2026 15:23:57 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862244e1asm726393f8f.11.2026.09.21.15.23.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Sep 2026 15:23:57 -0700 (PDT)
-Message-ID: <7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
-Date: Tue, 22 Sep 2026 00:23:55 +0200
+        d=1e100.net; s=20260707; t=1790029528; x=1790634328;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yHGVqmok/0GVfDYu2EI5EhSCaWnpiCB5OMGPCzXLcFA=;
+        b=AN0NuogZJ2d70grSlc11KXrlhHgXYk8GlJCtI9d2gJMFtKwsbkpsoMW+slN7zQUNik
+         +iW/Rc6qG98b9ioU4qUK3xI3SxuDxG/MOwWQSAIetAWcUwBYnTQparRTkF4421QqldFA
+         TfJkL+WQAWRTcppunsTk9F+UJr1IKKu6OgsIU75fHaqGOQtlQ7gkPBpxOgHU75NLVwnv
+         nu1ABFdd3QzeosQp9B32C72bvB1Q410nZoxQZvKtFK7d/K/y4FoVypBwqWfjmQCosmfn
+         pWwsKquPsuj3zNJ+e+910yO8iDVyrgfmfdB3gerMfzNBC6KWcSc2ITo2vakNAY8qk9Aq
+         N9GQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxZzyHhi0NP8Hg1A7i5GpTEV9IDgYEnSS0hRGnPaDfjQZY4KGxyR6ql+D9aQJTA1Q/kI0W9nos=@vger.kernel.org
+X-Gm-Message-State: AFuF++m4D4oh/O/rsoPdPB8G0lM6yZ3Zx2rOEZKpXrbrEqiyJUX0qNLM
+	ZzxYI98H/iJBy27RMxykBQVBziMSBDdYWpAi9WbvqkWjy/s1bPWrzAnHGIMOby5O6Vh0
+X-Gm-Gg: AYBFou15Do9D9BUHVIkNz2VMxQ0b7SXFcuol9yrOsNiUwQXYJ3z2KIxxXNVa2Uc+EWq
+	9iLM77r3selFYfeWpBWgTbp9sFY6Xn2v1v7TG57Zc1O0a+2O3DufECU+tmYqeMN5OYglW94na7F
+	MHCIQ7otb4d9Y9fN9IDHIsUbMGSjWT2lN9sHJgAlauLmcVkI1vf2lyM9Rv0zkxGmN5JzqFJrnWB
+	kaSriffsYYACPTJZ77FwX7BdO9ZG1L1ir2/uspwWYYX8AsGi0rwjj49ziDOKeHk4FHyE1tI6dV0
+	JhAlKyKbGc7Ngfd/QT+a2VVYOjEVbK+BA3XLdVfjlD7mPrOVKSojC0fC/jFpQouTbiQ0WLF1Xpg
+	QAaSkSHJEUHq/JEXLQoLu7pwMeNryIe178yhjsrIfhmwUlZGClMP7rkNbcV2M0DLyaoiTjwRHNl
+	66noWNfM6tFZHrP/MZyMC7RkCCAUCvW8icIay0jjUZL4IsqAksj+pjBFvN1ePv6xdlK16Vnudne
+	0NupfyFSXgMXU2JciM902Q3u76p6h0XOGBZJXQgW2E=
+X-Received: by 2002:a05:690c:e20b:20b0:873:5c6b:a324 with SMTP id 00721157ae682-8a1f902f70emr4003017b3.30.1790029527751;
+        Mon, 21 Sep 2026 15:25:27 -0700 (PDT)
+Received: from toolbx (104-53-165-62.lightspeed.stlsmo.sbcglobal.net. [104.53.165.62])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a23e676c72sm2049217b3.33.2026.09.21.15.25.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 15:25:27 -0700 (PDT)
+Date: Mon, 21 Sep 2026 17:25:34 -0500
+From: Andrew Halaney <andrew@amutable.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>
+Subject: Re: [PATCH v2 03/10] net: add SO_PASSPIDFD_THREAD to get a
+ thread-specific SCM_PIDFD
+Message-ID: <arGuC7Kaml0N728m@toolbx>
+References: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
+ <20260909-work-unix-passpidfd-v2-3-7bd342abb2d1@kernel.org>
+ <CAAVpQUAK8uhZtO+oza3=5qfZvxy+RHFQd2AQ2y9FpWKbK5jgyg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/4] net: dropreason: use new __print_sym() in tracing
-To: Matthieu Baerts <matttbe@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Johannes Berg <johannes.berg@intel.com>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- dev@openvswitch.org, linux-trace-kernel@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Adrian Moreno <amorenoz@redhat.com>, Antoine Tenart <atenart@kernel.org>
-References: <20260921101538.97286-6-johannes@sipsolutions.net>
- <20260921101538.97286-9-johannes@sipsolutions.net>
- <98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUAK8uhZtO+oza3=5qfZvxy+RHFQd2AQ2y9FpWKbK5jgyg@mail.gmail.com>
 
-On 9/22/26 12:03 AM, Matthieu Baerts wrote:
-> Hi Johannes,
+On Wed, Sep 09, 2026 at 10:24:47PM -0700, Kuniyuki Iwashima wrote:
+> On Wed, Sep 9, 2026 at 3:43 AM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > Currently, SCM_PIDFD carries a pidfd for the thread-group leader. A
+> > broker or the coredump server cannot learn the identity of the specific
+> > thread that sent a given message. Now that both struct pids are recorded
+> > a receiver can ask for the specific identity it needs.
+> >
+> > So add SO_PASSPIDFD_THREAD as a sibling of SO_PASSPIDFD. Either option
+> > makes recvmsg() deliver an SCM_PIDFD. SO_PASSPIDFD sends a pidfd for the
+> > thread-group leader and SO_PASSPIDFD_THREAD sends a pidfd for the
+> > specific thread.
+> >
+> > The two options are mutually exclusive. Enabling one switches the other
+> > off, so getsockopt() always reports which of the two is active.
+> >
+> > On SOCK_STREAM sockets recvmsg() only stops merging data at a thread
+> > boundary when the receiver asked for a thread pidfd. For SO_PASSCRED and
+> > SO_PASSPIDFD receivers all threads of one process remain a single
+> > writer.
+> >
+> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> > ---
+> >  arch/alpha/include/uapi/asm/socket.h  |  2 ++
+> >  arch/mips/include/uapi/asm/socket.h   |  2 ++
+> >  arch/parisc/include/uapi/asm/socket.h |  2 ++
+> >  arch/sparc/include/uapi/asm/socket.h  |  2 ++
+> >  include/net/sock.h                    | 10 +++++++++-
+> >  include/uapi/asm-generic/socket.h     |  2 ++
+> >  net/core/scm.c                        | 19 +++++++++++++------
+> >  net/core/sock.c                       | 26 ++++++++++++++++++++++++--
+> >  net/unix/af_unix.c                    | 11 ++++++++---
+> >  9 files changed, 64 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
+> > index 946a5fad2691..bb3d534826bb 100644
+> > --- a/arch/alpha/include/uapi/asm/socket.h
+> > +++ b/arch/alpha/include/uapi/asm/socket.h
+> > @@ -157,6 +157,8 @@
+> >
+> >  #define SO_RIGHTS_NOTRUNC      85
+> >
+> > +#define SO_PASSPIDFD_THREAD    86
+> > +
+> >  #if !defined(__KERNEL__)
+> >
+> >  #if __BITS_PER_LONG == 64
+> > diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
+> > index f1641dde135f..269badcaa086 100644
+> > --- a/arch/mips/include/uapi/asm/socket.h
+> > +++ b/arch/mips/include/uapi/asm/socket.h
+> > @@ -168,6 +168,8 @@
+> >
+> >  #define SO_RIGHTS_NOTRUNC      85
+> >
+> > +#define SO_PASSPIDFD_THREAD    86
+> > +
+> >  #if !defined(__KERNEL__)
+> >
+> >  #if __BITS_PER_LONG == 64
+> > diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
+> > index f3a3815c7dc2..313aee10a52c 100644
+> > --- a/arch/parisc/include/uapi/asm/socket.h
+> > +++ b/arch/parisc/include/uapi/asm/socket.h
+> > @@ -149,6 +149,8 @@
+> >
+> >  #define SO_RIGHTS_NOTRUNC      0x4053
+> >
+> > +#define SO_PASSPIDFD_THREAD    0x4054
+> > +
+> >  #if !defined(__KERNEL__)
+> >
+> >  #if __BITS_PER_LONG == 64
+> > diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
+> > index 7907f3b1f0ee..bd3e69bcce7a 100644
+> > --- a/arch/sparc/include/uapi/asm/socket.h
+> > +++ b/arch/sparc/include/uapi/asm/socket.h
+> > @@ -150,6 +150,8 @@
+> >
+> >  #define SO_RIGHTS_NOTRUNC        0x005e
+> >
+> > +#define SO_PASSPIDFD_THREAD      0x005f
+> > +
+> >  #if !defined(__KERNEL__)
+> >
+> >
+> > diff --git a/include/net/sock.h b/include/net/sock.h
+> > index 51185222aac2..fc09c92e8a83 100644
+> > --- a/include/net/sock.h
+> > +++ b/include/net/sock.h
+> > @@ -356,6 +356,7 @@ struct sk_filter;
+> >    *    @sk_scm_security: flagged by SO_PASSSEC to recv SCM_SECURITY
+> >    *    @sk_scm_pidfd: flagged by SO_PASSPIDFD to recv SCM_PIDFD
+> >    *    @sk_scm_rights: flagged by SO_PASSRIGHTS to recv SCM_RIGHTS
+> > +  *    @sk_scm_pidfd_thread: flagged by SO_PASSPIDFD_THREAD to recv a thread SCM_PIDFD
+> >    *    @sk_scm_unused: unused flags for scm_recv()
+> >    *    @ns_tracker: tracker for netns reference
+> >    *    @sk_user_frags: xarray of pages the user is holding a reference on.
+> > @@ -562,7 +563,8 @@ struct sock {
+> >                                 sk_scm_security : 1,
+> >                                 sk_scm_pidfd : 1,
+> >                                 sk_scm_rights : 1,
+> > -                               sk_scm_unused : 4;
+> > +                               sk_scm_pidfd_thread : 1,
+> > +                               sk_scm_unused : 3;
+> >                 };
+> >         };
+> >         u8                      sk_clockid;
+> > @@ -2986,6 +2988,12 @@ static inline bool sk_is_stream_unix(const struct sock *sk)
+> >         return sk_is_unix(sk) && sk->sk_type == SOCK_STREAM;
+> >  }
+> >
+> > +/* SO_PASSPIDFD or SO_PASSPIDFD_THREAD asked for an SCM_PIDFD. */
+> > +static inline bool sk_scm_pidfd_wanted(const struct sock *sk)
+> > +{
+> > +       return sk->sk_scm_pidfd || sk->sk_scm_pidfd_thread;
+> > +}
+> > +
+> >  static inline bool sk_is_vsock(const struct sock *sk)
+> >  {
+> >         return sk->sk_family == AF_VSOCK;
+> > diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
+> > index 84ea7b92936e..d1e5c6de146d 100644
+> > --- a/include/uapi/asm-generic/socket.h
+> > +++ b/include/uapi/asm-generic/socket.h
+> > @@ -152,6 +152,8 @@
+> >
+> >  #define SO_RIGHTS_NOTRUNC      85
+> >
+> > +#define SO_PASSPIDFD_THREAD    86
+> > +
+> >  #if !defined(__KERNEL__)
+> >
+> >  #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+> > diff --git a/net/core/scm.c b/net/core/scm.c
+> > index 9b9e119c353a..d69768414af4 100644
+> > --- a/net/core/scm.c
+> > +++ b/net/core/scm.c
+> > @@ -499,9 +499,13 @@ static bool scm_has_secdata(struct sock *sk)
+> >  }
+> >  #endif
+> >
+> > -static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+> > +static void scm_pidfd_recv(struct sock *sk, struct msghdr *msg,
+> > +                          struct scm_cookie *scm)
+> >  {
+> > +       enum pid_type type = sk->sk_scm_pidfd_thread ? PIDTYPE_PID : PIDTYPE_TGID;
+> > +       struct pid *pid = scm->pid[type];
+> >         struct file *pidfd_file = NULL;
+> > +       unsigned int flags = PIDFD_STALE;
 > 
-> (+Cc openvswitch devs)
+> nit: Please keep the reverse xmas tree order.
 > 
-> On 21/09/2026 12:06, Johannes Berg wrote:
->> From: Johannes Berg <johannes.berg@intel.com>
->>
->> The __print_symbolic() could only ever print the core
->> drop reasons, since that's the way the infrastructure
->> works. Now that we have __print_sym() with all the
->> advantages mentioned in that commit, convert to that
->> and get all the drop reasons from all subsystems. As
->> we already have a list of them, that's really easy.
->>
->> This is a little bit of .text (~100 bytes in my build)
->> and saves a lot of .data (~17k).
-> Thank you for working on that! But it looks like it breaks the
-> openvswitch test:
 > 
-> https://netdev-ctrl.bots.linux.dev/logview.html?f=%2Flogs%2Fvmksft%2Fnet%2Fresults%2F833743%2F9-openvswitch-sh%2Fstdout#L168
+> >         int len, pidfd;
+> >
+> >         /* put_cmsg() doesn't return an error if CMSG is truncated,
+> > @@ -517,10 +521,13 @@ static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
+> >                 return;
+> >         }
+> >
+> > -       if (!scm->pid[PIDTYPE_TGID])
+> > +       if (!pid)
+> >                 return;
+> >
+> > -       pidfd = pidfd_prepare(scm->pid[PIDTYPE_TGID], PIDFD_STALE, &pidfd_file);
+> > +       if (type == PIDTYPE_PID)
+> > +               flags |= PIDFD_THREAD;
 > 
-> Maybe the test needs to be adapted to get the same info differently?
-> (and adding CONFIG_TRACEPOINTS to the selftest config file)
-The parsing in the test will definitely need to be updated, i.e.,
-the numbers swapped with the names of the drop reasons.
+> I'm wondering how this flag can be useful.
+> 
+> I thought this should be
+> 
+>   if (pid_has_task(pid, PIDTYPE_TGID))
+>     flags |= PIDFD_THREAD;
+> 
+> because when the sender sends TGID, this flag is set even though
+> it is a thread leader.
+> 
+> It seems PIDFD_THREAD is just feedback of whether the
+> receiver has set SO_PASSPIDFD or _THREAD, which the
+> application should already know.
+> 
 
-IIUC, this change only affects the printing and doesn't affect debugging
-tools like retis that attempt to surface the drop reasons.  But, maybe
-Adrian and Antoine (CCed) may want to have a glance as well.
+Isn't this flag necessary to indicate how to handle signals? i.e. its acting like
+PIDFD_THREAD acquired pidfds defaulting to pidfd_send_signal() with
+PIDFD_SIGNAL_THREAD. userspace can even read that back with fcntl() so
+if you were to pass the pidfd around with SCM_RIGHTS, etc the other end knows
+what type of pidfd they've gotten.
 
-Best regards, Ilya Maximets.
+> 
+> > +
+> > +       pidfd = pidfd_prepare(pid, flags, &pidfd_file);
+> >
+> >         if (put_cmsg(msg, SOL_SOCKET, SCM_PIDFD, sizeof(int), &pidfd)) {
+> >                 if (pidfd_file) {
+> > @@ -539,7 +546,7 @@ static bool __scm_recv_common(struct sock *sk, struct msghdr *msg,
+> >                               struct scm_cookie *scm, int flags)
+> >  {
+> >         if (!msg->msg_control) {
+> > -               if (sk->sk_scm_credentials || sk->sk_scm_pidfd ||
+> > +               if (sk->sk_scm_credentials || sk_scm_pidfd_wanted(sk) ||
+> >                     scm->fp || scm_has_secdata(sk))
+> >                         msg->msg_flags |= MSG_CTRUNC;
+> >
+> > @@ -586,8 +593,8 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+> >                 scm_detach_fds(msg, scm, READ_ONCE(u->scm_rights_notrunc));
+> >         }
+> >
+> > -       if (sock->sk->sk_scm_pidfd)
+> > -               scm_pidfd_recv(msg, scm);
+> > +       if (sk_scm_pidfd_wanted(sock->sk))
+> > +               scm_pidfd_recv(sock->sk, msg, scm);
+> >
+> >         scm_destroy_cred(scm);
+> >  }
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 1ad41904db25..f9615b0de10e 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -1571,10 +1571,25 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+> >                 break;
+> >
+> >         case SO_PASSPIDFD:
+> > -               if (sk_is_unix(sk))
+> > +               if (sk_is_unix(sk)) {
+> > +                       /* Mutually exclusive with SO_PASSPIDFD_THREAD. */
+> >                         sk->sk_scm_pidfd = valbool;
+> > -               else
+> > +                       if (valbool)
+> > +                               sk->sk_scm_pidfd_thread = 0;
+> > +               } else {
+> > +                       ret = -EOPNOTSUPP;
+> > +               }
+> > +               break;
+> > +
+> > +       case SO_PASSPIDFD_THREAD:
+> 
+> If SO_PASSPIDFD had boolean check, it would have been possible
+> to reuse SO_PASSPIDFD==2 as SO_PASSPIDFD_THREAD.
+> 
+> Given two options are mutually exclusive here, I think it's cleaner
+> to have u32 SO_PASSPIDFD_OPTIONS or something, which can
+> store 32 flags for future extension.
+> 
+> #define SO_PASSPIDFD_OPTION 86
+> #define SO_PASSPIDFD_THREAD 1
+> 
+> Then, sk_scm_pidfd_thread will be used in unix_skb_scm_eq()
+> and scm_pidfd_recv() only.
+
+
+Are they really mutually exclusive? I could see a world where
+maybe you want both set. If we do treat it as exclusive is it
+a last option wins sort of thing?
+
+i.e.:
+
+    1. set SO_PASSPIDFD
+    2. set SO_PASSPIDFD_OPTION with SO_PASSPIDFD_THREAD
+
+does that just result in a SCM_PIDFD related to the thread?
+and then if we do a SO_PASSPIDFD_OPTION with 0, does that
+just stop sending the cmsg at all (or does it go back to SO_PASSPIDFD)?
+
+To me it would be kind of nice if they were unique / independent,
+i.e. if you did the above you'd get SCM_PIDFD and SCM_PIDFD_THREAD type as well
+(and I don't know if I'd make it have flags like that then and instead
+just keep it the way it is). That also seems to pair with SO_PEERPIDFD_THREAD better
+which has to be a separate option since you can't shove in any flags.
+
+Am I missing something? Happy to see it done either way but keeping them
+exclusive and adding options in kind of confuses me with expected behavior.
+
+Thanks,
+Andrew
