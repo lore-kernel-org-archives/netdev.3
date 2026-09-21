@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CAA31E82E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7392421239;
 	Mon, 21 Sep 2026 10:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789986052; cv=none; b=Tq+gB0wUlOdje4OKa1QH3sXK8hJ3jsTzGRQZs4tKl0tpva9FLIHW3YL98kF+9oZUrQkAQD27Wlebbt74yacNz2N6WlIReslStMCsp7H/mhco4LJGSDxb7Kjy0tyipnpvLA1mcyaBCAoBENvyovJ7Bkgj6JYFBvafaP/8ioZd/zQ=
+	t=1789986054; cv=none; b=c1ngCynKWtigUCXCMjfuXeLKiHFzlaYuZOl/pXI8xSZ+fTdax41o4zyxeVUXAvEy9ehFeXz9FCb4Aa0QG4DuvWG3/E6jvWJAextTnzOZ8IJvdj+yYpr9PqIftTQhKK0bPxXGmEQE+mmg6To08wLZm3bVDjPYA7IsxvarNOybvGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789986052; c=relaxed/simple;
-	bh=QmOgBzA2Kq2tYkYWMPInrTyhbi7hBNQhHZS7PB9kXaE=;
+	s=arc-20240116; t=1789986054; c=relaxed/simple;
+	bh=ZkFdrxlLVOOpYbPObEQxAjUcF+f/UYYm/hhuSp5UD/Y=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rVeHyCKhTZpRljpVnjbhJFFGF8fWUff/1DK6/hUZNDjTmNM5fQdUl0buuutNAhysKYMb4dhKl9OyYsqX/Hei0Ga23gIpb8OaweIuRph71+f5ce3IiBgj08Ct6BR6bqV6AbwFoBf3bztK2hhqjM9j1SdqmK6T2Z7dvJ0Eqkk5XC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SETYlG2m; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=HqcYdlWdmxMpX05TVP90q/zc+engaQRCLL5YC6egs37VAU6DMGsAZXANgwxVwjpYLaFi4l7Wjms84SagTHeIVROHQ9HFS7x+T/eUffGD58cQazowOIToalJw5N+hvKx/SpbTRovKg1fpbaIyODmaXzwt+KSz84EedpOoOL9eXD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DG7PK65y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SETYlG2m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02841F00893;
-	Mon, 21 Sep 2026 10:20:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DG7PK65y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88121F000FF;
+	Mon, 21 Sep 2026 10:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789986046;
-	bh=seDXjnfqJ0rhIy2Fav3ax7NOc5hwcP/VOGFy9gPK4P0=;
+	s=k20260515; t=1789986047;
+	bh=B9t0ZRWU00VJFvc/Xu88sxdaJ/htyQlwpOdwOmlDdKs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SETYlG2mDOHsqpos4gaM9/jzJebQ9kgrOd0Khn8y/pAwZxLJzN8v0iRDunkDka8yN
-	 Arf6UFW1T1O8nXoGEOIpbDdYdR22p4Iy++YjYX7WVSjauw/YUANK/mODh/ea6jB/Q9
-	 1/wtkpzOhfHJfTjdXJEHtzfp/5ISG4MsvilZesuU+RTLJcswP8gaIaWZGlhfuiKp2N
-	 O6UWDTWSog5XfHnTHLbYSuRJNpKM16pajj6xp3nX30YomLAuy9HD6cGId1THdgF5AC
-	 4ZzV6wAY/eGaXZZCqEB3NBs5bJbINadgaQtRf9CI7CKza2y+E/FPHDgbKkbEorDRlX
-	 jHFZ7SUFUO+/w==
-Subject: Re: [PATCH net-next v13 2/5] net: rnpgbe: Add basic TX packet
- transmission support
+	b=DG7PK65y5WphFUhJTdkW86ETdoKmJe9WwDNC+AVVIB8g+jDDdwwIwxd8m/yPm6ZPC
+	 WQCQ4Umt8iVirGQg+5VAmxna/A2MLpr7+p2cHpDKyuVQMhxKo2KQu29mIEdqZFfo8o
+	 CyIH6x+foGCETWtx/M+rcCPtC5d2WxOUUtMDkXKdOdZTEteRS4Afiyo63QVydgWhlN
+	 5Nc/rSUjzsUXjJv3jdOzzcONds0lrxs6pRegVvZ3KfRX8jbzhj21pvZGpU+zDufvoU
+	 wScK8fijCIwCbthXH1Fcosnraep4HdVh4qCnlbz9cua6Bq7ONFBopOkCXWP0atcDNW
+	 U8HQk5PGJixrw==
+Subject:
+ Re: [PATCH net-next v13 3/5] net: rnpgbe: Add basic RX data path support
 From: netdev-bot+sashiko@kernel.org
 To: dong100@mucse.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
  u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, yaojun@mucse.com
-Date: Mon, 21 Sep 2026 10:20:45 +0000
-Message-ID: <178998604523.2160803.309404195274642417@kernel.org>
-In-Reply-To: <5CF5340DA3D4CE3C+20260920092622.345496-1-dong100@mucse.com>
-References: <5CF5340DA3D4CE3C+20260920092622.345496-1-dong100@mucse.com>
+Date: Mon, 21 Sep 2026 10:20:46 +0000
+Message-ID: <178998604635.2160803.11049996034378624333@kernel.org>
+In-Reply-To: <E55C86DE587B8FE9+20260920092638.345601-1-dong100@mucse.com>
+References: <E55C86DE587B8FE9+20260920092638.345601-1-dong100@mucse.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,292 +59,309 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] rnpgbe_probe() replaces the previously error-checked
-  `dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(56))` (which aborted…
-- [Medium] In this patch ndo_start_xmit becomes reachable before the TX
-  ring software resources exist: rnpgbe_add_adapter() calls…
-- [Low] In drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h,
-  RESV_DESC_NEEDED is documented as "2 desc gap to keep tail from…
-- [Low] Two headers touched by the patch are not self-contained.
-- [Low] The patch builds an RCU protocol for the
-  mucse->tx_ring[]/rx_ring[] slots (adds `struct rcu_head rcu` to struct…
+- [Medium] RX descriptor length from the device (`rx_desc->wb.len`) is
+  only bounded by the skb/page geometry (`max_size =…
+- [Medium] `rnpgbe_clean_rx_irq()` counts a received packet in
+  `rx_ring->stats.packets` / `.bytes` only when the skb is successfully…
+- [Medium] For a multi-descriptor (non-EOP) frame the linear skb is built
+  from the first descriptor with `__skb_put(skb, size)` where the only…
 
 --
 
-net: rnpgbe: Add basic TX packet transmission support
+net: rnpgbe: Add basic RX data path support
 
-This adds the TX path for rnpgbe: the TX descriptor layout and buffer
-management, rnpgbe_xmit_frame_ring(), TX ring setup/teardown, TX completion
-handling in rnpgbe_clean_tx_irq(), and per-ring TX stats reported through
-ndo_get_stats64(). It also switches the DMA mask setup to
-dma_set_mask_and_coherent() and enables NETIF_F_SG/NETIF_F_HIGHDMA.
+This adds the RX DMA data path for rnpgbe: the RX write-back descriptor
+format, page_pool backed RX buffers, the NAPI poll callback with RX ring
+setup/teardown, and RX statistics.  A per-q_vector timer retries failed
+page allocations and RX DMA quiesce timeouts are latched as terminal AXI
+faults.
 
-A few questions below.
-
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-> index 40e41521a279..864cbf0caf44 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-
-[ ... ]
-
-> @@ -69,31 +135,37 @@ struct mucse_q_vector {
->  	int hw_vector;
->  	struct mucse_ring_container rx, tx;
->  	struct napi_struct napi;
-> +	struct rcu_head rcu;
->  	char name[IFNAMSIZ + 18];
->  	/* for dynamic allocation of rings associated with this q_vector */
->  	struct mucse_ring ring[] ____cacheline_internodealigned_in_smp;
->  };
->
-> -struct mucse_stats {
-> -	u64 tx_dropped;
-> -};
-> -
->  #define MAX_Q_VECTORS 8
->
-> +#define M_DEFAULT_TXD     512
-> +#define M_DEFAULT_TX_WORK 256
-> +
-> +enum mucse_state_t {
-> +	__MUCSE_AXI_FAULT,
-> +};
-> +
->  struct mucse {
->  	struct net_device *netdev;
->  	struct pci_dev *pdev;
->  	struct mucse_hw hw;
-> -	struct mucse_stats stats;
->  	struct mucse_ring *tx_ring[RNPGBE_MAX_QUEUES]
->  		____cacheline_aligned_in_smp;
->  	struct mucse_ring *rx_ring[RNPGBE_MAX_QUEUES]
->  		____cacheline_aligned_in_smp;
-
-[Severity: Low]
-The patch introduces an RCU protocol for these slots: struct mucse_q_vector
-gains an rcu_head, rnpgbe_free_q_vector() switches from kfree() to
-kfree_rcu(), and rnpgbe_get_stats64() reads the slots under
-rcu_read_lock(). Should the arrays carry __rcu and should the publish and
-consume sides use rcu_assign_pointer()/rcu_dereference() rather than
-WRITE_ONCE()/READ_ONCE()?
-
-In rnpgbe_alloc_q_vector() the store is:
-
-	ring->pfvfnum = hw->pfvfnum;
-	u64_stats_init(&ring->syncp);
-	WRITE_ONCE(mucse->tx_ring[ring->queue_index], ring);
-
-WRITE_ONCE() carries no release semantics, so the pointer store is not
-ordered against the preceding ring->dev/ring->count/ring->netdev stores or
-u64_stats_init(&ring->syncp), and rnpgbe_get_stats64() reads the slot with a
-plain READ_ONCE().
-
-Today this looks unreachable: rnpgbe_alloc_q_vector() runs from
-rnpgbe_init_interrupt_scheme() before register_netdev(), and
-rnpgbe_free_q_vector() runs either on the probe error path or after
-unregister_netdev(), so no ndo_get_stats64 caller can race. Would it be
-worth completing the idiom now, before any runtime queue reconfiguration or
-reset path is added, and so sparse/RCU checkers can validate it?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> index 0dce78e4a91b..6dc29ebe6fa7 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> @@ -7,13 +7,20 @@
-> +#define RNPGBE_DMA_STATUS              0x0008
-> +#define TX_AXI_RW_EN                   0xc
-> +/* DMA_STATUS_REG[23:20]: tx_wr, tx_rd, rx_wr, rx_rd done status. */
-> +#define RNPGBE_DMA_TX_STATUS           GENMASK_U32(23, 22)
-
-[Severity: Low]
-This isn't a bug, but rnpgbe_hw.h has no #include lines at all while now
-using GENMASK_U32() (and BIT() already). It builds only because the .c files
-happen to pull in the right headers first. Would adding
-#include <linux/bits.h> here make sense? The driver's other GENMASK_U32
-users, rnpgbe_mbx.c and rnpgbe_mbx_fw.c, do include <linux/bitfield.h>.
+A few questions about the descriptor length handling and the RX
+statistics below.
 
 > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> index 9196fa130ca9..af5cef987051 100644
+> index af5cef987051..9afd10273a62 100644
 > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
 > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
 
 [ ... ]
 
-> +static int rnpgbe_tx_map(struct mucse_ring *tx_ring,
-> +			 struct mucse_tx_buffer *first, u32 mac_ip_len,
-> +			 u32 tx_flags)
+> @@ -174,15 +176,436 @@ static bool rnpgbe_clean_tx_irq(struct mucse_q_vector *q_vector,
+
+[ ... ]
+
+> +/**
+> + * rnpgbe_add_rx_frag - Add non-linear data to the skb
+> + * @rx_buffer: pointer to rx_buffer
+> + * @skb: pointer skb for this packet
+> + * @size: data size in this desc
+> + **/
+> +static void rnpgbe_add_rx_frag(struct mucse_rx_buffer *rx_buffer,
+> +			       struct sk_buff *skb,
+> +			       unsigned int size)
 > +{
-
-[ ... ]
-
-> +	if (size) {
-> +		dma = dma_map_single(tx_ring->dev, skb->data, size,
-> +				     DMA_TO_DEVICE);
-> +		first->mapped_as_page = false;
-
-[ ... ]
-
-> +	/* write last descriptor with RS and EOP bits */
-> +	tx_desc->vlan_cmd_bsz = build_ctob(tx_flags | M_TXD_CMD_EOP |
-> +					   M_TXD_CMD_RS,
-> +					   mac_ip_len, size);
-
-[Severity: Low]
-This isn't a bug, but rnpgbe_tx_map() only ever writes data descriptors
-(pkt_addr plus build_ctob()), with tx_flags hardcoded to 0 and mac_ip_len
-fixed at M_DEFAULT_MAC_IP_LEN, so the "1 desc for context descriptor"
-comment on RESV_DESC_NEEDED in rnpgbe_lib.h describes a descriptor class the
-code never emits. Should the comment be trimmed to the two-descriptor gap
-until the offload code that needs the context descriptor lands?
-
-[ ... ]
-
-> +netdev_tx_t rnpgbe_xmit_frame_ring(struct sk_buff *skb,
-> +				   struct mucse_ring *tx_ring)
+> +	unsigned int truesize = PAGE_SIZE;
+> +
+> +	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
+> +			rx_buffer->page_offset, size, truesize);
+> +}
+> +
+> +/**
+> + * rnpgbe_build_skb - Try to build a skb based on rx_buffer
+> + * @rx_buffer: pointer to rx_buffer
+> + * @size: data size in this desc
+> + *
+> + * Return: skb for this rx_buffer
+> + **/
+> +static struct sk_buff *rnpgbe_build_skb(struct mucse_rx_buffer *rx_buffer,
+> +					unsigned int size)
 > +{
+> +	void *va = page_address(rx_buffer->page) + rx_buffer->page_offset;
+> +	unsigned int truesize = PAGE_SIZE;
+> +	struct sk_buff *skb;
+> +
+> +	net_prefetch(va);
+> +	/* build an skb around the page buffer */
+> +	skb = napi_build_skb(va - RNPGBE_SKB_PAD, truesize);
+> +	if (unlikely(!skb))
+> +		return NULL;
+> +	/* update pointers within the skb to store the data */
+> +	skb_reserve(skb, RNPGBE_SKB_PAD);
+> +	__skb_put(skb, size);
+> +	skb_mark_for_recycle(skb);
+> +
+> +	return skb;
+> +}
 
 [ ... ]
 
-> +	/* record the location of the first descriptor for this packet */
-> +	first = &tx_ring->tx_buffer_info[tx_ring->next_to_use];
-> +	first->skb = skb;
+> +/**
+> + * rnpgbe_cleanup_headers - Correct corrupted or empty headers
+> + * @skb: current socket buffer containing buffer in progress
+> + *
+> + * Return: true if an error was encountered and skb was freed.
+> + **/
+> +static bool rnpgbe_cleanup_headers(struct sk_buff *skb)
+> +{
+> +	/* if eth_skb_pad returns an error the skb was freed */
+> +	if (eth_skb_pad(skb))
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * rnpgbe_process_skb_fields - Set the RX queue and protocol fields
+> + * @rx_ring: RX descriptor ring containing the queue information
+> + * @skb: skb currently being received
+> + *
+> + * Records the RX queue that received the skb and sets its protocol from
+> + * the Ethernet header.
+> + **/
+> +static void rnpgbe_process_skb_fields(struct mucse_ring *rx_ring,
+> +				      struct sk_buff *skb)
+> +{
+> +	struct net_device *dev = rx_ring->netdev;
+> +
+> +	skb_record_rx_queue(skb, rx_ring->queue_index);
+> +	skb->protocol = eth_type_trans(skb, dev);
+> +}
 
 [Severity: Medium]
-Can this dereference a NULL tx_buffer_info during the first ifup?
+Is there anything guaranteeing that the first descriptor of a chained
+frame carries at least ETH_HLEN bytes before eth_type_trans() is called
+here?
 
-At this patch rnpgbe_add_adapter() calls register_netdev() without
-netif_carrier_off() or netif_tx_stop_all_queues(), and __dev_open() sets
-__LINK_STATE_START before calling ndo_open, so all three conditions checked
-by __dev_direct_xmit() are satisfied while rnpgbe_open() is still running:
+For a non-EOP first descriptor, rnpgbe_clean_rx_irq() only rejects
+!size || size > max_size, so size may be as small as 1, and
+rnpgbe_build_skb() puts exactly that into the linear area:
 
-	netif_running() && netif_carrier_ok() &&
-	!netif_xmit_frozen_or_drv_stopped()
+	skb_reserve(skb, RNPGBE_SKB_PAD);
+	__skb_put(skb, size);
 
-An AF_PACKET socket with PACKET_QDISC_BYPASS can then enter
-rnpgbe_xmit_frame() -> rnpgbe_xmit_frame_ring() in the window inside
-rnpgbe_open():
+The following descriptors go into frags, so skb->len is already >= ETH_ZLEN
+and the eth_skb_pad() in rnpgbe_cleanup_headers() does nothing.
 
-	err = netif_set_real_num_queues(netdev, mucse->num_tx_queues,
-					mucse->num_rx_queues);
-	if (err)
-		goto err_free_irqs;
+eth_type_trans() -> eth_skb_pull_mac() -> skb_pull_inline(skb, ETH_HLEN)
+does not return NULL because ETH_HLEN <= skb->len, so __skb_pull() runs:
 
-	err = rnpgbe_setup_all_tx_resources(mucse);
+include/linux/skbuff.h:__skb_pull() {
+	skb->len -= len;
+	if (unlikely(skb->len < skb->data_len)) {
+		...
+		BUG();
+	}
+	...
+}
 
-where tx_buffer_info is still NULL, and a slightly later landing reaches
-writel(i, tx_ring->tail) in rnpgbe_tx_map() with tail still NULL.
+With a first descriptor of S bytes and F bytes of frags, after the pull
+skb->len = S + F - 14 while data_len = F, so S < 14 hits the BUG().  It
+also reads eth->h_proto past the bytes the device actually wrote.
 
-The window is closed later in the series by "net: rnpgbe: Add link status
-handling support", which adds netif_carrier_off() before register_netdev()
-and at the top of rnpgbe_open(). Would it make sense to fold that
-netif_carrier_off() into this patch so it stands on its own?
+The comment in rnpgbe_clean_rx_irq() states the 33-byte minimum as a
+hardware guarantee, but nothing enforces it.  Would it make sense to
+check size >= ETH_HLEN for a non-EOP first descriptor, or to call
+pskb_may_pull() before eth_type_trans()?
+
+[ ... ]
+
+> +static int rnpgbe_clean_rx_irq(struct mucse_q_vector *q_vector,
+> +			       struct mucse_ring *rx_ring,
+> +			       int budget)
+> +{
+> +	unsigned int max_size = SKB_WITH_OVERHEAD(PAGE_SIZE) - RNPGBE_SKB_PAD;
+> +	unsigned int total_rx_bytes = 0, total_rx_packets = 0;
+> +	u16 cleaned_count = mucse_desc_unused_rx(rx_ring);
+> +	unsigned int work_done = 0;
+
+[ ... ]
+
+> +		dma_rmb();
+> +		/* Hardware guarantees the first descriptor of each packet is at
+> +		 * least 33 bytes, including multi-descriptor packets.
+> +		 * Multi-descriptor packets are only used for jumbo frames over
+> +		 * 1536 bytes (M_DEFAULT_SG = 96). Each descriptor is at most
+> +		 * 1536 bytes. Small packets use a single descriptor.
+> +		 */
+> +		size = le16_to_cpu(rx_desc->wb.len);
+
+[ ... ]
+
+> +		if (unlikely(!size || size > max_size)) {
+
+[Severity: Medium]
+Should this bound be the programmed per-descriptor DMA window rather than
+the page geometry?
+
+max_size is SKB_WITH_OVERHEAD(PAGE_SIZE) - RNPGBE_SKB_PAD, roughly 3.7 KB
+with 4K pages, while rnpgbe_configure_rx_ring() tells the device:
+
+	mucse_ring_wr32(ring, RNPGBE_RX_SG_LEN, M_DEFAULT_SG);
+
+which the header documents as 1536 bytes, and the comment right above the
+length read says "Each descriptor is at most 1536 bytes".
+
+A writeback length in the range (1536, max_size] passes the check, so
+rnpgbe_build_skb()'s __skb_put(skb, size) or rnpgbe_add_rx_frag()'s
+skb_add_rx_frag(..., size, truesize) would publish up to ~2.1 KB of page
+content the device never wrote.  page_pool pages are not zeroed, so that
+is previously freed kernel memory on a fresh page and earlier packet data
+on a recycled one, and it reaches napi_gro_receive() and from there
+AF_PACKET or the wire.  Would clamping against the M_DEFAULT_SG derived
+1536-byte limit be more appropriate here?
+
+> +			struct mucse_rx_buffer *err_rx_buffer;
+> +			u16 idx = rx_ring->next_to_clean;
+> +
+> +			cleaned_count++;
+> +			atomic64_inc(&rx_ring->stats.dropped);
+
+[ ... ]
+
+> +			rx_desc->wb.cmd = 0;
+> +			rx_ring->next_to_clean++;
+> +			if (rx_ring->next_to_clean >= rx_ring->count)
+> +				rx_ring->next_to_clean = 0;
+> +			continue;
+> +		}
+> +
+> +		rx_buffer = rnpgbe_get_buffer(rx_ring, &skb, size);
+> +
+> +		if (skb)
+> +			rnpgbe_add_rx_frag(rx_buffer, skb, size);
+> +		else
+> +			skb = rnpgbe_build_skb(rx_buffer, size);
+> +
+> +		if (!skb) {
+> +			cleaned_count++;
+> +
+> +			/* drop until eop if multiple descriptors */
+> +			if (rnpgbe_test_staterr(rx_desc, M_RXD_STAT_EOP))
+> +				work_done++;
+> +			else
+> +				rx_ring->drop_status = true;
+> +
+> +			rx_desc->wb.cmd = 0;
+> +			rx_ring->next_to_clean++;
+> +			atomic64_inc(&rx_ring->stats.dropped);
+
+[Severity: Medium]
+Should good frames dropped inside the driver still be counted in
+rx_ring->stats.packets and .bytes?
+
+Here, and in the MAX_SKB_FRAGS overflow path of rnpgbe_is_non_eop() and
+the rnpgbe_cleanup_headers() failure path, only stats.dropped is bumped;
+total_rx_packets and total_rx_bytes are updated only on successful
+delivery.
+
+rnpgbe_get_stats64() then exports those success-only counters directly:
+
+	stats->rx_packets += packets;
+	stats->rx_dropped += dropped;
+	stats->rx_bytes += bytes;
+
+include/uapi/linux/if_link.h documents rx_packets as counting "all good
+packets received from the device by the host, including packets which host
+had to drop at various stages of processing (even in the driver)", with
+rx_bytes corresponding to rx_packets.
+
+Under memory pressure ip -s link would show rx_dropped climbing without
+those frames appearing in rx_packets/rx_bytes.  Was that intentional?
+
+> +			if (rx_ring->next_to_clean >= rx_ring->count)
+> +				rx_ring->next_to_clean = 0;
+> +
+> +			continue;
+> +		}
+> +
+> +		rx_buffer->page = NULL;
+> +		rx_buffer->skb = NULL;
+> +		cleaned_count++;
+> +
+> +		if (rnpgbe_is_non_eop(rx_ring, rx_desc, skb))
+> +			continue;
+> +
+> +		/* verify the packet layout is correct */
+> +		if (rnpgbe_cleanup_headers(skb)) {
+> +			/* we should clean it since we used all info in it */
+> +			atomic64_inc(&rx_ring->stats.dropped);
+> +			rx_desc->wb.cmd = 0;
+> +			work_done++;
+> +			continue;
+> +		}
+> +
+> +		/* probably a little skewed due to removing CRC */
+> +		total_rx_bytes += skb->len;
+> +		rnpgbe_process_skb_fields(rx_ring, skb);
+> +		rx_desc->wb.cmd = 0;
+> +		napi_gro_receive(&q_vector->napi, skb);
+> +		/* Update packet statistics and NAPI work accounting. */
+> +		total_rx_packets++;
+> +		work_done++;
+> +	}
+> +
+> +	u64_stats_update_begin(&rx_ring->syncp);
+> +	rx_ring->stats.packets += total_rx_packets;
+> +	rx_ring->stats.bytes += total_rx_bytes;
+> +	u64_stats_update_end(&rx_ring->syncp);
+> +
+> +	return work_done;
+> +}
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
-> index d38c08df6b7c..1fe290ed224d 100644
+> index 1fe290ed224d..76b5b0c0ae4a 100644
 > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
 > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+> @@ -9,12 +9,27 @@ struct mucse_hw;
 
 [ ... ]
 
-> +#define M_MAX_TXD_PWR             12
-> +#define M_MAX_DATA_PER_TXD        (0x1 << M_MAX_TXD_PWR)
-> +#define TXD_USE_COUNT(S)          DIV_ROUND_UP((S), M_MAX_DATA_PER_TXD)
-> +#define DESC_NEEDED               (MAX_SKB_FRAGS + 4)
-> +/* 2 desc gap to keep tail from touching head */
-> +/* 1 desc for context descriptor */
-> +#define RESV_DESC_NEEDED          3
-
-[Severity: Low]
-Same self-containment question as for rnpgbe_hw.h: rnpgbe_lib.h has no
-#include lines, yet now uses MAX_SKB_FRAGS and DIV_ROUND_UP here, and
-netdev_tx_t, struct sk_buff, struct net_device and struct rtnl_link_stats64
-in the prototypes below. Should it include <linux/skbuff.h> and
-<linux/netdevice.h> so it does not depend on include order in the .c files?
-
-> @@ -31,4 +53,12 @@ void rnpgbe_free_irq(struct mucse *mucse);
-> +netdev_tx_t rnpgbe_xmit_frame_ring(struct sk_buff *skb,
-> +				   struct mucse_ring *tx_ring);
-> +void rnpgbe_get_stats64(struct net_device *netdev,
-> +			struct rtnl_link_stats64 *stats);
->  #endif
-
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> index debed2f3fe64..cdda5f3d09b2 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> +#define M_DEFAULT_SG              96 /* unit 16b, 1536 bytes */
+> +#define RNPGBE_RX_SG_LEN          0x58
 
 [ ... ]
-
-> @@ -206,6 +247,13 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
->  		goto err_clear_interrupt;
->  	}
->
-> +	netdev->features |= NETIF_F_SG;
-> +	netdev->hw_features |= NETIF_F_SG;
-> +	if (dma_get_mask(&pdev->dev) > DMA_BIT_MASK(32)) {
-> +		netdev->features |= NETIF_F_HIGHDMA;
-> +		netdev->hw_features |= NETIF_F_HIGHDMA;
-> +	}
-> +
->  	err = register_netdev(netdev);
->  	if (err)
->  		goto err_remove_mbx;
-
-> @@ -248,12 +296,7 @@ static int rnpgbe_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	if (err)
->  		return err;
->
-> -	err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(56));
-> -	if (err) {
-> -		dev_err(&pdev->dev,
-> -			"No usable DMA configuration, aborting %d\n", err);
-> -		goto err_disable_dev;
-> -	}
-> +	dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(56));
-
-[Severity: Medium]
-Should the return value of dma_set_mask_and_coherent() still be checked
-here? The previous code aborted probe and printed "No usable DMA
-configuration, aborting", and dma_set_mask_and_coherent() is a plain static
-inline int with no __must_check, so a failure is now completely silent.
-
-If dma_supported() rejects a 56-bit mask, neither the streaming nor the
-coherent mask is changed, the device keeps the PCI core's 32-bit default,
-and probe continues through pci_request_mem_regions() to register_netdev().
-
-The dma_get_mask() test above keeps highmem frags away by not setting
-NETIF_F_HIGHDMA, but it does not cover the linear-data mapping in
-rnpgbe_tx_map():
-
-	dma = dma_map_single(tx_ring->dev, skb->data, size,
-			     DMA_TO_DEVICE);
-	...
-	if (dma_mapping_error(tx_ring->dev, dma))
-		goto err_unmap;
-
-nor the descriptor allocation in rnpgbe_setup_tx_resources():
-
-	tx_ring->desc = dma_alloc_coherent(dev, tx_ring->size, &tx_ring->dma,
-					   GFP_KERNEL);
-
-So every frame whose linear data sits above 4GB would be dropped with only
-the private per-ring dropped counter moving and no kernel message.
-
-The commit message says only:
-
-  "Configure streaming and coherent DMA masks for the hardware's 56-bit
-  DMA addressing capability."
-
-Could it also state that a DMA configuration failure is now non-fatal and
-unreported, or could the check and the error path be restored?
-
-The call is still unchecked at the end of the series, so no later patch
-covers this.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/B8AF0FDE24FAFB51%2B20260920092424.345309-1-dong100%40mucse.com
