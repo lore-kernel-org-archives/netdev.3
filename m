@@ -1,266 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B023905EC;
-	Mon, 21 Sep 2026 14:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C00F4A4EFC
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999818; cv=none; b=T/YA+wT+oFO4rCdYda2JYFQsdCEsxjSTgCTj5hziNVmAFxbP89b1egw1d7fC+8Dv23F8xTiGMF91EeY5uIO/N/YuMOLHI+Qi/GdYVIr3YSxsI5wuIlGI02sOy6hS77oPw5cGKYCFTI3Fijr6m3Bel3fIcolbzn59u9qkYyl5ld8=
+	t=1790000082; cv=none; b=W8ENtWo0bXtp5HEtApdCoK5Rtz/hVIbyB32pMhwAR7fickAFmxF9CdYFIAycuN0ZOmLQaYXyFoFXXiMcnVrKW/rrZyfoMQhrh7OjEpD31UcVIYGG76/u0xibtjQY0vlBWvKCF1296Q7qPg47z49nLyFK/f0rfJiau3SZB5G4XQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999818; c=relaxed/simple;
-	bh=Q1s7yRBzLky6QTkAiCNCOrjP7ZRnEa+zJhfm/ZYb0R8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sC0D/mdAJvN1csrGAc//2qFaUkNu6WtB01DkTGwWDYecFil95cb8922El8279ChQr+F5oXwuy6mOJA+9a5rT+e3q/n4ZoUD3auqV2xZLX3J+z5ybMUCYD0rXRK3AkvXMq2yuWl4yptC6xdtIpfzX2ElJvsrpGf0ULZmOpvljrxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pr175d57; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790000082; c=relaxed/simple;
+	bh=A3lMAoHzvdrIRHmu0U9O1DHYioyKBVDwytLfoEf9Ugk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FjeS3cpYIRgSFGV8UrXQh9Ozrz07uS8iAFylj9nbPOlDPJ5q6cb18Gy8mjwrKycFNSIUXA36A6gBz/nM6NVjxJjk7Kmk8sezn71NMm0y3DSMQKy/SVLmAuYQSJxNjJA95q7r9BQSJRa/FaHStIJo9u7sPwU+I5WllTZp3n/R+8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=GBOj/dTt; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pr175d57"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826AA1F000FF;
-	Mon, 21 Sep 2026 14:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789999816;
-	bh=wwLKBbFNELL1uaqVUkS4iLSEWnb4HQ8FbjsIKKudu9g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Pr175d57SPVGwkxnZJYKydqY1XB6SSJ5RpVObj5REEZ1Ym1qaSRJTEeRtPuJGRbaQ
-	 dpYE3gzqT0p7CqBneAiLsb4xL1qY2vcb6mRYx30D7OdjlU8JUHhuKXIm2M2HzH4Sxh
-	 k3iOR5KxT5vHuaM90/Lv0r0bVVIAUi2AiyEHzi21/32oFD2bMDM2ULjFIPDbDaRyeh
-	 NjEC0jbQtlsiicHFMNSxfx1HzqDvLLdZtvGYzdLzkxdrwQI8tv+j2TZdC+CrsLufZw
-	 jBJ9t2rHZWW2uQlk6CH2aajnAOpz3tHxAcMryDgVfiy691dsTtXQjtBpWV4DD9jCcy
-	 boeFFtzp4Tl7A==
-Subject:
- Re: [PATCH net-next v4 1/2] tcp: annotate lockless access to sk->sk_err
-From: netdev-bot+sashiko@kernel.org
-To: quanyeyang@proton.me
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- matttbe@kernel.org, geliang@kernel.org, martineau@kernel.org,
- jiayuan.chen@linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 21 Sep 2026 14:10:15 +0000
-Message-ID: <178999981507.2160803.15037788484628952910@kernel.org>
-In-Reply-To: <20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
-References: <20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="GBOj/dTt"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e8185e037so17382125e9.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:14:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1790000078; x=1790604878; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+gnaVA0UVg6a41pLazpe1rvpHFpADsMibbWOKFLPcI8=;
+        b=GBOj/dTt0Pnzf1RehLOSf+1dOdqVXbCtTPy/3WB+gLuPImY6+Eaf0qTsiS2vcjXk/Y
+         x5Fqz7rK0U83YB880I53upchyDBUQakYuPGRO9MLHFS6KcopxaYkXKzhEjcQ6OMqs0vy
+         NrlT3UmAOpPIXM2ql9eo4Lm2AopyEP829oDUSL7cZ93tUcI4GSGHuzWheXX8Dez78qnP
+         8r+1UQOqP9xCle8mvaZWAzb3V7ebpEtCcVYpbCK8f8BwG1sppWESUQHWyTajoChF09qs
+         fXnH0tgeF4nEWgzqvz9UYQUhUWliKiNexORApK2XSUs37DMCd0/7lNx9fAlTSjlTpnRp
+         /H5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790000078; x=1790604878;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+gnaVA0UVg6a41pLazpe1rvpHFpADsMibbWOKFLPcI8=;
+        b=W5hAsaZKccKf8bCPn0cjaqPMsjVHPjnrBixgTaDu4NiWb91xLBi4g5ztuD9jAU1PX4
+         2iTT6T7WUpGRwrKRBtIvhpKeidhFAtNI3kl581QLwMGqGXd2BdyrVNlSvJjT0uTcQqwp
+         zZFAs+zVTraweHuIMyf3KrSS0pA/DOQjvd0oCE8GJWt2Bgqw6Y0BR2ZvBVwB2JxNJiUm
+         YhMVGOblemwiZthOaU6yWsJQV3/2vOPM2P6tc7YUtZd74C/3usF8iHXrdOTLoKGu7IxN
+         iOwPrclPC60ePFE6O1P0TDTjH6Cjy3gz59D4DCfyrhl/rlzlzIHN4aEnH6GgW9VdEQ75
+         Zp6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzsxwrZMe2b0xvUSFRNaRZk5NhLf6do6ZnZBtCRgqtPWKDMwOipUBispSRJVCH9orgLH1fhqng=@vger.kernel.org
+X-Gm-Message-State: AFuF++nW7ZI97SnAih8qesb7qDx0Vg5+9EciLtCV2CumSyiyBqkbmtxY
+	sa5HoaaZcEU06XyRlw2ZNmjDnn1hCruUYXXxQLvvUBgoIYprquQcR6VuCfB3Ju6R4U7vqleOOqS
+	iR/lo
+X-Gm-Gg: AYBFou3rJYV+S2rs5Yu6kYNiGO8U99zXkxpTyz1nJSeiDDdz8pZ6Qyg4khwHn5Qh/GH
+	TPXFlYGm2lNbkUcdtF6uU5YsDkVBGhngSO9cR55Mpe2sEX005nsFW+jPfY5T5++pwo4r8r9iCcD
+	HcVMnH2z7dyeZSv+7FpyYYdz7lS0cP7Ys7/H6n0S6D6F4n1NEh4mfaF3EZbAaKWxZHNkYmyt8ad
+	tXNIUMIgL9brLxqFPdOR+6qo+MMllU+2B3TdEA45iOYasfRpwAFV9xx2M4aNQUPkyDjsbztXXM8
+	onK6edZMwt3M2BWP3WomBtfiIGlpRxDpPMVZqjB/7Ui6zIH1kQWmKLrrZ6IhUvrQTUPElWuXWZD
+	rt9zURvOXur4q/bg6Wsr7tiqt7yQ+KMVf2I6DXV9SKt8k4oYBRIdCMCLkqf+dy4V5ZAg+wUw8Wq
+	VIDIFEGk6FBckxm85k/5MqW7Ao2sE0i3NM38zLDSZriXOPU4Xrsl7Zt+beFAAyjI+P3no06bz4z
+	FgBIlGZOFXK29jR7w6+Wcm0DwCSJw==
+X-Received: by 2002:a05:600c:3b8e:b0:49f:bc43:9e96 with SMTP id 5b1f17b1804b1-49fc57144aamr194759525e9.8.1790000078224;
+        Mon, 21 Sep 2026 07:14:38 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-487244229d5sm24216068f8f.2.2026.09.21.07.14.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 07:14:37 -0700 (PDT)
+Message-ID: <ab670ef7-7650-4a39-9871-b5182725beb1@blackwall.org>
+Date: Mon, 21 Sep 2026 17:14:35 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: mdb: restart port group walk after
+ deletion
+Content-Language: en-US, bg
+To: Fourie Zhang <littleddfu@gmail.com>, netdev@vger.kernel.org
+Cc: TencentOS Corvus AI <corvus@tencent.com>, stable@vger.kernel.org,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Petr Machata <petrm@nvidia.com>, bridge@lists.linux.dev
+References: <20260920110852.60293-1-fouriezhang@tencent.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260920110852.60293-1-fouriezhang@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 20/09/2026 14:08, Fourie Zhang wrote:
+> br_mdb_flush_pgs() keeps a pointer-to-pointer cursor while walking
+> mp->ports. br_multicast_del_pg() can re-enter the same MDB entry through
+> br_multicast_sg_del_exclude_ports() and unlink other port groups. If the
+> cursor points into one of those groups, the next iteration dereferences a
+> stale cursor and can leave mp->ports pointing at freed memory.
+> 
+> A following RTM_GETMDB exposes the dangling pointer:
+> 
+>    BUG: KASAN: slab-use-after-free in br_mdb_dump
+>    Read of size 8
+>      br_mdb_dump
+>      rtnl_mdb_dump
+>      rtnl_dumpit
+>      netlink_dump
+> 
+> Reset the cursor to mp->ports after every deletion. The deletion removes at
+> least the selected group, so the restarted walk always makes progress.
+> 
+> Fixes: a6acb535afb2 ("bridge: mdb: Add MDB bulk deletion support")
+> Cc: stable@vger.kernel.org
+> Assisted-by: tencentos-corvus-ai:hy4-preview
+> Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
+> ---
+> A reproducer for this issue is available if requested.
+> 
+>   net/bridge/br_mdb.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+> index e0c7020b1..a01bd280c 100644
+> --- a/net/bridge/br_mdb.c
+> +++ b/net/bridge/br_mdb.c
+> @@ -1523,6 +1523,8 @@ static void br_mdb_flush_pgs(struct net_bridge *br,
+>   		}
+>   
+>   		br_multicast_del_pg(mp, p, pp);
+> +		/* br_multicast_del_pg() can remove other groups from this list. */
+> +		pp = &mp->ports;
+>   	}
+>   }
+>   
 
-Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0
+Yeah, this seems like the simplest fix for stable. I will post my conversion to
+standard list primitives and will remove these issues altogether with it in
+net-next.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-- [Medium] Commit message does not describe the tcp_bpf_sendmsg() hunk.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the
-  annotated peeks are still followed by a second, independent read of…
-- [Medium] This problem wasn't introduced by this patch, but
-  tcp_bpf_sendmsg() (net/ipv4/tcp_bpf.c) discards a failed iterator-copy…
-
---
-
-tcp: annotate lockless access to sk->sk_err
-
-This annotates the plain sk->sk_err loads on the TCP send, receive and
-splice paths with READ_ONCE(), since sock_error() clears sk_err with
-xchg() from do_recvmmsg() and getsockopt(SO_ERROR) without holding the
-socket lock. The tcp_bpf_sendmsg() site is also restructured while the
-other sites are annotated in place.
-
-Link: https://lore.kernel.org/netdev/8bbee583-6f21-4817-bfeb-2d60057380a3@linux.dev/
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/632
-
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 1c867a3024446..9e7fa7e397265 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -843,7 +843,7 @@ ssize_t tcp_splice_read(struct socket *sock, loff_t *ppos,
->  				break;
->  			if (sock_flag(sk, SOCK_DONE))
->  				break;
-> -			if (sk->sk_err) {
-> +			if (READ_ONCE(sk->sk_err)) {
->  				ret = sock_error(sk);
->  				break;
->  			}
-
-[ ... ]
-
-> @@ -2760,7 +2760,7 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
->  			if (sock_flag(sk, SOCK_DONE))
->  				break;
->  
-> -			if (sk->sk_err) {
-> +			if (READ_ONCE(sk->sk_err)) {
->  				copied = sock_error(sk);
->  				break;
->  			}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the annotated peek is
-still followed by a second, independent read of sk_err inside
-sock_error(), so the value can be gone by the time it is consumed.
-
-include/net/sock.h:sock_error() {
-	if (likely(data_race(!sk->sk_err)))
-		return 0;
-
-	err = xchg(&sk->sk_err, 0);
-	return -err;
-}
-
-sock_error() is reachable without the socket lock from do_recvmmsg() and
-from getsockopt(SO_ERROR), which is the same writer named in the splat:
-
-CPU0 (socket lock held, tcp_recvmsg_locked())
-	if (READ_ONCE(sk->sk_err))	/* sees 0x6b, enters branch */
-
-CPU1 (no socket lock, do_recvmmsg() -> sock_error())
-	err = xchg(&sk->sk_err, 0);	/* consumes the error */
-
-CPU0 continues:
-		copied = sock_error(sk);	/* now returns 0 */
-		break;
-
-Since the break is unconditional, does recvmsg() then return 0 rather
-than falling through to the RCV_SHUTDOWN / TCP_CLOSE / !timeo / signal
-checks?  For a nonblocking receive on an open, empty socket the expected
-result would be -EAGAIN, and userspace reads 0 as an orderly shutdown.
-
-The same shape exists in tcp_splice_read(), where ret = sock_error(sk)
-followed by "if (spliced) return spliced; return ret;" returns 0, and in
-tcp_bpf_recvmsg_parser(), where copied = sock_error(sk) is followed by
-goto out.
-
-The changelog does say "the check-then-sock_error() TOCTOU on the
-no-data paths is a separate issue".  Would consuming the value once
-(copied = sock_error(sk); if (copied) break;) close both the data race
-and this window in one step?
-
-One related note: once these loads are marked, KCSAN will no longer
-report these sites, so the signal that produced this report goes away
-while the check-then-consume window stays.
-
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index 2e234d155b5e6..a96323e65758e 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -286,7 +286,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  		if (sock_flag(sk, SOCK_DONE))
->  			goto out;
->  
-> -		if (sk->sk_err) {
-> +		if (READ_ONCE(sk->sk_err)) {
->  			copied = sock_error(sk);
->  			goto out;
->  		}
-> @@ -553,10 +553,9 @@ static int tcp_bpf_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
->  		bool enospc = false;
->  		u32 copy, osize;
->  
-> -		if (sk->sk_err) {
-> -			err = -sk->sk_err;
-> +		err = -READ_ONCE(sk->sk_err);
-> +		if (err)
->  			goto out_err;
-> -		}
-
-[Severity: Medium]
-Could the changelog cover this hunk?  It describes the patch as a pure
-annotation:
-
-  "Annotate those peeks with READ_ONCE(). No extra ordering is needed:
-   the value is only used to decide whether I/O should stop. This does
-   not consume sk_err"
-
-In tcp_bpf_sendmsg() the value is not only used to decide whether I/O
-stops, it becomes the errno handed back to userspace:
-
-net/ipv4/tcp_bpf.c:tcp_bpf_sendmsg() {
-	...
-out_err:
-	if (err < 0)
-		err = sk_stream_error(sk, msg->msg_flags, err);
-	release_sock(sk);
-	sk_psock_put(sk, psock);
-	return copied > 0 ? copied : err;
-}
-
-The rewrite also looks like it changes behaviour beyond annotation.  The
-old form read sk->sk_err twice:
-
-		if (sk->sk_err) {
-			err = -sk->sk_err;
-
-If the lockless sock_error() consumer cleared sk_err between those two
-reads, err became 0 while control still jumped to out_err, where
-"if (err < 0)" is false and the function returned
-"copied > 0 ? copied : 0", i.e. a zero-byte success instead of the
-pending error.  The new single READ_ONCE() closes that.  Should this be
-called out in the changelog, with a Fixes: tag, or split into its own
-patch so the remaining five hunks stay mechanical?
-
-Also, err is now assigned on every loop iteration rather than only when
-sk_err is set.  Every later use of err in the loop is preceded by its
-own assignment from sk_msg_alloc(), tcp_bpf_send_verdict() or
-sk_stream_wait_memory(), so this looks behaviour preserving, but it is
-unexplained restructuring in an annotation-only patch.
-
-[Severity: Medium]
-This is a pre-existing issue, but while looking at the same loop in
-tcp_bpf_sendmsg(): can a failed copy from the user buffer be reported as
-a zero-byte send?
-
-The copy result goes into ret, not err, and out_err returns err:
-
-net/ipv4/tcp_bpf.c:tcp_bpf_sendmsg() {
-	...
-		err = sk_msg_alloc(sk, msg_tx, msg_tx->sg.size + copy, msg_tx->sg.end - 1);
-		if (err) {
-			if (err != -ENOSPC)
-				goto wait_for_memory;
-			enospc = true;
-			copy = msg_tx->sg.size - osize;
-		}
-
-		ret = sk_msg_memcopy_from_iter(sk, &msg->msg_iter, msg_tx,
-					       copy);
-		if (ret < 0) {
-			sk_msg_trim(sk, msg_tx, osize);
-			goto out_err;
-		}
-	...
-}
-
-sk_msg_memcopy_from_iter() returns -EFAULT on a short copy:
-
-net/core/skmsg.c:sk_msg_memcopy_from_iter() {
-	...
-		if (ret != copy) {
-			ret = -EFAULT;
-			goto out;
-		}
-	...
-}
-
-On the first iteration a successful sk_msg_alloc() leaves err == 0, so
-out_err skips sk_stream_error() and, with copied == 0, sendmsg() returns
-0 rather than -EFAULT.  If sk_msg_alloc() had returned the tolerated
--ENOSPC, the stale -ENOSPC is reported instead of the copy failure.
-Would "err = ret;" before the goto preserve the real failure?
-
-Reproducing this needs a sockmap/psock attached to the socket, then a
-sendmsg() with a partially unmapped user buffer.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917-mptcp-sk-err-net-v4-0-1f04f52f2561%40proton.me
