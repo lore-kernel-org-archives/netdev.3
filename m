@@ -1,126 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACBF45D912;
-	Mon, 21 Sep 2026 09:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949C346D548
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:51:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984170; cv=none; b=WBzTLMrtJTOqnTi0h+16lnDARG+UpA+twCQl/5UZsyw7QpjPHajsMbpzTBvQ1O6UbfvC3suDfSSxyIxLsO932pvQhmuOK0ViIFX9b2z4/vFr74s9+Z2CRDAMNEsyFiIGA65pA0u/FIZiqIkNZCTYloWicyTpFOnvQA0o7kc7kKg=
+	t=1789984320; cv=none; b=OcHw6J8g/PzTXDYuHPmt3N/IHFBarCQ6ftzA7Qd2v6SgrxJFaVw7yWAwrQGKHjhfAA8cSMmlwAHitBetQhz8VB1DbagWtBVfqgbULrkS0e7fYsNsAroH9PN5HD8RrYytMIEzarNYFAtR4WOCEYU1caVb+MGw3ThJsJRIJ5huYYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984170; c=relaxed/simple;
-	bh=HBsA9PM43GuWZO+qfQBfYt0z5BjFpNX/qpgO9J2YFuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=WRaWCqZcPh9D1C8LQckas5b3lwxSCoZ9Jc6k+68L+1oTuUh32im4gBKfXVao536oLlyF4FgwHH97fSvEqkHwetzGG5vKpX7pKvI+JHIH6z85yBroH+BYM8LprczYROa4mDmTyRRyOM2rZo4qy/TszrAwQ/CEDPFkR82CaN1Jfkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4Nq7CGW; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4Nq7CGW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ED91F000FF;
-	Mon, 21 Sep 2026 09:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789984168;
-	bh=L7Oq+XJqX0LzSIGBwuR1yRjmlCpODghQmCE1YBpzvP8=;
-	h=Date:From:To:Cc:Subject;
-	b=L4Nq7CGWPnWEOIe3JljlO3NzmADToiH7NKA2Jv6c484u4F1wVvbxE5ydcsqZrTsA9
-	 EfLhu2LBAYz7Pcxiq3LZOqKwDJSsMfLbNfNlI+VgRshwd0fdJ3Vrld7yfqosbNtbPG
-	 jH8KOHoFrNxKndeaotAAbjSQ0M1gOs+KzsUgES35k/Ba93uSOhhj1Hs4CPCP30CTn/
-	 sEfZfoCtElv5g2ZeuqVYSPFhpHgtPfNAsXbnzoyMLbbxv9BbaMlQqX/QAA5D13bo1f
-	 kQLUt4q+bGtK6NgNTVyrvCjlqvvMNRLNNFZRNnzRk85i5/foDhzttvOwk468YTqMBB
-	 GxJmwfbe6lqfA==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id BE60D1AC52F5; Mon, 21 Sep 2026 10:49:25 +0100 (BST)
-Date: Mon, 21 Sep 2026 11:49:25 +0200
-From: Mark Brown <broonie@kernel.org>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>
-Cc: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the bpf-next tree with the bpf tree
-Message-ID: <arD9pUBavrJQ8TRT@sirena.co.uk>
+	s=arc-20240116; t=1789984320; c=relaxed/simple;
+	bh=Mrto44z8auMjPVYZjsQlkZX5YH67DCe2Xy1B6uaopsA=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Zk1QBdyWWODivInj2miRW8VBnegSiakidM+svsoEFWey2rhrX71p1CnQUGFoerVtWA2rosCFBpQ0Rb+uRvjMr0QwISDgUrlkKMqPPEgA8RQHlVGVmM5kUB/bIcmGUmxnsXGOsbZDBOdbDFGOZDWt/OUPIc4M0099h3DFFojs/Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1193275cb5a211f19a56ed5b684f684d-20260921
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:1c037834-da9b-493b-b7c4-31e1d8546c31,IP:0,U
+	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:25
+X-CID-META: VersionHash:7db8b62,CLOUDID:7c6b26e58ba1d5fe59038d3b5e3efa67,BulkI
+	D:nil,BulkQuantity:0,SF:81|82|83|102|136|850|865|898,TC:nil,Content:0|15|5
+	0|99,EDM:5|-100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+	,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 1193275cb5a211f19a56ed5b684f684d-20260921
+X-User: zhangyunfei1@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zhangyunfei1@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1235505940; Mon, 21 Sep 2026 17:51:50 +0800
+From: Zhang Yunfei <zhangyunfei1@kylinos.cn>
+To: netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net: ngbe: propagate resume errors to the PM core
+Date: Mon, 21 Sep 2026 17:51:47 +0800
+Message-Id: <20260921095147.881874-1-zhangyunfei1@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <178998233302.2160803.12428550394082304742@kernel.org>
+References: <178998233302.2160803.12428550394082304742@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gZN7iER2B7tM4djM"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
---gZN7iER2B7tM4djM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the review. Point by point:
 
-Hi all,
+[High] ngbe_resume() still discards the return value of ngbe_reset_hw()
 
-Today's linux-next merge of the bpf-next tree got a conflict in:
+Agreed. ngbe_reset_hw() can genuinely fail (the wx_stop_adapter() error
+exit, or the LAN reset read_poll_timeout() expiring), and on those exits
+ngbe_reset_misc(), wx_clear_hw_cntrs(), wx_get_mac_addr() and
+wx_init_rx_addrs() are all skipped; ngbe_probe() treats the very same
+call as fatal. I will send a follow-up patch propagating that error as
+well, so that the whole tail of ngbe_resume() reports failures to the
+PM core.
 
-  kernel/bpf/helpers.c
+[Medium] "the device can be re-probed"
 
-between commit:
+Agreed, that sentence overstates the effect: device_resume()
+(drivers/base/power/main.c) only records the failure (async_error,
+dpm_save_failed_dev()) and logs it via pm_dev_err(); there is no
+unbind, re-probe or retry. What the patch actually buys is that the
+failure is reported to the PM core instead of being silently swallowed;
+the user-visible state of the netdev itself is unchanged. Sorry for the
+imprecise wording.
 
-  81c975aae375d ("bpf: Require CAP_PERFMON for kfuncs reading memory")
+[High, pre-existing] detached netdev with __LINK_STATE_START still set
+after a failed resume
 
-=66rom the bpf tree and commit:
+Acknowledged. One detail from reading the code: the WX_STATE_RES_FREED
+guard cannot fire in this scenario. That bit is only set by
+ngbe_down_suspend(), which is reachable only via wx->down_suspend from
+the PCI error-recovery path (libwx/wx_err.c); the normal suspend path
+goes through ngbe_dev_shutdown() -> ngbe_close() and never sets it, so
+the bit is clear here and the double teardown (including the memset()
+of already-freed descriptor rings) is indeed reachable. It is
+pre-existing and larger than this series; I plan to look at the
+failed-open unwind separately.
 
-  3f9d98dfed79f ("bpf: Add user memory access kfuncs for mm_struct")
+[Medium, pre-existing] wxvf_resume()
 
-=66rom the bpf-next tree.
+Acknowledged -- the same swallowed-error pattern is there, with an
+unconditional netif_device_attach() on top. It is shared by ngbevf and
+txgbevf, so it deserves its own patch rather than being folded into
+this series.
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+[Medium, pre-existing] ngbe_open() error path frees rings while the
+hardware is still armed
 
-diff --cc kernel/bpf/helpers.c
-index 712dca5a2c5bd,82402d97ce67c..0000000000000
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@@ -4920,12 -5049,14 +5049,14 @@@ BTF_ID_FLAGS(func, bpf_wq_set_callback
-  BTF_ID_FLAGS(func, bpf_wq_start)
-  BTF_ID_FLAGS(func, bpf_preempt_disable)
-  BTF_ID_FLAGS(func, bpf_preempt_enable)
- -BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
- +BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW | KF_PERFMON)
-  BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
-  BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_get_kmem_cache)
- +BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE | KF_PERFMON)
-++BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE | KF_PERFMON)
-++BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE | KF_PERFMON)
- +BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE | KF_PERFMON)
- +BTF_ID_FLAGS(func, bpf_get_kmem_cache, KF_PERFMON)
-  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
-  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_next, KF_ITER_NEXT | KF_RET_NULL |=
- KF_SLEEPABLE)
-  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_destroy, KF_ITER_DESTROY | KF_SLEE=
-PABLE)
+Acknowledged; see my reply on 2/2, the same reasoning applies here.
 
---gZN7iER2B7tM4djM
-Content-Type: application/pgp-signature; name="signature.asc"
+To sum up: I do not plan a v2 of this series. Patch 1/2 does what its
+commit message promises for the two error paths it touches, the
+ngbe_reset_hw() gap is a separate fix, and the remaining findings are
+pre-existing. I will follow up with patches for the ngbe_reset_hw()
+propagation and the failed-open unwind.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqw/aQACgkQJNaLcl1U
-h9AFSggAhb2Dk0lPYAKdAuGHjD6ShmhpnW2H8vySrTKhDQJBgSfB2XTc04WiPifh
-o2m/zgOtn1Or26x4Tunfhn36vTga+TlrcK+ZqsWRJ6bHUmX9lSauVaDsa+CZDFe+
-NpcBuXapYDue3rR3B4Obz4vJHSSJA+1skaTPFDIT2Xc8h4QNUdXQeGjcwpz3CYa5
-XImS6fQKnLAbDDMDC8+eppTc3s0j0tjl1FHSNkA8rsnTvhul3Mz0hlicgD2yCmkp
-e6Ei8WQd/Uu34+0tK44SV9pO43yHNzJwJa6xvtpunn8juCc+NVzhzgFygckpWk1I
-fKXiIAGYXiakQHxLBvQD/O+SQX5kHA==
-=acpp
------END PGP SIGNATURE-----
-
---gZN7iER2B7tM4djM--
+Thanks,
+Zhang Yunfei
