@@ -1,123 +1,191 @@
-Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60F448FF7B
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 17:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71644B3364;
+	Mon, 21 Sep 2026 17:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790011940; cv=none; b=OgaWdPzIwvrIfWgnynOqYIZsmAxpmdQAc3xU8/wPleW7xUvZib2rdcHE7jovGn/hrE6nwKaQQVejFWcMNuAFpSr9DBIUsqh6LY1F7x3A3ctZT7XAyVE1MWWbLkrAuaStdtqZvjg0ZdFP+0Hirh18YR9H6C2TrovfrU3OdJsqrg4=
+	t=1790012059; cv=none; b=HmPxFHGxigqAhw+Tk/fgC77C3EF78JJKYqqjaMe894cBTKCCfqeLHJKYqLo1DuhuFaURmi1HmVxzg++yvvDIlyOMwWZGNp7pHRdc2fWOscaBKB8fSRCiCCuSDiA5AOLTjH3Xb6+2DYPxdZSc78CHHn/RXKpg35sX2m1Qn7UY7h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790011940; c=relaxed/simple;
-	bh=gaAFaXvKdZ1VCIuj4sHrL5mssP3PdDg4VL9jG3dT5O0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HEf7eCyEXvfJimyNbUUuET04W/rkDFRbW8BGT35ObIi0NcN9J1WKr65p8Q9pdt8aZeoKzLUpBDBhoTgM6XI9ef2nau44jDHk5ER+YaSHji2h+ucyRdHu1T/L1Fh3STf7Gv3U40+aY4HzfK8XvtcgTP6KE5SnX/YZh8AubvqxA1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OJXeKkwK; arc=none smtp.client-ip=74.125.231.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790012059; c=relaxed/simple;
+	bh=NWPMLmKR5H+NciSlzSpaXKEQ9o8CFGTkrapK+qDVBsQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZGag79ZfFV75bbM04PZwD0eNdVI1clUEVa0PYwgrE/d1VOGvpZerPLYoghD8UAx536TZDKnhd9CTK6mJFecEnOZyjJcvFjvryVN2ylATqA4pdoCEl8zqSr0pwbYtd+T4Ql+f8F3fkk4pCG8aOeHoGBh9pnwRZLLvh55W+FVUjxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntfIleXt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OJXeKkwK"
-Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-7f4f0c89e34so2060849a34.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790011937; x=1790616737; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lW48M+WR60klYaUA2KW7joDWLXdNgVT9S/f0yr7pYFQ=;
-        b=OJXeKkwKqDUHOHjVPZYyHj9sy6cp7d47Z1UYxj5o4yWrzlvEr6V1qXF+b6cb9Oz7Si
-         Llnl6urt8XuED+cEuFzg3cxb0qy656UkeG+p+9i6Vwz0CZz+YIgw1f6Eoi2VWUnd80Ay
-         fYxI/gygXW76/KkpRCrkhC+NFChETqHeZGKrCqGjUKaAPg1Zljg+fk3mUQoMZU47LYAV
-         l/Q4vlHWT7HLt6RNHc2lL8AS/hiOm/TyqIV3idCqXCP3lZv726teP/dJckpTrtdrIVAh
-         OV0Fat7wXWyzOQ4mYzZ9kmdnwlVVE9iwS6kQLrZu8lfTvFZZ7tdg5bcHlfh1avwR3HD2
-         woWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790011938; x=1790616738;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lW48M+WR60klYaUA2KW7joDWLXdNgVT9S/f0yr7pYFQ=;
-        b=Nc4NZS5dZRkJAZ/lY8f4Q/hYfaL0KRy8UX7LzYbc4EVtP/8wcaUBqoZnsd9F+WN339
-         T6inSu77M7tv2vNXuGKFgeqfPZ5r8BT+QAbYFKcvpBJUNNGV9rdnirptxC4jYbFHtoXo
-         lOeFxcPj9h6piMJ7p00p4slOL8mWCB/PFzcHPzaacvL/dP/nPj/4AoOUhjzscX/89M69
-         635kwq7ThA/WweUZYSe/GtqdQtF7lHfQs/i5AENUl0qvI9D20CI4TBbGTxYlo2unIhLU
-         Jdy0+I2qdlQxyIaXOdsl+0SdSC9epvYTyW32yddAGOooZuInvQlzGsuHTc4a8awOdGnY
-         ntXg==
-X-Forwarded-Encrypted: i=1; AKwUvBxHdAalNKeOc7URcO5YcH7GwZBaWYA9vjJcipyG6feAymHzY9i2T+qATW4BwDbifAdAAsraSAg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lDYYAh+VTAS17ts7/dz3Z48VtXEcjtYpXE3w9xgVMRZ5P8u/oW
-	i6QnE91llhtlksjpJi/M82zN7SHYpIUbcWv2vwjY66Y485A91zXcJe28
-X-Gm-Gg: AYBFou21xbsEUeEEVGX3ihJ8PmUi2vgoitVWHfWXyKvVan3IsQ8pzIlX1lya1jPOu3K
-	tjFiIlUBLDEAAMoe02pCgkqR1VIhhRGt3TNRF8s0L5vxuPIcSfmnAFW2plaGu+0ONzdCzXeXwNv
-	/5fw1+NETb6xJ9vSR3XOQV6fNCfVTsvonUj1xSN//+pSUdXh+QA32H6tgFl1WsqHYoSnFlS6Q9M
-	mvUIbAxaX2UnDXaZ7JmmCikb6KRHBXE+6UCbOf/DUAbRLLdJ4YlN3kgabmhp+Cfb6VQT4MR/vVe
-	3KF0O7Y8TB/86D1JbKFjxT2T7FlggaNLgJXsfzRX8xiR21Kn/jrhPXwLaDfF8ctUN1XegnmNNa/
-	9tKifuB0dEnMMyxL4gLX2dRi3K5FUY13ISgWhTRVlBemv9G8u8jip6Kyq6QPjK/bkj366L/dthH
-	wRzwJxF8xDPEgSphTTd4mQ+xPU4bUD4FuKm3PcVyN48+XUR6BBDbbtnz20ZjNz0phqnhu7gQgCU
-	1peiTaO3s5nRyi4H578jDvdWP3QQME=
-X-Received: by 2002:a05:6830:a149:10b0:814:9c81:3ad8 with SMTP id 46e09a7af769-8149c813b4amr96786a34.19.1790011937552;
-        Mon, 21 Sep 2026 10:32:17 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:40::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-814770d6190sm714240a34.24.2026.09.21.10.32.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 10:32:17 -0700 (PDT)
-Date: Mon, 21 Sep 2026 10:32:14 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH net-next] vsock: remove dev_hold() and dev_put() in
- __vsock_deliver_tap_skb()
-Message-ID: <arFqHglxl8e7XB6I@devvm29614.prn0.facebook.com>
-References: <20260921094218.483234-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntfIleXt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4CF1F000FF;
+	Mon, 21 Sep 2026 17:34:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790012057;
+	bh=alPDCc/SUV227jYN2Mo1xAda//QTLk70i3b6IwDM7UI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ntfIleXtOngS9kgtd13aXHkN8riuMFwNMcUzajbCcBRQQBzBVoBr8ak1m1TfU92GE
+	 JI84svf3uFDwrccHoW+x64Ww2sS0QtdqhKvj91gutkuCzXF0exSukcQ5vInYuvLjpL
+	 PqqEDW5cX3eOn3T8ucVJx1OBRf0lJnMrk4oqUOOkZuD82IVo35bb8m7AR8LOvHuZF/
+	 s8Pkcvg2VNUxARnEhCpojVMdqOsKLjIjOR0E7/KE+VXw/t6Bakr0GKzvEf2mJKaQf4
+	 q4cb8gEn2UvgHB6qUTJXvV7QBgspz1ciY3EX+z/8AFZGYFDbMTXhrkAk/rctKHJp9Y
+	 vhn9X1eUgqahA==
+Subject: Re: [PATCH] net/smc: Fix socket use-after-free in smc_shutdown()
+From: netdev-bot+sashiko@kernel.org
+To: vulab@iscas.ac.cn
+Cc: alibuda@linux.alibaba.com, davem@davemloft.net, dust.li@linux.alibaba.com,
+ edumazet@google.com, guwen@linux.alibaba.com, horms@kernel.org,
+ kgraul@linux.ibm.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ mjambigi@linux.ibm.com, netdev@vger.kernel.org, pabeni@redhat.com,
+ sidraya@linux.ibm.com, tonylu@linux.alibaba.com, wenjia@linux.ibm.com,
+ stable@vger.kernel.org
+Date: Mon, 21 Sep 2026 17:34:15 +0000
+Message-ID: <179001205598.2160803.12068131189751847433@kernel.org>
+In-Reply-To: <20260917163956.2162779-1-vulab@iscas.ac.cn>
+References: <20260917163956.2162779-1-vulab@iscas.ac.cn>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921094218.483234-1-edumazet@google.com>
 
-On Mon, Sep 21, 2026 at 09:42:18AM +0000, Eric Dumazet wrote:
-> __vsock_deliver_tap_skb() is called from vsock_deliver_tap()
-> under rcu_read_lock().
-> 
-> dev_queue_xmit() does not require the caller to hold a device reference
-> count, and the device lifetime is already protected by RCU.
-> 
-> Remove the redundant dev_hold(dev) and dev_put(dev) calls.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  net/vmw_vsock/af_vsock_tap.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/af_vsock_tap.c b/net/vmw_vsock/af_vsock_tap.c
-> index 30ee7e4fe25115cef71b43f335862a09b8c51382..7c5cdceabb2a5f7079faab243ee9de7d6bb8857c 100644
-> --- a/net/vmw_vsock/af_vsock_tap.c
-> +++ b/net/vmw_vsock/af_vsock_tap.c
-> @@ -64,14 +64,10 @@ static int __vsock_deliver_tap_skb(struct sk_buff *skb,
->  	struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
->  
->  	if (nskb) {
-> -		dev_hold(dev);
-> -
->  		nskb->dev = dev;
->  		ret = dev_queue_xmit(nskb);
->  		if (unlikely(ret > 0))
->  			ret = net_xmit_errno(ret);
-> -
-> -		dev_put(dev);
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
+
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] net/smc/af_smc.c:smc_shutdown() — the commit claims to fix a
+  use-after-free where the passive-closing sock_put() frees sk before…
+
+--
+
+net/smc: Fix socket use-after-free in smc_shutdown()
+
+This moves the passive-closing sock_put() in the smc->use_fallback branch
+of smc_shutdown() past release_sock(), using a new passive_close flag, on
+the grounds that the put could otherwise free sk before release_sock()
+runs.  It carries a Fixes: tag and Cc: stable.
+
+> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> index e9f93b3ab435b..70d6da4c6267d 100644
+> --- a/net/smc/af_smc.c
+> +++ b/net/smc/af_smc.c
+> @@ -2946,6 +2946,7 @@ int smc_shutdown(struct socket *sock, int how)
+>  {
+>  	struct sock *sk = sock->sk;
+>  	bool do_shutdown = true;
+> +	bool passive_close = false;
+>  	struct smc_sock *smc;
+>  	int rc = -EINVAL;
+>  	int old_state;
+> @@ -2983,7 +2984,7 @@ int smc_shutdown(struct socket *sock, int how)
+>  		if (sk->sk_shutdown == SHUTDOWN_MASK) {
+>  			sk->sk_state = SMC_CLOSED;
+>  			sk->sk_socket->state = SS_UNCONNECTED;
+> -			sock_put(sk);
+> +			passive_close = true;
+>  		}
+>  		goto out;
 >  	}
->  
->  	return ret;
-> -- 
-> 2.55.0.1082.g2b9226bbc0-goog
-> 
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+[Severity: High]
+Can the use-after-free described in the changelog actually happen here?
+
+smc_shutdown() is only installed as proto_ops->shutdown (af_smc.c and
+smc_inet.c), so it is entered from __sys_shutdown() or
+kernel_sock_shutdown() while a struct socket/file reference is alive.  The
+socket's own reference on sk is dropped only in smc_release():
+
+net/smc/af_smc.c:smc_release() {
+	...
+	sock_orphan(sk);
+	sock->sk = NULL;
+	release_sock(sk);
+
+	sock_put(sk); /* sock_hold above */
+	sock_put(sk); /* final sock_put */
+}
+
+and smc_release() cannot run while the shutdown syscall holds the fd.  With
+that reference plus the passive-closing reference, wouldn't sk_refcnt be at
+least 2 at the old sock_put(), making the release_sock()-on-freed-sk path
+unreachable?
+
+The commit message also states the reference may be gone because "the
+passive closing reference was already consumed by an abort of the active
+link group".  Can that state be reached in this branch?  This branch runs
+only for smc->use_fallback sockets, and the abort paths leave sk_state at
+SMC_CLOSED, SMC_PEERABORTWAIT or SMC_PROCESSABORT:
+
+net/smc/smc_close.c:smc_close_active_abort() {
+	case SMC_ACTIVE:
+	case SMC_APPCLOSEWAIT1:
+	case SMC_APPCLOSEWAIT2:
+		sk->sk_state = SMC_PEERABORTWAIT;
+		...
+		sk->sk_state = SMC_CLOSED;
+		sock_put(sk); /* (postponed) passive closing */
+}
+
+net/smc/smc_close.c:smc_close_passive_abort_received() {
+	case SMC_INIT:
+	case SMC_ACTIVE:
+	case SMC_APPCLOSEWAIT1:
+		sk->sk_state = SMC_PROCESSABORT;
+		sock_put(sk); /* passive closing */
+}
+
+All three of those states are rejected earlier in smc_shutdown() with
+-ENOTCONN:
+
+	rc = -ENOTCONN;
+	if ((sk->sk_state != SMC_ACTIVE) &&
+	    (sk->sk_state != SMC_PEERCLOSEWAIT1) &&
+	    (sk->sk_state != SMC_PEERCLOSEWAIT2) &&
+	    (sk->sk_state != SMC_APPCLOSEWAIT1) &&
+	    (sk->sk_state != SMC_APPCLOSEWAIT2) &&
+	    (sk->sk_state != SMC_APPFINCLOSEWAIT))
+		goto out;
+
+so the fallback branch is never reached after such an abort.  Could a
+reachable path (ideally a KASAN splat) be added to the changelog?
+
+> @@ -3014,6 +3015,8 @@ int smc_shutdown(struct socket *sock, int how)
+>  		sock->state = SS_DISCONNECTING;
+>  out:
+>  	release_sock(sk);
+> +	if (passive_close)
+> +		sock_put(sk); /* passive closing */
+>  	return rc ? rc : rc1;
+>  }
+
+[Severity: High]
+If the premise in the changelog did hold, does this reordering remove the
+problem or just move it?
+
+passive_close is derived solely from sk_shutdown == SHUTDOWN_MASK, which
+says nothing about whether this call still owns the passive-closing
+reference.  The same unconditional decrement therefore still runs, just
+later.
+
+If it drops the last reference, sk is freed while sock->sk still points at
+it for an open fd, and the next fd operation touches freed memory:
+
+net/smc/af_smc.c:smc_release() {
+	struct sock *sk = sock->sk;
+	...
+	sock_hold(sk); /* sock_put below */
+
+Wouldn't an ownership check (or bracketing the region with
+sock_hold()/sock_put() as smc_release() does) be needed instead of a
+reordering, if there really is a stray put to fix?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917163956.2162779-1-vulab%40iscas.ac.cn
