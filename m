@@ -1,208 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023082.outbound.protection.outlook.com [40.107.162.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494FC33AD8C;
-	Mon, 21 Sep 2026 03:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789962990; cv=none; b=PyUhcvgIF5XLnM8RvlYkAh6YPOQOElRzzG20KDgcEAa7VORchUKWoK/NQWnwW3SWYx+NhiRkRZDZJJvFtK9AWVhsp+ekcRN8iiPKq88ZfsJIgHlHHbK0RdNGaIa6rS9WbnPcrmbwUPL2lSAbNY2EN2zQ91ZWZrNtoqkKLRJ6GdQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789962990; c=relaxed/simple;
-	bh=DuA4vGK359czk76fR54fow6IlJIGrbXTELlIgIlVM2E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jmifNBxWGYek3ZT1gHsdIuQE4CntCEWFFPzTmeiQEiR0m+jhBdsNjblAyhxOX/xxXGC2bLlCrkNmYzmnABGOOXWSqTO9zoBv3G9mBQdW+FB2kPWDCVWXEhf4TSzRFg9lP8MluE1CjUYcZDiLRkJViFlDhZcXrhfRq11vCLVVEn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEqDVXBE; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15F318146;
+	Mon, 21 Sep 2026 03:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789963171; cv=fail; b=jaVF3Xj0U8QYqYjQmUYGdYy43L4SmZm56f8hNP8dxWtdNrIndx9kP12hxMac1gDHWOQ+IDzwF0UYTKOuqhXmhzg4r92zjj8hjSEwTTelptwzImvkrNpcxWmOq/oKoeIAVqyHU9Qn80Skwapms96uY8zs+U50ylQzzHsQtJvHqNE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789963171; c=relaxed/simple;
+	bh=Xta23XDIsbEyEzL2u3E+1QkBp3fXbLr8UgU6W+fzSm0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=U4W6QUKakNbioHOvBa9UpvAG9Kxh/0F0oqY7WUI7xD1WT+qkKIwSU4rRHTSPdFM+DsVE7GhTqSCVrJjWERVxABzNqdUhu0JePu/ahinFwBXlRqY7ggvpRzf6YtffJajCwIAWR/t+gfRSL6E8iiLvDebcihuf+jaAHk9VsPYQC4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=studio.unibo.it; spf=pass smtp.mailfrom=studio.unibo.it; dkim=pass (2048-bit key) header.d=studio.unibo.it header.i=@studio.unibo.it header.b=DJGkHVtv; arc=fail smtp.client-ip=40.107.162.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=studio.unibo.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=studio.unibo.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEqDVXBE"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C0D3FC2BCB3;
-	Mon, 21 Sep 2026 03:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789962989;
-	bh=DuA4vGK359czk76fR54fow6IlJIGrbXTELlIgIlVM2E=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=oEqDVXBE05MbgC2AVe1An3cAuYve8Lu3dtW6HXe0RIZeyBwfHHrhYG+Izem7HLDvD
-	 KyhOzb+5ngf9YupinvSechtOUCaFg80bwkXhODJebv6xi9zVyOUK4qdPeWQEkd0NAW
-	 wWPGAV5xI5MrP7qCIMp1xNdoZZOxBZuGdsXamKX+xQNB7bpa5KQM/d0SVz9XIhDI1t
-	 7nfvdLACCu3Nwc5da1egjB23D/lwfRNdA9EwT01Zh3jsgpnl24SpHb6UA8F6F3au1Z
-	 nkvxNgSAyNzNWQAeZqWfhSV9AroNSlcJvNlM6s+7Ie5T1mMQ106K8nNPUu29yrw1H+
-	 TlC3+Ju+bf+2w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98153C982E1;
-	Mon, 21 Sep 2026 03:56:29 +0000 (UTC)
-From: Nicolo Giuliani via B4 Relay <devnull+nicolo.giuliani6.studio.unibo.it@kernel.org>
-Date: Mon, 21 Sep 2026 05:56:29 +0200
-Subject: [PATCH net v2] net: dsa: mv88e6xxx: 88E6191X and 88E6193X have no
- PTP
+	dkim=pass (2048-bit key) header.d=studio.unibo.it header.i=@studio.unibo.it header.b="DJGkHVtv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u96FLUPK0TQvSR+5tDxK30xLQfu8Hz2bQ+kNtfgCcy1Z5xyRYCKus1JFo6G4NmduqkLChoirG0yg9WnHADRYe8zrJ/+/LsGul23wzoktXJWoAnijhRMy871GP9jv6G57yhHBNueG1+NjHZWwvQyCvy63vt+bRUBNqPu9qn1dz+9dXEvamVq6WoGl9U3yyRYQOqWTpdxkP8Xicsieo1FFuW4hEHFHDR/LQg+a+dlOE45aL4tFgNV44/gvmcWJPxvqpMhzxPaIpGUCTcoGRjQ7xUYCz6R9TwwtDM8T8/akKNd7FEor9ZEtjZZVO5Npt9SdZvkWZbQ+TSfo3lD3rx1aDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AZAHRiu0PooHTSqhHaLit40v5LxWmxmfilztbQWTAqI=;
+ b=fF2UDsRo26P7M7IzqfdsmJ1XrT+LgTlgqfU2fsHs5TVF7+WK8MWNR3b4AZ9r9/jwZcLlhhwHmZmTqRR0hrF5LZ6Ol/UISFsPunUDpKq4G6IMJhDbcdJhXyFpzp5Fg8tUTp5BdWtnCeWwfnCXPBRGhWGCLjS70RNowus6AIcqaugG4SYioiraPT0/jj0WH/6X6+T9LigbrvEGXvylTXrrSNEc7Bp7evLG52oO/tTM+bBkxuEZsOP17UVFaDDtEdwXt6QQH6iNFfSPa35SNPa0EiRj6/QNJb6ioW7Pp4LAmXYGxgJick18GrpWSctBDVpSihZ+7TN1Mi/VXUe9UMoU2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=studio.unibo.it; dmarc=pass action=none
+ header.from=studio.unibo.it; dkim=pass header.d=studio.unibo.it; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=studio.unibo.it;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AZAHRiu0PooHTSqhHaLit40v5LxWmxmfilztbQWTAqI=;
+ b=DJGkHVtv8RlvDViDMMeUtkygM7kq6sF5cgYTzRYHAuuOnp4ikAhqaxMUo5GRsVOuXMxSjOjxF0iEHs30ojNB3CG02NKYk4Ybpl19C4qpNvuRJtdw0zqbNWfjjkYLndkKbwwn1swYEYwiRsGl/31oS7G5iDUqlDYietP0Z4lpbf5wHcBO+IvO+cSkYUl8BNDaebj83l4K6PVBqwsvG+DxW+yUphNxApaxhDR5acEG27FP1Nnq/29yXzuqTdo4gYHCZssSo+Zd5sZQ2YgHRBPBASbW6uJ2CQdWYA0RY9CJ3ERSGvlwbyjmewCvGkeFrFe0GtXIGTKkjuQdQSszm2OS6A==
+Received: from DU4PR01MB12163.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:620::18) by PR3PR01MB7891.eurprd01.prod.exchangelabs.com
+ (2603:10a6:102:14e::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.15; Mon, 21 Sep
+ 2026 03:58:37 +0000
+Received: from DU4PR01MB12163.eurprd01.prod.exchangelabs.com
+ ([fe80::bffd:753f:fbcc:c402]) by
+ DU4PR01MB12163.eurprd01.prod.exchangelabs.com ([fe80::bffd:753f:fbcc:c402%6])
+ with mapi id 15.21.0428.015; Mon, 21 Sep 2026 03:58:36 +0000
+From: =?iso-8859-1?Q?Nicol=F2_Giuliani_-_nicolo=2Egiuliani6=40studio=2Eunibo=2E?=
+ =?iso-8859-1?Q?it?= <nicolo.giuliani6@studio.unibo.it>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+	<richardcochran@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: R: R: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if the
+ TAI period is invalid
+Thread-Topic: R: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if
+ the TAI period is invalid
+Thread-Index:
+ AQHdSHBd+pGZ8FgfBki6KEuSlYSfVLbXjVuAgAAtc+WAABhkgIAAAq6SgAAlS4CAAG7CPQ==
+Date: Mon, 21 Sep 2026 03:58:36 +0000
+Message-ID:
+ <DU4PR01MB12163BB705A30C3A2F231F82680842@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
+References: <20260919-send-net-v1-1-4355c72465ee@studio.unibo.it>
+ <66937bde-51a0-49d2-9ae7-f27fb4f8ecde@lunn.ch>
+ <DU4PR01MB12163870875DEF21E5C39DD2D80852@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
+ <fde8b48a-10ed-46fd-b477-18ac57df8a88@lunn.ch>
+ <DU4PR01MB12163D71C8AF5C7695B2FB8BD80852@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
+ <f5d30e0b-9b10-45b4-a158-19c946c0c8bd@lunn.ch>
+In-Reply-To: <f5d30e0b-9b10-45b4-a158-19c946c0c8bd@lunn.ch>
+Accept-Language: it-IT, en-US
+Content-Language: it-IT
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=studio.unibo.it;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU4PR01MB12163:EE_|PR3PR01MB7891:EE_
+x-ms-office365-filtering-correlation-id: 6ac69491-1644-41ad-473c-08df17949ccb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|786006|1800799024|376014|366016|10067099003|11063799006|5023799004|56012099006|18002099003|22082099003|4143699003|38070700021;
+x-microsoft-antispam-message-info:
+ eU08CvYYxtzeXN2fF3twkd1tCwmTGTpwZ6BmYrwVSLYoR1Rcfme4hK5xBHb3eR8nvmXlKFE7PTtx71phwaxxVcD8Q1ttn0v8MEuPr3iI4b7ikUjTVc6twQ23ODLHJB7skB8zuyB5ScY8n70QI6E8YBZY6sSCYXqf7C1VnXOsjIWwOSnHxLewHDlq2+DsANSL9wJygmItrbjfrk96FvHCU80AGfi7woDZqY5FXqjiYRy153N3PGMGr2S0iGDZwxVTM/RuIhcV8CPm4l9MICwZQXkM33uagk92LGSYEXBQa8LrKwwvIZFTi9/PEY2VJPrDKIUso8Dr+9nwSP3fcyPgDQ1LuTXwJa+FyigtIQ3aEj+gSPaVqTvgYBquF/mwSMftsNWNrWMxQHmg6XpMfoXXd/AyvFCBH1iOd4p/hWzV5okUu2iZCVeVFwxfixTw9+M924kNi8Y6u8On+xsuwt1huC2OJRqAgFxuGoxKmJvhOPFqR0l8SaGcJqf/FOQxJwY4NWzsp7+sc2kUgKTTTcpbJP0ARqDg9lJayIsYiE8hgT1DPPAAAFIf0Y6JvbU1LgPuFuLTIW9ZPkgmwZciKO4fW56D8NuXz/GCr0R7eDujJ8m001obIfRbZFFDKyzMolgdI3gT8J61SK0drTmGK4sTIu95PKl60iCizckIl0ZsH8M=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR01MB12163.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(786006)(1800799024)(376014)(366016)(10067099003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003)(4143699003)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?uBscRfoVITbLReiJs1B6bwZgP5iz1PXptYtPBcUNjrfZKOiYZVwMO8bV65?=
+ =?iso-8859-1?Q?UKuC70eK+8BReXizJs12GBmu1TDJdVSTqrJJYqHKdgBbENPfQG+qqjB4/A?=
+ =?iso-8859-1?Q?y1i3bGxzJKAkBeqegbRoQvRcASniATyWg6uGFPh5XAYR0wDvON992sA91+?=
+ =?iso-8859-1?Q?+pRNTwC0bmOyNEIdyC22DsESflvbR5pgnTQ3MvsJvXs3ijmaov5QGG3Rbp?=
+ =?iso-8859-1?Q?L/SGXfEJt7pXDypRGGSgGvTkqX2S5j1rsmxjV2JIv5aqbn+0AXT92JltVW?=
+ =?iso-8859-1?Q?NwklTaNSCEDi1mZ4r8W9AUQJEV0D3mmktyasTWO/llRGmMHFttevgurzGi?=
+ =?iso-8859-1?Q?Lj66DOmRsAC3gG91uOLsvl2Yn2PGkMKITnXqh3pJbtr+eJMM0MCi8NPvjr?=
+ =?iso-8859-1?Q?eQgFmOPE5OjhTR0ctNFfeTseLyXSyLF6QHIIHPHhodJnfVbovP8mGeyrhq?=
+ =?iso-8859-1?Q?Wcy2/LSvow+hX4H2eoTn+cZt2Qv8Ysv7vm/feGlnrw1wLq6LfY7x7IgT3n?=
+ =?iso-8859-1?Q?LOf/lS/txi4Pg4qZYwGqLttZCYaLR/GDV6s91RKkxIAPHUP/CLkr0X0THC?=
+ =?iso-8859-1?Q?kFQcR3NMJcsY1pQjmycgk5wUSpxQjgDXQBl/mxUAdlWVIFMXRhHqtc1Vw1?=
+ =?iso-8859-1?Q?9R9YzsYkiERzPuZ3gcZRFS41LY513bi1GuEX9gZzE+fhTxMwQguxvKxdJH?=
+ =?iso-8859-1?Q?htmNWY8jFdIcaevBTDMVfH/Q/jlP7c8LQiFI04c1FGzufjkV86uRw4caMR?=
+ =?iso-8859-1?Q?XfFlCoGFoCpsfkJYiD/jlm++4mDYumN16K6BTVa/D0dM3ti9BanlX2TeGO?=
+ =?iso-8859-1?Q?l/IlhGAo3rurPpf0deDfmkfATiZQJFn8IwQxF6wuWShu/MJxqBl1xQrvtZ?=
+ =?iso-8859-1?Q?9Y9MdquIiA/JRkInXeZ+p2HcxNQe2fgPbL0RXaqEJn6of4S5WOWjz8A7Y9?=
+ =?iso-8859-1?Q?AIdeODBlmTIWAkr5JcOt845vy8kdDYjqtXD7+hYYr25faARuSlUFwh1wfj?=
+ =?iso-8859-1?Q?ySwoMDWN2ApTidoVjv1Z0Hh0bUVwmRDtUoBDm4bvTz15+zAbteVt3mezIT?=
+ =?iso-8859-1?Q?LU//jDpV5aIHq7A77A7s5nr757Qblg/ZOFc8DUocl7WdhygE8Tz1hGxZHm?=
+ =?iso-8859-1?Q?yaJgfUYrtQfhzoJMVppsZj+0jyOG2JVZHHkPJnJN61JcWQkMgsZt8m3RV8?=
+ =?iso-8859-1?Q?p8OkdPepa6q/64k19b6AYwr6dQlJBWeHme9uJjEVWGv1lInKrIFo+bVxIW?=
+ =?iso-8859-1?Q?gEEB0f3nogVLiGfv72yNhPSVU1uhl/PD14D2GZKic8PEWAleNRcq4V73wk?=
+ =?iso-8859-1?Q?7+aXDhpzEM0W1vROHLaGfWIllek+jwinwhYKBaQS/qw97j/oEGb365YCxk?=
+ =?iso-8859-1?Q?IsUJGjkXL/JjaCNYqc8KVqb0QMEUl7mYwOQiLtklPGWkCjzNYf66fGcaR3?=
+ =?iso-8859-1?Q?AoI3COgDIW/czI/fYlctCq3PBeOmhBDUeGWpgu1ivOzBfXNHFs+CVQIR22?=
+ =?iso-8859-1?Q?HcNeF4SKtmrD7c3138VjDZcVHsK2eb7RJK/jr4RDZQrItr8k9BSeQFvDNY?=
+ =?iso-8859-1?Q?BvrnVAL+jgjV+g4/ymJWPer2u4KVqWjGgXlNXTx5HsVG0rGQHCbS/TPjtd?=
+ =?iso-8859-1?Q?0mDkANBHz1jBylB73xcEAdRio3DcqBhXxrQFF4IONGKe7uCGiDKZE8+en4?=
+ =?iso-8859-1?Q?gI5w7z4uMFoFw86r+FLPSLTeztm2/m+p/dqijzaf3PLCJgwa/60FPOVHmz?=
+ =?iso-8859-1?Q?Gycm2OWnFcZQvzkjtPn63NkprDwwO7Ah053VQLKyeh2bY8E4wAHG2Za/Hf?=
+ =?iso-8859-1?Q?Vsr+xO5xB6qHPf9M3kzi7gM4aENw028=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-send-net-v2-1-031ad720f140@studio.unibo.it>
-X-B4-Tracking: v=1; b=H4sIAOyqsGoC/2WNQQ6CMBBFr0JmbQktLYgr72FclDLKuGhJpxAN4
- e4WXLp8Py/vr8AYCRkuxQoRF2IKPoM6FeBG658oaMgMqlJN1clOMPpBeEyia601jamt02fI+hT
- xQe8jdYMswP038ty/0KU9smsjcQrxcxwu8pD/24sUUujaGNcq3RjEK6d5oFDOnvpQUo5v2/YFo
- RWcor0AAAA=
-X-Change-ID: 20260919-send-net-97aa5653ac48
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789962988; l=6074;
- i=nicolo.giuliani6@studio.unibo.it; s=20260919; h=from:subject:message-id;
- bh=zvg227S60l2Y4KCjY2ZtncW2AyMuzOIIib4Gk2dmg1o=;
- b=267QZv6EzlKHut28OGs6bee7NNvCO2ylUTtereN1FBJtrz6WZ65ovebBlYIm1VmCLUGJx59CP
- 7Gme7E5F2a0COndbzmMLnwQLUpWCEoK5kf7j5ZSR1ck9AsvzNiZKrLZ
-X-Developer-Key: i=nicolo.giuliani6@studio.unibo.it; a=ed25519;
- pk=D652ecdT01GkA1eoFWNFNX85xIg5ZnFwUWyjfestgQw=
-X-Endpoint-Received: by B4 Relay for
- nicolo.giuliani6@studio.unibo.it/20260919 with auth_id=1040
-X-Original-From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
-Reply-To: nicolo.giuliani6@studio.unibo.it
-
-From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
-
-The 88E6191X and 88E6193X are 6393 family devices that share
-mv88e6393x_ops with the 88E6393X and are marked as ptp_support. Marvell's
-UMSD driver describes both as parts without AVB (88E6193X: "BGA package -
-No AVB, No Routing, No Cut-through"), and the register access confirms it
-on an 88E6193X: the whole indirect AVB register space behind Global 2
-registers 0x16 and 0x17 reads zero, for every port, block and address,
-with the 6390 and with the 6352 command encoding. Writes to the TAI
-registers, including the clock period register and the TAI global
-configuration register, read back as zero.
-
-Since commit 7e3c18097a70 ("net: dsa: mv88e6xxx: read cycle counter
-period from hardware") the PTP setup reads the TAI clock period, so the
-switch fails to probe:
-
-mv88e6xxx ...: unexpected cycle counter period of 0 ps
-
-Add mv88e6191x_ops, a copy of mv88e6393x_ops without avb_ops and ptp_ops,
-use it for the 88E6191X and the 88E6193X and stop setting ptp_support for
-them. The 88E6393X is unchanged.
-
-Tested on an 88E6193X (Sophos XGS 107w): the switch probes and the ports
-work. I do not have an 88E6191X, it is changed because UMSD describes it
-the same way.
-
-Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Assisted-by: LLM
-Signed-off-by: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
----
-Changes in v2:
-- New patch instead of skipping PTP setup: the 88E6191X and 88E6193X have no AVB/PTP unit (per Andrew Lunn, from Marvell's UMSD; the AVB register space reads zero on an 88E6193X), so they get their own ops without avb_ops and ptp_ops and lose ptp_support
-- Link to v1: https://patch.msgid.link/20260919-send-net-v1-1-4355c72465ee@studio.unibo.it
----
- drivers/net/dsa/mv88e6xxx/chip.c | 68 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 64 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 7f68a0c55..a4a8c7e11 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5639,6 +5639,68 @@ static const struct mv88e6xxx_ops mv88e6390x_ops = {
- 	.pcs_ops = &mv88e6390_pcs_ops,
- };
- 
-+static const struct mv88e6xxx_ops mv88e6191x_ops = {
-+	/* MV88E6XXX_FAMILY_6393 without AVB and PTP: 6191X and 6193X */
-+	.irl_init_all = mv88e6390_g2_irl_init_all,
-+	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
-+	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
-+	.set_switch_mac = mv88e6xxx_g2_set_switch_mac,
-+	.phy_read = mv88e6xxx_g2_smi_phy_read_c22,
-+	.phy_write = mv88e6xxx_g2_smi_phy_write_c22,
-+	.phy_read_c45 = mv88e6xxx_g2_smi_phy_read_c45,
-+	.phy_write_c45 = mv88e6xxx_g2_smi_phy_write_c45,
-+	.port_set_link = mv88e6xxx_port_set_link,
-+	.port_sync_link = mv88e6xxx_port_sync_link,
-+	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
-+	.port_set_speed_duplex = mv88e6393x_port_set_speed_duplex,
-+	.port_tag_remap = mv88e6390_port_tag_remap,
-+	.port_set_policy = mv88e6393x_port_set_policy,
-+	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
-+	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
-+	.port_set_mcast_flood = mv88e6352_port_set_mcast_flood,
-+	.port_set_ether_type = mv88e6393x_port_set_ether_type,
-+	.port_set_jumbo_size = mv88e6165_port_set_jumbo_size,
-+	.port_egress_rate_limiting = mv88e6097_port_egress_rate_limiting,
-+	.port_pause_limit = mv88e6390_port_pause_limit,
-+	.port_disable_learn_limit = mv88e6xxx_port_disable_learn_limit,
-+	.port_disable_pri_override = mv88e6xxx_port_disable_pri_override,
-+	.port_get_cmode = mv88e6352_port_get_cmode,
-+	.port_set_cmode = mv88e6393x_port_set_cmode,
-+	.port_setup_message_port = mv88e6xxx_setup_message_port,
-+	.port_set_upstream_port = mv88e6393x_port_set_upstream_port,
-+	.port_enable_tcam = mv88e6xxx_port_enable_tcam,
-+	.stats_snapshot = mv88e6390_g1_stats_snapshot,
-+	.stats_set_histogram = mv88e6390_g1_stats_set_histogram,
-+	.stats_get_sset_count = mv88e6320_stats_get_sset_count,
-+	.stats_get_strings = mv88e6320_stats_get_strings,
-+	.stats_get_stat = mv88e6390_stats_get_stat,
-+	/* .set_cpu_port is missing because this family does not support a global
-+	 * CPU port, only per port CPU port which is set via
-+	 * .port_set_upstream_port method.
-+	 */
-+	.set_egress_port = mv88e6393x_set_egress_port,
-+	.watchdog_ops = &mv88e6393x_watchdog_ops,
-+	.mgmt_rsvd2cpu = mv88e6393x_port_mgmt_rsvd2cpu,
-+	.pot_clear = mv88e6xxx_g2_pot_clear,
-+	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
-+	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
-+	.reset = mv88e6352_g1_reset,
-+	.rmu_disable = mv88e6390_g1_rmu_disable,
-+	.atu_get_hash = mv88e6165_g1_atu_get_hash,
-+	.atu_set_hash = mv88e6165_g1_atu_set_hash,
-+	.vtu_getnext = mv88e6390_g1_vtu_getnext,
-+	.vtu_loadpurge = mv88e6390_g1_vtu_loadpurge,
-+	.stu_getnext = mv88e6390_g1_stu_getnext,
-+	.stu_loadpurge = mv88e6390_g1_stu_loadpurge,
-+	.serdes_get_lane = mv88e6393x_serdes_get_lane,
-+	.serdes_irq_mapping = mv88e6390_serdes_irq_mapping,
-+	/* TODO: serdes stats */
-+	.gpio_ops = &mv88e6352_gpio_ops,
-+	.phylink_get_caps = mv88e6393x_phylink_get_caps,
-+	.pcs_ops = &mv88e6393x_pcs_ops,
-+	.tcam_ops = &mv88e6393_tcam_ops,
-+};
-+
- static const struct mv88e6xxx_ops mv88e6393x_ops = {
- 	/* MV88E6XXX_FAMILY_6393 */
- 	.irl_init_all = mv88e6390_g2_irl_init_all,
-@@ -6163,8 +6225,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.atu_move_port_mask = 0x1f,
- 		.pvt = true,
- 		.multi_chip = true,
--		.ptp_support = true,
--		.ops = &mv88e6393x_ops,
-+		.ops = &mv88e6191x_ops,
- 	},
- 
- 	[MV88E6193X] = {
-@@ -6190,8 +6251,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.atu_move_port_mask = 0x1f,
- 		.pvt = true,
- 		.multi_chip = true,
--		.ptp_support = true,
--		.ops = &mv88e6393x_ops,
-+		.ops = &mv88e6191x_ops,
- 	},
- 
- 	[MV88E6220] = {
-
----
-base-commit: 6c096bb08de97cdca051fecddad22cac6a1fd275
-change-id: 20260919-send-net-97aa5653ac48
-
-Best regards,
---  
-Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+X-OriginatorOrg: studio.unibo.it
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU4PR01MB12163.eurprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ac69491-1644-41ad-473c-08df17949ccb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 03:58:36.2881
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e99647dc-1b08-454a-bf8c-699181b389ab
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PMf31VugjUKE0zDW3SmqgbHgrpDyoTClwhx9n8zG9Coy4oOewtjXx1NcgQ/x/RtZuLuUvleljvrj8XwUf685OWsDYb1M+/rdp69umybdaaMIkpQ8rg1hHsiHWDUCfbAq
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR01MB7891
 
 
+Hi Andrew,
+
+Thanks, that explains it. I have sent the patch as v2 in a new thread:
+
+https://patch.msgid.link/20260921-send-net-v2-1-031ad720f140@studio.unibo.i=
+t
+
+It adds mv88e6191x_ops, a copy of mv88e6393x_ops without avb_ops and ptp_op=
+s, uses it for the 88E6191X and the 88E6193X and drops ptp_support for both=
+, so the 88E6393X is unchanged. I included the 88E6191X because UMSD descri=
+bes it the same way; I only have an 88E6193X, so that entry is untested.
+
+I tested it on the 88E6193X of the Sophos XGS 107w (Linux 6.18.52): with th=
+e driver unbound and the module replaced by one built with the patch, and w=
+ithout the workaround from v1, the switch is detected as 0x1930, the eight =
+PHYs and the 10gbase-r link come up, there is no PTP error and no PHC is re=
+gistered.
+
+Thanks,
+Nicolo Giuliani
+
+________________________________________
+Da: Andrew Lunn <andrew@lunn.ch>
+Inviato: domenica 20 settembre 2026 23:21
+A: Nicol=F2 Giuliani - nicolo.giuliani6@studio.unibo.it
+Cc: Vladimir Oltean; David S. Miller; Eric Dumazet; Jakub Kicinski; Paolo A=
+beni; Richard Cochran; netdev@vger.kernel.org; linux-kernel@vger.kernel.org
+Oggetto: Re: R: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if=
+ the TAI period is invalid
+
+On Sun, Sep 20, 2026 at 07:08:57PM +0000, Nicol=F2 Giuliani - nicolo.giulia=
+ni6@studio.unibo.it wrote:
+> Hi Andrew,
+>
+
+> Thanks, that is what I needed. I checked it on the board (chip ID
+> 0x1930, so the driver entry is the 88E6193X, family 6393, which uses
+> mv88e6390_avb_ops and mv88e6352_ptp_ops):
+
+Marvell names all there devices 88e6xyz. The x indicates the model
+within the family y. The lower the value of x, the less features the
+device has.
+
+So i could well be the 88E6193X does not have avb, tsn and ptp.
+
+Marvell has a vendor driver for these devices called UMSD. It has an
+open source licence, but it is well hidden.
+
+include/driver/msdSysConfig.h:  MSD_88E6193X =3D 0x193,   /* 88E6193X  - BG=
+A package - No AVB, No Routing, No Cut-through*/
+
+So i would say PTP is not available on this device. Please could you
+submit a patch removing the mv88e6390_avb_ops and mv88e6352_ptp_ops.
+
+There is also:
+
+        MSD_88E6191X =3D 0x192,  /* Amethyst 88E6191X  - BGA package - No A=
+VB, No Routing, No Cut-through, No TCAM, No 802.1BR*/
+
+Maybe you can review that entry as well.
+
+       Andrew
