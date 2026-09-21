@@ -1,69 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD65D48594E;
-	Mon, 21 Sep 2026 21:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2432E4257
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 21:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790025282; cv=none; b=VjfkDZEjqTRiLT2TJP9ml2qSd9SLrd/ACqd+7iI3zrJYq9x8nDm3roU0OV9obDs6PO2QlEXDAtGU7ObI3tw+3nzgMMCrttWRk6vastulz3yQoykFxcgffGlP2lMGq4f8N8CgrZc3um3mH6Z2w2h46dvw9jCaoZcv4f05p9tXfzI=
+	t=1790026256; cv=none; b=WcRxjpPPYMUGAii10L9Usq6wzwXJjgqnnno6hbDZOHNpiC6TzBay0YXrRswayX/zrT9+yFCoVclrThkrLC4k1vHRCvRh8DdK3zd00Ez18GPSqLlBeWh/QUBXyWV3Mc0x+ms35q5DtPr0jJaGuegFdb52n8Crbf7z7YMQMhp6dyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790025282; c=relaxed/simple;
-	bh=pZWq/VUfpsb0S24DS/LYzSU+NdII7InseEtqKIEJLU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lyGZgdU952RDvYBeAxBZzGuPtwDfpymJJ414P8mD3vJo+Jt9ZF/Nk7Zj3CibTqjhkFpOhooAl2msc65OnAI60J3kqFvCoM5o+3T/6cTGViKUR8GdKjLh96wE6Bk/vNRd5D0EqEEmfu56Cqz/I83Ey79f+FOkNHqThEG+ZsLdToc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AghGX+pM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790026256; c=relaxed/simple;
+	bh=SDD5uJHfK6z8nRdxuK0ng0TRvAY5EGWTNJID3QGutxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nGbbHCL38SoH8CH2IXk72ZoMyWcftaa5cimuehLyfJEiCznol9QzG7pQpcX9X7hWhkjk86YyD9Er8FdyCYEHYAYO+1LoPQrk7Yy3mhKORSdTzyas7vXuWQtl06vmMiii9LHOsLVAn2TzmqKnSMgXu0mUnSqbu619Cj1Zlco2+3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRroXxKS; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AghGX+pM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE641F000FF;
-	Mon, 21 Sep 2026 21:14:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790025281;
-	bh=pZWq/VUfpsb0S24DS/LYzSU+NdII7InseEtqKIEJLU0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AghGX+pMjf2qxDfL8CTVfIuP36wjitsTYFI9vCAWdWNJ8VJEMNbtTcBCpTwazJ7q4
-	 8PB+eSw5R8mHEis3W6Wqf45c0OEq69USNopr5BGRfBL7gvP+I8HrkUq2uOIF6f7BKd
-	 ll3AsIiv3qJ2kL6GkzCPHZzfUOLpuBo9na07dQ9bddLrs51tpC9PDnp7CEpME3JS0A
-	 TEylBI8aTza8UvVCfck7f3SC4LurH2rZyuTkFPjEQTB2yKwI3W6OHyWXt3o3tzbRxd
-	 BbWTii6n6FHePkVeqZBUtNHi6Kx7MSODfyLp15v6Ll9SrsJriulOF07MQ51hIZz78n
-	 tT7jEIVZzEXRg==
-Date: Mon, 21 Sep 2026 14:14:40 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Jeff Hugo
- <jeff.hugo@oss.qualcomm.com>, Richard Cochran <richardcochran@gmail.com>,
- mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Vivek Pernamitta
- <vivek.pernamitta@oss.qualcomm.com>, Sivareddy Surasani
- <sivareddy.surasani@oss.qualcomm.com>, Taniya Das
- <taniya.das@oss.qualcomm.com>, Imran Shaik <imran.shaik@oss.qualcomm.com>,
- Vivek Pernamitta <quic_vpernami@quicinc.com>
-Subject: Re: [PATCH v3 0/6] bus: mhi: host: mhi_phc: Add support for PHC
- over MHI
-Message-ID: <20260921141440.1512b9f8@kernel.org>
-In-Reply-To: <6e314a3f-c73c-461b-86c7-472ef02e440a@oss.qualcomm.com>
-References: <20260917-tsc_timesync-v3-0-6826d5d2d527@oss.qualcomm.com>
-	<20260917074804.08818813@kernel.org>
-	<6e314a3f-c73c-461b-86c7-472ef02e440a@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRroXxKS"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so2454098f8f.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:30:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790026253; x=1790631053; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SDD5uJHfK6z8nRdxuK0ng0TRvAY5EGWTNJID3QGutxE=;
+        b=NRroXxKSntq3xO4MSo3ErmviL4Xxw4fuz8NUWG+GV0sooY5EtQX558oSc0esSAbopE
+         XsyztbYzA2x7Dkqy2hio380jFCPzVTeSCYgqYM3aKDUa3kGTG7FfTX9ZfT6sJEONx/dr
+         knuUYZ9++zkefwgL9ghci1AJybaWRPftuwsqDAfe05Gey0dt4T+geSFR64uIvYscBtiY
+         5pGFDZy1wEAQFuTHX9McyL8Tlh+5YJqDs7rKaxCyk8e9nNGM5tzPwYIfB1bMXfgsOeZm
+         lS2lSCpIoUEd3Z73iI+sqnXuYqYL5GVZuh+a3MkXN4+2de/TEl9NXBOVDCJybNx3cf+R
+         nRVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790026253; x=1790631053;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SDD5uJHfK6z8nRdxuK0ng0TRvAY5EGWTNJID3QGutxE=;
+        b=vboh3VLPxyphh+SY7hRwK58mzYXq92IeZvLcrnKf90d3MiY+0G72yXj9ER4Kt33QdP
+         wIrliv9MLt9vF3p0P9TOBJrnPFml0Vrgv12/duHtf3ZriXzH4V3UAP2pCx/P1BZZJ4j6
+         pKNvIsbKxExWwU1714vvkRzbrEY75Hy+mLvTJNgNafQvdsAOgfXmSXEJHj66cNaCmhPh
+         lLl7Eo2etaoYImBm3Wu4WrWGApMeDDKvP0b5/XSgpnV3Snm+wlcmEOQbpxIkh4pxbciP
+         iQO45ar8vVp33B/Il3Dr/Em9ZU3TMNx4cY30dJYPMMkO64/KpjIUizp689QhyRKrwhZP
+         68uw==
+X-Forwarded-Encrypted: i=1; AKwUvByx3QmXWuHSpwHe842LrVaVmciNgywYztezgaxNaVEprFBjZ7UQqQ2lbaQpaWKkS6RKExUy8GU=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0OUx1Ex/RpGD902bfHsJ19ncsLJrMpuTAaxKAYEfJuuoZUHus
+	dEMBxYn9KV/NyxWcCXJZ1NCgaffGbbHKm1VVRec5bLVpOT8WxUE5yWVL6a3iAcZJ
+X-Gm-Gg: AYBFou0DgdvQN61tZRpbyRLP52dFAquk4Y1A+LvvC3PEh73a/UH+3lrkcUV6MJUbBTY
+	bPpWC/mTPksLhGdh2+FdiRJoypBtG5ADQ05UEYfbq625xKLyH7f5jnV6S8CLjPPm3S1Wot5/CNl
+	UcADdpAyUVtvV+t3NH1RK6WmSyGB9FDaA0jMtu2Q4dOecEIRMgkXOQWzvOVeLjy1evwn7QFXbj+
+	KNLpg6xn9nRHy9zgmRmFUEJNUuymcMMX8bDwJ8ZGL5eWDhRXmlaEkU5137ci+xnQqYQ1MhLPbfX
+	m+h9i6jWD9CDcYz0Luido2GNlMlLKmNaEqI1BmlEjYMJeC/u47aUqk+1mtwyMFEXL9y5OvlmMDu
+	ErpJ9TkqtTXnPA1Aio0Wtb9hSEhmrX9C3GuO4azxQoARstw75ojnMMWTFu3KMV0Ent6137pZZ3V
+	Zo4yk1sh1NlPeSbPGIpN6zz69mysdTzAiKqEIgSaeUvt32kowEU5UXi74T9x6VzN3OTU3Odsk3j
+	e267FHbZp+w30bf5FqXkaroSArjo7bvcN2ao6KlVBOxI5bzQQ==
+X-Received: by 2002:a05:6000:2890:b0:486:fa7b:d3aa with SMTP id ffacd0b85a97d-4871e2273a5mr15062011f8f.23.1790026252444;
+        Mon, 21 Sep 2026 14:30:52 -0700 (PDT)
+Received: from linus-personal-clanker ([102.164.100.122])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862287b6esm239042f8f.33.2026.09.21.14.30.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 14:30:52 -0700 (PDT)
+From: "David .B. Dull" <monderasdor@gmail.com>
+To: adrianox@gmail.com
+Cc: fw@strlen.de,
+	horms@verge.net.au,
+	ja@ssi.bg,
+	linux-kernel@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	pablo@netfilter.org
+Subject: Re: [PATCH v5 nf-next 3/3] selftests: netfilter: ipvs: add per-service secure_tcp test
+Date: Mon, 21 Sep 2026 23:30:31 +0200
+Message-ID: <20260921213031.6160-1-monderasdor@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260921205706.1055288-4-adrianox@gmail.com>
+References: <20260921205706.1055288-4-adrianox@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 18 Sep 2026 16:22:16 +0530 Krishna Chaitanya Chundru wrote:
-> > Carry this until told otherwise:
-> >
-> > Nacked-by: Jakub Kicinski <kuba@kernel.org> =20
-> Thanks for the feedback.
->=20
-> We agree that the PHC driver does not belong under the MHI bus.
-> In the next revision, we'll move the PHC driver to drivers/ptp=C2=A0
->=20
-> Since the concern raised by the NAK is being addressed by moving the
-> driver out of drivers/bus/mhi, I'll drop the Nacked-by tag in the next
-> revision.
+From: David Dull
 
-Is that what "until told otherwise" means?
+To: Adriano Cordova
+
+Cc: Simon Horman, Julian Anastasov, Pablo Neira Ayuso, Florian Westphal, netfilter-devel, lvs-devel, netdev, linux-kernel
+
+This patch has already been reviewed by the netdev bot with Sashiko on 2026-09-21 for the v4 revision of this same selftest patch. That review found three possible issues. First the changelog wording claimed a bare SYN ACK suffices but the probe actually sends a bare SYN followed by a separate bare ACK. Second the script has no kernel side prerequisite check and no skip path for when ip_vs is unavailable. Third the secure side assertion cannot distinguish between the per service secure_tcp working correctly and the ACK probe never arriving at all.
+
+This v5 revision appears to address the first and second points by rewording the changelog to say a bare SYN followed by a bare ACK and by adding module availability checks for ip_vs and ip_vs_rr. The third concern about the assertion being ambiguous if the ACK probe fails is addressed by the addition of checking the probe exit status so a probe that dies after the SYN cannot leave the secure side SYN_RECV assertion passing incorrectly.
+
+The code itself is well structured with proper error checking in the libmnl helper for setsockopt sendto and mnl_socket_bind return values. The fallback definition for IP_VS_SVC_F_SECURE_TCP in the helper is a reasonable approach for older userspace headers. The test topology and the approach of using TTL one probes to prevent the packets from reaching the real server is sound.
+
+However there is one remaining concern. The assertion that the plain service reaches ESTABLISHED state depends on the probe successfully sending both the SYN and the ACK. If the second sendto call fails in the probe the exit status will be non zero and the test will report failure. But if the ACK packet is sent successfully and simply does not reach IPVS for some reason the connection may still be in SYN_RECV when the assertion runs. The sleep between the probe and the assertion is only one second which may not be sufficient on a heavily loaded system. Consider increasing the sleep or adding a retry loop for the state check.
+
+Overall the patch is in good shape and addresses the prior review comments appropriately.
+
+Reviewed-by: David Dull
+
+Signed-off-by: David Dull
