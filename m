@@ -1,214 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8000248167A;
-	Mon, 21 Sep 2026 11:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789990508; cv=none; b=ll2dvmvQjNI7ToCb/ZRl7Tk3+LGKuARe0CmspgSz6slaK+hmusbVkFiRFQfW59dwPdYC/pYn5u9nQ5orjhC+w4yZAD8BKnK6Dn6kHOXJhFmIdCG/qFJc8Qwkft2J0GZJeBEqK1P9rkPdnaIGkkm2BisEz9PR7WnxfQpMhEtDrdI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789990508; c=relaxed/simple;
-	bh=aK8dCs0f+Fxt5fuDPrF6l/ep1El6yd6ny6LpOAax5fA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lt2sh8/7eOQ6g/cj40Kc4OGvn0zvxiksqJI0NSalmP0gqkf5W9ZkE4ymw8QYub8G3OGDCF4uRx3hOe6LzQldtT9kSfgBiMW0IZjiIoCZEFJ3H88CWtSXBu6/0goFaoPmvMENvZWHnBL/GNYX9LfqJgsawqaXeROX5DbTwPasjSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVVvcwRv; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B3848F03A
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789990718; cv=pass; b=GGkJvf6RIvTHNv/nTC9oc5QZwd7e3HijhRitFSIQE+E1teYgZZLCU2ium9Cpk8mXRGPBEk5/C+5cbIWz+cr9BT/2AryzFQYMlIctqSoqhO014raQuHKNBfBs68KAAVurJVdRtN/ZOeefGhY0lY12yPJc4WRsTxJIHXhbCgR9itc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789990718; c=relaxed/simple;
+	bh=Wdp5fa7wpUtnmnOPRUiNG8VmwpeuTY/AN0sHfo1zbhg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MedE3D0U8nUGHrtIsC7E3cuEzyttoLIuLPrnKEtHOyNstlabXW7FZgO1gMkLJpLI97hqLISY+lpfGCjcjOwLY+62tyxvaN0uF8TN2GenbXJOeUNisnHNWBFh/MGWuT0BWs5jnuYASeLeCciTEApE1BK4sPyQX7zAP7tCtvdh7ds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NY5gWOLD; arc=pass smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVVvcwRv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2C21F000FF;
-	Mon, 21 Sep 2026 11:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789990506;
-	bh=KyIzbVUhq1HctyEq/OfnvyuEkaEwN2uGoE8H4yzypLU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nVVvcwRvYxptV5IWO6JI2uEq7d1WjMbgb3sUo1I9DB0xXGNjS+OZ0HXDU9ZuugZhO
-	 XLzY2R6ROB6+lFkEVthSWz8191E0dK4xiO71E/oeznm7Vnf0/qnJlHZUv+FcXvUZSw
-	 x+7bf9aCgtuq/fotVCLFrnL2YoT638q52mGPmQu4TjoCJYmIyH7UukDK1lRJ1KvGLj
-	 eZUA8ecu+HwMhWOoD2631rstcU4qLc9wORcb71D8LRaKHEZLVpzb1Z3K4ai3ZwKoEP
-	 g3AWROyKM3BLiS8Zo4xtMaeGh1uAxqHZbSgBWlUqDANuVDJjIj2mYJTvGLifUP9+bt
-	 nRBM//cp56tQA==
-Subject:
- Re: [PATCH] net: cxgb: Fix skb reference leak in espibug_workaround_t204()
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- jeff@garzik.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, stephen@networkplumber.org,
- stable@vger.kernel.org
-Date: Mon, 21 Sep 2026 11:35:04 +0000
-Message-ID: <178999050491.2160803.7893971966748337214@kernel.org>
-In-Reply-To: <20260917105425.2147804-1-vulab@iscas.ac.cn>
-References: <20260917105425.2147804-1-vulab@iscas.ac.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NY5gWOLD"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a30eb3bso1758598b6e.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 04:38:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789990715; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IaXWdWabIZqFqF6YqRHnrh+hbU2zxMp+6eQKA/z5Im6OGy9lac3CThCvTBrb9pEzWc
+         RyIqJXcb7I8P+AH3mE2197N3+Oy0YlYwrdR8TjyHiTbL5Xq3lfIBtJdTKcXeGChNFRe0
+         5sinZBzLdaqHFGvhUvcyyaTsy9pNhTIe6G1q8dOPGe8pWQwaS4DY56/10qmSgYK4c6fM
+         U6Evy6VF5YBdkbco5E2jB2/vZcViAJdwvJCBaxGf6kRistJU//N5OTsZXALMRmHmNnnd
+         5y9ilX6yOdxdyM8OplmxUxqXJqA3t9AehydzrF2lrmx4v6j5bxZOETpJavIeV68Y6oTb
+         DLUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=9sNrUr+jad3Tl28tFEmsrKuGEDrRBiHkzmqFkjdqgIw=;
+        fh=U+4a7sg/TWuL4BVEFfO6SUlDKzsa+b9UhsFeBUNGmSg=;
+        b=Q5UWizV0uPZRqgI08p9TWsHBCSqW6PSxbrryPWnCdjfEAmKhXb3JSdb82PRfU/b+Mp
+         0bSYrE1y9EDi9vvCj2qjlEJ+JjbPFbXhZeXpzXH5e5zKuy1mv51oBDA/6J4qBVlNKcUa
+         MdDH1/ppMyLqPoygDCD3cxISGECVJsYVOscfYHdH7CQ8Fzj+pJ8QasZskQ5Wfrt+YRyI
+         SS1HGFnb3OsJYuTB4Ds0/PLqJ6hOQXzZJB3YnZUuxB/BdBkK2sWu2l0uNhylkwnBXEyB
+         M05DjdwxELVZuqLY6equ7CuC/n0iiRgVUpjypPCo+iyba6xYVGgceD5R266eryWOFXH6
+         VZgg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789990715; x=1790595515; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9sNrUr+jad3Tl28tFEmsrKuGEDrRBiHkzmqFkjdqgIw=;
+        b=NY5gWOLDbzEsAYjAAFHaoq2pSBopWmZB1M/pL8mjPV1nQAjtuH9vs7FmJSENxkNKiZ
+         /Me2QtGjtLafcQymFZy7G0+sDXHB/dTSzlhiBXzXP5pc+eVuA/3R+spwvBc73O6h89ex
+         CY+8fxNKZ8nUo1vmaA8FKjA0HqPnSQJsK+FzduLyXK/rqaLDwxZ2ek9w2YLhjZtiBVNn
+         LrN98r9vtQszmSIh2w/i4ApaDrid+RaUEKXqKvUHYvXkRht/Ls8T+FzGLNty8iTy3aqm
+         f/Yhbaw4u1z53ynL6+dwULxvTBkZNRJ2KgXxBwqMX1Zti0eaKcJN6XE4N9ZlzQx2H1mS
+         0fgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789990715; x=1790595515;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9sNrUr+jad3Tl28tFEmsrKuGEDrRBiHkzmqFkjdqgIw=;
+        b=ax+eSqKDR3FTz2wazAura0ar/JnT44R2yQ7R7fqk/TwQXn/ti0jdIxAlcjQnUht/Rs
+         sXH5fLRawlIZU6nxIY22P4zvZ/1SklIofiImRKsxrTw1wsQdnmEoyiGCAy5MGZmhP+/K
+         jl42v0F7Gm1Kg45CFBs1nqGpdNEOVX7Gc6xm0mBY/cbHVdLyT5DuOHbwYM6dyND20wdj
+         7q+osSnBsGhsgermeTC1TCQmjW0idGKTZ4OG03aVxJ4r/lGCG1Au6fHHVxi+SUuMHLom
+         Lq9RX/3Et4DvR+w6HST0c8C42NZiRmJvOKSYYmZRfrUU/p+AvIHVnSgSsuhFHct+dBn5
+         pWbw==
+X-Gm-Message-State: AFuF++kFaaHDMrx36rn/aFr9XV8Y0dTSUxCTJU55QDgGRc1fai5/Z78r
+	IAJ9EkfJkI81sLr7iI36TE/f2UEjrqHeBeRVRQvS3kKbDPhQOVcECji/0ZiDwBfZf/JaxBFsT+E
+	OTdm/9ZxtQZZSy5XaAqAjGOOqWV7Mg1EbUQQR
+X-Gm-Gg: AYBFou22rIu2xNbcZ5eW/iALrP/T9HlGOD9cucxAJ1eP54eYEbjLcB0HMoSXr8Y+833
+	KOMbLdy11J7ICLfKkU2WhqU43+gOygYslRsSlrKwsNurlLzh+icgdLAecfxzvg4BDXPKO+zUXZE
+	/6QvQ6ESTYBth4+PS/hzGa1p2S9pGRrvwHZI3NkbR9xEyfDAGOPdXZs2KASo9NUMBf9gUzRQcpb
+	fCxQ2QIUidqcBSLZkm7EkqlMAlQWKd1/9FlEq4AbScuO29ChsQBMTzDs7SgCoQmg/WH6cyA0tWQ
+	l1ooB3RLYXpmI9N1+t3N3U++iMyBy+2ZuQiXPXbUg8rKEBCO0/4cTQF7oA==
+X-Received: by 2002:a05:6820:4b86:b0:6c9:80d8:a1f5 with SMTP id
+ 006d021491bc7-6ca9cb5e01amr10711323eaf.50.1789990715296; Mon, 21 Sep 2026
+ 04:38:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com>
+In-Reply-To: <CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com>
+From: Stefano Sasso <stesasso@gmail.com>
+Date: Mon, 21 Sep 2026 13:38:23 +0200
+X-Gm-Features: AcwNN1WjT8KPBvzATRlJSg-_sEHzX1wCRTtWTkB2fe-R482GL2cs_EN1Yg8W8Kk
+Message-ID: <CALtE317EzDwKn_Ny8O8wZCFi+OAH4jsXzBBEDh==D5ubObOtpA@mail.gmail.com>
+Subject: Re: [BUG] vrf: attaching a packet tap to a VRF device corrupts
+ skb->csum for packets from L3 ingress devices (Udp6InCsumErrors, packets dropped)
+To: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hello all,
+  I would like to follow up on this, since it seems I got no responses.
 
-Critical: 0 · High: 0 (2) · Medium: 1 · Low: 0
+> Attaching a packet tap (tcpdump/dumpcap, i.e. anything that populates
+> `vrf_dev->ptype_all`) to a VRF device causes incoming UDP datagrams to be
+> dropped with `Udp6InCsumErrors`, when:
+>
+> - the packet arrives on an ingress device with no `header_ops`
+>   (ARPHRD_NONE: tun, ip6tnl, gre, wireguard...) that is enslaved to
+> that VRF, and
+> - the skb is in `CHECKSUM_COMPLETE` state by the time it reaches
+>   `vrf_ip6_rcv()` (in my case because conntrack software-verified the checksum
+>   in PREROUTING).
+>
+> Stop the capture and the packets are delivered again. Start it and they are
+> dropped again. Capturing on the enslaved ingress device instead of on the VRF
+> device is harmless.
+>
+> IPv4 should be affected identically, since `vrf_ip_rcv()` uses the same helper.
+> I only tested IPv6.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Please let me know if there's anything else I can or need to do - or
+if the previous mail is enough and now I only need to hope for a patch
+:)
 
-- [Medium] Incomplete fix: the identical skb reference leak remains in
-  the sibling ESPI workaround timer callback espibug_workaround()…
-
-Pre-existing issues:
-- [High] Pre-existing skb_buff_head list corruption in the exact call
-  path the patch touches: espibug_workaround_t204() re-submits the very…
-- [High] Pre-existing dangling cached skb pointer leading to use-after-
-  free and double free around the espibug_skb[] reference protocol that…
-
---
-
-net: cxgb: Fix skb reference leak in espibug_workaround_t204()
-
-The ESPI workaround timer for T204 adapters takes an extra reference on the
-cached espibug skb before handing it to t1_sge_tx().  When t1_sge_tx()
-returns NETDEV_TX_BUSY the skb was never queued, so the patch drops the
-extra reference in that case.
-
-> diff --git a/drivers/net/ethernet/chelsio/cxgb/sge.c b/drivers/net/ethernet/chelsio/cxgb/sge.c
-> index d8fca697874a5..d4677c5b8d744 100644
-> --- a/drivers/net/ethernet/chelsio/cxgb/sge.c
-> +++ b/drivers/net/ethernet/chelsio/cxgb/sge.c
-> @@ -2052,7 +2052,8 @@ static void espibug_workaround_t204(struct timer_list *t)
->  			 * the skb once the DMA has completed.
->  			 */
->  			skb = skb_get(skb);
-> -			t1_sge_tx(skb, adapter, 0, adapter->port[i].dev);
-> +			if (t1_sge_tx(skb, adapter, 0, adapter->port[i].dev))
-> +				dev_kfree_skb_any(skb);
->  		}
->  	}
->  	mod_timer(&sge->espibug_timer, jiffies + sge->espibug_timeout);
-
-[Severity: Medium]
-Should the sibling handler espibug_workaround() in the same file get the
-same treatment?  It has the identical sequence and still discards the
-return value:
-
-drivers/net/ethernet/chelsio/cxgb/sge.c:espibug_workaround() {
-	        /* bump the reference count to avoid freeing of the
-	         * skb once the DMA has completed.
-	         */
-	        skb = skb_get(skb);
-	        t1_sge_tx(skb, adapter, 0, adapter->port[0].dev);
-}
-
-That callback is the one installed for single-port T2 boards:
-
-	if (is_T2(sge->adapter)) {
-		timer_setup(&sge->espibug_timer,
-			    adapter->params.nports > 1 ? espibug_workaround_t204 : espibug_workaround,
-			    0);
-
-and subr.c lists single-port T2 boards (CHBT_BOARD_N210, CHBT_BOARD_CHT210,
-CH_BRD_T210_1F, CH_BRD_T210_1CU) with .port_number = 1, so it is live code.
-
-It also looks like the more exposed of the two: it does not test
-netif_queue_stopped() before calling t1_sge_tx(), and sge->espibug_timeout
-stays at 1 jiffy for nports == 1 versus HZ/100 for T204, so it re-enters the
-same call much more often.
-
-Since t1_sge_stop() only drops a single reference per slot:
-
-	for (i = 0; i < MAX_NPORTS; i++)
-		kfree_skb(sge->espibug_skb[i]);
-
-and t1_start_xmit() only repopulates the slot when it reads NULL, does each
-leaked reference make sge->espibug_skb[0] permanently unfreeable?  Would it
-make sense to fix both call sites in one patch?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can the same skb pointer end
-up enqueued twice on the scheduler queue in this exact path?
-
-On T204 sge->tx_sched is non-NULL and skb->dev is still set from the
-original t1_start_xmit(), so t1_sge_tx() always routes this submission
-through sched_skb():
-
-	if (sge->tx_sched && !qid && skb->dev) {
-use_sched:
-		...
-		skb = sched_skb(sge, skb, credits);
-		if (!skb) {
-			spin_unlock(&q->lock);
-			return NETDEV_TX_OK;
-		}
-
-sched_skb() enqueues unconditionally and can then leave the skb on the
-queue while returning NULL:
-
-drivers/net/ethernet/chelsio/cxgb/sge.c:sched_skb() {
-		skbq = &s->p[skb->dev->if_port].skbq;
-		__skb_queue_tail(skbq, skb);
-		s->num++;
-	...
-	if (credits < MAX_SKB_FRAGS + 1)
-		goto out;
-}
-
-That low-credit state (and the port quota check where len <=
-s->p[s->port].avail fails) is what a stuck ESPI produces, which is exactly
-when this timer handler runs.
-
-Since skb_get() returns the same pointer that is cached in
-sge->espibug_skb[i], and nothing in espibug_workaround_t204() tests whether
-the previous submission is still sitting in the scheduler queue, the next
-expiry hands the identical, still-queued pointer to __skb_queue_tail()
-again.
-
-Can that corrupt the skbq list (skb->next/prev pointing at itself) and
-desynchronize s->num, leading to reclaim_completed_tx() later consuming an
-skb the queue still references?  Note the new dev_kfree_skb_any() does not
-cover this case, since sched_skb() success is reported as NETDEV_TX_OK.
-
-[Severity: High]
-This is a pre-existing issue, but the new dev_kfree_skb_any() call may make
-it worse: is the cached pointer in sge->espibug_skb[] left dangling after
-the interface goes down?
-
-t1_sge_stop() frees the slot but never clears it:
-
-drivers/net/ethernet/chelsio/cxgb/sge.c:t1_sge_stop() {
-	for (i = 0; i < MAX_NPORTS; i++)
-		kfree_skb(sge->espibug_skb[i]);
-}
-
-The only writer of the array is t1_start_xmit(), and it only publishes a
-new skb when the slot reads NULL:
-
-		if ((unlikely(!adapter->sge->espibug_skb[dev->if_port]))) {
-			...
-				adapter->sge->espibug_skb[dev->if_port] = skb;
-
-So after cxgb_down() -> t1_sge_stop() drops the last reference, does the
-slot keep pointing at freed memory while also blocking a fresh skb from
-being cached?
-
-On the following ifup, t1_sge_start() re-arms the timer:
-
-	if (is_T2(sge->adapter))
-		mod_timer(&sge->espibug_timer, jiffies + sge->espibug_timeout);
-
-and espibug_workaround_t204() then reads skb->cb[0], writes into the buffer
-via skb_copy_to_linear_data_offset(), calls skb_get() on it and hands it to
-write_tx_descs() for DMA.  With this patch the same freed pointer can also
-reach dev_kfree_skb_any() on the NETDEV_TX_BUSY path, and a second
-interface down would run kfree_skb() on it again.
-
-Would setting sge->espibug_skb[i] = NULL after the kfree_skb() in
-t1_sge_stop() be the right fix here?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917105425.2147804-1-vulab%40iscas.ac.cn
+thanks again,
+Stefano
