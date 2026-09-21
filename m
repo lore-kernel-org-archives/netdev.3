@@ -1,183 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D6446D540;
-	Mon, 21 Sep 2026 09:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3965D2E1746
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984672; cv=none; b=Dca+U0QGx8EpkIgPItORjaylzlcsfG9HP9TUCOCNPQwuezCP54I1Bv+jYwtWHTJEyvrvNRGF7WiULdQZBLHQZF3Pq5Bpp5r77QfTY3CIlQ/6XWCdb3r+AgCs7euzuquldPtqzJdOvgHtVjloaLDFDPjJqvxJP5hfH81DtkDNLGA=
+	t=1789984829; cv=none; b=VtEQcduXerog09fOiFRo9/zfMDMJdcdOXPcxCk1jB9mnoUN/DYWzvgnDAgfQN31tzbG7ZN6unsGZ1aD/0HEQ1Cw/cJqBgG+ClcsnBKL1IbKEuJJMzT7Roel3FC/x7VLFQQvElMLiBxnD6eT6ReaJsOgQJ/Q2W/ZlokjPajo0Uhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984672; c=relaxed/simple;
-	bh=LkyOuO48Am+yJ1OXWE3MbaROGlTK7J6JilxoxnXKs1k=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u28NDm6y5PeGMqnna+LB4EP3f11BuUErcnG4LXXY4Uimf3nloEK4ByHVwu9iDF/y5DaQTty05U/pQttGp62u26ICu8cvMGcbZ0tPbD0P2UO1FAco7MTygc9eCDeoXClGGf2MRgN05WfKFkmi7wDYZLqzaQ+8Ll70TVtsFZRo45k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqyMndfd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789984829; c=relaxed/simple;
+	bh=jGvmlwUSbsp8x3X4MOA4gcbihfZLjlBgUOqmvFopaQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nTAX5Zr4XcMZhxfhgVspzInXn88QAxWudwtjtZqEw9VVtFw77hblfkn3GMjPa82a5KpBb6p0XZeV6seASWFdTZEMe1KxMFPRszyVFfJc3Ffi5AGwGAaLY+Ap0x8siUmJYxLzsE/mFcR/TIkzV+rB8EGQ+KwXxcJ8paFme+0ttH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jb51o8tH; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqyMndfd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1081F000FF;
-	Mon, 21 Sep 2026 09:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789984670;
-	bh=LWDf7Z4urWWk1OLakaZebmc5Ei86IWbtJatcDASCO2E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZqyMndfdFlOk7NVkd9QfEfzFHMfD+3k5Xfm5HsNs6FzlE0voWRlvb0YbZno/nB9dG
-	 wCGCh9RAT6/uK1SOYaaBUKpyR+a9unpo2G37CxJKObHI1C9Sd+R/a26x7Hr6Y35Z6m
-	 lu36ylZvZlQ+auC8a0qWSi4mQVitNoLQpO7hDwc1Xl2mQJAt+D4+yASHM8hHnkJs6f
-	 75cf/dT+pslptD0a04C7R7UBEUDywCIzS8UI85dbJTQa4C0zmZyaNUzHPxy9lq9CcB
-	 Jou6n8vV/aOjBWNMbEe7b5ArCsMjZ0VckdA3+dOMwKEzCwvIbtNUUJZW10AvjFioQT
-	 H7OQ8FXpxP/Sg==
-Subject: Re: [PATCH net] net: don't require the hwtstamp NDOs when a PHY
- provides timestamping
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, richardcochran@gmail.com,
- kory.maincent@bootlin.com, vadim.fedorenko@linux.dev, jjc@jclark.com,
- florian.fainelli@broadcom.com, opendmb@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 21 Sep 2026 09:57:49 +0000
-Message-ID: <178998466913.2160803.80702009306181180@kernel.org>
-In-Reply-To: <20260918095540.34286-1-nb@tipi-net.de>
-References: <20260918095540.34286-1-nb@tipi-net.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jb51o8tH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789984827;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ajNNixQX6BV58KzbsrlG4634t7w42wShP27NzOztrV8=;
+	b=Jb51o8tHkoaJBWm8ZcbgtLajNS3Brepa9H48GUzCN9rzE9mhsMeVUE8k4UgTWMUZEJ2QB6
+	iTaXYWwHpl9I7ME7Zu2BllWTcdsUDcAaLHKCtwLpJsKrURYC0MhQ24C1VHI5Ul6hwXu5tx
+	8NC9UnQpz0EZGSK8juuSg48FBmacg8s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-0I7bIq2YNmypL7FIiKE9kQ-1; Mon,
+ 21 Sep 2026 06:00:21 -0400
+X-MC-Unique: 0I7bIq2YNmypL7FIiKE9kQ-1
+X-Mimecast-MFC-AGG-ID: 0I7bIq2YNmypL7FIiKE9kQ_1789984819
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6619718007F7;
+	Mon, 21 Sep 2026 10:00:19 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.44.32.56])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4DF0B40E;
+	Mon, 21 Sep 2026 10:00:15 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net] ice: restore double VLAN port parameters on devlink reload
+Date: Mon, 21 Sep 2026 12:00:00 +0200
+Message-ID: <20260921100000.1152575-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Set Port Parameters with the double VLAN flag is issued from probe and
+from ice_rebuild(), but not from the devlink reinit path. ice_init_hw()
+resets the PF there and the port ends up in single VLAN mode while the
+driver keeps operating in DVM, so outer VLAN tags requested through the
+Tx descriptor by the PF and by VFs are silently not inserted until the
+next probe.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Move the call into ice_init_dev(), which is shared by probe and reinit.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: 31c8db2c4fa7 ("ice: implement devlink reinit action")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ drivers/net/ethernet/intel/ice/ice_main.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-- [Medium] Incomplete fix: the ethtool-netlink tsconfig path still
-  rejects PHY-only devices, so the two documented-equivalent uAPIs now…
-
---
-
-net: don't require the hwtstamp NDOs when a PHY provides timestamping
-
-This moves the ndo_hwtstamp_get/ndo_hwtstamp_set presence checks out of
-dev_get_hwtstamp()/dev_set_hwtstamp() and the generic_hwtstamp_*_lower()
-helpers, and puts them where the callbacks are actually invoked, so a
-device that only timestamps in its PHY can use SIOCGHWTSTAMP and
-SIOCSHWTSTAMP again.
-
-> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-> index a320e264eaaf..164643140a52 100644
-> --- a/net/core/dev_ioctl.c
-> +++ b/net/core/dev_ioctl.c
-> @@ -276,19 +276,18 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
->  	if (phy_is_default_hwtstamp(dev->phydev))
->  		return phy_hwtstamp_get(dev->phydev, cfg);
->  
-> +	if (!dev->netdev_ops->ndo_hwtstamp_get)
-> +		return -EOPNOTSUPP;
-> +
->  	return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
->  }
->  
->  static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
->  {
-> -	const struct net_device_ops *ops = dev->netdev_ops;
->  	struct kernel_hwtstamp_config kernel_cfg = {};
->  	struct hwtstamp_config cfg;
->  	int err;
->  
-> -	if (!ops->ndo_hwtstamp_get)
-> -		return -EOPNOTSUPP;
-> -
->  	if (!netif_device_present(dev))
->  		return -ENODEV;
->  
-> @@ -359,12 +358,18 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
->  	cfg->source = phy_ts ? HWTSTAMP_SOURCE_PHYLIB : HWTSTAMP_SOURCE_NETDEV;
->  
->  	if (phy_ts && dev->see_all_hwtstamp_requests) {
-> +		if (!ops->ndo_hwtstamp_get)
-> +			return -EOPNOTSUPP;
-> +
->  		err = ops->ndo_hwtstamp_get(dev, &old_cfg);
->  		if (err)
->  			return err;
->  	}
->  
->  	if (!phy_ts || dev->see_all_hwtstamp_requests) {
-> +		if (!ops->ndo_hwtstamp_set)
-> +			return -EOPNOTSUPP;
-> +
->  		err = ops->ndo_hwtstamp_set(dev, cfg, extack);
->  		if (err) {
->  			if (extack->_msg)
-
-[Severity: Medium]
-With the checks relocated here, the ioctl entry points now reach
-phy_hwtstamp_get()/phy_hwtstamp_set() for a device whose MAC implements
-neither NDO but whose phydev satisfies phy_is_default_hwtstamp().  The
-ethtool netlink peers of those ioctls keep the old unconditional gates,
-and they run before these helpers are ever called.
-
-net/ethtool/tsconfig.c:tsconfig_prepare_data() {
-	...
-	if (!dev->netdev_ops->ndo_hwtstamp_get)
-		return -EOPNOTSUPP;
-
-	ret = ethnl_ops_begin(dev);
-	...
-	ret = dev_get_hwtstamp_phylib(dev, &cfg);
-	...
-}
-
-net/ethtool/tsconfig.c:ethnl_set_tsconfig_validate() {
-	const struct net_device_ops *ops = req_base->dev->netdev_ops;
-
-	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
-		return -EOPNOTSUPP;
-
-	return 1;
-}
-
-Does this leave the two interfaces disagreeing on the same hardware?  On
-the bcmgenet plus BCM54213PE setup named in the changelog,
-SIOCGHWTSTAMP/SIOCSHWTSTAMP would succeed after this patch, while
-ETHTOOL_MSG_TSCONFIG_GET and ETHTOOL_MSG_TSCONFIG_SET would still return
--EOPNOTSUPP, even though Documentation/networking/ethtool-netlink.rst
-lists those netlink operations as the replacements for the two ioctls in
-its ioctl-to-netlink mapping table.
-
-The note about this ("tsconfig keeps its own copy of the check ... IMHO
-this is an extra patch for net-next") sits below the --- separator, so it
-does not end up in git history.  Could it be moved into the commit message
-so that maintainers and stable backporters can see that PHY-only
-timestamping devices are only fixed on the ioctl path?
-
-One detail for whoever narrows the tsconfig gates later: the fix is not a
-mechanical copy of this one.  The HWTSTAMP_SOURCE_NETDEV branch in
-dev_get_hwtstamp_phylib() still calls the callback with no NULL test:
-
-net/core/dev_ioctl.c:dev_get_hwtstamp_phylib() {
-	...
-	if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
-		return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
-	...
-}
-
-dev->hwprov is only ever assigned in ethnl_set_tsconfig(), which is
-reached through ethnl_set_tsconfig_validate(), so that branch is safe
-today precisely because of the check under discussion.  Should the two
-sites be changed together?
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 423adc138dd67c..8c4b0fbc790644 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4766,6 +4766,14 @@ int ice_init_dev(struct ice_pf *pf)
+ 	int err;
+ 
+ 	ice_set_pf_caps(pf);
++
++	err = ice_aq_set_port_params(pf->hw.port_info, ice_is_dvm_ena(&pf->hw),
++				     NULL);
++	if (err) {
++		dev_err(dev, "ice_aq_set_port_params failed: %d\n", err);
++		return err;
++	}
++
+ 	err = ice_init_interrupt_scheme(pf);
+ 	if (err) {
+ 		dev_err(dev, "ice_init_interrupt_scheme failed: %d\n", err);
+@@ -4909,7 +4917,6 @@ static void ice_init_link(struct ice_pf *pf)
+ 
+ static int ice_init_pf_sw(struct ice_pf *pf)
+ {
+-	bool dvm = ice_is_dvm_ena(&pf->hw);
+ 	struct ice_vsi *vsi;
+ 	int err;
+ 
+@@ -4928,10 +4935,6 @@ static int ice_init_pf_sw(struct ice_pf *pf)
+ 	/* record the sw_id available for later use */
+ 	pf->first_sw->sw_id = pf->hw.port_info->sw_id;
+ 
+-	err = ice_aq_set_port_params(pf->hw.port_info, dvm, NULL);
+-	if (err)
+-		goto err_aq_set_port_params;
+-
+ 	vsi = ice_pf_vsi_setup(pf, pf->hw.port_info);
+ 	if (!vsi) {
+ 		err = -ENOMEM;
+@@ -4941,7 +4944,6 @@ static int ice_init_pf_sw(struct ice_pf *pf)
+ 	return 0;
+ 
+ err_pf_vsi_setup:
+-err_aq_set_port_params:
+ 	kfree(pf->first_sw);
+ 	return err;
+ }
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918095540.34286-1-nb%40tipi-net.de
+2.55.0
+
