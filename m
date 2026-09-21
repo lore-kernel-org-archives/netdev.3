@@ -1,38 +1,38 @@
 Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03180472079;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E764756BB;
 	Mon, 21 Sep 2026 23:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032481; cv=none; b=Nu59hWhlteNewjdhkpujchCZInYGf1VzrIjpEufGiy3CXHDPEb9De7Fdc7gM5XnDLR6jVHNmoxUYkkLBcWdQa69PXdI2nuAVFRzYEnG27W1UQXDgjf71aT4t2uFeD/80bSLhGkZPjTtJ3B3fSe0Futz1O8Cw3gDcd3NybdMcR5c=
+	t=1790032483; cv=none; b=Q7fnKK/lMXWGsKN59pzGyBqJ5/3nWFASu2+U5NzIfaVK9fagMRMvmG3lwyZIpkqF59uivtFHvVZ5FH3sKPltsxdg18DRyvHxPssW+pEq8a5uoPvPjhQDkW5cEaV8Es7KFtznWmEXlr6d73Y1la2mvzkYlMswShlW8gb7SMvVnro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032481; c=relaxed/simple;
-	bh=+2lz5Ib/AOivyKV/aiz2gUyK2CUnonhtaoEzTb66ros=;
+	s=arc-20240116; t=1790032483; c=relaxed/simple;
+	bh=4KHTSHt2fx+tQth8nGkiLtxWijpx7L69RbtnLLBuXtY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oDb08ma9zqfl52X4yWTOWDKAUEvzXLYHCgRHJvcOOBRUfmCJQKotHCdiwqs2mSlXBiRErhBnddEG0jWPkPzm0ixh06NIEEKeu0qlxr5KS870HVgcDa6C+25371S6WhvYCZvKA4z19tUW8gj3Z7jUEQorTaOUOCBfKmlbgo3IBLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iVZFgctk; arc=none smtp.client-ip=192.19.166.231
+	 MIME-Version; b=tpeMSCJKCdvjgcFQmanzV6bUGcnr22U6IpkzIc9xJo5OPJ/vJRc/9o93cbEgdZWPxnRZutw38fuu/n4tvHikb4NZuWcNH6ab/sNzD+i1XRkH+jCv4kvfh9MbIEEONecF8I4ZqCBY0BjITZr751rDsmGIJsbuA0DN0vUg8OYl6vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GvTFIYO9; arc=none smtp.client-ip=192.19.166.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iVZFgctk"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GvTFIYO9"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 258C9C000D84;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 79505C000D85;
 	Mon, 21 Sep 2026 16:14:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 258C9C000D84
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 79505C000D85
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
 	s=dkimrelay; t=1790032473;
-	bh=+2lz5Ib/AOivyKV/aiz2gUyK2CUnonhtaoEzTb66ros=;
+	bh=4KHTSHt2fx+tQth8nGkiLtxWijpx7L69RbtnLLBuXtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVZFgctkwiZCZeHkCtnEMvHOyLjUCE4tb0STR1rBnpv21JuJ+F7l5dmwQlJMDZiCr
-	 9Wsz3h9tayC+PItcbdLIVj6GK0pNtr/wc+CxZQ5tXYEgbrj5hvXvEF3vMM/QVnuOB/
-	 QE1aPB2OvSMNuXFheYZpnL6Ss7ISdIMDPFMn0UNk=
+	b=GvTFIYO9fJJU2kNdEBAfhMj1XC2nD8Jyvad51d9vAqfllje61OTjku7vJkG081kEn
+	 2WhwKy9sqdjpQm+AzRvrIVgBrDneBqhIo3DNpomoPuTzuAWNoi6029Mv723RLNBdTA
+	 TZjHznix8mmpbi5aHygO6zvhml9yaSou9Dxvrkx4=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id F1B96AE0;
-	Mon, 21 Sep 2026 16:14:32 -0700 (PDT)
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 564E1AD9;
+	Mon, 21 Sep 2026 16:14:33 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -48,9 +48,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net 05/12] net: systemport: Fix Wake-on-LAN RXCHK filter enable loop
-Date: Mon, 21 Sep 2026 16:12:58 -0700
-Message-Id: <20260921231305.394773-6-florian.fainelli@broadcom.com>
+Subject: [PATCH net 07/12] net: systemport: Fix potential packet length underflow in bcm_sysport_desc_rx()
+Date: Mon, 21 Sep 2026 16:13:00 -0700
+Message-Id: <20260921231305.394773-8-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260921231305.394773-1-florian.fainelli@broadcom.com>
 References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
@@ -62,51 +62,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In bcm_sysport_suspend_to_wol(), the loop enabling programmed RXCHK
-filters in RXCHK_CONTROL used an auxiliary counter 'i' instead of the
-actual set filter index 'index'.
+In bcm_sysport_desc_rx(), the packet length 'len' extracted from the RSB
+is only validated against RX_BUF_LENGTH. If a malformed or corrupted
+frame is received with 'len' smaller than the prepended Receive Status
+Block (sizeof(*rsb)) plus 2 padding bytes (and optional FCS), calling
+skb_pull() will trigger a BUG() in __skb_pull() when pulling beyond
+skb->len. Furthermore, subtracting (sizeof(*rsb) + 2) from 'len' (u16)
+will underflow, resulting in corrupted packet stats and potential
+out-of-bounds operations.
 
-When non-contiguous filters were configured (for example, if filter 0
-was deleted and filter 1 remained), the code would enable bit
-(RXCHK_BRCM_TAG_MATCH_SHIFT + 0) corresponding to filter 0 rather than
-filter 1, causing Wake-on-LAN filter matching to fail.
+Fix this by ensuring 'len' is at least sizeof(*rsb) + 2 (plus
+ETH_FCS_LEN if CRC forward is enabled) before proceeding.
 
-Fix this by using the filter 'index' to set the appropriate match bit
-in RXCHK_CONTROL.
-
-Fixes: bb9051a2b230 ("net: systemport: Add support for WAKE_FILTER")
+Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
 Assisted-by: LLM
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 78b96b192185..7f2e5e4efb8d 100644
+index b69833d34bd5..95cead1df160 100644
 --- a/drivers/net/ethernet/broadcom/bcmsysport.c
 +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2652,7 +2652,7 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
- {
- 	struct net_device *ndev = priv->netdev;
- 	unsigned int timeout = 1000;
--	unsigned int index, i = 0;
-+	unsigned int index;
- 	u32 reg;
+@@ -781,8 +781,9 @@ static unsigned int bcm_sysport_desc_rx(struct bcm_sysport_priv *priv,
+ 			  p_index, priv->rx_c_index, priv->rx_read_ptr,
+ 			  len, status);
  
- 	reg = umac_readl(priv, UMAC_MPD_CTRL);
-@@ -2682,10 +2682,8 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
- 		reg = rxchk_readl(priv, RXCHK_CONTROL);
- 		reg &= ~(RXCHK_BRCM_TAG_MATCH_MASK <<
- 			 RXCHK_BRCM_TAG_MATCH_SHIFT);
--		for_each_set_bit(index, priv->filters, RXCHK_BRCM_TAG_MAX) {
--			reg |= BIT(RXCHK_BRCM_TAG_MATCH_SHIFT + i);
--			i++;
--		}
-+		for_each_set_bit(index, priv->filters, RXCHK_BRCM_TAG_MAX)
-+			reg |= BIT(RXCHK_BRCM_TAG_MATCH_SHIFT + index);
- 		reg |= RXCHK_EN | RXCHK_BRCM_TAG_EN;
- 		rxchk_writel(priv, reg, RXCHK_CONTROL);
- 	}
+-		if (unlikely(len > RX_BUF_LENGTH)) {
+-			netif_err(priv, rx_status, ndev, "oversized packet\n");
++		if (unlikely(len > RX_BUF_LENGTH ||
++			     len < sizeof(*rsb) + 2 + (priv->crc_fwd ? ETH_FCS_LEN : 0))) {
++			netif_err(priv, rx_status, ndev, "invalid packet size: %d\n", len);
+ 			ndev->stats.rx_length_errors++;
+ 			ndev->stats.rx_errors++;
+ 			dev_kfree_skb_any(skb);
 -- 
 2.34.1
 
