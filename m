@@ -1,176 +1,243 @@
-Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D16F2D9EFB
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A55B282F2A;
+	Mon, 21 Sep 2026 03:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789961056; cv=none; b=Y1POOW5ReGTDVBPk3DI3brO0s1i3S4YVLWNO58QF4JWsu9QlP3YL4pLHEYSRPHUahxJiXK7gFOutKHNbeK0HqvXW/m8lqUkUhUNU9avPL1D+F6HxSe1hG3YcqoKVTUOGcIbkD4I+7igj2ngWrhN7PZMtFG7qQHS53+chXPO0j2M=
+	t=1789961159; cv=none; b=ZNGMHDoYGS2goCbI5ozpW26k2sIgA06nMlyv0C5a0Q/IH/WJvpLIDJrI0Se/WcrHkC6Rgxr80QSaPd7x6ucZex/fIr3YDWeVyFBbCiZaQmSRV3pTJu4eIWCc3HevXqAUPFQKkAQ3NxiV5FisOkK9jgM/ivf6cnDwZ4HJvJTQaIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789961056; c=relaxed/simple;
-	bh=Q/3/5Nx5FM48RTGX6txObAhBKRMQKcQXI809YkxxirY=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=MTurBmuZm661AZPFM7r5ECTyKrHEywvcUQXBelXCoVUvl01s6Ph61XYAL2iYhN1IjOS6GoQE+kjfg+ST42vFD7rmN2G+49bDJwk9njB5IU3YA+IfMUvsmr+9Lbzt/pPdn7rvinkjgONQTX3+dahTWMLLmHNmXz9g+NRdA3Ez0b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-4566537e644so4409732fac.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 20:24:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789961054; x=1790565854;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wJ3hMGw7iw6O9BkY5HoyPwy1BTyJgCiMk7aL5MnnWMw=;
-        b=HJrbXtbIdE/j48HHsRvHS7T7azY6olFh0Xr9F2CpOme1dWMR9COSm463xUJmJOpTWA
-         1wd/mKgahensD7utGMrXtryv7XQavLmlotobyp9hhnVtUIe2rad4MyvOUSonolkLhBBP
-         OiUxIoVmMPmwCE5UPH8wfYtkvaaPlXeLd/AqNteZ4bkNvCS0ZTSj6odkTVNs0X0qWkFz
-         AcmNS+I8vnellkNSxihjYHjMI4kFMz+idf2BexNbl0ym8yTNDpKnbqOcLRFBOyjE+cNO
-         CsN6C24ZYH9rsFhlyz65gdzR8JWGPkz8Gvse+dCYVyIRXTlx0angg1SmiWGq5+WnjuKL
-         lqDg==
-X-Forwarded-Encrypted: i=1; AKwUvBxWo6h53kibCfwKliOIln9uMOK7y/BliOdwCNwgyX4HYb5qovm2IDLjDsHWnPashHQjXLps1JM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lVxVoeREGUGbi1kmYd4FWHKv3mnCTovAUpZgotIfywX/VkTs3o
-	2CsC8svJ/HPVEp09x1EYzosLgpa5JXTTMysokcbKpPKdX4Gj/gGYbTkuFKyltV6/IRcMjG7IfTI
-	lzkCVABoZvyTquy5meLFTD3PgdBsDzeKdOQ+fMOOh7TiNO0VJD17PU5rT0Lk=
+	s=arc-20240116; t=1789961159; c=relaxed/simple;
+	bh=neI+Lu8LmFyP+5kIdgowmy4yKGqMXYjUM09vlPZMpnY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NDziawyF3UNTYzSG/DSe3oV15kn5ZI7nFipIvoV1ANb83aSzvGmbZF5N/M326mtmIAEF2t+8tLVCLbiwPyNhQ/OGav+qsPL5bPZGdfKu01VutULAdo9POQZk8sskXUGnq020/vN4a/aMTwFfA34OKKKRLiwTW4CAR/SFx0hAAk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SekrnlTR; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SekrnlTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDCF1F000FF;
+	Mon, 21 Sep 2026 03:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789961157;
+	bh=12ublRLj27LOs/h6Qh62B3fPGXwvC4+pwxrc7Lg1DGo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SekrnlTRnTeCwprB9LH7E6xFSuTGx19xzo4PIhRv3ZPBEyax8S5WskATY4Je3FrKU
+	 eckkDJbeswsBWh8xvgYktSwFHSRWXndhBU4KpQFnGEBSdkSJf0P9z3twFJ9uoFPnLW
+	 FUg4dx5Z1Vr3W6qNrpqggEdh/nwwTkBqlSmHVZXoIg/a5qvmeU6x3ifITiIcBdZIGj
+	 bzZYzx8WbnemcbSVOn16D15javChHhG1jYVbbGJoxLfaYjw93f310mrYPNixvpYwxT
+	 KJauhnvQKYDR55aoPEXsyqstwbEjz/HxfDGoeffRkPOa+S4QUjw0empQslN3kVtdYY
+	 x/6DEI9S6/4CA==
+Subject: Re: [PATCH v3] sctp: reject forged cookie peer_addr with unknown
+ address family
+From: netdev-bot+sashiko@kernel.org
+To: hdthky0@gmail.com
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+Date: Mon, 21 Sep 2026 03:25:56 +0000
+Message-ID: <178996115646.2160803.7706206745490493314@kernel.org>
+In-Reply-To: <20260917030505.4176635-1-hdthky0@gmail.com>
+References: <20260917030505.4176635-1-hdthky0@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4d0a:b0:6cd:3ffc:acfc with SMTP id
- 006d021491bc7-6cd3ffcef09mr6027448eaf.76.1789961053959; Sun, 20 Sep 2026
- 20:24:13 -0700 (PDT)
-Date: Sun, 20 Sep 2026 20:24:13 -0700
-In-Reply-To: <20260918210419.4088201-1-kuba@kernel.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab0a35d.71f81b7d.15fa6d.001f.GAE@google.com>
-Subject: [syzbot ci] Re: net: opt loopback into instance locking
-From: syzbot ci <syzbot+ci721ed44e87a0b71e@syzkaller.appspotmail.com>
-To: andrew@lunn.ch, davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-syzbot ci has tested the following series
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-[v1] net: opt loopback into instance locking
-https://lore.kernel.org/all/20260918210419.4088201-1-kuba@kernel.org
-* [PATCH net-next] net: opt loopback into instance locking
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-and found the following issue:
-WARNING in ipv6_add_dev
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Full report is available here:
-https://ci.syzbot.org/series/f12bc892-cfa6-4277-beac-794482c9a3f7
+- [Medium] Undisclosed UAPI/behavioural regression on two socket-option
+  paths.
+- [Medium] sctp_unpack_cookie() validates a stack *copy* of the attacker-
+  controlled cookie peer_addr (`paddr = bear_cookie->peer_addr; ...…
+- [Low] The kernel-doc block above sctp_v6_addr_valid()
+  (net/sctp/ipv6.c:724-730) documents the return value purely as a…
 
-***
+--
 
-WARNING in ipv6_add_dev
+sctp: reject forged cookie peer_addr with unknown address family
 
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      8830e65ed46de41f849eefb8ba227d4852c460f6
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/ae142b5c-beb2-4c41-814c-2cd3e14bdbb0/config
+This validates the attacker-controlled COOKIE-ECHO peer_addr in
+sctp_unpack_cookie() with af->addr_valid() on a stack copy, makes
+sctp_v6_addr_valid() reject non-PF_INET6 sockets, and reuses
+addr_valid() in sctp_process_param() while adding the missing !af
+checks.
 
-usbcore: registered new interface driver snd-usb-hiface
-usbcore: registered new interface driver snd-bcd2000
-usbcore: registered new interface driver snd_usb_pod
-usbcore: registered new interface driver snd_usb_podhd
-usbcore: registered new interface driver snd_usb_toneport
-usbcore: registered new interface driver snd_usb_variax
-drop_monitor: Initializing network drop monitor service
-NET: Registered PF_LLC protocol family
-GACT probability on
-Mirror/redirect action on
-Simple TC action Loaded
-u32 classifier
-    Performance counters on
-    input device check on
-    Actions configured
-nf_conntrack_irc: The irc conntrack helper is scheduled for removal.
-Please contact the netfilter-devel mailing list if you still need this.
-The pptp conntrack helper is scheduled for removal.
-Please contact the netfilter-devel mailing list if you still need this.
-The DCCP match is deprecated and scheduled to be removed in 2027.
-Please contact the netfilter-devel mailing list or update your iptables rules
-xt_time: kernel timezone is -0000
-IPVS: Registered protocols (TCP, UDP, SCTP, AH, ESP)
-IPVS: Connection hash table configured (size=4096, memory=32Kbytes)
-IPVS: ipvs loaded.
-IPVS: [rr] scheduler registered.
-IPVS: [wrr] scheduler registered.
-IPVS: [lc] scheduler registered.
-IPVS: [wlc] scheduler registered.
-IPVS: [fo] scheduler registered.
-IPVS: [ovf] scheduler registered.
-IPVS: [lblc] scheduler registered.
-IPVS: [lblcr] scheduler registered.
-IPVS: [dh] scheduler registered.
-IPVS: [sh] scheduler registered.
-IPVS: [mh] scheduler registered.
-IPVS: [sed] scheduler registered.
-IPVS: [nq] scheduler registered.
-IPVS: [twos] scheduler registered.
-IPVS: [sip] pe registered.
-ipip: IPv4 and MPLS over IPv4 tunneling driver
-gre: GRE over IPv4 demultiplexer driver
-ip_gre: GRE over IPv4 tunneling driver
-IPv4 over IPsec tunneling driver
-Initializing XFRM netlink socket
-IPsec XFRM device driver
-xfrm_iptfs: IPsec IP-TFS tunnel mode module
-NET: Registered PF_INET6 protocol family
-------------[ cut here ]------------
-debug_locks && !(lock_is_held(&(&dev->lock)->dep_map) != 0)
-WARNING: ./include/net/netdev_lock.h:70 at ipv6_add_dev+0xfc1/0x1400, CPU#0: swapper/0/1
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:ipv6_add_dev+0xfc1/0x1400
-Code: ff ff e8 a2 6e 3a f7 48 8d 3d 6b 56 fd 05 48 c7 c6 80 a2 32 8d ba 80 01 00 00 67 48 0f b9 3a e9 ab f0 ff ff e8 80 6e 3a f7 90 <0f> 0b 90 e9 cb f1 ff ff e8 72 6e 3a f7 48 8d 3d 5b 56 fd 05 48 c7
-RSP: 0000:ffffc900000678c0 EFLAGS: 00010293
-RAX: ffffffff8a8d6400 RBX: dffffc0000000000 RCX: ffff888102abda00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffffff90253707 R09: 1ffffffff204a6e0
-R10: dffffc0000000000 R11: fffffbfff204a6e1 R12: dffffc0000000000
-R13: ffff88810c036000 R14: ffffffff8caa6a10 R15: ffff88810c036008
-FS:  0000000000000000(0000) GS:ffff88818d6cd000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88823ffff000 CR3: 000000000eb48000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- addrconf_init+0x8b/0x170
- inet6_init+0x228/0x3f0
- do_one_initcall+0x250/0x870
- do_initcall_level+0x10a/0x1a0
- do_initcalls+0x59/0xa0
- kernel_init_freeable+0x29d/0x3e0
- kernel_init+0x22/0x1d0
- ret_from_fork+0x514/0xb70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+A few questions below.
 
+> diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+> index ef26878f1282a..c45ac15f3b79d 100644
+> --- a/net/sctp/ipv6.c
+> +++ b/net/sctp/ipv6.c
+> @@ -734,6 +734,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
+>  {
+>  	int ret = ipv6_addr_type(&addr->v6.sin6_addr);
+>  
+> +	if (sp && sctp_opt2sk(sp)->sk_family != PF_INET6)
+> +		return 0;
+> +
 
-***
+[Severity: Medium]
+Should this gate sit before the IPV6_ADDR_MAPPED branch?  Placed here it
+also rejects a v4-mapped sockaddr_in6 on an AF_INET socket, not only
+genuine IPv6 addresses, and it fires for every caller that passes a
+non-NULL sctp_sock.
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+Two socket option callers build af straight from the user-supplied
+sa_family with no pf->af_supported() cross-check first, unlike
+sctp_verify_addr() which goes through sctp_sockaddr_af() ->
+opt->pf->af_supported().
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+net/sctp/socket.c:sctp_bindx_rem() {
+	...
+	af = sctp_get_af_specific(sa_addr->sa.sa_family);
+	if (!af) {
+		retval = -EINVAL;
+		goto err_bindx_rem;
+	}
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+	if (!af->addr_valid(sa_addr, sp, NULL)) {
+		retval = -EADDRNOTAVAIL;
+		goto err_bindx_rem;
+	}
+	...
+}
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+net/sctp/socket.c:sctp_setsockopt_peer_primary_addr() {
+	...
+	if (!af->addr_valid((union sctp_addr *)&prim->sspp_addr, sp, NULL))
+		return -EADDRNOTAVAIL;
+	...
+}
+
+Before this change, a v4-mapped sockaddr_in6 handed to a non-v6only
+PF_INET socket was rewritten in place by sctp_v6_map_v4() and validated
+as IPv4, so sctp_del_bind_addr() and sctp_assoc_lookup_laddr() then
+operated on the normalised AF_INET address and could succeed.  With the
+new early return, do SCTP_SOCKOPT_BINDX_REM and
+SCTP_SET_PEER_PRIMARY_ADDR with ::ffff:a.b.c.d now return -EADDRNOTAVAIL
+where they previously worked?
+
+The changelog describes the helper change only in terms of the cookie and
+INIT paths ("so that IPv6 addresses are never used on IPv4 sockets") and
+does not mention the socket API side effect.  Since the patch carries
+Fixes: 1da177e4c3f4 and will be picked up for stable, could this be either
+described in the changelog or scoped to the paths that need it?
+
+[Severity: Low]
+This isn't a bug, but the comment block above sctp_v6_addr_valid() still
+documents the verdict as a property of the address alone:
+
+/* This function checks if the address is a valid address to be used for
+ * SCTP.
+ *
+ * Output:
+ * Return 0 - If the address is a non-unicast or an illegal address.
+ * Return 1 - If the address is a unicast.
+ */
+
+A legal global unicast IPv6 address now returns 0 whenever the supplied
+sctp_sock is not PF_INET6, and the callers above turn that into
+-EADDRNOTAVAIL.  Could the comment gain a line about the socket family
+rejection?
+
+>  	/* Support v4-mapped-v6 address. */
+>  	if (ret == IPV6_ADDR_MAPPED) {
+>  		/* Note: This routine is used in input, so v4-mapped-v6
+
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 84a4c97d0f755..20c0938948843 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+
+[ ... ]
+
+> @@ -1841,6 +1843,11 @@ struct sctp_association *sctp_unpack_cookie(
+>  		goto fail;
+>  	}
+>  
+> +	paddr = bear_cookie->peer_addr;
+> +	af = sctp_get_af_specific(paddr.sa.sa_family);
+> +	if (!af || !af->addr_valid(&paddr, sctp_sk(ep->base.sk), NULL))
+> +		goto malformed;
+> +
+
+[Severity: Medium]
+Is the object that gets validated here the same one that is later used?
+
+sctp_v6_addr_valid() only declares a v4-mapped AF_INET6 address valid
+after rewriting it in place:
+
+net/sctp/ipv6.c:sctp_v6_addr_valid() {
+	...
+	if (ret == IPV6_ADDR_MAPPED) {
+		...
+		sctp_v6_map_v4(addr);
+		return sctp_get_af_specific(AF_INET)->addr_valid(addr, sp, skb);
+	}
+	...
+}
+
+The rewrite lands in the throw-away stack copy paddr, which is then
+discarded.  The association and its primary transport are built from the
+original in-skb address:
+
+net/sctp/sm_statefuns.c:sctp_sf_do_5_1D_ce() {
+	...
+	if (!sctp_process_init(new_asoc, chunk,
+			       &chunk->subh.cookie_hdr->c.peer_addr,
+			       peer_init, GFP_ATOMIC))
+	...
+}
+
+and memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie)) copies the
+un-normalised address into the association.
+
+So for a forged cookie carrying sa_family = AF_INET6 with ::ffff:a.b.c.d
+on a dual-stack PF_INET6 listener, the check passes (validated as IPv4)
+while sctp_assoc_add_peer() -> sctp_transport_new() installs an AF_INET6
+v4-mapped primary with af_specific = IPv6, and the primary path is then
+driven through sctp_v6_get_dst() with a v4-mapped destination.  The IPv4
+address parameters from the same forged INIT are normalised to AF_INET, so
+the same peer ends up with transports of two different families.
+
+The sibling call site added by the same patch does consume the normalised
+address:
+
+net/sctp/sm_make_chunk.c:sctp_process_param() {
+	...
+		if (!af || !af->from_addr_param(&addr, param.addr,
+						htons(asoc->peer.port), 0) ||
+		    !af->addr_valid(&addr, sctp_sk(asoc->base.sk), NULL))
+			break;
+		scope = sctp_scope(peer_addr);
+		if (sctp_in_scope(net, &addr, scope))
+			if (!sctp_assoc_add_peer(asoc, &addr, gfp, SCTP_UNCONFIRMED))
+	...
+}
+
+Could the two new users of addr_valid() be made to agree, for instance by
+storing the validated copy into retval->c.peer_addr and having the state
+function pass that instead of re-reading the raw cookie, so nothing is
+written into the possibly shared skb?
+
+>  	/* Make a new base association.  */
+>  	scope = sctp_scope(sctp_source(chunk));
+>  	retval = sctp_association_new(ep, ep->base.sk, scope, gfp);
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917030505.4176635-1-hdthky0%40gmail.com
