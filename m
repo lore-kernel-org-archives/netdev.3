@@ -1,97 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.auroraos.dev (unknown [95.181.193.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04224399F2;
-	Mon, 21 Sep 2026 20:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5612A4078C1;
+	Mon, 21 Sep 2026 20:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.193.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790022206; cv=none; b=Mncmm/6dHtGKjvd5a732QguzpjZIRwOvtQGi00jAmWvD5v2iczFI/2TJ+CtUKeDKYQnUwja8BHSAD0psQMnPz6EhhNrqOAOaMOSGOW6IHZ/mkM3fo6trXfc3VyuwKRedtnadBKkmi5xsiuY/c6jrKcnpe0+2RwUcjoIVJd1ATXI=
+	t=1790022308; cv=none; b=OiXU/oFWPYPpOKyy/0npfrNnEojENMpGJtzZHoK5EYjUULkKisQdQF5rnoe/2sU5A447NFUzm1km+BdxqpA1UA27ttYHR6u9AYpqAdcN3wQemqwqnOtaF9cPox+qDcBU/0xDSRmqmu8AamNP0rgv8RFl+VIv6iw9HzCwl4URa1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790022206; c=relaxed/simple;
-	bh=VYOTwb66gU+4oJxF+oncxRA9TZFHjb7Mvd0bybKM5ck=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qzV+owtziXbXmwaF0YvUWolxYyuCC6d+o3LwXCf2ceyH1/iDnPBRVKWd/znixC6XZfA7kT+u2jtEyq9GPmYrTFZ7ylNTQ5HQBuKTBr4xRdBT2Yg2WjhSG03qn0XgTPGkonup6cqLn/UljsAdfLblSZkI6uk68W1MSQCdI7V3UME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkSvno16; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkSvno16"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A411F000FF;
-	Mon, 21 Sep 2026 20:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790022204;
-	bh=EuIYaACFfYHQrqG9qgcFjCKehJqKFbN314wuAG+MnDA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mkSvno16N/KbJGqH9JJZG3oUqniaYsWHOFiSd9ghPUELNVKurBiKi3yJDjkAbLoRD
-	 xGKOhi//72HswvsfOg1UO9UzNxVoOgyxDGA09uczWblOpvKqhNwVzKtE4Nmg7q8Alq
-	 oJJdF3xhwK2GNG/oiFS+mklEUQB4Nl9i5O362wvz7KzhGYn4cGHMJqhOvsAUxpmejw
-	 dF2Pl8nHmPWHq0/TTbk0nJYkY3n5GTnap8fnt9gJoyy/8oIWJW5OMFDhmOMgDcUm9d
-	 8muczurGCO4jezT8YoOO6RqoACBvBu+HF+ws0+K52hrf/oCE/kEx9EPpGJno1pMcOB
-	 4xz92dZYnAW4Q==
-Date: Mon, 21 Sep 2026 13:23:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov
- <ryazanov.s.a@gmail.com>, Johannes Berg <johannes@sipsolutions.net>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>, Shi-Wei
- Yeh <shi-wei.yeh@mediatek.com>, "Minano Tseng" <Minano.tseng@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, "Simon Horman"
- <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, "Yu. Robert (GSM)" <robert_yu@compal.com>,
- "Chang. Jeff (GSM)" <Jeff_Chang@compal.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Subject: Re: [External Mail] Re: [PATCH v8 1/6] net: wwan: t9xx: Add PCIe
- core
-Message-ID: <20260921132323.7e6f76d3@kernel.org>
-In-Reply-To: <690e3d6d04ba47efba2b4cda7b18e42e@compal.com>
-References: <20260914-t9xx_driver_v1-v8-0-5206c2e6bea0@compal.com>
-	<20260914-t9xx_driver_v1-v8-1-5206c2e6bea0@compal.com>
-	<20260919165434.08d026a8@kernel.org>
-	<690e3d6d04ba47efba2b4cda7b18e42e@compal.com>
+	s=arc-20240116; t=1790022308; c=relaxed/simple;
+	bh=1qHM737Do/QGbex2exKUPSjnrwiXVYmKswlC197KgGo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=W8WGqvSWeJcmHcghXfnEZly/IXMz/TOi//ISgu1s3abopr6vjkoppK7H1+8Ys8yPhW1bc0SU+zn9TIZYeEymLRydHIpd76rRGduwCn9hQeNe/D6JHjPp55e50AmLNIVRjNYNUxApmCaXB1sqvSNzpPBZu2CsEVGew/4EwWqcrj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev; spf=pass smtp.mailfrom=auroraos.dev; arc=none smtp.client-ip=95.181.193.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auroraos.dev
+Received: from [192.168.2.104] (91.79.36.28) by exch16.corp.auroraos.dev
+ (10.189.209.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Mon, 21 Sep
+ 2026 23:24:58 +0300
+Message-ID: <4a2ae45f-71d0-49d4-ae44-b5a588f6ac43@auroraos.dev>
+Date: Mon, 21 Sep 2026 23:24:58 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] ch9200: do return USB errors from
+ control_write()
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <netdev-bot+sashiko@kernel.org>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+	<linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260915185805.38712-1-s.shtylyov@auroraos.dev>
+ <178954341078.22033.8722936070498955076@kernel.org>
+ <b43350d5-09d7-4fc4-9791-16bb4322d794@auroraos.dev>
+ <20260918182124.487edd13@kernel.org>
+ <354d72f6-35bc-49f0-a4f4-3555b03f0ad8@auroraos.dev>
+Content-Language: en-US
+In-Reply-To: <354d72f6-35bc-49f0-a4f4-3555b03f0ad8@auroraos.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: exch16.corp.auroraos.dev (10.189.209.38) To
+ exch16.corp.auroraos.dev (10.189.209.38)
 
-On Mon, 21 Sep 2026 07:06:23 +0000 Wu. JackBB (GSM) wrote:
-> Two questions on the prompts document.
+On 9/21/26 10:59 PM, Sergey Shtylyov wrote:
+[...]
+
+>> Please explain how you discovered the issue and how you tested the fix.
 > 
-> Are the following hard requirements the series has to meet, or targets
-> for the tool?
+>    As I noted in the description of the patch [1], the issue was reported
+> by the static analyzer. For the patch [2], I saw a problem with my own eyes.
+>    I don't have the hardware, so no testing; there was some hope that e.g.
+> Matthew Garret (the driver's original submitter) could be able to test but
+> his email bounced...
 
-Targets for the LLM but also these are describing a high quality
-submission in general.
+   Sorry, it's Garrett. From searching on lore it appears he still uses that
+same email, so not sure why it bounced...
+ 
+[...]
 
->  - line 44: "Ideal patches are between 200 and 700 LoC (added +
->    removed, not counting context)."
->  - line 46: "Avoid series larger than 2.5k LoC. The first series is
->    usually larger, but must not exceed 4k LoC."
->  - lines 57-58: "Series 1 should aim to add the simplest possible
->    version of the driver which nonetheless can send and receive a
->    trivial (no offloads) packet."
->  - line 117: "Avoid the use of managed APIs (``devm_``, ``pcim_``)."
-> 
-> On the packet one: this series carries no netdev because an earlier
-> review found the driver too large to submit at once, so the network
-> functionality was split into follow-up series.
-
-That's fine.
-
-> The document also asks for no defensive checks (lines 119-120) and few
-> code comments (line 124).  That runs against the direction of the AI review
-> we have been getting, where both have been growing.  Is the current
-> direction still fine?
-
-The kernel coding guide has not changed, defensive checks are still
-discouraged. If AI is suggesting checks that can't trigger just comment
-on the review or add a comment / WARN to the code to mark the condition
-as impossible.
+MBR, Sergey
