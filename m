@@ -1,45 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882B93358B9;
-	Mon, 21 Sep 2026 03:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC4D78F3A;
+	Mon, 21 Sep 2026 03:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789962313; cv=none; b=XMqrDRVyp9l4E3gGDhITXly7mZbcYmYcl8iv8179qM3nVakes2Ae3WE7yR+F+Sl5iwDbApco+EzbAmLKoQ3yyTWb8ls2VVKGYQo+S3NaO+GzcLJwxbnU/VSPtpdAAKxmoaYliAaCbbqUbozG9uxSRRwWTeka5e3hRNXXTinRorA=
+	t=1789962505; cv=none; b=GfgJcN8iBW0Tstlm6KtsPp2DPKy5m3G3X4T/QBlTnLuwRirkxL/7fDjzF/k7ZXIgtV9/W1zyza0FlCTSJ1NQcqVUKupXsSCruUV4CThwqCtYlngh5G+B9uED1ayzsv9vnwuEZpv0aptSIdOu+vm2+Ve+b1OrTNmmnASXNrsCc6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789962313; c=relaxed/simple;
-	bh=2mqcYQ13Dtq6iawIx/ixajTzHx5R5w48dlxlvQDoVOA=;
+	s=arc-20240116; t=1789962505; c=relaxed/simple;
+	bh=JW77XHcXbaZUmt7s44GHCJtnB/MlCkgLLVdM3c03FxY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ePkEXtfF/FOGxzSPdCxGSGJ/cihIFckh3y8txQ6y2I41mR54/628m9HQEmW9fIN/wzu50DhVhpFInZ3Y7UJM0dFl09T6GBZbHv8d2F0kPI5p/ifCmBqeClnULBCEn/4M4G9wCEYKmFFdcoQi7JmStiGxzq/LaQfSdkNGyGZ/MKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBB8gG92; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=XghOfULz+kYzHJ2stbQv8G4o3tgou0QZYQ9jLqDh4zGiX0r6yisEUaD4cJX93y9ii4styVreAwp4Sa41xuD7ZeHBfrmiYukEBfcWt0BQyfrgfTSk7/ivhyssDhAHmwxsDPXQ4oVNKJfv/zoI35mIg0SPDsxPZ0RBrYdmLlOBhSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXFf1lpo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBB8gG92"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EEF1F000FF;
-	Mon, 21 Sep 2026 03:45:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXFf1lpo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00621F000FF;
+	Mon, 21 Sep 2026 03:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789962311;
-	bh=EPx5RwoBp9LAbXGjS27mFFa+JbitlsUoPMjfbGclCkc=;
+	s=k20260515; t=1789962503;
+	bh=wWj4XMbi50YlwTCH4OHzPxm8EUjOl3BKv4hKfkPzX/o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PBB8gG92IM/PrR38dvMf4EXaL5oYQYXQSr1qwoUyDVMJmGFCrOmku8iGiQNtrZ2l4
-	 ELo65qyFgSTyHg1hU9dDVKthroJazlNSMjueYf8pJhWUiUMpjKYpGkz0aZE+muDGuJ
-	 lJm7c7CVMjMiXKqh1xE9tF2I+Bq01zIHHcN1WjMvk92z4oiRGly+OeQvo9nW/xjOpo
-	 bpTBjaeOnS1E9VFEUnBzEXUBkGRX4Kx0KPT2BCtJC0NrF8R0BMFMwK27ZPLOi+UPGi
-	 IIVnep7WRrZXcCIn3+gBdO0HNmmRWNEiS1K7ViVywndkWRKdWz3sTQAHOpNniOsaJr
-	 FJbvsTNrr+SOQ==
-Subject:
- Re: [PATCH net-next v2] selftests: net: fou_mcast_encap: load the fou module
+	b=aXFf1lpoMeKQe8s8QReZs7bK8kZkAJhdAGBQp5PGD9AVrjSJNd/Te8zXKmrlmKqxW
+	 QaKldb1DjlPBSknmGTYWU4obdIkL/vhmnqhLxoNU0kdn7wgQxLzYtvPg8h/t13xXtq
+	 5zIdOF4oLxh1WsQaghosT02cg2WtKOEYZZvErK21aUQxjuqaynVmM7ZjWFMDYF1OHI
+	 JSSSqEJDRkN6jDqqkTVizLiy07NzGvIeP4oXbe1OZi87ioxBNRkm0e+Qjdqk9VmPOu
+	 b6gn4BHsgMKM3LlGLXX3XeYaer4XUOo3WC+4mrFRFUT6aJmdQVPthpdyQ+H6uiLSts
+	 iAkdtK3SJgaCg==
+Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: qcom,bam-dmux: Add
+ memory-region and qcom,vmid properties
 From: netdev-bot+sashiko@kernel.org
-To: fuqingshuang@kylinos.cn
-Cc: apw@canonical.com, joe@perches.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, willemb@google.com, littlesmilingcloud@gmail.com,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 21 Sep 2026 03:45:09 +0000
-Message-ID: <178996230975.2160803.17640968761180621275@kernel.org>
-In-Reply-To: <20260917033049.792209-1-fuqingshuang@kylinos.cn>
-References: <20260917033049.792209-1-fuqingshuang@kylinos.cn>
-X-sashiko-severity: High
+To: vishnu.santhosh@oss.qualcomm.com
+Cc: stephan@gerhold.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, loic.poulain@oss.qualcomm.com,
+ ryazanov.s.a@gmail.com, johannes@sipsolutions.net,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ deepak.singh@oss.qualcomm.com
+Date: Mon, 21 Sep 2026 03:48:22 +0000
+Message-ID: <178996250211.2160803.6013516663876593386@kernel.org>
+In-Reply-To:
+ <20260920-qcom-bam-dmux-vmid-ext-v2-1-ef5ca2178378@oss.qualcomm.com>
+References:
+ <20260920-qcom-bam-dmux-vmid-ext-v2-1-ef5ca2178378@oss.qualcomm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,148 +53,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The new IPv4 gate in
-  tools/testing/selftests/net/fou_mcast_encap.sh (`if modprobe -q fou;…
-- [Low] The IPv4 subtest is now gated solely on the exit status of
-  `modprobe -q fou` (tools/testing/selftests/net/fou_mcast_encap.sh:162).
+- [Low] SERIES-RESOLVED (retained for policy combination only): the
+  concern that the newly documented `qcom,vmid`/`memory-region`…
+- [Low] The `qcom,vmid` schema contradicts its own description: the
+  description states "The local execution environment is retained…
 
 --
 
-selftests: net: fou_mcast_encap: load the fou module
+dt-bindings: net: qcom,bam-dmux: Add memory-region and qcom,vmid properties
 
-The patch replaces the unconditional IPv4 subtest invocation in
-fou_mcast_encap.sh with a modprobe -q fou guard, running setup_ipv4() and
-run_ping_test() only when the modprobe succeeds and calling log_test_skip()
-otherwise.
+This adds an optional memory-region property pointing at a
+restricted-dma-pool reserved-memory node for BAM-DMUX DMA mappings, plus a
+qcom,vmid property naming the remote execution environment that is granted
+access to that pool via SCM. A dependency entry makes memory-region
+mandatory whenever qcom,vmid is present.
 
-Link (v1): https://lore.kernel.org/all/20260911100158.854183-1-fuqingshuang@kylinos.cn/
+> diff --git a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+> index 33746c238513..5351269b0ab7 100644
+> --- a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+> +++ b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+> @@ -72,6 +72,24 @@ properties:
+>        - const: tx
+>        - const: rx
+>  
+> +  memory-region:
+> +    maxItems: 1
+> +    description:
+> +      Phandle to a reserved-memory node compatible with restricted-dma-pool.
+> +      The BAM-DMUX device uses the pool for DMA mappings.
+> +
 
-> diff --git a/tools/testing/selftests/net/fou_mcast_encap.sh b/tools/testing/selftests/net/fou_mcast_encap.sh
-> index 70210d39fba33..5f84d58d3075b 100755
-> --- a/tools/testing/selftests/net/fou_mcast_encap.sh
-> +++ b/tools/testing/selftests/net/fou_mcast_encap.sh
+[Severity: Low]
+This isn't a bug, just a note for the record on an earlier concern that
+these two properties have no in-tree consumer.
+
+The companion patch in this series, "net: wwan: qcom_bam_dmux: Assign
+restricted DMA pool to remote processor", adds bam_dmux_assign_dma_pool()
+in drivers/net/wwan/qcom_bam_dmux.c, which reads qcom,vmid, resolves
+memory-region through of_parse_phandle() and of_reserved_mem_lookup(), and
+then performs the grant:
+
+    ret = qcom_scm_assign_mem(rmem->base, rmem->size, &src, dst,
+                              ARRAY_SIZE(dst));
+
+The pool attachment itself is handled generically by
+of_dma_set_restricted_buffer() from of_dma_configure_id(), so the
+"uses the pool for DMA mappings" wording is backed by existing code too.
+Nothing further appears to be needed here.
+
+> +  qcom,vmid:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    minItems: 1
+> +    maxItems: 1
+> +    items:
+> +      minimum: 1
+> +      maximum: 63
+> +    description:
+> +      VMID of the remote execution environment that is granted access to the
+> +      restricted DMA pool through SCM. The local execution environment is
+> +      retained automatically and must not be specified.
+> +
+
+[Severity: Low]
+Does the numeric constraint on qcom,vmid contradict its own description?
+
+The description says the local execution environment "must not be
+specified", but the only constraints are minimum 1 and maximum 63, and
+include/dt-bindings/firmware/qcom,scm.h has:
+
+    #define QCOM_SCM_VMID_HLOS          0x3
+
+So qcom,vmid = <QCOM_SCM_VMID_HLOS> passes dt_binding_check even though the
+binding text declares it invalid. The 1..63 range looks like it encodes the
+width of the SCM VMID bitmask used for BIT_ULL(vmid) in a u64, not the set
+of values meaningful for this device.
+
+The driver side in this series does enforce the rule, in
+bam_dmux_assign_dma_pool():
+
+    if (vmid == QCOM_SCM_VMID_HLOS || vmid >= BITS_PER_TYPE(u64))
+            return dev_err_probe(dev, -EINVAL, "Invalid qcom,vmid %u\n", vmid);
+
+so the outcome of a bad value is a probe failure rather than anything worse.
+Would it make sense to encode the same restriction in the schema, for
+example with a not/const 3 clause or an enum of the supported remote
+execution environments, or otherwise drop the "must not be specified"
+sentence so the prose and the schema agree?
+
+For context, neither qcom,rmtfs-mem.yaml nor qcom,fastrpc.yaml places value
+constraints on their qcom,vmid / qcom,vmids properties, so an enum here
+would be a new convention rather than an existing one; the narrow point is
+just the internal inconsistency in this file.
 
 [ ... ]
 
-> @@ -160,8 +158,13 @@ run_ping_test() {
->  }
->  
->  setup_common
-> -setup_ipv4
-> -run_ping_test -4 eoudp4 "$TUN4_R" "FOU/GRETAP IPv4 multicast encap resubmit"
-> +
-> +if modprobe -q fou; then
-> +	setup_ipv4
-> +	run_ping_test -4 eoudp4 "$TUN4_R" "FOU/GRETAP IPv4 multicast encap resubmit"
-
-[Severity: High]
-
-Does this guard actually cover the CONFIG_NET_FOU=m case described in the
-commit message?
-
-The encap ops needed by "ip link add ... type gretap ... encap fou" are only
-compiled in under CONFIG_NET_FOU_IP_TUNNELS:
-
-net/ipv4/fou_core.c:
-#ifdef CONFIG_NET_FOU_IP_TUNNELS
-	... fou_iptun_ops / gue_iptun_ops ...
-#else
-static int ip_tunnel_encap_add_fou_ops(void)
-{
-	return 0;
-}
-
-and net/ipv4/Kconfig has:
-
-config NET_FOU_IP_TUNNELS
-	bool "IP: FOU encapsulation of IP tunnels"
-	depends on NET_IPIP || NET_IPGRE || IPV6_SIT
-	select NET_FOU
-
-Since a bool=y selecting a tristate forces it to y, doesn't CONFIG_NET_FOU=m
-imply CONFIG_NET_FOU_IP_TUNNELS=n?
-
-In that configuration the module init still returns success and registers no
-TUNNEL_ENCAP_FOU ops, so modprobe -q fou exits 0, setup_ipv4() runs, and:
-
-	ip -n "$NSENDER" link add eoudp4 type gretap \
-		remote "$MCAST4" local 10.0.0.1 \
-		encap fou encap-sport "$FOU_PORT4" encap-dport "$FOU_PORT4" \
-		key "$MCAST4"
-
-still fails, because ipgre_newlink_encap_setup() -> ip_tunnel_encap_setup() ->
-ip_encap_hlen() returns -EINVAL when no ops are registered for the encap type.
-
-setup_ipv4() checks none of its command exit statuses and the script does not
-use set -e, so get_rx_packets() yields an empty string, rx_delta becomes 0, and
-run_ping_test() logs exactly the line quoted in the commit message:
-
-  TEST: FOU/GRETAP IPv4 multicast encap resubmit (received 0/100)  [FAIL]
-
-The commit message also states:
-
-  This matches the existing fou6 handling in this script and the pattern used
-  in pmtu.sh.
-
-setup_fou_or_gue() in pmtu.sh does both halves:
-
-	modprobe fou || return $ksft_skip
-	run_cmd ${ns_a} ip fou add port 5555 ipproto ${ipproto} || return $ksft_skip
-	run_cmd ${ns_a} ip link add ${encap}_a type ${type} ${mode} local ${a_addr} remote ${b_addr} encap ${encap} encap-sport auto encap-dport 5556 || return $ksft_skip
-
-Only the modprobe half is adopted here, and that half cannot express the
-CONFIG_NET_FOU_IP_TUNNELS gate. Would a capability probe, mirroring
-setup_ipv6() and returning $ksft_skip when the "ip fou add" or the gretap
-creation fails, work better for this?
-
-As an aside, the IPv6 branch only degrades to a skip incidentally: the last
-command in setup_ipv6() is
-
-	ip -n "$NSENDER" neigh add "$TUN6_R" lladdr "$recv_mac" dev eoudp6
-
-which fails when the tunnel was never created, so setup_ipv6() happens to
-return non-zero.
-
-> +else
-> +	log_test_skip "FOU/GRETAP IPv4 multicast encap resubmit"
-> +fi
-
-[Severity: Low]
-
-The commit message says:
-
-  modprobe is a no-op when CONFIG_NET_FOU=y, so default selftest builds
-  remain unchanged.
-
-Is that accurate when /lib/modules/$(uname -r) is not populated?
-
-With CONFIG_NET_FOU=y (which is what tools/testing/selftests/net/config sets),
-modprobe can only resolve a built-in module name through the modules.builtin
-files and modules.dep that depmod generates during make modules_install. On a
-freshly built kernel booted without installing modules, or on a minimal
-initramfs or VM image where modprobe is not on PATH (exit 127), modprobe -q fou
-returns non-zero even though FOU is fully available, and this else branch is
-taken.
-
-In that case setup_ipv4() and run_ping_test() never run, so a real regression
-in the __udp4_lib_mcast_deliver() resubmit path would be reported as a clean
-skip. The -q also suppresses any diagnostic, unlike pmtu.sh which uses plain
-modprobe.
-
-Would running modprobe -q fou for its side effect only, and then gating the
-subtest on an actual capability check, avoid turning a working built-in
-configuration into a skip?
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917033049.792209-1-fuqingshuang%40kylinos.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920-qcom-bam-dmux-vmid-ext-v2-0-ef5ca2178378%40oss.qualcomm.com
