@@ -1,110 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD37C49DBB1;
-	Mon, 21 Sep 2026 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D0D2D1F40;
+	Mon, 21 Sep 2026 13:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789997129; cv=none; b=cp86lxz6jlVePv3yadfDHUe1Dyi1abm2hMQuH4DsvxkZVJT1XoBB9fJ561Uro/rRkm8kktmf7SqBVlLADbGzQvcR9c51/tXdURuFRtOLJ/TT2XSM6wRZuMdQervLJzy5Ehz7RRjGs6A7ZevnGZrs6P8k2Hms1dm8Rz6lFQ9jAQ4=
+	t=1789997161; cv=none; b=tST2NESHKcqLk9F4aXr5rigLCsbO34xr/zURbtw3wUk52Wddr5ziyUAnsqM5u3VnpgydEHdcZChjg8NDZOoHA6SsXQs2uci+OTZIZg6h3lUwOR0TRPDk60zV8ncVVVvysH05zslMvRwD9+ZEGYjC18RnDv3O99DSolHXlIEbcJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789997129; c=relaxed/simple;
-	bh=xYCV9phbnlvr/0RbhoT13i7JK7aS5KJeZrJBgCDDphY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=EFe5A/02JV38G3YiLfN4ZtwthF0V9bhwANvwqbj3/w+GQrC9WzsNEah04ruZIUaTbgm9xHAbf9GsCwMDv88sJ/G02WRyGzw4Z2tlHCJD1p3cwW8zALt9lQ7rvKVqeh5cM5x0+6Z24Txge8ZAaBgeTL1z4h4Ajuhb7g7XGCC3EWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAysZ80G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789997161; c=relaxed/simple;
+	bh=aYT/iyOMEgHj4yw3FJVCVyq3YjOS6CPp2Yeui/eo/go=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhauxXs2iHDAPMmDzl6RRvqqAHunckoYbTP4Di6mAU3Ho9BTbAzZfcv6oNt1ikrHBJdq9af8u040FrXMcH/Nhge45pwu9d3UEONA5t4287DvdMIpdvUJTz876zopmYQncruK9i+2CUEA8z51MjMkkibmy5goVfB89ydxbGp+FkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpJoC3Mz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAysZ80G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28A91F000FF;
-	Mon, 21 Sep 2026 13:25:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpJoC3Mz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26ABF1F000FF;
+	Mon, 21 Sep 2026 13:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789997127;
-	bh=M5oDiAOnMaNY9o9gZBHcIp39xYWkoqvS23b/muDgRDk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=YAysZ80GGY8HrTfZgZxkLKTyMtUkedjuankrXPurtWrPEf7G108Gh65GNxThOcjBw
-	 iNOhNqXHFF8jmZ3llq1aQp2o6AwAACJlyJiiaMZpEmP+INQwcPAQW4H1P/tIthpyJa
-	 S+/UQ7K5CkvWUK6+p/Xl2aCtp+h5cBKi2t+jEs5jTSrFxphT4Imif44/A9gf63WuGK
-	 LJ+iA2o1XJqCddAd6HE1dqCgbELHna80cQlILIiZO/f/88kiSFB0ReQQJVW6Od7HZY
-	 ILmuQ0osv9ZioFrW28wo4bBye8/iZNSLi0K0oQOUewjMjiqlBe6e4jCpAdrT2XwMxl
-	 OhbruLuUYVMag==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E6143F4006A;
-	Mon, 21 Sep 2026 09:25:25 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Mon, 21 Sep 2026 09:25:25 -0400
-X-ME-Sender: <xms:RTCxarYLhx7WOX4ULzwnVuYbYraVJsabJWrLRc2byqMvEnhj3eTkNQ>
-    <xme:RTCxalNUXM-lO9HZJn1q51HexVbew3_Q2-E3DcOxbrqGyYmNXRkXBuVS52Z3KF9z6
-    KjdX4tuMcYWDgAT0uuNFiDJhHp3YJBiAZrz97pr92ig5uR00L2FqnA>
-X-ME-Proxy-Cause: dmFkZTFTghwdCTVE7krZqSerSRoShUBKmlNU07x1ACHTfcSgbqttKRHqveL+zBZ/WQacFv
-    zzNfajRXFgkQB1Df2r9By94JsuXNjiGws2qD7z0jvKfZqRN1fwTyE6pV7xpo/7548sq1pP
-    SooyRGc1IKlRkQ2o83JzRBjyCHnT/647VTD8mYfG6z4T01+nmAq0OYFMM0SvUPhuYxn9TN
-    ttPhbfGhs6JcfjiGn2LxvrIwWcxXQcL2t5WqgmmOAEPcDe9sSqTLW56uc+ysg81GcLS/Df
-    iaRmQqmafkdccnHkZZoIIU2TgWKXLAjVKyAYuMHjXDu4veISo4KoXLIvkwnuNfUmTbogjD
-    3yMkjqg1qexd/jIcFlJTuv3EBVegB11kyRkeuYCG6cj1MqmJGlcaSk6X3431/cLLX6ioy1
-    J14hAzFLYJOJxUTmMxLfOk0AQTp9xk9vWCIln3RPtKxiMLPeZ2VprncYugJy6gGKJmrLC5
-    G49rDl0qzMlLjjez8chHbkox+h58QoYplncMNqxfsPX0VIoxQ6TNT1vBxfwTUZgYsLYiIC
-    +kQOVUz7vehLMRT9mUXCOrx5jyt6ss24gkXaGsdjnF4BIGDjaQzdCl5Pq7BDB+kELxpnL3
-    rjLt1J/JGV7UlXECNgjdPtgvdKPm61/HL+1bS0rtvcqAjDPtQKzW5ih1Q5Hw
-X-ME-Proxy: <xmx:RTCxanl7l27lBot6dJBcGBnbDmguZlxsFPOk5q4rhcp32VKrxyGFHg>
-    <xmx:RTCxamwHPzp679FKoNTk7PeEYBzadTZt5fqWaJwfCIfZM_UHwn7QDQ>
-    <xmx:RTCxajzN8q_QGCIcyz1JdmpfqtujPGmCIhUHtN3hmShIKlX48xK9oQ>
-    <xmx:RTCxal8ju2ybe6rbniFAy-DdTjPlG_DG1FJbsFzp9Dse54pSWgDYwg>
-    <xmx:RTCxaj8cyXe5RDDFSdeXi0Y2ideS0UbiXfpUZEt_FkEc1QvZSgZhIZVN>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id BEDBF780076; Mon, 21 Sep 2026 09:25:25 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1789997159;
+	bh=nha8ML1H2R/fcgwZZbQPRhZtrvRZFsoDZhBO+DEOQYU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hpJoC3Mzq7wrz0POCEfSBz/THghFV/1UuOP96ueguC1IWtsaaCw1hl2On2e0gqGZH
+	 4cxUib8+dZJEVj76tS8YCx8JopQ7260IhSMfPBpgSoyY/3EbuxVyc1B2PRhlb+zDuC
+	 0qLOTQe5MVh39Zd43qG1+7gjkJJkr9/eJHznJlQfYBhf53YilE6Gp4ataI5yLzrntG
+	 7BiGtB8EgjOSwmnYtxKW3v0OsA1YsjTN7ubyYEe9ql5crvYSVmOlzbk0zqJUimvOmJ
+	 a/EGup8aLynu8hNlSzoRiqa+zAk+pC0nlNzzoDAxmQK0Q/PThNESdnCPbNNHNu+UyA
+	 qpDCowVNO0jWw==
+Date: Mon, 21 Sep 2026 14:25:57 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
+Message-ID: <arEvspsSl3bLyYgs@thinkstation>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-6-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AFQlgKekMDrg
-Date: Mon, 21 Sep 2026 09:24:56 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- linux-kernel@vger.kernel.org, "Peng Fan" <peng.fan@nxp.com>,
- linux-nfs@vger.kernel.org, netdev@vger.kernel.org
-Message-Id: <2df127da-42fe-4b35-8199-5953f6dd01d3@app.fastmail.com>
-In-Reply-To: <arB/ixTLqjuyrSUr@shlinux89>
-References: <20260920022714.3145751-1-peng.fan@oss.nxp.com>
- <7c7d7b6a-38a9-477e-9bcd-1f9c53a160c5@app.fastmail.com>
- <arB/ixTLqjuyrSUr@shlinux89>
-Subject: Re: [PATCH] SUNRPC: use assign_bit() where applicable
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921075820.1718334-6-kees@kernel.org>
+
+On Mon, Sep 21, 2026 at 12:58:17AM -0700, Kees Cook wrote:
+> A bucket set holds one row of caches, cloned from KMALLOC_NORMAL, and an
+> allocation of any other kmalloc type falls back to the general caches.
+> Extend this to handle __GFP_ACCOUNT, so that a single bucket user can
+> isolate either GFP_KERNEL or GFP_KERNEL_ACCOUNT allocations, as is
+> needed for skb data, where AF_UNIX uses:
+> 
+> 	sk->sk_allocation = GFP_KERNEL_ACCOUNT;
+> 
+> The coverage is selected at bucket creation time:
+> 
+> 	b = kmem_buckets_create_types(name, flags, 0, INT_MAX, NULL,
+> 				      BIT(KMEM_BUCKET_NORMAL) |
+> 				      BIT(KMEM_BUCKET_CGROUP));
+> 
+> The prior kmem_buckets_create() function keeps its name and defaults
+> to only KMEM_BUCKET_NORMAL, leaving existing users as-is.
+> 
+> Only the accounted type is offered. Nothing wants a reclaimable or
+> no-obj-ext row, and of the twelve places passing GFP_DMA to an skb
+> allocator, all rare hardware: b44, b43legacy, prestera and s390 ctcm.
+> 
+> The choice is made at creation rather than every set getting every type
+> because the rows, when populated, are not free. Each holds 13 caches, and
+> a cache is a 1208 byte struct plus an unconditional per-cpu allocation,
+> a node struct, and an entry in /proc/slabinfo and under /sys/kernel/slab.
+> 
+> KMEM_BUCKET_CGROUP collapses to KMEM_BUCKET_NORMAL without CONFIG_MEMCG,
+> exactly as KMALLOC_CGROUP does, so NR_KMEM_BUCKET_TYPES is 1 there and a
+> bucket set is the same single row it is today. Where the type is asked for
+> but the system is not creating caches of it (under "cgroup.memory=nokmem")
+> the row is aliased to the normal one, as new_kmalloc_cache() does for the
+> general caches, so those allocations stay isolated rather than falling
+> back to the general caches.
+> 
+> Built and tests pass (and skip as expected) on ARCH=x86_64 defconfig
+> with GCC 16.2.0 in all combinations of CONFIG_SLAB_BUCKETS=y/n and
+> CONFIG_MEMCG=y/n/y+"cgroup.memory=nokmem".
+> 
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Harry Yoo <harry@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Hao Li <hao.li@linux.dev>
+> Cc: Christoph Lameter <cl@gentwo.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: <linux-mm@kvack.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Cc: <linux-hardening@vger.kernel.org>
+> ---
+>  include/linux/slab.h   |  45 ++++++++++++-
+>  mm/slab.h              |  23 ++++++-
+>  lib/tests/slub_kunit.c |  65 +++++++++++++++---
+>  mm/slab_common.c       | 145 ++++++++++++++++++++++++++++++++---------
+>  4 files changed, 235 insertions(+), 43 deletions(-)
+> 
+> diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+> index 823607e06248..58f800582170 100644
+> --- a/lib/tests/slub_kunit.c
+> +++ b/lib/tests/slub_kunit.c
+> @@ -723,15 +723,63 @@ static void test_kmem_buckets_type_fallback(struct kunit *test)
+>  				      "expected a DMA cache, got %s", c->name);
+>  	}
+>  
+> -	/* Nor can one that has to be accounted. */
+> -	if (IS_ENABLED(CONFIG_MEMCG) && !mem_cgroup_kmem_disabled()) {
 
 
+Didn't take a deeper look at this yet but this is causing an error:
 
-On Sun, Sep 20, 2026, at 8:51 PM, Peng Fan wrote:
-> On Sun, Sep 20, 2026 at 01:22:00PM -0400, Chuck Lever wrote:
->>
->>
->>On Sat, Sep 19, 2026, at 10:27 PM, Peng Fan (OSS) wrote:
->>> From: Peng Fan <peng.fan@nxp.com>
->>>
->>> Convert open-coded if/else with set_bit/clear_bit the assign_bit API.
->>
->>The above sentence explains the same thing that the diff body shows me,
->>so it does not add value.
->>
->>But I don't have any context here: why is this being done? Is there some
->>kind of tree-wide clean-up underway so that a new feature can be added,
->>or is this patch just a one-off change?
->
-> It is just a one-off change. I don't group other patches to use assign_bit()
-> into a large patchset, just separate patches.
->
-> Free to drop if it does not make sense to you.
-
-It makes sense. But I'd rather not make assumptions.
-
+MODPOST Module.symvers
+ERROR: modpost: lib/tests/slub_kunit.ko: symbol 'mem_cgroup_kmem_disabled' undefined!
+make[3]: *** [../scripts/Makefile.modpost:147: Module.symvers] Error 1
+make[2]: *** [/var/lib/jenkins/agent/workspace/harry-linux/ARCH/x86_64/COMPILER/clang/DEBUG/light/PREEMPT/lazy/src/Makefile:2179: modpost] Error 2
+make[1]: *** [/var/lib/jenkins/agent/workspace/harry-linux/ARCH/x86_64/COMPILER/clang/DEBUG/light/PREEMPT/lazy/src/Makefile:248: __sub-make] Error 2
+make[1]: Leaving directory '/var/lib/jenkins/agent/workspace/harry-linux/ARCH/x86_64/COMPILER/clang/DEBUG/light/PREEMPT/lazy/src/build'
+make: *** [Makefile:248: __sub-make] Error 2
+Build step 'Execute shell' marked build as failure
 
 -- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Cheers,
+Harry / Hyeonggon
