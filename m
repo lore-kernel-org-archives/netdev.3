@@ -1,76 +1,94 @@
-Received: from mta1.migadu.com (out-34.mta1.migadu.com [95.215.58.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C43793D2
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC97463B7C;
+	Mon, 21 Sep 2026 09:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789982827; cv=none; b=IYGVHmbBCJo3NoPn+sCS4NZBmZTGqctnPshdlV/w6PJs2FaFKHjC8VpZ3ryx6GzQvhAWsaBVHDwrZlZh+pY9jlgD6qa8p6ZZEPQBM2XxoKDyRIgkojmJM0OAUtJ7gMara5pxTZr678ksaTzk7dkgECftNcbznugkcp0OI0O8YYo=
+	t=1789982828; cv=none; b=j54F9nBMCJ0oj14OkwjaIvegoyqZnYtNOs0H51Wqxl5E5P9F34sZFgJlDCDOyTS2rEt8njhmPTAdumYwOIEVtOmaEttQrH2qTimv+hKY0fcO5fOxmQ5K+3pWO6soEm8J6LiapU816t012D0fNKuxo9Rf2hQKWlH+srDXxcgOXQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789982827; c=relaxed/simple;
-	bh=JniXzAKE9lpfUkjCAlN/VixjQ/mB0ZFDM8/tNkDSlNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U7I9qxvOKx4aBWBeRQ3SN5R7smiJGao4v6RLhthN46y7pLjL9zfMu4FzeAky+sNiZ0L2wf/4AldiElesIKNFvQGQa7dgLkmntgOgbj/h6/jQBaJPtuRoiI3t8oOGA0CNiRmn6TYXLpmqKWQryTW8aPH/z69pUrEoTCnrcBIMqTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R8biPaaa; arc=none smtp.client-ip=95.215.58.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789982828; c=relaxed/simple;
+	bh=v6JpBp3AArOdnsctwqjfY3ZCGJR9JA0h+WUyTMdr+WI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Lu/0q62QMKvnEHPFB/dbFp+ZQRij6V1cIBlla0vZ4UeCpLiwY6Rb8rzbmGcEn15AN8m2D6E+MhWn1OrXlX+oj22q9vBk4muI2fk0MmU+zsk00fXvCVxns2AgBk3BHf3gTbo9fZ8XCLeJhh59ilmmSQaluUw/Jeu+Ev0jjmeblvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCPakuZ0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R8biPaaa"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=JniXzAKE9lpfUkjCAlN/VixjQ/mB0ZFDM8/tNkDSlNg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789982824; v=1; x=1790587624;
- b=R8biPaaa9MhhaQBKatfYtizr7gXq6775Lw62rL2rd+EJ7vGe2mzuicT9pJnZj/zn3q/rtBDs
- c9XyLkL5fZst0WjmBDL9t9IZlpYZpwihIkUDMUW1c/zEkgJ1V8aJaq1CU93kBKSqzHETtbXlbbY
- fYgFUpr7/pvo7pBiH3BvQZ7I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id cc5d6d6b42a8116f;
-	Mon, 21 Sep 2026 09:27:04 +0000
-X-Mizu-Trace-ID: cc5d6d6b42a8116f
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 21 Sep 2026 17:26:53 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: netdev-bot+sashiko@kernel.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, donald.hunter@gmail.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	liuhangbin@kylinos.cn
-Subject: Re: [PATCH net-next 4/6] netlink: specs: rt-route: describe lwtunnel
- IP options
-Message-ID: <arD4XbtvSt-bo_8a@fedora>
-References: <20260917-ynl_rt_encap-v1-4-fbbe6e680571@kylinos.cn>
- <178997269588.2160803.17770495644903940757@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCPakuZ0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1B31F000FF;
+	Mon, 21 Sep 2026 09:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789982826;
+	bh=HDN5tiTALp2HjdaynTUWOVRoE4KJy7qUfZYfcVAfO6M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=SCPakuZ00OQvwOBru74VDnsKgxqtvVnrpR4I4DTicBqplzKxQ1/JHVYalVOy+fBXi
+	 phx16fde0X+tPcXeoa0K3HI7/4FErzYLoUE19z7668esyTacgyXRl2vi0aqLXzrzny
+	 xE3I9ulze6NBKfB8UUyrdOi+/sNT/7ZKDg+Yj4RTK2u9fr8JYKuMo1E5yCg0K9LYcX
+	 9kFWWkaRbnDDmv8uANkCdutrg7zm6ZK2w1zE5nXsd6D3TjbJUPJmmDupo0zzl94mcR
+	 vTNy3USx3CuoctNsxdOYI2NHDisLrB/u7y1ol6g+vlVg4HRks82m8D8b3NVJK4T08o
+	 8wktRkjTt4ZAQ==
+From: Srinivas Kandagatla <srini@kernel.org>
+To: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Marcel Holtmann <marcel@holtmann.org>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
+ Rocky Liao <quic_rjliao@quicinc.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Saravana Kannan <saravanak@kernel.org>, 
+ Christian Marangi <ansuelsmth@gmail.com>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
+ netdev@vger.kernel.org, daniel@makrotopia.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Christoph Hellwig <hch@lst.de>, 
+ Piotr Kwapulinski <piotr.kwapulinski@intel.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260806-block-as-nvmem-v10-0-be598b2a5606@oss.qualcomm.com>
+References: <20260806-block-as-nvmem-v10-0-be598b2a5606@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v10 00/10] Support for block device NVMEM
+ providers
+Message-Id: <178998281449.889291.7893229102394463283.b4-ty@kernel.org>
+Date: Mon, 21 Sep 2026 10:26:54 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178997269588.2160803.17770495644903940757@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Mon, Sep 21, 2026 at 06:38:15AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] New `lwtunnel-ip-opt-erspan.index` attribute in
->   Documentation/netlink/specs/rt-route.yaml is declared as host-order…
-> - [Medium] The new `lwtunnel-ip-opts` / `lwtunnel-ip-opt-geneve` sets
->   cannot represent multi-option Geneve tunnels.
 
-Thanks, this is a new inspire. I will update it in my v3 patch and post 1
-week later to make sure v2 have enough reviews.
+On Thu, 06 Aug 2026 16:38:33 +0200, Loic Poulain wrote:
+> On embedded devices, it is common for factory provisioning to store
+> device-specific information, such as Ethernet or WiFi MAC addresses,
+> in a dedicated area of an eMMC partition. This avoids the need for
+> and additional EEPROM/OTP and leverages the persistence of eMMC.
+> 
+> One example is the Arduino UNO-Q, where the WiFi MAC address and the
+> Bluetooth Device address are stored in the eMMC Boot1 partition.
+> 
+> [...]
 
-Hangbin
+Applied, thanks!
+
+[04/10] nvmem: layouts: Support fixed-layout as the nvmem device node itself
+        commit: 9c6cab93dcd47c3075d896c777567b9d8f813d18
+
+Best regards,
+-- 
+Srinivas Kandagatla <srini@kernel.org>
+
