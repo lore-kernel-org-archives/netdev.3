@@ -1,147 +1,165 @@
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA0E4FC343;
-	Mon, 21 Sep 2026 19:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03E2393DC8
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790017580; cv=none; b=YedvIjJ5kDMdvuwxQiZXSJwcdh4rv3EUHSuq6XLYLszJwxjjW02yZWAZfXfSh5EsuGEn0WP7DbwwIgRiLsw34Mpsb5Yza4L0Pga/EE9UKHgOV8GQ10hwLS2mAL1l1b9Y3M/J3xJ5a/5umFjio7TJxruW1j/msQxf4cH6ry4mVsE=
+	t=1790018776; cv=none; b=omq+zVAt/a6WyiDjPabEMFt+VMH3BpRkZC4hamJQPnP65jUctWs1ba9b815eBnvaiVEPQgZCeNFJDrYmUKQtek6wHwCERi5bwMaCnX6o3JiaMuMSiU11BwqTbMevH9A4N65FhDfaXdAz2NSEZ1RfAhxrOcKXNuw9fLPycYr7ATc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790017580; c=relaxed/simple;
-	bh=qzz7XnPrw2VN/hLIGszjeEct3tY2LRf2xEHYe6n5keM=;
-	h=MIME-Version:Content-Type:Subject:From:To:CC:In-Reply-To:
-	 References:Date:Message-ID; b=tGTJcDLQr29lcRu56hr9NWmFM8XeFd1NpJ3hfV5xSBwTs9I8l5hIAHQV5IeF9SrRCvgALdNXNBk3r+IY5k4M3xzvIK5XfOb7Dapeb2XxBmBAQ5JOXN8kE2OojPYCWrYxoLHKLFGDaLd0SShduoaC933IEa8LOLZ9/LnfUGq/i+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=rn3sOAmw; arc=none smtp.client-ip=52.42.203.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1790018776; c=relaxed/simple;
+	bh=RaJdotNRjQ7v4XLVdNOrJ2F3tz9HzM/CSax0HTuqhF8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oQFSymV0ugDxt9xb7YwLeLXSNy3ngc+v+TRdRx0MMnZzYErZ8t/GFxhSWVhretO1siQXByJaXvzUV2ZLC1RMWJ060q3pcGmmysiu+ejjjdIMMTGIow1ejHr1LB1oUqnjuoiL+DwGkfSl+ERQpv2hKFn7MH7C9/r2MpR+76T0kno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LXukoIQK; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="rn3sOAmw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LXukoIQK"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b2e1d5so3469922b3a.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1790017579; x=1821553579;
-  h=mime-version:content-transfer-encoding:subject:from:to:
-   cc:in-reply-to:references:date:message-id;
-  bh=5d1fPjV9fe1FfCtfOIKGBQ2v/+atEidlljUyxF6je9U=;
-  b=rn3sOAmwKFu6qIKGrBdAp5kmAFVZ+0bdMOSeS1j/tn2kDdhm3zcEd/we
-   CXyv90OEYj9w9etCyylNaKLbJYTY+u/SGc2A9+2g0PT6z4qADhLxZO56u
-   yYRAXPFeKc64+3selhWA85wZJn9BFnhMxkKal7a2Kr3Nj616kBEp6dKhQ
-   8lVJJg+FrVJ9vaIWOV7/FKWRdDQb+QN4tD/v7Skxxfq9z7MDB226+Orjl
-   4YQy++XAU3meZ7RsOi10C9X755V7Y8nRu4cYDvnoJJPhVwChAPpKmCV6V
-   u/N5GUZgXmZLin3z1ARsXWktDelKP8kOwa/l99E/bqbLcTuyYCZvcga7J
-   Q==;
-X-CSE-ConnectionGUID: 9Rii6w+CT5uGVI5t6oSXKg==
-X-CSE-MsgGUID: SjaWV+LkRxakxPqN1r2Uvg==
-X-IronPort-AV: E=Sophos;i="6.27,115,1787011200"; 
-   d="scan'208";a="29308397"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 19:06:16 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:23680]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.49.70:2525] with esmtp (Farcaster)
- id 5849dd9a-7d05-4b67-9d2d-f3bbb6ade12f; Mon, 21 Sep 2026 19:06:15 +0000 (UTC)
-X-Farcaster-Flow-ID: 5849dd9a-7d05-4b67-9d2d-f3bbb6ade12f
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Mon, 21 Sep 2026 19:06:15 +0000
-Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Mon, 21 Sep 2026 19:06:13 +0000
+        d=gmail.com; s=20251104; t=1790018773; x=1790623573; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oPHA1/g/WcT24PIfBNMekc+zAjDKuj7dhADig3JaAok=;
+        b=LXukoIQK426K+iiG8WWqQTbuFr8W/3FAxv+LPeJ4BogbgxKA1oTs++AABGrEcZoIir
+         70lXi1yX7umnwdHC9EGHM5qTzyxEAjFrkY9KzQaul0vefpkAbM9ftf35JsDI9U/6IQzq
+         0t202wTH06AwnAz0N+9R3p/ryYlDttSIpBC3wfCUAeeIux5kB6unHGCSoOi259grhRCI
+         xf1PUwUhKq57IRmibl9yo8vrkt5aDMPVScAspL/6E++7wIiSgP9w/CsI7waIHFEC4Oby
+         HmFQWMrBwvl088hKmbw4QZglNSxYNQOo7Y5aep8wQHLmbGSfhE2aWgMd0SQb2L17mjIb
+         bAAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790018773; x=1790623573;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oPHA1/g/WcT24PIfBNMekc+zAjDKuj7dhADig3JaAok=;
+        b=k2WdbH5N5HdotVG67Jea1yVDrCAqboAU4tCeAimyiLx46GGiBUcPniJI0p5CVTjI/m
+         VRhvH7qaxqdIURVkiHC98eepK/8Cn4yVDd+BnAFBgC1QAQSyRWfsZ5MGsvOINkm2wpyI
+         WZc/OowRR72a27ue2T+4wHIRAXe2nNigUApfusQVh+FcarYL8Z+Obhq/4bw2t0ULFIBf
+         vwiOwFE74TKIjJDs88O5QsSdBXmUCJKm8ViIAM1xfOWgwuwIcDcIKrdEgR0Ro9vfF5sa
+         dxCPsDyEdBdmAWyY9MyawhQn8BV2IMn/fjJSsxUCZb63Wj5zZOcFM8zzWsNwUmqKQpX1
+         guxQ==
+X-Gm-Message-State: AFuF++n3699h3xdnFjXj9aXCQxnY3bDyDrjnMdN6Fs9B9sYu87U5+5oL
+	sJ59D7um3WlYE4idJC8usRVMDXQxo1b7NIByTqjSt48ioDfOQQj0xEVSfLkJRXc52n7aul3Z
+X-Gm-Gg: AYBFou1LGpNVCb3X/KXZyol1O4+bQlWM9LWDC7yuAk7DxVpJWvfJ4YREOEXAcucJAPX
+	CkQMt46kihm/WDWqO2acA68QJjURWkIfdGGIHb+9PTCm7CdfeNbRdgSP7PSbUeH+ah6ewGSeRGH
+	0+z+HSB7Ud+NdnzH2SjhNV4lOCyp/4d8ZXSADiujmeqLMPYFWytstRuNH/Ev7DmJB+xvR049V9S
+	vcH5DXObccQT/Tp0xhQFjfdm3VKKOL/oV/5Lhb6FtOeBeRwQakOsz8J12w3ogO5gDGHJepy1WnY
+	nqA2LSD2/inf0O5bx7xcU8eaiV48tNMpDqHO1b5FdJq52tAhW7J/uAF+ayeUvTYYRtX5OHKlT8z
+	KJe0m7c5j5BvrIFCUMA1FUjTL//VMlezRpfcG3hucB4I3lXMP6Eei/CAAp4qE8lqwohBe75Rsf5
+	0yU42cZq1KsULK0jHaYjeGfmTc7CqcHgvvVIdSR4t3dY2RG/6I2lnIJawrkmcPvQF0B15mJ7ts
+X-Received: by 2002:a05:6a00:1d8c:b0:874:705d:f657 with SMTP id d2e1a72fcca58-874deced87fmr14985305b3a.37.1790018772523;
+        Mon, 21 Sep 2026 12:26:12 -0700 (PDT)
+Received: from localhost ([180.184.47.241])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87bf7eb7514sm827b3a.38.2026.09.21.12.26.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 12:26:11 -0700 (PDT)
+From: Dairui Zhang <zhangdairui@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Dairui Zhang <zhangdairui@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	stable@vger.kernel.org
+Subject: [PATCH net] af_packet: fix integer overflow in prb_calc_retire_blk_tmo()
+Date: Tue, 22 Sep 2026 03:26:08 +0800
+Message-ID: <20260921192608.1420047-1-zhangdairui@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/2] net: ena: fix PHC cleanup on probe failure
-From: Arthur Kiyanovski <akiyano@amazon.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-CC: Arthur Kiyanovski <akiyano@amazon.com>, David Arinzon
-	<darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, Sang-Heon Jeon <ekffu200098@gmail.com>, Dawei Feng
-	<dawei.feng@seu.edu.cn>, Amit Bernstein <amitbern@amazon.com>, "Netanel
- Belgazal" <netanel@annapurnalabs.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-In-Reply-To: <20260921154202.471662-2-lgs201920130244@gmail.com>
-References: <20260921154202.471662-1-lgs201920130244@gmail.com>
- <20260921154202.471662-2-lgs201920130244@gmail.com>
-Date: Mon, 21 Sep 2026 19:06:02 +0000
-Message-ID: <179001756287.8372.475254242129499819.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: EX19D039UWB004.ant.amazon.com (10.13.138.57) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Sep 2026 23:42:01 +0800, Guangshuo Li <lgs201920130244@gmail.com> wrote:
-> ena_probe() initializes the PHC as part of ena_device_init(), but the
-> probe failure path does not destroy it before freeing the PHC private
-> data.
-> 
-> The normal removal path calls ena_phc_destroy() through
-> ena_destroy_device() before ena_phc_free(). However, if probe fails
-> after ena_device_init() succeeds, the error path reaches ena_phc_free()
+prb_calc_retire_blk_tmo() computes in 32-bit int arithmetic:
 
-This part:
+        mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
 
-> without unregistering the PTP clock or destroying the device PHC
-> resources.
+If I'm reading the validation right, tp_block_size is user
+controlled and packet_set_ring() only rejects values that are <= 0
+as int or not page aligned, so a 256MiB block goes right through
+(and alloc_one_pg_vec_page() even has a vzalloc fallback for it).
+0x10000000 * 8 wraps to INT_MIN, and on a NIC reporting 1 Gbps
+(div == 1) the function ends up returning -2047.
 
-is inaccurate, see my explanation bellow.
+The condition is actually (8 * size) mod 2^32 >= 2^31 && div == 1,
+so the trigger set is [256,512), [768,1024), [1280,1536) and
+[1792,2048) MiB. Other sizes wrap to non-negative values and faster
+links divide the unsigned value back below 2^31, which is why this
+doesn't blow up for everyone.
 
->
->
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> index ea89619039d8..5f0864d16dd3 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> @@ -4122,6 +4122,7 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  err_device_destroy:
->  	ena_com_delete_host_info(ena_dev);
->  	ena_com_admin_destroy(ena_dev);
-> +	ena_phc_destroy(adapter);
->  ena_devlink_destroy:
->  	ena_devlink_free(devlink);
->  err_metrics_destroy:
+What makes it fatal is what happens next in init_prb_bdqc():
 
-Thanks for resending as a series - the split and the ordering are what I
-asked for.
+        p1->interval_ktime = ms_to_ktime(prb_calc_retire_blk_tmo(...));
+        hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
+                      HRTIMER_MODE_REL_SOFT);
 
-But v2 doesn't address Sashiko's review of v1.
+A negative relative timeout expires immediately. The callback
+unconditionally returns HRTIMER_RESTART, and hrtimer_forward() turns
+the negative interval into hrtimer_resolution:
 
-PHC is off during an initial probe. It only turns on if the user enables
-it via devlink, and devlink is registered at the very end of a successful
-ena_probe(). So on this error path phc_info->clock and
-ena_dev->phc.virt_addr are both NULL and ena_phc_destroy() does nothing.
+        if (interval < hrtimer_resolution)
+                interval = hrtimer_resolution;
 
-I still want the call - it keeps the probe unwind symmetric with
-ena_destroy_device() - but it is a robustness change, not a fix. Please
-drop Fixes: and Cc: stable, and say so in the commit message, for
-example:
+So the SOFT timer re-fires at the maximum rate forever, holding
+sk_receive_queue.lock each pass. One CPU spins in softirq until the
+socket is closed. Repeat with more rings and the machine is gone.
 
-  No functional change: PHC is always disabled during an initial probe,
-  so this only keeps the probe unwind symmetric.
+This is mostly a new problem: the overflow is ancient, but with
+msecs_to_jiffies() a negative timeout just got clamped to a huge
+unsigned value, i.e. the retire timer effectively never fired.
+f7460d2989fa ("net: af_packet: Use hrtimer to do the retire
+operation", v6.18) turned it into "fire immediately and spin".
+Still present in 7.2.6 and in current mainline as of this
+writing.
 
-Since net is for fixes, that means splitting after all - sorry for the
-extra round trip:
+(Unrelated to CVE-2019-20812 - that one was the ethtool failure path
+returning 0, which now returns DEFAULT_PRB_RETIRE_TOV.)
 
- - the MMIO read buffer fix goes to net on its own, keeping Fixes: and
- - this patch goes to net-next, without Fixes: or Cc: stable
+Reproducer, needs CAP_NET_RAW (a --network host container has it by
+default) and a 1 Gbps NIC (QEMU e1000 works):
 
-The MMIO fix has to land in net and propagate into net-next before you
-post this one, otherwise you hit the same hunk conflict again.
+        int fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+        bind(fd, ...);
+        int v = TPACKET_V3;
+        setsockopt(fd, SOL_PACKET, PACKET_VERSION, &v, sizeof(v));
+        struct tpacket_req3 req = {
+                .tp_block_size = 0x10000000,
+                .tp_block_nr = 1,
+                .tp_frame_size = 2048,
+                .tp_frame_nr = 0x10000000 / 2048,
+                .tp_retire_blk_tov = 0,
+        };
+        setsockopt(fd, SOL_PACKET, PACKET_RX_RING, &req, sizeof(req));
 
-Also please use --subject-prefix='PATCH net-next v3';
-netdev/series_format is still warning that the target tree isn't
-specified in the subject.
+Compute in 64 bits instead. The operands are already bounded by the
+existing validation, so nothing else changes. If you'd prefer a
+different fix, just say so and I'll respin.
 
-Thank you.
+Fixes: f7460d2989fa ("net: af_packet: Use hrtimer to do the retire operation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dairui Zhang <zhangdairui@gmail.com>
+---
+First patch to netdev, and compile-tested only - I don't have a
+1 Gbps setup to trigger it live. If I've misread the code, got the
+Fixes: tag wrong, or picked the wrong fix, please say so and I'll
+respin.
 
-Cc: stable
+ net/packet/af_packet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cc: stable
-
--- 
-Arthur Kiyanovski <akiyano@amazon.com>
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index b22cda3..24cf2d2 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -617,7 +617,7 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
+ 		return DEFAULT_PRB_RETIRE_TOV;
+ 
+ 	div = ecmd.base.speed / 1000;
+-	mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
++	mbits = (u64)blk_size_in_bytes * 8 / (1024 * 1024);
+ 
+ 	if (div)
+ 		mbits /= div;
