@@ -1,105 +1,86 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0190128C009;
-	Mon, 21 Sep 2026 12:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8699C3EE1FD;
+	Mon, 21 Sep 2026 12:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789994688; cv=none; b=st2yD20RizZQpnN0rOy+kPjaMzOnZ/mpXzsF3Rdf5Czk53f24VxB92qh+fglxWTfqRQzRXRuIT8S3PwoHWSu+HnNMx9tLzljtdJIsada9/vuVlwHshDKFK13feMrOIJHHdUx3e8KSZd45tQ8YF1jXh4038TaHGMUBeXKhRmd408=
+	t=1789994764; cv=none; b=lJwK8+u6w44NSSSFtNFWFyuX08gVTAYI75ePWYd7HsZUa0DvC8v5N3WtElVa0B7IGkoYSXS2G8Ay6tkWqzJg2oWnjYVHe+H/GJAaZdD72LqBJbuQw+ujAs8owdi5HhT+0yBqVLk4TZO0QEfR2QoZZ2i5O+V7NYZl4maQfHU6ZLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789994688; c=relaxed/simple;
-	bh=w1GlDaYjGOLyqTw2T7atvpFGJJuRBmdthAUnufDAhok=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q9ep/CuhVcCPOVUN4I8ltx5C4rOLoclkv7qnAbBDPHKTasF37wLApVTKWVnePZIHOIoqFOeIt2+Cw4xjD/Jbj3zr9DsbbCbQw8HWheIY0HQSWwpUQ6SsOt7lz4h+sIwVS/O/nQGyMNVsX0YMDmY3N1z/p7FaHVnzNp9sKq0ZGeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=yGKHp0In; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789994764; c=relaxed/simple;
+	bh=6v0BTfsWzBfmZOHrEarD6fEFT9rqQmW59HdNCeYcKgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A1Q+q5xQfvlWLOBW+Blo08Cr1uhizX+isP1Kd8AhuHIQxOyc3YaOsXX7/C55UiRWP28yum4MTgQr1wzjh8wFxerNFbLuEsjTWYjKPy1V/K182oe7pqdc1BCM1INriq1Bfi3neXIrO0PswmI2VHuuNdW7zQ1eMA/GV+SRZsnPyZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhso0QvU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="yGKHp0In"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 184B1A4A18;
-	Mon, 21 Sep 2026 14:44:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789994680; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=CbRBRCnqdsWMFVb2TRFmDEKx0JYd2/g65NfgRA9kBmQ=;
-	b=yGKHp0InIi3Cu0Id+HN3gRHss+CSwJA/4ctTu97cW5Nfmc2GVFupNyw12LjmfpabhiHUKN
-	DyRoZwhX7/EzDMP3JK29sV26+nsIA1vhyXqG7gAqXry8bQwQOcOiHhcQNZ6eHExCc5jPrR
-	+21zHDD6SPMENwcZV9YRY7lZZw9ckJbN19Oo72zqL03wfJcxOmDAN13zcsJsf0PiOCgzSw
-	moGT+L76Mqp3js8H9jZ2PJ5ifW4vPh2Fzd3BxLEgczpNlN+iA0oer8uWG9NfXal44c+Ze5
-	YgaATx0e242iYHP9MUZr+ERgquAVfWRJ2nzI5DmSzPONZiRk2C75yFzch92ZUw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhso0QvU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9821F000FF;
+	Mon, 21 Sep 2026 12:46:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789994763;
+	bh=pifXzv2SvQy9LF/ukmnuB1/jrrwEMYs2agzZGCWrZdI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hhso0QvU0W90ZixR5a7+GPaiQC5/MdwLtnn1UYIT6l6GjnjD0pxsAqfMb7I4H1l/W
+	 hnBrAzN250T3L56CDxnR3n6TdgEsBGLBGK25m+bDMppwSMzRAy+9ZbRAiqZJf4kls7
+	 +b2I7Y5ScS9g0ARjFF9ixcuMAuT30ZLq++TzsxhNrxVpVi9x/b6OnsLQMHN3kOGcQm
+	 /PJrEr0ri4FSzb4GGmYbeH7rfjc4VWFUOIU6kIjsC3fK81Ef0rTsww5RGS2Lfd9n1n
+	 evlkp8uJBxajXXpQP/7MNmiCirdhElNoH9QaU3hA7fQm9I/re2X53XFuoNO9TxVzs/
+	 il+1WhB0UO7Rg==
+Date: Mon, 21 Sep 2026 13:45:58 +0100
+From: Simon Horman <horms@kernel.org>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Justin Chen <justin.chen@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: bcmgenet: stop Tx NAPI before disabling the queues
-Date: Mon, 21 Sep 2026 14:44:34 +0200
-Message-ID: <20260921124435.974581-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	co+65e5c76b187f08b2@bugs.sh, Xiang Mei <xmei5@asu.edu>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] veth: manage XDP program pointers during channel
+ resize
+Message-ID: <20260921124558.GO13925@horms.kernel.org>
+References: <20260917153923.904124-3-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917153923.904124-3-bestswngs@gmail.com>
 
-bcmgenet_netif_stop() disables the Tx queues first and stops Tx NAPI
-several steps later. A completion in flight calls netif_tx_wake_queue() in
-between, so a transmit can reach the rings after bcmgenet_fini_dma() has
-freed them.
+On Thu, Sep 17, 2026 at 11:39:25PM +0800, Weiming Shi wrote:
+> veth_set_channels() tears down XDP resources for removed RX queues
+> without clearing rq->xdp_prog.  If the program is then detached or
+> replaced, those queues keep the old pointer after bpf_prog_put().  A
+> later channel increase can re-enable NAPI and run the freed program.
+> 
+> Clear the program pointer after taking an RX queue offline, and publish
+> the current program only after bringing the queue back online succeeds.
+> 
+>   BUG: unable to handle page fault for address: ffffc90000256048
+>   Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+>   RIP: veth_xdp_rcv_skb (include/linux/filter.h:779
+>                          include/net/xdp.h:696 drivers/net/veth.c:820)
+>   Call Trace:
+>    veth_xdp_rcv (drivers/net/veth.c:941)
+>    veth_poll (drivers/net/veth.c:986)
+>    __napi_poll (net/core/dev.c:7787)
+>    net_rx_action (net/core/dev.c:7850 net/core/dev.c:8007)
+>    handle_softirqs (kernel/softirq.c:645)
+>   Kernel panic - not syncing: Fatal exception in interrupt
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op")
+> Reported-by: <co+65e5c76b187f08b2@bugs.sh>
+> Assisted-by: LLM
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 
-Close is safe because dev_deactivate_many() stops the qdisc first.
-bcmgenet_suspend() does not, so stop Tx NAPI before the queues.
-
-KASAN on a Raspberry Pi CM4, driven from an MTU change because suspend
-freezes user space before the callback runs:
-
-  BUG: KASAN: use-after-free in bcmgenet_xmit+0x17f8/0x2258
-  Write of size 8 at addr ffffff8055844a68 by task ksoftirqd/0/14
-   bcmgenet_xmit+0x17f8/0x2258
-   dev_hard_start_xmit+0x13c/0x588
-   sch_direct_xmit+0x108/0x340
-   __dev_queue_xmit+0x1190/0x3848
-
-Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-Found this, while I was preparing my jumbo frame series for genet.
-The MTU change in my test comes from that series and is not in tree
-yet.
-
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index b916080f4ff1..0789b60e664a 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3441,6 +3441,8 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 
-+	/* Stop completion polling before it can wake a stopped queue */
-+	bcmgenet_disable_tx_napi(priv);
- 	netif_tx_disable(dev);
- 
- 	/* Disable MAC receive */
-@@ -3455,7 +3457,6 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
- 	/* Disable MAC transmit. TX DMA disabled must be done before this */
- 	umac_enable_set(priv, CMD_TX_EN, false);
- 
--	bcmgenet_disable_tx_napi(priv);
- 	bcmgenet_disable_rx_napi(priv);
- 	bcmgenet_intr_disable(priv);
- 
--- 
-2.53.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
