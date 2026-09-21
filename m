@@ -1,109 +1,66 @@
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp12.broadcom.com [192.19.144.207])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFE7518127;
-	Mon, 21 Sep 2026 22:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE75187E1;
+	Mon, 21 Sep 2026 22:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790028038; cv=none; b=kiOJRZNkGe9QRFoR+2n2gH0m/lmroOt/MxwF5klDAwduHmCIwcvJnMqLXZdyPTIdNPrr+m25T94JNUS8kmnCX81MhCBoFskKS/TzEphvQ+z5MUEkpgweue3ciMK+Z/3XYxbO/nYxyqSaq9sU3T4zlu17bBabF+rR101SZZSONOc=
+	t=1790028111; cv=none; b=eo1WLjmPfRV/kuNOo4d2teC0KwQFD69aU24TnuyCtekTqAWoRfPoKZkkjXBMfgYRblV8RTolm7b3uuqy8/6X3tEFN6Z5f0MjgQlELr3dcis+zO/pxaAPnTAWSn+lfdWfLEhWuOCD1Quij95STt7F0V6tpgJ9bs6jv7IDIIi8MPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790028038; c=relaxed/simple;
-	bh=9BtkW7ld/l9NGI6zvPuCmYiPqVvG8BxSnRpqfgT/ZJc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YLx2bszGBDadaOvh5bULVKviDTbg1AtU+pKoeuzFxcK69bCDx2qenTE9ACpTe86ByjQxHyFMJJOljyurut4cHJ1tOwVNi/SgzlVn9VU/My5k7ofRUCMXOWUDQKwPvzuBeP/CrJeRPujuNcaycZiS4UYn18xun+s7Hm3g4t6AwSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LCcFkusY; arc=none smtp.client-ip=192.19.144.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1790028111; c=relaxed/simple;
+	bh=InAx6qtfw/9lD3C6nt0nIObURZjNCE5Xmi4WiQsiBCw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ChoUCHs7M/Tez+jpHLSq2DXO7B/eGuSNQ1/CNSsm8aj7mUSXkdlGaIsiMOMSlL5Q8CIc9ZcRvUiLOdAH600vBCu+XsB7rfkaFsSDuYU85RvQgL0fzYZptYQtHD3/C7dPLcOfN8T1OilSe6OXQRWWAv7S6FDmLRu88Oe2NrWjjxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAsf01fq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LCcFkusY"
-Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 214DBC0000D8;
-	Mon, 21 Sep 2026 15:00:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 214DBC0000D8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1790028029;
-	bh=9BtkW7ld/l9NGI6zvPuCmYiPqVvG8BxSnRpqfgT/ZJc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCcFkusY/PxFuLhwvGELb7LqdlmgCNV3Qc+nEo9mJu6NndV+v58Br1QykbKSlIucf
-	 BDEAgNnw2lJLcbF6YIO3WTgaT3CoUxIXw5AqKCPQ66HDpw2+X7tAFVqtYdF+IzLBq5
-	 bqv1soS6+1RKybOpm7AbtZqT6GtU5PovWi5DKjrU=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id B92BDAE0;
-	Mon, 21 Sep 2026 15:00:28 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Doug Berger <opendmb@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zak Kemble <zakkemble@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 1/5] net: bcmgenet: fix 64-bit RTNL stats reading in ethtool on 32-bit systems
-Date: Mon, 21 Sep 2026 15:00:17 -0700
-Message-Id: <20260921220021.281418-2-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260921220021.281418-1-florian.fainelli@broadcom.com>
-References: <20260921220021.281418-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAsf01fq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5061F000FF;
+	Mon, 21 Sep 2026 22:01:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790028110;
+	bh=jOGHfkooEADLL8UQSObp6hOJnWO0Agvh1vXoe5BayNE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XAsf01fqbsxpgWxLz4OyawkHvAw5uRg3psECuBlHlnaeWKTPxz5aenBqvHHouFCqr
+	 Oe9NjY6/oJq65PZp3tAQAyjBYQ85t6QZgttqMFzTE0D/DwiWWox1tlG4ggSebTbD2P
+	 xa3RUqre8XahCx43593XsHVRdtpXTXJ+sKIg8DsJW+lI9LKNKicQ7RNfyV7NzLcpDb
+	 fSrMvkcz8gAwEY2rQaC1gTU6Daoo9bQIdvLALwLylV1Ww7KFe6+5mTs3BC+WflXQM1
+	 az0SoXE9O6onTxy1WIzXGwLvxSbQh+ddpfIuTbP4jjzf3JttSrU6Y+QVxuOTJJfaaX
+	 9asDYE4JJH/tw==
+Date: Mon, 21 Sep 2026 15:01:49 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: <netdev-bot+sashiko@kernel.org>, <davem@davemloft.net>,
+ <gakula@marvell.com>, <lcherian@marvell.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <sgoutham@marvell.com>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <saikrishnag@marvell.com>
+Subject: Re: [PATCH net] octeontx2-af: guard is_pf_cgxmapped() when PF to
+ CGX map is absent
+Message-ID: <20260921150149.1af94192@kernel.org>
+In-Reply-To: <aqzSYu6KduRWM42T@rkannoth-OptiPlex-7090>
+References: <20260915022952.886639-1-rkannoth@marvell.com>
+	<178970941782.22033.17901214089531533321@kernel.org>
+	<aqzSYu6KduRWM42T@rkannoth-OptiPlex-7090>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-When bcmgenet was converted to 64-bit statistics, STAT_RTNL members were
-switched to point into struct rtnl_link_stats64, whose fields are 64-bit
-(__u64) regardless of architecture.
+On Fri, 18 Sep 2026 11:25:46 +0530 Ratheesh Kannoth wrote:
+> On 2026-09-18 at 11:00:17, netdev-bot+sashiko@kernel.org (netdev-bot+sash=
+iko@kernel.org) wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider:
+> >
+> > Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 0
+> >
+> > - [Medium] The added `if (!rvu->pf2cgxlmac_map) return false;` in
+> >   `is_pf_cgxmapped()`=E2=80=A6 =20
+> Will modify the commit message and will post v2 to net-next as a hardenin=
+g patch.
 
-However, bcmgenet_get_ethtool_stats() retained a legacy check:
-  if (sizeof(unsigned long) != sizeof(u32) &&
-      s->stat_sizeof == sizeof(unsigned long))
-
-On 32-bit systems, sizeof(unsigned long) == sizeof(u32), causing this
-condition to evaluate to false. As a result, 64-bit RTNL stats fields were
-read via *(u32 *)p. On 32-bit Big-Endian systems (such as MIPS BE), this
-reads the high 32 bits and returns 0 until the counter exceeds 4GB; on
-32-bit Little-Endian systems (such as 32-bit ARM), the value is truncated
-to 32 bits.
-
-Fix this by checking if s->stat_sizeof == sizeof(u64) so 64-bit fields are
-always read as 64-bit values.
-
-Fixes: 59aa6e3072aa ("net: bcmgenet: switch to use 64bit statistics")
-Assisted-by: LLM
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index b916080f4ff1..7b089de9484e 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1346,9 +1346,8 @@ static void bcmgenet_get_ethtool_stats(struct net_device *dev,
- 				p = (char *)&stats64;
- 
- 			p += s->stat_offset;
--			if (sizeof(unsigned long) != sizeof(u32) &&
--				s->stat_sizeof == sizeof(unsigned long))
--				data[i] = *(unsigned long *)p;
-+			if (s->stat_sizeof == sizeof(u64))
-+				data[i] = *(u64 *)p;
- 			else
- 				data[i] = *(u32 *)p;
- 		}
--- 
-2.34.1
-
+no such thing as "hardening", please don't add defensive checks upstream
