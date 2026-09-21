@@ -1,163 +1,307 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1603D45C5;
-	Mon, 21 Sep 2026 12:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9459349159B;
+	Mon, 21 Sep 2026 12:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789992766; cv=none; b=F9bH+t5qDolyVX8ovVn4DskaScg24dtZarcK0eFksM9Vf4hPSQz0nhDhrCCW2T8XXHYDzbZh85/AGewD4INrkrdNxSe5htFYg0Fl6VXhqnaRJeVezw8z7B3EglN53AAAa1SGTByZxvnHSi6LaFczZmML+9n7kez9LQX80EQwmK0=
+	t=1789992823; cv=none; b=Vzlz4pncjsrIXIv8n8CijcmpMBDrS7a6lRtifANnICjcMYKn2LyfuIRO0OXOEUJ7reK9rLyei4eZPgkfhL4iSejeR+06Aui7QPg7+PQqijTU6l8I++pf7NjSHkRPPhIKoMIApqhKsasWJMc0pF5eg8Knc+PJfrFE5KHHirxV9jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789992766; c=relaxed/simple;
-	bh=eRRj97S6eF2KTLu4vsFeP1AS15pEdUjed2RS3FtCnHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TtgVotgmTq7blTiX5NkEKsiMPtCCx7O3x8+//lbQw5gMco6gmUcZvAZptgkX83+wV4CLdCv1T1xVXkMJguA/+JA1k+FbR9o0nYdQigP7VCIxehQ5xA3zhz6KheBdfBiE7i075Da6xmzTXeQE0dEezuVTzYXoZi/ogKkNrhTMus0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=VyMH+Ap1; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1789992823; c=relaxed/simple;
+	bh=Eqtl/kb4vJr77v8+8SpvB7/+jvOp2G/Tl0xd+mK2r9Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=etLDGow008jopwe3Q1E5ocyhxWZQYJ2E+BKmJJQmYMdO9ePYmQUw4cXf/nCaAg/ScXbhbDX+Y5iZ8dqGiEdK223uC2QfBrs7rMETBcPoPu6raqmFrBjKV1FxhApYkPROPkqHKBOifYO6s4mjOIHFGDk091di3youbTY0t1cPEZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=miLnFg2I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="VyMH+Ap1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=mTnuL4Z821ec449HQHfv+JzD9+UKtm8/FD+1W/Om3tM=; b=VyMH+Ap1tXwLFbfTMZWBdGSO1t
-	VtQIEeqmOBC1Dc7BRK8EMZiRzaXThyY+KClL2L2xUteKWQqsGedl5CdDckQXdAF6AywIK3frNBQMF
-	SiQGgC8blhhJOmBmIiJDAhPiEW4HOpH1ZnXZilqSZV7rAmEz6YH9Hj7qLNt5UtIs3LHGfGE+a+VDT
-	KW+eANIG9RPf5R+msbc0VBz7Olejo1YatjQlEL+aJoksohRVQiAlBKZuKaAHbJbJKp96IggX71h5m
-	WT/SWYptyUGGVeAI1OLdYzTzNf498mQKgBEhIUPQ7dX2Rxs6coWWPftTIBuZpVp1xq5pkh95vIXM3
-	AqYQSkdA==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1x8cst-000EL4-1H;
-	Mon, 21 Sep 2026 14:12:35 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1x8css-000N5u-1R;
-	Mon, 21 Sep 2026 14:12:34 +0200
-Message-ID: <76cdee19-3547-45de-a220-c71dadb0100c@iogearbox.net>
-Date: Mon, 21 Sep 2026 14:12:34 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="miLnFg2I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BD91F000FF;
+	Mon, 21 Sep 2026 12:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789992821;
+	bh=LjqV+TvColuL7thiwxFD+nBjPJWTQXK8oe4bjQxOgFs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=miLnFg2IaPJSF4LsGYJvDXYcjUcR8Vx3QjfQYwf1T319tiegKxUFgp3swWagkg1Jy
+	 x2lZ3mAoBMS1XZgOkMU2cdheE12g7fNQeAviHRM++1wcdOCQWuGwlHIKW0V/xzGCRs
+	 GDU3Qr/Nf2Mt0kmxM6EPK7xY2DiRMYwHT0lZ9+iQzwgKY+UxX84gTqEoE7UQMW5lTg
+	 edYYQvkmbp7UQuKGKBImgSIXsTZedsCnqNv+e2KVtxPsGp5GYYVJt/K8aMIwDm0R4U
+	 DcESYPLN8lNSPvMABmkfnYb3rcrU70kbcOO3fY/No32hgDfS0yPDz1fyxGKzGYLkbO
+	 qNERqLjtrjb/g==
+Subject:
+ Re: [PATCH net] net: axienet: restart the TX queue after a DMA error reset
+From: netdev-bot+sashiko@kernel.org
+To: maimon.sagi@gmail.com
+Cc: radhey.shyam.pandey@amd.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ michal.simek@amd.com, daniel@iogearbox.net,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Mon, 21 Sep 2026 12:13:40 +0000
+Message-ID: <178999282007.2160803.6952878199943822549@kernel.org>
+In-Reply-To: <20260917121306.23499-1-maimon.sagi@gmail.com>
+References: <20260917121306.23499-1-maimon.sagi@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: manual merge of the bpf-next tree with the bpf tree
-To: Mark Brown <broonie@kernel.org>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Eduard Zingerman <eddyz87@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
- Networking <netdev@vger.kernel.org>
-Cc: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <arD9pUBavrJQ8TRT@sirena.co.uk>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <arD9pUBavrJQ8TRT@sirena.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28130/Mon Sep 21 08:24:29 2026)
 
-On 9/21/26 11:49 AM, Mark Brown wrote:
-> Hi all,
-> 
-> Today's linux-next merge of the bpf-next tree got a conflict in:
-> 
->    kernel/bpf/helpers.c
-> 
-> between commit:
-> 
->    81c975aae375d ("bpf: Require CAP_PERFMON for kfuncs reading memory")
-> 
-> from the bpf tree and commit:
-> 
->    3f9d98dfed79f ("bpf: Add user memory access kfuncs for mm_struct")
-> 
-> from the bpf-next tree.
-> 
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
-> 
-> diff --cc kernel/bpf/helpers.c
-> index 712dca5a2c5bd,82402d97ce67c..0000000000000
-> --- a/kernel/bpf/helpers.c
-> +++ b/kernel/bpf/helpers.c
-> @@@ -4920,12 -5049,14 +5049,14 @@@ BTF_ID_FLAGS(func, bpf_wq_set_callback
->    BTF_ID_FLAGS(func, bpf_wq_start)
->    BTF_ID_FLAGS(func, bpf_preempt_disable)
->    BTF_ID_FLAGS(func, bpf_preempt_enable)
->   -BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
->   +BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW | KF_PERFMON)
->    BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
->    BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
->   -BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
->   -BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
->   -BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
->   -BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
->   -BTF_ID_FLAGS(func, bpf_get_kmem_cache)
->   +BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE | KF_PERFMON)
-> ++BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE | KF_PERFMON)
-> ++BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE | KF_PERFMON)
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-LGTM, yes, we need to mark the added kfuncs from Anastasios with KF_PERFMON.
+Critical: 0 · High: 2 (2) · Medium: 1 · Low: 0 (1)
 
->   +BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE | KF_PERFMON)
->   +BTF_ID_FLAGS(func, bpf_get_kmem_cache, KF_PERFMON)
->    BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
->    BTF_ID_FLAGS(func, bpf_iter_kmem_cache_next, KF_ITER_NEXT | KF_RET_NULL | KF_SLEEPABLE)
->    BTF_ID_FLAGS(func, bpf_iter_kmem_cache_destroy, KF_ITER_DESTROY | KF_SLEEPABLE)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [High] The netif_wake_queue() added at the end of
+  axienet_dma_err_handler() is not serialized against…
+- [High] The unconditional netif_wake_queue() added at the end of
+  axienet_dma_err_handler() can undo the TX stop that axienet_suspend()…
+- [Medium] The added in-code comment in axienet_dma_err_handler() and the
+  commit message assert a TX-watchdog failure that cannot happen in this…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  axienet_dma_err_handler() unmaps, frees and clears every TX descriptor…
+- [High] This problem wasn't introduced by this patch, but
+  axienet_dma_err_handler() performs a full AXI Ethernet core reset…
+- [Low] Concern that the newly added unconditional netif_wake_queue() in
+  axienet_dma_err_handler() re-enables transmission even when the…
+
+--
+
+net: axienet: restart the TX queue after a DMA error reset
+
+The patch adds netif_trans_update() and netif_wake_queue() at the end of
+axienet_dma_err_handler(), so that a queue stopped by axienet_start_xmit()
+is restarted after the DMA error reset has reinitialised the descriptor
+ring.  No Link: tags are present in the commit header.
+
+A few questions below about the new wake and about the surrounding recovery
+sequence.
+
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index 1722b7038f340..814d92fcb4fda 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -2778,6 +2778,15 @@ static void axienet_dma_err_handler(struct work_struct *work)
+>  	napi_enable(&lp->napi_rx);
+>  	napi_enable(&lp->napi_tx);
+>  	axienet_setoptions(ndev, lp->options);
+> +
+> +	/* The ring is empty again, so let the stack transmit.  The queue may
+> +	 * have been stopped by axienet_start_xmit(); netdev_reset_queue()
+> +	 * above clears only __QUEUE_STATE_STACK_XOFF, and nothing at all
+> +	 * without CONFIG_BQL.  Refresh the transmit timestamp first, or the
+> +	 * watchdog fires again on the next tick.
+> +	 */
+
+[Severity: Medium]
+Can the watchdog actually fire for this device?  The comment says:
+
+	 * without CONFIG_BQL.  Refresh the transmit timestamp first, or the
+	 * watchdog fires again on the next tick.
+
+and the commit message states it as a fact:
+
+    The transmit timestamp is not refreshed either, so on a kernel with a
+    TX timeout handler the watchdog condition stays true and the reset can
+    be retried indefinitely.
+
+Neither axienet_netdev_ops nor axienet_netdev_dmaengine_ops installs
+.ndo_tx_timeout, and the driver never assigns ndev->watchdog_timeo
+(a grep for both symbols in drivers/net/ethernet/xilinx/ matches only
+xilinx_emaclite.c).  The core refuses to arm the timer in that case:
+
+net/sched/sch_generic.c:netdev_watchdog_up() {
+	if (!dev->netdev_ops->ndo_tx_timeout)
+		return;
+	...
+}
+
+So dev_watchdog() never runs for axienet and netif_trans_update() is a
+timestamp store with no in-tree consumer.  The note below the --- line
+mentions this depends on a separate TX timeout patch, but that note does
+not reach git history, and the Fixes: tag invites a stable backport of a
+watchdog retry loop no in-tree axienet can produce.  Could the comment and
+the commit message be reworded to say the timestamp refresh is preparation
+for a TX timeout handler rather than a fix for observed behaviour?
+
+> +	netif_trans_update(ndev);
+> +	netif_wake_queue(ndev);
+
+[Severity: High]
+Can this wake be lost, leaving the queue stopped for good?
+
+axienet_dma_err_handler() runs in process context and never calls
+netif_tx_disable() or netif_tx_lock_bh(), and it sleeps for tens of
+milliseconds inside axienet_dma_stop().  An axienet_start_xmit() that
+entered before the teardown can therefore finish after the worker has
+reset the indices:
+
+axienet_dma_err_handler()
+	lp->tx_bd_ci = 0;
+	lp->tx_bd_tail = 0;
+	...
+	netif_wake_queue(ndev);
+
+axienet_start_xmit() then runs its own stop protocol:
+
+	if (axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1)) {
+		netif_stop_queue(ndev);
+
+		/* Matches barrier in axienet_tx_poll */
+		smp_mb();
+
+If that netif_stop_queue() lands after the worker's netif_wake_queue(),
+__QUEUE_STATE_DRV_XOFF is set again with nothing left to clear it.  The
+only other wake is inside the 'if (packets)' branch of axienet_tx_poll():
+
+		if (!axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1))
+			netif_wake_queue(ndev);
+
+and the commit message already explains axienet_free_tx_chain() cannot
+return a non-zero packet count once the handler has zeroed every status
+word.
+
+The existing queue-state protocol is a two-party smp_mb() handshake
+between axienet_start_xmit() and axienet_tx_poll(); this adds a third
+writer from a different context that does not take part in it.  Would
+quiescing the transmit path at the top of the handler (netif_tx_disable())
+and waking at the end make the wake unloseable?
+
+Related: lp->tx_bd_ci and lp->tx_bd_tail are written with plain stores by
+the worker while axienet_start_xmit() reads them unlocked
+(orig_tail_ptr = lp->tx_bd_tail) and WRITE_ONCEs them, so is the comment's
+premise that "the ring is empty again" guaranteed to hold at the instant
+of the wake?
+
+[Severity: High]
+Can this wake undo the transmit stop that suspend installed?
+
+The worker checks lp->stopping only at its entry.  If a suspend starts
+after that check:
+
+axienet_suspend()
+	netif_device_detach(ndev);
+
+	rtnl_lock();
+	axienet_stop(ndev);
+	rtnl_unlock();
+
+net/core/dev.c:netif_device_detach() {
+	if (test_and_clear_bit(__LINK_STATE_PRESENT, &dev->state) &&
+	    netif_running(dev)) {
+		netif_tx_stop_all_queues(dev);
+	}
+}
+
+axienet_stop() then sets lp->stopping and blocks:
+
+		WRITE_ONCE(lp->stopping, true);
+		flush_work(&lp->dma_err_task);
+		...
+		axienet_dma_bd_release(ndev);
+
+The already-running worker reaches the new netif_wake_queue(), clearing
+the DRV_XOFF that detach set and scheduling the qdisc.  Suspend calls
+axienet_stop() directly without dev_deactivate(), so the qdisc is still
+active, and the transmit path does not consult netif_device_present().
+Can backlogged traffic then enter axienet_start_xmit() after flush_work()
+returns, while axienet_stop() proceeds through napi_disable(),
+axienet_dma_stop(), free_irq() and axienet_dma_bd_release(), so that the
+in-flight transmit writes into lp->tx_bd_v as it is being dma_free'd and
+kicks XAXIDMA_TX_TDESC on a torn-down engine?
+
+Before this patch the detach-installed DRV_XOFF stayed set, so no xmit
+could run.  Would re-checking lp->stopping (or netif_device_present())
+before the wake close this?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the hardware reset result
+is discarded on this path.  __axienet_device_reset() returns -ETIMEDOUT
+when the DMA reset bit never clears or PhyRstCmplt never arrives:
+
+	if (ret) {
+		dev_err(lp->dev, "%s: timeout waiting for PhyRstCmplt\n", __func__);
+		goto out;
+	}
+
+but axienet_dma_stop() drops it:
+
+	/* Do a reset to ensure DMA is really stopped */
+	axienet_lock_mii(lp);
+	__axienet_device_reset(lp);
+	axienet_unlock_mii(lp);
+
+so the handler cannot tell a recovered device from one still in reset, and
+it unconditionally re-enables XAE_OPTION_TXEN via
+axienet_setoptions(ndev, lp->options) just above the new wake.  The added
+netif_wake_queue() does not make this worse - transmits already reached the
+possibly-unreset engine in the common case where the queue was not stopped
+when the error hit - but should axienet_dma_stop() propagate the reset
+failure instead of returning void?
+
+[Severity: High]
+This is a pre-existing issue, but the ring teardown earlier in this same
+handler has no exclusion against axienet_start_xmit(), which the commit
+message acknowledges below the --- line.  The handler does, for every TX
+descriptor:
+
+		if (cur_p->skb)
+			dev_kfree_skb_irq(cur_p->skb);
+		cur_p->phys = 0;
+		...
+		cur_p->skb = NULL;
+
+while the transmitter publishes the skb and then dereferences it:
+
+	cur_p->skb = skb;
+	...
+	WRITE_ONCE(lp->tx_bd_tail, new_tail_ptr);
+	netdev_sent_queue(ndev, skb->len);
+
+Disabling TX NAPI excludes completion processing, not ndo_start_xmit.  If
+the worker frees that skb between the two, is the skb->len read a
+use-after-free, and does the following tail publication plus
+XAXIDMA_TX_TDESC kick submit descriptors whose mappings the worker already
+released?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is the MAC fully
+reprogrammed at the point where the queue is now woken?
+
+axienet_dma_stop() runs __axienet_device_reset(), which resets the
+Ethernet core, and the recovery sequence restores RCW1, IS/IE, FCC (FCRX
+only), the MAC address, the multicast filter and lp->options.  It never
+rewrites XAE_EMMC_OFFSET.  The only writer of the LINKSPEED field and of
+the negotiated pause bits is axienet_mac_link_up():
+
+	emmc_reg &= ~XAE_EMMC_LINKSPEED_MASK;
+	...
+	axienet_iow(lp, XAE_EMMC_OFFSET, emmc_reg);
+
+and phylink will not call it again because the link state has not changed
+(axienet_mac_link_down() is a no-op and the handler does not re-trigger
+phylink).  axienet_options[] has no XAE_EMMC_OFFSET entry either, so
+axienet_setoptions() cannot repair it.
+
+On a 10/100 link, does the MAC keep its reset-default link speed after
+this recovery while software still believes the negotiated rate is in
+effect, so that the frames the new netif_wake_queue() lets through are
+clocked at the wrong rate until an unrelated link flap re-runs
+axienet_mac_link_up()?  The open path escapes this only because
+axienet_open() runs phylink_start() after axienet_device_reset().
+
+>  }
+>  
+>  /**
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917121306.23499-1-maimon.sagi%40gmail.com
