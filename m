@@ -1,48 +1,48 @@
 Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12B940DB3A;
-	Mon, 21 Sep 2026 20:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF7403123;
+	Mon, 21 Sep 2026 20:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.154.183
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790021486; cv=fail; b=XlcNt06loZ3YCGKiDl0wBa4rJWFaVAUDQMWgSG26Njimgzo6OrMED+xwP6jsWMo1/ni/1LRSHlLqbzHWxuSIFXH141hUzImyIdWzygvCXXxWwDr//vnlBJaCXzJSY/2He+UgvUxAKuAWQVhdYfft/th/+v7aQ9citprs8gEKzpQ=
+	t=1790021487; cv=fail; b=H2PaWEjQwa8nxuLMz08H1M7uD16FyJAkgqggeONLEXqDWFc2aQfVI705+edFodTOPGqXOyX2PkEg84FHO7QqGUD1Q77DS6Kv2UmH/+Py88YF5vREmNP6SofBuK/ePzFfWA7by+1d4UXwMDEbbcsfUAsnoBAIAWTZSVo4ms3LbsY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790021486; c=relaxed/simple;
-	bh=epgZdB47tbi71dDq+CeehZpuNBGyTMYSSqvo2zpaSjE=;
+	s=arc-20240116; t=1790021487; c=relaxed/simple;
+	bh=1Vu61sDA3h9rVDQBEIACqIkgc+ZJgu8xGizctvyz0Es=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RrNuEfstZo3ZO90VWgTQ5vZSn1rkP/MTq/qejQNEJpis2d/QmTzwH2XN7j+6mfJBpEFhq8w/Wwp5AXzl17qqlbj5WAnVf6UHxdSFZsiWEvwTKMBfTMLzO71vBzSM+BXTd1EQL6qM+AAyQwn/8jbWDnc2RiEo0/XTCtGmQGUoZZw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=AeYszNRE; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=CKcEWOqv; arc=fail smtp.client-ip=67.231.154.183
+	 Content-Type:MIME-Version; b=cXDwYimIwsVvKTstoCe8OFr5q0i1LyuCAhjwhgJHY9qmG6tRaO0sgNt82fvtqpbe2Y86jFilB0hlL0QMoUbpDXJFJ1db5DIqdqcQMTfGJgcBl+VZJmgN52uEYgNcMcy33wvVKwXhmouksxVz/9cc+5g8hakX8fr0nWobAcW9W5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=PtjLUJnc; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=kfZQMohk; arc=fail smtp.client-ip=67.231.154.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="AeYszNRE";
-	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="CKcEWOqv"
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="PtjLUJnc";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="kfZQMohk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
  h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
- s=mail; bh=qYfestxojeM4cuuu9m+Xx1agfxfjOQzNWI0Tg5GdeZM=;
- b=AeYszNREJH2jDmfPzRMkKoxWF8byzh/V0LU80uX8ettb9Tm+W/6/hJwNRc2RqE+ihMf/w+XUpvD/89ec2TXxv2bPyyQ06PiQSLKalKjA+YJO0XwHzgcxCX13sYU8pSoGoQH/bhRbzUG4M7qtVgHiYZonPDi+OvwNDBe63NIMDlZddp2xsFgf6FIZM+/iPmbP46st8sxC+phHru2PSoP2u2e6pPcRWFkZRTRKZCPMfFqCGZsIDxycnB7inVAQSj5KKRW6xjMpAB1WZsGoi08xajkc8nq3UHnuBDGBGN0e5q+n1A4rRgzXBX5B/jhVoih15XZRrdCr66PexcbjipSiDA==
+ s=mail; bh=5slyZH7m03GTdnXp1i5c/Ow5Ufe4eenqsgbJCsRykIw=;
+ b=PtjLUJncbrjfUZbOD+vU3a5cnIxopWw9KMmosdLd8BKbF4Vb/cvorBRN+4JwJTz7OiM0FiuhTxwzV6V00r6qQqNucuUENu0g2pSptho3WvTVUGrgeUD5mTj+RWs8tDVAJQQO334rMiJEjFyXjlIFi3bVl1SaG8lsh1BHOiz33To8XZDtIjm604qUkssZ75LSIcK73InrFO4RFyZFtxfr5RCxhGezhLMisNBnFQpnLKTieker29LPiTqqcYmJhQ4o1m8C5JmWQAxl+/56J3x74/6w2h6clf7dxptQKGvdQGm80+axTz1q7eSJFWQabJ+d+tfH/jHSuWNUtDmgdJIuOw==
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020131.outbound.protection.outlook.com [52.101.193.131])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020109.outbound.protection.outlook.com [52.101.193.109])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id CB7B19C00B8;
-	Mon, 21 Sep 2026 20:11:20 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 641DD300077;
+	Mon, 21 Sep 2026 20:11:22 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E18TmIA99Wh5XUF+nDoRco79v5k3ql4eGLMjBmQozLjIt0jQUlsaWWMdwRI9hcUW4bn6Iftwcpg79WPQiTM/JABEad93o+XdErxVRVLX5AKEqTGAhpPNBKAjF8b29cfzKzwMcI3jleKiJExrVzFnBxiXUhe82HW+XC0QhJ4MGQkDqFG5sTAE9B3mBA+kO8bg3uieZAGk9GyDbxtCPjjuxKNjQNgS/jPFN8PF9H/B10eOgS6uJslNcEwAi8ax3bm4lKC0xdhiPKYgtVdvHQ/kYLc7gxYqIzjiI96vLJA+yXBVj8XzZLNMmxsvxt8WCaA9kavdv+zdAxu/RHCC/4Z5iQ==
+ b=d0xneayDe0y1yKdRdKDTCpiazGQDWv1U23L8O3zSw/FsOl9gQu7XxxX3/489mniTQ5kUhE4IZQzUhyiX5h2pfHSfsbefTkyspvoerCxagAiXtH1FtZa7S2Ok2kjLGJKnF5JbdVOcV626HrLCN2PLVqHclWc4nUqlKzm+GAqGQieYkaaJ5ESXlEJNRKJvTEL5GOYo85ibZgFChrnWoyKvkSytixp/crcnDHxKKkZ9+BwFZNhbSgPCnyFE+A7f14JtDdfXLZBZUE1du6ew7yGIJovIv+b90esA9tk4rkRTVa1VZGrpSYwdwVu4Ha62QLgZMdkTrMGom7+i2CkpknlZKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qYfestxojeM4cuuu9m+Xx1agfxfjOQzNWI0Tg5GdeZM=;
- b=U/VuLLKpBgXtPaaSh3EIVa/OmaYm7xRlwOzbVO+1fLoquoun/qxPaYC6vEeLJ/fyo0kMKJchGh9EUmhA3PN23m1AKaEvidY0SUsXnaL+L16U6aUnHvX81ZP8U5uQS/0MUWmkpU2SKzGzJkYzFFY6F1+4EB6kvZeY0yknOoAC8RdtW7IcceXRjd0o0UXHzcitFxHWJUtd1QFUyHKPJbRvgcRc4XdxcLPgrIhUJzj9nzRVI+Md76mN9RhlP6cNCIc5Jj16QVa7aNVik3KPWcSZxmi1C/C5h6hSnEezJsQreqh3yX3Z+IkXCCeaRXzdHq9hnMmdAWCaRdzn81ZYwGCatA==
+ bh=5slyZH7m03GTdnXp1i5c/Ow5Ufe4eenqsgbJCsRykIw=;
+ b=LT6gFTcFVIVwjMxDi7H4myFTb0fVX8btPGykRlEPTaALe2ZTAKhM5Un7L4l0546F36Y4UtT/KtWKRLoR+BLQh4+tHQL+Cj45s5AJGjbCHrmqjb8aqTNq+c5ux19QjGE0hEvGscwIm6qr1ZOLnoNs0gKYdLxD7Q4EBgpF8OHFQN0dVvqd39hNZ1IWEr97D2Q5uNQpKxGTkIvbMUJ2AhuSE4Bokaa8X/F0FUEcTpWjBwIieZBMTyWadRP58hejjm+DDzN57TD4phu+PMFeL4wryt+K7UlbCPWn2rEuTf5OOvne4NdfR5mvUA2r4ZvZvU7xy855ZV3/mBuUX/DrpCBS/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
  dkim=pass header.d=sitime.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qYfestxojeM4cuuu9m+Xx1agfxfjOQzNWI0Tg5GdeZM=;
- b=CKcEWOqv+78MqbWC+cV0vIyiO8r3110agFxQezUhhwKDX42c/qTrGnJSyTndhbRywNF1wqLJmy1nfJlwmfvckoUhxSAYQkn+157EI5IMEUzZ0HUvXjCBR4Avlmk6QQlXgQeAl2jAuWbxVnM2qrOuw8ZPaRX2JBmifOo5lfgIfLYOvQ4dGBD+BVaobwx3hVmkxAe6Ii40CdCXeXHFkHBf1dge/K2bF+OZoeqmCNOhGoeR20GN8B6i0CxsA+Ze+rh6/IbcK8bWgbn1uIofdSRIZjMJbHcWahtPwdsJIiTQzxH7MOtxOxqjr/dNe86r4wMMpwytSauPeNTWibCJWS8ogg==
+ bh=5slyZH7m03GTdnXp1i5c/Ow5Ufe4eenqsgbJCsRykIw=;
+ b=kfZQMohkIkOkv7SJ25alBufH7KGZVhbwxbFSGGQOWwm+83jvwwp6xbZvqyvZ/Hjjy9GfvqRs6spsfBn0/Qs5whCtUdXLllFJaut75K+4Hh/zPLUNcvg3df4ddhaLak1Blz7tjMVvw+RiO8Np70vE8JRQVyvh/dUnSjLMjy4R/eF7BI2cfuylWtOsVVgplG0ZO5S9RjAHn9mquazScxSA/Rm/3kYBRwo3KRJuRKlFORZYR+v99uESoMT7H2Vlb58bdj6SWeybREmoffzi1fkn//mop0dSk5D1uVdsXWOcRVcx64AJ3G0aGqZ4KvzzG08D59p88CYla1jsJ8zlesAC2w==
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  (2603:10b6:408:3bf::16) by DS3PR20MB7783.namprd20.prod.outlook.com
  (2603:10b6:8:2df::5) with Microsoft SMTP Server (version=TLS1_2,
@@ -67,13 +67,13 @@ CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ali Rouhi
 	<arouhi@sitime.com>
-Subject: [PATCH v10 12/14] dpll: sit9531x: add support to get fractional
- frequency offset
-Thread-Topic: [PATCH v10 12/14] dpll: sit9531x: add support to get fractional
- frequency offset
-Thread-Index: AQHdSgVcZJTHG7Yue0aY03dDJnkTAg==
-Date: Mon, 21 Sep 2026 20:11:17 +0000
-Message-ID: <20260921201108.42676-13-arouhi@sitime.com>
+Subject: [PATCH v10 14/14] dpll: sit9531x: allow the device tree to override
+ two board facts
+Thread-Topic: [PATCH v10 14/14] dpll: sit9531x: allow the device tree to
+ override two board facts
+Thread-Index: AQHdSgVd/rH+yP+wU02iJ1gELfpGLw==
+Date: Mon, 21 Sep 2026 20:11:19 +0000
+Message-ID: <20260921201108.42676-15-arouhi@sitime.com>
 References: <20260921201108.42676-1-arouhi@sitime.com>
 In-Reply-To: <20260921201108.42676-1-arouhi@sitime.com>
 Accept-Language: en-US
@@ -84,47 +84,47 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=sitime.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|DS3PR20MB7783:EE_
-x-ms-office365-filtering-correlation-id: d0dc6caf-9d80-4398-5d03-08df181c7fcb
+x-ms-office365-filtering-correlation-id: c0e1b6f0-b47f-487f-024d-08df181c802e
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|10067099003|56012099006|3023799007|6133799003|22082099003|18002099003|38070700021;
+ BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|10067099003|56012099006|3023799007|6133799003|22082099003|18002099003|5023799004|38070700021;
 x-microsoft-antispam-message-info:
- IY/zZygRYcy9qoX/p/NTSg1rK8sW8g7lDC6U84CahL/MzBOgnlJLHKNoaoBLncdozRef3lwV7NBCJIozPbw4HNoZL56ncMxBsG32/KmMtqnmUrFriefQSFlxw7L5UHkt2kE3KnuWox+da5jrGSgfwVRhgwhd6qFZRvm+PkVVh0VE2qv9yFkbiMmYemfkPt9XAU+P69CkKmcST9lkrnL9kjpQsfmFwNIsH/a4fVGIlY+RU4HAX4lpwKj8NSzXpPcTRCIw/J9qx11tBK2ulI1Rn9oWhDRrPfrMOiYp689b+oKBThGXd1SSvoOuyb1aDAa+Svmz5uLv5PFdRNzHxqVgtyQIAS80KKns1BQxSpy7bYc9F96vitUHgb0PMY443kuQXM17C5Lc+wsiEfMNY0hbWQRilq7W0cPz/oREWYq0nfMz7B6Yp0wnKgcrxGU7VKg624U/iD8YHok7mfj6EFPWnVzmwY1yE+XMI7oSK/SkrYmldJ47jfIkyrvCSL1udA4PkpgbC6ggFuG8/M+Z7NgG680j43yLivbNsBMcmyLM/wN/5wFqWnSUR1LWD/z4w3uqOzrriOgpEBO8JwjgT6wgHI8EnW034Mz0sUUulEZf3bQyd0Z5odWnZDUDFZ2XYPFjsXSRlXTU+jtPeUoeNrRoXhiCd4Yqr1bfBDrMDkm2lN4WohPuritsBZYBniti2A0mXXqenyuYZByhCMbexvJFPqmppurcJdT4pGjMPp6VQqw=
+ 6bsN1BQqdnF1yW2bjWf8N2A7snZ3OsFiFbLu8SedIvpJm/NVetSCNN5QcZq/1k9RuMG+L7uU1n00t1qNqg9HXqZlF9LmrOVjwKy8+bzAbBEfUMEMZxpr+QL4CNLm6s6PA7e6RAK8RbUU0oE/ZhVgY+PLwY2ntJN7auYXOrwHIH+XBWhLDbUaka2u8eQCAud/kdoDbWqfjVzbIG5nAcmM15js5dQdHXS/NppQf46WpT7Bh1F6mueMyuqERVJs1fsXSzGg8+BVfHVa/TbMgQZAYoe7/+oBoqYUa3dHzsqAEd9gzHeSB/ofHBfbsZ6b30gDIfC5Et4Z4g7xsd7lRvgHEZI/RbnQWMBVKfroSY5mHO7mw8AxQ55zZwPVXl6kFf1RS/6CsogI8EjAxcN8GtgyDNDAdQZZxKr7sOZr23JaEWzxdyJg4g3hCMOCPAQTqomqFq9t/yufm0kNY9YzWW5mWlrzM58Oi7b9cWGKH478BS0Z/OGVavPmE4TGYuqYGXTSJlKHN5KAxjvwNaxYvPgfBr7buobJ3F0SxTrtZOTNDOB0Cpw7KLXe0soY4yFrsRrvYI2gd4f2+6sRYXjPmamu9KhgSjLaVjioJ47WzymQkCLgCJuivNljip34mAFc/gA9g/whXc716LeNHUiyYkQINTcT/1royHSDFVWtAQ07q/Z7HfUpJMG410tzmczwUW925uJs60PzpAoUjfTp+A0xDlmRNG7ZRXUjw3vVx09Xz+Y=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(10067099003)(56012099006)(3023799007)(6133799003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(10067099003)(56012099006)(3023799007)(6133799003)(22082099003)(18002099003)(5023799004)(38070700021);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?A7NIEVA0vHgdsTGK+wNTstkBQ9FHjF+eaJyu7bklKBHabpjecjhLNOb+3g?=
- =?iso-8859-1?Q?4KFbPktIpWDfBNDENc4qJINtrG/k6crShwcFSV/iH4I0jEz8iy1Ds/j4B8?=
- =?iso-8859-1?Q?bDQFh22c5pU22NIbi/fh2mCaLSvTwqQq1Kf46xKD9OdmvCkCINrj8AJjr4?=
- =?iso-8859-1?Q?ceRiIAnEYg5raRgXEqdTodknWUewW9//6HiNdfRr7l7JmGBSZAeIjYKmTH?=
- =?iso-8859-1?Q?sU5EOmgzo5+AYIqm6YBEng9ZW3lQ935TzBo6KUDp4ZOkACl6Dovb3fHaAx?=
- =?iso-8859-1?Q?a1cusymfMgTZewguhtvTRc58niiJgPRAGRY4eBJHUu8zOoJdYa9tfCAUKb?=
- =?iso-8859-1?Q?78XHQx1qXpzSMjQPIibCVcfN9xr/9h05wDyEGh8+VP18btvdfcEeN5nyTG?=
- =?iso-8859-1?Q?vWyfEe0+kcCF5xmDQD8eMUhCBH8HeEfLihlCYurFO40MRapK/iTZ2wkK/l?=
- =?iso-8859-1?Q?xBBYdXiaBznQS8O6xh+aEg1U2AnTbnZV+AkdHaJVsdSfQDdhoFYTcUHe3t?=
- =?iso-8859-1?Q?4YHrJe2nrQ6HtcbujFaaKv6HNMc84obz7FD/BIa8ZDUOgiH1w991yo3QBG?=
- =?iso-8859-1?Q?cSBzvPUXnfyb1grp+kTJuFCchH/poCnK/LEjU5dHTLJiklTk7NS4QKk8Cm?=
- =?iso-8859-1?Q?GMhUN+GTmCJIvFFK1UcNxl1Tx1w0fYjPk9gFpoa/ph4g8MUv63jymbWcik?=
- =?iso-8859-1?Q?J5YzFLu7/MUp2NeC0ty11LHLDQMv3a20LS/JZx0k1Xg7Ebrxk1dMSPg7yV?=
- =?iso-8859-1?Q?kPT4fMW3+EcQ+K8LSopm+cOOG6iNv+qAoCO0vaMqMADvMybBJU/LmoRkoJ?=
- =?iso-8859-1?Q?4XX7dJ08cUGWCHJq4vPt8xLKIXLEmpYEj70WaFll0T7sUg6GLZEHJwsGjv?=
- =?iso-8859-1?Q?nhmfqMin/JiwPW19BatpUI15KncApJG66WfzXTCBhas+qLhSGOV8vCGsRM?=
- =?iso-8859-1?Q?lfCbdW1JeD81HN/9LMuQb1In9K+yWWPUnWjnH7YXFxgMIk+8FqQl5kXY7b?=
- =?iso-8859-1?Q?zxINf5SGDDl91f7Gd4euVF0EOvZfWIPqBbf72BVOvuTBGLiistV8XwZe6P?=
- =?iso-8859-1?Q?iBODzt1ugQQA6CvFeqvkS2voR74pVuUSecSWyq/FYeVEtFQY6WPqzoeFbG?=
- =?iso-8859-1?Q?hwhtbpinHzO6iscWxken4iWGMCV5QCQcmuxj3j3BF9RENvmTee/fvdbb6i?=
- =?iso-8859-1?Q?ZsQFMTNbDEa6tjt5kNK0DguqrFcpZ3Vjxtc4+abCUr2QsUEOI5sLpackqG?=
- =?iso-8859-1?Q?Xw2SaOh+5cHBXaVgq96HvG8TJFmxavf5zHU+FB/gkuKlvMVaUD6BzuHLFj?=
- =?iso-8859-1?Q?FacPKYNH7OgEPy9KxQHNfyiiyh++Za6vBEyHOpp0p+dgS84TJdYx6902+W?=
- =?iso-8859-1?Q?62hhOizd8QFVhg+YXh+OQsRt7exUiJmUdi5UDOMfVGE2WRhCjT0KSn0Iby?=
- =?iso-8859-1?Q?i1B0vyR/gqfaUUTrJHX3tEn61S0X/zQ+u62WFBwavfum8bJqA+fkoABBDM?=
- =?iso-8859-1?Q?b/82WSaru6wHXFRRWHl6J3XPicPtmacdV2biLDB7Clq9cAUfiW6WO3FbOQ?=
- =?iso-8859-1?Q?jzg6+ew++2GKGAl1l8CMBIOn+8osNmHyCcT76jalNo1h95k2elhRCVc4WQ?=
- =?iso-8859-1?Q?O/mDhcMHYJ8TxAtF8/QErgjGcRKKxxBEqGNvz9q3anxtJodj134Y7bf4xo?=
- =?iso-8859-1?Q?Mr1/UPmioJvn3KtmhmqC7taAbcuo0/9oODzxJf6bzZSMJSGBNiwmx+dTIU?=
- =?iso-8859-1?Q?DMVfFwHH1lJG693Wo4++eyaWKdoBQBhhlMOO0uYWnahMLP?=
+ =?iso-8859-1?Q?Mhmu4G6oe1ylp7O23rXNkpWocOX57QuiLXmqd4F0P5T1ieY2pWOK1CdIkU?=
+ =?iso-8859-1?Q?a+wNlErHems3xgdOcgE1X/iI+y8qWioivRLx89UCTmqbwfp2LQZT5rN4OT?=
+ =?iso-8859-1?Q?ByrwtQAiHz/OEz4AtC8RAU0AGtps4WAsiqrBm5Yp5yx+aUzemrBJnmiC3j?=
+ =?iso-8859-1?Q?8YHIGp6bW/SqB1bxWlY34Ch9dqudq40vcH370z8y+/W46j0sHixRzurY7x?=
+ =?iso-8859-1?Q?o4+ukSFdb2i/3dcyRnj4t5aGkR0/ipjU09F1IyxMtjjPqMnUC7LjG/ESID?=
+ =?iso-8859-1?Q?ctYctMRAN3ZwCZNfoimSKJFlK9Al/cQz5yPrIqBj+/FCGIjQ5cUNHsiqjN?=
+ =?iso-8859-1?Q?gie828rGYpc+PmfdqP6BjdzGE+zgkZdI4ru1WNiLfzhqoKJM7KxzXTnJSY?=
+ =?iso-8859-1?Q?I6tCyqH0KD3mT0DOmp9N9cNqstjII1twgAptoHxCpV+cYnHjXbHYRq3EsL?=
+ =?iso-8859-1?Q?TfEOXeoH+RaBANopFTIVptOCe3xaZYTuTL+TM3/60cjVDNMRpZblfrq9BR?=
+ =?iso-8859-1?Q?9V5qIh3F2tdeobIto9Uo95PgXBlglMZmgPEaf45dNkGEveV+HbCx4NuAZa?=
+ =?iso-8859-1?Q?1kkE18KbydZBN4TTla/GOzeWMXrhD3DWo0HqzmUK6JHXMHN/SSaWtrrAOP?=
+ =?iso-8859-1?Q?h4rR6yYmFWX7ZO1mCRj7Gr3xYx63Mb8btMMLjXl2/YOJOBqmdtfyiw2EkG?=
+ =?iso-8859-1?Q?117boOkSvZ3n9rdcj6bfwlQJHCPyJkbjWJWoZj6i3RHj3vlNvAJmz9jOZf?=
+ =?iso-8859-1?Q?4nQRsRrdo3s+cYcm9ihVCQxqJecO4RFvz+eVCQl1ULiaD/y9zr/GocvJqM?=
+ =?iso-8859-1?Q?JmEOk5YOp+3cGHRI/XrGOmQu4EPtRbbPSrJ91zC9XWvpUDHRI5WWP86Zlp?=
+ =?iso-8859-1?Q?f/fuHIM4V1VRDIwwf+pgHCQTcuIlkYomgSyfBFYU76CBvWwIGhrKBc8Xgm?=
+ =?iso-8859-1?Q?AaG7xDfVyuaDURH1Lb4g8mbU/HHgT7f1xgzem2g718BDSFE84jl+i86UqH?=
+ =?iso-8859-1?Q?T5bPKo/8ZP9qi879lVLWwcHTjvuAGkLQgOgL/G/A/+r5A5HfOcxA58CFwG?=
+ =?iso-8859-1?Q?xw505F+1ZN1cHEDsiwqs9oIvJEvq9dTVg74FWhW0/TfQ7hXxcpdswY3UZN?=
+ =?iso-8859-1?Q?k8hh6L8z+OPY12TYcWWM/MfXknvGDMlHTd8pHM1vAWuwHFfRsOGwlztnHQ?=
+ =?iso-8859-1?Q?l3FvkDDo5bK83unePzi8eMo4GadytSK6wsaz6m+ZaauTbynR9bdIWQ49Is?=
+ =?iso-8859-1?Q?H/+5YFqxMElPXOVuL0+1HZmT0ATG8r/7H2YRGKbZX9fiD+l17QRSUD0vLd?=
+ =?iso-8859-1?Q?jJ7LFLuOXCde31qAQQJPbEOA/6k3iC/lW7z8xfkfY6V+yCV8CWfPTSPbJy?=
+ =?iso-8859-1?Q?Kbf/xb/5CXGiGoliVr7YJsGgJNH522ULSc/4rKkzC8SSfXYiV1lntygvPm?=
+ =?iso-8859-1?Q?9E/lDx86hOnx8RXFGRSg0/C//RIYbRzXhx0xTqPrVu3/Yukm10YkS5tWd8?=
+ =?iso-8859-1?Q?uQwpMtT6wW8/Ubctkd3X90+eaoXw8Xr5JxU//PgWk8MsaM0tMFvG1CZr4M?=
+ =?iso-8859-1?Q?4vd9mST3l4ttnopHqIPJ9O9atc2r/dIBLb2wluWao1/YsUYftPt0o7c+i3?=
+ =?iso-8859-1?Q?66DxgeDpffoJq8PANksztIh0a/3XFCqEYXRuWpLlpej2z7U/wpmUfY2jJ1?=
+ =?iso-8859-1?Q?0tsLnNzFjMGzl2mHHG/LVK8xybheoYuvn1rr2nKJK0oFObZF+gTesM2o9A?=
+ =?iso-8859-1?Q?ifdlRXUgejyv1OocUB+VaiGOIdX+O7UYiLePZjsIn/G+sv?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -134,47 +134,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Exchange-RoutingPolicyChecked:
-	bAPrDbawdeAlXZHLEk+7L0t8mo8comDGvuRjAJyX/PPg4cTf/ipgjAO6pGHBr2mJ62Pyg99fUZxaqWu3SxwYUbsgpc3CMkaUh4WMynhA1VjEGKvvu/f1+pCqSuJ1mw25MrntFTEwPIcv8+Pc/xiy+Gfwd2XKfOhKCdnMCcvxFMgvW7z5f0IoM7DAO5sLRY/9omTDJkC0xafJI1QC5SebTWOoOvYhsPUWCAxIhmDki4gSENxCmU55LHkKgyjU4zBXF0gzbN8fFR+NCIWjrKCAjwEas3A/gC3P4rP+y4/k+cXQvVAae5ZB3vYPB2ud8p1deM1uTwUPNENw+huwS00/1g==
+	AbEwOX5GIynlgJLVDLpy8Oi0T41OVczUWMUi7TakPND84ow9O3azCzIjkUiosGroqRSJ0olq81rCnZyGyRNqzpaLSIiTBWBr+hRlSc4daK3eV8Cvq/z77H6vXh8kJWduTXqEhWcY7chr0AgmgmpktrMmFPrIE4kiDWSkUIcZwsjVX2LSrJd82uiI43lotqid5zBawr702zAOcmOXpNzgvkVJSKurMPqz93tUl6ki93jA4RlhBHFqdo41up4JB0aWN7vSJlmj6xZsZ8fVWhJ+6JPRcjzlw06qkrQ4rQMiFFRbDmp3numyXNlhZSFfOg4wNo8sAOgT+A9oXfHWEUKwLA==
 X-OriginatorOrg: sitime.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0dc6caf-9d80-4398-5d03-08df181c7fcb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 20:11:17.2514
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0e1b6f0-b47f-487f-024d-08df181c802e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 20:11:19.0912
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HRnA8Yx4i6n2QyT3pmGnLgfRM3snuFh53OFJCkcGIW+rpnUA/+zfSy7JiRc91GRihaDzBSi+a3ut9j49CgJCBQ==
+X-MS-Exchange-CrossTenant-userprincipalname: ZWVXtgOuKfT1SJdTIiZ2ORc/Tdy3hFnagvvxJFsHnPJN6SclKViJ+FbRbNSFD7kRTcUdVjrC3HZieRkzq3uxuQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS3PR20MB7783
-X-MDID: 1790021481-uyXquNQDup8j
+X-MDID: 1790021483-8vYn5hvkJFfh
 X-PPE-STACK: {"stack":"us1"}
 X-MDID-O:
- us1;at1;1790021481;uyXquNQDup8j;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
+ us1;at1;1790021483;8vYn5hvkJFfh;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
 From: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
 =0A=
-Report how far a PLL's reference is from nominal, as a fraction of the=0A=
-nominal rate.=0A=
+Two things the driver reads from the chip can be wrong on a board, and=0A=
+neither has anywhere else to come from.=0A=
 =0A=
-The device does not measure that directly, but it does run a feedback=0A=
-divider that the loop adjusts to keep the reference in step: the=0A=
-difference between the divider the loop is running and the divider the=0A=
-configuration asked for is exactly the offset of the reference.  Both are=
+The VCO frequency is derived from the feedback divider, which is exact=0A=
+while the loop runs but not while a PLL sits in free-run with a divider=0A=
+the configuration never programmed; a board that knows its own VCO can=0A=
+state it.  The output-to-PLL routing is read from the output map=0A=
+registers, which describe what the loaded configuration did -- and a board=
 =0A=
-read from the chip -- the configured one from its registers, the running=0A=
-one through the debug window -- and the offset falls out of the ratio.=0A=
+whose outputs are fanned out differently from what those registers imply=0A=
+can state that too.=0A=
 =0A=
-The running value comes from the same latched debug window as the phase=0A=
-offset, so it is triggered three times per sample for the same reason.=0A=
-=0A=
-The running divider is two numbers read through a window that exposes one=
-=0A=
-tap at a time, so the numerator and the denominator come from separate=0A=
-samples and a loop moving between them can tear the pair.  On a locked=0A=
-loop the divider moves by parts per trillion between two register reads,=0A=
-which is below what this measurement resolves; the part offers no way to=0A=
-latch both at once.=0A=
+Both are optional.  Absent the properties the driver behaves exactly as=0A=
+before, deriving one and reading the other.=0A=
 =0A=
 Signed-off-by: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
 Assisted-by: Claude:claude-4-opus [chat]=0A=
@@ -183,387 +176,258 @@ Signed-off-by: Ali Rouhi <arouhi@sitime.com>=0A=
 =0A=
 Notes:=0A=
     Changes in v10:=0A=
-    Guarded the runtime DIVN tap the same way as the configured one, and=0A=
-    gave the denominator's high bit its own name rather than borrowing the=
-=0A=
-    integer field's.=0A=
+    Checked the device-tree array lengths against the part: the VCO=0A=
+    override needs an entry per PLL, and an output map shorter than the=0A=
+    variant's output count is ignored rather than read as unmapped=0A=
+    outputs.=0A=
     =0A=
-    Completed the kernel-doc and the documented return contract.=0A=
+    Updated the accessor's kernel-doc, which no longer described the=0A=
+    override path.=0A=
 =0A=
- drivers/dpll/sit9531x/core.c | 217 +++++++++++++++++++++++++++++++++++=0A=
+ drivers/dpll/sit9531x/core.c | 171 ++++++++++++++++++++++++++++++++++-=0A=
  drivers/dpll/sit9531x/core.h |   1 +=0A=
- drivers/dpll/sit9531x/dpll.c |  51 ++++++++=0A=
- drivers/dpll/sit9531x/regs.h |  14 +++=0A=
- 4 files changed, 283 insertions(+)=0A=
+ 2 files changed, 167 insertions(+), 5 deletions(-)=0A=
 =0A=
 diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c=0A=
-index 8f6f8ffc8dc1..1cb691f04019 100644=0A=
+index e8d47999f1a9..5316e6bcb338 100644=0A=
 --- a/drivers/dpll/sit9531x/core.c=0A=
 +++ b/drivers/dpll/sit9531x/core.c=0A=
-@@ -1396,6 +1396,93 @@ static int sit9531x_is_xo_doubler_enabled(struct sit=
-9531x_dev *sitdev)=0A=
- 	return (~val >> SIT9531X_XO_DOUBLER_ENB_BIT) & 1u;=0A=
+@@ -1695,12 +1695,15 @@ int sit9531x_pll_ffo_ppt(struct sit9531x_dev *sitde=
+v, u8 pll_idx, s64 *ffo)=0A=
  }=0A=
  =0A=
-+/*=0A=
-+ * sit9531x_dbg_sample - latch and read a signal pathway debug sample=0A=
-+ * @sitdev:	device pointer=0A=
-+ * @pll_idx:	PLL index (0-3)=0A=
-+ * @read_code:	which tap of the pathway to sample=0A=
-+ * @low_freq_clk: sample with the slow debug clock, which taps below=0A=
-+ *		200 kHz need=0A=
-+ * @buf:	result, least significant byte first=0A=
-+ * @len:	bytes to read, at most SIT9531X_DBG_DATA_BYTES=0A=
-+ *=0A=
-+ * Return: 0 on success, <0 on error=0A=
-+ */=0A=
-+static int sit9531x_dbg_sample(struct sit9531x_dev *sitdev, u8 pll_idx,=0A=
-+			       u8 read_code, bool low_freq_clk,=0A=
-+			       u8 *buf, unsigned int len)=0A=
-+{=0A=
-+	unsigned int i;=0A=
-+	int rc, lock_rc;=0A=
-+	u8 v;=0A=
-+=0A=
-+	if (len > SIT9531X_DBG_DATA_BYTES)=0A=
-+		return -EINVAL;=0A=
-+=0A=
-+	rc =3D sit9531x_write_pll_u8(sitdev, pll_idx, SIT9531X_PLL_REG_DEBUG,=0A=
-+				   SIT9531X_PLL_DEBUG_UNLOCK);=0A=
-+	if (rc)=0A=
-+		goto relock;=0A=
-+=0A=
-+	/*=0A=
-+	 * Select the debug clock this tap needs.  The device never clears=0A=
-+	 * the bit, so a read that left it to whatever the previous one set=0A=
-+	 * would depend on the order the taps happened to be read in.  Taps=0A=
-+	 * below 200 kHz need the slow clock; the divider taps do not.=0A=
-+	 */=0A=
-+	rc =3D sit9531x_update_pll_u8(sitdev, pll_idx,=0A=
-+				    SIT9531X_PLL_REG_DBG_WRITE_CODE,=0A=
-+				    SIT9531X_DBG_LOW_FREQ_CLK_BIT,=0A=
-+				    low_freq_clk ?=0A=
-+				    SIT9531X_DBG_LOW_FREQ_CLK_BIT : 0);=0A=
-+	if (rc)=0A=
-+		goto relock;=0A=
-+=0A=
-+	rc =3D sit9531x_write_pll_u8(sitdev, pll_idx,=0A=
-+				   SIT9531X_PLL_REG_DBG_READ_CODE, read_code);=0A=
-+	if (rc)=0A=
-+		goto relock;=0A=
-+=0A=
-+	/*=0A=
-+	 * Reading the trigger latches a sample of the selected tap.  Read it=0A=
-+	 * three times, as the documented phase-difference procedure does and as=
-=0A=
-+	 * sit9531x_phase_offset_read() already did: a single read returns=0A=
-+	 * the previous latch, so a caller sampling repeatedly gets the same=0A=
-+	 * value back however much the tap has moved.=0A=
-+	 */=0A=
-+	for (i =3D 0; i < SIT9531X_DBG_LATCH_READS; i++) {=0A=
-+		rc =3D sit9531x_read_pll_u8(sitdev, pll_idx,=0A=
-+					  SIT9531X_PLL_REG_DBG_TRIGGER, &v);=0A=
-+		if (rc)=0A=
-+			goto relock;=0A=
-+	}=0A=
-+=0A=
-+	for (i =3D 0; i < len; i++) {=0A=
-+		rc =3D sit9531x_read_pll_u8(sitdev, pll_idx,=0A=
-+					  SIT9531X_PLL_REG_DBG_DATA_0 + i,=0A=
-+					  &buf[i]);=0A=
-+		if (rc)=0A=
-+			goto relock;=0A=
-+	}=0A=
-+=0A=
-+	rc =3D 0;=0A=
-+=0A=
-+relock:=0A=
-+	/*=0A=
-+	 * Close the debug window again.  The key register opens every debug=0A=
-+	 * register on this PLL while it holds the unlock value, and these=0A=
-+	 * samples run on ordinary monitoring paths, so leaving it open would=0A=
-+	 * unlock the block for as long as the device runs.=0A=
-+	 */=0A=
-+	lock_rc =3D sit9531x_write_pll_u8(sitdev, pll_idx,=0A=
-+					SIT9531X_PLL_REG_DEBUG,=0A=
-+					SIT9531X_PLL_DEBUG_LOCK);=0A=
-+	if (lock_rc && !rc)=0A=
-+		rc =3D lock_rc;=0A=
-+=0A=
-+	return rc;=0A=
-+}=0A=
-+=0A=
  /*=0A=
-  * DIVN as a fixed-point value: int_part plus fracn/fracd, carried with=0A=
-  * SIT9531X_DIVN_SCALE steps per unit.  The scale keeps a whole DIVN=0A=
-@@ -1477,6 +1564,136 @@ static int sit9531x_divn_static(struct sit9531x_dev=
- *sitdev, u8 pll_idx,=0A=
- 	return 0;=0A=
- }=0A=
- =0A=
-+/*=0A=
-+ * sit9531x_divn_runtime - read the DIVN the digital loop is commanding=0A=
-+ * @sitdev:	device pointer=0A=
-+ * @pll_idx:	PLL index (0-3)=0A=
-+ * @divn:	result, fixed point as per sit9531x_divn_fixed()=0A=
-+ *=0A=
-+ * Same quantity as sit9531x_divn_static(), but sampled from the running=
-=0A=
-+ * loop rather than from the configuration registers, and carried at a=0A=
-+ * wider precision: the numerator is 48 bits, two's complement, the=0A=
-+ * denominator 49.  The integer part shares its tap with the numerator.=0A=
-+ *=0A=
-+ * The denominator is taken as it reads.  The configuration register holds=
-=0A=
-+ * the divisor minus one, and correcting for that reproduces a profile's=
-=0A=
-+ * stated VCO exactly, to the last bit of the fraction; this tap is a wide=
-r=0A=
-+ * field sampled from the loop itself and the documented readback uses it =
-as it=0A=
-+ * comes, so the bias is not applied here.=0A=
-+ *=0A=
-+ * The numerator and the denominator come from two separate latches:=0A=
-+ * the debug window exposes one tap at a time, so the pair can be torn=0A=
-+ * by a loop that moves between them.  The divider changes by parts per=0A=
-+ * trillion between samples on a locked loop, which is below what this=0A=
-+ * measurement resolves.=0A=
-+ *=0A=
-+ * Return: 0 on success, <0 on error=0A=
-+ */=0A=
-+static int sit9531x_divn_runtime(struct sit9531x_dev *sitdev, u8 pll_idx,=
-=0A=
-+				 s64 *divn)=0A=
-+{=0A=
-+	u8 buf[SIT9531X_DBG_DATA_BYTES];=0A=
-+	u64 fracn_raw =3D 0, fracd =3D 0;=0A=
-+	u32 int_part;=0A=
-+	s64 fracn;=0A=
-+	int rc, i;=0A=
-+=0A=
-+	rc =3D sit9531x_dbg_sample(sitdev, pll_idx, SIT9531X_DBG_READ_CODE_DIVN,=
-=0A=
-+				 false, buf, SIT9531X_DBG_DATA_BYTES);=0A=
-+	if (rc)=0A=
-+		return rc;=0A=
-+=0A=
-+	for (i =3D 5; i >=3D 0; i--)=0A=
-+		fracn_raw =3D (fracn_raw << 8) | buf[i];=0A=
-+=0A=
-+	int_part =3D buf[6] | ((u32)(buf[7] & SIT9531X_DIVN_RT_INT_HI_BIT) << 8);=
-=0A=
-+=0A=
-+	rc =3D sit9531x_dbg_sample(sitdev, pll_idx,=0A=
-+				 SIT9531X_DBG_READ_CODE_DIVN_DEN, false, buf,=0A=
-+				 SIT9531X_DBG_DATA_BYTES);=0A=
-+	if (rc)=0A=
-+		return rc;=0A=
-+=0A=
-+	for (i =3D 5; i >=3D 0; i--)=0A=
-+		fracd =3D (fracd << 8) | buf[i];=0A=
-+=0A=
-+	fracd |=3D (u64)(buf[6] & SIT9531X_DIVN_RT_DEN_HI_BIT) << 48;=0A=
-+=0A=
-+	fracn =3D sign_extend64(fracn_raw, SIT9531X_DIVN_RT_NUM_BITS - 1);=0A=
-+=0A=
-+	/*=0A=
-+	 * sit9531x_divn_fixed() drops the fractional part when the=0A=
-+	 * denominator is zero.  That is right for a configuration register=0A=
-+	 * that was never programmed, but a running loop reading zero means=0A=
-+	 * the sample is unusable, and returning the whole part alone would=0A=
-+	 * put a wrong DIVN into the frequency offset without saying so.=0A=
-+	 *=0A=
-+	 * A numerator at or above the denominator is not a fraction either,=0A=
-+	 * and would divide by a denominator small enough for the quotient=0A=
-+	 * to leave u64 -- a divide-error exception on x86 rather than a=0A=
-+	 * value sit9531x_get_fvco() could reject.=0A=
-+	 */=0A=
-+	if (!fracd || (u64)abs(fracn) >=3D fracd)=0A=
-+		return -ENODATA;=0A=
-+	*divn =3D sit9531x_divn_fixed(int_part, fracn, fracd);=0A=
-+=0A=
-+	return 0;=0A=
-+}=0A=
-+=0A=
-+/**=0A=
-+ * sit9531x_pll_ffo_ppt - fractional frequency offset of a PLL's reference=
-=0A=
-+ * @sitdev:	device pointer=0A=
-+ * @pll_idx:	PLL index (0-3)=0A=
-+ * @ffo:	result in parts per trillion=0A=
-+ *=0A=
-+ * A locked PLL commands whatever DIVN keeps its VCO tracking the=0A=
-+ * reference.  How far that sits from the configured DIVN is how far the=
-=0A=
-+ * reference sits from the local oscillator, which is the fractional=0A=
-+ * frequency offset the DPLL ABI reports for the pin feeding the device.=
-=0A=
-+ *=0A=
-+ * Caller must hold sitdev->multiop_lock.=0A=
-+ *=0A=
-+ * Return: 0 on success, <0 on error.  -ENODATA covers every reason the=0A=
-+ * ratio cannot be formed: a DIVN that was never programmed, a runtime=0A=
-+ * sample that is not a running loop, and a configured divider below one=
-=0A=
-+ * whole unit.=0A=
-+ */=0A=
-+int sit9531x_pll_ffo_ppt(struct sit9531x_dev *sitdev, u8 pll_idx, s64 *ffo=
-)=0A=
-+{=0A=
-+	s64 configured, running, delta;=0A=
-+	u64 magnitude;=0A=
-+	int rc;=0A=
-+=0A=
-+	lockdep_assert_held(&sitdev->multiop_lock);=0A=
-+=0A=
-+	if (pll_idx >=3D SIT9531X_NUM_PLLS)=0A=
-+		return -EINVAL;=0A=
-+=0A=
-+	rc =3D sit9531x_divn_static(sitdev, pll_idx, &configured);=0A=
-+	if (rc)=0A=
-+		return rc;=0A=
-+	/*=0A=
-+	 * Scaling by a divider far below one whole cycle overflows the=0A=
-+	 * 64-bit product and comes back as ~0, which would be reported=0A=
-+	 * as a plausible offset.  A DIVN that small is not a running=0A=
-+	 * loop, so treat it as no measurement.=0A=
-+	 */=0A=
-+	if (configured < SIT9531X_DIVN_SCALE)=0A=
-+		return -ENODATA;=0A=
-+=0A=
-+	rc =3D sit9531x_divn_runtime(sitdev, pll_idx, &running);=0A=
-+	if (rc)=0A=
-+		return rc;=0A=
-+=0A=
-+	delta =3D running - configured;=0A=
-+	magnitude =3D mul_u64_u64_div_u64(abs(delta), SIT9531X_PPT_PER_UNIT,=0A=
-+					(u64)configured);=0A=
-+=0A=
-+	*ffo =3D delta < 0 ? -(s64)magnitude : (s64)magnitude;=0A=
-+=0A=
-+	return 0;=0A=
-+}=0A=
-+=0A=
- /*=0A=
-  * sit9531x_get_fvco - read VCO frequency from chip's DIVN registers=0A=
+- * sit9531x_get_fvco - read VCO frequency from chip's DIVN registers=0A=
++ * sit9531x_get_fvco - the VCO frequency the driver works from=0A=
   *=0A=
+- * Fvco =3D Fref * DIVN, where DIVN comes from sit9531x_divn_static() and=
+=0A=
+- * Fref =3D xtal_freq << doubler.  DIVN is the steady-state Fvco/Fref=0A=
+- * target programmed by the NVM blob and is authoritative in both=0A=
+- * free-run and sync modes.=0A=
++ * A board that describes the VCO through "sitime,pll-fvco" is taken at=0A=
++ * its word and nothing is read.  Otherwise Fvco =3D Fref * DIVN, where=0A=
++ * DIVN comes from sit9531x_divn_static() and Fref =3D xtal_freq <<=0A=
++ * doubler.  DIVN is the steady-state Fvco/Fref target programmed by the=
+=0A=
++ * NVM blob and is authoritative in both free-run and sync modes; the=0A=
++ * result is clamped to the band the PLL runs in, so every caller divides=
+=0A=
++ * the same number.=0A=
+  *=0A=
+  * Return: 0 with *fvco set on success, -ENODATA when DIVN is not=0A=
+  * programmed (dormant PLL), or the register access error.  A bus=0A=
+@@ -3238,6 +3241,27 @@ static int sit9531x_out_state_fetch(struct sit9531x_=
+dev *sitdev, u8 index)=0A=
+ =0A=
+ 	sitdev->out[index].state_stale =3D false;=0A=
+ =0A=
++	/*=0A=
++	 * DT board-config override: the per-PLL OUTPUT_ENABLE bitmaps=0A=
++	 * (0x27/0x28) do not unambiguously express output->PLL routing on=0A=
++	 * every config (overlaps, and some outputs routed outside that=0A=
++	 * path).  When the board supplies an explicit map, trust it.=0A=
++	 */=0A=
++	if (sitdev->out_pll_map_valid) {=0A=
++		u8 m =3D sitdev->out_pll_map[index];=0A=
++=0A=
++		if (m < SIT9531X_NUM_PLLS) {=0A=
++			out->pll_idx =3D m;=0A=
++			out->routed =3D true;=0A=
++			out->enabled =3D !muted;=0A=
++		} else {=0A=
++			out->pll_idx =3D 0;=0A=
++			out->routed =3D false;=0A=
++			out->enabled =3D false;=0A=
++		}=0A=
++		return 0;=0A=
++	}=0A=
++=0A=
+ 	/*=0A=
+ 	 * The OUT_MAP_LO/HI bitmaps are indexed by the physical slot the=0A=
+ 	 * output occupies on the chip, not by the driver's logical output=0A=
+@@ -4223,6 +4247,126 @@ static u64 sit9531x_derive_clock_id(struct sit9531x=
+_dev *sitdev)=0A=
+ 	return clkid;=0A=
+ }=0A=
+ =0A=
++/*=0A=
++ * Does an Fvco fall in the band the given PLL runs in?=0A=
++ *=0A=
++ * The two bands are disjoint, and which one applies is fixed per PLL, so =
+a=0A=
++ * single envelope from the bottom of the low band to the top of the high=
+=0A=
++ * one would accept both the ~1 GHz gap between them and a rate belonging =
+to=0A=
++ * the other PLL's band.=0A=
++ */=0A=
++static bool sit9531x_fvco_in_band(u8 pll_idx, u64 fvco)=0A=
++{=0A=
++	if (pll_idx =3D=3D 1 || pll_idx =3D=3D 3)=0A=
++		return fvco >=3D SIT9531X_FVCO_HIGHBAND_MIN &&=0A=
++		       fvco <=3D SIT9531X_FVCO_HIGHBAND_MAX;=0A=
++=0A=
++	return fvco >=3D SIT9531X_FVCO_LOWBAND_MIN &&=0A=
++	       fvco <=3D SIT9531X_FVCO_LOWBAND_MAX;=0A=
++}=0A=
++=0A=
++/*=0A=
++ * Board-config overrides for fixed efuse/blob routing the chip registers =
+do=0A=
++ * not describe unambiguously.  Absent properties leave pll_fvco[] zeroed=
+=0A=
++ * (derive from DIVN) and out_pll_map_valid false (use the OUT_MAP registe=
+rs).=0A=
++ */=0A=
++static void sit9531x_parse_board_config(struct sit9531x_dev *sitdev)=0A=
++{=0A=
++	u32 map[SIT9531X_MAX_OUTPUTS];=0A=
++	int n, i, rc;=0A=
++=0A=
++	if (device_property_present(sitdev->dev, "sitime,pll-fvco")) {=0A=
++		/*=0A=
++		 * A fixed-count read rejects a short array but accepts a=0A=
++		 * long one and drops the surplus, so the count is checked=0A=
++		 * here: the property describes four PLLs and an array of=0A=
++		 * any other length describes something else.=0A=
++		 */=0A=
++		rc =3D device_property_count_u64(sitdev->dev,=0A=
++					       "sitime,pll-fvco");=0A=
++		if (rc !=3D SIT9531X_NUM_PLLS) {=0A=
++			dev_warn(sitdev->dev,=0A=
++				 "sitime,pll-fvco needs %d entries, ignoring\n",=0A=
++				 SIT9531X_NUM_PLLS);=0A=
++			memset(sitdev->pll_fvco, 0, sizeof(sitdev->pll_fvco));=0A=
++			goto out_map;=0A=
++		}=0A=
++=0A=
++		rc =3D device_property_read_u64_array(sitdev->dev,=0A=
++						    "sitime,pll-fvco",=0A=
++						    sitdev->pll_fvco,=0A=
++						    SIT9531X_NUM_PLLS);=0A=
++		if (rc) {=0A=
++			dev_warn(sitdev->dev,=0A=
++				 "invalid sitime,pll-fvco (%d), ignoring\n",=0A=
++				 rc);=0A=
++			memset(sitdev->pll_fvco, 0, sizeof(sitdev->pll_fvco));=0A=
++		}=0A=
++=0A=
++		/*=0A=
++		 * The override is used verbatim by the divider math, so an=0A=
++		 * implausible value (units typo, wrong cell count worked=0A=
++		 * around with zeros) must not silently misprogram DIVO.=0A=
++		 * Anything outside both VCO bands is dropped with a warning=0A=
++		 * rather than trusted.=0A=
++		 */=0A=
++		for (i =3D 0; i < SIT9531X_NUM_PLLS; i++) {=0A=
++			u64 f =3D sitdev->pll_fvco[i];=0A=
++=0A=
++			if (f && !sit9531x_fvco_in_band(i, f)) {=0A=
++				dev_warn(sitdev->dev,=0A=
++					 "PLL%c Fvco override %llu Hz is outside the band that PLL runs in, i=
+gnoring\n",=0A=
++					 'A' + i, f);=0A=
++				sitdev->pll_fvco[i] =3D 0;=0A=
++			}=0A=
++		}=0A=
++	}=0A=
++=0A=
++out_map:=0A=
++	if (!device_property_present(sitdev->dev, "sitime,output-pll-map"))=0A=
++		return;=0A=
++=0A=
++	/*=0A=
++	 * Any 1..MAX_OUTPUTS length is accepted so the 8-output SiT95317 need=0A=
++	 * not pad to 12; variant detection has not run yet and entries past=0A=
++	 * the detected num_outputs are never indexed.  Trailing entries of a=0A=
++	 * short map must read as unmapped rather than 0 (=3D=3D PLLA), which=0A=
++	 * would mark unrouted outputs active in sit9531x_out_state_fetch().=0A=
++	 */=0A=
++	memset(sitdev->out_pll_map, SIT9531X_OUT_PLL_UNMAPPED,=0A=
++	       sizeof(sitdev->out_pll_map));=0A=
++=0A=
++	n =3D device_property_count_u32(sitdev->dev, "sitime,output-pll-map");=0A=
++	sitdev->out_pll_map_count =3D (n > 0) ? n : 0;=0A=
++	if (n <=3D 0 || n > SIT9531X_MAX_OUTPUTS ||=0A=
++	    device_property_read_u32_array(sitdev->dev, "sitime,output-pll-map",=
+=0A=
++					   map, n)) {=0A=
++		dev_warn(sitdev->dev,=0A=
++			 "invalid sitime,output-pll-map, ignoring\n");=0A=
++		return;=0A=
++	}=0A=
++=0A=
++	/*=0A=
++	 * The binding allows only 0-3 and 255 per entry.  A stray value=0A=
++	 * would silently unroute an output (m >=3D SIT9531X_NUM_PLLS reads=0A=
++	 * as unmapped in sit9531x_out_state_fetch()), so reject the whole=0A=
++	 * property loudly instead.=0A=
++	 */=0A=
++	for (i =3D 0; i < n; i++) {=0A=
++		if (map[i] >=3D SIT9531X_NUM_PLLS &&=0A=
++		    map[i] !=3D SIT9531X_OUT_PLL_UNMAPPED) {=0A=
++			dev_warn(sitdev->dev,=0A=
++				 "sitime,output-pll-map entry %d is %u (must be 0-3 or 255), ignoring =
+map\n",=0A=
++				 i, map[i]);=0A=
++			return;=0A=
++		}=0A=
++	}=0A=
++=0A=
++	for (i =3D 0; i < n; i++)=0A=
++		sitdev->out_pll_map[i] =3D map[i];=0A=
++	sitdev->out_pll_map_valid =3D true;=0A=
++}=0A=
++=0A=
+ int sit9531x_dev_probe(struct sit9531x_dev *sitdev)=0A=
+ {=0A=
+ 	struct clk *xtal_clk;=0A=
+@@ -4267,6 +4411,8 @@ int sit9531x_dev_probe(struct sit9531x_dev *sitdev)=
+=0A=
+ 	if (sitdev->reset_gpio)=0A=
+ 		fsleep(10000);	/* internal boot after release */=0A=
+ =0A=
++	sit9531x_parse_board_config(sitdev);=0A=
++=0A=
+ 	rc =3D sit9531x_read_variant_id(sitdev, &variant_id);=0A=
+ 	if (rc)=0A=
+ 		return rc;=0A=
+@@ -4277,6 +4423,21 @@ int sit9531x_dev_probe(struct sit9531x_dev *sitdev)=
+=0A=
+ 				     "Unknown variant ID: 0x%02x\n",=0A=
+ 				     variant_id);=0A=
+ =0A=
++	/*=0A=
++	 * The map is parsed before the variant is known, so its length can=0A=
++	 * only be checked against the part here.  A map that stops short of=0A=
++	 * the outputs this variant has leaves the rest reading as unmapped,=0A=
++	 * which would drop real output pins; fall back to the routing the=0A=
++	 * registers describe instead.=0A=
++	 */=0A=
++	if (sitdev->out_pll_map_valid &&=0A=
++	    sitdev->out_pll_map_count < sitdev->info->num_outputs) {=0A=
++		dev_warn(sitdev->dev,=0A=
++			 "sitime,output-pll-map has %u of %u outputs, ignoring map\n",=0A=
++			 sitdev->out_pll_map_count, sitdev->info->num_outputs);=0A=
++		sitdev->out_pll_map_valid =3D false;=0A=
++	}=0A=
++=0A=
+ 	sitdev->clock_id =3D sit9531x_derive_clock_id(sitdev);=0A=
+ 	sitdev->intsync_src =3D -1;=0A=
+ =0A=
 diff --git a/drivers/dpll/sit9531x/core.h b/drivers/dpll/sit9531x/core.h=0A=
-index f2750c319ff3..1d77b89e83ec 100644=0A=
+index 1fc14eabb621..31a5f49c0253 100644=0A=
 --- a/drivers/dpll/sit9531x/core.h=0A=
 +++ b/drivers/dpll/sit9531x/core.h=0A=
-@@ -289,6 +289,7 @@ int sit9531x_clear_notifications(struct sit9531x_dev *s=
-itdev);=0A=
- /* ---- INTSYNC (inter-PLL synchronization) ---- */=0A=
+@@ -224,6 +224,7 @@ struct sit9531x_dev {=0A=
+ 	u64			pll_fvco[SIT9531X_NUM_PLLS];=0A=
+ 	u8			out_pll_map[SIT9531X_MAX_OUTPUTS];=0A=
+ 	bool			out_pll_map_valid;=0A=
++	u8			out_pll_map_count;=0A=
  =0A=
- /* ---- Phase offset (TDC readback) ---- */=0A=
-+int sit9531x_pll_ffo_ppt(struct sit9531x_dev *sitdev, u8 pll_idx, s64 *ffo=
-);=0A=
- int sit9531x_chan_selected_ref_read(struct sit9531x_dev *sitdev, u8 pll_id=
-x,=0A=
- 				    u8 *ref);=0A=
- int sit9531x_phase_offset_read(struct sit9531x_dev *sitdev, u8 pll_idx,=0A=
-diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c=0A=
-index 5f7c2d01562c..fcdd19e0bd3b 100644=0A=
---- a/drivers/dpll/sit9531x/dpll.c=0A=
-+++ b/drivers/dpll/sit9531x/dpll.c=0A=
-@@ -638,6 +638,50 @@ sit9531x_dpll_input_pin_prio_set(const struct dpll_pin=
- *pin, void *pin_priv,=0A=
- 	return 0;=0A=
- }=0A=
- =0A=
-+/*=0A=
-+ * sit9531x_dpll_input_pin_ffo_get - read the input's frequency offset=0A=
-+ *=0A=
-+ * The offset is derived from how far the PLL's running DIVN sits from=0A=
-+ * its configured one, which only says something about the reference the=
-=0A=
-+ * PLL is actually tracking.  For every other input there is no=0A=
-+ * measurement, and -ENODATA leaves the attribute out rather than=0A=
-+ * reporting the active reference's figure against the wrong pin.=0A=
-+ */=0A=
-+static int=0A=
-+sit9531x_dpll_input_pin_ffo_get(const struct dpll_pin *pin, void *pin_priv=
-,=0A=
-+				const struct dpll_device *dpll, void *dpll_priv,=0A=
-+				struct dpll_ffo_param *ffo,=0A=
-+				struct netlink_ext_ack *extack)=0A=
-+{=0A=
-+	struct sit9531x_dpll_pin *dpin =3D pin_priv;=0A=
-+	struct sit9531x_dpll *sitdpll =3D dpll_priv;=0A=
-+	struct sit9531x_dev *sitdev =3D sitdpll->dev;=0A=
-+	enum dpll_pin_state state;=0A=
-+	int rc;=0A=
-+=0A=
-+	mutex_lock(&sitdev->multiop_lock);=0A=
-+=0A=
-+	/*=0A=
-+	 * Publish FFO only for the input the DPLL is actively tracking.=0A=
-+	 * selected_ref alone is not enough (free-run, LOL, holdover), so use=0A=
-+	 * the same CONNECTED criterion as the generic selection-state logic.=0A=
-+	 */=0A=
-+	sit9531x_dpll_selection_state_get(sitdev, sitdpll, dpin->id, &state);=0A=
-+	if (state !=3D DPLL_PIN_STATE_CONNECTED) {=0A=
-+		mutex_unlock(&sitdev->multiop_lock);=0A=
-+		return -ENODATA;=0A=
-+	}=0A=
-+=0A=
-+	rc =3D sit9531x_pll_ffo_ppt(sitdev, sitdpll->id, &ffo->ffo);=0A=
-+	mutex_unlock(&sitdev->multiop_lock);=0A=
-+=0A=
-+	if (rc && rc !=3D -ENODATA)=0A=
-+		NL_SET_ERR_MSG(extack,=0A=
-+			       "Failed to measure the frequency offset of the selected referenc=
-e");=0A=
-+=0A=
-+	return rc;=0A=
-+}=0A=
-+=0A=
- /*=0A=
-  * sit9531x_dpll_input_pin_phase_offset_get - phase offset of a reference=
-=0A=
-  *=0A=
-@@ -763,6 +807,13 @@ static const struct dpll_pin_ops sit9531x_dpll_input_p=
-in_ops =3D {=0A=
- 	.prio_get		=3D sit9531x_dpll_input_pin_prio_get,=0A=
- 	.prio_set		=3D sit9531x_dpll_input_pin_prio_set,=0A=
- 	.phase_offset_get	=3D sit9531x_dpll_input_pin_phase_offset_get,=0A=
-+	/*=0A=
-+	 * The measurement compares the PLL's running feedback divider with=0A=
-+	 * its configured one, so it describes the device's own reference=0A=
-+	 * rather than a port rate.=0A=
-+	 */=0A=
-+	.supported_ffo		=3D BIT(DPLL_FFO_PIN_DEVICE),=0A=
-+	.ffo_get		=3D sit9531x_dpll_input_pin_ffo_get,=0A=
- };=0A=
- =0A=
- /*=0A=
-diff --git a/drivers/dpll/sit9531x/regs.h b/drivers/dpll/sit9531x/regs.h=0A=
-index a9731c360bc0..4a928126473d 100644=0A=
---- a/drivers/dpll/sit9531x/regs.h=0A=
-+++ b/drivers/dpll/sit9531x/regs.h=0A=
-@@ -291,6 +291,20 @@=0A=
- #define SIT9531X_TDC_SIGN_BIT		3=0A=
- #define SIT9531X_TDC_MAG_HI_MASK	GENMASK(2, 0)=0A=
- =0A=
-+/*=0A=
-+ * Read codes of the running DIVN taps.  Unlike the configuration=0A=
-+ * registers these report what the digital loop currently commands, so=0A=
-+ * they carry the correction the loop applies to track its reference.=0A=
-+ * The integer part and the numerator share one tap, the denominator=0A=
-+ * has its own.=0A=
-+ */=0A=
-+#define SIT9531X_DBG_READ_CODE_DIVN		0x57=0A=
-+#define SIT9531X_DBG_READ_CODE_DIVN_DEN	0x56=0A=
-+#define SIT9531X_DIVN_RT_NUM_BITS		48=0A=
-+#define SIT9531X_DIVN_RT_INT_HI_BIT		BIT(0)=0A=
-+/* Bit 48 of the denominator tap, which lands in the same byte position */=
-=0A=
-+#define SIT9531X_DIVN_RT_DEN_HI_BIT		BIT(0)=0A=
-+=0A=
- /*=0A=
-  * DIVN carried as fixed point, and the unit the DPLL ABI wants the=0A=
-  * fractional frequency offset in.  Equal in value, distinct in meaning.=
-=0A=
+ 	/* Inter-PLL synchronization state */=0A=
+ 	s8			intsync_src;=0A=
 -- =0A=
 2.43.0=0A=
 =0A=
