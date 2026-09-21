@@ -1,79 +1,75 @@
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011026.outbound.protection.outlook.com [52.101.62.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19071E5B9A
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789962526; cv=none; b=nq1o3qxzqxgNT9cVemQ6iCYuJt87g3UtPjTkmJKTazS21ZRkiCul5L93zGFnvOcubbqViaXxwzZm54hl3k7c7OTpCsnusxUJHL3Kbf/mwcPyc90bu28ibbO/IplTKORavdqSu6zJowmZfbucWxtUx37oVtPc8rYMkJACL77TOuo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789962526; c=relaxed/simple;
-	bh=Q4IOQA8Ym+dDw2UtT+U3YTePD6ShGZzG43yFkk1apGM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ev+RslrY/j0gP+Sr0cVypnhjE+aGZjevzuNU6cexElZpUvcWDFEc/i0EIK6hAmi6CJCXcT2o4w3o5uaPvR9QskHHomWYB1PjJDZnwgRgVk91jD0KXp6WX+2LQlU4aSTzBvNavRzgfB0HuDdu2s7wSdWO7V9sQIj2g12ymSQ8LS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fwLuPEtE; arc=none smtp.client-ip=74.125.227.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1A2F8E95;
+	Mon, 21 Sep 2026 03:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789962725; cv=fail; b=G1o9oCfBtUVdnH8xdUR8s9Vwd1GLURJr+MBz1o6Ble+YOpC1l4b0OnK04/eVbZG2IAVKMzhnv8BRhe0k/G6GFc6iLpw0Qxai35XtXOTKQ4nONXhBvi+PZEhpHWTf5ZHSx8OctR1r8273dQOLilfiau9NR0QPn8mzOiIGq7YEwxg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789962725; c=relaxed/simple;
+	bh=1mkf8VvL0zLOhwCNscDYeLtx26JUAQvYSNuRvMJdBGw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KcVaMDkGFl3mqdwc/vRgLUuLqYWYsG+aYQe85iT5tXu0VjhogPOmWwyLOE3cdPLjCtxA9SQvEgizMiH4kg+aIC5rURjk9jta7IH7xlB75Vtd7fWlBBWG/c6uYRp06ymcdRyWW1dwODWGE8JppD4r304Amx1h/p24u1ItnVIji7k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ecELPzEl; arc=fail smtp.client-ip=52.101.62.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fwLuPEtE"
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-39569e136f9so2269064a91.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 20:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789962524; x=1790567324; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MqTMVQvfIAsf3+hPBwhpTtZWuvWW4Fga5XQay6i/cYE=;
-        b=fwLuPEtE/l+rq43Gu8Ik6SNAO9S8cCW6dmcpkKaD9TbUj28nw9q51qIP6c9RTTxx8a
-         ZyfknC1KC2ze+Br1RouOEa6bqDyBqM3oqp4D6yBEglHtSKbwXO+ct/vpBX7/vsAUI2I2
-         m2lEuX0fC8AgncZ2DrptzzWU9OA2rZZ7o9nLK9B2PQpDO1VL+OhkweGgiSvueDgweyVj
-         w887l4Xu2swS5Qpwk7eGDYNxe06m26fZAVCvD8l835a9OV48vpJmatQZMENYgP9mJOZ6
-         dAJfeOCXw4xbh2Db+MZA+PIfZwiWSFi0gypUA/e8SPWDSftwZqtc0ij8MObyEjAyChb7
-         jm4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789962524; x=1790567324;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MqTMVQvfIAsf3+hPBwhpTtZWuvWW4Fga5XQay6i/cYE=;
-        b=abAqW1LHZsg1lSlpEUtfILx5CQ8kPk9CNeiBAzfStRVdWu/l0kUM2kHP/kTk8wI3Tf
-         WYONuuCdvob9wnIPr1/68v75tD9uKojWsFMEA5An4u4yxOJens0MoZs3PtkNoJyC6QdY
-         obtHa7mU9c2Oh5BuSvM9J6DGZojyqGyrZ09CZOP33h9AwEA43YeKStMfLufxUe5JTTrz
-         ViTu0KTAN6HeQHEBG0NAbDm9F0c6a9c0EvL5+PpNrnlc7HLtau5tdKQpQU096PdpXryE
-         pwHipkw4v3mzoJJ2mujKK95g/ykr/V36hJROrsd/MAOPGYgkrNVK6ZIgOPQT7/52mWZs
-         1J4Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzaTY5FPgy6ggWfvxwfpMXSywphAMF5KZKwbrF2Uc1UL1Rcjja9sz+9a3i9U+yJHYMabiebeFw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kGGdsTaK0uArU0QtaoOFI5JTyQcax4mwEzIBsglu0w3XkKQKBm
-	YgTWbbIA16IivVIoDp0FcizrLuwn2WmiTFHA5F6eHd6+l3Uua+6EZvqH
-X-Gm-Gg: AYBFou296My9KkZt4NCpRvo6De/eisv1Zigbv9mufkJ0pEhG0Cam4Ou7ufUC/4LwgmU
-	3m1sRCWuhTSqfjJjjiVre0Q8NG7eW7+BSzrnHnKD1HfzNQ+JZ1aYlVnHsB9PNXv4AREBZzTEQP2
-	4eeyWKGa0r9f+iQgjmumO8w+oa/8P+8wpRvjxeyMCAxyxFeopjmmO+nENlaE6nthycmLdsey1vG
-	7CJkj+/pXVWORadk/XhmePkTFOUIsLOXOpLTsWWvmF7Jal8TqL0Iyi4ZO+dqcRIhM/U+MwXfMmn
-	YFX+BW9PCz8V4E66Dj/eE922Tg+sJEOzaYgu1ifuUgBgll5+OBup3BKgLia3AXnKTi13Fa1qspZ
-	WIropoMi9AsCqfWd5biVlQMSKMTqA2Gf0JvZrMLF5Zgn6dajfIcnX+/FnoSc3S3MJmJAXbAdLhc
-	5OnPO1AJxeKNAudH1jzExHcOOUC61exOy04/dIaMcoc3uSHp1E7yYc1fORPvym4pnsARXw52Jtv
-	IPbA2MzwkL/2w==
-X-Received: by 2002:a17:90a:e705:b0:3a0:348a:5118 with SMTP id 98e67ed59e1d1-3a0348a5debmr4587419a91.47.1789962523933;
-        Sun, 20 Sep 2026 20:48:43 -0700 (PDT)
-Received: from localhost.localdomain ([112.49.236.215])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c3311a111sm13513743eec.6.2026.09.20.20.48.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 20:48:43 -0700 (PDT)
-From: xiaoshoukui@gmail.com
-To: tung.quang.nguyen@est.tech
-Cc: edumazet@google.com,
-	jmaloy@redhat.com,
-	netdev@vger.kernel.org,
-	tung.quang.nguyen@dektech.com.au,
-	w@1wt.eu,
-	xiaoshoukui@gmail.com,
-	xiaoshoukui@ruijie.com.cn
-Subject: Re: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
-Date: Mon, 21 Sep 2026 03:47:58 +0000
-Message-Id: <20260921034758.806257-1-xiaoshoukui@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <GV4P189MB37321B67712A8B2906F2DC2DC6B82@GV4P189MB3732.EURP189.PROD.OUTLOOK.COM>
-References: <GV4P189MB37321B67712A8B2906F2DC2DC6B82@GV4P189MB3732.EURP189.PROD.OUTLOOK.COM>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ecELPzEl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jy5IUv1yTi886Ar7J4nYIaz/dkTwjaM4ato+NeE2d17VVvObHVizexVyYIFTFn2nLsIjXKZ13AThl8RYygIPmo01xXFjEBBfKinXQbGZ8fvMOalOAHjYpMZmypEumju5vrnmeqq4c8k/DkE16l2a5g2BzWU//46oSSLekLsO5i3MlTmvm/Paw+DKzGgpRqEyxdcwO41GgzDnV8zkp8Eswf1P3fMe1lR60C9kM+m/VeWrZIHXNi+Ihpa25Nck8uPxPimxbdl87uN26uS9qmmckBB7QwbNJnc4yuE4lZnFF/PB5A9lMW+9yrH3LI8yKbOCtLwqM1awDfhgCLlOnDJ/+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6is8Rkqwq8EIZ52TZamsIQftOhZX+i2JPoNc//ToAiQ=;
+ b=H8d4wQsRYMeLq344M8ZBAGAfGScKnrbFh4AWSfs1eBWFnBdtJSZpSXdEa+fzRw0u/4r2KU8kNuNWXr4/lLl54v9VGJ+KgpBgCdedot1RABjhGIsnKVH+DWV6oVaXhpMhNgfSv9afHJuP4UsISJ/+Ef5CgUyAZTWkkg6IFfZyYsekZ2qHa+6IxiwGkGXj8nVAUPBrQWvsBtizs64dvrSXQ/g4m1RZ8BoAIhDKAp7rW2XxMXezWPClNJIeCuTYRsxd4/N5TxsrQUv+MVqBd9Gb/AOBedp0i/zefWPD5Nuv/XDEhs80do7bGC1kLtHwm7tRcpNfRaljtiAPDX46Q5HGmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=codeconstruct.com.au
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6is8Rkqwq8EIZ52TZamsIQftOhZX+i2JPoNc//ToAiQ=;
+ b=ecELPzElb9APu7lrgegxXBXbFY1eLhoTKSLz7YDm+x5hnahBK29xA5zM7iVgfk2vZPzrwPTYOVs/qfL4a1rcFcb3sqfpi0NFaBQheIZXYyjharNSY/mA1S4O2rWb5tYsElnpU78hfaPj7GgTYcuckU6SuK2AzNy8scYVWnITOTzLKop8O7dQeG1o51Lo/bfFUoOT9fyxwOGZr+DkM7KMcEyNP0Kv47tGNkK1MtXX0ISbt9MYHRkJXKJzdFUciq2+x9uX6Pq9e2FD4/tR8zcR23Tzzy8lLw7VpzW7yWgCCLJEZoTdExfMByerWAAio194v2aPXBngBp/khu9slFLTFg==
+Received: from YT1PR01CA0074.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:2d::13)
+ by LV1PR12MB999281.namprd12.prod.outlook.com (2603:10b6:408:3bd::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
+ 2026 03:51:54 +0000
+Received: from BN2PEPF0000A994.namprd04.prod.outlook.com
+ (2603:10b6:b01:2d:cafe::72) by YT1PR01CA0074.outlook.office365.com
+ (2603:10b6:b01:2d::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Mon,
+ 21 Sep 2026 03:51:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN2PEPF0000A994.mail.protection.outlook.com (10.167.248.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Mon, 21 Sep 2026 03:51:53 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 20 Sep
+ 2026 20:51:40 -0700
+Received: from Lancelot.nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 20 Sep
+ 2026 20:51:37 -0700
+From: Faizan Ali <faizana@nvidia.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston
+	<matt@codeconstruct.com.au>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+	<edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, Simon Horman
+	<horms@kernel.org>, Faizan Ali <faizana@nvidia.com>
+Subject: [PATCH net-next] net: mctp: add MCTP_OPT_ROUTE_SRCADDR getsockopt
+Date: Mon, 21 Sep 2026 09:21:18 +0530
+Message-ID: <20260921035118.1649687-1-faizana@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,145 +77,205 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A994:EE_|LV1PR12MB999281:EE_
+X-MS-Office365-Filtering-Correlation-Id: 138cae9c-4386-43cf-0ee7-08df1793aca1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|23010399003|1800799024|36860700016|6133799003|13003099007|18002099003|56012099006|11063799006|10067099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	ghOuMTWW/w1hda9G4Bj7Oi63N14vswFO8VikVbY79FXsFzrb2wgZMXGtcRhjfxtXKcjITrw+I2YRnLKoVxMdwgh/UtzoORSo6eKfrApSRLnbhISTb2oCgiEf4C55xHoOItZBGeCQl2xqPifiVXfweCElKugmQwRIAl6HBvRp3E+HeWXNUQ8SF4zSO4zY9AnmhePWoL0fuUusk0l4fol4bedVUwxK6ECHCFhaDAqVLGS1t16TpvUBTdGPXENAGFo3qYA2nwif36jcYdUDc1/W44zmjWIgtpat7sZE0H45l+ylMwGsYrgqN5gq/WmruJCyQhi6Rq1YO/HGp/b51q4mRguykZyMG95TC4aNMP5qROkHwzdwLJwHqv1jM10kF0FRYL4B8KQcXyd6iSjurraugs+ovycYuWvq7w9SJyi0r8yH0oDcfZbQeoTm4a7Ina9Em9PG5GL4uihJ1MJNYBZDfYpOHJ+uDUS3HiRU0f0LfzhqKV1cOefIe9Nq/5VoSVconlFfTb7c/v02/NIyHXo4GDjGxXHfjK6kbKlt38m+hC0sjNPRzkLcbF03DR0fQNjGp2/N4qRwWg8dzln0wE+vWc496dJEyglrHdyWRaJl+t7WTwiAB4P4060ZX8EeaNypAlTQExAH4IAuv7gUX95hr3MTlVr6o4c+WWIv3YJv9/TH9zinmmjuRamaM3Qc5vptm7MgarsyPtQTsp98dtoiqQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(6133799003)(13003099007)(18002099003)(56012099006)(11063799006)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	cBpSu6IuVauawq2nWXURI6inmAJ48JUVrO3qgw6hkEA/D4r5YmIvHW7/2Wt7OE6osV7E6+Zvb4/fkh1PXaLdxHmZKtCy4Nu0hHWShU5wVhQLjgrYySR4C+FDGh5Ws8OS0pIRHYpW70NLUSpLf801gigU+5Cvb4036+2UQqS31mU/IzFN3hq1dKVFl2pqUQY5LeyIgjK0JRL25yxLoNvn8iEIOYc4CMCbh9/0PyU8/cR8hwclRStvN2jcKfqQwwFyIE8wqeo0sDslLVsd9m+TP2Z5VBxHMVxwg+xGfCjAhn8w+qdJNn9TV0ETd06RuTqYW5JpOpIA4Ne20EUMeJKwyF6IenPPed+JTC+2xq+WSu+f5rVGHMKzM7tFww6cOa3XFtIMDc8dUf9ZDdSahbQToFHmshRdi9un5mDWngq0tHM2h3ugv6DsTqFdfvlhyhcA
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 03:51:53.1978
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 138cae9c-4386-43cf-0ee7-08df1793aca1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF0000A994.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB999281
 
-Hi Tung,
+Add a new socket option MCTP_OPT_ROUTE_SRCADDR that allows applications
+to query which local EID the kernel would use as the source address
+when sending to a given destination EID.
 
-Thanks for the review and feedback.
+Applications such as PLDM need to advertise a local EID as the event
+receiver address to remote endpoints. Previously this required a manual
+multi-step lookup via the mctp tool (route show + addr show).
+The kernel routing table is the authoritative
+source for this mapping, so expose it directly via a socket option.
 
-On Thu, Sep 17, 2026 at 03:51:16AM +0000, Tung Quang Nguyen wrote:
-> This cannot occur because the sending side already does sanity check to
-> make sure that no invalid protocol type exists in bundled and fragmented
-> messages.
-> This only occurs when you create fake TIPC messages or tampering with
-> existing messages. This is an invalid use case because TIPC is being used
-> in an insecure environment. In such environment, IPSec or TIPC encryption
-> must be used as mentioned here
-> https://datatracker.ietf.org/doc/html/draft-maloy-tipc-01.txt#section-6
+The caller fills in net and daddr in struct mctp_route_srcaddr before
+calling getsockopt(SOL_MCTP, MCTP_OPT_ROUTE_SRCADDR); the kernel
+performs the same route lookup used for actual packet output and
+returns the resolved local EID in saddr.
 
-I agree that the normal transmit path performs checks that prevent the
-relevant internal protocol users from being bundled. In particular,
-tipc_msg_try_bundle() rejects MSG_FRAGMENTER, TUNNEL_PROTOCOL, and
-BCAST_PROTOCOL.
+Verified with the included kunit tests, and manually validated on
+hardware that the resolved source EID matches mctp route show / addr
+show output for both reachable and unreachable destinations.
 
-However, I think this is separate from the receive-side skb ownership
-issue addressed by this patch. The patch does not assume that these
-message types are normally generated by the transmit path. It handles
-the case where an skb has reached tipc_data_input() and that function
-explicitly reports that it did not consume the skb.
+Link: https://github.com/CodeConstruct/mctp/issues/147
+Signed-off-by: Faizan Ali <faizana@nvidia.com>
+---
+ include/uapi/linux/mctp.h | 13 +++++++++
+ net/mctp/af_mctp.c        | 31 ++++++++++++++++++++
+ net/mctp/test/sock-test.c | 61 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 105 insertions(+)
 
-The relevant point here is that an skb that is not consumed by
-tipc_data_input() must still have a defined owner and cleanup path.
+diff --git a/include/uapi/linux/mctp.h b/include/uapi/linux/mctp.h
+index 19ad12a0c..7c3d4a936 100644
+--- a/include/uapi/linux/mctp.h
++++ b/include/uapi/linux/mctp.h
+@@ -55,6 +55,19 @@ struct mctp_fq_addr {
+ #define MCTP_TAG_PREALLOC	0x10
+ 
+ #define MCTP_OPT_ADDR_EXT	1
++#define MCTP_OPT_ROUTE_SRCADDR	2
++
++/* Query structure for MCTP_OPT_ROUTE_SRCADDR getsockopt.
++ *
++ * Caller fills in @net and @daddr before calling getsockopt.
++ * Performs a route lookup and returns the local source EID in @saddr.
++ */
++struct mctp_route_srcaddr {
++	unsigned int	net;
++	mctp_eid_t	daddr;
++	mctp_eid_t	saddr;
++	__u8		__pad[2];
++};
+ 
+ #define SIOCMCTPALLOCTAG	(SIOCPROTOPRIVATE + 0)
+ #define SIOCMCTPDROPTAG		(SIOCPROTOPRIVATE + 1)
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 8af5e2b3c..5c6077e03 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -425,6 +425,37 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
+ 	}
+ 
++	if (optname == MCTP_OPT_ROUTE_SRCADDR) {
++		struct mctp_route_srcaddr rsa;
++		struct mctp_dst dst;
++		unsigned int net;
++		int rc;
++
++		if (len != sizeof(rsa))
++			return -EINVAL;
++
++		if (copy_from_iter(&rsa, len, &opt->iter_in) != len)
++			return -EFAULT;
++
++		net = rsa.net;
++		if (net == MCTP_NET_ANY)
++			net = mctp_default_net(sock_net(sock->sk));
++
++		rc = mctp_route_lookup(sock_net(sock->sk), net, rsa.daddr, &dst);
++		if (rc)
++			return rc;
++
++		rsa.saddr = dst.saddr;
++		mctp_dst_release(&dst);
++
++		if (rsa.saddr == MCTP_ADDR_NULL)
++			return -EADDRNOTAVAIL;
++
++		if (copy_to_iter(&rsa, len, &opt->iter_out) != len)
++			return -EFAULT;
++		return 0;
++	}
++
+ 	return -ENOPROTOOPT;
+ }
+ 
+diff --git a/net/mctp/test/sock-test.c b/net/mctp/test/sock-test.c
+index b0942deb5..b3ebc504b 100644
+--- a/net/mctp/test/sock-test.c
++++ b/net/mctp/test/sock-test.c
+@@ -379,10 +379,71 @@ static void mctp_test_assumptions(struct kunit *test)
+ 	KUNIT_ASSERT_EQ(test, mctp_default_net(&init_net), 1);
+ }
+ 
++static void mctp_test_sockopt_init(sockopt_t *opt, struct kvec *vec,
++				   void *buf, size_t len)
++{
++	vec->iov_base = buf;
++	vec->iov_len = len;
++	iov_iter_kvec(&opt->iter_in, ITER_SOURCE, vec, 1, len);
++	iov_iter_kvec(&opt->iter_out, ITER_DEST, vec, 1, len);
++	opt->optlen = len;
++}
++
++static void mctp_test_getsockopt_route_srcaddr(struct kunit *test)
++{
++	struct mctp_route_srcaddr rsa = {
++		.net = MCTP_INITIAL_DEFAULT_NET,
++		.daddr = 9,
++	};
++	struct mctp_test_route *rt;
++	struct mctp_test_dev *dev;
++	struct socket *sock;
++	struct kvec vec;
++	sockopt_t opt;
++	int rc;
++
++	__mctp_sock_test_init(test, &dev, &rt, &sock);
++
++	/* Query the source EID for destination EID 9; the device has
++	 * local EID 8, so the route lookup should return saddr=8.
++	 */
++	mctp_test_sockopt_init(&opt, &vec, &rsa, sizeof(rsa));
++	rc = mctp_getsockopt(sock, SOL_MCTP, MCTP_OPT_ROUTE_SRCADDR, &opt);
++	KUNIT_EXPECT_EQ(test, rc, 0);
++	KUNIT_EXPECT_EQ(test, (int)rsa.saddr, 8);
++	KUNIT_EXPECT_EQ(test, opt.optlen, (int)sizeof(rsa));
++
++	__mctp_sock_test_fini(test, dev, rt, sock);
++}
++
++static void mctp_test_getsockopt_route_srcaddr_no_route(struct kunit *test)
++{
++	struct mctp_route_srcaddr rsa = {
++		.net = MCTP_INITIAL_DEFAULT_NET,
++		.daddr = 99,  /* no route for this EID */
++	};
++	struct mctp_test_route *rt;
++	struct mctp_test_dev *dev;
++	struct socket *sock;
++	struct kvec vec;
++	sockopt_t opt;
++	int rc;
++
++	__mctp_sock_test_init(test, &dev, &rt, &sock);
++
++	mctp_test_sockopt_init(&opt, &vec, &rsa, sizeof(rsa));
++	rc = mctp_getsockopt(sock, SOL_MCTP, MCTP_OPT_ROUTE_SRCADDR, &opt);
++	KUNIT_EXPECT_EQ(test, rc, -EHOSTUNREACH);
++
++	__mctp_sock_test_fini(test, dev, rt, sock);
++}
++
+ static struct kunit_case mctp_test_cases[] = {
+ 	KUNIT_CASE(mctp_test_assumptions),
+ 	KUNIT_CASE(mctp_test_sock_sendmsg_extaddr),
+ 	KUNIT_CASE(mctp_test_sock_recvmsg_extaddr),
++	KUNIT_CASE(mctp_test_getsockopt_route_srcaddr),
++	KUNIT_CASE(mctp_test_getsockopt_route_srcaddr_no_route),
+ 	KUNIT_CASE_PARAM(mctp_test_bind_conflicts, mctp_bind_pair_gen_params),
+ 	KUNIT_CASE(mctp_test_bind_invalid),
+ 	{}
+-- 
+2.43.0
 
-> This check is redundant because bundled messages do not contain message
-> types that can make tipc_data_input() return false. The only exception
-> is tampering with TIPC messages.
-> If that is the case, a fake valid message type can be inserted into the
-> bundle message and tipc_data_input() returns true but user applications
-> are broken by corrupt messages.
-
-I agree that a tampered message can be changed to a valid user type.
-In that case, tipc_data_input() returns true and the message is queued
-for further receive processing.
-
-However, that case does not exercise the check added by this patch.
-The added kfree_skb_reason() is only executed when tipc_data_input()
-returns false.
-
-The two cases therefore have different ownership behavior:
-
-valid user type
-    -> tipc_data_input() returns true
-    -> skb is queued to inputq
-    -> receive processing continues
-
-unhandled protocol user
-    -> tipc_data_input() returns false
-    -> skb is not queued or consumed by tipc_data_input()
-
-For the latter case, the bundle path currently ignores the return value:
-
-while (tipc_msg_extract(skb, &iskb, &pos))
-    tipc_data_input(l, iskb, &tmpq);
-
-tipc_msg_extract() has already allocated and validated iskb before
-returning it. For the protocol users listed above, tipc_data_input()
-then returns false without consuming the skb. Since the caller ignores
-that return value, the extracted skb has no subsequent cleanup path.
-
-The proposed check only closes this ownership gap; it does not attempt
-to solve message-integrity or anti-tampering problems.
-
-> >+				kfree_skb_reason(iskb,
-> >SKB_DROP_REASON_UNHANDLED_PROTO);
-> 
-> Compiling warnings:
-> https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/build/1166117/14820384/checkpatch/stdout
-
-Thanks for pointing this out. I will fix the checkpatch formatting issue
-in v2.
-
-> This check is redundant because fragmented messages do not contain message
-> types that can make tipc_data_input() return false. The only exception
-> is tampering with TIPC messages.
-> If that is the case:
-> - dropping the invalid fragmented message will cause the reassembled message
->   corrupt (For example: sending a 65KB message but dropping/truncating 1500
->   bytes). As a result, user applications receive corrupt messages.
-> - a fake fragmented message can ben sent and tipc_data_input() returns true
->   but user applications are broken by corrupt messages.
-
-Regarding the fragment path, I believe the proposed change does not drop
-an individual fragment during reassembly.
-
-tipc_buf_append() is documented to return 1 only when reassembly is
-complete. For the first and intermediate fragments it returns 0. When
-the last fragment is received, it validates the reassembled message,
-assigns the complete reassembled skb to *buf, clears the reassembly
-state, and returns 1.
-
-Therefore, the relevant sequence is:
-
-  first fragment
-      |
-  intermediate fragments
-      |
-  last fragment
-      |
-  complete reassembly
-      |
-  tipc_msg_validate()
-      |
-  tipc_data_input()
-
-The added kfree_skb_reason() is reached only after this complete
-reassembly step:
-
-  if (tipc_buf_append(reasm_skb, &skb)) {
-      l->stats.recv_fragmented++;
-      if (!tipc_data_input(l, skb, inputq))
-          kfree_skb_reason(skb,
-                           SKB_DROP_REASON_UNHANDLED_PROTO);
-  }
-
-At that point, skb refers to the complete reassembled message, not to an
-individual 1500-byte fragment.
-
-If tipc_data_input() returns true, the reassembled skb is queued to
-inputq as before. If it returns false, the complete reassembled skb is
-not consumed by tipc_data_input(). Without an explicit cleanup at this
-point, the reassembled skb and its associated fragment data become
-unreachable.
-
-Thus, the proposed change does not truncate a 65KB message by dropping
-one 1500-byte fragment. It only releases the complete reassembled skb
-when the receive-side dispatcher reports that it did not consume it.
-
-I agree that a forged valid user type is a separate message-integrity
-issue. This patch is not intended to provide authentication or
-protection against message tampering; its purpose is limited to ensuring
-that skbs rejected by tipc_data_input() are properly released.
-
-Thanks again for the review.
-
-Best regards,
-xiaoshoukui
