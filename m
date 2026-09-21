@@ -1,135 +1,169 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5614A2A4D
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D834A3407
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999066; cv=none; b=ATvL8ixwitcBH+U+1oHve2rBWDAO3VLeP5+yJszghuHOgThVI44SudDOC8GQzhMXQKhoY2FvhVKLE4m1B7lovTCC7lNT8fxLFJMQTnmJMogDwwbJRpCO5pqd/J7PhwjEm6RHLwB6wIrxDUCe0iGuZrZX85KgBC+0aiX7g1V7daA=
+	t=1789999082; cv=none; b=PA8loToOoKXlRbu/EWJTZ860CxuClOjh5Kk1fMhQJv6TubpaWyVTIqqt5yolTCNAN3UmDuER7CNWhwvQWOn0uUFKDk/CL50xU4KmnfTB2d5RzQsVSS9u4xrHEACt99XJaOmT0BrLRou7F8NgvBDQ7nKvkJJkg7WRbBQqAwv+JIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999066; c=relaxed/simple;
-	bh=Tb+naUYdOEbqWhCgBQoqJYUsxvDutMO2RLyfrlwQ7pc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fWqysa8SkhxpVkYc3474q+XgKdYzrruWc5ooGvOsWaWqraHnRNxnZEoQq1K1D5z4otO59E4sX6fyDea0tdwMzGtwPdK158XASUpyB8qxD4ZJpCg9CHKCNxjxDpQcncWFUYgaOH/B+8Nh7XQcJcoxhIX9JlwZ9JmC3cXeAk81oEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=alr+a4ZJ; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1789999082; c=relaxed/simple;
+	bh=scCajsGDahX0/C42DoxVM831Xi0Na9KZ5VIUIH33XnA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U5nX6qY3+9eAf34x+c06uqg3rEtxHN7vE1hXKHwfWoCl/dtCOE2YnGdm+R9EGoulJGC90trYA75ke/UPYnpjR68zNjfEDG44YDCb9HpTRNW4xEmLrTvP6Z1kq8kLfFmRsvub7BToHp3GVLSjHG1DqElPVqs86blsKZwtBKmSwtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cellusys.com; spf=pass smtp.mailfrom=cellusys.com; dkim=pass (2048-bit key) header.d=cellusys.com header.i=@cellusys.com header.b=OTj8RqEG; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cellusys.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cellusys.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="alr+a4ZJ"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so20813895e9.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:57:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cellusys.com header.i=@cellusys.com header.b="OTj8RqEG"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f6c7a4aso352622266b.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:57:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789999063; x=1790603863; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Bv3nJ81FTi9YRl87roXZd095J9UesWmHL2qfxaLM+IU=;
-        b=alr+a4ZJm7psgofrCNQzxU3d4HzkKQjHXipg2M9VZw9373uzEvxgj3RrTySJcbHmys
-         DJn8AFijVGKICCkS+zk7oKaPkyeaIXj1BfAyROgQNwxInK3pd8LIQ95PvXVlZHZ33X0X
-         h2s9hXOVr2AAL+HcoL3M35jzXBIBd50vPhjtO0N7cU/qZgsXC78Sr7Z57CLR5skJLCsQ
-         QjxyoNtrd4EeFKxzLoe0MtwnZDY9Kjx6lvXia9/8RoWeoC4sbE3k+e7BLHIxkzWdqJIi
-         T7AiryfnuiRPjKi+fJJLFTZdXBKU+vNVdZXj3DXiq7QCaNFRA0AWdjYG4mx6DfMdQaTz
-         axTQ==
+        d=cellusys.com; s=google; t=1789999076; x=1790603876; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EYb9djJ650f+j77K71sOdKHCCKyIjN5iGG67MyIXzHI=;
+        b=OTj8RqEGF+l7bCcbT5hmWzczPcMMCF04cVxsA9gd8KK9TkWoWZaTjN8rAcrIV9djmR
+         KuUDyAGWBG9Upx0+NyW0m7phkvCSPBelDgHxyra+2VIHQWaiWpZlzT3gHbNqtpK+rMYV
+         GZSsUF9GASy/7ger6mdq1WWdjsBvVBf/5ZhKIQHQX8Rryz2j9r2ySIXAOak/xegY0Tm/
+         JOUl9HDSegQU3C6kLhEgY3Q9pFVZ+H/FXdF4f/nsumDThPlKH7KjCPMoOxSvnFRyClzI
+         /3DqWw7OxSk2+FN7IzoturcTIB5J6s8xdMiBS2u2OSlHeCcZmBROeAbapk6nNZQf5wxp
+         9Z0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999063; x=1790603863;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789999076; x=1790603876;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Bv3nJ81FTi9YRl87roXZd095J9UesWmHL2qfxaLM+IU=;
-        b=jU1BADZ1Y16sw7wKR4EdYH161miUhpH7dTA3Q1ToL5VQMYlDxiMXidnP3RI/1ybije
-         kV+USngw4VYPDlpfYM7N4UDrOLJhzzr63gY1qGevE1TsRyzBX8/6fbHw5NRfGsIuZvIE
-         eDw6d6ZVqYsG6MJ5D9DULGS0IqCBmXJMVvUavjKdfSkueUH25MKN93jjBgbywRi1X42G
-         RxUEUoKQ25HJozw+8Li5CZskMiVWZUP9DKwkXcou3ed3w2VJQ/zfUsNr4HiXp2FcOsyt
-         yh17fK+IndRKybM/0TOLvTBYUC2piMLlaL2naLbhGy//WXJBnpR2PAobFLY3PjD1ySH0
-         vncA==
-X-Gm-Message-State: AFuF++nOXwlkexLyEYHq87tJCTKMqWfoCydP9ka4NW07x9WYIl0mbJ21
-	0PRJpvMakrU1I4Iujayaqbb57fr+mQwrolKfM4KuSz3p3sI3EKP5gZ2Jz7IfFz/GX5U=
-X-Gm-Gg: AYBFou1FLmOahmMefDKtbMlOHbvkuK2U+N/mqmI+ULVlqjoer8n74jzXEqcD1B7cnkO
-	wmO+7fyjrJnMG3ysbzM8IYw5dqkBTQcienPdG9E8+nF9xSja1FweLuT8FV8f37ClXv5O3B8kOxZ
-	IcHVNLvOQCHlkJhDQIUX+0QZIspB6iAuY61oQ7VeuhTLTuW5wrs+sfujClXEvo+P0CmMjLgLkE6
-	qrrNCHAmM8Uiqfi/6lcM8Y/0qMceV7hNFjRGvPGcWudXH/v1N9USvzqNFJenxFxG3dAhqoZSWjv
-	/6xoKdSbrpDbXTabGQDgPYC3SvvqNf50D+qwV7HnsByJmtcDzG3ZCKmfV07VfFoG/LjRZ7cybSg
-	RaGFGuKxwsh4kYOBxUo4gKWYdH+emPn/PC+QucdhBfM6B4gycEqOPjTQ1+o33hHql4Ppsnu5iKd
-	DxQG70k+qlDa2sgTfjT8tDA6GYYFowwSmg9LVAXJ92VXZVOVF348wOZm1aPOxJ+u6/Vxbt22u0x
-	xie1yxhTI/N9r+NJvXOlKGGuFMAxg==
-X-Received: by 2002:a05:600c:81c5:b0:49d:1a02:4797 with SMTP id 5b1f17b1804b1-49fc5737cd1mr132113045e9.17.1789999062539;
-        Mon, 21 Sep 2026 06:57:42 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc585920fsm619266685e9.4.2026.09.21.06.57.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Sep 2026 06:57:42 -0700 (PDT)
-Message-ID: <3d92300f-a3bc-420e-b94d-f59d7b928229@blackwall.org>
-Date: Mon, 21 Sep 2026 16:57:41 +0300
+        bh=EYb9djJ650f+j77K71sOdKHCCKyIjN5iGG67MyIXzHI=;
+        b=iyf+UDvDsKK6++LqqPJBgGpnuco0Nn2QMpZ41Xqp0NHDFk49EpQbQ2lJBImrZ6JneQ
+         +hXDMSgnlDakvcTbs8cRmN4Tu9PwzRsmvBTT1Sup7fwvWSm5z372GSpB9o/WYs0lWAJl
+         ya98W7Bj8sM/x6TWO7PBnX8jGINuVP+mjn0Gf+BAQohkZ2eA2YWrJeFeH6yp8jKhOSI2
+         +7IAWk3Gaa64S011ZcA5Y34afKiV+VSkIQP8F+4bD/e3GjT/zYyuzHz8MOxeEyZ7yBrB
+         gb27b5qk5Bu/dP1ceCj/HtZgw78H3uImwFmVl4j79dfDtJuj5fcXfJilEs9+q8ArCEQA
+         a9Zw==
+X-Forwarded-Encrypted: i=1; AKwUvBx8kiI/zlrLnWDWdXKAfNNS4wJJi6AXwtc6+Eu/BqgoirDhY5tr1weS7jt+1y7m3RxcY8/E3QA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lek+zzfl+lPdBnqNRnuFq9TegjwWaQS30izvWYSJhXlHY94W5E
+	bnFuGTO7XAoDxCDHhpEtutsY4D3WH8WUHlr43nLSGsTwcEcs30N1geyLc6+toc3uSmE=
+X-Gm-Gg: AYBFou2pvuiDUkKME0V1HFxA19vrIFN4uZiZk6/KGRcP71DB4OcpO1KQ9CI/04ssxij
+	ogu6c2+cE+VlFx5VBFWKQmx+BrQEC69W8Z1rJrjKBMiDcEMsBHlvf6LcDfREV2enT08gby9ZxpC
+	xdGqroVjv85ZLfnUCAHXoIAjmPJODDPnTd+jDFPmd1h+72TowyeSRWuYri68Yoe/OLeB97WpSgJ
+	fs5mhW5xQm5rJLWzptxJuwav0pnM3yqNCTeVA2NTtNraJgnQyPTnQd5UrgcSYy5pMpjz1CY/KQj
+	pIcnJtj9Zh9lazlm+aO50UHoZv05gN1RAIiwb6TWeC+n5DJa1SDim2JXkFe3Q6P0rgaJinLRhzw
+	8pMerLZhVAYrnf0GSzq84JG+qs8zS2G0jtx1PFBgGnKE+3pLEO4ws9dl5Gvvhnk83O9HUQo6qIF
+	QR0BiBcnR/YjqoEwXE1944lmC70u+WKxk+JHHFbAKI5oEDug9eoNu7Isz4gPLgY5LWiwdqphx62
+	CQK6hxz4ynfqTyia2GdUJC1qkjtQyJUJBwBDg1yifqZ/SnZm8XYBXwJ
+X-Received: by 2002:a17:906:f5a8:b0:c29:c356:6984 with SMTP id a640c23a62f3a-c2a1578857bmr907019266b.8.1789999076248;
+        Mon, 21 Sep 2026 06:57:56 -0700 (PDT)
+Received: from dscRocky-build.localdomain (ip-83-147-170-154.wfd.metro.digiweb.ie. [83.147.170.154])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a35745cfesm323987366b.38.2026.09.21.06.57.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 06:57:55 -0700 (PDT)
+From: Warren Briggs <wbriggs@cellusys.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Warren Briggs <wbriggs@cellusys.com>
+Subject: [PATCH net v3] sctp: carry peer capabilities across an INIT collision
+Date: Mon, 21 Sep 2026 09:57:33 -0400
+Message-ID: <20260921135733.577647-1-wbriggs@cellusys.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/9] net: bridge: vlan: broadcast fwding path
- optimizations
-Content-Language: en-US, bg
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
-References: <20260918152950.1938259-1-razor@blackwall.org>
- <20260921134458.GA2199421@shredder>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260921134458.GA2199421@shredder>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 21/09/2026 16:44, Ido Schimmel wrote:
-> On Fri, Sep 18, 2026 at 06:29:41PM +0300, Nikolay Aleksandrov wrote:
->> Hi,
->> This patch-set is the first step to removing unnecessary VLAN hash lookups
->> from the bridge fast-path and also provides additional broadcast path
->> optimization by considering only the port-VLANs that actually participate
->> in the VLAN instead of all bridge ports. Combined these changes bring
->> considerable improvements[1] and open the path to do the same for the most
->> common fdb forwarding path. As expected the pathological cases have the
->> largest gain, e.g. if we have 1 client / VM facing port and 1 upstream port
->> only participating in a VLAN with many other bridge ports, we consider only
->> those 2 when broadcasting in that VLAN.
->>
->> For up to 8 ports we only use the port-VLAN list as the array doesn't make
->> much of a difference and is unnecessary. Note that the array is rebuilt on
->> every member add or delete when >8 members, I tested that and could do
->> 2000 VLAN add/delete with 64 port-VLAN members / sec on my test VM.
->> If it ever becomes a problem we can optimize it further, for the time
->> being I prefer it is simpler.
-> 
-> Very nice!
-> 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> 
+sctp_assoc_update() folds a temporary association into the existing one
+when an INIT collision is resolved. It copies asoc->c, peer.rwnd,
+peer.sack_needed, peer.auth_capable and peer.i, and nothing else.
 
-Thank you!
+The remaining peer capability bits therefore keep whatever the surviving
+association was given when it was created, rather than what the peer
+advertised in the INIT that caused the collision.
 
-> A couple of nits that you can handle later (or not):
-> 
-> 1. Patch #3:
-> 
-> __vlan_delete_pvid(vg, rtnl_dereference(vg->pvid));
-> 
-> Can be simplified to:
-> 
-> RCU_INIT_POINTER(vg->pvid, NULL);
-> 
-> 2. Patch #7:
-> 
-> Initially I thought that 'fwd.vlan' is never set, but then I realized
-> that in the only place where this field is actually set it's called
-> 'dst.vlan', which is a bit confusing given that in the context of the
-> bridge driver 'dst' is usually an FDB entry. I would probably rename it
-> to 'fwd' to be consistent with the rest of the code.
+Forward TSN is the visible case. The INIT-ACK is built from the
+temporary association, so it advertises Forward-TSN-Supported; once the
+collision is resolved the surviving association holds
+peer.prsctp_capable == 0, and the first FORWARD TSN chunk the peer sends
+is answered with ERROR "Unrecognized chunk type". The peer does not
+expect this, having been told the capability was supported. ecn_capable,
+asconf_capable, reconf_capable and intl_capable are lost in the same
+way.
 
-Ack, I will deal with these in a follow-up, I have another set that removes
-the two egress vlan hash lookups for standard unicast fdb path and will add
-these as cleanups to it.
+The two address flags fail the other way round. sctp_process_param()
+clears ipv4_address and ipv6_address and sets them from the peer's
+Supported Address Types, but only on the temporary association. The
+surviving association keeps the permissive defaults from
+sctp_association_init(), so it can believe a peer supports an address
+family that peer never advertised.
 
-Cheers,
-  Nik
+peer.auth_capable is already carried, added by commit 1be9a950c646
+("net: sctp: inherit auth_capable on INIT collisions") for the same
+reason. This extends that to the rest of the block.
 
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Warren Briggs <wbriggs@cellusys.com>
+---
+Changes since v2:
+ - dropped asoc->peer.hostname_address. The field no longer exists,
+   removed by commit bd4b28189469 ("sctp: delete the obsolete code for
+   the host name address param").
+ - wrapped the commit message at 75 columns.
+ - added the Fixes tag.
+ - retargeted at net, subject prefix corrected.
+
+Changes since v1:
+ - added ecn_capable, asconf_capable, reconf_capable and intl_capable,
+   the missing fields identified in review of v1.
+ - also added ipv4_address and ipv6_address, which are set from the
+   peer's Supported Address Types on the temporary association and are
+   lost at the merge in the same way.
+
+Testing. An INIT collision was resolved between two sockets on one host
+and the resulting association's peer capabilities read back, with a
+second, non-collided association created in the same run as a control,
+on an unpatched and a patched kernel:
+
+prsctp_capable   SCTP_PR_SUPPORTED            unpatched 0, patched 1
+reconf_capable   SCTP_RECONFIG_SUPPORTED      unpatched 0, patched 1
+intl_capable     SCTP_INTERLEAVING_SUPPORTED  unpatched 0, patched 1
+asconf_capable   SCTP_ASCONF_SUPPORTED        unpatched 0, patched 1
+ecn_capable      SCTP_ECN_SUPPORTED           unpatched 0, patched 1
+ipv4_address     sctp_diag sctpi_peer_capable unpatched 1, patched 0,
+                 with the peer advertising IPv6 only
+ipv6_address     sctp_diag sctpi_peer_capable unpatched 1, patched 0,
+                 with the peer advertising IPv4 only
+
+Three of those were also confirmed on the wire. An unpatched kernel that
+has advertised Forward-TSN-Supported in its INIT-ACK answers a FORWARD
+TSN chunk with ERROR cause 6; a patched one accepts it.
+SCTP_RESET_STREAMS and sctp_bindx(SCTP_BINDX_ADD_ADDR) put a RE-CONFIG
+and an ASCONF on the wire on a patched kernel and produce nothing on an
+unpatched one.
+
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index 4521be3..0bd0a66 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1107,6 +1107,13 @@ int sctp_assoc_update(struct sctp_association *asoc,
+ 	asoc->peer.rwnd = new->peer.rwnd;
+ 	asoc->peer.sack_needed = new->peer.sack_needed;
+ 	asoc->peer.auth_capable = new->peer.auth_capable;
++	asoc->peer.prsctp_capable = new->peer.prsctp_capable;
++	asoc->peer.ecn_capable = new->peer.ecn_capable;
++	asoc->peer.asconf_capable = new->peer.asconf_capable;
++	asoc->peer.reconf_capable = new->peer.reconf_capable;
++	asoc->peer.intl_capable = new->peer.intl_capable;
++	asoc->peer.ipv4_address = new->peer.ipv4_address;
++	asoc->peer.ipv6_address = new->peer.ipv6_address;
+ 	asoc->peer.i = new->peer.i;
+ 
+ 	if (!sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
