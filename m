@@ -1,270 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F293751596D;
-	Mon, 21 Sep 2026 21:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790026346; cv=none; b=ksb6vHaZVHfEbKhfDC4K2j3g7iKf9/161VKevSQcwUa6az3QdmxeQjVSMCsvnkml/NoIIOpVWxGsv3oW2YAk9uDHNn3u4kZsu7y5xrLeYxitmER3Cmou/LEcZ0dE0ajTOLiQi1o+2djrerLHgFHKq+g7uv16zg4hBiI1lJ3w7lE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790026346; c=relaxed/simple;
-	bh=NmiiPM5bj1AXhlcvKdRAeFk4qSnecvP5GUd4UYJVgf8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=COjhdGLuFWKggt3t42w+PmTSbO/iOf2HxvJr+ojUFcMrRPCk6+sj0pndlbSSVqz6P4eFFs2YAUifmPJphCEWWTuSkMrkodh4MT5JjJRW6KR2v5lCcyJqr8xqyyjQAR+aO/Hs7WsbTltZDqxoW2lFHX+ROG+Z8oOudEX42JTzCPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYuUe7cV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C72D5158B7
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 21:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790026579; cv=pass; b=b7Y+yoUZiBiMmpJY4aWGXPPIHfXMT9+aI0cv+WhZ3wGPjSYwt1+dqKK8IsTjeVAxl6gIB45/w27wLreQrv52URws74OJ6eZ0lWIstJ23e0ZbhVsrlPVtGq8Z7uVBnv++5135CaJcu0UEPkymQzsEtAQDuIa9b7hbxNP197HUNtw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790026579; c=relaxed/simple;
+	bh=0xRxgq2j53JlZwoPQFcrgqq0FbNHb3eRgpC1bShN5I0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KoQb39GsfniTSRy9sBQNsZSI15HYaZlsXjyxZ37mPv0c2T767okqPgZ0Xg8qbvBR9WUg0QeY17aAwA+4fD+aH4fLF7zDYHnxW8/1NlY9mXASK/wx+ml67mwjxvgaN35KO3dLcCOU48PC4eRugxNCiiLxv/Y9bbrWTW2UVm/YoS4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RDoIlXaw; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYuUe7cV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2B71F000FF;
-	Mon, 21 Sep 2026 21:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790026344;
-	bh=c/PP3qmHY5ndB18W+iv3W1sPrDnXUtoEtSTPXz4Gfz0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kYuUe7cVncGTfdIdh0cxzyxdaze53XJjAzMh9cQa/SYT+2agjP9PLOCY7hTn6BBZR
-	 tTnJyN3elEQymP5q3/yxHJWPyLiWP2sp723A0gQ5JSlxWJDlFiC0AvLog9hS3st5Lx
-	 q2aAr2wY3hoTDjaiZgWEVj6dRCEEb3/ShK4ipTMvFe+Fs5bagw4teLvg6NDG5DJB9F
-	 1hJCUAe1i/5ThCU7ZQToimP1v8X0BEdCEh+9tz4zDYP8vzTeJACSrGlTxVlFl2LSKx
-	 +qIgrT1CkhIgg8eV1fhTR3QZHvAANPzTxajvrmh8qIUAAJGlNIbmVLVaIeIE1jELjq
-	 dUHVwJgpI7Gng==
-Subject: Re: [PATCH net-next 3/3] i40e: trigger PF reset when re-enabling ATR
- via ethtool
-From: netdev-bot+sashiko@kernel.org
-To: anthony.l.nguyen@intel.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- mheib@redhat.com, przemyslaw.kitszel@intel.com, jiri@resnulli.us,
- horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
- rdunlap@infradead.org, linux-doc@vger.kernel.org, sx.rinitha@intel.com
-Date: Mon, 21 Sep 2026 21:32:23 +0000
-Message-ID: <179002634332.2160803.9163338355195427947@kernel.org>
-In-Reply-To: <20260917204541.3072415-4-anthony.l.nguyen@intel.com>
-References: <20260917204541.3072415-4-anthony.l.nguyen@intel.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RDoIlXaw"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4bfd1so2370852a12.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:36:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790026578; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pHF21iO6eq/ZAAEkjco9Py0HdN4l/77j1QkpvF7rz//QXmuki8Ajsdb0lnYgRK+PoS
+         o3bH/7k9EFvd9hfq6cNyuXjFPZsS7mJGou7R6R2Yei2j4Kk6V7cnpw4Kd9F6AMf8gJOU
+         DRgVatdGEGY30NAQOCdncAzkHcn3jOPkYEo47OV5LKTh6fDIHVz/L8T0HqYyWMuR4L+I
+         HporCmfMw7ic7/21eGUM+Donh1NC9MecM3uyT4piUVH+KXbhy5DW6ceUieeG3Gm9kfN0
+         4b4Y7iiRcfQvOwLcEESerzDSyMcJSddsziLgkIA4KohimFogROFaoeTRpxcoh7gNCElx
+         0ODg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9S4UN1V9mLtIU5XAJ4Mj87c5tZOTpom4ugNvERFaqpw=;
+        fh=/eRw9WjU/KNuqcQfxdijkShZhZwegcbgtzKH4UJepdg=;
+        b=apNWJPHLGM3RrM0UNQnC1KjXWWrUIaoj4LgDxjMhe50zeodTuEpkJkgOJ+WMLh6mFS
+         KIQpXw+JgzPi+RVLVJc2PtenTkP9K5W/fDbaxItqq9+B8uneNvcY5D2tnfc4RYyc4e/T
+         p381ebxkAXJogV6CVUdy6iXNjvBGOTGN8sZ0AVv1SeBoCqIPCm5tCcj2Lp4crxZ2xwr1
+         bqq/aXgWcsN8D9eY7dXjktebzi1tjXk5ixvYXywOyHeJVJY0SKJDfugjhoJU2tayTO5v
+         2ZPtlsVUr83nw/UKi2F0ndd4NQVfGyP4wIs2ZT4L0+oohr9ZHPeozwDniklzUGlTPbla
+         321g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790026577; x=1790631377; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9S4UN1V9mLtIU5XAJ4Mj87c5tZOTpom4ugNvERFaqpw=;
+        b=RDoIlXawWkmcpBXKoytTplVKVsqrPDuz1ayCVa8Y2IHilZdz4yvdL0S/IGv3bniQnH
+         9n7wCXPVgU7ZlJe9P7nzIcfaPtV8BnWSEXboRXwzOPga/WQZGzU10Ea3RRdS8YaNpeKd
+         A0aThIUe0bhT1o5MAAT7OhjKT9L73iO6Sj31V8A/KCNzMS7vQiRQcHHtwJFEgtUPH93P
+         lK33volhbLoRM4QiyQg7e8M/QJaaZAHKZCfDSgBq/+kYhCsyzUPjarsBy2hkE9Pb3PKH
+         uPsuorU6A32aJGN/xujqM96GdwasbPKsgDTqVg+yAXS+pvdZs3PqdxeRXA8lX8zmToRa
+         yN7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790026578; x=1790631378;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9S4UN1V9mLtIU5XAJ4Mj87c5tZOTpom4ugNvERFaqpw=;
+        b=piN3dYCwR4TQyKxeZlYFfmTNItptEzJAgDectG552H3hukXH99xJ+Ee25Nj6clnSJq
+         XcXKSE03CjnhlXPYE6L4StHXqfcm4LQClW3ONxvt1SiE+QIrwcDUaadOjnTqqBDslkkj
+         coQ6NAvcYAkDIhdcwV1VpYxlFW8AE84lmYRK8dscbIN4qkEZV+kNCHst10hsQLPKydsw
+         o+HBymrQIeDElnsvAUCR2sFxBm6JJsq+bQFHWxOz6neawu/cCHIib2fcI/FiBj0BeepS
+         V+O8caFwo8qsuqaeX2NDzAxvsaqxt1GTLo80GdGN3f6eVAqAhPzqcSr0eOK3mNfCH5Dn
+         q5kQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwRJ838+64YUFQuQ0kdVQutSiu7mLBa2qhSZyKKVRVPUjmH7Ldgqh/fD0jqrAgWe49/W3ADxgA=@vger.kernel.org
+X-Gm-Message-State: AFuF++ncnvriNlYIOMoQabhMhpS/OeDAcTksFRf4Ke09YNPUyzHCTFx8
+	A+LtXUocvc3aqFD/vD7MIZ8T/VTtaRyHlQkWwOOk1WlxQ36N/Mh5J3rQRyeIlO9Vkhm1w7/d3Fq
+	mEz8NuwA+67kAHElAb7yJxRZAQkXliJvVeI7/sbdt
+X-Gm-Gg: AYBFou2tzZUh3Nu5GaiWfF92t+Niiob9Bk5ejf2g3TKcD4WXRgi03ttYpnLmvu5pbKW
+	IjLRuBfYaqlNhrfW0BVF4FzLub35y4q2kccBfkaAMNBboRDsTFV5aiJgYfAHKxTXLBORRMWaTYI
+	Ps+1mCG0SsFd7Y3QQiSEiZW1ppSnpmwypjL2gwgt8AbraIKQhqXK5QGPPcSMR1V+NFIg67Sq4xH
+	51+90p69WZKGN47PprestqRZes1w6h5w/yGorJYmKEtDFHv7v8gYdLsp3ZRo/AHzlskd1pN2drn
+	frKBDMgUnbr71sY10Nb5k09ZfHKUo0h6pk9xVtzgZ0XyNa/oKyHVzKRtWjh9j3757Q1nKWs17pD
+	i9l3ndWFlOZXV616Uc+hZHjHBwfgwQWvSJwyXVo/ocVAG3qiX00fAZFFG1/plakWfGeZyU3pTtb
+	AdE0VfN+xT+QqV3sDe6sEcCw==
+X-Received: by 2002:a05:6a20:548d:b0:3dd:85a8:cac7 with SMTP id
+ adf61e73a8af0-3dd8c44e2famr18712394637.30.1790026577083; Mon, 21 Sep 2026
+ 14:36:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260920195633.3033620-1-kuniyu@google.com> <20260920195633.3033620-7-kuniyu@google.com>
+ <arGYSbQ97ORDvSBl@devvm7509.cco0.facebook.com>
+In-Reply-To: <arGYSbQ97ORDvSBl@devvm7509.cco0.facebook.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 21 Sep 2026 14:36:05 -0700
+X-Gm-Features: AcwNN1Wmuqzqu6AVItlJJYH99pXCMxSAZwEMncsGSowQkA6OYTAXgvMp6Luf5KY
+Message-ID: <CAAVpQUDSU8QbnLm2ajR0NKTRNr75-6yXKaerG-ZcUkOLKz70rw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 6/7] bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Mon, Sep 21, 2026 at 1:50=E2=80=AFPM Stanislav Fomichev <sdf.kernel@gmai=
+l.com> wrote:
+>
+> On 09/20, Kuniyuki Iwashima wrote:
+> > bpf_tcp_ops.{enqueue,dequeue}_rcvq() were added to parse skb and
+> > adjust sk->sk_rcvlowat dynamically to suppress unnecessary wakeups.
+> >
+> > Let's add a new kfunc to set sk->sk_rcvlowat.
+> >
+> > Negative values are clamped to INT_MAX, consistent with SO_RCVLOWAT.
+> >
+> > For enqueue_rcvq(), wakeup is set to false because:
+> >
+> >   * tcp_data_ready() is always called after the hooks in
+> >     tcp_queue_rcv() and tcp_ofo_queue().
+> >
+> >   * when tcp_fastopen_add_skb() is called for TFO SYN, the socket is
+> >     not yet accept()ed, and when called for TFO SYN+ACK, the socket
+> >     is woken up by sk->sk_state_change() anyway.
+> >
+> > For dequeue_rcvq(), wakeup is set to true because tcp_data_ready()
+> > is not called in that path.
+> >
+> > An alternative would be to support bpf_setsockopt() for these
+> > hooks.
+> >
+> > However, that approach involves excessive conditionals and an
+> > unnecessary memcpy(), costs we do not want to pay for every skb
+> > in the TCP fast path.
+> >
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > ---
+> >  net/ipv4/bpf_tcp_ops.c | 56 +++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 55 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+> > index b0e14b54917e..3768b1440eb7 100644
+> > --- a/net/ipv4/bpf_tcp_ops.c
+> > +++ b/net/ipv4/bpf_tcp_ops.c
+> > @@ -359,8 +359,62 @@ static struct bpf_struct_ops bpf_tcp_ops =3D {
+> >       .owner =3D THIS_MODULE,
+> >  };
+> >
+> > +__bpf_kfunc_start_defs();
+> > +
+> > +__bpf_kfunc int bpf_tcp_ops_set_rcvlowat(struct sock *sk, int rcvlowat=
+,
+> > +                                      const struct bpf_prog_aux *aux)
+> > +{
+> > +     u32 moff =3D aux->attach_st_ops_member_off;
+> > +     bool wakeup =3D false;
+> > +
+> > +     if (moff =3D=3D offsetof(struct bpf_tcp_ops, dequeue_rcvq))
+> > +             wakeup =3D true;
+>
+> [..]
+>
+> > +     if (rcvlowat < 0)
+> > +             rcvlowat =3D INT_MAX;
+>
+> nit: the same check exists in setsockopt. Any reason not to move it
+> to your new __tcp_set_rcvlowat ?
 
-Critical: 0 · High: 1 · Medium: 4 · Low: 0
+Maybe we could duplicate it for each protocol, but I feel the logic should
+reside in the core part.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+$ chgrep -E "\.set_rcvlowat.*?=3D"
+net/vmw_vsock/af_vsock.c:2672: .set_rcvlowat =3D vsock_set_rcvlowat,
+net/mptcp/protocol.c:4730: .set_rcvlowat   =3D mptcp_set_rcvlowat,
+net/ipv6/af_inet6.c:691: .set_rcvlowat   =3D tcp_set_rcvlowat,
 
-- [High] The reset request the patch adds is stored in the shared scalar
-  `reset_needed`, which a later, unrelated error path zeroes — so the…
-- [Medium] The failure mode this commit fixes was introduced two commits
-  earlier in the same series by 6f0c883685a0 ("i40e: move ATR sample…
-- [Medium] i40e_set_priv_flags() now requests a full PF reset on every
-  0->1 transition of the flow-director-atr private flag, with no check…
-- [Medium] The new ATR block assigns `reset_needed` with `=` instead of
-  combining with the existing request, silently downgrading the stronger…
-- [Medium] i40e_atr()'s gate on I40E_FLAG_FD_ATR_ENA is published to the
-  lockless Tx fast path before the hardware context is updated, so the…
+>
+> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 
---
-
-i40e: trigger PF reset when re-enabling ATR via ethtool
-
-This adds a PF reset request in i40e_set_priv_flags() whenever the
-flow-director-atr private flag transitions from off to on, so that
-tx_ctx.fd_ena is recomputed in i40e_configure_tx_ring(). A few questions
-about the new reset request and how it interacts with the rest of
-i40e_set_priv_flags() are below.
-
-First, a question about the commit message itself:
-
->     Toggling flow-director-atr via ethtool private flags does not trigger a
->     ring reset. If ATR was disabled while fd_ena was cleared in the TX queue
->     HW context (e.g. after a ring reset with both ATR and ntuple off),
->     re-enabling ATR causes i40e_atr() to inject FDIR descriptors into a
->     queue where fd_ena is still 0.
-
-[Severity: Medium]
-Is this describing a long-standing defect, or one introduced two commits
-earlier in this same series by 6f0c883685a0 ("i40e: move ATR sample rate
-from ring to PF level")?
-
-Before that commit, i40e_configure_tx_ring() cleared the per-ring sample
-rate in exactly the scenario described here:
-
-	if (test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags))
-		ring->atr_sample_rate = vsi->back->atr_sample_rate;
-	else
-		ring->atr_sample_rate = 0;
-
-and i40e_atr() returned early on it:
-
-	if (!tx_ring->atr_sample_rate)
-		return;
-
-So a ring configured with both ATR and ntuple off had fd_ena == 0 and
-atr_sample_rate == 0, and re-enabling the private flag could not reach the
-descriptor-writing code. 6f0c883685a0 removed that gate in favour of
-pf->atr_sample_rate, which i40e_sw_init() initialises once to
-I40E_DEFAULT_ATR_SAMPLE_RATE and is therefore never zero.
-
-If that reading is right, the tree is broken at 6f0c883685a0 and
-41347643da7b and repaired only here, which makes a bisect land in a window
-with the described misprogramming. Would it be better to keep the gate (or
-program fd_ena unconditionally) in the patch that removes it, and to add a
-Fixes: tag here so stable backporters do not pick up a disruptive PF reset
-for kernels that never had the regression?
-
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> index ef9d1e78c16a2..79c2cdab0f516 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> @@ -5301,6 +5301,13 @@ static int i40e_set_priv_flags(struct net_device *dev, u32 flags)
->  	    test_bit(I40E_FLAG_SOURCE_PRUNING_DIS, changed_flags))
->  		reset_needed = BIT(__I40E_PF_RESET_REQUESTED);
->  
-> +	/* Re-enabling ATR requires a reset to update fd_ena in the
-> +	 * TX queue HW context.
-> +	 */
-> +	if (test_bit(I40E_FLAG_FD_ATR_ENA, changed_flags) &&
-> +	    test_bit(I40E_FLAG_FD_ATR_ENA, new_flags))
-> +		reset_needed = BIT(__I40E_PF_RESET_REQUESTED);
-> +
-
-[Severity: Medium]
-Can this assignment discard the stronger reset type requested a few lines
-above in the same function?
-
-i40e_set_priv_flags() has already run:
-
-	if (test_bit(I40E_FLAG_FW_LLDP_DIS, changed_flags))
-		reset_needed = I40E_PF_RESET_AND_REBUILD_FLAG;
-
-and the new block overwrites reset_needed with BIT(__I40E_PF_RESET_REQUESTED)
-using plain assignment, so a single ethtool write that changes
-disable-fw-lldp and flow-director-atr together ends up with the weaker
-selector.
-
-i40e_do_reset() then tests the two in an else-if chain, with the PF reset
-branch first:
-
-	} else if (reset_flags & I40E_PF_RESET_FLAG) {
-		i40e_handle_reset_warning(pf, lock_acquired);
-
-	} else if (reset_flags & I40E_PF_RESET_AND_REBUILD_FLAG) {
-		i40e_prep_for_reset(pf);
-		i40e_reset_and_rebuild(pf, true, lock_acquired);
-
-so reinit is false and i40e_setup_pf_switch() skips the main VSI
-re-initialisation that the FW LLDP change asked for:
-
-	else if (reinit)
-		main_vsi = i40e_vsi_reinit_setup(main_vsi);
-
-The "FW LLDP is enabled/disabled" dev_info() in the rebuild branch is lost
-as well. Note that changing = to |= would not be sufficient here, since
-i40e_do_reset() prefers I40E_PF_RESET_FLAG over
-I40E_PF_RESET_AND_REBUILD_FLAG; does the selection logic need reworking so
-the stronger request wins?
-
-[Severity: High]
-Can the reset this patch depends on be dropped later in the same call while
-the ATR flag is still committed?
-
-Further down in i40e_set_priv_flags(), the FW LLDP re-enable path clears
-reset_needed on a non-fatal admin queue status:
-
-	status = i40e_aq_start_lldp(&pf->hw, false, NULL);
-	if (status) {
-		adq_err = pf->hw.aq.asq_last_status;
-		switch (adq_err) {
-		case LIBIE_AQ_RC_EEXIST:
-			dev_warn(&pf->pdev->dev,
-				 "FW LLDP agent is already running\n");
-			reset_needed = 0;
-			break;
-
-and the flag publication is unconditional while the reset is not:
-
-	bitmap_copy(pf->flags, new_flags, I40E_PF_FLAGS_NBITS);
-
-	if (reset_needed)
-		i40e_do_reset(pf, reset_needed, true);
-
-Since tx_ctx.fd_ena is only recomputed when the Tx queue context is
-rewritten:
-
-i40e_configure_tx_ring()
-	if (test_bit(I40E_FLAG_FD_SB_ENA, vsi->back->flags) ||
-	    test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags))
-		tx_ctx.fd_ena = 1;
-
-does this leave I40E_FLAG_FD_ATR_ENA set in pf->flags with fd_ena still 0,
-which is the state the commit message says it is closing? The private-flags
-ioctl carries the whole bitmap, so disable-fw-lldp off and
-flow-director-atr on can be changed in one command while the FW agent is
-already running.
-
-[Severity: Medium]
-Is there a window between publishing the flag and quiescing Tx where
-i40e_atr() can still post descriptors to a ring with fd_ena == 0?
-
-The flag becomes visible to the lockless Tx path at bitmap_copy(pf->flags,
-new_flags, ...), and only the subsequent i40e_do_reset() reaches
-i40e_prep_for_reset() -> i40e_pf_quiesce_all_vsi(). Meanwhile i40e_atr(),
-called from i40e_xmit_frame_ring() in softirq context on another CPU, gates
-only on software state:
-
-	/* make sure ATR is enabled */
-	if (!test_bit(I40E_FLAG_FD_ATR_ENA, pf->flags))
-		return;
-
-	if (test_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state))
-		return;
-
-	sample_rate = READ_ONCE(pf->atr_sample_rate);
-	if (!sample_rate)
-		return;
-
-__I40E_FD_ATR_AUTO_DISABLED does not appear to cover the window either, as
-it is cleared asynchronously in i40e_fdir_flush_and_replay():
-
-		if (!disable_atr && !pf->fd_tcp4_filter_cnt)
-			clear_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
-
-as well as in i40e_reenable_fdir_atr() and i40e_set_ntuple(). Would keeping
-ATR suppressed until after the rebuild (for example holding
-__I40E_FD_ATR_AUTO_DISABLED across the re-enable and clearing it once the Tx
-context has been reprogrammed, or publishing the flag after the reset) close
-this ordering gap?
-
-[Severity: Medium]
-Should the reset be conditional on the HW context actually being stale?
-
-i40e_configure_tx_ring() sets tx_ctx.fd_ena = 1 when either
-I40E_FLAG_FD_SB_ENA or I40E_FLAG_FD_ATR_ENA is set, so on a system with
-ntuple/side-band filtering enabled, fd_ena is already 1 and nothing needs to
-change. With this patch, the sequence
-
-	ethtool --set-priv-flags ethX flow-director-atr off
-	ethtool --set-priv-flags ethX flow-director-atr on
-
-always runs i40e_do_reset(pf, BIT(__I40E_PF_RESET_REQUESTED), true) ->
-i40e_handle_reset_warning() -> i40e_prep_for_reset(), which quiesces all
-VSIs, calls i40e_vc_notify_reset() for VFs and shuts down the admin queue
-and HMC, turning a previously non-disruptive flag write into a traffic stop,
-link flap and VF reset.
-
-Could the condition also test that FD_SB is off (so fd_ena can really be 0),
-or alternatively could i40e_configure_tx_ring() program fd_ena from the FD
-capability rather than the current flag state so no reset is needed at all?
-The commit message says a reset is triggered but does not mention that it
-happens unconditionally, including when fd_ena cannot be stale.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917204541.3072415-1-anthony.l.nguyen%40intel.com
+Thanks !
