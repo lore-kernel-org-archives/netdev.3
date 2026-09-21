@@ -1,162 +1,178 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDBF4B66C2
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAE432B108
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790004833; cv=none; b=gI+l5YRaNPIu4IPITzXtVPX+agOs39fQZ4lFZPQ/UfvGnorwzKv+JlIb5oHCA8yGPWshYkTq4W8oNA/6eRePp3G6bXSocrB+VEKU3B//iDvugu2y1KX+akKHtdqbyrnsrN0c3eJmjFN9l/UYIeenkgyzLXe8RND7O23qOr5KnS8=
+	t=1790004857; cv=none; b=q84IB51my5xoi8qdkpJkGUsQJ2gper6ZwyieokJ4pk6x2gsPfwIBcemhH6xIUaLFUrNfGW1bvBvjXEBPUVLoQ49WA7pL1iPJw2MPOIhYExqRa47NgtiOUiqW/s1L7UdSlODYWQwyeq9tXxFxG7tgV4pTo1dM8Qs7e13gmt6KWoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790004833; c=relaxed/simple;
-	bh=I7UesNNzihhfUM3T9kkjRfplteVqAEnYJpPI/ePgiEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNW6mc5mjTleOIV44cUFq4+aaRkkFgEQwZ20YakXYXgkHOS3FGjeNj3zWB6grSsiLUzH/QHRYn95sgyjb9bhQWqk1hsyO3tkbdKRvQjtFpXElz9Acfiy1DZjG8cV0jGttx+d68M9jC69BNokH9K7JXZaedCb/TyjJo91kABBfn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dz0t2q82; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790004857; c=relaxed/simple;
+	bh=/2N4NpSJppaA67KSj0Z5/YwtgigrT4cAL+Z+ZzBKIrA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Dl/Yhcd//eIUjbgVRuH4S/PSVaDj0JNFcInNbZSxdYUfa16P9FR/D4hpY4hlRgSGJvqao4XiM6aadsEkN+mqiOE8P1uIzR2bzEEuGEI7gpx3foLAb9T9t9JN4nbDeW2YhBWeYfKFcIUL+lhU6Q7N+8GJCfvGpvSZrntTaxdluPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OauUfE1v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dz0t2q82"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-482f63546c5so2470950f8f.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:33:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790004829; x=1790609629; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ATQztYCMyMu3k6DnS/zHcGXiDiuEanDgsZ8XIDNR40k=;
-        b=Dz0t2q82wSX3pw4NUPNIMWFDFyaMLzrpHR3XlMeTROMDG6hkfv3lKtMy+t8UX4DCYZ
-         Yre0uZY0ohhZB/m8uZy+7NKSld+RQl4WeeH3lKWxRJDlI0jTU9kTZYktWnVPoRcdO0tM
-         O02PStEdyvZA/1ewe3YZi37vUbtncXVXn3bg/EPbqaWhOYHpbpwP8SIbHTRblKzE9q7l
-         nGBRSfYcad+DgIL8MobJBaUsECApzuOnQ/nsRfROKkFu03Gms5lDbF3Tihr3PUiStNA7
-         M0LzqB6uep7UWHhTP43YO6bWVcjxoa7FsoT+/mFMmL/xcKoHjtxanaXNqCzWNQDUnag3
-         +Amw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790004829; x=1790609629;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ATQztYCMyMu3k6DnS/zHcGXiDiuEanDgsZ8XIDNR40k=;
-        b=gl5K5y9mbMYZcO/uvoCSuKtoJJntbDG+wUZ3r5RLqqNR3vgm7Bv8cSZHb3z7rewYOa
-         nbBESf3iRILaMViRLS1Li8hDRZNqxi3l3wDBMuXOziQCThk8IGIU48VCC+c5o5LuVIU9
-         muJY6rUJmS9+tnaxZuXpzA4AtDLv5uhzZN1K2Tkw53/sOqfk68v4jg+7Eld332reBs6H
-         NagqMZk+hua5t8OOuSG4+zi1nLhUr1XkCfuwy9Ty2uLT8nAj0ERDz/1R2gko7UVP8/wY
-         x7QLqt39hvQZaB6KNzMUrX5/eHKlP8+6eE9L06b+4+X6T2vvL7LS2+QGLJH1GHy96asN
-         fAmg==
-X-Forwarded-Encrypted: i=1; AKwUvBxNhRjjS7r8SCamlgnUHRCLOQ3JbTZ0Qb8RgPs84c52ChAixKhrnx9+b6BK/GyGqw92WoTtzGQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nHUWq5xfOCqLt1IfU733yZw+JQAzoVugmPlUB4VctvknkvW8EL
-	fwvH8r2kOdKU7nY5e6eEoTod5JgN8wACZ3uZm31fyuJjrPpIpIKjYPEk4m5JIrbY
-X-Gm-Gg: AYBFou2Pt+uz/N5sZxtRrowe3jJcDfCB0Zw7Vtzpmt6QaxASsEtbgByyJZJ7/o+GvRS
-	z1oQ2Z6/OGBdovmlynfkuWanc/O1Jgm7x5D2fG14nOJr2nTJt+QTDufbyAcbsFUTc+hlpzAEGYe
-	GXoxX/sLz05HQ86EedIA2yCkfKJG3iyYVNLZ+aja0vdQ65K66Hza4mjj9YG418rA7ONW1cMEtOn
-	dxtrFJHer0M7DPXHBfF+3KCWfb6PyNXxKhnf9wUo15RUXyquNOWlpHKEtKW7bhzeyPjeGDpXWot
-	RmAzbJKNPBUM0/3JiTMf9aeLMCQans3RfQu0QxxNv/nhuzEbNT/ri712+okmdpdo40fu+92sG/P
-	UTR4U+i8w6XbMXhp9hNH09KaxOOnMldGSIVOlAzDzYgn3TEoj8ZKFS2t3JigmZ3wXmIiDbxaJvZ
-	DpenqiBC34JnaZbE2USMWcUEDX2Nmdbe/jEQDvu9kK04M7uVTGJjPY6ZxQicFRc5QiER3OlWFTS
-	13+nhqwQkM+oPgXi38h1jdiGzb7e5zqWmQj
-X-Received: by 2002:a05:6000:38f:b0:487:c48:5dae with SMTP id ffacd0b85a97d-4871e21d900mr14510363f8f.17.1790004829281;
-        Mon, 21 Sep 2026 08:33:49 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4872446067asm24137495f8f.12.2026.09.21.08.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 08:33:48 -0700 (PDT)
-Date: Mon, 21 Sep 2026 16:33:47 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-s390@vger.kernel.org, "D. Wythe"
- <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, Sidraya
- Jayagond <sidraya@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, Wen
- Gu <guwen@linux.alibaba.com>, Alexandra Winter <wintera@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Hidayath Khan <hidayath@linux.ibm.com>
-Subject: Re: [RFC] module: init-failure path can free a module with live
- try_module_get() users
-Message-ID: <20260921163347.2630a6f4@pumpkin>
-In-Reply-To: <2cd4adea-9b70-4951-be8b-40c1bcc7ecd6@linux.ibm.com>
-References: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
-	<20260918142241.55a6630a@pumpkin>
-	<2cd4adea-9b70-4951-be8b-40c1bcc7ecd6@linux.ibm.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OauUfE1v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5391B1F000FF;
+	Mon, 21 Sep 2026 15:34:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790004855;
+	bh=Rs48qZO+9zz7ILWPdAjUHo8vXvHAznm5eMrq/kpfxdY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OauUfE1vefFzgP9F/RJgXbBZlqiwrpij/QMr05BP6Rd65mAKAyejO/1BZgz/hcLyT
+	 bj/RfRRPBRDrgDUyy1I5SwvsCEk2ahb0zchfFvCpIVBsmcebPT3L1aCB+mBZrk1Op8
+	 PCgsY176JV2DsYemNou4J5zJfofEnPiKibMcZFWpRpeuWUMCB511U2r7HAzhGIMQ4j
+	 pjB8DQqRBZfmHwrgAndXbSSyut8HA9WjyqtRy/oGOJn7emTuGCXoXSQK/LZsOgzIqt
+	 jkSCyoDj7NEHe3P2WRq353rNtV0d9PfJyAEnZQfOTq+u5YftOSntUVOwf2pl8Wu+WU
+	 dfVOraOiyfRWQ==
+Subject:
+ Re: [PATCH net v2] tcp: preserve timestamps across receive queue collapse
+From: netdev-bot+sashiko@kernel.org
+To: kerneljasonxing@gmail.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com,
+ netdev@vger.kernel.org
+Date: Mon, 21 Sep 2026 15:34:14 +0000
+Message-ID: <179000485484.2160803.6557708738361294569@kernel.org>
+In-Reply-To: <20260917132742.87117-1-kerneljasonxing@gmail.com>
+References: <20260917132742.87117-1-kerneljasonxing@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, 21 Sep 2026 20:04:10 +0530
-Mahanta Jambigi <mjambigi@linux.ibm.com> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> On 18/09/26 6:52 pm, David Laight wrote:
-> > On Mon, 24 Aug 2026 11:43:46 +0530
-> > Mahanta Jambigi <mjambigi@linux.ibm.com> wrote:
-> >  =20
-> >> Hi Luis, Petr, Daniel, Sami, Aaron,
-> >>
-> >> I'm writing to ask about what looks like a generic module-init failure
-> >> lifetime problem in the module loader. I ran into it while working on
-> >> the SMC networking module (net/smc/), but after several patch
-> >> iterations, it seems the root issue may belong in kernel/module/main.c
-> >> rather than in SMC itself. I'd appreciate your guidance on whether this
-> >> reading is correct, and if so, what fix direction would be preferred.
-> >>
-> >> THE ISSUE IN do_init_module()
-> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-> >>
-> >> include/linux/module.h has a long-standing FIXME in module_is_live():
-> >>
-> >>     /* FIXME: It'd be nice to isolate modules during init, too, so they
-> >>        aren't used before they (may) fail. But presently too much code
-> >>        (IDE & SCSI) require entry into the module during init. */
-> >>     static inline bool module_is_live(struct module *mod)
-> >>     {
-> >>         return mod->state !=3D MODULE_STATE_GOING;
-> >>     }
-> >>
-> >> Because MODULE_STATE_COMING is not MODULE_STATE_GOING, try_module_get()
-> >> can succeed once a module's __init is executing. If __init makes the
-> >> module externally reachable partway through and then later fails, the
-> >> failure path in do_init_module() appears to do: =20
-> >=20
-> > It is rather worse that that.
-> > If sock_create() auto-loads a module (eg sctp) then nothing stops a sec=
-ond
-> > sock_create() entering the protocol code before the initialisation comp=
-letes.
-> > That can be hit by two separate applications, I hit it from an out of t=
-ree
-> > kernel module and avoided the problem by putting a mutex() around the
-> > sock_create() call.
-> >=20
-> > It might help by letting try_module_get(THIS_MODULE) always succeed
-> > while blocking other requests until initialisation completes.
-> > The code making the call must own a reference (otherwise the code could
-> > just disappear), and that reference stops the module being unloaded.
-> > That would let the initialisation code grab extra references (eg for
-> > a worker thread) without allowing other codes paths enter the
-> > part-initialised driver. =20
->=20
-> Thanks David =E2=80=94 you're right that the race is broader. This patch
-> addresses only the UAF on the __init failure path: once we set
-> MODULE_STATE_GOING and call synchronize_rcu(), new callers see GOING and
-> fail; we then drain existing refs before free_module().
->=20
-> The concurrent-init race you describe =E2=80=94 two callers entering
-> MODULE_STATE_COMING simultaneously during a successful init =E2=80=94 is =
-not
-> addressed here and would require changes to try_module_get() itself, as
-> you suggest. That is the long-standing FIXME in module_is_live() and is
-> a separate, larger change.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-I suspect it is also much more common.
-Module load doesn't normally fail, but if you can persuade the system to
-unload an unused module I'd expect a non-root user can hit the concurrent
-init race.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-David
+- [Medium] Incomplete fix: a fully-covered (zero-contribution) source skb
+  can still leave the collapsed skb with TCP_SKB_CB(nskb)->has_rxtstamp…
+- [Low] Commit message does not describe the actual code placement or the
+  resulting user-visible semantics.
+
+--
+
+tcp: preserve timestamps across receive queue collapse
+
+When tcp_collapse() rebuilds receive queue skbs under memory pressure, the
+cb memcpy carries has_rxtstamp over to the new skb but leaves nskb->tstamp
+and the hwtstamps at zero.  This patch copies tstamp and hwtstamp from the
+source skb while data is being copied into the new skb.
+
+Link: https://lore.kernel.org/all/20260916124153.43457-1-kerneljasonxing@gmail.com/
+
+A couple of questions below.
+
+> tcp: preserve timestamps across receive queue collapse
+[ ... ]
+> Fix this by copying both tstamp and hwtstamp to the new skb right
+> after the initialization.
+
+[Severity: Low]
+Does this sentence match where the code actually landed?  The copy is not
+placed after the initialization block:
+
+	memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
+	skb_copy_decrypted(nskb, skb);
+	TCP_SKB_CB(nskb)->seq = TCP_SKB_CB(nskb)->end_seq = start;
+
+but instead inside the inner "while (copy > 0)" data copy loop, right after
+TCP_SKB_CB(nskb)->end_seq += size.
+
+That difference is user visible: since the assignment runs once per source
+skb merged into nskb, the collapsed skb reports the timestamp of the last
+contributing skb rather than the first.  That matches tcp_add_backlog() in
+net/ipv4/tcp_ipv4.c and tcp_try_coalesce(), and the V2 note below the
+scissors says as much ("use the same semantic as tcp_add_backlog which is
+to sync the last skb"), but everything under "---" is dropped when the
+patch is applied.
+
+Could the changelog say that the timestamp of the last merged segment is
+the one kept, and drop the "right after the initialization" wording?
+
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 92bc60716f33d..bcb3861a38b9c 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -5854,6 +5854,12 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
+>  				if (skb_copy_bits(skb, offset, skb_put(nskb, size), size))
+>  					BUG();
+>  				TCP_SKB_CB(nskb)->end_seq += size;
+> +				if (TCP_SKB_CB(skb)->has_rxtstamp) {
+> +					TCP_SKB_CB(nskb)->has_rxtstamp = true;
+> +					nskb->tstamp = skb->tstamp;
+> +					skb_hwtstamps(nskb)->hwtstamp =
+> +						skb_hwtstamps(skb)->hwtstamp;
+> +				}
+
+[Severity: Medium]
+Can nskb still end up with has_rxtstamp set while both timestamps stay
+zero, which is the state the changelog says is being fixed?
+
+The new block only runs under "if (size > 0)", but the flag also arrives
+unconditionally through the earlier cb copy at the top of the outer loop:
+
+	memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
+
+If the previous nskb filled up exactly at a source skb boundary, the inner
+loop already advanced skb via tcp_collapse_one() before exiting, so the
+next outer iteration can seed nskb->cb from an skb whose
+
+	int size = TCP_SKB_CB(skb)->end_seq - start;
+
+is <= 0, i.e. a fully covered skb that contributes no bytes.  Its
+has_rxtstamp bit is inherited, the new copy is skipped, and if the skbs
+that actually supply the data have has_rxtstamp == false, nskb keeps
+flag = true with tstamp and hwtstamp at zero.
+
+Fully covered skbs do stay in the ofo tree, which tcp_collapse() itself
+notes with "No new bits? It is possible on ofo queue."  One way to reach it
+is tcp_data_queue_ofo() coalescing into a non-last predecessor:
+
+	} else if (tcp_ooo_try_coalesce(sk, skb1,
+					skb, &fragstolen)) {
+		goto coalesce_done;
+	}
+
+which extends skb1->end_seq and jumps past the merge_right loop that would
+otherwise drop the now covered successor.
+
+Downstream, tcp_recvmsg_locked() then acts on the inherited flag:
+
+	if (TCP_SKB_CB(skb)->has_rxtstamp) {
+		tcp_update_recv_tstamps(skb, tss);
+		*cmsg_flags |= TCP_CMSG_TS;
+	}
+
+and tcp_update_recv_tstamps() overwrites unconditionally:
+
+	tss->ts[0] = skb->tstamp;
+	tss->ts[2] = skb_hwtstamps(skb)->hwtstamp;
+
+so zeros replace timestamps already collected from earlier skbs in the same
+recvmsg(), and tcp_recv_timestamp() emits nothing because it is gated on
+"if (tss->ts[0] | tss->ts[2])".
+
+Would clearing TCP_SKB_CB(nskb)->has_rxtstamp right after the cb memcpy,
+so the new in-loop block is the only place that sets it, close this corner
+too?
+
+>  				copy -= size;
+>  				start += size;
+>  			}
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917132742.87117-1-kerneljasonxing%40gmail.com
