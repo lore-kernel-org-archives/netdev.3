@@ -1,132 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDA0361DA6;
-	Mon, 21 Sep 2026 06:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3D368D79;
+	Mon, 21 Sep 2026 06:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789971535; cv=none; b=uKE8GW/npKc+DjFuc5hH3oGEyScuCs2FVpSSW8S5l4QPdPQlnW+4WZ50mTk/EQnw0u4zAPjzu3HItmSnhAxQAWGMZEMQsn7XQnHJ3F/iw6hFH+eoD/iX8RDuYpqPn/ZMcjI9l54yX16mjJCw9cK/3KxkuN4lEKVx1BVHo3/YXGc=
+	t=1789972030; cv=none; b=ZZgIc0WKjaF1h8dgXmhwySNUlGtyHSMgDv0MPacR/egqQec3x3MB5Il6vfk+PQcEl7T9pZumpAl1tHmzM+M6h0Ds7LRMpgeEf0CeF1g2TNZjhyzhqkPxstFvhdHQrCnLPNOxzE9Hs9nkMJzC/IHltDOOoBIuTN/YybY//io2Xng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789971535; c=relaxed/simple;
-	bh=zQwdudy+/e6uVIiCTCuEoYe5+im3otbNBYOfnHzW0hI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=J7zk7idh/7RDJu9nt2mRDuBBz7CD3JIzByY8MD5vs15L7ll5GaRnbptmrEIKKWBsWrALqMas3HGkHdNrNN9ZdzBX8CqqhKFHTT3kSVSsE+2fstPqmWsFojOpX6yPwquoGBa5NCqV2nMIOZsh+FSE+cN2DrecqR4cp2BUmWyuoBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CY2RMC+D; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789972030; c=relaxed/simple;
+	bh=h7rAnpRUWdoFO9wRV6G8lhzzaCAWMSLGFjO1ZqeZDg4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gXDU5haSkC1HW5ancriCjW5cQKHIzkEVYr1GVKP9PE2Xj8qU3D7oFo5rAvpcSKXJNoAVVDwr/Ww1CiIQ/RA2QapQ41KMjtqKWBuOCL3k578v/uyi5a5i8Mgv2HqA5EpwaGPJiOcWC7nNK96ovDj0JnR0EdWJKqCs0MLci+bfcS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=dbxYBTGj; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CY2RMC+D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B581F000FF;
-	Mon, 21 Sep 2026 06:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789971534;
-	bh=4cTrkejZqjO54vzP9W02sQt9N5PF/Wx2jSHjrZFM5k4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CY2RMC+DNz9xNIoZK14hBmxfCcFt6QyKdMK/xwH5iNIzCNzArlB984Q+Wfv6djmVw
-	 CBv/hUadhRgr8wviJST5L7mhqEb7aE2XqFrn438zP2nipDhlChd/kdatBBSyIoomeG
-	 DegjBaIaAaEXCVxmgvEno4PK7FbEfhqDjHRBsfdUoIlf2AUM+rNuHmUj6W6a90E+df
-	 LjDFF2Di7jyxTwpYJZxzLPj1DS/Pz3Y5DxUTEHQoC9g2OxbPOiXE4e2nBgVOuAfLk+
-	 zPXijxa2lrTKU3HN41BSqZhwz7Q8G+1D29b3oN/qZqzME2iPDzPSAnUHKXd4ftqfXH
-	 TKzTisJAeiT1w==
-Subject: Re: [PATCH net v2] net: stmmac: do not cache the new TSO MSS before
- it reaches the DMA
-From: netdev-bot+sashiko@kernel.org
-To: xiaolinkui@126.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- xiaolinkui@kylinos.cn, stable@vger.kernel.org
-Date: Mon, 21 Sep 2026 06:18:53 +0000
-Message-ID: <178997153300.2160803.9722094587431911734@kernel.org>
-In-Reply-To: <20260920061609.1919876-1-xiaolinkui@126.com>
-References: <20260920061609.1919876-1-xiaolinkui@126.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="dbxYBTGj"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4e86eb585;
+	Mon, 21 Sep 2026 14:27:00 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	"Denis V . Lunev" <den@openvz.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net] net: neighbour: Serialize proxy timer teardown
+Date: Mon, 21 Sep 2026 14:26:50 +0800
+Message-Id: <20260921062650.22461-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260918231954.4049829-1-kuniyu@google.com>
+References: <20260914075604.120183-1-runyu.xiao@seu.edu.cn> <20260918231954.4049829-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0c2a57e9903a1kunm49c0ba5e353f7
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTU5JVh5OTR5MHkwfTx5MGVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUJCSU
+	5LVUpLS1VKQktCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=dbxYBTGjUK2E4uabB6gnW5eRe7l/mpAmFs8w2Mh6zue8IBR+isTrOh++Xkt4DFpH4GwvXiGnLMXWRQSFaj8FfUGwpRDf+bk8fqX3ZBB44CECSMUDcK9/73HUP34w2XeWy66wFNabAjbizxoBmtBXuWz0ZAthE/gZ/hQrI46NOtc=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=uHyHVs2p2BeM204OzQEYRrR5F0lBaEiaKwvTaTbBE4Q=;
+	h=date:mime-version:subject:message-id:from;
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Thanks for reviewing this.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On Mon, 14 Sep 2026, Runyu Xiao wrote:
 
-- [Medium] The commit message of "net: stmmac: do not cache the new TSO
-  MSS before it reaches the DMA" describes a failure mode that cannot…
+> A controlled QEMU test with explicit 5 ms schedule injection reproduced
+> the orphaned queue state on the unfixed kernel and did not reproduce it
+> with this change. Natural-load runs reached both paths but did not
+> trigger the narrow race.
 
---
+Could you provide the repro ?
 
-net: stmmac: do not cache the new TSO MSS before it reaches the DMA
+The reproducer uses an x86_64 QEMU guest with three network namespaces and
+veth pairs. Proxy ARP and IP forwarding are enabled on the guest, and an
+AF_PACKET helper sends valid broadcast ARP requests from a source namespace
+through the proxy-ARP ingress interface. The same interface is repeatedly
+brought down and up while the requests are being sent.
 
-The patch moves the tx_q->mss update in stmmac_tso_xmit() so it happens
-only after the MSS context descriptor gets its OWN bit, keeps tx_q->cur_tx
-parked on the context descriptor slot while the frame is being built, and
-releases that descriptor explicitly on the error paths.
+For the deterministic run, I built the baseline and fixed kernels from the
+same source and temporarily enabled C0109_POC instrumentation. It adds a
+5 ms delay at both of these points:
 
-The code change itself looks fine; the question below is only about the
-changelog.
+  - immediately before arp_process() calls pneigh_enqueue();
+  - after __neigh_ifdown() observes an empty proxy queue and immediately
+    before timer_delete_sync().
 
->     The next skb carrying the same MSS then compares equal to the cached
->     value, so no context descriptor is emitted and the hardware segments the
->     TCP stream with a stale MSS, generating frames whose payload size does
->     not match what the stack accounted for.
+The guest was run with two vCPUs and 2 GiB of memory. The trigger performed
+300 down/up cycles while sending the ARP requests. The test-only oracle
+reported a failure when __neigh_ifdown() completed with proxy_queue non-empty
+and proxy_timer not pending.
 
-[Severity: Medium]
-Can that on-the-wire symptom actually be observed before this patch?
+With the unfixed kernel, the run reached both paths and reported the oracle
+772 times. With the fixed kernel, the same workload reached both paths but
+reported the oracle zero times. The natural-load runs also reached both
+paths, but did not hit the narrow interleaving without the temporary delay.
+The delay is only schedule amplification for this race; it is not a claim
+that a third-party workload triggers it frequently in normal operation.
 
-Before the patch, the abandoned context descriptor sits at the slot that
-tx_q->cur_tx had when stmmac_set_mss() was called, and cur_tx was already
-advanced past it, so every later frame is queued behind that descriptor.
-Neither dwmac4_set_mss_ctxt() nor dwmac4_release_tx_desc() ever sets the
-OWN bit, so the slot stays at OWN=0.
+> Isn't is resolved by simply checking if dev is down here ?
 
-The error paths in stmmac_tso_xmit() return without calling
-stmmac_flush_tx_descriptors(), and that is the only place the tail pointer
-is written:
+A check of the device state in pneigh_enqueue() alone does not serialize the
+queue insertion with the purge, empty check, and timer deletion. An enqueue
+can pass that check while the device is still up, then be delayed until
+after __neigh_ifdown() has observed an empty queue and before it deletes the
+timer. The newly inserted skb would still be left without a timer.
 
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_flush_tx_descriptors() {
-	...
-	stmmac_set_queue_tx_tail_ptr(priv, tx_q, queue, tx_q->cur_tx);
-	...
-}
+There is also a second teardown path to consider. __neigh_ifdown() is used
+by neigh_carrier_down(), where the device can remain administratively up and
+netif_running() can still be true. The proxy_timer_lock serializes both the
+per-device and carrier-down teardown paths with proxy queue insertion and
+timer rearming. The timer callback does not take this lock, so
+timer_delete_sync() can still wait for an in-flight callback without a lock
+dependency.
 
-so the engine stays parked on the abandoned context descriptor. When a
-later xmit bumps the tail, the DMA re-fetches that slot, finds OWN=0 and
-suspends again.
+I will include a shorter version of these reproduction details in v2's
+commit message and can provide the complete QEMU harness if needed.
 
-Meanwhile stmmac_tx_clean() reclaims the OWN=0 context slot in software and
-then stops at the first descriptor the DMA still owns:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_tx_clean() {
-	...
-		if (unlikely(status & tx_dma_own))
-			break;
-	...
-}
-
-which pins dirty_tx just past the stuck slot, so cur_tx can never wrap
-around and rewrite it.
-
-Doesn't that mean no frame queued after the mapping failure is segmented at
-all, stale MSS or otherwise, and that the real pre-patch consequence is a
-wedged tx ring recovered only by the watchdog / stmmac_tx_err() path, which
-resets the channel and clears tx_q->mss via stmmac_reset_tx_queue()?
-
-The patch does fix that by keeping tx_q->cur_tx on the context slot and
-releasing mss_desc on the error paths, but the changelog does not mention
-the stall. Since this carries a Fixes: tag and Cc: stable, could the
-changelog describe the tx stall and controller reset instead of the
-mis-sized segment description?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920061609.1919876-1-xiaolinkui%40126.com
+Regards,
+Runyu
