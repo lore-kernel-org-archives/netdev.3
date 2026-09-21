@@ -1,82 +1,78 @@
-Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
+Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF84E4432F2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9D3D88F5;
 	Mon, 21 Sep 2026 20:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.75
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790020891; cv=none; b=WV9GcwIT12O6cV4+5PvmFj2WK5WhzJ2k9ruzOvVpnxhoYKykqglpgYtCapyonlVE8BqXQW8HgKKP3X7c1NAVB3KTFEyVzJQ0iVZlweiiDFtK/QuN1pmqMjlHzx7pXS98eQvzFFAAN1noy5vFdQSy+XRtpzJu/D/tb4J6XXPe8Lc=
+	t=1790020891; cv=none; b=polN/J6df6TbPoWZ3bUJLGaNSzsmA4Gc+KNY0em7SyVQVnMsvTgMuFIylULWLcKUESSuZ7xeMcxR/0vaNuwBXyLAx4w5aIELnteZlcwRw8o+8xMTNSEpi/fffAwX/95U2ZDE8K7jh8AAMSg5qVyEfllaMUjZvgXKEbEafBbSdrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790020891; c=relaxed/simple;
-	bh=ohiCbsmehgPhHi4jMihcbiOCuZx+lSCRS0pRf5dyCPs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Wrko0gug0XwG5cO/Cu3R0XEXGILc/hRGb0BPvSnep06OJ3UcTF2YL2CS0SpG1B9nd+9b1zeZb0stOgSOWXkpK5/JWH9jy4JLZ36d/icuezTtuQ05a8hdYQEJez6Wk+7I45MY8d3sk2NdgRNzPm1zMM7U+wgQaCoPe5EFy5xYJac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=fkWSRADy; arc=none smtp.client-ip=173.37.86.75
+	bh=1IbCnn5ExMs1u3paqE8e5LFnVmYSitrHG+7sl4Bq+3E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=MpRBixnGrZLh0ZG7MI99goTahqTdYKyUCvj0W4jaoq+wSWTtGiAiFJtrlOFgFmSy4exVsOtmlGgOcEcOppA3xTigWxtYxJx7YMJeUrPvBiZTMOy9PU3LodzedrG83vZU8YSu5FS4liTRq0FLLGt8u6XNR5wwNdQdhQ6gJaO5zAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=b8w/w7uk; arc=none smtp.client-ip=173.37.86.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="fkWSRADy"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="b8w/w7uk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=3985; q=dns/txt;
+  d=cisco.com; i=@cisco.com; l=2408; q=dns/txt;
   s=iport01; t=1790020890; x=1791230490;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=KSjttxtuYOgF/iTR6bLbLJtfDW806SK6C19fvDC2wpI=;
-  b=fkWSRADyFmIGrHOywRfaOeRmbbcOPb+nD42vJodKbv8PXUKEjAPDahQx
-   m50rkv6byrmsTlKIYvmgZq7ikPaYm7NDh4kZYh66+NxFONvBiT8+Ft3aM
-   qErkXoAR4rBN1WntTmJcAV/PvS54BgCvSFFEnHhivZIGJoyjok/l4Z7i7
-   9R9dEdIAJbZ6SoocJx78gXCyVhxVWkPgTZrn6BWFFadkhZYJNvbd8w1xl
-   QURFAzPZdEVmUX2G6pDmsB9eburnB0pYj8ZG3ZnOr51m1uW0ge3ONhcSw
-   ERkDPdf7OdS5q3x6mv+siunfS8qo9w6s7WS1attzW0HttTq8MNGZWxGnp
-   g==;
-X-CSE-ConnectionGUID: 8bLqk5csRuSgc2YxIrMayQ==
-X-CSE-MsgGUID: PXydF3UuS2aMlEz782Ycjw==
-X-IPAS-Result: =?us-ascii?q?A0A5AACvi7Fq/47/Ja1aHQEBAQEJARIBBQUBgXwIAQsBg?=
- =?us-ascii?q?heCFENJhFeIG4c3giGeHoF+DwEBAQ9RBAEBhQWOCQImNAkOAQIEAwIDAQEBA?=
- =?us-ascii?q?QEBAQEBAQEBCgEBBQEBAQIBBwWBDhOGXJAVJ0QSNQImAkgWARKDAoJ1A8V4e?=
- =?us-ascii?q?oEygQGEftlKgXQVgQouAYVwgm0BgXCECDuEQScbgUlEgRWDaYQfg3+CagSBD?=
- =?us-ascii?q?oEUgQyCYQWLVoYeCT+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQdEg8EF?=
- =?us-ascii?q?jIdcAwnEiwXL1gbBgWBHXwUBBOCGiMZNnqBCV6BKylgARAXgQeCCAKCVIF/A?=
- =?us-ascii?q?gFJQw4HRVMJJ0EKEkcpIggSCQETGjALgScYDUgRLDcGDxkEPQFuB49eH4FpA?=
- =?us-ascii?q?WsGARZ5gQsiMhkEFxoRAR0BkwYqHYNZjV9roQ+EKIFmiCyXZDOXZ5MGmQgjo?=
- =?us-ascii?q?2cBT4RpgWg8gVkzGggbFTuCZ1MZD49YAQGSBwG8eycyPQEBBwIHDgMLgWiEX?=
- =?us-ascii?q?osiAgMMFweBTwEB?=
-IronPort-Data: A9a23:bCCYQqshFsEBcjcGMlN17JpmNOfnVIRfMUV32f8akzHdYApBsoF/q
- tZmKT/XPKncNmfyKNoibtm3oU5SvpKDzt9kTldvpCFhQ3hAgMeUXt7xwmUckM+xwmwvaGo9s
- q3yv/GZdJhcokf0/0nrb/656yYsjclkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1vlV
- eja/YuFZzdJ5xYuajhKs/PZ8Us11BjPkGpwUmIWNKgjUGD2zxH5PLpHTYmtIn3xRJVjH+LSb
- 47r0LGj82rFyAwmA9Wjn6yTWhVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0NS+7vw60c+VZk
- 72hg3AfpTABZcUgkMxFO/VR/roX0aduoNcrKlDn2SCfItGvn3bEm51T4E8K0YIwquxTGGIT/
- uciNQsCZUqyl8Os5buqc7w57igjBJGD0II3oHpsy3TdSP0hW52GG/iM7t5D1zB2jcdLdRrcT
- 5NGMnw0M1KaPkAJYwtNYH49tL/Aan3XaDREqUmVpqof6GnIxws327/oWDbQUoHQGJQJzhzH/
- goq+UzBMgAWGoei1AHf+1eoq/2QzXnKU4ANQejQGvlCxQf7KnYoIBEfS1a+ifWwlEO7X9VRN
- woS9zZGhaU+6UmiXNThdxK/p3GAs1gXXN84O+098gSW4qnZ+QCUAi4DVDEpQN87vsYeRjEw0
- FKN2dTzClRHubuZU3+CtbGZsT+/JwARMGkEIyQEJSMd6tPupoAblB/DTt9/VqWyi7XdHTD23
- iDPryUkgbgXpdAE2r/9/l3dhT+o4J/TQWYd4AjLUm+7xh12aZTjZIGy71Xfq/FaI+6kokKpp
- nMInY2aqesJF5zIzHHLS+QWF7bv7PGAWNHBvWNS81Aa32zF0xaekUp4ulmS+G8B3h44RALU
-IronPort-HdrOrdr: A9a23:pgI2cqhSdGu5QnfpAhLOEzLmXnBQXkQji2hC6mlwRA09TyVXrb
- HLoB1973/JYVcqOU3I9urtBEDtexnhHP1Oj7X5Q43MYOCOggLBR72KhrGO/9SPIVyaysdtkY
- w8N5VkANfzDV915PyKgzWQIpILwdGB/qztpcq29QYOcShaL4xt8At9DB+WCQlVSBkuP+tBKL
- OsoudKuDakf20adYCABncDV/XevNGjruOBXfd/PW9B1CC+yRW19bX9Dx+Umj0aUz9J3PMe1F
- KtqX2A2k1m2MvLsCM1EATonu9rpOc=
-X-Talos-CUID: =?us-ascii?q?9a23=3AxMeK92iiHdFN35zjEv+zCgRXcTJuInf51XSNKFS?=
- =?us-ascii?q?CFF1mQ+ekWX6K3ap1qp87?=
-X-Talos-MUID: 9a23:2jTMNguNKPXlIS5xMs2nvAFzOOkz3rmVUkkolbgU5JneBCdyJGLI
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=J8PIC4Sls3ICIho+s3ExQIvvAHAm1YM1y599LQa8IOM=;
+  b=b8w/w7ukpSMM2Mg/DSjEgYILribwA5cSBK5vCaZqesTtKGXn/HsVMLI7
+   e/26h6sd7dmiyycabn69kcFZu2AvIEpTglDvxBoYpBe3WWeYlBgWK53Dk
+   3lw9ccuA5lRQKGllMmpHO69dE86Wil0W4eUspGIDDCBQ3YA0r2HuQF1uw
+   sCVd8QXnQ4cm12pDdVqIIDAo76j+1lWMbxdRwfHJKEvmICcaJ5L2SjBo/
+   woU+93nm69Yqn+KDlSmboCrIvMeoim0Ctp2jLflSIKcxn1OPCmH2mKADX
+   LoAYKNvJL7kpIrZRH5Ao5nyc4we1OZC/iKkSnAhFNFx10D7Bb40aQ/eMp
+   Q==;
+X-CSE-ConnectionGUID: ZPVFOrqYRziyUxsXGou5Rw==
+X-CSE-MsgGUID: F8oFZYD7RYCIAnMbFh33Hg==
+X-IPAS-Result: =?us-ascii?q?A0BGAgCvi7Fq/47/Ja1aglmCGD+BVUNJhFePUoIhmECFX?=
+ =?us-ascii?q?hSBag8BAQEPUQQBAYUFAo4HAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFA?=
+ =?us-ascii?q?QEBAgEHBYEOE4ZckBMCAQMjVhAlAiYCAkYQBgESgwKCdQPFeHqBMoEBhH7ZS?=
+ =?us-ascii?q?oFoAQsUAYEKLoVxgm0BgXCECDuEQScbgUlEgRWDaYQqg3SCagSDHBKUWgk/g?=
+ =?us-ascii?q?QIcA1ksAVUTDQoLBwVhUjMDIAoLEhIYFQIUHRIPBBYyHXAMJxIsFy9YGwYFg?=
+ =?us-ascii?q?R18FAQTghojGTZ6gQlegSspYAEQF4EHgggCglSBfwIBSUMOB0VTCSdBChJHK?=
+ =?us-ascii?q?SIIEgkBExowC4EnGA1IESw3Bg8ZBD0BbgePXh+CSgIQFnklWoEUHTiTHSWDW?=
+ =?us-ascii?q?Y1fa4E1n1qEKIFmoBAzhASTY5MGLodmkHQjgjaiAYRpgWg8gVkzGggbFYMiU?=
+ =?us-ascii?q?xkPji4WgRQBAZIHAbx7JzI+AQcCBw8CgXORfgEB?=
+IronPort-Data: A9a23:8wrAL6BfFTKcTRVW//viw5YqxClBgxIJ4kV8jS/XYbTApDtxgjJUx
+ 2MfXG2Pb/qJM2H2fdtxPNm+o01VvMCEm9BrOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
+ /02M4eGcYZsCCCM/n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXGthh
+ fuo+5eBYA7/gmYuWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
+ P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
+ 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TE8c1QImYsJLwi6OdmPHFVx
+ dMfNW03cUXW7w626OrTpuhEnM8vKozveYgYoHwllWyfBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
+ pdfMGY1BPjDS0Un1lM/E5sinfyohXnXeDxDo1XTrq0yi4TW5FErjuGyb4uPJrRmQ+17zkG2l
+ FPqoF7IKTAzMvmV5zreqVKj07qncSTTHdh6+KeD3vJjnlCW7mAaFhATUVy1vb+/h1LWc99TN
+ kkd6Ccyhac180OvQ5/2WBjQiH6DpBsHc9ldCes37EeK0KW8ywWEDGEsTTNbbtEi8sgsSlQC3
+ 1mFhd72RjpirLGYV1qZ67GS6ziyUQANJGUPYy4sVwYJ49D/5oo0i3rnStdlDb7wjdDvHzz06
+ y6FoTJ4hLgJi8MPkaKh8jjvhT+wqpXXZhA66x+RXW+/6A59Iom/aOSVBUPz9/1MKsOdC1KGp
+ nVBw5XY5+EVBpbLnyuIKAkQIIyUCz++GGW0qTZS81MJrlxBJ1bLkVhs3QxD
+IronPort-HdrOrdr: A9a23:drM86K+IjT8L6CPw1Yhuk+AuI+orL9Y04lQ7vn2ZhyYlFvBw8P
+ rOoB1773HJYVkqNU3I9errBEDEewK/yXcX2+Ys1MmZPDUO0VHAROpfBMnZsl7d8kbFmtK1u5
+ 0QFpRWOZncAUd3iMDi7BL9MdoxqeP3iZyAtKPyw2hgSAdyZ7ol1Qd2DQ6HDlZ7LTM2Y6bRbK
+ DsgfZvln6HZWkdaNi9Cz0uWujOoMCOqbfdCCR2fyLOLGK1/EmVAHmQKWni4isj
+X-Talos-CUID: 9a23:MQZRam2Qef3QEi2OPszOCbxfKPgbXFrH1UbqMU6pNHZyeJKSVAKq5/Yx
+X-Talos-MUID: 9a23:RrdaNQqyb7M+W/XLh2cezx8yM+la0ojxMnEmsLwAnsOqNXcrGzjI2Q==
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.27,115,1787011200"; 
-   d="scan'208";a="525948270"
+   d="scan'208";a="526177924"
 Received: from rcdn-l-core-05.cisco.com ([173.37.255.142])
-  by rcdn-iport-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Sep 2026 20:00:21 +0000
+  by rcdn-iport-5.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Sep 2026 20:00:22 +0000
 Received: from [127.0.0.1] (unknown [10.25.128.208])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-05.cisco.com (Postfix) with ESMTPS id AF7B218000236;
-	Mon, 21 Sep 2026 20:00:20 +0000 (GMT)
+	by rcdn-l-core-05.cisco.com (Postfix) with ESMTPS id 76FC11800035F;
+	Mon, 21 Sep 2026 20:00:21 +0000 (GMT)
 From: Satish Kharat <satishkh@cisco.com>
-Subject: [PATCH net-next 0/6] enic: configure V2 VF addresses and receive
- mode
-Date: Mon, 21 Sep 2026 12:59:43 -0700
-Message-Id: <20260921-b4-enic-sriov-v2-vf-receive-control-v1-0-67a0a6e08d43@cisco.com>
+Date: Mon, 21 Sep 2026 12:59:44 -0700
+Subject: [PATCH net-next 1/6] net: add netif_rx_mode_schedule_fresh()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,10 +81,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAK+MsWoC/yWNwQrCMBAFf6Xs2YW0tIX6K+Kh2b7qimwkiaFQ+
- u9GPQ4DMzslREWic7NTRNGkwSq0p4bkPtsNrEtl6lw3uqkd2fcMU+EUNRQuHZeVIwRawBIsx/B
- kP0jv/DJj8BPV0iti1e13uZAhs2HLdP2b9PYPSP5O6Dg+7rAlYpEAAAA=
-X-Change-ID: 20260916-b4-enic-sriov-v2-vf-receive-control-b5c40bdae5b9
+Message-Id: <20260921-b4-enic-sriov-v2-vf-receive-control-v1-1-67a0a6e08d43@cisco.com>
+References: <20260921-b4-enic-sriov-v2-vf-receive-control-v1-0-67a0a6e08d43@cisco.com>
+In-Reply-To: <20260921-b4-enic-sriov-v2-vf-receive-control-v1-0-67a0a6e08d43@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -96,96 +91,77 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Satish Kharat <satishkh@cisco.com>, sebaddel@cisco.com
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790020820; l=4098;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790020820; l=2414;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=ohiCbsmehgPhHi4jMihcbiOCuZx+lSCRS0pRf5dyCPs=;
- b=6zVQ/uUqa2Dt938frJYwiPUOTnx10MPh7Bd67vNVjr50ANPQzqs1tAo75sTmoMIq36xDKmKz/
- 4UBYKaoLcohDw2BWPobTlStgte1m2Y3flYzeOrdOe/nbrOHVnI7O5bo
+ bh=1IbCnn5ExMs1u3paqE8e5LFnVmYSitrHG+7sl4Bq+3E=;
+ b=Zsix0xTJfOEQYoG315riWlX/NJUX1udCnr14VobgzN6SamnTdKThKS72mVMdlR9GkpchBIiU0
+ 1x1rPmfqTB8DJsUdS13NLZmGF9K/lGkCkJ/DLijj+ZlbCjbF5egogk3
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.208];TLSv1.3;TLS_AES_256_GCM_SHA384;256
 X-Outbound-SMTP-Client: 10.25.128.208, [10.25.128.208]
 X-Outbound-Node: rcdn-l-core-05.cisco.com
 
-An ENIC V2 VF cannot program its station address or receive filters
-directly. The PF owns those resources and exposes mailbox operations for
-the VF to request changes. Add the VF control plane needed to use those
-operations for station-address, address-list, and packet-filter
-configuration.
+Add a receive-mode scheduling helper for callers that need to replay
+the complete configuration after a state transition.
 
-The mailbox transport remains asynchronous: receive dispatch continues to
-process replies and unsolicited PF notifications. The VF allows only one
-request/reply transaction at a time because it stores one expected reply
-and uses one completion. This serialization applies only to VF requests;
-PF-side request processing is unchanged. Notifications and their
-acknowledgments remain deferred and asynchronous.
+Cancel a pending retry before queueing the immediate update
+so stale retry timers cannot consume the new operation's retry
+budget. Resetting the backoff also gives the fresh replay its full
+bounded retry sequence.
 
-The first patch adds a netdev helper for scheduling an immediate, complete
-receive-mode replay. The second patch serializes only VF requests. The third
-patch recovers when a lost or malformed reply means that the VF does not
-know which changes the PF applied. A hardware send timeout is handled
-separately because the descriptor may still belong to the device.
-
-The remaining patches add and validate the configuration operations,
-manage station and administrative MAC changes, and install address lists
-and packet-filter settings through the sleepable receive-mode path. Replies
-are checked against the requested operation. If a station-address
-replacement deletes the old address but fails to add the new one, the VF
-registers again and rebuilds its mailbox state instead of assuming which
-address the PF kept.
-
-This is the VF-side receive-control series. It does not register
-.sriov_configure, so the in-tree V2 PF path remains dormant. A later PF
-activation series must implement the PF side of the MAC-address and
-packet-filter mailbox requests, including the VF policy checks, before
-wiring that callback.
-
-AI assistance:
-
-An LLM was used for design review, source review, commit-message
-drafting, test automation, and review triage. Sashiko was used as an
-additional review tool. All findings and generated changes were manually
-reviewed, and the author takes responsibility for the series.
-
-Validation:
-
-- With this 6-patch series, the VF module passed 20 unload/reload cycles,
-  10 concurrent PF administrative-MAC versus VF unload/reload race cycles,
-  and concurrent 100-unicast/100-multicast address churn with 20 netdev
-  reopen cycles. Carrier, the selected address, bidirectional traffic, and
-  host/guest kernel health were checked.
-- With this 6-patch series folded into the full SR-IOV development stack,
-  the final module passed the 20-case cross-DUT PF/VF TCP, UDP, and
-  8972-byte jumbo matrix. It also passed 100 unload/reload cycles on each VF
-  guest, 25 PF administrative-MAC versus VF unload/reload race cycles, and
-  a 30-minute post-stress traffic and kernel-health soak.
-
+Assisted-by: LLM
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
-Satish Kharat (6):
-      net: add netif_rx_mode_schedule_fresh()
-      enic: serialize V2 VF mailbox requests
-      enic: recover V2 VF mailbox when PF state is unknown
-      enic: validate V2 VF configuration replies
-      enic: manage V2 VF station and administrative MAC
-      enic: configure V2 VF receive mode over mailbox
+ include/linux/netdevice.h |  1 +
+ net/core/dev_addr_lists.c | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
- drivers/net/ethernet/cisco/enic/enic.h       |   54 +-
- drivers/net/ethernet/cisco/enic/enic_admin.c |   29 +-
- drivers/net/ethernet/cisco/enic/enic_dev.c   |   11 +
- drivers/net/ethernet/cisco/enic/enic_dev.h   |    1 +
- drivers/net/ethernet/cisco/enic/enic_main.c  | 1259 +++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.c  |  740 ++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.h  |   84 ++
- drivers/net/ethernet/cisco/enic/enic_rq.c    |   11 +-
- include/linux/netdevice.h                    |    1 +
- net/core/dev_addr_lists.c                    |   21 +
- 10 files changed, 2131 insertions(+), 80 deletions(-)
----
-base-commit: 8830e65ed46de41f849eefb8ba227d4852c460f6
-change-id: 20260916-b4-enic-sriov-v2-vf-receive-control-b5c40bdae5b9
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 5d16737167ee..2246be72d811 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5197,6 +5197,7 @@ static inline void __dev_mc_unsync(struct net_device *dev,
+ 
+ /* Functions used for secondary unicast and multicast support */
+ void dev_set_rx_mode(struct net_device *dev);
++void netif_rx_mode_schedule_fresh(struct net_device *dev);
+ void netif_rx_mode_schedule_retry(struct net_device *dev);
+ int netif_set_promiscuity(struct net_device *dev, int inc);
+ int dev_set_promiscuity(struct net_device *dev, int inc);
+diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
+index 08528ca0a8b3..4ae0510ce91f 100644
+--- a/net/core/dev_addr_lists.c
++++ b/net/core/dev_addr_lists.c
+@@ -1337,6 +1337,27 @@ static void netif_rx_mode_queue(struct net_device *dev)
+ 	__netdev_work_core_sched(dev, NETDEV_WORK_RX_MODE);
+ }
+ 
++/**
++ * netif_rx_mode_schedule_fresh() - schedule a fresh receive-mode update
++ * @dev: network device
++ *
++ * Cancel any pending retry and reset its backoff budget before scheduling an
++ * immediate receive-mode update. Callers use this after a state transition
++ * which requires the complete receive configuration to be replayed, rather
++ * than after a failed update (which uses netif_rx_mode_schedule_retry()).
++ *
++ * Context: sleepable. The caller must hold the device operations lock, or
++ * RTNL for a device which still uses RTNL-compatible operations.
++ */
++void netif_rx_mode_schedule_fresh(struct net_device *dev)
++{
++	might_sleep();
++	netdev_assert_locked_ops_compat(dev);
++	netif_rx_mode_cancel_retry(dev);
++	netif_rx_mode_queue(dev);
++}
++EXPORT_SYMBOL_GPL(netif_rx_mode_schedule_fresh);
++
+ static void netif_rx_mode_retry(struct timer_list *t)
+ {
+ 	struct net_device *dev =
 
-Best regards,
---  
-Satish Kharat <satishkh@cisco.com>
+-- 
+2.43.0
 
