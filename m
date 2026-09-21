@@ -1,195 +1,213 @@
-Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-50.mail.aliyun.com (out28-50.mail.aliyun.com [115.124.28.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F75548820B
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.233
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789995225; cv=pass; b=BwYvcIK8b5zvfLP08BxYrSRRhNT+2m1goXTTsHhFs6+biqOnVOBRMUJP+uq6uK83UEY6IlLDhYfg/3yH4qeDXQeOTiOLBKlUIm4yR9+A+RIUOI4SAQbWYqIf+vmbiQE8olMmvKic30hppoSiZQUw4hL85/Uk0WLbxJR1/hmPFHI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789995225; c=relaxed/simple;
-	bh=K4B5FxCtXwkBIRjmKyegvjxSrKxmltPU/9UHdRZnXfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eDI7v+XdeUQgAkPlL67ccYJEfpAmZElcsSY9oUXfxX+NIKtrpQEV9GfsBpiNkyNC4AmlyMG7ozrqiC7SaZduFm+Bv/uoF/v9f0AOiy9UQ7iAcBvMD0YyAaM1xKCPdQCOToBSo8T73QncFz/z9AmBvpik2iE6pD3Zh7suf4FRUpc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VGApFe44; arc=pass smtp.client-ip=74.125.230.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1BB494817
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789995296; cv=none; b=C/WXrzmq94/H/Sdsg4JHWFmoy7wcrxHYZK1VVRmA9mm3gHruTDVKek7/F43J/9EdSpKLYcV8q4DhNcRmsuY+6pLcaf9q7U/3MJZRiXf6kC8pdbgD1iJyOVYv9BdR4XWSm72PWAB5MEQkNDFj7HwC3hp+r9nMT3GhFb4oyCTsqEo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789995296; c=relaxed/simple;
+	bh=8JJDfPlUnywI+9Ks+Wzk8unG7nzb3MR9RAgZfoLn6UE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KOm5bc5Tu0pvbCAmYv/YdywkPyhy1Ofzaj+Xp0OciTCzFk61IqqmVppd/m3ouysh5Y+kzMn2cjwwATApSCQ1KqcGEkM6PJfvon5+2KlxKwMA/EXhDZ6qa8dGRB73LvIsAZZj5vKlm1oDUyV7jR7fi10NhPxmwuS/LPdcswQ9Q08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=Z/JLS79k; arc=none smtp.client-ip=115.124.28.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VGApFe44"
-Received: by mail-qk2-f41.google.com with SMTP id d75a77b69052e-532c7643bc4so10246721cf.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 05:53:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789995222; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RFNbAGIX+NcLq+Dh2E75rWCk36pxrcCoLxlxzbwyY6CFaq9aj5FSjEKqH8Qe0bwwOE
-         6I8why6O0WtlLfrJHvGAqSkr2h36f6YZJfopqL/QPjih+12Tz7o+OT66LgmXmrunQaH6
-         6e0TDDixPSeXzv8m4XcxJJwWZ0PdZuk7mGGhdbCbqW+XUzG5/8gZuIjcWOsx9/4zuEP4
-         iD2R/dAMDoP+Mfi5g7VqbeHqdJHaxdLhOTbwf3fI8kgwmTPxNx1U6XoXQZA33ky/swqh
-         u6NIIpxUMFIYqnKr01hZ/WeIoL9DKs46+/jcHCQZCZNNM/8TzAfaPAZ9vNQr3j9U3Q3U
-         Jqgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4PDmOLAc0V7K9wrJbGlsSxIG4ufpRZcawnbZOqhCO34=;
-        fh=ZatdjnH08a5PXytem+a8ETIrxcgakH8HjhZIL+pjZ6c=;
-        b=YWPAg/6BYfFGxdGPHfBMPYUJk58hANpMCHCGsoAmEzcoV0g13UsOIYpC2ihXxwPa4V
-         7Q4rxPQ6m3TcIdbEBgPqH7DcFRhmm9lijZOWbO5nQYd+7jaY7NFsOtP35ZDwRoNlE/ry
-         z8PEJUM8XEgckgcaoBU/qKOFkAO4ev9u1BeWGKv5Bka9muGwCb7gsISbfFLGyQ84gGP+
-         GqcnYaBXyEnbsNi6Wks+TZ30FJNoMNFW9yiMPwY6HIT32Tqzt2ewsOpw7QhxokUcFMol
-         T+IiD9OnWoUspdAIFISTePJ31DRfYrYMpenTqKQLDllBFMEgvwGeylMa4OsALgojPhue
-         kIPQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789995222; x=1790600022; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4PDmOLAc0V7K9wrJbGlsSxIG4ufpRZcawnbZOqhCO34=;
-        b=VGApFe449kZ5dDn1YYacxDm7ebegCuUwjDVXuxkI32VDXNGWQGvjNGLdgaj37C/q0X
-         IvLxos7lFuJecjehpOKV335xcnhHYaIfRpQZYzpjeLI6PED3JotZsuP+0puHvXnNf3SW
-         mCqeS7PxgnkWEsRTm3N+ykxuOtif10Dv9jK6GIpCa/Avwz094eAfNk3se/2SxY1Vx+x+
-         m5aEoxBwEkfBG+j7CTFN64S//NpRip5UKRMWShaybnRu+zS50amavi/rfU+DSUavh/x1
-         an8EpGLIhfbHAhcCSKNu3uV73h9l8wN6WCrD2KPTlATL5y/TFaBrW1/geCADY87s3+jK
-         hbLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789995222; x=1790600022;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4PDmOLAc0V7K9wrJbGlsSxIG4ufpRZcawnbZOqhCO34=;
-        b=ZjHQohxUNIgdOHFGMcPAvgvB1z7wkTt2dYJHsbGP5+GZAmU7HcX/0cCL9BFWeYbBhm
-         MIrOUnDQaZAo0VecjRGvKXTa64/sKHyqiAGkK9QJrFH8BDRYhJYVw1q2fGCjflzVlGvQ
-         84NOMr8Aeho5FlYez20smo5AVXYfNYr4Sdvsm70m4XarqH65w4OgoKobQ9/QDYMV07Zn
-         b42BEzISptq/yk9TFoN76HJD+LcanyplLF93C1uq4vSmHsBWHH0b1dpGAqm0ECJhErKQ
-         WJwK8sunRTjWGtUiIAxsvwb7/yb/OksBLJDu5C4hLf+Qf+qsk+XLpeLe+n8+XzUNciml
-         j6Jg==
-X-Forwarded-Encrypted: i=1; AKwUvByuVqJ2vPcRHOsTbPlV5RmLuHz4hPhoZNbP4RP6sbGPA3rOQTxVFHEvr+t4vY2pI1x168VD9bc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mwjnm1soDMtDNwKahvpVJM0imYnOouHmUmTKJODWKrxq/of5Ry
-	EKxqYLSGaPCLcQuxxRFQo6l5l5fE6/l4UaG59MKjvsutVnBEJeGZ9ZYgtgnSYNw8BNyY7j1dDJh
-	qp7i9v575aflAq4oPUGq00yjBFlk7MCAIZgvM7Myb
-X-Gm-Gg: AYBFou0DDi8qHzT67FwXiNjSPEr4TZsaTOSkROWdhkiZXbtVbVfHeLJtV8dlj8iteyw
-	VjucRBvHJsqKpjdxdZTkfi+Lmpawb0sPxgchDCUCnW01l92GO/MqSmd2h4Zf2tPxNBWiPBSg37q
-	bX8wF0Uc7s538042fo4WipsbkQvkAiP4FXzDBRglw9H/HFj8NEidpm4oW1FXEwNCfkiucJZxi9Y
-	m6PFay/YeHhsekiBLnLdZZTeL6QI87VGAecOzgu0T9JDhfFKBdI3mwYQnkY8NKPvj2J+ADjw4BI
-	0GM4ny5MCsr8Ik8fNTh5IMCZN5s9HYwcPbp6dLi2RjMAkH5phR0VFji739lYcH/us/CyJ1tx4ER
-	vDQyVZGoWNeOklxmhDPiKEMpQdGgUJJeWFFTd1jdXHgTbA+mATweAAF69Pt0+KRJIvOCy2A==
-X-Received: by 2002:a05:622a:3ce:b0:530:42e4:1b68 with SMTP id
- d75a77b69052e-532d8e359d4mr4583801cf.44.1789995221374; Mon, 21 Sep 2026
- 05:53:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="Z/JLS79k"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1789995284; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=yVHrKVj2/nOyoE916yITBj/gHgU80Qab4efrA3aW2g0=;
+	b=Z/JLS79kEndMNfMCF4BP0lWv66/f8NDIsJFOr4d4eLahp1hHTFokF4IMzSaEy6h8LuGOJvNmyIryBAOiWCVrOqmgHaXs7fVQeWMyZEhXdFxuHwaddgZB3UoLu6qO3fJ3w6e6MB/cyj4N9/NagMyEN7f+u3hXJ8K4GVeJJSdgZkk=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04438785|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0460115-0.00113364-0.952855;FP=13445336479053908080|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jJ3uDqN_1789995282;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jJ3uDqN_1789995282 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 21 Sep 2026 20:54:43 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: netdev@vger.kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>
+Subject: [PATCH net v2] net/sched: act_ife: validate metadata length before decoding
+Date: Mon, 21 Sep 2026 20:54:41 +0800
+Message-ID: <20260921125441.81459-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260919215236.3470714-1-benquike@gmail.com>
-In-Reply-To: <20260919215236.3470714-1-benquike@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 21 Sep 2026 14:53:29 +0200
-X-Gm-Features: AcwNN1UuaNK3ZL3t0L5G65CYvNKMTbVpCdbvcbXjoq6u70TWr5KPDoCcduwhOmg
-Message-ID: <CANn89iK2P8CYD0xNxtynmOuwqSB1i-+TPg4m5eSh60rs4pC-aw@mail.gmail.com>
-Subject: Re: [PATCH] tcp: drain out_of_order_queue and update SACKs in tcp_send_rcvq()
-To: Hui Peng <benquike@gmail.com>
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 19, 2026 at 11:52=E2=80=AFPM Hui Peng <benquike@gmail.com> wrot=
-e:
->
-> When TCP_REPAIR injects data into the receive queue via tcp_send_rcvq() a=
-nd
-> advances tp->copied_seq and tp->rcv_nxt, any segments already sitting in
+skbmark_decode(), skbprio_decode() and skbtcindex_decode() read fixed-size
+values from the TLV payload without validating its length.
 
-tcp_send_rcvq() does not advance tp->copied_seq. The only sequence
-update comes from tcp_queue_rcv() -> tcp_rcv_nxt_update(), which touches
-rcv_nxt. copied_seq of the receive queue is only written from
-TCP_QUEUE_SEQ, which requires TCP_CLOSE state.
+A malformed IFE frame can declare a shorter payload, causing the decoders
+to consume bytes beyond the declared metadata value:
 
+[TLV type=IFE_META_SKBMARK len=4]
+-> dlen == 0, but decode reads 4 bytes
 
-> tp->out_of_order_queue that are now covered or contiguous with rcv_nxt ar=
-e
-> not coalesced or removed from tp->rx_opt.num_sacks. Drain
+The decoder may therefore set skb metadata from unintended input.
 
+Validate the payload length before decoding and return -EINVAL for
+invalid lengths. Read the values with get_unaligned_be32() and
+get_unaligned_be16(), as TLV payloads are not guaranteed to be
+aligned. Teach tcf_ife_decode() to log a decoder error separately
+from an unknown metaid; both are counted as overlimits and decoding
+continues with the remaining metadata.
 
-num_sacks is a counter, nothing is "removed from" it.
+The metadata length issue was found by an automated audit of the IFE
+decode path at v6.18-rc7 and reproduced with a userspace sanitizer
+model of the decode path. Compile-tested on x86_64 with defconfig and
+NET_ACT_IFE=y: act_ife.o and the three act_meta_*.o build
+warning-free.
 
-> out_of_order_queue via tcp_ofo_queue(sk) and update SACK blocks via
-> tcp_sack_remove(tp) after advancing rcv_nxt in tcp_send_rcvq().
->
-> Fixes: 292e8d8c8538 ("tcp: Move rcvq sending to tcp_input.c")
+Fixes: 084e2f6566d2 ("Support to encoding decoding skb mark on IFE action")
+Fixes: 200e10f46936 ("Support to encoding decoding skb prio on IFE action")
+Fixes: 408fbc22ef1e ("net sched ife action: Introduce skb tcindex metadata encap decap")
+Assisted-by: Hawkeye:GLM-5.3-flash
+Assisted-by: Qoder:Qwen3.8-Max
+Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+---
 
-This commit is a pure code move, it changed no behavior.
+v1 -> v2:
+- Read metadata values with get_unaligned_be32()/get_unaligned_be16()
+  to avoid misaligned loads on strict-alignment architectures
+  (Sashiko review).
+- Count all undecodable metadata as overlimits in one place and log
+  decoder errors separately from unknown metaids, printing the errno
+  so future error types need no caller change (Sashiko review).
+- Move the discovery and testing description into the commit message,
+  per netdev-bot guidance.
 
-> Assisted-by: LLM
-> Signed-off-by: Hui Peng <benquike@gmail.com>
+v1: https://lore.kernel.org/all/20260920074245.79965-1-fangxy@xiaopeng.com/
 
-What is the bug exactly ? What is the user visible symptom ?
+ net/sched/act_ife.c             | 17 ++++++++++++-----
+ net/sched/act_meta_mark.c       |  6 ++++--
+ net/sched/act_meta_skbprio.c    |  6 ++++--
+ net/sched/act_meta_skbtcindex.c |  6 ++++--
+ 4 files changed, 24 insertions(+), 11 deletions(-)
 
-No repro, no syzbot report, no packetdrill test.
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 9cea71fc1db3..2afd68983ece 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -737,6 +737,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 		u8 *curr_data;
+ 		u16 mtype;
+ 		u16 dlen;
++		int ret;
+ 
+ 		curr_data = ife_tlv_meta_decode(tlv_data, ifehdr_end, &mtype,
+ 						&dlen, NULL);
+@@ -745,13 +746,19 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 			return TC_ACT_SHOT;
+ 		}
+ 
+-		if (find_decode_metaid(skb, p, mtype, dlen, curr_data)) {
+-			/* abuse overlimits to count when we receive metadata
+-			 * but dont have an ops for it
++		ret = find_decode_metaid(skb, p, mtype, dlen, curr_data);
++		if (ret < 0) {
++			/* abuse overlimits to count metadata we cannot
++			 * decode: no ops for it, or the decoder rejected it
+ 			 */
+-			pr_info_ratelimited("Unknown metaid %d dlen %d\n",
+-					    mtype, dlen);
+ 			qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
++
++			if (ret == -ENOENT)
++				pr_info_ratelimited("Unknown metaid %d dlen %d\n",
++						    mtype, dlen);
++			else
++				pr_info_ratelimited("Failed to decode metaid %d dlen %d err %d\n",
++						    mtype, dlen, ret);
+ 		}
+ 	}
+ 
+diff --git a/net/sched/act_meta_mark.c b/net/sched/act_meta_mark.c
+index ea0573cb8b2d..e2f61b22bf0f 100644
+--- a/net/sched/act_meta_mark.c
++++ b/net/sched/act_meta_mark.c
+@@ -10,6 +10,7 @@
+ #include <linux/string.h>
+ #include <linux/errno.h>
+ #include <linux/skbuff.h>
++#include <linux/unaligned.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -28,9 +29,10 @@ static int skbmark_encode(struct sk_buff *skb, void *skbdata,
+ 
+ static int skbmark_decode(struct sk_buff *skb, void *data, u16 len)
+ {
+-	u32 ifemark = *(u32 *)data;
++	if (len != sizeof(u32))
++		return -EINVAL;
+ 
+-	skb->mark = ntohl(ifemark);
++	skb->mark = get_unaligned_be32(data);
+ 	return 0;
+ }
+ 
+diff --git a/net/sched/act_meta_skbprio.c b/net/sched/act_meta_skbprio.c
+index 2df3133ce5ad..5cdb57931eab 100644
+--- a/net/sched/act_meta_skbprio.c
++++ b/net/sched/act_meta_skbprio.c
+@@ -10,6 +10,7 @@
+ #include <linux/string.h>
+ #include <linux/errno.h>
+ #include <linux/skbuff.h>
++#include <linux/unaligned.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -33,9 +34,10 @@ static int skbprio_encode(struct sk_buff *skb, void *skbdata,
+ 
+ static int skbprio_decode(struct sk_buff *skb, void *data, u16 len)
+ {
+-	u32 ifeprio = *(u32 *)data;
++	if (len != sizeof(u32))
++		return -EINVAL;
+ 
+-	skb->priority = ntohl(ifeprio);
++	skb->priority = get_unaligned_be32(data);
+ 	return 0;
+ }
+ 
+diff --git a/net/sched/act_meta_skbtcindex.c b/net/sched/act_meta_skbtcindex.c
+index 44547caead46..8803710c0905 100644
+--- a/net/sched/act_meta_skbtcindex.c
++++ b/net/sched/act_meta_skbtcindex.c
+@@ -10,6 +10,7 @@
+ #include <linux/string.h>
+ #include <linux/errno.h>
+ #include <linux/skbuff.h>
++#include <linux/unaligned.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -28,9 +29,10 @@ static int skbtcindex_encode(struct sk_buff *skb, void *skbdata,
+ 
+ static int skbtcindex_decode(struct sk_buff *skb, void *data, u16 len)
+ {
+-	u16 ifetc_index = *(u16 *)data;
++	if (len != sizeof(u16))
++		return -EINVAL;
+ 
+-	skb->tc_index = ntohs(ifetc_index);
++	skb->tc_index = get_unaligned_be16(data);
+ 	return 0;
+ }
+ 
+-- 
+2.50.1
 
-For the CRIU flow the out-of-order queue is empty, because TCP_QUEUE_SEQ
-only lets you move rcv_nxt while the socket is in TCP_CLOSE state.
-
-You need CAP_NET_ADMIN, and you have to enable TCP_REPAIR on a live
-ESTABLISHED socket that already has segments queued out of order, to
-even get there. And the state you describe is transient: the next
-in-order segment hits tcp_data_queue(), which already calls
-tcp_ofo_queue() and tcp_sack_remove(). tcp_fin(), tcp_prune_ofo_queue(),
-tcp_disconnect() and tcp_close() all purge the rb-tree as well.
-
-So this is a "Fixes:" tag on a 2012 commit, sending a behavior change of
-a privileged path to all stable trees, for something that is not
-demonstrated to be a bug.
-
-
-> ---
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 92bc60716f33..8a7c38a4b1ec 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -5589,6 +5589,11 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *=
-msg, size_t size)
->                 WARN_ON_ONCE(fragstolen); /* should not happen */
->                 __kfree_skb(skb);
->         }
-> +       if (!RB_EMPTY_ROOT(&tcp_sk(sk)->out_of_order_queue)) {
-> +               tcp_ofo_queue(sk);
-
-And this is actively dangerous: you are running the input path from
-sendmsg().
-If one of the out-of-order skbs carries a FIN and the injected bytes
-close the hole, tcp_ofo_queue() calls tcp_fin(), and we get
-ESTABLISHED -> CLOSE_WAIT, RCV_SHUTDOWN, SOCK_DONE,
-skb_rbtree_purge(&tp->out_of_order_queue), tcp_sack_reset(),
-inet_csk_schedule_ack() and the sk_state_change()/sk_wake_async()
-wakeups, from a sendmsg() that still returns size to the caller.
-A repair tool would see a successful write and a shut down read side.
-Also, tcp_ofo_queue() computes dsack_high from tp->rcv_nxt, which you
-just advanced with locally injected bytes. So we would record and later
-advertise DSACK for ranges the peer never retransmitted, and feed its
-undo logic. tp->rx_opt.dsack is not cleared here either, the existing
-caller clears it at the beginning of tcp_data_queue().
-
-
-> +               if (tcp_sk(sk)->rx_opt.num_sacks)
-> +                       tcp_sack_remove(tcp_sk(sk));
-> +       }
->         return size;
->
->  err_free:
-
-And you copied two of the five steps tcp_data_queue() performs:
-no ICSK_ACK_NOW, no tcp_fast_path_check(), no tcp_data_ready(), so bytes
-can be moved to sk_receive_queue with no wakeup.
-
-If you really want to address this, do not call the input path. Peer
-data sitting out of order is meaningless once the receive stream is
-being rewritten, so purging the rb-tree and resetting the SACK state
-would be the sane thing to do. But please come with a repro or a
-packetdrill test first, showing an actual problem.
-
-pw-bot: reject
