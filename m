@@ -1,77 +1,64 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013005.outbound.protection.outlook.com [40.107.159.5])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012020.outbound.protection.outlook.com [52.101.53.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0395748986E;
-	Mon, 21 Sep 2026 11:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F344825D8;
+	Mon, 21 Sep 2026 11:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789990199; cv=fail; b=b6r59AP5DtIzjucgDEqnb3GxuRjFWiUIrXJUPbO/ZtRmZtG07/+C4wPhZ9/UDRiPeuIUMkam9vqHEKPTffkDr5b+DCgxcs0hHbKoCPv/jJQfqglnLn0d+qCfjVSq35cHG4cOI3WpFl7xmSvz+Incji1y29nDPgpPztlKovx8lYs=
+	t=1789990382; cv=fail; b=XLLGpGB7i67q6XHRAWcqIGlAhu2OOm0zrZj1CxlEBwlCInzQ7QN44oBSmxzPhMfBjE1aK4ZPkwth46clyDkPufRCjSm8DSV0EsYUsD5V2U1xAxJEQ5W6F+vLHR7btcv5VtUvfHlBm0YoOrbvIxZqbudkHz6FHJ4rOfrAuQD+1dk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789990199; c=relaxed/simple;
-	bh=xX22YuXjqr98aFI3s13sWdMIlR83n7aG7glnehC+Ak8=;
+	s=arc-20240116; t=1789990382; c=relaxed/simple;
+	bh=PlvSLWRimtQ3bhfmtl3dL3ulnfpCvzUKSxe0OiISpEI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=u1Nh0C9nUZUp371+DehABWkGbJJ16EREuq+sEh/a0KtEP6L3Xp0aNbqOARyeagZ1czftNiiv61D8plR3NuJg89T2yOu+vstythiN3tZEoRsn75mysy3CvZSyxU9IRvsU/2ILGS4qQ8PmfM+OH0pgjBqepPWW8AxaVXroeviuP/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B+vtpJEt; arc=fail smtp.client-ip=40.107.159.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=E/f7ooOBOKILAAkif+sPlIQS24Qw2tSATBdoxlfNWBoIV6/Mse7pHmKjJ2cdlDrMFM9pXX1Kx/F64UXQiOamHDtT6LiiCNRMLzDxyQM4Wg33gMDk8kjKrJYETMgCLvpBAzQExA9b0xDt2yXNBSXYAbmgSvIGnjsfix6+HPg7O5o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KzpKSKh7; arc=fail smtp.client-ip=52.101.53.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B+vtpJEt"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KzpKSKh7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NY/AUOqGCKdP9xLxbP1D54Wyl5zz61Hjv+GhYDMJgHA3/3BMTLWMUEZNyb/UqaIl4ip9MqjHnBnvr/TLiOeobUFnw3gH5kiO/alFKGYflHKgDr4uObLlQ1280mY4ESArtOMkFNT4+QZUQAzdVxugXz+Tt5LbngY7GK5X0muFCg2Hkn7JiPXP4paIluBdbJA9Dk0SHVX6d08okDvgZPChBEqK3Oc/dLmOZq+TWi0g2N++nNGa5jkry9nsTx+vPYPis5/XHmrZ+9sqv0l2agAyl+BXwIS3A9amDGFPuwOimIlTVuGx4rwWH7rQgpXKUvTQM+ooa2WDlgzn10PY7OnfCw==
+ b=P9jV2Dp4jIZGWZ1nAH2sgCna6nb9utKpM5hiOSY/K5GJPdJLY+BZd60n4093dyGQCYdrFoIp0RZJRsgkpHc8GyAP9AJHPeDvfe9S0cDh/A7FD9GW6dd5p5MbzkLsc4rygshKvCKvIdelG3RstD1IlKrXtxy150OF1nHRKNHslzeR1PIYfh4qsQKMy/jJtRY1A1Xr/3EzKVwT9y6SdHqCR9a3WV5j1meEBQuCKhjjY76CC3Opzx/QmX37/Z2UBSCZHTVOJl3ytRpEl1+eer/vu+x2kxYXjc5AAyisRgzBwZ3QdTBUsu9OEE9E3PlZuA7VYdra9YjkKNyvR4O4FJyd2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HvL7BG05ZeRq1GFvVRMx2BzjsZDoy573dvUJqt8HDtc=;
- b=nZJAuF+3oARjZmC2LZ/6MlxRGEggYzEgILsRdq0NDraThoQOwTBG8W4x67vltYyfFrK8hK02Tyq7+yg51OIyeUTNNEWZ3/hdF0a2ZRJC9fyZHmBgn6DkQsjm15GH8PkAPscp5qL2PjSj+9SypWboJqYmXYGzQybrVc2uTPKxtozDqPfYsNg3yQl+GMKHlf1P2GOgO6l+hlG2vI3xx3zlZ8I2g4nPongyDsSESMkX6PA07OaSfszy4cTK7EzkRphwugMhsn1M14HO1JMBaSW95k31NrA73bod4jNQwBHzatGFm/hTEHlL3s+S9mufe+FbAJQSYRGI179O0Es1xN0L7Q==
+ bh=JEBnJyIVEt+ZJYhEIvDH/ZkXR8m3YXTqfoVqj/qdg2M=;
+ b=gGxkrns4abIwAlfbYjpiXIzNlAQwtCBMLlPN5JOREsvXVO2CsGUEwC3jorMLHFdbH0IHbqEG4l9TXx+TTUkS5jBiDB9dhUH1Q0Rd6W4iomHxlJTZoZGJL2jTBiUgx5fY9GoJX9Y5kakDCicQogvpEVqzybyeLx+cKrxWimQdO74/KXVwiXaglut0MtjpF/gg1i3j092ivR1p7LTwYHhB12al11jlCZ96dh0wCM059bTOMhoeta0vUr8X5zqD7YrSjLyubKNTWZhh/+QYgRsUoqZgVa7ieCwY4OonKASRWrdEt+D/O/jtZxjKLMQvqA7ZzH7Cf6ws5PKdodEN7Li8nA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HvL7BG05ZeRq1GFvVRMx2BzjsZDoy573dvUJqt8HDtc=;
- b=B+vtpJEtT8ONeS4s9c9WCeqFtK7RR/aiN2lZX5oTxUpxdJBnKAiyC8PpfQeguCK1fi0A8Pfu+jeR1B1TyFhl6MohSUm+gOldq53gRCAVgRVdx386ESOEU4icuWdyGsFh62WKWsLQC/n1r8BLiamy4uEbafBtE7iGy6tjcoO0aEzPtamPyF9ErPUyIqHwS55jpSCX+k5M2eNN0SWvdvjVfLTT1XsshnTiKH9HjibN/K6zER6UbsTqKLJzOzl9+OqVHuaGcCG0j8g9MpaYUj2A3C8EZxknOR/wgtHrg0ueCMbJiYQIfyWRv8lQzq3Vx7USTql7n4slETF0CheTWmeAbg==
+ bh=JEBnJyIVEt+ZJYhEIvDH/ZkXR8m3YXTqfoVqj/qdg2M=;
+ b=KzpKSKh77cgokh0DThLJe3IrTwsTY1vWNTvCRHg9iALKSra/fyXtE6rHT7yds9BnBhbNX56ds+Xi1/Us7uacLpPu5fH1U9jaLZzD+0xAhPGQhYco1bAGwaGkZaDRH1kg/G+IRZRmhQyAzrgQ2faiklVaUsqjvK4p2K87eP2L4el+tC46CTyOXBSYbmi0moOXFBeHORpyAZ+arg9qLo/lh5ITJNld/JglX7zQYpKfho38/wJXFRLzvAzRjUAxzLwq21nODtNRNQG4pxbWHpMClGVcSm3oTRJ3tWU6ASQBU1I/d/kmqOJijr7R3LZkJovPA2L4BZeCfqhIme6r7V6ZxA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by AMBPR04MB11811.eurprd04.prod.outlook.com (2603:10a6:20b:6f4::8) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by BY5PR12MB4289.namprd12.prod.outlook.com (2603:10b6:a03:204::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 11:29:50 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 11:29:50 +0000
-Date: Mon, 21 Sep 2026 14:29:46 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: netdev@vger.kernel.org, Zefir Kurtisi <zefir.kurtisi@westermo.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Yangbo Lu <yangbo.lu@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v3 net 4/7] net: enetc: pad short frames in software
-Message-ID: <20260921112946.edo5uw6cl7jx6oez@skbuf>
-References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
- <20260915222735.1016937-5-vladimir.oltean@nxp.com>
- <20260917111127.577d344b@pumpkin>
+ 2026 11:32:56 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 11:32:56 +0000
+Date: Mon, 21 Sep 2026 14:32:45 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, tgraf@suug.ch, pshelar@nicira.com,
+	linux-kernel@vger.kernel.org, luoxuanqiang@kylinos.cn
+Subject: Re: [PATCH net v2] ip_gre: Reject enabling collect metadata through
+ changelink
+Message-ID: <20260921113245.GA2154085@shredder>
+References: <20260921031859.9283-1-xuanqiang.luo@linux.dev>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917111127.577d344b@pumpkin>
-X-ClientProxiedBy: WA1PEPF00005B7F.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d8::607) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+In-Reply-To: <20260921031859.9283-1-xuanqiang.luo@linux.dev>
+X-ClientProxiedBy: FR4P281CA0369.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f8::9) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,175 +66,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AMBPR04MB11811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52a4183a-9305-40de-bcfe-08df17d3a60b
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|BY5PR12MB4289:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4862164c-f158-4892-9297-08df17d414b2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|19092799006|1800799024|366016|10070799003|11063799006|6133799003|10067099003|56012099006|4143699003|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|10067099003|56012099006|3023799007|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	pWOhlHDc+yMm8PVaWo7yRVtuZk9mO7yJ6x9JRa95TQom344WomSMeUFPpt3LrsumPapZclowoQ/XATyPGhleAIcOTHFErNPbmh9zVuPjeIeuxSk5eEAlk9djYPElmUpt+gV8NBnc5k0ESraRxhTdhQaMV9QYrCpxRMtB01QDvxN09nKNgIa+6h6VYNfaY+joH4CyTggi4n6grgQx+Hw2TeQAVhR6U+8h2vX8d9lw01llSdkIz8jz2rzD3OXmVCpP8U15LsNOJg5C1Ihh0KfjfkVyQjmYh11DG4nQ6I4dBNslrs4iaydDzeQo22xAIYKKho39F79oaehn1huSSWqgUB+KOWZEC1rZmNclqRu822UuB1nupAPPCokLiexXwd0YdFnt4TNkPJtsZ4IMEjEkSFIiQtb96jiQ49SPHMcAhA4wtrnz7bUN/7xS9yBl4o3hVLG/60xQfquFCZOv4gqCeB6MWRNU8w2VehFBkyLLbpYjfMFeTUQKhUcMP5H/WPt9hkvnnt43Jd2OXXsWfoNQI+RLCYTSgnN2mtiJe3V7J6M3xPklSqjAs5wXFEaAl41X6OikDIsEe/bZyjUYtyFd1JvvCgYSen9aWUkTLxRLePbdXblkuqG5kwVSZ5TqA5JC
+	GsR/pNQkT/k7KDIv9DoRcD6Zc78CdmfRwzuh0CQ1QJSIUOGCmZEOHoEt3knnqTP9/ScRJkgrjXnyKtmqLeY2GpAR9Oob4vvZyYdNsPAVaOue7AeCUI389sNFBJxpxQTXYiOQvK7M+v1JX9RsMgl4AMsJnF/uNURSC0AEzFinWhXdfJtU8rd2z0aYMY9Qd6y/0pq/WZPBkyyloza11+E00UBufySXfn+GYVUJzjs0ct/T94SD3gDJ/Dx3ZH7KBCmGi7txin91+VjVu34hc/aVesZgwr6+FbQQvEC+UONj6LxFWmikn8d3RilFGcdXirAK4ixWVAc0HbMj3XYosFdSlBfpRUHN+AK0XwNxYF3tEyNxIMDhGrWEeH5+aVUP2rSw/+JuM1q2bEsPwa0HY7Qo1uN4NGFxCrAjaPIXV6ujNX1yVRtDBawWZ/y9Auq0/X+3zExBQEYGnhlRrHCl1XyC1GWLgBWQDKUvtCzzu2QDjczegDtAIVeFDAyXEVbG6kZlv7nx0kqq7JQ2gmUc99l00j/H4qvTytJAkCspA+0spcyznUcedUAY98W+oWFt3Drxql8frXnbGLIYEyCIFh+nKeo/7CtAUSt/IfXVCtGDX2/xiNDA5I4k1hH8ocuVpWyR4FuT/ywhri9MEiBdc7ZSWPBr+ldYiBsq15ADQIigx/c=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(19092799006)(1800799024)(366016)(10070799003)(11063799006)(6133799003)(10067099003)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(10067099003)(56012099006)(3023799007)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/chdVW1XdAA3etp0WF5WrQOiuSHgpFBqz3E79BRcc2SjXasWQIq4r70ee82F?=
- =?us-ascii?Q?XQ4Mg+jVOcNH5exR8x+z5hTMQPYPVWAqx7P8THF4tM7yGxflyZJAyyqFBBCm?=
- =?us-ascii?Q?OF5MLLxRsLZCbtuwyYubFiCyKw+ni1FFym6FnbN1P4+j91+6VeRHHM6Z2rAa?=
- =?us-ascii?Q?GobNWB8oBUgzRhIb4TbWv880f6UXwqAjLeCo/7C7fVYXGtkECv2Lvkncxyep?=
- =?us-ascii?Q?ni4hCEV+jrIPD1woyVT1VQ/Bi4Kxj5zQuTTUvNm9RgbQntuWbal3D1GZF7rX?=
- =?us-ascii?Q?7LNQzoSSMgRE0+NrKFgtQv1sXsMmzuT6kELcCXmC/1CDU/i72L4cwIBPp8Va?=
- =?us-ascii?Q?Zga25kymxa1W5/wYz08qWMIoJRMgXx0fYE+WJRss+YYJvHXBHn3FnYQhiTwt?=
- =?us-ascii?Q?VkRRvNtW19KlXsigbdron9HPiDPHFIzc2olpQQPzKzJdl1wXijD5OJGGILkh?=
- =?us-ascii?Q?wNjqq1iqWTv0SUXAF3K8UPsNAEHfKH+1WFhJ+UgHc6NMrNnKJlQYizwgGchI?=
- =?us-ascii?Q?hgRPMkH5aqNY6VbbFngZH2/TMtFK9Q863sbZe/odcmt3ob8/svvwpV533748?=
- =?us-ascii?Q?GegYqyooglJR0BBYqBpCtgCtHbm/zYVMQISDVNH+A2QJtePNLQK2Xy940hzt?=
- =?us-ascii?Q?9Vg75Lb3Vi29OcRgcjP4xVvegItZK8OSgfqMj87k8Nv12ilJr2hazd41llZv?=
- =?us-ascii?Q?Ri6UoDhq+MZHE6u8G59iiwaTGZMM6sPWZy+IlHD2qpQ5+5ixKBSMrM6vjEwg?=
- =?us-ascii?Q?y39RYHDqVrus7Oti6C9qCp9I+9HDNCxgeGoJf/1LIMtmoIH4YKUd/CBP/xcX?=
- =?us-ascii?Q?ougZ6hsGSj2pQYMIJp9Kc67EjSBtuoWQqmRovkrWqrjbB6mwSftDyj0iD1da?=
- =?us-ascii?Q?BkykulX39KBXVxwDII+PhEGLGeOKgkPyUFG9saHnsofehxBi+pvNlrZJ62UF?=
- =?us-ascii?Q?FxXyktHNc1f3si6wTA9NfNTGHHrJ6g/kq10t90rw/V4P5UIvDWHUYw/jeypn?=
- =?us-ascii?Q?Pd/t4Y7uEODpFRJQ8YP7/G5hS+xKU52+2Cmm0VT7SinGbwWk09rZzMGe+20h?=
- =?us-ascii?Q?aRgnAzSmI9l0bhuvtwNx9cr2uhuhzlOZ9FwNiiPfHFN9yGsxSsRW7yL0u9Dg?=
- =?us-ascii?Q?LxLEzqxW96MaPRKaE6qm1oKjKGmJuv8cGeVzKgnFxgMnG1o/iSvTESOGwNQR?=
- =?us-ascii?Q?KEy8Gm3FnuQfGf0EzkR5dXKNVUy7DBVumY0tQurSGmc17gR9saXAyYkx5Smj?=
- =?us-ascii?Q?X7tnKyywEQ2NmH9pB6yS8U1YQG4/kDRNVQWY7uhSjSjAi10ImnkIabWTyBEN?=
- =?us-ascii?Q?Zuyt5QmZ+8nceyboTJUl9ypWg+1u+MSPc+Ppjn1q2a/yufPKumcNfGlgJByE?=
- =?us-ascii?Q?pDJCRnxAfBw3CGN+OWUNSnteT+hhkSmp++ZCa9flbNBUkE8KM13F7WVVS5FY?=
- =?us-ascii?Q?TLhS8dVJQNfT46bmRlqj0/akY0SQzcldvwEIx9kdHFyrgcEkNAMi3eDj4mNQ?=
- =?us-ascii?Q?n/dotnvYJK24vyUnNexQPqGeyYrwvw3/lhK+RWyiBMmcaOPDFC2bqsp5q0xx?=
- =?us-ascii?Q?M9fV9VLCRHcsHR/sd+DJwsXV21p266WJMI+VaN2P5sL2xVw4LVsTAoQd20kW?=
- =?us-ascii?Q?qwnuh5ukqH9DbYvZsGT4DAx6EV8zDCAZnTk8FLn+ORBsC+OFm1a3Vn9QOGDd?=
- =?us-ascii?Q?cr+JNR7CIr+3vluZxD115wppPrBfubK+bf0rriH9o3N0gRc6tF/CZ8fPRdHp?=
- =?us-ascii?Q?iQPgiAAFUS7gElp5PD4+UnSaonXW3WV1OMIbD8sfd+GzNjDmxa3SfIlMntJD?=
-X-MS-Exchange-AntiSpam-MessageData-1: 4FoMVe6u4vGjOUWA6z1VMwItQ7Qtqm3y2Hw=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52a4183a-9305-40de-bcfe-08df17d3a60b
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+	=?us-ascii?Q?GjVJfMbiYZ7xRQJltCqh9joA9PbIKmqwJVfXjUwG36oGbo0vu7+tSp35XEr3?=
+ =?us-ascii?Q?RKVwlv/jypkdXuxVt3Vbn6L2QLVVGAdNebcLtu4llvBOsgPhux18fZd/faAO?=
+ =?us-ascii?Q?6p3JXjFiXd7wNXUuJi2Hx0Xh7gA2ceRBL2eEexw12sLtxBHhervrWlZJ/8th?=
+ =?us-ascii?Q?pNu6uh4H+IXflItp1nvVwSljYmJu/rhK6rw6+A10i3xBR6nc8CyQ65MOxY4z?=
+ =?us-ascii?Q?UWi/+U1s9wVcPjnF0zljlUABve0v3E3kXXOwQ8v1VBpWp4Wjo98A9Xvg6seR?=
+ =?us-ascii?Q?nfQmaUDSFYq7qhrdbO7ZgifiKw2CN8W487XioA2QsCh801kHtR4XxrancUXz?=
+ =?us-ascii?Q?Z1GBcdQB9IJzpmyx01jQDVZPKc04UrYslInHrxh7Jt5UC653ub16T2pqNTLK?=
+ =?us-ascii?Q?aFt1N4aAy8qJUPF0zQU5jMhklBCYpgyshacCFTUrgBGmnnDm4bw/HrIds3BZ?=
+ =?us-ascii?Q?31O27aQmgewJKua8+NdhRVrfirMfU+OwUSChVEyMHrpR/P26ED5ad3dyVdaF?=
+ =?us-ascii?Q?zdtf3fargM9PN4mPuc5spVBO6jpXolZF9U4KUjTzUnSuHD7CdIdyYsTUu3Tq?=
+ =?us-ascii?Q?GK95n9O1EfHRRoUzcfeY/9+iRYEEi58JwqBUrPurJ/QPuz7CiiJxb/Af0Zyi?=
+ =?us-ascii?Q?RjH7kFLWobb7zUdJBaDWtby7ye5ugg4WFXA9j1dfp+E94XkZG6ATEwstX7uP?=
+ =?us-ascii?Q?gsJqDC1kujWHXutCSrNwYemAx/x71c9kVVASPLoxC0VzhF3dNqpcFpKgYzzC?=
+ =?us-ascii?Q?F77GZRMnbZXrtdAdmBffStDM+1DHmx8CFAw8TXNFhrEEQ9z280//TIGFwkyv?=
+ =?us-ascii?Q?0hXs0xiJ++hsFpcQSk7gzsiREmwF9P8z9/V27JCgu6qOQ9xm9S0FnUZpdWmG?=
+ =?us-ascii?Q?D0D6527s5fdySzXeMryr/2BVo+eIkpgsrONGQxQuMGh1izCLMQEo/VcGERPG?=
+ =?us-ascii?Q?V++65MOFS3udwF7CMQYYSLVHcdyOkm8n2A7TUifoqc6YrALZMSUW3B3wblG4?=
+ =?us-ascii?Q?4X6OLGEFfk44p+ZOQvU4pPWCVjgz462ocfEPRaP9iwMukRBGcdTGzHWUsfVV?=
+ =?us-ascii?Q?ARogyIsI2wFqmBglYpAF0s2HHXr1iFTPFoSaNNaQhRq7Q6Wu9q4KTNoPjI3s?=
+ =?us-ascii?Q?9IAMvbPwjdXdtXTzUx/L2Ah233eeEcYZ9EFy4cmIkQfVL2OwJus9z+/FGF2Q?=
+ =?us-ascii?Q?snTiXjGL1nFi4D81aaD7lXN8au6TpftZ/ayBiEbeURt/Ts2ojHaRRD69feuw?=
+ =?us-ascii?Q?5oRBFnLjsHbbMQRL3L3CMopOXqePKn1aT0vcNbfNEc/0UGixBd53zNh98ejz?=
+ =?us-ascii?Q?Y2PMiceyJYGXOkFDOu5fgrgoOWqtdw1HnuJi1d41l3YDG2P4cz1sx3nv+Pv5?=
+ =?us-ascii?Q?SiFPmPeJIa5OLkbuNGfnmiO/DR/dMieBXXVbdCcqMXNVCNXkldqu0QdKivZD?=
+ =?us-ascii?Q?K6JYueW74IU1HjM1gJIcU62D4uvhuScWQkTD4LNjC2y8Sz37HROxTR7dQSEU?=
+ =?us-ascii?Q?MmBAcqthhaOw5Gv71YnQXcnSNYo8PFhOsU9E/af/MzaI70Wfxbn5ATOBk1GL?=
+ =?us-ascii?Q?noSJOLGoIl97ZlMv6D7mOxJHf2tbKP6nfBABIXdrZ22pwdLg502jyAYVXUCU?=
+ =?us-ascii?Q?7BJ+UWFKiNsHxDGmmAWRxRYYTdVsBuIWoQnTuOZtoDj9W4XNZjf8sTKweyAA?=
+ =?us-ascii?Q?fLpJsJmhoUNXPZN6rLxACTEC6C88iyv5ZTt8ZSymI7LinsEff8Q600Wv+4O+?=
+ =?us-ascii?Q?F74+I/UteA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4862164c-f158-4892-9297-08df17d414b2
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 11:29:50.3179
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 11:32:56.0134
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HVDwxNvhmbCGMrFMcqYxiMBx48d+MmzhPog34XbSBymvyJRI3353/Xjp806KjP8NwxRrVJNHOeS1SYOJ4LW0Gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11811
+X-MS-Exchange-CrossTenant-UserPrincipalName: Jy38xnEdvhbcJaviZA0d/CibxugLu5U1k1I5R8shkpkAzTR32h1HxsFR46UG/1Yd8kUIMHcHiI9nYeVF/bNKGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4289
 
-On Thu, Sep 17, 2026 at 11:11:27AM +0100, David Laight wrote:
-> On Wed, 16 Sep 2026 01:27:31 +0300
-> vladimir.oltean@nxp.com wrote:
+On Mon, Sep 21, 2026 at 11:18:59AM +0800, Xuanqiang Luo wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 > 
-> > The ENETC does not support BUF_LEN or FRM_LEN in TX buffer descriptors
-> > less than 16. This is written in the reference manual of all SoCs
-> > supported by the driver: LS1028A, i.MX943, i.MX95 etc.
-> >
-> >   Frames must not have a FRM_LEN that is less than 16 bytes. Frames of
-> >   0-15 bytes are not supported.
-> >   (...)
-> >   The first descriptor in a chain must not have a BUFF_LEN that is less
-> >   than 16 bytes.
-> >
-> > I don't think proper attention was paid to this during development, we
-> > found the text at the end of a bug investigation. Therefore, the driver
-> > does not enforce this.
-> >
-> > But the frame length is out of the driver's control, and the network
-> > stack can actually send packets with skb->len smaller than that. The
-> > result is unpleasant, as will be explained below, so for simplicity
-> > sake, we just pad anything shorter than ETH_ZLEN.
-> >
-> > Zefir Kurtisi found a case where transmitting L2 WNM keep-alive frames
-> > through ENETC would soft-lockup the host through an IRQ storm. He later
-> > distilled this into a small enetc-killer.c user space program which
-> > sends a packet with MAC DA, MAC SA and EtherType IPv4 (14 octets in
-> > length) through an AF_PACKET raw socket.
-> >
-> > The IRQ storm is actually a curious effect of a chain of events.
-> >
-> > The hardware behaviour, when an invalid BD is put in its TX ring, is
-> > that it would transmit the packet as normal, update counters, raise
-> > completion interrupt as normal, but it would just not advance the
-> > consumer index of the ring (TBaCIR) to signify that the BD has been
-> > consumed and is available for software to free. The ring will also get
-> > its TBaSR[BUSY] bit persistently set to 1 afterwards.
-> >
-> > It deserves an explanation why the behaviour above would lead to an
-> > IRQ storm, since ENETC interrupts are message-based (MSI-X), and an
-> > unhandled interrupt would typically just be lost rather than retrigger
-> > itself as a wired interrupt would.
-> >
-> > NAPI processing in ENETC has 3 steps:
-> >
-> > I. the enetc_msix() hardirq handler disables RBaIER, TBaIER and sets
-> >    softirq processing to the 'pending' state.
-> >
-> > II. the enetc_poll() softirq handler for the IRQ vector walks through
-> >     the TX rings affine to that vector, checks which ones have a TBCIR
-> >     updated since last time - enetc_bd_ready_count() - processes those
-> >     completed frames, and clears pending interrupts in these updated TX
-> >     rings by writing to TBaIDR. (I've excluded RX processing due to it
-> >     being irrelevant).
-> >
-> > III. After the softirq handler does its round of checking all RX and TX
-> >      rings for updates, it re-enables all interrupts in RBaIER and
-> >      TBaIER that were previously disabled by the hardirq handler, and
-> >      exits.
-> >
-> > Because the TX ring with the short frame is skipped at step II (TBCIR
-> > wasn't updated as part of HW malfunction), its pending IRQ is not
-> > cleared in TBaIDR by enetc_clean_tx_ring().
-> >
-> > But because enetc_msix() disables TBaIER at step I and re-enables it at
-> > step III, another MSI will be fired upon re-enabling it. This is what
-> > completes the cycle and the driver goes back to step I.
-> >
-> > So the driver misinterprets the mixed signals it's getting from the
-> > hardware, and ends up causing a software-amplified IRQ storm.
-> >
-> > Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-> > Reported-by: Zefir Kurtisi <zefir.kurtisi@westermo.com>
-> > Closes: https://lore.kernel.org/netdev/b3d9136c-2803-4203-b1ea-1f9e62de80a1@gmail.com/
-> > Tested-by: Zefir Kurtisi <zefir.kurtisi@westermo.com>
-> > Reviewed-by: Wei Fang <wei.fang@nxp.com>
-> > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > ---
-> > v1->v3: none
-> > ---
-> >  drivers/net/ethernet/freescale/enetc/enetc.c | 13 +++++++++++++
-> >  drivers/net/ethernet/freescale/enetc/enetc.h |  2 ++
-> >  2 files changed, 15 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > index 0216f7d08e19..bbad942041f5 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > @@ -1077,6 +1077,19 @@ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev)
-> >       u8 udp, msgtype, twostep;
-> >       u16 offset1, offset2;
-> >
-> > +     /* Hardware does not support transmit buffer descriptors with a total
-> > +      * length of less than 16 bytes, or a first buffer size of less than
-> > +      * 16 bytes.
-> > +      */
-> > +     if (unlikely(skb_headlen(skb) < ENETC_MIN_BUFF_SIZE &&
-> > +                  skb_linearize(skb))) {
+> ipgre_netlink_parms() can enable collect_md on an existing GRE, GRETAP
+> or ERSPAN device. Unlike newlink, changelink does not enforce metadata
+> tunnel uniqueness. Converting a non-metadata device can therefore
+> replace the metadata receive entry for another device of the same type
+> in the same netns. Deleting either device then clears the shared entry,
+> breaking metadata receive lookup for the surviving device.
 > 
-> Isn't it only necessary to pull a few bytes into the linear region?
-
-It looks like pskb_may_pull() is an adequate improvement over
-skb_linearize(), so I'll use that, thanks.
-
-> > +             dev_kfree_skb_any(skb);
-> > +             return NETDEV_TX_OK;
-> > +     }
-> > +
-> > +     if (eth_skb_pad(skb))
-> > +             return NETDEV_TX_OK;
+> If parameter validation fails after collect_md is set, deleting the
+> modified device can also clear an entry it never owned.
 > 
-> That could be inside the (skb_headlen(skb) < ENETC_MIN_BUFF_SIZE) test.
+> Reject enabling metadata mode in both changelink callbacks before any
+> encapsulation or tunnel parameters are modified. Allow requests that
+> repeat the metadata attribute on an existing metadata device.
+> 
+> Fixes: 2e15ea390e6f ("ip_gre: Add support to collect tunnel metadata.")
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-There was an undocumented reason why it's done unconditionally for any
-packet < ETH_ZLEN and not just < ENETC_MIN_BUFF_SIZE. It is to avoid a
-separate potential erratum. I'll make sure to mention that in the commit
-message.
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+
+NL_SET_ERR_MSG_ATTR() would have been better, but I don't think it
+warrants a v3.
