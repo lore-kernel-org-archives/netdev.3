@@ -1,83 +1,105 @@
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5030B495041
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0190128C009;
+	Mon, 21 Sep 2026 12:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789994021; cv=none; b=TGX1ZiKn4GOgiKFJ/rDwiaJ5HzjwqHsFtUTsWDx9OEDRE34om6zQ+snoMerXVTC5dTFs2yrF/6JWv1f/Il+DvWBsoWRJf5mOaYwZ7XDweXMTzXld+zLztN7+GoI82UWAVBYrIOL3+P9fibNEOcnbmzZ0kPkH/n2G2aAmq9rvz2w=
+	t=1789994688; cv=none; b=st2yD20RizZQpnN0rOy+kPjaMzOnZ/mpXzsF3Rdf5Czk53f24VxB92qh+fglxWTfqRQzRXRuIT8S3PwoHWSu+HnNMx9tLzljtdJIsada9/vuVlwHshDKFK13feMrOIJHHdUx3e8KSZd45tQ8YF1jXh4038TaHGMUBeXKhRmd408=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789994021; c=relaxed/simple;
-	bh=1j1QU/4naUGwVc988zrlJ6S551c+tqiuwpenUdezBxc=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sKCNrDJMgh0PSs+hWZE33V7Ptdw7GiBK9lhHubRZ2TlkXgiuPqKLnXrMd7Fs1EwsYVhgslMJYnS31MJLIkMQvAc2ANznqXy41jP/Ny/G7OUJQe8h7kJnFvv54+VsKFC9U9KG+PLnuas17qbcjRAclVB9Le7qAaYlIMTFDmsMy64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-80d221f75caso3023261a34.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 05:33:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789994017; x=1790598817;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SrWCKhmhwPKk2RRpke7Ort9NY2I0LwsCKnerl92C5Ak=;
-        b=HnzmHv079+ii4MCgo9S+fRzpID2JE4dn1cdGKv/BcNOv2CsxG1sTajpAS5+4U67wLT
-         n/UqjAs4k2dqn2NG5PQIHvbZ/4VHkfVvwUbtTRcfxU38vppSKZNoJmaq1ahmhyX7xigN
-         vBLz8eotwgCJ2S3JL1AQ/df4hPjKZs9tTdpCE4D8dHIQF3JLb5zNW4eRBkBPeTnvPktS
-         cD5CYgAwidqyFH7QTa4sdEdmkslht8jwkEFU/OxWvUAh18KwAXnvYc4CoG9OK2zOj7UG
-         w8lZkAEDjSNDRmJe4KbUhwo2J0Pj4fQqjUvsRH6l8680C01BaC9Xmt+Un1hN6CflmsX8
-         cc0g==
-X-Forwarded-Encrypted: i=1; AKwUvBwqMcLSQxSSL1CjfOvnD7qEJfphEqSsV3/CLDl9vxzXdx2ZjSESm6me40pl9fKh57vEgzeTdgg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mqub6yQfuxHb0t3NMY6gjFBTmHYmWikddRhFdVpP9UVj3pfk5o
-	Y91TJn7A/zbgQzfmECnzYyAhXTPGiOvU8CEnnAjD4XTEiuLlK2VvqTXss5qrFFHb0YhkRBEbxdR
-	qP3TREBYUOYE0vjY4CHN2XBlc43tyq5DiGBD1IEQBoWGO6wnA9w6o+8j0DEE=
+	s=arc-20240116; t=1789994688; c=relaxed/simple;
+	bh=w1GlDaYjGOLyqTw2T7atvpFGJJuRBmdthAUnufDAhok=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q9ep/CuhVcCPOVUN4I8ltx5C4rOLoclkv7qnAbBDPHKTasF37wLApVTKWVnePZIHOIoqFOeIt2+Cw4xjD/Jbj3zr9DsbbCbQw8HWheIY0HQSWwpUQ6SsOt7lz4h+sIwVS/O/nQGyMNVsX0YMDmY3N1z/p7FaHVnzNp9sKq0ZGeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=yGKHp0In; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="yGKHp0In"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 184B1A4A18;
+	Mon, 21 Sep 2026 14:44:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789994680; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=CbRBRCnqdsWMFVb2TRFmDEKx0JYd2/g65NfgRA9kBmQ=;
+	b=yGKHp0InIi3Cu0Id+HN3gRHss+CSwJA/4ctTu97cW5Nfmc2GVFupNyw12LjmfpabhiHUKN
+	DyRoZwhX7/EzDMP3JK29sV26+nsIA1vhyXqG7gAqXry8bQwQOcOiHhcQNZ6eHExCc5jPrR
+	+21zHDD6SPMENwcZV9YRY7lZZw9ckJbN19Oo72zqL03wfJcxOmDAN13zcsJsf0PiOCgzSw
+	moGT+L76Mqp3js8H9jZ2PJ5ifW4vPh2Fzd3BxLEgczpNlN+iA0oer8uWG9NfXal44c+Ze5
+	YgaATx0e242iYHP9MUZr+ERgquAVfWRJ2nzI5DmSzPONZiRk2C75yFzch92ZUw==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Justin Chen <justin.chen@broadcom.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: bcmgenet: stop Tx NAPI before disabling the queues
+Date: Mon, 21 Sep 2026 14:44:34 +0200
+Message-ID: <20260921124435.974581-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:859a:20b0:6cd:3fdc:a93d with SMTP id
- 006d021491bc7-6cd3fecc4afmr4491628eaf.90.1789994017290; Mon, 21 Sep 2026
- 05:33:37 -0700 (PDT)
-Date: Mon, 21 Sep 2026 05:33:37 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab12421.3179f8cd.1e36b2.001f.GAE@google.com>
-Subject: [syzbot] Monthly wireguard report (Sep 2026)
-From: syzbot <syzbot+list3508dff347594ebfd49c@syzkaller.appspotmail.com>
-To: Jason@zx2c4.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello wireguard maintainers/developers,
+bcmgenet_netif_stop() disables the Tx queues first and stops Tx NAPI
+several steps later. A completion in flight calls netif_tx_wake_queue() in
+between, so a transmit can reach the rings after bcmgenet_fini_dma() has
+freed them.
 
-This is a 31-day syzbot report for the wireguard subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireguard
+Close is safe because dev_deactivate_many() stops the qdisc first.
+bcmgenet_suspend() does not, so stop Tx NAPI before the queues.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 5 issues are still open and 21 have already been fixed.
+KASAN on a Raspberry Pi CM4, driven from an MTU change because suspend
+freezes user space before the callback runs:
 
-Some of the still happening issues:
+  BUG: KASAN: use-after-free in bcmgenet_xmit+0x17f8/0x2258
+  Write of size 8 at addr ffffff8055844a68 by task ksoftirqd/0/14
+   bcmgenet_xmit+0x17f8/0x2258
+   dev_hard_start_xmit+0x13c/0x588
+   sch_direct_xmit+0x108/0x340
+   __dev_queue_xmit+0x1190/0x3848
 
-Ref Crashes Repro Title
-<1> 9       Yes   BUG: workqueue lockup in wg_packet_decrypt_worker
-                  https://syzkaller.appspot.com/bug?extid=d0d2f1a65f45b319d25d
-<2> 3       No    BUG: soft lockup in wg_packet_decrypt_worker
-                  https://syzkaller.appspot.com/bug?extid=27a6e390f71f14f4fecf
-<3> 20      Yes   INFO: rcu detected stall in wg_packet_handshake_receive_worker (3)
-                  https://syzkaller.appspot.com/bug?extid=48f45f6dd79ca20c3283
-
+Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Found this, while I was preparing my jumbo frame series for genet.
+The MTU change in my test comes from that series and is not in tree
+yet.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index b916080f4ff1..0789b60e664a 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3441,6 +3441,8 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 
++	/* Stop completion polling before it can wake a stopped queue */
++	bcmgenet_disable_tx_napi(priv);
+ 	netif_tx_disable(dev);
+ 
+ 	/* Disable MAC receive */
+@@ -3455,7 +3457,6 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
+ 
+-	bcmgenet_disable_tx_napi(priv);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
+ 
+-- 
+2.53.0
 
-You may send multiple commands in a single email message.
