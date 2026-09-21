@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802E03DB326
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E243D0910
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790020646; cv=none; b=oJe/HIHZfZ3avPfo5HwDx1qgFtzS4jow1HDgfMVggyTgOGGE12U7isBTjdoJuTOsTnDgW90Jj4YCKeY6v8eT5Hl8XRPwStmVsv6T0iz9hF2yF8syRKhaisVRhY3pFheqnOF5Ph4z4N8qW4MlyM8W5pe5DRtqfOIrHUtmpO8gbcs=
+	t=1790020648; cv=none; b=kkdHVekLw8N8BWEr7in2r/AdVAk8LHbDK8WodRSKh6lldjApXSkj+fiio3Q0s4bTBKVXYO82ZsP1egy/ToUXSMVdqs98TurX8K01DQMlST73+kmPAeuCGJrjzlevbpGkfw1+z6fMBvZlp2dwi2Wk/sEkjgB8DZaHrI8FL/3Fg9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790020646; c=relaxed/simple;
-	bh=wUWmtBexR8yVaUnZpHN6WS2MPKgw+V+fApBRXLvQ8uI=;
+	s=arc-20240116; t=1790020648; c=relaxed/simple;
+	bh=XcMcYkQL59BERzh/Og6nblrMCqgaobXxeiExANlIcQU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XCMzW3Mg3nF0spWrR1TqKHRGlhTWUt7hCh7MeJSzrbAYWcmAL/HPWOSVHy3dkjI3PggyT2nkLJC72RTmfPV/dhhR5lwAvEsLBjst1sTo1W28SBHOQmdCvOxarkC9Lpz5GtvqPTUb+iRAduiQxlBiZ2B9LSWonoH/hWsOXDgK7tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kl3qvy0/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DH9N3IrPBmWxP51hsaNFGWGoK4RrRhDYaaRqEUjNnX0s3oTcpHqA64o1MEFO0umMZ8kvHqk6KUIb8bnrYMYyK9rnNEibtokaTDzTdScNApJy3TjFRQdVyUGHYC6N1N4TdffhCzxNY43cc5jyZxksiZIIUCWRPSJXYWIQdJTC2FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnSefubu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kl3qvy0/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D581F00893;
-	Mon, 21 Sep 2026 19:57:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnSefubu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6151F00898;
+	Mon, 21 Sep 2026 19:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790020644;
-	bh=FnR9EvI4OpB6dympuAePTaVbjhy1sef4AOtnL+sHoEo=;
+	s=k20260515; t=1790020645;
+	bh=14XcF7mtgOrDd6aUhXQpLGsfpdleE+qdT/B0zgS4Gzw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kl3qvy0/Ri/yv0hDixb0QukWkWIm1LvnMW++GrSaAko9SaX3Yf3JsVVZIyJTmnxnI
-	 tj2yfu8a9wS6HXb65fXUwUBoOpnF5gT9Ue9/utwEqyKX/6ZRb4jTk2JMZc2N0UHe6o
-	 8pSDj18fXpqu3/o8uh8PkXbdK6DHX635mZwi+BquRv3VEQSARqopcW6wxN8dm1m63X
-	 7iRNCo/JL95mX9o+HspXYl8PDqBWIFAFSIP0T/HYCatJwi4RMzEq2hAfv38M+0GLqA
-	 9l1KzwpH2qIv25fPcEDkwQ/mBjXgNzfCadfIDz6INFL8fWiQfIBjTCOKWztKm6ePin
-	 kmkQOkTDYjZ/Q==
-Subject: Re: [PATCH net-next v2 08/12] ice: create ACL entry
+	b=BnSefubu313D46XIZ5eQLsPnTABvjfeyZtqS+20NzJhiHRR3ruNC9Cf9j3naVJW/y
+	 aBjn+Dmr029FAZTXg6830ZR8qsuFqTeLT8kQKlYvmqUBsw1fcR/MZh2JrLztiNldwd
+	 xS0LItaXQ2dMpU2z+rFlDB3vaESl/R9SYE4uxuVUf2PCwBWeGdfJxrgpb2LCFrtFuF
+	 boFDyu7173rXjDdkg1kHd3lMRlLC9fjmDUN0ECpbNnT6kA72BsharzgVtw1UHR7BCf
+	 +6YV46voekMincGTxo7vZ+fpTs4o9Yt5Zd0KBxc2FUVM2JQoj3hlIZP+G9rAGCqod6
+	 Ehg6vxmGI7YlQ==
+Subject: Re: [PATCH net-next v2 09/12] ice: program ACL entry
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -34,11 +34,11 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  lukasz.czapnik@intel.com, marcin.szycik@linux.intel.com,
  aleksandr.loktionov@intel.com, sandeep.penigalapati@intel.com,
  ananth.s@intel.com, alexander.duyck@gmail.com, sx.rinitha@intel.com
-Date: Mon, 21 Sep 2026 19:57:23 +0000
-Message-ID: <179002064326.2160803.9970333344666606379@kernel.org>
-In-Reply-To: <20260917183927.2692068-9-anthony.l.nguyen@intel.com>
-References: <20260917183927.2692068-9-anthony.l.nguyen@intel.com>
-X-sashiko-severity: Medium
+Date: Mon, 21 Sep 2026 19:57:24 +0000
+Message-ID: <179002064458.2160803.12419481046643015155@kernel.org>
+In-Reply-To: <20260917183927.2692068-10-anthony.l.nguyen@intel.com>
+References: <20260917183927.2692068-10-anthony.l.nguyen@intel.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 11 potential
+Thank you for your contribution! Sashiko AI review found 17 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 8 · Low: 3
+Critical: 0 · High: 2 · Medium: 9 · Low: 6
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,524 +59,802 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] ice_ntuple_set_input_set() strips the wrong ethtool extension
-  bit for the ACL block: `else if (blk == ICE_BLK_ACL) flow_mask =…
-- [Medium] ice_acl_comp_rules() requires the raw IP/port values to be
-  byte-identical in addition to the masks, so two ACL rules whose…
-- [Medium] In ice_flow_acl_frmt_entry_range() the 2-byte read of the
-  field mask out of the caller-supplied match buffer is performed…
-- [Medium] ice_flow_acl_check_actions() allocates one hardware ACL
-  counter per counter-type action in a loop and, on failure of a later…
-- [Medium] ice_flow_acl_set_xtrct_seq() and ice_flow_acl_disassoc_scen()
-  perform a query-modify-program transaction on the ACL profile…
-- [Medium] ice_flow_add_entry() releases hw->fl_profs_locks[blk]
-  immediately after ice_flow_assoc_prof() but keeps the raw `prof`…
-- [Medium] ice_flow_acl_frmt_entry() writes the packet-direction flag
-  value into the ACL key (buf[prof->cfg.scen->pkt_dir_idx] =…
-- [Medium] net/ice: TOCTOU race allows programming duplicate ACL rules
-- [Low] At this commit ice_acl_add_rule_ethtool() formats an ACL entry
-  but never programs it into the ACL TCAM, discards the handle returned…
-- [Low] At this commit the ACL flow entry created by ice_flow_add_entry()
-  is unreachable: for ICE_BLK_ACL it is deliberately not linked onto…
-- [Low] ice_flow_rem_entry_sync() ignores the return value of
-  ice_flow_acl_free_act_cntr() and then frees entry->acts, discarding…
+- [High] ice_flow_acl_add_scen_entry_sync() merges two distinct ethtool
+  rules (different 'location' slots) onto one ACL scenario entry…
+- [High] Replacing an ACL rule with a Flow Director rule at the same
+  ethtool location leaves the old ACL TCAM entry programmed and active.
+- [Medium] In ice_ntuple_update_list_entry() the new last-ACL-filter
+  cleanup calls ice_fdir_rem_flow(hw, ICE_BLK_ACL, old_fltr->flow_type),…
+- [Medium] ice_set_fd_vsi_ctx() now unconditionally sets
+  ICE_AQ_VSI_PROP_ACL_VALID and programs acl_def_act (hardcoded miss-…
+- [Medium] ACL ice_ntuple_fltr objects are inserted into
+  hw->fdir_list_head (input->acl_fltr = true) but the teardown paths…
+- [Medium] ACL rule placement ignores the ethtool rule-ordering contract.
+- [Medium] In ice_acl_add_rule_ethtool(), the new `del_entry` error path
+  unconditionally calls ice_flow_rem_entry(hw, ICE_BLK_ACL, entry_h).
+- [Medium] ice_flow_rem_prof_sync() iterates prof->entries calling
+  ice_flow_rem_entry_sync() and only `break`s on the first failure; the…
+- [Medium] ice_acl_rem_entry() only releases the scenario slot
+  (ice_acl_scen_free_entry_idx(), i.e. clearing the entry_bitmap bit…
+- [Medium] In the in-place action-update branch (do_chg_action) of
+  ice_flow_acl_add_scen_entry_sync(), the driver releases the existing…
+- [Medium] The new ice_flow_find_entry() converts a struct ice_flow_entry
+  pointer into a u64 'handle' and returns it after releasing both…
+- [Low] Concern that ACL filters are never reprogrammed after a PF/core
+  reset (ice_fdir_replay_fltrs() skips acl_fltr entries and…
+- [Low] ice_acl_prof_aq_send() is extended to set LIBIE_AQ_FLAG_RD for
+  ice_aqc_opc_program_acl_prof_ranges, but that opcode can never reach…
+- [Low] ice_flow_find_entry()'s kernel-doc states it returns
+  'ICE_FLOW_ENTRY_ID_INVAL' when no entry is found, but no such macro…
+- [Low] The new struct ice_acl_scen.entry_bitmap comment states that a
+  set bit means the entry is available, while the allocator and free…
+- [Low] ice_flow_acl_find_scen_entry_cond() bounds its action-comparison
+  loop with the existing entry's count but dereferences both arrays:…
+- [Low] ice_acl_add_entry() programs all cascaded TCAM slices - including
+  the leftmost slice that completes the match - before calling…
 
 --
 
-ice: create ACL entry
+ice: program ACL entry
 
-This adds the ACL entry creation path: the ethtool ACL add helper now
-builds an action (drop or forward to queue), formats a TCAM key from the
-ethtool flow spec, and programs the ACL profile extraction sequence.
-ice_flow_add_entry() gains an action array and a new ICE_BLK_ACL case.
+This completes the ACL filter programming path: the formatted key and the
+action set are written into the scenario's TCAM entry and action memories,
+scenario entry allocation/removal helpers are added, and the VSI context is
+extended with the ACL section.  Masked ntuple rules for tcp4, udp4, sctp4
+and ip4 can now be installed through ethtool.
 
-A few questions below.
+A few questions on the new code below.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> index db8137e6f8706..6313d511398a2 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-
-[ ... ]
-
-> @@ -207,6 +210,111 @@ static int ice_acl_prof_add_ethtool(struct ice_pf *pf,
-
-[ ... ]
-
-> +/**
-> + * ice_acl_comp_rules - compare two ACL filters
-> + * @a: first ACL filter
-> + * @b: second ACL filter
-> + *
-> + * Return: true if a and b values and masks are identical, false otherwise
-> + */
-> +static bool
-> +ice_acl_comp_rules(struct ice_ntuple_fltr *a, struct ice_ntuple_fltr *b)
-> +{
-> +	bool base_equal;
-> +
-> +	if (a->flow_type != b->flow_type)
-> +		return false;
-> +
-> +	base_equal = a->ip.v4.dst_ip == b->ip.v4.dst_ip &&
-> +		     a->ip.v4.src_ip == b->ip.v4.src_ip &&
-> +		     a->mask.v4.dst_ip == b->mask.v4.dst_ip &&
-> +		     a->mask.v4.src_ip == b->mask.v4.src_ip;
-
-[Severity: Medium]
-Should the value comparison here be done after applying the mask?
-
-ice_acl_comp_rules() requires the raw values to be byte-identical, but
-ice_flow_acl_frmt_entry_fld() turns every bit cleared in the mask into a
-don't-care bit:
-
-	if (use_mask) {
-		tmp_m = (~data[mask++] & 0xff) << disp;
-		dontcare[dst] |= tmp_m & 0xff;
-	}
-
-So these two rules differ only in mask-cleared bits and produce a
-bit-identical TCAM key, yet ice_acl_is_dup_fltr() does not consider them
-duplicates:
-
-  ethtool -N ethX flow-type tcp4 dst-ip 10.0.0.1 m 0.0.0.255 action 1 loc 1
-  ethtool -N ethX flow-type tcp4 dst-ip 10.0.0.2 m 0.0.0.255 action 1 loc 2
-
-Later in the series, ice_flow_acl_find_scen_entry_cond() then matches the
-existing scenario entry with memcmp(p->entry, e->entry, p->entry_sz) and
-re-labels it with exist->id = e->id, so location 1 no longer has an entry
-of its own.  A subsequent delete of location 1 goes through
-ice_del_acl_ethtool() -> ice_flow_find_entry(hw, ICE_BLK_ACL, 1), which
-finds nothing, so that filter can no longer be removed.  Is that the
-intended behaviour, and does the kerneldoc claim of "identical match
-criteria" hold given the don't-care handling above?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> index 0c088e6261438..f67b6e1c0ffbf 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-
-[ ... ]
-
-> @@ -2037,28 +2037,36 @@ ice_update_ring_dest_vsi(struct ice_vsi *vsi, u16 *dest_vsi, u32 *ring)
->  	if (!vsi || !fsp || !input)
->  		return -EINVAL;
+> diff --git a/drivers/net/ethernet/intel/ice/ice_acl.c b/drivers/net/ethernet/intel/ice/ice_acl.c
+> index 3179ce33e365e..ed078e30abfab 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_acl.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_acl.c
+> @@ -156,7 +156,8 @@ static int ice_acl_prof_aq_send(struct ice_hw *hw, u16 opc, u8 prof_id,
+>  	cmd = libie_aq_raw(&desc);
+>  	cmd->profile_id = prof_id;
 >  
-> +	if (blk == ICE_BLK_FD)
-> +		flow_mask = FLOW_EXT;
-> +	else if (blk == ICE_BLK_ACL)
-> +		flow_mask = FLOW_MAC_EXT;
-> +	else
-> +		return -EINVAL;
-> +
-
-[Severity: Medium]
-Is FLOW_MAC_EXT the right bit to strip for the ACL block?
-
-ice_add_ntuple_ethtool() rejects FLOW_MAC_EXT before the ACL path is ever
-reached:
-
-	if (fsp->flow_type & FLOW_MAC_EXT)
-		return -EINVAL;
-
-so for ICE_BLK_ACL the mask can never clear a bit that is set, while
-FLOW_EXT stays in flow_type.
-
-> @@ -2085,7 +2094,7 @@ ice_ntuple_set_input_set(struct ice_vsi *vsi, struct ethtool_rx_flow_spec *fsp,
+> -	if (opc == ice_aqc_opc_program_acl_prof_extraction)
+> +	if (opc == ice_aqc_opc_program_acl_prof_extraction ||
+> +	    opc == ice_aqc_opc_program_acl_prof_ranges)
+>  		desc.flags |= cpu_to_le16(LIBIE_AQ_FLAG_RD);
 >  
->  	input->fltr_id = fsp->location;
->  	input->q_index = q_index;
-> -	flow_type = fsp->flow_type & ~FLOW_EXT;
-> +	flow_type = fsp->flow_type & ~flow_mask;
+>  	return ice_aq_send_cmd(hw, &desc, buf, sizeof(*buf), cd);
 
-Can an ACL add with FLOW_EXT set still succeed after this change?  With
-something like:
+[Severity: Low]
+Can ice_aqc_opc_program_acl_prof_ranges ever reach ice_acl_prof_aq_send()?
+The only callers are ice_prgm_acl_prof_xtrct() (extraction) and
+ice_query_acl_prof() (query prof).
 
-  ethtool -N ethX flow-type tcp4 dst-ip 10.0.0.0 m 0.0.0.255 vlan 5 action 1
-
-ethtool sets FLOW_EXT, ice_is_acl_filter() (which uses & ~FLOW_EXT) returns
-true because the IP mask is partial, ice_acl_prof_add_ethtool() succeeds
-and records hw->acl_prof[fltr_type]->seg, and then flow_type here still
-carries FLOW_EXT, so ice_ethtool_flow_to_fltr() and the closing switch in
-this function hit:
-
-	default:
-		/* not doing un-parsed flow types */
-		return -EINVAL;
-
-The request is rejected after the profile has already been created.  Every
-other ACL decode site (ice_is_acl_filter(), ice_acl_prof_add_ethtool(), and
-the ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT) call in
-ice_acl_add_rule_ethtool()) strips FLOW_EXT instead.  Would masking both,
-~(FLOW_EXT | FLOW_MAC_EXT), be what is wanted here?  Note that simply
-stripping FLOW_EXT would silently ignore the VLAN match the user asked
-for, so the ACL path may need an explicit decision rather than a different
-mask.
+Also, this helper's buf parameter is struct ice_aqc_acl_prof_generic_frmt *
+and it always sends sizeof(*buf) of that type, while 0x0C1E takes a
+struct ice_aqc_acl_profile_ranges buffer.  The new
+ice_prog_acl_prof_ranges() added by this patch builds its own descriptor
+and sets LIBIE_AQ_FLAG_RD itself, so should this branch be dropped?
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
-> index e42367853253f..192569ff1d6c1 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_flow.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_flow.c
+> diff --git a/drivers/net/ethernet/intel/ice/ice_acl.h b/drivers/net/ethernet/intel/ice/ice_acl.h
+> index 066665c9d963d..0c8163e585d9d 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_acl.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_acl.h
+> @@ -69,6 +70,11 @@ struct ice_acl_scen {
+>  	 * participate in this scenario
+>  	 */
+>  	DECLARE_BITMAP(act_mem_bitmap, ICE_AQC_MAX_ACTION_MEMORIES);
+> +
+> +	/* If nth bit of entry_bitmap is set, then nth entry will
+> +	 * be available in this scenario
+> +	 */
+> +	DECLARE_BITMAP(entry_bitmap, ICE_MAX_ACL_TCAM_ENTRY);
+
+[Severity: Low]
+Is the polarity in this comment inverted?  The users treat a set bit as
+"allocated":
+
+	if (!test_and_set_bit(i, scen->entry_bitmap))
+		return i;			/* allocate */
+
+	if (!test_and_clear_bit(idx, scen->entry_bitmap))
+		return -ENOENT;			/* free */
+
+	if (!test_bit(entry_idx, scen->entry_bitmap))
+		return -ENOENT;			/* remove */
 
 [ ... ]
 
-> +/**
-> + * ice_flow_acl_disassoc_scen - Disassociate the scenario from the profile
-> + * @hw: pointer to the hardware structure
-> + * @prof: pointer to flow profile
-> + *
-> + * Disassociate the scenario from the profile for the PF of the VSI.
-> + *
-> + * Return: 0 on success, negative on failure
-> + */
-> +static int ice_flow_acl_disassoc_scen(struct ice_hw *hw,
-> +				      struct ice_flow_prof *prof)
+> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+> index 6a60da3034cf2..0ee86236bc37a 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+> @@ -29,6 +34,51 @@ static void ice_acl_init_entry(struct ice_acl_scen *scen)
+> +static u16 ice_acl_scen_assign_entry_idx(struct ice_acl_scen *scen,
+> +					 enum ice_acl_entry_prio prio)
 > +{
-> +	struct ice_aqc_acl_prof_generic_frmt buf = {};
-> +	int err = 0;
-> +	u8 prof_id;
+> +	u16 first_idx, last_idx, i;
+> +	s8 step;
 > +
-> +	err = ice_flow_get_hw_prof(hw, ICE_BLK_ACL, prof->id, &prof_id);
-> +	if (err)
-> +		return err;
+> +	if (prio >= ICE_ACL_MAX_PRIO)
+> +		return ICE_ACL_SCEN_ENTRY_INVAL;
 > +
-> +	err = ice_query_acl_prof(hw, prof_id, &buf, NULL);
-> +	if (err)
-> +		return err;
+> +	first_idx = scen->first_idx[prio];
+> +	last_idx = scen->last_idx[prio];
+> +	step = first_idx <= last_idx ? 1 : -1;
 > +
-> +	/* Clear scenario for this PF */
-> +	buf.pf_scenario_num[hw->pf_id] = ICE_ACL_INVALID_SCEN;
-> +	return ice_prgm_acl_prof_xtrct(hw, prof_id, &buf, NULL);
+> +	for (i = first_idx; i != last_idx + step; i += step)
+> +		if (!test_and_set_bit(i, scen->entry_bitmap))
+> +			return i;
+> +
+> +	return ICE_ACL_SCEN_ENTRY_INVAL;
 > +}
 
 [Severity: Medium]
-What serializes this query-modify-program sequence against the sibling PFs
-of the same device?
+How is the ethtool rule ordering contract honoured here?
+include/uapi/linux/ethtool.h says for struct ethtool_rx_flow_spec:
 
-struct ice_aqc_acl_prof_generic_frmt carries
-pf_scenario_num[ICE_AQC_ACL_PROF_PF_SCEN_NUM_ELEMS], one byte per physical
-function, so this profile entry is device global.  Both this function and
-ice_flow_acl_set_xtrct_seq() below read the whole entry, change only their
-own byte (and, on first use, the byte/word/dword selections and the entire
-pf_scenario_num array), and write the whole entry back.
+	 * @location: Location of rule in the table.  Locations must be
+	 *	numbered such that a flow matching multiple rules will be
+	 *	classified according to the first (lowest numbered) rule.
 
-The only lock held on the add side is hw->fl_profs_locks[blk], which is
-private to one driver instance.  rtnl_lock does not cover the other PF
-either, since a reset/rebuild runs from the service task:
-
-ice_reset_subtask()
-  ice_rebuild(pf, reset_type)
-
-Can two PFs racing here lose an update, leaving another PF's profile
-pointing at a wrong or invalid scenario, or resurrecting an association
-that PF just cleared?  The driver already has a cross-function primitive
-for shared table updates in ice_acquire_change_lock() /
-ice_acquire_res(ICE_CHANGE_LOCK_RES_ID); should these two transactions use
-it?
+ice_acl_add_rule_ethtool() passes ICE_FLOW_PRIO_NORMAL for every rule and
+uses fsp->location only as the flow entry id, and this function picks the
+first free slot of the priority partition without ever seeing the
+location.  For two overlapping masked rules, doesn't the hardware match
+order end up being the order in which they were added rather than the
+location order?
 
 [ ... ]
 
-> +static int ice_flow_acl_set_xtrct_seq(struct ice_hw *hw,
-> +				      struct ice_flow_prof *prof)
+> @@ -887,3 +937,209 @@ int ice_acl_destroy_tbl(struct ice_hw *hw)
+> +int ice_acl_add_entry(struct ice_hw *hw, struct ice_acl_scen *scen,
+> +		      enum ice_acl_entry_prio prio, u8 *keys, u8 *inverts,
+> +		      struct ice_acl_act_entry *acts, u8 acts_cnt,
+> +		      u16 *entry_idx)
 > +{
 
 [ ... ]
 
-> +	/* Update the current PF */
-> +	buf.pf_scenario_num[hw->pf_id] = (u8)prof->cfg.scen->id;
-> +	return ice_prgm_acl_prof_xtrct(hw, prof_id, &buf, NULL);
-> +}
-
-[ ... ]
-
-> +static int ice_flow_acl_check_actions(struct ice_hw *hw,
-> +				      struct ice_flow_action *acts, u8 acts_cnt,
-> +				      bool *cnt_alloc)
-> +{
-
-[ ... ]
-
-> +	/* Checks if ACL counters are needed. */
-> +	for (int i = 0; i < acts_cnt; i++) {
-> +		if (ice_flow_acl_is_cntr_act(acts[i].type)) {
-> +			struct ice_acl_cntrs cntrs = { 0 };
-> +			int err;
-> +
-> +			cntrs.amount = 1;
-> +			cntrs.bank = 0; /* Only bank0 for the moment */
-> +
-> +			if (acts[i].type == ICE_FLOW_ACT_CNTR_PKT_BYTES)
-> +				cntrs.type = ICE_AQC_ACL_CNT_TYPE_DUAL;
-> +			else
-> +				cntrs.type = ICE_AQC_ACL_CNT_TYPE_SINGLE;
-> +
-> +			err = ice_aq_alloc_acl_cntrs(hw, &cntrs, NULL);
-> +			if (err)
-> +				return err;
-
-[Severity: Medium]
-Does this return leak the ACL counters allocated by earlier iterations?
-
-ICE_FLOW_ACL_MAX_NUM_ACT is 2 and dup_check only rejects two actions of the
-same type, so an array such as {ICE_FLOW_ACT_CNTR_PKT,
-ICE_FLOW_ACT_CNTR_BYTES} performs two ice_aq_alloc_acl_cntrs() calls.  If
-the second one fails, the counter allocated for acts[0] is still owned by
-hardware when the error is returned.
-
-The caller cannot compensate, because the propagation happens before the
-label that has the rollback:
-
-	err = ice_flow_acl_check_actions(hw, acts, acts_cnt, &cnt_alloc);
-	if (err)
-		return err;
-	...
-out:
-	...
-	if (err) {
-		...
-		if (cnt_alloc)
-			ice_flow_acl_free_act_cntr(hw, acts, acts_cnt);
-	}
-
-Bank 0 only has 4 single or 2 dual counters, and nothing reclaims them
-short of a reset.  No in-tree caller requests counter actions yet
-(ice_acl_main.c builds only drop and forward-to-queue with
-ICE_ACL_NUM_ACT == 1), so this is latent today.
-
-> +/**
-> + * ice_flow_acl_frmt_entry_range - Format an ACL range checker for a given field
-
-[ ... ]
-
-> +static void
-> +ice_flow_acl_frmt_entry_range(u16 fld, struct ice_flow_fld_info *info,
-> +			      struct ice_aqc_acl_profile_ranges *range_buf,
-> +			      u8 *data, u8 *range)
-> +{
-> +	u16 new_mask, offset_val;
-> +
-> +	/* If not specified, default mask is all bits in field */
-> +	memcpy(&offset_val, data + info->src.mask, sizeof(offset_val));
-> +	new_mask = (info->src.mask == ICE_FLOW_FLD_OFF_INVAL ?
-> +		    BIT(ice_flds_info[fld].size) - 1 : offset_val) <<
-> +		   info->xtrct.disp;
-
-[Severity: Medium]
-Can this read past the end of the match buffer?
-
-The memcpy() runs before the ICE_FLOW_FLD_OFF_INVAL test in the ternary
-that follows, so in exactly the "mask not specified" case it performs:
-
-	memcpy(&offset_val, data + 0xffff, 2);
-
-ICE_FLOW_FLD_OFF_INVAL is 0xffff, and data is the kzalloc'ed struct
-ice_ntuple_fltr passed down from ice_acl_add_rule_ethtool() through
-ice_flow_acl_frmt_entry(), so that is a 2-byte read 64 KB past the end of
-a small slab object.
-
-The sibling helper added in the same patch guards first:
-
-	if (mask != ICE_FLOW_FLD_OFF_INVAL)
-		use_mask = true;
-
-Would hoisting the sentinel check above the memcpy() here be equivalent?
-No in-tree ACL profile builder creates ICE_FLOW_FLD_TYPE_RANGE fields
-today (ice_acl_set_ip4_addr_seg() and ice_acl_set_ip4_port_seg() pass
-range == false), so this looks latent rather than reachable from userspace.
-
-[ ... ]
-
-> +static int ice_flow_acl_frmt_entry(struct ice_hw *hw,
-> +				   struct ice_flow_prof *prof,
-> +				   struct ice_flow_entry *e, u8 *data,
-> +				   struct ice_flow_action *acts, u8 acts_cnt)
-> +{
-
-[ ... ]
-
-> +	/* Set don't care mask to all 1's to start, will zero out used bytes */
-> +	memset(dontcare, 0xff, buf_sz);
-
-[ ... ]
-
-> +	buf[prof->cfg.scen->pid_idx] = (u8)prof_id;
-> +	dontcare[prof->cfg.scen->pid_idx] = 0;
-> +
-> +	/* Format the buffer for direction flags */
-> +	dir_flag_msk = BIT(ICE_FLG_PKT_DIR);
-> +
-> +	if (prof->dir == ICE_FLOW_RX)
-> +		buf[prof->cfg.scen->pkt_dir_idx] = dir_flag_msk;
-
-[Severity: Medium]
-Should dontcare[prof->cfg.scen->pkt_dir_idx] be cleared here too?
-
-dontcare was pre-filled with 0xff, and pid_idx and rng_chk_idx get their
-mask bytes assigned, but pkt_dir_idx does not.  The dontcare buffer is
-passed to ice_set_key() as the dc argument, and ice_gen_key_word()
-wildcards every bit set there:
-
-	if (ice_gen_key_word(val[i], upd ? upd[i] : 0xff,
-			     dc ? dc[i] : 0, nm ? nm[i] : 0,
-			     key + off + i, key + half_size + off + i))
-
-The byte at scen->pkt_dir_idx is a real match byte: ice_acl_create_scen()
-wires the TCAM byte at ICE_ACL_SCEN_PKT_DIR_IDX_IN_TCAM to
-ICE_AQC_ACL_BYTE_SEL_BASE_PKT_DIR and then computes scen->pkt_dir_idx from
-it.  So is the direction value written above simply discarded, and does
-the entry then also match the other direction and arbitrary values of the
-other flag bits in that byte?  The dir_flag_msk name suggests the intent
-was dontcare[pkt_dir_idx] = ~dir_flag_msk.
-
-> @@ -2004,6 +2607,7 @@ ice_flow_add_entry(struct ice_hw *hw, enum ice_block blk, u64 prof_id,
->  	if (status)
->  		goto out;
->  
-> +	INIT_LIST_HEAD(&e->l_entry);
->  	e->id = entry_id;
->  	e->vsi_handle = vsi_handle;
->  	e->prof = prof;
-> @@ -2013,20 +2617,32 @@ ice_flow_add_entry(struct ice_hw *hw, enum ice_block blk, u64 prof_id,
->  	case ICE_BLK_FD:
->  	case ICE_BLK_RSS:
->  		break;
-> +	case ICE_BLK_ACL:
-> +		/* ACL will handle the entry management */
-> +		status = ice_flow_acl_frmt_entry(hw, prof, e, (u8 *)data, acts,
-> +						 acts_cnt);
-> +		if (status)
+> +		offset = num_cscd - i - 1;
+> +		memcpy(&buf.entry_key.val,
+> +		       &keys[offset * sizeof(buf.entry_key.val)],
+> +		       sizeof(buf.entry_key.val));
+> +		memcpy(&buf.entry_key_invert.val,
+> +		       &inverts[offset * sizeof(buf.entry_key_invert.val)],
+> +		       sizeof(buf.entry_key_invert.val));
+> +		err = ice_aq_program_acl_entry(hw, entry_tcam + offset, idx,
+> +					       &buf, NULL);
+> +		if (err) {
+> +			ice_debug(hw, ICE_DBG_ACL, "aq program acl entry failed status: %d\n",
+> +				  err);
 > +			goto out;
-> +		break;
-
-[Severity: Medium]
-What keeps prof alive across this call?
-
-ice_flow_add_entry() drops hw->fl_profs_locks[blk] right after
-ice_flow_assoc_prof() and then keeps using the raw prof pointer.  The new
-ACL branch does a lot of work with it: ice_flow_acl_frmt_entry()
-dereferences prof->id, prof->cfg.scen->width, prof->cfg.scen->pid_idx,
-prof->cfg.scen->pkt_dir_idx, prof->cfg.scen->rng_chk_idx, prof->segs[] and
-prof->dir, plus several allocations and AdminQ commands.
-
-Meanwhile ice_flow_rem_prof_sync() can take that same profile list lock and
-free the profile:
-
-		clear_bit(prof->id, hw->blk[blk].prof_id.id);
-		list_del(&prof->l_entry);
-		mutex_destroy(&prof->entries_lock);
-		devm_kfree(ice_hw_to_dev(hw), prof);
-
-ACL profile teardown also runs from the service task, without rtnl_lock,
-via ice_reset_subtask() -> ice_rebuild(), and the new entry is not
-registered anywhere yet, so removal cannot see it and cannot wait for it.
-Using prof after the unlock predates this patch (the FD and RSS paths
-re-take prof->entries_lock afterwards), but this widens the window and the
-set of prof fields touched considerably.  Would holding the profile list
-lock until the entry is registered, or taking a reference on the profile,
-be preferable?
-
-> @@ -1957,6 +2211,349 @@ int ice_flow_rem_prof(struct ice_hw *hw, enum ice_block blk, u64 prof_id)
-
-[ ... ]
-
-> @@ -216,12 +324,65 @@ static int ice_acl_prof_add_ethtool(struct ice_pf *pf,
->   */
->  int ice_acl_add_rule_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
->  {
-> +	struct ice_flow_action acts[ICE_ACL_NUM_ACT];
->  	struct ethtool_rx_flow_spec *fsp;
-> +	struct ice_acl_hw_prof *hw_prof;
-> +	struct ice_ntuple_fltr *input;
-> +	enum ice_fltr_ptype flow;
-> +	struct device *dev;
->  	struct ice_pf *pf;
-> +	struct ice_hw *hw;
-> +	u64 entry_h = 0;
-> +	int err;
->  
->  	pf = vsi->back;
-> +	hw = &pf->hw;
-> +	dev = ice_pf_to_dev(pf);
->  
->  	fsp = (struct ethtool_rx_flow_spec *)&cmd->fs;
->  
-> -	return ice_acl_prof_add_ethtool(pf, fsp);
-> +	err = ice_acl_prof_add_ethtool(pf, fsp);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Add new rule */
-> +	input = kzalloc_obj(*input);
-> +	if (!input)
-> +		return -ENOMEM;
-> +
-> +	err = ice_ntuple_set_input_set(vsi, ICE_BLK_ACL, fsp, input);
-> +	if (err)
-> +		goto free_input;
-> +
-> +	mutex_lock(&hw->fdir_fltr_lock);
-> +	if (ice_acl_is_dup_fltr(hw, input)) {
-> +		mutex_unlock(&hw->fdir_fltr_lock);
-> +		err = -EINVAL;
-> +		goto free_input;
+> +		}
 > +	}
-> +	mutex_unlock(&hw->fdir_fltr_lock);
 > +
-> +	memset(&acts, 0, sizeof(acts));
-> +	if (fsp->ring_cookie == RX_CLS_FLOW_DISC)
-> +		ice_acl_set_act_drop(&acts[0]);
-> +	else
-> +		ice_acl_set_act_fwd_queue(&acts[0], input->q_index);
+> +	err = ice_acl_prog_act(hw, scen, acts, acts_cnt, *entry_idx);
+
+[Severity: Low]
+Is there a window here where the entry matches but has no action?  The
+loop programs all cascaded slices, including the leftmost one that
+completes the match, and only afterwards does ice_acl_prog_act() program
+the action memory in a separate AdminQ command.
+
+The action memories are zeroed at table init, and mdid == 0 is documented
+as NOP in struct ice_acl_act_entry, so for the duration of that extra
+round trip a matching packet gets a NOP instead of the requested
+drop/redirect.  If the new entry lands in a higher priority slot than an
+existing overlapping rule, does it transiently shadow that rule?
+Would programming the action memory first and publishing the completing
+slice last avoid this?
+
 > +
-> +	flow = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
-> +	hw_prof = hw->acl_prof[flow];
-> +
-> +	err = ice_flow_add_entry(hw, ICE_BLK_ACL, hw_prof->prof_id,
-> +				 fsp->location, vsi->idx, ICE_FLOW_PRIO_NORMAL,
-> +				 input, acts, ICE_ACL_NUM_ACT, &entry_h);
+> +out:
 > +	if (err) {
-> +		dev_err(dev, "Could not add flow entry %d\n", flow);
-> +		goto free_input;
+> +		ice_acl_rem_entry(hw, scen, *entry_idx);
+> +		*entry_idx = 0;
 > +	}
-> +
-> +	return 0;
-> +
-> +free_input:
-> +	kfree(input);
 > +
 > +	return err;
->  }
+> +}
+
+[ ... ]
+
+> +int ice_acl_rem_entry(struct ice_hw *hw, struct ice_acl_scen *scen,
+> +		      u16 entry_idx)
+> +{
+
+[ ... ]
+
+> +	for (i = 0; i < num_cscd; i++) {
+> +		int aq_err = ice_aq_program_acl_entry(hw, entry_tcam + i, idx,
+> +						      &buf, NULL);
+> +		if (aq_err) {
+> +			dev_warn(ice_hw_to_dev(hw), "AQ program ACL entry failed, status: %d\n",
+> +				 aq_err);
+> +			err = aq_err;
+> +		}
+> +	}
+
+[ ... ]
+
+> +	if (!err)
+> +		err = ice_acl_scen_free_entry_idx(scen, entry_idx);
+> +
+> +	return err;
+> +}
 
 [Severity: Medium]
-Why is hw->fdir_fltr_lock dropped between the duplicate check and
-the hardware programming?
+[Sources: gpt-5-6-sol, gpt-6-astra, opus-5
+Can this leak scenario entries?  The bit reserved by test_and_set_bit() in
+ice_acl_scen_assign_entry_idx() is only released when every
+ice_aq_program_acl_entry()/ice_aq_program_actpair() invalidation above
+succeeded.  The loops themselves treat an AdminQ failure as non-fatal
+(dev_warn() and continue), so on such a failure the bit stays set and no
+other path clears it.
 
-ice_acl_is_dup_fltr() walks hw->fdir_list_head under the lock, but the
-lock is released immediately afterwards and the decision is then acted
-on without it: ice_flow_add_entry() formats the key, allocates the TCAM
-entry and programs it, and only later (in the final form of this
-function) is the lock re-taken for ice_ntuple_update_list_entry() to
-publish the filter on hw->fdir_list_head.  Between the check and that
-insertion nothing prevents a second caller from observing the same
-list state, concluding "not a duplicate", and programming a second
-scenario entry with identical match data.  The result is two TCAM
-entries for one rule, in a resource the driver cannot easily reclaim,
-plus the entry-matching logic later in the series keying off identical
-keys.
+Each such removal would then permanently consume one TCAM slot until
+ice_acl_scen_assign_entry_idx() starts returning
+ICE_ACL_SCEN_ENTRY_INVAL and all further adds fail with -ENOSPC.
 
-In practice the ethtool ioctl path runs under rtnl_lock, so this may be
-unreachable from concurrent ethtool -N today, but then the check-then-
-act split buys nothing and hides the real serialization.  The Flow
-Director side keeps the lock held across the dup check and the list
-update; is there a reason the ACL path cannot do the same, i.e. hold
-fdir_fltr_lock from ice_acl_is_dup_fltr() through
-ice_ntuple_update_list_entry()?  If the AdminQ work in
-ice_flow_add_entry() cannot run under that mutex, please say so in the
-commit message and state what actually guarantees exclusion here.
+Related, the rollback in ice_acl_add_entry() calls
+ice_acl_rem_entry(hw, scen, *entry_idx) and discards the return value
+before zeroing *entry_idx, so a failed add can lose the index it just
+reserved.
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c b/drivers/net/ethernet/intel/ice/ice_acl_main.c
+> index 6313d511398a2..171b7bf8519c6 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
+> @@ -371,6 +371,12 @@ int ice_acl_add_rule_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+>  	flow = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
+>  	hw_prof = hw->acl_prof[flow];
+>  
+> +	/* Look up existing HW entry before adding/replacing, so we can
+> +	 * remove it if the new entry has different match data and a fresh
+> +	 * TCAM slot was allocated instead of updating in place.
+> +	 */
+> +	old_entry_h = ice_flow_find_entry(hw, ICE_BLK_ACL, fsp->location);
+> +
+>  	err = ice_flow_add_entry(hw, ICE_BLK_ACL, hw_prof->prof_id,
+>  				 fsp->location, vsi->idx, ICE_FLOW_PRIO_NORMAL,
+>  				 input, acts, ICE_ACL_NUM_ACT, &entry_h);
+> @@ -379,8 +385,31 @@ int ice_acl_add_rule_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+>  		goto free_input;
+>  	}
+>  
+> +	/* If the match data changed, ice_flow_acl_add_scen_entry_sync()
+> +	 * allocated a new TCAM entry rather than updating in place, leaving
+> +	 * the old entry still programmed. Remove it.
+> +	 */
+> +	if (old_entry_h != ICE_FLOW_ENTRY_HANDLE_INVAL &&
+> +	    old_entry_h != entry_h) {
+> +		err = ice_flow_rem_entry(hw, ICE_BLK_ACL, old_entry_h);
+> +		if (err)
+> +			goto del_entry;
+> +	}
+> +
+> +	input->acl_fltr = true;
+> +
+> +	mutex_lock(&hw->fdir_fltr_lock);
+> +	/* input struct is added to the HW filter list */
+> +	err = ice_ntuple_update_list_entry(pf, input, fsp->location);
+> +	mutex_unlock(&hw->fdir_fltr_lock);
+> +	if (err)
+> +		goto del_entry;
+> +
+>  	return 0;
+>  
+> +del_entry:
+> +	ice_flow_rem_entry(hw, ICE_BLK_ACL, entry_h);
+> +
+
+[Severity: Medium]
+Is entry_h always a freshly created resource on this error path?  On the
+update path ice_flow_acl_add_scen_entry_sync() can return the
+pre-existing entry:
+
+	*entry = exist;
+
+which is still referenced by a live software filter record.  The
+failures that reach del_entry include the early returns of
+ice_ntuple_update_list_entry():
+
+	if (ice_is_reset_in_progress(pf->state))
+		return -EBUSY;
+
+	vsi = ice_get_main_vsi(pf);
+	if (!vsi)
+		return -EINVAL;
+
+Both happen before old_fltr is touched, so does the unconditional
+ice_flow_rem_entry() here tear down the hardware state of a filter that
+stays in hw->fdir_list_head?  Afterwards ice_del_acl_ethtool() cannot
+find an entry for that id, ice_flow_rem_entry() returns -EINVAL, and
+ice_ntuple_update_list_entry() returns before list_del()/kfree(), so the
+rule is listed by ethtool -n forever while not being programmed.
+
+[Severity: Medium]
+With input->acl_fltr = true the filter is handed to hw->fdir_list_head,
+but do the owners of that list free ACL entries?
+ice_fdir_del_all_fltrs() starts with:
+
+	list_for_each_entry_safe(f_rule, tmp, &hw->fdir_list_head, fltr_node) {
+		if (f_rule->acl_fltr)
+			continue;
+
+and ice_deinit_acl() only calls ice_acl_rem_flows()/ice_acl_destroy_tbl()
+and frees hw->acl_prof, never walking the filter list.  On unload
+(ice_deinit_fdir() -> ice_vsi_manage_fdir(vsi, false) ->
+ice_fdir_del_all_fltrs()) does every kzalloc'd struct ice_ntuple_fltr
+with acl_fltr set leak?
+
+The same skip also applies to ice_remove_q_channels(), which removes
+ntuple filters precisely because queue configuration is changing but only
+calls ice_fdir_del_all_fltrs(), so queue-directed ACL rules would keep
+pointing at queues that no longer exist.
+
+[Severity: Low]
+At this point in the series ACL filters are not reprogrammed after a
+PF/core reset: ice_fdir_replay_fltrs() skips acl_fltr records and
+ice_rebuild() has no ACL restoration, so the rules stay listed by
+ethtool -n while no longer matching in hardware.  This is addressed later
+in the same series by the commit adding ice_acl_replay_flows() and
+ice_acl_replay_fltrs() to ice_rebuild(), so it is only an issue for the
+intermediate state at this commit.  Would folding the ordering
+differently avoid the transient?
+
+>  free_input:
+>  	kfree(input);
+>  
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
+> index f67b6e1c0ffbf..0ac44d38fdbdf 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
+> @@ -1895,17 +1910,43 @@ ice_ntuple_update_list_entry(struct ice_pf *pf, struct ice_ntuple_fltr *input,
+>  
+>  	old_fltr = ice_fdir_find_fltr_by_idx(hw, fltr_idx);
+>  	if (old_fltr) {
+> -		err = ice_fdir_write_all_fltr(pf, old_fltr, false);
+> -		if (err)
+> -			return err;
+> +		if (old_fltr->acl_fltr) {
+> +			/* ACL filter - if the input buffer is present
+> +			 * then this is an update. The caller has already
+> +			 * applied the HW change (including removing the old
+> +			 * TCAM entry when match data changed), so just update
+> +			 * the SW structures. If no input then this is a
+> +			 * delete so we should delete the filter from the HW
+> +			 * and clean up our SW structures.
+> +			 */
+> +			if (!input) {
+> +				err = ice_del_acl_ethtool(hw, old_fltr);
+> +				if (err)
+> +					return err;
+> +			}
+
+[Severity: High]
+Does this assumption hold for all callers?  The comment says the caller
+has already applied the hardware change, which is true for
+ice_acl_add_rule_ethtool() (it looks up old_entry_h and removes it), but
+ice_add_ntuple_ethtool() also calls:
+
+	ret = ice_ntuple_update_list_entry(pf, input, fsp->location);
+
+with a non-NULL input and no ACL hardware removal at all.
+
+So for an ACL rule at location N replaced by a Flow Director rule at the
+same location, the "if (!input)" guard skips ice_del_acl_ethtool(), and a
+few lines below:
+
+		list_del(&old_fltr->fltr_node);
+		kfree(old_fltr);
+
+drops the only record of the ACL entry id.  Does that leave the old ACL
+TCAM entry armed (possibly a drop rule) with no way for userspace to see
+or delete it, plus a leaked ice_flow_entry, a leaked entry_bitmap slot
+and a stale hw->acl_fltr_cnt?
+
+> +		} else {
+> +			/* FD filter */
+> +			err = ice_fdir_write_all_fltr(pf, old_fltr, false);
+> +			if (err)
+> +				return err;
+> +		}
+> +
+>  		ice_ntuple_update_cntrs(hw, old_fltr, false);
+>  		/* update sb-filters count, specific to ring->channel */
+>  		ice_update_per_q_fltr(vsi, old_fltr->orig_q_index, false);
+> -		if (!input && !hw->fdir_fltr_cnt[old_fltr->flow_type])
+> +		/* Also delete the HW filter info if we have just deleted the
+> +		 * last filter of flow_type.
+> +		 */
+> +		if (!old_fltr->acl_fltr && !input &&
+> +		    !hw->fdir_fltr_cnt[old_fltr->flow_type])
+>  			/* we just deleted the last filter of flow_type so we
+>  			 * should also delete the HW filter info.
+>  			 */
+>  			ice_fdir_do_rem_flow(pf, old_fltr->flow_type);
+> +		else if (old_fltr->acl_fltr && !input &&
+> +			 !hw->acl_fltr_cnt[old_fltr->flow_type])
+> +			ice_fdir_rem_flow(hw, ICE_BLK_ACL, old_fltr->flow_type);
+> +
+
+[Severity: Medium]
+Does this ICE_BLK_ACL call do anything?  ice_fdir_rem_flow() resolves the
+profile with ice_fdir_get_hw_prof():
+
+	if (blk == ICE_BLK_FD && hw->fdir_prof)
+		return hw->fdir_prof[flow];
+
+	return NULL;
+
+and returns immediately on NULL, so for ICE_BLK_ACL it looks like an
+unconditional no-op and hw->acl_prof[flow] is never torn down.
+
+Then a later add for the same flow-type still sees the old input set in
+ice_acl_prof_add_ethtool():
+
+	if (hw_prof->seg) {
+		if (!memcmp(hw_prof->seg, seg, sizeof(*seg))) {
+			kfree(seg);
+			return 0;
+		}
+
+		err = -EINVAL;
+
+So after deleting all tcp4 ACL rules, does adding a tcp4 rule with a
+different mask selection fail with -EINVAL for the rest of the
+interface's lifetime?  Should this use the ACL API instead, the way
+ice_acl_rem_flows() does with
+ice_flow_rem_prof(hw, ICE_BLK_ACL, prof->prof_id)?  The two profile types
+also differ (struct ice_acl_hw_prof vs struct ice_fd_hw_prof).
+
+>  		list_del(&old_fltr->fltr_node);
+>  		kfree(old_fltr);
+>  	}
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
+> index 192569ff1d6c1..e0a1d8463d6f5 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_flow.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_flow.c
+> @@ -1741,6 +1741,16 @@ static int ice_flow_rem_entry_sync(struct ice_hw *hw, enum ice_block blk,
+>  		return -EINVAL;
+>  
+>  	if (blk == ICE_BLK_ACL) {
+> +		int err;
+> +
+> +		if (!entry->prof)
+> +			return -EINVAL;
+> +
+> +		err = ice_acl_rem_entry(hw, entry->prof->cfg.scen,
+> +					entry->scen_entry_idx);
+> +		if (err)
+> +			return err;
+> +
+
+[Severity: Medium]
+This makes the ACL branch of ice_flow_rem_entry_sync() fallible for the
+first time, and the early return happens before list_del() and
+ice_dealloc_flow_entry().  Is the caller prepared for that?
+ice_flow_rem_prof_sync() does:
+
+		list_for_each_entry_safe(e, t, &prof->entries, l_entry) {
+			status = ice_flow_rem_entry_sync(hw, blk, e);
+			if (status)
+				break;
+		}
+
+	mutex_unlock(&prof->entries_lock);
+
+and the loop's status is then overwritten and execution continues to
+ice_rem_prof() and devm_kfree(prof).
+
+So on an AdminQ failure during teardown (for example
+ice_acl_rem_flows() -> ice_flow_rem_prof() after a reset), does the
+failing entry and everything after it stay linked in prof->entries and
+never get freed, while the profile they point to through entry->prof is
+devm_kfree()d?
+
+>  		if (entry->acts_cnt && entry->acts)
+>  			ice_flow_acl_free_act_cntr(hw, entry->acts,
+>  						   entry->acts_cnt);
+
+[ ... ]
+
+> @@ -2211,6 +2260,44 @@ int ice_flow_rem_prof(struct ice_hw *hw, enum ice_block blk, u64 prof_id)
+> + * Return: flow entry handle if entry found, ICE_FLOW_ENTRY_ID_INVAL otherwise
+> + */
+
+[Severity: Low]
+ICE_FLOW_ENTRY_ID_INVAL does not exist anywhere in the tree; the code
+returns ICE_FLOW_ENTRY_HANDLE_INVAL (defined as 0 in ice_flow.h), which
+is also what the new callers compare against.
+
+> +u64 ice_flow_find_entry(struct ice_hw *hw, enum ice_block blk, u64 entry_id)
+> +{
+> +	struct ice_flow_entry *found = NULL;
+> +	struct ice_flow_prof *p;
+> +
+> +	mutex_lock(&hw->fl_profs_locks[blk]);
+> +
+> +	list_for_each_entry(p, &hw->fl_profs[blk], l_entry) {
+> +		struct ice_flow_entry *e;
+> +
+> +		mutex_lock(&p->entries_lock);
+> +		list_for_each_entry(e, &p->entries, l_entry)
+> +			if (e->id == entry_id) {
+> +				found = e;
+> +				break;
+> +			}
+> +		mutex_unlock(&p->entries_lock);
+> +
+> +		if (found)
+> +			break;
+> +	}
+> +
+> +	mutex_unlock(&hw->fl_profs_locks[blk]);
+> +
+> +	return found ? ICE_FLOW_ENTRY_HNDL(found) : ICE_FLOW_ENTRY_HANDLE_INVAL;
+> +}
+
+[Severity: Medium]
+What keeps the returned object alive?  The raw struct ice_flow_entry
+pointer is published as a handle after both hw->fl_profs_locks[blk] and
+p->entries_lock have been dropped, with no refcount and no RCU.
+
+Both new callers then dereference it unlocked, since ice_flow_rem_entry()
+reads entry->prof, takes prof->entries_lock and list_del()s
+entry->l_entry:
+
+ice_del_acl_ethtool()
+	entry = ice_flow_find_entry(hw, ICE_BLK_ACL, fltr->fltr_id);
+	return ice_flow_rem_entry(hw, ICE_BLK_ACL, entry);
+
+In ice_acl_add_rule_ethtool() the handle is additionally cached across a
+whole ice_flow_add_entry() call, and the only validity test is
+old_entry_h != entry_h, which shows identity rather than liveness.  Would
+resolving the id again under prof->entries_lock, or removing under that
+lock, be safer than caching a bare pointer?
+
+> @@ -2554,6 +2641,346 @@ static int ice_flow_acl_frmt_entry(struct ice_hw *hw,
+> +static struct ice_flow_entry *
+> +ice_flow_acl_find_scen_entry_cond(struct ice_flow_prof *prof,
+> +				  struct ice_flow_entry *e, bool *do_chg_action,
+> +				  bool *do_add_entry, bool *do_rem_entry)
+> +{
+
+[ ... ]
+
+> +	list_for_each_entry(p, &prof->entries, l_entry) {
+> +		if (memcmp(p->entry, e->entry, p->entry_sz))
+> +			continue;
+> +
+> +		/* Now we have the same matching_data */
+> +
+> +		*do_add_entry = false;
+> +		return_entry = p;
+> +
+> +		if (p->priority != e->priority) {
+> +			/* matching data && !priority */
+> +			*do_add_entry = true;
+> +			*do_rem_entry = true;
+> +			break;
+> +		}
+> +
+> +		/* Now we have matching_data && priority */
+> +
+> +		if (p->acts_cnt != e->acts_cnt)
+> +			*do_chg_action = true;
+> +		for (int i = 0; i < p->acts_cnt; i++) {
+> +			if (memcmp(&p->acts[i], &e->acts[i],
+> +				   sizeof(struct ice_flow_action))) {
+
+[Severity: Low]
+Can this read past the end of e->acts?  The loop is bounded by
+p->acts_cnt but indexes both arrays, and the check just above has already
+established that the counts can differ.  e->acts comes from
+ice_flow_acl_frmt_entry():
+
+	e->acts = kmemdup(acts, acts_cnt * sizeof(*acts), GFP_KERNEL);
+
+so it is sized exactly to e->acts_cnt.  Today every ACL entry is created
+with ICE_ACL_NUM_ACT (1) and ice_flow_add_entry() rejects acts_cnt == 0
+for ICE_BLK_ACL, so the counts are always equal, but
+ICE_FLOW_ACL_MAX_NUM_ACT is 2.  Should this use
+min(p->acts_cnt, e->acts_cnt), or skip the loop when the counts differ?
+
+> +				*do_chg_action = true;
+> +				break;
+> +			}
+> +		}
+
+[ ... ]
+
+> +static int ice_flow_acl_add_scen_entry_sync(struct ice_hw *hw,
+> +					    struct ice_flow_prof *prof,
+> +					    struct ice_flow_entry **entry)
+> +{
+
+[ ... ]
+
+> +	} else {
+> +		if (do_chg_action) {
+> +			/* For the action memory info, update the SW's copy of
+> +			 * exist entry with e's action memory info
+> +			 */
+> +			if (exist->acts_cnt && exist->acts)
+> +				ice_flow_acl_free_act_cntr(hw, exist->acts,
+> +							   exist->acts_cnt);
+> +			kfree(exist->acts);
+> +			exist->acts = kzalloc_objs(*exist->acts, e->acts_cnt);
+> +			if (!exist->acts) {
+> +				exist->acts_cnt = 0;
+> +				err = -ENOMEM;
+> +				goto out;
+> +			}
+> +			exist->acts_cnt = e->acts_cnt;
+> +
+> +			memcpy(exist->acts, e->acts,
+> +			       sizeof(struct ice_flow_action) * e->acts_cnt);
+> +
+> +			err = ice_acl_prog_act(hw, prof->cfg.scen, acts,
+> +					       e->acts_cnt,
+> +					       exist->scen_entry_idx);
+> +			if (err) {
+> +				/* HW programming failed; e's counters were not
+> +				 * transferred. Drop exist's new acts so the
+> +				 * caller's free_cntrs path does not release IDs
+> +				 * still referenced by exist->acts.
+> +				 */
+> +				kfree(exist->acts);
+> +				exist->acts = NULL;
+> +				exist->acts_cnt = 0;
+> +				goto out;
+> +			}
+
+[Severity: Medium]
+What describes the hardware state after this error path?  The existing
+entry's counters were already released by ice_flow_acl_free_act_cntr()
+before any hardware was touched, and ice_acl_prog_act() issues one
+ice_aq_program_actpair() per matching action memory in the cascade, so a
+failure on the second or later command leaves some action memories
+already updated.
+
+This path then sets exist->acts = NULL and exist->acts_cnt = 0 but leaves
+the TCAM entry programmed and exist on prof->entries, so the device keeps
+executing an action set (old, new, or a mix) that the driver no longer
+tracks.
+
+Also, with acts_cnt zeroed, ice_flow_rem_entry_sync() will skip
+ice_flow_acl_free_act_cntr():
+
+		if (entry->acts_cnt && entry->acts)
+			ice_flow_acl_free_act_cntr(hw, entry->acts,
+						   entry->acts_cnt);
+
+so are the counter IDs still referenced by the action memory
+unreclaimable, while the ones released earlier can be handed out to
+another filter?
+
+> +
+> +			/* e's counter IDs are now owned by exist->acts; clear
+> +			 * acts_cnt so the trailing ice_flow_acl_free_act_cntr
+> +			 * call does not release IDs that exist->acts owns.
+> +			 * ice_dealloc_flow_entry still frees the acts memory
+> +			 * via kfree(e->acts).
+> +			 */
+> +			e->acts_cnt = 0;
+> +		}
+
+[ ... ]
+
+> +		/* As we don't add the new entry to our SW DB, free its HW
+> +		 * counter resources and deallocate its memory, then return
+> +		 * the exist entry to the caller. Transfer the new caller's
+> +		 * entry_id to exist so that ice_flow_find_entry() can locate
+> +		 * it and the caller's handle remains valid for deletion.
+> +		 */
+> +		if (e->acts_cnt && e->acts)
+> +			ice_flow_acl_free_act_cntr(hw, e->acts, e->acts_cnt);
+> +		exist->id = e->id;
+> +		kfree(e->entry);
+> +		kfree(e->range_buf);
+> +		kfree(e->acts);
+> +		devm_kfree(ice_hw_to_dev(hw), e);
+> +		*entry = exist;
+> +	}
+
+[Severity: High]
+Can overwriting exist->id orphan the rule that previously owned that id?
+Two ethtool rules at different locations can end up here with
+byte-identical keys:
+
+ice_acl_is_dup_fltr() -> ice_acl_comp_rules() compares raw values and
+masks, so rules that differ only in masked-out bits are accepted as
+distinct:
+
+		       a->ip.v4.dst_port == b->ip.v4.dst_port &&
+		       a->ip.v4.src_port == b->ip.v4.src_port &&
+
+but ice_gen_key_word() emits the fixed don't-care key/invert pair for
+every masked bit, ignoring the value, so both rules produce identical
+e->entry buffers and ice_flow_acl_find_scen_entry_cond()'s
+memcmp(p->entry, e->entry, p->entry_sz) matches.  ethtool always passes
+ICE_FLOW_PRIO_NORMAL, so do_rem_entry stays false, do_add_entry becomes
+false, and this merge branch runs.
+
+After exist->id = e->id, no flow entry carries the first rule's id any
+more, although its ice_ntuple_fltr is still in hw->fdir_list_head and is
+still reported by ethtool -n.  Deleting the second rule invalidates the
+single shared TCAM entry, so does the first rule remain listed but no
+longer enforced?  And does deleting the first rule then fail forever,
+since ice_del_acl_ethtool() gets handle 0 and ice_flow_rem_entry()
+returns -EINVAL before ice_ntuple_update_list_entry() reaches
+list_del()/kfree(), leaving hw->acl_fltr_cnt[] and
+hw->ntuple_active_fltr_cnt inflated?
+
+> +out:
+> +	kfree(acts);
+> +
+> +	return err;
+> +}
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> index 9e08db376d3d0..8e842b29f84f2 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+> @@ -1118,7 +1118,7 @@ static void ice_set_fd_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+>  	    vsi->type != ICE_VSI_VF && vsi->type != ICE_VSI_CHNL)
+>  		return;
+>  
+> -	val = ICE_AQ_VSI_PROP_FLOW_DIR_VALID;
+> +	val = ICE_AQ_VSI_PROP_FLOW_DIR_VALID | ICE_AQ_VSI_PROP_ACL_VALID;
+>  	ctxt->info.valid_sections |= cpu_to_le16(val);
+
+[Severity: Medium]
+Is ICE_FLAG_FD_ENA the right condition for this?  The only call site is
+still:
+
+	if (test_bit(ICE_FLAG_FD_ENA, pf->flags))
+		ice_set_fd_vsi_ctx(ctxt, vsi);
+
+so the ACL section is now advertised for every PF/CTRL/VF/CHNL VSI
+whenever Flow Director is on, with no check that ACL was actually
+initialized.  ice_init_features() treats ACL init failure as non-fatal:
+
+	/* Note: ACL init failure is non-fatal to load */
+	if (ice_init_acl(pf))
+		dev_err(dev, "Failed to initialize ACL\n");
+
+so hw->acl_tbl can be NULL while the VSI context claims the ACL section.
+Conversely, for a configuration where ACL is available but the FD flag is
+clear, the ACL VSI configuration is never applied even though
+ice_add_ntuple_ethtool() routes rules to ACL based only on
+pf->hw.acl_tbl.
+
+>  	dflt_q = 0;
+>  	dflt_q_group = 0;
+
+[ ... ]
+
+> @@ -1144,6 +1144,14 @@ static void ice_set_fd_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+>  	/* priority of the default qindex action */
+>  	val |= FIELD_PREP(ICE_AQ_VSI_FD_DEF_PRIORITY_M, dflt_q_prio);
+>  	ctxt->info.fd_report_opt = cpu_to_le16(val);
+> +
+> +#define ICE_ACL_RX_PROF_MISS_CNTR	\
+> +	FIELD_PREP_CONST(ICE_AQ_VSI_ACL_DEF_RX_PROF_M, 2)
+> +#define ICE_ACL_RX_TBL_MISS_CNTR	\
+> +	FIELD_PREP_CONST(ICE_AQ_VSI_ACL_DEF_RX_TABLE_M, 3)
+> +
+> +	val = ICE_ACL_RX_PROF_MISS_CNTR | ICE_ACL_RX_TBL_MISS_CNTR;
+> +	ctxt->info.acl_def_act = cpu_to_le16(val);
+>  }
+
+Where do the miss-counter indices 2 and 3 come from?  They are not
+allocated anywhere in the driver and there is no comment explaining the
+choice.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917183927.2692068-1-anthony.l.nguyen%40intel.com
