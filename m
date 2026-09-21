@@ -1,251 +1,319 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C72436197B;
-	Mon, 21 Sep 2026 06:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E83546E4
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789970441; cv=none; b=lt3+2Q6nHVgBvZu1H8uW14yTZTTsiHxg3M0MZpySyuPlv76Uf5e9G5NYvfHyOEET0g7vPZvYcQzoz0jr4brPAzMut8c3CQEuwnJkEyJPChzlxFp3gPWJvHVNj13Qb/FqgMFJGLbjjhy/tBa8M8GgGpfpWIL+CLGpN4bN6RFE77E=
+	t=1789970772; cv=none; b=NEKR2v0lYyOtHbUL7rr0QwM2OwBf82Dty5tAMvFC4DKGK+VuV90V0VFiuGKIBV9jH+tRJMrqLucXVkukogudq0Dg6KPmSx6Mi1VsAiqjEPZWBxFu3i0HkbiWVieRppLyfNP2CxRSjhB8iFer6BGAtugwcPBsLRVIzQzDOTepHz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789970441; c=relaxed/simple;
-	bh=RMF65b1th4KyTlyH/ghnwdL51KpWq0LFuQceNJ7drA8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I0a6QJGWO3LlfsOcq6ymEykmebOeV8YDu33bGZrik2/aHaA57Nd3ixy9xD+bNGaS5kHXegfLjnnPeU1cfuy7zQrPJdI0S8PriboEVMx+ICrDvaLVgiA3xAxYTVNKfVX2bDY/X0oFWGAjA16FSG6tEPVCf13YJxokV41N9jFdMlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoihMhd5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1789970772; c=relaxed/simple;
+	bh=K2BRi/jr5OsYGwRmRtFF3h6s31LvosjAYnv2pH1QQgk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t4PrUaN5ZX7lgBZ9o7z6OX0ZWZhzd6SS6xdyONz/5SQ3fEJoTXFy3QOPajRMyUCXwyAx4JnetfDCAWKXcQxban1xxqmOq6qyYF3KN60zcxcUjBS588FGBoH90tpGJOUshguC2vo2DbBsVgGT+peXGaQ6ee6U7itE+6gsovhN4xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kse0SuVn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoihMhd5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A5765C2BCFA;
-	Mon, 21 Sep 2026 06:00:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789970440;
-	bh=RMF65b1th4KyTlyH/ghnwdL51KpWq0LFuQceNJ7drA8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eoihMhd5PTHLn84/vz7sPPFcqhtM0KVh1hDXderO9x9SRxPJl86fSckKtZyocPdO4
-	 bP6/r+P6HBj/rS3eA7OgvhbEKVfkCjkYoN0DAEq40cZ39QgYCa1Q7qHrfOyWp3dShc
-	 CR5AMtYFXKf/Dzl5hf1qZpvdYrMD6io0PQN635VZHjRvDB+p1pTdAbE6u50Q5U3YYJ
-	 rjYkIUroRaf5xT2gueQEUqtm59TmaonaOI1isxKcMo393YnWtDUud8qGqdMiUsIjSp
-	 hU8HEYq9YizkGtdIi5Ump7r5hUCdmiJHPuLe0orFMX7yuBNEEoh8KDc+oTcYyRLeUc
-	 XkkIYnrk7+Jew==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FD97C982E1;
-	Mon, 21 Sep 2026 06:00:40 +0000 (UTC)
-From: Bochao Cao via B4 Relay <devnull+bochaolucky.gmail.com@kernel.org>
-Date: Mon, 21 Sep 2026 14:00:04 +0800
-Subject: [PATCH net-next v4 1/2] selftests/bpf: Track test_xdp_features DUT
- processes
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kse0SuVn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6321F00893;
+	Mon, 21 Sep 2026 06:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789970770;
+	bh=0C2rtBQpmB3SNwVa0QgHznGf8faBcMF0zk9fd101V3E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kse0SuVnzNGT3BV7vjJ7WffJG64ZjURvO55z6iAoTr3r8dPMbigvFSijrjCPoRXs/
+	 azLaTZQX2yEILEZokc8R2umvk9Cnl0Iu1oDcWL4h8NXSUf4TOQyfKj09v+pXJkgazI
+	 Xc5B3xdxqhptAv2fuUf7g5Zu8odP4CIBHbYu1m02UVczey5T7ZXHxLNlW/GW23ceAs
+	 sQBIzJj4Ch/jiahvxQW/tHUsVuqQUx3aMhGdBuUeRzki09mvovv333Z6DMpdyuz4v9
+	 X/musM/x1AyS0fVet6Zqsx9SZRjxCsmuyiBO4Pe+qG4YEIJ12+94vNf9zmRQfYDx4/
+	 oSx4k2O0diOKg==
+Subject: Re: [PATCH v5] net/ncsi: Fix Use-After-Free in NCSI teardown using
+ synchronize_rcu
+From: netdev-bot+sashiko@kernel.org
+To: wongboonjhee52@gmail.com
+Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org
+Date: Mon, 21 Sep 2026 06:06:09 +0000
+Message-ID: <178997076985.2160803.10781988481082001796@kernel.org>
+In-Reply-To: <20260920052402.435974-1-wongboonjhee52@gmail.com>
+References: <20260920052402.435974-1-wongboonjhee52@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-xdp-features-v4-send-v4-1-a0d4ec392cb7@gmail.com>
-References: <20260921-xdp-features-v4-send-v4-0-a0d4ec392cb7@gmail.com>
-In-Reply-To: <20260921-xdp-features-v4-send-v4-0-a0d4ec392cb7@gmail.com>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, 
- Tiezhu Yang <tiozhang@didiglobal.com>, netdev@vger.kernel.org, 
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Bochao Cao <bochaolucky@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789970439; l=4557;
- i=bochaolucky@gmail.com; h=from:subject:message-id;
- bh=uQ+2NU3O7ZSyy8b0vNzfpUwu1hVw6HZn8zL79tfx1s4=;
- b=f9+18WycEljt8+sSaCF0e9Vnd4C271Sk4lTjnBNY4fiSf6tAP5xaSygC5OoTAk8qXYKTp6uJM
- OR5FRY54hAeB5/M62m7KRS+ZbK4JQjti1khYquT94N/uTyvCTZylnqR
-X-Developer-Key: i=bochaolucky@gmail.com; a=ed25519;
- pk=ZYp7O2eXSIrJ9YmKrl0iHDoulPYSG+1lzICsicAvld0=
-X-Endpoint-Received: by B4 Relay for bochaolucky@gmail.com/default with
- auth_id=1042
-X-Original-From: Bochao Cao <bochaolucky@gmail.com>
-Reply-To: bochaolucky@gmail.com
 
-From: Bochao Cao <bochaolucky@gmail.com>
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-Track the DUT process instead of matching processes by name to avoid
-interference between concurrent tests. Fix readiness retries under
-set -e and clean up the DUT and network state on exit or interruption.
+Critical: 0 · High: 2 · Medium: 3 (1) · Low: 0
 
-Signed-off-by: Bochao Cao <bochaolucky@gmail.com>
----
- tools/testing/selftests/bpf/test_xdp_features.sh | 88 ++++++++++++++++++------
- 1 file changed, 68 insertions(+), 20 deletions(-)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/tools/testing/selftests/bpf/test_xdp_features.sh b/tools/testing/selftests/bpf/test_xdp_features.sh
-index 0aa71c445..a78e0fb9e 100755
---- a/tools/testing/selftests/bpf/test_xdp_features.sh
-+++ b/tools/testing/selftests/bpf/test_xdp_features.sh
-@@ -8,6 +8,7 @@ readonly V0_IP6=2001:db8::11
- readonly V1_IP6=2001:db8::1
- 
- ret=1
-+dut_pid=""
- 
- setup() {
- 	{
-@@ -30,77 +31,124 @@ setup() {
- 	} > /dev/null 2>&1
- }
- 
-+terminate_dut_server() {
-+	local pid
-+
-+	# Use the shell job instead of dut_pid, which may not have been assigned
-+	# yet if a signal arrived immediately after the server was started.
-+	pid=$(jobs -pr %% 2> /dev/null) || true
-+	if [ -z "$pid" ]; then
-+		dut_pid=""
-+		return
-+	fi
-+
-+	kill -KILL %% 2> /dev/null || true
-+	wait "$pid" 2> /dev/null || true
-+	dut_pid=""
-+}
-+
- cleanup() {
--	ip link del v1 2> /dev/null
--	ip netns del ${NS} 2> /dev/null
--	[ "$(pidof xdp_features)" = "" ] || kill $(pidof xdp_features) 2> /dev/null
-+	terminate_dut_server
-+	ip link del v1 2> /dev/null || true
-+	ip netns del "${NS}" 2> /dev/null || true
- }
- 
- wait_for_dut_server() {
--	while sleep 1; do
--		ss -tlp | grep -q xdp_features
--		[ $? -eq 0 ] && break
-+	local i
-+
-+	for ((i = 0; i < 10; i++)); do
-+		if [ "$(jobs -pr %% 2> /dev/null)" != "$dut_pid" ]; then
-+			echo "xdp_features server $dut_pid exited before accepting connections" >&2
-+			return 1
-+		fi
-+
-+		if ss -tlp 2> /dev/null | grep -q "pid=$dut_pid,"; then
-+			return 0
-+		fi
-+
-+		sleep 1
- 	done
-+
-+	echo "Timed out waiting for xdp_features server $dut_pid" >&2
-+	return 1
-+}
-+
-+start_dut_server() {
-+	./xdp_features "$@" &
-+	dut_pid=$!
-+	wait_for_dut_server
-+}
-+
-+reap_dut_server() {
-+	local status=0
-+
-+	wait "$dut_pid" || status=$?
-+	dut_pid=""
-+	return "$status"
- }
- 
- test_xdp_features() {
- 	setup
- 
- 	## XDP_PASS
--	./xdp_features -f XDP_PASS -D $V1_IP6 -T $V0_IP6 v1 &
--	wait_for_dut_server
-+	start_dut_server -f XDP_PASS -D $V1_IP6 -T $V0_IP6 v1
- 	ip netns exec ${NS} ./xdp_features -t -f XDP_PASS \
- 					   -D $V1_IP6 -C $V1_IP6 \
- 					   -T $V0_IP6 v0
- 	[ $? -ne 0 ] && exit
-+	reap_dut_server
- 
- 	## XDP_DROP
--	./xdp_features -f XDP_DROP -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
--	wait_for_dut_server
-+	start_dut_server -f XDP_DROP -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
- 	ip netns exec ${NS} ./xdp_features -t -f XDP_DROP \
- 					   -D ::ffff:$V1_IP4 \
- 					   -C ::ffff:$V1_IP4 \
- 					   -T ::ffff:$V0_IP4 v0
- 	[ $? -ne 0 ] && exit
-+	reap_dut_server
- 
- 	## XDP_ABORTED
--	./xdp_features -f XDP_ABORTED -D $V1_IP6 -T $V0_IP6 v1 &
--	wait_for_dut_server
-+	start_dut_server -f XDP_ABORTED -D $V1_IP6 -T $V0_IP6 v1
- 	ip netns exec ${NS} ./xdp_features -t -f XDP_ABORTED \
- 					   -D $V1_IP6 -C $V1_IP6 \
- 					   -T $V0_IP6 v0
- 	[ $? -ne 0 ] && exit
-+	reap_dut_server
- 
- 	## XDP_TX
--	./xdp_features -f XDP_TX -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
--	wait_for_dut_server
-+	start_dut_server -f XDP_TX -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
- 	ip netns exec ${NS} ./xdp_features -t -f XDP_TX \
- 					   -D ::ffff:$V1_IP4 \
- 					   -C ::ffff:$V1_IP4 \
- 					   -T ::ffff:$V0_IP4 v0
- 	[ $? -ne 0 ] && exit
-+	reap_dut_server
- 
- 	## XDP_REDIRECT
--	./xdp_features -f XDP_REDIRECT -D $V1_IP6 -T $V0_IP6 v1 &
--	wait_for_dut_server
-+	start_dut_server -f XDP_REDIRECT -D $V1_IP6 -T $V0_IP6 v1
- 	ip netns exec ${NS} ./xdp_features -t -f XDP_REDIRECT \
- 					   -D $V1_IP6 -C $V1_IP6 \
- 					   -T $V0_IP6 v0
- 	[ $? -ne 0 ] && exit
-+	reap_dut_server
- 
- 	## XDP_NDO_XMIT
--	./xdp_features -f XDP_NDO_XMIT -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
--	wait_for_dut_server
-+	start_dut_server -f XDP_NDO_XMIT -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
- 	ip netns exec ${NS} ./xdp_features -t -f XDP_NDO_XMIT \
- 					   -D ::ffff:$V1_IP4 \
- 					   -C ::ffff:$V1_IP4 \
- 					   -T ::ffff:$V0_IP4 v0
- 	ret=$?
--	cleanup
-+	reap_dut_server
- }
- 
- set -e
--trap cleanup 2 3 6 9
-+trap cleanup EXIT
-+trap 'exit 129' HUP
-+trap 'exit 130' INT
-+trap 'exit 131' QUIT
-+trap 'exit 134' ABRT
-+trap 'exit 143' TERM
- 
- test_xdp_features
- 
+- [High] The fix does not close the UAF it claims to close: the NCSI
+  netlink readers are not RCU readers, so synchronize_rcu() in…
+- [High] ncsi_unregister_dev() flushes the per-request timers
+  (ndp->requests[i].timer, net/ncsi/ncsi-manage.c:1970-1973) BEFORE…
+- [Medium] rcu_barrier() in ncsi_unregister_dev() (net/ncsi/ncsi-
+  manage.c:1981) is a no-op for this bug and is misdescribed by the…
+- [Medium] The patch makes several substantive teardown-ordering changes
+  that the commit message does not describe and that the v5 changelog…
+- [Medium] The new request-timer cancellation loop in
+  ncsi_unregister_dev() (net/ncsi/ncsi-manage.c:1970-1973) performs only…
+
+Pre-existing issues:
+- [Medium] ncsi_unregister_dev() frees ndp without draining
+  ndp->vlan_vids, leaking every struct vlan_vid still on the list.
+
+--
+
+net/ncsi: Fix Use-After-Free in NCSI teardown using synchronize_rcu
+
+This reworks ncsi_unregister_dev() so the NCSI device is unlinked from
+ncsi_dev_list first, then the packet handler and work item are stopped, the
+request and channel-monitor timers are cancelled, and the package tree is
+destroyed after synchronize_rcu()/rcu_barrier(). The intent is to let the
+existing kfree() based teardown remain safe against concurrent RCU readers.
+
+> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+> index 54d0df0a9efe..3cda4b28480f 100644
+> --- a/net/ncsi/ncsi-manage.c
+> +++ b/net/ncsi/ncsi-manage.c
+> @@ -1956,19 +1956,33 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+>  {
+>  	struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
+>  	struct ncsi_package *np, *tmp;
+> +	struct ncsi_channel *nc;
+>  	unsigned long flags;
+> -
+> -	dev_remove_pack(&ndp->ptype);
+> -
+> -	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+> -		ncsi_remove_package(np);
+> +	int i;
+>  
+>  	spin_lock_irqsave(&ncsi_dev_lock, flags);
+>  	list_del_rcu(&ndp->node);
+>  	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+>  
+> +	dev_remove_pack(&ndp->ptype);
+>  	disable_work_sync(&ndp->work);
+
+[Severity: Medium]
+The v5 notes say "Simplified the patch to focus strictly on flushing readers
+during device unregistration", but this hunk also changes teardown ordering in
+ways the commit message does not mention:
+
+  - the ncsi_dev_lock/list_del_rcu(&ndp->node) block moves ahead of
+    dev_remove_pack()
+  - the package destruction loop moves from before dev_remove_pack() to after
+    disable_work_sync()
+  - two new timer cancellation loops are added
+
+The package-loop move looks like the most useful part of the change, since it
+closes the window where ndp->work or the Rx handler can run against already
+freed packages, yet it is not described at all. Could the changelog spell out
+these ordering changes, given the Fixes: tag makes this a stable backport
+candidate?
+
+>  
+> +	for (i = 0; i < ARRAY_SIZE(ndp->requests); i++) {
+> +		if (ndp->requests[i].enabled)
+> +			timer_delete_sync(&ndp->requests[i].timer);
+> +	}
+
+[Severity: Medium]
+This loop cancels the request timer but performs only half of what
+ncsi_free_request() does. That function is the only place the command and
+response buffers are released:
+
+net/ncsi/ncsi-manage.c:ncsi_free_request() {
+	if (nr->enabled) {
+		nr->enabled = false;
+		timer_delete_sync(&nr->timer);
+	}
+	...
+	cmd = nr->cmd;
+	rsp = nr->rsp;
+	nr->cmd = NULL;
+	nr->rsp = NULL;
+	nr->used = false;
+	...
+	consume_skb(cmd);
+	consume_skb(rsp);
+}
+
+and the request keeps its own reference on nr->cmd, since the transmit path
+takes an extra one:
+
+net/ncsi/ncsi-cmd.c:ncsi_xmit_cmd() {
+	nr->enabled = true;
+	mod_timer(&nr->timer, jiffies + 1 * HZ);
+
+	/* Send NCSI packet */
+	skb_get(nr->cmd);
+	ret = dev_queue_xmit(nr->cmd);
+}
+
+Deleting the timer means the timeout callback never runs, and dev_remove_pack()
+above has already removed the Rx handler that would otherwise complete the
+request, so does kfree(ndp) below leak nr->cmd and nr->rsp for every slot that
+still has used set? Would calling ncsi_free_request() for each used slot here
+be preferable to only deleting the timer?
+
+> +
+> +	list_for_each_entry(np, &ndp->packages, node) {
+> +		list_for_each_entry(nc, &np->channels, node)
+> +			ncsi_stop_channel_monitor(nc);
+> +	}
+
+[Severity: High]
+The channel monitors are stopped here, after the request timers were already
+flushed above, but the monitor is itself a producer of requests. It transmits
+directly from softirq context and re-arms itself:
+
+net/ncsi/ncsi-manage.c:ncsi_channel_monitor() {
+	case NCSI_CHANNEL_MONITOR_START:
+	case NCSI_CHANNEL_MONITOR_RETRY:
+		nca.ndp = ndp;
+		...
+		ret = ncsi_xmit_cmd(&nca);
+	...
+	mod_timer(&nc->monitor.timer, jiffies + HZ);
+}
+
+and ncsi_xmit_cmd() arms a timer that lives inside ndp:
+
+net/ncsi/ncsi-cmd.c:ncsi_xmit_cmd() {
+	nr->enabled = true;
+	mod_timer(&nr->timer, jiffies + 1 * HZ);
+}
+
+Neither dev_remove_pack() nor disable_work_sync() stops the monitor timer, so a
+monitor tick firing after the request loop has passed a slot (including one
+already executing while timer_delete_sync() inside ncsi_stop_channel_monitor()
+waits for it) can arm ndp->requests[i].timer roughly a second into the future.
+Nothing rescans the request table after this loop, and synchronize_rcu() and
+rcu_barrier() do not wait for timer_list callbacks.
+
+Can kfree(ndp) then free memory that still holds a queued timer, leaving the
+timer base with a pointer into freed slab and letting the callback write to it
+from softirq?
+
+net/ncsi/ncsi-manage.c:ncsi_request_timeout() {
+	struct ncsi_request *nr = timer_container_of(nr, t, timer);
+	struct ncsi_dev_priv *ndp = nr->ndp;
+	...
+	spin_lock_irqsave(&ndp->lock, flags);
+	nr->enabled = false;
+	...
+	ncsi_free_request(nr);
+}
+
+The callback can also walk the already freed package tree through
+ncsi_find_package_and_channel() in the NCSI_REQ_FLAG_NETLINK_DRIVEN case, and
+touch ndp->pending_req_num plus schedule_work(&ndp->work) via
+ncsi_free_request(). The netlink send-cmd path can arm a request timer the same
+way, since teardown holds no lock shared with it.
+
+Would stopping every request producer first (channel monitors and the netlink
+send path), then unconditionally flushing the request timers and releasing the
+requests, and only then freeing, be the safer order here?
+
+> +
+> +	synchronize_rcu();
+> +	rcu_barrier();
+
+[Severity: High]
+Do these calls actually serialize against the readers the commit message names?
+net/ncsi/internal.h declares the iterators as RCU list walks:
+
+#define NCSI_FOR_EACH_PACKAGE(ndp, np) \
+	list_for_each_entry_rcu(np, &ndp->packages, node)
+
+but net/ncsi/ncsi-netlink.c contains no rcu_read_lock() at all; the only
+rcu_read_lock() anywhere under net/ncsi is in ncsi_manage.c. The netlink lookup
+returns an unreferenced ndp and drops the netdev reference before returning:
+
+net/ncsi/ncsi-netlink.c:ndp_from_ifindex() {
+	dev = dev_get_by_index(net, ifindex);
+	...
+	nd = ncsi_find_dev(dev);
+	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+
+	dev_put(dev);
+	return ndp;
+}
+
+ncsi_find_dev() itself walks ncsi_dev_list via NCSI_FOR_EACH_DEV() with no
+read-side section. ncsi_pkg_info_nl() and ncsi_pkg_info_all_nl() then traverse
+ndp->packages and np->channels and copy their contents into the reply, in
+sleepable process context (genlmsg_new(..., GFP_KERNEL)), and for the dump
+across separate invocations with state in cb->args[0].
+
+A preemptible task that holds no rcu_read_lock() is permanently in a quiescent
+state, so doesn't synchronize_rcu() here return without waiting for those
+handlers, leaving ncsi_remove_package() -> ncsi_remove_channel() -> kfree(nc),
+kfree(np) and kfree(ndp) free to run while the handler is still dereferencing
+those pointers? NCSI_CMD_PKG_INFO has .flags = 0, so that reader needs no
+privileges.
+
+There is a second ordering question: the grace period runs before the removals,
+while the removal helpers still free immediately after unlinking:
+
+net/ncsi/ncsi-manage.c:ncsi_remove_package() {
+	spin_lock_irqsave(&ndp->lock, flags);
+	list_del_rcu(&np->node);
+	ndp->package_num--;
+	spin_unlock_irqrestore(&ndp->lock, flags);
+
+	kfree(np);
+}
+
+Shouldn't the wait come after the list_del_rcu(), and don't the netlink readers
+need rcu_read_lock() spanning lookup through last use (or a reference) before a
+writer-side grace period can help at all?
+
+[Severity: Medium]
+The commit message presents "synchronize_rcu() and rcu_barrier()" together as
+"waiting for all RCU readers to finish", but rcu_barrier() waits for previously
+queued call_rcu() callbacks, not for read-side critical sections. Grepping
+net/ncsi for call_rcu, kfree_rcu or kvfree_rcu returns no matches: ndp, np, nc,
+the filters and the vlan_vid entries are all freed synchronously with kfree().
+
+Is there any NCSI callback for rcu_barrier() to flush here? As written it blocks
+the unregister path until every RCU callback queued system-wide has completed,
+in addition to the synchronize_net() already performed by dev_remove_pack() and
+the new synchronize_rcu(). Could it be dropped, or the dependency named?
+
+> +
+> +	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+> +		ncsi_remove_package(np);
+> +
+>  	kfree(ndp);
+>  }
+>  EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but since the teardown path is being
+reworked here: kfree(ndp) frees the ndp->vlan_vids list head without draining
+the list. The entries are allocated in ncsi_vlan_rx_add_vid():
+
+	vlan = kzalloc_obj(*vlan);
+	if (!vlan)
+		return -ENOMEM;
+	...
+	list_add_rcu(&vlan->list, &ndp->vlan_vids);
+
+and the only kfree() for them is in ncsi_vlan_rx_kill_vid(). Does unregistering
+with VIDs still registered leak up to NCSI_MAX_VLAN_VIDS of these objects, and
+would draining ndp->vlan_vids here be worth folding in?
 
 -- 
-2.43.0
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920052402.435974-1-wongboonjhee52%40gmail.com
