@@ -1,156 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1201E48489A;
-	Mon, 21 Sep 2026 11:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DCF42F709;
+	Mon, 21 Sep 2026 11:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789988949; cv=none; b=Ei9N3jKOO2Bn1JKp1A2s22Fc5B2iUFzDiJTa+DHe/j/kHbN3vC1vk0e5FvIW+Oi3jwSLnxQxmqtJJzDCXAr9h3NfrGnD0vJ39+/E0pwiRP50chdPg89Dxn7Z3Zy0TVhAhf0zOnsnhNO13da8fK4Hv8t1CUKcbTWFPY3BnSM1qGo=
+	t=1789988996; cv=none; b=h1aW7CGiGhForExt/hRIFeqJ/17dGt8Gy6WAz/EThL+9QyF6u1kLqQDjY2Wy+ayiH2aRGQua7MZeVOkWGlHmQNhwL0D/CVJCz58ggtUs/xwJNChvWmIB89MUnfJwYgwli66U5W7IjNeX1oh15sPylOYUBqSeqwBnxGE/M35vcQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789988949; c=relaxed/simple;
-	bh=XOJGD4DL8Hbs3UyGwmPcnrJLfVdnCt93POrbVDP8F9E=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m0S9zTOYDbrWvXUGEex6EMeSEYVjOLSjt3yrTHCSNGMaUvKPYsXHsBJZVDiBBJ4Vr+VWDZ3czas1vUdzGx1qb/E77Lg5G8hoRHv52ql7/e3g/f3/Y+NcrNa8kTqx7qv2fjzsBzA3SiIEKFzN45HZhj6weooVtFoMAMa+9wbX+Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mt/oH4nW; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mt/oH4nW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231AE1F000FF;
-	Mon, 21 Sep 2026 11:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789988942;
-	bh=U+4ki4AvYJsyBiciw5qYv2Bi6kejqav8LxCvURMHiqM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mt/oH4nWL8KMKMmB1OqIMjWjZ2OcfR3FCfq7pIh3jfA5AN/4w1xJebxZ6gD9kVL4v
-	 DavnaaEGtJjrmbJQhVJADjNOs3asfA06EvMGLgbYRokhhMCnhX2RM93PyU8s+PJB0o
-	 LpKtqS6NMZRyBqsxKouva7UgC0VbeHdoqgWaqHT199ia8V15MfHe59fhgi4IrTbA6k
-	 UBLAJbebRboLAsTg3lR65ymjiO+L02TOd3ymR1VwU7DZrii8gjGqKBwfWZ7Rv1moa0
-	 pqX2A/jxJLDxMk3oxLNPPd6Lu+0zTdDw9xfueLdfvMf7sX5aorm97QQTKgKDDY0zVk
-	 b8xK7Tbh3YkUQ==
-Subject: Re: [PATCH] net: dsa: vitesse-vsc73xx: Fix SPI device reference leak
- in vsc73xx_spi_probe()
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: andrew@lunn.ch, davem@davemloft.net, edumazet@google.com,
- f.fainelli@gmail.com, kuba@kernel.org, linusw@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, olteanv@gmail.com,
- pabeni@redhat.com, paweldembicki@gmail.com, stable@vger.kernel.org
-Date: Mon, 21 Sep 2026 11:09:01 +0000
-Message-ID: <178998894159.2160803.2533930909979691719@kernel.org>
-In-Reply-To: <20260917104920.2147568-1-vulab@iscas.ac.cn>
-References: <20260917104920.2147568-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1789988996; c=relaxed/simple;
+	bh=Q8gJqCIgi+pxa0KnX6JaLruSoUbY0JF7Il1toHFsN54=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+6LTYKXWL2lFD/z0itxo7HNck2pEAr1DW8u6xwx3qEaLJ+kdSE3RcY3MArB65nTCPiA9iV/RGWqdDPespURtAQ4b5s0BiHaUZoK46fbG9WmivRUepE/t06ME1O4HvU/tW66DGRDOACY68XCR90TklAsGu4uJeurZ4C4lEcJ2xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E264E40C61;
+	Mon, 21 Sep 2026 13:09:45 +0200 (CEST)
+Date: Mon, 21 Sep 2026 13:09:44 +0200
+From: Gabriel Goller <g.goller@proxmox.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: David Ahern <dsahern@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Roopa Prabhu <roopa@cumulusnetworks.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ipv4: fib: treat an unbuildable encapsulation as a
+ nexthop mismatch
+Message-ID: <arEQHeBlqKWCu3l5@luna.proxmox.com>
+References: <20260918152836.1173368-1-g.goller@proxmox.com>
+ <20260920090818.GA1846216@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260920090818.GA1846216@shredder>
+User-Agent: NeoMutt/20260504
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1789988985117
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 20.09.2026 12:08, Ido Schimmel wrote:
+> On Fri, Sep 18, 2026 at 05:28:33PM +0200, Gabriel Goller wrote:
+> > fib_encap_match() builds the requested lwtunnel state and compares it
+> > against the nexthop of a candidate route. When lwtunnel_build_state()
+> > failed it left result at 0, which is interpreted as "the nexthop
+> > matches", so fib_nh_match() continues to compare only oif and gateway.
+> > 
+> > So if there comes along a RTM_DELROUTE which carries an encapsulation
+> > the kernel rejects, it could delete a different route with a different
+> > encapsulation.
+> 
+> Did you hit this in practice? Can you share details?
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Nope, found this in the code while writing
+https://lore.kernel.org/netdev/arD-5t6LiBiPXAAa@luna.proxmox.com/
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> Note that the modern alternative is to install nexthop objects with
+> encapsulation and then associate these objects with routes.
 
-- [High] Incomplete fix: the newly added spi_dev_put() calls do not cover
-  the shutdown()->remove() ordering, so the reference leak the commit…
+Yep.
 
---
+> > Fixes: 571e722676fe ("ipv4: support for fib route lwtunnel encap attributes")
+> > Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+> > ---
+> >  net/ipv4/fib_semantics.c | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+> > index 50e96f86ca59..951e48ae87da 100644
+> > --- a/net/ipv4/fib_semantics.c
+> > +++ b/net/ipv4/fib_semantics.c
+> > @@ -911,17 +911,17 @@ static int fib_encap_match(struct net *net, u16 encap_type,
+> >  			   struct netlink_ext_ack *extack)
+> >  {
+> >  	struct lwtunnel_state *lwtstate;
+> > -	int ret, result = 0;
+> > +	int result;
+> >  
+> >  	if (encap_type == LWTUNNEL_ENCAP_NONE)
+> >  		return 0;
+> 
+> This is also "unbuildable", but will match.
+> 
+> lwtunnel_build_state() returns an error in this case, so you can just
+> remove this check.
 
-net: dsa: vitesse-vsc73xx: Fix SPI device reference leak in vsc73xx_spi_probe()
+Makes sense, will send a v2 soon.
 
-This adds spi_dev_put() calls to balance the spi_dev_get() done in
-vsc73xx_spi_probe(), covering the two probe error paths and
-vsc73xx_spi_remove().
+Thanks for the review!
+Gabriel
 
-> diff --git a/drivers/net/dsa/vitesse-vsc73xx-spi.c b/drivers/net/dsa/vitesse-vsc73xx-spi.c
-> index 85b9a0f51dd89..7b784320c41e7 100644
-> --- a/drivers/net/dsa/vitesse-vsc73xx-spi.c
-> +++ b/drivers/net/dsa/vitesse-vsc73xx-spi.c
-> @@ -153,10 +153,15 @@ static int vsc73xx_spi_probe(struct spi_device *spi)
->  	ret = spi_setup(spi);
->  	if (ret < 0) {
->  		dev_err(dev, "spi setup failed.\n");
-> +		spi_dev_put(vsc_spi->spi);
->  		return ret;
->  	}
->  
-> -	return vsc73xx_probe(&vsc_spi->vsc);
-> +	ret = vsc73xx_probe(&vsc_spi->vsc);
-> +	if (ret)
-> +		spi_dev_put(vsc_spi->spi);
-> +
-> +	return ret;
->  }
->  
->  static void vsc73xx_spi_remove(struct spi_device *spi)
-> @@ -167,6 +172,8 @@ static void vsc73xx_spi_remove(struct spi_device *spi)
->  		return;
->  
->  	vsc73xx_remove(&vsc_spi->vsc);
-> +
-> +	spi_dev_put(vsc_spi->spi);
->  }
->  
->  static void vsc73xx_spi_shutdown(struct spi_device *spi)
 
-[Severity: High]
-Does this still leak the spi_device reference when shutdown() runs before
-remove()?
+> > -	ret = lwtunnel_build_state(net, encap_type, encap, AF_INET,
+> > -				   cfg, &lwtstate, extack);
+> > -	if (!ret) {
+> > -		result = lwtunnel_cmp_encap(lwtstate, nh->fib_nh_lws);
+> > -		lwtstate_free(lwtstate);
+> > -	}
+> > +	if (lwtunnel_build_state(net, encap_type, encap, AF_INET, cfg,
+> > +				 &lwtstate, extack))
+> > +		return 1;
+> > +
+> > +	result = lwtunnel_cmp_encap(lwtstate, nh->fib_nh_lws);
+> > +	lwtstate_free(lwtstate);
+> >  
+> >  	return result;
+> >  }
 
-The new spi_dev_put() sits after the NULL drvdata guard in
-vsc73xx_spi_remove():
-
-	struct vsc73xx_spi *vsc_spi = spi_get_drvdata(spi);
-
-	if (!vsc_spi)
-		return;
-
-	vsc73xx_remove(&vsc_spi->vsc);
-
-	spi_dev_put(vsc_spi->spi);
-
-and vsc73xx_spi_shutdown() deliberately clears drvdata without dropping
-the reference:
-
-	vsc73xx_shutdown(&vsc_spi->vsc);
-
-	spi_set_drvdata(spi, NULL);
-
-Documentation/networking/dsa/dsa.rst describes this ordering as permitted:
-
-  to be called even if ``shutdown()`` was already called. Therefore, drivers are
-  expected to implement a mutual exclusion method between ``remove()`` and
-  ``shutdown()`` by setting their drvdata to NULL after any of these has run
-
-So on reboot followed by SPI controller teardown, for example
-dspi_shutdown() -> dspi_remove() -> spi_unregister_controller() ->
-spi_unregister_device() -> device_del() -> vsc73xx_spi_remove(), the
-remove callback returns early at the !vsc_spi check and the extra
-reference on the spi_device (and its per-CPU spi_statistics) is never
-dropped. The commit message does not mention the shutdown path.
-
-Would it be simpler to drop the reference entirely instead of adding
-matching puts, i.e. in vsc73xx_spi_probe():
-
-	vsc_spi->spi = spi;
-
-vsc_spi is devm_kzalloc()'d on &spi->dev, and vsc_spi->spi is only
-dereferenced from vsc73xx_spi_read()/vsc73xx_spi_write() while the driver
-is bound, a window in which the driver core already keeps the spi_device
-alive. This file is also the only user of spi_dev_get()/spi_dev_put()
-outside drivers/spi and drivers/platform/x86; peer DSA SPI drivers just
-store the pointer, see b53_spi_probe() in drivers/net/dsa/b53/b53_spi.c
-and ksz_spi_probe() in drivers/net/dsa/microchip/ksz_spi.c. That would
-make every path, including shutdown, symmetric without adding three call
-sites to keep in sync.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917104920.2147568-1-vulab%40iscas.ac.cn
