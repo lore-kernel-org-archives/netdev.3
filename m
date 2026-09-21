@@ -1,65 +1,65 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2242922D7A9
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8701722D7A9
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789961317; cv=none; b=VfuxBEuOVqous3vx6LUPmU2/Ri+J48As/qvtrMnevyrhnaXtNgEO9jgUTS0QDzKStaFkqQd0xFmsjkp3lPzeMMgLQt9gxBK3ePuupUxeeh6W2lLohFx4n4tQzRzgwn9Pm07YdLOp8jGoNgMHSMqGZbkJFVlohNHtaVzpw8m+2rg=
+	t=1789961321; cv=none; b=k7LFg9m2kpZyA5HgcF5/4ShFPDqYeLie0TGpU4Yk3MgInjgK01GGAbiWjJe1GzVAiGbjD8q0RyahcVADpJoWQsTW+hC+QFj63ZeYjUr63FiE3L3bVJaKSs7KbAoKpMSJFUZ4ilGrB/smKv0vMm8jK8R52BeheKrJfEQBKaR0ZHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789961317; c=relaxed/simple;
-	bh=uVL14eVn0VtP3x7RiVxged3b/dHuJlVAmCUkuezqZhk=;
+	s=arc-20240116; t=1789961321; c=relaxed/simple;
+	bh=XPHufAaWv96oqPXlYKIZPXt1hwnXdBDNCJI2CHfFxHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmLIDt67dER5dJ2s/Vm+qowHP/TpGk03mQuk6uEt8I1lpq+JvookrDeR/nitFOGg63MUJ96pU0uuGaj6Tz4h6SyP0jWYmykCMg3PYWzHEJ6uH/v8cmt0iOz53eH7LEvdYISxNIlfAOXRMlVdETgyMXxbWeKIF0MC8t6vlwNNqxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sC/jYsG8; arc=none smtp.client-ip=74.125.227.171
+	 MIME-Version; b=DHSKS0y+phpH9f+J5kjRJ1XpHB/UNbvAB+cePR0MEsbonJa1vDOnbMQP/7iDvTmeWEJcwOqErAz2ChvQj7qMIQCmXAVzECKvEs/168HisjyDRlc6scBQGYze2MSGi1BT1CxatqgUpkJZHjXxEYCNTwxuWy90OJgkGFM51To4vak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mrvp09Pt; arc=none smtp.client-ip=74.125.228.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sC/jYsG8"
-Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2d91ede8035so29684165ad.3
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 20:28:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mrvp09Pt"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1cea34f01so2115651a12.1
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 20:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789961315; x=1790566115; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789961320; x=1790566120; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uVL14eVn0VtP3x7RiVxged3b/dHuJlVAmCUkuezqZhk=;
-        b=sC/jYsG8uajKFklC6zmBTbNTGzCT4DfTvT2E62UwY49tFxwgDuZEp0+PMhbtkzAzOS
-         WM6IQg6VsmBx6eGa2YdvZFsmZ1E+J0JCDgUmseOF6dhGVTS4ilshGIoMowbA6FJH1ca9
-         0dycRQqeicO2tFMpRCf/fRGZOUqi86vO7KYjvlG2/W/qBNYvSoPjujtC1mG1EoqisnT8
-         53NX1+VoD93/sZ5+JMDloFI9Xv6z977INgg/m0a+o+7ZimG9oVgCOvaL4SB/CvOJArfX
-         cXe9xLSgOp6ggwj+95+8pssSVVfbi/R10EU/QAALeKWrJNXI/PaPlCD77jfJIOh6LNXf
-         H4Fg==
+        bh=XPHufAaWv96oqPXlYKIZPXt1hwnXdBDNCJI2CHfFxHk=;
+        b=Mrvp09PtMzvwpkziAISr9XDITETTwRNeyBJkVZrExHNBVaYS9frTU+vH+PkxIEpE72
+         imQ1M1yakF6oOFFpjaY3KnBCxe9P5JIJozdXEcvpxUx6hA+jzfy7JlZgVjqQzLWQTRB0
+         7/nSvLbfryI/XLSDyPW3SsfbJJnbWTKTLJZLrPtx4InKe31CxDi2NthbStrxfSyW20BU
+         e0VhGfn4LlUU5pPTYXz9zffc7e+oWxNX2HPEbnnPtKVv8LXvASQCBh9ax/F0x3HuRON4
+         3tRUGcudl9A3RgDobZZyAcKOj4NeMFbmASylJS+X4m/cQuO3/eo3fC/8th8k+fi0Bqxq
+         NXAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789961315; x=1790566115;
+        d=1e100.net; s=20260707; t=1789961320; x=1790566120;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uVL14eVn0VtP3x7RiVxged3b/dHuJlVAmCUkuezqZhk=;
-        b=zNhIaGfNtg5k8KqiF0lmess4crEcuwV/b6jotLF7GHq3QeVLRhEGoCTK2Xns3lFeTh
-         y/bCOTesCAY/LNXrt49KHH6d6sXXUchgrnHsaCXOFNdW3LERNSaF0yH3zdBbl0HT4Jf2
-         KI80Pikc9/29wxp5hUnhNoxocaZHqn6wcrs6jS9V8RSwXS6XI3vIhKMa1eaVyDwkaLWL
-         /LLRB7yrSflyHfrCCZQoerssyhuRZI9mKE7lDmlTBlE91wP8uA6ytRQ4McJye1q1swdI
-         Rby7hPlqiORZXtE7mRnxsUsvST2EHS6Z4QOp+yBh1GXtHOtDj0Zety56f6v2u/tknlGi
-         e+kA==
-X-Forwarded-Encrypted: i=1; AKwUvBxdfvpEv1mgh9FrgFieQxlJfottkd968Ds6A0By/KLNTZe04029fS2tBj06D6DgOkl4QXdgA9g=@vger.kernel.org
-X-Gm-Message-State: AFuF++k+63R/pBH2MSBdiBax7plWASYK0bPq/jdg7b/+wbwkwN/pf3QU
-	DbiRPdDo3cKI95bSIcGNhf4BGEB26gBr/zONDl0azCeWlkmsP5bkgqC4Qoz4ZtxGArQ=
-X-Gm-Gg: AYBFou0Cz8WIJb4Wfq3IiQF6bX3N73zj/AcHnzanRB7uSYDbs6Bq/+wWed/k13Hhluy
-	hqGJxMyaLgDNw4aQNQoC1Azalnafj7KX2xmpwIpuxzQbPzP+uCP79CYH3BOGgnj/P6tNepW5mfy
-	nlp7l69/SzKg8BtKv+LmuWiGNIF/GgS4C4Hzx7bwN3gMWJS5JgOyccIeCxFaiP1DrF49htSHpWa
-	kGM9Eu42vQS76ZGv1hkI9QkvMLF901D3JsfeCBPxEg/foaJuIB4PBh0yqvXETcALdphldFR6FEP
-	tCr2/d4Vz4q4bGeWfsQ5s+U/OUtjnznV44FrMAzUd5a32XBLVhAJ6uNjouOtmOeW8/6nwEdanwn
-	4tl0//aYGQKUA673t0NPemF9DPgdXM68A87Sb6CgxQpzlEFi4qEHHtukhAGJqfW3vjg9A7S0Z31
-	l/NKI45bis+5qSCaW26kjVGT0toe2njU2yWv4FajUQWHFedpNtXfWsMcgu8sqrb+FNmxOqsNP9c
-	RR75JuHnCh2KVqeURIqFD0uQd0Tdf3gFxQLTVAN4oTWdkZd029Bk4Hmz1egOV2vqM2Nc3HcLMg0
-	YJE=
-X-Received: by 2002:a17:90b:3d87:b0:39e:6c6a:6579 with SMTP id 98e67ed59e1d1-39e6c6a67ccmr8574108a91.60.1789961315385;
-        Sun, 20 Sep 2026 20:28:35 -0700 (PDT)
+        bh=XPHufAaWv96oqPXlYKIZPXt1hwnXdBDNCJI2CHfFxHk=;
+        b=MTkzd77HHiBWY10sr+NdCL6tceekJjjkq4+Z5OCiqjR6oQqQDG2nJ+1stoJwSXhzPy
+         FmSo9Aw05x4xx7VLwz0rFIcVYmKNEK6MCcY4Z2poM2xrcMPGlKizHRoDf8CidDJ+2wWJ
+         z/LDkdj17AbtjOAEWSOg21myfGUQB27GKEKs0wmWjVHYE+6EPjqgvZy3TWw8tyK7ZW/G
+         swS0SlKFQVHoQkPw4CHBfFz+VqVG89b4Obydj1w4ISWm3Ea9C9cZZa785HLqDdWMxJVI
+         UH3yFk34lLfR7OxZAnXNsyNXnKuSxjOiwl0lEW0x78FpwBMAJWnB/6V8GTcQEo7DxShr
+         SdoQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxQq0p0QYc4apsSHx2dRpJKNXwFCTA5dETm0rCYOQ8PYonsMvK4/9xP14R1+dMkaYTKkev55YE=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7ETcVit/PUt6/PZIMk1TgmGAbH88IdXaYTisAiFSWkdgKs+aC
+	wxMToP+00sBKnlnTqs8k5FD0piGRr1z8MQldfmPaKEtoY+1Suwc1PfB3
+X-Gm-Gg: AYBFou0wlmuwGPUeT0Y8/PwBN67XEoJpJAbR6iwndJ3RQmYMa6sp1pIM6Sz2+W7cPjg
+	wJPo7VF75nnVrN4pF6tIfe96S/zJyXWPWkv/0pKfIHtlEZPc0U+uYNTfjE/Ymi2/Y94pl33AUlZ
+	GYh9UUC+x23FIXackKIWJfTvAN74z6q9n9W6GpyZ8ha76vuK7D3WrtjV4VXBSsy222Rw4vrQ/Qs
+	39cdp7t+uIXjRohRmrBdFrC1Lhe8rRAYcjKO59y460eeVP6buoUXuo3rBa8Esx2Llq5FeYAMBzd
+	PGMz5dmnMhdLikv+J5qhdjY2aSBk39vn9MCphJk2h+S63UgwR3dh0WIQaytF28/1HqPWw9OOe9P
+	jKPaMn82IHLIOHs1Rvph3R/uxqBF7LpyQfSAlwboU/6aIcgHWIPNsqn+Ka7NaYAExi7yCn7Q/jT
+	IHGSw9RJtDTgYtuibZhTu7Eobejq1pYU8dOI2y9j+AA9YWl/Qpo3sbDJICtQMdBOYFCGBu8tlYc
+	Tn1bi4A5gk846SGQ7z3s50VlY0SunFSDmFVtItCGlOYaCqs01cf0QBZywX5mlLQCWiyMN+vBwxg
+	+2R4
+X-Received: by 2002:a17:90b:5705:b0:39e:2faa:2e83 with SMTP id 98e67ed59e1d1-39e54d1e044mr15045770a91.10.1789961319791;
+        Sun, 20 Sep 2026 20:28:39 -0700 (PDT)
 Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c37c8e7sm11448715a91.9.2026.09.20.20.28.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c37c8e7sm11448715a91.9.2026.09.20.20.28.35
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 20 Sep 2026 20:28:34 -0700 (PDT)
+        Sun, 20 Sep 2026 20:28:39 -0700 (PDT)
 From: Tian Xun Ng <luckilystar08@gmail.com>
 To: emil.s.tantilov@intel.com
 Cc: Tian Xun Ng <luckilystar08@gmail.com>,
@@ -75,12 +75,12 @@ Cc: Tian Xun Ng <luckilystar08@gmail.com>,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Tian Xun Ng <tianxun.ng@bytedance.com>
-Subject: Re: [PATCH iwl-net 2/2] idpf: reset the function on shutdown
-Date: Mon, 21 Sep 2026 11:27:31 +0800
-Message-ID: <20260921032827.32485-1-luckilystar08@gmail.com>
+Subject: Re: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down vports on shutdown
+Date: Mon, 21 Sep 2026 11:27:32 +0800
+Message-ID: <20260921032827.32485-2-luckilystar08@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <49cbb19e-dcce-4bdd-8cfa-68fb2445f952@intel.com>
-References: <20260917105205.37561-1-luckilystar08@gmail.com> <20260917105205.37561-3-luckilystar08@gmail.com> <49cbb19e-dcce-4bdd-8cfa-68fb2445f952@intel.com>
+In-Reply-To: <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com>
+References: <20260917105205.37561-1-luckilystar08@gmail.com> <20260917105205.37561-2-luckilystar08@gmail.com> <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,27 +90,42 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 On 9/18/2026, Tantilov, Emil S wrote:
-> This alone would not be enough, you need to make sure the reset handling
-> does not trigger in the driver. Sashiko is also marking it:
-> you will have to set IDPF_REMOVE_IN_PROG, though I am not sure if that
-> alone would be sufficient.
+> Actually we can't wait on shutdown. If the MBX is defunct, like CP is
+> down or unresponsive, the shutdown will hang for a very long time. This
+> is the reason why we wanted to avoid communication on shutdown. Have you
+> tested the shutdown after stopping the control plane?
 
-You are right, and so is the review bot. I missed it because our hardware
-takes the PF path.
+No, I have not, and I cannot on this platform: the control plane sits
+behind the device and I have no way to stop it from the host. So I have
+to take your point as given, and as written the patch is not acceptable:
+each teardown transaction uses IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC (60 s),
+and the teardown per vport is disable_vport, disable_queues (which also
+waits for the SW marker) and destroy_vport. With a dead CP and two vports
+that is minutes of hang on every reboot, to remove a fault that only
+shows up on warm reboots. That trade is wrong.
 
-On the VF path idpf_vf_trigger_reset() sends VIRTCHNL2_OP_RESET_VF unless
-IDPF_REMOVE_IN_PROG is set, and idpf_shutdown() calls
-idpf_deinit_dflt_mbx() immediately after the trigger, which frees the ASQ
-while that message is still outstanding. That is an enqueue-then-free of
-DMA memory, and on a system with the IOMMU translating it is exactly the
-class of fault this series is trying to remove. On the PF path
-idpf_trigger_reset() only writes PFGEN_CTRL, which is why our testing
-never hit it.
+What I would like to propose for v2 is to keep the teardown but bound it:
+a shutdown-specific timeout, on the order of a second or two, used for
+those three transactions when the driver is shutting down. If the CP
+answers, the device is told to stop its queues and the stray writes go
+away; if it does not, shutdown loses a bounded couple of seconds instead
+of minutes. Does that direction look acceptable to you, and is there a
+timeout value you would consider safe? If you would rather not have any
+mailbox traffic on shutdown at all, then I think the fix has to come from
+the device side instead, and I would rather know that before sending v2.
 
-I will drop this patch from v2 rather than paper over it with a flag.
-It was never load bearing: the stray writes are stopped by patch 1, and
-this one only restored parity with idpf_remove(). If it turns out to be
-worth having, it belongs in its own series with the VF path handled
-properly.
+> This logic already exists in the reset handling, there should be no need
+> to replicate it here. Do you have a trace and/or exact scenario that
+> leads to remove being called while in a reset, but MBX is still alive?
 
-Thanks for catching it.
+No, I do not have such a trace. I added idpf_is_reset_detected() defensively
+rather than from an observed case, and I will drop it in v2.
+
+For the record, what we do see without any of this, on arm64 with two idpf
+functions: after a warm reboot the device still has its queues enabled with
+the previous kernel's ring addresses, and the first queue reconfiguration in
+the next boot makes it write SW_MARKER completions into memory that kernel
+has already reused. 20 of 20 warm reboots on an unpatched control node, none
+in 151 with the teardown messages delivered.
+
+Thanks for the review.
