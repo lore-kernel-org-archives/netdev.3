@@ -1,286 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA6A265CA8;
-	Mon, 21 Sep 2026 03:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D16F2D9EFB
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789960769; cv=none; b=ewnAvnlMGHYWVjJJz4RDk9iIz7mO+0VOw5ePxfu27G9bfKMaM4dK2FgfYnxFLfngaE3AKonZjfxk8QEq8AS3Co9dZ+Tgzk0Kk9oETpiyJei5wP0N8nhZKMmWhcUYC5UJMpPiM1w/k+C8XD8xKZwJDT7cLfttlnI3m76t2f77l6I=
+	t=1789961056; cv=none; b=Y1POOW5ReGTDVBPk3DI3brO0s1i3S4YVLWNO58QF4JWsu9QlP3YL4pLHEYSRPHUahxJiXK7gFOutKHNbeK0HqvXW/m8lqUkUhUNU9avPL1D+F6HxSe1hG3YcqoKVTUOGcIbkD4I+7igj2ngWrhN7PZMtFG7qQHS53+chXPO0j2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789960769; c=relaxed/simple;
-	bh=bqQaukvhg78Ca6HNMV5apQSeh0bro/hBfvXt4eFHCyQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ggnFzMDW8yJVMKNxKLU2BrOJ4QhaQzDgRjpFPOhANe3HOBJGETpMgVJy1tkh00wMYEzSBYrWafpEkDx8mXKr8msH+jxTVai77osLG/h+8mzcQQ0t3RIRv1ntd5sUzU1PihyIoBgG2m98EThETwulzfeaqBxwoXACMVn+IWm/FpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InFS6M8f; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InFS6M8f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E0A1F000FF;
-	Mon, 21 Sep 2026 03:19:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789960767;
-	bh=2qeg5nnX+L5JOV2Dy1e+zPJIv2gvFRCgZzcKI163yME=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=InFS6M8fNERaJAosZxAnHojUSgolbH+DQpf5A6ETRVDvka+ytF0TrFgU+t340W7zj
-	 IBXON4Q5p+S5SHTe4W4hT5hmSeW7VHV8nYbTnDN4+mRceUtjD9/s6Bx9+v+vco9nbC
-	 lIN9YFOzQ8s2qrQWG3z+FkxONVWKxKVpIyD4QPlARqapZKkPadBAxB0m6OlSB0iPkr
-	 afEaNDSxzFhOJ7H8kdGHqHuCDAOB00rQFJI3UWW0va2FriFhJFSK+ocoo1YgoSiCdH
-	 DWPxlJPhhgxcGPIoAFqxEv1gu1VcsWdLscga7YQh9ye0/UhFr8s/eZWZe6Afe4+eRI
-	 vlP32IYhZ0QiQ==
-Subject: Re: [PATCH net v2 1/2] ipvs: avoid stack overflow from recursive
- connection expiration
-From: netdev-bot+sashiko@kernel.org
-To: zihanx@nebusec.ai
-Cc: horms@verge.net.au, ja@ssi.bg, pablo@netfilter.org, fw@strlen.de,
- phil@nwl.cc, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 21 Sep 2026 03:19:26 +0000
-Message-ID: <178996076640.2160803.16028832049809238100@kernel.org>
-In-Reply-To: <20260917030301.5502-1-zihanx@nebusec.ai>
-References: <20260917030301.5502-1-zihanx@nebusec.ai>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1789961056; c=relaxed/simple;
+	bh=Q/3/5Nx5FM48RTGX6txObAhBKRMQKcQXI809YkxxirY=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=MTurBmuZm661AZPFM7r5ECTyKrHEywvcUQXBelXCoVUvl01s6Ph61XYAL2iYhN1IjOS6GoQE+kjfg+ST42vFD7rmN2G+49bDJwk9njB5IU3YA+IfMUvsmr+9Lbzt/pPdn7rvinkjgONQTX3+dahTWMLLmHNmXz9g+NRdA3Ez0b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-4566537e644so4409732fac.0
+        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 20:24:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789961054; x=1790565854;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wJ3hMGw7iw6O9BkY5HoyPwy1BTyJgCiMk7aL5MnnWMw=;
+        b=HJrbXtbIdE/j48HHsRvHS7T7azY6olFh0Xr9F2CpOme1dWMR9COSm463xUJmJOpTWA
+         1wd/mKgahensD7utGMrXtryv7XQavLmlotobyp9hhnVtUIe2rad4MyvOUSonolkLhBBP
+         OiUxIoVmMPmwCE5UPH8wfYtkvaaPlXeLd/AqNteZ4bkNvCS0ZTSj6odkTVNs0X0qWkFz
+         AcmNS+I8vnellkNSxihjYHjMI4kFMz+idf2BexNbl0ym8yTNDpKnbqOcLRFBOyjE+cNO
+         CsN6C24ZYH9rsFhlyz65gdzR8JWGPkz8Gvse+dCYVyIRXTlx0angg1SmiWGq5+WnjuKL
+         lqDg==
+X-Forwarded-Encrypted: i=1; AKwUvBxWo6h53kibCfwKliOIln9uMOK7y/BliOdwCNwgyX4HYb5qovm2IDLjDsHWnPashHQjXLps1JM=@vger.kernel.org
+X-Gm-Message-State: AFuF++lVxVoeREGUGbi1kmYd4FWHKv3mnCTovAUpZgotIfywX/VkTs3o
+	2CsC8svJ/HPVEp09x1EYzosLgpa5JXTTMysokcbKpPKdX4Gj/gGYbTkuFKyltV6/IRcMjG7IfTI
+	lzkCVABoZvyTquy5meLFTD3PgdBsDzeKdOQ+fMOOh7TiNO0VJD17PU5rT0Lk=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Received: by 2002:a05:6820:4d0a:b0:6cd:3ffc:acfc with SMTP id
+ 006d021491bc7-6cd3ffcef09mr6027448eaf.76.1789961053959; Sun, 20 Sep 2026
+ 20:24:13 -0700 (PDT)
+Date: Sun, 20 Sep 2026 20:24:13 -0700
+In-Reply-To: <20260918210419.4088201-1-kuba@kernel.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ab0a35d.71f81b7d.15fa6d.001f.GAE@google.com>
+Subject: [syzbot ci] Re: net: opt loopback into instance locking
+From: syzbot ci <syzbot+ci721ed44e87a0b71e@syzkaller.appspotmail.com>
+To: andrew@lunn.ch, davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+syzbot ci has tested the following series
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
+[v1] net: opt loopback into instance locking
+https://lore.kernel.org/all/20260918210419.4088201-1-kuba@kernel.org
+* [PATCH net-next] net: opt loopback into instance locking
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+and found the following issue:
+WARNING in ipv6_add_dev
 
-- [High] ipvs: use-after-free in ip_vs_conn_expire() due to timer re-
-  arming race
-- [Low] ip_vs_conn_del_put() (net/netfilter/ipvs/ip_vs_conn.c:1333-1346)
-  keeps its old comment "Try to delete connection while holding…
+Full report is available here:
+https://ci.syzbot.org/series/f12bc892-cfa6-4277-beac-794482c9a3f7
 
-Pre-existing issues:
-- [High] ip_vs_conn_del_put() (net/netfilter/ipvs/ip_vs_conn.c:1336-1341)
-  cancels the controller's timer, drops the caller's only reference on…
+***
 
---
+WARNING in ipv6_add_dev
 
-ipvs: avoid stack overflow from recursive connection expiration
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      8830e65ed46de41f849eefb8ba227d4852c460f6
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/ae142b5c-beb2-4c41-814c-2cd3e14bdbb0/config
 
-This changes ip_vs_conn_del_put() to return whether it managed to delete
-the controller's timer, and makes ip_vs_conn_expire() loop back with the
-controller instead of recursing into itself.  The stated goal is to keep
-chain cleanup synchronous while using a single stack frame.
+usbcore: registered new interface driver snd-usb-hiface
+usbcore: registered new interface driver snd-bcd2000
+usbcore: registered new interface driver snd_usb_pod
+usbcore: registered new interface driver snd_usb_podhd
+usbcore: registered new interface driver snd_usb_toneport
+usbcore: registered new interface driver snd_usb_variax
+drop_monitor: Initializing network drop monitor service
+NET: Registered PF_LLC protocol family
+GACT probability on
+Mirror/redirect action on
+Simple TC action Loaded
+u32 classifier
+    Performance counters on
+    input device check on
+    Actions configured
+nf_conntrack_irc: The irc conntrack helper is scheduled for removal.
+Please contact the netfilter-devel mailing list if you still need this.
+The pptp conntrack helper is scheduled for removal.
+Please contact the netfilter-devel mailing list if you still need this.
+The DCCP match is deprecated and scheduled to be removed in 2027.
+Please contact the netfilter-devel mailing list or update your iptables rules
+xt_time: kernel timezone is -0000
+IPVS: Registered protocols (TCP, UDP, SCTP, AH, ESP)
+IPVS: Connection hash table configured (size=4096, memory=32Kbytes)
+IPVS: ipvs loaded.
+IPVS: [rr] scheduler registered.
+IPVS: [wrr] scheduler registered.
+IPVS: [lc] scheduler registered.
+IPVS: [wlc] scheduler registered.
+IPVS: [fo] scheduler registered.
+IPVS: [ovf] scheduler registered.
+IPVS: [lblc] scheduler registered.
+IPVS: [lblcr] scheduler registered.
+IPVS: [dh] scheduler registered.
+IPVS: [sh] scheduler registered.
+IPVS: [mh] scheduler registered.
+IPVS: [sed] scheduler registered.
+IPVS: [nq] scheduler registered.
+IPVS: [twos] scheduler registered.
+IPVS: [sip] pe registered.
+ipip: IPv4 and MPLS over IPv4 tunneling driver
+gre: GRE over IPv4 demultiplexer driver
+ip_gre: GRE over IPv4 tunneling driver
+IPv4 over IPsec tunneling driver
+Initializing XFRM netlink socket
+IPsec XFRM device driver
+xfrm_iptfs: IPsec IP-TFS tunnel mode module
+NET: Registered PF_INET6 protocol family
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&dev->lock)->dep_map) != 0)
+WARNING: ./include/net/netdev_lock.h:70 at ipv6_add_dev+0xfc1/0x1400, CPU#0: swapper/0/1
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:ipv6_add_dev+0xfc1/0x1400
+Code: ff ff e8 a2 6e 3a f7 48 8d 3d 6b 56 fd 05 48 c7 c6 80 a2 32 8d ba 80 01 00 00 67 48 0f b9 3a e9 ab f0 ff ff e8 80 6e 3a f7 90 <0f> 0b 90 e9 cb f1 ff ff e8 72 6e 3a f7 48 8d 3d 5b 56 fd 05 48 c7
+RSP: 0000:ffffc900000678c0 EFLAGS: 00010293
+RAX: ffffffff8a8d6400 RBX: dffffc0000000000 RCX: ffff888102abda00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffffffff90253707 R09: 1ffffffff204a6e0
+R10: dffffc0000000000 R11: fffffbfff204a6e1 R12: dffffc0000000000
+R13: ffff88810c036000 R14: ffffffff8caa6a10 R15: ffff88810c036008
+FS:  0000000000000000(0000) GS:ffff88818d6cd000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88823ffff000 CR3: 000000000eb48000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ addrconf_init+0x8b/0x170
+ inet6_init+0x228/0x3f0
+ do_one_initcall+0x250/0x870
+ do_initcall_level+0x10a/0x1a0
+ do_initcalls+0x59/0xa0
+ kernel_init_freeable+0x29d/0x3e0
+ kernel_init+0x22/0x1d0
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-v1 Link: https://lore.kernel.org/all/cover.1789110326.git.zihanx@nebusec.ai/
 
-> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
-> index 6fa3e1dc534c3..c7b88ce1765dc 100644
-> --- a/net/netfilter/ipvs/ip_vs_conn.c
-> +++ b/net/netfilter/ipvs/ip_vs_conn.c
-> @@ -1331,17 +1331,18 @@ static void ip_vs_conn_del(struct ip_vs_conn *cp)
->  }
->  
->  /* Try to delete connection while holding reference */
-> -static void ip_vs_conn_del_put(struct ip_vs_conn *cp)
-> +static bool ip_vs_conn_del_put(struct ip_vs_conn *cp)
->  {
->  	if (timer_delete(&cp->timer)) {
->  		/* Drop cp->control chain too */
->  		if (cp->control)
->  			cp->timeout = 0;
->  		__ip_vs_conn_put(cp);
-> -		ip_vs_conn_expire(&cp->timer);
-> -	} else {
-> -		__ip_vs_conn_put(cp);
-> +		return true;
->  	}
-> +
-> +	__ip_vs_conn_put(cp);
-> +	return false;
->  }
+***
 
-[Severity: Low]
-This isn't a bug, but should the comment above ip_vs_conn_del_put() be
-updated?  On the success path the helper no longer deletes or expires the
-connection, it just cancels the timer, drops the caller's reference and
-hands the expiration back to the caller.
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-The sibling helper still keeps a nearly identical comment while doing the
-expiration itself:
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-	/* Try to delete connection while not holding reference */
-	static void ip_vs_conn_del(struct ip_vs_conn *cp)
-	{
-		if (timer_delete(&cp->timer)) {
-			...
-			ip_vs_conn_expire(&cp->timer);
-		}
-	}
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
-Could the new return value be documented, e.g. "returns true if the timer
-was cancelled and the caller must continue expiring @cp"?  Otherwise a
-future caller of ip_vs_conn_del_put() written against the current comment,
-like the ip_vs_conn_del() users in ip_vs_random_dropentry() and
-expire_nodest_conn_handler(), would cancel the timer and drop the reference
-while leaving the conn hashed and never expired.
-
->  
->  static void ip_vs_conn_expire(struct timer_list *t)
-> @@ -1349,6 +1350,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
->  	struct ip_vs_conn *cp = timer_container_of(cp, t, timer);
->  	struct netns_ipvs *ipvs = cp->ipvs;
->  
-> +repeat:
->  	/*
->  	 *	do I control anybody?
->  	 */
-> @@ -1358,6 +1360,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
->  	/* Unlink conn if not referenced anymore */
->  	if (likely(ip_vs_conn_unlink(cp))) {
->  		struct ip_vs_conn *ct = cp->control;
-> +		bool next = false;
->  
->  		/* delete the timer if it is activated by other users */
->  		timer_delete(&cp->timer);
-> @@ -1372,7 +1375,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
->  			    (!(ct->flags & IP_VS_CONN_F_TEMPLATE) ||
->  			     !(ct->state & IP_VS_CTPL_S_ASSURED))) {
->  				IP_VS_DBG(4, "drop controlling connection\n");
-> -				ip_vs_conn_del_put(ct);
-> +				next = ip_vs_conn_del_put(ct);
->  			} else if (has_ref) {
->  				__ip_vs_conn_put(ct);
->  			}
-> @@ -1402,6 +1405,10 @@ static void ip_vs_conn_expire(struct timer_list *t)
->  		else
->  			call_rcu(&cp->rcu_head, ip_vs_conn_rcu_free);
->  		atomic_dec(&ipvs->conn_count);
-> +		if (next) {
-> +			cp = ct;
-> +			goto repeat;
-> +		}
->  		return;
->  	}
-
-[Severity: High]
-One more angle on the deferral window, from the packet path side.
-
-After ip_vs_conn_del_put(ct) returns true we own ct only by
-convention: its timer has been cancelled, our reference has already
-been dropped by the __ip_vs_conn_put(ct) inside the helper, and ct is
-still hashed and still findable by ip_vs_conn_in_get() /
-ip_vs_conn_out_get().  Nothing in ct's state records that this context
-intends to come back and expire it.
-
-So while we finish tearing down cp -- ip_vs_conn_drop_conntrack(),
-ip_vs_unbind_app(), ip_vs_unbind_dest(), call_rcu() and the
-atomic_dec(&ipvs->conn_count) -- a packet arriving on another CPU can
-look ct up, take a reference, and then release it through
-ip_vs_conn_put(), which re-arms the timer unconditionally via
-mod_timer(&cp->timer, jiffies + cp->timeout).  With ct->timeout forced
-to 0 by ip_vs_conn_del_put() when ct has a controller of its own, that
-timer is due immediately, so ip_vs_conn_expire() can run for ct on that
-CPU, win the refcount_dec_if_one() in ip_vs_conn_unlink(), and hand ct
-to call_rcu(&ct->rcu_head, ip_vs_conn_rcu_free).
-
-When this context then does "cp = ct; goto repeat;", the first thing it
-touches is atomic_read(&cp->n_control) on a connection that has already
-been unlinked and queued for freeing -- and since the entries via
-ip_vs_random_dropentry() and expire_nodest_conn_handler() reach
-ip_vs_conn_expire() from process context, the deferral is preemptible
-and the grace period can complete before we get there.  Before the
-patch the recursive ip_vs_conn_expire(&ct->timer) call ran immediately
-after the timer_delete(), so this window was a few instructions wide;
-now it spans the entire teardown of cp.
-
-The timer_delete() under the "delete the timer if it is activated by
-other users" comment does not help here either: it only catches a
-re-armed timer that has not fired yet, not a callback already running
-or completed on another CPU.
-
-How do you want to close this?  Keeping a reference on ct across the
-deferral (i.e. not dropping it in ip_vs_conn_del_put() when the caller
-asked to continue) or re-establishing ownership at the repeat label by
-re-checking and re-deleting ct's timer both look plausible, but the
-refcount bookkeeping differs quite a bit -- which one matches the
-intended invariant?
-
-[Severity: High]
-This isn't a race introduced by this patch, the old code also dropped the
-reference on ct before recursing, but does the deferral here widen the
-window considerably?  Between ip_vs_conn_del_put(ct) returning true and
-"cp = ct; goto repeat;", ct is still hashed, has no pending timer, and is
-referenced by nobody, while the whole teardown of the previous conn runs in
-between (ip_vs_conn_drop_conntrack(), ip_vs_unbind_app(),
-ip_vs_unbind_dest(), call_rcu(), atomic_dec()).
-
-Note that ip_vs_conn_del_put() forces ct->timeout = 0 when ct itself has a
-controller:
-
-		if (cp->control)
-			cp->timeout = 0;
-
-So a concurrent reference holder finishing with ct re-arms the timer to fire
-on the next tick:
-
-	static void __ip_vs_conn_put_timer(struct ip_vs_conn *cp)
-	{
-		unsigned long t = (cp->flags & IP_VS_CONN_F_ONE_PACKET) ?
-			0 : cp->timeout;
-		mod_timer(&cp->timer, jiffies+t);
-
-		__ip_vs_conn_put(cp);
-	}
-
-Can that leave two contexts in ip_vs_conn_expire() for the same conn, with
-only one winning refcount_dec_if_one() inside ip_vs_conn_unlink()?
-
-CPU0 (deferring context)                CPU1 (packet path / timer)
-  next = ip_vs_conn_del_put(ct)
-    timer_delete(&ct->timer) ok
-    ct->timeout = 0
-    __ip_vs_conn_put(ct)   /* refcnt 1 */
-  ... teardown of cp ...
-                                        ip_vs_conn_put(ct)
-                                          mod_timer(&ct->timer, jiffies+0)
-                                        ip_vs_conn_expire(&ct->timer)
-                                          ip_vs_conn_unlink(ct) -> true
-                                          call_rcu(&ct->rcu_head, ...)
-  cp = ct; goto repeat;
-  ip_vs_conn_unlink(ct) -> false  /* HASHED already cleared */
-  expire_later:
-    refcount_inc(&ct->refcnt);   /* was zero */
-    ct->timeout = 60*HZ;
-    __ip_vs_conn_put_timer(ct);  /* mod_timer on freed-pending conn */
-
-Does the refcount_inc() on a refcount that already reached zero trigger
-refcount_warn_saturate, and does the subsequent mod_timer() touch a conn
-already queued for kmem_cache_free() by ip_vs_conn_rcu_free()?
-
-The "delete the timer if it is activated by other users" timer_delete()
-after a successful unlink only covers a re-armed timer that has not fired
-yet, not a callback already running on another CPU.  The comment in
-ip_vs_conn_expire_now() ("Using mod_timer_pending will ensure the timer is
-not modified after the final timer_delete in ip_vs_conn_expire") suggests
-the code relies on a "timer not pending means I own this conn" invariant
-that the plain mod_timer() in __ip_vs_conn_put_timer() does not honour.
-
-For the process-context entries into this path, ip_vs_random_dropentry()
-and expire_nodest_conn_handler() both reach ip_vs_conn_del() ->
-ip_vs_conn_expire() with cp->timeout forced to 0 while traffic is flowing,
-so the deferral is also preemptible.  Can the RCU grace period complete and
-free ct before the repeat iteration reads ct->n_control?
-
-Would it work to keep a reference on ct across the deferral, or to
-re-establish ownership at the repeat entry by re-checking and re-deleting
-the timer?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1789435989.git.zihanx%40nebusec.ai
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
