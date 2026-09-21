@@ -1,276 +1,192 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3516486BA7
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 16:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790006583; cv=none; b=Zjp2xkRAsfbXZwRZLtukOIqhuq61ixlMrznjT15U2uSB8mOiz1kSSZ27D0nP0LghMAePR2weEg+MU0aOD7I52BOFWbyYdRlk/uHAOTqSyDRu78qU9skPcDO6h3TI6t9WXhvgkwfHucSefSs89+gwOIuhcYqIL0NKJnd6qtnSn9g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790006583; c=relaxed/simple;
-	bh=1ZtpFPKdlEgIIzEYrpUsaWuCkcuVgsVZSvTnHVeHq5o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DZ4wbiSDSyTHeoxJGP+2uJnuRSSf2aQcNSRLvA2YNTxkYIqgSQdwJavOTBIATBNu+Dd5ipl/tBKlj6dXLhDhKKAjiKFqgqaydj1amVV5X6r7vwN+yJr/UPF7F6Gm/RPvYu/3wYIFHx2d9j2ndcpJCzf8byzuZ7fRANfQImrdHB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EViqiBNK; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC71E4BE434
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 16:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790006979; cv=pass; b=pBlLzdTtKnZp1GoNbDwfJ6Y3q2YxhDmBy4BRFM8/WBIVzM/CXqYlV4hlDhoJes7tV5eQudTaz5EIj+7UyKmPe3kmJvJ3uz/0XgXI6exbqbIDSnOJCeqJebMwIv/xyii5rMj7rmDAK3iAg16BSphR4YpPd1N/rcDl7bI3VopK5BU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790006979; c=relaxed/simple;
+	bh=rJMR1goI84UOj1zlSEMdnigQDLXKxYXLLUMmZidqtWg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LLpXYn/xenArizgst2FIylvVmlEE3ZTAit1KQU7N5QrXXCXWFSi0ykZfocShH+OyhGx015QWkLwepk66I9T2NzelSijTIpWWpug284cCs7ULfiKcskXpi5IwV8PfvMV5gdHIOHPqjtQ04GxvxeeAUp6grAXVR5f+OxOEF6WsUG8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BpbCfK+M; arc=pass smtp.client-ip=74.125.230.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EViqiBNK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790006580; x=1821542580;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1ZtpFPKdlEgIIzEYrpUsaWuCkcuVgsVZSvTnHVeHq5o=;
-  b=EViqiBNKXkTQB+M1nNZ52MeYhQe/KV25GcdBvz6TmIvNT6eGxqsxMV0h
-   wlFRb7vIIuu7TxrRjEOJQkc+K1YyGEImXu/ohOLWtS3ZhHsiOlHqiidvn
-   71wvj0LJDYvwEZAw6RMqv1IbpP7mv+YxsxVISsRVwW68ep/98fgj3Cxza
-   Yxj316k7mFRXip1CSnCopVb0mJCW75eSZpoOH2xoR/OjyMRbZ6XyOCIVc
-   gpWrsVsR70czg7PoA/xYvG5z61TTXCyLsKO0pEHCU9N78UJBW64gxoOMb
-   baoyjVRcXe6UHPEaMTxeAhV56CAULSgIrm9djHWQ/HhR+qFDMGwF/42Yt
-   A==;
-X-CSE-ConnectionGUID: 5UkGEkYKRUidZ0GOo6nvBg==
-X-CSE-MsgGUID: QhBxmkqnR4+AmWvPm+8mSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="108036032"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="108036032"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 09:02:59 -0700
-X-CSE-ConnectionGUID: sUS2XHXcTEunHZGo7VvnSA==
-X-CSE-MsgGUID: vplJ1Gt9SLeC7a4nxNrQ0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="269237542"
-Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.94.252.97]) ([10.94.252.97])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 09:02:57 -0700
-Message-ID: <a37799a1-8b41-4a8d-a350-9f4f913330f3@linux.intel.com>
-Date: Mon, 21 Sep 2026 18:02:49 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BpbCfK+M"
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530d0d5ae11so33465571cf.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:09:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790006976; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P7Vh5YUYkvJ3a0MKmDTu9AaK1ct7vticIHUdCEmySVob+SBQbgTmLswl2tJQcuARHP
+         2FTI7mzW+y4L6ON9qhrjpZdfJOF4DAiEBQfxApHtscM1uC9QdXrJuq3rd5tSCHe8Jo/s
+         6dJ555g4rqFVWIgTtbL7GfrqwU38UCPXDUx9/kvulJ0nYBe9RUjHRwvK2v7oLwAkeFQc
+         zO0/h+vv2nsHmTZLpbjcO5NJzVih58WRN1Rh8VmPI0XMnFFYY8XemDIljvWt8KyvFwli
+         3QpF64dkro9BzipcDJo1vgXk2sGtouI6fl8yKsZGm5oyflu/3ufr0aHQJQsaxApQoLQv
+         A21g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hT30naHPFA+SFGs6iwdccYenWnBCPLYfxZ1O0va1VaM=;
+        fh=WkYhoYvk2WjvOHMDswJ5dFiLeeHs3SkbjcM/OvwL1tE=;
+        b=HyD5PLRkIIHtAlEyVLakmIhGxF5CubmqMiTQwyFna+a8Gbg5kWvdVoNAkOsOVs6713
+         Lk2KCgqhwIGCQ0qaTe7K3WHRGe7qzVS/+Xj/z/Nj2O9G8LfRLEWjX9cuMFJRPB5AoCL3
+         Q1T76T0IPFm2Sqn3JrWAtoOJLgq22in0ctYRvJ9unfj/a+nabj/BGIHK18KJkbpG3ZOP
+         v6YeCbfUwqyiRtVU1UzsB+zauuJKcUHo+3EUkZf2cIYC3RRHUDm02Y5NRH9HvR48vGcn
+         bq9tOVUQ4hvyegjDHVxizoWqzIPFwDCgnc+BL1LER6dQdox8xaLdgejhn99aiYsy3WvX
+         mc7A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790006976; x=1790611776; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hT30naHPFA+SFGs6iwdccYenWnBCPLYfxZ1O0va1VaM=;
+        b=BpbCfK+MO0cnrE0M1KFqsdXEVqe5uxoOFKp/DrvA1scWBZYfx1yIZlBMF/g4P8tA0G
+         zjTjcciudLufbkADG03H0F3XJgJkrdbv8NGFAfgdyVtIH9o8Qf8yCTpRi7PdiBqOB4Sy
+         yI5TvmbG2hGmnHZLRmK312lU8LRU2ZwUHsVGPP0Ng7ItPeFB6zs/P4GHRRCm04mRR/u7
+         bqHMGqPPt8VuOck8tDsFplOZ4U6AySzVAx2RnqsTPqaCu9j+mhxWOMDNpQVR5J6D41mu
+         2A/pBbkxoKDhjT5AJIIX2DBMd4xeTgKPO5Q0FX9hWYmOaN1SJ8m5MLviZYnlYHPtbIWQ
+         ytow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790006976; x=1790611776;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hT30naHPFA+SFGs6iwdccYenWnBCPLYfxZ1O0va1VaM=;
+        b=Hk8kemldvFo9cAvjE8iqzmCId9ZcEW9Qmk2j1wTCCYCj97dpqORiSyWLOA9p5bhIGQ
+         t3OMa5r+txuml/yGm1E7JSGFnBBRRQ74mA57qs+kSgOJcPnmcirR79n6PGDiZF3JVSJC
+         EJcUib1L5wyiYT9NazQNcjxV/0uxC4Ou5GlWasLlVsK+fwUJgE3Tf0E0MjopjJu4t61D
+         5UtfaRgO3kwIacsT2NpOi04edzoRixvzEL1+QEwM7CgBxz248N2eqK+D00zgzpYqYome
+         6MYqNmDgSShOuPAyeuXQT/GBJq3KOp+Xw37pBTKnC+jyx7tNgMcZPgc/TNufarzLUV8F
+         J3Zg==
+X-Gm-Message-State: AFuF++lxDfu4Y2EvpMgmjok28EyA8TyN9CxaL707hrebfJ2kvG8K7eMU
+	aGOu5nRbhtmFAtR6XV4IziLJGLF6FYTHaZxZhpuHaZS+HZ/y/wmAGkTjca6yIH001S+K885UoSJ
+	bQUDbwuylrX3rYiRZqfYkA7qOTCJ6mHnR9l0jRfVW1FkWLB/XrTUbjfMfWkI=
+X-Gm-Gg: AYBFou1Ss9Ubq96PbGrVai1BJ8bnsVS3G5P3hFnJGo9W/w2CU1wC6ya/5P/DPql/YXE
+	1EwetVdh/anQwng2rnIe2dacnlB0zs8D2oC6/6V8Pc8IVEZCcQTdXarsLSHQpu4YaCF/VolZG7f
+	g46tWGdaKnAXWTtYRunU74s5QQwf8YsPnKfBNNWCZ3knBw0FNffXURf3e3do03U6nNYJx3BVxoe
+	V1Pv3c4xnA+R6F+oWBA/INjBW6IQrGIMRDbF9lFMh0n1BFW6fhZ6zq4Y5YWsHDJJO2XOfJ8bFLq
+	NWzHdIEzBF9WVuEee9F/SKchaEZFyeCUHoEYlZH6Faf3g9O7NxADVJjFXHvwP1gCvzUA0TPdnaw
+	j42QTf8w37aWwLdUsQ2nFgEhwEbed0gHTPCp84b9Nn58pHa8hPbjI5DrlmEccRiWpzuaJWA==
+X-Received: by 2002:a05:622a:307:b0:530:e3dd:dfb8 with SMTP id
+ d75a77b69052e-532d8d3478dmr13680971cf.14.1790006972661; Mon, 21 Sep 2026
+ 09:09:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 00/12][pull request] ice: Add ACL support
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
- andrew+netdev@lunn.ch, netdev@vger.kernel.org
-Cc: aleksandr.loktionov@intel.com, sandeep.penigalapati@intel.com,
- ananth.s@intel.com, alexander.duyck@gmail.com
-References: <20260917183927.2692068-1-anthony.l.nguyen@intel.com>
-Content-Language: en-US
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-In-Reply-To: <20260917183927.2692068-1-anthony.l.nguyen@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260921155522.679350-3-yunseong.kim@est.tech>
+In-Reply-To: <20260921155522.679350-3-yunseong.kim@est.tech>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 21 Sep 2026 18:09:21 +0200
+X-Gm-Features: AcwNN1U5ucC_8slHXtj9uoeN3R5L6EFD4XqPILQZKmxegu-LKV9HjKuAx7U_Efs
+Message-ID: <CANn89iLpT1hqqNS2vWM1xL_Y-Eqpj5UBxjJwyfVc5JuFhSZcjg@mail.gmail.com>
+Subject: Re: [PATCH] ipv4: guard inetdev_event() against a NULL from inetdev_init()
+To: Yunseong Kim <yunseong.kim@est.tech>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Taehee Yoo <ap420073@gmail.com>, stable@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I see 0/9/18/2 issues were found by one of the sashikos [1] (other one still
-embargoed), I assume some of them are valid. I will be analyzing and fixing
-these for next version, unless all are false positives (unlikely).
-For reference, previous version tally was 2/20/8/1 [2].
-
-Thanks,
-Marcin
-
-[1] https://sashiko.dev/#/patchset/20260917183927.2692068-1-anthony.l.nguyen%40intel.com
-[2] https://sashiko.dev/#/patchset/20260603220828.829969-1-anthony.l.nguyen%40intel.com
-
-On 17.09.2026 20:39, Tony Nguyen wrote:
-> Marcin Szycik says:
-> 
-> E8xx hardware provides a Ternary Classifier block for implementing
-> functions such as ACL (Access Control List). In this series it's simply
-> referred to as "ACL".
-> 
-> Implement ACL filtering. This expands support of network flow classification
-> rules for the ethtool ntuple command. ACL filtering allows for an ip or port
-> field's optional mask to be specified.
-> 
-> Example filters:
->   ethtool -N eth0 flow-type tcp4 dst-port 8880 m 0x00ff action 10
->   ethtool -N eth0 flow-type tcp4 src-ip 192.168.0.55 m 0.0.0.255 action -1
-> 
-> This is a resurrection of an old series from 2020 [1] with several
-> improvements, but the fundamental logic unchanged. v1 was almost pulled
-> in, but ultimately it was decided to drop it [2] because of unresolved
-> issues. One issue was too many defensive NULL checks. Second issue is
-> about inconsistency when using multiple input sets. Both are addressed
-> in this patchset.
-> 
-> More about the second issue:
-> 
-> From [3]:
->> I would argue that you need to have some sort of logic that basically
->> checks to see if you are going to hit the input set issue and falls
->> back and applies the ACL rules. Otherwise you are significantly
->> hampering the usefulness of this filter type. It doesn't make sense
->> that dropping a field will cause a rule to fail to be added, but
->> masking a single bit in some field will make it valid. It would make
->> it a nightmare to use from the user point of view as the rules come
->> across as arbitrary.
-> 
-> Flow Director (FD) has a hardware limitation where all filters for the same
-> packet type must use identical input sets. Previously, attempting to add the
-> second filter would fail.
-> 
-> Patch 12 adds automatic fallback to ACL block when FD cannot accommodate a
-> filter due to input set conflicts, which resolves this inconsistency.
-> 
-> [1] https://lore.kernel.org/intel-wired-lan/20200914153720.48498-1-anthony.l.nguyen@intel.com
-> [2] https://lore.kernel.org/netdev/7192efe4d27c93148b3205e65f37203c89170316.camel@intel.com/#t
-> [3] https://lore.kernel.org/netdev/CAKgT0Ucxd5-gvEwWAdbL04ER2o++RX_oekUV3E0rYquEgFKj1w@mail.gmail.com
+On Mon, Sep 21, 2026 at 5:58=E2=80=AFPM Yunseong Kim <yunseong.kim@est.tech=
+> wrote:
+>
+> On NETDEV_REGISTER, inetdev_event() only checks the inetdev_init()
+> return value with IS_ERR():
+>
+>     in_dev =3D inetdev_init(dev);
+>     if (IS_ERR(in_dev))
+>         return notifier_from_errno(PTR_ERR(in_dev));
+>     if (dev->flags & IFF_LOOPBACK) {
+>         IN_DEV_CONF_SET(in_dev, NOXFRM, 1);
+>     ...
+>
+> Because IS_ERR(NULL) is false, a NULL return flows straight into
+> IN_DEV_CONF_SET() -> ipv4_devconf_set(), whose
+> set_bit(index, in_dev->cnf.state) dereferences NULL.
+>
+> inetdev_init() is only kept from returning NULL by its trailing
+>
+>     out:
+>         return in_dev ?: ERR_PTR(err);
+>
+> which relies on every failure path that leaves in_dev NULL having also
+> set a non-zero err. That invariant is fragile and lives in the producer,
+> while the consumer's IS_ERR()-only check silently depends on it: any
+> future inetdev_init() failure path that returns NULL (directly, or by
+> leaving err =3D=3D 0) becomes a NULL dereference at this call site rather
+> than a clean error return.
+>
+> Before commit 20e61da7ffcf ("ipv4: fail early when creating netdev
+> named all or default") this call site used "if (!in_dev)", which caught
+> a NULL return; that commit converted inetdev_init() to the ERR_PTR()
+> convention and switched the check to IS_ERR(), dropping the NULL
+> handling here.
+>
+> Decouple the caller from that invariant by using IS_ERR_OR_NULL() and
+> translating a NULL return to -ENOMEM, so a NULL can no longer be
+> dereferenced regardless of how inetdev_init() signals failure.
+>
+> Cc: stable@vger.kernel.org
+> Cc: syzkaller-bugs@googlegroups.com
+> Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 > ---
-> v2:
->   The biggest change is the addition of proper reset handling, which was
->   apparently mostly missing in the original code - see patch 10
-> * Add patches 2 and 10
-> Patch 1:
-> * Rename fdir_active_fltr to ntuple_active_fltr_cnt, as it will
->   track the sum of fdir and ACL filters in future patches
-> * Rename ice_fdir_update_cntrs() to ice_ntuple_update_cntrs(),
->   move it to ice_ethtool_ntuple.c, and make it static. In future patches
->   it will handle both fdir and ACL
-> * ice_ntuple_update_cntrs(): join variable initialization and declaration
-> Patch 3:
-> * Remove example ethtool filters from commit message, as the feature is not
->   fully implemented at this point in the patchset. Moved this part to
->   the commit that finalizes functional implementation
-> * ice_acl_create_tbl():
->   * fill num_dependent_alloc_ids with actual value, not always
->     ICE_AQC_MAX_CONCURRENT_ACL_TBL
->   * fill remaining alloc_ids with ICE_AQC_CONCURR_ID_INVALID (was unused
->     in previous versions and remaining alloc_ids left with 0)
->   * struct ice_acl_tbl_params has a new member num_dep_tbls for tracking
->     the number of dependent tables. This new member is explicitly set to
->     0 in the only caller, for clarity.
->   * Note that the only caller (ice_init_acl()) doesn't use concurrent
->     tables, so this specific configuration is currently unused
-> * ice_acl_create_tbl(): move alloc_id check against ICE_AQC_ALLOC_ID_4K
->   to the success path, as the AQ command might complete successfully
->   with alloc_id set to below this value to indicate allocation failure.
->   Also, the AQ command might fail in a way that leaves the response
->   buffer invalid. IOW - the check was meaningless
-> * ice_acl_create_tbl(): add unroll of ice_aq_alloc_acl_tbl() -
->   ice_aq_dealloc_acl_tbl()
-> * ice_init_features(): remove ICE_FLAG_FD_ENA flag dependency on ACL
->   init. ACL should not be blocked by fdir being disabled
-> * Add ice_acl_create_hw(). For now it's just called from ice_init_acl(),
->   but will be reused in the rebuild path in the future
-> Patch 4:
-> * Make ice_acl_rem_flows() non-static. Remove its call from
->   ice_vsi_manage_fdir(), instead call it from ice_deinit_acl()
-> * ice_fdir_del_all_fltrs(), ice_fdir_replay_fltrs(): skip ACL filters
-> Patch 5:
-> * ice_{add,del}_ntuple_ethtool(): remove dependency on ICE_FLAG_FD_ENA.
->   ACL should not be blocked by fdir being disabled
-> * ice_acl_prof_add_ethtool(): don't free and NULL hw_prof on existing
->   seg mismatch. This prevents deallocating an existing hw_prof, also
->   leaking its seg
-> Patch 8:
-> * Move ICE_ACL_INVALID_SCEN definition to ice_acl.h - will be used by
->   other files
-> * Add ice_acl_set_act_drop() and ice_acl_set_act_fwd_queue() helpers -
->   will be useful later
-> * ice_flow_add_entry(): add entry list head initialization. In this
->   patch it may be possible to have a NULL dereference when deleting
->   entry, because it may not have been added to the list. This is handled
->   in one of the following patches, but adding init won't hurt.
-> Patch 9:
-> * ice_flow_rem_prof_sync(): reset profile extraction if it's unused
->   after removal
-> * ice_ntuple_update_list_entry(): add a missing ice_fdir_rem_flow() call
->   for ACL filter
-> * ice_acl_rem_entry(): set err in loops only on failure. This way, AQ
->   commands succeeding in the end won't override errors in the middle.
->   Final cleanup of entry index will now only happen if all AQ writes
->   succeeded
-> * ice_acl_add_rule_ethtool(): remove old entry when updating an entry
->   (same filter location). Without it, old entry remains in hw after
->   update, in addition to the new entry. Repro:
->     ethtool -N $PF1 flow-type tcp4 src-port 8080 m 0x0fff action -1 loc 5
->     ethtool -N $PF1 flow-type tcp4 src-port 9090 m 0x0fff action -1 loc 5
->     ethtool -N eth0 delete 5
-> * ice_flow_acl_add_scen_entry_sync(): free hw counters in exchange
->   actions and if the entry is being disregarded deallocated. This was
->   previously done in a later patch, but makes more sense here.
-> * ice_flow_add_entry(): same as above, move the change from future
->   patch here
-> * ice_flow_acl_add_scen_entry_sync(): store entry ID so it can be
->   properly deleted later
-> * ice_flow_acl_add_scen_entry_sync(): zero e->acts_cnt on success, so
->   that ice_flow_acl_free_act_cntr() will be skipped. On failure, free
->   exist->acts so exist won't carry stale counter references
-> * Add ethtool command examples to commit message (moved from patch 2)
-> Patch 11:
-> * ice_flow_acl_add_scen_entry_sync(), ice_flow_add_entry():
->   ice_flow_acl_free_act_cntr() additions make more sense in patch adding
->   this code, move them to that patch. Now this patch is a pure refactor.
-> Patch 12:
-> * ice_fdir_has_input_set_conflict(): add a check if aRFS is using perfect
->   filters that may cause a conflict
-> * ice_add_ntuple_ethtool(): add a guard that rejects flex-byte (user-def)
->   filters when they would be routed to ACL (since ACL ignores the flex
->   constraint, it would silently offload a broader rule)
-> * ice_add_ntuple_ethtool(): join subsequent conditions that call
->   ice_acl_add_rule_ethtool() for clarity
-> 
-> v1: https://lore.kernel.org/netdev/20260603220828.829969-11-anthony.l.nguyen@intel.com/
-> 
-> The following are changes since commit 26ee8cd69d46a14b37ba5e512084fe80d730127a:
->   net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
-> and are available in the git repository at:
->   git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
-> 
-> Lukasz Czapnik (1):
->   ice: use ACL for ntuple rules that conflict with FDir
-> 
-> Marcin Szycik (5):
->   ice: remove unused ICE_FD_FLUSH_REQ from PF state
->   Revert "ice: remove unused ice_flow_entry fields"
->   ice: use plain alloc/dealloc for ice_ntuple_fltr
->   ice: add ACL reset recovery and NTUPLE feature toggle
->   ice: re-introduce ice_dealloc_flow_entry() helper
-> 
-> Real Valiquette (5):
->   ice: initialize ACL table
->   ice: initialize ACL scenario
->   ice: create flow profile
->   ice: create ACL entry
->   ice: program ACL entry
-> 
-> Tony Nguyen (1):
->   ice: rename shared Flow Director functions and structs
-> 
->  drivers/net/ethernet/intel/ice/Makefile       |    5 +-
->  drivers/net/ethernet/intel/ice/ice.h          |   27 +-
->  drivers/net/ethernet/intel/ice/ice_acl.c      |  486 +++++++
->  drivers/net/ethernet/intel/ice/ice_acl.h      |  177 +++
->  drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 1140 +++++++++++++++
->  drivers/net/ethernet/intel/ice/ice_acl_main.c |  464 ++++++
->  drivers/net/ethernet/intel/ice/ice_acl_main.h |   10 +
->  .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  393 ++++-
->  drivers/net/ethernet/intel/ice/ice_arfs.c     |    8 +-
->  drivers/net/ethernet/intel/ice/ice_arfs.h     |    2 +-
->  drivers/net/ethernet/intel/ice/ice_ethtool.c  |   13 +-
->  ...ce_ethtool_fdir.c => ice_ethtool_ntuple.c} |  817 ++++++++---
->  drivers/net/ethernet/intel/ice/ice_fdir.c     |   41 +-
->  drivers/net/ethernet/intel/ice/ice_fdir.h     |   16 +-
->  .../net/ethernet/intel/ice/ice_flex_pipe.c    |   11 +-
->  .../net/ethernet/intel/ice/ice_flex_pipe.h    |    2 +
->  drivers/net/ethernet/intel/ice/ice_flow.c     | 1267 ++++++++++++++++-
->  drivers/net/ethernet/intel/ice/ice_flow.h     |   39 +-
->  .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |    3 +
->  drivers/net/ethernet/intel/ice/ice_lib.c      |   10 +-
->  drivers/net/ethernet/intel/ice/ice_main.c     |  162 ++-
->  drivers/net/ethernet/intel/ice/ice_type.h     |   14 +-
->  drivers/net/ethernet/intel/ice/virt/fdir.c    |   32 +-
->  23 files changed, 4859 insertions(+), 280 deletions(-)
->  create mode 100644 drivers/net/ethernet/intel/ice/ice_acl.c
->  create mode 100644 drivers/net/ethernet/intel/ice/ice_acl.h
->  create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
->  create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_main.c
->  create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_main.h
->  rename drivers/net/ethernet/intel/ice/{ice_ethtool_fdir.c => ice_ethtool_ntuple.c} (74%)
-> 
+>
+> Syzkaller reproducer:
+> # {Threaded:true Repeat:true RepeatTimes:0 Procs:8 Slowdown:1 Sandbox:non=
+e SandboxArg:0 Leak:false NetInjection:false NetDevices:true NetReset:true =
+Cgroups:true BinfmtMisc:true CloseFDs:true KCSAN:false DevlinkP
+> CI:false NicVF:false USB:false VhciInjection:false Wifi:false IEEE802154:=
+false Sysctl:true Swap:true UseTmpDir:true HandleSegv:true Trace:false Call=
+Comments:true LegacyOptions:{Collide:false Fault:false FaultCal
+> l:0 FaultNth:0}}
+> r0 =3D creat(&(0x7f00000000c0)=3D'./file0\x00', 0x26)
+> ioctl$RNDADDTOENTCNT(r0, 0x40045201, 0x0)
+> r1 =3D socket$inet6_udplite(0xa, 0x2, 0x88)
+> setsockopt$sock_int(r1, 0x1, 0x1d, &(0x7f0000000380), 0x4) (async, rerun:=
+ 64)
+> unshare(0x42020000) (async, rerun: 64)
+> truncate(&(0x7f0000000040)=3D'./file0\x00', 0x9) (rerun: 64)
+> ioctl$sock_SIOCBRADDBR(0xffffffffffffffff, 0x89a0, &(0x7f0000000000)=3D's=
+yzkaller0\x00')
+> socket$inet_udplite(0x2, 0x2, 0x88)
+> rename(&(0x7f0000000640)=3D'./file0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=
+aaaaaa\x00', &(0x7f0000000780)=3D'./file1\x00') (async)
+> ioctl$BTRFS_IOC_BALANCE_PROGRESS(0xffffffffffffffff, 0x84009422, &(0x7f00=
+000004c0)=3D{0x0, 0x0, {0x0, @struct, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, @s=
+truct}, {}, {0x0, @struct}})
 
+
+inetdev_init() can not return NULL.
+
+err is initialized to -ENOMEM, and the only place it is assigned is
+inside "if (err)" after devinet_sysctl_register(). Therefore every path
+reaching "return in_dev ?: ERR_PTR(err);" with in_dev =3D=3D NULL has a
+non-zero err, and IS_ERR() is sufficient.
+
+Please do not send patches for bugs that can not happen, especially
+with a Cc: stable and no Fixes: tag.
+
+Also, the syzkaller reproducer you pasted has nothing to do with this
+code path, and there is no syzbot report or Reported-by: here. Please
+do not decorate patches with unrelated material.
+
+If you used an LLM to generate this, please verify the claim before sending=
+.
+
+See Documentation/process/researcher-guidelines.rst
+
+pw-bot: rejected
