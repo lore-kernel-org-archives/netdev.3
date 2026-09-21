@@ -1,118 +1,134 @@
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA4049E5D1;
-	Mon, 21 Sep 2026 13:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AD249E12F;
+	Mon, 21 Sep 2026 13:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789997300; cv=none; b=c7zzfiso0I1zsdaPuMoGn11oFnSJbg+O3f5Bln4tjf9UXWeW6u8LDSPLDrJdiEJjHod9k/1FEY97zVymzlJXbk24dBchn+Op6svYAsalTf5dG3nOeT4jbKOGk13oMNjxk7YlcvoBX3GAUhqRgXRl1OxCaxZPD1Na05nAdOVPN8o=
+	t=1789997395; cv=none; b=Lc/g6AvbniTN/u8EHeVCjjZUBFUjz5lzPEPHzMWAl+SsJY//O9MbO9t8HV9JoG34gMJ80QLXxVcakLuGAN64dbcwoorAVnMmTorNBEwNGb0OLnJMp9i3blLKaFTZgm0yK1U7zkOpHHPxA//Z2iiNZmI0H6h+agYXT/RNEBXzUzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789997300; c=relaxed/simple;
-	bh=RW1YGZxqMA3BxKR446eKkO2tWZu1/Rk80FrvOSqtuwI=;
+	s=arc-20240116; t=1789997395; c=relaxed/simple;
+	bh=u6LARA2BHHrCOPC4emuepshoPChdUK1N82NLexkUVy0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sQhf2oQTBfP9j/dkxYVF1giE6nN9dkIysVypFu4zPVM12MgwK1IKVAqBle09niLVqr2Fim3Priela0KhtKjt90voAlZD+VaLZ0GPBCRd1xHIx+aq6r6v8RqkZL0Br/cyEFg8cDnYNhsyNdg5jQl4Ycw+EwQwjK+KBBQTf5epH8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=MTw/8iKc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uPs8+tiq; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=QcosUBu+70qRC+bXgpH5xNTuJeRlx/JY0KWA7d5RYGpRVtP0/g5E526JqyJvzrEETOeaKKGLSFvKPiBjAT6y6R9iYiH3JVt0J0M++AWpSfa4ykf3oP0JonaAfZN7FasBPcKfcwudFH3OiXwtd99AxLW20AgO6H3jBjs/32MGbRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZG4nHD8q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="MTw/8iKc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uPs8+tiq"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 71E0F7A0096;
-	Mon, 21 Sep 2026 09:28:15 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 21 Sep 2026 09:28:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789997295; x=
-	1790083695; bh=8zCf3uv1kJ23BTMvsNoYWXAI30eiZ3fDTG960OnbLqM=; b=M
-	Tw/8iKcZxC8dUon+ZEGCiMLBOrpAwOXuYxFuSNzq7d6X0JEmi3Dnm0/IUXjUbRa+
-	D8mS6wO7fLj67pjy9G+ciagL7BAI2OSNJC4a8tJEpGQS1cJ34m959UeOZQwGQd3Q
-	3W+EkBWFCnLXPJYEjuWFGkigdsyC4kXv1RF/wFhDSwrp7llCuuVN3TlKkk84GQcE
-	375IpUpYW3t5/CEaYpcFH6XeWmnkooT7qqzMIBFZJvH6Q4b8/Zl0Ynms+3Fey5s/
-	yJr6iWGg+TdTDJN3tQ0imeaXaPB6hLOmLhT5JN5Z8JEcwN0qXNYrH1RThPVnKedf
-	rqdfSQRfNAXF8hGsaqt/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1789997295; x=1790083695; bh=8zCf3uv1kJ23BTMvsNoYWXAI30eiZ3fDTG9
-	60OnbLqM=; b=uPs8+tiqvfYIQiqAJjQxADq5jt9/mCuMTGuNs70LUpLQ6oEicox
-	R9wmK5Kg0gQsJVM63ASIxBjJgOYEsr6pr0W2AchyA1jAH8Ek+mscncGrYcnhfRC+
-	QqEVlCwF/nAQbuxvwtf5Sz8LS8Kf3ISXFWQLbydI5+Ere2V8JZcfMaIzs8CqeUqG
-	TSCv7ZBE8cFCpAd3VBGsJA8RpwOOproHVVqcbp4hdUBc4UWWH6KMIfLUTdX5oI9o
-	Adft36v+eX+ewDfOKtc2CLJuXgj0BDmFr0b2fXK6iZs7zsxBWIzTPsUZYN3LLSmE
-	pNPHKn2R0P28opKA4ysRXWiEpGwB96n2a3Q==
-X-ME-Sender: <xms:7TCxakGnnyR868M28J0Q8yDknP0MJBSGQoTQVjkVV1h2DBlgpCaNYw>
-    <xme:7TCxapRbb9-ErT-jwPItv1UXeUQD2fm66bVh-efol-IGqtjVY0sY1CkQt0pRZn-cu
-    9BJLlNcqysHAIaPcYCW6gNdl5TiFhD5qm1uss6JG0FalnnISUT9blNc>
-X-ME-Received: <xmr:7TCxakSSAraQKK5v_HyjS9SypoLFf5CoJYjtxHv_hdohrKZhuj9Yu4ulfOSO>
-X-ME-Proxy-Cause: dmFkZTFJi6X8EXtz6VuhlJYgHc0myd9tNUnMA08kKDryRyNf1uHvqKyJi3Um+fcoVX+75J
-    /Cp0sZB9NL40w+Ke2Qu0F1HY5SYioNVZXF2t/S+8eQfjeJlEm0RvS1IEGwfE7JvITfUbY8
-    l4XH+zHLnLGvlMO6GvTbptotkuz/lxIytYj4iaW7Dw0eAq0JLxk1l3HMBl1NBKj6bkl8RZ
-    13FDI+XgzKLOVpMAJCF3+Rj2VGzaW26t4guX5tlMt1IxsB/E2gSpIPJhjqmg5Hkz2Bw3ob
-    +1r0/Igp/z6EetmtURRnvjQHACTqQ+ysSdaYgSjzB1G/tRs1BmNC44MFZcHsLvzPhb/WNP
-    +c6EsaxdIAwunDBAIDWwUdBG5c9VRGwDbZg8qgehuYD9AOCXSa4G/9uCHPnOG0CdG3KH1e
-    aQ9x+O1xKpRYo3iIEpxJSyr5bPkSIPuPz04RKTt0kkpZQvnn9EJhnC1deb4KrHR3gNVkGC
-    116eBKfpa7FkO/qG0mD8Z2kNyxfIl2VtSZ8biDPBfb6G6in6d5RLOLBsgg7xg4M/vEVQje
-    SSFvH+6awbX0rc5+AHBgGimkC7oZTXBOb6Y4RHF2ROi+5EtO5VaU3g1fZDCL3FGSjdTR2C
-    3s5ZS4K934v9o0CfBTX1zmeUbSRU5PIhG8Zrdaqpo1vE35KrleyNsKFy/JIw
-X-ME-Proxy: <xmx:7TCxasc317_wRhp3LeS3gnpj-RlPNvjrcAAixdyJoK0cVmL9muNxZQ>
-    <xmx:7TCxaoc88xRcLy3kBDrDUksGJGOUi8mkpOKc4HEwBFqlGWB25pfFEA>
-    <xmx:7TCxai-rju-xkhWqP5W2U30TTQBpex5GAw_RHoQ8Dd21lmcVf79DnA>
-    <xmx:7TCxaoM8fgldCcLLyrXxDesV6_APuAD2AGPuv58q22G9I-RnJILfKQ>
-    <xmx:7zCxaumV56FVrtN9ib1bLqTyoj518VHDBnIT2F1OmzzhSzrbHMklrc8w>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 21 Sep 2026 09:28:12 -0400 (EDT)
-Date: Mon, 21 Sep 2026 15:28:10 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antony Antony <antony.antony@secunet.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZG4nHD8q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002431F000FF;
+	Mon, 21 Sep 2026 13:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789997394;
+	bh=qo8YLb+8AMgGZ0Mty5fhrFkdYnAyoM7ODfWNEFzbmVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZG4nHD8qj7ADkpnqSCfe90NiIC8+DJin45KT3zSnT/h6pYILohTUeoHhbXsv+8Cxn
+	 dAojYYm9snY9MihgG2ub6yoeUgnBQZhwbAPK1nVnCtOzrgwU/Zic/wHrCeHfEnLWSI
+	 oeUiZG9I1kr9mRO2TVV+P2ah76+eWujRJ3NDwXNdx0TBLehzI14Dp6t6XkRLxgXdwb
+	 UUBb921UWAB8V7KeHZCtzm8rbtzp85/GWZqIniPQCvDbNwhuXzplPCM7mhAnVqmLXu
+	 Lc//QrVL0hNVilsWkRlnEt1s5cZfG8CzwPfxVKODxW+e8Hu5Vd5dRYln+wJYC/mXfq
+	 bfK3zhY/RyfuA==
+Date: Mon, 21 Sep 2026 14:29:49 +0100
+From: Simon Horman <horms@kernel.org>
+To: zjamg <ndaugoing@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>,
+	Christophe Ricard <christophe.ricard@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Jamal Hadi Salim <hadi@cyberus.ca>, Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org, Yan Yan <evitayan@google.com>,
-	Tobias Brunner <tobias@strongswan.org>,
-	Florian Westphal <fw@strlen.de>, linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH ipsec v2 1/6] xfrm: state: exact mark/mask match for
- SPI-keyed control-plane SA lookups
-Message-ID: <arEw6qLcr_YEI8Wl@krikkit>
-References: <migrate-state-fixes-v2-0-c3e2767f0d96@secunet.com>
- <migrate-state-fixes-v2-1-c3e2767f0d96@secunet.com>
+	oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] nfc: nci: do not process unexpected or invalid
+ CORE_CONN_CREATE_RSP
+Message-ID: <20260921132949.GQ13925@horms.kernel.org>
+References: <20260918020412.82878-1-ndaugoing@gmail.com>
+ <20260918020412.82878-2-ndaugoing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <migrate-state-fixes-v2-1-c3e2767f0d96@secunet.com>
+In-Reply-To: <20260918020412.82878-2-ndaugoing@gmail.com>
 
-2026-09-08, 08:48:45 +0200, Antony Antony wrote:
-> Add __xfrm_state_lookup_exact(); wire it into DELSA/GETSA
+On Fri, Sep 18, 2026 at 10:04:12AM +0800, zjamg wrote:
+> From: Yuchao Zhang <ndaugoing@gmail.com>
+> 
+> When an NCI_OP_CORE_CONN_CREATE_RSP packet is received,
+> nci_core_conn_create_rsp_packet() parses it and creates a logical
+> connection entry in ndev->conn_info_list.
+> 
+> However, nci_core_conn_create_rsp_packet() suffers from several issues:
+> 1. It does not verify that a connection creation command is currently
+>    pending. An unsolicited or delayed CORE_CONN_CREATE_RSP packet
+>    unconditionally creates a rogue connection and calls
+>    nci_req_complete(), prematurely completing unrelated in-flight
+>    requests.
+> 2. It lacks bounds checking against sizeof(struct nci_core_conn_create_rsp)
+>    for the packet payload, leading to potential out-of-bounds reads.
+> 3. It does not validate rsp->conn_id. Dynamic logical connections
+>    assigned by the NFCC must not use NCI_STATIC_RF_CONN_ID (0x00) or
+>    collide with any existing connection ID.
+> 4. It inserts the new connection at the head of ndev->conn_info_list
+>    via list_add(). Because connection lookup (e.g. in nci_tx_work() and
+>    nci_data_exchange_complete()) uses first-match semantics, prepending
+>    allows a newly created connection with a duplicate ID to shadow the
+>    static RF connection or earlier connections.
+>    Furthermore, ndev->hci_dev->conn_info is mistakenly updated even
+>    when the destination type is not NCI_DESTINATION_NFCEE because
+>    cur_params.id and nfcee_id both default to 0.
+> 
+> Fix this by:
+> - Adding an NCI_CONN_CREATE_PENDING flag in enum nci_flag to track
+>   in-flight connection creation commands, and rejecting unsolicited or
+>   delayed responses.
+> - Adding packet length verification before reading payload fields.
+> - Rejecting responses that allocate NCI_STATIC_RF_CONN_ID or duplicate
+>   existing connection IDs.
+> - Appending new connections with list_add_tail() instead of list_add().
+> - Restricting ndev->hci_dev->conn_info assignment to NFCEE destination
+>   types.
+> 
+> Fixes: 736bb9577407 ("NFC: nci: Support logical connections management")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
+> ---
+>  include/net/nfc/nci_core.h |  1 +
+>  net/nfc/nci/core.c         |  2 ++
+>  net/nfc/nci/rsp.c          | 37 ++++++++++++++++++++++++++++++-------
+>  3 files changed, 33 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/net/nfc/nci_core.h b/include/net/nfc/nci_core.h
+> index 664d5058e66e..a4652ffc173d 100644
+> --- a/include/net/nfc/nci_core.h
+> +++ b/include/net/nfc/nci_core.h
+> @@ -31,6 +31,7 @@ enum nci_flag {
+>  	NCI_DATA_EXCHANGE,
+>  	NCI_DATA_EXCHANGE_TO,
+>  	NCI_UNREG,
+> +	NCI_CONN_CREATE_PENDING,
+>  };
 
-On the "other proto" branch of xfrm_user_state_lookup(), we call
-xfrm_state_lookup_byaddr() -> __xfrm_state_lookup_byaddr(), which
-still does a "loose" mark match:
 
-		if ((mark & x->mark.m) != x->mark.v)
-			continue;
+Hi,
 
-Is that ok?
-That's the only thing I've noticed in the series.
+This patch seems to use a similar mechanism to another patch that
+you recently posted
+
+- [PATCH 1/1] nfc: nci: ignore unexpected CORE_RESET_NTF
+  https://lore.kernel.org/netdev/20260918013337.82214-2-ndaugoing@gmail.com/
+
+I forwarded an AI-generated review in response to that patch
+and I am concerned that this patch has similar issues centred around:
+
+* Use of a single-bit gate, in this case NCI_CONN_CREATE_PENDING, may
+  match against a late-arriving packet for an earlier request
+* Concurrency between a work queue handler and other execution paths
 
 
-I guess someone could claim that this patch changes behavior, but if a
-user somewhere notices it, I think that would mean they were relying
-on insertion order to delete/etc the right SA.
+As this patch seems related to the one at the link above I would suggest
+either concluding one first.  Or provided any updated versions in the form
+of a patch-set that includes both patches.  And I would suggest the first
+of those options would lead to a faster conclusion.
 
--- 
-Sabrina
+...
