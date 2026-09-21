@@ -1,135 +1,137 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325204B44BA
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C11A4AA562
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790004212; cv=pass; b=HDJFBuFa7dY0HpFsl2bODFyevQzTiXIla3dZ8E7zqePDA4Lm88g0aNGTCYZlYjyXzNcVaKE0kDu/w568jhdaYpL8UpE9wlXQMndnbLfvWVrJl7WrF/OHMIa1DFOLGqIPaoxSzETOka2IiwlgUQvkYjpYJqb311gPULTmnuyrYOU=
+	t=1790004279; cv=pass; b=LADuj6QjFpeqtIv/ZgGW9xgDvG2w8iksRM5i/Qc57CckiRAXowaGCnkpBYeAl2iQqy/G5N/FKQ4ChmFn3zikullhIuz4FOKpMahBErvnFY+Jp0KwIFb15I+6KlS4XHkrkCtD6oQ94IYVQE8H9ZUWgqfLRHv9UrktV00ZnQFUrTA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790004212; c=relaxed/simple;
-	bh=Qvro5yCQlNCOhITq/IgfziBeqn/uBwkhHPkGycI5TvQ=;
+	s=arc-20240116; t=1790004279; c=relaxed/simple;
+	bh=fVkMbtrDFgg9JhiC1LwbHU+t/WNuxQvV8nWO3zEnhqA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e1Ix7rpkcFrW4/3E1OVKyXGfB70xwgq84USubEqhvsRpA12kmdHki0QRRwJWQbyiRT1diBKGRSnr1r8o27aX4abyFK3XmR1LHBvmcat/kBlJO2GdhztF1A4gXV0Ur267Vi3YABB8W1WTi5DqssLhhJwoeCULvLe4e2Q1d1OuBAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RMIjwpvC; arc=pass smtp.client-ip=74.125.227.141
+	 To:Cc:Content-Type; b=GZJrjQ4roc3lr8x1oKWB3Tv2Uws9hHxxjjboGB5gDf0b8mzOWvSGGrYzhwcveI8dcVzeeyf5CLKxCWUMVu8+HkHftCaAmQPIIhmOcAszEDw+Ek3fXeZy+dHX6B1zPHZGoDXm9gGJHt2Ph6ZnvmfgqyJmBg7ZhdWaO73Vl0xOEYw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cQoRKykJ; arc=pass smtp.client-ip=74.125.230.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMIjwpvC"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d90ba1d807so37885975ad.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:23:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790004210; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cQoRKykJ"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a5b2864f1cso27136131fa.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:24:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790004276; cv=none;
         d=google.com; s=arc-20260327;
-        b=lS2zzXhq9U39bXvuVUss46m/rKS4NsdY2H5o6lgBjKstpIvJOdcq94o5An0bIVWLaH
-         apBUB/d8pBgJDeU+3JhiWnCnOAZufkA0f76fjOnN5092FJpFhvob41re3swQVfDoudXQ
-         m/yzkY4kqtyoxqfPSVPcv3MjOs6lqCdWU1d4ozzd2IlT58jb8qK4pHu0m7a0vugRtHec
-         P0eoDNYtIlOagd6Qy39CgV7C+Ql25PMpAOB4/t5HsCNmAg6AqwzPZ+VnsbokTPjiC/Yh
-         IFirYLiNTgMS9IBTRFBX5v3wLtzM9ks0DhVG5UNv7X2lzinhIRiXOP+b7fnzFuudIEvY
-         n5RA==
+        b=PuQbQLy1w0EbiKvReQgVHe9OlCs85R2IJlBYs6M1rIYrN+wbLNcTJPQL+mbAlUxrqu
+         ETadulzodXHtGXqgW1vv5A0iMiwAH+9xQP3Bn3sBuqXAnc8VYjsEm8EgEJckMvKLD6yz
+         jll6j2G6mr068O4ooi3XkrdB34C7LNofj9UJVYFTl/9mjb/6ND9afpQGALN11GI7mYsf
+         1/l43xvvWOL2gSxsrJE193BX4Y/O+yPx8o8ggqp1yZxrJOWe4qJ7ag5tIEYrIVqI+jLG
+         Gc71dKtVsCTuWIpJUFAprce/5WSAnY4IZLxYkbN6zXMDFbqGHegTNKdyzf30gzeVt0TO
+         ApTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=INq7XmDF4W6s4uqXjWWhutx+bhm3j3Ixyq53lQ+50kg=;
-        fh=xFfEYSuxZwTva788t22Kgq0oK40s6ZoiHS44D8V4siI=;
-        b=qIS7Be/JSHSVbNYUwAhPloXpYi3yEFkhMYziGi792RBkHDA0GkdCHei2eDROR8tbgQ
-         vFhvpYbmtrOOkuIWAR7Aj93Yoyig0yVrCLTTd3gE8V2stkUc+vQRXfgTHSOjZt9QfZdF
-         eYbSia6sLCmzw0sQF2FE0ILocDxh6rlmFU9sfDZZhHcbFG7Kmfj2Hs6x0qzRX0yxNPXA
-         jpSHdD4JFJumKt80w14VpnqFFJskku9cJQtc0+w0DgJk1Jd4o/3sqIVDQAOErKMFVUlu
-         v23to+jJzqQ4cIIrwEBNBICHuh69HpBGpuQbFPKAQ92XYrL6Do6IcX08LoYSegUiDvbb
-         Wczw==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L3IcGGSo5+j0HvIrQfCCVAwZ7s4gKZX9RwrmAX0fXMM=;
+        fh=bE9EU1G7kkur4o25BTq148uXPzsMBQxUcDOUv9gwWgQ=;
+        b=da72BgE4YtCW2eZkiRnzeogB8ofqrh1Hor1NFp9NAVqKYf5BBsz5ttwzR/XqWT4DZr
+         LbGtb2arLUI5/YEV9emsUJxjERldd33nNit1aRQTPnVbRbdy+5r7aXEWdTxAv/YVycn7
+         mwS8clXradt/kaiU1HCSopTGai2Uh3ocXvwr8WLlxEQYc1eOAunUgolEFS1GzxG/Z7nE
+         3+7dECRf7R82JdMbEpljEX1npMxGMe7UY4YzbQHWtOTOGC731WzrdHEusz+uoRqr5MWo
+         hWutMQT4sOn8+b8v16bwq3PJCnDC1RRcNtmCA96Req8X7Wn/A2+5qfSylCYNnvqx8hIa
+         VgnA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790004210; x=1790609010; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=INq7XmDF4W6s4uqXjWWhutx+bhm3j3Ixyq53lQ+50kg=;
-        b=RMIjwpvCSnEId6iLqqzpVweOuPEhmX1L+Tyr4Zz8O4OoKvZsfMUg9mCUiJbpa+uXBj
-         N+gFFQ2TQIjV5LoHWXs+7fstuuvcCxCLBXFh7cnKrt5NfNsv3Ha4Fb8l5Id0PvqH/J4m
-         ch761hTNk4r/QmVt+ht2v+JxUB3/GQftp52qqqMJnV+GyREll5VMIF+AMySfJuKaofbv
-         NXQxD4VkvwCtzzUwCQoB0+In7Rhl8vJv9wKf85Lqash/c+SotgbIHx7KFaiIP9Ph8Jxv
-         FrBPPYYNgsc4bVkj1pbGWtk2LzBoBd0B6xlMISvgZoq9NMcnR+FeTEbcHs6AG1rQROBv
-         TXiA==
+        d=gmail.com; s=20251104; t=1790004276; x=1790609076; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L3IcGGSo5+j0HvIrQfCCVAwZ7s4gKZX9RwrmAX0fXMM=;
+        b=cQoRKykJFqFyI9NigTnPCxeRN1VP1Ou79d7z8LN0sQVBAb3eOJCjlisTu98bQpUjEP
+         6J2SIyrGd6sKnzDGj1ylmrd1zSzIP8/Kqpdj5jyvKZIzuR39nEPXQ45vi5TDlcozpEOp
+         yvkO8I1+9RFwGUQrOfXuKnEttydrjoRMXvlDrSZSZjmXec4ken4RT0S2WJg1TvM32/+u
+         6cYKCBZwyDCyR8i/kCt91Nu4lyRFRK9Rq+t9VgnmFGgwkGiTeaU3M2jbQ7uQEga/8DbT
+         CedNXLSET7HzY453SzdOMpT7b9jJNuQuuwrxmAxV6JaeqG/SZSPe+5qRJXI4tiimoDsg
+         YV/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790004210; x=1790609010;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=INq7XmDF4W6s4uqXjWWhutx+bhm3j3Ixyq53lQ+50kg=;
-        b=Rq7dycK7NTaXH4ZBdvdQLD8f+9URfeqy0ULF4Eei5RC4GIzKZdBONrScPxoFiI0TY3
-         Z32iMfYeF8VDkfpLr4Wjo+n29uXMsvtqSLF/VPrU2CP+uttvLIMVnszHgyf2lZ8pINPa
-         AQ9hyjsV0Ym7bWpSW2730ErkzlNsgSVLAx5JVCx5DRHLdjdGp7P+o2ePTZwKtS0v+AUu
-         ZKDHtqgVfMliGG6nzRsnhK9TkG4WhEjf4SU/B7fscLBJRf7n0CQ7lrEJtcuQyFZ4atHQ
-         WnTavsB481PxyL6N+2wY1yiZU4GIIgrMVrsyQPReOUHGjv7hv+iumqOvuUUThBElp/b/
-         7IGw==
-X-Forwarded-Encrypted: i=1; AKwUvBzpsufWnWrZhzJ9rgnQnOLo0kS+Sy8DUtIsZyYzgQ5dZN/33kni7R3NBbzGhu154gZREBsOmzY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lRb5cm8NY79v/yGw0IEWvNaHKliVm3TrgYlYgf32ZfBjFDgqeW
-	eICuMYceRGaMJ8WaybmBeZLu13z0TdeQYfa7AUX2gRKMXEno8tQadNqlrDgru7/6ClGabIiMYmT
-	wTPjX5ynuVblDonUoc06uQ8p89+sz3Xg=
-X-Gm-Gg: AYBFou0CberDJJS+xlbGJi1jIHNGKHdR1P6NeT4Pgw/onD6rVyRZKqTcPYN8rGOVCfs
-	pQszZnnA45T4sZ+KbwIO9osYbKlKq89R2OLf2UY/AUXJR2uhNw9QB+Rcav1mDGsmbCrYN4Mo8rG
-	Dz+KlU1WO2liHWjZms5p5DitjklkRoZigNnfjROt2qI0LCRUjXwtdNsXO09Try+1/y6ZR7JRJzT
-	y3Mt92HEvIILWzIf+nmmQeDyAgB5r/0fmU8AH6rSfp9lVNoS7FFwno9D0NS3Dg4UTZncT8ZyCMd
-	Zv1K1VS8jtbvUPX3fD4PS3Bt3PkC5krM/A2yasnCvQgpj+Zb8VTDgpptew==
-X-Received: by 2002:a17:90a:d445:b0:3a0:2817:1fcf with SMTP id
- 98e67ed59e1d1-3a0281720f7mr8496428a91.11.1790004210586; Mon, 21 Sep 2026
- 08:23:30 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790004276; x=1790609076;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L3IcGGSo5+j0HvIrQfCCVAwZ7s4gKZX9RwrmAX0fXMM=;
+        b=ypUePTYOns3goELj6EMOmheaLLTGSzy5qbIt406wjTNt3FszUnx0hm4F63fWcsoQ62
+         7zkmQFND1mP4ZzuRHNuIdE+VP63klzDYFKdI37LXfX6sVdE7Hkju0jyPCVgibF54u3Mw
+         Uui0kk1mkfvp+n2YGIWoHZnBD5eWDUzfbLNcOV5rNvtw2L1hxeQogDaCuOfwHYluF9ml
+         LeaFio94KVL49vyYGzCAqQvgG9xlsTIHizvYjQ/Hr4HKsz4pCtg/+Gd3jOQR1B0BXenm
+         ZKHL6qf6PusLe64+zre3M1tQyk+qgBQieH/CS96YrW+YE1akUyyzwkaXiXpyWvXKEhm9
+         5EIA==
+X-Forwarded-Encrypted: i=1; AKwUvBwf2ECq7Vi20QNKunFBMotn2DjwximKCp4SdOGvZ56YyUJp/l8oF4uUdzCvxCbFcBiQxcshzGU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZvEjQzOAqVxyUvIjkCYSNt1u3hwYzxrviXj0n9cfmHva1LC47
+	jAlHnYdzXE+8UySceErf4Wuh8FrFo2jH9Oa4TcI/3cU3I13L6tHAUkGCVDn/u+Eq3H2lDe3yclu
+	ZoqcDdJRdfi3oUgbsidkYjRyZwi1GueA=
+X-Gm-Gg: AYBFou1Qosk9CeEFQWLa1kE1zB4bojKV0qGoISIYQ7GrEBmT4LrdUjrvgSS8DjqIxA+
+	O3rxOky/mTffabQPnFThX7q7kMrSHUFjB689PiZLuldfSZ9bNkSnAHrnfZs4HzqjGxnbnhIkcFP
+	FHtR7j7fRPFDUYu5Oew5KHQQdT/sb6hPKqKyZH6ipYb9vEkLgTOOp0Yuf+spOGlJbVRHWT4f2s7
+	SX8O+UNVAu5cRXS0SVy81ERBvRKRSLaQYQamBIh4ZAO8tjR6D0OTU3d0kDj6pjh9KBjsBHkeNeO
+	yhzRp7Rbaks1Fqi0Ly/5bQxU6Iv7nK/1HBL1gl2oOy49CXplSvfRVE+2u+eAQ7CLC75Uy0NZu3M
+	olBa97LwoZNMyypHW5cr/8IyBgs75yWxstSpguub2vxHsHAExsJqTtH9HLnxK5uzFgiMVgWL/rK
+	uPrtwJQkmVc0PW7oQbFG0QmzgIRlk=
+X-Received: by 2002:a05:651c:54d:b0:3a1:8dd6:aaf9 with SMTP id
+ 38308e7fff4ca-3a5fbf32d5amr23385811fa.8.1790004275723; Mon, 21 Sep 2026
+ 08:24:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260916022954.2690322-1-lgs201920130244@gmail.com> <178953744017.13037.8123570146284827976.b4-review@b4>
-In-Reply-To: <178953744017.13037.8123570146284827976.b4-review@b4>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Mon, 21 Sep 2026 23:23:16 +0800
-X-Gm-Features: AcwNN1VTUBM-S9HR0eeeidh2kablCG-BVFJX7Z6YN2-YKoW6ujal7wVJmjF5B58
-Message-ID: <CANUHTR_pjrYXHkMZH_QheAUr86=dJ4WFC+DNMgzUYsm+MsEXPg@mail.gmail.com>
-Subject: Re: [PATCH] net: ena: fix PHC cleanup on probe failure
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: David Arinzon <darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Sang-Heon Jeon <ekffu200098@gmail.com>, 
-	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
-	Dawei Feng <dawei.feng@seu.edu.cn>, Amit Bernstein <amitbern@amazon.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260917153923.904124-3-bestswngs@gmail.com>
+In-Reply-To: <20260917153923.904124-3-bestswngs@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Mon, 21 Sep 2026 23:23:56 +0800
+X-Gm-Features: AcwNN1VVTW-G-tYVzMWlBy3I-0oQzwQRNZQ4azMiWAQGx7Mm8VmFuFMIZMGo3_g
+Message-ID: <CAL+tcoCD9baTVJFckt8yXaTHEqU4BQ=cKCUxtyUHO2MqfLimFA@mail.gmail.com>
+Subject: Re: [PATCH net] veth: manage XDP program pointers during channel resize
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, co+65e5c76b187f08b2@bugs.sh, Xiang Mei <xmei5@asu.edu>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Arthur,
-
-Thanks for the review.
-
-On Wed, 16 Sept 2026 at 13:44, Arthur Kiyanovski <akiyano@amazon.com> wrote:
+On Fri, Sep 18, 2026 at 2:50=E2=80=AFAM Weiming Shi <bestswngs@gmail.com> w=
+rote:
 >
-> On Wed, 16 Sep 2026 10:29:54 +0800, Guangshuo Li <lgs201920130244@gmail.com> wrote:
-> > diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> > index ea89619039d8..5f0864d16dd3 100644
-> > --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> > +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> > @@ -4122,6 +4122,7 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-> >  err_device_destroy:
-> >       ena_com_delete_host_info(ena_dev);
-> >       ena_com_admin_destroy(ena_dev);
-> > +     ena_phc_destroy(adapter);
-> >  ena_devlink_destroy:
-> >       ena_devlink_free(devlink);
-> >  err_metrics_destroy:
+> veth_set_channels() tears down XDP resources for removed RX queues
+> without clearing rq->xdp_prog.  If the program is then detached or
+> replaced, those queues keep the old pointer after bpf_prog_put().  A
+> later channel increase can re-enable NAPI and run the freed program.
 >
-> Thank you for the patch.
-> It looks correct.
+> Clear the program pointer after taking an RX queue offline, and publish
+> the current program only after bringing the queue back online succeeds.
 >
-> Please resend this together with "net: ena: fix MMIO read buffer leak on
-> probe failure" as one two-patch series - both insert a line into the same
-> hunk, so they conflict with each other.
+>   BUG: unable to handle page fault for address: ffffc90000256048
+>   Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+>   RIP: veth_xdp_rcv_skb (include/linux/filter.h:779
+>                          include/net/xdp.h:696 drivers/net/veth.c:820)
+>   Call Trace:
+>    veth_xdp_rcv (drivers/net/veth.c:941)
+>    veth_poll (drivers/net/veth.c:986)
+>    __napi_poll (net/core/dev.c:7787)
+>    net_rx_action (net/core/dev.c:7850 net/core/dev.c:8007)
+>    handle_softirqs (kernel/softirq.c:645)
+>   Kernel panic - not syncing: Fatal exception in interrupt
 >
-> --
-> Arthur Kiyanovski <akiyano@amazon.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op"=
+)
+> Reported-by: <co+65e5c76b187f08b2@bugs.sh>
+> Assisted-by: LLM
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 
-Sure, I'll resend both fixes as a two-patch series, with the PHC cleanup
-as 1/2 and the MMIO read buffer cleanup as 2/2.
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 
-Thanks,
-Guangshuo
+Thanks!
