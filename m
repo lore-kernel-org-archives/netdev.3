@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5BA1EE7B7;
-	Mon, 21 Sep 2026 08:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4465644F54F;
+	Mon, 21 Sep 2026 08:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789979433; cv=none; b=PDVDlgBclvY4f9eMOdbPTG5ISP+EuP9ouIC658AYpxoMIve6ezpArA+ipCeSfXCSG292EZmQcVU+umv4Vgv/kAPgGf6r2sxy3dLfWNQ1GAFu/VMegg0Qj3sozpufT45G7aeHDhJlYzlGtQE9ZTjxSMq/jTRgVSPFxTpXcR29XoE=
+	t=1789979435; cv=none; b=W1vR7nLiXNqtixc5nV3VOmrNnDngqVSdRlYJOf78PeeZ3wrabAlGHdwi2sOhbu5uQi4N4EuNZu3oNU32/wNPnotztVttdtFJaNL5fso6ZwhFUgLju6Eyi9zEis6Zia0eD5itwAyE5eS632lo2FJQgJgCTrtHvd9HuaT/3wR2ydk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789979433; c=relaxed/simple;
-	bh=0icuCGelSsrHndUtDyKt15Z+QA62oQtYv8WQ5s8g0I4=;
+	s=arc-20240116; t=1789979435; c=relaxed/simple;
+	bh=rM2ZUIB/3BfLVVfCHCyqnkDXPS8MZJ8efTNz0EFFAaw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eOxyf6NAvlr7zDbz5g7++pmhuNBHRglAnRXj/8R3APEFmc22OWRrjAMF7Wko7ap9g10D6s/fRPIgsMwh7NDB0B4GVcPZ6HAzfCPZTvFeUk1b4mA6K2AiHb6VQRTg4fSBWRUFlrfjo+xVo+ynw149BlHOb/S+p/qiY46JUTorbVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SegM6z19; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=St1ZSadhEzh6Ccj9GI1dmTiOIrLqnZuTtlWdQdrk5kvj1QkKGMCajrrnEzsmK1zzvYcRXVoxdi7rU8riGXSx8eRgW1TD/spk48lv2kKH7lPS36KuVFRNI2UYS5Gin+Y8S2H/ZIjL2857jrIsXmkIgcJgAf3ErRZdkhWfg4f6YlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIpcT3aP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SegM6z19"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45D01F000FF;
-	Mon, 21 Sep 2026 08:30:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIpcT3aP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE771F00893;
+	Mon, 21 Sep 2026 08:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789979432;
-	bh=yjWMaaLRsqZzD0894CVnibLaW0tZ9pcPnPr3pO/rnLc=;
+	s=k20260515; t=1789979433;
+	bh=UbfNGOQhNZ21srVMGo7eKhNp2orhOxDwusAwsJDP4rw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SegM6z19T56pBYagEEDUfEuxnfxlIVjwx9qGIYaMrKyZsHgAfLBvaTVKoLp9UFpFH
-	 EoASp4YTvvKDoqYPUIspPSpLdMd3NgigvwvgH558Smo9NdLGDzxtkiKX5eG21gN8v7
-	 agSD6mJolW+n4VhzdEQvi0740Imr/x4w8KlVWcy2RRaR7+obeijOKN6qornf/UHi30
-	 cv8sPEKqasTe1mvD542R8Q37cDxCn4GWPaaZ5iVqRjM8eLedghqg/bqxvvGRhU22CS
-	 udZJCydZAaxhmB5f7huuFGidtqh3ZwTqE8bYEHX6paAG/lCNpaZ5cx+TJVp5qfdNZa
-	 5g2ajt7Kul+Zg==
-Subject: Re: [PATCH net-next v4 1/8] r8152: split r8156_init per chip and add
- missing init writes
+	b=MIpcT3aPnztR82TjD0+FTMaPb1EW6mDepEwPP7NKff7kLHzJNiAy7C2iepVY332cd
+	 PtHeVr9fBsD+5f8LKXwyYABM0K1MYga9Q1U4MrSJfTw504DioL4neqrGTpPbNPOrJb
+	 ULzJLqRqfaMSeoxJlV6yIja9Wtw//dDHlf4v4yjnwRPqzmA9ADIBlW59xMdmt8x0Nk
+	 P6PwfkwLjqK2Mwp2hv7WrMvQjQaiByLSGSOXs7QQd3kNxHRLmwMESWZ+38jbvI2ndq
+	 u299KWxtZm29iVm4YNxO7mYWKKvYrh//t959Z6cIp6qHBGPVJA7IeQWlAT1/xvc5ZC
+	 GssOByPGN6Jqg==
+Subject: Re: [PATCH net-next v4 2/8] r8152: split RTL_VER_17 into QFN68 and
+ QFN100 package variants
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
-Date: Mon, 21 Sep 2026 08:30:31 +0000
-Message-ID: <178997943124.2160803.765103077515705742@kernel.org>
-In-Reply-To: <20260917070637.62827-2-nic_swsd@realtek.com>
-References: <20260917070637.62827-2-nic_swsd@realtek.com>
-X-sashiko-severity: Medium
+Date: Mon, 21 Sep 2026 08:30:32 +0000
+Message-ID: <178997943250.2160803.10390789676459730535@kernel.org>
+In-Reply-To: <20260917070637.62827-3-nic_swsd@realtek.com>
+References: <20260917070637.62827-3-nic_swsd@realtek.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,282 +58,196 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Undocumented hardware behaviour change during the split:
-  r8157_init() (installed as ops->init for RTL_VER_16 in rtl_ops_init())…
-- [Medium] Silent reordering of hardware handshakes for RTL8157/RTL8159.
-- [Low] Commit message vs. code: the message names the FC-timer block
-  ("fenced to RTL_VER_12 <= version <= RTL_VER_15") as the example of a…
-
-Pre-existing issues:
-- [Medium] An RTL8159 backup-restore timeout marks the device
-  inaccessible but cannot report the failure to its caller: r8159_init()…
+- [High] A failed or unrecognised PLA_PKG_DET read makes an already-
+  identified RTL8159 (chip ID 0x2020) unusable.
+- [Low] The commit message states the patch splits the enum and updates
+  'every switch/case on RTL_VER_17', but it does not mention that the…
+- [Low] The new diagnostic in __rtl_get_hw_ver() uses
+  `dev_info(&udev->dev, "Unknown package %#02x\n", pkg_det)`.
 
 --
 
-r8152: split r8156_init per chip and add missing init writes
+r8152: split RTL_VER_17 into QFN68 and QFN100 package variants
 
-This splits the shared r8156_init() into r8156_init(), r8156b_init(),
-r8157_init() and r8159_init(), factors the AUTOLOAD_DONE polling loops into
-wait_autoload_done(), and adds a number of new OCP writes to the per-chip
-init sequences.  A few observations below.
+This splits RTL_VER_17 into RTL_VER_17_QFN68 and RTL_VER_17_QFN100 and
+updates the version switches accordingly. The package is detected by
+reading the new PLA_PKG_DET register through a new __rtl_get_pkg_det()
+helper called from __rtl_get_hw_ver() for chip ID 0x2020.
 
-First, about the motivation in the changelog:
-
-> RTL8156, RTL8156B, RTL8157 and RTL8159 shared a single r8156_init(),
-> gated by a dense set of tp->version range checks. That made the init
-> sequence hard to follow, and some checks (e.g. the FC-timer block,
-> which was fenced to "RTL_VER_12 <= version <= RTL_VER_15") silently
-> skipped RTL8156 (VER_10/11) and RTL8157/RTL8159 (VER_16/17)
-> altogether even though nothing chip-specific justified the gap.
-
-[Severity: Low]
-
-This isn't a bug, but after the split the FC-timer block named here still
-exists only in r8156b_init().  The PLA_RCR SLOT_EN clear, PLA_CPCR
-FLOW_CTRL_EN, USB_FC_TIMER, FLOW_CTRL_PATCH_2 and USB_FW_TASK FC_PATCH_TASK
-writes are absent from r8156_init() (VER_10/11), r8157_init() (VER_16) and
-r8159_init() (VER_17), i.e. the exact gap the paragraph complains about is
-unchanged by this patch, and the "While splitting:" list does not claim to
-close it.
-
-The gap is closed later in the series by "r8152: extract
-rtl_fc_pause_pkt_en() and apply it to RTL8156/8157/8159", which factors the
-block into rtl_fc_pause_pkt_en() with cases for RTL_VER_10/11,
-RTL_VER_12/13/15 and RTL_VER_16/17 and calls it from r8156_init(),
-r8156b_init() and rtl8157_enable().
-
-Could this paragraph say that the FC-timer gap is addressed by a later patch
-in the series rather than by this one?
+A couple of questions below.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index af3d7dcb2f141..00b0fda306c30 100644
+> index 00b0fda306c30..9ce072c38b5b5 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
 
 [ ... ]
 
-> @@ -542,6 +547,7 @@
->  #define RX_AGG_DISABLE		0x0010
->  #define RX_ZERO_EN		0x0080
->  #define RX_DESC_16B		0x0400
-> +#define RX_END_TRANSFER_EN	BIT(11)
+> @@ -6404,8 +6419,15 @@ static int rtl8156_enable(struct r8152 *tp)
+>  	set_tx_qlen(tp);
+>  	rtl_set_eee_plus(tp);
 >  
->  /* USB_U2P3_CTRL */
->  #define U2P3_ENABLE		0x0001
-
-[ ... ]
-
-> @@ -8330,90 +8311,132 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
-
-[ ... ]
-
->  	switch (tp->version) {
->  	case RTL_VER_13:
->  	case RTL_VER_15:
-> -	case RTL_VER_16:
-> -	case RTL_VER_17:
->  		r8156b_wait_loading_flash(tp);
->  		break;
->  	default:
->  		break;
->  	}
->  
-> -	for (i = 0; i < 500; i++) {
-> -		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
-> -		    AUTOLOAD_DONE)
-> -			break;
-> -
-> -		msleep(20);
-> -		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-> -			return;
-> -	}
-> -
-> -	if (tp->version == RTL_VER_17 && r8159_wait_backup_restore(tp)) {
-> -		rtl_set_inaccessible(tp);
-> -		dev_err(&tp->intf->dev, "init failed, backup-restore timed out\n");
-> +	if (wait_autoload_done(tp))
->  		return;
-> -	}
-
-[ ... ]
-
-> @@ -8421,73 +8444,261 @@ static void r8156_init(struct r8152 *tp)
-
-[ ... ]
-
->  	set_bit(GREEN_ETHERNET, &tp->flags);
->  
-> -	/* RX aggregation / 16 bytes RX descriptor
-> -	 * BIT(11) is specific to RTL8159, with unknown meaning
-> -	 */
-> -	if (tp->version == RTL_VER_17)
-> -		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> -				  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
-> -	else if (tp->version == RTL_VER_16)
-> -		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_DESC_16B);
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> +			  RX_AGG_DISABLE | RX_ZERO_EN);
-
-[ ... ]
-
-> +static void r8157_init(struct r8152 *tp)
-> +{
-> +	u16 data;
-> +
-> +	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-> +		return;
-> +
-> +	/* Enable SW reset */
-> +	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xcffe, BIT(3));
-> +	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(0));
-> +
-> +	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
-> +
-> +	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
-> +
-> +	r8153b_u1u2en(tp, false);
-> +
-> +	if (wait_autoload_done(tp))
-> +		return;
-> +
-> +	r8156b_wait_loading_flash(tp);
-
-[Severity: Medium]
-
-Is this reordering deliberate?  In the shared r8156_init() the flash-patch
-wait for VER_16/17 ran right after r8153b_u1u2en(tp, false) and before the
-AUTOLOAD_DONE poll:
-
-	switch (tp->version) {
-	case RTL_VER_13:
-	case RTL_VER_15:
-	case RTL_VER_16:
-	case RTL_VER_17:
-		r8156b_wait_loading_flash(tp);
-		break;
-	...
-	for (i = 0; i < 500; i++) {
-		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
-		    AUTOLOAD_DONE)
-			break;
-
-r8156b_init() keeps that pre-poll placement for VER_13/15, so only the
-VER_16 and VER_17 paths change order here.
-
-r8159_init() moves r8156b_wait_loading_flash() after
-r8159_wait_backup_restore() as well.  Both helpers poll USB_GPHY_CTRL
-(GPHY_PATCH_DONE versus BACKUP_RESTRORE), and the backup-restore poll has a
-20 ms budget:
-
-	return poll_timeout_us(ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_GPHY_CTRL),
-			       ocp_data & BACKUP_RESTRORE, 200, 20000, false);
-
-while r8156b_wait_loading_flash() allows roughly 100 ms for the patch load.
-If a pending flash load can delay BACKUP_RESTRORE, can this poll now time
-out where it previously could not, given that the flash wait used to
-complete first?  On timeout r8159_init() calls rtl_set_inaccessible() and
-abandons the rest of the bring-up.
-
-> +
-> +	data = r8153_phy_status(tp, 0);
-> +	if (data == PHY_STAT_EXT_INIT) {
-> +		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
-> +		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
+> -	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_17)
+> -		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_RX_AGGR_NUM, RX_AGGR_NUM_MASK);
+> +	switch (tp->version) {
+> +	case RTL_VER_10:
+> +	case RTL_VER_11:
+> +		break;
+> +	default:
+> +		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_RX_AGGR_NUM,
+> +				  RX_AGGR_NUM_MASK);
+> +		break;
 > +	}
 
+[Severity: Low]
+This isn't a bug, but the changelog only says "update every switch/case on
+RTL_VER_17 in the driver to handle both", and this hunk does something
+else: the positive range test
+
+	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_17)
+
+becomes an exclusion list, so every version other than RTL_VER_10 and
+RTL_VER_11 that reaches rtl8156_enable() now clears RX_AGGR_NUM_MASK by
+default.
+
+With the versions rtl_ops_init() currently routes to rtl8156_enable() the
+resulting register writes are identical, and the later patch "r8152: split
+rtl8156_enable/up/down into per-chip-family functions" removes this switch
+again, so there is no behavioural change in the tree.
+
+Could the changelog mention the inverted version gate, since it is not just
+an enum rename?
+
 [ ... ]
 
-> +	set_bit(GREEN_ETHERNET, &tp->flags);
+> @@ -10182,9 +10211,33 @@ static int rtl_fw_init(struct r8152 *tp)
+>  	return 0;
+>  }
 >  
-> +	/* RX aggregation / 16 bytes RX descriptor / Bulk In End transfer */
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> +			  RX_AGG_DISABLE | RX_DESC_16B | RX_END_TRANSFER_EN);
-
-[Severity: Medium]
-
-Should r8157_init() clear USB_USB_CTRL bit 11?  Before the split that bit
-was restricted to RTL_VER_17, with a comment saying it was RTL8159
-specific:
-
-	/* RX aggregation / 16 bytes RX descriptor
-	 * BIT(11) is specific to RTL8159, with unknown meaning
-	 */
-	if (tp->version == RTL_VER_17)
-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-				  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
-	else if (tp->version == RTL_VER_16)
-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_DESC_16B);
-
-rtl_ops_init() installs r8157_init() as ops->init for RTL_VER_16, so every
-RTL8157 now has bit 11 (newly named RX_END_TRANSFER_EN) cleared on each
-probe and reset_resume.
-
-Every other per-version divergence of the old function was reproduced
-exactly in the split (USB_SPEED_OPTION for versions below VER_16, RX_DETECT8
-for VER_12 to VER_15, PLA_MCU_SPDWN_EN for versions below VER_16, ACT_ODMA
-for versions below VER_12, r8153_u2p3en() versus r8157_u2p3en(),
-r8153b_power_cut_en() versus r8157_power_cut_en()), and the changelog
-enumerates each intentionally added write without mentioning this one.
-
-Can the changelog describe what bit 11 does on RTL8157, or keep the write
-limited to RTL8159 as before?
-
-[ ... ]
-
-> +static int r8159_wait_backup_restore(struct r8152 *tp)
+> +static u32 __rtl_get_pkg_det(struct usb_device *udev)
 > +{
-> +	u32 ocp_data;
+> +	u32 pkg_det = 0;
+> +	__le32 *tmp;
+> +	int ret, i;
 > +
-> +	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
-> +	if (!(ocp_data & PCUT_STATUS))
+> +	tmp = kmalloc_obj(*tmp);
+> +	if (!tmp)
 > +		return 0;
 > +
-> +	return poll_timeout_us(ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_GPHY_CTRL),
-> +			       ocp_data & BACKUP_RESTRORE, 200, 20000, false);
-> +}
+> +	for (i = 0, ret = 0; i < 3 && ret != 4; i++)
+> +		ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+> +				      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
+> +				      PLA_PKG_DET, MCU_TYPE_PLA, tmp,
+> +				      sizeof(*tmp), USB_CTRL_GET_TIMEOUT);
 > +
-> +static void r8159_init(struct r8152 *tp)
-> +{
+> +	if (ret > 0)
+> +		pkg_det = __le32_to_cpu(*tmp) & PKG_MASK;
+> +
+> +	kfree(tmp);
+> +	return pkg_det;
+> +}
+
+[Severity: High]
+Can __rtl_get_pkg_det() report a read failure to its caller?
+
+Both the allocation failure path and the "all three control transfers
+failed" path return 0, which is also a legal register value (PKG_DET bits
+[4:1] all zero), so the caller cannot tell an -EPIPE/-ETIMEDOUT/-ENOMEM
+from real strap data.
+
+Two smaller points in the same helper:
+
+The loop's success condition is ret == 4, but the value is consumed when
+ret > 0, so a short control transfer would be accepted and the unread
+bytes of the kmalloc'ed (non-zeroed) buffer would be folded into pkg_det.
+Should this test be ret == sizeof(*tmp), matching the loop?
+
+The version read a few lines above retries and complains with
+dev_warn("Needed %d retries to read version") when the transfer misbehaves.
+Would it be worth propagating an error here in the same spirit, e.g.
+returning the usb_control_msg() error via an out parameter?
+
+>  static u8 __rtl_get_hw_ver(struct usb_device *udev)
+>  {
+>  	u32 ocp_data = 0;
+> +	u32 pkg_det = 0;
+>  	__le32 *tmp;
+>  	u8 version;
+>  	int ret;
 
 [ ... ]
 
-> +	if (wait_autoload_done(tp))
-> +		return;
-> +
-> +	if (r8159_wait_backup_restore(tp)) {
-> +		rtl_set_inaccessible(tp);
-> +		dev_err(&tp->intf->dev,
-> +			"init failed, backup-restore timed out\n");
-> +		return;
->  	}
+> @@ -10267,7 +10320,16 @@ static u8 __rtl_get_hw_ver(struct usb_device *udev)
+>  		version = RTL_VER_16;
+>  		break;
+>  	case 0x2020:
+> -		version = RTL_VER_17;
+> +		pkg_det = __rtl_get_pkg_det(udev);
+> +		if (pkg_det == 0x1e || pkg_det == 0x1c) {
+> +			version = RTL_VER_17_QFN68;
+> +		} else if (pkg_det == 0x18 || pkg_det == 0x1a) {
+> +			version = RTL_VER_17_QFN100;
+> +		} else {
+> +			version = RTL_VER_UNKNOWN;
 
-[Severity: Medium]
+[Severity: High]
+Following on from the helper above: does a single failed PLA_PKG_DET read
+make an already identified RTL8159 unusable?
 
-This is a pre-existing issue and not introduced by this patch, since the
-same abort path was in the shared r8156_init(), but as it is being moved
-here: how does this failure reach the caller?
+The chip has been positively identified from PLA_TCR0/TCR1 as 0x2020 at
+this point, but a failed read yields pkg_det == 0, which lands in the else
+branch and becomes RTL_VER_UNKNOWN. In rtl8152_probe():
 
-rtl_set_inaccessible() only sets one flag:
+	version = rtl8152_get_version(intf);
+	if (version == RTL_VER_UNKNOWN)
+		return -ENODEV;
 
-	static void rtl_set_inaccessible(struct r8152 *tp)
-	{
-		set_bit(RTL8152_INACCESSIBLE, &tp->flags);
-		smp_mb__after_atomic();
-	}
+	for (i = 0; i < RTL8152_PROBE_TRIES; i++) {
 
-PROBE_SHOULD_RETRY is set only by r8152_control_msg() on a failed control
-transfer, which a BACKUP_RESTRORE poll timeout is not, and
-rtl8152_probe_once() checks only that flag after calling
-tp->rtl_ops.init(tp):
+so the -ENODEV happens before the RTL8152_PROBE_TRIES retry loop and a
+transient control-transfer error is not retried at probe level either.
 
-	if (test_bit(PROBE_SHOULD_RETRY, &tp->flags))
-		goto out2;
+rtl8152_cfgselector_choose_configuration() has the same test:
 
-So probe continues through register_netdev() and returns success while the
-rest of r8159_init() was skipped and every subsequent
-generic_ocp_read()/generic_ocp_write() short-circuits to -ENODEV, leaving a
-registered netdev that cannot pass traffic until re-plug.  Would it make
-sense for this path to propagate an error or queue a device reset?
+	/* Switch the device to vendor mode, if and only if the vendor mode
+	 * driver supports it.
+	 */
+	if (__rtl_get_hw_ver(udev) == RTL_VER_UNKNOWN)
+		return -ENODEV;
+
+which leaves the device in its default CDC configuration, and
+rtl8153_ecm_probe() then treats the zero version as "r8152 does not
+support this device":
+
+drivers/net/usb/r8153_ecm.c:
+	if (rtl8152_get_version(intf))
+		return -ENODEV;
+
+Before this patch chip ID 0x2020 unconditionally bound as RTL_VER_17.
+Would it make sense to keep binding when the PKG_DET read itself fails,
+and only fall back to RTL_VER_UNKNOWN for a value that was actually read?
+
+The same else branch is also taken for the twelve other encodings
+PKG_MASK = 0x1e can produce. Is rejecting the device the intended
+behaviour for those, or should one of the two packages be the default?
+
+> +			dev_info(&udev->dev, "Unknown package %#02x\n",
+> +				 pkg_det);
+
+[Severity: Low]
+Does this format string produce the intended padding? The kernel
+vsnprintf() counts the "0x" emitted by the '#' flag inside the field
+width, so "%#02x" behaves like "%#x": pkg_det == 0 prints as 0x0 rather
+than 0x00. The sibling message in the default case of the same switch uses
+
+	dev_info(&udev->dev, "Unknown version 0x%04x\n", ocp_data);
+
+Would "%#04x" be what was meant here?
+
+> +		}
+>  		break;
+>  	default:
+>  		version = RTL_VER_UNKNOWN;
 
 [ ... ]
 
