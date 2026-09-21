@@ -1,80 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51E524DFF9;
-	Mon, 21 Sep 2026 10:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C45645348A;
+	Mon, 21 Sep 2026 10:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789985048; cv=none; b=iOPTT89OhphR1R3Ord30fZkU4r5VNdZxswR31pR0jQfhed7rckLM2CIw4AVcQ3Zr0qcZOwlw51qIGfk1/W4SPm8WBH6F8Sgz2G8f0ZQa3biHvh9ayJnd0Gcm5TnV29DD9sR5bmEEMYi7MdKgzL5JUBrh69fx+kvuD6qmA2UFlX8=
+	t=1789985176; cv=none; b=r+jlRU8QUeOUGCyicP2HfQS3Uz2gme1jesIv9EiZWu+SXC7Q9SV3ydUPqRxJuO6U5HGi40S7fyx95MDREmZGkkiOOIPmGrv+0G/bIugJDiZBxqXJYDHsbwcUVt8dJ/vGJ7LTfx7k4RVFdSGRt+szsI3oYTViPA188vyYQKO/E8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789985048; c=relaxed/simple;
-	bh=vqe1anqrH73ZYZJ8pspdjyri3NMOBeodwVDouCv57Ys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KLmpzi0sYVd3QbJbJgaRYNntibBdbs/xaJLZHni5DgvcEuBPThvlWgrTlWdbHtkcYdCpyRI8huYF6YkuE5PBG/dYaMVkehARdWqOtB7IUvGTmw56P4iZ++zgA3rzrYEI9ohPa2PPcBEnFwgWeLvjwIQqcFvt7RD2CYzgYIDPV4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrM2UDI2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789985176; c=relaxed/simple;
+	bh=TQHvv65J/zzLh+WKmHIXrutEiyIav2kG0laQR/4vRNo=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=OyEOkiQxF9ywVS9ZIZZNfCcz9kjJMOEQmtG88/0Kj81AorjhSmgFraAvVB7MlGbinmbEWdIypVO1n9rI+iB5GelQT4oGFnYAYfmZC15+eGiwKzUZd/BYG2hV85V/J78vIR2SiCNAb2TR4/Q/qg2Ba0q9qXF2U+k038JTVTnD1fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mfHurCId; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrM2UDI2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5A31F000FF;
-	Mon, 21 Sep 2026 10:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789985047;
-	bh=8ADuUsrRS3h/7DwUQhJ/VbGMEZuAgKj089MxrWSS3OA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OrM2UDI2mSfJoh1dXQFTTXc6T0VaqMmEYx9TgyK3b1HDVuF+1BrDagMT21LxvR29o
-	 qNm0asx4n198KhIpoK7eH7LfNAhrX2I/f8TgAJF3pn0JZMT1vn5fyTc8QDsQE6YENi
-	 hd8ScdpPDm+bOXCnbMejmP8GW6KViHJ8n61mdeqRV/7loigxKFJ7oWL5iHPt2o12E3
-	 3juyHfRwc5iYQIKKzaTHXz4Uq04Qs1+V341m/hbKr22Z7jBeR5S4fnHLpp1VquPHlP
-	 802F5/J71NQgA15BHGVV/UQ1yyvC1zmGGWE8C92MPZt3gEmuOSKl10JVg8qL0i8y4u
-	 aFX8Exk6Hn48w==
-Date: Mon, 21 Sep 2026 11:04:03 +0100
-From: Simon Horman <horms@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	igal.liberman@freescale.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, madalin.bucur@nxp.com,
-	netdev@vger.kernel.org, pabeni@redhat.com, sean.anderson@linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fsl/fman: Fix clk reference leak in read_dts_node()
-Message-ID: <20260921100403.GD13925@horms.kernel.org>
-References: <20260917110135.2148068-1-vulab@iscas.ac.cn>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mfHurCId"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=TQHvv65J/zzLh+WKmHIXrutEiyIav2kG0laQR/4vRNo=; b=m
+	fHurCIdd6pZ+l1e9CpYBqFCJMxIBNafyLwL9pGmwXRBczsiAAid8TY6JJCRkbZ2D
+	9EupvXYNrphuGowruKXROz1aeCulrlUonjTpVIkA+QtTlo8iuKxOumFVudGUPDHp
+	2aiqofV1byWABRQzoOYNSX1sk/dF4qnRB3oXGV3uaw=
+Date: Mon, 21 Sep 2026 18:05:47 +0800 (CST)
+From: CJ <firefly0158@163.com>
+To: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+	davem@davemloft.net, kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [BUG] Bluetooth: rfcomm: possible circular locking dependency in
+ the SAK vs. connect path
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+X-NTES-SC: AL_Qu2TC/WTukkv4SebY+kdmEsTju82UcS4ufQl245Xc/sEuADE1wYGfV5FGUX59tmTLwSKmzOZcTJQ8uBIdIhWn0u3hFgcDWHkBgsk1SueKg==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917110135.2148068-1-vulab@iscas.ac.cn>
+Message-ID: <6572ca06.97a1.1a0c36dcb5f.Coremail.firefly0158@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:cSgvCgDXf1J7AbFq5FxLAA--.44295W
+X-CM-SenderInfo: piluvw1o1qikqy6rljoofrz/xtbC3RtlF2qxAXvzYwAA3F
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-On Thu, Sep 17, 2026 at 11:01:35AM +0000, Wentao Liang wrote:
-> of_clk_get() returns a clock with its reference count incremented, but
-> read_dts_node() only uses it to read the rate and never calls clk_put().
-> The clock is not stored anywhere, so the reference cannot be released
-> later either.
-> 
-> Release the clock once its rate has been read, which also covers the
-> error path taken when the rate is zero.
-> 
-> Fixes: 414fd46e7762 ("fsl/fman: Add FMan support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-
-As noted by Andrew Lunn elsewhere, fixes for bugs are present in net
-should be target at net like this:
-
-Subject: [PATCH net] ...
-
-Also, perhaps someone else has mentioned this, but please slow down a bit
-with your patches. I see 19 in Patchwork as of writing. But we encourage
-a maximum of 15, and I really would like to stress that is a maximum
-to be used sparingly, not a buffer to be refilled.
-
-Link: https://docs.kernel.org/process/maintainer-netdev.html#limit-patches-outstanding-on-mailing-list
-
-I don't think there is any need to repost because of this feedback,
-but please keep them in mind for the future.
-
-As for this code change, it looks good to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+CkhpLAoKCkkgYW0gcmVwb3J0aW5nIGFuIGlzc3VlIHRyaWdnZXJlZCBieSBhIHN5emthbGxlciBy
+ZXByb2R1Y2VyIG9uIExpbnV4CjcuMy4wLXJjMi4gVGhlIGlzc3VlIGlzIHJlcHJvZHVjaWJsZSB3
+aXRoIEhFQUQgY29tbWl0CmRmMjkwODA5MGNkYTM2OGIwMWZmNDM3MDlmNTE4OTAwNzZjNTYxNTcu
+CgoKVGhlIHJlcHJvZHVjZXIgY3JlYXRlcyBhbiBSRkNPTU0gc29ja2V0IG9uIGEgdmhjaS1iYWNr
+ZWQgSENJIGRldmljZSwgYmluZHMKYW5kIGxpc3RlbnMgb24gaXQsIGFuZCB0aGVuIGluamVjdHMg
+Zm91ciBjcmFmdGVkIFJGQ09NTSBmcmFtZXMgdGhyb3VnaApzeXpfZW1pdF92aGNpKCkuIFRoZSBm
+cmFtZXMgZHJpdmUgdGhlIFJGQ09NTSByZWNlaXZlciBpbnRvIHRoZSBjb25uZWN0aW9uCmluZGlj
+YXRpb24gcGF0aC4KCgpMb2NrZGVwIHJlcG9ydHMgYSBjaXJjdWxhciBsb2NraW5nIGRlcGVuZGVu
+Y3kgaW52b2x2aW5nIHJmY29tbS4gT24gdGhlCnJlcG9ydGluZyBzaWRlIHRoZSB0YXNrIGhvbGRz
+IGNvbnNvbGVfbG9jayAodGFrZW4gaW4gdmNfU0FLKSBhbmQgdHJpZXMgdG8KYWNxdWlyZSB0aGUg
+dHR5IGJ1ZmZlciBsb2NrICgmYnVmLT5sb2NrLCBhdCB0dHlfYnVmZmVyX2ZsdXNoKTsgdGhlIHJl
+dmVyc2UKZGVwZW5kZW5jeSBjaGFpbiBzaG93cyBjb25zb2xlX2xvY2sgYmVpbmcgYWNxdWlyZWQg
+YnkgY29uX2ZsdXNoX2NoYXJzKCkgZnJvbQpuX3R0eV93cml0ZSgpLiBUaGUgbG9jayBjbGFzcyBv
+ZiBpbnRlcmVzdCBmb3IgcmZjb21tIGlzIGVudGVyZWQgdGhyb3VnaApsb2NrX3NvY2tfbmVzdGVk
+KCkgZnJvbSByZmNvbW1fY29ubmVjdF9pbmQoKSwgd2hpY2ggdGhlIGVhcmxpZXIgcmVwb3J0IG9u
+CmxpbnV4LTYuMSBhbHNvIHNob3dlZC4KCgpUaGlzIGxvb2tzIGxpa2UgYSBsb2NrIG9yZGVyaW5n
+IHByb2JsZW0gYmV0d2VlbiB0aGUgUkZDT01NIHJlY2VpdmUvc2V0dXAKcGF0aCBhbmQgdGhlIHR0
+eS9jb25zb2xlIHRlYXJkb3duIHBhdGgsIHJhdGhlciB0aGFuIGEgc3BlY2lmaWMgYmFkIHBvaW50
+ZXIuClRoZSBlYXJsaWVyIHJlcG9ydCBhZ2FpbnN0IHRoZSBzYW1lIHJlcHJvZHVjZXIgZGVzY3Jp
+YmVkIHRoZSBtYXRjaGluZyBlZGdlCm9mIHRoZSBjeWNsZSwgd2l0aCB0dHkgdGVybWlvc19yd3Nl
+bSB0YWtlbiBhdCBuX3R0eV9mbHVzaF9idWZmZXIoKSB3aGlsZQpob2xkaW5nIHRoZSB0dHkgYnVm
+ZmVyIGxvY2ssIHNvIHRoZSBjeWNsZSBoYXMgYmVlbiByZWFjaGFibGUgZm9yIGEgd2hpbGUgYW5k
+CnRoZSBwYXJ0aWNpcGF0aW5nIGxvY2tzIGFyZSB0aGUgc2FtZS4gU2VyaWFsaXppbmcgdGhlIFJG
+Q09NTSBzZXNzaW9uIHNldHVwCmFuZCB0ZWFyZG93biBhZ2FpbnN0IHRoZSBzb2NrZXQgbG9jayB3
+b3VsZCBiZSB0aGUgZGlyZWN0aW9uOyBJIGhhdmUgbm90CnZlcmlmaWVkIHdoaWNoIG9mIHRoZSBy
+ZWNlbnQgUkZDT01NIGxvY2tpbmcgY2hhbmdlcyBhbHJlYWR5IGNvdmVycyBpdC4KCgpUaGlzIGZh
+aWx1cmUgd2FzIHJlcG9ydGVkIGVhcmxpZXIgYWdhaW5zdCB0aGUgbGludXgtNi4xIGxvbmd0ZXJt
+IHNlcmllcyBhdApodHRwczovL3N5emthbGxlci5hcHBzcG90LmNvbS9idWc/ZXh0aWQ9M2ExZjg2
+OWRjZDhmMjZlNWMyMTYsIGFuZCB0aGUKcmVwcm9kdWNlciBiZWxvdyBpcyB0aGUgb25lIGZyb20g
+dGhhdCByZXBvcnQuIEl0IHN0aWxsIHJlcHJvZHVjZXMgb24gdGhlCnRlc3RlZCBtYWlubGluZSBr
+ZXJuZWwuCgoKUmVwcm9kdWNlcjoKCgpzeXogcmVwcm9kdWNlcjoKVGhlIHJlcHJvZHVjZXIgaXMg
+dGhlIHByb2dyYW0gYmVsb3csIHdoaWNoIHJlcXVpcmVzIG5vIGxhcmdlIGVuY29kZWQgaW1hZ2U6
+CgoKcjAgPSBzeXpfaW5pdF9uZXRfc29ja2V0JGJ0X3JmY29tbSgweDFmLCAweDEsIDB4MykKYmlu
+ZCRidF9yZmNvbW0ocjAsICYoMHg3ZjAwMDAwMDAwMDApPXsweDFmLCBAYW55LCAweDF9LCAweGEp
+Cmxpc3RlbihyMCwgMHg1KQpzeXpfZW1pdF92aGNpKCYoMHg3ZjAwMDAwMDAyMDApPUFOWT1bQEFO
+WUJMT0I9IjAyYzgyMDBjMDAwODAwMDEwMDAyMDIwNDAwMDMwMDQwMDAiXSwgMHgxMSkKc3l6X2Vt
+aXRfdmhjaSgmKDB4N2YwMDAwMDAwMzAwKT1BTlk9W0BBTllCTE9CPSIwMmM4MjAwYzAwMDgwMDAx
+MDAwNDAzMDQwMDQwMDAwMDAwIl0sIDB4MTEpCnN5el9lbWl0X3ZoY2koJigweDdmMDAwMDAwMDQw
+MCk9QU5ZPVtAQU5ZQkxPQj0iMDJjODIwMGUwMDBhMDAwMTAwMDUwMTA2MDA0MDAwMDAwMDAwMDAi
+XSwgMHgxMykKc3l6X2VtaXRfdmhjaSgmKDB4N2YwMDAwMDAwNjAwKT1BTlk9W0BBTllCTE9CPSIw
+MmM4MjAxMjAwMGUwMDQwMDAwM2VmMTU4MzExMDIwMDA3MDA3ZjAwMDAwNzcwIl0sIDB4MTcpCgoK
+Y29uc29sZSBvdXRwdXQ6wqBodHRwczovL3Bhc3RlYmluLmNvbS9yYXcvekx5VkdoaTUKa2VybmVs
+IGNvbmZpZzogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20vdGV4dD90YWc9S2VybmVsQ29u
+ZmlnJng9MzFkZmVmYzRhMTRlZmVhMwoKCktlcm5lbDoKCgpIRUFEIGNvbW1pdDogZGYyOTA4MDkw
+Y2RhMzY4YjAxZmY0MzcwOWY1MTg5MDA3NmM1NjE1NwpnaXQgdHJlZTogbWFpbmxpbmUKa2VybmVs
+IHZlcnNpb246IDcuMy4wLXJjMgp0ZXN0ZWQgdGFnOiB2Ny4zLXJjMiAoYW5ub3RhdGVkIHRhZyBv
+YmplY3QgNWUwMzZjZTEyZGU5MWM2ZmQ2NzRkYWQzM2IxNjljNjE1MGJlMmE3YSkKCgpMZXQgbWUg
+a25vdyBpZiB5b3UgbmVlZCBtb3JlIGRldGFpbHMgb3IgdGVzdGluZy4KCgpCZXN0IHJlZ2FyZHMs
+CkNoYW5namlhbiBMaXXCoA==
