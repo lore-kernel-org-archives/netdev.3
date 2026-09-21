@@ -1,56 +1,56 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8A445D5C0
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43653E1208
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984908; cv=none; b=aru6Os5nZEAoR5PZTeYpzNTx9lZkN9vafLfRDna26KQ/GuRg8/uEIkJ9tcvHuJTI4imz6CP5divdS5sfWqlz2aFwRFD13X6/ChNr9OHzLejejlJFxpkpVwPETaV34s0/F+ugxzRh2AiFDTU1zzEQw93f/iGlTHqmXFKkIkgAqIs=
+	t=1789984912; cv=none; b=Gq6flzpbhmZMZBsvSTvjvijnKsMJrOuZk+hmeGAbpHHjI8rNNFtpRixhCas5FBmMoh+bZbocNw5PgDaiA4JOkx9/xnNz47EzIIcaWEy/BuZ/H8+2eqj27IIkb0/ogjPH7rfMPYm+xNZl2qOJt6HAR/bUMUlMBNQ4sgr33k9NlfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984908; c=relaxed/simple;
-	bh=7+PDdazJGpn8nK9H3AAo2jsd6ZwDrWdLr1bpVAzIsYE=;
+	s=arc-20240116; t=1789984912; c=relaxed/simple;
+	bh=OTVmFQBdasnkYNXZb9yzRc/tPXPXTZ+U/NHSOBvk8dU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qz7Td1+VTaDNUuUTRp5yuFCuAmtnumKQIFCYCxR2R3RVsPV3tNBcW/UB4FPBjwKMY4OYxn1AHnjUjhb624o4Q3jJBi20lkkdUzl2A4Dcjq1kFJPRqhu8zMBWquuQRVWk0QIN1APa13OSJG4wsCi/F5X83ed4ELpQLviXgGP1YYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o5ioGzPM; arc=none smtp.client-ip=209.85.222.199
+	 To:Cc:Content-Type; b=BAoUNVbY7WX7B3RkzHssdQVm9QuPy6BRRsi4OnnL3VEQ5wtptnFMgIzQYsQQaES+7mEoMdO7G/4GhZWo9zYUWQP8v6Iw1Y3xnNRdMGn/jaDoxni3UEa34kZdA+11MbfcuLnZKsumppjoQ4QCejFOVKVLzWWfZ1EtSAjs72pTOJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hKoypoqn; arc=none smtp.client-ip=209.85.160.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o5ioGzPM"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a1e564fd5so479287485a.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:01:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hKoypoqn"
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-530e12b296bso67432011cf.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:01:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789984905; x=1790589705; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789984909; x=1790589709; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iYAU3l9E8lTg0E9jS6OXBwYFbe8bAsXlh0rN6uSxQkY=;
-        b=o5ioGzPMOg5s+MPF9WuLbAtXLJJ8ZJ6+X3FWYLhIhYAduJr3w+joXJ4lCtGXUUMk4c
-         WHVNJxM5RSzV6Sf0GN7q3bM2wAI9UuF1RWu+152Sc5a0p34X+22atsHF2T/f5jmk6tkN
-         hMYn7HhxxIS1pAOF9Y/B4PdpUg7ziUzOwWcC4t8+tjdd2ZRnt5vFf7L5RQeOA5aGJHjF
-         58rNXw2KsHbOOecg5vHgzLwqJhjb9QABc5V1i4deVpEN7F7XZUyPpWk0W4RwZjfP19+P
-         r2sK5YCmNMi1OeDN1IOQR3iRjpJ1v/STpr8Aflsv4sBwTO/Vv9jshr9VlMOi4RW794tP
-         D32w==
+        bh=lhfCKfPuwOw1GTWQmaNeBMGbiiBL3fe6h5+APo/dsts=;
+        b=hKoypoqnOKbPrAbLoNbbuueluFQWKaW80nETAWbkrAhPZJBMgWxZMnWfFsJj3USN4C
+         RdtfQctBoKHgng4iB5NCcXZn0XsPzYltyJM6oXacOcnFvSozJBvebesMUiRsda/XlH9l
+         r6wxETi+Ek/E0saVmV3m7rWG6nYRUxskzYNRUG7wJBo0B9fTNujifBzp+vU1n0I0QPGP
+         mbBXPaVJRyFXLWxWGcTA0aQrCHFZqXN1X5FVQY/VzTkVZs/LCyNowMfv+l5Fp32CnoAs
+         ATw4iNoblrwEScMKlVnnDSKIQPLQ3v6mxd7TAYCHBPRE+/iFWN/sItcy7C1Tr22gV6iK
+         tQXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789984905; x=1790589705;
+        d=1e100.net; s=20260707; t=1789984909; x=1790589709;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iYAU3l9E8lTg0E9jS6OXBwYFbe8bAsXlh0rN6uSxQkY=;
-        b=pYM8heos9+J5aFciOU9MECsiFIFydNIrmMVz6dbtTVngteVEem0kHI+ZGk2tFZqDpQ
-         QTA4F3ziwuKxI0uA92lugBJfHDuZE75AOzx7dQ5BRBBlJyfkT0MgYFVLOowJ3NkcvbbB
-         Km5JteX4gb7NG2TC8nEfkgGvQD1kYqnXFtdy1ufB8v6cWYWWG/D9lgl84uKl2GpM+GUC
-         HxF1/sIK3P8X8kezECWy31/JkIq4feb8bvaQ0qhcjwXb5nUK8swf22xmxHGrtVFZ/ygL
-         I+WpkCM/45UuAa1tzPVawa6JvkWDyz2O92832mTEW8r+mcAssiF7l+0YbbrexUhuHhi1
-         kgJw==
-X-Forwarded-Encrypted: i=1; AKwUvBwbRAaWc3wcExZXN87f8zJr16zJgeC0Z5gr3T6PmcWZifIHvFKoVaMdyoS+2zQlaSA/UakeJwo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mIVGyu4UzDOI0XqIeEIOlmVrMfm+SuB39iJ2azgh4RuOnv9yno
-	4rjiNXoI4Ahk0bEh/ScXvZSHzYc0Me6LhoyP8dsIVfmfWr0jKDsaiiBbrRyuazJwg4pQxZBjbVN
-	7j/t9eoPQRFPZiw==
-X-Received: from qkau16.prod.google.com ([2002:a05:620a:a1d0:b0:93a:2075:18f])
+        bh=lhfCKfPuwOw1GTWQmaNeBMGbiiBL3fe6h5+APo/dsts=;
+        b=pCcjqCE4n7zNP544p/CUCgw/iFB0OXzh7YOgV8cCxiK9CSUidZskZDkafGb/U1z4UK
+         p1fvx0oSm0UkwSgy/IuAeN4X73gwGxGqw2t4mTjwvp4Zyv6dLo6jZQrhpNqrw0z7HNRx
+         Qao2t3zzae4zrLLWWO/Lmmz/SkYypmDmKRUA+YM5YALewWyTFvjioY89854fMDBKPkfd
+         4l+TKWFgagb/d25G9i/IqX+Cq/LRZ0/gkxoMO2mv77zP1H5d5L/5voE93iP/lqLx5951
+         BCs0RytW2EoV39EivR3Pla2oINN1f2l/gH2tOE95ex5rjemRhKrHhpxL8YIyyOk5Fq12
+         gXrw==
+X-Forwarded-Encrypted: i=1; AKwUvBzclipF4L/uJFIbdUlUaBoDn59cFX9LzlILe0DGa2gU2JHM6Thk4VJ87GugpRhlUhqeiGbpYAg=@vger.kernel.org
+X-Gm-Message-State: AFuF++la6skMWv/bMyufTq5OAuOvPXjsgkK0D7sl07npKC2SNxxMiUfH
+	aM7X6t7p0AuEnwqRtr4vXguovFJjYkY7zh9j0BGqbGf3r5+pgQPp/x3KeFSKu9J74yhO5RrLLAo
+	vFjFDNItCqE4YRg==
+X-Received: from qtkp8.prod.google.com ([2002:a05:622a:13c8:b0:531:320:7db7])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:6509:b0:93b:c3d1:ff8a with SMTP id af79cd13be357-93bf56f5325mr901808685a.39.1789984905143;
- Mon, 21 Sep 2026 03:01:45 -0700 (PDT)
-Date: Mon, 21 Sep 2026 10:01:34 +0000
+ 2002:a05:622a:138f:b0:530:2cc6:c8ad with SMTP id d75a77b69052e-532b71fb909mr100992191cf.19.1789984909177;
+ Mon, 21 Sep 2026 03:01:49 -0700 (PDT)
+Date: Mon, 21 Sep 2026 10:01:36 +0000
 In-Reply-To: <20260921100139.508191-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260921100139.508191-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921100139.508191-4-edumazet@google.com>
-Subject: [PATCH v5 net-next 3/8] vxlan: vnifilter: signal interrupted
- RTM_GETTUNNEL dumps
+Message-ID: <20260921100139.508191-6-edumazet@google.com>
+Subject: [PATCH v5 net-next 5/8] vxlan: move VXLAN_F_MDB to struct vxlan_dev flags
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -70,183 +69,127 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netd
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-vxlan_vnifilter_dump() walks all vxlan devices of a netns, and for each
-one walks vg->vni_list. Both cursors are plain ordinals stored in
-cb->args[0] and cb->args[1], and RTNL is released between dump skbs.
+VXLAN_F_MDB is an internal runtime state flag indicating whether any
+MDB entries are configured on the device, rather than a netlink
+configuration attribute.
 
-A concurrent __vxlan_vni_add_list(), which inserts sorted by VNI,
-__vxlan_vni_del_list(), or an in-place group update in
-vxlan_vni_update() (which splits or merges coalesced VNI ranges) shifts
-the second cursor, duplicating or skipping entries. Unregistering a
-vxlan device shifts the first one, and the partially dumped device is
-then skipped altogether by the "if (idx < s_idx)" test, silently losing
-the rest of its VNIs.
+In preparation for converting vxlan->cfg to an RCU-protected pointer,
+move VXLAN_F_MDB from struct vxlan_config to a dedicated 'flags' field
+in struct vxlan_dev as VXLAN_DEV_F_MDB, using atomic bitops (set_bit(),
+clear_bit(), test_bit()) to avoid KCSAN data races between the TX path
+and RTNL operations.
 
-Add a per-netns generation counter, bumped whenever the set of vxlan
-devices in the netns or any vni_list changes, and feed it to
-nl_dump_check_consistent() so that user space gets NLM_F_DUMP_INTR and
-can retry, as vxlan_mdb_dump() already does.
+This avoids having to dynamically reallocate and publish a new
+vxlan_config structure via RCU whenever the first MDB entry is added
+or the last one is removed, and prevents potential memory allocation
+failures during MDB teardown under memory pressure.
 
-The counter is keyed on dev_net(vxlan->dev) rather than vxlan->net,
-because the dump enumerates devices with for_each_netdev_rcu() in the
-netns the netdevice lives in, which differs from the packet i/o netns
-when the device was created with a separate link netns.
+mlxsw validates cfg->flags against a deny-by-default mask, so
+VXLAN_F_MDB used to make mlxsw_sp_nve_vxlan_can_offload() reject a
+device with MDB entries as carrying an unsupported flag. Add an
+explicit VXLAN_DEV_F_MDB test there to keep that rejection, with a
+message naming the actual reason.
 
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- drivers/net/vxlan/vxlan_core.c      |  4 ++++
- drivers/net/vxlan/vxlan_private.h   |  9 ++++++++
- drivers/net/vxlan/vxlan_vnifilter.c | 35 ++++++++++++++++++++++++-----
- 3 files changed, 42 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c | 5 +++++
+ drivers/net/vxlan/vxlan_core.c                           | 2 +-
+ drivers/net/vxlan/vxlan_mdb.c                            | 6 +++---
+ include/net/vxlan.h                                      | 6 +++++-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c
+index 52c2fe3644d4b9b27f1d589d9f7f597748339782..b78aff31c98f2d8aedfdf36bbfc1cb61e1066edf 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c
+@@ -92,6 +92,11 @@ static bool mlxsw_sp_nve_vxlan_can_offload(const struct mlxsw_sp_nve *nve,
+ 		return false;
+ 	}
+ 
++	if (test_bit(VXLAN_DEV_F_MDB, &vxlan->flags)) {
++		NL_SET_ERR_MSG_MOD(extack, "VxLAN: MDB entries are not supported");
++		return false;
++	}
++
+ 	switch (cfg->saddr.sa.sa_family) {
+ 	case AF_INET:
+ 		if (!mlxsw_sp_nve_vxlan_ipv4_flags_check(cfg, extack))
 diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index c4e3e8e8eef57196c3b7120ff4b8ce71207f3bf8..03272fe95fa66d535094adf4b4df92da53d5c417 100644
+index e834b58ea745ce8394ff2ae6cef05eec3a9f8d26..f98f1d802724df40d4f68ba7282dc377752b1160 100644
 --- a/drivers/net/vxlan/vxlan_core.c
 +++ b/drivers/net/vxlan/vxlan_core.c
-@@ -4767,6 +4767,10 @@ static int vxlan_netdevice_event(struct notifier_block *unused,
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
- 	struct vxlan_net *vn = net_generic(dev_net(dev), vxlan_net_id);
+@@ -2824,7 +2824,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (nhid)
+ 		return vxlan_xmit_nhid(skb, dev, nhid, vni, cfg);
  
-+	if ((event == NETDEV_REGISTER || event == NETDEV_UNREGISTER) &&
-+	    netif_is_vxlan(dev))
-+		vxlan_vnifilter_seq_inc(dev_net(dev));
-+
- 	if (event == NETDEV_UNREGISTER)
- 		vxlan_handle_lowerdev_unregister(vn, dev);
- 	else if (event == NETDEV_UDP_TUNNEL_PUSH_INFO)
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index e4ceca925bde7bea909bd691fa0f4ebfebdefbd3..74d713717cd5da267fc0aef9812593b5ed3ef37e 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -22,6 +22,8 @@ struct vxlan_net {
- 	/* sock_list is protected by rtnl lock */
- 	struct hlist_head sock_list[PORT_HASH_SIZE];
- 	struct notifier_block nexthop_notifier_block;
-+	/* Generation counter for RTM_GETTUNNEL dumps */
-+	atomic_t vnifilter_seq;
+-	if (flags & VXLAN_F_MDB) {
++	if (test_bit(VXLAN_DEV_F_MDB, &vxlan->flags)) {
+ 		struct vxlan_mdb_entry *mdb_entry;
+ 
+ 		rcu_read_lock();
+diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
+index 56ca9283283307d8b1231c3b26724474e6c838d6..cf606256d0929c4dd356ec8aa343150c10edfb82 100644
+--- a/drivers/net/vxlan/vxlan_mdb.c
++++ b/drivers/net/vxlan/vxlan_mdb.c
+@@ -1219,7 +1219,7 @@ vxlan_mdb_entry_get(struct vxlan_dev *vxlan,
+ 		goto err_free_entry;
+ 
+ 	if (hlist_is_singular_node(&mdb_entry->mdb_node, &vxlan->mdb_list))
+-		vxlan->cfg.flags |= VXLAN_F_MDB;
++		set_bit(VXLAN_DEV_F_MDB, &vxlan->flags);
+ 
+ 	return mdb_entry;
+ 
+@@ -1236,7 +1236,7 @@ static void vxlan_mdb_entry_put(struct vxlan_dev *vxlan,
+ 		return;
+ 
+ 	if (hlist_is_singular_node(&mdb_entry->mdb_node, &vxlan->mdb_list))
+-		vxlan->cfg.flags &= ~VXLAN_F_MDB;
++		clear_bit(VXLAN_DEV_F_MDB, &vxlan->flags);
+ 
+ 	rhashtable_remove_fast(&vxlan->mdb_tbl, &mdb_entry->rhnode,
+ 			       vxlan_mdb_rht_params);
+@@ -1762,7 +1762,7 @@ void vxlan_mdb_fini(struct vxlan_dev *vxlan)
+ 	struct vxlan_mdb_flush_desc desc = {};
+ 
+ 	vxlan_mdb_flush(vxlan, &desc);
+-	WARN_ON_ONCE(vxlan->cfg.flags & VXLAN_F_MDB);
++	WARN_ON_ONCE(test_bit(VXLAN_DEV_F_MDB, &vxlan->flags));
+ 	rhashtable_free_and_destroy(&vxlan->mdb_tbl, vxlan_mdb_check_empty,
+ 				    NULL);
+ }
+diff --git a/include/net/vxlan.h b/include/net/vxlan.h
+index 7b82075055237058d231d636698f640c75c521af..d323f91af2364822e148310297c978fec7664010 100644
+--- a/include/net/vxlan.h
++++ b/include/net/vxlan.h
+@@ -300,6 +300,7 @@ struct vxlan_dev {
+ 	spinlock_t	  hash_lock;
+ 	unsigned int	  addrcnt;
+ 	struct gro_cells  gro_cells;
++	unsigned long	  flags;
+ 
+ 	struct vxlan_config	cfg;
+ 
+@@ -313,6 +314,10 @@ struct vxlan_dev {
+ 	unsigned int mdb_seq;
  };
  
- struct vxlan_fdb_key {
-@@ -177,6 +179,13 @@ vxlan_vnifilter_lookup(struct vxlan_dev *vxlan, __be32 vni)
- 				      vxlan_vni_rht_params);
- }
- 
-+static inline void vxlan_vnifilter_seq_inc(const struct net *net)
-+{
-+	struct vxlan_net *vn = net_generic(net, vxlan_net_id);
++enum vxlan_dev_flags {
++	VXLAN_DEV_F_MDB,
++};
 +
-+	atomic_inc(&vn->vnifilter_seq);
-+}
-+
- /* vxlan_core.c */
- int vxlan_fdb_create(struct vxlan_dev *vxlan,
- 		     const u8 *mac, union vxlan_addr *ip,
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index fad7c76418e929866c5c48431b08d179909f5931..93fca54749e76da8ae1ad1c15c0461a35d0ee194 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -410,9 +410,22 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
+ #define VXLAN_F_LEARN			0x01
+ #define VXLAN_F_PROXY			0x02
+ #define VXLAN_F_RSC			0x04
+@@ -331,7 +336,6 @@ struct vxlan_dev {
+ #define VXLAN_F_IPV6_LINKLOCAL		0x8000
+ #define VXLAN_F_TTL_INHERIT		0x10000
+ #define VXLAN_F_VNIFILTER               0x20000
+-#define VXLAN_F_MDB			0x40000
+ #define VXLAN_F_LOCALBYPASS		0x80000
+ #define VXLAN_F_MC_ROUTE		0x100000
  
- 	nlmsg_end(skb, nlh);
- 
-+	nl_dump_check_consistent(cb, nlh);
-+
- 	return err;
- }
- 
-+static u32 vxlan_vnifilter_base_seq(const struct net *net)
-+{
-+	const struct vxlan_net *vn = net_generic(net, vxlan_net_id);
-+	u32 res = atomic_read(&vn->vnifilter_seq);
-+
-+	/* Must not return 0 (see nl_dump_check_consistent()) */
-+	if (!res)
-+		res = 0x80000000;
-+	return res;
-+}
-+
- static int vxlan_vnifilter_dump(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	int idx = 0, err = 0, s_idx = cb->args[0];
-@@ -432,6 +445,9 @@ static int vxlan_vnifilter_dump(struct sk_buff *skb, struct netlink_callback *cb
- 	}
- 
- 	rcu_read_lock();
-+
-+	cb->seq = vxlan_vnifilter_base_seq(net);
-+
- 	if (tmsg->ifindex) {
- 		dev = dev_get_by_index_rcu(net, tmsg->ifindex);
- 		if (!dev) {
-@@ -570,8 +586,11 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
- 	if (ret)
- 		goto out;
- 
--	if (group)
-+	if (group) {
- 		memcpy(&vninode->remote_ip, group, sizeof(vninode->remote_ip));
-+		if (!create)
-+			vxlan_vnifilter_seq_inc(dev_net(vxlan->dev));
-+	}
- 
- 	if (vxlan->dev->flags & IFF_UP) {
- 		if (vxlan_addr_multicast(&old_remote_ip) &&
-@@ -716,7 +735,8 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
- 	return 0;
- }
- 
--static void __vxlan_vni_add_list(struct vxlan_vni_group *vg,
-+static void __vxlan_vni_add_list(struct vxlan_dev *vxlan,
-+				 struct vxlan_vni_group *vg,
- 				 struct vxlan_vni_node *v)
- {
- 	struct list_head *headp, *hpos;
-@@ -732,13 +752,16 @@ static void __vxlan_vni_add_list(struct vxlan_vni_group *vg,
- 	}
- 	list_add_rcu(&v->vlist, hpos);
- 	vg->num_vnis++;
-+	vxlan_vnifilter_seq_inc(dev_net(vxlan->dev));
- }
- 
--static void __vxlan_vni_del_list(struct vxlan_vni_group *vg,
-+static void __vxlan_vni_del_list(struct vxlan_dev *vxlan,
-+				 struct vxlan_vni_group *vg,
- 				 struct vxlan_vni_node *v)
- {
- 	list_del_rcu(&v->vlist);
- 	vg->num_vnis--;
-+	vxlan_vnifilter_seq_inc(dev_net(vxlan->dev));
- }
- 
- static struct vxlan_vni_node *vxlan_vni_alloc(struct vxlan_dev *vxlan,
-@@ -800,7 +823,7 @@ static int vxlan_vni_add(struct vxlan_dev *vxlan,
- 		return err;
- 	}
- 
--	__vxlan_vni_add_list(vg, vninode);
-+	__vxlan_vni_add_list(vxlan, vg, vninode);
- 
- 	if (vxlan->dev->flags & IFF_UP)
- 		vxlan_vs_add_del_vninode(vxlan, vninode, false);
-@@ -846,7 +869,7 @@ static int vxlan_vni_del(struct vxlan_dev *vxlan,
- 	if (err)
- 		goto out;
- 
--	__vxlan_vni_del_list(vg, vninode);
-+	__vxlan_vni_del_list(vxlan, vg, vninode);
- 
- 	vxlan_vnifilter_notify(vxlan, vninode, RTM_DELTUNNEL);
- 
-@@ -960,7 +983,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
- #if IS_ENABLED(CONFIG_IPV6)
- 		hlist_del_init_rcu(&v->hlist6.hlist);
- #endif
--		__vxlan_vni_del_list(vg, v);
-+		__vxlan_vni_del_list(vxlan, vg, v);
- 		vxlan_vnifilter_notify(vxlan, v, RTM_DELTUNNEL);
- 		call_rcu(&v->rcu, vxlan_vni_node_rcu_free);
- 	}
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
