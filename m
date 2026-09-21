@@ -1,370 +1,348 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FFE4570FA;
-	Mon, 21 Sep 2026 08:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3881B457E77;
+	Mon, 21 Sep 2026 08:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789980627; cv=none; b=lEDehHMa0kZjJc3dm2iQ5XprJAraKFPwSFitbQJxy/3XLwFsEqj7AZabpbfeKf/s3EdiuAEf0+wwmzwlqM2GKCtKh2SfvnPUTVEmd/u0EAXIQ1YcCb4BiuaCvXkJxQDiIvMLKqeFAcRx9Z7Ob9rg17APRkJGudnx4tRwlOqwMIk=
+	t=1789980781; cv=none; b=n31Lz33znW4fCZ8myWmQotK3suCE4D+ellcgAdMJfmQ0t9DR6nkrGaVQxPxn7jW4SrEtIGtL4B0KNabcJnE7cGzQMIUIHlqoFz2K6ehE7BwTPPcdFXrHfdrgRX6uS4A2j/Tuq78V85oA7IMg5FsSTOCMvJv1S9LMaD5hNXnmZtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789980627; c=relaxed/simple;
-	bh=1roAp1njcsMyiE7wSbk0IspcEIahhecqC9rN69VBbnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKr5NpTfAb1oqBVyCzT1vUgyvdg9JBDibuZPM11EHNwMIl54T76SyHOlEYCSwFjloxWupAYKzcnS7W1A+DlUDMQko3BRZwuV8gf+zgxBibCjVe67xPwkHIEzU84MCN/tFz9QdzDAjWBe0s8ikSHBmujlLegESSGASOlgK96hn70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ZtouWXXp; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1789980781; c=relaxed/simple;
+	bh=VWumyYdINZ/5KEtt1ktWYZmwhZezwWep+jwyVTffUa4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aXV1Lev8fJ4/cvl+VW4fNNY4IdgmLXiuzwXOr0YpqSoGVypVebPboly13di7q5/ADAy3s0YLi1SdwQ25fj408OZKkN9DKu1Jm+zRaROAhMXBtnLFoq4JdLmuqLEBKWXHSqM67Tod7kyEVQgRbKFNWlhrcWYUew26uJJgC9/y0sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxZtBxn5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ZtouWXXp"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L2v2bd721555;
-	Mon, 21 Sep 2026 08:50:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=xZnfuy0MLFoO7/PvZGdS5CEeE7/Hb
-	mCgxHT5yvfF75c=; b=ZtouWXXpl4QrrKgZqovn9dEzzJhqEkhLyWVTB+yJKcbh/
-	YkGiZOj7lwInpcJWgv4Qevr8MTF/mDqXcGxsXu9IJTnVHdy9na7p8XvPn3DGomXj
-	hRpHnPt5/2Xo+luTeC8xzD1ImXx2xUssnqHUg2OcStgedyHM1Mqt5Hdj/FFV8Lll
-	9ZP4TxUZRuB+JPCPgSglfeUsUgsDzPa/L5eTnWcAfflQ1oSlCruwb19RoztDFrY5
-	j1IV3/WI5PObM+ElOu5jw+Cxr74mESbHqC8XGkBxqt8ugKuGIE4ttsNlCr/YwpDE
-	eVH/sI5iRKpYV7xUN7hxbx0jZttT5c1k45AD/coXg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4gsk2d1vt0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Sep 2026 08:50:13 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 68L8o0To034301;
-	Mon, 21 Sep 2026 08:50:12 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4gtegmn3r5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Sep 2026 08:50:12 +0000 (GMT)
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 68L8jOHG025134;
-	Mon, 21 Sep 2026 08:50:11 GMT
-Received: from pkannoju-dev-build.osdevelopmeniad.oraclevcn.com (pkannoju-dev-build.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.252.59])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4gtegmn3px-1;
-	Mon, 21 Sep 2026 08:50:11 +0000 (GMT)
-From: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
-To: jgg@ziepe.ca, leon@kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
-        mbloch@nvidia.com, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, jiri@resnulli.us,
-        kalesh-anakkur.purayil@broadcom.com, ynachum@amazon.com,
-        kees@kernel.org, mrgolin@amazon.com, parav@nvidia.com,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc: anand.a.khoje@oracle.com,
-        Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
-Subject: [PATCH v2] RDMA/mlx5: Add poll-EQ callback for ULP recovery
-Date: Mon, 21 Sep 2026 08:50:06 +0000
-Message-ID: <20260921085006.1443240-1-praveen.kannoju@oracle.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxZtBxn5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1BA1F000FF;
+	Mon, 21 Sep 2026 08:52:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789980779;
+	bh=+afw/DGe4bk0PkJPWYl7XReefJSYXvqWnF8WgUxerYU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=VxZtBxn5A1IytykXf1Ev9IOOhXFCkEiYgkLKhfewdDgL7E0JUmKN93m1XcS4kfQdV
+	 PJg2spE97pdnPzV671RypxPOsSZoSAhe5lLvL5Ha9QtHg+RqANDaRY7+bhkOA4xb75
+	 hRsYsZjNYdhaSkyLpBEez9Y2OKv/ib3lhDKz7o0e0sGGHFDA/wqmm9q6Frwkxd2HXP
+	 sY924Q0d9DAC+qIj6vpTbGHJvMALj6PzD93abbgHyTECbQmA/1MPqXxJWR+z/5NpTM
+	 FiUakB+bEZ7zMtPMRWu+sFNNa23o8FuWi344i79qXcX/TEkdU9704RxYS4Wud0BtUi
+	 0c7PJhFaaKlMg==
+Subject:
+ Re: [PATCH net v2] net: dsa: microchip: save the periodic output request
+From: netdev-bot+sashiko@kernel.org
+To: bastien.curutchet@bootlin.com
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, richardcochran@gmail.com, ceggers@arri.de,
+ arun.ramadoss@microchip.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 21 Sep 2026 08:52:58 +0000
+Message-ID: <178998077822.2160803.3867886756893254872@kernel.org>
+In-Reply-To: <20260917-fix-perout-v2-1-d8acf3eea6f7@bootlin.com>
+References: <20260917-fix-perout-v2-1-d8acf3eea6f7@bootlin.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_03,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
- spamscore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2609040000 definitions=main-2609210126
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEyNSBTYWx0ZWRfX84bzhXzx/qpL
- t+uenacsH3JH1RspQzYQop4GqIcUyhV+7U2usoFGDKbD8qzCgeFnh7etaz/K70eGb8zEEvNh4pI
- rNdWnN75Sa0kDmKTkIsTfLYot59QeK7dlmLAFh0iNTbD8t3Uxr60VGtgwYHoX2TlafDBM2j0Bkn
- qdQ/VlCTrQpI2QEUnFWoBEzHShhnJolHEfjg+rAtdeOjZGzh0BJlWMD56tqOKtW1q0XcOfF1kK5
- C4s+soWws+CAYwZCy84kwzjjveiBYBfA3GGKo+/hwf9k4wQSF4Cu+ZgI3H8iwu90jtywdyNuCnU
- FgXJ6rsMcYjMyw77nsAZftaxg6VuR9Q++0RtUsX2ic4iOHGuj3yDYzNf2TCPwT0DHdN6talfeo7
- BRyK/9zBFCMa3iEnaxaIq0YfasWfkY+5gDxGdWFYkBQgHuGj+WgKh3hsYPJqYCSRZjDqlrprAs5
- JJK82zeVrRSQht5fGIg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEyNSBTYWx0ZWRfX/OcE+KV/WWgb
- i7yAY0ZTh/ZOwqL2gNOHPyqonlEIHFalDsS3WGU6YNjgKbpAOKPDXCBU2Ec4vW/gwhjbhAPwD1i
- S6KdSKpntgcKQyHSLL3jutapnkQcdPA1lmfUTeSqcgt2StCJkU29
-X-Proofpoint-ORIG-GUID: Kp3y8Bf8CTv1sz5BIwO5VGdfT0XlI3Mm
-X-Authority-Analysis: v=2.4 cv=f+Ddl+yM c=1 sm=1 tr=0 ts=6ab0efc5 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=EIcjfB9IiI4px24ztqRk:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=GFc6DVPmfN4-scXs8msA:9
-X-Proofpoint-GUID: Kp3y8Bf8CTv1sz5BIwO5VGdfT0XlI3Mm
 
-Some upper layer protocols, such as RDS, use mlx5 RDMA CQs whose
-completion EQs are not shared with mlx5e queues. If an EQ notification is
-missed for one of those CQs, the ULP can remain idle until another event
-arrives or a driver health recovery path polls the EQ.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-mlx5e already has a recovery path that polls a completion EQ from the tx
-timeout handler through mlx5_eq_poll_irq_disabled(). That mechanism is
-internal to the mlx5 core and is not reachable from RDMA ULPs such as RDS
-when they need to recover a CQ-associated EQ.
+Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 0 (1)
 
-Add an optional RDMA device operation, reap_eq, and an ib_reap_eq() helper
-so ULPs can ask the provider to poll the event queue associated with a CQ.
-Providers that do not implement the callback return -EOPNOTSUPP.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The recovery poll path is sleepable: mlx5 disables the IRQ synchronously
-and serializes recovery polling with a mutex. Document that ib_reap_eq()
-must be called from process context, assert the contract with
-might_sleep(), and reject interrupt-context or IRQ-disabled callers with
--EWOULDBLOCK before invoking the provider callback.
+- [High] ksz_ptp_enable_perout()
+  (drivers/net/dsa/microchip/ksz_ptp.c:226) commits the caller-supplied…
+- [Medium] The commit message states that 'if a flag was set in the
+  request that triggered the periodic output, it is lost when the output…
 
-Validate the device and CQ passed to ib_reap_eq() before dereferencing the
-callback table or provider-private CQ storage. The mlx5 callback also
-checks that the CQ belongs to the supplied device and that the mlx5 device
-and completion EQ are present before polling.
+Pre-existing issues:
+- [High] A non-canonical but ABI-accepted period whose timespec64
+  conversion is zero (e.g. period.sec = -1, period.nsec = 1000000000;…
+- [High] In ksz_ptp_restart_perout()
+  (drivers/net/dsa/microchip/ksz_ptp.c) the elapsed-period quotient is…
+- [Medium] The device exposes three trigger output units (caps.n_per_out
+  = 3 at drivers/net/dsa/microchip/ksz_ptp.c:1056, PTP_TOU_INDEX =…
+- [Medium] ksz_ptp_enable_perout() resolves the output pin with
+  ptp_find_pin() (drivers/net/dsa/microchip/ksz_ptp.c:206).
+- [Low] ksz_ptp_tou_reset() (drivers/net/dsa/microchip/ksz_ptp.c:66-86)
+  assigns the result of the TRIG_RESET read-modify-write to 'ret' at…
 
-Implement the callback for mlx5 by mapping the ib_cq to the mlx5 CQ and
-polling the CQ's completion EQ through a new exported mlx5_eq_reap()
-helper. mlx5_eq_reap() logs the EQ state, invokes
-mlx5_eq_poll_irq_disabled(), and reports any recovered EQEs.
+--
 
-Serialize mlx5_eq_poll_irq_disabled() with a per-EQ mutex. The recovery
-poll path disables the IRQ, runs the EQ handler, advances the EQ consumer
-index, and updates the CI doorbell. Multiple recovery callers polling the
-same EQ concurrently could race on that state and reap the same EQ in
-parallel.
+net: dsa: microchip: save the periodic output request
 
-Use this only as a recovery path for missed EQ notifications. It is not a
-normal completion polling path.
+The patch replaces the two stored timespec64 values (perout_target_time_first
+and perout_period) in struct ksz_ptp_data with a copy of the full
+ptp_perout_request, so that the index and flags survive a perout restart.
+ksz_ptp_restart_perout() now replays the saved request with only the start
+time recomputed.
 
-Signed-off-by: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
----
-v1: https://lore.kernel.org/linux-rdma/20260919100609.732391F000FF@smtp.kernel.org/T/#t
+A few questions below.
 
-Changes in v2:
-- Document ib_reap_eq() as process-context-only because the mlx5 recovery
-  path may sleep while synchronously disabling the IRQ.
-- Reject interrupt-context or IRQ-disabled callers with -EWOULDBLOCK before
-  invoking the provider callback.
-- Add might_sleep() assertions in ib_reap_eq() and
-  mlx5_eq_poll_irq_disabled().
-- Validate device/CQ input and CQ ownership before provider-private
-  dereferences.
-- Serialize mlx5_eq_poll_irq_disabled() with a per-EQ mutex so concurrent
-  recovery callers cannot reap the same EQ in parallel.
+>     When a periodic output is initialized, only the start and the period are
+>     stored, not the flags nor the pin index. So when the periodic output is
+>     restarted, the request flags and index are always set to 0. So if a pin
+>     other than the first one was used, or if a flag was set in the request
+>     that triggered the periodic output, it is lost when the output is
+>     restarted.
 
- drivers/infiniband/core/device.c              |  1 +
- drivers/infiniband/hw/mlx5/main.c             | 18 ++++++++++
- drivers/net/ethernet/mellanox/mlx5/core/eq.c  | 25 +++++++++++++-
- .../net/ethernet/mellanox/mlx5/core/lib/eq.h  |  2 ++
- include/linux/mlx5/eq.h                       |  2 ++
- include/rdma/ib_verbs.h                       | 34 +++++++++++++++++++
- 6 files changed, 81 insertions(+), 1 deletion(-)
+[Severity: Medium]
+Can request->flags ever be non-zero in this driver?
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index 7a3ed5ecac00..a0a6e4a9ed50 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -3016,6 +3016,7 @@ void ib_set_device_ops(struct ib_device *dev, const struct ib_device_ops *ops)
- 	SET_DEVICE_OP(dev_ops, rdma_netdev_get_params);
- 	SET_DEVICE_OP(dev_ops, read_counters);
- 	SET_DEVICE_OP(dev_ops, read_comp_cntr);
-+	SET_DEVICE_OP(dev_ops, reap_eq);
- 	SET_DEVICE_OP(dev_ops, reg_dm_mr);
- 	SET_DEVICE_OP(dev_ops, reg_user_mr);
- 	SET_DEVICE_OP(dev_ops, reg_user_mr_dmabuf);
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 373ee1f42d4a..ae8d32358e82 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -22,6 +22,7 @@
- #include <rdma/ib_addr.h>
- #include <rdma/ib_cache.h>
- #include <linux/mlx5/port.h>
-+#include <linux/mlx5/eq.h>
- #include <linux/mlx5/vport.h>
- #include <linux/mlx5/fs.h>
- #include <linux/mlx5/eswitch.h>
-@@ -3654,6 +3655,22 @@ static void get_dev_fw_str(struct ib_device *ibdev, char *str)
- 		 fw_rev_sub(dev->mdev));
- }
- 
-+static int mlx5_ib_reap_eq(struct ib_device *ibdev, struct ib_cq *ibcq)
-+{
-+	struct mlx5_ib_dev *dev;
-+	struct mlx5_ib_cq *cq;
-+
-+	if (!ibdev || !ibcq || ibcq->device != ibdev)
-+		return -EINVAL;
-+
-+	dev = to_mdev(ibdev);
-+	if (!dev->mdev)
-+		return -ENODEV;
-+
-+	cq = to_mcq(ibcq);
-+	return mlx5_eq_reap(dev->mdev, cq->mcq.eq);
-+}
-+
- static int lag_event(struct notifier_block *nb, unsigned long event, void *data)
- {
- 	struct mlx5_ib_dev *dev = container_of(nb, struct mlx5_ib_dev,
-@@ -4642,6 +4659,7 @@ static const struct ib_device_ops mlx5_ib_dev_ops = {
- 	.query_ucontext = mlx5_ib_query_ucontext,
- 	.reg_user_mr = mlx5_ib_reg_user_mr,
- 	.reg_user_mr_dmabuf = mlx5_ib_reg_user_mr_dmabuf,
-+	.reap_eq = mlx5_ib_reap_eq,
- 	.req_notify_cq = mlx5_ib_arm_cq,
- 	.rereg_user_mr = mlx5_ib_rereg_user_mr,
- 	.resize_user_cq = mlx5_ib_resize_cq,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-index d11ec263d53c..5a91cbf34125 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-@@ -148,21 +148,43 @@ static int mlx5_eq_comp_int(struct notifier_block *nb,
- /* Some architectures don't latch interrupts when they are disabled, so using
-  * mlx5_eq_poll_irq_disabled could end up losing interrupts while trying to
-  * avoid losing them.  It is not recommended to use it, unless this is the last
-- * resort.
-+ * resort. This function may sleep and must be called from process context.
-  */
- u32 mlx5_eq_poll_irq_disabled(struct mlx5_eq_comp *eq)
- {
- 	u32 count_eqe;
- 
-+	might_sleep();
-+	mutex_lock(&eq->poll_lock);
- 	disable_irq(eq->core.irqn);
- 	count_eqe = eq->core.cons_index;
- 	mlx5_eq_comp_int(&eq->irq_nb, 0, NULL);
- 	count_eqe = eq->core.cons_index - count_eqe;
- 	enable_irq(eq->core.irqn);
-+	mutex_unlock(&eq->poll_lock);
- 
- 	return count_eqe;
- }
- 
-+int mlx5_eq_reap(struct mlx5_core_dev *dev, struct mlx5_eq_comp *eq)
-+{
-+	u32 eqe_count;
-+
-+	if (!dev || !eq)
-+		return -EINVAL;
-+
-+	mlx5_core_dbg(dev, "EQ 0x%x: Cons = 0x%x, irqn = 0x%x\n",
-+		      eq->core.eqn, eq->core.cons_index, eq->core.irqn);
-+
-+	eqe_count = mlx5_eq_poll_irq_disabled(eq);
-+	if (eqe_count)
-+		mlx5_core_warn(dev, "Recovered %d EQEs on EQ 0x%x\n",
-+			       eqe_count, eq->core.eqn);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(mlx5_eq_reap);
-+
- static void mlx5_eq_async_int_lock(struct mlx5_eq_async *eq, bool recovery,
- 				   unsigned long *flags)
- 	__acquires(&eq->lock)
-@@ -1012,6 +1034,7 @@ static int create_comp_eq(struct mlx5_core_dev *dev, u16 vecidx)
- 	INIT_LIST_HEAD(&eq->tasklet_ctx.list);
- 	INIT_LIST_HEAD(&eq->tasklet_ctx.process_list);
- 	spin_lock_init(&eq->tasklet_ctx.lock);
-+	mutex_init(&eq->poll_lock);
- 	tasklet_setup(&eq->tasklet_ctx.task, mlx5_cq_tasklet_cb);
- 
- 	irq = xa_load(&table->comp_irqs, vecidx);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h
-index b1edc71ffc6d..ca019b3019aa 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h
-@@ -6,6 +6,7 @@
- #include <linux/mlx5/driver.h>
- #include <linux/mlx5/eq.h>
- #include <linux/mlx5/cq.h>
-+#include <linux/mutex.h>
- 
- #define MLX5_EQE_SIZE       (sizeof(struct mlx5_eqe))
- 
-@@ -46,6 +47,7 @@ struct mlx5_eq_comp {
- 	struct notifier_block   irq_nb;
- 	struct mlx5_eq_tasklet  tasklet_ctx;
- 	struct list_head        list;
-+	struct mutex            poll_lock; /* protect recovery polling */
- };
- 
- static inline u32 eq_get_size(struct mlx5_eq *eq)
-diff --git a/include/linux/mlx5/eq.h b/include/linux/mlx5/eq.h
-index 3705a382276b..a053f9eb2614 100644
---- a/include/linux/mlx5/eq.h
-+++ b/include/linux/mlx5/eq.h
-@@ -9,6 +9,7 @@
- #define MLX5_NUM_SPARE_EQE (0x80)
- 
- struct mlx5_eq;
-+struct mlx5_eq_comp;
- struct mlx5_irq;
- struct mlx5_core_dev;
- 
-@@ -29,6 +30,7 @@ void mlx5_eq_disable(struct mlx5_core_dev *dev, struct mlx5_eq *eq,
- 
- struct mlx5_eqe *mlx5_eq_get_eqe(struct mlx5_eq *eq, u32 cc);
- void mlx5_eq_update_ci(struct mlx5_eq *eq, u32 cc, bool arm);
-+int mlx5_eq_reap(struct mlx5_core_dev *dev, struct mlx5_eq_comp *eq);
- 
- /* The HCA will think the queue has overflowed if we
-  * don't tell it we've been processing events.  We
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index cb3b6163961b..c9a41c88839a 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -13,6 +13,7 @@
- #define IB_VERBS_H
- 
- #include <linux/ethtool.h>
-+#include <linux/kernel.h>
- #include <linux/types.h>
- #include <linux/device.h>
- #include <linux/bvec.h>
-@@ -2542,6 +2543,7 @@ struct ib_device_ops {
- 	int (*poll_cq)(struct ib_cq *cq, int num_entries, struct ib_wc *wc);
- 	int (*peek_cq)(struct ib_cq *cq, int wc_cnt);
- 	int (*req_notify_cq)(struct ib_cq *cq, enum ib_cq_notify_flags flags);
-+	int (*reap_eq)(struct ib_device *device, struct ib_cq *cq);
- 	int (*post_srq_recv)(struct ib_srq *srq,
- 			     const struct ib_recv_wr *recv_wr,
- 			     const struct ib_recv_wr **bad_recv_wr);
-@@ -4296,6 +4298,38 @@ static inline int ib_req_notify_cq(struct ib_cq *cq,
- 	return cq->device->ops.req_notify_cq(cq, flags);
- }
- 
-+/**
-+ * ib_reap_eq - Poll the event queue associated with a CQ.
-+ * @device: Device that owns the CQ.
-+ * @cq: CQ whose associated event queue should be polled.
-+ *
-+ * Poll the device event queue associated with @cq to recover completions
-+ * after a missed event queue notification. This is an optional provider
-+ * callback.
-+ *
-+ * This helper may sleep and must be called from process context without
-+ * spinlocks held or IRQs disabled.
-+ *
-+ * Return: 0 on success, %-EINVAL for invalid input, %-EWOULDBLOCK when
-+ * called from interrupt context or with IRQs disabled, and %-EOPNOTSUPP
-+ * when unsupported.
-+ */
-+static inline int ib_reap_eq(struct ib_device *device, struct ib_cq *cq)
-+{
-+	if (!device || !cq || cq->device != device)
-+		return -EINVAL;
-+
-+	if (WARN_ON_ONCE(in_interrupt() || irqs_disabled()))
-+		return -EWOULDBLOCK;
-+
-+	might_sleep();
-+
-+	if (!device->ops.reap_eq)
-+		return -EOPNOTSUPP;
-+
-+	return device->ops.reap_eq(device, cq);
-+}
-+
- struct ib_cq *ib_cq_pool_get(struct ib_device *dev, unsigned int nr_cqe,
- 			     int comp_vector_hint,
- 			     enum ib_poll_context poll_ctx);
+ksz_ptp_clock_register() sets caps.n_pins, caps.n_per_out and the callbacks,
+but never sets caps.supported_perout_flags, and caps lives in the zeroed
+struct ksz_device, so the mask stays 0. The core rejects any flag that is not
+advertised before it calls the driver:
+
+drivers/ptp/ptp_chardev.c:ptp_perout_request() {
+	...
+	if (perout->flags & ~ops->supported_perout_flags)
+		return -EOPNOTSUPP;
+	...
+	return ops->enable(ops, &req, perout->period.sec || perout->period.nsec);
+}
+
+That would make the "if (request->flags & ~PTP_PEROUT_DUTY_CYCLE)" check in
+ksz_ptp_enable_perout() unable to fire, the PTP_PEROUT_DUTY_CYCLE pulse-width
+branch unreachable, and the newly saved flags/on fields dead state.
+
+The user visible effect looks like the opposite of the description: the driver
+implements PTP_PEROUT_DUTY_CYCLE but the core answers -EOPNOTSUPP, so such an
+output can never be created. Would setting caps.supported_perout_flags =
+PTP_PEROUT_DUTY_CYCLE be needed, and should the flags part of the changelog be
+dropped until then? The index part of the description does hold, since
+ksz_ptp_verify_pin() accepts PTP_PF_PEROUT on any pin for any channel.
+
+> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+> index 39cc70d65900b..0979b6e04d1e9 100644
+> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
+
+[ ... ]
+
+> @@ -222,13 +223,11 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
+>  		return 0;
+>  	}
+>  
+> -	ptp_data->perout_target_time_first.tv_sec  = request->start.sec;
+> -	ptp_data->perout_target_time_first.tv_nsec = request->start.nsec;
+> +	memcpy(&ptp_data->perout_request, request, sizeof(struct ptp_perout_request));
+>  
+> -	ptp_data->perout_period.tv_sec = request->period.sec;
+> -	ptp_data->perout_period.tv_nsec = request->period.nsec;
+> -
+> -	cycle_width_ns = timespec64_to_ns(&ptp_data->perout_period);
+> +	tmp.tv_sec = ptp_data->perout_request.period.sec;
+> +	tmp.tv_nsec = ptp_data->perout_request.period.nsec;
+> +	cycle_width_ns = timespec64_to_ns(&tmp);
+>  	if ((cycle_width_ns & TRIG_CYCLE_WIDTH_M) != cycle_width_ns)
+>  		return -EINVAL;
+
+[Severity: High]
+Should the request be committed to ptp_data->perout_request only after it has
+been validated and the hardware has actually been programmed?
+
+After the memcpy, ksz_ptp_enable_perout() can still fail at the cycle-width
+mask check just below, at ksz_ptp_tou_pulse_verify(), and at every register
+access in ksz_ptp_configure_perout(), ksz_ptp_tou_gpio() and
+ksz_ptp_tou_start(). None of those returns restores the previous saved
+request, and ptp_data->tou_mode is not rolled back either - it is cleared only
+on the !on path and set to KSZ_PTP_TOU_PEROUT only on full success.
+
+The entry guard in the same function accepts a new request while an output is
+already running:
+
+	if (ptp_data->tou_mode != KSZ_PTP_TOU_PEROUT &&
+	    ptp_data->tou_mode != KSZ_PTP_TOU_IDLE)
+		return -EBUSY;
+
+So for a second PTP_PEROUT_REQUEST that gets rejected after the memcpy,
+tou_mode stays KSZ_PTP_TOU_PEROUT and ksz_ptp_settime()/ksz_ptp_adjtime() then
+enter ksz_ptp_restart_perout() with a request that was never programmed. Since
+index and flags are now persisted too, can this re-arm a different trigger
+unit and GPIO than the one actually running, and keep settime()/adjtime()
+failing with the same error?
+
+There is also a period that this check rejects but the memcpy has already
+stored: period.sec = 4, period.nsec = 294967296 gives 0x100000000 ns, and
+TRIG_CYCLE_WIDTH_M is GENMASK(31, 0), so the request returns -EINVAL. On the
+next clock step, ksz_ptp_restart_perout() feeds that value to
+div_u64(now_ns - first_ns, period_ns), whose divisor parameter is u32, so the
+divisor truncates to 0. Is that a divide error in process context with
+ptp_data->lock held?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the ksz_ptp_tou_reset() call
+that runs just above this hunk discards the result of the TRIG_RESET write:
+
+drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_tou_reset() {
+	/* Reset trigger unit (clears TRIGGER_EN, but not GPIOSTATx) */
+	ret = ksz_rmw32(dev, REG_PTP_CTRL_STAT__4, TRIG_RESET, TRIG_RESET);
+
+	data = FIELD_PREP(TRIG_DONE_M, BIT(unit));
+	ret = ksz_write32(dev, REG_PTP_TRIG_STATUS__4, data);
+	if (ret)
+		return ret;
+
+ret is overwritten before it is tested, so a failed bus transaction looks like
+a successful reset and both the enable and the restart flow go on to
+reprogram REG_TRIG_CTRL__4, the cycle/pulse widths and the target time of a
+trigger unit whose TRIG_ENABLE was never cleared. Should the first return
+value be checked?
+
+> @@ -763,6 +763,7 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  	struct ptp_perout_request request;
+>  	struct timespec64 next;
+>  	struct timespec64 now;
+> +	struct timespec64 tmp;
+>  	unsigned int count;
+      ^^^^^^^^^^^^^^^^^^
+
+[Severity: High]
+This is a pre-existing issue, but count is 32-bit while div_u64() returns u64,
+and the patched code still depends on it. Can the quotient wrap here?
+
+	count = div_u64(now_ns - first_ns, period_ns);
+	next_ns = first_ns + count * period_ns;
+	...
+	while (next_ns < now_ns + 100000000)
+		next_ns += period_ns;
+
+The RTC starts at 0 (see ksz_ptp_start_clock()), so enabling a 1 ms output
+shortly after probe and then stepping the clock to wall-clock time gives
+now_ns - first_ns of roughly 1.7e18 ns and a true quotient of about 1.7e12.
+After truncation to 32 bits, next_ns stays far behind now_ns and the guard
+loop has to advance one period at a time, on the order of 1e12 iterations,
+with ptp_data->lock held by ksz_ptp_settime()/ksz_ptp_adjtime(). Would
+declaring count as u64 be enough here?
+
+> @@ -773,10 +774,14 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  		return ret;
+>  
+>  	now_ns = timespec64_to_ns(&now);
+> -	first_ns = timespec64_to_ns(&ptp_data->perout_target_time_first);
+> +	tmp.tv_sec = ptp_data->perout_request.start.sec;
+> +	tmp.tv_nsec = ptp_data->perout_request.start.nsec;
+> +	first_ns = timespec64_to_ns(&tmp);
+>  
+>  	/* Calculate next perout event based on start time and period */
+> -	period_ns = timespec64_to_ns(&ptp_data->perout_period);
+> +	tmp.tv_sec = ptp_data->perout_request.period.sec;
+> +	tmp.tv_nsec = ptp_data->perout_request.period.nsec;
+> +	period_ns = timespec64_to_ns(&tmp);
+>  
+>  	if (first_ns < now_ns) {
+>  		count = div_u64(now_ns - first_ns, period_ns);
+
+[Severity: High]
+This is a pre-existing issue as well, since the old code stored
+ptp_data->perout_period before the same validation, but can period_ns be 0
+here?
+
+struct ptp_clock_time has __s64 sec and __u32 nsec and the core does not
+normalize them, so a request with period.sec = -1 and period.nsec =
+1000000000 arrives with on == 1 because ptp_perout_request() uses the raw
+fields:
+
+	return ops->enable(ops, &req, perout->period.sec || perout->period.nsec);
+
+timespec64_to_ns() of {-1, 1000000000} is 0, which passes the cycle-width mask
+check in ksz_ptp_enable_perout(), and the derived default pulse width is 0,
+which ksz_ptp_tou_pulse_verify() accepts (0 & 3 is 0 and FIELD_FIT() of 0 is
+true). The zero period is stored either way.
+
+On the next clock_settime()/clock_adjtime(), does div_u64(now_ns - first_ns, 0)
+Oops, or, when first_ns >= now_ns, does this loop never terminate:
+
+	while (next_ns < now_ns + 100000000)
+		next_ns += period_ns;
+
+Both happen with ptp_data->lock held. Would a positive-period check in
+ksz_ptp_enable_perout() before the request is stored close this?
+
+> @@ -791,12 +796,9 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  
+>  	/* Restart periodic output signal */
+>  	next = ns_to_timespec64(next_ns);
+> +	memcpy(&request, &ptp_data->perout_request, sizeof(struct ptp_perout_request));
+>  	request.start.sec  = next.tv_sec;
+>  	request.start.nsec = next.tv_nsec;
+> -	request.period.sec  = ptp_data->perout_period.tv_sec;
+> -	request.period.nsec = ptp_data->perout_period.tv_nsec;
+> -	request.index = 0;
+> -	request.flags = 0;
+>  
+>  	return ksz_ptp_enable_perout(dev, &request, 1);
+>  }
+
+[Severity: Medium]
+This isn't a bug introduced by this patch either, since the restart path
+already called into ksz_ptp_enable_perout() with a hardcoded index, but the
+saved index is now the lookup key for a pin lookup made without pincfg_mux.
+
+ksz_ptp_enable_perout() resolves the pin with:
+
+	pin = ptp_find_pin(ptp_data->clock, PTP_PF_PEROUT, request->index);
+	if (pin < 0)
+		return -EINVAL;
+
+and include/linux/ptp_clock_kernel.h documents for ptp_find_pin():
+
+ * The caller must hold ptp_clock::pincfg_mux.
+
+The core only provides that for the .enable() callback, which
+ptp_perout_request() wraps in the pincfg_mux guard. Coming in through
+ksz_ptp_settime()/ksz_ptp_adjtime() -> ksz_ptp_restart_perout() only
+ptp_data->lock is held, while ptp_set_pinfunc() updates pin->func and
+pin->chan with plain stores under pincfg_mux alone. Can a concurrent
+PTP_PIN_SETFUNC make this lookup return the wrong pin index, or -1, in which
+case the -EINVAL return leaves the trigger unit already reset, the output
+stopped and tou_mode still KSZ_PTP_TOU_PEROUT?
+
+Note that taking pincfg_mux here would invert the .enable() order of
+pincfg_mux -> ptp_data->lock; caching the pin index resolved inside .enable()
+and reusing it on restart avoids that.
+
+> diff --git a/drivers/net/dsa/microchip/ksz_ptp.h b/drivers/net/dsa/microchip/ksz_ptp.h
+> index 7067ec9bd1e6f..eb3827203b962 100644
+> --- a/drivers/net/dsa/microchip/ksz_ptp.h
+> +++ b/drivers/net/dsa/microchip/ksz_ptp.h
+> @@ -29,8 +29,7 @@ struct ksz_ptp_data {
+>  	spinlock_t clock_lock;
+>  	struct timespec64 clock_time;
+>  	enum ksz_ptp_tou_mode tou_mode;
+> -	struct timespec64 perout_target_time_first;  /* start of first pulse */
+> -	struct timespec64 perout_period;
+> +	struct ptp_perout_request perout_request;
+>  };
+
+[Severity: Medium]
+This is a pre-existing limitation rather than something the patch introduces,
+but now that the index is part of the saved state it becomes more visible: one
+tou_mode and one perout_request describe up to three trigger units
+(caps.n_per_out = 3, PTP_TOU_INDEX is GENMASK(1, 0)) and two pins, and
+ksz_ptp_verify_pin() accepts PTP_PF_PEROUT on any pin for any channel.
+
+Since the guard in ksz_ptp_enable_perout() lets a request through while
+tou_mode == KSZ_PTP_TOU_PEROUT, the memcpy there overwrites the record of the
+first channel while its unit stays armed. A later clock step invalidates the
+absolute TRIG_TARGET_SEC/NANOSEC of every armed unit, but
+ksz_ptp_restart_perout() re-arms only the single saved index, so the other
+output keeps a target time in the past. Disabling any channel also sets
+tou_mode = KSZ_PTP_TOU_IDLE while another unit is still armed. Would it be
+worth mentioning this single-slot limitation in the changelog, or tracking
+state per channel?
+
 -- 
-2.43.7
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917-fix-perout-v2-1-d8acf3eea6f7%40bootlin.com
