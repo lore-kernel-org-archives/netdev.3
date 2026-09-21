@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A044519BE;
-	Mon, 21 Sep 2026 08:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF9C451986;
+	Mon, 21 Sep 2026 08:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789979436; cv=none; b=IWstl9E5mJW0Ikz3TrqeLq7qH98mfl70SXvDDbfhc0sO6BNkeQRULfGtrAP6qnQxQtsFqOHUc0X4PtDXb2I0i9OUDj+oFZpFhJ6jI6q/pdmWUWJgGxEM6cT1obzREszA3y5hLgCKGygjN+7pkNglsY+AKoqJbJZ6Oq+VzE/KbTg=
+	t=1789979443; cv=none; b=Xw+xRiIwrjWVdhlrXCXJfFh9rbefyX2GKzm2/raGb6JP0HQQmrB1IrOEAtlF7MCC9kX9zbOCC/xiRgeFE8xpWKlo0JN2tbKu2zSLmzt+nYbSRC9bPDoJLw8Z1R9kiYzTlCS1BpH3pUkJBzmASuJlF2FyXsj/x6PTgRzyKNWFgiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789979436; c=relaxed/simple;
-	bh=Yd0uxyHQTGlQ3+hCXGPlmYlFuHJrMutLMSCThQbrFFY=;
+	s=arc-20240116; t=1789979443; c=relaxed/simple;
+	bh=7Gj5awCwXFy8070vtROZHwXzHjMm5Rfqr7GgyzYreMk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n4NfMTA5GFYKcoA9NVCHVXaLCw5mpSLmhnwUl72+GKeCPmWvicHobkJVLMUU/63BOC/5GkYUMlTS68Y+goHDJl6cr4Lr59zp2sXZ63kRi/vy7/mSs2xTfOKrROXHiC3qjGyuEBidPYDKtgljinGATwbeV1ZjRkMTGGEMJLJ8i0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJWrQ5ck; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=hWtlLTyeR/ee8KCD3ijGS3vKhhkJecoCegAur4bRJh0JZJmgPfP8xoez9gCl9UhYHi9RoLJKaN81O3ONWQBUzJo7Jw1aMETsW4y97Zw22mjtK1DjSH4+3bt0EfZ9DSczlh0dmccv/wbCDfMCkQRF+C4zqAVHcp1iaHUYsUnxl1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqh+C4wr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJWrQ5ck"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374291F000FF;
-	Mon, 21 Sep 2026 08:30:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqh+C4wr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7133B1F00898;
+	Mon, 21 Sep 2026 08:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789979434;
-	bh=W+9/LqQt7kHG504rV0ExfKya1vB2CfePQ2Ls9RNjdIU=;
+	s=k20260515; t=1789979436;
+	bh=wNEYUGZC88AhU0NcvSKBXqpj+bQa1LtifzOVLPZeP3Y=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RJWrQ5ckGqApePtfDNmSrTvM0Y5ObURNkZ61RF5lbh0pHCofKZ9+mTi92ONuE7hQy
-	 SREmbw7EgzeMiILd9c4Skr5PpMKioH03Ll6b2Larc8YrIh63vdyVbv9AD8TcXBayTz
-	 abxZyDetAc1Ve+aoc5IlbfWDlIFA2FJCibKHalZ/AwmCk1iTuMpyWhWAPUc7MM1B/M
-	 G/jv2kCJpgo1RIqQ/RQx2w6T0Rg+zU+CVWWM56AmLY2gC6Lio9REa/GkAmmpkwm3wp
-	 GS5TDtHnFCUt5alLokvzkqLvC3R6wJo5J6XpfO2ApqkmbPIXSZsv2D5gekdnv9UMnM
-	 +ggc6tLNOXmNQ==
-Subject: Re: [PATCH net-next v4 3/8] r8152: split rtl8156_enable/up/down into
- per-chip-family functions
+	b=gqh+C4wrS3Ju47tZ1H1hrhMJUzPt40N6kNNETt6ELz7IttSmnTZLzqn6pagpKoNrQ
+	 3y0EXa57fKY1r1CtJdUJjCASC8G0P4MgV5wb9UI+3LBQ8Rr62+tPq/x9vpalRbv9wO
+	 2WJFw91qoyqliBx7bZnVIzkXZpGLiFaR4n8ybNfvYNLdleQxClLckjuj9w97TwCuJu
+	 TG7mJGakrmxFRo9CxMnJo6K7ojqL3TLyTWmQjFGgOEvGNIDF2w8T8d98rSFfiKZRLB
+	 72TxA3tHbd9fIrdff8QOM/tjmxVbDJWpB5fQuOmgLeUWY0vqb44+pvOpLZdMiU2Q8Y
+	 jnQyuxT4ZgWXg==
+Subject: Re: [PATCH net-next v4 4/8] r8152: split r8157_hw_phy_cfg into
+ RTL8157 and RTL8159 variants
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
-Date: Mon, 21 Sep 2026 08:30:33 +0000
-Message-ID: <178997943377.2160803.16681954944740037290@kernel.org>
-In-Reply-To: <20260917070637.62827-4-nic_swsd@realtek.com>
-References: <20260917070637.62827-4-nic_swsd@realtek.com>
+Date: Mon, 21 Sep 2026 08:30:34 +0000
+Message-ID: <178997943498.2160803.2709433616562364871@kernel.org>
+In-Reply-To: <20260917070637.62827-5-nic_swsd@realtek.com>
+References: <20260917070637.62827-5-nic_swsd@realtek.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+Critical: 0 · High: 0 · Medium: 3 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,224 +58,278 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] For RTL8157/RTL8159 (RTL_VER_16, RTL_VER_17_QFN68,
-  RTL_VER_17_QFN100) the newly extracted rtl8157_up() / rtl8157_down()…
-- [Medium] The patch is presented as a refactor ("split
-  rtl8156_enable/up/down into per-chip-family functions") but it…
-- [Medium] Suspicious bitwise clear for Clear_SDR feature in rtl8157_up()
+- [Medium] r8159_hw_phy_cfg() (drivers/net/usb/r8152.c:8309) contains
+  functional PHY programming that the commit message does not disclose.
+- [Medium] r8159_hw_phy_cfg() (drivers/net/usb/r8152.c:8309) drops the
+  unconditional rtl_eee_enable(tp, false) that r8157_hw_phy_cfg() keeps…
+- [Medium] The preceding patch in this series, "r8152: split RTL_VER_17
+  into QFN68 and QFN100 package variants", justifies the new package…
+- [Low] The commit message states the split was done "instead of
+  switching on version mid-function", but both resulting functions still…
 
 --
 
-r8152: split rtl8156_enable/up/down into per-chip-family functions
+r8152: split r8157_hw_phy_cfg into RTL8157 and RTL8159 variants
 
-This splits the version-guarded rtl8156_enable()/rtl8156_up()/rtl8156_down()
-into per-chip-family callbacks: rtl8156b_enable() for VER_12/13/15 and
-rtl8157_enable()/rtl8157_up()/rtl8157_down() for VER_16/17, while
-rtl8156_up()/rtl8156_down() keep serving VER_10..VER_15. Along the way
-several register writes that were previously version guarded become
-unconditional for one family or another.
+This splits r8157_hw_phy_cfg() into an RTL8157-only version and a new
+r8159_hw_phy_cfg() for RTL_VER_17_QFN68/QFN100, each carrying its own copy of
+the shared prologue and epilogue.  It also adds sram2_set_bits()/
+sram2_clr_bits() helpers and replaces a raw 0xa430 write with the named
+OCP_POWER_CFG/EN_10M_PLLOFF/EN_ALDPS_PLLOFF macros.
+
+No Link: tags in the commit header.
+
+A few questions below about the new function and the commit message.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 9ce072c38b5b5..c513c286c5499 100644
+> index c513c286c5499..d30031dbf2d38 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
 
 [ ... ]
 
-> @@ -6849,8 +6892,7 @@ static void rtl8156_up(struct r8152 *tp)
+> @@ -8257,12 +8271,85 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+>  		sram2_write_w0w1(tp, 0x807c, 0xff00, 0x5000);
+>  		sram2_write_w0w1(tp, 0x809d, 0xff00, 0x5000);
+>  		break;
+> +	default:
+> +		break;
+> +	}
 >  
->  	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_OOB_CTRL, NOW_IS_OOB);
->  
-> -	if (tp->version >= RTL_VER_16)
-> -		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR1, BIT(3));
-> +	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR1, BIT(3));
 
-[Severity: Medium]
+[ ... copy of the r8157 epilogue snipped ... ]
 
-Should the behaviour changes to already-supported chips be a separate
-patch from the mechanical split?
-
-The subject describes a split, but this hunk starts clearing PLA_RCR1
-BIT(3) on every ifup for RTL8156/8156B, which previously only happened
-for VER_16 and later. The same patch also:
-
-- adds a Clear_SDR write for VER_13/15 (USB 0xd3ca BIT(15)) in
-  rtl8156_up()
-- clears USB_SPEED_OPTION RG_PWRDN_EN|ALL_SPEED_OFF for RTL8157/8159 in
-  rtl8157_up(), which was excluded for them before
-- adds PLA_BDC_CR ALDPS_PROXY_MODE and PLA_OOB_CTRL DIS_MCU_CLROOB to OOB
-  entry in rtl8156_down() and rtl8157_down()
-- changes RTL8157/8159 OOB sizing to PLA_RMS=1526 and PLA_MTPS=10K in
-  rtl8157_down()
-
-The commit message says:
-
-  "Per the datasheet, this uncovers real register differences that the
-   old version guards had wrong or missing"
-
-If the old guards were wrong, then shipping RTL8156/8156B dongles are
-mis-programmed today, in particular for the OOB/wake-on-LAN path after
-ifdown. Can the message name the observed symptom, add Fixes: tags for
-the commits that introduced the wrong guards (195aae321c82, fd3c7d080df5,
-ad2a55b63b41), and state which chips were tested?
-
-Splitting the refactor from the register fixes would also let the fixes be
-backported and bisected on their own.
-
->  
->  	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_SFF_STS_7, MCU_BORW_EN);
->  
-> @@ -6872,11 +6914,11 @@ static void rtl8156_up(struct r8152 *tp)
->  	ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_RXFIFO_FULL, RXFIFO_FULL_MASK,
->  		      0x08);
->  
-> -	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
-> +	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
-> +			  PLA_MCU_SPDWN_EN);
->  
-> -	if (tp->version < RTL_VER_16)
-> -		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
-> -				  RG_PWRDN_EN | ALL_SPEED_OFF);
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
-> +			  RG_PWRDN_EN | ALL_SPEED_OFF);
-
-[ ... ]
-
-> @@ -6929,7 +6977,102 @@ static void rtl8156_down(struct r8152 *tp)
-
-[ ... ]
-
-> +static void rtl8157_up(struct r8152 *tp)
+> +static void r8159_hw_phy_cfg(struct r8152 *tp)
 > +{
-> +	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-> +		return;
+> +	u16 data;
 > +
-> +	r8153b_u1u2en(tp, false);
-> +	r8153_aldps_en(tp, false);
-
-[ ... ]
-
-> +	/* share FIFO settings */
-> +	ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_RXFIFO_FULL, RXFIFO_FULL_MASK,
-> +		      0x08);
+> +	r8156b_wait_loading_flash(tp);
 > +
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
-> +			  RG_PWRDN_EN | ALL_SPEED_OFF);
-
-[Severity: Medium]
-
-Is dropping the PLA_MCU_SPDWN_EN programming intentional for
-RTL8157/RTL8159?
-
-Before the split, VER_16/VER_17 ran rtl8156_up(), which cleared the bit
-unconditionally at exactly this spot in the sequence:
-
-	/* share FIFO settings */
-	ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_RXFIFO_FULL, RXFIFO_FULL_MASK,
-		      0x08);
-
-	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
-
-	if (tp->version < RTL_VER_16)
-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_SPEED_OPTION,
-				  RG_PWRDN_EN | ALL_SPEED_OFF);
-
-and the old rtl8156_down() had
-
-	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
-			  PLA_MCU_SPDWN_EN);
-
-as its first register write for these chips. Neither rtl8157_up() nor
-rtl8157_down() touches PLA_MAC_PWR_CTRL3.
-
-Grepping PLA_MCU_SPDWN_EN after the patch leaves only rtl8153b_up/down,
-rtl8153c_up, rtl8156_up/down, r8153b_init, r8156_init and r8156b_init.
-r8157_init() and r8159_init() do not clear it either, and
-r8156_mac_clk_spd(), which r8157_init() does call, only writes
-PLA_MAC_PWR_CTRL and PLA_MAC_PWR_CTRL2.
-
-So for VER_16 and both VER_17 variants the MCU speed-down enable is now
-never written: while the interface is up it keeps whatever the ROM/OOB
-firmware or a previous driver instance left, and the set on OOB entry is
-gone. The commit message enumerates the other register deltas but not
-this one. Was the paired clear-on-up / set-on-down meant to be carried
-over into rtl8157_up()/rtl8157_down()?
-
-The omission is also still present at the end of the series
-(eac8e24403901016050a115a3102a0c0b46ddbbd), where the later added
-rtl8157_unload() does not add it back.
-
+> +	ocp_word_test_and_clr_bits(tp, MCU_TYPE_USB, USB_MISC_0, PCUT_STATUS);
 > +
-> +	ocp_write_dword(tp, MCU_TYPE_USB, USB_RX_BUF_TH, 0x00600400);
-> +
-> +	if (tp->saved_wolopts != __rtl_get_wol(tp)) {
-> +		netif_warn(tp, ifup, tp->netdev, "wol setting is changed\n");
-> +		__rtl_set_wol(tp, tp->saved_wolopts);
+> +	data = r8153_phy_status(tp, 0);
+> +	switch (data) {
+> +	case PHY_STAT_EXT_INIT:
+> +		rtl8152_apply_firmware(tp, true);
+> +		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
+> +		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
+> +		break;
+> +	case PHY_STAT_LAN_ON:
+> +	case PHY_STAT_PWRDN:
+> +	default:
+> +		rtl8152_apply_firmware(tp, false);
+> +		break;
 > +	}
 > +
-> +	r8153_aldps_en(tp, true);
+> +	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
 > +
-> +	/* Clear_SDR */
-> +	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xd378, BIT(7));
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, 0xcd06, BIT(15));
-> +}
-> +
-> +static void rtl8157_down(struct r8152 *tp)
-> +{
-> +	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags)) {
-> +		rtl_drop_queued_tx(tp);
-> +		return;
-> +	}
-> +
-> +	r8153b_u1u2en(tp, false);
 > +	r8153_aldps_en(tp, false);
 
 [Severity: Medium]
-Is the clear (rather than set) of USB 0xcd06 BIT(15) here what you
-meant?
+Here the rtl_eee_enable(tp, false) call is gone, while the epilogue of
+r8159_hw_phy_cfg() still ends with:
 
-The commit message says RTL8157/8159 "gain their own Clear_SDR enables
-(USB 0xd378 BIT(7), USB 0xcd06 BIT(15))", and the comment above the two
-writes just says "Clear_SDR". The first write uses ocp_byte_set_bits()
-to set 0xd378 BIT(7), which matches "enable". The second uses
-ocp_word_clr_bits() to zero 0xcd06 BIT(15), which is the opposite
-direction, and it is the only Clear_SDR write in the series that clears
-rather than sets: the RTL8156B path added in this same patch does
+	if (tp->eee_en)
+		rtl_eee_enable(tp, true);
 
-	ocp_word_set_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(15));
+with no else branch.
 
-for its Clear_SDR enable. If 0xcd06 BIT(15) is an active-low or
-disable-type bit, that would explain the asymmetry, but nothing in the
-code or the changelog says so, and a plain clr/set typo here would
-silently leave Clear_SDR off on RTL8157/8159 with no visible error.
+When tp->eee_en is false, is there anything left in this callback that
+programs the EEE registers or updates tp->ups_info.eee?  r8157_hw_phy_cfg(),
+r8153_hw_phy_cfg(), r8153b_hw_phy_cfg() and the r8156/r8156b variants all
+keep the unconditional disable in the same spot.
 
-Since these are bare magic addresses with no register defines, please
-either give the bit a name (a #define alongside the other USB_*
-registers) or extend the comment to state the polarity, e.g. that
-BIT(15) of 0xcd06 must be 0 to enable Clear_SDR. Can you confirm
-against the datasheet which of set/clear the hardware needs for that
-bit?
+tp->eee_en is user settable through r8152_set_eee(), which does
+tp->eee_en = eee->eee_enabled followed by rtl_eee_enable(tp, tp->eee_en),
+i.e. both states get programmed there.  hw_phy_cfg() is what re-establishes
+that policy after the PHY goes back to defaults: it is re-run from the
+PCUT_STATUS power-cut recovery paths and from rtl_hw_phy_work_func_t, and
+rtl8152_apply_firmware() runs just above.
+
+So after "ethtool --set-eee <dev> eee off" and a later power-cut recovery on
+RTL8159, can EEE come back enabled/advertised in hardware while ethtool still
+reports eee_enabled == 0 and tp->ups_info.eee (used to build USB_UPS_FLAGS)
+stays stale?
+
+The commit message says "RTL8159 doesn't need EEE disabled before
+reprogramming PHY parameters", which covers the ordering role of that call.
+Does it also cover its second role of enforcing the requested EEE state?
+
+> +
+> +	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
+> +	WARN_ON_ONCE(data != PHY_STAT_LAN_ON);
+> +
+> +	/* PFM mode */
+> +	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
+> +
+> +	/* Advanced Power Saving parameter */
+> +	ocp_reg_set_bits(tp, OCP_POWER_CFG, EN_10M_PLLOFF | EN_ALDPS_PLLOFF);
+> +
+> +	/* Disable ALDPS force mode */
+> +	ocp_reg_clr_bits(tp, 0xa44a, BIT(2));
+> +
+> +	/* Disable bypass_turn_off_clk_in_aldps */
+> +	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
+> +
+> +	switch (tp->version) {
+
+[Severity: Low]
+The commit message says the split was done "instead of switching on version
+mid-function", but both resulting functions still switch on tp->version with
+only one non-default case each.
+
+rtl_ops_init() installs ops->hw_phy_cfg = r8159_hw_phy_cfg only under
+case RTL_VER_17_QFN68 / case RTL_VER_17_QFN100, and
+ops->hw_phy_cfg = r8157_hw_phy_cfg only under case RTL_VER_16, so neither
+default arm is reachable.
+
+Can both switches (and their default: break; arms) simply be dropped?
+
+>  	case RTL_VER_17_QFN68:
+>  	case RTL_VER_17_QFN100:
+
+[Severity: Medium]
+The preceding patch in this series, "r8152: split RTL_VER_17 into QFN68 and
+QFN100 package variants", justifies the new package detection with:
+
+    "RTL8159 is sold in two packages, QFN68 and QFN100, which need
+     different PHY tuning (added in a later patch) and a package-specific
+     u2phy backup-restore patch"
+
+This is the patch that adds the RTL8159 PHY tuning, yet both package
+versions fall into the same case and get identical power-level, TX filter,
+CMP timer, PLL and SRAM/SRAM2 values.  By the end of the series the only
+QFN68-specific code is the u2phy backup-restore write (0xb99c BIT(0)) in
+r8159_init(), the UPS enable/disable selection, and the 10G EEE UPS flag.
+
+Is one of the two packages being programmed with the other package's PHY
+parameters here, or was the per-package PHY tuning rationale in the previous
+patch inaccurate?
+
+> -		/* Disable bypass turn off clk in ALDPS */
+> -		ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
+> -
+>  		/* Power level tuning
+>  		 * test mode power level
+>  		 */
+> @@ -8272,22 +8359,35 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+>  		sram_write_w0w1(tp, 0x81ae, 0xff00, 0x0f00);
+>  		sram_write_w0w1(tp, 0x81b9, 0xff00, 0xb900);
+>  		/* normal link TX filter */
+> -		sram2_write_w0w1(tp, 0x83b0, 0x0e00, 0);
+> -		sram2_write_w0w1(tp, 0x83c5, 0x0e00, 0);
+> -		sram2_write_w0w1(tp, 0x83da, 0x0e00, 0);
+> -		sram2_write_w0w1(tp, 0x83ef, 0x0e00, 0);
+> +		sram2_clr_bits(tp, 0x83b0, 0x0e00);
+> +		sram2_clr_bits(tp, 0x83c5, 0x0e00);
+> +		sram2_clr_bits(tp, 0x83da, 0x0e00);
+> +		sram2_clr_bits(tp, 0x83ef, 0x0e00);
+> +
+> +		ocp_reg_w0w1(tp, 0xbf38, 0x01f0, 0x0160);
+> +		ocp_reg_w0w1(tp, 0xbf3a, 0x001f, 0x0014);
+> +		/* shorten CLKS latency */
+> +		ocp_reg_clr_bits(tp, 0xbf28, BIT(14) | BIT(13));
+> +		ocp_reg_clr_bits(tp, 0xbf2c, BIT(15) | BIT(14));
+> +		/* CMP_Timer on MP_Timer=333
+> +		 * GPHY OCP 0xbf28 bit[0] = 0x1
+> +		 * GPHY OCP 0xbf28 bit[6:1] = 0x3
+> +		 * GPHY OCP 0xbf28 bit[12:7] = 0x3
+> +		 */
+> +		ocp_reg_w0w1(tp, 0xbf28, 0x1fff, 0x0187);
+> +		ocp_reg_w0w1(tp, 0xbf2a, 0x3f, 0x03);
+
+[Severity: Medium]
+These writes to 0xbf38, 0xbf3a, 0xbf28, 0xbf2c and 0xbf2a have no matching
+removal anywhere in the diff, so they are new PHY programming rather than
+moved code.
+
+The commit message enumerates exactly three RTL8159 divergences (dropping
+rtl_eee_enable(tp, false), clearing EN_10M_CLKDIV instead of setting it, and
+the extra 0xa5ea BIT(2)) and then frames the rest as
+"add sram2_set_bits()/sram2_clr_bits() helpers ... and use the named
+OCP_POWER_CFG/EN_10M_PLLOFF/EN_ALDPS_PLLOFF macros".
+
+Can the "shorten CLKS latency" and "CMP_Timer on MP_Timer=333" programming be
+mentioned in the commit message as well?
+
+>  
+>  		/* AFE power saving for 2.5G & 5G */
+>  		sram_write(tp, 0x8173, 0x8620);
+>  		sram_write(tp, 0x8175, 0x8671);
+>  
+> -		sram_write_w0w1(tp, 0x817c, 0, BIT(13));
+> -		sram_write_w0w1(tp, 0x8187, 0, BIT(13));
+> -		sram_write_w0w1(tp, 0x8192, 0, BIT(13));
+> -		sram_write_w0w1(tp, 0x819d, 0, BIT(13));
+> -		sram_write_w0w1(tp, 0x81a8, BIT(13), 0);
+> -		sram_write_w0w1(tp, 0x81b3, BIT(13), 0);
+> -		sram_write_w0w1(tp, 0x81be, 0, BIT(13));
+> +		sram_set_bits(tp, 0x817c, BIT(13));
+> +		sram_set_bits(tp, 0x8187, BIT(13));
+> +		sram_set_bits(tp, 0x8192, BIT(13));
+> +		sram_set_bits(tp, 0x819d, BIT(13));
+> +		sram_clr_bits(tp, 0x81a8, BIT(13));
+> +		sram_clr_bits(tp, 0x81b3, BIT(13));
+> +		sram_set_bits(tp, 0x81be, BIT(13));
+>  
+>  		sram_write_w0w1(tp, 0x817d, 0xff00, 0xa600);
+>  		sram_write_w0w1(tp, 0x8188, 0xff00, 0xa600);
+> @@ -8351,10 +8451,10 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+>  		sram2_write_w0w1(tp, 0x84b2, 0xff00, 0x6000);
+>  		/* Training AAGC PAR (with uc2 patch) */
+>  		sram2_write(tp, 0x8ffc, 0x6008);
+> -		sram2_write(tp, 0x8ffe, 0xf450);
+> +		sram2_write(tp, 0x8ffe, 0xf4ff);
+
+[Severity: Medium]
+The neighbouring lines in this block are pure sram2_set_bits()/
+sram2_clr_bits() conversions, but this one changes the value written to
+0x8ffe from 0xf450 to 0xf4ff.  Is this value change intended, and can it be
+called out in the commit message?
+
+>  		/* DAC BGK */
+> -		sram2_write_w0w1(tp, 0x8015, 0, BIT(9));
+> -		sram2_write_w0w1(tp, 0x8016, 0, BIT(11));
+> +		sram2_set_bits(tp, 0x8015, BIT(9));
+> +		sram2_set_bits(tp, 0x8016, BIT(11));
 
 [ ... ]
 
-> +	ocp_write_word(tp, MCU_TYPE_PLA, PLA_RMS, 1526);
-> +	ocp_write_byte(tp, MCU_TYPE_PLA, PLA_MTPS, 10 * 1024 / 64);
+> @@ -8440,8 +8540,15 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+>  		sram2_write(tp, 0x8ff8, 0xaa5a);
+>  
+>  		sram2_write_w0w1(tp, 0x88d5, 0xff00, 0x0200);
+> -		break;
+>  
+> +		/* spdchg_pga1_lpf_cap */
+> +		sram_write_w0w1(tp, 0x84bb, 0xff00, 0x0a00);
+> +		sram_write_w0w1(tp, 0x84c0, 0xff00, 0x1600);
+> +
+> +		/* ENET PLL jitter improvement */
+> +		ocp_reg_w0w1(tp, 0xbf8a, 0xfc00, 0x2000);
+> +		ocp_reg_set_bits(tp, 0xbf88, BIT(2));
+> +		break;
+
+[Severity: Medium]
+The spdchg_pga1_lpf_cap writes (0x84bb, 0x84c0) and the ENET PLL jitter
+writes (0xbf8a, 0xbf88) are also new, with no counterpart removal in the
+diff.  Should the commit message list these among the RTL8159 changes too?
+
+>  	default:
+>  		break;
+>  	}
 
 [ ... ]
 
-> @@ -10090,10 +10233,10 @@ static int rtl_ops_init(struct r8152 *tp)
->  		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
->  		tp->eee_adv2		= MDIO_EEE_2_5GT | MDIO_EEE_5GT;
->  		ops->init		= r8157_init;
-> -		ops->enable		= rtl8156_enable;
-> +		ops->enable		= rtl8157_enable;
->  		ops->disable		= rtl8153_disable;
-> -		ops->up			= rtl8156_up;
-> -		ops->down		= rtl8156_down;
-> +		ops->up			= rtl8157_up;
-> +		ops->down		= rtl8157_down;
-
-[ ... ]
+> @@ -10264,7 +10371,7 @@ static int rtl_ops_init(struct r8152 *tp)
+>  		ops->eee_get		= r8153_get_eee;
+>  		ops->eee_set		= r8152_set_eee;
+>  		ops->in_nway		= rtl8153_in_nway;
+> -		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
+> +		ops->hw_phy_cfg		= r8159_hw_phy_cfg;
+>  		ops->autosuspend_en	= rtl8157_runtime_enable;
+>  		ops->change_mtu		= rtl8156_change_mtu;
+>  		tp->rx_buf_sz		= 48 * 1024;
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917070637.62827-1-nic_swsd%40realtek.com
