@@ -1,261 +1,235 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945BD4825B4;
-	Mon, 21 Sep 2026 10:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789987644; cv=fail; b=IwPwWR9EC7SQDjymdGHTigNZry/PivNBcLB9HUDbhNm7N8reO8sU3LcRAZQtMvjvWz8UE4CY9RDkAMvoo3tybv9xZVC4MyEp2lMHu3gydfHuJ3zEvVT2hrHQCsMdQUPHTDTg+jazKNdfTztw7K6HfPUglp6ir08S0DkPBr4+Vg4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789987644; c=relaxed/simple;
-	bh=fP6qGGp3rmWppzIu4icVu1QMih/RKJneZxEE65Cnl2s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=L1ztz/obR67Ry3uLnzIoV+cC3yE/kf0sgewK8u3d4df0RD4jAZyVRiQHrufuueNoYeArW7c4EycJIy9LMyIaG0nxhwRGEEyERWCMwIoyx/Ex5rBvys8k5U37BUCDpMV6LPnkZXrN3APKCOJn8XtxgIxEr5WJcyTb93j2/OF0Zqk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=fail smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=I9g2Ywd1; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=windriver.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D313B8950;
+	Mon, 21 Sep 2026 10:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789987991; cv=none; b=RscOmI1trq6Xy4+AwisTxY/Wnpb3zVA3d8kLa1XXMa08GRm49XxpA+S+vLEP4obKk4QBzXrIRtrrX8R9/e6h4qOMY2avhgVNClcSnKeaZ7Oxxnhojlk3ceWPxVZDpqQHsSVPAZDnJoDhnzMbVXlWHSbh3+UzOAmgpYMXpyKo9Kc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789987991; c=relaxed/simple;
+	bh=RrJGYdKkxTQlz72pG9pht7EpKJzAaKC1XCSf3BCO5VM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DdUzUxWltzql/osvIKVdkeRaMaFWQ8PC8+vE0u2FtV6nLM5qsI609w1Xun+L7F5xM/J/dhXvNxWzJy+dKvP+UCo0yoFcYN5CrLFXEgmuJHzJbo6iGRZaW7a/kIgRX4GE8DcC9mHAXFAqyeOTXBmVYwtLna+Np0c8xOBSs1Ftj1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=lQHFfhIm; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="I9g2Ywd1"
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LAfwJT1474455;
-	Mon, 21 Sep 2026 03:46:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS06212021; bh=eNdmB+wYxh2UNNpo3d62CuO9Y9SRrD1zSjWd0dBJcL8=; b=
-	I9g2Ywd1FSsjy0Fi7v1ma1+f3DEz8NZUx4VsvWaRGj0Om/xRUj+BcKvKtHK6eoER
-	0zClDqcLlZKwAZAzsO5Cqv8kcrqsi1s6jQqbae6PdDLAhHruzSvOdEzoQLsg3KZA
-	dzxpvYq9zKiTshqOatgTzJuY4rM8lDsKPRQgCyay7J1PIQB3aeZ9aLMyGL/dQbK9
-	ztYMjSWdWhEY1fQ1d1U9exj/Y2Vp4Pmtd+KU6qaTXr2oKX0HFqXGgbfL71rLVxJn
-	n/Ou0MOn/Lm9W3Gh8E/93faB1hWnkLago7x6ujSQ+LSTITLXNHNfQsbMruPS50Ei
-	6KE5Esf6nNJSNouASjz93A==
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11020099.outbound.protection.outlook.com [52.101.46.99])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4gsswe20tj-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 03:46:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yqemwc2yUfDF6SrtBlhtlM5i+DfchNGejjFv0pjaD+YgO1TDDsGAF5Nogep+GzVCi50K3fj9XbsWT7MgPgEl83OTxRPLCkaRaTjqUocWdnEO+N9L5KH6SUjeU3JKI2ug5VZNvwj5Wae+aH9wl4DjVNFlidOfw/ij1MdXjjmGu7BXpQ64Pi1skEeLnRmapkgDIp5G5Kx2Zzpq2pHjZJwfxp3x7MfAezuzf+C+kHuJUhp8vj+gPUrlTrFwAvHCjFsHN88nb9jFwYJPgddHCkjlEOdSRiEjEvMAgEMcWFUZWmTfiUWYDGYjcC8cDGWoeQD9nLxxyZsdLdHJecUFfLKXag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eNdmB+wYxh2UNNpo3d62CuO9Y9SRrD1zSjWd0dBJcL8=;
- b=PssQzsxiQnMYMtjqLxxsxAUfgcV6OhcGsXAcDRmhbXXCFA3KdMeMVEbCbfwqs/Q0d0tyL+DfD+X9l9YpnJM/I6+F5Y9MxTY/JowzpGQYO97Rsj6/gh73gSDT91vRcQtJhe6ToWhpoJLoF9nkC5CtdTfY29cdlisZH7HTfW0xvdXFXEEHo4RtGbaUeLNkxmZ0JdmEosMPLRA6JuC+XWBQA7Zw37jLUANJWrFICiXCiWeRuocrxOJ09wF3CwMUAyJ6XK0ttOnlpcBY5idyYI4RBjjqhyqGqtEWCJpY9DNFNUtP7Pr4ikktTqR/l0rOM7QFrw66reGp2Dggft5SQDZQ+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CH0PR11MB5332.namprd11.prod.outlook.com (2603:10b6:610:bf::17)
- by IA4PR11MB9443.namprd11.prod.outlook.com (2603:10b6:208:55e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 10:46:25 +0000
-Received: from CH0PR11MB5332.namprd11.prod.outlook.com
- ([fe80::8f86:8d08:45bf:ec13]) by CH0PR11MB5332.namprd11.prod.outlook.com
- ([fe80::8f86:8d08:45bf:ec13%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 10:46:25 +0000
-Message-ID: <3e23a695-d3dc-4a77-88b7-afc68869853d@windriver.com>
-Date: Mon, 21 Sep 2026 18:46:16 +0800
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v4] net: erspan: set lltx to avoid sch_direct_xmit
- deadlock
-To: netdev-bot+sashiko@kernel.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260916061314.936440-1-yun.zhou@windriver.com>
- <178988609227.2160803.11846126417836059113@kernel.org>
-Content-Language: en-US
-From: "Zhou, Yun" <yun.zhou@windriver.com>
-In-Reply-To: <178988609227.2160803.11846126417836059113@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TYCPR01CA0201.jpnprd01.prod.outlook.com
- (2603:1096:405:7a::18) To CH0PR11MB5332.namprd11.prod.outlook.com
- (2603:10b6:610:bf::17)
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="lQHFfhIm"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D992F3EC3A;
+	Mon, 21 Sep 2026 10:52:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1789987981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KNCZjlfW/DFoOfMy9njTLqync4si8qX2FR/TAuNZUXk=;
+	b=lQHFfhImy1Au/8yk3vhs3EWoZt9wL7WnsJjhdSChXLGI9AX7jVpQ7YVO6Ve/svqkwtqd6m
+	NAf/QAKZCgeVo6NUwXTCDk5JMDm2DjwMZ4Kp2gfFDD8zWhZ57FVkTOhhEeOJjgB5aKJALy
+	u5+MDCsrrU5/1Vd+8RheiqUoZ4vimzfELtM7KKAz3gBnVrVj3f1sm1h34PgzMNd/8UU8ma
+	0mXEnNyea5RjO+ecIYSDWrZThQTzrx6e7bHdrtA/xaZCowT1EWpHX2TIVVIalP9tNUUU6G
+	laPUjfhHE95hQCpersHkPT9tgg7Jt7xMV7zZ2rQts8UuPp70NMfN5X/fZnbYDA==
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+Subject: [PATCH net-next v10 0/3] w5100: restore GPIO-based link detection
+Date: Mon, 21 Sep 2026 12:52:48 +0200
+Message-Id: <20260921-wiznet-link-gpio-v10-0-5874a7a147a2@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5332:EE_|IA4PR11MB9443:EE_
-X-MS-Office365-Filtering-Correlation-Id: cea7daed-0ffa-4462-9829-08df17cd953f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|10067099003|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	7bj4zTeXSW+heVly3aODsh6w7Dd6ihQtH0zRnP5QdgbA4f7Gtmn6dJTWTkLaHQDOfkZ7nYsH8A+GN4ozHuSpe77wr0ztv3VxYTRRdrELVaUFoE2LdydaBCk3Qq57guk19C3Bvu6ynnI9+R28Cg1QVsDz/RrI/gqIz+gy8uy1hWSvtxT0tANTs1wdH+CkkDc1p4yhisDrlbSmB+XTIsxhjAhD4h35+hm0NgsH/HXNZF5HU6yWSS4o3fna0SujfDWJmHk8ReelRUrF5QUHpnp3RVYxu7BIkfDTiYT2v9zXIlydaLaN1dPGo50nGIk1P3UwGNaw9zb/F8b5LFW2OxiTALxXJvXuAq4tHN2oabPP0EviKlv8+W8ivVutZE+ybO78irQt2geacOZhQtAYTDKD1chH9NKvPzSCuOvJoIskbr/5I5Wpw+A1zhkSEZUIwcQGTLyWnDQATGYFkYeg/c5DnIdtuTPHJPnowZpMvacuZdbziPbG6RYag8C7TbROH3ApyAt8MZ2DCaQSaIQxV4azv/965yNjRcSova5MFxazrtv8Fc3aWZrUEOeAsnZfY9BC3wTphdqnGOoAkhKnDLzjxbluHwE/8Zkroj9o9nQ/iwAL8TrUQ1sCecrubyHsm7ZE
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5332.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(10067099003)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVhONWE0Um1OQk1WY0tqWnFPd3UvcytyN2dRdDZuZEV1dzFldEw5SXhCY3F2?=
- =?utf-8?B?bzNwRHhsLzlDcWdYRkNHb2hPS1BicGxNN3F4VURBRjZqYjBVS05JdzZGSksy?=
- =?utf-8?B?OGFBVnpYUDhBNUtROTVuU1l2Zmd3azJBUVc1UllYaVhqQkhlQXV0em9iTlRX?=
- =?utf-8?B?OHlRYWJqZDQ5ZnpaS0FmdFYvR0NlZERxeHZjcVhiNzNxTHJ6NXJsL3pyTkUv?=
- =?utf-8?B?VUl1V1p6TXhRTGtsTTI5Qm5pbmpiSG9kY2VYYkRyaldQVWRKdGR4Y1dqU2tl?=
- =?utf-8?B?VTMrd280RDZ3Y0dUbHpXY05EVHI1eFZLOERXakFDTVFyUmFUdlpqOXY3NDhP?=
- =?utf-8?B?QjJNY25GS0Ywa0dEazF2bDBZWmFYbmdaTmwySFc5SWpHVEI4UEZnT0NFM3hI?=
- =?utf-8?B?dU1JdkNkMFZuTnVDQnREQlpUMnlpVnZWVkJhamJuQmZ4WGFMOWEwV0plMFJB?=
- =?utf-8?B?SnhNTjdGcnhsQVJLNUpOc2pRQUxjNmwycFczTFV0cWo4bU56ZFdMZ0tPU2Mz?=
- =?utf-8?B?aUdqVTdMTDBObDE5Z2JhY000MEdscExaeEJidFpxL0hjVjBWcEx2OTdyc3Zw?=
- =?utf-8?B?Ui9peGJabDdzQ1lmMWlablpFK253WkExOXlDVEIrdDU2ZDlMdEo2Y20vZGo1?=
- =?utf-8?B?VkZFc0M3VlBpdUo2VEMzbm1tb2p1VU5RNXhxTE8yVytqb0N3MmlUazhqTHd0?=
- =?utf-8?B?cXNudWw2alJJMDF0WWlyWUxTV3FvekpLTWdkTTRaWlhpMElFSTQ1QjZlL2hx?=
- =?utf-8?B?bVhkdGwvQ3RDNzg3azdIYitJOFFPRlBwdUJhNkYwdVRMS2RONGsyM3hDTFNB?=
- =?utf-8?B?RnppU0VVQ1E5Qm5YdjRNbjNGa3p0aTlJUTBGMkZrK1lTWHV0T0F6dHNicWhY?=
- =?utf-8?B?YTBXdTVIVFc2Wk5LWFU4SFpHRm0wZGJYNWk0Y0FxUUVkdnBXT1ZTUDFidm5F?=
- =?utf-8?B?YzRaeWlramh6b2lKWitqb2pPSE1CWngrcDdkMkZZZUxjSW50MEF2K2dTRFNC?=
- =?utf-8?B?WE4vOGpxUU1XNU1BWVhMNWtnWkFCZ1J3RVNvelUycVlzTzk2cE81allpTitK?=
- =?utf-8?B?anRsMGVVeFA0R1JUYVlwT2lFdEUrbG5PMGF6MkVEbXlTQ241cmRIRk9YNjEx?=
- =?utf-8?B?VzRZVGg2Y0pzMWUyemZpeHdFbzhydTF4VWFON0RGZUhqNXhkM2t2VDJRdnpx?=
- =?utf-8?B?RlpqSVhxOU9nVU83aisyZmxpenJYdkltbHNNajFIa2tIV3didE0wUDZKU2VX?=
- =?utf-8?B?bUwvMUNGL2h6cXZoS2tWOGxhQmIvZXJxR0hQMWFhMWZJR1VKM0FESThYRStH?=
- =?utf-8?B?cXVLdEkxZEdOdHRWSlBlN2NUL0dJRW9mdFNadDJLL2dVb2crN0FOckhwUUd0?=
- =?utf-8?B?bEttUnlYalRqaGVINTJaVkt5dGg3S04weElZUFFlZUZOc0IwYjVWaU1UaEt0?=
- =?utf-8?B?dTZJZnJITWhsdGxpVmpjTlI1TGx1MllPVUlHM0NSYlowSHdCd2g4THd1VDhD?=
- =?utf-8?B?LzRsb1NoR2xEWEtlL1pFcGVMM0xVOTRkdndnYTBka3EzcUZuaXJBUUNjaVBy?=
- =?utf-8?B?MTg1ejgrT2FnZm9zN29HVitmdjFORjRxZzdXVHAzZGlFaFlkTXBVaE15U1JF?=
- =?utf-8?B?bGxKODJoUUtOUTJZdlF5VEpIbUpsTG85dWtQQWhkR3ZFdm1vT3orVGR1QitH?=
- =?utf-8?B?Rk4zTmRSOSsySmtEZDh2QzRnNkNxTFlkdUNrT2ljUmladDB3Wi9QR2hVcFJO?=
- =?utf-8?B?K1ZkV1p3ZlcvNDlvWXVhaGxoUWhxejhGZlByVW9ianB1SXN5dlBtNXV3NXAv?=
- =?utf-8?B?WnovU1MzanpvVVUwenRUdVBVSnhDdTVZS09KV3FUMXU0RUM4QmliSXI1clU4?=
- =?utf-8?B?aGVHNUR3QmJoVENybXA5eTVkVlVVKzFORlovdWNLN2tIaUVHTWFEQ2IyK2NX?=
- =?utf-8?B?WmRyTVlmSkVNS2tyOHRVNFdxbGdORzJaVWMyU2RCK2VEbTJJdjZHTUxrZ0k5?=
- =?utf-8?B?bUFqRG1LUVg0a0M1QTB3WUNURkNjMHlObmw4UWFVTG54a1NEMEJzVzczb0xW?=
- =?utf-8?B?bDd4Ny8xV1I5MmtFcU1JNElmcTN0aE5GTHhaU21IZk5xZkd0VXlQZ1dSQlpv?=
- =?utf-8?B?VlJ4WXpzZ0xOY25NdGl3RHQ4cXhOQ1AzbHY2SWNPZ25tU1VtazdZRVpqMDAy?=
- =?utf-8?B?MnB6YVZ5d2FzdmxENUc4VnZndEsrZ3dHUWFpU0xGYUFwaktJRHQ2WU9qSHk4?=
- =?utf-8?B?R3hvZk9reFhRb3R4aU54OFRDbEdxWXppVSttOFdydHgrdUZIbnFuNC9QSE1I?=
- =?utf-8?B?RU1heklqTVJ3RlR0OFBpUWRKTDhsaitpaG51a2MvcFpCTlhidTRwQT09?=
-X-Exchange-RoutingPolicyChecked:
-	lYETDFgeG/uc4Wr+OiDewJbbviLFFPXGxzH6k4HUa+F2XC2Akorr2rFXMKrL/JLTkJ+NE8xrJGsKnwddlOfZDGKAAHhF/2kxknWviruVoe9bo4ybPTH8SL8xic+xcA+PaGQJOkZ1Iw62zAYR58ZH7nfMz+MPIa1jbVPmwaWgz2ZboxNGAje1LufjRoyamvrNynhpHAGwY359a/a3KESPdP6EAAh4R4Q8+PGgpITnHUxSJ0sxV8aMIkkgc8nTiARVzNv9/44CaH/Dp63L2WGuLt3Z24x7AG6aeV+FzTvUP2EI6ZwBEPDSiaCjmXcBd8s2qSKt/PfEbiWmpq3zSAkT9A==
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cea7daed-0ffa-4462-9829-08df17cd953f
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5332.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 10:46:25.2989
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sb5B4iV135lXOzzTI0/1l7KVhO3M6Ccccd3hYt/etsfsWqjzDajsWBl0n18dWUiYDV7y82LSiqZnwmBOAdDB2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9443
-X-Proofpoint-GUID: AMv8OGi7lRRFd3VPvMyQiKGegiOIUNGR
-X-Authority-Analysis: v=2.4 cv=WLrqzXsR c=1 sm=1 tr=0 ts=6ab10b04 cx=c_pps
- a=s8W5O/SPP/itI6RUWNtt8g==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22 a=iKiJcTA2PjBS6x5JeXcw:22
- a=edf1wS77AAAA:8 a=VwQbUJbxAAAA:8 a=gLIKHLzNw2RV7LWUXAsA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=DcSpbTIhAlouE1Uv7lRv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDE1MyBTYWx0ZWRfX1kNalmeokIWW
- 8y5CYLITSowDsqV71f625c1n/aRFxH2laNzqD4T0oFeioXBMCnUjJVTxjljgSzqE8C9o02NMEV2
- rtdL8SKmUOlEDpleG6wHwL5bDHN1F0McdGSiI8ohamP+3Ke4vx7+0VUalHffGpMYmMpoD/aEuXY
- d5t7MLx4NBZ+jovU4pW7G5TLASzGU5iIbt1kclVv5UOOGko+QhcSEBxVh1C6Om5iyy5WtBsThIX
- bt6VCHmLh+o+afqRw6z0zXVg/hRB5jLWuQhOao0RF2zd+ut3M5PMc+SxdqE/OHhPj7+nDm/Rw05
- LkVwFOcyF3VrhJ8qTBLN33kU68o4e2CxJi6/ejOsEANQCftl9Rk1/rz0gsr5R6qd1hfRjOj8IiV
- k0an/69F99NeyNiEB90yXeeYogy9Yw2bmHFDGNP7GOmUkD2YENEvl6Ruz/nqIED26M+CapVxn4d
- UlP0m/78Mnp4/SL1CDw==
-X-Proofpoint-ORIG-GUID: AMv8OGi7lRRFd3VPvMyQiKGegiOIUNGR
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDE1MyBTYWx0ZWRfX1ofNwzUkmOw8
- iOnnsXPI/LZH8JO5GtoeDYCRkNm4h1StE4vCzJ6sYaXqC1AVf8v3u9u86AC+yCFhDJIBH0T6PBn
- nQ0Tz12jAfQy1h1d7qaFY8uIfDAeZ629haPAbZhjIIp1woSLwawe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 phishscore=0 clxscore=1011 spamscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210153
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIAMsWoC/4XRzVLDIBAH8FfpcBaH5WMBT76H4yHho0Vt0knSW
+ O303SXxYMZZxyPw39/CcmVjGkoa2cPuyoY0l7H0XV2AuNuxcGi6feIl1g0mhUThhObv5bNLE38
+ r3Svfn0rPrcesMETQ2bNadhpSLpfVfGJLtEuXiT1/n4zn9iWFaRGX7KGMUz98rO1nWCv+bjQDB
+ 96ixBx1tiG0j8dmOPbTdB7va3JtMcv/EMkFVy1EEZwVWRkKUVsECURVxCgZdQNaOUEieoMAEIi
+ uiI4m29g4ZxpHIWaLKAIxFWlCfSpmqTUoCsENoqib4IK0KWEwwSMmCrE/iCcHayuCPgtorahKp
+ hC3QcAQiKtIBKtQSm11CBTit4gjEL/8jlHLRKKLGH8jt9vtC4J8s7b5AgAA
+X-Change-ID: 20260804-wiznet-link-gpio-796f36cd14f9
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Arthur Crepin Leblond <arthur@marmottus.net>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTF6b6jgYhyLS1AMsjs3SUF00ycLJG+3ieVql2Kn6qdvxDGf4rTyaSbhAqnwuGsjZ+WJOX/RpUHNPAXw8XKKkZ0KNTXxMTbyh1ZPeLZ/qDIQ7zQj799wFeDFqub8XcxckvuSUxxiBAdBRkbrJE9XHLO58FjG+8nOB+AxI++RzKQrqnmKb3pZEkkmHAA+2m/ZbgRJ7V52Z61a5S70xs3cs1YT95mw5ihF7Av3KbXYeMtfVUMvj9MBJ3vXM+JI4uGUtG2RywLSdFAKmgsJkJo7zgM5jDRsCsm02CYlSfELfbPydAL5xfFMHamzz8rvCADlcg88DIPeXJBwoVlZsuzk2jv2pWUUTvpJCI9sT8v1sGHObRWXCPYv64Pq+NTyZuMIluS5qLuJGEOADqIJYWBO5plZE+rY9LVIG2E43POFlBK0xrH0RNDLaIDE898yi6ucoP9He2T7Ktk1XF46D5F/+7FFFO3JsPwKWdOzYBPCRPx8OUfGf6RRfbOhy3Iuh1GANa89Hfgg3+xKmbtWkJpHGPqTBlQda7vwP+ZicY8LMmHEA/oJKjE1dmF9/Yea9coMbpNFrOoUVhoRMuZybAcOsETdP7/8OnB3uYhiwEXHGFvaZj46sAp7GXo2ETbgPm36hwfQgcNo4mE4IRPlqcXwGkl1QMa7kDc5qUofC8tllUPKyA
 
+Hi,
 
+In the previous version of the w5100 driver, the LINKLED pin could be
+wired to a GPIO to detect the link status changes via an interrupt.
+This only works on w5500 as it is the only one documenting its LINKLED
+pin to hold the link status (on w5100 the LINKLED pin is changing with
+RX/TX activity).
 
-On 9/20/26 14:34, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The patch enables `dev->lltx = true` for both IPv4 ERSPAN
->    (`erspan_tunnel_init()`, net/ipv4/ip_gre.c:1371) and IPv6 ERSPAN…
-> 
-> --
-> 
-> net: erspan: set lltx to avoid sch_direct_xmit deadlock
-> 
-> This sets dev->lltx = true for the IPv4 and IPv6 ERSPAN tunnel devices so
-> that HARD_TX_LOCK() skips the txq _xmit_lock, avoiding the nested
-> _xmit_lock acquisition when erspan_xmit() re-enters the stack through the
-> underlay device.  The change is tagged for stable with Fixes tags pointing
-> at 84e54fe0a5ea and 5a963eb61b7c.
-> 
-> Closes: https://syzkaller.appspot.com/bug?extid=9bda1b9fbb7fbdf9b62b
-> 
->> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
->> index 82309efd417e0..0058cb20e36a1 100644
->> --- a/net/ipv4/ip_gre.c
->> +++ b/net/ipv4/ip_gre.c
->> @@ -1367,6 +1367,8 @@ static int erspan_tunnel_init(struct net_device *dev)
->>        dev->features           |= GRE_FEATURES;
->>        dev->hw_features        |= GRE_FEATURES;
->>        dev->priv_flags         |= IFF_LIVE_ADDR_CHANGE;
->> +     /* Skip TX lock: xmit re-enters stack, risking ABBA with underlay */
->> +     dev->lltx = true;
->>        netif_keep_dst(dev);
->>
->>        return ip_tunnel_init(dev);
-> 
-> [Severity: Medium]
-> The commit message justifies the change with:
-> 
->    "This is safe as erspan_xmit() has no shared mutable state: o_seqno is
->     atomic, TX stats are per-CPU u64_stats, dst_cache is per-CPU, and
->     o_flags is no longer modified in the xmit path since commit 9958e69b9893"
-> 
-> That statement holds in this tree, but the patch also carries Cc:
-> stable@vger.kernel.org with Fixes tags on 84e54fe0a5ea and 5a963eb61b7c.
-> Commit 9958e69b9893 ("gre: fix ERSPAN o_flags race/corruption in xmit and
-> fill_info") has neither a Fixes tag nor Cc: stable, so it is not queued for
-> any stable tree.
-> 
-> Both hunks here only touch the *_init() functions, so they apply cleanly to
-> any tree that has the dev->lltx bitfield (6.12 and later) even when
-> 9958e69b9893 is absent.  In such a tree erspan_xmit() still does the
-> read-modify-write on the shared per-tunnel word:
-> 
-> net/ipv4/ip_gre.c:erspan_xmit() (pre-9958e69b9893) {
->          ...
->          __clear_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags);
->          ...
->          __clear_bit(IP_TUNNEL_KEY_BIT, tunnel->parms.o_flags);
->          __gre_xmit(skb, dev, &tunnel->parms.iph, proto);
->          ...
-> }
-> 
-> Once lltx is set, is anything left serializing two concurrent
-> erspan_xmit() calls on the same single-queue device, given that the txq
-> _xmit_lock was the only thing keeping those __clear_bit() sequences from
-> overlapping?  The same question applies to the race against
-> erspan_fill_info(), which in those trees sets IP_TUNNEL_KEY_BIT back into
-> tunnel->parms.o_flags under RTNL only.
-> 
-> If a lost update resurrects IP_TUNNEL_KEY_BIT or IP_TUNNEL_SEQ_BIT, can
-> gre_build_header() then emit optional GRE fields that tunnel->tun_hlen
-> never accounted for, i.e. exactly the header corruption described in
-> 9958e69b9893?
-> 
-> Would it make sense to name 9958e69b9893 as an explicit stable
-> prerequisite in a note below the --- line, or to fold the equivalent
-> o_flags localization into this series, so stable maintainers do not apply
-> the lltx change on its own?
-> 
-Okay, I will add the prerequisite in v5.
+This series of patches is bringing back the link status detection on
+w5500 using the Link Status bit of the PHY Configuration Register.
+Additionally, the LINKLED pin can also be wired to detect link status
+changes and read the register in the interrupt handler.
+
+Arthur Crepin Leblond
+
+Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
+---
+v9 -> v10:
+ - Address Sashiko review
+  - Always schedule the restart work to avoid atomic context
+  - Move netif_device_detach before disabling irq in w5100_suspend
+  - Flush rx/tx queues in w5100_remove
+
+Link to v9: https://patch.msgid.link/20260918-wiznet-link-gpio-v9-0-5536f24d8d6d@marmottus.net
+Sashiko: https://sashiko.dev/#/patchset/20260918-wiznet-link-gpio-v9-0-5536f24d8d6d@marmottus.net
+
+v8 -> v9:
+ - Address Sashiko review
+  - Rework commit message
+  - Disable the link irq first in w5100_stop()
+  - Call w5100_hw_close earlier in w5100_stop()
+  - Flush rx/tx work and cancel restart in w5100_stop()
+  - Call cancel_work_sync() after unregister_netdev in w5100_remove()
+  - Call cancel_work_sync before netif_carrier_off in w5100_suspend()
+  - Enable/Disable main irq in open()/stop() and suspend()/resume()
+  - Check the number of irqs defined in DT
+  - enable the link irq after checking PHYCFGR
+  - Ignore fwnode_irq_get errors other than EPROBE_DEFER
+
+ - DT binding: Simplify the interrupts description:
+  - Describe the 2 interrupts in the top-level properties
+  - Limit the maximum number to 1 on non-w5500 with a condition
+  - Somehow only adding minItems in the top-level and then describing
+    2 items in the if block led to dt checks errors.
+
+Link to v8: https://patch.msgid.link/20260915-wiznet-link-gpio-v8-0-d173622474cc@marmottus.net
+Sashiko: https://sashiko.dev/#/patchset/20260915-wiznet-link-gpio-v8-0-d173622474cc%40marmottus.net
+Clashiko: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915-wiznet-link-gpio-v8-0-d173622474cc%40marmottus.net
+
+v7 -> v8:
+- dt-bindings: net: wiznet,w5100: convert to DT schema
+ - Add a myself in MAINTAINERS
+ - Address Sashiko reviews
+  - Change edge-falling to level-low
+  - Clarify the spi max frequency for all devices
+  - Add main interrupt description
+
+- dt-bindings: net: wiznet,w5100: add link status interrupt
+ - Remove Krzysztof Kozlowski reviewed-by tag after Sashiko review changes
+  - Make the interrupts property conditional
+
+- w5100: detect carrier state using link status bit and optional
+  interrupt
+ - Add myself in the MAINTAINERS file
+ - Address Sashiko reviews from online bot and locally run
+  - Add a mutex to synchronize the link state read and interrupt
+  - Return last known carrier state (netif_carrier_ok) in
+    w5500_get_link on SPI error or if the device is not present
+  - Only set ops .get_link on w5500
+  - Check the netif state, disable/enable the irq and re-check the
+    carrier state in w5100_restart
+  - Cancel the restart work on stop/suspend
+  - Only set carrier state to off in w5100_stop/suspend  when a link
+    irq is present
+  - Warn on fwnode_irq_get errors for the link irq
+  - Free the main irq and flush queues before resetting the hardware
+    in w5100_remove
+
+Link to v7: https://patch.msgid.link/20260904-wiznet-link-gpio-v7-0-69f01b70c96f@marmottus.net
+Sashiko : https://sashiko.dev/#/patchset/20260904-wiznet-link-gpio-v7-0-69f01b70c96f%40marmottus.net
+Netdev Sashiko : https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-wiznet-link-gpio-v7-0-69f01b70c96f%40marmottus.net
+
+v6 -> v7:
+- Address Sashiko reviews
+ - Propagate spi read error to the caller
+ - Do not change the state of the carrier on SPI read error
+ - Enable the link IRQ before reading the PHYCFGR bit
+ - Call unregister_netdev before reset
+ - Update commit message
+
+Link to v6: https://patch.msgid.link/20260831-wiznet-link-gpio-v6-0-abee6c5c966e@marmottus.net
+
+v5 -> v6:
+- Fix DT error: use minItems
+- Remove conditional properties
+- Put back the reviewed by tag from Krzysztof Kozlowski from v4
+- Revert to the reviewed v4 version by Arnd Bergmann with a few
+  changes based on Sashiko's review
+- Address Sashiko reviews
+ - call netif_carrier_off in open if there is no link_irq or  get_link
+   returns false
+ - call register_netdev at the very end of probe
+ - call unregister_netdev before destroying work queue
+ - handle link irq probe defer error
+ - call netif_device_attach in resume before re enabling the link irq
+ - disable the link irq first in suspend
+ - log netif_err when PHYCFGR cannot be read
+ - enable link irq in open
+ - disable link irq in stop
+ - free irq and invalidate it in remove
+
+Link to v5: https://patch.msgid.link/20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net
+
+v4 -> v5:
+- Remove gpio/gpio.h include from DT example
+- Make the DT interrupts property dynamic from the compatible one
+- Fix DT bindings errors
+- Address Sashiko review
+ - Read the link status register only on w5500 instead of checking
+   link_irq
+ - call netif_carrier_off on w5500 link status off in open
+ - enable/disable the link irq in open/stop
+ - enable/disable the link irq in resume/suspend
+ - handle link irq probe defer error
+ - register the netdev last
+
+Link to v4: https://patch.msgid.link/20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net
+
+v3 -> v4:
+- Update interrupts in DT bindings
+- Use directly an interrupt line instead of gpio -> irq
+- Address Sashiko reviews
+ - drop devm_ on request_threaded_irq to avoid use after free
+ - disable/enable the link_irq in the suspend/resume
+ - only call netif_carrier_on|off if the link interrupt is present
+
+Link to v3: https://patch.msgid.link/20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net
+
+v2 -> v3:
+- Fix DT binding errors
+- Use the Link Status bit of the PHY Configuration Register
+- Use the LINKLED gpio binding for change detection only
+
+Link to v2: https://patch.msgid.link/20260804-wiznet-link-gpio-v2-0-3b1d0c870f35@marmottus.net
+
+v1 -> v2:
+- Convert device tree binding to YAML
+- Use devm_request_threaded_irq instead of request_any_context_irq
+- Use devm_gpiod_get_optional instead of gpiod_get_optional
+- Call dev_err_probe on gpiod_to_irq failure
+- Remove link_irq from priv
+- Use a fixed string for the IRQ name
+- Remove empty new lines
+
+Link to v1: https://patch.msgid.link/20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net
+
+---
+Arthur Crepin Leblond (3):
+      dt-bindings: net: wiznet,w5100: convert to DT schema
+      dt-bindings: net: wiznet,w5100: add link status interrupt
+      w5100: detect carrier state using link status bit and optional interrupt
+
+ .../devicetree/bindings/net/wiznet,w5100.yaml      |  88 ++++++++
+ .../devicetree/bindings/net/wiznet,w5x00.txt       |  50 -----
+ MAINTAINERS                                        |   7 +
+ drivers/net/ethernet/wiznet/w5100.c                | 227 ++++++++++++++++++---
+ 4 files changed, 296 insertions(+), 76 deletions(-)
+---
+base-commit: 8830e65ed46de41f849eefb8ba227d4852c460f6
+change-id: 20260804-wiznet-link-gpio-796f36cd14f9
+
