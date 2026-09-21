@@ -1,73 +1,73 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D774F3EBE;
-	Mon, 21 Sep 2026 17:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8104EFFD8;
+	Mon, 21 Sep 2026 17:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790013075; cv=none; b=fomNdyrHaKCC5u6iDYaLz0bfJiCbzFTK89jQTLBY+cKDTgiUuGDaizwNMa7B7JmDeq6vXJkdNrPxDX4xSKfqF9K8Le0wdDC0Fd6mJi95+kEKbxNF7qtagnPtu22/jhi0lU1eji9udJ9/UsM4CQ8Vd3TvLs0ZdNz8BFy/FeQrXNg=
+	t=1790013078; cv=none; b=P43uaVqXq1mnjpSY/SsegC61pSgrHP6tCrjb9wb3FojvnZMGk4VrGvXEkWqxtiiwIc5YGxPAqzp/kRBSjWUMmKyNPJ3qoSM5qkUd2zlUd+eo7+9v4hdEnFS2vyxN+u9QoQkG8W4A1gOXGzXz3shQ05TWrt/eXw3e7JLtz9d2aOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790013075; c=relaxed/simple;
-	bh=n8uMvO6lkLqeZI1gW7SImMJOFb8/LIYVX94RbwXVc8w=;
+	s=arc-20240116; t=1790013078; c=relaxed/simple;
+	bh=afRHI9FtEbxCLNKeHKo467KfMaY6RFbHTRoY1FFrJ5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LBY+zzowNOHcPlg744a3Y0xHiRX2z070PA+/2qLMKxZhSG4cReChbqVxYmoHouQ4ssZVlHPRizeCRw6W+BOzvSmJYc/582Gb97dGhkS0QeCyahFaaM30nEFXp5a93kab6OzxSvsDDbxtrhCoVQf2Dg+tDmW/IVrIIsGHdiG/ZIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=GF2Tf8Ld; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DmO2APUG; arc=none smtp.client-ip=202.12.124.156
+	 MIME-Version:Content-Type; b=r44irH5jWcXc6VGwtZyclU/4i7k7qis6xPQ613eaw8hhQ2EUGTrpGF98R5bDwwRObnDlTpk3UA0K77TcmBPdFxw7WIq3mQN5eJvZtXuyh4fxlFziQZHnCI3Vc8SvMyhI7x3WeV+8mekOkuXnv2JFasXCzzwpzzeaUipmxy8zpb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=WB9+vVPx; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MV104EVo; arc=none smtp.client-ip=202.12.124.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="GF2Tf8Ld";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DmO2APUG"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 862EC7A00C2;
-	Mon, 21 Sep 2026 13:51:12 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 21 Sep 2026 13:51:13 -0400
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="WB9+vVPx";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MV104EVo"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 684401D000D6;
+	Mon, 21 Sep 2026 13:51:15 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 21 Sep 2026 13:51:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790013072;
-	 x=1790099472; bh=zhK2da/WvXsINzlSRetnNOBunpzwaf0zMWO1x1DU4zQ=; b=
-	GF2Tf8LdvYOe6XnClhdZBkkdYYvGpz+5pMGDJdmCagKXI04rdIUHrqp/OJDpa+IZ
-	6pRu4T0b++TiBrx6wYoSfQLKnSU2kd86bTfSzRE569RN+hjNDOU+alLFCjVq2h9u
-	DadlQT9XB7bvUXbnpQDUdo3wBzDsSc2/TEM3QHxhepkH/DVOfFihm7ZI7OJHUi+Q
-	0IQZDji6HUD/y0ktjSBlX/vA+R2b1J7F/pMWizyH1OBFAwZcpdZ/GXN9CPTnpJzO
-	7H560ta1WoERUWUfH4u38JUiVN44x2iIKSIo52h8mDGEOuv3VOENNRWvQk8cN2sn
-	ZSQbp/Fw9f2rcu4c0enkxQ==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1790013075;
+	 x=1790099475; bh=ibc1CId1Nm0nkVBYGtch82/IlWWe7XN6GaGSe3rG3FQ=; b=
+	WB9+vVPxMAKRFyiQ5llOMkNzuCVNNhuCC3pHoMG0RAM9PN2BVLxjOy+mvZThT2zs
+	Yxoen3f21Q60IDTKHfGPHSnrp1TQ7K9NneAP1XOX8CfzfEu7+VCzUfM5q9jO/FO6
+	6YwHj/NRzmXAYxF532THt7pVq0gOJ/O9Ss10+rloHSZ+tO3DQKyaCdSqorY1vS0K
+	Bx0thVJV8Yejl8FH8ydrx+9oh3DDsO5p0bI5kCY8+Dutnqd6Y6aGaIKRdlidv3YD
+	zll384EkeNzFurbFUxVWDW6GAaAhl7R2N53a7JrO4RwUXY/26jlujFjRcuBnIR+9
+	1oTKdj9L1t9fvAeccIb3nQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790013072; x=
-	1790099472; bh=zhK2da/WvXsINzlSRetnNOBunpzwaf0zMWO1x1DU4zQ=; b=D
-	mO2APUGJfTdgl9Lo1kfFI5Xme0MaAsHLiPWzCeVuLNDl3syuGwVg0leM4W8mQV1O
-	vK0HEpAso8bhYWhxc1pAkVxbTkZ9r+vd/AcK+Aqv3do++LWlQBURnxXUi0p98SVM
-	/nQqcyRTQmk0/LBJFGiBBv4K7tg49xiZQBOrNdEmE2rSG3rEpIW9s7oyFh0XzBiM
-	1f3c2Op4M2kU3nTP95evv3l5+N/wRA1QixUsUnIQmPlZA7JzhHZ1rARpALtCGFCG
-	s/q8S+kt28XVZlSv6mRcQRzB2o4GH9PNzuMHHd549xZus9QsIV1Z8+pr9wjN4Ux+
-	rwY/uq6UFbE0ADk8pf50g==
-X-ME-Sender: <xms:kG6xavYCFVP2jZN5a1TTaDeJMsvkbQzphtqzIPJWIOtCfrKteFU34Q>
-    <xme:kG6xav2YUgGfUuDr2qHzMoMaGoZCwrUyIMGQLakZVPNfEmAzcRt6g11QIGN9R-7fn
-    nrJkYfJfBGaD0zSikjleCND13dXBuhhrDXpC2WDlyXgq1Wby4pKFp0>
-X-ME-Received: <xmr:kG6xatWpkFlJexzU985ItbPI6HeWv-0zU9tVb8bis8axI0NB6zPsNYNgI3M5lm9cvbmi40nAOaUeyWbd085pFMXRAKMNBDs>
-X-ME-Proxy-Cause: dmFkZTERb8iWuOaCoZl7Bdy7ms8LtfxU+xjK78I80yyQZdvSwOOOfv5Eh589Pe9RlM06WU
-    dDnU8HOY0XEZCSLotd4wkziCSyOMbfYp7QQMcpxqxHGnE0sN+h/hwRsMQX/TPzjkM+eutR
-    EyTNwAM1tWMwrq7QvnP58hqr16hBRsM/xWQjxvzbUj3rLPulCyCubKGS8/OfnPdml28WZP
-    11HBM2ETQKxQIL8VV/A/GNA6vlfx97xrmJ0/jihnD6jQBVLDZo9wvlSWgasgNowAQLofbi
-    uJp5/Pi8DlT51OEeXr8hn2lIL64WOU6L6jZxXkbUv9MeKffjxF51gA/7UnWz5uX+sq6JG2
-    ITdsLqQkFa3h7S3XVJV0s/l0O9h6eSu9xjJlIxNRDIXO5nUD0b2RKhnw2SFFqzoWbu29g2
-    Bdwu/9dmua7YTDTI4b0lqvqDOmhRS9v9UVt4aR+IzhoNfumI/VOEnicDL0L4FAn0tMzZu7
-    74ztFZnX7wM9f3NmbRoMzaJQkeiIEjaEI8WrVXxBrn1to1E+HpzLFWpDpSAlVSLdLKwVLC
-    7/h+zRTW6H65cMhNU+gP6HZ7KX17mbRzR6Yndqai0wsS2OTTYoXI9EBksT0tNKH+e6aZqm
-    pccKl+oQA+Y3ewOZeIAlECk6dPWK1IqQIBt8yVfWWnDU/ICzcYSjgPLa0ogA
-X-ME-Proxy: <xmx:kG6xaiui6Htu0CD-0_2_cHN0pBA2W4XRYXk_GDK-voZ65hmIaOve1g>
-    <xmx:kG6xasWFNQq1LmFXdKXaRHRNRVA3GdWiQo7EsmUflKtXhv13L5KAoQ>
-    <xmx:kG6xamU74cl98YYuN7GARkEgxOXXTqOJEOiuY9X9n4-v87A_LIZy9g>
-    <xmx:kG6xaudWYoORaL-gVnwgLaee9Luxc-O616jqFs0A5qAq0AG-kh8Izw>
-    <xmx:kG6xat-F2acYgnCSH1wwbchE6HaX9jmDNaxK-I32HX7p-0ZFrgSNCPTp>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790013075; x=
+	1790099475; bh=ibc1CId1Nm0nkVBYGtch82/IlWWe7XN6GaGSe3rG3FQ=; b=M
+	V104EVo9EqhPbajuovpm6HGmOEteZgS3pPYaBGblE4qz06gX9+WlIlVaW70SJ+iJ
+	X/oC+fdlFZT/HuoNFFMy5KET1AvcIqJodvGnwZc20k7mNGLoT/NxIgQDzmVkpquw
+	A8nRdt/akGrVYWg+jhoeg8dm5mMSvDyc6PGsLc8J8WSEdL9KDejltFYtNIu80bin
+	eqiVHxVzmhGYTLmdAStHolcxmkjLpgqv64+XFbOqKnJOc0LoRuqSWucmy5VS5t7R
+	Iz2kGQWqCa6YPbwx2ypaXOA7MPEmjKVe2PouTV+NlEoqZ/4fyXBpjmkWx/6MWaie
+	HHjvqsnRSAoRKDp8x70yQ==
+X-ME-Sender: <xms:k26xaqSVnD7HTXwsudlTjTTspjS9SMhFMhqZZP-hlnvrXd-qhNXPbg>
+    <xme:k26xahNhPDRzOAqkiLie62UStgdiXUj0ktyqEsi2urCeEo_30mgC5d93BHnGDNW8W
+    venZ7XmbxQbhRa5P27LboczAMdS9NbMvI5hVdk34-zPD93n80r2hIk>
+X-ME-Received: <xmr:k26xajOfJpnwsM5M6A1LQSRdJC4BGxPt3-qAqQxdmh8KMOTT9eAXLbp5DxPgfdwNH8KixN41qdyhXjSXy4AH7i1uq2uJb2g>
+X-ME-Proxy-Cause: dmFkZTGxueDU6ybJrp3DH63sos1//zx+SFUDv+Z0HmZd1kiJ7nzuFU0LghLhMGbNt8CtYt
+    wt5HRnq8CzXv75RJbh41RmrgUsjkhBuSa7HsiS+BvOsgN2w1ECbKLiyF06hhLO/qiieiwC
+    wkZKkiHKAYNIzrgCTqxZ7xQexBG+kgbIhc6BI6nKd8ZJJotjeCwEepYGWxT35kQ689BIZa
+    NOiqgBNzAoMxfOrq/9EkB1onjknI4lCkOrel9/ympJ7mWhVbylSWekfBi0VyqfMViZEcZk
+    gme1mTHDxRopPgczIQ18lr31i4s7n6F5NBqxwBc9Ufu8NPc84/QeYVPBiw/u91oS2vtklv
+    beAf+X8nWUg0+r2jTwRUSUk2ild7xmQSw0ga2dyPXHbz6AnFSpa+XkCGumAcffURgoJOir
+    HorPI2JO7gHoDrd9fdgsQRXpaLIezOAuMa+liDjW/4KnCSsIGH6xFl8yXJy/IR16mtImeL
+    cggR5G0f/i355LetlOnO66j1JNMlvQfpsopIVP0jQG5ubaXIeWibWPmT1Rk/E/F6FrPg84
+    hPTFQLMvsO1P9MUa3w2WNn1g3eIwpfIf1Fz+TfDEfVFtCeQBpjUJjSLqd7vheEoczhbWqR
+    jNuD4wbJYO3hSjQF4R6QHbvKynK38Ny6Ln2GMONiUdDH7zWN9fL9Uq6WYQew
+X-ME-Proxy: <xmx:k26xajGP3P-NAH2UqHuw39XNUa1iJNF0IIWNVf3rtNomQa85WHwIaw>
+    <xmx:k26xalPVjBV8MoMObqi4JJNW5_ymyMzvbtA7iUEKz4jur7hivEEkkA>
+    <xmx:k26xatuub4qhg1VoGueDF5iaBcVyvCCdRzEyiq6Csct44l1xd4vBWQ>
+    <xmx:k26xaiWEjUBveqTHAm3_KbYLN1DGrW9WsNXwTtvQ0ylu0-v6YNMdgQ>
+    <xmx:k26xao2Mb1P7_7PWh5M5wsIZQ2xX8oW5L2AylWsaSHuOc0ET7tC8XKlC>
 Feedback-ID: i80c9496c:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 21 Sep 2026 13:51:11 -0400 (EDT)
+ 21 Sep 2026 13:51:14 -0400 (EDT)
 From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
 To: paul@pbarker.dev,
 	Rob Herring <robh@kernel.org>,
@@ -88,9 +88,9 @@ To: paul@pbarker.dev,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
 Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Subject: [PATCH net-next v5 04/10] net: ethernet: ravb: Remove redundant argument to ravb_ptp_init()
-Date: Mon, 21 Sep 2026 19:50:31 +0200
-Message-ID: <20260921175037.4084310-5-niklas.soderlund+renesas@ragnatech.se>
+Subject: [PATCH net-next v5 05/10] net: ethernet: ravb: Propagate error from ptp_clock_register()
+Date: Mon, 21 Sep 2026 19:50:32 +0200
+Message-ID: <20260921175037.4084310-6-niklas.soderlund+renesas@ragnatech.se>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260921175037.4084310-1-niklas.soderlund+renesas@ragnatech.se>
 References: <20260921175037.4084310-1-niklas.soderlund+renesas@ragnatech.se>
@@ -103,75 +103,140 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-There is no need to explicitly pass the struct platform_device pointer
-to ravb_ptp_init(), it can retrieve it directly from the private data
-structure.
+If the PTP clock registration failed the error is silently ignored.
+Before reworking all callers of ravb_ptp_init() handle and propagate the
+error so it can be used.
 
+Link: https://sashiko.dev/#/patchset/20260610102432.3538432-2-niklas.soderlund+renesas@ragnatech.se?part=1
 Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 Reviewed-by: Sergey Shtylyov <sergei.shtylyov@gmail.com>
 ---
- drivers/net/ethernet/renesas/ravb.h      | 2 +-
- drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
- drivers/net/ethernet/renesas/ravb_ptp.c  | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+* Changes since v3
+- Add check to keep sashiko happy, the remark is fixed already later in
+  the series but to keep the bot happy.
+
+* Changes since v2
+- Rework to remove the caching of phc_index added by LLM without access
+  to hardware.
+
+* Changes since v1
+- New in v2.
+---
+ drivers/net/ethernet/renesas/ravb.h      |  3 +--
+ drivers/net/ethernet/renesas/ravb_main.c |  5 ++---
+ drivers/net/ethernet/renesas/ravb_ptp.c  | 27 +++++++++++-------------
+ 3 files changed, 15 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-index 3ee4c6108189..aa45f5466001 100644
+index aa45f5466001..0c122a815840 100644
 --- a/drivers/net/ethernet/renesas/ravb.h
 +++ b/drivers/net/ethernet/renesas/ravb.h
-@@ -1163,7 +1163,7 @@ void ravb_modify(struct net_device *ndev, enum ravb_reg reg, u32 clear,
+@@ -1028,7 +1028,6 @@ struct ravb_ptp_perout {
+ struct ravb_ptp {
+ 	struct ptp_clock *clock;
+ 	struct ptp_clock_info info;
+-	int phc_index;
+ 	u32 default_addend;
+ 	u32 current_addend;
+ 	int extts[N_EXT_TS];
+@@ -1163,7 +1162,7 @@ void ravb_modify(struct net_device *ndev, enum ravb_reg reg, u32 clear,
  int ravb_wait(struct net_device *ndev, enum ravb_reg reg, u32 mask, u32 value);
  
  void ravb_ptp_interrupt(struct net_device *ndev);
--void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev);
-+void ravb_ptp_init(struct net_device *ndev);
+-void ravb_ptp_init(struct net_device *ndev);
++int ravb_ptp_init(struct net_device *ndev);
  void ravb_ptp_stop(struct net_device *ndev);
  
  #endif	/* #ifndef __RAVB_H__ */
 diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 42d208e6b8ec..1dfe905832a0 100644
+index 1dfe905832a0..db3ef87f0991 100644
 --- a/drivers/net/ethernet/renesas/ravb_main.c
 +++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -713,7 +713,7 @@ static int ravb_dmac_init(struct net_device *ndev)
+@@ -1774,7 +1774,7 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *hw_info = priv->info;
  
- 	/* Initialise PTP Clock driver */
- 	if (info->gptp)
--		ravb_ptp_init(ndev, priv->pdev);
-+		ravb_ptp_init(ndev);
+-	if (hw_info->gptp || hw_info->ccc_gac) {
++	if (priv->ptp.clock && (hw_info->gptp || hw_info->ccc_gac)) {
+ 		info->so_timestamping =
+ 			SOF_TIMESTAMPING_TX_SOFTWARE |
+ 			SOF_TIMESTAMPING_TX_HARDWARE |
+@@ -1785,7 +1785,7 @@ static int ravb_get_ts_info(struct net_device *ndev,
+ 			(1 << HWTSTAMP_FILTER_NONE) |
+ 			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+ 			(1 << HWTSTAMP_FILTER_ALL);
+-		info->phc_index = READ_ONCE(priv->ptp.phc_index);
++		info->phc_index = ptp_clock_index(priv->ptp.clock);
+ 	}
  
  	return 0;
- }
-@@ -1968,7 +1968,7 @@ static int ravb_open(struct net_device *ndev)
- 
- 	/* Initialise PTP Clock driver */
- 	if (info->ccc_gac)
--		ravb_ptp_init(ndev, priv->pdev);
-+		ravb_ptp_init(ndev);
- 
- 	/* PHY control start */
- 	error = ravb_phy_start(ndev);
+@@ -2937,7 +2937,6 @@ static int ravb_probe(struct platform_device *pdev)
+ 	priv->rstc = rstc;
+ 	priv->ndev = ndev;
+ 	priv->pdev = pdev;
+-	priv->ptp.phc_index = -1;
+ 	priv->num_tx_ring[RAVB_BE] = BE_TX_RING_SIZE;
+ 	priv->num_rx_ring[RAVB_BE] = BE_RX_RING_SIZE;
+ 	if (info->nc_queues) {
 diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
-index ac91a6813368..6817e94721b5 100644
+index 6817e94721b5..407ae97b76bb 100644
 --- a/drivers/net/ethernet/renesas/ravb_ptp.c
 +++ b/drivers/net/ethernet/renesas/ravb_ptp.c
-@@ -313,7 +313,7 @@ void ravb_ptp_interrupt(struct net_device *ndev)
+@@ -313,11 +313,11 @@ void ravb_ptp_interrupt(struct net_device *ndev)
  	ravb_write(ndev, ~(gis | GIS_RESERVED), GIS);
  }
  
--void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
-+void ravb_ptp_init(struct net_device *ndev)
+-void ravb_ptp_init(struct net_device *ndev)
++int ravb_ptp_init(struct net_device *ndev)
  {
  	struct ravb_private *priv = netdev_priv(ndev);
- 	struct ptp_clock *clock;
-@@ -338,7 +338,7 @@ void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
+-	struct ptp_clock *clock;
+ 	unsigned long flags;
++	int ret = 0;
+ 
+ 	priv->ptp.info = ravb_ptp_info;
+ 
+@@ -338,15 +338,14 @@ void ravb_ptp_init(struct net_device *ndev)
  	ravb_modify(ndev, GCCR, GCCR_TCSS, GCCR_TCSS_ADJGPTP);
  	spin_unlock_irqrestore(&priv->lock, flags);
  
--	clock = ptp_clock_register(&priv->ptp.info, &pdev->dev);
-+	clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
- 	if (IS_ERR(clock)) {
- 		netdev_err(ndev, "failed to register PTP clock: %pe\n", clock);
- 		clock = NULL;
+-	clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
+-	if (IS_ERR(clock)) {
+-		netdev_err(ndev, "failed to register PTP clock: %pe\n", clock);
+-		clock = NULL;
++	priv->ptp.clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
++	if (IS_ERR(priv->ptp.clock)) {
++		ret = PTR_ERR(priv->ptp.clock);
++		priv->ptp.clock = NULL;
++		ravb_ptp_stop(ndev);
+ 	}
+ 
+-	WRITE_ONCE(priv->ptp.clock, clock);
+-	if (clock)
+-		WRITE_ONCE(priv->ptp.phc_index, ptp_clock_index(clock));
++	return ret;
+ }
+ 
+ static void ravb_ptp_disable(struct net_device *ndev)
+@@ -369,14 +368,12 @@ static void ravb_ptp_sync_irqs(struct net_device *ndev)
+ void ravb_ptp_stop(struct net_device *ndev)
+ {
+ 	struct ravb_private *priv = netdev_priv(ndev);
+-	struct ptp_clock *clock;
+-
+-	WRITE_ONCE(priv->ptp.phc_index, -1);
+-	clock = xchg(&priv->ptp.clock, NULL);
+ 
+ 	ravb_ptp_disable(ndev);
+ 	ravb_ptp_sync_irqs(ndev);
+ 
+-	if (clock)
+-		ptp_clock_unregister(clock);
++	if (priv->ptp.clock) {
++		ptp_clock_unregister(priv->ptp.clock);
++		priv->ptp.clock = NULL;
++	}
+ }
 -- 
 2.55.0
 
