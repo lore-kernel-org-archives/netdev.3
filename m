@@ -1,137 +1,287 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A8735A385
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 05:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60372283142;
+	Mon, 21 Sep 2026 05:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789969708; cv=none; b=tHaG92RYbrAexczyfuoGvvLal56byXftJPR7CnLIcxk65S4xQo23SW/cHK4xb7Ron+ZpN8S2dli49LOnrg7WTanaKTZHmNcFB6tQo3d+Warzypr+lr83pLUy8OC6Uvp64n5a48NNZCOHbiOTTwKpt9vE3x6aRKN1n5dRU/RZshE=
+	t=1789969801; cv=none; b=tH9n42Q0GujJls2IOVng2SalHBDHwoYgX2NW0kVpRHSdjMgB9pw1PwUYhcJ7+mfbXl5Yin+Pvy6aj5HsvetAIgEIbXUHX8LkPsw8GxAtZmcaaA6lGDtqd8VHc92RA6O5r2123Kfhoz413Ff7lAK0xSfnK/cFQOmY72b5QUzDLqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789969708; c=relaxed/simple;
-	bh=4q3x0VjUvsd6BIdKh4dxjcXadLqLQxFM6mQepQJSzUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok4KjrsfNr2+m12+6DglLz0M0hrz7d6f9ydtKQwohUJATYQYB55jeNM2J0A0QFPtWCM29+jjDtwGbnzcWNqSG14FzXQb+r/A50PPKuo2wKm6CgVcaXN5ULnwrWmqiBaYKStNHzYupmmYDPepUPclW+2WH+015mKqZitOi5DxGDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M0LzBUAG; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789969801; c=relaxed/simple;
+	bh=dxd33diBx/y3UwKTmtnlAJj1HYjEQXvs9B/2VOv2gvE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CmJW5ZDflD2RL3Yy8ABIIW6QPujZIsBvC0GWxl78BkLfzbEUjY6bamxfeasBLrFI9Ct6XRnTuq6Lg8hyn7OulEjd8YI9S9h2yzeiaoBIu3hLRDyzjpUSWh8BcJwEQhsMMZ8yqWUjXHden0Fdr1X7f3iMkl+hWBO55/FZd5Wvsko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKSPhQSE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M0LzBUAG"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea34f01so2192139a12.1
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 22:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789969705; x=1790574505; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zNJYOwH68Um+gj+JHkyQ06KZcoI1X6BYrC4IoaU244U=;
-        b=M0LzBUAG+E4ngoiMV65MDhbsgox3K5+3ta+tx0gZLyief7igIKdaivLhXEZIGM5THM
-         uak4iiZmRUCazbzM5IxILqWedfH3/y1upy4ozmebhGzuCpiMHxtuM/scMRE6MYBdxvIW
-         3Y0YkYL630tMhi1Vq8VsoPv4i9lQUzabffeoNI/bFzMz5ytD9FBV3RxxduS21Mnq9Aox
-         UQCvJp3qLGc1vLsazcgt01vOZXs4KnQbI7O8HdcpFNwrDP8YwsYOiJQWajl2IgCvjAza
-         n1kDLJKvSCZXpiB7I+7VHk4Ql3wG/qxqaSy/ybu5F2c+1+SYDYNkfYRPvdRcGMoJiyUh
-         2dXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789969705; x=1790574505;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zNJYOwH68Um+gj+JHkyQ06KZcoI1X6BYrC4IoaU244U=;
-        b=Yu6bgVc23IhwEOMB7oa1223/kNxixmbJuiyy9SxAyXDDJC/b6cBLCabfjJOxYbJTYc
-         S2Xv42lJrQLU+v1LCXahQik/7OXozazK0rey/1pH0+dIRCohWNa6Y1Kzu4iByRu2DWoj
-         9tknZ9N0MWxVyqNqdeuL8TN3ecDgojS8a+u1bguktq+HYSyjN/7xH+FXciK0eY78KIQ4
-         qHleO0NXTThq3w2/FUBGcU+JNLnvOPaTUyMwyF6be+xug9jFqLvNwOBxGf1rQ5ezRGCw
-         XfiBlxqxNU3gRPvEqAF7xnS7zw+W3jc1iVHiDVAGN9bDlRf5I8EEFI5n4ceD9II5G7Jr
-         haFA==
-X-Forwarded-Encrypted: i=1; AKwUvBy1xzZ27Yrh8/UW2jNU5mdPZiCxHgGx7mtPEDmKAJ1zbqi80tqdINVw8Wj4zPjm6FAta6N2jd8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzgWy8IruM97XB0hqfTjM9hs46UPuQ7NVG175WQW1TFhaaM8xb
-	jBD5vm/9yX/0MK9ZUGp1BfPM+ba0zTTY8OfdN6i1WqPLWIMM1UZo97j5
-X-Gm-Gg: AYBFou1BT6wlxtUQL9h/0PxnkSmgG+aTs/W2sIfEVUbmL6YWjjaQgkuxFlKOfWYsX2l
-	GhFaMBMnlWD73FpB4F62qFW9ir8h/geyIeSar+dgE7kVweYxO7o3OpVNHrdOxamAbZ9lp0rsr/4
-	Rf62Z4lnqt1t6kcftHHdbDjA90+gHBBcMd0pKqQT03+1Wgdu1SPr4aalkJtlLEy9uGbGd6HcdtK
-	Au+L5Sk6Jp78LLB7/94LvfCsUoV0QC5M8wJKQlcCWJQUWrQrtCeDGOt0WiQgoUvbWBEKls/AA0a
-	O8wKJwfsPwJAZm/j9IfRWuybTZG2r2RKY74+thDfLoaqRP/0EPlsUy0El6KZjEgWdEkE00baS5x
-	n8Jct1BZwVrj0Cn8e9bq5hyP7QMoYH6sLSO4IwxSBxDBfvi3OASwqdyLpgiQsrCPcSMB+aEtli1
-	sF50Pyo8xz26MuX4gavbI67xl2+B91MxUYtgWzvGLYGl+bWLLEARXRpx7ATYdQVN3mFSAvgD7Dm
-	qB5l/NVVq6t9oqgEq6zU2PSxDbbpMqoIokU/4YOI1f4SCDZEGWUrXju9Og28kwpmi0Dd/X97yVF
-	RyBrtsNryw==
-X-Received: by 2002:a17:90b:4c50:b0:39d:fd60:caba with SMTP id 98e67ed59e1d1-39e54d21a31mr14881297a91.14.1789969705254;
-        Sun, 20 Sep 2026 22:48:25 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cb372b7sm12640514a91.15.2026.09.20.22.48.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 22:48:24 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: kuniyu@google.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	willemb@google.com,
-	mhal@rbox.co,
-	jakub@cloudflare.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	benquike@gmail.com
-Subject: [PATCH net v2 1/2] af_unix: decrement u->inq_len when skipping unread OOB skb in manage_oob()
-Date: Mon, 21 Sep 2026 05:48:22 +0000
-Message-ID: <20260921054823.1822122-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-In-Reply-To: <CAAVpQUARH-vecUojrXJWHp_C_rCpyxkB-HMBhryfxB-S76BAiw@mail.gmail.com>
-References: <CAAVpQUARH-vecUojrXJWHp_C_rCpyxkB-HMBhryfxB-S76BAiw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKSPhQSE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0021F000FF;
+	Mon, 21 Sep 2026 05:49:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789969799;
+	bh=cWKiyNN+ZwBt0vGFx3kkNpOpb4m1x6useaF3SDDlZcY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mKSPhQSEAQbQUk/qpzd9pxG3/Q9UaKEzaTWtXTB1NHN4Y0Bhif/tAxpMtiFvEXzvO
+	 eDGM2VDLdzLY0XJVzY+tWiCstMULIjcbwjIO0SCPsFU2HXZAB6DSoWqB5VDrUpsh/p
+	 kSWD90CG4yYY38Jun/glqpWGzkVQmMgscHHYRbFGQbzKMm2J5tgZBjZk6Zbs1XCtlx
+	 N6NnuQ2+GbbqV1DBDflPCrlJ0cmpOj1k5Cc2SyRimXB295sVlzzVuQDdkQsP+qhu1a
+	 CjqX1oqvQdUyPsGI6Hm6ETua7PBH7aQs2IAI4fCDWSD1el0ZRtAT0Gj29L14WLzwIa
+	 0mBhEi8p9t4Nw==
+Subject: Re: [PATCH net v2] net: stmmac: request the MDIO reset GPIO only once
+From: netdev-bot+sashiko@kernel.org
+To: xiaolinkui@126.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ xiaolinkui@kylinos.cn, stable@vger.kernel.org
+Date: Mon, 21 Sep 2026 05:49:58 +0000
+Message-ID: <178996979856.2160803.6509728485884520489@kernel.org>
+In-Reply-To: <20260920054703.1897755-1-xiaolinkui@126.com>
+References: <20260920054703.1897755-1-xiaolinkui@126.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When a normal in-band read on an AF_UNIX stream socket (without MSG_PEEK
-and without SO_OOBINLINE) encounters an unread u->oob_skb in manage_oob(),
-manage_oob() clears u->oob_skb, unlinks the 1-byte skb from
-sk->sk_receive_queue, and drops it with SKB_DROP_REASON_UNIX_SKIP_OOB
-without decrementing u->inq_len. Because queue_oob() incremented
-u->inq_len by 1 when queuing the OOB skb, u->inq_len remains permanently
-inflated by 1 byte for each skipped unread OOB skb, causing SIOCINQ /
-FIONREAD to report a stale positive byte count on an empty socket.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Decrement u->inq_len by 1 when unlinking the unread OOB skb in
-manage_oob().
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-Tested in QEMU against Linux 7.3.0-rc3 by sending three 1-byte MSG_OOB
-packets interleaved with normal stream data on an AF_UNIX SOCK_STREAM
-socketpair and draining all in-band data via recv(): on the unfixed
-kernel, ioctl(SIOCINQ) reports 3 on the empty socket; with this patch
-applied, ioctl(SIOCINQ) reports 0.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: f4e1fb04c123 ("af_unix: Use cached value for SOCK_STREAM in unix_inq_len().")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Hui Peng <benquike@gmail.com>
----
-Changes in v2:
-- Split the manage_oob() and unix_stream_read_skb() fixes into a 2-patch
-  series as requested by Kuniyuki Iwashima.
-- Update Fixes: tag to f4e1fb04c123 ("af_unix: Use cached value for
-  SOCK_STREAM in unix_inq_len().") and clarify the commit message as
-  noted by Sashiko.
+- [Medium] Guard mismatch between where the MDIO reset GPIO is acquired
+  and where it is used: stmmac_mdio_register() acquires the descriptor…
+- [Low] The new devm_gpiod_get_optional() call is placed before the
+  driver learns that the DT MDIO node is disabled, and is not…
+- [Low] The new devm_gpiod_get_optional() in stmmac_mdio_register()
+  (stmmac_mdio.c:604-609) is not wrapped in `#if…
 
- net/unix/af_unix.c | 1 +
- 1 file changed, 1 insertion(+)
+--
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 42cffeafc8c1..1770af3c2684 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2849,6 +2849,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sk_buff **last,
- 		WRITE_ONCE(u->oob_skb, NULL);
- 
- 		if (!sock_flag(sk, SOCK_URGINLINE)) {
-+			WRITE_ONCE(u->inq_len, u->inq_len - 1);
- 			__skb_unlink(skb, &sk->sk_receive_queue);
- 			unread_skb = skb;
- 			skb = skb_peek(&sk->sk_receive_queue);
+net: stmmac: request the MDIO reset GPIO only once
+
+This moves the "snps,reset" GPIO lookup out of stmmac_mdio_reset() and
+into stmmac_mdio_register(), caching the descriptor in
+struct stmmac_priv::mdio_reset_gpio.  stmmac_mdio_reset() now only
+pulses the cached line, so repeated calls no longer fail with -EBUSY
+from a second devm_gpiod_get_optional().
+
+A few questions about the new placement of the request.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> index afe98ff5bdcb..346f93f86abe 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> @@ -386,15 +386,8 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+>  
+>  #ifdef CONFIG_OF
+>  	if (priv->device->of_node) {
+> -		struct gpio_desc *reset_gpio;
+>  		u32 delays[3] = { 0, 0, 0 };
+>  
+> -		reset_gpio = devm_gpiod_get_optional(priv->device,
+> -						     "snps,reset",
+> -						     GPIOD_OUT_LOW);
+> -		if (IS_ERR(reset_gpio))
+> -			return PTR_ERR(reset_gpio);
+> -
+>  		device_property_read_u32_array(priv->device,
+>  					       "snps,reset-delays-us",
+>  					       delays, ARRAY_SIZE(delays));
+> @@ -402,11 +395,11 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+>  		if (delays[0])
+>  			msleep(DIV_ROUND_UP(delays[0], 1000));
+>  
+> -		gpiod_set_value_cansleep(reset_gpio, 1);
+> +		gpiod_set_value_cansleep(priv->mdio_reset_gpio, 1);
+>  		if (delays[1])
+>  			msleep(DIV_ROUND_UP(delays[1], 1000));
+>  
+> -		gpiod_set_value_cansleep(reset_gpio, 0);
+> +		gpiod_set_value_cansleep(priv->mdio_reset_gpio, 0);
+>  		if (delays[2])
+>  			msleep(DIV_ROUND_UP(delays[2], 1000));
+>  	}
+
+[Severity: Medium]
+Is the pulse site still gated on the same condition as the new
+acquisition site?
+
+Here in stmmac_mdio_reset() the only guard is CONFIG_OF plus
+priv->device->of_node, while the request added in stmmac_mdio_register()
+is additionally gated on mdio_bus_data->needs_reset.  For a DT device
+where needs_reset is false, priv->mdio_reset_gpio stays NULL, so both
+gpiod_set_value_cansleep() calls are no-ops, the delays are still slept,
+and the function returns 0.
+
+The caller that the commit message identifies as the victim does not test
+needs_reset either:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_resume() {
+	...
+		/* reset the phy so that it's ready */
+		if (priv->mii)
+			stmmac_mdio_reset(priv->mii);
+	...
+}
+
+needs_reset == false together with an of_node is produced in-tree, for
+example:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c:tegra_eqos_probe() {
+	/* MDIO bus was already reset just above */
+	plat_dat->mdio_bus_data->needs_reset = false;
+}
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c:loongson_dwmac_dt_config() {
+	plat->mdio_node = of_get_child_by_name(np, "mdio");
+	if (plat->mdio_node) {
+		dev_info(&pdev->dev, "Found MDIO subnode\n");
+		plat->mdio_bus_data->needs_reset = true;
+	}
+}
+
+In the loongson case needs_reset stays false when there is no "mdio"
+subnode, while the device still has an of_node.
+
+On such a configuration, before this patch the first stmmac_mdio_reset()
+call did request the line and drive the pulse; afterwards the pulse never
+reaches the wire.  Would gating the acquisition on exactly the same
+condition as the use site (or not gating it on needs_reset at all) avoid
+that divergence?
+
+Related, the commit message says:
+
+    "The request is still gated on mdio_bus_data->needs_reset, which is
+    the condition that installs the reset callback, and on the device
+    using DT, as the reset itself is."
+
+Is that accurate for the stmmac_resume() path, which calls
+stmmac_mdio_reset() regardless of needs_reset?
+
+For what it is worth, no in-tree DT was found that combines
+needs_reset == false with "snps,reset-gpio" (all in-tree users of that
+property go through stmmac_platform.c, which sets needs_reset = true), so
+the lost pulse depends on a firmware or vendor DT, such as the
+firmware-provided Loongson one.
+
+> @@ -608,6 +601,14 @@ int stmmac_mdio_register(struct net_device *ndev)
+>  	if (!mdio_bus_data)
+>  		return 0;
+>  
+> +	if (mdio_bus_data->needs_reset && dev_of_node(priv->device)) {
+> +		priv->mdio_reset_gpio =
+> +			devm_gpiod_get_optional(priv->device, "snps,reset",
+> +						GPIOD_OUT_LOW);
+> +		if (IS_ERR(priv->mdio_reset_gpio))
+> +			return PTR_ERR(priv->mdio_reset_gpio);
+> +	}
+> +
+
+[Severity: Low]
+Can this request run for an MDIO bus that is disabled in DT and will
+never be registered?
+
+stmmac_of_get_mdio() does not filter unavailable nodes in either branch:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:stmmac_of_get_mdio() {
+	if (of_match_node(need_mdio_ids, np)) {
+		mdio_node = of_get_child_by_name(np, "mdio");
+	} else {
+		for_each_child_of_node(np, mdio_node) {
+			if (of_device_is_compatible(mdio_node,
+						    "snps,dwmac-mdio"))
+				break;
+	...
+}
+
+so a disabled child still reaches stmmac_mdio_setup(), which sets
+plat->mdio_bus_data->needs_reset = true.  The MDIO core then rejects it
+before the reset callback can ever be installed:
+
+drivers/net/mdio/of_mdio.c:__of_mdiobus_register() {
+	/* Do not continue if the node is disabled */
+	if (!of_device_is_available(np))
+		return -ENODEV;
+}
+
+and stmmac_mdio_register() turns that into success:
+
+	err = of_mdiobus_register(new_bus, mdio_node);
+	if (err == -ENODEV) {
+		err = 0;
+		dev_info(dev, "MDIO bus is disabled\n");
+		goto bus_register_fail;
+
+Before this patch the lookup only happened from the reset callback, so
+nothing was requested in that configuration.  With the request moved
+here, three things change for such a board:
+
+- a lookup error (-EPROBE_DEFER while the gpiochip is not yet present,
+  -EBUSY from another consumer, or anything else) is returned from
+  stmmac_mdio_register() and aborts or defers the whole MAC probe, for a
+  reset that can never run
+- on success the devm descriptor holds the line for the device lifetime
+  with no user at all, since probe succeeds and devres cleanup does not
+  run
+- GPIOD_OUT_LOW drives the reset signal to its inactive level for a bus
+  DT asked not to be used
+
+Would requesting the GPIO only after a bus has actually been registered,
+or skipping the request when the MDIO node is present but unavailable,
+be preferable?
+
+No in-tree DT was found that declares "snps,reset-gpio" on the MAC node
+and marks its MDIO child disabled, so the probe-abort and early
+de-assertion parts are not demonstrated on an in-tree board; the
+reserved-but-unused line follows directly from the code.
+
+[Severity: Low]
+Should this request be inside the same conditional compilation block as
+its only consumer?
+
+stmmac_mdio_reset() wraps its whole body, including both
+gpiod_set_value_cansleep(priv->mdio_reset_gpio, ...) calls, in:
+
+	int stmmac_mdio_reset(struct mii_bus *bus)
+	{
+	#if IS_ENABLED(CONFIG_STMMAC_PLATFORM)
+
+so with CONFIG_STMMAC_PLATFORM=n the function reduces to return 0, and
+priv->mdio_reset_gpio has no reader, while the new request above is
+compiled unconditionally.
+
+That combination is buildable: DWMAC_LOONGSON, DWMAC_MOTORCOMM and
+STMMAC_PCI sit after "endif # STMMAC_PLATFORM" in
+drivers/net/ethernet/stmicro/stmmac/Kconfig, and dwmac-loongson.c
+includes only stmmac.h and stmmac_libpci.h, so it links without
+stmmac_platform.o while still setting needs_reset = true on a device
+with a firmware-provided of_node:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c:loongson_dwmac_dt_config() {
+	plat->mdio_bus_data->needs_reset = true;
+}
+
+In that build the "snps,reset" line is claimed for the device lifetime
+while the code that would pulse it does not exist, and a transient
+lookup failure aborts probe.  Before the patch acquisition and use were
+always compiled together.  Putting the request under the same
+IS_ENABLED(CONFIG_STMMAC_PLATFORM) guard, or dropping the guard from
+stmmac_mdio_reset(), would keep them paired.
+
+No in-tree Loongson DT carries snps,reset-gpio, so this has no observed
+effect on in-tree boards.
+
 -- 
-2.49.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920054703.1897755-1-xiaolinkui%40126.com
