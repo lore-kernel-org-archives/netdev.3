@@ -1,165 +1,143 @@
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DF7441623
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.234
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790022954; cv=pass; b=bBf7rxZjy3u6G5da/ustCMz1Xw8fZuBURaDZB0qbSalvScysGTz2FSu/rqxhn0fS5R0kHFqGIA2eVpv9DsvH/9He6z470uX0IA7irGBfLNCZVmT4I5nTKCIhzYVIiI8MOvX8CRIxNX28rCVn/PHOgg0xzVTu/l7s+5EzCyMX8UE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790022954; c=relaxed/simple;
-	bh=U3DXEKNWlCB0uYRtqUZf/ug5VAzBLjlT6fU2c/knisc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=anKeh2MkhmKUowyIMz0LjjD4PuQla312C2YQ53XLf+OgPfCl7zpeD0J5NYyKqypcas+6EtcaKsnfhFCzqLS/zKqek38pdEUxOeUDBpOKj92WQt/7AG+nlkZ8vAgyhsla4Coyf9ncROVbcgm2SbqyMV+fWPsmymHJHeLG8kLnGIM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PelLgQG6; arc=pass smtp.client-ip=74.125.230.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8B638B7DD
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790023001; cv=none; b=QHUUgar5TkapCgrBfVr6ktmdcXgyk1Nqs7ciM1thhrImksIYwrZw8I8DSEQfRzu4mz7tRcLDvOzQtiJ8yViBgBi/EXyoDxs/fxNjIYOrzf2/sQssYnPIOXCW7xB16F1A5MmNRl0od75VC3p2ulnnpVKBcLj1N69/PWp2fv3IxOI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790023001; c=relaxed/simple;
+	bh=dmEauoCiaAlWlhb1/A2yKF4r4V3fFIH+2z6Df6dyJGo=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=CNgBKLJMw6f4fua01LxTs9gyZa5ghFN72sgO0I0YgcZqBByKCLqizp8z00cwTPNNBc/A4GBgXemhcL38G1PEtTNOWgpKrz9dRj+J77G26e8NqdRQl9j6BYJktx85Cr8hFqtxPgyR3xkMSY+xUU0NQqq7rUy6QKoOoLYfhF55938=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s0hj0DRA; arc=none smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PelLgQG6"
-Received: by mail-qk2-f42.google.com with SMTP id af79cd13be357-93be29bb454so379909685a.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:35:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790022952; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bfaoUWMBm0lRWP3O/1itAlh3OLNiXc45d9fySKIFSypR6IHacJv+sQGwT8lGgtx52I
-         VQy/Z8OTHpaDNz4RLvRvzYD1/UeGKdEPkKPAZiiddGFlkkAQSP6+2Ywl++1k0BbrpzZF
-         jxBnWLZ+uwGCuexpp+++1po6oeR/U7dgt+M/MIgwiQfv+uz5y/vdo08f8Uuae9faKorK
-         T4qyuh7vEEbm5bfjXpRt7Zku9WZ/WRcaG4oWtpxhP7w4WaqHpf+TnMSb2G2tCz7f9moZ
-         K95CFomVdES5LvImw1QCBzW9efiXshnHzg4f1u+P2Tzy4i9rYt3/7RHTC4dCGPQFMFwp
-         dP8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GzvEhHEFf3U+VWscOvjIoCtOuQQNDN766fh3j56iCig=;
-        fh=j7jo7tI4OVxJyMVZst8j6beWGDkZ6ivVPPuDMURfQYQ=;
-        b=Vqimd4YCE8HtjhGWNLKCWTngqigm3uhJ/WiNXLuD4ptcRcqjofoNL7NvXGJOEA5/01
-         V4X8Sh9l/pmq/TKFDPZbm/1LyCqFOv88MRp2Q1K+GDXfxEdSRdeYHbPdE0zIPuMRCGNs
-         LwDPAd3Txuso5nA/o93Cv/UKMO5O4QZPkUeNnV/1kZ1TExi8JU5WrwFMAgGZoTGbVl+U
-         wKtDjhYZCR2rrDTyKpszUFF4hdSakT2hcNpSMP56leLQCtpbIWCrSQXqneRDQI8M73iT
-         8ZThtfyiN+cznJ3x090jiey8rb70zAMrhG0HPqavNgBEK7BVidkhSDgqPPcluMej4+J6
-         eLiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s0hj0DRA"
+Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d46e4cdccso22086387b3.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790022952; x=1790627752; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GzvEhHEFf3U+VWscOvjIoCtOuQQNDN766fh3j56iCig=;
-        b=PelLgQG6RVFjFUuHWfpFTnfPidTIkPHrD2Ms6ODqrKDQU4PU3OM75qsoJfpOoAMo+d
-         9yB6Z0Klg/PR/Wp4H5hxeDO7dHmyruFREuQutvLoYad95lFanPan3zJLdzSrpUzPYINv
-         r0Nz4mCQkyOAm61cghf0sJIISnOGqByWYhp2mPjvUw85c7rw+4dv4GNFdAjCKiPj4Rxl
-         uo8M9Z+/BlqLU+m0OJdScommCJcNFCm5d3MyfG9+GB3E89qXiziT+OhV0+PkyefRV6jJ
-         MjLugZVpRNl2aBCZU2VsrdeuDzCVHRsDJHHaEx1shZMLBeLbqvqWUrktZVAMDmwQ6uYO
-         F69A==
+        d=gmail.com; s=20251104; t=1790022999; x=1790627799; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4o6O2twLKiU2dp3ijpF1x/3M3V1HAc1dKcHv0/luByU=;
+        b=s0hj0DRAwSagOm+JJK4sMqjQ8+xN++GLO5YLzzCzEvL2TASX1R2OoixsBvOXHTkqKk
+         /kN2ANsFi4fG4GZ78nbCNjv5P1EU+D1C1LjgrUCG4NeVvIBzFeKXdAKsOolfaVRb13Na
+         oWC/1znDhSAJXVFSAQcgNOmewERolq0Ej1CjAwm211sYfhhuIqFSFIxdW2ZnDltYNky9
+         1nKssklenz1R1QTTSrX0fIHFXo85K+wi0VSdL6w6wX99PJBKbmFv7uezktuOIjSUUaWj
+         37ViU/Wdl6b9vHihsLZOodxmedws4jtJhK3uEVbrj0OwFc5oDUu5pjOjKzHGMrYJ2TX/
+         wETw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790022952; x=1790627752;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790022999; x=1790627799;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GzvEhHEFf3U+VWscOvjIoCtOuQQNDN766fh3j56iCig=;
-        b=LgfFnTlONy2nUsZg7/i6J9mZOJ35kBv44wM8aVHCcOsbiFI9THlEUTh3hvVan0m5sQ
-         B/qyJPkR5Ob4ohHLhS/FN4or9ztGWaADNRE7v09dN3g/u/gNbj6odzDyGKPVdvgH6TXE
-         vz0GVC4YzFTUrjDIiMThBor8E19xpodFdl8R/xmKu7myskR4uaLsz4TqVpiBI15YmyWc
-         iTqCJs8NYLV0QhCfJyQE0BeL9ohNGsealhzhXmPkNVeUXc6nfvNqOnwizQjwHvHkEFke
-         V6qomrppAzAC7kl0z/BVyIedhKkE5j7AcnN0yWinboRNbZ27xv1ynlbjtSi3qFd+4caB
-         0L8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwTRsL4S5p5NMlt4flMqsCEEYxiLUVUIZna8SDEiKa0pe2H23ls9CCbJhj3+Fu2DgGPJhih3HQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++n53leOe00U9VlWBAhUuagfUNSI+03y9JyExOOOjqQ+VVhDZjaD
-	P71PfjIU1SXK3pTa7FWsM7P2lEE6EGwlVJJZGmDT1MntCmFCYQYcJaW/NqDJU+34VTqpTTUACLw
-	CZhZVdTtsyVz07zaYnQ/Ko11K6vQx0aGwLh85W+ev2Lf+EsQOGnPvzm8xkmY=
-X-Gm-Gg: AYBFou2c1kA0KJOsoLzs44H3n6ZrMF5POGgyaj+Ts4Po6uXscPFquSsR78YxpP48qEc
-	ShyXQOvphaAsre5m3UfE4RaA7vx4O//wd6It5ataYELIgmyLb5kxBn/wDvPh+2EYLJtMzAWnYl3
-	qRsVQa9mBEtneiV2NGxQPdRK+F6g8SXyG1fpoLmffSENP9aclC1bBg8iU/K5KQnjDL3DNtNl8X3
-	sWsInxS9WjAW5jKaXAqdEjigCKVdokqPiH3PhxexmFbubcRBLNGgwNKCPehVRFarKVco3bkDzZL
-	ACNAmyIg6MQB97XqVbzOovNtGTwyMdRWhCblOuOv6m/njKVSzYCYds8BJIDl2rJoGQ27UOxYZ86
-	OLjj3GU5fXOPeg0gqsaDRSkhBF+t0WeFc8L49dZlCk9P/yx8y55hg2DEnhiaOfU9NViaNyZ+GaC
-	TRe2C0
-X-Received: by 2002:a05:620a:178d:b0:939:10dd:9c01 with SMTP id
- af79cd13be357-93c19a4621emr25588585a.38.1790022951139; Mon, 21 Sep 2026
- 13:35:51 -0700 (PDT)
+        bh=4o6O2twLKiU2dp3ijpF1x/3M3V1HAc1dKcHv0/luByU=;
+        b=USSjl24OoaVGkY5PDTogHENtzoIrb5MYoHcrmKrTEOn05A12HTgp+IfmCZcgZyFQ/W
+         5GJtBjRCocHtoLpMAR33Vdkl59TiIN9s3pJNOG5tdv40s/gOAwIouV0htKOQWGu7oZ0V
+         p1Rh1QDs4Ym56CssNLiernuqQVVbR4VIBaIypm4j4I0gmskLkQZi0v0qJyJO756md0Gv
+         XIimDgk6SFiRe8Mb+eWjfkji3ZK9j0lpFfU6OVlVqVQm2/687a5GkI1kr9mgozG+tUR2
+         FyoAveN3gfosAOJ/SuFFbDurmbM9Xcs72WzJ10tmzRDyKWCBGVeskXb/Rm7dJ+4J1x7G
+         Af7w==
+X-Forwarded-Encrypted: i=1; AKwUvBy89WL9MGyIQBGCRF6e54pNR48ZaVDubUPXaJyIaxtUm8NEqAwXGA1bVnETz7iVjtLpx79+DeU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lxyy0D55xYbL5nDJ7QXojJz4PiG/cd+M+l3bvbPyVOKt/osfwO
+	DmuUMCnV7PJdHAFPEW7x2DAHk1PexjGeXkalNLUlj5veIMrbliVndxpz
+X-Gm-Gg: AYBFou0GWBvxPGnh3XObm36KrUUHPIBhVYcRsOABrMpPXdradDPGhYokoDGqPtMWF9E
+	aM5vqmVPpklydltPjSFxqq3ZK47n64U4xGC6TaVa9YGqyD+txSc71KG1IzmRF1w198F2bRdB2y7
+	EADFu1e0rvMEg9HSqXcQjSmtv4L5epvmJ942AJpgUv7xvb4wqmyvrrfRyYSP2RnWbEggQK0B4qe
+	vI9LxlSdcP6u2w7SqYVvDT8kpE6hbWel9cmDKiCiHPnq6a857uBPPaL3hbhzf1lcmD2L1aRZsq1
+	bd6SQBQjomkl0g3Ne+uBsYAEQ1QK+poICZhMISIrIwi87/eUg0MAIz0Ak59D7NWMgZ0XHztrkHW
+	uXknAb10ACc/e8HV4m2WSK2/sEK9RGTU73C7nxbBmb5n3ntfO7qtPgRZI5MnMHBnb6f6X8LQZiB
+	YIeWvSSKKp8MBYaWNrQoKvt478vjPlkWRNyoqH5oJiLkrOl2URMqtl6jrFfjZfAaYXJhTeCx3H4
+	h/+W0qmcH7pR+OVpOeOiBdzVfDMBiaili89buMjcU58ueJEsezC
+X-Received: by 2002:a05:690c:7011:b0:89b:6beb:1147 with SMTP id 00721157ae682-89b6beb159bmr30196867b3.52.1790022999243;
+        Mon, 21 Sep 2026 13:36:39 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a23fa14369sm1188727b3.45.2026.09.21.13.36.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 13:36:38 -0700 (PDT)
+Date: Mon, 21 Sep 2026 16:36:37 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Wang Zhan <wang.zhan@smartx.com>, 
+ netdev@vger.kernel.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ keyong.sun@smartx.com, 
+ Ilya Maximets <i.maximets@ovn.org>, 
+ Aaron Conole <aconole@redhat.com>, 
+ Eelco Chaudron <echaudro@redhat.com>, 
+ dev@openvswitch.org, 
+ Wang Zhan <wang.zhan@smartx.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Alice Mikityanska <alice@isovalent.com>
+Message-ID: <willemdebruijn.kernel.2984a0c37a5cf@gmail.com>
+In-Reply-To: <20260920131231.3610688-1-wang.zhan@smartx.com>
+References: <20260918084651.3022878-1-wang.zhan@smartx.com>
+ <20260918084651.3022878-3-wang.zhan@smartx.com>
+ <willemdebruijn.kernel.7b2e4c8d0d45@gmail.com>
+ <20260920131231.3610688-1-wang.zhan@smartx.com>
+Subject: Re: [PATCH net-next v2 2/4] net: gso: support bounded TCP
+ segmentation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921183758.1812310-1-edumazet@google.com> <20260921183758.1812310-4-edumazet@google.com>
- <20260921130337.57d93c2f@kernel.org> <CANn89iJkB4BERbG_7yCmvguMdTcJUBzpM_Dkas+L2LnB6nraMQ@mail.gmail.com>
-In-Reply-To: <CANn89iJkB4BERbG_7yCmvguMdTcJUBzpM_Dkas+L2LnB6nraMQ@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 21 Sep 2026 22:35:39 +0200
-X-Gm-Features: AcwNN1V64J6p4OcfZ1zcGtorf2O_LNTNxzeWB20He_8yDz1A7aaz3_3FLq53UA8
-Message-ID: <CANn89iLqsBte3krUn6hzKeTTbNmfEBsvcx5+1LkV1q+T+RFx=g@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/5] net: ethtool: add KUnit tests for the
- generated RSS key
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 21, 2026 at 10:10=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Mon, Sep 21, 2026 at 10:03=E2=80=AFPM Jakub Kicinski <kuba@kernel.org>=
- wrote:
+Wang Zhan wrote:
+> On Sat, 19 Sep 2026 11:35:17 -0400 Willem de Bruijn wrote:
+> > > -		struct sk_buff *segs = __skb_gso_segment(skb, features, false);
+> > > +		struct sk_buff *segs;
+> > >  		struct sk_buff *next;
+> > > +		segs = __skb_gso_segment(skb, features, false, 0);
 > >
-> > On Mon, 21 Sep 2026 18:37:56 +0000 Eric Dumazet wrote:
-> > > Check the property from the definition of the Toeplitz hash, independ=
-ently
-> > > of the way netdev_rss_key_init() achieves it: an aligned block of 2^q
-> > > consecutive values of one field has to land on the 2^q queues exactly=
- once
-> > > each.
-> > >
-> > > Four checks and a control. rss_key_property_test() does the algebra f=
-or
-> > > the named fields of the usual hash inputs, rss_key_grid_test() sweeps=
- every
-> > > 16-bit aligned position of the key, since the generator does not get =
-to
-> > > know the layout the hardware uses, and rss_key_spread_test() hashes t=
-he
-> > > inputs of an actual burst and looks at where they land. The control,
-> > > rss_key_checker_test(), feeds degenerate keys to the rank check so th=
-at a
-> > > check accepting everything cannot make the others pass.
-> > >
-> > > rss_key_alias_test() covers the other half of what the generator prom=
-ises,
-> > > that no two input bits read the same 32-bit key window and are theref=
-ore
-> > > indistinguishable to the hash. It sorts the windows instead of compar=
-ing
-> > > them pairwise, so unlike netdev_rss_key_init() it looks at every dist=
-ance
-> > > rather than at the multiples of 16 alone.
-> > >
-> > > The field table includes a PSP over UDP over IPv6 layout, whose inner=
- TCP
-> > > ports sit far past the plain 4-tuple, because that is the case the of=
-fsets
-> > > of the standard layouts do not cover.
-> > >
-> > > Commenting out the fixup makes three of the five cases fail and leave=
-s the
-> > > control passing. Keeping the fixup but skipping the redraw fails
-> > > rss_key_alias_test alone.
+> > irrelevant?
+> 
+> Not unrelated: with the extra argument that line is 82 columns, so the
+> initializer moved to its own line.  The call itself is unchanged.
+> 
+> > > +	unsigned int max_segs = SKB_GSO_CB(head_skb)->max_segs;
 > >
-> > Is this AI generated or do you think there's some genuine value here?
-> > I don't want kunits which can be trivially re-generated during
-> > development to be merged. But perhaps there's some genuine value in
-> > this one?
->
-> I added all these tests because Willem wanted them in our internal bug en=
-try :)
->
-> This can certainly be removed, although I have to find ways to launch
-> vng so that
-> /proc/sys/net/core/netdev_rss_key is populated.
+> > could this be computed inside skb_segment, rather than having to be
+> > passed through SKB_GSO_CB. I haven't checked, but it would simplify.
+> 
+> I tried it: https://github.com/zwtop/linux/pull/3
+> 
+> It does read better, but whether to resegment is the caller's choice: the
+> qdiscs strip the GSO bits to get one packet per segment (sch_netem.c:443),
+> and a device-derived limit groups that output instead - which sch_netem then
+> drops, because skb_checksum_help() on the first segment rejects a GSO skb
+> (sch_netem.c:538, net/core/dev.c:3626). 
 
-Adding the following seems to help:
-   --qemu-opts=3D"-netdev user,id=3Dn0 -device
-virtio-net-pci,netdev=3Dn0,rss=3Don,hash=3Don"
+So this is a rare netem edge case we need to handle.
+
+In the hot path, we should be able to defer the decision whether to
+segment entirely or segment to the capabilities of the device to
+skb_segment itself.
+
+> The features cannot tell the two
+> cases apart either: gso_features_check() clears the same bits for an
+> over-limit skb (net/core/dev.c:3843).
+
+I wonder if we can refine this instead.
+
+> So the bound stays an input from the caller.
+
+
+
+
