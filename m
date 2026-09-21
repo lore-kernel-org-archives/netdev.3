@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23D545FFBB;
-	Mon, 21 Sep 2026 09:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822ED33A9E8;
+	Mon, 21 Sep 2026 09:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789983329; cv=none; b=tNgy96uAJU/Fywd2w0G/xCtL1M9oDyewYrxUBzP29y5RXj5kCwuVr04UIvphGjsLN0zaVgkgTcG/8VLKd1ee2pcEdIpC214893ur5GLZzyvUWm0SM78LLH/dvIxX1sQLGFWTiLiDvMoKKFRohayl7a8UZl6MzC5TvO1jyHVWgYg=
+	t=1789983331; cv=none; b=HtPfirjGA8bFmdVo6FyJ/7TNElf/ASDeMdFZr8oHBNP/YKTI60G7pda3rRKaLrIUt6Qrhpltkx2bXVbHFLnEwvjf0haPmp5Gdt/LWtcyPfD286iKmVguUhdQpegv3EQBrajA//ojGzNO56gLoe/RTMDNC83/4NHiuY2nr7TV2eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789983329; c=relaxed/simple;
-	bh=foLcCqnRWv6kRnR/TqwlI71c4jkBeGIRefv+95oWOkU=;
+	s=arc-20240116; t=1789983331; c=relaxed/simple;
+	bh=t00lcsfRf3awC+LwaoXAD+X4mJyzwyy3q7zlZrUbvv0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aYbLMX/ELz86lWdiaSbvnQYtzCMLvJJop/qQ/2RdNYchpEJJ7eRsH1+8ZbN2q2s+Agjp/kCj1OeYvNjBWWmtk2TYBI/S57QxEsfUFgvbBab5UOMiVm5GhGPUJgqabaAwvf1PKTy8kqzt+3WGBmtWuaMQfQs6OvqIVNqCtiMyq/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QnOBSYLN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=A/tNzaMb9i4rX0Wl6+s7AvlKehOspWTBIjD/kYsG/g/lVlqt27FFJp83t2RmsU1U0hihnCJarxRjTA2PpXt21+Z1i2MZSG/yXPFJwW0HRjP11Yq/rXX7OCS5Cm2UfskHwXsgtZ3VhTUpQ93AcjnaLmF0Kx8rGP6peDNYGMMDIa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6vQN1UX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QnOBSYLN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18281F00893;
-	Mon, 21 Sep 2026 09:35:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6vQN1UX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315E21F000FF;
+	Mon, 21 Sep 2026 09:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789983327;
-	bh=SSzDrzYniilzCO1E29hD8FQCgjbslPxGsBns/I2qd4A=;
+	s=k20260515; t=1789983329;
+	bh=Pb/VAm068FplAX0X0vs/5ZAdIHasRPqFVhcI747Unek=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QnOBSYLNnyV1QmaVO7LbBWN/+Kl8e23aXmi0xSKYMeRpVaCTRXEV/8jIv5LfWiJWs
-	 RzT5rqJy6TESR/KJA3nor85UVhT3kJbQWt366vN0QqXmN1CSQXp8xIbcW/2V7787Cf
-	 W3BBh07xLFyONNXKxJInZKw76QO05OtKOtMozqcKPOKw0x0y/lLyvYpxJX/JYRQ+7O
-	 o4px6QFuXn7+5b9EY2pdeikBCIrOCtHw0rSW873w+ksxaTIUqsplU7xZeeiEx1rqSa
-	 kbE8JwpBZjsUbkFV2YXVtGouVxohOR0+T/DD2qVVxdFUh8UV95QP2t306+czDTEMP3
-	 na8LxY//lTNqQ==
-Subject: Re: [PATCH net-next v8 2/6] net: dsa: motorcomm: use max_ports in
- series for port bounds checking
+	b=H6vQN1UXzfYwmFEryPQbYvDrpexRYJ7RcaYMQq5J2LNGQiffWd4S2WGGBgnXUJVNn
+	 ZkY0EyvC5XFEkFpGf5t7uCl6o1D26z9v8KMSnJu7POkdql+nQTfxMdeD1UkoFTk2OB
+	 GtbaRZUDQnycMOByvLze6YndmS4QzfeKQzIottyX6eJAmwP4qMsw5iUmU653BkarMl
+	 AOkTBXaPeKMLdapCyCbdmuUogsM6FxmIcWokaQr4DesauTrK1Vw7mTPwhfQux6zRou
+	 AndpvZ1Q4CZXXJnc6ea6GS1tWTic9FPblO/FE5sd3gg2VlrB4LZNHBjU1lc3VSvzjI
+	 J9ODFZrto7xrw==
+Subject: Re: [PATCH net-next v8 3/6] net: dsa: motorcomm: move mib start from
+ probe() to dsa_setup()
 From: netdev-bot+sashiko@kernel.org
 To: kyle.switch@motor-comm.com
 Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
@@ -36,11 +36,11 @@ Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
  linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
  xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com,
  sijia.huang@gl-inet.com
-Date: Mon, 21 Sep 2026 09:35:26 +0000
-Message-ID: <178998332620.2160803.14693797109344103505@kernel.org>
-In-Reply-To: <20260917082236.3427168-3-kyle.switch@motor-comm.com>
-References: <20260917082236.3427168-3-kyle.switch@motor-comm.com>
-X-sashiko-severity: Low
+Date: Mon, 21 Sep 2026 09:35:27 +0000
+Message-ID: <178998332774.2160803.17644567305115314588@kernel.org>
+In-Reply-To: <20260917082236.3427168-4-kyle.switch@motor-comm.com>
+References: <20260917082236.3427168-4-kyle.switch@motor-comm.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,130 +50,238 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 1 (3) · Low: 0
 
-- [Low] yt921x_mbus_int_read()/yt921x_mbus_int_write() (chip.c:360 and
-  chip.c:378) now validate internal-MDIO addresses against…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] yt921x_dsa_setup() now runs INIT_DELAYED_WORK(&pp->mib_read,
+  yt921x_poll_mib) for every port on every DSA .setup() invocation…
+- [Medium] After this patch the per-port delayed works are initialized
+  only inside yt921x_dsa_setup() (chip.c:4556-4562), while…
 
 Pre-existing issues:
-- [Low] Claim of an inconsistency between the runtime per-series bound
-  (ds->num_ports = priv->series->max_ports at chip.c:4734, and now the…
+- [Medium] If dsa_register_switch() fails after yt921x_dsa_setup()
+  already ran and a port's mib_read work has been scheduled…
+- [Medium] The self-re-arming per-port MIB poller (yt921x_poll_mib() ->
+  yt921x_read_mib(), chip.c:609-626) is never stopped by…
+- [Medium] The per-port init block moved into yt921x_dsa_setup()
+  (chip.c:4556-4562) sets pp->index and initializes pp->mib_read but…
 
 --
 
-net: dsa: motorcomm: use max_ports in series for port bounds checking
+net: dsa: motorcomm: move mib start from probe() to dsa_setup()
 
-This patch replaces YT921X_PORT_NUM with priv->series->max_ports in the
-internal MDIO bus read/write address checks and in the phy_mask
-computation in yt921x_mbus_int_init().  The commit message states there
-is no functional change for existing YT921X devices.
+This moves the per-port MIB delayed_work initialization out of
+yt921x_mdio_probe() and into the DSA .setup() callback, so the works are
+now initialized once per .setup() instead of once per probe().
 
 > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 564e45ece22cb..2156230a78aad 100644
+> index 2156230a78aad..167b208357710 100644
 > --- a/drivers/net/dsa/motorcomm/chip.c
 > +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -357,7 +357,7 @@ static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
->  	u16 val;
+> @@ -4553,6 +4553,14 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
+>  	struct device_node *child;
 >  	int res;
 >  
-> -	if (port >= YT921X_PORT_NUM)
-> +	if (port >= priv->series->max_ports)
->  		return U16_MAX;
->  
+> +	/* mib polling init */
+> +	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
+> +		struct yt921x_port *pp = &priv->ports[i];
+> +
+> +		pp->index = i;
+> +		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
+> +	}
+> +
+
+[Severity: High]
+Can this re-initialize a delayed_work that is still armed or queued?
+
+.setup() can run a second time for the same struct yt921x_priv without a
+new probe().  dsa_switch_teardown() clears ds->setup, so when a peer
+switch of a multi-switch tree is unbound and re-bound, the whole tree is
+torn down and set up again and ds->ops->setup() is invoked once more.
+
+The counterpart yt921x_dsa_teardown() does not touch the works at all:
+
+	static void yt921x_dsa_teardown(struct dsa_switch *ds)
+	{
+		struct yt921x_priv *priv = to_yt921x_priv(ds);
+
+	#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
+		yt921x_leds_remove(priv);
+	#endif
+	}
+
+The only per-port cancellation before device removal is the
+non-synchronous cancel in yt921x_phylink_mac_link_down():
+
+	/* No need to sync; port control block is hold until device remove */
+	cancel_delayed_work(&priv->ports[port].mib_read);
+
+and the worker re-arms itself unconditionally:
+
+	yt921x_poll_mib()
+		...
+		schedule_delayed_work(&pp->mib_read, delay);
+
+So if yt921x_poll_mib() is executing when the port goes down, the cancel
+is a no-op and the work is armed again.  A subsequent .setup() then runs
+INIT_DELAYED_WORK() on that live work, overwriting work->data,
+work->entry and dwork->timer while they are linked into the timer base or
+a pool worklist.  Does that risk list corruption, lost work, and
+debug-objects/lockdep splats?
+
+The comment quoted above ("port control block is hold until device
+remove") also seems to no longer hold once the init lifetime becomes
+per-.setup(); should it be updated together with this change?
+
+Note the follow-up patch in this series, "net: dsa: motorcomm: move mib
+stop from remove() to teardown()", adds the disable_delayed_work_sync()
+loop to yt921x_dsa_teardown(), and with that in place the works are
+drained before any re-initialization.  Would it make sense to fold the
+two changes together so this intermediate state does not exist for
+bisect?
+
+[Severity: Medium]
+This is a pre-existing issue, but the new placement of the init loop
+makes it worth asking about: can the poller read the MIB block while it
+is reset?
+
+The init block now sits immediately before:
+
+	mutex_lock(&priv->reg_lock);
+	res = yt921x_chip_reset(priv);
+	mutex_unlock(&priv->reg_lock);
+
+Since yt921x_dsa_teardown() does not stop the poller and
+yt921x_phylink_mac_link_down() only uses cancel_delayed_work() against a
+worker that re-arms itself, a poll can still run during a second
+.setup(), in the window between yt921x_chip_reset() and
+yt921x_chip_setup() re-enabling YT921X_FUNC_MIB plus writing
+YT921X_MIB_CTRL_CLEAN.  priv->reg_lock serializes individual register
+accesses but does not keep the poller out of that window.
+
+yt921x_read_mib() treats any decrease of the low 32 bits as a wrap:
+
+		val = (old_val & ~(u64)U32_MAX) | val0;
+		if (val < old_val)
+			val += 1ull << 32;
+
+so one read of a reset or disabled MIB block permanently shifts the
+shadow counter by 2^32 rather than producing a single bad sample.  The
+follow-up patch adding disable_delayed_work_sync() to
+yt921x_dsa_teardown() closes this window.
+
+[Severity: Medium]
+This is a pre-existing divergence, but this hunk moves the per-port init
+onto exactly the path that clears the hardware counters: should the
+software MIB shadow be reset here too?
+
+The block sets pp->index and initializes pp->mib_read, but leaves
+pp->mib, pp->rx_frames and pp->tx_frames untouched, while the same
+.setup() path clears the hardware counters in yt921x_chip_setup():
+
+	/* Clear MIB */
+	ctrl = YT921X_MIB_CTRL_CLEAN | YT921X_MIB_CTRL_ALL_PORT;
+	res = yt921x_reg_write(priv, YT921X_MIB_CTRL, ctrl);
+
+yt921x_read_mib() documents the precondition:
+
+	/* Read and handle overflow of 32bit MIBs. MIB buffer must be zeroed before. */
+
+pp->mib is only ever zeroed by the devm_kzalloc() in yt921x_mdio_probe().
+On a second .setup() for the same priv the hardware counters restart at
+zero while the shadow keeps its old values, so the wrap heuristic adds
+2^32 to every 32-bit counter and ethtool -S / rtnl statistics jump by
+roughly 4.29e9 per counter.  This one is still present at the end of the
+series.
+
 >  	mutex_lock(&priv->reg_lock);
-> @@ -375,7 +375,7 @@ yt921x_mbus_int_write(struct mii_bus *mbus, int port, int reg, u16 data)
->  	struct yt921x_priv *priv = mbus->priv;
->  	int res;
+>  	res = yt921x_chip_reset(priv);
+>  	mutex_unlock(&priv->reg_lock);
+> @@ -4805,13 +4813,6 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
+>  	priv->reg_ops = &yt921x_reg_ops_mdio;
+>  	priv->reg_ctx = mdio;
 >  
-> -	if (port >= YT921X_PORT_NUM)
-> +	if (port >= priv->series->max_ports)
->  		return -ENODEV;
+> -	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
+> -		struct yt921x_port *pp = &priv->ports[i];
+> -
+> -		pp->index = i;
+> -		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
+> -	}
+> -
 
-[Severity: Low]
-Is max_ports the right quantity for these two checks?  The address passed
-to yt921x_mbus_int_read()/yt921x_mbus_int_write() ends up in the
-YT921X_INT_MBUS_CTRL PORT field, which selects one of the integral GbE
-PHYs, whereas max_ports is the total DSA port count including the
-external MAC ports and the MCU port.
+[Severity: Medium]
+With the init now conditional on .setup() having run, can
+yt921x_mdio_remove() operate on never-initialized works?
 
-The driver keeps those as separate quantities:
+yt921x_mdio_remove() still disables all of them unconditionally:
 
-drivers/net/dsa/motorcomm/chip.h:
-	/* 8 internal + 2 external + 1 mcu */
-	#define YT921X_PORT_NUM			11
-	...
-	#define yt921x_port_is_internal(port) ((port) < 8)
-	#define yt921x_port_is_external(port) ((port) == 8 || (port) == 9)
+	for (size_t i = ARRAY_SIZE(priv->ports); i-- > 0; ) {
+		struct yt921x_port *pp = &priv->ports[i];
 
-and struct yt921x_info carries:
+		disable_delayed_work_sync(&pp->mib_read);
+	}
 
-	/* Ports with integral GbE PHYs, not including MCU Port 10 */
-	u16 internal_mask;
+dsa_register_switch() can return 0 without ever calling ds->ops->setup():
 
-With max_ports == 11 the guard now accepts internal-bus transactions for
-ports 8 and 9 (external MACs) and port 10 (MCU), none of which have an
-integral PHY.  For a series whose integral PHYs are not the lowest port
-indices, the accepted set diverges further: the YT922x entry added later
-in this series sets max_ports = 9 while its integral UTP PHYs are only
-ports 4..7, so ports 0..3 and 8 would also be accepted.
+	net/dsa/dsa.c:dsa_tree_setup() {
+		...
+		complete = dsa_tree_setup_routing_table(dst);
+		if (!complete)
+			return 0;
+		...
+	}
 
-The effect is bounded: these callbacks only see addresses phylib has
-bound from the "mdio" child node, so a DT would have to list a PHY at
-such an address.  When it does, the driver runs a real INT_MBUS cycle
-against a nonexistent PHY index, and yt921x_intif_read() already has a
-dev_info() for the resulting unexpected read data.
+That happens when a DT-declared dsa-link peer switch has not probed yet,
+or never probes.  priv is devm_kzalloc()'d and drvdata is set before
+dsa_register_switch(), so a later unbind or module unload reaches
+yt921x_mdio_remove() with zero-filled delayed_work objects.
 
-Would keying the check off the integral-PHY count or mask (the
-internal_mask / yt921x_port_is_internal equivalent) rather than
-max_ports, which DSA consumes as ds->num_ports, match the hardware
-field being programmed?
+disable_delayed_work_sync() -> __cancel_work_sync() then calls
+timer_delete() on an uninitialized timer, which trips the debug-objects
+assert under CONFIG_DEBUG_OBJECTS_TIMERS, and unconditionally calls
+__flush_work(work, true):
 
-> @@ -390,6 +390,7 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
->  {
->  	struct device *dev = to_device(priv);
->  	struct mii_bus *mbus;
-> +	u32 max_ports;
->  	int res;
->  
->  	mbus = devm_mdiobus_alloc(dev);
-> @@ -402,7 +403,8 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
->  	mbus->read = yt921x_mbus_int_read;
->  	mbus->write = yt921x_mbus_int_write;
->  	mbus->parent = dev;
-> -	mbus->phy_mask = (u32)~GENMASK(YT921X_PORT_NUM - 1, 0);
-> +	max_ports = priv->series->max_ports;
-> +	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
+	kernel/workqueue.c:__flush_work() {
+		if (WARN_ON(!work->func))
+			return false;
+		...
+	}
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but now that the runtime bound
-comes from priv->series->max_ports, is it worth tying that value to the
-compile-time array size?
+so one warning per port.  The follow-up patch moves this loop into
+yt921x_dsa_teardown(), which DSA only invokes when setup actually ran
+(dsa_switch_teardown() returns early on !ds->setup), so this only exists
+at this bisect point.
 
-yt92xx_register_switch() already does:
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the probe error path looks
+unprotected: does it leave a scheduled work pointing at freed memory?
 
-	ds->num_ports = priv->series->max_ports;
+yt921x_mdio_probe() ends with:
 
-while the per-port state stays fixed size in chip.h:
+	mdiodev_set_drvdata(mdiodev, priv);
 
-	struct yt921x_port ports[YT921X_PORT_NUM];
+	return dsa_register_switch(ds);
 
-and several helpers still loop on the old constant, for example in
-yt921x_chip_setup_dsa():
+If dsa_register_switch() fails after yt921x_dsa_setup() already ran and a
+port's work has been armed by
+yt921x_phylink_mac_link_up() -> schedule_delayed_work(&priv->ports[port].mib_read, 0),
+probe returns the error, the mdio core does not call yt921x_mdio_remove(),
+and devm releases the priv that embeds the delayed_work.  Port teardown
+on the unwind path only calls cancel_delayed_work(), and
+yt921x_poll_mib() re-arms itself, so the work is not guaranteed to be
+drained and can run against freed priv/pp memory.
 
-	for (int i = 0; i < YT921X_PORT_NUM; i++)
-		ctrl |= YT921X_ACT_UNK_ACTn_TRAP(i);
-
-Nothing is broken today: the only two series entries are max_ports == 11
-(YT921x) and max_ports == 9 (YT922x), both within ARRAY_SIZE(priv->ports),
-and the remaining YT921X_PORT_NUM loops live in helpers reachable only
-through yt921x_dsa_switch_ops, i.e. only when max_ports == 11.  A
-BUILD_BUG_ON() relating max_ports to ARRAY_SIZE(priv->ports), or
-converting those loops to max_ports, would make the invariant explicit
-for the next series added.
+Placing disable_delayed_work_sync() in yt921x_dsa_teardown(), as the
+follow-up patch does, also covers this, since DSA calls .teardown() on
+the tree-setup error paths via dsa_tree_teardown_switches().
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917082236.3427168-1-kyle.switch%40motor-comm.com
