@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8884FC8C3
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677764FD28B
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790014878; cv=none; b=aDjhsZT/3OELtJ+dGkynxOn54c4/C15pc/3pCvQaf252je5GVW/LhCmr+BMj6XpY4TQSacy/Dgg7+ire/pGmvL6PIQkt/+ogW0kasxv5kK2bUGoZAOadL/xvGOjfngA2iHnJy3zQPYFU+9G1plRmEtS8dhoY7nYoPh+IbCz1UMg=
+	t=1790014880; cv=none; b=m0v9ZNRaijVgbv+jsVtiwRIfPNgztdRNOUwxb/f8jKV9LGgYJwItBh4WnvoULuQSURPAPqotm1ke1FkAfdArtOMjWYOgLRt/RgC8Qd4PPbh5JR4a9ypn58hUR9fyolqlE2VIsifnaCh2K0m+E8UE8IMRIjnQEKicEbheigNypRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790014878; c=relaxed/simple;
-	bh=McSJ/+gl6XAaywlQcDch6zvkPEdCzUvQXdgpRHkgP3U=;
+	s=arc-20240116; t=1790014880; c=relaxed/simple;
+	bh=thq+jlqiklYpgaHjloFaH+FY2dN4KPxuQ1tkMxvFJDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nR8MANe0/8f1O98g+xZcQBS7HONZD9i7oUxHbrKdHSNi9yUAR2pTbew5RwHPPEL0tJb8xH9ABpb4vk6hPhiioaaIT1HX21rGquu+CfEOg4hhfN7yckeZdZpw/Drw9k946VPmjiMHWLqEiZyRG4Rpv9H/uWa0M98N2Dc0HA5KXAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WOlC/biV; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=qJH1NUEQX8PuJrw6a4urhi3zg5UFyzZeqKW7kWF27i0Nt3Wf43ynAakcYosyvHhGrFyvHCYIrg4VtucFke2azd/gJTCcS/VlFhdU3q7OfBi+i/HerYOv+bxBWd5xrT5lrfJWBN1ERCDB2vsFKgOvZbWNQO2iqB8NGlgqjEu0oZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z0ZzYjR0; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WOlC/biV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z0ZzYjR0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790014876; x=1821550876;
+  t=1790014878; x=1821550878;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=McSJ/+gl6XAaywlQcDch6zvkPEdCzUvQXdgpRHkgP3U=;
-  b=WOlC/biVEnRxiDEO9TSKVOPiAJEik4rCdLJAhN0i1De0kI0AsCgW5QGq
-   Rf3o8Q35yo+MXGSbdK4ZnwNuwt/SvVzhYpB/tCkMbKQPmKtwKPXZ30Oza
-   8oH3q79PVtzeOgYf7bXz477g/NoyqjgzZfotwFrkSh3MEdCZgYrBWHIG/
-   u3nHP/qu/0PA0mBeWLfa2QDtTkZnGoMHXj0r4j/KQfu2TH5juE2KuxIEU
-   CknZ/giUe/P3nTGrb97nFoJpGFk6DwuVZgNSIEHRutmRsqZidQ4EPwMQn
-   9UKSMw2+hW+hugaQGmI/rAR5BUGpW5aBkZ7Cp37rG+ZinLAZp1wLDhIsd
-   g==;
-X-CSE-ConnectionGUID: Azn5LefgScK8Fv34TfsAtw==
-X-CSE-MsgGUID: gjzlwLrsQEeM1YTFwcItGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90426166"
+  bh=thq+jlqiklYpgaHjloFaH+FY2dN4KPxuQ1tkMxvFJDM=;
+  b=Z0ZzYjR00muiE2grIPwY6Ye1lB/YrZ73VxFAs2qObQxHDVdKWm0BN3EQ
+   y5N98BAHoGwf+6Phy3yL0ZP+058fQTvOqxt1f7g4EJw7SjTZ7YxFIkEbO
+   51Z9kNightJOWEeWnwRaz0m9uwdRS27Lebyt3aQcOg2Y+KWMEL6LAB8Ee
+   zn+FQXJ0TfiwONx5GX6VnAgOTb41tVdB5C3ssh9fnbSk5jyCdn3lXnDID
+   oTn+gW4/UWtk5lG7VBl9JNFR0Qvdtnx73liPjOqbPL5nSsO639kH295Pe
+   XdWdOI2AnSsdgAExqMsa+BInuul4nds8tcrRS7yOO5v5p8YgPcx8rcxsr
+   Q==;
+X-CSE-ConnectionGUID: oJyL92GtS6Crk8uS/hjutg==
+X-CSE-MsgGUID: 4ISfVY6JTiyJLm4HFJf4RQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90426172"
 X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="90426166"
+   d="scan'208";a="90426172"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 11:21:13 -0700
-X-CSE-ConnectionGUID: 5WSv4ngdT8qtBiQOxFPsPA==
-X-CSE-MsgGUID: cUwhkWulRu6+G0mDFOi75w==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 11:21:14 -0700
+X-CSE-ConnectionGUID: NskeAjgqS4CzoQkjdXS6eg==
+X-CSE-MsgGUID: iHmpx2MBRbKn6KsaSJxTKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="272267064"
+   d="scan'208";a="272267067"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa007.fm.intel.com with ESMTP; 21 Sep 2026 11:21:13 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,15 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+Cc: Michal Schmidt <mschmidt@redhat.com>,
 	anthony.l.nguyen@intel.com,
-	mschmidt@redhat.com,
+	przemyslaw.kitszel@intel.com,
 	poros@redhat.com,
 	aleksandr.loktionov@intel.com,
 	horms@kernel.org
-Subject: [PATCH net v4 4/5] ice: rebuild ring stats arrays instead of reallocating them in place
-Date: Mon, 21 Sep 2026 11:21:03 -0700
-Message-ID: <20260921182106.1015019-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net v4 5/5] ice: fix stats array overflow when VF requests more queues
+Date: Mon, 21 Sep 2026 11:21:04 -0700
+Message-ID: <20260921182106.1015019-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260921182106.1015019-1-anthony.l.nguyen@intel.com>
 References: <20260921182106.1015019-1-anthony.l.nguyen@intel.com>
@@ -70,189 +70,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-ice_vsi_realloc_stat_arrays() resized the ring stats arrays in place
-with krealloc_array(), sizing them from vsi->req_txq/req_rxq. That is
-not what ice_vsi_set_num_qs() computes later in ice_vsi_cfg_def(), so
-after a rebuild the arrays could end up shorter than vsi->alloc_txq /
-vsi->alloc_rxq, and ice_vsi_alloc_ring_stats() then walked past their
-end. Requesting fewer queues than the PF pool can hand out was enough
-to trigger it.
+When a VF increases its queue count via VIRTCHNL_OP_REQUEST_QUEUES,
+ice_vc_request_qs_msg() sets vf->num_req_qs and triggers a VF reset.
+The reset calls ice_vf_reconfig_vsi(), which does ice_vsi_decfg()
+followed by ice_vsi_cfg(). ice_vsi_decfg() does not free the per-ring
+stats arrays. Inside ice_vsi_cfg_def(), ice_vsi_set_num_qs() updates
+alloc_txq/alloc_rxq to the new larger value, but
+ice_vsi_alloc_stat_arrays() returns early because the stats already
+exist. ice_vsi_alloc_ring_stats() then iterates using the new larger
+alloc_txq and writes beyond the bounds of the old, smaller
+tx_ring_stats/rx_ring_stats pointer arrays, corrupting adjacent SLUB
+metadata.
 
-Replace it with ice_vsi_resize_stat_arrays(), which allocates a fresh
-struct ice_vsi_stats instead, sized with ice_vsi_get_num_qs() and the
-queues ice_vsi_decfg() is about to return to the PF pool, which is
-exactly what ice_vsi_set_num_qs() will compute once they are back
-there. Copy the surviving entry pointers over and install the new
-structure, all before ice_vsi_decfg() runs. The entries that did not
-fit are freed together with the old container, via
-__ice_vsi_free_stats() with @free_entries set to false.
+KASAN detects the bug:
+ ==================================================================
+ BUG: KASAN: slab-out-of-bounds in ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
+ Read of size 8 at addr ffff88810affea60 by task kworker/u131:7/221
 
-Doing the allocation up front also means the failure path is a plain
-unlock and return, with the VSI still fully configured, rather than a
-half-torn-down VSI to unwind.
+ CPU: 24 UID: 0 PID: 221 Comm: kworker/u131:7 Not tainted 7.1.0-rc1+ #1 PREEMPT(lazy)
+ ...
+ Workqueue: ice ice_service_task [ice]
+ Call Trace:
+  <TASK>
+  ...
+  kasan_report+0xd7/0x120
+  ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
+  ice_vsi_cfg_def+0x12e2/0x2060 [ice]
+  ice_vsi_cfg+0xb5/0x3c0 [ice]
+  ice_reset_vf+0x858/0xf80 [ice]
+  ice_vc_request_qs_msg+0x1da/0x290 [ice]
+  ice_vc_process_vf_msg+0xb15/0x1430 [ice]
+  __ice_clean_ctrlq+0x70d/0x9d0 [ice]
+  ice_service_task+0x840/0xf20 [ice]
+  process_one_work+0x690/0xff0
+  worker_thread+0x4d9/0xd20
+  kthread+0x322/0x410
+  ret_from_fork+0x332/0x660
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-While at it, skip the stats handling for ICE_VSI_CHNL, which has no
-entry in pf->vsi_stats[] to begin with.
+ Allocated by task 2439:
+  kasan_save_stack+0x1c/0x40
+  kasan_save_track+0x10/0x30
+  __kasan_kmalloc+0x96/0xb0
+  __kmalloc_noprof+0x1d8/0x580
+  ice_vsi_cfg_def+0x115c/0x2060 [ice]
+  ice_vsi_cfg+0xb5/0x3c0 [ice]
+  ice_vsi_setup+0x180/0x320 [ice]
+  ice_start_vfs+0x1f3/0x590 [ice]
+  ice_ena_vfs+0x66d/0x798 [ice]
+  ice_sriov_configure.cold+0xe4/0x121 [ice]
+  sriov_numvfs_store+0x279/0x480
+  kernfs_fop_write_iter+0x331/0x4f0
+  vfs_write+0x4c4/0xe40
+  ksys_write+0x10c/0x240
+  do_syscall_64+0xd9/0x650
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
+ The buggy address belongs to the object at ffff88810affea40
+                which belongs to the cache kmalloc-32 of size 32
+ The buggy address is located 0 bytes to the right of
+                allocated 32-byte region [ffff88810affea40, ffff88810affea60)
+ ...
+ ==================================================================
+
+ice_vsi_rebuild() handles this correctly by calling
+ice_vsi_resize_stat_arrays() before reconfiguration, but
+ice_vf_reconfig_vsi() was missing this call.
+
+Fix by calling ice_vsi_resize_stat_arrays() in ice_vf_reconfig_vsi()
+before ice_vsi_decfg(), mirroring the ice_vsi_rebuild() pattern. The
+helper sizes the new arrays with ice_vsi_get_num_qs(), which for a VF
+reads vf->num_req_qs directly, so there is nothing else to set up for
+it.
+
+See the linked RHEL Jira item for a reproducer.
+
+Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
+Closes: https://redhat.atlassian.net/browse/RHEL-164321
+Assisted-by: Claude:claude-opus-4-6 semcode
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Co-developed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 118 +++++++++++++----------
- 1 file changed, 69 insertions(+), 49 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c    | 2 +-
+ drivers/net/ethernet/intel/ice/ice_lib.h    | 1 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c | 4 ++++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index c6023c11eed3..c6166ff44fc9 100644
+index c6166ff44fc9..8d462570d152 100644
 --- a/drivers/net/ethernet/intel/ice/ice_lib.c
 +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2956,6 +2956,51 @@ ice_vsi_rebuild_get_coalesce(struct ice_vsi *vsi,
- 	return vsi->num_q_vectors;
- }
- 
-+static void ice_vsi_free_unused_stat_arrays(struct ice_vsi_stats *vsi_stat,
-+					    struct ice_vsi_stats *new_vsi_stat)
-+{
-+	int new_txq = new_vsi_stat->tx_ring_stats_len;
-+	int new_rxq = new_vsi_stat->rx_ring_stats_len;
-+	int prev_txq = vsi_stat->tx_ring_stats_len;
-+	int prev_rxq = vsi_stat->rx_ring_stats_len;
-+
-+	for (int i = new_txq; i < prev_txq; i++) {
-+		if (vsi_stat->tx_ring_stats[i]) {
-+			kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
-+			WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
-+		}
-+	}
-+	for (int i = new_rxq; i < prev_rxq; i++) {
-+		if (vsi_stat->rx_ring_stats[i]) {
-+			kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
-+			WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
-+		}
-+	}
-+}
-+
-+static void ice_vsi_set_stat_arrays(struct ice_vsi *vsi,
-+				    struct ice_vsi_stats *new_vsi_stat)
-+{
-+	u16 new_txq, new_rxq, prev_txq, prev_rxq;
-+	struct ice_vsi_stats *vsi_stat;
-+	struct ice_pf *pf = vsi->back;
-+
-+	new_txq = new_vsi_stat->tx_ring_stats_len;
-+	new_rxq = new_vsi_stat->rx_ring_stats_len;
-+	vsi_stat = pf->vsi_stats[vsi->idx];
-+	pf->vsi_stats[vsi->idx] = new_vsi_stat;
-+	if (!vsi_stat)
-+		return; /* don't copy if there is no source */
-+
-+	prev_txq = vsi_stat->tx_ring_stats_len;
-+	prev_rxq = vsi_stat->rx_ring_stats_len;
-+
-+	memcpy(new_vsi_stat->tx_ring_stats, vsi_stat->tx_ring_stats,
-+	       sizeof(*vsi_stat->tx_ring_stats) * min(prev_txq, new_txq));
-+	memcpy(new_vsi_stat->rx_ring_stats, vsi_stat->rx_ring_stats,
-+	       sizeof(*vsi_stat->rx_ring_stats) * min(prev_rxq, new_rxq));
-+}
-+
- /**
-  * ice_vsi_rebuild_set_coalesce - set coalesce from earlier saved arrays
-  * @vsi: VSI connected with q_vectors
-@@ -3042,63 +3087,38 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
- }
- 
- /**
-- * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
-- * @vsi: VSI pointer
-+ * ice_vsi_resize_stat_arrays - resize ring stats arrays for new queue count
-+ * @vsi: VSI to swap the ring stats arrays of
-+ *
-+ * Call while @vsi still owns its queues and before ice_vsi_decfg() returns them
-+ * to the PF pool, so that the new size is what ice_vsi_set_num_qs() will compute
-+ * afterwards. Surviving entries are carried over, the rest is freed.
-+ *
-+ * Return: 0 on success and negative value on failure
+@@ -3096,7 +3096,7 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
+  *
+  * Return: 0 on success and negative value on failure
   */
--static int
--ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
-+static int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
+-static int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
++int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
  {
--	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
--	u16 req_rxq = vsi->req_rxq ? vsi->req_rxq : vsi->alloc_rxq;
--	struct ice_ring_stats **tx_ring_stats;
--	struct ice_ring_stats **rx_ring_stats;
--	struct ice_vsi_stats *vsi_stat;
-+	struct ice_vsi_alloc_queues_params qs;
-+	struct ice_vsi_stats *old_stat;
-+	struct ice_vsi_stats *new_stat;
- 	struct ice_pf *pf = vsi->back;
--	u16 prev_txq = vsi->alloc_txq;
--	u16 prev_rxq = vsi->alloc_rxq;
--	int i;
+ 	struct ice_vsi_alloc_queues_params qs;
+ 	struct ice_vsi_stats *old_stat;
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
+index 49454d98dcfe..5236088c320b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_lib.h
+@@ -67,6 +67,7 @@ void ice_vsi_decfg(struct ice_vsi *vsi);
+ void ice_dis_vsi(struct ice_vsi *vsi, bool locked);
  
--	vsi_stat = pf->vsi_stats[vsi->idx];
-+	if (vsi->type == ICE_VSI_CHNL)
-+		return 0;
+ int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags);
++int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi);
+ int ice_vsi_cfg(struct ice_vsi *vsi);
+ struct ice_vsi *ice_vsi_alloc(struct ice_pf *pf);
+ void ice_vsi_free(struct ice_vsi *vsi);
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index a54cb2b8d3c7..c56a35b8dd48 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -268,6 +268,10 @@ static int ice_vf_reconfig_vsi(struct ice_vf *vf)
  
--	if (req_txq < prev_txq) {
--		for (i = req_txq; i < prev_txq; i++) {
--			if (vsi_stat->tx_ring_stats[i]) {
--				kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
--				WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
--			}
--		}
--	}
-+	qs = ice_vsi_get_num_qs(vsi, vsi->alloc_txq + vsi->num_xdp_txq,
-+				vsi->alloc_rxq);
+ 	vsi->flags = ICE_VSI_FLAG_NO_INIT;
  
--	tx_ring_stats = vsi_stat->tx_ring_stats;
--	vsi_stat->tx_ring_stats =
--		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
--			       sizeof(*vsi_stat->tx_ring_stats),
--			       GFP_KERNEL | __GFP_ZERO);
--	if (!vsi_stat->tx_ring_stats) {
--		vsi_stat->tx_ring_stats = tx_ring_stats;
-+	new_stat = ice_vsi_new_stat_arrays(qs.alloc_txq, qs.alloc_rxq);
-+	if (!new_stat)
- 		return -ENOMEM;
--	}
--	vsi_stat->tx_ring_stats_len = req_txq;
--
--	if (req_rxq < prev_rxq) {
--		for (i = req_rxq; i < prev_rxq; i++) {
--			if (vsi_stat->rx_ring_stats[i]) {
--				kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
--				WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
--			}
--		}
--	}
- 
--	rx_ring_stats = vsi_stat->rx_ring_stats;
--	vsi_stat->rx_ring_stats =
--		krealloc_array(vsi_stat->rx_ring_stats, req_rxq,
--			       sizeof(*vsi_stat->rx_ring_stats),
--			       GFP_KERNEL | __GFP_ZERO);
--	if (!vsi_stat->rx_ring_stats) {
--		vsi_stat->rx_ring_stats = rx_ring_stats;
--		return -ENOMEM;
-+	old_stat = pf->vsi_stats[vsi->idx];
-+	ice_vsi_set_stat_arrays(vsi, new_stat);
-+	if (old_stat) {
-+		ice_vsi_free_unused_stat_arrays(old_stat, new_stat);
-+		__ice_vsi_free_stats(old_stat, false);
- 	}
--	vsi_stat->rx_ring_stats_len = req_rxq;
- 
- 	return 0;
- }
-@@ -3130,7 +3150,7 @@ int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags)
- 
- 	mutex_lock(&vsi->xdp_state_lock);
- 
--	ret = ice_vsi_realloc_stat_arrays(vsi);
-+	ret = ice_vsi_resize_stat_arrays(vsi);
- 	if (ret)
- 		goto unlock;
++	err = ice_vsi_resize_stat_arrays(vsi);
++	if (err)
++		return err;
++
+ 	ice_vsi_decfg(vsi);
+ 	ice_fltr_remove_all(vsi);
  
 -- 
 2.47.1
