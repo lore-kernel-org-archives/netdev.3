@@ -1,76 +1,216 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0A83B4404;
-	Mon, 21 Sep 2026 23:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFFE398902;
+	Mon, 21 Sep 2026 23:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032522; cv=none; b=qPVtxK3PaMy2TTx5fXKposvafu9cXOIC7xG/O0bMc7jj2DTvKNd/nHS4jyuDmfahlTK/XHL045ZTLMg0ZWGNcvkYgkm7w9cl6AhR/1S9vgmOGgsmCMi19A0XOxG4F+3gPyyz08xOkv3/Ulohr0ldCC2aC4WqkptP5Rh9uokf3lk=
+	t=1790032645; cv=none; b=bDPeTEJt+9NrjlmtgSj4aRGwB8oZ8qKHRnmv9HvXRBGC0i5H2G4IiikEg1fOcgJgYTTWdcca6ruElOCkbcBU8HZm0qf2XNLq9l2eugMY41+e8E5ZHQ+rQxGNUK6GgMN0WAaafDOxDNiOMabONzimuIbmSrjaWz38PnilwmQNoVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032522; c=relaxed/simple;
-	bh=OY4b74Cv4pudauJdHjz5vL4UbHr7YKa7dMBenbGun3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1DmD77hMvvhaIr7kcOImmEX8KVnkecfvau1S5rodKEuqkZ3C8A3inE8ECxlUXoyVitMzoEsO9YJvrwyxNHOOxWBZyo+UKgznvOQuWgogoRRGz1r0gmXcAlEguVaootzG/EJyw+mB1F8GbQ0ZT/NkgHEQG+KE2uMhl7H5Nja9rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8y6L5Eg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790032645; c=relaxed/simple;
+	bh=AUFbhEmXlZkVXtSMKv7VlAO0otXxEUML2aBbTl1nVMs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MEBCOxorM6PZkDqmaUaqOpPQsIjxOdqMdtX+ZbHKzhjGWHZfQhOG49ZtYinUEnoa0ftawKIDvFfM+cs1D5BECIjM4AhMn5p0dqEM/ItFWZiwSV18R8Fgonf0+xGP3ZJhhili9XctLUBhu7PjQYPMfWKug7Avv9MptgI4EoxYcbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+oJrMdn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8y6L5Eg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FA41F000FF;
-	Mon, 21 Sep 2026 23:15:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+oJrMdn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F088E1F000FF;
+	Mon, 21 Sep 2026 23:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790032520;
-	bh=fvDka7Ykxs/yoe0YlGGDGW0r9OYOGXwGtAQ7CcMIEG8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=R8y6L5EgcYN77jzzTmyOd3SedZumzyONT51BLt4w3BPUO7TwnUmXRJGBG2J+2qx2F
-	 eVgkz7qiyWqjgFCOtIOzk4AzhqCtR9bNqwqhlqvxjuC0xo6OTC5UIK5u/yqZXMo/N4
-	 7q9x+L4ceqM2cUM7O0LiFU0IJY5jaXg0WpLBT9yrwBF5ISuTrS8dHxtgw05oIUP6P4
-	 m2aDstR8nukve+DEE9U8TB+lbCvBVuwBTjk15kGcNYzK+FSVc4HKC/zVOXs9v+RQlv
-	 4Avw011bvBjITkHbYHMR1JkmPcZAtc+fwQ5F8Teue1fnF6IiddeSqNGA8RD/PeTkDL
-	 G1SFV9vQWr4TA==
-Date: Mon, 21 Sep 2026 16:15:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Nagamani PV <nagamani@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, wintera@linux.ibm.com, aswin@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, kees@kernel.org,
- linux-s390@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] s390/ctcm: Fix timer bugs in fsm.c
-Message-ID: <20260921161519.17f77cae@kernel.org>
-In-Reply-To: <20260916132149.4185912-1-nagamani@linux.ibm.com>
-References: <20260907144511.3810194-1-nagamani@linux.ibm.com>
-	<20260916132149.4185912-1-nagamani@linux.ibm.com>
+	s=k20260515; t=1790032641;
+	bh=+wEn3Ak0xk7EOTNfcdfLsG0vOpuUj3SLgH6sSDqmVac=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=X+oJrMdnXu+h3ySDtfxpoOridtFjoYe842E/PQsyzPDq79DbbHydjTTLZtD3s5vST
+	 bjZsQ3byp1ixHxbC1x/dJforJlTKDvQOmP+13lNmaQj3W9msBdrAbtB2+74CIfkdB3
+	 r1rFGWvKu6xWbcFXZ7J3/F79PWYGBtLJk6wZWmKAKyzBInnyJLcPbol7c7xebaG7Qr
+	 uztpDqKmy+h9ootJ1trcyVDqiY5SJo6wpeAAgbXmSEjqPAQKq2SSeyWmiij037A+K1
+	 gJXOhXui0XFMs1DNzlunsh165us9vJMzxrOhq7gSmcEWK5sDlQLcNbqFVjM5ZGFCU7
+	 F5Wt3O8QdxHYQ==
+Subject: Re: [PATCH] vsock/hv_sock: reject incoming connections when the
+ listener is being released
+From: netdev-bot+sashiko@kernel.org
+To: bartlomiej.dmitruk@isec.pl
+Cc: decui@microsoft.com, wei.liu@kernel.org, haiyangz@microsoft.com,
+ kys@microsoft.com, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ sgarzare@redhat.com, mst@redhat.com, kuba@kernel.org
+Date: Mon, 21 Sep 2026 23:17:20 +0000
+Message-ID: <179003264046.2160803.3176959842906352107@kernel.org>
+In-Reply-To: <20260917220156.56015-1-bartlomiej.dmitruk@isec.pl>
+References: <20260917220156.56015-1-bartlomiej.dmitruk@isec.pl>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 16 Sep 2026 15:21:47 +0200 Nagamani PV wrote:
-> Fix two bugs in drivers/s390/net/fsm.c found by Sashiko AI code review.
-> 
-> Patch 1 fixes timer list corruption when fsm_addtimer() is called on
-> an already-pending timer - timer_setup() re-initializes the timer
-> list_head while it is still enqueued in the wheel.
-> 
-> Patch 2 fixes a use-after-free in channel_remove() - timer_delete()
-> returns before any running callback finishes, leaving a window where
-> the timer callback can access freed memory. Fix by waiting for any
-> running callback to complete before freeing the channel.
-> 
-> Changes in v2:
-> - Patch 1: fix function name ctcm_send_sweep() -> ctcmpc_send_sweep_req()
->   in the commit message (Sashiko netdev-bot)
-> - Patch 1: call mod_timer() then return 0 explicitly, preserving the
->   "Always returns 0" contract documented in fsm.h (Sashiko netdev-bot)
-> - Patch 2: add Fixes: and Cc: stable@vger.kernel.org tags
->   (Sashiko netdev-bot)
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Clashiko won't respond because of the unnecessary threading,
-but there are 4 high severity findings needing your attention:
+Critical: 1 · High: 0 (1) · Medium: 0 · Low: 1
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916132149.4185912-3-nagamani@linux.ibm.com
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Critical] The new early-exit added to hvs_open_connection() jumps to
+  the `out:` label, which performs `sock_put(sk)`…
+- [Low] The commit fixes a real, user-visible socket and VMBUS-channel
+  leak in hvs_open_connection() (net/vmw_vsock/hyperv_transport.c:334)…
+
+Pre-existing issues:
+- [High] hvs_open_connection() (net/vmw_vsock/hyperv_transport.c): the
+  new released-listener guard `if (sk->sk_shutdown == SHUTDOWN_MASK)…
+
+--
+
+vsock/hv_sock: reject incoming connections when the listener is being released
+
+This adds a check for sk_shutdown == SHUTDOWN_MASK in
+hvs_open_connection() so that a host channel offer racing close() of an
+hv_sock listener does not create a child socket and enqueue it onto an
+accept queue that __vsock_release() has already flushed.  The stated goal
+is to stop the child socket and its VMBUS channel from leaking.
+
+No Link: tags are present in the commit header.
+
+A few questions about the change below.
+
+[Severity: Low]
+Should this carry a Fixes: tag?
+
+The unguarded child creation in hvs_open_connection(), and the release
+path that sets sk_shutdown = SHUTDOWN_MASK while leaving sk_state ==
+TCP_LISTEN, both date back to the introduction of the transport, so the
+trailer would be:
+
+Fixes: ae0078fcf0a5 ("hv_sock: implements Hyper-V transport for Virtual Sockets (AF_VSOCK)")
+
+Without it, stable tooling will not pick up what is otherwise a real leak
+fix.
+
+> diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+> index 855b15971c359..19e487ac27263 100644
+> --- a/net/vmw_vsock/hyperv_transport.c
+> +++ b/net/vmw_vsock/hyperv_transport.c
+> @@ -326,6 +326,14 @@ static void hvs_open_connection(struct vmbus_channel *chan)
+>  		if (sk_acceptq_is_full(sk))
+>  			goto out;
+>  
+> +		/* __vsock_release() may have already flushed the accept queue
+> +		 * and set sk_shutdown = SHUTDOWN_MASK while leaving sk_state ==
+> +		 * TCP_LISTEN.  Enqueuing a child now would leak the child socket
+> +		 * and its VMBUS channel.  Mirror virtio_transport_recv_listen().
+> +		 */
+> +		if (sk->sk_shutdown == SHUTDOWN_MASK)
+> +			goto out;
+> +
+
+[Severity: Critical]
+Can this new goto out lead to a use-after-free of the listener?
+
+The out: epilogue in hvs_open_connection() drops the reference before it
+unlocks:
+
+net/vmw_vsock/hyperv_transport.c:hvs_open_connection() {
+	...
+out:
+	/* Release refcnt obtained when we called vsock_find_bound_socket() */
+	sock_put(sk);
+
+	release_sock(sk);
+}
+
+In the exact race this patch targets, is the vsock_find_bound_socket()
+reference the last one left?  The racing close() drops everything else:
+
+net/vmw_vsock/af_vsock.c:__vsock_release() {
+	sock_set_flag(sk, SOCK_DEAD);
+
+	if (vsk->transport)
+		vsk->transport->release(vsk);	/* hvs_release() ->
+						 * vsock_remove_sock() ->
+						 * vsock_remove_bound()
+						 */
+	sock_orphan(sk);
+	sk->sk_shutdown = SHUTDOWN_MASK;
+	...
+	while ((pending = vsock_dequeue_accept(sk)) != NULL) {
+		__vsock_release(pending, SINGLE_DEPTH_NESTING);
+		sock_put(pending);
+	}
+
+	release_sock(sk);
+	sock_put(sk);
+}
+
+vsock_dequeue_accept() also does sock_put(listener) for each queued child,
+and hvs_close_lock_held() returns true immediately for TCP_LISTEN without
+touching sk_state, so once __vsock_release() finishes the listener is only
+kept alive by the lookup reference held by hvs_open_connection().
+
+hvs_open_connection() then takes the lock, sees sk_state == TCP_LISTEN,
+matches the new sk_shutdown == SHUTDOWN_MASK test, and goes to out:, where
+sock_put() drops the count to zero.  vsock_proto sets neither SOCK_RCU_FREE
+nor SLAB_TYPESAFE_BY_RCU, so sk_free() -> __sk_destruct() ->
+kmem_cache_free() runs synchronously and the following release_sock(sk)
+touches sk->sk_lock.slock, the backlog and the wait queue on freed memory.
+
+Before this change the same race normally continued into
+vsock_enqueue_accept(), which does sock_hold(listener), so the leak being
+fixed here is what kept the socket alive past that sock_put().  Should the
+epilogue be reordered to release_sock(sk) followed by sock_put(sk) as part
+of this fix?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but should the new test be
+hoisted above the if (conn_from_host) block so it also covers the
+guest-initiated arm?
+
+As placed, the check only runs for conn_from_host.  For the
+!conn_from_host case hvs_open_connection() accepts sk_state ==
+TCP_SYN_SENT, and hvs_close_lock_held() leaves sk_state alone for that
+state too, so a socket that __vsock_release() has already torn down still
+looks connectable while sock_orphan() has cleared sk->sk_socket.  The else
+branch then does:
+
+net/vmw_vsock/hyperv_transport.c:hvs_open_connection() {
+	...
+	} else {
+		sk->sk_state = TCP_ESTABLISHED;
+		sk->sk_socket->state = SS_CONNECTED;
+
+		vsock_insert_connected(vsock_sk(sk));
+	}
+	...
+}
+
+which writes through a NULL sk_socket, and inserts an already released
+socket into the connected table.
+
+Core vsock already treats that combination as a state where sk_socket must
+not be dereferenced:
+
+net/vmw_vsock/af_vsock.c:vsock_connect_timeout() {
+	...
+	if (sk->sk_state == TCP_SYN_SENT &&
+	    (sk->sk_shutdown != SHUTDOWN_MASK)) {
+		sk->sk_state = TCP_CLOSE;
+		sk->sk_socket->state = SS_UNCONNECTED;
+	...
+}
+
+Moving the new check up to just after the sk_state tests would cover both
+arms.
+
+>  		new = vsock_create_connected(sk);
+>  		if (!new)
+>  			goto out;
+
 -- 
-pw-bot: cr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917220156.56015-1-bartlomiej.dmitruk%40isec.pl
