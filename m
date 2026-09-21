@@ -1,281 +1,208 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011026.outbound.protection.outlook.com [52.101.62.26])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1A2F8E95;
-	Mon, 21 Sep 2026 03:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789962725; cv=fail; b=G1o9oCfBtUVdnH8xdUR8s9Vwd1GLURJr+MBz1o6Ble+YOpC1l4b0OnK04/eVbZG2IAVKMzhnv8BRhe0k/G6GFc6iLpw0Qxai35XtXOTKQ4nONXhBvi+PZEhpHWTf5ZHSx8OctR1r8273dQOLilfiau9NR0QPn8mzOiIGq7YEwxg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789962725; c=relaxed/simple;
-	bh=1mkf8VvL0zLOhwCNscDYeLtx26JUAQvYSNuRvMJdBGw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KcVaMDkGFl3mqdwc/vRgLUuLqYWYsG+aYQe85iT5tXu0VjhogPOmWwyLOE3cdPLjCtxA9SQvEgizMiH4kg+aIC5rURjk9jta7IH7xlB75Vtd7fWlBBWG/c6uYRp06ymcdRyWW1dwODWGE8JppD4r304Amx1h/p24u1ItnVIji7k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ecELPzEl; arc=fail smtp.client-ip=52.101.62.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494FC33AD8C;
+	Mon, 21 Sep 2026 03:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789962990; cv=none; b=PyUhcvgIF5XLnM8RvlYkAh6YPOQOElRzzG20KDgcEAa7VORchUKWoK/NQWnwW3SWYx+NhiRkRZDZJJvFtK9AWVhsp+ekcRN8iiPKq88ZfsJIgHlHHbK0RdNGaIa6rS9WbnPcrmbwUPL2lSAbNY2EN2zQ91ZWZrNtoqkKLRJ6GdQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789962990; c=relaxed/simple;
+	bh=DuA4vGK359czk76fR54fow6IlJIGrbXTELlIgIlVM2E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jmifNBxWGYek3ZT1gHsdIuQE4CntCEWFFPzTmeiQEiR0m+jhBdsNjblAyhxOX/xxXGC2bLlCrkNmYzmnABGOOXWSqTO9zoBv3G9mBQdW+FB2kPWDCVWXEhf4TSzRFg9lP8MluE1CjUYcZDiLRkJViFlDhZcXrhfRq11vCLVVEn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEqDVXBE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ecELPzEl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jy5IUv1yTi886Ar7J4nYIaz/dkTwjaM4ato+NeE2d17VVvObHVizexVyYIFTFn2nLsIjXKZ13AThl8RYygIPmo01xXFjEBBfKinXQbGZ8fvMOalOAHjYpMZmypEumju5vrnmeqq4c8k/DkE16l2a5g2BzWU//46oSSLekLsO5i3MlTmvm/Paw+DKzGgpRqEyxdcwO41GgzDnV8zkp8Eswf1P3fMe1lR60C9kM+m/VeWrZIHXNi+Ihpa25Nck8uPxPimxbdl87uN26uS9qmmckBB7QwbNJnc4yuE4lZnFF/PB5A9lMW+9yrH3LI8yKbOCtLwqM1awDfhgCLlOnDJ/+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6is8Rkqwq8EIZ52TZamsIQftOhZX+i2JPoNc//ToAiQ=;
- b=H8d4wQsRYMeLq344M8ZBAGAfGScKnrbFh4AWSfs1eBWFnBdtJSZpSXdEa+fzRw0u/4r2KU8kNuNWXr4/lLl54v9VGJ+KgpBgCdedot1RABjhGIsnKVH+DWV6oVaXhpMhNgfSv9afHJuP4UsISJ/+Ef5CgUyAZTWkkg6IFfZyYsekZ2qHa+6IxiwGkGXj8nVAUPBrQWvsBtizs64dvrSXQ/g4m1RZ8BoAIhDKAp7rW2XxMXezWPClNJIeCuTYRsxd4/N5TxsrQUv+MVqBd9Gb/AOBedp0i/zefWPD5Nuv/XDEhs80do7bGC1kLtHwm7tRcpNfRaljtiAPDX46Q5HGmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=codeconstruct.com.au
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6is8Rkqwq8EIZ52TZamsIQftOhZX+i2JPoNc//ToAiQ=;
- b=ecELPzElb9APu7lrgegxXBXbFY1eLhoTKSLz7YDm+x5hnahBK29xA5zM7iVgfk2vZPzrwPTYOVs/qfL4a1rcFcb3sqfpi0NFaBQheIZXYyjharNSY/mA1S4O2rWb5tYsElnpU78hfaPj7GgTYcuckU6SuK2AzNy8scYVWnITOTzLKop8O7dQeG1o51Lo/bfFUoOT9fyxwOGZr+DkM7KMcEyNP0Kv47tGNkK1MtXX0ISbt9MYHRkJXKJzdFUciq2+x9uX6Pq9e2FD4/tR8zcR23Tzzy8lLw7VpzW7yWgCCLJEZoTdExfMByerWAAio194v2aPXBngBp/khu9slFLTFg==
-Received: from YT1PR01CA0074.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:2d::13)
- by LV1PR12MB999281.namprd12.prod.outlook.com (2603:10b6:408:3bd::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 03:51:54 +0000
-Received: from BN2PEPF0000A994.namprd04.prod.outlook.com
- (2603:10b6:b01:2d:cafe::72) by YT1PR01CA0074.outlook.office365.com
- (2603:10b6:b01:2d::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Mon,
- 21 Sep 2026 03:51:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN2PEPF0000A994.mail.protection.outlook.com (10.167.248.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Mon, 21 Sep 2026 03:51:53 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 20 Sep
- 2026 20:51:40 -0700
-Received: from Lancelot.nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 20 Sep
- 2026 20:51:37 -0700
-From: Faizan Ali <faizana@nvidia.com>
-To: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston
-	<matt@codeconstruct.com.au>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	<edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, Simon Horman
-	<horms@kernel.org>, Faizan Ali <faizana@nvidia.com>
-Subject: [PATCH net-next] net: mctp: add MCTP_OPT_ROUTE_SRCADDR getsockopt
-Date: Mon, 21 Sep 2026 09:21:18 +0530
-Message-ID: <20260921035118.1649687-1-faizana@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEqDVXBE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C0D3FC2BCB3;
+	Mon, 21 Sep 2026 03:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789962989;
+	bh=DuA4vGK359czk76fR54fow6IlJIGrbXTELlIgIlVM2E=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=oEqDVXBE05MbgC2AVe1An3cAuYve8Lu3dtW6HXe0RIZeyBwfHHrhYG+Izem7HLDvD
+	 KyhOzb+5ngf9YupinvSechtOUCaFg80bwkXhODJebv6xi9zVyOUK4qdPeWQEkd0NAW
+	 wWPGAV5xI5MrP7qCIMp1xNdoZZOxBZuGdsXamKX+xQNB7bpa5KQM/d0SVz9XIhDI1t
+	 7nfvdLACCu3Nwc5da1egjB23D/lwfRNdA9EwT01Zh3jsgpnl24SpHb6UA8F6F3au1Z
+	 nkvxNgSAyNzNWQAeZqWfhSV9AroNSlcJvNlM6s+7Ie5T1mMQ106K8nNPUu29yrw1H+
+	 TlC3+Ju+bf+2w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98153C982E1;
+	Mon, 21 Sep 2026 03:56:29 +0000 (UTC)
+From: Nicolo Giuliani via B4 Relay <devnull+nicolo.giuliani6.studio.unibo.it@kernel.org>
+Date: Mon, 21 Sep 2026 05:56:29 +0200
+Subject: [PATCH net v2] net: dsa: mv88e6xxx: 88E6191X and 88E6193X have no
+ PTP
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000A994:EE_|LV1PR12MB999281:EE_
-X-MS-Office365-Filtering-Correlation-Id: 138cae9c-4386-43cf-0ee7-08df1793aca1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|23010399003|1800799024|36860700016|6133799003|13003099007|18002099003|56012099006|11063799006|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	ghOuMTWW/w1hda9G4Bj7Oi63N14vswFO8VikVbY79FXsFzrb2wgZMXGtcRhjfxtXKcjITrw+I2YRnLKoVxMdwgh/UtzoORSo6eKfrApSRLnbhISTb2oCgiEf4C55xHoOItZBGeCQl2xqPifiVXfweCElKugmQwRIAl6HBvRp3E+HeWXNUQ8SF4zSO4zY9AnmhePWoL0fuUusk0l4fol4bedVUwxK6ECHCFhaDAqVLGS1t16TpvUBTdGPXENAGFo3qYA2nwif36jcYdUDc1/W44zmjWIgtpat7sZE0H45l+ylMwGsYrgqN5gq/WmruJCyQhi6Rq1YO/HGp/b51q4mRguykZyMG95TC4aNMP5qROkHwzdwLJwHqv1jM10kF0FRYL4B8KQcXyd6iSjurraugs+ovycYuWvq7w9SJyi0r8yH0oDcfZbQeoTm4a7Ina9Em9PG5GL4uihJ1MJNYBZDfYpOHJ+uDUS3HiRU0f0LfzhqKV1cOefIe9Nq/5VoSVconlFfTb7c/v02/NIyHXo4GDjGxXHfjK6kbKlt38m+hC0sjNPRzkLcbF03DR0fQNjGp2/N4qRwWg8dzln0wE+vWc496dJEyglrHdyWRaJl+t7WTwiAB4P4060ZX8EeaNypAlTQExAH4IAuv7gUX95hr3MTlVr6o4c+WWIv3YJv9/TH9zinmmjuRamaM3Qc5vptm7MgarsyPtQTsp98dtoiqQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(6133799003)(13003099007)(18002099003)(56012099006)(11063799006)(10067099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	cBpSu6IuVauawq2nWXURI6inmAJ48JUVrO3qgw6hkEA/D4r5YmIvHW7/2Wt7OE6osV7E6+Zvb4/fkh1PXaLdxHmZKtCy4Nu0hHWShU5wVhQLjgrYySR4C+FDGh5Ws8OS0pIRHYpW70NLUSpLf801gigU+5Cvb4036+2UQqS31mU/IzFN3hq1dKVFl2pqUQY5LeyIgjK0JRL25yxLoNvn8iEIOYc4CMCbh9/0PyU8/cR8hwclRStvN2jcKfqQwwFyIE8wqeo0sDslLVsd9m+TP2Z5VBxHMVxwg+xGfCjAhn8w+qdJNn9TV0ETd06RuTqYW5JpOpIA4Ne20EUMeJKwyF6IenPPed+JTC+2xq+WSu+f5rVGHMKzM7tFww6cOa3XFtIMDc8dUf9ZDdSahbQToFHmshRdi9un5mDWngq0tHM2h3ugv6DsTqFdfvlhyhcA
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 03:51:53.1978
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 138cae9c-4386-43cf-0ee7-08df1793aca1
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000A994.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB999281
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260921-send-net-v2-1-031ad720f140@studio.unibo.it>
+X-B4-Tracking: v=1; b=H4sIAOyqsGoC/2WNQQ6CMBBFr0JmbQktLYgr72FclDLKuGhJpxAN4
+ e4WXLp8Py/vr8AYCRkuxQoRF2IKPoM6FeBG658oaMgMqlJN1clOMPpBeEyia601jamt02fI+hT
+ xQe8jdYMswP038ty/0KU9smsjcQrxcxwu8pD/24sUUujaGNcq3RjEK6d5oFDOnvpQUo5v2/YFo
+ RWcor0AAAA=
+X-Change-ID: 20260919-send-net-97aa5653ac48
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789962988; l=6074;
+ i=nicolo.giuliani6@studio.unibo.it; s=20260919; h=from:subject:message-id;
+ bh=zvg227S60l2Y4KCjY2ZtncW2AyMuzOIIib4Gk2dmg1o=;
+ b=267QZv6EzlKHut28OGs6bee7NNvCO2ylUTtereN1FBJtrz6WZ65ovebBlYIm1VmCLUGJx59CP
+ 7Gme7E5F2a0COndbzmMLnwQLUpWCEoK5kf7j5ZSR1ck9AsvzNiZKrLZ
+X-Developer-Key: i=nicolo.giuliani6@studio.unibo.it; a=ed25519;
+ pk=D652ecdT01GkA1eoFWNFNX85xIg5ZnFwUWyjfestgQw=
+X-Endpoint-Received: by B4 Relay for
+ nicolo.giuliani6@studio.unibo.it/20260919 with auth_id=1040
+X-Original-From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+Reply-To: nicolo.giuliani6@studio.unibo.it
 
-Add a new socket option MCTP_OPT_ROUTE_SRCADDR that allows applications
-to query which local EID the kernel would use as the source address
-when sending to a given destination EID.
+From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
 
-Applications such as PLDM need to advertise a local EID as the event
-receiver address to remote endpoints. Previously this required a manual
-multi-step lookup via the mctp tool (route show + addr show).
-The kernel routing table is the authoritative
-source for this mapping, so expose it directly via a socket option.
+The 88E6191X and 88E6193X are 6393 family devices that share
+mv88e6393x_ops with the 88E6393X and are marked as ptp_support. Marvell's
+UMSD driver describes both as parts without AVB (88E6193X: "BGA package -
+No AVB, No Routing, No Cut-through"), and the register access confirms it
+on an 88E6193X: the whole indirect AVB register space behind Global 2
+registers 0x16 and 0x17 reads zero, for every port, block and address,
+with the 6390 and with the 6352 command encoding. Writes to the TAI
+registers, including the clock period register and the TAI global
+configuration register, read back as zero.
 
-The caller fills in net and daddr in struct mctp_route_srcaddr before
-calling getsockopt(SOL_MCTP, MCTP_OPT_ROUTE_SRCADDR); the kernel
-performs the same route lookup used for actual packet output and
-returns the resolved local EID in saddr.
+Since commit 7e3c18097a70 ("net: dsa: mv88e6xxx: read cycle counter
+period from hardware") the PTP setup reads the TAI clock period, so the
+switch fails to probe:
 
-Verified with the included kunit tests, and manually validated on
-hardware that the resolved source EID matches mctp route show / addr
-show output for both reachable and unreachable destinations.
+mv88e6xxx ...: unexpected cycle counter period of 0 ps
 
-Link: https://github.com/CodeConstruct/mctp/issues/147
-Signed-off-by: Faizan Ali <faizana@nvidia.com>
+Add mv88e6191x_ops, a copy of mv88e6393x_ops without avb_ops and ptp_ops,
+use it for the 88E6191X and the 88E6193X and stop setting ptp_support for
+them. The 88E6393X is unchanged.
+
+Tested on an 88E6193X (Sophos XGS 107w): the switch probes and the ports
+work. I do not have an 88E6191X, it is changed because UMSD describes it
+the same way.
+
+Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Assisted-by: LLM
+Signed-off-by: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
 ---
- include/uapi/linux/mctp.h | 13 +++++++++
- net/mctp/af_mctp.c        | 31 ++++++++++++++++++++
- net/mctp/test/sock-test.c | 61 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 105 insertions(+)
+Changes in v2:
+- New patch instead of skipping PTP setup: the 88E6191X and 88E6193X have no AVB/PTP unit (per Andrew Lunn, from Marvell's UMSD; the AVB register space reads zero on an 88E6193X), so they get their own ops without avb_ops and ptp_ops and lose ptp_support
+- Link to v1: https://patch.msgid.link/20260919-send-net-v1-1-4355c72465ee@studio.unibo.it
+---
+ drivers/net/dsa/mv88e6xxx/chip.c | 68 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 64 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/mctp.h b/include/uapi/linux/mctp.h
-index 19ad12a0c..7c3d4a936 100644
---- a/include/uapi/linux/mctp.h
-+++ b/include/uapi/linux/mctp.h
-@@ -55,6 +55,19 @@ struct mctp_fq_addr {
- #define MCTP_TAG_PREALLOC	0x10
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 7f68a0c55..a4a8c7e11 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5639,6 +5639,68 @@ static const struct mv88e6xxx_ops mv88e6390x_ops = {
+ 	.pcs_ops = &mv88e6390_pcs_ops,
+ };
  
- #define MCTP_OPT_ADDR_EXT	1
-+#define MCTP_OPT_ROUTE_SRCADDR	2
-+
-+/* Query structure for MCTP_OPT_ROUTE_SRCADDR getsockopt.
-+ *
-+ * Caller fills in @net and @daddr before calling getsockopt.
-+ * Performs a route lookup and returns the local source EID in @saddr.
-+ */
-+struct mctp_route_srcaddr {
-+	unsigned int	net;
-+	mctp_eid_t	daddr;
-+	mctp_eid_t	saddr;
-+	__u8		__pad[2];
-+};
- 
- #define SIOCMCTPALLOCTAG	(SIOCPROTOPRIVATE + 0)
- #define SIOCMCTPDROPTAG		(SIOCPROTOPRIVATE + 1)
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 8af5e2b3c..5c6077e03 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -425,6 +425,37 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
- 		return 0;
- 	}
- 
-+	if (optname == MCTP_OPT_ROUTE_SRCADDR) {
-+		struct mctp_route_srcaddr rsa;
-+		struct mctp_dst dst;
-+		unsigned int net;
-+		int rc;
-+
-+		if (len != sizeof(rsa))
-+			return -EINVAL;
-+
-+		if (copy_from_iter(&rsa, len, &opt->iter_in) != len)
-+			return -EFAULT;
-+
-+		net = rsa.net;
-+		if (net == MCTP_NET_ANY)
-+			net = mctp_default_net(sock_net(sock->sk));
-+
-+		rc = mctp_route_lookup(sock_net(sock->sk), net, rsa.daddr, &dst);
-+		if (rc)
-+			return rc;
-+
-+		rsa.saddr = dst.saddr;
-+		mctp_dst_release(&dst);
-+
-+		if (rsa.saddr == MCTP_ADDR_NULL)
-+			return -EADDRNOTAVAIL;
-+
-+		if (copy_to_iter(&rsa, len, &opt->iter_out) != len)
-+			return -EFAULT;
-+		return 0;
-+	}
-+
- 	return -ENOPROTOOPT;
- }
- 
-diff --git a/net/mctp/test/sock-test.c b/net/mctp/test/sock-test.c
-index b0942deb5..b3ebc504b 100644
---- a/net/mctp/test/sock-test.c
-+++ b/net/mctp/test/sock-test.c
-@@ -379,10 +379,71 @@ static void mctp_test_assumptions(struct kunit *test)
- 	KUNIT_ASSERT_EQ(test, mctp_default_net(&init_net), 1);
- }
- 
-+static void mctp_test_sockopt_init(sockopt_t *opt, struct kvec *vec,
-+				   void *buf, size_t len)
-+{
-+	vec->iov_base = buf;
-+	vec->iov_len = len;
-+	iov_iter_kvec(&opt->iter_in, ITER_SOURCE, vec, 1, len);
-+	iov_iter_kvec(&opt->iter_out, ITER_DEST, vec, 1, len);
-+	opt->optlen = len;
-+}
-+
-+static void mctp_test_getsockopt_route_srcaddr(struct kunit *test)
-+{
-+	struct mctp_route_srcaddr rsa = {
-+		.net = MCTP_INITIAL_DEFAULT_NET,
-+		.daddr = 9,
-+	};
-+	struct mctp_test_route *rt;
-+	struct mctp_test_dev *dev;
-+	struct socket *sock;
-+	struct kvec vec;
-+	sockopt_t opt;
-+	int rc;
-+
-+	__mctp_sock_test_init(test, &dev, &rt, &sock);
-+
-+	/* Query the source EID for destination EID 9; the device has
-+	 * local EID 8, so the route lookup should return saddr=8.
++static const struct mv88e6xxx_ops mv88e6191x_ops = {
++	/* MV88E6XXX_FAMILY_6393 without AVB and PTP: 6191X and 6193X */
++	.irl_init_all = mv88e6390_g2_irl_init_all,
++	.get_eeprom = mv88e6xxx_g2_get_eeprom8,
++	.set_eeprom = mv88e6xxx_g2_set_eeprom8,
++	.set_switch_mac = mv88e6xxx_g2_set_switch_mac,
++	.phy_read = mv88e6xxx_g2_smi_phy_read_c22,
++	.phy_write = mv88e6xxx_g2_smi_phy_write_c22,
++	.phy_read_c45 = mv88e6xxx_g2_smi_phy_read_c45,
++	.phy_write_c45 = mv88e6xxx_g2_smi_phy_write_c45,
++	.port_set_link = mv88e6xxx_port_set_link,
++	.port_sync_link = mv88e6xxx_port_sync_link,
++	.port_set_rgmii_delay = mv88e6390_port_set_rgmii_delay,
++	.port_set_speed_duplex = mv88e6393x_port_set_speed_duplex,
++	.port_tag_remap = mv88e6390_port_tag_remap,
++	.port_set_policy = mv88e6393x_port_set_policy,
++	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
++	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
++	.port_set_mcast_flood = mv88e6352_port_set_mcast_flood,
++	.port_set_ether_type = mv88e6393x_port_set_ether_type,
++	.port_set_jumbo_size = mv88e6165_port_set_jumbo_size,
++	.port_egress_rate_limiting = mv88e6097_port_egress_rate_limiting,
++	.port_pause_limit = mv88e6390_port_pause_limit,
++	.port_disable_learn_limit = mv88e6xxx_port_disable_learn_limit,
++	.port_disable_pri_override = mv88e6xxx_port_disable_pri_override,
++	.port_get_cmode = mv88e6352_port_get_cmode,
++	.port_set_cmode = mv88e6393x_port_set_cmode,
++	.port_setup_message_port = mv88e6xxx_setup_message_port,
++	.port_set_upstream_port = mv88e6393x_port_set_upstream_port,
++	.port_enable_tcam = mv88e6xxx_port_enable_tcam,
++	.stats_snapshot = mv88e6390_g1_stats_snapshot,
++	.stats_set_histogram = mv88e6390_g1_stats_set_histogram,
++	.stats_get_sset_count = mv88e6320_stats_get_sset_count,
++	.stats_get_strings = mv88e6320_stats_get_strings,
++	.stats_get_stat = mv88e6390_stats_get_stat,
++	/* .set_cpu_port is missing because this family does not support a global
++	 * CPU port, only per port CPU port which is set via
++	 * .port_set_upstream_port method.
 +	 */
-+	mctp_test_sockopt_init(&opt, &vec, &rsa, sizeof(rsa));
-+	rc = mctp_getsockopt(sock, SOL_MCTP, MCTP_OPT_ROUTE_SRCADDR, &opt);
-+	KUNIT_EXPECT_EQ(test, rc, 0);
-+	KUNIT_EXPECT_EQ(test, (int)rsa.saddr, 8);
-+	KUNIT_EXPECT_EQ(test, opt.optlen, (int)sizeof(rsa));
++	.set_egress_port = mv88e6393x_set_egress_port,
++	.watchdog_ops = &mv88e6393x_watchdog_ops,
++	.mgmt_rsvd2cpu = mv88e6393x_port_mgmt_rsvd2cpu,
++	.pot_clear = mv88e6xxx_g2_pot_clear,
++	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
++	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
++	.reset = mv88e6352_g1_reset,
++	.rmu_disable = mv88e6390_g1_rmu_disable,
++	.atu_get_hash = mv88e6165_g1_atu_get_hash,
++	.atu_set_hash = mv88e6165_g1_atu_set_hash,
++	.vtu_getnext = mv88e6390_g1_vtu_getnext,
++	.vtu_loadpurge = mv88e6390_g1_vtu_loadpurge,
++	.stu_getnext = mv88e6390_g1_stu_getnext,
++	.stu_loadpurge = mv88e6390_g1_stu_loadpurge,
++	.serdes_get_lane = mv88e6393x_serdes_get_lane,
++	.serdes_irq_mapping = mv88e6390_serdes_irq_mapping,
++	/* TODO: serdes stats */
++	.gpio_ops = &mv88e6352_gpio_ops,
++	.phylink_get_caps = mv88e6393x_phylink_get_caps,
++	.pcs_ops = &mv88e6393x_pcs_ops,
++	.tcam_ops = &mv88e6393_tcam_ops,
++};
 +
-+	__mctp_sock_test_fini(test, dev, rt, sock);
-+}
-+
-+static void mctp_test_getsockopt_route_srcaddr_no_route(struct kunit *test)
-+{
-+	struct mctp_route_srcaddr rsa = {
-+		.net = MCTP_INITIAL_DEFAULT_NET,
-+		.daddr = 99,  /* no route for this EID */
-+	};
-+	struct mctp_test_route *rt;
-+	struct mctp_test_dev *dev;
-+	struct socket *sock;
-+	struct kvec vec;
-+	sockopt_t opt;
-+	int rc;
-+
-+	__mctp_sock_test_init(test, &dev, &rt, &sock);
-+
-+	mctp_test_sockopt_init(&opt, &vec, &rsa, sizeof(rsa));
-+	rc = mctp_getsockopt(sock, SOL_MCTP, MCTP_OPT_ROUTE_SRCADDR, &opt);
-+	KUNIT_EXPECT_EQ(test, rc, -EHOSTUNREACH);
-+
-+	__mctp_sock_test_fini(test, dev, rt, sock);
-+}
-+
- static struct kunit_case mctp_test_cases[] = {
- 	KUNIT_CASE(mctp_test_assumptions),
- 	KUNIT_CASE(mctp_test_sock_sendmsg_extaddr),
- 	KUNIT_CASE(mctp_test_sock_recvmsg_extaddr),
-+	KUNIT_CASE(mctp_test_getsockopt_route_srcaddr),
-+	KUNIT_CASE(mctp_test_getsockopt_route_srcaddr_no_route),
- 	KUNIT_CASE_PARAM(mctp_test_bind_conflicts, mctp_bind_pair_gen_params),
- 	KUNIT_CASE(mctp_test_bind_invalid),
- 	{}
--- 
-2.43.0
+ static const struct mv88e6xxx_ops mv88e6393x_ops = {
+ 	/* MV88E6XXX_FAMILY_6393 */
+ 	.irl_init_all = mv88e6390_g2_irl_init_all,
+@@ -6163,8 +6225,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.atu_move_port_mask = 0x1f,
+ 		.pvt = true,
+ 		.multi_chip = true,
+-		.ptp_support = true,
+-		.ops = &mv88e6393x_ops,
++		.ops = &mv88e6191x_ops,
+ 	},
+ 
+ 	[MV88E6193X] = {
+@@ -6190,8 +6251,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.atu_move_port_mask = 0x1f,
+ 		.pvt = true,
+ 		.multi_chip = true,
+-		.ptp_support = true,
+-		.ops = &mv88e6393x_ops,
++		.ops = &mv88e6191x_ops,
+ 	},
+ 
+ 	[MV88E6220] = {
+
+---
+base-commit: 6c096bb08de97cdca051fecddad22cac6a1fd275
+change-id: 20260919-send-net-97aa5653ac48
+
+Best regards,
+--  
+Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+
 
