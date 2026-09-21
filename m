@@ -1,199 +1,129 @@
-Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697F84E0B84
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 16:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30931624D5;
+	Mon, 21 Sep 2026 16:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790009653; cv=none; b=hyAMMFSoKXIQaxEgZvbdVdVkCoKozExZgVib2gvFe6ZVFAvfgbG6oW0uLE0he5bWxfqnDMptrJKg31XJWBKtarJLUzjH0uOpyqK0dRa5BcDyqD3F2O8RXqWQE6EYP0krWb1nO7LkOF+l631lP/6wKsvzzQJd/aeCFgEJcywiM3w=
+	t=1790009848; cv=none; b=ImNc2xwT9HRL/e29B/jXXDfCPBFN/6S3GSBf5GPCM115aD+bwAKuALZEbH61RK2scxtrhfKj2pJDvnQbjgs1k6Y1dsilDIe6k22tKK4wfdooHcfPtKYRoNWGjbHd5b+a5keUoDGxZkyi9Q7iRDzmOsDqt5MNwiiPIAw/sGZ3YSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790009653; c=relaxed/simple;
-	bh=1qgx7WO1ODz0uzZ0PV4p/UIMKqQiae0iH1KRXidMcvY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Dumuyui4S8xLYuuibI4pNSE0yBeGMlnNwugz7kl47gl5wwmqxdwzYlibuxtMOok8veuGqX2wQ3NbR2c0aSd7ySlDfueh6UY+9Vm6FhlDJMvrGtSpY+sfVLm8/R1wIPy1HXRpKWqnW7ML1+xybxF8ZiuH8qsoUy8qoal0dIhk/SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzRYSL0o; arc=none smtp.client-ip=74.125.231.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790009848; c=relaxed/simple;
+	bh=5nFCKZRfcuvn/YXGZADAf4Z8vVuASbwW+MW92OBSrV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hvG0QIRdumAItuVKeDQZLzSO0K1TKBUfKfT1pGhhSldOZ5V7MfFmNMcjGniEXEj6tbwxTqyFyW35HslgRcLalZRhZ+NOVcZVIWOMXqxRhKvYKfPeXS+KwDbUj4vXGCK+neFmyHtrXK8rORlsprTwk43Emuszr2aoCNSbOLtAFsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nM7gV2Kk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzRYSL0o"
-Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-801a8bf8112so1215704a34.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790009648; x=1790614448; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tvfdmXPJ30DEketzEq5aXVKBwOS7ewPYMj6rBpY0hhM=;
-        b=TzRYSL0o+MpnwNBRJpqqA0Jzs+X+BizeBR8Xs4t/NZDUnnjVj/IPAgy+bMB0mEaBjJ
-         fFL1VPPamn21NLHMGuA1qas1GqibT8ksabxhUoWfniQBvynsJces+DeL157WMjxwoYiF
-         yuE2QKY8/gvogRsntZabuP0YSmBQ8mge4BkYHLnTOjxfHYNz6J4jimucok2MSt48tKyI
-         etnqLkaLRsdwlGUT21xHuENi3hfcLDsMWVd2tWHYA2CyJrIrWgg8JvRg6QxMlEH6Z1p3
-         TsvShJsG2gze47Us3D2zh1vB53JodlwmulORilbuiZ7dfaHbWWife/0dvvVi0Tn/bmZB
-         WasA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790009648; x=1790614448;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tvfdmXPJ30DEketzEq5aXVKBwOS7ewPYMj6rBpY0hhM=;
-        b=ednyc6HXLBM7FwrMRvDe0YMgJaVYmkybT4ilHhVAOVTRW4onwvhd83iA22fwOY+wrv
-         EOksGBBSJtNJRGME/yH8OnAuRlEFmqfOvq9uzHvUcqSMDbHmSXLaEb0jsKSEGdl00evf
-         7kmML2zUrrX8AQ+krRp5wk/Ie71UCLin93/V7qLPfQKwHy7DPJpgpCb/ZukbJOO0n1uX
-         Su/rfvH9Z+T3j0Zg5qVuaiJVuuIT6dZrPGYmqrbIhCEIg2lZmI3rVLZsWRTwNkjXSk+2
-         py4hjRLa3NaHvkiBsJ+PzgtAXICLSjumVwg9SMNzAOerWM7qTLh6j+XQfQ/G1dREvwRG
-         g0OA==
-X-Forwarded-Encrypted: i=1; AKwUvByESMrWE6+sr57S2R0RD7S/e5FkSPz6PjP/rWNKFX4es6Fo/2JVlvWuoP+PZz8wdbOk1ScxUc8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nuJDgM4ZV7zDJf8K5olumH7udyAw8lH8wFo/AndYyBL74XeO8Y
-	GwJPnsVydsyeKACDOxT0NRyF4DE4Hb2lXswH2BjG543UCKSHi4z3DxpO
-X-Gm-Gg: AYBFou3WbbYS5Y9djnTzoqRAWFcZ6c2LT8hVZjM3a1SUaP2S+lGdz/DNj7vLQTLO93n
-	84bmxZL589y8tTuJ1aEJWGXAEfI5VHXSxcPz75OjKpwkpHu0vivgoW1DEwv9gvJKtrg/svzELD5
-	wCjH6BoTdLJdnhCmN1lqiYE1KUFtsFaTGAOh0D9DN+8GrGOJ4bDBZZ2YyGU9eMusudcUV90lHB2
-	DhbIp8VIF+QtyvR2eFLkkTwjw/ul4K5aWstf3pLcmhvTYFHiQGkL2d+VRwZ1ni5flH+CSnD6ViE
-	IoOUIysDGJkChYTAdNswBhhb9sZuPov7vXpecCXBAGMynK0ueVgCxkeBGN3iD0e72jlLJsECl/0
-	JUIKnftPmbyDYtJYgQOEjhXtNrvMwYmiOjtFq3YQBmLRYLS6+NLp95tAHA4+AMCJtfIe1qPeS+F
-	hvC+w4dBcYlavrdpVpp30bKtLRQS3rNJQaRl7euGg1KIe35ZnBXyz76kXcK+4gMpWJ1x8zukFmI
-	URaFMIsgOA5sW3USLLa9NXUhSrhVQK6IgrmhygK79XRLXzTZFQVnWr2RkZT5JrP0deFe5QbAWQS
-	IzIGBtbW6Ow7+GaYalHprShefOKHRTbFHuscrTNulhb1R0sJI5vPqzZOuE43sz/Iw5nWyJ8ByDC
-	js47AAuxpjh4yDSTThVITHA==
-X-Received: by 2002:a05:6820:f00b:b0:6bd:760a:a8ce with SMTP id 006d021491bc7-6ca9d451e13mr9761450eaf.62.1790009648212;
-        Mon, 21 Sep 2026 09:54:08 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d145bc40e6sm510481eaf.5.2026.09.21.09.54.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 09:54:07 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 21 Sep 2026 10:54:04 -0600
-Subject: [PATCH net 3/3] net: stmmac: close the interface after failed
- hardware resume
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nM7gV2Kk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB7B1F000FF;
+	Mon, 21 Sep 2026 16:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790009846;
+	bh=904noNjHPafrnstEIgkJLCwelDb9DPxtN8XoE/tkNIQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nM7gV2KkpVd0pB5qcjf+/dITkY5klukICr9KHFD5WIvdepw5sq4wP7wdZZ6zM+NTj
+	 z0Pi2oShQaUp0uZ4CPnFViPzPjj6AwveV46SQDNmloUfWy/IhbI1tG0i8iio+C8a1w
+	 stNT+Jn33V9dmsU7s4+eRMiiAlMuPUOZtvD12Yo3+9kFo6hASmx3qyhr9aCGHexcwY
+	 QtweaTbjMwPxvWuUPu0xlgKFExzgRgB5b7+O6csqM4hCZzgZApoooHJ1N+9+Z4zGvL
+	 JNFdNKYWYntCOGtoTvqMJf/draPy9ySj9nCKPG3zq3yvG1IFtTtlcOj0hJx4qaCpig
+	 gR+WNppE0yd8A==
+Date: Mon, 21 Sep 2026 17:57:22 +0100
+From: Simon Horman <horms@kernel.org>
+To: Dongliang Qin <cccccccccccc777777@gmail.com>
+Cc: netdev@vger.kernel.org, achender@kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] rds: ib: Clear the sg list when mapping an MR fails
+Message-ID: <20260921165722.GY13925@horms.kernel.org>
+References: <20260920063449.1594203-1-cccccccccccc777777@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-submit-stmmac-reset-fixes-v1-v1-3-87a4e431ee00@gmail.com>
-References: <20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00@gmail.com>
-In-Reply-To: <20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00@gmail.com>
-To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Joakim Zhang <qiangqing.zhang@nxp.com>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Christian Marangi <ansuelsmth@gmail.com>, 
- Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
-Cc: Richard Genoud <richard.genoud@bootlin.com>, 
- Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>, 
- James Hilliard <james.hilliard1@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260920063449.1594203-1-cccccccccccc777777@gmail.com>
 
-System suspend disables NAPI and suspends phylink but retains the IRQs
-and DMA resources. If hardware setup fails during resume, the interface
-remains administratively up with NAPI still disabled. Closing it later
-calls napi_disable() a second time and can hang indefinitely.
+On Sun, Sep 20, 2026 at 02:34:49PM +0800, Dongliang Qin wrote:
+> rds_ib_map_frmr() stores the caller's scatterlist in the MR before DMA
+> mapping and registration can fail. On failure, __rds_rdma_map() unpins
+> the pages and frees the scatterlist, but rds_ib_free_frmr() can still
+> return the MR to the pool with the stale pointer set.
+> 
+> This leaves the pool with a dangling scatterlist and can lead to local
+> privilege escalation. KASAN detects the resulting use-after-free when the
+> MR is later torn down:
+> 
+> BUG: KASAN: slab-use-after-free in __rds_ib_teardown_mr
+> Read of size 8
+> 
+> Call Trace:
+>  __rds_ib_teardown_mr
+>  rds_ib_unreg_frmr
+>  rds_ib_flush_mr_pool
+>  rds_ib_flush_mrs
+>  rds_free_mr
+>  rds_setsockopt
+> 
+> Clear the scatterlist fields before returning an error so the caller
+> retains sole ownership of the scatterlist and its pinned pages. Route a
+> zero-length DMA mapping through the same cleanup path, and skip unmap
+> when no mapping was created.
+> 
+> Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dongliang Qin <cccccccccccc777777@gmail.com>
+> ---
+>  net/rds/ib_frmr.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
+> index bd8611911..fea387952 100644
+> --- a/net/rds/ib_frmr.c
+> +++ b/net/rds/ib_frmr.c
+> @@ -213,7 +213,8 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
+>  					 DMA_BIDIRECTIONAL);
+>  	if (unlikely(!ibmr->sg_dma_len)) {
+>  		pr_warn("RDS/IB: %s failed!\n", __func__);
+> -		return -EBUSY;
+> +		ret = -EBUSY;
+> +		goto out_unmap;
+>  	}
 
-On hardware-setup failure, stop DMA and disable the MAC, then release the
-suspended data path without repeating NAPI disable. Stop phylink directly
-from its suspended state rather than restarting the link on hardware
-which failed to resume. Drop the driver mutex before teardown, retaining
-RTNL across cleanup and network-core close.
+Hi Dongliang,
 
-Close the netdev to detach the PHY, release its runtime-PM reference and
-clear its administrative state. Reattach the now-down netdev so a later
-open can allocate new resources and retry. Preserve the original resume
-error and leave successful resume unchanged.
+This approach leads to the complexity of a condition in the out_unmap
+label.  I wonder if a cleaner approach would be to, instead, only store the
+scatterlist in the MR once mapping has succeeded.
 
-Fixes: 6896c2449a18 ("net: stmmac: Check stmmac_hw_setup() in stmmac_resume()")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 29 ++++++++++++++++-------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+With such an approach I think that ibmr->sg and ibmr->sg_len would still
+need to be cleared in the error path. But neither the condition in the
+out_unmap label nor the hunk above would not be necessary. And I wonder
+if that would be a cleaner approach.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 44b59d0f56b5..87cb0978ed6a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4245,7 +4245,7 @@ static int stmmac_open(struct net_device *dev)
- 	return ret;
- }
- 
--static void __stmmac_release(struct net_device *dev)
-+static void __stmmac_release(struct net_device *dev, bool napi_disabled)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	u8 chan;
-@@ -4258,7 +4258,9 @@ static void __stmmac_release(struct net_device *dev)
- 	/* Stop and disconnect the PHY */
- 	phylink_stop(priv->phylink);
- 
--	stmmac_disable_all_queues(priv);
-+	/* Suspend has already disabled NAPI when hardware resume fails. */
-+	if (!napi_disabled)
-+		stmmac_disable_all_queues(priv);
- 
- 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
- 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
-@@ -4297,7 +4299,7 @@ static int stmmac_release(struct net_device *dev)
- 	if (device_may_wakeup(priv->device))
- 		phylink_speed_down(priv->phylink, false);
- 
--	__stmmac_release(dev);
-+	__stmmac_release(dev, false);
- 
- 	stmmac_legacy_serdes_power_down(priv);
- 	phylink_disconnect_phy(priv->phylink);
-@@ -6174,7 +6176,7 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
- 			return PTR_ERR(dma_conf);
- 		}
- 
--		__stmmac_release(dev);
-+		__stmmac_release(dev, false);
- 
- 		ret = __stmmac_open(dev, dma_conf);
- 		if (ret) {
-@@ -8356,10 +8358,7 @@ int stmmac_resume(struct device *dev)
- 	ret = stmmac_hw_setup(ndev);
- 	if (ret < 0) {
- 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
--		stmmac_legacy_serdes_power_down(priv);
--		mutex_unlock(&priv->lock);
--		rtnl_unlock();
--		return ret;
-+		goto error_stop_dma;
- 	}
- 
- 	stmmac_init_timestamping(priv);
-@@ -8386,6 +8385,20 @@ int stmmac_resume(struct device *dev)
- 	netif_device_attach(ndev);
- 
- 	return 0;
-+
-+error_stop_dma:
-+	stmmac_stop_all_dma(priv);
-+	stmmac_mac_set(priv, priv->ioaddr, false);
-+	mutex_unlock(&priv->lock);
-+	/* Release the suspended data path before ndo_stop(), which must not
-+	 * disable NAPI or free these resources a second time.
-+	 */
-+	__stmmac_release(ndev, true);
-+	netif_close(ndev);
-+	netif_device_attach(ndev);
-+	rtnl_unlock();
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(stmmac_resume);
- 
-
--- 
-2.53.0
-
+>  
+>  	frmr->sg_byte_len = 0;
+> @@ -261,9 +262,13 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
+>  	return ret;
+>  
+>  out_unmap:
+> -	ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
+> -			DMA_BIDIRECTIONAL);
+> -	ibmr->sg_dma_len = 0;
+> +	if (ibmr->sg_dma_len) {
+> +		ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
+> +				DMA_BIDIRECTIONAL);
+> +		ibmr->sg_dma_len = 0;
+> +	}
+> +	ibmr->sg = NULL;
+> +	ibmr->sg_len = 0;
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.43.0
+> 
