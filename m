@@ -1,64 +1,64 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676CF47044C
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5738046E005
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789986148; cv=none; b=qtXahKR2wAXFcyeJFgdhk6pLN1bBZHQ493wRATTzG7/XYMPLJH3semAeYnOlWzY00grOZ/vkx/iDAA3AMMV1jBgugCj97BEcjOFH8r1AC01y82hZxymuKE5It+lYJK5YA+KkHy7zmyawuvj6ti45i0AZOpCe5mGBOWIWA/FPRzI=
+	t=1789986149; cv=none; b=OyXlQZswGMp52/wuUv58xyuWzirB3mIqhZPKMsIrKUP6l8zP1x0qAt/rR5oIKsGb4asKRoojJ3Qi61iI64+co8eTyKNE0jJ4P8t8GIvdEdJEpOGDvdlS3/yOXqXgrjBrt2oI8zgtrjNrjQlFDx7ghVSB0vlbgtEdunfuqqpHSJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789986148; c=relaxed/simple;
-	bh=Qu+eU8Sua2dxLw88XNNDejaHPPc96Fv93k4F7/Cr2ko=;
+	s=arc-20240116; t=1789986149; c=relaxed/simple;
+	bh=4sK6QOW/XuX4PtRDm8Px7ysSOyjt0ZFKOsV7wL7Mp+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9W209z6G+Mly3swep1qG4EvU7kEpwXEHgk+Q9ZMzdi8Ix25bWbzxaa12Y10MgSu+s70XwO8O/vAuh3LfiU4OtS+v7hr9G078Lsy62GoxjWbSpKjLpNYPevoEy65BrX/3hdK3SGx1zIMsgFqSFze0KQrdvmsJMRYoJs4zXhjLB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Inj6bjWx; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=knWE1RU/q8YFHxyF/1OGNqzzpOG09nPeln1/yYwKKq035A9sazp/BSUzrQn/vYrJ+TlalZr2Nb7bS0D2/JtbMZqkDtcCwnNXeZDRi6TFEAskBRSsCkdFhgsyeT6lpfnFPfygCXv/lu+5ssUOUmwbqYMQL27CcYFPtTrW2wyvR0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=J1ylzubl; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Inj6bjWx"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so19108155e9.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:22:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="J1ylzubl"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so19108225e9.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1789986144; x=1790590944; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1789986145; x=1790590945; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gG2eUzbutPnDE7dtjKcwke5EFlyLZ9q322o1mX80B7M=;
-        b=Inj6bjWxDXmRvTTRUO/sEDaamMBRRuJU1ac0m1YtVJjx2tstXXg1fP/pIXD/stxH17
-         N0BXcJ/UI6Y2ieaGaHZAwf6kQEWjIyQi4DcVCck/bxxTDTxA+LCISvvclVmPrOMVDJlv
-         8pqs6czLU+YZ8QMtCSpl3g5vTDC4nGVOB6LYBRVmEloPIv9fqgReI3R4hPPF9I48mvB+
-         wKu8hIM7PEUj/UbB15lvlA+3+Q+ZHwvi7b0bf8UcXEsL4BNdbY+xCDHebpQKoi8pcuPZ
-         lfPWOOeSCFGaZqc7eubrXohEnyUhrbBS9n1FHZouB3/xFzQS8z5noZiBILIuAF1AzA7q
-         GAkw==
+        bh=WKECQPH61OXosXrIy2gW7bks0SM6RaMxdNnU7t0j8+I=;
+        b=J1ylzubl+8fhTfZhwHLYlSeeeCucYeSIAxeHjU+hksTv0cgwzvG2O9+tbkroIyT3wx
+         /9B5FmONXfxWjXsnLrIeUwu071p/YEzkrJEVVWAJJRiInuwRVqhC4P/rmoUFbEG4c83K
+         ReNn3VpD3N0Zpxy2fNmEMrT3k61Hib5nhiCPo4cSLGGaZE5kGRw+0+H3ITbbWM9wwb4o
+         K/jo+RZ7FKB7/sbKXvo0EDLyAh6E59+6/dsxB4i/X0Ft4BwZsE5YLi9Vin66EK5x9an2
+         9FJoxlFc8bVHexyUi46nxLhys385gzU0sT09BDkedxVd4p4w5nJz+LMYELUuROS/hYQF
+         eBZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789986144; x=1790590944;
+        d=1e100.net; s=20260707; t=1789986145; x=1790590945;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gG2eUzbutPnDE7dtjKcwke5EFlyLZ9q322o1mX80B7M=;
-        b=GAjxy0znSehwwaJOLlwyFynbveeO6HYFs9/EScXFGMsHpLVpsUDLTWZPk1JTFqtAwk
-         /9z1DCcnHTVN9wTeMJKDAMij6FHkPc8/tNceZedIKsSkBxtCnecb1jM9OBk6YyiqwqfL
-         Pq6furQREXv5VcXNlJkdP5r2MrKJgSHWSeCRDmBkjZHy3UZKTN5uz1Ic/VgwwpV4RXcU
-         Ciuv5iJ06AqCLM+xj/04PlVDhda/20WIoLBh7GOziZnuGoLQ8BYKe9FUH9EKOK3th9xY
-         MqXriZrrMCslNyCyoEWaoAyLHyMoh6IeronY/GzPpujdyILb1ILkNvoi/0utJRJj75gS
-         SZSg==
-X-Gm-Message-State: AFuF++nqgXwkLfpQUoodSRqZphJVyTJCy3yuCGYauCquAZZqENPX/+PN
-	c0PtkQI4QT2rHorFbXfra40taKTNEMHyxIBelVQPADKZcFNGbJ42g3E5HecL2ppy0ArIRsXt6zP
-	sRcONsfHHB/kodPLaa7bxkERnIEaaRhI/i6HXe/l2rf7GsCFSbdpha2xlym5IaEXfAM8=
-X-Gm-Gg: AYBFou10RzyA51j4z7Qor45vpzpHHY+kr3d/ZbaskJ9jJX5ox6N2bWiduBf9iO5e0xi
-	vCTFCKkvlqt17CP8MuWpniKIxvRGrNM/cOlLon06WWopQitoJKn3zCq5LaDj4lO70V9OR3z/+FM
-	3jL3OuuCsGFGILLPamiLf7LITgrczQSREB7PTzqoDxq36pT375XPP9YY2fwTkWwPC1GzlkprnIb
-	qnMEPwlC6pfOkLANO9KFOkPheDH+izAPtO2ErCvmI9YIpVlxrYM2WGLIrbydRLUV9peJ7KvB4AB
-	HeIFYlt6Y+JJ+azmS3znmrwJr0bZOa0JmupfqNxyrA6fuPEfRb7GMObuUPU3m1jnYw7fF1MnTed
-	CKogasevaWWmghZZFTZ8KpaYkbrPhpWApu9fR5pnQj8kXJOiXvo2H2RQiS50l6uideT9vZnV626
-	OWvy4Qm4jsPmcvIwzCjN8Ozw4HtSHEP5MlD2OKXNykuEg92kfy8k+e5RycX/FdwkB/E5sCR8lJ1
-	D2hSVOHzwU=
-X-Received: by 2002:a05:600d:1b:b0:49f:ce72:e930 with SMTP id 5b1f17b1804b1-49fce72e992mr77406655e9.34.1789986144552;
-        Mon, 21 Sep 2026 03:22:24 -0700 (PDT)
+        bh=WKECQPH61OXosXrIy2gW7bks0SM6RaMxdNnU7t0j8+I=;
+        b=EUQ97upXjOqZEQiKAIHkotjuTUALQf14I2p9N9shgbaPelV6QSkBSVjnfaVXbojQms
+         KxhQYT9Oj7LXKNTPX/2InTOyI28HXXOnCugYuzGnCsbgVo12zdOq6W69krqxXddnkXTb
+         6X0/fbKt1ohZi/DNjl4VXlOeSQolOHFzo5gomx/667Pe1hl/5tsKA7j9g6CESbmUimik
+         NQEqQRK6C2/w973fJXl+zZYD2EXYNOH1ldUK/NJN49sU7KTpkJGsNdCwdzjD/bnZI1PY
+         MpjjZpAcnOy4Lmum9Lw11YarA9zec7N5H8Vc3FAzvKyxgwloY2W59LoLofcDrpMSG934
+         JXbg==
+X-Gm-Message-State: AFuF++n4EWQochIOZ1Cz4T6rvmHZF/U8DN7vfN5TRAmbwSsPyPqFjuUm
+	la7mPa1q9DThmuezqILov+hNv+nA4+Pp+8bSOTp0a3DbvXgXvoB65R1LoZ85ZVo7Ra86Plh0daN
+	WPPeXh694XkxsDf/k7iQHDdMiNgqt5O+WPxLjqOKi5Pz4mA84AaNGrUWneoK+l+ktoOg=
+X-Gm-Gg: AYBFou29/SeNVXS2a4I8tnVFh3rMwdmNJ3cUmgp79fqjFVxy7x+tjoX19My4cSszZ1w
+	8ymEax90l20yr2FOb3JsMeTo8i/YpLpzBop8k+o8OB6ymAMU3jv6954U+g4X5bJEOayK1w/pCvg
+	aawH/6JjZzLsNmL6rwcFhehoLCTBGPQ4yfHTtMSrtbDzIYk/SepjpH78n115ZoQHr3iRnWUhds5
+	+oiu36FYPRq93ntKu9nsEyOaVPHiAElKn6HT9Pp6TKB0T/tnt8U2wbR9zG2+TJhHzspSrJo3Rv3
+	psYNdLkHg8livLjTp4z6p401IPuDVyH1ekV6Aajtt/dcVzZ8vydaNbFXWJPcBYDX7OAShFsj+19
+	pTMhuC2SRRwI/42am9+xuxaG+Jy0dWg+j2uxEDGtzAg5Zd5VqSUW+lp9QSx5I8Ufc2UKOA4R8jf
+	XdW48jRrbObpPcpcOu1HZ7w+H7tUoIYusghKUVA7oPkOFECKm5h6HhYNlltouJfgH7fwob63eZt
+	L1DPN0GanI=
+X-Received: by 2002:a05:600c:468c:b0:49d:16df:8521 with SMTP id 5b1f17b1804b1-49fc56811dcmr146021255e9.4.1789986145609;
+        Mon, 21 Sep 2026 03:22:25 -0700 (PDT)
 Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:b03b:2cfc:7208:2ecf])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724583fffsm20925476f8f.23.2026.09.21.03.22.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724583fffsm20925476f8f.23.2026.09.21.03.22.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 03:22:24 -0700 (PDT)
+        Mon, 21 Sep 2026 03:22:25 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
 To: netdev@vger.kernel.org
 Cc: Ralf Lici <ralf@mandelbit.com>,
@@ -69,9 +69,9 @@ Cc: Ralf Lici <ralf@mandelbit.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net 06/11] ovpn: replace bind when clearing stale local source
-Date: Mon, 21 Sep 2026 12:22:07 +0200
-Message-ID: <20260921102215.3599702-7-antonio@openvpn.net>
+Subject: [PATCH net 07/11] ovpn: always unhash old VPN addresses before rehashing
+Date: Mon, 21 Sep 2026 12:22:08 +0200
+Message-ID: <20260921102215.3599702-8-antonio@openvpn.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260921102215.3599702-1-antonio@openvpn.net>
 References: <20260921102215.3599702-1-antonio@openvpn.net>
@@ -85,174 +85,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Ralf Lici <ralf@mandelbit.com>
 
-The UDP output fallback clears bind->local in place when the remembered
-source address is no longer usable. The bind is RCU-published and read
-locklessly by concurrent TX, so an IPv6 reader can observe a torn
-address.
+ovpn_peer_hash_vpn_ip updates the per-peer VPN address hash entries
+after userspace changes a peer VPN address. The current code removes an
+old hash entry only when the new address for that family is not the
+unspecified address.
 
-Retry the route lookup with source address autoselection without
-modifying the bind. After a successful lookup, revalidate the bind and
-route key under peer->lock, reset the dst cache, and best-effort publish
-a replacement bind with a wildcard local address.
+When an address is cleared to 0.0.0.0 or ::, its hash node therefore
+remains linked in the bucket selected by the old address. The address
+comparison performed during lookup prevents the old address from
+matching, but the table retains a stale entry until the peer is removed
+or another address is configured for that family.
 
-Do not cache the resolved dst when clearing the local source. Replacing
-the source invalidates all per-CPU cache entries, while
-dst_cache_set_ip4 and dst_cache_set_ip6 update only the current CPU
-slot. The current packet can still use the resolved route; if bind
-allocation fails, a later cache miss retries the repair.
+Always remove both old VPN address hash entries before conditionally
+adding the currently configured addresses back. This ensures that a
+cleared address leaves its hash node unhashed.
 
-Fixes: 08857b5ec5d9 ("ovpn: implement basic TX path (UDP)")
+Fixes: 1d36a36f6d53 ("ovpn: implement peer add/get/dump/delete via netlink")
 Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 ---
- drivers/net/ovpn/udp.c | 81 +++++++++++++++++++++++++++++-------------
- 1 file changed, 56 insertions(+), 25 deletions(-)
+ drivers/net/ovpn/peer.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index eeef4a7229f5..055cdb1bee13 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -185,7 +185,7 @@ static void ovpn_dst_cache_check_key(struct ovpn_peer *peer,
-  * to detect whether the bind was replaced while the route lookup was running.
-  *
-  * Return: true if the lookup result still matches the current peer state and
-- * may update the dst cache.
-+ * may update the dst cache or replace the bind.
-  */
- static bool ovpn_dst_cache_current(const struct ovpn_peer *peer,
- 				   const struct ovpn_bind *bind,
-@@ -218,6 +218,9 @@ static int ovpn_udp4_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 			    struct sk_buff *skb,
- 			    const struct ovpn_route_key *key)
- {
-+	struct sockaddr_storage remote;
-+	struct in_addr local = {};
-+	bool reset_local = false;
- 	struct rtable *rt;
- 	struct flowi4 fl = {
- 		.saddr = bind->local.ipv4.s_addr,
-@@ -236,24 +239,17 @@ static int ovpn_udp4_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
+diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+index 430c6cd48db8..bbd9e17fb0bf 100644
+--- a/drivers/net/ovpn/peer.c
++++ b/drivers/net/ovpn/peer.c
+@@ -994,10 +994,11 @@ void ovpn_peer_hash_vpn_ip(struct ovpn_peer *peer)
+ 	if (hlist_unhashed(&peer->hash_entry_id))
+ 		return;
  
- 	if (fl.saddr && unlikely(!inet_confirm_addr(sock_net(sk), NULL, 0,
- 						    fl.saddr, RT_SCOPE_HOST))) {
--		/* we may end up here when the cached address is not usable
--		 * anymore. In this case we reset address/cache and perform a
--		 * new look up
-+		/* The learned local address is not usable anymore.
-+		 * Retry with source address autoselection.
- 		 */
- 		fl.saddr = 0;
--		spin_lock_bh(&peer->lock);
--		bind->local.ipv4.s_addr = 0;
--		spin_unlock_bh(&peer->lock);
--		dst_cache_reset(cache);
-+		reset_local = true;
+-	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY)) {
+-		/* remove potential old hashing */
+-		hlist_nulls_del_init_rcu(&peer->hash_entry_addr4);
++	/* remove potential old hashing */
++	hlist_nulls_del_init_rcu(&peer->hash_entry_addr4);
++	hlist_nulls_del_init_rcu(&peer->hash_entry_addr6);
+ 
++	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY)) {
+ 		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_vpn_addr4,
+ 					   &peer->vpn_addrs.ipv4,
+ 					   sizeof(peer->vpn_addrs.ipv4));
+@@ -1005,9 +1006,6 @@ void ovpn_peer_hash_vpn_ip(struct ovpn_peer *peer)
  	}
  
- 	rt = ip_route_output_flow(sock_net(sk), &fl, sk);
- 	if (IS_ERR(rt) && PTR_ERR(rt) == -EINVAL) {
- 		fl.saddr = 0;
--		spin_lock_bh(&peer->lock);
--		bind->local.ipv4.s_addr = 0;
--		spin_unlock_bh(&peer->lock);
--		dst_cache_reset(cache);
-+		reset_local = true;
- 
- 		rt = ip_route_output_flow(sock_net(sk), &fl, sk);
- 	}
-@@ -267,10 +263,28 @@ static int ovpn_udp4_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 		goto err;
- 	}
- 
--	/* avoid storing a stale cache */
-+	/* avoid storing a stale cache or local address */
- 	spin_lock_bh(&peer->lock);
--	if (likely(ovpn_dst_cache_current(peer, bind, key)))
--		dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
-+	if (likely(ovpn_dst_cache_current(peer, bind, key))) {
-+		if (!reset_local) {
-+			dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
-+			spin_unlock_bh(&peer->lock);
-+			goto transmit;
-+		}
-+
-+		/* invalidate per-CPU dst entries that may still carry
-+		 * the stale source
-+		 */
-+		dst_cache_reset(cache);
-+
-+		/* preserve the current remote */
-+		memcpy(&remote, &bind->remote, sizeof(struct sockaddr_in));
-+		/* The current packet already has a valid wildcard-source route.
-+		 * If replacing the bind fails, leave the stale local in place;
-+		 * a later cache miss will retry the repair.
-+		 */
-+		ovpn_peer_reset_sockaddr(peer, &remote, &local);
-+	}
- 	spin_unlock_bh(&peer->lock);
- 
- transmit:
-@@ -300,6 +314,9 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 			    struct sk_buff *skb,
- 			    const struct ovpn_route_key *key)
- {
-+	struct in6_addr local = in6addr_any;
-+	struct sockaddr_storage remote;
-+	bool reset_local = false;
- 	struct dst_entry *dst;
- 	int ret;
- 
-@@ -320,15 +337,11 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 
- 	if (!ipv6_addr_any(&fl.saddr) &&
- 	    unlikely(!ipv6_chk_addr(sock_net(sk), &fl.saddr, NULL, 0))) {
--		/* we may end up here when the cached address is not usable
--		 * anymore. In this case we reset address/cache and perform a
--		 * new look up
-+		/* The learned local address is not usable anymore.
-+		 * Retry with source address autoselection.
- 		 */
- 		fl.saddr = in6addr_any;
--		spin_lock_bh(&peer->lock);
--		bind->local.ipv6 = in6addr_any;
--		spin_unlock_bh(&peer->lock);
--		dst_cache_reset(cache);
-+		reset_local = true;
- 	}
- 
- 	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
-@@ -340,10 +353,28 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 		goto err;
- 	}
- 
--	/* avoid storing a stale cache */
-+	/* avoid storing a stale cache or local address */
- 	spin_lock_bh(&peer->lock);
--	if (likely(ovpn_dst_cache_current(peer, bind, key)))
--		dst_cache_set_ip6(cache, dst, &fl.saddr);
-+	if (likely(ovpn_dst_cache_current(peer, bind, key))) {
-+		if (!reset_local) {
-+			dst_cache_set_ip6(cache, dst, &fl.saddr);
-+			spin_unlock_bh(&peer->lock);
-+			goto transmit;
-+		}
-+
-+		/* invalidate per-CPU dst entries that may still carry
-+		 * the stale source
-+		 */
-+		dst_cache_reset(cache);
-+
-+		/* preserve the current remote */
-+		memcpy(&remote, &bind->remote, sizeof(struct sockaddr_in6));
-+		/* The current packet already has a valid wildcard-source route.
-+		 * If replacing the bind fails, leave the stale local in place;
-+		 * a later cache miss will retry the repair.
-+		 */
-+		ovpn_peer_reset_sockaddr(peer, &remote, &local);
-+	}
- 	spin_unlock_bh(&peer->lock);
- 
- transmit:
+ 	if (!ipv6_addr_any(&peer->vpn_addrs.ipv6)) {
+-		/* remove potential old hashing */
+-		hlist_nulls_del_init_rcu(&peer->hash_entry_addr6);
+-
+ 		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_vpn_addr6,
+ 					   &peer->vpn_addrs.ipv6,
+ 					   sizeof(peer->vpn_addrs.ipv6));
 -- 
 2.55.0
 
