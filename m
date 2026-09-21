@@ -1,77 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A642647C116;
-	Mon, 21 Sep 2026 23:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43E647A898;
+	Mon, 21 Sep 2026 23:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790033211; cv=none; b=gj85sI+es65EDj+B5MlUtTYXEW+BIoKRMKnc7VxhRYc8mMIPt8oAnseEoLyBNkUxycqb87ZYpqyX1n3jm2WvwbMVYNpRQU/5yiElPihmOiaKg6Az6ZuhQgdYV0PXAxcy65lhdaSbaZAJfaNOoAd+H5nBNnoLC6CcgUmP3yNw4qA=
+	t=1790033353; cv=none; b=Vf+QW/cGpg2hIjhdsjHHLeAzWSRpR3zvVUoB+TIIFQtzX42tSHUuUh/mEC17RI7yUg4A0ezc8zVc1nYEx0JESvjY69F+ouV/tjwBYBe1TchpOXcOU9novt4k/daQRNpfexELHqDWaapTJvMd+uuCeoCKaTe2HsfOWhnrrKu9II4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790033211; c=relaxed/simple;
-	bh=L/D1VBpSzR1XeQJNrXqUys+cTWArQNCxiy9cWg8e9YQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iAn6yOo9fC9vrDWYVMHgcdH6hFgGrvbSuqUfKUmZ8F9X5hO+YOW7uVxhigBpnmT7RGBooXO0rMU6vqRVcsejczTAbliz4hO0E/heG1pg3Hm9V4v4hLofCWYq4VgOGhpazghvgwkpW4go07zx7szXDTrEwdTPnVS8carqCPNALWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsfpG4wq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790033353; c=relaxed/simple;
+	bh=lFsc1GojGmU3K5BpyRT66DQ0L55nkb7Z08ORNGTHHeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g3mF6Rd5kdaNcb4aw4d+hdpwIE7NMd6xi5fot2tU5mkhO4K72nYPfHyavkvRxK/k8NX4+PUL+hxVzY5F7eh1920r4gssT0fLRplQ/7EqN6dqQoUab2xDFWG1Ysc3WfKXvKrZ7EehxxR7EMqvKYkN5ceH3GRyqgvm1gB7YlyzT38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4kWmp9o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsfpG4wq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF721F000FF;
-	Mon, 21 Sep 2026 23:26:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4kWmp9o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878951F000FF;
+	Mon, 21 Sep 2026 23:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790033200;
-	bh=hM5mTuDQ4dfNK5Z8XPoMxZFJdoiMu0qCdKMcLrxKa3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JsfpG4wqpOafQFBopqW3RNxUYW2gAwzPzWoeHVqBzw8tKKe1B0s4t63iQSWnV8EQ1
-	 rSGPeW4M7vzIvlk+heYi85lhmuPaRw4CEYvxRFoMudbkW//0iO+tB/IICwZJPAYJR+
-	 jf6H2CYP/ekh2L58Vi5xfINtZos2WrvrwYrJSBmFAMg8V9w/mUIXUsP6Dxb5kHLenH
-	 ZH5/C25uUC4b793UVhAx4RRACAJzZdJaQQE08kzGuwQ5EgOcWrsH9yKQSPLFppbHHZ
-	 dnO93SqbtdBPl863CAVJvqPS9wsaTfT7c/g0CxDGpB7QRrgYkcgDEiEi60mZ/7mBtZ
-	 S8Oeg4uEOfhaw==
-Date: Mon, 21 Sep 2026 16:26:40 -0700
-From: Kees Cook <kees@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
-Message-ID: <202609211625.B1F704163@keescook>
-References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-6-kees@kernel.org>
- <arEvspsSl3bLyYgs@thinkstation>
+	s=k20260515; t=1790033346;
+	bh=3rdTZZ6oKBMbejVEbYel2wDyhsKjwmIkaR2bmVVCYog=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=d4kWmp9oAfCVa6isFY4AxMe6iGhxntTMfvA+hZKnMmjmYhNgz8JHyRr+WK4ttMtUb
+	 7uqRWnH7teYCec/1iQCQSiGmA2dkT6fcswYoJjSXNjvaSgvsWlUX4S+Em7fDibGMB7
+	 v6wdORpZ2LhzmEDMWcCos8YCszMrsrxRiFPmCYK0qqt5QZpsdh4HZLL2L+gyad5G4y
+	 JwGMnbT8XRv3iCMy2XPXbvKJm2P6PzK6Kec2M0CobyKpk7M2wyermQnflGmIrwqkz/
+	 AU7p5gaLT0T6CTP30sEqW+dmvG/pl0AHps+ptdhva3C0u1RJw55VvMBtDuvMf0CuAT
+	 2n6+CBBHFXIQA==
+Date: Mon, 21 Sep 2026 16:29:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me,
+ bobbyeshleman@meta.com, almasrymina@google.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/3] net: devmem: replace gen_pool with
+ freelist
+Message-ID: <20260921162905.48e76338@kernel.org>
+In-Reply-To: <20260917181116.3319017-2-sdf@fomichev.me>
+References: <20260917181116.3319017-1-sdf@fomichev.me>
+	<20260917181116.3319017-2-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arEvspsSl3bLyYgs@thinkstation>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 21, 2026 at 02:25:57PM +0100, Harry Yoo wrote:
-> On Mon, Sep 21, 2026 at 12:58:17AM -0700, Kees Cook wrote:
-> Didn't take a deeper look at this yet but this is causing an error:
-> 
-> MODPOST Module.symvers
-> ERROR: modpost: lib/tests/slub_kunit.ko: symbol 'mem_cgroup_kmem_disabled' undefined!
+On Thu, 17 Sep 2026 11:11:14 -0700 Stanislav Fomichev wrote:
+>  struct netlink_ext_ack;
+> +struct dmabuf_genpool_chunk_owner;
 
-Argh, modular build. Of all the things I tested, I didn't actually test
-kunit modular build. :P It's so easy to use kunit.py that I forget it's
-doing a monolithic build under the hood. :P
+watch out for unnecessary forward decl
+(next patch deletes this one so doesn't matter)
 
-I'll get that fixed.
-
--- 
-Kees Cook
+>  struct net_devmem_dmabuf_binding {
+>  	struct dma_buf *dmabuf;
+> @@ -26,7 +27,7 @@ struct net_devmem_dmabuf_binding {
+>  	 * dereferenced.
+>  	 */
+>  	void *vdev;
+> -	struct gen_pool *chunk_pool;
+> +	struct dmabuf_genpool_chunk_owner *chunk_owner;
+>  	/* Protect dev */
+>  	struct mutex lock;
