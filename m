@@ -1,525 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4867C3E008F
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790020651; cv=none; b=F/kOhbExFdj+C6h1qrUbgzn99TAtblHE3uUsr/upGH+M6EOl0hrGeTvb0qAi4Ay+RMGw9Ii9c1/4m9blFE2IZBGh/CEGZgg9BsNQ6Li9pNqM0lZHDtvfwXsGhK+MCA4CKFzckxOOsUJBnuuGyVOmDDCvOYnzm6A4Qbp8y4m/HvU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790020651; c=relaxed/simple;
-	bh=0kgQXZLk6OBjqApNG/AsuvvJpZWogz4VJz6OhXVkSyI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FbIhoEOJ7Kl8Z2mJNor/GjvOUoZ5KyAgaUvuk3FT4+im3daqhfOGGvZZTAhELRoAuoZcBpE+ORMulFuiTadeRnke+Onvma3TbvMNKi/3VFiRjS756O6m3rExLA7MNoxJOgd+fsmuyCUegRk2VzAPJo/XfKmjxyxh/p70+sbSYuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isMpGoc1; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361593B14A7
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790020689; cv=pass; b=ZBKJpOeyF/eExTBnpzsEkFKDgI1F6vit2bMpRFBzIqTsgmlYQDhdZ4DXtBbDQp4w44xbnLil/z0UVLseIRjT0S1WPzl8PgCa71xWEx8stNZS7EbMxlp3ycYfJnz3IHd7togFdZus04kVGXHeiIzyaXx4KNWUKth8pIKhrjpv6/0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790020689; c=relaxed/simple;
+	bh=aVIY0fcdB+TxzKraWgL56vzwXD30AFT+2P7KJPTHESQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XJ0z84rNEb0O7El/3jyXJRHwebYGuORBr8w2t4OKC1mbF8/vviL4sOQ+UK1WkpRQiHVgRgq/XOw4Qpzc46XEfdsQdiNv8Ly83ExGxFjd1pALzdBm/w1cRXg3xsuwEGRfulWdo0wXGCe/0H6dUUVH4aFaJC2+wU05AsXF4WZKuHU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=W+Rm/4q2; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isMpGoc1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1438C1F00899;
-	Mon, 21 Sep 2026 19:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790020648;
-	bh=T7mLTM7mRArf6T5qHbZO96GqNJyg1IhoCLzy4oIM77U=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=isMpGoc1Q7MF1J0b6Y5Gxc5mV4NQs6O+9WA9KKIA12TiTSkjTIiFYtoMXmC+h9z+J
-	 /lIbiygILQDEBBFU2vossHjXJOP/SxChIUx0MfluaAAQHUn2BUH3pKpry5ORCRPVaP
-	 G0m5hRVpW7admfXs+Vt/7dFkkd/dyqnTUEnOlXKZNJO8WX8wDXVJbmMPzcnXde3lO5
-	 WZIxpJsfHweFWsYjkkXCLBt5U6CIRWNLFe0cw9SrTBzcGUQnJ5fcK4elwLX1TK46gb
-	 O9P7dS8++uNkQXPFAKX42w/PPG9P7ERoQVCEuTYrXzA4a2ahAuj97FVsmoEqR0i7X0
-	 4S/Q3jepoSSeg==
-Subject: Re: [PATCH net-next v2 12/12] ice: use ACL for ntuple rules that
- conflict with FDir
-From: netdev-bot+sashiko@kernel.org
-To: anthony.l.nguyen@intel.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- lukasz.czapnik@intel.com, marcin.szycik@linux.intel.com,
- aleksandr.loktionov@intel.com, sandeep.penigalapati@intel.com,
- ananth.s@intel.com, alexander.duyck@gmail.com, sx.rinitha@intel.com
-Date: Mon, 21 Sep 2026 19:57:27 +0000
-Message-ID: <179002064764.2160803.13065389876778124107@kernel.org>
-In-Reply-To: <20260917183927.2692068-13-anthony.l.nguyen@intel.com>
-References: <20260917183927.2692068-13-anthony.l.nguyen@intel.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="W+Rm/4q2"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b35611so2249374b3a.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:58:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790020685; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c2PVdPi+j0Y1Mr5ZzGEr21j7cKF2Q/QXB3JU0u1m+tfLfG7rwNkZ0s0kdFYtRxtmXy
+         w1fNXu48Ea3rKB8uRO6FEOi39jH/XAUXPsFByba0M3E+PwQSgpGQp/BPBTCqWMbB4ivy
+         vX7tIPMi8d+8LWi+BmwYIMdycI55QgtfP6yd/88tEKYKix/YinIrTyRFZnsiXYnofi+i
+         Y2ovVAGXbGiuXzullKZHN+gq83ZsOyeB+Hzy9HmRk04WX4WKhRs1+jFtCsPJfdGXCI9p
+         ViAP36dWhUvUJPz+HWEFJVRxuLi+Ep5RvegvX1kIchL0t/YEY45c17lLWelVCcx6uHBI
+         FMhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Ir8YjhAZ4HBKfv4xjXY9QLHR7YUA9HcIqSwoU+P+HV0=;
+        fh=tDbrLGbqPvwgsqhMqSHf8/Hhg24ZkP67/eddtzwcejI=;
+        b=lL9ADFi1kLAOGHw6GkM2+rmUlcMcyD6z3lqaoYrYCtJPjRVYSQMllWv5GbihdlpFjs
+         x5xkSDKxw+IrjvfZhlUbOhIgGQZP4xQTTHpx8rHb1ZRwJvKE6epy7x8uMju0AZKFrNY0
+         ZYTlrvHUASWB2bX4+GkbuEtuqvEu3taVM0U1+AfRmFQj4gSoxF080fYYp7utFoDLd20T
+         9S4c8915dABm1kAj+uzFvLe3ApRMssObL/jcqK/Mf3SRh15xr4fplolkHkexGy6MAWI6
+         XSBqc7pMQn/Oax1OwmtDu6StyJUUcLnAa0WmWVl7PuZXaJWu02laLQXSx8GMDbsEpai8
+         fs0w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1790020685; x=1790625485; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ir8YjhAZ4HBKfv4xjXY9QLHR7YUA9HcIqSwoU+P+HV0=;
+        b=W+Rm/4q2w64AQOlMdLST0LcN7wx+3eVZKaD2KVeA8dvyUcVr/UJvYi107uV0lFgkZT
+         QFtImlvuWqvEXGxXB/B+SbUlOwc59wzphjpTJuAn8uYCzvKkLIWI5AdltnWOkqIVUXxS
+         vu8rzMWMqpmlftNmbI+fnYSRyGhEb3nPupvIs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790020685; x=1790625485;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ir8YjhAZ4HBKfv4xjXY9QLHR7YUA9HcIqSwoU+P+HV0=;
+        b=zC1+ya/ktTKwrAx/om7dYqQN+iEUl/Zbhg1W0gdtJs2JdlkvvN2n2kwbJW8TDn8Uhm
+         RFrrUesLg6QSp8D8ToLSd27ZQlNqCjUBbPeo/N0jf5c8NdgEZotzcyJwBTwqW7Q22nh+
+         Y+TU6RVN2esJUnCbT0Kaboorychk7AbDIEI3ydYVeNTUdHrloIz0hScmijTomYQ4qD3T
+         PiI8Swu0JNmn3LDaIit+Occb62YkBmYgxhUG3lDBST13iTsQX96NFrXqqdezZX8Ucse9
+         iR5LQX37TlPruNAP3CvOXTm1tJ6RgmuvWI5Jo7SXlMiVaga/0o7eC9SBVxJQjozvcJrV
+         R3UA==
+X-Gm-Message-State: AFuF++kp59ek4JrhDm/J55FsmcISztlcGm9bcA5/JlZgqrOi65u3Ljms
+	KBpnxhJ1KOHqrW9PhP+jKfFMe+ED+fCzWHv5EZksRvZJLzmEF6vab2a4ZtjeO0LPBOf+GiYJvEx
+	9fE+tHbj6U8lJrk9VjDEA3jB7JEdGNHWbPQYJTk4I
+X-Gm-Gg: AYBFou1BzPbMoRxFdE9k/soesk4v0jC3y2bflPqrDdYQPbqze8O7Y6NHWCpTVLQh/8j
+	xu66tfaiuJu3o6NBX9Wf9IsHZAhePL0PDuWyuI14pr0KdkOyKVUOvpxDpuDmpXlpPVnofi1rMiZ
+	/us6r6plzyZ7NDYzN3yM+g3ZmhKZy0MHqaOrDK+d46qYDokjm/OqnSaNkP0StxcRRMSmVL4oCgy
+	1myIWPtZeBXf51154Owylf3vwO+LaeMAdTn/yri4UOciHkUVJtvyqeW+glLBohtbfm4FRdOinpS
+	cYg0vHeW2syrS83z5XZaj2qiFX31QsKInqg5s1jB619iPJC+rT3Aox8Fu1wNFGYDLdPX2jj0zCJ
+	bIEmtvaqWe7+B+P7oBKkSe6OiMSE1oWGtdTfd7w==
+X-Received: by 2002:a05:6a00:c206:b0:877:ec64:dcfb with SMTP id
+ d2e1a72fcca58-877ec64e61fmr7175019b3a.16.1790020684726; Mon, 21 Sep 2026
+ 12:58:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 8 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 (1) · Medium: 2 · Low: 4
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] ice_fdir_has_input_set_conflict()
-  (drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c:1543) reports a…
-- [High] The new conflict check dereferences a possibly-NULL aRFS counter
-  block.
-- [Medium] Conflict-routed rules that carry FLOW_EXT are rejected by the
-  ACL path with -EINVAL even when they contain no flex match, because…
-- [Medium] ice_fdir_has_input_set_conflict() makes the FDir-vs-ACL
-  routing decision from state that can change before the decision is…
-- [Low] Claimed regression: the new `if (userdata.flex_fltr) return
-  -EOPNOTSUPP;` block in ice_add_ntuple_ethtool() sits inside the…
-- [Low] The two new messages in the ACL branch of
-  ice_add_ntuple_ethtool() describe an offload that may never occur.
-- [Low] ice_fdir_has_input_set_conflict() documents `false` as "can use
-  FD" and ice_add_ntuple_ethtool() consumes it as permission to skip the…
-- [Low] Documentation/networking/device_drivers/ethernet/intel/ice.rst
-  (lines 326-345) still states unconditionally that "For each flow-type,…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the new input-
-  set-dependent backend selection makes it reachable for full-mask…
-
---
-
-ice: use ACL for ntuple rules that conflict with FDir
-
-This adds a pre-check that builds the candidate IP flow segment for an
-ethtool ntuple rule, compares it against the active non-tunneled Flow
-Director profile, and routes the rule to ACL when the input sets differ.
-The IP flow segment setup is factored out into ice_set_fdir_ip_flow_seg()
-so both the extraction-sequence path and the new check can use it.
-
-A few questions below about the new helper and the ACL dispatch.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> index fef8640d23fb6..691b4500e6be6 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> @@ -1484,6 +1484,120 @@ ice_set_fdir_vlan_seg(struct ice_flow_seg_info *seg,
->  	return 0;
->  }
->  
-> +/**
-> + * ice_set_fdir_ip_flow_seg - set IP flow segment based on ethtool flow type
-> + * @fsp: pointer to ethtool Rx flow specification
-> + * @seg: flow segment for programming
-> + * @perfect_fltr: valid on success; returns true if perfect fltr, false if not
-> + *
-> + * Return: 0 on success and errno in case of error.
-> + */
-> +static int ice_set_fdir_ip_flow_seg(struct ethtool_rx_flow_spec *fsp,
-> +				    struct ice_flow_seg_info *seg,
-> +				    bool *perfect_fltr)
-> +{
-> +	switch (fsp->flow_type & ~FLOW_EXT) {
-
-[ ... ]
-
-> +	case TCP_V6_FLOW:
-> +		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
-> +					    ICE_FLOW_SEG_HDR_TCP, perfect_fltr);
-> +	case UDP_V6_FLOW:
-> +		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
-> +					    ICE_FLOW_SEG_HDR_UDP, perfect_fltr);
-> +	case SCTP_V6_FLOW:
-> +		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
-> +					    ICE_FLOW_SEG_HDR_SCTP,
-> +					    perfect_fltr);
-> +	case IPV6_USER_FLOW:
-> +		return ice_set_fdir_ip6_usr_seg(seg, &fsp->m_u.usr_ip6_spec,
-> +						perfect_fltr);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-
-[ ... ]
-
-> +static bool
-> +ice_fdir_has_input_set_conflict(struct ice_pf *pf,
-> +				struct ethtool_rx_flow_spec *fsp,
-> +				const struct ice_rx_flow_userdef *user)
-> +{
-> +	struct ice_flow_seg_info *test_seg, *old_seg;
-> +	bool perfect_fltr = false, conflict = false;
-> +	struct ice_fd_hw_prof *hw_prof;
-> +	struct ice_hw *hw = &pf->hw;
-> +	enum ice_fltr_ptype flow;
-> +	int err;
-> +
-> +	if ((fsp->flow_type & ~FLOW_EXT) == ETHER_FLOW)
-> +		return false;
-
-[Severity: High]
-This gate excludes only ETHER_FLOW, and ice_set_fdir_ip_flow_seg() above
-happily builds segments for TCP_V6_FLOW, UDP_V6_FLOW, SCTP_V6_FLOW and
-IPV6_USER_FLOW, so a true verdict can be produced for IPv6 rules.
-
-The only consumer of a true verdict is ice_acl_add_rule_ethtool(), which
-starts with ice_acl_prof_add_ethtool().  Can ACL program IPv6 flow types
-at all?
-
-drivers/net/ethernet/intel/ice/ice_acl_main.c:ice_acl_prof_add_ethtool() {
-	switch (fsp->flow_type & ~FLOW_EXT) {
-	case TCP_V4_FLOW:
-	...
-	case IPV4_USER_FLOW:
-	...
-	default:
-		err = -EOPNOTSUPP;
-	}
-}
-
-With this sequence on an ACL-capable device:
-
-  ethtool -U ethX flow-type tcp6 src-ip A dst-ip B src-port P dst-port Q action 1
-  ethtool -U ethX flow-type tcp6 src-ip C action 2
-
-the second rule has a full mask, so ice_is_acl_filter() returns false (it
-only inspects the IPv4 specs), while ice_fdir_has_input_set_conflict()
-returns true.  Does the rule then end up in ice_acl_prof_add_ethtool()'s
-default case and get rejected with -EOPNOTSUPP, instead of being offloaded?
-
-If so, the descriptive rejection that used to come from
-ice_fdir_set_hw_fltr_rule():
-
-	dev_err(dev, "Failed to add filter. Flow director filters on each port must have the same input set.\n");
-	return -EINVAL;
-
-is no longer reached for these rules.  Since the new gate only tests
-pf->hw.acl_tbl (ACL block present) and never "ACL can offload this flow
-type", should the conflict detection be restricted to the flow types
-ice_acl_prof_add_ethtool() supports?
-
-> +
-> +	flow = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
-> +	if (flow >= ICE_FLTR_PTYPE_MAX || !hw->fdir_prof ||
-> +	    !hw->fdir_prof[flow]) {
-> +		return false;
-> +	}
-> +
-> +	hw_prof = hw->fdir_prof[flow];
-> +	old_seg = hw_prof->fdir_seg[ICE_FD_HW_SEG_NON_TUN];
-> +
-> +	/* A profile with no ethtool FDir filters (fdir_fltr_cnt == 0) may
-> +	 * still be locked by aRFS perfect (4-tuple) filters, which keep their
-> +	 * own active counters separate from fdir_fltr_cnt.
-> +	 */
-> +	if (!old_seg || (hw->fdir_fltr_cnt[flow] == 0 &&
-> +			 !ice_is_arfs_using_perfect_flow(hw, flow)))
-> +		return false;
-
-[Severity: High]
-Can ice_is_arfs_using_perfect_flow() be called here with
-vsi->arfs_fltr_cntrs still NULL?
-
-With CONFIG_RFS_ACCEL=y it dereferences the counter block without a NULL
-check:
-
-drivers/net/ethernet/intel/ice/ice_arfs.c:ice_is_arfs_using_perfect_flow() {
-	arfs_fltr_cntrs = vsi->arfs_fltr_cntrs;
-
-	/* active counters can be updated by multiple CPUs */
-	smp_mb__before_atomic();
-	switch (flow_type) {
-	case ICE_FLTR_PTYPE_NONF_IPV4_UDP:
-		return atomic_read(&arfs_fltr_cntrs->active_udpv4_cnt) > 0;
-	...
-}
-
-ice_set_features() enables Flow Director and ACL before the fallible aRFS
-setup:
-
-drivers/net/ethernet/intel/ice/ice_main.c:ice_set_features() {
-	ice_vsi_manage_fdir(vsi, ena);
-	ice_vsi_manage_acl(vsi, ena);
-	ena ? ice_init_arfs(vsi) : ice_clear_arfs(vsi);
-}
-
-and ice_init_arfs() swallows the allocation failure:
-
-drivers/net/ethernet/intel/ice/ice_arfs.c:ice_init_arfs() {
-	if (ice_init_arfs_cntrs(vsi))
-		goto free_arfs_fltr_list;
-	...
-}
-
-so after "ethtool -K ethX ntuple on" with a failing allocation,
-ICE_FLAG_FD_ENA is set, ice_fdir_create_dflt_rules() has already installed
-the default perfect tcp4/udp4/tcp6/udp6 profiles, and
-vsi->arfs_fltr_cntrs is NULL.  A following "ethtool -U ethX flow-type
-tcp4 ..." on a device with hw->acl_tbl set reaches this check with
-old_seg != NULL and hw->fdir_fltr_cnt[flow] == 0.  Does that oops inside
-atomic_read()?
-
-The missing NULL check in ice_is_arfs_using_perfect_flow() predates this
-patch, but previously ice_fdir_set_hw_fltr_rule() compared the segments
-first and returned -EEXIST without consulting the aRFS counters, so rules
-whose input set matches the existing profile never touched them.  Does
-this new call site widen that exposure to the common case?
-
-[Severity: Medium]
-Is the state read here stable until it is acted upon?
-
-hw->fdir_prof[flow], hw_prof->fdir_seg[ICE_FD_HW_SEG_NON_TUN],
-hw->fdir_fltr_cnt[flow] and the aRFS atomics are all read without
-hw->fdir_fltr_lock; ice_add_ntuple_ethtool() takes that mutex only later,
-after ice_cfg_fdir_xtrct_seq() has already programmed the profile.  The
-aRFS counters are written from contexts that are not serialized against
-the ethtool ioctl:
-
-ice_service_task()
-  ice_sync_arfs_fltrs()
-    ice_arfs_add_flow_rules()
-      ice_arfs_update_active_fltr_cntrs()
-
-and also from ice_rx_flow_steer().
-
-So:
-
-CPU0 (ethtool -U)
-  ice_fdir_has_input_set_conflict()
-    hw->fdir_fltr_cnt[flow] == 0
-    aRFS tcpv4 counter == 0  -> returns false, take the FDir path
-
-CPU1 (service task)
-  ice_arfs_add_flow_rules()
-    ice_arfs_update_active_fltr_cntrs()  -> counter becomes 1
-
-CPU0 continues into ice_fdir_set_hw_fltr_rule(), which re-reads the same
-state:
-
-		if (ice_is_arfs_using_perfect_flow(hw, flow)) {
-			dev_err(dev, "aRFS using perfect flow type %d, cannot change input set\n",
-				flow);
-			return -EINVAL;
-		}
-
-Can that produce the -EINVAL this patch is meant to avoid, with no ACL
-fallback left at that point?  The mirror ordering would route to ACL a
-rule Flow Director could have taken.
-
-> +
-> +	test_seg = kzalloc_obj(*test_seg);
-> +	if (!test_seg)
-> +		return false;
-
-[Severity: Low]
-The kernel-doc for this helper documents false as "can use FD", and
-ice_add_ntuple_ethtool() treats false as permission to skip the ACL
-branch.  Here false also means "the comparison could not be performed".
-
-On this allocation failure the rule goes down the Flow Director path and
-ice_fdir_set_hw_fltr_rule() rejects the differing input set:
-
-		if (hw->fdir_fltr_cnt[flow]) {
-			dev_err(dev, "Failed to add filter. Flow director filters on each port must have the same input set.\n");
-			return -EINVAL;
-		}
-
-Should this report -ENOMEM (or still take the ACL route) rather than
-returning the value that means no conflict?
-
-The other early false path, ice_set_fdir_ip_flow_seg() returning an error,
-looks benign since the FDir path re-runs the same builder and produces the
-same errno.
-
-> +
-> +	err = ice_set_fdir_ip_flow_seg(fsp, test_seg, &perfect_fltr);
-> +
-> +	if (err) {
-> +		kfree(test_seg);
-> +		return false;
-> +	}
-> +
-> +	if (user && user->flex_fltr)
-> +		ice_flow_add_fld_raw(test_seg, user->flex_offset,
-> +				     ICE_FLTR_PRGM_FLEX_WORD_SIZE,
-> +				     ICE_FLOW_FLD_OFF_INVAL,
-> +				     ICE_FLOW_FLD_OFF_INVAL);
-> +
-> +	/* Compare the test segment with the existing segment */
-> +	if (memcmp(old_seg, test_seg, sizeof(*test_seg)) != 0)
-> +		conflict = true;
-> +
-> +	kfree(test_seg);
-> +
-> +	return conflict;
-> +}
-> +
->  /**
->   * ice_cfg_fdir_xtrct_seq - Configure extraction sequence for the given filter
->   * @pf: PF structure
-
-[ ... ]
-
-> @@ -2368,9 +2441,27 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
->  		return -ENOSPC;
->  	}
->  
-> -	/* ACL filter */
-> -	if (pf->hw.acl_tbl && ice_is_acl_filter(fsp))
-> +	/* ACL filter, or this filter would cause an input set conflict with
-> +	 * existing FD filters
-> +	 */
-> +	if (pf->hw.acl_tbl &&
-> +	    (ice_is_acl_filter(fsp) ||
-> +	     ice_fdir_has_input_set_conflict(pf, fsp, &userdata))) {
-> +		/* The ACL programming path does not honor flex byte
-> +		 * (user-def) constraints. Routing a flex filter to ACL would
-> +		 * silently drop the flex match and offload a much broader
-> +		 * rule than requested, so reject it explicitly instead.
-> +		 */
-> +		if (userdata.flex_fltr) {
-> +			dev_info(dev, "Failed to add filter. Flex byte (user-def) filters cannot be offloaded to ACL.\n");
-> +			return -EOPNOTSUPP;
-> +		}
-
-[Severity: Low]
-This new rejection sits inside the combined condition, so it also applies
-to the pre-existing partial-mask ACL route selected by
-ice_is_acl_filter().
-
-Such rules already failed before this patch, just with a different errno:
-flex_fltr requires FLOW_EXT (ice_parse_rx_flow_user_data() returns early
-when !(fsp->flow_type & FLOW_EXT)), and the ACL decoder strips only
-FLOW_MAC_EXT:
-
-drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c:ice_ntuple_set_input_set() {
-	else if (blk == ICE_BLK_ACL)
-		flow_mask = FLOW_MAC_EXT;
-	...
-	flow_type = fsp->flow_type & ~flow_mask;
-	...
-	switch (flow_type) {
-	...
-	default:
-		return -EINVAL;
-	}
-}
-
-So a command like
-
-  ethtool -U ethX flow-type tcp4 src-ip A m 0.255.255.255 ... user-def 0x4ffff
-
-returned -EINVAL before and returns -EOPNOTSUPP now.  Would it be worth
-mentioning that user-visible errno change in the changelog, since it is
-not a consequence of the conflict detection being added?
-
-> +
-> +		dev_dbg(dev, "ntuple filter at location %d offloaded to ACL instead of Flow Director\n",
-> +			fsp->location);
-
-[Severity: Low]
-This message is printed before ice_acl_add_rule_ethtool() is called, so it
-claims an offload that may never happen.  For flow types that
-ice_acl_prof_add_ethtool() rejects:
-
-drivers/net/ethernet/intel/ice/ice_acl_main.c:ice_acl_prof_add_ethtool() {
-	default:
-		err = -EOPNOTSUPP;
-}
-
-the log says the rule was offloaded to ACL while the command failed.
-Should it be emitted only after ice_acl_add_rule_ethtool() succeeds?
-
-Similarly, the dev_info above attributes the failure to an ACL flex byte
-limitation even for tcp6/udp6/sctp6/ip6, where ACL cannot take the rule at
-all and the real blocker is the Flow Director input set conflict.
-
-> +
->  		return ice_acl_add_rule_ethtool(vsi, cmd);
-> +	}
-
-[Severity: Medium]
-Is FLOW_EXT normalized consistently between the new selector and the ACL
-destination?
-
-ice_fdir_has_input_set_conflict() and ice_acl_prof_add_ethtool() both mask
-with & ~FLOW_EXT, but ice_ntuple_set_input_set() uses FLOW_MAC_EXT for
-ICE_BLK_ACL, so FLOW_EXT survives into its switch and hits
-default: return -EINVAL.
-
-A command that sets FLOW_EXT without any flex match, for example
-
-  ethtool -U ethX flow-type tcp4 src-ip C vlan 0x1 m 0xffff action 2
-
-against an existing conflicting tcp4 FDir profile, leaves flex_fltr false
-(m_ext.data is zero), so it passes the check above and is routed to ACL,
-where it fails with -EINVAL.
-
-By that point ice_acl_prof_add_ethtool() has already created and
-programmed a profile for the flow type:
-
-	hw->acl_prof[fltr_type] = hw_prof;
-
-Does the failed command leave that profile registered, so later ACL rules
-for the same flow type with a different input set fail the
-if (hw_prof->seg) memcmp check?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the new input-set-dependent
-backend selection makes it reachable for full-mask rules: replacing an
-ACL-backed ntuple rule with an FDir-backed rule at the same location looks
-like it leaves the old ACL TCAM entry programmed.
-
-The only ACL hardware removal in ice_ntuple_update_list_entry() is gated
-on the replacement pointer being NULL:
-
-drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c:ice_ntuple_update_list_entry() {
-	if (old_fltr->acl_fltr) {
-		...
-		if (!input) {
-			err = ice_del_acl_ethtool(hw, old_fltr);
-			if (err)
-				return err;
-		}
-	}
-	...
-	list_del(&old_fltr->fltr_node);
-	kfree(old_fltr);
-}
-
-which holds only for ice_acl_add_rule_ethtool() replacing ACL with ACL.
-The Flow Director path afterwards calls ice_fdir_write_all_fltr(), which
-does not touch the ACL table.
-
-Sequence:
-
-  1. add an FDir rule matching src-ip
-  2. add a full-mask dst-ip rule at location L; the new conflict check
-     routes it to ACL
-  3. re-add at location L a src-ip rule compatible with the active FDir
-     profile; it now takes the FDir path
-
-Does the ACL entry for the dst-ip match survive step 3 with no software
-record, so it keeps dropping or steering matching packets and is invisible
-to ethtool -u?
-
-[Severity: Low]
-Should Documentation/networking/device_drivers/ethernet/intel/ice.rst be
-updated along with this?  The Flow Director Filters notes still say
-unconditionally:
-
-  For each flow-type, the programmed filters must all have the same
-  matching input set.
-
-and the example there, showing
-
-  ethtool -U ethX flow-type ip4 src-ip 192.168.0.1 src-port 5300 action 7
-  ethtool -U ethX flow-type ip4 dst-ip 192.168.0.5 src-port 55 action 10
-
-"will fail with an error", plus "on one device, you may not program two
-tcp4 filters with different matching fields".  On an ACL-capable device
-that second rule now succeeds through ACL.  The new flex byte limitation
-is also undocumented.
-
->  
->  	/* Only fdir filters below */
->  	if (!test_bit(ICE_FLAG_FD_ENA, pf->flags))
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917183927.2692068-1-anthony.l.nguyen%40intel.com
+References: <QDISC-9R8V.v1.20260921065103@mojatatu.com> <CANn89iLwYx8nCVf0pCEk_MmEiyC6kQaMwCQT9WkQVeeNzNQHqQ@mail.gmail.com>
+In-Reply-To: <CANn89iLwYx8nCVf0pCEk_MmEiyC6kQaMwCQT9WkQVeeNzNQHqQ@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 21 Sep 2026 15:57:52 -0400
+X-Gm-Features: AcwNN1U0TtrJlJtmcnLvTjC10KotZWlmoXxQK3RjKM6r8C0XrxC13TtwOf5HRGU
+Message-ID: <CAM0EoMmzdRYFRvjvTEQM7QsdPRqiVmHg1pHVCObdMTjAKmZP5A@mail.gmail.com>
+Subject: Re: [PATCH net] net: cap skb->queue_mapping when the tx queue is picked
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Simon Horman <horms@kernel.org>, 
+	Victor Nogueira <victor@mojatatu.com>, Tonghao Zhang <xiangxia.m.yue@gmail.com>, 
+	Zero Day Initiative <zdi-disclosures@trendmicro.com>, hybris <hybris@mojatatu.ai>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Sep 21, 2026 at 10:42=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Mon, Sep 21, 2026 at 4:02=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.co=
+m> wrote:
+> >
+> > skbedit can set skb->queue_mapping and __dev_queue_xmit() honors it
+> > through the skip_txqueue flag; netdev_tx_queue_mapping() clamps the
+> > index it uses to select the netdev_queue but leaves the out-of-range
+> > value in skb->queue_mapping.
+> >
+> > Every later consumer of skb_get_queue_mapping()/skb_get_tx_queue() on
+> > that path then reads past the device's queues. Taprio's child array
+> > q->qdiscs[] is sized to the device's queue count, so taprio_enqueue()
+> > indexes past its allocation; qdisc_restart() likewise dereferences
+> > dev->_tx[queue_mapping].
+> >
+> > A local user in a network namespace can redirect a packet from a device
+> > with more TX queues to one with fewer (mirred action) after setting a
+> > mapping valid only on the larger device. That reaches these reads and,
+> > under KASAN, faults with "slab-out-of-bounds in taprio_enqueue".
+> >
+> > Store the clamped value back into skb->queue_mapping, as
+> > netdev_core_pick_tx() already does for the mapping it picks, so the
+> > whole egress path observes an in-range queue index.
+> >
+> > I have looked at other alternative places to put this "fix", none
+> > appealing: an out-of-range queue_mapping is read by every consumer
+> > on the xmit path, not just by taprio. For example, upon testing
+> > an approach that only bounds-checked taprio_enqueue() I observed
+> > the fault relocated to sch_direct_xmit()/qdisc_restart() instead
+> > (because dev->_tx[queue_mapping] is still indexed with the raw value).
+> > Another approach was to cap it in skbedit;  cannot work: the
+> > redirect target, whose queue count bounds the mapping, is not known
+> > when the action runs, and act_mirred sets skb->dev afterwards.
+> > So the decision is to cap the value where it is first trusted and
+> > result is it fixes all downstream readers at once.
+> >
+> > Conditions to recreate the bug: with CONFIG_NET_SCH_TAPRIO=3Dy,
+> > CONFIG_NET_ACT_SKBEDIT=3Dy, CONFIG_NET_ACT_MIRRED=3Dy and KASAN enabled=
+,
+> > create a 3-queue dummy qa and a 2-queue dummy qb, put a taprio root on
+> > qb, then on qa's clsact add matchall with "action skbedit queue_mapping
+> > 2 pipe action mirred egress redirect dev qb" and send one packet out
+> > qa. Mapping 2 is valid for qa but past qb's two-entry taprio child
+> > array.
+> >
+> > Reproduction: reproducer ran on a KASAN build with panic_on_warn=3D1:
+> > the unfixed control faults with "BUG: KASAN: slab-out-of-bounds in
+> > taprio_enqueue", a read 0 bytes past a 16-byte taprio_init allocation,
+> > and panics.
+>
+> I do not think this reproducer works. mirred egress redirect re-enters
+> __dev_queue_xmit() for qb, which does netdev_xmit_skip_txqueue(false)
+> before sch_handle_egress(). qb has no egress filter here, so
+> netdev_tx_queue_mapping() is not called for qb at all, and
+> netdev_core_pick_tx() rewrites skb->queue_mapping in range before
+> taprio_enqueue() runs.
+>
+
+The repro from zdi works (and produced the kasan) - but i think you
+caught a bad description on how to reproduce.
+It reads like it is two devices but it is infact 3:
+
+  qa (3 queues) - clsact egress matchall:
+          action skbedit queue_mapping 2 pipe
+           action mirred egress redirect dev qb
+  qb (2 queues, taprio root) - clsact egress matchall:
+       action mirred egress mirror dev qc
+  qc (1 queue) - clsact egress matchall:
+       action skbedit queue_mapping 0 pipe
+
+The KASAN trace shows exactly that stack (tcf_mirred_act ->
+tcf_skbedit_act on qc, then taprio_enqueue on the outer qb xmit).
+
+At a minimum, the commit log needs fixing to describe as above:
+
+> I suspect the real issue is that the per-cpu flag is cleared *before*
+> sch_handle_egress(), so a nested dev_queue_xmit() (mirred mirror, or a
+> drop after skbedit) can set it and have the *outer* __dev_queue_xmit()
+> consume it, for an skb that never went through skbedit.
+
+That could be the root cause or part of it....
+
+> For a forwarded
+> packet, skb->queue_mapping is then still skb_record_rx_queue()'s
+> rx_queue + 1 from the ingress NIC. That reaches taprio with a garbage
+> index, and clamping it only hides the fact that an innocent packet got
+> pinned to a random TX queue.
+>
+> If that is confirmed, I would rather consume the flag where it is read:
+>
+>     skip_txq =3D netdev_xmit_txqueue_skipped();
+>     netdev_xmit_skip_txqueue(false);
+>
+> right after sch_handle_egress(), dropping the pre-clear. Same number of
+> stores, and the request can no longer escape the xmit that set it.
+>
+
+I believe your suggestion would fix the poc repro but opens other issues.
+
+How about: save it, clear it before sch_handle_egress(), and restore
+it on every exit? Something like:
+
+        skip_txq =3D netdev_xmit_txqueue_skipped();
+        netdev_xmit_skip_txqueue(false);
+        ...
+        skb =3D sch_handle_egress(skb, &rc, dev);
+        if (!skb) {
+                netdev_xmit_skip_txqueue(skip_txq);
+                goto out;
+        }
+        ...
+        if (netdev_xmit_txqueue_skipped())
+                txq =3D netdev_tx_queue_mapping(dev, skb);
+        netdev_xmit_skip_txqueue(skip_txq);
+
+
+> Also, taprio_enqueue() is the only qdisc indexing a num_tx_queues sized
+> array with skb->queue_mapping. A bounds check there is free and worth
+> having regardless.
+
+Likely missing something: how will taprio code be hit if we cover the
+egress direction hole above?
+
+cheers,
+jamal
