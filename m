@@ -1,245 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5CD311967;
-	Mon, 21 Sep 2026 18:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3D84E0B78
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790015957; cv=none; b=qLnMLlxmnulSxhAft+/Ls50yblqh9nd5ZHmis95aEfYO491ze0On4KFJ9S08ezRtFNggaUIolyam8xd9G/YcG4cPAQNjQ16KQkDffAmww4/fbz2yzy/9gnuQmoqwJYKwx19JMcOWGjwgmckZRi5lQelBZwsnal3Yqhe23MvV3r8=
+	t=1790016220; cv=none; b=qX08nGFQRCKaeZQl1PkS1QmHXze8T0EBhyQA4zrJX/PVU+5llwFdgT8UQEbR8s502LB0VOVhMV/FKaMT9ocEk2KR5uLyVpNTxFHYPCmC4ZnQaIfKmLfAodrh0giOW6GXybKS8dbd4Dyk5vE4ZGCg8Sd/t6Vxed9E46+b3ioCC8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790015957; c=relaxed/simple;
-	bh=8048W0Qstxb4u3tk/L4QUyhCusDPnUgH/De2pFrlyKo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uzyZy1u0uBvvgCpL6/Tqwu8SsVoDGDtGTcYi/7sRjDttHHGXbvvDpSX6WeVF+NYv7RMuGg1T9s1Wnbgj11pk4g2rrqLeidSD61CdwwiGqMRN8E3EUd/ehlKufE6gxRQsoTUDxviXoe/7xtw10ySaSGGyA8Y7DzQ0e3mu6i/31Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrJy2ugp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790016220; c=relaxed/simple;
+	bh=8xVNcCCnqs8JZAkv5ynaLQmALpySnD0v2Xf2MRO697w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W0pgD7WDX8YDbWprI1SOHguuVBfLaTMU3pbLwWliIEBXsLoKWd2Gf32/MwHgKvlAiP9vJ3l7Ucw/qxqDjIgBH6+X+c5hMOzJ/m8jgZ8kyPKDbLOFLoeSjmowG8wftM0UEOD/GVwIYQ7P2Xi4hM4/hG5rN+YFCJ2zLOH2bcZ9MbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jql/xAwP; arc=none smtp.client-ip=74.125.227.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrJy2ugp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0535C1F00898;
-	Mon, 21 Sep 2026 18:39:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790015955;
-	bh=UeDScPBNmOh9XYy9jBfRdxGXrrZgiZJlCCknSYaZGCc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VrJy2ugpYA+6Tz1lBz+byaiIjhJVmevATI7bypr66T8XbNKJRIiFhsHtouH0DO6g7
-	 9y+ockqbzD9RTjMZ04jBZB/Yo1IrnwKf1CP/MExuhpjIIIWGVEuVEM66Eq+eI2D5FV
-	 s97W5b9l2g44Km9quUipnN8UZGEnKKffqDNhIOvPhhSOzvdJh3zj8hWzAVlJz6gPVI
-	 1XO+C9eFb8Sz9IwVrNlQ1X8ctx1zhMapZ0jKL3OFOlxC/iiifXnhx67jdPpQHG25lL
-	 /bTRlc7Q2ABQ36eXl6uqi0vVbO4Oc5oie3cYNjvFsuJHcFFJ7BVSwwBZqw3eF/F8w+
-	 5lYM4kJLnrJsw==
-Subject: Re: [PATCH net-next 4/4] selftests: mptcp: cover IP_RECVERR sockopt
- propagation
-From: netdev-bot+sashiko@kernel.org
-To: matttbe@kernel.org
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- devnexen@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org
-Date: Mon, 21 Sep 2026 18:39:14 +0000
-Message-ID: <179001595456.2160803.1891677059727765271@kernel.org>
-In-Reply-To:
- <20260918-net-next-mptcp-msg_errqueue-v1-4-dd77e1738248@kernel.org>
-References:
- <20260918-net-next-mptcp-msg_errqueue-v1-4-dd77e1738248@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jql/xAwP"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccd5cf02so2455330a91.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:43:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790016217; x=1790621017; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8xVNcCCnqs8JZAkv5ynaLQmALpySnD0v2Xf2MRO697w=;
+        b=Jql/xAwPmwg6ql8IeZd+1LVZrqh++0GRdEurNQD2OSVTrwuo0wFvgMlpqHi4pD9BFB
+         +HMScaT7HRyCdlUPmzQ/ReL0AQpQci1x0qHjo0V3tgJMytvIcCL/AzcideLDEGflOKNC
+         xdrNtBlnJGEYOrhQp2MEkPgmIh0N9jdtou2QzG6JKo9Q2BFxbe0e1Y1XpHd2VXFpJLrY
+         iSEyFnRSwdQANf5hfiF+beQNQro07NG4S1kPA3zW2FzYiWjPpfItZ0GbQ5j5X0F5nErv
+         rkbipOu06DEAxCPGMqqOsJ64qH+UWSAXKZa2MmOaNtxr5iGsvyNVHxQ0HmmByW6Dd36o
+         ZuMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790016217; x=1790621017;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8xVNcCCnqs8JZAkv5ynaLQmALpySnD0v2Xf2MRO697w=;
+        b=gyPMX0MWGrlRzpY4W42QYzeKaLEHUhypKVQScm6WQEp67TgpILpnppq6LLZ4nEa8lE
+         iUAqQlK2ICE2HkYtDhCWwkGdskK0YTzm42MFz/mRxdHRwfJmo9t70EEylnhtZh3bxPZW
+         4XfsgA1cPeUKujtHRSZdWNbPpQhI6FrGmFDVd9U8axQYfMQI8mJXmJhIfRdWfSau27Cq
+         ueYeyW6zEz8RWIHYPVWkC7lhtSXSG3hN0sqx/OJ+S6m9ueDPsTPKQBc/+ARn7Wvto7yB
+         ZeRFsRSBLGnegLgq6kuiKpv/J4KQGGF/l4SGxBDkEYmzwzC0bjtqb2PmVJXO9nWncsUN
+         xZKA==
+X-Forwarded-Encrypted: i=1; AKwUvByDVB1UXLO23IrqBkrbQIEZcPGplHLNPVrV9wiegXqpCnLIwBF9EJ89Ey8BidDFhQKh2lEnDBo=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/qy/SbfYlrLPugWwi+yr+RhXhTfE11mFg0BMYrO+XjdSc6esY
+	ZrtiBhPczRLXwgbyB0n8Ncnzpjou55XpLLEwC6bfCyGTiHy/o2Omtx0b
+X-Gm-Gg: AYBFou1U3VfI7zgp2yVS2sEMnNfFkMGurVFUkuX/+vcb7VYu4iWm6beGhYdHGOyuGtV
+	/u9Y0dOhJBXtE1mcUYQWHcENNj1FyNP5ZiPSHDR06V4xy/Az7E+gZ7tWcM99+Dl4qQm3MAA7Bld
+	+dc8h11wAo1wusw7f6IGiGxlM6kfGRZubgU8J2HI1g5WIXodTnM0V+KNhaPVIf+mfg9R32Qosol
+	VQNhtQU3wxeemLNoSMAxgLmsogtx4waDgRoowfZbm0nbijx8nKgZJDDnF6TQzzjfParkwdTO1nQ
+	ie/BMmpVDbyuNopWcw6YnMkPu1WAKBQ6DtYlyfZ7thLXCEsbiAskbykfkzMxnxxBzDelCpThKLM
+	oL/J6wuImzsWrupbG0BCSjzzWywiTfrA/a7irB5hq0VqG2B3yptYV02cZYSZpR3USPm3136hM3w
+	Q4JsKu9Bj21dRW39dsSvxzJ9DHnKVdO55wsUuZVuLvSMYjH16PPGUiK+oKVf0BPm71dEEO
+X-Received: by 2002:a17:90b:56c5:b0:395:5f43:4ec4 with SMTP id 98e67ed59e1d1-39e549787b4mr18463027a91.0.1790016216901;
+        Mon, 21 Sep 2026 11:43:36 -0700 (PDT)
+Received: from localhost ([180.184.77.6])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06702167esm611149a91.1.2026.09.21.11.43.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 11:43:35 -0700 (PDT)
+From: Dairui Zhang <zhangdairui@gmail.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Mina Almasry <almasrymina@google.com>,
+	netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	David Wei <dw@davidwei.uk>,
+	Dairui Zhang <zhangdairui@gmail.com>
+Subject: Re: [BUG] net: devmem: NETDEV_CMD_BIND_TX has no permission check and no accounting
+Date: Tue, 22 Sep 2026 02:43:31 +0800
+Message-ID: <20260921184331.1415909-1-zhangdairui@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <arF4n8rQtVzxy0da@devvm7509.cco0.facebook.com>
+References: <arF4n8rQtVzxy0da@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Stanislav Fomichev wrote:
+> I was gonna do it, but looks like you volunteered yourself? We do
+> get this almost every day now:
+>
+> https://lore.kernel.org/netdev/20260918150858.3c98728d@kernel.org/
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Thanks for the pointer - I see the same flag patch was posted just
+a few days ago. Sorry for adding to the pile, I should have
+searched the list harder before sending.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+That leaves the accounting side as my one remaining question. With
+bind-tx unprivileged on purpose, is there anything that stops a
+user from exhausting memory and IOMMU mappings by binding over and
+over? As far as I can see there's no per-socket or per-user limit,
+the allocations don't go to memcg (GFP_KERNEL, devmem.c:214), and
+repeated binds of the same dmabuf fd aren't deduplicated - but I
+may well be missing a guard somewhere.
 
-- [Medium] The commit subject claims the patch covers "IP_RECVERR sockopt
-  propagation", but the new selftest `test_ip_recverr_sockopt()`…
-- [Low] The "empty-errqueue EAGAIN contract" assertion added at
-  tools/testing/selftests/net/mptcp/mptcp_sockopt.c:823-826 (`r =…
+If there isn't one, is that a gap you'd want a patch for, or is it
+considered acceptable in practice? Happy to help either way, just
+tell me which direction you'd prefer.
 
---
-
-selftests: mptcp: cover IP_RECVERR sockopt propagation
-
-This adds test_ip_recverr_sockopt() to the mptcp_sockopt selftest, which
-sets and reads back IP_RECVERR / IPV6_RECVERR on the MPTCP parent socket
-and checks that recvmsg() with MSG_ERRQUEUE|MSG_DONTWAIT on an empty
-error queue returns EAGAIN.
-
-> diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
-> index b6e58d936ebe..d68515b7903b 100644
-> --- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
-
-[ ... ]
-
-> @@ -769,6 +776,68 @@ static void test_ip_tos_sockopt(int fd)
->  		xerror("expect socklen_t == -1");
->  }
->  
-> +static void test_ip_recverr_sockopt(int fd)
-> +{
-
-[Severity: Medium]
-The subject says "cover IP_RECVERR sockopt propagation", but does this
-test observe any propagation?  Everything here operates on the parent fd
-only, and no subflow state is ever queried.
-
-The MPTCP-specific work happens in mptcp_setsockopt_recverr() ->
-mptcp_setsockopt_all_sf(), including the skip for IPv6 options on v4
-subflows:
-
-net/mptcp/sockopt.c:mptcp_setsockopt_all_sf() {
-	...
-	if (level == SOL_IPV6 && ssk->sk_family != AF_INET6)
-		continue;
-	...
-}
-
-and in sync_socket_options() for subflows that join later:
-
-net/mptcp/sockopt.c:sync_socket_options() {
-	...
-	src = READ_ONCE(inet_sk(sk)->inet_flags);
-	if (ssk->sk_family != AF_INET6)
-		mask &= ~(BIT(INET_FLAGS_RECVERR6) |
-			BIT(INET_FLAGS_RECVERR6_RFC4884));
-	...
-}
-
-The read-back path, however, only reports the parent msk's own flag bit:
-
-net/mptcp/sockopt.c:mptcp_getsockopt_v4() {
-	...
-	case IP_RECVERR:
-		return mptcp_put_int_option(msk, optval, optlen,
-				inet_test_bit(RECVERR, sk));
-	...
-}
-
-with mptcp_getsockopt_v6() doing the same for inet6_test_bit(RECVERR6, sk).
-
-So if the subflow forwarding step and the sync-on-join masking were both
-deleted, would this test still pass?  Would it be more accurate to say the
-test covers the parent-socket set/get round trip, and to note that subflow
-propagation is not asserted?  IP_RECVERR_RFC4884 / IPV6_RECVERR_RFC4884 go
-through the same kernel paths and are also not touched here.
-
-> +	struct iovec iov = {
-> +		.iov_base = &(char){ 0 },
-> +		.iov_len = 1,
-> +	};
-> +	struct msghdr msg = {
-> +		.msg_iov = &iov,
-> +		.msg_iovlen = 1,
-> +	};
-> +	int one = 1, zero = 0, val = -1;
-> +	socklen_t s = sizeof(val);
-> +	int level, optname, r;
-> +
-> +	switch (pf) {
-> +	case AF_INET:
-> +		level = SOL_IP;
-> +		optname = IP_RECVERR;
-> +		break;
-> +	case AF_INET6:
-> +		level = SOL_IPV6;
-> +		optname = IPV6_RECVERR;
-> +		break;
-> +	default:
-> +		xerror("Unknown pf %d\n", pf);
-> +	}
-> +
-> +	r = setsockopt(fd, level, optname, &one, sizeof(one));
-> +	if (r) {
-> +		/* For older kernels not supporting IP(V6)_RECVERR yet */
-> +		if (errno == EOPNOTSUPP && !expect_all_features()) {
-> +			fprintf(stderr, "IP(V6)_RECVERR not supported, SKIP\n");
-> +			return;
-> +		}
-> +
-> +		die_perror("setsockopt IP(V6)_RECVERR on");
-> +	}
-> +
-> +	r = getsockopt(fd, level, optname, &val, &s);
-> +	if (r)
-> +		die_perror("getsockopt IP(V6)_RECVERR on");
-> +	if (s != sizeof(val) || val != one)
-> +		xerror("IP(V6)_RECVERR on mismatch val=%d len=%u", val, s);
-> +
-> +	r = recvmsg(fd, &msg, MSG_ERRQUEUE | MSG_DONTWAIT);
-> +	if (r != -1 || errno != EAGAIN)
-> +		xerror("expected empty errqueue to return EAGAIN, r=%d err=%d",
-> +		       r, errno);
-
-[Severity: Low]
-Can this check tell the errqueue path apart from the ordinary non-blocking
-empty receive queue path?
-
-The branch it aims at is:
-
-net/mptcp/protocol.c:mptcp_recvmsg() {
-	...
-	if (unlikely(flags & MSG_ERRQUEUE))
-		return inet_recv_error(sk, msg, len);
-	...
-}
-
-If that branch were gone, the normal receive loop in the same function
-would still return -EAGAIN for a connected socket with nothing queued:
-
-net/mptcp/protocol.c:mptcp_recvmsg() {
-	...
-		if (!timeo) {
-			copied = -EAGAIN;
-			break;
-		}
-	...
-}
-
-Since test_ip_recverr_sockopt() runs before connect_one_server() moves any
-payload, the data queue is empty by construction and MSG_DONTWAIT is set,
-so both paths return -1/EAGAIN.  Would something like checking that a
-queued TX timestamp is actually returned, or that the one byte data buffer
-is not consumed, make the assertion discriminating?
-
-> +
-> +	r = setsockopt(fd, level, optname, &zero, sizeof(zero));
-> +	if (r)
-> +		die_perror("setsockopt IP(V6)_RECVERR off");
-> +
-> +	val = -1;
-> +	s = sizeof(val);
-> +	r = getsockopt(fd, level, optname, &val, &s);
-> +	if (r)
-> +		die_perror("getsockopt IP(V6)_RECVERR off");
-> +	if (s != sizeof(val) || val != zero)
-> +		xerror("IP(V6)_RECVERR off mismatch val=%d len=%u", val, s);
-> +}
-> +
->  static int client(int pipefd)
->  {
->  	int fd = -1;
-> @@ -787,6 +856,7 @@ static int client(int pipefd)
->  	}
->  
->  	test_ip_tos_sockopt(fd);
-> +	test_ip_recverr_sockopt(fd);
->  
->  	connect_one_server(fd, pipefd);
-
-Since the option is switched back off here before connect_one_server()
-runs, no later part of the test can observe the option state on subflows
-either.  Was leaving RECVERR enabled for the rest of the run considered?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-net-next-mptcp-msg_errqueue-v1-0-dd77e1738248%40kernel.org
+Thanks,
+Dairui Zhang
