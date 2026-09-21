@@ -1,113 +1,153 @@
-Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A648B35E1AD
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A097337188B;
+	Mon, 21 Sep 2026 06:38:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789972494; cv=none; b=QnVb1rg4/t8/OiI8mxS7fr1wD+sMlyVEFppI57j4bfBXnlGceE6WQIaxNXybWxDSgGwKsGzzs+112B/Yew9fdg7d7JJjyT/sK5AXmXtz/TJQgQk+tgITGuGSr+kBpvMh+qlbHMXEaJcasLwu9VXnSEDHvJDc0aRWpDK0pl9NZiU=
+	t=1789972695; cv=none; b=YIJoqKB4ykfhKpCbByymoTnfxmfhkRig35TdipiHk9NXwlAzXCBA0bEVlJgQhAz5KQFk5LzosM5eHW6HEwlNYecnO3EqT+mIMY7+cmzwCX7OoZXP1HnHQZx7i8jVx5E+ib/dKAi2nHbV5TtjgpPEi9e9cY3cPAfZc8OFcBrNuJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789972494; c=relaxed/simple;
-	bh=tzHXtSDyKoqlRcC2fF99+d0VGCnqq37KuyiMMgIOk4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mOU7VFsTtiibPh/KNfyJM9OczZ+VUOMjA01NwI2PIaa6LM5yKo0Dh8EFXK1HKuQVy/CU50YLZ+EJnznJMGKTY7FXaJtTBXZxiaQ8ynhzUjhTiW0VU+Jqd1E7lvrBeq85E6ztFFbqUzBZGaODYCfWJ+fIIaWIZ9suJkAqK9x3Kds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IpTnWZxv; arc=none smtp.client-ip=95.215.58.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789972695; c=relaxed/simple;
+	bh=bMxzDIxiW8cOH1VnbzCdMyTeE+OjDPpHkWawxiDfxxY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IkIryliCy8rtwaA08J7sWAEe2lKvP3J6KuQ9OKRJfn8m6xLl7w5WL8sBN/4r4o9Hgf8/Cv2S/ReOtMJrZetfJQ2ZayYvBQhE2Zkzt5aAzm5GmpoFQJ3FMY7btaGffFYrP+Cc/tFBOFVfpURgJB3E07sfRnzWUxLAW4A4Tpt+i0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1oysJ+q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IpTnWZxv"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=tzHXtSDyKoqlRcC2fF99+d0VGCnqq37KuyiMMgIOk4o=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789972490; v=1; x=1790577290;
- b=IpTnWZxvWGOlde77JeVjqNrRBvENzJVxijGKg905gNiwdPC+O3gYHVkTqzPcwM0KpxrBb72O
- 96JWITrH8az/fHGHdr55GtSR/vK+YE3ADhJB0ncOFs96RyQkNnp4yEKs22Wf6Ei9TV6JWKmmjFI
- yHDVQOcZUHaMIHf+Qic7+CvE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 4eb82a119267221f;
-	Mon, 21 Sep 2026 06:34:50 +0000
-X-Mizu-Trace-ID: 4eb82a119267221f
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 21 Sep 2026 14:34:37 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Hui Peng <benquike@gmail.com>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Lebrun <david.lebrun@uclouvain.be>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] ipv6: sr: enforce exact attribute length for
- SEG6_ATTR_DST
-Message-ID: <arDP_TE-Lsoc4VPq@fedora>
-References: <aq-E5MPYZS5s9_bk@fedora>
- <20260921044025.1535982-1-benquike@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1oysJ+q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691781F00893;
+	Mon, 21 Sep 2026 06:38:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789972693;
+	bh=1JE51AbZAJCWb44yWHH5z+1HzSH3k7L3puE5z2Zm/68=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Z1oysJ+qbtVY1VRA6wLJvZcrc9Jekm3KnztLIswEPsN8G7lKljUNB+NPAs2zrFbd+
+	 yuX5HjyX0djcRSmDS1xpuaarsdqNt1CY/hbWbMmnKqw68siarC3htEyjr5yYWKU/Xp
+	 9lUZnQHLFc7Qj27Uro7gTO3hQE9s3Ov9nHZGGJAdAGwbXCtgfU1ZaaKlEhnj7aPwQp
+	 v81wKRL+9TLyybcX5W0MEDQUC189h1JfhXzLuiGy9OzVs619tWV0j2aDzF3p0n+tIS
+	 vc31OWMlF843btRuNf1QePTxKN47BsV+Ayc5zOxNO1szDWPt9SYlyCCFZgUlz9EgID
+	 N+pgvtB8WPjfg==
+Subject: Re: [PATCH net-next 1/6] net: lwtunnel: change encap fill order
+From: netdev-bot+sashiko@kernel.org
+To: hangbin.liu@linux.dev
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ donald.hunter@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, liuhangbin@kylinos.cn
+Date: Mon, 21 Sep 2026 06:38:11 +0000
+Message-ID: <178997269190.2160803.430062400277571051@kernel.org>
+In-Reply-To: <20260917-ynl_rt_encap-v1-1-fbbe6e680571@kylinos.cn>
+References: <20260917-ynl_rt_encap-v1-1-fbbe6e680571@kylinos.cn>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921044025.1535982-1-benquike@gmail.com>
 
-On Mon, Sep 21, 2026 at 04:40:25AM +0000, Hui Peng wrote:
-> In seg6_genl_policy, SEG6_ATTR_DST is defined with .type = NLA_BINARY and
-> .len = sizeof(struct in6_addr). For NLA_BINARY, .len only enforces the
-> maximum payload length and permits shorter payloads (e.g., 0 bytes).
-> When seg6_genl_set_tunsrc() copies sizeof(struct in6_addr) bytes via
-> kmemdup(val, sizeof(*val), GFP_KERNEL), a short SEG6_ATTR_DST attribute
-> triggers a 16-byte out-of-bounds read past skb->tail into uninitialized
-> skb->head memory, which is stored in sdata->tun_src and leaked back to
-> userspace via SEG6_CMD_GET_TUNSRC.
-> 
-> Switch SEG6_ATTR_DST in seg6_genl_policy to
-> NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)) so that generic netlink
-> validation rejects any attribute whose length is not exactly
-> sizeof(struct in6_addr) with -ERANGE.
-> 
-> Tested in QEMU against Linux 7.3.0-rc3 by sending a SEG6_CMD_SET_TUNSRC
-> Generic Netlink message with a 0-byte SEG6_ATTR_DST attribute followed
-> by SEG6_CMD_GET_TUNSRC. On the unfixed kernel, SEG6_CMD_SET_TUNSRC
-> succeeds (err = 0) and SEG6_CMD_GET_TUNSRC leaks 16 bytes of
-> uninitialized kernel heap memory (tun_src =
-> 836a61ecc4d25a1042a8d60411cfb378); with this patch applied,
-> SEG6_CMD_SET_TUNSRC is rejected by netlink policy validation with
-> -ERANGE (-34) and tun_src remains zeroed.
-> 
-> Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> ---
-> Changes in v2:
-> - Drop the redundant nla_len(info->attrs[SEG6_ATTR_DST]) !=
->   sizeof(struct in6_addr) check in seg6_genl_set_tunsrc() since
->   NLA_POLICY_EXACT_LEN() in seg6_genl_policy already enforces the exact
->   length, as pointed out by Hangbin Liu.
-> 
->  net/ipv6/seg6.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-> index 62a7eb779202..8c2b156c227a 100644
-> --- a/net/ipv6/seg6.c
-> +++ b/net/ipv6/seg6.c
-> @@ -138,8 +138,8 @@ void seg6_icmp_srh(struct sk_buff *skb, struct inet6_skb_parm *opt)
->  static struct genl_family seg6_genl_family;
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Incomplete rollback in lwtunnel_fill_encap()
+  (net/core/lwtunnel.c:229-268): the reorder commits the selector…
+- [Low] Concern (assessed INVALID by baseline verification, retained only
+  for policy combination): the commit message justifies the reorder by a…
+
+--
+
+net: lwtunnel: change encap fill order
+
+This moves the encap-type attribute so it is written before the encap
+nest in lwtunnel_fill_encap(), so that YNL can read the sub-message
+selector before the payload it selects.  No other behaviour was
+intended to change.
+
+> diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
+> index b01a395d9a966..f13dfa02e026e 100644
+> --- a/net/core/lwtunnel.c
+> +++ b/net/core/lwtunnel.c
+> @@ -240,6 +240,10 @@ int lwtunnel_fill_encap(struct sk_buff *skb, struct lwtunnel_state *lwtstate,
+>  	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
+>  		return 0;
 >  
->  static const struct nla_policy seg6_genl_policy[SEG6_ATTR_MAX + 1] = {
-> -	[SEG6_ATTR_DST]				= { .type = NLA_BINARY,
-> -		.len = sizeof(struct in6_addr) },
-> +	[SEG6_ATTR_DST]				=
-> +		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
->  	[SEG6_ATTR_DSTLEN]			= { .type = NLA_S32, },
->  	[SEG6_ATTR_HMACKEYID]		= { .type = NLA_U32, },
->  	[SEG6_ATTR_SECRET]			= { .type = NLA_BINARY, },
-> -- 
-> 2.49.0
+> +	ret = nla_put_u16(skb, encap_type_attr, lwtstate->type);
+> +	if (ret)
+> +		return ret;
+> +
+>  	nest = nla_nest_start_noflag(skb, encap_attr);
+>  	if (!nest)
+>  		return -EMSGSIZE;
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+[Severity: Medium]
+Now that the type attribute is committed to the skb before the nest is
+opened, can the -EOPNOTSUPP path leave it behind?
+
+In lwtunnel_fill_encap() the failure label only rewinds the nest, and
+-EOPNOTSUPP is translated into a successful return:
+
+net/core/lwtunnel.c:lwtunnel_fill_encap() {
+	ret = -EOPNOTSUPP;
+	rcu_read_lock();
+	ops = rcu_dereference(lwtun_encaps[lwtstate->type]);
+	if (likely(ops && ops->fill_encap))
+		ret = ops->fill_encap(skb, lwtstate);
+	rcu_read_unlock();
+
+	if (ret)
+		goto nla_put_failure;
+	...
+nla_put_failure:
+	nla_nest_cancel(skb, nest);
+
+	return (ret == -EOPNOTSUPP ? 0 : ret);
+}
+
+nla_nest_cancel() trims back only to the start of the nest, so the
+encap_type_attr written just above it stays in the message.  Before this
+change the type attribute was emitted only after ops->fill_encap()
+succeeded, so this path left the skb unchanged.
+
+All callers treat the 0 return as success and finish the message, for
+example fib_nexthop_info():
+
+	if (lwtunnel_fill_encap(skb, nhc->nhc_lwtstate,
+				RTA_ENCAP, RTA_ENCAP_TYPE) < 0)
+		goto nla_put_failure;
+
+and the same "< 0" test appears in nh_fill_node(), rt_fill_info() and
+rt6_fill_node().  Does that mean user space can now receive a route or
+nexthop message carrying RTA_ENCAP_TYPE / NHA_ENCAP_TYPE with no encap
+payload?
+
+That shape is rejected by the kernel's own nexthop parser in
+rtm_to_nh_config():
+
+	} else if (tb[NHA_ENCAP_TYPE]) {
+		NL_SET_ERR_MSG(extack, "LWT encapsulation attribute is missing");
+		goto out;
+
+so tools that dump and replay nexthops would see -EINVAL on restore.
+
+Would it work to record the write position before emitting the selector
+and nlmsg_trim() back to it on the failure and -EOPNOTSUPP paths, or to
+reserve the selector attribute and fill it in only once the payload fill
+has succeeded?
+
+The trigger requires lwtun_encaps[lwtstate->type] to be NULL or an ops
+without a ->fill_encap handler while an lwtstate of that type is still
+live, which the module reference taken in lwtunnel_build_state() makes
+hard to reach in normal operation, but the code explicitly tests
+ops->fill_encap so the branch does not look impossible.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917-ynl_rt_encap-v1-0-fbbe6e680571%40kylinos.cn
