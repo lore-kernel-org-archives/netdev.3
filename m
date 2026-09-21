@@ -1,37 +1,37 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.228])
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp12.broadcom.com [192.19.144.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5EE517BC5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF44518120;
 	Mon, 21 Sep 2026 22:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790028037; cv=none; b=gB33gTYQiF9/psKeQvRLIYTyn2pqo+1UxH+fOe3yRa+TyVftdPJ+2SI0exhLq/JdbWc8V8TYeQCjqw+A7uMee7R6juH/vJowN6G6qG4z0u2+oFv8sv3aiszcnpgEzgRixetnt8ydNe8R9l0dI3raPpaGKsq2w+0q4zOL1eZsTps=
+	t=1790028037; cv=none; b=ShAojwydXq+yQIE6sX10kXDYX4M0YQ7F8YaQm4Q/yv8Ox4hAu827HldbpU2otMw8j5rVgVKC9zc0JIxErCuI+FFKlClXC5QuCMH3oNNt6LFCJq9vYc143GgP9JluSmtQOlMTYsVFUCf58IZ6EgAJUVKR4AG+vvu60dNJRLQFLtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790028037; c=relaxed/simple;
-	bh=XweC/BmVghZObXd0oGdfwJcXunlAoagyj0XiejVWlmw=;
+	bh=qz4/YYWXJpr06I59bi5sUWCWfU/oGF8IV7/SYFOgw3c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MyvqTev98UwlQ49kfOf5ycgMFntATLZWDHzPPvaGrEHIMHwJtiy6N0lTnoCyYUOsfnpKoxP+4i3Uaho/tck7symUkw4+ezlb9mZe9PtW4y0IzeGrRqbPrYzM/1UQ1I8EalBOQTrVX7FFTtkc8hMm0bLHM3ZlTKtx+8Af7auL3Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=uEPc1U+R; arc=none smtp.client-ip=192.19.166.228
+	 MIME-Version; b=rQl40lDLE6v+OPD5GOE1BGojP2agqLt736OyZfWywbSUuQ0cu4SO4YQbmbdxqOmCYS/eEmNfI6xTpX05YY8Xnz4ua6pBFTqx+eMncj33JlNg06Eb43Yv5o1Aa2mNYyXUmBhFf8w00NV4dMUW7HcyBA7jAg7fSg4zWi1B5jmMML4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=uIxyPS4P; arc=none smtp.client-ip=192.19.144.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="uEPc1U+R"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="uIxyPS4P"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 979E5C0087BC;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 9DBECC0000F3;
 	Mon, 21 Sep 2026 15:00:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 979E5C0087BC
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 9DBECC0000F3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
 	s=dkimrelay; t=1790028029;
-	bh=XweC/BmVghZObXd0oGdfwJcXunlAoagyj0XiejVWlmw=;
+	bh=qz4/YYWXJpr06I59bi5sUWCWfU/oGF8IV7/SYFOgw3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEPc1U+RRTkYJJCSepamm3PPceilbzVQY/IiOLwFA6kF9o46Om5WCFNEVOXy3SF60
-	 OQT4ogxDj8gw8M/y7Df1x+uOlnAAraN17TrWkZp8FVzdJEeZ/gYuD+dKcNYfY5dbCv
-	 wnwYwa2bGFctG+Eq8+/y4owh1MykkEGDht9+QjFs=
+	b=uIxyPS4P4DR5F1mbnyWhL/jqUD6Q508fj+DRLA3Am0e6XiY5xpQF6hVCsFRLLjJt7
+	 Lu7/+d8k8jX/4ISd1kVsGZL08A30x3YIRP3gr7JU0LgBARy0S2AOmHWzvzrBu3wb3g
+	 ytM0mJqfQ4j4IFP1PIWDT0iMoxkJbsa7JWy7mAf8=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 734F9AE4;
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 47D27AE0;
 	Mon, 21 Sep 2026 15:00:29 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Simon Horman <horms@kernel.org>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 5/5] net: bcmgenet: mask DMA_TIMEOUT_MASK when reading DMA_RING0_TIMEOUT
-Date: Mon, 21 Sep 2026 15:00:21 -0700
-Message-Id: <20260921220021.281418-6-florian.fainelli@broadcom.com>
+Subject: [PATCH net v2 4/5] net: bcmgenet: validate Ethernet address in bcmgenet_set_mac_addr
+Date: Mon, 21 Sep 2026 15:00:20 -0700
+Message-Id: <20260921220021.281418-5-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260921220021.281418-1-florian.fainelli@broadcom.com>
 References: <20260921220021.281418-1-florian.fainelli@broadcom.com>
@@ -62,37 +62,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-bcmgenet_get_coalesce() reads DMA_RING0_TIMEOUT to calculate
-rx_coalesce_usecs without masking out bits outside DMA_TIMEOUT_MASK
-(16 bits). If upper bits are non-zero or contain status/flags, the
-computed value of rx_coalesce_usecs returned to userspace via ethtool
-becomes corrupted.
+bcmgenet_set_mac_addr() did not check whether the provided MAC address is a
+valid Ethernet address before applying it. Userspace could configure an
+invalid address (such as all zeroes or a multicast address) while the
+interface is down.
 
-Mask the register read with DMA_TIMEOUT_MASK before computing the
-timeout in microseconds.
+Add a call to is_valid_ether_addr() and return -EADDRNOTAVAIL if the MAC
+address is not valid.
 
-Fixes: 4a29645bfe6c ("net: bcmgenet: Implement RX coalescing control knobs")
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
 Assisted-by: LLM
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index e9d9d3d7b636..ef3b750630d3 100644
+index bfb74dca55d6..e9d9d3d7b636 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -852,7 +852,8 @@ static int bcmgenet_get_coalesce(struct net_device *dev,
- 	ec->rx_max_coalesced_frames =
- 		bcmgenet_rdma_ring_readl(priv, 0, DMA_MBUF_DONE_THRESH);
- 	ec->rx_coalesce_usecs =
--		bcmgenet_rdma_readl(priv, DMA_RING0_TIMEOUT) * 8192 / 1000;
-+		(bcmgenet_rdma_readl(priv, DMA_RING0_TIMEOUT) &
-+		 DMA_TIMEOUT_MASK) * 8192 / 1000;
+@@ -3634,6 +3634,9 @@ static int bcmgenet_set_mac_addr(struct net_device *dev, void *p)
+ 	if (netif_running(dev))
+ 		return -EBUSY;
  
- 	for (i = 0; i <= priv->hw_params->rx_queues; i++) {
- 		ring = &priv->rx_rings[i];
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	eth_hw_addr_set(dev, addr->sa_data);
+ 
+ 	return 0;
 -- 
 2.34.1
 
