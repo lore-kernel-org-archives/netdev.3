@@ -1,431 +1,216 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B364C0420
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790005014; cv=none; b=RGTm114KE7q2V6XofzNbvVRjzdGS0kdchmtxUGlk2eY97BwTy+8nzGV3pA6AEysAY738Pj7wksD2v0cB7V7RunBTbS2VdvBPZ4kCAgXoA1moHM7Elr8xPHiKPiBs06qQXBZ5zNdDb7doslKXLL5MBgAN72kSNbb4gDW+3JbjMv8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790005014; c=relaxed/simple;
-	bh=Gbu8VWNKAjuSkfRIWlCP/D5M/aRsmzfh4vnpmiMXeSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GqCwkR29Dkrrr7AsQ2grj5V6cdTflgUVghxVidNVScIm2WTPlhCQG1jJQquIxOA49Nqvb+7NFw26kZ7JNT2fEHe6LetZ9tN6r/sFE6E8OANGsbFD69LbVqvinhhznwKfyN23GzpbnjgoKEvlQRXeLjujjaea7bl6L0VT2GChuD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YcE8l4jL; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE3C495500;
+	Mon, 21 Sep 2026 15:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790005104; cv=fail; b=gTCtPH01s6JbPV7+C8Rbl8kerPtU9w/GFf2RBZKMbvLyk0wQXYyjie1qCxFLQZZMvzp+LVEDKSY2xsDRgOSwLg8iS7Aec3O88QXpmnxBPtHLKfkI8ks5FLIdh3XLQR9jsouUeHL1hXhoMmNw8tQMdPC0ljoMvw1QApyplhzE34g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790005104; c=relaxed/simple;
+	bh=Poad694m0qPvhSesT+th1zTiLEWmUAULNZZymKqZU9E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rNX7Wa6oAC6GQmLLq2uI1P8aBmlaFziowuGWDAln9edsSJhIEkxK/Gd1mKnwP9twzqvOW6L3wza93yGmruQVGKi3wRMu23Sxr6ln/NMVgmfFa23yVKIscXLCDbek4GCVCP2Ch+fZUBHc+47jlgI6emqN5qYugyOtco1KRFUNVpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f4yaRZk5; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YcE8l4jL"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-398a147688bso3245752a91.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:36:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790005009; x=1790609809; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nkmZr/sOgDuRQiHmNVl4p6TAmxDvforlyB7xdzWmXoU=;
-        b=YcE8l4jL7XrljB2mv2treGWtXaaY5lShs/C4UUKQV9zI9R1G4PvR48E9cxraA1SB2F
-         WYh/mwVXkMRUTDsuoMqXOQbMbvUkDKpdfAJYv5U3Jr02mC3jI9yYq291hhqLlJ3ux6Tu
-         BqtuPkhXJjoUjUo8dWY2mnL+JxyvUlf8aGSp8NmR4UGFkjxbKkssL3rmdqHmOVcLwvnC
-         euP0MKQu07lFbnPWmXhaN44yc2b4iW0F2/1s1E5MnJ956ePS1st9Q2PEwEPd1pI98VMb
-         vah307/dJNEInp7o6qLrKM2hlsoWEJvdiS4CbNHkNIiEbeqqLCsQnjUphkMKHRxmKLgx
-         962Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790005009; x=1790609809;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nkmZr/sOgDuRQiHmNVl4p6TAmxDvforlyB7xdzWmXoU=;
-        b=qbLvTzlu3ItwA/1PbSAb07R3VxY72UDGDuHWfoRrEzjn7Qui71lqCZ0lkzDvpk1/Bm
-         NTNiJ5GfSEUDkOsMHAWsqGabks+j1ighRUyCIc/s3i4Br/opR/W9jhz4rThJe2qrpGaK
-         NHYQx3mIN4tdZvQRntl0DN/vzISwOej1U/fzP4peDhc5EqdsvLTQH/H0YhTxXsCqpXyb
-         uIRuXIQeqSUq8zGVdjr8z8Ww607PBjvylOx70B2ZHbggw/noaRFIM++9mTZe2yYHlOYu
-         N44QwOwb0EmAjdIcbg/WTrSlXCHYIfJ2uwLz8Ou1fGEpV6srtIKXzIGnWVNvVhxj5TO+
-         RanQ==
-X-Gm-Message-State: AFuF++lLlFpsLcWQLbF7ethxQlVR7pTVq8d1L9cA8c/oZNdjnfMx8OXR
-	NPmJIr2IZtgJi9leysESWlFMpNQpyjGObK19hfqmRmA/Skk5EVY44xd0eXDBXFI9
-X-Gm-Gg: AYBFou1H3BQDfhgr8Sf+hzD9PEBF/fe6lgT6I84HsS8SfUabna9tIo1smaiM8pXw1dP
-	asfBz9eMx1S6jNSRbz+7/v8HlgZdWGkbPSMfvy5Bixx75paA3IF1H0t593wANklU4rHV/r4uYvp
-	7L2/ZNVfWAfcSUZc65lWA0TMpnUeYQlfSevIuHvyXcS3QoTo1LsZaBwOADzJ6Q/wGumKYGDR1jg
-	fTBy3D+zyaYivSwh4ZgQGJoZcbn/fbiX2qWj8nL75G9Yw6rVkv40XzFzK0WlX8MbOjl/k4UJb1P
-	BwtSos2//zBBJgzEA6hZCA1UduT6T+TYWinMy4CTwynG2BRznEnmP2livDHxgGo3GnWagHgMVfS
-	/KT6UZhm4w3+O/bexuFaz6RG/kbCM940X2rxuqW7p7Vt6O6xkHcknjvZPjdIIr01chiTDmKjZpe
-	YMA2chDThWEmQqhHnuQThI373luiRaF5sLk9rFOo9MXQhb2oCPiEunz7XfKdyszxHV2ThXWJa6Q
-	Ok=
-X-Received: by 2002:a17:90b:50c6:b0:39d:e213:9dd3 with SMTP id 98e67ed59e1d1-39e54cc62d2mr18704039a91.1.1790005008521;
-        Mon, 21 Sep 2026 08:36:48 -0700 (PDT)
-Received: from fedora ([2406:3003:2000:232d:8687:63a8:d931:9b81])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a063f33101sm656655a91.2.2026.09.21.08.36.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 08:36:47 -0700 (PDT)
-From: Wong Boon Jhee <wongboonjhee52@gmail.com>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	kuba@kernel.org,
-	Wong Boon Jhee <wongboonjhee52@gmail.com>
-Subject: [PATCH v6] net/ncsi: Fix Use-After-Free in NCSI teardown using synchronize_rcu
-Date: Mon, 21 Sep 2026 23:36:33 +0800
-Message-ID: <20260921153633.565779-1-wongboonjhee52@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f4yaRZk5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790005101; x=1821541101;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Poad694m0qPvhSesT+th1zTiLEWmUAULNZZymKqZU9E=;
+  b=f4yaRZk5cLBq5lS5KnPd9I3aRvIoCw3zQWqlG+Wwn/bmqxFP62c+jteg
+   3HughbIg5dDhDKFak+jV46NtdP1ri81GTU3WxrlqVm5dyEfpyOdlSb57Z
+   KedqutdGNcgOg9FfDnqVcDkPaspWWOTImL8v7NLcsCmK0mvfe3wqSEuJa
+   TGDW+tH6eBe2b3R7oYmyNT9KGqFE1ArdFdaTRBS034PnVoVMrvvG194XH
+   ly11ivkKi8OQrmv0yrUWSiwAukzvNRMor2R1No6vPvAgi0g3gWNKfMD59
+   qYKsWeZkBe7sVzw/V187Q51A0lDp4bL+YkdZ42RU5gx07qRIGaKxpv1dU
+   w==;
+X-CSE-ConnectionGUID: bXEdzym4QJCP/oOXnn9pWA==
+X-CSE-MsgGUID: 3GXJuGAdTPKZj5kHF8gFJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90398209"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="90398209"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 08:38:20 -0700
+X-CSE-ConnectionGUID: +HOgJsw4R2agFYr7Hot+kQ==
+X-CSE-MsgGUID: aJ6YuRU7SlyMNY4ysJRytQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="298939846"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 08:38:20 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 21 Sep 2026 08:38:20 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Mon, 21 Sep 2026 08:38:20 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.41) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 21 Sep 2026 08:38:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Kwji47BGjDo/Shvr1q4Dx/rhAcQ69bP0WsPiJsaOgow4WcpPCDlnl+wGxPHabZ/ZYrNDprkSx7xcS/HBE4j+H4TFLFjTXylpV2VA5IulTCNMGiXTysMd2alB3bEDr+aIfLK2rhfj9S/5L73dPizqnat+UMkbfRB7bl/RGQWj+hzbbbNIu62/szqEXbTJaJkvfdQITtqNELgOq4OkSm9sYFX/aaDiB7jntpwLJe3zT27JAdDaZd4Eic+d2ENK6cz5/wRXXUPvI58KyxgYiSIba3Pe5ueX3YpX9zzdB5TEX5pzOSwTZNorK6Eu1dNJkcpDUfgjD8pzHRS0Rap21GWxRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1G5PwWRPekVsWCXJhBC4O6pgzO4gtiPTmTiL9195cfs=;
+ b=TiB9gnEEab+PQWm3YffcAAfjgnwEl4aDcnNC35Yo0Y0grU9Q1Ur1vxhUT7+9WuyJt37e5RGK2EGapD4K1SkcsaM4EQKX3iBuaTsYVN/Lm2XmejOSQ6h0MpAitrwrGruHbUMGeeR5yqPqEhK1CrVYzVg8NNzn5gBHqRqSWGkG8zoOtCaIj//+u5NCnuJTD7jnIEEcipW5j7xk9z6L3L/pO+y3xBIEYZ+pKMDjIPVQyzbUxPDqeW+J2BDo51vcYSVWTLa2N8gYm7euustL53KS0OpykihxOQEABcshhQJceIvf2wg9jqtwwN9wwnCjYwjb3GbyQg+hPq9va18OLq+ZSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by IA3PR11MB8967.namprd11.prod.outlook.com (2603:10b6:208:574::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
+ 2026 15:38:13 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 15:38:13 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com"
+	<syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com>
+Subject: RE: [PATCH] net: e1000: fix warning in iounmap on probe failure
+Thread-Topic: [PATCH] net: e1000: fix warning in iounmap on probe failure
+Thread-Index: AQHdSd6SKc1qfuTd60OoAKqrPmb1zbbZKdvA
+Date: Mon, 21 Sep 2026 15:38:13 +0000
+Message-ID: <IA3PR11MB898634DED4F39601AFDF1145E5842@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260921125932.7943-1-nsvatoslav515@gmail.com>
+In-Reply-To: <20260921125932.7943-1-nsvatoslav515@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA3PR11MB8967:EE_
+x-ms-office365-filtering-correlation-id: d8d2b2af-db56-4cb7-3a11-08df17f65923
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|6133799003|18002099003|22082099003|38070700021|56012099006|11063799006|10067099003;
+x-microsoft-antispam-message-info: 34f1LGC3juhIq/117xHwhTjJsAHDGmQbGY+0bWfpjx/5hS1YUkxOS26f46P7f+fAhFVgeth0Iw7SySHEVxc2/rV3351JtJLRiKFXq6g19E/F42fUnOm0sbNoqsV80ZSelpo5NFeEGYxKsGhjhVMXBl5f/fOnce213JxmCXrC5N96nQtFxANigkBOOrQ6MayN7Blpzv75Bh1agNJefhy3PM3TooEXHgbs9UKn8gFxJnPKiQKxEtY1v+IvYUZ9bfelswR2b0QQYlU+n9/gZee4unglj27h9hLHvQP7QUlcbHUbKT6dLUBIPVcJhTiwazXyR+BUppYtXkJaV6/sge65Y0IaUaQV7gbNm+xoR2O8ixvPC7vl461bh80skDpoc3nvDC9ZslUx+B6HAnr7eU1Oz8r1s/raybaN1nCQmQqyQvJZYYw+lQRLvYDymFPAiIuPuf1G0uPpAgRlc8pRpNxQVSKVuQAh7BTRNnIYzHLKnnFuJ5ARnNoaXE8oX0hPbHE5D7/AYR1acXiXeFYFthCmSDR6jIrxK9RQSPjK5cGrITvZEfXI0xKc8A562Lr/PoU7iZTxe1oGOI/5myGazvtXSvTG8jd5R4jwIZI73q4/vbV6jN05MU2AHB99XVJy2uiC0qaAmxmvhqJJdDow7GxsyA6+5CgpeZhVdB+vZb/18B9pEk+inPm2T/QGnogr/V9Wa29flUxYN73LcozT2zGJRv/nMc+Ia3SbongocRaPWjI=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(6133799003)(18002099003)(22082099003)(38070700021)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?HA0IrYvDq5N8Ienr8UJ0a74qoOocvIKff9GwR0P6nLp1ls/zYPGI302pipWR?=
+ =?us-ascii?Q?5H3YDror4GOT7QR9p8TsKjX4sKsFCUbc2n8FGgT9BABAY7h/G2kGJYP7be5g?=
+ =?us-ascii?Q?lqVU8LcT52wk5/EjgawsNuBoOGOuy73Tuc7huDwH4mkZNlXBUZ0ojCCv0Bjm?=
+ =?us-ascii?Q?w+kyE/qdrVGjzLiGI2KQhwniFEZwPqO3DxGqloIfFud8BC0G4f6UboC8Tnpb?=
+ =?us-ascii?Q?3ZuuLb+32ebBi0tKdG4IbFV2B3FOOBjDWH/jDK2ShLcHBQkX3aKlInbMbO+O?=
+ =?us-ascii?Q?T2sQeyg6EJRlRSEf8dk94fJwEcuZ5rA5kvKCV0lUlTuItR2jwObpjUSkyuOp?=
+ =?us-ascii?Q?Pp6vcU8jt0+RoTzMLB3XSyp4Bc/Kf6mXk4m1ZChTefP69rMGwfiA4D+u2BaM?=
+ =?us-ascii?Q?q/dwm3rcSKUsbiO72jTSz5F6RHIgjMxQgsqiQq9I3L8oyDVoxo0/rIrtD7ug?=
+ =?us-ascii?Q?VqeIsBMGTkuwe2+8IDO0XR/AvZN8NaUSfc3CjJ+g/+5lbVljuLEzpsOBnzM6?=
+ =?us-ascii?Q?O33+xNKXD8nSIAf50L3mHDeqvpDsLOjUdVuL1pVRq05nIAoOihL1OurejeMB?=
+ =?us-ascii?Q?k6eFba9rv3Yg8MuT0a94u4kte8bQxPsIgJQoRCc177jdN76M7LEic2X339Go?=
+ =?us-ascii?Q?caB/1tNrkT/IBtmTnvHlBcpetMmyFnNHGSEUK6M63Y+w3CZNLqTeIqqX5es4?=
+ =?us-ascii?Q?jA8Yjjl1AHuw+nWVhcll7lGwt3BGIQcXlTKSjmmqPQHdkwChDIXwitfeFsmU?=
+ =?us-ascii?Q?sEwd+wv1E47gkJeFcrI18O/bZ0D45bv9PYx38oFuDlZ0thgpTGGaO75nfPlh?=
+ =?us-ascii?Q?Y3S56HP+DsyBfPiihxtGuRmOGWrjSMg8RSIMZSNr3bpzt2BUHUmG3yY0WRd5?=
+ =?us-ascii?Q?jdKjA9ElK6UVcBAj5MRlAjXA+qtDqNThG6Zbs/ZRUGt8rloNygZP7dHDzDbF?=
+ =?us-ascii?Q?f+RwtDZhUi9X7a12/ek+AliXpjzckMOhpx3AlbGHLIIQxsVGfreTwThNenUw?=
+ =?us-ascii?Q?N7e8uH55b/3M9dxk2KSHhCxkLbYwizzzVU5MAbdcSQcCLElrtGuRxccOgP2Z?=
+ =?us-ascii?Q?4elgW1g0I4cUTrWYh9lQOcFSpTjPU0fo1RmQ3KuuStMwCjY5HfUnNOsnDvzH?=
+ =?us-ascii?Q?g6mBOUlKrrmJVfK/RkT6JECo2SqsJo2F26v+i9XLd626bRk5v4e57Z38GaI5?=
+ =?us-ascii?Q?/DljZhOSJN5zeJmSGDL3uYDOQPiK22OYml4JtB4jeiqJhSowamjFIo99y5t1?=
+ =?us-ascii?Q?oJjoQFy9QFYRYsgFY9WbuHrHM5LYQdxVQSnSjIeg0GOQqNTqNNggZTVO47we?=
+ =?us-ascii?Q?tqoIelKRON7UEAT2jzYzF/TdFivYnOhKQdOY/lAoG0xcYuvdgdxCUzpLdUV4?=
+ =?us-ascii?Q?3Xsk4c+pWO3Pw4+u3/XSAqYvDo3khREikp81gcE2hDiAOvPzCyvnq1rlFm5Y?=
+ =?us-ascii?Q?pFqhJeomoai5XIMcY5UA2sEdY8yN70YYfztVpair3h3h2dRHD3dRnpBZUupc?=
+ =?us-ascii?Q?U5nkFVUrBIajUAnASb/S6i4/x/PjqBVrsB56BvO9Sd+Cy4Vzh9ljeJSnyVxz?=
+ =?us-ascii?Q?bQqXwGanqVjkAgJl/ZDQ6zQxdEEzSlzpGZz2mhxuWNAVmECI+GQpJlr5iWae?=
+ =?us-ascii?Q?Gk4fQ9rqRDSTQn7WPMRHuGz6acIowic1DEt076+32i+R10Oa0dnt3er+X3tX?=
+ =?us-ascii?Q?6frvqPGLdGrWZVfK181XJjvF+33bXBL7Leh+6IoFVhHEsX5UGU+elRofVg7s?=
+ =?us-ascii?Q?qoBdlYrROnM2W+JPAGjssNfeYWKtk9A=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: zECTLzj5L/r6UKTWkJR/G4ds9oDQm/mR1l/HrqyNvf4sFiReaKHr+sarC7FBrXRE8kWrDS7zXVr8tdjggkcG1RdtvewlyN2GtipAmnSQE5kE8oqb4Ffij95oDeAYYRVQFsdPl0W/J62UcUcPMsxTek0v5qbUvfv6ltfFs4UJyNVelO/msLCBCw7SoeaN5ddnGX2zszqDMvUNJTmV2+jTt006nN83/KU2uxHzAW/I/o1tfCf3UoMl7uobs+D2ZZ4W0q94Sg+zPWQQ4KNZp9w0P4NiCOXlBAsIbGGA0ZGN5ppl/5IvBG782lx3wymYGG6ARFayfC45mEmDjeM6MKJvQg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8d2b2af-db56-4cb7-3a11-08df17f65923
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 15:38:13.4513
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lPlgldWr/gvambrW2HGLU0I+eDnuyyk5y5RDJuQfDurxZrBXGmseSvSyWw3zAG1NBo1lW/gbMPrjD1SUP71tXuulLm06P/il6I8psTGjq6g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8967
+X-OriginatorOrg: intel.com
 
-ncsi_remove_package() and ncsi_remove_channel() remove objects from
-RCU-protected lists and free them immediately using kfree(). Concurrent
-readers (such as Netlink dump handlers) traversing these lists may
-access freed memory, resulting in a slab-use-after-free.
 
-Instead of converting all frees to kfree_rcu() or adding complex
-reference counting, this fix uses synchronize_rcu()
-in the teardown path (ncsi_unregister_dev). By stopping asynchronous
-producers and waiting for all RCU readers to finish before destroying
-the device tree, we ensure safe synchronous reclamation.
 
-This approach is compact, avoids overhead on the fast path, and
-resolves the race condition reported by KASAN.
+> -----Original Message-----
+> From: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
+> Sent: Monday, September 21, 2026 3:00 PM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>
+> Cc: andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Svyatoslav
+> Nikolenko <nsvatoslav515@gmail.com>;
+> syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
+> Subject: [PATCH] net: e1000: fix warning in iounmap on probe failure
 
-Fixes: 2d283bdd079c ("net/ncsi: Resource management")
-Signed-off-by: Wong Boon Jhee <wongboonjhee52@gmail.com>
----
-v5 -> v6:
-- Added RCU read-side protection to all NCSI netlink handlers and fixed
-  every error-path unlock.
-- Moved synchronize_rcu() before package/channel iteration during teardown.
-- Stopped channel monitors before draining request timers and released all
-  outstanding request command/response SKBs.
-- Removed the unnecessary rcu_barrier() and drained ndp->vlan_vids.
-- Documented the updated teardown ordering.
- net/ncsi/ncsi-manage.c  | 34 +++++++++++++++++----
- net/ncsi/ncsi-netlink.c | 79 ++++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 91 insertions(+), 22 deletions(-)
+What configuration you have the reproduction?
+What are the reproduction steps?
+Is it a crash?
 
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 54d0df0a9efe..00941c630270 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1956,19 +1956,43 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
- {
- 	struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
- 	struct ncsi_package *np, *tmp;
-+	struct ncsi_channel *nc;
-+	struct vlan_vid *vlan, *vlan_tmp;
- 	unsigned long flags;
--
--	dev_remove_pack(&ndp->ptype);
--
--	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
--		ncsi_remove_package(np);
-+	int i;
- 
- 	spin_lock_irqsave(&ncsi_dev_lock, flags);
- 	list_del_rcu(&ndp->node);
- 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
- 
-+	dev_remove_pack(&ndp->ptype);
- 	disable_work_sync(&ndp->work);
- 
-+	/* Wait for readers that found this device before it was unlinked. */
-+	synchronize_rcu();
-+
-+	/* Stop all request producers before draining request state. */
-+	list_for_each_entry(np, &ndp->packages, node) {
-+		list_for_each_entry(nc, &np->channels, node)
-+			ncsi_stop_channel_monitor(nc);
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(ndp->requests); i++) {
-+		struct ncsi_request *nr = &ndp->requests[i];
-+
-+		timer_delete_sync(&nr->timer);
-+		if (nr->used)
-+			ncsi_free_request(nr);
-+	}
-+
-+	list_for_each_entry_safe(vlan, vlan_tmp, &ndp->vlan_vids, list) {
-+		list_del(&vlan->list);
-+		kfree(vlan);
-+	}
-+
-+	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-+		ncsi_remove_package(np);
-+
- 	kfree(ndp);
- }
- EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
-diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
-index 8cc538358f6a..f8ea2ea73fb0 100644
---- a/net/ncsi/ncsi-netlink.c
-+++ b/net/ncsi/ncsi-netlink.c
-@@ -169,19 +169,24 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
- 	if (!info->attrs[NCSI_ATTR_PACKAGE_ID])
- 		return -EINVAL;
- 
--	ndp = ndp_from_ifindex(genl_info_net(info),
--			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
--	if (!ndp)
--		return -ENODEV;
--
- 	skb = genlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
- 	if (!skb)
- 		return -ENOMEM;
- 
-+	rcu_read_lock();
-+	ndp = ndp_from_ifindex(genl_info_net(info),
-+			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
-+	if (!ndp) {
-+		rcu_read_unlock();
-+		kfree_skb(skb);
-+		return -ENODEV;
-+	}
-+
- 	hdr = genlmsg_put(skb, info->snd_portid, info->snd_seq,
- 			  &ncsi_genl_family, 0, NCSI_CMD_PKG_INFO);
- 	if (!hdr) {
- 		kfree_skb(skb);
-+		rcu_read_unlock();
- 		return -EMSGSIZE;
- 	}
- 
-@@ -190,6 +195,7 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
- 	attr = nla_nest_start_noflag(skb, NCSI_ATTR_PACKAGE_LIST);
- 	if (!attr) {
- 		kfree_skb(skb);
-+		rcu_read_unlock();
- 		return -EMSGSIZE;
- 	}
- 	rc = ncsi_write_package_info(skb, ndp, package_id);
-@@ -202,10 +208,12 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
- 	nla_nest_end(skb, attr);
- 
- 	genlmsg_end(skb, hdr);
-+	rcu_read_unlock();
- 	return genlmsg_reply(skb, info);
- 
- err:
- 	kfree_skb(skb);
-+	rcu_read_unlock();
- 	return rc;
- }
- 
-@@ -228,11 +236,14 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
- 	if (!attrs[NCSI_ATTR_IFINDEX])
- 		return -EINVAL;
- 
-+	rcu_read_lock();
- 	ndp = ndp_from_ifindex(get_net(sock_net(skb->sk)),
- 			       nla_get_u32(attrs[NCSI_ATTR_IFINDEX]));
- 
--	if (!ndp)
-+	if (!ndp) {
-+		rcu_read_unlock();
- 		return -ENODEV;
-+	}
- 
- 	package_id = cb->args[0];
- 	package = NULL;
-@@ -240,20 +251,23 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
- 		if (np->id == package_id)
- 			package = np;
- 
--	if (!package)
-+	if (!package) {
-+		rcu_read_unlock();
- 		return 0; /* done */
-+	}
- 
- 	hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid, cb->nlh->nlmsg_seq,
- 			  &ncsi_genl_family, NLM_F_MULTI,  NCSI_CMD_PKG_INFO);
- 	if (!hdr) {
--		rc = -EMSGSIZE;
--		goto err;
-+		rcu_read_unlock();
-+		return -EMSGSIZE;
- 	}
- 
- 	attr = nla_nest_start_noflag(skb, NCSI_ATTR_PACKAGE_LIST);
- 	if (!attr) {
--		rc = -EMSGSIZE;
--		goto err;
-+		genlmsg_cancel(skb, hdr);
-+		rcu_read_unlock();
-+		return -EMSGSIZE;
- 	}
- 	rc = ncsi_write_package_info(skb, ndp, package->id);
- 	if (rc) {
-@@ -266,9 +280,12 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
- 
- 	cb->args[0] = package_id + 1;
- 
--	return skb->len;
-+	rc = skb->len;
-+	rcu_read_unlock();
-+	return rc;
- err:
- 	genlmsg_cancel(skb, hdr);
-+	rcu_read_unlock();
- 	return rc;
- }
- 
-@@ -289,10 +306,13 @@ static int ncsi_set_interface_nl(struct sk_buff *msg, struct genl_info *info)
- 	if (!info->attrs[NCSI_ATTR_PACKAGE_ID])
- 		return -EINVAL;
- 
-+	rcu_read_lock();
- 	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
- 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
--	if (!ndp)
-+	if (!ndp) {
-+		rcu_read_unlock();
- 		return -ENODEV;
-+	}
- 
- 	package_id = nla_get_u32(info->attrs[NCSI_ATTR_PACKAGE_ID]);
- 	package = NULL;
-@@ -302,6 +322,7 @@ static int ncsi_set_interface_nl(struct sk_buff *msg, struct genl_info *info)
- 			package = np;
- 	if (!package) {
- 		/* The user has set a package that does not exist */
-+		rcu_read_unlock();
- 		return -ERANGE;
- 	}
- 
-@@ -317,6 +338,7 @@ static int ncsi_set_interface_nl(struct sk_buff *msg, struct genl_info *info)
- 			netdev_info(ndp->ndev.dev,
- 				    "NCSI: Channel %u does not exist!\n",
- 				    channel_id);
-+			rcu_read_unlock();
- 			return -ERANGE;
- 		}
- 	}
-@@ -350,6 +372,7 @@ static int ncsi_set_interface_nl(struct sk_buff *msg, struct genl_info *info)
- 	if (!(ndp->flags & NCSI_DEV_RESET))
- 		ncsi_reset_dev(&ndp->ndev);
- 
-+	rcu_read_unlock();
- 	return 0;
- }
- 
-@@ -365,10 +388,13 @@ static int ncsi_clear_interface_nl(struct sk_buff *msg, struct genl_info *info)
- 	if (!info->attrs[NCSI_ATTR_IFINDEX])
- 		return -EINVAL;
- 
-+	rcu_read_lock();
- 	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
- 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
--	if (!ndp)
-+	if (!ndp) {
-+		rcu_read_unlock();
- 		return -ENODEV;
-+	}
- 
- 	/* Reset any whitelists and disable multi mode */
- 	spin_lock_irqsave(&ndp->lock, flags);
-@@ -389,6 +415,7 @@ static int ncsi_clear_interface_nl(struct sk_buff *msg, struct genl_info *info)
- 	if (!(ndp->flags & NCSI_DEV_RESET))
- 		ncsi_reset_dev(&ndp->ndev);
- 
-+	rcu_read_unlock();
- 	return 0;
- }
- 
-@@ -398,6 +425,7 @@ static int ncsi_send_cmd_nl(struct sk_buff *msg, struct genl_info *info)
- 	struct ncsi_pkt_hdr *hdr;
- 	struct ncsi_cmd_arg nca;
- 	unsigned char *data;
-+	bool rcu_locked = false;
- 	u32 package_id;
- 	u32 channel_id;
- 	int len, ret;
-@@ -427,10 +455,14 @@ static int ncsi_send_cmd_nl(struct sk_buff *msg, struct genl_info *info)
- 		goto out;
- 	}
- 
-+	rcu_read_lock();
-+	rcu_locked = true;
- 	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
- 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
- 	if (!ndp) {
- 		ret = -ENODEV;
-+		rcu_read_unlock();
-+		rcu_locked = false;
- 		goto out;
- 	}
- 
-@@ -480,6 +512,8 @@ static int ncsi_send_cmd_nl(struct sk_buff *msg, struct genl_info *info)
- 				      ret);
- 	}
- out:
-+	if (rcu_locked)
-+		rcu_read_unlock();
- 	return ret;
- }
- 
-@@ -608,10 +642,13 @@ static int ncsi_set_package_mask_nl(struct sk_buff *msg,
- 	if (!info->attrs[NCSI_ATTR_PACKAGE_MASK])
- 		return -EINVAL;
- 
-+	rcu_read_lock();
- 	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
- 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
--	if (!ndp)
-+	if (!ndp) {
-+		rcu_read_unlock();
- 		return -ENODEV;
-+	}
- 
- 	spin_lock_irqsave(&ndp->lock, flags);
- 	if (nla_get_flag(info->attrs[NCSI_ATTR_MULTI_FLAG])) {
-@@ -639,6 +676,7 @@ static int ncsi_set_package_mask_nl(struct sk_buff *msg,
- 			ncsi_reset_dev(&ndp->ndev);
- 	}
- 
-+	rcu_read_unlock();
- 	return rc;
- }
- 
-@@ -663,10 +701,13 @@ static int ncsi_set_channel_mask_nl(struct sk_buff *msg,
- 	if (!info->attrs[NCSI_ATTR_CHANNEL_MASK])
- 		return -EINVAL;
- 
-+	rcu_read_lock();
- 	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
- 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
--	if (!ndp)
-+	if (!ndp) {
-+		rcu_read_unlock();
- 		return -ENODEV;
-+	}
- 
- 	package_id = nla_get_u32(info->attrs[NCSI_ATTR_PACKAGE_ID]);
- 	package = NULL;
-@@ -675,8 +716,10 @@ static int ncsi_set_channel_mask_nl(struct sk_buff *msg,
- 			package = np;
- 			break;
- 		}
--	if (!package)
-+	if (!package) {
-+		rcu_read_unlock();
- 		return -ERANGE;
-+	}
- 
- 	spin_lock_irqsave(&package->lock, flags);
- 
-@@ -690,6 +733,7 @@ static int ncsi_set_channel_mask_nl(struct sk_buff *msg,
- 			}
- 		if (!channel) {
- 			spin_unlock_irqrestore(&package->lock, flags);
-+			rcu_read_unlock();
- 			return -ERANGE;
- 		}
- 		netdev_dbg(ndp->ndev.dev,
-@@ -721,6 +765,7 @@ static int ncsi_set_channel_mask_nl(struct sk_buff *msg,
- 	if (!(ndp->flags & NCSI_DEV_RESET))
- 		ncsi_reset_dev(&ndp->ndev);
- 
-+	rcu_read_unlock();
- 	return 0;
- }
- 
+Please specify which branch you aim to net/next.
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+
+>=20
+> Reported-by: syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
+
+Rule of thumb it needs Fixes: tag then
+
+> Signed-off-by: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
+> ---
+>  drivers/net/ethernet/intel/e1000/e1000_main.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c
+> b/drivers/net/ethernet/intel/e1000/e1000_main.c
+> index d7f5c6f16142..156903089fa6 100644
+> --- a/drivers/net/ethernet/intel/e1000/e1000_main.c
+> +++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+> @@ -1227,8 +1227,10 @@ static int e1000_probe(struct pci_dev *pdev,
+> const struct pci_device_id *ent)
+>  	kfree(adapter->rx_ring);
+>  err_dma:
+>  err_sw_init:
+> -	iounmap(hw->ce4100_gbe_mdio_base_virt);
+> -	iounmap(hw->hw_addr);
+> +	if (hw->ce4100_gbe_mdio_base_virt)
+> +		iounmap(hw->ce4100_gbe_mdio_base_virt);
+> +	if (hw->hw_addr)
+> +		iounmap(hw->hw_addr);
+>  err_ioremap:
+>  	disable_dev =3D !test_and_set_bit(__E1000_DISABLED, &adapter-
+> >flags);
+>  	free_netdev(netdev);
+> --
+> 2.47.3
+
