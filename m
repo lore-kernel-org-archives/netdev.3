@@ -1,201 +1,217 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023082.outbound.protection.outlook.com [40.107.162.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15F318146;
-	Mon, 21 Sep 2026 03:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789963171; cv=fail; b=jaVF3Xj0U8QYqYjQmUYGdYy43L4SmZm56f8hNP8dxWtdNrIndx9kP12hxMac1gDHWOQ+IDzwF0UYTKOuqhXmhzg4r92zjj8hjSEwTTelptwzImvkrNpcxWmOq/oKoeIAVqyHU9Qn80Skwapms96uY8zs+U50ylQzzHsQtJvHqNE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789963171; c=relaxed/simple;
-	bh=Xta23XDIsbEyEzL2u3E+1QkBp3fXbLr8UgU6W+fzSm0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=U4W6QUKakNbioHOvBa9UpvAG9Kxh/0F0oqY7WUI7xD1WT+qkKIwSU4rRHTSPdFM+DsVE7GhTqSCVrJjWERVxABzNqdUhu0JePu/ahinFwBXlRqY7ggvpRzf6YtffJajCwIAWR/t+gfRSL6E8iiLvDebcihuf+jaAHk9VsPYQC4Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=studio.unibo.it; spf=pass smtp.mailfrom=studio.unibo.it; dkim=pass (2048-bit key) header.d=studio.unibo.it header.i=@studio.unibo.it header.b=DJGkHVtv; arc=fail smtp.client-ip=40.107.162.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=studio.unibo.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=studio.unibo.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FBE157487
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 04:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789964255; cv=none; b=tz4u4txKWiaGvceYEe+PNe1HDvgEGt4zOyf0JS758CxuNEy7VNnoIXvguPqZUTYf80PxSwWuO29x5IiUhJjNYEtJXeczLO741ZYiabbgWfd8DbMJlbcv3T/t7Lo4PJLMzAt3+S0EJCSui/x1NUtpMpQEdNc71T2gSmWCaXEbHSk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789964255; c=relaxed/simple;
+	bh=GASaJk4gMXSCH7AgvJaoIqbLuhXpEKXlbXXPujL6QpU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LGg1q+Ze6UMHeWjvg42+2d+Fzzb+gzmSQ+n+qqdmHDTPeTwVCRKieoi/kwSS/fMcdkBY5rJYBIV3K3YpSYNSQoGewNGRpAs6Na8NF3X6MLVC55lYOdCzOqmJSr7AzcXad3PmJEn1Cpc2TZz8PiW0oDL5tYmQQxbwO9eHb/p5l4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lX53+69s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=studio.unibo.it header.i=@studio.unibo.it header.b="DJGkHVtv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u96FLUPK0TQvSR+5tDxK30xLQfu8Hz2bQ+kNtfgCcy1Z5xyRYCKus1JFo6G4NmduqkLChoirG0yg9WnHADRYe8zrJ/+/LsGul23wzoktXJWoAnijhRMy871GP9jv6G57yhHBNueG1+NjHZWwvQyCvy63vt+bRUBNqPu9qn1dz+9dXEvamVq6WoGl9U3yyRYQOqWTpdxkP8Xicsieo1FFuW4hEHFHDR/LQg+a+dlOE45aL4tFgNV44/gvmcWJPxvqpMhzxPaIpGUCTcoGRjQ7xUYCz6R9TwwtDM8T8/akKNd7FEor9ZEtjZZVO5Npt9SdZvkWZbQ+TSfo3lD3rx1aDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AZAHRiu0PooHTSqhHaLit40v5LxWmxmfilztbQWTAqI=;
- b=fF2UDsRo26P7M7IzqfdsmJ1XrT+LgTlgqfU2fsHs5TVF7+WK8MWNR3b4AZ9r9/jwZcLlhhwHmZmTqRR0hrF5LZ6Ol/UISFsPunUDpKq4G6IMJhDbcdJhXyFpzp5Fg8tUTp5BdWtnCeWwfnCXPBRGhWGCLjS70RNowus6AIcqaugG4SYioiraPT0/jj0WH/6X6+T9LigbrvEGXvylTXrrSNEc7Bp7evLG52oO/tTM+bBkxuEZsOP17UVFaDDtEdwXt6QQH6iNFfSPa35SNPa0EiRj6/QNJb6ioW7Pp4LAmXYGxgJick18GrpWSctBDVpSihZ+7TN1Mi/VXUe9UMoU2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=studio.unibo.it; dmarc=pass action=none
- header.from=studio.unibo.it; dkim=pass header.d=studio.unibo.it; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=studio.unibo.it;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AZAHRiu0PooHTSqhHaLit40v5LxWmxmfilztbQWTAqI=;
- b=DJGkHVtv8RlvDViDMMeUtkygM7kq6sF5cgYTzRYHAuuOnp4ikAhqaxMUo5GRsVOuXMxSjOjxF0iEHs30ojNB3CG02NKYk4Ybpl19C4qpNvuRJtdw0zqbNWfjjkYLndkKbwwn1swYEYwiRsGl/31oS7G5iDUqlDYietP0Z4lpbf5wHcBO+IvO+cSkYUl8BNDaebj83l4K6PVBqwsvG+DxW+yUphNxApaxhDR5acEG27FP1Nnq/29yXzuqTdo4gYHCZssSo+Zd5sZQ2YgHRBPBASbW6uJ2CQdWYA0RY9CJ3ERSGvlwbyjmewCvGkeFrFe0GtXIGTKkjuQdQSszm2OS6A==
-Received: from DU4PR01MB12163.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:620::18) by PR3PR01MB7891.eurprd01.prod.exchangelabs.com
- (2603:10a6:102:14e::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.15; Mon, 21 Sep
- 2026 03:58:37 +0000
-Received: from DU4PR01MB12163.eurprd01.prod.exchangelabs.com
- ([fe80::bffd:753f:fbcc:c402]) by
- DU4PR01MB12163.eurprd01.prod.exchangelabs.com ([fe80::bffd:753f:fbcc:c402%6])
- with mapi id 15.21.0428.015; Mon, 21 Sep 2026 03:58:36 +0000
-From: =?iso-8859-1?Q?Nicol=F2_Giuliani_-_nicolo=2Egiuliani6=40studio=2Eunibo=2E?=
- =?iso-8859-1?Q?it?= <nicolo.giuliani6@studio.unibo.it>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
-	<richardcochran@gmail.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: R: R: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if the
- TAI period is invalid
-Thread-Topic: R: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if
- the TAI period is invalid
-Thread-Index:
- AQHdSHBd+pGZ8FgfBki6KEuSlYSfVLbXjVuAgAAtc+WAABhkgIAAAq6SgAAlS4CAAG7CPQ==
-Date: Mon, 21 Sep 2026 03:58:36 +0000
-Message-ID:
- <DU4PR01MB12163BB705A30C3A2F231F82680842@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
-References: <20260919-send-net-v1-1-4355c72465ee@studio.unibo.it>
- <66937bde-51a0-49d2-9ae7-f27fb4f8ecde@lunn.ch>
- <DU4PR01MB12163870875DEF21E5C39DD2D80852@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
- <fde8b48a-10ed-46fd-b477-18ac57df8a88@lunn.ch>
- <DU4PR01MB12163D71C8AF5C7695B2FB8BD80852@DU4PR01MB12163.eurprd01.prod.exchangelabs.com>
- <f5d30e0b-9b10-45b4-a158-19c946c0c8bd@lunn.ch>
-In-Reply-To: <f5d30e0b-9b10-45b4-a158-19c946c0c8bd@lunn.ch>
-Accept-Language: it-IT, en-US
-Content-Language: it-IT
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=studio.unibo.it;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU4PR01MB12163:EE_|PR3PR01MB7891:EE_
-x-ms-office365-filtering-correlation-id: 6ac69491-1644-41ad-473c-08df17949ccb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|786006|1800799024|376014|366016|10067099003|11063799006|5023799004|56012099006|18002099003|22082099003|4143699003|38070700021;
-x-microsoft-antispam-message-info:
- eU08CvYYxtzeXN2fF3twkd1tCwmTGTpwZ6BmYrwVSLYoR1Rcfme4hK5xBHb3eR8nvmXlKFE7PTtx71phwaxxVcD8Q1ttn0v8MEuPr3iI4b7ikUjTVc6twQ23ODLHJB7skB8zuyB5ScY8n70QI6E8YBZY6sSCYXqf7C1VnXOsjIWwOSnHxLewHDlq2+DsANSL9wJygmItrbjfrk96FvHCU80AGfi7woDZqY5FXqjiYRy153N3PGMGr2S0iGDZwxVTM/RuIhcV8CPm4l9MICwZQXkM33uagk92LGSYEXBQa8LrKwwvIZFTi9/PEY2VJPrDKIUso8Dr+9nwSP3fcyPgDQ1LuTXwJa+FyigtIQ3aEj+gSPaVqTvgYBquF/mwSMftsNWNrWMxQHmg6XpMfoXXd/AyvFCBH1iOd4p/hWzV5okUu2iZCVeVFwxfixTw9+M924kNi8Y6u8On+xsuwt1huC2OJRqAgFxuGoxKmJvhOPFqR0l8SaGcJqf/FOQxJwY4NWzsp7+sc2kUgKTTTcpbJP0ARqDg9lJayIsYiE8hgT1DPPAAAFIf0Y6JvbU1LgPuFuLTIW9ZPkgmwZciKO4fW56D8NuXz/GCr0R7eDujJ8m001obIfRbZFFDKyzMolgdI3gT8J61SK0drTmGK4sTIu95PKl60iCizckIl0ZsH8M=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR01MB12163.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(786006)(1800799024)(376014)(366016)(10067099003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003)(4143699003)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?uBscRfoVITbLReiJs1B6bwZgP5iz1PXptYtPBcUNjrfZKOiYZVwMO8bV65?=
- =?iso-8859-1?Q?UKuC70eK+8BReXizJs12GBmu1TDJdVSTqrJJYqHKdgBbENPfQG+qqjB4/A?=
- =?iso-8859-1?Q?y1i3bGxzJKAkBeqegbRoQvRcASniATyWg6uGFPh5XAYR0wDvON992sA91+?=
- =?iso-8859-1?Q?+pRNTwC0bmOyNEIdyC22DsESflvbR5pgnTQ3MvsJvXs3ijmaov5QGG3Rbp?=
- =?iso-8859-1?Q?L/SGXfEJt7pXDypRGGSgGvTkqX2S5j1rsmxjV2JIv5aqbn+0AXT92JltVW?=
- =?iso-8859-1?Q?NwklTaNSCEDi1mZ4r8W9AUQJEV0D3mmktyasTWO/llRGmMHFttevgurzGi?=
- =?iso-8859-1?Q?Lj66DOmRsAC3gG91uOLsvl2Yn2PGkMKITnXqh3pJbtr+eJMM0MCi8NPvjr?=
- =?iso-8859-1?Q?eQgFmOPE5OjhTR0ctNFfeTseLyXSyLF6QHIIHPHhodJnfVbovP8mGeyrhq?=
- =?iso-8859-1?Q?Wcy2/LSvow+hX4H2eoTn+cZt2Qv8Ysv7vm/feGlnrw1wLq6LfY7x7IgT3n?=
- =?iso-8859-1?Q?LOf/lS/txi4Pg4qZYwGqLttZCYaLR/GDV6s91RKkxIAPHUP/CLkr0X0THC?=
- =?iso-8859-1?Q?kFQcR3NMJcsY1pQjmycgk5wUSpxQjgDXQBl/mxUAdlWVIFMXRhHqtc1Vw1?=
- =?iso-8859-1?Q?9R9YzsYkiERzPuZ3gcZRFS41LY513bi1GuEX9gZzE+fhTxMwQguxvKxdJH?=
- =?iso-8859-1?Q?htmNWY8jFdIcaevBTDMVfH/Q/jlP7c8LQiFI04c1FGzufjkV86uRw4caMR?=
- =?iso-8859-1?Q?XfFlCoGFoCpsfkJYiD/jlm++4mDYumN16K6BTVa/D0dM3ti9BanlX2TeGO?=
- =?iso-8859-1?Q?l/IlhGAo3rurPpf0deDfmkfATiZQJFn8IwQxF6wuWShu/MJxqBl1xQrvtZ?=
- =?iso-8859-1?Q?9Y9MdquIiA/JRkInXeZ+p2HcxNQe2fgPbL0RXaqEJn6of4S5WOWjz8A7Y9?=
- =?iso-8859-1?Q?AIdeODBlmTIWAkr5JcOt845vy8kdDYjqtXD7+hYYr25faARuSlUFwh1wfj?=
- =?iso-8859-1?Q?ySwoMDWN2ApTidoVjv1Z0Hh0bUVwmRDtUoBDm4bvTz15+zAbteVt3mezIT?=
- =?iso-8859-1?Q?LU//jDpV5aIHq7A77A7s5nr757Qblg/ZOFc8DUocl7WdhygE8Tz1hGxZHm?=
- =?iso-8859-1?Q?yaJgfUYrtQfhzoJMVppsZj+0jyOG2JVZHHkPJnJN61JcWQkMgsZt8m3RV8?=
- =?iso-8859-1?Q?p8OkdPepa6q/64k19b6AYwr6dQlJBWeHme9uJjEVWGv1lInKrIFo+bVxIW?=
- =?iso-8859-1?Q?gEEB0f3nogVLiGfv72yNhPSVU1uhl/PD14D2GZKic8PEWAleNRcq4V73wk?=
- =?iso-8859-1?Q?7+aXDhpzEM0W1vROHLaGfWIllek+jwinwhYKBaQS/qw97j/oEGb365YCxk?=
- =?iso-8859-1?Q?IsUJGjkXL/JjaCNYqc8KVqb0QMEUl7mYwOQiLtklPGWkCjzNYf66fGcaR3?=
- =?iso-8859-1?Q?AoI3COgDIW/czI/fYlctCq3PBeOmhBDUeGWpgu1ivOzBfXNHFs+CVQIR22?=
- =?iso-8859-1?Q?HcNeF4SKtmrD7c3138VjDZcVHsK2eb7RJK/jr4RDZQrItr8k9BSeQFvDNY?=
- =?iso-8859-1?Q?BvrnVAL+jgjV+g4/ymJWPer2u4KVqWjGgXlNXTx5HsVG0rGQHCbS/TPjtd?=
- =?iso-8859-1?Q?0mDkANBHz1jBylB73xcEAdRio3DcqBhXxrQFF4IONGKe7uCGiDKZE8+en4?=
- =?iso-8859-1?Q?gI5w7z4uMFoFw86r+FLPSLTeztm2/m+p/dqijzaf3PLCJgwa/60FPOVHmz?=
- =?iso-8859-1?Q?Gycm2OWnFcZQvzkjtPn63NkprDwwO7Ah053VQLKyeh2bY8E4wAHG2Za/Hf?=
- =?iso-8859-1?Q?Vsr+xO5xB6qHPf9M3kzi7gM4aENw028=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lX53+69s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D281F000FF;
+	Mon, 21 Sep 2026 04:17:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789964253;
+	bh=ZkwhNUx0ke+7m3F9pjmPZi87bUasInd9oGgPqC/F574=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lX53+69sOyGV1xYJtvWfCX66dwmzve+Eyj0JVj33iGBaGxZHXB1zTobfO/CiPVDRq
+	 FLmtxMcQ202bs3hWb5/uup0P16+4kcxMfw00r2clinVQCT6IZZ0zYs446sx3NTkSbw
+	 5CRXPho0gfWqRZZ52j+/qdGmKjy206tm5Ir66QDbPPp1RYKZ49HCjBQVaHjfbxMHA7
+	 w+N5l7B54gq1Y61YRYlPtNeFv2qgHUcizCTVgWrNbQtERCwbaObtZsNJGCq0jxRhR9
+	 j9lCauoWkWrCC1MUIlmpbkMasFo2haVpKxPN0Nm8igfdfhcDEEQL4XxzxVa5lpgx0O
+	 ImS1Snowb9G7Q==
+Subject: Re: [PATCH v1 net] ipv6: Fix dst leak for uncached routes.
+From: netdev-bot+sashiko@kernel.org
+To: kuniyu@google.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ weiwan@google.com, marcharvey@google.com, kuni1840@gmail.com,
+ netdev@vger.kernel.org
+Date: Mon, 21 Sep 2026 04:17:32 +0000
+Message-ID: <178996425243.2160803.4584297902384929765@kernel.org>
+In-Reply-To: <20260918041439.2575935-1-kuniyu@google.com>
+References: <20260918041439.2575935-1-kuniyu@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: studio.unibo.it
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU4PR01MB12163.eurprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ac69491-1644-41ad-473c-08df17949ccb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 03:58:36.2881
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: e99647dc-1b08-454a-bf8c-699181b389ab
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PMf31VugjUKE0zDW3SmqgbHgrpDyoTClwhx9n8zG9Coy4oOewtjXx1NcgQ/x/RtZuLuUvleljvrj8XwUf685OWsDYb1M+/rdp69umybdaaMIkpQ8rg1hHsiHWDUCfbAq
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR01MB7891
 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Hi Andrew,
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
-Thanks, that explains it. I have sent the patch as v2 in a new thread:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-https://patch.msgid.link/20260921-send-net-v2-1-031ad720f140@studio.unibo.i=
-t
+- [Medium] Incomplete backport metadata: the Fixes: tags select stable
+  trees where the patch is either useless or actively harmful, and the…
+- [Low] Comment vs. code mismatch left by the patch.
 
-It adds mv88e6191x_ops, a copy of mv88e6393x_ops without avb_ops and ptp_op=
-s, uses it for the 88E6191X and the 88E6193X and drops ptp_support for both=
-, so the 88E6393X is unchanged. I included the 88E6191X because UMSD descri=
-bes it the same way; I only have an 88E6193X, so that entry is untested.
+Pre-existing issues:
+- [Low] Documented refcount contract of the IPv6 link-scope l3mdev lookup
+  disagrees with the implementation.
 
-I tested it on the 88E6193X of the Sophos XGS 107w (Linux 6.18.52): with th=
-e driver unbound and the module replaced by one built with the patch, and w=
-ithout the workaround from v1, the switch is detected as 0x1930, the eight =
-PHYs and the 10gbase-r link come up, there is no PTP error and no PHC is re=
-gistered.
+--
 
-Thanks,
-Nicolo Giuliani
+ipv6: Fix dst leak for uncached routes.
 
-________________________________________
-Da: Andrew Lunn <andrew@lunn.ch>
-Inviato: domenica 20 settembre 2026 23:21
-A: Nicol=F2 Giuliani - nicolo.giuliani6@studio.unibo.it
-Cc: Vladimir Oltean; David S. Miller; Eric Dumazet; Jakub Kicinski; Paolo A=
-beni; Richard Cochran; netdev@vger.kernel.org; linux-kernel@vger.kernel.org
-Oggetto: Re: R: R: [PATCH net] net: dsa: mv88e6xxx: continue without PTP if=
- the TAI period is invalid
+This replaces the list_empty(&rt->dst.rt_uncached) test in
+ip6_route_output_flags(), ip6_rt_put_flags() and ip6_dst_check() with a
+check of rt->dst.rt_uncached_list, so a route that was already unlinked
+from rt6_uncached_list by rt6_uncached_list_flush_dev() is still treated
+as holding the reference taken by ip6_rt_cache_alloc().
 
-On Sun, Sep 20, 2026 at 07:08:57PM +0000, Nicol=F2 Giuliani - nicolo.giulia=
-ni6@studio.unibo.it wrote:
-> Hi Andrew,
->
+A couple of questions about the Fixes: tags and about the comments that
+were left behind.
 
-> Thanks, that is what I needed. I checked it on the board (chip ID
-> 0x1930, so the driver entry is the 88E6193X, family 6393, which uses
-> mv88e6390_avb_ops and mv88e6352_ptp_ops):
+> Fixes: 7d9e5f422150 ("ipv6: convert major tx path to use RT6_LOOKUP_F_DST_NOREF")
+> Fixes: d64a1f574a29 ("ipv6: honor RT6_LOOKUP_F_DST_NOREF in rule lookup logic")
+> Fixes: a4c2fd7f7891 ("net: remove DST_NOCACHE flag")
 
-Marvell names all there devices 88e6xyz. The x indicates the model
-within the family y. The lower the value of x, the less features the
-device has.
+[Severity: Medium]
+Should this also carry Fixes: 98aa546af5e4 ("inet: remove (struct
+uncached_list)->quarantine")?
 
-So i could well be the 88E6193X does not have avb, tsn and ptp.
+The commit message itself says the routes used to be moved with
+list_move() and are only unlinked with list_del_init() since that
+commit.  Before it, rt6_uncached_list_flush_dev() left the entry linked
+on ul->quarantine, so list_empty(&rt->dst.rt_uncached) could not become
+true for a live uncached route.  The other unlinker,
+rt6_uncached_list_del(), only runs from ip6_dst_destroy() and
+xfrm6_dst_destroy(), i.e. after the refcount already dropped to zero.
 
-Marvell has a vendor driver for these devices called UMSD. It has an
-open source licence, but it is well hidden.
+The three tags listed point at 2018/2019 commits, which selects
+v4.20..v6.10 trees where the misdetection described here cannot happen.
 
-include/driver/msdSysConfig.h:  MSD_88E6193X =3D 0x193,   /* 88E6193X  - BG=
-A package - No AVB, No Routing, No Cut-through*/
+There also seems to be an undisclosed dependency worth a note below the
+--- line.  The new predicate uses dst.rt_uncached_list as a "was ever
+added to an uncached list" flag, which only works because 9a6f0c4d5796
+("dst: fix races in rt6_uncached_list_del() and rt_del_uncached_list()")
+added the initialization in dst_init():
 
-So i would say PTP is not available on this device. Please could you
-submit a patch removing the mv88e6390_avb_ops and mv88e6352_ptp_ops.
+net/core/dst.c:dst_init() {
+	...
+	INIT_LIST_HEAD(&dst->rt_uncached);
+	dst->rt_uncached_list = NULL;
+	...
+}
 
-There is also:
+dst_alloc() uses kmem_cache_alloc() without __GFP_ZERO, so on a tree
+without 9a6f0c4d5796 the field is slab garbage for any dst never placed
+on an uncached list.  There, would ip6_route_output_flags() skip
+dst_hold_safe() and return an unreferenced dst, and would
+ip6_rt_put_flags() call ip6_rt_put() on a dst it never referenced?
 
-        MSD_88E6191X =3D 0x192,  /* Amethyst 88E6191X  - BGA package - No A=
-VB, No Routing, No Cut-through, No TCAM, No 802.1BR*/
+On top of that, dst.rt_uncached_list only exists since d288a162dd1c
+(v6.4); before that the field lived in rt6_info as rt6i_uncached_list,
+so the patch would not build on the older trees the tags select.
 
-Maybe you can review that entry as well.
+> diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+> index b9e8d2b759e9..2c5ded121f54 100644
+> --- a/include/net/ip6_route.h
+> +++ b/include/net/ip6_route.h
+> @@ -106,7 +106,7 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
+>  static inline void ip6_rt_put_flags(struct rt6_info *rt, int flags)
+>  {
+>  	if (!(flags & RT6_LOOKUP_F_DST_NOREF) ||
+> -	    !list_empty(&rt->dst.rt_uncached))
+> +	    rt->dst.rt_uncached_list)
+>  		ip6_rt_put(rt);
+>  }
 
-       Andrew
+[Severity: Low]
+Should the comment just above ip6_rt_put_flags() be updated too?  It
+still describes list membership:
+
+include/net/ip6_route.h
+/* Only conditionally release dst if flags indicates
+ * !RT6_LOOKUP_F_DST_NOREF or dst is in uncached_list.
+ */
+
+rt->dst.rt_uncached_list is assigned in rt6_uncached_list_add() and is
+never reset to NULL; both rt6_uncached_list_del() and
+rt6_uncached_list_flush_dev() only list_del_init() the node.  So after
+this change the test means "was ever added to an uncached list", which is
+intentionally still true for routes already unlinked by device flushing.
+
+Leaving the old wording in place makes it easy for someone to later
+"restore" the list_empty() form and bring the leak back.
+
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 08bd68f1b5bb..b18cd0d9148c 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -2722,7 +2722,7 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
+>  	dst = ip6_route_output_flags_noref(net, sk, fl6, flags);
+>  	rt6 = dst_rt6_info(dst);
+>  	/* For dst cached in uncached_list, refcnt is already taken. */
+> -	if (list_empty(&rt6->dst.rt_uncached) && !dst_hold_safe(dst)) {
+> +	if (!rt6->dst.rt_uncached_list && !dst_hold_safe(dst)) {
+
+[Severity: Low]
+Same question here for the comment sitting directly on the converted
+line, "For dst cached in uncached_list, refcnt is already taken."  The
+condition no longer asks whether the dst is currently on the list, and
+the flushed-but-still-referenced case is exactly the one this fix
+depends on.  Would "for dst that was added to uncached_list" (or
+similar) be more accurate?
+
+[Severity: Low]
+This is a pre-existing inconsistency and not something introduced here,
+but since this is the site that compensates for it: the documented
+refcount contract of the l3mdev link-scope lookup disagrees with what
+the implementation can return.
+
+net/l3mdev/l3mdev.c, kernel-doc for l3mdev_link_scope_lookup():
+ *	This function does not hold refcnt on the returned dst.
+ *	Caller must hold rcu_read_lock().
+
+drivers/net/vrf.c, above vrf_link_scope_lookup():
+ * Note: Caller to this function must hold rcu_read_lock() and no refcnt
+ * is taken on the dst by this function.
+
+But vrf_link_scope_lookup() -> vrf_ip6_route_lookup() -> ip6_pol_route()
+passes RT6_LOOKUP_F_DST_NOREF, and the FLOWI_FLAG_KNOWN_NH branch of
+ip6_pol_route() states the opposite rule:
+
+net/ipv6/route.c:ip6_pol_route() {
+	...
+			/* 1 refcnt is taken during ip6_rt_cache_alloc().
+			 * As rt6_uncached_list_add() does not consume refcnt,
+			 * this refcnt is always returned to the caller even
+			 * if caller sets RT6_LOOKUP_F_DST_NOREF flag.
+			 */
+			rt6_uncached_list_add(rt);
+	...
+}
+
+That branch looks reachable from this path: an IPv6 raw socket with
+IPV6_HDRINCL sets FLOWI_FLAG_KNOWN_NH, and with a link-local or
+multicast destination and an oif enslaved to a VRF,
+ip6_route_output_flags_noref() goes through l3mdev_link_scope_lookup();
+if the matched nexthop has no gateway the RTF_CACHE clone is returned
+ref-held.
+
+No leak today, because ip6_route_output_flags() is the only caller and
+encodes the exception in the line this patch changes.  Would it be worth
+correcting the exported kernel-doc and the vrf comment, so a future
+l3mdev_link_scope_lookup() caller does not drop that reference and leak
+the dst along with the device pinned via rt->from?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918041439.2575935-1-kuniyu%40google.com
