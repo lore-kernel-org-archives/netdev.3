@@ -1,166 +1,102 @@
-Received: from mail-oa2-f35.google.com (mail-oa2-f35.google.com [74.125.231.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D52948820E
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CDC485936;
+	Mon, 21 Sep 2026 11:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789989437; cv=none; b=jucAZKwNamdFsvhzF3NaxTan7eBXkWXGdlOO8cPJxsc9+8pNBtYTSNzsLvQWeWOFRTRxSveVfEN3odEQPGp1gyF98W6OTPl0tbg+dphbkWc41ujTKS5/c6BDUUMf//MBMLM6bYncjJ08xvC5kuaDFCKfYB22K+G+uwvX4fPkM4E=
+	t=1789989473; cv=none; b=SovZwkoDw5Myskh0rjGH6cVaYszBtDMmWOp69V1dpYIsXsL+00I3r43DH73ePFh02yoA5Wff9joXtsYRFT3A1t+L4q+0ikc2N7j8eiu+ZIRPMGT1hp1wcYSKQO3Yd2KMqZWbjXpxDjZImE4ehyaz5JN7s3OeiPlDrSFOU+i9Fjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789989437; c=relaxed/simple;
-	bh=ynnB93uRRMFm5MeLrvG8YOly/C5erKJyFzwadvMCU78=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tJTF4oMDwTQ/JnD41J6uJ+DPUzzXGxoAw02UGxc+XT+3blFbkzr/iDpHulFMq3YKdkKSacRemFRBjeoBUkKCcA4HnunKpUVMogPeYVEX+LCsrbpfXROI4jZADe/JSl6NJKkuKYraxks1BjSUMTJ8Ob3Uss4FiVsWLXO4IIJsP1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hammerspace.com; spf=pass smtp.mailfrom=hammerspace.com; dkim=pass (2048-bit key) header.d=hammerspace.com header.i=@hammerspace.com header.b=OeVHCE/4; arc=none smtp.client-ip=74.125.231.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hammerspace.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hammerspace.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hammerspace.com header.i=@hammerspace.com header.b="OeVHCE/4"
-Received: by mail-oa2-f35.google.com with SMTP id 586e51a60fabf-4881ca701a4so637245fac.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 04:17:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hammerspace.com; s=google; t=1789989434; x=1790594234; darn=vger.kernel.org;
-        h=content-type:mime-version:references:in-reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oFZAXGGRVdUcw8Z+HbfAgS1Po8zavpuqYE8I7GH9OYY=;
-        b=OeVHCE/44f64CBJemBAiL6V0NXnT+2k2G6FuqpPJ2NvL3jn/OzHBy3zmigLebeF3ws
-         VTKWnS5+dt/JPdWDYy94Jr5K5lI5I8dQ/RewOkjcGsh6JziE6HLvcii9zeJbsxNeNwOu
-         A6a2IDjYJvlmArYTS/aJ9gRC7R8DHHKV3fEwHggvZfrIQkEzKFeMdaXWcBKO+Ez0CEd2
-         zslOObRQPygzT3dIyYFfy1Vt9rqFaGA5RdcQHK7t/UhHN8E0guQvyT0tUCrCbDXRveuu
-         1pj9lJAah1Bz1tAFGqlxe/DNU3s41rLTkNkreqkC6u97XBqBCFjZlevHfgMKx7oOrV6t
-         TkWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789989434; x=1790594234;
-        h=content-type:mime-version:references:in-reply-to:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oFZAXGGRVdUcw8Z+HbfAgS1Po8zavpuqYE8I7GH9OYY=;
-        b=HOjeCwGFeq+bFB2K/qVOoUFd03DI/IiySWZ44SB4TFEA5FAsOfSU2mtVBIETCrR8Ey
-         P3jWNZgew4X4Je6y29IyMFGoaI0/CNF57xuX28R4hjND2812AM76kYTwnYDDdcBOULFP
-         24N2Y/X5kGJ8G2sGz8g2vZr0nFgxvQlmnzbU1rdZ8lDtLlLloeBihKhAb/vyGGb46IjO
-         b3QWMaqZRVQoiTxsQY0BIzZjnXuhLgWn+++vlCAn5vQxnaqg/QPpVxqpskfpN1smPIQS
-         SdTS2TmPpaRvVNpUXUWlp4dSjHoxihSgiyLXvv3IPfT/Rez/UZV7h4JBkIrGkEMlPqNx
-         LA/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxuJuhy/gbDaoaSCiRKtlT0DfjToDuYcDYaNqRFDaqOt3wLMDYeN4sAD3daRBrDm4mXjxBBCaM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mGKh6ZeK1V0U9Gdtf1jcSN9xJ3ewaJzmzTf9tABARjCLzmF2bC
-	bJc3FYJbWpQa2/B2nC000CP7QJJ8D0iJn0bOW/WP0dXmv/iyIHBMOPjOCUSwM6julWo=
-X-Gm-Gg: AYBFou3G5qA26njrXyKLbaUp6wDuctTgdaG/TTQqYHkVHVajLKZBKDcY8zbFgHtVyKq
-	b4FX0PTRvRLG2ab+LXjBMJFe5sHfanHjXiF1lmB2iF+5O4aoqmnSXNnVyQJT8+K9LEYGXvB8q5k
-	+cQ7wrf6CVXe499+9c9PZf3SNJUW+fiPC0guYMwXZhhMXsMuJNDjEJJsJoS9FSdRT3Unk23t4vP
-	/SYycE1Q5ffod+om5jzgxGv1Jinyy+3uC2PDMxk9xnTC44WepudfsuGX+GPNKHt8ytX8dJtUEuP
-	DEeNIjEYJzFE13i//+GcP/hKJT+alOLUoMDZzz6moXNcqvs4gHBFUxR9gxOkINl39DCjZIh7zin
-	nccFK3jYB82ceX+fr5bT6Pq3EQFf1j7fTYcSe0+5dAbbAJgS2yR0QgowzAMGXkGk+ObkoBw4ViF
-	O9WWhgsXHl9tJc+eqSbCxiRe6Ipk/b/CerXNyUwYbE10coNHvvYqJliaLr8e8oD4LBVABC/Pb3P
-	mUWypPQaP6j0XGlrg==
-X-Received: by 2002:a05:6871:64a:b0:465:fdf:bd44 with SMTP id 586e51a60fabf-486e574f446mr8866000fac.14.1789989434138;
-        Mon, 21 Sep 2026 04:17:14 -0700 (PDT)
-Received: from [192.168.254.51] ([66.97.168.37])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-48820f30ce7sm7756232fac.3.2026.09.21.04.17.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 04:17:13 -0700 (PDT)
-From: Benjamin Coddington <ben.coddington@hammerspace.com>
-X-Google-Original-From: Benjamin Coddington <bcodding@hammerspace.com>
-To: Hannes Reinecke <hare@suse.de>
-Cc: Benjamin Coddington <ben.coddington@hammerspace.com>,
- Chuck Lever <cel@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
- Anna Schumaker <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Christian Brauner <brauner@kernel.org>,
- David Howells <dhowells@redhat.com>, Sagi Grimberg <sagi@grimberg.me>,
- linux-nfs@vger.kernel.org, keyrings@vger.kernel.org,
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 0/5] NFS: isolate mTLS client credentials by network
- namespace
-Date: Mon, 21 Sep 2026 07:17:10 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <FF0D8D15-2520-4B42-AED4-4FAB4D461D70@hammerspace.com>
-In-Reply-To: <5a7830fd-7823-476b-84aa-3b01ca81ccdf@suse.de>
-References: <20260918-nfs-mtls-identity-v1-0-197e568d78a7@kernel.org>
- <2FBF57B6-FBB6-498F-A1F4-695D52EB89E9@hammerspace.com>
- <5a7830fd-7823-476b-84aa-3b01ca81ccdf@suse.de>
+	s=arc-20240116; t=1789989473; c=relaxed/simple;
+	bh=EZ21ncQrjQNm7o8Cw+zlBh2DjaJdXZNMq93zx34x0jU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fAMTrFj6pfz/44PUwwJGH9ZSR3YWM9fOIOQGYOAA4P/4XvonEDFn7Ty7qcWI+/Hvsln4UEkiM6LnR0Npfh2Ag4EBafNBfI8JFLNeE6Q17fBbwDVDAfUmcjDMrRxqA+vDifqTqy4LfPnqPdSswQj+KHbmarBxSQyImJZt1n/h0SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.0.107] (unknown [123.116.51.226])
+	by APP-03 (Coremail) with SMTP id rQCowACnrTtGErFq+tZHCA--.11992S2;
+	Mon, 21 Sep 2026 19:17:27 +0800 (CST)
+Message-ID: <7d96c999-20db-427e-be57-3a79b0ec5119@iscas.ac.cn>
+Date: Mon, 21 Sep 2026 19:17:26 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: spacemit: clear TX descriptor on fragment mapping
+ failure
+To: Muhammad Bilal <meatuni001@gmail.com>, andrew+netdev@lunn.ch
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dlan@kernel.org, vadim.fedorenko@linux.dev,
+ maxime.chevallier@bootlin.com, troy.mitchell@linux.spacemit.com,
+ netdev@vger.kernel.org, linux-riscv@infradead.org, spacemit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260919191937.271202-1-meatuni001@gmail.com>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <20260919191937.271202-1-meatuni001@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:rQCowACnrTtGErFq+tZHCA--.11992S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cry7ur18Gw4fWrW7urWfKrg_yoW8AFWfpF
+	ZYvFsIkr1DJr43Kw4xCF1xGry0vayxC34UZ3yYvrZY9Fs8AF4SkFW2y3W5JryUAr1kAw1F
+	yr4DZa48GFyDA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
+	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
+	1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
+	ZFpf9x07betCcUUUUU=
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-On 21 Sep 2026, at 4:45, Hannes Reinecke wrote:
+On 9/20/26 03:19, Muhammad Bilal wrote:
 
-> On 9/18/26 7:21 PM, Benjamin Coddington wrote:
->> On 18 Sep 2026, at 10:05, Chuck Lever wrote:
->>
->>> An xprtsec=mtls mount names its client certificate and private key
->>> by keyring serial, and tlshd reads those keys with its own
->>> credentials. Each key therefore has to grant user read permission,
->>> and any tlshd on the host that learns a serial can read it. Nothing
->>> separates one network namespace's credentials from another's.
->>>
->>> This series makes the network namespace the isolation domain. The
->>> RFC thread asked whether the user or mount namespace is the better
->>> binding. tlshd services the handshake socket of one network
->>> namespace, so that is the namespace it already lives in.
->>>
->>>    https://lore.kernel.org/linux-nfs/20260602154740.49861-1-cel@kernel.org/
->>>
->>> The keyring is held in struct nfs_net rather than found by name,
->>> because /proc/keys is not namespace scoped. Its serial travels with
->>> each handshake instead (patches 3-4), and tlshd's possession of that
->>> keyring is what lets a provisioned key grant no user read permission
->>> at all. Both ends of the link exist today, in tls_handshake_accept()
->>> and in tlshd. The handshake genetlink ABI and the cert_serial= and
->>> privkey_serial= mount options do not change.
->>>
->>> Still open is how userspace names the kernel-held keyring. Patch 5
->>> prototypes a request_key type handled in the kernel and tagged
->>> KEY_TYPE_NET_DOMAIN. A keyctl modeled on KEYCTL_GET_PERSISTENT, or a
->>> read-only attribute on the netns-tagged nfs_client sysfs kobject,
->>> would do the same job if the keyrings maintainers prefer one. Keys
->>> that userspace adds are quota-charged by user namespace while the
->>> keyring lives in nfs_net. Confirmation that this is sane when the
->>> two boundaries differ would be welcome.
->>>
->>> nfstlskey, the provisioning tool that consumes the key type, is
->>> merged in https://github.com/oracle/ktls-utils/ .
->>>
->>> Tested on one Fedora VM acting as both NFS client and NFSD, with
->>> tlshd from ktls-utils 1.4.0: NFSv4.2 mounts with xprtsec=tls, with
->>> xprtsec=mtls using the identity in tlshd.conf, and with xprtsec=mtls
->>> using serials that nfstlskey provisioned.
->>
->> I think this is the old upcall/namespace problem that's never been generally
->> solved (as far as I know).  Here's a shameless plug to potentially revive
->> the original "key agent" concept which solves this in a general way.
->>
->> The idea is - user space processes (tlshd) register themselves as key-agents
->> that can satisfy request-key.  A key agent represents itself as a key-type,
->> and the appropriate key agent is consulted for request-key if the calling
->> process has that agent's key in its keyrings.
->>
->> Otherwise, this solution looks good - but without a general solution to this
->> problem, other folks building on keyrings will keep trying to solve this
->> problem.
->>
-> Not sure. Basic problem with the 'upcall' mechanism is that it needs to
-> execute a userspace program by the time of the upcall.
-> And that (trivially) requires
-> a) a usable userspace to be present
-> and
-> b) the correct program to be be available
+> emac_tx_mem_map() writes TX_DESC_0_OWN into the ring descriptor for
+> every slot beyond old_head as soon as that slot's memset()'d local
+> copy is committed with "*tx_desc_addr = tx_desc", i.e. before the
+> buffers for that slot have necessarily all been mapped successfully.
+> If emac_tx_map_frag() then fails on a later fragment, the err_free_skb
+> path calls emac_free_tx_buf() to unmap and drop the skb, but leaves
+> the already-written descriptor memory untouched, and tx_ring->head is
+> never advanced past old_head (the "tx_ring->head = head" store is
+> skipped by the goto).
+>
+> So a slot between old_head and the rolled-back head can be left with
+> TX_DESC_0_OWN set and buffer_addr_{1,2} pointing at DMA mappings that
+> emac_free_tx_buf() just tore down, while software considers that slot
+> free again. The next successful emac_tx_mem_map() call only rebuilds
+> old_head itself; if the DMA engine auto-advances into the following
+> descriptor once it finishes old_head's packet, it will fetch that
+> stale, already-unmapped address.
+>
+> emac_tx_clean_desc() already treats emac_free_tx_buf() and clearing
+> the descriptor as a pair when reclaiming completed descriptors; do
+> the same in the mapping failure path.
+>
+> Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+> Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+> ---
+>  drivers/net/ethernet/spacemit/k1_emac.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Yes..
+Reviewed-by: Vivian Wang <wangruikang@iscas.ac.cn>
 
-The key agent worked similarly to tlshd - it wasn't the old request-key
-upcall mech.  In fact, tlshd and its netlink interface could easily be
-adapted into this key-agent-as-a-key.
+Much appreciated. I indeed did not consider this.
 
-Its a trade-off that allows you to route the upcall via how keys are
-linked in the calling process, rather than by some defined-in-code domain
-like "same network namespace".
+Also, a minor nit, but it should probably be:
 
-Ben
+Fixes: 86292155bea5 ("net: spacemit: Fix error handling in emac_tx_mem_map()")
+
+Thanks,
+Vivian "dramforeve" Wang
+
