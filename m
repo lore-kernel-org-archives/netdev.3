@@ -1,39 +1,39 @@
 Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1164BE432;
-	Mon, 21 Sep 2026 16:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB19427FBF;
+	Mon, 21 Sep 2026 16:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790007565; cv=none; b=E2VKABv/d5ErtlwOXImyL58HT++qzPkfdezlhLiKe4d4Hqm3GJSsnQXYhLVJJxm37Vqm+pmo1OSgWAn8M1SbniGB8/pTspE0gYCNyZxWvwK/1R+QHoLWtaKIw/ONiP4TzoJ6d/c8qBWp5tehLNQ6e17xJhC7Po2q0qiMgMcR4c4=
+	t=1790007565; cv=none; b=onDsgu9bqIwlCqT0bSe0sIsyntUuNJldLBbtljeQnV+NiSkEWIXtM0AVVfVxaQoU8yle/utN2svJEgnKS+t9+xo9Jj9S7oJxX3dUk+NWLrtj3DZN0dXXR6ReMjhLnXG0ek5IfjTQEn4F4uZNvugr7hRNeHb1dRoRxxD8KVrPet4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790007565; c=relaxed/simple;
-	bh=ZHJtnhUKEiw3qJAn/+DiVKMC8hpWnVdxVd9Z71Ot0EA=;
+	bh=oeCO+v7fNM5KTV5sAaLeGlTHPLLd/AV5Bs9zK/WDLVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH9t4VdqPk4hwaZdNmPyZyy3umR1tTs7zAhPRwsYPq5DzxinH9Uw/QSJb4fkkxPv9T16t7gmdhulXT1v771lAZgOBtjbrXl3LTDgTyu6RrO9wxWSwarrssd27NPU2QmLkPVJZtVy6Ka7wCzYcC82TvUpU7Hq65y4w5nPWvAiFRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=auWwnWWq; arc=none smtp.client-ip=80.241.56.171
+	 MIME-Version; b=qVMd9wstj+WQa2h5jJdoRFUbGUdm0FlZC6+E4B5iUnV/e/XdsZWn+0alrmsY5IsgaT+LK89R0OoXEQbWNJ5gXQrjL+qTen2eW+ixQT6U3/XK5aOY7t/PPQr7klep8p+mTntG4RyjX/AUdjUKhxXbzYw3R1hWViikKKq/avFzHJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SGYJK5B6; arc=none smtp.client-ip=80.241.56.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="auWwnWWq"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SGYJK5B6"
 Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hpT295cbyzMlD8;
-	Mon, 21 Sep 2026 18:19:13 +0200 (CEST)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hpT2J1cR7zMlGJ;
+	Mon, 21 Sep 2026 18:19:20 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1790007553;
+	t=1790007560;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o7D8EFqHEwFH6FhIuTcgoWbFdokmlAiR8iTMMffyM3s=;
-	b=auWwnWWqwemJDClmHQUDI2ijfqHqLTZUwLrjmfaRx2ED3SSRK06r5YiMVNNjbXxuCeV7AD
-	AiCo5MYnCOXSV1b91mwDqVNceyOat980FsJ4tEw5tBruknrP1HP+gg8P2yBaCr8zDlmPjb
-	I2vYh8hojy7exvVNOP44NpA2Q+1jZvKEuwZY1r5MevLBaL/BcYIpmSWeJ/1nnYX7D+P3G/
-	G+16724V8IlRWoltIJn+q8itQecwuXsEuOVScVUEGrtC/fzm8mQAzs2sNj+LehbNyUdgnq
-	T0axVDG4xe0IyauqyHNRHmlLLunYxgRuAK5OuFCkqQrPtGGodYvGpl/YJfuQWg==
+	bh=xsVGfcwq8Q6m8URuxO/CCkmwXeLUMEyKJp/gAc4kZEc=;
+	b=SGYJK5B6Al38O6s3vdB/qL59Le1F3uWGCLOz+v//dSYqdtxkidh4ukqAMI3ZYmMiFOzDZq
+	Zg8MxmQ7fM1Azi3vxQkR2bxewWqTnXGjM/i5vSDQG+1c2uwRFcRyn3VOlmesDvkyVIl05E
+	5sqeEEnuu1O841i6gb23/El13uyr0PDfrm62oq6xB324VtTmH9wP1VyPWlMQ2qfSkCK9lr
+	vtlWIxeF4uUdRQEqeZgSesEzmH7Z7q7ZF6BO3l/ZKPPC7JEH2GXSHMACYfTRJpvhIksxZO
+	nTZ22QgLk8X+2F31iAIBuNfq5ZEsjtezEesVx4Zyh7Vocu0nic6UblfuUVNMbQ==
 From: Simon Polack <spolack+git@mailbox.org>
 To: andrew+netdev@lunn.ch,
 	hkallweit1@gmail.com,
@@ -52,9 +52,9 @@ Cc: f.fainelli@gmail.com,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/3] net: phy: realtek: apply SerDes lane polarity on RTL8261C/D
-Date: Mon, 21 Sep 2026 18:18:16 +0200
-Message-ID: <20260921161817.565185-3-spolack+git@mailbox.org>
+Subject: [PATCH net-next 3/3] net: phy: realtek: add LED support for RTL8261C/D
+Date: Mon, 21 Sep 2026 18:18:17 +0200
+Message-ID: <20260921161817.565185-4-spolack+git@mailbox.org>
 In-Reply-To: <20260921161817.565185-1-spolack+git@mailbox.org>
 References: <20260921161817.565185-1-spolack+git@mailbox.org>
 Precedence: bulk
@@ -64,282 +64,335 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 8iz8wk7bq7cc5bhgtghys8c4kiitfy7c
-X-MBO-RS-ID: 757fa17c40127964923
+X-MBO-RS-META: 6ohhx57ocn7is86qpo9q4b513styo75c
+X-MBO-RS-ID: 9a657350ea5382c8198
 
-Boards such as the Gemtek W1700K (Airoha AN7581) route the USXGMII
-lanes between the SoC and the PHY inverted and describe that in the
-device tree with the generic tx-polarity/rx-polarity properties.
-Nothing in the RTL8261C/D driver reads them and the Airoha PCS has no
-polarity handling of its own, so the inversion is never programmed.
-The copper side negotiates normally while the SerDes never trains and
-the netdev stays NO-CARRIER.
+From: Chad Monroe <chad@monroe.io>
 
-Lane polarity on this part lives behind the same VEND1 SerDes command
-window the RTL822x code already uses for in-band autoneg, in SerDes
-registers 0x0000 (bits 9:8) and 0x00c2 (bits 14:13). The register at
-VEND1 0xc1 that some other Realtek 10G PHYs use for the same purpose
-is not implemented on this die and reads back as zero after a write.
+The RTL8261C/D use the same LED register block as the RTL8221B: one
+control register per LED at VEND2 0xd032 + 2 * index selecting the link
+speeds that light it, activity blink bits in LCR6 and per-LED polarity
+and enable bits in LCR7. Compared to the RTL8221B there are four LEDs
+instead of three, and two more speed bits for 5G and 10G.
 
-Add a read side and a read-modify-write helper to the command window,
-move rtl822x_serdes_write() up next to them so all three are visible
-from the RTL8261 code, apply the polarity from config_init() and select
-PHY_COMMON_PROPS for the property helpers. Only lanes actually described
-in the firmware node are touched; a board without the properties keeps
-whatever the boot loader and the PHY firmware left in place.
+Reuse the existing RTL822X_VND2_* definitions and add the two speed bits
+and the enable bit. The callbacks follow rtl822xb_led_*() closely, with
+two additions:
 
-The bit assignment has been verified on an RTL8261CE (sub-model 0x00,
-PHY ID 0x001cc899): on the W1700K, SerDes register 0x0000 goes from
-0x1403 to 0x1703 and 0x00c2 from 0x0000 to 0x6000, after which VEND1
-0x758d reports the SerDes linked (0x0010 -> 0x001e) and the link comes
-up at 1G and 10G and passes traffic. The RTL8261C, RTL8261D and
-RTL8261D_VM share rtl8261x_config_init() and get the same treatment,
-but have not been tested with inverted lanes.
+ - led_polarity_set() honours active-low LEDs. The polarity bit in LCR7
+   doubles as the manual on/off level in led_brightness_set(), so the
+   configured polarity is cached in the private data and restored by
+   led_hw_control_set().
 
-Assisted-by: LLM
+ - led_hw_control_set() and led_brightness_set() set the output enable
+   bit, which firmware normally leaves set already.
+
+The callbacks duplicate most of rtl822xb_led_*(), differing only in the
+LED count, the speed mask and the LCR7 handling. Making the RTL8221B code
+table-driven and sharing it would be the right end state, but that
+touches a working driver and wants testing on an RTL8221B, so it is left
+for a follow-up series.
+
+The callbacks are wired to the RTL8261C_CG and RTL8261CE_CG entries,
+which between them cover the parts this was tested on. RTL8261D_VM is
+left out for lack of hardware.
+
+Tested on a Gemtek W1700K (Airoha AN7581) with an RTL8261CE: index 2
+drives a yellow and index 3 a green LED on each 10G port. Under hardware
+control the link speed bits, the activity blink and the combined
+TRIGGER_NETDEV_LINK all take effect and offloading is confirmed through
+the netdev trigger. The polarity bit was verified to be active-high when
+clear on that board. Also tested on AN7581 and MT7988A boards with an
+RTL8261C and RTL8261D.
+
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Co-developed-by: Simon Polack <spolack+git@mailbox.org>
 Signed-off-by: Simon Polack <spolack+git@mailbox.org>
+Assisted-by: LLM
 ---
- drivers/net/phy/realtek/Kconfig        |   1 +
- drivers/net/phy/realtek/realtek_main.c | 174 +++++++++++++++++++++----
- 2 files changed, 148 insertions(+), 27 deletions(-)
+ drivers/net/phy/realtek/realtek_main.c | 228 +++++++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
 
-diff --git a/drivers/net/phy/realtek/Kconfig b/drivers/net/phy/realtek/Kconfig
-index a741b34d193e..a9272aebe26d 100644
---- a/drivers/net/phy/realtek/Kconfig
-+++ b/drivers/net/phy/realtek/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config REALTEK_PHY
- 	tristate "Realtek PHYs"
-+	select PHY_COMMON_PROPS
- 	select PHY_PACKAGE
- 	help
- 	  Currently supports RTL821x/RTL822x and fast ethernet PHYs
 diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 1e670638dd1c..04d397f0a2d8 100644
+index 04d397f0a2d8..b1f020aa7760 100644
 --- a/drivers/net/phy/realtek/realtek_main.c
 +++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -13,9 +13,11 @@
- #include <linux/firmware.h>
- #include <linux/of.h>
- #include <linux/phy.h>
-+#include <linux/phy/phy-common-props.h>
- #include <linux/pm_wakeirq.h>
- #include <linux/netdevice.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/delay.h>
- #include <linux/clk.h>
- #include <linux/string_choices.h>
-@@ -164,6 +166,7 @@
- #define   RTL822X_VND1_SERDES_INBAND_DISABLE	0x71d0
- #define   RTL822X_VND1_SERDES_INBAND_ENABLE	0x70d0
- #define RTL822X_VND1_SERDES_DATA		0x7589
-+#define RTL822X_VND1_SERDES_RDATA		0x758a
+@@ -183,12 +183,15 @@
+ #define RTL822X_VND2_LCR_LINK_100		BIT(1)
+ #define RTL822X_VND2_LCR_LINK_1000		BIT(2)
+ #define RTL822X_VND2_LCR_LINK_2500		BIT(5)
++#define RTL822X_VND2_LCR_LINK_5000		BIT(6)
++#define RTL822X_VND2_LCR_LINK_10000		BIT(4)
  
- #define RTL822X_VND2_TO_PAGE(reg)		((reg) >> 4)
- #define RTL822X_VND2_TO_PAGE_REG(reg)		(16 + (((reg) & GENMASK(3, 0)) >> 1))
-@@ -271,6 +274,18 @@
- #define RTL8261X_INT_ALDPS_CHG		BIT(9)
- #define RTL8261X_INT_JABBER		BIT(10)
+ #define RTL822X_VND2_LCR6			0xd040
+ #define RTL822X_VND2_LED_ACT(x)			BIT(x)
  
-+/* SerDes lane polarity, behind the VEND1 SerDes command window. This is not
-+ * the global inversion bit that other Realtek 10G PHYs use; the bit
-+ * assignment below has only been verified on an RTL8261CE reporting PHY ID
-+ * 0x001cc899.
-+ */
-+#define RTL8261X_SERDES_POL_REG0	0x0000
-+#define  RTL8261X_SERDES_POL_REG0_TX	BIT(8)
-+#define  RTL8261X_SERDES_POL_REG0_RX	BIT(9)
-+#define RTL8261X_SERDES_POL_REGC2	0x00c2
-+#define  RTL8261X_SERDES_POL_REGC2_TX	BIT(14)
-+#define  RTL8261X_SERDES_POL_REGC2_RX	BIT(13)
-+
- #define RTL8261X_INT_MASK_DEFAULT	(RTL8261X_INT_AUTONEG_DONE | \
- 					 RTL8261X_INT_LINK_CHG | \
- 					 RTL8261X_INT_AUTONEG_ERROR | \
-@@ -708,18 +723,147 @@ static int rtl8261x_config_aneg(struct phy_device *phydev)
- 	return 0;
+ #define RTL822X_VND2_LCR7			0xd044
+ #define RTL822X_VND2_LED_POLAR(x)		BIT(x)
++#define RTL822X_VND2_LED_EN(x)			BIT((x) + 4)
+ 
+ #define RTL8224_MII_RTCT			0x11
+ #define RTL8224_MII_RTCT_ENABLE			BIT(0)
+@@ -305,6 +308,7 @@
+ #define FW_SUB_MAGIC_8261D		0x32363144
+ #define RTL8261X_POLL_TIMEOUT_MS	100
+ #define RTL8261X_MAX_MMD_DEV		31
++#define RTL8261X_LED_COUNT		4
+ 
+ #define RTL8261C_CE_FW_NAME	"rtl_nic/rtl8261c.bin"
+ #define RTL8261D_FW_NAME	"rtl_nic/rtl8261d.bin"
+@@ -364,6 +368,11 @@ struct rtl8261x_priv {
+ 	const char *fw_name;
+ 	u32 fw_sub_magic;
+ 	bool fw_loaded;
++	/* LCR7's polarity bit doubles as the manual on/off level in
++	 * led_brightness_set(), so the configured polarity is kept here
++	 * to restore it whenever hardware control is set up again.
++	 */
++	u8 led_active_low;
+ };
+ 
+ static int rtl821x_read_page(struct phy_device *phydev)
+@@ -2530,6 +2539,215 @@ static int rtl822xb_led_brightness_set(struct phy_device *phydev, u8 index,
+ 					  RTL822X_VND2_LED_POLAR(index));
  }
  
-+static int rtl822x_serdes_wait(struct phy_device *phydev)
++static int rtl8261x_led_hw_is_supported(struct phy_device *phydev, u8 index,
++					unsigned long rules)
 +{
-+	int poll;
++	const unsigned long act_mask = BIT(TRIGGER_NETDEV_RX) |
++				       BIT(TRIGGER_NETDEV_TX);
++	const unsigned long link_mask = BIT(TRIGGER_NETDEV_LINK) |
++					BIT(TRIGGER_NETDEV_LINK_10) |
++					BIT(TRIGGER_NETDEV_LINK_100) |
++					BIT(TRIGGER_NETDEV_LINK_1000) |
++					BIT(TRIGGER_NETDEV_LINK_2500) |
++					BIT(TRIGGER_NETDEV_LINK_5000) |
++					BIT(TRIGGER_NETDEV_LINK_10000);
 +
-+	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
-+					 RTL822X_VND1_SERDES_CMD, poll,
-+					 !(poll & RTL822X_VND1_SERDES_CMD_BUSY),
-+					 500, 100000, false);
++	if (index >= RTL8261X_LED_COUNT)
++		return -EINVAL;
++
++	/* Filter out any other unsupported triggers. */
++	if (rules & ~(link_mask | act_mask))
++		return -EOPNOTSUPP;
++
++	/* RX and TX are not differentiated, they are not possible
++	 * without combination with a link trigger.
++	 */
++	if ((rules & act_mask) && !(rules & link_mask))
++		return -EOPNOTSUPP;
++
++	return 0;
 +}
 +
-+static int rtl822x_serdes_read(struct phy_device *phydev, u16 reg)
++static int rtl8261x_led_hw_control_get(struct phy_device *phydev, u8 index,
++				       unsigned long *rules)
 +{
-+	int ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_ADDR, reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_CMD,
-+			    RTL822X_VND1_SERDES_CMD_BUSY);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = rtl822x_serdes_wait(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	return phy_read_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_RDATA);
-+}
-+
-+static int rtl822x_serdes_write(struct phy_device *phydev, u16 reg, u16 val)
-+{
-+	int ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_ADDR, reg);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_DATA, val);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_CMD,
-+			    RTL822X_VND1_SERDES_CMD_WRITE |
-+			    RTL822X_VND1_SERDES_CMD_BUSY);
-+	if (ret < 0)
-+		return ret;
-+
-+	return rtl822x_serdes_wait(phydev);
-+}
-+
-+static int rtl822x_serdes_modify(struct phy_device *phydev, u16 reg,
-+				 u16 mask, u16 set)
-+{
++	const u16 all_links = RTL822X_VND2_LCR_LINK_10 |
++			      RTL822X_VND2_LCR_LINK_100 |
++			      RTL822X_VND2_LCR_LINK_1000 |
++			      RTL822X_VND2_LCR_LINK_2500 |
++			      RTL822X_VND2_LCR_LINK_5000 |
++			      RTL822X_VND2_LCR_LINK_10000;
 +	int val;
 +
-+	val = rtl822x_serdes_read(phydev, reg);
++	if (index >= RTL8261X_LED_COUNT)
++		return -EINVAL;
++
++	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LED(index));
 +	if (val < 0)
 +		return val;
 +
-+	if ((val & mask) == set)
-+		return 0;
++	if (val & RTL822X_VND2_LCR_LINK_10)
++		__set_bit(TRIGGER_NETDEV_LINK_10, rules);
 +
-+	return rtl822x_serdes_write(phydev, reg, (val & ~mask) | set);
++	if (val & RTL822X_VND2_LCR_LINK_100)
++		__set_bit(TRIGGER_NETDEV_LINK_100, rules);
++
++	if (val & RTL822X_VND2_LCR_LINK_1000)
++		__set_bit(TRIGGER_NETDEV_LINK_1000, rules);
++
++	if (val & RTL822X_VND2_LCR_LINK_2500)
++		__set_bit(TRIGGER_NETDEV_LINK_2500, rules);
++
++	if (val & RTL822X_VND2_LCR_LINK_5000)
++		__set_bit(TRIGGER_NETDEV_LINK_5000, rules);
++
++	if (val & RTL822X_VND2_LCR_LINK_10000)
++		__set_bit(TRIGGER_NETDEV_LINK_10000, rules);
++
++	if ((val & all_links) == all_links)
++		__set_bit(TRIGGER_NETDEV_LINK, rules);
++
++	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR6);
++	if (val < 0)
++		return val;
++
++	if (val & RTL822X_VND2_LED_ACT(index)) {
++		__set_bit(TRIGGER_NETDEV_RX, rules);
++		__set_bit(TRIGGER_NETDEV_TX, rules);
++	}
++
++	return 0;
 +}
 +
-+/* The host-side SerDes lanes are only inverted when the board says so.
-+ * Lanes the firmware node does not describe are left as the boot loader
-+ * and PHY firmware left them.
-+ */
-+static int rtl8261x_config_serdes_polarity(struct phy_device *phydev)
++static int rtl8261x_led_hw_control_set(struct phy_device *phydev, u8 index,
++				       unsigned long rules)
 +{
-+	bool tx_present, rx_present, tx_invert = false, rx_invert = false;
-+	u16 reg0_mask = 0, reg0_set = 0, regc2_mask = 0, regc2_set = 0;
-+	struct fwnode_handle *fwnode = dev_fwnode(&phydev->mdio.dev);
-+	const char *mode = phy_modes(phydev->interface);
-+	unsigned int pol;
++	struct rtl8261x_priv *priv = phydev->priv;
++	u16 lcr7 = RTL822X_VND2_LED_EN(index);
++	u16 val = 0;
++	bool act;
 +	int ret;
 +
-+	tx_present = fwnode_property_present(fwnode, "tx-polarity");
-+	rx_present = fwnode_property_present(fwnode, "rx-polarity");
-+	if (!tx_present && !rx_present)
-+		return 0;
++	if (index >= RTL8261X_LED_COUNT)
++		return -EINVAL;
 +
-+	if (tx_present) {
-+		ret = phy_get_manual_tx_polarity(fwnode, mode, &pol);
-+		if (ret)
-+			return ret;
-+		tx_invert = pol == PHY_POL_INVERT;
-+	}
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
++	    test_bit(TRIGGER_NETDEV_LINK_10, &rules))
++		val |= RTL822X_VND2_LCR_LINK_10;
 +
-+	if (rx_present) {
-+		ret = phy_get_manual_rx_polarity(fwnode, mode, &pol);
-+		if (ret)
-+			return ret;
-+		rx_invert = pol == PHY_POL_INVERT;
-+	}
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
++	    test_bit(TRIGGER_NETDEV_LINK_100, &rules))
++		val |= RTL822X_VND2_LCR_LINK_100;
 +
-+	if (tx_present) {
-+		reg0_mask |= RTL8261X_SERDES_POL_REG0_TX;
-+		regc2_mask |= RTL8261X_SERDES_POL_REGC2_TX;
-+		if (tx_invert) {
-+			reg0_set |= RTL8261X_SERDES_POL_REG0_TX;
-+			regc2_set |= RTL8261X_SERDES_POL_REGC2_TX;
-+		}
-+	}
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
++	    test_bit(TRIGGER_NETDEV_LINK_1000, &rules))
++		val |= RTL822X_VND2_LCR_LINK_1000;
 +
-+	if (rx_present) {
-+		reg0_mask |= RTL8261X_SERDES_POL_REG0_RX;
-+		regc2_mask |= RTL8261X_SERDES_POL_REGC2_RX;
-+		if (rx_invert) {
-+			reg0_set |= RTL8261X_SERDES_POL_REG0_RX;
-+			regc2_set |= RTL8261X_SERDES_POL_REGC2_RX;
-+		}
-+	}
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
++	    test_bit(TRIGGER_NETDEV_LINK_2500, &rules))
++		val |= RTL822X_VND2_LCR_LINK_2500;
 +
-+	ret = rtl822x_serdes_modify(phydev, RTL8261X_SERDES_POL_REG0,
-+				    reg0_mask, reg0_set);
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
++	    test_bit(TRIGGER_NETDEV_LINK_5000, &rules))
++		val |= RTL822X_VND2_LCR_LINK_5000;
++
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules) ||
++	    test_bit(TRIGGER_NETDEV_LINK_10000, &rules))
++		val |= RTL822X_VND2_LCR_LINK_10000;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
++			    RTL822X_VND2_LED(index), val);
 +	if (ret < 0)
 +		return ret;
 +
-+	return rtl822x_serdes_modify(phydev, RTL8261X_SERDES_POL_REGC2,
-+				     regc2_mask, regc2_set);
++	act = test_bit(TRIGGER_NETDEV_RX, &rules) ||
++	      test_bit(TRIGGER_NETDEV_TX, &rules);
++
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR6,
++			     RTL822X_VND2_LED_ACT(index), act ?
++			     RTL822X_VND2_LED_ACT(index) : 0);
++	if (ret < 0)
++		return ret;
++
++	/* Enable the output and restore the configured polarity, which
++	 * led_brightness_set() may have used as a level.
++	 */
++	if (priv->led_active_low & BIT(index))
++		lcr7 |= RTL822X_VND2_LED_POLAR(index);
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR7,
++			      RTL822X_VND2_LED_EN(index) |
++			      RTL822X_VND2_LED_POLAR(index), lcr7);
 +}
 +
- static int rtl8261x_config_init(struct phy_device *phydev)
- {
- 	struct rtl8261x_priv *priv = phydev->priv;
++static int rtl8261x_led_brightness_set(struct phy_device *phydev, u8 index,
++				       enum led_brightness value)
++{
++	struct rtl8261x_priv *priv = phydev->priv;
++	u16 lcr7 = RTL822X_VND2_LED_EN(index);
++	bool active_low, on;
 +	int ret;
- 
- 	/* The firmware parameters are preserved across IEEE soft resets and
- 	 * suspend/resume cycles. Reloading is only necessary after a power
- 	 * cycle or hard reset.
- 	 */
--	if (priv->fw_name && !priv->fw_loaded)
--		return rtl8261x_fw_load(phydev);
-+	if (priv->fw_name && !priv->fw_loaded) {
-+		ret = rtl8261x_fw_load(phydev);
-+		if (ret)
-+			return ret;
++
++	if (index >= RTL8261X_LED_COUNT)
++		return -EINVAL;
++
++	/* clear HW LED setup */
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
++			    RTL822X_VND2_LED(index), 0);
++	if (ret < 0)
++		return ret;
++
++	/* clear HW LED blink */
++	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR6,
++				 RTL822X_VND2_LED_ACT(index));
++	if (ret < 0)
++		return ret;
++
++	/* With no link condition selected the output sits at its idle
++	 * level, so inverting the polarity turns the LED on.
++	 */
++	active_low = priv->led_active_low & BIT(index);
++	on = value != LED_OFF;
++	if (on != active_low)
++		lcr7 |= RTL822X_VND2_LED_POLAR(index);
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR7,
++			      RTL822X_VND2_LED_EN(index) |
++			      RTL822X_VND2_LED_POLAR(index), lcr7);
++}
++
++static int rtl8261x_led_polarity_set(struct phy_device *phydev, int index,
++				     unsigned long modes)
++{
++	struct rtl8261x_priv *priv = phydev->priv;
++	bool active_low = false;
++	u32 mode;
++
++	if (index >= RTL8261X_LED_COUNT)
++		return -EINVAL;
++
++	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
++		switch (mode) {
++		case PHY_LED_ACTIVE_LOW:
++			active_low = true;
++			break;
++		case PHY_LED_ACTIVE_HIGH:
++			break;
++		default:
++			return -EINVAL;
++		}
 +	}
- 
--	return 0;
-+	return rtl8261x_config_serdes_polarity(phydev);
- }
- 
- static int rtl821x_probe(struct phy_device *phydev)
-@@ -2120,30 +2264,6 @@ static int rtl822xb_config_init(struct phy_device *phydev)
- 	return rtl822x_set_serdes_option_mode(phydev, false);
- }
- 
--static int rtl822x_serdes_write(struct phy_device *phydev, u16 reg, u16 val)
--{
--	int ret, poll;
--
--	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_ADDR, reg);
--	if (ret < 0)
--		return ret;
--
--	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_DATA, val);
--	if (ret < 0)
--		return ret;
--
--	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, RTL822X_VND1_SERDES_CMD,
--			    RTL822X_VND1_SERDES_CMD_WRITE |
--			    RTL822X_VND1_SERDES_CMD_BUSY);
--	if (ret < 0)
--		return ret;
--
--	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
--					 RTL822X_VND1_SERDES_CMD, poll,
--					 !(poll & RTL822X_VND1_SERDES_CMD_BUSY),
--					 500, 100000, false);
--}
--
- static int rtl822x_config_inband(struct phy_device *phydev, unsigned int modes)
++
++	if (active_low)
++		priv->led_active_low |= BIT(index);
++	else
++		priv->led_active_low &= ~BIT(index);
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_LCR7,
++			      RTL822X_VND2_LED_POLAR(index),
++			      active_low ? RTL822X_VND2_LED_POLAR(index) : 0);
++}
++
+ static int rtl822xb_led_hw_is_supported(struct phy_device *phydev, u8 index,
+ 					unsigned long rules)
  {
- 	return rtl822x_serdes_write(phydev, RTL822X_VND1_SERDES_ADDR_AUTONEG,
+@@ -3494,6 +3712,11 @@ static struct phy_driver realtek_drvs[] = {
+ 		.soft_reset		= genphy_c45_pma_soft_reset,
+ 		.suspend		= genphy_c45_pma_suspend,
+ 		.resume			= genphy_c45_pma_resume,
++		.led_brightness_set	= rtl8261x_led_brightness_set,
++		.led_hw_is_supported	= rtl8261x_led_hw_is_supported,
++		.led_hw_control_get	= rtl8261x_led_hw_control_get,
++		.led_hw_control_set	= rtl8261x_led_hw_control_set,
++		.led_polarity_set	= rtl8261x_led_polarity_set,
+ 	}, {
+ 		PHY_ID_MATCH_EXACT(RTL_8261CE_CG),
+ 		.name			= "Realtek RTL8261CE 10Gbps PHY",
+@@ -3507,6 +3730,11 @@ static struct phy_driver realtek_drvs[] = {
+ 		.soft_reset		= genphy_c45_pma_soft_reset,
+ 		.suspend		= genphy_c45_pma_suspend,
+ 		.resume			= genphy_c45_pma_resume,
++		.led_brightness_set	= rtl8261x_led_brightness_set,
++		.led_hw_is_supported	= rtl8261x_led_hw_is_supported,
++		.led_hw_control_get	= rtl8261x_led_hw_control_get,
++		.led_hw_control_set	= rtl8261x_led_hw_control_set,
++		.led_polarity_set	= rtl8261x_led_polarity_set,
+ 	}, {
+ 		PHY_ID_MATCH_EXACT(RTL_8261D_VM),
+ 		.name			= "Realtek RTL8261D_VM 10Gbps PHY",
 -- 
 2.55.0
 
