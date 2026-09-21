@@ -1,189 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDB03F44FC;
-	Mon, 21 Sep 2026 23:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E60423A72;
+	Mon, 21 Sep 2026 23:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032046; cv=none; b=p3WG0FZuk84uAuJu7O3vyRRuZOmeJfIbOKX7em/8LpS2qPzb1zR7V6fT6vumqEwoX0sNH1/WS0WkbMzkfZFLNcggmD7PRyvTfFNyI/u9NpJ12jRl2GEtPzcwu3zoWWCx5wBzBLB+nfbNoo3SsSQU7Qt0rxdx9KihXjswNafERYE=
+	t=1790032368; cv=none; b=rpHrRdiHfgwVToXaEnnbQXZ2d+vY/yp4+b2iy/SHDj1NP+JS4qtPg7ZGp2a/lwi1d46HjWzMmS2EU+WS5IloJdYWqD3PuqGh2OM0YAhgwWKsG9taj77aX2gBKpIfmHXvhV3oVluP4i2WybsuINDsusKF2FETza303G0owVTRKYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032046; c=relaxed/simple;
-	bh=Ee1m8mvmXFOEfyP1iDT8QKt8AH3zJmufzdxQyWmw6ag=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cv6h/PgCy/vjhAz5cYMGY7llbW7wDBK4s8PL/iuLzqhkX85FA1jwdErYU7wSHLcOlegkUX7kzdNg0+jifFY3tS4MjKBIGXRQwifHKIFjbeahdS3u/c3Dd5v8UoTfy8MJdnERxbVu7JwGGW/8bRFGlCp7yMztN6aB604WSbhgnnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CEobv4f5; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790032368; c=relaxed/simple;
+	bh=8bmo6rME6ZO+fpjk9bMmruyHxVq8PEsU9d81TXH5aU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gJBD8UwMIVlKdLjqNT19+t8Qkx/ko7tIGZJoMz2v7X625zbw3NclQfSFxH5MVizIbhJegJbk8nPFyVoYCIumc+FYO8rmKfJPz26qQjgLuQoowzLknneoX13DqH6cpm5hNiISVe1V9CYmynAMOCEFJyzN6qOrm5EUn3w8hQE3fF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFsfygKc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CEobv4f5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790032033; x=1821568033;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Ee1m8mvmXFOEfyP1iDT8QKt8AH3zJmufzdxQyWmw6ag=;
-  b=CEobv4f5dPkMigVV2J0OB0+qqai1PAjlYUQKrmC1VWDuvPh1lBcdMq+Q
-   /bBjYGyzfByCdGIu2yA3suax5hGrgV+eu92yyC21e2sA8OUT9TtEewPWi
-   BH7jHrjI2oz371SCO9tO0jTz/wCxT851DNwkoyJlwppyRvYGINvP1f6Ab
-   US0MLePgn86VP1qIrmZGI3RLiW55VK8kRPX8qW38ZhkMm/QoHfttLALPU
-   0uQEpBdorpetGkFsupSAXkmbE6M+j+EBb5G+g5UyZ/p1cWh7trApqpGio
-   vdWiA4bgCoESlGSeoeOzyGVIQULvQVDHtgwyZaCTDYW/Cg4KXyt6mAGLY
-   A==;
-X-CSE-ConnectionGUID: gRmm2iq2S5+J6vUDFwFoVw==
-X-CSE-MsgGUID: ITntlJtNRqCQrvgOZIz7MA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90455576"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="90455576"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 16:07:12 -0700
-X-CSE-ConnectionGUID: N/l7hms9SMCqnk9FsLi47A==
-X-CSE-MsgGUID: NmOE4VuCSWGLlVfJQ64O9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="299106627"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.109.234]) ([10.125.109.234])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 16:07:10 -0700
-Message-ID: <4d46bd37-1016-41a9-a810-66144be71ed4@intel.com>
-Date: Mon, 21 Sep 2026 16:07:09 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFsfygKc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6371F000FF;
+	Mon, 21 Sep 2026 23:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790032366;
+	bh=TzsqyVxFGovRsQqLM0aksXwwYMwWK+mbmw974hkYZZI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aFsfygKckNTllnVd2Thy5OKqD4HLS+HaZ0sApdLD5Hh8ZLUHK5lvaMBQKewlzKnZe
+	 q5uhw7DCYHJvvKFm1DcDShApHynO0eV/7gL7jfhT4zWyLuUWR6RQiKa3kFwZFy6EGO
+	 8HV0tXlRRPOeAsIvQiFtTik0sDrZLZRjvhZ7SbTJHH8nPvcbvXarDAPBM9twbovHeY
+	 FERCn4imiP1SiXUCakw54Jg7epadHvWu0QUuM+l7Sb8F3GXC6euj+y6vZHgBreUZha
+	 bGH6mnMszgEf3Jyy97axUGuMHmGZbm7/ct7zPFhoGRKb5OxQuKpOVKN5y9Aj0q5ojA
+	 MwbK3qPChhRZA==
+Date: Mon, 21 Sep 2026 16:12:45 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sagi Maimon <maimon.sagi@gmail.com>
+Cc: Richard Cochran <richardcochran@gmail.com>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Jiri Pirko
+ <jiri@resnulli.us>, Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Sagi Maimon
+ <sagi.maimon@adtran.com>
+Subject: Re: [PATCH net-next v15 0/4] ptp: ocp: add TAP CPLD support for
+ ADVA TimeCard X1
+Message-ID: <20260921161245.7ff10aee@kernel.org>
+In-Reply-To: <20260916153242.157171-1-sagi.maimon@adtran.com>
+References: <20260916153242.157171-1-sagi.maimon@adtran.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/4] cxl/memdev: Add support for multi PF devices
-To: alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
- rafael@kernel.org
-References: <20260921191239.4249-1-alucerop@amd.com>
- <20260921191239.4249-4-alucerop@amd.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260921191239.4249-4-alucerop@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Wed, 16 Sep 2026 18:32:38 +0300 Sagi Maimon wrote:
+> The ADVA TimeCard X1 (PCI device 0x0410) carries a Lattice MachXO3 CPLD
+> on the TMC I2C bus.  This series adds access to it and an update path
+> through devlink flash.
 
-
-On 9/21/26 12:12 PM, alucerop@amd.com wrote:
-> From: Alejandro Lucero <alucerop@amd.com>
-> 
-> A PCI device can present multiple Physical Functions(PFs) but the CXL
-> specs restrict to the first one, PF0, the discovery and management of
-> CXL capabilities accessed through a PF0 BAR. Other non-PF0 PFs need to
-> obtain the CXL.mem range to work with somehow.
-> 
-> Add a device link between the cxl region a PF0 memdev is attached to and
-> the non-PF0 wanting to use the CXL region. A CXL region release will
-> trigger such a PF to be released from its driver first.
-> 
-> PF0 being unbound from its driver triggers memdev and region release
-> leading to non-PF0s being unbound first keeping the CXL memory use safe.
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> ---
->  drivers/cxl/core/memdev.c | 66 +++++++++++++++++++++++++++++++++++++++
->  include/cxl/cxl.h         |  1 +
->  2 files changed, 67 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-> index b3419df586b9..67be02faa7e1 100644
-> --- a/drivers/cxl/core/memdev.c
-> +++ b/drivers/cxl/core/memdev.c
-> @@ -802,6 +802,72 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
->  	return ERR_PTR(rc);
->  }
->  
-> +static int match_memdev_by_parent_device(struct device *dev, const void *data)
-> +{
-> +	const struct device *pf_dev = data;
-> +	struct cxl_memdev *cxlmd;
-> +
-> +	if (!is_cxl_memdev(dev))
-> +		return 0;
-> +
-> +	cxlmd = to_cxl_memdev(dev);
-> +	return (cxlmd->cxlds->dev == pf_dev);
-> +}
-> +
-> +/**
-> + * cxl_get_pf0_memdev - register a device link with the region PF0 memdev is
-> + * attached to. The region release will imply the link consumer to be unbound
-> + * from its driver first.
-> + *
-> + * @pf0: device to use for finding target memdev.
-> + * @pfx: device to link to PF0's memdev region, the link consumer.
-> + * @range: to be set with the PF0's memdev range.
-> + *
-> + * Return: PF0 memdev pointer or error.
-> + */
-> +struct cxl_memdev *cxl_get_pf0_memdev(struct device *pf0, struct device *pfx,
-
-cxl_link_to_pf0_region() may be a better name? cxl_get_pf0_memdev() hides the intention of linking.
-
-> +				      struct range *range)
-> +{
-> +	struct cxl_attach_region *attach;
-> +	struct cxl_memdev *cxlmd;
-> +	struct device *mem_dev __free(put_device) =
-> +		bus_find_device(&cxl_bus_type, NULL, pf0,
-> +				match_memdev_by_parent_device);
-> +
-> +	if (!mem_dev)
-> +		return ERR_PTR(-ENODEV);
-> +
-> +	cxlmd = to_cxl_memdev(mem_dev);
-> +
-> +	/*
-> +	 * we got the cxl_memdev and the implicit get_device in bus_find_device
-> +	 * makes the next steps safe.
-> +	 */
-> +	attach = container_of(cxlmd->attach, struct cxl_attach_region, attach);
-> +
-> +	/*
-> +	 * The cxlmd object does exist and it can be found in the cxl bus after
-> +	 * creation but before attach probe setting the proper HPA range. If so,
-> +	 * the caller will need to try later.
-> +	 */
-> +	if (attach->hpa_range.end == -1)
-
-CXL_RESOURCE_NONE instead of -1?
-
-> +		return ERR_PTR(-EPROBE_DEFER);
-> +
-> +	/*
-> +	 * Create the device link between the region and the consumer device.
-> +	 * AUTOREMOVE_CONSUMER means the link implicitly to be removed if the
-> +	 * consumer unbinds first with no consequences for the supplier.
-> +	 */
-> +	if (!device_link_add(pfx, &attach->cxlr->dev, DL_FLAG_AUTOREMOVE_CONSUMER))
-> +		return ERR_PTR(-ENODEV);
-> +
-> +	range->start = attach->hpa_range.start;
-> +	range->end = attach->hpa_range.end;
-> +
-> +	return to_cxl_memdev(mem_dev);
-
-Should we bother returning cxl_memdev? Does the SFC driver consumer it at all?
-
-DJ
-
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_get_pf0_memdev, "CXL");
-> +
->  static long __cxl_memdev_ioctl(struct cxl_memdev *cxlmd, unsigned int cmd,
->  			       unsigned long arg)
->  {
-> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
-> index 802b143de83d..e3b1e5be95f8 100644
-> --- a/include/cxl/cxl.h
-> +++ b/include/cxl/cxl.h
-> @@ -228,4 +228,5 @@ struct cxl_memdev *devm_cxl_probe_mem(struct cxl_dev_state *cxlds,
->  				      struct range *range);
->  
->  int cxl_set_capacity(struct cxl_dev_state *cxlds, u64 capacity);
-> +struct cxl_memdev *cxl_get_pf0_memdev(struct device *pf0, struct device *pfx, struct range *range);
->  #endif /* __CXL_CXL_H__ */
-
+Good enough for me, please post incremental follow up on any of the AI
+nit picks if necessary
