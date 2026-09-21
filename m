@@ -1,217 +1,278 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14914534AD
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C5A439F77;
+	Mon, 21 Sep 2026 08:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789979773; cv=none; b=Xd7gGMs6zHjB680TDL9a20WvI0h1BRPcTOJcWgWnPJRTFMw4UcHMEla97BfnPXRuIeGWyDOWuT8d/LPqolHCLrIj+VpqfUxrF3nD2eCYRDXyv7y9K0lNkwNZFJXL1Ogsu1J7poE7PhgC1qdd/sNHQUMsMATQ3iPnzllArKSYlkY=
+	t=1789979830; cv=none; b=YT8Q2tF4N/PXFFHml56t93isJszpoZr4s9YZa+dcPSfgLDuv4vY4MerbvXyRv1OV126sqHj4+EKlwJXQlastmhfARQ9INcZFxIEgtXcOIdGx4kcrJlFrBk6+kzVPpAo7ys6ZzEug7U9YSNYrvFhH9kF0VWZMPPu/DhxwkZvZgFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789979773; c=relaxed/simple;
-	bh=OdBNgb0PtwM4DWzdp2s9eZOPrAztVKM8tUWsHZwHw8U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mkeodnvzdJLlSXn84m3VZLOm0c648a+p2NbvO6mhnal7nq0QC/USOWwcIcdPic37rqlCklHb97Irj6VAEe27l7aaqmvud1XpZsWHxH1+mgfvWbV4AAYwcnjA3dZ2t2zPAGvBG494uQSN3Q5CBRBcHlz1JiAxzIBTzqiygmG/7yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=geTVWfUD; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789979830; c=relaxed/simple;
+	bh=TcQzOZNfLDzV2zhe9f7FPc4PwujpqnLn4gLODXQtmqM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FfyHZa6B1Ta6v9WfN59wjJAmMyTpYEMI8tc2OOKKElveGR7WNCJBeVESAjHND6pgGa9x8Q9wwIrOZ5PtDKoTNv9B6eER+j+WsbVTeSlxyFGH9eIbUTVyEuD/GtKTFsAx2WyEX/v+7VykJ/ZOEFawe7jq3vP/kFupHMzRu49OPSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJCiDh6j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="geTVWfUD"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39dacf053eeso1914893a91.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 01:36:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789979768; x=1790584568; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vDdpnAedBCd+PkUW1BZBEIgcTVJ4n1or/kvNujyh01k=;
-        b=geTVWfUDPvO4sRwzoKMrVpAPcgnVejpzmaiJCO/ka5IJbvYHjycUSqHUPw0s7lp3Ni
-         pxVcX5r7db5tLbLCGM4FEHAQxC3dVCqHnOlu4GH5YirYcWr3UHKh0+FPlw1qvvnzmwqm
-         NwfbwS/Fet9NP8HAMBUsAV2lcZlqpKOgvo0ZqqiU44FEGd6vY+jTtheCkIPo8dICdNLK
-         7iFD2jl31SzoamZa6nv/KWqVGaMMUBA8rcxKNpGUh9vAzVseSUuExI0Pm/DwIYbxsv89
-         oG/TlkO03GPkuCP8MP8spqj5KveBl7sVKhCOF/XVIOHRelDH+CJ8HYiI/6VgverbDGHr
-         5nIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789979768; x=1790584568;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vDdpnAedBCd+PkUW1BZBEIgcTVJ4n1or/kvNujyh01k=;
-        b=EkIXxZ2vzqc7m3g/LwxWY+Mgj48dyuM4/T1Jvqfiv7xvIhig669+8qLmZTuIeJPvWV
-         qG+EbckLNiVvVHLRL1rKWqwRNRxcbeCamf6QbSQIR12kGjzW/alAeC/ZbXNlR7fW9Iox
-         eP0zWnCZYyM/T1svy/EFnjBfFjdbgGY9i2BfJBdeFOR3bnZ7lzONT97SpaHaWE6pLKsy
-         MIgca81OegFSyLx6s1uErhDV+HzNoFV5yZbFnoGgj0eBizchtgXqMvQWmxdwdDscnwxp
-         r/HJBdG3d9KHaUdQvfHmMzBQs6eoSZr/m2wLpnm7IRK6lFdoE8qRIyRpXsetmj3mMvmL
-         Iwsg==
-X-Gm-Message-State: AFuF++mF3trIJv4PNwnDzZrDVg3bH03FHH8Cs6POiBb4Hoobup0+y4xd
-	6S4jQtTPy/3YxWetX8rh1se+0hayo8snD8oVSqT3ND+saGqPHCs2cGb3XDOLLUiE
-X-Gm-Gg: AYBFou0rBSQBbnFvxHgYfgl/Fb4kkgNumhY2ifomoBEF+2zY09QVxCTHZPOeqlzYBfw
-	F3Bi2QV6SpWgqpWqmXva5AIhvhhIpwGbNwoGW4z7zah7FVrPcpZW4JQNBYmuByCcYUvBLY0b/99
-	0ejd2KeJRm5JCXPZhSN8HOhMaU9Q8mjiA4wx+VXP2AcAaaEF+89qPpAG9ERcTta3q6v+Q/LOBup
-	EoEmDBxHV8iKHO9W5ilQuyE3nNIVyVs3pLqi8goHCXFyIOKX4wTaJAmg8pAbVjUyXyYgSKBvUTq
-	zE0zNLB3NVoOWUsVbsigjzxMY5+M6782WOB1fJDgn/whFjAOUKmo4cAp5OnpLq3tGkDGCY2kL3X
-	j7ZR6v2t8rqKdypre+9RtkbtcyBJJRHEAWudTSslmj9bv146GHKCfonEgiwxb/sGiSqtmhcxToe
-	oPXIid2GAchry1QxU6RoBF18+kwDNaZKbJAtBoB1KWPGiUMHae+4qvE7aiCb8i
-X-Received: by 2002:a17:90b:134b:b0:3a0:5413:49b7 with SMTP id 98e67ed59e1d1-3a054135a87mr1285742a91.42.1789979768228;
-        Mon, 21 Sep 2026 01:36:08 -0700 (PDT)
-Received: from fox.. ([43.242.224.196])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c331aef90sm16595526eec.26.2026.09.21.01.36.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 01:36:07 -0700 (PDT)
-From: Roshan Kumar <roshaen09@gmail.com>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	chopps@labn.net,
-	shubham@octane.security,
-	robert@octane.security,
-	gio@octane.security,
-	roshaen09@gmail.com
-Subject: [PATCH] xfrm: iptfs: hold a device reference while packets are queued
-Date: Mon, 21 Sep 2026 14:06:02 +0530
-Message-ID: <20260921083602.814584-1-roshaen09@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJCiDh6j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466C21F00893;
+	Mon, 21 Sep 2026 08:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789979828;
+	bh=94Mdz/CeYX3Wx0TJZ6lj43M5svcwKZtbvYAsbOTl5f4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JJCiDh6jWanW+wI0AzT+tgnTSRo0AvwpEiaKO7P3yuaNsi6vkSAVa2V6IRItFfziC
+	 tK1wWmjnSCfgz3mWijDuHNfPxvkU06XaLY1++aUAXNszxCUmbNtlGleTH5qStVnwiz
+	 7/jkgcbz1DRQMtTRMUvn4kgv+CmRjqVx+9d7GDYrwgIlPBpkgGxQyodFbP5aIjurAo
+	 XWH1wPCYrc9OrPizARTzbzNdK6KVarVBpvAI+BhTS29VdddCZ/cg6iz2zIELNDCiOl
+	 +FpO49mKN65puvQ2OCtGnkzwPYjhbMzatQTa6ooLMkZPu6CZvOyoKqSm0+AfFAN0tS
+	 TNMfdhxfgdR1g==
+Subject: Re: [PATCH net-next] net/rds: restrict the rdma_cm ids to IB devices
+From: netdev-bot+sashiko@kernel.org
+To: achender@kernel.org
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org
+Date: Mon, 21 Sep 2026 08:37:07 +0000
+Message-ID: <178997982782.2160803.16084252052230368942@kernel.org>
+In-Reply-To: <20260917074108.174262-1-achender@kernel.org>
+References: <20260917074108.174262-1-achender@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-IPTFS receive may retain skbs past the return of iptfs_input(): out of
-order outer packets are parked in the reorder window (w_saved) and a
-partially received inner packet is kept in ra_newskb until more data
-arrives or the drop timer fires.  The retained skbs keep the pointer
-to the ingress net_device that was copied from the tunnel packet, but
-no reference is taken on it.  If the ingress device is unregistered
-while any of these skbs is queued, the later processing in
-iptfs_drop_timer() and the xfrm_input() restart path dereference a
-freed net_device:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-  BUG: KASAN: use-after-free in xfrm_input+0x45d6/0x59c0
-   iptfs_complete_inner_skb
-   __input_process_payload
-   iptfs_input_ordered
-   iptfs_drop_timer
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
 
-Take a reference on skb->dev when a packet is placed in the reorder
-window or kept as the in-progress reassembly skb, and drop it when the
-queued skb is delivered back into the stack or freed.  The drop timer
-and the reassembly queues are bounded by the configured drop time, so
-the extra reference delays device unregistration by at most that
-amount.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Reported-by: Roshan Kumar <roshaen09@gmail.com>
-Reported-by: Shubham Antil <shubham@octane.security>
-Fixes: 6c82d2433671 ("xfrm: iptfs: add basic receive packet (tunnel egress) handling")
-Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
----
- net/xfrm/xfrm_iptfs.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+- [High] The commit message's closing paragraph — "With that, the
+  connect-request rejection for non-IB devices in the event handler…
+- [Low] The patch fixes a real, remotely reachable defect (RDS installing
+  its rdma_cm listener on every RDMA device — including RDMA_NODE_RNIC…
+- [Low] rds: memory leak of rdma_cm_id in rds_ib_conn_path_connect error
+  path
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 597aedeac..98de38d5e 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -701,6 +701,8 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
- 
- 	/* We don't care if it works locking takes care of things */
- 	hrtimer_try_to_cancel(&xtfs->drop_timer);
-+	if (xtfs->ra_newskb)
-+		dev_put(xtfs->ra_newskb->dev);
- 	if (free)
- 		kfree_skb(xtfs->ra_newskb);
- 	xtfs->ra_newskb = NULL;
-@@ -837,6 +839,7 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
- 			goto abandon;
- 		}
- 		xtfs->ra_newskb = newskb;
-+		dev_hold(newskb->dev);
- 
- 		/* Copy the runt data into the buffer, but leave data
- 		 * pointers the same as normal non-runt case. The extra `rrem`
-@@ -1153,6 +1156,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
- 			spin_lock(&xtfs->drop_lock);
- 
- 			xtfs->ra_newskb = skb;
-+			dev_hold(skb->dev);
- 			xtfs->ra_wantseq = seq + 1;
- 			if (!hrtimer_is_queued(&xtfs->drop_timer)) {
- 				/* softirq blocked lest the timer fire and interrupt us */
-@@ -1373,6 +1377,7 @@ static void __reorder_this(struct xfrm_iptfs_data *xtfs, struct sk_buff *inskb,
- 	u32 count = 0;
- 
- 	/* Got what we wanted. */
-+	dev_hold(inskb->dev);
- 	list_add_tail(&inskb->list, list);
- 	++xtfs->w_wantseq;
- 	if (!savedlen)
-@@ -1467,6 +1472,7 @@ static void __reorder_future_fits(struct xfrm_iptfs_data *xtfs,
- 	}
- 
- 	xtfs->w_saved[index].skb = inskb;
-+	dev_hold(inskb->dev);
- 	xtfs->w_savedlen = max(savedlen, index + 1);
- 	iptfs_set_window_drop_times(xtfs, index);
- }
-@@ -1602,6 +1608,7 @@ static void __reorder_future_shifts(struct xfrm_iptfs_data *xtfs,
- 	/* We've shifted. plug the packet in at the end. */
- 	xtfs->w_savedlen = nslots - 1;
- 	xtfs->w_saved[xtfs->w_savedlen - 1].skb = inskb;
-+	dev_hold(inskb->dev);
- 	iptfs_set_window_drop_times(xtfs, xtfs->w_savedlen - 1);
- 
- 	/* if we don't have a slot0 then we must wait for it */
-@@ -1691,13 +1698,18 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
- 
- 	spin_unlock(&xtfs->drop_lock);
- 
--	if (skb)
-+	if (skb) {
-+		dev_put(skb->dev);
- 		kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
-+	}
- 
- 	if (count) {
- 		list_for_each_entry_safe(skb, next, &list, list) {
-+			struct net_device *dev = skb->dev;
-+
- 			skb_list_del_init(skb);
- 			iptfs_input_ordered(x, skb);
-+			dev_put(dev);
- 		}
- 	}
- 
-@@ -1737,8 +1749,11 @@ static int iptfs_input(struct xfrm_state *x, struct sk_buff *skb)
- 	spin_unlock(&xtfs->drop_lock);
- 
- 	list_for_each_entry_safe(skb, next, &list, list) {
-+		struct net_device *dev = skb->dev;
-+
- 		skb_list_del_init(skb);
- 		iptfs_input_ordered(x, skb);
-+		dev_put(dev);
- 	}
- 
- 	list_for_each_entry_safe(skb, next, &freelist, list) {
-@@ -2743,12 +2758,16 @@ static void iptfs_destroy_state(struct xfrm_state *x)
- 
- 	hrtimer_cancel(&xtfs->drop_timer);
- 
--	if (xtfs->ra_newskb)
-+	if (xtfs->ra_newskb) {
-+		dev_put(xtfs->ra_newskb->dev);
- 		kfree_skb(xtfs->ra_newskb);
-+	}
- 
- 	for (s = xtfs->w_saved, se = s + xtfs->w_savedlen; s < se; s++) {
--		if (s->skb)
-+		if (s->skb) {
-+			dev_put(s->skb->dev);
- 			kfree_skb(s->skb);
-+		}
- 	}
- 
- 	kfree_sensitive(xtfs->w_saved);
+--
+
+net/rds: restrict the rdma_cm ids to IB devices
+
+This restricts the three rdma_cm ids RDS creates (the listener, the
+per-connection id, and the probe id in rds_ib_laddr_check_cm()) to
+RDMA_NODE_IB_CA via rdma_restrict_node_type(), so the listener is only
+installed on IB devices and address resolution can only pick one.
+
+A couple of questions about the commit message and about what the handler
+actually does today.
+
+The message says:
+
+    With that, the connect-request rejection for non-IB devices in the
+    event handler becomes unreachable; it stays as the last line of
+    defence and is what stable kernels without the new API rely on.
+
+[Severity: High]
+Is there actually a rejection in the event handler?  Looking at
+rds_rdma_cm_event_handler_cmn() in net/rds/rdma_transport.c, trans is
+declared without an initializer and only ever assigned on the IB path:
+
+	struct rds_connection *conn = cm_id->context;
+	struct rds_transport *trans;
+	...
+	if (cm_id->device->node_type == RDMA_NODE_IB_CA)
+		trans = &rds_ib_transport;
+
+There is no else arm, and no error return.  The switch then dereferences
+trans unconditionally:
+
+	case RDMA_CM_EVENT_CONNECT_REQUEST:
+		ret = trans->cm_handle_connect(cm_id, event, isv6);
+
+with the same pattern for trans->cm_initiate_connect() under
+RDMA_CM_EVENT_ROUTE_RESOLVED and trans->cm_connect_complete() under
+RDMA_CM_EVENT_ESTABLISHED.
+
+So on a device whose node_type is not RDMA_NODE_IB_CA, does the handler
+reject anything, or does it make an indirect call through an uninitialized
+stack slot?  git blame points at dcdede0406d30e ("RDS: Drop stale iWARP
+RDMA transport"), which removed the
+
+	else
+		trans = &rds_iw_transport;
+
+arm without adding a bail-out.
+
+If that is right, then the sentence quoted above describes the opposite of
+what the code does, and the trees the message says are covered have no
+mitigation at all.  siw_device_create() in
+drivers/infiniband/sw/siw/siw_main.c sets
+
+	base_dev->node_type = RDMA_NODE_RNIC;
+
+and before this patch cma_listen_on_dev() installed the RDS listener on
+that device, so a remote peer connecting to the RDS port reaches the
+CONNECT_REQUEST case above.
+
+Would it make sense to also add the handler-side bail-out, something like
+
+	if (!trans)
+		return -EINVAL;
+
+so that the "last line of defence" the message refers to exists, and so
+there is something minimal to backport to trees without
+rdma_restrict_node_type()?  The cm_id->device->node_type load itself is
+also unguarded, while net/rds/ib.c still tests !cm_id->device.
+
+> diff --git a/net/rds/ib.c b/net/rds/ib.c
+> index 786f39169bc14..6d367518aafba 100644
+> --- a/net/rds/ib.c
+> +++ b/net/rds/ib.c
+> @@ -414,13 +414,14 @@ static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
+>  	bool isv4;
+>  
+>  	isv4 = ipv6_addr_v4mapped(addr);
+> -	/* Create a CMA ID and try to bind it. This catches both
+> -	 * IB and iWARP capable NICs.
+> -	 */
+> +	/* Create a CMA ID restricted to IB devices and try to bind it. */
+>  	cm_id = rdma_create_id(&init_net, rds_rdma_cm_event_handler,
+>  			       NULL, RDMA_PS_TCP, IB_QPT_RC);
+>  	if (IS_ERR(cm_id))
+>  		return PTR_ERR(cm_id);
+> +	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
+> +	if (ret)
+> +		goto out;
+>  
+>  	if (isv4) {
+>  		memset(&sin, 0, sizeof(sin));
+
+[ ... ]
+
+> @@ -473,10 +474,8 @@ static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
+>  #endif
+>  	}
+>  
+> -	/* rdma_bind_addr will only succeed for IB & iWARP devices */
+> +	/* the restriction above means this only succeeds for IB devices */
+>  	ret = rdma_bind_addr(cm_id, sa);
+> -	/* due to this, we will claim to support iWARP devices unless we
+> -	   check node_type. */
+>  	if (ret || !cm_id->device ||
+>  	    cm_id->device->node_type != RDMA_NODE_IB_CA)
+>  		ret = -EADDRNOTAVAIL;
+
+[Severity: High]
+The message describes this test as follows:
+
+    the address check's bind fails outright on anything else (its
+    explicit node_type test now only guards against a device with no
+    node type at all)
+
+Is that accurate?  Once restricted_node_type is set on the id,
+cma_acquire_dev_by_src_ip() in drivers/infiniband/core/cma.c skips every
+candidate device by node type:
+
+		if (id_priv->restricted_node_type != RDMA_NODE_UNSPECIFIED &&
+		    id_priv->restricted_node_type != cma_dev->device->node_type)
+			continue;
+
+Since RDMA_NODE_UNSPECIFIED is also filtered there, the
+cm_id->device->node_type != RDMA_NODE_IB_CA half of the test in
+rds_ib_laddr_check_cm() looks dead rather than a guard for "no node type
+at all"; only the !cm_id->device half can still fire.  Could the
+parenthetical be reworded?
+
+> diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+> index 4feb0edc360c8..a859c252fd9a7 100644
+> --- a/net/rds/ib_cm.c
+> +++ b/net/rds/ib_cm.c
+> @@ -999,6 +999,16 @@ int rds_ib_conn_path_connect(struct rds_conn_path *cp)
+>  		goto out;
+>  	}
+>  
+> +	/* rds_ib_laddr_check() only vouched for the local address being
+> +	 * on an IB device; the address resolution below picks the device
+> +	 * on its own, so restrict it to the same kind.
+> +	 */
+> +	ret = rdma_restrict_node_type(ic->i_cm_id, RDMA_NODE_IB_CA);
+> +	if (ret) {
+> +		rdsdebug("rdma_restrict_node_type() failed: %d\n", ret);
+> +		goto out;
+> +	}
+> +
+>  	rdsdebug("created cm id %p for conn %p\n", ic->i_cm_id, conn);
+>  
+>  	if (ipv6_addr_v4mapped(&conn->c_faddr)) {
+> diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
+> index b15cf316b23a2..91ff1dde26af0 100644
+> --- a/net/rds/rdma_transport.c
+> +++ b/net/rds/rdma_transport.c
+> @@ -210,6 +210,14 @@ static int rds_rdma_listen_init_common(rdma_cm_event_handler handler,
+>  		return ret;
+>  	}
+>  
+> +	/* Only the IB transport is left, so only listen on IB devices */
+> +	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
+> +	if (ret) {
+> +		pr_err("RDS/RDMA: failed to setup listener, rdma_restrict_node_type() returned %d\n",
+> +		       ret);
+> +		goto out;
+> +	}
+> +
+
+[Severity: Low]
+This new error path jumps to out and returns ret with ic->i_cm_id
+still pointing at the id rdma_create_id() just handed back, and nothing
+between here and the return destroys it.  Compare the
+rdma_resolve_addr() failure a few lines further down, which does
+
+	rdma_destroy_id(ic->i_cm_id);
+	ic->i_cm_id = NULL;
+
+before falling into the same out label, and the other two sites this
+patch touches: in rds_ib_laddr_check_cm() the new goto out lands on a
+label that calls rdma_destroy_id(cm_id), and in
+rds_rdma_listen_init_common() cm_id is still non-NULL at out so it is
+destroyed there too.  So this is the one of the three new calls whose
+failure leaks the id, i.e. a struct rdma_id_private and its restrack
+entry.
+
+In practice it cannot be reached: rdma_restrict_node_type() only
+returns -EINVAL for a node type it does not recognise and -EALREADY if
+the id is not in RDMA_CM_IDLE, and a freshly created kernel id being
+restricted to RDMA_NODE_IB_CA is neither, so this is a structural
+defect rather than something a peer or a local user can trigger.
+
+Still, the surrounding code is careful about this, so which way did you
+intend it?  Is the connection teardown path (rds_ib_conn_shutdown(),
+which destroys ic->i_cm_id when it is set) meant to clean up after a
+failed rds_ib_conn_path_connect(), or should this arm mirror the
+resolve failure and do the rdma_destroy_id()/NULL itself?  If the
+former, the asymmetry with the rdma_resolve_addr() arm immediately
+below is confusing enough that it is worth saying so in a comment.
+
+[Severity: Low]
+Should this change carry a Fixes: tag, and a note for stable?  The defect
+being closed is remotely reachable (the listener was previously installed
+on RDMA_NODE_RNIC devices such as siw, and the handler then runs with
+trans unassigned), but there is no Fixes: line among the trailers.
+
+The three new calls here, in rds_ib_conn_path_connect() and in
+rds_ib_laddr_check_cm() all depend on a760e80e90f5 ("RDMA/core: introduce
+rdma_restrict_node_type()"), so an automated backport to a tree without
+that commit will not build.  Could the message state either that
+a760e80e90f5 is a prerequisite, or that stable should take a minimal
+handler-side fix instead?
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917074108.174262-1-achender%40kernel.org
