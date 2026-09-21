@@ -1,80 +1,29 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A15488225
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5AA3BB113;
+	Mon, 21 Sep 2026 13:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789997695; cv=none; b=RQi4Qr5pVnvFyMbMLgsMjnXLeJMcFWXwWOz+Fq5gTt4NHchGSBERSqpf2Msj30mxYBkJK2+sjw9UGulvGIDN6c2/2CPxPPEWC+RT4n6rlR/x9ruh+LUa0BK7Crfkc4K3MyuNYG3lygLTLtvmUjuO4GIJwkUN6dX/jNz+6aI4g8E=
+	t=1789997710; cv=none; b=sk6/g+76pCE3GUzvA4U8GLktzDq4L4Np0QEgEFc6UEBEUs7FQAdoKi5stgRbcUGhANyd8eysRKSD94fVMaWPvZEl951UXQP4MGsBhc6bbDmCPZHfTAdu/GAtH4TxHsKkizaUGkaE3rRLKnwvR1hvBC2Dcn8+6K/uwYHmdfbOvOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789997695; c=relaxed/simple;
-	bh=H5LA40f1WetS5i8CyVAeK6YQrsiVAQpb5jVV28HrRbg=;
+	s=arc-20240116; t=1789997710; c=relaxed/simple;
+	bh=UWC88YrCSjuBEAYv6YmW2Vz2vGkRxAVkZItvmE4GaUI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SLs9n/rheGYDetB2FL7LlowZspvCXAzwh1rp6LMurMSTAxBPPPbYNg0dwweAFH00eOHLGrB9pfgAKt8gqTw9IGBCkhPJm+6j8XnotsVrO6P044U8Or5oL9AB9+4KyhyTiwTTDHdM5SGSB0KWcwnkYbowO7+5LNEGHk8Sq3pV6XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oxo/8uXb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IwqXwSD9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gDkqCJTh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Y3pcSdyA; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=H91PowNPO4WFj1603If/jH6GMiwpd0S2zF3RUWkE/3OmgxMGLy3fKSuqrDBa9af5jGqzbwXVKar3Ocl9qveQLJD5TaTjAMzZDnalp09wiXjonEqvZdOo00ushD3LMyuMZnWRQ60j89iXGVwx38kYNctvn0Wx7FHyBaHRM2JJe94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=NaDMSG2A; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oxo/8uXb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IwqXwSD9";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gDkqCJTh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Y3pcSdyA"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A3E1A1F74A;
-	Mon, 21 Sep 2026 13:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789997687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f9ZZYkiuBFP23TLhQXBgnzQsZ+18uwIyDOHz8vFXWwU=;
-	b=oxo/8uXb/8JiGHx9COZyqaB7B+R6xGOEvjn3/V+aO7hOwN+dCmRrfn07T5xOAdvj9tqOHV
-	oZD3j/AtrnE/jJ0fmiTUGPH6PVFVExLltN3etwHxc8YJXvAr6my5k+0bCPs0TJkgDRoCqe
-	kOsu4kH/hLHeSomNfVWTQ+/a6X46jXY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789997687;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f9ZZYkiuBFP23TLhQXBgnzQsZ+18uwIyDOHz8vFXWwU=;
-	b=IwqXwSD9yXpDRmSbKHC+waMAb/KVcJNDhy1WBjweFGWvmpa4dP4CavH7F5fWuQWmvzwB9d
-	GCcIZqu4GRnk8TDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789997683; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f9ZZYkiuBFP23TLhQXBgnzQsZ+18uwIyDOHz8vFXWwU=;
-	b=gDkqCJTh7JvyPIDk8iOXQGGiX5m1gL50pym7SajdYEKLNxW65d6BifScsk2MQ5vcle+v1T
-	GZR1CTuQSOh0Fo2jRzrNdLCIq2gi2AUVjeGi+ycGMCzO66l/H8usSK4i9+SDR8ZPBv2+kh
-	o+MutTeLJYh1m25mEMBVUTS1IukuMmI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789997683;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f9ZZYkiuBFP23TLhQXBgnzQsZ+18uwIyDOHz8vFXWwU=;
-	b=Y3pcSdyAMavVmRF3vDLfqAY/nw1QEoBlokMUlmpQSofr45mGz0fy5oFylQVznzmLUv5/6o
-	BIfz2IsqHzSmazCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CEE9C1368D;
-	Mon, 21 Sep 2026 13:34:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3x47HXIysWpmBwAAD6G6ig
-	(envelope-from <hare@suse.de>); Mon, 21 Sep 2026 13:34:42 +0000
-Message-ID: <bb036bb6-0f65-44e7-a2b0-6ae2ee7b7c58@suse.de>
-Date: Mon, 21 Sep 2026 15:34:41 +0200
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="NaDMSG2A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=XEhYqIMshobqJ5nP45/is74QQI1p741fQ2FIDVZGPoY=;
+	b=NaDMSG2Ah0e/mu5fVfFCmB1PPXMamt0K5AvjyuxytV80IrdKdQxfCLh73J2dtS
+	ff4eHx5CkSICr1DosMBRsR8AQ+9UcmtREfQltqIk2tOtQ6Z/skzlw47RtlumAFaw
+	un/oJv6Qj5HA3ulhmRFwZLllgx5uKINrLFXXviUwvIjtI=
+Message-ID: <b6b2a6bb-e00c-4bcf-8359-525730c5ea33@126.com>
+Date: Mon, 21 Sep 2026 21:31:30 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,68 +31,172 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] nvme-tcp: support IPv6 traffic class
-To: Geliang Tang <geliang@kernel.org>, Keith Busch <kbusch@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
- Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>, linux-nvme@lists.infradead.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev
-References: <cover.1786841319.git.tanggeliang@kylinos.cn>
- <52c4840e36ee6016d18806c2d205f4f9fdc1e830.1786841319.git.tanggeliang@kylinos.cn>
+Subject: Re: [PATCH net v2] net: stmmac: ethtool: validate TX coalesce before
+ reprogramming RX
+To: netdev-bot+sashiko@kernel.org
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ xiaolinkui@kylinos.cn, stable@vger.kernel.org
+References: <20260920015647.1783574-1-xiaolinkui@126.com>
+ <178995636352.2160803.2776927980309704252@kernel.org>
 Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <52c4840e36ee6016d18806c2d205f4f9fdc1e830.1786841319.git.tanggeliang@kylinos.cn>
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <178995636352.2160803.2776927980309704252@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLhpsi56b8wki6rd8p6oz1itgg)];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,kylinos.cn:email]
-X-Spam-Flag: NO
+X-CM-TRANSID:_____wD3_+CzMbFqX1l4Bw--.17993S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3WF48ZFyfuF4rtFy5GF48Zwb_yoWxWF45pF
+	W5CFZrtw1ktrWFk3s7Ca18Wrya934fKFsxJw1rtr92k3W5uryYvr1fKr1jgFZ7Cr4kZw1j
+	kF4FqFZrCwn8A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UxDGOUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlRSAV2qxMbSNHQAA3Y
 
-On 8/16/26 3:00 AM, Geliang Tang wrote:
-> From: Geliang Tang <tanggeliang@kylinos.cn>
-> 
-> Currently, nvme-tcp host only supports setting the IPv4 TOS value when a
-> TOS is specified, but does not handle the IPv6 traffic class.
-> 
-> Extend the queue socket setup to handle AF_INET6 sockets by applying the
-> TOS value to both IPv4 and IPv6 sockets. For IPv6, the TOS value is set
-> as the IPv6 traffic class via IPV6_TCLASS using do_sock_setsockopt().
-> 
-> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-> ---
->   drivers/nvme/host/tcp.c | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
+ > Thank you for your contribution! Sashiko AI review found 1 potential
+ > issue(s) to consider.
+ >
+ > Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
 
-Cheers,
+Both issues are legitimate, thanks for the detailed analysis. v3 reworks
+the fix and adds a second patch; details inline.
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+ > - [High] Incomplete fix: the TX validation relocated to the top of
+ >   __stmmac_set_coalesce()...
+ >
+ > Does this reordering actually fix the per-queue case described in the
+ > changelog? [...]
+ > On a device with rx_queues_to_use > tx_queues_to_use (dwmac-intel
+ > tgl_common_data sets 6 RX and 4 TX queues, so queues 4 and 5 are 
+RX-only),
+ > does ethtool -Q ethX queue_mask 0x10 --coalesce rx-usecs N still return
+ > -EINVAL here?
+
+Yes, it still does. tgl_common_data() sets rx_queues_to_use = 6 and
+tx_queues_to_use = 4, __stmmac_get_coalesce() reports tx-usecs and
+tx-frames as 0 for index 4 and 5, ethtool feeds those zeros straight
+back into the setter and the relocated test rejects the request. v2
+changed when such a request fails, not whether it succeeds.
+
+ > If so, is the net effect for that queue not worse than before? 
+Previously
+ > the RX watchdog and rx_riwt[]/rx_coal_frames[] were programmed and 
+-EINVAL
+ > was returned; now the early return means the RX part is never applied, so
+ > per-queue RX coalescing on an RX-only queue index has no effect at all.
+ >
+ > There is a second consequence in the ethtool core. [...]
+ > For an RX-only queue the saved backup necessarily carries 
+tx_coalesce_usecs
+ > == 0 and tx_max_coalesced_frames == 0, so the new first check rejects the
+ > replay before the RX block runs.  Can the RX watchdog and rx_riwt[] 
+of that
+ > queue therefore stay at the values of the failed request after a 
+later queue
+ > in the mask fails?
+
+Correct on both counts, and the roll-back one is the more serious of the
+two: ethtool_set_per_queue_coalesce() discards the return code of the
+replay, so an early -EINVAL there silently leaves the RX watchdog of an
+already-applied queue at the value of the failed request.
+
+ > Would making the validation direction-aware, so the TX checks only 
+apply when
+ > all_queues || queue < tx_cnt and the rx_riwt check only when
+ > all_queues || queue < rx_cnt (plus the getter reporting ~0 instead of 
+0 for
+ > the inapplicable fields), address both directions rather than reordering
+ > alone?
+
+That is what v3 patch 1/2 does, minus the getter change:
+
+	has_rx = all_queues || queue < rx_cnt;
+	has_tx = all_queues || queue < tx_cnt;
+
+	if (has_tx &&
+	    ec->tx_coalesce_usecs == 0 && ec->tx_max_coalesced_frames == 0)
+		return -EINVAL;
+
+	if (has_tx &&
+	    (ec->tx_coalesce_usecs > STMMAC_MAX_COAL_TX_TICK ||
+	     ec->tx_max_coalesced_frames > STMMAC_TX_MAX_FRAMES))
+		return -EINVAL;
+
+	if (has_rx && priv->use_riwt) {
+
+has_rx also gates the application, so the "else if (queue < rx_cnt)"
+inside the RIWT block becomes a plain "else", and the TX store keeps its
+own has_tx test. All validation still runs before the first
+stmmac_rx_watchdog() call, so the property v2 was after is retained: a
+request is either applied completely or rejected without touching the
+device.
+
+The mirrored case is fixed by the same change. With use_riwt set and
+queue >= rx_cnt, has_rx is false, so stmmac_usec2riwt() is never asked
+to convert the rx-usecs 0 that the getter reported and the MIN_DMA_RIWT
+test no longer rejects per-queue TX requests for a TX-only index.
+tx_queues_to_use > rx_queues_to_use does not occur in the in-tree
+platform data - dwmac-intel is the other way round - but
+stmmac_probe_config_dt() parses snps,rx-queues-to-use and
+snps,tx-queues-to-use independently and clamps each one on its own, so
+DT can produce it.
+
+I left __stmmac_get_coalesce() reporting 0 rather than ~0. Once the
+setter ignores the inapplicable fields the read-modify-write round trip
+works either way, and ~0 would show up as 4294967295 in
+"ethtool --per-queue ... --show-coalesce" for the indices that print 0
+today. If the ~0 convention is wanted it should be a separate change,
+together with whatever displays it.
+
+ > [Severity: High]
+ > This isn't a bug introduced by this patch, but since the validation 
+is being
+ > moved anyway, is the zero tx_max_coalesced_frames case worth handling 
+here
+ > too? [...]
+ > That is reached from stmmac_xdp_xmit_back() for XDP_TX and from
+ > stmmac_xdp_xmit() for ndo_xdp_xmit, so does this divide by zero in 
+softirq
+ > context on x86?
+
+The divide by zero is real and reachable. tx_coal_frames[] starts at
+STMMAC_TX_FRAMES in stmmac_init_coalesce() and can only become 0
+through ethtool, and dwmac-intel TGL/EHL is exactly the x86 platform
+where the modulo traps.
+
+The fix belongs in stmmac_xdp_xmit_xdpf() rather than in the setter,
+because tx-frames 0 is a supported request: it only stops the frame
+count from raising TX completion interrupts, while the coalescing timer
+that stmmac_xmit(), stmmac_tso_xmit(), stmmac_finalize_xdp_rx() and
+stmmac_xdp_xmit() arm through stmmac_tx_timer_arm() keeps reclaiming the
+descriptors. That is why those paths test the divisor - the test came
+with c2837423cb54 ("net: stmmac: Rework TX Coalesce logic") and was
+extended to the zero-copy path by 132c32ee5bc0 ("net: stmmac: Add TX via
+XDP zero-copy socket") - and why __stmmac_set_coalesce() rejects the
+request only when tx-usecs is zero as well, since then nothing would
+complete the transmissions. Rejecting tx-frames 0 outright would break
+that configuration.
+
+So v3 adds patch 2/2, giving stmmac_xdp_xmit_xdpf() the missing test,
+with be8b38a722e6 ("net: stmmac: Add support for XDP_TX action") as the
+Fixes tag.
+
+ > The other TX sites do test for zero, but the guard and the divisor are
+ > separate unannotated loads of the same plain u32 with no lock [...]
+ > Can a concurrent ethtool store of 0 land between the guard and the modulo
+ > reload?  Would a single READ_ONCE() snapshot per transmit path be
+ > appropriate?
+
+In principle yes: nothing forces the two loads to observe the same
+value. They are adjacent in all four chains with no call or barrier in
+between, so compilers are likely to CSE them, but that is a favour and
+not a guarantee. Annotating it properly means one snapshot per transmit
+path plus WRITE_ONCE() on the stores in __stmmac_set_coalesce(), i.e. a
+conversion of all four sites at once, which does not belong in a stable
+fix. Patch 2/2 therefore uses the plain test that matches the existing
+three; I will send the READ_ONCE()/WRITE_ONCE() conversion separately if
+it is wanted.
+
+pw-bot: cr
+
