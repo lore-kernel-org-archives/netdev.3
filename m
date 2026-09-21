@@ -1,270 +1,192 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505404D17A8
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A70738E8BD
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.205
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790005688; cv=pass; b=QrqQtZFJMg3WGL+Lsxa0uoe44+2tWCXDOpSlptJKDUJfIbF/vB2w3YOtgeIRjgP3hl4kofRBJBgB/SHdYvRCO9knv6H7IaZ/ZhwZad8+I6eQlN/V62OuDj5cMPsEmcKXZq64cgpKvmXljKjb2y63r+pqgTpHLaPoaaM2ALa/H5Q=
+	t=1790005729; cv=pass; b=ANoRTgQze0yIZGCXcK4Dml95qhsZHaQOsDvGGw7RL8skIUe42SxMM7IlVQUT7rJNAoT1/hdyB4liC5c8uFOLr4Q4ui/d1HFf5SVZKJIrYjuSTeReABa/ZPklTT5nb0b1aWxPWbD1VvR1I+nVsomyceTCYtOTx3ILGKugK6mivJs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790005688; c=relaxed/simple;
-	bh=BEARvT16wBenWkVWVBYMGXHkkv0EPzDCZ521NVaAc/E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=czyHGj8TpVtU3jzEZFRSE65pBK/hvInqGeBGq6w8YZwt3dZfZKGO8S8NlEbP2e8U55+6XLD0pjEQfBDTC2Yrsx3wqeIAn/b9R247vQHKxf0cl3F4smk0asbE1SpuXqmzlHqOB9dZpoRtX5MmhOzOp/nUXKuXrvmNfRXnT6fZjdc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LzZUQZkM; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790005729; c=relaxed/simple;
+	bh=hqCP8q73l4xlgKtVJj6PdBYEoe4oFusfyO5eUoNJNqU=;
+	h=In-Reply-To:References:MIME-Version:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XFn5H8zfbbsxhoL8sV4GNPO1pwxFlHmYHWqH6Q4iDsHtaCrBzIxu+LuD4dlI8xWWh+bjw9MOmAgmv6PQC4qB2M1XKCccRABDeHAsfKaLuK5XUSQ1aKweReO8qrlS113BUkT/jkItmQzAvk7wX7WeZCWfuIM/zS2j17Nme37MUg0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=khu.ac.kr; spf=pass smtp.mailfrom=khu.ac.kr; dkim=pass (1024-bit key) header.d=khu.ac.kr header.i=@khu.ac.kr header.b=QZPlboIE; arc=pass smtp.client-ip=74.125.229.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=khu.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=khu.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LzZUQZkM"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530d0d5ae11so33247551cf.0
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:48:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790005679; cv=none;
+	dkim=pass (1024-bit key) header.d=khu.ac.kr header.i=@khu.ac.kr header.b="QZPlboIE"
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8b402f4e3so3276363e87.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:48:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790005719; cv=none;
         d=google.com; s=arc-20260327;
-        b=sWF5/99B4ABxJkMQcZy8zgRqOukLfaU4+jzA80wM0aAj8qPCkuW0WaNA4kPdU4O2Mh
-         DtiaKZnOqI8qQt28T88E1RdQIUtLcPDaw7nuUD5sv7yVkzTkMHN867FDi8SpgpgDiWVx
-         hOzhPy/NBpVmDK6gFt2yx6YcmgKJV++YDzxoC3cJRfypkBmtJQrjO83F3lN+rSAVTKdp
-         l09fytlnjEl8Z1aZhQ7nTJKrNNYWs5MifKGhCe0rOAjxZZl/3swv0p4nqWKWb4F2Ks+U
-         pwuykRfkwGdBz9r5J6oKZSqduUcGKxzjjhupWNjW1fRNj7BKoe6Vqcs1fnLYeChoYBH6
-         1S0g==
+        b=CiLx0UVGPznzgAN7zADbsgyNdtr+9P+wvse3EKM8y1IO0noyBMkRTdO3r3fPQ6w6sY
+         RqJJ6v7E/QTHqTnV2AG18D1giJYUjE3whtGV3RNS+4pAAGy/Bl0u4HJZh1nAyVhZj+XF
+         hWoFiD+cwvKvbrjiND1aOv+yQQpQrHkJ5G8BQh3NTSp06NdIBQBE64NpFywW+NVIHGkA
+         u1U3/Nek2SCb/1LEHR78R/+RqkT46D6aDzEfai84ItPNPQkrMMpGMN7qKTxkbwfiydaC
+         4u4jK3L5xXxZQjDQBKbb5mGCqGJTH97hikIToh27ocLOuegATzMMSzNyFMxsKe50dBJg
+         3Y5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iE6g1Ef0J2o/f5fbrn5anstK8qfgpZs8pToEEcpe7pw=;
-        fh=zxJU1XFuZoXnBBS1/iohMXZnQlaQXTzvYV1ctVU4wu0=;
-        b=cFZsHzws6XF6Kn8gp/Ic+fLe2LV5SEP7Yw8249cDSzSIG3QWPqp5cY08KYiiHn4BdT
-         tQiT9ZNqAP++nxSux/15hGdgcwys0qFr6HLQsWUDRKZKSsNjQgv1srpsvJu3QIqfZ/qF
-         1lEH4O4DsSZiuwMhEi1gjrde0W7sAG+nmjOLo5vNZ/GbR9d/PgiTZyN4IK0k1JTYSZ56
-         4XtdzcKTwDh+CJjUPMILeu63D3v/oPgJaWFVm5JMZNgDnJd3xpEyoJvRusibpIbkFa+s
-         Tncc3Y64RfALltPZRnGLIr48Yjj2GyyS8w0tCghshJSljjTQiO4n7bijNYGrGAbFpV7t
-         8gOQ==;
+         :mime-version:references:in-reply-to:dkim-signature;
+        bh=hqCP8q73l4xlgKtVJj6PdBYEoe4oFusfyO5eUoNJNqU=;
+        fh=RHaF+0QY9m4d5nq3yNW5p+bZJcBMVOhYJmOJqb4NOU0=;
+        b=j0LDCSQiXse5oZMFm1zZCrAiLqNVZXpmSaAbgTJlU4psADzh3VLM7eyjhdCy+5db0d
+         lt4dkfmWSsouXBgxeSxBGuDz/hTNfWMZD5KinTOJFMurIPxSkV8iMJ6kpwvetwSZZs29
+         187WtO5Nj1RbNcGNLWzZXgPq0m0cdEJkI2WIVy+6fZn6oZLw4wtmdorXxeJKrJh8NPSO
+         BAnEtmT/bqzvgByN8EzMRnogR/2hmQktFo3IjvYAO5haKS8YF6h3IKKesTOEhpR7ljpV
+         eLeCGuz1ajG09ZfucWWZiH31OjPQfzR7VVOIe1FYrej4A+vV0P7ma1aoBmOCqZZeAJ91
+         uoWg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790005679; x=1790610479; darn=vger.kernel.org;
+        d=khu.ac.kr; s=google; t=1790005719; x=1790610519; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:from:mime-version:references:in-reply-to:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=iE6g1Ef0J2o/f5fbrn5anstK8qfgpZs8pToEEcpe7pw=;
-        b=LzZUQZkMwiB8mpdxHKXh/TPWPyGlBqWb6MmFEo1I/h3MqzaTkD9lvdwiwjbrAcfTQ+
-         Ue52aozfb77hiegTEPTzvpVM0PI5JvQqzdVHOAbq5N6wgKCaLcwt5uNzzZDG+rf/dZtl
-         mZQuiEb8AklSjfnb+OnxY+Gvg+GQUSI+af2MzwTMM9yOYhpOcQARFBV5S34MfdyrTxd6
-         HzU7oPxhyI1W/PCOi9Awn3Xft+yypw8oQinkMce7evDShBDZZAjDGyzpNFrYFw8RtLU7
-         Kq1efZ2frhZRKrwGP2oYzH7yxnXbDEIq8zN6nRDNFgF676kJ7A6Y1ryic+pp9jt6gAzD
-         7q5w==
+        bh=hqCP8q73l4xlgKtVJj6PdBYEoe4oFusfyO5eUoNJNqU=;
+        b=QZPlboIEL1Fvy/6YuFk4c6nLMsXJAcCu7aDHFIdKS/HOxESvaZIYGtvNYneVJMQvsI
+         KONoLq1pZKBQgiH0Pc1D0r/moJhNQ44FumFIsyNAbgKqHoIwUe+pT0G/FX5iaCVx6F5l
+         Yg8/2L466p+beo1TmGjm4XCQ5WMUkSZGe8NfU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790005679; x=1790610479;
+        d=1e100.net; s=20260707; t=1790005719; x=1790610519;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :date:from:mime-version:references:in-reply-to:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iE6g1Ef0J2o/f5fbrn5anstK8qfgpZs8pToEEcpe7pw=;
-        b=ZaMDrtxsJ4Fv3okMeP8dTCnqeJUq0jRPCliHD8Qh7MlLL7xa80D6KXbqeEgzia+AXB
-         FVntoa4b3poHo+H298eLW2Ux/e2EEAUAzaL0T3k80xaTiJT3S3z8n/Gz1p2IevVAboev
-         1kQIqzNoI2SjdmVR0ogTRVbzHlDj8F6ENJae2ISsmKPW/s5RtjrMpAbhNi9kiW/ZnOih
-         Jp+Ge776mfdJQeFlw0hcMKONqiKZAUcFAX9RWZVP9lmD06RAp3NkjytiSMNEHONJXAx7
-         Z9sDSiDCJ7I+7+Nbnh7lpBTqsXoWPSqkl4kKUSkfSZt4HdgiygyTwh5dzOwOenQ4fXER
-         8iVg==
-X-Forwarded-Encrypted: i=1; AKwUvByQmR+NaP48USFCMHNReDPpXVCmo3pbssDjTbDBOej4KqBpB84xI+8nrQFFwYKQ48xcnuibA1Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++mHXtjBscrpE/ztPFv/3G2KXRWHqOOdpgLI+HKtCbNKvx1vmihA
-	bAqA6TgOAvlYp1ymgLg6rAJKTLlgY4vpdN1QSeHncn/l8I/giZ8tDP0ndOEp4cewnIdt62qbPPn
-	jhJYTdi/8K6orBaZfGl7IHRzZwP1RSdDlWP5UGyrM+zc8CwE73GMisIJ+j8U=
-X-Gm-Gg: AYBFou35YidJ5UV5dpJT7RU/5Bi2hVLScBHvbBoh2p37d1a7/xyDYcT3/3VrqPRQy/7
-	sAEB+X/6rQ46RRM6HnAsZHjTNlw/6pkMqqMoll+gp+xcLr33JTrtizb/iKnbCYNLiRcEZq+nh++
-	KTTefKKkAlPtPWqCJHfEf94sKHSqtRI4kp8nvcSmoXZVwci536PGtJQOWvLd9wkX8FRsAcvnlj/
-	StcPNcNv0hXTWCEMlECxF5S3/xAXMm+7ztBTHRMTWPKUs4RwR0xeIIyZLngQtg+6h78J7N0EilL
-	gNCGz6t2wjCa1xVgbgQW02VRqKcdmvAxwLXh325ktyitmYoR8y/cAAP1wGqyO4NEBbfFsFNwHUe
-	OfL5XkXNo0EkG48vraKfSM+MCuW4VdBrOaFmJAsywraMGTCT3p9YM/oKcMXdbZRzWq/c8kQ==
-X-Received: by 2002:ac8:7d05:0:b0:532:9673:9e79 with SMTP id
- d75a77b69052e-532d8e3468cmr11664111cf.43.1790005678751; Mon, 21 Sep 2026
- 08:47:58 -0700 (PDT)
+        bh=hqCP8q73l4xlgKtVJj6PdBYEoe4oFusfyO5eUoNJNqU=;
+        b=KLLnh4E1NCLnuNW05bQcLzBk8zqslQjk01UQc+TdF1nXZVkqi7hW+amUYuzj5wt14k
+         9+XYsUIOSd0/FCOikJTdHGTLEq8VuSBVDs+P8plQ9rybHazGws0+VDDsMXAoYQGwHC9I
+         W8+e1wNrnsN0ZKCy9aHezTP4jTpcUL+DMR92OYiOP/vb5BXFZ2ak0GFZiRBzKZU1NRdP
+         n/2yfXc+GLsyenz07qssypkY7FasjqywFxuMII5euCgvIMN5vg3A4zLBo9iUbDI04MmL
+         8xm2sXywLFG51rCAcIBvu7Tfz1kGS5GHEQOLmftoF/aKuSNrbncaxFyVSKAwmrHagzVo
+         gLTg==
+X-Gm-Message-State: AFuF++m9ZnJwuI+NAUz1DiY7QjDUYNsiG9xmCWkS4CK/RFCwCmCB66/W
+	CiOMgsS+LTHsu2EZdwJ04NAeYH/2JTfTMcbZ3UgEMqTPVW5VDiPccXPqxJyT7Di1R0TRqDxHypL
+	9r+PXFnms5o7NTvGNg2F2K9EInAQpkblqdgHJQsZN+g==
+X-Gm-Gg: AYBFou23bVHHVPf92D8VvmfHWTKT+j9j8Ejcx03abFsVp1Dog6FJ0k++RhSiNtqUWlp
+	gXxHjZ3GKa4E4nsGw0PEHjZSpElsfivNo049388/XfsswoGEMKlMc4TsA3Od9RHcpzPfaJX1rHN
+	7SdKJM8SrkmofN8EApXF7txk2C5Z/nPXH+3uYky9J6+Eg5+MQ2rLNQ1M6o+fBacIY8bEO2zsoYO
+	ILTeqVhZZpkrqixMvvm7k/y6zbBsXnwqej8s4f/Yzk6LG67naiDnxht/30nx3Fe0hTsNvVk2p3s
+	Q+6SptyGJEyQCcaKHDcBvMT9NTmaxjPqRVMKkrgFPWOjQN6J3BP/aDapwhKKt8yTGMol2PNo6Fz
+	9hBDouD030ZBZTD0lGVh/vDv66yOacR9F
+X-Received: by 2002:a05:6512:39cb:b0:5b8:bc5e:d100 with SMTP id
+ 2adb3069b0e04-5b8c195b41cmr4452537e87.42.1790005718733; Mon, 21 Sep 2026
+ 08:48:38 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Mon, 21 Sep 2026 08:48:38 -0700
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Mon, 21 Sep 2026 08:48:38 -0700
+In-Reply-To: <DLL0PZY25HAD.1RWXC61P3MZRV@bootlin.com>
+References: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+ <20260915083839.71546-1-pabeni@redhat.com> <CAH1Bc_yQYJ6cWyYVvfWK0pAgrXW1TMkpzmNxZvAXAKZJdiOqWQ@mail.gmail.com>
+ <CAH1Bc_z6PFc7N6XVZ2dQEH=7D9mkXwGkXP2KKMW-Emd4zcf3fA@mail.gmail.com> <DLL0PZY25HAD.1RWXC61P3MZRV@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260917132742.87117-1-kerneljasonxing@gmail.com> <179000485484.2160803.6557708738361294569@kernel.org>
-In-Reply-To: <179000485484.2160803.6557708738361294569@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 21 Sep 2026 17:47:47 +0200
-X-Gm-Features: AcwNN1W53iwkYPE8X3tj8CG9XbjJiNh6XoUSsxjd_U6N3GmtSyuMJxE6DgPqnUs
-Message-ID: <CANn89iKZiHhR3W2gm7Gy4GHBbK7ND+e9O8DYA1_xrwYvOPvGaQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: preserve timestamps across receive queue collapse
-To: netdev-bot+sashiko@kernel.org
-Cc: kerneljasonxing@gmail.com, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
-	netdev@vger.kernel.org
+From: =?UTF-8?B?4oCN6rmA7Jqw7ISdW+2VmeyDnV0o7KCE7J6Q7KCV67O064yA7ZWZIOyghOyekOqzte2VmeqzvA==?=
+	=?UTF-8?B?KQ==?= <5mghybrid@khu.ac.kr>
+Date: Mon, 21 Sep 2026 08:48:38 -0700
+X-Gm-Features: AcwNN1Vx1sHe6ZDAEcThELJ4Tdn2z8qxNTUS-8vTPEnaX6AQ6ya6oOxZJBqyO1M
+Message-ID: <CAH1Bc_yDpY1q3yLH5R+fbr_3=LicRv-qsrcPQYspZHz095TVxg@mail.gmail.com>
+Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on
+ rejected timestamp requests
+To: theo.lebrun@bootlin.com
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, conor.dooley@microchip.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, richardcochran@gmail.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 21, 2026 at 5:34=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+Hi Th=C3=A9o,
+
+Thanks for explaining the approach.
+
+I found both issues while validating hardware timestamp configuration
+on the Raspberry Pi 5's Ethernet interface for my research. I reproduced
+them on the board and tested both fixes there, as described in the
+cover letter. These were hardware-verified failures, rather than
+cleanup based only on source inspection.
+
+I've already applied the fixes locally on my Pi, so there is no
+immediate urgency on my side. That said, the structure you suggested
+looks like a cleaner way to handle the configuration path overall, and
+I think it makes sense to take this opportunity to rework it in that
+direction rather than keep the changes limited to the current fixes.
+
+Rather than posting a v2 limited to the current two fixes, I'll prepare
+a new series that refactors gem_set_hwtst() along those lines and
+incorporates both fixes. I'll link back to this series for context and
+validate the reworked path on the Pi 5.
+
+Thanks,
+Wooseok Kim
+
+On Mon, 21 Sep 2026 15:11:13 +0200, "Th=C3=A9o Lebrun"
+<theo.lebrun@bootlin.com> wrote:
+> Hello Woo-seok Kim,
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] Incomplete fix: a fully-covered (zero-contribution) source skb
->   can still leave the collapsed skb with TCP_SKB_CB(nskb)->has_rxtstamp=
-=E2=80=A6
-> - [Low] Commit message does not describe the actual code placement or the
->   resulting user-visible semantics.
->
-> --
->
-> tcp: preserve timestamps across receive queue collapse
->
-> When tcp_collapse() rebuilds receive queue skbs under memory pressure, th=
-e
-> cb memcpy carries has_rxtstamp over to the new skb but leaves nskb->tstam=
-p
-> and the hwtstamps at zero.  This patch copies tstamp and hwtstamp from th=
-e
-> source skb while data is being copied into the new skb.
->
-> Link: https://lore.kernel.org/all/20260916124153.43457-1-kerneljasonxing@=
-gmail.com/
->
-> A couple of questions below.
->
-> > tcp: preserve timestamps across receive queue collapse
-> [ ... ]
-> > Fix this by copying both tstamp and hwtstamp to the new skb right
-> > after the initialization.
->
-> [Severity: Low]
-> Does this sentence match where the code actually landed?  The copy is not
-> placed after the initialization block:
->
->         memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
->         skb_copy_decrypted(nskb, skb);
->         TCP_SKB_CB(nskb)->seq =3D TCP_SKB_CB(nskb)->end_seq =3D start;
->
-> but instead inside the inner "while (copy > 0)" data copy loop, right aft=
-er
-> TCP_SKB_CB(nskb)->end_seq +=3D size.
->
-> That difference is user visible: since the assignment runs once per sourc=
-e
-> skb merged into nskb, the collapsed skb reports the timestamp of the last
-> contributing skb rather than the first.  That matches tcp_add_backlog() i=
+> On Sun Sep 20, 2026 at 11:04 AM CEST, Woo-seok Kim wrote:
+> > Following up on my September 15 reply. I noticed that the series is
+> > still marked "Changes Requested" in Patchwork.
+> >
+> > This series fixes rejected timestamp requests changing the TX mode and
+> > the two PTPv1 RX filters disabling receive timestamping. As explained i=
 n
-> net/ipv4/tcp_ipv4.c and tcp_try_coalesce(), and the V2 note below the
-> scissors says as much ("use the same semantic as tcp_add_backlog which is
-> to sync the last skb"), but everything under "---" is dropped when the
-> patch is applied.
+> > my reply, the additional issues predate this series and are not made
+> > worse by it. I propose keeping those fixes separate so that this series
+> > remains focused on the two reported bugs.
+> >
+> > Could you please reconsider the Changes Requested status in light of
+> > that reply and continue reviewing the series as posted?
 >
-> Could the changelog say that the timestamp of the last merged segment is
-> the one kept, and drop the "right after the initialization" wording?
+> To me it all depends on the intent behind your series. If you have faced
+> this bug in practice and your patches are intended to fix your usecase
+> and prevent others from facing it, then we can take your patches as-is.
 >
-> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> > index 92bc60716f33d..bcb3861a38b9c 100644
-> > --- a/net/ipv4/tcp_input.c
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -5854,6 +5854,12 @@ tcp_collapse(struct sock *sk, struct sk_buff_hea=
-d *list, struct rb_root *root,
-> >                               if (skb_copy_bits(skb, offset, skb_put(ns=
-kb, size), size))
-> >                                       BUG();
-> >                               TCP_SKB_CB(nskb)->end_seq +=3D size;
-> > +                             if (TCP_SKB_CB(skb)->has_rxtstamp) {
-> > +                                     TCP_SKB_CB(nskb)->has_rxtstamp =
-=3D true;
-> > +                                     nskb->tstamp =3D skb->tstamp;
-> > +                                     skb_hwtstamps(nskb)->hwtstamp =3D
-> > +                                             skb_hwtstamps(skb)->hwtst=
-amp;
-> > +                             }
+> If they are edge-cases cleanup patches and you never encountered the
+> issue (maybe because you don't have hardware), then either
+> - the patch won't be accepted because it's overall churn or
+> - you fix the full sequence fully and we consider it a noticeable
+> improvement and take that series.
 >
-> [Severity: Medium]
-> Can nskb still end up with has_rxtstamp set while both timestamps stay
-> zero, which is the state the changelog says is being fixed?
+> About "the proper way(TM)", I expect something like:
 >
-> The new block only runs under "if (size > 0)", but the flag also arrives
-> unconditionally through the earlier cb copy at the top of the outer loop:
+> int gem_set_hwtst(struct net_device *netdev,
+> struct kernel_hwtstamp_config *tstamp_config,
+> struct netlink_ext_ack *extack)
+> {
+> struct macb *bp =3D netdev_priv(netdev);
+> u32 regval;
 >
->         memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
+> if (!macb_dma_ptp(bp))
+> return -EOPNOTSUPP;
 >
-> If the previous nskb filled up exactly at a source skb boundary, the inne=
-r
-> loop already advanced skb via tcp_collapse_one() before exiting, so the
-> next outer iteration can seed nskb->cb from an skb whose
+> // Step (1): tstamp_config->tx_type validation and precomputing
+> // of TXBDCTRL and NCR values/masks.
 >
->         int size =3D TCP_SKB_CB(skb)->end_seq - start;
+> // Step (2): same for tstamp_config->rx_filter.
 >
-> is <=3D 0, i.e. a fully covered skb that contributes no bytes.  Its
-> has_rxtstamp bit is inherited, the new copy is skipped, and if the skbs
-> that actually supply the data have has_rxtstamp =3D=3D false, nskb keeps
-> flag =3D true with tstamp and hwtstamp at zero.
+> // Step (3): read-modify-write NCR, writel TXBDCTRL & RXBDCTRL.
 >
-> Fully covered skbs do stay in the ofo tree, which tcp_collapse() itself
-> notes with "No new bits? It is possible on ofo queue."  One way to reach =
-it
-> is tcp_data_queue_ofo() coalescing into a non-last predecessor:
+> bp->tstamp_config =3D *tstamp_config;
 >
->         } else if (tcp_ooo_try_coalesce(sk, skb1,
->                                         skb, &fragstolen)) {
->                 goto coalesce_done;
->         }
+> return 0;
+> }
 >
-> which extends skb1->end_seq and jumps past the merge_right loop that woul=
-d
-> otherwise drop the now covered successor.
+> Improvements:
+> - we remove writel from the validation code
+> - we write to NCR once and not twice
+> - we don't have a tiny gem_ptp_set_ts_mode() function that returns an
+> int for no reason
+> - also NCR RMW probably deserves some atomicity through locking
 >
-> Downstream, tcp_recvmsg_locked() then acts on the inherited flag:
->
->         if (TCP_SKB_CB(skb)->has_rxtstamp) {
->                 tcp_update_recv_tstamps(skb, tss);
->                 *cmsg_flags |=3D TCP_CMSG_TS;
->         }
->
-> and tcp_update_recv_tstamps() overwrites unconditionally:
->
->         tss->ts[0] =3D skb->tstamp;
->         tss->ts[2] =3D skb_hwtstamps(skb)->hwtstamp;
->
-> so zeros replace timestamps already collected from earlier skbs in the sa=
-me
-> recvmsg(), and tcp_recv_timestamp() emits nothing because it is gated on
-> "if (tss->ts[0] | tss->ts[2])".
->
-> Would clearing TCP_SKB_CB(nskb)->has_rxtstamp right after the cb memcpy,
-> so the new in-loop block is the only place that sets it, close this corne=
-r
-> too?
->
-> >                               copy -=3D size;
-> >                               start +=3D size;
-> >                       }
+> Thanks,
 >
 > --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260917132742.87117-1-kerneljasonxing%40gmail.com
-
-The AI is right that the flag can still be inherited through the cb
-memcpy from an skb
-that contributes no bytes
-(fully covered skb left in the ofo tree by the tcp_ooo_try_coalesce()
--> coalesce_done path).
-
-Please add
-
-TCP_SKB_CB(nskb)->has_rxtstamp =3D 0;
-right after the memcpy(nskb->cb, ...) so that the new in-loop block is
-the only place setting it,
-and reword the changelog to say the timestamp of the last merged
-segment is kept,
-matching tcp_try_coalesce()/tcp_add_backlog().
-
-pw-bot: cr
-
-Thanks.
+> Th=C3=A9o Lebrun, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
