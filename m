@@ -1,102 +1,74 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CDC485936;
-	Mon, 21 Sep 2026 11:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E564825D8;
+	Mon, 21 Sep 2026 11:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789989473; cv=none; b=SovZwkoDw5Myskh0rjGH6cVaYszBtDMmWOp69V1dpYIsXsL+00I3r43DH73ePFh02yoA5Wff9joXtsYRFT3A1t+L4q+0ikc2N7j8eiu+ZIRPMGT1hp1wcYSKQO3Yd2KMqZWbjXpxDjZImE4ehyaz5JN7s3OeiPlDrSFOU+i9Fjw=
+	t=1789989765; cv=none; b=M6jaL7JZbX017Glf6npRp1aWFmxgcEOkuARH1C3u5HBD5nPPnheq8cPni4WN1hk3nhCbAYXR9jnxnkPP/i1hJbVFwP+fhUQA7Zw7AJFx4kdXSN5LVSrL+xNQzRybBaBJmCeQxn7/BflClY7ZEX3lX/j/3Fv4mqAHqr/Z44iawAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789989473; c=relaxed/simple;
-	bh=EZ21ncQrjQNm7o8Cw+zlBh2DjaJdXZNMq93zx34x0jU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fAMTrFj6pfz/44PUwwJGH9ZSR3YWM9fOIOQGYOAA4P/4XvonEDFn7Ty7qcWI+/Hvsln4UEkiM6LnR0Npfh2Ag4EBafNBfI8JFLNeE6Q17fBbwDVDAfUmcjDMrRxqA+vDifqTqy4LfPnqPdSswQj+KHbmarBxSQyImJZt1n/h0SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.107] (unknown [123.116.51.226])
-	by APP-03 (Coremail) with SMTP id rQCowACnrTtGErFq+tZHCA--.11992S2;
-	Mon, 21 Sep 2026 19:17:27 +0800 (CST)
-Message-ID: <7d96c999-20db-427e-be57-3a79b0ec5119@iscas.ac.cn>
-Date: Mon, 21 Sep 2026 19:17:26 +0800
+	s=arc-20240116; t=1789989765; c=relaxed/simple;
+	bh=u1WhI9U6b1XC1j1N3n7Q4HWjw9ehxiJ9KvxzF3einho=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kxAH7bNe1FA1kqMlhNUSHlkkNd2wGn252/34b4lXMMfexjKxjvJejduSGlCQXpX/RdKsd54N1bu489+R6ZLev4NkYwPhN1CwUv4lz2ulR/ge3/LD2ZV5BoyfFF2Rt8+XzAOW14rsk2V7keJVK3dixQH7MagMPAzU0/N7gvl0L/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=asf4h0A6; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="asf4h0A6"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4e9246a2f;
+	Mon, 21 Sep 2026 19:22:36 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>
+Subject: Re: [PATCH net v2] net: macb: initialize PTP state before registering clock
+Date: Mon, 21 Sep 2026 19:22:31 +0800
+Message-Id: <20260921112231.71716-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260921111128.69129-1-runyu.xiao@seu.edu.cn>
+References: <20260921111128.69129-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: spacemit: clear TX descriptor on fragment mapping
- failure
-To: Muhammad Bilal <meatuni001@gmail.com>, andrew+netdev@lunn.ch
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dlan@kernel.org, vadim.fedorenko@linux.dev,
- maxime.chevallier@bootlin.com, troy.mitchell@linux.spacemit.com,
- netdev@vger.kernel.org, linux-riscv@infradead.org, spacemit@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260919191937.271202-1-meatuni001@gmail.com>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260919191937.271202-1-meatuni001@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowACnrTtGErFq+tZHCA--.11992S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cry7ur18Gw4fWrW7urWfKrg_yoW8AFWfpF
-	ZYvFsIkr1DJr43Kw4xCF1xGry0vayxC34UZ3yYvrZY9Fs8AF4SkFW2y3W5JryUAr1kAw1F
-	yr4DZa48GFyDA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
-	1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x07betCcUUUUU=
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0c3b41fde03a1kunm6099a0b349253
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTE8dVk4YSxhCSUxCQktITFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=asf4h0A6ILvlyWr1XuV/XaUoB1ihNSZjaQo/6St9X9RCcI5g8/KebCGUN8SIaUlPDxTmv4/aO+F0BfB6+FItOGCAZtM2u82UdTsn4pyS+ZWBV/EuBMBsnh0bElKsko+GLp2VjFPfVm8+t/OuTGuZiybasM4hgLY8q9vg4Jmg5vM=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=u1WhI9U6b1XC1j1N3n7Q4HWjw9ehxiJ9KvxzF3einho=;
+	h=date:mime-version:subject:message-id:from;
 
-On 9/20/26 03:19, Muhammad Bilal wrote:
+Hello,
 
-> emac_tx_mem_map() writes TX_DESC_0_OWN into the ring descriptor for
-> every slot beyond old_head as soon as that slot's memset()'d local
-> copy is committed with "*tx_desc_addr = tx_desc", i.e. before the
-> buffers for that slot have necessarily all been mapped successfully.
-> If emac_tx_map_frag() then fails on a later fragment, the err_free_skb
-> path calls emac_free_tx_buf() to unmap and drop the skb, but leaves
-> the already-written descriptor memory untouched, and tx_ring->head is
-> never advanced past old_head (the "tx_ring->head = head" store is
-> skipped by the goto).
->
-> So a slot between old_head and the rolled-back head can be left with
-> TX_DESC_0_OWN set and buffer_addr_{1,2} pointing at DMA mappings that
-> emac_free_tx_buf() just tore down, while software considers that slot
-> free again. The next successful emac_tx_mem_map() call only rebuilds
-> old_head itself; if the DMA engine auto-advances into the following
-> descriptor once it finishes old_head's packet, it will fetch that
-> stale, already-unmapped address.
->
-> emac_tx_clean_desc() already treats emac_free_tx_buf() and clearing
-> the descriptor as a pair when reclaiming completed descriptors; do
-> the same in the mapping failure path.
->
-> Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-> Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-> ---
->  drivers/net/ethernet/spacemit/k1_emac.c | 3 +++
->  1 file changed, 3 insertions(+)
+Please disregard the [PATCH net v2] message I sent above. It was sent
+in error as a duplicate.
 
-Reviewed-by: Vivian Wang <wangruikang@iscas.ac.cn>
+The corresponding v3 had already been submitted and applied, so this v2
+does not contain a new change and does not need review or application.
+I had not updated my local submission state before sending the prepared
+v2.
 
-Much appreciated. I indeed did not consider this.
+Sorry for the duplicate submission and the unnecessary noise.
 
-Also, a minor nit, but it should probably be:
-
-Fixes: 86292155bea5 ("net: spacemit: Fix error handling in emac_tx_mem_map()")
-
-Thanks,
-Vivian "dramforeve" Wang
-
+Regards,
+Runyu
