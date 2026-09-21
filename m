@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B7D355F46;
-	Mon, 21 Sep 2026 12:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A356355F46;
+	Mon, 21 Sep 2026 12:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789992251; cv=none; b=BdAxWYQ6tN62un/z1Ga9tQlwxwBFj4ZE9P+jmRX+JfuisWUzS3zvHKDI4HDr3wMTQt0gy/e597VtAZERy8eOWYGNz6KetASJkH/mj08MA1hEZGiOg3+Fd6Fwbl2/RJgmCdiQErSDqmUEWf1DR9dAtb0Vl7fKROXogucJYUOK/w4=
+	t=1789992631; cv=none; b=F369kTWclndjX2ktm6WKG1WtP+qcJxy00sUxecgKW39P2BqhVb/OFzrB53wz8YVRDo0T5XTuUYIgnCB2o3XKdGnoJveRzHCs1P+gISo9EFBtjP7SaKsTXrIUdzZX4OiZl8OeMbMUHDakSJxfjNNYIha0+V5ix1mETJd88jd5r84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789992251; c=relaxed/simple;
-	bh=ZGTi9h6SFleZ7mTCAa31fA/gFkDp9itBKqDTH+eKi0c=;
+	s=arc-20240116; t=1789992631; c=relaxed/simple;
+	bh=F0khSI8haFqLwK8ha/fAvJOllIzErtVACmDY7oV2nlk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lCqSO2nKKSsOGZ21ST7EBc+IRBtQznWNgmY9P6qfr4fpv9FyVb6+Fn1S9s/MEz7OY71cKcsElNwnnhdDOzM0WIPkcSKxJ7S0fz2XGxXkgEUkoERx3lruK01tw0p3f3AihUO4OcsYsWu0AVSzCileCQrKMD/SfZTAx83OuvUj8oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2MAKrrg; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=dzEYsYA9g9cGf4d67H1/cHpE62X7ICSMHz8MawkolFw29ZxOJwB3hTPgLWEJzH8yGt6VXxh/5arTj242D7aT7s5oJzQCjxVKNSk5LPZjmnDuBofddB3+e+KPJTzx+f5Iduzjzi/06sWLZ7JUQFqZxUomy5dA3jVKZ0QQ1JP52jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxy+sPTR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2MAKrrg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD11F000FF;
-	Mon, 21 Sep 2026 12:04:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxy+sPTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A8B1F00899;
+	Mon, 21 Sep 2026 12:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789992249;
-	bh=1EuaCpVYCA591cNz3vckVy5/ZHFLXZkad3uSzRD9xkg=;
+	s=k20260515; t=1789992629;
+	bh=UeJmK4kWg3yRR+nNOTmEncPuh0kbRpSvlgt4fWTbY4k=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J2MAKrrgf4HQzs2/tWDfLhA0/6cCMkMEtaY+zzWFPYhoNcW0/yuCpPEK4vFNdA0Hc
-	 rD5cEkbkU92cpnbp4f3aP9R8T1W+VousFBAOEEi50c7gUNW0CSOYwTOD6CO7tZO9gL
-	 QIPFbOTmy5izsAsrjegiZ3o9Ovjvlo9ZEg0OBH0Xo6tNsmmIRaldp1viQT/ggBvKa0
-	 cUuIFuLaWRdRS8SxCbJq2YcqUSrsSF0J09cEP3lp88v9qhwzLwdKTL7WjzAjCOS6QW
-	 E0Ui+PheviASQqblSQ15T5gLVTrdA5gFA6tBpog6RDq2dddXIN3ZGb5HoKyWPtm1KI
-	 yy+pMZq5FTudw==
-Subject:
- Re: [PATCH] net: dpaa: Fix tbidev reference leak in dtsec_initialization()
+	b=dxy+sPTRpEbn+bWgh5JVaBkxYM6mn5vCclm7e4wB9isF7kbmExMGjCop/YetyovxP
+	 H90i5RIKCj5J/onxpK1LhKpCciGvuOr+o0xycc2SWAr/IZrq+OklA8XEe8hZYXuUlX
+	 I+htxKgKiMoz7gkhnwlQ4UR8RoGmPKKDZ/zIc8SReXIv91IHrYLly9mh3+dHJ6Hp+V
+	 piL08opKJXO2ai3CO1L1iafs9+b6IGcBmb4FLujNypc0DYRP+B9IlkHQDtqJCTWytG
+	 eVRho14dm5tAIZ4t5yrikoCHgzAtEObVJ9fy8nSJ3Sq3WsUgE2/WLyns6ipOg1uDte
+	 ELPzRDRoX+yEg==
+Subject: Re: [PATCH] fsl/fman: Fix fm_pdev reference leak in fman_port_probe()
 From: netdev-bot+sashiko@kernel.org
 To: vulab@iscas.ac.cn
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, linux-kernel@vger.kernel.org, madalin.bucur@nxp.com,
- netdev@vger.kernel.org, pabeni@redhat.com, sean.anderson@linux.dev,
- stable@vger.kernel.org
-Date: Mon, 21 Sep 2026 12:04:08 +0000
-Message-ID: <178999224836.2160803.9651628345883455355@kernel.org>
-In-Reply-To: <20260917110554.2148240-1-vulab@iscas.ac.cn>
-References: <20260917110554.2148240-1-vulab@iscas.ac.cn>
+ kuba@kernel.org, linmq006@gmail.com, linux-kernel@vger.kernel.org,
+ madalin.bucur@nxp.com, netdev@vger.kernel.org, pabeni@redhat.com,
+ sean.anderson@linux.dev, stable@vger.kernel.org
+Date: Mon, 21 Sep 2026 12:10:28 +0000
+Message-ID: <178999262869.2160803.15157689217656066895@kernel.org>
+In-Reply-To: <20260917110726.2148318-1-vulab@iscas.ac.cn>
+References: <20260917110726.2148318-1-vulab@iscas.ac.cn>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,7 +50,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,155 +58,110 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In `dtsec_initialization()`
-  (drivers/net/ethernet/freescale/fman/fman_dtsec.c:1506) the patch…
+- [High] Incomplete fix plus inaccurate commit message in
+  fman_port_probe(): the commit claims the of_find_device_by_node()…
 
 Pre-existing issues:
-- [Medium] The dTSEC MAC has no teardown path: `mac_remove()`
-  (drivers/net/ethernet/freescale/fman/mac.c:325-336) only drops the…
+- [High] fman_port_probe()
+  (drivers/net/ethernet/freescale/fman/fman_port.c:1864-1873) treats a…
 
 --
 
-net: dpaa: Fix tbidev reference leak in dtsec_initialization()
+fsl/fman: Fix fm_pdev reference leak in fman_port_probe()
 
-The patch adds a put_device() on the TBI PCS mdio device at the end of
-dtsec_initialization(), on the grounds that the reference taken by
-of_mdio_find_device() is only dropped in dtsec_free() on the error paths.
-No other change is made.
+This adds a put_device(&fm_pdev->dev) on the success path of
+fman_port_probe(), so the reference taken by of_find_device_by_node() is
+dropped before returning 0.
 
-> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> index b8d70c0ecb6c6..4f1e3900cebdb 100644
-> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> @@ -1499,6 +1499,12 @@ int dtsec_initialization(struct mac_device *mac_dev,
->  	dev_info(mac_dev->dev, "FMan dTSEC version: 0x%08x\n",
->  		 ioread32be(&dtsec->regs->tsec_id));
+> diff --git a/drivers/net/ethernet/freescale/fman/fman_port.c b/drivers/net/ethernet/freescale/fman/fman_port.c
+> index 1b8fef69114ed..f44a890165127 100644
+> --- a/drivers/net/ethernet/freescale/fman/fman_port.c
+> +++ b/drivers/net/ethernet/freescale/fman/fman_port.c
+> @@ -1868,6 +1868,8 @@ static int fman_port_probe(struct platform_device *of_dev)
 >  
-> +	/* The PCS device is registered as long as the FMan device, of which
-> +	 * mac_dev holds a reference, so the reference taken above is not
-> +	 * needed anymore.
-> +	 */
-> +	put_device(&dtsec->tbidev->dev);
+>  	dev_set_drvdata(&of_dev->dev, port);
+>  
+> +	put_device(&fm_pdev->dev);
 > +
+>  	return 0;
+>  
+>  put_device:
 
 [Severity: High]
-Can this put_device() lead to a use-after-free of dtsec->tbidev?
+The commit message says the fm_pdev reference "is released on the error
+paths, but the successful path returns without dropping it".  Is that
+accurate for all error paths in fman_port_probe()?
 
-The pointer is not cleared here, and it stays in struct fman_mac and is
-dereferenced for the whole lifetime of the interface, including from the
-phylink state machine, which polls once per second because
-dtsec->pcs.poll = true:
+The __devm_request_region() failure branch jumps to free_port:, which sits
+below the put_device: label:
 
-drivers/net/ethernet/freescale/fman/fman_dtsec.c
-
-static void dtsec_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
-				struct phylink_link_state *state)
-{
-	struct fman_mac *dtsec = pcs_to_dtsec(pcs);
-
-	phylink_mii_c22_pcs_get_state(dtsec->tbidev, neg_mode, state);
-}
-
-dtsec_pcs_config() and dtsec_pcs_an_restart() use it the same way, and
-dtsec_init() writes MII_TBICON through mdiodev_write(dtsec->tbidev, ...),
-so the handle is the access path to the TBI registers rather than a
-transient lookup.
-
-of_mdio_find_device() documents the ownership rule this way:
-
-drivers/net/mdio/of_mdio.c
-
- * If successful, returns a pointer to the mdio_device with the embedded
- * struct device refcount incremented by one, or NULL on failure.
- * The caller should call put_device() on the mdio_device after its use
-
-Is the lifetime claim in the comment and in the commit message ("The
-device stays registered for as long as the FMan device, which mac_dev
-holds a reference to") accurate?  The TBI mdio_device lives on an MDIO bus
-owned by a separate platform device (compatible "fsl,fman-mdio", driven by
-the tristate module drivers/net/ethernet/freescale/fsl_pq_mdio.c):
-
-drivers/net/ethernet/freescale/fsl_pq_mdio.c
-
-static void fsl_pq_mdio_remove(struct platform_device *pdev)
-{
+	dev_res = __devm_request_region(port->dev, &res, res.start,
+					resource_size(&res), "fman-port");
+	if (!dev_res) {
+		dev_err(port->dev, "%s: __devm_request_region() failed\n",
+			__func__);
+		err = -EINVAL;
+		goto free_port;
+	}
 	...
-	mdiobus_unregister(bus);
+put_device:
+	put_device(&fm_pdev->dev);
+return_err:
+	of_node_put(port_node);
+free_port:
+	kfree(port);
+	return err;
 
-	iounmap(priv->map);
-	mdiobus_free(bus);
-}
+Does that branch still leak the fm_pdev device reference after this patch?
 
-mdiobus_unregister() then does, for each child:
+Would a single put_device(&fm_pdev->dev) right after the last use of
+fm_pdev/fman cover both returns instead?
 
-drivers/net/phy/mdio_bus_provider.c
+	port->dts_params.fman = fman;
+	put_device(&fm_pdev->dev);
 
-		mdiodev->device_remove(mdiodev);
-		mdiodev->device_free(mdiodev);
+	of_node_put(port_node);
 
-which is the final put once the driver's own reference is gone, and
-mdio_device_release() kfree()s the object.
+Note that redirecting free_port: to the existing put_device: label does not
+look workable, since return_err: would then run of_node_put(port_node) a
+second time after the of_node_put(port_node) already done just before
+__devm_request_region().
 
-The reference mac_dev holds is only a struct device refcount on the FMan
-platform device:
+[Severity: High]
+This isn't a bug introduced by this patch, but right above the newly added
+put_device() the devm_ioremap() failure is only logged and probe still
+returns 0:
 
-drivers/net/ethernet/freescale/fman/mac.c:mac_remove() {
-	for (i = 0; i < PORT_NUM; i++)
-		put_device(mac_dev->fman_port_devs[i]);
-	put_device(mac_dev->fman_dev);
+	port->dts_params.base_addr = devm_ioremap(port->dev, res.start,
+						  resource_size(&res));
+	if (!port->dts_params.base_addr)
+		dev_err(port->dev, "%s: devm_ioremap() failed\n", __func__);
+
+	dev_set_drvdata(&of_dev->dev, port);
+
+Can this publish a port with a NULL register base?  fman_port_bind() hands
+the drvdata to mac_probe() in fman/mac.c, and dpaa_eth_init_tx_port() /
+dpaa_eth_init_rx_port() then call fman_port_config(), which derives the
+register windows from that base without checking it:
+
+drivers/net/ethernet/freescale/fman/fman_port.c:fman_port_config() {
+	void __iomem *base_addr = port->dts_params.base_addr;
 	...
+	port->bmi_regs = base_addr + BMI_PORT_REGS_OFFSET;
+	port->qmi_regs = base_addr + QMI_PORT_REGS_OFFSET;
+	port->hwp_regs = base_addr + HWP_PORT_REGS_OFFSET;
+	...
+		reg = 0x00001013;
+		iowrite32be(reg, &port->bmi_regs->tx.fmbm_tfp);
 }
 
-Does that pin the descendant MDIO platform device or its bus in any way?
-After an unbind of fsl-pq_mdio (or rmmod fsl_pq_mdio), phylink would keep
-calling phylink_mii_c22_pcs_get_state(dtsec->tbidev, ...) on freed memory,
-and would also walk tbidev->bus whose registers have been iounmap()ed.
+With base_addr NULL, does that iowrite32be() for the A005127 errata (rev >=
+6, 1G TX) dereference a near-NULL __iomem pointer, followed by the
+ioread32be()/iowrite32be() calls in fman_port_init() and
+fman_port_enable()?
 
-Before this change the retained reference kept the object allocated, so
-the symptom was a refcount leak rather than a freed dereference.
-
-Would it be better to keep the reference and release it from a real
-teardown path, the way fman_memac.c does it in memac_free() via
-pcs_put()?
-
->  	goto _return;
->  
->  _return_fm_mac_free:
-
-[Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but is it
-the reason the reference is never dropped on the success path?
-
-dtsec_free() has exactly one caller, the _return_fm_mac_free label in
-dtsec_initialization():
-
-drivers/net/ethernet/freescale/fman/fman_dtsec.c
-
-static int dtsec_free(struct fman_mac *dtsec)
-{
-	free_init_resources(dtsec);
-
-	kfree(dtsec->dtsec_drv_param);
-	dtsec->dtsec_drv_param = NULL;
-	if (!IS_ERR_OR_NULL(dtsec->tbidev))
-		put_device(&dtsec->tbidev->dev);
-	kfree(dtsec);
-
-	return 0;
-}
-
-and mac_remove() performs no MAC-specific cleanup at all, so after a
-successful probe nothing releases mac_dev->fman_mac.  On unbind the whole
-fman_mac allocation, its hash tables and dtsec_drv_param leak, and the
-FMan MAC/1588 interrupt callbacks registered through fman_register_intr()
-stay installed pointing at the leaked dtsec whose regs mapping
-(mac_dev->vaddr) has been unmapped.
-
-fman_memac.c has the same shape, with memac_free() only reachable from the
-error label in memac_initialization().
-
-Should the fix add the missing teardown path instead, so the tbidev
-reference (and the rest of the state) is released when the MAC goes away?
+Should the devm_ioremap() failure set err = -ENOMEM and take the cleanup
+path like the other fatal probe errors?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917110554.2148240-1-vulab%40iscas.ac.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917110726.2148318-1-vulab%40iscas.ac.cn
