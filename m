@@ -1,105 +1,184 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3D84E0B78
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1FB4FE2C9
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790016220; cv=none; b=qX08nGFQRCKaeZQl1PkS1QmHXze8T0EBhyQA4zrJX/PVU+5llwFdgT8UQEbR8s502LB0VOVhMV/FKaMT9ocEk2KR5uLyVpNTxFHYPCmC4ZnQaIfKmLfAodrh0giOW6GXybKS8dbd4Dyk5vE4ZGCg8Sd/t6Vxed9E46+b3ioCC8I=
+	t=1790016358; cv=none; b=fhxGcgDSPmIady27HmO3g4397Mb7HDtgsyiMVunm+jTcZ7ZVt+x0HyTuFl+XvZn1fG7dlE0fpFU7yib8L+rBeTN/1EqbB7lt/DvLQypZUHecppVP6SrCVp7qyLigwWxfGCpHD3+5MgiNqH2ZDV8g9sVK1zl5NtYyFC7i8T6lbPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790016220; c=relaxed/simple;
-	bh=8xVNcCCnqs8JZAkv5ynaLQmALpySnD0v2Xf2MRO697w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0pgD7WDX8YDbWprI1SOHguuVBfLaTMU3pbLwWliIEBXsLoKWd2Gf32/MwHgKvlAiP9vJ3l7Ucw/qxqDjIgBH6+X+c5hMOzJ/m8jgZ8kyPKDbLOFLoeSjmowG8wftM0UEOD/GVwIYQ7P2Xi4hM4/hG5rN+YFCJ2zLOH2bcZ9MbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jql/xAwP; arc=none smtp.client-ip=74.125.227.170
+	s=arc-20240116; t=1790016358; c=relaxed/simple;
+	bh=6bBjpny5N1e2SRsS37EoTapMfmRF26k/B1H4vibyuJE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iYznKdBIPpTF9GLsmUT3dTNYS3Hb8LG58LIW3bZJSniACnHv3JSVc/M7kW2EO7YFhRJC9w73ytyW14iiro7B4VIm3bwOebVcLrTHaFFOwxX2G/rN62AkbQCBrH010yo7ikd4JnPZgPdsY2roUWBOcgiwJ0MsLHcDmiAINNY8J80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOQKnvMW; arc=none smtp.client-ip=74.125.227.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jql/xAwP"
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccd5cf02so2455330a91.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:43:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOQKnvMW"
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-398e10200a6so2142359a91.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:45:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790016217; x=1790621017; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8xVNcCCnqs8JZAkv5ynaLQmALpySnD0v2Xf2MRO697w=;
-        b=Jql/xAwPmwg6ql8IeZd+1LVZrqh++0GRdEurNQD2OSVTrwuo0wFvgMlpqHi4pD9BFB
-         +HMScaT7HRyCdlUPmzQ/ReL0AQpQci1x0qHjo0V3tgJMytvIcCL/AzcideLDEGflOKNC
-         xdrNtBlnJGEYOrhQp2MEkPgmIh0N9jdtou2QzG6JKo9Q2BFxbe0e1Y1XpHd2VXFpJLrY
-         iSEyFnRSwdQANf5hfiF+beQNQro07NG4S1kPA3zW2FzYiWjPpfItZ0GbQ5j5X0F5nErv
-         rkbipOu06DEAxCPGMqqOsJ64qH+UWSAXKZa2MmOaNtxr5iGsvyNVHxQ0HmmByW6Dd36o
-         ZuMw==
+        d=gmail.com; s=20251104; t=1790016356; x=1790621156; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ys3kcQzfZ3490e1gxpoxMXZSPnIfno7l6ut1Q4fF6Vw=;
+        b=hOQKnvMWQwpRnVRXE8QY6K3vqazsMI4ZNNeHq7YTFv55hW/MQWfln0tO7f4k3IdFX/
+         pS3O/oGobmt5rTTn7VrziRLHRadVGWN+DWKVvClCjJiaLKR90ewERsKBIr9JB61Dlr4N
+         M5RLs8uKIeC2K3KS8G6s3XamsexN6VOyeqjD3qSqC6WqQD87RymMdfxu+HV99BsNI+cN
+         nq9JiSSmha+fUpMJ3oX6xQILYCwOAaDlcdiD9mFTdY7gGjMZYWbRffqgibFLxO8RqBvW
+         7k+sKSakhouoQmVxXGhdUNSOxM+Ta+2wOWEgbXksITRN1+2IewWPKxLb8Y80ny6Q2HVo
+         L/dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790016217; x=1790621017;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8xVNcCCnqs8JZAkv5ynaLQmALpySnD0v2Xf2MRO697w=;
-        b=gyPMX0MWGrlRzpY4W42QYzeKaLEHUhypKVQScm6WQEp67TgpILpnppq6LLZ4nEa8lE
-         iUAqQlK2ICE2HkYtDhCWwkGdskK0YTzm42MFz/mRxdHRwfJmo9t70EEylnhtZh3bxPZW
-         4XfsgA1cPeUKujtHRSZdWNbPpQhI6FrGmFDVd9U8axQYfMQI8mJXmJhIfRdWfSau27Cq
-         ueYeyW6zEz8RWIHYPVWkC7lhtSXSG3hN0sqx/OJ+S6m9ueDPsTPKQBc/+ARn7Wvto7yB
-         ZeRFsRSBLGnegLgq6kuiKpv/J4KQGGF/l4SGxBDkEYmzwzC0bjtqb2PmVJXO9nWncsUN
-         xZKA==
-X-Forwarded-Encrypted: i=1; AKwUvByDVB1UXLO23IrqBkrbQIEZcPGplHLNPVrV9wiegXqpCnLIwBF9EJ89Ey8BidDFhQKh2lEnDBo=@vger.kernel.org
-X-Gm-Message-State: AFuF++n/qy/SbfYlrLPugWwi+yr+RhXhTfE11mFg0BMYrO+XjdSc6esY
-	ZrtiBhPczRLXwgbyB0n8Ncnzpjou55XpLLEwC6bfCyGTiHy/o2Omtx0b
-X-Gm-Gg: AYBFou1U3VfI7zgp2yVS2sEMnNfFkMGurVFUkuX/+vcb7VYu4iWm6beGhYdHGOyuGtV
-	/u9Y0dOhJBXtE1mcUYQWHcENNj1FyNP5ZiPSHDR06V4xy/Az7E+gZ7tWcM99+Dl4qQm3MAA7Bld
-	+dc8h11wAo1wusw7f6IGiGxlM6kfGRZubgU8J2HI1g5WIXodTnM0V+KNhaPVIf+mfg9R32Qosol
-	VQNhtQU3wxeemLNoSMAxgLmsogtx4waDgRoowfZbm0nbijx8nKgZJDDnF6TQzzjfParkwdTO1nQ
-	ie/BMmpVDbyuNopWcw6YnMkPu1WAKBQ6DtYlyfZ7thLXCEsbiAskbykfkzMxnxxBzDelCpThKLM
-	oL/J6wuImzsWrupbG0BCSjzzWywiTfrA/a7irB5hq0VqG2B3yptYV02cZYSZpR3USPm3136hM3w
-	Q4JsKu9Bj21dRW39dsSvxzJ9DHnKVdO55wsUuZVuLvSMYjH16PPGUiK+oKVf0BPm71dEEO
-X-Received: by 2002:a17:90b:56c5:b0:395:5f43:4ec4 with SMTP id 98e67ed59e1d1-39e549787b4mr18463027a91.0.1790016216901;
-        Mon, 21 Sep 2026 11:43:36 -0700 (PDT)
-Received: from localhost ([180.184.77.6])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06702167esm611149a91.1.2026.09.21.11.43.34
+        d=1e100.net; s=20260707; t=1790016356; x=1790621156;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ys3kcQzfZ3490e1gxpoxMXZSPnIfno7l6ut1Q4fF6Vw=;
+        b=YlCzW0EySQEdkfZuXMp+mJjZf/4nMnH0m6myS23eiWTwRmd151p+F0zntqtDWSPM0n
+         VwTUmanB2vfOBqpX6/57OXpHy9oEf6utqQHZEBtPPnng3EpU3zXz6MsXAAnxIZsRMc1Z
+         SlV8dDpM8hkX7oElmyrMBvz5mgIy30HUpslPCLGdQgzhPEXisrtGDPPp64fncGsmPdFm
+         GTKPjQKU0ys4FIZZzSAgr+3EXJNfMKJSHuSdW27DBsig0WVy4W1W0wb6kcZkbpGy3XEa
+         QyMGYX77XU+9TmtonbW3p4/iRgIOttrgkVYj6oMxKrVInCTTUJpJMigGcPlYykJpUs9K
+         WmmQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwxEJItJXEqfCsmXsNy9Bsf2+UUstmdfeDnEpOtDSPqdRNcpi+opanhi7TS5giLfkwZt+mXrvE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nuAAA2qy+eDF1BLfstY2RpzKID2vn0hr81ltQNzk284POUMG2N
+	UZfZk5z5/Wx8TRNzBRsNiqD8GXenVqYfUdbPJh96Qrgh4oigjGAvfdRX
+X-Gm-Gg: AYBFou1TFDiHmeNUTMp6Rqjx625r0EIBAeQKuSDnh1CMoYj6jjSrEaVmwW8MxfpIwFi
+	dBPVRKvADVIfyAFrWNpOT9Jli3Q/9+DBSbpyPbbXhZ/oXCDlNS6UzBqWYXydiFgH3Beh394IQXo
+	saf/e1/OvK8hv1Aq61obgU9HOwhZTN2OTzOt+ac1bTlpM+JD0wH7XEGeabmIkF6SDAIX50NQSp8
+	/jSnSDKRLLoT3+B3gLhzS5Rwp13V8GOq7mwnyJVt+2f9m6YaEgPnxxfrxnEkHNoihT9JC24dSHy
+	RH5IYJxVAabg5ZJSTBjSWViPDvLIIwDbCggn8baPrKkE6JtldkyDUWoZU0bUHJeZvwWEoCb46SM
+	GcFOdA+GLCyJaVsqQejfxw5KH3iwRPgHImSv/+uK90pPom1sudsWlCM7ZtlWJKwOfpKqh5K9wBD
+	xglHadHSy2VPLYFUh8YvOmb8Tt8g4IYlT+g0LwUziaQB/a69HKEnBn0PyJWHlZfKLu
+X-Received: by 2002:a17:90b:4ac2:b0:3a0:2111:d15a with SMTP id 98e67ed59e1d1-3a02111e27dmr10344795a91.29.1790016356058;
+        Mon, 21 Sep 2026 11:45:56 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:49::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0699ba967sm120008a91.11.2026.09.21.11.45.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 11:43:35 -0700 (PDT)
-From: Dairui Zhang <zhangdairui@gmail.com>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Mina Almasry <almasrymina@google.com>,
-	netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Wei <dw@davidwei.uk>,
-	Dairui Zhang <zhangdairui@gmail.com>
-Subject: Re: [BUG] net: devmem: NETDEV_CMD_BIND_TX has no permission check and no accounting
-Date: Tue, 22 Sep 2026 02:43:31 +0800
-Message-ID: <20260921184331.1415909-1-zhangdairui@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <arF4n8rQtVzxy0da@devvm7509.cco0.facebook.com>
-References: <arF4n8rQtVzxy0da@devvm7509.cco0.facebook.com>
+        Mon, 21 Sep 2026 11:45:55 -0700 (PDT)
+Date: Mon, 21 Sep 2026 11:45:53 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org, Jason Xing <kernelxing@gmail.com>
+Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
+Message-ID: <arF7FGr8rQqDw8Pj@devvm7509.cco0.facebook.com>
+References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260919143732.11772-1-kerneljasonxing@gmail.com>
 
-Stanislav Fomichev wrote:
-> I was gonna do it, but looks like you volunteered yourself? We do
-> get this almost every day now:
->
-> https://lore.kernel.org/netdev/20260918150858.3c98728d@kernel.org/
+On 09/19, Jason Xing wrote:
+> From: Jason Xing <kernelxing@gmail.com>
+> 
+> Greeting,
+> 
+> It's BPF Timestamping 2.0 that aims to observe the packet latency
+> more efficiently and simply for different protocols. The current
+> series is only focused on TCP protocol.
+> 
+> At Netdev 0x1a/Netconf 2026, the history, background, motivation and
+> rough implementation of the feature were exhaustively introduced[1].
+> 
+> History
+> =======
+> - In 2009, Patrick Ohly implemented the basic infrastructure
+> - In 2014, Willem de Bruijn enhanced the TCP latency observation
+> - In 2024, Jason Xing proposed its lightweight BPF version
+> Detailed slides from 28 to 32 [1].
+> 
+> Background
+> ==========
+> Even though BPF Timetamping 1.0 is comparatively low-overhead,
+> transparent, it's still complicated due to a few points inherited
+> from the design:
+> - Inflexible/fixed reporting phases (qdisc/driver/ack)
+>   When we confirm the issue arises from the kernel by using attribution
+>   ability of timestamping feature, we need to further minimize the scope
+>   until the issue is fixed. That means, we then have to resort to write
+>   a few complex BPF progs with the similar functionalities (like skb
+>   level tag) which should not happen.
+> - Not enough low-overhead
+>   Serving the sensitive applications, an always-on latency observation
+>   platform should mitigate the self-impact as much as possible. As we
+>   can conclude from BPF Timestamping selftests, there are some blocking
+>   and time-consuming points like where reading/writing BPF maps happen
+>   in the extremely hot paths.
+> - Minor flaws
+>   There are a few minor flaws inherited from the initial design, like
+>   missing tagging the last packet[2][3][4].
+> Detailed slides from 33 to 39 [1].
+> 
+> Motivation
+> ==========
+> During the process of the large scale deployment over the last few years,
+> we eventually realized timestamping feature doesn't support container
+> scenario and we need a finer-grained and flexible tracing tool (packet
+> basis) after a few rounds of attribution of issues.
+> 
+> Design
+> ======
+> - Start time
+>   For the specific protocol, we need to accurately set the start time of
+>   each packet first. For TCP, we chose the entry of tcp_sendmsg_locked
+>   and the driver time as the start point, so that any BPF program is
+>   capable of computing the delta between start time and current time.
+> - Simplicity
+>   Previous BPF program (like selftests) is too complex to implement. The
+>   core idea is to make everything as simple as possible. And it should be
+>   decoupled from BPF area and previous timestamping feature as much as
+>   possible.
+> - Flexibility
+>   BPF program hooking any function with skb parameter can get the latency
+>   value, which means it's no longer bound to the pre-embeded reporting
+>   phases (see __skb_tstamp_tx)
+> - Efficiency
+>   Avoid the previous BPF operations as much as possible. Make sure the
+>   feature achieves the lowest performance impact, which means only time
+>   operations remain.
+> Detailed slides from 40 to 62 [1].
+> 
+> Implementations
+> ===============
+> in-kernel
+> - Find a suitable place to timestamp for each packet
+> - Pick the right start time for TCP
+> - Handle the split skb due to various reasons
+> BPF prog
+> - Hook any functions that carry skb parameter
+> - Read out the start time from the skb
+> - Generate the current time and then compute the latency
+> 
+> Discussion?
+> ===========
+> - Do we need a kfunc to allow users to reset the start time of each skb?
+>   What I had in mind is if someone tries to observe the latency between
+>   two specific functions (rather than tcp_sendmsg_locked).
+> - Current implementation is real hardware timestamp always wins, which
+>   means BPF prog possibly gets the hardware time that is not aligned
+>   with bpf_ktime_get_real_ns.
+> - After the series, do we need to implement the same logic for
+>   SYN/FIN/PROBE... As far as I know according to numerous user reports,
+>   a small handful of issues came from 3-way handshake.
+> - Reusing the slot of hwtstamp might bring potential problems or make the
+>   code hard to maintain. Can we add a timestamping specific field in
+>   skb to deal with the latency observation?
+> - netdev_data conflict in IGC driver. It seems unavoidable to pollute
+>   start time when it's enabled. Should V2 feature coexist with hardware
+>   timestamping?
+> - Should V2 coexist with net timestamping and BPF timestamping? If not,
+>   the maintenance should be easier.
 
-Thanks for the pointer - I see the same flag patch was posted just
-a few days ago. Sorry for adding to the pile, I should have
-searched the list harder before sending.
-
-That leaves the accounting side as my one remaining question. With
-bind-tx unprivileged on purpose, is there anything that stops a
-user from exhausting memory and IOMMU mappings by binding over and
-over? As far as I can see there's no per-socket or per-user limit,
-the allocations don't go to memcg (GFP_KERNEL, devmem.c:214), and
-repeated binds of the same dmabuf fd aren't deduplicated - but I
-may well be missing a guard somewhere.
-
-If there isn't one, is that a gap you'd want a patch for, or is it
-considered acceptable in practice? Happy to help either way, just
-tell me which direction you'd prefer.
-
-Thanks,
-Dairui Zhang
+After netconf discussion, I was under the impressions that no kernel
+changes are needed, so what changed? Is it hard to track start_time
+from tcp_sendmsg_locked on the bpf side that we need kernel support?
