@@ -1,160 +1,61 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43643B4423;
-	Mon, 21 Sep 2026 10:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BDC3BE154;
+	Mon, 21 Sep 2026 10:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789986229; cv=none; b=W0lTiui2VEAymqtrNpYCuaz7QDwZAaHg2U3LYgaA8nFv0zhFOJh4ZnPGRl+xfm2Tg/o9ImG9ZLzsfOxGXzday4g8Zer31H7OGuRBFmFJV33k0dzfoc+nyk3wInGrdR1qgvD1VNJ5UfpzKqbt5ppflsoALg5TmoTpAP96TELrEwg=
+	t=1789986473; cv=none; b=p17aqVzg7OX9SHxc8vPBT1PaNjOsU5fBTyIA87Rg3xD5jQsdXcEqdwzoUtn4YgPGjmD7Z4rHTJi2ZUjfU5+CRhMv4AqEECiFeSjCQlXQT5gQX6O4Gn7un/vxGMr/b6DXULfIT1xqAcntefy3pZFISMj1GKr2ljSQTCUgjsg0z1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789986229; c=relaxed/simple;
-	bh=SGxlfflnoEUE8PQna8EIobdZGBeut1mKJI2YDTFNBSk=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=VE8Xhunv27KRLGVHvIuEkh4YvNpUbjITmXQ7lpvbyNMXJS8mfdNL3EA0xdDGcy9peB+zT3VdPtXrfqWee2liUAAVbGqqkEuLJA1A+aZfvxfcPkuGcX4DfJlUqkhsOG8hYzpxJVzyI8T5pEJY+6JAeQakVQiZ1+8KEAFuUmOXc2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Gu8aXN/Y; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789986473; c=relaxed/simple;
+	bh=lvF4VxgNAmL/DMFBMxt8O+5PK4dRU10yStkYLKahp90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mVRQQ1y5qk5uQ/TfhXBKRTjqUuce2MdTa2tu84mUS6BhZApRuKWoq01G0eIxMj0j0J8PHW+f5D+3iQf5Ew+3qpKIcDR1CD/u7KVwGZXokjgvUAyT509Sj4vkg5TCn0D+PRJ5flCMDWR4rWhICH00wEQ55NCBjDFBexL7qbzaFIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFsBIXG5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Gu8aXN/Y"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5A63DA4A31;
-	Mon, 21 Sep 2026 12:23:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789986221; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=sYTyf2NzK31tnC6ydhPwUeBuS5CmfMmG+CeRjqUuIfE=;
-	b=Gu8aXN/YGk9qhL59VL0nIyWichBQRIS8ZytYfql2XkgbGzV9TMGQHQThHKrpZtmKkRK37S
-	yF1g9z5XUrNH1IbOFixDvcY4BU3R4QRQJ1yNgKEZtY6NrVvH8q/by6vcDdl3sArYyg0jlK
-	7PI/ljHWHKv5rS31XbgkX3lbeQeovU0rYY3nHQ/+cIc+ftJIbX5RZltwMsvi5yHSzcxQkJ
-	1ufZ0NpRTIW8QYIgSbviE/5cjzbegDKLtb98ipZtZaAWtM0RFW0pvkRZBwTxw4ooNjRDQL
-	leLQf/jUls/M6DnK682xY5UjK3uXOJBPOP6cn4eTLA8yLhmecJU3LYCQXkMLMQ==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFsBIXG5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3530B1F000FF;
+	Mon, 21 Sep 2026 10:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789986472;
+	bh=sxsN+TlIHJHvv76mHxiqyAMvaRfMC/jRNv1GbodqDrw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jFsBIXG59yHL609zVg4O8dOdX+CqyvC+dkS1GYYKr1rLXoScCbL8Jsg4PljAiCfBi
+	 Olm51+2DzGkw8dgol8S7N50xd34uKWXyftyW0Nz1I0pM+dlpP756NIuvDyBDzlHoeH
+	 si9P3I+vz2zRwbL3cp31isHDvjfPgXAmZ67fdES3F6O4c4sigO64mE2CscZYc9irmp
+	 FaQjT6tv4j+t/IWxs+Vi6tS8/In5Mm2QXS1SesnVDFj4ULQvFDWJTOkg5dh0VweGaM
+	 v54P5cTee+6fLhDW7MA0GqQNnHK8cW6ralwHHJOi8ppgz97PQ1NXUceZpE/RCsOTY4
+	 vUicYfdthva4Q==
+Date: Mon, 21 Sep 2026 11:27:47 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Yisen.Zhuang@huawei.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, shenjian15@huawei.com,
+	yankejian@huawei.com, stable@vger.kernel.org
+Subject: Re: [PATCH] net: hisilicon: hns_dsaf_mac: fix mdio device leak in
+ hns_mac_register_phy()
+Message-ID: <20260921102747.GF13925@horms.kernel.org>
+References: <20260917110828.2148390-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 21 Sep 2026 12:23:37 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, richardcochran@gmail.com,
- kory.maincent@bootlin.com, vadim.fedorenko@linux.dev, jjc@jclark.com,
- florian.fainelli@broadcom.com, opendmb@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: don't require the hwtstamp NDOs when a PHY
- provides timestamping
-In-Reply-To: <178998466913.2160803.80702009306181180@kernel.org>
-References: <20260918095540.34286-1-nb@tipi-net.de>
- <178998466913.2160803.80702009306181180@kernel.org>
-Message-ID: <8037c32ce6fef79a74ee56973bf185c2@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917110828.2148390-1-vulab@iscas.ac.cn>
 
-Hi (S|Cl)ashiko
+On Thu, Sep 17, 2026 at 11:08:28AM +0000, Wentao Liang wrote:
+> hns_dsaf_find_platform_device() returns the mdio platform device with its
+> reference count incremented. hns_mac_register_phy() never drops that
+> reference, so the mdio device can not be released.
+> 
+> Release the reference on both the deferred probe and the normal path.
+> 
+> Fixes: 1d1afa2ebf82 ("net: hns: register phy device in each mac initial sequence")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-On 21.9.2026 11:57, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let 
-> patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your 
-> reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Incomplete fix: the ethtool-netlink tsconfig path still
->   rejects PHY-only devices, so the two documented-equivalent uAPIs now…
-> 
-> --
-> 
-> [...]
-
-> [Severity: Medium]
-> With the checks relocated here, the ioctl entry points now reach
-> phy_hwtstamp_get()/phy_hwtstamp_set() for a device whose MAC implements
-> neither NDO but whose phydev satisfies phy_is_default_hwtstamp().  The
-> ethtool netlink peers of those ioctls keep the old unconditional gates,
-> and they run before these helpers are ever called.
-> 
-> net/ethtool/tsconfig.c:tsconfig_prepare_data() {
-> 	...
-> 	if (!dev->netdev_ops->ndo_hwtstamp_get)
-> 		return -EOPNOTSUPP;
-> 
-> 	ret = ethnl_ops_begin(dev);
-> 	...
-> 	ret = dev_get_hwtstamp_phylib(dev, &cfg);
-> 	...
-> }
-> 
-> net/ethtool/tsconfig.c:ethnl_set_tsconfig_validate() {
-> 	const struct net_device_ops *ops = req_base->dev->netdev_ops;
-> 
-> 	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
-> 		return -EOPNOTSUPP;
-> 
-> 	return 1;
-> }
-> 
-> Does this leave the two interfaces disagreeing on the same hardware?  
-> On
-
-Yes, but they already disagreed before this patch (EOPNOTSUPP).
-
-The ioctls are the regression and AFAIU TSCONFIG_GET/SET never worked
-here. Both gates are part of 6e9e2eed4f39 (~ a year before 
-5062245a5a7f).
-
-> the bcmgenet plus BCM54213PE setup named in the changelog,
-> SIOCGHWTSTAMP/SIOCSHWTSTAMP would succeed after this patch, while
-> ETHTOOL_MSG_TSCONFIG_GET and ETHTOOL_MSG_TSCONFIG_SET would still 
-> return
-> -EOPNOTSUPP, even though Documentation/networking/ethtool-netlink.rst
-> lists those netlink operations as the replacements for the two ioctls 
-> in
-> its ioctl-to-netlink mapping table.
-> 
-> The note about this ("tsconfig keeps its own copy of the check ... IMHO
-> this is an extra patch for net-next") sits below the --- separator, so 
-> it
-> does not end up in git history.  Could it be moved into the commit 
-> message
-> so that maintainers and stable backporters can see that PHY-only
-> timestamping devices are only fixed on the ioctl path?
-
-That would suggest the regression is half fixed. It isn't, the tsconfig
-gap is a separate and older bug. I placed it deliberately below ---.
-
-> 
-> One detail for whoever narrows the tsconfig gates later: the fix is not 
-> a
-> mechanical copy of this one.  The HWTSTAMP_SOURCE_NETDEV branch in
-> dev_get_hwtstamp_phylib() still calls the callback with no NULL test:
-> 
-> net/core/dev_ioctl.c:dev_get_hwtstamp_phylib() {
-> 	...
-> 	if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
-> 		return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
-> 	...
-> }
-> 
-> dev->hwprov is only ever assigned in ethnl_set_tsconfig(), which is
-> reached through ethnl_set_tsconfig_validate(), so that branch is safe
-> today precisely because of the check under discussion.  Should the two
-> sites be changed together?
-
-No, IMHO not here. It would change change behaviour that never worked.
-Thus I would suggest fixing this with a follow-up to net-next.
-
-> 
-> [ ... ]
-
-Thanks,
-Nicolai
+Reviewed-by: Simon Horman <horms@kernel.org>
