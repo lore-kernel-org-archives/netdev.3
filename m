@@ -1,317 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012026.outbound.protection.outlook.com [52.101.48.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA764E01E8;
-	Mon, 21 Sep 2026 17:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790013227; cv=none; b=mMfwqGqick8JUQKD8Le7BG0UJQ7jzWknGQX1DC/Hy2ByuM35HZNImxRycrEdtAzIE6BU9d4FEdKQyc/ZEpvU3X1gMx/dFCxzwX3egz+KyVlDQiLTrSNs9g7I7qlbZAFQSQj6B/9FW6vj6dCN+bYn2D2yfOAtHjRWbaMC+TrMAAc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790013227; c=relaxed/simple;
-	bh=tY7Vd8NRFhLbocJtcET64P0RFG6F0Je7fr9qTGEZWMQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YeAPihHvXByARyfwtDcCACeE8sw7LTibTLop/dHqYcUVyBSENJvU4Yr1k+8GRjVpY6i1rpmmBiLHR6RfqRj2Dfu1xxo++mB5LhJ2B5hTwdvvPmciKD+bTQr/8zGyufQ9nDWq43kZDgD+z7dj3ntESPRjbu3B6CO7T/vVwTp5cok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJzGxOTq; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F894DA540;
+	Mon, 21 Sep 2026 17:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790013359; cv=fail; b=lXwTJL/6nnlCPopm4Y5jZah6eA4AvEAOPYSO2j0lxie4WCitxUJRzg6b5MoKQyTgOGaZzrhg+Po/Ohpsmjj5/fD5wYwupV2uKol2EO3jqZVZWEfCmn5/8bBNTcekGJFsyMSR9Ja5TyMW25pw+OVOgc2guoO3d6vbTf8Okh18HaA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790013359; c=relaxed/simple;
+	bh=fGErNgzHd5oPsoPw0XmyIj+xqIKgqHMlCTPVJz68j1k=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mn1gd35GvXopU+fgOgEzzjspyWBR4tHCuK/KPjIKXFdnom6ZV0eFHYHMLAuEwO5fQmDhZDI+BtopS18Hpilr1fWipWar4CWxUX15wcCsLR7YcnkDCD6WwVAJyWT56Me6MUvnNa0dyGUXqs4CUT8BCbKNBtPrdP3c6SATumNV0Xw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=N/vltTpo; arc=fail smtp.client-ip=52.101.48.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJzGxOTq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E97B1F000FF;
-	Mon, 21 Sep 2026 17:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790013225;
-	bh=A8JVvGDjiKb+z6HfLLy8ux29yVX3go19GDF/iGG2Pig=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YJzGxOTqGsEq1pXowPouLTYWNwN2Bezr9oOj6a9sfi05xaIKF8tO3D5i9x78AHjR/
-	 5IORRaTw7or+dAfZIANQd9ZvTApeaLPkHIIq29c7NHDhmRuQtO1VLzz57xUqt/g4Ly
-	 Yh8REUbY/nAkIzsr/kfAJSV6/K6l0OcvAegZbp0YlomHkt8ZQ54M9el6F9oM4b0zYN
-	 RTmm+NszqUUnhQ6dB8o5qmI8X8mHMD5aY+myRnJ9zsIrfaWPtFcvRjiFxp2Pvhx2X8
-	 73/DACb4r/XHfJFKX1DKlC+EVFX0rZtGn7f5QxFcwFAr6Zxn0NYUC4cnaBTL2rdOmy
-	 xbySYwWXfazcQ==
-Subject:
- Re: [PATCH net v2] tcp: prevent stale tx timestamp keys on rtx fallback
-From: netdev-bot+sashiko@kernel.org
-To: dw@davidwei.uk
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev,
- song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
- emil@etsalapatis.com, ihor.solodrai@linux.dev, john.fastabend@gmail.com,
- sdf@fomichev.me, willemb@google.com, liuhangbin@gmail.com,
- mkarsten@uwaterloo.ca, kerneljasonxing@gmail.com, bjorn@kernel.org,
- jakub@cloudflare.com, jiayuan.chen@linux.dev
-Date: Mon, 21 Sep 2026 17:53:43 +0000
-Message-ID: <179001322376.2160803.7069391663364625397@kernel.org>
-In-Reply-To: <20260917172050.2191062-1-dw@davidwei.uk>
-References: <20260917172050.2191062-1-dw@davidwei.uk>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="N/vltTpo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oUIOWjEVB5/wQHmAfzBAcFtmO3OMtfr59iRoXNYdcNyMA6CNRzGjSO2AeVgJCVk4s4rSBoBiYKkaX5QsCH/QSP6xkcvLycaiK6/aaxp3c37VdLc70olFv/z7wUJtMoilpPdWGGMjvp2JwF8MSSuFyINuuzBe+BKJGZZ25ReUfyyndefjh7V3/aCF8FFoH9EQGcUtBPsnnm9rmyPtgfGpkEQqNTW/9Gx4xgIChcTNztsIQvnH0gbhC8+QVNNto/dRvN5D+arR8fjqHXXj/3R5+LTOpBRchxtOfTyHtP+IljTg/GOlINxfTv8B4WslmVOCIvgUj+CyrNEIL5XOAkCQrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tlnfl2uCkEoL+4boiuau7MAt8w47zdRmmK2LxZTvLLY=;
+ b=CuxD/Dp5Oh3GsipfF7w9psS6JTTpSxQW7d4RGSoboDiMoAkTjvXTE1CL/+ia1IsrJcUbtLXJ5a0AOsMTynczIuBXNyZGyZ1B2cDS3icx18bjk/a/cZyjzbGciXXuzox6UGkD3NDc3KSDrNkJWBrp0r7o1XqMwAvQIsULD4TIw4Jnfb000O+EERIMwEYc5yZ6tCuGZG69Wq4QUveU8A3S0rcBsPJ5mQ9KzQr0DcYrthEBly24LF1VWLPleCFN+/UKq5CDODVbsPu6PoCACwpEF5he3EL5nwlqmrwkOmlIIQRBdSqB+Mon6xQXz+r8cmLtBarzbg/MWOybkcC47RQbDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tlnfl2uCkEoL+4boiuau7MAt8w47zdRmmK2LxZTvLLY=;
+ b=N/vltTpon1bGUwxTLYMQpfOuvaJdHoCnoMl7xT/yezyBkx2IhB2MVH+pCmFa1+6VIN6PpwRp6qqY2QP9Ttvg2Rz7WV3jeL/k6Oe4CuO5YUB+oWmIXVV4pHFx58gkCn5peRW1YQz1xeGboyOuxjiwbPA6l+/qeELImeCf2n0O3QU=
+Received: from PH7P223CA0026.NAMP223.PROD.OUTLOOK.COM (2603:10b6:510:338::31)
+ by SN7PR12MB8602.namprd12.prod.outlook.com (2603:10b6:806:26d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
+ 2026 17:55:53 +0000
+Received: from SJ1PEPF000023CE.namprd02.prod.outlook.com
+ (2603:10b6:510:338:cafe::98) by PH7P223CA0026.outlook.office365.com
+ (2603:10b6:510:338::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Mon,
+ 21 Sep 2026 17:55:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF000023CE.mail.protection.outlook.com (10.167.244.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Mon, 21 Sep 2026 17:55:52 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 21 Sep
+ 2026 12:55:51 -0500
+Received: from galena-46a8.xcblab.xilinx.com (10.180.168.240) by
+ satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 21 Sep 2026 12:55:51 -0500
+From: <alucerop@amd.com>
+To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@google.com>, <ecree.xilinx@gmail.com>, <icheng@nvidia.com>,
+	<rafael@kernel.org>, Alejandro Lucero <alucerop@amd.com>
+Subject: [PATCH v1 1/4] driver core: Rely on supplier driver binding at link creation
+Date: Mon, 21 Sep 2026 20:12:36 +0100
+Message-ID: <20260921191239.4249-2-alucerop@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260921191239.4249-1-alucerop@amd.com>
+References: <20260921191239.4249-1-alucerop@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CE:EE_|SN7PR12MB8602:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9eb7ade-d6d7-4545-6a47-08df180993f5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|10067099003|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	HfN2RIeYh73M/jEv+Ei8pdVUzI8mFyaRe/eNEuzV1woXlDndPEzNnjuWFTziBQxKIpjGjHtWR4fXH2q84c5hLbxv8wJ39HIhDdcMNa9mBPUv+oEtFKHyG1NuHZd7kuA63CGuJyVMANimFBH9MK2Zlg0K65hAjiYeu8Nst3UafRfEZzGGfc4p+pLRsph9Wc1Lh9gJDminnDlMj+TfSqrAxhvnBRrqS30v5kj1S1QR1CYrgT/20fL8dzdZ2GoOUAhPWj2AMzo6/Uo9MFP3MyIlAFbfnwm3MNHP9O0Zn+O3G3GU1Jy1O6r03xnBlCKN6dwBJXDSViwzBhKMnaAt5NhjnqMbI5Bl86lpTQEamRnbwpEY3a76rIk2cVwJd59RUSGe6Iopb+Ona/njKu7HUio1u9AIbUXd1fb5+euVTUwSKj0PP5+2XjZeclRGruDOD6UqFJ7tkXI1Rz0WBAh6y8fJ8Uvv/goIfiPhwjMiN6Z+gBMTj39Ax7FMEcy6P6cpuOY9/pAOw9fjEVYZV26KOc5+vEKxCXY3Gvdjvo8XMinXwg5r1Ve8ZbmPHOhwNSKr7KTxdkpcs6VvWv+Wezvd69vCb9OXky0aiGizwrRcxW6XUwORbDs7rU6HEbioyCjNqlJQ0kn9SFQZQ7LYTCoLTCRH7s2qwetoUy+P01bgn875cKWQIk+/PGwxi11HrjEIN5f9fNWHlDuunids/RfMSygQmw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	fu7M+t5ewsoSGIwed3B0JiAEL6fPjRqVEfqPaZPtlpmLKsdmCd9fJ85jg9++Bf6oY7b+25zRRhjxI1KSXFcqnGcvIuB7lMGf4tQNE4eYF/aMXilPEIxQ3Jdz8I3bxHqRNnJz3IQo0GAPTpDR0T4Fflsw90yOz+LgvXUjwLrmi1hyyJlNFCZnDH6FMmeqK70GCsSYmodu9QMM/ijzOiOjxFauPkDB+v1I0Ni8fM6gucJGcL7lf597SxyWxLklIVKQEbWvJQdRPBaion807fQ735xojCI0SFSMhW0uHrckfFMvmE+WNO7dxS+EEqrCBHQXyQkc+zHyefBblSbd8DSqFUlyrxj9lqDfyioXYKFKDFLNhd0kY4YlU+xu1d8AEbaeN3rSsMxW1rXKEzO5WM+RmG9KSSFJAOP/swHHJuvUgar7y4XTq2rgQMi/eWSUcNBq
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 17:55:52.5354
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9eb7ade-d6d7-4545-6a47-08df180993f5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023CE.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8602
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Alejandro Lucero <alucerop@amd.com>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0 (1)
+Differentiate between driver binding from PM dependency when a device
+link is created. Rely on the device being bound to a driver for validating
+the supplier as some device drivers could not support PM.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Check for supplier's PM state only if consumer specifies PM_RUNTIME flag.
 
-- [High] tcp_tx_timestamp() (net/ipv4/tcp.c) gains an undocumented early
-  return in the retransmit-queue fallback: `if (skb &&…
-- [Medium] The new release/acquire publication protocol is bypassed by
-  copy-on-write of skb_shared_info.
+Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+---
+ drivers/base/core.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-Pre-existing issues:
-- [Low] Concern that __sock_tx_timestamp() (net/socket.c:767-783) and
-  bpf_sock_ops_enable_tx_tstamp() (net/core/filter.c:12613-12620) now…
-
---
-
-tcp: prevent stale tx timestamp keys on rtx fallback
-
-This reorders the tskey/tx_flags stores in tcp_tx_timestamp() and
-bpf_sock_ops_enable_tx_tstamp() so that tskey is written first and
-tx_flags is published with smp_store_release(), and converts the
-readers of tx_flags to smp_load_acquire()/READ_ONCE().  It also moves
-tcp_has_tx_tstamp() from net/ipv4/tcp_output.c into include/net/tcp.h.
-
-A few questions below.
-
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index 436495ff2271d..dccfa127d8c26 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -1156,6 +1156,12 @@ struct tcp_skb_cb {
->  
->  #define TCP_SKB_CB(__skb)	((struct tcp_skb_cb *)&((__skb)->cb[0]))
->  
-> +static inline bool tcp_has_tx_tstamp(const struct sk_buff *skb)
-> +{
-> +	return TCP_SKB_CB(skb)->txstamp_ack ||
-> +		(READ_ONCE(skb_shinfo(skb)->tx_flags) & SKBTX_ANY_TSTAMP);
-> +}
-> +
->  extern const struct inet_connection_sock_af_ops ipv4_specific;
->  
->  #if IS_ENABLED(CONFIG_IPV6)
-
-[ ... ]
-
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 61940e7535523..ed6396704e114 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -12611,9 +12613,11 @@ __bpf_kfunc int bpf_sock_ops_enable_tx_tstamp(struct bpf_sock_ops_kern *skops,
->  		return -EINVAL;
->  
->  	skb = skops->skb;
-> -	skb_shinfo(skb)->tx_flags |= SKBTX_BPF;
-> +	shinfo = skb_shinfo(skb);
-> +	WRITE_ONCE(shinfo->tskey, TCP_SKB_CB(skb)->seq + skb->len - 1);
->  	TCP_SKB_CB(skb)->txstamp_ack |= TSTAMP_ACK_BPF;
-> -	skb_shinfo(skb)->tskey = TCP_SKB_CB(skb)->seq + skb->len - 1;
-> +	tx_flags = READ_ONCE(shinfo->tx_flags);
-> +	smp_store_release(&shinfo->tx_flags, tx_flags | SKBTX_BPF);
->  
->  	return 0;
->  }
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the split read-modify-write
-here and in __sock_tx_timestamp() is still not atomic, and drivers modify
-the same shinfo byte of an in-flight clone without any shared lock, for
-example igb_xmit_frame_ring():
-
-	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-
-Before this patch __sock_tx_timestamp() already did
-
-	u8 flags = *tx_flags;
-	...
-	*tx_flags = flags;
-
-and the SKBTX_BPF update was likewise a plain |=, so the window for a lost
-bit is the same size as before; only the annotations changed.  Is it worth
-noting in the changelog that these remain non-atomic updates, since the
-new release annotation may read as if the update itself became safe?
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 609f2c7f4a47a..56609fc28e8a5 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -5718,20 +5721,23 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
->  	struct sk_buff *skb;
->  	bool tsonly, opt_stats = false;
->  	u32 tsflags;
-> +	u8 tx_flags;
->  
->  	if (!sk)
->  		return;
->  
-> -	if (skb_shinfo(orig_skb)->tx_flags & SKBTX_BPF)
-> +	tx_flags = smp_load_acquire(&skb_shinfo(orig_skb)->tx_flags);
-> +	if (tx_flags & SKBTX_BPF)
->  		skb_tstamp_tx_report_bpf_timestamping(orig_skb, hwtstamps,
->  						      sk, tstype);
-
-[Severity: Medium]
-Can the acquire here still see an inconsistent flags/tskey pair when the
-shinfo was copied by copy-on-write in between?
-
-The publication in tcp_tx_timestamp() targets the shinfo of an skb that
-was already cloned and handed down, and a driver on the clone can reach
-pskb_expand_head() via skb_cow_head()/skb_unclone(), which snapshots the
-whole shinfo with no barrier and no flag test:
-
-net/core/skbuff.c:pskb_expand_head() {
-	...
-	memcpy((struct skb_shared_info *)(data + size),
-	       skb_shinfo(skb),
-	       offsetof(struct skb_shared_info, frags[skb_shinfo(skb)->nr_frags]));
-	...
-}
-
-tx_flags and tskey are separate fields in that copy, so on a weakly
-ordered machine the copy can pick up the newly published tx_flags
-together with the pre-publication tskey of 0.  After that the private
-copy holds the inconsistent pair permanently, and this smp_load_acquire()
-reads the copy rather than the original store, so serr->ee.ee_data ends
-up as 0 minus sk_tskey - the same underflow the changelog describes.
-
-Does the release/acquire pairing need to cover the shinfo copying paths
-too, or does the metadata need to be set before the skb is handed down?
-
-I should note the decisive step is a reordering inside memcpy() on the
-copying cpu, which I can only argue is unprevented rather than
-demonstrate.
-
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 562752352afe4..ec4ee5e5d2dec 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -483,18 +483,21 @@ static void tcp_tx_timestamp(struct sock *sk, struct sockcm_cookie *sockc)
->  	struct sk_buff *skb = tcp_write_queue_tail(sk);
->  	u32 tsflags = sockc->tsflags;
->  
-> -	if (unlikely(!skb))
-> +	if (unlikely(!skb)) {
->  		skb = skb_rb_last(&sk->tcp_rtx_queue);
-> +		if (skb && tcp_has_tx_tstamp(skb))
-> +			return;
-> +	}
-
-[Severity: High]
-Is this early return an intended behaviour change?  The changelog and the
-v2 notes only describe reordering the tskey/tx_flags stores and adding
-symmetric reader annotations, but this return also drops the timestamp
-request belonging to the sendmsg() currently in progress.
-
-The return sits above both the recording block and the sendmsg callback:
-
-net/ipv4/tcp.c:tcp_tx_timestamp() {
-	if (tsflags && skb) {
-		...
-		sock_tx_timestamp(sk, sockc, &shinfo->tx_flags);
-	}
-
-	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) &&
-	    SK_BPF_CB_FLAG_TEST(sk, SK_BPF_CB_TX_TIMESTAMPING) && skb)
-		bpf_skops_tx_timestamping(sk, skb, BPF_SOCK_OPS_TSTAMP_SENDMSG_CB);
-}
-
-so when the rtx tail already carries any timestamp state, shinfo->tskey
-keeps the byte offset recorded by the earlier sendmsg(), a newly
-requested class is never armed through sock_tx_timestamp() or
-tcb->txstamp_ack, and the callback is skipped even when sockc->tsflags
-is 0.
-
-The path that reaches the fallback is the one commit 838eb9687691 added
-it for:
-
-net/ipv4/tcp.c:tcp_sendmsg_locked() {
-	...
-out:
-	if (copied) {
-		tcp_tx_timestamp(sk, &sockc);
-		tcp_push(sk, flags, mss_now, tp->nonagle, size_goal);
-	}
-	...
-do_error:
-	tcp_remove_empty_skb(sk);
-	if (copied)
-		goto out;
-	...
-}
-
-With a first send arming the tail skb and a second send failing partway
-(non blocking -EAGAIN from sk_stream_wait_memory(), or -ENOMEM), the
-empty tail is removed, copied is non zero, and tcp_tx_timestamp() runs
-with an empty write queue.  skb is then the armed rtx tail,
-tcp_has_tx_tstamp() is true, and nothing is recorded for this send.
-
-Since tcp_has_tx_tstamp() also tests txstamp_ack, does an earlier
-SOF_TIMESTAMPING_TX_ACK-only request suppress a later
-SOF_TIMESTAMPING_TX_SOFTWARE request on the same skb?  And with
-SK_BPF_CB_TX_TIMESTAMPING, bpf_sock_ops_enable_tx_tstamp() sets
-SKBTX_BPF and TSTAMP_ACK_BPF on every sendmsg, so the next send taking
-this fallback loses BPF_SOCK_OPS_TSTAMP_SENDMSG_CB, which
-include/uapi/linux/bpf.h documents as:
-
-	BPF_SOCK_OPS_TSTAMP_SENDMSG_CB,	/* Called when every sendmsg syscall
-					 * is triggered. It's used to correlate
-					 * sendmsg timestamp with corresponding
-					 * tskey.
-					 */
-
-Also, when the rtx tail has no timestamp bits set yet, tskey and
-tx_flags are still written into a possibly already cloned shinfo, so
-does this guard cover the case the changelog is about?
-
->  	if (tsflags && skb) {
->  		struct skb_shared_info *shinfo = skb_shinfo(skb);
->  		struct tcp_skb_cb *tcb = TCP_SKB_CB(skb);
->  
-> -		sock_tx_timestamp(sk, sockc, &shinfo->tx_flags);
-> +		if (tsflags & SOF_TIMESTAMPING_TX_RECORD_MASK)
-> +			WRITE_ONCE(shinfo->tskey, tcb->seq + skb->len - 1);
->  		if (tsflags & SOF_TIMESTAMPING_TX_ACK)
->  			tcb->txstamp_ack |= TSTAMP_ACK_SK;
-> -		if (tsflags & SOF_TIMESTAMPING_TX_RECORD_MASK)
-> -			shinfo->tskey = TCP_SKB_CB(skb)->seq + skb->len - 1;
-> +		sock_tx_timestamp(sk, sockc, &shinfo->tx_flags);
->  	}
-
-[ ... ]
-
-> diff --git a/net/socket.c b/net/socket.c
-> index c05d86e63abf7..d16e1f491f154 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -766,7 +766,7 @@ EXPORT_SYMBOL(sock_release);
->  
->  void __sock_tx_timestamp(__u32 tsflags, __u8 *tx_flags)
->  {
-> -	u8 flags = *tx_flags;
-> +	u8 flags = READ_ONCE(*tx_flags);
->  
->  	if (tsflags & SOF_TIMESTAMPING_TX_HARDWARE)
->  		flags |= SKBTX_HW_TSTAMP_NOBPF;
-> @@ -780,7 +780,7 @@ void __sock_tx_timestamp(__u32 tsflags, __u8 *tx_flags)
->  	if (tsflags & SOF_TIMESTAMPING_TX_COMPLETION)
->  		flags |= SKBTX_COMPLETION_TSTAMP;
->  
-> -	*tx_flags = flags;
-> +	smp_store_release(tx_flags, flags);
->  }
->  EXPORT_SYMBOL(__sock_tx_timestamp);
-
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 4c0c373998a1..eb6d87e35d76 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -834,15 +834,26 @@ struct device_link *device_link_add(struct device *consumer,
+ 	device_pm_lock();
+ 
+ 	/*
+-	 * If the supplier has not been fully registered yet or there is a
+-	 * reverse (non-SYNC_STATE_ONLY) dependency between the consumer and
+-	 * the supplier already in the graph, return NULL. If the link is a
+-	 * SYNC_STATE_ONLY link, we don't check for reverse dependencies
+-	 * because it only affects sync_state() callbacks.
++	 * If the supplier has not been fully registered yet with a driver
++	 * return NULL.
+ 	 */
+-	if (!device_pm_initialized(supplier)
+-	    || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
+-		  device_is_dependent(consumer, supplier))) {
++	scoped_guard(device, supplier) {
++		if (!device_is_bound(supplier)) {
++			link = NULL;
++			goto out;
++		}
++	}
++	/*
++	 * If consumer asks for PM to use the link and the supplier has not
++	 * PM initialized, or if there is a reverse (non-SYNC_STATE_ONLY)
++	 * dependency between the consumer and the supplier already in the
++	 * graph, return NULL. If the link is a SYNC_STATE_ONLY link, we
++	 * don't check for reverse dependencies because it only affects
++	 * sync_state() callbacks.
++	 */
++	if (((flags & DL_FLAG_PM_RUNTIME) && !device_pm_initialized(supplier)) ||
++	    (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
++	     device_is_dependent(consumer, supplier))) {
+ 		link = NULL;
+ 		goto out;
+ 	}
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917172050.2191062-1-dw%40davidwei.uk
+2.34.1
+
