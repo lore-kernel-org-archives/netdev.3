@@ -1,81 +1,197 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B01247ECD8;
-	Mon, 21 Sep 2026 23:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8E947D460;
+	Mon, 21 Sep 2026 23:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032878; cv=none; b=ahuZVUZo3NJ0Ft1NjL1K7iIC6IJrfl9Q+43UFxy7xaryL8GQdJ6QxYOVQr3ZMeiB4LY1lECwZyuNM+wVma98bW3Zcd1huGRydFbxc47spXnE4zCVY07a9hVzTIgScxRfkkcPOryEBFm9ttvniWyqSL6s8e3HwJbAJrHfz7sqo1k=
+	t=1790033042; cv=none; b=A27pAOiaQIqhtdCsRJPqLvaGpz/T2QF6rkwjcn7/NoYkclZbliyCqm7jFz4E3Z5N9zodxCdNNAdjkqxdITPsZciZewEJ24ARGjsqL+WZBDi0vJgHN+6r97lhEoZNpFiMcm53k2ozr/cJBcqbICjj4Ygd1ilZiDE36dlaynp56cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032878; c=relaxed/simple;
-	bh=49o9pb+1VoZAoiQJaXKdb0V6bNnez0VH69mWuklhJBU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OswnVLn0OaOefKux3FJyHnKsU7iG+ZGRhWLxG1Rx+UsjG2E9BNrhF7rxC6OfdYuk9rIn0ckcOIYPd/j7Wb44K7dcHT84fxBiIsfgkpz1uf70JgeYlpe+okKfkxuVeCxzPme65F55a1w6HIIMLTYx/C/AXZeW26oo1h0zRVfAsks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Da6lJQRE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790033042; c=relaxed/simple;
+	bh=F9Nc5VQmOoSmRUIxGOfwTVssqSez1uZN9c7xJYqdl5I=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dc8JvAAMQviadUIDvwJ8YEcpbqjcdYLAViqfGon8gH4e2HSCRaLYuhic4T4Dq/zqdUSfmdGg3xyTqy9jfVDn9erbEQy2m2n+5UMJzJ+ginNUkE/4SDhWXquaRFyDiS96njoBA6e2GmEtMMLjIlCIMAYiiLJ/EAHyqypZbBzyY1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uvo2n6Fi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Da6lJQRE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3121F1F00893;
-	Mon, 21 Sep 2026 23:21:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uvo2n6Fi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306E71F000FF;
+	Mon, 21 Sep 2026 23:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790032877;
-	bh=k9NrOWYVGtDR/lirl5Q6knd2UgIX1yDhfPFcB6MWFEU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Da6lJQREWrNr5lnviBVprCqBiPq3nwtPDM8GnBB/5Lp7JnO66fg12kYXGJHirKBuN
-	 41cHRUdTGWqbIZ4OU1Bdui66/tlZjkI4mHzwECLyK91aXS3MyjlnIiPnloINwlcAlr
-	 egjUi+n/qZFO+y8Q87YvfTBt/Iq4P3aSYEtR3x+cgCNdtFNStg4hAd4SqRUmlyFQsz
-	 QL66aaq8LSsYnh3ryShk44WZ0evU/o8qIOsKyuXO4qz1dicvvANUkEXZQ+9YKp3T8p
-	 KnyxEVfnZsJkCh4XgzTxHQHstw8+yjOOjaIFRJ8klO2JqMatXkDQWXLpYCmFtPh/qn
-	 vmICFVYVlzRiQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09D23927048;
-	Mon, 21 Sep 2026 23:20:09 +0000 (UTC)
+	s=k20260515; t=1790033037;
+	bh=q/Nbz2dyNClG9b4ee353cgWCmiZ/CbxVIEn8L+troCo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Uvo2n6FiGWfFvycM6y1y/I7EE1/KRtfmO3D2WYmBsvvHpmiKkAZLuc/sTvdveTX52
+	 VHJvhyG4+9lgiLSVtJQch9Z8BgVPTJna0vIcQgAqF7LsOsmP5xIYLkWCd2KhTmXePa
+	 kWObz8aU2BI3moyNuOS9kkeOUFDZTgu34kggH2SP9aYCzmm6WOxkI6bTGtZs6gRdtH
+	 l/J7dXVhoyXjf1HMT9RncEUzQ7VWZpU5rhgxla6A6LXC5MyjwYiY5/QKuaicO9Ldfk
+	 Istbvu5fpLeJeXuveJ7Lp21hxiSovjYdzxgSOG28lRDISjEA3Zq34aSdIRNVZiUqtt
+	 1fVX8ldeGjnpA==
+Subject: Re: [PATCH] vsock/hv_sock: fix socket/table leak when rescind races
+ the delayed close
+From: netdev-bot+sashiko@kernel.org
+To: bartlomiej.dmitruk@isec.pl
+Cc: decui@microsoft.com, wei.liu@kernel.org, haiyangz@microsoft.com,
+ kys@microsoft.com, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ sgarzare@redhat.com, mst@redhat.com, kuba@kernel.org
+Date: Mon, 21 Sep 2026 23:23:56 +0000
+Message-ID: <179003303663.2160803.2038691427232135222@kernel.org>
+In-Reply-To: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
+References: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] sfc: fix CONFIG_CXL_MEM dependency
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179003280839.3282843.14048096814750266893.git-patchwork-notify@kernel.org>
-Date: Mon, 21 Sep 2026 23:20:08 +0000
-References: <20260917155519.2121486-1-arnd@kernel.org>
-In-Reply-To: <20260917155519.2121486-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: ecree.xilinx@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- dave.jiang@intel.com, djbw@kernel.org, alucerop@amd.com, arnd@arndb.de,
- Jonathan.Cameron@huawei.com, alison.schofield@intel.com,
- netdev@vger.kernel.org, linux-net-drivers@amd.com,
- linux-kernel@vger.kernel.org
 
-Hello:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-On Thu, 17 Sep 2026 17:55:11 +0200 you wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> A recent patch introduced a call to devm_cxl_probe_mem(), which is only
-> available when CXL_MEM is enabled. If CXL_MEM is in a loadable module,
-> this causes a link failure for a builtin driver:
-> 
-> s390-linux-ld: drivers/net/ethernet/sfc/efx_cxl.o: in function `efx_cxl_init':
-> efx_cxl.c:(.text+0x156): undefined reference to `devm_cxl_probe_mem'
-> 
-> [...]
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Here is the summary with links:
-  - sfc: fix CONFIG_CXL_MEM dependency
-    https://git.kernel.org/netdev/net-next/c/c6219deaee41
+- [Medium] Missing `Fixes:` tag and stable Cc on a real bug fix.
 
-You are awesome, thank you!
+Pre-existing issues:
+- [High] The identical leak the patch closes for hv_sock remains in the
+  sibling transport that shares the same `vsk->close_work` /…
+
+--
+
+vsock/hv_sock: fix socket/table leak when rescind races the delayed close
+
+This changes hvs_close_timeout() so that, when SOCK_DONE is already set but
+vsk->close_work_scheduled is still true, the running work drops the
+scheduling reference and calls vsock_remove_sock() itself. That covers the
+case where hvs_close_connection() could not cancel the already-dequeued
+work.
+
+A couple of questions below.
+
+> Make the running timeout complete the cleanup the rescind path could not:
+> when SOCK_DONE is set but the work is still marked scheduled, drop the
+> scheduling reference and remove the socket.  The two cleanup sites are
+> mutually exclusive and guarded by close_work_scheduled, so the reference
+> is dropped exactly once.  (cancel_delayed_work_sync() cannot be used from
+> hvs_do_close_lock_held(): it runs under the same lock_sock() the work
+> takes.)
+>
+> Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+
+[Severity: Medium]
+Should this carry a Fixes: tag and a stable Cc?
+
+git blame on the pre-image points both halves of the defective logic at
+commit a9eeb998c28d ("hv_sock: Add support for delayed close"): the
+cancel_delayed_work()-conditional reference drop in
+hvs_do_close_lock_held(), and the unconditional
+vsk->close_work_scheduled = false in hvs_close_timeout().
+
+The triggering event is a host-initiated channel rescind, so it is not
+under guest control. Would the following trailers be appropriate, along
+with a [PATCH net] subject prefix?
+
+  Fixes: a9eeb998c28d ("hv_sock: Add support for delayed close")
+  Cc: stable@vger.kernel.org
+
+> diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+> index 855b15971c359..2779961fc18ca 100644
+> --- a/net/vmw_vsock/hyperv_transport.c
+> +++ b/net/vmw_vsock/hyperv_transport.c
+> @@ -499,10 +499,18 @@ static void hvs_close_timeout(struct work_struct *work)
+>  
+>  	sock_hold(sk);
+>  	lock_sock(sk);
+> -	if (!sock_flag(sk, SOCK_DONE))
+> +	if (!sock_flag(sk, SOCK_DONE)) {
+>  		hvs_do_close_lock_held(vsk, false);
+> -
+> -	vsk->close_work_scheduled = false;
+> +	} else if (vsk->close_work_scheduled) {
+> +		/* A concurrent rescind (hvs_close_connection) set SOCK_DONE but
+> +		 * could not cancel this already-running work, so it left the
+> +		 * scheduling reference and vsock_remove_sock() to us.  Finish
+> +		 * the cleanup to avoid leaking the socket and its table entry.
+> +		 */
+> +		vsk->close_work_scheduled = false;
+> +		vsock_remove_sock(vsk);
+> +		sock_put(sk);
+> +	}
+>  	release_sock(sk);
+>  	sock_put(sk);
+>  }
+
+[Severity: High]
+This is a pre-existing issue and not introduced by this patch, but does the
+same struct sock leak still exist in virtio_transport_common.c, which uses
+the same vsk->close_work and vsk->close_work_scheduled fields from
+include/net/af_vsock.h?
+
+virtio_transport_close_timeout() still has the pattern this hunk replaces:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_close_timeout() {
+	sock_hold(sk);
+	lock_sock(sk);
+
+	if (!sock_flag(sk, SOCK_DONE)) {
+		(void)virtio_transport_reset(vsk, NULL);
+
+		virtio_transport_do_close(vsk, false);
+	}
+
+	vsk->close_work_scheduled = false;
+
+	release_sock(sk);
+	sock_put(sk);
+}
+
+and the cancel-failure path is the same one described in the changelog:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_cancel_close_work() {
+	if (vsk->close_work_scheduled &&
+	    (!cancel_timeout || cancel_delayed_work(&vsk->close_work))) {
+		vsk->close_work_scheduled = false;
+
+		virtio_transport_remove_sock(vsk);
+
+		/* Release refcnt obtained when we scheduled the timeout */
+		sock_put(sk);
+	}
+}
+
+The racing event there is a peer packet rather than a host rescind:
+
+virtio_transport_recv_pkt()
+  lock_sock()
+  virtio_transport_recv_connected()   /* VIRTIO_VSOCK_OP_RST */
+    virtio_transport_do_close(vsk, true)
+      virtio_transport_cancel_close_work(vsk, true)
+
+If virtio_transport_close_timeout() has already been dequeued and is
+blocked on lock_sock(), cancel_delayed_work() returns false, so
+close_work_scheduled stays true, the scheduling sock_put() is skipped and
+virtio_transport_remove_sock() is not called, while SOCK_DONE is set. The
+work then resumes, skips the !sock_flag(sk, SOCK_DONE) branch, clears
+close_work_scheduled and drops only its own local reference.
+
+Does that leak the struct sock and its struct virtio_vsock_sock, leave the
+socket in the bound/connected tables, and leave vvs->rx_queue unpurged? The
+recovery in virtio_transport_destruct() -> virtio_transport_cancel_close_
+work(vsk, true) would not run because sk_refcnt never reaches zero, and
+would be a no-op anyway once the flag has been cleared.
+
+Since both transports share close_work and close_work_scheduled, would it
+make sense to put this cleanup rule in code common to both rather than only
+in hyperv_transport.c, so the two users do not implement different
+ownership protocols for the same field?
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917220213.56102-1-bartlomiej.dmitruk%40isec.pl
