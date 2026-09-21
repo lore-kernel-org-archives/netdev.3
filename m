@@ -1,82 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f8.google.com (mail-wr2-f8.google.com [74.125.225.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FF63AE18A;
-	Mon, 21 Sep 2026 22:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7206496D43
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790029325; cv=none; b=BMHNIMtClzHNjD4F/U2lOVBg0w8iwKvdJiS1Ia3V7XzbVBnrqdWwpST4yuYs4B7ijBvSd77i1C6SbtEqqo+j4480b8JKk/JAAIjExdfEgkp6gq9x9+DqcGNL0C01bpMsyDKI1kfZbuFK8yjTqWjk7LKQARH0EQrIeojTMh/x0Bk=
+	t=1790029441; cv=none; b=cwf2G+/OClWErzOelU/f2sCBF5Qw8jUM6/XixAsHLxd24mCQ6z347ME4gvhz3O17AHJ4+yTiryZlxn/6vXsgsfxSHnCv4N1U3NWXvsHMAxjOmCvm1yHgVO78ZXDONIuP6BpHZHeFjzjgS4tYtxCAXEWo3me4wETZ8jYoyf9mK3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790029325; c=relaxed/simple;
-	bh=tJHWfxoP+zjBOHbLeaVaarbONpKFYAIF83a6bpmAYPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PllYP6NCX/YxZ48kmTsQfdLVZ/kRTnfSciGaCtaKr3CXa8tfOr6gs9iBodladmTP36dbnnab2PpM0xpR+/EGjMNnYwtAIGqoxFSlfxI58J/m85rktozyLRcuqs50xsmIW5hWeJqgGjg3MjIULhX1jSlRiACfFAyMHzxL43cJV74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoYGRW1W; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoYGRW1W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A1A1F000FF;
-	Mon, 21 Sep 2026 22:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790029323;
-	bh=RxhnBak1xJH1AGk2N4hZ7YSgAZBIEX9Uhz0IHaeExdo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eoYGRW1W0ewpO2qK4BMXQphjf2JvipC8nP6hq0uQjXqaVE1dgkgdEAw4LEW03BCrL
-	 Wnxkh49j0uxFEuzc4IZVFzNix4STPD4p2tMiPTM3J/PSwR1OXxjCuM7k0hxeTYzFjV
-	 X7SEE3sxZAnuosGsCaK8r98QP0fgBijJnNfK5xhT6IfMG7sN8BtO0gbHQJ12sj9sZ9
-	 ZbCbc9pe8+B3slQKQwukS7YTsZnrc1qA4OH2TrrkM42B8wxlf4ZB9I+a/+D+5VNVlf
-	 gAVIksxVpY96z5orSsZLXEIBAv4UbdK3Np4WXdgjSPHHaW9vvxZaQ+hBpNPjcsOoIp
-	 vuBT48B92+zlg==
-Date: Mon, 21 Sep 2026 15:22:02 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>, Alexis
- =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Emil Renner Berthing <kernel@esmil.dk>,
- Minda Chen <minda.chen@starfivetech.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
- Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Jan Petrous
- <jan.petrous@oss.nxp.com>, Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
- Jose.Abreu@synopsys.com, Nicolai Buchwitz <nb@tipi-net.de>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de, David Laight
- <david.laight.linux@gmail.com>
-Subject: Re: [PATCH net v4 0/7] net: stmmac: More selftest-related fixes
-Message-ID: <20260921152202.64d4c67a@kernel.org>
-In-Reply-To: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
-References: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
+	s=arc-20240116; t=1790029441; c=relaxed/simple;
+	bh=bSLQ8dhyTkMsa0T3MRybn10V2qri87KKmc+w8o1F3xM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U58G29OLLBF5gF/f7x29bgmoO4cZb/EAPNTAtR5CHW3uWii9bk83HWQQak/wz3Uq3zdiuo6iR+dF31aGw2mBlV+rzI3Pg8Cq8iT6XIQeYAONqZekNc4GFSFCir/+ftUjUj1pjMLW0SQmCdATSzYZZto4+n3gDlUH2lN2rJ12eXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr2-f8.google.com with SMTP id ffacd0b85a97d-482e1e7a4f6so1429674f8f.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:23:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790029438; x=1790634238;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZWKBhus7Q6cGpJkKuYawt2j9PRf/Qc0mjhsFcNxeZ9c=;
+        b=q4clbKnd1nyEsAPEpf3+FB2wc8ObIRo10PVdKaLKg/m1jb5JXuTQJSZrRDHshwpHgW
+         +COIO4GxNEwK9YBaOabf+MQAveEYn2uF+idIiXIpzRY3ODlP/vbmSJp5gLB14G8R5/Fs
+         J1ovAjNe1sf/5Jvg5DmeKlkCQCCvSQ6fKLTyMHHKUbC0S+fAWBm1Pb7O5Xnwa5Zqxajm
+         bSfmm+H0y0I2wbUYjdJQNhHUy+YaEOUn3v4zQsHfUHNA0er6WKYNDkvAYFw+MKYNbuht
+         x0vXL0HY7Fjl8vtvULwhL1/mQhHIDiKtMv3Y44jj6DNNEdnnb+qjA6HtYUTOFqP2eTr7
+         SvqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBybxUd57cJ63YpCY4x0oAHbUC4TSUX84M3jXuysX1OinG2A583nP5Y8idojdIIfxB0t3TcPyds=@vger.kernel.org
+X-Gm-Message-State: AFuF++leErq6enkzhexPXdFbPRfl62L73KTVAZsoYlzDrPlzbV/4fNmE
+	WEKLlJ4Oss8hm9pAjVvmS/2PAg0v3h1TfDQSZDCsD4wYvPmQC3vlN7fZ
+X-Gm-Gg: AYBFou3Kb2wVMO11W4FPSI+qpZ0hFiovuXEQqDXwULv5mQQA2BBv35RV+etI+//S87n
+	xxbbl/YiLmPl2U/+miZdcd1MCYQs9bfrmGthvJh6y/VCDqQ2KX2PJX9tFSMnFcNF3LHdlbg19Mj
+	mQkR3bDfe0AsiVrV5j6RTWD9190BcjDbZYXYccYuw9/3OV3plygaA0hVFa9Z/w/ZYnGNZE4uNum
+	5bqwntzvR1bhmN9ZXxYlNu52MrkZQTVAHkh++e7p+bkLZn77VXw7jLDgHJgThkvufd32r08PXjH
+	ogUvARJnPeM83DB7FXjNegp4cdSmRqfQpmeUEhA32mszKl2tie9T6zAw5YxPeV7/12fWJgz/PEL
+	JO4iVI9zD3cOfN44bwstrwO3baPZR/1SRbspDlmfhEmQgb6bnXHRKxIPe+CaarjLIlcJETlryHo
+	XVpzr0/Qmw1gxheB9A7b6ILgmf+FyTyark+P4CSRgNk+uezB0GZFMFVFCbXlFBE5cVGFv3N7wXk
+	ql3b9SD7BInFumF8L3idueU1kIvW4lZYQLAHAHidyqqoh3JrQ==
+X-Received: by 2002:a05:6000:2301:b0:487:a3f:1ea6 with SMTP id ffacd0b85a97d-4871e211724mr18432556f8f.11.1790029437903;
+        Mon, 21 Sep 2026 15:23:57 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862244e1asm726393f8f.11.2026.09.21.15.23.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 15:23:57 -0700 (PDT)
+Message-ID: <7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
+Date: Tue, 22 Sep 2026 00:23:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/4] net: dropreason: use new __print_sym() in tracing
+To: Matthieu Baerts <matttbe@kernel.org>,
+ Johannes Berg <johannes@sipsolutions.net>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Johannes Berg <johannes.berg@intel.com>, Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
+ dev@openvswitch.org, linux-trace-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Adrian Moreno <amorenoz@redhat.com>, Antoine Tenart <atenart@kernel.org>
+References: <20260921101538.97286-6-johannes@sipsolutions.net>
+ <20260921101538.97286-9-johannes@sipsolutions.net>
+ <98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Sep 2026 23:53:31 +0200 Maxime Chevallier wrote:
-> This is V4 of stmmac selftest fixes, addressing Sashiko's issues over
-> the MTU patch. This lead to the introduction of a new one. The
-> dev_add_pack races have been addressed, however the double-vlan issue
-> stayed there. Ovidiu is actively working on it, let's wait for his work
-> to land before fixing that.
+On 9/22/26 12:03 AM, Matthieu Baerts wrote:
+> Hi Johannes,
 > 
-> Nicolai, I took the liberty of keeping your review tags on affected
-> patches, let me know if this isn't ok.
+> (+Cc openvswitch devs)
 > 
-> This is another round of stmmac selftest fixes, mostly about the selftests
-> themselves but a few things were discovered w.r.t MTU and buffer size
-> handling, see patch 5 anf 6.
+> On 21/09/2026 12:06, Johannes Berg wrote:
+>> From: Johannes Berg <johannes.berg@intel.com>
+>>
+>> The __print_symbolic() could only ever print the core
+>> drop reasons, since that's the way the infrastructure
+>> works. Now that we have __print_sym() with all the
+>> advantages mentioned in that commit, convert to that
+>> and get all the drop reasons from all subsystems. As
+>> we already have a list of them, that's really easy.
+>>
+>> This is a little bit of .text (~100 bytes in my build)
+>> and saves a lot of .data (~17k).
+> Thank you for working on that! But it looks like it breaks the
+> openvswitch test:
 > 
-> After this is merged, I consider the selftests to be now reliable enough
-> to run them nightly on every stmmac series that's sent, and I'll be requiring
-> clean selftests for new glue drivers.
+> https://netdev-ctrl.bots.linux.dev/logview.html?f=%2Flogs%2Fvmksft%2Fnet%2Fresults%2F833743%2F9-openvswitch-sh%2Fstdout#L168
+> 
+> Maybe the test needs to be adapted to get the same info differently?
+> (and adding CONFIG_TRACEPOINTS to the selftest config file)
+The parsing in the test will definitely need to be updated, i.e.,
+the numbers swapped with the names of the drop reasons.
 
-This got to the top of the stack for me, LMK if none of the AI feedback
-is legit. You mentioned the VLAN one, not sure about the rest.
-The EEE complaints look like nit picks but also some are easily
-addressable? LMK..
+IIUC, this change only affects the printing and doesn't affect debugging
+tools like retis that attempt to surface the drop reasons.  But, maybe
+Adrian and Antoine (CCed) may want to have a glance as well.
+
+Best regards, Ilya Maximets.
