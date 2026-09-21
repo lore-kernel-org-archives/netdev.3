@@ -1,61 +1,61 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1B443DEDD
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8307143D4EF
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789976531; cv=none; b=AeIZ0G8rUJBQck+Sv+Chhq/hY/ElXj5Iqd4XS2KgXIGZMx7mUFoHfpP+5M3I8g93X7LIqUqqhhDv2k6dt8LKIn/STFY0Ny/OHY4IkgvH9ORMuqT1l9clo7T5zgA2kYsyQNj8pigazdrXJtgm1XGnEn9KwbFvkxxkDzm4O7OPapM=
+	t=1789976532; cv=none; b=Dvb6EaG66aZlcZR/OCmLTTVb4+mFB+H4hcgiZPhwhqlwq9QnUb8lnrMsGWfatgvSWLrzzyuDKx8Xz/7Dn1ylGN8aS8oec0iVMWlsNqhjjhP0Zle/hR2AynbbJ0JJZRUwy8RDhSa+iPvFGkj76LB0baBboYy8l3UK7Vfj1CT2CLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789976531; c=relaxed/simple;
-	bh=HBE/+kSisSLQtTti9PD0IF4r82pEZs1xT/tQKJlZHgo=;
+	s=arc-20240116; t=1789976532; c=relaxed/simple;
+	bh=+PxWiJGd3qQeg3qY9tqhXy5GvpqL3o3G+lizbAofHcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUNPiTMXHFtsSRqmkTxesxTSbqSeHuV5cWH0Z/S+Hl42fn0K/krelO4EMShU7keOAIRqVbG82oGa+OhPCv0o9Dtg9aztroFU/ekWHVVW+rZWBnjzvZQdOdsL4gIzAMBuroh95CiJMvHapt01PHnPJGLKMvcZDqqldQohdKIn/58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rDIHpsbK; arc=none smtp.client-ip=74.125.228.41
+	 MIME-Version; b=GgT8A3ttYMp4LrecqliVRkhb23V3YWaRCzeHA8fs6fH1V0LeP2vnloiiBO3UFUFpH+APVm+4uEK5YWesax24iWzfwd/NUMMO6gAYDwJNkl3nhblIq2dEOijSkKZZa8n7mEUtFbVpwXXK9yK5W9M8+aka+ewxahs9KeZ0WoXu+Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qtIfeI5A; arc=none smtp.client-ip=74.125.228.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rDIHpsbK"
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-85469b35611so1672145b3a.0
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 00:42:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qtIfeI5A"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea50dc1so1545621a12.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 00:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1789976529; x=1790581329; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EpPg8uLiGCt1nmkqruCW0RWeQqwd9zjhCiMPftKkUsQ=;
-        b=rDIHpsbK0Tl8HpuwCfE4/CmCKps1Zep2g4sz/H9wvWTa8ogLLKX1qn05qcQHaBjC+O
-         b6YK5UlXhSxpiD/mqjHdGsQEvp29yx+wBNsDkM/6K0SdUQCIMAd23w+gGwcwAsC4aDfp
-         gnCOhU5JhFAVvhtjhmyOOIk9Av8ABgooYYYbIkLM1TTQn6OJUwIsJ0Y++v5vkJZVQNYM
-         NZQbNJMRHR0gjevbWrQL09gyOqnOQBKsxa5auG0NcNT3OAsog9GrZejE7oS4mRRtT9Vg
-         KtLvAaeSL2OWXwl309uKiTZ23ntLY6OUQ8MYyIxFa/GNiEqe4/TvauISNVCCiJITvqqj
-         EMew==
+        bh=EHgcYtuYemojMdrCO9G6C1IAVKzr+T0NM2HjgpZp/nc=;
+        b=qtIfeI5An/RpD16yzxCT1Sak7grlDcQirLRhUl+uXA4hCdgX1i7mKrpnzOFy5GE9NJ
+         RktAx2RAXnQqqzMZCbNQ+T0yTTce9MmmGrp60VIcqKKflKepAHm3D3TiuvvAFhl+b9XN
+         /eNaY0ZfsR2aff/1vDG0Ylq3eEQ/5jnKdHH8LZ+vFuQoz4Q3pQetRAvL8AyBj09vS9VV
+         kCDtsbeO7ikh3JqnZ/i88YkrZzkVMDLMRGoMUw6eK2e70QjbKh54Mlg7XbPfbQQdoHPE
+         h/xkA7YDYNMe4MkuaONiJgKpXX+136teBj2PAcNbVkglT2TWilmFb4TSivmvVuAKPtnT
+         Jzkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1789976529; x=1790581329;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EpPg8uLiGCt1nmkqruCW0RWeQqwd9zjhCiMPftKkUsQ=;
-        b=a2tqi3+jy7WLGMMLdad/PmTWVK5UAYK1szfYf5yJBEmA8L3woQALzq9/x1naJcghTV
-         8phPYKOtfjsy3gYKdb6QZE0v7/mfoKaeSRVhDQKUZTWljuZMCTpyJPR5F8ZT3Cagf4Mh
-         H8K3z9d016A1lvFcoipWG/54tQ0yE1sBV7RJRAiGtFk5rRDeLPoRHDETCXAWSYyDOmdl
-         grcUqiB6LYSzBJQPBl0+Q+Qcw2/TFEhfnh0i2S1dqs2QwtN2V4jh63AseQiL/Hx4sudN
-         94h2UOevERsHpq6MlHeAeGlbbPMh8Nik7AHwtfXl+1iy5ugioyHkt5xvq8hojNAacYGc
-         bWqA==
-X-Forwarded-Encrypted: i=1; AKwUvBzEheRdsdlCuabARaN5kIfaOKEfOv+W8k/WnfQRAmazTfZ92OScqlO5I9ixa/bqOua88m/uOxk=@vger.kernel.org
-X-Gm-Message-State: AFuF++khwvBnEtTThOKV8Pc0FmLpC+Aer50GQjNLXaYb5h8K1cwZ/xFk
-	dS5oxSl0ik7+3mn4rABZOyUUhaWzKQJfH0MUqERf3hJeFpvyLqFKd4TC
-X-Gm-Gg: AYBFou1NRAwOLmNgPkprtNn5/6RP4Di1KoxtYFXVysMER3FNo2nTW91CoIi9nHWQtn/
-	5fxITWRxyW5d4+hoeccouqYZCjkN4sOWc/y59LL9GsSdMXvwUKqiVMGbyB9rOOVcjK6sm3iZlVk
-	xdrWU7fxqTQ8894sjp9zdaC99yf2Jgz48WxTJOtEKeeaPePCR/ajlIvP8FnIAI2efdB8Wr14NtC
-	W8p++JSG9/4CpjFBzRTQWhdYAAh3WL5zujDJPhVeOJt1sva5wb8TyyY9MSsnJ2DsHVwaor7/8gx
-	d9uki9wfTpJE8Its8gEGV/viZmXGGcWsv3NjDtq7ebs4dFcwWXho+6/bZaJGUkDci8JmWhtoILX
-	GKQORIE2QU9Br47PqXAJ8/R/cZhrY6A6xmq1/MegfjYbAnxsu6Triipg2gxZ2aBa5eYRql0PkZ4
-	FaIpBE3JRzNy3De6fi8amZGyHlywFzM1o3dgQ1yRSeOzHrgK3H4rkIyBtp2UuYLs1u/ZUrD/Box
-	2zdRLQJHLNa4iNhd/Koo6xySzLTj4aGlq/vwFWfBclLFQI4oNwR7Ok04Wh1GTSmlk+vIPMhS4hV
-	NCjHDKX8nQ==
-X-Received: by 2002:a05:6300:85:b0:3dd:a195:dd57 with SMTP id adf61e73a8af0-3dda195e4bemr10090144637.57.1789976528682;
-        Mon, 21 Sep 2026 00:42:08 -0700 (PDT)
+        bh=EHgcYtuYemojMdrCO9G6C1IAVKzr+T0NM2HjgpZp/nc=;
+        b=QXiO78brKNC5Li6v5HC4iFCVqrx8bvID3sNT9mFprqek3Lnxqi67WzNZ0g17eaRmaD
+         p7SeC51W/AR7xBUeB1m2azx9S1nSTBF6G+Hp6VZO8nkgUyeGKZ/YulDnNLjItwqXypS1
+         GSkChXQe/KXiXcgzkBNH9PD5YkLzW2OqLKDnHBAwCyMwsUDhcRj1EhBgY+vvF06pW031
+         sPJ0ng+VoWVjVQn1VtjUaxNyTFRz04wEnvJoyktvzAGFKN6sktbj4egD6xTrajJ4RBbH
+         Tnw5JZPlBCFHUS+h0rh0YulxarZlndw+shcpOR2/RwYg8S+IHqmGWJgPrbJW5/EW8UHt
+         noHA==
+X-Forwarded-Encrypted: i=1; AKwUvByQO60GqWs8VB03SeOrVQmukFX9uNpjGpMOiAlyoZu6ropO2qIrcRPjkrjCN7HqTZZQk9Odkr0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nrGV/u3+1I/G/nL+GKgGp6BoqdybVpJvqZuJEf2sto5qq3dyVs
+	aHbYxckr/t75NKJrRqSZb3GOekaLeJCdLCBCwiFtr2WaSoVwSeE2BgmE
+X-Gm-Gg: AYBFou0OKQyeRAaXx2DbVi5D5VktAjgHXKGNV4ppi4tycZbgt2yRWimjZgryyTH3Nox
+	5q3LGNvSpkdSZcCNFOZ15veQTwA0HQlsxLp9pYxmDmqbWdAzeWNmbM4ZXA0jiW7Wg6Sbx3TODRJ
+	taQJBgoJYCodDL1Xb+LK82VRsCdp9PDgZOOY6VhW8vxhBRJYGqY/f6FBi6box2IdoPNt2vV28CT
+	ZRfptouaPH+BBuOt+c/EnFY3LckdkMqLlp5IL5U7dG56tUE0Ay9TCRVrV6jtE6luis97/9KOh12
+	Rj9HWc/9iDwYoHmNQeYb0J/7wduz9p4NUmeJ4u2qnltDSqWx34yz/U4x7KzDYTFDyMVlrU3dUBQ
+	Rg59CVOsAAw96PGkN+Qvy0HvWKRV6spCMuh637uMzJKlTGcNJhP9/Gv9Xt8OU1Sff+gGBtZVs3N
+	UWLZ832dK/lkI00Cj5GBX4pENDTcIwrWfWO1IgASF3sdr5OqIYHQ3j8RRAhIKweMc8e9hcyJ3kC
+	9ztJefu6Efdms8pL7sS0Nvsf9Lkhkeq16nj3hNgVG2oZ1FdaZLPtrrUw4RVuYfeM9EIEus/15aN
+	Dcs0AiGOCw==
+X-Received: by 2002:a05:6a20:9c8c:b0:3dd:85a9:559d with SMTP id adf61e73a8af0-3dd8c57fe0emr17599249637.31.1789976529153;
+        Mon, 21 Sep 2026 00:42:09 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
         by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc72ae70637sm3048650a12.6.2026.09.21.00.42.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -69,9 +69,9 @@ Cc: linux-wpan@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hui Peng <benquike@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v2 2/4] ieee802154: cc2520: flush fifop_irqwork before destroying buffer_mutex in probe
-Date: Mon, 21 Sep 2026 07:42:05 +0000
-Message-ID: <20260921074207.2289391-2-benquike@gmail.com>
+Subject: [PATCH net v2 3/4] ieee802154: mcr20a: drop corrupted RX frames instead of reading 125 stale bytes
+Date: Mon, 21 Sep 2026 07:42:06 +0000
+Message-ID: <20260921074207.2289391-3-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260919213639.3316625-1-benquike@gmail.com>
 References: <20260919213639.3316625-1-benquike@gmail.com>
@@ -83,54 +83,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In cc2520_probe()'s err_hw_init path, mutex_destroy(&priv->buffer_mutex)
-is called before flush_work(&priv->fifop_irqwork). If fifop_irq fires
-after devm_request_irq() and schedules priv->fifop_irqwork before probe
-fails, cc2520_fifop_irqwork() can lock priv->buffer_mutex after it has
-already been destroyed:
+In mcr20a_handle_rx_read_buf_complete(), when
+!ieee802154_is_valid_psdu_len(len) is true, the driver overwrites len
+with IEEE802154_MTU (127) and copies 125 bytes from lp->rx_buf into a new
+skb even though only the original len bytes were transferred over SPI,
+reading past the valid RX data and leaking up to 125 bytes of stale heap
+memory to the network stack:
 
-  BUG: KASAN: slab-use-after-free in assign_work+0x2f1/0x340
-  Read of size 8 at addr ffff88800246b0b0 by task kworker/1:1/43
-  Workqueue:  0x0 (events)
+  BUG: KASAN: slab-out-of-bounds in mcr20a_handle_rx_read_buf_complete.constprop.0+0x91/0xc0
+  Read of size 125 at addr ffff888002853f40 by task init/1
   Call Trace:
    <TASK>
    dump_stack_lvl+0x70/0xa0
    print_report+0x153/0x4c6
    kasan_report+0xf1/0x120
-   assign_work+0x2f1/0x340
-   worker_thread+0x2b8/0xb70
+   kasan_check_range+0x125/0x200
+   __asan_memcpy+0x23/0x60
+   mcr20a_handle_rx_read_buf_complete.constprop.0+0x91/0xc0
+  ...
+  The buggy address belongs to the object at ffff888002853f40
+   which belongs to the cache kmalloc-8 of size 8
+  The buggy address is located 0 bytes inside of
+   allocated 4-byte region [ffff888002853f40, ffff888002853f44)
 
-Flush priv->fifop_irqwork before mutex_destroy(&priv->buffer_mutex),
-matching the teardown order in cc2520_remove().
+Drop the corrupted frame, re-arm reception via mcr20a_request_rx(lp), and
+return early.
 
-Tested in QEMU with KASAN enabled by scheduling fifop_irqwork on the
-cc2520_probe() error path.
+Tested in QEMU with KASAN enabled by passing a corrupted 4-byte RX frame
+length to mcr20a_handle_rx_read_buf_complete().
 
-Fixes: ff5891b266a7 ("ieee802154: cc2520: fix FIFOP work use-after-free")
+Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
 Changes in v2:
-- Split out as patch 2/4 and documented the probe cleanup ordering fix and
-  Fixes: tag as requested by Miquel Raynal.
+- Split out as patch 3/4 covering only the mcr20a RX corrupted frame
+  handling as requested by Miquel Raynal.
 
- drivers/net/ieee802154/cc2520.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ieee802154/mcr20a.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/cc2520.c b/drivers/net/ieee802154/cc2520.c
-index 5454872..d2c8484 100644
---- a/drivers/net/ieee802154/cc2520.c
-+++ b/drivers/net/ieee802154/cc2520.c
-@@ -1153,8 +1153,8 @@ static int cc2520_probe(struct spi_device *spi)
- 	return 0;
+diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+index 020d392a98b6..d01b277d33d2 100644
+--- a/drivers/net/ieee802154/mcr20a.c
++++ b/drivers/net/ieee802154/mcr20a.c
+@@ -790,7 +790,8 @@ mcr20a_handle_rx_read_buf_complete(void *context)
  
- err_hw_init:
--	mutex_destroy(&priv->buffer_mutex);
- 	flush_work(&priv->fifop_irqwork);
-+	mutex_destroy(&priv->buffer_mutex);
- 	return ret;
- }
+ 	if (!ieee802154_is_valid_psdu_len(len)) {
+ 		dev_vdbg(&lp->spi->dev, "corrupted frame received\n");
+-		len = IEEE802154_MTU;
++		mcr20a_request_rx(lp);
++		return;
+ 	}
  
+ 	len = len - 2;  /* get rid of frame check field */
 -- 
 2.47.3
