@@ -1,148 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC19449BD93;
-	Mon, 21 Sep 2026 13:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0923C1991
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789996147; cv=none; b=n+FQiMGEJ08pJUGa73X2MDTgr/yZnj33rr+Tre0MpuiygrX44E8Lu54fKfGa9+Hz4mr1AMcUNlI01DjeQg3GA0oWKhoTzkHVpAzSxFzwOQegiQ8i2adZq9STRFSdG7dIOzsv4eeAaSseJR523LjhTVgXL9T4WNPaUTSexo/HHts=
+	t=1789996184; cv=none; b=WIeoyKgphaMh4NaqiZx0MsVuneihhPXuNEnmLVmyThhbN5zmC9efsdXNaIcZe2CFRMr1yyTWRoSsfWbHbjoru/yib8xRhLJO9IM2kQG3mlLLDHJLV3RYHN7eMsgxEffP8VxPKh75dPDqhA6UTyGpY6s0BHMfW/TezeJs+78O4ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789996147; c=relaxed/simple;
-	bh=ifOkwrmCxPO5sY/E09Yyp0OcBzzC1r9/BaN0dXIyDtw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q2uAF7wuUnC99+vduWTzjvW3WI/oSjWG5/D/BZkBjkYZsWOJxTI2RVPU6kTEOXlpIoaszKfrkqYEK6Wd/Lr9e1BjduOH3H2CM5ZBVVLGWloKx1Mx1obMqNxl9Q+DK01wmouHnz+TO8PEvdBcjU1Q8dftIj5UgUZnvyFBsk5JIPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYE9wBYV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789996184; c=relaxed/simple;
+	bh=eiuWmlpWIrVmvRukmtMzZVNhvzYKEvXfj3/9QCPxu5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OCRk4IWGSPR2WnbDQ/Ng4BxJFdsYAs1f2bZYyK/Dy7aNrKd9rsv+nqLw4GOBCp9abz1Jjs7y9sZZO9zlOyY8Ck5pa4oXaX3e40KMJk2DXhjnf80bySf3TsyLqetIDYqms1fjUCobqDw9oDBvuF3Xgncm7yNG2pW6/kQ/QKKlYxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gbH46PJU; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYE9wBYV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07E51F000FF;
-	Mon, 21 Sep 2026 13:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789996145;
-	bh=B8gx0Q83Hru6sT6K+fPJFVxJySRvNozZjXezt+2+dPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PYE9wBYVav5ozpb8Ra9SuMbtAP/vMhlV3A1n+UIS3oqvk0oyFw3C8gDoFg1s7YNx2
-	 5yjNnWuRdZMeS7DIGP5krvMTZDRoAqryl358VXxuHt8Ldp2R2eBuIEyVGPhX6eTLx+
-	 xaRBYmDPLgJw5S2E0ZmZryonpQEsVu2toIj91YN2oad0PDSC2YqNlFC41GyH4dKgU2
-	 DLpPJT22DbP76/AYPkrmG+lfqf8ZW/3cyaMsyfrR1mzmoP0HAzJL1OSEVVWSoU804b
-	 1c7sliwL8FWxgQ0KDAQV/mbpCAMQQBIPcSuTnXb415be4CUxVKLMGoOOG91gYE9WBg
-	 a0YFGEA9KSYsQ==
-Date: Mon, 21 Sep 2026 14:09:01 +0100
-From: Simon Horman <horms@kernel.org>
-To: Edoardo Canepa <edoardo.canepa@canonical.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gbH46PJU"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1ceb47d55so533663a12.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:09:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789996182; x=1790600982; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=snQf0hJkQsH7Jj4aS5id74hgw0NIowrU4G8FGq6/9fI=;
+        b=gbH46PJURVM7ZTREuV2r1oNue8DRiPFq/kT5g7aJL3XK4lYzByd8eOkTSgiiB7jnpj
+         yQDsXEZXreurjXy/ZoNr1+ONL802AjHj7Gy5kEiP1t8/hJAnRp63CCQWzhaGFo5L6sv8
+         CTEzWr1vfh9Dx/HSYjTHUhHbIz6gXR3CB2eaPug6/0RyHeXHCvVNby/EouSqxEpocaUd
+         dYmz5PBMW9SooxNapP4pl7MriU+wEGI49pN/wxKRVNVBBzq5pLs9SggDkDplycfIrC27
+         F63d7oFB61q0NFezBPL0d3YYRcNdC6TLu0wIVcQ5+AUbTzUJu56hMrMNPZJ1A7bNs8rj
+         icHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789996182; x=1790600982;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=snQf0hJkQsH7Jj4aS5id74hgw0NIowrU4G8FGq6/9fI=;
+        b=ddFRwbpeBdD+yb9B7GmcBXK0o3njIWocOGd1jPEkasgeA5bz400EUpqn8EwC0mZbQx
+         uujuxOWxIP1PXG/7qbtoSTbMJokzMSnV2ca3sbb4FksuKJVPdznaMnZPJm+SMI71rytl
+         5WhGvxiEAR0xzFOpuTdfM10N+QTmFHuAsf0UlIZrXPUBco10xFAyQtL3JSSrfNVDuYn4
+         CwuIsK/k/gYqfWHLjPlbBEqRzJaL4zbaZtLphKyEJTMHOBCiHIbXvBjoK/0sJQ4hogud
+         VWtut4gwROy1cvnoVm5wrdGLaQIgpjQ/TGuKdi705scdr5fpVUxChqLQBz5hqrKzM4t6
+         ltbg==
+X-Forwarded-Encrypted: i=1; AKwUvBxNn94CT47bijGQl+w/eBQo2+RaTVds2GlXbzpTnFOexWWFavnucwQP3J+jSr9983sKZjScHao=@vger.kernel.org
+X-Gm-Message-State: AFuF++m93uyEYLYyfdCEm70jJe2w9td8ytXV3Vv+GnNspaN+xaHNA3bW
+	6D1I7A/azYdFjKM5Zd7hPA3HtcHzEPAwfG7dzEKT6dk9O/QyFJxKP8Q9
+X-Gm-Gg: AYBFou3FSBiSC7KSEfUxBM97VoHP/dW/SD0DVj9zDuyeUcBe00TaTqEp10hrMbreS46
+	HjlN9UTWd0B2PkXppS2+COGyOQC5fIPIIKIeHfQwZnshZ1eR9UkEWlOGE9HtTaWe4BdUfYyyPMH
+	WWvsm6/TegrU27Qn3rxm5I2SBdiqJt08wq2OKI50Sn5ri6rrmx8PwzLipVSowj4Tala7bxIozco
+	gX4zJFSKsAi2SxSrN1d5ZpHtHZISWCqQv0hivXw+WeVtR3jNdjYbsHre0UraHR0F+3TzvwKsO2h
+	dxj6emUp/uwFkhpFLSfjH2bN9UAX42D4OOlL3KocazNDHIoiSgmWeR2eGmd5U77ubWRO7HXr6mQ
+	VyezezteCv5I+5yetFUYy0ReYETLW86jtkfF6UcROIR3tiaun3VjTiOHlVr31YKAZ4n3sLgL3kz
+	aNhI6lzkEn5AQRJ2pGt6aImjaErVg5SPCu2xdJBLJ4n6MSAuKLGcVefA==
+X-Received: by 2002:a17:90b:2890:b0:39e:3dad:684f with SMTP id 98e67ed59e1d1-39e5546c89dmr10847172a91.4.1789996182395;
+        Mon, 21 Sep 2026 06:09:42 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1002::de93])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a023e44854sm5275079a91.4.2026.09.21.06.09.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 06:09:41 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Xu Du <xudu@redhat.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] selftests/net: run tun tests in a dedicated
- network namespace
-Message-ID: <20260921130901.GP13925@horms.kernel.org>
-References: <20260917111520.2614448-1-edoardo.canepa@canonical.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	bcm-kernel-feedback-list@broadcom.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: bcmasp: fix MDIO child device leaks
+Date: Mon, 21 Sep 2026 21:09:29 +0800
+Message-ID: <20260921130929.403129-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917111520.2614448-1-edoardo.canepa@canonical.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 17, 2026 at 01:15:20PM +0200, Edoardo Canepa wrote:
-> The tun_vnet_udptnl fixture creates a fresh tap device, assigns it a
-> fixed MAC address and installs the outer neighbor entry as
-> NUD_PERMANENT.  On systems where systemd-udevd is running and a systemd
-> .link file sets
-> 
->     MACAddressPolicy=persistent
-> 
-> (the default shipped by systemd in 99-default.link, so this is what
-> most systemd-based hosts inherit), systemd-udevd's net_setup_link
-> builtin asynchronously sends an RTM_SETLINK to reassign the freshly
-> created tap device's MAC to a machine-persistent value.  When that
-> lands after the fixture has configured the device, both directions
-> break:
-> 
-> - recv_gso_packet transmits through the tap, and the address change
->   flushes the neighbor entry the fixture installed:
-> 
->     do_setlink
->     -> netif_set_mac_address
->        -> call_netdevice_notifiers(NETDEV_CHANGEADDR)
->           -> ndisc_netdev_event (arp_netdev_event for an IPv4 outer)
->              -> neigh_changeaddr
->                 -> neigh_flush_dev(tbl, dev, /* skip_perm = */ false)
-> 
->   so the packet hits __neigh_create() and waits on neighbor resolution
->   that never completes.
-> 
-> - send_gso_packet writes frames addressed to the MAC the fixture
->   assigned.  Once the tap has a different address, eth_type_trans()
->   marks them PACKET_OTHERHOST and the IP receive path drops them.
-> 
-> Either way nothing arrives before the receive timeout, and the test
-> fails with, for example:
-> 
->   tun.c:947:send_gso_packet:Expected ret (0) == variant->data_size (1)
->   tun.c:948:send_gso_packet:Expected r_num_mss (0) == variant->r_num_mss (1)
->   tun.c:962:recv_gso_packet:Expected ret (0) == variant->data_size (1)
-> 
-> The failure is non-deterministic and reproduces on a plain
-> systemd-based VM with no containers.
-> 
-> Fix by calling unshare(CLONE_NEWNET) from both fixture setups.  The
-> harness runs each test in its own forked process, so every test gets a
-> private network namespace that is torn down with it, and all tap and
-> geneve devices are created in a namespace that systemd-udevd (running
-> in the init netns) does not watch, so its RTM_SETLINK never fires
-> against them.
-> 
-> Creating a network namespace needs CAP_SYS_ADMIN in the current user
-> namespace and CONFIG_NET_NS=y, neither of which the tests required
-> before.  Where they are unavailable the unshare() is reported with
-> SKIP() rather than aborting, so the binary still emits a full TAP
-> stream and a runner can tell "network namespaces unavailable" apart
-> from a real tun/tap regression.
-> 
-> Verified on a plain systemd-based VM running the affected kernel.
-> Without the fix, 1000 sequential invocations of
-> 
->   tun -r tun_vnet_udptnl.4in6_nogsosz_1byte.recv_gso_packet
-> 
-> fail 10 times, and 2 out of 20 full runs of the test binary fail.  With
-> the fix there are no failures in either case.
-> 
-> Reported-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-> Closes: https://bugs.launchpad.net/bugs/2158217
-> Fixes: 24e59f26eef2 ("selftest: tun: Add helpers for GSO over UDP tunnel")
-> Assisted-by: LLM
-> Signed-off-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-> ---
-> v3:
->   - Drop the claim that a failure leaves the tap and geneve devices
->     behind.  The failing checks are EXPECT_EQ()s in the test body, so
->     FIXTURE_TEARDOWN still runs (Sashiko).
->   - Explain the send_gso_packet failure correctly: its frames are
->     dropped as PACKET_OTHERHOST once the tap's MAC changes.  The
->     neighbor flush only affects recv_gso_packet.
->   - Redo the measurements on a freshly booted host.  The v2 numbers
->     were taken in an unclean environment.  The v1 numbers were fine,
->     and the v2 entry saying otherwise was wrong.
->   - Go back to "Assisted-by: LLM", the current format in
->     Documentation/process/coding-assistants.rst.  v2 followed an older
->     copy of that document (Sashiko).
-> v2: https://lore.kernel.org/netdev/20260914211921.3786609-1-edoardo.canepa@canonical.com/
->   - Add the unshare(CLONE_NEWNET) to FIXTURE_SETUP(tun) and
->     FIXTURE_SETUP(tun_vnet_udptnl) instead of replacing
->     TEST_HARNESS_MAIN with a hand-written main() (Jakub).
->   - Report an unshare() failure with SKIP() instead of aborting the
->     binary before the harness starts (Sashiko).
->   - Mention the new CAP_SYS_ADMIN / CONFIG_NET_NS prerequisite in the
->     commit message (Sashiko).
->   - Change the Assisted-by: format (reverted in v3).
->   - Redo the measurements (redone again in v3).
-> v1: https://lore.kernel.org/netdev/20260905085318.3416670-1-edoardo.canepa@canonical.com/
+bcmasp_probe() populates MDIO child platform devices using
+of_platform_populate(). If initialization later fails, the probe error
+paths clean up interfaces and clock state without depopulating those
+child devices.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+The normal remove path has the same issue and leaves the populated
+MDIO devices registered after the ASP driver is unbound.
+
+Add a separate error path for failures that occur after the MDIO
+devices have been populated, and call of_platform_depopulate() there.
+Also depopulate the child devices during normal driver removal.
+
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 972474893a6b..c4087408a822 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -1309,14 +1309,14 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 					 sizeof(*priv->mda_filters), GFP_KERNEL);
+ 	if (!priv->mda_filters) {
+ 		ret = -ENOMEM;
+-		goto err_clock_disable;
++		goto err_depopulate;
+ 	}
+ 
+ 	priv->net_filters = devm_kcalloc(dev, priv->num_net_filters,
+ 					 sizeof(*priv->net_filters), GFP_KERNEL);
+ 	if (!priv->net_filters) {
+ 		ret = -ENOMEM;
+-		goto err_clock_disable;
++		goto err_depopulate;
+ 	}
+ 
+ 	bcmasp_core_init_filters(priv);
+@@ -1327,7 +1327,7 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 	if (!ports_node) {
+ 		dev_warn(dev, "No ports found\n");
+ 		ret = -EINVAL;
+-		goto err_clock_disable;
++		goto err_depopulate;
+ 	}
+ 
+ 	i = 0;
+@@ -1369,6 +1369,8 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ err_cleanup:
+ 	bcmasp_remove_intfs(priv);
++err_depopulate:
++	of_platform_depopulate(dev);
+ err_clock_disable:
+ 	clk_disable_unprepare(priv->clk);
+ 
+@@ -1383,6 +1385,7 @@ static void bcmasp_remove(struct platform_device *pdev)
+ 		return;
+ 
+ 	bcmasp_remove_intfs(priv);
++	of_platform_depopulate(&pdev->dev);
+ }
+ 
+ static void bcmasp_shutdown(struct platform_device *pdev)
+-- 
+2.43.0
 
