@@ -1,49 +1,49 @@
-Received: from mail-wm2-f9.google.com (mail-wm2-f9.google.com [74.125.225.137])
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2584AC147
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB702494826
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790002651; cv=none; b=RH88I9lm7re9e2LKJSX4957liTEc2OHwpueMn+OdXobtQ2XN2AUrEVyg9APIxTnskg/AVWFCr/YL1gai+yrO52vKu1hIjcUIW0VkP2Db0sD+rIpnzjfgja0yEjGeY9N/WHbTFET6Gse8NBh+O49qLYbkTKKlwAHK8V8HukIJ1+0=
+	t=1790002653; cv=none; b=YUHKor26uQ0pb1SQrWP6TZAV2Uzq4cOfaw4K4qxfd+Z1BAZn8fRSoqyVFKyYkm4JuamXoEOKCMepoaTfujEYLa+trfoDbIsxD9LDcSSCs07ZGI8+bcfFIH9vbbuMYuWmd3+BDE2tVS7PAPBqQq8rNn8aZsdHuaU74vFnn8FIiDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790002651; c=relaxed/simple;
-	bh=OK1hcbfhrRYnS7Fji50QexykkRH0sRg4CUWkyRdbGGI=;
+	s=arc-20240116; t=1790002653; c=relaxed/simple;
+	bh=O84UlgIt22qVXOTeLEKlJ+J21Nne9exAai0M6IVznd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3POkoS6nb154Za7ZCE55SeLqew2C1WXSBg7STDZ9FZlT5nnhHSm9lTD+v5vpWiHqmOUw97hTXPUMwEskLxcXTcFzgtdAH4+cmQkGakQCZrGrnQ1YzTvRttJGA2/VTcaJ6dfFBc3QG75j9uFv6Nzv3pnSDSl6GgYumYm5lshlo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.137
+	 MIME-Version; b=qDujWzBCjB9/tMfUZU3Tq1sXK6cOT9RDGIbW9qecDKtGMTVHchGeOXI3F5urKD7dME1QAshS/hCE9oeCAOLtJ8i9Arv/HnqGeR9nLuJ1AXUQlSUbrF4pHKaNhQyKtYkkA6Oc/FhD89A5/MLDn/ew2SogWDHkugvi1xPD250DYno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f9.google.com with SMTP id 5b1f17b1804b1-49e6e43b9d8so11352555e9.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:57:25 -0700 (PDT)
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-49b963f51f6so13081645e9.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:57:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790002643; x=1790607443;
+        d=1e100.net; s=20260707; t=1790002648; x=1790607448;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JPeqxpJkKYTQM9xCANZhikKMsVz4xTfivxM0gs/My1U=;
-        b=Jq1XHVk0sFFREGH8Vf/y0rr17xWAG0nFURPsY9WELMDjKp5q5Po56+AoL3qRCoxRS4
-         d/sMauyzGEe+vgsTxrVwfSMzpDXmFfjA5/YkLq45wyl+VchqYqRTVqqgDwZ6zCZHaBy2
-         GFhryFF0Avg1YbB5nU+sFRPyBjCltGB71TCkElbcv+v2gBjHdZfUu68B4azkgma63rk+
-         iyjLyjlv4sNQBqCeTxw+f5usHO9G+ex5Hby2T6stnd93q4pjIgQ9OhqnjxPuFUQQalY7
-         SaGm860FulN0GTj6cYqJo0f0N4y/n3PJ7ueZiYZv6OneMjuYYNIyGIwv84XSs1tosz7/
-         Y/bw==
-X-Gm-Message-State: AFuF++mIW6NJ5lOCPglB9ftclX6WqaWyAXhi63Q1AxrzCxGOEk9Gz6it
-	UCKoG+vFO/BRhVhNG6pC3xDaj9QWxjWoOhB41D2CWRVs5jdaJZpSJ66HsXQbmL7r
-X-Gm-Gg: AYBFou3KdOAYCUpdaQHigsxTLpccUaM/hMB1lg92Ys25e2gtw6s1KLCz0Kh4Gp767rM
-	1s5vzc9+CtsdT5cJNMubj9g8oKygB56tNxLRptDFSlkbfwSFiH/8Uk9EmAEZceiPTRKYPEFJ75L
-	uds6Nrtp12QwZvc0+UPdZQcwv79qBJL3Sazzf+K0G0XEsQttFRozzfGw6g5yiidWGXkI5wcb05C
-	62euMDclhFwQZwTxvAQZtqlEK85EWsGac2SFS0TF3+QIp3G7a2pQhd9h9Dj//Xlvj3BfAvM2DD6
-	vqIc7GPsDecnpKGTjLPC5TQ9FMtgJzrd23GRiC1mue2GyNJxbXdBpdeF8LvdONeS+wvt0WqQCZ2
-	+MXR2deSGrZFHu0S5CImeKVpt275e2Pcf3pR7So3BL94OAy1+Ms25IcCcMCW+kn6iA5dtOj+OS6
-	q3PkB+sjZhT1cJw1Ntjqpju9kllZtI3+sSQW+dFYArzjfyQ3+ZNrYnY5O1zAGMJTyIyc2sQQN43
-	B/Ls1mKPdAEAGFTlX2uDqHTBRRM5iJWLEH7Y3aQrrHUq3WNYfRF
-X-Received: by 2002:a05:600c:138b:b0:49c:f89b:f82 with SMTP id 5b1f17b1804b1-49fc568f8dcmr139432395e9.12.1790002642660;
-        Mon, 21 Sep 2026 07:57:22 -0700 (PDT)
+        bh=D5yxLi0HeeDyCNaoa/cXH7lPCvNUM8Mh94Wvp96R2LI=;
+        b=wzKfhjSn/28RBPkPpsJQu2nLzueeUURLpWm2VbGx/6c1KdcgvMO2r5zngLxKMcveM7
+         i2WKebg51Eki/K/nzIb10vqk0pMeBTWqvHBCM5R3ticGk5u64wZV/5F2tWIGZQC85KlR
+         Crb2T3XjcaEg5hVa0Z2+pECrayWPMwv5DOuaYjzq1fXSaYnjBB32J0FHPS5nXRATbLyY
+         3HtRzNQIxcZaWm+mqdAw51UnVKK7MSItCWOnuDdZVi0+aS7Tq07CuNAx4G5nvXqdmCp7
+         Erdzqj/YoyoikgyEFhXFTxvracKu9dCaMfuKa5vvhzjWfpUTmo4YExtho23fp9mnrYp5
+         sZeQ==
+X-Gm-Message-State: AFuF++liRFTZa3Ug9JIz+WO6enWtxg91Sxq5Eobl5VosYvXJs7iSK6qF
+	DmZ2NQCFCxJYh0joWzvQCikYAE3siBdF4bJc5I5Kv3fA6yYWUAG5w6P8YgNBqtue
+X-Gm-Gg: AYBFou1CO9qSE3V6J17N9o5k39Gfz2XH160ZcsIZtgV3n4p4hL1eflTZDiXwYgvmQwR
+	J+VVwLs0RP3SAlg/fnkCA0q1RRhN8FHpQ786mNk0vMf4QHe3O722OiWG6GRZHHwNyWOSMoWJTt+
+	w3HtD2JoyA6lGTDheYOLGc1pgNOGn3xXKthP1DX1WNFQnaeRrbXqq0P2tYJdLCsoN3EyN1QL2rT
+	984aONIyDQmSmjJl8aAlFaB3PCNN8JOpdbG/sFSQ4sAPxtmTkJBC5NV8YSmQ3kgf2gC5hTCRmM3
+	YVQXp4WefjkwFrAIQoc3o+xon/+k2LZfMon7Fr3qTR9FDLjUp54NxyQdUt5EfYlWsl3aN+YwFyM
+	fgM/ELhN+gqDWTwpYfC1b2trmaqVQYtW6Won21txjww/dZkxKaXmcaxaB3s5tUtLlo3l31DTDbh
+	myaSz8zUHNdmimCWPSoNsmj7P+6mADc8qQl1dDrygEpsI3SmsRE6CSEuYyBE3n+k1qQW13dpjLn
+	qiymGQPSRD9X9ONnpzti+8ZKKFddzRwDIPdCKLsqkOO6r0sgO1f82A=
+X-Received: by 2002:a05:600c:34c3:b0:49c:fa21:e74a with SMTP id 5b1f17b1804b1-49fc5757f73mr156995365e9.32.1790002647731;
+        Mon, 21 Sep 2026 07:57:27 -0700 (PDT)
 Received: from im-t490s.redhat.corp (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd0eabfcsm243153905e9.3.2026.09.21.07.57.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd0eabfcsm243153905e9.3.2026.09.21.07.57.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 07:57:22 -0700 (PDT)
+        Mon, 21 Sep 2026 07:57:27 -0700 (PDT)
 From: Ilya Maximets <i.maximets@ovn.org>
 To: netdev@vger.kernel.org
 Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
@@ -67,9 +67,9 @@ Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Ilya Maximets <i.maximets@ovn.org>,
 	stable@vger.kernel.org,
 	Axel Mierczuk <axel.mierczuk@1password.com>
-Subject: [PATCH net 4/6] net/sched: act_ct: avoid modifying shared unconfirmed ct entry
-Date: Mon, 21 Sep 2026 16:55:46 +0200
-Message-ID: <20260921145655.3167436-5-i.maximets@ovn.org>
+Subject: [PATCH net 6/6] net/sched: act_ct: fix helper UAF due to extensions realloc
+Date: Mon, 21 Sep 2026 16:55:48 +0200
+Message-ID: <20260921145655.3167436-7-i.maximets@ovn.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260921145655.3167436-1-i.maximets@ovn.org>
 References: <20260921145655.3167436-1-i.maximets@ovn.org>
@@ -81,98 +81,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In a case where skb with an unconfirmed ct entry gets cloned, we may
-end up processing both again but with different sets of extensions.
+While calling the helpers, a raw pointer to the extensions area is
+wired into expectations list:
 
-The series of events:
+  -> nf_ct_helper()
+   -> helper->help()
+    -> nf_ct_expect_related_report()
+     -> nf_ct_expect_insert()
+      -> hlist_add_head_rcu(&exp->lnode, &master_help->expectations)
 
- 1. The first clone wants to commit and runs the helpers wiring up
-    the extension pointer into the expectation list.
- 2. Then it looses the confirmation keeping the entry unconfirmed.
- 3. Second clone now wants to commit labels or run NAT and adds the
-    new extension for that breaking the pointer in the expectation
-    list causing UAF on the destruction path later.
+In case the connection is not confirmed yet, more extensions can be
+added afterwards with *_ext_add() calls reallocating the extension
+space and leaving the now invalid pointer in the expectations list
+that is later accessed while removing the expectation.
 
-While this is possible to trigger, there should be no practical
-network pipeline where we need to process both clones without
-modifications in the same zone.  So, let's just reset the entry in
-case for some reason we got an skb with a shared one.  This doesn't
-affect any known use cases, but avoids any potential problems with
-sharing and modification of the unconfirmed ct entry.
+Make sure that helpers are called at the end after all the other
+extensions are already added.
 
-Unlike openvswitch module, act_ct allows for NAT without commit.
-Changing that would be a uAPI break.  So, act_ct needs to reset on NAT
-regardless of the commit flag to avoid reallocation of the extension
-space.  This, however, doesn't really change the picture for sensible
-networking cases as there should be no need to run the same packet
-twice (before and after the clone) through conntrack without packet
-header or zone changes and without commit.
-
-The fixes tag points to the introduction of helpers, since that's the
-main UAF trigger for the sharing.
+Note that the helper rejection now leaves the mark and labels set,
+but that's not different from how the NAT was handled before or how
+the mark and the labels were handled on confirmation failure.  And
+there are no atomicity guarantees provided by the API anyway.
 
 Fixes: a21b06e73191 ("net: sched: add helper support in act_ct")
 Cc: stable@vger.kernel.org
 Reported-by: Axel Mierczuk <axel.mierczuk@1password.com>
 Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 ---
- net/sched/act_ct.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ net/sched/act_ct.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 55f3521edb4c9..e72143d36b119 100644
+index f62051ec9d57d..411e3dd92d072 100644
 --- a/net/sched/act_ct.c
 +++ b/net/sched/act_ct.c
-@@ -979,11 +979,11 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 				 struct tcf_result *res)
- {
- 	struct net *net = dev_net(skb->dev);
-+	bool cached, commit, clear, nat;
- 	enum ip_conntrack_info ctinfo;
- 	struct tcf_ct *c = to_ct(a);
- 	struct nf_conn *tmpl = NULL;
- 	struct nf_hook_state state;
--	bool cached, commit, clear;
- 	int nh_ofs, err, retval;
- 	struct tcf_ct_params *p;
- 	bool add_helper = false;
-@@ -998,6 +998,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 	retval = p->action;
- 	commit = p->ct_action & TCA_CT_ACT_COMMIT;
- 	clear = p->ct_action & TCA_CT_ACT_CLEAR;
-+	nat = p->ct_action & TCA_CT_ACT_NAT;
- 	tmpl = p->tmpl;
+@@ -1102,19 +1102,25 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 		}
+ 	}
  
- 	tcf_lastuse_update(&c->tcf_tm);
-@@ -1046,6 +1047,19 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 	 * different zone.
- 	 */
- 	cached = tcf_ct_skb_nfct_cached(net, skb, p);
-+
-+	/* If the ct entry is not confirmed and shared with some other skb,
-+	 * e.g., a cloned one, we can't just modify it with a commit or nat
-+	 * as we must not modify the extension set.  Reset.
+-	if (nf_ct_is_confirmed(ct) ? (!cached && !skip_add) : commit) {
+-		err = nf_ct_helper(skb, ct, ctinfo, family);
+-		if (err != NF_ACCEPT)
+-			goto nf_error;
+-	}
+-
+ 	if (commit) {
+ 		tcf_ct_act_set_mark(ct, p->mark, p->mark_mask);
+ 		tcf_ct_act_set_labels(ct, p->labels, p->labels_mask);
+ 
+ 		if (!nf_ct_is_confirmed(ct))
+ 			nf_conn_act_ct_ext_add(skb, ct, ctinfo);
++	}
+ 
++	/* Run helpers for the connection if nf_conntrack_in() was executed
++	 * or if we're about to commit.  This has to be done after all the
++	 * extensions are already added.
 +	 */
-+	if (cached && (commit || nat)) {
-+		ct = nf_ct_get(skb, &ctinfo);
-+		if (ct && !nf_ct_is_confirmed(ct) && nf_ct_shared(ct)) {
-+			nf_reset_ct(skb);
-+			cached = false;
-+		}
++	if (nf_ct_is_confirmed(ct) ? (!cached && !skip_add) : commit) {
++		err = nf_ct_helper(skb, ct, ctinfo, family);
++		if (err != NF_ACCEPT)
++			goto nf_error;
 +	}
 +
- 	if (!cached) {
- 		if (tcf_ct_flow_table_lookup(p, skb, family)) {
- 			skip_add = true;
-@@ -1083,7 +1097,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 		if (err)
- 			goto drop;
- 		add_helper = true;
--		if (p->ct_action & TCA_CT_ACT_NAT && !nfct_seqadj(ct)) {
-+		if (nat && !nfct_seqadj(ct)) {
- 			if (!nfct_seqadj_ext_add(ct))
- 				goto drop;
- 		}
++	if (commit) {
+ 		/* This will take care of sending queued events
+ 		 * even if the connection is already confirmed.
+ 		 */
 -- 
 2.55.0
 
