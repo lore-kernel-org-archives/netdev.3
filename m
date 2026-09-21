@@ -1,103 +1,119 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6944FE2F7
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89FB4F648A
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790014770; cv=none; b=l8A0NvH9aVceWFTvF6rOdGsItk8Cb06gMW6UyTGWA3tu1YjlsGiNdznDsP1CyfGzGM1ax03Kc3nUAWqAKadN/DzRpKbczH97OKeSVbbMb33hS8M1ZrnNKy+Bg3WODV/Csbh7domzgfMiKL7u2wOqOV2/oIeDqULq6j2A52J2+lg=
+	t=1790014875; cv=none; b=EyxGoAJgMSzNGLg53cxTW1jH0rR8T7sEH/joY3Jws13rrZsMfiebjvRDRxpbJlWhjboNDMlZ4d1dTOlrYyYW/bOq3vkpSwKUkX+CR/lpSBbXAVzCzQzInUkX9N0mZrEJR41FCHuMfvL1tUqkRVf7G86MTqgmPc5Ey6QQbyqdOFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790014770; c=relaxed/simple;
-	bh=8SOK7b4+RHwgrDEN4NWIfgnetoUHukLJ8xvvCPI50C8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g/TNy54md+n54WyzhXwNomqZeD3IzAL9u0Zu69Z53oogSsR55yc/owBWBh9C5bhGAadFUhQc5R7VNEDuH+HgyfK78JiZh0rfc4eI9PmS3h7AmeELZK69HYz88S3GVQBM0rMBVw00HQJXh1KrXU6ggt8bCUiiobQupkX3BaHZtbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=agfE6jnq; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1790014875; c=relaxed/simple;
+	bh=BTVOElioEK9rnPU/6uipyk3WcaLnl+ZyqVCBGeiFycE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CT7n+J308VT2ShftbQ9YjqdwmNelvMlK1IqwCd8jzZiiL5vxSpuYNEPFbkARrUnfoEgHAeJkzZXBS9YB83rBQmIBpGymGqnobgnHqaxd1TK21I4jebZ6VOtR7RXMu0yCgvf4E1cpgpxNq5PwwLWoYkGnF6X7HpSZJV9XOeko+BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hpu0whqA; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="agfE6jnq"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccd5cf03so3234798a91.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:19:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1790014766; x=1790619566; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AJPQyzX/Wkk0kOsOXOqZO/LlRwi3EkZiLjHZ4oL9XAw=;
-        b=agfE6jnqz2GUCf/D7JzNG1SDlq+VJNbHsFJP3kV0aJMnISZdLt1pf3Cn8+uDYC+rQT
-         YQDkLxPmC5WW1aODBrviW3Ug2lmzaln5LTDPGEgplTWlvmc8FCn+1xnQDOU1+kYyCfCy
-         HOU0P9HqWUPnGj2f0CulTZac9m1bbxGZotBSyia3jPM6txR23iNNergfXETmH78SB6+P
-         RLWDNHwWw80kFSufr4IgM9MYzX4hdJswRqfJr7+PZcHPLW/867laAMP9ElNOKgsgghdn
-         przS4Q5G4U2wDNf+7YH09c5uWy20GXgOfH0+zUXvSxVTSFb0Ht0L6C5vasp6BB2/pJ5d
-         HN5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790014766; x=1790619566;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AJPQyzX/Wkk0kOsOXOqZO/LlRwi3EkZiLjHZ4oL9XAw=;
-        b=GtK5+J3oVTUNl0RSo1G8yg1RBpaaW+EO+6PtHuGBCv2dxG/phydi19e4LeIBdRt3UY
-         83Wqm45vit2kHizzfhICVhCLEsRu9NsDNtoDd1H8ynE2X+IK1N0z4xcobsn+hY0oD4DF
-         NWmojGdvs7HoQGXGk7pESDGkiE3NOyhWbdT9HLLmJYpWJSkvLmD008ThR/s9yEnafGxN
-         9taZVJQHh/gQL4PqfKi43RVsq6W/M6Lo5Hhp1Wk6q/Fg7vtzJnY/fj9ulItwhPpPwbzX
-         48K3BHY6mz2VgeY6LKIyJn6eJTOvvdYhyu6V2RWGvvSREbFRo9cYysEOd9RFtCPe0eho
-         kAmg==
-X-Gm-Message-State: AFuF++lm1OjtqUrcEZNDOLU5rujCjBmfWx5eVKcjUthio4QTCulOMiVF
-	vtC/DM0YpHCGoE/o/lPHHc37/KVfQtvplcAV7MXUch/pATn2hMHUOgqwY2Lcp/itRLg=
-X-Gm-Gg: AYBFou0sM4zYK0nQBoqStNP+RgzACI7B++91PCWMej+7AFQmW4+LEK/Qqb9xtnAGGCb
-	4GmhHsXnkFlU+mnqf14OYmPLdVgjfJLjLo1+aJUBhbiHHFBQXANE+34I173lIIelk0B/tfRf+Qv
-	hOrmfv8i9L+xQHSIsUPynLLje6RYf7STzW7fOlo+s5Qv2Bliw/ke3zxP73QNeHAq4aDdVUXnZ+0
-	77kdFxc8ybMjB4P7aWbVx7ymzDZCSyTZIbstSuH3dlmXL63RRX74p8zWpkJH/FGMDL4tvKdzwhJ
-	lmGMI0YW4l1Eo/wTkOkmmBcu8whO7pDLiSmtGuo1zSGSJ43FjvP+TpI9AKn0o/BvFqN6oWZlc1R
-	XqKzqHt2TT5M0cBnZHcY/dU0PRGvSCMmarrEXRevjSA3vlJr3z2a1MF1QCUn0R82cWj3+Ex05gR
-	1tINezBme2zSaet238DxLkYVSVHgJfe5uveRRRmlYU1/kg+6uYrx6LepOA0bsewMMHmSkMVKAy/
-	0LU0HxyiFC3SDqBzT1HMe1DUBzhiDSZ4bdRqWd1
-X-Received: by 2002:a17:90b:57d0:b0:39e:6c69:f479 with SMTP id 98e67ed59e1d1-39e6c69f5acmr11572630a91.56.1790014766468;
-        Mon, 21 Sep 2026 11:19:26 -0700 (PDT)
-Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0320b6ad5sm4531998a91.0.2026.09.21.11.19.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 11:19:26 -0700 (PDT)
-Date: Mon, 21 Sep 2026 11:19:24 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: "Hemendra M. Naik" <hemendranaik@gmail.com>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, jhs@mojatatu.com,
- kuba@kernel.org, linux-kernel@vger.kernel.org, vishy0777@gmail.com,
- tahiliani@nitk.edu.in
-Subject: Re: [PATCH iproute2-next v6 3/3] tc: correct tc_pie_xstats field
- documentation
-Message-ID: <20260921111924.2cd405de@phoenix.local>
-In-Reply-To: <20260919061254.39678-4-hemendranaik@gmail.com>
-References: <20260919061254.39678-1-hemendranaik@gmail.com>
-	<20260919061254.39678-4-hemendranaik@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hpu0whqA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790014873; x=1821550873;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BTVOElioEK9rnPU/6uipyk3WcaLnl+ZyqVCBGeiFycE=;
+  b=Hpu0whqANh/j0sKJd0JwzKz3qf7XDIBpScQNuWwyCuZOz6V0kcuMM0V+
+   NE1WALg38nELKG2llRsfzV7N+SKbOEzhOyw5a6xJxWlUEu4lqxLwGpD1p
+   64A1HySc99fOD01ddm0Flgrsx+QcumkagCgr3TrkCA7OpJJR64AulIYyG
+   OiFLIb6JtNJrPKya1RDUkx1fiKq2Nzi5LlL7UD0ie/5AQv54fvK6BnHF4
+   5E5qu3p1jDvh9yxUUjpxHuxfz6Glh7Ncn1lPnfVxP4CRVCvf56jnotb+k
+   shrg/gLOKzv5hAFasNvf0YO7wvD0KSe3FPs5e/XYrTQL9UdVtuE2xEMBd
+   Q==;
+X-CSE-ConnectionGUID: c3dF2KR/QUuZ4TZ+qHgsGQ==
+X-CSE-MsgGUID: G2HmLiS4S26mK0rVYxESrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90426140"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="90426140"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 11:21:12 -0700
+X-CSE-ConnectionGUID: RmL6OqeTTnSuwQJdupD5yg==
+X-CSE-MsgGUID: eolBLf60SC+I0/YlXXiLUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="272267050"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa007.fm.intel.com with ESMTP; 21 Sep 2026 11:21:11 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	przemyslaw.kitszel@intel.com,
+	mschmidt@redhat.com,
+	poros@redhat.com,
+	aleksandr.loktionov@intel.com,
+	horms@kernel.org
+Subject: [PATCH net v4 0/5][pull request] ice: fix stats array overflow via proper realloc
+Date: Mon, 21 Sep 2026 11:20:59 -0700
+Message-ID: <20260921182106.1015019-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 19 Sep 2026 11:42:54 +0530
-"Hemendra M. Naik" <hemendranaik@gmail.com> wrote:
+Przemek Kitszel says:
 
-> Correct the comments describing the delay and avg_dq_rate fields in
-> struct tc_pie_xstats to match the values exported by the kernel.
-> 
-> Update the documented units for delay from milliseconds to
-> microseconds, and for avg_dq_rate from bits/pie_time to
-> bytes/second.
-> 
-> These are documentation-only changes and do not affect the UAPI or
-> runtime behavior.
-> 
-> Signed-off-by: Hemendra M. Naik <hemendranaik@gmail.com>
-> Signed-off-by: Vishal Kamath <vishy0777@gmail.com>
-> Signed-off-by: Mohit P. Tahiliani <tahiliani@nitk.edu.in>
-> ---
+Fix OOB access to the stats arrays.
 
-Header file changes are done by getting patch accepted to kernel.
-Then the headers generated by "make headers_install" are synced
-with iproute2. We don't take changes directly.
+The first three commits are simple refactors to make the rest smaller,
+the fourth one untangles the logic/lifetime of the stats array entries,
+then we have the final fix by Michal for VF OOB access to the stats array.
+
+Michal's fix was made prior to the rest, I have only slightly changed it
+to base it on top of the pre-work commits, that should resolve all the
+corner/error cases reported by AI.
+
+The series was made anew vs the [v2], but the goal and spirit is similar,
+but I have started from beginning instead of playing whack-a-mole with
+yet another corner cases. We are also back to [v0] by Michal, as it turned
+out to be more elegant finish with my first four patches already intact.
+
+[v0]
+https://lore.kernel.org/netdev/20260520183501.3360810-3-anthony.l.nguyen@intel.com
+
+[v2]
+https://sashiko.dev/#/message/20260812204619.32253-3-przemyslaw.kitszel%40intel.com
+---
+v4:
+Rebase and resend of:
+https://lore.kernel.org/intel-wired-lan/20260911113848.44086-1-przemyslaw.kitszel@intel.com/
+
+The following are changes since commit 1e24c4f2ee44be0eee94092b5d13cbdb4bdf0d60:
+  selftests: tc-testing: add a lateral-drift hfsc classify-walk test
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 100GbE
+
+Michal Schmidt (1):
+  ice: fix stats array overflow when VF requests more queues
+
+Przemek Kitszel (4):
+  ice: extract __ice_vsi_free_stats()
+  ice: extract ice_vsi_new_stat_arrays()
+  ice: extract ice_vsi_get_num_qs()
+  ice: rebuild ring stats arrays instead of reallocating them in place
+
+ drivers/net/ethernet/intel/ice/ice.h        |   8 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c    | 295 ++++++++++++--------
+ drivers/net/ethernet/intel/ice/ice_lib.h    |   1 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c |   4 +
+ 4 files changed, 183 insertions(+), 125 deletions(-)
+
+-- 
+2.47.1
+
