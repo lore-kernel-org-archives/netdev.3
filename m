@@ -1,220 +1,105 @@
-Received: from mail-pj2-f35.google.com (mail-pj2-f35.google.com [74.125.227.163])
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8589E463B8C
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4937246EF72
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789983439; cv=none; b=JJ2m4Rps3rXICIoVVpQXMwx/VA2+tX0IwIrsf0FBAWuSRUuVQTEVknqv1ovQmQXAIAWn3vEK6VHESKLDvwuSeJWvqj2fGL7sUDjimLYhFJY2VX5IsZGFJko8LVfHbF6jMdsa7WhJaE3xc9RcwS4SFFjy+0Qh6+Fb/KH7V8A/Bgo=
+	t=1789983592; cv=none; b=hlDKFD5eoUperKZi6OApTvVeZ60CEN7P6L7Hw00hoANzfdLurDc7PNKNMtHQmj+1p2Rcf2OWBf+SgHfGK4GmGcTlhdFcluqeLMbQ9peLCu5iabD451KZXH0/wfhFbqnXCBWr7FBPWT57gdPae1WavlVkMcbr829W4+f3gDQ6azI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789983439; c=relaxed/simple;
-	bh=DjkeyF9FjUQU2PuvGj1DiBtxbzqamGHfh/avpU0E3Ag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQyNhN6sH5gfFbRc8X1VF11uJNogHnM7RJX/2I7lvpMx67GwrR+ijr549Y5xty3/2FryMUCPmAqtCF76DgLLtQLdDeWRx/YXx98tuycWOVaj6dcRoITHbsCB4MEOgA6kTbGtZ6+YerxjKghuHMetI3JNW63Xp8KUZGOLcoJj6Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9P40Pi0; arc=none smtp.client-ip=74.125.227.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789983592; c=relaxed/simple;
+	bh=Kn8Sqg3MCF+ZAhhwHPR4OX7VWS71WUpLjOUZtRczz2s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lmz1mAOYw7+Cmxmyf34RCkwfs7u2sWjr3PJO/ecdOe5geN3jnYaSXd0RlgKSosCDmCnKLNW37n94Y5xYqbdQyW11tEdHWzlwscxoAsAFnIB/FjV8zTYS6JugtZiKVEDLIbN1vpJcgIrNHGV3SVMN4BNjtHzzJlonfij2TGgqeYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ASQgcKJV; arc=none smtp.client-ip=209.85.222.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9P40Pi0"
-Received: by mail-pj2-f35.google.com with SMTP id d9443c01a7336-2dd77300825so27993505ad.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 02:37:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ASQgcKJV"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-9390a2c895bso206479785a.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 02:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789983437; x=1790588237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SZkGOV2v3EKiVxv0iFZpEgc+uW9SwmXctAKdDjSSr1c=;
-        b=K9P40Pi0eQ/fxU240CR6GvK9OZfm+UBn7nPK1p5ecpXez44DHlrfB1wqUPnozzGkVb
-         qjFKWsFFRRDDu/CUBUatVrxxb9gAXvPydoZGRJUxV10o/345G3FmJKMsjNyEW+lZw/WA
-         I02MIJ/jigjZH/4hLicIxt4JeN9tiJEqEdsIXQn8dl353F4FJGga9Vr7aaNwvy4xv+nZ
-         03yY4N8hktNN+krX9raT3L6gueLVJuF5xEc+j4qu3G7KoKkJjjGX0NbyoYmZWqP1sI8n
-         W1RYeek0BfxTPSr4PRn8iwpEV21IMuR1Tk/0ksX6MNnN9Bkm4xxJKBx1ZpOBFCf30dUw
-         J+rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789983437; x=1790588237;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1789983590; x=1790588390; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SZkGOV2v3EKiVxv0iFZpEgc+uW9SwmXctAKdDjSSr1c=;
-        b=bkEn5xrvlYqWlirkbMvehnQr/bg3E4M9uCxe9uNN7ldVzByOxHIquhJsPjypke9DEE
-         WkHilh8tfYj/FjQ2lF3kU0BZZyUbsayC4pYhERXgeacH84D7KqLzgplNh/SNElalvyIz
-         NhEZV9QIS9UArXEoOI2s1Cq0qjBOcG6F4LRlafYF4HY0Mk0G9kgyTyLcywBH8QoLkYzt
-         k3oBiyZalHqRb6H4iSCBGYIgTro+4rDQ6ph3DwOp3clLEVQiA1oB453wGgEDdlxinDde
-         Q74NQs9vBGgTjFdjzO86GwoqISxd+cJxeTXIRa4y/4sUbykmNG4c9TVt/pc0Ocm1ADdu
-         rkYA==
-X-Gm-Message-State: AFuF++krbKwMuUKGGSI+WhZseAHJ/6RLde/SEDnTu/WcXk2Uj/ZijdNp
-	Ta4LPSNFMR0QTWLBPGKKCs3imQnG6vHglAeL+4fomTHokY0J4Z3OhWBJ1bfvmLjlyiI=
-X-Gm-Gg: AYBFou0NjJCOHkhnEwLvPfFbwSwEXagNzGPYhurqQvB2t7m2LCubU+dTtuXPal8Mpf/
-	k7VYSvLJTgmhajwXWMfttTI/XRoxzdkEV4Og+aQWB9fzL/QB0YnJmBzpxvuIzaG9ds5lPsGo/A8
-	/sNUHTuGyY3ap/YlJMhYjNyo2a3idobJESLqX1FKx4w3q8COv3eFSp85W4zRmRKH9aJV2ey6B+7
-	w4W87Fw9bJe6EyJjfF/YOazBKL4V2j2PKLnOn/gkSl4xXHhG4wsbIsmyFoS45LWceQo/71I85J9
-	I9t32r97k7cOQIypepRSTCfSLpqehGkWpS/PO82+Bmnq6p+qddQavG4vBBxWOBzZH3LQaNTqTit
-	34qrBZCD9zXQIwkAkZMsYHMCo6kgpYiqUF57mhuYLb0ZVljgd0cyUmf2Y7WHL09ssmFnmvXZzrl
-	xnEGCCvJeKu1h+dBrBA9eJdMRI89NaVHHo2ZHfQZ3kEIuKuSCBEsFQT+teOudUrVuN3L768K+/e
-	I9V2u3S+QcHKhaDPfWwfcU6HRynHWkocfI4
-X-Received: by 2002:a17:903:2f4c:b0:2dd:c170:2d4d with SMTP id d9443c01a7336-2ddc17034demr99894695ad.24.1789983436470;
-        Mon, 21 Sep 2026 02:37:16 -0700 (PDT)
-Received: from localhost.localdomain ([117.88.121.70])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df52383751sm3496445ad.9.2026.09.21.02.37.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 02:37:15 -0700 (PDT)
-From: Aohan Mei <ljp1205831794@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-sctp@vger.kernel.org,
-	marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	imv4bel@gmail.com,
-	Aohan Mei <henrymei@tencent.com>,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] sctp: discard the rest of the packet on a stale-cookie error
-Date: Mon, 21 Sep 2026 17:37:04 +0800
-Message-ID: <20260921093707.1432184-1-ljp1205831794@gmail.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <CADvbK_eQjfg_-HLT3zJ5Bt5LWbUTx_+fLG5ggLPNY1Ah+sF9GA@mail.gmail.com>
-References: <CADvbK_eQjfg_-HLT3zJ5Bt5LWbUTx_+fLG5ggLPNY1Ah+sF9GA@mail.gmail.com>
+        bh=mlAd5pVjz3GHh5HVWW7qo4VxebOVdwoeCM32zrjzZwQ=;
+        b=ASQgcKJVjlN4OTGwC9gO64AcjBq8h1n8Cqf1iNex7B86TDR44hchLNwPHF2B6MiVFk
+         E3fHDtu7JjOwYA0xZdyPtAWUf7siE6KaxFo08ah7yx2TnUSJe2N3yW0gXLkKkeMySNTE
+         bFE3eLhVCil5iYe1/39LeI1WtCIiB5Id6aI/RhbT/a/66tjWI08g4Hx1fX34SAeAUxTe
+         R7Y9MWhtq68HEybAF7lYI8N+eubYoMkcr6jvKr9sgJ6/JwKCf/+D/fksEu57OptC2BWF
+         3owon8OH5fum6h/JDfvn1707jbaoxXUQNwOXrcEaV8LlK3Nwenecr91Q1xbFJL1cDNTB
+         5reQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789983590; x=1790588390;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mlAd5pVjz3GHh5HVWW7qo4VxebOVdwoeCM32zrjzZwQ=;
+        b=tqZeioGmby12nRRvlMqRLQoqo/O3h0/TkaQSU+fy+BkvgBXz0ubD6mjvP+I4kEbwTP
+         dBT1IBtIPs2Rgq4DIIz2XYdTaTd8666k1IUepeKL6Mz8XnNJscB+7pkGHZnNn/5PC+/h
+         b4eQq2So1Yj+NWcyUap2XcmZ8+3A4wxu+qE/cAQf0SphpejD6y5MimNYRpNvLR/Fx5CV
+         HQk7kpcCXQmPuwKXljab3RwqclQgJLRajD+ytQOY9Rc1k2XclLUs5M4W0qWCZ9Ogm8zy
+         Y9jgRlDQmVUJtbwl1MWzSSL72ikFM3VnmBDeooQRNxyjX7JufOY8gbKHxaaOI+dAkovc
+         l3DQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzvZsjoJyMrvaZXvDzIeErfw6Yip/A5RghYtdOUmkkVibguDCljo9cKR+G5TLY0v9FxnCxKCI4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nNxkAvv8QNKGM/L9AqJU82PHi6qhzecsCtObfDMSAyLI9u9az7
+	NXbZS9fpjo03yOGZfGod+49lBawvFPX4Lh9oqX6gDtiV++xXR+1yDgodyQMAL8x9UbPmMsUep0M
+	X2XmAuQX4KOvufw==
+X-Received: from qkbo18.prod.google.com ([2002:a05:620a:6dd2:b0:93a:1aae:ff42])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4102:b0:939:acf1:dbc1 with SMTP id af79cd13be357-93bf55589dbmr928452485a.23.1789983589766;
+ Mon, 21 Sep 2026 02:39:49 -0700 (PDT)
+Date: Mon, 21 Sep 2026 09:39:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921093947.477658-1-edumazet@google.com>
+Subject: [PATCH net-next] netlink: remove dev_hold() and dev_put() in __netlink_deliver_tap_skb()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Aohan Mei <henrymei@tencent.com>
+__netlink_deliver_tap_skb() is called from netlink_deliver_tap()
+under rcu_read_lock().
 
-When an association is in COOKIE-ECHOED state and the peer sends a
-bundled [ERROR(Stale Cookie)][DATA] packet from one of its non-primary
-addresses, processing the ERROR chunk takes the non-fatal stale-cookie
-retry path sctp_sf_do_5_2_6_stale(), which queues
-SCTP_CMD_DEL_NON_PRIMARY while keeping the association alive.
-sctp_cmd_del_non_primary() removes every non-primary transport -
-including the very transport this packet arrived on, which is still
-referenced by the receive lookup and shared by all chunks of the
-packet via chunk->transport.
+dev_queue_xmit() does not require the caller to hold a device reference
+count, and the device lifetime is already protected by RCU (the netlink tap
+is unlinked and waited for via grace periods prior to device destruction).
 
-sctp_assoc_rm_peer() does redirect asoc->peer.last_data_from away from
-the removed transport, but right afterwards the bundled DATA chunk
-makes sctp_assoc_bh_rcv() re-register
-asoc->peer.last_data_from = chunk->transport unconditionally, undoing
-the redirection with the just-removed transport.
+Remove the redundant dev_hold(dev) and dev_put(dev) calls.
 
-Once the packet is done, the receive reference is dropped and the
-transport is RCU-freed, while the surviving association keeps the
-dangling last_data_from.  A later FWD-TSN (or the delayed SACK timer)
-makes sctp_gen_sack() dereference it (->param_flags and friends), and
-sctp_make_sack()/sctp_outq_select_transport() may write to the freed
-object and link it into the live transport list.  This is a
-use-after-free triggerable by any malicious SCTP peer (or a local
-unprivileged user acting as one) with no capabilities required:
-
-  BUG: KASAN: slab-use-after-free in sctp_do_sm+0x498a/0x5660
-  Read of size 4 at addr ffff88800e1e356c by task poc/115
-  Call Trace: sctp_do_sm <- sctp_assoc_bh_rcv <- sctp_inq_push <-
-              sctp_rcv <- ip_protocol_deliver_rcu <- ip_rcv
-  Allocated: sctp_transport_new <- sctp_assoc_add_peer <-
-             sctp_process_init (INIT-ACK processing)
-  Freed: kfree <- sctp_transport_destroy_rcu <- rcu_core
-         (call_rcu queued by sctp_transport_put at end of sctp_rcv)
-  The buggy address is located 364 bytes inside of freed 1024-byte
-  region [ffff88800e1e3400, ffff88800e1e3800), cache kmalloc-1k
-
-Note that commit 03a9d10ecf71 ("sctp: drop a chunk if its transport
-was removed") only covers the window between the receive lookup and
-the chunk processing (e.g. an ASCONF DEL-IP racing the socket backlog);
-here the transport is removed *while* the packet is being processed,
-by an earlier chunk of the same packet, so the drop in sctp_inq_push()
-does not reach this path.  Verified with the bundled [ERROR(Stale
-Cookie)][DATA] + FWD-TSN reproducer: the KASAN report above still
-fires with that commit applied, and is gone with this patch on top.
-
-Fix it by discarding the rest of the packet on this path, as suggested
-by Xin.  After the stale-cookie ERROR has sent the association back to
-COOKIE-WAIT and removed the non-primary transports, the remaining
-chunks of the packet can only run against the restarted handshake
-while referencing the removed arrival transport through
-chunk->transport: besides the last_data_from registration above,
-sctp_cmd_setup_t2() and the sctp_make_*() reply builders would also
-copy that pointer into association-lifetime state that
-sctp_assoc_rm_peer() has already sanitized.  Let the peer retransmit
-them, in line with what sctp_inq_push() does for chunks whose
-transport was removed before processing.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Cc: stable@vger.kernel.org
-Assisted-by: CodeBuddy:Kimi-K3
-Signed-off-by: Aohan Mei <henrymei@tencent.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
+ net/netlink/af_netlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Hi Xin,
-
-Thanks a lot for the review and the suggestion.  Implemented in v2:
-SCTP_CMD_DISCARD_PACKET queued at the end of the stale-cookie retry.
-
-Verified with the reproducer: the kprobe trace now shows the ERROR
-chunk still removing the transport (sctp_assoc_rm_peer/
-sctp_transport_free fire as before) but no further chunk of the packet
-being processed, and asoc->peer.last_data_from keeps the redirection
-done by sctp_assoc_rm_peer().  The KASAN use-after-free is gone and
-the association completes the retry handshake normally.
-
-This also takes care of the other same-packet sinks the sashiko review
-pointed out (sctp_cmd_setup_t2() and the sctp_make_*() reply chunks
-copying chunk->transport into association-lifetime state): the
-remaining chunks are now dropped before they can run, in line with
-what sctp_inq_push() does for chunks whose transport was removed
-before processing.
-
-Regarding the cookie-echo restart path the review mentioned
-(sctp_assoc_update() removing the arrival transport mid-packet, with a
-bundled [COOKIE ECHO][SHUTDOWN] reaching SCTP_CMD_SETUP_T2): discarding
-the packet does not look like an option there, as bundling DATA with
-COOKIE-ECHO is a legitimate fast path.  I can look into clearing the
-in-progress chunk's transport on removal, or a loop-level check, as a
-follow-up - please let me know if you'd rather have it handled here.
-
-On the bitfield concern: v2 no longer reads transport->dead at all.
-The race described (sctp_icmp_frag_needed() in softirq doing a
-non-atomic read-modify-write of pmtu_pending racing dead = 1) would
-also defeat the existing transport->dead check in sctp_inq_push() from
-03a9d10ecf71, so it might be worth moving that flag into its own word
-separately.
-
-As for the reproducer: it is a single static binary that plays both
-roles over a TUN device - the victim side is a plain SCTP client
-socket, while the peer side answers the INIT-ACK advertising a primary
-and a non-primary address plus FWD-TSN support, injects the bundled
-[ERROR(Stale Cookie)][DATA] from the non-primary address while the
-association is COOKIE-ECHOED, completes the retry handshake, and sends
-an FWD-TSN one second later to consume the dangling pointer.  It was
-verified on tlinux 6.6.119 and on mainline v7.2-rc6-343, where it
-still fires with 03a9d10ecf71f applied and is clean with this patch on
-top.
-
-Since it is a ready-to-run trigger for the bug, I'd prefer not to post
-it to the public list - would it be OK if I send it to you and Marcelo
-off-list instead?  Happy to share it in whatever way you prefer.
-
-Thanks again!
-
- net/sctp/sm_statefuns.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 708fa07d5fffc..43ebceb5e15f5 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2654,6 +2654,8 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 1e594baf7adf2930096f290b898d80bfa6aff4e5..6d2530e33540dce6dfc3c6ef01463a040c72812a 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -293,8 +293,6 @@ static int __netlink_deliver_tap_skb(struct sk_buff *skb,
+ 	if (!net_eq(dev_net(dev), sock_net(sk)))
+ 		return 0;
  
- 	sctp_add_cmd_sf(commands, SCTP_CMD_REPLY, SCTP_CHUNK(reply));
+-	dev_hold(dev);
+-
+ 	if (is_vmalloc_addr(skb->head))
+ 		nskb = netlink_to_full_skb(skb, GFP_ATOMIC);
+ 	else
+@@ -310,7 +308,6 @@ static int __netlink_deliver_tap_skb(struct sk_buff *skb,
+ 			ret = net_xmit_errno(ret);
+ 	}
  
-+	sctp_add_cmd_sf(commands, SCTP_CMD_DISCARD_PACKET, SCTP_NULL());
-+
- 	return SCTP_DISPOSITION_CONSUME;
+-	dev_put(dev);
+ 	return ret;
+ }
  
- nomem:
 -- 
-2.43.7
+2.55.0.1082.g2b9226bbc0-goog
 
