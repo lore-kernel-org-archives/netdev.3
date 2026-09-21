@@ -1,289 +1,233 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55E8334692
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 02:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59A533937F;
+	Mon, 21 Sep 2026 02:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789959236; cv=none; b=djL5y5oQM7aG14dXdSt7/PKQY2dcBIeI/aFvzZ2zzQHnrxTciETNAm22imP8/edZ+nqJq28b8N+huXr5MGqRvoxHYChcAPbQnCIsLwqvn3tFs9SghHY1VF9+8WLeiZ9hs2wuKS58yO7F+FcRokL1eLQToLZ9inOHGWqCiwGWuUY=
+	t=1789959237; cv=none; b=sM4nX7CODGOI1w5tTT3ZhxlH2THu7mkW7WY/nBT8rys49epOTR26KpdA5ZZIPkecqZu9TlZ0FAfDQZy7qSV2kOjBcs560kbBGFsI5CXuCWbigFsMmggz1+XoiAhSjI6fVv+DjMl9GNW0oJ7QWQtTgVBXGp4JpZrJb+THq7hyca4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789959236; c=relaxed/simple;
-	bh=o7u+Ilnkg+4xjG93z/0C0NZxlAlBcA2mnfdP5ehaM74=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUbVJe0XD60Khsp9Z5mQIOqvLplY+XSlOo1wcd4yCYfOYo0Lg1nZbkh6PbjDt8w/jQMP06nJMqE9cDLScHMkawpvtg1zLxB6b5egB9EGJQJjfk29wt7UJPFe1aPMuHqyr1vdaF2nc7KeY0jMusYfLCY5NGkOzhEUkL85TpT9Qus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=et+W8caU; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789959237; c=relaxed/simple;
+	bh=hPmMXi3DIwHejYR6KZDF66L7tN963ysxO89JlXIjB7A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cSqNhcUSVypNiMlZXTWXanSO4Vk7bNWogKs6K5v/ssatn82S3DsSfRYeHDcsL6PzTTx7JlEkDfTLME8+7O9u4Lv6RN06n8OeImONHnHJbqTmUT4KVqG0vA9ZeFTM+cn+2LJOVr1aRzes+adXphcH49izyLMSJuSN6NAMwnWfzMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoyMqjir; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="et+W8caU"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910cc46c8so322026885a.0
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 19:53:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789959233; x=1790564033; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=u8Ct4yW9W4ymcEv428o4m/ZX/KrAWtAnJ7CKPNzyvYY=;
-        b=et+W8caUeJia6mcj+wTgoqX2bCsCLBK/WVaX/C/smL2cFB37iXQulDUhLvBfJ2MX2n
-         XEDtaQ1MZ5fV71ktQtakXlkp7WHuxUYf0RrjxU2tvxFQunVd1G00ZS4Ir7OYKRMLawZR
-         sN9lXfmtWKxkJnXP74qbhdDxqAW6PASB+IjujdVpRsnGidWJ7BBZVSiYopVO7BdacymA
-         BqcYoM5UxmFn7xygMTlbZYAOlCNaDJRrFleZxjhsRKdxf8Y+1iuq/Q2CPE1n0KRCBQdm
-         dMjSfjLEjKrYiz/a7Qq5u/cSrOaesRTqIACJZM0LQPBXVeWfU4e7mt00ygMwRV8fl+qB
-         c5XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789959233; x=1790564033;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=u8Ct4yW9W4ymcEv428o4m/ZX/KrAWtAnJ7CKPNzyvYY=;
-        b=esPGwrXOzR+ekpC0V++YTU7QnNPwid/MEt0FQXQ6VqbXzkiirRIFhxGFPsTAxadZOA
-         MJuFTLnSRHLIIdOmNlYZodJarqI/7mLmX1YnpOvp3ojn9Ou5oyJ0jC9UGbkmYAcRaUfV
-         YR4Ih+Rb1ljB5AxeaWzJMBH4Qm2J0ePVRwQiW4uzMAWq+xoQYfFUqAR6GomEPkF+abbD
-         iuVoNcN1rCt3Mmw52VhfaJfyhax/mv91qeN6wmnX1oPq7SBpAycdJ8lzRplquLI5ugbp
-         GCaeVGdtkB4P/DQsgeIce0SLiz2XqG68cI21qqQLOM5vdviy0Dd+QzljENvGclMe8/Od
-         m6hQ==
-X-Gm-Message-State: AFuF++l3KC1OE+QZXps+UKdltdODaaYgh+BZq6ghG9Q0jNKexPi5x+zB
-	KoNjI++DO8tUgL512+rN/F7gcmkwEhqJ1BNpwU5GEnPaTCmBbZuU3TOETO1ELSbKhMw=
-X-Gm-Gg: AYBFou2w5EOuC1poCWsSba3geQ6z3BUmrqO605PIvViSWCtvFkk+nvv3BIuhJLXh2L5
-	f/mQJ6qsgfEUaO2Fe8UXWHL97veu7TGuAUPqPL78u1YaVu5g/1ofM4wM6TTubgxbOpgTXqUO+VL
-	DqmjUK4RxFtzJn5XgAH9MTjuNcjOKf3cDN17eUcNS63qW59fG7LjhAuTe9NWoMdG5D9J1r4vTjl
-	k1F12eBSnleHqfMqGO+zQNp9x189Nlqk2ds4n5lKx7iGh/Z0IIfRDlpoV1F4pReTkh/FXRWFwzf
-	3woCLa++IqDuuXFzN7jx7NL8q+OYGSVoG5vEu7752U6Phs6ys465ZjDVjwyAcPuXuCFZxQGtDWE
-	82YtCyvJgniSJSf3AI0kWpzaFI+KCq0BZ66HcxNaupMyjrH/PlLArsvNUwTpEQHCxeIGb5ZcerH
-	1xjzitdfpjidjrlrZ0elv4zgG56puUs+jLN1119au5GNkOAutFQ35W7lVOxbqNNWcVU6U1ENal3
-	LJhI08j9toWdIKpcc/Nk19CHOhbCYrjBW7TZeG/njbsJi1mw90GiH29qOdhgKdv36/TS4vi
-X-Received: by 2002:a05:620a:1724:b0:93b:d7a0:d9f0 with SMTP id af79cd13be357-93bf57eea2emr869731285a.74.1789959232559;
-        Sun, 20 Sep 2026 19:53:52 -0700 (PDT)
-Received: from localhost.localdomain ([2601:155:4200:2c80:64b9:5e22:f77c:324e])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93bedb3de58sm528732785a.37.2026.09.20.19.53.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 20 Sep 2026 19:53:51 -0700 (PDT)
-From: Paulos Yibelo <habte.yibelo@gmail.com>
-To: netdev@vger.kernel.org
-Cc: richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	mst@redhat.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	andrew+netdev@lunn.ch,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	razor@blackwall.org,
-	idosch@nvidia.com,
-	dsahern@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-um@lists.infradead.org,
-	virtualization@lists.linux.dev,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	bridge@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v5 2/2] ip: reject partial checksums covering network headers
-Date: Sun, 20 Sep 2026 22:53:41 -0400
-Message-ID: <20260921025341.44846-3-habte.yibelo@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20260921025341.44846-1-habte.yibelo@gmail.com>
-References: <20260920004733.6473-1-habte.yibelo@gmail.com>
- <20260921025341.44846-1-habte.yibelo@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoyMqjir"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49CB1F00899;
+	Mon, 21 Sep 2026 02:53:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789959235;
+	bh=WQXDAUzizbrL4Dhi7hzmeIYNARQ4ZiKmlqe6VCGycP8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SoyMqjirH5ReH63LZHlHziK7xmNy+n1oMr0/vjhVrtX6cMUw8eBKt7kWAVq5PhrXU
+	 nX16JZ0W+/m0TILjy+NdNxLtcUTNT+97p0qmXhdjSjDjzdAxoNZ+nJxoaCWw3bucwx
+	 3F4b1Afzk5QM0TbNn61GVC9hcobJDRCtvVYVAVNZZB5VPnsDSim0uiHlVClcqJDE82
+	 z2SQOcwYXxcfQ2xSDbLanno3+kXdtqvpncWzfuV9mJn6d+sLFuXt7ylKjS2pDsmwLs
+	 WCBJw7KrG90LtEb8AU4I9zwL6SEeGMFVwAEeQaWQxR2xsOjmpf63Q2mmx1wL8MtUCW
+	 doa8BSXaOJxQw==
+Subject: Re: [PATCH net v2] net: tun: fix race condition between tun_attach
+ and tun_get_user with XDP
+From: netdev-bot+sashiko@kernel.org
+To: xietangxin@h-partners.com
+Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, huyizhen2@huawei.com,
+ gaoxingwang1@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 21 Sep 2026 02:53:54 +0000
+Message-ID: <178995923435.2160803.18166174326002943726@kernel.org>
+In-Reply-To: <20260920030240.443223-1-xietangxin@h-partners.com>
+References: <20260920030240.443223-1-xietangxin@h-partners.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-ip_do_fragment() and nf_br_ip_fragment() complete a CHECKSUM_PARTIAL skb
-before reading the IPv4 header length. ip6_fragment() and br_ip6_fragment()
-complete one after parsing the IPv6 header chain. A virtualization
-interface can supply a checksum start which, after link-layer removal,
-still points inside that parsed network header.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-skb_checksum_help() then writes the completed checksum into header bytes
-the stack has already consumed. For IPv4, changing iph->ihl after routing
-and validation can make fragmentation copy beyond the skb's logical linear
-head into transmitted options. A negative checksum-start offset is rejected
-by skb_checksum_help(), but only after a WARN_ONCE which can panic a
-panic_on_warn system.
+Critical: 0 · High: 1 · Medium: 0 (2) · Low: 0
 
-Validate the checksum start against the parsed header length before
-completing it. For IPv4, read and validate IHL first, retain it, and
-reacquire iph after skb_checksum_help() in both implementations. For IPv6,
-use the length returned by ip6_find_1stfragopt() in both implementations.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Compare the signed checksum-start offset with the bounded signed header
-length so integer promotion cannot bypass either boundary.
+- [High] Incomplete fix: the new "publish tfile->tun last" ordering is a
+  no-op on the TUNSETQUEUE/IFF_ATTACH_QUEUE re-attach path, so the…
 
-Fixes: dbd3393c56a8 ("ipv4: add defensive check for CHECKSUM_PARTIAL skbs in ip_fragment")
-Fixes: 405c92f7a541 ("ipv6: add defensive check for CHECKSUM_PARTIAL skbs in ip_fragment")
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Fixes: 764dd163ac92 ("netfilter: nf_conntrack_bridge: add support for IPv6")
-Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-Link: https://lore.kernel.org/netdev/20260920004733.6473-3-habte.yibelo@gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
----
-Changes in v5:
-- Compare the checksum-start offset and IPv4 header length as signed
-  values.
-- Add parsed-header checks to the IPv4/IPv6 output and bridge-netfilter
-  fragmentation paths.
-- Drop the prior Acked-by and Reviewed-by tags because the code changed.
+Pre-existing issues:
+- [Medium] Mirror-image ordering problem on the detach path is untouched
+  and reproduces the same netif_get_rxqueue() WARN_ONCE.
+- [Medium] tun_set_real_num_queues() (drivers/net/tun.c:526-530) is void
+  and discards the documented error returns of…
 
-Changes in v4:
-- State that a TUN device is sufficient and no guest is required, as
-  noted by Michael S. Tsirkin.
+--
 
-Changes in v3:
-- No code changes.
+net: tun: fix race condition between tun_attach and tun_get_user with XDP
 
-Changes in v2:
-- No code changes.
+This moves the rcu_assign_pointer(tfile->tun, tun) publication in
+tun_attach() to after tun_set_real_num_queues(), so that
+dev->real_num_rx_queues is raised before a concurrent writer can observe
+the newly attached tun_file.  The intent is to stop the WARN_ONCE in
+netif_get_rxqueue() that fires when a recorded rx queue index is not
+below dev->real_num_rx_queues.
 
- net/bridge/netfilter/nf_conntrack_bridge.c | 21 +++++++++++++++-----
- net/ipv4/ip_output.c                       | 23 ++++++++++++++++------
- net/ipv6/ip6_output.c                      | 12 ++++++++---
- net/ipv6/netfilter.c                       | 12 ++++++++---
- 4 files changed, 51 insertions(+), 17 deletions(-)
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 5a302709a68a..2dfca25b86e9 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -811,11 +811,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>  	 * initialized tfile; otherwise we risk using half-initialized
+>  	 * object.
+>  	 */
+> -	if (publish_tun)
+> -		rcu_assign_pointer(tfile->tun, tun);
+>  	rcu_assign_pointer(tun->tfiles[tun->numqueues], tfile);
+>  	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
+>  	tun_set_real_num_queues(tun);
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 7ecb8a26b..d81ed8692 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -38,18 +38,29 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 	struct iphdr *iph;
- 	int err = 0;
- 
--	/* for offloaded checksums cleanup checksum before fragmentation */
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
-+	iph = ip_hdr(skb);
-+	hlen = iph->ihl * 4;
-+	if (unlikely(hlen < sizeof(*iph) || hlen > skb_headlen(skb))) {
-+		err = -EINVAL;
- 		goto blackhole;
-+	}
- 
--	iph = ip_hdr(skb);
-+	/* Complete offloaded checksums only after the validated IP header. */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto blackhole;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto blackhole;
-+		iph = ip_hdr(skb);
-+	}
- 
- 	/*
- 	 *	Setup starting values
- 	 */
- 
--	hlen = iph->ihl * 4;
- 	frag_max_size -= hlen;
- 	ll_rs = LL_RESERVED_SPACE(skb->dev);
- 	mtu = skb->dev->mtu;
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index a24cc8ee1..fa6a74d20 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -770,16 +770,28 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	struct ip_frag_state state;
- 	int err = 0;
- 
--	/* for offloaded checksums cleanup checksum before fragmentation */
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto fail;
--
- 	/*
- 	 *	Point into the IP datagram header.
- 	 */
- 
- 	iph = ip_hdr(skb);
-+	hlen = iph->ihl * 4;
-+	if (unlikely(hlen < sizeof(*iph) || hlen > skb_headlen(skb))) {
-+		err = -EINVAL;
-+		goto fail;
-+	}
-+
-+	/* Complete offloaded checksums only after the validated IP header. */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto fail;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto fail;
-+		iph = ip_hdr(skb);
-+	}
- 
- 	mtu = ip_skb_dst_mtu(sk, skb);
- 	if (IPCB(skb)->frag_max_size && IPCB(skb)->frag_max_size < mtu)
-@@ -789,7 +801,6 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	 *	Setup starting values.
- 	 */
- 
--	hlen = iph->ihl * 4;
- 	if (mtu < hlen + 8) {
- 		err = -EMSGSIZE;
- 		goto fail;
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 550965058..d157b6ade 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -942,9 +942,15 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	frag_id = ipv6_select_ident(net, &ipv6_hdr(skb)->daddr,
- 				    &ipv6_hdr(skb)->saddr);
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto fail;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto fail;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto fail;
-+	}
- 
- 	prevhdr = skb_network_header(skb) + nexthdr_offset;
- 	hroom = LL_RESERVED_SPACE(rt->dst.dev);
-diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
-index a7025ec87..da7ada12f 100644
---- a/net/ipv6/netfilter.c
-+++ b/net/ipv6/netfilter.c
-@@ -144,9 +144,15 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	frag_id = ipv6_select_ident(net, &ipv6_hdr(skb)->daddr,
- 				    &ipv6_hdr(skb)->saddr);
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto blackhole;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto blackhole;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto blackhole;
-+	}
- 
- 	prevhdr = skb_network_header(skb) + nexthdr_offset;
- 	hroom = LL_RESERVED_SPACE(skb->dev);
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the new ordering guarantee
+now rests on tun_set_real_num_queues() having actually taken effect, and
+that function drops both return values:
+
+drivers/net/tun.c:
+static void tun_set_real_num_queues(struct tun_struct *tun)
+{
+	netif_set_real_num_tx_queues(tun->dev, tun->numqueues);
+	netif_set_real_num_rx_queues(tun->dev, tun->numqueues);
+}
+
+For an already registered device, netif_set_real_num_rx_queues() returns
+early without assigning dev->real_num_rx_queues:
+
+net/core/dev.c:netif_set_real_num_rx_queues() {
+		rc = net_rx_queue_update_kobjects(dev, dev->real_num_rx_queues,
+						  rxq);
+		if (rc)
+			return rc;
+	}
+
+	dev->real_num_rx_queues = rxq;
+}
+
+and net_rx_queue_update_kobjects() can fail on rx_queue_add_kobject():
+
+net/core/net-sysfs.c:net_rx_queue_update_kobjects() {
+		error = rx_queue_add_kobject(dev, i);
+		if (error) {
+			new_num = old_num;
+			break;
+		}
+}
+
+In that case tun_attach() has already published tun->tfiles[] and bumped
+tun->numqueues, and then publishes tfile->tun and returns 0.  Does that
+leave tfile->queue_index == dev->real_num_rx_queues permanently, so that
+every write() on that queue going through the generic XDP path hits the
+same netif_get_rxqueue() warning the commit message is trying to remove?
+Should the error be propagated and the numqueues/tfiles publication
+unwound instead?
+
+[Severity: Medium]
+This is a pre-existing issue and the patch does not touch __tun_detach(),
+but the decreasing direction looks like the same mismatch.  In
+__tun_detach() the surviving queue's index is lowered and numqueues is
+decremented well before the real queue count is reduced:
+
+drivers/net/tun.c:__tun_detach() {
+		spin_lock(&ntfile->tx_ring.consumer_lock);
+		ntfile->queue_index = index;
+		ntfile->xdp_rxq.queue_index = index;
+		...
+		WRITE_ONCE(tun->numqueues, tun->numqueues - 1);
+		...
+		synchronize_net();
+		...
+		tun_set_real_num_queues(tun);
+}
+
+The moved tfile keeps its ->tun published, and the queue_index sample in
+tun_get_user() happens before the rcu_read_lock() around the XDP call:
+
+	skb_record_rx_queue(skb, tfile->queue_index);
+
+	if (skb_xdp) {
+		...
+		local_bh_disable();
+		rcu_read_lock();
+
+so the synchronize_net() above does not fence a writer that already
+sampled the old, higher index.  Can a write() racing with
+TUNSETQUEUE|IFF_DETACH_QUEUE reach do_xdp_generic() after
+dev->real_num_rx_queues has shrunk and hit the same WARN_ONCE?  Also, for
+the clean == false case, tun_disable_queue() never clears tfile->tun and
+the stale queue_index stays in place while the fd is still writable.
+Should the commit message scope its claim to the attach path, or should
+the detach direction be handled too?
+
+> +	if (publish_tun)
+> +		rcu_assign_pointer(tfile->tun, tun);
+>  out:
+>  	return err;
+>  }
+
+[Severity: High]
+Is this reordering effective on the TUNSETQUEUE re-attach path?  A queue
+detached with IFF_DETACH_QUEUE goes through __tun_detach(tfile, false),
+where clearing tfile->tun only happens in the clean case:
+
+drivers/net/tun.c:__tun_detach() {
+		if (clean) {
+			RCU_INIT_POINTER(tfile->tun, NULL);
+			sock_put(&tfile->sk);
+		} else {
+			tun_disable_queue(tun, tfile);
+			tun_napi_disable(tfile);
+		}
+}
+
+So on that fd tfile->tun stays non-NULL and visible.  tun_set_queue()
+then re-attaches with publish_tun = true:
+
+		ret = tun_attach(tun, file, false, tun->flags & IFF_NAPI,
+				 tun->flags & IFF_NAPI_FRAGS, true);
+
+and tun_attach() writes the new, higher index long before the queue count
+is raised:
+
+	spin_lock(&tfile->tx_ring.consumer_lock);
+	tfile->queue_index = tun->numqueues;
+	spin_unlock(&tfile->tx_ring.consumer_lock);
+
+Since the moved rcu_assign_pointer(tfile->tun, tun) stores a value that
+readers can already see, does it order anything for them on this path?  A
+concurrent write() on the same fd still passes tun_get(), records the new
+index and calls into XDP:
+
+	skb_record_rx_queue(skb, tfile->queue_index);
+
+	if (skb_xdp) {
+
+reaching net/core/dev.c:netif_get_rxqueue():
+
+		if (unlikely(index >= dev->real_num_rx_queues)) {
+			WARN_ONCE(dev->real_num_rx_queues > 1,
+
+which is the warning quoted in the commit message, plus the silent
+fallback to dev->_rx[0] so the program runs against the wrong
+netdev_rx_queue.  The window is not small either, because
+netif_set_real_num_rx_queues() does GFP_KERNEL sysfs work.  Would either
+clearing tfile->tun on the non-clean detach, or publishing
+tfile->queue_index only after tun_set_real_num_queues(), close the attach
+path in all cases rather than only when tfile->tun transitions from NULL?
+
 -- 
-2.46.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920030240.443223-1-xietangxin%40h-partners.com
