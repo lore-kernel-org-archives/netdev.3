@@ -1,150 +1,104 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F18F47CA62
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A8B46EF7C
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789983696; cv=none; b=A4SIOiqfGX2TmJvqLFezHXz0mwYC2jk8SFQIL+g7GSHn7mBHn5SS0qIHnejq3qvIg4N2wNcaKija5jcumnmsXL4ishtk8EcQt0eawhLrWVwlAXOk6DdsFFaRQEUgUMl/MVMpr+KI63Z+O63PmNXNmyUYpyrpY8Zk8o+7ugg3vPc=
+	t=1789983742; cv=none; b=Og6VUJ0aOi7p7EAkOWpNDbiT2bL/AshjH8Cr9xQim4zBKt8r6Xi0qDxf59YO8rOPues6nKbagp2qu1Cq3R9BU9dNAWX7uCRhfON8GltXF+q0/5mCsw7XaL9mffEqiE4Z/J1vfMcJQlAkkYUHeWRe2KLPDzSupaZe/imdTfRDGVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789983696; c=relaxed/simple;
-	bh=ozu5/SZuYmOj7l/+TcTNUYCFkfrJn6H80xQ/szzuqj8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1ATj6UDTud+gajTmzYxxkyi+s1ytgTVP7LyptXVsmkQjA8ZmBuc08dnZ/R6zazh0GqZnysaVap2+q6nBnE41UDtco3u8gsjZMljCKxDkxnQZ/GXvA+3DkNzUcuTsU4fguSy6NzRYkGoA7Ow5iQlB3XELI9k9wleGh0y4M19pT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cbZCAa+5; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789983742; c=relaxed/simple;
+	bh=ZVK9IWkzuMit9UN0/IVNL/DUWvScN7/FjTNB7Cagk44=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aS3GhjQsr26FLbDZBl531NfAu8PdZjOxUgA4J/ojdT9BHVq5u1kuPcQIYg27d8NrhOJQzPor+8xb+XBusACibdKCERpRyfyOx3BNeO+t6+5+07MpYuVm+0Cr8bsQ9ZyV+IPgzDW7podr0AJ59tzPTTrYNDZJ5LsEtEKdTOsgk7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tUCQ33E/; arc=none smtp.client-ip=209.85.222.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cbZCAa+5"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebad4afso1929382a12.0
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 02:41:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tUCQ33E/"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a0b66ecd9so347723585a.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 02:42:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789983692; x=1790588492; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pJ8HiLAEu0EI7hAaBs+acvitqX1WjD8B529R9qokT7o=;
-        b=cbZCAa+5cVog9asM1kucgkDgEirPKJf2FWMUurtmxxfBMpWniHsQWfyNDa+wcPBYG2
-         nW3ZrKoCTcs1VPCDC1AYpSOBMW9SKUX2eRZ9Ru1BITSBMJctVM8NxRwe1SjmZyImwCXO
-         ufrmjkUinPi9UscH3XLZsnPP6pUazuzRr6+hWO+33QnhyBppGyxvK7bBj2LmbNbVnTZE
-         L2fvPXARJx2IHY67edo4wGBlnGasZXFga2i0086duAcP0E5tN9ZwPWRVpyQv3qXRB/rS
-         mc6KFejXmtCLykbNqJx4k/3xyu1bNn9Xzsh/kmdeZyYsG96m/1CoLS6OYcgTtqOpXNuT
-         T3oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789983692; x=1790588492;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1789983739; x=1790588539; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pJ8HiLAEu0EI7hAaBs+acvitqX1WjD8B529R9qokT7o=;
-        b=bVNytvP8av6cMgkreShCuUCqMJADEtX1ESjKNzy0+LQwaZ/e4/Z9FTayeSu8uqpze5
-         lWN/KEdxxz+3i3iDzefr1OARALI3lbHpKo/ZQQFtbJriUOiMKRgN8d2ZU3WwvgitU+EG
-         8Mq0I/S096pRb/Oq6HQNfkVhE0UbovaYaFgx86zY5ctmXdMg34SkU9NKlqOhsYUR+bLM
-         NF0x8UHSwaRFTFm9QlHX17mT9xEOPMQkAbK/9TpFnmSvQ+8TsJx0Bfa0wQ56X9PNOeYa
-         DIMd5OA/NUwz+K6P211hcHu2yeNoPZOwtNQ7KzkWdbWU8UFH3xT3+S+79IoLTeG69M9z
-         Rxaw==
-X-Gm-Message-State: AFuF++n5zsBMHMigqV8ORFmr441x6Lo01NX+wAHv9s/qKncjaqirsqE6
-	wOOSp7smvABNNZoWWAw1vR19xbwAleTGH12sTlKptLqrgnbCJ1uPCwBl/Lw2y4WcY9nYCA==
-X-Gm-Gg: AYBFou0BpAdgiQiJYaGr8cta3wRH7MN9mCBdIJmWCUO/1Kwy6mcFD4+lNrRRNFdB+wh
-	QRyJWU/xfLJFMrWRhx64KJFUMcxb41ybPuoQELP/Q2wRYNLoXI8pyqIefpseDybpCyEl+/lWdVV
-	w1duZVvepQSt9cHlCyx/ulTsAj1HdAbFioXwzeYeJ1OSpJJBULxJ9CQ3pZkv0bB7cSvLuxkYw6S
-	c+GMzP48rbQvuTmvl2Kps75qiLuTs9oOzzPuga1esOaPkIbq4FkibOR3A6TPNGmiehQArlsGoc8
-	Ixc8iYwJ5YcENcxEPBQg7rjxQGJeNRFkFoWfHtuxencfBLvzishtfvA9+TSDNIOUNuT+3Ph+FkG
-	iwLklcxKu6jan9Cr+k0/38JG3wXvKmfa0FDeyQBffzRphfk4rv6RUrutO/oq211MI/QB5PYi4AT
-	dqLHGE5XwT3nev0zNBSBbUhQvibhtRd+OJyfKbfxM601A1KmgM3S3v0/BEIRn7L/XYksLzhSY2E
-	ji0SlNPM5Aa9N3yvhaU/fVavoWFiwMg8KAhFgFsT8bOdiJty95tg/bvu2yQXF9Q1wmJY7rbgKZV
-	tnDb
-X-Received: by 2002:a17:903:2c0e:b0:2dd:c100:7cc3 with SMTP id d9443c01a7336-2ddc1007e21mr89901765ad.63.1789983692380;
-        Mon, 21 Sep 2026 02:41:32 -0700 (PDT)
-Received: from lenovo-thinkbook.lenovo.com (n112120123178.netvigator.com. [112.120.123.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc17a04afsm31053665ad.42.2026.09.21.02.41.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 02:41:31 -0700 (PDT)
-From: Yuqi Xu <xuyuqiabc@gmail.com>
-To: netdev@vger.kernel.org,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: Jon Maloy <jmaloy@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ying Xue <ying.xue@windriver.com>,
-	Parthasarathy Bhuvaragan <parthasarathy.bhuvaragan@ericsson.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Ren Wei <weir@nebusec.ai>,
-	xuyq21@lenovo.com
-Subject: [PATCH net v2 2/2] tipc: make conn_idr teardown safe
-Date: Mon, 21 Sep 2026 17:41:15 +0800
-Message-ID: <91e85c3211fd31d24b231e8def5755c0f18b71f4.1789960909.git.xuyuqiabc@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1789960909.git.xuyuqiabc@gmail.com>
-References: <cover.1789960909.git.xuyuqiabc@gmail.com>
+        bh=4RFSnOgpwphN7ttl/wFzvxDj+TdLRnGdBDD5X4w8tFs=;
+        b=tUCQ33E/sTEQbBFE7HSlJa/oyvY/AdEmYZSCg6RMe3m2qS5/w3jtYXZrXm0Zxf7e61
+         4YMTLN3K2xeSp4bxSW0x8hS7jwwHw/yqNyH1fg39g30bQEiPqsJMh8VbFLa8dGSs/L/2
+         r5nCjvprDdNBkX9XwkU3BX2XcsDk69jH8Q3hdDHIYfwlDxIp+DPk0pLoQUktkAMGbr+M
+         7m0dC4zWU5KVPpl78QSBly6zKQ3Plt565OL1n97jljVLXZenIIdNU6M6uJa/k0G1xYpq
+         nAo/QvRmQ4FBufB/krB+iHxNQOnIsv9LpLVuAeV5nvR9wwrwN5yEpYgQf17cxHkjShi7
+         m6nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789983739; x=1790588539;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4RFSnOgpwphN7ttl/wFzvxDj+TdLRnGdBDD5X4w8tFs=;
+        b=tDii8WTU4Z4+19ZTA5sMPMh7d+kNIl/GxtHTW7tEwdgAvSZIT8MXlU0rZV3ROnfd02
+         Hes+FIbetfysP+Ix8KblBHWSQudnMFRWpkcTPWne20TOI9dorUvyeDftNnp/DmWVdzCZ
+         EvKkCYWu3wq3tmAEBeDxmSXSAJiBd/rVTlNipEnOPS7Nte8VRzbiceFBP3GxZtqTHstj
+         9ShC00bR1MC1a2VvPsGK/DHFzFnsv1UZYFLW3+M4qHJMISWsn1/WSgkJt/qpHROOGGnY
+         w5E4NRti3OvfRJGi3/aLAmhIgjimO3/F4ANwrKHGCLCN/Fc+1Vtl5oH/+1i28eUhJS1Z
+         ZwlQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxTVGE+Sq8KA+k0MEMgp7KZlxQx/9kf5qByUP8Y9chaTCreRr/uI3XkEHewH9OVzUNxE8hZnLY=@vger.kernel.org
+X-Gm-Message-State: AFuF++m2+dnjn7ZMCrUyQkqMpMZxdbxa+hDs3GV22kiewkSZTYB4UzJJ
+	JnMZ5vaXAwWJUU9UnSxWOe58keqwYkhVF2hoxzbw1DPfRvCcP69nkFRjFQ6dgU7ADPzCJOtJ6uY
+	XB/zlHiHt+oJFPQ==
+X-Received: from qvsy2.prod.google.com ([2002:a05:6214:162:b0:912:422d:6833])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4541:b0:93b:d79a:c460 with SMTP id af79cd13be357-93bf5785db4mr944983685a.56.1789983739435;
+ Mon, 21 Sep 2026 02:42:19 -0700 (PDT)
+Date: Mon, 21 Sep 2026 09:42:18 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921094218.483234-1-edumazet@google.com>
+Subject: [PATCH net-next] vsock: remove dev_hold() and dev_put() in __vsock_deliver_tap_skb()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The teardown walk iterated conn_idr by incrementing a numeric ID while
-holding idr_lock, so it could scan a large range of unused IDs without
-letting a connection's final reference release make progress. An entry
-whose last reference had already been dropped could also be resurrected
-by the unconditional conn_get() while its release callback was blocked
-on the same lock.
+__vsock_deliver_tap_skb() is called from vsock_deliver_tap()
+under rcu_read_lock().
 
-Walk conn_idr with idr_get_next(), release the lock and reschedule when
-no entry can be taken, and use kref_get_unless_zero() so a connection
-that is already being released cannot be revived.
+dev_queue_xmit() does not require the caller to hold a device reference
+count, and the device lifetime is already protected by RCU.
 
-Fixes: 35e22e49a5d6 ("tipc: fix cleanup at module unload")
-Fixes: 667eeab4999e ("tipc: Fix use-after-free in tipc_conn_close().")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Reviewed-by: Ren Wei <weir@nebusec.ai>
+Remove the redundant dev_hold(dev) and dev_put(dev) calls.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>
 ---
-Changes in v2:
- - Rebased onto the current net/main tip; patch content unchanged.
+ net/vmw_vsock/af_vsock_tap.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
- net/tipc/topsrv.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-index 908622a3d0fc..9333e36a74de 100644
---- a/net/tipc/topsrv.c
-+++ b/net/tipc/topsrv.c
-@@ -710,15 +710,20 @@ static void tipc_topsrv_stop(struct net *net)
- 	cancel_work_sync(&srv->awork);
+diff --git a/net/vmw_vsock/af_vsock_tap.c b/net/vmw_vsock/af_vsock_tap.c
+index 30ee7e4fe25115cef71b43f335862a09b8c51382..7c5cdceabb2a5f7079faab243ee9de7d6bb8857c 100644
+--- a/net/vmw_vsock/af_vsock_tap.c
++++ b/net/vmw_vsock/af_vsock_tap.c
+@@ -64,14 +64,10 @@ static int __vsock_deliver_tap_skb(struct sk_buff *skb,
+ 	struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
  
- 	spin_lock_bh(&srv->idr_lock);
--	for (id = 0; srv->idr_in_use; id++) {
--		con = idr_find(&srv->conn_idr, id);
--		if (con) {
--			conn_get(con);
-+	for (id = 0; srv->idr_in_use;) {
-+		con = idr_get_next(&srv->conn_idr, &id);
-+		if (!con || !kref_get_unless_zero(&con->kref)) {
- 			spin_unlock_bh(&srv->idr_lock);
--			tipc_conn_close(con);
--			conn_put(con);
-+			cond_resched();
- 			spin_lock_bh(&srv->idr_lock);
-+			id = 0;
-+			continue;
- 		}
-+		id++;
-+		spin_unlock_bh(&srv->idr_lock);
-+		tipc_conn_close(con);
-+		conn_put(con);
-+		spin_lock_bh(&srv->idr_lock);
+ 	if (nskb) {
+-		dev_hold(dev);
+-
+ 		nskb->dev = dev;
+ 		ret = dev_queue_xmit(nskb);
+ 		if (unlikely(ret > 0))
+ 			ret = net_xmit_errno(ret);
+-
+-		dev_put(dev);
  	}
- 	__module_get(lsock->ops->owner);
- 	__module_get(lsock->sk->sk_prot_creator->owner);
+ 
+ 	return ret;
 -- 
-2.55.0
+2.55.0.1082.g2b9226bbc0-goog
 
