@@ -1,46 +1,50 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-243.mta1.migadu.com [95.215.58.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9D2194C96;
-	Mon, 21 Sep 2026 03:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1152773E5
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789960639; cv=none; b=GBOZWidNf4Hkgoa7KJajyvCu9DjV3gjPZOdq0VzY2pydhcpQONtbrsg/hHzL8FcOMbvAUqhm8r+T7kmTMcCTIMzSd6EC22VAxIkfBbbX2umIfIyZFMm+ngxoiuJlexDF+XucJJdw+CZs03Ik6+EQ+7rHppGhDlZQkoe8oKKm0Xg=
+	t=1789960757; cv=none; b=sdnPbi4LBomw0ZKp2WWuoSv1RABQXaAUxefRr0njOzWX/U6ccwtNABnkft4EW+lusNZZko1b2GQeD3kBwgMKr1XNk0iJ2wEJemiXWEMFftGO3NAz2V5cIqZpleWrW6vgX+ND+BwGM14QgN5SFMRvIGtvl8uaYCyMy4D0z2QKojU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789960639; c=relaxed/simple;
-	bh=Hs15HYxGNxqVANaNisUHApsJspGhjqP0fRA347dQl/U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZyW5/P++z+WDHWmZTi5KCt/C9/Bg7qCWBFsf2m9HHO1iPmxVQzomHGm25GG+nEfna5ZWdASLj5tj4HhOGro1go2edVUmVF1j9ylTt7KPwW7LE+xrNPeHE/C/0nSBu+LYmRmkPEULiz4iHTODVid+1OKSCVHwt3IftHiL8bBsKPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=E5Sxtr9m; arc=none smtp.client-ip=220.197.31.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789960757; c=relaxed/simple;
+	bh=nafX4fOFcVwD34oldbapBUQWZa4m9yYVFt7lnwjGmXc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CgDMu6S4RYv1S1l5lT/etS9BE+AuyCgwEBOEj9xVMSwb7pUK3++KjL9raeJIqufE/H5zIhZqWfaYw64bHrzJdUu9wR4aE0FGYGDoLFKl3N+oL6OEI2sSED4OFAc+2cC75eKs5PLnjLOdrJvmX+YXxzuRUTWbkmwInY4qsHRPMpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YXBxiSCk; arc=none smtp.client-ip=95.215.58.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="E5Sxtr9m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=I7
-	fYR/PDwkxcuXTwn2JWJPrIY5xxFViS+7lj7SyyQ5o=; b=E5Sxtr9mv7TTHc9AAA
-	LrEIXxnJfo5Yvkv5/6raj4FFU0qzpTX8CV3hMt9/4TRlCLMYlEDWB+t+kO4AErj3
-	qiMPan3xkxQiW3rYzB7QwHnA9Nc69H+HueBKRJXjK8nA2hpSDqJYE0CBMJP3+7qq
-	WZyGhI8NI2+JZG7rBdsHroXHo=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDnr6yCobBq+hKqBg--.25902S2;
-	Mon, 21 Sep 2026 11:16:19 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YXBxiSCk"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=nafX4fOFcVwD34oldbapBUQWZa4m9yYVFt7lnwjGmXc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789960753; v=1; x=1790565553;
+ b=YXBxiSCkZIObf07hHzsIDe5GfLXO0/ZN2oyj5LZ7vWQKFXyMk7L4cDg88wva7tSnnaR98Sc+
+ VuXwqm8Y43sPKWp9Mf0hBvNE3PV/1UeXR8jdsVwLnHrOQUDbDX5IrtHEd+43dPBdN/V5W3SLiqy
+ nuj2HABrgqxMCGtbh8IQGMHQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 402aac842757386e;
+	Mon, 21 Sep 2026 03:19:13 +0000
+X-Mizu-Trace-ID: 402aac842757386e
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: netdev@vger.kernel.org,
+	idosch@nvidia.com
+Cc: dsahern@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	tgraf@suug.ch,
+	pshelar@nicira.com,
 	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net] ice: detach the VF representor when ice_start_vfs() fails
-Date: Mon, 21 Sep 2026 11:16:16 +0800
-Message-Id: <20260921031616.3390259-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	luoxuanqiang@kylinos.cn
+Subject: [PATCH net v2] ip_gre: Reject enabling collect metadata through changelink
+Date: Mon, 21 Sep 2026 11:18:59 +0800
+Message-ID: <20260921031859.9283-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,73 +52,92 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnr6yCobBq+hKqBg--.25902S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGFy7Jw4kAF4DZF45GF17ZFb_yoW5Xw4rpr
-	Wvq34rGr4kJ3Wagw4Dua18u34ruayrCrWagr10k3WfCF45Jr9Ykr47KFy2yr18C3s7Cr1a
-	va1q9r1ru34DA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYzuZUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqQNPJmqwoYNTJQAA3N
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-ice_start_vfs() attaches every VF it brings up to the eswitch with
-ice_eswitch_attach_vf(), but the teardown path only undoes the queue
-mappings and the VF VSI. Nothing calls ice_eswitch_detach_vf() for the
-VFs that were attached before the failure, and the caller, ice_ena_vfs(),
-goes straight to ice_free_vf_entries(), which drops its reference to
-every VF.
+ipgre_netlink_parms() can enable collect_md on an existing GRE, GRETAP
+or ERSPAN device. Unlike newlink, changelink does not enforce metadata
+tunnel uniqueness. Converting a non-metadata device can therefore
+replace the metadata receive entry for another device of the same type
+in the same netns. Deleting either device then clears the shared entry,
+breaking metadata receive lookup for the surviving device.
 
-The port representors created for those VFs therefore outlive the
-failed VF creation:
+If parameter validation fails after collect_md is set, deleting the
+modified device can also clear an entry it never owned.
 
-  - the representor netdev stays registered and its devlink port stays
-    registered too. That port is embedded in struct ice_vf, so it ends
-    up pointing into the memory that ice_sriov_free_vf() releases;
+Reject enabling metadata mode in both changelink callbacks before any
+encapsulation or tunnel parameters are modified. Allow requests that
+repeat the metadata attribute on an existing metadata device.
 
-  - repr->vf keeps pointing at the freed struct ice_vf, and repr->src_vsi
-    at the VF VSI that ice_vf_vsi_release() tore down. The leftover
-    netdev is still visible to the user, so even a plain
-    "ip -s link show" of it reaches ice_repr_get_stats64(), which calls
-    repr->ops.ready() -> ice_check_vf_ready_for_cfg(repr->vf) and then
-    reads repr->src_vsi through ice_update_eth_stats();
-
-  - the virtchnl ops of that VF, which ice_repr_add_vf() replaced with
-    ice_virtchnl_set_repr_ops(), are never handed back to
-    ice_virtchnl_set_dflt_ops();
-
-  - pf->eswitch.reprs never becomes empty, so ice_eswitch_detach() never
-    calls ice_eswitch_disable_switchdev(). pf->eswitch.is_running stays
-    true, with the bridge offloads and the devlink rate topology still
-    up, and ice_eswitch_release_env() is skipped, so the uplink VSI is
-    left in the switchdev configuration that ice_eswitch_setup_env()
-    gave it.
-
-Detach the representor in the teardown loop the way ice_free_vfs() does,
-ahead of ice_vf_vsi_release(), because ice_repr_rem_vf() and
-ice_eswitch_release_repr() both need repr->src_vsi to still be valid.
-Every VF the teardown loop walks completed ice_eswitch_attach_vf()
-successfully, and ice_eswitch_detach_vf() already returns early for a VF
-without a representor, so no extra condition is needed.
-
-Fixes: fff292b47ac1 ("ice: add VF representors one by one")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Fixes: 2e15ea390e6f ("ip_gre: Add support to collect tunnel metadata.")
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes:
+v2:
+  - Add an extack message when rejecting collect_md enablement in both
+    changelink callbacks. (Ido Schimmel.)
+  - Rebase onto the latest net/main.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index e04de0215596..1b563aba3bbd 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -508,6 +508,7 @@ static int ice_start_vfs(struct ice_pf *pf)
- 		if (it_cnt == 0)
- 			break;
+v1: https://lore.kernel.org/all/20260917095016.71937-1-xuanqiang.luo@linux.dev/
+
+The state change on failure can be reproduced without an existing
+metadata tunnel (output abbreviated):
+
+  # ip link add g1 type gre local 192.0.2.1 remote 192.0.2.2
+  # ip -d link show g1
+      link/gre 192.0.2.1 peer 192.0.2.2 ...
+      gre remote 192.0.2.2 local 192.0.2.1 ...
+
+  # ip link set g1 type gre external
+  RTNETLINK answers: Invalid argument
+
+  # ip -d link show g1
+      link/none c0:00:02:01 peer c0:00:02:02 ...
+      gre external remote 192.0.2.2 local 192.0.2.1 ...
+
+  # ip link del g1
+
+The request fails, but collect_md and the device type have already
+changed.
+
+If another metadata tunnel exists, deleting this device can clear its
+collect_md_tun entry. A successful conversion can overwrite that entry.
+
+ net/ipv4/ip_gre.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 82309efd417e0..e4878e9aa6367 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1464,6 +1464,12 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (!rtnl_dev_link_net_capable(dev, t->net))
+ 		return -EPERM;
  
-+		ice_eswitch_detach_vf(pf, vf);
- 		ice_dis_vf_mappings(vf);
- 		ice_vf_vsi_release(vf);
- 		it_cnt--;
++	if (data && data[IFLA_GRE_COLLECT_METADATA] && !t->collect_md) {
++		NL_SET_ERR_MSG(extack,
++			       "Enabling collect_md on an existing device is not supported");
++		return -EOPNOTSUPP;
++	}
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+@@ -1496,6 +1502,12 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (!rtnl_dev_link_net_capable(dev, t->net))
+ 		return -EPERM;
+ 
++	if (data && data[IFLA_GRE_COLLECT_METADATA] && !t->collect_md) {
++		NL_SET_ERR_MSG(extack,
++			       "Enabling collect_md on an existing device is not supported");
++		return -EOPNOTSUPP;
++	}
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+
+base-commit: 1e24c4f2ee44be0eee94092b5d13cbdb4bdf0d60
 -- 
-2.25.1
+2.43.0
 
