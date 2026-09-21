@@ -1,45 +1,49 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E66488DAF;
-	Mon, 21 Sep 2026 12:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5C9405F7;
+	Mon, 21 Sep 2026 12:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789993139; cv=none; b=WXz4vfUrhHkibO741QI0/rvQH20my0wlTSSVADISHl+oiluPJc2n0fXNv4M3yQuZWfXBuaN7u0mUlUpDbCeJRHGOZJK/41Xt9z1yZ4g1gtV3zHYSZidk5L+aYNr+F8WE9+QRLa7BrlQAPbPE5567pfliFaKG+kiaqH0yGxAPIJM=
+	t=1789993870; cv=none; b=eP/wUuNrMPY8+oH5kKtsOBZc5hBp2sTgi+AuYLKdPhzIUxOKTjAC2OhMHSbHhlQKMpOUi3fkeOzY1XXL9Qvg4jSvQKG5UhmNvgp3bLvtdbM4iCld8lvsCNpArN8K3c8FsV5nUmkwbMMmL69tFgqnIlHYw3Cn04R33uhVnPzKiks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789993139; c=relaxed/simple;
-	bh=bvnN0Mzpxckyl+yg6E4Z9E05lDmzEvpoRvpfpVG+JME=;
+	s=arc-20240116; t=1789993870; c=relaxed/simple;
+	bh=2GSXX5XmH8VuwmtxYG7eRluM0wThRoGn/CwWDmJu8Q0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hC/0PIbP93+RPJq3bM3xg7hTWKVhAsvDyZoy/SMSHM4gVPsg1wLhkFyC6XikcBLk+SPp08JZ/PK2NN1AKkgYS/2OXkgsY3Tr+tGXaQm+Sg8jYrBP8Ecf7st5HlsKRsV5LIFMRIFIiOiMvvYzdOTv3vV1Cir0BB+IwOEgBWB5C2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Judxc395; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=SdvaHseb77uAn7In5N9mPx4am3wcn9guWhTSG74uiUcHE7TzqMIBuTj2Npg/LSqnR0G8tWHYRQ6N53ec1j4+iCrKwFiTvG5vx6ynXI0XGdVy/lfNtVsi9zCO2g240pP1OpqjAwNQsQTTo2mkYcivC6c+BfIKxMRlrwHZ0taYKxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9TTRNCk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Judxc395"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RI7sMNEp/l3Fru78fsbHiPfiT9uXTwKAZfOcDtetHmI=; b=Judxc395kuFBRMtxL1hozwVtMl
-	p0iB7Bm4x1QBmUqhMxcFJ2nvzh9xAdfeijmUBeBUpZevDTBXuestVTpLMv2hB51++OQPAFgQbwZS+
-	tpVnDhjOsfusmV1Elu/i179KYS8dfN8nWP43dY4RItd3sPpO4mYy+o2Aeon5PVJg7i7E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x8cyu-006KM5-QQ; Mon, 21 Sep 2026 14:18:48 +0200
-Date: Mon, 21 Sep 2026 14:18:48 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: nicolo.giuliani6@studio.unibo.it
-Cc: Vladimir Oltean <olteanv@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9TTRNCk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52811F000FF;
+	Mon, 21 Sep 2026 12:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789993869;
+	bh=uI0NeLBIOre8Pi8roeB/IqcCUiWO4vKdO4LKY/yER6Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j9TTRNCks2amDA/ldheuyNJFjzhpNAlOe51gw6qoW+gdRu3aJMff3Oy9FPwlshCa1
+	 69c2VJHRC3xFwSnTD5U503/odaMMqX1f4DUjF7vbajNXeLHn8gg+JnDUCdAXg4Wvzp
+	 HqQNYlYyBq9gQ/jmwFeXoU9RyxVNMbKxZlZ8pwRmEINFEap0gM5JrWR4MXj72S7Dh8
+	 l7LJwa2u7JQl/l6VteaAvk5hpFGJtiCjrSXK2QqS7WvcUIUNjBwl9xeztTmBL0Et/m
+	 gHHlSc61qFwAuBy0j0KqeVu9DzqdCbr+WDiWlU+719ryRHH4TqcKt+0nCzjyXN4En8
+	 77/Rm0AwOzTLA==
+Date: Mon, 21 Sep 2026 13:31:04 +0100
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: dsa: mv88e6xxx: 88E6191X and 88E6193X have
- no PTP
-Message-ID: <b9abe153-04b8-4990-b99e-38f5f63ec076@lunn.ch>
-References: <20260921-send-net-v2-1-031ad720f140@studio.unibo.it>
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mvneta: rely on napi_build_skb() in
+ mvneta_swbm_build_skb()
+Message-ID: <20260921123104.GM13925@horms.kernel.org>
+References: <20260917-mvneta-napi-poll-v1-1-fb57604932d3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,40 +52,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260921-send-net-v2-1-031ad720f140@studio.unibo.it>
+In-Reply-To: <20260917-mvneta-napi-poll-v1-1-fb57604932d3@oss.qualcomm.com>
 
-On Mon, Sep 21, 2026 at 05:56:29AM +0200, Nicolo Giuliani via B4 Relay wrote:
-> From: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+On Thu, Sep 17, 2026 at 03:22:29PM +0200, Lorenzo Bianconi wrote:
+> mvneta_swbm_build_skb() is only invoked from mvneta_poll(), the NAPI
+> poll routine, so it always runs in NAPI context. Use napi_build_skb()
+> instead of build_skb() to source the skb head from the per-CPU NAPI
+> cache, avoiding a per-packet kmem_cache_alloc() of the skb head.
 > 
-> The 88E6191X and 88E6193X are 6393 family devices that share
-> mv88e6393x_ops with the 88E6393X and are marked as ptp_support. Marvell's
-> UMSD driver describes both as parts without AVB (88E6193X: "BGA package -
-> No AVB, No Routing, No Cut-through"), and the register access confirms it
-> on an 88E6193X: the whole indirect AVB register space behind Global 2
-> registers 0x16 and 0x17 reads zero, for every port, block and address,
-> with the 6390 and with the 6352 command encoding. Writes to the TAI
-> registers, including the clock period register and the TAI global
-> configuration register, read back as zero.
-> 
-> Since commit 7e3c18097a70 ("net: dsa: mv88e6xxx: read cycle counter
-> period from hardware") the PTP setup reads the TAI clock period, so the
-> switch fails to probe:
-> 
-> mv88e6xxx ...: unexpected cycle counter period of 0 ps
-> 
-> Add mv88e6191x_ops, a copy of mv88e6393x_ops without avb_ops and ptp_ops,
-> use it for the 88E6191X and the 88E6193X and stop setting ptp_support for
-> them. The 88E6393X is unchanged.
-> 
-> Tested on an 88E6193X (Sophos XGS 107w): the switch probes and the ports
-> work. I do not have an 88E6191X, it is changed because UMSD describes it
-> the same way.
-> 
-> Fixes: de776d0d316f ("net: dsa: mv88e6xxx: add support for mv88e6393x family")
-> Suggested-by: Andrew Lunn <andrew@lunn.ch>
-> Assisted-by: LLM
-> Signed-off-by: Nicolo Giuliani <nicolo.giuliani6@studio.unibo.it>
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-    Andrew
