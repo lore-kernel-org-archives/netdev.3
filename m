@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D993ACEF3
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE14388E74
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790020321; cv=none; b=GaBv052zInCTJvjySy7hLMSip5ceQGYjoGdpHtuSYkPXSmfIWTYKgEbKtguLsM8/oDTKRdsbP62UlW11ZGUbl+LrkzR0yHKAcp9UGFrCNq6eFPFTDbsRA9PNekxbIRD7fAsy8ufNSYvv2EkAuA41YZMi8xXv0mH25h66iw2pZFQ=
+	t=1790020402; cv=none; b=JTSga1j97Fh28LwE54schnCH5NaYqswoETbD+YASRN7c9tXJAdpjsxIzK+VyX+sEe0/OQXs/LUQtGGJWvrRCDScelJcPlA3JaZTJS6jpH4u+8wUi1AknWeKMmaKqMaR2Oc7zK5EBgHIW9DJXPysGaJx/O5OgDSjxnnbH4RxF51A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790020321; c=relaxed/simple;
-	bh=5ALLlUA0JDLyU5BCEA68zsbTd8dizoNjEs+DtY3kKX4=;
+	s=arc-20240116; t=1790020402; c=relaxed/simple;
+	bh=C11xViEggXRRpaaUtFgcYrZIYA5pLAAZZojOLSvaqjA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AVOufvyS/MYbOhrl5Dg+mF/FeGYoyyAQl5MDxrtklGmQ+/rl1BEcFAS+RjnyHbPQDmqQnChMSdLqmOLg0PddketMt4RoVycOjOaBj9EX5zCp0xtDadpWnhSzZVUTFK6RQtYoBQKT3I+Qp0uArAvnsQP/dM+1n+84VDIKwEdLcV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVZUjGMv; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=N3hLxv3xyvGZUNhDCUbfoQl4wi1ndHSSFEMl3ViEohRVtlyMmY4iGhqEkjqddFQin1xgr1wxQvQl2DmQWWp/paHqhTQYmYE1I3xJ8vc3maZ4iW7EBY3zhYxq2sELHMkvcuFcwgsAW+cjVtwxSCasoZ4NOOdlB6OqgdL7yEnvTs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=midT764D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVZUjGMv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F7C1F000FF;
-	Mon, 21 Sep 2026 19:51:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="midT764D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BAD1F000FF;
+	Mon, 21 Sep 2026 19:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790020317;
-	bh=orUtAGMJYzqcv/TbwXugFiLjJLVusdGa2RUp9QtxTJQ=;
+	s=k20260515; t=1790020400;
+	bh=2hdgfMQyZpLSb+tfYC6xQFJhRYyGKAew/QFYH+x53Ew=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QVZUjGMvB5T+efr1/yYJptlvgVK/A74enOoHZANr81SyKiIrNj2XGf7laBy5Ytd97
-	 VkctbS7Hb7YPHj5HuqfcAf3o1r8c1GO4XtbwBI6WmD/Db50VUfWREC3cR5zoCjQ9V/
-	 fuj2R+sKeutoB7bchQpU50OgvqxwlEbPRK3laAyfTg1lYySFLN2wpWZ8sTdddm3UqR
-	 rsJY8GgATXTNDzc9p5UcT0BZHaRWn6z8m4aFDnIKcRiAvkrxrugdt9cIQCqYMfZNjj
-	 rzvNhXT/Pstpz85g17umD7oIxRALqR97ToGQSH3nGfJnanUl8gzrxP885DlROcA4tm
-	 WnnYOCiNkJNJA==
-Date: Mon, 21 Sep 2026 12:51:56 -0700
+	b=midT764DMSHpVXayWhnQ9yjtKiLeGaJ6uFsmsGIN6t9HFUh873OXFWR1DJEjzXM7U
+	 TsdG1Y3CNFY4AGWNmuB44NJN/3OiOsN8eamK1unXHrlunrQHXzKr+pLtH4Nil7Lioq
+	 ppSmOY9IziOXEOrwSB5V5fPyOg8jVw7U1Ai5ZhnyjYdCf2Exs6e2v+hf9x8/FeZmXJ
+	 c6r7PdvMgsAMo0e66GeSPr6/vAVsWssBAjUmcwGmUKU9SqFGORkKTFV0GJP8iygupn
+	 rwR4+cFC2ePs3xThcQ8ziiysKrC8LLe4IkbhZ++SiZPxETwaGE2yZd0q0YaCU2EU2A
+	 Su1pWqHldbnEg==
+Date: Mon, 21 Sep 2026 12:53:19 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Eric Dumazet <edumazet@google.com>
 Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
@@ -34,10 +34,11 @@ Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
  <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com
 Subject: Re: [PATCH net-next 1/5] net: synchronize proc_do_rss_key() with
  netdev_rss_key_fill()
-Message-ID: <20260921125156.6623d5ec@kernel.org>
-In-Reply-To: <20260921183758.1812310-2-edumazet@google.com>
+Message-ID: <20260921125319.6704c27a@kernel.org>
+In-Reply-To: <20260921125156.6623d5ec@kernel.org>
 References: <20260921183758.1812310-1-edumazet@google.com>
 	<20260921183758.1812310-2-edumazet@google.com>
+	<20260921125156.6623d5ec@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,15 +48,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Sep 2026 18:37:54 +0000 Eric Dumazet wrote:
->  	struct ctl_table fake_table;
->  	char *pos = buf;
-> +	bool initialized;
+On Mon, 21 Sep 2026 12:51:56 -0700 Jakub Kicinski wrote:
+> Maybe we should call netdev_rss_key_fill() from the proc handler
+> and let the net_get_random_once() handle the safe init?
+> 
+> IMHO the concern is entirely academic / hallucinated so adding
+> LoC for it feels strange
 
-reverse xmas tree
-
-Maybe we should call netdev_rss_key_fill() from the proc handler
-and let the net_get_random_once() handle the safe init?
-
-IMHO the concern is entirely academic / hallucinated so adding
-LoC for it feels strange
+I see it's mostly gone in the next commit, I guess that's fine
