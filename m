@@ -1,49 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE6033C1BE;
-	Mon, 21 Sep 2026 03:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8833446B0;
+	Mon, 21 Sep 2026 03:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789962507; cv=none; b=REPUmpfcOIjmYUc0KJGcHqmg+1+SI1e1jnWCGQ3Ua7JEoTM4r/z0zrDD5q9V9+pEnFjReSWHSqj5de/MmFMIqEWCSq6EB6pMEVw6+96MxcGe5aCBkt7NERQSpsS5pvzglKoJG+ruuda5BJ4sTMBFcx9FJdSIuz2GG3exScFhiPo=
+	t=1789962508; cv=none; b=IRuUNWazLwHWcuGq/uM+uL3cqBZQBONF6tOw8wJthyQlfREtbZpDlyPwYSGo/eE2ZeIJ/OC35M7NUAgiQSJJnh+Vu9pGC2QckzXRXmIHRW3JlHDB2Bn9LXEon/iYluR1yfOO3qZwllfiYb0wH89ggnNFJRWflj5KGLSsmenWBBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789962507; c=relaxed/simple;
-	bh=X2FZhLiHF5lvC6RLt3eGUzO9KUxe7+iaRhCqVbumjMU=;
+	s=arc-20240116; t=1789962508; c=relaxed/simple;
+	bh=mopJf9/SDQRW9KRJUeuUQUsp7SnqhZu4QlKh/AJ6RCk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O9iZ+3ISeqjGRJUMBtxMGWphtr+o6Dg9hOe8M6GsRpcfyNVAObPxk4RgcN7dm0i6OOuRqdvomRBRCJRZWokSudTWWv/YfoArmBoSQIUhO6EoAGr3bovre3KUGQrEUc89g+MQJPo5STvK2E6EMcthfSQuPB0tNTNHuVR7+ZAo1a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiZzDuWC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uY9QQu53WFAKprnd1XtVyunjNg9yKKb/NFIuuXczKvyPbW2XKB/+14/GKeb+wrlVpTqBizDFPNfj/i0x8xPDvOypW58zDe3sBOwmMAkTpEI/tEaVavnXzmWL4xU2zH7822yqYmECOEx/KagbO9Zd57hwzD31KJDpTIGrHJRR+/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmL37mUD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kiZzDuWC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2041F00893;
-	Mon, 21 Sep 2026 03:48:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmL37mUD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DD81F000FF;
+	Mon, 21 Sep 2026 03:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789962505;
-	bh=Q+gfMcgIYxr5U4QGuV3PyosxWM/5AkpyPGlqILK5RzA=;
+	s=k20260515; t=1789962506;
+	bh=V8OBPLd5thLYEUtF4FPQVb9RyDbgr7s5b+VJV9r/eNs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kiZzDuWCuk/KY+Fz2k7BC3hkbjxzxOCv8truQU8pt8gU6HLK4oL3rcBSytBCeMyc8
-	 wbtMv5lim4xcGndlcmbPcOoPQa7K0OtS4Thva63SKb5xkbH7ZYaZreUAYcPBPChCfY
-	 IOFz0PXz6TTFJiTJsyt7p+oCJO1dDAk/dWCHUtD2LZ8pYaup9a4a5cjoYTzBCMVrBl
-	 2woNC0V49jUrBt60UixaNcOVtrNTSPDnX79wmbQlTGDr/kJzelDgums8WqTyqVZFju
-	 ILAUMJbTiIPpwrguTdcNj00HIZbqhdZ2Yr3xFzTiUIopeVarjkHxAFoGOJaYlufmmQ
-	 BLV8kiTENt/nQ==
-Subject: Re: [PATCH net-next v2 2/2] net: wwan: qcom_bam_dmux: Assign
- restricted DMA pool to remote processor
+	b=YmL37mUDElrdd27lhIZcRn3URfqANLh4vAEwnYPoZEQYkeZJFHyercqGKH9GZ1+pC
+	 T/XTrzxmVm3Dy/ziUDCFZZrid4P1DAbEeanQcKvHENsmCtHU6pMjzLCm4UHLOy1MFx
+	 sOUI2seWJIXiuSrj3e8MvfBcwVhJQcnz+3Q5FgZuud1Fi/fC8iQsGAM9RUmzNXf/br
+	 vZinAhmLVsDs9YQVzgf0rUdl4gtIfegbV7R8dwOYOvupl16Eqh37mWKKS4aFP/kUyS
+	 CoDNDw3gRvexDR1gqPJWQSi4a4p/s4E1FgsOTX/hU4thcjRlbbD5l0iy6kGfEe7mJw
+	 9e4LyNWmU4klQ==
+Subject: Re: [PATCH net v3] net/iucv: require IUCV for AF_IUCV sockets
 From: netdev-bot+sashiko@kernel.org
-To: vishnu.santhosh@oss.qualcomm.com
-Cc: stephan@gerhold.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, loic.poulain@oss.qualcomm.com,
- ryazanov.s.a@gmail.com, johannes@sipsolutions.net,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- deepak.singh@oss.qualcomm.com
-Date: Mon, 21 Sep 2026 03:48:23 +0000
-Message-ID: <178996250389.2160803.17277339384338088713@kernel.org>
-In-Reply-To:
- <20260920-qcom-bam-dmux-vmid-ext-v2-2-ef5ca2178378@oss.qualcomm.com>
-References:
- <20260920-qcom-bam-dmux-vmid-ext-v2-2-ef5ca2178378@oss.qualcomm.com>
-X-sashiko-severity: High
+To: hppiscas@163.com
+Cc: wintera@linux.ibm.com, twinkler@linux.ibm.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com
+Date: Mon, 21 Sep 2026 03:48:25 +0000
+Message-ID: <178996250579.2160803.3689804935882322466@kernel.org>
+In-Reply-To: <20260920034503.17322-1-hppiscas@163.com>
+References: <20260920034503.17322-1-hppiscas@163.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 8 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 3 · Medium: 3 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,357 +59,110 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] bam_dmux_probe()'s err_disable_pm label
-  (drivers/net/wwan/qcom_bam_dmux.c:938-942) calls the new…
-- [High] The feature's stated requirement - that the BAM descriptor FIFOs
-  also live in the SCM-assigned region - cannot be expressed by a…
-- [High] bam_dmux_remove() revokes the remote EE's access to the pool
-  even when the remote has demonstrably not quiesced.
-- [Medium] bam_dmux_assign_dma_pool()
-  (drivers/net/wwan/qcom_bam_dmux.c:770-830) validates only device-tree…
-- [Medium] bam_dmux_assign_dma_pool() accepts any qcom,vmid in 0..63
-  (line 786) and stores dmux->dma_pool_perms =…
-- [Medium] bam_dmux_reclaim_dma_pool()
-  (drivers/net/wwan/qcom_bam_dmux.c:832-852) only logs a failure of…
-- [Low] The qcom,vmid parser in bam_dmux_assign_dma_pool()
-  (drivers/net/wwan/qcom_bam_dmux.c:783-787) accepts values and property…
-- [Low] Binding/driver validation ranges diverge for qcom,vmid:
-  Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml constrains…
+- [Medium] net/iucv/Kconfig: replacing `depends on S390` with `depends on
+  IUCV` for AFIUCV reverts, without disclosure, the design intent of the…
 
 --
 
-net: wwan: qcom_bam_dmux: Assign restricted DMA pool to remote processor
+net/iucv: require IUCV for AF_IUCV sockets
 
-This patch makes qcom_bam_dmux look up the restricted DMA pool referenced
-by memory-region when qcom,vmid is present, and hands the whole pool to
-both HLOS and the remote VMID via qcom_scm_assign_mem() before the DMA
-channels are requested.  The pool is reclaimed for HLOS again on remove
-and on the probe error path.
+This changes the AFIUCV Kconfig symbol from "depends on S390" to
+"depends on IUCV" so that AFIUCV can no longer be enabled when the IUCV
+core is disabled. It replaces the v2 approach of always descending into
+net/iucv from net/Makefile.
 
-A few questions about the new code below.
+Previous posting referenced in the patch:
+https://lore.kernel.org/all/20260815135456.53684-1-pengpeng@iscas.ac.cn/
 
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8d6437..c81e668d4e96 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-
-[ ... ]
-
-> @@ -762,6 +767,90 @@ static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
->  	return 0;
->  }
+> diff --git a/net/iucv/Kconfig b/net/iucv/Kconfig
+> index 5cfddc9c6498..2686d795cc2f 100644
+> --- a/net/iucv/Kconfig
+> +++ b/net/iucv/Kconfig
+> @@ -9,7 +9,7 @@ config IUCV
+>  	  communication link between VM guests.
 >  
-> +static int bam_dmux_assign_dma_pool(struct bam_dmux *dmux)
-> +{
-> +	struct device *dev = dmux->dev;
-> +	struct device_node *rmem_np;
-> +	struct reserved_mem *rmem;
-> +	struct qcom_scm_vmperm dst[2];
-> +	u64 src = BIT_ULL(QCOM_SCM_VMID_HLOS);
-> +	u32 vmid;
-> +	int ret;
-> +
-> +	if (!of_property_present(dev->of_node, "qcom,vmid"))
-> +		return 0;
-> +
-> +	ret = of_property_read_u32(dev->of_node, "qcom,vmid", &vmid);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to read qcom,vmid\n");
-> +	if (vmid == QCOM_SCM_VMID_HLOS || vmid >= BITS_PER_TYPE(u64))
-> +		return dev_err_probe(dev, -EINVAL, "Invalid qcom,vmid %u\n", vmid);
-
-[Severity: Low]
-Is vmid == 0 intentionally accepted here?  The binding added by
-"dt-bindings: net: qcom,bam-dmux: Add memory-region and qcom,vmid
-properties" declares:
-
-  qcom,vmid:
-    minItems: 1
-    maxItems: 1
-    items:
-      minimum: 1
-      maximum: 63
-
-so qcom,vmid = <0> is schema-invalid, but this check only rejects
-QCOM_SCM_VMID_HLOS and values >= 64, and 0 is forwarded as dst[1].vmid to
-qcom_scm_assign_mem().
-
-The maxItems: 1 side is not enforced either.  of_property_read_u32() reads
-just the first cell, so qcom,vmid = <A B> is silently truncated rather than
-rejected.  Would of_property_count_u32_elems() (or the read_variable
-helper) be a better fit so a malformed list fails with the clear "Invalid
-qcom,vmid" diagnostic instead of a firmware rejection later?
-
-[Severity: Low]
-Related: the binding's numeric range 1..63 includes QCOM_SCM_VMID_HLOS
-(0x3, include/dt-bindings/firmware/qcom,scm.h), and the prose note that the
-local execution environment must not be specified is not encoded in the
-schema.  So qcom,vmid = <QCOM_SCM_VMID_HLOS> passes dt_binding_check while
-this check fails probe with -EINVAL.  Could the schema express the
-exclusion so the constraint is machine-checkable?
-
-> +
-> +	if (!IS_ENABLED(CONFIG_DMA_RESTRICTED_POOL))
-> +		return dev_err_probe(dev, -EOPNOTSUPP,
-> +				     "qcom,vmid requires DMA_RESTRICTED_POOL\n");
-> +
-> +	rmem_np = of_parse_phandle(dev->of_node, "memory-region", 0);
-> +	if (!rmem_np)
-> +		return dev_err_probe(dev, -EINVAL,
-> +					     "qcom,vmid requires memory-region\n");
-> +
-> +	if (!of_device_is_compatible(rmem_np, "restricted-dma-pool")) {
-> +		of_node_put(rmem_np);
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "memory-region must reference a restricted DMA pool\n");
-> +	}
-> +
-> +	rmem = of_reserved_mem_lookup(rmem_np);
-> +	of_node_put(rmem_np);
-> +	if (!rmem)
-> +		return dev_err_probe(dev, -EINVAL,
-> +					     "Failed to look up restricted DMA pool\n");
+>  config AFIUCV
+> -	depends on S390
+> +	depends on IUCV
 
 [Severity: Medium]
-These checks confirm the device tree text (memory-region index 0 is
-compatible with restricted-dma-pool, and the reserved_mem descriptor
-exists), but is there anything here that confirms the pool actually backs
-this device's DMA path, i.e. that dev->dma_io_tlb_mem points at it?
+Is the stated rationale accurate here?  The commit message says:
 
-Attaching the pool is best-effort in the DMA core.  In
-of_dma_configure_id(), the restricted pool is only installed when the
-device was not claimed by an IOMMU:
+  "Independently entering the directory is not sufficient: AF_IUCV also
+   relies on the IUCV implementation."
 
-drivers/of/device.c:of_dma_configure_id() {
-	...
-	if (ret)
-		of_dma_set_restricted_buffer(dev, np);
-	...
-}
+Looking at afiucv_init() in net/iucv/af_iucv.c, the only reference to
+the IUCV core is compile-time guarded:
 
-and of_dma_set_restricted_buffer() additionally requires the node to be
-available and only warns on failure:
-
-	if (of_device_is_compatible(it.node, "restricted-dma-pool") &&
-	    of_device_is_available(it.node)) {
-		if (of_reserved_mem_device_init_by_idx(dev, of_node, i))
-			dev_warn(dev, "failed to initialise \"restricted-dma-pool\" memory node\n");
-
-rmem_swiotlb_device_init() can also legitimately fail, for example:
-
-kernel/dma/swiotlb.c:rmem_swiotlb_device_init() {
-	if (PageHighMem(pfn_to_page(PHYS_PFN(rmem->base)))) {
-		dev_err(dev, "Restricted DMA pool must be accessible within the linear mapping.");
-		return -EINVAL;
+	if (machine_is_vm() && IS_ENABLED(CONFIG_IUCV)) {
+		...
+		pr_iucv = &iucv_if;
+	} else {
+		memset(&iucv_userid, 0, sizeof(iucv_userid));
+		pr_iucv = NULL;
 	}
 
-In all of those cases probe still succeeds, the pool is still granted to
-the modem, and bam_dmux_skb_dma_map()'s dma_map_single() returns addresses
-outside the assigned region.  The commit message states:
+and iucv_sock_alloc() treats a NULL provider as a supported mode:
 
-  "This ensures that BAM-DMUX mappings are within the assigned region."
+	if (pr_iucv)
+		iucv->transport = AF_IUCV_TRANS_IUCV;
+	else
+		iucv->transport = AF_IUCV_TRANS_HIPER;
 
-Can that hold without checking the device's effective DMA backend (for
-example is_swiotlb_for_alloc(dev) / dev->dma_io_tlb_mem) after
-of_dma_configure() has run?
+The other iucv_* users in af_iucv.c are iucv_path_alloc() and
+iucv_path_free(), which are static inline wrappers around kzalloc_obj()
+and kfree() in include/net/iucv/iucv.h.  Does af_iucv.o then have any
+link-time dependency on the IUCV core at all with CONFIG_IUCV=n?
 
-> +
-> +	if (!qcom_scm_is_available())
-> +		return -EPROBE_DEFER;
-> +
-> +	dst[0].vmid = QCOM_SCM_VMID_HLOS;
-> +	dst[0].perm = QCOM_SCM_PERM_RW;
-> +	dst[1].vmid = vmid;
-> +	dst[1].perm = QCOM_SCM_PERM_RW;
-> +
-> +	ret = qcom_scm_assign_mem(rmem->base, rmem->size, &src, dst,
-> +				  ARRAY_SIZE(dst));
+The reason af_iucv.o is not built in that configuration appears to be
+only the traversal rule in net/Makefile:
 
-[Severity: High]
-This assigns the pool referenced by the bam-dmux consumer node, but the
-BAM descriptor FIFOs are allocated against the BAM DMA controller device:
+	obj-$(CONFIG_IUCV)		+= iucv/
 
-drivers/dma/qcom/bam_dma.c:bam_alloc_chan() {
-	...
-	bchan->fifo_virt = dma_alloc_wc(bdev->dev, BAM_DESC_FIFO_SIZE,
-					&bchan->fifo_phys, GFP_KERNEL);
-	...
-}
+Also, c69748d1c9b5, named in the Fixes: tag, deliberately changed
+"depends on IUCV" to "depends on S390" together with
+"def_tristate m if QETH_L3 || IUCV" so that AF_IUCV could be enabled for
+the HiperSockets transport alone.  Since this patch makes the AFIUCV
+symbol invisible for every CONFIG_IUCV=n configuration, is the word
+"Restore" describing the right direction, and could the commit message
+say explicitly that the HiperSockets-only configuration is being dropped
+rather than fixed?
 
-so the FIFO follows the controller's DMA configuration, not the consumer's
-restricted pool.  The commit message says:
+One further consequence worth spelling out: iucv_init() in
+net/iucv/iucv.c bails out early on non-z/VM systems:
 
-  "When the BAM DMA controller references the same pool, its descriptor
-  FIFOs are covered by the assignment as well."
-
-How is a device tree supposed to express that?  Adding
-memory-region = <&pool> to the qcom,bam-dma node does not validate, since
-Documentation/devicetree/bindings/dma/qcom,bam-dma.yaml defines no
-memory-region property and ends with:
-
-  additionalProperties: false
-
-Without that binding change, do the descriptor FIFOs stay outside the
-assigned region, which is the access the commit message describes as
-triggering an XPU violation?
-
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "SCM assign restricted DMA pool failed\n");
-> +
-> +	dmux->dma_pool_base = rmem->base;
-> +	dmux->dma_pool_size = rmem->size;
-> +	/* Track the destination VMIDs explicitly for the reclaim operation. */
-> +	dmux->dma_pool_perms = BIT_ULL(QCOM_SCM_VMID_HLOS) | BIT_ULL(vmid);
-
-[Severity: Medium]
-The check above allows any vmid up to 63, and the bit is recorded here with
-BIT_ULL() and later passed as the srcvm bitmap to qcom_scm_assign_mem().
-Does that work on a 32-bit build?  The SCM helper sizes the source array
-with hweight64() but decodes it with the unsigned-long-wide BIT():
-
-drivers/firmware/qcom/qcom_scm.c:qcom_scm_assign_mem() {
-	src_sz = hweight64(srcvm_bits) * sizeof(*src);
-	...
-	for (b = 0; b < BITS_PER_TYPE(u64); b++) {
-		if (srcvm_bits & BIT(b))
-			src[i++] = cpu_to_le32(b);
+	if (!machine_is_vm()) {
+		rc = -EPROTONOSUPPORT;
+		goto out;
 	}
-	...
-		next_vm |= BIT(newvm->vmid);
-}
 
-On a 32-bit kernel a vmid >= 32 is counted but never emitted, and
-qcom_tzmem_alloc() uses gen_pool_alloc() without zeroing, so the skipped
-src[] slot reaches the secure monitor with stale bytes.  This driver also
-covers 32-bit SoCs, and the binding example uses QCOM_SCM_VMID_NAV (0x2B,
-43).  Should the accepted range match what the SCM bitmap plumbing can
-actually represent?
+so on an LPAR, does a modular IUCV still work as the provider that
+AFIUCV=m now depends on, or does this effectively force CONFIG_IUCV=y
+for HiperSockets AF_IUCV users?
 
-> +
-> +	return 0;
-> +}
-> +
-> +static void bam_dmux_reclaim_dma_pool(struct bam_dmux *dmux)
-> +{
-> +	struct qcom_scm_vmperm hlos = {
-> +		.vmid = QCOM_SCM_VMID_HLOS,
-> +		.perm = QCOM_SCM_PERM_RW,
-> +	};
-> +	u64 src = dmux->dma_pool_perms;
-> +	int ret;
-> +
-> +	if (!dmux->dma_pool_perms)
-> +		return;
-> +
-> +	ret = qcom_scm_assign_mem(dmux->dma_pool_base, dmux->dma_pool_size, &src,
-> +				  &hlos, 1);
-> +	if (ret) {
-> +		dev_err(dmux->dev, "SCM reclaim restricted DMA pool failed: %d\n", ret);
-> +		return;
-> +	}
+>  	def_tristate m if QETH_L3 || IUCV
+>  	prompt "AF_IUCV Socket support (S390 - z/VM and HiperSockets transport)"
+>  	help
 
-[Severity: Medium]
-When this reclaim fails, dma_pool_perms is left set and the region stays
-owned by {HLOS, remote VMID}, but that state only lives in the devm
-allocated struct bam_dmux, which goes away once probe returns or remove()
-finishes.
+[Severity: Low]
+With "depends on IUCV" in place, IUCV is always y or m whenever AFIUCV
+is visible, so the QETH_L3 term of
 
-Does that make the condition unrecoverable?  A later re-bind or module
-reload enters bam_dmux_assign_dma_pool() with the hard-coded source set:
+	def_tristate m if QETH_L3 || IUCV
 
-	u64 src = BIT_ULL(QCOM_SCM_VMID_HLOS);
+can never decide the default any more.  Should the default clause be
+reduced to just "def_tristate m"?
 
-which no longer matches the real owner set, so the assign is rejected and
-the device cannot be used again without a reboot.  Would it be better to
-propagate the failure (or retry) instead of only logging it?
+Similarly, the prompt and the help text below still present z/VM and
+HiperSockets as separable transports:
 
-> +
-> +	dmux->dma_pool_perms = 0;
-> +}
-> +
->  static int bam_dmux_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
+	  Select this option if you want to use AF_IUCV socket applications
+	  based on z/VM inter-user communication vehicle or based on
+	  HiperSockets.
 
-[ ... ]
-
-> @@ -845,6 +938,7 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  err_disable_pm:
->  	pm_runtime_disable(dev);
->  	pm_runtime_dont_use_autosuspend(dev);
-> +	bam_dmux_reclaim_dma_pool(dmux);
->  	return ret;
->  }
-
-[Severity: High]
-Can this path revoke the remote VMID's access while the RX pipe and its
-mappings are still live?
-
-The pc IRQ is registered before the last fallible probe step:
-
-	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
-					IRQF_ONESHOT, NULL, dmux);
-	if (ret)
-		goto err_disable_pm;
-
-	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
-				    &dmux->pc_state);
-	if (ret)
-		goto err_disable_pm;
-
-bam_dmux_pc_irq() -> bam_dmux_power_on() does dma_request_chan(dev, "rx")
-and queues BAM_DMUX_NUM_SKB RX buffers mapped out of the restricted pool,
-then acks the modem.  If probe then fails here, err_disable_pm calls the
-reclaim without disable_irq(dmux->pc_irq), bam_dmux_power_off() or
-bam_dmux_free_skbs(), and devres only frees the IRQs (and the devm
-allocated dmux) after probe returns, so the handler can even re-arm RX DMA
-into an already-reclaimed pool.
-
-bam_dmux_remove() establishes the ordering the commit message describes:
-
-	disable_irq(dmux->pc_irq);
-	bam_dmux_power_off(dmux);
-	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
-	bam_dmux_reclaim_dma_pool(dmux);
-
-The commit message says the pool is reclaimed "after DMA channels and
-mappings are released during remove or probe error cleanup".  Should the
-error path mirror that sequence?
-
->  
-> @@ -879,6 +973,7 @@ static void bam_dmux_remove(struct platform_device *pdev)
->  	disable_irq(dmux->pc_irq);
->  	bam_dmux_power_off(dmux);
->  	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
-> +	bam_dmux_reclaim_dma_pool(dmux);
->  }
-
-[Severity: High]
-Is it safe to reclaim unconditionally here when the remote side did not
-quiesce?  Just above, the timeout result is only logged:
-
-	if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
-		dev_err(dev, "Timed out waiting for remote side to suspend\n");
-
-Control flow is unchanged, so bam_dmux_power_off() and the new reclaim run
-anyway and the modem loses RW on the pool while it may still be fetching
-descriptors from it.
-
-Local teardown is not guaranteed either.  dma_release_channel() reaches
-bam_free_chan(), which can bail before resetting the pipe and freeing the
-FIFO:
-
-drivers/dma/qcom/bam_dma.c:bam_free_chan() {
-	ret = pm_runtime_get_sync(bdev->dev);
-	if (ret < 0)
-		return;
-	...
-}
-
-leaving the BAM pipe programmed with a descriptor FIFO address inside the
-region whose permission was just revoked.  Should the reclaim be skipped
-(or deferred) when the remote has not acked the power-down?
+Do these need updating too, now that the HiperSockets-only case can no
+longer be configured?  The IS_ENABLED(CONFIG_IUCV) test in
+afiucv_init() also becomes permanently true after this change.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920-qcom-bam-dmux-vmid-ext-v2-0-ef5ca2178378%40oss.qualcomm.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920034503.17322-1-hppiscas%40163.com
