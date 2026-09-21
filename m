@@ -1,165 +1,256 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03E2393DC8
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA28F3AFCEC;
+	Mon, 21 Sep 2026 19:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790018776; cv=none; b=omq+zVAt/a6WyiDjPabEMFt+VMH3BpRkZC4hamJQPnP65jUctWs1ba9b815eBnvaiVEPQgZCeNFJDrYmUKQtek6wHwCERi5bwMaCnX6o3JiaMuMSiU11BwqTbMevH9A4N65FhDfaXdAz2NSEZ1RfAhxrOcKXNuw9fLPycYr7ATc=
+	t=1790019854; cv=none; b=c24Zl2EMH43LT+f3u3noWWBOt2MJns1WxDZQ0ngonlDsPSEMZIMOmVwitt1ZeUdJHCgqUqEVMauQU//m4vR0/ZwQ+zpGT/7QKlQ05BqheOXn6vo7U4jCL6L6QtPwyiPwh9EI2yaJv5zSmZtz4ynLUEUHqfC+KX1ynUE8NGaIgnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790018776; c=relaxed/simple;
-	bh=RaJdotNRjQ7v4XLVdNOrJ2F3tz9HzM/CSax0HTuqhF8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oQFSymV0ugDxt9xb7YwLeLXSNy3ngc+v+TRdRx0MMnZzYErZ8t/GFxhSWVhretO1siQXByJaXvzUV2ZLC1RMWJ060q3pcGmmysiu+ejjjdIMMTGIow1ejHr1LB1oUqnjuoiL+DwGkfSl+ERQpv2hKFn7MH7C9/r2MpR+76T0kno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LXukoIQK; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790019854; c=relaxed/simple;
+	bh=iLU+T4dsvu0FgybBcA0IX3oa9P9+HMULBx/wVylofiI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hx2Th8607UofVi/M7h+YCJJy3bj9gscaXK8u4svwRKnn3IyDlx4jcrbI5euX3n1ql9b+FimJGuqIBkGt41cDTllCoWn47LPgQrcA+PTiLn17DATkq9WI7EROy7cZj+OcnAbQEeBSq9bOPNLHXrmauG8MW9r2VFbAUSnnMScmmqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hn2cY2yh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LXukoIQK"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b2e1d5so3469922b3a.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 12:26:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790018773; x=1790623573; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oPHA1/g/WcT24PIfBNMekc+zAjDKuj7dhADig3JaAok=;
-        b=LXukoIQK426K+iiG8WWqQTbuFr8W/3FAxv+LPeJ4BogbgxKA1oTs++AABGrEcZoIir
-         70lXi1yX7umnwdHC9EGHM5qTzyxEAjFrkY9KzQaul0vefpkAbM9ftf35JsDI9U/6IQzq
-         0t202wTH06AwnAz0N+9R3p/ryYlDttSIpBC3wfCUAeeIux5kB6unHGCSoOi259grhRCI
-         xf1PUwUhKq57IRmibl9yo8vrkt5aDMPVScAspL/6E++7wIiSgP9w/CsI7waIHFEC4Oby
-         HmFQWMrBwvl088hKmbw4QZglNSxYNQOo7Y5aep8wQHLmbGSfhE2aWgMd0SQb2L17mjIb
-         bAAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790018773; x=1790623573;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oPHA1/g/WcT24PIfBNMekc+zAjDKuj7dhADig3JaAok=;
-        b=k2WdbH5N5HdotVG67Jea1yVDrCAqboAU4tCeAimyiLx46GGiBUcPniJI0p5CVTjI/m
-         VRhvH7qaxqdIURVkiHC98eepK/8Cn4yVDd+BnAFBgC1QAQSyRWfsZ5MGsvOINkm2wpyI
-         WZc/OowRR72a27ue2T+4wHIRAXe2nNigUApfusQVh+FcarYL8Z+Obhq/4bw2t0ULFIBf
-         vwiOwFE74TKIjJDs88O5QsSdBXmUCJKm8ViIAM1xfOWgwuwIcDcIKrdEgR0Ro9vfF5sa
-         dxCPsDyEdBdmAWyY9MyawhQn8BV2IMn/fjJSsxUCZb63Wj5zZOcFM8zzWsNwUmqKQpX1
-         guxQ==
-X-Gm-Message-State: AFuF++n3699h3xdnFjXj9aXCQxnY3bDyDrjnMdN6Fs9B9sYu87U5+5oL
-	sJ59D7um3WlYE4idJC8usRVMDXQxo1b7NIByTqjSt48ioDfOQQj0xEVSfLkJRXc52n7aul3Z
-X-Gm-Gg: AYBFou1LGpNVCb3X/KXZyol1O4+bQlWM9LWDC7yuAk7DxVpJWvfJ4YREOEXAcucJAPX
-	CkQMt46kihm/WDWqO2acA68QJjURWkIfdGGIHb+9PTCm7CdfeNbRdgSP7PSbUeH+ah6ewGSeRGH
-	0+z+HSB7Ud+NdnzH2SjhNV4lOCyp/4d8ZXSADiujmeqLMPYFWytstRuNH/Ev7DmJB+xvR049V9S
-	vcH5DXObccQT/Tp0xhQFjfdm3VKKOL/oV/5Lhb6FtOeBeRwQakOsz8J12w3ogO5gDGHJepy1WnY
-	nqA2LSD2/inf0O5bx7xcU8eaiV48tNMpDqHO1b5FdJq52tAhW7J/uAF+ayeUvTYYRtX5OHKlT8z
-	KJe0m7c5j5BvrIFCUMA1FUjTL//VMlezRpfcG3hucB4I3lXMP6Eei/CAAp4qE8lqwohBe75Rsf5
-	0yU42cZq1KsULK0jHaYjeGfmTc7CqcHgvvVIdSR4t3dY2RG/6I2lnIJawrkmcPvQF0B15mJ7ts
-X-Received: by 2002:a05:6a00:1d8c:b0:874:705d:f657 with SMTP id d2e1a72fcca58-874deced87fmr14985305b3a.37.1790018772523;
-        Mon, 21 Sep 2026 12:26:12 -0700 (PDT)
-Received: from localhost ([180.184.47.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87bf7eb7514sm827b3a.38.2026.09.21.12.26.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 12:26:11 -0700 (PDT)
-From: Dairui Zhang <zhangdairui@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Dairui Zhang <zhangdairui@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	stable@vger.kernel.org
-Subject: [PATCH net] af_packet: fix integer overflow in prb_calc_retire_blk_tmo()
-Date: Tue, 22 Sep 2026 03:26:08 +0800
-Message-ID: <20260921192608.1420047-1-zhangdairui@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hn2cY2yh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA361F000FF;
+	Mon, 21 Sep 2026 19:44:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790019852;
+	bh=XLCkND4IduTpuyRUPB3YnBAfzMrdpMsjQcaALhgXvs4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Hn2cY2yhJ6Cyaoz6UxCVhhqDm6FVOkHbNmTu0Fsp4zLKVODJhD3gQ321Dbvvv8ahB
+	 rLHVyXST66B+80bwuI8DfNMYQsMKi55kNeKOaujUOUoam10RJbQZqFH6ddejjvh9gb
+	 z6A0e8GqggI5mwn3ApRkV+Gkb6fi6/y/9a/GE5gaZzh79sj4L3Mb9IsNA5Ye+Hpb6L
+	 bk0GqqEuM1l+oUUtCgUIqtVHaFPbK+Yww3UmSNoQ+K8NEm1pVHtWwl3XJJS/QqAWlq
+	 lndfTB1ydXPdnASza2s2niBYpx0rdn8t39Y7azJQPDcyqurQzPLnlkIhPSGRLtSnIu
+	 rUSCWDL72pH7Q==
+Subject: Re: [PATCH net-next v3 3/8] net: dsa: motorcomm: Check port type with
+ runtime info
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Date: Mon, 21 Sep 2026 19:44:11 +0000
+Message-ID: <179001985166.2160803.9562894284788810196@kernel.org>
+In-Reply-To: <20260917185010.3189199-4-mmyangfl@gmail.com>
+References: <20260917185010.3189199-4-mmyangfl@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-prb_calc_retire_blk_tmo() computes in 32-bit int arithmetic:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-        mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-If I'm reading the validation right, tp_block_size is user
-controlled and packet_set_ring() only rejects values that are <= 0
-as int or not page aligned, so a 256MiB block goes right through
-(and alloc_one_pg_vec_page() even has a vzalloc fallback for it).
-0x10000000 * 8 wraps to INT_MIN, and on a NIC reporting 1 Gbps
-(div == 1) the function ends up returning -2047.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The condition is actually (8 * size) mod 2^32 >= 2^31 && div == 1,
-so the trigger set is [256,512), [768,1024), [1280,1536) and
-[1792,2048) MiB. Other sizes wrap to non-negative values and faster
-links divide the unsigned value back below 2^31, which is why this
-doesn't blow up for everyone.
+- [High] yt921x_port_up() (drivers/net/dsa/motorcomm/chip.c) selects
+  between the SerDes register block and the xMII register block solely…
+- [Low] Concern (not confirmed as a defect): the patch carries no Fixes:
+  tag and does not name the chip/port failure it corrects, although the…
 
-What makes it fatal is what happens next in init_prb_bdqc():
+--
 
-        p1->interval_ktime = ms_to_ktime(prb_calc_retire_blk_tmo(...));
-        hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
-                      HRTIMER_MODE_REL_SOFT);
+net: dsa: motorcomm: Check port type with runtime info
 
-A negative relative timeout expires immediately. The callback
-unconditionally returns HRTIMER_RESTART, and hrtimer_forward() turns
-the negative interval into hrtimer_resolution:
+This drops the yt921x_port_is_internal/external() macros, which hardcoded
+ports 8 and 9 as external on every chip, and instead derives the port type
+from the per-chip masks in struct yt921x_info plus a new per-port pp->serdes
+flag set by yt921x_port_config().
 
-        if (interval < hrtimer_resolution)
-                interval = hrtimer_resolution;
+A couple of questions below about the new pp->serdes flag and about the
+missing Fixes: tag.
 
-So the SOFT timer re-fires at the maximum rate forever, holding
-sk_receive_queue.lock each pass. One CPU spins in softirq until the
-socket is closed. Repeat with more rings and the machine is gone.
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index b527a9cfd3e86..bcc9542370c2f 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
+> @@ -3746,12 +3747,13 @@ static int yt921x_port_down(struct yt921x_priv *priv, int port)
+>  	if (res)
+>  		return res;
+>  
+> -	if (yt921x_port_is_external(port)) {
+> +	if (BIT(port) & info->serdes_mask) {
+>  		mask = YT921X_SERDES_LINK;
+>  		res = yt921x_reg_clear_bits(priv, YT921X_SERDESn(port), mask);
+>  		if (res)
+>  			return res;
+> -
+> +	}
+> +	if (BIT(port) & info->xmii_mask) {
+>  		mask = YT921X_XMII_LINK;
+>  		res = yt921x_reg_clear_bits(priv, YT921X_XMIIn(port), mask);
+>  		if (res)
 
-This is mostly a new problem: the overflow is ancient, but with
-msecs_to_jiffies() a negative timeout just got clamped to a huge
-unsigned value, i.e. the retire timer effectively never fired.
-f7460d2989fa ("net: af_packet: Use hrtimer to do the retire
-operation", v6.18) turned it into "fire immediately and spin".
-Still present in 7.2.6 and in current mainline as of this
-writing.
+[Severity: High]
+Here the teardown is gated on info->xmii_mask, but yt921x_port_up() below
+picks the xMII branch based on pp->serdes instead.  Can the two disagree?
 
-(Unrelated to CVE-2019-20812 - that one was the ethtool failure path
-returning 0, which now returns DEFAULT_PRB_RETIRE_TOV.)
+For port 8 of YT9215SC/YT9215S/YT9214NB the yt921x_infos entries have the
+port in serdes_mask but not in xmii_mask:
 
-Reproducer, needs CAP_NET_RAW (a --network host container has it by
-default) and a 1 Gbps NIC (QEMU e1000 works):
+	{ "YT9215S", YT9215_MAJOR, 2, 0, GENMASK(4, 0), BIT(9), BIT(8), },
 
-        int fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-        bind(fd, ...);
-        int v = TPACKET_V3;
-        setsockopt(fd, SOL_PACKET, PACKET_VERSION, &v, sizeof(v));
-        struct tpacket_req3 req = {
-                .tp_block_size = 0x10000000,
-                .tp_block_nr = 1,
-                .tp_frame_size = 2048,
-                .tp_frame_nr = 0x10000000 / 2048,
-                .tp_retire_blk_tov = 0,
-        };
-        setsockopt(fd, SOL_PACKET, PACKET_RX_RING, &req, sizeof(req));
+If yt921x_port_up() takes the else branch for such a port it sets
+YT921X_XMII_LINK on YT921X_XMIIn(port), and yt921x_port_down() will then
+never clear it again because BIT(port) & info->xmii_mask is zero.
 
-Compute in 64 bits instead. The operands are already bounded by the
-existing validation, so nothing else changes. If you'd prefer a
-different fix, just say so and I'll respin.
+> @@ -3800,7 +3804,10 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
+>  	if (res)
+>  		return res;
+>  
+> -	if (yt921x_port_is_external(port)) {
+> +	if (!(BIT(port) & (info->serdes_mask | info->xmii_mask)))
+> +		return 0;
+> +
+> +	if (pp->serdes) {
+>  		mask = YT921X_SERDES_SPEED_M;
+>  		switch (speed) {
+>  		case SPEED_10:
 
-Fixes: f7460d2989fa ("net: af_packet: Use hrtimer to do the retire operation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dairui Zhang <zhangdairui@gmail.com>
----
-First patch to netdev, and compile-tested only - I don't have a
-1 Gbps setup to trigger it live. If I've misread the code, got the
-Fixes: tag wrong, or picked the wrong fix, please say so and I'll
-respin.
+[Severity: High]
+The capability gate above accepts a port that is only in serdes_mask, and
+after that the register block is chosen purely from pp->serdes, not from
+info->xmii_mask.  Is "!pp->serdes" equivalent to "this port has an xMII
+block"?
 
- net/packet/af_packet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That looks like the same hardcoded-layout assumption the changelog sets out
+to remove, only expressed through a flag rather than a port number.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index b22cda3..24cf2d2 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -617,7 +617,7 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
- 		return DEFAULT_PRB_RETIRE_TOV;
- 
- 	div = ecmd.base.speed / 1000;
--	mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
-+	mbits = (u64)blk_size_in_bytes * 8 / (1024 * 1024);
- 
- 	if (div)
- 		mbits /= div;
+> @@ -3836,7 +3843,7 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
+>  					     mask, ctrl);
+>  		if (res)
+>  			return res;
+> -
+> +	} else {
+>  		mask = YT921X_XMII_LINK;
+>  		res = yt921x_reg_set_bits(priv, YT921X_XMIIn(port), mask);
+>  		if (res)
+
+[Severity: High]
+Can this else branch be reached with pp->serdes stale-false on a port that
+was already muxed to SerDes in hardware?
+
+yt921x_port_config() commits the mux first and only sets pp->serdes at the
+very end of the SerDes case:
+
+	mask = YT921X_SERDES_CTRL_PORTn(port);
+	res = yt921x_reg_set_bits(priv, YT921X_SERDES_CTRL, mask);
+	if (res)
+		return res;
+	...
+		pp->serdes = true;
+
+So if any register access between those two points fails (an SMI/MDIO
+transfer error), yt921x_port_config() returns early with the port muxed to
+SerDes while pp->serdes is still false.
+
+yt921x_phylink_mac_config() is void and can only log it:
+
+	res = yt921x_port_config(priv, port, mode, state->interface);
+	mutex_unlock(&priv->reg_lock);
+
+	if (res)
+		dev_err(dp->ds->dev, "Failed to %s port %d: %i\n", "config", port, res);
+
+phylink only forces the link down when pl->major_config_failed is set, and
+that flag comes from mac_select_pcs/mac_prepare/pcs_config/mac_finish
+errors, not from mac_config:
+
+drivers/net/phy/phylink.c:phylink_resolve() {
+	...
+	if (pl->major_config_failed)
+		link_state.link = false;
+	...
+}
+
+phylink then proceeds to mac_link_up() -> yt921x_port_up(), which passes
+the serdes_mask|xmii_mask gate and takes this else branch: it writes
+YT921X_XMII_LINK and YT921X_MDIO_POLLINGn(port) for a port that may have no
+xMII block, and never asserts YT921X_SERDES_LINK or the SerDes
+speed/duplex/pause fields, so the port stays down while the kernel reports
+carrier up.
+
+Nothing re-derives pp->serdes afterwards, since phylink re-runs the major
+config only on interface change or forced reconfiguration.
+
+Would gating the else branch on BIT(port) & info->xmii_mask, or deriving the
+branch from the validated interface argument, avoid this?  Alternatively,
+recording the mux selection as soon as YT921X_SERDES_CTRL is committed would
+keep pp->serdes in sync with the hardware.
+
+> @@ -3928,13 +3937,21 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
+>  		if (res)
+>  			return res;
+>  
+> +		/* The order is quite arbitrary - we can't return to a safe
+> +		 * state on IO errors.
+> +		 */
+> +		pp->serdes = true;
+>  		break;
+
+[Severity: High]
+This is the only writer of pp->serdes, and it runs after the mux writes
+(YT921X_SERDES_CTRL set, YT921X_XMII_CTRL cleared) and after the SERDES mode
+update, each of which returns on error.  The comment acknowledges that a
+safe state cannot be restored, but the flag is later used to decide which
+register block yt921x_port_up() touches.  Should the flag be set before the
+fallible writes so that software and hardware do not end up disagreeing, or
+should yt921x_port_up() not depend on it at all?
+
+This was verified to still be the case at the end of the series (the
+"net: dsa: motorcomm: Add SerDes PCS" commit keeps both the "if (pp->serdes)"
+test and the late "pp->serdes = true"), so no later patch changes this.
+
+> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+> index 83e76cefbccd5..fd552f7dced4d 100644
+> --- a/drivers/net/dsa/motorcomm/chip.h
+> +++ b/drivers/net/dsa/motorcomm/chip.h
+> @@ -858,9 +858,6 @@ enum yt921x_fdb_entry_status {
+>  
+>  #define YT921X_NAME	"yt921x"
+>  
+> -#define yt921x_port_is_internal(port) ((port) < 8)
+> -#define yt921x_port_is_external(port) ((port) == 8 || (port) == 9)
+> -
+
+[Severity: Low]
+This isn't a bug, but the changelog describes these macros as wrong while
+the patch carries no Fixes: tag and does not name a chip or port that
+misbehaves.  They were added in 186623f4aa724c and refined in f2596ce59b151b,
+both recent enough for a tag.
+
+As far as could be checked, the paths the changelog mentions are already
+gated: yt921x_dsa_phylink_get_caps() advertises PHY_INTERFACE_MODE_INTERNAL
+only for info->internal_mask ports and the SerDes modes only for
+info->serdes_mask ports, and phylink_create() rejects an empty
+supported_interfaces set:
+
+	if (phy_interface_empty(config->supported_interfaces)) {
+		dev_err(config->dev, "phylink: error: empty supported_interfaces\n");
+		return ERR_PTR(-EINVAL);
+
+so the dummy ports and xMII-only ports never reach these callbacks, and the
+new "if (!(BIT(port) & info->serdes_mask)) goto err;" check rejects
+something phylink would not request either.
+
+Is this intended as a hardening/refactor step ahead of the SerDes PCS work,
+or as a fix?  If the latter, could a Fixes: tag and the affected chip/port be
+named?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917185010.3189199-1-mmyangfl%40gmail.com
