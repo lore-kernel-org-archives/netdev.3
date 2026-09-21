@@ -1,328 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f35.google.com (mail-pj2-f35.google.com [74.125.227.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AFB499F27;
-	Mon, 21 Sep 2026 09:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8589E463B8C
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789983335; cv=none; b=goCUVBkWLhByIgTMChIzMxOvM+V9+nOqU7pbmcLNxwchDNbWPVYxgETZSEluibthigmLVfmY+1o0VqKSwlmaK2dS1IrlQQif3hWLOt7XXLOZXMHG9hWIUihrLTDC5JaGOHweYM7p5PxwX8/+fM7gzO3gcPWXoV9pvOVygPAZYXw=
+	t=1789983439; cv=none; b=JJ2m4Rps3rXICIoVVpQXMwx/VA2+tX0IwIrsf0FBAWuSRUuVQTEVknqv1ovQmQXAIAWn3vEK6VHESKLDvwuSeJWvqj2fGL7sUDjimLYhFJY2VX5IsZGFJko8LVfHbF6jMdsa7WhJaE3xc9RcwS4SFFjy+0Qh6+Fb/KH7V8A/Bgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789983335; c=relaxed/simple;
-	bh=2fx0gGNpJJopbueNjiaGNeqxnVxGgXTC314wtJ4/y0w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o0vD6Lg861Qpa3uToos5zQooqEdVIyxFdvMucjqwYF1l392GdzXSsiayyGo8wOD+wFHwmtagVyQtL1Gi2oUNw+AKzohTy5caHIqc+Laid4K+dmjLymFNfwur81JwZqjECPpFuWnixKRom4326Oea77poRipm53f3hNHyERuz4Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0YHY5DN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789983439; c=relaxed/simple;
+	bh=DjkeyF9FjUQU2PuvGj1DiBtxbzqamGHfh/avpU0E3Ag=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pQyNhN6sH5gfFbRc8X1VF11uJNogHnM7RJX/2I7lvpMx67GwrR+ijr549Y5xty3/2FryMUCPmAqtCF76DgLLtQLdDeWRx/YXx98tuycWOVaj6dcRoITHbsCB4MEOgA6kTbGtZ6+YerxjKghuHMetI3JNW63Xp8KUZGOLcoJj6Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9P40Pi0; arc=none smtp.client-ip=74.125.227.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0YHY5DN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30551F000FF;
-	Mon, 21 Sep 2026 09:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789983333;
-	bh=YMwOLTG56jwERBfAtojuwEAnWnxIxlP6/aR60IPV2YA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=g0YHY5DNQmRnzw5ZnVAGKe4+tlVVwu9JhGYX0aHoaTop83aX8l147sED440xeyoS6
-	 NRDK7ruQlUQzF455YG76kXawczR5ewflUXa7oBx71oFCwG+O3WZ4v1nxLbAxh89jk/
-	 pyLjTfFFFD+xBaOskDj0uk6IWJdiqWpEEV/BuV6ulQLGvA32g+/NZaUOJVCCLWHu3x
-	 jHI4iy3tDjvQbZe+ku00EHrPmUS2MGzDE9nDk74T+fTOKmrb3FBcyzuTFZS6QtygjF
-	 bxhFFUKiA8aTMIiEAOd/JcCyV41tPj4WGOZlSldmAMxO57UtFs4LYtbQN71PXW1HAt
-	 OBzfDOANWrlng==
-Subject: Re: [PATCH net-next v8 6/6] net: dsa: motorcomm: Add support for
- Motorcomm YT922x
-From: netdev-bot+sashiko@kernel.org
-To: kyle.switch@motor-comm.com
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
- horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
- xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com,
- sijia.huang@gl-inet.com
-Date: Mon, 21 Sep 2026 09:35:32 +0000
-Message-ID: <178998333228.2160803.11818290223147794708@kernel.org>
-In-Reply-To: <20260917082236.3427168-7-kyle.switch@motor-comm.com>
-References: <20260917082236.3427168-7-kyle.switch@motor-comm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9P40Pi0"
+Received: by mail-pj2-f35.google.com with SMTP id d9443c01a7336-2dd77300825so27993505ad.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 02:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789983437; x=1790588237; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SZkGOV2v3EKiVxv0iFZpEgc+uW9SwmXctAKdDjSSr1c=;
+        b=K9P40Pi0eQ/fxU240CR6GvK9OZfm+UBn7nPK1p5ecpXez44DHlrfB1wqUPnozzGkVb
+         qjFKWsFFRRDDu/CUBUatVrxxb9gAXvPydoZGRJUxV10o/345G3FmJKMsjNyEW+lZw/WA
+         I02MIJ/jigjZH/4hLicIxt4JeN9tiJEqEdsIXQn8dl353F4FJGga9Vr7aaNwvy4xv+nZ
+         03yY4N8hktNN+krX9raT3L6gueLVJuF5xEc+j4qu3G7KoKkJjjGX0NbyoYmZWqP1sI8n
+         W1RYeek0BfxTPSr4PRn8iwpEV21IMuR1Tk/0ksX6MNnN9Bkm4xxJKBx1ZpOBFCf30dUw
+         J+rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789983437; x=1790588237;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SZkGOV2v3EKiVxv0iFZpEgc+uW9SwmXctAKdDjSSr1c=;
+        b=bkEn5xrvlYqWlirkbMvehnQr/bg3E4M9uCxe9uNN7ldVzByOxHIquhJsPjypke9DEE
+         WkHilh8tfYj/FjQ2lF3kU0BZZyUbsayC4pYhERXgeacH84D7KqLzgplNh/SNElalvyIz
+         NhEZV9QIS9UArXEoOI2s1Cq0qjBOcG6F4LRlafYF4HY0Mk0G9kgyTyLcywBH8QoLkYzt
+         k3oBiyZalHqRb6H4iSCBGYIgTro+4rDQ6ph3DwOp3clLEVQiA1oB453wGgEDdlxinDde
+         Q74NQs9vBGgTjFdjzO86GwoqISxd+cJxeTXIRa4y/4sUbykmNG4c9TVt/pc0Ocm1ADdu
+         rkYA==
+X-Gm-Message-State: AFuF++krbKwMuUKGGSI+WhZseAHJ/6RLde/SEDnTu/WcXk2Uj/ZijdNp
+	Ta4LPSNFMR0QTWLBPGKKCs3imQnG6vHglAeL+4fomTHokY0J4Z3OhWBJ1bfvmLjlyiI=
+X-Gm-Gg: AYBFou0NjJCOHkhnEwLvPfFbwSwEXagNzGPYhurqQvB2t7m2LCubU+dTtuXPal8Mpf/
+	k7VYSvLJTgmhajwXWMfttTI/XRoxzdkEV4Og+aQWB9fzL/QB0YnJmBzpxvuIzaG9ds5lPsGo/A8
+	/sNUHTuGyY3ap/YlJMhYjNyo2a3idobJESLqX1FKx4w3q8COv3eFSp85W4zRmRKH9aJV2ey6B+7
+	w4W87Fw9bJe6EyJjfF/YOazBKL4V2j2PKLnOn/gkSl4xXHhG4wsbIsmyFoS45LWceQo/71I85J9
+	I9t32r97k7cOQIypepRSTCfSLpqehGkWpS/PO82+Bmnq6p+qddQavG4vBBxWOBzZH3LQaNTqTit
+	34qrBZCD9zXQIwkAkZMsYHMCo6kgpYiqUF57mhuYLb0ZVljgd0cyUmf2Y7WHL09ssmFnmvXZzrl
+	xnEGCCvJeKu1h+dBrBA9eJdMRI89NaVHHo2ZHfQZ3kEIuKuSCBEsFQT+teOudUrVuN3L768K+/e
+	I9V2u3S+QcHKhaDPfWwfcU6HRynHWkocfI4
+X-Received: by 2002:a17:903:2f4c:b0:2dd:c170:2d4d with SMTP id d9443c01a7336-2ddc17034demr99894695ad.24.1789983436470;
+        Mon, 21 Sep 2026 02:37:16 -0700 (PDT)
+Received: from localhost.localdomain ([117.88.121.70])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df52383751sm3496445ad.9.2026.09.21.02.37.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 02:37:15 -0700 (PDT)
+From: Aohan Mei <ljp1205831794@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-sctp@vger.kernel.org,
+	marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	imv4bel@gmail.com,
+	Aohan Mei <henrymei@tencent.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] sctp: discard the rest of the packet on a stale-cookie error
+Date: Mon, 21 Sep 2026 17:37:04 +0800
+Message-ID: <20260921093707.1432184-1-ljp1205831794@gmail.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <CADvbK_eQjfg_-HLT3zJ5Bt5LWbUTx_+fLG5ggLPNY1Ah+sF9GA@mail.gmail.com>
+References: <CADvbK_eQjfg_-HLT3zJ5Bt5LWbUTx_+fLG5ggLPNY1Ah+sF9GA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+From: Aohan Mei <henrymei@tencent.com>
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 2
+When an association is in COOKIE-ECHOED state and the peer sends a
+bundled [ERROR(Stale Cookie)][DATA] packet from one of its non-primary
+addresses, processing the ERROR chunk takes the non-fatal stale-cookie
+retry path sctp_sf_do_5_2_6_stale(), which queues
+SCTP_CMD_DEL_NON_PRIMARY while keeping the association alive.
+sctp_cmd_del_non_primary() removes every non-primary transport -
+including the very transport this packet arrived on, which is still
+referenced by the receive lookup and shared by all chunks of the
+packet via chunk->transport.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+sctp_assoc_rm_peer() does redirect asoc->peer.last_data_from away from
+the removed transport, but right afterwards the bundled DATA chunk
+makes sctp_assoc_bh_rcv() re-register
+asoc->peer.last_data_from = chunk->transport unconditionally, undoing
+the redirection with the just-removed transport.
 
-- [High] yt922x_pcs_config() violates the documented phylink PCS
-  contract: it ignores neg_mode, advertising and permit_pause_to_mac and…
-- [High] net: devm_ leak and sysfs crash in DSA .setup callback
-- [Medium] The driver advertises a new device-tree compatible
-  "motorcomm,yt9224" in yt921x_of_match[], but no DT binding documents…
-- [Low] drivers/net/dsa/motorcomm/Kconfig: the NET_DSA_YT921X prompt is
-  updated to "Motorcomm YT9215 and YT9224 ethernet switch chip support"…
-- [Low] net/dsa/tag_yt922x.c defines YT922X_TAG_RX_PRIO_M (bits 15:13 of
-  the received control word) but yt922x_tag_rcv() reads that same word…
+Once the packet is done, the receive reference is dropped and the
+transport is RCU-freed, while the surviving association keeps the
+dangling last_data_from.  A later FWD-TSN (or the delayed SACK timer)
+makes sctp_gen_sack() dereference it (->param_flags and friends), and
+sctp_make_sack()/sctp_outq_select_transport() may write to the freed
+object and link it into the live transport list.  This is a
+use-after-free triggerable by any malicious SCTP peer (or a local
+unprivileged user acting as one) with no capabilities required:
 
---
+  BUG: KASAN: slab-use-after-free in sctp_do_sm+0x498a/0x5660
+  Read of size 4 at addr ffff88800e1e356c by task poc/115
+  Call Trace: sctp_do_sm <- sctp_assoc_bh_rcv <- sctp_inq_push <-
+              sctp_rcv <- ip_protocol_deliver_rcu <- ip_rcv
+  Allocated: sctp_transport_new <- sctp_assoc_add_peer <-
+             sctp_process_init (INIT-ACK processing)
+  Freed: kfree <- sctp_transport_destroy_rcu <- rcu_core
+         (call_rcu queued by sctp_transport_put at end of sctp_rcv)
+  The buggy address is located 364 bytes inside of freed 1024-byte
+  region [ffff88800e1e3400, ffff88800e1e3800), cache kmalloc-1k
 
-net: dsa: motorcomm: Add support for Motorcomm YT922x
+Note that commit 03a9d10ecf71 ("sctp: drop a chunk if its transport
+was removed") only covers the window between the receive lookup and
+the chunk processing (e.g. an ASCONF DEL-IP racing the socket backlog);
+here the transport is removed *while* the packet is being processed,
+by an earlier chunk of the same packet, so the drop in sctp_inq_push()
+does not reach this path.  Verified with the bundled [ERROR(Stale
+Cookie)][DATA] + FWD-TSN reproducer: the KASAN report above still
+fires with that commit applied, and is gone with this patch on top.
 
-This adds YT922x (YT9224 only for now) support to the existing Motorcomm
-YT921x DSA driver: a new chip info entry, a new yt92xx series entry with
-its own dsa_switch_ops and phylink_mac_ops, a PCS implementation for the
-internal SerDes ports, and a new "motorcomm,yt9224" OF compatible.
+Fix it by discarding the rest of the packet on this path, as suggested
+by Xin.  After the stale-cookie ERROR has sent the association back to
+COOKIE-WAIT and removed the non-primary transports, the remaining
+chunks of the packet can only run against the restarted handshake
+while referencing the removed arrival transport through
+chunk->transport: besides the last_data_from registration above,
+sctp_cmd_setup_t2() and the sctp_make_*() reply builders would also
+copy that pointer into association-lifetime state that
+sctp_assoc_rm_peer() has already sanitized.  Let the peer retransmit
+them, in line with what sctp_inq_push() does for chunks whose
+transport was removed before processing.
 
-A few questions below.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Assisted-by: CodeBuddy:Kimi-K3
+Signed-off-by: Aohan Mei <henrymei@tencent.com>
+---
 
-> diff --git a/drivers/net/dsa/motorcomm/Kconfig b/drivers/net/dsa/motorcomm/Kconfig
-> index 79cdd79a1fd25..ab2b548c216f3 100644
-> --- a/drivers/net/dsa/motorcomm/Kconfig
-> +++ b/drivers/net/dsa/motorcomm/Kconfig
-> @@ -1,7 +1,8 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  config NET_DSA_YT921X
-> -	tristate "Motorcomm YT9215 ethernet switch chip support"
-> +	tristate "Motorcomm YT9215 and YT9224 ethernet switch chip support"
->  	select NET_DSA_TAG_YT921X
-> +	select NET_DSA_TAG_YT922X
->  	select NET_IEEE8021Q_HELPERS if DCB
->  	help
->  	  This enables support for the Motorcomm YT9215 ethernet switch
+Hi Xin,
 
-[Severity: Low]
-This isn't a bug, but the prompt now mentions YT9224 while the help text
-right below it still says:
+Thanks a lot for the review and the suggestion.  Implemented in v2:
+SCTP_CMD_DISCARD_PACKET queued at the end of the stale-cookie retry.
 
-	  This enables support for the Motorcomm YT9215 ethernet switch
-	  chip.
+Verified with the reproducer: the kprobe trace now shows the ERROR
+chunk still removing the transport (sctp_assoc_rm_peer/
+sctp_transport_free fire as before) but no further chunk of the packet
+being processed, and asoc->peer.last_data_from keeps the redirection
+done by sctp_assoc_rm_peer().  The KASAN use-after-free is gone and
+the association completes the retry handshake normally.
 
-Should the help text mention YT9224 too?
+This also takes care of the other same-packet sinks the sashiko review
+pointed out (sctp_cmd_setup_t2() and the sctp_make_*() reply chunks
+copying chunk->transport into association-lifetime state): the
+remaining chunks are now dropped before they can run, in line with
+what sctp_inq_push() does for chunks whose transport was removed
+before processing.
 
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 2412fe2f696f8..1cf5e859d8af0 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
+Regarding the cookie-echo restart path the review mentioned
+(sctp_assoc_update() removing the arrival transport mid-packet, with a
+bundled [COOKIE ECHO][SHUTDOWN] reaching SCTP_CMD_SETUP_T2): discarding
+the packet does not look like an option there, as bundling DATA with
+COOKIE-ECHO is a legitimate fast path.  I can look into clearing the
+in-progress chunk's transport on removal, or a loop-level check, as a
+follow-up - please let me know if you'd rather have it handled here.
 
-[ ... ]
+On the bitfield concern: v2 no longer reads transport->dead at all.
+The race described (sctp_icmp_frag_needed() in softirq doing a
+non-atomic read-modify-write of pmtu_pending racing dead = 1) would
+also defeat the existing transport->dead check in sctp_inq_push() from
+03a9d10ecf71, so it might be worth moving that flag into its own word
+separately.
 
-> @@ -4694,6 +4725,637 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
+As for the reproducer: it is a single static binary that plays both
+roles over a TUN device - the victim side is a plain SCTP client
+socket, while the peer side answers the INIT-ACK advertising a primary
+and a non-primary address plus FWD-TSN support, injects the bundled
+[ERROR(Stale Cookie)][DATA] from the non-primary address while the
+association is COOKIE-ECHOED, completes the retry handshake, and sends
+an FWD-TSN one second later to consume the dangling pointer.  It was
+verified on tlinux 6.6.119 and on mainline v7.2-rc6-343, where it
+still fires with 03a9d10ecf71f applied and is clean with this patch on
+top.
 
-[ ... ]
+Since it is a ready-to-run trigger for the bug, I'd prefer not to post
+it to the public list - would it be OK if I send it to you and Marcelo
+off-list instead?  Happy to share it in whatever way you prefer.
 
-> +static void
-> +yt922x_phylink_mac_config(struct phylink_config *config, unsigned int mode,
-> +			  const struct phylink_link_state *state)
-> +{
-> +}
+Thanks again!
 
-[ ... ]
+ net/sctp/sm_statefuns.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +static int yt922x_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-> +			     phy_interface_t interface,
-> +			     const unsigned long *advertising,
-> +			     bool permit_pause_to_mac)
-> +{
-> +	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-> +	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-> +	int res, port;
-> +	u16 data;
-> +	u16 ctrl;
-> +	int addr;
-> +
-> +	port = pp->index;
-> +	if (!yt922x_port_is_internal_sds(port))
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +	addr = yt922x_sds_phyaddr_get
-> +		(port, YT922X_PHY_REG_TYPE_SDS_COMMON_EXT);
-> +	if (addr < 0) {
-> +		res = addr;
-> +		goto err;
-> +	}
-> +	/* write protect */
-> +	res = yt921x_intif_ext_write(priv, addr, 0x4be, 0xd);
-> +	if (res)
-> +		goto err;
-> +	switch (interface) {
-> +	case PHY_INTERFACE_MODE_SGMII:
-> +		ctrl = YT922X_SERDES_MODE_SGMII;
-> +		break;
-> +	case PHY_INTERFACE_MODE_1000BASEX:
-> +		ctrl = YT922X_SERDES_MODE_1000BASEX;
-> +		break;
-> +	case PHY_INTERFACE_MODE_2500BASEX:
-> +		ctrl = YT922X_SERDES_MODE_2500BASEX;
-> +		break;
-> +	case PHY_INTERFACE_MODE_USXGMII:
-> +		ctrl = YT922X_SERDES_MODE_USXGMII;
-> +		break;
-> +	default:
-> +		res = -EINVAL;
-> +		goto err;
-> +	}
-> +	res = yt921x_intif_ext_read(priv, addr, YT922X_PORT_SDSn, &data);
-> +	if (res)
-> +		goto err;
-> +	data &= ~YT922X_SERDES_MODE_M;
-> +	data |= ctrl;
-> +	res = yt921x_intif_ext_write(priv, addr, YT922X_PORT_SDSn, data);
-> +	if (res)
-> +		goto err;
-> +	mutex_unlock(&priv->reg_lock);
-> +
-> +	return res;
-
-[Severity: High]
-Is this safe on a second .setup() call?
-
-DSA .setup() is not a once-per-device callback: the tree is torn
-down and set up again whenever the conduit goes away and comes back
-(dsa_tree_teardown() / dsa_tree_setup()), while the mdio_device that
-owns the devm allocations stays bound the whole time. So the devm
-resources taken in yt921x_mbus_int_init() (devm_mdiobus_alloc() plus
-devm_of_mdiobus_register()) are only released when the mdiodev
-itself unbinds, not when the switch is torn down.
-
-That means on the second yt922x_dsa_setup() the first internal MDIO
-bus is still registered, priv->mbus_int gets overwritten (leaking
-the first allocation), and the of_mdiobus_register() for the new bus
-hits a duplicate sysfs name for the same bus id, which fails the
-re-setup and leaves the switch half-configured.
-
-Making it worse, yt922x_dsa_switch_ops has no .teardown at all,
-unlike yt921x_dsa_switch_ops which supplies yt921x_dsa_teardown(),
-so there is nothing on the yt922x path that can unwind anything
-allocated or registered from .setup().
-
-How do you want to fix this? Either register the internal bus with
-the plain mdiobus_alloc()/of_mdiobus_register() and drop it from a
-new yt922x .teardown callback, or move the bus registration out of
-.setup() into yt921x_mdio_probe(), where the devm lifetime actually
-matches the device. If the yt921x path has the same issue today,
-please say so and fix both consistently rather than copying the
-pattern into the new ops.
-
-[Severity: High]
-Can the SerDes ports negotiate a link with this pcs_config()?
-
-The callback only rewrites the 3-bit SERDES_MODE field of the ext register
-YT922X_PORT_SDSn. neg_mode, advertising and permit_pause_to_mac are unused,
-so MII_BMCR.BMCR_ANENABLE is never set or cleared and MII_ADVERTISE is
-never programmed.
-
-The kerneldoc for pcs_config in include/linux/phylink.h states:
-
- * When operating in %MLO_AN_INBAND, inband should always be enabled,
- * otherwise inband should be disabled.
- ...
- * For 1000BASE-X, the advertisement should be programmed into the PCS.
- ...
- * When an autonegotiation restart is required for 802.3z modes, .pcs_config()
- * should return a positive non-zero integer (e.g. 1)
-
-Here res is 0 on the success path, so phylink never triggers the restart:
-
-drivers/net/phy/phylink.c:phylink_change_inband_advert() {
-	ret = phylink_pcs_config(pl->pcs, pl->pcs_neg_mode, &pl->link_config,
-				 !!(pl->link_config.pause & MLO_PAUSE_AN));
-	if (ret < 0)
-		return ret;
-
-	if (ret > 0)
-		phylink_pcs_an_restart(pl);
-}
-
-which means an ethtool advertisement change never reaches
-yt922x_pcs_an_restart(), and yt922x_pcs_an_restart() itself only sets
-BMCR_ANRESTART, so it cannot enable in-band AN either.
-
-Meanwhile yt922x_pcs_get_state() hands MII_LPA to
-phylink_mii_c22_pcs_decode_state() (and phylink_decode_usxgmii_word() for
-USXGMII) as if it were a completed negotiation word, and
-yt922x_phylink_mac_link_up() -> yt922x_port_up() then force-writes that
-speed/duplex/pause into YT922X_PORTn_CTRL. Since
-yt922x_phylink_mac_config() is empty, nothing else applies the interface
-change either.
-
-Is there also anything that resets or re-times the SerDes when the mode
-changes between rates (SGMII 1.25G, 2500BASEX 3.125G, USXGMII 10.3125G)?
-
-For YT9224 external_mask is BIT(0) | BIT(8), so this affects the ports that
-normally carry the CPU link.
-
-[ ... ]
-
-> +static enum dsa_tag_protocol
-> +yt922x_dsa_get_tag_protocol(struct dsa_switch *ds, int port,
-> +			    enum dsa_tag_protocol m)
-> +{
-> +	return DSA_TAG_PROTO_YT922X;
-> +}
-
-[Severity: Low]
-On the tagger added earlier in this series (net/dsa/tag_yt922x.c), is
-YT922X_TAG_RX_PRIO_M used anywhere? yt922x_tag_rcv() reads the same control
-word only for the source port:
-
-	rx = ntohs(tag[2]);
-	port = FIELD_GET(YT922X_TAG_RX_PORT_M, rx);
-	skb->dev = dsa_conduit_find_user(netdev, 0, port);
-
-while the sibling yt921x_tag_rcv() does:
-
-	skb->priority = FIELD_GET(YT921X_TAG_RX_PRIO_M, rx);
-
-Was the skb->priority assignment meant to be there as well, or should the
-unused macro be dropped?
-
-[ ... ]
-
-> @@ -4825,8 +5501,9 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
->  }
->  
->  static const struct of_device_id yt921x_of_match[] = {
-> -	{ .compatible = "motorcomm,yt9215" },
-> -	{}
-> +	{ .compatible = "motorcomm,yt9215", },
-> +	{ .compatible = "motorcomm,yt9224", },
-> +	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, yt921x_of_match);
-
-[Severity: Medium]
-Should this series also update the binding? The only Motorcomm DSA schema in
-the tree, Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml,
-still has:
-
-properties:
-  compatible:
-    const: motorcomm,yt9215
-
-so a node with compatible = "motorcomm,yt9224" is matched by the driver but
-rejected by dt_binding_check/dtbs_check.
-
-The binding prose also disagrees with the topology added here. The schema
-describes "up to 8 internal GbE PHYs and up to 2 GMACs" with "PHY 0-7 are
-used for Port 0-7 respectively", while the new chip info entry is:
-
-	{
-		"YT9224", YT9224_MAJOR, 0, 0,
-		YT922X_PORT_MASK_INTm_n(4, 7),
-		YT922X_PORT_MASK_EXT0 | YT922X_PORT_MASK_EXT1,
-	},
-
-i.e. internal PHYs on ports 4-7 and SerDes on ports 0 and 8, with
-YT922X_PORT_NUM = 9 (no port 9). Following the current binding text, would a
-device tree author end up describing ports the driver cannot drive?
-
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 708fa07d5fffc..43ebceb5e15f5 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -2654,6 +2654,8 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
+ 
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_REPLY, SCTP_CHUNK(reply));
+ 
++	sctp_add_cmd_sf(commands, SCTP_CMD_DISCARD_PACKET, SCTP_NULL());
++
+ 	return SCTP_DISPOSITION_CONSUME;
+ 
+ nomem:
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917082236.3427168-1-kyle.switch%40motor-comm.com
+2.43.7
+
