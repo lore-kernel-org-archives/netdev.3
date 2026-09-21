@@ -1,80 +1,42 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB34E73DE
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 21:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626452E4257;
+	Mon, 21 Sep 2026 21:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790027055; cv=none; b=rs4rVNPSmIbzdM21hjXxH+cs5IN4UnIGdlOO14S6+CtDtuqFNg90N0RWj2s4N9LpFnoPaSI5fqsNAQAyYbOERKqTIHxdDfHK/ULygy3p4ZX4nwCfV0X2v02Me5GQ6ryU2cMShDcuexd5WRKsuOswY8vMTSHJ//eOAA+XNZ38p4w=
+	t=1790027430; cv=none; b=T2C096pk6ZIQ3c8w0j4vbgdjrb4n/xsd1Oq566vmcATqjXFIBQyOdrjFyDF8a10/nl0pDnZiRiYb+LIKx/Gcc8KhWXkzVbdiGEqzGyc7bfbXSIX+iKTIjyMwLnzWjaU4vTqhVzg77VrZ1beHQUYplv3DRx2ndq9qeXZHK/Mp6YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790027055; c=relaxed/simple;
-	bh=ITSFGhBCgCYWwEXlvak+PK/ROh9aqcx9mXeYFcC0aJw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjKhL0CjSKjWGWO+p/byFeONZ+l/YRZp6BidP8JaMwH3hwDt52L5DKN+tl43qUj/FG6SrtZc5g6L6Gyn94wmwxfEAxrVDYMwC+/wgHm9CdFoblIITjhfARiE2srEaJiJC1SLJngiumTUiVDD3LVpAWbSsQ0RlWkmav5mBEor1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WexRML7w; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790027430; c=relaxed/simple;
+	bh=ZXFuSexSjcaO9C2kLRzh0bAaTuReuOintSOEo4XTOA4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZlYmk1HtmfoxKMrZQGuxGT1wbePbGtN217+Yji67WkFpUmTSBAQKoC/y/pgWROQiMD4Gj1ZW8E9HkGNxTLDJRqhBDxbFdH2mpPfLMEExsP6RcRay9Ac/Yr9NfTD2LPxdQm05m8GLi9MShWP1X6Me6gi3kXa19BvV38ffeFBLdRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1es6Gk2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WexRML7w"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f88so2165638f8f.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:44:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790027052; x=1790631852; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ITSFGhBCgCYWwEXlvak+PK/ROh9aqcx9mXeYFcC0aJw=;
-        b=WexRML7wNY9HYHVsSLgAdJ1X8hq8E9SbazwD/0JPQLRmJHuWJ2731Zpik7tOudgSOa
-         G9juTmXT56C9FkAAZ8eESwPY8of6wjvVYqMKruOfiXF5yt29+ui3kaahHRldS6qbQmQJ
-         UBzumqhrIJEYjckC38tUy8qRCvTpTkebtoo2koAPc0KlxXXACERqEHoNodtQiXHJx3IZ
-         X5iNUM33fTgMrGkW4XIZ2tOMWtVtrGY+5lB3QxP6XjUTG5Dg4JZGj5Tngo9kqajI0jX6
-         F0fbrX1JJYL/zCrnLaS3gjrsC5+MATlfb3ABcPwWKd5N3vOsYokY0J8WtAIvZm6UqaDW
-         Qt8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790027052; x=1790631852;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ITSFGhBCgCYWwEXlvak+PK/ROh9aqcx9mXeYFcC0aJw=;
-        b=HtHPAwawOCMJZJ2yQfOr3eORd3wy9f9YXHMe/liE+RaKFb+E7yqE6Jq6H4zgPsl7nA
-         qN0LGjx1YdsKyHlqqy5H4CjFRV9ocPSMNHLmLfWZcVPmOHWzlu0yu2YSWymLRfhcL/IR
-         eXromoJEPynXzS1qK5djket/sRwb056baBWWYt5+XVreMCcOELxSgCq+wGWSPtP65q5s
-         QlEFewzjLINhrJvfQNvRiDRi/G4ucCQJiDyA1TPqkJVBqp6YQFzY29iN5rb80RNSw8fN
-         wi0fRBhG+FmIBW1QDKl0tkbbsMvzPbHanyVyO8dpZ2Uj84+qLKP7cVhbAxv0ePcX7FWD
-         9FnQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz2sCc03y2gxGjDGdV3X9dz2aqSQppkSocYF3f+fYCELDVL255ZMwU++cBN4mF74SNIg1aY7Ms=@vger.kernel.org
-X-Gm-Message-State: AFuF++keYnRy6z1wplBzeheUjeunTIm16vBXWg+6JKTg5qjmrXMwCFh1
-	z4uJ0Pjwoglf9H2YnWDFW1eYDXuHtjSppUAepTRnwhlTEsizybXVNuJ6
-X-Gm-Gg: AYBFou3NGajmJePAgfT3kUFhTHFnv/GM2EcZ27wraK2OOWREZTrNTlsX+fF0oGB9pYw
-	FANSsmZ/xRfhvu41+Lr6SO5SrbRlRYuyJIytemgxh8rM11WYIauokVAgAmmEAo0J9Iwr/4p3CqF
-	Gw4ZYsSqEyHieESBwPKwjxQagSTbwZqHr5QvM/qY5oOaUOcHgdHYsDiSFAYt+F7K3vI5zjyiMzU
-	/j91xgdXMkVbzJ6PAL8nwFdnNOyrgKJ0wop1v0djwEqAnIC42uDSPVe9mceX6/37dnbxNporv3u
-	qDiknRisRpCDzOoO4Ix+ovqONrCurtlqsWUDK9aDquinGIOiGHjK+QFhDQd7g8fZJwskGMS8JCm
-	mzEo4C9IfCWMJ1MKBwV2SFlPYmbzjwckt3dXQmrVu9uj9h0tdHFVJP87A6hNAUL/QUD9GGlCMNJ
-	wiyWKCwF9LClOgEG2rXaLlFFZh1W8WsyzBhCZ/S1QINFIcVxkcatlz0NLtaef/QxgOsR/bB+xX7
-	PLJdIANXZW11bR+h+PYfkWCNMlc51u9PCxDpbQAYIz5aPP1
-X-Received: by 2002:a05:6000:2410:b0:486:f404:e833 with SMTP id ffacd0b85a97d-4871e363fd5mr17751590f8f.44.1790027052088;
-        Mon, 21 Sep 2026 14:44:12 -0700 (PDT)
-Received: from linus-personal-clanker ([102.164.100.122])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886224427bsm447839f8f.8.2026.09.21.14.44.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 14:44:11 -0700 (PDT)
-From: "David .B. Dull" <monderasdor@gmail.com>
-To: adrianox@gmail.com
-Cc: fw@strlen.de,
-	horms@verge.net.au,
-	ja@ssi.bg,
-	linux-kernel@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	pablo@netfilter.org
-Subject: Re: [PATCH v5 nf-next 3/3] selftests: netfilter: ipvs: add per-service secure_tcp test (David Dull)
-Date: Mon, 21 Sep 2026 23:44:05 +0200
-Message-ID: <20260921214405.7003-1-monderasdor@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921213031.6160-1-monderasdor@gmail.com>
-References: <20260921213031.6160-1-monderasdor@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1es6Gk2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC3C1F000FF;
+	Mon, 21 Sep 2026 21:50:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790027428;
+	bh=kjOeNXulRANbAxNBOQMOOOfsTuV70e2AmehNq3O70Qc=;
+	h=From:To:Cc:Subject:Date;
+	b=U1es6Gk2f5PFvUXE+AfrcvrAXxqacsbTjPjdj9W6LJRCbIeNBKZiDovuIBTbYt9g6
+	 03rzRq12OXQF7V1CxMecidfwp3R6pl2NFS7BfMamSWnxUzBxIgwMcowbddmx+H40Pz
+	 lSug1L4POS4DaRCZufgx8FTjpYImDJKGnT42PZwyWBfiBIREe0MKIe0y/Cq48WifV+
+	 jF5G260A7nFZ/qaCSy/TWTBuHJXfMfQ/vor0+zlZJX5n8Mav2V02A4BNoEYtzalKsc
+	 5xPS8d/pZJ6ozKKpNZmDZ7qkVaATy+qttsNWqOnxBIYeoxizhdAlGudKZzdxG4dATE
+	 MWJy07/spOEhQ==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: achender@kernel.org
+Subject: [PATCH net] net/rds: size a connection's path set by the transport it ends up with
+Date: Mon, 21 Sep 2026 14:50:27 -0700
+Message-Id: <20260921215027.174657-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,4 +45,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Also to avoid misunderstanding. git added the signed-off line unintentionally. please ignore it.
+__rds_conn_create() computes npaths from the caller's transport before
+it decides whether a connection to one of the host's own addresses is
+to be handled by the loopback transport instead.  That substitution is
+what an RDS/TCP socket sending to a local address gets, and after it
+the path init loop still runs for the TCP transport's RDS_MPATH_WORKERS
+paths and allocates an ordered workqueue for each, while
+rds_loop_conn_alloc() only ever provides transport data for path 0.
+
+rds_conn_destroy() sizes its teardown from c_trans, by then the
+loopback transport, so it visits path 0 only - and
+rds_conn_path_destroy() would skip the other paths anyway, since it
+returns before destroy_workqueue() for a path without transport data.
+kfree(c_path) then drops the last pointers to seven workqueues.  That
+repeats for every such connection, on every netns teardown or module
+unload, and every distinct local destination address is a separate
+connection.
+
+Recompute npaths once the transport is final, so that creation and
+destruction agree on the set of paths.  The c_path array stays sized
+for the caller's transport; the unused entries are freed with it.
+
+Fixes: 4716af3897e9 ("net/rds: Give each connection path its own workqueue")
+Assisted-by: Claude-Code:claude-fable-5
+Signed-off-by: Allison Henderson <achender@kernel.org>
+---
+ net/rds/connection.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/rds/connection.c b/net/rds/connection.c
+index b6c4beb50eaf..c752a8623cfc 100644
+--- a/net/rds/connection.c
++++ b/net/rds/connection.c
+@@ -276,6 +276,12 @@ static struct rds_connection *__rds_conn_create(struct net *net,
+ 
+ 	conn->c_trans = trans;
+ 
++	/* The transport may just have been swapped for loopback; size the
++	 * set of paths - which is also what rds_conn_destroy() tears down
++	 * again - by the transport the connection actually uses.
++	 */
++	npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
++
+ 	init_waitqueue_head(&conn->c_hs_waitq);
+ 	for (i = 0; i < npaths; i++) {
+ 		__rds_conn_path_init(conn, &conn->c_path[i],
+-- 
+2.25.1
+
