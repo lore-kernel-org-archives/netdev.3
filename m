@@ -1,346 +1,124 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011002.outbound.protection.outlook.com [52.101.65.2])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACEA49A3D7
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789982928; cv=fail; b=rUEdrZ3anvGe0y3wauFjvqGPe1qQm3Yc3Ngpl+RDLpzkkgNxlG/f69/1nCZB5rVcXbO0M7YM8gXoJwWRjIduikjON1IiqHGc5qS1naz+yoZmJppiIQuFbl0CtYf15uVa/sIJNxixbLzSCEYeCoHmqekKXLAkzweegiv13R8IQ8c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789982928; c=relaxed/simple;
-	bh=uryIDchf5orsXo7fOySDY86trn4/fXjQMrY5pXwrLCM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sGnDaiqkxktKUeeS0axerZZjD0ITqAt6/oLk0LQv/lffYtoTykmX6Ga8jB+AZwJzUCfH35SFG6Huj7j+j8S72hguC9LkdmiqG/WJ+gteiMerZVtHjQueQhCStPUiBkg2isOytiOfrkRw3e6Kq8MgyCr4kB2DCmoznpxnfJzH6Lc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=sPHoUE+q; arc=fail smtp.client-ip=52.101.65.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841DA46D540;
+	Mon, 21 Sep 2026 09:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789982972; cv=none; b=bQeuSE0P2Toyjya9vd1+4o5zckw8w+cz8s13BIw6Pg5r8Xg6ezsSIb25dAawPA93Fyf7PLwY4yH0BT1B7mlsgD+r8Q2cHaQA8WfZnhX5gUCntrtdKpUqKyR5RyCgncHqohS9IZPvWsAvR26KhTUsFnyggLD3G550nGhmAB4LiMI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789982972; c=relaxed/simple;
+	bh=SIpIlxvqLnULWsMVrpFj7gSY/FAXED4xw6Fwv4KkZC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uzBRJCZsmzaVQCD1MvmlxOAD8vITFb9e8zbuG8cALORow62iLbAw6Bb5kif+Mm3dlVKU3b8tE1YkYA8/D/RG/jwcJOMzF+d2Xfn+32FUmzz2DH7x9y7b5frHrOQVviKwMSTes9zgO6JITdTVtxqUUAhd2YSTlQ0btCztyc77cz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=HyV6GGaT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kXKKfKPO; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="sPHoUE+q"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QTK8bqafCBLc0C0yiHVa5i4KQJGgKMWu/b04lsQbDJ26zScZMSgxMzRoRYajT4rW1js6fzRHjXlT7ViEEzMW/9CLPYXQy2gAi7WCkhP2aAD1PGG82K5a05i8l12wKurIOBAj294s3MPBMoxnvhnnjfuBaMpKQ89gyj3beCS8z9xylkFQfOlcUukR0lQkzop1FspC0PBtK0Mi+vhGCdpYYOc+ONeUI8fmjUi7zW/hDNpTrjBdkZ6C8qC3TkionbDQ2XAVPYSdvZDYMa7eoUw3S1ANqDLM08oI7gFURWO8U+ABpEvs0dKE2uCPW0H7cyCM4SdMiS3xcXej4L3DPgYbgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zLd5hPRcfb/E4GiSkOhMPn5Inpb8BbqTq/OSgK0dIGY=;
- b=EMH9eRwS0ithv4F+fjogxHXCjsj6XDJDjI/UF5GTUWT8LticPytZIHe93KJrd9ljQRCaGdSxmODYyA9e2T4Hw7se/MvVnfNFXWaMsqqB0zsA9tqgx3iOI+RyxTqOBKidnbaphwCTe6Sj7RQfx948cvPUNi7m+ZFiIPh1TNcKMAKY/FNq+U5NO4TpEIFFD4Zl4z++VmsgcEOeNQEndDefIB3JDK61x8E46uiQluuyOQdQxYi2WDuKFgab1dSFGdhRW+4YmXwlIixPqlz+Z69x+P+l9siTPRitdxpR1HqWrZNzn7cZOr5CCbbYsNJkirgZV3m4vmjEPvx/UlY0Mj/tKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zLd5hPRcfb/E4GiSkOhMPn5Inpb8BbqTq/OSgK0dIGY=;
- b=sPHoUE+qIajYggeTEYUN3DYjIwrAV2x7Q1omzJXjLVWPshlAExut34LzA8k9fJBBfAHeaXfNCUPFbyEZ2XxsFeHhw0MFKbP/5NMb7t7e9pmVtjiSNVG0IVP8Oks7PeC6E7kb5IkPHwRLDH9Qcrr6SlnpBHvAdy4ovGGTZewts1BzgplAUNYZcxdrsTUwEqCpjqFyL6cXpYI2QjT5mHM4ZnSFqBfqf1b4He975WxWquskwhS8bdBuPrm1R9TeGYFxF8GFeQdfYxRTbNDEFhRzReZXqoAjduVGel/jkIAri8iQP2+IaFGx97hNPsMojYdWN7Rz2VxYfsvQJ3rzjOhDlA==
-Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:617::19)
- by AS4P189MB2136.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:51b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 09:28:40 +0000
-Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
- ([fe80::d422:dd3a:7c1e:f4f3]) by DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
- ([fe80::d422:dd3a:7c1e:f4f3%3]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 09:28:40 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: "xiaoshoukui@gmail.com" <xiaoshoukui@gmail.com>
-CC: "edumazet@google.com" <edumazet@google.com>, "jmaloy@redhat.com"
-	<jmaloy@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"w@1wt.eu" <w@1wt.eu>, "xiaoshoukui@ruijie.com.cn"
-	<xiaoshoukui@ruijie.com.cn>
-Subject: RE: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
-Thread-Topic: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
-Thread-Index: AQHdRaM/5s16wXYOHEyHInlRwNizWbbSEy6QgAZZhwCAAE9NoA==
-Date: Mon, 21 Sep 2026 09:28:40 +0000
-Message-ID:
- <DU4P189MB37506A937448D1ED977C7BFCC6842@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
-References:
- <GV4P189MB37321B67712A8B2906F2DC2DC6B82@GV4P189MB3732.EURP189.PROD.OUTLOOK.COM>
- <20260921034758.806257-1-xiaoshoukui@gmail.com>
-In-Reply-To: <20260921034758.806257-1-xiaoshoukui@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU4P189MB3750:EE_|AS4P189MB2136:EE_
-x-ms-office365-filtering-correlation-id: 82a3d0bc-e12a-4457-71d1-08df17c2b91e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|3023799007|56012099006|10067099003|4143699003|38070700021|5023799004|11063799006|18002099003|22082099003|6133799003;
-x-microsoft-antispam-message-info:
- B5v7UiLOH9kEb+Lqr88YAI5L1ynvPxgjeJMRizZXjg/HOuxp2CTQ4j8MkQUjSSQf1YY8PcxibLxnnvvQDtxaJYi/76eBHG5A2ua8CYM1TzG6MUeNUOS341L3wrqJ4xFSzJMRwN/Ksn692/KmPoZKut3YOJ/DILfK+aEB5TrCN/fKfGlELrsxEaniGPlQW0MGvcohU2r+CcgHQekczl1gSo3uorN6YIouasdflyvuemX0lipI+DU3RNGPeZABZDeacfgK32MvXiHPf7ElmjJ6mH+ZWzaGCJrrcnNSYqfejpCLfPSdSCL/gyd+SwYNH9STpaYSwRL8mO+3D7xO6IwLgpjKZt6WxqO+xqK/8bQbjUuugnjvNRjOpAVJs75930H7MTGsJh5TKPODdBrapx1xaCUZEZw7Yz66B1xK6L3cn9X5UzTnnHwt+znVhPbzw4xEHFTZ9iGuv4LF48Ot+14q7t6ID9+wADFA8/JI0gfSPyiewp3nJTlwLQd+JiX4CjJrJ0RD5WpEVyW/Js0AYScAXOLzp2E60Si+bXtmuHUwCU/7WEOHW/ZEIs7KhMjaGLC++Czt0LOILB42C+DzfWJ8C0HpNtejJNmGyj6bbsc8SgBal8m1ey9O5lNopbvjNBWDNP27K079c2BgszzwD9QNUzHoEO4LiYDobeHdnCOw3Qg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4P189MB3750.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(3023799007)(56012099006)(10067099003)(4143699003)(38070700021)(5023799004)(11063799006)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?vYXFy0yYZUhNGrACjtz4Tk7+P60MOQKDwDXRNwX8jnBOHTDGwjmmZLZtjrSE?=
- =?us-ascii?Q?cqC++ACvQjQXYd6kh3R5TRvBBgLilaPP6J8mi6xMH8WtPBKMggw64v8oS5S/?=
- =?us-ascii?Q?2g39DhZSRrYIqwEcQLKd00djH6SC9z7R8EMrlpT7jKgQ+KYXKgACB1D1r8I9?=
- =?us-ascii?Q?e30LA6vczxFWaYRcfQhZSBtWJ0ucGqm4s8wntLAmOFhRvvWcU7N03Tds3RJk?=
- =?us-ascii?Q?dZwhaUX+qJTpzCciXrV0BSm2XfyI4f+XTsawYolgcMN1pt0oM9nraHMsI0RJ?=
- =?us-ascii?Q?L6oGp2h61ncYCTMWPrS5DZHkQDhgXIPgBJQAkXJiHnVCav59D63n5gXd0cCh?=
- =?us-ascii?Q?iVW3M905kWWfRSFje3MEzielcy2y47GGBZdjgLgFHQfKl3VnEP5abUo9LXhg?=
- =?us-ascii?Q?6EBeilQIxTK1xoPaiIsPa9tFLGfDjYVfPr1GbzRm5HtN2EF2yRZbePQIpKAO?=
- =?us-ascii?Q?KC20X25wK4FxDGzgELsgC8W6eskGPeFCYMNSoAJmFvRfKjZ7ABjjLmg7JtNu?=
- =?us-ascii?Q?u8c726tlgm7dVsM/xlVS+2rE0aUfPHGl1F7PmMTHPeQLc3cY2j4bIskNpL9C?=
- =?us-ascii?Q?KQ97w0gZlGXGFZN9//Jy0n2nl23BlGD7xlbSrQZJGgpj6YlNrCQsCCLZbhT5?=
- =?us-ascii?Q?IhJGN9GZiPxqyeRBRALsLM4UAwEML4t1L1uS10had/qkxrz5bwhusJD4rQ3V?=
- =?us-ascii?Q?7pmzXhKTuUKv9HjdZzyIA27znQmesbAGVifTFg4e8PPFpr1gbOhodKqp6evF?=
- =?us-ascii?Q?TnZBL1wESPivngC0f0XHS4v9vI2DudhpaXAQyuqah1ISoGapugOb4dUi+ffe?=
- =?us-ascii?Q?Lx2+zazk2b9hPjabFTOgsGmFBCLsZRP05y4JJ5sEiJ20WCYpGvsf9cqRMgZu?=
- =?us-ascii?Q?GMpoAkCx3mhH0XcBmmMSfTU1Tfe7jnF3vPQXeux3jZ8TK+OISV9n3514xCRv?=
- =?us-ascii?Q?skkckoLVSFH9cANASHaTGRMNEOgR8YV8EB1mKBcPwKBX9vPWdinkhiTKQhQ9?=
- =?us-ascii?Q?x+VGC+K4fm5lgNm1IUKpxDacXUpg8cQsPrifjRT6/Hc3uMyg9XYRm1ikvCQY?=
- =?us-ascii?Q?osTMx4TMfR78glyEEpvxW7YWeF0VMRNyxpqYE62abQNB9Kd2cRpQFv9dM7ro?=
- =?us-ascii?Q?6XDJ3vGSJJxMF4pfyqfaBztiLvUbGgKv0kH3lgSfZVoJb8znnfXNdohp0FIy?=
- =?us-ascii?Q?Ba5q59VUOxueARi0BCx7evl8Gku4pXgibvtx8aLPkKMCKa0KZRSUtcv99vXS?=
- =?us-ascii?Q?W7d35vqVx3T/zQNds+gs7gV+e/bwN6LFjdmVat98AXfK77D0ggnBX68haP7w?=
- =?us-ascii?Q?DQ8zN0jT9seIGzXpjE+c64kEcNK5mMVaxLUYM4TUUgnuO+I5ahuOb1ywUqRZ?=
- =?us-ascii?Q?ZVnTTmNWzV4Z5aeIqiYD3yc/iOu566RBon8wHXd/EYB5NbcZPpjyDVPSJsor?=
- =?us-ascii?Q?fBsdu/T9YT301syzUvKcplH1TR/5kSZL3GoNLKEcnoOmD7ewwp1IuVu6pRU1?=
- =?us-ascii?Q?l7cIeBvHM8VvMi81ybGWD2waTermixOHHHFv0Y1KlftkMAilwkII6/uaPiuo?=
- =?us-ascii?Q?FnUEFoGjOljk+ZQTDDPmEp+2fu5FzJzQc6LyIbPGBl/GI/n+Dr9FUKPqR1dW?=
- =?us-ascii?Q?qpatzFdbKZjDyXCvGk7gtZrAdfR4IphW1MQc4f2gx6AzgafNAKNyCNLYJStf?=
- =?us-ascii?Q?7i5ALLANqUds5wldHUA2ai0c8Bzak3emD/pNBGPVcu7DTYGe51MvWpiBll2w?=
- =?us-ascii?Q?nm+XlJUAxw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="HyV6GGaT";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kXKKfKPO"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 142301D0008F;
+	Mon, 21 Sep 2026 05:29:27 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 21 Sep 2026 05:29:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1789982966; x=
+	1790069366; bh=tozHMk5NwGp0Nnkz9Qbt5sXPlfSoracy95QzI1l+XLE=; b=H
+	yV6GGaTGMINmU77HePz827y9m8BqF1JtmDcK1Hr9k6MCKfsIhPXQj9QZnm+nlQIs
+	4D9dz+7Bmh68xFKwBUx9z66hOdwQtbfwfKZQ1gBCGPOPGPbWh8eHQQoXv0zucqU8
+	Ois+SwBGIqBjEF3/TBza6NcxTjbypsHLgFuiC3tVskPqxFKQBOFSamV/uUXSdRBv
+	HWIBOnaA67fEy03HRlQeaFe1HFbYARXHqJQQnJrhOLzqSVySm9se/95uCCA+wkAm
+	KgZ7KIneRjyHz276+sq4o4JdwPVJwO56nY6Op3HUGN5F0w8auQN9RwPhI7pH0dKB
+	vPGuSNzNJznmff+I98QnA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789982966; x=1790069366; bh=tozHMk5NwGp0Nnkz9Qbt5sXPlfSoracy95Q
+	zI1l+XLE=; b=kXKKfKPOrCSaRbpUx0SKn2BovUirZaAFD9awqASXPupTc5vIaEF
+	CKFKCxTBHJps64ri1hO1525MoQaYngRcdVi8KUCNO1UuGi1+2aOhZ9xQWwNHBr8q
+	QmT89ksUq/cutE8ZA7D87HlzdyN6Z7986U3f2xS6/+0NeuoSukA0WB+004RalRBI
+	BqODY9wBef/PypO33/vhRmN9AZL1U7bjc4aKB36bR/69gba8wmDmx8pi9A7Vq+b8
+	JLVIR9YJN8V2PleOsmp8SaFisQ4U+UDiW6DYjCUfodi4Ktj5IsH+prxJcjQdl/ND
+	UWnU9dfMY/nRqkpcfXP5b6F38+JBIBsWYqQ==
+X-ME-Sender: <xms:9viwat61I9fl6fPUprJpzFY3eAKzCv7PyseYvV8hL7xPGPWiOM_6eQ>
+    <xme:9viwaqciYHoo6DS_wdDxqQ07CRCTEcAIwJtt3wKbLv_kGBnPWQ8K9Cwe1-UNfqwQs
+    w10TzfEpks2WZC22pcuyZOdc-1vQ7BGzS_7KarBNbe0vcuJkhkqJ-6XTA>
+X-ME-Received: <xmr:9viwaoxegCDHLWZaXvVCX58Pzbf9cPcNM8UfB7JA8E29_5x0MIsdyTgppmD3>
+X-ME-Proxy-Cause: dmFkZTGEn3taAaYhLgx4plFq+cNdstjuMDhwzeKDpA7LcdYpkkHm3ZO32h5jf8AFCfTMLK
+    sRc/vQbLHiHHAVj9DOghD1Sqj050uLY85xpdm7EFRlPC/2AdhSIADvaaTgyWw8d3VL9QK6
+    rNXWelIQOAxQfGO7XfHjmeWtiE+md4TTugCesltQLiE4Cp5Oh8EDskO9zFYAvgUBLnN8el
+    KHzAKB7BMG86kTwvwtkCgo8g5ccC78D1tvAAD5IBXAnuLFMOOhdPjDhFwWQYY1KuixJQ9z
+    g/OOpRFAUojC/rJ1u/Oz2CIb2apHoeSLfO8AtAMPI4VvmpZW3ctPBH0Cf/URXDI4ubZRnU
+    RUUuPY6OgRGn2nLOocWFVkErprPrV11/pcKYBKXeTPHiyET4/u9CAuNAIyA1KXtjnn/okh
+    4WxH3Fi98rffvIGJpJoHCzFVgYHUDX17EX9S1GJ0g9v8BXfAM+FfA1s/+2xKMERyVKCpOs
+    YGIAuEZ3ktTEvzwBJdiF3aVY4gnhL7jqXMMy13O4Nu7ZSX/vwwslrlKKmfPrTTtcz0xa64
+    EJED79zBvGtzg/o/r5okT6b/U6/3TTKT+T7Z7qa886HOueGqnR6YJjwhUOz6q2TIBOEhZf
+    vvVYkk02oCBLOk482kqbEaMmxp1aXaLKvfJjBu37WKJe1NTnwL3qgAiKrItw
+X-ME-Proxy: <xmx:9viwaoqJiv1TptxjTLQZtnoT81VAPI_8Gc3zVDVv0p6UR1cmjAmLVg>
+    <xmx:9viwauwcgiX9k42YECLcE88Y0HSrenWge8SnSH_cqgcBIVuqpHAl8w>
+    <xmx:9viwakptJ7eRJGu3r1WuR73m7k706RyHZau0rXlq7AyocGRDMNrQ9A>
+    <xmx:9viwamek-ACqI5t42CTSQ2mGPmCl8xnKcCZ-iMZ0jx_n0pGpmSJquw>
+    <xmx:9viwar3d7hTjWIWx1tv7t9EI-Zrc6OKf9z_m6AX_3PrBCxvfLYDEeTgO>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Sep 2026 05:29:25 -0400 (EDT)
+Date: Mon, 21 Sep 2026 11:29:23 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Haseeb Malik via B4 Relay <devnull+haseebulhaq55.gmail.com@kernel.org>
+Cc: felix.walter@cloudandheat.com, edumazet@google.com,
+	linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch,
+	hangbin.liu@linux.dev, kuba@kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, horms@kernel.org, davem@davemloft.net,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com,
+	Haseeb Malik <haseebulhaq55@gmail.com>
+Subject: Re: [PATCH net v2] macsec: initialize SecY before registering the
+ netdevice
+Message-ID: <arD488xDvFFwtTTN@krikkit>
+References: <20260918-fix-macsec-net-v2-1-784203ec4836@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82a3d0bc-e12a-4457-71d1-08df17c2b91e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 09:28:40.6531
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GyAdvOgaDv+/mqgx6CxE8ZYJZUqjVehr/5AVx7+N5ShswDtoSn5LHsJ1Wa4hu3GTF/UEzZe6H+RRTaXBJkHv+fnIRF7vsWsbFKbHCosiFVI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4P189MB2136
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260918-fix-macsec-net-v2-1-784203ec4836@gmail.com>
 
->Subject: Re: [PATCH net] tipc: fix memory leaks in bundle and fragment pat=
-hs
->
->Hi Tung,
->
->Thanks for the review and feedback.
->
->On Thu, Sep 17, 2026 at 03:51:16AM +0000, Tung Quang Nguyen wrote:
->> This cannot occur because the sending side already does sanity check
->> to make sure that no invalid protocol type exists in bundled and
->> fragmented messages.
->> This only occurs when you create fake TIPC messages or tampering with
->> existing messages. This is an invalid use case because TIPC is being
->> used in an insecure environment. In such environment, IPSec or TIPC
->> encryption must be used as mentioned here
->> https://datatracker.ietf.org/doc/html/draft-maloy-tipc-01.txt#section-
->> 6
->
->I agree that the normal transmit path performs checks that prevent the
->relevant internal protocol users from being bundled. In particular,
->tipc_msg_try_bundle() rejects MSG_FRAGMENTER, TUNNEL_PROTOCOL, and
->BCAST_PROTOCOL.
->
->However, I think this is separate from the receive-side skb ownership issu=
-e
->addressed by this patch. The patch does not assume that these message type=
-s
->are normally generated by the transmit path. It handles the case where an =
-skb
->has reached tipc_data_input() and that function explicitly reports that it=
- did
->not consume the skb.
+2026-09-18, 15:01:29 -0400, Haseeb Malik via B4 Relay wrote:
+> From: Haseeb Malik <haseebulhaq55@gmail.com>
+> 
+> Creating a MACsec device with MAC offload over an LRO-capable lower
+> device triggers a warning in rtmsg_ifinfo_build_skb() when IPv4
+> forwarding is enabled by default.
+> 
+> register_netdevice() invokes inetdev_init(), which disables LRO and emits
+> a NETDEV_FEAT_CHANGE notification. This reaches macsec_fill_info() before
+> macsec_add_dev() initializes the SecY. key_len is still zero, so
+> macsec_fill_info() returns -EMSGSIZE and trips the WARN_ON in
+> rtmsg_ifinfo_build_skb(), even though the skb has enough space.
+> 
+> Initialize the SecY and apply the new-link attributes before registration.
+> Move MAC address inheritance into macsec_newlink() so the SCI can also be
+> initialized before registration-time notifications report it. Move the
+> per-CPU statistics and metadata destination allocation into ndo_init(),
+> and release partial allocations on failure.
+> 
+> Fixes: ccfdec908922 ("macsec: Add support for GCM-AES-256 cipher suite")
 
-This patch tries to address an unreal use case. I am waiting for your real =
-reproducer and explanation on how data part of bundling and fragmented mess=
-ages can contain invalid types/users.
-Of course, tipc_data_input() drops invalid types/users as designed.
+Why this commit? The "register, then init SCI etc" order of operations
+has existed since day 1. Without ccfdec908922 we don't hit the WARN_ON
+in rtmsg_ifinfo_build_skb, but the bit fixed by "Registration can
+notify listeners before returning." would still be bogus.
 
->
->The relevant point here is that an skb that is not consumed by
->tipc_data_input() must still have a defined owner and cleanup path.
->
->> This check is redundant because bundled messages do not contain
->> message types that can make tipc_data_input() return false. The only
->> exception is tampering with TIPC messages.
->> If that is the case, a fake valid message type can be inserted into
->> the bundle message and tipc_data_input() returns true but user
->> applications are broken by corrupt messages.
->
->I agree that a tampered message can be changed to a valid user type.
->In that case, tipc_data_input() returns true and the message is queued for
->further receive processing.
->
->However, that case does not exercise the check added by this patch.
->The added kfree_skb_reason() is only executed when tipc_data_input()
->returns false.
+The patch itself looks ok. Thanks for picking this up, things got
+crazy and I forgot about it.
 
-The check is redundant because tipc_data_input() never returns false after =
-calling tipc_msg_extract() or tipc_buf_append().
-
->
->The two cases therefore have different ownership behavior:
->
->valid user type
->    -> tipc_data_input() returns true
->    -> skb is queued to inputq
->    -> receive processing continues
->
-
-This is correct but there is more valid use case:
--> tipc_data_input() returns false
--> skb is passed to tipc_link_input()
-->  tipc_data_input() returns true
--> skb is queued to inputq
-
->unhandled protocol user
->    -> tipc_data_input() returns false
->    -> skb is not queued or consumed by tipc_data_input()
-
-This is not correct. If tipc_data_input() returns false, the skb will be dr=
-opped.
-
->
->For the latter case, the bundle path currently ignores the return value:
->
->while (tipc_msg_extract(skb, &iskb, &pos))
->    tipc_data_input(l, iskb, &tmpq);
->
->tipc_msg_extract() has already allocated and validated iskb before returni=
-ng it.
->For the protocol users listed above, tipc_data_input() then returns false
->without consuming the skb. Since the caller ignores that return value, the
->extracted skb has no subsequent cleanup path.
-
-This is not correct as explained above.
-
->
->The proposed check only closes this ownership gap; it does not attempt to
->solve message-integrity or anti-tampering problems.
->
->> >+				kfree_skb_reason(iskb,
->> >SKB_DROP_REASON_UNHANDLED_PROTO);
->>
->> Compiling warnings:
->> https://netdev-ctrl.bots.linux.dev/logview.html?f=3D/logs/build/1166117/
->> 14820384/checkpatch/stdout
->
->Thanks for pointing this out. I will fix the checkpatch formatting issue i=
-n v2.
->
->> This check is redundant because fragmented messages do not contain
->> message types that can make tipc_data_input() return false. The only
->> exception is tampering with TIPC messages.
->> If that is the case:
->> - dropping the invalid fragmented message will cause the reassembled
->message
->>   corrupt (For example: sending a 65KB message but dropping/truncating
->1500
->>   bytes). As a result, user applications receive corrupt messages.
->> - a fake fragmented message can ben sent and tipc_data_input() returns t=
-rue
->>   but user applications are broken by corrupt messages.
->
->Regarding the fragment path, I believe the proposed change does not drop a=
-n
->individual fragment during reassembly.
->
->tipc_buf_append() is documented to return 1 only when reassembly is
->complete. For the first and intermediate fragments it returns 0. When the =
-last
->fragment is received, it validates the reassembled message, assigns the
->complete reassembled skb to *buf, clears the reassembly state, and returns=
- 1.
->
->Therefore, the relevant sequence is:
->
->  first fragment
->      |
->  intermediate fragments
->      |
->  last fragment
->      |
->  complete reassembly
->      |
->  tipc_msg_validate()
->      |
->  tipc_data_input()
->
->The added kfree_skb_reason() is reached only after this complete reassembl=
-y
->step:
->
->  if (tipc_buf_append(reasm_skb, &skb)) {
->      l->stats.recv_fragmented++;
->      if (!tipc_data_input(l, skb, inputq))
->          kfree_skb_reason(skb,
->                           SKB_DROP_REASON_UNHANDLED_PROTO);
->  }
->
->At that point, skb refers to the complete reassembled message, not to an
->individual 1500-byte fragment.
->
->If tipc_data_input() returns true, the reassembled skb is queued to inputq=
- as
->before. If it returns false, the complete reassembled skb is not consumed =
-by
->tipc_data_input(). Without an explicit cleanup at this point, the reassemb=
-led
->skb and its associated fragment data become unreachable.
->
->Thus, the proposed change does not truncate a 65KB message by dropping one
->1500-byte fragment. It only releases the complete reassembled skb when the
->receive-side dispatcher reports that it did not consume it.
-
-You are right. I misread tipc_buf_append().
-
->
->I agree that a forged valid user type is a separate message-integrity issu=
-e. This
->patch is not intended to provide authentication or protection against mess=
-age
->tampering; its purpose is limited to ensuring that skbs rejected by
->tipc_data_input() are properly released.
-
-tipc_data_input() releases invalid skbs as expected.
-Note that we do not want to add check for unreal cases because it causes pe=
-rformance regression.
-I tested your patch and it showed regression as below:
-
-Setup: disable NAGLE to generate bundling messages. Two netperf threads wit=
-h different message sizes are executed at the same time.
-
-[BEFORE PATCH]:
-node1 ~ # taskset -c 0 netperf -n 2 -f m -c -C -H 100.100.100.2 -t TIPC_STR=
-EAM -l 60 -- -O THROUGHPUT -m 64
-TIPC STREAM TEST to <1.0.561:547203127>
-Throughput=20
-521.49
-
-node1 ~ # taskset -c 1 netperf -n 2 -f m -c -C -H 100.100.100.2 -t TIPC_STR=
-EAM -l 60 -- -O THROUGHPUT -m 65536
-TIPC STREAM TEST to <1.0.561:309928041>
-Throughput=20
-9342.63   =20
-
-[AFTER PATCH]:
-node1 ~ # taskset -c 0 netperf -n 2 -f m -c -C -H 100.100.100.2 -t TIPC_STR=
-EAM -l 60 -- -O THROUGHPUT -m 64
-TIPC STREAM TEST to <1.0.561:1589461199>
-Throughput=20
-440.38     =20
-
-node1 ~ # taskset -c 1 netperf -n 2 -f m -c -C -H 100.100.100.2 -t TIPC_STR=
-EAM -l 60 -- -O THROUGHPUT -m 65536
-TIPC STREAM TEST to <1.0.561:2903145288>
-Throughput=20
-8417.67
-
-
-
+-- 
+Sabrina
