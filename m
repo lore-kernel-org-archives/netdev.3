@@ -1,123 +1,158 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8B0502546
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E90B4FDA57
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790016587; cv=none; b=ERh2gsKkJIJWN+yOoataUNTwk7uBGwVsN4OSgLTwUBYxMmWWW6X3A9xRw4P3bj1UAgvrJXUnkpJbvx4e9hYnjiCFvKbqXiswK4Xolycm9Ua5YVr5eOiqhKbiROErfPsak3R6BCVmBjxFuPawKL9NBoaUQBzUZ2VmSPAZrpdcNOc=
+	t=1790016945; cv=none; b=up9Cr9pbI7INAZiJNIKydBfGIrAWCoUSQLb1hxepIW0DDEhoiz8esHBADOCrRLNuZlIZE3SjK4pS5UHnRufnl+TwjeLk2yjnd4U+0Mfjfos7OmdfhC/bk8R4U7UaNhbyy1Ukr9mBpUUI8aIqrLOsDEXZidtx8OPTEcc5PeuA1ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790016587; c=relaxed/simple;
-	bh=eH7Hm1uMrlwa/7LDj8dOOc8xLeAvOtQc1CnaM/GQf4U=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=HTgW6haf40q2eeo66VRw0v2XyJTJrcqV18MS494hwIldu12HZOuST3LXF1Ga3dOBuHRA6KB8/MKjMVVm/aVwI8aUp21/v9yPHmAWI0sNuam/mpKWqoGcgn+rtSwiWFQpSB2PXbmJ1GmqTdY4/DRVQgA2S01VRSuYtu8jIbNTEt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FjxdgSOT; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790016945; c=relaxed/simple;
+	bh=efVWYgIjl3iCadL7kQR6FSdI3gwDaztITVsfcs0HPfU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AF0uIxKi2ZQwcHzEm10fdzdrcX1hUMKjvHuRMp709uwZf6WWbZdRrZsMGoxm+zAJma/Ex+KPXyWFXrvbyflRPxNosocAqa19FeMcqx3HohGE62RC90YRGLqibJ8zc8TAVDFePTTF/CcBrJMn8KHJCeHwhyc/INxwmkBVYSI1Nlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MX9ebfTZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FjxdgSOT"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b910bdf2eso2304658a91.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:49:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790016586; x=1790621386; darn=vger.kernel.org;
-        h=message-id:date:content-transfer-encoding:content-type:mime-version
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cPNI3EKcdTmIIayCEDJy76QjloEjzqwyuvf/Q6PUASQ=;
-        b=FjxdgSOTW6pG3/1XVjqWfiK3j3CaBKoa93RkuLLcEDHumcvZGFBv4vpzHQFN4cSzFU
-         CWCl+/T0S7Fisu3WmTZJv2eoOPkQFG6QTcGtMjuVqK3YT1H0T7b2kW6n68NAJzKZtW8b
-         qLNBsGmeFJfDNCMlrViBW4FsL92YaOdmLiXjtJspKvK8zjXgqd4ns1TheFcwsPuWrbu2
-         mRdUgP7TlfssyRU4fTYWT92tex/WkQEyHbt1Q2eC5lffNNslijuxsX3INQfb4Q7VTVuD
-         ZshFAz9b/1KX93u5UTF1x1584SSozwy5PIY90GF0VexidQAD3o89FsCJDVqQlHHv+iQP
-         uQMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790016586; x=1790621386;
-        h=message-id:date:content-transfer-encoding:content-type:mime-version
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cPNI3EKcdTmIIayCEDJy76QjloEjzqwyuvf/Q6PUASQ=;
-        b=zrVb09Nu2005JWHoplulnROFmiNd8rAZn3xFFOyod2dFFkC+Fp2RLhcgbyL1vHmzPu
-         WkL03QWKpKlG2nb/FlYNgRBA2/2Fm+IzcPg/oGGoX55aRKTI4JYcJkM4Fd8RsToixQ+B
-         ZIJsf/coKwf4iy13FxVCVrJ/r+a3olsrnAhgKAZUCZPRCyKCce/d6Hro94sp+YRGMKZK
-         /BXeVzCCLWZPv0M6u+XO3FR9PeMI92vddreNcKu8Fr09tt3PGTfxrWsK60rgQDmm6gN6
-         HIspZZYohTo+VKpMAANl/GzYVXk1/IUs8K+dD097g2ZIqUX1mEqY45l77ynD+zrguOx8
-         dkSQ==
-X-Gm-Message-State: AFuF++kZ7Z1yQAy8wDIgGoFmBQJCbu0w0cCVd6Jlgvrfn6pItN4FqvSB
-	6Bh/mr/1WwwBKPygxX9ouC7E60+NlHyOTGMo2TFXei9MEl1WfPFW96GQf42SFSlL
-X-Gm-Gg: AYBFou2GMtpzKYSCBI2qrRuQPU3d31BkvTHyMj2y6vZwADKH9pWQcOHZC5dksKe0SgN
-	s7EyjaGRcYTGPE7JXiVUWf/BooWPJoPxhsfMtX8+KF+iAQvw4XouJMQDGO38QQdE3XfFSh507//
-	tClr2z2AVO0SsGW+Ql86EJHTsO6a1XvxV/OtQ/YFKs75nLAToOha+JNIAzRegFRRT0JwVjHA8Ql
-	sj3HgbuxIb4sMN06P745vJHaKyk8+A6O4IfGMSCJYrRyUN1sWPuwctKLqkdhEQsVlwepmwyOzEZ
-	gEHodxAFI7VkXlOh//5hGaxBS5Q/frKxKRBH3pUKeOsKGcEY3Vd5Vn+qQc2xZ0da9ccZcI04mpA
-	W5sYk+rcKp3jHkhi/qSdD2BSh8T2g+/pCv1yVNJ++OOocxAhR22v8LBbIxljFqhRnaAzAa178+a
-	ZSYP6xmkbB3GHTgW3V7XZ6PgU0UrBDjJ3JZYcTu0m5XiHtMASly6CV0RBTxeSxXCdhFxJckniRA
-	xKxdlRu+QqBkbWDe9Cqjdw=
-X-Received: by 2002:a17:90b:4e85:b0:39e:21a7:5df5 with SMTP id 98e67ed59e1d1-39e54d5ca4fmr16112066a91.24.1790016585605;
-        Mon, 21 Sep 2026 11:49:45 -0700 (PDT)
-Received: from SANGHOON. ([1.220.132.212])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e52d5adc1sm8579800a91.0.2026.09.21.11.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 11:49:44 -0700 (PDT)
-From: Sang-Hoon Choi <csh0052@gmail.com>
-To: Fan Gong <gongfan1@huawei.com>
-Cc: netdev@vger.kernel.org,
-    Changyul Lee <lcy8047@gmail.com>
-Subject: [PATCH net] hinic3: handle auxiliary device ID allocation failure
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MX9ebfTZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188DA1F000FF;
+	Mon, 21 Sep 2026 18:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790016943;
+	bh=m7g0dwHnMzToYSN2TrpN1WvxECMSYHYWnPdaKAxCW+8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MX9ebfTZVLaAAMQPEkQpm9XfNJFZfyXza8+RAMaAY2KS4xt/LloBUan11g89HgFmD
+	 GIkcPJ1GsueoRh+/IpjYqj6vfc8r8mFa/EYfYQ1YU5ua9ARHnw2O3+dYcHvQ+ZYr24
+	 e4yj/oubHVRhsA94VQJjjn21b8EerS1zEPl+XsokCT6zZzzRQnJ4wpLaxTHksySMaI
+	 nt9CetespxKw1bICidK+eMGQK2a+xozFtDmfgi/OSYt/8Cyy/InaS4UfxSF0RotvB+
+	 kCkDr5YBa75yAXSrKz6u3DXZdWFu49czoz1N+IAkynLtVmjQKwEFZ3KvM0jzW44xyc
+	 M1eNxy2ret6qg==
+Subject: Re: [PATCH net-next 1/2] net: dsa: mv88e6xxx: check the port when
+ reading back a policy rule
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, olteanv@gmail.com,
+ andrew@lunn.ch, f.fainelli@gmail.com, vivien.didelot@gmail.com
+Date: Mon, 21 Sep 2026 18:55:42 +0000
+Message-ID: <179001694253.2160803.16390239637008123615@kernel.org>
+In-Reply-To: <20260918185326.3940857-2-kuba@kernel.org>
+References: <20260918185326.3940857-2-kuba@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Date: Tue, 22 Sep 2026 03:49:28 +0900
-Message-ID: <179001656835.91284.3719235813225229273.idr-bug-81@gmail.com>
 
-hinic3_init_hwdev() stores the result of hinic3_adev_idx_alloc() in
-hwdev->dev_id without checking for an error. If ID allocation fails but
-the remaining initialization succeeds, hinic3_add_one_adev() uses the
-negative error code as the auxiliary device ID instead of a reserved ID.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Return the allocation error before initializing the hardware. Add an
-unwind label that clears pci_adapter->hwdev and frees the allocation
-without attempting to release an ID that was never allocated.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
-Fixes: 8133788d023f ("hinic3: Nic_io initialization")
-Reported-by: Changyul Lee <lcy8047@gmail.com>
-Assisted-by: LLM
-Signed-off-by: Sang-Hoon Choi <csh0052@gmail.com>
----
-Found during source review at mainline
-5dd1818b15d98d4a20806cd00b1b40320b06004f. The affected source is unchanged
-at f0100363d8c374bd8e9ea7c9ba02744f0b802ca4.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The modified hinic3_hwdev.o compiled with x86 allmodconfig and W=1.
-I have not tested this on hinic3 hardware or injected ID allocation
-failures.
+- [Medium] Missing `Fixes:` tag.
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
-index f44b3064a..830bf9aad 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
-@@ -545,6 +545,10 @@ int hinic3_init_hwdev(struct pci_dev *pdev)
- 	hwdev->dev = &pci_adapter->pdev->dev;
- 	hwdev->func_state = 0;
- 	hwdev->dev_id = hinic3_adev_idx_alloc();
-+	if (hwdev->dev_id < 0) {
-+		err = hwdev->dev_id;
-+		goto err_free_hwdev_no_id;
-+	}
- 	spin_lock_init(&hwdev->channel_lock);
- 
- 	err = hinic3_init_hwif(hwdev);
-@@ -602,8 +606,9 @@ int hinic3_init_hwdev(struct pci_dev *pdev)
- err_free_hwif:
- 	hinic3_free_hwif(hwdev);
- err_free_hwdev:
--	pci_adapter->hwdev = NULL;
- 	hinic3_adev_idx_free(hwdev->dev_id);
-+err_free_hwdev_no_id:
-+	pci_adapter->hwdev = NULL;
- 	kfree(hwdev);
- 
- 	return err;
+Pre-existing issues:
+- [Low] SRXCLSRLDEL cross-port delete: mv88e6xxx_set_rxnfc()'s
+  ETHTOOL_SRXCLSRLDEL arm looks up fs->location in the switch-wide…
+
+--
+
+net: dsa: mv88e6xxx: check the port when reading back a policy rule
+
+This adds a policy->port == port test to the ETHTOOL_GRXCLSRULE arm of
+mv88e6xxx_get_rxnfc(), so a location belonging to another user port is no
+longer copied back to the caller.  The GRXCLSRLCNT and GRXCLSRLALL arms of
+the same switch already filter on policy->port.
+
+> net: dsa: mv88e6xxx: check the port when reading back a policy rule
+>
+> chip->policies is one IDR for the whole switch, so the location an
+> ETHTOOL_GRXCLSRULE caller supplies can name a rule belonging to any port.
+> mv88e6xxx_get_rxnfc() copies it out without looking at policy->port, which
+> lets a user on one user port read the MAC address and VID of a policy an
+> admin installed on another.  ETHTOOL_GRXCLSRULE needs no CAP_NET_ADMIN.
+[ ... ]
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+[Severity: Medium]
+Should this carry a Fixes: tag?
+
+git blame on the pre-patch GRXCLSRULE arm in mv88e6xxx_get_rxnfc():
+
+	policy = idr_find(&chip->policies, fs->location);
+	if (policy) {
+		memcpy(fs, &policy->fs, sizeof(*fs));
+
+attributes those lines to da7dc87553046 ("net: dsa: mv88e6xxx: add RXNFC
+support").
+
+The earlier fix to the same function, b1fffc273112e ("net: dsa: mv88e6xxx:
+bound the policy rule dump by the caller's buffer size"), already uses:
+
+	Fixes: da7dc8755304 ("net: dsa: mv88e6xxx: add RXNFC support")
+
+Without that trailer, stable tooling has nothing to key on for the
+unprivileged cross-port read described above.
+
+The commit message says "changing this does carry some regression risk" --
+is that hedge the reason the trailer was left out, and could that be stated
+explicitly?
+
+> diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+> index 8cf5681f5806..461167199a71 100644
+> --- a/drivers/net/dsa/mv88e6xxx/chip.c
+> +++ b/drivers/net/dsa/mv88e6xxx/chip.c
+> @@ -2457,7 +2457,7 @@ static int mv88e6xxx_get_rxnfc(struct dsa_switch *ds, int port,
+>  	case ETHTOOL_GRXCLSRULE:
+>  		err = -ENOENT;
+>  		policy = idr_find(&chip->policies, fs->location);
+> -		if (policy) {
+> +		if (policy && policy->port == port) {
+>  			memcpy(fs, &policy->fs, sizeof(*fs));
+>  			err = 0;
+>  		}
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the delete side of the same
+IDR has the identical missing check.  In mv88e6xxx_set_rxnfc():
+
+	case ETHTOOL_SRXCLSRLDEL:
+		err = -ENOENT;
+		policy = idr_remove(&chip->policies, fs->location);
+		if (policy) {
+			policy->action = MV88E6XXX_POLICY_ACTION_NORMAL;
+			err = mv88e6xxx_policy_apply(chip, port, policy);
+			devm_kfree(chip->dev, policy);
+		}
+
+A location owned by port A can be removed and freed while
+mv88e6xxx_policy_apply() is called with the caller's port B, so the
+hardware side effects (mv88e6xxx_port_db_load_purge() and
+port_set_policy()) are applied to the wrong port, and the "mapping still in
+use" loop filters on policy->port == port:
+
+	if (action == MV88E6XXX_POLICY_ACTION_NORMAL)
+		idr_for_each_entry(&chip->policies, policy, id)
+			if (policy->port == port && policy->mapping == mapping &&
+			    policy->action != action)
+				return 0;
+
+This arm sits in the privileged default of dev_ethtool(), so CAP_NET_ADMIN
+is required to reach it.
+
+This one is already handled inside the same series -- the following patch,
+"net: dsa: mv88e6xxx: check the port when deleting a policy rule", adds the
+same policy->port == port test to the delete arm, so nothing remains at the
+end of the range.  Noting it here only for completeness.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918185326.3940857-1-kuba%40kernel.org
