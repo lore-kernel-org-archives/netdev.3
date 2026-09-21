@@ -1,89 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720C451614B;
-	Mon, 21 Sep 2026 21:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FAC229B38
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 21:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790027448; cv=none; b=sRzizSrdpY5idLq5V/k41WaRhcHiR8DpjQ/+OwIjW9tNy3iNV1yyJiZCspFnN2MAW7yjCe7keRangwFzIhSqJzoTjzbkGYMrYkPU9xQGvBEt2wRIH4mvIk2pCz6v+tnQ+j1+auF/Gn1W6OR4Kd+iLJg9Mb0epO8/ZMZnKaXodMY=
+	t=1790027990; cv=none; b=DWWgIoM5M6NYr4ZOHZEDdeOGsVv1Cmmn5WWHys2Fa2cuA8KOkq3lqMTXCpjZiPR/4w7SNPZTAg/GMZ6N/msGQpj8CPrGoMqhDdxEpf5hyVNZLU5zQTq/RF8WY3dek13O/lcu4qE6JzwGpsIFC5XfRc1OkcDIQAqUrvTYrB8EADI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790027448; c=relaxed/simple;
-	bh=D71f7uILAyrvvvvFg//FqtUrM6J53vSeLJLumSknAOc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mpyRrUg61EIDc9ybUwgipjiwxwj0fK2h63nhj7YKIf+zUCqVH5aXhvCNy43JxYEget6C73bLQys4vIy76ynPXOxtQ0pKUMExM9wgaGGqrWQFHZwJ21ykeiJ65/WUAp0CC2y+HZbZCPH+Zpr07aZFnV0auXE0S3w3+fuFw4XKWV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtYmyO8j; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790027990; c=relaxed/simple;
+	bh=5y1C1HMAJ8SKcITEA3lkNHPiYq4pBhGi2fZgxuDx3aE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eWwj9Z4PWwTNMGXJIrFCA56rU2HLSO1kJRGiii/lJkI1XZcBFmtmZxYIhuZ4gLgqG95KC2Ze/wmB5lvjsM+qJYG5pYRDCJcqGEU3lRGeC+7IB9E1ibVCEtyYjo4Q3YYIhc4J9mwRTNPcsAcHVkG3DbpMH57K3KsZFbQJlShAx+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jBSlB3uq; arc=none smtp.client-ip=74.125.228.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtYmyO8j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75011F000FF;
-	Mon, 21 Sep 2026 21:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790027447;
-	bh=HLip/4mebxRdBkh5E4jlcAdSH/jfbe3rHCsYtFhelbg=;
-	h=From:To:Cc:Subject:Date;
-	b=TtYmyO8j3KcTdifwzU+PrLpBm2q+hMv3htjFfZOBSvWhPmLnhm8cF+qJozcOG3NA8
-	 S4ktO7f07yMdOYHNVFPZ/KTkyThgdvGXGSB71C9ihIvT2vLTJGoCG3oTGQ3gS52l0Q
-	 zwC5DopIop5pf/bnb0rXS9EkNYKlMIbbv1kjEapDUiE12pkVkpnrfSYoEUSuBk9QdW
-	 lkRoRFze9S1mvu3eT/x9XQr2+wP5ebUN1mzOsyXNY2Z66xQIVIPffJqXCsVRtCT/IO
-	 o9VnR70hF7gbG1zsTfi5o+O4LuDw9t9wPdWHUFjg0nG+twRw4oKCGDHkhKxEBNE/qO
-	 aAHvVrFVGwrLg==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org
-Subject: [PATCH net] net/rds: include the scope id in the sendmsg connection cache check
-Date: Mon, 21 Sep 2026 14:50:46 -0700
-Message-Id: <20260921215046.174745-1-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jBSlB3uq"
+Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa22408406so5333318a12.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:59:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790027987; x=1790632787; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hSlFAvdvk76O8etMUCMxW34HuIJRKYdAfu//0LmiLks=;
+        b=jBSlB3uqmKDNy6mfQH1hfrG67LIAUWRcLgmj6It3v3UNp0f+8mCN7kkxIP8/rCdapD
+         9e0R/KHT/9xBJ/f4gmogfuYfNU3CJbaYUI1yv7uBVYVBTyJHUAUWGYW1b2/YqZ7oZ8ZR
+         9dP2la7Tpej45XsSi8Mp8Ljm/fHOMWulfPmYhIP1ulaAWw4qzX4RktNWXOQiqRNXtv0T
+         Nxxfv+SAcBItgnvBubfy6POG4FAjFFt3Mtg2vLyvAzEU9Ad0kjLJz/ZW00tdeYwp2Pox
+         kUDRm47NirkxRanC3PhSBIfxGhb6Bxw5cURtQizpx5msZ4VkTXgj9nRmtqjENDvd45I1
+         L/Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790027987; x=1790632787;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hSlFAvdvk76O8etMUCMxW34HuIJRKYdAfu//0LmiLks=;
+        b=p7F4fipMbUtiOzZR8tbCo2kNps9evbNCX2rVh4cNkO1PDDWHDBOxuvRUztrtUuxIkX
+         Z7ciQ83V5UsCJtCesG2v7fHlx4pyYprxsCodwuJka/9uSGv8wzwzLNdBi5DvdonFkgjF
+         z9VFJfvnrSwJI42je8x5K6g0CiEEjBygYBlhBbz/jeoY7YFvIx2dh1rQqQvbbnNdzpQ9
+         vzEQV/6CideHp1nVS29yDSPHz/RijIFU/yt7FLm6ytyyqrMQ4MFJF3AHnaZ0/XZe5RVA
+         QPD9IUX+JNSKWSp1yPcJlAcJUd8t8n1pEZGIpXAos/wPVgCnbdqvhrICEEGwDCy6YoHC
+         UPaA==
+X-Gm-Message-State: AFuF++muByQH4ZtVMNT8YmJE3M9uCmax2wLsmFcMVN9cIa32GGdUc3x/
+	sjNIHeiYcOS5jDiqArpdUWVJ+kcWVLoxiXxMWeK3lIj9efHzcI76W6qE
+X-Gm-Gg: AYBFou0MfQV3E3NbK5Ivucsi8OIxx0CppbcBmS1WFE+wM/Fo5XkkmdgY9Vv+RokLVAy
+	09YpjrdBwiL3ds9zmLJMuoJbytPnkvv2l56JS/rO997B6C+lZVJ4LiLf25bYC/ROin1ur8R7eXG
+	KspuxupB72UvKgDXNeIPVgIHtNHXDKe7kuWqiArN6sTFHHQrcLm7DLKVLBe9UOH/5kQqIS8CmCE
+	vBYXsiqy6QWtbAwgCi0P12im6mdrY48CNTSCRxk0+eHGcezCqFAokiSOpMqLwEGOPIvUoL309zz
+	PMtwPCbx7AM+mlYylDHi7s2fCjd1929lKLOY1Gv2Y27kLqjCcx07BKUW14+ai90DORYarnlrXYC
+	MfH8OQYmYONPYL9T0+eM8A1fyDbHC0+BO1V7oYk4BksUo61Plt235UElp6VzH7sbslZkDgV2X6f
+	aqPoGhOW6SqrW8VQ+yvt6HDC0IgMjQdFzhQgBDo8EA+Y/QWsdpBPVNB68+cHuQHDnL3h7iNnmq3
+	yfIvKWD8cfDkbu1MALU2ILL8isNV9Tmq6t2/HrpWtPkysBjdcLnDmOpOfwjDjQ=
+X-Received: by 2002:a05:6402:23d1:b0:6a9:a2b9:5907 with SMTP id 4fb4d7f45d1cf-6aa577f5832mr9055442a12.4.1790027987286;
+        Mon, 21 Sep 2026 14:59:47 -0700 (PDT)
+Received: from ?IPV6:2a02:a03f:a75e:9a00:f474:15bf:74b7:bee4? ([2a02:a03f:a75e:9a00:f474:15bf:74b7:bee4])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aaa124f636sm250182a12.12.2026.09.21.14.59.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 14:59:47 -0700 (PDT)
+Message-ID: <206467ff-9afc-42e0-a0ff-e861f67ced89@gmail.com>
+Date: Mon, 21 Sep 2026 23:59:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: ipv6: keep room for the mac header in
+ dst_dev_overhead()
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>,
+ Andrea Mayer <andrea.mayer@uniroma2.it>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260922-seg6-maclen-headroom-v3-1-7b2f982ef79d@gmail.com>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@gmail.com>
+In-Reply-To: <20260922-seg6-maclen-headroom-v3-1-7b2f982ef79d@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-rds_sendmsg() reuses the connection cached in rs->rs_conn when its
-peer address and ToS match the request.  The interface index is part
-of a connection's identity as well: rds_conn_create_outgoing() passes
-the request's scope_id down as dev_if, and rds_conn_lookup() compares
-c_dev_if, so sends to the same link-local address through two
-interfaces are two different connections.  The cache-hit test never
-looked at it.
+On 9/21/26 22:49, Yuya Kusakabe wrote:
+> The seg6, ioam6 and rpl lwtunnels size their skb_cow_head() request
+> as the length they are about to push plus dst_dev_overhead(), then
+> push the new headers and rebuild the mac header below them with 
+> skb_mac_header_rebuild().  That rebuild needs skb->mac_len of
+> headroom, but dst_dev_overhead() leaves LL_RESERVED_SPACE() of the
+> egress device, 16 bytes for plain Ethernet.
+> 
+> Where the mac header is longer than that, as it is on ingress
+> through a VLAN device with reorder_hdr off, the rebuild runs out of
+> room: skb_set_mac_header(skb, -skb->mac_len) computes a negative
+> offset, stores it unchecked in the u16 skb->mac_header, and the
+> memmove that follows writes skb->mac_len bytes about 64 KB past skb-
+> >head. Forwarding plain ping6 traffic through such a device
+> reproduces it on all five seg6 encapsulation modes and on the rpl
+> and ioam6 inline paths; skb->mac_header comes back as 65534 on a 704-
+> byte head.
+> 
+> Return the larger of the two.  The helper already returns skb-
+> >mac_len when it has no dst, so this only makes the other branch
+> agree, and it covers every caller rather than each call site in
+> turn.
+> 
+> Fixes: 40475b63761a ("net: ipv6: seg6_iptunnel: mitigate 2-realloc
+> issue") Fixes: dce525185bc9 ("net: ipv6: ioam6_iptunnel: mitigate 2-
+> realloc issue") Fixes: 985ec6f5e623 ("net: ipv6: rpl_iptunnel:
+> mitigate 2-realloc issue") Suggested-by: Andrea Mayer
+> <andrea.mayer@uniroma2.it> Assisted-by: LLM Signed-off-by: Yuya
+> Kusakabe <yuya.kusakabe@gmail.com> --- Changes in v3: - Fix
+> dst_dev_overhead() itself rather than each of its callers [Andrea] -
+> Drop Justin's Reviewed-by from v2, which was given for the per-
+> caller version; the patch no longer touches the files he reviewed -
+> Link to v2: https://lore.kernel.org/r/20260918-seg6-maclen-headroom-
+> v2-1-4d370af55b2e@gmail.com
+> 
+> Changes in v2: - Use max_t(unsigned int, ...) rather than max()
+> [Justin] - Make the same change in ioam6_iptunnel and rpl_iptunnel
+> [Justin] - Reproduce and verify the fix on those two as well:
+> unpatched, rpl underflows in 12 of 16 probed configurations and
+> ioam6 in 3 of 13, both reaching about 64 KB past a 320-byte head;
+> patched, neither underflows in 18 - Rewrap the requests so they no
+> longer exceed 80 columns - Retitle for net: ipv6, now that the
+> change spans three files - Link to v1: https://lore.kernel.org/
+> r/20260917-seg6-maclen-headroom-v1-1-02ccec50f096@gmail.com --- 
+> include/net/dst.h | 3 ++- 1 file changed, 2 insertions(+), 1
+> deletion(-)
+> 
+> diff --git a/include/net/dst.h b/include/net/dst.h index
+> 307073eae7f8..dbedfe72e1fd 100644 --- a/include/net/dst.h +++ b/
+> include/net/dst.h @@ -455,7 +455,8 @@ static inline unsigned int
+> dst_dev_overhead(struct dst_entry *dst, struct sk_buff *skb) { if
+> (likely(dst)) -		return LL_RESERVED_SPACE(dst->dev); +		return
+> max_t(unsigned int, skb->mac_len, +			     LL_RESERVED_SPACE(dst-
+> >dev));
+> 
+> return skb->mac_len; }
+> 
 
-A socket bound to a non-link-local address has rs_bound_scope_id 0,
-and the scope check at the top of rds_sendmsg() accepts any non-zero
-destination scope for such a socket.  So after a send to fe80::x%ifA,
-a send to fe80::x%ifB hits the cached ifA connection and the datagram
-leaves through ifA, to whichever peer answers to that address there.
-
-Compare c_dev_if with the request's scope_id in the cache test, so
-that such a send takes the lookup path and finds, or creates, the ifB
-connection.
-
-Fixes: 1e2b44e78eea ("rds: Enable RDS IPv6 support")
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
----
- net/rds/send.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/rds/send.c b/net/rds/send.c
-index 1afa981e5c06..38b9cc9e0d20 100644
---- a/net/rds/send.c
-+++ b/net/rds/send.c
-@@ -1342,7 +1342,8 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
- 	/* rds_conn_create has a spinlock that runs with IRQ off.
- 	 * Caching the conn in the socket helps a lot. */
- 	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
--	    rs->rs_tos == rs->rs_conn->c_tos) {
-+	    rs->rs_tos == rs->rs_conn->c_tos &&
-+	    rs->rs_conn->c_dev_if == scope_id) {
- 		conn = rs->rs_conn;
- 	} else {
- 		conn = rds_conn_create_outgoing(sock_net(sock->sk),
--- 
-2.25.1
-
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
