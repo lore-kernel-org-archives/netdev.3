@@ -1,37 +1,37 @@
 Received: from relay.smtp-ext.broadcom.com (lpdvsmtp12.broadcom.com [192.19.144.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA4C425CD2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B904483A6;
 	Mon, 21 Sep 2026 23:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032476; cv=none; b=H5JF+HTZ27vv0BJjd3gV+vtM899cbKgTJ+L/MAWCTJJ22Hpggbb6ZrZq+HjtUJ8jnnOn+3BuDvGAgBbwVo5GbRAt102rBNWoy1wkTH5xUisERrbris1RtQnypddDrjqAXfDjiNwW/4gznIJvDQFr7MYtKpJeTBIUHumEWnuhWE8=
+	t=1790032477; cv=none; b=Z4UXHuXvROx1NUKEOJdiqO+m/mc7WHcjAvDWAN8dsGtlaJSyNsUKIxIHdbLI4gUgzXe9/SvidFVsiAxZoMJEGmCXIqc8rnqps+ecfNLnHwGAIkhFyBfLd7nuiyEIoXnSVjwxYXrJQKcySab4TUG+vjgs9HRCyzcukGgvD92epLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032476; c=relaxed/simple;
-	bh=d1baMmvN6EUkR/FHwY6K4p5Nu6ow44Fl2QIjowV6JqI=;
+	s=arc-20240116; t=1790032477; c=relaxed/simple;
+	bh=ADyxWm85hREfXI/zUlXqlXz0qUfjpUc+UolH/uIxQ+4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YoyFLbUQVu/HHoW4g7r6VGVCdTjaSQNVjCKJBAxPoxbAkaH1pspaAKT8JGm1nNo8JSHtSiEDBlxoqZT0pd9NiDr7MnWbMK8VWajd5AW01NMq56YvXDBqHWw5gLOczX5dKGZdirsz6hxI8yqZBtGNgbaSQJvoXO8X32yGCkolkJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WigRtIQY; arc=none smtp.client-ip=192.19.144.207
+	 MIME-Version; b=jzCnFK6ANwkuGUG9mekJYtH1LMI/8s3CO0VrWlqvTgKgTS1mcAH+6ViHHcR+uy7m4TM2aOrfZHn3+JeQR6JLcHi2veC6Eg7yBOfie+3SZK7z6Yesuqu2E5Ks09bJl2uEdyhumjq1Rm67Rvl8/WB8vmC1x5aMPHqtYbyb/wC6vMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CW0GtAQp; arc=none smtp.client-ip=192.19.144.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WigRtIQY"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CW0GtAQp"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 175EEC0000EA;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 1C0BFC0000EC;
 	Mon, 21 Sep 2026 16:14:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 175EEC0000EA
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 1C0BFC0000EC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
 	s=dkimrelay; t=1790032474;
-	bh=d1baMmvN6EUkR/FHwY6K4p5Nu6ow44Fl2QIjowV6JqI=;
+	bh=ADyxWm85hREfXI/zUlXqlXz0qUfjpUc+UolH/uIxQ+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WigRtIQYKSFirlHokq4qpw9mB5NTifQReoUwDOn2CKBSohVvdIlkl2M+zN7Qe17+Y
-	 zCz6aSsQEvmWLM+xyGJTzm97I86gGMyim8XpC957XYvrmkYMg/qMkVqTMB8geYicGQ
-	 DqYjXUGVpeaai08cplLR3jcIrWrduvOFwIE40+7M=
+	b=CW0GtAQpDchjq9pY3an9AD0456XcwutFiMwDaLFKoYPqHMU4AHsmM7F72j30bgn2F
+	 jbPajRMukBiXhjoee00O1pWu+PId3ud/WFAjH1ETyUEkHZL8SJskp/5YIYYh1oUBQc
+	 WdpX8iil4MfOVCIGqyeXzPsuADZnd0GwoxjFEZ2M=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id AC15EACC;
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id D6C39AD9;
 	Mon, 21 Sep 2026 16:14:33 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net 09/12] net: systemport: Fix inverted error messages in bcm_sysport_stop()
-Date: Mon, 21 Sep 2026 16:13:02 -0700
-Message-Id: <20260921231305.394773-10-florian.fainelli@broadcom.com>
+Subject: [PATCH net 10/12] net: systemport: Fix unbalanced Wake-on-LAN clock disable in resume
+Date: Mon, 21 Sep 2026 16:13:03 -0700
+Message-Id: <20260921231305.394773-11-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260921231305.394773-1-florian.fainelli@broadcom.com>
 References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
@@ -62,42 +62,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In bcm_sysport_stop(), the error messages printed when tdma_enable_set()
-and rdma_enable_set() time out were inverted: the failure of
-tdma_enable_set() logged 'timeout disabling RDMA' and the failure of
-rdma_enable_set() logged 'timeout disabling TDMA'.
+In bcm_sysport_suspend(), the Wake-on-LAN clock (priv->wol_clk) is only
+prepared and enabled if both device_may_wakeup(d) and priv->wolopts are
+true.
 
-Swap the error messages so they correctly describe the failing engine.
+In bcm_sysport_resume(), however, clk_disable_unprepare(priv->wol_clk)
+was called whenever priv->wolopts was non-zero, regardless of
+device_may_wakeup(d). If the system entered suspend with Wake-on-LAN
+disabled at the device level (e.g., via sysfs wakeup control), this
+resulted in an unbalanced clk_disable_unprepare() call on resume.
 
-Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
+Fix this by mirroring the suspend check in bcm_sysport_resume().
+
+Fixes: 6328a126896e ("net: systemport: Manage Wake-on-LAN clock")
 Assisted-by: LLM
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 130545cce045..384423b312ca 100644
+index 384423b312ca..dd5a7c9dd90f 100644
 --- a/drivers/net/ethernet/broadcom/bcmsysport.c
 +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2089,7 +2089,7 @@ static int bcm_sysport_stop(struct net_device *dev)
- 
- 	ret = tdma_enable_set(priv, 0);
- 	if (ret) {
--		netdev_err(dev, "timeout disabling RDMA\n");
-+		netdev_err(dev, "timeout disabling TDMA\n");
+@@ -2803,7 +2803,7 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
  		return ret;
  	}
  
-@@ -2098,7 +2098,7 @@ static int bcm_sysport_stop(struct net_device *dev)
+-	if (priv->wolopts)
++	if (device_may_wakeup(d) && priv->wolopts)
+ 		clk_disable_unprepare(priv->wol_clk);
  
- 	ret = rdma_enable_set(priv, 0);
- 	if (ret) {
--		netdev_err(dev, "timeout disabling TDMA\n");
-+		netdev_err(dev, "timeout disabling RDMA\n");
- 		return ret;
- 	}
- 
+ 	umac_reset(priv);
 -- 
 2.34.1
 
