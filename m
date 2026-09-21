@@ -1,56 +1,90 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B990B276050;
-	Mon, 21 Sep 2026 09:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB67457E6F;
+	Mon, 21 Sep 2026 09:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984541; cv=none; b=eT9Dsckk9NsmUQeduBmXhK0lbjnRcE+8xiys5M0mh5Uh+iiFxWbhMW9r0ZyiakUaEXU8JrP/5HZfYIsGacU9DUdU/UQ+H8r0hDhpL2zOkwMKUIL8atocSYA/c3EDlcC1ooS+mCGHXY6WWeOdYhUgZgeBQrMu8mfzOZvgmcLMBf8=
+	t=1789984575; cv=none; b=NQ+J/Oo5/nz64hlhBWLZu/inZIxOcYkUHOhWgDKTOnueWwIvHflNoWdaWg9tvoFGbvPNrF1adMKXxR2bzlbCZ6TIGkg/XxHIqneQI7bGV5zt+bdJKrvRPEGMh0Ivj1AmBVyuEg/xrnAHwxjFzbStFCTrl6huXWXhQ3mjUoUViXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984541; c=relaxed/simple;
-	bh=HtktVx/5wu8n4HrwStgefIj+KDjkCZNU89AbZotB19E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bBNpQcKeSukU/37QWt9uOzPlcATOqg9FnWOxpBXNvOAAakC8omwX0bJAkg1JCE1FzfNfbzPkdfIQV4+isGZojAIZOPnNUXgQIespWWfo497OZ2ofxdMPqZu5ELd05p0rGKt4mdoC7wr1rax8pJYFc2kiokg8KoSCZ+pBjHjduas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DD4D340C36;
-	Mon, 21 Sep 2026 11:55:29 +0200 (CEST)
-Date: Mon, 21 Sep 2026 11:55:27 +0200
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] selftests: seg6: check extack messages on
- SRv6 lwtunnel setup
-Message-ID: <arD-5t6LiBiPXAAa@luna.proxmox.com>
-References: <20260918153544.1178884-1-g.goller@proxmox.com>
- <20260918153544.1178884-3-g.goller@proxmox.com>
- <20260918150256.1a1ca82e@kernel.org>
+	s=arc-20240116; t=1789984575; c=relaxed/simple;
+	bh=d5sYf58LwCo4fn2GyNj30sMSZtjlRRtDgeN8PduQsl8=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=lDIIg05d5leuGuBemf/6liV/A+7xu3+4T//mODkBEURYRWZcnsLRFOByDigcInlFie+ulBj32I79DSvHFjIm84Uco4+wNg16sPwHff1dY8mbwfxiRB09ZYlLhwTi06M+8A3eZsEL9G0/yiwkSdbY/nZz5tDzOfVydV5PqepKm8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RI5JLT+l; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RI5JLT+l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=d5sYf58LwCo4fn2GyNj30sMSZtjlRRtDgeN8PduQsl8=; b=R
+	I5JLT+l6geAv8Q9M15dTOwSHhXh7yEFbecJMJf7mCtRmAuQQRvTwGNqgqIsr37Th
+	popjRAM/2438DrjCWSTDR841LuM0g5InHwUx4h0Wl2phaQDMMxLd8JG7IxTlKIbi
+	TZKzZrK/MiDoqpKhxQMzjd516ixufXVSAR6XAd/koo=
+Date: Mon, 21 Sep 2026 17:55:49 +0800 (CST)
+From: CJ <firefly0158@163.com>
+To: kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [BUG] ath10k: WARNING in ath10k_pci_probe on an unmatched device
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+X-NTES-SC: AL_Qu2TC/WTu00v7ymdZOkdmEsTju82UcS4ufQl245Xc/sEuADE1wYGfV5FGUX59tmTLwSKmzOZcTJQ8uBIdIhWdKEYByzElKiI26s7Nz/UAQ==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260918150256.1a1ca82e@kernel.org>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1789984528102
+Message-ID: <246f3c73.95eb.1a0c364ac46.Coremail.firefly0158@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:cSgvCgD310Mm_7BqqFpLAA--.44354W
+X-CM-SenderInfo: piluvw1o1qikqy6rljoofrz/xtbC3QXPgWqw-yXDNQAA3g
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-On 18.09.2026 15:02, Jakub Kicinski wrote:
-> On Fri, 18 Sep 2026 17:35:16 +0200 Gabriel Goller wrote:
-> > Add a ksft/ynl test that shoves invalid RTA_ENCAP payloads to
-> > RTM_NEWROUTE and asserts both the errno and the extack message are
-> > correct.
-> 
-> Please be judicious when adding tests.
-
-Got it. We can either drop the whole second patch or I can simplify it and only
-add test cases for a few error messages.
-
+CkhpLAoKCkkgYW0gcmVwb3J0aW5nIGFuIGlzc3VlIHRyaWdnZXJlZCBieSBhIHN5emthbGxlciBy
+ZXByb2R1Y2VyIG9uIExpbnV4CjcuMy4wLXJjMi4gVGhlIGlzc3VlIGlzIHJlcHJvZHVjaWJsZSB3
+aXRoIEhFQUQgY29tbWl0CmRmMjkwODA5MGNkYTM2OGIwMWZmNDM3MDlmNTE4OTAwNzZjNTYxNTcu
+CgoKVGhlIHJlcHJvZHVjZXIgbW91bnRzIHN5c2ZzLCBzZXRzIHRoZSBkcml2ZXJfb3ZlcnJpZGUg
+b2YgUENJIGRldmljZQowMDAwOjAwOjAxLjAgdG8gYXRoMTBrX3BjaSwgYW5kIHRoZW4gd3JpdGVz
+IHRoYXQgZGV2aWNlJ3MgbmFtZSBpbnRvIHRoZQphdGgxMGtfcGNpIGJpbmQgYXR0cmlidXRlLiBU
+aGF0IGZvcmNlcyB0aGUgZHJpdmVyIHRvIHByb2JlIGEgZGV2aWNlIGl0IHdhcwpuZXZlciBtYXRj
+aGVkIGFnYWluc3QsIHNvIHRoZSBkZXZpY2UgaXMgbm90IGEgcmVhbCBhdGgxMGsgcmFkaW8uCgoK
+SW4gYXRoMTBrX3BjaV9wcm9iZSgpLCB0aGUgZHJpdmVyIHJlYWRzIHRoZSBjaGlwIHZlcnNpb24g
+ZnJvbSB0aGUgZGV2aWNlIGFuZApzZWxlY3RzIGJlaGF2aW91ciB3aXRoIGEgc3dpdGNoIG92ZXIg
+dGhhdCB2YWx1ZS4gTm8gY2FzZSBtYXRjaGVzLCBzbyB0aGUKZGVmYXVsdCBicmFuY2ggZXhlY3V0
+ZXMgV0FSTl9PTigxKSBhbmQgdGhlIHByb2JlIHJldHVybnMgLUVPUE5PVFNVUFAuIFRoZQp3YXJu
+aW5nIGNvbWVzIGZyb20gdGhlIHRhc2sgcGVyZm9ybWluZyB0aGUgc3lzZnMgd3JpdGUsIHRocm91
+Z2ggYmluZF9zdG9yZSgpCi0+IGRldmljZV9kcml2ZXJfYXR0YWNoKCkgLT4gcmVhbGx5X3Byb2Jl
+KCkuCgoKVGhpcyBpcyBhIGRyaXZlciBiZWluZyBhc2tlZCB0byBkcml2ZSBoYXJkd2FyZSBpdCBk
+b2VzIG5vdCByZWNvZ25pc2UuIFRoZQp3YXJuaW5nIGlzIGluZm9ybWF0aXZlIHJhdGhlciB0aGFu
+IGEgbWVtb3J5LXNhZmV0eSBwcm9ibGVtLCBidXQgc2luY2UgdGhlCmJpbmQgYXR0cmlidXRlIGlz
+IHdyaXRhYmxlIGJ5IHJvb3QgYW5kIHRoZSBkZXZpY2UgY2FuIGJlIGFueSBQQ0kgZnVuY3Rpb24s
+CnJldHVybmluZyB0aGUgZXJyb3Igd2l0aG91dCB0aGUgV0FSTl9PTiB3b3VsZCBhdm9pZCB0aGUg
+c3BsYXQuIEkgaGF2ZSBub3QKY2hlY2tlZCB3aGV0aGVyIHRoZSB2ZXJzaW9uIHJlZ2lzdGVyIHJl
+YWQgaXRzZWxmIGlzIHZhbGlkIGZvciB0aGlzIGRldmljZS4KCgpUaGlzIGZhaWx1cmUgd2FzIHJl
+cG9ydGVkIGVhcmxpZXIgYWdhaW5zdCB0aGUgbGludXgtNi4xIGxvbmd0ZXJtIHNlcmllcyBhdApo
+dHRwczovL3N5emthbGxlci5hcHBzcG90LmNvbS9idWc/ZXh0aWQ9MzFlYzZiYzNhOTJiOGFhOWYy
+ZjcsIGFuZCB0aGUKcmVwcm9kdWNlciBiZWxvdyBpcyB0aGUgb25lIGZyb20gdGhhdCByZXBvcnQu
+IEl0IHN0aWxsIHJlcHJvZHVjZXMgb24gdGhlCnRlc3RlZCBtYWlubGluZSBrZXJuZWwuCgoKUmVw
+cm9kdWNlcjoKCgpzeXogcmVwcm9kdWNlcjoKVGhlIHJlcHJvZHVjZXIgaXMgdGhlIHByb2dyYW0g
+YmVsb3csIHdoaWNoIHJlcXVpcmVzIG5vIGxhcmdlIGVuY29kZWQgaW1hZ2U6CgoKbWtkaXJhdCgw
+eGZmZmZmZmZmZmZmZmZmOWMsICYoMHg3ZjAwMDAwMDAwMDApPScuL3N5c1x4MDAnLCAweDFmZikK
+bW91bnQoMHgwLCAmKDB4N2YwMDAwMDAwMDAwKT0nLi9zeXNceDAwJywgJigweDdmMDAwMDAwMDA0
+MCk9J3N5c2ZzXHgwMCcsIDB4MCwgMHgwKQpyMCA9IG9wZW5hdCgweGZmZmZmZmZmZmZmZmZmOWMs
+ICYoMHg3ZjAwMDAwMDAwODApPScuL3N5cy9idXMvcGNpL2RldmljZXMvMDAwMDowMDowMS4wL2Ry
+aXZlcl9vdmVycmlkZVx4MDAnLCAweDEsIDB4MCkKd3JpdGUocjAsICYoMHg3ZjAwMDAwMDAwYzAp
+PSdhdGgxMGtfcGNpXHgwMCcsIDB4YikKcjEgPSBvcGVuYXQoMHhmZmZmZmZmZmZmZmZmZjljLCAm
+KDB4N2YwMDAwMDAwMTAwKT0nLi9zeXMvYnVzL3BjaS9kcml2ZXJzL2F0aDEwa19wY2kvYmluZFx4
+MDAnLCAweDEsIDB4MCkKd3JpdGUocjEsICYoMHg3ZjAwMDAwMDAxNDApPScwMDAwOjAwOjAxLjBc
+eDAwJywgMHhkKQoKCmNvbnNvbGUgb3V0cHV0OsKgaHR0cHM6Ly9wYXN0ZWJpbi5jb20vcmF3L0Jn
+enpqVkFCCmtlcm5lbCBjb25maWc6IGh0dHBzOi8vc3l6a2FsbGVyLmFwcHNwb3QuY29tL3RleHQ/
+dGFnPUtlcm5lbENvbmZpZyZ4PTMxZGZlZmM0YTE0ZWZlYTMKCgpLZXJuZWw6CgoKSEVBRCBjb21t
+aXQ6IGRmMjkwODA5MGNkYTM2OGIwMWZmNDM3MDlmNTE4OTAwNzZjNTYxNTcKZ2l0IHRyZWU6IG1h
+aW5saW5lCmtlcm5lbCB2ZXJzaW9uOiA3LjMuMC1yYzIKdGVzdGVkIHRhZzogdjcuMy1yYzIgKGFu
+bm90YXRlZCB0YWcgb2JqZWN0IDVlMDM2Y2UxMmRlOTFjNmZkNjc0ZGFkMzNiMTY5YzYxNTBiZTJh
+N2EpCgoKTGV0IG1lIGtub3cgaWYgeW91IG5lZWQgbW9yZSBkZXRhaWxzIG9yIHRlc3RpbmcuCgoK
+QmVzdCByZWdhcmRzLApDaGFuZ2ppYW4gTGl1
