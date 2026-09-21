@@ -1,129 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30931624D5;
-	Mon, 21 Sep 2026 16:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F0D306B3D
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 16:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790009848; cv=none; b=ImNc2xwT9HRL/e29B/jXXDfCPBFN/6S3GSBf5GPCM115aD+bwAKuALZEbH61RK2scxtrhfKj2pJDvnQbjgs1k6Y1dsilDIe6k22tKK4wfdooHcfPtKYRoNWGjbHd5b+a5keUoDGxZkyi9Q7iRDzmOsDqt5MNwiiPIAw/sGZ3YSE=
+	t=1790009902; cv=none; b=VjfqbYqh/7Bbv38ecYdR9Qz2YYGJYD43KMuv+3+CjPaKZ85G0omHWkQvkEYCK0uDIazsE+XwjixbykO+2t/L6NQfdf4bxsXynRzLuahSlLFLSIaMxkTktTHplN0rU24tdbi1OiNvlT+oXKhpCwD31liVhqB25+e3gl/xLg9uDL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790009848; c=relaxed/simple;
-	bh=5nFCKZRfcuvn/YXGZADAf4Z8vVuASbwW+MW92OBSrV0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hvG0QIRdumAItuVKeDQZLzSO0K1TKBUfKfT1pGhhSldOZ5V7MfFmNMcjGniEXEj6tbwxTqyFyW35HslgRcLalZRhZ+NOVcZVIWOMXqxRhKvYKfPeXS+KwDbUj4vXGCK+neFmyHtrXK8rORlsprTwk43Emuszr2aoCNSbOLtAFsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nM7gV2Kk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790009902; c=relaxed/simple;
+	bh=wWHdB41W1DvNt7beSy9Dq0J2mhCwUfWa1uMOtBfifX0=;
+	h=Date:Message-ID:From:To:Cc:In-Reply-To:Subject:Content-Type; b=tg/TRuFEnVUsAPfF14OnVXf3Nv0KLmyxhxuTNqOYk4Ktz3MN8LnOaLNobEmrtJqaOq14XsPS+O97cmkllyTUuOES1qTwVzqFkfSH70aKkmGpQPau9NmvL0gCiwAglGij+nvqj7Tbco8U10+zdCZadzwkEjhIFYlxegqEt/mq7F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f22GCgka; arc=none smtp.client-ip=74.125.227.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nM7gV2Kk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB7B1F000FF;
-	Mon, 21 Sep 2026 16:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790009846;
-	bh=904noNjHPafrnstEIgkJLCwelDb9DPxtN8XoE/tkNIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nM7gV2KkpVd0pB5qcjf+/dITkY5klukICr9KHFD5WIvdepw5sq4wP7wdZZ6zM+NTj
-	 z0Pi2oShQaUp0uZ4CPnFViPzPjj6AwveV46SQDNmloUfWy/IhbI1tG0i8iio+C8a1w
-	 stNT+Jn33V9dmsU7s4+eRMiiAlMuPUOZtvD12Yo3+9kFo6hASmx3qyhr9aCGHexcwY
-	 QtweaTbjMwPxvWuUPu0xlgKFExzgRgB5b7+O6csqM4hCZzgZApoooHJ1N+9+Z4zGvL
-	 JNFdNKYWYntCOGtoTvqMJf/draPy9ySj9nCKPG3zq3yvG1IFtTtlcOj0hJx4qaCpig
-	 gR+WNppE0yd8A==
-Date: Mon, 21 Sep 2026 17:57:22 +0100
-From: Simon Horman <horms@kernel.org>
-To: Dongliang Qin <cccccccccccc777777@gmail.com>
-Cc: netdev@vger.kernel.org, achender@kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] rds: ib: Clear the sg list when mapping an MR fails
-Message-ID: <20260921165722.GY13925@horms.kernel.org>
-References: <20260920063449.1594203-1-cccccccccccc777777@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f22GCgka"
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-398b9f722abso1750048a91.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 09:58:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790009900; x=1790614700; darn=vger.kernel.org;
+        h=content-type:subject:in-reply-to:cc:to:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=j+NBNc6SqBPqRSjjTcg4t04/ngPd1IpMeBHJZ17kgEA=;
+        b=f22GCgkaEMThjJVd/AonTLHvshiw9ewnlmuQv72FAYCUzLyPGzMtiGPuOGXKyu0H+Z
+         1B1LGIaY5cXVPP7Lx7QkoRIphQlRMy/dz0LSQtGIWDuE3TXRlcvmXJ/FRyQvvKTBShzY
+         yhQkP4irmObUH2z8zWR+RfZwCBXGrhtTGyoPgVppWLfuIFlL753rSvOIFPJsdnrNGg49
+         Ak/tQGww2aSnki+P6Ayq+pAb8RCSn3awIHVNGwXGBLs1nwPSaMHQrINTj8FXWcELdUXl
+         BVW3XdWn586OiXUcfwK6FQ+FT8FKnjjTFpyOUFcVc+ilDGF2kzDLp8kh6vX71mo+pOIj
+         LsaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790009900; x=1790614700;
+        h=content-type:subject:in-reply-to:cc:to:from:message-id:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j+NBNc6SqBPqRSjjTcg4t04/ngPd1IpMeBHJZ17kgEA=;
+        b=tY8mioqIh1JlD/6N0+YJuetHuTyxuJN16QbEI0TNvYukYsidrsdaqF6DgBDvWRFtpP
+         QqJn4QCGYlFoKIGiV9BsNXgJ0Kh6GNC9OOQ3NNizzG9ss9A6EqwiqGrvNh08YYBjfkT+
+         mVjRKbobgPHGIeOSMIlcioZ+lOkOMmwoU7++GwvdoOBSNbWgSpPq07b96W5JDn0krLV/
+         oGnBtF3e7gNSpvkAminjJX7QaHc+hKjYtOrhtWv4gcZAUBNkxZF82BsgSKyVrZVc8jF8
+         SE/xhVaR8ETz9GWVr/pZmHpHUxMumEHhD83LjJdYBzbq5ORWXNPdmtOO09QUsRgxG/cu
+         6EFQ==
+X-Gm-Message-State: AFuF++lwtRhWnfbgXfNl5aTOTlT4cVOHbumKfZpP4zqxqN2GC0vVfL87
+	SvJxZenTBRt9veGWMUHZ5tV/QOmbHElQ9fntHVZYDb/D1W2o8/LDM1P1
+X-Gm-Gg: AYBFou2Qd0b/b42yJ5lJGkEDHu1i1zZh5MLrSjSMNkDGvpR5FrVQG3N54NuYtAbPcPf
+	NFnBgAJQvT00BnWi0g1EZXSy1gzlyXJpbmDKlBwfM/R8vsg0HDX8Fx8EB36La5tHa0tCPul3ovz
+	SGWZZjmzkKBwhuPbby4UW/BqnAt2rtLlpH13gKv+sj2xM15qWdc4MxdsR1ETDVtS/WAR9qgxXrY
+	2676PWIF15NzrNElTPyUMeFpquenBD5cJ9VaH2uTa39SJNN2P9NM5U4mvJLPSS5RObx5q9hPwc9
+	jDXjFZfqOK7PBSMasotLPWECwUdu3RNvb3mP7bqIHpc9TI/4z2gWDts3kRxCXc52biIteEWTKHE
+	pqvdHBlivvRxdBak0e+IEUtxJrfRM6eNxau/kob/UZydGpkshtG5COMyK5fFXUKqMFgfemvYFbO
+	/LIiZi+5z7eUK6R7B7covkS+YTXMIh3eKhRl/iti/vlzBFflaINXuuQxyyIKJkQLUd
+X-Received: by 2002:a17:90b:37cb:b0:3a0:2c7d:edd7 with SMTP id 98e67ed59e1d1-3a02c7e2fd8mr8181330a91.10.1790009899774;
+        Mon, 21 Sep 2026 09:58:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:57::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0673b7f31sm188197a91.4.2026.09.21.09.58.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 09:58:19 -0700 (PDT)
+Date: Mon, 21 Sep 2026 09:58:18 -0700
+Message-ID: <7286d84a0b3b4098219acc0cf9803e6e@gmail.com>
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me,
+ bobbyeshleman@meta.com, almasrymina@google.com, linux-kernel@vger.kernel.org
+In-Reply-To: <178993807798.2160803.6987249829072277558@kernel.org>
+Subject:
+ Re:  Re: [PATCH net-next v3 1/3] net: devmem: replace gen_pool with freelist
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920063449.1594203-1-cccccccccccc777777@gmail.com>
 
-On Sun, Sep 20, 2026 at 02:34:49PM +0800, Dongliang Qin wrote:
-> rds_ib_map_frmr() stores the caller's scatterlist in the MR before DMA
-> mapping and registration can fail. On failure, __rds_rdma_map() unpins
-> the pages and frees the scatterlist, but rds_ib_free_frmr() can still
-> return the MR to the pool with the stale pointer set.
-> 
-> This leaves the pool with a dangling scatterlist and can lead to local
-> privilege escalation. KASAN detects the resulting use-after-free when the
-> MR is later torn down:
-> 
-> BUG: KASAN: slab-use-after-free in __rds_ib_teardown_mr
-> Read of size 8
-> 
-> Call Trace:
->  __rds_ib_teardown_mr
->  rds_ib_unreg_frmr
->  rds_ib_flush_mr_pool
->  rds_ib_flush_mrs
->  rds_free_mr
->  rds_setsockopt
-> 
-> Clear the scatterlist fields before returning an error so the caller
-> retains sole ownership of the scatterlist and its pinned pages. Route a
-> zero-length DMA mapping through the same cleanup path, and skip unmap
-> when no mapping was created.
-> 
-> Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dongliang Qin <cccccccccccc777777@gmail.com>
-> ---
->  net/rds/ib_frmr.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
-> index bd8611911..fea387952 100644
-> --- a/net/rds/ib_frmr.c
-> +++ b/net/rds/ib_frmr.c
-> @@ -213,7 +213,8 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
->  					 DMA_BIDIRECTIONAL);
->  	if (unlikely(!ibmr->sg_dma_len)) {
->  		pr_warn("RDS/IB: %s failed!\n", __func__);
-> -		return -EBUSY;
-> +		ret = -EBUSY;
-> +		goto out_unmap;
->  	}
+> gen_pool_free() -> gen_pool_free_owner() -> bitmap_clear_ll()
+> 	BUG_ON(remain);
+>
+> Reaching this requires a separate page_pool refcount bug, since
+> mp_dmabuf_devmem_release_page() rejects refcount != 1, so this is
+> only a loss of a fail-stop diagnostic. Is dropping that check
+> intentional to match io_uring zcrx, which uses the same unguarded
+> LIFO?
 
-Hi Dongliang,
+Working as intended. A duplicate return already violates page_pool ownership.
 
-This approach leads to the complexity of a condition in the out_unmap
-label.  I wonder if a cleaner approach would be to, instead, only store the
-scatterlist in the MR once mapping has succeeded.
+> This is a pre-existing issue and not introduced here, since the
+> return value of page_pool_set_dma_addr_netmem() is dropped.
+>
+> Would it be worth failing the bind here as well?
 
-With such an approach I think that ibmr->sg and ibmr->sg_len would still
-need to be cleared in the error path. But neither the condition in the
-out_unmap label nor the hunk above would not be necessary. And I wonder
-if that would be a cleaner approach.
+I plan to follow up with 2 more patches to cleanup freelist and will
+fix it there (convert to the helpers). Let's consider this a pre-existing
+issue that I'll fix separately?
 
->  
->  	frmr->sg_byte_len = 0;
-> @@ -261,9 +262,13 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
->  	return ret;
->  
->  out_unmap:
-> -	ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
-> -			DMA_BIDIRECTIONAL);
-> -	ibmr->sg_dma_len = 0;
-> +	if (ibmr->sg_dma_len) {
-> +		ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
-> +				DMA_BIDIRECTIONAL);
-> +		ibmr->sg_dma_len = 0;
-> +	}
-> +	ibmr->sg = NULL;
-> +	ibmr->sg_len = 0;
->  	return ret;
->  }
->  
-> -- 
-> 2.43.0
-> 
+> [Severity: Medium]
+> Can this walk overrun owner->area.niovs[], binding->freelist[] and
+> binding->tx_vec[]?
+>
+> Would adding the sum check or the post-loop equality check be
+> worthwhile?
+
+Same feedback as on patch 1: let's not do defensive programming. We
+do have a contract where dmabuf->len == sum(sg->len) and it is
+maintained for the in-tree dmabufs.
