@@ -1,75 +1,75 @@
 Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CDE4F85D2
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C9B4F85B1
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790015016; cv=none; b=m3rpN8rxxOfKq6vkd7JITiplkmqEhElyfjOfu0gGE7p28yYRVpBwD8jDJ91UwQ2bo5CpaghX6R5Rd1kXWg3XeM1FJ8uGJ70jc8iqKxqmm+cHuxzBNXln+8rvTYbMu+az7E4WZjYwmC30l6w0/dOQUNkxcpDWnROk23KWg3ebTn0=
+	t=1790015018; cv=none; b=ETlmc3ie9XzmYUhuzxI5gMYNwGgeqbSkUCQ+Bn2DtZ50ZNN8QqyIVvAOilAhIpxADmGMfQJMYKd3Cenvn6OlTVgGWirQJBLahzBCDduDkaKl+ea6IaJi35pSeriVTr6NtKDoBc8L2rwZqwNN7ZJ+8YTI7pzSw1ByuxrSDOyXJmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790015016; c=relaxed/simple;
-	bh=EhGNjzinEoe0rb9XQGllpzIYz23bT+vZYztS0WlJQq0=;
+	s=arc-20240116; t=1790015018; c=relaxed/simple;
+	bh=bmpOwCmyBfym+bmRNeuZ5zx9NhewvCIDN0AbyVF/xyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KvQexVVOKmCYKzUgShEJODIunrmn071nSIaPxy7hGQz2RmA6DpXgQ6o2wXo6La9EBx4hQ7RqPIdtx5pQlQSc1ER3VgVn8KyKAiuNi5sd0q54BUOSZY7Tw1mgSs1dXNK+YJqj9kssMnO1xoy+b3ofbC5NlVwaTAcIFXtxwuel6h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=YyczaQN9; arc=none smtp.client-ip=74.125.227.171
+	 MIME-Version:Content-Type; b=NsosS7YJ9+Y7A4lBnlJ5q4krXM0lHHjkKYeJcXbG0xuBsATXZkdbBHMj8nTHw3cvnAGXiNiMwmh8J5mNcz7IYbv/n3zxld865W1NrgQ3E/UvfRZF6/4KirRvqC8TddOlYgMeA/1/zUm0m2eanU0aHgZ3yR1CPvvrVJzJKLuOd6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=cUiqEW39; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="YyczaQN9"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccb1a98dso2573096a91.0
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:23:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="cUiqEW39"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccafb752so2748209a91.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:23:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1790015014; x=1790619814; darn=vger.kernel.org;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1790015016; x=1790619816; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1UJU8vWnpLqo2FzVlfzcu2nhsHdLYdrBMVsYnHBFjhU=;
-        b=YyczaQN9GH56lCO9mKIB0oiGbifdmZw0PMRdVA2DT0cJnIRI29R+DQXB/90VI+1IgH
-         7pXmvIDaqkCeTp8a6AwvrSDXX+iGhQIGZWobOLvhYq6+mMGNE4ltMbjdAqjvsv3kxD/R
-         Sw2KDdZUjMZGvFuiHsO/4uDB0vgu25tzidT8aY6KrlfOuvFDpCFXxixsQydfA4bJ8hqH
-         W6Tf83YwYCQ4iynk4mOh60N+aJnACx2a2KcHP/zPHz/zzWXqRxXg9GViHPtER/Z49tgv
-         K5cyN4teGQ/za7JbNmUEklAi3l3lwAd7jfEYrsE8qgddNJzJqJO8+4phcxuTm7vAb+3x
-         3yAQ==
+        bh=/RaJVJ7Ve3EUMsN3RGuElHe7Bsrf4WoOSmglC49sp00=;
+        b=cUiqEW39VAtyOzNE8bqJ4temXF85DWhecNd/+5bPVVQilQeMI/c4wsciAxo8GdJ8kD
+         br+JeGQ8V1zVwlYET3NeLReTuA7yB8xAD6fZD9Bm8rJudZPgUjdzapVuqoM6GIgepzad
+         F9Pk0Tdyjo9689qPaDIewcNq+2r6oSyn3qfjGwzs1NC7wPrVGvqFMq5LP2U7yq6yG5Mg
+         2VpMbGX/Q4Oc2chhMpyg6G4j5WRiEIHEzYFABBWGi3JT+BwU5AMq/7KhA4+cv58mlWmg
+         zsMtSi6CQ1t0D/f+h8sRbrs80Fzzoi62OLmhnFP1hzzvA3r4s507Wmwrn7uEbEHvAQgl
+         UaAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790015014; x=1790619814;
+        d=1e100.net; s=20260707; t=1790015016; x=1790619816;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1UJU8vWnpLqo2FzVlfzcu2nhsHdLYdrBMVsYnHBFjhU=;
-        b=LAqUtIY6Ir06PoiiDRLEZCQo1gN1HYfMR4v/cC3KvDd2H5JwJNorJDpTS+4nYBWs48
-         b0ZrSFJzXK64QqWJONdXazMbqO3ARvQIM9uHIepwDwINf/Rfm4M2McaYrkHGPkRTzEuW
-         yQLlLoBUvE7SYZsubsOhrx61BMgGop5SkD5Aol9+kPCxiOtYNcuLUPEf2B4OnzL4OxVB
-         N9Sb58YQEgC7TWvjuemIs68OT1gp5N0iG2W7FGmVfPNG0Ddpl/sq2bX8Iat+UwifxNUi
-         roGfG5uj9uKHjaTVvf+WdHV6SSpCq8OX1PjWNoi0GGbapouCJmJ6YqlNlCCOm94ptnkH
-         LmAQ==
-X-Gm-Message-State: AFuF++nKlNbfDyDVBRgWe0j+4N285JctaSjy403pr0sFFigCIDWWiyP7
-	IJMi1AUdarrLuapBMQp1dmBczDpZqABU3IYtGkTJ/QR5Q7rE5FEBvavwHQmnsQ98G88=
-X-Gm-Gg: AYBFou11FeRNHqW+8m6pZh9gImuI0Mg5eG/k0USiMu0WFrHAY7iYDX9D9I+Y76GoUKG
-	vgoXpA0VuqSVtFWjWduFjoMEbYxo7J0+A45N5OIYe1p9+N1BwvJdVh5UNDBK0zHbee5B6ZFx0ad
-	3KxatGfS89sGX8x5fSVkD3K2Fi8eBnWPLfbisYR4EJr0Up88PTNrfSbXyTYr4WlyFkkz/VuPJBx
-	QnSVNHfkbhen45Nm7aX+M2YZn6ZpoJRiN7lt88YP7Dh/0Yaped3FIC6fa8NmSZEZbnKeiFXtYcM
-	xVlYpphoazBTAWtEDB77OyJCUrqE1cGWX4dxS3DIQoQxgdy/BJlxGzFVpSm9WPdsNXXw29A9HdX
-	ziSef9BnhAIbh8cgpzhixjY6/YeeDo+Ry/Ve1Jd/Z9UkIaINoSItCQmCJJfJtGMVp79H5ac4OcP
-	WhgBt4Vk9qD+lcH2ROU3GO7KAL7owiguzxdYv8wwrAj/iKz8LC+DSgoR3SqTP+SwVE7eEPKzVf0
-	YOeSvFwTuRAUwt5KRoYUhrDUvpzT2HbCYpZT+X4QQ==
-X-Received: by 2002:a17:90a:d40b:b0:3a0:574f:5854 with SMTP id 98e67ed59e1d1-3a0574f5cf6mr2852052a91.39.1790015014139;
-        Mon, 21 Sep 2026 11:23:34 -0700 (PDT)
+        bh=/RaJVJ7Ve3EUMsN3RGuElHe7Bsrf4WoOSmglC49sp00=;
+        b=MvEPb7uVWgd36gD3kxiTM8o9eQ0MnyzNtFJrnlxgQOT0QWqsOzjfXk6cuha4hhWwse
+         QucPmRzmHH7bHLQ4J2MVeDsnKbGmGdRSqTLtZRuTZCo72My7qsyzeQHG4XQzBC3jyzIY
+         uTUBWj+ZvVq2OdrOKmwLymaiKlcO8qfWP1BVg+LsMG3PS7M6L+847BBoPBouRzzO7gxd
+         4k5T3q1lFVMMkUJ7lavV9Jonp3OEymOqpMdHHeNZOmnrFeBD5W0fB7ePj+gC7H9L+elf
+         /GVQAVexmlgqkmTSNS+0IYwrYtN8/iJWgj+CvWe2mRj7JRQVFGVmprps96ouBFagcpqs
+         tIgQ==
+X-Gm-Message-State: AFuF++mtvGewbnVTrQaVNtinPXwGTDbVUlIIMl99OxLs9dT5+3BzEsXI
+	6OCwk53jnt5LoRlMcBI6/Y6aoddfls5zVOct1zm50LGz9VpXfBCHEmLlu4HN6hdYZ5Y=
+X-Gm-Gg: AYBFou2kiDSx7HjnReGHtDgP3e8hKJ+QrLr44s6f0845F3k07gyt6PwxT2dr0QOE56b
+	jPaVXgEkX6kUDdEDPhmywBOMqScS71NhTlt0+rJ+4ZJ194tqlSyU00eoW+ueWIDB91M5G9G+utl
+	vpAMIjlElv1khWgLtWTr8PmUsSeJbe4Ot6Qq7F4Cwv6q8EXgJEnBl2hqKJnCM097UsY3wEuMK+6
+	2kWgBk4Mdxjcjduf61bFcxqpXB5jcUoZyobpqAzOaAPP0hI+Z0hrHFS1vYVdYfKM7hIzzuW2yEe
+	1w06cpz04+hwi+NvPshEs5SuMmxAqPzvgipVYNvfyllq6d6QDEEc36KvHqW0eVuPVN1k3yCfUaf
+	oNKM3wt4g+F7wNcuNrrEmr2hWq7TL0hx+15ipefnWoa7G54ubseioDuX6muug4PknjZoRFOT+Ar
+	CkzLVGU6k3GgzxmGY51YM61ZMglvVxwAhnjwsPjEK5d/ygn1TuK1OPyDpa35baxG1o79LufQnGY
+	wY9DypFJ3aBpwKy+m+XHEd8fWclfkgOF1iwrWakgs2by44fdgs=
+X-Received: by 2002:a17:90b:440e:b0:39e:6c69:7777 with SMTP id 98e67ed59e1d1-39e6c697978mr10887836a91.32.1790015016358;
+        Mon, 21 Sep 2026 11:23:36 -0700 (PDT)
 Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a069a0c7aesm39051a91.16.2026.09.21.11.23.33
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a069a0c7aesm39051a91.16.2026.09.21.11.23.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 11:23:33 -0700 (PDT)
-Date: Mon, 21 Sep 2026 11:22:01 -0700
+        Mon, 21 Sep 2026 11:23:36 -0700 (PDT)
+Date: Mon, 21 Sep 2026 11:23:27 -0700
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: Alexander Zubkov <green@qrator.net>
 Cc: netdev@vger.kernel.org, Petr Machata <me@pmachata.org>, Ido Schimmel
  <idosch@nvidia.com>
-Subject: Re: [PATCH iproute2 v3 2/2] ip: ipstats: Do not hide HW statistics
- when hw_stats_info is missing
-Message-ID: <20260921112201.28213661@phoenix.local>
-In-Reply-To: <20260910092057.3980-3-green@qrator.net>
+Subject: Re: [PATCH iproute2 v3 1/2] ip: ipstats: Merge statistics split
+ across several netlink messages
+Message-ID: <20260921112327.7678123e@phoenix.local>
+In-Reply-To: <20260910092057.3980-2-green@qrator.net>
 References: <20260910092057.3980-1-green@qrator.net>
-	<20260910092057.3980-3-green@qrator.net>
+	<20260910092057.3980-2-green@qrator.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,31 +79,112 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 10 Sep 2026 11:20:57 +0200
+On Thu, 10 Sep 2026 11:20:56 +0200
 Alexander Zubkov <green@qrator.net> wrote:
 
-> ipstats_show_hw_stats() returns as soon as IFLA_OFFLOAD_XSTATS_HW_S_INFO
-> is absent, dropping the counters that the message does carry.
-> __ipstats_show_hw_stats() already copes with a NULL info attribute, so
-> let it, and skip the record only when neither attribute is present.
+> The kernel can split the statistics of one interface across several
+> netlink messages. ipstats_dump_one() formats every message on its
+> own, so the interface is shown twice and the attributes of the second
+> message are dropped:
 > 
+>     109: vlan859: group offload subgroup l3_stats on used on
+> 
+>     109: vlan859: group offload subgroup l3_stats
+> 
+> Buffer the message instead, merge into it the following messages with
+> the same ifindex, and format it once another ifindex shows up or the
+> dump ends.
+> 
+> Fixes: 54d82b0699a0 ("ip: Add a new family of commands, "stats"")
 > Assisted-by: Claude:claude-opus-5
 > Signed-off-by: Alexander Zubkov <green@qrator.net>
 > ---
 
-Ok to check for bugs, but this is not that much of a problem.
+AI review found somethings here.
 
-After patch 1 this is unreachable with a sane kernel.
-rtnl_offload_xstats_fill() emits HW_S_INFO unconditionally whenever
-its filter bit is set, and ipstats packs that bit together with
-L3_STATS. The only way to get L3_STATS without HW_S_INFO is the
-resumed message with prividx at L3_STATS, which patch 1 now merges.
-GET is not NLM_F_MULTI so it cannot split, the monitor notification
-carries HW_S_INFO only, and both attributes landed in the same kernel
-series, so there is no version skew either.
 
-The commit message still describes the v1 symptom. It is not dropping
-any counters once patch 1 is in. If you want to keep it, reword it as
-a consistency cleanup: __ipstats_show_hw_stats() already tolerates a
-NULL at_hwsi, the wrapper does not. Otherwise drop it. Not going to
-add a validator higher up for a message the kernel never sends.
+On Thu, 10 Sep 2026 11:20:56 +0200, Alexander Zubkov wrote:
+> +#define IFSM_PAYLOAD(n) NLMSG_PAYLOAD(n, sizeof(struct if_stats_msg))
+> +
+>  static int ipstats_dump_one(struct nlmsghdr *n, void *arg)
+> +{
+> +	struct ipstats_dump_ctx *ctx = arg;
+> +	int rc;
+> +
+> +	if (IFSM_PAYLOAD(n) < 0) {
+> +		fprintf(stderr, "BUG: wrong nlmsg len %d\n", n->nlmsg_len);
+> +		return -EINVAL;
+> +	}
+
+This check never fires. NLMSG_PAYLOAD() expands to
+
+	((nlh)->nlmsg_len - NLMSG_SPACE((len)))
+
+and nlmsg_len is __u32, so the subtraction is done in unsigned arithmetic
+and the result is promoted to unsigned long, not int. A truncated message
+wraps to a huge positive value instead of going negative, and the compare
+against 0 is always false. Compiled and confirmed: with nlmsg_len = 4,
+NLMSG_PAYLOAD() yields 0xffffffffffffffe8, and "IFSM_PAYLOAD(n) < 0"
+evaluates to false.
+
+To be clear about severity: I do not think this is reachable from a
+correct kernel. RTM_NEWSTATS messages are built with a fixed-size struct
+if_stats_msg, so a short one should not occur in practice, and I am not
+reporting a live crash. But the check was clearly written to catch
+something, and as written it cannot.
+
+It is worth fixing rather than deleting, because nothing else on this path
+does the job. NLMSG_OK() only validates against sizeof(struct nlmsghdr),
+not against the 28-byte if_stats_msg header, so libnetlink hands the
+message to the filter without checking the family payload.
+ipstats_process_ifsm() does have an equivalent check that works, because
+it computes into a signed int first:
+
+	show_attrs.len = (answer->nlmsg_len -
+			  NLMSG_LENGTH(sizeof(*show_attrs.ifsm)));
+	if (show_attrs.len < 0) {
+
+but that only guards the print path. The new merge path runs before any
+printing and passes the payload lengths straight down:
+
+	rc = ipstats_merge_attrs(merged, maxlen,
+				 IFLA_STATS_RTA(NLMSG_DATA(ctx->pending)),
+				 IFSM_PAYLOAD(ctx->pending),
+				 IFLA_STATS_RTA(NLMSG_DATA(n)),
+				 IFSM_PAYLOAD(n), 0);
+
+ipstats_merge_attrs() takes these as "int alen"/"int blen", so on a
+malformed message the wrapped value truncates back to a negative int and
+feeds RTA_OK() and addraw_l(). So the guard in ipstats_dump_one() is the
+only thing covering that, and it should work.
+
+Simplest fix is to compare the length rather than the payload:
+
+	if (n->nlmsg_len < NLMSG_LENGTH(sizeof(struct if_stats_msg))) {
+		fprintf(stderr, "BUG: wrong nlmsg len %d\n", n->nlmsg_len);
+		return -EINVAL;
+	}
+
+or assign to an int first, matching what ipstats_process_ifsm() already
+does.
+
+> +	merged = malloc(maxlen);
+> +	if (merged == NULL) {
+> +		fprintf(stderr, "Error merging netlink answer: %s\n",
+> +			strerror(errno));
+> +		return -errno;
+> +	}
+
+Minor: fprintf() may clobber errno before it is read back for the return
+value, so this can return an unrelated error (or 0). The sibling failure
+path in ipstats_dump_one() gets this right by returning -ENOMEM
+explicitly; please do the same here.
+
+The rest of the series looks correct to me. In particular the merge itself
+holds up: maxlen cannot be overflowed since the merged content is at most
+the sum of both messages minus a header per merge level, addattr_nest()
+is passed the raw rta_type so NLA_F_NESTED survives, padding attributes
+are inert on both sides of the split, and the allocation paths are
+balanced -- free(ctx.pending) on dump abort, free(merged) on merge
+failure, and the iterative scheme handles three or more messages for one
+ifindex.
