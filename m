@@ -1,156 +1,126 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0923C1991
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4405E3C198D;
+	Mon, 21 Sep 2026 13:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789996184; cv=none; b=WIeoyKgphaMh4NaqiZx0MsVuneihhPXuNEnmLVmyThhbN5zmC9efsdXNaIcZe2CFRMr1yyTWRoSsfWbHbjoru/yib8xRhLJO9IM2kQG3mlLLDHJLV3RYHN7eMsgxEffP8VxPKh75dPDqhA6UTyGpY6s0BHMfW/TezeJs+78O4ss=
+	t=1789996295; cv=none; b=G/Gls1elCv8XW5LN3a69azZY/Hl866YoP9jxBYG/WBS07+irKMMRLzJ9FhsOz5yOnpUYOYZQ8aywprIeDlRS2C7tqfAK7QHWKvwxsekxU2gTUsqdExMNCaufoilL/n0SDNHXGxzPah6Ky6Ex/Mmfe7Sr5DAY3Mz+v13fo+pIot0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789996184; c=relaxed/simple;
-	bh=eiuWmlpWIrVmvRukmtMzZVNhvzYKEvXfj3/9QCPxu5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OCRk4IWGSPR2WnbDQ/Ng4BxJFdsYAs1f2bZYyK/Dy7aNrKd9rsv+nqLw4GOBCp9abz1Jjs7y9sZZO9zlOyY8Ck5pa4oXaX3e40KMJk2DXhjnf80bySf3TsyLqetIDYqms1fjUCobqDw9oDBvuF3Xgncm7yNG2pW6/kQ/QKKlYxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gbH46PJU; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789996295; c=relaxed/simple;
+	bh=170G/wINedk/LpDaoAUfkaU+wcfqyh6TsCo0Nr5U4IY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=f7mA0dFU+SS/ZmV0SBrb0/gVP0faziXxB36Jm8d7rG0PPlJpdNjB2fL/Mkyt0iuqACsjsPTCR5chvDnng3taP17wdFrJDiP9D7IxQXGdpZsQuuMNI4Awe79O8rTTmeh5ffJvhQ4slpVLtFQZ0VS8/1HwOA8ZkiNDxdOl9P9jYFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dkFs4YnL; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gbH46PJU"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1ceb47d55so533663a12.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789996182; x=1790600982; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=snQf0hJkQsH7Jj4aS5id74hgw0NIowrU4G8FGq6/9fI=;
-        b=gbH46PJURVM7ZTREuV2r1oNue8DRiPFq/kT5g7aJL3XK4lYzByd8eOkTSgiiB7jnpj
-         yQDsXEZXreurjXy/ZoNr1+ONL802AjHj7Gy5kEiP1t8/hJAnRp63CCQWzhaGFo5L6sv8
-         CTEzWr1vfh9Dx/HSYjTHUhHbIz6gXR3CB2eaPug6/0RyHeXHCvVNby/EouSqxEpocaUd
-         dYmz5PBMW9SooxNapP4pl7MriU+wEGI49pN/wxKRVNVBBzq5pLs9SggDkDplycfIrC27
-         F63d7oFB61q0NFezBPL0d3YYRcNdC6TLu0wIVcQ5+AUbTzUJu56hMrMNPZJ1A7bNs8rj
-         icHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789996182; x=1790600982;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=snQf0hJkQsH7Jj4aS5id74hgw0NIowrU4G8FGq6/9fI=;
-        b=ddFRwbpeBdD+yb9B7GmcBXK0o3njIWocOGd1jPEkasgeA5bz400EUpqn8EwC0mZbQx
-         uujuxOWxIP1PXG/7qbtoSTbMJokzMSnV2ca3sbb4FksuKJVPdznaMnZPJm+SMI71rytl
-         5WhGvxiEAR0xzFOpuTdfM10N+QTmFHuAsf0UlIZrXPUBco10xFAyQtL3JSSrfNVDuYn4
-         CwuIsK/k/gYqfWHLjPlbBEqRzJaL4zbaZtLphKyEJTMHOBCiHIbXvBjoK/0sJQ4hogud
-         VWtut4gwROy1cvnoVm5wrdGLaQIgpjQ/TGuKdi705scdr5fpVUxChqLQBz5hqrKzM4t6
-         ltbg==
-X-Forwarded-Encrypted: i=1; AKwUvBxNn94CT47bijGQl+w/eBQo2+RaTVds2GlXbzpTnFOexWWFavnucwQP3J+jSr9983sKZjScHao=@vger.kernel.org
-X-Gm-Message-State: AFuF++m93uyEYLYyfdCEm70jJe2w9td8ytXV3Vv+GnNspaN+xaHNA3bW
-	6D1I7A/azYdFjKM5Zd7hPA3HtcHzEPAwfG7dzEKT6dk9O/QyFJxKP8Q9
-X-Gm-Gg: AYBFou3FSBiSC7KSEfUxBM97VoHP/dW/SD0DVj9zDuyeUcBe00TaTqEp10hrMbreS46
-	HjlN9UTWd0B2PkXppS2+COGyOQC5fIPIIKIeHfQwZnshZ1eR9UkEWlOGE9HtTaWe4BdUfYyyPMH
-	WWvsm6/TegrU27Qn3rxm5I2SBdiqJt08wq2OKI50Sn5ri6rrmx8PwzLipVSowj4Tala7bxIozco
-	gX4zJFSKsAi2SxSrN1d5ZpHtHZISWCqQv0hivXw+WeVtR3jNdjYbsHre0UraHR0F+3TzvwKsO2h
-	dxj6emUp/uwFkhpFLSfjH2bN9UAX42D4OOlL3KocazNDHIoiSgmWeR2eGmd5U77ubWRO7HXr6mQ
-	VyezezteCv5I+5yetFUYy0ReYETLW86jtkfF6UcROIR3tiaun3VjTiOHlVr31YKAZ4n3sLgL3kz
-	aNhI6lzkEn5AQRJ2pGt6aImjaErVg5SPCu2xdJBLJ4n6MSAuKLGcVefA==
-X-Received: by 2002:a17:90b:2890:b0:39e:3dad:684f with SMTP id 98e67ed59e1d1-39e5546c89dmr10847172a91.4.1789996182395;
-        Mon, 21 Sep 2026 06:09:42 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a023e44854sm5275079a91.4.2026.09.21.06.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 06:09:41 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	bcm-kernel-feedback-list@broadcom.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: bcmasp: fix MDIO child device leaks
-Date: Mon, 21 Sep 2026 21:09:29 +0800
-Message-ID: <20260921130929.403129-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dkFs4YnL"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E14001A0F03;
+	Mon, 21 Sep 2026 13:11:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9AF915FFB2;
+	Mon, 21 Sep 2026 13:11:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54351103281DF;
+	Mon, 21 Sep 2026 15:11:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789996282; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=a/OAO1hWOHct6RHp0uO2yGO4InwES539CJG3xP9PBEQ=;
+	b=dkFs4YnLMzIYCHARnOQpHmY3nod7H7OhdhcBmN1zDBS2tadgxKDlb1G/wYhn0I7aPHShfa
+	foAHlM3tmyxsRyHVJ6LiNs2+e7nB3ewJkGyp/DxEuazB1pqSWKHahB8OVQKB2JpCz+nC32
+	FJ2DX0NmzP6Abc3LLLNtNPagkmYCa+vkIrQlyWAWfeQWtaIIJb2eUJ7AqGi/YB8cwBszSN
+	uIAgMGVfRq73aZteFRnvygrbyBb729OJgUS7puGqUNVh3hRTMpSyv2GktJg22ohJjqNU20
+	+duD+AwF0zsECpR8CpYLP11XabnrGLvmgM3GoYUbIZk3v5a4GhWe2oplkBUROg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 21 Sep 2026 15:11:13 +0200
+Message-Id: <DLL0PZY25HAD.1RWXC61P3MZRV@bootlin.com>
+Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on
+ rejected timestamp requests
+Cc: "Paolo Abeni" <pabeni@redhat.com>, <conor.dooley@microchip.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <kuba@kernel.org>, <richardcochran@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: =?utf-8?b?4oCN6rmA7Jqw7ISdW+2VmeyDnV0o7KCE7J6Q7KCV67O064yA7ZWZIOyghA==?=
+ =?utf-8?b?7J6Q6rO17ZWZ6rO8KQ==?= <5mghybrid@khu.ac.kr>,
+ <netdev@vger.kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+ <20260915083839.71546-1-pabeni@redhat.com>
+ <CAH1Bc_yQYJ6cWyYVvfWK0pAgrXW1TMkpzmNxZvAXAKZJdiOqWQ@mail.gmail.com>
+ <CAH1Bc_z6PFc7N6XVZ2dQEH=7D9mkXwGkXP2KKMW-Emd4zcf3fA@mail.gmail.com>
+In-Reply-To: <CAH1Bc_z6PFc7N6XVZ2dQEH=7D9mkXwGkXP2KKMW-Emd4zcf3fA@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-bcmasp_probe() populates MDIO child platform devices using
-of_platform_populate(). If initialization later fails, the probe error
-paths clean up interfaces and clock state without depopulating those
-child devices.
+Hello Woo-seok Kim,
 
-The normal remove path has the same issue and leaves the populated
-MDIO devices registered after the ASP driver is unbound.
+On Sun Sep 20, 2026 at 11:04 AM CEST, Woo-seok Kim wrote:
+> Following up on my September 15 reply. I noticed that the series is
+> still marked "Changes Requested" in Patchwork.
+>
+> This series fixes rejected timestamp requests changing the TX mode and
+> the two PTPv1 RX filters disabling receive timestamping. As explained in
+> my reply, the additional issues predate this series and are not made
+> worse by it. I propose keeping those fixes separate so that this series
+> remains focused on the two reported bugs.
+>
+> Could you please reconsider the Changes Requested status in light of
+> that reply and continue reviewing the series as posted?
 
-Add a separate error path for failures that occur after the MDIO
-devices have been populated, and call of_platform_depopulate() there.
-Also depopulate the child devices during normal driver removal.
+To me it all depends on the intent behind your series. If you have faced
+this bug in practice and your patches are intended to fix your usecase
+and prevent others from facing it, then we can take your patches as-is.
 
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
+If they are edge-cases cleanup patches and you never encountered the
+issue (maybe because you don't have hardware), then either
+ - the patch won't be accepted because it's overall churn or
+ - you fix the full sequence fully and we consider it a noticeable
+   improvement and take that series.
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+About "the proper way(TM)", I expect something like:
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index 972474893a6b..c4087408a822 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -1309,14 +1309,14 @@ static int bcmasp_probe(struct platform_device *pdev)
- 					 sizeof(*priv->mda_filters), GFP_KERNEL);
- 	if (!priv->mda_filters) {
- 		ret = -ENOMEM;
--		goto err_clock_disable;
-+		goto err_depopulate;
- 	}
- 
- 	priv->net_filters = devm_kcalloc(dev, priv->num_net_filters,
- 					 sizeof(*priv->net_filters), GFP_KERNEL);
- 	if (!priv->net_filters) {
- 		ret = -ENOMEM;
--		goto err_clock_disable;
-+		goto err_depopulate;
- 	}
- 
- 	bcmasp_core_init_filters(priv);
-@@ -1327,7 +1327,7 @@ static int bcmasp_probe(struct platform_device *pdev)
- 	if (!ports_node) {
- 		dev_warn(dev, "No ports found\n");
- 		ret = -EINVAL;
--		goto err_clock_disable;
-+		goto err_depopulate;
- 	}
- 
- 	i = 0;
-@@ -1369,6 +1369,8 @@ static int bcmasp_probe(struct platform_device *pdev)
- 
- err_cleanup:
- 	bcmasp_remove_intfs(priv);
-+err_depopulate:
-+	of_platform_depopulate(dev);
- err_clock_disable:
- 	clk_disable_unprepare(priv->clk);
- 
-@@ -1383,6 +1385,7 @@ static void bcmasp_remove(struct platform_device *pdev)
- 		return;
- 
- 	bcmasp_remove_intfs(priv);
-+	of_platform_depopulate(&pdev->dev);
- }
- 
- static void bcmasp_shutdown(struct platform_device *pdev)
--- 
-2.43.0
+int gem_set_hwtst(struct net_device *netdev,
+		  struct kernel_hwtstamp_config *tstamp_config,
+		  struct netlink_ext_ack *extack)
+{
+	struct macb *bp =3D netdev_priv(netdev);
+	u32 regval;
+
+	if (!macb_dma_ptp(bp))
+		return -EOPNOTSUPP;
+
+	// Step (1): tstamp_config->tx_type validation and precomputing
+	//           of TXBDCTRL and NCR values/masks.
+
+	// Step (2): same for tstamp_config->rx_filter.
+
+	// Step (3): read-modify-write NCR, writel TXBDCTRL & RXBDCTRL.
+
+	bp->tstamp_config =3D *tstamp_config;
+
+	return 0;
+}
+
+Improvements:
+ - we remove writel from the validation code
+ - we write to NCR once and not twice
+ - we don't have a tiny gem_ptp_set_ts_mode() function that returns an
+   int for no reason
+ - also NCR RMW probably deserves some atomicity through locking
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
