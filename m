@@ -1,71 +1,48 @@
-Received: from mail-ua2-f27.google.com (mail-ua2-f27.google.com [74.125.226.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E92D49F131
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 13:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112794A0139;
+	Mon, 21 Sep 2026 13:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999097; cv=none; b=j2TGVt3wOM5jz4/GKtvyG4J2vniSfBH8K5SswnzqD++EZvaoyCQLfyO3LOqKMpHX1eX1zGXxr2WGhI0NZrfd5BMjEYkjUIWQZsujc45EotxeXonAPjmGW3eooDYwe7B8Sw6hb+bkJCZBTpyHFYtDV7Vhp6rJrbzGBZljT5jppyU=
+	t=1789999127; cv=none; b=C8cxNokcyMTDKcA4xhgeLyGtuWFUm0gTPcBH1FLS41KviZt0r9HcyGCwWKGc96Lxl3LcDwrcdvJsynX9V1qcQNsrvypxLjL+7pE/RsW5jyz6VAw7CwFwPpQ0qWWQr6gzkwtHZEnODN9EFWDJbrCX9xCNwC605rM6ayXUwy4/Fuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999097; c=relaxed/simple;
-	bh=yKa/C4reZmFaOxAQ9geSl9LHte9/jgL68Qyv5mezAm4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AmNjtEUajU0IXHp8Q0Nkc45Lh882qjCeuMNa/0YfCnkiXl6TmJ17EIB7cthG7wHQasUpIclWPsspFiBDYDMWP3As8srHptu8RA78a7k3JgQJu7pu+upO8VDyA4STUloRT1337B5zlXbSUrTnLfkJKF4T1LS2e0njzSouDS93c9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/61Jf9v; arc=none smtp.client-ip=74.125.226.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789999127; c=relaxed/simple;
+	bh=THpSRXzLzNF65kA5k6YgmRSnVbUWk8l6krfhI9QSfgM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WPoEecFkcfnrdZjUit3EMtlm1o0ij+1rYtCHrcXSvLBGdI1/DyNET/nTSsHSktbbfO6H+WlgTtmLNgjhLw9TE2NWmcwR87hozqtUrB/JPSSnhxSkN4KR9Q4gBlFvkd1KtRKe8O49XK6v4L3YtGfvdP9AiEPFyQ/xJJmnA7/gxVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=ZJ4A9DHy; arc=none smtp.client-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/61Jf9v"
-Received: by mail-ua2-f27.google.com with SMTP id a1e0cc1a2514c-97e7c7bac31so1629975241.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 06:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789999095; x=1790603895; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=c/Thi6xBcnnvJkPXGTyDu12w7QnPPNQqCF3O40BVJc4=;
-        b=k/61Jf9v+yZJXtn1TudlmLOLsKLXlGgzC1cKeG5n7eDTzpyxu1qna22gKkhJJW5FEt
-         L4/R3ifafesHOzSc6Rz2dfWaCa/rMlG3FOD9SG4KpLFvpvDKNsFAu9rNiHAjEvk4stPY
-         gEjRNdMizqR8PeOPpCZ9l0SSQyo4/vqMprZz+HQmGmMWomw8yQkdEKNdbE0Ubh3bG/As
-         jJEG/Fr6zisfXEtXSeqI5hc0wQyiCdicquI9iJZ5hrUP6DmQrtiYpwehOftLQeO6XyHf
-         ieQkF7es169VDSSLwDPyGjuxIqZNlJ/cEeEm2S425qWpwsSYIFe41LCQ8+1OyxwyKc29
-         oDtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999095; x=1790603895;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=c/Thi6xBcnnvJkPXGTyDu12w7QnPPNQqCF3O40BVJc4=;
-        b=jKpcLxFs71MA98LJuMJn2WnPaaLWwsi/yl2XhrxQMtHdsSx8BQSzn41bQm9TZP0RsH
-         hPUyxzqIUyLzgUaNR5N6emWCZ7mkH6mULiumancrGkfh24JhGX8wfG82tLuPforSdBbR
-         1FoCY0Bm1R1AtV3BmJbAsS8PsWiGlAqfs5wPo8cozUy67gB0XVTtj59DatwCw11/4MEv
-         yFwmeUrdJaomh0rR1JB9K1p8gOGi1cBvWWW6gY63a1VOIXVjLH8AFWyY7KZ39XKVJMAg
-         ZBmz8veDTouZHlDkvP7ea2iu0oNmnm7xNE+Zag0K4YwYi/D2PMIcyKUSAkFAxnwC1v9p
-         AWLw==
-X-Forwarded-Encrypted: i=1; AKwUvBw6ClJEPTgxdUMCCpyhm+668yErWVdVsiwQUHTjn6Cb/NeGmMaKuUypON8roKAM6+zz68VTImc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kduQD/JZ6HOB+HVTWhlEEkTlhzjQDer1KB7b8++MLVXwq+nuuf
-	pxaC8KokMdF6h+gBEtrdgzMJlOu/E2Tg643SmJT/puLsFm6VVf0DvyYrFp6880yk
-X-Gm-Gg: AYBFou1hXUS7Ojo0Q2MtgF6Urib7hNLXni6ryJF/lLYq5VXz8vEthZKUJ8/ungYqAf/
-	uv5yPt4NTwQGQgCvZSk1vVIVTLj8jyKWZ79p6p2qXv7eSL34/HqdYEkNJclvRHIC0LAtH8TSYDs
-	Wfs2VYZm+ZBL1BJPMZVM9VjpfCPp+MaG0mgOD6h2dAl224wrZN4Yn1ycGRabIjFwQWdKpYDLsBg
-	u7fYrmJ88qBrVnWw+Q+32SyDFpPB+mp5gzRj/87LndfHexSXPg1dPYWLygoqSeVTKAmJH5UOajz
-	cSkpF5c/eiG7fqzt+DyZCJDb9cmzyuR/dKzCuzVAI4e4Kmwffchj237kRGFY1MGBucBKLXMzwxI
-	AT4hDLmg9yfZ0LMekk8G4Tk3hi4+qcSTdq6bi5wJ/J0uFGdJe02eOrTmHPOdp4inJ1NHB5N/Zz2
-	P08vMESeLV0HE+PawMsePQ+VWcELn6Y2lmmFPczZkRlwpvELLOyVlZmtQFcnpxyPhk5mvlEcGTB
-	Yq/jJiulhpYaSylQ3iMG2W2sRNJYaH3jj2e+cmDOTWBszXFVGWw5P5/MyUrUUsUeQ==
-X-Received: by 2002:a05:6122:20a3:b0:5c9:c60e:3a49 with SMTP id 71dfb90a1353d-5c9c60e3de9mr2975687e0c.21.1789999094895;
-        Mon, 21 Sep 2026 06:58:14 -0700 (PDT)
-Received: from lvondent-mobl5 ([72.188.211.115])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-984d52bcbeasm8032669241.3.2026.09.21.06.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 06:58:14 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth 2026-09-21
-Date: Mon, 21 Sep 2026 09:58:07 -0400
-Message-ID: <20260921135807.3459373-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="ZJ4A9DHy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ez
+	yjvcjHnU8bsyuDFh4e4QIqzX8lLzZewGB28BdVIsQ=; b=ZJ4A9DHyVWeOVgvWbX
+	SQ9fRseiZitjjvZsJRy0vgOPvPYK4I4A2fSw7+Isykg0xhImtaQWk6orSkYK66wu
+	PxNG9vEiBNQoqNSf6yBUF3YXTamAJDNvhfhfcrFh5fkANSSVg0y197cqefnaoe+Y
+	WmsS7GG7L1lk796eI84fvtd94=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD33wG+N7FqH9M7Bw--.62914S2;
+	Mon, 21 Sep 2026 21:57:18 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3 1/2] net: stmmac: ethtool: ignore inapplicable per-queue coalesce fields
+Date: Mon, 21 Sep 2026 21:57:15 +0800
+Message-Id: <20260921135716.218420-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,79 +50,135 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD33wG+N7FqH9M7Bw--.62914S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuF4DtFyxZF4Dury7Kry5twb_yoW7Jw47p3
+	yUCFZavw1kJrW2yw1kAF40kFy5trs3tFZ7XFyxt34Fka1fCry5Xry5tryUKFnFkrWkZrWY
+	gFWjq39ru398XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UnmRUUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqR8E2mqxN7-cjgAA3p
 
-The following changes since commit 801fb950cae7048eb7d83b18857d1ca37b8cd5a4:
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-  Bluetooth: RFCOMM: avoid socket lock inversion in listener cleanup (2026-09-15 14:55:41 -0400)
+rx_queues_to_use and tx_queues_to_use are independent: dwmac-intel uses
+6 RX and 4 TX channels on TGL and EHL, and snps,rx-queues-to-use and
+snps,tx-queues-to-use are parsed separately, so a queue index can exist
+in one direction only. include/linux/ethtool.h documents the parameters
+of the missing side as inapplicable and asks set_per_queue_coalesce() to
+ignore them, but __stmmac_set_coalesce() validates both directions for
+every index while __stmmac_get_coalesce() reports the inapplicable ones
+as zero.
 
-are available in the Git repository at:
+ethtool implements --per-queue by reading the current settings of every
+queue in the mask and sending them back with only the requested fields
+overwritten, so the zeroed fields are fed straight back into the setter:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-21
+  - on an RX-only index the test for both TX fields being zero rejects
+    the request, so per-queue RX coalescing cannot be changed at all;
+  - on a TX-only index rx_coalesce_usecs is zero, stmmac_usec2riwt()
+    returns zero and the MIN_DMA_RIWT test rejects the request, so
+    per-queue TX coalescing cannot be changed at all.
 
-for you to fetch changes up to 6d91041bb38b97e2feb625123cc0529d7b83a0e1:
+On an RX-only index the TX test rejects the request after the RX block
+has already called stmmac_rx_watchdog() and stored rx_riwt[] and
+rx_coal_frames[], so the driver reports -EINVAL with the hardware half
+reprogrammed.  The roll-back that ethtool_set_per_queue_coalesce() runs
+for the queues it has already changed then trips over the same test and
+cannot restore them.  On a TX-only index the rx_riwt range check fails
+before anything is written, but the request is still rejected and the
+TX settings are never stored.
 
-  Bluetooth: RFCOMM: Reject short EA=0 frames in rfcomm_recv_frame() (2026-09-21 09:37:20 -0400)
+Validate and apply only the side that the queue index actually has, and
+move the TX checks in front of the RX block so that a request is either
+applied completely or rejected without touching the device.
 
-----------------------------------------------------------------
-bluetooth pull request for net:
+Fixes: db2f2842e6f5 ("net: stmmac: add per-queue TX & RX coalesce ethtool support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+Changes in v2:
+- Trim the comment in front of the TX checks to one line; the reasoning
+  belongs in the changelog. (Andrew Lunn)
+- Link: https://lore.kernel.org/all/20260920015647.1783574-1-xiaolinkui@126.com/
 
-Core:
+Changes in v3:
+- Only run the TX checks when the index carries a TX ring, and the rx_riwt
+  range check only when it carries an RX ring. Moving the checks alone
+  rejected per-queue RX coalescing on an RX-only index and broke the
+  ethtool core rollback for it. (Sashiko review)
+- Reword the subject and changelog to describe the direction-aware
+  validation.
 
- - hci_conn: fix CIS hold ownership on reuse
- - hci_sock: reject out-of-range OCF values
- - hci_sock: validate event length before filtering
- - L2CAP: validate frame length before control and FCS access
- - RFCOMM: fix NULL dereference of dlc->session in RFCOMM_CONNINFO
- - RFCOMM: Reject short EA=0 frames in rfcomm_recv_frame()
- - ISO: release unused CIS holds after channel attach
- - ISO: balance the parent hold in hci_bind_bis()
- - SMP: reject Security Request over BR/EDR
- - MGMT: fix race in read_unconf_index_list()
- - MGMT: Dequeue pending mesh_send_sync entries on cancel
- - BNEP: fix out-of-bounds reads on short RX/TX frames and control fallthrough
+ .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 35 +++++++++++++------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-Drivers:
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 154cc0c7623d..fed648a9f784 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -837,6 +837,8 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	bool all_queues = false;
+ 	unsigned int rx_riwt;
++	bool has_rx;
++	bool has_tx;
+ 	u32 max_cnt;
+ 	u32 rx_cnt;
+ 	u32 tx_cnt;
+@@ -850,7 +852,20 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 	else if (queue >= max_cnt)
+ 		return -EINVAL;
+ 
+-	if (priv->use_riwt) {
++	has_rx = all_queues || queue < rx_cnt;
++	has_tx = all_queues || queue < tx_cnt;
++
++	/* An index can be RX-only or TX-only; ignore the missing side. */
++	if (has_tx &&
++	    ec->tx_coalesce_usecs == 0 && ec->tx_max_coalesced_frames == 0)
++		return -EINVAL;
++
++	if (has_tx &&
++	    (ec->tx_coalesce_usecs > STMMAC_MAX_COAL_TX_TICK ||
++	     ec->tx_max_coalesced_frames > STMMAC_TX_MAX_FRAMES))
++		return -EINVAL;
++
++	if (has_rx && priv->use_riwt) {
+ 		rx_riwt = stmmac_usec2riwt(ec->rx_coalesce_usecs, priv);
+ 
+ 		if ((rx_riwt > MAX_DMA_RIWT) || (rx_riwt < MIN_DMA_RIWT))
+@@ -866,7 +881,7 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 				priv->rx_coal_frames[i] =
+ 					ec->rx_max_coalesced_frames;
+ 			}
+-		} else if (queue < rx_cnt) {
++		} else {
+ 			priv->rx_riwt[queue] = rx_riwt;
+ 			stmmac_rx_watchdog(priv, priv->ioaddr,
+ 					   rx_riwt, queue);
+@@ -875,14 +890,6 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 		}
+ 	}
+ 
+-	if ((ec->tx_coalesce_usecs == 0) &&
+-	    (ec->tx_max_coalesced_frames == 0))
+-		return -EINVAL;
+-
+-	if ((ec->tx_coalesce_usecs > STMMAC_MAX_COAL_TX_TICK) ||
+-	    (ec->tx_max_coalesced_frames > STMMAC_TX_MAX_FRAMES))
+-		return -EINVAL;
+-
+ 	if (all_queues) {
+ 		int i;
+ 
+@@ -892,7 +899,7 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 			priv->tx_coal_timer[i] =
+ 				ec->tx_coalesce_usecs;
+ 		}
+-	} else if (queue < tx_cnt) {
++	} else if (has_tx) {
+ 		priv->tx_coal_frames[queue] =
+ 			ec->tx_max_coalesced_frames;
+ 		priv->tx_coal_timer[queue] =
+-- 
+2.25.1
 
- - btintel_pcie: validate device-supplied DMA indices
- - btnxpuart: Fix skb leak in nxp_process_fw_dump()
-
-----------------------------------------------------------------
-Aldo Ariel Panzardo (7):
-      Bluetooth: hci_conn: fix CIS hold ownership on reuse
-      Bluetooth: ISO: release unused CIS holds after channel attach
-      Bluetooth: hci_sock: reject out-of-range OCF values
-      Bluetooth: hci_sock: validate event length before filtering
-      Bluetooth: ISO: balance the parent hold in hci_bind_bis()
-      Bluetooth: L2CAP: validate frame length before control and FCS access
-      Bluetooth: mgmt: fix race in read_unconf_index_list()
-
-Christiano Amora (1):
-      Bluetooth: SMP: reject Security Request over BR/EDR
-
-Hui Peng (3):
-      Bluetooth: bnep: fix out-of-bounds reads on short RX/TX frames and control fallthrough
-      Bluetooth: RFCOMM: fix NULL dereference of dlc->session in RFCOMM_CONNINFO
-      Bluetooth: RFCOMM: Reject short EA=0 frames in rfcomm_recv_frame()
-
-Lee Jones (1):
-      Bluetooth: mgmt: Dequeue pending mesh_send_sync entries on cancel
-
-Ravindra (1):
-      Bluetooth: btintel_pcie: validate device-supplied DMA indices
-
-Zijun Hu (1):
-      Bluetooth: btnxpuart: Fix skb leak in nxp_process_fw_dump()
-
- drivers/bluetooth/btintel_pcie.c | 16 ++++++++++++++++
- drivers/bluetooth/btnxpuart.c    |  8 +++++---
- net/bluetooth/bnep/core.c        | 17 ++++++++++++++++-
- net/bluetooth/bnep/netdev.c      |  8 +++++++-
- net/bluetooth/hci_conn.c         | 14 ++++++++++++--
- net/bluetooth/hci_sock.c         | 20 ++++++++++++++++----
- net/bluetooth/iso.c              |  7 +++++++
- net/bluetooth/l2cap_core.c       | 10 +++++++++-
- net/bluetooth/mgmt.c             | 27 +++++++++++++++++----------
- net/bluetooth/rfcomm/core.c      |  3 ++-
- net/bluetooth/rfcomm/sock.c      |  6 ++++--
- net/bluetooth/smp.c              | 17 +++++++++++++++++
- 12 files changed, 128 insertions(+), 25 deletions(-)
