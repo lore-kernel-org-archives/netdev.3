@@ -1,104 +1,182 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2432E4257
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 21:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3782551477D;
+	Mon, 21 Sep 2026 21:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790026256; cv=none; b=WcRxjpPPYMUGAii10L9Usq6wzwXJjgqnnno6hbDZOHNpiC6TzBay0YXrRswayX/zrT9+yFCoVclrThkrLC4k1vHRCvRh8DdK3zd00Ez18GPSqLlBeWh/QUBXyWV3Mc0x+ms35q5DtPr0jJaGuegFdb52n8Crbf7z7YMQMhp6dyA=
+	t=1790026343; cv=none; b=PgWBlyVsaZ8jyzK5tB7TaytSNthvN8h9f3h4dlZzWboAgbcyH78gDq93/UUAlDumV2p0gEO3mv8Y2+IKJHPkYMk4sWd/6txBbt5Nfmt6dW49fIOrGMIlTRZ/YW91VURlvjDr0MdUXWMg0976JQKQ1mf7ge+dWwCdBK1RKd6Rjq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790026256; c=relaxed/simple;
-	bh=SDD5uJHfK6z8nRdxuK0ng0TRvAY5EGWTNJID3QGutxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGbbHCL38SoH8CH2IXk72ZoMyWcftaa5cimuehLyfJEiCznol9QzG7pQpcX9X7hWhkjk86YyD9Er8FdyCYEHYAYO+1LoPQrk7Yy3mhKORSdTzyas7vXuWQtl06vmMiii9LHOsLVAn2TzmqKnSMgXu0mUnSqbu619Cj1Zlco2+3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRroXxKS; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790026343; c=relaxed/simple;
+	bh=nj7/loD5kK6wN8ZAxacG6WZUOLGqZeQ1K8/Zypurjv0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JS4HSQbOpQZrZV0iOgL2nLkv+0KweQ7ThkK0K9b48Z6eD5hzRc3m8y4I+cWijoGenh/p0wCCxP3eyahR8DcsRdCwhSfBKtuZkoc53aZJV79Zlj2/kn9EjKDAAqd7D80mC37a2HiWo3Snr2PL6r+J1q7pV4FPRbZERlisiXB8XCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5gEi17J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRroXxKS"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so2454098f8f.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:30:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790026253; x=1790631053; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SDD5uJHfK6z8nRdxuK0ng0TRvAY5EGWTNJID3QGutxE=;
-        b=NRroXxKSntq3xO4MSo3ErmviL4Xxw4fuz8NUWG+GV0sooY5EtQX558oSc0esSAbopE
-         XsyztbYzA2x7Dkqy2hio380jFCPzVTeSCYgqYM3aKDUa3kGTG7FfTX9ZfT6sJEONx/dr
-         knuUYZ9++zkefwgL9ghci1AJybaWRPftuwsqDAfe05Gey0dt4T+geSFR64uIvYscBtiY
-         5pGFDZy1wEAQFuTHX9McyL8Tlh+5YJqDs7rKaxCyk8e9nNGM5tzPwYIfB1bMXfgsOeZm
-         lS2lSCpIoUEd3Z73iI+sqnXuYqYL5GVZuh+a3MkXN4+2de/TEl9NXBOVDCJybNx3cf+R
-         nRVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790026253; x=1790631053;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SDD5uJHfK6z8nRdxuK0ng0TRvAY5EGWTNJID3QGutxE=;
-        b=vboh3VLPxyphh+SY7hRwK58mzYXq92IeZvLcrnKf90d3MiY+0G72yXj9ER4Kt33QdP
-         wIrliv9MLt9vF3p0P9TOBJrnPFml0Vrgv12/duHtf3ZriXzH4V3UAP2pCx/P1BZZJ4j6
-         pKNvIsbKxExWwU1714vvkRzbrEY75Hy+mLvTJNgNafQvdsAOgfXmSXEJHj66cNaCmhPh
-         lLl7Eo2etaoYImBm3Wu4WrWGApMeDDKvP0b5/XSgpnV3Snm+wlcmEOQbpxIkh4pxbciP
-         iQO45ar8vVp33B/Il3Dr/Em9ZU3TMNx4cY30dJYPMMkO64/KpjIUizp689QhyRKrwhZP
-         68uw==
-X-Forwarded-Encrypted: i=1; AKwUvByx3QmXWuHSpwHe842LrVaVmciNgywYztezgaxNaVEprFBjZ7UQqQ2lbaQpaWKkS6RKExUy8GU=@vger.kernel.org
-X-Gm-Message-State: AFuF++n0OUx1Ex/RpGD902bfHsJ19ncsLJrMpuTAaxKAYEfJuuoZUHus
-	dEMBxYn9KV/NyxWcCXJZ1NCgaffGbbHKm1VVRec5bLVpOT8WxUE5yWVL6a3iAcZJ
-X-Gm-Gg: AYBFou0DgdvQN61tZRpbyRLP52dFAquk4Y1A+LvvC3PEh73a/UH+3lrkcUV6MJUbBTY
-	bPpWC/mTPksLhGdh2+FdiRJoypBtG5ADQ05UEYfbq625xKLyH7f5jnV6S8CLjPPm3S1Wot5/CNl
-	UcADdpAyUVtvV+t3NH1RK6WmSyGB9FDaA0jMtu2Q4dOecEIRMgkXOQWzvOVeLjy1evwn7QFXbj+
-	KNLpg6xn9nRHy9zgmRmFUEJNUuymcMMX8bDwJ8ZGL5eWDhRXmlaEkU5137ci+xnQqYQ1MhLPbfX
-	m+h9i6jWD9CDcYz0Luido2GNlMlLKmNaEqI1BmlEjYMJeC/u47aUqk+1mtwyMFEXL9y5OvlmMDu
-	ErpJ9TkqtTXnPA1Aio0Wtb9hSEhmrX9C3GuO4azxQoARstw75ojnMMWTFu3KMV0Ent6137pZZ3V
-	Zo4yk1sh1NlPeSbPGIpN6zz69mysdTzAiKqEIgSaeUvt32kowEU5UXi74T9x6VzN3OTU3Odsk3j
-	e267FHbZp+w30bf5FqXkaroSArjo7bvcN2ao6KlVBOxI5bzQQ==
-X-Received: by 2002:a05:6000:2890:b0:486:fa7b:d3aa with SMTP id ffacd0b85a97d-4871e2273a5mr15062011f8f.23.1790026252444;
-        Mon, 21 Sep 2026 14:30:52 -0700 (PDT)
-Received: from linus-personal-clanker ([102.164.100.122])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862287b6esm239042f8f.33.2026.09.21.14.30.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 14:30:52 -0700 (PDT)
-From: "David .B. Dull" <monderasdor@gmail.com>
-To: adrianox@gmail.com
-Cc: fw@strlen.de,
-	horms@verge.net.au,
-	ja@ssi.bg,
-	linux-kernel@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	pablo@netfilter.org
-Subject: Re: [PATCH v5 nf-next 3/3] selftests: netfilter: ipvs: add per-service secure_tcp test
-Date: Mon, 21 Sep 2026 23:30:31 +0200
-Message-ID: <20260921213031.6160-1-monderasdor@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921205706.1055288-4-adrianox@gmail.com>
-References: <20260921205706.1055288-4-adrianox@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5gEi17J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3121F000FF;
+	Mon, 21 Sep 2026 21:32:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790026341;
+	bh=Gv598snNBg2ytzaXtEccRuibUzHZZ7MBdyIQlWn+2uQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=G5gEi17JEOgo8O0CmhAm/xVs6ovLnHsjbVL5G4M4zO11OdgrW6wM2b8YAyye4Jpy8
+	 DDtjlZnRD9vJ6oP0YJc0ZJm1vwwH5PwlgN74mNjkD8oGy1gGU+MGMS9/yiOeBACnGt
+	 3x4ThFpB56c3baHtW7pIMc+WoDuYII/NI2faM9LIdsgNjorOSLKdLamObvt87DxXLB
+	 pT3Nl9X8OlVia54rnVfMc+L9TeLI7hKCq7wl/c0vPdY4t3OmzzyXXOlmcab3zPAPGR
+	 iv4ngwwSLk0uEI4JyY+zJrctMVSk5V0rJHhEReB1GRk5xpKBVEyzSmx53wwvXYhIgf
+	 pHuOt28pZL4Zg==
+Subject:
+ Re: [PATCH net-next 1/3] i40e: move ATR sample rate from ring to PF level
+From: netdev-bot+sashiko@kernel.org
+To: anthony.l.nguyen@intel.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ mheib@redhat.com, przemyslaw.kitszel@intel.com, jiri@resnulli.us,
+ horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+ rdunlap@infradead.org, linux-doc@vger.kernel.org, sx.rinitha@intel.com
+Date: Mon, 21 Sep 2026 21:32:20 +0000
+Message-ID: <179002634029.2160803.4618287131417011270@kernel.org>
+In-Reply-To: <20260917204541.3072415-2-anthony.l.nguyen@intel.com>
+References: <20260917204541.3072415-2-anthony.l.nguyen@intel.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: David Dull
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-To: Adriano Cordova
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Cc: Simon Horman, Julian Anastasov, Pablo Neira Ayuso, Florian Westphal, netfilter-devel, lvs-devel, netdev, linux-kernel
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This patch has already been reviewed by the netdev bot with Sashiko on 2026-09-21 for the v4 revision of this same selftest patch. That review found three possible issues. First the changelog wording claimed a bare SYN ACK suffices but the probe actually sends a bare SYN followed by a separate bare ACK. Second the script has no kernel side prerequisite check and no skip path for when ip_vs is unavailable. Third the secure side assertion cannot distinguish between the per service secure_tcp working correctly and the ACK probe never arriving at all.
+- [High] Concern (discarded on baseline verification): removing the per-
+  ring atr_sample_rate decoupled the software ATR gate from…
+- [Medium] Undisclosed user-visible behaviour change: "i40e: move ATR
+  sample rate from ring to PF level" is written as a pure storage…
 
-This v5 revision appears to address the first and second points by rewording the changelog to say a bare SYN followed by a bare ACK and by adding module availability checks for ip_vs and ip_vs_rr. The third concern about the assertion being ambiguous if the ACK probe fails is addressed by the addition of checking the probe exit status so a probe that dies after the SYN cannot leave the secure side SYN_RECV assertion passing incorrectly.
+--
 
-The code itself is well structured with proper error checking in the libmnl helper for setsockopt sendto and mnl_socket_bind return values. The fallback definition for IP_VS_SVC_F_SECURE_TCP in the helper is a reasonable approach for older userspace headers. The test topology and the approach of using TTL one probes to prevent the packets from reaching the real server is sound.
+i40e: move ATR sample rate from ring to PF level
 
-However there is one remaining concern. The assertion that the plain service reaches ESTABLISHED state depends on the probe successfully sending both the SYN and the ACK. If the second sendto call fails in the probe the exit status will be non zero and the test will report failure. But if the ACK packet is sent successfully and simply does not reach IPVS for some reason the connection may still be in SYN_RECV when the assertion runs. The sleep between the probe and the assertion is only one second which may not be sufficient on a heavily loaded system. Consider increasing the sleep or adding a retry loop for the state check.
+This moves atr_sample_rate out of struct i40e_ring and into struct i40e_pf,
+initializing it once in i40e_sw_init() instead of in i40e_configure_tx_ring().
+i40e_atr() now reads the PF-level value, and ring->atr_count grows from u8 to
+u32.
 
-Overall the patch is in good shape and addresses the prior review comments appropriately.
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> index abbc71e815ae3..0a4272e1ab070 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+> @@ -3458,12 +3458,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
+>  		ring->xsk_pool = i40e_xsk_pool(ring);
+>  
+>  	/* some ATR related tx ring init */
+> -	if (test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags)) {
+> -		ring->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
+> -		ring->atr_count = 0;
+> -	} else {
+> -		ring->atr_sample_rate = 0;
+> -	}
+> +	ring->atr_count = 0;
 
-Reviewed-by: David Dull
+[Severity: Medium]
+The commit message describes this as a storage relocation: "Since the sample
+rate is a global policy that applies uniformly across all rings, it makes more
+sense to store it at the PF level."  Does dropping this conditional also change
+when the writable "flow-director-atr" private flag takes effect?
 
-Signed-off-by: David Dull
+Before this patch, the per-ring rate was latched from I40E_FLAG_FD_ATR_ENA at
+the time the Tx ring was configured, and i40e_atr() bailed out on
+!tx_ring->atr_sample_rate.  i40e_set_priv_flags() does not add
+I40E_FLAG_FD_ATR_ENA to reset_needed and only handles the disable direction:
+
+	/* Flush current ATR settings if ATR was disabled */
+	if (test_bit(I40E_FLAG_FD_ATR_ENA, changed_flags) &&
+	    !test_bit(I40E_FLAG_FD_ATR_ENA, new_flags)) {
+		set_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
+		set_bit(__I40E_FD_FLUSH_REQUESTED, pf->state);
+	}
+
+So on a live interface whose rings were configured while ATR was off,
+"ethtool --set-priv-flags ethX flow-director-atr on" did not resume sampling
+until an ifdown/ifup or a PF reset.  With the PF-level rate now always
+non-zero, the flag alone re-enables descriptor generation immediately.
+
+Could the commit message mention this user-visible semantic change, and should
+it carry a Fixes tag if the old latching behaviour was considered a bug?
+
+[ ... ]
+
+> @@ -12740,6 +12735,8 @@ static int i40e_sw_init(struct i40e_pf *pf)
+>  		}
+>  	}
+>  
+> +	pf->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
+> +
+>  	if ((pf->hw.func_caps.fd_filters_guaranteed > 0) ||
+>  	    (pf->hw.func_caps.fd_filters_best_effort > 0)) {
+>  		set_bit(I40E_FLAG_FD_ATR_ENA, pf->flags);
+
+[Severity: High]
+This assignment is unconditional and happens before the Flow Director
+capability detection below it.  Can that decouple the software ATR gate from
+the Flow Director enable bit programmed into the Tx queue context?
+
+i40e_configure_tx_ring() still snapshots the flags into the HMC context:
+
+	if (test_bit(I40E_FLAG_FD_SB_ENA, vsi->back->flags) ||
+	    test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags))
+		tx_ctx.fd_ena = 1;
+
+The matching software snapshot (ring->atr_sample_rate) is what this patch
+removes, so after toggling "flow-director-atr" on without a reconfiguration,
+i40e_atr() would pass the new gate:
+
+	sample_rate = READ_ONCE(pf->atr_sample_rate);
+	if (!sample_rate)
+		return;
+
+and go on to write an I40E_TX_DESC_DTYPE_FILTER_PROG descriptor and advance
+tx_ring->next_to_use on a queue whose context was programmed with fd_ena = 0.
+Would that produce an MDD event or bogus FD programming status on that queue?
+
+For completeness, the later patch in this series, "i40e: trigger PF reset when
+re-enabling ATR via ethtool", adds a reset on the enable transition in
+i40e_set_priv_flags(), which re-programs the queue contexts and addresses this
+for the series as a whole.  It does leave a window between
+bitmap_copy(pf->flags, new_flags) and i40e_do_reset(), and it means this
+intermediate commit alone is not bisect-clean in that respect.  Would it make
+sense to fold the reset change into this patch, or to order it first?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> index 7f68adb5109b0..e045f9c71c944 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+> @@ -2882,7 +2883,8 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
+>  		return;
+>  
+>  	/* if sampling is disabled do nothing */
+> -	if (!tx_ring->atr_sample_rate)
+> +	sample_rate = READ_ONCE(pf->atr_sample_rate);
+> +	if (!sample_rate)
+>  		return;
+>  
+>  	/* Currently only IPv4/IPv6 with TCP is supported */
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917204541.3072415-1-anthony.l.nguyen%40intel.com
