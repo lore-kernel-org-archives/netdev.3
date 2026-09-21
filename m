@@ -1,171 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EDA377AA1;
-	Mon, 21 Sep 2026 06:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CEB245012;
+	Mon, 21 Sep 2026 06:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789972701; cv=none; b=RuG0UGORsRAtVB45RAlzBd7nKxqiTu1t9qi4gLX7wV9NXb+eo8I8gZ5bTR8vWWP7alMFx1c4cKMv5jz6LUq4MU7BxkIX1/9dgWfM0mcyFxFBiGE1G8U1zyBscAaXCbLd8s7GJKUu/hxvq1pteB1QFVzYZpoTs6iv3GGn5BRjJfQ=
+	t=1789973459; cv=none; b=qbIm44O/UDr3k6VoUKlF2g6SET9/b02RUIu0yBJf7nsh0rz7L9HK6P/TGtsU12hY2uB8B+7o9/QF1FntIEeu1C+s3t1zYSy5DeK42iWNJUddpzAzlpGAylPoJQEF5vob9E781nauSatoED9JTULYckdD/bNbIl4GOIcLUyaM/cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789972701; c=relaxed/simple;
-	bh=av7b8k4TaDZ78d2UuXsX8d+SrVCoNudj09wDyVqYdCo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iryWw7qoU8kg6JuBkaDWc8NRy5bWw14EGs8NB5zNUxNysQnQJzpg5arhO3dGWUkpx+sF3Pq0dGqa4e93grBzTZmaUPDFKdOSL5DeD2jyZFkH8gGZ9YFeDFD8CCNJYjidcAtvuJ5Wwf3eYBc5Cs7dJfsAnjTAOj7Ikpla6BlpTx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMoV12BC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789973459; c=relaxed/simple;
+	bh=6f0eCkeGFCciTpnm1HOobpxQ0s5oxwvG28Sv0p2qS48=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=WDrvyIb0xzTUHvWoMf7YHJTZh2aAJ8Ff2h3z0xpOFE5OkDd7JgEevSqRzt8t2iPpr8A4WjH+gKCPgH15r1/F1G+fo2D08bzi+SQKED/6aKX7llBE8+5DqdH8n2TFjolsJCKVPjJIhXrfh7jPQXyxMR9w2JSw4RELxLSYhRmK1T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=FKf24MKD; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMoV12BC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC0C1F00893;
-	Mon, 21 Sep 2026 06:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789972699;
-	bh=Y4jE66NJS02PB9RnKwqWmkL3qkxjOW4XR7o+CYDXN5Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HMoV12BCIjFyf0D04FW2dy8S/bYJcqK9PWFoqlwbvhjk8gJZQ1zy2bU2C85Nn5fKO
-	 E9AuKQ4n7S8N7FsRTYEsnQvLCyM2F15MsP/eKitcA56tcqAkNpFd8kXrKKTLtpJ1oo
-	 rwHg4Y7APX/QhL4L/uXbs6t0hhn5i1WDGNHXAl/LAsmlIHrYviM8qph3VhSGQ6jKLN
-	 saQdrJYXeTnPLmDypojDDJvsr18nr1gLb8TCOQnfwP9vv6bfXpkULDrwtngHXziSWH
-	 fc6hvo0NyeJARWWnTf2dFS1P127qhUknKn7UAfRHIbKuLyMGALXi4Q3wsffd0nsYXn
-	 CdHtM7zFEXIDw==
-Subject: Re: [PATCH net-next 6/6] netlink: specs: rt-route: describe
- seg6-local actions, counters and flavors
-From: netdev-bot+sashiko@kernel.org
-To: hangbin.liu@linux.dev
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- donald.hunter@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, liuhangbin@kylinos.cn
-Date: Mon, 21 Sep 2026 06:38:18 +0000
-Message-ID: <178997269841.2160803.16028415760620210470@kernel.org>
-In-Reply-To: <20260917-ynl_rt_encap-v1-6-fbbe6e680571@kylinos.cn>
-References: <20260917-ynl_rt_encap-v1-6-fbbe6e680571@kylinos.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="FKf24MKD"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 9D6D9213B0;
+	Mon, 21 Sep 2026 09:50:48 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=RfTcnOOoHbgriPhJ1Vzr0zRBmP8UA0p7+omFHNT3LAA=; b=FKf24MKDRyB6
+	KlwVQpo0abcsTAu/7Csc8mX7LoUxjLwpzZGDxCQ9idlr62p0F8pL/kCWKl/iaN7r
+	/GMYKI4wI3Q3BYCyykrmmc537gLjBqHHMEaoE9SXdoHtmmPAfIMqTpi12p9MSnbf
+	2V6gBQD0hVqLJ60YPfOLZ+PDjIKBYTOd+AowTdO3vb7uTiZDVzK5TFWM8pSPjbll
+	m+JAFjAGhJM77lxj6Y5Hx5ZiA1//TdWkEDWhvYcy1pOAncMjC1gNb5m3kRvBWgXL
+	LIZPYDmABa7l75bptlmsQjDHEUARuKcgKgC0LuTw/XQSdKMfoM2tdKRM14ndDKm+
+	JDXqWRGw5dByrjm9zK0h7YuAVD1ZGHJ+wG//JWgqWaOmgLA0/GhNBw2Hg40waVus
+	a4uoFBVEzueFbEz0ZLDxfCLuFaybY7enQ85Ez5zhOWXfXD9KzvSezgLfEBZhw030
+	921SJZxBqE/5HCAb3dWrkUKK586QLVCGtG+IZI01RAxRG+Lv938k5x4fPvw0BGCf
+	v40WARMo9DmRBK2A/IbwJE5uaP7te+FClSciLl6DsSnfOVy1ZkIqe+a1YioG/710
+	fmSBEjKDxN2LRPJGEWTLbrgk5Lrb2HRjVkg7qunuVe/iZT6kUu3JaUa1DP5Y7Pib
+	PtRuGJrJ881BcqETVEbDotnjjDUIHIE=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Mon, 21 Sep 2026 09:50:48 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 6F7F8605C2;
+	Mon, 21 Sep 2026 09:50:50 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68L6omnT015991;
+	Mon, 21 Sep 2026 09:50:48 +0300
+Date: Mon, 21 Sep 2026 09:50:48 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: netdev-bot+sashiko@kernel.org
+cc: zihanx@nebusec.ai, horms@verge.net.au, pablo@netfilter.org, fw@strlen.de,
+        phil@nwl.cc, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] ipvs: avoid stack overflow from recursive
+ connection expiration
+In-Reply-To: <178996076640.2160803.16028832049809238100@kernel.org>
+Message-ID: <e1efae34-24a7-3b24-22b0-6a838aa93d52@ssi.bg>
+References: <20260917030301.5502-1-zihanx@nebusec.ai> <178996076640.2160803.16028832049809238100@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="-1463811672-861824406-1789973449=:8320"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+---1463811672-861824406-1789973449=:8320
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [Medium] Incomplete/misleading description of the SEG6_LOCAL_FLAVORS
-  operation field: the newly added `seg6-local-flv` attribute set…
+	Hello,
+
+On Mon, 21 Sep 2026, netdev-bot+sashiko@kernel.org wrote:
+
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] ipvs: use-after-free in ip_vs_conn_expire() due to timer re-
+>   arming race
+> - [Low] ip_vs_conn_del_put() (net/netfilter/ipvs/ip_vs_conn.c:1333-1346)
+>   keeps its old comment "Try to delete connection while holding…
+> 
+> Pre-existing issues:
+> - [High] ip_vs_conn_del_put() (net/netfilter/ipvs/ip_vs_conn.c:1336-1341)
+>   cancels the controller's timer, drops the caller's only reference on…
+> 
+> --
+> 
+> ipvs: avoid stack overflow from recursive connection expiration
+> 
+> This changes ip_vs_conn_del_put() to return whether it managed to delete
+> the controller's timer, and makes ip_vs_conn_expire() loop back with the
+> controller instead of recursing into itself.  The stated goal is to keep
+> chain cleanup synchronous while using a single stack frame.
+> 
+> v1 Link: https://lore.kernel.org/all/cover.1789110326.git.zihanx@nebusec.ai/
+
+	Zihan, IPVS has conn refcounting which does not look
+natural: the hash table has reference and the timer callback
+has no reference. Let me try today to change the refcounting,
+so that unhashing occurs after last reference is dropped,
+the conn lookups already use inc_not_zero, so we will try
+to consider the timer_delete as successful stealing of
+the refcnt from the timer callback (yes, the callback should
+hold refcnt, not the hashing). But first let me try if the
+idea would be successful. As result, your change should
+be small as before, we should be able to delete conns safely.
+
+Regards
 
 --
+Julian Anastasov <ja@ssi.bg>
+---1463811672-861824406-1789973449=:8320--
 
-netlink: specs: rt-route: describe seg6-local actions, counters and flavors
-
-This adds a seg6-local-actions enum definition, annotates the seg6-local
-action attribute with it, and replaces the binary counters/flavors
-attributes with nests described by the new seg6-local-cnt and
-seg6-local-flv attribute sets.
-
-> diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
-> index 5e9537f7dfad4..3929a877aa279 100644
-> --- a/Documentation/netlink/specs/rt-route.yaml
-> +++ b/Documentation/netlink/specs/rt-route.yaml
-> @@ -116,6 +116,29 @@ definitions:
->        - rpl
->        - ioam6
->        - xfrm
-> +  -
-> +    name: seg6-local-actions
-> +    type: enum
-> +    name-prefix: seg6-local-action-
-> +    enum-name:
-> +    entries:
-> +      - unspec
-> +      - end
-> +      - end-x
-
-[ ... ]
-
-> +      - end-bpf
-> +      - end-dt46
->  
->  sub-messages:
->    -
-
-[ ... ]
-
-> @@ -624,6 +650,35 @@ attribute-sets:
->        -
->          name: name
->          type: string
-
-[ ... ]
-
-> +  -
-> +    name: seg6-local-flv
-> +    name-prefix: seg6-local-flv-
-> +    attributes:
-> +      -
-> +        name: operation
-> +        type: u32
-
-[Severity: Medium]
-Should the operation attribute here also carry an enum annotation, with
-enum-as-flags: true?
-
-SEG6_LOCAL_FLV_OPERATION does not carry an ordinal, it carries a bitmask
-built from the flavor-operation enum in include/uapi/linux/seg6_local.h:
-
-enum {
-	SEG6_LOCAL_FLV_OP_UNSPEC,
-	SEG6_LOCAL_FLV_OP_PSP,
-	SEG6_LOCAL_FLV_OP_USP,
-	SEG6_LOCAL_FLV_OP_USD,
-	SEG6_LOCAL_FLV_OP_NEXT_CSID,
-	__SEG6_LOCAL_FLV_OP_MAX
-};
-
-net/ipv6/seg6_local.c turns those into bit positions:
-
-#define SEG6_F_LOCAL_FLV_OP(flvname)	BIT(SEG6_LOCAL_FLV_OP_##flvname)
-
-and seg6_local_init() confirms the u32 attribute holds one bit per
-operation:
-
-	BUILD_BUG_ON(SEG6_LOCAL_FLV_OP_MAX + 1 > BITS_PER_TYPE(__u32));
-
-parse_nla_flavors() reads the attribute and validates it against the
-per-action supported-ops mask, and put_nla_flavors() writes finfo->flv_ops
-back, so both directions are masks.
-
-As written, a user-space client generated from this spec sees an opaque
-integer, and setting it to 4 for next-csid means BIT(2), i.e. USP, or
-gets rejected with EINVAL depending on the action.
-
-The sibling rt-* specs describe such fields with a flags definition plus
-enum-as-flags, for example ifa-flags in
-Documentation/netlink/specs/rt-addr.yaml and ifi-flags in
-Documentation/netlink/specs/rt-link.yaml.
-
-Since the same patch does add enum: seg6-local-actions for the action
-attribute, the two enumerated fields of the same uAPI header end up
-described inconsistently: action decodes symbolically while operation
-stays a plain integer.  Would it make sense to add the matching
-type: flags definition (unspec/psp/usp/usd/next-csid) here as well, given
-that the generated enum names are themselves user visible and changing
-them later is awkward?
-
-> +      -
-> +        name: lcblock-bits
-> +        type: u8
-> +      -
-> +        name: lcnode-fn-bits
-> +        type: u8
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917-ynl_rt_encap-v1-0-fbbe6e680571%40kylinos.cn
