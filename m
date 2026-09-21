@@ -1,86 +1,40 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8701722D7A9
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96966331EB5;
+	Mon, 21 Sep 2026 03:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789961321; cv=none; b=k7LFg9m2kpZyA5HgcF5/4ShFPDqYeLie0TGpU4Yk3MgInjgK01GGAbiWjJe1GzVAiGbjD8q0RyahcVADpJoWQsTW+hC+QFj63ZeYjUr63FiE3L3bVJaKSs7KbAoKpMSJFUZ4ilGrB/smKv0vMm8jK8R52BeheKrJfEQBKaR0ZHY=
+	t=1789962155; cv=none; b=B/yfUbA4kQVyvwgrcBYpS+uIxj73mIUwQVHSBtnwm8GspeuaFdzx+BSI5wTBs2jyCE4obaMOttJhYxsoJmUQkS27t9xgmXuLXiOVs3o2HJZzPTj0oUjKNVrpXJc0B9DKXs5ylHL3jy1tcT+OxycvybJO6+oml4Jy+eTiUx1duAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789961321; c=relaxed/simple;
-	bh=XPHufAaWv96oqPXlYKIZPXt1hwnXdBDNCJI2CHfFxHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHSKS0y+phpH9f+J5kjRJ1XpHB/UNbvAB+cePR0MEsbonJa1vDOnbMQP/7iDvTmeWEJcwOqErAz2ChvQj7qMIQCmXAVzECKvEs/168HisjyDRlc6scBQGYze2MSGi1BT1CxatqgUpkJZHjXxEYCNTwxuWy90OJgkGFM51To4vak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mrvp09Pt; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mrvp09Pt"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1cea34f01so2115651a12.1
-        for <netdev@vger.kernel.org>; Sun, 20 Sep 2026 20:28:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789961320; x=1790566120; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XPHufAaWv96oqPXlYKIZPXt1hwnXdBDNCJI2CHfFxHk=;
-        b=Mrvp09PtMzvwpkziAISr9XDITETTwRNeyBJkVZrExHNBVaYS9frTU+vH+PkxIEpE72
-         imQ1M1yakF6oOFFpjaY3KnBCxe9P5JIJozdXEcvpxUx6hA+jzfy7JlZgVjqQzLWQTRB0
-         7/nSvLbfryI/XLSDyPW3SsfbJJnbWTKTLJZLrPtx4InKe31CxDi2NthbStrxfSyW20BU
-         e0VhGfn4LlUU5pPTYXz9zffc7e+oWxNX2HPEbnnPtKVv8LXvASQCBh9ax/F0x3HuRON4
-         3tRUGcudl9A3RgDobZZyAcKOj4NeMFbmASylJS+X4m/cQuO3/eo3fC/8th8k+fi0Bqxq
-         NXAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789961320; x=1790566120;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XPHufAaWv96oqPXlYKIZPXt1hwnXdBDNCJI2CHfFxHk=;
-        b=MTkzd77HHiBWY10sr+NdCL6tceekJjjkq4+Z5OCiqjR6oQqQDG2nJ+1stoJwSXhzPy
-         FmSo9Aw05x4xx7VLwz0rFIcVYmKNEK6MCcY4Z2poM2xrcMPGlKizHRoDf8CidDJ+2wWJ
-         z/LDkdj17AbtjOAEWSOg21myfGUQB27GKEKs0wmWjVHYE+6EPjqgvZy3TWw8tyK7ZW/G
-         swS0SlKFQVHoQkPw4CHBfFz+VqVG89b4Obydj1w4ISWm3Ea9C9cZZa785HLqDdWMxJVI
-         UH3yFk34lLfR7OxZAnXNsyNXnKuSxjOiwl0lEW0x78FpwBMAJWnB/6V8GTcQEo7DxShr
-         SdoQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxQq0p0QYc4apsSHx2dRpJKNXwFCTA5dETm0rCYOQ8PYonsMvK4/9xP14R1+dMkaYTKkev55YE=@vger.kernel.org
-X-Gm-Message-State: AFuF++k7ETcVit/PUt6/PZIMk1TgmGAbH88IdXaYTisAiFSWkdgKs+aC
-	wxMToP+00sBKnlnTqs8k5FD0piGRr1z8MQldfmPaKEtoY+1Suwc1PfB3
-X-Gm-Gg: AYBFou0wlmuwGPUeT0Y8/PwBN67XEoJpJAbR6iwndJ3RQmYMa6sp1pIM6Sz2+W7cPjg
-	wJPo7VF75nnVrN4pF6tIfe96S/zJyXWPWkv/0pKfIHtlEZPc0U+uYNTfjE/Ymi2/Y94pl33AUlZ
-	GYh9UUC+x23FIXackKIWJfTvAN74z6q9n9W6GpyZ8ha76vuK7D3WrtjV4VXBSsy222Rw4vrQ/Qs
-	39cdp7t+uIXjRohRmrBdFrC1Lhe8rRAYcjKO59y460eeVP6buoUXuo3rBa8Esx2Llq5FeYAMBzd
-	PGMz5dmnMhdLikv+J5qhdjY2aSBk39vn9MCphJk2h+S63UgwR3dh0WIQaytF28/1HqPWw9OOe9P
-	jKPaMn82IHLIOHs1Rvph3R/uxqBF7LpyQfSAlwboU/6aIcgHWIPNsqn+Ka7NaYAExi7yCn7Q/jT
-	IHGSw9RJtDTgYtuibZhTu7Eobejq1pYU8dOI2y9j+AA9YWl/Qpo3sbDJICtQMdBOYFCGBu8tlYc
-	Tn1bi4A5gk846SGQ7z3s50VlY0SunFSDmFVtItCGlOYaCqs01cf0QBZywX5mlLQCWiyMN+vBwxg
-	+2R4
-X-Received: by 2002:a17:90b:5705:b0:39e:2faa:2e83 with SMTP id 98e67ed59e1d1-39e54d1e044mr15045770a91.10.1789961319791;
-        Sun, 20 Sep 2026 20:28:39 -0700 (PDT)
-Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c37c8e7sm11448715a91.9.2026.09.20.20.28.35
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 20 Sep 2026 20:28:39 -0700 (PDT)
-From: Tian Xun Ng <luckilystar08@gmail.com>
-To: emil.s.tantilov@intel.com
-Cc: Tian Xun Ng <luckilystar08@gmail.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksander.lobakin@intel.com,
-	aleksandr.loktionov@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+	s=arc-20240116; t=1789962155; c=relaxed/simple;
+	bh=NdSCcVfzkkNGws8HsrAT0no3jlNrDV1Tucu8z3oaBeg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bC0XcquKtSmnUVatGEYl/lHGt9o465bmZxxAvCipHVsaAO3Lt4CA1e0iBTC9DpRHJZS2HSBBTvtk2bHqXj/3SrGFirWwRYHwaJ944E97dnHwoNRNaI7CAGY9V5VFcH11sC4u2eAfyOolPqcuZtHBg8EihP3B+EMAVGDO69AWIxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn; spf=pass smtp.mailfrom=mails.ucas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
+Received: from fric.. (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowACXATyLp7BqpO_RCA--.16449S2;
+	Mon, 21 Sep 2026 11:42:03 +0800 (CST)
+From: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
+To: tung.quang.nguyen@est.tech
+Cc: davem@davemloft.net,
 	edumazet@google.com,
+	horms@kernel.org,
+	jmaloy@redhat.com,
 	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
 	pabeni@redhat.com,
-	Tian Xun Ng <tianxun.ng@bytedance.com>
-Subject: Re: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down vports on shutdown
-Date: Mon, 21 Sep 2026 11:27:32 +0800
-Message-ID: <20260921032827.32485-2-luckilystar08@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com>
-References: <20260917105205.37561-1-luckilystar08@gmail.com> <20260917105205.37561-2-luckilystar08@gmail.com> <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com>
+	tipc-discussion@lists.sourceforge.net,
+	xujiakai24@mails.ucas.ac.cn
+Subject: Re: [PATCH] tipc: refuse to attach a second bearer to a netdevice
+Date: Mon, 21 Sep 2026 03:42:03 +0000
+Message-Id: <20260921034203.2416773-1-xujiakai24@mails.ucas.ac.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <DU4P189MB3750BF183DB76F1E3AF58B79C6842@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+References: <DU4P189MB3750BF183DB76F1E3AF58B79C6842@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,44 +42,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACXATyLp7BqpO_RCA--.16449S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUY_7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8I
+	cVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87
+	Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvE
+	ncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I
+	8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwAC
+	jI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64
+	vIr41l4c8EcI0Ec7CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2Iq
+	xVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r
+	1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY
+	6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
+	AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuY
+	vjfUoYLvDUUUU
+X-CM-SenderInfo: 50xmxthndljko6pdxz3voxutnvoduhdfq/
 
-On 9/18/2026, Tantilov, Emil S wrote:
-> Actually we can't wait on shutdown. If the MBX is defunct, like CP is
-> down or unresponsive, the shutdown will hang for a very long time. This
-> is the reason why we wanted to avoid communication on shutdown. Have you
-> tested the shutdown after stopping the control plane?
+Hi Tung,
 
-No, I have not, and I cannot on this platform: the control plane sits
-behind the device and I have no way to stop it from the host. So I have
-to take your point as given, and as written the patch is not acceptable:
-each teardown transaction uses IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC (60 s),
-and the teardown per vport is disable_vport, disable_queues (which also
-waits for the SW marker) and destroy_vport. With a dead CP and two vports
-that is minutes of hang on every reboot, to remove a fault that only
-shows up on warm reboots. That trade is wrong.
+Thanks for the review and the suggested patch.
 
-What I would like to propose for v2 is to keep the teardown but bound it:
-a shutdown-specific timeout, on the order of a second or two, used for
-those three transactions when the driver is shutting down. If the CP
-answers, the device is told to stop its queues and the stray writes go
-away; if it does not, shutdown loses a bounded couple of seconds instead
-of minutes. Does that direction look acceptable to you, and is there a
-timeout value you would consider safe? If you would rather not have any
-mailbox traffic on shutdown at all, then I think the fix has to come from
-the device side instead, and I would rather know that before sending v2.
+Unfortunately I don't have a reproducer that triggers the crash
+reliably, so I can't do a runtime test.  I did apply your patch and it
+builds cleanly with CONFIG_TIPC enabled, and I agree your fix is
+better: rejecting the bearer in tipc_enable_bearer() before any
+allocation or device reference is taken is cleaner than the rollback I
+proposed, and it reuses the existing "rejected" path with a proper
+netlink extended ack message.
 
-> This logic already exists in the reset handling, there should be no need
-> to replicate it here. Do you have a trace and/or exact scenario that
-> leads to remove being called while in a reset, but MBX is still alive?
+Regards,
+Jiakai Xu
 
-No, I do not have such a trace. I added idpf_is_reset_detected() defensively
-rather than from an observed case, and I will drop it in v2.
-
-For the record, what we do see without any of this, on arm64 with two idpf
-functions: after a warm reboot the device still has its queues enabled with
-the previous kernel's ring addresses, and the first queue reconfiguration in
-the next boot makes it write SW_MARKER completions into memory that kernel
-has already reused. 20 of 20 warm reboots on an unpatched control node, none
-in 151 with the teardown messages delivered.
-
-Thanks for the review.
