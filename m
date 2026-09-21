@@ -1,203 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D954E781F;
-	Mon, 21 Sep 2026 17:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60F448FF7B
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 17:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790011489; cv=none; b=jAcn+GJ2okRNbaZzwePrVJ2ok1y7QwaETgc73sIaSk8EsG2vaCwZpnXih0ULDR4Lb+HUtY/4wNpmkOMSVxBG5la7GFen2gIEsAZ0D6F/0GgnPf1b5w325VIHmgA92yMLDwg1gwzOZx7n4qOBbt9CeUoljjmsU6t+505egw7mscw=
+	t=1790011940; cv=none; b=OgaWdPzIwvrIfWgnynOqYIZsmAxpmdQAc3xU8/wPleW7xUvZib2rdcHE7jovGn/hrE6nwKaQQVejFWcMNuAFpSr9DBIUsqh6LY1F7x3A3ctZT7XAyVE1MWWbLkrAuaStdtqZvjg0ZdFP+0Hirh18YR9H6C2TrovfrU3OdJsqrg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790011489; c=relaxed/simple;
-	bh=j9KZ33MFe0YiEqyKSC1hK3OwkOrikm2nb6ce0fH0b84=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=krHfkCiKPJsIf8mFrhlXaIo3NdYlDNOIoYHDyv091HO81gxyGWAgnECxHff8O7FaJyBVE6LFHUZmtQF7H4UPf2NohUHqrNj9gCqY5oJg1AjWCLnGd6MWOx7CSQskzPgsSESdroPuXv5J0XOow9rZXmMzh+PyPZixh3fvY/v17k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlFwZU8w; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790011940; c=relaxed/simple;
+	bh=gaAFaXvKdZ1VCIuj4sHrL5mssP3PdDg4VL9jG3dT5O0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HEf7eCyEXvfJimyNbUUuET04W/rkDFRbW8BGT35ObIi0NcN9J1WKr65p8Q9pdt8aZeoKzLUpBDBhoTgM6XI9ef2nau44jDHk5ER+YaSHji2h+ucyRdHu1T/L1Fh3STf7Gv3U40+aY4HzfK8XvtcgTP6KE5SnX/YZh8AubvqxA1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OJXeKkwK; arc=none smtp.client-ip=74.125.231.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlFwZU8w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0971F00893;
-	Mon, 21 Sep 2026 17:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790011487;
-	bh=gjYOlwCRz4zxA3pIOX0hHh4x8YB0O8SP9gSX7XtSeLQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OlFwZU8wp7YrD3ebzcRzzZUjV3rNm6to1xsAinHW9wRUsyDbYnqRv745aGqcBkptv
-	 j+iWcuvqHhVYfCjKGOktLA0ndz5wJ2o/sz/PE36q8GrXrZYHJcW33HjMqVAUucMrdh
-	 3vUnOkGpxo0xYeDkIcnKp1TBu95xOGCwaHxolmaamzHjsYwOidP6yfeS36rMtWKQxI
-	 DGcXLbqU3XlfzyZL2ZxACCcO/x9ObIFpn7ufS7A5fhyaR+1i+C0k7+QEe5xOPWrTCS
-	 Uo4cb72GmOYhvhWYJHn9WD0XyMeJGsZJp5N8RkHL5GSPkmM1/BD4XccUmXjiaUeQPR
-	 IMYh66PdvW7tw==
-Subject: Re: [PATCH] kcm: Fix socket use-after-free in kcm_unattach()
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- pabeni@redhat.com, tom@herbertland.com, stable@vger.kernel.org
-Date: Mon, 21 Sep 2026 17:24:46 +0000
-Message-ID: <179001148656.2160803.18004232271699303811@kernel.org>
-In-Reply-To: <20260917163656.2162621-1-vulab@iscas.ac.cn>
-References: <20260917163656.2162621-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OJXeKkwK"
+Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-7f4f0c89e34so2060849a34.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790011937; x=1790616737; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lW48M+WR60klYaUA2KW7joDWLXdNgVT9S/f0yr7pYFQ=;
+        b=OJXeKkwKqDUHOHjVPZYyHj9sy6cp7d47Z1UYxj5o4yWrzlvEr6V1qXF+b6cb9Oz7Si
+         Llnl6urt8XuED+cEuFzg3cxb0qy656UkeG+p+9i6Vwz0CZz+YIgw1f6Eoi2VWUnd80Ay
+         fYxI/gygXW76/KkpRCrkhC+NFChETqHeZGKrCqGjUKaAPg1Zljg+fk3mUQoMZU47LYAV
+         l/Q4vlHWT7HLt6RNHc2lL8AS/hiOm/TyqIV3idCqXCP3lZv726teP/dJckpTrtdrIVAh
+         OV0Fat7wXWyzOQ4mYzZ9kmdnwlVVE9iwS6kQLrZu8lfTvFZZ7tdg5bcHlfh1avwR3HD2
+         woWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790011938; x=1790616738;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lW48M+WR60klYaUA2KW7joDWLXdNgVT9S/f0yr7pYFQ=;
+        b=Nc4NZS5dZRkJAZ/lY8f4Q/hYfaL0KRy8UX7LzYbc4EVtP/8wcaUBqoZnsd9F+WN339
+         T6inSu77M7tv2vNXuGKFgeqfPZ5r8BT+QAbYFKcvpBJUNNGV9rdnirptxC4jYbFHtoXo
+         lOeFxcPj9h6piMJ7p00p4slOL8mWCB/PFzcHPzaacvL/dP/nPj/4AoOUhjzscX/89M69
+         635kwq7ThA/WweUZYSe/GtqdQtF7lHfQs/i5AENUl0qvI9D20CI4TBbGTxYlo2unIhLU
+         Jdy0+I2qdlQxyIaXOdsl+0SdSC9epvYTyW32yddAGOooZuInvQlzGsuHTc4a8awOdGnY
+         ntXg==
+X-Forwarded-Encrypted: i=1; AKwUvBxHdAalNKeOc7URcO5YcH7GwZBaWYA9vjJcipyG6feAymHzY9i2T+qATW4BwDbifAdAAsraSAg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lDYYAh+VTAS17ts7/dz3Z48VtXEcjtYpXE3w9xgVMRZ5P8u/oW
+	i6QnE91llhtlksjpJi/M82zN7SHYpIUbcWv2vwjY66Y485A91zXcJe28
+X-Gm-Gg: AYBFou21xbsEUeEEVGX3ihJ8PmUi2vgoitVWHfWXyKvVan3IsQ8pzIlX1lya1jPOu3K
+	tjFiIlUBLDEAAMoe02pCgkqR1VIhhRGt3TNRF8s0L5vxuPIcSfmnAFW2plaGu+0ONzdCzXeXwNv
+	/5fw1+NETb6xJ9vSR3XOQV6fNCfVTsvonUj1xSN//+pSUdXh+QA32H6tgFl1WsqHYoSnFlS6Q9M
+	mvUIbAxaX2UnDXaZ7JmmCikb6KRHBXE+6UCbOf/DUAbRLLdJ4YlN3kgabmhp+Cfb6VQT4MR/vVe
+	3KF0O7Y8TB/86D1JbKFjxT2T7FlggaNLgJXsfzRX8xiR21Kn/jrhPXwLaDfF8ctUN1XegnmNNa/
+	9tKifuB0dEnMMyxL4gLX2dRi3K5FUY13ISgWhTRVlBemv9G8u8jip6Kyq6QPjK/bkj366L/dthH
+	wRzwJxF8xDPEgSphTTd4mQ+xPU4bUD4FuKm3PcVyN48+XUR6BBDbbtnz20ZjNz0phqnhu7gQgCU
+	1peiTaO3s5nRyi4H578jDvdWP3QQME=
+X-Received: by 2002:a05:6830:a149:10b0:814:9c81:3ad8 with SMTP id 46e09a7af769-8149c813b4amr96786a34.19.1790011937552;
+        Mon, 21 Sep 2026 10:32:17 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:40::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-814770d6190sm714240a34.24.2026.09.21.10.32.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 10:32:17 -0700 (PDT)
+Date: Mon, 21 Sep 2026 10:32:14 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: [PATCH net-next] vsock: remove dev_hold() and dev_put() in
+ __vsock_deliver_tap_skb()
+Message-ID: <arFqHglxl8e7XB6I@devvm29614.prn0.facebook.com>
+References: <20260921094218.483234-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921094218.483234-1-edumazet@google.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 1 · Low: 0 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch fixes only one of the two sites that release the
-  psock's socket references, leaving the identical (and strictly worse)…
-- [Medium] The commit message's premise is not supported by the code, so
-  the `Fixes:`/`Cc: stable` tags are unjustified.
-
-Pre-existing issues:
-- [Low] Stale/incorrect comment at the call site of the function this
-  patch modifies: kcm_unattach_ioctl() has '/* Lower socket lock should…
-
---
-
-kcm: Fix socket use-after-free in kcm_unattach()
-
-This reorders the teardown in the unreserved (no_reserved) branch of
-kcm_unattach() so that fput(csk->sk_socket->file) and release_sock(csk)
-happen before the psock's sock_put(csk), and returns early from that
-branch.  It carries a Fixes: tag for the original KCM commit and
-Cc: stable.
-
-> diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-> index 71af69d442f21..079b73af91559 100644
-> --- a/net/kcm/kcmsock.c
-> +++ b/net/kcm/kcmsock.c
-> @@ -1458,9 +1458,11 @@ static void kcm_unattach(struct kcm_psock *psock)
->  		mux->psocks_cnt--;
->  		spin_unlock_bh(&mux->lock);
+On Mon, Sep 21, 2026 at 09:42:18AM +0000, Eric Dumazet wrote:
+> __vsock_deliver_tap_skb() is called from vsock_deliver_tap()
+> under rcu_read_lock().
+> 
+> dev_queue_xmit() does not require the caller to hold a device reference
+> count, and the device lifetime is already protected by RCU.
+> 
+> Remove the redundant dev_hold(dev) and dev_put(dev) calls.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>  net/vmw_vsock/af_vsock_tap.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/af_vsock_tap.c b/net/vmw_vsock/af_vsock_tap.c
+> index 30ee7e4fe25115cef71b43f335862a09b8c51382..7c5cdceabb2a5f7079faab243ee9de7d6bb8857c 100644
+> --- a/net/vmw_vsock/af_vsock_tap.c
+> +++ b/net/vmw_vsock/af_vsock_tap.c
+> @@ -64,14 +64,10 @@ static int __vsock_deliver_tap_skb(struct sk_buff *skb,
+>  	struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
 >  
-> -		sock_put(csk);
->  		fput(csk->sk_socket->file);
->  		kmem_cache_free(kcm_psockp, psock);
-> +		release_sock(csk);
-> +		sock_put(csk);
-> +		return;
-
-[Severity: Medium]
-The changelog says:
-
-    "the reference held by the psock on the underlying TCP socket is
-     dropped with sock_put() before the socket file is released with
-     fput(csk->sk_socket->file) and before release_sock() is called at
-     the end of the function.  If that was the last reference on the
-     socket, both uses access freed memory."
-
-Can that sock_put() actually be the last reference?  kcm_attach() only
-accepts inet TCP sockets:
-
-    if ((csk->sk_family != AF_INET && csk->sk_family != AF_INET6) ||
-        csk->sk_protocol != IPPROTO_TCP) {
-
-and the psock keeps the socket file reference for its whole lifetime.
-kcm_attach_ioctl() returns success without sockfd_put(csock):
-
-    /* Keep reference on file also */
-
-    return 0;
-
-so while the psock still holds its sock_hold() reference, the struct
-socket also still owns the sk_refcnt reference taken in sock_init_data(),
-which is only dropped via inet_release() -> tcp_close() -> sock_put().
-That makes the refcount at this point >= 2.
-
-On top of that, does fput() ever free the socket synchronously here?  For
-an FMODE_OPENED file, fput() -> __fput_deferred() always defers:
-
-    if (likely(!in_interrupt() && !(task->flags & PF_KTHREAD))) {
-        init_task_work(&file->f_task_work, ____fput);
-        if (!task_work_add(task, &file->f_task_work, TWA_RESUME))
-            return;
-
-so the old trailing release_sock(csk) would not have touched freed memory
-either.  The new ordering looks fine on its own, but could the impact
-statement, the Fixes: tag and the Cc: stable be reconsidered if no
-use-after-free is reachable?
-
-[Severity: High]
-Should the second release site be changed too?  unreserve_psock() has the
-same pair in its deferred-free block, still in the order this patch calls
-unsafe:
-
-    if (unlikely(psock->tx_stopped)) {
-        if (psock->done) {
-            /* Deferred free */
-            list_del(&psock->psock_list);
-            mux->psocks_cnt--;
-            sock_put(psock->sk);
-            fput(psock->sk->sk_socket->file);
-            kmem_cache_free(kcm_psockp, psock);
-        }
-
-Here psock->sk is dereferenced twice (->sk_socket, ->file) after the
-reference has been dropped, and the whole block runs under
-spin_lock_bh(&mux->lock), so under the changelog's premise the final
-sock_put() would also run sk_free()/sk_destruct() with BH disabled.
-
-This is the continuation of the path this patch touches.  When the psock
-is reserved, kcm_unattach() does:
-
-        kcm_abort_tx_psock(psock, EPIPE, false);   /* sets tx_stopped */
-        ...
-        psock->done = 1;
-        smp_mb();
-        queue_work(kcm_wq, &psock->tx_kcm->tx_work);
-
-and the tx work reaches kcm_write_msgs():
-
-    if (unlikely(psock && psock->tx_stopped)) {
-        /* A reserved psock was aborted asynchronously. Unreserve
-         * it and we'll retry the message.
-         */
-        unreserve_psock(kcm);
-
-which takes the psock->done deferred-free branch above.  So for every
-psock unattached while reserved (SIOCKCMUNATTACH or release_mux()), the
-exact sequence declared unsafe still executes.
-
-Would it make sense to factor the release sequence into one helper used
-by both sites, so the intended ordering invariant is unambiguous?
-
+>  	if (nskb) {
+> -		dev_hold(dev);
+> -
+>  		nskb->dev = dev;
+>  		ret = dev_queue_xmit(nskb);
+>  		if (unlikely(ret > 0))
+>  			ret = net_xmit_errno(ret);
+> -
+> -		dev_put(dev);
 >  	}
 >  
->  	release_sock(csk);
+>  	return ret;
+> -- 
+> 2.55.0.1082.g2b9226bbc0-goog
+> 
 
-[Severity: Low]
-This is a pre-existing issue and not introduced by this patch, but while
-the exit paths of kcm_unattach() are being changed, is the comment at the
-kcm_unattach_ioctl() call site still accurate?
-
-    /* Lower socket lock should already be held */
-    kcm_unattach(psock);
-
-kcm_unattach() takes the lower socket lock itself on entry:
-
-    struct sock *csk = psock->sk;
-    struct kcm_mux *mux = psock->mux;
-
-    lock_sock(csk);
-
-and now releases it on all three exits, including the early return added
-here.  If the caller really held that lock, lock_sock() would deadlock;
-kcm_unattach_ioctl() only holds a sockfd_lookup() reference on csock.
-Could that comment be dropped or corrected?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917163656.2162621-1-vulab%40iscas.ac.cn
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
