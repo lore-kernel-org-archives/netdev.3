@@ -1,208 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677764FD28B
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CDE4F85D2
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790014880; cv=none; b=m0v9ZNRaijVgbv+jsVtiwRIfPNgztdRNOUwxb/f8jKV9LGgYJwItBh4WnvoULuQSURPAPqotm1ke1FkAfdArtOMjWYOgLRt/RgC8Qd4PPbh5JR4a9ypn58hUR9fyolqlE2VIsifnaCh2K0m+E8UE8IMRIjnQEKicEbheigNypRI=
+	t=1790015016; cv=none; b=m3rpN8rxxOfKq6vkd7JITiplkmqEhElyfjOfu0gGE7p28yYRVpBwD8jDJ91UwQ2bo5CpaghX6R5Rd1kXWg3XeM1FJ8uGJ70jc8iqKxqmm+cHuxzBNXln+8rvTYbMu+az7E4WZjYwmC30l6w0/dOQUNkxcpDWnROk23KWg3ebTn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790014880; c=relaxed/simple;
-	bh=thq+jlqiklYpgaHjloFaH+FY2dN4KPxuQ1tkMxvFJDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJH1NUEQX8PuJrw6a4urhi3zg5UFyzZeqKW7kWF27i0Nt3Wf43ynAakcYosyvHhGrFyvHCYIrg4VtucFke2azd/gJTCcS/VlFhdU3q7OfBi+i/HerYOv+bxBWd5xrT5lrfJWBN1ERCDB2vsFKgOvZbWNQO2iqB8NGlgqjEu0oZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z0ZzYjR0; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790015016; c=relaxed/simple;
+	bh=EhGNjzinEoe0rb9XQGllpzIYz23bT+vZYztS0WlJQq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KvQexVVOKmCYKzUgShEJODIunrmn071nSIaPxy7hGQz2RmA6DpXgQ6o2wXo6La9EBx4hQ7RqPIdtx5pQlQSc1ER3VgVn8KyKAiuNi5sd0q54BUOSZY7Tw1mgSs1dXNK+YJqj9kssMnO1xoy+b3ofbC5NlVwaTAcIFXtxwuel6h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=YyczaQN9; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z0ZzYjR0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790014878; x=1821550878;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=thq+jlqiklYpgaHjloFaH+FY2dN4KPxuQ1tkMxvFJDM=;
-  b=Z0ZzYjR00muiE2grIPwY6Ye1lB/YrZ73VxFAs2qObQxHDVdKWm0BN3EQ
-   y5N98BAHoGwf+6Phy3yL0ZP+058fQTvOqxt1f7g4EJw7SjTZ7YxFIkEbO
-   51Z9kNightJOWEeWnwRaz0m9uwdRS27Lebyt3aQcOg2Y+KWMEL6LAB8Ee
-   zn+FQXJ0TfiwONx5GX6VnAgOTb41tVdB5C3ssh9fnbSk5jyCdn3lXnDID
-   oTn+gW4/UWtk5lG7VBl9JNFR0Qvdtnx73liPjOqbPL5nSsO639kH295Pe
-   XdWdOI2AnSsdgAExqMsa+BInuul4nds8tcrRS7yOO5v5p8YgPcx8rcxsr
-   Q==;
-X-CSE-ConnectionGUID: oJyL92GtS6Crk8uS/hjutg==
-X-CSE-MsgGUID: 4ISfVY6JTiyJLm4HFJf4RQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90426172"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="90426172"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 11:21:14 -0700
-X-CSE-ConnectionGUID: NskeAjgqS4CzoQkjdXS6eg==
-X-CSE-MsgGUID: iHmpx2MBRbKn6KsaSJxTKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="272267067"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa007.fm.intel.com with ESMTP; 21 Sep 2026 11:21:13 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Michal Schmidt <mschmidt@redhat.com>,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	poros@redhat.com,
-	aleksandr.loktionov@intel.com,
-	horms@kernel.org
-Subject: [PATCH net v4 5/5] ice: fix stats array overflow when VF requests more queues
-Date: Mon, 21 Sep 2026 11:21:04 -0700
-Message-ID: <20260921182106.1015019-6-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260921182106.1015019-1-anthony.l.nguyen@intel.com>
-References: <20260921182106.1015019-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="YyczaQN9"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccb1a98dso2573096a91.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 11:23:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1790015014; x=1790619814; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1UJU8vWnpLqo2FzVlfzcu2nhsHdLYdrBMVsYnHBFjhU=;
+        b=YyczaQN9GH56lCO9mKIB0oiGbifdmZw0PMRdVA2DT0cJnIRI29R+DQXB/90VI+1IgH
+         7pXmvIDaqkCeTp8a6AwvrSDXX+iGhQIGZWobOLvhYq6+mMGNE4ltMbjdAqjvsv3kxD/R
+         Sw2KDdZUjMZGvFuiHsO/4uDB0vgu25tzidT8aY6KrlfOuvFDpCFXxixsQydfA4bJ8hqH
+         W6Tf83YwYCQ4iynk4mOh60N+aJnACx2a2KcHP/zPHz/zzWXqRxXg9GViHPtER/Z49tgv
+         K5cyN4teGQ/za7JbNmUEklAi3l3lwAd7jfEYrsE8qgddNJzJqJO8+4phcxuTm7vAb+3x
+         3yAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790015014; x=1790619814;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1UJU8vWnpLqo2FzVlfzcu2nhsHdLYdrBMVsYnHBFjhU=;
+        b=LAqUtIY6Ir06PoiiDRLEZCQo1gN1HYfMR4v/cC3KvDd2H5JwJNorJDpTS+4nYBWs48
+         b0ZrSFJzXK64QqWJONdXazMbqO3ARvQIM9uHIepwDwINf/Rfm4M2McaYrkHGPkRTzEuW
+         yQLlLoBUvE7SYZsubsOhrx61BMgGop5SkD5Aol9+kPCxiOtYNcuLUPEf2B4OnzL4OxVB
+         N9Sb58YQEgC7TWvjuemIs68OT1gp5N0iG2W7FGmVfPNG0Ddpl/sq2bX8Iat+UwifxNUi
+         roGfG5uj9uKHjaTVvf+WdHV6SSpCq8OX1PjWNoi0GGbapouCJmJ6YqlNlCCOm94ptnkH
+         LmAQ==
+X-Gm-Message-State: AFuF++nKlNbfDyDVBRgWe0j+4N285JctaSjy403pr0sFFigCIDWWiyP7
+	IJMi1AUdarrLuapBMQp1dmBczDpZqABU3IYtGkTJ/QR5Q7rE5FEBvavwHQmnsQ98G88=
+X-Gm-Gg: AYBFou11FeRNHqW+8m6pZh9gImuI0Mg5eG/k0USiMu0WFrHAY7iYDX9D9I+Y76GoUKG
+	vgoXpA0VuqSVtFWjWduFjoMEbYxo7J0+A45N5OIYe1p9+N1BwvJdVh5UNDBK0zHbee5B6ZFx0ad
+	3KxatGfS89sGX8x5fSVkD3K2Fi8eBnWPLfbisYR4EJr0Up88PTNrfSbXyTYr4WlyFkkz/VuPJBx
+	QnSVNHfkbhen45Nm7aX+M2YZn6ZpoJRiN7lt88YP7Dh/0Yaped3FIC6fa8NmSZEZbnKeiFXtYcM
+	xVlYpphoazBTAWtEDB77OyJCUrqE1cGWX4dxS3DIQoQxgdy/BJlxGzFVpSm9WPdsNXXw29A9HdX
+	ziSef9BnhAIbh8cgpzhixjY6/YeeDo+Ry/Ve1Jd/Z9UkIaINoSItCQmCJJfJtGMVp79H5ac4OcP
+	WhgBt4Vk9qD+lcH2ROU3GO7KAL7owiguzxdYv8wwrAj/iKz8LC+DSgoR3SqTP+SwVE7eEPKzVf0
+	YOeSvFwTuRAUwt5KRoYUhrDUvpzT2HbCYpZT+X4QQ==
+X-Received: by 2002:a17:90a:d40b:b0:3a0:574f:5854 with SMTP id 98e67ed59e1d1-3a0574f5cf6mr2852052a91.39.1790015014139;
+        Mon, 21 Sep 2026 11:23:34 -0700 (PDT)
+Received: from phoenix.local (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a069a0c7aesm39051a91.16.2026.09.21.11.23.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 11:23:33 -0700 (PDT)
+Date: Mon, 21 Sep 2026 11:22:01 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Alexander Zubkov <green@qrator.net>
+Cc: netdev@vger.kernel.org, Petr Machata <me@pmachata.org>, Ido Schimmel
+ <idosch@nvidia.com>
+Subject: Re: [PATCH iproute2 v3 2/2] ip: ipstats: Do not hide HW statistics
+ when hw_stats_info is missing
+Message-ID: <20260921112201.28213661@phoenix.local>
+In-Reply-To: <20260910092057.3980-3-green@qrator.net>
+References: <20260910092057.3980-1-green@qrator.net>
+	<20260910092057.3980-3-green@qrator.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Michal Schmidt <mschmidt@redhat.com>
+On Thu, 10 Sep 2026 11:20:57 +0200
+Alexander Zubkov <green@qrator.net> wrote:
 
-When a VF increases its queue count via VIRTCHNL_OP_REQUEST_QUEUES,
-ice_vc_request_qs_msg() sets vf->num_req_qs and triggers a VF reset.
-The reset calls ice_vf_reconfig_vsi(), which does ice_vsi_decfg()
-followed by ice_vsi_cfg(). ice_vsi_decfg() does not free the per-ring
-stats arrays. Inside ice_vsi_cfg_def(), ice_vsi_set_num_qs() updates
-alloc_txq/alloc_rxq to the new larger value, but
-ice_vsi_alloc_stat_arrays() returns early because the stats already
-exist. ice_vsi_alloc_ring_stats() then iterates using the new larger
-alloc_txq and writes beyond the bounds of the old, smaller
-tx_ring_stats/rx_ring_stats pointer arrays, corrupting adjacent SLUB
-metadata.
+> ipstats_show_hw_stats() returns as soon as IFLA_OFFLOAD_XSTATS_HW_S_INFO
+> is absent, dropping the counters that the message does carry.
+> __ipstats_show_hw_stats() already copes with a NULL info attribute, so
+> let it, and skip the record only when neither attribute is present.
+> 
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Alexander Zubkov <green@qrator.net>
+> ---
 
-KASAN detects the bug:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
- Read of size 8 at addr ffff88810affea60 by task kworker/u131:7/221
+Ok to check for bugs, but this is not that much of a problem.
 
- CPU: 24 UID: 0 PID: 221 Comm: kworker/u131:7 Not tainted 7.1.0-rc1+ #1 PREEMPT(lazy)
- ...
- Workqueue: ice ice_service_task [ice]
- Call Trace:
-  <TASK>
-  ...
-  kasan_report+0xd7/0x120
-  ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
-  ice_vsi_cfg_def+0x12e2/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_reset_vf+0x858/0xf80 [ice]
-  ice_vc_request_qs_msg+0x1da/0x290 [ice]
-  ice_vc_process_vf_msg+0xb15/0x1430 [ice]
-  __ice_clean_ctrlq+0x70d/0x9d0 [ice]
-  ice_service_task+0x840/0xf20 [ice]
-  process_one_work+0x690/0xff0
-  worker_thread+0x4d9/0xd20
-  kthread+0x322/0x410
-  ret_from_fork+0x332/0x660
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+After patch 1 this is unreachable with a sane kernel.
+rtnl_offload_xstats_fill() emits HW_S_INFO unconditionally whenever
+its filter bit is set, and ipstats packs that bit together with
+L3_STATS. The only way to get L3_STATS without HW_S_INFO is the
+resumed message with prividx at L3_STATS, which patch 1 now merges.
+GET is not NLM_F_MULTI so it cannot split, the monitor notification
+carries HW_S_INFO only, and both attributes landed in the same kernel
+series, so there is no version skew either.
 
- Allocated by task 2439:
-  kasan_save_stack+0x1c/0x40
-  kasan_save_track+0x10/0x30
-  __kasan_kmalloc+0x96/0xb0
-  __kmalloc_noprof+0x1d8/0x580
-  ice_vsi_cfg_def+0x115c/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_vsi_setup+0x180/0x320 [ice]
-  ice_start_vfs+0x1f3/0x590 [ice]
-  ice_ena_vfs+0x66d/0x798 [ice]
-  ice_sriov_configure.cold+0xe4/0x121 [ice]
-  sriov_numvfs_store+0x279/0x480
-  kernfs_fop_write_iter+0x331/0x4f0
-  vfs_write+0x4c4/0xe40
-  ksys_write+0x10c/0x240
-  do_syscall_64+0xd9/0x650
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- The buggy address belongs to the object at ffff88810affea40
-                which belongs to the cache kmalloc-32 of size 32
- The buggy address is located 0 bytes to the right of
-                allocated 32-byte region [ffff88810affea40, ffff88810affea60)
- ...
- ==================================================================
-
-ice_vsi_rebuild() handles this correctly by calling
-ice_vsi_resize_stat_arrays() before reconfiguration, but
-ice_vf_reconfig_vsi() was missing this call.
-
-Fix by calling ice_vsi_resize_stat_arrays() in ice_vf_reconfig_vsi()
-before ice_vsi_decfg(), mirroring the ice_vsi_rebuild() pattern. The
-helper sizes the new arrays with ice_vsi_get_num_qs(), which for a VF
-reads vf->num_req_qs directly, so there is nothing else to set up for
-it.
-
-See the linked RHEL Jira item for a reproducer.
-
-Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-Closes: https://redhat.atlassian.net/browse/RHEL-164321
-Assisted-by: Claude:claude-opus-4-6 semcode
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Co-developed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_lib.c    | 2 +-
- drivers/net/ethernet/intel/ice/ice_lib.h    | 1 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.c | 4 ++++
- 3 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index c6166ff44fc9..8d462570d152 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3096,7 +3096,7 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
-  *
-  * Return: 0 on success and negative value on failure
-  */
--static int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
-+int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
- {
- 	struct ice_vsi_alloc_queues_params qs;
- 	struct ice_vsi_stats *old_stat;
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
-index 49454d98dcfe..5236088c320b 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.h
-@@ -67,6 +67,7 @@ void ice_vsi_decfg(struct ice_vsi *vsi);
- void ice_dis_vsi(struct ice_vsi *vsi, bool locked);
- 
- int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags);
-+int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi);
- int ice_vsi_cfg(struct ice_vsi *vsi);
- struct ice_vsi *ice_vsi_alloc(struct ice_pf *pf);
- void ice_vsi_free(struct ice_vsi *vsi);
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index a54cb2b8d3c7..c56a35b8dd48 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -268,6 +268,10 @@ static int ice_vf_reconfig_vsi(struct ice_vf *vf)
- 
- 	vsi->flags = ICE_VSI_FLAG_NO_INIT;
- 
-+	err = ice_vsi_resize_stat_arrays(vsi);
-+	if (err)
-+		return err;
-+
- 	ice_vsi_decfg(vsi);
- 	ice_fltr_remove_all(vsi);
- 
--- 
-2.47.1
-
+The commit message still describes the v1 symptom. It is not dropping
+any counters once patch 1 is in. If you want to keep it, reword it as
+a consistency cleanup: __ipstats_show_hw_stats() already tolerates a
+NULL at_hwsi, the wrapper does not. Otherwise drop it. Not going to
+add a validator higher up for a message the kernel never sends.
