@@ -1,174 +1,164 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3617C471246;
-	Mon, 21 Sep 2026 14:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790001269; cv=none; b=X7fJedxOIUu4kNO5FpjkMBMEGMURFlv9a8xAr/4gjkxWL4k8zOJh5U1FyUsXMaaMjmMoJBLrM8h5UJGXGZCgzgRHsBlD5sjSpKq785/iD8C3fxTi/eevuE5wmnXBzAJ03onLdq42Upi00cHMuBy5OQqdr+kRDYPOj97IjRXoEaE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790001269; c=relaxed/simple;
-	bh=2/0wGrB+8o4Y73yBsvH7MeZ+LxU4/IXLLLFr1CIZMRw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XDukN1CRxjAHJ6IhqkZoPuuDSYMb7OhAFg0t+yjc2I5ByuE6smyy4EIhjKIrhoCTm6raXiPv9/GuCaTlF3Df0MxOLn1/5fNTB2qWbJCqmrDyahWODyj+yWVk3cEBsOsTkJw4t24g4mv6iOmRzBFMdMWRISThYVROAQTY+spEjfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LMTC2K4R; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF874A4983
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 14:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790001399; cv=pass; b=ir2t6ubUox1KqunAkXrs7mFqpNm/0u6sbg0Ta6yUZE6La9uDxE5Ox1qlfrnU20YWKI4BAROXif78w+FZD2StYXqJrDYTtSPadaSyeaZcOYCoaLqmO3swrCHoR/woTiSXR6HFBAvKAouTDseuEKW6cH65/H053DbHs+oh8ARYbxY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790001399; c=relaxed/simple;
+	bh=L7K5h9ss5itYa3PVNVnsJLd0vmUVmWWDUWKgAFHYFq4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VwyaBQpxaRiY01Dylt/bPy+IcK+iRPuCR9NgjXp72Yly0ocCMnC+gh1OGh/1cJdRcwLsH0cSJV7tz1t+LMGfIeUeyRNS9fWE3PIkqoi+RTOrMqPmgPqzAsDLLy+Fh7KcfHZp2vf24Lfbjk0k8qptpQINRqQBak69qHfpeo0hGj4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QImxfmys; arc=pass smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LMTC2K4R"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LE5KtH1735437;
-	Mon, 21 Sep 2026 14:34:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hPVcO2
-	fTiSn9Cgqz2uE06qQzsAi1kuBDSpXamgeVd84=; b=LMTC2K4R3PSCNb6A9R3KVJ
-	XMoJmTKJb0ZZTuwu6M0JOX+LpbjiLwZDOj0134nvnZ0lPEXN318gjrU0ztcKUeX1
-	BWR3QeT6cyOdlVp0Q6FkkkHQxAxMl8+FSFcVZDuaRRcstdk/spvY+mPfyVDbHGNs
-	0aLk2KXiiycfE+tfJ+f0KQXRrzgzGt9kp7pMAcBwHOHn78KyW4nVYUVKyf36oom/
-	SfS2S7JOrQ/UFHdFTqQk6P4XGScQzqfuo8IyGYLZFWJS50VLwUn7OsEyRZ252k7f
-	UibWBSktaGnSb1WTviBk5TN037aY8RhD8nWlBt3//PpcdDlJy5BEh2f8UsW6PvOg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgs13d1-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 14:34:21 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68LEIl1d1409274;
-	Mon, 21 Sep 2026 14:34:20 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt4qq5uk5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 14:34:20 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68LEYJr333096222
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Sep 2026 14:34:20 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BBF135805C;
-	Mon, 21 Sep 2026 14:34:19 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 07EA55805B;
-	Mon, 21 Sep 2026 14:34:13 +0000 (GMT)
-Received: from [9.39.17.204] (unknown [9.39.17.204])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 21 Sep 2026 14:34:12 +0000 (GMT)
-Message-ID: <2cd4adea-9b70-4951-be8b-40c1bcc7ecd6@linux.ibm.com>
-Date: Mon, 21 Sep 2026 20:04:10 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QImxfmys"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-67109935888so2888072d50.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:36:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790001397; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FbNmtqD25e+XLzzJc0cmSG+XzXegeyftTHHWbPvS58+J4E5OPKPUJsnOhUCcykQE7g
+         yqoIfGFRLtKDnQMIgLYSRa2EKzWFEC8e/L6y2awgg9UoJhXglToillHM451am2eSAaLz
+         rz9DkQk6l4FlsVP3kIL3JeZQPGeDTdbkx0kVhRBpVMuyXkZv31IdMSX9Ggg2QSAF9Dx6
+         lOJs55KhxwMRSV88j1cZ5hts0gu/rKKjUPSi/fehN4eKI7RI82HWEx+72NTNgkK0JgWe
+         TAetfNQiKxvs50sz8nKrqr5ewxWYTTpEnGmlPVbOJJJl5oNUWa/iQcrLqZUCjrKQci0M
+         BcqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=UQQaX7dLiH9spYaOUwUq19F+SUoVy4mqeHG1ly59DKE=;
+        fh=UAevWC/91Z9BTIQew8vbd2LT3Gv56dNuE1GTXIxseCk=;
+        b=aPodaK+PVyvZOgikAy/IFnqO6nOMK37JqIP/u/q2785oKhqMJrNDSH9nPk1xajzBmZ
+         eb8A25xuafGtCFl70dbw+/Hc96uJOcxo/8NI8UvZ7Vk1K32OwPu55h3jwDXqlbnUZTFg
+         7kxXpgEMXcd7yzBHZz8mBOSZSDO9gNHBFL+Dpv/MIsTxW6vw8q3yVSmMRPqLfPcb+YZW
+         bZse/9jcpxiAqaXSI91VqtAfasMUFFfq7W6hKLgBobmpHYo19qjv6EP2Gmx5Arh36Ql4
+         Y/UxqDGza5aH4IQyytJGxJESH4fn8jpstRrVV45oW0Q81hz+Kf+4VpaKUoS3bEFZeJPc
+         QdRg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790001397; x=1790606197; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UQQaX7dLiH9spYaOUwUq19F+SUoVy4mqeHG1ly59DKE=;
+        b=QImxfmysaImtqZ+ui3x9VJPDG5rBcvcV46keBb06SfHfbPH4+bbxaJKw1ZGNQdiy5x
+         ddqyuT3VOB1jZRsv/13myxMX+H77tz/cL+Jah+OXt62LmgTxoawRj6QF7MkNN1dz93Qo
+         D2iq/giyHgOwsSy7j3aXKwSSJAsrtzCoSR2PV/oOy1KQRem1F7nChx8BCgRDrWhCIvEX
+         HDKim0r6qIQrMVAglgTzh78bsbduMAUvqnsTyQr/KzASi2RtbzNhOD2MiBk8Kj2fqsrP
+         YyQXYq78vsBJXEJTdu3dD/eYJGgA2vxFFpuCedi32xi16kUyoREG0B6YvndItrk7WiAR
+         //1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790001397; x=1790606197;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UQQaX7dLiH9spYaOUwUq19F+SUoVy4mqeHG1ly59DKE=;
+        b=AxrjPuyX4fLTEs7pf3vXSFI8pZ4lmDliyy0M60rmbqdW462IriWYCOx+IkBh7oPywI
+         GZs2Jb+opwMJj7LWtYjyjY5q5+JISOj4aHtzZZwXt59SYNp1u8s0J6g2PcDTcXxj1SKI
+         wduOW9Qgc+02g7/u3hedfWDwdfnrTWY0OxaWy91k915lRG0rKMNPmWK/uTpabGVX9Czl
+         KGHAq/CSRVNji10WsfHlE8jMG/0IOgQw/SKq9DDkZwtKNCPkPQbbMeE25uh5gsqrQh1I
+         cdF+iJ643V/No3VE/M2VjJ5YwJRuK5888QltcO6JCXO3CbfbSYA3Ge7oPM/0Gvd3GAAh
+         pHSg==
+X-Forwarded-Encrypted: i=1; AKwUvBwyGRPwsXloly5jkgVYZazsjWovggTN0523WIpTo6tx2XcuJgdSz+wGq55Mcdu5VUcvfXp8iBg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lNRcJqUvNs3JZbBdT73SCDYsySH8L4IyIQRnE2zR5fO7KRAHkT
+	XWfDEZbuGJYcminum5Eoj0jEIex2AI/RYFETOuHPYpUDRLsbxmObcQyzlVC8vxIJ9Gqg9biwyly
+	Cd9oSyhK9Q41Ako6M+fdeR6hxmBZrPbk=
+X-Gm-Gg: AYBFou1t6eFnJq4ndaP0w8BHI01nWtJBWkGczPLlszaNYrksF/Z/XkwbjBnfNH5BT+W
+	dOEsgWuIoGVAJlEABlpJC5Ut6UjnDIqK3uHRjbj53oYDzWSWJlG1SB4zNEHIrPlRxqQ0zaEP7Tk
+	nzvNb/s5DvvppOYsdxfMF6wKwo50rSc85aeI6RKOthbIaeMkiStWOdgV7DZtQMs6MtJ7twqeMfy
+	x7MfpwrOUIZAdjy3Alc9ISVLNr/NzlPOjQA1CnKF1zqjkz/BCBiJ7bvmkShBIQYp5otOEzr4eOY
+	HkDhMgVGXS5hoK/zmxtyK4b07V21aPk76eI8NWnb7zOTJcJ+EA/tAviS7A==
+X-Received: by 2002:a05:690e:43cf:b0:66f:ac49:a27a with SMTP id
+ 956f58d0204a3-6717fc65521mr2383542d50.14.1790001396949; Mon, 21 Sep 2026
+ 07:36:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] module: init-failure path can free a module with live
- try_module_get() users
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
-        Daniel Gomez <da.gomez@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, "D. Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond
- <sidraya@linux.ibm.com>,
-        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        Alexandra Winter <wintera@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Hidayath Khan <hidayath@linux.ibm.com>
-References: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
- <20260918142241.55a6630a@pumpkin>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20260918142241.55a6630a@pumpkin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ab1406e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=YvAVsvIxy3shiQVTEy0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: nTipSvQcDklONTshWfQZaWkCujhuVyll
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDIwNSBTYWx0ZWRfX16sjj/DfXDpU
- mPvi3YyZDg2sLX4bjPbOR/0jYsZRGcr51Cb6fNWzigwtLPUb/NLcEDQL4Hjq9BIA+wdlRF7rgUk
- 5wOG2wFie1ju4D06R6x+aZGrpMCUbl9CZOX0qYMW6kVGwrSySJxY5cvDXok6MQeyCwcLb15A0Un
- fiugiF4ybwDFxNgWbG4QYDdx9Knm4AOWdbpAYuvC3luVGIyUuQk3pbb2Spc1dghA6Eer690Y2EX
- IB+JAtVozO/VVqu5tH4zcC2dS0uUc9k59IaV9UbIEX5hxO+oUHfoY0yweMKS9PEPW+3c5AwfGWc
- vCWNc9VeKxcEtipWEzJscvm87GsHov2/pHp8L5IeexYpZXuMd8Eh+0f64UknOyfEXoG/hqtx7vk
- tgxh55pkmEBLYVANG6vVzuaTNUx01akmNkRVLseBuF0sXmIRLlEIC03ibLmhg5VhavtoBPyhvcG
- msLj7V391uelXo61DXg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDIwNSBTYWx0ZWRfX8H4e7tHd9R5e
- J/iG9eIRMZ/932/tf0PduiI+h53ZGqOzbJ5p+YOrlox+4UJ1d4bkwsHFs4GIlbqYS7MoYjRt2Ry
- XJal1g8gEP8zieexIpd1zjAIZSwDeWw=
-X-Proofpoint-GUID: vqkJvofST-7iaBHmYvcrgHmhxYpo8Svl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_04,2026-09-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210205
+References: <20260916051618.2904439-1-lgs201920130244@gmail.com> <178962811102.1264013.13698060411191875408@gmail.com>
+In-Reply-To: <178962811102.1264013.13698060411191875408@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Mon, 21 Sep 2026 22:36:24 +0800
+X-Gm-Features: AcwNN1VX0XaLkydRZySUPzjNak9mjroYac8VQM-fZ7BBkk7Judurvc9M8LXCNAM
+Message-ID: <CANUHTR9Csn86KgVMTCBPBobAjg78-M3TR1VTz--yLyG74w6YbQ@mail.gmail.com>
+Subject: Re: [PATCH] net: mediatek: fix PPE resource leak on remove
+To: Wayen Yan <win847@gmail.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Wayen,
 
+Thanks for the detailed review.
 
-On 18/09/26 6:52 pm, David Laight wrote:
-> On Mon, 24 Aug 2026 11:43:46 +0530
-> Mahanta Jambigi <mjambigi@linux.ibm.com> wrote:
-> 
->> Hi Luis, Petr, Daniel, Sami, Aaron,
->>
->> I'm writing to ask about what looks like a generic module-init failure
->> lifetime problem in the module loader. I ran into it while working on
->> the SMC networking module (net/smc/), but after several patch
->> iterations, it seems the root issue may belong in kernel/module/main.c
->> rather than in SMC itself. I'd appreciate your guidance on whether this
->> reading is correct, and if so, what fix direction would be preferred.
->>
->> THE ISSUE IN do_init_module()
->> =============================
->>
->> include/linux/module.h has a long-standing FIXME in module_is_live():
->>
->>     /* FIXME: It'd be nice to isolate modules during init, too, so they
->>        aren't used before they (may) fail. But presently too much code
->>        (IDE & SCSI) require entry into the module during init. */
->>     static inline bool module_is_live(struct module *mod)
->>     {
->>         return mod->state != MODULE_STATE_GOING;
->>     }
->>
->> Because MODULE_STATE_COMING is not MODULE_STATE_GOING, try_module_get()
->> can succeed once a module's __init is executing. If __init makes the
->> module externally reachable partway through and then later fails, the
->> failure path in do_init_module() appears to do:
-> 
-> It is rather worse that that.
-> If sock_create() auto-loads a module (eg sctp) then nothing stops a second
-> sock_create() entering the protocol code before the initialisation completes.
-> That can be hit by two separate applications, I hit it from an out of tree
-> kernel module and avoided the problem by putting a mutex() around the
-> sock_create() call.
-> 
-> It might help by letting try_module_get(THIS_MODULE) always succeed
-> while blocking other requests until initialisation completes.
-> The code making the call must own a reference (otherwise the code could
-> just disappear), and that reference stops the module being unloaded.
-> That would let the initialisation code grab extra references (eg for
-> a worker thread) without allowing other codes paths enter the
-> part-initialised driver.
+On Thu, 17 Sept 2026 at 14:55, Wayen Yan <win847@gmail.com> wrote:
+>
+> Hi Guangshuo,
+>
+> Thanks for the patch. Calling mtk_ppe_deinit() from the remove path is
+> the right direction, since the probe error path already tears PPE down
+> but the successful remove path currently does not.
+>
+> However, I think the cleanup is still incomplete.
+>
+> mtk_ppe_deinit() currently only destroys the per-PPE l2_flows
+> rhashtable:
+>
+>     rhashtable_destroy(&eth->ppe[i]->l2_flows);
+>
+> This only destroys the hash table itself. It does not free any entries
+> that may still be stored in it. In this driver, L2 offload entries are
+> struct mtk_flow_entry objects allocated by mtk_flow_offload_replace()
+> and inserted into eth->flow_table, and bridge/L2 entries are also
+> indexed from ppe->l2_flows via mtk_foe_entry_commit_l2().
+>
+> There is also a lifetime mismatch for eth->flow_table:
+> mtk_eth_offload_init() initializes it, but I do not see a matching
+> destroy/free on the remove path.
+>
+> So I think remove should first drain the offload flow entries, using the
+> same per-entry teardown as mtk_flow_offload_destroy():
+>
+>     mtk_foe_entry_clear(...)
+>     mtk_wed_flow_remove(...) when needed
+>     kfree(entry)
+>
+> and then destroy eth->flow_table and the per-PPE l2_flows tables.
+> rhashtable_free_and_destroy() with a small callback would probably fit
+> this better than plain rhashtable_destroy().
+>
+> While touching mtk_ppe_deinit(), it would also be better to use continue
+> instead of return for missing PPE instances, so later PPE instances are
+> not skipped.
+>
+> One more minor cleanup issue: mtk_ppe_debugfs_init() creates the ppe%d
+> debugfs directory, but the PPE teardown path does not remove it.
+>
+> So I agree with the fix direction, but I think this should be respun as
+> a complete PPE/offload cleanup rather than only adding mtk_ppe_deinit()
+> to mtk_remove().
+>
+> Thanks,
+> Wayen
+>
+Agreed. I'll extend the cleanup to drain eth->flow_table with
+rhashtable_free_and_destroy(), using the same per-entry teardown as the
+normal flow destroy path, then remove the PPE debugfs entries and destroy
+the per-PPE l2_flows tables.
 
-Thanks David — you're right that the race is broader. This patch
-addresses only the UAF on the __init failure path: once we set
-MODULE_STATE_GOING and call synchronize_rcu(), new callers see GOING and
-fail; we then drain existing refs before free_module().
+I'll also make mtk_ppe_deinit() continue past missing PPE instances and
+send a v2 with these changes.
 
-The concurrent-init race you describe — two callers entering
-MODULE_STATE_COMING simultaneously during a successful init — is not
-addressed here and would require changes to try_module_get() itself, as
-you suggest. That is the long-standing FIXME in module_is_live() and is
-a separate, larger change.
+Thanks,
+Guangshuo
