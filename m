@@ -1,92 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EAE51AEE0;
-	Mon, 21 Sep 2026 22:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FF63AE18A;
+	Mon, 21 Sep 2026 22:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790029285; cv=none; b=eALi++w6kEtUDUFLHvbP/dLzKKItEDjkHbojLwirriiBHtT0PtJkF75tI9Y20opaTnhJZEco2nXkl0TlsNGU5pxQtvfofel8xgzH1DXieBur7i9O3UsnDxJNplnn8uZAhh9vwibl8/n4pyv4RDZ8sIm6b/ejvXavk+iY0NS7TKQ=
+	t=1790029325; cv=none; b=BMHNIMtClzHNjD4F/U2lOVBg0w8iwKvdJiS1Ia3V7XzbVBnrqdWwpST4yuYs4B7ijBvSd77i1C6SbtEqqo+j4480b8JKk/JAAIjExdfEgkp6gq9x9+DqcGNL0C01bpMsyDKI1kfZbuFK8yjTqWjk7LKQARH0EQrIeojTMh/x0Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790029285; c=relaxed/simple;
-	bh=eEzvJSkZcAeOwGwiOJFzpDqZemIeIYUf3X8u1mu6Dcs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ED0D6wrLye9FCa1H03ZD2v/bLTZD0oXb5mro2/U1MocHqV5uvks5T1aYLgIK4fslZmUp2PH7ft1n9bHw2Oxw7Fz0yshCRXEL0fw9I7kCLrpMqObVAV8YVKq+jqgc4jIjdNUKijhB9fjygJ2lFpCvDvcV2/Kle9De3n+fQzMQKvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWucIGy1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790029325; c=relaxed/simple;
+	bh=tJHWfxoP+zjBOHbLeaVaarbONpKFYAIF83a6bpmAYPM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PllYP6NCX/YxZ48kmTsQfdLVZ/kRTnfSciGaCtaKr3CXa8tfOr6gs9iBodladmTP36dbnnab2PpM0xpR+/EGjMNnYwtAIGqoxFSlfxI58J/m85rktozyLRcuqs50xsmIW5hWeJqgGjg3MjIULhX1jSlRiACfFAyMHzxL43cJV74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoYGRW1W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWucIGy1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E142C1F000FF;
-	Mon, 21 Sep 2026 22:21:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoYGRW1W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A1A1F000FF;
+	Mon, 21 Sep 2026 22:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790029283;
-	bh=1FCpLALQlGggQQXRKN+31vT81DR2kUF9lOniwLhoMRM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LWucIGy1gLziJrH8XMAvh5HL/agf3s1/TsetI9Z/8QL08XZLmaLZRJEIGPxwGLu2U
-	 L3fKRggRGMWZnMe5k0MaJ/HqlPCBzu2HyPjPBh7Y2W8GR1nkjxBHQwteEcSHgjWFgr
-	 9pP43cWyQqhigvi9LaJgcOYJxxAGgtAYCuNxEsRUDLV8SbymyvvHyBva6p6a/OVNBZ
-	 fPE7Tpa5+XHnaMNxkh2i8+mdjnNSMOXGWrlXj9hhzDoFVNyMn5ciDiYE368U2/fGJo
-	 PMoBQHOEGlNK5XHeaU++Oun/UQ6iqffxv+TICFaeMCEVZCDdpbQZMmkEzBKGQ1GHdg
-	 mfssmI1aoMSYA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A583927202;
-	Mon, 21 Sep 2026 22:20:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790029323;
+	bh=RxhnBak1xJH1AGk2N4hZ7YSgAZBIEX9Uhz0IHaeExdo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eoYGRW1W0ewpO2qK4BMXQphjf2JvipC8nP6hq0uQjXqaVE1dgkgdEAw4LEW03BCrL
+	 Wnxkh49j0uxFEuzc4IZVFzNix4STPD4p2tMiPTM3J/PSwR1OXxjCuM7k0hxeTYzFjV
+	 X7SEE3sxZAnuosGsCaK8r98QP0fgBijJnNfK5xhT6IfMG7sN8BtO0gbHQJ12sj9sZ9
+	 ZbCbc9pe8+B3slQKQwukS7YTsZnrc1qA4OH2TrrkM42B8wxlf4ZB9I+a/+D+5VNVlf
+	 gAVIksxVpY96z5orSsZLXEIBAv4UbdK3Np4WXdgjSPHHaW9vvxZaQ+hBpNPjcsOoIp
+	 vuBT48B92+zlg==
+Date: Mon, 21 Sep 2026 15:22:02 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>, Alexis
+ =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
+ Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>, Jan Petrous
+ <jan.petrous@oss.nxp.com>, Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+ Jose.Abreu@synopsys.com, Nicolai Buchwitz <nb@tipi-net.de>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de, David Laight
+ <david.laight.linux@gmail.com>
+Subject: Re: [PATCH net v4 0/7] net: stmmac: More selftest-related fixes
+Message-ID: <20260921152202.64d4c67a@kernel.org>
+In-Reply-To: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
+References: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/8] netfilter: flowtable: publish HW_DEAD after
- worker is
- done
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179002921521.3263747.10381944958738209082.git-patchwork-notify@kernel.org>
-Date: Mon, 21 Sep 2026 22:20:15 +0000
-References: <20260918112844.194503-2-pablo@netfilter.org>
-In-Reply-To: <20260918112844.194503-2-pablo@netfilter.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Pablo Neira Ayuso <pablo@netfilter.org>:
-
-On Fri, 18 Sep 2026 13:28:37 +0200 you wrote:
-> From: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+On Thu, 17 Sep 2026 23:53:31 +0200 Maxime Chevallier wrote:
+> This is V4 of stmmac selftest fixes, addressing Sashiko's issues over
+> the MTU patch. This lead to the introduction of a new one. The
+> dev_add_pack races have been addressed, however the double-vlan issue
+> stayed there. Ovidiu is actively working on it, let's wait for his work
+> to land before fixing that.
 > 
-> flow_offload_work_del() sets NF_FLOW_HW_DEAD before the work handler
-> clears NF_FLOW_HW_PENDING. Once a flow is both HW_DYING and HW_DEAD, a
-> concurrent garbage collection pass can remove it and schedule it for RCU
-> freeing.
+> Nicolai, I took the liberty of keeping your review tags on affected
+> patches, let me know if this isn't ok.
 > 
-> [...]
+> This is another round of stmmac selftest fixes, mostly about the selftests
+> themselves but a few things were discovered w.r.t MTU and buffer size
+> handling, see patch 5 anf 6.
+> 
+> After this is merged, I consider the selftests to be now reliable enough
+> to run them nightly on every stmmac series that's sent, and I'll be requiring
+> clean selftests for new glue drivers.
 
-Here is the summary with links:
-  - [net,1/8] netfilter: flowtable: publish HW_DEAD after worker is done
-    https://git.kernel.org/netdev/net/c/d644b23afe1e
-  - [net,2/8] netfilter: nfnetlink_queue: hold nfnl mutex in event notifier
-    https://git.kernel.org/netdev/net/c/9461613afc59
-  - [net,3/8] netfilter: ip6t_rpfilter: reject routes without inet6_dev
-    https://git.kernel.org/netdev/net/c/1b9b5323725e
-  - [net,4/8] netfilter: ip6t_rt: fix zero-address non-strict match out-of-bounds read
-    https://git.kernel.org/netdev/net/c/82313c169edd
-  - [net,5/8] netfilter: nft_synproxy: use the family-aware checksum helper
-    https://git.kernel.org/netdev/net/c/a311a8981727
-  - [net,6/8] ipvs: revalidate ihl before icmp_send
-    https://git.kernel.org/netdev/net/c/e29014556488
-  - [net,7/8] netfilter: ctnetlink: fix suspicious RCU usage in expect_iter_name
-    https://git.kernel.org/netdev/net/c/207d591c3532
-  - [net,8/8] netfilter: nf_tables: skip expired catchall elements on insert and delete
-    https://git.kernel.org/netdev/net/c/70194dc37670
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+This got to the top of the stack for me, LMK if none of the AI feedback
+is legit. You mentioned the VLAN one, not sure about the rest.
+The EEE complaints look like nit picks but also some are easily
+addressable? LMK..
