@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898733DEFE7
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4867C3E008F
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790020649; cv=none; b=oPeKrXR+fWEu0zJGSiN7wFa8Jgk0bxnkglDAe4IvKEECOpSwHxDzatbt+XJZo5gAoGiOCvASPUsAC5cyJLCydQoowKl+VF72T5eqEPQkkGxqm4alE40PII/iBaFiw40KodStxoWdfb6Za7CyhhR1WjED7rQeWsvE51CfmE16d64=
+	t=1790020651; cv=none; b=F/kOhbExFdj+C6h1qrUbgzn99TAtblHE3uUsr/upGH+M6EOl0hrGeTvb0qAi4Ay+RMGw9Ii9c1/4m9blFE2IZBGh/CEGZgg9BsNQ6Li9pNqM0lZHDtvfwXsGhK+MCA4CKFzckxOOsUJBnuuGyVOmDDCvOYnzm6A4Qbp8y4m/HvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790020649; c=relaxed/simple;
-	bh=G0NpM7AmUtqsH7CMyFrmpIhMtURD3B3b1WIo3eLu18k=;
+	s=arc-20240116; t=1790020651; c=relaxed/simple;
+	bh=0kgQXZLk6OBjqApNG/AsuvvJpZWogz4VJz6OhXVkSyI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m87+AR4DNEPec74RaD/4cUqBZyKHYUtrB8374ybQjuhzIrPeWzGVZgMT03VDvwoE4z2HKkldrQyTSFlAPxHkfOP7aGXh3V3GIjmtUcTzdNN8xNYcwFrfc24rQ6zwFxOwficRbb8yjaejIokjDjOowSCewm+FFnuGjsferu3xbRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gopmXBJH; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=FbIhoEOJ7Kl8Z2mJNor/GjvOUoZ5KyAgaUvuk3FT4+im3daqhfOGGvZZTAhELRoAuoZcBpE+ORMulFuiTadeRnke+Onvma3TbvMNKi/3VFiRjS756O6m3rExLA7MNoxJOgd+fsmuyCUegRk2VzAPJo/XfKmjxyxh/p70+sbSYuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isMpGoc1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gopmXBJH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6CB1F00893;
-	Mon, 21 Sep 2026 19:57:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isMpGoc1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1438C1F00899;
+	Mon, 21 Sep 2026 19:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790020647;
-	bh=gQm1fBKZEE9wNTU/WdgPWhM90UoPadSOjqZl7TNd3Us=;
+	s=k20260515; t=1790020648;
+	bh=T7mLTM7mRArf6T5qHbZO96GqNJyg1IhoCLzy4oIM77U=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gopmXBJHQhOoa/ZnZ5SZYBOFxZ8j6CAOMQ23yPT46znU4Qdlj65ogzcItBWBCbQqw
-	 cTuzTcOlNqUzo/lzCIzs94lJObb9DWqE3eTR6tp2MPLNI2r3wgEjN777p4dor9SUTm
-	 7TuCB8/CjIhZ9xEnLE1VatovJbGAq6u/GBKY9j0/5MBAthEcMDyWykVAvITPy1vLxf
-	 fTa/AkVEOyrMRoqIe5OScEOyto95Xlvnje2UTN7m4oEUYFfDRthL1hsAXH635Rdw03
-	 5CN4FVrYEpJTGKNMPtqXiZ7UvXKHDd1Ybtb2f42kFBsacZCatFspTiaaVF5jJfyxql
-	 6AZtwE5VSIVBg==
-Subject: Re: [PATCH net-next v2 10/12] ice: add ACL reset recovery and NTUPLE
- feature toggle
+	b=isMpGoc1Q7MF1J0b6Y5Gxc5mV4NQs6O+9WA9KKIA12TiTSkjTIiFYtoMXmC+h9z+J
+	 /lIbiygILQDEBBFU2vossHjXJOP/SxChIUx0MfluaAAQHUn2BUH3pKpry5ORCRPVaP
+	 G0m5hRVpW7admfXs+Vt/7dFkkd/dyqnTUEnOlXKZNJO8WX8wDXVJbmMPzcnXde3lO5
+	 WZIxpJsfHweFWsYjkkXCLBt5U6CIRWNLFe0cw9SrTBzcGUQnJ5fcK4elwLX1TK46gb
+	 O9P7dS8++uNkQXPFAKX42w/PPG9P7ERoQVCEuTYrXzA4a2ahAuj97FVsmoEqR0i7X0
+	 4S/Q3jepoSSeg==
+Subject: Re: [PATCH net-next v2 12/12] ice: use ACL for ntuple rules that
+ conflict with FDir
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -35,10 +35,10 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  lukasz.czapnik@intel.com, marcin.szycik@linux.intel.com,
  aleksandr.loktionov@intel.com, sandeep.penigalapati@intel.com,
  ananth.s@intel.com, alexander.duyck@gmail.com, sx.rinitha@intel.com
-Date: Mon, 21 Sep 2026 19:57:26 +0000
-Message-ID: <179002064606.2160803.13242183804176202091@kernel.org>
-In-Reply-To: <20260917183927.2692068-11-anthony.l.nguyen@intel.com>
-References: <20260917183927.2692068-11-anthony.l.nguyen@intel.com>
+Date: Mon, 21 Sep 2026 19:57:27 +0000
+Message-ID: <179002064764.2160803.13065389876778124107@kernel.org>
+In-Reply-To: <20260917183927.2692068-13-anthony.l.nguyen@intel.com>
+References: <20260917183927.2692068-13-anthony.l.nguyen@intel.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 13 potential
+Thank you for your contribution! Sashiko AI review found 8 potential
 issue(s) to consider.
 
-Critical: 0 · High: 6 · Medium: 5 · Low: 2
+Critical: 0 · High: 2 (1) · Medium: 2 · Low: 4
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,562 +60,466 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] ICE_FLAG_ACL_ENA does not gate ACL rule programming, so the
-  commit's stated purpose ('Use the new flag to track the NTUPLE ethtool…
-- [High] ice_rebuild() creates the ACL HW table whenever ICE_FLAG_ACL_ENA
-  is set, but ice_set_pf_caps() (ice_main.c:3952) now sets that flag…
-- [High] In the new per-profile reset loop in ice_acl_create_hw(), the
-  return value of ice_prog_acl_prof_ranges() is discarded and the…
-- [High] ice_acl_create_hw() unconditionally reprograms the extraction
-  sequence and range checkers of all 128 ACL HW profiles with zeroed…
-- [High] ice_acl_prof_add_ethtool() reuses the ice_acl_hw_prof already
-  published in hw->acl_prof[fltr_type], but its `free_acl_prof:…
-- [High] The new reset-replay code walks and mutates state that every
-  other accessor protects with hw->fdir_fltr_lock, without taking it.
-- [Medium] Per-profile and per-filter replay failures leave ACL rules
-  present in software but absent from hardware after a reset.
-- [Medium] A PF reset taken while NTUPLE is disabled leaves no usable ACL
-  hardware table after the feature is re-enabled.
-- [Medium] ice_acl_replay_flows() only updates prof->prof_id for flow
-  types whose ice_flow_add_prof() succeeded; on a per-flow failure it…
-- [Medium] ice_acl_destroy_tbl()'s new kernel-doc promises that SW state
-  is always cleaned up even when the AQ calls fail ('e.g. after a reset,…
-- [Medium] ice_rebuild()'s new ACL failure branch does
-  mutex_lock(&hw->fdir_fltr_lock), but that mutex is initialized only…
-- [Low] ice_acl_replay_flows() applies the ethtool uAPI modifier bit
-  FLOW_EXT to a loop variable of type enum ice_fltr_ptype (`flow &=…
-- [Low] The new ice_acl_replay_fltrs() documentation block is written in
-  kernel-doc form (summary line `ice_acl_replay_fltrs - replay ACL…
+- [High] ice_fdir_has_input_set_conflict()
+  (drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c:1543) reports a…
+- [High] The new conflict check dereferences a possibly-NULL aRFS counter
+  block.
+- [Medium] Conflict-routed rules that carry FLOW_EXT are rejected by the
+  ACL path with -EINVAL even when they contain no flex match, because…
+- [Medium] ice_fdir_has_input_set_conflict() makes the FDir-vs-ACL
+  routing decision from state that can change before the decision is…
+- [Low] Claimed regression: the new `if (userdata.flex_fltr) return
+  -EOPNOTSUPP;` block in ice_add_ntuple_ethtool() sits inside the…
+- [Low] The two new messages in the ACL branch of
+  ice_add_ntuple_ethtool() describe an offload that may never occur.
+- [Low] ice_fdir_has_input_set_conflict() documents `false` as "can use
+  FD" and ice_add_ntuple_ethtool() consumes it as permission to skip the…
+- [Low] Documentation/networking/device_drivers/ethernet/intel/ice.rst
+  (lines 326-345) still states unconditionally that "For each flow-type,…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the new input-
+  set-dependent backend selection makes it reachable for full-mask…
 
 --
 
-ice: add ACL reset recovery and NTUPLE feature toggle
+ice: use ACL for ntuple rules that conflict with FDir
 
-This adds ice_acl_replay_flows() and ice_acl_replay_fltrs() to rebuild ACL
-HW profiles and TCAM entries after a PF reset, wires them into
-ice_rebuild(), resets per-profile HW extraction sequences and range
-checkers in ice_acl_create_hw(), and introduces the ICE_FLAG_ACL_ENA PF
-flag tied to the ethtool NTUPLE feature.
+This adds a pre-check that builds the candidate IP flow segment for an
+ethtool ntuple rule, compares it against the active non-tunneled Flow
+Director profile, and routes the rule to ACL when the input sets differ.
+The IP flow segment setup is factored out into ice_set_fdir_ip_flow_seg()
+so both the extraction-sequence path and the new check can use it.
 
-A few questions about the new code below.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> index 0ee86236bc37a..4ea08bd9784c0 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> @@ -877,9 +877,10 @@ static int ice_acl_destroy_scen(struct ice_hw *hw, u16 scen_id)
->   * ice_acl_destroy_tbl - Destroy a previously created LEM table for ACL
->   * @hw: pointer to the HW struct
->   *
-> - * Return: 0 on success, negative on error
-> + * Continue on AQ errors so SW state is always cleaned up - e.g. after a reset,
-> + * where the HW tables might be already gone.
->   */
-> -int ice_acl_destroy_tbl(struct ice_hw *hw)
-> +void ice_acl_destroy_tbl(struct ice_hw *hw)
-
-[ ... ]
-
->  		err = ice_acl_destroy_scen(hw, pos_scen->id);
->  		if (err) {
-> -			ice_debug(hw, ICE_DBG_ACL, "deletion of scenario failed. status: %d\n",
-> +			ice_debug(hw, ICE_DBG_ACL, "deletion of scenario failed, status: %d\n",
->  				  err);
-> -			return err;
->  		}
->  	}
->  
->  	err = ice_aq_dealloc_acl_tbl(hw, hw->acl_tbl->id, &resp_buf, NULL);
->  	if (err) {
-> -		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of ACL failed. status: %d\n",
-> +		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of ACL failed, status: %d\n",
->  			  err);
-> -		return err;
->  	}
->  
->  	kfree(hw->acl_tbl);
->  	hw->acl_tbl = NULL;
-> -
-> -	return 0;
->  }
-
-[Severity: Medium]
-The new comment says SW state is always cleaned up, but does
-ice_acl_destroy_scen() still return early before removing the scenario from
-the list?
-
-ice_acl_destroy_scen() {
-	...
-	err = ice_aq_dealloc_acl_scen(hw, scen_id, NULL);
-	if (err) {
-		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of scenario failed. status: %d\n",
-			  err);
-		return err;
-	}
-
-	/* Remove scenario from hw->acl_tbl->scens */
-	list_for_each_entry_safe(scen, tmp_scen, &hw->acl_tbl->scens, ...
-			list_del(&scen->list_entry);
-			devm_kfree(ice_hw_to_dev(hw), scen);
-	...
-}
-
-The scenario stays on hw->acl_tbl->scens, and ice_acl_destroy_tbl() then does
-kfree(hw->acl_tbl), which owns that list head.
-
-Does this leak the struct ice_acl_scen (including its
-DECLARE_BITMAP(entry_bitmap, ICE_MAX_ACL_TCAM_ENTRY)) once per failing
-teardown?  Since ice_rebuild() calls ice_acl_destroy_tbl() exactly when the
-firmware allocation is expected to be gone, this looks like the normal case
-on reset rather than a rare one.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> index 171b7bf8519c6..d13e8bc1b7019 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> @@ -236,6 +236,53 @@ static void ice_acl_set_act_fwd_queue(struct ice_flow_action *action,
->  	action->data.acl_act.value = cpu_to_le16(queue_index);
->  }
->  
-> +/*
-> + * ice_acl_replay_fltrs - replay ACL filters from the SW filter list
-> + * @pf: board private structure
-
-[Severity: Low]
-This isn't a bug, but the block is kernel-doc formatted (summary line plus
-@pf) while opened with /* instead of /**, so scripts/kernel-doc skips it.
-Other documented functions in ice_acl_main.c use /**.
-
-> + *
-> + * Reprograms ACL TCAM entries after a reset using data preserved in the
-> + * SW filter list. Relies on ice_acl_replay_flows() having been called first
-> + * to restore the flow profiles.
-> + */
-> +void ice_acl_replay_fltrs(struct ice_pf *pf)
-> +{
-> +	struct ice_vsi *vsi = ice_get_main_vsi(pf);
-> +	struct ice_hw *hw = &pf->hw;
-> +	struct ice_ntuple_fltr *f_rule;
-> +
-> +	if (!vsi)
-> +		return;
-> +
-> +	list_for_each_entry(f_rule, &hw->fdir_list_head, fltr_node) {
-
-[Severity: High]
-Should this traversal hold hw->fdir_fltr_lock?
-
-Every other accessor of hw->fdir_list_head takes that mutex, and the patch
-itself documents ice_acl_del_all_fltrs() as "needs to be called while holding
-hw->fdir_fltr_lock".  ice_del_ntuple_ethtool() does list_del() + kfree() on
-these nodes under the mutex.
-
-The same question applies to ice_acl_replay_flows(), which reads prof->seg
-and writes prof->prof_id unlocked while ice_vsi_manage_acl(vsi, false) ->
-ice_acl_rem_flows() kfree()s prof->seg under the mutex.
-
-ice_rebuild() runs from the service task / ice_do_reset() without rtnl_lock,
-and the ice_is_reset_in_progress() test at the top of the ethtool handlers is
-taken before any lock, so a task that passed it can still be inside
-ice_del_ntuple_ethtool() or ice_acl_prof_add_ethtool() while the replay walks
-the same objects.  Can that traverse a freed list node or call
-ice_flow_add_prof() on a freed prof->seg?
-
-Note the failure branch added to ice_rebuild() a few lines below does take
-the mutex for the same data, which makes the success path look inconsistent.
-
-> +		struct ice_flow_action acts[ICE_ACL_NUM_ACT];
-> +		struct ice_acl_hw_prof *hw_prof;
-> +		u64 entry_h = 0;
-> +		int err;
-> +
-> +		if (!f_rule->acl_fltr)
-> +			continue;
-> +
-> +		if (!hw->acl_prof || !hw->acl_prof[f_rule->flow_type])
-> +			continue;
-> +
-> +		hw_prof = hw->acl_prof[f_rule->flow_type];
-> +
-> +		memset(&acts, 0, sizeof(acts));
-> +		if (f_rule->dest_ctl == ICE_FLTR_PRGM_DESC_DEST_DROP_PKT)
-> +			ice_acl_set_act_drop(&acts[0]);
-> +		else
-> +			ice_acl_set_act_fwd_queue(&acts[0], f_rule->q_index);
-> +
-> +		err = ice_flow_add_entry(hw, ICE_BLK_ACL, hw_prof->prof_id,
-> +					 f_rule->fltr_id, vsi->idx,
-> +					 ICE_FLOW_PRIO_NORMAL, f_rule, acts,
-> +					 ICE_ACL_NUM_ACT, &entry_h);
-
-[Severity: Medium]
-Can hw_prof->prof_id be stale here?
-
-ice_acl_replay_flows() only assigns prof->prof_id when ice_flow_add_prof()
-succeeds; on failure it logs and continues, so the ice_acl_hw_prof keeps the
-pre-reset ID.  Profile IDs come from a recyclable bitmap:
-
-ice_flow_add_prof_sync() {
-	ids = &hw->blk[blk].prof_id;
-	prof_id = find_first_zero_bit(ids->id, ids->count);
-	...
-}
-
-and that bitmap is cleared during reset prep by ice_clear_hw_tbls().  So a
-later flow in the same replay loop can be handed exactly the numeric ID a
-failed flow still stores, and ice_flow_find_prof_id() will resolve it to a
-valid but different profile.
-
-Would that program the filter's match data into another flow type's
-extraction sequence without any error being reported?
-
-> +		if (err)
-> +			dev_warn(ice_pf_to_dev(pf), "Could not reprogram filter %d, status %d\n",
-> +				 f_rule->fltr_id, err);
-> +	}
-> +}
-
-[Severity: Medium]
-The commit message says "On failure, don't fail reset, rather delete all ACL
-filters from the SW list."  Does that happen for replay failures?
-
-Both ice_acl_replay_flows() and ice_acl_replay_fltrs() return void and only
-log, so ice_rebuild() only calls ice_acl_del_all_fltrs() when
-ice_acl_create_hw() itself fails.  After a per-filter ice_flow_add_entry()
-error (-ENOSPC on TCAM/scenario exhaustion, -ENOMEM, an AQ error), the reset
-completes, the netdev is reattached, and the filter list plus
-hw->acl_fltr_cnt[] still report the rule as installed while hardware has no
-entry.
-
-Such a rule also looks undeletable afterwards: ice_ntuple_update_list_entry()
-calls ice_del_acl_ethtool(), ice_flow_find_entry() returns
-ICE_FLOW_ENTRY_HANDLE_INVAL, ice_flow_rem_entry() returns -EINVAL, and the
-error is propagated before the SW rule is unlinked.  Can the user still
-remove the rule without reloading the driver?
+A few questions below about the new helper and the ACL dispatch.
 
 > diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> index 0ac44d38fdbdf..fef8640d23fb6 100644
+> index fef8640d23fb6..691b4500e6be6 100644
 > --- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
 > +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> @@ -527,6 +527,37 @@ void ice_fdir_replay_flows(struct ice_hw *hw)
->  	}
+> @@ -1484,6 +1484,120 @@ ice_set_fdir_vlan_seg(struct ice_flow_seg_info *seg,
+>  	return 0;
 >  }
 >  
 > +/**
-> + * ice_acl_replay_flows - replay HW ACL flow profiles
-> + * @hw: pointer to HW instance
+> + * ice_set_fdir_ip_flow_seg - set IP flow segment based on ethtool flow type
+> + * @fsp: pointer to ethtool Rx flow specification
+> + * @seg: flow segment for programming
+> + * @perfect_fltr: valid on success; returns true if perfect fltr, false if not
+> + *
+> + * Return: 0 on success and errno in case of error.
 > + */
-> +void ice_acl_replay_flows(struct ice_hw *hw)
+> +static int ice_set_fdir_ip_flow_seg(struct ethtool_rx_flow_spec *fsp,
+> +				    struct ice_flow_seg_info *seg,
+> +				    bool *perfect_fltr)
 > +{
-> +	if (!hw->acl_prof)
-> +		return;
+> +	switch (fsp->flow_type & ~FLOW_EXT) {
+
+[ ... ]
+
+> +	case TCP_V6_FLOW:
+> +		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
+> +					    ICE_FLOW_SEG_HDR_TCP, perfect_fltr);
+> +	case UDP_V6_FLOW:
+> +		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
+> +					    ICE_FLOW_SEG_HDR_UDP, perfect_fltr);
+> +	case SCTP_V6_FLOW:
+> +		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
+> +					    ICE_FLOW_SEG_HDR_SCTP,
+> +					    perfect_fltr);
+> +	case IPV6_USER_FLOW:
+> +		return ice_set_fdir_ip6_usr_seg(seg, &fsp->m_u.usr_ip6_spec,
+> +						perfect_fltr);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
 > +
-> +	for (enum ice_fltr_ptype flow = ICE_FLTR_PTYPE_NONF_NONE;
-> +	     flow < ICE_FLTR_PTYPE_MAX; flow++) {
-> +		struct ice_flow_prof *hw_prof;
-> +		struct ice_acl_hw_prof *prof;
-> +		int err;
+
+[ ... ]
+
+> +static bool
+> +ice_fdir_has_input_set_conflict(struct ice_pf *pf,
+> +				struct ethtool_rx_flow_spec *fsp,
+> +				const struct ice_rx_flow_userdef *user)
+> +{
+> +	struct ice_flow_seg_info *test_seg, *old_seg;
+> +	bool perfect_fltr = false, conflict = false;
+> +	struct ice_fd_hw_prof *hw_prof;
+> +	struct ice_hw *hw = &pf->hw;
+> +	enum ice_fltr_ptype flow;
+> +	int err;
 > +
-> +		flow &= ~FLOW_EXT;
+> +	if ((fsp->flow_type & ~FLOW_EXT) == ETHER_FLOW)
+> +		return false;
+
+[Severity: High]
+This gate excludes only ETHER_FLOW, and ice_set_fdir_ip_flow_seg() above
+happily builds segments for TCP_V6_FLOW, UDP_V6_FLOW, SCTP_V6_FLOW and
+IPV6_USER_FLOW, so a true verdict can be produced for IPv6 rules.
+
+The only consumer of a true verdict is ice_acl_add_rule_ethtool(), which
+starts with ice_acl_prof_add_ethtool().  Can ACL program IPv6 flow types
+at all?
+
+drivers/net/ethernet/intel/ice/ice_acl_main.c:ice_acl_prof_add_ethtool() {
+	switch (fsp->flow_type & ~FLOW_EXT) {
+	case TCP_V4_FLOW:
+	...
+	case IPV4_USER_FLOW:
+	...
+	default:
+		err = -EOPNOTSUPP;
+	}
+}
+
+With this sequence on an ACL-capable device:
+
+  ethtool -U ethX flow-type tcp6 src-ip A dst-ip B src-port P dst-port Q action 1
+  ethtool -U ethX flow-type tcp6 src-ip C action 2
+
+the second rule has a full mask, so ice_is_acl_filter() returns false (it
+only inspects the IPv4 specs), while ice_fdir_has_input_set_conflict()
+returns true.  Does the rule then end up in ice_acl_prof_add_ethtool()'s
+default case and get rejected with -EOPNOTSUPP, instead of being offloaded?
+
+If so, the descriptive rejection that used to come from
+ice_fdir_set_hw_fltr_rule():
+
+	dev_err(dev, "Failed to add filter. Flow director filters on each port must have the same input set.\n");
+	return -EINVAL;
+
+is no longer reached for these rules.  Since the new gate only tests
+pf->hw.acl_tbl (ACL block present) and never "ACL can offload this flow
+type", should the conflict detection be restricted to the flow types
+ice_acl_prof_add_ethtool() supports?
+
+> +
+> +	flow = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
+> +	if (flow >= ICE_FLTR_PTYPE_MAX || !hw->fdir_prof ||
+> +	    !hw->fdir_prof[flow]) {
+> +		return false;
+> +	}
+> +
+> +	hw_prof = hw->fdir_prof[flow];
+> +	old_seg = hw_prof->fdir_seg[ICE_FD_HW_SEG_NON_TUN];
+> +
+> +	/* A profile with no ethtool FDir filters (fdir_fltr_cnt == 0) may
+> +	 * still be locked by aRFS perfect (4-tuple) filters, which keep their
+> +	 * own active counters separate from fdir_fltr_cnt.
+> +	 */
+> +	if (!old_seg || (hw->fdir_fltr_cnt[flow] == 0 &&
+> +			 !ice_is_arfs_using_perfect_flow(hw, flow)))
+> +		return false;
+
+[Severity: High]
+Can ice_is_arfs_using_perfect_flow() be called here with
+vsi->arfs_fltr_cntrs still NULL?
+
+With CONFIG_RFS_ACCEL=y it dereferences the counter block without a NULL
+check:
+
+drivers/net/ethernet/intel/ice/ice_arfs.c:ice_is_arfs_using_perfect_flow() {
+	arfs_fltr_cntrs = vsi->arfs_fltr_cntrs;
+
+	/* active counters can be updated by multiple CPUs */
+	smp_mb__before_atomic();
+	switch (flow_type) {
+	case ICE_FLTR_PTYPE_NONF_IPV4_UDP:
+		return atomic_read(&arfs_fltr_cntrs->active_udpv4_cnt) > 0;
+	...
+}
+
+ice_set_features() enables Flow Director and ACL before the fallible aRFS
+setup:
+
+drivers/net/ethernet/intel/ice/ice_main.c:ice_set_features() {
+	ice_vsi_manage_fdir(vsi, ena);
+	ice_vsi_manage_acl(vsi, ena);
+	ena ? ice_init_arfs(vsi) : ice_clear_arfs(vsi);
+}
+
+and ice_init_arfs() swallows the allocation failure:
+
+drivers/net/ethernet/intel/ice/ice_arfs.c:ice_init_arfs() {
+	if (ice_init_arfs_cntrs(vsi))
+		goto free_arfs_fltr_list;
+	...
+}
+
+so after "ethtool -K ethX ntuple on" with a failing allocation,
+ICE_FLAG_FD_ENA is set, ice_fdir_create_dflt_rules() has already installed
+the default perfect tcp4/udp4/tcp6/udp6 profiles, and
+vsi->arfs_fltr_cntrs is NULL.  A following "ethtool -U ethX flow-type
+tcp4 ..." on a device with hw->acl_tbl set reaches this check with
+old_seg != NULL and hw->fdir_fltr_cnt[flow] == 0.  Does that oops inside
+atomic_read()?
+
+The missing NULL check in ice_is_arfs_using_perfect_flow() predates this
+patch, but previously ice_fdir_set_hw_fltr_rule() compared the segments
+first and returned -EEXIST without consulting the aRFS counters, so rules
+whose input set matches the existing profile never touched them.  Does
+this new call site widen that exposure to the common case?
+
+[Severity: Medium]
+Is the state read here stable until it is acted upon?
+
+hw->fdir_prof[flow], hw_prof->fdir_seg[ICE_FD_HW_SEG_NON_TUN],
+hw->fdir_fltr_cnt[flow] and the aRFS atomics are all read without
+hw->fdir_fltr_lock; ice_add_ntuple_ethtool() takes that mutex only later,
+after ice_cfg_fdir_xtrct_seq() has already programmed the profile.  The
+aRFS counters are written from contexts that are not serialized against
+the ethtool ioctl:
+
+ice_service_task()
+  ice_sync_arfs_fltrs()
+    ice_arfs_add_flow_rules()
+      ice_arfs_update_active_fltr_cntrs()
+
+and also from ice_rx_flow_steer().
+
+So:
+
+CPU0 (ethtool -U)
+  ice_fdir_has_input_set_conflict()
+    hw->fdir_fltr_cnt[flow] == 0
+    aRFS tcpv4 counter == 0  -> returns false, take the FDir path
+
+CPU1 (service task)
+  ice_arfs_add_flow_rules()
+    ice_arfs_update_active_fltr_cntrs()  -> counter becomes 1
+
+CPU0 continues into ice_fdir_set_hw_fltr_rule(), which re-reads the same
+state:
+
+		if (ice_is_arfs_using_perfect_flow(hw, flow)) {
+			dev_err(dev, "aRFS using perfect flow type %d, cannot change input set\n",
+				flow);
+			return -EINVAL;
+		}
+
+Can that produce the -EINVAL this patch is meant to avoid, with no ACL
+fallback left at that point?  The mirror ordering would route to ACL a
+rule Flow Director could have taken.
+
+> +
+> +	test_seg = kzalloc_obj(*test_seg);
+> +	if (!test_seg)
+> +		return false;
 
 [Severity: Low]
-This isn't a bug, but FLOW_EXT is an ethtool uAPI modifier bit and flow here
-is an already-converted enum ice_fltr_ptype.  Since the loop only takes
-values below ICE_FLTR_PTYPE_MAX, masking with ~FLOW_EXT (0x7fffffff) clears
-nothing, and it writes to the loop counter.
+The kernel-doc for this helper documents false as "can use FD", and
+ice_add_ntuple_ethtool() treats false as permission to skip the ACL
+branch.  Here false also means "the comparison could not be performed".
 
-Peer sites strip FLOW_EXT before conversion, e.g. in
-ice_acl_prof_add_ethtool():
+On this allocation failure the rule goes down the Flow Director path and
+ice_fdir_set_hw_fltr_rule() rejects the differing input set:
 
-	fltr_type = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
+		if (hw->fdir_fltr_cnt[flow]) {
+			dev_err(dev, "Failed to add filter. Flow director filters on each port must have the same input set.\n");
+			return -EINVAL;
+		}
 
-and the structurally equivalent ice_fdir_replay_flows() has no such mask.
-Can this statement be dropped?  The same line was added earlier in the series
-in ice_acl_rem_flows().
+Should this report -ENOMEM (or still take the ACL route) rather than
+returning the value that means no conflict?
 
-> +		prof = hw->acl_prof[flow];
-> +		if (!prof || !prof->seg)
-> +			continue;
+The other early false path, ice_set_fdir_ip_flow_seg() returning an error,
+looks benign since the FDir path re-runs the same builder and produces the
+same errno.
+
 > +
-> +		err = ice_flow_add_prof(hw, ICE_BLK_ACL, ICE_FLOW_RX,
-> +					prof->seg, 1, false, &hw_prof);
-> +		if (err) {
-> +			dev_err(ice_hw_to_dev(hw), "Could not replay ACL, flow type %d\n",
-> +				flow);
-> +			continue;
-> +		}
-> +		prof->prof_id = hw_prof->id;
+> +	err = ice_set_fdir_ip_flow_seg(fsp, test_seg, &perfect_fltr);
+> +
+> +	if (err) {
+> +		kfree(test_seg);
+> +		return false;
 > +	}
+> +
+> +	if (user && user->flex_fltr)
+> +		ice_flow_add_fld_raw(test_seg, user->flex_offset,
+> +				     ICE_FLTR_PRGM_FLEX_WORD_SIZE,
+> +				     ICE_FLOW_FLD_OFF_INVAL,
+> +				     ICE_FLOW_FLD_OFF_INVAL);
+> +
+> +	/* Compare the test segment with the existing segment */
+> +	if (memcmp(old_seg, test_seg, sizeof(*test_seg)) != 0)
+> +		conflict = true;
+> +
+> +	kfree(test_seg);
+> +
+> +	return conflict;
 > +}
+> +
+>  /**
+>   * ice_cfg_fdir_xtrct_seq - Configure extraction sequence for the given filter
+>   * @pf: PF structure
 
 [ ... ]
 
-> @@ -1825,6 +1856,28 @@ static int ice_del_acl_ethtool(struct ice_hw *hw, struct ice_ntuple_fltr *fltr)
->  	return ice_flow_rem_entry(hw, ICE_BLK_ACL, entry);
->  }
->  
-> +/**
-> + * ice_acl_del_all_fltrs - Delete all ACL filters from the filter list
-> + * @vsi: the VSI being changed
-> + *
-> + * This function needs to be called while holding hw->fdir_fltr_lock
-> + */
-> +void ice_acl_del_all_fltrs(struct ice_vsi *vsi)
-
-[ ... ]
-
-> +/**
-> + * ice_vsi_manage_acl - turn on/off ACL
-> + * @vsi: the VSI being changed
-> + * @ena: boolean value indicating if this is an enable or disable request
-> + */
-> +void ice_vsi_manage_acl(struct ice_vsi *vsi, bool ena)
-> +{
-> +	struct ice_pf *pf = vsi->back;
-> +	struct ice_hw *hw = &pf->hw;
-> +
-> +	if (ena) {
-> +		set_bit(ICE_FLAG_ACL_ENA, pf->flags);
-> +		return;
-> +	}
-> +
-> +	mutex_lock(&hw->fdir_fltr_lock);
-> +	if (!test_and_clear_bit(ICE_FLAG_ACL_ENA, pf->flags))
-> +		goto release_lock;
-> +
-> +	ice_acl_del_all_fltrs(vsi);
-> +	ice_acl_rem_flows(hw);
-> +
-> +release_lock:
-> +	mutex_unlock(&hw->fdir_fltr_lock);
-> +}
-
-[Severity: High]
-Does ICE_FLAG_ACL_ENA actually gate ACL rule programming?
-
-The commit message says "Use the new flag to track the NTUPLE ethtool feature
-flag ... Like with Flow Director, disabling the flag deletes all filters".
-After ethtool -K ethX ntuple off, existing filters are deleted here, but the
-add path still dispatches on hw->acl_tbl alone:
-
-ice_add_ntuple_ethtool() {
-	/* ACL filter */
-	if (pf->hw.acl_tbl && ice_is_acl_filter(fsp))
-		return ice_acl_add_rule_ethtool(vsi, cmd);
-
-	/* Only fdir filters below */
-	if (!test_bit(ICE_FLAG_FD_ENA, pf->flags))
-		return -EOPNOTSUPP;
-	...
-}
-
-So a new ACL-class rule is still accepted and programmed with NTUPLE off,
-while the equivalent Flow Director rule returns -EOPNOTSUPP.  Those rules are
-also invisible to the new replay, since ice_rebuild() only enters the ACL
-block when ICE_FLAG_ACL_ENA is set.  Should the ACL dispatch test the new flag
-too?
-
-[Severity: Medium]
-What restores the ACL hardware table if a reset happens while NTUPLE is off?
-
-ethtool -K ethX ntuple off clears the flag here but leaves hw->acl_tbl set.
-A PF reset then skips the whole ACL block in ice_rebuild(), so the SW
-hw->acl_tbl object survives while its firmware table and scenario allocation
-are gone.  Re-enabling only does set_bit(ICE_FLAG_ACL_ENA, pf->flags) with no
-hardware reconstruction, and ice_add_ntuple_ethtool() treats the stale
-non-NULL hw->acl_tbl as proof the ACL hardware exists.
-
-Can rules then be programmed against a table and scenario that no longer
-exist in hardware until the driver is reloaded?
-
-[Severity: High]
-Does the ice_acl_rem_flows() call here leave a wrapper in hw->acl_prof[] that
-a later error path can free twice?
-
-ice_acl_rem_flows() frees prof->seg and sets it NULL but keeps the
-ice_acl_hw_prof installed in hw->acl_prof[flow]:
-
-ice_acl_rem_flows() {
-	...
-	kfree(prof->seg);
-	prof->seg = NULL;
-	...
-}
-
-Since the add path stays open after the disable (it is gated on hw->acl_tbl),
-a following ACL rule add reuses that retained wrapper in
-ice_acl_prof_add_ethtool(), skips the if (hw_prof->seg) branch, and on any
-ice_flow_add_prof() failure takes:
-
-free_acl_prof:
-	kfree(hw_prof);
-free_seg:
-	kfree(seg);
-
-without clearing hw->acl_prof[fltr_type].  ice_acl_replay_flows() then
-dereferences prof->seg/prof->prof_id on the next reset, and ice_deinit_acl()
-does kfree(hw_prof->seg) followed by kfree(hw_prof).  Is that a
-use-after-free plus double free?  Before this patch,
-ice_acl_rem_flows() was only reachable from ice_deinit_acl(), so the
-"wrapper retained, seg == NULL" state did not exist at runtime.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index 3a10b2c2a44ae..8a81d3e475a72 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -3947,6 +3948,9 @@ static void ice_set_pf_caps(struct ice_pf *pf)
->  				       func_caps->fd_fltr_best_effort);
+> @@ -2368,9 +2441,27 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+>  		return -ENOSPC;
 >  	}
 >  
-> +	/* ACL is always initially available */
-> +	set_bit(ICE_FLAG_ACL_ENA, pf->flags);
-> +
-
-[Severity: High]
-Is the flag safe to set unconditionally here, given ice_rebuild() uses it as
-the sole gate for creating the ACL HW table?
-
-ice_set_pf_caps() is called from ice_init_dev() regardless of safe mode, but
-hw->acl_prof is allocated only by ice_init_acl(), which:
-
-  - is never called in safe mode (ice_init_features() returns early), and
-  - may fail: "Note: ACL init failure is non-fatal to load".
-
-In both cases hw->acl_prof stays NULL.  After a PF reset the new block calls
-ice_acl_create_hw(), which on success sets hw->acl_tbl while nothing in the
-rebuild path allocates acl_prof (ice_acl_replay_flows() just returns on
-!hw->acl_prof).  An ethtool ACL rule then passes the hw->acl_tbl gate and
-reaches:
-
-ice_acl_prof_add_ethtool() {
-	...
-	hw_prof = hw->acl_prof[fltr_type];
-	if (!hw_prof) {
-	...
-}
-
-Can this dereference a NULL hw->acl_prof array?
-
-[Severity: Medium]
-Related to the unconditional set_bit: hw->fdir_fltr_lock is initialized only
-in ice_init_fdir(), after ice_ctrl_vsi_setup()/ice_vsi_open_ctrl(), and never
-in safe mode since ice_init_features() returns before ice_init_fdir().  With
-ICE_FLAG_ACL_ENA always set, the new mutex_lock(&hw->fdir_fltr_lock) in
-ice_rebuild()'s ACL failure branch can run on a mutex that was never
-mutex_init()ed.
-
-Would that trip the CONFIG_DEBUG_MUTEXES magic check, or produce a lockdep
-"trying to register non-static key" splat?  ice_vsi_manage_fdir() has the same
-pre-existing exposure, but this patch adds a new reachable site and decouples
-the ACL paths from the FD init that creates the mutex.
-
-> @@ -4369,6 +4373,30 @@ static int ice_acl_create_hw(struct ice_pf *pf)
->  	if (err)
->  		goto destroy_table;
->  
-> +	/* Reset profile extraction sequences and range checkers for all
-> +	 * possible HW profile IDs. The TCAM entries are already zeroed by
-> +	 * ice_acl_init_tbl() inside ice_acl_create_tbl(), but profile
-> +	 * extraction and range checker state is separate per-profile HW state
-> +	 * that survives PF reset, therefore must be brought back to default
-> +	 * state.
+> -	/* ACL filter */
+> -	if (pf->hw.acl_tbl && ice_is_acl_filter(fsp))
+> +	/* ACL filter, or this filter would cause an input set conflict with
+> +	 * existing FD filters
 > +	 */
-> +	for (u8 prof_id = 0; prof_id < ICE_ACL_MAX_PROF; prof_id++) {
-> +		struct ice_aqc_acl_prof_generic_frmt xtrct_buf = {};
-> +		struct ice_aqc_acl_profile_ranges range_buf = {};
-> +
-> +		memset(xtrct_buf.pf_scenario_num, ICE_ACL_INVALID_SCEN,
-> +		       sizeof(xtrct_buf.pf_scenario_num));
-> +		err = ice_prgm_acl_prof_xtrct(hw, prof_id, &xtrct_buf, NULL);
-
-[Severity: High]
-Is this per-profile state shared between PFs?
-
-struct ice_aqc_acl_prof_generic_frmt carries one scenario slot per PF, and the
-existing code treats the record as device-global:
-
-ice_flow_acl_set_xtrct_seq() {
-	...
-	if (!ice_flow_acl_is_prof_in_use(&buf)) {
-		/* Program the profile dependent configuration. This is done
-		 * only once regardless of the number of PFs using that profile
-		 */
-	...
-}
-
-ice_flow_acl_disassoc_scen() {
-	/* Clear scenario for this PF */
-	buf.pf_scenario_num[hw->pf_id] = ICE_ACL_INVALID_SCEN;
-	...
-}
-
-This loop writes a zeroed extraction buffer and sets ICE_ACL_INVALID_SCEN for
-every PF slot of all 128 profiles, without querying first and without
-restricting the change to hw->pf_id.
-
-Since ice_acl_create_hw() now also runs from ice_rebuild() on every PF reset,
-and ICE_FLAG_ACL_ENA is set unconditionally even for a PF that never
-programmed an ACL rule, can a probe or reset on one PF clear the key
-extraction, range checkers and scenario association of ACL rules belonging to
-other PFs on the same adapter while their TCAM entries stay programmed?
-
-> +		if (err)
-> +			dev_warn(ice_pf_to_dev(pf), "Failed to reset profile extraction for profile %u\n",
-> +				 prof_id);
-> +
-> +		ice_prog_acl_prof_ranges(hw, prof_id, &range_buf, NULL);
-> +		if (err)
-> +			dev_warn(ice_pf_to_dev(pf), "Failed to reset range checkers for profile %u\n",
-> +				 prof_id);
-> +	}
-> +
->  	return 0;
-
-[Severity: High]
-Should the return value of ice_prog_acl_prof_ranges() be assigned to err?
-
-As written, err is only ever set by ice_prgm_acl_prof_xtrct(), so the second
-if (err) re-tests the previous status:
-
-  - a real range-checker failure is never reported, and
-  - an extraction failure prints a second warning claiming the range checkers
-    failed.
-
-Neither failure is propagated either, since the function returns 0 after the
-loop, so ice_rebuild() takes the success path and replays profiles and filters
-even though the state this loop exists to clear may still hold pre-reset
-values.  Does that contradict "Explicitly clearing it ensures that the old
-configuration is erased"?
-
-Also, with 128 profiles and a dev_warn per iteration, a device or firmware
-that rejects high profile IDs would emit up to 256 warnings and 256 AQ
-commands on every probe and every reset.  Would rate-limiting or a single
-summary message be preferable?
-
-> @@ -7911,6 +7940,24 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
->  		ice_rebuild_arfs(pf);
->  	}
->  
-> +	if (test_bit(ICE_FLAG_ACL_ENA, pf->flags)) {
-> +		/* Clean up the stale HW table SW state left by the reset,
-> +		 * recreate the HW table and scenario, then replay flow profiles
-> +		 * from preserved SW state.
+> +	if (pf->hw.acl_tbl &&
+> +	    (ice_is_acl_filter(fsp) ||
+> +	     ice_fdir_has_input_set_conflict(pf, fsp, &userdata))) {
+> +		/* The ACL programming path does not honor flex byte
+> +		 * (user-def) constraints. Routing a flex filter to ACL would
+> +		 * silently drop the flex match and offload a much broader
+> +		 * rule than requested, so reject it explicitly instead.
 > +		 */
-> +		ice_acl_destroy_tbl(hw);
-> +		if (!ice_acl_create_hw(pf)) {
-> +			ice_acl_replay_flows(hw);
-> +			ice_acl_replay_fltrs(pf);
-> +		} else {
-> +			dev_err(dev, "Failed to rebuild ACL\n");
-> +			mutex_lock(&hw->fdir_fltr_lock);
-> +			if (vsi)
-> +				ice_acl_del_all_fltrs(vsi);
-> +			mutex_unlock(&hw->fdir_fltr_lock);
+> +		if (userdata.flex_fltr) {
+> +			dev_info(dev, "Failed to add filter. Flex byte (user-def) filters cannot be offloaded to ACL.\n");
+> +			return -EOPNOTSUPP;
 > +		}
-> +	}
+
+[Severity: Low]
+This new rejection sits inside the combined condition, so it also applies
+to the pre-existing partial-mask ACL route selected by
+ice_is_acl_filter().
+
+Such rules already failed before this patch, just with a different errno:
+flex_fltr requires FLOW_EXT (ice_parse_rx_flow_user_data() returns early
+when !(fsp->flow_type & FLOW_EXT)), and the ACL decoder strips only
+FLOW_MAC_EXT:
+
+drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c:ice_ntuple_set_input_set() {
+	else if (blk == ICE_BLK_ACL)
+		flow_mask = FLOW_MAC_EXT;
+	...
+	flow_type = fsp->flow_type & ~flow_mask;
+	...
+	switch (flow_type) {
+	...
+	default:
+		return -EINVAL;
+	}
+}
+
+So a command like
+
+  ethtool -U ethX flow-type tcp4 src-ip A m 0.255.255.255 ... user-def 0x4ffff
+
+returned -EINVAL before and returns -EOPNOTSUPP now.  Would it be worth
+mentioning that user-visible errno change in the changelog, since it is
+not a consequence of the conflict detection being added?
+
 > +
->  	if (vsi && vsi->netdev)
->  		netif_device_attach(vsi->netdev);
+> +		dev_dbg(dev, "ntuple filter at location %d offloaded to ACL instead of Flow Director\n",
+> +			fsp->location);
+
+[Severity: Low]
+This message is printed before ice_acl_add_rule_ethtool() is called, so it
+claims an offload that may never happen.  For flow types that
+ice_acl_prof_add_ethtool() rejects:
+
+drivers/net/ethernet/intel/ice/ice_acl_main.c:ice_acl_prof_add_ethtool() {
+	default:
+		err = -EOPNOTSUPP;
+}
+
+the log says the rule was offloaded to ACL while the command failed.
+Should it be emitted only after ice_acl_add_rule_ethtool() succeeds?
+
+Similarly, the dev_info above attributes the failure to an ACL flex byte
+limitation even for tcp6/udp6/sctp6/ip6, where ACL cannot take the rule at
+all and the real blocker is the Flow Director input set conflict.
+
+> +
+>  		return ice_acl_add_rule_ethtool(vsi, cmd);
+> +	}
+
+[Severity: Medium]
+Is FLOW_EXT normalized consistently between the new selector and the ACL
+destination?
+
+ice_fdir_has_input_set_conflict() and ice_acl_prof_add_ethtool() both mask
+with & ~FLOW_EXT, but ice_ntuple_set_input_set() uses FLOW_MAC_EXT for
+ICE_BLK_ACL, so FLOW_EXT survives into its switch and hits
+default: return -EINVAL.
+
+A command that sets FLOW_EXT without any flex match, for example
+
+  ethtool -U ethX flow-type tcp4 src-ip C vlan 0x1 m 0xffff action 2
+
+against an existing conflicting tcp4 FDir profile, leaves flex_fltr false
+(m_ext.data is zero), so it passes the check above and is routed to ACL,
+where it fails with -EINVAL.
+
+By that point ice_acl_prof_add_ethtool() has already created and
+programmed a profile for the flow type:
+
+	hw->acl_prof[fltr_type] = hw_prof;
+
+Does the failed command leave that profile registered, so later ACL rules
+for the same flow type with a different input set fail the
+if (hw_prof->seg) memcmp check?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the new input-set-dependent
+backend selection makes it reachable for full-mask rules: replacing an
+ACL-backed ntuple rule with an FDir-backed rule at the same location looks
+like it leaves the old ACL TCAM entry programmed.
+
+The only ACL hardware removal in ice_ntuple_update_list_entry() is gated
+on the replacement pointer being NULL:
+
+drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c:ice_ntuple_update_list_entry() {
+	if (old_fltr->acl_fltr) {
+		...
+		if (!input) {
+			err = ice_del_acl_ethtool(hw, old_fltr);
+			if (err)
+				return err;
+		}
+	}
+	...
+	list_del(&old_fltr->fltr_node);
+	kfree(old_fltr);
+}
+
+which holds only for ice_acl_add_rule_ethtool() replacing ACL with ACL.
+The Flow Director path afterwards calls ice_fdir_write_all_fltr(), which
+does not touch the ACL table.
+
+Sequence:
+
+  1. add an FDir rule matching src-ip
+  2. add a full-mask dst-ip rule at location L; the new conflict check
+     routes it to ACL
+  3. re-add at location L a src-ip rule compatible with the active FDir
+     profile; it now takes the FDir path
+
+Does the ACL entry for the dst-ip match survive step 3 with no software
+record, so it keeps dropping or steering matching packets and is invisible
+to ethtool -u?
+
+[Severity: Low]
+Should Documentation/networking/device_drivers/ethernet/intel/ice.rst be
+updated along with this?  The Flow Director Filters notes still say
+unconditionally:
+
+  For each flow-type, the programmed filters must all have the same
+  matching input set.
+
+and the example there, showing
+
+  ethtool -U ethX flow-type ip4 src-ip 192.168.0.1 src-port 5300 action 7
+  ethtool -U ethX flow-type ip4 dst-ip 192.168.0.5 src-port 55 action 10
+
+"will fail with an error", plus "on one device, you may not program two
+tcp4 filters with different matching fields".  On an ACL-capable device
+that second rule now succeeds through ACL.  The new flex byte limitation
+is also undocumented.
+
+>  
+>  	/* Only fdir filters below */
+>  	if (!test_bit(ICE_FLAG_FD_ENA, pf->flags))
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917183927.2692068-1-anthony.l.nguyen%40intel.com
