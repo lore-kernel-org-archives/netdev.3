@@ -1,61 +1,61 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7303AC0CD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E383E43B4BF
 	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 07:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789976526; cv=none; b=K8Tiy4S6eDJJ7Up3GWSnfnIvTQec0R3TZ+91QVEPGavWWXWw46sCqrG1OZ7wt0X8TDxdy+jlEL4dhm1zU3c/S89z07pAPWAR8RpAHoX7UL64F+Eh/49kUUL1N6vZSZ6otnu2NESuMrIReRiOKVbT0Q4Zyf2hCxleaTktLcMv8Rk=
+	t=1789976527; cv=none; b=pxEokjwbo1Ej/3QRoOGDcInaLQHYSlRjNRJh825P4cWUrfCN4Pqa7SFrkpcP7vAHtKPd5AGxEbMEKrmYJzBVNMqVdrfRf5/6VhUaL/DLp/4fo8JYpDWWXaZYYVW3o3n4shQUTks7XzE01yKpQqihAFF5fAsqH/c0eukxF1DPWQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789976526; c=relaxed/simple;
-	bh=qC+plKl4jaMAeMv9KFQI5KK5xUjHAIEAMcvOG4NG30k=;
+	s=arc-20240116; t=1789976527; c=relaxed/simple;
+	bh=vSpK+C5pyaQ2+gljxZXl3+/lbaSVGdNsU+FgzLAv1qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFFYWE8lUBXruu9Cq9Z91iKH/5UVW8SG+vef1PXvMd/G7era3zJz3p8hQoX7k1nGHy6Yrtz/GgvJY5xKR6BGB5E4QoG755gjCukQmngOeX+/XUsAfvd9kPsSTtm0m983AWu1baBLkpVrT5SlZHHVjD/DqjzjAhe4g8Pbj0wmlbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ce1d50Q9; arc=none smtp.client-ip=74.125.228.42
+	 MIME-Version; b=GkEWW7jkKG4lhQtjCVX4wUEfjpKyCcMsvBQwu4/u4wZJZZDOWT60DXTzQhgrq6r8oTUr6bFxDQBXlBxF0FyJ78rNHQc5rHjKO6qJF93EH9z0561NGlL0zqRvcf3l5jyaNp09J4Uv2oaorVq3e3Perx9MPooPyzB1yabnN2s/Mok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYXpj7gZ; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ce1d50Q9"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4cacd3409so3029777a12.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYXpj7gZ"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b9184fa80so2320946a91.2
         for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 00:42:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1789976525; x=1790581325; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=m7NI7dmw05ci1upj6wN18SfkuMFDavLQgdb5foGE0c0=;
-        b=ce1d50Q9AfpHujUEdquNoKI6t0v7FvRD/V5yk+InTyQdtlDdyoZp0LJ5xepBSQzNnv
-         uweDpswcar79ScXJRJ8V3hnY5QM1MUm2F8KS1mjOWqbEImRhuDPT7UDh19/3o7kGa1o7
-         h3DEd/uidMyUrqYkjttopiSJrA5znJlHZFlVNqLHrQfMqLglIAJCCwGmnFpBuLEnzFhS
-         ZtztnO091WKMAKdUkxcPBbN+HrU+5//JNx4YUdh03JF3BqkXc9AMyeVCdhyeBC8pD6t2
-         JVt6R0yv6kDkNOTA5kMAxmpZv3Msp6uMRS1BMlaETFPvXtlbOzoxVxxcQavZPia4gN0u
-         XnqA==
+        bh=VLvaiOprHNCFNGuXuFEkMmn5a+uIlIxvauRxRVWqnRw=;
+        b=cYXpj7gZQRSxtdR/24KVbN2BjcD4bF37zaSmLFblHnNuyn7rZRnhdcILqT8TKbFV9/
+         DJLT4IxnHJYql8/DbTrzprie5XH3eY2hn242vQp5SkGIGA/mSyKiiWd3fmxyqz6wiGvs
+         YyC7/xfaX0BL8zo+nvhksg+tMNFK36zEH5hjWarmuVwagrQOBm5aoGGnHWNDV7tFTTYm
+         ivM4G2AKRNvbDAwJVvwSEdS6VahR2Be0bSpDKyzO5dk1SVzKdh+vfAXW8wgLrrQTP6O5
+         VFpwy9/7wRVCxz9O2BvItqq0ptC6DD/MD68iHfsMbqtnKMgZyeGo8xc3ap8lXuaNDDEw
+         jntw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1789976525; x=1790581325;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m7NI7dmw05ci1upj6wN18SfkuMFDavLQgdb5foGE0c0=;
-        b=wZ88DtMTr8rVlceCVeblkQAKwQ000SnyguV+0awWg9aGwDIDIxXufqthD97RMRcpbl
-         cuvzJGfylotWZ0cO9O3+KHTgbxVIGvZDGiqPLyiUFvPvCEsJmVKoNaJTEqkbFJMSfZDs
-         CZvsvD5mbpyFRxijCQyZ3dBQDgt5AI2S0SCv05YdIK2lif4FUNjiQCrQLMfeB3Pj4XeG
-         PmtvArJZ35hWkv+Vrgg6+lejUkxerBtU0BLTO0LmeIOhLzKQLrNRPu7PEDluOAGVOqGw
-         sXf2UXe6ATdYjlF90VudzsSkMiCdVdBDCmUNh46S94qApCH1CJ5NhrFDRoAO/T4BCaq+
-         vRjg==
-X-Forwarded-Encrypted: i=1; AKwUvBxAIeM4cO+t/Obic8AKudVOYRJiSJWSSIH8sUYHbdoIfFBBLHFgNF0+4wNcwT6UNIsnzv3J1e8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mhPZF4Xfg9vEay8tt2N4a40DYYZpms86nETEExrhi/x1ZvIpkd
-	mPAh31Cgg1SvqDVl6VDiCLRB1OeG6DCMMfmPY86IR9RHI/Q083dXNnlJ
-X-Gm-Gg: AYBFou1mRzJo3aGuHry35kcOXk6zJWLHxTMNTOio7KfrKjxzVeSC+qOs44mssm9olH1
-	6e0KNclXgCBOLRgtRx28btz6F2dcM8Un0JuCv/K4BW8UZkIaYhSN52aydQXYye8F5Ak6FCwuXgA
-	4gTtnOokAQThRq4iz3irGcle1COQiFaQqhQMYUZYoitq6HKCfyx0KP9K6dmxTGMO8xlYm6bkqDN
-	+4J68khk6z+AoKwyJBZkHf2FJ3IxjYuY7ALZ/KYtm3L9PagQYZs45299hya6p5HL9vUYvA8+Rro
-	+3XcOeRrtdTKn7GeGnNf8RT59dMm5VDJ2kOKvFai7XxubEiu4uThLB52bQdYIdyh9jdRHijOozb
-	tmib5W1Ilj7iiteU1kYNBf2lcC1EGDF3rBWRx0y/nw7cIx2TaxkCrV6CDWs4cgRJf7ZsCvg5YEN
-	9Cr7oJFhg9K1Uj96PAB17F2T6GWeLtOiEaeu5fJF5cJMr2pF7eB6dOlpfcPwuLMH/iI1dqSF3W6
-	RE2v352fNYzaAqVx/uwCOAOnkxoEvVz9/tsYxxWERCUC4Cq26lc5miBLoZCa0WUzXEsxRoX5MWq
-	j+tkdzocIg==
-X-Received: by 2002:a17:90b:37cb:b0:39e:6c69:9b9a with SMTP id 98e67ed59e1d1-39e6c69b2eamr10004502a91.63.1789976524658;
-        Mon, 21 Sep 2026 00:42:04 -0700 (PDT)
+        bh=VLvaiOprHNCFNGuXuFEkMmn5a+uIlIxvauRxRVWqnRw=;
+        b=LPfXkl/WfWgcPyUTJ6HAknzI6czOdTAKGf37INAPXN5nVkAQ7YRZEGrms0Y4vvveLr
+         TVVDMd8BmRdgF+MUdUjg0KAaZEgMjkJottxNFOupakOpNMdUAXGgXRyZi6U+gTgJ8mDC
+         O4izA4D0ZwdwyeHTEpCyo/y3WBu8MkxdVJIk3PzAeyL+153PA1FelaBHuM+VzdrCooku
+         3mHgsk3kkdtsoFZmIAspLIDI0slKKQyDElK6S3nCG77e3gLapQCVI03aS/oSsBzsSqHK
+         kWuCSq74B3D+dZFKuHflYVnNa3zq08oEB7vXSoPZkCh2XC6hEpXgW5hC/YzBU52J6r5v
+         xfXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBySV98ZK6x9KrXXoU5GyXY3l9Ov+IJ5PvbSaOYXvwQDjHadYFtPmBHKJh3n10kefixDm9dhOLw=@vger.kernel.org
+X-Gm-Message-State: AFuF++ko2EvnmME2Wqpths3SBDYaEqZRYEJNdB8yQ2/7olmVyO+V3gUT
+	u+cEVFDEtlmzYamwCybisMzJlEzYUF9ODbkNU/uGyAH+w/Cp+L5iRK4/
+X-Gm-Gg: AYBFou2uV0uC4vAUOoR6pwTcFR3Had7MATQXIFw54Qamn27jLqq6IMZcsZvovw/lOsz
+	Tp+HannnaKPWsWflY/iD9dviRvdDKPZ3HAo0XmMKheoEytVSsa3MPviXVD9pS688Z5FbZzXJ9QQ
+	9fsPuf8V24tCKPrAk/i1tC+IrvTZOExZHcBXoXwxN/cvqXcfDehC8BVVNyHOHzMkBuaTopj72pu
+	O4bml0wq2orj2abW8+MXTj87GlW8EpRVb+mh7NFTVkzS4pRogYf2JMD18wSaij+6rOIJzYXXPwd
+	sbAf1Osm+bf3k+HrtoZshlvLw15ET4Wgsy/+KVnVvjVXh/TgwyN44bnwVSXPco0TznRAvLZDBYz
+	Y12g6w3+0ehhMLXM7yo2EqVsflCBh1shr2Sxhoelx/AW9A6V3/I5ueyk0CChCFoqGrbk7ylAt/d
+	Lyvp1fmddWhJw+4pcyNy5JvVDngnQraJPUWxEFIjWdC+hrrC6EXhifzeHyfmHjPg1KjvV0y3bIM
+	MnqTtV7hutEyV3roQdV+Te4zUriLkJNyz69UAzvznukVFS2XenTFCFih1L5xcC9NdhpoYJNBPWJ
+	neYjD3e5gQ==
+X-Received: by 2002:a17:90b:4a03:b0:36d:9e0b:3801 with SMTP id 98e67ed59e1d1-39e54d38c48mr20398806a91.8.1789976525034;
+        Mon, 21 Sep 2026 00:42:05 -0700 (PDT)
 Received: from phui-2.c.googlers.com.com (78.123.83.34.bc.googleusercontent.com. [34.83.123.78])
         by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c6dd585sm12396602a91.0.2026.09.21.00.42.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -69,9 +69,9 @@ Cc: linux-wpan@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hui Peng <benquike@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net v2 1/2] mac802154: rx: fix skb leak in beacon and mac_cmd rx paths
-Date: Mon, 21 Sep 2026 07:42:01 +0000
-Message-ID: <20260921074202.2289040-1-benquike@gmail.com>
+Subject: [PATCH net v2 2/2] mac802154: rx: ensure tailroom before appending CRC
+Date: Mon, 21 Sep 2026 07:42:02 +0000
+Message-ID: <20260921074202.2289040-2-benquike@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260919213636.3316565-1-benquike@gmail.com>
 References: <20260919213636.3316565-1-benquike@gmail.com>
@@ -83,58 +83,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In __ieee802154_rx_handle_packet(), skb_clone() already creates a new
-skb with an initial reference count of 1 before passing it to
-ieee802154_subif_frame(). When handling IEEE802154_FC_TYPE_BEACON and
-IEEE802154_FC_TYPE_MAC_CMD frames, ieee802154_subif_frame() calls
-skb_get(skb) to increment the reference count to 2 before queueing the
-work item, and then returns NET_RX_SUCCESS without freeing the skb.
-When mac802154_rx_beacon_worker() or mac802154_rx_mac_cmd_worker()
-eventually calls kfree_skb(), the reference count only drops to 1,
-leaking the cloned skb on every beacon and MAC command frame received.
+When IEEE802154_HW_RX_OMIT_CKSUM is set, ieee802154_rx() appends a 2-byte
+calculated CRC via skb_put(skb, 2) without checking whether the driver
+allocated sufficient tailroom in the received skb, triggering
+skb_over_panic when skb_tailroom(skb) < 2:
 
-Remove the redundant skb_get(skb) calls so the worker consumes the
-reference from skb_clone().
+  skbuff: skb_over_panic: text:ffffffffb6e61896 len:386 put:2
+  kernel BUG at net/core/skbuff.c:214!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+  RIP: 0010:skb_panic+0x170/0x172
+  Call Trace:
+   <TASK>
+   skb_put.cold+0x23/0x23
+   ieee802154_rx+0xb26/0x1d30
+   ieee802154_tasklet_handler+0xa9/0xd0
+   tasklet_action_common+0x2ff/0x850
+   handle_softirqs+0x188/0x4e0
 
-Tested in QEMU with mac802154_hwsim by transmitting 2000 IEEE 802.15.4
-beacon and MAC command frames across two linked hwsim virtual radios,
-reducing the SUnreclaim slab delta from +680 kB on the unfixed kernel
-to -80 kB (0 leaked skbs) on the fixed kernel.
+Ensure at least 2 bytes of tailroom are available via pskb_expand_head()
+before calling skb_put().
 
-Fixes: 57588c71177f ("mac802154: Handle passive scanning")
-Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
+Tested in QEMU with KASAN by injecting a zero-tailroom skb into
+ieee802154_rx() with IEEE802154_HW_RX_OMIT_CKSUM set.
+
+Fixes: b7889497d306 ("mac802154: rx: simplify crc receive handling")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Hui Peng <benquike@gmail.com>
 ---
 Changes in v2:
-- Split the beacon/mac_cmd skb leak fix and the IEEE802154_HW_RX_OMIT_CKSUM
-  tailroom expansion into a two-patch series as suggested by Miquel Raynal.
+- Split from the beacon/mac_cmd skb leak fix into patch 2/2.
+- Dropped the redundant skb->len < 2 check as noted by Miquel Raynal.
+- Only call pskb_expand_head() when skb_tailroom(skb) < 2.
 
- net/mac802154/rx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac802154/rx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/net/mac802154/rx.c b/net/mac802154/rx.c
-index 19b5382..ad602d2 100644
+index ad602d2..6aa5920 100644
 --- a/net/mac802154/rx.c
 +++ b/net/mac802154/rx.c
-@@ -287,7 +287,7 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 		if (!mac_pkt)
- 			goto fail;
- 
--		mac_pkt->skb = skb_get(skb);
-+		mac_pkt->skb = skb;
- 		mac_pkt->sdata = sdata;
- 		mac_pkt->page = sdata->local->scan_page;
- 		mac_pkt->channel = sdata->local->scan_channel;
-@@ -304,7 +304,7 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
- 		if (!mac_pkt)
- 			goto fail;
- 
--		mac_pkt->skb = skb_get(skb);
-+		mac_pkt->skb = skb;
- 		mac_pkt->sdata = sdata;
- 		netdev_hold(sdata->dev, &mac_pkt->dev_tracker, GFP_ATOMIC);
- 		spin_lock(&sdata->local->rx_lock);
+@@ -487,6 +487,9 @@ void ieee802154_rx(struct ieee802154_local *local, struct sk_buff *skb)
+ 	 * solution because the monitor needs a crc here.
+ 	 */
+ 	if (local->hw.flags & IEEE802154_HW_RX_OMIT_CKSUM) {
++		if (skb_tailroom(skb) < 2 &&
++		    pskb_expand_head(skb, 0, 2, GFP_ATOMIC))
++			goto free_skb;
+ 		crc = crc_ccitt(0, skb->data, skb->len);
+ 		put_unaligned_le16(crc, skb_put(skb, 2));
+ 	}
 -- 
 2.47.3
