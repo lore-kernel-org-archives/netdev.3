@@ -1,197 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8E947D460;
-	Mon, 21 Sep 2026 23:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1714825DC;
+	Mon, 21 Sep 2026 23:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790033042; cv=none; b=A27pAOiaQIqhtdCsRJPqLvaGpz/T2QF6rkwjcn7/NoYkclZbliyCqm7jFz4E3Z5N9zodxCdNNAdjkqxdITPsZciZewEJ24ARGjsqL+WZBDi0vJgHN+6r97lhEoZNpFiMcm53k2ozr/cJBcqbICjj4Ygd1ilZiDE36dlaynp56cs=
+	t=1790033135; cv=none; b=d3ollZ3chK59CecgtUbB3y2rfKZ8bPC5FToklaCrQSoutfVV+5U0kpU3q+5yBdT/oeuKbW2gra6eD+S/2MfOXGgHdJU3IQ85vk9PPFLMgL7MoCHBYyGWeWuaxizuNefagTb4IIseeUjgs5koXYzRNCo3UktfoPh5bJ7kKue9ids=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790033042; c=relaxed/simple;
-	bh=F9Nc5VQmOoSmRUIxGOfwTVssqSez1uZN9c7xJYqdl5I=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dc8JvAAMQviadUIDvwJ8YEcpbqjcdYLAViqfGon8gH4e2HSCRaLYuhic4T4Dq/zqdUSfmdGg3xyTqy9jfVDn9erbEQy2m2n+5UMJzJ+ginNUkE/4SDhWXquaRFyDiS96njoBA6e2GmEtMMLjIlCIMAYiiLJ/EAHyqypZbBzyY1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uvo2n6Fi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790033135; c=relaxed/simple;
+	bh=MJ2Hp/KWZc5i0XyNPx+/X7OdyoIGYk7ogHruNQqEYpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B2ONTJombjck2G/6C9rngu+Y3Vk/ovXbYtToDQxGGDBT/PRarA/6IVHQZWDehSU9CnuTWyOIep8Z6n0bWlwxvAcDprb5sFppb3dHM5iOvhzJVKfJFow5G3/+xBa4BLl1TuB7dw/nA4HES4a9byO+VdJm1Gpia24xvWyYVvugyf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azIn/d0w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uvo2n6Fi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306E71F000FF;
-	Mon, 21 Sep 2026 23:23:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azIn/d0w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CC31F00893;
+	Mon, 21 Sep 2026 23:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790033037;
-	bh=q/Nbz2dyNClG9b4ee353cgWCmiZ/CbxVIEn8L+troCo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Uvo2n6FiGWfFvycM6y1y/I7EE1/KRtfmO3D2WYmBsvvHpmiKkAZLuc/sTvdveTX52
-	 VHJvhyG4+9lgiLSVtJQch9Z8BgVPTJna0vIcQgAqF7LsOsmP5xIYLkWCd2KhTmXePa
-	 kWObz8aU2BI3moyNuOS9kkeOUFDZTgu34kggH2SP9aYCzmm6WOxkI6bTGtZs6gRdtH
-	 l/J7dXVhoyXjf1HMT9RncEUzQ7VWZpU5rhgxla6A6LXC5MyjwYiY5/QKuaicO9Ldfk
-	 Istbvu5fpLeJeXuveJ7Lp21hxiSovjYdzxgSOG28lRDISjEA3Zq34aSdIRNVZiUqtt
-	 1fVX8ldeGjnpA==
-Subject: Re: [PATCH] vsock/hv_sock: fix socket/table leak when rescind races
- the delayed close
-From: netdev-bot+sashiko@kernel.org
-To: bartlomiej.dmitruk@isec.pl
-Cc: decui@microsoft.com, wei.liu@kernel.org, haiyangz@microsoft.com,
- kys@microsoft.com, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- sgarzare@redhat.com, mst@redhat.com, kuba@kernel.org
-Date: Mon, 21 Sep 2026 23:23:56 +0000
-Message-ID: <179003303663.2160803.2038691427232135222@kernel.org>
-In-Reply-To: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
-References: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1790033126;
+	bh=oaGIE4gQUBGH4tcAm0OKjGErwoNdUaA0Sne6xnAyux0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=azIn/d0wCBW/n5NuSAAvioZRTS6hsz/Zzmk86xwjKslNuC+NfEG2OnH1ZfzQ3TRz/
+	 3cro52SIhBBCt2l3ERGmS9tyrTutoW2wkR/hIcoE8WXd0jAVCrFmXdAtIROZ+AIl+L
+	 mZunPKrWZ9NH7wotaotbcWy1jLlQG8AY+mu2J+ZtfZlmW8ci62EJWLiLIbYeUpfJG9
+	 Xn7R+a8VNffucyoETZHR1hjCQqsc31YOS1uipcHkLK6NSFO+mKrQNeu0qUGVDrEYTT
+	 nN48t9N17wjW6roUjjostFNHgjYqWZkqJbefoyyzfHGd3NkjlW7+HtwXrktWeN6lhZ
+	 jp1Vo/FxK1B0Q==
+Date: Mon, 21 Sep 2026 16:25:25 -0700
+From: Kees Cook <kees@kernel.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v4 2/7] mm/slab: Give bucket caches the alignment of the
+ caches they mirror
+Message-ID: <202609211620.342AAA61@keescook>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-2-kees@kernel.org>
+ <arEdcaJz4i5HP26a@thinkstation>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arEdcaJz4i5HP26a@thinkstation>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Mon, Sep 21, 2026 at 02:17:21PM +0100, Harry Yoo wrote:
+> On Mon, Sep 21, 2026 at 12:58:13AM -0700, Kees Cook wrote:
+> > A bucket set is created with kmem_cache_create_usercopy(..., align = 0),
+> > so calculate_alignment() falls back to arch_slab_minalign(), typically 8
+> > bytes. The general kmalloc caches it stands in for are created through
+> > create_boot_cache(), which starts from ARCH_KMALLOC_MINALIGN and raises
+> > it to the largest power-of-two divisor of the size:
+> > 
+> > 	if (flags & SLAB_KMALLOC)
+> > 		align = max(align, 1U << (ffs(size) - 1));
+> > 
+> > This is only a problem when slab metadata is enabled with
+> > CONFIG_KASAN=y, CONFIG_SLUB_DEBUG_ON=y, or "slab_debug=...", because
+> > metadata changes the stride size off a power of two, for example:
+> >
+> > 	size 128:  bucket align=8 size=224  | kmalloc align=128  size=384
+> > 	size 512:  bucket align=8 size=608  | kmalloc align=512  size=1536
+> > 	size 2048: bucket align=8 size=2144 | kmalloc align=2048 size=6144
+> 
+> Hmm... I think what adds confusion here is that in new_kmalloc_cache()
+> we adjust the size based on alignment, but in create_boot_cache() we
+> don't do that. Perhaps let's make it consistent and move it to
+> new_kmalloc_cache()?
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+Yeah, I really couldn't figure out what was "correct" here.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> > So bucket allocations will fail the IS_ALIGNED(p, ARCH_DMA_MINALIGN)
+> > check, potentially creating problems for non-coherent DMA situation.
+> 
+> I was wondering "Why should they respect kmalloc alignment..." but yeah,
+> It makes sense if the users were using kmalloc and depended on its
+> alignment.
 
-- [Medium] Missing `Fixes:` tag and stable Cc on a real bug fix.
+Right, it was a "visible" change between standard kmalloc and bucketed
+kmalloc, so I figured the right action was to be (bug?) identical.
 
-Pre-existing issues:
-- [High] The identical leak the patch closes for hv_sock remains in the
-  sibling transport that shares the same `vsk->close_work` /…
+> Well, but that's already done in new_kmalloc_cache() and
+> kmem_buckets_create() should already honor ARCH_KMALLOC_MINALIGN? 
+> 
+> The largest-power-of-two-divisor-alignment guarantee was introduced by
+> commit ad59baa31695 ("slab, rust: extend kmalloc() alignment guarantees
+> to remove Rust padding")
+> 
+> ...which makes me wonder what you're trying to fix here?
 
---
+What Sashiko noticed was that alignment might not match under certain
+configs, and then I verified it at runtime, and figured I'd best fix it
+just on the basis that it was a difference from what a user might expect,
+and it might be especially important for skb data.
 
-vsock/hv_sock: fix socket/table leak when rescind races the delayed close
+> >  			if (WARN_ON(!cache_name))
+> >  				goto fail;
+> >  			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
+> > -					0, flags, cache_useroffset,
+> > +					kmalloc_caches[KMALLOC_NORMAL][idx]->align,
+> > +					flags, cache_useroffset,
+> >  					cache_usersize, ctor);
+> >  			kfree(cache_name);
+> >  			if (WARN_ON(!(*b)[aligned_idx]))
 
-This changes hvs_close_timeout() so that, when SOCK_DONE is already set but
-vsk->close_work_scheduled is still true, the running work drops the
-scheduling reference and calls vsock_remove_sock() itself. That covers the
-case where hvs_close_connection() could not cancel the already-dequeued
-work.
-
-A couple of questions below.
-
-> Make the running timeout complete the cleanup the rescind path could not:
-> when SOCK_DONE is set but the work is still marked scheduled, drop the
-> scheduling reference and remove the socket.  The two cleanup sites are
-> mutually exclusive and guarded by close_work_scheduled, so the reference
-> is dropped exactly once.  (cancel_delayed_work_sync() cannot be used from
-> hvs_do_close_lock_held(): it runs under the same lock_sock() the work
-> takes.)
->
-> Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
-
-[Severity: Medium]
-Should this carry a Fixes: tag and a stable Cc?
-
-git blame on the pre-image points both halves of the defective logic at
-commit a9eeb998c28d ("hv_sock: Add support for delayed close"): the
-cancel_delayed_work()-conditional reference drop in
-hvs_do_close_lock_held(), and the unconditional
-vsk->close_work_scheduled = false in hvs_close_timeout().
-
-The triggering event is a host-initiated channel rescind, so it is not
-under guest control. Would the following trailers be appropriate, along
-with a [PATCH net] subject prefix?
-
-  Fixes: a9eeb998c28d ("hv_sock: Add support for delayed close")
-  Cc: stable@vger.kernel.org
-
-> diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-> index 855b15971c359..2779961fc18ca 100644
-> --- a/net/vmw_vsock/hyperv_transport.c
-> +++ b/net/vmw_vsock/hyperv_transport.c
-> @@ -499,10 +499,18 @@ static void hvs_close_timeout(struct work_struct *work)
->  
->  	sock_hold(sk);
->  	lock_sock(sk);
-> -	if (!sock_flag(sk, SOCK_DONE))
-> +	if (!sock_flag(sk, SOCK_DONE)) {
->  		hvs_do_close_lock_held(vsk, false);
-> -
-> -	vsk->close_work_scheduled = false;
-> +	} else if (vsk->close_work_scheduled) {
-> +		/* A concurrent rescind (hvs_close_connection) set SOCK_DONE but
-> +		 * could not cancel this already-running work, so it left the
-> +		 * scheduling reference and vsock_remove_sock() to us.  Finish
-> +		 * the cleanup to avoid leaking the socket and its table entry.
-> +		 */
-> +		vsk->close_work_scheduled = false;
-> +		vsock_remove_sock(vsk);
-> +		sock_put(sk);
-> +	}
->  	release_sock(sk);
->  	sock_put(sk);
->  }
-
-[Severity: High]
-This is a pre-existing issue and not introduced by this patch, but does the
-same struct sock leak still exist in virtio_transport_common.c, which uses
-the same vsk->close_work and vsk->close_work_scheduled fields from
-include/net/af_vsock.h?
-
-virtio_transport_close_timeout() still has the pattern this hunk replaces:
-
-net/vmw_vsock/virtio_transport_common.c:virtio_transport_close_timeout() {
-	sock_hold(sk);
-	lock_sock(sk);
-
-	if (!sock_flag(sk, SOCK_DONE)) {
-		(void)virtio_transport_reset(vsk, NULL);
-
-		virtio_transport_do_close(vsk, false);
-	}
-
-	vsk->close_work_scheduled = false;
-
-	release_sock(sk);
-	sock_put(sk);
-}
-
-and the cancel-failure path is the same one described in the changelog:
-
-net/vmw_vsock/virtio_transport_common.c:virtio_transport_cancel_close_work() {
-	if (vsk->close_work_scheduled &&
-	    (!cancel_timeout || cancel_delayed_work(&vsk->close_work))) {
-		vsk->close_work_scheduled = false;
-
-		virtio_transport_remove_sock(vsk);
-
-		/* Release refcnt obtained when we scheduled the timeout */
-		sock_put(sk);
-	}
-}
-
-The racing event there is a peer packet rather than a host rescind:
-
-virtio_transport_recv_pkt()
-  lock_sock()
-  virtio_transport_recv_connected()   /* VIRTIO_VSOCK_OP_RST */
-    virtio_transport_do_close(vsk, true)
-      virtio_transport_cancel_close_work(vsk, true)
-
-If virtio_transport_close_timeout() has already been dequeued and is
-blocked on lock_sock(), cancel_delayed_work() returns false, so
-close_work_scheduled stays true, the scheduling sock_put() is skipped and
-virtio_transport_remove_sock() is not called, while SOCK_DONE is set. The
-work then resumes, skips the !sock_flag(sk, SOCK_DONE) branch, clears
-close_work_scheduled and drops only its own local reference.
-
-Does that leak the struct sock and its struct virtio_vsock_sock, leave the
-socket in the bound/connected tables, and leave vvs->rx_queue unpurged? The
-recovery in virtio_transport_destruct() -> virtio_transport_cancel_close_
-work(vsk, true) would not run because sk_refcnt never reaches zero, and
-would be a no-op anyway once the flag has been cleared.
-
-Since both transports share close_work and close_work_scheduled, would it
-make sense to put this cleanup rule in code common to both rather than only
-in hyperv_transport.c, so the two users do not implement different
-ownership protocols for the same field?
+It looks "obviously correct", but I probably failed to correctly
+describe it. I'm happy to do whatever here.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917220213.56102-1-bartlomiej.dmitruk%40isec.pl
+Kees Cook
