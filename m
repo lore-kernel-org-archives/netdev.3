@@ -1,38 +1,38 @@
-Received: from relay.smtp-ext.broadcom.com (lpdvsmtp12.broadcom.com [192.19.144.207])
+Received: from relay.smtp-ext.broadcom.com (lpdvsmtp11.broadcom.com [192.19.166.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B904483A6;
-	Mon, 21 Sep 2026 23:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7460B47C110;
+	Mon, 21 Sep 2026 23:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032477; cv=none; b=Z4UXHuXvROx1NUKEOJdiqO+m/mc7WHcjAvDWAN8dsGtlaJSyNsUKIxIHdbLI4gUgzXe9/SvidFVsiAxZoMJEGmCXIqc8rnqps+ecfNLnHwGAIkhFyBfLd7nuiyEIoXnSVjwxYXrJQKcySab4TUG+vjgs9HRCyzcukGgvD92epLE=
+	t=1790032481; cv=none; b=AyKcNJHFx/3yPaMYe0KtMe2tQjBqqkXOn/lYB2P1ByWKu8jfUGd9adprbFCCYbvj1/eRSocgpjwcEP1PiwCOSqGOMTPVT9ctcFCscpNKzweYpovnmH5yaVKUgxHbxr1jTzMPVJAs7GlI0XRQTw9HWxx/vdyatAIhCe6w5TTl3S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032477; c=relaxed/simple;
-	bh=ADyxWm85hREfXI/zUlXqlXz0qUfjpUc+UolH/uIxQ+4=;
+	s=arc-20240116; t=1790032481; c=relaxed/simple;
+	bh=v3TAneIUXNK6RM+jO/O4VsMmQ5viuhNfs/4VJDoEAUs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jzCnFK6ANwkuGUG9mekJYtH1LMI/8s3CO0VrWlqvTgKgTS1mcAH+6ViHHcR+uy7m4TM2aOrfZHn3+JeQR6JLcHi2veC6Eg7yBOfie+3SZK7z6Yesuqu2E5Ks09bJl2uEdyhumjq1Rm67Rvl8/WB8vmC1x5aMPHqtYbyb/wC6vMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CW0GtAQp; arc=none smtp.client-ip=192.19.144.207
+	 MIME-Version; b=ZAIiIhjNFT3fSRRU+XYVyrnRtii09yeCPGdXwqy3jD+5TFGiLzXWELxIP0MrXQPQnwOsgakc+pNLbI8jdM7/htNeSdIttlcyfk4/M+kcJSGoHTZ9gkAtjCydOfqa7dx+7+yt6STJVBbADEw0p3YXlu6jUx1mnELYcMIMkajwiXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=mjQIvBcU; arc=none smtp.client-ip=192.19.166.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CW0GtAQp"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="mjQIvBcU"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 1C0BFC0000EC;
-	Mon, 21 Sep 2026 16:14:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 1C0BFC0000EC
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 9BB11C000D83;
+	Mon, 21 Sep 2026 16:14:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 9BB11C000D83
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1790032474;
-	bh=ADyxWm85hREfXI/zUlXqlXz0qUfjpUc+UolH/uIxQ+4=;
+	s=dkimrelay; t=1790032472;
+	bh=v3TAneIUXNK6RM+jO/O4VsMmQ5viuhNfs/4VJDoEAUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CW0GtAQpDchjq9pY3an9AD0456XcwutFiMwDaLFKoYPqHMU4AHsmM7F72j30bgn2F
-	 jbPajRMukBiXhjoee00O1pWu+PId3ud/WFAjH1ETyUEkHZL8SJskp/5YIYYh1oUBQc
-	 WdpX8iil4MfOVCIGqyeXzPsuADZnd0GwoxjFEZ2M=
+	b=mjQIvBcUo6ZzzcAA1ZVoBrSVPZeV4q/w4JVdh08mk4qIlFvN7//cq3iTK+ex7kwKq
+	 HI/AlWO+t0LENQIUjU/BcxoSFPdxGTCn0EKMxWAULj/FzBMNLOGJ8T3UPlGnZsl3Lw
+	 Sz4XSavF6jH+BBQfXwF/f5T+I1CONDRv/YUoHCpo=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id D6C39AD9;
-	Mon, 21 Sep 2026 16:14:33 -0700 (PDT)
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 72D3BAE0;
+	Mon, 21 Sep 2026 16:14:32 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -48,9 +48,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list),
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net 10/12] net: systemport: Fix unbalanced Wake-on-LAN clock disable in resume
-Date: Mon, 21 Sep 2026 16:13:03 -0700
-Message-Id: <20260921231305.394773-11-florian.fainelli@broadcom.com>
+Subject: [PATCH net 02/12] net: systemport: Fix invalid dev_id argument in bcm_sysport_poll_controller()
+Date: Mon, 21 Sep 2026 16:12:55 -0700
+Message-Id: <20260921231305.394773-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260921231305.394773-1-florian.fainelli@broadcom.com>
 References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
@@ -62,38 +62,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In bcm_sysport_suspend(), the Wake-on-LAN clock (priv->wol_clk) is only
-prepared and enabled if both device_may_wakeup(d) and priv->wolopts are
-true.
+Both bcm_sysport_rx_isr() and bcm_sysport_tx_isr() expect their second
+argument (dev_id) to be a 'struct net_device *dev', as they call
+netdev_priv(dev) to retrieve the private data structure.
 
-In bcm_sysport_resume(), however, clk_disable_unprepare(priv->wol_clk)
-was called whenever priv->wolopts was non-zero, regardless of
-device_may_wakeup(d). If the system entered suspend with Wake-on-LAN
-disabled at the device level (e.g., via sysfs wakeup control), this
-resulted in an unbalanced clk_disable_unprepare() call on resume.
+bcm_sysport_poll_controller() was passing 'priv' instead of 'dev',
+causing netdev_priv() inside the ISRs to treat 'priv' as a net_device,
+leading to out-of-bounds pointer calculations and crashes when netconsole
+or netpoll is triggered.
 
-Fix this by mirroring the suspend check in bcm_sysport_resume().
+Fix this by passing 'dev' instead of 'priv' to the ISRs.
 
-Fixes: 6328a126896e ("net: systemport: Manage Wake-on-LAN clock")
+Fixes: 6cec4f5e00a3 ("net: systemport: Add netconsole support")
 Assisted-by: LLM
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 384423b312ca..dd5a7c9dd90f 100644
+index db627cd15fb7..8328fe824d15 100644
 --- a/drivers/net/ethernet/broadcom/bcmsysport.c
 +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2803,7 +2803,7 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
- 		return ret;
+@@ -1198,12 +1198,12 @@ static void bcm_sysport_poll_controller(struct net_device *dev)
+ 	struct bcm_sysport_priv *priv = netdev_priv(dev);
+ 
+ 	disable_irq(priv->irq0);
+-	bcm_sysport_rx_isr(priv->irq0, priv);
++	bcm_sysport_rx_isr(priv->irq0, dev);
+ 	enable_irq(priv->irq0);
+ 
+ 	if (!priv->is_lite) {
+ 		disable_irq(priv->irq1);
+-		bcm_sysport_tx_isr(priv->irq1, priv);
++		bcm_sysport_tx_isr(priv->irq1, dev);
+ 		enable_irq(priv->irq1);
  	}
- 
--	if (priv->wolopts)
-+	if (device_may_wakeup(d) && priv->wolopts)
- 		clk_disable_unprepare(priv->wol_clk);
- 
- 	umac_reset(priv);
+ }
 -- 
 2.34.1
 
