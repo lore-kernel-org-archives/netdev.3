@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6957F4B7A39
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67FD4ACC62
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790023809; cv=none; b=i23DlFQqlL0NlJbExIFNmNpUFGCTJrMzmuOiQS5rClU3Nlbw/tqtbfesTY86Qs3fmmc196Z4PgxPtkO6qrtPQYFrUv5csf+pgysZd8phoh1HcVaRXQ0/wo8tlJ1OlV4fSAeYK3hH5mhf2QNe4kM0I74DO/aJ6mEAbgnGC+In8z0=
+	t=1790023809; cv=none; b=VErc5ctcZSn3HVta1RmhoBOLumN2ZBnmsNeZR4C0B3aAEtUberVQc2i6sBdhCgQ49UZgcJ8gD3Nc2HqPM26NvlQ3+WdLyv3pHSWNILuAM11e+hmIhXisUxA8Jy55c43gR/lOepsjiZwS9YWO9aCLjZ2yNnmePOfADnZo3HCVi/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790023809; c=relaxed/simple;
-	bh=EecgGsss6L1NYXP25zaBsDg09bcIdlxZKPLaNWLTMRo=;
+	bh=sEpMRwtMz2cYwLEIqUUIGuPt+V1jsq30W6J5iVsU6C8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SzlXJV03h+wpadfcuFAMfOXjB6PDlojN3KQ3AcMi6LkbO22J50sfWn1DFTRiLDv7KWWUF9fwh1UL4CifsKY88/8K1zbFNZqqIubeR3+AskqUE7/i8gNJHKkRmwb7mU5Oe5fQoLXNjw52KS2NFjOKs+eyoQ1+XHSottkmCnG7B3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSOgJ4k3; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=FBta6EZuvjibGT0jAiUyz/suRjcmZ1yE1DSGiBg3lTtteTSs7SpU+kTKu2EZLqn+bJovNXLIoyKDRGA9tPmFthIdz6eytgPlopw0/rZXP3wZUP9Ntqf7skkWQBt8R1iRQWbreDciD961aosj1lk6/9q+9rt1rirpXKEZtjrNUuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+vqw1DW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSOgJ4k3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A271F00893;
-	Mon, 21 Sep 2026 20:50:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+vqw1DW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6B51F000FF;
+	Mon, 21 Sep 2026 20:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790023806;
-	bh=/Y73nXPX/HtsiRzjBqZO3yo338pdC+0D9xf1HVB669U=;
+	s=k20260515; t=1790023804;
+	bh=XFcLji0DWuUN4Fj3cm0CA0/DE324nW10lDE459NMhBg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PSOgJ4k3CtqpwVGzO4WAuVSadE+O3UyDD+6zzLMyKs/cs5goIYzoa6IC8TvsFlRgt
-	 ypKI+mvQMu5teh4DmdltwPT80xLyEE/8IfGdg5LqWoBQTvPV6vLTrRwnPP1xVimLF5
-	 ns1z78s6bsEEri5RvP7+jfHPrgV4y0g/l258EdbM+QzbokrHMs7xqkuFS3GjW/GxJ5
-	 aF0gY77MknFlx4xePn92jWK/a1bVwgnOg2btnCflg9g7OsFXEdCPluFTmSfPiZZwcp
-	 iOKOkDDswR7NyfmG6ClJOzAkUYlm9ldnbHP32J6IpG5QhtV8hj1PRk4MbIpvsndrnN
-	 VNZtDTxyfmSIg==
+	b=H+vqw1DW00AQGDBAQlrqsFGY1WFwZujN2TIHRzMc4qZgMUZ8dosROgiLFqfwEiDkT
+	 Ha7h7ZO3/Er7W6YpMLgVceZ5WmfU5+SOp8hDnbqGN9JUnRTed/3IvO8P0IYsyrB9ya
+	 /h70ViK80fUk7WfdLNOWBCZjlmvvYM+qtNbnHQsUAiE9gYoz0ITmGa2O2N8p1+p3OW
+	 vTnbqaMhIA/lhpVYOfBmCI8SGxj/jCB1XXrr0w9DPc7FJBHaZZG44VwV7WioBVdcUK
+	 ULj1JKyFB603oKiDF8yUfdpsbxvYXpZBAsGmG/vp08ojHzZq2g9khHMzJMf9ZNBNSx
+	 qNQNrqbLtZD5g==
 Subject:
- Re: [PATCH net-next v2 3/4] net: core: resegment oversized TCP GSO skbs
+ Re: [PATCH net-next v2 2/4] net: gso: support bounded TCP segmentation
 From: netdev-bot+sashiko@kernel.org
 To: wang.zhan@smartx.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
@@ -36,11 +36,11 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  dev@openvswitch.org, andrew+netdev@lunn.ch, jasowangio@gmail.com,
  willemdebruijn.kernel@gmail.com, ncardwell@google.com, kuniyu@google.com,
  alice@isovalent.com
-Date: Mon, 21 Sep 2026 20:50:04 +0000
-Message-ID: <179002380484.2160803.13955762820082413555@kernel.org>
-In-Reply-To: <20260918084651.3022878-4-wang.zhan@smartx.com>
-References: <20260918084651.3022878-4-wang.zhan@smartx.com>
-X-sashiko-severity: High
+Date: Mon, 21 Sep 2026 20:50:03 +0000
+Message-ID: <179002380317.2160803.2629890126162105944@kernel.org>
+In-Reply-To: <20260918084651.3022878-3-wang.zhan@smartx.com>
+References: <20260918084651.3022878-3-wang.zhan@smartx.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,7 +53,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,250 +61,227 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Bounded resegmentation can emit GSO skbs whose L3 length exceeds
-  65535, which inet_gso_segment()/ipv6_gso_segment() then silently…
-- [Medium] Changing gso_within_device_limits() from skb->protocol to
-  vlan_get_protocol(skb) (net/core/dev.c:3842-3848) silently alters the…
+- [Medium] skb_segment(): a non-zero SKB_GSO_CB(head_skb)->max_segs
+  disables the *entire* frag_list eligibility block at…
+- [Medium] __skb_gso_segment() now advertises a protocol-agnostic per-
+  call bound ("@max_segs: maximum MSS segments per output GSO skb, 0…
 
 --
 
-net: core: resegment oversized TCP GSO skbs
+net: gso: support bounded TCP segmentation
 
-An unencapsulated TCP GSO skb which exceeds the egress device gso_max_size
-or gso_max_segs is no longer fully segmented down to MSS sized packets.
-Instead a per-output segment bound is computed and the skb is resegmented
-into smaller GSO skbs which still fit the device limits.
+This adds a max_segs bound to __skb_gso_segment(), carried in the
+skb_gso_cb scratch area, so callers can ask the GSO engine to group
+several MSS segments into each output GSO skb. All existing callers pass
+zero, and skb_segment() uses the bound instead of GSO_MAX_SEGS when
+computing partial_segs.
 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 16685888b281..548db4d4e874 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -3834,18 +3834,24 @@ static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
->  			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
->  }
->  
-> +/*
-> + * Does @skb fit the GSO limits of @dev?  The size limit depends on the L3
-> + * protocol, which validate_xmit_vlan() replaces with the VLAN ethertype when
-> + * it pushes the tag inside the skb, so look behind the tag.
-> + */
->  static bool gso_within_device_limits(const struct sk_buff *skb,
->  				     const struct net_device *dev)
->  {
->  	return skb_shinfo(skb)->gso_segs <= READ_ONCE(dev->gso_max_segs) &&
-> -	       skb->len < netif_get_gso_max_size(dev, skb->protocol);
-> +	       skb->len < netif_get_gso_max_size(dev, vlan_get_protocol(skb));
->  }
->  
->  static netdev_features_t gso_features_check(const struct sk_buff *skb,
->  					    struct net_device *dev,
-> -					    netdev_features_t features)
-> +					    netdev_features_t features,
-> +					    bool check_limits)
->  {
-> -	if (!gso_within_device_limits(skb, dev))
-> +	if (check_limits && !gso_within_device_limits(skb, dev))
->  		return features & ~NETIF_F_GSO_MASK;
+> diff --git a/include/net/gso.h b/include/net/gso.h
+> index 29975440cad5..fccb37889965 100644
+> --- a/include/net/gso.h
+> +++ b/include/net/gso.h
+> @@ -19,6 +19,7 @@ struct skb_gso_cb {
+>  	int	encap_level;
+>  	__wsum	csum;
+>  	__u16	csum_start;
+> +	__u16	max_segs;	/* Max MSS segs per output skb, 0 = no limit */
+>  };
+>  #define SKB_GSO_CB_OFFSET	32
+>  #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
+
+[ ... ]
+
+> diff --git a/net/core/gso.c b/net/core/gso.c
+> index bcd156372f4d..157f2bfdca12 100644
+> --- a/net/core/gso.c
+> +++ b/net/core/gso.c
+> @@ -77,6 +77,7 @@ static bool skb_needs_check(const struct sk_buff *skb, bool tx_path)
+>   *	@skb: buffer to segment
+>   *	@features: features for the output path (see dev->features)
+>   *	@tx_path: whether it is called in TX path
+> + *	@max_segs: maximum MSS segments per output GSO skb, 0 means no limit
 
 [Severity: Medium]
+This kernel-doc describes max_segs as a protocol-agnostic bound on an
+exported entry point, but only tcp_gso_segment() was taught to look at it.
 
-Does switching gso_within_device_limits() from skb->protocol to
-vlan_get_protocol(skb) also change behaviour for the pre-existing limit
-check, and not only for the new resegmentation path?
+The other gso_segment implementers reached through the very same
+__skb_gso_segment() path still take their unconditional "nothing to do"
+fast path. In __udp_gso_segment():
 
-gso_features_check() is still reached with check_limits = true from
-netif_skb_features(), which is an exported symbol used by the first
-features computation in validate_xmit_skb(), by bonding/team, and by
-qdiscs which segment via skb_gso_segment(skb, netif_skb_features(skb)).
+	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
+		/* Packet is from an untrusted source, reset gso_segs. */
+		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh), mss);
+		return NULL;
+	}
 
-For an skb with an in-band VLAN tag (skb->protocol == ETH_P_8021Q or
-ETH_P_8021AD, e.g. a bridge-forwarded frame, or a frame after an earlier
-__vlan_hwaccel_push_inside()) carrying IPv6, the limit selected by
-netif_get_gso_max_size() changes:
+and in sctp_gso_segment():
 
-  before: protocol == ETH_P_8021Q   -> dev->gso_ipv4_max_size
-  after:  vlan_get_protocol() == ETH_P_IPV6 -> dev->gso_max_size
+	if (skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST)) {
+		/* Packet is from an untrusted source, reset gso_segs. */
+		...
+		segs = NULL;
+		goto out;
+	}
 
-On a device with BIG TCP enabled for IPv6 only (gso_max_size >
-gso_ipv4_max_size), such an in-band-tagged IPv6 TSO frame above
-gso_ipv4_max_size is now handed to the driver where it was previously
-software segmented.
+Neither consults SKB_GSO_CB(skb)->max_segs, which is exactly the check
+tcp_gso_segment() gained in this patch.
 
-The commit message only explains the change as a consequence of where the
-new check sits:
+If a caller passes a non-zero max_segs for a UDP or SCTP GSO skb, doesn't
+the bound get silently dropped and the original oversized skb returned as
+"no segmentation needed"?  The caller cannot tell that apart from the
+device being able to take the skb as-is: tap_handle_frame() queues the
+original skb on a NULL return, and queue_gso_packets() turns NULL into
+-EINVAL.
 
-  "That position is also why the limit follows the L3 protocol rather than
-  skb->protocol: validate_xmit_vlan() replaces the latter with the VLAN
-  ethertype when it pushes the tag inside the skb."
+No current caller passes a non-zero bound, so this is latent today. Should
+the kernel-doc say the bound is honoured for TCP only, or should the other
+implementers check it too?
 
-and patch 1 of the series, "net: core: factor out the GSO device limit
-check", stated "No functional changes".
-
-Could the change to the existing netif_skb_features() path be described
-explicitly, or split into its own patch with a Fixes: tag if it is meant
-as a fix?
-
->  
->  	if (!skb_shinfo(skb)->gso_type) {
-
-[ ... ]
-
-> @@ -3894,13 +3900,15 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
->  	return features;
->  }
->  
-> -netdev_features_t netif_skb_features(struct sk_buff *skb)
-> +static netdev_features_t __netif_skb_features(struct sk_buff *skb,
-> +					      bool check_gso_limits)
+>   *
+>   *	This function segments the given skb and returns a list of segments.
+>   *
+> @@ -86,7 +87,8 @@ static bool skb_needs_check(const struct sk_buff *skb, bool tx_path)
+>   *	Segmentation preserves SKB_GSO_CB_OFFSET bytes of previous skb cb.
+>   */
+>  struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
+> -				  netdev_features_t features, bool tx_path)
+> +				  netdev_features_t features, bool tx_path,
+> +				  unsigned int max_segs)
 >  {
->  	struct net_device *dev = skb->dev;
->  	netdev_features_t features = dev->features;
+>  	struct sk_buff *segs;
 >  
->  	if (skb_is_gso(skb))
-> -		features = gso_features_check(skb, dev, features);
-> +		features = gso_features_check(skb, dev, features,
-> +					      check_gso_limits);
+> @@ -117,6 +119,7 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
 >  
+>  	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
+>  	SKB_GSO_CB(skb)->encap_level = 0;
+> +	SKB_GSO_CB(skb)->max_segs = min_t(unsigned int, max_segs, U16_MAX);
+
+[Severity: Medium]
+The changelog says:
+
+	"the bounded path is only used for skbs which do not carry a
+	frag_list"
+
+Is that precondition enforced or documented anywhere?  __skb_gso_segment()
+is EXPORT_SYMBOL and records the caller-supplied bound for any skb here,
+and the new @max_segs kernel-doc above states no restriction.  See the
+related question on the skb_segment() hunk below.
+
+>  
+>  	skb_reset_mac_header(skb);
+>  	skb_reset_mac_len(skb);
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index dbbe10277d51..9c0d140236bc 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -4793,6 +4793,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  	struct sk_buff *segs = NULL;
+>  	struct sk_buff *tail = NULL;
+>  	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
+> +	unsigned int max_segs = SKB_GSO_CB(head_skb)->max_segs;
+>  	unsigned int mss = skb_shinfo(head_skb)->gso_size;
+>  	bool gso_by_frags = mss == GSO_BY_FRAGS;
+>  	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
+> @@ -4839,7 +4840,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  	csum = !!can_checksum_protocol(features, proto);
+>  
+>  	if (sg && csum && !gso_by_frags)  {
+> -		if (!(features & NETIF_F_GSO_PARTIAL)) {
+> +		if (!max_segs && !(features & NETIF_F_GSO_PARTIAL)) {
+
+[Severity: Medium]
+A non-zero max_segs skips the whole block here, not just the uniform-length
+test the changelog mentions.  Also skipped are the net_gso_ok() bail-out,
+the per-member head_frag guard and the length accounting:
+
+net/core/skbuff.c:skb_segment() {
+	...
+		if (!list_skb ||
+		    !net_gso_ok(features, skb_shinfo(head_skb)->gso_type))
+			goto normal;
+		...
+		frag_len = list_skb->len;
+		skb_walk_frags(head_skb, iter) {
+			if (frag_len != iter->len && iter->next)
+				goto normal;
+			if (skb_headlen(iter) && !iter->head_frag)
+				goto normal;
+
+			len -= iter->len;
+		}
+
+		if (len != frag_len)
+			goto normal;
+	...
+}
+
+Since len is then still the full head_skb->len, mss *= partial_segs can
+produce a grouped MSS that is not aligned with the frag_list member
+boundaries, so one output skb spans several members.  Can that reach the
+BUG_ON() in the frag walk further down?
+
+net/core/skbuff.c:skb_segment() {
+	...
+			if (!skb_headlen(list_skb)) {
+				BUG_ON(!nfrags);
+			} else {
+				BUG_ON(!list_skb->head_frag);
+	...
+}
+
+A frag_list member with kmalloc'ed linear data (as TCP GRO produces via
+skb_gro_receive()) is not a head_frag, and previously such an skb took
+"goto normal" instead.
+
+I checked the rest of the series: the only in-tree bounded caller,
+skb_can_gso_resegment() in net/core/dev.c added by "net: core: resegment
+oversized TCP GSO skbs", refuses these skbs with
+
+	if (skb_has_frag_list(skb))
+		return false;
+
+and net_test.c never combines max_segs with frag_skbs, so nothing panics
+today.  Would it be worth keeping the head_frag and uniformity validation
+(or ignoring the bound) when skb_shinfo(head_skb)->frag_list is set, and
+stating the precondition in the @max_segs kernel-doc?
+
+Dropping the net_gso_ok() check the same way also means a bounded call can
+emit still-GSO skbs whose gso_type the output features do not support.  Is
+that intentional?
+
+>  			struct sk_buff *iter;
+>  			unsigned int frag_len;
+>  
+> @@ -4874,7 +4875,10 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  		 * now.
+>  		 */
+>  		DEBUG_NET_WARN_ON_ONCE(len / mss > GSO_MAX_SEGS);
+> -		partial_segs = min(len / mss, GSO_MAX_SEGS);
+> +		if (max_segs)
+> +			partial_segs = min(len / mss, max_segs);
+> +		else
+> +			partial_segs = min(len / mss, GSO_MAX_SEGS);
+>  		if (partial_segs > 1)
+>  			mss *= partial_segs;
+>  		else
 
 [ ... ]
 
-> @@ -3923,8 +3931,79 @@ netdev_features_t netif_skb_features(struct sk_buff *skb)
+> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+> index e74d99ca9fac..a4076318c535 100644
+> --- a/net/ipv4/tcp_offload.c
+> +++ b/net/ipv4/tcp_offload.c
+> @@ -164,7 +164,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+>  	if (unlikely(skb->len <= mss))
+>  		goto out;
 >  
->  	return harmonize_features(skb, features);
->  }
-> +
-> +netdev_features_t netif_skb_features(struct sk_buff *skb)
-> +{
-> +	return __netif_skb_features(skb, true);
-> +}
->  EXPORT_SYMBOL(netif_skb_features);
+> -	if (skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST)) {
+> +	if (!SKB_GSO_CB(skb)->max_segs &&
+> +	    skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST)) {
+>  		/* Packet is from an untrusted source, reset gso_segs. */
 >  
-
-[ ... ]
-
-> +static unsigned int
-> +skb_gso_resegment_max_segs(struct sk_buff *skb, struct net_device *dev,
-> +			   netdev_features_t features)
-> +{
-> +	unsigned int mss = skb_shinfo(skb)->gso_size;
-> +	unsigned int hdr_len, max_segs;
-> +	unsigned int gso_max_size;
-> +	struct tcphdr _tcph, *th;
-> +
-> +	gso_max_size = netif_get_gso_max_size(dev, vlan_get_protocol(skb));
-> +
-
-[ ... ]
-
-> +	hdr_len = skb_transport_header(skb) - skb_mac_header(skb) +
-> +		  th->doff * 4;
-> +	if (gso_max_size <= hdr_len + mss)
-> +		return 0;
-> +
-> +	/*
-> +	 * gso_within_device_limits() accepts gso_segs == gso_max_segs but
-> +	 * rejects skb->len >= gso_max_size, so only the size bound needs - 1.
-> +	 */
-> +	max_segs = (gso_max_size - hdr_len - 1) / mss;
-> +	max_segs = min_t(unsigned int, max_segs,
-> +			 READ_ONCE(dev->gso_max_segs));
-> +
-> +	return max_segs > 1 ? max_segs : 0;
-> +}
-
-[Severity: High]
-
-Should this bound also be clamped so that hdr_len + max_segs * mss stays
-within what a 16-bit IPv4 tot_len or IPv6 payload_len can express?
-
-The bound here derives only from netif_get_gso_max_size(dev, ...) and
-dev->gso_max_segs. If the egress device itself has a BIG TCP limit above
-64 KiB (veth calls netif_set_tso_max_size(dev, GSO_MAX_SIZE), so
-"ip link set dev vethX gso_max_size 120000" is accepted) and the incoming
-skb is larger still, the output skbs come out at roughly gso_max_size
-bytes.
-
-skb_segment() only tags the outputs as SKB_GSO_PARTIAL when features carry
-NETIF_F_GSO_PARTIAL:
-
-  net/core/skbuff.c:skb_segment() {
-      ...
-      type |= (features & NETIF_F_GSO_PARTIAL) / NETIF_F_GSO_PARTIAL * SKB_GSO_PARTIAL;
-      ...
-  }
-
-So for software devices the outputs are ordinary GSO skbs, and the L3
-segmenters take the non-partial branch, which truncates through htons():
-
-  net/ipv4/af_inet.c:inet_gso_segment() {
-      ...
-          else
-              tot_len = skb->len - nhoff;
-      ...
-      iph->tot_len = htons(tot_len);
-  }
-
-  net/ipv6/ip6_offload.c:ipv6_gso_segment() {
-      ...
-          else
-              payload_len = skb->len - nhoff - sizeof(*ipv6h);
-      ipv6h->payload_len = htons(payload_len);
-  }
-
-Neither uses the >64 KiB encodings the rest of the tree expects, where
-iph_set_totlen() writes tot_len = 0 above IP_MAX_MTU and ip6_xmit() writes
-payload_len = 0 above IPV6_MAXPLEN. Can the declared length therefore end
-up as (len mod 65536), with a software receiver trimming the frame in
-ip6_rcv_core() via ipv6_payload_len() and pskb_trim_rcsum(), and the
-equivalent iph_totlen() path in ip_rcv_core()?
-
-> +
->  static int xmit_one(struct sk_buff *skb, struct net_device *dev,
->  		    struct netdev_queue *txq, bool more)
->  {
-
-[ ... ]
-
-> @@ -4088,10 +4168,29 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
->  	if (unlikely(!skb))
->  		goto out_null;
->  
-> -	if (netif_needs_gso(skb, features)) {
-> +	/*
-> +	 * An oversized skb loses its GSO feature bits and is segmented
-> +	 * down to MSS sized skbs below.  A TCP skb can instead be split
-> +	 * into GSO skbs which do fit the device, so keep the bits and
-> +	 * bound the resegmentation.  The features computed without the
-> +	 * limit checks say whether the device offloads the GSO type at
-> +	 * all.
-> +	 */
-> +	if (skb_is_gso(skb) && skb_is_gso_tcp(skb) && !skb->encapsulation &&
-> +	    !gso_within_device_limits(skb, dev)) {
-> +		netdev_features_t offload = __netif_skb_features(skb, false);
-> +
-> +		resegment_max_segs =
-> +			skb_gso_resegment_max_segs(skb, dev, offload);
-> +		if (resegment_max_segs)
-> +			features = offload;
-> +	}
-> +
-> +	if (resegment_max_segs || netif_needs_gso(skb, features)) {
->  		struct sk_buff *segs;
->  
-> -		segs = skb_gso_segment(skb, features);
-> +		segs = __skb_gso_segment(skb, features, true,
-> +					 resegment_max_segs);
->  		if (IS_ERR(segs)) {
->  			goto out_kfree_skb;
->  		} else if (segs) {
-
-Is there anything between this point and dev_hard_start_xmit() which
-re-validates the length of the resulting segments? With gso_max_size =
-120000 on the egress device and a 200000 byte incoming skb,
-skb_segment() computes partial_segs = min(len/mss, max_segs) and
-mss *= partial_segs, so the outputs land around 119 KiB and reach the
-driver unchecked, where the previous code produced MSS sized packets with
-correct 16-bit lengths.
+>  		skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(skb->len, mss);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918084651.3022878-1-wang.zhan%40smartx.com
