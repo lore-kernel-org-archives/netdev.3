@@ -1,265 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB4C2D8DA8;
-	Mon, 21 Sep 2026 10:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CE23E0094
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 10:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789984889; cv=none; b=MLGP+uTGLhHBXQpCfhfbpXmYFh+pWbys5LqV/Ef+24GSxB3kNmAwPOGO1Yy5bBc1DW5MRsiE2PDxgpo7IjChk/fXlSNI+TfMT+CsGKDYc6BlDm046ujW903jCCES6YWt37wcJymwc+ZG4YlsP1qsxX/xFjpaRyIEkKiK3pSpaG4=
+	t=1789984904; cv=none; b=IJRnAnQq7pC3bYg7J/F0Lt3mu5eDAIg5bDaBqeCTtztaVwzGiK4Y9xbBoo7IsQIPGAqWNd+b/3q7m/WAfk/O8+ysGVyJogc/wRRIfXNPczo0pA3PEeLVsPvntlj6r15DxzSOlq47Z7HdBwzV0k/TIb2nuG3hiRVYJdG3b5rdJSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789984889; c=relaxed/simple;
-	bh=wxaewxrEB+uoU5ttmH9zstsQaabickXV4tjVmy5lPQA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lgRLAZi+g2L0SMOImMLtcZfR6LOVNpFwkZ5m31ODNFA4mcA7xu0Yz8aXafZjyySWj1rQWeVHSQV5gVjR6rlxdwgReXVBranpL5/HDVDfXa5wvxHkCjLFchMfCSS5PboEy3KQDMAdNf6+OPg8hBHm82mjwjT6mO4y83EzU/YP/20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzR4lN1k; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789984904; c=relaxed/simple;
+	bh=OxbXoFXO+6mkmmt6BMgVaLpxtZP/c6BysPo2SOEqJhw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CSDy2f8MyTlz34PpKg4oLV5eGAAOA3Xq6xQO+43dZtTN4S4PF8wKD1KRUDaShY6bby3iUEw25iGGlyurzh+s7icbYPoTUn059G8X3bM/sA+i2Ub1ITK6nDOgUdp6GjGN5/4yPuQlC4E7YZMBI+JYAUq1USRd8sLjlozueW0GVDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ozwvKV4u; arc=none smtp.client-ip=209.85.222.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzR4lN1k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBB41F000FF;
-	Mon, 21 Sep 2026 10:01:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789984887;
-	bh=Bsp5Dl9hE7Sk5T9zUzuExl2x6QwWgmYKxou+GHV1kSU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QzR4lN1kg0hi30PUyeisbzsjNgASRRd0KFFzSlCz3/ozGXL6ceMorp2PDzDhCEQni
-	 wNQx2GO11dP98gSN8DljVDsZmgxsdIra5Je7k++XTAnRx1DphdE0s/8uNLwEmxX8oh
-	 BfU2ws+YoTDp0mWtUErt9o3nDTb8+dD5iapmF6bw2QatLmHC4Xc9gO60vmbZnCG0AT
-	 tqgDpgIQvTp7cOnloG6cTMNDM2jXJFHjTnqYmLYh96shMksTbAviGYjWNInCfX2UcM
-	 wz30fyiGmY5cVNMT/Hnwha087hHZB13XiPr6/2/kMSg7WgGtde54Sz0kuzyh3Kc+H4
-	 UmUE8jRJxCLqA==
-Subject:
- Re: [PATCH] net: macb: rate limit netdev error info print in the data path
-From: netdev-bot+sashiko@kernel.org
-To: taozj888@163.com
-Cc: maintainer@kernel.org, linux-kernel@vger.kernel.org,
- theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
- netdev@vger.kernel.org, kuba@kernel.org
-Date: Mon, 21 Sep 2026 10:01:26 +0000
-Message-ID: <178998488647.2160803.1346494444640418442@kernel.org>
-In-Reply-To: <20260920095839.62852-1-taozj888@163.com>
-References: <20260920095839.62852-1-taozj888@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ozwvKV4u"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-934963b2bc0so445157285a.3
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 03:01:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789984901; x=1790589701; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LtS1k+g5KNY8TGsRsTa9daN4qnWRmvThzKdIL8PTBVc=;
+        b=ozwvKV4uEbMt71R+efxZ/01C2Fik74AtOpAc/MyTsUdfKcXJRWhyStOGNGMhMjfsPI
+         l1YWLwGlOYMvF01jhlnlnITya6W1XmksS12FZgA0IjlLBYe/DsN7PxxYEi3oj18uvISp
+         5fYurKOQKsK1IxfZbyYHYtHTAKbdiGJCireIfe1WPBZsMGeOu7MZPoMFjqFj+pot4C75
+         EMndRyWyCgHTwLdhZ3eQbgitAPzUdjf1aFu3QsIpkrJhO8q6pdPq4aRVqOufJunw2kTZ
+         kxuVcJeJ0GCw8wrv+3o7kCWL6D2lmhdy7JFJHv7k1tPSv7a6MHS73dlLgkh3XeplTPs0
+         +bpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789984901; x=1790589701;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LtS1k+g5KNY8TGsRsTa9daN4qnWRmvThzKdIL8PTBVc=;
+        b=j/Kk0fXwhL5zyZC6f2yFTkNDMmUoKKXrVfNCnoJbKQP0LLmEJvwIbToYkDIT12U4cw
+         vRxiUyQ4yBGDg+jFXngJRjilLWnd0Jf0vpRUKPfkIgddJXLGjK0Qqi5CgVYcM0/Ofalt
+         e18uCTua9cuCuxLAsxWQnt1dViIWhYXKoTd785+IPUXew04Xq8h62KXmEIzN2o8Lts9S
+         IdHNaHoYMBrZ6Lbwq1baFP0PCQDYvURyyZqrD7es8RmJ2olLihhF9M/CpYTPbZYo8w8F
+         ivilZLtqhH8kmpi4QbrDxETKNQr15nEoPXE6SdTeQSoYDRbhgxrvoPco4TktXWP0xU13
+         QItA==
+X-Forwarded-Encrypted: i=1; AKwUvBxm191XZ8Yb4tkQqkxAUf+z6L3sx8lzkBbPyXymS4R5qa21EIpjaCgcqz84MaKAlBX+LJGQTgM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mNVM0WNXneaLjn6osV3ktg2Gaf08A+qnRpy69rioHV9wmw1g0o
+	tCWRrLtCfO5dN/ybOMADurTmJcHZj1ROeVQ/wGhY5HR2Rpx+rupOlyru8gdv9vqLt7bQ/nIRkjA
+	LfPmyVknnrAScag==
+X-Received: from qknqj4.prod.google.com ([2002:a05:620a:8804:b0:93a:378b:d100])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:6016:b0:93b:eed8:3a52 with SMTP id af79cd13be357-93bf5519fb4mr1030273185a.3.1789984900950;
+ Mon, 21 Sep 2026 03:01:40 -0700 (PDT)
+Date: Mon, 21 Sep 2026 10:01:31 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921100139.508191-1-edumazet@google.com>
+Subject: [PATCH v5 net-next 0/8] vxlan: convert configuration to RCU and
+ enable lockless dumps
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+This patch series converts struct vxlan_config to RCU protection, eliminates
+redundant destination fields, and enables lockless RTNL-free link dumping
+in vxlan_fill_info().
 
-Critical: 0 (1) · High: 1 · Medium: 0 · Low: 1
+Changes in v5:
+- Widen vxlan_multicast_leave() and vxlan_multicast_join() conditions in
+  vxlan_changelink() to also run when VXLAN_F_VNIFILTER is set, so per-VNI
+  multicast memberships are migrated across lower-device changes even when
+  the device-default remote_ip is 0.0.0.0 (patches 1, 6, 7).
+- Unwind already-updated per-VNI entries and the device-wide default FDB
+  entry if vxlan_vnilist_update_group() fails partway through in
+  vxlan_changelink() (patches 1, 7).
+- Bump the vnifilter dump generation counter inside vxlan_vni_update_group()
+  as soon as vninode->remote_ip is overwritten, so concurrent dumps still
+  observe NLM_F_DUMP_INTR if a subsequent IGMP leave/join fails (patch 3).
+- In vxlan_config_validate(), reject clearing IFLA_VXLAN_LINK when
+  VXLAN_F_VNIFILTER has per-VNI multicast groups configured (patch 7).
+- In vxlan_config_apply(), reset dev->needed_tailroom when detaching a
+  lower device and use READ_ONCE()/WRITE_ONCE() for dev->mtu (patch 7).
+- Link to v4: https://lore.kernel.org/netdev/20260915175501.391567-1-edumazet@google.com/
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Changes in v4:
+- Split out the default FDB update fix when the lower device changes into
+  patch 1 with a Fixes: tag, and updated vxlan_vnilist_update_group() to
+  refresh all VNIs (including those with explicit per-VNI multicast groups)
+  so their FDB entries do not retain a stale remote_ifindex. Kept in this
+  series rather than routing through net to avoid a cross-tree conflict
+  with the default_dst removal in patch 7.
+- Added patch 3 to signal interrupted RTM_GETTUNNEL dumps to user space via
+  a per-netns atomic generation counter and nl_dump_check_consistent(), per
+  Paolo's suggestion.
+- Added an explicit VXLAN_DEV_F_MDB check in mlxsw_sp_nve_vxlan_can_offload()
+  so moving VXLAN_F_MDB out of cfg->flags does not silently relax mlxsw's
+  deny-by-default flag validation (patch 5).
+- In vxlan_config_apply(), gated the MTU clamp on lowerdev_changed so that
+  unrelated changelink operations do not shrink dev->mtu (patch 7).
+- Documented in patch 7's changelog that cfg->remote_ifindex is now committed
+  unconditionally and that IFLA_VXLAN_LINK=0 tears down the upper/lower
+  adjacency.
+- Link to v3: https://lore.kernel.org/netdev/20260911033945.164207-1-edumazet@google.com/
 
-- [High] Incomplete fix: the patch rate-limits only 4 netdev_err() sites,
-  leaving the equally floodable peer prints in the very same RX/TX data…
-- [Low] The commit message describes a user-visible defect (unbounded
-  console flooding from gem_rx() delaying boot) but carries only a…
+Changes in v3:
+- Folded configuration conversion patches into a single patch to maintain
+  clean bisectability and avoid intermediate mutable state.
+- In vxlan_changelink(), pass lowerdev to vxlan_config_apply() to prevent
+  truncating dev->needed_headroom and dev->needed_tailroom when lowerdev
+  does not change.
+- Cleaned up redundant NULL checks and unreachable error paths.
 
-Pre-existing issues:
-- [Critical] Use-after-free of the skb the network stack still owns:
-  macb_start_xmit() calls macb_pad_and_fcs(&skb, netdev) at…
+Eric Dumazet (8):
+  vxlan: update default fdb entries when the lower device changes
+  vxlan: vnifilter: use list_for_each_entry_rcu() in
+    vxlan_vnifilter_dump_dev()
+  vxlan: vnifilter: signal interrupted RTM_GETTUNNEL dumps
+  vxlan: pass vxlan_config pointer to helper functions
+  vxlan: move VXLAN_F_MDB to struct vxlan_dev flags
+  vxlan: convert configuration to RCU protection
+  vxlan: remove default_dst and use vxlan_config and lowerdev
+  vxlan: no longer rely on RTNL in vxlan_fill_info()
 
---
-
-net: macb: rate limit netdev error info print in the data path
-
-The patch wraps five netdev_err() calls in the macb receive and transmit
-paths with net_ratelimit(), so a flood of bad descriptors or LSO errors no
-longer prints unbounded messages.  The motivating case is "not whole frame
-pointed by descriptor" repeating from gem_rx() during boot.
-
-No Link: tags were present in the commit header.
-
-[Severity: Low]
-This isn't a bug in the code, but the changelog describes a user-visible
-defect (boot delayed by unbounded printing from gem_rx()) and the patch
-carries only:
-
-  Signed-off-by: Zijin Tao <taozj888@163.com>
-
-Should this carry a Fixes tag and name the intended tree?  The unconditional
-print in gem_rx() goes back to commit 4df95131ea80 ("net/macb: change RX
-path for GEM"), which isn't referenced, and there is no note about whether
-this is aimed at net or net-next.
-
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index b8234ac4b602..c32d48d03008 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
->  		count++;
->  
->  		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
-> -			netdev_err(bp->netdev,
-> -				   "not whole frame pointed by descriptor\n");
-> +			if (net_ratelimit())
-> +				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
->  			bp->netdev->stats.rx_dropped++;
->  			queue->stats.rx_dropped++;
->  			break;
->  		}
->  		skb = queue->rx_skbuff[entry];
->  		if (unlikely(!skb)) {
-> -			netdev_err(bp->netdev,
-> -				   "inconsistent Rx descriptor chain\n");
-> +			if (net_ratelimit())
-> +				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
->  			bp->netdev->stats.rx_dropped++;
->  			queue->stats.rx_dropped++;
->  			break;
-
-[Severity: High]
-The changelog says the change will "rate limit the netdev error information
-print in the receive and transmit data path", but several equally floodable
-netdev_err() calls in the same paths are left as they are.  Can the same
-console flood still be produced through them?
-
-In the receive path, gem_rx() ends with gem_rx_refill(queue), which prints
-once per NAPI poll while allocations keep failing:
-
-drivers/net/ethernet/cadence/macb_main.c:gem_rx_refill() {
-	...
-			skb = netdev_alloc_skb(bp->netdev, bp->rx_buffer_size);
-			if (unlikely(!skb)) {
-				netdev_err(bp->netdev,
-					   "Unable to allocate sk_buff\n");
-				break;
-			}
-	...
-}
-
-In the transmit path, macb_start_xmit() -> macb_tx_map() prints once per
-skb, and a dma_map failure tends to persist:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_tx_map() {
-	...
-	/* Should never happen */
-	if (unlikely(!tx_skb)) {
-		netdev_err(bp->netdev, "BUG! empty skb!\n");
-		return 0;
-	}
-	...
-dma_error:
-	netdev_err(bp->netdev, "TX DMA map failed\n");
-	...
-}
-
-The at91ether entry points in the same file are in the same situation.
-at91ether_start_xmit() returns NETDEV_TX_BUSY from the busy branch, so
-sch_direct_xmit() -> dev_requeue_skb() -> __netif_schedule() retries the
-same skb and the message can repeat at softirq rate:
-
-drivers/net/ethernet/cadence/macb_main.c:at91ether_start_xmit() {
-	...
-		if (dma_mapping_error(dev, bp->rm9200_txq[desc].mapping)) {
-			dev_kfree_skb_any(skb);
-			netdev->stats.tx_dropped++;
-			netdev_err(netdev, "%s: DMA mapping error\n", __func__);
-			return NETDEV_TX_OK;
-		}
-	...
-	} else {
-		netdev_err(netdev, "%s called, but device is busy!\n",
-			   __func__);
-		return NETDEV_TX_BUSY;
-	}
-}
-
-And at91ether_interrupt() prints from hard IRQ on every receive overrun,
-which is the same remotely triggered error storm the changelog describes:
-
-drivers/net/ethernet/cadence/macb_main.c:at91ether_interrupt() {
-	...
-	if (intstatus & MACB_BIT(ISR_ROVR))
-		netdev_err(netdev, "ROVR error\n");
-	...
-}
-
-Would it make sense to convert these as well, or to narrow the changelog to
-the sites that are actually covered?
-
-[ ... ]
-
-> @@ -2511,7 +2513,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
->  		else
->  			hdrlen = skb_tcp_all_headers(skb);
->  		if (skb_headlen(skb) < hdrlen) {
-> -			netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
-> +			if (net_ratelimit())
-> +				netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
->  			/* if this is required, would need to copy to single buffer */
->  			return NETDEV_TX_BUSY;
->  		}
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but while looking at the
-NETDEV_TX_BUSY returns in macb_start_xmit(): can the non-LSO ring-full
-return use an skb that was already freed?
-
-macb_start_xmit() calls macb_pad_and_fcs(&skb, netdev) early on, and that
-helper can free the pointer the transmit core still holds:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_pad_and_fcs() {
-	...
-	if (cloned || tailroom < padlen) {
-		nskb = skb_copy_expand(*skb, 0, padlen, GFP_ATOMIC);
-		if (!nskb)
-			return -ENOMEM;
-
-		dev_consume_skb_any(*skb);
-		*skb = nskb;
-	}
-	...
-}
-
-Execution then continues, and the ring-full check can return
-NETDEV_TX_BUSY:
-
-drivers/net/ethernet/cadence/macb_main.c:macb_start_xmit() {
-	...
-	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
-		       bp->tx_ring_size) < desc_cnt) {
-		netif_stop_subqueue(netdev, q);
-		...
-		ret = NETDEV_TX_BUSY;
-		goto unlock;
-	}
-	...
-}
-
-NETDEV_TX_BUSY is not a completion status, so the core writes into the skb
-it passed in and then requeues it:
-
-net/core/dev.c:dev_hard_start_xmit() {
-	...
-		rc = xmit_one(skb, dev, txq, next != NULL);
-		if (unlikely(!dev_xmit_complete(rc))) {
-			skb->next = next;
-			goto out;
-		}
-	...
-}
-
-sch_direct_xmit() then hands that pointer to dev_requeue_skb(), which
-stores it in q->gso_skb for a later dequeue and transmit.
-
-Both conditions look independently satisfiable: a short or tailroom-poor,
-non-CHECKSUM_PARTIAL, cloned or nonlinear frame on a NETIF_F_HW_CSUM
-interface gets replaced by macb_pad_and_fcs(), and CIRC_SPACE() can be
-below desc_cnt at that moment under sustained transmit load.
-
-The LSO branch shown in this hunk avoids the sequence only because
-macb_pad_and_fcs() returns 0 early when skb_shinfo(*skb)->gso_size is set.
-Is the non-LSO ring-full path meant to return NETDEV_TX_BUSY after the skb
-may have been replaced?
+ .../mellanox/mlx5/core/en/tc_tun_vxlan.c      |  11 +-
+ .../mellanox/mlxsw/spectrum_nve_vxlan.c       |  19 +-
+ .../mellanox/mlxsw/spectrum_switchdev.c       |  57 +-
+ drivers/net/vxlan/vxlan_core.c                | 754 +++++++++++-------
+ drivers/net/vxlan/vxlan_mdb.c                 |  45 +-
+ drivers/net/vxlan/vxlan_multicast.c           |  76 +-
+ drivers/net/vxlan/vxlan_private.h             |  34 +-
+ drivers/net/vxlan/vxlan_vnifilter.c           | 191 +++--
+ include/net/vxlan.h                           |  12 +-
+ 9 files changed, 769 insertions(+), 430 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920095839.62852-1-taozj888%40163.com
+2.55.0.1082.g2b9226bbc0-goog
+
