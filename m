@@ -1,260 +1,176 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24DF4A49B5
-	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790005843; cv=pass; b=NzOgt/kgrF6E/CDdAnjVdszscIg4yf7M5DZWXwCq3HevNFin1ksljmZTfsxJya/pcweM/cstYeNuYlZTF2JxJUBfOqkawgOccpfQxLEUxu6hahLIeZPQrrrX0s6VPSp/Q2LUtN7LsZFOf+4En26Q9t3BP5g1/S0CfdSQR+IO7EA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790005843; c=relaxed/simple;
-	bh=Q2N8kLm6wRwCpOk3CgQu50Shbi0J31/wktfMba/FXoI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AntpbfALyX6Dm4L8GXd5F1qLqiqL4+BSTma7xUitUxna1GVxuuynuFbHIMXIdYoZcWe5NNqkqAQ8KAcjKUSs5RyOSpBU2XW28j9LhehZCb0ikKFFNNNRqeDXHQpnydXf+w0LIf6sJBcWDw2Uy+cPHf/5f+5iF4E1KEx+BfnzmpM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ghu7xnjM; arc=pass smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FE54CEE71
+	for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 15:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790006111; cv=none; b=qgS7H5CnS3vPqvpiaS0WY7h7MIdYg4XXky338xc3eAcpQx64oPRrQxdjAYcpjFSOkl5TGloiEqpZGTNoMl8OjW4wyET/DPDgG2rVQmhVeXkbY62Vo31Q72eQe4GWfwnk7k4tmo/dJ9oxQxepdXtytRrfNG6uupBbZe8lz4iDFKY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790006111; c=relaxed/simple;
+	bh=bDsUNSkjs/FlyzkubQ2+eUfYnX4CeTJ1aPsc/gNisz0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NH+gSNm7A1jhcHD6jixmf/vuPddyyXbpoi4cVW8WO8xKSoBlI2kIafDSok0UemeTN8f8csKrQXxbhslhihFDNDuv1i5pU4OXhnkTrcSoFPtDl4rfVcdduIRhsu3NcpiX98XC/NcoGbP3oG0Cb0O0GL0Pvg2SNQCdkzsQ4pSPYNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PTRIRdgj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y5Dbd/w8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ghu7xnjM"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1cea4c7a0so1649842a12.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:50:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790005837; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kDfIreV0Xt/FWH4h4l0Qhr2IGlV6ZpOhM8Z9jVONpt8giiXAgzLU+OPbPmIOZGcgyd
-         JgAAdkZ1TLdCWkhqmpDwIyg4tEgcdWZgS0Yyhkw8azvVYqMaA87U1IknEQKHYx9ceDx0
-         Zv68UngLtueQudaWJZ1KezlwUP1r9TJqoNSmOoiuHt2YXPwzwuSrHBARBXZ18KDEr7i2
-         /CdJssOD27NGoMzUNTf2P2h5Sy9ZgaZUuUVfHLKaBovKJyQGHdtk6TUuoaPRekiaFzwG
-         +7Hia52JEjKpEV3dZ0gu478IYc0T9vfbiLSMWVpXuvSkf1H1o5W3QCNOI4A9yznvz9sc
-         NIww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UUpIUbD0Y38dahxUTc3kTHdAeYdpZ1UlGgHQuvP+VJ4=;
-        fh=3d6TzFUAWeQGrIf3BKsQx/PVu4Dxew+V7CLo6sZQ+8w=;
-        b=kBgA+XFvRe5GqM9b3XCe+Btta0aj6PYHh//8YeunVJpZzexCsjiDZ2n7JTwDwYJFoA
-         4REImEYkVXmKqjFa3WCcpGQvb0ZjyeCT6KOnuiIPJUvzzl1r1J1TDB1BRudYvy9Ys7kU
-         wGtYztrDMV5zCm+T/3upNrOFF5/+MX/hbfZNJ5hBWmcxvHRUIMfiTvN4ecOXyipIJP5K
-         r2t7+98Kjfp7p/gbCMfR9P0mnlljRPKKc7S80SgJM+bvnApu2mLZY2+7U3u7ctVbLrqV
-         a03s8GhjXIOZmKof2VK0zrPu2CwOoVJVOLhO0csFmyor/FX2PAJ68dY2TUvMohfvJ65a
-         u13A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PTRIRdgj";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y5Dbd/w8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790006108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VTP2SwRBukIzP2qE0+hVPmAsi+ftB+ZRXy8fpuSvdAc=;
+	b=PTRIRdgjYyn/llk2pe460xdjZ/n89Yq4uJiJiRj5HlWLJ4ApDy532kUgtePjnQqW0LqSRl
+	Q+JqHulr9bTCQKnYCNanuNxT5bXlCY62cJabXQV65zPZm/SBHE55CGfp4YvOCci/125wdu
+	fM4vD4ukI7gpgM0vLEpra/Rzobdp88o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-lC_efuyVMoWeujpnh21tWg-1; Mon, 21 Sep 2026 11:55:07 -0400
+X-MC-Unique: lC_efuyVMoWeujpnh21tWg-1
+X-Mimecast-MFC-AGG-ID: lC_efuyVMoWeujpnh21tWg_1790006106
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49cdc4080ddso154205e9.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 08:55:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790005837; x=1790610637; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UUpIUbD0Y38dahxUTc3kTHdAeYdpZ1UlGgHQuvP+VJ4=;
-        b=Ghu7xnjMdmdeuI9nc+luoud9PYzoLfn8k9SfMVY8dBYRcWSoBPJj6yloig72/hTfhq
-         IR+Vi6uudOtkpE7awJNH1/6hYYirYL/E+Bhh4ugWkPIoZkCdymcWpbMKoPjpjw9Ao/0r
-         4EnaqqeqyNlSzcpySjkKuXFneHhj5UBuecLPtyHgZKKpNYZ7m/RBnR4vBbweUXDlkMsE
-         Dy3ruJBzJO4wwxFFDKhgI9pIInQYZcTI8UvX/DHzYVhgF9nVJIJ7DYtCogP6H2kYbXKI
-         +EdQ3hpfm5woMR3swYDJN+89Mdeh7Q35QLAE2M/llYoP1Yx3FBRJOEtj9/TYrHxY3CKR
-         RV2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790005837; x=1790610637;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1790006106; x=1790610906; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UUpIUbD0Y38dahxUTc3kTHdAeYdpZ1UlGgHQuvP+VJ4=;
-        b=JGhIZc+dskI8IB+fdEWXIRuEZxAZfHWK0CIB1JL4vhFaOvdqNgXIN0swBvMR1waP7O
-         Q835eD+Am/4X/pqabI94KSAxNiubQizet25Hh5cIw5efYSZAiqZc8tRkNLEIr9Bajm53
-         sHmJ3uwWtAhAaAwqxy0ydGviruWVL3eWtR5fBVHAUmau6jcBfGn51FDvwlzZ/4KmfnXv
-         O3All+ygD6AXtskOjjGKiugEbRzDXds9tlz0MNa0+ZXABCydTpSwHOrQg2+DWLL/PaZ5
-         N2Am/ZjZKfqoR2cO26W/koceJgKnr6tHfPNQwztGJzWjTBppVxxgIcT1pavax8YVLl0S
-         IoFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxtea4My+q8i8tJ1+Dv84P8QRGZwqLGYSPDy+02mJm7ihwD0YXS6WZ1PI/YIXt+oGVtFk0Ywz0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nej06roz7RxDewGRvlYYRDV5JkayuQ8G5O2Crdy25NbBMtmn/T
-	o0lOMYFp61l89bC2gRHkr6eUWbicg3WpOe6pEEEgAnLwy0PhCoQ+yFLS/iF1I8mu9aBpJ5juJ9t
-	DtMP/FxsQNRhV7dny/TLeNKLz99DOKpDkrashhFu2
-X-Gm-Gg: AYBFou2EUW0jLydVAlyA0gMe7GgRL0exnlfgimTjfQJajxqlxYaGc/wT1991B5/8spv
-	J80cCWhl9MYTJWHqovbk74R0AcRoGgqjZz7ixm1xHDLxaJ7vg/DW258/ybi9IMu8W3/2V6VNTUP
-	TWGrJoVuOeflERbymorrE3R0LnTSYFe7sGmY+hVbo2oKqgyds6Bl8GZGety4LTJB2aqUtGNv85J
-	y9VlDxYz/jy3now/sK0lP4tlPciObI+e1L0ZWKQ0o6sqarkzxKfr1qRUiDYQOM1gKIBMGgNiJ4d
-	8V6DwpZNwOp+9Lh3S9nOAbAbZEUrzkQGJjl99s2oaT/7J1py93Uk5sXBduRCoLl4pjuxXk4TGd9
-	ctzbeEHKmyVR8H699R6qIxpqWRRsgnZAoZnWqBiy0YJ8xcQBDMdM87qEpPosXe2EyJKam/J3KrM
-	pMhQFIGm7IMaA4P+mZpTPIQZd2oHkVjIs5
-X-Received: by 2002:a17:90b:17cc:b0:39e:135e:130e with SMTP id
- 98e67ed59e1d1-39e54af6a0emr16893374a91.3.1790005836132; Mon, 21 Sep 2026
- 08:50:36 -0700 (PDT)
+        bh=VTP2SwRBukIzP2qE0+hVPmAsi+ftB+ZRXy8fpuSvdAc=;
+        b=Y5Dbd/w8hhKV5Qb0peUumCFOOAIsuftbqDnPTRpkGmpn6700S5snKfEZtU8dfKCagZ
+         6/yNuUSYD6QAvBAvrPXmSS0AuPdxRocJJv5XoBGRc/thxWYiA0L4d86wAdTuPM/sTp4d
+         7+tUqZXsenDqV//lg+y4IO1rXVf2WRUUxktVVLjMKjGYKxE8PGM3glF+iVqtLjSrMXsO
+         Z8i2xrKWjnm8GhYM38BnzHpP2GB8z/794OlZ0Q/mEG6A5t+UUVFuxVVnNFqfUOLevF+i
+         kIZRwf9R7SOwPhs7yHaGC3h70F8KjKtyEPTyhhTnu3QJq02dYVKznsOsXr1b650tx0Rk
+         J4bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790006106; x=1790610906;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VTP2SwRBukIzP2qE0+hVPmAsi+ftB+ZRXy8fpuSvdAc=;
+        b=kIdcKAOo6MP8ItPpq0h3ZvUHWW9z9saDq718DOvfCqC+9lccJNJchbSOW5MxYddAWs
+         t2dxk2TVQTg4c5fNylOvrqTCqcpI6sb50LP2Le09e/Kfp1DpqLAxqFu+bF08kEzx/XAX
+         2uJxMMSPnG5zKoXc4cC8AP2Rqe0tYeKf5GhIFKWe1SlIlEu+sqx8p/kzg/ONODett5t9
+         dyhllqIEXe/s+6MyCR49EUyWDx46qAHTQ2z5EUQTjVsxF0XjExD56q9nfi5aAxkjI5Lf
+         iXk1aFJNvICSs9B4ibzqvTeh0hGtLV5+H2o+ZcgWOcoRD96AjaYzMpsJ1gq0vSS9bQwF
+         v2gQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxMwXqD7Su9mt+AwFHK5A47t0CIIFGGXj9R2rBgWUE9SZok5ON3JaNJm9X/KmMAzvtTiugyHhQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lkVpQJvAC8PRijI0H3fSK0hXRuZc5r2IbN2zBB4gPdSGX46Pi6
+	lov0TG/VWk0H1e0VF1V8IQHLh7nMLpABE0txnvTS2JkJtEFgdMf1vSRwQBqt+fU8IOuFRdCV9l5
+	4apwarLdbSJXyGNxKQTPOJZsD+/qi6XFl1wWZ2hQfmGAESvzCG/ansMGIiw==
+X-Gm-Gg: AYBFou1mwZjycBKPfbQUq8kf3AUBwFTMn92sDYioOA8rP3UkXKlE4qcDN7pcCRaHAt3
+	p1jwkmlnzP1+LYV4rlmy34QFuysqqfUePyaK3jL8x8ukB9PjVHTw5jbw9KA8c6x+PRPoD/nYQGk
+	FRlOMfF5c4NLut+0fJ6TXpb09fdUC/dgX+XWbIE47PRiAd1UllvWlyEhYBPGLdTttx+XyBj6NIL
+	XpzyofB1+9imx3RsyPfSrON+1mBcEa0WJeeepuO7SqAhYT450RdWBCDJV3/seq4YvFunTWgogaw
+	iIVmcbWOpiKB43fZx7UJWRiYHk7XL8n/Ed9h5R2XKWGlyOipf2f57BeK3dywK0g+G61QfLRfRHd
+	A4YOn/URkeAYiNc9SGLUZgaX+1SBHow+MMbJL/mH5ogQVvYzm39uvbBn19woz/HeFJvRjvZTGPw
+	==
+X-Received: by 2002:a05:600c:34c6:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-49fd88607e7mr1301875e9.5.1790006106227;
+        Mon, 21 Sep 2026 08:55:06 -0700 (PDT)
+X-Received: by 2002:a05:600c:34c6:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-49fd88607e7mr1301585e9.5.1790006105850;
+        Mon, 21 Sep 2026 08:55:05 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc481c73bsm6271415e9.1.2026.09.21.08.55.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 08:55:05 -0700 (PDT)
+Message-ID: <890795c7-f9f9-4725-9c2b-bb345f627fc5@redhat.com>
+Date: Mon, 21 Sep 2026 17:55:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260918082209.2853582-1-kuniyu@google.com> <178997904775.2160803.15157410527748919821@kernel.org>
- <20260921100956.GA2108776@shredder>
-In-Reply-To: <20260921100956.GA2108776@shredder>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 21 Sep 2026 08:50:24 -0700
-X-Gm-Features: AcwNN1Uu3h5HDn00WRS8F1wFoShbL-iSTQCHXYUECPf4zWDmgw6VT-BVEXTKhR8
-Message-ID: <CAAVpQUAEdk=T+_prizx4yRXb=VdSYt_WFHzmCeH0CuT1wSedCQ@mail.gmail.com>
-Subject: Re: [PATCH v1 net] ipv6: Prevent rt6_insert_exception() for dying fib6_info.
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev-bot+sashiko@kernel.org, dsahern@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	marcharvey@google.com, kuni1840@gmail.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mptcp: do not use Fast Open on MP_JOIN subflows
+To: Matthieu Baerts <matttbe@kernel.org>, Yilin Zhang <yilinzhang@moonshot.ai>
+Cc: Mat Martineau <martineau@kernel.org>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, Kimi Security Team <bug-report@moonshot.ai>
+References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
+ <20260920061904.3575780-1-yilinzhang@moonshot.ai>
+ <aa299737-002e-43b4-ad1e-881720798470@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <aa299737-002e-43b4-ad1e-881720798470@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 21, 2026 at 3:10=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
->
-> On Mon, Sep 21, 2026 at 08:24:07AM +0000, netdev-bot+sashiko@kernel.org w=
-rote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider.
-> >
-> > Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
-> >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
-> >
-> > - [Medium] The new guard in rt6_insert_exception()
-> >   (net/ipv6/route.c:1732) trusts f6i->fib6_destroying, but that bit is=
-=E2=80=A6
-> >
-> > --
-> >
-> > ipv6: Prevent rt6_insert_exception() for dying fib6_info.
-> >
-> > This reorders fib6_purge_rt() so that fib6_drop_pcpu_from() runs before
-> > rt6_flush_exceptions(), and adds a f6i->fib6_destroying check in
-> > rt6_insert_exception() so a dying fib6_info can no longer gain a new
-> > exception route.  The goal is to stop the fib6_info<->exception referen=
-ce
-> > cycle that stalls netdev unregistration.
-> >
-> > > diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-> > > index 9ea75703b38d..9ff761962b45 100644
-> > > --- a/net/ipv6/ip6_fib.c
-> > > +++ b/net/ipv6/ip6_fib.c
-> > > @@ -1043,8 +1043,8 @@ static void fib6_purge_rt(struct fib6_info *rt,=
- struct fib6_node *fn,
-> > >     struct fib6_table *table =3D rt->fib6_table;
-> > >
-> > >     /* Flush all cached dst in exception table */
-> > > -   rt6_flush_exceptions(rt);
-> > >     fib6_drop_pcpu_from(rt);
-> > > +   rt6_flush_exceptions(rt);
-> > >
-> > >     if (rt->nh) {
-> > >             spin_lock(&rt->nh->lock);
-> > > diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> > > index 08bd68f1b5bb..884d9ab0d50d 100644
-> > > --- a/net/ipv6/route.c
-> > > +++ b/net/ipv6/route.c
-> > > @@ -1729,6 +1729,11 @@ static int rt6_insert_exception(struct rt6_inf=
-o *nrt,
-> > >
-> > >     spin_lock_bh(&rt6_exception_lock);
-> > >
-> > > +   if (f6i->fib6_destroying) {
-> > > +           err =3D -ENOENT;
-> > > +           goto out;
-> > > +   }
-> > > +
-> >
-> > [Severity: Medium]
-> > Can this check observe fib6_destroying =3D=3D 0 after fib6_purge_rt() h=
-as
-> > already set it?
-> >
-> > fib6_destroying shares one u8 storage unit with three other bits in
-> > struct fib6_info:
-> >
-> > include/net/ip6_fib.h:
-> >       u8                              should_flush:1,
-> >                                       dst_nocount:1,
-> >                                       dst_nopolicy:1,
-> >                                       fib6_destroying:1,
-> >                                       unused:4;
-> >
-> > Adjacent bitfields are a single memory location, so every assignment to
-> > any of them is a non-atomic read-modify-write of the whole byte.
-> >
-> > The setter in fib6_drop_pcpu_from() runs with only the table's tb6_lock
-> > held:
-> >
-> > net/ipv6/ip6_fib.c:fib6_drop_pcpu_from() {
-> >       f6i->fib6_destroying =3D 1;
-> >       mb(); /* paired with the cmpxchg() in rt6_make_pcpu_route() */
-> >       ...
-> > }
-> >
-> > One peer writer of the same byte is addrconf_disable_policy_idev(), whi=
-ch
-> > holds only rtnl_net_lock plus idev->lock and ifa->lock:
-> >
-> > net/ipv6/addrconf.c:addrconf_disable_policy_idev() {
-> >       ...
-> >                       rcu_read_lock();
-> >                       ifa->rt->dst_nopolicy =3D val ? true : false;
-> >       ...
-> > }
-> >
-> > Is there any lock common to both paths?  inet6_rtm_delroute() is
-> > registered with RTNL_FLAG_DOIT_UNLOCKED, and
-> > ip6_route_del()->__ip6_del_rt()->fib6_del()->fib6_purge_rt() takes only
-> > rcu_read_lock() and tb6_lock, so a write to
-> > net.ipv6.conf.<dev>.disable_policy on a host route (ifa->rt) does not
-> > appear to be serialized against the deletion path.
-> >
-> > If the disable_policy writer loaded the byte before fib6_destroying was
-> > set and stores its copy back afterwards, the bit is cleared again.  A
-> > third thread in ip6_rt_update_pmtu() or rt6_do_redirect() that still
-> > holds the pre-removal fib6_info would then read fib6_destroying =3D=3D =
-0 here
-> > and insert an exception after the final rt6_flush_exceptions(), which
-> > recreates the fib6_info<->exception cycle and the
-> >
-> >       unregister_netdevice: waiting for gre6 to become free
-> >
-> > stall described in the commit message.  The same lost update also lets
-> > rt6_make_pcpu_route() re-add per-CPU routes after
-> > __fib6_drop_pcpu_from() has run.
->
-> It's a pre-existing issue and not a problem introduced by this patch.
-> The likelihood of this happening is close to zero.
+On 9/21/26 11:43, Matthieu Baerts wrote:
+> 20 Sept 2026 08:19:21 Yilin Zhang <yilinzhang@moonshot.ai>:
+>> tcp_fastopen_create_child() hands the SYN packet itself to
+>> subflow_syn_recv_sock(). For an MP_JOIN request this takes the
+>> fatal fallback: the cloned child is destroyed and handed back with
+>> drop_req flagged, but tcp_fastopen_create_child() does not check
+>> the flag and queues it, so accept() can expose the freed child.
+>>
+>> MP_JOIN cannot use Fast Open: data on a subflow requires the
+>> completed HMAC exchange (RFC 8684, sec. 3.2). Refuse it (only the
+>> TFO path passes a SYN skb here) and let tcp_conn_request() fall
+>> back to the regular MP_JOIN handshake; also strip the Fast Open
+>> cookie from MP_JOIN SYN/ACKs.
+>>
+>> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
+>> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+>> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+>> Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+>> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+>> ---
+>> v3:
+>> - refuse TFO for MP_JOIN in subflow_syn_recv_sock() and fall back to
+>>    the regular handshake; the TCP-side hunks from v2 are dropped
+>> - strip the TFO cookie from MP_JOIN SYN/ACKs
+> 
+> Thank you for the V3.
+> 
+> Please start a new thread when sending a new version.
+> 
+>> v2:
+>> - https://lore.kernel.org/netdev/20260903094010.4066892-1-yilinzhang@moonshot.ai/
+>> v1:
+>> - https://lore.kernel.org/netdev/20260902121247.3248539-1-yilinzhang@moonshot.ai/
+>>
+>> net/mptcp/subflow.c | 10 ++++++++++
+>> 1 file changed, 10 insertions(+)
+>>
+>> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+>> index af81ad5..2b454d4 100644
+>> --- a/net/mptcp/subflow.c
+>> +++ b/net/mptcp/subflow.c
+>> @@ -348,6 +348,10 @@ static void subflow_prep_synack(const struct sock *sk, struct request_sock *req,
+>>      if (foc && foc->len > -1)
+>>          ireq->tstamp_ok = 0;
+>>
+>> +   /* MP_JOIN cannot use TFO, do not send a cookie in the SYN/ACK */
+>> +   if (foc && mptcp_subflow_rsk(req)->mp_join)
+>> +       foc->len = -1;
+> 
+> This should go above the previous block, not to disable TCP timestamps
+> in this case.
+I'm sorry for lagging behind on this thread.
 
-Agreed.
+I think this is not the correct approach.
 
->
-> The current patch needs to be backported up to v5.3 and the issue being
-> flagged here is only visible since v6.16 (bd11ff421d36), so either
-> handle the issue in a follow-up or in patch 2/2 of v2.
+AFAICS only pktdrill or similar can send MPJ TFO; there is no gain in
+keeping such subflows open, and some potential risks. IMHO this too
+similar to the disconnect()/ADDR_FORM scenarios to embark into the 'keep
+the feature alive' path.
 
-I'd follow up on it.  I might not have enough time to check all bit field
-users and locking this week (due to oncall).
+I suggest just resetting the TFO MPJ subflow and avoid other possible
+follow-ups.
 
+@Yilin, please wait for agreement on this point before sending a new
+revision.
 
->
-> >
-> > Note the load here is a plain bitfield read with no READ_ONCE(), and th=
-e
-> > store side is a plain RMW, so this is also visible to KCSAN as a data
-> > race.  rt6_multipath_flush() writes should_flush under tb6_lock, so
-> > dst_nopolicy looks like the one unsynchronized peer.
-> >
-> > Would it make sense to give this flag its own storage accessed with
-> > WRITE_ONCE()/READ_ONCE() (or to serialize all writers of the containing
-> > byte), and to document which lock protects it?
-> >
-> > The comment above the store in fib6_drop_pcpu_from() still mentions onl=
-y
-> > rt6_make_pcpu_route() and the cmpxchg() as the counterpart; could it al=
-so
-> > mention the new rt6_exception_lock reader added here?
->
-> I already mentioned this and it's minor.
+Thanks,
 
-Yes, I'll follow up on this in net-next.
+Paolo
 
-Thanks !
