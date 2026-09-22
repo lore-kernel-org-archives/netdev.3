@@ -1,167 +1,165 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D13B35A3BF
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6210024501D
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790041573; cv=none; b=iJJFuVbotr+8LcmJyIqaNUVSFiasHODGcm0cNDdcc1dxXBLGvol5XgTVl4ES0kKoEKmeyK+uGuyEduxuES3zTlzwQ+O8DxvRHrEmh+YP+/GfLW7D3GoCaSvqd2cfPxQcAfHzs6xZoXMM58/XKHCQzwAXfTHZ4DrdCAVwnLTpsnQ=
+	t=1790042160; cv=none; b=hlGoBZsZLPQ/18SfaEm3fFEIf4wDgP1I9hr9eGWkEnrWwERB2PX+hrnY+JmI1tf9S5rdxaQcI3SAD4nwLPid2EPma+bXn1lK9GcFxOBNj0YAV3b2d0+ONvSgp3L0xOfJ8YiiNPOSbA9yeH0gXdxqMSOpXWFxPVUmd/WxW65+Fiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790041573; c=relaxed/simple;
-	bh=y+XAD1bzLlPmvSg9e/3OC75RDcM7A3CrfnaE1zi3yj8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=flUmuNvS6RM3Ss32y/udA7xKhykEJt65fbP50v5vCDGtmV+3LzI3Cds5Dro3T1Tbt0EqxZFg3Lk9ht3rSE2vMYkJS8FyaHWUxc9uZ9AQknBvd8QZxo62rshJ4Qj0fVCNeYIKIXdYsJXT1gk8rpdUTtY2SYoKI3w1hz4Va3zNPsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwNHhgDL; arc=none smtp.client-ip=74.125.230.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790042160; c=relaxed/simple;
+	bh=BpBGgDpqV9ksrqZ16ZXweY+75sFYrMJFOevwWr8kkDg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=awuCQi+Sh8JLZdR1BD5MgaHy/M8RSoDDpmda1hf69pFUjsB7IsncgTjhy6ee/dXjSOFcdOMPmSYM3xRU1MbpAajAheoHcVyVScwIJu4lQe2AjRRbc2xhQwXJMs+oJ2t4p3yosHU4iOL9IJ6kYeHm+XwOfW3bDs9Sx46s3roY3H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQl8/GMC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwNHhgDL"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfc6db0aso32043516d6.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790041570; x=1790646370; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y8xPShnnQq1RRm8SZPF19MXAMPQrqUo2Z2vKGdJI+3o=;
-        b=NwNHhgDL4rP/C/q35BW5E+4t4rw7psMkxYpIWrRf7Rtw2yYmiE82xVbc7x9E69lbgL
-         ccBJ6OPJkKusO0h8nCldSxZwLhojVaYSsXxJ5jf6JRHSk45SlmTy53ncHVocjs2pXq9e
-         ji//CEeZUuuSUtYufvXJ4IVhufQN6gA6Z5jRHqZ6nS8atrvq1Zf/yCmeVbThH2PSobvG
-         TMQS7qBTvmSJpMEZqfkudm1R5GpPeubd/iL0Gkzl6KFr/BAdbX/+YrLtfX37x7Afgf4f
-         XdtRwkyY7O1UjXwHGT5CoK2lvrgXIP+17QaR27EcEuMtfiw3ql8KpKDbsCf9jy4dMoI7
-         Us5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790041570; x=1790646370;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y8xPShnnQq1RRm8SZPF19MXAMPQrqUo2Z2vKGdJI+3o=;
-        b=P93wj2/x7I5+A9jTW6pOIEJaLNPpBvPwz/n7OOLm8+4cweplEAXE/ckeD41Uz0RCxm
-         /n7EdTBbFZcDYQQ67ifB0h4VIrWgzUuEFeHmV8PF7CTqXCrEgK/xjO81gRdq9ZCHjZV/
-         82dLXWPmMtzbt+FZV/WC4O5MqHmzlu8X2AQpZXfgp+T4JXx2mmzs5mDh4J1EnUhRWPY8
-         AH9PNXiHKmCmI738YNGmmlRM8cocNmGxUA0hw6dVJn/kANVvAUtQY9DFOspUCs2eec04
-         xdm5KeyRIULP8jJFqlijABzAvhgl7FRNMnUg7JnHsFAm2fUDSSzO/bYzT+FWcTnTO52t
-         mU1w==
-X-Forwarded-Encrypted: i=1; AKwUvBxrx0mYBDavtU0GTrXDK3CKCkw2OHxc0CBJItp54sAGlS3Q+QB0Nf9+VCL+XmaPUjP0UuyPeiY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mDU3ZUMeqVK1mWnVbs4R4x1xMgfoJv76M2VWL7nCU7kd9oOVzJ
-	xiFJsjjFgc1+9rtB8xvM76YbY0IcdSIztp0u9khHgqZcjLNE9OXfyKY=
-X-Gm-Gg: AYBFou27fRiNazC55KMLCk4dbXOkG0ghmHY4Z5+OlQzKVxr5km5d3YBJEKDSZq0cqj7
-	O4QgR2Up6HA4VcSmOD5ycoNt/OiCeXUoFFvF+0Gh97v9pv/WJbdKmugF55pW3RNhNdLNXV1QcWK
-	+uhsS7BhgDtPy8rsq/szrUGIhrZmtFfe5pcxtuv4yqPEUH0eHELMr0ZqyMhadC8kNizgZauD+pL
-	GSKbLc2vFuvLvfNwj/ZecpNbm97MDPASU01f7/FjjqKxpzUQaa2nWcL+xIwKVo+lYjmg6h/vHDp
-	Qjf3w973eZVs0dzEGY0ZqCeegog9Y2wGzjmyozeFdaTNLFJpv1q7rIZjTJffbIQUI0Cc73HFL71
-	1wVW+IZ9ji22gW7Sp8Anw5g93B4v+xJ6WRpSCM6FzZvFjfdIhMDmU0NCkSp5RkgRJ/eMX0wmVOa
-	qrwmxDKOwK21HVKVVE67E/T0hcoTPC8URfedymMb3QAvJelhoaIHw8RwEis5NliQE4V5AACNBuO
-	SHlwNJvadgaMtjxmjYY2atr89n+/LdXZ5LoMQ/rVyWFABghFOImQn6fKD4morFrblSXBMDBG+t9
-	QlAf9wiqYzrF/CDL7M72OUqLZLgm
-X-Received: by 2002:a05:622a:1cc5:b0:532:c925:c31e with SMTP id d75a77b69052e-532d8d34820mr37916871cf.16.1790041570399;
-        Mon, 21 Sep 2026 18:46:10 -0700 (PDT)
-Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532e17123casm1228641cf.3.2026.09.21.18.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 18:46:09 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Rasesh Mody <rmody@marvell.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: GR-Linux-NIC-Dev@marvell.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net] bna: prevent IOC timer rearm during teardown
-Date: Mon, 21 Sep 2026 21:46:05 -0400
-Message-ID: <20260922014605.588040-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQl8/GMC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58761F000FF;
+	Tue, 22 Sep 2026 01:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790042158;
+	bh=fJt2+IHZ0Tor0dOqF36XcL2IvTrSIBSAjA4aF8eDIx4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AQl8/GMCouXldlClkeo9xI3sj1BkZg1Tq6SIkPJUBP10XfdmDXtphNpKyBth8YY2h
+	 Cckz6gVKkeWEAPwLK+B1njv1BClpF9HAu5Ty9ADLRdMcoVN/YhG+6Z1oX4BkY47OfH
+	 v6bn84Qelaz98YvWex/CEYX0I1ZvT0ao+ClX2HZqBGBWYGX+HuNeBHqvUF898Sxo2E
+	 7AbVsruzRJ1h3Ysdx+ldgEi3gbjwD+MaaLdOJCCY4iMIrTx2zXrQngq4phvWIyqxSj
+	 aDBK+tRoujBMDYTGt0mGAvhKay2B3Psb5Y0x3ueB2dA9wdiYvyPb/rXaXBv4667npo
+	 AlBARAR2qQJ0g==
+Subject: Re: [PATCH net-next v17 01/15] net: tls: reject TLS 1.3 offload in
+ chcr_ktls and nfp drivers
+From: netdev-bot+sashiko@kernel.org
+To: rjethwani@purestorage.com
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
+ kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
+ edumazet@google.com, leon@kernel.org, andrew.gospodarek@broadcom.com
+Date: Tue, 22 Sep 2026 01:55:57 +0000
+Message-ID: <179004215742.2160803.15371116345141495279@kernel.org>
+In-Reply-To: <20260917224355.2288021-2-rjethwani@purestorage.com>
+References: <20260917224355.2288021-2-rjethwani@purestorage.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-bna: prevent IOC timer rearm during teardown
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-bnad_pci_remove() and the probe disable_ioceth path call
-timer_delete_sync() for ioc_timer, sem_timer and hb_timer, but not for
-iocpf_timer.  bnad_iocpf_timeout() then takes bnad->bna_lock after
-free_netdev() has freed the struct bnad.
+Low priority / nit picks for your consideration:
 
-Deleting iocpf_timer last does not fix this.  sem_timer and
-iocpf_timer rearm each other: bnad_iocpf_sem_timeout() can arm
-iocpf_timer, and bnad_iocpf_timeout() arms sem_timer from
-bfa_ioc_hw_sem_get() when the semaphore is busy.
-timer_delete_sync() only waits out its own callback.
-bnad_ioceth_disable() can time out and leave that callback live.
+- [Low] Claim: the two new `crypto_info->version != TLS_1_2_VERSION`
+  guards in chcr_ktls_dev_add() and nfp_net_tls_add() are dead code,…
+- [Low] Claim: the patch implements the same rejection with two different
+  semantics — nfp_net_tls_add() returns -EOPNOTSUPP while…
 
-Shut all four IOC timers down with timer_shutdown_sync() on both
-paths, so a later mod_timer() is ignored.
+--
 
-This issue was identified during our ongoing static-analysis research
-while reviewing kernel code.
+net: tls: reject TLS 1.3 offload in chcr_ktls and nfp drivers
 
-Fixes: 1d32f7696286 ("bna: IOC failure auto recovery fix")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
- drivers/net/ethernet/brocade/bna/bnad.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+The patch adds an early version check to the ->tls_dev_add callbacks of
+the chcr_ktls and nfp drivers so that a crypto_info whose version is not
+TLS_1_2_VERSION is refused before any hardware state is programmed.
 
-diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
-index 8b75004ba7c9..55dfd4896785 100644
---- a/drivers/net/ethernet/brocade/bna/bnad.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad.c
-@@ -2571,6 +2571,22 @@ bnad_ioceth_disable(struct bnad *bnad)
- 	return err;
- }
- 
-+/*
-+ * The IOC timers rearm one another, so deleting one cannot stop a
-+ * sibling callback from arming it again.  Shut them down so a later
-+ * mod_timer() is ignored.
-+ */
-+static void
-+bnad_ioc_timers_shutdown(struct bnad *bnad)
-+{
-+	struct bfa_ioc *ioc = &bnad->bna.ioceth.ioc;
-+
-+	timer_shutdown_sync(&ioc->ioc_timer);
-+	timer_shutdown_sync(&ioc->sem_timer);
-+	timer_shutdown_sync(&ioc->hb_timer);
-+	timer_shutdown_sync(&ioc->iocpf_timer);
-+}
-+
- static int
- bnad_ioceth_enable(struct bnad *bnad)
- {
-@@ -3727,9 +3743,7 @@ bnad_pci_probe(struct pci_dev *pdev,
- 	bnad_res_free(bnad, &bnad->mod_res_info[0], BNA_MOD_RES_T_MAX);
- disable_ioceth:
- 	bnad_ioceth_disable(bnad);
--	timer_delete_sync(&bnad->bna.ioceth.ioc.ioc_timer);
--	timer_delete_sync(&bnad->bna.ioceth.ioc.sem_timer);
--	timer_delete_sync(&bnad->bna.ioceth.ioc.hb_timer);
-+	bnad_ioc_timers_shutdown(bnad);
- 	spin_lock_irqsave(&bnad->bna_lock, flags);
- 	bna_uninit(bna);
- 	spin_unlock_irqrestore(&bnad->bna_lock, flags);
-@@ -3770,9 +3784,7 @@ bnad_pci_remove(struct pci_dev *pdev)
- 
- 	mutex_lock(&bnad->conf_mutex);
- 	bnad_ioceth_disable(bnad);
--	timer_delete_sync(&bnad->bna.ioceth.ioc.ioc_timer);
--	timer_delete_sync(&bnad->bna.ioceth.ioc.sem_timer);
--	timer_delete_sync(&bnad->bna.ioceth.ioc.hb_timer);
-+	bnad_ioc_timers_shutdown(bnad);
- 	spin_lock_irqsave(&bnad->bna_lock, flags);
- 	bna_uninit(bna);
- 	spin_unlock_irqrestore(&bnad->bna_lock, flags);
-base-commit: 238650ef6c7c7cca08e032527329424c9fbd70e5
+A couple of questions on the two new checks below.
+
+> diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
+> index f5acd4be1e69d..29e108ce67645 100644
+> --- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
+> +++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
+> @@ -431,6 +431,9 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
+>  	atomic64_inc(&port_stats->ktls_tx_connection_open);
+>  	u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;
+>  
+> +	if (crypto_info->version != TLS_1_2_VERSION)
+> +		goto out;
+> +
+
+[Severity: Low]
+Is this new check in chcr_ktls_dev_add() reachable as of this commit?  At
+this point net/tls still filters the version before calling
+->tls_dev_add:
+
+net/tls/tls_device.c:tls_set_device_offload() {
+	...
+	if (crypto_info->version != TLS_1_2_VERSION) {
+		rc = -EOPNOTSUPP;
+		goto release_netdev;
+	}
+	...
+}
+
+and the same for the receive side in tls_set_device_offload_rx():
+
+	if (ctx->crypto_recv.info.version != TLS_1_2_VERSION)
+		return -EOPNOTSUPP;
+
+The guards do become live once those two core checks are dropped later in
+the series, and the ordering here looks bisect-safe, so this is only a
+changelog question: could the commit message say that this is a
+prerequisite for the later core change that starts accepting TLS 1.3
+crypto_info, rather than describing it as preventing attempts that the
+core currently already blocks?
+
+For nfp the guard is also not covered by nfp_net_cipher_supported(), which
+only looks at cipher_type, so a TLS 1.3 AES-GCM-128 crypto_info would pass
+that helper once the core stops filtering versions.
+
+[Severity: Low]
+This isn't a bug, but the two halves of the patch report the same
+condition differently.  nfp_net_tls_add() returns -EOPNOTSUPP while
+chcr_ktls_dev_add() jumps to the shared failure label:
+
+out:
+	atomic64_inc(&port_stats->ktls_tx_connection_fail);
+	return -1;
+
+so chcr reports -EPERM for an unsupported version and also counts the
+request in both ktls_tx_connection_open and ktls_tx_connection_fail.
+
+The errno does not reach userspace on the only reachable path, since
+do_tls_setsockopt_conf() treats any nonzero return from
+tls_set_device_offload() on an initial install as a software fallback:
+
+net/tls/tls_main.c:do_tls_setsockopt_conf() {
+	...
+	rc = tls_set_device_offload(sk);
+	conf = TLS_HW;
+	if (!rc) {
+	...
+	} else {
+		rc = tls_set_sw_offload(sk, 1, update ? crypto_info : NULL);
+	...
+}
+
+and the counter behaviour matches the existing reject branches in the same
+function (RX direction, chcr_get_ktls_tx_info(), u_ctx->detach), which all
+use the same out: label.  Would it still be preferable to return
+-EOPNOTSUPP here to match nfp_net_tls_add() and the core?
+
+>  	if (direction == TLS_OFFLOAD_CTX_DIR_RX) {
+>  		pr_err("not expecting for RX direction\n");
+>  		goto out;
+> diff --git a/drivers/net/ethernet/netronome/nfp/crypto/tls.c b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
+> index 9983d7aa2b9cd..13864c6a55dce 100644
+> --- a/drivers/net/ethernet/netronome/nfp/crypto/tls.c
+> +++ b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
+> @@ -287,6 +287,9 @@ nfp_net_tls_add(struct net_device *netdev, struct sock *sk,
+>  	BUILD_BUG_ON(offsetof(struct nfp_net_tls_offload_ctx, rx_end) >
+>  		     TLS_DRIVER_STATE_SIZE_RX);
+>  
+> +	if (crypto_info->version != TLS_1_2_VERSION)
+> +		return -EOPNOTSUPP;
+> +
+>  	if (!nfp_net_cipher_supported(nn, crypto_info->cipher_type, direction))
+>  		return -EOPNOTSUPP;
+>
+
 -- 
-2.53.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917224355.2288021-1-rjethwani%40purestorage.com
