@@ -1,173 +1,229 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D038DC69
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814BA35DA40;
+	Tue, 22 Sep 2026 03:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790046412; cv=none; b=DK8dR5a/eh4s7RCRT20J2juM/sfDyzNuY6aWudfXtIIP+2wCYt/nXpiSWplpJI2BVme+LfAe2ekaUx1tLsKKjNt0l1edP+qxCeuJBLviLu+ZdB1T88djg2DK49tTBnc6YejlvaKikj5sqvkj54EZIfVYDbzYFyxQv4fsL5R9IM8=
+	t=1790046658; cv=none; b=BmkY9Fg/Mw/OMcWpt3a2mgDZEtalp0AOqrm53ksbEpBMTGZej8p3exC5l7rsgEnndngsXY3YbGQv3tGUmk8ztTuC93XKOQPP6oB0t3SsF1SH9DCQdJ3adNbkeYY6hIKqL0lmNm9440AszrPl7pg3rsTJGFxdUJU1BXLHHSOjFeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790046412; c=relaxed/simple;
-	bh=gKseP2UPem83UrKFMaWwniyYTAzvUEDYHT63VKc/kdM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=n1t3CZ6+kiZRh1gmVBfo9snfNm6Ot51A4vdq2fs/Nw1iVoxDX5uU1Vir+Gme48kurqCP5S6afc1loiIQPVwBG8h9QfzqFM8bLkz2iRTKEgu5EMEX+6kxO38dIS65492wZdwwArMHVPsBL3zFk99NQuMBLS46cDlAvNVnWlTiP6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qFx5ek6X; arc=none smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790046658; c=relaxed/simple;
+	bh=NllU/WOrUsmJskpSVrPDTGRzxl46+qwRZZY2NvEUyxE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=p4uNxR2r7FOQJ0xPowQJz4JLWEdMmFG/NI8zD6RgdAUprIyMVlRz0xNOAtvdlBR1QuFhOh08DCuftEFQPnoX8rOxcQBrquB6UjLfwWcI/h9OqkLdob7sIhXb9BlWCuL2rVIbgZDozNz5pIpsVuQAR7VnMGLAT4U3AuM2C4v5k+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zr4rXcS8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qFx5ek6X"
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d43f9b119so33405237b3.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:06:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790046409; x=1790651209; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=D4L3vIDsc7dnY0rPhCGADvH7oIEWEbf+uUvOLRnQTeQ=;
-        b=qFx5ek6XsNw9i5j4jz8c5TXTZEeSc7WC9b1A1cf62OcojJmdAI/ig5JK/E90HBpL4m
-         QPJAVd6o8Mhv6HFGBD5KwnLi2e63Yjfy7EykhJGZ7pBc5rYV81wGFEzjhOYzy+9uH5lQ
-         Wx//0wkCijxOAdMpA9Bw4iQTuvGNiceowUIldhAkjHN/VLPlYX8a1pXUJI7WKNZStuxL
-         dwLKLiXYs3lBcpirXVmlFTWUloWQD4uXBaNlCOxyu9GXJ602JemT86Qvkf+IeinWe2nF
-         BVK4c0xMyWNQUUeo3v1DKiWj8bi6BaLaG7Qa3gZzJnV36Jlv5fkF2Pp/SUPdikHK5Rah
-         rT9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790046410; x=1790651210;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D4L3vIDsc7dnY0rPhCGADvH7oIEWEbf+uUvOLRnQTeQ=;
-        b=U22sl46ZmumotAARQYIW1RUgKiePNUEQafLFkA4xrAyxaOyrwbSZbnfMKTQEAFODqN
-         yIykFLOk6hCqX+SlpuPs/r3QRg8g0/tjn7e9CEa9hZS4BvtZUI4+i2K1bWWdbqhj/X3t
-         eB5aoFz9fnQOsdqb2d2vhy5iNEgh9wFAPKNnpJDUM4BlElCdqHGu/HEVKwMGWlsXovKc
-         av07WzuWqjRbhNIvWgrQWJ71/tP9VkwR0Yg1n3Q1Ja1SCtYNKdv1xizpQ4XdrAbKfWsm
-         wKrMzsx6vHlRzN6zkz6e6IS3gl8lEWYR8t9jTBN03yoP3bmT3fGMIzJdjn6jc6OTfN22
-         4mhA==
-X-Forwarded-Encrypted: i=1; AKwUvBzOLJbljdVjLYbzxsD9lGdXx9YYmyHI7K98C+LMzS+BlUdqZtHRTmEKYjNuJdxiwKedDK8+zes=@vger.kernel.org
-X-Gm-Message-State: AFuF++k4uLPLGKLS1CXBJX722jDBVxeI6k3P0BpS1LalmV+qvm0esD3T
-	KZD2ocME82Ttio0wDpYAGy9CtjvxVKYtncTbfAErn05Zz+tAljNxptCL
-X-Gm-Gg: AYBFou2YPb6TRhD/nboqKxHdanTv2A2LIYtV37IYepuP8aCOjvfvrtINJtd24VpSX6o
-	LwdyOPZGqxBtymm8FnCo3H3hDN8IeRGR7+QkC6PS+MyDEzZzqRgOzBmd5234TdgJrFMrzKzZS+c
-	x6FKhbxJOv/RQc228NDGsHeyy//kUwa/43IPaYyCk3qEkmnuX8oM+1RO/XpnR5Xkso1s7mq8PLZ
-	Wg76uKKBH4+U83PfvNKPdGwOTlMZrxpopwvt13eF4iZqAJU3V+nns1X2T2KTq7WIcD/XruBryYa
-	gIhaO3sQq5+LHvcX1RqLLnIB1yUickfNV5gYOnGLTQ8fgv7Q9ERLuDsg3qY3wEAVD3Vtr55r5Y+
-	urcsZFJQqjp30rKfaE8M0W9eXt2pCDVn1fLzALozNBL/JWDBzeppF6GUfYKSKidHFSk4VJjhwYi
-	FRb1cuJ9UoT0msHHhtegjFAsWUxv+1Xafo7q9o3fYeJ9Xxudl/mZfsAHk68/i6GJKyCEsu6uxG6
-	ne6Km6KtwzbALr3J7qcbm5LCa3IrD4GIgZcE6CZh89aPNoea7uFSr8kVTuoytg=
-X-Received: by 2002:a05:690c:39b:b0:89a:63da:fa95 with SMTP id 00721157ae682-89a63db043amr31355787b3.80.1790046409598;
-        Mon, 21 Sep 2026 20:06:49 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a2c2f797c4sm1471287b3.32.2026.09.21.20.06.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 20:06:48 -0700 (PDT)
-Date: Mon, 21 Sep 2026 23:06:48 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Dairui Zhang <zhangdairui@gmail.com>, 
- netdev@vger.kernel.org
-Cc: Dairui Zhang <zhangdairui@gmail.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1b65de0a75434@gmail.com>
-In-Reply-To: <20260921192608.1420047-1-zhangdairui@gmail.com>
-References: <20260921192608.1420047-1-zhangdairui@gmail.com>
-Subject: Re: [PATCH net] af_packet: fix integer overflow in
- prb_calc_retire_blk_tmo()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zr4rXcS8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8771F000FF;
+	Tue, 22 Sep 2026 03:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790046657;
+	bh=JuRCpvKO2FyROzwUiWDogYR8vNf+2vmDwHRyUrGgkfU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Zr4rXcS8NWbl/AZ1+KRIWVSTmrY0JXrchZDednHjdMwHQAWDMAKWSLWXC3rmg7b3U
+	 qJemHH70twb0wbVmRxadYffvmudSGHw+1pxSuS8jbHk2E4A9oHiZ7zffPg1WNzbAus
+	 ed781A8fePSE/WqP531H7YHO1qXvwPSylFlr1fJrrnsSpgKF4JOp6cdIaVquHd9sK2
+	 gbPjJ4DjRYn7Kkg3tnVnieDLpoWFZpB2jpJwDTxrCq76HFe5KxKVYqOqvJQYns0Oj8
+	 D2s70+VGoaNw7bZk5A5xvsA8tbk92LO1B2oflhx/621hQwyd4ry9Vlq+avkLvrkxGZ
+	 0RL9I33ghv2BA==
+Subject: Re: [PATCH net] net: bcmgenet: add hwtstamp callbacks to restore PHY
+ timestamping
+From: netdev-bot+sashiko@kernel.org
+To: jjc@jclark.com
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com, netdev@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, vadim.fedorenko@linux.dev,
+ richardcochran@gmail.com, kory.maincent@bootlin.com
+Date: Tue, 22 Sep 2026 03:10:55 +0000
+Message-ID: <179004665570.2160803.5770454161179957984@kernel.org>
+In-Reply-To: <20260918030149.80398-1-jjc@jclark.com>
+References: <20260918030149.80398-1-jjc@jclark.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Dairui Zhang wrote:
-> prb_calc_retire_blk_tmo() computes in 32-bit int arithmetic:
-> 
->         mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
-> 
-> If I'm reading the validation right, tp_block_size is user
-> controlled and packet_set_ring() only rejects values that are <= 0
-> as int or not page aligned, so a 256MiB block goes right through
-> (and alloc_one_pg_vec_page() even has a vzalloc fallback for it).
-> 0x10000000 * 8 wraps to INT_MIN, and on a NIC reporting 1 Gbps
-> (div == 1) the function ends up returning -2047.
-> 
-> The condition is actually (8 * size) mod 2^32 >= 2^31 && div == 1,
-> so the trigger set is [256,512), [768,1024), [1280,1536) and
-> [1792,2048) MiB. Other sizes wrap to non-negative values and faster
-> links divide the unsigned value back below 2^31, which is why this
-> doesn't blow up for everyone.
-> 
-> What makes it fatal is what happens next in init_prb_bdqc():
-> 
->         p1->interval_ktime = ms_to_ktime(prb_calc_retire_blk_tmo(...));
->         hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
->                       HRTIMER_MODE_REL_SOFT);
-> 
-> A negative relative timeout expires immediately. The callback
-> unconditionally returns HRTIMER_RESTART, and hrtimer_forward() turns
-> the negative interval into hrtimer_resolution:
-> 
->         if (interval < hrtimer_resolution)
->                 interval = hrtimer_resolution;
-> 
-> So the SOFT timer re-fires at the maximum rate forever, holding
-> sk_receive_queue.lock each pass. One CPU spins in softirq until the
-> socket is closed. Repeat with more rings and the machine is gone.
-> 
-> This is mostly a new problem: the overflow is ancient, but with
-> msecs_to_jiffies() a negative timeout just got clamped to a huge
-> unsigned value, i.e. the retire timer effectively never fired.
-> f7460d2989fa ("net: af_packet: Use hrtimer to do the retire
-> operation", v6.18) turned it into "fire immediately and spin".
-> Still present in 7.2.6 and in current mainline as of this
-> writing.
-> 
-> (Unrelated to CVE-2019-20812 - that one was the ethtool failure path
-> returning 0, which now returns DEFAULT_PRB_RETIRE_TOV.)
-> 
-> Reproducer, needs CAP_NET_RAW (a --network host container has it by
-> default) and a 1 Gbps NIC (QEMU e1000 works):
-> 
->         int fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
->         bind(fd, ...);
->         int v = TPACKET_V3;
->         setsockopt(fd, SOL_PACKET, PACKET_VERSION, &v, sizeof(v));
->         struct tpacket_req3 req = {
->                 .tp_block_size = 0x10000000,
->                 .tp_block_nr = 1,
->                 .tp_frame_size = 2048,
->                 .tp_frame_nr = 0x10000000 / 2048,
->                 .tp_retire_blk_tov = 0,
->         };
->         setsockopt(fd, SOL_PACKET, PACKET_RX_RING, &req, sizeof(req));
-> 
-> Compute in 64 bits instead. The operands are already bounded by the
-> existing validation, so nothing else changes. If you'd prefer a
-> different fix, just say so and I'll respin.
-> 
-> Fixes: f7460d2989fa ("net: af_packet: Use hrtimer to do the retire operation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dairui Zhang <zhangdairui@gmail.com>
-> ---
-> First patch to netdev, and compile-tested only - I don't have a
-> 1 Gbps setup to trigger it live. If I've misread the code, got the
-> Fixes: tag wrong, or picked the wrong fix, please say so and I'll
-> respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Code Looks good to me. Thanks.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-As Fixes tag do prefer original commit f6fb8f100b80 ("af-packet:
-TPACKET_V3 flexible buffer implementation.")
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-That is where the bug is introduced, and the effect of the bug prior
-to the currenty blamed commit is not as clear-cut as described in the
-commit message.
+- [High] Fix applied at the wrong layer: the regression the commit
+  message diagnoses ("the core rejects timestamp configuration requests…
+- [Medium] Registering ndo_hwtstamp_get/ndo_hwtstamp_set on a MAC that
+  has no PHC opens a one-way trap on the ETHTOOL_MSG_TSCONFIG_SET path.
 
-The return value of prb_calc_retire_blk_tmo() is stored into an
-unsigned short retire_blk_tov then, so can be truncated. A 0-jiffy
-delay loop can also be programmed. Though its effect is not nearly as
-detrimental as from the blamed commit on.
+--
+
+net: bcmgenet: add hwtstamp callbacks to restore PHY timestamping
+
+This adds ndo_hwtstamp_get() and ndo_hwtstamp_set() stubs to bcmgenet that
+both return -EOPNOTSUPP, so that the core hwtstamp entry points no longer
+reject SIOCSHWTSTAMP/SIOCGHWTSTAMP before the phylib helpers get a chance to
+dispatch to a timestamp-capable PHY.  No other behaviour is changed.
+
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index b916080f4ff1..98d861811328 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -3721,6 +3721,19 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
+>  	return 0;
+>  }
+>  
+> +static int bcmgenet_hwtstamp_get(struct net_device *dev,
+> +				 struct kernel_hwtstamp_config *cfg)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static int bcmgenet_hwtstamp_set(struct net_device *dev,
+> +				 struct kernel_hwtstamp_config *cfg,
+> +				 struct netlink_ext_ack *extack)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+
+[Severity: High]
+
+Should this be fixed in net/core instead of per driver?  The commit message
+describes the failure as "the core rejects timestamp configuration requests
+before they reach the PHY", and the rejecting code is provider independent:
+
+net/core/dev_ioctl.c:dev_get_hwtstamp() {
+	if (!ops->ndo_hwtstamp_get)
+		return -EOPNOTSUPP;
+	...
+}
+
+net/core/dev_ioctl.c:dev_set_hwtstamp() {
+	...
+	if (!ops->ndo_hwtstamp_set)
+		return -EOPNOTSUPP;
+	...
+}
+
+The same presence test exists in generic_hwtstamp_get_lower(),
+generic_hwtstamp_set_lower() and in ethnl_set_tsconfig_validate()
+(net/ethtool/tsconfig.c):
+
+	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
+		return -EOPNOTSUPP;
+
+These are the lines 5062245a5a7f turned from a dev_eth_ioctl() fallback into
+a hard error, so every MAC whose PTP comes only from the PHY is affected, not
+just bcmgenet.
+
+Two drivers in the same directory still have no ndo_hwtstamp_* and rely on
+phylib ioctl handling:
+
+drivers/net/ethernet/broadcom/bgmac.c:
+	.ndo_eth_ioctl           = phy_do_ioctl_running,
+
+drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c:
+	.ndo_eth_ioctl		= phy_do_ioctl_running,
+
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts wires bgmac's gmac0 to
+a BCM54210E, and that PHY driver calls bcm_ptp_probe() and sets
+phydev->default_timestamp = true, so that board still fails SIOCSHWTSTAMP
+after this patch.  Would skipping the NDO presence test when
+phy_is_default_hwtstamp(dev->phydev) is true cover all of these at once?
+
+A related question about the stubs themselves: since dev_set_hwtstamp_phylib()
+only calls the MAC callback when !phy_ts or dev->see_all_hwtstamp_requests,
+and bcmgenet sets neither, are these two functions ever invoked in the PHY
+case?  If they exist purely as a capability signal, would a comment saying so
+help, so a later "these always fail, remove them" cleanup does not silently
+bring the failure back?
+
+>  static const struct net_device_ops bcmgenet_netdev_ops = {
+>  	.ndo_open		= bcmgenet_open,
+>  	.ndo_stop		= bcmgenet_close,
+> @@ -3732,6 +3745,8 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
+>  	.ndo_set_features	= bcmgenet_set_features,
+>  	.ndo_get_stats64	= bcmgenet_get_stats64,
+>  	.ndo_change_carrier	= bcmgenet_change_carrier,
+> +	.ndo_hwtstamp_get	= bcmgenet_hwtstamp_get,
+> +	.ndo_hwtstamp_set	= bcmgenet_hwtstamp_set,
+>  };
+
+[Severity: Medium]
+
+Can advertising these NDOs on a MAC without a PHC make the
+ETHTOOL_MSG_TSCONFIG_SET path reachable in a way that cannot be undone?
+
+bcmgenet uses .get_ts_info = ethtool_op_get_ts_info, which reports
+info->phc_index = -1.  Before this patch ethnl_set_tsconfig_validate()
+returned -EOPNOTSUPP for bcmgenet, so ethnl_set_tsconfig() was never reached.
+With both NDOs present, validation passes.
+
+Consider this sequence:
+
+1. TSCONFIG_SET selecting the PHY provider (index = the PHY phc_index), so
+   dev->hwprov is non-NULL and PHY timestamping works.
+
+2. TSCONFIG_SET with ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX = 0xFFFFFFFF and
+   QUALIFIER = 0.  ts_parse_hwtst_provider() stores that through
+   ethnl_update_u32() into the int index field of struct
+   hwtstamp_provider_desc, giving -1.
+
+net/ethtool/common.c:ethtool_net_get_ts_info_by_phc() {
+	...
+	if (info->phc_index == hwprov_desc->index &&
+	    net_support_hwtstamp_qualifier(dev, hwprov_desc->qualifier))
+		return 0;
+	...
+}
+
+-1 == -1 matches, and net_support_hwtstamp_qualifier() returns true because
+bcmgenet declares no supported_hwtstamp_qualifiers, so the provider becomes
+HWTSTAMP_SOURCE_NETDEV with phydev = NULL.
+
+ethnl_set_tsconfig() first disables the working PHY timestamper with
+dev_set_hwtstamp_phylib(zero_config) and then installs that provider:
+
+net/ethtool/tsconfig.c:ethnl_set_tsconfig() {
+	...
+		__hwprov = rcu_replace_pointer(dev->hwprov, hwprov,
+					       netdev_is_locked_ops_compat(dev));
+	...
+}
+
+>From there dev_get_hwtstamp_phylib() and dev_set_hwtstamp_phylib() take the
+HWTSTAMP_SOURCE_NETDEV branch:
+
+net/core/dev_ioctl.c:dev_set_hwtstamp_phylib() {
+	...
+		} else if (hwprov->source == HWTSTAMP_SOURCE_NETDEV) {
+			phy_ts = false;
+	...
+}
+
+so the PHY is never consulted and bcmgenet_hwtstamp_set() returns
+-EOPNOTSUPP.
+
+Does that also block recovery?  Reselecting the PHY provider runs the
+zero-config disable step first, which now hits the NETDEV branch and the stub,
+so ethnl_set_tsconfig() bails out through err_free_hwprov without replacing
+dev->hwprov.  dev->hwprov is only cleared in phy_detach() when
+hwprov->phydev matches the detaching phydev, which is NULL here, so ifdown
+and ifup would not clear it either.
+
+The permissive -1 comparison itself lives in core and predates this change,
+but is this patch what makes it reachable for bcmgenet?  Would declaring a
+real .get_ts_info (or rejecting an index of -1) avoid it?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918030149.80398-1-jjc%40jclark.com
