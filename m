@@ -1,123 +1,94 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B0747532E;
-	Tue, 22 Sep 2026 16:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A8939D6FC
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790095979; cv=none; b=OnFZTeDOU7dfVTLMpI6RUe50K94X7xG9n4xVmRvDn8pt2MXNYKiX0TvwYqLAetfevdxq6sfED0ZBCLROm9dGCYArS3cS+pvEdWsZh9U5wqAyTftuPI5ox37X0a/SzQ7L5QIm1Dgg7p4k4xq5NDuzh8RKBRfqkXF2gQiC8Q8DwuU=
+	t=1790096473; cv=none; b=kEouLCr16aH0eJsEJtYqOCZRJtyPzOgXbVUzByaBLuq97rcCb5BTcKDYWcM3DG1Ev6oIZFnnvZk6MnYLdlw7j/xutjuSD/Zonfs4s/XiqH3rRWoPJJJQXj5u9kVqFm9fU8NBIXPF8NASETFqS7bGWgDNxtniOYjQTR0Q4Zq8uzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790095979; c=relaxed/simple;
-	bh=Zx7JncGWk4TW7RfMzGAcjrtyj4qdjZAEcCxFpOv3g5Q=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=mq79B1BsLVMqvymjB1HVQLg0T3358wSP9KEzyJZpXzB4vw/GZEd+0zKlzHjzQ3yPcL1gIugTMEcgFVVqh9xjsPUaT1SQ+qxkKVAOlVapVfiYCRs7m071HqtH/dr4mYkfwhMTRJBV4dM7JM7byHu5d51BsriB2xT0zHoR/MJ0B8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=xEnZmAQV; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1790096473; c=relaxed/simple;
+	bh=qQJNstfTwv8iNMFEAMGwgqeGoCJp+DtUVQAv7X3CIJc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VrF1OqaaW9TwUDVWTTk8EkAeL8hDZtvmje7z8IWhfXETWGPMQuydEUO1vPBaJZFMTptD3F7sXhOAwfE1VUTDe6bW6m79+CrM3ahSTJldqWq5YDFkBCelOckXi5ayKBwAG05miLfiTOCoo2WdNlcyidD/pw18pgsseTUYG6A/2bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=K5I068TP; arc=none smtp.client-ip=74.125.231.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="xEnZmAQV"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 59107213B0;
-	Tue, 22 Sep 2026 19:52:42 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=VJI6C9siQ7JlQwwveoBhCM8yQghseBo9HlyzE9K3zp8=; b=xEnZmAQVw2Ay
-	f+vi88MUk9lm16OcC2/SIhM9E/SS/ZtqMKztZOpwHFdAbajcJ49leIlfzRmnOlLe
-	y1hyb7AhtAj/JoaY2IBQjk8lLdreBx8N8R6vPp8YRhEiX0M0k20P+UN35mSs/ODW
-	OzWp40Fw6i4KuVhLUCl8UM5K6OZolVXTIqpHTZREldD9k3Lq4ynNwmN3uk0bOilr
-	taGotiuzQRz1EuAcW0IXPOyc9o8lR9SpCBgOe5POhrF0vwpvlUuVOfkp8WX5ofeV
-	ooZ11/ZYG7xXU8rpNhsk8q1KBqwYB9H4xkoNTxy+UovGiNYO7zSB46DEhjfDW0Jv
-	ZpKwn6C+RbbrXDicg3FY0fenwrs/gv49xpGahh4ncvaAjN+YwjluUYrBuA/7yijG
-	66PiKLFvdoLlYddqloyZrisYR4SSNTMCCN4FtuBpjacMKc7Tav8GV/Iw9Fineywg
-	RVyG15MUzzDeK2Yp1qZcHe5txGe1ul3kULPq3aVvVGeID8rmKqb1SMwq7r17iDbE
-	mH4G1L+eB6pbxujBGK9ltt6L+NRE/Rp0BdNBM+ZFI9UFZV3Gr8zqWV8L7B4E8Pj5
-	vQlS/OyeVgxdTzvEjym46x+9821Veai4SNYLptG+ncpJ03bQCTEgL/GEAGsosShV
-	V1fzvi2LdobxtHdI9IvprmYAiia0948=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Tue, 22 Sep 2026 19:52:42 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 7E848607D6;
-	Tue, 22 Sep 2026 19:52:44 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68MGqg5w049100;
-	Tue, 22 Sep 2026 19:52:42 +0300
-Date: Tue, 22 Sep 2026 19:52:42 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Joel Granados <joel.granados@kernel.org>
-cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ipvs: skip committing sync_threshold when proc_dointvec
- fails
-In-Reply-To: <20260922-lklm-sysctl-retval-fix-v1-1-7290ea4253a4@kernel.org>
-Message-ID: <2e6d674c-92d8-8178-3c34-475f7156946a@ssi.bg>
-References: <20260922-lklm-sysctl-retval-fix-v1-1-7290ea4253a4@kernel.org>
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="K5I068TP"
+Received: by mail-oo2-f39.google.com with SMTP id 006d021491bc7-6b1ae736c64so45727eaf.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1790096471; x=1790701271; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x9YLkzZ28C/6ZrOI8QJdDbKRDoNHJA/GmIfIJsBNLEU=;
+        b=K5I068TPjV9liWWYwr3JJnaVOZUY+7NEnuaI5vHQI1YOo/tX9359vu+rUgb83158mX
+         fiIxQnMdPanBMvVq7/ybZvzVRNNyp+t/f6e9Q+mw6oh/N+rS1VpvBqDXok/Vaqe26f8r
+         5IjhwZ8FbChSAOVBb7b1FYDk62ruBclKtXIAk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790096471; x=1790701271;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x9YLkzZ28C/6ZrOI8QJdDbKRDoNHJA/GmIfIJsBNLEU=;
+        b=BmxsTNlTMHfkoLtrrlvkKBSGF9tVHVOnY0fhoe+LdWBO0zWJ82vdnvNxaqJCjKFytM
+         mI9F0PM3RAOBVNhW4SGPxfZ+tWtGTU1kIt1cs1u6uEeEZTxssm43pU82aY5w265L6YaZ
+         dUsRdQVjA3uEu9G465ZA7ZWuxq31uAqbOAtADssqjWYw2RhqvPJUJYKn775VeuZAsr2Z
+         7cbZhDYuPuv9sTq96WVts5A/KWMWik+bmSDxgnkm83rrj9x3+oyuh/9eHjNo76S7kgEa
+         r6VFPAKRGa+nfaWO9u5mx3kFFRmXQlKEMLUWFmHxuo6TrwfRcdxpdx2B0X92S6sw3UKr
+         wCOw==
+X-Gm-Message-State: AFuF++m9VSqdHLGSDZ0QhVFf1+R5QoOUSDF04IrU2q3lUI5nObV6Y4Xu
+	BqUOeW/aFfwdJFgYfRsG1CVS5BatLlHzOngCvmZACFZQRiqnhUsYsSVsBRsY8Iy4o1g=
+X-Gm-Gg: AYBFou2bOlIVuWOhSH9NssPAHXHKni0Po0Q2ktfJuIGv7odGLnpWKgS6hzpGymLu//e
+	YEdT/ib+ufs5MUWkBBlVCPWZStJw2PJlXE6LD1FdLmlrDzwcMWDOuoROVRmNfV8BZy/8Zx3jzCM
+	De3bKQfN1cOdXSleolWT/80dleZOk0RMcbMNSlrLFy4TjFT0TJeEIsQZoZZDAjgfv8eENkTMO+7
+	9O4gkEi6c6f8v7ncJKtFwfjcGD2YeiGyovQKSrkkODkALA8pteKMl8+g6NCkz91BflXHA8VZHlm
+	XXhmrAxqd+uMPRMQ4UQzIvz/HFD3IyGJiVDw8C8kWCUoO4Aohw+/xYdjgX+0zFBg2essBnuQQcS
+	BycR/WjANcNJtG2xN5LhVU74GZ8nVgMoLgSE6aagENWMlLeMgy0gxzUpfgwa6dtb2XTuOjGPtx/
+	Pwi/EnuHRi7Te/EXuTuTwTnGL+3Rz+91gyJhIsKWtG4hpAzYgLwF8XPSwmUqUSPwIP9WTpb42hs
+	jL8Z5dKlPcItABn8HKcYts3eC1opvh1269tbwjKAbZ2YLKIIa5j3X3Gv17lFlNF
+X-Received: by 2002:a05:6820:619:b0:6be:b2e3:27e with SMTP id 006d021491bc7-6d2cff43388mr26252eaf.16.1790096470557;
+        Tue, 22 Sep 2026 10:01:10 -0700 (PDT)
+Received: from com-94485 ([199.47.143.14])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d2cfc4a98fsm35786eaf.15.2026.09.22.10.01.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 10:01:10 -0700 (PDT)
+Date: Tue, 22 Sep 2026 10:01:06 -0700
+From: Jeff Jo <jeffjo@openai.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 2/2] selftests: net: check timestamp echo after an
+ old ACK
+Message-ID: <arK0UmX8qJy3O-rS@com-94485>
+References: <20260921222609.50824-4-jeffjo@openai.com>
+ <20260921222609.50824-6-jeffjo@openai.com>
+ <CANn89iK00zXGA8sdpH9Y1CkFK3n=uKG9Bci3+=69fGV0UDQ80w@mail.gmail.com>
+ <arIE_i8Ysz5nOI2W@com-94485>
+ <CANn89i+nY499TfuGMvMq3P=Pxw6vBxe+uYH1zioK=bhU--GXYw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89i+nY499TfuGMvMq3P=Pxw6vBxe+uYH1zioK=bhU--GXYw@mail.gmail.com>
 
-
-	Hello,
-
-On Tue, 22 Sep 2026, Joel Granados wrote:
-
-> Forward rc value and skip updating sysctl_sync_threshold when
-> proc_dointvec fails. This targets a write such as "5 x" which would fail
-> with -EINVAL but would store the first element anyway.
+O Tue, Sep 22, 2026 at 10:09:42AM +0200, Eric Dumazet wrote:
+> I saw you sent the packetdrill patch for formal inclusion.
 > 
-> Signed-off-by: Joel Granados <joel.granados@kernel.org>
-
-	Looks good to me for the nf tree, thanks!
-
-Acked-by: Julian Anastasov <ja@ssi.bg>
-
-> ---
->  net/netfilter/ipvs/ip_vs_ctl.c | 3 +++
->  1 file changed, 3 insertions(+)
+> Let's wait for it to be merged and our runners to be updated, as the
+> kernel bug is minor.
+> This will allow us to get a nicer packetdrill test that exposes the
+> issue directly instead of via a workaround.
 > 
-> diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-> index 4c1c739446b76ea455dab2958a844d05e31a46a7..7c260529238cd2015f1d30abd094d25b056b30fa 100644
-> --- a/net/netfilter/ipvs/ip_vs_ctl.c
-> +++ b/net/netfilter/ipvs/ip_vs_ctl.c
-> @@ -2454,6 +2454,8 @@ proc_do_sync_threshold(const struct ctl_table *table, int write,
->  	mutex_lock(&ipvs->sync_mutex);
->  	memcpy(val, valp, sizeof(val));
->  	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
-> +	if (rc)
-> +		goto out;
->  	if (write) {
->  		if (val[0] < 0 || val[1] < 0 ||
->  		    (val[0] >= val[1] && val[1]))
-> @@ -2461,6 +2463,7 @@ proc_do_sync_threshold(const struct ctl_table *table, int write,
->  		else
->  			memcpy(valp, val, sizeof(val));
->  	}
-> +out:
->  	mutex_unlock(&ipvs->sync_mutex);
->  	return rc;
->  }
-> 
-> ---
-> base-commit: 93f51579e7df248780214094418f205253383cc5
-> change-id: 20260922-lklm-sysctl-retval-fix-abad29dc37bd
-> 
-> Best regards,
-> -- 
-> Joel Granados <joel.granados@kernel.org>
+> Thanks!
 
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
-
+Sounds good, thank you!
