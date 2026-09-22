@@ -1,155 +1,147 @@
-Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE173B47FF
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108443; cv=none; b=nNHD2E1LTcj0oc50Ohmvvn7GFpCnnC6wWEn9j56ICl+ZAbzVXVZJWiaIozeKc34fEW/3uOjnT+umSiIXN5JSsjJ7gpZXJCgNv2F9pGdyXREK4BtkS/1av+vXoquf3VC+6P4qAM8g8niAB9AV08BY5GEf1j0rkElmCytUIMxFPso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108443; c=relaxed/simple;
-	bh=NfI/Dm5EYDMnMTAl3fxv1BGBbGtmkx+otpGuTeOYlsM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gYSgU3efYk579n7cP3Nq3YV3NVfRyce9WnLTYNctx2/Ros0vy1Nc/EWqwIn1/ziCvaUhoQ1vMYdR+Rr3JpYBA9jm2grC3rsX9DNfryLV4ZJiXMg6UvdZ3m4i70H4j1oltjlh8yOSGvpRKcvS+PcrIw43u7X9x96J9v7v0KBOpSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lm5bcyw8; arc=none smtp.client-ip=74.125.229.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6253B8BB6
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.167
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790108669; cv=pass; b=YmRtRlxOj/4Qr7vOuTB4XTMMe16OYyWy+w2kfZ6ADB4rnJ6MAyNTQ9IWydWnD0q0HFBWEppHIH5guC/bS8yBA/M+BiixyHIN+pajxNUm3VHjKELHgvTlz+oin/7xcFXPVpzIRVu3fxDWQ8MSB3xa6wD4AlcMneWx0JY/IWi9Bvs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790108669; c=relaxed/simple;
+	bh=+sfK3/3ZZLF+ZbTCtO0+5guiWMUXrvSJ8jXz2wEwafs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o+FbHn4rO2ilk0WQqlyCIcWpXT7Ryq9fsQrNSmCJqadZu/4YceVoFlFTqxWDrJ5Ey9HshzAlG5Rh3mqLXkW4C7ikk0qnGLVMzlJu7haRENpyzpbIM9+5GYYLLRKL8xBiZ8910ydWAB41fAaIUjB9+jcDdFGe2Y+HKC4LMeYiVM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zk0NHcbD; arc=pass smtp.client-ip=74.125.231.167
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lm5bcyw8"
-Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144e32aaa1cso141016c88.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:20:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zk0NHcbD"
+Received: by mail-oo2-f39.google.com with SMTP id 006d021491bc7-6bcc0c495efso143249eaf.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:24:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790108650; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WVwJq5kLhjiZ3X1zJQW8g8eTrS5pwEOj8OV/0MmG8G1Q0gzu5J+PsjN6JIhjWfcXLh
+         AIvxXStaK+jI+BbRArLqaosYMvL18RXaDUQKXYNpx2VmvPyXh9bcFcFWpb/zFsO7pgf1
+         n1WYxi2x2w+BRenJTC+dpBy7Bgvbe+pwhAYXiFupULlap56V6f3s4sXSYQTE91w5SJP4
+         Vmx9vv9cmkjXdfDC6Qf968iYo5R+f98C7/vK6XjGbzPdtZ+U0xDIacqnx7M+IRrT80Qx
+         wXf26EiNCL+va5osMx6haBXVdgrUyzyvnYplRDhTiLDHV3f/7H7CTt1geYFWwHMdSF5Q
+         5j8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MGlxY/stF9UV9Yd5mArTkSQ33aYUoCNMkwZq4NryLYc=;
+        fh=WnBwU7wUFalknE2F5mezfTtJvbJu0fxiF6oXJMo6IOw=;
+        b=V1l+JzOe2AspaHI0ohWY7SnHS8aSAYOhnVtE1Njj5BN5V/9mUtiGyqSz2YQRXNQjv2
+         byRzeMWd2feutndMuUAWaHuLLocXcDES0RRAiefZO1qRFtK5jbJAMU5tjRoMUPCiNrQG
+         GNbGw1xag3eSVQVJ66SIvbtk0KsvMyvfPAnsmdRY27qpI7GZsOX1QBR8QhMSziM7HCin
+         pDAdzKf/uKEz63Dn73cgTl2puxd7hAUDOpZt3vSul8hNqMzIvGzBy6SbDVw6l6wSFsn+
+         scrgzXGcLhOrS9m/7Q8Ww/08aEFvJSoXyljZasY1cc52EqByYczPIg3l9eJS4ipNSCTS
+         V/Gg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790108423; x=1790713223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NfI/Dm5EYDMnMTAl3fxv1BGBbGtmkx+otpGuTeOYlsM=;
-        b=lm5bcyw8kOZ1x/vhA0+QxXrRD8amGvH15hMxKrrzHpaa99g+sjEgx8XqN1+AVNGk+F
-         57gwSw+UmANftrxVLDQpYJ20g37w+1T5HqcpHJPhgqoM/MW01P6CaZYeU3jFSdHZ49s4
-         jPvMPl/Hzyb6ZluI0eaQnvPfHj+vcBJNwuxoAbP0NkQS5eiDTiGy3fzWEb8sKegwppOO
-         Ei0sFx1S5YpazUzKxipuJ+0iJE2ejopeYI6LzVs20+mUkT7wQRYac2Na8xp3TYxUWRce
-         blUy11W2J7yONA8zAXORPBuYRA43AA9+ENyucV45g1xQ3uWouxBJ4wwJfKYzenladE4O
-         +jYQ==
+        d=gmail.com; s=20251104; t=1790108650; x=1790713450; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MGlxY/stF9UV9Yd5mArTkSQ33aYUoCNMkwZq4NryLYc=;
+        b=Zk0NHcbDSuljmxQ/1VUDrRiCB5dLvex9ZCcpBWXOVe0dAdF3mQUeJEHqY0oD1eO7X9
+         6F1TxssewITq1gtquVFmyB4oOAgvgFr9Tjk/1jzXdAf2pldk5Njkf+fvz5QzD4bR+e0e
+         Ov+Msy9TN2u3X3ymxNaedMn8sQgUdmjywjPcu1gRihdGSmVj6bVBxeLpoGucDMQjZKAq
+         q4Q9ECV5ekOTAJmlvvgAkAZxoUs+/EQBfcqwiR660H9WXLNJUhFRrSg0cGhBZx4zOFge
+         qRzo6qXkjvydz67Bmha7/hSF8gw+Zr/kPLAHvRpxcXZvufgSNuaUab04GFvxMtE4ZzEw
+         ynyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790108423; x=1790713223;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NfI/Dm5EYDMnMTAl3fxv1BGBbGtmkx+otpGuTeOYlsM=;
-        b=yLMbUIn68LWWFsbz/J0Uej3ByZDaxPVOuScRptPSfWr6rMFoHBkttV3y7RcJ7HbHm9
-         ihENmn6K8HdfdtlbPyLps6sE1RpsR9dZjRg1S/llCnpGnrDOp6T4o5zO85ZTPgzTUO/+
-         VhplARqV3raH//OyDiKeSaewpwxlKXYNR2Gjb6Ineuxgx/jAtamZxzyf/Zyg2UggvDM0
-         V5A7QElnzJQxGWebxB5vx+HoNPP3Jn6rr5yr1KuMgX7iJsotCAX1Qt7LUQCQrka0qdV4
-         hSui8G0IflFa8w1+UZOVXP26U91CFLcq3tEZDuCILkRmf8IFh7y8Cr5jxPrxSNEIoAeK
-         TyvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzUOJ0CdnmtzWbo5E4DYR/eeGEJD9//kmabDpYg8c4Qd5Qk9XV1BzPpH90d4sxoHZ1khctPPYo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lLUxpJd/rpVAt8DPbQ9DmSGR5jMjtJVYe9eJ/A2+OQDQc34knr
-	DbriMX4RAsNOXiIya/UtBZwGMffGWYnLq3nu8DicBI50yZFeNX/WaE4M
-X-Gm-Gg: AYBFou3qvNuTA1bXUGeIu70M4vb86Mr5DkVTtKev972y0TFwDwqkK6KhO/EoSHQ5c39
-	zKBNpl4Zop9GYykkZfSJ0yBC68tfor1VZq9x2AUdBkzM3Fxa6IIPJUABuHbvptqny62pxbFNEMG
-	Sij6BQyKBIZz/5n1gp6tfoq/zhBhlyIzPV80wCePgKwckUzxGEeYplHZTUm6sPNfgzJDRdbXeMJ
-	UXSEYxP7D2Hyc9TriuMgzYWL6fXwkUi3oHhKQG3d7nBGGq33NGC7SFu1omK7/JHonsEmw9dq6zM
-	NEDvOddhO13pSPYuBFrwElqOkLyB+JrlR00bNpVC5DMLnn1daTS9ea195IxO6E/bJEMlqY3uaJh
-	KdahT1ZDe8FGUPSWtQadtN2WbuEvuUrGhrx6q2rZa8sRlP8tazCgN5uvUCpJTbuWJnprr3O3ku1
-	kcSgT+rYXKX6ukW3RbqGbycaRzyFOm6iEjApojvQO1F8PBx0zJ2NKEvB2ePV4vQMg8tJBZzf7OV
-	IaNr51Thqx/72hnzGLOUZ2TAXAmCIpXbBmHLjC6QVavM/mJC5mk+kqijQy2g8Nxm4Lh08AqCqGO
-	nQ93Fqo1Bu++VOAwVOBq
-X-Received: by 2002:a05:701b:455a:20b0:141:4951:f150 with SMTP id a92af1059eb24-144f90adb56mr519266c88.18.1790108422631;
-        Tue, 22 Sep 2026 13:20:22 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:f16e:2102:25ad:9cdb])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f9820ca5sm716854c88.3.2026.09.22.13.20.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 13:20:22 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	hemendranaik@gmail.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	tahiliani@nitk.edu.in,
-	vishy0777@gmail.com
-Subject: Re: [PATCH net-next v6 1/3] net/sched: sch_fq_pie: add per-flow statistics via class ops
-Date: Wed, 23 Sep 2026 01:50:13 +0530
-Message-Id: <20260922202013.25126-1-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <179002340755.2160803.3742716999091408861@kernel.org>
-References: <179002340755.2160803.3742716999091408861@kernel.org>
+        d=1e100.net; s=20260707; t=1790108650; x=1790713450;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MGlxY/stF9UV9Yd5mArTkSQ33aYUoCNMkwZq4NryLYc=;
+        b=QNKG7K21KeIYLtJ6hXId5jXFtW2RLQAYDWAafRAoeKUirOsVK8a+jKdpUAlNpprpML
+         uo2ClSIssO1vIL/93QJ3GITDZ7NAfAhzBuqMr6JgLFxCJbyuKUtI1vAXGE4XBaLfy+2H
+         lNKXnZ+e5KvtEIAfqNm1Yes+WJFqB4j09dHD647RlpCpPwjflP1wfQUoR6JfZpIqx9ya
+         Pv3HmlGCg5lTfSkFB1pPZanFVvi2m8u33ZKjf0bJyVWcd13ZyCBj3dKFc12ZfoTTCsbt
+         5DzurrQow6xGhdWSi3vH5i3Wrs81roffLGavra6954JYtePK7bllHrMOzTllxB1ry8Cj
+         1PpA==
+X-Forwarded-Encrypted: i=1; AKwUvBx3Abx2MQCbih7JqMP0jrzPXyqbpobZzbx9eAURkoIIQNlYCigbPTiy/eGFa5XiEzpwS1a1Vaw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mLDBKj/7/IkMtSrf3yBAcemqWMTb8GF0vxXzSitfSOpjhwBEiC
+	qIfT73WoxHon1bRFM2scQcV35Ekoxhiid46Iz3H5NAtTJBX9gAsSpsqummqY/ltIrV/gIPG1yVE
+	UQS3InGXvgDQwf7EomPAxI+PZ5OsNZTc=
+X-Gm-Gg: AYBFou0GTNUqH1NjRLwkRKegv7wHGlWjz4wKfUdnmeDkR1qAPLEoibV9DKEWIJWHE/Q
+	xfgIqq04AvIzJVmdIhlZfAwLSK6Lry17LCHHoQ0sqRKKlLnddH2l4MTTefdxYZdqGJbPPRGpbHh
+	W12u1asshzScQtke0LVCWQ/faXCvMUlyncGN4EkDW8FKpY79wNJVqYryZ1DMDTYXsjAkjavdMZm
+	fi2TaVRBIQh8hfUT4FQV5gAUyFBXSx+KtbacwzZoLEQBXkDLaXIEgO/4jL3A5kUOqYRWtxqYqFo
+	Xl0bvw7oPzyU01dKPAz7w8w1zQvcnGWJboYGcg6ROs/M3Bhglfd+SANhvJI5wqwoWfj1MwuHVNv
+	3sZraSw==
+X-Received: by 2002:a05:6820:c91:b0:6b7:8415:d786 with SMTP id
+ 006d021491bc7-6d2d261c823mr453823eaf.49.1790108649854; Tue, 22 Sep 2026
+ 13:24:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260922172028.6269-1-emil@etsalapatis.com> <20260922172028.6269-10-emil@etsalapatis.com>
+ <DLM2H0M84V64.3DRNAWAWXR4FZ@gmail.com>
+In-Reply-To: <DLM2H0M84V64.3DRNAWAWXR4FZ@gmail.com>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Tue, 22 Sep 2026 13:23:56 -0700
+X-Gm-Features: AcwNN1W5N_KIAWLFVCBSFDm-7vSGi6EFTLU4zBKjmbFVIMO1UfWu6-IsRp4hrsE
+Message-ID: <CAMB2axPbLQhGq-LRLzW4p27YVMowcv0XLdF6gNrLn8U3mG_fJA@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 09/11] bpf: Track whether dynptr type is known
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org, ast@kernel.org, 
+	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, daniel@iogearbox.net, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for the review. Replies are inline below.
-
-> Is this paragraph describing a change made by this patch? The diff is
-> purely additive and net/sched/sch_fq_pie.c had no delay or avg_dq_rate
-> conversion before it, so the new fq_pie_dump_class_stats() is not
-> replacing any truncating computation.
+On Tue, Sep 22, 2026 at 11:49=E2=80=AFAM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
 >
-> The code that actually contains both of the described defects is
-> pie_dump_stats() in net/sched/sch_pie.c, which this patch does not touch
-> and does not mention, and there is no Fixes: tag.
+> On Tue Sep 22, 2026 at 5:20 PM UTC, Emil Tsalapatis wrote:
+> > The TYPE_LOCAL dynptr type is used for two different
+> > kinds of dynptrs in the codebase: Those that are created
+> > locally and backed with a memory region, and those that
+> > are passed as arguments to a global subprog, whose type
+> > is not known at verification time. The two kinds require
+> > different handling in certain scenarios, e.g., packet
+> > pointer invalidation. However, there is no current way
+> > to distinguish them.
+> >
+> > Add a new field, type_unknown, to bpf_reg_state's  dynptr-
+> > specific state. The field designates whether the dynptr
+> > type reported is accurate, or a placeholder for "type
+> > unknown". Adding an extra field to bpf_reg_state avoids
+> > unnecessarily splitting TYPE_LOCAL into two types, since
+> > they would behave identically in most cases.
+> >
+> > The change is currently non-functional. The new field is
+> > first used in the next commit.
+> >
+> > Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+> > ---
+> >  include/linux/bpf_verifier.h |  2 ++
+> >  kernel/bpf/states.c          |  1 +
+> >  kernel/bpf/verifier.c        | 27 ++++++++++++++++++---------
+> >  3 files changed, 21 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.=
+h
+> > index be0ccad15..f57730d1d 100644
+> > --- a/include/linux/bpf_verifier.h
+> > +++ b/include/linux/bpf_verifier.h
+> > @@ -71,6 +71,7 @@ struct bpf_reg_state {
+> >               /* For dynptr stack slots */
+> >               struct {
+> >                       enum bpf_dynptr_type type;
+> > +                     bool type_unknown;
 >
-> Could the paragraph either be reworded as a deliberate difference from
-> the pie qdisc, or the series extended to fix pie_dump_stats() as well?
+> why extra bool? Can it be another value in enum?
 
-As you noted, the diff here is purely additive, so this paragraph isn't
-describing a fix to existing code in this file - there's nothing in this
-patch's history to carry a Fixes: tag for. It's explaining why the new
-code uses div_u64() and a widened u64 intermediate: to avoid a known
-overflow pattern, not to describe a prior bug in this file.
+Second this. Could be a BPF_DYNPTR_TYPE_UNKNOWN or BPF_DYNPTR_TYPE_ANY.
 
-The bug you found in pie_dump_stats() is real, but it's independent,
-pre-existing (net/sched/sch_pie.c, ~2014), and unrelated to whether this
-new ABI addition is correct. We'd rather not fold a fix for that into a
-series about adding per-flow statistics - it deserves its own patch,
-separately from this series.
-
-We can make the paragraph read as a comparison rather than a claim about
-this file - e.g. "which can wrap" instead of "which wrapped" - a
-wording-only change, no scope change.
-
-> Growing struct tc_fq_pie_xstats from 36 to 64 bytes is visible to
-> userspace in both directions [...] Does the accompanying iproute2
-> change parse defensively, e.g. copying min(RTA_PAYLOAD(xstats),
-> sizeof(st)) bytes into a zeroed local struct rather than bailing out?
-> [...] Could that reasoning be added to the changelog?
 >
-> The alternative would be to leave tc_fq_pie_xstats at 36 bytes entirely
-> and emit a separate struct [...] Was that option considered and
-> rejected?
-
-Yes to both. iproute2's fq_pie_print_xstats() already does exactly this:
-it copies into a zeroed local struct and memcpy()s only RTA_PAYLOAD()
-bytes when the reply is short, so a short/zero-filled read still
-resolves to TCA_FQ_PIE_XSTATS_QDISC (0) and prints normally. This
-reasoning is already in the changelog - it's there now, not something
-we're planning to add.
-
-We did consider a separate struct and rejected it. fq_codel can put its
-discriminator first only because it was designed in from day one;
-tc_fq_pie_xstats already has nine fixed-offset __u32 counters that
-predate this patch, so a discriminator can only be appended here, not
-prepended, without moving those offsets. A new, separate struct would
-still need its own attribute and its own print callback wired up in tc,
-splitting one qdisc's stats across two code paths for no added
-compatibility benefit. Extending the existing struct was thus better.
-
-
-
-pw-bot: cr
-
-
-
-
+>
