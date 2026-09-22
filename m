@@ -1,177 +1,155 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EE2572673;
-	Tue, 22 Sep 2026 17:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9FF577E22
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790097138; cv=none; b=HpCP+Tj1IwNYXgLiuW+4FJtxDwtZNKGE1/1053+6cPr13a4/cLYkl0T2/oRUZbfWwNby9MB0NFO8Ct0Y0Y23kK8g5ex5fiJT8pLfmoOnA1QODwdsgZgezhsk2M0SRJhyA/uuqf4mVHcvXFp6zoNALa4BkxSLAnRiR3apAPyqDhU=
+	t=1790097267; cv=none; b=GI4akHj8ohKUHSmKh3AfZw9RxlgRUWncZ4TboCNnaLLnvnlH4fvnIfR+N0hwf0MrdbSFKd1JjiQcJxzQrk/WQSCH41wHCLNBRL8a/ZnfEV8h9N3LdugQjCTtuyp1ezZokB1gPyKg0ALPQunPb7H+aWrEqev4u9MPiVfneL8nAAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790097138; c=relaxed/simple;
-	bh=zNQHcBd7xYGJRfYFZY4Bnu6Ky/BoGBYc61+QbkOviPY=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=WuTSwmrRKMhavj7wGWZMXwFzTj46iszxdzapMlItvMnONmwhbpQ8RXAPIctrl8ibQnxJ2MzKy1LZ9FkJ2limAfF4S9eQMS4TzvEL+7A+Gk8JpRZV4pv1xHYebC67IVropnO2Smm9l/GFZ2PpaceLadI09+7VHNWIXA34jRQRw/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=eKjz4rOr; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1790097267; c=relaxed/simple;
+	bh=YoKdxzXqcxs8aDLJDgxMewiJDR0phHL0RqzGzKoDtbA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ve6SYq4xYjFMPxD9NQn5+6IWXKHH7uypXxoMOSQBmVNCx7J38CeK/sg8Y3XWWmFC0f+yP1ocS3Xd890myBEFQS0Vdq8oBuRBwwTh9BXn0s1vfyhbaBvyOUaoIk4xEWkXDDqWiFL5bods3StAFMiTG3tPFDwn3tFK+zOIDhu5c/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SH+LZHyY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=LTzBuDrQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="eKjz4rOr"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 8DA08213B2;
-	Tue, 22 Sep 2026 20:12:09 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=Js5PmAUcjbxW7gWn4Whs+OD6wHnqQpE49HM1IGljWhc=; b=eKjz4rOrPWyz
-	D+g84LRf7FOEPohxy8J/rNiO6h1zQytm8c/48zfyZelj+Ny4NSONZwKL9AhKyDMv
-	3MMZQJW+obmSzHy9YxNBLz3jxAxg7wfM9XKJadGx5FcviiBVGtij1B9si8uyFf+G
-	znVJKoa0IVbCPWlFyVblD9AraJUtv4RiWCVmNihhanh9jU+QzHBxkRQ9Ib5ueq5W
-	ryvJ2ldps+U/cPV9Tyy07GOOLFlsEPim98cHxKkqyzfT793NBuW67ad1N6B1gMep
-	CnCmvFdT1h5EDA6rpk3pZuIzk5M/GDhQIl9hcJnfexgQPBT3lriIM3lqVQCrKgkj
-	krSWPTRLepqLfZkEA3H85W1JI02CDyC8O5XP3Och+4k+9pam7x5XmwDOoYXDYACQ
-	xaHOsONpw9kwtwWB9O/3kCQf+xB/t4mI2POWiHzYwjJrAo3uwOQYfLtz0LNcYbMD
-	rw7TRIIKhKJylxB2q2BTXhoW6TtmjIegjJPLUJapsagk150iuEeark+Cn8seNe2k
-	Pfl+NfFq7CI9+79t1nYrhFWsnv2rGraUdG4McR5OfEKLryIaE/gij3XCWfF5l55L
-	DMJnwLFjGzHHGNO/EVTjWndsNJaT+nmgKBwEpy2x+IgG0Z2yflI4ZerlsqUkB02I
-	Zv2UTIDVdJDt84ZEY+cO/+sRE0ZFziY=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Tue, 22 Sep 2026 20:12:09 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 8C7B1608CD;
-	Tue, 22 Sep 2026 20:12:11 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68MHC9bH050657;
-	Tue, 22 Sep 2026 20:12:09 +0300
-Date: Tue, 22 Sep 2026 20:12:09 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Adriano Cordova <adrianox@gmail.com>
-cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>, netfilter-devel@vger.kernel.org,
-        lvs-devel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 nf-next 1/3] ipvs: add flags for per-service secure
- TCP state table
-In-Reply-To: <20260921205706.1055288-2-adrianox@gmail.com>
-Message-ID: <013264f0-57e4-c8e7-6e31-30d2e1b92893@ssi.bg>
-References: <20260921205706.1055288-1-adrianox@gmail.com> <20260921205706.1055288-2-adrianox@gmail.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SH+LZHyY";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="LTzBuDrQ"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MEijS63924021
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:14:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	YoKdxzXqcxs8aDLJDgxMewiJDR0phHL0RqzGzKoDtbA=; b=SH+LZHyYwm2EFfev
+	dC5BCRUX03669BE8eC0oX2/hVQM7GGQdKVUNUdu4Itf5aHF9qQvWOX7MmQOwrZGg
+	kWcnsZWveGgyMRCrEn2H8nN6mhJLWFQPRtULJLFNTYv1cSWibtySAPnLuuDosrK2
+	WuJsH+sc9vYBtwbhj9SZDjxSCF4nMV1MYxKEGmRGckPPpNkjIjpzDsALZHYkyV4A
+	Wi0miG0scxa/iKB0GevgxH2N8lUg9+pVqEZ1MI+zPx9gUdwdAbwL2ZWWDOoCZ8u8
+	/779x+jpuN2xDyu7BTMFi1aVqBky7lF6RSzfZ/PAHroxEQ2nZzWlv/2Sj++WFsJf
+	6Sha7g==
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4guuec0vg1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:14:25 +0000 (GMT)
+Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-980682ebf05so14358241.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:14:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790097264; x=1790702064; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YoKdxzXqcxs8aDLJDgxMewiJDR0phHL0RqzGzKoDtbA=;
+        b=LTzBuDrQM9/ievMqIR8scbOGzJHFlb+lxwB7lHQLh1ZWJPsvfFvSu5SL88NTZ6o8HA
+         udd2wQkDXS5iFthPodSoo2T2xDzIEiHfM872GT6SgosVXXkcs/Ll9j/KnakDZ2Ro1Y1A
+         Dg+/LzZmP9P5kjpijj4bdFyj3YXWjYaDJaIL5FWOMsHGam26/iMJuAK0iBTiATIy5OB2
+         w6WZCLlEKIVaxRF/5puLsi/EchcJNmFh9YSLzUYW343/HrdWFiD7usLBf1m4poVJ9w9H
+         8qKrYKHnjVyOya+IdLllNsy9iQ5LmXvo5KQ6867Tqwg/N4aVc+642gWu+hRwXwbrnGm4
+         EC3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790097264; x=1790702064;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YoKdxzXqcxs8aDLJDgxMewiJDR0phHL0RqzGzKoDtbA=;
+        b=BrJ5VrnV8ZVepZCmQUCky1hGUjZS1o4e7ojEacPoxvlg+PrWhFuVwVB94B8jcWDEVM
+         zhIaMkzczqk6JZTjzaR+lDaosCKQTDqKr04IEjUYL4QRylrpzB82ch50xLNjuG9U+EvN
+         aUeImPwADwKYaEv+jGJSWnoOampCcK6chAOhXQyOHEqfApY5QLXnFBT5oVtrjOYacSmj
+         PGzpEsNB3weHJ6YheE+kjD7TVqxDWhEhHGMzv/8fC+IprgLrYyNx7A3T9avDX03WBMpc
+         +VpAr1NHMKUM9w4ClI9yh9pm9gkblDtPvk4waBRQ2XVQ3PWGQb0vraMmVWRl6whZLyJ2
+         PQSg==
+X-Forwarded-Encrypted: i=1; AKwUvBy7Lby8tDiIxa1YquU0W7FRfSquMb7g6bgnZkm4MDtCw8LrfF+7BKW7hy0N7E/ZaPoMq39YQxQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kBTKiuw/HZVq5URzG6IBrMk5s+eOyV2VTQ88E9y1yv1jBN/Fya
+	f/dhxT34K1pKesvgIN3bO8gmYx6yL8lFkYYAT8mqMKTuyGGU4b9IpFLez7lRCaSif0KMfKm48B5
+	J9Ga9FxD2Q7T7FudZpCRyF5OnBP2W6eFVVAxT+YRkgp6BMKNg39+l6O2dS6/vTxOgsoUZdQ==
+X-Gm-Gg: AYBFou2PwAXcopqBKWt4xI4une0RWHJvQsEIhS+1+WGZRBCasjS8Bq0Asd2/b8jvLzw
+	Dh5rbcwJMegGoBng73CeuF5kl8ZRRclGeehv5/wFeYqZFS0BIkaxb78GRWY0t7d2Vi5mEmNi26u
+	6AcwdohEVeMgwm+alplNfYVf3iSS7Q/mvWMTjscRK9iOQ6kI5IZoznLl6VJzQUhvjC8TFGQtXpw
+	hUy0qsU/N6qTZthxBzG+rf8QiW7Y0/Q3+T8C2oE2x2+2fXr9b10rSx2FyD35q4pOwyTwXIY9OX9
+	6xNEwdTWAAXaKpOjHZ6JKhj+Bwhar8mR9498ZR9c0saJ0h796NF6RrY1pM/UBD1U1uDheDktjxp
+	yqvUFRUQRqpa974bVVbxMivdJdeOVWOLg2p6UWYg=
+X-Received: by 2002:a05:6102:f85:b0:7a7:19aa:f0d1 with SMTP id ada2fe7eead31-7a719aaf773mr6957679137.30.1790097264218;
+        Tue, 22 Sep 2026 10:14:24 -0700 (PDT)
+X-Received: by 2002:a05:6102:f85:b0:7a7:19aa:f0d1 with SMTP id ada2fe7eead31-7a719aaf773mr6957615137.30.1790097263755;
+        Tue, 22 Sep 2026 10:14:23 -0700 (PDT)
+Received: from [10.243.142.186] ([212.136.9.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdaaf0074sm59131665e9.3.2026.09.22.10.14.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 10:14:23 -0700 (PDT)
+Message-ID: <a16d507e-17f7-4074-8817-4b8da3a71c3b@oss.qualcomm.com>
+Date: Tue, 22 Sep 2026 18:14:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] net: qrtr: Assign unique node id for MHI endpoints
+To: manivannan.sadhasivam@oss.qualcomm.com,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Chris Lew <christopher.lew@oss.qualcomm.com>,
+        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+        Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+        Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+        Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+References: <20260921-qrtr-multi-ep-v2-0-27dd80d841a0@oss.qualcomm.com>
+ <20260921-qrtr-multi-ep-v2-2-27dd80d841a0@oss.qualcomm.com>
+Content-Language: en-US
+From: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+In-Reply-To: <20260921-qrtr-multi-ep-v2-2-27dd80d841a0@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDI1MiBTYWx0ZWRfX8/4cJJoGW3pR
+ q1YEhUHoQOsliqkTgoQoeIxk+YbKSLUWo6faDUtJaglPMDRl3rVcbkLFUGfLPZAau1duV2z/QCh
+ SPCKLSQHQP07oj3Sm1RFUFm6+62VBSiHHSwfLkq5JNSog8achLx+e++K3qROYxvifQRejUHA21h
+ Njz+Szqev1IRdbSz4BAHSAZ9bHho0PqejP/kmr0aI32+UWWGdHdEyjs4Y02/dqDTthd7lb0VVYi
+ 8deGAUdJahbtZL0tl9EKqGdFYNhLTcWMZnNC9/gj89+tn7jfF7To1KIjQTSj+udp6qozzHULvTp
+ IMYa6tIk5cNIF37lYgfq/BYmMFCXW801R6SxZLzybW6RUlPqcUN+wT0qr9oczx+ISkwJDeZ5/fq
+ S5pX3+LDoNSo/zHX3jH6Lytb8LCEwlrZy+M5f7tVJE4dquUAjjtGl1YiZ7DKuyz+XHKkxUShcBV
+ TKu3Z4r1F0ioEAuR5Dw==
+X-Authority-Analysis: v=2.4 cv=VKdIDNPX c=1 sm=1 tr=0 ts=6ab2b771 cx=c_pps
+ a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=dNlqnMcrdpbb+gQrTujlOQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=ar2LfINMGabpzH7QhtgA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=1WsBpfsz9X-RYQiigVTh:22
+X-Proofpoint-GUID: 9PbCSNWggqD82-ui2UDAOp0TMzsWdhT1
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDI1MiBTYWx0ZWRfXyEWobHkKlH0N
+ e5JIZS12YiaLogxV8oanhneLpzJA83dGet2/IDLXKiFEiI2Ocr8r9nSaC+rp8UZVJwSLnaB69z7
+ XDjU1evLYoPjyvD4BnPy3YaDovyrny4=
+X-Proofpoint-ORIG-GUID: 9PbCSNWggqD82-ui2UDAOp0TMzsWdhT1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-22_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 malwarescore=0
+ suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220252
 
 
-	Hello,
 
-On Mon, 21 Sep 2026, Adriano Cordova wrote:
-
-> Add IP_VS_SVC_F_SECURE_TCP to mark a virtual service for the
-> DoS-hardened TCP connection state table, and
-> IP_VS_CONN_F_SECURE_TCP to carry that capability on a connection
-> so the TCP state machine can select the hardened table for it.
-> 
-> The service flag is 0x0100: bits 0x0008/0x0010/0x0020 are the
-> scheduler bits, so leave 0x0040/0x0080 free for schedulers.
-> 
-> Set IP_VS_CONN_F_SECURE_TCP on every connection bound to a
-> destination whose service carries IP_VS_SVC_F_SECURE_TCP.
-> 
-> Signed-off-by: Adriano Cordova <adrianox@gmail.com>
-> ---
-> Changes in v2:
-> - Let IP_VS_SVC_F_SECURE_TCP be 0x0100, leaving 0x0040/0x0080 free for
->   scheduler flags.
-> - Let IP_VS_CONN_F_SECURE_TCP be (1 << 17) and drop it from
->   IP_VS_CONN_F_BACKUP_MASK.
-> - Set the flag in ip_vs_bind_dest() instead of at every ip_vs_conn_new()
->   call site.
-> 
-> Changes in v3:
-> - Merge the uapi flag definition and the ip_vs_bind_dest() stamping into
->   a single patch.
-> 
-> (no changes since v3)
-> 
->  include/uapi/linux/ip_vs.h      | 2 ++
->  net/netfilter/ipvs/ip_vs_conn.c | 4 ++++
->  net/netfilter/ipvs/ip_vs_core.c | 3 +++
->  3 files changed, 9 insertions(+)
-> 
-> diff --git a/include/uapi/linux/ip_vs.h b/include/uapi/linux/ip_vs.h
-> index 2c37c6ac7525..ade170109ff4 100644
-> --- a/include/uapi/linux/ip_vs.h
-> +++ b/include/uapi/linux/ip_vs.h
-> @@ -27,6 +27,7 @@
->  
->  #define IP_VS_SVC_F_SCHED_SH_FALLBACK	IP_VS_SVC_F_SCHED1 /* SH fallback */
->  #define IP_VS_SVC_F_SCHED_SH_PORT	IP_VS_SVC_F_SCHED2 /* SH use port */
-> +#define IP_VS_SVC_F_SECURE_TCP	0x0100		/* use the hardened TCP table */
->  
->  /*
->   *      IPVS sync daemon states
-> @@ -105,6 +106,7 @@
->  
->  /* Flags that are not sent to backup server start from bit 16 */
->  #define IP_VS_CONN_F_NFCT	(1 << 16)	/* use netfilter conntrack */
-> +#define IP_VS_CONN_F_SECURE_TCP	(1 << 17)	/* use the hardened TCP table */
->  
->  /* Connection flags from destination that can be changed by user space */
->  #define IP_VS_CONN_F_DEST_MASK (IP_VS_CONN_F_FWD_MASK | \
-> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
-> index 6fa3e1dc534c..0b465298b64b 100644
-> --- a/net/netfilter/ipvs/ip_vs_conn.c
-> +++ b/net/netfilter/ipvs/ip_vs_conn.c
-> @@ -1090,6 +1090,7 @@ ip_vs_bind_dest(struct ip_vs_conn *cp, struct ip_vs_dest *dest)
->  {
->  	unsigned int conn_flags;
->  	__u32 flags;
-> +	struct ip_vs_service *svc;
->  
->  	/* if dest is NULL, then return directly */
->  	if (!dest)
-> @@ -1102,6 +1103,9 @@ ip_vs_bind_dest(struct ip_vs_conn *cp, struct ip_vs_dest *dest)
->  	if (cp->protocol != IPPROTO_UDP)
->  		conn_flags &= ~IP_VS_CONN_F_ONE_PACKET;
->  	flags = cp->flags;
-> +	svc = rcu_dereference(dest->svc);
-> +	if (svc && (svc->flags & IP_VS_SVC_F_SECURE_TCP))
-> +		flags |= IP_VS_CONN_F_SECURE_TCP;
-
-	Adriano, due to the long IPVS bugfix queue, sometimes
-the -next work may conflict with other changes. This is the case
-with the above hunk. Looks like we should wait the patch
-"ipvs: do not create invisible templates" to be included
-into the net tree, the net tree to be merged into the net-next
-and nf-next tree and then you can post a version for nf-next
-which will be on top of this patch. In the mean time I'll
-review your changes soon, so that the patchset can be ready
-for that moment.
-
->  	/* Bind with the destination and its corresponding transmitter */
->  	if (flags & IP_VS_CONN_F_SYNC) {
->  		/* Synced conns are hashed, so they can not get this flag */
-> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-> index ba0957798bad..aa8a3a964ffd 100644
-> --- a/net/netfilter/ipvs/ip_vs_core.c
-> +++ b/net/netfilter/ipvs/ip_vs_core.c
-> @@ -784,6 +784,9 @@ int ip_vs_leave(struct ip_vs_service *svc, struct sk_buff *skb,
->  				      IP_VS_CONN_F_ONE_PACKET : 0;
->  		union nf_inet_addr daddr = { .all = { 0, 0, 0, 0 } };
->  
-> +		if (svc->flags & IP_VS_SVC_F_SECURE_TCP)
-> +			flags |= IP_VS_CONN_F_SECURE_TCP;
+On 9/21/2026 12:23 PM, Manivannan Sadhasivam via B4 Relay wrote:
 > +
->  		/* create a new connection entry */
->  		IP_VS_DBG(6, "%s(): create a cache_bypass entry\n", __func__);
->  		{
-> -- 
-> 2.51.0
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
-
+> +/* The offset is chosen carefully to not collide with the node ids allocated by
+> + * the remote nodes. All the remote nodes use node ids in range 0 to 0xffff.
+This assumption does not hold up for QRTR V1 headers where the node ids are 32bit.
+QAIC devices use BHI_SERIALNUM as the node ID, and it is definitely larger than
+0xFFFF.> + */
+> +#define QRTR_NODE_HOST_BASE 0x10000u
+>
+Thanks,
+Youssef
