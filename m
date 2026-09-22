@@ -1,70 +1,71 @@
-Received: from mail-oi2-f29.google.com (mail-oi2-f29.google.com [74.125.231.221])
+Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE72B3655E9
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 23:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52272531AE5
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 23:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790119675; cv=none; b=cTJny8Xo0rwZ+lNFeJbL0S6MCuWvfGd8em2oo2m8mIJFRizJ0KLmQbHAz7YRdMwaHVlQ0srraOvpciVn4plyzcyAni6dzPvkwu/HOpN84wgxwygySz+NdAPQwTLfd8/3V0jq8LCW3O48Z2StVz90AXSH3VvQcYKxX57cN5SXNoY=
+	t=1790119684; cv=none; b=bOBdhPDa2bao2e36a7O7QaOo1iN0eddOXJV02uThAgHBo/fjQXXG0i1FIfgU6BL1iWEf3EKbNaqHyYvrauuJ8zCC373o7oPEbjL5MafDod8nkCJO1GDjhPdr3RWPHWwLffzJOqw36nlGioF5JhjlevWQWtlQEJ2zKF7Xw+UWy/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790119675; c=relaxed/simple;
-	bh=0LGURl3KOzcIf/uzIsA7NYSodW43r248TxGYIjWU/fg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JJaD0Wk8yxIMtIWOVlvW+u47YaYaoBadrSXZUzRy5RtOpr/SQzlBQpSfmWcFsBU8xtsrbn4fjs5Tygyh7NKZBoJ7A2ZQWWT+x9B2abAjcDOSbKskcFPqsKlOEUvJNoE/RF7p3Z4UnGAzDqQ71uRF4QQjZ9jvavGeaPKbZ1rGS8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ji4TKtVI; arc=none smtp.client-ip=74.125.231.221
+	s=arc-20240116; t=1790119684; c=relaxed/simple;
+	bh=WXvjNDGT5fIJ4+hQrMbJuJmFLYmSKGyYuzOMTm701Vo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dYKHYINn3/rXej1ODsqnUC1qqkT1DTXuDqJci2c6peudelMnI5167Caofj2fqwBOTMBcjGAdpUit+/eroiscHnOVMMZGrS0F9RgbTzOIFm30PbUlyNJeYhp+VdynuYRinN+xHV0svVcQKNzIemfqeYGtuD9T2UOMCZvO1dnB988=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZRTZXQk; arc=none smtp.client-ip=74.125.231.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ji4TKtVI"
-Received: by mail-oi2-f29.google.com with SMTP id 46e09a7af769-8144632e066so299680a34.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:27:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZRTZXQk"
+Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-804f7045f3eso235243a34.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:27:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790119666; x=1790724466; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jPMMzPerF76ev1rgt9IqVi5wI7uHr29cgpQnNd/IeQk=;
-        b=ji4TKtVIPZb4cE3FS42ZRO/Js8RwqPH92vYBfi8AO3yqDCg8R33oTZa1EhI2h/Ortr
-         Xy7MJjqZpJY3zCkt9wuvSTfVPsIiXMAf7wQkfApbn9l9bCLtblgB+njQi9tPmfWPvgWj
-         osLsObRNF0NELIwBaJJqEwrdMhIg2m9qjl06H0nSTOQmj7r2TETgCGMcHpu5b/Qeazwx
-         ManpEj245xTEsPlqmL2V+nvujeDF7U8x/cSfkdvrkkBQphqcBWvfZ9Ld6Og48faQUTBC
-         8IlWM9A/W8OctToHMMLjEjJC3PG5ErfPuAUCfTi+HTpbOxANUOxNrMzoc0BZIs6kYmug
-         3CDQ==
+        d=gmail.com; s=20251104; t=1790119667; x=1790724467; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I8++WyG12SZPVqlwFfWjIZRV+ikQ2NXn6irkLz76Dxw=;
+        b=YZRTZXQk93/XTcsVd3JwZlVnKtfidiAOoq/j1gfSZfrdvg1Y5X7gNJaO+3aAcOJaoQ
+         OTU2CRWHefdahBXLeY1f4/42/koVJx9N4XvUtnB3gqoGL7icCRkxUU8a72UMd5R69iaK
+         tQpQrwxZI8uCY5hSJ/mqDhOkpm1WJf8+Z7bjU0qGNfVwjrfag5CIgOUQGdaXCKFo7kg9
+         3os5t/5rOAWcnyhGJfxfDxlzDbnjA0YEV1Oy9g1DFbeO+ZQKTgP/7FBqm1YRBy3bTOqG
+         s3VcHx+yIJHHrGEX1+0jl3fGp9LteoPu9J8Br3ukLvOX7W2xIHTqUc/RS5ba2CxzZpwR
+         acVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790119666; x=1790724466;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jPMMzPerF76ev1rgt9IqVi5wI7uHr29cgpQnNd/IeQk=;
-        b=lujTOAU1dxtlsGdyk5rorg1e7AxuY6f7T4m5vBMDGVvQ7ZQ7gwxhbzpX62z5XgHD/B
-         vsWeOIpmlRahlBJ2CQ8rZ7Bs4lL0quL2YCaMRxwCce+TDJWMrtWTSHbFBW4jnDpXAjMI
-         4ApV1+5xOrzML0LXKhom/UIcIyQUS94N+h/u/OecIljpDxqdaWFvwevC+hcbBht3hqbl
-         Q4Yvfn8TDR5fdZerKxUjqU4N9BeBVq5YCSKsNTayO9jTS+BnzbE7U+5rI6HpkrfTDwcO
-         ZtHrzk12168KohWST0mt/NZVWzJdXSyHyujhRpHyuw0zAc+T8YQC0xU4dTGJLHJ5PCYY
-         G/pA==
-X-Forwarded-Encrypted: i=1; AKwUvByHShbs5oFNrijau+0xi4L+RTxoOwNQjfwYQFvBinYHJesfEdH4KQwu0jS48X3I6YeCQPPCJI8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mhqRU7Z7iFbC3EOFjuii429yPJ1YT1N1DnImNK+2QrCSkrgvKy
-	IEvvMmEVVSDQIKxscDFtnt6+CLoAODPNLcVD2F/PMs37XcSrzH8vAgwZ
-X-Gm-Gg: AYBFou3ylBT3Pl2vJF6WPGBh9e6+3O/fjmUnETpkdrn6Y+bD8msKhfHKJCgpk4NjrUa
-	9c2fSWouf7QNeiwMFV4ZBC0y10K5RZ01jsMByGDMsgHtifH0v21ejCpK7Oz+bLFLCdmuq99mguP
-	Kl9lp3a1gNafkCK4TCPwfTyvKAJVRbfKRUvWsl5Hld0Zm54J2LpDuHfpvrRFDnYV/636okHHdmo
-	rET8NTHXRClNiVT5mJuMb9Xq/dmMG5CVd51S83sQrldnHr/d+6RF6fwFWDgaYqHU1S/4+rFNirO
-	KV0OxqYNUHVzkL+rLxv4N3Q8HfbBAZIgkXO/SBqvZVEotLW5vpLUuGI7+qMOKByFabClCGCzAgl
-	JwfzBFZk4WE39LU9dfetTIz0IGZeiBUqAd2bVsKvQNmA7lIMKbceK376LXtwx8xjiTbP6PiO//R
-	EOEj0f1sNqg7nv3tZQ7JKl3+id9XuCFuaVOeY+YgJclWohRhQUUdesIYBlg0Kgrm8WiOFA0Svud
-	/FRfSWf8HVwqSDRJ24WxpX4cAYVtxXTdlWIEHXfSs0H4eNen4BYhzIkrbt6Pko3fJdmY0EEooGt
-	1EJ9KkEKq8RyNOm+gvBp0oyS0mvtJqaeH9dhl6QbTJjE6lBzR49h85ktkhyHXXNY2qsRoCQAEP7
-	g6XN6u1PYDyxPmX2XOtGegA==
-X-Received: by 2002:a05:6820:308d:b0:6cd:3ffc:e329 with SMTP id 006d021491bc7-6d2d2621293mr774668eaf.71.1790119665547;
-        Tue, 22 Sep 2026 16:27:45 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790119667; x=1790724467;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I8++WyG12SZPVqlwFfWjIZRV+ikQ2NXn6irkLz76Dxw=;
+        b=JxMY5nghYAVfv7ejk3rCBY9dBnsrtO2RCby6W76NLzIqZES089omRTr/sJWPxjXqxu
+         p3Gi190nHSxkmeY/w8oS/aHQbLUSbBAhbFbX0GSRtM2UrjziNaBJkl4pTs2R/Af9KgUv
+         jf3NR5bT4691coyGVIe58A4IFe64zEAkypjAPvT/Zalj0ZJGqqoBSCZwzPtK/3fu+rkb
+         UD3xTvnB1sHcFWKbl7eniJZMYHp73JyeAU9hyJ3uEWmaot3zo4CRaPksKpqV3MTh8UGh
+         ok+JwEudY/d55WYfsdHOtEcbEGosk3KQg7mBh8YlzccSuZ3c6o7C5GmZsZpcQl7sJZUM
+         dIZw==
+X-Forwarded-Encrypted: i=1; AKwUvBzQXuvjtH6dCftX0a1D7RNhNUekuHeGrf+3Ml3CnO4vKESqtGS/m27f1Rx+OU7RTINffFnchu4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kl0ueU+KijybnU8Qe6I0u41zr7EJd69gW20mXgDMC2UdRh2M6b
+	n99gRCwodJWnxHB0MUo8bkx8FqshqpberlZgRkyhTDcPIoqZRlkPErvH
+X-Gm-Gg: AYBFou1qCVzBbq92DJMtD6R80P3C++dlrUYoV7Qxtscqei/rULkuG9sFzGbBMjdw+oT
+	7yTvk+JyReKbC/ah2KAnxQdB2fbaPa2FG1I8YM6hRhLzEoVmnZrC28uXJzBtphVPyfrDns4JeHf
+	gjfanWHNNl489YaZfCIDFhAPlCTELYLHCnfpwgu+zKb89Zflr3/LT+uWArjuZBWX/Pvj6eRSLPq
+	/xIBMA2m1xTbiiaZC8g3kXS1E2q7WW9JijGO8PriQWC5dBeZ5VsSJiBpO2mnFF5ZQzo7DD2i2/e
+	00Ua9hecUSrL4bWrK652Ux3Q9nHthhDV0pXvh0CjohSPCQ/TjvTXpL+rzBj7JwA1dAQGAmnAnfD
+	79BZE+u48a8DdFkHXLTv3quTFJ6yxlGTMIvtUalVPJOe/huMpQxwmortx6Pn357wZmOJiEF8VMe
+	v8ZxFwlcPkaXoVMWuqD5U6CWQ4qv5fG6IzTrNDQWMQX+7ozoFfQL7ODhWpmlmGuojZsRYcm8Rt6
+	Q5M7dxgHkJfHuVCE3mTcHf7IlNJV4sdHBo1xXRIkzFC6Um2EVQF6RsERbdi20TYgTI1IS6qy0mf
+	sIF6lLBfYeHZd2iFDkMMhxpRfoXWaH5SgiSBdbJVWBSWIB9S4mTs/dvKmieE9uzfPNAvd4/1yXQ
+	QlUE9C88INfQADNYjhLYQWw==
+X-Received: by 2002:a05:6830:4ac5:b0:802:68c:1b51 with SMTP id 46e09a7af769-815ef299a60mr1161319a34.11.1790119667060;
+        Tue, 22 Sep 2026 16:27:47 -0700 (PDT)
 Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81603fc87cdsm1243053a34.13.2026.09.22.16.27.43
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81603fc87cdsm1243053a34.13.2026.09.22.16.27.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 16:27:44 -0700 (PDT)
+        Tue, 22 Sep 2026 16:27:46 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Subject: [PATCH net v2 0/2] net: stmmac: fix failed MTU reopening and
- hardware resume
-Date: Tue, 22 Sep 2026 17:27:39 -0600
-Message-Id: <20260922-submit-stmmac-reset-fixes-v1-v2-0-d92e609be996@gmail.com>
+Date: Tue, 22 Sep 2026 17:27:40 -0600
+Subject: [PATCH net v2 1/2] net: phylink: allow stopping a suspended
+ instance
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,11 +74,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OwQ6CMBBEf4Xs2TVtJUI9+R+GQy0rrLFgupVoC
- P9uwR8wmcvMTt7ODEKRSeBUzBBpYuFxyMbsCvC9GzpCbrMHo8xRWaNRXtfACSWF4DxGEkp44zc
- JThorb+urNa2xzkJGPCNtt0y4wEAJml+YIXfyaQWvtZ4ljfGzjZj0Vv7vX5bCunIllQdNpNS5C
- 44fez8GaJZl+QLBbXFw3wAAAA==
-X-Change-ID: 20260921-submit-stmmac-reset-fixes-v1-7c98b92d29a9
+Message-Id: <20260922-submit-stmmac-reset-fixes-v1-v2-1-d92e609be996@gmail.com>
+References: <20260922-submit-stmmac-reset-fixes-v1-v2-0-d92e609be996@gmail.com>
+In-Reply-To: <20260922-submit-stmmac-reset-fixes-v1-v2-0-d92e609be996@gmail.com>
 To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
  Heiner Kallweit <hkallweit1@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -102,53 +101,76 @@ Cc: Richard Genoud <richard.genoud@bootlin.com>,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-Keep the stmmac datapath coherent after failed MTU reopening or hardware
-resume without changing the interface's administrative state. An ordinary
-down/up must release the resources still owned and open a fresh datapath,
-without disabling NAPI twice or releasing already-freed allocations.
+If a network driver's system resume fails before phylink_resume(), the
+network device can remain administratively up with phylink suspended.
+Closing the interface then needs to terminate that suspended instance.
+Calling phylink_resume() merely to make phylink_stop() work is not a safe
+substitute: resume reconfigures the MAC and restarts link resolution,
+although the driver has not successfully restored the MAC.
 
-The phylink prerequisite permits an ordinary close to terminate a
-suspended instance directly. Resuming phylink solely to stop it would
-reconfigure and restart a MAC which has not successfully resumed.
+This is a missing suspend-to-stop transition, independent of the reason
+hardware restoration failed. No MAC recovery policy belongs in phylink;
+the driver still decides whether to retry resume or wait for an ordinary
+administrative down/up cycle.
 
-The stmmac fix tracks running, suspended-with-resources and released
-datapaths separately from IFF_UP. A failed interface stays detached until
-successful resume or administrative recovery. XDP, AF_XDP and debugfs
-paths which are not excluded by detach also respect resource ownership.
+Without MAC Wake-on-LAN, phylink_suspend() has already called
+phylink_stop(). Leave that stopped instance alone instead of repeating
+PHY, SFP and PCS shutdown. With MAC Wake-on-LAN, suspend deliberately
+defers mac_link_down() and sets PHYLINK_DISABLE_MAC_WOL. Finish that
+deferred link-down, drain resolution work and clear the WoL disable bit
+while retaining PHYLINK_DISABLE_STOPPED. Otherwise a subsequent start
+cannot resolve the link.
 
+Document that a suspended instance can be stopped directly. This neither
+resumes the PHY nor reconfigures or brings up the MAC.
+
+Fixes: f97493657c63 ("net: phylink: add suspend/resume support")
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
-Changes in v2:
-- Drop forced netif_close() and retain the interface's administrative state,
-  as requested by Maxime Chevallier.
-- Separate queue quiescence from resource release and use explicit datapath
-  state instead of a napi_disabled argument to the release helper.
-- Handle repeated suspend/resume after failure, preserve PHY/PM ownership
-  until ordinary close, and allow a fresh down/up recovery.
-- Check XDP/AF_XDP cleanup, descriptor readback and asynchronous reset work
-  while the netdev is administratively up but unavailable.
-- Explain the generic phylink suspend-to-stop transition and why restarting
-  phylink after a failed MAC resume is not a valid substitute, in response
-  to Andrew Lunn.
-- Combine the two stmmac error-path fixes so every user of the new state
-  has consistent resource and NAPI lifetime handling in one patch.
-- Link to v1: https://patch.msgid.link/20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00@gmail.com
+ drivers/net/phy/phylink.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
----
-James Hilliard (2):
-      net: phylink: allow stopping a suspended instance
-      net: stmmac: keep datapath state coherent after reinitialization failure
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index a1458da8111b..df520d77fded 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -2495,11 +2495,18 @@ EXPORT_SYMBOL_GPL(phylink_start);
+  *
+  * This will synchronously bring down the link if the link is not already
+  * down (in other words, it will trigger a mac_link_down() method call.)
++ * A suspended instance may be stopped without first calling phylink_resume().
++ * In particular, closing a device after a failed resume must not restart the
++ * link or reconfigure the MAC just to finish shutting it down.
+  */
+ void phylink_stop(struct phylink *pl)
+ {
+ 	ASSERT_RTNL();
+ 
++	/* phylink_suspend() already stops the link without MAC WoL. */
++	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state))
++		return;
++
+ 	if (pl->sfp_bus)
+ 		sfp_upstream_stop(pl->sfp_bus);
+ 	if (pl->phydev)
+@@ -2512,6 +2519,16 @@ void phylink_stop(struct phylink *pl)
+ 
+ 	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
+ 
++	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
++		/* Finish the link-down deferred by MAC WoL, without restarting. */
++		flush_work(&pl->resolve);
++		mutex_lock(&pl->state_mutex);
++		if (pl->suspend_link_up)
++			phylink_link_down(pl);
++		__clear_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
++		mutex_unlock(&pl->state_mutex);
++	}
++
+ 	pl->pcs_state = PCS_STATE_DOWN;
+ 
+ 	phylink_pcs_disable(pl->pcs);
 
- drivers/net/ethernet/stmicro/stmmac/stmmac.h      |  11 ++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 116 ++++++++++++++++------
- drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c  |   8 +-
- drivers/net/phy/phylink.c                         |  17 ++++
- 4 files changed, 120 insertions(+), 32 deletions(-)
----
-base-commit: 17741334d00bf5ebd37f8c1c36bc9c146a351deb
-change-id: 20260921-submit-stmmac-reset-fixes-v1-7c98b92d29a9
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+-- 
+2.53.0
 
