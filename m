@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CFD37B3F7
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A135C37F015
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790042162; cv=none; b=ZKHi9cQ8wkNuXRfC/VusioIlWdq4vkx6d2r0QNwGCcPVfIC1M7cFyB+DGbH97sB2icOzLQLdY3eBJKZTz8Kdvxy4/UZVBeEoPRqtR1QAvYJfq2cFm1/QaslkrK2kJLHWeM9Hvf4LyoYeWFddDHafZr9Z+95s0OLgab+HrzJ2DL0=
+	t=1790042164; cv=none; b=B7lCVa/kznomRNy0vR3VcfNPfocwldGL1CmFPdvBGl9Byc6jlmgfLlUlIpf7EN+LpYKEE07oNfzFovEHO/zBG5XAG96Qj8cklVt9g+u36XvgbmG32cFKyRGVg89qtfFR052p92bedfgJZpX6Ppxr9M4el6Do+QROGMsv2vUfSlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790042162; c=relaxed/simple;
-	bh=zFLW/mMYvm78J+sDujqQplOT29MqtwWIURnFbbzNVU8=;
+	s=arc-20240116; t=1790042164; c=relaxed/simple;
+	bh=KoN1igMCr2SeDuR6AzkuqSz6vzG8qtbs2xyLYLhmKy4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DoUdKi2l/du5eT6iasNgQ2zrLlB7k7/zmMTWflXo1PqzVooHkkShwQuMLSHZIticU7NsFlbCM9fjB1lPt9Q9B1wKN83Fs3utkCCjIgJoNBG5UtiWiHXsJdIiPRIuaWKaNqCYZ6EsRSHrQmL93KuF+9iqU6Ctdzm0qWnpAc19blI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b299aP/p; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=p4B6ytnbe2cin/6MKJ/hDm4ft1PhqzRPCx/1rbGl6Z4QRelhcUmB176s92ghUxBqoXyP7fuL3IVg5qRIQRxyH33IKJMsu9MPU9i94npwLAWugb+iRrFT6uESdAEYpku4FrRV0JfLKF2IPzxX1D3Ff6HgIHgbx7S7R7OZXSKqD64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YF2t74OK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b299aP/p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5718A1F00893;
-	Tue, 22 Sep 2026 01:55:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YF2t74OK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC0E1F000FF;
+	Tue, 22 Sep 2026 01:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790042160;
-	bh=b0OmOGCHUBeJsXI2lwWY1QhpBnwZpuAOWWn+r+4yC9w=;
+	s=k20260515; t=1790042161;
+	bh=jsBdn3QO9BrXoBb4A4azisdxry0jEbTx/FycxyM5NxQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=b299aP/pO2F5PdGVAtdzZAPNzlwgjjE2SMjm8RrIA2oRSbrlffqn1qSTzJIUQ1HOz
-	 KUaCvp/hRK/bptPSJk2VhZ4mpdApRdLDV9B8SMs5UpLRa3UAKqbT5phpSMlQ2BkGbC
-	 oJEYjSJTslSlH0GeWCRMS34pbadHbrzMaC6mh8ZMMSVP45BL8lYjW6LoWBfaHA97Oe
-	 OZ+uyTqin0aXrPbJK5xj2WWitfPUBfpAYM+Qsy3WWg+MoAtEt5UHPeIS0TYTitC5XM
-	 +1YiMRpk5YtThVVngm2bBAVBo2oRAzpd/iYIvc+mJJQ2bYz58RIS75uRfmjKyVuCPh
-	 JIMB4QmT5xrjA==
-Subject: Re: [PATCH net-next v17 02/15] net/mlx5e: add TLS 1.3 hardware
- offload support
+	b=YF2t74OKPr8+SU7URRk5XzXye/sA6LoR/Cz+qLgJx30sVRswxfnhmJ5M7p3ItReXr
+	 FNJWMOpgbUz0SmkRJti1t5WrfLhWGXzGVAp3+cCS3/atlEdaJI2pbSUlTUYv0vSUNS
+	 XKc4brMrtirnDYPQXMtsuchhyiV/z1i/z4INrb9ZlU8/6gCKb8Z8/oVFlecncLgnPP
+	 GQOffkfpeWexPx64JR7vE8LQz8f/ZAAK/mj5Ix0MIyH8nHa4fnqlXiKTm6I9R8gJTw
+	 CmHV0bnmGaor+Ni5r4+CG1+cSQ9Ef3DkTzeAjn9uIHtX40mIWKD93TsamPhXXcPDbp
+	 YozXQeh2pFkCA==
+Subject:
+ Re: [PATCH net-next v17 04/15] tls: add TLS 1.3 hardware offload support
 From: netdev-bot+sashiko@kernel.org
 To: rjethwani@purestorage.com
 Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
  mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
  kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
  edumazet@google.com, leon@kernel.org, andrew.gospodarek@broadcom.com
-Date: Tue, 22 Sep 2026 01:55:58 +0000
-Message-ID: <179004215886.2160803.3872789531181206919@kernel.org>
-In-Reply-To: <20260917224355.2288021-3-rjethwani@purestorage.com>
-References: <20260917224355.2288021-3-rjethwani@purestorage.com>
-X-sashiko-severity: Low
+Date: Tue, 22 Sep 2026 01:56:00 +0000
+Message-ID: <179004216049.2160803.7175771420897392767@kernel.org>
+In-Reply-To: <20260917224355.2288021-5-rjethwani@purestorage.com>
+References: <20260917224355.2288021-5-rjethwani@purestorage.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,153 +48,116 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] Concern (INVALIDATED by series context): 'net/mlx5e: add TLS 1.3
-  hardware offload support' is claimed to be dead code because net/tls…
-- [Low] Concern (no defect proven): fill_static_params() writes the TLS
-  1.3 8-byte IV tail into the device's implicit_iv field by pointer…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] tls: add TLS 1.3 hardware offload support drops the
+  TLS_1_2_VERSION guards in tls_set_device_offload() and…
+- [Low] Documentation/networking/tls-offload.rst (Rekey section, lines
+  404-408 at the parent commit) states that offload does not support TLS…
 
 --
 
-net/mlx5e: add TLS 1.3 hardware offload support
+tls: add TLS 1.3 hardware offload support
 
-This adds TLS 1.3 capability checks to mlx5e_is_ktls_device() and
-mlx5e_ktls_type_check(), and teaches fill_static_params() to program the
-TLS 1.3 static params context including the 8-byte IV tail that follows
-the 4-byte salt.
+This patch enables TLS 1.3 on the kTLS device offload path by dropping the
+TLS_1_2_VERSION checks in tls_set_device_offload() and
+tls_set_device_offload_rx(), appending the 1.3 content_type byte with the
+tag in tls_device_record_close(), and teaching the device fallback
+encryption path about the 1.3 IV, AAD and prepend layouts.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
-> index 07a04a142a2ea..0469ca6a0762e 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
-> @@ -30,7 +30,9 @@ static inline bool mlx5e_is_ktls_device(struct mlx5_core_dev *mdev)
->  		return false;
->  
->  	return (MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_128) ||
-> -		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256));
-> +		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256) ||
-> +		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_128) ||
-> +		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_256));
->  }
->  
->  static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
-> @@ -40,10 +42,14 @@ static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
->  	case TLS_CIPHER_AES_GCM_128:
->  		if (crypto_info->version == TLS_1_2_VERSION)
->  			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_128);
-> +		else if (crypto_info->version == TLS_1_3_VERSION)
-> +			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_128);
->  		break;
->  	case TLS_CIPHER_AES_GCM_256:
->  		if (crypto_info->version == TLS_1_2_VERSION)
->  			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
-> +		else if (crypto_info->version == TLS_1_3_VERSION)
-> +			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_256);
->  		break;
+> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> index f5e1b6b61ce38..ada66c0bd0756 100644
+> --- a/net/tls/tls_device.c
+> +++ b/net/tls/tls_device.c
+
+[ ... ]
+
+> @@ -1101,11 +1110,6 @@ int tls_set_device_offload(struct sock *sk)
 >  	}
-
-[Severity: Low]
-This isn't a bug, but could the commit message mention the core dependency?
-
-At this commit the new TLS_1_3_VERSION arms in mlx5e_ktls_type_check() and
-the TLS 1.3 branch in fill_static_params() cannot be reached, because
-net/tls still rejects 1.3 for device offload:
-
-net/tls/tls_device.c:tls_set_device_offload() {
-	crypto_info = &ctx->crypto_send.info;
-	if (crypto_info->version != TLS_1_2_VERSION) {
-		rc = -EOPNOTSUPP;
-		goto release_netdev;
-	}
-}
-
-net/tls/tls_device.c:tls_set_device_offload_rx() {
-	if (ctx->crypto_recv.info.version != TLS_1_2_VERSION)
-		return -EOPNOTSUPP;
-}
-
-Those two guards are dropped by "tls: add TLS 1.3 hardware offload support"
-later in the same series, so the driver code does become live by the end of
-the series and there is no functional problem here.
-
-Since the message says "Tested with TLS 1.3 AES-GCM-128 and AES-GCM-256
-cipher suites", would it help to state that the test depends on the later
-core patch, or to reorder so the core change lands first?
-
-Related, mlx5e_is_ktls_device() starts advertising kTLS on hardware that
-only reports tls_1_3_aes_gcm_128/256 caps while the core still offers only
-1.2 sessions, which mlx5e_ktls_type_check() then refuses. Is that
-intermediate state intentional for the two commits it lasts?
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
-> index 570a912dd6faf..f3f1be1d40343 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
-
-[ ... ]
-
-> @@ -15,8 +16,10 @@ enum {
->  #define EXTRACT_INFO_FIELDS do { \
->  	salt    = info->salt;    \
->  	rec_seq = info->rec_seq; \
-> +	iv      = info->iv;      \
->  	salt_sz    = sizeof(info->salt);    \
->  	rec_seq_sz = sizeof(info->rec_seq); \
-> +	iv_sz      = sizeof(info->iv);      \
->  } while (0)
-
-[ ... ]
-
-> @@ -59,7 +62,12 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
->  	memcpy(gcm_iv,      salt,    salt_sz);
->  	memcpy(initial_rn,  rec_seq, rec_seq_sz);
 >  
-> -	tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
-> +	if (crypto_info->crypto_info.version == TLS_1_3_VERSION) {
-> +		memcpy(gcm_iv + salt_sz, iv, iv_sz);
-                        ^^^^^^^^^^^^^^^^
+>  	crypto_info = &ctx->crypto_send.info;
+> -	if (crypto_info->version != TLS_1_2_VERSION) {
+> -		rc = -EOPNOTSUPP;
+> -		goto release_netdev;
+> -	}
+> -
+>  	cipher_desc = get_cipher_desc(crypto_info->cipher_type);
+>  	if (!cipher_desc || !cipher_desc->offloadable) {
+>  		rc = -EINVAL;
+> @@ -1208,9 +1212,6 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
+>  	struct net_device *netdev;
+>  	int rc = 0;
+>  
+> -	if (ctx->crypto_recv.info.version != TLS_1_2_VERSION)
+> -		return -EOPNOTSUPP;
+> -
+>  	/* A rekey (setsockopt on an already-configured socket) is not
+>  	 * supported on the device offload path yet; reject it here so the
+>  	 * caller can decide (propagate the error for a HW connection, or
+
+[Severity: Medium]
+
+At this point in the series, TLS 1.3 becomes offloadable in both directions
+while the rekey rejection right below in tls_set_device_offload_rx() is
+still in place.  Can a HW-offloaded TLS 1.3 RX socket get permanently
+stuck if the peer sends a KeyUpdate?
+
+The peer KeyUpdate makes tls_check_pending_rekey() in net/tls/tls_sw.c set
+sw_ctx->key_update_pending, and tls_rx_rec_wait() then bails out
+unconditionally:
+
+	/* a rekey is pending, let userspace deal with it */
+	if (unlikely(ctx->key_update_pending))
+		return -EKEYEXPIRED;
+
+tls_sk_poll() also masks EPOLLIN in that state.  The only place that clears
+the flag is tls_finish_key_update(), reached from the SW setup path, but
+the setsockopt(TLS_RX) that would install the new key is rejected in
+tls_set_device_offload_rx() for rx_conf != TLS_BASE and the error is
+propagated by do_tls_setsockopt_conf() without a SW fallback.  So recvmsg()
+keeps returning -EKEYEXPIRED with no way for userspace to recover.
+
+TX side, a TLS 1.3 KeyUpdate that used to work via software now turns into
+a hard setsockopt failure on an offload-capable NIC.
+
+The later patches in this series ("tls: device: add TX KeyUpdate support"
+and "tls: device: add RX KeyUpdate support") implement the rekey and make
+tls_set_device_offload_rx() end in tls_sw_ctx_finalize(), which clears
+key_update_pending, so the end state of the series looks fine.  Would it
+make sense to reorder so this patch does not leave a bisectable window
+where a remote peer can wedge an offloaded 1.3 socket?
 
 [Severity: Low]
-This isn't a bug today, but would it be clearer to address implicit_iv by
-name rather than walking off the end of gcm_iv?
 
-The layout is:
+Should the Rekey section of Documentation/networking/tls-offload.rst be
+updated in this patch?  It currently says:
 
-include/linux/mlx5/mlx5_ifc.h:
-struct mlx5_ifc_tls_static_params_bits {
-	...
-	u8         gcm_iv[0x20];
+	Rekey
+	=====
 
-	u8         implicit_iv[0x40];
+	Offload does not currently support TLS 1.3, therefore key rotation
+	is not a concern for offloaded connections at this point.
 
-	u8         reserved_at_100[0x8];
-	u8         dek_index[0x18];
-	...
-};
+which no longer holds once the version guards above are gone and 1.3
+crypto_info is programmed into the NIC for both directions.  The "TLS 1.3
+Key Updates" section of Documentation/networking/tls.rst also describes
+installing a new key with setsockopt(TLS_TX/TLS_RX) without mentioning the
+hardware offload limitation that this patch temporarily leaves behind.
 
-gcm_iv is 4 bytes, so gcm_iv + salt_sz with salt_sz == 4 and iv_sz == 8
-lands exactly on the 8 bytes of implicit_iv for both AES-GCM-128 and
-AES-GCM-256, which is why nothing is currently overwritten.
+The later patch "tls: document TLS 1.3 hardware offload rekey handling"
+does rewrite that section with the TX and RX rekey description, so this is
+only a mismatch in the intermediate state of the series.
 
-The write does depend on salt_sz staying 4 and on gcm_iv/implicit_iv staying
-adjacent though. Would using
-
-	implicit_iv = MLX5_ADDR_OF(tls_static_params, ctx, implicit_iv);
-
-plus a BUILD_BUG_ON() tying sizeof(info->salt) and sizeof(info->iv) to the
-field widths be preferable, so a future cipher suite with a different salt
-size or a PRM layout change fails to build instead of writing into
-dek_index?
-
-> +		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3;
-> +	} else {
-> +		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
-> +	}
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917224355.2288021-1-rjethwani%40purestorage.com
