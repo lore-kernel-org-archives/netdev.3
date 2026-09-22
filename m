@@ -1,62 +1,63 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6268515966
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB34F515969
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790109853; cv=none; b=EuIl01zVuURKUhaY7RkGLrSdcoWY9Fqowl8IKbhLaghYlO+ovtgPyRi+C7oHVv2pLvBV2UUT9s5kWXRQIQRlnCnTjGAM+QBML5iUQtAjjdo+aZHgBWlNtAN7jianis0zzwAx86qFAZ9B/vvLsre/y0yBRsr4Gd9lJWHcqW/J43o=
+	t=1790109853; cv=none; b=AiIZPdbloquYKF3qq6wzsDIejtvz4qBDi/vg06qQvUdh5NF/Z0eGgAYkH5qJTQfFxCPGlJlIMoRW/xdMu3R+NmZLtPTIHFluB+kwQKe8moahqj6NQoRrvbVeKpSvjEGRkXJqChWzWF3wraBCdV2zDCweJIdmzDSMl6xfVVPbHPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790109853; c=relaxed/simple;
-	bh=skCoc+C0hEQPVu18sCy3a39JKiwa3vnAiGPPaMNlYOU=;
+	bh=OWLnRy0Kyd8FdV/E9+5Qi5HN1AFVDCBPd909vqVd4d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWcLypLBgr7HSEDowBXaGsm/cAb4T2qwZk/qzcBTXp4XqVwieN911Rn3dExlFT6Z2yfp+51/us4eUO2z8ATX2MQmU1G/g3o9HAJVdcby4RDRdzsL+z2m/59BGFEQ6HfioKhjVQA4WJDORG+CZo7UwMk2KT54VCLZf3LFgy+FHrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XlfHmxgS; arc=none smtp.client-ip=74.125.228.1
+	 MIME-Version; b=t69M60cPPBFtWl4NfmYQEf15Tx6+wS2xdhs8cP7x2td+hBar0+DTNcirzfi6RfgThYhJSgtFc53yOm4EjtdLwV2U1KPPtgLgO9xWs47Qwvz9F+EtLbdXyHIhAeZeUYg/VzhXVJtmYuvheqtXxCIDdGMHyGinT+NT9p5U5U5GVrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LsW/y3zj; arc=none smtp.client-ip=74.125.227.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XlfHmxgS"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca8758e7e94so21327a12.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:43:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LsW/y3zj"
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2dd9bce707bso931355ad.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:43:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790109832; x=1790714632; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790109833; x=1790714633; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Q2XSgCg/L+gcV4fc8+Srep5u/tQwTGnGLQScsN2YpZw=;
-        b=XlfHmxgSl9Gx8kKDvp+jLClKQMTvp2SYLnbKzqwZ31Kb4Ja/CLHhgiqwBl+N0/0qMY
-         Kqi0KRaktuTsVx+4Nj5+hv3XbUobKMoAdU3IL/ZTBakEsu3M+gRG5k8lYMt5f3GX2Cs7
-         dOqrTrTjAQDj1+WdKUC+oWp/xkigxsO+gWSj2cB3gEy/pH7KSReqVYK2Bfa5mElhKgho
-         aXtOE8tl0onrPyj3ktK9suPZlnSkdkhJHf55WRWVk7EIyrvRg6zegZUaAPIjDDTxyAFh
-         7AwFZQXQdtP2FW5ZiqePHpyFRgZ3rL4jr9Zhi4RUwuy1YyNjsVj96b6XeYIDCjU8aBx1
-         Z4tw==
+        bh=NWtkhPsIR7rUvSSAcPaCXCFRGMGm2fhAVUCymwEWeyQ=;
+        b=LsW/y3zjvB6uh21uuruh/Ri7fkZYm4WKusxPX4jKNVvoGlr21HDedY5cMenr46pwEP
+         9/gfmdW0U9WhuDu5TEqyCnkVctLyU16gjfA5hLkTySocRoAwBlRyWpAW4bpIiipShmqe
+         F5PlUQlbGF3jZZS8+Gc9zPvuCxBSMHAbxn/FQezpxhTqumXa+e9jpx4/zLPQdKIqqwDI
+         uFHDF4yqYA5qK7zc4fW2wF5dd7kJReZRgtWKUHQ42DkW7eQ5vugrqLsQRYnrhJSY/wR7
+         29Ags8MMbggZA1pmBWShQQCGLPrDUFBQRlt76jDkbKDHl7ebXPColxqRO1glX2ybNt6p
+         GgHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790109832; x=1790714632;
+        d=1e100.net; s=20260707; t=1790109833; x=1790714633;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q2XSgCg/L+gcV4fc8+Srep5u/tQwTGnGLQScsN2YpZw=;
-        b=NECCT0+Bzcm7SdEwWbYmlV5T8XYl+8LvGlOE0vu7v0oUDvMuvIfqvUqp91Yz99HmQK
-         ifqsJZuBNLvW2+lxmGc71BcXSnyss9mNs2aW/CDm4pHR7fC8QPKtG68MhW0A01W+07oD
-         C8O1Za12ogedU3ACujkWd0bZZxZv9O/tykunfj01lfESlWFAI2AEj/PUSSf3utOGpRDF
-         8Ir2NwKxriXiK6Gb18fx8UcFhDcxELh73K8YeyklV4iNOjVjGHd4SWH69R1204OaD7N7
-         255PIg+i9C7ZvZrgAZJBK6cLnC7ZloM/oJuobK+RxdnuyulVPklPmb6gwHzfggFJOOMu
-         z2tg==
-X-Gm-Message-State: AFuF++lsCEXN8P0IYW/2eZXx0CGJn9OMFmf8AUL3pYpR/MMeQO7S0S2d
-	Mm+CMk4u+hXeDvibSEzBxQWzWBWtgfJc++zG9CnB1NPYRK9U99+sqFNv+71WqCBQ
-X-Gm-Gg: AYBFou04lyKv8NNw8kVkNVuQMLJ+LZbaJTX2Sb+nIi9jUHP5BrgxyuivnqcWAHOVzHh
-	sex+wfTfz1jFZz55SxWTS4MYNSRzkjDErvg98JcfzSPbN1DcHmvnyGaL3va9WqNmmbAMOSuen5k
-	HCTWBI7C71Xfgw3edbrhN+Xbl7a/nLKa+pMG0qoTVbNPKgIdtUKL6f80PAs9aFkeVqBmSx3ecnK
-	+gkOSPaXC7g8j8Cn0HC5/gPBfmuBSa3LA/b331sskF5ymA1ECEynxv1/TBE6Zjey1AIiecgi5HI
-	M9BLfiFEOUlPMmtylK9xADFUT+lQ83EtXPN9a6LYBGi+0BGDd5crXB+H2GHiWMax/3EsQl9EnPD
-	IErsMPScMhyN8acKbHwO8KspiFQEv/xvDTqJVRSrklE/JGgu5E/W082x5RAKMIeO+8MWaaGqGKj
-	/bo8EroSp7honG9/eGUiZynFzt96VR/xLoTNYwHEEzMiaocwuy4Z2Bkoi31LYTe8qN
-X-Received: by 2002:a05:6a00:b807:b0:857:72f8:dca6 with SMTP id d2e1a72fcca58-87d2374c350mr495409b3a.12.1790109831832;
-        Tue, 22 Sep 2026 13:43:51 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:47::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1dff9769sm280202b3a.46.2026.09.22.13.43.51
+        bh=NWtkhPsIR7rUvSSAcPaCXCFRGMGm2fhAVUCymwEWeyQ=;
+        b=cWFwY2prVy3msvdRMZuP/QQR2PoHNp5bCSPWoHK2KneRnH9LHgyGg2Z+SwUwQZnUhb
+         U9o9R4u6eQAYtJkpODqGQ3fZU/EJumV5UBgV553aefC/TwlCEfGeCUVxKRVOxtspUabv
+         NLqw8kguFObrAPlRcwqZtMVwruEZGVHlwsN5TFEEVHjeEZpML7IRWge2WLaVuCf7h/0f
+         aSBbvubqjh05WZZ8ZXxE01x7FwuMcPzRtRQ4HFzWERgphuFeSqsZtDmC4A0C8MXZgzrp
+         8r0A7V4R0ET1gr9LiFoazrDNE0lshzcn2HAjv1pWZfToJ5Jy6yXg5olciPNQKGrXTE3T
+         f8gw==
+X-Gm-Message-State: AFuF++mmd9VMzL3BR0H6dp0w/VT9oizAFa0U8RZStS+ZEkla36xOVxBi
+	Gr82sJbynsvFUUtQ04TY4SBmbuzBCDiUCwtYUOBUKwRdCh0T8sTG4lYLqOAxQyWR
+X-Gm-Gg: AYBFou2qQL51yPj0T69sh5NG6gFp5BMZSOGsS8jdtf70jj7XQC45b/C13NrJoqZjy/o
+	8qTe7QCGQCtX2IpW/rFPzVub9FuspIVYq0E5XGZgGG0YCjghn4i/aaR6t24neCqkin6FRdN8d32
+	F2tz5bc315k69BJzQfrq5whPllFlxlI0rPeW3uRilkbMvIXyGZK7hlUU4SSFrKSZ4u8ODc5bF1d
+	kD+dzAQTkBsjjurlZUIriImM2zoeoJliw4DzITcs5n/qpHsO+RB5mX4ybB5Eyd85Xdx5kidaAH8
+	hc11CwSrIZN1RjKF8DAYogHY4JmQgEaxb1FEar1zq8ynqhg7lADSZoz9W9O22v6Bw1DVu6BQudR
+	SwsFPMoEhB9knsVW23OJ14kE79sOElpXAnvNDqlx1kDxpLAr9jE1xqiBWdnwnhVAOdl3yXlAtle
+	diuwrZyyMy7LcU2XjgtqtvVewmhBqZVKPGHKt8rCgCMx7XbqEWnc/LvZpaRwnxoQUGjUcsmyKol
+	/w=
+X-Received: by 2002:a17:903:1ac5:b0:2dd:c053:82f0 with SMTP id d9443c01a7336-2df69dc3fddmr4755005ad.39.1790109833271;
+        Tue, 22 Sep 2026 13:43:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:72::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5f965esm879425ad.75.2026.09.22.13.43.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 13:43:51 -0700 (PDT)
+        Tue, 22 Sep 2026 13:43:52 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -75,9 +76,9 @@ Cc: davem@davemloft.net,
 	kaiyuanz@google.com,
 	linux-kernel@vger.kernel.org,
 	io-uring@vger.kernel.org
-Subject: [PATCH net-next 2/3] net: devmem: use memory provider helpers for net_iovs
-Date: Tue, 22 Sep 2026 13:43:47 -0700
-Message-ID: <20260922204348.717198-3-sdf@fomichev.me>
+Subject: [PATCH net-next 3/3] net: devmem: decode DMA addresses for TX
+Date: Tue, 22 Sep 2026 13:43:48 -0700
+Message-ID: <20260922204348.717198-4-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260922204348.717198-1-sdf@fomichev.me>
 References: <20260922204348.717198-1-sdf@fomichev.me>
@@ -89,91 +90,135 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use public memory-provider helpers for DMA address storage and page-pool
-association instead of open-coding page_pool state and accounting.
+On 32-bit architectures where dma_addr_t is wider than unsigned long,
+page_pool_set_dma_addr_netmem() stores page-aligned DMA addresses shifted
+by PAGE_SHIFT. The net_iov branch of __skb_frag_dma_map() adds byte offsets
+to the encoded value, so the NIC is programmed with an invalid DMA address.
+This can trigger an IOMMU fault or DMA from unintended memory.
 
-Zero the net_iov array because net_mp_niov_set_page_pool() ORs
-PP_SIGNATURE into pp_magic. Reject DMA addresses that cannot be
-represented in net_iov metadata.
+Consolidate DMA address encoding, decoding, and representability checks in
+netmem helpers. Use the common decoder from the page pool and net_iov TX
+paths so both interpret stored addresses consistently.
 
+Fixes: bd61848900bf ("net: devmem: Implement TX path")
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- net/core/devmem.c | 31 +++++++++++--------------------
- 1 file changed, 11 insertions(+), 20 deletions(-)
+ include/linux/skbuff.h          |  7 +++++--
+ include/net/netmem.h            | 27 +++++++++++++++++++++++++++
+ include/net/page_pool/helpers.h | 10 +---------
+ net/core/page_pool_priv.h       | 14 ++------------
+ 4 files changed, 35 insertions(+), 23 deletions(-)
 
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index c1c1872b88de..0fc77c1a2956 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -17,11 +17,9 @@
- #include <net/page_pool/memory_provider.h>
- #include <net/sock.h>
- #include <net/tcp.h>
--#include <trace/events/page_pool.h>
- 
- #include "devmem.h"
- #include "mp_dmabuf_devmem.h"
--#include "page_pool_priv.h"
- 
- /* Device memory support */
- 
-@@ -247,7 +245,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 			goto err_unmap;
- 		}
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 421f6fc45451..3740d4b15b70 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3833,9 +3833,12 @@ static inline dma_addr_t __skb_frag_dma_map(struct device *dev,
+ 					    size_t offset, size_t size,
+ 					    enum dma_data_direction dir)
+ {
++	dma_addr_t addr;
++
+ 	if (skb_frag_is_net_iov(frag)) {
+-		return netmem_to_net_iov(frag->netmem)->desc.dma_addr +
+-		       offset + frag->offset;
++		addr = netmem_dma_addr_decode(
++			netmem_get_dma_addr(frag->netmem));
++		return addr + offset + frag->offset;
  	}
--	binding->area.niovs = kvmalloc_objs(*binding->area.niovs,
-+	binding->area.niovs = kvzalloc_objs(*binding->area.niovs,
- 					    binding->area.num_niovs);
- 	if (!binding->area.niovs) {
- 		err = -ENOMEM;
-@@ -274,8 +272,12 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		for (i = 0; i < nr_niovs; i++, niov_idx++) {
- 			niov = &binding->area.niovs[niov_idx];
- 			net_iov_init(niov, &binding->area, NET_IOV_DMABUF);
--			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
--						      dma_addr);
-+			if (net_mp_niov_set_dma_addr(niov, dma_addr)) {
-+				err = -EFAULT;
-+				NL_SET_ERR_MSG(extack,
-+					       "dmabuf DMA address cannot be represented");
-+				goto err_free_niovs;
-+			}
- 			if (direction == DMA_TO_DEVICE)
- 				binding->tx_vec[niov_idx] = niov;
- 			else
-@@ -439,19 +441,9 @@ netmem_ref mp_dmabuf_devmem_alloc_netmems(struct page_pool *pool, gfp_t gfp)
- 	if (unlikely(!allocated))
- 		return 0;
+ 	return dma_map_page(dev, skb_frag_page(frag),
+ 			    skb_frag_off(frag) + offset, size, dir);
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index da885d95ea63..4e06a647620a 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -384,6 +384,33 @@ static inline bool netmem_is_pfmemalloc(netmem_ref netmem)
+ 	return page_is_pfmemalloc(netmem_to_page(netmem));
+ }
  
--	for (i = 0; i < allocated; i++) {
--		struct net_iov *niov = netmem_to_net_iov(netmems[i]);
++#define NETMEM_32BIT_ARCH_WITH_64BIT_DMA	\
++	(sizeof(dma_addr_t) > sizeof(unsigned long))
++
++static inline unsigned long netmem_dma_addr_encode(dma_addr_t addr)
++{
++	if (NETMEM_32BIT_ARCH_WITH_64BIT_DMA)
++		addr >>= PAGE_SHIFT;
++
++	return addr;
++}
++
++static inline dma_addr_t netmem_dma_addr_decode(unsigned long addr)
++{
++	if (NETMEM_32BIT_ARCH_WITH_64BIT_DMA)
++		return (dma_addr_t)addr << PAGE_SHIFT;
++
++	return addr;
++}
++
++static inline bool netmem_dma_addr_fits(dma_addr_t addr)
++{
++	/* We assume page alignment to shave off bottom bits,
++	 * if this "compression" doesn't work we need to drop.
++	 */
++	return addr == netmem_dma_addr_decode(netmem_dma_addr_encode(addr));
++}
++
+ static inline unsigned long netmem_get_dma_addr(netmem_ref netmem)
+ {
+ 	return netmem_to_nmdesc(netmem)->dma_addr;
+diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+index 87a4e13886e1..cd021832c3fa 100644
+--- a/include/net/page_pool/helpers.h
++++ b/include/net/page_pool/helpers.h
+@@ -408,9 +408,6 @@ static inline void page_pool_recycle_direct_netmem(struct page_pool *pool,
+ 	page_pool_put_full_netmem(pool, netmem, true);
+ }
+ 
+-#define PAGE_POOL_32BIT_ARCH_WITH_64BIT_DMA	\
+-		(sizeof(dma_addr_t) > sizeof(unsigned long))
 -
--		niov->desc.pp_magic = 0;
--		niov->desc.pp = NULL;
--		atomic_long_set(&niov->desc.pp_ref_count, 0);
+ /**
+  * page_pool_free_va() - free a va into the page_pool
+  * @pool: pool from which va was allocated
+@@ -427,12 +424,7 @@ static inline void page_pool_free_va(struct page_pool *pool, void *va,
+ 
+ static inline dma_addr_t page_pool_get_dma_addr_netmem(netmem_ref netmem)
+ {
+-	dma_addr_t ret = netmem_get_dma_addr(netmem);
 -
--		page_pool_set_pp_info(pool, netmems[i]);
+-	if (PAGE_POOL_32BIT_ARCH_WITH_64BIT_DMA)
+-		ret <<= PAGE_SHIFT;
 -
--		pool->pages_state_hold_cnt++;
--		trace_page_pool_state_hold(pool, netmems[i],
--					   pool->pages_state_hold_cnt);
+-	return ret;
++	return netmem_dma_addr_decode(netmem_get_dma_addr(netmem));
+ }
+ 
+ /**
+diff --git a/net/core/page_pool_priv.h b/net/core/page_pool_priv.h
+index 2fb06d5f6d55..430b97cd88da 100644
+--- a/net/core/page_pool_priv.h
++++ b/net/core/page_pool_priv.h
+@@ -18,18 +18,8 @@ void page_pool_unlist(struct page_pool *pool);
+ static inline bool
+ page_pool_set_dma_addr_netmem(netmem_ref netmem, dma_addr_t addr)
+ {
+-	if (PAGE_POOL_32BIT_ARCH_WITH_64BIT_DMA) {
+-		netmem_set_dma_addr(netmem, addr >> PAGE_SHIFT);
+-
+-		/* We assume page alignment to shave off bottom bits,
+-		 * if this "compression" doesn't work we need to drop.
+-		 */
+-		return addr != (dma_addr_t)netmem_get_dma_addr(netmem)
+-				       << PAGE_SHIFT;
 -	}
-+	for (i = 0; i < allocated; i++)
-+		net_mp_niov_set_page_pool(pool,
-+					  netmem_to_net_iov(netmems[i]));
- 
- 	/* Return the last one, the rest stay in the page_pool cache. */
- 	allocated--;
-@@ -476,8 +468,7 @@ bool mp_dmabuf_devmem_release_page(struct page_pool *pool, netmem_ref netmem)
- 	if (WARN_ON_ONCE(refcount != 1))
- 		return false;
- 
--	page_pool_clear_pp_info(netmem);
 -
-+	net_mp_niov_clear_page_pool(netmem_to_net_iov(netmem));
- 	net_devmem_free_dmabuf(netmem_to_net_iov(netmem));
+-	netmem_set_dma_addr(netmem, addr);
+-	return false;
++	netmem_set_dma_addr(netmem, netmem_dma_addr_encode(addr));
++	return !netmem_dma_addr_fits(addr);
+ }
  
- 	/* We don't want the page pool put_page()ing our net_iovs. */
+ static inline bool page_pool_set_dma_addr(struct page *page, dma_addr_t addr)
 -- 
 2.53.0-Meta
 
