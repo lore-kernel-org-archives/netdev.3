@@ -1,94 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB043AC0E4
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 11:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549C847DD42;
+	Tue, 22 Sep 2026 11:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790076970; cv=none; b=lNgTtVRPCn1BXtyf9p2WsI/AvGg+gbU74FHRyVRFnQY1CazR3QcXg44yZlA600l5vRur9GF/0MifyATAvxjxohdapFUb62ZzpqTTMsV3U92pY0CKPTlxfBw91Lxnje27otCBfw+lHAIhB0y9fsrQL5rEz5yE5se65cEITByHZHo=
+	t=1790076972; cv=none; b=Wk+omWODQQGb16i7VmdFWuBqsbu3X3lmV1M6m8WvE4xlqemfyLFnYiWcpT9AP2P2OJhvvBGD5jLtoNsXiXGo2nrw9txli9fX/1LGvAwijPhBT0upHPuMMnccaC1gb33Vxz8lEJ5bL4qtjqHHDmg6F/P7YUOAtktC51KoetMNx7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790076970; c=relaxed/simple;
-	bh=Q7Qq1ojA9P4t/8q0aG9ChIfME7AZFSv4Z/bbT5TDIO0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MEnuVeto5z7z4JyTh++A84UlcwxjlR3LlKw0evzRVBY37ECgRdAp2fxHWX2QNQPW6mGpjm9lggsfITra4nReR+s8YkBtgIpqqJHHVYT3nppfCpZEVDiMq8kpTn0QNTiVp3x2gJFsflhbtUEV7mNFJYy5vIs/K5BE4K+3Ddt1rkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W+st14d7; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790076972; c=relaxed/simple;
+	bh=EjaZvIYZH36hkw1Fupqd0+eqFmicqMv4mf3X7fVQ3sQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HeIR0LBzifI2EYR0fxMsCBWVu3BXg3REIubrdQ/ye+yg6dm0tKQXBJHM5NzFazYIUSDBCqjLJqoKAt7clFNp6JEVsy/UJXsDfWykM1CRWS0lIqC/DBsqiOTNy80IYgBodKN5xqcgkzX9c8vPYDq2Flw9SAZOk2dD13ejmKMJTys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=XBGmAP7/; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W+st14d7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790076964; x=1821612964;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Q7Qq1ojA9P4t/8q0aG9ChIfME7AZFSv4Z/bbT5TDIO0=;
-  b=W+st14d7svALQfDggcXACts1fXXltllL3EIJYmEnAzZs8q7UdBffMYLL
-   v7hjmTE53xP5oT/64MKymPXWEBvU9DtMl6NLtXpxmqCVDgRIlcF1yKimM
-   t4J4m/AXojCNdj2Kup6BWhaYtyfkMsTnd18rQQV8PUJgkyzVQ6c5UINNL
-   ZebrKQ8f50ifVWzCVGjSB1WYa3X68F/irJQVKyBBzuLGdTbWNfSC/GgLb
-   oxjZ+Q1hDyrOlDYE2lMgiRD1S9wOUIWGwFsq9GVPaXiqOmNjwrF8fMigb
-   4j5PftmTzcjN7rzM2La7c6dM1rnaLtrJz9W1DK3J6zW4XBRFSQMvkQT1U
-   Q==;
-X-CSE-ConnectionGUID: Q0EQk3YZT/emHcQOfOfSuQ==
-X-CSE-MsgGUID: Fx5LGblGTL2dCznYGX4Fkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90787326"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="90787326"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 04:35:59 -0700
-X-CSE-ConnectionGUID: qhl5J6QWSouxkDES+jgeQw==
-X-CSE-MsgGUID: hUsLZAzQTHK8bLav/guSVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="272591974"
-Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
-  by fmviesa007.fm.intel.com with ESMTP; 22 Sep 2026 04:35:59 -0700
-From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-net  v2 0/4] ixgbe: fix FCoE/XDP issues and PCI reset handling
-Date: Tue, 22 Sep 2026 11:35:54 +0000
-Message-ID: <20260922113558.2288111-1-sergey.temerkhanov@intel.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="XBGmAP7/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TDaIUlTPFR1/obqbJ/+5NOCgSFSUgteEaC2g9fZ6c+s=; b=XBGmAP7/mY+orbd0XJM8GHFJdY
+	XGypJlBRLfSgcn3dnspoW7GrhquX7sCMjQ1Fw42ZivmoriqLh8t3iSp2Wb6G8fz4IT6IKhsEoNbPr
+	3tCEZqNwJGXHMvoo988MnPHTS9dfMUn7JW2sM6+yTQRTNMkd5lNSo06t0dKc7GSELqfG1AeE6BoBW
+	DyM4xex+AoGfo/DAslXe5jdFdWegz58vGLU6SGuTb+1zpzivhyQeJ6/D3L8fJ5UesXmeEr/3S9doK
+	B3QQ7fS4Z4kUFoJhQegTXCZZZWJfUDXLicBCP/KHEl6wpxg6NQb5KrzavpOLDtmnDf6zX2UZ2qrX6
+	DBryrP5g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x8yn0-002x4v-09;
+	Tue, 22 Sep 2026 11:35:58 +0000
+Date: Tue, 22 Sep 2026 04:35:52 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Zhang Yunfei <zhangyunfei1@kylinos.cn>
+Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com, 
+	mengyuanlou@net-swift.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com, 
+	weirongguang@kylinos.cn, u.kleine-koenig@baylibre.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] net: ngbe: propagate resume errors to the PM
+ core
+Message-ID: <arJoC8T9R527DlKy@gmail.com>
+References: <20260922100836.1147718-1-zhangyunfei1@kylinos.cn>
+ <20260922100836.1147718-2-zhangyunfei1@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922100836.1147718-2-zhangyunfei1@kylinos.cn>
+X-Debian-User: leitao
 
-This series fixes several ixgbe error and reset codepaths.
+On Tue, Sep 22, 2026 at 06:08:35PM +0800, Zhang Yunfei wrote:
+> ngbe_resume() declares err as u32 and unconditionally returns 0, so
+> failures of wx_init_interrupt_scheme() or ngbe_open() are silently
+> swallowed, and the return value of ngbe_reset_hw() is ignored
+> entirely. The device stays in netif_device_detach() state with a
+> broken interrupt scheme, the PM core is told the resume succeeded,
+> and the netdev never appears in the networking stack again: the
+> reset task also bails out early on the missing
+> netif_device_present() check, so the device cannot self-heal.
+> 
+> Fix the type to int and propagate the errors instead, making the
+> whole tail of the resume path consistent with the
+> pci_enable_device_mem() failure path at the top, which already
+> propagates its error. If the hardware reset fails, the remaining
+> resume steps cannot succeed, so return early instead of continuing
+> with a broken device. A failed resume is then reported to the PM
+> core, which records and logs the failure, instead of being silently
+> swallowed.
+> 
+> Fixes: 6963e463256e ("net: ngbe: add Wake on Lan support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhang Yunfei <zhangyunfei1@kylinos.cn>
 
-The first three patches are prerequisite fixes that make sure that
-the driver does not access hardware during the reset time when it
-is unavailable. These add the required availability checks etc.
-
-The final patch adds missing handlers for PCI function reset through sysfs
-in the manner that is safe for ixgbe. It implements the PCI reset prepare
-and completion callbacks to quiesce and reinitialize the adapter. This
-prevents TX queue timeouts and other related problems caused by
-inconsistent hardware state after a sysfs-triggered PCI reset.
-
-Previous version: 
-https://lore.kernel.org/netdev/20260617084329.199110-1-sergey.temerkhanov@intel.com/
-v1->v2: Almost complete rework of the series to ensure safe
-	reset procedure
-
-Sergey Temerkhanov (4):
-  ixgbe: Refactor device operations to check whether netdev is available
-  ixgbe: Fix FCoE refcount taking for unsupported adapters
-  ixgbe: Restore previous XDP program on ixgbe_setup_tc() failure
-  ixgbe: Implement PCI reset handler
-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      |   6 +
- .../net/ethernet/intel/ixgbe/ixgbe_dcb_nl.c   |  13 +-
- .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  |  34 +--
- drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.c |  42 +++-
- drivers/net/ethernet/intel/ixgbe/ixgbe_fcoe.h |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 193 +++++++++++++++++-
- drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c  |   4 +-
- 7 files changed, 262 insertions(+), 31 deletions(-)
-
--- 
-2.53.0
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
