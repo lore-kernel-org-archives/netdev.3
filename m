@@ -1,63 +1,63 @@
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDE54D4867
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859DC4CDDE8
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790107521; cv=none; b=bo5CiussyGUoMTHu6XJN2UswSnkJiI7DBuPYScXKMmGaVvY/K4RPaooKSzgXXHnh+6nBsX1nZQNYkeYm/MIdA9OqisAy4Or4Z/hd7wIJabBRsA+ey55glseTy8GXvXdaum49iVmxA8e6CxvQFAj4g9AjbOf+zapnOqHWESWmiZk=
+	t=1790107528; cv=none; b=KtE9ExNsHySkhDA3JAlv5Jsuvn7CU65BPCaGkuuUM/3N1jS16HTl53XteotRftw1037oKCq82Gngsi8Y/nit34PdxZ2oB4pHAMQK2X8TaL199zybYE5Z1M/f2PqUeoeTzK5JGUEueBuusF8eGj2LZYR0WoZL2/InkrCFWdbYvnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790107521; c=relaxed/simple;
-	bh=EAepGZi5JJgVl5A2Zgbnsm82y7MavVep4jBcaMjh1U4=;
+	s=arc-20240116; t=1790107528; c=relaxed/simple;
+	bh=fh2Uu82ejF0DtKt0brgXH//fEo0R202bASP2cymwUFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpTGZpcR66kFdDdpY4QaHBHIh5v5X6F+KA2lN6TkYtqtPqu4cNSHLx4xSzdLURBWzhKJq/64e/E8snmQ0loRlgRRCzP3iSz0oww9m14rIEzsHrFe4gU8kUya7gG/tN8ScR+xednlQv8dygsPFQN0ooUVCsjzO2Y3v8r7Ff2l/Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ehzT3xUx; arc=none smtp.client-ip=74.125.227.133
+	 MIME-Version; b=o8lNO7ajf1ChRX4aNB/fp03Syg3b9i0vnWzs0+2I5IIiSb1Q/u3qLVSlp12LLX+H9omg6V8sbqAWEjyvoroxaFYO5RpGhg70ia0hih7jOFmSnFZ7SbuMMHJEE0kB+k4nmtDsSziHZF/9GCvElry0CzuQre/ET+WYk85yl87GB4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UdSVq3K+; arc=none smtp.client-ip=74.125.227.135
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ehzT3xUx"
-Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2d6f9dddd99so963155ad.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:05:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UdSVq3K+"
+Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2d903e972efso1031845ad.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:05:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790107504; x=1790712304; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790107512; x=1790712312; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IeBd/f+KYPaUD3mTxXbAK7RiokjVClr9ke91eN5DQPw=;
-        b=ehzT3xUx4rW/uBTmhMgoj333w78TBs0axtGyz1PuWXSgzFgovhSIFTBMgMikJOrc4k
-         vHCtiAN0fJk+Ya9hRaCZcmQjOoE46/QVdISEQZOf9cpnpUElvyTVj7cbxxa57FiLlNAB
-         jKp6D6uUTqgIbRDtPBGtUpTHVZAomote5esBDTvq/4U1PZrjFlr0ON1sbIMIgqNTGaTE
-         tLO2l8zW80vI2TQEfmJUitGA/q9tnk9amO8cYAXzEbv3HND/OnHoG2g2dkuAz9vRLHcT
-         iyzJfvrD+HN4PHZmzzuHPKZqr5Rgw8OOCL33l9oJm3qcF3DVws+4iJd3YxA8c8k6RlVs
-         RNfQ==
+        bh=bdJAnLwrz+/OjIyJtnetxy2JKy8P0MsUYxFs2QuKaus=;
+        b=UdSVq3K+yojQHpnGmXGkAEkPTwJMk03Ajk4hF9OLMwsODOjQCbvDf+WSAgGPzHIWq2
+         nRgmIJdoOtiaRZUQPD/DhCTuMORzVe9/jqNUoQDo7z8ZzIP1FdXm3Jbo7tZViUWx/m31
+         mfF3kkwqEvFh+8FkrYN59yqQKqKabszHdHIUpi3BwZZ4l9FlpmJHXUFjaMmFfT8kaew/
+         dqm+gs3l9v5N45jo9WZ/YYs9i92/yVuHWd1nTp1K2lPxtAkEO6cXxCakPlh1XJj13VRM
+         YMCFM8YYrgdAsN6HoQjVmGG1cS7BIFlI4ER2QtgfLQl7oyIKbQBmNofZOf90LUkmEbNL
+         KdyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790107504; x=1790712304;
+        d=1e100.net; s=20260707; t=1790107512; x=1790712312;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IeBd/f+KYPaUD3mTxXbAK7RiokjVClr9ke91eN5DQPw=;
-        b=sorQpKWPgA42n1jkvT7YmKiYCnZ78avrecB1cx19sG6b7XOSQ1YZWHdi6qwh3DW657
-         1QYZicocdB4TmmLeFIKZH9hTwgel74Xjy4chCdLOReinwFII8prmi88VT9+GJXt3kDDt
-         l0EF5wng0AibhgHrBTNlZPTC9MbMTDQCXxI4bID6f1JnxY5wSP/tkrqtQt7I9AG4PlL0
-         IHOG1uy6q4dx03KjBnJDlH85/0B3DQTD7+064rf35T8pT8F1FKRyEByyaVx6/3y0YT58
-         yaxZwmdZ+QIOW39vUkq8k7b8gcUz/QtwL56RwpM983mATLW7qP2udqQkVK233avkVnPl
-         l0xQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzru7smCUOZuKrzV+ga4PfcGlyF/3Omgw1bqDc4rKLFvdy82uSPDj8mLUwrXxEI1tf+KSfnMrw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXEhBHmPkvzQd9QO+wwzUfW7GfAkq9XdfwgZeFi/O2UdWbyMDy
-	u8N4ZoxhEl9WxbN601Nhc68jtMycU95FFs+4BH/aZ6GQyVfwiJampZnP
-X-Gm-Gg: AYBFou1fjfY1YbeqqnO69dihTtORHS43cdrYDWVy9kYaTjFF1pcepk4W+29cpl5SqT3
-	SRWx30GFPRUT8eLqUuTrsH40i8ceNfTgNUynoU9koxX8GJ2q+Q6eilZTVrzX5yl7GvTYzEwmeuJ
-	Geq4D9y1RKpu2EkM4wx9iPrBOV3pK36yEYnsAvNyU/n8dZj+mVfpHZwsHFBDBntUQoKp2JjM7ru
-	CmpyqQeyzRntKy47Iuz1DZYJf4rjl9gSE2m8VgwfQ3b6Mb379QfA9yJOf0scHMFw4zvaDqe1KFK
-	vaaOYIyXgH240rJc4zrFJftwe+slwwEFDX7kUE5iIoahwJmIwz8EXQ3egnQ2xncbWK9+HGdZKsF
-	NEHNkIAXMWh4aY1XHYk9QAiQ0xNI11wVXHy/BWwQPLNxdAjlFLJQLdIQoxgSGal9wHk6aw9cT62
-	MnU5qzJ1lkWc9bjstcqS9X4wzlfyCTUQ2myFL4+uNM9JIg9EmsPprpt4dgiGSEl3AL86nC
-X-Received: by 2002:a17:903:228e:b0:2dd:ad73:c984 with SMTP id d9443c01a7336-2df69d5ac91mr4126585ad.28.1790107504081;
-        Tue, 22 Sep 2026 13:05:04 -0700 (PDT)
+        bh=bdJAnLwrz+/OjIyJtnetxy2JKy8P0MsUYxFs2QuKaus=;
+        b=txMymNDQ9oOE5MBVS1UtJMZdmOAPsS1R4jpwjydNoMx1QFZZ4UhEjKlcxV7uxqIGOo
+         iYXbN+2SG4eSRClCoJjsNzaHrpWd6qfihE+lQRUsDJ5g/A1qYtWtYZXtOM6qQLAK1c+M
+         NpeDKjMUqdC5JIo2TIa5SQchpStfPZYrRHGaCnruahR2CWeNI6shKhmWEZBN3nA10mch
+         S5YLmaeygOXCPYkUS9oFlUFnb5+ueYXNPWNmIOySAlXcYONkepw5ow2WsvJOJvxL02WG
+         bgSkvzI3HwKJ1KjVQ2RsL8NGNSCf0PtL1kB8beXZf6sLh0lDFGFiVK/cGgs4U3d+BijZ
+         v2+A==
+X-Forwarded-Encrypted: i=1; AKwUvByMAKbJxy/jkabM9cBWWpK7jZhuqYR9ki4wI3Q6FbvfV41dIB7XAFhbpjBHl9eq4M190dwQxvM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kHyq+0mOffnKxUTnevN+tEq3B5xNuB+PAoY+4bW64vpunzPf1K
+	nROMoQ0vOszdKY7dXnhA5m+jmFupHA/20D+w4kjtc/dm9gl0ne1s7hCG
+X-Gm-Gg: AYBFou1OmUlTFtWzVlS2Zyb27xqyLcLmLVDmor5cyAJFOvmxMpkMzVgYkbR0AaJynLc
+	GauxMuVryr9QdsO8/lEsK7yTd+lXnh05u0UJ1ATK62uWhB9yxOGUfHJol3FCqPtfaxw+WVuxH2K
+	KHmdVAsM+3ZWH9rIKg31cUfk+buckA9RDA/4SmZ52CLf46KD15+DvJgm+Yv5oKECJ5I3w1dJMHp
+	k+Vqtkf8TJ6aEJFFWx0zbgmJHxxoC5uzs9f8cDWEkg2tjTYkOSN3X/Op7DXei4IKOXarlg2b7PF
+	sItnjLOUaO9JBo32MBNi4Bibn5GpMSyyL3AQAVa4b/eLAg92On8BsUiAqY+33+hrMGH8Z2ZuaZm
+	4rqpUCMlxz59yJQWqqm/cDL/lYNtVtMlVQWGQuTpHFeqsbJuQ2D31QTm1lvoyrexAoOyRn0XHJ1
+	pukt1mzXI1CgDBw7b/4x4ewt+189xE2YEL7WOGU+MWYCRfU2WBEF2+KcsbK9vqXBxnQHhr
+X-Received: by 2002:a17:903:234e:b0:2dc:fcfc:bdeb with SMTP id d9443c01a7336-2df69d3649amr4211185ad.22.1790107512560;
+        Tue, 22 Sep 2026 13:05:12 -0700 (PDT)
 Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5eea15sm654515ad.64.2026.09.22.13.04.56
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5eea15sm654515ad.64.2026.09.22.13.05.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 13:05:03 -0700 (PDT)
+        Tue, 22 Sep 2026 13:05:11 -0700 (PDT)
 From: Coia Prant <coiaprant@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -87,9 +87,9 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	linux-kernel@vger.kernel.org,
 	linux-phy@lists.infradead.org,
 	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH net-next v10 10/11] arm64: dts: rockchip: rk3568-photonicat: enable SGMII LAN port
-Date: Wed, 23 Sep 2026 04:03:34 +0800
-Message-ID: <20260922200336.2201212-11-coiaprant@gmail.com>
+Subject: [PATCH net-next v10 11/11] MAINTAINERS: add entry for Rockchip XPCS driver
+Date: Wed, 23 Sep 2026 04:03:35 +0800
+Message-ID: <20260922200336.2201212-12-coiaprant@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260922200336.2201212-1-coiaprant@gmail.com>
 References: <20260922200336.2201212-1-coiaprant@gmail.com>
@@ -101,145 +101,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Ariaboard Photonicat has a Motorcomm YT8521SC Gigabit Ethernet PHY
-connected to GMAC0 via XPCS SGMII.  Enable the necessary nodes to make
-this port functional.
+Add a MAINTAINERS entry for the Rockchip RK3568 XPCS platform driver
+and its device tree binding.
 
-Add rockchip,sgmii-mac-sel = <0> to the already enabled combphy2,
-to route the SGMII interface to GMAC0.  RK3568 has three Combo PHYs
-that can carry SGMII; which one is wired to the XPCS is a board-level
-choice, and Photonicat uses combphy2.
-
-Enable the xpcs node and its port 0 sub-node, referencing combphy2
-as the SerDes PHY.
-
-Add the mdio0 node with the YT8521SC PHY at address 3, including its
-reset GPIO and LED configuration.  Also add LED configuration for the
-existing RGMII PHY on mdio1 for consistency.
+Include the relevant mailing lists (netdev and linux-rockchip) so that
+future patches are properly distributed.
 
 Signed-off-by: Coia Prant <coiaprant@gmail.com>
 ---
- .../boot/dts/rockchip/rk3568-photonicat.dts   | 74 ++++++++++++++++++-
- 1 file changed, 72 insertions(+), 2 deletions(-)
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-index 58c1052ba8ef3..fdaa4a2a4328b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-@@ -3,6 +3,7 @@
- /dts-v1/;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cc3cae2e378b3..085589b8ba65e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23740,6 +23740,15 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/rockchip,rk3576-sai.yaml
+ F:	sound/soc/rockchip/rockchip_sai.*
  
- #include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
- #include <dt-bindings/pinctrl/rockchip.h>
- #include <dt-bindings/soc/rockchip,vop2.h>
- #include "rk3568.dtsi"
-@@ -241,6 +242,7 @@ &combphy1 {
- };
- 
- &combphy2 {
-+	rockchip,sgmii-mac-sel = <0>;
- 	status = "okay";
- };
- 
-@@ -260,9 +262,18 @@ &cpu3 {
- 	cpu-supply = <&vdd_cpu>;
- };
- 
--/* Motorcomm YT8521SC LAN port (require SGMII) */
-+/* Motorcomm YT8521SC LAN port */
- &gmac0 {
--	status = "disabled";
-+	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>;
-+	assigned-clock-parents = <&clk_gmac0_xpcs_mii>;
-+	managed = "in-band-status";
-+	pcs-handle = <&xpcs_mii0>;
-+	phy-handle = <&sgmii_phy>;
-+	phy-mode = "sgmii";
-+	phy-supply = <&vcc_3v3>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gmac0_miim>;
-+	status = "okay";
- };
- 
- /* Motorcomm YT8521SC WAN port */
-@@ -341,6 +352,36 @@ &i2s0_8ch {
- 	status = "okay";
- };
- 
-+&mdio0 {
-+	sgmii_phy: ethernet-phy@3 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <0x3>;
-+		max-speed = <1000>;
-+		reset-assert-us = <20000>;
-+		reset-deassert-us = <100000>;
-+		reset-gpios = <&gpio3 RK_PC6 GPIO_ACTIVE_LOW>;
++ROCKCHIP XPCS DRIVER
++M:	Coia Prant <coiaprant@gmail.com>
++L:	netdev@vger.kernel.org
++L:	linux-rockchip@lists.infradead.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
++F:	drivers/net/pcs/pcs-xpcs-rk.c
++F:	include/linux/pcs/pcs-xpcs-rk.h
 +
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@1 {
-+				reg = <1>;
-+				color = <LED_COLOR_ID_AMBER>;
-+				function = LED_FUNCTION_LAN;
-+				default-state = "keep";
-+			};
-+
-+			led@2 {
-+				reg = <2>;
-+				color = <LED_COLOR_ID_GREEN>;
-+				function = LED_FUNCTION_LAN;
-+				default-state = "keep";
-+			};
-+		};
-+	};
-+};
-+
- &mdio1 {
- 	rgmii_phy: ethernet-phy@3 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
-@@ -350,6 +391,25 @@ rgmii_phy: ethernet-phy@3 {
- 		reset-gpios = <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
- 		rx-internal-delay-ps = <1500>;
- 		tx-internal-delay-ps = <1500>;
-+
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@1 {
-+				reg = <1>;
-+				color = <LED_COLOR_ID_AMBER>;
-+				function = LED_FUNCTION_WAN;
-+				default-state = "keep";
-+			};
-+
-+			led@2 {
-+				reg = <2>;
-+				color = <LED_COLOR_ID_GREEN>;
-+				function = LED_FUNCTION_WAN;
-+				default-state = "keep";
-+			};
-+		};
- 	};
- };
- 
-@@ -586,3 +646,13 @@ &xin32k {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&clk32k_out1>;
- };
-+
-+&xpcs {
-+	phys = <&combphy2 PHY_TYPE_SGMII>;
-+	phy-names = "serdes";
-+	status = "okay";
-+};
-+
-+&xpcs_mii0 {
-+	status = "okay";
-+};
+ ROCKER DRIVER
+ M:	Jiri Pirko <jiri@resnulli.us>
+ L:	netdev@vger.kernel.org
 -- 
 2.47.3
 
