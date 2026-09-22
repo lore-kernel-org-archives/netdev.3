@@ -1,142 +1,93 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619775616A2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5905616AC;
+	Tue, 22 Sep 2026 13:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790083231; cv=none; b=jf8247ErXpBxZdtFMhXLno5W2biLFylr7qp3CZDPiyFnebEv3aRpTY3abx8vUyqrcm2G9hqX+Y+9Btn8sCZuugrZq8uP4BaDYN+lMcyxgi9DFmKt/xKLAcC7E8gA8n5rNe8QyRYxYZskddXzBqmtQ5V3w/a0XbalmQxHtCqfTxk=
+	t=1790083248; cv=none; b=jMw1mp/vz6ENNs5zQBYVTCNHrtp+kjjgBWlqYVwJISrv28uGYZ17fPa/8XCb49Co9geEHiZDmXc4m9uYMkjNk2uvXjAzaxuSD/ZDZnnbOiHU6RlcMHfE/tRqggeAOGsA8XZV8Loag0BBwx4VjuUSYBAFqWpQBoaEXkbs0o9bZBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790083231; c=relaxed/simple;
-	bh=V7obrWHWdAK2sr9GRBu2vV54NRwonddAzRSGSOMaNfo=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=t6L87+iq2OeyMVur9elNLvMulu1m9iWfzhXwq7CgAVYvWjEnkB8R56ar3T2bVz1d2icry4HVDPuO85G+u4IxaWZ551eGSE9IwgoaqE/ETXLpoFUg4NZ/Z1kRXpdNjdca78Wlj90qKWVoma7vxKBFhQlZP7qrDgkqEvwqSQ+DtVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=lnHd1NVp; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790083248; c=relaxed/simple;
+	bh=/2a9T7JHmwdEY9PAft/uJPme/PjbeFBI98+knDarYq0=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=M9yEjTAmBytQLII9FdFy5oYLb+XqOiV5iO9Auqytb5K7LXxN9Rzmwn6QEtgv+m9R3bYU3RAuPEuoTDeKn3jkSTu5zdmP0Kz8etXSk+eM7Z11L/NWvhexvbqezr6gl2zPElR03qTlUMrSKbrmikD4s6ppLZrj7zojwCJWrNOp21U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DgnnxVCA; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="lnHd1NVp"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07798A02D4;
-	Tue, 22 Sep 2026 15:20:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790083225; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=dBu6Up7RjQ62pB4/IdXwodWU9rbgYbAkG6HPXs4Al+g=;
-	b=lnHd1NVpSs6aI+bI4Dq0+TnClt6iqPrRypXFeZoVVm1i0wNcD0ARTeQ6XxzvtrXjN62l3e
-	UNFwfGFjmV/sqYEwaxPXhQurCpox5Es5M8JZsz8xxzPML/rcHjGkKFWu5NhUZ45ihzY0Me
-	ieX57l57xztdz0RwR6aM26Wt+4trFmU9OeUeImmVlqQvLR+Aq0jP7u5T7lhaGcM6S/L8tl
-	EFRp2AYwkxijLQXcdAuY3dCLp0Do66iFI4UcXNs8fC0xxcdlfCao9+4lAmGO+L0rZoDa+b
-	jV0yHjzrDy7mOk6/wd3oFqfRQx6E224REakvv1zH8F6U3+TTDuIF9XJ4wZ8eGg==
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DgnnxVCA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=/2a9T7JHmwdEY9PAft/uJPme/PjbeFBI98+knDarYq0=; b=D
+	gnnxVCAfGxHNuNKjpaYkpTadN6uQbhA5JyxjKlm5ZPUGYDxUIi3WpW5sAWrzvSB8
+	6ANrlAzBzq9/u3dZedcQ7WDvdOvsVpVWQKPESpB4Ih8M6K1sRaJYM1EjqypiQ3QM
+	7632tbOhNyLlUc63feupmYhZ5R63PPOhnY+XaZJ9C4=
+Date: Tue, 22 Sep 2026 21:19:19 +0800 (CST)
+From: "Binbin Deng" <18983559317@163.com>
+To: jk@codeconstruct.com.au, matt@codeconstruct.com.au, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Binbin Deng" <dengbinbin21@nudt.edu.cn>
+Subject: [PATCH net v2] net/mctp: publish the mctp_dev only after it is
+ initialised
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+X-NTES-SC: AL_Qu2SAvyTvEku7ymdYukdnUgXgec/X8S1vvwi2YVUc8MFgiXfwgchcW9bDVz7y/yFBTGcqgKuWwNLyORaUI93BeVM7YGA9zxbanXBMdiEyw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 15:20:22 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Christian Lamparter <chunkeey@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
- davem@davemloft.net, jacob.e.keller@intel.com, edumazet@google.com,
- maxime.chevallier@bootlin.com
-Subject: Re: [PATCH net v2] net: emac: move setting of netops to fix crash
-In-Reply-To: <49cd7343bc0e507c022071f3e2b5662b053dca73.1790007431.git.chunkeey@gmail.com>
-References: <49cd7343bc0e507c022071f3e2b5662b053dca73.1790007431.git.chunkeey@gmail.com>
-Message-ID: <26f6da2763e771c04815352597ae1c6d@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-ID: <729830b8.130.1a0c945579d.Coremail.18983559317@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:higvCgDnJ2VYgLJqrd5MAA--.41359W
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+xh9YWqygFgTAgAA3u
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-Hi Christian
-
-On 21.9.2026 18:28, Christian Lamparter wrote:
-> fixes the following crash on driver initialization:
-> 
-> |BUG: Kernel NULL pointer dereference on read at 0x00000158
-> |Faulting instruction address: 0xc0566b40
-> |Oops: Kernel access of bad area, sig: 11 [#1]
-> |BE PAGE_SIZE=4K  PowerPC 44x Platform
-> |Modules linked in:
-> |CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: GW 7.3.0-rc3+ #1
-> |Tainted: [W]=WARN
-> |Hardware name: MyBook Live APM821XX 0x12c41c83 PowerPC 44x Platform
-> |NIP:  c0566b40 LR: c05648f8 CTR: c04c1e9c
-> |REGS: c1053a20 TRAP: 0300   Tainted: GW  (7.3.0-rc3+)
-> |MSR:  0002b000 <CE,EE,FP,ME>  CR: 24008808  XER: 00000000
-> |DEAR: 00000158 ESR: 00000000
-> |GPR00: c05648f8 c1053b10 c1063600 c1030000 c5ab3000 00000000 [...]
-> |GPR08: 00000002 00000000 00000000 c1053b40 84002808 00000000 [...]
-> |GPR16: cfffd210 00000002 c0beafcc cfffc960 00000000 c1030644 [...]
-> |GPR24: c0beafbc c1037000 00000000 0000000a 00000000 c1030000 [...]
-> |NIP [c0566b40] phy_link_topo_add_phy+0x2c/0x1d0
-> |LR [c05648f8] phy_attach_direct+0x1a4/0x368
-> |Call Trace:
-> |[c1053b10] [c0811e04] klist_put+0x54/0xb4 (unreliable)
-> |[c1053b40] [c05648f8] phy_attach_direct+0x1a4/0x368
-> |[c1053b70] [c0564ae8] phy_connect_direct+0x2c/0x60
-> |[c1053b90] [c056c7a8] of_phy_connect+0x50/0x74
-> |[c1053bc0] [c0572a88] emac_probe+0xd50/0x119c
-> |[c1053c90] [c04cb770] platform_probe+0x74/0xa4
-> |[c1053cb0] [c04c8f08] really_probe+0x120/0x2b0
-> |[c1053cd0] [c04c9254] __driver_probe_device+0x1bc/0x1fc
-> |[c1053d00] [c04c9334] driver_probe_device+0x38/0xa8
-> |[c1053d30] [c04c9560] __driver_attach+0xf4/0x10c
-> |[c1053d50] [c04c6af8] bus_for_each_dev+0x68/0xd0
-> |[c1053d90] [c04c7c34] bus_add_driver+0xcc/0x1ec
-> |[c1053dc0] [c04c9f6c] driver_register+0xcc/0x110
-> |[c1053de0] [c0aa3f40] emac_init+0x1c4/0x200
-> 
-> This bug showed up starting with v7.3-rc1. At the NIP in
-> phy_link_topo_add_phy() is a netdev_need_ops_lock() check.
-> This was added by the following
-> commit ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() 
-> locking assertion")
-
-ded86da4bbb7 was added in v7.2-rc1?
-
-   $ git grep -c netdev_need_ops_lock v7.1 -- 
-drivers/net/phy/phy_link_topology.c
-   $ git grep -c netdev_need_ops_lock v7.2-rc1 -- 
-drivers/net/phy/phy_link_topology.c
-   v7.2-rc1:drivers/net/phy/phy_link_topology.c:1
-
-> 
-> The bug shows up because at the time of_phy_connect() was called, the
-> netdev_ops were *not yet* determined. My fix is to move the code that
-> sets netdev_ops+commac.ops+ethtool_ops further up as emac_init_config()
-> derives that by looking at the device-tree and sets the required
-> dev->phy_mode accordingly.
-> 
-> During review, the Sashiko bot's AI stated that the commac assignment
-> became a dead store. Great catch! To keep the original behavior as-is,
-> one mentioned option "set dev->commac.ops = &emac_commac_ops only in
-> the non-gige case?" sounded like a great plan. So the dev->commac.ops
-> assignment for the non-gige-case moves into the else block.
-> 
-> This patch was tested on a WD MyBook Live (RGMII). the device now works 
-> again.
-
-nit: [...] (RGMII). the device" -> The device
-
-> 
-> Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() 
-> locking assertion")
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
-> 
-> v2:
->   - "set dev->commac.ops = &emac_commac_ops only in the non-gige case"
->   - reworded commit message to include commac_ops and Sashiko
-> v1: 
-> https://lore.kernel.org/all/178999551085.2160803.13630958553679103031@kernel.org/
-> ---
-> [...]
-
-With the commit message changed:
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks
-Nicolai
+RnJvbTogQmluYmluIERlbmcgPDE4OTgzNTU5MzE3QDE2My5jb20+CgptY3RwX2FkZF9kZXYoKSBs
+aW5rcyB0aGUgbmV3IG1jdHBfZGV2IGludG8gZGV2LT5tY3RwX3B0ciBiZWZvcmUgbWRldi0+ZGV2
+CmlzIGFzc2lnbmVkLCBzbyBhIHJlYWRlciB0aGF0IHBpY2tzIHRoZSBkZXZpY2UgdXAgaW4gdGhh
+dCB3aW5kb3cKZGVyZWZlcmVuY2VzIGEgbmV0X2RldmljZSBwb2ludGVyIHRoYXQgaXMgc3RpbGwg
+TlVMTDoKCktBU0FOOiBudWxsLXB0ci1kZXJlZiBpbiByYW5nZSBbMHgwMDAwMDAwMDAwMDAwMGIw
+LTB4MDAwMDAwMDAwMDAwMDBiN10KQ2FsbCBUcmFjZToKIDxUQVNLPgogPyBfX3BmeF9tY3RwX3Nl
+bmRtc2cgKC4vaW5jbHVkZS9saW51eC9zb2NrcHRyLmg6NDkpCiA/IF9fcGZ4X21jdHBfZHN0X291
+dHB1dCAobmV0L21jdHAvcm91dGUuYzo0MSkKID8gc2VsaW51eF9zb2NrZXRfc2VuZG1zZyAoc2Vj
+dXJpdHkvc2VsaW51eC9ob29rcy5jOjUyNzgpCiBfX19fc3lzX3NlbmRtc2cgKG5ldC9zb2NrZXQu
+Yzo3NzUgKGRpc2NyaW1pbmF0b3IgMSkgbmV0L3NvY2tldC5jOjc5MAogKGRpc2NyaW1pbmF0b3Ig
+MSkgbmV0L3NvY2tldC5jOjI2ODQgKGRpc2NyaW1pbmF0b3IgMSkpCiA/IF9fcGZ4X19fX19zeXNf
+c2VuZG1zZyAobmV0L3NvY2tldC5jOjExMzEpCiA/IF9fcGZ4X2NvcHlfbXNnaGRyX2Zyb21fdXNl
+ciAobmV0L3NvY2tldC5jOjI1OTApCiA/IHVwZGF0ZV9jZnNfcnFfbG9hZF9hdmcgKGtlcm5lbC9z
+Y2hlZC9mYWlyLmM6NTQ3OCkKIF9fX3N5c19zZW5kbXNnIChuZXQvc29ja2V0LmM6MjczOCkKID8g
+X19wZnhfX19fc3lzX3NlbmRtc2cgKG5ldC9zb2NrZXQuYzoyNjI1KQogPyBwZXJmX2V2ZW50X3Rh
+c2tfdGljayAoLi9pbmNsdWRlL2xpbnV4L3JjdXBkYXRlLmg6ODM4KQogPyBzY2hlZF90aWNrIChr
+ZXJuZWwvc2NoZWQvY29yZS5jOjU4MTgpCiA/IGNsb2NrZXZlbnRzX3Byb2dyYW1fZXZlbnQgKGtl
+cm5lbC90aW1lL2Nsb2NrZXZlbnRzLmM6MzcyKQogPyBmZGdldCAoLi9pbmNsdWRlL2xpbnV4L3Jj
+dXBkYXRlLmg6ODczIGZzL2ZpbGUuYzoxMTAwKQogX19zeXNfc2VuZG1zZyAobmV0L3NvY2tldC5j
+OjI3NzApCiA/IF9fcGZ4X19fc3lzX3NlbmRtc2cgKG5ldC9zb2NrZXQuYzoyNzUxKQogZG9fc3lz
+Y2FsbF82NCAoYXJjaC94ODYvZW50cnkvc3lzY2FsbF82NC5jOjYzKQogZW50cnlfU1lTQ0FMTF82
+NF9hZnRlcl9od2ZyYW1lIChhcmNoL3g4Ni9lbnRyeS9lbnRyeV82NC5TOjEyMSkKIDwvVEFTSz4K
+CkZpeCBieSBwdWJsaXNoaW5nIG9ubHkgb25jZSB0aGUgb2JqZWN0IGlzIGZ1bGx5IGluaXRpYWxp
+c2VkOgpfX21jdHBfZGV2X2dldCgpIHJ1bnMgdW5kZXIgcmN1X3JlYWRfbG9jaygpIG9ubHkgYW5k
+IGhhbmRzCnRoaXMgb2JqZWN0IHRvIHJlYWRlcnMgYXMgc29vbiBhcyBtY3RwX3B0ciBpcyBhc3Np
+Z25lZCwgc28KdGhleSBtdXN0IG5ldmVyIG9ic2VydmUgbWRldi0+ZGV2ID09IE5VTEwuCgpGaXhl
+czogNTgzYmU5ODJkOTM0ICgibWN0cDogQWRkIGRldmljZSBoYW5kbGluZyBhbmQgbmV0bGluayBp
+bnRlcmZhY2UiKQpTaWduZWQtb2ZmLWJ5OiBCaW5iaW4gRGVuZyA8MTg5ODM1NTkzMTdAMTYzLmNv
+bT4KLS0tCiBuZXQvbWN0cC9kZXZpY2UuYyB8IDExICsrKysrKysrLS0tCiAxIGZpbGUgY2hhbmdl
+ZCwgOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25ldC9tY3Rw
+L2RldmljZS5jIGIvbmV0L21jdHAvZGV2aWNlLmMKaW5kZXggODIyMTIwZTg2MGM4Li5iNzY3MTVl
+YTUwZTEgMTAwNjQ0Ci0tLSBhL25ldC9tY3RwL2RldmljZS5jCisrKyBiL25ldC9tY3RwL2Rldmlj
+ZS5jCkBAIC0zNDQsMTMgKzM0NCwxOCBAQCBzdGF0aWMgc3RydWN0IG1jdHBfZGV2ICptY3RwX2Fk
+ZF9kZXYoc3RydWN0IG5ldF9kZXZpY2UgKmRldikKIAogCW1kZXYtPm5ldCA9IG1jdHBfZGVmYXVs
+dF9uZXQoZGV2X25ldChkZXYpKTsKIAotCS8qIGFzc29jaWF0ZSB0byBuZXRfZGV2aWNlICovCiAJ
+cmVmY291bnRfc2V0KCZtZGV2LT5yZWZzLCAxKTsKLQlyY3VfYXNzaWduX3BvaW50ZXIoZGV2LT5t
+Y3RwX3B0ciwgbWRldik7Ci0KIAlkZXZfaG9sZChkZXYpOwogCW1kZXYtPmRldiA9IGRldjsKIAor
+CS8qCisJICogQXNzb2NpYXRlIHRvIG5ldF9kZXZpY2UuICBQdWJsaXNoIG9ubHkgb25jZSB0aGUg
+b2JqZWN0IGlzIGZ1bGx5CisJICogaW5pdGlhbGlzZWQ6IF9fbWN0cF9kZXZfZ2V0KCkgcnVucyB1
+bmRlciByY3VfcmVhZF9sb2NrKCkgb25seSBhbmQKKwkgKiBoYW5kcyB0aGlzIG9iamVjdCB0byBy
+ZWFkZXJzIGFzIHNvb24gYXMgbWN0cF9wdHIgaXMgYXNzaWduZWQsIHNvCisJICogdGhleSBtdXN0
+IG5ldmVyIG9ic2VydmUgbWRldi0+ZGV2ID09IE5VTEwuCisJICovCisJcmN1X2Fzc2lnbl9wb2lu
+dGVyKGRldi0+bWN0cF9wdHIsIG1kZXYpOworCiAJcmV0dXJuIG1kZXY7CiB9CiAKLS0gCjIuNDMu
+MAo=
