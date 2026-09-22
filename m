@@ -1,147 +1,146 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC083CC7F3;
-	Tue, 22 Sep 2026 08:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD38407CD3
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790064348; cv=none; b=Ci/gfHTKhprjdOTuuQr8qnTwS7gBhCRhUjzPTgkHlB33bPJr4kd2PbCT6Gfj0sxFe6c48XUR1nW53M4EtF2z9WMpCamKYsXPtgvOxZD4z0aYmD7WbywzN0eOPrK0R1BQtBiGBSeIxLrYviB1B5/HAyA2elSOEoed4ysGMzBKTlY=
+	t=1790064484; cv=none; b=A3b4011wtRS4YcZwNLlRSbXUH5vy8g8Mq47AUGm/i2+ji9fVhW/Ia0bDZeClbFO/IvLcYZloFB98dvtOWYar+tZfAUK4fzV0qii4KRfcy8lsADN0w8OYo2MwodXQTap2HIr9Las3aV0rD5KJD/j9PpSt3OnuG2Ej84CcXL0kyz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790064348; c=relaxed/simple;
-	bh=PDfqLIrtKXc56e+IxGVn2DHnILwSPY5ARzjjT75vb4I=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=QMOHcGrxbNBYY+jFpmwKpi3ABssF6nDVK1+iOXhLtc21bCje7abOYy9k/rJHrTJWxtzbXq470kRFOztPwY8QOWBDWDRjklVVt12U6BTjJ3sIKtBXLth8z/POnYnqvt/a/vb2keJCXPkfvG4vR+Mx71CWCIOVRg5KgKBsCUiwJ3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=2mEKz5PH; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790064484; c=relaxed/simple;
+	bh=Xgr9P5NDRohHNy557cU23inSf3q8IPgz3jcsZq7IAqg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pRDrKAZCIFyHjWMGE/MSYDR7MCey37uGHHLIE8rTsOFGoubMQyIQH+W9T1ZlWx8vAtXqgl/O2q9nZVpi/x6EZrh3SMZ3a1o7cIY+fywJFN8X0fIsM+BDp8Qnn4P7ghgFlXVpYDPOO6Xywr7+b8xM8APiM4If8/mEryC5ufCqPGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltYACqk1; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="2mEKz5PH"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C9DFEA4A18;
-	Tue, 22 Sep 2026 10:05:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790064332; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=foVdRgaMl1qFwxL6Tifr5TOpbq3AA20cOEg6B93g4Hc=;
-	b=2mEKz5PHqiXTHCnWQP1JT/umvxPZ7N/7iHewQV4yFcowQ3Q7dZIbrpY7i37X1IjnUdowiY
-	OQYZXpaljfye+FEk5AnYSnBkMeoNXiP2LznujYDce5tapD9w0VKFBb90UROfoYl+jtzHoZ
-	AIX9SdOy59Bzazye/qncnA+Avve1OLko9ToGBz6b1wz+sQyVTHSTlX62qWPb09eojhEQNV
-	+EomXLwFQWJNv6wsw/n/2jFztOJDzvex3HI2O/Y4p1mQfbfYMkTMQiO45GJmPxyOwfmNLD
-	PZ1PH59p8+42sOFJOz1YSkf7obnPbJLRGRwku5DBhHCNFAA+2kcfqgOlPt+C7g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltYACqk1"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39dbdfaef3cso3209259a91.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:07:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790064471; x=1790669271; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Xgr9P5NDRohHNy557cU23inSf3q8IPgz3jcsZq7IAqg=;
+        b=ltYACqk1NgRGIPzuHyjM+S8aRi+uXZiBTFqZ7w1wk2P26MexfhLv+Hr+0dDO1fMtaV
+         YOcENv2MHNP8yjwnFatsaAEgn8O1yihs79Zona0D6GQovk5VJcMTaysEFNAaBOcXFbr7
+         S3ngnI1LwJd9HbgoKUqGamrAn1hvQAOC/2vinHtIaLykJhs9pSzrBwsMgt4bUedJSIsq
+         afju83H/hwUcW/AQXaaJZg7eL325xaQ3sm+HBaQjegMhuM6RDfeX7DbYI8b5NjY8iANM
+         2ivk3zVrxghi49foV617+f4lmaccxH0ZVZ+NWhSTHzoEJ4lVWZ3UjylG7QPh1bkoESiJ
+         SLNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790064471; x=1790669271;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Xgr9P5NDRohHNy557cU23inSf3q8IPgz3jcsZq7IAqg=;
+        b=2iAg8icHV90P4+aTjhVqslQFH1KBWoSdpdmP3qeRgMMSqlXs9RRoUWIDkc8GepDaws
+         jt6JgVvhXr28dF9fvepwgUVbwEhrV2C32h555UOjugLVZjRZRzCNlfV0KrwcC/ORi6bE
+         dNB9zWc2hT5wd2bRZFF5FCebMROWjWbEUyFhpEGolDfKDp7pDiLQ7lmstn/JQ8NVE7Hq
+         7lYSpnRqgbN+hrSSrmzmyBPsoT5/icHQvdcj/Maa9zq27NfSCGfjq92SxudvehKE7zi1
+         z1sAWU1SiHBVC1j/ghbUDV7B9aCoC7fx20DoAmHXe7h42MM/orwjGMBw69bjsbCj74Az
+         kmcA==
+X-Forwarded-Encrypted: i=1; AKwUvBwf0a02df/v3O/i1sQxeBGb8aQqPmnAjmA8bd1xKw3DBtIXysLJOiSawTUgZr1bpNH/xpgzS18=@vger.kernel.org
+X-Gm-Message-State: AFuF++l/yH1Mvn/sBE3C3gEfsya7E7h8QrunOY9EBtRDi8BXNZNNpKFN
+	gunQezHnQMYI7es7i1hNdhG1Mxe3on/xMhwqyIroQ5bKeHo+/nfuzbVy
+X-Gm-Gg: AYBFou1HTlK8uVfd4BZgHbXTrBjQyCbMkI5zMehFULq82nmSgIwPYkDxavUrdCfXFpQ
+	4AnJP0FyF+X8SgUTqoFHjXj53RzscCFm4isL32wIZ8Jc0OwONfl/1THpHwmS2wZD3hzXHtBUUN8
+	uGPlxq7BsLlOGvIGaqsgGcgkgKv51VlVULfnCRh9DXgLvIulzGMuWIpNDtinQUWEKWk615EspUv
+	fIy+lDHMgQa30TYxa6ofgGDe7YqL5SXSUAjQHcTtqXUqIWLXoCvyiygF2vgtDYifUSGz/bRQcjF
+	uOGfUJAvTzEYBajrR4C7koUFEHakFvvpzPp9mneR1pZy9CIZO9akAU4KNlXbl+m+K3gn69vCfVa
+	uoMhT4JZQEu/cOSs1YjiE/L4QihyruPBxAE4zW27wZa9klcw6uX9gLlTE2u/8jtXsYrOsyylayO
+	4BEc/99x8ViXv+k/quBkdICbe+uIG8DxHyQvGMym10s3uOjVQhwr8IjEy89LYV2Y7gW5arL5vs9
+	Z2Jvx/pREHJstztQ6YTmF/u/x6AmPCiHUcpPriOPK3j70PZlA==
+X-Received: by 2002:a17:90b:2e0e:b0:39e:6a7f:eef0 with SMTP id 98e67ed59e1d1-3a0731ef86fmr388880a91.21.1790064470681;
+        Tue, 22 Sep 2026 01:07:50 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8a1e:2e81:7320:c92a:4bc0:f68c:8fc1])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06747204csm3350233a91.11.2026.09.22.01.07.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 22 Sep 2026 01:07:48 -0700 (PDT)
+From: Yuchao Zhang <ndaugoing@gmail.com>
+To: Simon Horman <horms@kernel.org>
+Cc: david@ixit.cz,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuchao Zhang <ndaugoing@gmail.com>
+Subject: Re: [PATCH 1/1] nfc: nci: ignore unexpected CORE_RESET_NTF
+Date: Tue, 22 Sep 2026 16:07:39 +0800
+Message-ID: <20260922080739.35915-1-ndaugoing@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260921125805.224979-1-horms@kernel.org>
+References: <20260921125805.224979-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 10:05:30 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>, Kory Maincent <kory.maincent@bootlin.com>,
- vadim.fedorenko@linux.dev
-Cc: James Clark <jjc@jclark.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: ethtool: let tsconfig reach a PHY-only timestamp
- provider
-In-Reply-To: <20260922070813.1458713-1-nb@tipi-net.de>
-References: <20260922070813.1458713-1-nb@tipi-net.de>
-Message-ID: <5af6a329b41d6d40d1488ab4ceffef02@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-+TO vadim.fedorenko@linux.dev
+Hi Simon,
 
-(get_maintainers seems to missed Vadim, sorry)
+Thank you (and the sashiko reviewer) for the thorough review.
+The points raised are completely valid and insightful.
 
-On 22.9.2026 09:08, Nicolai Buchwitz wrote:
-> TSCONFIG_GET and TSCONFIG_SET reject a device that implements neither
-> hwtstamp NDO, even when its PHY can serve the request. The ioctls they
-> meant to replace handle it, so the two interfaces disagree on the same
-> hardware and user space has to pick one.
-> 
-> Drop both checks and let the phylib helpers decide, like the ioctls do.
-> 
-> As this makes a netdev provider reachable without ndo_hwtstamp_get, 
-> test
-> for the callback before calling it.
-> 
-> Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to 
-> get/set hwtstamp config")
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> ---
-> Follow-up to 31995571219c ("net: don't require the hwtstamp NDOs when a
-> PHY provides timestamping"), which fixed the ioctl side:
-> 
->   https://lore.kernel.org/netdev/20260918095540.34286-1-nb@tipi-net.de/
-> 
-> Tested on a Raspberry Pi CM4 with BCM54213PE.
-> 
->  net/core/dev_ioctl.c   |  3 ++-
->  net/ethtool/tsconfig.c | 15 ---------------
->  2 files changed, 2 insertions(+), 16 deletions(-)
-> 
-> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-> index 164643140a52..f6029f60c1dc 100644
-> --- a/net/core/dev_ioctl.c
-> +++ b/net/core/dev_ioctl.c
-> @@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
->  		    hwprov->phydev)
->  			return phy_hwtstamp_get(hwprov->phydev, cfg);
-> 
-> -		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
-> +		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
-> +		    dev->netdev_ops->ndo_hwtstamp_get)
->  			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
-> 
->  		return -EOPNOTSUPP;
-> diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
-> index 6be3aa5d4bc1..8c99b2dc26d0 100644
-> --- a/net/ethtool/tsconfig.c
-> +++ b/net/ethtool/tsconfig.c
-> @@ -42,9 +42,6 @@ static int tsconfig_prepare_data(const struct 
-> ethnl_req_info *req_base,
->  	struct kernel_hwtstamp_config cfg = {};
->  	int ret;
-> 
-> -	if (!dev->netdev_ops->ndo_hwtstamp_get)
-> -		return -EOPNOTSUPP;
-> -
->  	ret = ethnl_ops_begin(dev);
->  	if (ret < 0)
->  		return ret;
-> @@ -248,17 +245,6 @@ static int tsconfig_send_reply(struct net_device 
-> *dev, struct genl_info *info)
->  	return ret;
->  }
-> 
-> -static int ethnl_set_tsconfig_validate(struct ethnl_req_info 
-> *req_base,
-> -				       struct genl_info *info)
-> -{
-> -	const struct net_device_ops *ops = req_base->dev->netdev_ops;
-> -
-> -	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
-> -		return -EOPNOTSUPP;
-> -
-> -	return 1;
-> -}
-> -
->  static struct hwtstamp_provider *
->  tsconfig_set_hwprov_from_desc(struct net_device *dev,
->  			      struct genl_info *info,
-> @@ -459,6 +445,5 @@ const struct ethnl_request_ops 
-> ethnl_tsconfig_request_ops = {
->  	.reply_size		= tsconfig_reply_size,
->  	.fill_reply		= tsconfig_fill_reply,
-> 
-> -	.set_validate		= ethnl_set_tsconfig_validate,
->  	.set			= ethnl_set_tsconfig,
->  };
-> 
-> base-commit: f0b88fade64c6fe52e15b246097d10bb115d8af3
+1. Regarding FDP firmware update breakage (Severity: High):
+You are absolutely right. In nci_ntf_packet(), returning -EINVAL from
+nci_core_reset_ntf_packet() aborts the dispatch pipeline (goto end), which
+prevents nci_core_ntf_packet() from running driver-specific handlers. In
+drivers/nfc/fdp/fdp.c, the firmware patching path relies on this spontaneous
+CORE_RESET_NTF to wake up info->setup_wq; dropping the packet causes it to
+block indefinitely.
 
-Regards Nicolai
+As suggested, in v2 we drop only the core-level bookkeeping (skipping the
+ndev->nci_ver update and nci_req_complete) and return 0 so that driver-registered
+ops continue to receive the notification.
+
+2. Regarding ntf->reset_trigger (Severity: Medium):
+The reset_trigger field is revision-dependent: in NCI 1.0, CORE_RESET_CMD
+is reported as 0x00 (0x01 is powered-on), while NCI 2.0 defines 0x00 as
+an unrecoverable error and reports CORE_RESET_CMD as 0x02. Hardcoding
+either value would break the other generation of devices, so v2 gates
+the core bookkeeping on NCI_RESET_PENDING alone and only skips power-on
+notifications (trigger 0x01, which means the same in both revisions).
+Power-on notifications never overlap a pending reset in the protocol
+flow, and both revision's command-triggered values reach the flag gate.
+
+3. Regarding nci_core_reset_rsp_packet() (Severity: Medium):
+Agreed. nci_core_reset_rsp_packet() now checks whether NCI_RESET_PENDING
+is set before calling nci_req_complete() on non-OK or NCI 1.x responses to avoid
+prematurely completing an unrelated request.
+
+4. Regarding NCI 1.x response length check (Severity: Low):
+In v2, we explicitly check skb->len >= sizeof(*rsp) to ensure config_status is
+not read out-of-bounds in pr_debug().
+
+5. Regarding request serialization / stale notifications (Severity: Medium):
+All requests are serialized under ndev->req_lock, and __nci_request() unconditionally
+clears NCI_RESET_PENDING before dropping req_lock. Filtering out power-on notifications
+(trigger 0x01) ensures spontaneous controller power-ups are ignored, while checking and
+clearing the pending flag ensures each command matches at most one notification.
+
+6. Regarding request generation (Severity: Medium on both questions):
+The NCI protocol gives notifications no request correlation, so a stale
+CORE_RESET_NTF/RSP that is already inside nci_rx_work when a reset times
+out and userspace retries cannot be distinguished from the new attempt's
+own frame: the flag gate and the trigger check narrow the window, but a
+generation identity would require protocol support that does not exist.
+The failure path purges queued frames; only an in-flight worker frame can
+straddle, and the data it carries originates from the same controller.
+If you would prefer, I can add a per-request generation check for the RSP
+path where an identity exists, as a follow-up.
+
+v2 patch has been sent as reply to this thread.
+
+Thanks,
+Yuchao
