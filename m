@@ -1,123 +1,137 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE105304B9
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066665; cv=pass; b=ky4lV68GPjPaHTQm92NF41aV75kvAnm+QOL/71pO4EzVCDBpTXzNbvcQD799hlZcqCIv3kxf+XuzX9lEkMaer4scBWAj0En0NoG9ibP81bJdwbHGF68VOa20WURXam7zZ5f8v3u9LSXj7MHECopIT/c/C+bHYrKZxGcsaAkR5oE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066665; c=relaxed/simple;
-	bh=u5qQmLy+pyZNGMwYq8Tx+105RlM9v+qgj/NhiJHu++8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BV8ckgnmTVaXsbOi49eWBAxz/ful4jtZxALZgCdhi2n7o4y5Cw85LCsdP/5y03Uo6phdIT39L/oqknJ/euVaxUHQhnHRyDHywmDtuD0et7IKEUTPePRLV5Ofb5ZUmc25ftKjCaKPSyyK4c4XEtqezQpjkGYOjGNAeJJKLD3glrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVpOLVjS; arc=pass smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0ED52F285
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790066818; cv=none; b=c/Bu/nLe2P58eApbu6RjJzA1/Aybmdd2yWnQf8eVdGuaqrkCmfVQ+RKKQIu+KcuFw5YqivuMz9n2EVryP26BaaNlgszpmRGWI6QPyFh+PJOel0EUAPLSlVycKnNAq668WropRd16QJ2pnrzEu+MowoQ+fERsUHtfP2kaIjVW/wI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790066818; c=relaxed/simple;
+	bh=hEj5nL9MRpMH+JX12YZNspzZFd1+3Fuf+CZGgePMxM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gM5WtwUk3M7TrubweHF/xQnThN4UYAla/oGRBmSUKy6voiWj4klKWMyqu+3tkK8sXj/5i5TuCowbSzhlHpw4Xn4UfHbZ02+P/7dlZIm3UGnV7e1GFQDDY8Pae+coJznRsTi4kPtlzWqEv325gdMp357r1/rGbM6VOlR9kOS5WNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IYBKNLtQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WaYJ8M0W; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVpOLVjS"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1651bso3323554e87.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:44:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790066661; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EOHTVOgchsKgcVKoYz3t/LLZnQcKZu1LpsvcObLs7lWdU17gluX50uID1ooGFMd9ml
-         tBdUrD2OoOJO6cFRJx5YLV+f+rjp15xQX8VLDPuq6zpCF5qBGGL1XV+xvd5M3NbdTlAP
-         osio7dsfwBgnhoyQeLc7ScIJtNdV+UehF+ECUTAHNYGU9JRSfS+20oP4EkLVzECv+esL
-         WaI8AVFfOO50zFddnK3DK3hWgmLlXADiORT/73pnVU+R2KwUrGdfAAtBWK/YFrN2m55j
-         Z06HDBhWxdE2u+k4SbXfTC7yrc8Gq9JmlT6z8Yn8iqLQ7FqtatoYiX7YpGw0oEyPhY9t
-         AAzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WsVALZGvNuNx3Pr3M5+XTqulMSxCzM1LXdhBKksMaY0=;
-        fh=ZGPrL+mHtxvFlmC7TzRBsn9pgkvUMeUVWfiptkrOupw=;
-        b=sy7Qj8Orl52MXa4eKLI2f16kDqOtKBBkA0F4S7mJGi7BMslHNzoxv42F16wRNb3AFY
-         W++eFDhxZxusvO1odXEGWKuTOWH9GNZ9ccaePqVKnhSNmhKOXEkPkaVUe3eT0z1EiRhb
-         52JmH5Cwwv5d2mI0VKx38I3+WbSjYbU3TFrD+ePMD0fNcgqfE2RXuxMw1jzooisv57aG
-         OhPX+Xx2l8SlB0fDau67AjcUgyyDKwZsnBTCtpD+6HGQGE5/SuPQEwbOOKUWWkaaZLka
-         iV4b3UCQ0HazXztgB4C9wJuOz9VcheBG0Gcnj2/mQyc/Escx61DybRixYd/TmYgwvpvP
-         kftw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IYBKNLtQ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WaYJ8M0W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790066815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C95bRAv5IkFCsxK5LjzncGYLGpBLHTNK6JTZFhyWW0M=;
+	b=IYBKNLtQq8wTUycH85md9ifO3UzdBdQpmXnhcI9WuMUbzlJTZb2nJoqTJfUGv/jkxW+2df
+	Q6/0abTDQLcb41eolbGg5OtlRpucdzzl5QIHymKupyLRdX/r9s70yGIJ1MliJgs8JNm5Z+
+	SWpooAx5kvmxb+KysJsp5NFMcJny9wA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-478-sfUkQX2xN9yuT3oxtJ2GMQ-1; Tue, 22 Sep 2026 04:46:54 -0400
+X-MC-Unique: sfUkQX2xN9yuT3oxtJ2GMQ-1
+X-Mimecast-MFC-AGG-ID: sfUkQX2xN9yuT3oxtJ2GMQ_1790066813
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e7631c43aso50743625e9.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:46:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790066661; x=1790671461; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1790066813; x=1790671613; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=WsVALZGvNuNx3Pr3M5+XTqulMSxCzM1LXdhBKksMaY0=;
-        b=SVpOLVjSOXBsn3X5rkexY2ODuRiSuigeaafcuqg9cc0HEEB33C0aiJW+lazBFfuT4V
-         CeT8vlWAhfevQG58IHZboFwmSizGlWIEpEbReSlUBkmLNC8PFqUP9gQ432RIvRPmKE/k
-         ag0YN4WR88xDkzaMXHvCGCAjhrVP+DWfFz0F4PirVfThOy7ytCxggEjmnq5S9swoS3uY
-         R++kyil7ZJUDyhyPsfDri1h42SlnYsN67fbdtXMkiCTZDzuQli5g3xkFijAQ+vMzJM1e
-         nmPh9zpyKo7rUwH0AhPkrlA+qMRhKZVF14kWqH+OzH6UR2t2eO019tWDrAnMdZ5IGdS4
-         f3ag==
+        bh=C95bRAv5IkFCsxK5LjzncGYLGpBLHTNK6JTZFhyWW0M=;
+        b=WaYJ8M0WDXY41t6aJdV7dAtLD/WG9BCa/2mVdYHEDhRiXod0jioeiS2VtDV6Az20T7
+         +Gr5LExcSy4Ohg55uWipz3cTnR3X5yZ5Vrt3O1jcfjIJXGVmEb62WZWwUXYJfrNtTYV3
+         gjCLuime50/prA+2ewWPzEGdksjxsuIW2XXn+WOC49hXygfCGlALNjwZD+au/Rmiarrz
+         a8hNui9wBUadUJBh10cz5P/IAhq1F8jYrrl8p64nuynZB/YFqgf+HF+ASUJIMXfAu9Tq
+         6iWjtEM/9Wp196S8wQxONv3r6kNIo0cZfqqbyuIVxvcyXASjjndyrHKkyhslSraLunjy
+         aWJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790066661; x=1790671461;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790066813; x=1790671613;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WsVALZGvNuNx3Pr3M5+XTqulMSxCzM1LXdhBKksMaY0=;
-        b=Z08SN2Whgq42WZLAu+oywRoYQBsJMm63es9c6qo9xIUSUDuQ9fvUx267CoO4C3HjH7
-         6Rsdj4NzvykjZRBmFjHDlAIB7ksLelzf0++RPnyNtKtz/QeTxhiiKOFo/Yj9hQqneevW
-         bgStu+HUBnBazJNnWgbepv2LnvTbjFRHr/o8c+4zAAWnL76x8VSuvzXyTUuUte4+yfm8
-         rdRG1AqheUruZUPFK1Pswv9335oUMcYG5TI3V+xl0HUubZ4jmkKO8zlNnJaK2KYyUlW5
-         mFWKYXqmpNBSbhbRgQBjg2gEodBJWoiDrQQYSimGKwlsq+M3szyvlv/72ejw+Fw89Ke2
-         2rYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBydzVti3hlcUy7w6WLS9KmtmsOcYISkkFc1TDT7s0dLl7VZubsLKT7PVUTW8KiN7aUgnRQGQEQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mbMHQTMcsJCMFQ7tSjoXLC0kdTtOsX/x/2uIBJUJUI7rj2f/hM
-	XK47xLOLO1yrPDcU7Am4DRYX1k41RjiigxCGKeQ8xQ2Oruj3TNg4YsJny+Gt8cahd2tbnYXJjG+
-	tvW4otGMJLXdSNtIwtJNyQAOrNG4vlK8=
-X-Gm-Gg: AYBFou14PFplwsNqWwobPqSilFgioqUvXI6QE35CLJc4rU4N7jQC9i3bWtCvuxVKb9X
-	rLsyXMyKCk9k0CnTfM96QOqH8H4RzmXgMpj6r3APZjGdFWzJGzOW2MVtluZo25bUP3M2jVFShEU
-	upFmQtYf7kkWwuugVbTZRUVRrLphh6qp2vzJGhszrX0hyPwRWBeEoDP5bBn1opy/e1NXag6joRF
-	702CbSLkOWf4bAgXLTN1Sc+9prAh6MMdzwFC7A1TD/r5e4djwpJmqsUpdR40aKl9Cnt8/RjwgTN
-	qlpJmXDks4zXqjj2uIunpbDl1WBSZGcJnieiW8rTcGfJdXfLB1Zbc8tXWedvDb5JYLCIXX2tBo7
-	dEHY2TRhyr6s+AseptNxKwOpGt7PUeY1qv6ggJwExv0PO
-X-Received: by 2002:a05:6512:b9e:b0:5b6:1870:2689 with SMTP id
- 2adb3069b0e04-5b8c1955f0emr3870626e87.58.1790066660778; Tue, 22 Sep 2026
- 01:44:20 -0700 (PDT)
+        bh=C95bRAv5IkFCsxK5LjzncGYLGpBLHTNK6JTZFhyWW0M=;
+        b=Hsz59Ur+lPd5vptLTPFs7mDDtArTL9I2nMUn1yEkZYHaj2YaLRSbbdYz/URA7YxqfC
+         T+dGQk2Rz6jvBgo1u2Djgu1ezaD8raFi1Wic1Q1u+38EDNdYr7E9NC+yV2HZ1e2NJ01T
+         +Q0Vu8VilKHJwN7vE2B5O56QYn3+NuD2OgwwmQnvWheK5LHmD9NnxvwWXBnSEX1GoXLH
+         +7JSxa8pC7b39/Uqha5+QSii0qfYTgjcGfgSi9zWD7/zmQsHan8GKfFUM511uAXd/dJq
+         +/Ztsf9jcZrvy7qsYyAEpQ9ofoGXW3J5SlNTpcEOWebiIFqhYBZR5mgGwqziPcgPS6VG
+         K4Jg==
+X-Forwarded-Encrypted: i=1; AKwUvByK09UZFtDygXFM7fynKomweWISgG8z/8aZqhxFmQFl0hqw/Gd2X7vlFGv4UxjPmZR055JCysg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mfp5TaRrPl5hnr5RT9LAgwPXqvKXrfl6nmsLRDoL53/EUeSkzw
+	cQsghOpcw+N5sWDT666+eBT2ZWwbFO09kawUx1DEgM/eZJn7KRW0mldcIp7AZU1ohLb1UhtNE4v
+	4rZBd+mJLAZbeyatWer0BhZF1VyeV7jBcsJ8UKf88oa6ogQaRQ5JUxSLQ2A==
+X-Gm-Gg: AYBFou2OYj6kUsxb4r40doZ0FubiVHU9F6dTJzfudGuwSuikLhfBSeeQW2BTjKsjTR4
+	2k0tq59HBhMGmIbUFiQbThKEZhKA/pz1DmmF7f6V/L/tdpaUtYTTJAcGfsprZP0FVEM2YQPP/Uh
+	zZox21WiOp+LD8eksPlhL8huMxURLTrOCLK5iIwnJ5fIkrtGi65LYEh5TEu418KR6NKCFlFQ+i6
+	OAVj2DH9b2OmBa3M8OwKI0pwttWW1OzjmeXeMbe1F4E7kU5vwh8KcVrF5Ek6PUDRLqKNww2/Sut
+	AK5N9VWZH77PQcJfmyq+NHk9Fjwp4DK6VTr09n9u8OEcDx8zZj8Rg+IfjfNz7LUt06iSCS5yfno
+	GW6HX9dold6HvwdbqYCUtYQQ=
+X-Received: by 2002:a05:600c:19cd:b0:499:7a15:fcec with SMTP id 5b1f17b1804b1-49fc5695861mr190094895e9.13.1790066813180;
+        Tue, 22 Sep 2026 01:46:53 -0700 (PDT)
+X-Received: by 2002:a05:600c:19cd:b0:499:7a15:fcec with SMTP id 5b1f17b1804b1-49fc5695861mr190094445e9.13.1790066812661;
+        Tue, 22 Sep 2026 01:46:52 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fd8ccd185sm65246905e9.8.2026.09.22.01.46.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 01:46:52 -0700 (PDT)
+Date: Tue, 22 Sep 2026 04:46:47 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Paulos Yibelo <habte.yibelo@gmail.com>, netdev@vger.kernel.org,
+	richard@nod.at, anton.ivanov@cambridgegreys.com,
+	willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+	andrew+netdev@lunn.ch, pablo@netfilter.org, fw@strlen.de,
+	phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com,
+	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-um@lists.infradead.org, virtualization@lists.linux.dev,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	bridge@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v6 1/2] net: validate virtio checksum start after
+ network header
+Message-ID: <20260922044627-mutt-send-email-mst@kernel.org>
+References: <20260922030310.8684-1-habte.yibelo@gmail.com>
+ <20260922030310.8684-2-habte.yibelo@gmail.com>
+ <20260922005353-mutt-send-email-mst@kernel.org>
+ <aa560d2d2cbf94e50397740159c12e24e0ecf820.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921235951.3214-1-sigefriedhyy@gmail.com> <20260921235951.3214-3-sigefriedhyy@gmail.com>
- <adc2bc61-d832-4e9d-818b-e5d03fed0fca@6wind.com>
-In-Reply-To: <adc2bc61-d832-4e9d-818b-e5d03fed0fca@6wind.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Tue, 22 Sep 2026 17:44:07 +0900
-X-Gm-Features: AcwNN1VJxh1M-j0f2S_sS1Tn5lZAUShRZrC3tTvY2gbK724PVnkPgKNJHtZU710
-Message-ID: <CA+7S2v+CCVeVVCeF8_hxL=mya2pjrT9By6ey+kAkjRWG8xQ1hw@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 2/4] net: add AF_PACKET multicast dumps
-To: nicolas.dichtel@6wind.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Nikolaos Gkarlis <nickgarlis@gmail.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa560d2d2cbf94e50397740159c12e24e0ecf820.camel@sipsolutions.net>
 
-On Tue, Sep 22, 2026 at 4:20=E2=80=AFPM Nicolas Dichtel
-<nicolas.dichtel@6wind.com> wrote:
-> dev_base_seq only indicates whether the netdevice list has changed, not w=
-hether
-> the addr list has changed. It's only a partial consistency check.
-> See inet_base_seq()/inet6_base_seq().
->
-> I don't see an equivalent of dev_addr_genid for the L2 mcaddr list; it sh=
-ould
-> probably be added.
+On Tue, Sep 22, 2026 at 07:56:23AM +0200, Johannes Berg wrote:
+> On Tue, 2026-09-22 at 01:14 -0400, Michael S. Tsirkin wrote:
+> > 
+> > >  
+> > > +/*
+> > > + * Return the L3 offset and protocol of an Ethernet frame starting at skb->data.
+> > > + * The offset is unused without NEEDS_CSUM, so avoid parsing and return zero.
+> > > + */
+> > 
+> > for networking code multiline comments:
+> > 
+> > /* always
+> >  * look like this
+> >  */
+> > 
+> > /*
+> >  * never
+> >  * like this
+> >  */
+> 
+> This, for the record, is't really true any more - we dropped the special
+> rule a few years ago.
+> 
+> johannes
 
-Thanks for the suggestion, I will fix this issue in v7: I think I need
-to  add a per netns counter bumped on dev->mc changes and combine it
-with dev_base_seq like inet_base_seq() does.
+Oh good to know. thanks!
 
-Thanks,
-
-Yuyang
