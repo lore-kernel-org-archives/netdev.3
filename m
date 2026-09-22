@@ -1,465 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D292E38F951;
-	Tue, 22 Sep 2026 15:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4085A53D0B1;
+	Tue, 22 Sep 2026 15:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790089714; cv=none; b=spoKQ8ryitNoW/s8gDYrONeijqNDPv7JksmayYedZPdCm1zRA+IjPKInSjHDBEmN/lNk31TamZnPt/d+7dpaBoWpKAsG4kfGZQr+OH3o5xPMFTfteWZozfFxg3/umbI/eoHfHSrziTC9wnxab/kiWxcMPkd273q5VYKbVsW8RCE=
+	t=1790090033; cv=none; b=DmVexpCUgTT5pNXQOWL/w4IGMrWlvc6ZqReBhbbOH3g6aAzhVvg+QkElZo3M8tEM/1YXg3ioMg1xqiL9G5P7XxNrnIzlIBTMwIpQIwicz19ExeXRXjIKew0V8srCpc732j1CfEIUAJGbc28WYRVNlnXNgYsnyr09v40C32E0ZvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790089714; c=relaxed/simple;
-	bh=veYOWRgHEBVNxox/aJCmN1gSmwlfQEhyYY+r9ZPnM9g=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ie1xm5xTYvfkHK8umgrwNr042BvFbAkQb5pD6UFBi/U0Nc1c0sCNnEIxc6Oum2acFERqEcJrR+GJZ7dPa2/0OT+bsW6wqNlcn31Yfx+7HDdmZRTfjUfeytPPu+bMlrX/RLI7+oEVahFSw/dEKGdzSShJD74GV9zLb8fEqAwFwEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fes+E6PT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790090033; c=relaxed/simple;
+	bh=/2xq9DPwE3L16cCd6eTM6rYKcsdwWDIewQrrLjuSvN0=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FU3LYMbzSBFTE9iMS6cOh4Vsz4f35lAQkSUSWiP7LM1DU08WFaxRkMKStqimNkFyXpc+8gGbdXElFu0CzHXRP84HbVcj6pT+XlQsX0yeLZj/5MvcbWhrmLZNLz9CMJ7IIPIghMEfxErix2leGkOzvaP44sHl2j5AqcVbMZKStd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=gnBPh8az; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=rKHuWOaA; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fes+E6PT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2700F1F00899;
-	Tue, 22 Sep 2026 15:08:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790089710;
-	bh=de7QF1Qj9nMkZym16WInFSa4gw/wUerVeVyBDe3SMrs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fes+E6PTqJc+vc6tqGIp6wa3PT3CnvFlmxZtBTzKWQXmZ78U+RcgAJqCYFmZB8AvL
-	 N23C+0ZXm2BpOB4a7MSnRLQ6DH1Midvnp3UbspLgApE72uhaxGNxSwy/0KL51VUP2p
-	 wle2W/Q8XDKgTxVtEBZfjvHJHmjofkFxE0/2SLt/u+VssKm5R07luAGUaJgoJ1/KAt
-	 t7fznQFcOKCz+l6V1BbIyEpPWgHuj+WXsM4eix73TCKKMELbRR0j0GAKx6m6fkZFKA
-	 uRC/MrMEJqKN+uERCWvoPSfS9SGOUohWttWtDlE5a4lTXL0/abGB6A0fS4+7aYdHTz
-	 73CCs8VIVbr8g==
-Subject: Re: [PATCH net-next v3 4/4] net: phy: microchip_t1s: fix collision
- detection for LAN867X Rev.D0
-From: netdev-bot+sashiko@kernel.org
-To: parthiban.veerasooran@microchip.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- UNGLinuxDriver@microchip.com
-Date: Tue, 22 Sep 2026 15:08:29 +0000
-Message-ID: <179008970969.2160803.871498341525662184@kernel.org>
-In-Reply-To: <20260918143302.76909-5-parthiban.veerasooran@microchip.com>
-References: <20260918143302.76909-5-parthiban.veerasooran@microchip.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="gnBPh8az";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="rKHuWOaA"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68MFDHNt020020;
+	Tue, 22 Sep 2026 17:13:23 +0200
+Received: from lubuntu-18.04 (host-79-20-84-28.retail.telecomitalia.it [79.20.84.28])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 7B2311228F4;
+	Tue, 22 Sep 2026 17:13:13 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1790089993; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qFrsjbh7CASY9oxnwYk+AY/nluAsH8IF18Z0KsHOg/Y=;
+	b=gnBPh8az478OkyzGrNQ/woLFKvhU7iZuz/SOrMc3aFqnpFVOSceFBibUBNfwOsd2b5DXSf
+	Auvyo/RAhkR/oICQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1790089993; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qFrsjbh7CASY9oxnwYk+AY/nluAsH8IF18Z0KsHOg/Y=;
+	b=rKHuWOaAeWB+ONo+aL6gmWOxtvkSkCiYoKOvjxMnZIuioU3zw0Y1+5Xlya5YH145Syn+RI
+	JcCduhM3L2TGSQ9svXuI7uFqmJlAS18O+W52J40HbZ34R6Vgjj5KkdOga71MXXKegP9/sE
+	jdRyvyYrgAQQzLK5R+e4wTU1Y2VI0UmHTkldwvZDe+4EJfxKp6im9uSR8ao9vuFphcr+fi
+	zsuEzZXZB7x+hITqo9Zg+IyIovNSiBnudyDTxUc0y91RJ6lDQnIAvQEKwVMblEPKNSc4Gi
+	de4hEmEN3TCEWnRkSetlh7IYeaqWoc59+TbelKuP8yoZnAqwLYM5j7recN9QMw==
+Date: Tue, 22 Sep 2026 17:13:13 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Justin Iurman
+ <justin.iurman@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v3] net: ipv6: keep room for the mac header in
+ dst_dev_overhead()
+Message-Id: <20260922171313.3a094ae86725b0898f92ec11@uniroma2.it>
+In-Reply-To: <20260922-seg6-maclen-headroom-v3-1-7b2f982ef79d@gmail.com>
+References: <20260922-seg6-maclen-headroom-v3-1-7b2f982ef79d@gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 1 (1) · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Rev.D0 collision detection can stay permanently disabled: after
-  this patch no code path ever programs COL_DET_CTRL0 (0x0087) bit 15…
-- [High] Wiring .config_intr/.handle_interrupt into the LAN867X Rev.D0
-  driver entry (lines 836-837) regresses ethtool cable testing on any…
-- [Medium] net: phy: redundant MDIO traffic in
-  lan867x_revd0_handle_interrupt()
-- [Low] lan867x_revd0_handle_interrupt() discards an already-established
-  IRQ_HANDLED verdict.
-- [Low] Concern as filed: lan867x_revd0_config_intr() (lines 709-747)
-  performs a multi-step read-modify-write of PHY state (read-clear STS1…
-
-Pre-existing issues:
-- [Medium] In lan86xx_plca_set_cfg() the Rev.D0 link-status-selection
-  register (LAN867X_REG_LINK_STATUS_CTRL, 0x0012) is programmed at lines…
-
---
-
-net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
-
-This configures the CCMFC field in COL_DET_CTRL0 to the OA default so the
-LAN867X Rev.D0 hardware gates collision forwarding from PLCA_Status, and
-stops the software CDEN toggling for that revision.  It also adds
-lan867x_revd0_config_intr()/lan867x_revd0_handle_interrupt() handling Link
-Status Change and PLCA Status Change, forcing the semaphore link-status
-source whenever autonomous fallback to CSMA/CD (PRSCTL1 bit 10) is enabled.
-
-A few questions below.
-
-> diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
-> index 3333e4801aae..a69ad6ce1d8a 100644
-> --- a/drivers/net/phy/microchip_t1s.c
-> +++ b/drivers/net/phy/microchip_t1s.c
-
-[ ... ]
-
-> @@ -40,6 +41,17 @@
->  #define COL_DET_CTRL0_ENABLE_BIT_MASK	BIT(15)
->  #define COL_DET_ENABLE			BIT(15)
->  #define COL_DET_DISABLE			0x0000
-> +#define COL_DET_CTRL0_CCMFC_MASK	GENMASK(10, 9)
-> +/* OA default: collisions gated by PLCA_Status in hardware */
-> +#define COL_DET_CTRL0_CCMFC_OA_DEFAULT	BIT(9)
-> +
-> +/* PLCA Reconciliation Sublayer Control 1 Register (PRSCTL1). Bit 10
-> + * controls whether the PHY autonomously falls back to CSMA/CD mode when
-> + * no BEACON is observed while PLCA is enabled, versus staying pinned to
-> + * PLCA mode regardless of BEACON presence.
-> + */
-> +#define LAN867X_REG_PRSCTL1               0x0035
-> +#define PRSCTL1_PLCA_FALLB_TO_CSMACD_EN   BIT(10)
-
-[ ... ]
-
-> @@ -454,9 +505,12 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
->  {
->  	int ret;
->  
-> -	/* Link status selection must be configured for LAN8670/1/2 Rev.D0 */
-> -	if (phydev->phy_id == PHY_ID_LAN867X_REVD0) {
-> -		ret = lan867x_revd0_link_active_selection(phydev,
-> +	/* Link status selection must be configured for LAN8670/1/2 Rev.D0.
-> +	 * Only update link status selection if enabled is explicitly specified
-> +	 * (not -1, which means "don't change").
-> +	 */
-> +	if (phydev->phy_id == PHY_ID_LAN867X_REVD0 && plca_cfg->enabled != -1) {
-> +		ret = lan867x_revd0_update_link_selection(phydev,
->  							  plca_cfg->enabled);
->  		if (ret)
->  			return ret;
->  	}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the ordering here looks
-questionable in both the old and new code: LAN867X_REG_LINK_STATUS_CTRL is
-programmed to the PLCA_STATUS source before genphy_c45_plca_set_cfg() sets
-MDIO_OATC14_PLCA_EN.
-
-genphy_c45_plca_set_cfg() performs several independent MMD writes
-(PLCA_CTRL1, TOTMR, BURST) before it finally enables PLCA:
-
-	// if we need to enable PLCA, do it at the end
-	if (plca_cfg->enabled > 0) {
-		ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND2,
-				       MDIO_OATC14_PLCA_CTRL0,
-				       MDIO_OATC14_PLCA_EN);
-
-If any of those writes fails, lan86xx_plca_set_cfg() returns the error to
-phy_ethtool_set_plca_cfg() with no unwind, leaving 0x0012 selecting
-PLCA_STATUS while PLCA is still disabled.
-
-Does that leave the PHY reporting link-down until the next successful
-ethtool PLCA write or a re-init?  Would it be better to enable PLCA first
-and switch the link-status source afterwards, restoring the semaphore source
-if the PLCA programming failed?
-
-> @@ -472,8 +526,12 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
->  	 * here as a baseline on every ethtool PLCA reconfiguration. The
->  	 * limitation is that autonomous PLCA mode transitions between ethtool
->  	 * reconfigurations are not tracked on such boards.
-> +	 *
-> +	 * LAN867X Rev.D0 has autonomous collision detection via CCMFC, so skip
-> +	 * the software CDEN toggling for that revision.
->  	 */
-> -	if (phy_interrupt_is_valid(phydev))
-> +	if (phy_interrupt_is_valid(phydev) ||
-> +	    phydev->phy_id == PHY_ID_LAN867X_REVD0)
->  		return 0;
->  
->  	if (plca_cfg->enabled > 0)
-
-> @@ -507,6 +565,20 @@ static int lan867x_revd0_config_init(struct phy_device *phydev)
->  			return ret;
->  	}
->  
-> +	/* AN1699: Configure CCMFC (Collision Counting and MAC Forwarding
-> +	 * Control) to OA default (0x1) so that the hardware autonomously gates
-> +	 * collision forwarding to the MAC based on the live PLCA_Status:
-> +	 * collisions are neither counted nor forwarded when PLCA_Status is OK,
-> +	 * and are counted/forwarded when not OK. This eliminates the need for
-> +	 * software-driven CDEN toggling. CDEN is enabled by default and remains
-> +	 * permanently enabled for Rev.D0.
-> +	 */
-> +	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
-> +			     COL_DET_CTRL0_CCMFC_MASK,
-> +			     COL_DET_CTRL0_CCMFC_OA_DEFAULT);
-> +	if (ret)
-> +		return ret;
-
-[Severity: High]
-Where does anything actually set CDEN (COL_DET_CTRL0 bit 15) for Rev.D0?
-
-The comment says "CDEN is enabled by default and remains permanently enabled
-for Rev.D0", but the read-modify-write above only covers bits 10:9:
-
-	#define COL_DET_CTRL0_CCMFC_MASK	GENMASK(10, 9)
-
-The Rev.D0 init table does not touch 0x0087 either:
-
-	static const u16 lan867x_revd0_fixup_regs[8] = {
-		0x0037, 0x008A, 0x0118, 0x00D6,
-		0x0082, 0x00FD, 0x00FD, 0x0091,
-	};
-
-And the new early return in lan86xx_plca_set_cfg() removes the last
-remaining writer of COL_DET_ENABLE/COL_DET_DISABLE for this revision:
-
-	if (phy_interrupt_is_valid(phydev) ||
-	    phydev->phy_id == PHY_ID_LAN867X_REVD0)
-		return 0;
-
-So if bit 15 happens to be clear when lan867x_revd0_config_init() runs,
-does the part end up running CSMA/CD with the collision detector off
-permanently, with nothing left to re-arm it?  The CCMFC gating only decides
-whether detected collisions are counted/forwarded.
-
-Is the "enabled by default" assumption safe here?  This driver provides no
-.soft_reset, and phy_init_hw() only resets when the driver supplies one:
-
-	if (phydev->drv->soft_reset) {
-		ret = phydev->drv->soft_reset(phydev);
-
-so on a board without a PHY reset line config_init() runs against leftover
-register state, for example after an unbind/rebind or a kexec from a
-pre-patch kernel where lan86xx_plca_set_cfg() wrote COL_DET_DISABLE
-whenever PLCA was enabled (pre-patch Rev.D0 was always PHY_POLL, so that
-branch always ran).
-
-The AN1699 Rev.B1 table in this same file explicitly sets bit 15 for the
-same register:
-
-	/* RMW 0x1F 0x0087 0x801C 0x801C */
-
-Would including COL_DET_CTRL0_ENABLE_BIT_MASK/COL_DET_ENABLE in the same
-read-modify-write be preferable to documenting an invariant that no code
-establishes?
-
->  	/* Initially the PHY will be in CSMA/CD mode by default. So it is
->  	 * required to set the link always active as it doesn't support
->  	 * autoneg.
-
-> @@ -634,6 +706,91 @@ static irqreturn_t lan86xx_handle_interrupt(struct phy_device *phydev)
->  	return ret_irq;
->  }
->  
-> +static int lan867x_revd0_config_intr(struct phy_device *phydev)
-> +{
-> +	u16 mask = LAN86XX_STS1_PLCA_STS_CHANGED |
-> +		   LAN86XX_STS1_LINK_STS_CHANGED;
-> +	struct phy_plca_cfg plca_cfg;
-> +	int sts1, ret;
-> +
-> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-> +		/* Read to clear any pending status before enabling. */
-> +		sts1 = lan86xx_read_clear_sts1(phydev);
-> +		if (sts1 < 0)
-> +			return sts1;
-> +
-> +		if (sts1 & LAN86XX_STS1_LINK_STS_CHANGED)
-> +			phy_trigger_machine(phydev);
-
-[Severity: Low]
-This isn't a bug, but is the ordering here intentional?  phy_trigger_machine()
-runs before the link-status-selection source is resynced a few lines further
-down by lan867x_revd0_update_link_selection(), so the state machine can read
-the link state through the old selection source.
-
-On the related concurrency question: lan867x_revd0_config_intr() does its
-read-clear STS1 / genphy_c45_plca_get_cfg() / LINK_STATUS_CTRL write sequence
-without phydev->lock, while lan867x_revd0_handle_interrupt() touches the same
-registers under that lock via phy_interrupt().  That looks benign as written,
-since both writers compute the 0x0012 value from the same two static inputs
-(PLCA_CTRL0.PLCA_EN and PRSCTL1 bit 10) and the only mutator of those inputs
-runs under rtnl and phydev->lock, so the two paths write identical values.
-Would swapping the trigger to after the resync still be worth doing?
-
-> +
-> +		/* STS1 may have cleared a pending PSTC while masked, and a
-> +		 * missed PSTC leaves no trace to key off, so unconditionally
-> +		 * resync the link-status-selection source from the current
-> +		 * PLCA enable state and fallback configuration. CDEN is
-> +		 * never touched here - see lan867x_revd0_config_init().
-> +		 */
-> +		ret = genphy_c45_plca_get_cfg(phydev, &plca_cfg);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = lan867x_revd0_update_link_selection(phydev,
-> +							  plca_cfg.enabled);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		return lan86xx_set_intr_mask(phydev, mask, true);
-> +	}
-
-[ ... ]
-
-> +static irqreturn_t lan867x_revd0_handle_interrupt(struct phy_device *phydev)
-> +{
-> +	irqreturn_t ret_irq = IRQ_NONE;
-> +	struct phy_plca_cfg plca_cfg;
-> +	int sts1, ret;
-> +
-> +	sts1 = lan86xx_read_clear_sts1(phydev);
-> +	if (sts1 < 0) {
-> +		phy_error(phydev);
-> +		return IRQ_NONE;
-> +	}
-> +
-> +	if (sts1 & LAN86XX_STS1_LINK_STS_CHANGED) {
-> +		phy_trigger_machine(phydev);
-> +		ret_irq = IRQ_HANDLED;
-> +	}
-> +
-> +	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
-> +		ret = genphy_c45_plca_get_cfg(phydev, &plca_cfg);
-> +		if (ret < 0) {
-> +			phy_error(phydev);
-> +			return IRQ_NONE;
-> +		}
-
-[Severity: Medium]
-What does the PSTC arm here actually accomplish?  It re-derives the
-link-status-selection source from two inputs that a PLCA_Status
-transition cannot have changed: lan867x_revd0_update_link_selection()
-computes the 0x0012 value from PLCA_CTRL0.PLCA_EN, fetched via
-genphy_c45_plca_get_cfg(), and PRSCTL1 bit 10, fetched by
-lan867x_revd0_fallback_to_csmacd().  Both are static configuration.
-The only mutator of PLCA_EN is lan86xx_plca_set_cfg(), which already
-programs LINK_STATUS_CTRL itself, and lan867x_revd0_config_intr()
-resyncs it when interrupts are enabled.  So every PLCA flap ends in
-lan867x_revd0_link_active_selection() writing 0x0012 with the value it
-already holds.
-
-The cost is five MMD reads in genphy_c45_plca_get_cfg() (PLCA_IDVER,
-CTRL0, CTRL1, TOTMR, BURST), one more for PRSCTL1, and one write -
-seven management-bus transactions per transition to produce no state
-change.  On a multidrop segment where BEACONs come and go, PSTC can
-flap frequently.
-
-The error handling makes that worse than just wasted bandwidth: a
-single transient MDIO failure in either call lands in phy_error(),
-i.e. WARN_ON(1) plus PHY_ERROR, which parks the PHY until something
-re-initialises it.  That is a hard failure taken on behalf of a
-no-op register write.
-
-The commit message says the Rev.D0 handler "only needs to update the
-link status selection on each PLCA transition", but with CCMFC gating
-collision forwarding from live PLCA_Status in hardware, and 0x0012
-already pointing at PLCA_STATUS (or the semaphore when fallback is
-enabled), does Rev.D0 need to subscribe to PSTC at all?  Could the
-mask in lan867x_revd0_config_intr() drop
-LAN86XX_STS1_PLCA_STS_CHANGED and keep only the link-status event?  If
-there is a hardware reason the selection must be rewritten on every
-transition, please spell it out in the comment - as written the code
-reads as if the value were expected to differ.
-
-[Severity: Low]
-Should these error paths return ret_irq instead of IRQ_NONE?
-
-When STS1 latches both LAN86XX_STS1_LINK_STS_CHANGED and
-LAN86XX_STS1_PLCA_STS_CHANGED, ret_irq is already IRQ_HANDLED and
-phy_trigger_machine() has run, and the latched bits were cleared by
-lan86xx_read_clear_sts1().  A failing genphy_c45_plca_get_cfg() (or the
-lan867x_revd0_update_link_selection() call below) then reports IRQ_NONE for
-an interrupt the driver did consume.
-
-phy_error() only sets PHY_ERROR and queues the state machine, and
-phy_interrupt() forwards the driver verdict unchanged:
-
-drivers/net/phy/phy.c:phy_interrupt() {
-	...
-	ret = phydev->drv->handle_interrupt(phydev);
-	mutex_unlock(&phydev->lock);
-
-	return ret;
-}
-
-so genirq accounts the serviced interrupt as unhandled.
-
-> +
-> +		/* lan867x_revd0_update_link_selection() drives the selection
-> +		 * source from the configured PLCA enable state, forcing
-> +		 * semaphore mode instead whenever autonomous fallback to
-> +		 * CSMA/CD is configured (see PRSCTL1 above).
-> +		 */
-> +		ret = lan867x_revd0_update_link_selection(phydev,
-> +							  plca_cfg.enabled);
-> +		if (ret < 0) {
-> +			phy_error(phydev);
-> +			return IRQ_NONE;
-> +		}
-> +
-> +		ret_irq = IRQ_HANDLED;
-> +	}
-> +
-> +	return ret_irq;
-> +}
-> +
-
-> @@ -676,6 +833,8 @@ static struct phy_driver microchip_t1s_driver[] = {
->  		.name               = "LAN867X Rev.D0",
->  		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
->  		.config_init        = lan867x_revd0_config_init,
-> +		.config_intr        = lan867x_revd0_config_intr,
-> +		.handle_interrupt   = lan867x_revd0_handle_interrupt,
->  		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
->  		.set_plca_cfg	    = lan86xx_plca_set_cfg,
->  		.get_plca_status    = genphy_c45_plca_get_status,
-
-[Severity: High]
-Does wiring .config_intr/.handle_interrupt into this entry break ethtool
-cable testing for Rev.D0 on boards with a real PHY interrupt?
-
-phy_drv_supports_irq() returns config_intr && handle_interrupt, so phylib no
-longer rewrites phydev->irq to PHY_POLL as it did before this patch.  The
-same entry registers .cable_test_start/.cable_test_get_status but sets no
-.flags, so PHY_POLL_CABLE_TEST is absent:
-
-include/linux/phy.h:phy_polling_mode() {
-	if (phydev->state == PHY_CABLETEST)
-		if (phydev->drv->flags & PHY_POLL_CABLE_TEST)
-			return true;
-
-	if (phydev->drv->update_stats)
-		return true;
-
-	return phydev->irq == PHY_POLL;
-}
-
-With a valid IRQ and no PHY_POLL_CABLE_TEST this returns false during
-PHY_CABLETEST, and phy_start_cable_test() only queues the state machine in
-polling mode:
-
-drivers/net/phy/phy.c:phy_start_cable_test() {
-	...
-	phydev->state = PHY_CABLETEST;
-
-	if (phy_polling_mode(phydev))
-		phy_trigger_machine(phydev);
-	...
-}
-
-The PHY_CABLETEST arm of _phy_state_machine() is the only caller of
-drv->cable_test_get_status():
-
-	case PHY_CABLETEST:
-		err = phydev->drv->cable_test_get_status(phydev, &finished);
-
-and genphy_c45_oatc14_cable_test_get_status() detects completion purely by
-polling:
-
-	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_HDD);
-	...
-	if (!(ret & OATC14_HDD_VALID))
-		return 0;
-
-Nothing in lan867x_revd0_handle_interrupt() signals diagnostic completion, so
-does "ethtool --cable-test" now leave the interface with the carrier down and
-netif_testing_on() set until phy_stop() aborts the test?  Would adding
-.flags = PHY_POLL_CABLE_TEST to this entry, as at803x/qca808x/micrel/
-microchip_t1 do when combining .config_intr with cable testing, address it?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918143302.76909-1-parthiban.veerasooran%40microchip.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
+
+On Tue, 22 Sep 2026 05:49:56 +0900
+Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
+
+> The seg6, ioam6 and rpl lwtunnels size their skb_cow_head() request as
+> the length they are about to push plus dst_dev_overhead(), then push the
+> new headers and rebuild the mac header below them with
+> skb_mac_header_rebuild().  That rebuild needs skb->mac_len of headroom,
+> but dst_dev_overhead() leaves LL_RESERVED_SPACE() of the egress device,
+> 16 bytes for plain Ethernet.
+> 
+> Where the mac header is longer than that, as it is on ingress through a
+> VLAN device with reorder_hdr off, the rebuild runs out of room:
+> skb_set_mac_header(skb, -skb->mac_len) computes a negative offset,
+> stores it unchecked in the u16 skb->mac_header, and the memmove that
+> follows writes skb->mac_len bytes about 64 KB past skb->head.
+> Forwarding plain ping6 traffic through such a device reproduces it on
+> all five seg6 encapsulation modes and on the rpl and ioam6 inline paths;
+> skb->mac_header comes back as 65534 on a 704-byte head.
+> 
+> Return the larger of the two.  The helper already returns skb->mac_len
+> when it has no dst, so this only makes the other branch agree, and it
+> covers every caller rather than each call site in turn.
+> 
+> Fixes: 40475b63761a ("net: ipv6: seg6_iptunnel: mitigate 2-realloc issue")
+> Fixes: dce525185bc9 ("net: ipv6: ioam6_iptunnel: mitigate 2-realloc issue")
+> Fixes: 985ec6f5e623 ("net: ipv6: rpl_iptunnel: mitigate 2-realloc issue")
+> Suggested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> Assisted-by: LLM
+> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+> ---
+> Changes in v3:
+> - Fix dst_dev_overhead() itself rather than each of its callers [Andrea]
+> - Drop Justin's Reviewed-by from v2, which was given for the per-caller
+>   version; the patch no longer touches the files he reviewed
+> - Link to v2: https://lore.kernel.org/r/20260918-seg6-maclen-headroom-v2-1-4d370af55b2e@gmail.com
+> 
+> Changes in v2:
+> - Use max_t(unsigned int, ...) rather than max() [Justin]
+> - Make the same change in ioam6_iptunnel and rpl_iptunnel [Justin]
+> - Reproduce and verify the fix on those two as well: unpatched, rpl
+>   underflows in 12 of 16 probed configurations and ioam6 in 3 of 13,
+>   both reaching about 64 KB past a 320-byte head; patched, neither
+>   underflows in 18
+> - Rewrap the requests so they no longer exceed 80 columns
+> - Retitle for net: ipv6, now that the change spans three files
+> - Link to v1: https://lore.kernel.org/r/20260917-seg6-maclen-headroom-v1-1-02ccec50f096@gmail.com
+> ---
+>  include/net/dst.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+
+Thanks for the rework,
+Andrea
+
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
