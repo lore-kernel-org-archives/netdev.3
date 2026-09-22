@@ -1,71 +1,71 @@
 Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35A0347FFE
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 00:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408DA343896
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 00:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790037934; cv=none; b=s4Y2EYX+Hzhz53S0IWNW+tiwDATCMAc9i7pGPZsgktvUoY8gPvT+VFdSSFBJRSbV922Y1CLoxAzelcSuISItn6JbUejTVfcagtnjjkEGySSuMCblIpjb8ZzLeuVAlmGJ+V/6t8uDMeEUfObcrQ2y8cM1/1K7VpPJXjM6wUWpOwU=
+	t=1790037935; cv=none; b=sCmAtV51SJZSpsLSBxXbUryfUiJrYkRMNLJbvAxgNeFPp4KxZBeKabVk/dlEf2WYeFjnTRPoKB6jNeg2FvBsUO7RFZ4tDvos2mL2EynCfxkx8bo8meWIeBPYHPTCxjjiOvcYzZyD3lYRtHTzsdYrXjFbTWDPid7TIWvd9UntftE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790037934; c=relaxed/simple;
-	bh=Gj+LzOejuhn4QUWRd2BeQZ06xMLgJHxeiRX4lCDRZzE=;
+	s=arc-20240116; t=1790037935; c=relaxed/simple;
+	bh=e9hk5Tsdquyr+5avHPEA7bcfLf2nOdnHsiLzbvu4On4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aFHOna3HZUVbv1J8BvfY/jHqSxcZVN6jeOOO21R2SzQ0GC8IoWDjCvYPDFtuCHu4Y/TYb/0Y/X9Qr+a47In8f2vJiGYtcoz8irSFcoPdOIGxrYRhTTmo7HpRgS9zK3TM9KK5neG2u6DdjWULygYbGbVPtqLwzqDTXWEn3pNMPwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7inqSqQ; arc=none smtp.client-ip=74.125.231.205
+	 In-Reply-To:To:Cc; b=grD7W9BLcN5lF1YA4PAI8ZLDZoT7KvdA0pLMjcdYTGbZhsUbK0AOJjJS+8OmoYUC5X8G6yJQjS9iQNozEVGtUVGBK07mf2z4Nd2GeqMeR40s/VU1jr7dtTr8z0FSbTz/zKf49d3fwdOrI65gstxtHxsFMaKoDOESxLwKHAKvHro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhM+It5m; arc=none smtp.client-ip=74.125.231.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7inqSqQ"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4bb359e6878so1340049b6e.0
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 17:45:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhM+It5m"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a36887bso1904573b6e.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 17:45:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790037930; x=1790642730; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790037931; x=1790642731; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oLXSL+1npHD8gI1D6ujrAzi7XeKmrbhfqQT3WXutYPk=;
-        b=A7inqSqQ4WJ1W9QuTjZA5aBS3Q6LjJYOSgolETL1tkZbq1TRo7JFlWOmid9LnUub1+
-         nnjlhjs01OsTjSGGtHJRK92xca3bsPWQjPTBGjhHNmkqgTjq56yehc+1THpWSz2CDYtt
-         OKF7AHbTssWe3fnWHdH/CWoW0L6WheFUTY6PfVamnTGZQBizhEMFmY093qbdsGTsxOoE
-         phO2hOtUs2TqdKEWOl0ZuWZob/lXOP0E4sJOxvZ0i8xUOkYo4/Pnpyvybu9qhxg11h/L
-         R3y9DMtaoZZuW3GCBkrapvTOnzmZ6NAlHOhZmwZPDx35+eVb2WotdMoSIyjasmanHMEh
-         xBVg==
+        bh=gFndLx5Yqc+lsDlrSDVoBXxkYOfQ85XX/QivbJQF5Mw=;
+        b=PhM+It5mqLbZ7YhOvK2KNrTEoxni7WRnq6aPvlmblT4/+6t7xi1H3vYr57McO+ZVOh
+         WfwVINiNC5hN+w7xIMVchq/6/ioDb0+uMvW8QCCb5F6EWRqObB7M0dOZxaBrCTMdRG06
+         3msitVZ3cOXYhBzvpJPnRkMVNRhs3VlqFETsgIgbSUBgXWp16B39HnDoJ4NF7fQLJQsj
+         eXyZCXczZ5Fp8QDkYgeoaWV0EJ1m/MJhNYyhgjw2trtFiGzpIP/gA8N3vyf2GwJ09urP
+         0ES44kzChYAJH5ThjyYaeKoNzPRJJgOjpfvgz45cKPLpoinYM5Vsn49CrT5VYxi2njtu
+         tOzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790037930; x=1790642730;
+        d=1e100.net; s=20260707; t=1790037931; x=1790642731;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oLXSL+1npHD8gI1D6ujrAzi7XeKmrbhfqQT3WXutYPk=;
-        b=i+IALwnI9KG1hiFjHgf0lYOkab3wQ4cdFJ7z/6nXBKq4O9XsTdaAkA0AWsLVVHQIN9
-         AaNDvC8Yv7mLHWPCaEscGSCCQNFLn7pfeahHgpkIkwQLIGfmnrA+rqtusdF32bUCm2Tu
-         SxcP3rZ+t/hRN3EN6KBvv5FF4dxVfCU03o57AeFaWMwzYwkWRl+DncsxBuxsbytBi/Ve
-         aEealR2CiVvjohwpc4tEFEDl3zeh+mzd5kWEXqkz2NmZl/8tYXoJlWWxhfxhPnWQG189
-         avZz+sh8pR4tccNMyMeyH8OBQGkgma4yMA+/RSigT4UstdZ4uJWg3huJ6BtSgFkZESDj
-         vhtg==
-X-Forwarded-Encrypted: i=1; AKwUvBxcovN3P/6WCgaToPv8fJ2oykm8raAwnIxLGG1rs+RNERqGv8ZoWo3ZSTrXuAVmY4OGUjs/TFU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lzNtM/AwLTc7VMjqmG1ktasugc41RBBfPg7d+3+2PNHMXyJN5i
-	FFbiAoYz8oAucDEUMfb6VpzQe/AuMlrS+u/xbL/PyPYCcmoVJlwBzn+P
-X-Gm-Gg: AYBFou2Q9fwEOYu2Owkds/ffRz4JlKFT5npbJiNmxaCYbK/eNwDvwv4Izv85SUA0h3X
-	idMEAU4wmKjsDiXc0hy5MK8iyrR3ZSh2nBzEDt/90pLMvuxFfoQ54DLB151ubl44ozZTB4XWVs3
-	xVTiw/jVEpbEvGg5BMoSOibsrMtCtRlp9NZBQCa+NiJE+5scwYlrC0woJ2WqeYukDyFNQr84Qp7
-	YWNmqonnZGUUywbEVBAwbpb9YTNq14FMuRCRwlqWxCNtXSymTOa+u+tFhQLYEge0UhOtvXevZsM
-	bbeqDee8q9nhDDlY6PmoGorT18rLQ6FeCIXZevuHeO8OQmEH7Zrw9dzg3ZHIXEOkhJ2IK0BSL8Q
-	O9Kurg4Me6OxUlgQL7la1f+/ZW9GYMzTO2n4qr+9RwJe5HRx74XwXTEXaJnA75ScYP9Q3OE5pDx
-	DrPX+Nu2/or5ay/WPXmHoMZbHX08JsRlyirfrP10UchD9l2vppZwXk/EaFTyIUpgcrhqPY+yfFX
-	x9yz3Euo+jhB7OLwPTqm9+MZUK/n1znw2QAf5Bwge2LpKhrj4wMeu2k0ORN1FmCeVFyIFrQc2qU
-	mOT00Rxj50YZ+ia1drMnYF3UCzAWKcJXy3rhNeUwY04F1k6z8pBdPU7iVRMR4KLg4F9dNkmXtDt
-	iHZ8sz8OHis2cWNox9MqY4w==
-X-Received: by 2002:a05:6808:1526:b0:4b3:7aeb:1b73 with SMTP id 5614622812f47-4ccf59c8345mr10592065b6e.2.1790037930082;
-        Mon, 21 Sep 2026 17:45:30 -0700 (PDT)
+        bh=gFndLx5Yqc+lsDlrSDVoBXxkYOfQ85XX/QivbJQF5Mw=;
+        b=nzRHkjK4omMERZbEcN1fl+XqUnJnfiGGqlwT8wO+NMkMH1LR4TzB2jx+YRYvyvfbHq
+         jRU5EFN2eGs34RnzRcmN0M7uscVMbOMtJUbuQK+xF9NMRrmJDqr0vO66ptMtxBEefNM9
+         hSJBw+tDItv0avRbL6LC6nJ5G3VfGJ9WB39DZ8et4OIQOShAz8njCu16eN7IUQxPs0RC
+         8je4+8P/8bx+GtKL3jdL6efbUUi0ObzFpVnE5hgU4rgL/WJlh/9ZXPTiNhKN33GvvcMB
+         HWavmEbfHS+BYL3eEL7S1VDmELsgiY1H1Go1YLrY+Dmj0rxvjG/Q16uVFJdL4Q+ncH4E
+         AV0A==
+X-Forwarded-Encrypted: i=1; AKwUvBxlzz2FvrfpjWISQcgf9CVyjNna9J0sg6nyQN5TmNC9n8qUjM7GPr8+7Kn3MPJCP6sD/5KBPd0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKK7mOv+/C+DmVdAEzY1XqoOkboM3DtgIJ57URSUVTIC4Jf1oR
+	WXlbUd7qnZ8hjdmjm46/9vSvNANdwHVfc6uJ3nc0adxnk1TO4pJLp2ql
+X-Gm-Gg: AYBFou3xbw7UhpY0FzZZqRQlUwLL3JgRG9ysiTMd/QNmW2JoQP+GeDY2FHD8srfT0r9
+	+akWLx982UHuPQsrB+OEIBJJc+5APDpe4fP2pMe93QCZTOSr3HswRBmSeaZYPrPhZKg97Y/y2iR
+	ECfn5DLem2KvSe3ySIBqSPUhpUHzRLbLlXaLTxeAXOEDXSWm5OkbMlVXUUcY0modibHQ05+upvZ
+	YjiJItToY7b5P3FMuaDp7MfiFlkH5F2XTGvl2/3YVA3EQIGOhcx8OS5ntw+YfjcIYJU1XE2rERB
+	kk9byO5FLbmet4faBdoPYBW5JPNGVDm2gsihJu5Lhj4I/UQpBTne0aLSFfajTUAmdRjb7HY/F65
+	d+MQvmR2sCVejFK5VeuOY567St41Dtrkim/Zff4tOkG7voyhb03jqyiUXzgfavLInJtVqoCbqdb
+	hX9K3defYhczUPrtyM9AnMCtZ+PalDI5pWRItIAAVt2eus+2gPvzxRiGqout7TE+O5iyaJtkbiQ
+	TPvw2Eo35Co9wg/VFToDWhvnmrT1DACI966xhjdOAEShkCTmK9XbkTiuI/KOqNYZJmy0IYf10MA
+	nFxlvosazvNGQAWadqssvhjGAmIfZIFKn9x89r45l5pb3cmquxyc98//hl62S8FQzCiMTBDoHLQ
+	Nztn94ozsv9Uwk1xc5x4gcNjMh8sAJIgR
+X-Received: by 2002:a05:6808:1701:b0:4b9:a8ac:487 with SMTP id 5614622812f47-4ccf91570e3mr11567524b6e.37.1790037931601;
+        Mon, 21 Sep 2026 17:45:31 -0700 (PDT)
 Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4d4bb6be7b3sm60201b6e.0.2026.09.21.17.45.28
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4d4bb6be7b3sm60201b6e.0.2026.09.21.17.45.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 17:45:29 -0700 (PDT)
+        Mon, 21 Sep 2026 17:45:30 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 21 Sep 2026 18:45:25 -0600
-Subject: [PATCH net-next v5 2/3] dt-bindings: net: allwinner: add H616
- EMAC1
+Date: Mon, 21 Sep 2026 18:45:26 -0600
+Subject: [PATCH net-next v5 3/3] net: stmmac: sun8i: add support for
+ Allwinner H616 EMAC1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-submit-h616-emac1-v1-v5-2-ada661ed9e9b@gmail.com>
+Message-Id: <20260921-submit-h616-emac1-v1-v5-3-ada661ed9e9b@gmail.com>
 References: <20260921-submit-h616-emac1-v1-v5-0-ada661ed9e9b@gmail.com>
 In-Reply-To: <20260921-submit-h616-emac1-v1-v5-0-ada661ed9e9b@gmail.com>
 To: Richard Genoud <richard.genoud@bootlin.com>, 
@@ -96,82 +96,70 @@ Cc: Alastair D'Silva <alastair@d-silva.org>,
  James Hilliard <james.hilliard1@gmail.com>, netdev@vger.kernel.org, 
  linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
  linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org
+ devicetree@vger.kernel.org, Andre Przywara <andre.przywara@arm.com>
 X-Mailer: b4 0.15.2
 
 The H616 secondary EMAC uses a separate system-control clock register
-and supports only RMII at 10/100 Mbps. Add its distinct compatible
-without an older fallback, since using the primary EMAC clock register
-would not work.
+and supports only RMII at 10/100 Mbps. It connects internally to the
+co-packaged AC200 or AC300 EPHY and has no external PHY pins.
 
-Constrain the PHY interface mode to RMII, matching the hardware.
+Add an EMAC1 variant using the dedicated register and enable only RMII.
+Leave PHY initialization to the PHY driver instead of using the H3
+internal-PHY controls. No RX or TX clock delays are configured for this
+RMII-only variant.
 
+Co-developed-by: Richard Genoud <richard.genoud@bootlin.com>
+Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
 Reviewed-by: Alastair D'Silva <alastair@d-silva.org>
 Tested-by: Alastair D'Silva <alastair@d-silva.org>
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- .../devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml  | 13 +++++++++++++
- Documentation/devicetree/bindings/net/snps,dwmac.yaml       |  2 ++
- 2 files changed, 15 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-index 323a669fa982..2cae0133b3cd 100644
---- a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-+++ b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-@@ -21,6 +21,7 @@ select:
-           - allwinner,sun8i-r40-gmac
-           - allwinner,sun8i-v3s-emac
-           - allwinner,sun50i-a64-emac
-+          - allwinner,sun50i-h616-emac1
-           - allwinner,sun55i-a523-gmac200
-   required:
-     - compatible
-@@ -33,6 +34,7 @@ properties:
-       - const: allwinner,sun8i-r40-gmac
-       - const: allwinner,sun8i-v3s-emac
-       - const: allwinner,sun50i-a64-emac
-+      - const: allwinner,sun50i-h616-emac1
-       - items:
-           - enum:
-               - allwinner,sun20i-d1-emac
-@@ -91,6 +93,17 @@ required:
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index 9598c386bb21..0ea1860cf203 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -81,6 +81,13 @@ static const struct reg_field sun8i_syscon_reg_field = {
+ 	.msb = 31,
+ };
  
- allOf:
-   - $ref: snps,dwmac.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: allwinner,sun50i-h616-emac1
++/* EMAC1 clock register @ 0x34 in the "system control" address range */
++static const struct reg_field sun8i_syscon_reg_field_emac1 = {
++	.reg = 0x34,
++	.lsb = 0,
++	.msb = 31,
++};
 +
-+    then:
-+      properties:
-+        phy-mode:
-+          const: rmii
+ /* EMAC clock register @ 0x164 in the CCU address range */
+ static const struct reg_field sun8i_ccu_reg_field = {
+ 	.reg = 0x164,
+@@ -143,6 +150,13 @@ static const struct emac_variant emac_variant_h6 = {
+ 	.tx_delay_max = 7,
+ };
+ 
++static const struct emac_variant emac_variant_h616_emac1 = {
++	.syscon_field = &sun8i_syscon_reg_field_emac1,
++	/* The co-packaged AC200/AC300 PHY does not use the H3 PHY controls. */
++	.soc_has_internal_phy = false,
++	.support_rmii = true,
++};
 +
-   - if:
-       properties:
-         compatible:
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-index 0ff9e3284a06..3fa6e17c3d12 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-@@ -57,6 +57,7 @@ properties:
-         - allwinner,sun8i-r40-gmac
-         - allwinner,sun8i-v3s-emac
-         - allwinner,sun50i-a64-emac
-+        - allwinner,sun50i-h616-emac1
-         - amlogic,meson6-dwmac
-         - amlogic,meson8b-dwmac
-         - amlogic,meson8m2-dwmac
-@@ -623,6 +624,7 @@ allOf:
-                 - allwinner,sun8i-r40-gmac
-                 - allwinner,sun8i-v3s-emac
-                 - allwinner,sun50i-a64-emac
-+                - allwinner,sun50i-h616-emac1
-                 - loongson,ls2k-dwmac
-                 - loongson,ls7a-dwmac
-                 - ingenic,jz4775-mac
+ #define EMAC_BASIC_CTL0 0x00
+ #define EMAC_BASIC_CTL1 0x04
+ #define EMAC_INT_STA    0x08
+@@ -1277,6 +1291,8 @@ static const struct of_device_id sun8i_dwmac_match[] = {
+ 		.data = &emac_variant_a64 },
+ 	{ .compatible = "allwinner,sun50i-h6-emac",
+ 		.data = &emac_variant_h6 },
++	{ .compatible = "allwinner,sun50i-h616-emac1",
++		.data = &emac_variant_h616_emac1 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);
 
 -- 
 2.53.0
