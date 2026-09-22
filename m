@@ -1,64 +1,64 @@
 Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAB93EDE63
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158C3408626
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108904; cv=none; b=K0DeYDnjRkV8ySs5Wd0kG0oFFFtN6yB22iMPSZ/BkAEZM357Nvl5bYkq30aL0OvyFs1jcAchUaJa8ckQUvGezXORJAjIcE6uZ82i8UQBJI4I905Xq2itGxPlcb5Bdf0pZKPOrw8NjdpKrmRJd4BU3kR+h+XHSNZyuxIggzgV90U=
+	t=1790108988; cv=none; b=aElZi6+FzI4w4zJrTDlVhuL8o/wDGIoRutJLJmTMiOuNIlvcfWBiPvFcRAJAOuKAbn17OJUqse0d5FEUFj2PC+a/UB/pb2J568a7yUQWRzYfNU1X9zFCwUqHQFWVtXGsMshdl4ZNxGl4T5IV9hkuRnf1dnAiyO2RdzVnrwitANA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108904; c=relaxed/simple;
-	bh=Fji0HRzHvqxcQeEBfQJE0uUG7PTXA9ehLCdLYpVq5Vs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=bq+zEfs7jmcu9Bm0vlUrZrV18T5OthuyuirmDlB5JAegZ95bndkqY2xir17t2yxgi3R6H2Sr5gm5jDltQuTKXcsORP5bKbssm/SdNT8zwPdSqI4Da8+q9VlQ4cTXyVuzP3XvTqI5yIsp8D39rLCSzuhTZ8q3PNB8haeCyhaTXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=edFqkwTb; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1790108988; c=relaxed/simple;
+	bh=Ee22KWiRYao1lKApmUekh9IxTs2YfqEPVpWAJMqP0Is=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=iYj+NDWMRsGmUrX4/nmrzbBw1dG5gYBuK4InuHCNG/vUegQ3XPTRbR68JJIDcBwOT+6KP1ngABBL+ML9GcVqcDY3YCc34ianmhUTemsQoUL4rjIoKB3XZ2LQRH+vYgEJJkn3CXhn88uD9/ZujAEqZWWmB8UlTWmITrLfEx3CB1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=pRSCA67X; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="edFqkwTb"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccead2aecso934435e9.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="pRSCA67X"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so1197035e9.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:29:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790108896; x=1790713696; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790108974; x=1790713774; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=FRw3oz69t2vAuwzTn8J01kFIogSh59Vp/4+7uQqF6OQ=;
-        b=edFqkwTbs6XUtkDtmoZFGMprSjr4MBPiFrv3VodnNbISuR8qF/uonFkByM18Z/PoER
-         6Q62vvP5IgZwIqWm5WlzsOWXzcSW1v0L4NrxZsgIdA9jmWW5Y1m7HsApZT374RfZ050+
-         pVFxlfTbPdISCvCxwJ0JGIwA9nTpLzbHuUiP/ClHtD/R2LcVsSEmg13EOHxVl3Pc6YZk
-         Vf/Rmrp3D1eDcwWUETZzz/adh9C3JgpH7lKbhvlhfNatDXZbgJmPzWPydw/U2qrlEz6R
-         OIcyVoV/wHYHNXNJXU4lnNiiyfHSYnfup+uWI1esy7vKaBgeqlRNM9g1oIAvYaT8S9Fs
-         c+sw==
+        bh=bhuZkFkjAv5pmqD3J5DZhx2ag4XfpnmA8RxKM8znkiE=;
+        b=pRSCA67Xcibw/OynTZE+anC4Z4pVYTqs2iqVB8dg34tU7W+R0X1rxsdsGwCVcE9pY5
+         9Y0fBFTnAOqyUa210OaHu9iFjRI1BQi5OjPG1Rhk6zMs5AfwD81PXbSt47oRZyzLIamO
+         BBXm/CPliIlvf5Gsc0JJgD39zVtPhm/OEur4Hnej1/NvX3wGBNnnpRf7Uayx+e+Bvxl/
+         y+0TADixS0nXnS/6bSe/xU5U/CK0Z0QCRUMgAYgUHZJmEVtB2La22h0zcAoGoWCKjZWn
+         upNt4lozkEF0CT/meUYA8oqW0mSvMFLRtT199Ki7Ri8QJ4u1IHiR+5Uy9QqGsnvzVEzP
+         6ytA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790108896; x=1790713696;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=1e100.net; s=20260707; t=1790108974; x=1790713774;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FRw3oz69t2vAuwzTn8J01kFIogSh59Vp/4+7uQqF6OQ=;
-        b=0aPhCMARGxos+efHCH4hRbJBptjZshDyUJ45dsRz1jDuauLQ2ICq0xjohb6c38krup
-         dd5nYFqwnjdudFTHo4Isyud/UAUuw8oL3YpHL9ADTT5frI4xGZ16I74iN2IaFDnP94km
-         f/jTj9z8btCTcYV1VWyYdIlmhOYePTeTqw6TbQ7EZfWxkiYUXBpRhlkFaacI6YnKPU0w
-         ZcayHdeSURev+2wWfK0E+uZvypK7+s1Hsp4XLraUTykro/f9EQpLm5D1Y6FAdhXhKgfo
-         Mj49fmJvsWVaVN80MJvbCtxRN4aSWsLJ+TFVPbNZZ6+uWLxyrpSknCAnTDBIXii3SiAq
-         BnaA==
-X-Forwarded-Encrypted: i=1; AKwUvByKm0DwYf3wUOMMdp2PqmtwBxi6J+TArP//CVM5VNPXh4GRbABzUReaRpTZwLPOMiOIPGyKmfA=@vger.kernel.org
-X-Gm-Message-State: AFuF++m9x/AsbCKXvUKcmw3TMnKe6CDuEGHHpRSbKSKdS0e2wX6J+ZQs
-	t1Q8aGiiwXEx21A1AWlHKCD+luwdACreCfHPefKHoqLEpbPzSs+Jlj/DMNslpH7eaVA=
-X-Gm-Gg: AYBFou3+UEfhHcKgtqENMQ4G6LYri8+EW+Tpuvpn18430LhQttG+UcCflVa3e+DM4YK
-	WqPsZT/8emBoj4JO4c5dccHDgAiOE26fPsgOTcqWJtHN4qQtRhGfBpLjv2LQuqnkdB8ZLoyngcu
-	cbfhkgdPmt6UyP89PnZ3++zLGTm+BCUTesmqILP4BgPFJPBMKxGgJEn9xU/Dr9yzdr+0tVSJDFp
-	RRLfKklo40bcbOjElHqvI/SQ5WaoyG5a2V1cSfG2J7f42t6RvhQL1KAN8kSSs4T/n73f0JACElc
-	XWo53jkqz6C9FJN+AQGeIF3bkpL3hZCFCsNHNZNFfc4DOVo3A6HSjVsbD6qv6JPkDhDmoi7ndCv
-	jneoPhZk1h4jiYtATLIl6thEubXIz2I8zKddLbXv3JHxSRjo0VtRGRmP2bCiWh1XSOpjAiVdvgK
-	pRsY87imjGsEdTG1fFKhoR06S1dV3tFKrfh+e9qdDzleuu8DuQywMsWbc=
-X-Received: by 2002:a05:600c:1d1f:b0:49f:c199:e1e2 with SMTP id 5b1f17b1804b1-49fdf1474demr4570545e9.28.1790108895692;
-        Tue, 22 Sep 2026 13:28:15 -0700 (PDT)
+        bh=bhuZkFkjAv5pmqD3J5DZhx2ag4XfpnmA8RxKM8znkiE=;
+        b=NUykcPrvKv4bjey4BDq9ILHkSPdJuddamAFze38aLHVzDuL8cRqXpfYqF/3IkcpD+E
+         n69gRiO/amyvMa+SozaOH5HgHZXcWiLHKVV+eX7tCxY0PViefJi77gsDfleIt8sThN9X
+         d/psbwg4ZpkahRdnu6KT5bp5XII7gJkX6bYM1gavYR6en4S6DjhWQB9pedIYAcZi9Yr7
+         /z2J1rnYn7eElvVmctkPkTSV/6Uk/bKoFGjyDPeBpmGVZ8+sWG+hju0r+VdDxG9+mSau
+         BXexncCHfVbNtfpu1xVHc9+ik/L3Xhnk7SibKhyuz7/Ib5pb5dyI4Z6ESgF6fP0WUcOR
+         wyew==
+X-Forwarded-Encrypted: i=1; AKwUvBw6giLuLYjQJde3bYKSWpxfrfCoJlEj33qyHS6yTw5XLsgTJFoUH+YY4uhIUt5ikCVJrGmWN44=@vger.kernel.org
+X-Gm-Message-State: AFuF++lvfoTqRdwSW5cIz6UFCw1NHf1C2+airt9V4lYyxH8p8KKspqmM
+	jpWKNbFeSzVh2aXwm2XV5qx+Z4NqtX60sGHv0NY5AH/4iJ+2cX/dmhw+Axzs6sknEBk=
+X-Gm-Gg: AYBFou1s1dKi9x+GkZa9+Pk/skPx8WXFZuux1CdtxSK3vZ+5vm3jJ//FASWZCMZQfFa
+	Ip0HalP+XBcGESC956anS450Twvj+CUGUs0wqjRRlIZ1FAyHGuru/29cc5L+w+PxKb3N5V7/BN9
+	sKqvwaTBwT2PEbMBEy/cErypqrIBMwBJojcd5At4F2OFM7ws8a+kvq4YAIoUgBwcFhPx+oYhpjQ
+	OcNnM7FcF7gte4yLbNQnQ7iZZO6Vqh+ceVRGxRxh25nc0zhfe/VeDL23xnZCBG6kKwaYkcDVMXT
+	ylgcr4PfAfdPAB95crmUBPIKPCr+jZO+x4Pn4rkp4+TsqilgFUMn7Zgr6NhpxHK/bvmUln9tHQS
+	/JbzGsARqYBp/T925BFf6UVDbu3vW8R2E9Y+zMw/iKVpnVzFpQaoYKT0T2nAfVIX43Fy7sxkKgZ
+	BgCc3t3ibBaT3GzXtgLOsf5tR1VKECMkk9OizEAHo8e9sojr2NrzY3n636taR+bBA5lA==
+X-Received: by 2002:a05:600c:3b92:b0:49f:c432:2e50 with SMTP id 5b1f17b1804b1-49fdf1399d7mr5064765e9.25.1790108974144;
+        Tue, 22 Sep 2026 13:29:34 -0700 (PDT)
 Received: from localhost ([2620:10d:c090:600::1:2ba4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488684863fbsm844100f8f.11.2026.09.22.13.28.12
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fde1ec8a1sm19883145e9.15.2026.09.22.13.29.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 13:28:15 -0700 (PDT)
+        Tue, 22 Sep 2026 13:29:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,76 +67,254 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Sep 2026 20:28:09 +0000
-Message-Id: <DLM4N2XSQ4LE.23XSEE8I96EK9@etsalapatis.com>
-To: "Amery Hung" <ameryhung@gmail.com>, "Alexei Starovoitov"
- <alexei.starovoitov@gmail.com>
-Cc: "Emil Tsalapatis" <emil@etsalapatis.com>, <bpf@vger.kernel.org>,
- <ast@kernel.org>, <andrii@kernel.org>, <eddyz87@gmail.com>,
- <memxor@gmail.com>, <daniel@iogearbox.net>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH bpf v2 09/11] bpf: Track whether dynptr type is known
+Date: Tue, 22 Sep 2026 20:29:27 +0000
+Message-Id: <DLM4O2QP87FM.1F2UYDTP6VY7V@etsalapatis.com>
 From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Amery Hung" <ameryhung@gmail.com>, "Emil Tsalapatis"
+ <emil@etsalapatis.com>
+Cc: <bpf@vger.kernel.org>, <ast@kernel.org>, <andrii@kernel.org>,
+ <eddyz87@gmail.com>, <memxor@gmail.com>, <daniel@iogearbox.net>,
+ <netdev@vger.kernel.org>, "Nicholas Carlini" <nicholas@carlini.com>
+Subject: Re: [PATCH bpf v2 10/11] bpf: Track skb memory invalidation by
+ packet-backed dynptrs
 X-Mailer: aerc 0.21.0
 References: <20260922172028.6269-1-emil@etsalapatis.com>
- <20260922172028.6269-10-emil@etsalapatis.com>
- <DLM2H0M84V64.3DRNAWAWXR4FZ@gmail.com>
- <CAMB2axPbLQhGq-LRLzW4p27YVMowcv0XLdF6gNrLn8U3mG_fJA@mail.gmail.com>
-In-Reply-To: <CAMB2axPbLQhGq-LRLzW4p27YVMowcv0XLdF6gNrLn8U3mG_fJA@mail.gmail.com>
+ <20260922172028.6269-11-emil@etsalapatis.com>
+ <CAMB2axMWU469XKFGEkvp46R7y+Uw0p4gAK8nT9-o2zdFGu0Vng@mail.gmail.com>
+In-Reply-To: <CAMB2axMWU469XKFGEkvp46R7y+Uw0p4gAK8nT9-o2zdFGu0Vng@mail.gmail.com>
 
-On Tue Sep 22, 2026 at 8:23 PM UTC, Amery Hung wrote:
-> On Tue, Sep 22, 2026 at 11:49=E2=80=AFAM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
+On Tue Sep 22, 2026 at 8:06 PM UTC, Amery Hung wrote:
+> On Tue, Sep 22, 2026 at 10:24=E2=80=AFAM Emil Tsalapatis <emil@etsalapati=
+s.com> wrote:
 >>
->> On Tue Sep 22, 2026 at 5:20 PM UTC, Emil Tsalapatis wrote:
->> > The TYPE_LOCAL dynptr type is used for two different
->> > kinds of dynptrs in the codebase: Those that are created
->> > locally and backed with a memory region, and those that
->> > are passed as arguments to a global subprog, whose type
->> > is not known at verification time. The two kinds require
->> > different handling in certain scenarios, e.g., packet
->> > pointer invalidation. However, there is no current way
->> > to distinguish them.
->> >
->> > Add a new field, type_unknown, to bpf_reg_state's  dynptr-
->> > specific state. The field designates whether the dynptr
->> > type reported is accurate, or a placeholder for "type
->> > unknown". Adding an extra field to bpf_reg_state avoids
->> > unnecessarily splitting TYPE_LOCAL into two types, since
->> > they would behave identically in most cases.
->> >
->> > The change is currently non-functional. The new field is
->> > first used in the next commit.
->> >
->> > Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
->> > ---
->> >  include/linux/bpf_verifier.h |  2 ++
->> >  kernel/bpf/states.c          |  1 +
->> >  kernel/bpf/verifier.c        | 27 ++++++++++++++++++---------
->> >  3 files changed, 21 insertions(+), 9 deletions(-)
->> >
->> > diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier=
-.h
->> > index be0ccad15..f57730d1d 100644
->> > --- a/include/linux/bpf_verifier.h
->> > +++ b/include/linux/bpf_verifier.h
->> > @@ -71,6 +71,7 @@ struct bpf_reg_state {
->> >               /* For dynptr stack slots */
->> >               struct {
->> >                       enum bpf_dynptr_type type;
->> > +                     bool type_unknown;
+>> A dynptr can be backed by skb memory, and kfuncs that
+>> write but also read the underlying area may reallocate
+>> the backing memory in the process of pulling the skb.
+>> However, the verifier does not track these calls as
+>> possibly invalidating packet pointers, and does not
+>> do so after their call site.
 >>
->> why extra bool? Can it be another value in enum?
+>> Expand the verifier to track dynptr kfuncs for packet
+>> invalidation.
+>>
+>> Fixes: 5fc5d8fded57 ("bpf: Add bpf_dynptr_memset() kfunc")
+>> Fixes: a498ee7576de ("bpf: Implement dynptr copy kfuncs")
+>> Fixes: daec295a7094 ("bpf/helpers: Introduce bpf_dynptr_copy kfunc")
+>> Reported-by: Nicholas Carlini <nicholas@carlini.com>
+>> Suggested-by: Nicholas Carlini <nicholas@carlini.com>
+>> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+>> ---
+>>  include/linux/bpf_verifier.h |  2 ++
+>>  kernel/bpf/cfg.c             | 10 +++++--
+>>  kernel/bpf/verifier.c        | 51 ++++++++++++++++++++++++++++++++++--
+>>  3 files changed, 59 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+>> index f57730d1d..8a9b7a2f2 100644
+>> --- a/include/linux/bpf_verifier.h
+>> +++ b/include/linux/bpf_verifier.h
+>> @@ -1589,6 +1589,7 @@ struct bpf_call_arg_meta {
+>>
+>>         /* Only set by kfunc */
+>>         bool r0_rdonly;
+>> +       bool dynptr_may_clobber_pkt_ptr;
 >
-> Second this. Could be a BPF_DYNPTR_TYPE_UNKNOWN or BPF_DYNPTR_TYPE_ANY.
+> I would suggest making it common to helper and kfunc and not specific to =
+dynptr:
+>
+> bool pkt_changed;
+>
+> Then, helper and kfunc and all share this following block:
+>
+>         if (meta->pkt_changed)
+>                 clear_all_pkt_pointers(env);
+>
+> This also matches the existing changes_pkt_data terminology.
 
-Sounds good, let's go with that. The reasoning behind the extra bool was to
-avoid having to add TYPE_UNKNOWN everywhere as an extra case statement, bec=
-ause
-the two enums would have identical behavior except for the check added in t=
-he
-next patch.
+This and the point below both make sense to me, thank you. I will adjust ac=
+cordingly.
 
 >
+>>         u32 kfunc_flags;
+>>         const struct btf_type *func_proto;
+>>         const char *func_name;
+>> @@ -1642,6 +1643,7 @@ static inline bool bpf_is_kfunc_sleepable(struct b=
+pf_call_arg_meta *meta)
+>>         return meta->kfunc_flags & KF_SLEEPABLE;
+>>  }
+>>  bool bpf_is_kfunc_pkt_changing(struct bpf_call_arg_meta *meta);
+>> +bool bpf_is_kfunc_maybe_pkt_changing(struct bpf_call_arg_meta *meta);
+>>  struct bpf_iarray *bpf_iarray_realloc(struct bpf_iarray *old, size_t n_=
+elem);
+>>  int bpf_copy_insn_array_uniq(struct bpf_map *map, u32 start, u32 end, u=
+32 *off);
+>>  bool bpf_insn_is_cond_jump(u8 code);
+>> diff --git a/kernel/bpf/cfg.c b/kernel/bpf/cfg.c
+>> index 842c7d1ea..cb499d19d 100644
+>> --- a/kernel/bpf/cfg.c
+>> +++ b/kernel/bpf/cfg.c
+>> @@ -73,6 +73,12 @@ static void mark_subprog_might_throw(struct bpf_verif=
+ier_env *env, int off)
+>>         subprog->might_throw =3D true;
+>>  }
+>>
+>> +static bool bpf_helper_maybe_changes_pkt_data(enum bpf_func_id func_id)
+>> +{
+>> +       return bpf_helper_changes_pkt_data(func_id) ||
+>> +              func_id =3D=3D BPF_FUNC_dynptr_write;
+>> +}
+>> +
+>>  /* 't' is an index of a call-site.
+>>   * 'w' is a callee entry point.
+>>   * Eventually this function would be called when env->cfg.insn_state[w]=
+ =3D=3D EXPLORED.
+>> @@ -510,7 +516,7 @@ static int visit_insn(int t, struct bpf_verifier_env=
+ *env)
+>>                          */
+>>                         if (ret =3D=3D 0 && fp->might_sleep)
+>>                                 mark_subprog_might_sleep(env, t);
+>> -                       if (bpf_helper_changes_pkt_data(insn->imm))
+>> +                       if (bpf_helper_maybe_changes_pkt_data(insn->imm)=
+)
+>>                                 mark_subprog_changes_pkt_data(env, t);
+>>                         if (insn->imm =3D=3D BPF_FUNC_tail_call) {
+>>                                 ret =3D visit_abnormal_return_insn(env, =
+t);
+>> @@ -543,7 +549,7 @@ static int visit_insn(int t, struct bpf_verifier_env=
+ *env)
+>>                          */
+>>                         if (ret =3D=3D 0 && bpf_is_kfunc_sleepable(&meta=
+))
+>>                                 mark_subprog_might_sleep(env, t);
+>> -                       if (ret =3D=3D 0 && bpf_is_kfunc_pkt_changing(&m=
+eta))
+>> +                       if (ret =3D=3D 0 && bpf_is_kfunc_maybe_pkt_chang=
+ing(&meta))
+>>                                 mark_subprog_changes_pkt_data(env, t);
+>>                         if (ret =3D=3D 0 && bpf_is_throw_kfunc(insn))
+>>                                 mark_subprog_might_throw(env, t);
+>> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+>> index da110cdbc..e916ce89c 100644
+>> --- a/kernel/bpf/verifier.c
+>> +++ b/kernel/bpf/verifier.c
+>> @@ -8278,6 +8278,7 @@ static bool is_kfunc_arg_scalar_with_name(const st=
+ruct btf *btf,
+>>                                           const char *name);
+>>  static bool is_bpf_cast_to_kern_ctx_kfunc(const struct bpf_call_arg_met=
+a *meta);
+>>  static bool is_bpf_dynptr_clone_kfunc(const struct bpf_call_arg_meta *m=
+eta);
+>> +static bool is_kfunc_dynptr_may_clobber_pkt_ptr(struct bpf_call_arg_met=
+a *meta);
+>>  static bool is_bpf_iter_css_task_new_kfunc(const struct bpf_call_arg_me=
+ta *meta);
+>>  static bool is_bpf_obj_drop_kfunc(u32 func_id);
+>>  static bool is_bpf_percpu_obj_drop_kfunc(u32 func_id);
+>> @@ -9320,6 +9321,15 @@ static int check_func_arg(struct bpf_verifier_env=
+ *env, u32 arg, u32 slot, u32 p
+>>                 err =3D process_dynptr_func(env, reg, argno, insn_idx, a=
+rg_type, meta);
+>>                 if (err)
+>>                         return err;
+>> +               /*
+>> +                * These kfuncs only clobber packet pointers when their
+>> +                * destination dynptr, argument 0, is backed by skb pack=
+et data.
+>> +                */
+>> +               if (arg =3D=3D 0 && is_kfunc_dynptr_may_clobber_pkt_ptr(=
+meta) &&
+>> +                   (meta->dynptr.type_unknown ||
+>> +                    meta->dynptr.type =3D=3D BPF_DYNPTR_TYPE_SKB ||
+>> +                    meta->dynptr.type =3D=3D BPF_DYNPTR_TYPE_SKB_META))
+>> +                       meta->dynptr_may_clobber_pkt_ptr =3D true;
+>>                 break;
+>>         }
+>>         case ARG_PTR_TO_ITER:
+>> @@ -11759,7 +11769,8 @@ static int check_helper_call(struct bpf_verifier=
+_env *env, struct bpf_insn *insn
+>>                 if (dynptr_type =3D=3D BPF_DYNPTR_TYPE_INVALID)
+>>                         return -EFAULT;
+>>
+>> -               if (dynptr_type =3D=3D BPF_DYNPTR_TYPE_SKB ||
+>> +               if (meta.dynptr.type_unknown ||
+>> +                   dynptr_type =3D=3D BPF_DYNPTR_TYPE_SKB ||
+>>                     dynptr_type =3D=3D BPF_DYNPTR_TYPE_SKB_META)
+>>                         /* this will trigger clear_all_pkt_pointers(), w=
+hich will
+>>                          * invalidate all dynptr slices associated with =
+the skb
+>> @@ -12787,9 +12798,45 @@ static bool is_kfunc_bpf_preempt_enable(struct =
+bpf_call_arg_meta *meta)
+>>         return is_kfunc_call(meta, special_kfunc_list[KF_bpf_preempt_ena=
+ble]);
+>>  }
+>>
+>> +/*
+>> + * Dynptr kfuncs that may clobber packet pointers when called with an s=
+kb or
+>> + * skb_meta backed destination dynptr by pulling the packet.
+>> + */
+>> +BTF_SET_START(dynptr_may_clobber_pkt_ptr_kfuncs)
+>
+> This set identifies kfuncs that write to dynptr-backed memory. Whether
+> such a write can invalidate packet pointers is determined separately
+> from the destination dynptr type. How about:
+>
+>   BTF_SET_START(dynptr_memory_write_kfuncs)
+>
+>> +BTF_ID(func, bpf_dynptr_memset)
+>> +BTF_ID(func, bpf_dynptr_copy)
+>> +#ifdef CONFIG_BPF_EVENTS
+>> +BTF_ID(func, bpf_probe_read_user_dynptr)
+>> +BTF_ID(func, bpf_probe_read_kernel_dynptr)
+>> +BTF_ID(func, bpf_probe_read_user_str_dynptr)
+>> +BTF_ID(func, bpf_probe_read_kernel_str_dynptr)
+>> +BTF_ID(func, bpf_copy_from_user_dynptr)
+>> +BTF_ID(func, bpf_copy_from_user_str_dynptr)
+>> +BTF_ID(func, bpf_copy_from_user_task_dynptr)
+>> +BTF_ID(func, bpf_copy_from_user_task_str_dynptr)
+>> +#endif
+>> +BTF_SET_END(dynptr_may_clobber_pkt_ptr_kfuncs)
+>> +
+>> +static bool is_kfunc_dynptr_may_clobber_pkt_ptr(struct bpf_call_arg_met=
+a *meta)
+>
+> Likewise, perhaps:
+>
+>   static bool is_kfunc_dynptr_memory_write(...)
+>
+> This keeps the two concepts separate: the set classifies the
+> operation, while meta.changes_pkt_data records the effect for this
+> particular call.
+>
+>> +{
+>> +       return meta->btf && btf_id_set_contains(&dynptr_may_clobber_pkt_=
+ptr_kfuncs,
+>> +                                               meta->func_id);
+>> +}
+>> +
+>>  bool bpf_is_kfunc_pkt_changing(struct bpf_call_arg_meta *meta)
+>>  {
+>> -       return is_kfunc_call(meta, special_kfunc_list[KF_bpf_xdp_pull_da=
+ta]);
+>> +       return is_kfunc_call(meta, special_kfunc_list[KF_bpf_xdp_pull_da=
+ta]) ||
+>> +              meta->dynptr_may_clobber_pkt_ptr;
+>> +}
+>> +
+>> +/*
+>> + * More conservative version of the above used in check_cfg(),
+>> + * where no register state exists and the dynptr type is unknown.
+>> + */
+>> +bool bpf_is_kfunc_maybe_pkt_changing(struct bpf_call_arg_meta *meta)
+>> +{
+>> +       return bpf_is_kfunc_pkt_changing(meta) ||
+>> +              is_kfunc_dynptr_may_clobber_pkt_ptr(meta);
+>>  }
+>>
+>>  static u32 kfunc_abi_slots(const struct btf_func_model *fm)
+>> --
+>> 2.54.0
 >>
 >>
 
