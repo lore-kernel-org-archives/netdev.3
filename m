@@ -1,47 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B95B360EDC;
-	Tue, 22 Sep 2026 04:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C4276050;
+	Tue, 22 Sep 2026 05:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790052592; cv=none; b=jteH+nM0Oubu7B1GZnSrjeYdzF7+BEZpJ+soPvcVePS15n/o/0iyvwY4V7AO//5OvuxkpUV/CDDNJaer+2doCEjIYHfO8LjS5TGbQahOQG7AYFaVS5JIHw7vaGPMG+1LIYmAvhkwP/eSarWcgxFRKTeqSeqwECQ1c/ovQFKY7Uw=
+	t=1790053552; cv=none; b=s2cn4sydN52WNn0ZYbidmT/fPNnHbs+WrQdBFSI/RfuKG8vU83jffghemiyexXc9aG5mYFRHl/H+U+CThBVHTRGpXnm2TTcdW7wuCJgYnAVPkG+c8TKuF+QKhlxIHPahWlzA29H2DeCf0cv0eCK0z1k+7dIydfk4yl6V+3lQ/aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790052592; c=relaxed/simple;
-	bh=LE3ktMvn8f20wey7b96+iSHLbZJasRdXGgoFtYTRWfs=;
+	s=arc-20240116; t=1790053552; c=relaxed/simple;
+	bh=SSugme39AaT4a7tjags5rgJx2pgXI2oH0edPTiycef4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l6asmGmyRMsx1u8OVhTV15DF+2CHVga5cKldEppOgomuHtr0Haa+e0GYmE2nUuILlMwT0JZth84BXiLEE2NjnSmt0blD+eO1OaEEw2OBl3C8USFiiP+/IrNeLdaAODY2FwtDVu/DXb+vpKhglr1emzkkK/lDUARFtKsMTd5sV1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfbtMN/S; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fi99Ax4Chnc2AAZ/Eur5oWtkrHqWMuYSiqyu0+OXuBxW0MLle8eXZHqUOjpJC9smILMJxqIdTRKik9lYAW+CAWr7mB8dV/9K5GBx7YX8L9QSpCD/2tbY3PYff7PetRMLvw9aFrLU3X++1NLUuvs12dQQoEUnAU0Ymfl3ffgswh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxzkTsg6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfbtMN/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708931F000FF;
-	Tue, 22 Sep 2026 04:49:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxzkTsg6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2E81F000FF;
+	Tue, 22 Sep 2026 05:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790052591;
-	bh=qC/scIJ0wq4RMXDVdwbaYlepxpTiRdoR45/xM5+kulM=;
+	s=k20260515; t=1790053550;
+	bh=GJG6I5Clw5SCk/1VpkRKC4P7mxnCryzaJv4G7QIe0/Q=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AfbtMN/S5YuBrDLCgvQ+s3VacCte4ChmcAdZre0KaXjG3gIl2gmqtOU4oF3jfpD3x
-	 XVE+vYYEZzZsuPYnsSu6cF0Hk35/QDYIv7SEnvMJxgXVlKZfxzi152/jaZbLjG+uz4
-	 STH03j8TsJ9A10TFWFAzlEIZgcZmDDPSA5kO7VQbU1rk58ZViSB+on/nH2Buw3I8Id
-	 VP+CNRLFNIn+4E7vuWXSuCyCLEuLpLhbXQYR31fkKhY66g8+nlFOw6liQTR1DvB3uP
-	 KxfOY8hBbmVuwd0AqR9I/Hyw7Uv16Tio3gm9euqFOaiwhdr/WC9x+rcMGkV6jNDLQz
-	 Ah1VvTespjzRg==
-Subject: Re: [PATCH net v3] net: pcs: rzn1-miic: Reset PRCMD state before
- unprotect sequence
+	b=cxzkTsg6YpwwvdbpuJvSO/ID7WPyYAPxPa9VxLV/seFyHqIQcuYktPfzIZWv3Pn/r
+	 90tVtBDRiq3GJGXjb1/hB65AgHECqvX1kq0ukuddED6Rx+plCtncZ0sz7uLqvrPlXx
+	 vyOjEGpXaKqPZ61meUlQ5uUydsTCKMA6Ltzr0rpDamWSsy14HARnnb1cwOQ/0QMQnL
+	 zOky9+H9ruIRu0xY9YD5vkCA02BYOW63W/3qwbb02+mypTtgNB4nYjsSgKR1TPwTr1
+	 Q3TVsEt28jmOfWRA5KdOa5qh3p25iXvRWMyYc5ZQiuHb5Zy0+gyQJW0FofpPoraiCa
+	 +vdBYJSdico/w==
+Subject:
+ Re: [PATCH net v2 1/3] net: stmmac: propagate platform mac_finish errors
 From: netdev-bot+sashiko@kernel.org
-To: yoshihisa.yamamoto.xn@renesas.com
-Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
- linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 22 Sep 2026 04:49:49 +0000
-Message-ID: <179005258996.2160803.11359360903588205993@kernel.org>
-In-Reply-To: =?utf-8?q?=3CTYCPR01MB7481CE8351FDB2CDCA229955A4872=40TYCPR01MB?=
- =?utf-8?q?7481=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
-References: =?utf-8?q?=3CTYCPR01MB7481CE8351FDB2CDCA229955A4872=40TYCPR01MB7?=
- =?utf-8?q?481=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
-X-sashiko-severity: Medium
+To: tom.karpiniec@outlook.com
+Cc: netdev@vger.kernel.org, mohd.anwar@oss.qualcomm.com,
+ maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, linux@armlinux.org.uk, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ yong.liang.choong@linux.intel.com, brgl@kernel.org, coiaprant@gmail.com,
+ linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 22 Sep 2026 05:05:49 +0000
+Message-ID: <179005354933.2160803.8939564905853996739@kernel.org>
+In-Reply-To: =?utf-8?q?=3CSJ2PR11MB8401FFBBECB8FBBA9C002134E4872=40SJ2PR11MB?=
+ =?utf-8?q?8401=2Enamprd11=2Eprod=2Eoutlook=2Ecom=3E?=
+References: =?utf-8?q?=3CSJ2PR11MB8401FFBBECB8FBBA9C002134E4872=40SJ2PR11MB8?=
+ =?utf-8?q?401=2Enamprd11=2Eprod=2Eoutlook=2Ecom=3E?=
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,7 +56,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -62,117 +64,91 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] SoC-specific PRCMD semantics are applied unconditionally in a
-  shared helper: the new `writel(0x0000, miic->base + MIIC_PRCMD)` is…
-- [Medium] Fixes-tag mis-attribution and a changelog that names no
-  failure mode.
+- [High] Incomplete fix: the bug class the commit message claims to close
+  ('Phylink then treats the interface as successfully configured and can…
+- [Low] Continuation-line misalignment introduced by the patch in
+  stmmac_mac_finish(): after adding 'return ', the open parenthesis of…
 
 --
 
-net: pcs: rzn1-miic: Reset PRCMD state before unprotect sequence
+net: stmmac: propagate platform mac_finish errors
 
-This adds a writel(0x0000, MIIC_PRCMD) ahead of the existing
-0x00A5/0x0001/0xFFFE/0x0001 unprotect key sequence in miic_unlock_regs(),
-so that the sequence starts from the IDLE state of the PRCMD command state
-machine as documented for RZ/T2H.
+stmmac_mac_finish() previously dropped the return value of the platform
+mac_finish callback and always told phylink the configuration succeeded.
+The patch returns the callback result instead, keeping the zero return for
+the case where no platform callback is installed.
 
-> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-> index cb74861e823c..4a2a50827338 100644
-> --- a/drivers/net/pcs/pcs-rzn1-miic.c
-> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -270,6 +270,9 @@ static struct miic_port *phylink_pcs_to_miic_port(struct phylink_pcs *pcs)
+No Link: tags present in the commit header.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 1fb5f804ea23..1350e92943ac 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -1048,8 +1048,8 @@ static int stmmac_mac_finish(struct phylink_config *config, unsigned int mode,
+>  	struct stmmac_priv *priv = netdev_priv(ndev);
 >  
->  static void miic_unlock_regs(struct miic *miic)
->  {
-> +	/* Reset PRCMD state before unprotect sequence */
-> +	writel(0x0000, miic->base + MIIC_PRCMD);
-> +
+>  	if (priv->plat->mac_finish)
+> -		priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode,
+> -				       interface);
+> +		return priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode,
+> +					     interface);
 
-[Severity: Medium]
-Should this write be gated on the SoC it is documented for?
+[Severity: High]
+The commit message says that without this change "Phylink then treats the
+interface as successfully configured and can report carrier even though the
+SerDes is not ready".  Does that failure mode still remain reachable on the
+Intel mGbE ports after this patch?
 
-miic_unlock_regs() has two consumers, and they belong to different SoCs:
+intel_mac_finish() in dwmac-intel.c is the other in-tree mac_finish
+implementer (installed by ehl_sgmii_data(), ehl_pse0_sgmii1g_data(),
+ehl_pse1_sgmii1g_data() and adln_sgmii_phy0_data()), and it ends with:
 
-  miic_reg_writel_locked()   /* only rzt2h_miic_of_data.miic_write */
-      miic_unlock_regs()
-      writel(value, ...)
-      miic_lock_regs()
+drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c:intel_mac_finish() {
+	...
+	priv->plat->phy_interface = interface;
 
-  miic_init_hw()             /* only rzn1_miic_of_data sets the flag */
-      if (miic->of_data->init_unlock_lock_regs)
-              miic_unlock_regs();
+	intel_serdes_powerdown(ndev, intel_priv);
+	intel_serdes_powerup(ndev, intel_priv);
 
-rzn1_miic_of_data carries .init_unlock_lock_regs = true and
-.miic_write = miic_reg_writel_unlocked, while rzt2h_miic_of_data carries
-.miic_write = miic_reg_writel_locked and does not set the flag. So the new
-un-keyed PRCMD write is now also emitted on RZ/N1 (r9a06g032), where the
-driver has so far only ever written the documented key sequence to this
-write-protected register.
+	return ret;
+}
 
-The changelog justifies the write with RZ/T2H documentation only:
+ret here is the value from intel_set_reg_access(), normally zero, so the
+return value of intel_serdes_powerup() is dropped.  That function has three
+timeout exits fed by serdes_status_poll():
 
-  "On RZ/T2H MIIC, writing 0x0000 to PRCMD resets the command state
-  machine to the IDLE state."
+	data = serdes_status_poll(priv, serdes_phy_addr,
+				  SERDES_GSR0,
+				  SERDES_PLL_CLK,
+				  SERDES_PLL_CLK);
 
-If the RZ/N1 protect block instead treats a bare 0x0000 as an
-out-of-sequence command of the A5/data/~data/data protocol, does the
-following unprotect sequence still release protection?
+	if (data) {
+		dev_err(priv->device, "Serdes PLL clk request timeout\n");
+		return data;
+	}
 
-In that case every write that miic_init_hw() issues afterwards, MODCTRL,
-CONVRST via miic_converter_enable(), SWCTRL and SWDUPC, would be dropped by
-the hardware. There is no read-back of a protected register and
-miic_init_hw() ends with:
+with the other two covering the lane reset reflection and the
+SERDES_PWR_ST_P0 transition.  serdes_status_poll() returns -ETIMEDOUT after
+10 retries.
 
-	return 0;
+Since intel_serdes_powerdown() has already dropped the lane to P3, a timeout
+in intel_serdes_powerup() leaves the lane out of P0 or held in reset, yet
+intel_mac_finish() returns 0.  phylink_major_config() only records a failure
+for err < 0, so phylink still sees success and can raise carrier.
 
-so probe would still succeed and the only visible symptom would be a
-mis-muxed or dead Ethernet path on RZ/N1.
+Would it make sense to add a companion change so that intel_mac_finish()
+returns the intel_serdes_powerup() result, so that the propagation added
+here has an effect on this platform too?
 
-Would it make sense to scope the reset write to RZ/T2H, either via
-of_data->type == MIIC_TYPE_RZT2H, a new of_data flag, or by doing it inside
-miic_reg_writel_locked(), or alternatively to state in the changelog that
-the extra PRCMD write was verified harmless on RZ/N1?
+[Severity: Low]
+This isn't a bug, but the continuation line no longer lines up with the open
+parenthesis after "return " was inserted: the argument list now starts one
+column further right, so "interface);" needs one more space to satisfy
+checkpatch.pl --strict ("CHECK: Alignment should match open parenthesis").
 
-[Severity: Medium]
-Does the Fixes tag point at the right commit?
-
-  Fixes: 419747319e3a ("net: pcs: rzn1-miic: Add per-SoC control for MIIC
-  register unlock/lock")
-
-git blame shows 419747319e3a only moved the pre-existing RZ/N1 four-write
-sequence into miic_unlock_regs(); at that point the helper was reachable
-only from the RZ/N1 miic_init_hw() path. The RZ/T2H side the changelog
-relies on came from the later commit 08f89e42121d4, which added
-miic_lock_regs(), miic_reg_writel_locked() and rzt2h_miic_of_data.
-
-A backport driven by this tag would therefore land the write on kernels
-that have no RZ/T2H support at all, where its only effect is an extra
-PRCMD write on RZ/N1. Should the tag reference 08f89e42121d4 instead?
-
-Also, which condition actually leaves PRCMD in a non-IDLE state?
-
-On RZ/T2H every register write goes through
-unlock, write, miic_lock_regs(), and miic_lock_regs() already does:
-
-	writel(0x0000, miic->base + MIIC_PRCMD);
-
-so PRCMD is 0x0000 after any driver-initiated access. On RZ/N1
-miic_unlock_regs() runs once during probe on a freshly reset block. The
-remaining source of unknown state would be pre-kernel firmware or the other
-master mentioned in miic_init_hw():
-
-	/* Unlock write access to accessory registers (cf datasheet). If this
-	 * is going to be used in conjunction with the Cortex-M3, this sequence
-	 * will have to be moved in register write
-	 */
-
-but the changelog does not mention it. And against a concurrent external
-agent, does one extra leading write really give the stated property,
-"always starts from a known state, regardless of any previous PRCMD
-activity", given the five writes are not atomic as a group?
-
-Could the changelog name the observed symptom or the condition that
-produces the stale PRCMD state?
+>  
+>  	return 0;
+>  }
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/TYCPR01MB7481CE8351FDB2CDCA229955A4872%40TYCPR01MB7481.jpnprd01.prod.outlook.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SJ2PR11MB8401F5C3A075DE2A0013E063E4872%40SJ2PR11MB8401.namprd11.prod.outlook.com
