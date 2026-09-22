@@ -1,93 +1,67 @@
-Received: from mta0.migadu.com (out-64.mta0.migadu.com [91.218.175.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC350535FAC
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB77531604;
+	Tue, 22 Sep 2026 12:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790078607; cv=none; b=tQXh5Bb6QltE8fGkt7xKqxkO8yBIEpNWhWmA6Q5wmQuBcG6s0ED9ZaxoZP7cFVhzYgVu3i4WZjZ7ya9izhQGeV9hcwnyt1AVrGSyB9dtGb4g4ylJJ4Ix29XWFcLR4z8OwF6TrdF9RBBAhZdO3Yu/Fo2ZHxDhjfV8AS5tJTFr05c=
+	t=1790078608; cv=none; b=mmK2Xf8nS6AAFQrnQ7VsTRPgKhGXswOclpewfIpdELBjTth/yjbhXw0f81Fx7gZ++ogS3aXhW7MK3SgFRpQV5ZxM2fGNa6EeqQWmNR0izuMtjzAtsOz4U/ruXFC1izwwEtmoqUDxHUQmyYx9lv5CKOIN4zdD9EgKl2TEJ2Qq2o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790078607; c=relaxed/simple;
-	bh=N+YY9kP72EJX4e0q1/BpSD+bJ/oqJzCRVO1fh2+Sk7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kEzYGRuEVIiuGmWGZq3mHjLMaa5ujAWkv1Db8Aa60oO3C/+6gZEHmu43kLDqcRN7eHWxsOKIXfGuTiTXyB6nQWTMIzG6GFqC20XRtGTZArbbehsEfhpoLA+HkLZdsuPCZCYZwUh2GRijDSu10fsSIG0vJogVsRfV09HxVih7jxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KeOcB33z; arc=none smtp.client-ip=91.218.175.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790078608; c=relaxed/simple;
+	bh=n9FpIaAN33W0DO7GyLXsKhLBrBgyc9o6R/zLeItOogA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YX/7QpM26rNtGME8uCB2uB54iMC4DRFeUIjmBoDKD3EsDUgtZX19WvlQRNACw/Ob+7yz/BhefErvNoZLlQbw/j82ojzomwCoastJts60U7MDMicvRt49voEn6ANlEPHNsu7nfHgmUN13erNMbLDSw6dJ26h1ip67YHN1yUs6AEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1T9WEqN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KeOcB33z"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=N+YY9kP72EJX4e0q1/BpSD+bJ/oqJzCRVO1fh2+Sk7M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790078602; v=1; x=1790683402;
- b=KeOcB33zVuS9tuH1Bq7u0QLT4f7hRrZ6omqQ4tYOxIartMAVKtz+PprWX8jJIL7Urt1TSTJS
- ZL880NRb/CXh3ayuddUXKg4bd+rDENAlX+MC9NGSE5sQac2yU+oChcCGUFOXQbcYItwk+JeNICi
- 0fC6aLqAU66HkUYTRWbRzr4c=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1c9ea4c20335ce24;
-	Tue, 22 Sep 2026 12:03:22 +0000
-X-Mizu-Trace-ID: 1c9ea4c20335ce24
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f56e2df4-1f2b-44e6-b807-dccb60d5393e@linux.dev>
-Date: Tue, 22 Sep 2026 20:03:07 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1T9WEqN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606B21F000FF;
+	Tue, 22 Sep 2026 12:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790078606;
+	bh=DhFfV30KEO/sb3oCDRBx6W3tLymcOKC4hcgAgAQWZ4Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V1T9WEqNPXL2Cvd6Js8hrKP1/M3YU1kgqqkgL8PZYNvFam5p4YmBKhLAcm4AUUdtP
+	 6Py3ZejTCbXIhvJPs5Df+HCpLXfACK4gnVi2EPaFziHrI15NApio3e2BVaOQXEr3P/
+	 +69SWypVL74QdPAC/HNWa3SGY21QmJ7k4g4unnppdOQ7RnhtyPxeVgI62Xw3H51GcN
+	 IgKU7pTr6KcQ29QjyxL8dWJlWixpbzHD/m/YUFwsAE35fVfiNuE7S+xv9rD/j91Jmi
+	 ARv01dbzQpBFxyilyGr9nESYVnMIJDiXoaQ/n3OY+gPaxjQ5xHXgrTZujaDSy/t1nt
+	 H7VDnA1tXSSjw==
+Date: Tue, 22 Sep 2026 13:03:21 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
+	clabbe.montjoie@gmail.com, davem@davemloft.net, edumazet@google.com,
+	jernej.skrabec@gmail.com, kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org, pabeni@redhat.com, samuel@sholland.org,
+	wens@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: stmmac: dwmac-sun8i: Fix EPHY clock leak in
+ get_ephy_nodes()
+Message-ID: <20260922120321.GD13925@horms.kernel.org>
+References: <20260917113654.2149268-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v4] bpf: drop duplicate check_app_limited in
- tcp_bpf_push
-To: Geliang Tang <geliang@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, mptcp@lists.linux.dev
-References: <1f7dc605b16fc0590f7cbf5a27d57271926c01ce.1790074764.git.tanggeliang@kylinos.cn>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <1f7dc605b16fc0590f7cbf5a27d57271926c01ce.1790074764.git.tanggeliang@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917113654.2149268-1-vulab@iscas.ac.cn>
 
+On Thu, Sep 17, 2026 at 11:36:54AM +0000, Wentao Liang wrote:
+> get_ephy_nodes() stores the clock returned by of_clk_get() directly in
+> gmac->ephy_clk before the reset control is obtained. When the reset
+> lookup fails, the loop continues or returns without releasing that
+> clock, and sun8i_dwmac_probe() then jumps to dwmac_remove, which does
+> not call clk_put(). Keep the clock in a local variable and release it
+> on the error paths.
+> 
+> Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-On 9/22/26 7:06 PM, Geliang Tang wrote:
-> From: Geliang Tang <tanggeliang@kylinos.cn>
->
-> Commit c5c37af6ecad9 ("tcp: Convert do_tcp_sendpages() to use
-> MSG_SPLICE_PAGES") moved tcp_rate_check_app_limited() inside
-> do_tcp_sendpages(), turning it into a wrapper around tcp_sendmsg_locked().
-> Later, commit ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now
-> a wrapper around tcp_sendmsg") inlined the wrapper in tcp_bpf_push() with
-> direct tcp_sendmsg_locked() calls, which perform the check on every path
-> that queues data, but kept the outer tcp_rate_check_app_limited() that
-> was previously needed to cover do_tcp_sendpages(). The outer call is now
-> redundant.
->
-> The site changed here, tcp_bpf_push(), holds the socket lock and invokes
-> tcp_sendmsg_locked() on every iteration. The early-return paths in
-> tcp_sendmsg_locked() that skip tcp_rate_check_app_limited() - the
-> MSG_ZEROCOPY allocation failure and MSG_FASTOPEN branches - return without
-> queueing any MSG_SPLICE_PAGES data, so there is no functional consequence
-> from omitting the outer check.
->
-> A potential benefit of this change is that it facilitates future reuse of
-> tcp_bpf_push() for sockmap support in protocols beyond TCP, such as MPTCP.
-> Since tcp_rate_check_app_limited() is TCP-specific while sendmsg_locked()
-> is a generic interface in struct proto_ops, this change allows us to switch
-> to different protocols via sk->sk_socket->ops->sendmsg_locked() without
-> carrying protocol-specific assumptions.
->
-> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-
-
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
-
-Thanks
+Reviewed-by: Simon Horman <horms@kernel.org>
 
