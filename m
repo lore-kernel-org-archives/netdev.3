@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAA7386C21;
-	Tue, 22 Sep 2026 08:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ACA41B8C4;
+	Tue, 22 Sep 2026 08:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790064981; cv=none; b=HBzrOuyzTWKcTe2BePjqO38iORoLGNcP+ku81zUdfbr2EiaX8Ou1FLEIU3DjNm5vwoQnDxnFL3dFMjMw4/+5SpqzLEKOwsu4lfNF//TqBEnCqaLBjLb/DGTBMsQchv78fv1sfP0QVNGYdohFxtreFHthL6qBc+oXiyUD7R/NB5w=
+	t=1790065558; cv=none; b=LijZWMFCVBZcv9Q9m9o8WLf55YY12+t6xPfFflkXEfmX5wWtfAdPlBhb3puMfVP/04sYyuSIfnac5m8z/ZDfeaSp7lOinUHip9CEuHV0pDh1IfnRMxHFIIymOkms8C9/Dg6WcKBgKfyweEtETYdXcoFrG8E445R5lhdDKWCXV1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790064981; c=relaxed/simple;
-	bh=BuTVsnydVMlOpXAKBEWqj71dcPdmU1jkMss8beXiBjo=;
+	s=arc-20240116; t=1790065558; c=relaxed/simple;
+	bh=LWVulDi9m1xBay3ycdDwKwOYQ5YCOYFy19VDDM/bSgQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=de9oWlAPiSDp+lEdoG0F8LAAi9h+hBqevDj0kCFKXyGf/bsOkSREtduWmdLy9sDctFD1MaxNxreSP5AbG5OSYqZxqz3GTbPlDv4u2NIXn11KoD/AnXn2fOns6kTMLiNnhCo5Mkm5jKlsQhMUT2QblHKU52iQ+IH8kDaewf/tyhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnriIg+Z; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=p7LNEphDqAQEdr4e0P07EYD3UVpzTUUJruTqK8f6TUKOclPMSd8FOXoSBtahjf/31zKcRLRRipxl8wl94VMWeljMhQKug3/V7YmrsQE9tk1AlRqLJvOHC6nbPatLLj4Ff7aCQIQGV+DGI8GJW1IsfE4kEjCXEQ0/XgKGXisB5Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ibi/Fk9W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnriIg+Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB411F000FF;
-	Tue, 22 Sep 2026 08:16:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ibi/Fk9W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291641F000FF;
+	Tue, 22 Sep 2026 08:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790064978;
-	bh=gOk4uYV7AmQiIV5I3BISJRVheE9g6ivZNXTPgLuvCDE=;
+	s=k20260515; t=1790065556;
+	bh=2X1OCcip9WdRidK88ayPzdYka+btvJ/3z+Cw7Fhbf18=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AnriIg+ZhXJyWVxHbinL0tNToxHlkD048VcwpjOs390gXHXcW5OLm/D/kyHTFL6oL
-	 UyIU1LJWKEKnyLVNSgtl1hnE719qfz9ucONGEiS46d5HmRMQ94Ojmhh6BMsZe/yVcA
-	 1N0p/7v0vazn+xe4xoHxkoiLVB4vODt7XBEkqcGzROECCGFq5XqMNXvEUBBpkNWioF
-	 ACOvfJmP2pMDaYyL8/N3D+0HxxZRIak0Pzg7GWVOqwxpW3faueHaDcg5ts1P9ZzpdN
-	 u47nwbXKRFoi7zzpaCqajyLsnqs4QVbIz2ryAy/2KYOm8vRAVdo31LTTuxJ+8ql7P0
-	 0TLvGwJJ2pAJA==
-Subject: Re: [PATCH net] net: ti: am65-cpsw-switchdev: flush dynamic FDB
- entries by port on delete
+	b=Ibi/Fk9W0CqbMvTkKEtatnrtBLseWmGefLP53I3Ejo4mg2mGDL0gokqO+sGacaYvB
+	 6aGSVfnVYGxajwp9QIriZ0v04JrczoAaUBU8ry+YlFjyQlIa7mMydU8EeoEGpz0a0X
+	 gKh3PYysPYERP7+wRqeTK4X76nCWuIaNaEfjf2U7Pz+4E+sCZ5YM1V/JFWYlTKehSU
+	 31j9r9OL1qVq2PBMaKcDfADSlBlMpwHZu03k8TnSb1Ahhkgb0nmdbMr0C1v37RUB8e
+	 2evBLmSfWKu85Bvs33SPNXNvWqJKuo+McNvY1D9DxDcqJB3TMb9XLftLZ6Bj3htfMQ
+	 jrIgteyJHt11Q==
+Subject: Re: [PATCH v4 net-next 3/8] ptp: netc: export
+ netc_timer_get_current_time() for cross-driver use
 From: netdev-bot+sashiko@kernel.org
-To: danishanwar@ti.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, s-vadapalli@ti.com, rogerq@kernel.org,
- kees@kernel.org, stefan.wiehler@nokia.com, c-vankar@ti.com, horms@kernel.org,
- arnd@arndb.de, vigneshr@ti.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Date: Tue, 22 Sep 2026 08:16:16 +0000
-Message-ID: <179006497666.2160803.14768308117153644313@kernel.org>
-In-Reply-To: <20260918075926.3616434-1-danishanwar@ti.com>
-References: <20260918075926.3616434-1-danishanwar@ti.com>
-X-sashiko-severity: High
+To: wei.fang@oss.nxp.com
+Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ richardcochran@gmail.com, linusw@kernel.org, linux@armlinux.org.uk,
+ wei.fang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Tue, 22 Sep 2026 08:25:54 +0000
+Message-ID: <179006555469.2160803.8873313402765313889@kernel.org>
+In-Reply-To: <20260918072852.501420-4-wei.fang@oss.nxp.com>
+References: <20260918072852.501420-4-wei.fang@oss.nxp.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 2 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,239 +62,252 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] New cross-module ALE helper
-  `cpsw_ale_del_ucast_dynamic_by_port()` is added to…
-- [Medium] In am65_cpsw_switchdev_event_work() the `!fdb->added_by_user`
-  gate is dropped for SWITCHDEV_FDB_DEL_TO_DEVICE, but only the `vid ==…
-- [Medium] Dropping the `!fdb->added_by_user` gate makes every hardware-
-  learned (dynamic) bridge FDB delete run an unbounded full ALE table…
-
-Pre-existing issues:
-- [Medium] cpsw_ale_del_ucast_dynamic_by_port() performs a full-table
-  read-modify-write walk over the ALE indirect access window…
-- [Low] The identical stale-dynamic-FDB defect remains in the sibling
-  legacy switchdev driver drivers/net/ethernet/ti/cpsw_switchdev.c…
+- [Medium] netc_timer_get_current_time()
+  (drivers/ptp/ptp_netc.c:1050-1082) takes the module-global…
+- [Medium] netc_timer_get_current_time() treats membership in
+  netc_timer_list as proof that TMR_CUR_TIME can be read, and returns 0…
+- [Low] Concern that the exported netc_timer_get_current_time() and its
+  list/lock infrastructure have no in-tree consumer.
+- [Low] Concern that netc_timer_get_current_time() keys its lookup on an
+  unreferenced caller-supplied 'struct pci_dev *' (tmp->pdev == pdev at…
+- [Low] include/linux/fsl/netc_global.h — a header that otherwise
+  contains only trivial MMIO accessor inlines…
 
 --
 
-net: ti: am65-cpsw-switchdev: flush dynamic FDB entries by port on delete
+ptp: netc: export netc_timer_get_current_time() for cross-driver use
 
-The patch drops the added_by_user gate in the SWITCHDEV_FDB_DEL_TO_DEVICE
-arm of am65_cpsw_switchdev_event_work() so dynamic FDB deletes reach the
-ALE, and adds cpsw_ale_del_ucast_dynamic_by_port() to clear dynamic rows
-for a MAC on a port regardless of vid when the bridge reports vid=0.
+This adds netc_timer_get_current_time() to the NETC Timer driver and exports
+it so the NETC Switch driver, which is a separate PCIe function with its own
+driver, can read TMR_CUR_TIME. Each probed Timer is tracked in a
+module-private list keyed by its pci_dev, and one global spinlock covers both
+the list lookup and the register read so that an unbind cannot free priv
+under an in-flight read.
 
-> diff --git a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-> index 53cdac272b58..8b4640809cf5 100644
-> --- a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-> +++ b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-> @@ -397,13 +397,23 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
->  			   fdb->addr, fdb->vid, fdb->added_by_user,
->  			   fdb->offloaded, port_id);
+A few questions about the new helper and the header change below.
+
+> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> index aa9be8e2a630..1211aa9a37d3 100644
+> --- a/drivers/ptp/ptp_netc.c
+> +++ b/drivers/ptp/ptp_netc.c
+
+[ ... ]
+
+> @@ -123,8 +123,12 @@ struct netc_timer {
+>  	u8 fs_alarm_num;
+>  	u8 fs_alarm_bitmap;
+>  	struct netc_pp pp[NETC_TMR_FIPER_NUM]; /* periodic pulse */
+> +	struct list_head node;
+>  };
 >  
-> -		if (!fdb->added_by_user || fdb->is_local)
-> +		if (fdb->is_local)
->  			break;
->  		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
->  			port_id = HOST_PORT_NUM;
+> +static LIST_HEAD(netc_timer_list);
+> +static DEFINE_SPINLOCK(netc_timer_list_lock);
+> +
+>  #define netc_timer_rd(p, o)		netc_read((p)->base + (o))
+>  #define netc_timer_wr(p, o, v)		netc_write((p)->base + (o), v)
 >  
-> -		cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port_id,
-> -				   fdb->vid ? ALE_VLAN : 0, fdb->vid);
-> +		if (!fdb->added_by_user && !fdb->vid)
-> +			/* vid=0 here just means "bridge doesn't know the
-> +			 * real vid" (vlan_filtering=0) -- the dynamic entry
-> +			 * may be stored under any nonzero vid, or several.
-> +			 * Delete by (addr, port) instead of guessing a vid.
-> +			 */
-> +			cpsw_ale_del_ucast_dynamic_by_port(cpsw->ale,
-> +							   (u8 *)fdb->addr,
-> +							   port_id);
-> +		else
-> +			cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port_id,
-> +					   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+> @@ -985,6 +989,10 @@ static int netc_timer_probe(struct pci_dev *pdev,
+>  
+>  	enable_irq(priv->irq);
+>  
+> +	spin_lock_bh(&netc_timer_list_lock);
+> +	list_add(&priv->node, &netc_timer_list);
+> +	spin_unlock_bh(&netc_timer_list_lock);
+> +
+>  	return 0;
+>  
+>  free_msix_irq:
+> @@ -999,6 +1007,10 @@ static void netc_timer_remove(struct pci_dev *pdev)
+>  {
+>  	struct netc_timer *priv = pci_get_drvdata(pdev);
+>  
+> +	spin_lock_bh(&netc_timer_list_lock);
+> +	list_del(&priv->node);
+> +	spin_unlock_bh(&netc_timer_list_lock);
+> +
+>  	disable_irq(priv->irq);
+>  	ptp_clock_unregister(priv->clock);
+>  	netc_timer_wr(priv, NETC_TMR_TEMASK, 0);
+
+[ ... ]
+
+> @@ -1021,5 +1033,54 @@ static struct pci_driver netc_timer_driver = {
+>  };
+>  module_pci_driver(netc_timer_driver);
+>  
+> +/**
+> + * netc_timer_get_current_time - read the current PTP time from the NETC Timer
+> + * @pdev: PCI device of the NETC Timer
+> + * @ns: Output, the current PTP clock time in nanoseconds
+> + *
+> + * Read TMR_CUR_TIME from the NETC Timer bound to @pdev. The lookup and read
+> + * run under netc_timer_list_lock, so the Timer cannot be unbound and its priv
+> + * freed during the read.
+> + *
+> + * Context: Process or softirq context. Must not be called from hardirq.
+> + *
+> + * Return: 0 on success, -ENODEV if the Timer is not present (not yet probed
+> + *         or already removed).
+> + */
+> +int netc_timer_get_current_time(struct pci_dev *pdev, u64 *ns)
+> +{
+> +	struct netc_timer *priv = NULL;
+> +	struct netc_timer *tmp;
+> +	unsigned long flags;
+> +	int err = 0;
+> +
+> +	/* Serialize against driver unbind, so holding it here ensures that
+> +	 * priv remains valid for the entire duration of the register read.
+> +	 */
+> +	spin_lock_bh(&netc_timer_list_lock);
 
 [Severity: Medium]
-What happens to dynamic deletes that carry a nonzero vid (bridge with
-vlan_filtering=1)?  They now land in the else arm, and
-cpsw_ale_del_ucast() resolves the row through cpsw_ale_match_addr(),
-which compares only entry type, vlan_id and MAC:
+Is it necessary to hold the module-global netc_timer_list_lock across the
+MMIO access, rather than only across the lookup?
 
-drivers/net/ethernet/ti/cpsw_ale.c:cpsw_ale_match_addr() {
-	...
-		if (cpsw_ale_get_vlan_id(ale_entry) != vid)
-			continue;
-		cpsw_ale_get_addr(ale_entry, entry_addr);
-		if (ether_addr_equal(entry_addr, addr))
-			return idx;
-	...
+priv->lock is taken from hardirq context with a plain spin_lock() in
+netc_timer_isr(), and that handler can spin in the register drain loop in
+netc_timer_handle_etts_event():
+
+drivers/ptp/ptp_netc.c:netc_timer_handle_etts_event() {
+	while (netc_timer_rd(priv, NETC_TMR_STAT) & TMR_STAT_ETS_VLD(index))
+		etts = netc_timer_rd64(priv, NETC_TMR_ETTS_L(index));
 }
 
-The port argument of cpsw_ale_del_ucast() is never used, and no
-ucast_type filtering happens, so the row that gets blanked may belong to
-a different port or be an ALE_UCAST_PERSISTANT row.
+So while CPU A sits in netc_timer_get_current_time() waiting on
+spin_lock_irqsave(&priv->lock) with softirqs disabled and the global list lock
+held, CPU B can be inside netc_timer_isr() holding priv->lock for a period
+bounded only by hardware. During that window every other Timer's probe(),
+remove() and every other time query is serialized behind
+netc_timer_list_lock. The same applies if the target function is unreachable
+and the non-posted read stalls until the PCIe completion timeout.
 
-The MAC roaming case looks reachable: br_fdb_update() emits a dynamic
-RTM_DELNEIGH for the old port while the ALE has already re-learned the
-MAC on the new port:
+Would an RCU-protected lookup (with the priv free deferred in remove()), or
+taking a reference on the Timer, give the same lifetime guarantee without
+holding a global lock across the register access?
 
-net/bridge/br_fdb.c:br_fdb_update() {
-	...
-			if (unlikely(source != READ_ONCE(fdb->dst) &&
-				     !test_bit(BR_FDB_STICKY, &fdb->flags))) {
-				br_switchdev_fdb_notify(br, fdb, RTM_DELNEIGH);
-				WRITE_ONCE(fdb->dst, source);
-	...
-}
+Related to that: the BH-only requirement makes the exported symbol illegal
+from hardirq or with interrupts disabled, but that constraint appears only in
+the kerneldoc and is not visible at the prototype in
+include/linux/fsl/netc_global.h, and nothing but an eventual WARN from
+__local_bh_enable_ip() catches a violation. Is there a reason not to drop the
+context restriction by using a lookup scheme that does not disable BH?
 
-The ADD arm still keeps its added_by_user gate, so nothing reprograms the
-row afterwards.  Before this patch the gate made that path unreachable
-for dynamic entries.
-
-Should the vid != 0 dynamic case also go through a port-aware and
-ucast_type-aware delete, so both arms of the new conditional agree on
-which rows a dynamic delete may clear?
-
-[Severity: Medium]
-With the added_by_user gate gone, every hardware-learned delete now runs
-a full ALE table walk in cpsw_ale_del_ucast_dynamic_by_port() while the
-rtnl_lock() taken at the top of am65_cpsw_switchdev_event_work() is held.
-The helper has no early exit, since it deliberately clears rows under all
-vids, so each event costs ale_entries times six MMIO accesses (64 entries
-on cpsw2g, 512 on am64-cpswxg, more on j721e-cpswxg).
-
-The event rate is driven by network traffic: learning, ageing, flush and
-especially roaming, where one RTM_DELNEIGH is emitted per roam.  An
-off-box host can keep this going by sourcing frames with the MAC of a
-host known on another bridge port.
-
-Is the added rtnl hold time and MMIO load per untrusted FDB event
-acceptable here, or would an early exit / bounded search be preferable?
+> +
+> +	list_for_each_entry(tmp, &netc_timer_list, node) {
+> +		if (tmp->pdev == pdev) {
+> +			priv = tmp;
+> +			break;
+> +		}
+> +	}
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but the legacy sibling driver
-drivers/net/ethernet/ti/cpsw_switchdev.c still has the exact code this
-patch replaces in its SWITCHDEV_FDB_DEL_TO_DEVICE arm:
+This isn't a bug, but the lookup is a bare pointer comparison on a
+caller-supplied struct pci_dev *, so its soundness depends on the caller
+holding a reference on @pdev. The in-tree consumer does hold one
+(netc_get_ptp_timer() obtains it with pci_get_domain_bus_and_slot() and
+drops it with pci_dev_put()), so nothing is broken today.
 
-drivers/net/ethernet/ti/cpsw_switchdev.c:cpsw_switchdev_event_work() {
-	...
-		if (!fdb->added_by_user || fdb->is_local)
-			break;
-	...
-		cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port,
-				   fdb->vid ? ALE_VLAN : 0, fdb->vid);
-	...
-}
+Could the kerneldoc and the exported prototype state that the caller must
+hold a reference on @pdev? Without it, a future caller that caches a raw
+pci_dev pointer has no hint that a freed and recycled pointer could match a
+different Timer's entry.
 
-cpsw_new.c also sets ALE_VLAN_AWARE unconditionally in switch mode, so
-both premises stated in the changelog seem to hold there as well.  Since
-the new helper is declared in the shared cpsw_ale.h consumed by both
-drivers, was leaving cpsw_switchdev.c unconverted intentional?  A note in
-the changelog about the scope would help.
-
->  		break;
->  	default:
->  		break;
-> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-> index e202bba49480..1a2aceda3dbe 100644
-> --- a/drivers/net/ethernet/ti/cpsw_ale.c
-> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-
-[ ... ]
-
-> @@ -441,6 +441,40 @@ static int cpsw_ale_find_ageable(struct cpsw_ale *ale)
->  	return -ENOENT;
->  }
->  
-> +int cpsw_ale_del_ucast_dynamic_by_port(struct cpsw_ale *ale, const u8 *addr,
-> +				       int port)
-> +{
-> +	u32 ale_entry[ALE_ENTRY_WORDS];
-> +	int type, ucast_type, idx;
-> +	u8 entry_addr[6];
-> +	int deleted = 0;
 > +
-> +	for (idx = 0; idx < ale->params.ale_entries; idx++) {
-> +		cpsw_ale_read(ale, idx, ale_entry);
-
-[Severity: Medium]
-This is a pre-existing property of cpsw_ale.c rather than something the
-patch introduces, but the new helper adds one more unlocked
-read-modify-write walk over the shared ALE indirect access window:
-
-drivers/net/ethernet/ti/cpsw_ale.c:cpsw_ale_read() {
-	writel_relaxed(idx, ale->params.ale_regs + ALE_TABLE_CONTROL);
-	for (i = 0; i < ALE_ENTRY_WORDS; i++)
-		ale_entry[i] = readl_relaxed(ale->params.ale_regs +
-					     ALE_TABLE + 4 * i);
-	...
-}
-
-There are no locks anywhere in cpsw_ale.c, and other table transactions
-such as am65_cpsw_nuss_ndo_slave_set_rx_mode() ->
-cpsw_ale_flush_multicast() run under netif_addr_lock_bh() rather than the
-rtnl_lock held by the switchdev worker.  Should anything ever interleave,
-one transaction's staged words can be committed under the other's index,
-and cpsw_ale_flush_multicast() writes back every ADDR/VLAN_ADDR row it
-reads, which could restore a row this helper just cleared.
-
-Is there an assumption documented somewhere that all ALE table accessors
-run under rtnl?
-
-> +		type = cpsw_ale_get_entry_type(ale_entry);
-> +		if (type != ALE_TYPE_ADDR && type != ALE_TYPE_VLAN_ADDR)
-> +			continue;
-> +		if (cpsw_ale_get_mcast(ale_entry))
-> +			continue;
-> +		ucast_type = cpsw_ale_get_ucast_type(ale_entry);
-> +		if (ucast_type == ALE_UCAST_PERSISTANT ||
-> +		    ucast_type == ALE_UCAST_OUI)
-> +			continue;
-> +		if (cpsw_ale_get_port_num(ale_entry, ale->port_num_bits) != port)
-> +			continue;
-> +		cpsw_ale_get_addr(ale_entry, entry_addr);
-> +		if (!ether_addr_equal(entry_addr, addr))
-> +			continue;
-> +
-> +		memset(ale_entry, 0, sizeof(ale_entry));
-> +		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
-> +		cpsw_ale_write(ale, idx, ale_entry);
-> +		deleted++;
+> +	if (!priv) {
+> +		err = -ENODEV;
+> +		goto netc_timer_list_unlock;
 > +	}
 > +
-> +	return deleted ? 0 : -ENOENT;
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +	*ns = netc_timer_cur_time_read(priv);
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+
+[Severity: Medium]
+Can this return 0 together with a meaningless timestamp when the Timer
+function is not accessible?
+
+List membership only proves the pci_dev is bound to this driver: the entry is
+added at the end of netc_timer_probe() and removed only in
+netc_timer_remove(). netc_timer_driver registers no PM callbacks, so system
+suspend takes the PCI core default path and the function is disabled and put
+into D3 while the list entry stays live, and nothing re-programs
+TMR_CTRL[TE], CK_SEL, TMR_ADD or TMR_CNT on resume. The driver already
+documents the constraint in netc_timer_init():
+
+drivers/ptp/ptp_netc.c:netc_timer_init() {
+	/* Software must enable timer first and the clock selected must be
+	 * active, otherwise, the registers which are in the timer clock
+	 * domain are not accessible.
+	 */
+}
+
+The same holds for a surprise-removed function or one contained by DPC/AER,
+where the read returns all-ones. In those cases the helper still reports
+success, and the switch side consumes the value verbatim as the one-step Sync
+originTimestamp in netc_port_onestep_work():
+
+drivers/net/dsa/netc/netc_ptp.c:netc_port_onestep_work() {
+	NETC_SKB_CB(skb)->tstamp = tstamp;
+}
+
+Would it make sense to gate the read on pdev->current_state == PCI_D0 and
+!pci_channel_offline(pdev), or on TMR_CTRL[TE], and return an error instead
+of a successful-looking value? The missing PM support is not introduced by
+this patch, but the new export is what turns an inaccessible-device read into
+a timestamp handed to another driver.
+
+> +
+> +netc_timer_list_unlock:
+> +	spin_unlock_bh(&netc_timer_list_lock);
+> +
+> +	return err;
 > +}
+> +EXPORT_SYMBOL_GPL(netc_timer_get_current_time);
+> +
+>  MODULE_DESCRIPTION("NXP NETC Timer PTP Driver");
+>  MODULE_LICENSE("Dual BSD/GPL");
+> diff --git a/include/linux/fsl/netc_global.h b/include/linux/fsl/netc_global.h
+> index 5b8ff528d369..d4a26c17f99a 100644
+> --- a/include/linux/fsl/netc_global.h
+> +++ b/include/linux/fsl/netc_global.h
+> @@ -6,6 +6,7 @@
+>  
+>  #include <linux/io.h>
+>  #include <linux/io-64-nonatomic-lo-hi.h>
+> +#include <linux/pci.h>
 
-[Severity: High]
-Is an EXPORT_SYMBOL_GPL() missing here?  The neighbouring ALE entry
-points used across module boundaries all have one:
+[Severity: Low]
+This isn't a bug, but is the full <linux/pci.h> needed here? The prototype
+and the stub only name struct pci_dev *, so a forward declaration of
+struct pci_dev plus <linux/errno.h> for -ENODEV would be enough.
 
-drivers/net/ethernet/ti/cpsw_ale.c
-	EXPORT_SYMBOL_GPL(cpsw_ale_add_ucast);
-	...
-	EXPORT_SYMBOL_GPL(cpsw_ale_del_ucast);
+netc_global.h otherwise holds only the netc_read()/netc_write()/netc_read64()
+inlines, and it is included by drivers/net/dsa/netc/netc_switch.h,
+drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c,
+drivers/net/ethernet/freescale/enetc/ntmp.c and drivers/ptp/ptp_netc.c, so
+all four now pull in the PCI API.
 
-The only caller, am65_cpsw_switchdev_event_work() in
-am65-cpsw-switchdev.c, is linked into a different module than
-cpsw_ale.o:
-
-drivers/net/ethernet/ti/Makefile
-	ti-cpsw-ale-y += cpsw_ale.o
-	...
-	obj-$(CONFIG_TI_K3_AM65_CPSW_NUSS) += ti-am65-cpsw-nuss.o ti-cpsw-sl.o ti-cpsw-ale.o
-	ti-am65-cpsw-nuss-y := am65-cpsw-nuss.o am65-cpsw-ethtool.o
-	ti-am65-cpsw-nuss-$(CONFIG_TI_K3_AM65_CPSW_SWITCHDEV) += am65-cpsw-switchdev.o
-
-With CONFIG_TI_K3_AM65_CPSW_NUSS=m and
-CONFIG_TI_K3_AM65_CPSW_SWITCHDEV=y, does modpost report
-"cpsw_ale_del_ucast_dynamic_by_port" [drivers/net/ethernet/ti/ti-am65-cpsw-nuss.ko]
-undefined?  Built-in configurations would hide this.
+Would a separate header such as include/linux/fsl/netc_timer.h be a better
+home for an inter-driver service API than the register accessor header?
 
 >  
->  static void cpsw_ale_flush_mcast(struct cpsw_ale *ale, u32 *ale_entry,
->  				 int port_mask)
+>  static inline u32 netc_read(void __iomem *reg)
 >  {
-
-[ ... ]
+> @@ -22,4 +23,13 @@ static inline u64 netc_read64(void __iomem *reg)
+>  	return ioread64(reg);
+>  }
+>  
+> +#if IS_REACHABLE(CONFIG_PTP_NETC_V4_TIMER)
+> +int netc_timer_get_current_time(struct pci_dev *pdev, u64 *ns);
+> +#else
+> +static inline int netc_timer_get_current_time(struct pci_dev *pdev, u64 *ns)
+> +{
+> +	return -ENODEV;
+> +}
+> +#endif
+> +
+>  #endif
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918075926.3616434-1-danishanwar%40ti.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918072852.501420-1-wei.fang%40oss.nxp.com
