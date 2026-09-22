@@ -1,208 +1,205 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DB44E0B8B
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAF24570D4;
+	Tue, 22 Sep 2026 10:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790071324; cv=none; b=ASy82HfFM8F3d2U8HGIFB4MvTVlj25bXHiNKWKKOzOa2Vt7nsBtVY1cBlVtoeSmkzaN0YBsOp/xW7CIBLIwZHFDl8tL+YCYfzFVgEq+C6SCdfLNq/EjZL+shnqzl86EGUHgC76H+wIuetwN7yS4uvaOJfEGv+OHW57zMDF4Sf8w=
+	t=1790071510; cv=none; b=X/wy20/fGFCnmUIwKGlIapoGUXjQjQfaaLivYJ3HQlloJ8w+mvjdIvQt1kYZ2NhdqyXSXmz/ByipikGUbrD+kvR8vuhShDouZIdKljJOFLgYpuVFxUL2yLKlTYCh0QdYx5ZXt60QueRtvcDFLy4Sr9tyQgHrpZviYwUWroVKXgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790071324; c=relaxed/simple;
-	bh=207cRhtOF6NzUqdPBujl5zqVEED8VL4pXa16JxsEym4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rL0JUx8gvVdUdrqsoXTkqCAyAX6mmjkmqSnEI9O8LOCMS940BU3U0zLSOYziHT7C0ftlm32gUFa0M4cZjO+0CPD4O3wBJQYMPoKxvNR5xe9QdBZbjqZ9IVSJhgOAUjXnhKOk9bJaNY87iqQ5ln4sA6gD6chHLXJb2uL6Hsa+AHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RZVn7zS0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=izfsOyU0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790071510; c=relaxed/simple;
+	bh=e1OPguSznv0oaoWEQ835BMLZphcamQK6RYvbQxI3zms=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=U9wnvJn2/Klu7++xRgRZJKpYA+gpgMzcx7yTlyFk8P5IXM3zzhrcZeE4ecx6clrRRbZGAxO0lHT4s21hcBUsfay0AXxKrGCIbfDP5V+ZJya3z8IPZN2si0g5c289Ws9eNR6fatLv8l2gsJHh6MNFwdpvz3gExrYyaQhklC+iWcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKE6s0xy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RZVn7zS0";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="izfsOyU0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790071321;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XPYZNeIyiYj7gOq6QRXPEwzFCOAwM8Zc2zjq+jeGRJc=;
-	b=RZVn7zS0I9XQtr+Xc+Ca01c/z2lF+HxgqikV2XA+24ZccRFBMGXw4Cx2l6nvXS0Jpe1pBS
-	w+BQUxRB5SrR4R6z+gJ5XURushvvWpnOnxbl4pHdimlPgp5/g7i7wGEFR9VIByaCNMjxQy
-	snJCDpNBeWDTJYOIglFAnHmLp5KqC9g=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-251-XwhObu9xN5-Qo7YSbaoh9A-1; Tue, 22 Sep 2026 06:02:00 -0400
-X-MC-Unique: XwhObu9xN5-Qo7YSbaoh9A-1
-X-Mimecast-MFC-AGG-ID: XwhObu9xN5-Qo7YSbaoh9A_1790071319
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4870a0f802cso3726359f8f.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790071319; x=1790676119; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XPYZNeIyiYj7gOq6QRXPEwzFCOAwM8Zc2zjq+jeGRJc=;
-        b=izfsOyU0WFguVFQcG+kXD6kF4mRthWdF8+qSKJ0u563lMWVRRBVaBcZN+VOVdsnAB3
-         VWiiWrJBnF8Lq7BPr6RuilBlTq+Lwv8mCzgEU9T2095KpBXbTzL4Dz1yszUBpZfXv70W
-         lim2kjl/J4jQS0+HMmlrfDOzhaVRAFj7zkkFhEKULm30vEvgj7NfV27MdwF0EzXDQA2E
-         oIHW+2PhuPtuIDJXxVAFL5fHK23vOT0qhm5C84N5KyCixi0tADb21THNZtE/QOafsoHO
-         pmwWdrN5t7GeLWyMCYaY4YRR8SLAmPjvM4p/X3UbORfLDellbQwO+Sm647YUETs73Zud
-         iXcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790071319; x=1790676119;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XPYZNeIyiYj7gOq6QRXPEwzFCOAwM8Zc2zjq+jeGRJc=;
-        b=CuWE1xkDgNIL/HHyocyChu31Rq4xav/q5fEGIVlkgya7+Q1qzcbilXWp2d1AZvo9JH
-         Da00E2oWJufeMTtuf5Pz7tH6z9v+edibM2QOnoIMQnLzcFBfKNMHhmkBZf0w9Fbobyol
-         IpPR119NhS0LcFbg3+Brj7pG+FOZo49ABBHYIOeO5GZXoIPZudfUumwnTXyE4CnCFLBs
-         gjIwpWEkbhkTiId65F8QY/gXri3Y6JI0BaRSeD0sYs8M9Bm9fF5l+SYKPlWuYh0TsR78
-         h5jIpvD/6Xd4+00+qXnPhmxyc9IOoUIvPrtNNcq2J7vB6B/p9rhv9kafWNlsF8Xo7rL+
-         gUtA==
-X-Forwarded-Encrypted: i=1; AKwUvBzUBWNnc8Qk1XPeCuqwaVwG9P654k5c7w801M/hq1x+po+MA6kQmFl+4JvaIgkNAelZ29EkOVQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++l9iGvqOj0jafNaX3CpSd9T4IvKI3dfS1Oes+f39N2JENftzGgu
-	PwvMGza2Ym+6QTgIgf17257o9onygKmfSWCfOfZXosWWWySPkk9QUxAKVXHzK8tEDjFdMEzNuY0
-	IWXFiQPNvwvMARz/110msLG5KSemo1yEfXvOfNlgAmXlrVs/7XvzbUDyY1A==
-X-Gm-Gg: AYBFou3YjMSWFEDDLa9GiT5v5jhbrPjLz4j0iFWPlJkFpCPXfQLKImj/PRmWL1USfzz
-	62pv4QXUKfndWixMeeNJynnnFf0RTfhhFaGrvbDXdG+PDk7BJelxYgJ15roz04tzAAALSveChzC
-	REyJKF81PTiQBczPhGA5BkLleeM0JM2WLkMkJgGIe5LWumncJ9oAbGq2DqQjuap8i3JfvkcIo9G
-	8uHPiuXKPc3bLBLsSOU6QYIkICzhYjbO4BxqLfsEEYtj3QLo7gxXBXknn6cOzHin/n7VHWGG5Qj
-	LfLbuG8+JAhUdeSpdBQtAZuecB4Am32coaYjQW7kSiE8Y2b5oAwaN4i9gysOmeVhnCUxNuXmjaI
-	wjNbtBCXcUIvWyFBGikYisPVr7fiL93rW6gHF2ZbE8LyMgcOMoGl3tG+ToGL5xRX7ZMvmcJMnKw
-	==
-X-Received: by 2002:a05:6000:38a:b0:487:36b:1816 with SMTP id ffacd0b85a97d-4871e244bd2mr18225756f8f.7.1790071318719;
-        Tue, 22 Sep 2026 03:01:58 -0700 (PDT)
-X-Received: by 2002:a05:6000:38a:b0:487:36b:1816 with SMTP id ffacd0b85a97d-4871e244bd2mr18225706f8f.7.1790071318182;
-        Tue, 22 Sep 2026 03:01:58 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862795232sm3867019f8f.32.2026.09.22.03.01.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 03:01:57 -0700 (PDT)
-Message-ID: <99bcc883-1cbb-46f9-9283-cd03e5efafe7@redhat.com>
-Date: Tue, 22 Sep 2026 12:01:56 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKE6s0xy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D95E1F000FF;
+	Tue, 22 Sep 2026 10:05:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790071508;
+	bh=w2sZxf+PXOvNNTzDd/9WHwR+bGg7r6uPFpZLwJ0woQc=;
+	h=Date:From:To:Cc:Subject;
+	b=TKE6s0xyO5zpNxZoQf3uHhv9ip5+KCBng83OcGHn3+tREzOEhut9Hl+xkeeVvNVUH
+	 dfxSX9qwyAHQwXxFBRiTcNabV3FIQEdYbaSLCIEA43wiR2f5SslQ6UuuKJGQ92+qiT
+	 55NYXQ4Yhy4QKTw0RGt6ZUF3PuMTbSCrwGVVTey53KBpRH8nMR70GRiwHNwIXqkwVK
+	 Axt9vijRZK5ovkmoGiVwigZi4G3IsIpjNwYFvbgzgiGfZLzE319dDNR2JfRpJqrBLm
+	 Z8ZIuRnNQUGRZ42SzrZ0QTBi8Dg9J0EirYjyyqf9ZSBUlNGrctLGszbMXJ1yCT/oYh
+	 ublzq4ZqjGfPg==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id DA04F1AC56BF; Tue, 22 Sep 2026 11:05:02 +0100 (BST)
+Date: Tue, 22 Sep 2026 12:05:02 +0200
+From: Mark Brown <broonie@kernel.org>
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the bpf-next tree with the bpf tree
+Message-ID: <arJSzo-jhnM-Tkvm@sirena.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: dsa: microchip: save the periodic output
- request
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>,
- netdev-bot+sashiko@kernel.org
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, richardcochran@gmail.com, ceggers@arri.de,
- arun.ramadoss@microchip.com, pascal.eberhard@se.com,
- miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260917-fix-perout-v2-1-d8acf3eea6f7@bootlin.com>
- <178998077822.2160803.3867886756893254872@kernel.org>
- <635cfefd-c588-4b3f-bbc4-1cf11ef0a2c5@bootlin.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <635cfefd-c588-4b3f-bbc4-1cf11ef0a2c5@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pyZ6XOk+o1SSkcvv"
+Content-Disposition: inline
 
-On 9/22/26 08:32, Bastien Curutchet wrote:
-> On 9/21/26 10:52 AM, netdev-bot+sashiko@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 2 potential
->> issue(s) to consider.
->>
->> Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 0 (1)
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let patchwork
->> know by including "pw-bot: cr" as a separate line at the end of your reply
->> (one such reply per series is enough).
->>
->> - [High] ksz_ptp_enable_perout()
->>    (drivers/net/dsa/microchip/ksz_ptp.c:226) commits the caller-supplied…
->> - [Medium] The commit message states that 'if a flag was set in the
->>    request that triggered the periodic output, it is lost when the output…
->>
->> Pre-existing issues:
->> - [High] A non-canonical but ABI-accepted period whose timespec64
->>    conversion is zero (e.g. period.sec = -1, period.nsec = 1000000000;…
->> - [High] In ksz_ptp_restart_perout()
->>    (drivers/net/dsa/microchip/ksz_ptp.c) the elapsed-period quotient is…
->> - [Medium] The device exposes three trigger output units (caps.n_per_out
->>    = 3 at drivers/net/dsa/microchip/ksz_ptp.c:1056, PTP_TOU_INDEX =…
->> - [Medium] ksz_ptp_enable_perout() resolves the output pin with
->>    ptp_find_pin() (drivers/net/dsa/microchip/ksz_ptp.c:206).
->> - [Low] ksz_ptp_tou_reset() (drivers/net/dsa/microchip/ksz_ptp.c:66-86)
->>    assigns the result of the TRIG_RESET read-modify-write to 'ret' at…
->>
->> -- 
->>
->> net: dsa: microchip: save the periodic output request
->>
->> The patch replaces the two stored timespec64 values (perout_target_time_first
->> and perout_period) in struct ksz_ptp_data with a copy of the full
->> ptp_perout_request, so that the index and flags survive a perout restart.
->> ksz_ptp_restart_perout() now replays the saved request with only the start
->> time recomputed.
->>
->> A few questions below.
->>
->>>      When a periodic output is initialized, only the start and the period are
->>>      stored, not the flags nor the pin index. So when the periodic output is
->>>      restarted, the request flags and index are always set to 0. So if a pin
->>>      other than the first one was used, or if a flag was set in the request
->>>      that triggered the periodic output, it is lost when the output is
->>>      restarted.
->>
->> [Severity: Medium]
->> Can request->flags ever be non-zero in this driver?
->>
->> ksz_ptp_clock_register() sets caps.n_pins, caps.n_per_out and the callbacks,
->> but never sets caps.supported_perout_flags, and caps lives in the zeroed
->> struct ksz_device, so the mask stays 0. The core rejects any flag that is not
->> advertised before it calls the driver:
->>
->> drivers/ptp/ptp_chardev.c:ptp_perout_request() {
->>     ...
->>     if (perout->flags & ~ops->supported_perout_flags)
->>         return -EOPNOTSUPP;
->>     ...
->>     return ops->enable(ops, &req, perout->period.sec || perout->period.nsec);
->> }
->>
-> 
-> This check is 'fairly' recent, it was added by d9f3e9ecc456 ("net: ptp: introduce .supported_perout_flags to ptp_clock_info") (v6.15). I experienced the reset issue on a v6.12 kernel.
-> 
-> Even if it can't happen right now, as soon as this driver registers any new flag, the bug will come back.
-> 
-> 
-> 
-> All others comments are already existing issues that can be fixed independently from this patch so I don't plan to address them right now.
-This one:
 
-"""
-Should the request be committed to ptp_data->perout_request only after it has
-been validated and the hardware has actually been programmed?
-[...]
+--pyZ6XOk+o1SSkcvv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-There is also a period that this check rejects but the memcpy has already
-stored: period.sec = 4, period.nsec = 294967296 gives 0x100000000 ns, and
-TRIG_CYCLE_WIDTH_M is GENMASK(31, 0), so the request returns -EINVAL. On the
-next clock step, ksz_ptp_restart_perout() feeds that value to
-div_u64(now_ns - first_ns, period_ns), whose divisor parameter is u32, so the
-divisor truncates to 0. Is that a divide error in process context with
-ptp_data->lock held?
-"""
+Hi all,
 
-Looks new to me, and bad.
+Today's linux-next merge of the bpf-next tree got a conflict in:
 
-Also if the issue you are observing on an older kernel is already fixed in
-the vanilla tree, I suggest instead sending to stable the relevant change.
+  tools/testing/selftests/bpf/prog_tests/verifier.c
 
-Thanks,
+between commit:
 
-Paolo
+  a903f145a8914 ("selftests/bpf: Add tests for the KF_PERFMON gates")
 
+=66rom the bpf tree and commit:
+
+  a8bbd9ee1bbc7 ("selftests/bpf: Cover generic __uninit output initializati=
+on")
+
+=66rom the bpf-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+diff --cc kernel/bpf/helpers.c
+index 712dca5a2c5bd,501c7ce35cba9..0000000000000
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@@ -4920,12 -5049,14 +5049,14 @@@ BTF_ID_FLAGS(func, bpf_wq_set_callback
+  BTF_ID_FLAGS(func, bpf_wq_start)
+  BTF_ID_FLAGS(func, bpf_preempt_disable)
+  BTF_ID_FLAGS(func, bpf_preempt_enable)
+ -BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
+ +BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW | KF_PERFMON)
+  BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
+  BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
+ -BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
+ -BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
+ -BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
+ -BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
+ -BTF_ID_FLAGS(func, bpf_get_kmem_cache)
+ +BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE | KF_PERFMON)
+++BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE | KF_PERFMON)
+++BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE | KF_PERFMON)
+ +BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE | KF_PERFMON)
+ +BTF_ID_FLAGS(func, bpf_get_kmem_cache, KF_PERFMON)
+  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
+  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_next, KF_ITER_NEXT | KF_RET_NULL |=
+ KF_SLEEPABLE)
+  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_destroy, KF_ITER_DESTROY | KF_SLEE=
+PABLE)
+diff --cc mm/internal.h
+index 0434dfcfc36f1,9e3be236f18c0..0000000000000
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@@ -24,7 -23,17 +24,10 @@@
+  #include "vma.h"
+ =20
+  struct folio_batch;
+ -struct hstate;
+ =20
++ int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
++ 		void *buf, int len, unsigned int gup_flags);
++=20
+ -struct huge_bootmem_page {
+ -	struct list_head list;
+ -	struct hstate *hstate;
+ -	unsigned long flags;
+ -};
+ -
+  /* mm/workingset.c */
+  bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+  			    bool flush);
+diff --cc tools/testing/selftests/bpf/prog_tests/cb_refs.c
+index 490e15e7126d9,c32c6dab49bce..0000000000000
+--- a/tools/testing/selftests/bpf/prog_tests/cb_refs.c
++++ b/tools/testing/selftests/bpf/prog_tests/cb_refs.c
+@@@ -11,9 -11,9 +11,9 @@@ struct=20
+  	const char *prog_name;
+  	const char *err_msg;
+  } cb_refs_tests[] =3D {
+- 	{ "underflow_prog", "release kfunc bpf_kfunc_call_test_release expects r=
+eferenced PTR_TO_BTF_ID passed to R1" },
+- 	{ "leak_prog", "Possibly NULL pointer passed to helper R2" },
++ 	{ "underflow_prog", "R1 type=3Dscalar expected=3Dptr_, trusted_ptr_, rcu=
+_ptr_" },
++ 	{ "leak_prog", "Unreleased reference id=3D4 alloc_insn=3D3" }, /* alloc_=
+insn=3D3{2,3} */
+ -	{ "nested_cb", "Unreleased reference id=3D4 alloc_insn=3D2" }, /* alloc_=
+insn=3D2{4,5} */
+ +	{ "nested_cb", "Unreleased reference id=3D5 alloc_insn=3D2" }, /* alloc_=
+insn=3D2{4,5} */
+  	{ "non_cb_transfer_ref", "Unreleased reference id=3D4 alloc_insn=3D1" },=
+ /* alloc_insn=3D1{1,2} */
+  };
+ =20
+diff --cc tools/testing/selftests/bpf/prog_tests/verifier.c
+index 8b439e194bcc5,4f1e1c1cd5ab3..0000000000000
+--- a/tools/testing/selftests/bpf/prog_tests/verifier.c
++++ b/tools/testing/selftests/bpf/prog_tests/verifier.c
+@@@ -54,7 -55,9 +56,10 @@@
+  #include "verifier_iterating_callbacks.skel.h"
+  #include "verifier_jeq_infer_not_null.skel.h"
+  #include "verifier_jit_convergence.skel.h"
++ #include "verifier_kfunc_packet_access.skel.h"
+ +#include "verifier_kfunc_perfmon.skel.h"
++ #include "verifier_kfunc_uninit.skel.h"
++ #include "verifier_kfunc_uninit_multi.skel.h"
+  #include "verifier_ld_ind.skel.h"
+  #include "verifier_ldsx.skel.h"
+  #include "verifier_leak_ptr.skel.h"
+@@@ -219,7 -224,9 +227,10 @@@ void test_verifier_int_ptr(void
+  void test_verifier_iterating_callbacks(void)  { RUN(verifier_iterating_ca=
+llbacks); }
+  void test_verifier_jeq_infer_not_null(void)   { RUN(verifier_jeq_infer_no=
+t_null); }
+  void test_verifier_jit_convergence(void)      { RUN(verifier_jit_converge=
+nce); }
++ void test_verifier_kfunc_packet_access(void)  { RUN_TESTS(verifier_kfunc_=
+packet_access); }
+ +void test_verifier_kfunc_perfmon(void)        { RUN(verifier_kfunc_perfmo=
+n); }
++ void test_verifier_kfunc_uninit(void)         { RUN_TESTS(verifier_kfunc_=
+uninit); }
++ void test_verifier_kfunc_uninit_multi(void)   { RUN_TESTS(verifier_kfunc_=
+uninit_multi); }
+  void test_verifier_load_acquire(void)         { RUN(verifier_load_acquire=
+); }
+  void test_verifier_ld_ind(void)               { RUN(verifier_ld_ind); }
+  void test_verifier_ldsx(void)                  { RUN(verifier_ldsx); }
+
+--pyZ6XOk+o1SSkcvv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqyUssACgkQJNaLcl1U
+h9AJLgf/b204gVZX/IeKYjNsCB9oiOd1gN6gDrO/ftoVIVnn1GXoRKJqyV7RC60s
+PewUH50nX3R5Ttqo+hS1upltjwYW0azQ69Z+F2VAOZ+eDpTZTeDbdP0P+DwQqWqg
+OuvRZXgaqFTmuC/cw6GlDJImOwWKFNR67KYU0596NVx690UOBR6X2+oB8luyTu/y
+QTMOT6ThGrqIFTKw/LKUqRDJaCIt8e+CT6ZbAPWSM5HrEfWL6qG8PSnkcC3LcazC
+umNCvfubGCzXxYDwi8U8Qr2dJWWp7EoUD6E7L8RAB6MA6oqOuNpQ4jDrOPJFJx0B
+1ZUUGgeRTDKC3JdAFDpsp+uak+L7RQ==
+=qm5D
+-----END PGP SIGNATURE-----
+
+--pyZ6XOk+o1SSkcvv--
