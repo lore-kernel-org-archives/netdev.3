@@ -1,131 +1,206 @@
-Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230FD55D87C
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380D2562607
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790092492; cv=none; b=fL2/UQK/DHEgdGuxE9bj5iG/bC54E5+hgBAe2kKKpIWWW/xaq42IdFyZjVKlDlo7AoZnJ6aUlyOsrlxtU4SrMk/KLdLpfXcONeCmEQFLGmDEdnc06cDDLHQJg0lfgB7sGLkXG6+WBVpieZ/UZFzsUpK0vlY7K4xahBIcKBueVuM=
+	t=1790092501; cv=none; b=ERXLa63mTDZjB2jN7db5PTNQ3UM75PFiExtq3MJLYL0tyNTcVg8Ta4Ku2Fb48J5vbyYQIA7RT0idNCMBDmZADs28fX5CtraHc4KkAyJqIktCI3YbJY956oiouPJnW/mRqz9ldJ6LB8Ys0E66sZbQU1De1GonEQYNWA2wS+6wsXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790092492; c=relaxed/simple;
-	bh=ePs2dgVNu990/RdOsOFHVYBsJZidaGimnQNxUffXzD4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KMffqHUotv4rJoDC5mqCjziFDjAcZIycKzWmXXuXyzEpDP1IqXkYzty68GAgOrvgH6SFgxlsp9HSh+5z9jK6FQRl1+rzgyStwtSq6p8aYANjQGF1dEoAHo26C+GV2a4HXXo6DjAOEh//Dsmu31+L3dnik4XbzgMpt3gDZHHrvHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+	s=arc-20240116; t=1790092501; c=relaxed/simple;
+	bh=vK6OFxVujsLdxAnbev7MwgtHj3nRNI0wcI0BQy7x/5A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qC00qDvB+esc5FF0BBhGLmvmmYU9+FN2ird31y0IYn+/Q79f/tazevt7ygAbViweivxQlFJ0+LPJ+uiSyyKk/RTIjZ6sRz6bK73mHdtPZBrqJy9tGKo8SqspZGuexTEOmk4pf77WdVQTHeGsv1LyPbUu80H29g6Tg8HYAu2GaKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AC10UTal; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49cfcf2548aso15091915e9.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:54:51 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AC10UTal"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso25150455e9.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790092497; x=1790697297; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wT5mWkdgUm/hzbx3Bgoqr9BADbbojUu1G/tndNF4lm8=;
+        b=AC10UTal0u9LPBxGdc4R1fnt9DRQUNGeyE0nC1rdjfNxpHRgwylj9RUYDgbGzlQSbd
+         flaNNm0cT79sOAeWR/DjIcNgi2xYjuoYlhthv2bGgCML9Jeis0oo9yV/bzBYtK28FEqD
+         s6iIgnAaAvXaZ2CtqZehoza18ZoeoUtfWVYiAzLD1r4ibA66rsJnZXE14H0Od+LbIVF9
+         WMjZoEw6BEODBbHo8S9oOKaM7n81FLa2MdevlYJCChxXItWXJ5uVMlHfLwnhJl6O5jeH
+         mcx4fIJ4U1h7Qps7oh/HF8+tnZeb1g3sTZ72HRX6+zcuS2CG2K+1IUc2OYlHxWZw8cz8
+         E4/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790092489; x=1790697289;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ou7RXgdpVNWLI+ozw/bBmPEO1nYVgTeR75Rde89LsiM=;
-        b=QYIISYoYUPyuwYUA/gsVk5lwWDCyGQ5FRmAD+/qdJYHQNQ2qoRk9fqhMtz7hpp9V1R
-         4lWPy5Nc4pQn+fEAXn0C+V0fDj3gXY00sSGWtfGG9yoP8k/lz0i5I2jv9eb7oiEFyPQ0
-         jG+0EWiiwftA9ZeHvLAOrDoqSnrF114FZwRgKbjNXQtlEjsjZ3BfqVhQx16FiAxhAQS7
-         7lPzjBCeui4fZmSRD8ZHB0CWR5Tpp9MBiIbliXyI3XbDq6xPSQo7aEAcQOMmJpWSMau3
-         pjBYmEGzw9m0bK8aDmPdoiSeUKQkzsPTdpYJ0Z6Lzqhl7eNap065jHmSPVd4I9nNILEv
-         LfTQ==
-X-Gm-Message-State: AFuF++k+fdzNpVPAVUS/sqtCB3V4QbERajZyO4Lly9+rxYvBpZMGWOkx
-	ewnTZZc5umX+ooWEO7Xbr3hg4dH6OdmdTIVQtCD1UNkm5Wgw6svg6NuM
-X-Gm-Gg: AYBFou3A/8/25FaARIv5776ZZAxEEI0ART7mCCGDUy03KVeHOavLpnOmzu8taho84ND
-	ae94vZ3j6qC1OzibiLYc3xBJGheI2VAnAQwnXGnnNk6O0iyFs8A8/MYo7wJO6UdcqqXITupvYPj
-	A89MICwnzv9FoZcz/1qVIA93OQWscYLVtbgNGG959NcEJiPdur1ek9UT9GabudRyeWksN2cOnrU
-	HEyomo5ErPwGZZPBce/KlWuKFMw17VTbGH2VoaH+HvB/S0byhCWadz2qBrWekflTWcAdyf7Ywyi
-	JETQXM1cNt8D6IzdTmkHpYO/mcwQOMEdRizxpJY6QRhCiSYcFArclbs1BpsESO7Lf1BFUH/pdMa
-	U+W40IBrodwSWTRtKQ/l7A8xwZ3OfawsKDCL+Nke2StIkJxNFlZBf+bkwoYG+QCwkaVExZpzQGM
-	zOc6VMJSQYGNfbMk3eRB6Tm5UTalN3BY09HUkwOZFYngGQ3dXEppRznWVZU0eALZsK4F//GPo4Z
-	orLE9PSkQMQKW9FEcSd91IMI39vIB2gM+T5OY7ilYHPsIQ=
-X-Received: by 2002:a05:600c:3585:b0:49c:cee0:f383 with SMTP id 5b1f17b1804b1-49fc5734ef6mr262140235e9.16.1790092489386;
-        Tue, 22 Sep 2026 08:54:49 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862731a53sm6067611f8f.4.2026.09.22.08.54.47
+        d=1e100.net; s=20260707; t=1790092497; x=1790697297;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=wT5mWkdgUm/hzbx3Bgoqr9BADbbojUu1G/tndNF4lm8=;
+        b=klSDv8fSfCSzgAwHVwtoa/3Lm7Cvrsxp+/+c3TZMEahOgpxK6QJ1luqzaGjeTjc2cV
+         k2afKxq0EaqYKrpemVmKOSojYFPd0/L4PmAU1q2HW7rr7lmKYigooKctmGIy3+IYZX6i
+         JVdO1R9SitJZrJ7VhXRmFftltl7laLYVJJy2X7YWo86ewALJVl/2oh4hHPziLKYZJAjN
+         SCCZWjCWGiFmPjDlXUFfTye7+ISyH3MZGpNbMcqzWAJ6rSwTURQR7nNR56r/E04K1mzw
+         vQfg0bAWFPRRBVMyBV2bRDGvY6BJOtTyyzdJOj0E0GzxHidijwYQ+xDTlQWxtqxRZsLY
+         JwQA==
+X-Gm-Message-State: AFuF++mhKVvklSN63Bvg6xQdv2qbSioy118Vq/SwpxJ/ylqZZ+V6hpEv
+	T2Tu05QVgtG0sk7hUyGMAJDtCElKrxxEJU5NzYHdJd49XNdhwFiPIffq
+X-Gm-Gg: AYBFou0D+ez2UBsQarGX/0vDaA9ERbK/tgELymUBONdoR/e+81arGFYHWGOzfHRmdGy
+	B4kLC1WQwhdE5aIRI2cDmuefNQ47dMe42ngAo3dncg8VK+4xlULRdV/V83WyM3uM5l8/HBscU6N
+	a3lsQaF/7mPiBVftvMNkyV3Axu8npcqNv4sEe8zQe2IPHURXbak4lkAyfQFKJ5de0RhzJwIdxhv
+	og925CHPXKkEKVqsHAbBd4kF2sSIYcpiDG/w4Zinchr2ya/iPpLcgEe/b++VVxr5+xKvSETrBBu
+	ePoHkCvYKq6q0Gm5fSdV0/ZidI8Jap+eXQLyJeo+tblNxWxSX3CLyUCBl8kKTcqb9M8VcfRZFQk
+	sy/T9X1ABrNq73AcIPQtazjZB4SLt59HB6BkMHHia4wsy1xobbUfHBJeHTft5TIxJtEG+XV6hv4
+	nPsapzVFB5ZgzoQiLp1hKiI3skPC2eiJnB6OhWs7t09QCv7hZSYY2k4wlidqhqosWuUOQpDWmeD
+	LdJm2J6uV40EAz1EsmFyuHijaLCBHtWZwTUKp96PsVQXJPYkCg764stx2UU8sTkUhl9fVrlqVSW
+	xkFbONs/pg0cUzqSxJZ7pHULrI9q6d62FHL9Hhf2Lsd1
+X-Received: by 2002:a05:600c:19cb:b0:49e:8184:f619 with SMTP id 5b1f17b1804b1-49fc57410f2mr203367475e9.22.1790092497265;
+        Tue, 22 Sep 2026 08:54:57 -0700 (PDT)
+Received: from localhost (89-73-120-30.dynamic.play.pl. [89.73.120.30])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48862793528sm5067667f8f.36.2026.09.22.08.54.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 08:54:49 -0700 (PDT)
-Message-ID: <3a838a30-9a1f-4d76-90ef-ee17ed188f7a@ovn.org>
-Date: Tue, 22 Sep 2026 17:54:47 +0200
+        Tue, 22 Sep 2026 08:54:56 -0700 (PDT)
+From: Patryk Biel <pbiel7@gmail.com>
+Date: Tue, 22 Sep 2026 17:54:46 +0200
+Subject: [PATCH net-next v3] net: pcs: enable autonegotiation for
+ 10g-usxgmii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 6/6] net/sched: act_ct: fix helper UAF due to
- extensions realloc
-To: netdev-bot+sashiko@kernel.org, i.maximets@ovn.org
-Cc: netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, aconole@redhat.com,
- echaudro@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
- lucien.xin@gmail.com, marcelo.leitner@gmail.com,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, dev@openvswitch.org, stable@vger.kernel.org
-References: <20260921145655.3167436-7-i.maximets@ovn.org>
- <179008912273.2160803.18168154192973334378@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <179008912273.2160803.18168154192973334378@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260922-b4-fix-pcs-lynx-an-v3-1-dda3ac4e499c@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMWksmoC/33NTQrDIBAF4KsU152iJpXaVe9RuvBnTITEBA2SE
+ HL3iqssSpePN++bnSSMHhN5XnYSMfvkp1BCc70Q06vQIXhbMuGUC/rgFHQLzq8wmwTDFlZQARp
+ nmb2jbA0KUoZzxHJS0TcJuEDAdSGf0vQ+LVPc6rfMav8PzgwYCG6FaCRD5dyrG5UfbmYaK5f5m
+ Wh/ErwQUmtm0UjhqD4Tx3F8AfbuuJYBAQAA
+X-Change-ID: 20260820-b4-fix-pcs-lynx-an-3fd1d5e94ce6
+To: Ioana Ciornei <ioana.ciornei@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Patryk Biel <pbiel7@gmail.com>
+X-Mailer: b4 0.14.2
 
-On 9/22/26 4:58 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] Comment vs. code mismatch introduced by this patch in
->   tcf_ct_act() (net/sched/act_ct.c:1113-1117).
+The Lynx PCS USXGMII setup programs the replicator advertisement, but
+does not explicitly enable and restart in-band autonegotiation or program
+the replicator link timers.
 
-Same thing as for the previous patches.  Comments do not need to
-spell out everything that happens in the code.
+This leaves the PCS dependent on firmware or bootloader state. Systems
+which do not get the USXGMII replicator preconfigured before Linux may
+therefore fail to negotiate the link correctly.
 
-Best regards, Ilya Maximets.
+After programming the USXGMII device ability, configure the replicator
+BMCR with reset, autonegotiation enable and autonegotiation restart. Also
+program the replicator link timer registers using the value returned by
+phylink_get_link_timer_ns()
+
+Co-developed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Patryk Biel <pbiel7@gmail.com>
+---
+Changes in v3:
+- Add separate link timer macro for 10G-QXGMII (1/4 tick rate vs USXGMII).
+- Select link timer macro based on interface mode.
+- Link to v2: https://lore.kernel.org/r/20260824-b4-fix-pcs-lynx-an-v2-1-9bb1dec96f0b@gmail.com
+
+Changes in v2:
+- Reorder local variable declarations in lynx_pcs_config_usxgmii().
+- Move USXGMII replicator link timer configuration before the autonegotiation restart.
+- Use phylink_get_link_timer_ns() instead of hardcoded USXGMII 
+  replicator link timer values, converting to 3.2 ns register step.
+- Link to v1: https://lore.kernel.org/r/20260820-b4-fix-pcs-lynx-an-v1-1-62d66391eaff@gmail.com
+---
+ drivers/net/pcs/pcs-lynx.c | 53 ++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
+index da4f99059eef7722a5c3bf32df490940cc1135f8..6d94f92a3332959bc4d39969a8ad781ac06951af 100644
+--- a/drivers/net/pcs/pcs-lynx.c
++++ b/drivers/net/pcs/pcs-lynx.c
+@@ -20,6 +20,12 @@
+ #define IF_MODE_SPEED_MSK		GENMASK(3, 2)
+ #define IF_MODE_HALF_DUPLEX		BIT(4)
+ 
++/* USXGMII replicator link timer step is 3.2 ns (312.5M XGMII columns per sec)
++ * for single port mode. For quad port mode, it is 1/4 of that.
++ */
++#define LINK_TIMER_VAL_USXGMII(ns)	((u32)((ns) * 10 / 32))
++#define LINK_TIMER_VAL_10G_QXGMII(ns)	((u32)((ns) * 10 / 128))
++
+ struct lynx_pcs {
+ 	struct phylink_pcs pcs;
+ 	struct mdio_device *mdio;
+@@ -158,6 +164,9 @@ static int lynx_pcs_config_usxgmii(struct mdio_device *pcs,
+ {
+ 	struct mii_bus *bus = pcs->bus;
+ 	int addr = pcs->addr;
++	int link_timer_ns;
++	u32 link_timer;
++	int ret;
+ 
+ 	if (neg_mode != PHYLINK_PCS_NEG_INBAND_ENABLED) {
+ 		dev_err(&pcs->dev, "%s only supports in-band AN for now\n",
+@@ -166,10 +175,46 @@ static int lynx_pcs_config_usxgmii(struct mdio_device *pcs,
+ 	}
+ 
+ 	/* Configure device ability for the USXGMII Replicator */
+-	return mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2, MII_ADVERTISE,
+-				 MDIO_USXGMII_10G | MDIO_USXGMII_LINK |
+-				 MDIO_USXGMII_FULL_DUPLEX |
+-				 ADVERTISE_SGMII | ADVERTISE_LPACK);
++	ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2, MII_ADVERTISE,
++				MDIO_USXGMII_10G | MDIO_USXGMII_LINK |
++				MDIO_USXGMII_FULL_DUPLEX |
++				ADVERTISE_SGMII | ADVERTISE_LPACK);
++	if (ret < 0) {
++		dev_err(&pcs->dev, "could not set USXGMII replicator config\n");
++		return ret;
++	}
++
++	link_timer_ns = phylink_get_link_timer_ns(interface);
++	if (link_timer_ns > 0) {
++		if (interface == PHY_INTERFACE_MODE_10G_QXGMII)
++			link_timer = LINK_TIMER_VAL_10G_QXGMII(link_timer_ns);
++		else
++			link_timer = LINK_TIMER_VAL_USXGMII(link_timer_ns);
++
++		ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2,
++					LINK_TIMER_LO, link_timer & 0xffff);
++		if (ret < 0) {
++			dev_err(&pcs->dev, "could not set USXGMII Link Timer 1\n");
++			return ret;
++		}
++
++		ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2,
++					LINK_TIMER_HI, (link_timer >> 16) & 0x1f);
++		if (ret < 0) {
++			dev_err(&pcs->dev, "could not set USXGMII Link Timer 2\n");
++			return ret;
++		}
++	}
++
++	/* Configure autonegotiation */
++	ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2, MII_BMCR,
++				BMCR_RESET | BMCR_ANENABLE | BMCR_ANRESTART);
++	if (ret < 0) {
++		dev_err(&pcs->dev, "could not set USXGMII replicator control config\n");
++		return ret;
++	}
++
++	return ret;
+ }
+ 
+ static int lynx_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+
+---
+base-commit: 10cfa109c880092df32e396647b4afdca9be8350
+change-id: 20260820-b4-fix-pcs-lynx-an-3fd1d5e94ce6
+
+Best regards,
+-- 
+Patryk Biel <pbiel7@gmail.com>
+
