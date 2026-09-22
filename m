@@ -1,206 +1,259 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380D2562607
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C547A3C942B;
+	Tue, 22 Sep 2026 16:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790092501; cv=none; b=ERXLa63mTDZjB2jN7db5PTNQ3UM75PFiExtq3MJLYL0tyNTcVg8Ta4Ku2Fb48J5vbyYQIA7RT0idNCMBDmZADs28fX5CtraHc4KkAyJqIktCI3YbJY956oiouPJnW/mRqz9ldJ6LB8Ys0E66sZbQU1De1GonEQYNWA2wS+6wsXg=
+	t=1790092882; cv=none; b=Gls7NpgqgSBrssBmmEKla/mJviQKvZT+sBxCA0CoMVhPJwSatlMuQRcxxqQilZbTHGXfh3yOK9aSrNUmE3b2lgQ6MyiZmN4aAce7nG6BGYya9wvZO1ioXIBbuU/ebqJF/K/DTkxymw8nFQiErpqvzcwOVfK5ZygStXEkE85MoWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790092501; c=relaxed/simple;
-	bh=vK6OFxVujsLdxAnbev7MwgtHj3nRNI0wcI0BQy7x/5A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qC00qDvB+esc5FF0BBhGLmvmmYU9+FN2ird31y0IYn+/Q79f/tazevt7ygAbViweivxQlFJ0+LPJ+uiSyyKk/RTIjZ6sRz6bK73mHdtPZBrqJy9tGKo8SqspZGuexTEOmk4pf77WdVQTHeGsv1LyPbUu80H29g6Tg8HYAu2GaKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AC10UTal; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790092882; c=relaxed/simple;
+	bh=bbouN4XikNN4VfImQG6aQfyahi8ezoXY7igGGmga81g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T72FsG55lH3inQBVInKCUxw9LQ7XPKAwsWtVGu2JaH4GCfShHWGW87yvQWavsKx8b2EDmhyRTMS4QYJO/gked7B65C6UAZegt/BQJiCOtoj/sbDbvsT1XBYd0z5vT3pEpAQUb/V6p+DaMDGu0YnI5nWwi4qceeef8JJhj4nRzTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WH87jzOw; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AC10UTal"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso25150455e9.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:54:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790092497; x=1790697297; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wT5mWkdgUm/hzbx3Bgoqr9BADbbojUu1G/tndNF4lm8=;
-        b=AC10UTal0u9LPBxGdc4R1fnt9DRQUNGeyE0nC1rdjfNxpHRgwylj9RUYDgbGzlQSbd
-         flaNNm0cT79sOAeWR/DjIcNgi2xYjuoYlhthv2bGgCML9Jeis0oo9yV/bzBYtK28FEqD
-         s6iIgnAaAvXaZ2CtqZehoza18ZoeoUtfWVYiAzLD1r4ibA66rsJnZXE14H0Od+LbIVF9
-         WMjZoEw6BEODBbHo8S9oOKaM7n81FLa2MdevlYJCChxXItWXJ5uVMlHfLwnhJl6O5jeH
-         mcx4fIJ4U1h7Qps7oh/HF8+tnZeb1g3sTZ72HRX6+zcuS2CG2K+1IUc2OYlHxWZw8cz8
-         E4/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790092497; x=1790697297;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=wT5mWkdgUm/hzbx3Bgoqr9BADbbojUu1G/tndNF4lm8=;
-        b=klSDv8fSfCSzgAwHVwtoa/3Lm7Cvrsxp+/+c3TZMEahOgpxK6QJ1luqzaGjeTjc2cV
-         k2afKxq0EaqYKrpemVmKOSojYFPd0/L4PmAU1q2HW7rr7lmKYigooKctmGIy3+IYZX6i
-         JVdO1R9SitJZrJ7VhXRmFftltl7laLYVJJy2X7YWo86ewALJVl/2oh4hHPziLKYZJAjN
-         SCCZWjCWGiFmPjDlXUFfTye7+ISyH3MZGpNbMcqzWAJ6rSwTURQR7nNR56r/E04K1mzw
-         vQfg0bAWFPRRBVMyBV2bRDGvY6BJOtTyyzdJOj0E0GzxHidijwYQ+xDTlQWxtqxRZsLY
-         JwQA==
-X-Gm-Message-State: AFuF++mhKVvklSN63Bvg6xQdv2qbSioy118Vq/SwpxJ/ylqZZ+V6hpEv
-	T2Tu05QVgtG0sk7hUyGMAJDtCElKrxxEJU5NzYHdJd49XNdhwFiPIffq
-X-Gm-Gg: AYBFou0D+ez2UBsQarGX/0vDaA9ERbK/tgELymUBONdoR/e+81arGFYHWGOzfHRmdGy
-	B4kLC1WQwhdE5aIRI2cDmuefNQ47dMe42ngAo3dncg8VK+4xlULRdV/V83WyM3uM5l8/HBscU6N
-	a3lsQaF/7mPiBVftvMNkyV3Axu8npcqNv4sEe8zQe2IPHURXbak4lkAyfQFKJ5de0RhzJwIdxhv
-	og925CHPXKkEKVqsHAbBd4kF2sSIYcpiDG/w4Zinchr2ya/iPpLcgEe/b++VVxr5+xKvSETrBBu
-	ePoHkCvYKq6q0Gm5fSdV0/ZidI8Jap+eXQLyJeo+tblNxWxSX3CLyUCBl8kKTcqb9M8VcfRZFQk
-	sy/T9X1ABrNq73AcIPQtazjZB4SLt59HB6BkMHHia4wsy1xobbUfHBJeHTft5TIxJtEG+XV6hv4
-	nPsapzVFB5ZgzoQiLp1hKiI3skPC2eiJnB6OhWs7t09QCv7hZSYY2k4wlidqhqosWuUOQpDWmeD
-	LdJm2J6uV40EAz1EsmFyuHijaLCBHtWZwTUKp96PsVQXJPYkCg764stx2UU8sTkUhl9fVrlqVSW
-	xkFbONs/pg0cUzqSxJZ7pHULrI9q6d62FHL9Hhf2Lsd1
-X-Received: by 2002:a05:600c:19cb:b0:49e:8184:f619 with SMTP id 5b1f17b1804b1-49fc57410f2mr203367475e9.22.1790092497265;
-        Tue, 22 Sep 2026 08:54:57 -0700 (PDT)
-Received: from localhost (89-73-120-30.dynamic.play.pl. [89.73.120.30])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48862793528sm5067667f8f.36.2026.09.22.08.54.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 08:54:56 -0700 (PDT)
-From: Patryk Biel <pbiel7@gmail.com>
-Date: Tue, 22 Sep 2026 17:54:46 +0200
-Subject: [PATCH net-next v3] net: pcs: enable autonegotiation for
- 10g-usxgmii
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WH87jzOw"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1790092868; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=+ClSnMxfSM/WITTo4HDenJcjEtkXpEipTYk1bTX5b6E=;
+	b=WH87jzOw3CM7NZAIm52MM+5jY2bDuLBVxEe54cCixUBU1kPbLIdGBwroDMnXNQl8xEHAzkaai0PgKRuKplH+fvZUdXpOuI0XMtA3EFq3nwEu38donXhw1LXl37+NB886FJhBwUsuPnQnzg0NENmozuZKgWx2Mj4xALen+OS4VJU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XBUGdpo_1790092866;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XBUGdpo_1790092866 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 23 Sep 2026 00:01:07 +0800
+Date: Wed, 23 Sep 2026 00:01:06 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com, hidayath@linux.ibm.com,
+	stable@vger.kernel.org, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net v4] net/smc: fix lgr/lnk lifetime vs diag reader race
+Message-ID: <arKmQvQUeHb84Mlu@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20260911090906.1949163-1-mjambigi@linux.ibm.com>
+ <aqlgtaEk3kNcg-Yp@linux.alibaba.com>
+ <69676c38-3d68-41db-8b26-3e589d7477d5@linux.ibm.com>
+ <aqq0rnQjiKymR3TM@linux.alibaba.com>
+ <2111df0c-33b1-4330-8adf-ac5a0f1de451@linux.ibm.com>
+ <aqwM5USzvdm5zF40@linux.alibaba.com>
+ <d11098fd-042c-4246-ba3b-9c2662447f21@linux.ibm.com>
+ <arD_Wzbv3Z01ZSCv@linux.alibaba.com>
+ <6b7736f4-d759-476a-8bc9-9038ef5823ea@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-b4-fix-pcs-lynx-an-v3-1-dda3ac4e499c@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMWksmoC/33NTQrDIBAF4KsU152iJpXaVe9RuvBnTITEBA2SE
- HL3iqssSpePN++bnSSMHhN5XnYSMfvkp1BCc70Q06vQIXhbMuGUC/rgFHQLzq8wmwTDFlZQARp
- nmb2jbA0KUoZzxHJS0TcJuEDAdSGf0vQ+LVPc6rfMav8PzgwYCG6FaCRD5dyrG5UfbmYaK5f5m
- Wh/ErwQUmtm0UjhqD4Tx3F8AfbuuJYBAQAA
-X-Change-ID: 20260820-b4-fix-pcs-lynx-an-3fd1d5e94ce6
-To: Ioana Ciornei <ioana.ciornei@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, Patryk Biel <pbiel7@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6b7736f4-d759-476a-8bc9-9038ef5823ea@linux.ibm.com>
 
-The Lynx PCS USXGMII setup programs the replicator advertisement, but
-does not explicitly enable and restart in-band autonegotiation or program
-the replicator link timers.
+On 2026-09-22 18:57:24, Mahanta Jambigi wrote:
+>
+>
+>On 21/09/26 3:26 pm, Dust Li wrote:
+>> On 2026-09-18 12:57:13, Mahanta Jambigi wrote:
+>>>
+>>>
+>>> On 17/09/26 9:23 pm, Dust Li wrote:
+>>>> On 2026-09-17 13:15:23, Mahanta Jambigi wrote:
+>>>>>
+>>>>>
+>>>>> On 16/09/26 8:54 pm, Dust Li wrote:
+>>>>>> On 2026-09-16 14:04:42, Mahanta Jambigi wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> On 15/09/26 8:43 pm, Dust Li wrote:
+>>>>>>>> On 2026-09-11 11:09:06, Mahanta Jambigi wrote:
+>>>>>>>>> The diag dump walks the socket hash table under a read_lock and
+>>>>>>>>> dereferences conn->lgr and conn->lnk.  Two terminal teardown paths
+>>>>>>>>> drop those references via smc_conn_free() while the socket is still
+>>>>>>>>> hashed:
+>>>>>>>>>
+>>>>>>>>> - smc_conn_kill() -> smc_close_active_abort() -> smc_conn_free() -
+>>>>>>>>> smc_close_passive_work() -> smc_conn_free()
+>>>>>>>>>
+>>>>>>>>> This allows the diag reader to dereference a freed lgr or lnk.
+>>>>>>>>>
+>>>>>>>>> Fix it by unhashing the socket before smc_conn_free() is called at
+>>>>>>>>> each of these two sites.  Any socket visible to the diag reader
+>>>>>>>>> under the hash read_lock then has valid conn->lgr and conn->lnk
+>>>>>>>>> pointers.
+>>>>>>>>>
+>>>>>>>>> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets") Fixes:
+>>>>>>>>> 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R
+>>>>>>>>> connections") Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+>>>>>>>>> --- Changes in v4: - dropped smc_conn_unhash() wrapper, conn-
+>>>>>>>>>> unhashed flag, and all changes to af_smc.c, smc.h, smc_core.c and
+>>>>>>>>> smc_core.h; smc_unhash_sk() is already idempotent via sk_hashed(),
+>>>>>>>>> so direct calls at the two teardown sites in smc_close.c are
+>>>>>>>>> sufficient - dropped the __smc_release() hunk: it needs no change
+>>>>>>>>> since the subsequent unhash there is already a safe no-op - fixed
+>>>>>>>>> premature-unhash issue present in v3: smc_conn_free() must not unhash
+>>>>>>>>> because smc_conn_abort() calls it before smc_switch_to_fallback() in
+>>>>>>>>> both smc_listen_decline() and smc_connect_rdma() error paths; unhashing
+>>>>>>>>> there would make live fallback sockets invisible to smcss -
+>>>>>>>>> likewise, the ISM/RDMA retry loops (smc_find_ism_v2_device_serv(), 
+>>>>>>>>> smc_find_rdma_v2_device_serv()) call smc_conn_abort() on a failed attempt
+>>>>>>>>> and then smc_conn_create() on the next device; unhashing in 
+>>>>>>>>> smc_conn_free() would permanently hide the established connection
+>>>>>>>>> from smc_diag since smc_conn_create() does not re-hash the socket
+>>>>>>>>
+>>>>>>>> Hi Mahanta,
+>>>>>>>>
+>>>>>>>> This version looks clean. And you explained why we can't call unhash
+>>>>>>>> in smc_conn_abort() well. But smc_conn_abort() still calls
+>>>>>>>> smc_conn_free(), when the smc_sk is still hashed, is there still a
+>>>>>>>> race window with dump ?
+>>>>>>>
+>>>>>>> Hi Dust,
+>>>>>>>
+>>>>>>> Thank you for catching this corner case!
+>>>>>>>
+>>>>>>> During early handshake setup (when sk_state is *SMC_INIT*),
+>>>>>>> smc_conn_abort() can be called on connection failure/fallback and
+>>>>>>> invokes smc_conn_free() while the socket remains hashed, leaving a
+>>>>>>> window where a concurrent diag dump could evaluate smc_conn_lgr_valid()
+>>>>>>> and dereference conn->lgr / conn->lnk.
+>>>>>>>
+>>>>>>> Since sockets in *SMC_INIT* are in a transient embryonic handshake phase
+>>>>>>> and userspace (smcss) *skips displaying link-group, DMB, and connection
+>>>>>>> details for INIT state sockets anyway*, we could have __smc_diag_dump()
+>>>>>>> skip inspecting connection/link-group extensions when r->diag_state ==
+>>>>>>> SMC_INIT:
+>>>>>>>
+>>>>>>> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+>>>>>>> --- a/net/smc/smc_diag.c
+>>>>>>> +++ b/net/smc/smc_diag.c
+>>>>>>> @@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
+>>>>>>> sk_buff *skb,
+>>>>>>> 	r->diag_state = sk->sk_state;
+>>>>>>> +	if (r->diag_state == SMC_INIT)
+>>>>>>> +		return 0;
+>>>>>>> +
+>>>>>>> 	if (smc->use_fallback)
+>>>>>>> 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
+>>>>>>> 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+>>>>>>>
+>>>>>>> Together with unhashing before smc_conn_free() in smc_close.c for
+>>>>>>> established and closing sockets, this cleanly closes the race window
+>>>>>>> across all socket states without touching the hash table mechanics
+>>>>>>> during fallback/retry.
+>>>>>>>
+>>>>>>> Does this approach look good to you? If you agree, I will prepare and
+>>>>>>> submit v5 with this change. Please let me know if you have any other
+>>>>>>> suggestions or alternative approaches, and I'll be happy to look into them.
+>>>>>>
+>>>>>> What about this path ?
+>>>>>>
+>>>>>> smc_listen_decline() -> smc_listen_out_err(), where smc_conn_abort() has
+>>>>>> already run, and the sock state is then changed from SMC_INIT to SMC_CLOSED.
+>>>>>
+>>>>> Hi Dust,
+>>>>>
+>>>>> Good catch on the smc_listen_out_err() path as well!
+>>>>>
+>>>>> In smc_listen_decline() -> smc_listen_out_err(), the server socket fails
+>>>>> handshake and is transitioned to SMC_CLOSED while remaining in the hash
+>>>>> table until smc_accept_dequeue() runs.
+>>>>>
+>>>>> Since userspace (smcss) skips displaying all connection, link-group, and
+>>>>> DMB details for both SMC_INIT and SMC_CLOSED sockets (smcss.c:186 and
+>>>>> smcss.c:199), we can update __smc_diag_dump() to check for both states:
+>>>>>
+>>>>> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+>>>>> --- a/net/smc/smc_diag.c
+>>>>> +++ b/net/smc/smc_diag.c
+>>>>> @@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
+>>>>> sk_buff *skb,
+>>>>> 	r->diag_state = sk->sk_state;
+>>>>> +	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED)
+>>>>> +		return 0;
+>>>>> +
+>>>>> 	if (smc->use_fallback)
+>>>>> 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
+>>>>> 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+>>>>>
+>>>>
+>>>> I checked the code again, and I'm afraid adding SMC_CLOSED is still not right.
+>>>>
+>>>> smc_listen_decline(): smc_switch_to_fallback(), smc_clc_send_decline() then
+>>>> fails, and smc_listen_out_err() sets the socket to SMC_CLOSED. The socket
+>>>> stays on the accept queue, hashed, until accept() reaches smc_accept_dequeue().
+>>>>
+>>>> But the early return sits after nlmsg_put() but before diag_mode,
+>>>> smc_diag_msg_attrs_fill() and the SMC_DIAG_FALLBACK attribute are filled.
+>>>> The record is still emitted, but diag_mode is left at 0 -- which is
+>>>> SMC_DIAG_MODE_SMCR, not "unknown" -- and the fallback reason attribute is gone.
+>>>
+>>> Regarding your concern about wrong output when the early return fires
+>>> before diag_mode and SMC_DIAG_FALLBACK are filled: you are right that
+>>> diag_mode must be filled before the guard. *smcss.c* reads diag_mode at
+>>> lines 177 and 179 for --smcr/--smcd filtering, which happens before the
+>>> SMC_INIT and SMC_CLOSED state checks. If diag_mode is left as 0 for
+>>> a failed-fallback SMC_CLOSED socket, --smcr would incorrectly include it
+>>> and --smcd would incorrectly exclude it.
+>>>
+>>> *SMC_DIAG_FALLBACK* however is *not* needed before the guard — smcss
+>>> only reads it inside the diag_mode == SMC_DIAG_MODE_FALLBACK_TCP branch
+>>> which is never reached for *SMC_INIT* or *SMC_CLOSED* sockets, as those
+>>> two states hit goto newline before that point.
+>> 
+>> I don't agree on this.
+>> 
+>> Here what we are changing is the UAPI behaviour, which should not be
+>> constrained by what smcss did.
+>> 
+>> And SMC_INIT can coexist with fallback. For example:
+>> 
+>> smc_sendmsg() calls smc_switch_to_fallback(SMC_CLC_DECL_OPTUNSUPP) under
+>> MSG_FASTOPEN while sk_state is SMC_INIT and never changes it afterwards --
+>> fastopen does not call connect(), so the state never goes to SMC_ACTIVE.
+>
+>In that case how about moving the check further down, like below? This
+>way I am not changing the UAPI behaviour and SMC_INIT can co-exist with
+>fallback.
 
-This leaves the PCS dependent on firmware or bootloader state. Systems
-which do not get the USXGMII replicator preconfigured before Linux may
-therefore fail to negotiate the link correctly.
-
-After programming the USXGMII device ability, configure the replicator
-BMCR with reset, autonegotiation enable and autonegotiation restart. Also
-program the replicator link timer registers using the value returned by
-phylink_get_link_timer_ns()
-
-Co-developed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Patryk Biel <pbiel7@gmail.com>
----
-Changes in v3:
-- Add separate link timer macro for 10G-QXGMII (1/4 tick rate vs USXGMII).
-- Select link timer macro based on interface mode.
-- Link to v2: https://lore.kernel.org/r/20260824-b4-fix-pcs-lynx-an-v2-1-9bb1dec96f0b@gmail.com
-
-Changes in v2:
-- Reorder local variable declarations in lynx_pcs_config_usxgmii().
-- Move USXGMII replicator link timer configuration before the autonegotiation restart.
-- Use phylink_get_link_timer_ns() instead of hardcoded USXGMII 
-  replicator link timer values, converting to 3.2 ns register step.
-- Link to v1: https://lore.kernel.org/r/20260820-b4-fix-pcs-lynx-an-v1-1-62d66391eaff@gmail.com
----
- drivers/net/pcs/pcs-lynx.c | 53 ++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
-index da4f99059eef7722a5c3bf32df490940cc1135f8..6d94f92a3332959bc4d39969a8ad781ac06951af 100644
---- a/drivers/net/pcs/pcs-lynx.c
-+++ b/drivers/net/pcs/pcs-lynx.c
-@@ -20,6 +20,12 @@
- #define IF_MODE_SPEED_MSK		GENMASK(3, 2)
- #define IF_MODE_HALF_DUPLEX		BIT(4)
- 
-+/* USXGMII replicator link timer step is 3.2 ns (312.5M XGMII columns per sec)
-+ * for single port mode. For quad port mode, it is 1/4 of that.
-+ */
-+#define LINK_TIMER_VAL_USXGMII(ns)	((u32)((ns) * 10 / 32))
-+#define LINK_TIMER_VAL_10G_QXGMII(ns)	((u32)((ns) * 10 / 128))
-+
- struct lynx_pcs {
- 	struct phylink_pcs pcs;
- 	struct mdio_device *mdio;
-@@ -158,6 +164,9 @@ static int lynx_pcs_config_usxgmii(struct mdio_device *pcs,
- {
- 	struct mii_bus *bus = pcs->bus;
- 	int addr = pcs->addr;
-+	int link_timer_ns;
-+	u32 link_timer;
-+	int ret;
- 
- 	if (neg_mode != PHYLINK_PCS_NEG_INBAND_ENABLED) {
- 		dev_err(&pcs->dev, "%s only supports in-band AN for now\n",
-@@ -166,10 +175,46 @@ static int lynx_pcs_config_usxgmii(struct mdio_device *pcs,
- 	}
- 
- 	/* Configure device ability for the USXGMII Replicator */
--	return mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2, MII_ADVERTISE,
--				 MDIO_USXGMII_10G | MDIO_USXGMII_LINK |
--				 MDIO_USXGMII_FULL_DUPLEX |
--				 ADVERTISE_SGMII | ADVERTISE_LPACK);
-+	ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2, MII_ADVERTISE,
-+				MDIO_USXGMII_10G | MDIO_USXGMII_LINK |
-+				MDIO_USXGMII_FULL_DUPLEX |
-+				ADVERTISE_SGMII | ADVERTISE_LPACK);
-+	if (ret < 0) {
-+		dev_err(&pcs->dev, "could not set USXGMII replicator config\n");
-+		return ret;
-+	}
-+
-+	link_timer_ns = phylink_get_link_timer_ns(interface);
-+	if (link_timer_ns > 0) {
-+		if (interface == PHY_INTERFACE_MODE_10G_QXGMII)
-+			link_timer = LINK_TIMER_VAL_10G_QXGMII(link_timer_ns);
-+		else
-+			link_timer = LINK_TIMER_VAL_USXGMII(link_timer_ns);
-+
-+		ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2,
-+					LINK_TIMER_LO, link_timer & 0xffff);
-+		if (ret < 0) {
-+			dev_err(&pcs->dev, "could not set USXGMII Link Timer 1\n");
-+			return ret;
-+		}
-+
-+		ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2,
-+					LINK_TIMER_HI, (link_timer >> 16) & 0x1f);
-+		if (ret < 0) {
-+			dev_err(&pcs->dev, "could not set USXGMII Link Timer 2\n");
-+			return ret;
-+		}
-+	}
-+
-+	/* Configure autonegotiation */
-+	ret = mdiobus_c45_write(bus, addr, MDIO_MMD_VEND2, MII_BMCR,
-+				BMCR_RESET | BMCR_ANENABLE | BMCR_ANRESTART);
-+	if (ret < 0) {
-+		dev_err(&pcs->dev, "could not set USXGMII replicator control config\n");
-+		return ret;
-+	}
-+
-+	return ret;
- }
- 
- static int lynx_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-
----
-base-commit: 10cfa109c880092df32e396647b4afdca9be8350
-change-id: 20260820-b4-fix-pcs-lynx-an-3fd1d5e94ce6
+Yes, I think we should do that.
 
 Best regards,
--- 
-Patryk Biel <pbiel7@gmail.com>
+Dust
+
+>
+>smc_sendmsg() calls smc_switch_to_fallback(SMC_CLC_DECL_OPTUNSUPP) under
+>MSG_FASTOPEN while sk_state is SMC_INIT and it never transitions further
+>— connect() is not called in that path, so the fallback reason is real
+>diagnostic information that should be reported. The guard after the
+>SMC_DIAG_FALLBACK nla_put preserves that.
+>
+>--- a/net/smc/smc_diag.c
+>+++ b/net/smc/smc_diag.c
+>@@ -103,6 +103,9 @@ static int __smc_diag_dump(struct sock *sk, struct
+>sk_buff *skb,
+> 	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
+> 		goto errout;
+>
+>+	if (sk->sk_state == SMC_INIT || sk->sk_state == SMC_CLOSED)
+>+		goto out;
+>+
+> 	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
+> 	    smc->conn.alert_token_local) {
+>@@ -185,5 +188,6 @@ static int __smc_diag_dump(struct sock *sk, struct
+>sk_buff *skb,
+> 		goto errout;
+> 	}
+>
+>+out:
+> 	nlmsg_end(skb, nlh);
+> 	return 0;
+
 
