@@ -1,79 +1,204 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F667544D5B;
-	Tue, 22 Sep 2026 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09C8355049;
+	Tue, 22 Sep 2026 14:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790085676; cv=none; b=O+RN8VT5MDcYTu9OuU+gj8TnYnUbXSR4hvhx6FxWJf+ZBxtuBxvr+vBc//607U1zYwb8CawYc0pQhB36DGjXT5YSBtzjLg2gr7pltDeezl02bo2QfTAVPjrERh8w1kKiwenl24vPGnuSAnNBqE6swpEH18faGTmXpPYu4s2sy7M=
+	t=1790085822; cv=none; b=ORjc4NG6un6Q1ChBO/yq341y3l/aMmb+7JpCrgroQi2YHmdodkruGAHVpuKV2ZPaJI13EYmfPPeitJSYUM/Z4t485tZbB6D4SAKun6hi7grvg5ootABwSoL89ICFZCjacmxhNd7JR75BQi94MgpM0QcAsW0Y/TpGBsDOcMmDMls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790085676; c=relaxed/simple;
-	bh=+xT3lhOevF9cEOl9WZISiKH7vf8j4vxQuX8dCDiLEVU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lABwgc9RmoqriAy9SHV8ZjKa+90/895FetzxFGWDqxFmDmDY3dAm7beBTDGqw9lbzoCKrjcJNbJoCIfom8FFfHnZ7k5hLyy67N7wZb0QKJd0grarq+34WVp9KVFUGh0XYuYJ9wtKm1hjyOdHP61WUWtXB+q0ek4HWsINTqlD0BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kts70Emy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790085822; c=relaxed/simple;
+	bh=VteDioE9EKgPhL1HmKnMvQIBLW6tFZwEmG5fda6ugTg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RNqlRYU+9kGS0Q2JE4BPVwsFOcyeEZyXZmFWGI5Yums8zeMlK3ogcsqNSjOnta0Cf6MSqK+lsXvcVbTBVx+ffLn9Sp1dTQ/KdH+SkbtkCtV+iT87n8vCjViTqS3po5nMXOgh6BfK72i+h8EQex0W3ZtzceT2oCZ28hDYiuzhRtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=giVhRNNh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kts70Emy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F4A1F000FF;
-	Tue, 22 Sep 2026 14:01:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="giVhRNNh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA981F00893;
+	Tue, 22 Sep 2026 14:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790085674;
-	bh=1Ess7UL1IoK9tUC3cvBKwGTxvOb5UlfUK/tcef+tFdk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kts70EmyYpMUaKoBIgrTmmimVEk8VqBvrO8X9GJ/lGezN/wrsQNQSqo3focx4AsVE
-	 7DA+RKgFjm9hbsabLj+bGUwWKhXOoD92YPGOORphEH1nLozttsWdTLzMIp37xbCl+D
-	 k71QSnpYL3zD2guL5blAX8EUQ7o3vb1SGz4XrZgcZGaJanr1HcwSUuIrHV77KNaPZh
-	 roYiQydJ0V/MLtYkE366the5xrt8ErLfP/o7IS7QKx/KqpxJk6SrOWhczEPsRb7SNC
-	 XHsumt6AactL6cFTLn6Ibxzf5iwF91zbqOleESDILnCc/V/XehhMGBGkXD0iRN2oiR
-	 7mat9+0owX3aA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 567C738119F8;
-	Tue, 22 Sep 2026 14:00:06 +0000 (UTC)
+	s=k20260515; t=1790085820;
+	bh=PZmFwgh0hVDeZa3TgR4QqJqkWaKALIRY2ecMMmXWkGY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=giVhRNNhgVntMadv7JcylznJvXWAIZcvEsiHudgRRECnIsY6oDWfbjFcgxHz3y0S6
+	 ceeo1cHAvQZxyTRBrqrwSIKA5FeQIPqW9vEDCGkvf8HMrcyNTFcQSFfUu663ofvSsd
+	 v7iQ+TxjrtEvfFD6IgP5lCpKJW6ZcgOrg8qrRIACbyJyT0EWyGxBPAkg3peJSqkfcb
+	 a1FzTAhv1JrgtBhKondeSZweI8xQtJ7lzJf7aDM9QUoZl+lJoZPjIz/FdIkEbhS9Yt
+	 9ihnF/fadBhQcUAdIWCS5/JyCSM/jzZTE8UTQyH7Wy8tlljCjt+iffiLg0KpduHJoq
+	 4T7UwMl51kRrg==
+Subject:
+ Re: [PATCH net] net: cap skb->queue_mapping when the tx queue is picked
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
+ vinicius.gomes@intel.com, horms@kernel.org, victor@mojatatu.com,
+ xiangxia.m.yue@gmail.com, zdi-disclosures@trendmicro.com, hybris@mojatatu.ai,
+ stable@vger.kernel.org
+Date: Tue, 22 Sep 2026 14:03:39 +0000
+Message-ID: <179008581937.2160803.7117814290574262942@kernel.org>
+In-Reply-To: <QDISC-9R8V.v1.20260921065103@mojatatu.com>
+References: <QDISC-9R8V.v1.20260921065103@mojatatu.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: lan78xx: Fix URB reference leak in
- lan78xx_submit_deferred_urbs()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179008560489.4097520.9027717710600492085.git-patchwork-notify@kernel.org>
-Date: Tue, 22 Sep 2026 14:00:04 +0000
-References: <20260917115811.2150119-1-vulab@iscas.ac.cn>
-In-Reply-To: <20260917115811.2150119-1-vulab@iscas.ac.cn>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Rengarajan.S@microchip.com, Thangaraj.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, john.efstathiades@pebblebay.com, kuba@kernel.org,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
 
-Hello:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-On Thu, 17 Sep 2026 11:58:11 +0000 you wrote:
-> usb_get_from_anchor() hands over a reference to the URB, which the caller
-> must release. lan78xx_submit_deferred_urbs() never does, so every deferred
-> Tx URB keeps an extra reference: the counter grows on each suspend/resume
-> cycle and the URBs are never freed when the buffers are released. Drop
-> the reference after submitting, and on the path that drops the packet
-> instead of submitting it.
-> 
-> [...]
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Here is the summary with links:
-  - net: usb: lan78xx: Fix URB reference leak in lan78xx_submit_deferred_urbs()
-    https://git.kernel.org/netdev/net/c/17741334d00b
+- [High] The commit message's justification and reproducer cannot reach
+  the code the patch changes, so the patch's stated bug (and its…
 
-You are awesome, thank you!
+--
+
+net: cap skb->queue_mapping when the tx queue is picked
+
+This stores the value returned by netdev_cap_txqueue() back into
+skb->queue_mapping in netdev_tx_queue_mapping(), so that later readers of
+skb_get_queue_mapping() on the xmit path see an in-range index. The
+changelog attributes the out-of-range mapping to an skbedit + mirred
+egress redirect from a device with more TX queues to one with fewer.
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index c67900354fa64..736b3664b6354 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -4404,9 +4404,14 @@ EXPORT_SYMBOL(dev_loopback_xmit);
+>  static struct netdev_queue *
+>  netdev_tx_queue_mapping(struct net_device *dev, struct sk_buff *skb)
+>  {
+> -	int qm = skb_get_queue_mapping(skb);
+> +	int queue = skb_get_queue_mapping(skb);
+> +	int capped;
+>  
+> -	return netdev_get_tx_queue(dev, netdev_cap_txqueue(dev, qm));
+> +	capped = netdev_cap_txqueue(dev, queue);
+> +	if (unlikely(capped != queue))
+> +		skb_set_queue_mapping(skb, capped);
+> +
+> +	return netdev_get_tx_queue(dev, capped);
+>  }
+
+[Severity: High]
+Can the reproducer in the changelog actually reach this function?
+
+netdev_tx_queue_mapping() has a single caller, and it is gated on the
+per-CPU (or per-task, on PREEMPT_RT) skip_txqueue flag:
+
+net/core/dev.c:__dev_queue_xmit() {
+	...
+	if (static_branch_unlikely(&egress_needed_key)) {
+		...
+		netdev_xmit_skip_txqueue(false);
+
+		nf_skip_egress(skb, true);
+		skb = sch_handle_egress(skb, &rc, dev);
+		if (!skb)
+			goto out;
+		nf_skip_egress(skb, false);
+
+		if (netdev_xmit_txqueue_skipped())
+			txq = netdev_tx_queue_mapping(dev, skb);
+	}
+	...
+}
+
+The clear at netdev_xmit_skip_txqueue(false) runs unconditionally at the
+top of that block, in every egress-enabled frame.
+
+The described redirect enters the target device through a nested
+__dev_queue_xmit():
+
+tcf_mirred_forward()
+  tcf_dev_queue_xmit(skb, dev_queue_xmit)
+    dev_queue_xmit()
+      __dev_queue_xmit()   /* for qb */
+
+Since clsact on qa has already raised egress_needed_key, that nested
+frame for qb takes the same block and clears the flag that skbedit set
+while running on qa. netdev_xmit_txqueue_skipped() is then false, txq
+stays NULL, and qb's queue comes from netdev_core_pick_tx(), which caps
+and rewrites the mapping itself:
+
+net/core/dev.c:netdev_core_pick_tx() {
+	...
+		queue_index = netdev_cap_txqueue(dev, queue_index);
+	}
+
+	skb_set_queue_mapping(skb, queue_index);
+	return netdev_get_tx_queue(dev, queue_index);
+}
+
+So by the time taprio_enqueue() runs:
+
+net/sched/sch_taprio.c:taprio_enqueue() {
+	queue = skb_get_queue_mapping(skb);
+
+	child = q->qdiscs[queue];
+
+the index it reads looks already in range for qb, on the patched and the
+unpatched kernel alike. Does the quoted "BUG: KASAN: slab-out-of-bounds
+in taprio_enqueue", the read 0 bytes past the 16-byte taprio_init
+allocation, really come from this skbedit + mirred sequence?
+
+A second point on the rationale:
+
+    So the decision is to cap the value where it is first trusted and
+    result is it fixes all downstream readers at once.
+
+Is this site where the value is first trusted? The only in-tree setter of
+the flag validates against the same device before arming it, and stores an
+already capped value:
+
+net/sched/act_skbedit.c:tcf_skbedit_act() {
+	...
+	if (params->flags & SKBEDIT_F_QUEUE_MAPPING &&
+	    skb->dev->real_num_tx_queues > params->queue_mapping) {
+#ifdef CONFIG_NET_EGRESS
+		netdev_xmit_skip_txqueue(true);
+#endif
+		skb_set_queue_mapping(skb, tcf_skbedit_hash(params, skb));
+	}
+
+and tcf_skbedit_hash() ends with:
+
+	return netdev_cap_txqueue(skb->dev, queue_mapping);
+
+With that, capped != queue in the new code seems to require either
+real_num_tx_queues shrinking concurrently (the index still being below
+dev->num_tx_queues, so still inside dev->_tx[] and taprio's q->qdiscs[]),
+or something rewriting skb->queue_mapping later in the same egress run.
+
+A path that does look able to deliver a genuinely out-of-range value to
+the new statement is a tc BPF program writing skb->queue_mapping after
+skbedit armed the flag on the same device, since
+tc_cls_act_is_valid_access() permits BPF_WRITE of that field and
+bpf_convert_ctx_access() emits the store. Would describing that (or a
+similar in-frame rewrite) instead of the cross-device mirred path make the
+Fixes: tag and the reported scenario verifiable for reviewers and stable
+backporters?
+
+Also, this isn't a bug, but the changelog says:
+
+    Another approach was to cap it in skbedit;  cannot work: the
+    redirect target, whose queue count bounds the mapping, is not known
+    when the action runs, and act_mirred sets skb->dev afterwards.
+
+there is a double space after the semicolon.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-9R8V.v1.20260921065103%40mojatatu.com
