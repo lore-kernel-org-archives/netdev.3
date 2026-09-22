@@ -1,107 +1,128 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF484052CA
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790064563; cv=none; b=hBFgZpxB5VirnMLQS/3HG4NcACb3x6hz7xKs7EqpqXphAVvfVhGZ8/bpbTePFuz10xrGmyp6rb3mdkK9z/uj3svRrkD9UHHGi5MyJ81zIAAkpfs4LQ3aJFwzB0iM5edburoBgsHp9tq+4aJxMBeSP8tmZQJ76tDf9U0+GUdjBV0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790064563; c=relaxed/simple;
-	bh=FM9sgnYHKYLQdnbQxJPIQBCYzxHbimOCpUuRPbakWmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VwhIUd3rk/dU/Y03Nd65Krg8u1GAmYsLcIv3tOhz1KnfhHoMZJ8I6WhMM/xEbBxnpuZSL/mp9PSuOF9ECXMPW/XBgyWVRJAkMCZ2Tvl6pAIIsHyo471Br8ZC0zwoItHCGGEd4Elm+Ay7fZbOxTsE3lnwBWSY/ubgC+ct+dNH/wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IVpJD6uI; arc=none smtp.client-ip=74.125.228.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28564423E8B
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.235
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790064617; cv=pass; b=WB5vCzLNaUEHzR7dRNCxSIvRvfcYreWMOJlHC7POCoc/e5C4TeJt2MgAJxaBhlenlbXiEVNAnx+OS8umEauFGIH7Ja18WPQP4GmFWgQCyAEqVPnXssJ5Ec/OqADulmxfe89fYeLkvploaKJJG61x08+qtVN9YGrdKeknKrixZ1s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790064617; c=relaxed/simple;
+	bh=0TPHr2wjc7lv7i9amMHXALYK0m/OfGIqKy9VfsJQwbc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F2AVHh0E0YiZhJrFBF43Xt3JUAhK+RbVDz6pxrEsiFAAjqUI2dFYEkiw+7YSMLonzF8JqF18LYNY6t44OOyFJR+3uwNfRg4MSjG27vT2oQAgLlbYYInmv8fyT2KJRLD0MrrZHWT3rYh2Yh/i7pWBIVbJv8eNPkC4OyqkjRVeP1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UI78I7jg; arc=pass smtp.client-ip=74.125.230.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IVpJD6uI"
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-85469d20963so2502982b3a.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:09:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UI78I7jg"
+Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb767d286so35478871cf.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:10:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790064595; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BxRXT27aMcap+g768hntDpusyxvl1hWoLORjRlDBZuyI+1FZ5x2i0bIg3OWdkQg8Zy
+         B6JTIyc5Vbm+qNZmaJGZOhl4UUUdeJcbWbeSuTZuc6pDt1sZuLZgqzUJk7A6SM5H6QhN
+         lbWXIXlN680s/QOB1ANpYOOnuKBNTK1xcQ5bziqb2IuIFH1p3I+76JS/7a3tBW/qJ4B4
+         e/n7azzWe9qpSVBx/ejpRBBdMApuqqEzv4ustjx03HVKj4tdMatXe9gzvr0VDJRbVdf6
+         i91k51sblrwvBHUVcaviRiPzBhxejx9gUcvcs2/CtUD9muxjgJ90qKnoEUcaM7hRG9xV
+         xjiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0TPHr2wjc7lv7i9amMHXALYK0m/OfGIqKy9VfsJQwbc=;
+        fh=6zfc34g9dSC0U+f8Tklj1Fl9FF2409hSLYzYwy9S3Cg=;
+        b=GmmfLdcrsEQ8B+nG8EUZ5UFTVt4DL49wnoVkO3cgU8ll1pQmZrylODs4kChkkdSQOt
+         7OjDqh1WwZeGQAFC2q6SN23NcUYLzrx0HhQGsN5+r+zx2gyElavKkgzPC1wkBr16rcQI
+         kD0E0loM5hzigSxNZbXQwVq5ruJKH0nO7cId6gs9BUDSR5/HXubXb1famA36IqNl7Nv5
+         sivR3E5Ga4NhmTxCD1V1uPraI8EmyECAxXvRwXFFCprrTnmUKTxbmnpqT5acDEPoqz+x
+         Eax+ptBUNfi6l/gEgaXO13MyD5wSKI7Ms1KN1IgDmd88kaSAZlaMCpiWkQ3mevzXEe6R
+         8o5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790064555; x=1790669355; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H/KZ3Zb/HHoL3F/ptWbLdF1qyOZdC4rzO0WRdzYjvaU=;
-        b=IVpJD6uIedx3XfMFa9Zn6StdvFSj/X9Fk0yTqR73hGlsPGCBYISwY9ConFxUNlmyO1
-         xbVlSvj3nW0Bm3CtYRPeRj7ElTZAO7W6VouUsmuYKeilxmPs1kqvWYvO9eDRQ9FHIseS
-         XX111yGrMYLrrB3CfQjVPVH8sRSIxsRYgBlulfbQ4ZDZGkb1rukCuv8RVC99Jm0IALlE
-         jtIi4/tjduf+YUXGQKQ+hJ9KI7E94UZ5xsq9vzTOw7Fmb8+cTzh9axcU2eAFVpj9nXd+
-         tMsaOK3QE3gn3COEctzztkmtu4WJpD7wqe++zxHs1/06bDrKzkMdgspgcwtRBY11Ce7h
-         4hZw==
+        d=google.com; s=20251104; t=1790064595; x=1790669395; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0TPHr2wjc7lv7i9amMHXALYK0m/OfGIqKy9VfsJQwbc=;
+        b=UI78I7jg2WcXtLSBRhot0Ibx1hwI5uqdSXP9L0/P9Ngf2Wf2tNiyiQJfV0rrLgGMLu
+         IJu/JLXLNDQIYa09dB+7MS+wmonGDrQeiaJK1vsnwgq6V6QWOVc3mpTvLwhbxNyWX0Mg
+         vre9548+kquflevrnvMByBzcn8QWU4AP0SihQKwfeD2mTRm9eYn0QPBY8UMNYUNPuMQP
+         ATuJK9cUr3eA0hU19PIRmOamZ3616OJgOdDCtqVczw/3hUVDlCiJdEXE41W//BVlnMEI
+         /SPWl7MLxYS94PfP+CVQPRjGQtBGiWRU5Zxxitz3Htc/PVpRTXJpuq15YZ+WWMCEclX5
+         pGLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790064555; x=1790669355;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H/KZ3Zb/HHoL3F/ptWbLdF1qyOZdC4rzO0WRdzYjvaU=;
-        b=ucUMY0UtYlqpdPs97SVKKqWFfyz7BhNa9EyNwWMIAgTZNkMh11N6bQHXpvO6s54vFc
-         WMvpaJf+EaWqqXK+a/gcfBpVykBIkf6AxMDVaxFJSshUETeUhAoSwf3YUbHNH/G6ntSz
-         VHzG3KNsYG+T5uFccvBlloNFlSyVtDo3mZwRRS2Utbvp+McedLR9nBSQ6tEBFvPCUACi
-         nwny3bkLK9Q+CTCyCq8O6xyi11NkGirmAjDqYLFxXfTBEGlLHk6IfhJkoAqZ4S+x5HPR
-         sWFrjTWMPztNxBdbb1jop9/vja17v+TG0P8a+bZVD4BS6Zi2tuRpYdGJCUdrGxilHLfT
-         x0MA==
-X-Gm-Message-State: AFuF++nMiD/nPWzJzDs4Q9KPrRnLXLXzxKuYKfNqDR+FFxlteZkEeb8I
-	z35FsMzxq2/LaVE2wnZk6OCfl94AyGijs5Xxm4EnH8ZugLbrVDPxYyQcAFewYBsnKlpKgg==
-X-Gm-Gg: AYBFou0yzUNnEWi2taNWHWWGnTiIoRM5I8WJTr2dSS7H3VKIA+5MStDaefFNTybk0lb
-	qsbJi4jxgjP2F4K9dpZ6kaZBfT1o0hIXY2F87kly3hjNxmqb0guPkE1MWoUUswMqz6GttTZj4i2
-	PvmZWeOKPNKjU4l0RyfUueqyNJstqQHx2fjNWQSgexXH8vjQAzATGiOTR/iJKCWHimhM4sDwoe1
-	akNSASfsThIEz76/GnWJN9ZKxwoGtUoHekoqWCbjLVZjEHu4S3LuCM/GmkVJxS38cYOG+5DyFd7
-	R4DBagYWJ/JI0TDsaZIT4XzGSC9KEcaTA1kxarkvVXbp9Qt3ZiUbpNF4TW/xTc4B5RcHT/szRLq
-	n3OqVQjQZVUFhk9v9bhuZgk39TbWi6ldRrrTl23vyADF1p0lC5v8wI0+pe/7rYiGhwy+cijlAXO
-	/OScIRwxBI7LvEdKHp5Tpjm6b+joZnksI4bItDW8mVkPlFaefYG9Z/MwN+/cR4ad4yXs9eRYCTC
-	d1CGWjG2TlG11hyUn4qUE1XwQfXehFqPn7Yq2fYjUNNeAyPkLIJmjKWB+2qSrMkgA==
-X-Received: by 2002:a05:6a00:23d4:b0:878:3507:8d5e with SMTP id d2e1a72fcca58-87c8432efbbmr362613b3a.37.1790064555038;
-        Tue, 22 Sep 2026 01:09:15 -0700 (PDT)
-Received: from localhost.localdomain (5.240.104.34.bc.googleusercontent.com. [34.104.240.5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87c31ee8fc5sm458535b3a.9.2026.09.22.01.09.12
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 22 Sep 2026 01:09:14 -0700 (PDT)
-From: Ginger Li <ginger.jzllee@gmail.com>
-To: jmaloy@redhat.com,
-	tung.quang.nguyen@est.tech
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] tipc: Fix a data race on mon->peer_cnt in mon_timeout()
-Date: Tue, 22 Sep 2026 16:09:09 +0800
-Message-ID: <20260922080909.21123-1-ginger.jzllee@gmail.com>
-X-Mailer: git-send-email 2.46.0
+        d=1e100.net; s=20260707; t=1790064595; x=1790669395;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0TPHr2wjc7lv7i9amMHXALYK0m/OfGIqKy9VfsJQwbc=;
+        b=L/sAf12U5LjtJrWkCl/ZjDkqM1T2ips4jKSdVNEp0E9jVZfNeOYmiFt+KprAM8Q2HK
+         rqyWLL72d/KRW6dx6wNMbmWVd5fir0TKT60pzxntvO8nTPovoxziKUVHrcyJ2Y3oeR7P
+         z/mPiThbGOYLmn5RZqnXd03gqAyl7E4feS7kQKx3v9nUpfQBKTelhtw8Ai14aShunW7V
+         rUz80dYt411coHFlzch39aukojWRuPLhdzvTKmk83WmXWUMa1s3sMNfxgUrPX5aU2ThJ
+         OOPU+rHgILshyxJOFaXvwiATTdATNc+Zl2yZLocsgS0Y1KyGeAe4oXeTRlENYbA22H7s
+         rJig==
+X-Gm-Message-State: AFuF++klY0vRpRG/E0MoSWdqiOK4SLxyrcvetqbPV8ZLz4vCe+p0JlIr
+	scrX0eJq8IUEHrYGjSy9yu8NvzwDIkJCYyQ7G1FQ1yTz84OMCzsEoVA3T+UIItPzgB/3X942x/H
+	VfnCrXDvz3lWF7YG/Zf7tZVwFfm4LAFjlVXQ0kNVW
+X-Gm-Gg: AYBFou1rRGMTe1ZfnOsUNou7AZjFd11JAb+xJ8ge5HmIJ5PDIFdPZzN8HYmv3pI/XzG
+	BLMqzo37ZjMRskQ2vWQqJ61tkdENsdeVTy4CUHNehsTaA+Y4r/lIB7/oppD9aj+wCiZODix4snu
+	TEK8UV1iP7dWbPMeuCX+4evfw/boBPm5W5wsUdXMYIYc2Bkx1fzPsptaH6GyFyWWsV7kvsjrWjd
+	3gt3lEUF1O10SINtvA3/oQfUoGN2XgTXPxphw6gv/9cSqEDskmdxjGtRn5hEyZfpxeTcIYnraXO
+	2wkJMRyKfD2N2d3CsfvKqTwsYY97LnlBLUh9j5b/t/oDqZawJq+o6KeoCE6ysI3p+3G41pXMZ0u
+	UETq+7b/Q8+7mYxTJS8DcrS3xPZEh7PNw+Qv8YLAPYe1LDtWQnCVf9YkPHNmfd+kczO25Sg==
+X-Received: by 2002:a05:622a:8b:b0:532:9ade:b6db with SMTP id
+ d75a77b69052e-532d8ec0addmr44120171cf.68.1790064594490; Tue, 22 Sep 2026
+ 01:09:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260921222609.50824-4-jeffjo@openai.com> <20260921222609.50824-6-jeffjo@openai.com>
+ <CANn89iK00zXGA8sdpH9Y1CkFK3n=uKG9Bci3+=69fGV0UDQ80w@mail.gmail.com> <arIE_i8Ysz5nOI2W@com-94485>
+In-Reply-To: <arIE_i8Ysz5nOI2W@com-94485>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 22 Sep 2026 10:09:42 +0200
+X-Gm-Features: AcwNN1VZRZKeamW0woMTH2MljTZUPUykptvBQbfvKuUK7LNYhzxm8OhK1Dtip-A
+Message-ID: <CANn89i+nY499TfuGMvMq3P=Pxw6vBxe+uYH1zioK=bhU--GXYw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] selftests: net: check timestamp echo after an old ACK
+To: Jeff Jo <jeffjo@openai.com>
+Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-mon_timeout() evaluates dom_size(mon->peer_cnt) before it takes mon->lock,
-while mon->peer_cnt is updated under that lock by tipc_mon_add_peer() and
-tipc_mon_remove_peer().  The value can therefore be stale, and the decision
-whether the local domain has to be recomputed can be based on an outdated
-member count.
+On Tue, Sep 22, 2026 at 6:33=E2=80=AFAM Jeff Jo <jeffjo@openai.com> wrote:
+>
+> On Tue, Sep 22, 2026 at 02:08:47AM +0200, Eric Dumazet wrote:
+> > Note: Even with existing packetdrill binaries in the wild that don't
+> > check TS ecr,
+> > tp->rx_opt.ts_recent is still directly testable in pure .pkt via PAWS
+> > (tcp_paws_discard()),
+> > the same way tcp_ts_recent_invalid_ack.pkt works:
+>
+> Thanks for the feedback. I'll send a v2 series tomorrow removing the
+> redundant SYN_RECV check and replacing the test with a plain .pkt test
+> that uses PAWS for the assertion. I've verified that the revised test
+> detects the bug with unmodified packetdrill and passes with the
+> simplified kernel fix.
+>
+> For the PAWS probe, I used TSval 300998 rather than 300999, since
+> Linux's one-tick PAWS tolerance allows the latter through.
+>
+> I'll follow up with a separate packetdrill fix. How does that sound?
 
-Read mon->peer_cnt inside the write_lock_bh(&mon->lock) protected region.
+I saw you sent the packetdrill patch for formal inclusion.
 
-Fixes: 35c55c9877f8 ("tipc: add neighbor monitoring framework")
-Signed-off-by: Ginger Li <ginger.jzllee@gmail.com>
----
- net/tipc/monitor.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Let's wait for it to be merged and our runners to be updated, as the
+kernel bug is minor.
+This will allow us to get a nicer packetdrill test that exposes the
+issue directly instead of via a workaround.
 
-diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
---- a/net/tipc/monitor.c
-+++ b/net/tipc/monitor.c
-@@ -632,9 +632,10 @@ static void mon_timeout(struct timer_list *t)
- {
- 	struct tipc_monitor *mon = timer_container_of(mon, t, timer);
- 	struct tipc_peer *self;
--	int best_member_cnt = dom_size(mon->peer_cnt) - 1;
-+	int best_member_cnt;
- 
- 	write_lock_bh(&mon->lock);
-+	best_member_cnt = dom_size(mon->peer_cnt) - 1;
- 	self = mon->self;
- 	if (self && (best_member_cnt != self->applied)) {
- 		mon_update_local_domain(mon);
--- 
-2.43.0
+Thanks!
