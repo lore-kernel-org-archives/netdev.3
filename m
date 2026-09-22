@@ -1,241 +1,298 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10233C1974
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAA7386C21;
+	Tue, 22 Sep 2026 08:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790064963; cv=none; b=NbAUNMLBEDiiAIEJ+FPeKwfxFJ7uF0gRJU+p1lz+f5kzM2oJbAnkPiQUxTOcOyymu0/MmEfk7+ZMOmUGTqOwICU6bhEC/afr+AKRvH56AyrF/8d8fHX3XfrV4qNWWXxOLXocDkBxUKtTYTszUeqZnLoFV0xaDapgNnA44EkrFEI=
+	t=1790064981; cv=none; b=HBzrOuyzTWKcTe2BePjqO38iORoLGNcP+ku81zUdfbr2EiaX8Ou1FLEIU3DjNm5vwoQnDxnFL3dFMjMw4/+5SpqzLEKOwsu4lfNF//TqBEnCqaLBjLb/DGTBMsQchv78fv1sfP0QVNGYdohFxtreFHthL6qBc+oXiyUD7R/NB5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790064963; c=relaxed/simple;
-	bh=2vxbM7tPDJsSYHWzZeCi14MlUc8L6n7SqbqtOin0qVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ejJspoNSW4YqXbcMwGm8wZCXahSo1tNmqxjVf4oowdnEZWyB4Q5cbxewE4MvprjIDmzPhGtYBOnkiIi9uj0I+aR59qiykIls4WisNLBLTr/TRbDHWqbD9cbzed3IyB7HvShtj7zrEihyXvaKLovFXpE0SIJoA5Tctv1tIT1k3Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TPMh2/uf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=N3ZkRPsE; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790064981; c=relaxed/simple;
+	bh=BuTVsnydVMlOpXAKBEWqj71dcPdmU1jkMss8beXiBjo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=de9oWlAPiSDp+lEdoG0F8LAAi9h+hBqevDj0kCFKXyGf/bsOkSREtduWmdLy9sDctFD1MaxNxreSP5AbG5OSYqZxqz3GTbPlDv4u2NIXn11KoD/AnXn2fOns6kTMLiNnhCo5Mkm5jKlsQhMUT2QblHKU52iQ+IH8kDaewf/tyhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnriIg+Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TPMh2/uf";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="N3ZkRPsE"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68M4MuSb3383563
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:15:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=GoG1axqiW7GSzo7JL49Rru+X
-	2FH8bH4THAcHQLUbhIM=; b=TPMh2/ufSQdrKpQI7CtbbyaqenspdgjbOubvvNwH
-	nipujmpyFSmceek5gA5NnO594tYTTx5p2eurAErDO+V091J7llTtp6neHQKQyLLG
-	/HJ9bl4YUyfaur7FJMJ/50m4C14B0z80NzJ4+Mss9LvSyQv8X6wqTjhSbULOVhJb
-	CHSngyP3pZbRj3VNesFN+Sfp1Ub10kXTRJQbiFZGhWQvMdxXrf0CBw4eMPZTHTGD
-	SZAg/cO99LRurcCfhnenHVKbO0KCf62/MRLYvR0LQPgtHAy2H+CrHZ+B5ijqKJqh
-	wRU2dgcy7mYhaxfBmrlkEU+hdeMfjtUPr920fZe7t2j+DQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gujkj8uxb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:15:56 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93a0312937eso494505685a.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790064956; x=1790669756; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GoG1axqiW7GSzo7JL49Rru+X2FH8bH4THAcHQLUbhIM=;
-        b=N3ZkRPsEesURhd4/4V1xl7sEFxszaNkGzLocAzX9UdfzMhx45UvITmwAlqflFlipA3
-         yu5H8ErJQSU5tQPp+zFGIekOm4q0ajoeWGoMnnqpMlqyxM5g2xTiwFoEv7Z73D3kWRUP
-         vR38axnyJi55EkZCiUlTPOjq8er3eIpoNgjGKEHy1uliI9IbRrtUC6vp19NUO31tpy3f
-         ONhOI3J/2ovY61eShpnlONJBjrlHpOU35WQj1oq8brxCnIDK5Ag0YD2dOvlqyYDH72GH
-         rMiKRSixT0ZgNCqLOOKSca5oyjSB88nB5+vmsenUg/QGWsAZQd6EGsGa/gNC56d+BIJT
-         LjRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790064956; x=1790669756;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GoG1axqiW7GSzo7JL49Rru+X2FH8bH4THAcHQLUbhIM=;
-        b=BR1WfGTLv/dEAn66QGmxZUNXZ29xMdLvuyjdsMN6xJv83bS6WLa5c0hpX/Q5YFnPF1
-         sCCLjDV60wm+zJyVPyO3jc17VrDqHpVjpMRFEVYizPV04POXoKfYxL7BItXozAzYOG9K
-         8g1S+6ZOa/LCzHCamVRpeEhHo0C3TReJybWWGy/j81jr0qgwzFZEPzTiCdBX/KeCoHyn
-         l/MkcNZj7EPsplc6fbVYSgb7Ly2LKuDeTi6lfYNT95F7uNJjqczj5ag2JfTqJMjE4sUh
-         9MQ1le1l/4cglW176vAJpqjH+B2H+64IAFh3r4wWWR4noluO1zLblY1hjxGBhfWZgHkt
-         eDuw==
-X-Forwarded-Encrypted: i=1; AKwUvByuzt6im/a8Z8TCU+lyhQrDZXvB1uLD5OePZpXfFfBdYxHcFJMZK5cTqT7lMWKxt+86i2Q6UyY=@vger.kernel.org
-X-Gm-Message-State: AFuF++k4i09y53ALmFzBlmZbBX3PCJtY8Y73eDsHJrwLId+dg2OBmN7x
-	DB8tPAbe2JhAy8BcDqxCQ4meDc5N8mLpHuFsM7NwYMou1yZAt9DjonHcJ2fHDDcbkiPjDKvwksI
-	It0mdcMwcV3/4sJQ28nRcVQYI+5bJhep5O/UVLTynqJWSPOWNmxKxyuVyzMg=
-X-Gm-Gg: AYBFou2FMfKpUiRaCu0iBR64c4r7d5i+g99BChUX+1vavK2+Qou64Be+a1IyDH/4GnL
-	O4GaCn7DVObmFVnzE6ja3iQ6phblog+Vpd2jfZf98CLsiS6gR3Ek7OaaPKlVhTbwINcaZlP2kXO
-	taj9r0iMDZ4NtSZYvrzOjrYy0JVONRtFmrbRhLeQSX44T3EvxuiuSdrSp9Wa68s6kYB3nQzTpf0
-	OIAJxY75+4rWONA5Ixt12mP20KHxH+AHYm07CVv7Ts3VUxKCgykEOv2K3qlFHQxZbHwn+nKYJ6C
-	DuMG/2TKtA/SSX2+XrNkxO0lERuXb8MX0mWYkb2tJ8H93FOYUtG6aieIlNDmTXvVlckNFpx6wIO
-	mzGwEv3z3Q4tEJw==
-X-Received: by 2002:a05:620a:838d:b0:93b:d7a2:dd39 with SMTP id af79cd13be357-93c15ed080cmr404178085a.73.1790064955550;
-        Tue, 22 Sep 2026 01:15:55 -0700 (PDT)
-X-Received: by 2002:a05:620a:838d:b0:93b:d7a2:dd39 with SMTP id af79cd13be357-93c15ed080cmr404175985a.73.1790064955001;
-        Tue, 22 Sep 2026 01:15:55 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a9c5e7850sm45992066b.42.2026.09.22.01.15.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 01:15:53 -0700 (PDT)
-Date: Tue, 22 Sep 2026 10:15:52 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Myeonghun Pak <mhun512@gmail.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Ijae Kim <ae878000@gmail.com>
-Subject: Re: [PATCH net] net: airoha: npu: cancel wdt_work after releasing
- the WDT IRQ
-Message-ID: <arI5OD8X2Eoz_Ojd@lore-desk>
-References: <20260922000914.542068-1-mhun512@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnriIg+Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB411F000FF;
+	Tue, 22 Sep 2026 08:16:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790064978;
+	bh=gOk4uYV7AmQiIV5I3BISJRVheE9g6ivZNXTPgLuvCDE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AnriIg+ZhXJyWVxHbinL0tNToxHlkD048VcwpjOs390gXHXcW5OLm/D/kyHTFL6oL
+	 UyIU1LJWKEKnyLVNSgtl1hnE719qfz9ucONGEiS46d5HmRMQ94Ojmhh6BMsZe/yVcA
+	 1N0p/7v0vazn+xe4xoHxkoiLVB4vODt7XBEkqcGzROECCGFq5XqMNXvEUBBpkNWioF
+	 ACOvfJmP2pMDaYyL8/N3D+0HxxZRIak0Pzg7GWVOqwxpW3faueHaDcg5ts1P9ZzpdN
+	 u47nwbXKRFoi7zzpaCqajyLsnqs4QVbIz2ryAy/2KYOm8vRAVdo31LTTuxJ+8ql7P0
+	 0TLvGwJJ2pAJA==
+Subject: Re: [PATCH net] net: ti: am65-cpsw-switchdev: flush dynamic FDB
+ entries by port on delete
+From: netdev-bot+sashiko@kernel.org
+To: danishanwar@ti.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, s-vadapalli@ti.com, rogerq@kernel.org,
+ kees@kernel.org, stefan.wiehler@nokia.com, c-vankar@ti.com, horms@kernel.org,
+ arnd@arndb.de, vigneshr@ti.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Date: Tue, 22 Sep 2026 08:16:16 +0000
+Message-ID: <179006497666.2160803.14768308117153644313@kernel.org>
+In-Reply-To: <20260918075926.3616434-1-danishanwar@ti.com>
+References: <20260918075926.3616434-1-danishanwar@ti.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="T9inMwS7qgqrO+Sd"
-Content-Disposition: inline
-In-Reply-To: <20260922000914.542068-1-mhun512@gmail.com>
-X-Proofpoint-GUID: gwi7_8gGGYvINEJq5k61y93j4zWVx0bA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDExOCBTYWx0ZWRfX2mIZAOFFEaaO
- 2kCnmhWhPdciFD+HUt1D+G3rgx4j3CWQZCaNtvwHjqXahQruvgk/FAGlefF4WUc5Tx+Sucq2lM0
- cvHiqUH+X5yz6hayrLQ6zHGfHCf7i/X58m2hx6NRgy0DrfAadrIJRC/ekzdXqNmpgfbv78yDcKG
- 2LZfp+nSFGnxHMAVrmFxL1JFW8EdS6MyDz8qw9+a19P0lKkavwDr2Tjsj3CSJbr9Y4r7uL3Q4KO
- it5iBGe+4KMqGE947ycBY1ShWl2FxCUPh6hxBT7ZQJObFG5h3dhAMVGdEUo/UYQShkYDPICmG0M
- One3R4ggAQU2uiVRMDDVPGqab4WPvqKb3hpvD73IHZj5VMj5wD8uLzXIzej3Q20TyERQKahOwPw
- vTxuHUosKDVXh89O37BMD/ZAmpGuRATCt/Q0tacSdKGrqvZnA2WB9Ig6bSvBjUKozJZxPyKCa3Y
- U5CAUVOcgZxKLJgOFkA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDExOCBTYWx0ZWRfXzLRjrWHg1SUa
- YFsTUHtKk2vckqamMv9bxIsXJm9SIum1MRIsHBoqmV9nplIyG/ygErWdA1+bwoHX5XqAzwTjhne
- jwtSBsa3i4rhUeOHIXInV3zL5hL5AxM=
-X-Authority-Analysis: v=2.4 cv=SuAFe/O0 c=1 sm=1 tr=0 ts=6ab2393c cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=4MF4sh17vRPpCNt1FVoA:9 a=CjuIK1q_8ugA:10
- a=TFMy8jt120Iq-BnFKmgA:9 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-ORIG-GUID: gwi7_8gGGYvINEJq5k61y93j4zWVx0bA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_07,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 adultscore=0 impostorscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220118
 
---T9inMwS7qgqrO+Sd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-> airoha_npu_remove() calls cancel_work_sync() on each core's wdt_work,
-> but the watchdog IRQ that queues it is requested with devm_request_irq()
-> and is freed only after .remove() returns.  airoha_npu_wdt_handler() can
-> therefore schedule_work() again once the cancel has returned.  struct
-> airoha_npu, which contains the work, is devm_kzalloc()'d and is freed in
-> that same unwind, so the late work dereferences freed memory.
->=20
-> Register the work with devm_work_autocancel() before devm_request_irq()
-> and drop .remove().  Devres runs in reverse order, so the IRQ is freed
-> before cancel_work_sync(), including when probe fails.  A cancel left in
-> .remove() cannot get that order.  Initializing the work first also stops
-> a pending watchdog interrupt from queuing an uninitialized work item.
-> Probe currently calls INIT_WORK() only after devm_request_irq().
->=20
-> This issue was identified during our ongoing static-analysis research
-> while reviewing kernel code.
->=20
-> Fixes: 23290c7bc190 ("net: airoha: Introduce Airoha NPU support")
-> Cc: stable@vger.kernel.org # 6.15+
-> Assisted-by: LLM
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0 (1)
 
-I guess this is net-next material, it is just an optimization, not a real f=
-ix.
-Anyway:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+- [High] New cross-module ALE helper
+  `cpsw_ale_del_ucast_dynamic_by_port()` is added to…
+- [Medium] In am65_cpsw_switchdev_event_work() the `!fdb->added_by_user`
+  gate is dropped for SWITCHDEV_FDB_DEL_TO_DEVICE, but only the `vid ==…
+- [Medium] Dropping the `!fdb->added_by_user` gate makes every hardware-
+  learned (dynamic) bridge FDB delete run an unbounded full ALE table…
 
-> ---
->  drivers/net/ethernet/airoha/airoha_npu.c | 18 ++++++------------
->  1 file changed, 6 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
-net/airoha/airoha_npu.c
-> index 5bb4817a898d..4d3195eb00f7 100644
-> --- a/drivers/net/ethernet/airoha/airoha_npu.c
-> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
-> @@ -5,6 +5,7 @@
->   */
-> =20
->  #include <linux/devcoredump.h>
-> +#include <linux/devm-helpers.h>
->  #include <linux/firmware.h>
->  #include <linux/platform_device.h>
->  #include <linux/of_net.h>
-> @@ -751,12 +752,15 @@ static int airoha_npu_probe(struct platform_device =
-*pdev)
->  		if (irq < 0)
->  			return irq;
-> =20
-> +		err =3D devm_work_autocancel(dev, &core->wdt_work,
-> +					   airoha_npu_wdt_work);
-> +		if (err)
-> +			return err;
-> +
->  		err =3D devm_request_irq(dev, irq, airoha_npu_wdt_handler,
->  				       IRQF_SHARED, "airoha-npu-wdt", core);
->  		if (err)
->  			return err;
-> -
-> -		INIT_WORK(&core->wdt_work, airoha_npu_wdt_work);
->  	}
-> =20
->  	/* wlan IRQ lines */
-> @@ -803,18 +807,8 @@ static int airoha_npu_probe(struct platform_device *=
-pdev)
->  	return 0;
+Pre-existing issues:
+- [Medium] cpsw_ale_del_ucast_dynamic_by_port() performs a full-table
+  read-modify-write walk over the ALE indirect access window…
+- [Low] The identical stale-dynamic-FDB defect remains in the sibling
+  legacy switchdev driver drivers/net/ethernet/ti/cpsw_switchdev.c…
+
+--
+
+net: ti: am65-cpsw-switchdev: flush dynamic FDB entries by port on delete
+
+The patch drops the added_by_user gate in the SWITCHDEV_FDB_DEL_TO_DEVICE
+arm of am65_cpsw_switchdev_event_work() so dynamic FDB deletes reach the
+ALE, and adds cpsw_ale_del_ucast_dynamic_by_port() to clear dynamic rows
+for a MAC on a port regardless of vid when the bridge reports vid=0.
+
+> diff --git a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+> index 53cdac272b58..8b4640809cf5 100644
+> --- a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+> +++ b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+> @@ -397,13 +397,23 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
+>  			   fdb->addr, fdb->vid, fdb->added_by_user,
+>  			   fdb->offloaded, port_id);
+>  
+> -		if (!fdb->added_by_user || fdb->is_local)
+> +		if (fdb->is_local)
+>  			break;
+>  		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
+>  			port_id = HOST_PORT_NUM;
+>  
+> -		cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port_id,
+> -				   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+> +		if (!fdb->added_by_user && !fdb->vid)
+> +			/* vid=0 here just means "bridge doesn't know the
+> +			 * real vid" (vlan_filtering=0) -- the dynamic entry
+> +			 * may be stored under any nonzero vid, or several.
+> +			 * Delete by (addr, port) instead of guessing a vid.
+> +			 */
+> +			cpsw_ale_del_ucast_dynamic_by_port(cpsw->ale,
+> +							   (u8 *)fdb->addr,
+> +							   port_id);
+> +		else
+> +			cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port_id,
+> +					   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+
+[Severity: Medium]
+What happens to dynamic deletes that carry a nonzero vid (bridge with
+vlan_filtering=1)?  They now land in the else arm, and
+cpsw_ale_del_ucast() resolves the row through cpsw_ale_match_addr(),
+which compares only entry type, vlan_id and MAC:
+
+drivers/net/ethernet/ti/cpsw_ale.c:cpsw_ale_match_addr() {
+	...
+		if (cpsw_ale_get_vlan_id(ale_entry) != vid)
+			continue;
+		cpsw_ale_get_addr(ale_entry, entry_addr);
+		if (ether_addr_equal(entry_addr, addr))
+			return idx;
+	...
+}
+
+The port argument of cpsw_ale_del_ucast() is never used, and no
+ucast_type filtering happens, so the row that gets blanked may belong to
+a different port or be an ALE_UCAST_PERSISTANT row.
+
+The MAC roaming case looks reachable: br_fdb_update() emits a dynamic
+RTM_DELNEIGH for the old port while the ALE has already re-learned the
+MAC on the new port:
+
+net/bridge/br_fdb.c:br_fdb_update() {
+	...
+			if (unlikely(source != READ_ONCE(fdb->dst) &&
+				     !test_bit(BR_FDB_STICKY, &fdb->flags))) {
+				br_switchdev_fdb_notify(br, fdb, RTM_DELNEIGH);
+				WRITE_ONCE(fdb->dst, source);
+	...
+}
+
+The ADD arm still keeps its added_by_user gate, so nothing reprograms the
+row afterwards.  Before this patch the gate made that path unreachable
+for dynamic entries.
+
+Should the vid != 0 dynamic case also go through a port-aware and
+ucast_type-aware delete, so both arms of the new conditional agree on
+which rows a dynamic delete may clear?
+
+[Severity: Medium]
+With the added_by_user gate gone, every hardware-learned delete now runs
+a full ALE table walk in cpsw_ale_del_ucast_dynamic_by_port() while the
+rtnl_lock() taken at the top of am65_cpsw_switchdev_event_work() is held.
+The helper has no early exit, since it deliberately clears rows under all
+vids, so each event costs ale_entries times six MMIO accesses (64 entries
+on cpsw2g, 512 on am64-cpswxg, more on j721e-cpswxg).
+
+The event rate is driven by network traffic: learning, ageing, flush and
+especially roaming, where one RTM_DELNEIGH is emitted per roam.  An
+off-box host can keep this going by sourcing frames with the MAC of a
+host known on another bridge port.
+
+Is the added rtnl hold time and MMIO load per untrusted FDB event
+acceptable here, or would an early exit / bounded search be preferable?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the legacy sibling driver
+drivers/net/ethernet/ti/cpsw_switchdev.c still has the exact code this
+patch replaces in its SWITCHDEV_FDB_DEL_TO_DEVICE arm:
+
+drivers/net/ethernet/ti/cpsw_switchdev.c:cpsw_switchdev_event_work() {
+	...
+		if (!fdb->added_by_user || fdb->is_local)
+			break;
+	...
+		cpsw_ale_del_ucast(cpsw->ale, (u8 *)fdb->addr, port,
+				   fdb->vid ? ALE_VLAN : 0, fdb->vid);
+	...
+}
+
+cpsw_new.c also sets ALE_VLAN_AWARE unconditionally in switch mode, so
+both premises stated in the changelog seem to hold there as well.  Since
+the new helper is declared in the shared cpsw_ale.h consumed by both
+drivers, was leaving cpsw_switchdev.c unconverted intentional?  A note in
+the changelog about the scope would help.
+
+>  		break;
+>  	default:
+>  		break;
+> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+> index e202bba49480..1a2aceda3dbe 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+
+[ ... ]
+
+> @@ -441,6 +441,40 @@ static int cpsw_ale_find_ageable(struct cpsw_ale *ale)
+>  	return -ENOENT;
 >  }
-> =20
-> -static void airoha_npu_remove(struct platform_device *pdev)
-> -{
-> -	struct airoha_npu *npu =3D platform_get_drvdata(pdev);
-> -	int i;
-> -
-> -	for (i =3D 0; i < ARRAY_SIZE(npu->cores); i++)
-> -		cancel_work_sync(&npu->cores[i].wdt_work);
-> -}
-> -
->  static struct platform_driver airoha_npu_driver =3D {
->  	.probe =3D airoha_npu_probe,
-> -	.remove =3D airoha_npu_remove,
->  	.driver =3D {
->  		.name =3D "airoha-npu",
->  		.of_match_table =3D of_airoha_npu_match,
->=20
-> base-commit: 238650ef6c7c7cca08e032527329424c9fbd70e5
-> --=20
-> 2.53.0
->=20
+>  
+> +int cpsw_ale_del_ucast_dynamic_by_port(struct cpsw_ale *ale, const u8 *addr,
+> +				       int port)
+> +{
+> +	u32 ale_entry[ALE_ENTRY_WORDS];
+> +	int type, ucast_type, idx;
+> +	u8 entry_addr[6];
+> +	int deleted = 0;
+> +
+> +	for (idx = 0; idx < ale->params.ale_entries; idx++) {
+> +		cpsw_ale_read(ale, idx, ale_entry);
 
---T9inMwS7qgqrO+Sd
-Content-Type: application/pgp-signature; name=signature.asc
+[Severity: Medium]
+This is a pre-existing property of cpsw_ale.c rather than something the
+patch introduces, but the new helper adds one more unlocked
+read-modify-write walk over the shared ALE indirect access window:
 
------BEGIN PGP SIGNATURE-----
+drivers/net/ethernet/ti/cpsw_ale.c:cpsw_ale_read() {
+	writel_relaxed(idx, ale->params.ale_regs + ALE_TABLE_CONTROL);
+	for (i = 0; i < ALE_ENTRY_WORDS; i++)
+		ale_entry[i] = readl_relaxed(ale->params.ale_regs +
+					     ALE_TABLE + 4 * i);
+	...
+}
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCarI5OAAKCRA6cBh0uS2t
-rI4fAP98jcpyP9Tldx0CU7Z1EVA2UQeRcOvya5TXQ8iPwJToBwD/c4p6RNL7m3/J
-s/bHKE3R7bhNQpjQhHDpmb8HLe2IXAQ=
-=zZw8
------END PGP SIGNATURE-----
+There are no locks anywhere in cpsw_ale.c, and other table transactions
+such as am65_cpsw_nuss_ndo_slave_set_rx_mode() ->
+cpsw_ale_flush_multicast() run under netif_addr_lock_bh() rather than the
+rtnl_lock held by the switchdev worker.  Should anything ever interleave,
+one transaction's staged words can be committed under the other's index,
+and cpsw_ale_flush_multicast() writes back every ADDR/VLAN_ADDR row it
+reads, which could restore a row this helper just cleared.
 
---T9inMwS7qgqrO+Sd--
+Is there an assumption documented somewhere that all ALE table accessors
+run under rtnl?
+
+> +		type = cpsw_ale_get_entry_type(ale_entry);
+> +		if (type != ALE_TYPE_ADDR && type != ALE_TYPE_VLAN_ADDR)
+> +			continue;
+> +		if (cpsw_ale_get_mcast(ale_entry))
+> +			continue;
+> +		ucast_type = cpsw_ale_get_ucast_type(ale_entry);
+> +		if (ucast_type == ALE_UCAST_PERSISTANT ||
+> +		    ucast_type == ALE_UCAST_OUI)
+> +			continue;
+> +		if (cpsw_ale_get_port_num(ale_entry, ale->port_num_bits) != port)
+> +			continue;
+> +		cpsw_ale_get_addr(ale_entry, entry_addr);
+> +		if (!ether_addr_equal(entry_addr, addr))
+> +			continue;
+> +
+> +		memset(ale_entry, 0, sizeof(ale_entry));
+> +		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+> +		cpsw_ale_write(ale, idx, ale_entry);
+> +		deleted++;
+> +	}
+> +
+> +	return deleted ? 0 : -ENOENT;
+> +}
+
+[Severity: High]
+Is an EXPORT_SYMBOL_GPL() missing here?  The neighbouring ALE entry
+points used across module boundaries all have one:
+
+drivers/net/ethernet/ti/cpsw_ale.c
+	EXPORT_SYMBOL_GPL(cpsw_ale_add_ucast);
+	...
+	EXPORT_SYMBOL_GPL(cpsw_ale_del_ucast);
+
+The only caller, am65_cpsw_switchdev_event_work() in
+am65-cpsw-switchdev.c, is linked into a different module than
+cpsw_ale.o:
+
+drivers/net/ethernet/ti/Makefile
+	ti-cpsw-ale-y += cpsw_ale.o
+	...
+	obj-$(CONFIG_TI_K3_AM65_CPSW_NUSS) += ti-am65-cpsw-nuss.o ti-cpsw-sl.o ti-cpsw-ale.o
+	ti-am65-cpsw-nuss-y := am65-cpsw-nuss.o am65-cpsw-ethtool.o
+	ti-am65-cpsw-nuss-$(CONFIG_TI_K3_AM65_CPSW_SWITCHDEV) += am65-cpsw-switchdev.o
+
+With CONFIG_TI_K3_AM65_CPSW_NUSS=m and
+CONFIG_TI_K3_AM65_CPSW_SWITCHDEV=y, does modpost report
+"cpsw_ale_del_ucast_dynamic_by_port" [drivers/net/ethernet/ti/ti-am65-cpsw-nuss.ko]
+undefined?  Built-in configurations would hide this.
+
+>  
+>  static void cpsw_ale_flush_mcast(struct cpsw_ale *ale, u32 *ale_entry,
+>  				 int port_mask)
+>  {
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918075926.3616434-1-danishanwar%40ti.com
