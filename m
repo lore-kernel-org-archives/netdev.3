@@ -1,102 +1,102 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E88651C043;
-	Tue, 22 Sep 2026 10:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932D73BB674;
+	Tue, 22 Sep 2026 10:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790074093; cv=none; b=LnbhvPNzl+G2OvTQUfv3CU1MNaFUmOUo+IoBR/ej2JS7XNeZwRSllhiTx7srY2rIC31DZ7rIavC7Y05vXAHWX7iQElWU0MJ8i5VVMylSeRc9CFo1LS3k9A7OlK3p89b3tXzPoehiCfzxLZ6BWgzHsp8SFLSFdAIxmCZ4xYR1TLA=
+	t=1790074455; cv=none; b=fyS1ST2KHgvHCwks40lCMsNiK/fO0QrAjZIAM8ngLqGVaTDOM8mCnMndDHtwB6gyoJ9KSSoT1n8k0KT0UELFZaGmd8WE4SCkd9dHQccOzRYMGCPjxPvrGdyF12ycbU0XCiAFfeoNdhT5dxT5e2vpjB/Hk7ZFQz/U7e+qaDJN3E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790074093; c=relaxed/simple;
-	bh=5XTj1EA863DQasURQDAmZbHghEd6eLn4G22Pvz7bVXs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=dHMU6trpjWLnDe1XUvojv0T0D4uT/OEcs/FJwNDUJGIweck2wfaRBCi+WspYBpwBEwghHYKVDULhZXn6VpVsCCh/OJ6ErUDKVu9zc9ay6eOREhArEUggQjS03VAHYZ1BiQMn3+Vd6/Lq6e/qJdBPxmy/k4s/Z5nL2R/gyGHmsFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=VDKHHDGM; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="VDKHHDGM"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99DE3A3808;
-	Tue, 22 Sep 2026 12:48:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790074089; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+3fixJm91Sq7EWmB5NYvMP8ut3zsm7bduoF8KuWeDtg=;
-	b=VDKHHDGMX9AmEG3dZhlBvNiiEZu9ea0/NvWSOvF+jPB3/oqlO26QH1TFnKDl1f+aoXjHk6
-	8BVl1t6vAOgoLFQyFsVbCRI8DUKjvkKoCBMm+46q/ksO5Hbp8qPwptgew/pZEnD6q3Oxvt
-	9ZSscWKIIPKasB6U0GFcT5KZf1P6t0SuJaYyoC/C/tRSO6LaPA5ECgGh8z/fcCIkfCizCn
-	GUJ3LsNcDlKrfUvNLBpeDJnxTIHXXTbYSLPp7nx8CcVdKCTp7//Ubw8uAcPpWk/qQ5JGye
-	/+txGXg94qSucEJTG4bGbEGVGXJYOyEfvulp2Cn004qeV6RmY1L5nGHBwwjaFA==
+	s=arc-20240116; t=1790074455; c=relaxed/simple;
+	bh=t5p+DeVFySLPUo98JwsIrRuSP1NSLjZ8sNO8pVCFJ3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YdJ0VBmMJnJpZS6gOFYIGVhWM1CmCtWd8pyalJhPhNADsMh984pIFU71F8fKaNdgYREN1yJQ9Z9k+Mxym7NM6d5Giu0cv6Y6HR45/4RERkoXm0F8BTdnawOOA3KpDDTRSWLyF3lsI6+OlcGCC8JjvnExRM/Kbl8YSTWZC4q5Dfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
+	 (Exim 4.100)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1x8y8P-000000006Qz-3nQU;
+	Tue, 22 Sep 2026 10:54:02 +0000
+Date: Tue, 22 Sep 2026 11:53:48 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: netdev@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4] net: dsa: mxl-gsw1xx: force internal PHYs
+ into a known reset state
+Message-ID: <arJePPY2gHpVeIKU@makrotopia.org>
+References: <20260922104124.311334-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 12:48:08 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: 5mghybrid@khu.ac.kr
-Cc: netdev@vger.kernel.org, =?UTF-8?Q?Th=C3=A9o_Lebrun?=
- <theo.lebrun@bootlin.com>, Rafal Ozieblo <rafalo@cadence.com>, Conor Dooley
- <conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
- <richardcochran@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 4/4] net: macb: Clear SRTSM outside PTPv2 receive
- filters
-In-Reply-To: <20260922-codex-macb-hwtstamp-submit-v1-4-9d1abaa53296@khu.ac.kr>
-References: <20260922-codex-macb-hwtstamp-submit-v1-0-9d1abaa53296@khu.ac.kr>
- <20260922-codex-macb-hwtstamp-submit-v1-4-9d1abaa53296@khu.ac.kr>
-Message-ID: <37a63a21097938f8057ca336ff3bf40e@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922104124.311334-1-alexander.sverdlin@siemens.com>
 
-On 22.9.2026 11:10, Kim Wooseok via B4 Relay wrote:
-> From: Kim Wooseok <5mghybrid@khu.ac.kr>
+On Tue, Sep 22, 2026 at 12:41:22PM +0200, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > 
-> A PTPv2 receive filter sets NCR.SRTSM, but switching to NONE, ALL or a
-> PTPv1 filter leaves it set. As a result, selecting the same filter can
-> produce a different register setting depending on whether PTPv2 was
-> used before.
+> When bootstrapped with PS_NOWAIT = 0 the internal PHYs stay held in
+> reset, so the driver only worked with PS_NOWAIT = 1 where they are
+> released automatically.
 > 
-> Update SRTSM whenever the RX filter changes, setting it only for PTPv2.
-> Switching away from PTPv2 then clears the old setting, so the bit 
-> follows
-> the currently selected filter.
+> Add a ->setup() hook, run before the MDIO bus is registered so PHY IDs
+> are readable during the bus scan, that programs the RST_REQ PHY reset
+> lines: release the PHYs of used (DSA user) ports and hold all other
+> internal PHYs in reset. Driving both directions yields the same state
+> regardless of the PS_NOWAIT bootstrap and keeps unused PHYs from staying
+> powered.
 > 
-> Assisted-by: GPT-6 Astra
-> Signed-off-by: Kim Wooseok <5mghybrid@khu.ac.kr>
-> ---
->  drivers/net/ethernet/cadence/macb_ptp.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> A single 300ms settle delay is applied only when at least one PHY is
+> released.
 > 
-> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c 
-> b/drivers/net/ethernet/cadence/macb_ptp.c
-> index 6376b6631..637d0da32 100644
-> --- a/drivers/net/ethernet/cadence/macb_ptp.c
-> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
-> @@ -390,7 +390,7 @@ int gem_set_hwtst(struct net_device *netdev,
->  		  struct kernel_hwtstamp_config *tstamp_config,
->  		  struct netlink_ext_ack *extack)
->  {
-> -	u32 ncr_mask = MACB_BIT(OSSMODE);
-> +	u32 ncr_mask = MACB_BIT(OSSMODE) | MACB_BIT(SRTSM);
->  	enum macb_bd_control tx_bd_control = TSTAMP_DISABLED;
->  	enum macb_bd_control rx_bd_control = TSTAMP_DISABLED;
->  	int rx_filter = tstamp_config->rx_filter;
-> @@ -429,7 +429,6 @@ int gem_set_hwtst(struct net_device *netdev,
->  	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
->  		rx_bd_control = TSTAMP_ALL_PTP_FRAMES;
->  		rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
-> -		ncr_mask |= MACB_BIT(SRTSM);
->  		ncr_bits |= MACB_BIT(SRTSM);
->  		break;
->  	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> [...]
+> --- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
+> +++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
+> @@ -589,6 +589,37 @@ static void gsw150_phylink_get_caps(struct dsa_switch *ds, int port,
+>  	gsw1xx_phylink_get_lpi_caps(config);
+>  }
+>  
+> +static int gsw1xx_setup(struct dsa_switch *ds)
+> +{
+> +	struct gsw1xx_priv *priv = container_of(ds->priv, struct gsw1xx_priv, gswip);
+> +	struct gswip_priv *gswip_priv = ds->priv;
+> +	u32 phy_mask = 0, active_mask = 0;
+> +	int port, ret;
+> +
+> +	/* Reset bits exist only for the internal-PHY ports preceding the first
+> +	 * MII port.
+> +	 */
+> +	for (port = 0; port < gswip_priv->hw_info->max_ports; port++) {
+> +		if (gswip_priv->hw_info->mii_cfg[port] != -1)
+> +			break;
+> +
+> +		phy_mask |= GSW1XX_RST_REQ_PHY(port);
+> +
+> +		if (dsa_port_is_user(dsa_to_port(ds, port)))
+> +			active_mask |= GSW1XX_RST_REQ_PHY(port);
+> +	}
+> +
+> +	ret = regmap_update_bits(priv->shell, GSW1XX_SHELL_RST_REQ, phy_mask,
+> +				 phy_mask & ~active_mask);
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+```suggestion
+				 ~active_mask);
+```
 
-Thanks,
-Nicolai
+regmap_update_bits already applies the mask for you, so applying it
+also in the caller is redundant.
+
+With that change applied:
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
