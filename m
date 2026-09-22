@@ -1,43 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7312353ED0A;
-	Tue, 22 Sep 2026 12:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19834414403;
+	Tue, 22 Sep 2026 12:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790079645; cv=none; b=J953WKUPVOcKe4lBizBGPzpnWJeSpoRJxU3poE0g/4s9kFHySxjuQOrF15cdZirH/nj6ZjawrrLSbsAVIMjszag6svKaa2fcZKT0USLmRlzdwij/oHXAGU3sOZ8L+DED1gkJrk3O7l+ljBjEbnPFox0guOuIqos31uj7SXyetTk=
+	t=1790079746; cv=none; b=lZ5hEqBtSGK81UAZK1Mm88zCGqlrX+kfda8TCLMSihk9xGdRnF5ujcOKu5hIj40kuY+mLp8sHN5Z4XaqsJjg36jRwww8+ZXjgK9SWaViZ6SOcB14G07S/VRWtgullh8gcUjmCtP2yXLcvh2tdN1E2Y7v7xE5jHzG4CZEmtuY0iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790079645; c=relaxed/simple;
-	bh=kRLHycinaMLdarpjWa+huFAtjSJzeqoDKcPD5Y/LEUU=;
+	s=arc-20240116; t=1790079746; c=relaxed/simple;
+	bh=3afR1Bzq8XcFa8cMu2H6ovUOMUTvAmf6actyawrW4gE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rz6nIeXqWiKUKkahG2dKwAbBLHpXqZVP7d8rGh6c15N6nSRbn8qeqOYyUw/h7Zuq9Txx/41ulb3vvgEo/pIxjz0fMbKvhBltJDNhXBu9PMnKcVpXjiZ8nhxQ4iGbf+7wz8aHKfSYdo9c2K4OcvYFu1aIEZ5+EeoKyKoNEKKpRHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfhINh5w; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nmgQo9Uxlg8VVoHMFbC7yXQFCGkwWYMBnF5byjIil7XvYVcETmK+aUCTHfiZnauZlC+TNPqKrizBLAgsjjAGpOqGnPlMsT0Ohy7b+8Legbtvrv85HKRl3dybuF7nYfjuP8zk83f/pqzOA7jJ2ML2vVaBat1iBo2XwV+9FdclLtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Ee5Lpe9m; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfhINh5w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ACB1F000FF;
-	Tue, 22 Sep 2026 12:20:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790079644;
-	bh=lnbAaFcbUuyEf5z4nx7NXc5Gs0Oi9a3ZSHa0+UvAExo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jfhINh5w1gckN4yEnwM5Mk3fDKz6Shw2CCE3WQ2kmHTrMLlTDGWVBQZB52FpNmujd
-	 GX00nojwf5pWnG7vSXbXC6K5+sfWdiDdkr3zJn+ED1RZbh3ZMrjYlQ08rov2TMKX7R
-	 DC+AkqMGNGqizjTAyFbE3BhqWFM+LFiNaN3dEZGPVkQfInSuJp4BrU+lMU5B+8z5QI
-	 W7dgzLECuC6+8jXRxvXjDGwVklZQ3HPj9CxsZso166bOsrQJul06Wr0M60f+jS76b4
-	 vp931u0mcJpHIXtNe1LMxaJfmB7kk3DdAy16nTxXv8tUg8UW09Y946im9MtD4+lK4V
-	 Rk4sMYxUv9q+Q==
-Date: Tue, 22 Sep 2026 13:20:39 +0100
-From: Simon Horman <horms@kernel.org>
-To: Hui Peng <benquike@gmail.com>
-Cc: robin@protonic.nl, o.rempel@pengutronix.de, mkl@pengutronix.de,
-	mailhol@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, kernel@pengutronix.de,
-	socketcan@hartkopp.net, linux-can@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] can: j1939: return 0 instead of user value in
- j1939_sk_setsockopt_flag()
-Message-ID: <20260922122039.GE13925@horms.kernel.org>
-References: <20260919213632.3313825-1-benquike@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Ee5Lpe9m"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=1iAbemXqGoGWsW5gQyZwmNgUJE4W1FWwNo+eaphdyp8=; b=Ee5Lpe9m6PAPfwOOrR/92xrovr
+	MwIrl7+7fWEH027M5odknv31cIDrAF/wXBg8KicB/lDnbGBgTghCMc5L3cKB6JanDO1FXbGD9sQUf
+	tGah2cLhqFjZlldLhIzFi0Tt18daB8nLGDTXetzowshn6h9fOLWPbDhibP/4X4Hj+ZPE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x8zVf-006aJ1-G9; Tue, 22 Sep 2026 14:22:07 +0200
+Date: Tue, 22 Sep 2026 14:22:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Daniel Golle <daniel@makrotopia.org>,
+	John Crispin <john@phrozen.org>, Hauke Mehrtens <hauke@hauke-m.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: phy: intel-xway: workaround 100BASE-TX
+ Link-Up issue
+Message-ID: <38ac8f1a-3024-48bc-9f7f-9302bd8e9acb@lunn.ch>
+References: <20260922075251.23386-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,31 +52,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260919213632.3313825-1-benquike@gmail.com>
+In-Reply-To: <20260922075251.23386-1-alexander.sverdlin@siemens.com>
 
-On Sat, Sep 19, 2026 at 09:36:32PM +0000, Hui Peng wrote:
-> In `j1939_sk_setsockopt_flag()`, after copying the integer option value
-> `tmp` from userspace and updating `jsk->state`, the function returns
-> `tmp` instead of `0`.
+On Tue, Sep 22, 2026 at 09:52:46AM +0200, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > 
-> If a caller passes a negative integer (e.g., `-1`) to enable
-> `SO_J1939_BROADCAST` or `SO_J1939_PROMISC`, `if (tmp)` sets `jsk->state
-> |= flag` and then returns the negative value as an error code from
-> `setsockopt()`. If a caller passes a positive non-zero integer (e.g.,
-> `1`), `setsockopt()` violates POSIX by returning `1` instead of `0`.
+> MaxLinear GSW12x/GSW14x Ethernet Switch Errata Sheet states:
+> "An issue has been sporadically observed after device power-on on the first
+> link-up attempt in 100BASE-TX mode resulting in either the link-up taking a
+> long time, or failing to link-up altogether...
 > 
-> Return `0` on success in `j1939_sk_setsockopt_flag()`.
+> Workaround:
+> After power-on, enable Cable Diagnostic Mode for all ports and disable
+> it..."
 > 
-> Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-> Assisted-by: LLM
-> Signed-off-by: Hui Peng <benquike@gmail.com>
+> Implement the proposed workaround unconditionally in the Intel XWAY driver
+> (MaxLinear GSW1xx switches incorporate Intel XWAY PHYs) because the
+> diagnostic bits have the same meaning even in older integral PHYs such as
+> GPY111/PEF7071/PHY11G. So it's not clear how to distinguish the affected
+> newer integrated PHYs, but the workaround should not hurt the older PHYs.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 22335939ec90 ("net: dsa: add driver for MaxLinear GSW1xx switch family")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-I agree that the problem described exists, and that your patch addresses        it. That the but was introduced in the cited commit. And that the corrected
-behaviour matches that described in Documentation/networking/j1939.rst
-for SO_J1939_ERRQUEUE and SO_J1939_PROMISC, the two users of
-j1939_sk_setsockopt_flag().
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-   "The acceptable value size for this option is ``sizeof(int)``, and the
-    value is only differentiated between `0` and non-zero."
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+    Andrew
