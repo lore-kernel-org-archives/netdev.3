@@ -1,175 +1,235 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11021089.outbound.protection.outlook.com [52.101.62.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFC04570D0
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790090142; cv=fail; b=G6TOqN2YTVNgVfno5cbb5xx9fOnSrzZTOAitlFFNimDav0d0suwgc1bMwGChdLsjblYFRRJTLzha4tXoLLRP+BrGe7pYjMN1904NftyU8oZXLxJN5zzB/Mb39Rfk49OQ4FfOlJFcGWHnerXqG+S+UcCo9xpSSGJ+VwJgV6De9g0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790090142; c=relaxed/simple;
-	bh=QPSfgoj/x4Mtvku2gARGmahZGgQQkRs5K67fSJOqOvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=aByT4yh++2P8Qn5AQXXp+mZVfno/9UamX5K8/wfYVbTw7yqUPuLf1byUDJBztTGZpLp+8JTNMq7FeT8hZ10Vg+RcK1QcRkiuyzw8hn8xT3MHIzMS5VAwVDVwTwTCkehJtgAqa+fd1+GMsKuUiR2EI2APVIHKGBSSu6KXDv4sWr0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=Z4aLH3z8; arc=fail smtp.client-ip=52.101.62.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1227F4570D0;
+	Tue, 22 Sep 2026 15:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790090284; cv=none; b=TQNw0ziZoFoIHlFxxqKRlY12cIfnvcERezQVneXvwBdgHxxF0Gz41+Dax/H7maJ7/o0Hf51FUTnTLxnJEhukLn+p+rf88nZHwr9pV/rLjgvoXHkUXmM7CI8MHuAU6ssrc2LGfoFDv0TQlX0eVEEC6fvLicWXL6/GCKJASlVk6c4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790090284; c=relaxed/simple;
+	bh=15HkibEpQmCW+19fUFq8VXDh4YsgQ14loxKhOxO0lII=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WQeTUZwa8G0leMCP+z8UR9cZx/qlvYLMlGXi+yUnCSkyAk1mNUkxHV93NYvy6IQ8U+THl5cyhwkJJpSVqLOkZiUc++UupHUN6wKa+BAKFOzDc6H49y03Ky/BqMBecr5bfHBVPv6HguYBE+PkR5J8msz98mjNM7PZzmh6pdAuop8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6CXXqI5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="Z4aLH3z8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I3mOU4pIWnR0Mq/0CwN9ce8z+mot+Z1+eSCPvNLEdBADDWKhfbExBcbStICeD/bu8Pj/rMjAvEYJXzHn9jLfjIb1A8oBnVeN9XljLNzw8ADkEcvntVumjFtwb0SClkYheZT58uQeC9HSvM1URqhis/ug5/Z1AGpBPsmUsa6fh1FoRHXikyGmOWMFyBQ1comOtAtuT/mzlB3jssEwb108WIqPN9CAVac4bqlis4ktktK24jwVl5/f5JclMyxLm9AqigsF5wDEMsluSWvVLW//CXCXRVCm6PLkqnLrQ+8ctoFsTdpQ6G+4YVDl52njQwnfMFfEyUtXgjK09e+L6P7yxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QIITzjXnlYW+KMDufLDGn9nEcL3a/qGDhwM0j3KtdGk=;
- b=akLsEXdRPKcyTmUtIjM7D6UMy/5HLHqX24bi4RJk911XgblefiXLZpA89copYxcMree8lfOjeQVzLR5iyZufImZ+BRjC2Jzmg2k7nU7qQNZNtZ4BRQp7Gjxku5u/gBu+UMT2KL0ZV2LGZ+6RaJdSNNMAakb1WHiMAzDsiESeza59BJQ+yj6vmJ976WFwnPMcTAfBloUzLiDaEOLUNkblpUnfCx+uc1xF2OroZpkxW5LrB3xdJPzpVNXBpULqFvSSBoFrGWLKYHEI5N3Jkf9h/XzryO0tZx55md6MhND7pEd978WZ9S64D0Gr3jp4uJt818wGW3X0DVPf0QisEdjKAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
- dkim=pass header.d=pa.msu.edu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QIITzjXnlYW+KMDufLDGn9nEcL3a/qGDhwM0j3KtdGk=;
- b=Z4aLH3z8sqQc623G57YI/Wqx42ku/xgkEKja8qXuLJffPUxtNbrX7D9W9cPG5nBGqCQfq600CBsfXikpTxsq5kf05wGaYQ1f9GUuD6Jr+mkmoeSjBDANY2ERW6x7vKhzuyakKfOvIe4ed8PebdLHdXsJahbddE+5nxbPCdJJKOaP0YsiHC/GurGXvNrakXHBCQ/6HpkCPF0IihJP/gKMKLZayuqUZak5rOZ36hR0iu2kxfihesis1svdN5LpJ5IbOXYYNAk5Lw/j7feZ0yqgYp9GeSO3BEPYb910Tb5Fht6N9nIQzuglyNf6N8LLtKLoxOy8FY7dTtU8mD6AzN3ypQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=pa.msu.edu;
-Received: from DM6PR12MB4337.namprd12.prod.outlook.com (2603:10b6:5:2a9::12)
- by PH0PR12MB8173.namprd12.prod.outlook.com (2603:10b6:510:296::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
- 2026 15:14:43 +0000
-Received: from DM6PR12MB4337.namprd12.prod.outlook.com
- ([fe80::b412:1b80:dfc:18c5]) by DM6PR12MB4337.namprd12.prod.outlook.com
- ([fe80::b412:1b80:dfc:18c5%5]) with mapi id 15.21.0451.012; Tue, 22 Sep 2026
- 15:14:41 +0000
-From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
-To: netdev@vger.kernel.org
-Cc: theo.lebrun@bootlin.com,
-	conor.dooley@microchip.com,
-	charles.perry@microchip.com,
-	andrew@lunn.ch,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net-next v6 0/2] net: macb: 1000BASE-X on internal PCS
-Date: Tue, 22 Sep 2026 11:09:23 -0400
-Message-ID: <20260922151429.23272-1-nwhitehorn@pa.msu.edu>
-X-Mailer: git-send-email 2.55.0
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6CXXqI5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98AD1F000FF;
+	Tue, 22 Sep 2026 15:18:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790090282;
+	bh=SCUskFf4P9uSaGgRY2DVcZeibiyVC9XecefXdSM92Hg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=k6CXXqI5y/J0EJrREtniefQG6Xg6CdtuQprCHaleooshSYJWEUL04kAFvwXdyB2PU
+	 lbNAnhPKZ4SpEThqh06cABShaNf5S1kfH7G4mCtN0xULjmZ++sW5ZxoxzEmcrwvBSm
+	 QxKFai5SDu+iH96dCDJPNue7ShuxbQ+MBQ6u3g7uF6XvwwfJAyKPBB3mbuGKhTkvl/
+	 dK56IVjCbEWDgKzcYqj/TEpotv8SG/KNy/qS/tY/jZU2DLgO0Ov7tN93TjXaTRYT7O
+	 ccfyQVWRje1ZYZ0PZfUES2qJixyraN+hLoC/ej+Ke7RNHQK/dsLf8WfIiGuuBIkU4O
+	 eTlYRZexoknJw==
+Subject:
+ Re: [PATCH net] ice: detach the VF representor when ice_start_vfs() fails
+From: netdev-bot+sashiko@kernel.org
+To: xiaolinkui@126.com
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn,
+ stable@vger.kernel.org
+Date: Tue, 22 Sep 2026 15:18:01 +0000
+Message-ID: <179009028142.2160803.9147341738754348504@kernel.org>
+In-Reply-To: <20260921031616.3390259-1-xiaolinkui@126.com>
+References: <20260921031616.3390259-1-xiaolinkui@126.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0415.namprd03.prod.outlook.com
- (2603:10b6:610:11b::26) To DM6PR12MB4337.namprd12.prod.outlook.com
- (2603:10b6:5:2a9::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4337:EE_|PH0PR12MB8173:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91cdd001-4574-4010-49d2-08df18bc3976
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|786006|1800799024|376014|10070799003|23010399003|18002099003|13003099007|11063799006|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	PUwpDsNWFz8ospoMkKnQsV/fdvABlgBXO/0Y9HmMwmoGVKEvLB/T+Ej7287tk3rWr7vL11XftY/eVy1y8gVUmqDJO1qQJ8l8RmiCNkte4PFWiq8LAM182JSUbGAZZ10VvGabkVP7ou5ibdbw2BoDIDs0coQcZPTr4UqOD35CsediBXy3LRyCjD0h9AnY4oFFS518z1XHuYqy7NnCBq1SMK5pofuq6dSMjFp0wjUmr2UB9oDpPRHAOfvXGV1HzPVagXFPWTT1KSw3qOhlrC8DOFvv/9D8Xog40/7Dz8XfLwf1+frfYcKIumzNWxfhGuHChns+0VkyF8Y63vUtiLKhlSFHwvUXIoIDWLnqSGEfTyGLPu1wn8YcLrVTOCMgZuGPJ0/LqFaJno3dzb8sxT5eJyp2UOz0IC+qeHybXc8QVXHZSbRf+AvSg/g1eAHXe3fRVkdUvJ55+u2GAZt04lYzbdW5mSIjsWirLCoZtj8gREbTSLIJfTt1gqxq8bhiNrzVsPsZskln1FHvk0eUlINiJZ7xMrfanxJUase58Zzl/EeJ154iiuLBKN3s6kwnfOiZWpxxdLG+TejCas7/lnIadn5esdVMv9wzxIlHzkttqP+tOgZAeTdhjTtr+wiPJu1hnFXdJzgRn1yi9ZCeXjTZO0AHpzrE7JArKL4jLKzHBi0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4337.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(786006)(1800799024)(376014)(10070799003)(23010399003)(18002099003)(13003099007)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OE16VDFFT2ZTbDVJWGdQN1RCVmVoNDFyeVJFVWN2ZEhSVTlMLzQ5c2lQelVa?=
- =?utf-8?B?L0dtYVprRzdLc2ZlYzBpK3NvTWtuYlhwTUszOG16U0RuRTdMaU4zSUMyMy9L?=
- =?utf-8?B?UW9EaWg5MGljNjZzd0REQmRCREVhQ0Jkd2JRb0h4TW91YUNZTEdJT2NnbGtK?=
- =?utf-8?B?c2x3bHMyblUvN1dtOURjZHM3ckpaOWhnUTI1M3h2TWo0dVZDYit3Yk4reGdW?=
- =?utf-8?B?K010d0hXU0RxT09ZdldqWGVtdTFhc0tWb0xJR1FxMG1nalUybENLMEl0QUQ0?=
- =?utf-8?B?VUdLNzVKaXNqYkliRlZYbnJYMWxtUkpsRjZjV0hJTG93LzZJODVJMFlGV212?=
- =?utf-8?B?dlc5RlZJQnYzZjkxTmlZZU1EQ0JqWHVaVlBJcURiR1ZuQVJsakgzWVMrYzdy?=
- =?utf-8?B?NVZjTGFoV0Zjb1dhVGpjclF3ZEZURXRYbUlUQzl3U0RERDJJOG51M0xKUjBQ?=
- =?utf-8?B?Z1BIVzRJcjk1K0FDN0I4cmEwaXVyZWc5dTRuV2NjQWVLamt6K3I0K1FMTGlp?=
- =?utf-8?B?TlNEa1NDeE1uMkViVERCRFd2OTZaSk84elU2NENrZDFHK0ZGS2JqUjhLK1Ev?=
- =?utf-8?B?UU9qS2RVYnVqRXpEaHoydUZFTGNXNGVFbHhrQjVQUjRnSk5ReUNkM3ZGZEs3?=
- =?utf-8?B?ZDhUNUFYT0NGenRxRzJJRUZqQUNJK1N5Q29pODVQNVVrTHlyK2NZVGs5OWZQ?=
- =?utf-8?B?QjgzRno2ZWYxOHFEbmdXMWJSb1VDL0l4V1p6QS96V3EzNnVTNkFYMDY5Vklt?=
- =?utf-8?B?MkFkMHp4SWNGbDB4RCsvM2E4cFBPWk5RcHQ5djVQYWFHUVJlUnFzQnRwaloy?=
- =?utf-8?B?bmpscXN5dk9DVm5CT1FoL1YzcTI0M0E1ZWxQNWM2eEtXMTdZRC9McXVUKzc0?=
- =?utf-8?B?bHgyQzI2a0NZS1cxNkMyMkE3NHFIODJEdmQ0b1NlaVd1eGdPdndCZkZaS3cv?=
- =?utf-8?B?Rngvakxabm1Sd05VN3F2TFRuYUY1cVZpdk93cnNCYmpVZEt0VCs5YmJlczl4?=
- =?utf-8?B?ODRTelAyY3IvSGxzdzNYdEJXVnYvTU9heG4zaURRY0Evb1psVVlud2JvU0t6?=
- =?utf-8?B?THN6SURDcERWbjhidEl6WWN3MTYyb0VBQzZ3emovSVhzekVaMHFYNnZGQW5y?=
- =?utf-8?B?WEs1N080SDVwVHJZM2VEZkl4TUdvK1QzeUcwclNlS1JZSFVTaUxOT3VFbEYw?=
- =?utf-8?B?dDVodkQ2bWZOTUZJWGJVNkZnWEdUYkh3aDI0NXpwUTFPVjZReFB5NEFob09J?=
- =?utf-8?B?STVvODFIOU5DakY1dEM4SVl6Q3laRXZ2RTkrS3ZTMXY5VVh3dkxFZGdyMDB3?=
- =?utf-8?B?cFphMEhpMHBTblM2a2wwaGtFN2h4TldUOVpudy9YYXZBZ1diZnFFQ0RNb2h3?=
- =?utf-8?B?OTA3U3NYS2duN1J4VXBXNm1sWkRHNDk1bFhuQWdzYWlpdFVIZTRiZlcxWG4x?=
- =?utf-8?B?bW4vd0didUxPaDBJWjM1Vlp1RUtVTDVVamtCNUJVYWcxOTI4SFlqT2JnZ0kz?=
- =?utf-8?B?UmRDWXhGb284dkdENWwxVVdnZFRoUXVPMTlPMWordU54Z1JsTWNXaVlNVmh2?=
- =?utf-8?B?Z0ZsOXJvVzRWYnRGYnVreWJIbjJ6aHdLVHFKMFJsQ1FUdTM3RStrWCtwZmNw?=
- =?utf-8?B?L2xWaGRPRFNhZUE1VG04OTZnWVhvUVBCR2VLZU0vd0lyNU9hazRQWE5PRXlF?=
- =?utf-8?B?N3ViN2xCODNwVTRQUytnTjdPaHVTUEhSS2k5MmExYVVZZEtSQUJzaGUrbktE?=
- =?utf-8?B?bm1mWVJMWGVSRWJpOTFQYmZQZ20rc0VEMFV3K2gySkxQUENBem02bWNUNXpR?=
- =?utf-8?B?aWhmM3Z0SmdpVzIxUVN5ZGFlM0gvbk5WaUZYbzVZMGIxRjdmYjRTMG4xcDdh?=
- =?utf-8?B?bFdWcnBZczlUbWFDaHZhYk5wV25ObmhFbEo4dk03bXVGUmlCT0d3OXlOVGhC?=
- =?utf-8?B?QnY0bCtjT2ROOUJuK2srTGJ5NmNaZGVDbHZla1RZVW1yWEhzL00wbCtDN2F6?=
- =?utf-8?B?ZmFCeUF5OWw2bno3WDIrcm9WRmd2dmFSekRVZmhxN25VaC9jTFdyMUdpY3VG?=
- =?utf-8?B?R3ZCRy9WZ0RFbzdVZEJBa3A4clp6NlgyeG5UVDNHSzFxbjJxb1ZGV2V1UUl0?=
- =?utf-8?B?b0FRbVlUblNVZ3BDTi8xU1Q5RWVINHVTZTRyQ01VbzRTS0x5NjNnRU16eTlI?=
- =?utf-8?B?UHV6bE43Z1owM0cxWHlQREdxWUFjcHR4eTBYL09Ga0NCZXdhWk1PeU5PMGx1?=
- =?utf-8?B?KzQyU1RveU55WkdZNlhaelRQR3F6aUZydkMwM1ZwZUtCZWp0Q0xLYjAzaEQy?=
- =?utf-8?B?V2ZScmZEUlZjdGR5QWlJMGJYYUlzUEZQL1BRWVFVdENHZnkvcVpZQT09?=
-X-OriginatorOrg: pa.msu.edu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91cdd001-4574-4010-49d2-08df18bc3976
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 15:14:40.9615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3gvaA0xn2Wct6qE7ARl8POGbjpg8AtxAA4hkR6khWevB5cvEdRFv/IUtdWjRlMBB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8173
 
-This series adds support for 1000BASE-X autonegotiation to the Cadence macb
-driver when using the MAC-internal PCS. The existing driver code is oriented
-toward the PCS being used with an on-board SGMII PHY, so uses Cisco
-SGMII-style autonegotiation exclusively and does not anticipate e.g. link
-state changes arising from fiber attach/detach events since the SGMII endpoint
-is permanently attached in such cases. The first patch changes the driver
-to monitor the PCS's link by polling, following the approach used currently
-by this driver for fixed links when the PCS is enabled since the driver
-does not currently monitor PCS link state otherwise and this had not come up
-with permanently-attached SGMII PHYs that report link state out of band.
-The second extends the existing SGMII autonegotiation code to also support
-1000BASE-X autonegotiation.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Changelog:
-- v1: Original patch
-  Link: https://lore.kernel.org/netdev/20260714200904.70428-1-nwhitehorn@pa.msu.edu/
-- v2: Split into two pieces and clean-up of a few details in anrestart().
-  Link: https://lore.kernel.org/netdev/20260714200904.70428-1-nwhitehorn@pa.msu.edu/
-- v3: Fix mistakes in commit message for patch 1 and improve wording.
-  Link: https://lore.kernel.org/netdev/20260729192748.6928-1-nwhitehorn@pa.msu.edu/
-- v4: Fix return value in macb_pcs_config() to indicate to phylink when the
-  autonegotiation advertisement has changed and autonegotiation needs to be
-  restarted.
-  Link: https://lore.kernel.org/r/20260807201741.3275-1-nwhitehorn@pa.msu.edu
-- v5: Fix bug in the v4 return value from macb_pcs_config() that caused
-  phylink to be informed in the wrong circumstances about updates. Also adjust
-  some whitespace issues in the earlier patch series.
-  Link: https://lore.kernel.org/netdev/20260813153705.23407-1-nwhitehorn@pa.msu.edu/
-- v6: Rebase after 07362f68e61d8. No functional changes.
+Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 0
 
-Tested on Microchip PolarFire SoC with a variety of SFPs (copper, fiber, GPON)
-attached to the I/O Bank-5 PCS lines.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks to Charles Perry, Andrew Lunn, Paolo Abeni, Théo Lebrun, and
-Jakob Kicinski for helpful suggestions and discussion on this patch series.
-As a brief summary of that discussion, there are a few areas near this patch
-that are existing non-idealities in the macb driver, in particular that it uses
-polling to monitor link-state with the internal PCS and the driver does not
-currently have support for using the link-state change interrupt. The
-intention is to address this in a later patch that would remove polling from
-both this case and the fixed-link one. Other discussion in earlier rounds
-of the patches was related to handling some ZynqMP-specific code that is
-related to specific SGMII-only hardware that is not relevant in the 1000BASE-X
-case.
+- [High] The newly added ice_eswitch_detach_vf(pf, vf) in the
+  ice_start_vfs() teardown loop…
 
+Pre-existing issues:
+- [High] AB-BA lock ordering inversion between pf->vfs.table_lock and the
+  devlink instance lock.
+- [Medium] ice_start_vfs() teardown loop
+  (drivers/net/ethernet/intel/ice/ice_sriov.c:507-515) still never…
+
+--
+
+ice: detach the VF representor when ice_start_vfs() fails
+
+The patch adds a call to ice_eswitch_detach_vf() in the ice_start_vfs()
+teardown loop so that port representors created by ice_eswitch_attach_vf()
+are destroyed when VF startup fails. It is placed ahead of
+ice_vf_vsi_release() so that repr->src_vsi is still valid. A few questions
+about the new call site below.
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+> index e04de0215596..1b563aba3bbd 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+> @@ -508,6 +508,7 @@ static int ice_start_vfs(struct ice_pf *pf)
+>  		if (it_cnt == 0)
+>  			break;
+>  
+> +		ice_eswitch_detach_vf(pf, vf);
+
+[Severity: High]
+Should this call be made with vf->cfg_lock held?
+
+ice_start_vfs() only holds pf->vfs.table_lock (see the
+lockdep_assert_held(&pf->vfs.table_lock) at the top of the function). Both
+existing callers of ice_eswitch_detach_vf() hold vf->cfg_lock across it:
+
+drivers/net/ethernet/intel/ice/ice_sriov.c:ice_free_vfs() {
+	ice_for_each_vf(pf, bkt, vf) {
+		mutex_lock(&vf->cfg_lock);
+
+		ice_eswitch_detach_vf(pf, vf);
+	...
+}
+
+and ice_reset_all_vfs() in ice_vf_lib.c does the same.
+
+cfg_lock rather than table_lock is what serializes VF reconfiguration:
+ice_vc_process_vf_msg() in virt/virtchnl.c takes only
+mutex_lock(&vf->cfg_lock) before dispatching through vf->virtchnl_ops, and
+the ndo handlers ice_set_vf_mac(), ice_set_vf_trust() and
+ice_set_vf_port_vlan() take cfg_lock and then call ice_reset_vf(), which
+reaches ice_eswitch_update_repr().
+
+Since pci_enable_sriov() has already run by the time ice_start_vfs() is
+called, and ice_sriov_configure() does not take rtnl, can the following
+interleave?
+
+CPU0 (sysfs sriov_numvfs, teardown loop, no cfg_lock)
+ice_eswitch_detach_vf()
+  ice_eswitch_detach()
+    xa_erase(&pf->eswitch.reprs, repr->id);
+    ice_repr_destroy(repr);   /* free_netdev()/kfree() */
+
+CPU1 (ip link set dev ... vf N trust on, cfg_lock only)
+ice_reset_vf()
+  ice_eswitch_update_repr() {
+	repr = xa_load(&pf->eswitch.reprs, *repr_id);
+	if (!repr)
+		return;
+
+	repr->src_vsi = vsi;
+	repr->dst->u.port_info.port_id = vsi->vsi_num;
+
+	if (repr->br_port)
+		repr->br_port->vsi = vsi;
+  }
+
+Does this write through a freed struct ice_repr? The VFs this loop walks
+still have ICE_VF_STATE_INIT set and ICE_VF_STATE_DIS clear, so
+ice_check_vf_ready_for_cfg() succeeds on the concurrent path; unlike
+ice_free_vfs(), the new loop never sets ICE_VF_STATE_DIS.
+
+The same unlocked window also has ice_repr_rem_vf() calling
+ice_virtchnl_set_dflt_ops(repr->vf) while ice_vc_process_vf_msg() reads
+vf->virtchnl_ops under cfg_lock.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but it adds one more instance of
+it: ice_eswitch_detach_vf() takes the devlink instance lock internally,
+
+drivers/net/ethernet/intel/ice/ice_eswitch.c:ice_eswitch_detach_vf() {
+	...
+	devl_lock(devlink);
+	ice_eswitch_detach(pf, repr);
+	devl_unlock(devlink);
+}
+
+so this call establishes table_lock -> devl_lock, the same order that
+ice_eswitch_attach_vf() in this function and ice_eswitch_detach_vf() in
+ice_free_vfs() already use.
+
+The reverse order exists in ice_tear_down_devlink_rate_tree():
+
+drivers/net/ethernet/intel/ice/devlink/devlink.c {
+	devl_lock(devlink);
+	mutex_lock(&pf->vfs.table_lock);
+	ice_for_each_vf(pf, bkt, vf) {
+	...
+}
+
+which is reached from ice_setup_tc_mqprio_qdisc() in ice_main.c and from
+ice_pf_dcb_cfg() in ice_dcb_lib.c, neither of which holds devl_lock
+already and neither of which is excluded while switchdev/SR-IOV is active.
+
+Can this deadlock?
+
+CPU0: write to sriov_numvfs -> ice_ena_vfs() -> ice_start_vfs() rollback
+      holds pf->vfs.table_lock, blocks on devl_lock
+
+CPU1: tc qdisc ... mqprio hw 1 mode channel, or a DCB reconfiguration
+      holds devl_lock, blocks on pf->vfs.table_lock
+
+ice_sriov_configure() runs under the PCI sysfs device_lock and takes no
+rtnl, while the TC/DCB paths run under rtnl, so the two sides do not seem
+to be mutually exclusive. Would it make sense to converge on one hierarchy
+here, for example acquiring devl_lock outside table_lock in ice_ena_vfs()
+and using lock-held attach/detach helpers?
+
+>  		ice_dis_vf_mappings(vf);
+>  		ice_vf_vsi_release(vf);
+>  		it_cnt--;
+
+[Severity: Medium]
+This is a pre-existing issue, but since the loop is being made symmetric
+with ice_free_vfs(), does this loop also need to return the VF MSI-X
+window?
+
+ice_init_vf_vsi_res() reserves it:
+
+	vf->first_vector_idx = ice_virt_get_irqs(pf, vf->num_msix);
+	if (vf->first_vector_idx < 0)
+		return -ENOMEM;
+
+ice_virt_get_irqs() does bitmap_set() on the PF-wide
+pf->virt_irq_tracker.bm, and the only release helper,
+ice_virt_free_irqs(), is not called anywhere on this failure path: not in
+this teardown loop, not at the release_vsi label of
+ice_init_vf_vsi_res(), not in the ice_eswitch_attach_vf() failure branch,
+and not in the caller, where err_unroll_vf_entries -> ice_free_vf_entries()
+-> ice_put_vf() -> ice_sriov_free_vf() only does mutex_destroy() and
+kfree_rcu().
+
+ice_free_vfs() pairs the two calls the new loop now half-mirrors:
+
+		ice_eswitch_detach_vf(pf, vf);
+		ice_dis_vf_qs(vf);
+		ice_virt_free_irqs(pf, vf->first_vector_idx, vf->num_msix);
+
+The tracker bitmap is allocated once per PF in
+ice_init_virt_irq_tracker() and freed only in
+ice_deinit_virt_irq_tracker(), and ice_set_per_vf_res() sizes VFs from
+pf->virt_irq_tracker.num_entries rather than from the number of free bits.
+Does each failed "echo N > sriov_numvfs" therefore leak
+num_vfs * num_msix_per_vf entries of the VF MSI-X range until
+ice_virt_get_irqs() starts returning an error and SR-IOV can no longer be
+enabled without a driver reload?
+
+Note also that ice_dis_vf_mappings() clears VPINT_ALLOC/VPINT_ALLOC_PCI and
+re-points GLINT_VECT2FUNC of exactly those vectors back at the PF, so the
+hardware mapping and the software bookkeeping end up disagreeing.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921031616.3390259-1-xiaolinkui%40126.com
