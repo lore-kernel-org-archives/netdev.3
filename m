@@ -1,158 +1,142 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD6E566C5C
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619775616A2
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790083212; cv=none; b=RiGnWnIfAi+35jWJV4BQtpJl4NWSLBHoMvKnj2Q/MhaoqJUb1/zts+VwP4b1p6yp9BQj9DwYN3gYzBhHYknJc3fd4ZULq8s2q4lkFmTZHpNLjcuxXE6U+E6iqK7vQ2cETS796+fz9W28WoZ0LneQu/RpRJz4ZKbRdfbtF3NZdms=
+	t=1790083231; cv=none; b=jf8247ErXpBxZdtFMhXLno5W2biLFylr7qp3CZDPiyFnebEv3aRpTY3abx8vUyqrcm2G9hqX+Y+9Btn8sCZuugrZq8uP4BaDYN+lMcyxgi9DFmKt/xKLAcC7E8gA8n5rNe8QyRYxYZskddXzBqmtQ5V3w/a0XbalmQxHtCqfTxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790083212; c=relaxed/simple;
-	bh=cjPhgMl06Gz4v8vlPzDnw8UWAHAvj1+3h2RWkeYhBNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dr2iJ0lHdB+edPKFQhmREozPKeWOqRFF/RJQsOOnIG5bgQZXI9bc9eW6a+e/uxTKFUMOiXywtmr7bPabILrK6JscKEby15JlPuU8m95Z6n1Y3fePIb7IOPdblrd1LhERt/LSTnvbGE/oSnH3icm9WXlYg9E81wVrgmNPxtc9j7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=lQZM1P8z; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1790083231; c=relaxed/simple;
+	bh=V7obrWHWdAK2sr9GRBu2vV54NRwonddAzRSGSOMaNfo=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=t6L87+iq2OeyMVur9elNLvMulu1m9iWfzhXwq7CgAVYvWjEnkB8R56ar3T2bVz1d2icry4HVDPuO85G+u4IxaWZ551eGSE9IwgoaqE/ETXLpoFUg4NZ/Z1kRXpdNjdca78Wlj90qKWVoma7vxKBFhQlZP7qrDgkqEvwqSQ+DtVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=lnHd1NVp; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="lQZM1P8z"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccf3ca626so21554385e9.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:20:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1790083207; x=1790688007; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S2+N1IorirZjTQOoiJkqviwvBkdqoi6Ht3FnwQDKUlk=;
-        b=lQZM1P8zL9NkQ3eDkCXkNCLyr7zr8b7b5lA5BG9jnBAckSezhgtQ+oHsLk599TbMqv
-         R6KkTviMw2LC+DHOchlh/DbvhyNgF0fHiiKComW6+DwPJiHnA20t5SkmsxxDh/SIQQZW
-         qauI0UGxe53kR7TvHnR1icEPj2nB7ufspzhfnFomP6BwTMEZISPPNerWU065Lw3Qd8bE
-         a06R3zSxwr+I8nPISfp+ThhZXU7hB24dJp6q6WK1Mq4EOHlRHIEalwUbw+u7qMwBuaOq
-         D7fyGYv37PqeRyWehrSulswsBol7IpLSznZZ2KX34gkKKIP4+sWV2sYKLCncsO63/rG9
-         Fn4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790083207; x=1790688007;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S2+N1IorirZjTQOoiJkqviwvBkdqoi6Ht3FnwQDKUlk=;
-        b=OZ2AanyaukJOModeKTfsZAZrYH2HlJrPlPEpq+QMXfH7OSXmkFbVpnFAAH5Bcv8nWS
-         31cchWkiLE94tuVN6w77QX6xBxMi6riSyIlMO6xBEjPM/ZSboYCb/7/DdC2gkrBn1AU7
-         emAmyoJ6dJO4xAs6mQt18CzP4ohuA6P4pv4CGdUg5oIO3kQiHJx6eB205SBWyUpQ0LXs
-         uy2ZaXiNAeZqvF7fdVH28gw4l1RTVT7VTk5qqxpuf6wKz3zSH/286QtmYSc2ypiHjNxu
-         t0ouetXybaA5VyIl9l2b+Wj4tPPxA1C9MuaqOgZ1nG98HtyXZTp6AKOzYi7KBoIPVt0u
-         ZTaQ==
-X-Gm-Message-State: AFuF++nloJZDX+yG58Y0UzIZWYb7nKkh4L13QEYcIe0ADLPhKSv2MQ1z
-	Orxrhsk9c1eZsxbL6Z7Gr9Jc9Nv45qeZzpebYrDvZ40wUTiVrwkt0gJ+OU3a9CtOXE/APvrMX9H
-	vBn5FpqoffMnH
-X-Gm-Gg: AYBFou2gxICXuRzA+P8qB28frIVYxOSL3bA8GKU+DdGUwjEPHkGWn+alupGGMXcZmTj
-	p5iD2L+celCEZShgEdJp9RxKGhy7vwobDz1FoDCZzP01ibY0juXCONne/YV6ayIU7za8HZ+HPYB
-	vOox8Hl0ISZo3tC3GCR/ZtPR24LUX/jygAT2uwQj5NuniUvyv08p/I8Tytk5rzTD/zEB44VGxdi
-	eQ00fxa8BMAEsKOcjzef2NkuvqeIxfGzusQlhfhTZFOwELTeCq3S7eijV0JrHWtRGTbSjGcnuui
-	boGeyzT5X6HtzK6xRO6/faNAkDqe6XBhCgzXXwqCvFC4mOTFHgd2w5S1llk56vMCMx73osWPxgC
-	Z2JURpxDg0sFCVSeF54bDZH6xoDWMUeuE+JwKDdiKv6PbxNtKvokejbxV0BgOHaVydxod/m2XGV
-	krWw0HAqXF4xqzHO9Ma6i7AuTEWrwzeDbT9F721MaMk0FMumaTWCg=
-X-Received: by 2002:a05:600c:35c9:b0:49f:bcce:13f5 with SMTP id 5b1f17b1804b1-49fc5736229mr230926025e9.24.1790083207537;
-        Tue, 22 Sep 2026 06:20:07 -0700 (PDT)
-Received: from remote-01 ([84.17.55.230])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488627929a4sm4085220f8f.35.2026.09.22.06.20.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 06:20:06 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	olteanv@gmail.com,
-	Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	steve.glendinning@shawell.net,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net v10 4/4] net: phy: restore the interrupt when the generic bind cycle fails
-Date: Tue, 22 Sep 2026 16:19:55 +0300
-Message-ID: <20260922131955.4175785-5-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260922131955.4175785-1-f@lex.la>
-References: <20260922131955.4175785-1-f@lex.la>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="lnHd1NVp"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07798A02D4;
+	Tue, 22 Sep 2026 15:20:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790083225; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dBu6Up7RjQ62pB4/IdXwodWU9rbgYbAkG6HPXs4Al+g=;
+	b=lnHd1NVpSs6aI+bI4Dq0+TnClt6iqPrRypXFeZoVVm1i0wNcD0ARTeQ6XxzvtrXjN62l3e
+	UNFwfGFjmV/sqYEwaxPXhQurCpox5Es5M8JZsz8xxzPML/rcHjGkKFWu5NhUZ45ihzY0Me
+	ieX57l57xztdz0RwR6aM26Wt+4trFmU9OeUeImmVlqQvLR+Aq0jP7u5T7lhaGcM6S/L8tl
+	EFRp2AYwkxijLQXcdAuY3dCLp0Do66iFI4UcXNs8fC0xxcdlfCao9+4lAmGO+L0rZoDa+b
+	jV0yHjzrDy7mOk6/wd3oFqfRQx6E224REakvv1zH8F6U3+TTDuIF9XJ4wZ8eGg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Tue, 22 Sep 2026 15:20:22 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Christian Lamparter <chunkeey@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, kuba@kernel.org,
+ davem@davemloft.net, jacob.e.keller@intel.com, edumazet@google.com,
+ maxime.chevallier@bootlin.com
+Subject: Re: [PATCH net v2] net: emac: move setting of netops to fix crash
+In-Reply-To: <49cd7343bc0e507c022071f3e2b5662b053dca73.1790007431.git.chunkeey@gmail.com>
+References: <49cd7343bc0e507c022071f3e2b5662b053dca73.1790007431.git.chunkeey@gmail.com>
+Message-ID: <26f6da2763e771c04815352597ae1c6d@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-phy_attach_direct() binds the generic driver by hand, and the probe it
-calls is phy_probe(), which replaces phydev->irq with PHY_POLL before
-either of the points it can fail at. That failure unwinds on a label of
-its own, which does not go through phy_detach(), so the substitution
-outlives a bind cycle that never completed and a later attach finds a
-PHY that can only be polled. Found while placing the restore of the
-previous patch, as the other exit of the same bind cycle.
+Hi Christian
 
-Take the number back on that label as well, before it clears d->driver.
-That store is what reopens the device to the driver core: until it runs,
-the core turns a probe away with -EBUSY. That is ordering, not
-exclusion - this bind and its unwind run without the device lock
-device_bind_driver() asks its callers to hold.
+On 21.9.2026 18:28, Christian Lamparter wrote:
+> fixes the following crash on driver initialization:
+> 
+> |BUG: Kernel NULL pointer dereference on read at 0x00000158
+> |Faulting instruction address: 0xc0566b40
+> |Oops: Kernel access of bad area, sig: 11 [#1]
+> |BE PAGE_SIZE=4K  PowerPC 44x Platform
+> |Modules linked in:
+> |CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: GW 7.3.0-rc3+ #1
+> |Tainted: [W]=WARN
+> |Hardware name: MyBook Live APM821XX 0x12c41c83 PowerPC 44x Platform
+> |NIP:  c0566b40 LR: c05648f8 CTR: c04c1e9c
+> |REGS: c1053a20 TRAP: 0300   Tainted: GW  (7.3.0-rc3+)
+> |MSR:  0002b000 <CE,EE,FP,ME>  CR: 24008808  XER: 00000000
+> |DEAR: 00000158 ESR: 00000000
+> |GPR00: c05648f8 c1053b10 c1063600 c1030000 c5ab3000 00000000 [...]
+> |GPR08: 00000002 00000000 00000000 c1053b40 84002808 00000000 [...]
+> |GPR16: cfffd210 00000002 c0beafcc cfffc960 00000000 c1030644 [...]
+> |GPR24: c0beafbc c1037000 00000000 0000000a 00000000 c1030000 [...]
+> |NIP [c0566b40] phy_link_topo_add_phy+0x2c/0x1d0
+> |LR [c05648f8] phy_attach_direct+0x1a4/0x368
+> |Call Trace:
+> |[c1053b10] [c0811e04] klist_put+0x54/0xb4 (unreliable)
+> |[c1053b40] [c05648f8] phy_attach_direct+0x1a4/0x368
+> |[c1053b70] [c0564ae8] phy_connect_direct+0x2c/0x60
+> |[c1053b90] [c056c7a8] of_phy_connect+0x50/0x74
+> |[c1053bc0] [c0572a88] emac_probe+0xd50/0x119c
+> |[c1053c90] [c04cb770] platform_probe+0x74/0xa4
+> |[c1053cb0] [c04c8f08] really_probe+0x120/0x2b0
+> |[c1053cd0] [c04c9254] __driver_probe_device+0x1bc/0x1fc
+> |[c1053d00] [c04c9334] driver_probe_device+0x38/0xa8
+> |[c1053d30] [c04c9560] __driver_attach+0xf4/0x10c
+> |[c1053d50] [c04c6af8] bus_for_each_dev+0x68/0xd0
+> |[c1053d90] [c04c7c34] bus_add_driver+0xcc/0x1ec
+> |[c1053dc0] [c04c9f6c] driver_register+0xcc/0x110
+> |[c1053de0] [c0aa3f40] emac_init+0x1c4/0x200
+> 
+> This bug showed up starting with v7.3-rc1. At the NIP in
+> phy_link_topo_add_phy() is a netdev_need_ops_lock() check.
+> This was added by the following
+> commit ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() 
+> locking assertion")
 
-Fixes: 6d9f66ac7fec ("net: phy: Fix PHY module checks and NULL deref in phy_attach_direct()")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
+ded86da4bbb7 was added in v7.2-rc1?
 
-Notes:
-    Both points the hand-bind can fail at are reachable. phy_probe() reaches
-    genphy_read_abilities() through genphy_driver's .get_features, and that
-    returns the error from phy_read(phydev, MII_BMSR); device_bind_driver()
-    returns whatever driver_sysfs_add() got, from either of its two
-    sysfs_create_link() calls or from the coredump attribute.
-    
-    A failed genphy bind leaves the device with no driver bound at all, so the
-    next driver to arrive binds directly and never goes through phy_detach().
-    That is why patch 3 cannot cover this path, and why the Fixes: tag here is
-    6d9f66ac7fec rather than the one patch 3 carries. That commit did not
-    introduce the lost number - the substitution is far older - it created this
-    second exit from the bind cycle, splitting the failure off the label that
-    calls phy_detach(). Before it, patch 3 alone would have covered this, so
-    that is where the backport range for this one starts.
-    
-    Exercised on the board described in patch 3, with a debug-only module
-    parameter that fails the hand-bound generic probe once for one MDIO
-    address. The connect then ends in -EIO rather than the -EINVAL of the
-    validation path, so the unwind takes the label this patch touches.
-    phydev->irq afterwards reads -1 with patch 3 alone and 15 with this one.
-    
-    One difference between the injector and a real failure, since it does not
-    affect what was measured but should not be implied away: a genuine error
-    inside phy_probe() leaves through its out: label, which re-asserts the PHY
-    reset before returning, while the injector returns earlier than that.
-    Neither path touches phydev->irq.
+   $ git grep -c netdev_need_ops_lock v7.1 -- 
+drivers/net/phy/phy_link_topology.c
+   $ git grep -c netdev_need_ops_lock v7.2-rc1 -- 
+drivers/net/phy/phy_link_topology.c
+   v7.2-rc1:drivers/net/phy/phy_link_topology.c:1
 
- drivers/net/phy/phy_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+> 
+> The bug shows up because at the time of_phy_connect() was called, the
+> netdev_ops were *not yet* determined. My fix is to move the code that
+> sets netdev_ops+commac.ops+ethtool_ops further up as emac_init_config()
+> derives that by looking at the device-tree and sets the required
+> dev->phy_mode accordingly.
+> 
+> During review, the Sashiko bot's AI stated that the commac assignment
+> became a dead store. Great catch! To keep the original behavior as-is,
+> one mentioned option "set dev->commac.ops = &emac_commac_ops only in
+> the non-gige case?" sounded like a great plan. So the dev->commac.ops
+> assignment for the non-gige-case moves into the else block.
+> 
+> This patch was tested on a WD MyBook Live (RGMII). the device now works 
+> again.
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index a9c71a286118..06161a73fe3f 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1896,6 +1896,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 
- error_module_put:
- 	module_put(d->driver->owner);
-+	/* The NULL below lets phy_probe() write this field. */
-+	phydev->irq = bus->irq[phydev->mdio.addr];
- 	phydev->is_genphy_driven = 0;
- 	d->driver = NULL;
- error_put_device:
--- 
-2.53.0
+nit: [...] (RGMII). the device" -> The device
 
+> 
+> Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() 
+> locking assertion")
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+> ---
+> 
+> v2:
+>   - "set dev->commac.ops = &emac_commac_ops only in the non-gige case"
+>   - reworded commit message to include commac_ops and Sashiko
+> v1: 
+> https://lore.kernel.org/all/178999551085.2160803.13630958553679103031@kernel.org/
+> ---
+> [...]
+
+With the commit message changed:
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Thanks
+Nicolai
