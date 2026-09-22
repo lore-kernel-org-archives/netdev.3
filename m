@@ -1,173 +1,261 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011023.outbound.protection.outlook.com [40.93.194.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f227.google.com (mail-oi1-f227.google.com [209.85.167.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682F843C07C;
-	Tue, 22 Sep 2026 17:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790099466; cv=fail; b=bisgBL8uTbyxg70ag3kocF/Zy5UlQMuhknOCBSL28ASHIhzVdutD2VE7ECtPCw5iG2hulBxGRe4KXtZ4bi3FDfmNfT14MvoW9NKVR/yHvmKsR6nJ1cMnNghR0CYn/DY3+0idXnBqJDyEBy26cFRkzUihGsm0jjCrG7iMgHw+CP8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790099466; c=relaxed/simple;
-	bh=3MGhBmMmXcajgcyy0RTzt9i94dPk0aX7a9XyHjkgdMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=G+FKNalyhK/tYEnItgg3vGy2b8XDlrFxdf8kdRQCX790A/xqjxr3M3UoHO8h5Bvll/qdTxfq+b9N+mG+v7slPc9o4b41O8wKAABG5SY80W/H3/SOCdGg4P9Pv9DsPxL+nsvenOBWXwV185Y80X49UmxUmTveNSzz1cqteQ7PVNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=InUaIgMD; arc=fail smtp.client-ip=40.93.194.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A353424D47
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.227
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790099688; cv=none; b=Lk/LpCD66iDhlUCYrKsqPAe4BC1hVs/KLBBFg5hxHdsFpQ170Ciry8rtDtV4sLFowqpqJIxzQEUPwylXZna6BMTUW34YvulrN2XDGbxCuxvQDormMhdAAPpRkyJGa3+snxRzyy+Uw5YZFrhpjrG8dT7ODOAIy61hOrSasr3uAhk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790099688; c=relaxed/simple;
+	bh=K1MOeZdwQaNY1OQCMZZsTbdMYOP0S/DRljrRbUJDXL0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oypD5yzm9nR4ZR5F1PGwZCcPaaq33nC6wcZcdPfKF+3OW33Fti9/EyXuRs4axyzdyWGpCbg99cDGI498j4lCbQjjslotdanAYSCPoJT64TTTdoYP+QDELZL1IX3OfaE1ZcN3RxVWDP/qfmYuYfdq69P/NYVcwwsgWaDzKkwqruU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=S3jsheX7; arc=none smtp.client-ip=209.85.167.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="InUaIgMD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jWikXq6zFRyTkG1tKqsrEwn/BlrELNRFuCSsVwYl6roDB6esgVK4UmP+uhK9SQHkLBW0g/SB9dhDolYmU9EHbQCE6ndwOX6SAvgSBgT7WEPgJGiR/rYVTln9e5Sb1tVxsKYS577auLdngbhvcn2pOLRMLgsP+HXr3zK3s8LsSziS3HP/X2tsGlfR6w7vGRpEp1txit4VTlnJvDQ4dPm56OluvU3s47k9TlgvvMPvLMQvL/6VnekXV3aHdHwh3FE23m3fchOVnZE2wEwK+lojQJZIaDxrlZ8lWxjbqTOZU0VkoEAz2n/ZZ/QPg+X4Y3SwZkIXdy/e0YF3aJCGdLsukg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+ptsfCuuewqfHdl8Q3bgWr8VIdPMuIO1WryXXS3EQHc=;
- b=XIlt24QBNI3uWCex7maPQWETL6TKtBjjlFNtNHHKND4BUmzEaaJSk/gRK1Agez05u54HEan+e0eohphgIcfS8VCzlNQxY7jIqU7eWTDhbZnbTxFpxApe5odvts5Y2Jts1U//m6ct2X4l1v23oYqw8NXjiaSwgBoUH/ZVT1rqXhOpxQuJGGDQjDkMN9/BX2VBofDEX6VS8TmThn2mqXa72qM/wA1DjXljuuv9ePRI8kc0yoX/mCWj7qTKjbF7V5PfRX1lEyncX75y/q2KfWqYpP1Ku3AeIu2GA7/jFwWOi2pZ8gRPyaMiP+99mMwcTbq3GEndUmmLRdHbaYCv4FQU/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+ptsfCuuewqfHdl8Q3bgWr8VIdPMuIO1WryXXS3EQHc=;
- b=InUaIgMDJNyZ0mdL9VvJOoq4R7stizD04MUAu+RPc9ajX1veBaQxQf9vn0dKFIdQZVbaLM4zibNOSdxCE+dDnDBbNpfSimaKgBrc6Q+tAYJod5IXr9ygv8L4mzCEdN3YMKJ55khawZ9d58Htf6IzklMxeEj0iZhVQ3a1keVSjUjtykzvplZEKUf6sX5mYZQ6yRA7QD1DHrb4BpZst5gE5Q0AIiLWfJIPKYbua/fecabbNqcBdNv0vNW1LpMIuL729yEB7vFWWoSprn+RqYSrMd8BvAnIx21T8mTuaTc/SVQCB9Z694COyFkxGHYLGhpwUFwvYoZQ0reDpiV/z59XnQ==
-Received: from BN9P222CA0018.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::23)
- by LV9PR12MB9830.namprd12.prod.outlook.com (2603:10b6:408:2ec::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
- 2026 17:51:02 +0000
-Received: from BN1PEPF00006002.namprd05.prod.outlook.com
- (2603:10b6:408:10c:cafe::75) by BN9P222CA0018.outlook.office365.com
- (2603:10b6:408:10c::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Tue,
- 22 Sep 2026 17:51:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN1PEPF00006002.mail.protection.outlook.com (10.167.243.234) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Tue, 22 Sep 2026 17:51:01 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 22 Sep
- 2026 10:50:34 -0700
-Received: from [10.125.205.140] (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 22 Sep
- 2026 10:50:29 -0700
-Message-ID: <eb64923a-afc1-422f-a0f1-e2dd034d322c@nvidia.com>
-Date: Tue, 22 Sep 2026 20:50:24 +0300
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="S3jsheX7"
+Received: by mail-oi1-f227.google.com with SMTP id 5614622812f47-4cbaed7776aso5414b6e.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:54:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790099685; x=1790704485;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KhBquOKO/9HRk/ACfAt6LL/8IlAX/xuUQGAEwq4Fiik=;
+        b=vV493vXoc1xhQZMLAgzgreIjev7gBnA04ifmY5zTmYxnp3/nyfqz3ykTVbvFh1agro
+         RXX+C+a+5NuXJa2igEwg+JepneQjV4m9bZP5pa96W4Cr+Shap5xSQ4BYCcXaYU/ayvrZ
+         MzzrQd2PxkECb6cydFPvXRzKQC3j3hgKsJYuYSSPMwHvnCFpSbRBYd62a0Jd5pti+FX+
+         4W4VWBfeSktVVJcldt8LR1nqb6iPHQV3FtF541utyDm3wE2qj5Eb8Wxz1tgHWtoHVNkP
+         v53BImvxmElcfGW31QlOqXOVvmw7uyAOXhBQKP7ZmhOJJksOMv/nRyjKfHKfPN2RUtbI
+         ZFIw==
+X-Forwarded-Encrypted: i=1; AKwUvBxlUNTRXNSnE4GSoJya31MvpOI5mt+bOx7TICDmD0frAQ860aSnafX3CLY3vZPChGEsVI0BZ9M=@vger.kernel.org
+X-Gm-Message-State: AFuF++miwLa4G9xDOZn55FpGALceTDMlq+reTMWRxb/I0/YBEzxbtE64
+	XAbtnt4f+kCmdUNy3yszZv2cdipn+2osonqzMMjAo4wsMi8dFycpvIxjtRpkh9v5XJcsNNDdbCQ
+	2QKQL1SUUByRf6fuNAUxh3hW2BO/b2E9I3g6DU9uKmiTz/7EKjpZYNQrxm/xbI7UAOFDVDrYpMK
+	gEaLh9YriXqXbGBqNYMXWxkoohlBr0oX/u8VvI2n7CBoxcNcjQMVkaGOsg8ZeMBK/eYBDZQ35Kx
+	J6/KWZS
+X-Gm-Gg: AYBFou2uM9OybzavcLGk0nKaCX9Q1D5bYEPoM+Z7SR2GNxjLG3OAKdDVZ/XySKh8lla
+	cSL90u4J9rcDw5ddI0J2daqxOJoKTrhoE0cs2ptmxB/1dXgaO8LGHMVxoybdAaJ4Ev6PKGg9LO8
+	IOSA2ggH+w/M0FI1upjmwOM9oghEHc3tzKko+1AFGBByPcBvcGRI3bv476WVHSiMn4GCsQoyiVi
+	KrVJ+wLmu4rxT0tmNjY6VsnfiPB/kyb8VANJBErwaWE1sbjTZd0uCnHKLpJ8QTvRWMxeuhjBg97
+	R1VLmmkYZelN3wk1nvU72y9WMwPuteoQs9w0COaWpsrQM7wYO4K28/IjEmBfzKwzt/BOU68IeYD
+	q5ad9XriMYFrexMyTS/gv22ObLGczfXBTUNPvXw1acvrfgfjfNiif2DewhoYSZ0KNElgfHnexu4
+	gVm+HGCIZ1skEMsnFcCZLrmkSSyW4G4kDBXeA=
+X-Received: by 2002:a05:6808:3081:b0:4c3:6abc:db7a with SMTP id 5614622812f47-4d5b72f6ccbmr197349b6e.10.1790099685192;
+        Tue, 22 Sep 2026 10:54:45 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-815fe98df97sm62608a34.0.2026.09.22.10.54.44
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 22 Sep 2026 10:54:45 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c252686999cso4918866b.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:54:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790099683; x=1790704483; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KhBquOKO/9HRk/ACfAt6LL/8IlAX/xuUQGAEwq4Fiik=;
+        b=S3jsheX7ghIQN/XOGRBJkC8R5bzB97YItKEJ4nqGkrMVKSDxJpgHitInTDa4JgWh6R
+         MMzqvZLIriJRza6xgg7RDHSuAaZxWI6zbY6oJjpEWbqdGBSamXmyLIkEabznVOFQnPbR
+         7opikTOmQ51uUI1F531UY3TgEm0b5bDbyKG6c=
+X-Forwarded-Encrypted: i=1; AKwUvBzablK0PrDrDshTGjWXVxeZH5i+ol8f+92ssJOTrV4i/SjYAz8KcZp15OE7l7DNyv3PMz1dWiQ=@vger.kernel.org
+X-Received: by 2002:a17:906:6a0e:b0:c28:f9e4:836c with SMTP id a640c23a62f3a-c2a157c36c4mr1359936966b.28.1790099683291;
+        Tue, 22 Sep 2026 10:54:43 -0700 (PDT)
+X-Received: by 2002:a17:906:6a0e:b0:c28:f9e4:836c with SMTP id
+ a640c23a62f3a-c2a157c36c4mr1359934866b.28.1790099682926; Tue, 22 Sep 2026
+ 10:54:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5: Fix slab-out-of-bounds when handling team
- device events
-To: Anirudh Virdi <avirdi@redhat.com>, <netdev@vger.kernel.org>
-CC: <saeedm@nvidia.com>, <leon@kernel.org>, <tariqt@nvidia.com>,
-	<mbloch@nvidia.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<ohartoov@nvidia.com>, <maorg@nvidia.com>, <linux-rdma@vger.kernel.org>
-References: <20260922135123.46205-1-avirdi@redhat.com>
-Content-Language: en-US
-From: Shay Drori <shayd@nvidia.com>
-In-Reply-To: <20260922135123.46205-1-avirdi@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00006002:EE_|LV9PR12MB9830:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3750d30d-1f33-47ac-303f-08df18d2112d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|23010399003|1800799024|36860700016|6133799003|18002099003|22082099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	FJBVKD25RyWLAE1n9mtv+TpLyyE5qqiB1nkNmDmt0rhl2X0/NC/ZwAHk/09nbhs9ULPqRNr8lJdYm+O0EBydJKj/sh8+LjX296wioHm8dKDeU9AgsTIk/fjfArWaj0MZsk0X7ihG6iOT4z5iId1tSM8JlbhkEjHu8Y05kh9EyIhgKG5TSBv/YVuSy8SubC1KfzdVDRAaSw70pR1OsaLcAsbMp6PbEKkdKopg45ji7zyDYM06LDwu+yFMW8/NNQH+nzRcoKDDegcouTpmWJxjNn63NJoTPizpbXpvBRqbfCXdh7JT7wAltciRDM1HYLw6373YLUMuPvy2DvsUIp2tIePWUa/B4ZcUPhsdSv27+mP1FJ1ENZT3Tj6oH5iN0TA/wu9rAW4GWoFoC2bDSn3hsnAYCRFceXV4CV6isy1JSV8icwzLyDEx8cngBubC8i5/fIbt2dFmc23obvXjK4aAQepyuMnry2atY0e4RYeCUvAw3GZO9WGFvWgPJ5YlQ8oIAroaysgca/yPBsEv88Reep3edoMEXVzJLS0vNhuLnDWljN7q+73nEsHMMlPIU3UA/TxXyjQ/tALDqHMnYRUh/HtIY6sRQhN3pVI2Kz9LR8908fTLRJWAwbQvottIZ23rA3CyU61sgDi3tU2dkQ273RbglPinIG9W2JAD0DkkJ1Qj3XGMGs1mQYbnHtIDa2e17tMl282/Hn4UqJLT8BzuUg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ZgLt/4MbzyHzn//GZfkell33JuautdBQ66aOHoUbY00qJ3h5eIL5/Jd1QV5P9xgt4+oUYwU5pDsNYr54HsX5+LxTJFHLaFlwYxmFHCLAL+x7dHhO7KVOLyAUn9lu0VmEye9UtnTAN43Qiw67HOQhBA9I/ruLnZw2+CQT1ZjBVRahkyqfIiiAMaNp1novAxhOTiJmYsVJ2b2TQdvgdthAXSjL/xZe2rsca0W7uTZCypbZHx7HcpVGQ3cjvtN8TXyS3ji875euCK3ekAXmC8QbFM6KEJ2xfRXLJcU1/RIhAWjrBilTNo8fIou8HIIKq+wDZG8j/bNV3yGZerzWKKYnNN4JOSX87QKZnTPBsDLSa2NFXB8hLSKkyqXvsvkWRjR5X0YGoLawxfSfATvbaq7qR2Sm0OTZ1sTO8aL8aNSeLPxUi6us1JMSvFHQF1G/u5mH
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 17:51:01.8425
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3750d30d-1f33-47ac-303f-08df18d2112d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00006002.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9830
+References: <20260919123208.29032-1-bartlomiej.dmitruk@isec.pl> <20260919123208.29032-2-bartlomiej.dmitruk@isec.pl>
+In-Reply-To: <20260919123208.29032-2-bartlomiej.dmitruk@isec.pl>
+From: Vishnu Dasa <vishnu.dasa@broadcom.com>
+Date: Tue, 22 Sep 2026 10:54:30 -0700
+X-Gm-Features: AcwNN1VxZOQcFFCm7caZKqYMY5PSHL2XX9LEeKhSmLyKVEfu0HCiGbBZkwyQ0Bg
+Message-ID: <CAF+opq12yFHNZXUoWn24GnBozm7Zvfwh3FiCZRsDypLw7WY-pA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] vsock/vmci: enforce per-netns mode on the datagram
+ receive path
+To: =?UTF-8?Q?Bart=C5=82omiej_Dmitruk?= <bartlomiej.dmitruk@isec.pl>
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	bcm-kernel-feedback-list@broadcom.com, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000c03b1d065c160f3f"
 
+--000000000000c03b1d065c160f3f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Sep 19, 2026 at 5:32=E2=80=AFAM Bart=C5=82omiej Dmitruk
+<bartlomiej.dmitruk@isec.pl> wrote:
+>
+> The send hook vmci_transport_dgram_allow() refuses datagrams when the soc=
+ket's
+> netns is not in global mode (vsock_net_mode_global()), but the receive pa=
+th
+> (vmci_transport_recv_dgram_cb() -> vmci_transport_allow_dgram()) did not,=
+ so a
+> socket bound in a non-global (local) netns received datagrams from peers =
+it
+> could never send to, defeating namespace isolation.
+>
+> Add the check at the start of the receive decision, before the
+> VMADDR_CID_HYPERVISOR short-circuit, so the hypervisor CID is covered too
+> (matching the send side).
+>
+> This was found by code inspection; I do not have VMCI hardware to test on
+> (compile-tested only).
+>
+> Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
+> Signed-off-by: Bart=C5=82omiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+> Assisted-by: Claude (Anthropic)
 
-On 22/09/2026 16:51, Anirudh Virdi wrote:
-> External email: Use caution opening links or attachments
-> 
-> 
-> The mlx5_handle_changeupper_event() and mlx5_handle_changeinfodata_event()
-> functions assume the upper device is a bonding device and call bonding-
-> specific
-> APIs like bond_slave_get_rcu() and bond_is_slave_inactive().
-> 
-> When a device is enslaved to a team master instead of bonding, the code
-> attempts to access the team_port structure as if it were a bond slave
-> structure. Since team_port is smaller than slave, this causes KASAN to
-> detect an out-of-bounds memory access.
-> 
-> Fix this by checking explicitly for bonding devices using
-> netif_is_bond_master() instead of the generic netif_is_lag_master() which
-> includes both bonding and team devices. This ensures mlx5 only processes
-> bonding events, not team events, preventing the invalid memory access.
-> 
-> Tested with Mellanox ConnectX-5 on Linux 7.2.0-rc6:
-> - Bonding: PASS (no regressions)
-> - Team device: PASS (no KASAN errors)
-> 
-> Fixes: 54493a08e21f ("net/mlx5: Lag, record inactive state of bond device")
-> Signed-off-by: Anirudh Virdi <avirdi@redhat.com>
-
-Reviewed-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Vishnu Dasa <vishnu.dasa@broadcom.com>
 
 > ---
->   drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> index 28d16fdc3f06..022a69cdebaf 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> @@ -1897,7 +1897,7 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
->          int changed = 0;
->          int i, idx = -1;
-> 
-> -       if (!netif_is_lag_master(upper))
-> +       if (!netif_is_bond_master(upper))
->                  return 0;
-> 
->          if (info->linking)
-> @@ -2004,7 +2004,7 @@ static int mlx5_handle_changeinfodata_event(struct mlx5_lag *ldev,
->          bool has_inactive = 0;
->          int idx;
-> 
-> -       if (!netif_is_lag_master(ndev))
-> +       if (!netif_is_bond_master(ndev))
->                  return 0;
-> 
->          rcu_read_lock();
-> --
-> 2.55.0
-> 
+> v2: perform the netns check first (before the hypervisor early return) so
+>     hypervisor datagrams are also gated in local mode -- the Sashiko AI r=
+eview
+>     noted v1 left that path partially bypassed.
+> v1: https://lore.kernel.org/netdev/20260917220225.56200-1-bartlomiej.dmit=
+ruk@isec.pl/
+>
+> diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transpor=
+t.c
+> --- a/net/vmw_vsock/vmci_transport.c
+> +++ b/net/vmw_vsock/vmci_transport.c
+> @@ -532,6 +532,14 @@
+>  static bool vmci_transport_allow_dgram(struct vsock_sock *vsock, u32 pee=
+r_cid)
+>  {
+>         u64 access;
+> +
+> +       /* Enforce the per-netns mode first, symmetrically with the send =
+hook
+> +        * vmci_transport_dgram_allow(): a socket in a non-global (local)=
+ netns
+> +        * must not receive datagrams it could never send (this also cove=
+rs the
+> +        * hypervisor CID).
+> +        */
+> +       if (!vsock_net_mode_global(vsock))
+> +               return false;
+>
+>         if (VMADDR_CID_HYPERVISOR =3D=3D peer_cid)
+>                 return true;
 
+--000000000000c03b1d065c160f3f
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+R/NZ5tTafc0SyuWmEVyFR825FbSoi1HwMkY1/lsU/2Ny0PK1+9WamuvV11QKd2dN0bYDXrT9uWC/
+Cw+IDnr+5S21lWL9xM3S7htf+QjbSezM58DicE0QLGoXIYZ98zGOum91sMMgq2YfQKCVeOcD/7SL
+0tftIn9SftUtPTeRab5qssPI8Aqo18uk3WxLqQRQv57jHWDis/0CAwEAAaOCAdkwggHVMA4GA1Ud
+DwEB/wQEAwIFoDCBkwYIKwYBBQUHAQEEgYYwgYMwRgYIKwYBBQUHMAKGOmh0dHA6Ly9zZWN1cmUu
+Z2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjZzbWltZWNhMjAyMy5jcnQwOQYIKwYBBQUHMAGG
+LWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMzBlBgNVHSAEXjBc
+MAkGB2eBDAEFAwEwCwYJKwYBBAGgMgEoMEIGCisGAQQBoDIKAwIwNDAyBggrBgEFBQcCARYmaHR0
+cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBBBgNVHR8EOjA4
+MDagNKAyhjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmww
+IwYDVR0RBBwwGoEYdmlzaG51LmRhc2FAYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwME
+MB8GA1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBSDkmQlbsGdC/WLbyB/
+f4VlMvD+ozANBgkqhkiG9w0BAQsFAAOCAgEAYv4/sGMrazXrWECSGMFJ6YIDir3jLsYCcD/xTMfS
+bXSiWFQ/ZiFLbxfVV9JJKkkKR29ow0Eo1fBaZMCDhnax7746XJn6qJ0Iz5MyLKFB2DKt3UO2q1PB
++wh73XKXTx6FDnbFRDjtyam6uKjknIMrZcFVTyFwUiY9zKz5pK40OPx4ZzdWxOCKMnCblGOiqvS+
+gHpKXHRfCd9Ul1teGR1+muz+L7fJfrx9WUBNDFFIhwZEevLSVo7wIoyT2PG0fIk2yjKCFOT3CVVy
+E5LT/kzQHjq7Y36GeUxozu21FbrNYm4Ivlh1OV9suNl/3iN1j9kFAdgg/8QXh9USKmg2zaS/S9lc
+1YYUOS+Epg0WBwhAwWtVym636KWqu4Esgz2XWX1260rHG0sIxkdxzvBwsUYpf3e1axBlOHHr1Jz+
+vDtQVeBUS7fBAVDWnBJrKNn+jseGnpcqBDQSSNq1kB44XhKZFApne6lKSCqYkE3qXnr7Dp0CXm+G
+pPoyxqxotis4l4Dl4A3btCkYLp/dzOS00M71f185BKufW7S/16rj/jVUzgz2AjGvM/OC0SWvGoB2
+tDdyBMmW1/0xK5rKGnmfM07/k8agfS2J6eI1iWB35m1Ni2SoCoLGoLlvUA4OhexyRqMTTjyllKtA
+0Z9TF7kzBYUx8Qa7zfaTaIsVorChiSjphpgxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkw
+FwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlN
+RSBDQSAyMDIzAgwcY9XKjV0+TQvViOkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIE
+IBH5FrfexFJpoUypchQyJdKqPeYwm/tqaEEeiTGt+JXWMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0B
+BwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDkyMjE3NTQ0M1owXAYJKoZIhvcNAQkPMU8wTTALBglghkgB
+ZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcw
+CwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBALqfqsiC6fm6mwjwUoFvh3tMT6f6XRPuYOBv
+fwpB5HTT2RbZU56ciRKn3vZyOLXL313AktH3XYnbQvBhwPAlRJ8RmYkWJm26yq+oBF+Le13RjfNE
+nYfgzWvvATG0KA861ig77tfTcnwfN/5r3V6LwDVhhfzkUR79iowdHkT0UD20SH7aJ55eq5USmpHz
+j32UWU85xKCy2sz3gqI9PCQ/15RSKmvrOcJjRcL34lVYXpCzyTaOnwqiGFmSKxZZpqWIHX9Eb7nO
+8kWBWquj2d6fFi8TQOMBfEPNz8rCRVt+qXdybP6FTXKdVCKQaFiFgbhYQyZtHQ42SUI+blZpkEHc
+TnU=
+--000000000000c03b1d065c160f3f--
