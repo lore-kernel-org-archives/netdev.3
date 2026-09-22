@@ -1,270 +1,182 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AFA560AAB
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 22:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060EF522EE0;
+	Tue, 22 Sep 2026 22:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790116207; cv=none; b=MQg0vDDUXYUkxcrpPmSd/OFFebZTTLiw7hroaekauErlCluePOjbSxQZfJYRyxpTAt1sw6c39JMQi6936j0iOLOSxcza2vEuj/CoTNupMmtr9iXlYRj+BViRbJUDichxy9IGm2ZfcIRSmPg7StcHiZqcWOxw0ypvA3Cznh7WK7Q=
+	t=1790116692; cv=none; b=cK8O6qypjLXM5ooAhFxdIalOb1k81cdS5d4NJAvYFL63ShHOXO7NomvuSdFWR649AGiV+2C082swGds+gJf7zvCC4JY9MAnGVSgyOpNBgLAnRZNqQL3Q/rKormSL45PmJWLSWOGnZDm6VxbXris7Hiu8ONwjTeHXS8J3iNRgNkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790116207; c=relaxed/simple;
-	bh=GPLKcgE/IGUmibjYksV+m38Ut7/zFBjUgzhUH19TbD8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=i7MWd4+ZzviDtIDta5QKwXjlgsRYsKWKUkiD3OgNwUL4GhL7w3bUG3CGODx9ADBNIIxFwaGVkk+RMPkZO+QaeFcLm/KiDYCoKO77L0zR0sCMuTNcu1bBLBmjDGJS52S6n0dw3TE2NsV8HY4N+dlqiZKmYqfCYoP0Ko+4qORa9gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ys9uvVRS; arc=none smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790116692; c=relaxed/simple;
+	bh=Kd2xmQx1B6Fhb4HfCOjX/bzyprZqy3oVCjhs0bkA+kQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DAOJsxXk+WijQr8ElA8o0DnXBwaR5xnCLiy2LDDtOOObk6XVz/J/CBsy8yUbmZMiHgLLGWcIEZ6qB0qEtJx2/CJKNAm9ikUB0hGPzrAieQx6GNnnGly6AC5g6LfVNLFVYcWZbQ40S9f6keWrMX1SOrxoLcCrCpLaAN/7B5jKUhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ayic1V3i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ys9uvVRS"
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-8716a5baf64so5932407b3.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:29:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790116191; x=1790720991; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0qPZh/r/REXP5ZSy0nxs+oUBSRD0aY6qVWm9CYsML3E=;
-        b=Ys9uvVRSJwCh5svQvp/RAv00KXVGJmhotLNBqseMO2qZ0tq1W3XoM19jTFngBc0CRr
-         aKCTfpDG8pIwoJgXDx/C0r/xid3JPY17ccgySynzqXO2NGmF7/z8auG7q6K44UxkVTPF
-         pKgXIiWKiSqd8ReKKb0/IOSr332hkOjBy7ApNSj8aNEk0r8sIu7sBc4fjEKTfAZoPUP6
-         gun44WmVspZgPYZpsJwE8NIoLAWSe7Hup9S2fHfPSHgFaeDfyKZJy63Apne5wKhEMOj5
-         cTSAKVyWfKIPchJl/qQSNI+I7Q5LgYEcwg/ZBzCim+gcSS56Ok5yGQE7vVv7fBBSAK55
-         ryOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790116191; x=1790720991;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0qPZh/r/REXP5ZSy0nxs+oUBSRD0aY6qVWm9CYsML3E=;
-        b=pDiB3EIXvf58QlL+imSejjKLqS6APm67gx1CsV1+lWazwpqpV9l4bH5cCLBqxlewSe
-         w9jew9BacTahNXGRsBN3rHuWPZ4+tMPwmzqdvdQDvBmRUf0+FqdoLvFbJDVSEWFhRfP8
-         zUX3A/3hfdzwWoxwqOCqQt2VSUpCDr8Qz7Q9VVQtutVDZdCL4jiPkjWPe2rSgvn7Xg8w
-         Pr0qSgSyDBkL5Ta0SZoyiJeNuzY1OLcLMp/lnNbjlpmWv5DzkqFoCRTZuGqltkD530ia
-         sxHSWLasAXXKVyxwXFQCUVHhtT/wHwRjwe9hl5OtcX01ck7lPn6OVGQoWE9NCQfAtFl7
-         D8vQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzdFPpmXjSHBKzukrmOpHLLF5CkwtajRy0DTAsoXPCd3QSYHy2bimzIdE2dDrj/TCPbaXlliFo=@vger.kernel.org
-X-Gm-Message-State: AFuF++l/uBuNYzg8CAAESqori8DYG+DrSRqxuvlRCByi7g1zHlAQMIrD
-	SKJ0ei95ka33FzA1WPHhltuw2lw305VS2q2xBvo/FtcgX8hbIK2aBq0z
-X-Gm-Gg: AYBFou3TFD2+C5kBpqFSVaJ4rGgvkmd9EE4LVrasaihbKD6GUNQYSs5swXtX53204o7
-	gs/si1LSgP3w/mOGqZprlXC4wX0iz81GOj5L4VjuVqpeI/naCxkLOm16rRPnLa9xV8bWHQxQEh1
-	iu1AD13GYzw6V48eNifLIZFvJohENtAnvwsmCWw2DYcN4D2CMo51bhFVAqtngNuqT6vyt68n0lB
-	XGpr/u/L+QbDdCv+G9vXcAhY94fqsBZtQxMay17nB++f2adXg1w0WCaDBcre51vVA9rUN/johX5
-	kXLEW9mhMbHcUKhy3s+JY4V02qq6aMkxqjDCpBpLun64ChOB+8XsX59qa7Ij05ABcDuFpoqLy/u
-	+zqm2VilLGEgrX3cc5c4AJQ9esg7Zh//FMS6Ys3zgQ0gme89X+tavaKh9uRfD+Kqu1DggTAd0RR
-	YqcurEQdChLG7jFQmQHQfWAYob2pp97krnMNxGNMfHKd5zLr31tAdJW3qpfuXO7oCA5nn+3geih
-	Kaa+D2NlZ51cFTTo2GDFKLf0jnzKxOEoClgGpxksBkDJeTVLYq5
-X-Received: by 2002:a05:690c:c:b0:873:5bb2:6c32 with SMTP id 00721157ae682-8a45bb75c4bmr5165927b3.57.1790116191128;
-        Tue, 22 Sep 2026 15:29:51 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a465ec41acsm3153167b3.26.2026.09.22.15.29.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 15:29:50 -0700 (PDT)
-Date: Tue, 22 Sep 2026 18:29:49 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Paulos Yibelo <habte.yibelo@gmail.com>, 
- netdev@vger.kernel.org
-Cc: richard@nod.at, 
- anton.ivanov@cambridgegreys.com, 
- johannes@sipsolutions.net, 
- willemdebruijn.kernel@gmail.com, 
- jasowangio@gmail.com, 
- mst@redhat.com, 
- eperezma@redhat.com, 
- xuanzhuo@linux.alibaba.com, 
- andrew+netdev@lunn.ch, 
- pablo@netfilter.org, 
- fw@strlen.de, 
- phil@nwl.cc, 
- razor@blackwall.org, 
- idosch@nvidia.com, 
- dsahern@kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- linux-um@lists.infradead.org, 
- virtualization@lists.linux.dev, 
- netfilter-devel@vger.kernel.org, 
- coreteam@netfilter.org, 
- bridge@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.259bc7096258d@gmail.com>
-In-Reply-To: <20260922030310.8684-2-habte.yibelo@gmail.com>
-References: <20260922030310.8684-1-habte.yibelo@gmail.com>
- <20260922030310.8684-2-habte.yibelo@gmail.com>
-Subject: Re: [PATCH net v6 1/2] net: validate virtio checksum start after
- network header
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ayic1V3i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F921F000FF;
+	Tue, 22 Sep 2026 22:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790116680;
+	bh=M3PZkslH3h5r4cxJsjU2sMMqI/7Ln2Gz9rJUcgdRE+s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Ayic1V3iVReHA16nFgKA3/s0vUtr8IAAyVraemrj+8WZVKAX1iCW/8ITY6RW+XD+X
+	 6gg48CZb+4Tux5vwGmlYHDmNI3Romi11Bb3ONeKT0Q12DGeQG0Jq8xEvXkotVouhoc
+	 HT1Du5eoPJIvEd1tghdEmfs3Dn/r/HRN5gL+vTZgz92aCCS/Be6+iGbM8fsEUvATIk
+	 zw2kJoj3ym8sOyyTgH727RMheMPZT1tUoLwBSd9U3PzMrmLbFZeIo4rju9coUbHThi
+	 l295RWRdnc43wxdZRjZjADgi2Kyc+oHy/FBRhnIIhg2/mzQearv2pdxjgz8Fcs1Nc0
+	 Oc8jEq0sgTb4w==
+Subject: Re: [PATCH net-next v3 1/2] ipv6: update NUD_FAILED neighbors from NA
+ messages
+From: netdev-bot+sashiko@kernel.org
+To: lfqlee314@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ rdunlap@infradead.org, netdev@vger.kernel.org, aajith@arista.com,
+ roopa@nvidia.com, jhpark1013@gmail.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, shuah@kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 22 Sep 2026 22:37:58 +0000
+Message-ID: <179011667864.2160803.5487538537038042784@kernel.org>
+In-Reply-To:
+ <e5b7a4f8cbd7c436b463b3751bf283ce861fcfaa.1789734885.git.lfqlee314@gmail.com>
+References:
+ <e5b7a4f8cbd7c436b463b3751bf283ce861fcfaa.1789734885.git.lfqlee314@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Paulos Yibelo wrote:
-> __virtio_net_hdr_to_skb() checks a minimum network-header length for
-> CHECKSUM_PARTIAL packets. Its checksum start is relative to skb->data,
-> but some callers have not established skb->network_header when they
-> convert the virtio header.
-> =
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-> Pass the data-relative L3 origin explicitly. Ethernet receive paths
-> parse the frame and nested VLAN headers without changing skb state.
-> AF_PACKET uses the frame's actual L3 origin even when the socket
-> protocol is ETH_P_IP and the raw frame carries VLAN tags. Non-Ethernet
-> AF_PACKET devices retain their established skb network offset.
-> =
+Low priority / nit picks for your consideration:
 
-> Also pass the actual L3 protocol so IPv6 packets use the 40-byte base
-> header minimum even without TCPv6 GSO. IFF_TUN obtains that protocol
-> from the packet before skb->protocol is set. Name the Ethernet parser
-> accordingly, use the same origin for tunnel validation, and propagate
-> conversion failures in UML.
-> =
+- [Low] Claimed missing selftest coverage for the newly documented
+  FAILED->STALE behaviour of accept_untracked_na: the in-tree tests…
 
-> The bound remains a minimum; fragmentation paths separately validate
-> the parsed IPv4 or IPv6 header length before completing a checksum.
-> =
+--
 
-> Fixes: 49d14b54a527 ("net: test for not too small csum_start in virtio_=
-net_hdr_to_skb()")
-> Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO t=
-unneling.")
-> Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> Link: https://lore.kernel.org/netdev/20260920004733.6473-2-habte.yibelo=
-@gmail.com/
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> ---
->  arch/um/drivers/vector_transports.c | 13 ++++-
->  drivers/net/tun_vnet.h              | 52 ++++++++++++++++-
->  drivers/net/virtio_net.c            | 10 +++-
->  include/linux/virtio_net.h          | 87 ++++++++++++++++++++++++-----=
+ipv6: update NUD_FAILED neighbors from NA messages
 
->  net/packet/af_packet.c              | 24 +++++++-
->  5 files changed, 163 insertions(+), 23 deletions(-)
+This changes ndisc_recv_na() so that a neighbor entry in NUD_FAILED is
+treated like an absent entry and moved to STALE when accept_untracked_na
+is enabled and forwarding is on. The ip-sysctl documentation for
+accept_untracked_na is updated to describe the new FAILED handling.
 
-The fix may still miss the case IPv4 packets have options.
+Link: https://lore.kernel.org/r/20260813233344.445265-1-lfqlee314@gmail.com
 
-This version is a very large patch.
+> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+> index f7af0286341c..685c84cf543d 100644
+> --- a/Documentation/networking/ip-sysctl.rst
+> +++ b/Documentation/networking/ip-sysctl.rst
+> @@ -3225,18 +3225,19 @@ drop_unsolicited_na - BOOLEAN
+>  	Default: 0 (disabled).
+>  
+>  accept_untracked_na - INTEGER
+> -	Define behavior for accepting neighbor advertisements from devices that
+> -	are absent in the neighbor cache:
+> +	Define behavior for accepting neighbor advertisements for IPv6 addresses
+> +	that are absent from the neighbor cache or whose entries are in FAILED
+> +	state:
+>  
+> -	- 0 - (default) Do not accept unsolicited and untracked neighbor
+> -	  advertisements.
+> +	- 0 - (default) Do not create new neighbor cache entries or update
+> +	  FAILED entries from neighbor advertisements.
+>  
+> -	- 1 - Add a new neighbor cache entry in STALE state for routers on
+> -	  receiving a neighbor advertisement (either solicited or unsolicited)
+> -	  with target link-layer address option specified if no neighbor entry
+> -	  is already present for the advertised IPv6 address. Without this knob,
+> -	  NAs received for untracked addresses (absent in neighbor cache) are
+> -	  silently ignored.
+> +	- 1 - For routers, add a new neighbor cache entry or update an existing
+> +	  FAILED entry to STALE upon receiving a neighbor advertisement (either
+> +	  solicited or unsolicited) with the target link-layer address option
+> +	  specified. Without this knob, NAs received for untracked addresses
+> +	  (absent from the neighbor cache or in FAILED state) are silently
+> +	  ignored.
+>  
+>  	  This is as per router-side behavior documented in RFC9131.
+>  
+> @@ -3251,9 +3252,10 @@ accept_untracked_na - INTEGER
+>  	  used in conjunction with the ndisc_notify setting on the host to
+>  	  satisfy this prerequisite.
+>  
+> -	- 2 - Extend option (1) to add a new neighbor cache entry only if the
+> -	  source IP address is in the same subnet as an address configured on
+> -	  the interface that received the neighbor advertisement.
+> +	- 2 - Extend option (1) to add a new neighbor cache entry or update a
+> +	  FAILED entry only if the source IP address is in the same subnet as
+> +	  an address configured on the interface that received the neighbor
+> +	  advertisement.
 
-Untested shorter first suggestion by bot, which looks plausible as a
-starting point for discussion.
+[ ... ]
 
-    --- a/drivers/net/tun_vnet.h
-    +++ b/drivers/net/tun_vnet.h
-    @@ -152,6 +152,9 @@ static inline int tun_vnet_hdr_to_skb(unsigned in=
-t flags, struct sk_buff *skb,
-                           const struct virtio_net_hdr *hdr)
-     {
-    +    if ((flags & TUN_TYPE_MASK) =3D=3D IFF_TUN)
-    +        skb_reset_network_header(skb);
-    +
-         return virtio_net_hdr_to_skb(skb, hdr, tun_is_little_endian(flag=
-s));
-     }
+> diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+> index 90cd5d852569..12d85d7f8234 100644
+> --- a/net/ipv6/ndisc.c
+> +++ b/net/ipv6/ndisc.c
 
-    --- a/include/linux/virtio_net.h
-    +++ b/include/linux/virtio_net.h
-    @@ -71,9 +71,27 @@ static inline int __virtio_net_hdr_to_skb(struct s=
-k_buff *skb,
-             if (!pskb_may_pull(skb, needed))
-                 return -EINVAL;
-     =
+[ ... ]
 
-    +        if (!skb_network_header_was_set(skb) ||
-    +            (skb->dev && skb->dev->type =3D=3D ARPHRD_ETHER)) {
-    +            int nhoff =3D ETH_HLEN;
-    +
-    +            if (unlikely(start < ETH_HLEN + nh_min_len))
-    +                return -EINVAL;
-    +            __vlan_get_protocol(skb, eth_hdr(skb)->h_proto, &nhoff);=
+> @@ -1067,34 +1067,39 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+>  	new_state = msg->icmph.icmp6_solicited ? NUD_REACHABLE : NUD_STALE;
+> -	if (!neigh && lladdr && idev && READ_ONCE(idev->cnf.forwarding)) {
+> -		if (accept_untracked_na(idev, saddr)) {
+> -			neigh = neigh_create(tbl, &msg->target, dev);
+> -			new_state = NUD_STALE;
+> +	if (!neigh || (READ_ONCE(neigh->nud_state) & NUD_FAILED)) {
+> +		if (!lladdr || !idev || !READ_ONCE(idev->cnf.forwarding) ||
+> +		    !accept_untracked_na(idev, saddr)) {
+> +			if (neigh)
+> +				neigh_release(neigh);
+> +			return reason;
+>  		}
+> +		if (!neigh)
+> +			neigh = neigh_create(tbl, &msg->target, dev);
+> +		new_state = NUD_STALE;
+>  	}
 
-    +            nh_min_len +=3D nhoff;
-    +        } else {
-    +            nh_min_len +=3D skb_network_offset(skb);
-    +        }
-    +        if (unlikely(start < nh_min_len))
-    +            return -EINVAL;
-    +
-    +        const struct iphdr *iph =3D (void *)(skb->data + nh_min_len =
-- sizeof(*iph));
-    +        if (iph->version =3D=3D 4)
-    +            nh_min_len +=3D max_t(u32, iph->ihl * 4, sizeof(*iph)) -=
- sizeof(*iph);
-    +        else if (iph->version =3D=3D 6)
-                 /* ..here I don't trust the initial bug output, but the =
-branch is clear.. */
-    +        if (unlikely(start < nh_min_len))
-    +            return -EINVAL;
-    +
-             if (!skb_partial_csum_set(skb, start, off))
-                 return -EINVAL;
-    -        if (skb_transport_offset(skb) < nh_min_len)
-    -            return -EINVAL;
-         }
+[Severity: Low]
+This isn't a bug, but a note on test coverage for the new FAILED branch in
+ndisc_recv_na().
 
-    --- a/net/ipv4/ip_output.c
-    +++ b/net/ipv4/ip_output.c
-    @@ -772,7 +772,9 @@ int ip_do_fragment(struct net *net, struct sock *=
-sk, struct sk_buff *skb,
-         if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL &&
-             (!(dev->features & NETIF_F_CSUM_MASK) ||
-    -         skb_checksum_help(skb)))
-    +         skb_checksum_start_offset(skb) < (int)(iph->ihl * 4) ||
-    +         skb_checksum_help(skb)))
-             goto fail;
-  =
+At the time this patch is applied on its own, the in-tree selftests only
+walk the "absent entry" rows of the matrix: the matrix comment in
+tools/testing/selftests/net/ndisc_unsolicited_na_test.sh and verify_ndisc()
+start from an empty neighbor cache, and arp_ndisc_untracked_subnets.sh does
+the same for the accept=2 subnet rule. That leaves the new
 
-And the summary of the problem:
+	if (!neigh || (READ_ONCE(neigh->nud_state) & NUD_FAILED)) {
 
-  ### 1. What the Problem Is
+path, and the FAILED rows now documented for accept_untracked_na, without a
+test.
 
-  When userspace (AF_PACKET, TUN/TAP, vhost-net) or a device (virtio_net,=
- UML) injects a CHECKSUM_PARTIAL packet using struct virtio_net_hdr,
-  virtio_net.h:47-119 validates hdr->csum_start:
+This is addressed later in the same series by "selftests: net: test
+untracked NA recovery of FAILED neighbors", which extends the matrix
+comment in ndisc_unsolicited_na_test.sh with the six "failed" rows, adds
+initial_state/same_subnet parameters to verify_ndisc() and
+test_unsolicited_na_common() that seed the entry with
 
-    // include/linux/virtio_net.h:107 (added by commit 49d14b54a527)
-    if (skb_transport_offset(skb) < nh_min_len)
-        return -EINVAL;
+	ip neigh replace ${HOST_ADDR} dev ${ROUTER_INTF} nud failed extern_learn
 
-  This validation has three bugs:
+and then adds cases for accept=1, accept=0, forwarding=0, drop=1 and both
+in-prefix and out-of-prefix accept=2, checking that the lladdr is learned
+for the STALE rows and absent for the rows that must stay FAILED. So the
+gap exists only for this commit in isolation, not for the final state of
+the series.
 
-  1. Missing L2 + VLAN offset: skb_transport_offset(skb) (hdr->csum_start=
-) is an offset from skb->data, which points to the L2 header (14
-  bytes for Ethernet + 4 * n bytes for 802.1Q/802.1ad VLAN tags) on Ether=
-net callers (virtio_net, IFF_TAP, PACKET_SOCK_DGRAM/SOCK_RAW).
-  Comparing csum_start < 20 allows csum_start to land inside the L2 VLAN =
-tags (14..21) or inside the L3 header (22..33).
-  2. Wrong nh_min_len for IPv6 non-GSO: nh_min_len defaults to sizeof(str=
-uct iphdr) (20) and is only raised to sizeof(struct ipv6hdr) (40)
-  when gso_type is VIRTIO_NET_HDR_GSO_TCPV6. A non-GSO or GSO_UDP_L4 IPv6=
- packet is only checked against 20 bytes.
-  3. Ignores IPv4 options (iph->ihl > 5): Even without an L2 header (IFF_=
-TUN), an IPv4 header with options can be up to 60 bytes (ihl =3D 15),
-  allowing csum_start =3D 20 to point 40 bytes inside the IPv4 options ar=
-ea.
+Would it be worth mentioning the follow-up selftest patch in this commit
+message so the coverage relationship is visible when this commit is read
+alone?
 
-  This causes two kernel bugs downstream:
-
-  =E2=80=A2 Bug A (WARN_ONCE / panic_on_warn in skb_checksum_help): With =
-2 VLAN tags (22 bytes L2), csum_start =3D 20 passes 20 >=3D 20. Once
-  eth_type_trans() + skb_vlan_untag() pull 22 bytes, skb_checksum_start_o=
-ffset(skb) (csum_start - skb_headroom(skb)) becomes -2. In
-  dev.c:3645, offset >=3D skb_headlen(skb) promotes signed -2 to 0xffffff=
-feU, firing WARN_ONCE(1, ...) and crashing panic_on_warn=3D1 hosts.
-  =E2=80=A2 Bug B (TOCTOU L3 Header Corruption -> OOB Read in ip_do_fragm=
-ent): With csum_start =3D 20, csum_offset =3D 0 on TAP/AF_PACKET, csum_st=
-art
-  lands at byte 6 of struct iphdr (frag_off) or byte 0 (version/ihl on do=
-uble-VLAN frames). In ip_output.c:774 and nf_conntrack_bridge.c:42,
-  skb_checksum_help(skb) runs before hlen =3D iph->ihl * 4 is read. The 1=
-6-bit checksum write corrupts iph->ihl (e.g. from 5 [20B] to 15 [60B])
-  after ip_rcv_core() already validated it, causing ip_do_fragment() to r=
-ead 60 bytes out-of-bounds from skb->data.
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1789734885.git.lfqlee314%40gmail.com
