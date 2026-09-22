@@ -1,81 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EE64A43E8;
-	Tue, 22 Sep 2026 19:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889F94A4F1F;
+	Tue, 22 Sep 2026 19:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790105818; cv=none; b=YKCgpVIlXNCskZhHqOEVyrg+tOKR/xv78HXWLr2WY6D1fd8Lq88qCOVmczeEBOgCKak3cm2sgdoOi+ThMAbUmjVPomDV3mVFcu8f0dM1hwSbYcAILO6Ok1OjKOaheDfuJINZdxB+MCUzd1Mtx5hKLDUXMugA8NOfecf+IDz2LKs=
+	t=1790106089; cv=none; b=T0y3Mk6uwPYyocEd+ELhp20kLQKLBxRdJXCbmxfZa40zyD6b4NhsUk2GS400i7vZ931Na+Tu+qfdTsVs1HlCbD9AcSue3c1p+5g2+o/A5cLiiGt7kVgjhtGIHBFd7vnqNxDD+iW7fehhYNd40cadMx0gcVI8O7P9H5Qf68Mko08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790105818; c=relaxed/simple;
-	bh=u5eC7QbN/0KMiGIfAnewygJ7wjNim+8UKid5Q38XPEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n+BUJy1u8oJ8akLiOJ2rluAgrsdD1eJwXmFDODCch+sun23p9NG37iozagrc2qcgDiMycUxdGEZeXx2l7asq224cyrQp75kcf1//5Yu3qbK8IWmPMCGg98oJqR+SgXH8U9Qls9KMmbDdV4M4u7BLpBu+kMRUxgrPpnR3O8+TqNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0jidb+h; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790106089; c=relaxed/simple;
+	bh=y03ImLd8/oljktXTCWu9VWLWus5hn0BdVkjodGZSMO8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uQdgUTdY+VNq3Lwyv/k+s0teYZlSJhwc9FHNEvK/btlY2jZYOSJuQLrN74ESIpz+Xjs+vJVpKe0QWgM/PCGzOf+Gn4w36W/RPFE3Xpn/fMgBIuwib7+VQ7V64j1Ec8JqVqg9kPJdw9hdZ1sdLpKY9cVwLiypa7eb1/Qux6bv7P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1cRMfV+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0jidb+h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EFA1F000FF;
-	Tue, 22 Sep 2026 19:36:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1cRMfV+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9D81F000FF;
+	Tue, 22 Sep 2026 19:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790105817;
-	bh=V7bXpo0vHaFtFPd8JgONxBJ9/QU6tAtzQGrWC4wYhTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j0jidb+hLKwwmTBn7BvFTYJ5vD19Z9z959/j/gHZvTijOnIkb3dAx8gtFOcJFQERg
-	 DF6vUuZD2q4dXkyzsrYJ0od9pAH8NbmhBDH9xFlaIQpcu8KoZsVfjTVWIYeHyukeff
-	 XSYa0ZG8Omtmf07lQX71gAUZXhD1qyTDw+ST2b+5jeYYcduQr7w4diBq3Wm7iFouvQ
-	 3T/3CPYGDHx1F2G9lfUIf2zszouQiAWRsmIeGMQUCKr4av08UDQc/P1A5X6keF2o96
-	 Q5i+JSDpclnnimbsNh0IhyCYgMceiWXYTJc98prV0bm8DWQRvINmBv3ayiqcgyH6eW
-	 GSmDKfjgComlw==
-Date: Tue, 22 Sep 2026 20:36:53 +0100
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: benquike@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: slip: fix out-of-bounds access on short CSLIP
- packets
-Message-ID: <20260922193653.GH13925@horms.kernel.org>
-References: <20260919223432.3882500-1-benquike@gmail.com>
- <178994445036.2160803.93100448666025209@kernel.org>
+	s=k20260515; t=1790106088;
+	bh=Qax63mSOp1gySUBjRXF4hfdq/dtG6DsHkoSgPgOQRCw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=O1cRMfV+TUwxeTV9tp3Xz8GCPeiIp5VRizyr4+HQMi6lLLb3gleUY4xr1ugvS9szo
+	 0hI2NPNl/BwvfGSrFVGVFUQHXb3OJ9L+vSzE3gvB9h8H9DtUVBC4IvFnLxRXtPDbdX
+	 G+r0zKfKeqfHZWjKTI/pyPmDGcTxU1X4/sYWk1XxPJNTOMZ62G+c03tVl1X1LwjcoI
+	 gxPV1FcK63tDdievTAMowhq8mwYgEmMk5Pm8ytSWvvdW5/ZQhbAAt7MYggu3EfpIQW
+	 mseqDfAiAA/i6CDjCQfyv3HLIY2/52oXLsXZM531O6egX4txFXjt5f65Wt7gd6/izq
+	 O62ePxLKOzXmQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BF53811A60;
+	Tue, 22 Sep 2026 19:40:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178994445036.2160803.93100448666025209@kernel.org>
+Subject: Re: [PATCH bpf v2 00/11] skb/arena bugfixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179010601914.57201.17168926914102740622.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Sep 2026 19:40:19 +0000
+References: <20260922172028.6269-1-emil@etsalapatis.com>
+In-Reply-To: <20260922172028.6269-1-emil@etsalapatis.com>
+To: Emil Tsalapatis <emil@etsalapatis.com>
+Cc: bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com,
+ memxor@gmail.com, daniel@iogearbox.net, netdev@vger.kernel.org
 
-On Sun, Sep 20, 2026 at 10:47:30PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
+Hello:
+
+This series was applied to bpf/bpf.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
+
+On Tue, 22 Sep 2026 17:20:17 +0000 you wrote:
+> Set of verifier-focused bugfixes related to dynptrs, SKB
+> management in BPF, and dynptrs.
 > 
-> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 2 (1)
+> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
+> v1 -> v2 (https://lore.kernel.org/bpf/20260916050830.8774-1-emil@etsalapatis.com/)
 > 
-> - [Medium] Commit message describes work that the patch does not do, and
->   names the wrong bug class.
-> - [Low] The new reserve literal 120 in sl_bump()
->   (drivers/net/slip/slip.c:338) is undocumented and unlinked to the code…
-> - [Low] The Fixes tag is wrong.
+> [...]
 
-The concerns above seem legitimate.
+Here is the summary with links:
+  - [bpf,v2,01/11] bpf: Fix bounds check for skb-backed dynptrs
+    https://git.kernel.org/bpf/bpf/c/ed6eec97b534
+  - [bpf,v2,02/11] selftests/bpf: Test dynptr slices past end of skb
+    https://git.kernel.org/bpf/bpf/c/4fd72eb9f1c9
+  - [bpf,v2,03/11] bpf: Fix bpf_sock context code generation
+    https://git.kernel.org/bpf/bpf/c/4a4852376e3a
+  - [bpf,v2,04/11] selftests/bpf: Add selftests for rx_queue_mapping context access
+    https://git.kernel.org/bpf/bpf/c/dec0c209a680
+  - [bpf,v2,05/11] bpf: Reject pkt arguments in mutating subprogs
+    https://git.kernel.org/bpf/bpf/c/a6c1edfbe240
+  - [bpf,v2,06/11] selftests/bpf: Test rejection of pkt args to mutating subprogs
+    https://git.kernel.org/bpf/bpf/c/1ed69a54d318
+  - [bpf,v2,07/11] bpf: Prevent variable arena/non-arena register contents
+    https://git.kernel.org/bpf/bpf/c/f85f5917aa2f
+  - [bpf,v2,08/11] selftests/bpf: Test for mixed arena/nonarena code paths
+    https://git.kernel.org/bpf/bpf/c/a9e86dd9de4f
+  - [bpf,v2,09/11] bpf: Track whether dynptr type is known
+    (no matching commit)
+  - [bpf,v2,10/11] bpf: Track skb memory invalidation by packet-backed dynptrs
+    (no matching commit)
+  - [bpf,v2,11/11] selftests/bpf: Test dynptr slice invalidation on skb clobber
+    (no matching commit)
 
-> 
-> Pre-existing issues:
-> - [Medium] The rx_over_errors early return in sl_bump()
->   (drivers/net/slip/slip.c:338-341) discards a compressed frame without…
-> - [Low] Claimed TOCTOU race between the reserve check in sl_bump() and
->   sl_realloc_bufs() swapping/shrinking sl->rbuff and sl->buffsize.
-
-I'm less convinced that the above are in-scope for this patch.
-
+You are awesome, thank you!
 -- 
-pw-bot: changes-requested
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
