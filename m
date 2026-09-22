@@ -1,139 +1,129 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688E047F2C4
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790088073; cv=pass; b=PKhxUHIrpTFm50FVBz5an6cFDO35JEofMQ3RmoD4AHcw7zPrsqMA6GwG50S84Rosnb4feOiLHib5llvlJW0zk/j9to/bBu77SJl/hH83Q9gkpVX7fuphCcVu6KnQDUo2rDC3bZ9evwebCJ6OF2zOnxkNNfe0Qc9hicxvIUJDqkA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790088073; c=relaxed/simple;
-	bh=iYkoLLjFuLaOLIFnl2IacK4JF+N4rG+CagfraarYei4=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vs7iEdyK05rPhJPeZdat2dqEZmsRtymQNgITAPGNoNkTusOjiSzCk+NfZRTBKD3BB0jGp1Us2VKQcG+muz9cL1nfQwYjV2zMCnkMqdX58+CFYZW9oJdtFVQo6YPs/qxXoiYyE1/X+UbhEMA0JzH/KNjxFQdWP2B63x7brkdeQhA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pPVxjpNy; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD52A38758C
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790088337; cv=none; b=ZUzzyUN2VdqjgfCv4ReTF1ldOSVG3LHdLBgkDyDqnGYKe+3+Gj8ZMKViLtdfZtNaNp1E2cVQ/5Xc2ZwsJCMcU813x4VjhhzObtu1V+/33EZEdVDLkgyzXKde3qKODa41YN/RvLlTgwVXzeybVRHkO44mo5zxRUuyw0WCzS9q7A4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790088337; c=relaxed/simple;
+	bh=6+7YwPssrYwwbcVyy1E2zRmvrRlDS05FVVsJW9+Xl58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N7/RdYjFCQWOLXoCWVsicE+8u3P7ZYahtUg7gP8a6L+48HBh2kLgJLX50CwzfG1Bj82Y8Ml5vhNDS4fPWJXekLmRzo+R30De60NAlWLi7d9GmCHpVEImvvD9LzZAtYHncvGP5mMfxe0fc+2VsLt88EZn8vlRujd/iN+UbwUq9M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=CguFkjds; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pPVxjpNy"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f7db0so513962566b.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:41:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790088069; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SDO7V0gT8QfxXXy3BwerBZLI8Ljt5rfNZrvrCPgA0e9wcQHZZIUQC3+FsKmK22kFXR
-         Z0AD7GByt9H17paptHcD2xISbNRMJ8mPtoEjFl86aVTQUqwtm6RW4fTOClyviP1MrQuZ
-         DDJdqrIJXKgc4GCgnvrd5zcU9To7NzxxWG7kp+GoWkcBs7qELxOTs1SIze0iQdpw2Hh9
-         C3G8gGQnHT/QP7IVJYUU1ESRJOykT7haSgYyY4RrqNaMBXeljGfZD4wzjGUFEo/bq56Z
-         fQe3Al32n8KgqKg1GjfblqgRoWgWcUY1U2hr6og87uiCSl1JXZrpERD/Dg48hHItfn1g
-         Gg6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=aobqVTftx2RUrnHTqiqb5TNxJi/O+H0hYNwZcfYit+Y=;
-        fh=oscuMgTh7wHBzrUDKOarO0aBSXBA85T1i+BN/enA+6U=;
-        b=nXLE5WEwdzrHWIz/za3o27x67XdW/6ZTXUQcgYj8UaTooNhiBO54zE/T/4gQ0EDw/a
-         rwDJa8H5LLACqYIk/M2/4+sKJBAlN0lTKj/kjgoR8g5N5YOsobEmrskHxECDrSAEa6Uq
-         64Z8H/eZO4Aj4X3sP7x+aXXewWaI+ZtThB+rwb6VyXRAQUuQ+V+tUH7uA5ueyzBeN/+u
-         1Dlj7i0d6B9jTjX9d33NUE+ceYEmB+Gm90W7bV1Tp/chnIYFKCMY8q/IBcn0/tBjJMCU
-         2hngsK9X7pc93wFAXSm7dBb254xEtqjGxxQHOPMrFrAedbbIZxw8oZsGSHGkFbPgUQLV
-         ZCzg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790088069; x=1790692869; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aobqVTftx2RUrnHTqiqb5TNxJi/O+H0hYNwZcfYit+Y=;
-        b=pPVxjpNyTrNK+5ZOq0PM2wCKcDZs7hZyct3huk+9SPzuvcVEW/QIcGiGOrqOaydR/5
-         Zq63oCKR7m97TtIrvMEmWJUzQm4k3CDT8LPJZgbTG36I3hZ7OrUZonzr6Y/RbyFf2LsH
-         LbCxa/SdUf8gJ/0mAZJ7ivod1C0S+6tGCkTLH3SbbEfEv0XaIXyukmGAjTNDQOYL4urZ
-         2QyPbk4QhmyQkGIJ6t9Ib16Erp+tu0l9mpxN2nzih2QhgRmVOA3pzGGt2pTp8ugegUeC
-         7NKABHf6QzukcTJtc1JR07/x+H7IW44H0PmCc6EA+HhcQ+FslOzCKb9xu4TMmMTG0poe
-         BXpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790088069; x=1790692869;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aobqVTftx2RUrnHTqiqb5TNxJi/O+H0hYNwZcfYit+Y=;
-        b=qrv6IpQNpTfPB9DleLfMY1b15c89wbzx0KenDVHsx+1Pnt+0f+T1jA+Dwr1QiGpDhR
-         fWxzSwTqmGP2/62mRa8oXhQuQ674/g/0wM2xM9epdeYvOdJjBTQYHmytSDBSXY6i6UH8
-         ib6IKzvVfe5xgX5Hrdl6j1TdSpaisZWVpjJd7M4CZEhLjjQeC/yG2nHTwI3GU8txhGNg
-         i/RAsaSHLE4sS7Isz/csT8JzN8aeMoZAZ65MDUXbTAdvX+roZ4XL4maoULnqmjoXXdBv
-         bCqZapXl8/h2cEj2k/DpIFc6KMlma5U+xlGM59JH5UYSqO3Sq1N+7LVsYa50jgWIkYAw
-         lpzQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw7O0xyU/brRJQKkICfeGyNV/aWuzbMvSdhvu+GiEkvj73rwkiqSsAcJEpEZulmDTdAEKjDTxI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIH8ced2BrochTrbnyTvIBFjI4jttkZ0L5gUpxFiZML2XfohG9
-	jN2dxDxw16YLcZ05Bhbfo8UxJxq/9zfqs7yHRapzCYlg8aXme0hZDGoHkzpQtwAK49KgnBGlpHf
-	E83cKvvbeL+R0GXhSbYjLXdYbtzNnha0=
-X-Gm-Gg: AYBFou0u2Pzj+g6/2f3lApz4IzIzIIUe61BhIQxqu1Q8NmuDAmDlmOjNG7n7xHjPh27
-	hPxFjEYvRbrQxRusKj5tJT8xrG5YIBAdijXnw6+T3hXpimOCIc10xfUhPQZR7b7Gudrbc05lOLL
-	TQxAjXojjyt+4vCQF1qs3WHPDLfXj8qu29OO8Wk8Lx8D3d/roN3V32idsDacfxbI/+t0eFCfkDz
-	QAtDg7m1UlN8Vk6BE6RoQPWGCByRYOxDqwJ91gX6WY9yfOpLYf0iUe/nwbLVmwaKHyhrPjEhYkp
-	TCskKoNO71PFl4a8iXcIUcf01q5SBbpgjVOKuQriQ4wtH9ksBxWwW7f3IgAYZ2DatFtHGAbzdkf
-	EAwdLHuTglTYkAC+gQXwWwaC/buLoeI/DscPYJ2ylbXNYzSHH5u+EmNAFfvFWV7/x06K2BQFaHx
-	XXu7vI+rwmLLbwjlqh9YiW68uoOBVKBh0jakauTdTW/g==
-X-Received: by 2002:a17:907:7b87:b0:c29:5a49:f8ae with SMTP id
- a640c23a62f3a-c2a156d4889mr1174425166b.12.1790088068900; Tue, 22 Sep 2026
- 07:41:08 -0700 (PDT)
-Received: from 1057883412519 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 07:41:07 -0700
-Received: from 1057883412519 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 07:41:07 -0700
-From: Zack Gomez <zack.gomez@gmail.com>
-In-Reply-To: <aqpnhJyXHYrqqohg@gmail.com>
-References: <20260914041221.1028092-1-zack.gomez@gmail.com>
- <aqeyvaw06I2883Fo@gmail.com> <CAErB-w3fmW4bQqRg7895dZ4ZRqkDJmfb7FSCLPvRCkwrhQzaqQ@mail.gmail.com>
- <aqpnhJyXHYrqqohg@gmail.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="CguFkjds"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=6+7Y
+	wPssrYwwbcVyy1E2zRmvrRlDS05FVVsJW9+Xl58=; b=CguFkjdsvQ8uo+wX/xEJ
+	3RiokJSXD94GoXAfVLjWKz+1uejkAw7kl4/1xIpbNhEz9+k8g68TzFsoi6LLucFN
+	Ndwn5b23x97IbqfUJS6Ka3H72pLXZn/70hR4VEbM5/VqqBrypDjeacVP/f3C862U
+	QWEM/koX8XX8b5wCCJBbcEyGr3j/76Lp52BWBC+xXj/jZb18FDWsHby8SdFNA5AJ
+	KriCM4PWx7LxDc/OHgfaqQik8Web9Ux9ddtyjZ5Nital6JoZS/EUVbsnJuy5pRGN
+	wavCkHNDjeGpkkALeScB5I6OHW7dAuPRkvR3oBxySwAhM494mYq744+2PmKIpyE+
+	hw==
+Received: (qmail 286476 invoked from network); 22 Sep 2026 16:45:25 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 22 Sep 2026 16:45:25 +0200
+X-UD-Smtp-Session: l3s3148p1@0aq/ahNckKNQT+F6
+Date: Tue, 22 Sep 2026 16:45:25 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rudolf Marek <r.marek@assembler.cz>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Duncan Sands <duncan.sands@free.fr>,
+	Chas Williams <3chas3@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>, linux-watchdog@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] watchdog: Replace __MODULE_STRING() with
+ __stringify()
+Message-ID: <arKUgQKr99Ox6ZIW@shikoro>
+References: <20260922-module-string-v1-0-c18766690185@suse.com>
+ <20260922-module-string-v1-1-c18766690185@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 07:41:07 -0700
-X-Gm-Features: AcwNN1WJEk5oAzhiFwYCAEjZSZzcOxsgWSi9YoYm3E2lZNizP7dV3aoB5UEvxfE
-Message-ID: <CAErB-w0sQ6mg9UpK9_YM-VXjQrf=shY+nwtkWMYbSF=zk+cSeQ@mail.gmail.com>
-Subject: Re: [PATCH net] netpoll: bound the deferred transmit queue
-To: Breno Leitao <leitao@debian.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sgLEH0/VtwN7fsyT"
+Content-Disposition: inline
+In-Reply-To: <20260922-module-string-v1-1-c18766690185@suse.com>
 
-On Wed, Sep 16, 2026 at 03:01:30AM -0700, Breno Leitao wrote:
-> My concern is some other netpoll users that do not check for return
-> value. Is this change going to affect them?
->
-> For instance, team doesn't even check the return value.
+--sgLEH0/VtwN7fsyT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-They only lose the accounting. bond, bridge, team, vlan, macvlan
-and dsa reach netpoll_send_skb() only under netpoll_tx_running(),
-when the upper device's xmit was itself entered from netpoll, so the
-skb they hand down is always netconsole's, and it is consumed whether
-sent, parked or dropped. The drop lands on the lower device's txq,
-which is the queue that fills, so the bound holds for them too. What
-none of them see is the drop itself, bond included: NET_XMIT_DROP
-from the nested call is below NET_XMIT_MASK, so the outer
-__netpoll_send_skb() reports a completed transmit and xmit_drop_count
-never moves. The existing !npinfo / !netif_running() drops behave
-the same way today, and netconsole never had a delivery promise to
-lose (UDP, and netpoll_send_udp() already drops on pool exhaustion).
+On Tue, Sep 22, 2026 at 03:32:21PM +0200, Petr Pavlu wrote:
+> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
+> MODULE_PARM support for older modules" [1] in 2002-12. That change also
+> moved it to the graveyard section at the end of linux/module.h
+>=20
+> Replace the remaining uses of __MODULE_STRING() with __stringify() in
+> preparation for its removal.
+>=20
+> Link: https://git.kernel.org/tglx/history/c/136839a1b4 [1]
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 
-> If a WARN is too heavy and it seems it might be, would a drop with
-> a reason be better than just dev_kfree_skb_irq() ?
->
->       dev_kfree_skb_irq_reason(skb, SKB_DROP_REASON_FULL_RING);
+I didn't look at all but at some of the drivers (Renesas ones, da905x,
+STMP and a few others). Those looked good. I guess you generated the
+changeset anyhow:
 
-Will do in v2, though it will rarely be seen:
-dev_kfree_skb_irq_reason() defers the free to the completion queue,
-and the next find_skb() on that CPU zaps it with __kfree_skb(), so
-the reason seldom reaches the tracepoint. v2 therefore also does
-dev_core_stats_tx_dropped_inc() on the device whose queue is full,
-so the loss shows in its tx_dropped in the stacked case (tun pairs
-the two the same way for its ring). I'd rather not WARN: the path
-runs from the console being drained, and with a flood in progress
-the splat is one more thing queued behind it.
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Zack
+
+--sgLEH0/VtwN7fsyT
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmqylIEACgkQFA3kzBSg
+KbZBaw/9FrBesyOyyDUrnxlHP0bOF3BmqDAG1eHCb7OuWj1Wcqrh68l72s5PrP8Y
+omafJO2i4E1dAJdffYG+gz4rfeaT4Kj9TJCODqKn6pB7cEFOj0Gk9Tlc1Pd3sNpo
+3nNxwod06QpdI/1RpmBPR76rj+a0vaK8WM1j1zoARksJT0LK8Jrfm5d73Hoisng7
+2iNk+ZkddaYmPSqgADJxlB+j3VUcWAIp4t/Q4F0c6+xJgA++OzbgOAvDLpXzi4Ae
+zVzinZ552qM8vWVqf9RHbEz05NCRqlYewqsc6ZzFWcLHOcC9cE9nbgwH6qtd5qWU
+LWqNdIl0WXDwSXi79NzvtqsAIXCMN814bx497Fbz4Xe4Sa3KBDkfUPv/JmmRtxcZ
+BQxDPqXjxauBMrmarjBbr2fJy+6JRoJ44Fb3n3USWvZufXWhUbagITi8bfkE+ikP
+6YriAOJVgsI9IQnTTUN5szRzPcFEHTM9N5qptkcwjCyWa3Z61/a2gmppmR4wwQ1l
+Be/BD93oE4Y+DkKI3w3dWjyamEWcx+Hq9JYIMlemrXpGx5f2OZCIJNHFwvdyS02h
+k8AE3H4VIwo7A/6UYTImr/JQAtwuUTyzcK54vyXsGAPSc1FhvXr+8zgbaR06nqgD
+EfSNpsEVCbms7JBhxZphEoSYGUtYUwHE6x/Vd63n78pA5DJoRQ0=
+=++bp
+-----END PGP SIGNATURE-----
+
+--sgLEH0/VtwN7fsyT--
