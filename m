@@ -1,259 +1,441 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C547A3C942B;
-	Tue, 22 Sep 2026 16:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24493516144
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790092882; cv=none; b=Gls7NpgqgSBrssBmmEKla/mJviQKvZT+sBxCA0CoMVhPJwSatlMuQRcxxqQilZbTHGXfh3yOK9aSrNUmE3b2lgQ6MyiZmN4aAce7nG6BGYya9wvZO1ioXIBbuU/ebqJF/K/DTkxymw8nFQiErpqvzcwOVfK5ZygStXEkE85MoWU=
+	t=1790092950; cv=none; b=kjWcZEULCWjnETPNvMmoSvuFKbZsl45M4LD6cacP4TGXaN+4ceAdZ1uok2u5u83rSOGg5RNxmoslO8gM7uIchnFZw902jBTWbP/+2Yhplp0jmSt4I6o1g+Sg/bnWqWYG2aiU/jLScWX4KJBjtKzAE4D3Y2bzVIgxepqZZd8zbto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790092882; c=relaxed/simple;
-	bh=bbouN4XikNN4VfImQG6aQfyahi8ezoXY7igGGmga81g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T72FsG55lH3inQBVInKCUxw9LQ7XPKAwsWtVGu2JaH4GCfShHWGW87yvQWavsKx8b2EDmhyRTMS4QYJO/gked7B65C6UAZegt/BQJiCOtoj/sbDbvsT1XBYd0z5vT3pEpAQUb/V6p+DaMDGu0YnI5nWwi4qceeef8JJhj4nRzTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WH87jzOw; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1790092950; c=relaxed/simple;
+	bh=DMJXaHTUtvyDpY2B056sHR57Z/SBxeOdawRNalkN5Zs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M90nGNgtjvTmg10nS7uSsHOH5qmpQ2rpHuMJI8XZVGKGcxxYEg1F7WSAYv/0/cyyYqF7XBTmQC8HrLVuTXxbVIqnSJuEJi3/GI2RWjYBMP3arfRhNgMjGtwnMW3kk8Bfk2AGDm0QxbXikym93hjCNaOvH12MHsLDampWw3DuCNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTsw/G/z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WH87jzOw"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1790092868; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=+ClSnMxfSM/WITTo4HDenJcjEtkXpEipTYk1bTX5b6E=;
-	b=WH87jzOw3CM7NZAIm52MM+5jY2bDuLBVxEe54cCixUBU1kPbLIdGBwroDMnXNQl8xEHAzkaai0PgKRuKplH+fvZUdXpOuI0XMtA3EFq3nwEu38donXhw1LXl37+NB886FJhBwUsuPnQnzg0NENmozuZKgWx2Mj4xALen+OS4VJU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XBUGdpo_1790092866;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XBUGdpo_1790092866 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 23 Sep 2026 00:01:07 +0800
-Date: Wed, 23 Sep 2026 00:01:06 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, hidayath@linux.ibm.com,
-	stable@vger.kernel.org, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net v4] net/smc: fix lgr/lnk lifetime vs diag reader race
-Message-ID: <arKmQvQUeHb84Mlu@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260911090906.1949163-1-mjambigi@linux.ibm.com>
- <aqlgtaEk3kNcg-Yp@linux.alibaba.com>
- <69676c38-3d68-41db-8b26-3e589d7477d5@linux.ibm.com>
- <aqq0rnQjiKymR3TM@linux.alibaba.com>
- <2111df0c-33b1-4330-8adf-ac5a0f1de451@linux.ibm.com>
- <aqwM5USzvdm5zF40@linux.alibaba.com>
- <d11098fd-042c-4246-ba3b-9c2662447f21@linux.ibm.com>
- <arD_Wzbv3Z01ZSCv@linux.alibaba.com>
- <6b7736f4-d759-476a-8bc9-9038ef5823ea@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTsw/G/z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF931F000FF;
+	Tue, 22 Sep 2026 16:02:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790092948;
+	bh=yHkv64Rb9PD32TmnOnObxFMDksoGqO0i2tcZhAOkSPQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XTsw/G/zkWWjeONHnQms4pGI8auS6wJ5q51Douokv6qwVlSbisg7qMQxLbCNFFOe0
+	 MbRXCeBNlugjBDZyfnv3p/VG8yR/WiS9aztiwdqwoQeM1oEZ8Zcg7F8dao8F3v5yA7
+	 8hOsYPlsUId99dsIS0h4wv4C0eCdi6X5k5K2Memc82a8GZxHncPJ57Hh2rUb0Zx1vC
+	 0OnomAciMcRkDGJqnaLnjmg3LjL0h3qj4POyvaV4mk8ZpVe4de/oPDBB5NabhRLhmM
+	 AYobiZ9JeeYI7x5xGOC8z/ygZA8D3lmRUGQkMOkHhNcdZ4Y7qYnkxD3YCSJ+/bN0ic
+	 C1gs+e+8Y3CpQ==
+Subject: Re: [PATCH v5 net-next 1/8] vxlan: update default fdb entries when
+ the lower device changes
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Date: Tue, 22 Sep 2026 16:02:27 +0000
+Message-ID: <179009294790.2160803.1798518165297205299@kernel.org>
+In-Reply-To: <20260921100139.508191-2-edumazet@google.com>
+References: <20260921100139.508191-2-edumazet@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6b7736f4-d759-476a-8bc9-9038ef5823ea@linux.ibm.com>
 
-On 2026-09-22 18:57:24, Mahanta Jambigi wrote:
->
->
->On 21/09/26 3:26 pm, Dust Li wrote:
->> On 2026-09-18 12:57:13, Mahanta Jambigi wrote:
->>>
->>>
->>> On 17/09/26 9:23 pm, Dust Li wrote:
->>>> On 2026-09-17 13:15:23, Mahanta Jambigi wrote:
->>>>>
->>>>>
->>>>> On 16/09/26 8:54 pm, Dust Li wrote:
->>>>>> On 2026-09-16 14:04:42, Mahanta Jambigi wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 15/09/26 8:43 pm, Dust Li wrote:
->>>>>>>> On 2026-09-11 11:09:06, Mahanta Jambigi wrote:
->>>>>>>>> The diag dump walks the socket hash table under a read_lock and
->>>>>>>>> dereferences conn->lgr and conn->lnk.  Two terminal teardown paths
->>>>>>>>> drop those references via smc_conn_free() while the socket is still
->>>>>>>>> hashed:
->>>>>>>>>
->>>>>>>>> - smc_conn_kill() -> smc_close_active_abort() -> smc_conn_free() -
->>>>>>>>> smc_close_passive_work() -> smc_conn_free()
->>>>>>>>>
->>>>>>>>> This allows the diag reader to dereference a freed lgr or lnk.
->>>>>>>>>
->>>>>>>>> Fix it by unhashing the socket before smc_conn_free() is called at
->>>>>>>>> each of these two sites.  Any socket visible to the diag reader
->>>>>>>>> under the hash read_lock then has valid conn->lgr and conn->lnk
->>>>>>>>> pointers.
->>>>>>>>>
->>>>>>>>> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets") Fixes:
->>>>>>>>> 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R
->>>>>>>>> connections") Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
->>>>>>>>> --- Changes in v4: - dropped smc_conn_unhash() wrapper, conn-
->>>>>>>>>> unhashed flag, and all changes to af_smc.c, smc.h, smc_core.c and
->>>>>>>>> smc_core.h; smc_unhash_sk() is already idempotent via sk_hashed(),
->>>>>>>>> so direct calls at the two teardown sites in smc_close.c are
->>>>>>>>> sufficient - dropped the __smc_release() hunk: it needs no change
->>>>>>>>> since the subsequent unhash there is already a safe no-op - fixed
->>>>>>>>> premature-unhash issue present in v3: smc_conn_free() must not unhash
->>>>>>>>> because smc_conn_abort() calls it before smc_switch_to_fallback() in
->>>>>>>>> both smc_listen_decline() and smc_connect_rdma() error paths; unhashing
->>>>>>>>> there would make live fallback sockets invisible to smcss -
->>>>>>>>> likewise, the ISM/RDMA retry loops (smc_find_ism_v2_device_serv(), 
->>>>>>>>> smc_find_rdma_v2_device_serv()) call smc_conn_abort() on a failed attempt
->>>>>>>>> and then smc_conn_create() on the next device; unhashing in 
->>>>>>>>> smc_conn_free() would permanently hide the established connection
->>>>>>>>> from smc_diag since smc_conn_create() does not re-hash the socket
->>>>>>>>
->>>>>>>> Hi Mahanta,
->>>>>>>>
->>>>>>>> This version looks clean. And you explained why we can't call unhash
->>>>>>>> in smc_conn_abort() well. But smc_conn_abort() still calls
->>>>>>>> smc_conn_free(), when the smc_sk is still hashed, is there still a
->>>>>>>> race window with dump ?
->>>>>>>
->>>>>>> Hi Dust,
->>>>>>>
->>>>>>> Thank you for catching this corner case!
->>>>>>>
->>>>>>> During early handshake setup (when sk_state is *SMC_INIT*),
->>>>>>> smc_conn_abort() can be called on connection failure/fallback and
->>>>>>> invokes smc_conn_free() while the socket remains hashed, leaving a
->>>>>>> window where a concurrent diag dump could evaluate smc_conn_lgr_valid()
->>>>>>> and dereference conn->lgr / conn->lnk.
->>>>>>>
->>>>>>> Since sockets in *SMC_INIT* are in a transient embryonic handshake phase
->>>>>>> and userspace (smcss) *skips displaying link-group, DMB, and connection
->>>>>>> details for INIT state sockets anyway*, we could have __smc_diag_dump()
->>>>>>> skip inspecting connection/link-group extensions when r->diag_state ==
->>>>>>> SMC_INIT:
->>>>>>>
->>>>>>> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
->>>>>>> --- a/net/smc/smc_diag.c
->>>>>>> +++ b/net/smc/smc_diag.c
->>>>>>> @@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
->>>>>>> sk_buff *skb,
->>>>>>> 	r->diag_state = sk->sk_state;
->>>>>>> +	if (r->diag_state == SMC_INIT)
->>>>>>> +		return 0;
->>>>>>> +
->>>>>>> 	if (smc->use_fallback)
->>>>>>> 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
->>>>>>> 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
->>>>>>>
->>>>>>> Together with unhashing before smc_conn_free() in smc_close.c for
->>>>>>> established and closing sockets, this cleanly closes the race window
->>>>>>> across all socket states without touching the hash table mechanics
->>>>>>> during fallback/retry.
->>>>>>>
->>>>>>> Does this approach look good to you? If you agree, I will prepare and
->>>>>>> submit v5 with this change. Please let me know if you have any other
->>>>>>> suggestions or alternative approaches, and I'll be happy to look into them.
->>>>>>
->>>>>> What about this path ?
->>>>>>
->>>>>> smc_listen_decline() -> smc_listen_out_err(), where smc_conn_abort() has
->>>>>> already run, and the sock state is then changed from SMC_INIT to SMC_CLOSED.
->>>>>
->>>>> Hi Dust,
->>>>>
->>>>> Good catch on the smc_listen_out_err() path as well!
->>>>>
->>>>> In smc_listen_decline() -> smc_listen_out_err(), the server socket fails
->>>>> handshake and is transitioned to SMC_CLOSED while remaining in the hash
->>>>> table until smc_accept_dequeue() runs.
->>>>>
->>>>> Since userspace (smcss) skips displaying all connection, link-group, and
->>>>> DMB details for both SMC_INIT and SMC_CLOSED sockets (smcss.c:186 and
->>>>> smcss.c:199), we can update __smc_diag_dump() to check for both states:
->>>>>
->>>>> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
->>>>> --- a/net/smc/smc_diag.c
->>>>> +++ b/net/smc/smc_diag.c
->>>>> @@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
->>>>> sk_buff *skb,
->>>>> 	r->diag_state = sk->sk_state;
->>>>> +	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED)
->>>>> +		return 0;
->>>>> +
->>>>> 	if (smc->use_fallback)
->>>>> 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
->>>>> 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
->>>>>
->>>>
->>>> I checked the code again, and I'm afraid adding SMC_CLOSED is still not right.
->>>>
->>>> smc_listen_decline(): smc_switch_to_fallback(), smc_clc_send_decline() then
->>>> fails, and smc_listen_out_err() sets the socket to SMC_CLOSED. The socket
->>>> stays on the accept queue, hashed, until accept() reaches smc_accept_dequeue().
->>>>
->>>> But the early return sits after nlmsg_put() but before diag_mode,
->>>> smc_diag_msg_attrs_fill() and the SMC_DIAG_FALLBACK attribute are filled.
->>>> The record is still emitted, but diag_mode is left at 0 -- which is
->>>> SMC_DIAG_MODE_SMCR, not "unknown" -- and the fallback reason attribute is gone.
->>>
->>> Regarding your concern about wrong output when the early return fires
->>> before diag_mode and SMC_DIAG_FALLBACK are filled: you are right that
->>> diag_mode must be filled before the guard. *smcss.c* reads diag_mode at
->>> lines 177 and 179 for --smcr/--smcd filtering, which happens before the
->>> SMC_INIT and SMC_CLOSED state checks. If diag_mode is left as 0 for
->>> a failed-fallback SMC_CLOSED socket, --smcr would incorrectly include it
->>> and --smcd would incorrectly exclude it.
->>>
->>> *SMC_DIAG_FALLBACK* however is *not* needed before the guard — smcss
->>> only reads it inside the diag_mode == SMC_DIAG_MODE_FALLBACK_TCP branch
->>> which is never reached for *SMC_INIT* or *SMC_CLOSED* sockets, as those
->>> two states hit goto newline before that point.
->> 
->> I don't agree on this.
->> 
->> Here what we are changing is the UAPI behaviour, which should not be
->> constrained by what smcss did.
->> 
->> And SMC_INIT can coexist with fallback. For example:
->> 
->> smc_sendmsg() calls smc_switch_to_fallback(SMC_CLC_DECL_OPTUNSUPP) under
->> MSG_FASTOPEN while sk_state is SMC_INIT and never changes it afterwards --
->> fastopen does not call connect(), so the state never goes to SMC_ACTIVE.
->
->In that case how about moving the check further down, like below? This
->way I am not changing the UAPI behaviour and SMC_INIT can co-exist with
->fallback.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Yes, I think we should do that.
+Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0
 
-Best regards,
-Dust
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->
->smc_sendmsg() calls smc_switch_to_fallback(SMC_CLC_DECL_OPTUNSUPP) under
->MSG_FASTOPEN while sk_state is SMC_INIT and it never transitions further
->— connect() is not called in that path, so the fallback reason is real
->diagnostic information that should be reported. The guard after the
->SMC_DIAG_FALLBACK nla_put preserves that.
->
->--- a/net/smc/smc_diag.c
->+++ b/net/smc/smc_diag.c
->@@ -103,6 +103,9 @@ static int __smc_diag_dump(struct sock *sk, struct
->sk_buff *skb,
-> 	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
-> 		goto errout;
->
->+	if (sk->sk_state == SMC_INIT || sk->sk_state == SMC_CLOSED)
->+		goto out;
->+
-> 	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
-> 	    smc->conn.alert_token_local) {
->@@ -185,5 +188,6 @@ static int __smc_diag_dump(struct sock *sk, struct
->sk_buff *skb,
-> 		goto errout;
-> 	}
->
->+out:
-> 	nlmsg_end(skb, nlh);
-> 	return 0;
+- [High] vxlan_changelink() (drivers/net/vxlan/vxlan_core.c:4538-4554)
+  now routes every VXLAN_F_VNIFILTER device through…
+- [Medium] Both rollback paths added by this patch ignore the int return
+  value of vxlan_update_default_fdb_entry(): the err_unwind loop in…
 
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it directly
+  undermines the bug class the patch targets.
 
+--
+
+vxlan: update default fdb entries when the lower device changes
+
+This refreshes the all zeros mac fdb entries when a changelink only swaps
+the lower device, by passing the old and new ifindex down to
+vxlan_update_default_fdb_entry() and visiting every vni rather than only
+the ones inheriting the device group.  It also runs the multicast
+leave/join pair for VXLAN_F_VNIFILTER devices and unwinds already updated
+fdb entries when the vni list update fails partway through.
+
+> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+> index 347245cc1de4e..c4e3e8e8eef57 100644
+> --- a/drivers/net/vxlan/vxlan_core.c
+> +++ b/drivers/net/vxlan/vxlan_core.c
+
+[ ... ]
+
+> @@ -4475,13 +4476,16 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
+>  	if (err)
+>  		return err;
+>  
+> +	/* vxlan_config_apply() only commits remote_ifindex if lowerdev is set */
+> +	new_ifindex = lowerdev ? conf.remote_ifindex : dst->remote_ifindex;
+> +
+>  	rem_ip_changed = !vxlan_addr_equal(&conf.remote_ip, &dst->remote_ip);
+>  	change_igmp = vxlan->dev->flags & IFF_UP &&
+>  		      (rem_ip_changed ||
+> -		       dst->remote_ifindex != conf.remote_ifindex);
+> +		       dst->remote_ifindex != new_ifindex);
+>  
+>  	/* handle default dst entry */
+> -	if (rem_ip_changed) {
+> +	if (rem_ip_changed || dst->remote_ifindex != new_ifindex) {
+
+[ ... ]
+
+> @@ -4509,13 +4513,21 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
+>  					   true);
+>  		spin_unlock_bh(&vxlan->hash_lock);
+>  
+> -		/* If vni filtering device, also update fdb entries of
+> -		 * all vnis that were using default remote ip
+> +		/* If vni filtering device, also update default fdb entries of
+> +		 * all vnis
+>  		 */
+>  		if (vxlan->cfg.flags & VXLAN_F_VNIFILTER) {
+>  			err = vxlan_vnilist_update_group(vxlan, &dst->remote_ip,
+> -							 &conf.remote_ip, extack);
+> +							 &conf.remote_ip,
+> +							 dst->remote_ifindex,
+> +							 new_ifindex, extack);
+>  			if (err) {
+> +				vxlan_update_default_fdb_entry(vxlan, conf.vni,
+> +							       &conf.remote_ip,
+> +							       &dst->remote_ip,
+> +							       new_ifindex,
+> +							       dst->remote_ifindex,
+> +							       NULL);
+>  				netdev_adjacent_change_abort(dst->remote_dev,
+>  							     lowerdev, dev);
+>  				return err;
+> @@ -4523,7 +4535,9 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
+>  		}
+>  	}
+>  
+> -	if (change_igmp && vxlan_addr_multicast(&dst->remote_ip))
+> +	if (change_igmp &&
+> +	    (vxlan_addr_multicast(&dst->remote_ip) ||
+> +	     (vxlan->cfg.flags & VXLAN_F_VNIFILTER)))
+>  		err = vxlan_multicast_leave(vxlan);
+
+[Severity: High]
+Can this leave/join pair end up leaving a running vnifilter device with no
+multicast memberships at all?
+
+For VXLAN_F_VNIFILTER the leave reaches
+vxlan_multicast_leave() -> vxlan_multicast_leave_vnigrp(), which issues one
+vxlan_igmp_leave() per vni entry:
+
+	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
+		if (vxlan_addr_multicast(&v->remote_ip) &&
+		    !vxlan_group_used(vn, vxlan, v->vni, &v->remote_ip,
+				      0)) {
+			ret = vxlan_igmp_leave(vxlan, &v->remote_ip, 0);
+			if (ret)
+				last_err = ret;
+		}
+	}
+
+A single "bridge vni add dev vxlan0 vni 100-200 group 239.1.1.1" gives every
+vni in the range the same group, so all of those entries share one socket
+membership.  The first vxlan_igmp_leave() drops it, and the remaining ones
+return -EADDRNOTAVAIL (ip_mc_leave_group() starts with
+int ret = -EADDRNOTAVAIL, and ipv6_sock_mc_drop() behaves the same), which
+leave_vnigrp() records in last_err and returns.
+
+vxlan_group_used() cannot absorb the duplicate here either: it skips
+vxlan == dev and returns false early when refcount_read(&sock4->refcnt) == 1.
+
+Note the asymmetry with the join side.  vxlan_multicast_join_vnigrp() both
+skips entries whose address equals the device default remote_ip and maps
+-EADDRINUSE to 0, while vxlan_multicast_leave_vnigrp() does neither.
+
+With err set to -EADDRNOTAVAIL, netdev_adjacent_change_commit() and
+vxlan_config_apply() still commit the new lower device, and then:
+
+	if (!err && change_igmp &&
+	    (vxlan_addr_multicast(&dst->remote_ip) ||
+	     (vxlan->cfg.flags & VXLAN_F_VNIFILTER)))
+		err = vxlan_multicast_join(vxlan);
+
+skips the re-join entirely.  Repeating the same changelink does not repair
+it, because lowerdev == dst->remote_dev makes lowerdev NULL, so
+new_ifindex == dst->remote_ifindex and change_igmp becomes false.
+
+Reproducer shape:
+
+	ip link add vxlan0 type vxlan external vnifilter dstport 4789 \
+		local 10.0.0.1 dev eth0
+	bridge vni add dev vxlan0 vni 100-200 group 239.1.1.1
+	ip link set vxlan0 up
+	ip link set dev vxlan0 type vxlan ... dev eth1
+
+Would it be better to rejoin unconditionally here, and/or make the per-vni
+teardown act once per unique (group, ifindex) membership and tolerate
+-EADDRNOTAVAIL the way the join side tolerates -EADDRINUSE?
+
+>  
+>  	if (netif_running(dev) && conf.age_interval != vxlan->cfg.age_interval)
+> @@ -4535,7 +4549,8 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
+>  	vxlan_config_apply(dev, &conf, lowerdev, vxlan->net, true);
+>  
+>  	if (!err && change_igmp &&
+> -	    vxlan_addr_multicast(&dst->remote_ip))
+> +	    (vxlan_addr_multicast(&dst->remote_ip) ||
+> +	     (vxlan->cfg.flags & VXLAN_F_VNIFILTER)))
+>  		err = vxlan_multicast_join(vxlan);
+>  
+>  	return err;
+
+[ ... ]
+
+> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+> index dd94085e08865..12fa11a318184 100644
+> --- a/drivers/net/vxlan/vxlan_vnifilter.c
+> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
+> @@ -470,14 +470,19 @@ static const struct nla_policy vni_filter_policy[VXLAN_VNIFILTER_MAX + 1] = {
+>  	[VXLAN_VNIFILTER_ENTRY] = { .type = NLA_NESTED },
+>  };
+>  
+> -static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
+> -					  union vxlan_addr *old_remote_ip,
+> -					  union vxlan_addr *remote_ip,
+> -					  struct netlink_ext_ack *extack)
+> +int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
+> +				   union vxlan_addr *old_remote_ip,
+> +				   union vxlan_addr *remote_ip,
+> +				   u32 old_ifindex, u32 new_ifindex,
+> +				   struct netlink_ext_ack *extack)
+>  {
+> -	struct vxlan_rdst *dst = &vxlan->default_dst;
+>  	int err = 0;
+>  
+> +	if (old_remote_ip && remote_ip &&
+> +	    vxlan_addr_equal(old_remote_ip, remote_ip) &&
+> +	    old_ifindex == new_ifindex)
+> +		return 0;
+> +
+>  	spin_lock_bh(&vxlan->hash_lock);
+>  	if (remote_ip && !vxlan_addr_any(remote_ip)) {
+>  		err = vxlan_fdb_update(vxlan, all_zeros_mac,
+> @@ -487,7 +492,7 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
+>  				       vxlan->cfg.dst_port,
+>  				       vni,
+>  				       vni,
+> -				       dst->remote_ifindex,
+> +				       new_ifindex,
+>  				       NTF_SELF, 0, true, extack);
+>  		if (err) {
+>  			spin_unlock_bh(&vxlan->hash_lock);
+> @@ -500,7 +505,7 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
+>  				   *old_remote_ip,
+>  				   vxlan->cfg.dst_port,
+>  				   vni, vni,
+> -				   dst->remote_ifindex,
+> +				   old_ifindex,
+>  				   true);
+>  	}
+>  	spin_unlock_bh(&vxlan->hash_lock);
+> @@ -546,6 +551,8 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
+>  
+>  	ret = vxlan_update_default_fdb_entry(vxlan, vninode->vni,
+>  					     oldrip, newrip,
+> +					     dst->remote_ifindex,
+> +					     dst->remote_ifindex,
+>  					     extack);
+>  	if (ret)
+>  		goto out;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the oldrip/newrip selection
+just above this call makes the new equality guard dead for this caller, and
+it also feeds the bug class the changelog describes.
+
+In vxlan_vni_update_group() the two pointers are mutually exclusive:
+
+	if (group && !vxlan_addr_any(group)) {
+		newrip = group;
+	} else {
+		if (!vxlan_addr_any(&dst->remote_ip))
+			newrip = &dst->remote_ip;
+	}
+
+	/* if old rip exists, and no newrip,
+	 * explicitly delete old rip
+	 */
+	if (!newrip && !vxlan_addr_any(&old_remote_ip))
+		oldrip = &old_remote_ip;
+
+So when a vni's group is changed:
+
+	bridge vni add dev vxlan0 vni 100 group 239.1.1.1
+	bridge vni add dev vxlan0 vni 100 group 239.1.1.2
+
+vxlan_vni_add() -> vxlan_vni_update() -> vxlan_vni_update_group(create=false)
+passes newrip = 239.1.1.2 with oldrip still NULL, and in
+vxlan_update_default_fdb_entry() the delete side is skipped:
+
+	if (old_remote_ip && !vxlan_addr_any(old_remote_ip)) {
+		__vxlan_fdb_delete(vxlan, all_zeros_mac,
+				   *old_remote_ip,
+
+The 239.1.1.1 rdst of the (all_zeros_mac, vni) entry therefore survives, and
+vxlan_vni_delete_group() only deletes vninode->remote_ip, so it can never be
+removed and each further group update appends one more rdst.
+
+The new migration loop below only re-keys vent->remote_ip:
+
+		} else {
+			oldrip = &vent->remote_ip;
+			newrip = &vent->remote_ip;
+		}
+
+so after a lower device change that stale rdst additionally keeps pointing
+at the old ifindex.
+
+Both the pre-existing "!create && oldrip && newrip &&
+vxlan_addr_equal(oldrip, newrip)" test and the newly added
+"old_remote_ip && remote_ip && vxlan_addr_equal(...) && old_ifindex ==
+new_ifindex" test are unreachable for this caller, which suggests oldrip was
+meant to be set on a group change.  Should vxlan_vni_update_group() set
+oldrip = &old_remote_ip whenever it differs from newrip?
+
+Verified via git blame as unchanged since f9c4bb0b245ce ("vxlan: vni
+filtering support on collect metadata device") and still present at the end
+of this series.
+
+> @@ -583,8 +590,10 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
+>  int vxlan_vnilist_update_group(struct vxlan_dev *vxlan,
+>  			       union vxlan_addr *old_remote_ip,
+>  			       union vxlan_addr *new_remote_ip,
+> +			       u32 old_ifindex, u32 new_ifindex,
+>  			       struct netlink_ext_ack *extack)
+>  {
+> +	union vxlan_addr *oldrip, *newrip;
+>  	struct list_head *headp, *hpos;
+>  	struct vxlan_vni_group *vg;
+>  	struct vxlan_vni_node *vent;
+> @@ -595,17 +604,46 @@ int vxlan_vnilist_update_group(struct vxlan_dev *vxlan,
+>  	headp = &vg->vni_list;
+>  	list_for_each_prev(hpos, headp) {
+>  		vent = list_entry(hpos, struct vxlan_vni_node, vlist);
+> +
+>  		if (vxlan_addr_any(&vent->remote_ip)) {
+> -			ret = vxlan_update_default_fdb_entry(vxlan, vent->vni,
+> -							     old_remote_ip,
+> -							     new_remote_ip,
+> -							     extack);
+> -			if (ret)
+> -				return ret;
+> +			oldrip = old_remote_ip;
+> +			newrip = new_remote_ip;
+> +		} else {
+> +			/* A vni with its own group keeps it, but its fdb entry
+> +			 * is still keyed on the device remote_ifindex.
+> +			 */
+> +			oldrip = &vent->remote_ip;
+> +			newrip = &vent->remote_ip;
+>  		}
+> +
+> +		ret = vxlan_update_default_fdb_entry(vxlan, vent->vni,
+> +						     oldrip, newrip,
+> +						     old_ifindex, new_ifindex,
+> +						     extack);
+> +		if (ret)
+> +			goto err_unwind;
+>  	}
+>  
+>  	return 0;
+> +
+> +err_unwind:
+> +	list_for_each_continue(hpos, headp) {
+> +		vent = list_entry(hpos, struct vxlan_vni_node, vlist);
+> +
+> +		if (vxlan_addr_any(&vent->remote_ip)) {
+> +			oldrip = old_remote_ip;
+> +			newrip = new_remote_ip;
+> +		} else {
+> +			oldrip = &vent->remote_ip;
+> +			newrip = &vent->remote_ip;
+> +		}
+> +
+> +		vxlan_update_default_fdb_entry(vxlan, vent->vni,
+> +					       newrip, oldrip,
+> +					       new_ifindex, old_ifindex,
+> +					       NULL);
+> +	}
+> +	return ret;
+>  }
+
+[Severity: Medium]
+Does discarding the return value here still guarantee the changelog's claim
+that "default_dst and the fdb entries do not diverge"?
+
+vxlan_update_default_fdb_entry() is ordered add-then-delete, and it returns
+early if the add fails:
+
+		if (err) {
+			spin_unlock_bh(&vxlan->hash_lock);
+			return err;
+		}
+
+The re-add performed by the unwind is fallible.  It goes
+vxlan_fdb_update() -> vxlan_fdb_update_existing() -> vxlan_fdb_append(),
+which does:
+
+	rd = kmalloc_obj(*rd, GFP_ATOMIC);
+	if (rd == NULL)
+		return -ENOMEM;
+
+and vxlan_fdb_notify() can also fail through
+vxlan_fdb_switchdev_call_notifiers() on an offloading device.
+
+When that happens the new-ifindex rdst stays installed, __vxlan_fdb_delete()
+is never reached, and vxlan_changelink() returns the error without calling
+vxlan_config_apply(), so default_dst.remote_ifindex keeps the old value.
+Since vxlan_vni_delete_group() looks the entry up with the current (old)
+dst->remote_ifindex and vxlan_fdb_find_rdst() requires an exact ifindex
+match, that surviving rdst can no longer be deleted, and the next
+"bridge vni add" of the same vni appends another one, which is the duplicated
+BUM traffic this patch sets out to fix.
+
+The same discarded return exists for the device default entry in
+vxlan_changelink(), where the revert call is:
+
+				vxlan_update_default_fdb_entry(vxlan, conf.vni,
+							       &conf.remote_ip,
+							       &dst->remote_ip,
+							       new_ifindex,
+							       dst->remote_ifindex,
+							       NULL);
+
+Would it make sense to attempt the delete even when the re-add fails, or to
+restructure so the rollback needs no allocation, for example by keeping the
+original destinations installed until every new destination has been added
+successfully?
+
+>  
+>  static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921100139.508191-1-edumazet%40google.com
