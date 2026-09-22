@@ -1,172 +1,175 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+Received: from mail-ed2-f37.google.com (mail-ed2-f37.google.com [74.125.228.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB9E360EDC
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790040798; cv=none; b=D7/bLVCtbciCHoeVHhbBOEq57Fu8VbXbu6VrP2GFksSwixjPymYYDaSnLnFeMIXsRO6IShvvjAPU05CiJaNL+u9y6IJFqzbfDZlz+JvXKdnSwrh5LzYybKSnjA1JujW7UyTSLJ2i24OhiyqGjoJ9h0sdinovX5uLhm/8S796vvA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790040798; c=relaxed/simple;
-	bh=RwQjF5gp74MpRivf4d3S2U9VdDQkXPXaJDMAW5/Hpzw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=GtqIUF1X1x/oJQbsA3olSAzejOyFCMuPpwgQjZ0qQ790Qbviac/CTrSwdWYhLnfXxasHILlccbor5LNB+S9DaXXEghrSRkLKDFjPJ0GJ3chYA6QbO6G0qTkvzhzwthHxsAgwcQTpCBRR4vBAPbBUfMqQk7o7lsmqwJz/Rp07VKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ttd/2bSd; arc=none smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6667D33A014
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.101
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790041160; cv=pass; b=K/2weUVXpAjaMqkpghdy+gjFRAo5CFtkh5ep8JaVxA3AM+vVTq9q+ooaskXthLBc3klXdjmWWYmstGy5rimv9JNaaJnMeHg4N7Hj8+XNVJ4LYDjZvZ1JIdUw25EcKwjDWCEOhkKlFuVmmpaRHJy5l1L3RM9L8lBWvT3nH4s2qlA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790041160; c=relaxed/simple;
+	bh=nzKayMpt5LpI2eLOKchl+ApCZGT1r93JNTtN1iAm+qk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OJLPhOmkFtTq7zZsfht7VcfLxWd2DVmGjz0TbCMznrHaUWpJeRYuNDr7TkzdfqjfyPbIZA9sNrawocvx6va47/jkN7RrXS7S3cjdiKtj0Qk53aHDAAYQIxpLS6EspwNi38gVynaCbswEFS4kBR2Q54tkgPi81r2MXTgPpm6JNng=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PHj02wF+; arc=pass smtp.client-ip=74.125.228.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ttd/2bSd"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aae3147so2624045d50.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:33:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PHj02wF+"
+Received: by mail-ed2-f37.google.com with SMTP id 4fb4d7f45d1cf-6a9984f9a59so5250957a12.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:39:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790041157; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HDQLvAMdhitWwAZMvFBUzNPFfwrp+1rNaC5KkqgTrB9x9GaXdaj5ZSk15YVz9uc+/C
+         YA4uXVGOd9qhMJnEcRMTJEhGGPOT/0hAxx0BPyIXOU+0BuTzU6QtyUoQZz8SCAjpHXiw
+         kYuyJf4daoKH/2RuGY1QkqUbY2dZbyKhxhkLvd3ygd5hAjPMCc7sOcOaVESRRxkf5qdp
+         GpjiAcBx7kXIXzXlHVkw4iK8i+mAxnOI6OLaaSYRXMIXGsdARJ92lrbdQ/592kcmiW+y
+         3iyI/FKkBS1UGfnwBBDjjDHFWVmHz6vsjCdIIZozAAa+vcMQgJgFvV22etlXZiLVKmY1
+         +I4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3+sqL9EndfnUuC3ekBlZfho08escxH2wAgTzkVZingk=;
+        fh=/7qAlWUSWSn8/gphoIC7zLXSxWIn1eM9w3o+M199Xbo=;
+        b=cwcigydZntNqa8MaWhRuUam1lvEOvintoJwZACsgF9HXwKlBfFgsgF1Wp5ohrN2PX9
+         HVpEGwM5vpQxGXQxjv1QUuAtYb3CSblqlGZV0UJfjNWvRTUNane8CrtTrzgnPcTzm/F9
+         M+f+VkUKc/IwOLFfat7rdA6HcbJy0n/pKJCpbfHs733imds3AY0u1h/KLCsZEhnS3yAE
+         lcwKGZ4svEESsCAcv7TRcU5KztIVTn9k8tSoiDcvJ8FcTwM0I9hgUWcGeJqTPcDAi9xU
+         AE+f2eE79KTbE5VGqusxxCvX4Z8imVUlJ+J0qKfz2p+q7pbicX8usXBYl/A712b1jss1
+         bQZg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790040796; x=1790645596; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ay4065FSvCY9ZRaYwz1DEwsmCGDvPHvVukTn40zk1F4=;
-        b=Ttd/2bSd5NGIxyqMvAwb/7BTPyziMqL//NqakfFXG8bZsB80Rcydmd9yhbQ3KvQeJJ
-         Wey/D7Bkdkmw8r3sWHl7+LzMAiAT7setx8n5lMSZEuoXCj6hTeYK/hQskV1nQVsB95ch
-         MnKGJ3INOgHEcaH8SdZFPxRXnWZOu9ohk6pSRyYAa/ezCOOIKY3Ji+QtyKg+gmt3TZC0
-         BLdS8xqLa9azi0jrvRA6jHe+kzuf0cVInDEZJqpDDzaWBUf9rr/7jk7i1coxu98IA3u2
-         Ej7SnbNweNfzU7BPjile9+d5IPdIuMJ1pZHS6pnagLbW+KE2Mufe84/c1rkJgFfIp6v2
-         HCkw==
+        d=google.com; s=20251104; t=1790041157; x=1790645957; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3+sqL9EndfnUuC3ekBlZfho08escxH2wAgTzkVZingk=;
+        b=PHj02wF+S1igaSjToouEgfLXh9CxfHR1DvJwkegHnYIM1twZ1tHdwxaGQ2jlr00fd/
+         NUpCIArR9KVskYG/fAkgijnd5osUj7jCzJobZvQoaukY3GNe0yCJoebEvhzv2kTwOram
+         GgX/XZXh4jr2x09HQE+Yn1oQ7msb9kwOmXWFu0QgGPLEAXUQ/y8YIuAycFkNgq4sQv3n
+         D30pbtc0ZYrndZn52jGrDGl2UaXpkyO0jsO5GOWTj+d2z7ZMv0/KbxI/hZSOIbabkMbx
+         GsVHB2Vq7c7Fndt6ODkbFV/ijYG+ugv3SRGfHOlzKH8ZN34Xvz+VPlaaB7iPr/ghAhF4
+         k3lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790040796; x=1790645596;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790041157; x=1790645957;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ay4065FSvCY9ZRaYwz1DEwsmCGDvPHvVukTn40zk1F4=;
-        b=QbkS2UIh0NxfDLfwah2LfunK1Qnlq5OR3nwSBDgXTiB4YycJsbjCx6bIQq+1fzNsTR
-         aW3xRCLKb5mfcuqCH9c2cxDGdq64VvI6fT2dY9lT1c3GeLNU9BIX1iguNEPiVFBQXkf1
-         brUL8Bqvz84FaSa+4rmCJ3r40ID2Jfb5nM2pYxNPRgeTpYED9Rqz2tMug3R/VOVylAj6
-         /rvvAxfJYVMMbIQoC6e1F78KwEi/YkbnCijtAyEdcIsLa9Id/2Qy0+G9Wms7rEUq1ibR
-         am/hIakp7ABc04wbtIJv4xzdYy9L9rQPdSZpUnod2ZgwxZbbYDO5MPWrw7KNnsjeOX1V
-         FdaA==
-X-Forwarded-Encrypted: i=1; AKwUvByXgYtidLeh4SUEce6x4XnxVWWHgCPPeV+b/VMxdYc4KI/gxdJsHvHb3UCCWgH9fsiEDERgI5M=@vger.kernel.org
-X-Gm-Message-State: AFuF++krUVu00MzAMUsHt4DIbznkhPw6jRL/YOjs3YAck2LfgKonzfBY
-	hJOsJ8E+WDvOim9nzMoc1yRwW47+vx+KnJSSd8WibwLuryMy5i2Q6AKS
-X-Gm-Gg: AYBFou1GjMsFe7nhnxo0J3Am0u2pDu8NSA6oZSTXz0uTmfw+2K6bskN//G92DbdzqmR
-	CN5yer15JM6KRcSiItq35t88HU2JyBsa2ghwiiLz5rtsFTsc7aE9v0hRfz2esSTeNDDicMqfLw5
-	wgkw0BNLe6oAXNMys6UNmmy1JO3H46OhprJnXQAAk8JRVRKIsR6gxaf19vrXANO5c0gmc3AKOQ2
-	cXV0GsGJDZ+p7+P1YxPWtjUc0X+KkslIu7OuY2Oo3qo3LlOwXn+952RZuwmeVbzx+tGnzOihog9
-	sJbrfTtIu0P5kJy2zijRdmuJtfc5RtRYTCdo7W5dTNhs4kZaw44Jxv5aWk0wNr5i1SCJCgCmqSl
-	DTxCGSOqfPtBUuC3yWsKah6lanJHe0BPzcac8OjnNvc3TwftAeMXGpLGFr4Xq4wM87Cc8WoGG07
-	Yk4Bu2Umi+8aruFqeMD/k4dqcgpeA4j4adLooCGMPmqwYlIfdZo41bk2bw/gSqaBfZH8U5C2+Bt
-	L3zs2bZbHRrrduQjFNwvfxkU9J7Lu8u4gSgVofdH0kasCW68QEe
-X-Received: by 2002:a05:690e:1c09:b0:672:b6ce:62cd with SMTP id 956f58d0204a3-672b6ce65d7mr1585414d50.69.1790040795858;
-        Mon, 21 Sep 2026 18:33:15 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672c768e6a3sm159526d50.18.2026.09.21.18.33.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 18:33:14 -0700 (PDT)
-Date: Mon, 21 Sep 2026 21:33:13 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Jason Wang <jasowangio@gmail.com>
-Cc: virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, 
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <willemdebruijn.kernel.3b33970b82622@gmail.com>
-In-Reply-To: <20260921-v6-7-topic-virtio-net-ptp-v3-1-3350851c4f88@pengutronix.de>
-References: <20260921-v6-7-topic-virtio-net-ptp-v3-0-3350851c4f88@pengutronix.de>
- <20260921-v6-7-topic-virtio-net-ptp-v3-1-3350851c4f88@pengutronix.de>
-Subject: Re: [PATCH RFC v3 1/2] virtio-net: support receive timestamp
+        bh=3+sqL9EndfnUuC3ekBlZfho08escxH2wAgTzkVZingk=;
+        b=cmVE72WGLLVPQL9iLEtBMMifQ1MBrtK1ImcrD5n+HcQ79u7W56C89xIxvP2D9+Q6X0
+         QA71zquhTYQ9S4GliiBWStJQTAo0BW1a+YEl2o4Cvbo5G/B+C5i5YRbNNACMWR0k6UXu
+         s3L0F1nY5JkVR+pXoNOzG/QlkRAgnK2jhuBzVbmeWVRwlXn7TlePLCgwBrBcOPzr2BHv
+         VvtxAc4m7sPDQ6/XngdxrOB/k5i/2s74Nt7bxRMKiLlT7w8hcYib7ifVEUSBxSzq0L1F
+         uYk3h2YTFDYEGiWgbk8NNmSFBg4IzsRpddQrYm6qgUiYIiOpH2qnLTPrghgdUfVy2NfL
+         yKsg==
+X-Forwarded-Encrypted: i=1; AKwUvBzqWSDprAP4uH9PRadU9LREjmCDRfuf2MdGuF1QaEsV68PuwrQ8we6GBZyAigaI8KGZ+3zoXMA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lw1bL2effPatnZLpXSTQVRnCEOlmpB1HUn4v9NHKh+4QxzpKeG
+	yKk7FsVqx8WmQQ5vrJG1AevkBeoVeA3AiflaiHFBA2VFgoaYaJ0TTk+EzSQJ1P3fg+DhZR7mR/c
+	FNlYkm6S2QGBU0Qi6tRUak6pBqm8cl2WTqrMC7ku8
+X-Gm-Gg: AYBFou2urnivR3MGb2xQJS29zbWXQZI9xKH0YEnETWm1/g72b0kLg/K65Ofuc+DZcLU
+	37PW+iASQxwU+rn8wE0FNd8XSLWcKmfge51tac7qunjEnrG+E+YSFlWKqvvZwQts+p2oiluaYAR
+	YYle5vHagiWYIU2F2d1VEBiHEKRZEgrzAPeEdbI2SoNiCyEV8VBw5sf3M2bsUS5kczNpR2oddz6
+	80EfAz/vifFBKKMYbIWIfob3DduL5vHZoMKySa+JBRuHeZS1JYAYEWrJIgFi0rIoTTxnjAb+yrt
+	E5XtuwmjQ8tB38ODohS5zw+x+/1zFIU5DIAI8CfV4pfJjuY4lGULocr7KxsLSyDGb59BO+k11cR
+	1d4e+xJvxXfgwus3woHffbm6Pi8WZVnK3zj0oy+u7OZESJ2oIE2iqdpsuVXBgGJmRiAkxRgFRYc
+	a6xaRhKpqesQ87CWkJ79L0KKkT
+X-Received: by 2002:a05:6402:1ecd:b0:6aa:a6e7:b0 with SMTP id
+ 4fb4d7f45d1cf-6aaa6e70422mr9471a12.1.1790041156323; Mon, 21 Sep 2026 18:39:16
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <20260917-udp_hash4_fix_v1-v1-0-718891af0d7a@mpiricsoftware.com> <20260917-udp_hash4_fix_v1-v1-2-718891af0d7a@mpiricsoftware.com>
+In-Reply-To: <20260917-udp_hash4_fix_v1-v1-2-718891af0d7a@mpiricsoftware.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 21 Sep 2026 18:39:02 -0700
+X-Gm-Features: AcwNN1VS5-tmQwdV_hNQPnVds2HKZ6G4TX5VEKVnNrvmlJfpkS67ooCdmA57lA0
+Message-ID: <CAAVpQUC-QN1meeJJedRk7Go3+nUNywi+E+XQpzXFvpWPEtmHWw@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] udp: remove a disconnected socket from the
+ 4-tuple hash table
+To: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Philo Lu <lulie@linux.alibaba.com>, Fred Chen <fred.cc@alibaba-inc.com>, 
+	Yubing Qiu <yubing.qiuyubing@alibaba-inc.com>, Willem de Bruijn <willemb@google.com>, 
+	Cambda Zhu <cambda@linux.alibaba.com>, Janak Bhatt <janak@mpiric.us>, 
+	Kalpan Jani <kalpan.jani@mpiricsoftware.com>, Shardul Bankar <shardulsb08@gmail.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Steffen Trumtrar wrote:
-> Add optional hardware rx timestamp offload for virtio-net.
-> 
-> Introduce virtio feature VIRTIO_NET_F_TSTAMP. If negotiated, the
-> virtio-net header is expanded with room for a timestamp.
-> 
-> To get and set the hwtstamp the functions ndo_hwtstamp_set/get are
-> implemented. This allows filtering the packets and only time stamp
-> the packets where the filter matches. This way, the timestamping can
-> be en/disabled at runtime.
-> Currently, timestamping is handled the same for all supported filters and
-> therefore handled the same for all received packets.
-> 
-> XDP packets are not supported and timestamping is skipped for the XDP path.
-> 
-> Tested:
->   guest: ./timestamping eth0 \
->           SOF_TIMESTAMPING_RAW_HARDWARE \
->           SOF_TIMESTAMPING_RX_HARDWARE
->   host: nc -4 -u 192.168.1.1 319
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> 
-> --
->   Changes to v2:
->   - update filter handling
->   - move tstamp into virtio_net_common_hdr
->   - remove new struct virtio_net_hdr_v1_hash_tunnel_ts
->   Changes to v1:
->   - rework series to use flow filters
->   - add new struct virtio_net_hdr_v1_hash_tunnel_ts
->   - original work done by: Willem de Bruijn <willemb@google.com>
-> ---
->  drivers/net/virtio_net.c        | 127 +++++++++++++++++++++++++++++++++++++++-
->  include/uapi/linux/virtio_net.h |   1 +
->  2 files changed, 126 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index e34c52d059d39..ef6238cb336b9 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -416,6 +416,12 @@ struct virtnet_info {
->  	u32 rss_hash_types_supported;
->  	u32 rss_hash_types_saved;
->  
-> +	/* Device passes time stamps to the driver */
-> +	bool has_tstamp;
-> +	bool hwts_rx_en;
-> +
-> +	struct kernel_hwtstamp_config tstamp_config;
-> +
->  	/* Has control virtqueue */
->  	bool has_cvq;
->  
-> @@ -499,6 +505,8 @@ struct virtio_net_common_hdr {
->  		struct virtio_net_hdr_v1_hash hash_v1_hdr;
->  		struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
->  	};
-> +
-> +	__le16 tstamp[4];	/* 64-bit timestamp, 2-byte aligned */
->  };
+On Thu, Sep 17, 2026 at 2:26=E2=80=AFAM Shardul Bankar
+<shardul.b@mpiricsoftware.com> wrote:
+>
+> A UDP socket bound to a specific address and port keeps its entry in the
+> 4-tuple hash table after it is disconnected:
+>
+>     sk binds to 127.0.0.1:21001
+>     sk connects to 127.0.0.2:20001      // filed in the 4-tuple table
+>     sk disconnects, connect(AF_UNSPEC)  // still filed, peer now 0.0.0.0:=
+0
+>
+> __udp_disconnect() takes a socket out of that table only as a side effect
+> of ->rehash() or ->unhash(), and it skips ->rehash() when
+> SOCK_BINDADDR_LOCK is set and ->unhash() when SOCK_BINDPORT_LOCK is set.
+> commit 6996a2d2d0a6 ("udp: Unhash auto-bound connected sk from 4-tuple ha=
+sh
+> table when disconnected.") fixed the same end state for a wildcard-bound
+> socket, by a path this one does not take.
+>
+> The entry is counted whether or not anything hits it. hash4_cnt on the
+> hash2 slot stays raised for as long as the socket lives, so udp_has_hash4=
+()
+> keeps sending every packet for that address and port through the 4-tuple
+> lookup first.
+>
+> On IPv6 it can also be hit. __udp_disconnect() does not clear sk_v6_daddr=
+,
+> so udp_v6_rehash() files the entry under the peer the socket was connecte=
+d
+> to with a zero dport, and inet6_match() compares that same
+> field: a datagram from the former peer with a zero source port matches,
+> and source port zero is accepted on receive. On IPv4 the peer is cleared,
+> so a match would need a zero source address as well, which the routing
+> layer rejects as martian. The stale sk_v6_daddr is a separate defect, not
+> addressed here; removing the entry closes this path either way.
+>
+> The entry can also be relocated. __udp_disconnect() clears sk_bound_dev_i=
+f,
+> so a subsequent SO_BINDTODEVICE calls ->rehash(), and because the receive
+> address is still specific udp_lib_rehash() moves the entry instead of
+> removing it, into the bucket that (rcv_saddr, num, 0, 0) hashes to -- a
+> pure function of the address and port, so every socket reaching this stat=
+e
+> on one address and port collects in one bucket. The bucket cannot be chos=
+en
+> from outside, as udp_ehashfn() is seeded with a per-boot secret. This las=
+t
+> one became reachable only with commit 644f9108f3a5 ("udp: Make rehash4
+> independent in udp_lib_rehash()"), which moved the hash4 handling out of =
+a
+> branch a disconnected socket does not take; the stale entry itself dates
+> from the commit in Fixes.
+>
+> Take the socket out of the table before __udp_disconnect() runs, while it
+> still matches how it was filed. This also reaches the wildcard case ahead
+> of udp_lib_rehash()'s udp_unhash4() branch, leaving that branch unreachab=
+le
+> from udp_disconnect(); removing it belongs in net-next. udp_disconnect()
+> and udp_abort() are the only UDP entries into __udp_disconnect(), which i=
+s
+> shared with raw, ping and l2tp sockets that are not struct udp_sock:
+> ping_prot.obj_size is sizeof(struct inet_sock), so udp_hashed4() on one
+> would read past the allocation.
+>
+> Fixes: 78c91ae2c6de ("ipv4/udp: Add 4-tuple hash for connected socket")
+> Assisted-by: LLM
+> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-What is the alignment of the structs in the union and thus the padding
-here?
-
-Moving away from introducing a new variant of the struct with every
-field is the right approach.
-
-I don't think virtio_net_common_hdr was intended to be extended in
-this way. But it might be the simplest approach.
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
