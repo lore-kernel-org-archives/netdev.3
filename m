@@ -1,203 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2E64D4868;
-	Tue, 22 Sep 2026 07:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D433C5218A9;
+	Tue, 22 Sep 2026 07:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790063069; cv=none; b=K1YrwdVHDCnJLktIlVkWketWPBvUNplkkAKlj1vi8ilxkGkdMufrcCQj7je7cqiflvP296pRQNxkLNgh55TD/92PxzJCl1haeq8VgyFgc8luxcN3Ikt8Alm/TU4HexOK6Jc1V09cBrPx9FLg0uIQJwpWCw/5stjKv4CxlpBdBrc=
+	t=1790063459; cv=none; b=oUKtPlVBrrQzwY2T8vVC01XbfXpGc+MSe4d9iXYVtdLY2RmOxgrZFYSVjsC55fCe6qB3maVEkKyWkrNo8PYPjn6GG3uNshxCbv/O25NfBhQJpyoLQ6rJTT58/4NPDkvFrRDdQAx+G/3saMQ+wajULCm0LWpDH0D9rIXrTg0BzWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790063069; c=relaxed/simple;
-	bh=BLSRwa20kCE7EArPXcKQr5kZ43kSG+lur4OacCc6AJ4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k3UUs2JFOz2FhFawt5tdAvRP3+Bcqx4V86OtUsRLzeTkeaIAUAHLepUO2ucaiyagcNdWHIXgsjA9lB3liY0GakaLdLNPGDhE2+JHfkswADadorSiYlNbwjPRCQWOVR56o9JK0H+aAkoLaeWSXrYVNZqo6nDxm/+yv94sMvk67uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7AtoFqx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790063459; c=relaxed/simple;
+	bh=Ehb0qutR8MenPgNu9E+e1P2VW64xTQzLJGfwUv6414k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CfQcP4BoX/PtXeK53SSPMeNPjm9WCOifEm4KJV7gUJSn4Z+VOfssRvryZBJqv7gTuRxJWJXHinPuRva7ebUGtZ/hD+r7CLWsN6cBFpBKfHMMiDlX/pdl12pTXohP0tL2A0DPIYLM8ebPRB8mS7qhjRx1zPuU16cpy3YEOKtP2D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Gjl8kPDH; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7AtoFqx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF571F00898;
-	Tue, 22 Sep 2026 07:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790063062;
-	bh=Dc+7ht9AUxPqxIO1kN1mC4z7K0gjkXpcd+T6+V+HMG0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=T7AtoFqxlZ/L+zN5uj4QcwJz6QQnFP0ptj2oDUI76ZNHH+kAAt3xl1hQwpzKe/bdJ
-	 mftNDZI88BJLbF++syCex3dTKWYy/vbolwaNjm5+HG7XSiEirMde/O2GaP/crp3m0L
-	 mLLcAZ0/VG16GAQ0VCduqLPCqLHGPqhgeV8ucaOJJTktIJO4AMgOjJY32y040wgcS/
-	 vWdlIQiCGw901fvd5l7IBQiwzlnZPrAXpoMi6bDfZcnBRhppvKj8m3oUjgeia4aaZD
-	 W5rmHQabUIeRpPv9xdz7YaE90y163qrfSiKI8jzzpdu+94jEyJ73sIqq85pq8YKtUv
-	 Dn0edq1huV68Q==
-Subject: Re: [PATCH net v2 4/4] ieee802154: mcr20a: fix 1-byte out-of-bounds
- read in mcr20a_handle_tx()
-From: netdev-bot+sashiko@kernel.org
-To: benquike@gmail.com
-Cc: alex.aring@gmail.com, miquel.raynal@bootlin.com, stefan@datenfreihafen.org,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Tue, 22 Sep 2026 07:44:21 +0000
-Message-ID: <179006306173.2160803.2024412371470708989@kernel.org>
-In-Reply-To: <20260921074207.2289391-4-benquike@gmail.com>
-References: <20260921074207.2289391-4-benquike@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Gjl8kPDH"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 6C0C91D000EA;
+	Tue, 22 Sep 2026 03:50:47 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 22 Sep 2026 03:50:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790063447; x=1790149847; bh=CLTOomVvwyhaIVz87iePe3y/WJq8UrZa/EE
+	6k4DqZi0=; b=Gjl8kPDHqaXVFTZhrK0tVPA6mwrn5xeq47RO4UjBfJ/RnjGrtpA
+	hw85QrPxDW18yYDS1QuipXOqbGLNEk+EF/7FMEU+m/hEWJWekwG1GHg2S6GHF9X/
+	kZiahBaMrcVZIf5Adwh7fRpjLUALEJE2HP08N3n2a8AR9zkTwUtOhJz0PrJWocCK
+	gdSVTpvWW0r+HpIdxhCnuX2UpLG4nHRMxTAJNy6JD/y4WXprwTuTdSpZ8vQ57bZL
+	cztl9GdxXfK/8wP3kvtZBlhwxVzth/77o92tXRcXWHHbhsXXvcbQLsHeMRs5z0l/
+	Z4XrWbO3U0NH5SYZNevEFtnU0GAAAZYAGRQ==
+X-ME-Sender: <xms:VjOyamt_9lxJ8XC2idd5jFG2Uk2iNDob6iP-HAPxXdZnYVA4f3XQKQ>
+    <xme:VjOyagYYn1mDBK5Ncr9VYB5K6seYdxlMBGVITm8yCRdxCD9OlAN6lEI7ems51RIOK
+    YFz2StjKxWHIzvW0THksB0bGaG_CVHDhV4NAWNmxrXekdTyazxs>
+X-ME-Received: <xmr:VjOyamDOWvMJg1gG3uvEfDeJ2y_tlc-tF4sWrddw01FAGhG6fAz97ASu>
+X-ME-Proxy-Cause: dmFkZTEqOfxk5KetvJAl/TK5VbeQw7ocLoRNt8Rri1qUHaBlUxZAGQ+Wr2dIfLKcHDObO5
+    wZZPiDV3wqpb9ppN0GB0lfXmvnh177q6/ouvggY7dc7DaU+OfSaYOXe7ikToQ5D/agkDMn
+    ofN0V0CHMLdo9btn7yIe3ajPKQaBY351OamH8O5TvEIHWS6t4SQQnXu9kvPPtPCt7cxlt7
+    bfTwnpbxguwVtAoO0l15fULlrtzd3DYllK4TpwVFkWxzTzfVlduMqvzTZEJ3DBAUOAhKKe
+    2CCR6Gi5b1oLyO2ICXRbmSpNfjiFqxlh4vOFxYRmg71BkFJW63B3cRpnGRNWyTrDo3i1ap
+    IOGBR/YF9/UJA8tCwn64NcVJmx+ED5JiRl6qqkyipAfeGQXsI8JJCu144XbhrcB+KDOJpv
+    a44X49XZwTFXdsxPF9g1u5Shux98YUzbkswJbl1BsljjcA/PfZWHGo61xNMO08vv1Ak7/K
+    a0tsu3OQlvyV3giFhO4WYT01lQKjy0WkzjjKk/eE8frJTjGWzBDlEZips+cAVC9dQbJKsb
+    9IkJ+ZZy+wC+qWehAM6sMwHz2gvP2cnrbgvT2ImZ/ePvjPhyjeLPi2KmlZajE9kKVs3yhB
+    z0cDKuUvux74T4UcijR5NNnXFKkdbYY+ef1tUl7PdRk2kjkh1UhHlUsaCXSw
+X-ME-Proxy: <xmx:VjOyag_VNcX5tt4cYNx5WPGSQgUHTS56pHWaF2ptoEaaqxwBFiriRQ>
+    <xmx:VjOyaqQtMopVxFqOxgKBSB4J35E8Y_XrDFCteoXFP0OJ--vdUoYD_g>
+    <xmx:VjOyasWtWq-tZNCegammSUopTWpuJZ6mh55sufgL5w2u6whVyDZjgA>
+    <xmx:VjOyasQz_Zwp_bq3R2VfpQVuPFH_6cVsEXNFyIPRtZG5imcP8USZ2Q>
+    <xmx:VzOyanyDOrSinpRYdhICu8nsqNhAnCp32XmTOuptyTm6hrKeGz9JOAOi>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 22 Sep 2026 03:50:46 -0400 (EDT)
+Date: Tue, 22 Sep 2026 10:50:44 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: Stefano Sasso <stesasso@gmail.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] vrf: attaching a packet tap to a VRF device corrupts
+ skb->csum for packets from L3 ingress devices (Udp6InCsumErrors, packets
+ dropped)
+Message-ID: <20260922075044.GA2349844@shredder>
+References: <CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sat, Sep 05, 2026 at 02:59:13PM +0200, Stefano Sasso wrote:
+> Naively, the fix looks like it should be to make the accounting symmetric:
+> either drop the `skb_postpush_rcsum()` call, since the push/pull pair leaves the
+> packet unchanged, or add the matching `skb_postpull_rcsum()` before
+> `skb_pull_inline()`. I do not feel qualified to say which is correct, or whether
+> there are other callers/paths that rely on the current behaviour, so I am not
+> sending a patch.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+I believe your analysis is correct. I will test [1]. Drivers that
+support CHECKSUM_COMPLETE don't include the checksum of the Ethernet
+header in skb->csum.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message of "ieee802154: mcr20a: fix 1-byte out-of-
-  bounds read in mcr20a_handle_tx()" misrepresents the severity of the…
-
-Pre-existing issues:
-- [High] Unhandled spi_async() failure in the TX state machine leaks the
-  skb and wedges the TX queue forever.
-
---
-
-ieee802154: mcr20a: fix 1-byte out-of-bounds read in mcr20a_handle_tx()
-
-This drops the "+ 1" from lp->tx_xfer_buf.len in mcr20a_handle_tx(), so the
-payload SPI transfer now clocks out exactly lp->tx_skb->len bytes instead of
-one extra byte. The 1-byte psduLength prefix is already carried by the
-separate lp->tx_xfer_len transfer.
-
-A couple of questions below, one about the commit message and one about the
-error path that the hunk touches.
-
->     In mcr20a_handle_tx(), the 1-byte psduLength prefix (lp->tx_len[0]) is
->     already sent in a separate SPI transfer (lp->tx_xfer_len), while
->     lp->tx_xfer_buf transfers the payload from lp->tx_skb->data. Setting
->     lp->tx_xfer_buf.len = lp->tx_skb->len + 1 causes the SPI transfer to read
->     1 byte past the end of lp->tx_skb->data:
->
->       BUG: KASAN: slab-out-of-bounds in mcr20a_handle_tx+0xf5/0x150
->       Read of size 17 at addr ffff8880057f7500 by task init/1
->       ...
->       The buggy address belongs to the object at ffff8880057f7500
->        which belongs to the cache kmalloc-16 of size 16
-
-[Severity: Medium]
-Can this splat actually be produced by the driver's own TX path?
-
-lp->tx_skb comes from mac802154 via mcr20a_xmit(), and an skb head allocated
-by __alloc_skb()/kmalloc_reserve() is always sized as the data area plus
-SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) inside one slab object.
-sizeof(struct skb_shared_info) alone is a few hundred bytes, so an skb head
-cannot live in kmalloc-16, and skb->data[skb->len] always lands inside the
-same allocation (tailroom or shared info) where KASAN has no redzone to
-report.
-
-The last paragraph says:
-
->     Tested in QEMU with KASAN enabled by transferring a 16-byte tx_skb->data
->     buffer in mcr20a_handle_tx().
-
-Would it be clearer to state up front that the trace comes from an
-instrumented/synthetic buffer rather than from a normal transmit, and to
-describe the real effect instead?
-
-As far as I can tell the real effect is that one byte of unrelated
-in-allocation memory was clocked into the transceiver packet buffer at the
-first FCS position, which the chip then overwrites because mcr20a_hw_setup()
-sets IEEE802154_HW_TX_OMIT_CKSUM and the hardware generates the FCS itself.
-That reads as a correctness fix with no kernel memory-safety violation and
-no over-the-air leak, which matters for how stable maintainers judge the
-Cc: stable tag.
-
-The code change itself looks right: mcr20a_setup_tx_spi_messages() already
-sends psduLength as its own transfer:
-
-	lp->tx_xfer_len.len = 1;
-	lp->tx_xfer_len.tx_buf = lp->tx_len;
-
-and at86rf230_write_frame() uses the same layout (length byte = skb->len + 2,
-payload = skb->len bytes).
-
-> diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
-> index ee3c1e67ef60..d7e076397550 100644
-> --- a/drivers/net/ieee802154/mcr20a.c
-> +++ b/drivers/net/ieee802154/mcr20a.c
-> @@ -867,8 +867,7 @@ mcr20a_handle_tx(struct mcr20a_local *lp)
->  	/* add 2 bytes of FCS */
->  	lp->tx_len[0]		= lp->tx_skb->len + 2;
->  	lp->tx_xfer_buf.tx_buf	= lp->tx_skb->data;
-> -	/* add 1 byte psduLength */
-> -	lp->tx_xfer_buf.len	= lp->tx_skb->len + 1;
-> +	lp->tx_xfer_buf.len	= lp->tx_skb->len;
->  
->  	ret = spi_async(lp->spi, &lp->tx_buf_msg);
->  	if (ret) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since the hunk sits right
-above it: does this error path leak lp->tx_skb and stall the TX queue for
-good?
-
-	ret = spi_async(lp->spi, &lp->tx_buf_msg);
-	if (ret) {
-		dev_err(printdev(lp), "SPI write Failed for TX buf\n");
-		return ret;
-	}
-
-On failure the message is never submitted, so no completion callback runs.
-lp->tx_skb is neither completed nor freed and lp->is_tx stays 1. The only
-caller discards the return value:
-
-mcr20a_irq_clean_complete() {
-	...
-	case (DAR_IRQSTS1_SEQIRQ):
-		if (lp->is_tx) {
-			dev_dbg(printdev(lp), "TX is starting\n");
-			mcr20a_handle_tx(lp);
-	...
-}
-
-Meanwhile ieee802154_tx() in net/mac802154/tx.c already did
-ieee802154_hold_queue() and atomic_inc(&local->phy->ongoing_txs) when the
-earlier drv_xmit_async() (mcr20a_xmit()) returned 0, and only
-mcr20a_handle_tx_complete() -> ieee802154_xmit_complete() undoes that. So
-the queue is never woken and ongoing_txs stays non-zero.
-
-Does that then make ieee802154_sync_queue() wait forever?
-
-net/mac802154/tx.c:ieee802154_sync_queue() {
-	...
-	wait_event(local->phy->sync_txq, !atomic_read(&local->phy->ongoing_txs));
-	...
-}
-
-There is no timeout and no alternative wake condition, so any MLME operation
-going through ieee802154_mlme_op_pre() would block indefinitely.
-
-spi_async() can fail for real reasons: -EBUSY when ctlr->bus_lock_flag is
-set by a concurrent spi_bus_lock() user, or an error propagated from
-spi_maybe_optimize_message()/__spi_async().
-
-Would ieee802154_xmit_error(lp->hw, lp->tx_skb, IEEE802154_SYSTEM_ERROR),
-or ieee802154_wake_queue() plus kfree_skb(), together with clearing
-lp->is_tx, be the right handling here?
-
-mcr20a_write_tx_buf_complete() looks to have the same gap for the SEQ TX
-register write:
-
-	ret = spi_async(lp->spi, &lp->reg_msg);
-	if (ret)
-		dev_err(printdev(lp), "failed to set SEQ TX\n");
-
-Should that path also release the skb and the queue?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921074207.2289391-1-benquike%40gmail.com
+[1]
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index a0557a3a7026..d4dc6d690a75 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1175,8 +1175,6 @@ static int vrf_prepare_mac_header(struct sk_buff *skb,
+ 	skb->protocol = eth->h_proto;
+ 	skb->pkt_type = PACKET_HOST;
+ 
+-	skb_postpush_rcsum(skb, skb->data, ETH_HLEN);
+-
+ 	skb_pull_inline(skb, ETH_HLEN);
+ 
+ 	return 0;
