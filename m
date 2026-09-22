@@ -1,35 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D161B2F60B2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 00:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0044A7E0FF;
+	Tue, 22 Sep 2026 00:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790038279; cv=none; b=DTy5MgK0+3dk9zDOS3dTI0AWpP5wcDPygiEBjx5UDjTLpVh50WYV/dnA39C474y5rFOeyexYHpZxFkUUkzat+YzJXIhP4zwgWCJu8ALrwpGk/jIX48c5X9AbDdQ3iEtPvckcDP7NnAMvrutRCV9Zb7+IIDhNMuuaIcNrSfVeVr8=
+	t=1790038288; cv=none; b=OZsTpvBCATLoznZX9hgB/zafERQ1wZCXDHQ7r3PcroMwfdORJcYBhb1oYAddR7WSPaNC/IJx9kPTqYxJw+oNnooCDmPU6KLdY+U/+PnPdGfZpRPa+Fw3dH4u73ix4U0NT6z2c4R8fygKN/QuATIXm1aIPTVvXnpoJ6g7PG7U1FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790038279; c=relaxed/simple;
-	bh=pYyRGwbHzWyIHM0PVc3pQ09Axy5u2RYGJjWaMk77kUM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JagdPpM7D0eORkhlmhG+7i/f2/UfTIAic18oK9MxxACCGi+brEakYBEPECB8E+IVVWLV24PBpAUlBgjg+gmG1BEk95AV3lV/8B1i8iKMASlXQkSs4g2WBi2D9wAaZ1Hhla92u2JzFcqcpWBOIaQf2uyCCmJ7qHkPpTFxq0Swdq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=St0NHDnH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790038288; c=relaxed/simple;
+	bh=9ODhgmhwooKZWj5DG3+H2ncIS+XGRaG6cFEiuqYVOVc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eB6yBu/Tokqc5tdpFaIZdhr2WxBVnsx70jWoWbEXzFNYmY7YL9l3EvsDS2xDLR3wr5zKu/LPapWkkq3N+i1PIjvE3Vp5BLhG9A7Nw98jQVWYM7POlEKfZ6GcVskUv9OwCR3QoXAP466FKIy4GymM65gNeYGIF7zidrrMGgyr9uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kH7wg21z; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="St0NHDnH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C67F1F000FF;
-	Tue, 22 Sep 2026 00:51:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790038278;
-	bh=xFXIc8XHJPvkndyIgvNrz/aM5wVMsDlJRub7YScUbX4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=St0NHDnHqg5dIlzuU0uvEaD8XMUveAYfeTuO0tRpLSAVnBZQvAvhWYFW0t2rimllL
-	 sSqNGqrWLFqtiblqmWNOjU/SI4PSmK1x2Zo2CCYvf/6kraCuSxa4UMpUjhQZpcEXXT
-	 PqIMaaMqPy6nGRXWAa+DgifK9I6zWACzUV3KdE7DR/Ry9deP5n2GdbxwIu4IB862Y0
-	 u+arwjPeZSA1e4CG2v2VLTAzCXHz49ADgvhi4funJnhU+47+Gr8bTKdp5b5TrjbwvY
-	 bZqtONb00VGTgaP6itq1EU0C0lZQpWaVa7BDrd/+wHuyMKg0beqx8ejGwf+hUhJ3+l
-	 YMzYM6DqxHSkg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198313930205;
-	Tue, 22 Sep 2026 00:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kH7wg21z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=hU
+	rmChZYIzv/Ri4MxoMOBxPpdJC/oAKAp5fDivpiEYs=; b=kH7wg21zQ7WWqHZskM
+	Jt3hsTfGJNVs7B+8oJmdzmOxOvhWK0Kza1kvgYlHBDYXK1CKbrzHc9qiakst+R8o
+	+vtt9ol1SGYqW1KWGlWLqHabgX+e985lpEYHrrV/wvL4eCX/cKNgfrcQHKzQgFCA
+	iEwWs8a+0H7pWE3xV/O8+O8Wc=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3P5vr0LFqjmcBAA--.965S2;
+	Tue, 22 Sep 2026 08:50:52 +0800 (CST)
+From: Pengpeng Hou <hppiscas@163.com>
+To: andrew@lunn.ch
+Cc: olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linusw@kernel.org,
+	hppiscas@163.com
+Subject: [PATCH net-next v2] net: dsa: mv88e6060: publish the OF module alias
+Date: Tue, 22 Sep 2026 08:50:49 +0800
+Message-ID: <20260922005049.7647-1-hppiscas@163.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,40 +46,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] netlink: remove dev_hold() and dev_put() in
- __netlink_deliver_tap_skb()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179003820964.3312649.8706518471915925994.git-patchwork-notify@kernel.org>
-Date: Tue, 22 Sep 2026 00:50:09 +0000
-References: <20260921093947.477658-1-edumazet@google.com>
-In-Reply-To: <20260921093947.477658-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
+X-CM-TRANSID:_____wD3P5vr0LFqjmcBAA--.965S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1UGr45ArWxZrW7WrWktFb_yoW8GF4fpF
+	ZrCF15Zry8JF45J3yDuw4xuFyY93ZxA395KFyDZ34fZry5ZF9rX3yfKa4Ykw15Jr45Gr17
+	tF4jyry5ua90qFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRYg4DUUUUU=
+X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbCxQx2P2qx0OyolgAA3Z
 
-Hello:
+The MDIO driver matches marvell,mv88e6060 through its OF table, but the
+table is not exported. The existing platform alias does not supply the
+OF modalias used for this MDIO-enumerated device.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Export the existing table so modular OF-based configurations can load
+the switch driver automatically.
 
-On Mon, 21 Sep 2026 09:39:47 +0000 you wrote:
-> __netlink_deliver_tap_skb() is called from netlink_deliver_tap()
-> under rcu_read_lock().
-> 
-> dev_queue_xmit() does not require the caller to hold a device reference
-> count, and the device lifetime is already protected by RCU (the netlink tap
-> is unlinked and waited for via grace periods prior to device destruction).
-> 
-> [...]
+The issue was found by our static-analysis tool.
 
-Here is the summary with links:
-  - [net-next] netlink: remove dev_hold() and dev_put() in __netlink_deliver_tap_skb()
-    https://git.kernel.org/netdev/net-next/c/c7a2a8c0c9ef
+Fixes: 277617603c02 ("net: dsa: mv88e6060: Support probing as an mdio device")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Assisted-by: gpt 5
+Signed-off-by: Pengpeng Hou <hppiscas@163.com>
+---
+Changes since v1:
+- use the full author name as Jakub requested
+- rebase on net-next while preserving the one-line change reviewed by Linus
 
-You are awesome, thank you!
+Previous version:
+https://lore.kernel.org/all/20260905134131.66680-1-hppiscas@163.com/
+
+ drivers/net/dsa/mv88e6060.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/dsa/mv88e6060.c b/drivers/net/dsa/mv88e6060.c
+index 64bf3d759d17..3bb485a90429 100644
+--- a/drivers/net/dsa/mv88e6060.c
++++ b/drivers/net/dsa/mv88e6060.c
+@@ -364,6 +364,7 @@ static const struct of_device_id mv88e6060_of_match[] = {
+ 	},
+ 	{ /* sentinel */ }
+ };
++MODULE_DEVICE_TABLE(of, mv88e6060_of_match);
+ 
+ static struct mdio_driver mv88e6060_driver = {
+ 	.probe	= mv88e6060_probe,
+
+base-commit: c7a2a8c0c9ef480849d655273101dcd0c5067e6a
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1 (Apple Git-155)
 
