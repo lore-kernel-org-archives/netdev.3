@@ -1,322 +1,198 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1CA3955D6
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790088756; cv=pass; b=a5Ii6Mhxwq5LYMpZdBKfKgYuweYKfQP+6GiR8cWRbeUq9FlZTPfx3Pp9816FJewuiLn8QwTThelVrban2laXOLt2r6UApycGQLrz4l9cUGzASSvY13uS7/Me8O4P28I/bJm2lExIAhOYW4znszv8o1RXS75EpkppvZ7JNMl4YQA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790088756; c=relaxed/simple;
-	bh=7sVwErfco+8+EMVPhXwvTV1CuJJIBB3tXQZyI1MPDrs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kXdeVjGYyr3By/h98RNJMFUk9reN8yfDs61ZnmzH3QLkcIV3xot2oLWuwfe+VSGUqlH8OiFugMTq21BPF+1fslNQBcRjR2YOBXf1MqlEp61MOzCHBdQRqqou2vXovZmYHuBo9nHfv2NWRaoaydIm334IQEYvoAjjJX26h0BXEIw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O4aIlhmd; arc=pass smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C585D39F190
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790088825; cv=none; b=QaKg3NmUFKvTRnlJPA/qazId4dJ2lxUxPYMeh/DuwYRnjcejkFVjmEwesodCXOsmQoJAL7JueiEHAD1WfZl9AnAYg/dCwBafX1PzEgyFtg3Cuh2K3QfCbTkU0OWJmieh1BzJVeKLKNHLzSYYmrtH4ynGHvQYwe/oJmgDXY9K96s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790088825; c=relaxed/simple;
+	bh=hghF98NYK78YNHXX1dgieJtN7r6JRJ6pzIa0JQe6vbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PVWcOx69/7Me/cPhcCek0Dk2QrhR2v3tmS3z6OeirhPRdk7MCF+RwtXuJ7GXmLxVwGSjh3T3CdDmO6erYxzYsmO8GpkJ6H8EVjxs6DBNE7y4HDmBu5pvvoSA5KyhxBTkp3dH/ZKQ/i9vpvGnFk/l6/inAoUVN162Msg6FxTuYJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=CwKohdlU; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O4aIlhmd"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d8facae850so110475ad.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:52:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790088754; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Hq8mwLBqxfDICCWYL/pHG0QmAHwvNu3UyVFcNl7rKvLBiNATMoGV7lu0K8EfcGxod2
-         OEs1uwVPvFPJAQJZLPDYJsApL+cWmTCfNd35xO5iUPYli0pg8hzcJqp7LI3Kdv/cWBXZ
-         0MTL3geDE1YyUX/T1xmQn6bApv57dMsKH2aZiOJbWus5KX8K2CoakNteW/HWPLIYTbwQ
-         EYGnDGa/A7EbULTxfgO2sHAIGz6SeaLwp7zQOtp1/VEJHwO90kIK80DAr0f4CsCH7qu0
-         zi0eYle8RrPE2Mv/iVk7DRwCT/WUp4ucPgdpopHozb2m/6fLiQq4yI2fkCdsXfQCxsTN
-         KmEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yTIoEW85SNN7D0Fwascax7ulU13Zqj41VZ1QFZ0r9YU=;
-        fh=APbJliO46LkatvoEcnPoJWpXRq0vrXvKhEkedbXlMHs=;
-        b=inxsnF58gsEVrnZ+c2nY5YIssJltcNNXsO7iK/nXuRANHi+omFPSbiEUSxobxTlTww
-         Isc5ntcXPoAYZh88p8f8rSrNmM1SyDw0jT98eQ+1Q3JIE/qn8HN1ct5NxKGQ3xWsusAh
-         1akT5mZpDxQSx04ELO6SP9OwvnjMy/jwdDRz6y2r9n/nWu3gRMIKh/HnChwDiHrYgazq
-         gbIHr7rIsKPdUp7JmRzK51pMJ8KVk9C2rNMIGHHL8P2ktl/yXQ7DamcKKIIhapxXNSlm
-         MHgIoYGj8Gph5ZvAgU3zwojV68bN5JhpsAn5zhD//eEAv+GEr2KN2w0dFhWQSiJc2odX
-         gQVA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="CwKohdlU"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b6so21173455e9.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790088754; x=1790693554; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yTIoEW85SNN7D0Fwascax7ulU13Zqj41VZ1QFZ0r9YU=;
-        b=O4aIlhmd/k7LGq5UZq7Evsa07K0uP5QvEUssypZ8LH7t0Ii/keSJXO04XqarW+Fsyi
-         f53Twi5X2/iAGq2XWqifHm9hDBKzDN6FN84hd5EbADXRN1EFKpACy1IPx6x7N0uUsnOr
-         D6C+IS6yHw32kmUYHs9nIxgEl0RGIZb3GUY8Wle0gEJvzDP0A2TIJ3zO2OtTuwP8f0dB
-         pDMXBA1Ad7+ephCQr0f/YV6Y4ChdSsZiZJDG/JvWRklzjyzDZulCZ9xztf/Pp1qX+9AL
-         bQ9ukpfgKb0F/2LujJ6kWaAd4ga4OmQ99RLrriX2xUwBpV6FK5XRWrxMZyJXJhlL9356
-         LKng==
+        d=trailofbits.com; s=google; t=1790088821; x=1790693621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZdXUXs+Kfd08foCbufXmHwGq0BzwF/4pD5Iu/UeB7bk=;
+        b=CwKohdlUD17rHg35WuwS78r95cJg4lU9oAXAGfUbvlyRzxxSbpq/dyvXNaGan62JtZ
+         PT3/EuzzPEGnsEVmBc/bECCNU7e1qVB3BAMPEd6dA+jBiEcrX7dP8X4Jd6+quw8RiSb8
+         J4VoQuVGZENc75ggYvnoqeB2+HeVHf3E/YUiSvgd+Vbl2sPhR5Qnj+g/4IMgzKIat0FJ
+         FJ8LyJsulV8C8FllKniX5P41gwSR94e6tal4mIc51LeGZvsBMEtELIenNMzUDmsO5tMU
+         ylgtRoMZwS2cSBw61whJA8/ZRdbE8i2OtmpIJa9FzvOtOHpciXqN5vLrVaQ9T7ulDVpQ
+         8Gxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790088754; x=1790693554;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yTIoEW85SNN7D0Fwascax7ulU13Zqj41VZ1QFZ0r9YU=;
-        b=AYrnOyOz5G4a1Sy0jiry+5TU4X0edQ9caLfqzMZWUbSAGtdlG8hpY3gvGr6J5FuLkh
-         bMiSmkVUz4cfglozXgAPK8RcOSFn6iuUsTgk/Qj43KfjQWpAvFP6VT6/SC0/JjEXO4HV
-         CRGO8xrQ3N4SlGG6GAT2jzDNxl13bJIyZ6OEyNSIibzAm+wsQx4xZMW2X4pn4DIjtD4m
-         iQccYqkQDjHm37Vz0dxvZTwT4K57E9NOQD5ViHNE4fEd4l7mBFcAM0v8dyGfhef4XBYV
-         wI046ZgxqmEDPjv6RUnsd/9EwFG2MDTFZASgkM6cI9+kF+tA6L4CZSwc/ZWMRfDJofIl
-         Fj3A==
-X-Gm-Message-State: AFuF++nhbHp05TRvaVZN777IlzKNNxNXS+9WNdhHoK2J6NvhFy4EIjBM
-	wi2c3Dc9ii9BJ+5ycuyLKXXBTSp5eXtpWaCkCgzb0kwhqzz3ZXpwerqcSQw0K/1F96ww4No59MW
-	CLbfCBmFGbNFZ87Rf5BWvg7eCypkMYrgh9hQdKknX
-X-Gm-Gg: AYBFou3YC0TiCH5EHQ0zR+6JMGe4F3krQQ/HWAe5RrZn+rd2BCZ3qL/pIfMifVpeVcs
-	NZOWEz3qmCgQl4lh3p+G2+Wj8zJ9SuNRcUVOtTxTfzGpZUhtEBQWT49ptCWXHNnHUURZfI+ikC6
-	Tz9TQhJaWV7a3aUkHRuNzXk5l2T/SOItxA02m9S9+l7pdOGJDQpKK8aSZ74/5IRh25Y8pmFmB3X
-	UCJlr1jQ97rfJWUPvDoDfp1IwN8VKQcPz59b3KcEmvhr9mt9kNgufILp029oMzVJCJBWElPeyFC
-	cmGkb8eupvkh3SyadKTi1ettKR1pHR4f3qJZ3YMxI6nOk5r7C9QsSYo8fypFqtABdnVfUS96HO6
-	OQkR6aYLO
-X-Received: by 2002:a17:902:fc8d:b0:2c9:d89f:fd98 with SMTP id
- d9443c01a7336-2df662e3374mr1116865ad.1.1790088752668; Tue, 22 Sep 2026
- 07:52:32 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790088821; x=1790693621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZdXUXs+Kfd08foCbufXmHwGq0BzwF/4pD5Iu/UeB7bk=;
+        b=Sy69O2bbdOSgGSqClNmaT0+jyj0YESnCm1h/rUY442X781Ymmgn/A8a99s8jVwdUd8
+         OsGRm82Okv52YMMqRzj0vsJfzas4Z/Vr0iDdGV/ukJaQsMysXaDBrVkb2lS5ghaHXSn3
+         NWoliaP3PwBeDN4QekwIPAHrLZ591lwJ4MgteopkuqDB6PnJUYjySJ+6suD79vDi9PO7
+         lY435sLebbv7bjGw3vupENWcwsIP6vFH2lDSD0L8jiQdVfSjGUBJTb1kJN7C23IZ/SMj
+         fUEP4xKNo52jE8h12QwsiR/qELOdhG/RJGKvq9dTAQ2z7s57I71m1Ao7xGl3vVxl4LgK
+         IETg==
+X-Gm-Message-State: AFuF++l4BBnb5hS5vfg3K772JRQZ2VOW6d1dxMrxnon7nmqC69FzBXoM
+	X9PYrNU9ZxKoCViBWCbHTH1T29IAc3kPdq1Xq4GFhnaawS2gQlWE7M2M74vR5QHMXqQ=
+X-Gm-Gg: AYBFou2Q6Alb4zqCefiA7GfWqMi5Lmwcpq1CglkcAa47RDsuj/J/1IoszGh4RZiNdnw
+	KlCmIU92Uw6MsSGsYvtM5fac0B2QYLeQCUGb+LYSqmk/Z7giDp1melN3W0z58MPKQgyQ56WevgA
+	mjmM4XraItan8W+8o5onpqGhNzVcYs39DnNc8eC2RBBgl1Ze4SQ/z3xjsXDqm6pepf119MBatJq
+	+fAvA0iVpynjQHtUH44LHiUb73DWecvVePRO99oaWQ9RDm5FWsXFzr2yJBUx1IL6sITEJiKQjj/
+	BQlhHGLjsU8PaX58ymPOa5i5C7ZmdqALv3URNa3824EL5BjHIvaOnEdnJ3wr6HLrJH19YYk2DnP
+	MO4Yt+GpvbhUtVV8utELUjGTpLRqNo302BViLOtmGSOfgUMWOwE46zqCXy7HQtx7NVwA05N0PGt
+	ZjnvAUgVeFrorrQmYHLApJkHOAhmRRQgEXkZOWGjoQktf94oE40RpxjYpRcrAQy12MFtaipq11W
+	/nqLJXI
+X-Received: by 2002:a05:600c:a415:b0:49f:ddc0:6e8f with SMTP id 5b1f17b1804b1-49fddc06f09mr4681645e9.5.1790088820973;
+        Tue, 22 Sep 2026 07:53:40 -0700 (PDT)
+Received: from localhost ([2a02:168:9d56:1:84ba:d001:a11c:487b])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4886279298asm4771587f8f.34.2026.09.22.07.53.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 07:53:40 -0700 (PDT)
+From: Bruno Produit <bruno.produit@trailofbits.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>
+Cc: netdev@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	linux-kernel@vger.kernel.org,
+	Dominik Czarnota <dominik.czarnota@trailofbits.com>,
+	stable@vger.kernel.org,
+	Bruno Produit <bruno.produit@trailofbits.com>
+Subject: [PATCH] xfrm: espintcp: build sk_msg locally before publishing
+Date: Tue, 22 Sep 2026 16:53:35 +0200
+Message-ID: <20260922145335.2016559-1-bruno.produit@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921195545.493253-1-almasrymina@google.com> <179007458060.2160803.1077952399417880240@kernel.org>
-In-Reply-To: <179007458060.2160803.1077952399417880240@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 22 Sep 2026 07:52:16 -0700
-X-Gm-Features: AcwNN1V4Ci3W10Pgy9sSkPzuwcP_7GXIolq8-v2uiIIScOXhlMj8k7qpggL2nHY
-Message-ID: <CAHS8izP5KFE13qp0H6WY8iTYi22_YQyCYfhrG3KzOgwd-uybRQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v1] net: devmem: document that bind-tx is
- unprivileged by design
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	donald.hunter@gmail.com, sdf@fomichev.me, razor@blackwall.org, 
-	daniel@iogearbox.net, bobbyeshleman@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 22, 2026 at 3:56=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 2 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] NETDEV_CMD_BIND_TX is unprivileged (net/core/netdev-genl-
->   gen.c:240-245: .flags =3D GENL_CMD_CAP_DO), and this patch cements that=
-=E2=80=A6
-> - [Medium] The comment added above netdev_nl_bind_tx_doit()
->   (net/core/netdev-genl.c:1183-1188) and the mirrored note in=E2=80=A6
-> - [Medium] bind-tx is reachable by any unprivileged user
->   (net/core/netdev-genl-gen.c:244: .flags =3D GENL_CMD_CAP_DO) with no=E2=
-=80=A6
->
-> --
->
-> net: devmem: document that bind-tx is unprivileged by design
->
-> This adds a comment above netdev_nl_bind_tx_doit() and a matching note in
-> Documentation/netlink/specs/netdev.yaml stating that NETDEV_CMD_BIND_TX
-> carries no GENL_ADMIN_PERM / GENL_UNS_ADMIN_PERM on purpose, on the groun=
-ds
-> that bind-tx only DMA-maps the caller's dmabuf.
->
-> A few questions about the rationale being recorded here.
->
-> > diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/ne=
-tlink/specs/netdev.yaml
-> > index e13461cf3fc33..4303593e5003c 100644
-> > --- a/Documentation/netlink/specs/netdev.yaml
-> > +++ b/Documentation/netlink/specs/netdev.yaml
-> > @@ -852,6 +852,8 @@ operations:
-> >        name: bind-tx
-> >        doc: Bind dmabuf to netdev for TX
-> >        attribute-set: dmabuf
-> > +      # Intentionally unprivileged (no admin-perm / uns-admin-perm); s=
-ee
-> > +      # comment above netdev_nl_bind_tx_doit().
-> >        do:
-> >          request:
-> >            attributes:
-> > diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-> > index fa9edfdb32c29..690c27f63d260 100644
-> > --- a/net/core/netdev-genl.c
-> > +++ b/net/core/netdev-genl.c
-> > @@ -1180,6 +1180,12 @@ netdev_find_netmem_tx_dev(struct net_device *dev=
-)
-> >       return NULL;
-> >  }
-> >
-> > +/* Note: NETDEV_CMD_BIND_TX is intentionally unprivileged (no
-> > + * GENL_ADMIN_PERM / GENL_UNS_ADMIN_PERM). Unlike bind-rx, which confi=
-gures
-> > + * shared NIC RX queues, bind-tx only DMA-maps the caller's dmabuf so =
-they can
-> > + * transmit from it on their own sockets without affecting other traff=
-ic or
-> > + * device state.
-> > + */
->
-> [Severity: High]
-> Is the "on their own sockets" part of this rationale actually enforced
-> anywhere?
->
-> net_devmem_bind_dmabuf() in net/core/devmem.c allocates the id out of a
-> single global xarray and only records the owning netlink socket for clean=
-up:
->
->         err =3D xa_alloc_cyclic(&net_devmem_dmabuf_bindings, &binding->id=
-,
->                               binding, xa_limit_32b, &id_alloc_next,
->                               GFP_KERNEL);
->         ...
->         list_add(&binding->list, &priv->bindings);
->
-> priv->bindings is then only walked by netdev_nl_sock_priv_destroy().
->
-> On the TX side, net_devmem_get_binding() resolves whatever u32 the sender
-> passed and checks only that a tx_vec exists and that the route egresses t=
-he
-> bound device:
->
->         binding =3D net_devmem_lookup_dmabuf(dmabuf_id);
->         if (!binding || !binding->tx_vec) {
->                 err =3D -EINVAL;
->                 goto out_err;
->         }
->         ...
->         dst_dev =3D dst_dev_rcu(dst);
->         if (unlikely(!dst_dev) ||
->             unlikely(dst_dev !=3D READ_ONCE(binding->dev) &&
->                      dst_dev !=3D READ_ONCE(binding->vdev))) {
->                 err =3D -ENODEV;
->
-> and net_devmem_lookup_dmabuf() is a plain xa_load() with no credential,
-> netns or creator comparison.
->
-> So can an unrelated unprivileged process reach another user's binding lik=
-e
-> this?
->
->   process A: NETDEV_CMD_BIND_TX -> gets id N, keeps the netlink socket op=
-en
->   process B: sendmsg(MSG_ZEROCOPY) with SCM_DEVMEM_DMABUF carrying id N
->
-> __sock_cmsg_send() in net/core/sock.c takes the bare id:
->
->         case SCM_DEVMEM_DMABUF:
->                 if (cmsg->cmsg_len !=3D CMSG_LEN(sizeof(u32)))
->                         return -EINVAL;
->                 sockc->dmabuf_id =3D *(u32 *)CMSG_DATA(cmsg);
->
-> tcp_sendmsg_locked() then calls net_devmem_get_binding(sk, sockc.dmabuf_i=
-d)
-> and zerocopy_fill_skb_from_devmem() builds frags from the resulting niovs=
- at
-> attacker-chosen offsets. If B's route egresses the same netdev, does this
-> let B transmit the contents of A's dmabuf to a peer of B's choosing?
->
-> Ids are allocated cyclically starting low, and the return codes differ
-> (-EINVAL for an unknown or non-TX id, -ENODEV for the wrong device), so i=
-s
-> guessing a live id cheap? Should the TX path check the binding against it=
-s
-> creating netdev_nl_sock before this is documented as safe, or should the
-> command grow a permission flag instead?
->
+From: Kyle Zeng <kylebot@openai.com>
 
-This is a pre-existing issue that we can tighten up in the future. It
-technically may be possible that 1 socket guesses the binding id of
-another socket.
+espintcp_sendmsg() builds a new message directly in ctx->partial. If
+allocation fails, sk_stream_wait_memory() drops the socket lock while
+the shared sk_msg remains unpublished with emsg->len equal to zero. A
+concurrent sender can then reuse the same slot. If the first sender is
+interrupted, its failure path frees state now owned by the second sender
+while TCP may still be consuming it, causing a use-after-free.
 
-> [Severity: Medium]
-> Separately from the enforcement question above, is the wording here wider
-> than what the code does?
->
-> Two parts look overstated:
->
-> "so they can transmit from it on their own sockets" - nothing in
-> net_devmem_get_binding() ties a binding to the socket, task, uid, netns o=
-r
-> cgroup that created it; the u32 id from the global xarray is the only
-> credential.
->
-> "without affecting other traffic or device state" -
-> netdev_find_netmem_tx_dev() can resolve the bind target to a different,
-> shared physical NIC via an rx queue lease:
->
->                 phys_dev =3D lease_rxq->dev;
->                 if (netif_device_present(phys_dev) &&
->                     phys_dev->netmem_tx =3D=3D NETMEM_TX_DMA)
->                         return phys_dev;
->
-> and net_devmem_bind_dmabuf() then runs dma_buf_attach() and
-> dma_buf_map_attachment_unlocked() against that physical device's dma_dev.
->
-> Would it be more accurate to state the narrow property that bind-tx does
-> not reconfigure RX queues or steering, rather than claiming no effect on
-> other traffic or device state? The same wording is mirrored into the uAPI
-> spec in Documentation/netlink/specs/netdev.yaml, so it becomes the answer
-> future readers get when they ask why this command has no permission flag.
->
+Construct the message in a call-local sk_msg instead. After allocation
+and any lock-dropping wait, recheck that the shared partial slot is still
+free, then transfer the completed message into it. Failure cleanup
+consequently releases only state owned by the current call. The recheck
+also covers packets submitted through the common IPv4 and IPv6
+espintcp_push_skb() path.
 
-Ugh, commit message can be tighten up a bit but it doesn't matter. The
-critical point is that bind-tx doesn't make the appliaction take
-ownership of an rx queue, unlike bind-rx.
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Bruno Produit <bruno.produit@trailofbits.com>
+---
+ net/xfrm/espintcp.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-> [Severity: Medium]
-> Does anything bound how many times an unprivileged caller can do this, or
-> account the memory it consumes?
->
-> net_devmem_bind_dmabuf() can be called repeatedly on the same dmabuf FD, =
-and
-> each call allocates with plain GFP_KERNEL / kvmalloc, so none of it is
-> charged to the caller's memcg:
->
->                 binding->tx_vec =3D kvmalloc_objs(struct net_iov *,
->                                                 dmabuf->size / PAGE_SIZE)=
-;
->         ...
->                 owner->area.niovs =3D kvmalloc_objs(*owner->area.niovs,
->                                                   owner->area.num_niovs);
->
-> and each call installs another mapping on the shared device:
->
->         binding->attachment =3D dma_buf_attach(binding->dmabuf, dma_dev);
->         ...
->         binding->sgt =3D dma_buf_map_attachment_unlocked(binding->attachm=
-ent,
->                                                        direction);
->
-> There is no duplicate-binding check, no count limit on entries added to
-> priv->bindings, no __GFP_ACCOUNT, and no RLIMIT_MEMLOCK accounting for th=
-e
-> long-lived mapping. With the rx-lease path in netdev_find_netmem_tx_dev()
-> these mappings land on the physical NIC shared with other users.
->
-> Given that, is "without affecting other traffic or device state" the righ=
-t
-> thing to document, or should a per-socket or per-user cap and memcg
-> accounting come first?
->
+diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+index 674aedc..1642b34 100644
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -311,6 +311,7 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 	struct espintcp_msg *emsg = &ctx->partial;
+ 	struct iov_iter pfx_iter;
+ 	struct kvec pfx_iov = {};
++	struct sk_msg *skmsg;
+ 	size_t msglen = size + 2;
+ 	char buf[2] = {0};
+ 	int err, end;
+@@ -324,6 +325,11 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 	if (msg->msg_controllen)
+ 		return -EOPNOTSUPP;
+ 
++	skmsg = kmalloc_obj(*skmsg);
++	if (!skmsg)
++		return -ENOMEM;
++	sk_msg_init(skmsg);
++
+ 	lock_sock(sk);
+ 
+ 	err = espintcp_push_msgs(sk, msg->msg_flags & MSG_DONTWAIT);
+@@ -337,10 +343,9 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 		goto unlock;
+ 	}
+ 
+-	sk_msg_init(&emsg->skmsg);
+ 	while (1) {
+ 		/* only -ENOMEM is possible since we don't coalesce */
+-		err = sk_msg_alloc(sk, &emsg->skmsg, msglen, 0);
++		err = sk_msg_alloc(sk, skmsg, msglen, 0);
+ 		if (!err)
+ 			break;
+ 
+@@ -348,25 +353,30 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 		if (err)
+ 			goto fail;
+ 	}
++	if (emsg->len) {
++		err = -ENOBUFS;
++		goto fail;
++	}
+ 
+ 	*((__be16 *)buf) = cpu_to_be16(msglen);
+ 	pfx_iov.iov_base = buf;
+ 	pfx_iov.iov_len = sizeof(buf);
+ 	iov_iter_kvec(&pfx_iter, ITER_SOURCE, &pfx_iov, 1, pfx_iov.iov_len);
+ 
+-	err = sk_msg_memcopy_from_iter(sk, &pfx_iter, &emsg->skmsg,
++	err = sk_msg_memcopy_from_iter(sk, &pfx_iter, skmsg,
+ 				       pfx_iov.iov_len);
+ 	if (err < 0)
+ 		goto fail;
+ 
+-	err = sk_msg_memcopy_from_iter(sk, &msg->msg_iter, &emsg->skmsg, size);
++	err = sk_msg_memcopy_from_iter(sk, &msg->msg_iter, skmsg, size);
+ 	if (err < 0)
+ 		goto fail;
+ 
+-	end = emsg->skmsg.sg.end;
+-	emsg->len = size;
++	end = skmsg->sg.end;
+ 	sk_msg_iter_var_prev(end);
+-	sg_mark_end(sk_msg_elem(&emsg->skmsg, end));
++	sg_mark_end(sk_msg_elem(skmsg, end));
++	sk_msg_xfer_full(&emsg->skmsg, skmsg);
++	emsg->len = size;
+ 
+ 	tcp_rate_check_app_limited(sk);
+ 
+@@ -374,14 +384,15 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
+ 	/* this message could be partially sent, keep it */
+ 
+ 	release_sock(sk);
++	kfree(skmsg);
+ 
+ 	return size;
+ 
+ fail:
+-	sk_msg_free(sk, &emsg->skmsg);
+-	memset(emsg, 0, sizeof(*emsg));
++	sk_msg_free(sk, skmsg);
+ unlock:
+ 	release_sock(sk);
++	kfree(skmsg);
+ 	return err;
+ }
+ 
+-- 
+2.53.0
 
-I don't see an issue here. Binding one dmabuf to many netdevs should
-be fine. Binding one dmabuf to the same netdev many times is possible
-but pointless.
-
-
---=20
-Thanks,
-Mina
