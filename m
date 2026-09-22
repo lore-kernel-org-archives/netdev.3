@@ -1,78 +1,70 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BFD4FDA48;
-	Tue, 22 Sep 2026 07:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7C4439F88;
+	Tue, 22 Sep 2026 07:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790061144; cv=none; b=ulbWSrZxXI2mXPykRwH/NLEJVWIL3y8IZfniT7pE/fX3JNNFUtoRnhO16wOs1jLPTWDFD/KeZXQYlMGcyQ16PI6ECEEnPCJtwErBAz9uGveodYCh9O80tAkfdRW5FKwzaGqpZEEuy/XAe2wha2l4b2QpL+1fcgaFD1+s3JAfP9E=
+	t=1790061419; cv=none; b=UPutBKlOlF8+kpnD1wuDd4w1v7u8943n2sIOcz/LH+MBVRoPM4Tq1Nj6yaA3L97rR8AJ+tpft2G+jWAjHeEsNoSA8PQEURhy1rNAhFDnwMObJnID418LgGLz3B5uFqSza1GZgaMegVzHRZWgU3/g5N5qdQEbu+kw+VhI4qLuCII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790061144; c=relaxed/simple;
-	bh=J7bgjlWHfD35nAuXdrw5wqnQOzUKyrdR7uwwIxPzLRc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=nJczIGQpuzAKldqB8K6Wo+XmCowl9ayElC1+qX1/T5fXtLomDg3rA4I19kDp1fS2q8rxMWKbk0irfAINhAGGkPkBQGWQKuKPY9oESN35n05V+CMjqIGDN1Uu6YRTU0KUDb94d6LBwm3L13puiXBFA9j1dJBVD9WjuyrujKyBFww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=MKmd26Fr; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790061419; c=relaxed/simple;
+	bh=eXNCPrKfHJPcki+h0vGLiwriuGBBLEfHPIdO7YzqF+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERrnom2+2I67kOR+1ZrtdVgnqk5ZhdXMUKwL/C/mBZihblTO9EsGcKEA7Y9AtkxQlaCDmnVWQ06a7Ag7V3FQED30yl2bJu2Wo3nzYYrexRbkdlV+tWqHD1lbQ5bRD/EvoDZyU+coQoiB6iym+KWZbHq3tHN1NgWeggeeBcvrjic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArMiyMDR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="MKmd26Fr"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C8F94A4A34;
-	Tue, 22 Sep 2026 09:12:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790061136; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=o2Dvl8LriDs9c3eda7doL8EwSK7ODoJenHR1YmSNe4A=;
-	b=MKmd26FrzNVo/twqZl4H8Aut4kR3D4mhaxSq6q4l071V8gjU+2XGLDstzKgJY2/8w/SB+o
-	4HaYGI5XRLjUcJAuEOCIx5PFh7jf36AV0ONjw+JbCLJzXwJomiVucMEMUAYQSp13Dv8VDF
-	BX4EIKPsdM5i3ApPbVS70xbYVK2qAxArjnwarueTx+RQthGBjymYKH/NIjAS+KGFSf9on1
-	YQgxVi53WihZPmUOgOsFJKYD3foa9EMCbW5X5rYRdh/Jgwg2QuCQS85sSsAFASfABsp4NP
-	Z+pl3tg+OxzV/WslEiYjLSMPVSyaztQFg58VW9CQ5cwyha54qjC5HFGtddeC6g==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArMiyMDR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444571F000FF;
+	Tue, 22 Sep 2026 07:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790061413;
+	bh=1ozzugNwC0Ma5vqRPrIYqe8LPeS4FR9eJ5gGP57BVro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ArMiyMDRKoNLF6dfedUrV3xOp45+gIXu1v9EuFtb9duiUYCDxTPMd7MZBSmg2PT9u
+	 qw1Y30c8ze2u+SEggDAxNJmwQY37gc1h4UfXRs+VKi2CB+jAElqW0T23p23uCBSIah
+	 7RrQ9FCdyWD10O4wDbr/EqWrTZ9BrHbs8P7/V3a+dU1hSsORONMjLg8SzBtOHo3At/
+	 nYSazROsdJ3iP889Cu3Ux3oSOHNDVKsY3ix1XeACYquyTKuezTH7oYKKrBMJWidHZ2
+	 74DexlQxTIZzDmX7TlXsM+LrlhL9HPLc5fcUpbgfXEUvsdwUPn4m9S9fwchVncntU9
+	 4G+nJGnBfgH1A==
+Date: Tue, 22 Sep 2026 08:16:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: phucduc.bui@gmail.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	David Yang <mmyangfl@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Nishanth Menon <nm@ti.com>, Wingman Kwok <w-kwok2@ti.com>,
+	m-karicheri2@ti.com, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: ethernet: ti: netcp: fix pm_runtime usage
+ counter leak on error
+Message-ID: <20260922071648.GZ13925@horms.kernel.org>
+References: <20260918042804.13101-1-phucduc.bui@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 09:12:14 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, richardcochran@gmail.com,
- kory.maincent@bootlin.com, vadim.fedorenko@linux.dev, jjc@jclark.com,
- florian.fainelli@broadcom.com, opendmb@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: don't require the hwtstamp NDOs when a PHY
- provides timestamping
-In-Reply-To: <20260921163746.5d5d0070@kernel.org>
-References: <20260918095540.34286-1-nb@tipi-net.de>
- <178998466913.2160803.80702009306181180@kernel.org>
- <8037c32ce6fef79a74ee56973bf185c2@tipi-net.de>
- <20260921163746.5d5d0070@kernel.org>
-Message-ID: <3663f91fa60a78f8eeadb6983cf0d70f@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918042804.13101-1-phucduc.bui@gmail.com>
 
-On 22.9.2026 01:37, Jakub Kicinski wrote:
-> On Mon, 21 Sep 2026 12:23:37 +0200 Nicolai Buchwitz wrote:
-
-> [...]
-
->> No, IMHO not here. It would change change behaviour that never worked.
->> Thus I would suggest fixing this with a follow-up to net-next.
+On Fri, Sep 18, 2026 at 11:28:04AM +0700, phucduc.bui@gmail.com wrote:
+> From: bui duc phuc <phucduc.bui@gmail.com>
 > 
-> Not sure I agree that it's separate but whatever, I don't want the 
-> ioctl
-> fix to miss rc5.
+> pm_runtime_get_sync() leaves the runtime PM usage counter incremented even
+> when it fails, but the error path in netcp_probe() does not call
+> pm_runtime_put_noidle() to balance it, leaking a reference each time
+> resume fails.
 > 
-> I'd prefer the netlink fix to also target net, tho. Netlink
-> functionality should match the IOCTL, targeting -next would put user
-> space in an awkward position when deciding between the two.
+> Use pm_runtime_resume_and_get() instead, which automatically drops the
+> usage counter on failure, fixing the leak.
+> 
+> Fixes: 84640e27f230 ("net: netcp: Add Keystone NetCP core ethernet driver")
+> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 
-Ack, see 
-https://lore.kernel.org/netdev/20260922070813.1458713-1-nb@tipi-net.de/
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Thanks
-Nicolai
