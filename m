@@ -1,227 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa2-f35.google.com (mail-oa2-f35.google.com [74.125.231.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA3146D086;
-	Tue, 22 Sep 2026 19:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450A34A8FE4
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 19:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790106718; cv=none; b=BAOM5oLIPpe1QCLD301ZXEkq2dnWNGaF0l6CG3Agzo+V4oKDTuCl6gb2um800HrdYAtuXrdneU/v0FbOWEdGkf3zoaNnSP81/SSpzoxOFe/xEbr7/KCZIYO11ObYXdBwJimGyVrLKdebuj6HJiQhWtVodKiGkSp0gf9p9WYxA38=
+	t=1790106823; cv=none; b=R2tJyDVxW/T7W34oWXnnwnaDHCNlGV8Fd72tz2c1phOfSQsLUIdNnL2ZDnejTtbSClIbluktZvUvZBenF8/hR59x91KhdTpeHwQNU5vDAksrhVPKK3elRN9y/20+zx6pbumww1/+50Dn1ZukVr5a2jo2yQjG4xx4wj/gYhMlzUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790106718; c=relaxed/simple;
-	bh=9R5CXjDYNBiUuqJqqxbarw4apjHiM4Oer8D+OA+W8ko=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lCkDbADF03Mom5vLZBTviHtGS5+j+eIeO2nbwPQVLXomM0Rz9tyjD61JavWDDCcdcddiySKhx8/lY8pchIcJ3S+MdjS8V8CfwQdTen5/y/aHecZYzhtQDYyBD503eheoGb2if/Ya4VOJ2I5Wlf2sVWk9R+Q9u842bwk17lDcHz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XoY1aLds; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790106823; c=relaxed/simple;
+	bh=rVQcvu2nQ9hhpSlEWzP2hEyq51SDjt+QGpBeBBaBtz4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Nf4nLKWOKhgGGfmE3pd7p4SLuT9swDYUs7M+PMgdFO7C5c7kBop93oIJIqJiq99FVWbxSIW1vTEVsosJFnNDVpvi0GTievuYpVq+nrJyyKFj5aLQ1IH/xug8T2kS3Df7/66SA5vFty9gLhKfM4zgmaSHKpjr3MlI4oXrjGrO+0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7dIBAnB; arc=none smtp.client-ip=74.125.231.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XoY1aLds"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3C81F000FF;
-	Tue, 22 Sep 2026 19:51:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790106716;
-	bh=PsXty5IDKGkuqvA+Km0WMkwXIK2YK4kWiCl0RTrrt5I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XoY1aLds18uA1FkTmI+ll8odGN+bjDS/SknCH3GYfLwv5ChhZNwzCorR7WNnB5y8q
-	 J32A7Xly8hOPG/3Qd4STyd5btIaA3oTU8DUo4HJasILMSZVpWBVypBNM9M5M1oL2fO
-	 ChOPLx7UbKPgibAxCasebvWkYR/LWhctU26JMms/H92l30iwRoSmgLWowdkDCNvlUg
-	 KeQAZRE5nUnzxb4cMfTLeyN4L9mdi/oMfw/NaNcHqHm42hJPe3shQKKx6D8XNK1vwa
-	 8sTW0RCzN5TrGn0nYayGJvpd5vB5RybgvJyCzLbS0XO2tCbRVVrh11bcFZLR6LfvJb
-	 Px+ixJavP+McA==
-Subject: Re: [PATCH] net: usb: qmi_wwan: add common Huawei modem IDs
-From: netdev-bot+sashiko@kernel.org
-To: jackympoka22@gmail.com
-Cc: bjorn@mork.no, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, 223556219+Copilot@users.noreply.github.com
-Date: Tue, 22 Sep 2026 19:51:55 +0000
-Message-ID: <179010671575.2160803.12741982130194822492@kernel.org>
-In-Reply-To: <20260918193645.59374-1-jackympoka22@gmail.com>
-References: <20260918193645.59374-1-jackympoka22@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7dIBAnB"
+Received: by mail-oa2-f35.google.com with SMTP id 586e51a60fabf-486e0f56cddso167803fac.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:53:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790106820; x=1790711620; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=30kr5BweW/mill+9FpYAClX2qkZFuhc6bMu71N8WrHI=;
+        b=A7dIBAnBpdbzaWlZKqZ1VhkmnbdUsGHhZOp2KG7NKtD50ueAoCKaG2HC2YjQr4HEPz
+         t7B4kfv5PeX/ec9jZLRrqJ5WAKpjFvuh2s5416BvlatY4ucLgaBJM44NS3Unajox2jeI
+         of65jOoBsacQPnS1IEvSJGP9q+Dxl38nf6BsdIe/k3C/p9XX1xRQc5/PeKztKDVGFLPy
+         pK31A+A1Wj/UUXOfntxDrvWANVK0vrELOxCnJXymZg8MckOgEEdbQEaUg/RaEMv0s39X
+         3pBVPxGhzi+fPfi18lBD/6sY5sp9XLcyWRrCC3TLtCjIInhmri5qjjJbuwe14zVa7Mdm
+         pvaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790106820; x=1790711620;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=30kr5BweW/mill+9FpYAClX2qkZFuhc6bMu71N8WrHI=;
+        b=a80YfJnQY/AuQe4D/COTzIxyJlWeudQ3FaurviT0urISDkuEjnaI9CL+EAMNLxomcs
+         HlQvr1I6z8SolR5IZpEH259NKK065GZ4xUdTzs1II5lIDmomqUtU/ybXT5yBHEo5hsT7
+         fdE2iF7VFgaY9g/Z94ys6NT/PyZ8Pr7MoLcJ2PmBPAzDWrHgv2v0NASKVg4A5di1D2pp
+         kSpxTeW8tSXREWXqaCw4yjKaX1GjY7Sag4ng7fXeOQsDk/2nak/s3VTVwAe3eI0jsxRu
+         neqAUDOqhCCQj7dB3LFT3mK1RyFNOrph88V8F79vLyYaNtQ6cXK+vx0KswjWbplf5rIK
+         0wVA==
+X-Gm-Message-State: AFuF++m2QjhGjB9n6wTyw61Jse0cjdMpdSHi/m5W6rPyPAbPgE5gq3fP
+	fFqoLmAk9IeZQ4qTmGqRXBoUdAa7jmredvTh39molGz1I1inoUWVwS2v
+X-Gm-Gg: AYBFou25gZ6IlPOC2BAElYlyYAV47Ocb3eUZvRLEDnEUZ7fNeeE9qQ4VTTVafmeUQA4
+	SPpWnzjaNamwA3CC1yd7pNBTujgX4aXVvIJTyOljeupb9M3b+4MRQPJtlUrEdkkdpJFzbi+gzh3
+	+lbqq1vgjTtL9re1r4erj3XPH72iKcSmg0KDfuFhlyLoqRnMVxYxLVQgz55G6UCqFnUWt4cW3OF
+	u9VrWbjgNaBNn2C6HhbHyLo2qYnjfRe7e2QWV4sRRbGrXDqAZkQJmhafw60pRO3dH4sjB4Rsw32
+	nhRSgd4+IBIBqwtyXHlWx1ATTHepzVawiO2k9Eg6KECzGswrcFOZGrYpNFMnZB6kA8E4VYhY2Ks
+	pPNzhSVCt2Fj4ZI0ogbZ21E6M1YHVVwjTO9YWrv1dNviAQY8KiyKQOwyv2Tj5aR+TAMcgjUx3jD
+	LpahuAOZkc+fIA8jjdoCSE85Oe+zE5aC9lxhJydrBi2QaNsDPflBOa+eiXvGTWNeTcP7R8
+X-Received: by 2002:a05:6820:810c:b0:6b7:46e9:96fb with SMTP id 006d021491bc7-6d2d25210c4mr422952eaf.43.1790106820016;
+        Tue, 22 Sep 2026 12:53:40 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:73::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d2dacc5db9sm426923eaf.2.2026.09.22.12.53.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 12:53:39 -0700 (PDT)
+From: Daniel Zahka <daniel.zahka@gmail.com>
+Date: Tue, 22 Sep 2026 12:53:28 -0700
+Subject: [PATCH net-next] eth: fbnic: put back netmem reference
+ xdp_buff_add_frag() fails
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260922-fbnic-refcount-fix-v1-1-31e5862c9893@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALfcsmoC/x2MywqAIBAAfyX23EIZPX8lOqittZct1EKI/j3pO
+ AwzDwTyTAGm4gFPNwc+JENdFmB3LRshr5lBVaqrRqXQGWGLnpw9LonoOKHuB9PontqmM5DDM1t
+ O/3QGoYhCKcLyvh95Vav4bgAAAA==
+To: Alexander Duyck <alexanderduyck@fb.com>, 
+ Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org
+X-Mailer: b4 0.13.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+fbnic_add_rx_frag() takes a page_pool reference out of the buffer's
+pagecnt_bias before handing the fragment to xdp_buff_add_frag(). If that
+call fails it has not taken ownership of the netmem: the fragment is not
+recorded in the shared info, and fbnic_put_pkt_buff() will not put the
+reference back.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+Put the netmem reference back on the failure path.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+---
+This error path was introduced in commit 61f9a066c309 ("eth: fbnic: Use
+shinfo to track frags state on Rx"). This is not a fix though, because
+the branch is unreachable if the device is behaving correctly.
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-- [High] Wrong interface number claimed for Huawei E1750 (12d1:1406),
-  plus four further unverified interface-1 claims.
-- [High] The new entry {QMI_FIXED_INTF(HUAWEI_VENDOR_ID,
-  HUAWEI_PRODUCT_E173S6, 1)} binds qmi_wwan to Huawei 12d1:1c07…
-- [Medium] Commit message does not describe the whole change.
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index 447ec5522499..bbc3c9e89a38 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -1045,6 +1045,7 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
+ 		pkt->add_frag_failed = true;
+ 		netdev_err_once(nv->napi.dev,
+ 				"Failed to add fragment to xdp_buff\n");
++		page_pool_put_full_netmem(qt->sub1.page_pool, netmem, true);
+ 	}
+ }
+ 
 
---
+---
+base-commit: 6598456d72e48d779445bfec8f72114747f8b8d7
+change-id: 20260922-fbnic-refcount-fix-a78b3a7e536b
 
-net: usb: qmi_wwan: add common Huawei modem IDs
-
-The commit adds seven HUAWEI_PRODUCT_* defines and converts the two
-existing Huawei QMI_FIXED_INTF() entries to use them, while adding five
-new Huawei product IDs bound at interface 1.  It also touches
-qmimux_rx_fixup() and re-indents three Novatel table entries.
-
-> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-> index f51cf9cb9421..93aa403ed3e5 100644
-> --- a/drivers/net/usb/qmi_wwan.c
-> +++ b/drivers/net/usb/qmi_wwan.c
-> @@ -216,10 +216,10 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
->  		if (netif_rx(skbn) != NET_RX_SUCCESS) {
->  			net->stats.rx_errors++;
->  			return 0;
-> -		} else {
-> -			dev_sw_netstats_rx_add(net, pkt_len);
->  		}
->  
-> +		dev_sw_netstats_rx_add(net, pkt_len);
-> +
->  skip:
->  		offset += len + qmimux_hdr_sz;
->  	}
-
-[Severity: Medium]
-Is this hunk intended to be part of this patch?  The commit message only
-says:
-
-    Add common Huawei product IDs to qmi_wwan fixed-interface mappings
-    for broader generic Huawei modem coverage.
-
-The rewrite looks functionally equivalent, but it is an edit to the qmimux
-receive path in a commit that advertises itself as a USB ID addition.
-Could it be split into its own patch so that a stable backport of the ID
-list does not silently carry an rx path change?
-
-> @@ -946,6 +946,13 @@ static const struct driver_info	qmi_wwan_info_quirk_dtr = {
->  };
->  
->  #define HUAWEI_VENDOR_ID	0x12D1
-> +#define HUAWEI_PRODUCT_E1750	0x1406
-> +#define HUAWEI_PRODUCT_E173	0x140c
-> +#define HUAWEI_PRODUCT_K4505	0x1464
-> +#define HUAWEI_PRODUCT_K3765	0x1465
-> +#define HUAWEI_PRODUCT_K4605	0x14c6
-> +#define HUAWEI_PRODUCT_E1820	0x14ac
-> +#define HUAWEI_PRODUCT_E173S6	0x1c07
->  
->  /* map QMI/wwan function by a fixed interface number */
->  #define QMI_FIXED_INTF(vend, prod, num) \
-
-[ ... ]
-
-> @@ -1024,23 +1031,23 @@ static const struct usb_device_id products[] = {
->  	},
->  	{	/* Novatel USB551L and MC551 */
->  		USB_DEVICE_AND_INTERFACE_INFO(0x1410, 0xb001,
-> -		                              USB_CLASS_COMM,
-> -		                              USB_CDC_SUBCLASS_ETHERNET,
-> -		                              USB_CDC_PROTO_NONE),
-> +					      USB_CLASS_COMM,
-> +					      USB_CDC_SUBCLASS_ETHERNET,
-> +					      USB_CDC_PROTO_NONE),
->  		.driver_info        = (unsigned long)&qmi_wwan_info,
->  	},
-
-[Severity: Medium]
-Same question for the space-to-tab reindentation of the three pre-existing
-Novatel entries (0x1410:0xb001, 0x1410:0x9010, 0x1410:0x9011): the commit
-message does not mention any whitespace cleanup.  Would it be better as a
-separate cleanup patch?
-
-[ ... ]
-
-> @@ -1229,8 +1236,13 @@ static const struct usb_device_id products[] = {
->  	{QMI_QUIRK_SET_DTR(0x05c6, 0x9625, 4)},	/* YUGA CLM920-NC5 */
->  	{QMI_FIXED_INTF(0x0846, 0x68a2, 8)},
->  	{QMI_FIXED_INTF(0x0846, 0x68d3, 8)},	/* Netgear Aircard 779S */
-> -	{QMI_FIXED_INTF(0x12d1, 0x140c, 1)},	/* Huawei E173 */
-> -	{QMI_FIXED_INTF(0x12d1, 0x14ac, 1)},	/* Huawei E1820 */
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E1750, 1)},	/* Huawei E1750 */
-
-[Severity: High]
-Is interface 1 the right interface number for 12d1:1406?  The only
-in-tree description of that device's layout says interface 2 is the
-reserved (non-serial) function:
-
-drivers/usb/serial/option.c:option_ids[] {
-	{ USB_DEVICE_AND_INTERFACE_INFO(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E1750, 0xff, 0xff, 0xff),
-	  .driver_info = RSVD(2) },
-}
-
-option_probe() only rejects the interfaces named in the RSVD mask:
-
-	if (iface_is_reserved(device_flags, iface_desc->bInterfaceNumber))
-		return -ENODEV;
-
-so option binds interface 1 of 0x1406, and this new entry makes qmi_wwan
-claim the same interface.  Note the neighbouring 0x140c, 0x14ac and 0x1c07
-entries in option.c use RSVD(1), the opposite of 0x1406.
-
-Does qmi_wwan_probe() catch this?  For an interface-number match it only
-rejects non vendor-specific classes, the Quectel EC20 interface 0 case,
-and two-endpoint interfaces:
-
-drivers/net/usb/qmi_wwan.c:qmi_wwan_probe() {
-	if (desc->bNumEndpoints == 2)
-		return -ENODEV;
-
-	return usbnet_probe(intf, id);
-}
-
-A 3-endpoint Huawei serial/PCUI interface passes all of those, and
-qmi_wwan_bind() does no QMI validation, so the bind succeeds.  Depending on
-which driver registers first, either the E1750 loses its ttyUSB port in
-favour of a netdev and cdc-wdm node that never carry QMI, or the table
-entry is dead code.  Either way interface 2 stays unclaimed.
-
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E173, 1)},	/* Huawei E173 */
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K4505, 1)},	/* Huawei K4505 */
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K3765, 1)},	/* Huawei K3765 */
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K4605, 1)},	/* Huawei K4605 */
-
-[Severity: High]
-Where does the interface 1 choice for 0x1464, 0x1465 and 0x14c6 come from?
-In option.c these three carry RSVD(1) | RSVD(2), which only records the
-interfaces option must not bind:
-
-	{ USB_DEVICE_AND_INTERFACE_INFO(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K4505, 0xff, 0xff, 0xff),
-	  .driver_info = RSVD(1) | RSVD(2) },
-
-Was the QMI function on interface 1 confirmed on these pre-QMI HSPA sticks,
-for example with qmicli against the resulting cdc-wdm node?  Could the
-commit message carry the lsusb output for each device it adds?
-
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E1820, 1)},	/* Huawei E1820 */
-> +	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E173S6, 1)},	/* Huawei E173s-6 */
-
-[Severity: High]
-Should 12d1:1c07 interface 1 be added here at all?  Commit 8f173e22abf2
-("USB: serial: option: blacklist interface 1 for Huawei E173s-6"), which
-added the RSVD(1) entry in option.c, says of this exact interface:
-
-    It doesn't seem to respond to QMI if it's added to qmi_wwan so don't
-    add it there - it's likely used by the card reader.
-
-So the RSVD(1) mask records an interface option must leave alone, not a QMI
-function.  Since qmi_wwan_probe() accepts any vendor-specific interface with
-more than two endpoints and qmi_wwan_bind() does not verify the protocol,
-this entry would create a wwan netdev plus /dev/cdc-wdm that never answer
-QMI.  Was this tested on an E173s-6?
-
->  	{QMI_FIXED_INTF(0x1435, 0x0918, 3)},	/* Wistron NeWeb D16Q1 */
->  	{QMI_FIXED_INTF(0x1435, 0x0918, 4)},	/* Wistron NeWeb D16Q1 */
->  	{QMI_FIXED_INTF(0x1435, 0x0918, 5)},	/* Wistron NeWeb D16Q1 */
-
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918193645.59374-1-jackympoka22%40gmail.com
+Daniel Zahka <daniel.zahka@gmail.com>
+
