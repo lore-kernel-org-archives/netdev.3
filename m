@@ -1,153 +1,197 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0F252FE21
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6A52F285
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790072077; cv=pass; b=s0oNmAPn1vJ2fYcXLmrlIAqjtxXoYELkILFATTBC/l6jnJJT2kX4QJIQuWm3TvKSTClcJya8uGS1Ho082RojE55FSCjlYc6eo+8hIC1Rc7DSOBoeb+1Gn88eEZrDDdPnB8gv/NSzFrRrtyelAyNN9nX0U0L63YbO17RJnaTIjWQ=
+	t=1790072302; cv=pass; b=jJ6W7RjApM0ssqr9/zZUjQWHK4dxJotMGZnyK/AN75obI1LnFAgRwXt+Dg/iApSTgHgXKwWNko52Iq0BdI3lzG1vSTHNHK/nD7+eGecrghaILoCKZqAgmeA/flttdMhF1K9gfWBjI4MzL9IavBG+caWGKaae5RQZXfd1gP3Vi+c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790072077; c=relaxed/simple;
-	bh=MP7qOWwL+P1a6ht9RviQn5PbhcTDg1vQhBcP5eyXfGM=;
+	s=arc-20240116; t=1790072302; c=relaxed/simple;
+	bh=7msoXiz8ZhQY0jm8uy/r22rhQVLWIg6ZBrWtGTnCYpA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BjdT72UhmwhCYodI7fFBDizJx9nx5xyCtru14Lfrh/ebXEQh6svjZUjbFtjPf6xklfOE+5qNdOIVANg7jx5pB6GOdUz4J2GRTRKvGn49NdvUyfjqfhWNBKixEqdTFSB3V9q15hVFydwo9E+lG3rOKUNI1cvUAdhOwKx09yKGFsw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ABLRxbfE; arc=pass smtp.client-ip=74.125.230.140
+	 To:Cc:Content-Type; b=OyjEY2j3H+dIGhttL47Q0DEBHPlyQSBgK8l4aWKncWKUF4ZTkt0+HXxbp9yF/ueCtx/cB1o8C/Of3xaMf8qC4Yx4JTsJtTC95E8inEdYGvFC045REUz9YTYTCWDxdxiosRB0Y6QeRy8UI13C6UKtKhaVWxWDqezadeXNWa1OJKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qJtTJCHi; arc=pass smtp.client-ip=74.125.228.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ABLRxbfE"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfcbe208so47091836d6.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:14:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790072074; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qJtTJCHi"
+Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6a98dfb8002so5580028a12.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:18:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790072299; cv=none;
         d=google.com; s=arc-20260327;
-        b=b6RsJC+Afqtst0nezumwxdLpKe/+B34giANYwPo0sp/uPv760jUM0anuOieRYVLjvN
-         skWvIKqqSMVtqL8ZoyJAsznnJCkCp199NrdelT6Fgu6y3QnJQ5TUJHVZcWgj9ETd2d0Z
-         bIGBMB3sgdgjc+xIGX/8N7SgafwMuJOTBmXxBmamXcDmKyr0BWayR3UElvGvQ9gzuutI
-         VhH8ceeAtbyu5q/+tVyefSw84Bz3vizVi51BiFnO9XYvKZky/14+eK9oYH+awHOtOksw
-         Q7yWMR09C+TvUi6pmU6onPCFoGfapARfbh8Y3rhhNVzE6itDZLBU1rrR00NQhaQYDJ6m
-         GAAQ==
+        b=H9JUPkAY9/toXPY2Slm5FF37drpA4wZaaAXmpO2tP3UpVantVsQWOl0E3BmVihOfKK
+         sN54zXfKvaPv6P69xotLvkhv8XxEzLkRc/MWEqbocwA4ut9HwDKoVfQSKYegLYX7DUTH
+         xlZ/PtB2FRc2k9/nI51Qoi7H0oXXOv/MGPDNjmRyrg52eqPIvN7BOYXs+AMd2EKg6pf+
+         WT7vFwPU13Cn78iQsIDYv4icxGkNQb8PV23B+HEY9aS7GZx1lIhCLpjVJMhmdyZ1W5sJ
+         oapRWBRa1izZqcFs+toat66YAir18apwUxuwKK5sx7tIu0nR+MuVpGuMyFHn/rr6Epua
+         Lx3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=2ESDSZM667q7EB0r3pmeL1vJBKH8ckNK36jbuGzw9rQ=;
-        fh=FeJ4mrkn7RtV5Q6LoqKIsVRYOZC+Z+GWVT2AyMp2ch8=;
-        b=sUSB1cOkRSiwQtZJ/CcEDDOlRIRYz6czuS1LkdwR5RX01I5loQyzDnzJiGEeqAw4Vq
-         6Mz/2uCdrKmj7hzGGMxl+qDeokzr7+g97y7rNfjazAMfWfYU4zwpYyK6F9V0ibXMGahX
-         wmsueLB7TjepcZkBTXMkiY7tZlIzZokGqLXnAhL9GHj5iSkRzvAx9r+NtoqUdPuhRR94
-         dfZDiObBUr9qTHcAWIR/YcU9Q0iGiaDngP/fb2ojR5j2v8/+BtdIWD8ihjmiSpsabRjO
-         S47ySB70TjaulmiHaDzRMO/unV8cXUoKYzqfn3zEN4zuhUfePxi1SBGf3OCDhS+0KeMC
-         mW1g==;
+        bh=R3Amu3+PQPJ43Ed9YGF8q4KOUPYdD7wbwNF4u+yNpeI=;
+        fh=cQa+t+dgWAQeVmWvAq2xU51ChborZoos+NmGwlbvPYA=;
+        b=X4egi3/vA/gKxCUuYZ18q0LKp2zw2hR+qYUvRuFRZ84ucVfBzcVxEf0sFFeamcfjZL
+         Phh6Rxa4oohuv6asfQ1Pk8YpjhccvCKnpdZiaigodd4Lq89IQCoV0LBpQ60gl7xptftK
+         LAAnLCyY/Kf+R2yF48S30w2MfpjrQ5A+hz1AGdQ5Ro+2TNHjHCc+j8Y9HohW5Nu/apHy
+         Kps8EONQt1u14iCSJZ1nU2M/2rqYj6BLaBXI0lb1tvLT3JK7aSQkGCf7Tc1q6/DlgQiU
+         i4rRlncu+MYf5Xep0HlQ2R+RGqBNda4vjuwAtlUxficXQPb5PzxD2DBoA6yWPBPVScO1
+         N5fg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790072074; x=1790676874; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790072299; x=1790677099; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=2ESDSZM667q7EB0r3pmeL1vJBKH8ckNK36jbuGzw9rQ=;
-        b=ABLRxbfE6NZ7sOy0INwd3XY4Y8s168Ra8wxGTqzrQIAqw3hou6Rq23TKQfmnHBAk4X
-         v6L5jxxM+78pAkKkVrqsf+veesjFiiVPt1Nep3U00Qni+c0cyjFj0uYJGrUSfewG8tEk
-         Zf33LvNghY6aF4qFJ/unoVK1XAkMLk84VEVKgrcVJmXrk7yaoFNLBl+IQxIQW8TzO/8J
-         Or6asyop9L0UhvpjcU2RvrwYTH4zND9/xJckQizoWSri9lGro6occWnxQ453vWCybkQ3
-         89ypd/XfD/SNnBwxfujW3QDPgn1lIyfdwNb58dmF2FPOa8jygoN1f6YPsbBzLHlJwARU
-         Ga8A==
+        bh=R3Amu3+PQPJ43Ed9YGF8q4KOUPYdD7wbwNF4u+yNpeI=;
+        b=qJtTJCHi0n3CABWwVvkR5DxsiQ5eboPpLWh4j2/p8u43FK4V0EWXwKGGnLBTo99OHZ
+         vSv0kpfj0oocy4OQHgtDncEezFK8suTHiODwbeadgxS5XWQUAjjLnW0i+zIN/H2bSyI8
+         oiM56QMolhasWF5c0wAJv3aB7YOBQMZagcza+pwFbSmt7nJpSD+0Zx9l8x4T2V/OE95v
+         JtqwzA++Ya/vQRvWXIDY/0whJBUFuVtAnCcH7sd+9+YRp6Da+8ib96VM5tsKTIyckNLU
+         mH2MijYxH0rUOqniJ6yU1DAQP0YkDvc+FtDgO2Nlx0sdjQlPyOmUEURMxDZTYcsde6Rx
+         9kTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790072074; x=1790676874;
+        d=1e100.net; s=20260707; t=1790072299; x=1790677099;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2ESDSZM667q7EB0r3pmeL1vJBKH8ckNK36jbuGzw9rQ=;
-        b=Dzttawodzx6swExGQo7K6A4E6AiwCmptvRfK9jawLUQFPfx1krxhF+OMo7N2kuNPgd
-         TnpqrJklfY+xg/fHtFObtKRXN3RDKut2yY8iHRydgUY+xpfSKYTpRTZIe7oTrIp8a40A
-         JiPmwX/qvCh0w7jeM08vq+EZ7EVCrklyonFNBJwly7WqFr/1krS4wOTVJRtJMz1308Dc
-         ULBWqyHqLvfMq/+HZ0TW52ltCvJy8hNZg1LS/aXagEtylOZlV36urH78JZiPjKQZrt6B
-         FAv66inw++3Nv4MtTT/DnF8HQz0C5Cx1RrZudpRPQTJxPgfVTmcSyNga4Jml/jvFlzI1
-         LHEg==
-X-Forwarded-Encrypted: i=1; AKwUvBzKPz9DADDG8rOuU/ZyVg8fKgVKeTZQ/YnhMpeJGONVxEoZv65y4E6UABsb+CQyr7Y5s6lPTW4=@vger.kernel.org
-X-Gm-Message-State: AFuF++noWF9rYqXtX448a5UjnfQTCC4SQsZDdi3IhM+O2k9DZKz1kHnL
-	vUegIBQGOYCAS6C7ZlLVaKL1VVWfMng3ZYXr2j6BwZmwboZqkqS4IJ1ejpJDuMXEOn9k6cc0x6b
-	i74VZBTozDS2M6vKGyyYKKV9eu54SPXg=
-X-Gm-Gg: AYBFou09RAekD1Ns7M0+D2C62OozSaZifMt3uHmD18CMeEtGt0WM3mu6xOcV+ghQkzb
-	hEzgzN9QWBRC0MqkaSr8OdGOQaF6FbfDeq6ZZU71Og/S8Ux4NsW0t1pfN9yqMAMozt4m4vVYWxT
-	D89ACiFwHocy7Oo8xPp+pDo6kMMIe4LqMUubTqy7ByWkrpO8xTrIAWCgMV+gULymuWzUj3VuMAh
-	ArO/tA1ZnTM8lyDWHUT4VJACT1NobLsCnQuDsYukhTYosqaVgimIYECrNDBhd+FslrvpwM7d9nG
-	JBusOfQtpGJ3J8gAqa/lRnhFYeIYq1QQlgbB2acYQPexsCr/n7Sn0Bc=
-X-Received: by 2002:a05:6214:d63:b0:913:fa79:99c3 with SMTP id
- 6a1803df08f44-913fc94b160mr46562816d6.43.1790072074583; Tue, 22 Sep 2026
- 03:14:34 -0700 (PDT)
+        bh=R3Amu3+PQPJ43Ed9YGF8q4KOUPYdD7wbwNF4u+yNpeI=;
+        b=oDHH6cqWoLwYpA5BXgfuOmh+t9ABWjosdeZ3qFvznmooThL7dD5INw5kowAxF55Q/W
+         Cui1e7Z3Pim0o3kZP8UifIchT4oskLkgscH0GC5y+LVlyNUZbUXpnx7PrDBYy7KgIE0K
+         ltr8bZCDxY58P9ru0v60+g7EXbsoyAa52OC0D75otQi7+LxOX86ZNaQe76cN66M8m7m0
+         88Xy6xAS5gnoM++dN6b5r2W7cw6gDNc/93XStGVweY3eJqXGqbCt4Y1R/8iSzx2y3yKK
+         /3D1ttaTl29HFDr8nC5/UHC9RfZtYAF+64h90/mSyGOEcwox1dttzL1xp/LqE6aXk5tG
+         WzLA==
+X-Forwarded-Encrypted: i=1; AKwUvBw78r5pe0vjyT30vPfPza0BvzOhL8iuMwRL8sPQij3yZKiKmPGDpQj8a4AbjNGY4jAhB2otwDM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mISWoqwYxbL1ejw5qkd6vNiLv5QD3LuHzWGejofBzXlnvLxd1b
+	G08vRrBJu3Wj7k2PDxDt4VWE7L7ni5YGf5JCqTYEeQDZQ4RPOSoDWsIOIPIj2nPSlUMX1ebh/Uo
+	0IYNO5PEFGSLK5s5r1VywiDbb1lEohhJ2AohnOWNbBQ==
+X-Gm-Gg: AYBFou0LTEP89cFPIJcWUhOppY87AI2iMa1MfK+JeMHI+YRUgxUpnNf2brh1EtKQZbQ
+	KJUMa0sOw7A4HRUhu19Aa5sZ04XIzcaPO+71BPbUGwwXdoKGMdeCh/vYFdlvrnNLTUXFWJyxWNc
+	wQPdyrUuOjx1cXWgiYAUsvw+6O5CMCHph0GiRuwIDItNtrBAZFc4VZwTEjdwpAfJtL+2MHCLwLw
+	tC39Vys6hSJOSXiiV/XSPaJP1Xy+gp1TBmk4AWeoQuPPwgysx/GxUsVS3dR8QYTEa/wZlKpr2ul
+	/Qi2GsIY5KFnkAEzMJwVG7jDzxQW6Jz2XLSpRFNlXzUDJA7WJEExhcBw
+X-Received: by 2002:a17:907:7244:b0:c29:4490:50d6 with SMTP id
+ a640c23a62f3a-c2a15cc7b3dmr1214184366b.47.1790072298525; Tue, 22 Sep 2026
+ 03:18:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915123812.14747-1-ansuelsmth@gmail.com> <20260915123812.14747-5-ansuelsmth@gmail.com>
- <20260921134410.13a7173c@kernel.org>
-In-Reply-To: <20260921134410.13a7173c@kernel.org>
-From: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Date: Tue, 22 Sep 2026 12:14:22 +0200
-X-Gm-Features: AcwNN1WQadm9kZulSu2D2w98S17OkpHd-MeZLtXiKqWwHyLw9Fh6tPwUuh65TfY
-Message-ID: <CA+_ehUyFH_ZSsjhp-U9WBFoRZR-ZMWnNQ5pY5vAy1LxUU5hSsw@mail.gmail.com>
-Subject: Re: [PATCH net-next v22 4/9] mfd: an8855: Add support for Airoha
- AN8855 Switch
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, Daniel Golle <daniel@makrotopia.org>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
-	mfd@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260921125805.224979-1-horms@kernel.org> <20260922080750.35929-1-ndaugoing@gmail.com>
+ <049e03e2-3648-4a8a-8959-d88a56545f4d@ixit.cz>
+In-Reply-To: <049e03e2-3648-4a8a-8959-d88a56545f4d@ixit.cz>
+From: Yuchao Zhang <ndaugoing@gmail.com>
+Date: Tue, 22 Sep 2026 18:18:06 +0800
+X-Gm-Features: AcwNN1U4xZeDysD8F_-uIUOnyy4axDXfoxw1BjtNX_Q8SmqiH5PTE1y2i5vEhBo
+Message-ID: <CAC2BP3+s=vGTxUrTALO3Fq+kUJODCpCdbujwkFK5txL9GFk2uw@mail.gmail.com>
+Subject: Re: [PATCH v2] nfc: nci: ignore unexpected CORE_RESET_NTF and CORE_RESET_RSP
+To: David Heidelberg <david@ixit.cz>
+Cc: Simon Horman <horms@kernel.org>, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, oe-linux-nfc@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Il giorno lun 21 set 2026 alle ore 22:44 Jakub Kicinski
-<kuba@kernel.org> ha scritto:
+Hi David,
+
+Thanks a lot for the pointer and explanation! I apologize for the
+threading confusion =E2=80=94 I mistakenly chained the v2 patch under the
+previous review message using --in-reply-to.
+
+I'll re-send the v2 patch as a clean, standalone thread right away so
+that patchwork can track it properly, and I'll definitely adopt b4 for
+future submissions.
+
+Thanks again for keeping me on the right track!
+
+Best regards,
+Yuchao
+
+David Heidelberg <david@ixit.cz> =E4=BA=8E2026=E5=B9=B49=E6=9C=8822=E6=97=
+=A5=E5=91=A8=E4=BA=8C 18:05=E5=86=99=E9=81=93=EF=BC=9A
 >
-> On Tue, 15 Sep 2026 14:38:01 +0200 Christian Marangi wrote:
-> > Add support for Airoha AN8855 Switch that provide support for a DSA
-> > switch and a NVMEM provider.
+> On 22/09/2026 10:07, Yuchao Zhang wrote:
+> > Commit bcd684aace34 ("net/nfc/nci: Support NCI 2.x initial sequence")
+> > added handling of CORE_RESET_NTF in nci_core_reset_ntf_packet(). When
+> > received, it updates ndev->nci_ver, ndev->manufact_id, and
+> > ndev->manufact_specific_info, and calls nci_req_complete(ndev,
+> > NCI_STATUS_OK) to finish the pending reset request.
 > >
-> > Also make use of the mdio-regmap driver and register a regmap for each
-> > internal PHY of the switch.
-> > This is needed to handle the double usage of the PHYs as both PHY and
-> > Switch accessor.
+> > However, unlike other notification handlers in ntf.c (which validate
+> > ndev->state before completing requests), nci_core_reset_ntf_packet()
+> > does not check whether a core reset request is actually pending.
+> > If an unsolicited or delayed CORE_RESET_NTF arrives (e.g. after a reset
+> > command times out or from a misbehaving NFCC), it unconditionally:
+> > 1. Completes whatever request is currently in-flight (such as CORE_INIT=
+,
+> >     RF_DISCOVER, or CONN_CREATE) with NCI_STATUS_OK, leading to kernel
+> >     state desynchronization.
+> > 2. Overwrites ndev->nci_ver and manufacturer info. Because
+> >     ndev->nci_ver is used as a selector for subsequent packet formats
+> >     and parsers (e.g., in nci_open_device() and nci_core_init_rsp_packe=
+t()),
+> >     unexpectedly modifying it can cause protocol format confusion.
+> >
+> > A similar issue exists in nci_core_reset_rsp_packet(): an unexpected or
+> > delayed response packet can prematurely complete an unrelated in-flight
+> > request.
+> >
+> > Fix this by ensuring CORE_RESET_NTF and CORE_RESET_RSP are only process=
+ed
+> > by the core layer when a reset command is actively awaiting them:
+> > - Set NCI_RESET_PENDING in nci_reset_req() when sending CORE_RESET_CMD.
+> > - In nci_core_reset_rsp_packet(), ignore the response if NCI_RESET_PEND=
+ING
+> >    is not set. If set, clear the flag and complete the request on failu=
+re
+> >    or for NCI 1.x (checking skb->len >=3D sizeof(*rsp)).
+> > - In __nci_request(), ensure NCI_RESET_PENDING is cleared upon request
+> >    completion, cancellation, or timeout.
+> > - In nci_core_reset_ntf_packet(), skip power-on notifications (trigger
+> >    0x01, identical in NCI 1.0 and 2.0), then check and clear
+> >    NCI_RESET_PENDING before updating device fields and completing the
+> >    request. The CORE_RESET_CMD trigger value is revision-dependent
+> >    (0x00 in NCI 1.0, 0x02 in NCI 2.0), so both are accepted and gated
+> >    on NCI_RESET_PENDING alone. If unexpected, log a warning and return
+> >    0 so driver-specific handlers (such as fdp firmware patch handling)
+> >    still receive the notification.
+> >
+> > Fixes: bcd684aace34 ("net/nfc/nci: Support NCI 2.x initial sequence")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
+> > ---
+> > v2:
+> >   - Do not abort the notification pipeline on unexpected CORE_RESET_NTF=
+ (return 0
+> >     instead of -EINVAL), preserving driver-level hooks (e.g. fdp firmwa=
+re
+> >     patching) per Simon Horman.
+> >   - Skip power-on notifications (trigger 0x01, identical in NCI 1.0 and=
+ 2.0)
+> >     while gating both NCI 1.0 (0x00) and NCI 2.0 (0x02) command-trigger=
+ed resets
+> >     on NCI_RESET_PENDING alone.
+> >   - Check NCI_RESET_PENDING in nci_core_reset_rsp_packet() to avoid com=
+pleting
+> >     unrelated requests on unexpected responses.
+> >   - Explicitly check skb->len >=3D sizeof(*rsp) in nci_core_reset_rsp_p=
+acket()
+> >     for NCI 1.x handling.
+> Hello Yuchao,
 >
-> GCC spews warnings:
+> please never send follow-ups as part of the thread. Always send them as a
+> separate message (otherwise they may get lost and we already have patchwo=
+rk wich
+> can track the submissions.
 >
-> drivers/mfd/airoha-an8855.c: In function =E2=80=98an8855_mdio_register=E2=
-=80=99:
-> drivers/mfd/airoha-an8855.c:438:48: warning: =E2=80=98-phy=E2=80=99 direc=
-tive output may be truncated writing 4 bytes into a region of size between =
-1 and 61 [-Wformat-truncation=3D]
->   438 |         snprintf(mrc.name, MII_BUS_ID_SIZE, "%s-phy%d", priv->bus=
-->id, addr);
->       |                                                ^~~~
-> In function =E2=80=98an8855_phy_bus_register=E2=80=99,
->     inlined from =E2=80=98an8855_mdio_register=E2=80=99 at ../drivers/mfd=
-/airoha-an8855.c:469:9:
-> drivers/mfd/airoha-an8855.c:438:45: note: using the range [-2147483648, 2=
-147483647] for directive argument
->   438 |         snprintf(mrc.name, MII_BUS_ID_SIZE, "%s-phy%d", priv->bus=
-->id, addr);
->       |                                             ^~~~~~~~~~
-> drivers/mfd/airoha-an8855.c:438:9: note: =E2=80=98snprintf=E2=80=99 outpu=
-t between 6 and 76 bytes into a destination of size 61
->   438 |         snprintf(mrc.name, MII_BUS_ID_SIZE, "%s-phy%d", priv->bus=
-->id, addr);
->       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~~~~~~~
+> Even better, try to use tools such as b4 to submit patches (easier for yo=
+u, sent
+> in expected format for us).
 >
-
-Hi,
-
- I also didn't receive the email for the AI review... Did it broke also her=
-e?
-If everything else is ok, should I send new revision or maybe we can pick t=
-his
-and I can send followup for this warning?
+> Thanks
+> David
