@@ -1,140 +1,176 @@
-Received: from mail-wr2-f9.google.com (mail-wr2-f9.google.com [74.125.225.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793C233937B
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728F955D88B;
+	Tue, 22 Sep 2026 15:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790091806; cv=none; b=Q6yq3u62wUOheqnMUqfUG1KOIPyXHSYNP/i6XDb7cMhaQqpA/uCQfVoPI7Ed6IZEwMr6+c+GjFZsHF2hcuzbGwAj2Et7K87VQmuM4hzxygM6erhpRTrwFnMQXKxcZ67wXl6ZpjWG7iSnPuF6s6BHAVZ7n4MK29tkSd1mxp6nkr8=
+	t=1790091815; cv=none; b=ezEbuvubBHRGJ3B08XeGhXX0+YxOcLLnj6SreBlRwktFJ5CiIrGBWd+mDdjXCuTP7EQ6tawbgp8MK7NVqK/xyPq0QeVuZwdz6mTSX+35hUFFfxQUUtS8QjIN/fAgqW2ooU5LFj6GMza4ExSqR31dIrd1RNAe8MvKojHzoCj4hTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790091806; c=relaxed/simple;
-	bh=GRqgTHPRWnG9IwMRRfG26N3mDu61p8pYCpytvjGSY1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hwf75GCmgNKLjiZQJEbcIygVILL7nMTlonTYADZcGhl11KgKCRuOuswS1Ab16ktI3kEG4XEqaCsu/D+UYMJhlM1b7z+2CBxpxQHf/2m2agaN1/1t3cNjFHm7X7osj4icvc3l0a3tRxyaQrZ3RHKoF/+ct7QAGZ07orr1jZnCYl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f9.google.com with SMTP id ffacd0b85a97d-485850cf4deso26092f8f.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:43:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790091801; x=1790696601;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QhvTPOuk38OAJeKZ6IPjN37kqjVi+x1d9H+4Ju5mOtw=;
-        b=t8qRnJjbYASGPcxFLCO7zA0L/f8xmkSeDa4DpwVrq0/wGq66lr73cHasvEB7y7bne7
-         KhNxdPvvBqUtdalfW/2pKAV2ABvOkjk1RsNPaiWxcHUeRvqS5YZw7g8YNh1tttQhkPho
-         ft7u4whJ8XgNhn7a/21Ve+miMS98nIdOh/cgVf1H18fSitQ81UmNzqwc0hn7tQkNv67L
-         yYfTrcO415xvEJZWZKwT3w3w9voij7wNNBzSuECMBQ57VGEmxbCbh+PKm2YZGZmEI6j/
-         9CJkL2YnPC4OwWtK6Pxwzt5YcixsnumUdd7Q9e/73YNrtCRra38q+YdhGc6b7oTz4PBu
-         SoxA==
-X-Gm-Message-State: AFuF++kr8YubadCPB1taGTUl23PLUyuVDsuheIZqHRBSwSDsE83kPX5g
-	MFDUKHuJvOtpp93Jo0WoVM+k2c5AEx+sy8Ed9Jfe2r+suDqsoM0FBAuA
-X-Gm-Gg: AYBFou3HwaJsjvkoejvULNhVTvHLTsZTemCngMNDldt9HE7uN/PWyJQ+ROMV2uuXbUq
-	Tbh8a8RT13C/cOOgqotHbf3bDmXXn4RokLU3SXrQYF/h8mbQeVws33kHc0mHGGWXkz1qR1dfnGg
-	wHb8I7IvhK+5JbhSO2U76vw3fz18RqWMboujUY3G+hvDXx1fC2MkJ4+5OfoopOFffIwzOZ823Zm
-	JqF47ehsLcEWIHEr8NVLq24BU7NjLuJAZ5wkCP5qi1Cq40/oLiSWgZd5B+kXMsgg1JwtuxJKH+J
-	yjp5D+psFoNBbbcz1mHGCcBlcO2fS6KtgEvRrMUBJOoOID8vtBjdqXi9S+Enhk1bjaBS8mI6WNW
-	K9ZljwFsSQGUW1pRynaW1yR8qrA2WZ9zvY8uzcNyC60/6UIRA2pWf2d/SLF7wcUvJiCPziPilCE
-	byuMW4rT0d5D+k0pjzBjpqaxwm6NGj9LGFYM4JWVIEM47hUd8Kh1G2dClkyhx1q7q5X3wXbJZhc
-	Dk3k0F+hQ1omLvPpQaSVrxHQg6k7UgyH0s5SkOGkr8i32M=
-X-Received: by 2002:a05:6000:2004:b0:487:242a:c020 with SMTP id ffacd0b85a97d-4886704a921mr11085f8f.6.1790091800734;
-        Tue, 22 Sep 2026 08:43:20 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862773ee0sm5831124f8f.6.2026.09.22.08.43.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 08:43:20 -0700 (PDT)
-Message-ID: <51f0cbae-71e3-4b9f-af91-55a610eb15d0@ovn.org>
-Date: Tue, 22 Sep 2026 17:43:18 +0200
+	s=arc-20240116; t=1790091815; c=relaxed/simple;
+	bh=rmm2ip3x4rObg7f/IAVd47+fOQlHAFprDiAJ7f3b2P4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oLmcZXmrxoy4tcdylwngh493tc88PmfHS+VcgAOv5t+Uv5/sKD0KrgAq9zxwN8MhK7vWHej5iH+UKznLflXmoCBXxZ+W5COIbfVSkyNWztv/m/pcn1sN+gukeEfh21IKw9W7zpr7iVl9zYOxcso9pL98UGfGUwuGHFw1iJ1v2YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdkMEqYM; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdkMEqYM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C17B1F000FF;
+	Tue, 22 Sep 2026 15:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790091805;
+	bh=5mYDRdpqoJm7XMxAfIZWNQHNwzVLqZ0QTUodt1TbgI4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KdkMEqYMmwypy+vCPZp+0rfPCpV//vHL+13MpUUQEBpkTIKNd3FyaeP0YQvv7E2U9
+	 oyqOqbLOT7zV4xv/l7/0CKpnWdPN+G7gGFFKrkpr+samrEKeOHpUs+GF3MGDcppo0u
+	 zp3iLf4r7CHEYwHHmunilJlsYPu3+mjiIKV19Cpao+gX5QY4lL+XRgb830I6pW0Hkw
+	 QdcCCHeWKy0tT/yApayK55iZTB8JldsqEBbTLrs7VJtueuTrHs8OPWO7XxSeqKplO0
+	 CxMUgSg7F5KibA410lU3CfPaiKG+NoNXjG7lwpQgqaYAz7lf+/QxmqSH5/6r6qBbO3
+	 mmCf3QY45OY0w==
+Subject: Re: [PATCH net-next v9 1/3] dt-bindings: net: wiznet,w5100: convert
+ to DT schema
+From: netdev-bot+sashiko@kernel.org
+To: arthur@marmottus.net
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 22 Sep 2026 15:43:24 +0000
+Message-ID: <179009180465.2160803.12754142201441824675@kernel.org>
+In-Reply-To: <20260918-wiznet-link-gpio-v9-1-5536f24d8d6d@marmottus.net>
+References: <20260918-wiznet-link-gpio-v9-1-5536f24d8d6d@marmottus.net>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 3/6] net: openvswitch: conntrack: fix helper UAF due
- to extensions realloc
-To: netdev-bot+sashiko@kernel.org, i.maximets@ovn.org
-Cc: netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, aconole@redhat.com,
- echaudro@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
- lucien.xin@gmail.com, marcelo.leitner@gmail.com,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, dev@openvswitch.org, stable@vger.kernel.org
-References: <20260921145655.3167436-4-i.maximets@ovn.org>
- <179008911935.2160803.14933035266780079917@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <179008911935.2160803.14933035266780079917@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 9/22/26 4:58 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] Inaccurate newly added comment in __ovs_ct_lookup()
->   (net/openvswitch/conntrack.c:820-826).
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Same thing as for the previous patch.  Comments do not need to
-spell out everything that happens in the code.  The intention of
-the comment and the code seems clear enough to me.  So, I'd keep
-it as-is, unless someone thinks it needs more clarification.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-> 
-> Pre-existing issues:
-> - [Low] Concern (INVALIDATED by later patch in the same series): the
->   identical helper/expectation use-after-free was claimed to remain…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Preexisting and fixed later in the set.
+- [Medium] In Documentation/devicetree/bindings/net/wiznet,w5100.yaml the
+  new machine-checkable constraint 'spi-max-frequency: maximum:…
+- [Low] Undisclosed MAINTAINERS change: the commit adds a new "WIZNET
+  W5100 ETHERNET DRIVER" section (MAINTAINERS:29442) that is never…
 
-Best regards, Ilya Maximets.
+--
+
+dt-bindings: net: wiznet,w5100: convert to DT schema
+
+This converts the Wiznet w5x00 SPI Ethernet controller binding from plain
+text to a YAML DT schema, and changes the documented interrupt trigger from
+edge-falling to level-low to match the driver.  It also adds a new
+MAINTAINERS section for the binding.
+
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> new file mode 100644
+> index 000000000000..25098308eb6e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> @@ -0,0 +1,68 @@
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - wiznet,w5100
+> +      - wiznet,w5200
+> +      - wiznet,w5500
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description: Main interrupt (INT pin on the device).
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    description:
+> +      According to the datasheets, w5500 and w5200 allow a maximum of 80 MHz
+> +      while w5100 is reported by users to allow a maximum of 14 MHz. However,
+> +      board designs may need to limit this value.
+> +    maximum: 80000000
+
+[Severity: Medium]
+Do the description and the constraint here disagree for wiznet,w5100?
+
+The text says w5100 is limited to about 14 MHz, but the only
+machine-checkable limit is a single unconditional maximum of 80000000 shared
+by all three compatibles.  So this node passes dt_binding_check:
+
+    ethernet@0 {
+        compatible = "wiznet,w5100";
+        reg = <0>;
+        interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
+        spi-max-frequency = <80000000>;
+    };
+
+Nothing downstream clamps it either: w5100_spi_read() and w5100_spi_write()
+in drivers/net/ethernet/wiznet/w5100-spi.c issue their transfers at the SPI
+device's configured speed, with no per-chip ceiling, so the out-of-spec rate
+is what actually gets driven for every register and packet buffer access.
+
+Would an if-then block be preferable, keeping 80 MHz for the other two
+parts?
+
+    allOf:
+      - if:
+          properties:
+            compatible:
+              contains:
+                const: wiznet,w5100
+        then:
+          properties:
+            spi-max-frequency:
+              maximum: 14000000
+
+Note the removed .txt scoped its 80 MHz statement to the w5500 only and had
+no machine-checkable limit, so the unconditional bound is new here.  The
+single maximum of 80000000 is still the only spi-max-frequency constraint at
+the end of the series (9d871f2771b9), where the added allOf block constrains
+only interrupts.
+
+[ ... ]
+
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cae5962045dd..e6a5a4e245a0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -29439,6 +29439,12 @@ M:	Miloslav Trmac <mitr@volny.cz>
+>  S:	Maintained
+>  F:	drivers/input/misc/wistron_btns.c
+>  
+> +WIZNET W5100 ETHERNET DRIVER
+> +M:	Arthur Crepin Leblond <arthur@marmottus.net>
+> +L:	netdev@vger.kernel.org
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+
+[Severity: Low]
+Could the commit message mention this new MAINTAINERS section?  The
+preserved log text only describes the .txt to YAML conversion and the
+edge-falling to level-low trigger change; the new maintainership claim is
+mentioned only in the changelog below the --- separator, which does not end
+up in git history.
+
+The section is named as a driver entry, but its only F: line matches the
+binding file, so at this commit scripts/get_maintainer.pl will not route
+drivers/net/ethernet/wiznet/ changes here.  That part is addressed later in
+the same series: the commit "w5100: detect carrier state using link status
+bit and optional interrupt" adds F: drivers/net/ethernet/wiznet/ to this
+section, so the mismatch exists only between this patch and that one.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-wiznet-link-gpio-v9-0-5536f24d8d6d%40marmottus.net
