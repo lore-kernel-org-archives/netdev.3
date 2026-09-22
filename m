@@ -1,191 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA8E544D7F;
-	Tue, 22 Sep 2026 12:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10BF3C3F64
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790081223; cv=none; b=U/1NZQgr0UZYs2zUkSWh13NzS7P/IbEAmUwx1tQ3hJtYwnOo7eUR/C0jYXlsp2eNTgSO6W6UzWrN4U1hOdXxFZNltRriFgm8U8k7djTuSUuiByFzh5y2X0Kugeoe/9k5cRXA9ohQbpQ5wgu5QjDa7b+0pOsNxH1BasTUrnvLmiw=
+	t=1790081238; cv=none; b=pOG6KaQWTX3xtTBcQ6Hq8Pi37exCQALtT2/lyzRmBSktL01tShZxS6/ZZIBzlYUDUV1sBC00DpCFC4jTbm1hXNe05QOpuJnZxhnZeguWWCEgszav//5O899jPutm/h4qK4iqHgVMX2mzStE7LbhgmmT3OOGop0ouTngK2Fdu8uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790081223; c=relaxed/simple;
-	bh=BudmzbRUBh/nsImbCyxQlRL9pd09aKsZBoGF2/iX0/c=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=At+P3EdUql2+ze6B+xVtLJgSj6Ai32h9QsMdtzs2awrmYRT3h379pzFeYUmF8inhGHMHVhxKQdEC2VewzALxTpONvD5aM4E6ErNzgEh+zKbcZDcGGMuLNSblxq0/NH4LMs0rzea4Y21/F106w4hijsCr53rxMoXABYNFJrGzEQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsHlo2Vc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790081238; c=relaxed/simple;
+	bh=jbQUTCe0ICwWOioxGPSxPQ50mAT7yEYTFcxWXz3Ogj8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hCDy0N1uVYANNB33yPZXY8u/2IynycptIovdhNjXOCtV1uB9JE+FLOx1Ep29m2GKtYRHNDm1IPkqEdaJdNneeH1aP6tAlAqdejElc3IS/FRcNHMWHLztrgx5D/AjV3fwOFNuj9fT3MEXSkapeYgNfEwyQSTS1Ahx1cAvu1LJ/yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G1zuI4YW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WiNXb+ES; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsHlo2Vc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681821F000FF;
-	Tue, 22 Sep 2026 12:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790081222;
-	bh=D3Jdj3+bSP+YSlJtW/E4z6RFHVsPDAGtj1j45y1Vlsk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gsHlo2VcQ1iYlQl6UUoLuBDmF/gfgXTAI9xoO++swjzvv4qobB3ohoLU/BSaSXdV1
-	 JHGFJ0TqRWbkt0nKOGhhimXHpU+yFgU1y+9tbTxzfKOLfmKz4oxDSP6KxRqCMbr3+q
-	 7ph38+3JdzPkeXmliA3zfhD8Af6kg9GNcQpAhbmudwK8mz1TOrwwWyYCmRchBa2HaZ
-	 SIc1B/7RwyNSFEkwsyWkZFqlYBuebrZmbsxhJvndXIG7lTrH3Pd8cm2OKyWwmRZvRk
-	 dVl/sLj4/CAHbl5OvvWmTBdMgPVR5GspNPSY+P/q1KxVHeV1n54rzdAp6kOsIGtTP6
-	 i7X7ZXqruBk0A==
-Subject:
- Re: [PATCH net] net: bcmgenet: stop Tx NAPI before disabling the queues
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- justin.chen@broadcom.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 22 Sep 2026 12:47:00 +0000
-Message-ID: <179008122084.2160803.1051800375963129894@kernel.org>
-In-Reply-To: <20260921124435.974581-1-nb@tipi-net.de>
-References: <20260921124435.974581-1-nb@tipi-net.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G1zuI4YW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WiNXb+ES"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790081234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cr6ub0HQ36E9YAIRyboF6gdXSYsRFPX75mape4tZPCw=;
+	b=G1zuI4YWw6mbOIMfoky61H1svKlnni6e4/1Gq3JeNu/QrxM5tjwnG3OrcxRulgIURt4fLv
+	/7vrtJ/xebvHnBDzVfqI6E+p52QJgn7fo6Ryt3XtUZtXira4RFlVj1kcWTcL8WR2csMJQF
+	SLv0metlTnU9h/WM8joVruQU5n6h7zg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-79-_INaCTp7PHaJrAxXCb4AYQ-1; Tue, 22 Sep 2026 08:47:13 -0400
+X-MC-Unique: _INaCTp7PHaJrAxXCb4AYQ-1
+X-Mimecast-MFC-AGG-ID: _INaCTp7PHaJrAxXCb4AYQ_1790081232
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e6862e924so30154685e9.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:47:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790081232; x=1790686032; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cr6ub0HQ36E9YAIRyboF6gdXSYsRFPX75mape4tZPCw=;
+        b=WiNXb+ESh7LBvwsIza680rzB+zFHa7gc/0cTuukeQdYt0ABzTXxxzisRaGYDatYxiU
+         fPeIlX28/SebenXoUk//nQE1Dhg+SJRcCDtmQI58bUctsHWJl7Jromx75nBxW2speHi/
+         OHR8BF3f05PgU2GuuSIyIxTKm1MTMPkrmaQ9bPXrq2gXeZQSJyROvd5YB6+kSZZAKjnB
+         lvLxGuSmBThCFuzg3BuhnLrdeUe7dosrFeGz5wq07en2aLY1SfzuNFAnNtjc1nyydQ5h
+         82IPGJJBh0LRu3JSGX/8A6W2tIgzz2Ivq/2d8b9kajphQ7okyjN/s/VepIF1n/71nuZv
+         1B3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790081232; x=1790686032;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=cr6ub0HQ36E9YAIRyboF6gdXSYsRFPX75mape4tZPCw=;
+        b=Y81YG3t2Hjkc3vrzoGghfQBix2rQlsOR1LnkGigg43CkYowG+3tQz2A7mkAxSRKMwX
+         gKG0hIDKq4mOx7t4IhL4RfMIFu5USVpdhqj2aoI9s0kXTFC/E6lrYzwtGArPpRCSl6g4
+         Xd1qJM+0kvhtxhKbgohCeJLQxOmeae4pNTssLuJUIvDe0KHkmZ24Y/46vm6gHb6EZmF2
+         MfKC6rpE1wSU2QveAA/XJtFWYBiMgyZ4YCC0p1BFuszKHuKC8MAP9ygQLm6rO6qKgg4c
+         vbfzL5J5pbrn9q1BJmOIoLqBYWn7zWdd8/jkZHn7ufhO7WfmuPSupyE70MrJImyuCR3i
+         5TwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz9pj5TirgHL3cbXfCwyBIBNaJRqnrE9yV1A5BGS1TDUoAvR/IRRLnaXb09XDZuJ160LwGt4S8=@vger.kernel.org
+X-Gm-Message-State: AFuF++k9MqSgrGXLY6KGk8RBTOWi9JvQEKUYnQF2EKPBO9RR8g9Jousa
+	91yBZg71yjaJzPitJQe9NipBP16/UiZHStx+ulAsCPs/pHtzzSvZQH1FxrULcP5qfWpHfhspTaz
+	yxdXkrpu121rLEhWOG7LhClmILJmAQuD+cJ2AR6WwZC78xkCNE0Rk/py59g==
+X-Gm-Gg: AYBFou1/TNC1/1uBKCw5vX2xEzxRo7vBJ3+y90M3eNumq1PW1xbU84ngAIsxdNXEjc8
+	YBBcfjC/K8rmffy8UuYGTXKYw3cJUnpkqq2WisrFLhdqk7IZUBVpn6wK3gNKXgW2+S6Gx8JIMLl
+	JFRYEX+jD3+ixYJvaz/BGqsqrzCa/2WlGZdmhHdp5qSi8XFOGiB5NAPuETpDkyiNu8TRasLrCU5
+	09T2iipl3/nAXoLOoz8sZnsADj52xE/tB/3gg9K4OigwTwWX15cJ4KSHQ/CXHxbwO/lrhzO3sfB
+	SsWWoRg8EccZe2s0/muC2M9Va9dQBH3U7/oRat4SydL61DSxk9H017HAwDD7afQhJcK5cwVnJYL
+	f8tdek+F2GUVF2JBH70660mq1VlCZSZ5JEx6D0KxSvKEk3+e6blA=
+X-Received: by 2002:a05:600c:4e0a:b0:49d:29ab:540b with SMTP id 5b1f17b1804b1-49fc5723f3cmr203501445e9.15.1790081231762;
+        Tue, 22 Sep 2026 05:47:11 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e0a:b0:49d:29ab:540b with SMTP id 5b1f17b1804b1-49fc5723f3cmr203500975e9.15.1790081231215;
+        Tue, 22 Sep 2026 05:47:11 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-134-131.retail.telecomitalia.it. [82.53.134.131])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fda8f3402sm37398835e9.0.2026.09.22.05.47.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 05:47:10 -0700 (PDT)
+Date: Tue, 22 Sep 2026 14:47:01 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: =?utf-8?Q?Bart=C5=82omiej?= Dmitruk <bartlomiej.dmitruk@isec.pl>
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>, 
+	Vishnu Dasa <vishnu.dasa@broadcom.com>, bcm-kernel-feedback-list@broadcom.com, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] vsock/vmci: make the cached_peer dgram decision
+ race-safe
+Message-ID: <arJ3bKG7vRjMI5Bo@sgarzare-redhat>
+References: <20260919123208.29032-1-bartlomiej.dmitruk@isec.pl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260919123208.29032-1-bartlomiej.dmitruk@isec.pl>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sat, Sep 19, 2026 at 02:31:56PM +0200, Bartłomiej Dmitruk wrote:
+>vmci_transport_allow_dgram() cached its result in vsock->cached_peer and
+>vsock->cached_peer_allow_dgram with an unsynchronized check-then-set. The
+>function runs both in the lockless receive tasklet
+>(vmci_transport_recv_dgram_cb(), no socket lock) and in the lock_sock() send
+>path; lock_sock() does not exclude bottom halves, so the two contexts race on
+>those fields and can return a stale 'allow' for a VMCI_PRIVILEGE_FLAG_RESTRICTED
+>peer. It is also a plain data race. The in-code comment claiming the fields
+>are never modified outside create/destruct is contradicted by the send path.
+>
+>Keep the O(1) cache -- it avoids an O(N) vmci_ctx_get() lookup on every
+>datagram in the bottom-half receive path -- but pack the peer CID and the
+>decision into a single word accessed with READ_ONCE()/WRITE_ONCE(). A race
+>then only forces a recompute and can never return a stale allow.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+I honestly don't understand this part...
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+>
+>This was found by code inspection; I do not have VMCI hardware to test on
+>(compile-tested only).
+>
+>Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+>Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+>Assisted-by: Claude (Anthropic)
+>---
+>v2: keep an O(1) cache made race-safe rather than dropping it entirely; an
+>    earlier revision removed the cache, which the Sashiko AI review flagged as
+>    an O(N)-per-datagram fast-path regression. Split out per Stefano
+>    Garzarella; independent of namespace support.
+>v1: https://lore.kernel.org/netdev/20260917220225.56200-1-bartlomiej.dmitruk@isec.pl/
+>
+>diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+>index 5549298c1..97968ac53 100644
+>--- a/include/net/af_vsock.h
+>+++ b/include/net/af_vsock.h
+>@@ -39,10 +39,13 @@ struct vsock_sock {
+> 	 * modified outsided of socket create or destruct.
+> 	 */
+> 	bool trusted;
+>-	bool cached_peer_allow_dgram;	/* Dgram communication allowed to
+>-					 * cached peer?
+>-					 */
+>-	u32 cached_peer;  /* Context ID of last dgram destination check. */
+>+	/* Cached dgram access decision for the last peer, packed as
+>+	 * (cid << 32) | VALID | ALLOW and accessed via READ_ONCE()/
+>+	 * WRITE_ONCE() so the lockless receive tasklet and the
+>+	 * lock_sock() send path cannot race to a stale decision.
+>+	 * See vmci_transport_allow_dgram().
+>+	 */
+>+	u64 cached_peer_access;
+> 	const struct cred *owner;
+> 	/* Rest are SOCK_STREAM only. */
+> 	long connect_timeout;
+>diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+>--- a/net/vmw_vsock/vmci_transport.c
+>+++ b/net/vmw_vsock/vmci_transport.c
+>@@ -524,23 +524,38 @@
+>  * only if it is trusted as described in vmci_transport_is_trusted.
+>  */
+>
+>+/* Packing for vsk->cached_peer_access. */
+>+#define VMCI_DGRAM_ACCESS_VALID		BIT_ULL(0)
+>+#define VMCI_DGRAM_ACCESS_ALLOW		BIT_ULL(1)
+>+#define VMCI_DGRAM_ACCESS_CID_SHIFT	32
+>+
+> static bool vmci_transport_allow_dgram(struct vsock_sock *vsock, u32 peer_cid)
+> {
+>+	u64 access;
+>+
+> 	if (VMADDR_CID_HYPERVISOR == peer_cid)
+> 		return true;
+>
+>-	if (vsock->cached_peer != peer_cid) {
+>-		vsock->cached_peer = peer_cid;
+>-		if (!vmci_transport_is_trusted(vsock, peer_cid) &&
+>-		    (vmci_context_get_priv_flags(peer_cid) &
+>-		     VMCI_PRIVILEGE_FLAG_RESTRICTED)) {
+>-			vsock->cached_peer_allow_dgram = false;
+>-		} else {
+>-			vsock->cached_peer_allow_dgram = true;
+>-		}
+>-	}
+>+	/* Cache the trusted/restricted decision for the last peer to avoid the
+>+	 * O(N) vmci_ctx_get() lookup on every datagram.  Read/update it through
+>+	 * a single word so a race between the lockless receive tasklet and the
+>+	 * lock_sock() send path only forces a recompute -- it can never 
+>return a
 
-- [High] Incomplete fix: the Wake-on-LAN branch of bcmgenet_suspend()
-  keeps the exact queue-stop-before-Tx-NAPI-stop ordering that this…
+Is this a real issue?
 
---
+We have this in the code:
 
-net: bcmgenet: stop Tx NAPI before disabling the queues
+	 * NOTE: We access the socket struct without holding the lock here.
+	 * This is ok because the field we are interested is never modified
+	 * outside of the create and destruct socket functions.
+	 */
+	vsk = vsock_sk(sk);
+	if (!vmci_transport_allow_dgram(vsk, dg->src.context))
+		return VMCI_ERROR_NO_ACCESS;
 
-This moves bcmgenet_disable_tx_napi() ahead of netif_tx_disable() in
-bcmgenet_netif_stop(), so an in-flight Tx completion can no longer call
-netif_tx_wake_queue() after the queues have been stopped and before
-bcmgenet_fini_dma() frees the rings.
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index b916080f4ff17..0789b60e664ad 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -3441,6 +3441,8 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
->  {
->  	struct bcmgenet_priv *priv = netdev_priv(dev);
->  
-> +	/* Stop completion polling before it can wake a stopped queue */
-> +	bcmgenet_disable_tx_napi(priv);
->  	netif_tx_disable(dev);
+>+	 * stale allow for a restricted peer.
+>+	 */
+>+	access = READ_ONCE(vsock->cached_peer_access);
 
-[Severity: High]
+How this will work on 32-bit systems?
 
-The commit message says:
+Stefano
 
-  Close is safe because dev_deactivate_many() stops the qdisc first.
-  bcmgenet_suspend() does not, so stop Tx NAPI before the queues.
+>+	if ((access & VMCI_DGRAM_ACCESS_VALID) &&
+>+	    (u32)(access >> VMCI_DGRAM_ACCESS_CID_SHIFT) == peer_cid)
+>+		return !!(access & VMCI_DGRAM_ACCESS_ALLOW);
+>
+>-	return vsock->cached_peer_allow_dgram;
+>+	access = VMCI_DGRAM_ACCESS_VALID |
+>+		 ((u64)peer_cid << VMCI_DGRAM_ACCESS_CID_SHIFT);
+>+	if (vmci_transport_is_trusted(vsock, peer_cid) ||
+>+	    !(vmci_context_get_priv_flags(peer_cid) &
+>+	      VMCI_PRIVILEGE_FLAG_RESTRICTED))
+>+		access |= VMCI_DGRAM_ACCESS_ALLOW;
+>+
+>+	WRITE_ONCE(vsock->cached_peer_access, access);
+>+	return !!(access & VMCI_DGRAM_ACCESS_ALLOW);
+> }
+>
+> static int
+>
 
-bcmgenet_suspend() only reaches bcmgenet_netif_stop() in the non-WoL else
-branch. Does the Wake-on-LAN branch still have the ordering this patch
-declares unsafe?
-
-drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_suspend() {
-	if (device_may_wakeup(d) && priv->wolopts) {
-		netif_tx_disable(dev);
-		...
-		/* HFB programming, interrupt clearing */
-		...
-		if (-ETIMEDOUT == bcmgenet_tdma_disable(priv))
-			netdev_warn(priv->dev,
-				    "Timed out while disabling TX DMA\n");
-
-		bcmgenet_disable_tx_napi(priv);
-		bcmgenet_disable_rx_napi(priv);
-		disable_irq(priv->irq1);
-		bcmgenet_tx_reclaim_all(dev);
-		bcmgenet_fini_tx_napi(priv);
-	} else {
-		/* Teardown the interface */
-		bcmgenet_netif_stop(dev, true);
-	}
-}
-
-Between netif_tx_disable() and bcmgenet_disable_tx_napi() here, priv->irq1
-is still enabled and the Tx NAPI is still live, and bcmgenet_tdma_disable()
-spins in udelay, so the window is not short. Can bcmgenet_tx_poll() run in
-that window and undo the stop?
-
-drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_tx_poll() {
-	work_done = __bcmgenet_tx_reclaim(ring->priv->dev, ring);
-	if (ring->free_bds > (MAX_SKB_FRAGS + 1)) {
-		txq = netdev_get_tx_queue(ring->priv->dev, ring->index);
-		netif_tx_wake_queue(txq);
-	}
-}
-
-Nothing later in the WoL branch re-stops the queue, and suspend does not
-call dev_deactivate(), so the qdisc stays attached. sch_direct_xmit() gates
-only on the per-txq stop bit, not on netif_device_present(), so the
-netif_device_detach() done earlier in bcmgenet_suspend() does not block a
-transmit:
-
-net/sched/sch_generic.c:sch_direct_xmit() {
-	HARD_TX_LOCK(dev, txq, smp_processor_id());
-	if (!netif_xmit_frozen_or_stopped(txq))
-		skb = dev_hard_start_xmit(skb, dev, txq, &ret);
-}
-
-A kernel-generated transmit is enough to hit this (ARP/ND reply, TCP
-retransmit, forwarding), so freezing user space does not close it.
-
-Two follow-on questions about that path:
-
-Can this leak the skb and its DMA mapping? A transmit arriving after
-bcmgenet_tx_reclaim_all() dma_map_single()s the skb into ring->cbs while
-TDMA is already disabled, so no completion reclaims it. On the WoL-success
-resume path, bcmgenet_resume() -> bcmgenet_init_tx_queues() ->
-bcmgenet_init_tx_ring() resets the software and hardware indices without
-walking cbs:
-
-drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_init_tx_ring() {
-	ring->cbs = priv->tx_cbs + start_ptr;
-	ring->size = size;
-	ring->clean_ptr = start_ptr;
-	ring->c_index = 0;
-	ring->free_bds = size;
-	ring->write_ptr = start_ptr;
-	ring->cb_ptr = start_ptr;
-	ring->prod_index = 0;
-}
-
-Neither that function nor the resume path calls netdev_tx_reset_queue(), so
-does the netdev_tx_sent_queue() accounting from the stray xmit leave BQL
-skewed as well?
-
-And on the WoL-failure resume path, can this reproduce the same
-use-after-free quoted in the commit message?
-
-drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_resume() {
-		/* MAC was reset so complete bcmgenet_netif_stop() */
-		umac_enable_set(priv, CMD_RX_EN | CMD_TX_EN, false);
-		bcmgenet_rdma_disable(priv);
-		bcmgenet_intr_disable(priv);
-		bcmgenet_fini_dma(priv);
-}
-
-bcmgenet_fini_dma() kfree()s priv->tx_cbs while the Tx queue is still
-runnable, and bcmgenet_init_dma() only reallocates it after init_umac(),
-phy_init_hw() and genphy_config_aneg(), so bcmgenet_xmit() ->
-bcmgenet_get_txcb() would write through ring->cbs into freed memory.
-
-Would it make sense to reorder the WoL branch as well, moving
-bcmgenet_disable_tx_napi() ahead of netif_tx_disable() there?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921124435.974581-1-nb%40tipi-net.de
