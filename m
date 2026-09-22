@@ -1,94 +1,139 @@
-Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A8939D6FC
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778B8348C75;
+	Tue, 22 Sep 2026 17:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790096473; cv=none; b=kEouLCr16aH0eJsEJtYqOCZRJtyPzOgXbVUzByaBLuq97rcCb5BTcKDYWcM3DG1Ev6oIZFnnvZk6MnYLdlw7j/xutjuSD/Zonfs4s/XiqH3rRWoPJJJQXj5u9kVqFm9fU8NBIXPF8NASETFqS7bGWgDNxtniOYjQTR0Q4Zq8uzE=
+	t=1790096595; cv=none; b=ZcZM5iD/uX6Eer1AzUqc2zndn+5NzJ68LXBaL8D3nTzEJVmYJ2kNJ5CfLu4gExom+yP6Ef3NZElYPOXHh8OBDeWxOckuiKAKM8nvSzrKO1JzPOnIkSksH6v+HJrM2p8stXooK+oMH/zb8pCqzyUCHsByrpTegEZusUPbGmJv/Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790096473; c=relaxed/simple;
-	bh=qQJNstfTwv8iNMFEAMGwgqeGoCJp+DtUVQAv7X3CIJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VrF1OqaaW9TwUDVWTTk8EkAeL8hDZtvmje7z8IWhfXETWGPMQuydEUO1vPBaJZFMTptD3F7sXhOAwfE1VUTDe6bW6m79+CrM3ahSTJldqWq5YDFkBCelOckXi5ayKBwAG05miLfiTOCoo2WdNlcyidD/pw18pgsseTUYG6A/2bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=K5I068TP; arc=none smtp.client-ip=74.125.231.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1790096595; c=relaxed/simple;
+	bh=YWVXGn05t59bBwYol/9eivEUZrMBbQ7aZl7i8X/Tq9s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o5PPZjlKZ/DYISi13AP6uIDIn/O60swjQ2LnUYZ9A3dXij1C/whPk/t+P6EAbKoew81eIcT2ETvil3DAwl76YOrJ+b1yBC7SCw5J13f+V0iARr07G3QVEEFXmwqGCCUxqVZvkEi33gL6NKVjq+H2ZHxar4mQsixhloVuNcuYTm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxf06q/c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="K5I068TP"
-Received: by mail-oo2-f39.google.com with SMTP id 006d021491bc7-6b1ae736c64so45727eaf.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:01:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1790096471; x=1790701271; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=x9YLkzZ28C/6ZrOI8QJdDbKRDoNHJA/GmIfIJsBNLEU=;
-        b=K5I068TPjV9liWWYwr3JJnaVOZUY+7NEnuaI5vHQI1YOo/tX9359vu+rUgb83158mX
-         fiIxQnMdPanBMvVq7/ybZvzVRNNyp+t/f6e9Q+mw6oh/N+rS1VpvBqDXok/Vaqe26f8r
-         5IjhwZ8FbChSAOVBb7b1FYDk62ruBclKtXIAk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790096471; x=1790701271;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x9YLkzZ28C/6ZrOI8QJdDbKRDoNHJA/GmIfIJsBNLEU=;
-        b=BmxsTNlTMHfkoLtrrlvkKBSGF9tVHVOnY0fhoe+LdWBO0zWJ82vdnvNxaqJCjKFytM
-         mI9F0PM3RAOBVNhW4SGPxfZ+tWtGTU1kIt1cs1u6uEeEZTxssm43pU82aY5w265L6YaZ
-         dUsRdQVjA3uEu9G465ZA7ZWuxq31uAqbOAtADssqjWYw2RhqvPJUJYKn775VeuZAsr2Z
-         7cbZhDYuPuv9sTq96WVts5A/KWMWik+bmSDxgnkm83rrj9x3+oyuh/9eHjNo76S7kgEa
-         r6VFPAKRGa+nfaWO9u5mx3kFFRmXQlKEMLUWFmHxuo6TrwfRcdxpdx2B0X92S6sw3UKr
-         wCOw==
-X-Gm-Message-State: AFuF++m9VSqdHLGSDZ0QhVFf1+R5QoOUSDF04IrU2q3lUI5nObV6Y4Xu
-	BqUOeW/aFfwdJFgYfRsG1CVS5BatLlHzOngCvmZACFZQRiqnhUsYsSVsBRsY8Iy4o1g=
-X-Gm-Gg: AYBFou2bOlIVuWOhSH9NssPAHXHKni0Po0Q2ktfJuIGv7odGLnpWKgS6hzpGymLu//e
-	YEdT/ib+ufs5MUWkBBlVCPWZStJw2PJlXE6LD1FdLmlrDzwcMWDOuoROVRmNfV8BZy/8Zx3jzCM
-	De3bKQfN1cOdXSleolWT/80dleZOk0RMcbMNSlrLFy4TjFT0TJeEIsQZoZZDAjgfv8eENkTMO+7
-	9O4gkEi6c6f8v7ncJKtFwfjcGD2YeiGyovQKSrkkODkALA8pteKMl8+g6NCkz91BflXHA8VZHlm
-	XXhmrAxqd+uMPRMQ4UQzIvz/HFD3IyGJiVDw8C8kWCUoO4Aohw+/xYdjgX+0zFBg2essBnuQQcS
-	BycR/WjANcNJtG2xN5LhVU74GZ8nVgMoLgSE6aagENWMlLeMgy0gxzUpfgwa6dtb2XTuOjGPtx/
-	Pwi/EnuHRi7Te/EXuTuTwTnGL+3Rz+91gyJhIsKWtG4hpAzYgLwF8XPSwmUqUSPwIP9WTpb42hs
-	jL8Z5dKlPcItABn8HKcYts3eC1opvh1269tbwjKAbZ2YLKIIa5j3X3Gv17lFlNF
-X-Received: by 2002:a05:6820:619:b0:6be:b2e3:27e with SMTP id 006d021491bc7-6d2cff43388mr26252eaf.16.1790096470557;
-        Tue, 22 Sep 2026 10:01:10 -0700 (PDT)
-Received: from com-94485 ([199.47.143.14])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d2cfc4a98fsm35786eaf.15.2026.09.22.10.01.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 10:01:10 -0700 (PDT)
-Date: Tue, 22 Sep 2026 10:01:06 -0700
-From: Jeff Jo <jeffjo@openai.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 2/2] selftests: net: check timestamp echo after an
- old ACK
-Message-ID: <arK0UmX8qJy3O-rS@com-94485>
-References: <20260921222609.50824-4-jeffjo@openai.com>
- <20260921222609.50824-6-jeffjo@openai.com>
- <CANn89iK00zXGA8sdpH9Y1CkFK3n=uKG9Bci3+=69fGV0UDQ80w@mail.gmail.com>
- <arIE_i8Ysz5nOI2W@com-94485>
- <CANn89i+nY499TfuGMvMq3P=Pxw6vBxe+uYH1zioK=bhU--GXYw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxf06q/c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4995F1F000FF;
+	Tue, 22 Sep 2026 17:03:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790096594;
+	bh=DTgI03Mb2guSbNjbgohk2ODS86HEBC4CplwUVNmAa0I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dxf06q/cfVdRc+b9A3STWRA0UWGDXlKXGJvWITgIYlNSzK3Cujfv2zQh7kDpaa6bX
+	 /9LasdNdUBAjHzz2yRUdmGjaeueKsI80375q2iIEJaa7r3XT6GSB2KtKqBHD4AkRkT
+	 pKIQhXRJr0zBqcPYFpD/TOpGuIdsB0Rddz01va4QQ73GpWAPrBJ+WGedlLqjinn5WH
+	 E/auFJGb3Qf9HbyAa/84wZWJa4DOdyO5Og/K6SWUU0py0yhYpbfA+RZFY9ix5ff0X7
+	 EftFWNgSzEdOG9rbRpd4KjNOOUT5rVRMazCOXpqwYnxMDwmL8sSnYBGJx39seh2IQr
+	 5KsMgWWG+HlhA==
+Subject: Re: [net PATCH] net: ethernet: mediatek: only enable WED for ARM64
+ architecture
+From: netdev-bot+sashiko@kernel.org
+To: yangshiji66@outlook.com
+Cc: netdev@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org
+Date: Tue, 22 Sep 2026 17:03:12 +0000
+Message-ID: <179009659284.2160803.2402786454793152027@kernel.org>
+In-Reply-To: =?utf-8?q?=3COSZPR01MB8140B889AD227E0B547F5F87BC872=40OSZPR01MB?=
+ =?utf-8?q?8140=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
+References: =?utf-8?q?=3COSZPR01MB8140B889AD227E0B547F5F87BC872=40OSZPR01MB8?=
+ =?utf-8?q?140=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANn89i+nY499TfuGMvMq3P=Pxw6vBxe+uYH1zioK=bhU--GXYw@mail.gmail.com>
 
-O Tue, Sep 22, 2026 at 10:09:42AM +0200, Eric Dumazet wrote:
-> I saw you sent the packetdrill patch for formal inclusion.
-> 
-> Let's wait for it to be merged and our runners to be updated, as the
-> kernel bug is minor.
-> This will allow us to get a nicer packetdrill test that exposes the
-> issue directly instead of via a workaround.
-> 
-> Thanks!
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Sounds good, thank you!
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Inappropriate `Fixes:` tag: the commit claims to fix
+  804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless…
+
+--
+
+net: ethernet: mediatek: only enable WED for ARM64 architecture
+
+This narrows the dependency of the hidden def_bool symbol
+NET_MEDIATEK_SOC_WED so it is only enabled on ARM64 ARCH_MEDIATEK
+builds, on the grounds that only MT7622 and MT798x implement WED.
+
+> diff --git a/drivers/net/ethernet/mediatek/Kconfig b/drivers/net/ethernet/mediatek/Kconfig
+> index 2ba361f8ce7d..7737f2f15478 100644
+> --- a/drivers/net/ethernet/mediatek/Kconfig
+> +++ b/drivers/net/ethernet/mediatek/Kconfig
+
+>     Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
+
+[Severity: Medium]
+
+Is the Fixes: tag appropriate here?  The changelog does not describe a
+defect, only a hardware-scope observation and a prediction:
+
+    Currently, only MT7622 and MT798x SoCs support WED features. They
+    are all ARM64 platforms. And it is unlikely that MediaTek will
+    release a new net chip based on ARM32 architecture in the future.
+
+As far as I can tell nothing misbehaves on 32-bit today.  WED is only
+instantiated when the ethernet DT node carries a mediatek,wed phandle:
+
+drivers/net/ethernet/mediatek/mtk_eth_soc.c:mtk_probe() {
+	...
+	np = of_parse_phandle(pdev->dev.of_node,
+			      "mediatek,wed", i);
+	if (!np)
+		break;
+	...
+	mtk_wed_add_hw(np, eth, eth->base + wdma_base, wdma_phy, i);
+	...
+}
+
+and git grep wed arch/arm/boot/dts/mediatek returns no matches, so no
+32-bit MediaTek platform can reach mtk_wed_add_hw().
+
+There also does not appear to be any 64-bit-only construct that a
+depends on ARM64 would be repairing: mtk_wed.c, mtk_wed_wo.c,
+mtk_wed_mcu.c and mtk_wed.h contain no readq/writeq, no >> 32 address
+splitting and no CONFIG_64BIT conditionals (the only CONFIG_64BIT use in
+the directory is in mtk_eth_soc.h, which this symbol does not gate).
+
+> @@ -8,7 +8,7 @@ config NET_VENDOR_MEDIATEK
+>  if NET_VENDOR_MEDIATEK
+>  
+>  config NET_MEDIATEK_SOC_WED
+> -	depends on ARCH_MEDIATEK || COMPILE_TEST
+> +	depends on (ARCH_MEDIATEK && ARM64) || COMPILE_TEST
+>  	def_bool NET_MEDIATEK_SOC != n
+
+Since the Fixes: tag makes this a candidate for stable backporting, could
+this silently flip a config symbol in released kernels?  On a stable tree
+with 32-bit ARCH_MEDIATEK, the depends on line becomes false and
+NET_MEDIATEK_SOC_WED is a hidden def_bool, so make olddefconfig drops
+mtk_wed*.o from the build with no prompt or warning.
+
+Would it make sense to drop the Fixes: tag and describe this as a build
+scope cleanup instead?
+
+One more question on the ARM64 condition itself: if something in the WED
+code really is not buildable on 32-bit, does the || COMPILE_TEST branch
+leave that unaddressed, since it still builds the identical code on
+non-ARM64 targets?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/OSZPR01MB8140B889AD227E0B547F5F87BC872%40OSZPR01MB8140.jpnprd01.prod.outlook.com
