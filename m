@@ -1,179 +1,173 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF53B5208CD
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0495F44998A;
+	Tue, 22 Sep 2026 08:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066495; cv=none; b=TV0HvPDhKyeetYGFEPFa3d7qIHE/oYc4pO6BaPLGXw5+BcF5VHmuHE2BA9nPkF63ATU7SKeFL9VDPJvg67Xev2quKA72y66iXqyrNaTOVr1UGsXeTegDnrema+8ML/d7yYMHw2HtnKfHeXwPQ6NIe2+rmRzuRnL81iVnUJcNPu4=
+	t=1790066575; cv=none; b=DoxD4c9ocGRlle9QWFSjoqpTTZ1TBEG6mNumg0PWnlf/0bMU5pelhPhQXz8jEPuBmWAotkjvoyoYmb/AME24wNaiXJbxYgakZ3mU1aZTo213RJZVXZNC9ZY5JFxfBBq7INXQLKfY1BzcVuES94tAKBl91h5WNR0ObWTf0NjhMWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066495; c=relaxed/simple;
-	bh=Yizwf49hTgGWK0f7w1A7hUDvewrlrBBNlQW6FGUza3c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuOeUfWYSyMpaech47SDg4x3DPQRwbzVT8hTi7X/R/mMk797wsjWkwP8VZ8v5kcTBmK+Nn5zFG5/PnUim+1WTTMFSxqM+/L/1ddoRIn2+z771P5qaHMJ9k1iyUCrWbSP28QwblcTpHD1jApecTDr96GM6Dqpu+Tw2Ti1L78NdnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sjt1Mp2j; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790066575; c=relaxed/simple;
+	bh=3e/BsRy35eV7UZWO5PsqnAuc6Ly+wdX4R9Ku26lvkm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q/iAC2brhnclC4e1oqsrwRX8gQvbZtwNBOzVNzGaRarN2N3Q0jUJ6qkqS88IjwHhzc0L9Yz1hFZ+yqGTdslCvCZZIOVY9+wgfnVNdZMRJzM2P3tTH3tTMMmTgHPUbin8irgEHxSFCkekVBaSxFEfhrGFBMwdqaCMbAB8q5gcGbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaEsM3dW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sjt1Mp2j"
-Received: by mail-pj2-f42.google.com with SMTP id d9443c01a7336-2df4aa80a73so17059025ad.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790066493; x=1790671293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lbIdLkWcjcYqMS1e8Ux9cE0ST5iQLHRVAtymRNEq84E=;
-        b=sjt1Mp2jbhMxQSI8jMmRRwck5TEaCW+Evr6xB4ogE38WqQ3+zCY73oTvj58q2GY1Bn
-         triD6lQXGmu1Hd+nIvJrcm9nZfTowab6oXcLGRWKISIkN57ebZUebq3K+SSBWUKjtsfV
-         +PCSWA6TS87WHlZhIJXUVcQ/FsiUWWEQDc5W7p2ubLJBRsN7i6dznT0bUlaQs2cV8fU0
-         mJCAX6Hj3f6hi1RZtJjHvJIDnHC1G9IwcQgdajbGZNrUZUaAlvO7zZ68llp8qnVST2Da
-         Byq9MoapsjFL61t8G38+hZxKRwM2mNk8mflD86KODO5oqMbxUhHP6yWG46BXSnbTxpRc
-         ySPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790066493; x=1790671293;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lbIdLkWcjcYqMS1e8Ux9cE0ST5iQLHRVAtymRNEq84E=;
-        b=Xr+gw83xt9WOmLQe83/2uWRV2n/Z1VysA0fyw+QWMPmuN9MLADPu6fYMSalaFtAt9W
-         qOgEC/ruVbPK4Li4BmvTrFDUfqX4dn/ZsZxGOm/35h8T6t8usTB+buSp2rSehipigIRY
-         JtUUYHLDRl33sKoZZlUXLsDMj+iimP+DcVXwhMSjs4giIwYxgFN/5WwAX708zTQJ19kx
-         tqvC3Zne9fgKu7vjbG3b3n9BF7hv55x8ecgl3oDWvcDXNsmipgjXImc5nmmZbGBQ2Y5r
-         /JyAisV8CjeZAbyn0Phxi27ZC00b1cY7Vt/EqsnWikRJA9DkNjez9vw8pxWThyJEc8Xe
-         C0Yw==
-X-Forwarded-Encrypted: i=1; AKwUvBzaeh2EgZtYyMJms6LtsFMvF5gH/YWFdSpOR+OKg9Y4GHioi+olEQhUEjZJs7aKMkj27Jv7xlQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mCaaE/kXxeOHYTKqobeR2gLE/CZtc7pYGx0T/+ysmHTtgWsaQU
-	8Bc8B15yDsl98ibFI8iyPPJtqtqXb+Td/8ZfP2zqT4OeTsz1WyuRaOzNLYGVuaJHBUk=
-X-Gm-Gg: AYBFou08GZpkJbL3dYa1zEzMvbKK37wnW2VO0DrVVbHnLJuUZA3FBhbcxa97CM+ed+N
-	UerDXgxMqLEQ2xeQobYMnOTspLA4xdzWeeq6lqtzujzhhgZeFeS1bxfeF2klCopRYaUNj0Bp0fq
-	45A92qetmDMsplzCoCKyng8TxgQlnPz3FHg2D1sYzf/5GG24DlL5AfrdsNg2PU15SE7w18f+qHj
-	K1We1uA/Ds7kfiKuppB2jP7cz5xzhs4F8D8zJ1c5qiMTkdnQff5Gg+V0mVj0FaYgIB8lHAJ4jyZ
-	Bpwq489XoPEOiHuBUzJTK9ZL8PGhOJ6pFJWx0e14iK5kcDH+Hs4ePvSSnHhMRxrFwRlXUlPsZqR
-	lQWspakFRnm51bL6fIqIT/9bd5RDnXylx2zeDSJ57mY/vFRhHsB9lGkaHal6n+rofR/Nlc9akN2
-	Uz0xzRLi98B0nmj9bIJV2KwCMnF3lhSVQ+1VjJw3rEvH/lfZ1jUBA/LVzCK/RSbFfvGrjNtsmyf
-	wWc33iInBTnl9sJSRQmKf4P9vfXmJmvk1Ezjg==
-X-Received: by 2002:a17:902:cf4c:b0:2dd:c053:82f4 with SMTP id d9443c01a7336-2df60b46f92mr5284585ad.43.1790066492911;
-        Tue, 22 Sep 2026 01:41:32 -0700 (PDT)
-Received: from localhost.localdomain ([2409:8a1e:2e81:7320:b519:cd9:fed2:d000])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df5d047dafsm6084765ad.52.2026.09.22.01.41.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 22 Sep 2026 01:41:32 -0700 (PDT)
-From: Yuchao Zhang <ndaugoing@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	toke@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuchao Zhang <ndaugoing@gmail.com>
-Subject: [PATCH v2] net/sched: sch_cake: prevent shaper corruption and stall in cake_overhead()
-Date: Tue, 22 Sep 2026 16:41:24 +0800
-Message-ID: <20260922084124.36858-1-ndaugoing@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <179000041222.2160803.11108326722307773525@kernel.org>
-References: <179000041222.2160803.11108326722307773525@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaEsM3dW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C911F000FF;
+	Tue, 22 Sep 2026 08:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790066573;
+	bh=fi3feLtPVMOYDU5sUdusGNlECI2wB3sb2uL66NcRc9k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BaEsM3dWk6wO/Saa4fIrO+Mh3NPfkoe9ZQcZyG/yXkQGiFFm5tTlbD32I7tzqlbg/
+	 vx2k3Qn1Y6m896KGpgneohI2pxEl7Z0VFM3SUgQbsZ1rY4K6WjWQRgoe6/WZo7R17h
+	 1NXYCUYOU2ubx20DuHLzFF8tcUZmmPgcbRDVrhNC5SndIekDeCDRw9CHN/AixWf8ER
+	 tV80o5arod7lIY6Exk2YSycqkx0xHHFXWta/Ks1pUavYnqisrJIZmVSMrCNJtwGIkI
+	 I8yhuEFrDftHcM8ggvz8sj1yTL+qkmywXYgiFFTBHMzHwNYwxp+KpM1sJp4TtKp8rO
+	 /1Up6/elBhjjQ==
+Date: Tue, 22 Sep 2026 10:42:51 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Myeonghun Pak <mhun512@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: Re: [PATCH net] net: airoha: npu: cancel wdt_work after releasing
+ the WDT IRQ
+Message-ID: <arI_i_JpOBsXM3ln@lore-desk>
+References: <20260922000914.542068-1-mhun512@gmail.com>
+ <arI5OD8X2Eoz_Ojd@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ROMP+kOHbe7PUdpe"
+Content-Disposition: inline
+In-Reply-To: <arI5OD8X2Eoz_Ojd@lore-desk>
 
-In cake_overhead(), the header length up to the transport layer is
-computed using logic borrowed from qdisc_pkt_len_segs_init():
+--ROMP+kOHbe7PUdpe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-        /* borrowed from qdisc_pkt_len_segs_init() */
-        if (!skb->encapsulation)
-                hdr_len = skb_transport_offset(skb);
-        else
-                hdr_len = skb_inner_transport_offset(skb);
+> > airoha_npu_remove() calls cancel_work_sync() on each core's wdt_work,
+> > but the watchdog IRQ that queues it is requested with devm_request_irq()
+> > and is freed only after .remove() returns.  airoha_npu_wdt_handler() can
+> > therefore schedule_work() again once the cancel has returned.  struct
+> > airoha_npu, which contains the work, is devm_kzalloc()'d and is freed in
+> > that same unwind, so the late work dereferences freed memory.
+> >=20
+> > Register the work with devm_work_autocancel() before devm_request_irq()
+> > and drop .remove().  Devres runs in reverse order, so the IRQ is freed
+> > before cancel_work_sync(), including when probe fails.  A cancel left in
+> > .remove() cannot get that order.  Initializing the work first also stops
+> > a pending watchdog interrupt from queuing an uninitialized work item.
+> > Probe currently calls INIT_WORK() only after devm_request_irq().
+> >=20
+> > This issue was identified during our ongoing static-analysis research
+> > while reviewing kernel code.
+> >=20
+> > Fixes: 23290c7bc190 ("net: airoha: Introduce Airoha NPU support")
+> > Cc: stable@vger.kernel.org # 6.15+
+> > Assisted-by: LLM
+> > Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+>=20
+> I guess this is net-next material, it is just an optimization, not a real=
+ fix.
+> Anyway:
 
-However, cake_overhead() suffers from several issues:
+Sorry I misread the commit message, this is actually for net, thx for fixin=
+g it.
 
-1. When segs == 0 (e.g. from dodgy GSO packets where gso_segs is not
-   recomputed), the multi-segment arithmetic underflows: (segs - 1) wraps
-   to 4294967295, causing cake_calc_overhead() * (segs - 1) to produce
-   an enormous length. When charged in cake_advance_shaper(),
-   time_next_packet is pushed decades into the future, permanently
-   stalling the CAKE dequeue queue.
-   Fix this by returning cake_calc_overhead(q, len, off) for segs <= 1.
+Regards,
+Lorenzo
 
-2. When the transport header was never set, skb->transport_header holds
-   the sentinel value ~0U. skb_transport_offset() returns ~65535, which
-   is not caught by a negative offset check. skb_header_pointer() fails,
-   and hdr_len stays ~65535, charging ~66 KB per segment to the shaper.
-   Fix this by mirroring qdisc_pkt_len_segs_init() and checking
-   unlikely(!skb_transport_header_was_set(skb)).
+>=20
+> Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+>=20
+> > ---
+> >  drivers/net/ethernet/airoha/airoha_npu.c | 18 ++++++------------
+> >  1 file changed, 6 insertions(+), 12 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/eth=
+ernet/airoha/airoha_npu.c
+> > index 5bb4817a898d..4d3195eb00f7 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_npu.c
+> > +++ b/drivers/net/ethernet/airoha/airoha_npu.c
+> > @@ -5,6 +5,7 @@
+> >   */
+> > =20
+> >  #include <linux/devcoredump.h>
+> > +#include <linux/devm-helpers.h>
+> >  #include <linux/firmware.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/of_net.h>
+> > @@ -751,12 +752,15 @@ static int airoha_npu_probe(struct platform_devic=
+e *pdev)
+> >  		if (irq < 0)
+> >  			return irq;
+> > =20
+> > +		err =3D devm_work_autocancel(dev, &core->wdt_work,
+> > +					   airoha_npu_wdt_work);
+> > +		if (err)
+> > +			return err;
+> > +
+> >  		err =3D devm_request_irq(dev, irq, airoha_npu_wdt_handler,
+> >  				       IRQF_SHARED, "airoha-npu-wdt", core);
+> >  		if (err)
+> >  			return err;
+> > -
+> > -		INIT_WORK(&core->wdt_work, airoha_npu_wdt_work);
+> >  	}
+> > =20
+> >  	/* wlan IRQ lines */
+> > @@ -803,18 +807,8 @@ static int airoha_npu_probe(struct platform_device=
+ *pdev)
+> >  	return 0;
+> >  }
+> > =20
+> > -static void airoha_npu_remove(struct platform_device *pdev)
+> > -{
+> > -	struct airoha_npu *npu =3D platform_get_drvdata(pdev);
+> > -	int i;
+> > -
+> > -	for (i =3D 0; i < ARRAY_SIZE(npu->cores); i++)
+> > -		cancel_work_sync(&npu->cores[i].wdt_work);
+> > -}
+> > -
+> >  static struct platform_driver airoha_npu_driver =3D {
+> >  	.probe =3D airoha_npu_probe,
+> > -	.remove =3D airoha_npu_remove,
+> >  	.driver =3D {
+> >  		.name =3D "airoha-npu",
+> >  		.of_match_table =3D of_airoha_npu_match,
+> >=20
+> > base-commit: 238650ef6c7c7cca08e032527329424c9fbd70e5
+> > --=20
+> > 2.53.0
+> >=20
 
-3. Both skb_transport_offset() and skb_inner_transport_offset() return
-   signed int, but hdr_len is declared as unsigned int. If post-enqueue
-   mangling (such as BPF packet trimming via bpf_skb_net_shrink())
-   produces a negative offset, hdr_len wraps to near UINT_MAX, causing
-   corrupted header length accounting.
-   Fix this by declaring hdr_len as int and falling back to
-   cake_calc_overhead(q, len, off) if hdr_len is negative.
 
-Fixes: a41851bea7bf ("net: account for encap headers in qdisc pkt len")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
----
-v2:
- - Accurately describe the impact as shaper accounting corruption / stall
-   rather than OOB read past the allocation per Sashiko review.
- - Fix pre-existing high-severity integer underflow when segs == 0 by
-   checking segs <= 1.
- - Import companion check !skb_transport_header_was_set(skb) from
-   qdisc_pkt_len_segs_init() to prevent unset transport header sentinel
-   (~0U) from inflating packet length to ~66 KB.
 
- net/sched/sch_cake.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+--ROMP+kOHbe7PUdpe
+Content-Type: application/pgp-signature; name=signature.asc
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index dc93267029e7..45969c1b95fc 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1413,21 +1413,28 @@ static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
- static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
- {
- 	const struct skb_shared_info *shinfo = skb_shinfo(skb);
--	unsigned int hdr_len, last_len = 0;
-+	unsigned int last_len = 0;
- 	u32 off = skb_network_offset(skb);
- 	u16 segs = qdisc_pkt_segs(skb);
- 	u32 len = qdisc_pkt_len(skb);
-+	int hdr_len;
- 
- 	WRITE_ONCE(q->avg_netoff, cake_ewma(q->avg_netoff, off << 16, 8));
- 
--	if (segs == 1)
-+	if (segs <= 1)
- 		return cake_calc_overhead(q, len, off);
- 
- 	/* borrowed from qdisc_pkt_len_segs_init() */
--	if (!skb->encapsulation)
-+	if (!skb->encapsulation) {
-+		if (unlikely(!skb_transport_header_was_set(skb)))
-+			return cake_calc_overhead(q, len, off);
- 		hdr_len = skb_transport_offset(skb);
--	else
-+	} else {
- 		hdr_len = skb_inner_transport_offset(skb);
-+	}
-+
-+	if (unlikely(hdr_len < 0))
-+		return cake_calc_overhead(q, len, off);
- 
- 	/* + transport layer */
- 	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 |
--- 
-2.53.0
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCarI/iwAKCRA6cBh0uS2t
+rCBBAQDy2x6M/fi6duRrhEFZhDWaiM2e2dJo7Uiggfh389sWAQD/RM73V4pw21iD
+BWMNWNTf6UaF0dWbwvNONop0kmUkHQI=
+=o0gu
+-----END PGP SIGNATURE-----
+
+--ROMP+kOHbe7PUdpe--
