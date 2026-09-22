@@ -1,120 +1,82 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8E2541E60
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BE6549380
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790085112; cv=none; b=Ad3IpcK51uWojourxKnMgLHQMx+WxMcpOnrbzBuIj9XwB3ADzS3OGNskl/6q9fIO5UqO6pi8GlZXFXgPpnaAdYqTQxhpcLKvwNWuP/HhzG2eM9iBmYTTch5gqXG3+5C2quSVE5cnmr5hmNEkgGiXGMXkgWyNXy9yEFFG5lZnzb0=
+	t=1790085320; cv=none; b=QtIp3l0KnBI1BAIwrsjd5UfPcMq8RNGMHGSwLd1LurYj50AXUHB6HxqbnC8d+0ohye5CyykoCZ/n6xXDGvLnNdrKJzQWbXr6HylPVpudCbHkcbouU64Rvsp5tUqfK9Uxq/Pj//pK9Bof8uN69ExD8TKi0vZw+PBdAbPEVvoW6kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790085112; c=relaxed/simple;
-	bh=PHHeBkTUUbVe48PRib7ybGU4knWph0NCvNZx7jPeJAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZBY8Q18kNJ5NCTHspPbiU+FiKe/g/M11MD+ZTDpg9YX6mBmrEHAzcoLbQDkleUr31MQhaj0ZGbgml2Ld8S/OMt8XSDuAB9I3EsgIoy+ypD6fTYysuX6SuzgNLSzreElEFuPjRLpG4b9cmjbGJwpt2RPhn9yZGsHyCcsNWN0kKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QnMiE56C; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790085320; c=relaxed/simple;
+	bh=7BbHKdMzr+Z/4HuBTcQGx32wV4cA540pjIz0Cxh2m4o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hBM610/0XoKfmre04i4QDWhqzR05uxpeAEzioHaQHRqWSs44+EmXrFNOrRN6M43WCAnqGYJXu3NBV9ZxQ8RP2NypL0zZ1JPfPn35KVLLkpOPtqhbh3fHDHE4B75WJxhXjpO5qsiGzpkz0KYess+0ZDuOW1m5qZo62SyqWhLPfWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnsOz33l; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QnMiE56C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790085109;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=E10+PWqTEjwyBWN9Zj4spCIBtKpKl/tBI/SnqZqASCg=;
-	b=QnMiE56CjyxyuH37Q4PtctBEgWVqKlACIqf4EDwNUqRbzgprRd6JXvTbMlMgtVBkY5CJN4
-	+zMngZNtNe00N0J/VPcy4R671IKuiPBMAiMyvTeaOCTdxhMP2UCtqL4lBueiWwzs+3Q86u
-	8rl5wRtWQfM3wRqVA5Am0z8jFjmvmMo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-550-3AfWG8nzOBisTdzw4tULPw-1; Tue,
- 22 Sep 2026 09:51:46 -0400
-X-MC-Unique: 3AfWG8nzOBisTdzw4tULPw-1
-X-Mimecast-MFC-AGG-ID: 3AfWG8nzOBisTdzw4tULPw_1790085104
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA01C184139F;
-	Tue, 22 Sep 2026 13:51:43 +0000 (UTC)
-Received: from fedora.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 04E2D30001B9;
-	Tue, 22 Sep 2026 13:51:37 +0000 (UTC)
-From: Anirudh Virdi <avirdi@redhat.com>
-To: netdev@vger.kernel.org
-Cc: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shayd@nvidia.com,
-	ohartoov@nvidia.com,
-	maorg@nvidia.com,
-	linux-rdma@vger.kernel.org,
-	Anirudh Virdi <avirdi@redhat.com>
-Subject: [PATCH net] net/mlx5: Fix slab-out-of-bounds when handling team device events
-Date: Tue, 22 Sep 2026 19:21:23 +0530
-Message-ID: <20260922135123.46205-1-avirdi@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnsOz33l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D341F00893;
+	Tue, 22 Sep 2026 13:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790085318;
+	bh=PZN+/As3YJHYqBZAUeegw/c3ZnSXdl6af20oZLYYJ0I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hnsOz33lE92HqfXYP6p4PvEM8B/bWI9xyWtoE4xEyoLNaqg3VBJQTvCyrV1w5ms1k
+	 9nX4Fqu7cmF49GcEFnRYcTtg3SQ+zryIm0apNUurTnTAW1Q7ahhDZ8EGHkmG0byi/y
+	 YTsi4OBxFyrKregFq7DW9S95av/LY51hycjKB1hNIdkCQyHGoiAWH1Lsica4kHD/Uc
+	 cXsTCrAJp7982qj9mo5w1NPHV5nDw7uPrPdw/l7Wz/QFZHG+mZ3K7mnJsg33kQg0hn
+	 hn5PrPR2ixf+N6vRTJmCKHOu5cf4pPP1/607YOgSz9DyOdKMtO8FTQDv4DoIOdF/P9
+	 mgd2Mm/DKYFmw==
+Message-ID: <71792738-39d6-4375-9d47-bc4944727ed8@kernel.org>
+Date: Tue, 22 Sep 2026 07:55:17 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] vrf: Stop corrupting skb->csum when capturing
+ CHECKSUM_COMPLETE packets
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, andrea.mayer@uniroma2.it,
+ stesasso@gmail.com
+References: <20260922131239.2509494-1-idosch@nvidia.com>
+Content-Language: en-US
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260922131239.2509494-1-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The mlx5_handle_changeupper_event() and mlx5_handle_changeinfodata_event()
-functions assume the upper device is a bonding device and call bonding-
-specific
-APIs like bond_slave_get_rcu() and bond_is_slave_inactive().
+On 9/22/26 7:12 AM, Ido Schimmel wrote:
+> The VRF device is an Ethernet device but it can have non-Ethernet ports
+> such as IP tunnels. Before the cited commit, capturing packets from such
+> ports on the VRF device resulted in these packets being detected as
+> malformed since they lack an Ethernet header.
+> 
+> The cited commit fixed it by pushing a dummy Ethernet header to such
+> packets before the capture and pulling it afterwards. In the case of
+> CHECKSUM_COMPLETE packets it also updated skb->csum with the checksum of
+> the dummy Ethernet header. This is wrong as skb->csum should not include
+> the checksum of the Ethernet header ("checksum of the _whole_ packet as
+> seen by netif_rx()").
+> 
+> This also means that L4 protocols receive a corrupted skb->csum and
+> potentially drop the packet, as is the case with UDP packets whose
+> checksum was completed by software.
+> 
+> Fix by removing the unnecessary call to skb_postpush_rcsum().
+> 
+> Fixes: 048939088220 ("vrf: add mac header for tunneled packets when sniffer is attached")
+> Reported-by: Stefano Sasso <stesasso@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com/
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  drivers/net/vrf.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
 
-When a device is enslaved to a team master instead of bonding, the code
-attempts to access the team_port structure as if it were a bond slave
-structure. Since team_port is smaller than slave, this causes KASAN to
-detect an out-of-bounds memory access.
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-Fix this by checking explicitly for bonding devices using
-netif_is_bond_master() instead of the generic netif_is_lag_master() which
-includes both bonding and team devices. This ensures mlx5 only processes
-bonding events, not team events, preventing the invalid memory access.
-
-Tested with Mellanox ConnectX-5 on Linux 7.2.0-rc6:
-- Bonding: PASS (no regressions)
-- Team device: PASS (no KASAN errors)
-
-Fixes: 54493a08e21f ("net/mlx5: Lag, record inactive state of bond device")
-Signed-off-by: Anirudh Virdi <avirdi@redhat.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 28d16fdc3f06..022a69cdebaf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -1897,7 +1897,7 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
- 	int changed = 0;
- 	int i, idx = -1;
- 
--	if (!netif_is_lag_master(upper))
-+	if (!netif_is_bond_master(upper))
- 		return 0;
- 
- 	if (info->linking)
-@@ -2004,7 +2004,7 @@ static int mlx5_handle_changeinfodata_event(struct mlx5_lag *ldev,
- 	bool has_inactive = 0;
- 	int idx;
- 
--	if (!netif_is_lag_master(ndev))
-+	if (!netif_is_bond_master(ndev))
- 		return 0;
- 
- 	rcu_read_lock();
--- 
-2.55.0
+Thanks, Ido.
 
