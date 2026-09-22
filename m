@@ -1,140 +1,171 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D76C4B827C
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF5A4DE715
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790070153; cv=none; b=h910vQ/fst4G6UMTURAd+s7mnqm3vXCyXPBLgRBkK9MQwSh+9bVcRnPjWgfrlxB53ieRsFiMKAimGLoB52DF0GDo5KNyiT6FkWSoAFlhuGo3cxfU5C1YqA0LhkTvU/BeUD7TA9MSy1c7Xw0DI9B8GASXO5JLmleMddOjS3g/jeY=
+	t=1790070461; cv=none; b=qK/+eiE3DAjyERAkKLfoV+AjjR+kANyAWZ5p2NtLuwHk03oAQbkgRm5B2/nxPsKIfTsyIbg8uh5LW9bYxmW3QXjNGXidJYALI3IYloH+E0JR7rVPAdf2mpRWesb0KdIVhPtjKZjU2TYY6j0XSvMzhWJNomeUF41u8HhLoJByHmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790070153; c=relaxed/simple;
-	bh=EV3qeg/IT2dhQk0AAQm7n/YC1210gfudvYCjLTPTQTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fw89Cv+Gw76gpwneYrc87X6Cvgtpjzxco2qFezhzJ5F5T9M48wYj758YlYJLa1U6+5GfTRu0dJeE92X9QZUtoLIw98fshq5xqC+N5JGqzJZusblJwIuTkH1ns59KbPhHbp2ZUkfJfyTrdi+7GwddN70Zqbr+hkpPLtYyEWiYVxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Nr51vpjA; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1790070461; c=relaxed/simple;
+	bh=2CUH3YGiPlXy555Q9SI3ZYnCZbH8YDJQaUSBvfvqZ6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Rfyv77v3l0thOtGykaNoH1n8vSISsmTCpu8JNfacp103JYoERiTZTg/QG10jEMRNff8k0gnG/oD2ZpFDgDAXnVjk4LDEWpOfPV/iE4OEzTXqbssAQE2Ne/cZXzkY8J6CpiiHdM4z1iFdSpzp9QnUuQ0oKsoFK2EwgYArdp2CVIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvNBStGl; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Nr51vpjA"
-Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2d91ede8035so47532115ad.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:42:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvNBStGl"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f633cd78so2166557f8f.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790070151; x=1790674951; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wd+T6ssCXbt72WCToNvBeLcTHQSX6SP8R0mHNa4Aoq8=;
-        b=Nr51vpjAMR4gmOMObq1xtGKFpAvNj6J4sWRV4+Jjho+sdkoUtfr9jB26iha3FrwUn3
-         1eEFIs6xYduI1dT1XkqLogHnxAWC+uKqafRBpNU2nDDWoJITUXKpvTMz1j4H9ChUed0c
-         dxiz+fkqrQYXMdAdrm5hVt5yPOVfzdkpO6wf+hhvmAB+x/uzNZP/47+z+4OPN3VjTTSA
-         Ef6eEjMLa360R4BTbjb7zh9mNF0910F/2AFizXPLAObx+GoPBDtVrFExERiejI+CKnuY
-         SNw/L2YgonZYcormXbmgb7KkDrb5jLcwqsX2rP70ieEa+Gr/ZhuBQBFfEqNRczMM6KfN
-         qRBw==
+        d=gmail.com; s=20251104; t=1790070458; x=1790675258; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1mHA714llFxRbL4YpV3zzI7qdHUQEj56NbS4Oyhz2TE=;
+        b=UvNBStGlptbsfoizP0M7WPR8TBH+UhYLVyjoEPDRLeSoLNQuh7GLHz3T5/m0+UmBNZ
+         RHrrzsLV0K/1tL1nA+hHnjigNFBMWMqOHkC2hAp9rehOuAlFe8SvIs8Z6CpW3d6rTbbu
+         qUN4yFety6ERn2Pq27SISc97Qgyi/FNkA/2oV0hESNH3CrGFm1JB7EYRbfKMluJjr8oK
+         ttR4FN9+EvyTCRmk7aGWOVeyliElH3Fme+P3KYATNqyFatLBn3k0NH1gwluMVxzIirTx
+         DTowTIQwxpjvhHhSZOLcG5y2+hQWEt9qDuVNyafBzvAUvmydtwW4n5iPhqIUqR/Rgbej
+         XPqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790070151; x=1790674951;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wd+T6ssCXbt72WCToNvBeLcTHQSX6SP8R0mHNa4Aoq8=;
-        b=OG77SdB50Ut183HJbhhd82DS9dBvMupKuBwslWaY9YGRqoLVa3tTzjaZuKNp9wPABu
-         MKDGZcFCi2twZ2e0+mgl9g6mitrL0Padxb21tED+oF+q0Mk9ayXAI4toABIgEKUIeL8I
-         7CbaPVwmrYHHIj4ZOq8dAE43FiES0pOlDTlIZpxRruvY4jiYszifMuYAHTJJjCd8/6/Z
-         6BVKZpcW0h+WpdTRpYj9kSIAEoJYn0VsZzlgHkPfiUAFVcTKDZFwtkecW7TWNEy5Pxzn
-         zAt158vN5qwaSfAO3pvK3L9YMjQQPvLGen4HB9pyig7fAGCUsrDyKZLb2qauIgddMmeI
-         VsQg==
-X-Gm-Message-State: AFuF++kMXa3g6kHDNH4bsCr3TR6FqGqtQbXTcqhAKSgaOm6yewpSraVZ
-	RDYe1k+eWUEwRzUANTt3E53ppNqAHOtpUcGZGgqls8PU7xur6qmucMmA5W8dSfs8HSasMMg7gks
-	TP/iO5t+z
-X-Gm-Gg: AYBFou1k4P+sqz7QGqnvXarlL/313igtq+LxY9sXKMUdSZYhoDWpmNWc0cr+RLic3uK
-	aStBe0eLMIFCBCinbtZLUAuaBU4LZEKa+0nV9+ZXCJQhBTOuf3Enl3Ra4nDbIld9wB3jbmb+f+s
-	33RKo5I0WSTc2y5d013ljZ9luu8H4fFlda9AgvTtrDfWHtfR103+2e4uoyHP1LzauGJdGuY319C
-	qIWfXGnXfhq/b/90vtkX8GhbztlYg7jthwxERpOfETrDgTxWyApqrZxYJ4Mwe17zLAWzcyvMlzN
-	56QuZ9QYAkX8j947v/5aEED5a7hZPLiYvJmnwW6GIgOcco/Dj/Y/HBra4XPglQUKHe6qyMJDJ2G
-	NIuqyo4t2i78Qy77re6snNBL4Hv/QOskQPUIikUBHo9ru5OXg43Xp2XbrjN/ByLcDTLm9Ird9hE
-	y79fX45f2+weYz4ya+RLvSE3KoI5ovNMra9wZKkvTbTHMmY7r1ss72GUw7o9NLJYEndUw2FCoxq
-	vo8IQfV
-X-Received: by 2002:a17:902:e892:b0:2dd:c100:9431 with SMTP id d9443c01a7336-2df60b53cd4mr6321585ad.47.1790070151400;
-        Tue, 22 Sep 2026 02:42:31 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df5d056911sm6799025ad.70.2026.09.22.02.42.25
+        d=1e100.net; s=20260707; t=1790070458; x=1790675258;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1mHA714llFxRbL4YpV3zzI7qdHUQEj56NbS4Oyhz2TE=;
+        b=aUsHCXRO1HYUlu+9L+ZtNC0bhQJnPcUBi+gglfKV+iE+s3P2j7GywYRzTQndFW6gQT
+         8+OS8/mqB0xV5GCWFEKnVhZxqz07uvqbE75C5lb5HplROt8oBH4qKM0V3WRRCNL9SlCy
+         ATgi7M6W+HND37FqBbx9t3G0brW6xzpWhZaesqhqlJVuEHG2b0Bx2a0ierEMi+0ypy5/
+         Pwa1COui2MGIdE5WaDk0dMIftzmYF5Fegp7NLZ8J4LhnF6zpsSONTj9Am9qlgFeApidk
+         mbhlPF2SJuksdHrROFJfluAUVPscU8fV10HodAE5jij4FRXb+jbg9jU8Lh5occH3Z6CJ
+         dkCg==
+X-Forwarded-Encrypted: i=1; AKwUvBzynBVUvF1BkI4rOnb74Nhmu4JuC19d/J/ANo5l8gnv+9wr8aBDIe5lf4U893fGeaUBr5rIF94=@vger.kernel.org
+X-Gm-Message-State: AFuF++nAZi4b9ciy/ZqnYyhWZi0RflklTIsQPlDTXkBrtQEXjrG0g0ws
+	+IjB+tyEvzcMByHQNKUrBmydxmbmz35zczOhJzpiXFK2WKhP2g/c33MlBH7BUOXY
+X-Gm-Gg: AYBFou1GWCZUejgrAVA/tA7hvx0OKJ463GF56/aVlCJid1BQe0Afe0o/URh5u/c31UT
+	ep59lrpWONi1BtYW4q7ybm9/JLPR3fj8N0pvsOB9w9LQXBji2/G1K9XFM0hICnD/8x/OEu416uA
+	PILUPNeNievetW3Z+OAoM1pKyPAq+gRhMk4Z4UQhE9tBmPobxmrf5SBgQuUgxRsOv+M4BjI/9DE
+	vELU3kSKfk9nXnZ+bfRbk56pJRig/NNPXvRUJ7nJhvt/oY+Va/4NRP+1CjmJV4XdSUqF2ExseTS
+	FvX2qF0cwNMkRlGp9WivYb1pmxZqXTfZQp3cR2ePEwoVzJSiIjgK0c4NpZveZdefVl06sweaW4I
+	+BBb0OXJMuwz1Maafr9FCqIw5zfq1GNw8y1SGmx5idvmNrFmq/feDLRh5x9VP39S4Gjie4rIIyx
+	f1eGotxTa7PzfV67O7Lidhlakn0xLinA3FWJPsNoVlny2tvP9WvDApkGxYdOpvse1uCXgeo5d64
+	1MuiW9h1+FdXHmKJFOJXkxfpdbNPtcvDLs=
+X-Received: by 2002:a05:6000:1a8a:b0:487:62d:37dc with SMTP id ffacd0b85a97d-4871e269cd3mr21320913f8f.32.1790070457566;
+        Tue, 22 Sep 2026 02:47:37 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862773ee0sm3708938f8f.6.2026.09.22.02.47.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 02:42:31 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	tim.bird@sony.com,
-	opurdila@ixiacom.com,
-	vega@nebusec.ai,
-	petalzu987@gmail.com,
-	weir@nebusec.ai
-Subject: [PATCH net 1/1] llc: reserve device headroom for allocated frames
-Date: Tue, 22 Sep 2026 17:41:54 +0800
-Message-ID: <5002123a7fd47989926bcefe4d5bdeb824f40b63.1789987105.git.petalzu987@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1789987105.git.petalzu987@gmail.com>
-References: <cover.1789987105.git.petalzu987@gmail.com>
+        Tue, 22 Sep 2026 02:47:37 -0700 (PDT)
+Date: Tue, 22 Sep 2026 10:47:36 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Hui Peng <benquike@gmail.com>
+Cc: Harry Morris <h.morris@cascoda.com>, Alexander Aring
+ <alex.aring@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Stefan
+ Schmidt <stefan@datenfreihafen.org>, linux-wpan@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v3 2/3] ieee802154: ca8210: prevent stack buffer
+ overflow in hwme_get_request_sync()
+Message-ID: <20260922104736.0e7e20f2@pumpkin>
+In-Reply-To: <20260922093126.141969-3-benquike@gmail.com>
+References: <20260922093126.141969-1-benquike@gmail.com>
+	<20260922093126.141969-3-benquike@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Zixuan Chai <petalzu987@gmail.com>
+On Tue, 22 Sep 2026 09:30:24 +0000
+Hui Peng <benquike@gmail.com> wrote:
 
-llc_alloc_frame() reserves link-layer headroom using the device type.
-This is insufficient for stacked Ethernet devices such as VLAN devices,
-where vlan_dev_hard_header() pushes a VLAN header before the lower
-device's Ethernet header. An LLC response on such a device can
-therefore underflow skb headroom in eth_header().
+> In ca8210_get_ed(), an uninitialized u8 lenvar and a pointer to a 1-byte
+> stack buffer (u8 *level) are passed to hwme_get_request_sync(), which
+> unconditionally copies response.pdata.hwme_get_cnf.hw_attribute_length
+> bytes into hw_attribute_value without checking the caller's destination
+> buffer capacity, overflowing level on the stack when hw_attribute_length
+> exceeds 1:
+> 
+>   BUG: KASAN: stack-out-of-bounds in hwme_get_request_sync.constprop.0.isra.0+0xf3/0x170
+>   Write of size 16 at addr ffff888001907780 by task init/1
+>   Call Trace:
+>    <TASK>
+>    dump_stack_lvl+0x70/0xa0
+>    print_report+0x153/0x4c6
+>    kasan_report+0xf1/0x120
+>    kasan_check_range+0x125/0x200
+>    __asan_memcpy+0x3c/0x60
+>    hwme_get_request_sync.constprop.0.isra.0+0xf3/0x170
+>    ca8210_get_ed+0x9c/0xf0
+>   ...
+>   The buggy address belongs to stack of task init/1
+>    and is located at offset 48 in frame:
+>    ca8210_get_ed+0x0/0xf0
+>   This frame has 2 objects:
+>    [48, 49) 'level'
+>    [64, 65) 'lenvar'
+> 
+> Initialize lenvar = 1 in ca8210_get_ed() and return
+> IEEE802154_SYSTEM_ERROR in hwme_get_request_sync() if
+> response.pdata.hwme_get_cnf.hw_attribute_length exceeds
+> *hw_attribute_length.
 
-Use LL_RESERVED_SPACE() to account for the device's actual required
-headroom while preserving the existing reservation for the LLC header.
+This function is silly.
+There is exactly one caller, the only valid length seems to 1 (is zero valid?),
+not much point using memcpy() either.
 
-Fixes: bf9ae5386bca ("llc: use dev_hard_header")
-Cc: stable@vger.kernel.org
-Reported-by: VEGA <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
----
- net/llc/llc_sap.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+David
 
-diff --git a/net/llc/llc_sap.c b/net/llc/llc_sap.c
-index 1bd446a21092..4b203ffb1e83 100644
---- a/net/llc/llc_sap.c
-+++ b/net/llc/llc_sap.c
-@@ -19,16 +19,6 @@
- #include <linux/llc.h>
- #include <linux/slab.h>
- 
--static int llc_mac_header_len(unsigned short devtype)
--{
--	switch (devtype) {
--	case ARPHRD_ETHER:
--	case ARPHRD_LOOPBACK:
--		return sizeof(struct ethhdr);
--	}
--	return 0;
--}
--
- /**
-  *	llc_alloc_frame - allocates sk_buff for frame
-  *	@sk:  socket to allocate frame to
-@@ -45,7 +35,7 @@ struct sk_buff *llc_alloc_frame(struct sock *sk, struct net_device *dev,
- 	int hlen = type == LLC_PDU_TYPE_U ? 3 : 4;
- 	struct sk_buff *skb;
- 
--	hlen += llc_mac_header_len(dev->type);
-+	hlen += LL_RESERVED_SPACE(dev);
- 	skb = alloc_skb(hlen + data_size, GFP_ATOMIC);
- 
- 	if (skb) {
--- 
-2.34.1
+> 
+> Tested in QEMU with KASAN enabled by passing an oversized
+> hw_attribute_length response into ca8210_get_ed().
+> 
+> Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> ---
+> Changes in v3:
+> - No changes.
+> 
+> Changes in v2:
+> - Split out as patch 2/3.
+> - Replaced the temporary stack buffer in ca8210_get_ed() with lenvar = 1
+>   and an upper-bound check against *hw_attribute_length in
+>   hwme_get_request_sync() as requested by Miquel Raynal.
+> 
+>  drivers/net/ieee802154/ca8210.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+> index a990a0f..8aa7ffe 100644
+> --- a/drivers/net/ieee802154/ca8210.c
+> +++ b/drivers/net/ieee802154/ca8210.c
+> @@ -1677,6 +1677,9 @@ static u8 hwme_get_request_sync(
+>  		return IEEE802154_SYSTEM_ERROR;
+>  
+>  	if (response.pdata.hwme_get_cnf.status == IEEE802154_SUCCESS) {
+> +		if (response.pdata.hwme_get_cnf.hw_attribute_length >
+> +		    *hw_attribute_length)
+> +			return IEEE802154_SYSTEM_ERROR;
+>  		*hw_attribute_length =
+>  			response.pdata.hwme_get_cnf.hw_attribute_length;
+>  		memcpy(
+> @@ -2027,7 +2030,7 @@ static int ca8210_xmit_async(struct ieee802154_hw *hw, struct sk_buff *skb)
+>   */
+>  static int ca8210_get_ed(struct ieee802154_hw *hw, u8 *level)
+>  {
+> -	u8 lenvar;
+> +	u8 lenvar = 1;
+>  	struct ca8210_priv *priv = hw->priv;
+>  
+>  	return link_to_linux_err(
+
