@@ -1,64 +1,64 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A86576EDF
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90F91A682F
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790097648; cv=none; b=pZHILWW3/tPkkcgvGbFjVFKkyjwyvbgYwytb2GjZsW4jhKRhXuexni2b9Sp8zwjyLEns6de9K57q4m10znYcEaQ4NvCGRLHkSfa+27jJ+cKriRfoaUcjZEvSWIEoJ5+9eArFcVI8Sy6oASJJwTh28Nls3J/W63ovYFuCajzNyKs=
+	t=1790097652; cv=none; b=V8Bk4viZGGj3syniIOFlcBPm1keU6CfFWsRYThNj60NRwS7k0Ipbi9U0Fhq1pOZVbgxRWYB2WmhVdY0nec8U7i74g5mk50i6Hp+6AGi/++Zgbdnhf/7YZn1MFFi1C/xDAioZqG/8Ypcet4+P4SBeqyiuXUxTuGaeYMLvNl7ee+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790097648; c=relaxed/simple;
-	bh=RCAx16luTF02kZgEZ0D7CHSImQt7iTlNbzO7mxUy3ck=;
+	s=arc-20240116; t=1790097652; c=relaxed/simple;
+	bh=vLbRLVhbj8RwxDK1glDhecQBCjjtE69Bi+W72zh7us0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhlaIEGGr/NF1dNl72mBKVxYLnaBY6UGrVt7eYw4SOVBdiXQ7KYkzQxy0CH6dvlHnQxoWnUwIXaSxCfLL74Gk+EMa05QgbBG1/SJ5/seKQfX6t1gpjKXywDqwNW+NEQw06taQM1ybVfc0X787tFkcXPpRgMXfMIVG/l82o+j5QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=lRpxDeAk; arc=none smtp.client-ip=74.125.227.141
+	 MIME-Version; b=a/LFsxmpydm6AH8MoApxcJSpVy9P6DMgDPysv5JQoAb1UbSZynHa8Y/TUWX/Sx09woW7PYwylK3H6pqTtkq1r1466338JN7P4FWkc5WAMTuyGwka7tsrUHgYDr1Ydhu7HF7qoJiTgbvgfgJJJcmo+CPRC0n+4xTb+ZR0opFtgEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=Y1aZFMnV; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="lRpxDeAk"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39dbdfaef3cso117689a91.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:20:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="Y1aZFMnV"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b350c69b4so117891a91.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790097645; x=1790702445; darn=vger.kernel.org;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790097646; x=1790702446; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=w8uvju0VQfszCfaJ5PHHj1YzIoy00iEV5n4pCl9kK1c=;
-        b=lRpxDeAkTCt/8ZOgLl6Y5rDsc4wlVC0mT/JqFPX7ZCF+rGCaYLbL4rxZeg1n/LjzPR
-         E6NGqk2eRBp5cC+qgtcLAW0jP/pj2jxvJ84Cb7b+2UocsysbcsYj4BQk0T1ibi1kMdEx
-         iauoopYolANp3lKGZ2osqz5n44Is22gV6nUiUDvr/Cfkp0+jbfqL9conZ2QI6ATPUwwV
-         3YUocPaJ4i/lMSzrB8ONNuGJ0r56nLK456Q7jq53mlJ1968V1MCeLt62dcVoAXtoDkoJ
-         xsWTy/x7sul5fCpwqEIwKJzpRC1cpBPegEWN+jgcoY1q/qjBrH6VErGzjGmcFwX5GrRR
-         ph+Q==
+        bh=eeoRD0ZvaQHpJ2Mh9yIGiF9D5HUjmB+w4ge+o9sW4U4=;
+        b=Y1aZFMnV35f3Aq8lTJEhAdadV66XfbtaQBG9MhrRLc+RjDMtIGfIiUZj89BCQifH6X
+         LBTpeuVYf3to74xstaFY9Go09XPqJ3oJ8K5xd+7ZgUM+tEeOU2ESsroJEkSWNqIkfPJY
+         96WHi74H4kTp0oKZ80jMlvsMF0l243W71mGBYEDc6LMhhbh14P7WFaMeDwXIJ/xMEOZJ
+         Js23cIXJkEyjfTxt+byTet74Khlssb6MN+G9lqMca/cEr/+wC7YC6JyQO6F9aAL40Ms4
+         PcZp3bhViTe2H1ZnTBdqBUw31RlAm+1XjtQPckGXOwM1LWEkir2Dk7PhAaWeYrVTxcqH
+         RIkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790097645; x=1790702445;
+        d=1e100.net; s=20260707; t=1790097646; x=1790702446;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w8uvju0VQfszCfaJ5PHHj1YzIoy00iEV5n4pCl9kK1c=;
-        b=Up1kLqYwb95RmeGLRPmZkNBUuENOnk85l8oDPMF3J59oweAaqakJN7E20BSylCeLvG
-         Po2zXczq3QUrdLARcnJTBblXq4tOEr+DZN8tyd2OeGCV9IQJiTRWpW5xKwEFLsJKtgMk
-         gvdvmQhZnNEDbE7Hh4L3vAKzVGOEd52PpLOjVciXYoi8RmhDp+ufNZuYvECJxgc+/c0D
-         vonN0ozofvX2SHoqSgHND7S/kAs2Thb2YbSyT7U7Y5lkLoE4Wak1vwG2Q+tMd85QbQY/
-         A3a8q5rdSszxAksPUcvRNg1Mb2tSoGOZfbd9kJVYVQfcXs8g6/lpbnZC9RhYwYIZQfzx
-         h0MQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwuOT6tBJokIUOvxWTvNXjtUVYjXcpECcO/42HerQzazckj0oczaZreKP1niS9OU5kecZ3MX2s=@vger.kernel.org
-X-Gm-Message-State: AFuF++lqP2xXuXvhYixuwWf0nZ9m/ct3nkTbZH1tUM0LPVT2b5+GW9e7
-	BpJo+deQz4THGIANGpMtkduVaFG/TjUXcGPmyluCgCXbLKJLG5dngBoCMk3hfpBvnNA=
-X-Gm-Gg: AYBFou3yfMKNmxp80zl43XEUJDKM9gE6PSMDFnJcyzX0F2oZMki872nzmvpTrVbDxho
-	/s2a6P1dt6a86eOjcX9/S7L7z+uTe5EUPS4uzHRHJWZLlNiNUpivkDFfk01PzOg7l5O9ikvRLHH
-	7pxBhdbAy9tt4I2rRxyiOa1lzRMf9kTH0jDlziovqO2OqKtGVRq8hiRIKJQvitgofLod9RMsqux
-	HIU2xKLuyDCIJMR6Yp9Tv7NWjrniqo7rdyfL5RCgJ6IbdlhZJ/sGR5Rr14zrREtUYs+7VhLiaz/
-	HxtqJ4FzMwsEg6CEPHdXOYqL7KkWmNTlMsJkQxarnPoFYLyWk9nL2up4i9g7zePtNAmX0lbl/1B
-	dCvkpWfL5eWcabWSrUgtO0HMWoJmYAmMraUxM9mhLIpwTBVUU0RpKMPVGxH3y05C9PXdK9TGBZF
-	LF2+0lBiQADO/Bf4Zyjt6ESmyGE8fq7Pmo1Kc1rM4KOYFHjTTAKH7pkZ1LiF1Qo0id+nTZ9GqJG
-	apMz0xUdvPS/Ay1l1hcGWCMiFWSyi36i+MVXNrMcQ==
-X-Received: by 2002:a17:90b:33c9:b0:39e:6c69:776f with SMTP id 98e67ed59e1d1-3a07e6a66c2mr94952a91.24.1790097645388;
-        Tue, 22 Sep 2026 10:20:45 -0700 (PDT)
+        bh=eeoRD0ZvaQHpJ2Mh9yIGiF9D5HUjmB+w4ge+o9sW4U4=;
+        b=J3jOk3LmOhH053Xr4A1r2cbCxLxytM1AQ+CNinINmdBioyxvXD7oCJN0tMThEazIi/
+         rOZxaa7lR4HMOaZN4HpcLST0CyWQt2eTcSsWM2LDdC6s55rKdgXl5p++DEp4DTxK4nw0
+         9a4YP7COM5vlu65ItgWK+2C0UBSKh7qfERzw4bqjgYqs2SKWhKtgJf1PThlsXlfPB6kX
+         waUuVwUGvHIrXj5VppHYnGFIbprjEiqS2XPt6bWPGhNZIICCKF5gDAA0c2Jgd+JwmjTS
+         h7NSwpDCOM0BAZJqUb8lqadiMDsVDJoVD8JGG2EdtrADdT1ej/OcM5nVDPoobcykFYAP
+         WYHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxx0ASZllSUb1IhJj4L/gcqywlEAcvJ3gS+iRWTOsuRm1NEhjGEe9WDCxxsIGupwzDMJOTUOU8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nyKWClCkZkaXIEsODS13QuMOrh5DTcIpGs06Cn5VyHyKlXhpRn
+	DExZoB49IiC08V1UTV128F/DTzr9u7Ww707g52lfBCsMC7XX3o2WVav+E1wHcoFZbTE=
+X-Gm-Gg: AYBFou2aFwgDqMVKuB+MIEtdBuI72VmZJgbHxWGgkVjqN1ezNhog/ZcD/a1SI1iqZz3
+	uV/4PVDceU8XEt1/XK97dWJSMX8MLA4IdyROpnhX6AxmUXzArtSIzHHfAqKhpdqOJ3hjMVigvCx
+	FA2YgWmGpjB/KPmP/fHXheX+cN6AZqe3dtmwa0trFwMqRWSJ9I1ydbK1PvLX0ukK+WqEbeFNa7P
+	4w0PQ45ibFpeT3u5pZQtQXJbEoJUOYLdq+tAESWa3ij7PQFpBZ4FYoLbXp/mBDZi06zfpasFElq
+	7Vj17ohvLFrjccI6FAslCYxxJXR16N95g/VAfHxkZagqKD2YIPB/MxBdBxoKJt35MS8sd0KUFHt
+	/FE7tDZY41TMTtz2Nc4b8LpO9fK0NVs5UxDxc7qq2Q4AD7javYHC2sWQd3OHapETFPeFia6qnvT
+	Ge/BfcLcBWmB3pbap8KZ3FK8i4ZGkgiAP3piL5Pq0A9KZakKZbuGjZYMjlDxX0yxtG3do5HeaiS
+	IbaUj2CdR2fnQ4n9+Lm2sbgUeDIeZ/cWDmqxjc86w==
+X-Received: by 2002:a17:90b:3806:b0:3a0:4146:2955 with SMTP id 98e67ed59e1d1-3a07e693c71mr116676a91.61.1790097646271;
+        Tue, 22 Sep 2026 10:20:46 -0700 (PDT)
 Received: from alpine05.ht.home (69-172-153-146.cable.teksavvy.com. [69.172.153.146])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06cb7159fsm1774824a91.4.2026.09.22.10.20.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06cb7159fsm1774824a91.4.2026.09.22.10.20.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 10:20:44 -0700 (PDT)
+        Tue, 22 Sep 2026 10:20:45 -0700 (PDT)
 From: Emil Tsalapatis <emil@etsalapatis.com>
 To: bpf@vger.kernel.org
 Cc: ast@kernel.org,
@@ -67,10 +67,11 @@ Cc: ast@kernel.org,
 	memxor@gmail.com,
 	daniel@iogearbox.net,
 	netdev@vger.kernel.org,
-	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: [PATCH bpf v2 06/11] selftests/bpf: Test rejection of pkt args to mutating subprogs
-Date: Tue, 22 Sep 2026 17:20:23 +0000
-Message-ID: <20260922172028.6269-7-emil@etsalapatis.com>
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Nicholas Carlini <nicholas@carlini.com>
+Subject: [PATCH bpf v2 07/11] bpf: Prevent variable arena/non-arena register contents
+Date: Tue, 22 Sep 2026 17:20:24 +0000
+Message-ID: <20260922172028.6269-8-emil@etsalapatis.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260922172028.6269-1-emil@etsalapatis.com>
 References: <20260922172028.6269-1-emil@etsalapatis.com>
@@ -82,77 +83,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a selftests that ensures that PTR_TO_PACKET arguments can
-only be passed to subprogs that will never adjust the underlying
-packet memory, and are rejected otherwise.
+The verifier marks ALU instructions that include at least
+one arena operand with needs_zext: These instructions are
+fixed up after verification to be ALU32 instructions to
+ensure that the result is a valid offset into an arena.
+However, different code paths may provide two non-arena
+64-bit arguments to the same instruction. The result of
+the operation in that code path is wrong, since it is
+now unexpectedly truncated to 32 bits and zero-extended.
 
+Add logic to the verifier to ensure every instruction either
+always has at least one PTR_TO_ARENA argument, or never does.
+Since needs_zext already tracks the first scenario, add a
+prevent_zext field in bpf_insn_aux to track the latter.
+Reject instructions that use arena arguments and have prevent_zext
+set, or do not have arena arguments and have needs_zext set.
+
+Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
+Reported-by: Nicholas Carlini <nicholas@carlini.com>
+Suggested-by: Nicholas Carlini <nicholas@carlini.com>
 Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
 ---
- .../bpf/progs/verifier_global_ptr_args.c      | 53 +++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ include/linux/bpf_verifier.h |  1 +
+ kernel/bpf/verifier.c        | 24 +++++++++++++++++++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c b/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c
-index b277b1efb..10019af5e 100644
---- a/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c
-@@ -350,4 +350,57 @@ int anything_to_untrusted_mem(void *ctx)
- 	return 0;
- }
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 92f528c45..be0ccad15 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -679,6 +679,7 @@ struct bpf_insn_aux_data {
+ 	bool nospec_result; /* result is unsafe under speculation, nospec must follow */
+ 	bool zext_dst; /* this insn zero extends dst reg */
+ 	bool needs_zext; /* alu op needs to clear upper bits */
++	bool prevent_zext; /* alu op cannot be zext (already used with 64-bit scalars) */
+ 	bool non_sleepable; /* helper/kfunc may be called from non-sleepable context */
+ 	bool is_iter_next; /* bpf_iter_<type>_next() kfunc call */
+ 	bool call_with_percpu_alloc_ptr; /* {this,per}_cpu_ptr() with prog percpu alloc */
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 71ad07a9d..cebed6c9d 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16130,6 +16130,7 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 	struct bpf_reg_state *regs = state->regs, *dst_reg, *src_reg;
+ 	struct bpf_reg_state *ptr_reg = NULL, off_reg = {0};
+ 	bool alu32 = (BPF_CLASS(insn->code) != BPF_ALU64);
++	struct bpf_insn_aux_data *aux = cur_aux(env);
+ 	u8 opcode = BPF_OP(insn->code);
+ 	int err;
  
-+struct pkt_arg {
-+	__u64 x;
-+	__u8 pad[56];
-+};
+@@ -16141,12 +16142,23 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 
+ 	/* Case where at least one operand is an arena. */
+ 	if (dst_reg->type == PTR_TO_ARENA || (src_reg && src_reg->type == PTR_TO_ARENA)) {
+-		struct bpf_insn_aux_data *aux = cur_aux(env);
+ 
+ 		if (dst_reg->type != PTR_TO_ARENA)
+ 			*dst_reg = *src_reg;
+ 
+ 		if (BPF_CLASS(insn->code) == BPF_ALU64) {
++			/*
++			 * Only arena pointers set needs_zext, but doing so
++			 * modifies the instruction at fixup time to an ALU32
++			 * and makes it unsuitable for 64-bit scalar args. We
++			 * prevent zext from being set if the instruction has
++			 * been previously called with non-arena registers.
++			 */
++			if (aux->prevent_zext) {
++				verbose(env, "same insn cannot be used with and without arena pointer\n");
++				return -EINVAL;
++			}
 +
-+__weak int subprog_pkt_ptr_no_change(struct pkt_arg *p)
-+{
-+	if (!p)
-+		return 0;
+ 			/*
+ 			 * 32-bit operations zero upper bits automatically.
+ 			 * 64-bit operations need to be converted to 32.
+@@ -16159,6 +16171,16 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 		return 0;
+ 	}
+ 
++	/* Prevent the instruction from being used with arena pointers (see above). */
++	if (env->prog->aux->arena && BPF_CLASS(insn->code) == BPF_ALU64) {
++		if (aux->needs_zext) {
++			verbose(env, "same insn cannot be used with and without arena pointer\n");
++			return -EINVAL;
++		}
 +
-+	return p->x;
-+}
++		aux->prevent_zext = true;
++	}
 +
-+SEC("?tc")
-+__success
-+int pkt_ptr_to_global_mem_arg_no_change(struct __sk_buff *skb)
-+{
-+	void *data = (void *)(long)skb->data;
-+	void *data_end = (void *)(long)skb->data_end;
-+	struct pkt_arg *p = data;
-+
-+	if ((void *)(p + 1) > data_end)
-+		return 0;
-+
-+	return subprog_pkt_ptr_no_change(p);
-+}
-+
-+__weak int subprog_pkt_ptr_changes_data(struct __sk_buff *skb __arg_ctx,
-+					struct pkt_arg *p)
-+{
-+	if (!p)
-+		return 0;
-+
-+	bpf_skb_pull_data(skb, 0);
-+	return p->x;
-+}
-+
-+SEC("?tc")
-+__failure __log_level(2)
-+__msg("R2 is a packet pointer, but func#{{[0-9]+}} may change packet data")
-+__msg("Caller passes invalid args into func#{{[0-9]+}} ('subprog_pkt_ptr_changes_data')")
-+int pkt_ptr_to_global_mem_arg_changes_data(struct __sk_buff *skb)
-+{
-+	void *data = (void *)(long)skb->data;
-+	void *data_end = (void *)(long)skb->data_end;
-+	struct pkt_arg *p = data;
-+
-+	if ((void *)(p + 1) > data_end)
-+		return 0;
-+
-+	return subprog_pkt_ptr_changes_data(skb, p);
-+}
-+
- char _license[] SEC("license") = "GPL";
+ 	if (dst_reg->type != SCALAR_VALUE)
+ 		ptr_reg = dst_reg;
+ 
 -- 
 2.54.0
 
