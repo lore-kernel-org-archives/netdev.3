@@ -1,63 +1,63 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9B054A7EB
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 21:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0EF5505F0
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 21:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790111538; cv=none; b=nMrnGjCBBgv6nXwX6CMGk6rm4AAmMRuU7tBDukGrwchRVGENWnV9sWYDGhmf8jL838siDpu7mR0FN512o8Mxu1aXO1WIHI62uFLG0GPJa2bSqIc1qjl1oD+YtdL1W1qAuYgyMG9DxWsFgnxdpaUZIQc2/mlSTNV4wUWWq4WYNIc=
+	t=1790111553; cv=none; b=DdLv6Wy+wFwzwncSShYMVQjwZcMxsbFRX+RoHrcmOxNB5sImRHmjJ1TexenlMb84tE6FOhdjHCMBNt6DWHWG0mACGPbqKQzxl7xGxWDGFvatWwkrFSo6SKQq/nZd945Qet13HFUGcfJr89hJHLfp+jdqLletnCuy2H+gGFvzF8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790111538; c=relaxed/simple;
-	bh=d2swiA7I6cFbtKN9uMLHwpoHtcqZjjVynhBD4VanSRA=;
+	s=arc-20240116; t=1790111553; c=relaxed/simple;
+	bh=edSqkUf/Jp56J9Vg7c+aqfiXzucyWX6M92AvRsKUe34=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KabCF/ph2eQ5AsMPNSv2HXTJj7380ShMcKd380RV7RtMOfshwWOVmVEvYwS1SrciIirVCOE9Rm+ouWSAul9xJvt5dkv/6TFKBwXZG9w3VQe6rZXIZciBTPmf/im6fwAJKjX0ezSTrMooSCMj2x9QjCSHaqZVefxqPqFzp/ubsVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7GfO7Pq; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=dVBDFI1sWC7i387z/dtSQcl3CXqLCKE0BqxtmLGrxRnhyoobq/H+ouNLe7akYt0OUOcnPt3WqjusPyOqaFTeaDYLaNgeNn+7acfe8uT+HpzmV38K9r7mLesEA1HTmCCClzFbB7olEeJ9QXGPm4s/P6hfh5NpGYbUcfpaziVeFuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5r2OhKo; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7GfO7Pq"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c24422d4dso289730eec.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:12:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5r2OhKo"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664c2da6so141240eec.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:12:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790111518; x=1790716318; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790111532; x=1790716332; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nKobARkBm3jckAeWzRLINPL374n1cjc6XoeTqsHKNiU=;
-        b=T7GfO7Pq2trlZMPGV12Q81tV4rf/yUOhUNcc2pR+U6lTrw1bhtdd2wIgjYvVC5+mbK
-         kFtdiQRpjNjX1LIRlg06Ajc8PHeSVBuuxQqKg8Jm7dN/xT1FRDQRsIZCVBI3u+cXCIV7
-         vgfXXRYrZM/Bqj5tGQQj5G6CFV/mVSlCO1OF1iRZeTUIq69lmWVbNIekSaNjK3zgx8X9
-         17JgpFlfNVtd5Zq9qdXm+NPxtfAOvm5Kw40waA1xRViRXcYaYGS3ZdMhWSb1QeWih+nE
-         4dHKsdjoav+dyTn3GwP8mdPVMRWqak6Ge/YOsyMPNWP0igMwFgnnG37Exf1v3OW0Nfry
-         6kWg==
+        bh=81pB+7IxOj1JIFRbnFGuG+Ebf120vc1g1oVisMJhAcQ=;
+        b=Z5r2OhKoH2rzwFHmTAe2GsTvadG1fQs7fjETvvVPNSbJ8BiQznw2QS4t+hJi/7drwp
+         MLM9mtIePDA7bWYiP7GnZhCAepR7mxqUHhh4S5pFVazpbzWp2ViSDHygGEeVxvGK7/iU
+         EiIADIz0SUQR6AN0gsKlqIk+ZpWUSnQiDfmlU3n8yp6b6iRTnHufE/BGZdFAeH5IOtY0
+         rIf+BsAbojFrcw6kYhvRIk9Kk3u9AHgDwKiToZbOsxjHfSbg6WUc36orDgyYz7Uznff9
+         5oUunf3yg19ZsK4hYy6Lmnbl9oSNa4m2AyoDG714wU+IcZ2MWeTXllOrt1dVvIEqT16C
+         bDHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790111518; x=1790716318;
+        d=1e100.net; s=20260707; t=1790111532; x=1790716332;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nKobARkBm3jckAeWzRLINPL374n1cjc6XoeTqsHKNiU=;
-        b=CAtM8ELFEGcG4qrYwAaylIEYGLCm7fia22CPO3OtKO6Ugjb6Dqq5HQteoqAyvzZq1v
-         Z44gGicv2mC/gu9GM7kYtXNq6PR/FnQ/xs+3NSB74++rsk7NrGbFmxbxULd3SJ5Czhpu
-         /esuM27tv0GukIuRGcnpqDIaK0Uvzq5kjLy2Erjxo8RpBbhpxeioQOo/FWeZPa0BObHR
-         JQSRi4BnAHdUlFMkbP6LyKhnlFLfid3i3DMHncL6lvcoHcVILRoar0yMCsr7pLnSF+ML
-         70jtJZlhitnvwbGfWTj7vmDGM+yBVPlc94gc3eaIpN43zKoEpl7Pwn+TVfinBGOntVZx
-         jbrQ==
-X-Gm-Message-State: AFuF++kS5caYn7o4ULINPyazb3Wlc+T+1/udYnMoU/DvddTptEpL/2s/
-	EkisUzXQFicB54mLrpcgLb6mG31SAJ+86P1NwgYBouCtoTvsROaV98U93olDpBkA
-X-Gm-Gg: AYBFou18M8cJB3uwezhTWDQrOrz4mLpOjH4DpeKj3EOVCOO+ctr0e9x0iz1hYMG2HD1
-	8uW75hCSKZseQULJ+EAtENaLd2dlYiwK0e5qZ5fr2bkc/DRIUOg+TarVyd34lG+zVIfKQ9utXoJ
-	h1zBaKyH/2onW5w4x5C6S3WCsQ7KrlKlbuGYMKHlMI2hM4Nu4qRVXNMM09tUOoRt8dt6yEPuFAc
-	CmX4Kn49T+XmVvYvo6ctdPnTMmazaeBdHv5VUXZTZTii0YdG1aVqohYyKV66ROFDfw0w+o833IB
-	/K8Eng9bNjzJbcBWK/xPP1mnyMyK1SxFT8NCMwUiKbkh4gyJx9ZzspdL05u4m+P2GRa1eO7xoqU
-	m9sziuQ6/F48l1bnVVSdmTc9Gyjo0Ynl1XZld2Z1A6wJNy0HBp4LC6LtjPyCqE+CIPul9jU/wyL
-	aYbiJ4mSpKgInOoOHHo0PZ8D14B5jdgGGTuGhFmflZkV6gxcMkQg/Ns7/WtyU39mRxwqBYz3Lzb
-	TGGjp7DRMDTzCRUWqSj7FAzL5buYGYL6ZPr4amMEa7oA1x80GB7+qyeqx2oYd4e3h98Rwi1xKQ=
-X-Received: by 2002:a05:7300:dd05:b0:33c:357c:d33e with SMTP id 5a478bee46e88-33e8dcbc59emr508003eec.28.1790111517740;
-        Tue, 22 Sep 2026 14:11:57 -0700 (PDT)
+        bh=81pB+7IxOj1JIFRbnFGuG+Ebf120vc1g1oVisMJhAcQ=;
+        b=b+XeC8AU4ySt1cRSvRQz6XmoIrgmMAqNxV+BxHhyfdd7EXKkLBHZp55/FOpQg1kpnO
+         DchjTvFV/mp2GhuUMrUCgg/M/+tUXCExEHHEZWAz/g7FTYazI4j5MKRT4hQtEpbhfvU/
+         Ydwa7n9A1dVbPdP2D+RFMqHhp9yeZuT1gyAJVJDY3gFUgBIQVVjJHRKwGvzdHZT0oUis
+         mSU5wmKUmhzIjh7nZP3UytLjJS69mKbkzXo1Zgxn7ZBCt9SGCbxiRmKT4xBphC87VgMT
+         MOtidGbhbFnUQrAYh9O3VFY+upqHJKjB6xcP3eLX7UPJAlfqPPU2/pvcCjIasRNtwOiO
+         vPew==
+X-Gm-Message-State: AFuF++mqfQWxgr7c1Fye3BIpd747ocHL3DEt4rlbY5qKtykqKWLBxc6S
+	IW3E9JxnCXzSl9aG64Leq/npSN1eLaj7VWMbUX4GHDj7UVmjnaazIXCd3WcXh8UV
+X-Gm-Gg: AYBFou1sd4DTOpUQ7n89/fk3Kzw/8lQwyvcv1UGcVmhm+L88YRcFNeo1muo9otJEY0V
+	3/RyO4rUxH2N1QUYbVPuPm5pNAPT7i0wBOkKoNr2woWA/2pnPK376qpuFvHfDb362uKEaQP6nsJ
+	V9CIptLCqQD7Bo6c9V8BEernDr4gCULGL7Y1J80w9mykcL+76Meo2fRZfpy2Xaw6jAl7rrvmj2k
+	Zfg77c0wZjepMYosjkEE1xm2u+pOtHb9m5qNsJJ+PVmL46k/u/Y7IekBdbPp+3X0XaGRIPZJM0K
+	EuePF+Bs+jJB+l43skpBdMo/TKKJp82cq/ur3uN5phdqO3HwR8u/wp6eamjdlND9RwOz7lBYIZQ
+	RSC1DrTd6QO0byXzXDkfY5n0icIxkjwzJM2xrYPPPTnFKiGWBvflhzVIQBzJRFArjW0ohDFh+Ot
+	PNyVpJma8QvtjOnWJclsbXpVV/7vncGuhrMLIgifwXZlMwoED3YLekBFOxJYMYblf4Dr7kP1WQG
+	wXoMDqlaQI8wRYmubzHlrrPKX7JNQ5O6ow1zA5hDk7Rl32jlaHyXF8p7jHSbu/sUVhxd+0+nuc=
+X-Received: by 2002:a05:7301:3a86:b0:33e:5c4f:f46e with SMTP id 5a478bee46e88-33e8d8d2598mr486297eec.30.1790111531511;
+        Tue, 22 Sep 2026 14:12:11 -0700 (PDT)
 Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:f16e:2102:25ad:9cdb])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e939fdd91sm943147eec.4.2026.09.22.14.11.54
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e939fdd91sm943147eec.4.2026.09.22.14.12.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 14:11:57 -0700 (PDT)
+        Tue, 22 Sep 2026 14:12:11 -0700 (PDT)
 From: "Hemendra M. Naik" <hemendranaik@gmail.com>
 To: netdev@vger.kernel.org
 Cc: jiri@resnulli.us,
@@ -66,9 +66,9 @@ Cc: jiri@resnulli.us,
 	vishy0777@gmail.com,
 	tahiliani@nitk.edu.in,
 	"Hemendra M. Naik" <hemendranaik@gmail.com>
-Subject: [PATCH iproute2-next v7 1/2] tc: fq_pie: add support for printing per-flow PIE statistics
-Date: Wed, 23 Sep 2026 02:41:38 +0530
-Message-Id: <20260922211139.38570-2-hemendranaik@gmail.com>
+Subject: [PATCH iproute2-next v7 2/2] tc: pie: print avg_dq_rate in human-readable format
+Date: Wed, 23 Sep 2026 02:41:39 +0530
+Message-Id: <20260922211139.38570-3-hemendranaik@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260922211139.38570-1-hemendranaik@gmail.com>
 References: <20260922211139.38570-1-hemendranaik@gmail.com>
@@ -80,137 +80,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-`tc -s class show` for an fq_pie qdisc now prints the following
-per-flow PIE statistics:
+Print avg_dq_rate using tc_print_rate() instead of displaying the
+raw bytes/second value.
 
- prob           drop probability for the flow
- delay          per-flow queue sojourn time (microseconds)
- deficit        remaining DRR byte credits (signed integer)
- avg_dq_rate    dequeue rate estimate in bytes/second
-                (dq_rate_estimator mode only)
+This converts the kernel-provided rate to a human-readable bits/second
+string (for example, 10742Kbit), consistent with how other tc
+schedulers display rate statistics.
 
-avg_dq_rate is formatted using tc_print_rate(), which converts the
-kernel's bytes/second value to a human-readable bits/second string
-(e.g. 3906Kbit), consistent with how other tc schedulers display
-rate fields.
-
-Add `tc -s class show` examples to tc-fq_pie(8) demonstrating the new
-per-flow statistics with and without dq_rate_estimator enabled.
+Update the tc-pie(8) example to match the new output format.
 
 Signed-off-by: Hemendra M. Naik <hemendranaik@gmail.com>
 Signed-off-by: Vishal Kamath <vishy0777@gmail.com>
 Signed-off-by: Mohit P. Tahiliani <tahiliani@nitk.edu.in>
 ---
- man/man8/tc-fq_pie.8 | 18 ++++++++++++++
- tc/q_fq_pie.c        | 59 ++++++++++++++++++++++++++++++--------------
- 2 files changed, 58 insertions(+), 19 deletions(-)
+ man/man8/tc-pie.8 | 2 +-
+ tc/q_pie.c        | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/man/man8/tc-fq_pie.8 b/man/man8/tc-fq_pie.8
-index 457a56bb..8027783c 100644
---- a/man/man8/tc-fq_pie.8
-+++ b/man/man8/tc-fq_pie.8
-@@ -153,6 +153,24 @@ dq_rate_estimator
-   pkts_in 6082 overlimit 0 overmemory 0 dropped 4 ecn_mark 0
-   new_flow_count 94 new_flows_len 0 old_flows_len 8 memory_used 1157632
+diff --git a/man/man8/tc-pie.8 b/man/man8/tc-pie.8
+index 5a8c7820..ec0d4af2 100644
+--- a/man/man8/tc-pie.8
++++ b/man/man8/tc-pie.8
+@@ -115,7 +115,7 @@ is turned off.
+    qdisc pie 8036: dev eth0 root refcnt 2 limit 1000p target 15.0ms tupdate 16.0ms alpha 2 beta 20
+     Sent 63947420 bytes 42414 pkt (dropped 41, overlimits 0 requeues 0)
+     backlog 271006b 179p requeues 0
+-     prob 0.000092 delay 22200us avg_dq_rate 12145996
++     prob 0.000092 delay 22200us avg_dq_rate 10742Kbit
+      pkts_in 41 overlimit 343 dropped 0 maxq 50 ecn_mark 0
  
-+# tc qdisc add dev eth0 parent 100:1 handle 200: fq_pie target 2ms flows 3
-+.br
-+# tc -s class show dev eth0
-+.br
-+class fq_pie 200:2 parent 200:
-+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
-+ backlog 22800b 2p requeues 0
-+  prob 0.57679 delay 2.38ms deficit -52
-+
-+# tc qdisc add dev eth0 parent 100:1 handle 200: fq_pie target 2ms flows 3 dq_rate_estimator
-+.br
-+# tc -s class show dev eth0
-+.br
-+class fq_pie 200:2 parent 200:
-+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
-+ backlog 22800b 2p requeues 0
-+  prob 0.57679 delay 2.38ms deficit -52 avg_dq_rate 10742Kbit
-+
- .SH SEE ALSO
- .BR tc (8),
- .BR tc-pie (8),
-diff --git a/tc/q_fq_pie.c b/tc/q_fq_pie.c
-index dc2710cd..0c85e17f 100644
---- a/tc/q_fq_pie.c
-+++ b/tc/q_fq_pie.c
-@@ -274,6 +274,8 @@ static int fq_pie_print_xstats(const struct qdisc_util *qu, FILE *f,
- {
- 	struct tc_fq_pie_xstats _st = {}, *st;
+  # tc qdisc add dev eth0 root pie limit 100 target 20ms tupdate 30ms ecn
+diff --git a/tc/q_pie.c b/tc/q_pie.c
+index 04c9aa61..97690d49 100644
+--- a/tc/q_pie.c
++++ b/tc/q_pie.c
+@@ -220,8 +220,8 @@ static int pie_print_xstats(const struct qdisc_util *qu, FILE *f,
+ 	print_string(PRINT_FP, NULL, " delay %s", sprint_time(st->delay, b1));
  
-+	SPRINT_BUF(b1);
-+
- 	if (xstats == NULL)
- 		return 0;
+ 	if (st->dq_rate_estimating)
+-		print_uint(PRINT_ANY, "avg_dq_rate", " avg_dq_rate %u",
+-			   st->avg_dq_rate);
++		tc_print_rate(PRINT_ANY, "avg_dq_rate", " avg_dq_rate %s",
++			      st->avg_dq_rate);
  
-@@ -283,25 +285,44 @@ static int fq_pie_print_xstats(const struct qdisc_util *qu, FILE *f,
- 		st = &_st;
- 	}
- 
--	print_uint(PRINT_ANY, "pkts_in", "  pkts_in %u",
--		   st->packets_in);
--	print_uint(PRINT_ANY, "overlimit", " overlimit %u",
--		   st->overlimit);
--	print_uint(PRINT_ANY, "overmemory", " overmemory %u",
--		   st->overmemory);
--	print_uint(PRINT_ANY, "dropped", " dropped %u",
--		   st->dropped);
--	print_uint(PRINT_ANY, "ecn_mark", " ecn_mark %u",
--		   st->ecn_mark);
--	print_nl();
--	print_uint(PRINT_ANY, "new_flow_count", "  new_flow_count %u",
--		   st->new_flow_count);
--	print_uint(PRINT_ANY, "new_flows_len", " new_flows_len %u",
--		   st->new_flows_len);
--	print_uint(PRINT_ANY, "old_flows_len", " old_flows_len %u",
--		   st->old_flows_len);
--	print_uint(PRINT_ANY, "memory_used", " memory_used %u",
--		   st->memory_usage);
-+	if (!st->type || st->type == TCA_FQ_PIE_XSTATS_QDISC) {
-+		print_uint(PRINT_ANY, "pkts_in", "  pkts_in %u",
-+			   st->packets_in);
-+		print_uint(PRINT_ANY, "overlimit", " overlimit %u",
-+			   st->overlimit);
-+		print_uint(PRINT_ANY, "overmemory", " overmemory %u",
-+			   st->overmemory);
-+		print_uint(PRINT_ANY, "dropped", " dropped %u",
-+			   st->dropped);
-+		print_uint(PRINT_ANY, "ecn_mark", " ecn_mark %u",
-+			   st->ecn_mark);
-+		print_nl();
-+		print_uint(PRINT_ANY, "new_flow_count", "  new_flow_count %u",
-+			   st->new_flow_count);
-+		print_uint(PRINT_ANY, "new_flows_len", " new_flows_len %u",
-+			   st->new_flows_len);
-+		print_uint(PRINT_ANY, "old_flows_len", " old_flows_len %u",
-+			   st->old_flows_len);
-+		print_uint(PRINT_ANY, "memory_used", " memory_used %u",
-+			   st->memory_usage);
-+		print_nl();
-+	}
-+
-+	if (st->type == TCA_FQ_PIE_XSTATS_CLASS) {
-+		print_float(PRINT_ANY, "prob", " prob %lg",
-+			    (double)st->class_stats.prob / (double)UINT64_MAX);
-+		print_uint(PRINT_JSON, "delay", NULL, st->class_stats.delay);
-+		print_string(PRINT_FP, NULL, " delay %s",
-+			     sprint_time(st->class_stats.delay, b1));
-+		print_int(PRINT_ANY, "deficit", " deficit %d",
-+			  st->class_stats.deficit);
-+
-+		if (st->class_stats.dq_rate_estimating) {
-+			tc_print_rate(PRINT_ANY, "avg_dq_rate", " avg_dq_rate %s",
-+				      st->class_stats.avg_dq_rate);
-+		}
-+		print_nl();
-+	}
- 
- 	return 0;
- 
+ 	print_nl();
+ 	print_uint(PRINT_ANY, "pkts_in", "  pkts_in %u", st->packets_in);
 -- 
 2.34.1
 
