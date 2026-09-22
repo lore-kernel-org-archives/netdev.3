@@ -1,171 +1,115 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF5A4DE715
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122DE50B429;
+	Tue, 22 Sep 2026 09:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790070461; cv=none; b=qK/+eiE3DAjyERAkKLfoV+AjjR+kANyAWZ5p2NtLuwHk03oAQbkgRm5B2/nxPsKIfTsyIbg8uh5LW9bYxmW3QXjNGXidJYALI3IYloH+E0JR7rVPAdf2mpRWesb0KdIVhPtjKZjU2TYY6j0XSvMzhWJNomeUF41u8HhLoJByHmM=
+	t=1790070479; cv=none; b=fCra2BEIW1XGe1xml+xHDxbKGYP5p/VfVcaGJP2AMWWjwiPdt46v9db0RIewC/JXP4kR4vhJiP+JShepkJbsIHg+YybiBEwfy/ZToJSmPGSupyCsep+h4f1K5sbBtHaJKJAtRkj2TCXo6yixiC+pGJs6Fb8gNAKU/vyUPJDi+Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790070461; c=relaxed/simple;
-	bh=2CUH3YGiPlXy555Q9SI3ZYnCZbH8YDJQaUSBvfvqZ6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rfyv77v3l0thOtGykaNoH1n8vSISsmTCpu8JNfacp103JYoERiTZTg/QG10jEMRNff8k0gnG/oD2ZpFDgDAXnVjk4LDEWpOfPV/iE4OEzTXqbssAQE2Ne/cZXzkY8J6CpiiHdM4z1iFdSpzp9QnUuQ0oKsoFK2EwgYArdp2CVIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvNBStGl; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790070479; c=relaxed/simple;
+	bh=fpwLyeud8slxDNFfMPt4fH1RoTxc6zyHHuy5KD2xz/M=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=OlDVsM1ctck2Yhz5KdX6bvsshZb65aNZrl0rscn5pL2LKG7ia4EDWRO5PScF2hiLqW4uK89NcgQCmCxRV0Kcm56ln4S/geTf4P/vLy4dR5IuNOmfB/qhYs3SBJ7+aKWyfPqgSRbrt6vsIFvBrAidnyX2eNjaYNFpXApObijusdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=lmX4ESpr; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvNBStGl"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f633cd78so2166557f8f.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:47:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790070458; x=1790675258; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1mHA714llFxRbL4YpV3zzI7qdHUQEj56NbS4Oyhz2TE=;
-        b=UvNBStGlptbsfoizP0M7WPR8TBH+UhYLVyjoEPDRLeSoLNQuh7GLHz3T5/m0+UmBNZ
-         RHrrzsLV0K/1tL1nA+hHnjigNFBMWMqOHkC2hAp9rehOuAlFe8SvIs8Z6CpW3d6rTbbu
-         qUN4yFety6ERn2Pq27SISc97Qgyi/FNkA/2oV0hESNH3CrGFm1JB7EYRbfKMluJjr8oK
-         ttR4FN9+EvyTCRmk7aGWOVeyliElH3Fme+P3KYATNqyFatLBn3k0NH1gwluMVxzIirTx
-         DTowTIQwxpjvhHhSZOLcG5y2+hQWEt9qDuVNyafBzvAUvmydtwW4n5iPhqIUqR/Rgbej
-         XPqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790070458; x=1790675258;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1mHA714llFxRbL4YpV3zzI7qdHUQEj56NbS4Oyhz2TE=;
-        b=aUsHCXRO1HYUlu+9L+ZtNC0bhQJnPcUBi+gglfKV+iE+s3P2j7GywYRzTQndFW6gQT
-         8+OS8/mqB0xV5GCWFEKnVhZxqz07uvqbE75C5lb5HplROt8oBH4qKM0V3WRRCNL9SlCy
-         ATgi7M6W+HND37FqBbx9t3G0brW6xzpWhZaesqhqlJVuEHG2b0Bx2a0ierEMi+0ypy5/
-         Pwa1COui2MGIdE5WaDk0dMIftzmYF5Fegp7NLZ8J4LhnF6zpsSONTj9Am9qlgFeApidk
-         mbhlPF2SJuksdHrROFJfluAUVPscU8fV10HodAE5jij4FRXb+jbg9jU8Lh5occH3Z6CJ
-         dkCg==
-X-Forwarded-Encrypted: i=1; AKwUvBzynBVUvF1BkI4rOnb74Nhmu4JuC19d/J/ANo5l8gnv+9wr8aBDIe5lf4U893fGeaUBr5rIF94=@vger.kernel.org
-X-Gm-Message-State: AFuF++nAZi4b9ciy/ZqnYyhWZi0RflklTIsQPlDTXkBrtQEXjrG0g0ws
-	+IjB+tyEvzcMByHQNKUrBmydxmbmz35zczOhJzpiXFK2WKhP2g/c33MlBH7BUOXY
-X-Gm-Gg: AYBFou1GWCZUejgrAVA/tA7hvx0OKJ463GF56/aVlCJid1BQe0Afe0o/URh5u/c31UT
-	ep59lrpWONi1BtYW4q7ybm9/JLPR3fj8N0pvsOB9w9LQXBji2/G1K9XFM0hICnD/8x/OEu416uA
-	PILUPNeNievetW3Z+OAoM1pKyPAq+gRhMk4Z4UQhE9tBmPobxmrf5SBgQuUgxRsOv+M4BjI/9DE
-	vELU3kSKfk9nXnZ+bfRbk56pJRig/NNPXvRUJ7nJhvt/oY+Va/4NRP+1CjmJV4XdSUqF2ExseTS
-	FvX2qF0cwNMkRlGp9WivYb1pmxZqXTfZQp3cR2ePEwoVzJSiIjgK0c4NpZveZdefVl06sweaW4I
-	+BBb0OXJMuwz1Maafr9FCqIw5zfq1GNw8y1SGmx5idvmNrFmq/feDLRh5x9VP39S4Gjie4rIIyx
-	f1eGotxTa7PzfV67O7Lidhlakn0xLinA3FWJPsNoVlny2tvP9WvDApkGxYdOpvse1uCXgeo5d64
-	1MuiW9h1+FdXHmKJFOJXkxfpdbNPtcvDLs=
-X-Received: by 2002:a05:6000:1a8a:b0:487:62d:37dc with SMTP id ffacd0b85a97d-4871e269cd3mr21320913f8f.32.1790070457566;
-        Tue, 22 Sep 2026 02:47:37 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862773ee0sm3708938f8f.6.2026.09.22.02.47.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 02:47:37 -0700 (PDT)
-Date: Tue, 22 Sep 2026 10:47:36 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Hui Peng <benquike@gmail.com>
-Cc: Harry Morris <h.morris@cascoda.com>, Alexander Aring
- <alex.aring@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Stefan
- Schmidt <stefan@datenfreihafen.org>, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v3 2/3] ieee802154: ca8210: prevent stack buffer
- overflow in hwme_get_request_sync()
-Message-ID: <20260922104736.0e7e20f2@pumpkin>
-In-Reply-To: <20260922093126.141969-3-benquike@gmail.com>
-References: <20260922093126.141969-1-benquike@gmail.com>
-	<20260922093126.141969-3-benquike@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="lmX4ESpr"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 10FB2A4A18;
+	Tue, 22 Sep 2026 11:47:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790070474; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=iavK7jlVR53wJLl9dAXyNsjZSHduAokv0Z9wuS8R5hc=;
+	b=lmX4ESprTgkNASV8goNwJt3cY7eUyRQ+VUzTctY6YpkPVBf28JGVbPRCwew43Ozp+VemIg
+	Cf7p3TzZuDk7zgluPYXQDvOqkuaVGVXi1Zv5B39MkHdKV9Wqc8YFt/4/pSZZGUV/lczvoY
+	6YIwYLva8RavTo9VwDXrNzPy2WcZRW1Z13HVgatKMUI2QKshyK0nNDJNp4PvKjzIGyTExI
+	RvAcFOJUpyT3RYNSexWyN2YUCm7DG4A/EPmSmIMY2Mm2zOlpOruXqr0b0lEmGFaNgDujuT
+	EUM02+91xfyrq3jg07Bcx6W7V7iYecvgEb9bphe+mvFvltxmpfM8FG2iNHCdRQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Date: Tue, 22 Sep 2026 11:47:52 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+ <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 12/12] net: systemport: Complete resource teardown
+ even on DMA disable timeout
+In-Reply-To: <20260921231305.394773-13-florian.fainelli@broadcom.com>
+References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
+ <20260921231305.394773-13-florian.fainelli@broadcom.com>
+Message-ID: <8496008859d5a584dd3f958055abbbb2@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 22 Sep 2026 09:30:24 +0000
-Hui Peng <benquike@gmail.com> wrote:
+Hi Florian
 
-> In ca8210_get_ed(), an uninitialized u8 lenvar and a pointer to a 1-byte
-> stack buffer (u8 *level) are passed to hwme_get_request_sync(), which
-> unconditionally copies response.pdata.hwme_get_cnf.hw_attribute_length
-> bytes into hw_attribute_value without checking the caller's destination
-> buffer capacity, overflowing level on the stack when hw_attribute_length
-> exceeds 1:
+On 22.9.2026 01:13, Florian Fainelli wrote:
+> In bcm_sysport_stop(), if tdma_enable_set() or rdma_enable_set() timed
+> out, the function returned early with an error code. However, 
+> ndo_stop()
+> callers in the networking core ignore error returns, leaving the
+> software ring structures allocated, interrupts registered, PHY
+> connected, and clock enabled. If the interface was subsequently brought
+> up again, request_irq() and PHY connection would fail or leak.
 > 
->   BUG: KASAN: stack-out-of-bounds in hwme_get_request_sync.constprop.0.isra.0+0xf3/0x170
->   Write of size 16 at addr ffff888001907780 by task init/1
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x70/0xa0
->    print_report+0x153/0x4c6
->    kasan_report+0xf1/0x120
->    kasan_check_range+0x125/0x200
->    __asan_memcpy+0x3c/0x60
->    hwme_get_request_sync.constprop.0.isra.0+0xf3/0x170
->    ca8210_get_ed+0x9c/0xf0
->   ...
->   The buggy address belongs to stack of task init/1
->    and is located at offset 48 in frame:
->    ca8210_get_ed+0x0/0xf0
->   This frame has 2 objects:
->    [48, 49) 'level'
->    [64, 65) 'lenvar'
+> Ensure all software ring teardown, interrupt freeing, PHY
+> disconnection, and clock disabling steps are executed regardless of DMA
+> disable timeouts.
 > 
-> Initialize lenvar = 1 in ca8210_get_ed() and return
-> IEEE802154_SYSTEM_ERROR in hwme_get_request_sync() if
-> response.pdata.hwme_get_cnf.hw_attribute_length exceeds
-> *hw_attribute_length.
-
-This function is silly.
-There is exactly one caller, the only valid length seems to 1 (is zero valid?),
-not much point using memcpy() either.
-
-David
-
-> 
-> Tested in QEMU with KASAN enabled by passing an oversized
-> hw_attribute_length response into ca8210_get_ed().
-> 
-> Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-> Cc: stable@vger.kernel.org
+> Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet 
+> MAC driver")
 > Assisted-by: LLM
-> Signed-off-by: Hui Peng <benquike@gmail.com>
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 > ---
-> Changes in v3:
-> - No changes.
+>  drivers/net/ethernet/broadcom/bcmsysport.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 > 
-> Changes in v2:
-> - Split out as patch 2/3.
-> - Replaced the temporary stack buffer in ca8210_get_ed() with lenvar = 1
->   and an upper-bound check against *hw_attribute_length in
->   hwme_get_request_sync() as requested by Miquel Raynal.
+> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c 
+> b/drivers/net/ethernet/broadcom/bcmsysport.c
+> index e5bb7fa84fda..2b064da4eb7c 100644
+> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
+> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+> @@ -2088,19 +2088,15 @@ static int bcm_sysport_stop(struct net_device 
+> *dev)
+>  	umac_enable_set(priv, CMD_RX_EN, 0);
 > 
->  drivers/net/ieee802154/ca8210.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  	ret = tdma_enable_set(priv, 0);
+> -	if (ret) {
+> +	if (ret)
+>  		netdev_err(dev, "timeout disabling TDMA\n");
+> -		return ret;
+> -	}
 > 
-> diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-> index a990a0f..8aa7ffe 100644
-> --- a/drivers/net/ieee802154/ca8210.c
-> +++ b/drivers/net/ieee802154/ca8210.c
-> @@ -1677,6 +1677,9 @@ static u8 hwme_get_request_sync(
->  		return IEEE802154_SYSTEM_ERROR;
->  
->  	if (response.pdata.hwme_get_cnf.status == IEEE802154_SUCCESS) {
-> +		if (response.pdata.hwme_get_cnf.hw_attribute_length >
-> +		    *hw_attribute_length)
-> +			return IEEE802154_SYSTEM_ERROR;
->  		*hw_attribute_length =
->  			response.pdata.hwme_get_cnf.hw_attribute_length;
->  		memcpy(
-> @@ -2027,7 +2030,7 @@ static int ca8210_xmit_async(struct ieee802154_hw *hw, struct sk_buff *skb)
->   */
->  static int ca8210_get_ed(struct ieee802154_hw *hw, u8 *level)
->  {
-> -	u8 lenvar;
-> +	u8 lenvar = 1;
->  	struct ca8210_priv *priv = hw->priv;
->  
->  	return link_to_linux_err(
+>  	/* Wait for a maximum packet size to be drained */
+>  	usleep_range(2000, 3000);
+> 
+>  	ret = rdma_enable_set(priv, 0);
+> -	if (ret) {
+> +	if (ret)
+>  		netdev_err(dev, "timeout disabling RDMA\n");
+> -		return ret;
+> -	}
 
+If TDMA or RDMA don't stop, the rings get freed while the hardware may
+still use them. Maybe topctrl_flush() before freeing?
+
+The same pattern would probably apply to bcm_sysport_suspend().
+
+> [...]
+
+Thanks,
+Nicolai
