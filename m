@@ -1,387 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E285328DD
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5498B46F48C
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790092952; cv=none; b=eZ2eHNbg31UbTyc8WcITj22xc2wN8GXYNswBVP58hUNoyH+3fyZqPxnWlzDzvR4Yqqw7mxLVwKME3oHbt2HaTZh50xbA/mSpA/laOQCyfxweV0qn1yb6Xr0oville35eYKwW3lKGIk5VicMt9KMIOI44aF1Dr9YHh4GppxebiVk=
+	t=1790093162; cv=none; b=C5a2FJ7PVA+heXTS1Jv6A9RTa46Y07raadOffDIrQXq+l7DkjY3oB2+2eykki7yahkUOffYRcguCVGInqcL9HGw5uHS64y4cuwEA7L3jixvhByixgf5LN/Iarxz5TJyQr49m93WGKbNh/jDkazTw0Qe8JXOYeAEqVNIpnTRgNjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790092952; c=relaxed/simple;
-	bh=Ncz7CQBqB5oktJ/N60An10A7HDBKgqh+UTY0yaIgqlc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a9qCSR39hbc9VYe/1ny+y6utXtRZnJMsvORw2+SiW6LotxhJtSSpyS6p/I5BAikOvCugroraV/jZwp0PAfZuVfxy7e9ZXitbb+RzZRkDo46nMWlJ7irybp7XSawUj3JCsvBjhGr5gqY3NRSIEZpiRDVwlK0ZaEHFpvZlZZDnA1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcLOaNIK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790093162; c=relaxed/simple;
+	bh=cBEc7uDHaj0F3xOA20DtzQQ/3s8Na+5oIiUZ7+r/aMU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uk1nviXbgLXcD9U8LK6dO4Bv1RxXerq48/yrKywhaM0S4sQQk2C3icm6x2BOBAQumMQtZhA6LhegvvNEXFTocWuLrBUaZH5F8Yr7auGIDfPAWMFClrHxHs1DrsaLQ+FwBIeT483GpG7Evo8LM7uzqrEuOKthKNzwfWQgwwkoy0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iQurr0gN; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcLOaNIK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804F31F00898;
-	Tue, 22 Sep 2026 16:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790092950;
-	bh=wWceUFZ4RHIGoXegkXkHU7YhQ74ks/AZrPsuIzn0Bl0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LcLOaNIKLKzCtVEZj7guNnElp/vjxtQ4hrNZ3ea4eMolI+QxB/GsJFGmV4AGZ7SRc
-	 j6itlRyCaGkngTwLJwVivzmMeFXf5T+zT4XknGG8Y22PVH2o9ZlukKt/OV5h55q0IW
-	 PdMWZtxPj0jPHmLT4m4JKf8X5h0u4YcOO4SGwa79M5Pynsrjxz6j7xl6AdhOUh8KLL
-	 SW9fXylJ3WyBNgIG8E8jgXxeSiUN3PaTdtM5VJga+pD0NFtJZL1hUkejRdaB4hl94Y
-	 RG5qYzH0Fz3qNZiOPS8weJ4TIUENg4QSdIyvOKP+vjN+03De4S3MRYV7dy11FAsx8j
-	 mLcHFGhpOLvqg==
-Subject: Re: [PATCH v5 net-next 7/8] vxlan: remove default_dst and use
- vxlan_config and lowerdev
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@google.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Date: Tue, 22 Sep 2026 16:02:30 +0000
-Message-ID: <179009295008.2160803.2616095529025993546@kernel.org>
-In-Reply-To: <20260921100139.508191-8-edumazet@google.com>
-References: <20260921100139.508191-8-edumazet@google.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iQurr0gN"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-39de8addbe4so10534a91.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:06:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790093160; x=1790697960;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=V0YyTnBog96V9Zb3wGwIvmL06QL89nmCL7iyIr76ijI=;
+        b=WkcuiXiq5pKfCl9/uLFcg5vVNkBy/9aqloqybddPE21+SfsYeVzmSkB4aINyoBmWpn
+         BDiWhRLZpbZAgdTdpU3ioq2NtHglKWc8mjEFwhpjXG2Mp50rgFuBfgBJjjaxNmDHnmkW
+         aaf7BIja/m71ijbuI1/lXavZGNtriyjsLnxE6sxdM6Yu3LNfYfmFmZwKgzEdbeaykuo9
+         NwOpiH8Blvc4jm32aZARGqUeoUABTPag1tq56s9aio8xEEguYhVUFdGWRAFe+5gdf+zn
+         f6ZBB+epSLhfjxLHzotOOTL7JOcwnaHRcRydF2AqrVMIeYNAG0nJXooRSyo8Pif9VVYW
+         r1WQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw6rs+kOMS0iH0miV8LPSpDGM3CxbKh+x2Xx/FIAc5D6zUtqxPKmG/p973HRXPs4ORo2aeqkXw=@vger.kernel.org
+X-Gm-Message-State: AFuF++nkUYJyT+L+BWPki6SvdPYCPvNj5gWfkk1k2VIfaQ6iLW6utMHx
+	ba3Stdo0GjsdcnUwtAVEn1a1jhKRyHOVn0R7pgPvB09E1q+cswDBGtIucI/hPORUjruHJai1kad
+	19diIDScKqxzgRQiAgSI8WRnhqaoQyTEO2CBQgvNdEwUppSN6MSSOWDETiYu7GnBEJQgsydADBr
+	Eu5V3Bep4UDBwSyIXxQOM8f3mtyjr++xbH66McpOqht38pU9N4EHg9QV2oRsrljsK1dAetPiLrE
+	THpZXInL0Z8oWl0
+X-Gm-Gg: AYBFou0NgrxNSesndILiWoRxU2VrWj83a7i12kCqSzZSQH9+NuT/3thrFqd1glOdmhT
+	q+b0G2hUe+DF38lDQjpQkxRIj+n21mFzBKLEI2/GTLBIOLE6gIjN1qS7G/rdlGUkQLl4ExVPsZl
+	R3aul1UgRpX6GzK4h4XFVh2NFeRvNwqOWO7+GGi5Xk7iC5byEV/v0fp8ZNSt+oshvv9VwFZQkDh
+	pltXL4EISeBiwNyf5Bv68UmjUmxm0gkvQ+vK+VP09viUvVPrMGXZrHaXAeXWTGrpKl51P4I+GVe
+	qufYFbHWgyBFJ1uUM06LY5f4qkxYMbwux7x+LsM5Kbms+QpnJuwIztWlfOZ6W0zL4mdQF+k/zse
+	p/mweoSc4I7KH3uzRNAyRwz3aOCJHUZrtPzf2Zc03qD7RgjD61jxPYRM+PCiwKVWaynJGsUPQ4I
+	uSqF70+nuKFr4N6EQkcLYoV1tXCOMNliiyGbxzBOAq
+X-Received: by 2002:a17:90b:4b:b0:39e:27e:2f09 with SMTP id 98e67ed59e1d1-3a07309da84mr1898188a91.8.1790093160323;
+        Tue, 22 Sep 2026 09:06:00 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a07db71d7fsm43393a91.2.2026.09.22.09.05.58
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 22 Sep 2026 09:06:00 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-530d912b923so1096661cf.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:05:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790093158; x=1790697958; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V0YyTnBog96V9Zb3wGwIvmL06QL89nmCL7iyIr76ijI=;
+        b=iQurr0gNBLdYSeTU7SZjD5/BU1k+oQF3YLM6oWjK0JxRiJdlizXhpGJXXz6gBY889a
+         k0CVcPtN1Er353LwBX5uT0tYXC9z+J2ZoLV+oH8fHE2ps6rZDEdlztNUyBLC0D9I4Lfv
+         3xOCWot60njwXmMWgFxDN3hHkLyU0llz/oDZk=
+X-Forwarded-Encrypted: i=1; AKwUvBxXdXXLzdFJWsnsg9mNNOWi5j3b/CqhaKLb6IakZUNZUjOV15qOwo1dhuKa+b2hkyiVur8i2Fg=@vger.kernel.org
+X-Received: by 2002:a05:622a:14cf:b0:530:cf10:8a9e with SMTP id d75a77b69052e-532eadce263mr614881cf.39.1790093158004;
+        Tue, 22 Sep 2026 09:05:58 -0700 (PDT)
+X-Received: by 2002:a05:622a:14cf:b0:530:cf10:8a9e with SMTP id d75a77b69052e-532eadce263mr613981cf.39.1790093157020;
+        Tue, 22 Sep 2026 09:05:57 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532e18c5ee4sm16133671cf.11.2026.09.22.09.05.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 09:05:56 -0700 (PDT)
+Message-ID: <faea1c6e-1317-4771-9096-75254877a810@broadcom.com>
+Date: Tue, 22 Sep 2026 09:05:52 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] MAINTAINERS: add Nicolai Buchwitz as GENET
+ maintainer
+To: Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org
+Cc: Doug Berger <opendmb@gmail.com>, Justin Chen <justin.chen@broadcom.com>,
+ bcm-kernel-feedback-list@broadcom.com, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, linux-kernel@vger.kernel.org
+References: <20260922073140.1471858-1-nb@tipi-net.de>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20260922073140.1471858-1-nb@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On 9/22/26 00:31, Nicolai Buchwitz wrote:
+> I have been contributing to and reviewing the GENET driver for a while
+> now. Florian asked if I would like to formalize this commitment, so add
+> myself as a maintainer.
+> 
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Low priority / nit picks for your consideration:
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
-- [Low] The patch is advertised as a pure redundancy-removal refactor
-  ("remove default_dst and use vxlan_config and lowerdev"), but it…
-
-Pre-existing issues:
-- [High] On a running VXLAN device with VXLAN_F_VNIFILTER, a changelink
-  that swaps the lower device (or changes the remote) makes…
-- [Medium] This problem wasn't introduced by this patch, but the patch
-  touches the affected function: in vxlan_vni_update_group()…
-
---
-
-vxlan: remove default_dst and use vxlan_config and lowerdev
-
-This drops vxlan->default_dst and replaces it with a plain
-struct net_device *lowerdev in struct vxlan_dev, moving the remaining
-readers of remote_ip, remote_vni and remote_ifindex over to vxlan->cfg.
-vxlan_config_apply() gains a lowerdev_changed argument, and
-vxlan_config_validate() gains a new rejection when IFLA_VXLAN_LINK is
-cleared while per-VNI multicast groups exist.
-
-A few questions below about how the behaviour changes are packaged, plus
-two older issues in code this patch touches.
-
-(no Link: tags in the commit header)
-
-> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-> index 04b2925d7c38a..b505fefcef70a 100644
-> --- a/drivers/net/vxlan/vxlan_core.c
-> +++ b/drivers/net/vxlan/vxlan_core.c
-
-[ ... ]
-
-> @@ -3973,6 +3982,13 @@ static int vxlan_config_validate(struct net *src_net, struct vxlan_config *conf,
->  			return -EINVAL;
->  		}
->  
-> +		if ((conf->flags & VXLAN_F_VNIFILTER) && old &&
-> +		    vxlan_vnifilter_has_multicast(old)) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "Local interface required for multicast remote group");
-> +			return -EINVAL;
-> +		}
-> +
->  #if IS_ENABLED(CONFIG_IPV6)
->  		if (conf->flags & VXLAN_F_IPV6_LINKLOCAL) {
->  			NL_SET_ERR_MSG(extack,
-> @@ -4007,10 +4023,9 @@ static void vxlan_config_apply(struct net_device *dev,
->  			       struct vxlan_config *new_cfg,
->  			       struct net_device *lowerdev,
->  			       struct net *src_net,
-> -			       bool changelink)
-> +			       bool changelink, bool lowerdev_changed)
->  {
->  	struct vxlan_dev *vxlan = netdev_priv(dev);
-> -	struct vxlan_rdst *dst = &vxlan->default_dst;
->  	unsigned short needed_headroom = ETH_HLEN;
->  	struct vxlan_config *old_cfg;
->  	int max_mtu = ETH_MAX_MTU;
-> @@ -4023,18 +4038,13 @@ static void vxlan_config_apply(struct net_device *dev,
->  			vxlan_ether_setup(dev);
->  
->  		if (new_cfg->mtu)
-> -			dev->mtu = new_cfg->mtu;
-> +			WRITE_ONCE(dev->mtu, new_cfg->mtu);
->  
->  		vxlan->net = src_net;
->  	}
->  
-> -	dst->remote_vni = new_cfg->vni;
-> -
-> -	memcpy(&dst->remote_ip, &new_cfg->remote_ip, sizeof(new_cfg->remote_ip));
-> -
-> +	dev->needed_tailroom = 0;
->  	if (lowerdev) {
-> -		dst->remote_ifindex = new_cfg->remote_ifindex;
-> -
->  		netif_inherit_tso_max(dev, lowerdev);
->  
->  		needed_headroom = lowerdev->hard_header_len;
-> @@ -4042,16 +4052,17 @@ static void vxlan_config_apply(struct net_device *dev,
->  
->  		dev->needed_tailroom = lowerdev->needed_tailroom;
->  
-> -		max_mtu = lowerdev->mtu - vxlan_headroom(flags);
-> +		max_mtu = READ_ONCE(lowerdev->mtu) - vxlan_headroom(flags);
->  		if (max_mtu < ETH_MIN_MTU)
->  			max_mtu = ETH_MIN_MTU;
->  
->  		if (!changelink && !new_cfg->mtu)
-> -			dev->mtu = max_mtu;
-> +			WRITE_ONCE(dev->mtu, max_mtu);
->  	}
->  
-> -	if (dev->mtu > max_mtu)
-> -		dev->mtu = max_mtu;
-> +	/* A changelink leaving the lower device alone must not shrink the mtu */
-> +	if (lowerdev_changed && READ_ONCE(dev->mtu) > max_mtu)
-> +		WRITE_ONCE(dev->mtu, max_mtu);
-
-[Severity: Low]
-
-The subject presents this as removing a redundant copy of the default
-destination, but two of the changes here look like fixes for existing
-user triggerable defects, and there is no Fixes: tag for either.  Would
-it make sense to split them out?
-
-Before this patch vxlan_changelink() forced lowerdev to NULL when it was
-unchanged:
-
-	if (dst->remote_dev == lowerdev)
-		lowerdev = NULL;
-
-and vxlan_config_apply() only derives the headroom inside if (lowerdev):
-
-	needed_headroom = lowerdev->hard_header_len;
-	needed_headroom += lowerdev->needed_headroom;
-
-So any changelink that kept the same lower device, for example
-ip link set vxlan0 type vxlan ttl 64, recomputed dev->needed_headroom as
-ETH_HLEN + vxlan_headroom(flags) and dropped the lower device's
-contribution.  Passing lowerdev unconditionally repairs that, and the
-new lowerdev_changed argument keeps the previous mtu semantics.
-
-The second one: vxlan_config_apply() used to commit
-dst->remote_ifindex = new_cfg->remote_ifindex only when lowerdev was
-non-NULL, while vxlan->cfg received remote_ifindex == 0 anyway, so
-clearing IFLA_VXLAN_LINK left default_dst.remote_ifindex stale.
-vxlan_fill_info(), vxlan_change_mtu(), vxlan_get_link_ksettings() and
-vxlan_handle_lowerdev_unregister() all read that stale value.  This
-patch removes the divergence, again with no Fixes: tag.
-
-Finally, the new vxlan_vnifilter_has_multicast() check in
-vxlan_config_validate() makes a changelink with IFLA_VXLAN_LINK=0 return
--EINVAL where it was previously accepted, and IFLA_VXLAN_LINK reporting
-after such a request changes as well.
-
-Could the two fixes be carried as separate patches with Fixes: tags so
-they can be picked up for stable, and the new -EINVAL be called out as a
-user visible change?
-
-[ ... ]
-
-> @@ -4579,26 +4589,23 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
->  	if (!new_cfg)
->  		return -ENOMEM;
->  
-> -	if (dst->remote_dev == lowerdev)
-> -		lowerdev = NULL;
-> -
-> -	err = netdev_adjacent_change_prepare(dst->remote_dev, lowerdev, dev,
-> -					     extack);
-> -	if (err) {
-> -		kfree(new_cfg);
-> -		return err;
-> +	lowerdev_changed = vxlan->lowerdev != lowerdev;
-> +	if (lowerdev_changed) {
-> +		err = netdev_adjacent_change_prepare(vxlan->lowerdev, lowerdev,
-> +						     dev, extack);
-> +		if (err) {
-> +			kfree(new_cfg);
-> +			return err;
-> +		}
->  	}
-
-[ ... ]
-
-> @@ -4651,20 +4661,26 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
->  	}
->  
->  	if (change_igmp &&
-> -	    (vxlan_addr_multicast(&dst->remote_ip) ||
-> +	    (vxlan_addr_multicast(&cfg->remote_ip) ||
->  	     (cfg->flags & VXLAN_F_VNIFILTER)))
->  		err = vxlan_multicast_leave(vxlan);
->  
->  	if (netif_running(dev) && conf.age_interval != cfg->age_interval)
->  		mod_timer(&vxlan->age_timer, jiffies);
->  
-> -	netdev_adjacent_change_commit(dst->remote_dev, lowerdev, dev);
-> -	if (lowerdev && lowerdev != dst->remote_dev)
-> -		dst->remote_dev = lowerdev;
-> -	vxlan_config_apply(dev, new_cfg, lowerdev, vxlan->net, true);
-> +	if (lowerdev_changed) {
-> +		if (lowerdev)
-> +			netdev_adjacent_change_commit(vxlan->lowerdev, lowerdev,
-> +						      dev);
-> +		else
-> +			netdev_upper_dev_unlink(vxlan->lowerdev, dev);
-> +		vxlan->lowerdev = lowerdev;
-> +	}
-> +	vxlan_config_apply(dev, new_cfg, lowerdev, vxlan->net, true,
-> +			   lowerdev_changed);
->  
->  	if (!err && change_igmp &&
-> -	    (vxlan_addr_multicast(&dst->remote_ip) ||
-> +	    (vxlan_addr_multicast(&new_cfg->remote_ip) ||
->  	     (new_cfg->flags & VXLAN_F_VNIFILTER)))
->  		err = vxlan_multicast_join(vxlan);
-
-[Severity: High]
-
-This is a pre-existing issue and not introduced by this patch, but since
-the error handling around vxlan_multicast_leave() is being touched here,
-can a failing leave leave a running device with no memberships at all?
-
-With VXLAN_F_VNIFILTER, vxlan_multicast_leave() calls
-vxlan_multicast_leave_vnigrp(), which walks every VNI without
-deduplicating:
-
-	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
-		if (vxlan_addr_multicast(&v->remote_ip) &&
-		    !vxlan_group_used(vn, vxlan, v->vni, &v->remote_ip, 0)) {
-			ret = vxlan_igmp_leave(vxlan, &v->remote_ip, 0);
-			if (ret)
-				last_err = ret;
-		}
-	}
-
-The join side collapses duplicates, so only one membership exists:
-
-	bridge vni add dev vx0 vni 100 group 239.1.1.1
-	bridge vni add dev vx0 vni 200 group 239.1.1.1
-
-vxlan_multicast_join_vnigrp() maps the second join's -EADDRINUSE to
-success, and it also skips any per-VNI group equal to cfg->remote_ip,
-which the leave path does not.
-
-vxlan_group_used() cannot see the duplicate inside the same device:
-
-	if (family == AF_INET && sock4 && refcount_read(&sock4->refcnt) == 1)
-		return false;
-	...
-		if (!netif_running(vxlan->dev) || vxlan == dev)
-			continue;
-
-so the second vxlan_igmp_leave() reaches ip_mc_leave_group() with no
-membership left and returns -EADDRNOTAVAIL, which is propagated as
-last_err.
-
-At that point the new adjacency and the new cfg are still committed, and
-the
-
-	if (!err && change_igmp && ...)
-		err = vxlan_multicast_join(vxlan);
-
-guard skips the rejoin, so the device keeps running with no group
-membership and stops receiving flooded traffic.  Retrying the same
-request does not help, since cfg->remote_ifindex now matches the
-requested value and change_igmp is false, so only an administrative
-down/up restores it.  Should the leave path skip groups it never joined,
-or should the rejoin not be gated on the leave result?
-
-> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-> index 678565c4f8e27..48135ff9b95a1 100644
-> --- a/drivers/net/vxlan/vxlan_vnifilter.c
-> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-
-[ ... ]
-
-> @@ -518,8 +534,10 @@ int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
->  
->  	spin_lock_bh(&vxlan->hash_lock);
->  	if (remote_ip && !vxlan_addr_any(remote_ip)) {
-> +		union vxlan_addr rip = *remote_ip;
-> +
->  		err = vxlan_fdb_update(vxlan, all_zeros_mac,
-> -				       remote_ip,
-> +				       &rip,
->  				       NUD_REACHABLE | NUD_PERMANENT,
->  				       NLM_F_APPEND | NLM_F_CREATE,
->  				       cfg->dst_port,
-> @@ -553,8 +571,8 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
->  				  struct netlink_ext_ack *extack)
->  {
->  	struct vxlan_net *vn = net_generic(vxlan->net, vxlan_net_id);
-> -	struct vxlan_rdst *dst = &vxlan->default_dst;
-> -	union vxlan_addr *newrip = NULL, *oldrip = NULL;
-> +	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
-> +	const union vxlan_addr *newrip = NULL, *oldrip = NULL;
->  	union vxlan_addr old_remote_ip;
->  	int ret = 0;
->  
-> @@ -566,8 +584,8 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
->  	if (group && !vxlan_addr_any(group)) {
->  		newrip = group;
->  	} else {
-> -		if (!vxlan_addr_any(&dst->remote_ip))
-> -			newrip = &dst->remote_ip;
-> +		if (!vxlan_addr_any(&cfg->remote_ip))
-> +			newrip = &cfg->remote_ip;
->  	}
->  
->  	/* if old rip exists, and no newrip,
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch either, but vxlan_vni_update_group()
-is being converted here, so while looking at it: does replacing one non-zero
-per-VNI group with another leave the old flood destination behind?
-
-oldrip is only set when there is no newrip:
-
-	if (!newrip && !vxlan_addr_any(&old_remote_ip))
-		oldrip = &old_remote_ip;
-
-so on a replacement vxlan_update_default_fdb_entry() is called with
-old_remote_ip == NULL and only runs the NLM_F_APPEND | NLM_F_CREATE
-update.  For the all-zeros MAC that goes through
-vxlan_fdb_update_existing() -> vxlan_fdb_append(), which keeps the
-existing rdst:
-
-	if ((flags & NLM_F_APPEND) &&
-	    (is_multicast_ether_addr(f->key.eth_addr) ||
-	     is_zero_ether_addr(f->key.eth_addr))) {
-		rc = vxlan_fdb_append(f, ip, port, vni, ifindex, &rd);
-
-vninode->remote_ip is then overwritten with the new group and the request
-succeeds, so the zero-MAC entry ends up with two remotes:
-
-	bridge vni add dev vx0 vni 100 group 239.1.1.1
-	bridge vni add dev vx0 vni 100 group 239.1.1.2
-
-vxlan_vni_add() routes the second request to vxlan_vni_update() ->
-vxlan_vni_update_group() with create == false.  A later VNI delete only
-targets vninode->remote_ip in vxlan_vni_delete_group(), so the stale rdst
-survives and re-adding the VNI accumulates more.  The same applies when a
-per-VNI group is switched back to a non-zero device default.
-
-Should the replacement case pass the previous address as old_remote_ip so
-the stale destination is removed?
-
+Thanks for accepting Nicolai, welcome!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921100139.508191-1-edumazet%40google.com
+Florian
