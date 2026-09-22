@@ -1,108 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FCD43E066;
-	Tue, 22 Sep 2026 11:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2ACA53C3AE;
+	Tue, 22 Sep 2026 11:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790076312; cv=none; b=EQBHKJVpv+zmbkEeb9mj2w1ULRtCInaC5iZbqo5pTrh/uVNQ5oKJ0p9cMqcfCwRQWnVaKK90F3r9a2gqm7UYPK9cLxR78YT9JSYyqs2cpc3Z93Erzdrg7nTCbqd8r6jjDlexmWJh81zKRw4V/nYrtLvnDOD2x7PjpYbMNUL4Hhw=
+	t=1790076541; cv=none; b=ADZYqDmsmNvApO7wML9exTIJQgT9QKgIDwZpni38diYOBtL6hcQvkxJuR7eNnvjNOWbxe2iXEWWksMWVRdf97eWR93Et+SuIyj29jiBINiYp7ALRNu6ngIL8R5xKfhuqRKkQiIaFZFG71HCZSHTU/MCkWC4Q224Jx3PW4SjXcbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790076312; c=relaxed/simple;
-	bh=yjAOdJxpE1xtRzakmMUG+xk8gE312jRtw4fYjg8deBI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aB5ZpgjDhv1IvhCkqCDUPzYMpNVG1zkUzu4M+e2Hvh/NPg03M4wtl1/vbl8yL2TnJpYnvL7yjazarzV7ByTAUM+o8h3YAkz5kVi8nJOfRA6oL/pd8weMn/aAD0YFd+ZWphPkzdeJH2cj6q9kG2L/xT8UXPndtyV+zRhWGkfcgyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOjMcEw7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790076541; c=relaxed/simple;
+	bh=8ezXR+Lt6ZaNOwuRcrQbMLhsdGaTIjT66z9uPptkQk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=CtNqQkZKsBVAErILlX57CtR3tSs7U9C3TKqWkrQmoA0a3CPOv8symJRJs70dRCKbk2zLvpJGyJuUMckMofIBodQ+CxqGPk+XNU6Kih/c/ChE+/rUx5meCts13n7SGztFkwnUVry7OyVy6uSlL5JUrap8QtnURuhR07qefyaJbRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKsSSuLY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOjMcEw7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 14512C2BCF7;
-	Tue, 22 Sep 2026 11:25:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790076310;
-	bh=yjAOdJxpE1xtRzakmMUG+xk8gE312jRtw4fYjg8deBI=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=OOjMcEw7OkCEq5Z9tj+0dx9dUycG5kPAQF0bGcQ99MZMq+HQdLc1IJDO+y7uSjRx9
-	 4rv3xnMJmwU7tCYlmgIaFAzQIIbeDxSTd75ygsK9YfqC9KoXEVtP6gbjT4hCiH1Hmd
-	 /7vjV6ynhrQuvhbocKKw9Lw/lXxxPc20vCIwGd2hGmGZRBcjFuTmQXLz0Y8qV3VKXw
-	 aRZsi3VGnHA81QfBdH7KaEzbaVeYRmOi+9y/kWbmyFwCXN9356nlGtSuVbtPDLcIAZ
-	 xhk/mb7ssDXW7dMvoZFYM5MtsvRSYKqmvS8LSacXN9oXhSraJqjUzvnDIA9edQVvnI
-	 clfa4cz4h7jsA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2DFCC982FF;
-	Tue, 22 Sep 2026 11:25:09 +0000 (UTC)
-From: Rouven Czerwinski via B4 Relay <devnull+rouven.czerwinski.linaro.org@kernel.org>
-Date: Tue, 22 Sep 2026 13:25:09 +0200
-Subject: [PATCH] net: phy: mxl-gpy: add 2.5G for MXL68211C
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKsSSuLY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397C51F000FF;
+	Tue, 22 Sep 2026 11:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790076535;
+	bh=5sE+IxoSTZUzdVKx+DnOqn3GcbiLTNJfCmwEINwktAQ=;
+	h=Date:From:To:Cc:Subject;
+	b=GKsSSuLYy/KpyQmmJcxlG1tTw9B2746oAF3qz5OJco6Rk5wlREuqDmWhTLBz1OnVE
+	 2Y6dhKvi/JzJU2AzPLasVYfnGiA1CW1DjfxqbawnAAQjvWj2xjKqYionA1EbLUtLwx
+	 2Et0ui1/4koz1YZY+04kJ8J8WDmflnehPSFevrwsGjxK1HE/9u9XLS3aCySqZO8pA9
+	 SCSUm7eKCN/Vq+uhou2v9Q4mhTnsTxnUOq655hniNYJ/R1rA6widK7p2wgp/U5eYcb
+	 9BbvtMgbb4HjxzttDe0HRup2BPs4VLjIMNHEofQKVdHMvsWqtW5exZqbb/o+/sTFFu
+	 aX4LsGZtkV5Eg==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 8C3FF1AC56BF; Tue, 22 Sep 2026 12:28:50 +0100 (BST)
+Date: Tue, 22 Sep 2026 13:28:50 +0200
+From: Mark Brown <broonie@kernel.org>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Networking <netdev@vger.kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Johannes Berg <johannes.berg@intel.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the net-next tree with the iwlwifi tree
+Message-ID: <arJmcuhpJ69wAvYK@sirena.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-mainline-rouven-mxl2g5-v1-1-a0ed53631a5f@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ5EQBBA4atIrVXSKvE3V5lY0AollEk3IhF31
- 8byW7x3gmcn7OETneB4Fy+LBiRxBHaotWeUNhjIUGZKIpxr0UmU0S3bzorzMVGfYk6NTZOWijI
- 3EOKf406O//hbvfZbM7Jdnxtc1w2+JTMfegAAAA==
-X-Change-ID: 20260922-mainline-rouven-mxl2g5-72bc51d28970
-To: Xu Liang <lxu@maxlinear.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Daniel Golle <daniel@makrotopia.org>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Rouven Czerwinski <rouven.czerwinski@linaro.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790076309; l=1299;
- i=rouven.czerwinski@linaro.org; s=20260126; h=from:subject:message-id;
- bh=FhxIeimRH2FMtZe6AVDcaAIBuNHx/BLHGEk99OxHqR8=;
- b=3yHtTW7SSXcyJX6qd70w7Pzh8M+YvhdIFCee0ZdsEGtHIKDwlye1fUmIn5TryCg/6lQDfIRbe
- hbC5QSYtAZUCMyr/CFlcycDZBM4bBkWp9LMptWPPwrBbT27eOvsmXsy
-X-Developer-Key: i=rouven.czerwinski@linaro.org; a=ed25519;
- pk=/5pmUK/XIAIIo8JA0axgfy1k8NRhRTQkxVwZYa1ga7U=
-X-Endpoint-Received: by B4 Relay for rouven.czerwinski@linaro.org/20260126
- with auth_id=616
-X-Original-From: Rouven Czerwinski <rouven.czerwinski@linaro.org>
-Reply-To: rouven.czerwinski@linaro.org
-
-From: Rouven Czerwinski <rouven.czerwinski@linaro.org>
-
-The MXL86211C also supports 2.5G via 2500BASEX, switch the config init
-to indicate support for that mode. Datasheet checks indicate that the
-2.5G speed indication is the same between GPY211 & MXL68211C.
-
-The same should be true for MXL86252 & MXL86282, those are not modified
-for a lack of testing hardware.
-
-With this change 2.5G negotiates correctly with a Mikrotik
-CRS310-G+2S+IN.
-
-Signed-off-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
----
- drivers/net/phy/mxl-gpy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index 0da2d4e9d8548..089a1a9e5bc61 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -1405,7 +1405,7 @@ static struct phy_driver gpy_drivers[] = {
- 		PHY_ID_MATCH_MODEL(PHY_ID_MXL86211C),
- 		.name		= "Maxlinear Ethernet MxL86211C",
- 		.get_features	= genphy_c45_pma_read_abilities,
--		.config_init	= gpy_config_init,
-+		.config_init	= gpy21x_config_init,
- 		.probe		= gpy_probe,
- 		.inband_caps	= gpy_inband_caps,
- 		.config_inband	= gpy_config_inband,
-
----
-base-commit: 2d7341a020a57b30c1826db38f81bbc257ae3bbc
-change-id: 20260922-mainline-rouven-mxl2g5-72bc51d28970
-
-Best regards,
---  
-Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mDMwOWWrCDSRTJm4"
+Content-Disposition: inline
 
 
+--mDMwOWWrCDSRTJm4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+Today's linux-next merge of the net-next tree got conflicts in:
+
+  net/mac80211/ieee80211_i.h
+  net/mac80211/tx.c
+
+between commit:
+
+  8effab902fa34 ("wifi: mac80211: prevent AP VLAN tx from other interfaces")
+
+=66rom the iwlwifi tree and commit:
+
+  78b843974fb83 ("wifi: mac80211: report multicast transmission from lookup=
+_ra_sta()")
+
+=66rom the net-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+diff --cc net/mac80211/ieee80211_i.h
+index 9374c2942489c,10767666c45c0..0000000000000
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+diff --cc net/mac80211/tx.c
+index c8217f6d146e7,83b758724edff..0000000000000
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@@ -2530,9 -2579,16 +2579,16 @@@ static inline bool ieee80211_is_tdls_se
+  	       skb->data[14] =3D=3D WLAN_TDLS_SNAP_RFTYPE;
+  }
+ =20
+- int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
+- 			    struct sk_buff *skb,
+- 			    struct sta_info **sta_out, bool bss)
++ /*
++  * Returns an error if the frame should be dropped, otherwise
++  * the *sta_out pointer is filled:
++  *  - valid sta pointer: frame goes to that station
++  *  - NULL: frame will be unicast to a yet unknown station
++  *  - ERR_PTR(-ENOENT): frame will be group addressed
++  */
++ static int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
++ 				   struct sk_buff *skb,
+ -				   struct sta_info **sta_out)
+++				   struct sta_info **sta_out, bool bss)
+  {
+  	struct sta_info *sta;
+ =20
+@@@ -4422,10 -4426,10 +4429,11 @@@ void __ieee80211_subif_start_xmit(struc
+  	    ieee80211_mesh_xmit_fast(sdata, skb, ctrl_flags))
+  		goto out;
+ =20
+ -	if (ieee80211_lookup_ra_sta(sdata, skb, &sta))
+ +	if (ieee80211_lookup_ra_sta(sdata, skb, &sta,
+ +				    skb->protocol =3D=3D sdata->control_port_protocol))
+  		goto out_free;
+ =20
++ 	group_addressed =3D IS_ERR(sta);
+  	if (IS_ERR(sta))
+  		sta =3D NULL;
+ =20
+
+--mDMwOWWrCDSRTJm4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqyZnEACgkQJNaLcl1U
+h9D5dQf/SZty+OfWJFr41+2F/8C5/86/5rUcAGnb0e2uDzhIYDv7bTcjc9n7urcr
+so8bt5V6+La5xROtzLsbixofDaSqe5Qilo/T84s9BlOFQZim6MBZXGHLOQReTHDH
+gISa6du0kqxp/TOyPJPiibar4iMAO3inFBV0IO0vv7P4oBAMzbP6yZ4BdXbtjPOb
+GQoEhQZmt6BJLHzlnmCJzgRqaidVYDImnwL+BN2J7si48xFU3KdkCWzyaGhNYgoC
+27m08TlebW2qjgY3orHtNKjv4sxUEN/ZU7YTA848oUbkuIhtdISST2vR0lOsJscs
+SIJ9MWmslmVYpeOeqLwrW3T49buRlA==
+=LYnI
+-----END PGP SIGNATURE-----
+
+--mDMwOWWrCDSRTJm4--
