@@ -1,230 +1,79 @@
-Received: from mta1.migadu.com (out-131.mta1.migadu.com [95.215.58.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B3A52844F
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DA442E40F;
+	Tue, 22 Sep 2026 08:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790067345; cv=none; b=IqfmPRyShggzkIzt+5KYIAKQTbhTvb3c2HlEuj3ZILu7MB5j7QvaX2Dn9FudqDu/ET5aUQrD0q4CulqXoivE3m2m04Wg9XMh0QgYi8YYHKGOQd6jF6PpNijprXkla5m5yepaI1q/YK6zxSbv0cKUzYSPXXmG9F4+vILOOBDZSPo=
+	t=1790067492; cv=none; b=iJ7TT8CKFg7kxHIbcR9cUVD6BL3WMHJYT3AX1Vc6yZBDcv7vQxTv4GC6eQewVAmxGOpZIwOXeKAAmK3oGI/8C/lft/o3LEQfDJobgok6m9SRAtz4ClQ1m0LvL9usYkFI/FNEkqhyv1jz/5hRgbkpw/A84HJ/7US4s7A2poHur1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790067345; c=relaxed/simple;
-	bh=9S/WJv5Rt2cdity4AXgyXkjGtrAC7glb1fuugeDEndY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bNpKAK6l8OJVkm89WxcE+/89fOEUAUqt1AByIAVZQppX0UUULfC9QQxdwiV3lA5ULHNJppslivGLUvHRujontj8dRB55ZsBW44BJOkyX7kp1hiV0Dg+tFm/A4PwjgVa7orCmyaxqFxNgqj/SjHmJu5upxuUAhIRV8cg1z/5aBK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O3Tow/d1; arc=none smtp.client-ip=95.215.58.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790067492; c=relaxed/simple;
+	bh=HCghI6B5XR5O7Pinh+TlIQ2Bo8pT+2v2fO9A6qRKXcU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=uUQH8v21IzbPsJDf851TOakLbm8VyehiHzoE+3zj4w+vPlj+DuUt5xPshNUIGSry62r8k4icthK7occqsWlXtR8Q+eHvQ8jfu2cUmaj415z+Uw715EWfOZchYqgTkhvKBuZ11mxBSlfR8ZKyEDhv+L1xakMRjAdQw2G/C7MBzaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=iU3weUmZ; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O3Tow/d1"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9S/WJv5Rt2cdity4AXgyXkjGtrAC7glb1fuugeDEndY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790067341; v=1; x=1790672141;
- b=O3Tow/d1XCGCBR2TdjQ/H58iqMxdOun/VDcu/C2TdZOha/udM8n7sYKGKczJv1E6FWGuuSTw
- Tnu6N8oaBNrWp5+CkS1OnF42E+o00rS1Lm/3i7E/HUs7HLehfwBXPNnYVKk/uJuIKPUy71LTAN/
- yQ1fKP2Oq59AH5Vd7mDTtuEY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ef8445d551e51785;
-	Tue, 22 Sep 2026 08:55:41 +0000
-X-Mizu-Trace-ID: ef8445d551e51785
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Tue, 22 Sep 2026 16:54:47 +0800
-Subject: [PATCH net-next 5/5] selftests: seg6: add End.X PSP selftest
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="iU3weUmZ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0B854A48A8;
+	Tue, 22 Sep 2026 10:58:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790067488; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=+j8pTvdfJB9RlncZLBRBInAE9D5Ej55N+i65IplmUPs=;
+	b=iU3weUmZ8SgKXUhqncOgURlItnYMmwT0S9ae1NyOkbByO1qeT4/WRvNRLkoZ336zZerD5l
+	pdpCo6XtffdZ+EA1tvO4X1cO8l9DrzhAb5seoB/AxKfx1txTsB7RxZC8u5aeyFsnDIMG5l
+	BzyKslmU4oCRpwCFUur0w0Xbvk7SjXhTazYT6aAJd63cW2mO61EMR+wxO6klGp/LGDT8Tm
+	WKD22HRzBcM8wVdJG+y1FMo46paRteZ7d81PzIm7nmi7VW+zrU/uHfi8uXQ6vCKkOF21eP
+	qNjcsW7jyp7letAILTIW8LCNZVjx+6OBvdC7SZrK+tFyvNwO8xW/74R+FlIDBA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Date: Tue, 22 Sep 2026 10:58:06 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+ <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 07/12] net: systemport: Fix potential packet length
+ underflow in bcm_sysport_desc_rx()
+In-Reply-To: <20260921231305.394773-8-florian.fainelli@broadcom.com>
+References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
+ <20260921231305.394773-8-florian.fainelli@broadcom.com>
+Message-ID: <e82722225b62056031dac3648630c2c1@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-srv6_flavors_endx-v1-5-4d01c05c47b7@kylinos.cn>
-References: <20260922-srv6_flavors_endx-v1-0-4d01c05c47b7@kylinos.cn>
-In-Reply-To: <20260922-srv6_flavors_endx-v1-0-4d01c05c47b7@kylinos.cn>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+Hi Florian
 
-The current selftest only exercises End with PSP. Add a new test that
-uses End.X on the PSP path so the kernel's End.X flavor handling is
-validated end to end.
+On 22.9.2026 01:13, Florian Fainelli wrote:
+> In bcm_sysport_desc_rx(), the packet length 'len' extracted from the 
+> RSB
+> is only validated against RX_BUF_LENGTH. If a malformed or corrupted
+> frame is received with 'len' smaller than the prepended Receive Status
+> Block (sizeof(*rsb)) plus 2 padding bytes (and optional FCS), calling
+> skb_pull() will trigger a BUG() in __skb_pull() when pulling beyond
+> skb->len. Furthermore, subtracting (sizeof(*rsb) + 2) from 'len' (u16)
+> will underflow, resulting in corrupted packet stats and potential
+> out-of-bounds operations.
 
-Extend __setup_rt_policy() to parse End.X action field from the
-router description, allowing entries like:
-  4:psp:End.X,4,2
-  3:psp:End.X,3,1
+AFAIU skb_pull() returns NULL for len > skb->len and never reaches
+__skb_pull(), so it doesn't reach BUG()?
 
-Since SETUP_ERR is not set in one setup function, and the middle test may
-set ret to 1, we also need to check ret before setting the result as SKIP.
+I agree on the underflow and the wrong rx_bytes issue though.
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
- .../testing/selftests/net/srv6_end_flavors_test.sh | 83 ++++++++++++++++++++--
- 1 file changed, 78 insertions(+), 5 deletions(-)
+> [...]
 
-diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-index 52731983b4cc..e130d0d71b3d 100755
---- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-@@ -194,8 +194,8 @@
- # after the IPv6 header. At this point, the packet with IPv6 DA=cafe::1 is sent
- # to the destination, i.e. hs-1.
- 
--# Kselftest framework requirement - SKIP code is 4.
--readonly ksft_skip=4
-+# shellcheck source=lib.sh
-+source lib.sh
- 
- readonly RDMSUFF="$(mktemp -u XXXXXXXX)"
- readonly DUMMY_DEVNAME="dum0"
-@@ -345,7 +345,7 @@ cleanup()
- 	# check whether the setup phase was completed successfully or not. In
- 	# case of an error during the setup phase of the testing environment,
- 	# the selftest is considered as "skipped".
--	if [ "${SETUP_ERR}" -ne 0 ]; then
-+	if [ "${SETUP_ERR}" -ne 0 ] && [ "$ret" -ne "$ksft_fail" ]; then
- 		echo "SKIP: Setting up the testing environment failed"
- 		exit "${ksft_skip}"
- 	fi
-@@ -414,6 +414,36 @@ __get_srv6_rtcfg_op()
- 		xargs | sed 's/ /,/g'
- }
- 
-+# Given the description of a router <id:op:act> as an input, the function
-+# returns the <act> token which represents the action (e.g. End, End.X,
-+# End.T behavior with or without route table, out interface) configured
-+# for the node.
-+#
-+# Support End, End.X at present. When omit, return default End behavior.
-+# i.e. input: "1:psp:End.X,1,3"
-+#      output: "End.X nh6 fcf0:0:1:3::3 oif veth-rt-1-3"
-+__get_srv6_rtcfg_act()
-+{
-+	local element="$1"
-+	local net_prefix
-+	local acts
-+	local out
-+
-+	acts="$(echo "${element}" | cut -d':' -f3)"
-+	act="$(echo "${acts}" | cut -d',' -f1)"
-+	act="${act:-"End"}"
-+
-+	rt="$(echo "${acts}" | cut -d',' -f2)"
-+	neigh="$(echo "${acts}" | cut -d',' -f3)"
-+
-+	if [ "$act" == "End" ]; then
-+		echo "End"
-+	elif [ "$act" == "End.X" ]; then
-+		net_prefix="$(get_network_prefix "${rt}" "${neigh}")"
-+		echo "End.X nh6 ${net_prefix}::${neigh} oif veth-rt-${rt}-${neigh}"
-+	fi
-+}
-+
- # Setup the basic networking for the routers
- setup_rt_networking()
- {
-@@ -514,6 +544,7 @@ __setup_rt_policy()
- 	local function
- 	local fullsid
- 	local op_type
-+	local action
- 	local node
- 	local n
- 
-@@ -522,19 +553,20 @@ __setup_rt_policy()
- 	for n in ${policy_rts}; do
- 		node="$(__get_srv6_rtcfg_id "${n}")"
- 		op_type="$(__get_srv6_rtcfg_op "${n}")"
-+		action="$(__get_srv6_rtcfg_act "${n}")"
- 		rt_nsname="$(get_rtname "${node}")"
- 
- 		case "${op_type}" in
- 		"noflv")
- 			policy="${policy}${LOCATOR_SERVICE}:${node}::${END_FUNC},"
- 			function="${END_FUNC}"
--			behavior_cfg="End"
-+			behavior_cfg="${action}"
- 			;;
- 
- 		"psp")
- 			policy="${policy}${LOCATOR_SERVICE}:${node}::${END_PSP_FUNC},"
- 			function="${END_PSP_FUNC}"
--			behavior_cfg="End flavors psp"
-+			behavior_cfg="${action} flavors psp"
- 			;;
- 
- 		*)
-@@ -729,6 +761,30 @@ cleanup_end_flv_psp()
- 	cleanup_rt_policy_ipv6 1 2 "1:psp"
- }
- 
-+setup_endx_flv_psp()
-+{
-+	# Direction hs-1 -> hs-2 (End.X PSP flavor)
-+	# SID List=fcff:3::e,fcff:4::ef1,cafe::2
-+	#  - rt-1 (SRv6 H.Insert policy)
-+	#  - rt-3 (SRv6 End behavior)
-+	#  - rt-4 (SRv6 End.X flavor PSP with SL=1)
-+	#  - rt-2 (Route to hs-2 via nh and oif)
-+	#
-+	# Direction hs-2 -> hs-1 (End.X PSP flavor)
-+	# SID List=fcff:3::ef1,cafe::1
-+	#  - rt-2 (SRv6 H.Insert policy)
-+	#  - rt-3 (SRv6 End.X flavor PSP with SL=1)
-+	#  - rt-1 (Route to hs-1 via nh and oif)
-+	setup_rt_policy_ipv6 2 1 "3:noflv:End 4:psp:End.X,4,2"
-+	setup_rt_policy_ipv6 1 2 "3:psp:End.X,3,1"
-+}
-+
-+cleanup_endx_flv_psp()
-+{
-+	cleanup_rt_policy_ipv6 2 1 "3:noflv 4:psp"
-+	cleanup_rt_policy_ipv6 1 2 "3:psp"
-+}
-+
- check_rt_connectivity()
- {
- 	local rtsrc="$1"
-@@ -835,6 +891,22 @@ host_srv6_end_flv_psp_tests()
- 	cleanup_end_flv_psp
- }
- 
-+host_srv6_endx_flv_psp_tests()
-+{
-+	set -e
-+	SETUP_ERR=1
-+	setup_endx_flv_psp
-+	SETUP_ERR=0
-+	set +e
-+
-+	log_section "SRv6 connectivity test hosts (h1 <-> h2, End.X flavor PSP)"
-+
-+	check_and_log_hs_connectivity 1 2
-+	check_and_log_hs_connectivity 2 1
-+
-+	cleanup_endx_flv_psp
-+}
-+
- test_iproute2_supp_or_ksft_skip()
- {
- 	local flavor="$1"
-@@ -936,5 +1008,6 @@ set +e
- router_tests
- host2gateway_tests
- host_srv6_end_flv_psp_tests
-+host_srv6_endx_flv_psp_tests
- 
- print_log_test_results
-
--- 
-2.55.0
-
+Thanks
+Nicolai
