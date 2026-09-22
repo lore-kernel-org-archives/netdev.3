@@ -1,166 +1,69 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9727F1F1534
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 00:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741731F418F;
+	Tue, 22 Sep 2026 00:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790035762; cv=none; b=Q0e2VCcus0rvKLwGZKj/8FtJCFnsZuWDUbs7A+qHq6pi2/iNo/3VhRCSIQP/vo5ynMo6tauBMIoJX9epMiYnukufce8JEU4sBtOwOH8OnhbyWxtJGBeOe25LO7/CVQQHpBi34L4XSvZT7ikDglP2PxZJ7aLKH6EMlOii4jiUcZs=
+	t=1790035989; cv=none; b=EdhT5napUHM67LRzFZy7NEwkH/ysJbNUicFmgG6b03cDONUYLgXz+tgosyUzc3M5Ud5Bs3cH68sO7oxZw9K0ReptqeqCrJ7uDeMZtBUcsW75AVsMSzN1REHLtyt6anEuYEYEylJcRtoLJCgiFM3bJgm8QjNsxxvbOXS1+0qomog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790035762; c=relaxed/simple;
-	bh=g+F1XzIjG9tPsGCMtumO2J7BqYdSrLwWUlEAMXEUQy4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pSkpb226TtYpLh/RkLlzqI6FTw7rojL3hM0vFl36pTlKqudLVqtv+vGccNYZH4bWitIMB38gdnskwIqchYxnjeL3JWeGqH9W3tPAPakGhL5/KVNapg59AvRuIbH3sAdTCA54/rjXNSSqUFcEHb/lHrwAqV/Pq/HF4XLHENsCHN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qGGPDtBe; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790035989; c=relaxed/simple;
+	bh=JjQLzpYpzi6+EIL40lnAthaQLHiDc9oLR2y5XiQU9qw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UaX35gCmbRUvDA5b0iWFWsoMVEcm1ukCwH7Xc6kvgOEHhdlj2qEWs6pOTL+u3YJtK3j0ZD7+9TpHAF+5gLDYLPhlI/iCi04gLKRaxmHYM7g0FgtDmRRTO9XXPi5MmGmQfNAf4ISyXNvVn8OAKEpE0oXcfLMacAASCKztZBMnD9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YYayYgjQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qGGPDtBe"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a2a8c29c4so373408885a.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 17:09:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790035759; x=1790640559; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+px+gyXVLidkcy+k/uZ//IG8TqK3wgfrhlr6nss3oOM=;
-        b=qGGPDtBeywuo8153H6+ImNCOQoLuVwZOD6Mn+7G7Z34viSUp0V7Vi9B3EQK1qFe7N+
-         LHX8M3oXk2LQkNZzXaBuY0cvlBT8iDieUmTacF5nCg26WHx4wC9MIa1U9ba5DK5OpTE7
-         6S2XAl5sOt5Ck16J06WaF4rJAwBR6aDueZfjtbsStFgd4m73AR27P8qxvQncXG1QlaJL
-         5VgXA+FQOmFiw/7wJxcX+MwYxeBHNWKQ53RAlhYFsMyh5J+3EqtFbPIMBorEZkf8enPj
-         b9L5oId/otBx92cRC+WKNThy5zk7+DwfvT+2mYd0wyzGm4SEkF8/SWFITwMyMfaelVgG
-         gKBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790035759; x=1790640559;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+px+gyXVLidkcy+k/uZ//IG8TqK3wgfrhlr6nss3oOM=;
-        b=jAU4JvbT7cBQzPISu2CDD00ofr+6NdWE2BNRJ/QELNCHRG8s+TnAuTqX1LuRdHgzpc
-         he3FIkrKJGxqhwYEuX/W1KNcG+vJSwz0ql41a9uH0j0pDQr0765VCqN7IaQyJtrMcdse
-         MGwo07cXCfUUEBBosFcWGY3ZX4I9PvLZmS6KkKrbYPwI7aiISufFkh4dF1iPfMu5DTeW
-         XhuNmLEPWct2TKdhYq5s/+dMQqZseJqvkhkzAJA5sNf/Uk/2xohRDjRjuuspfvIAJFLw
-         7ztb0jMVSNncWFpQLDhKHs4QXEXmQZMZXRoyh8I/rRLSYag4iiUhiaFEJblf4ZHRndJo
-         IGIA==
-X-Forwarded-Encrypted: i=1; AKwUvBwztRhZCdL6e8+g8hndtkCMYzWzH/vxXPuAgRy2prBQnbAsMYzbwaJn+yno1W7ET/vcpl+6GN0=@vger.kernel.org
-X-Gm-Message-State: AFuF++n5pqsRAIrgkYhirpZRNlyNDCUZoBIvH4fi+AvaWSHFxoS4ziyP
-	wtP3+uSgzYCrf0Rbuw86CbxzPboIAwnEOe2c8V3F2sTiW8Cr2FsWxIY=
-X-Gm-Gg: AYBFou3oZGeE6W5Ss9iJLtqckXV+xabLH3OLW5+4piGhJCDkjQSScnpSVS49CuxStAY
-	/HWYOEhWs8JLbjWuozrxLZiiec1rMljAcKDx9CuVB0Y229daXq/kNinj+/DdA4lcYt/KbXzx6Lr
-	aeWXK0cq8RQZaNaom5DtYcbiiwZQNYhUiquMIjqQSSfBx7AXrh9zj8ZyvUGBPpDj00ZQHKfkD2o
-	fiQvqYvwxkCk7zntGO5vmckSa4zqOKlxH0uVMDnM/R7apBAzOtx+XOLrUPW+93oqgEjldF6knxg
-	CSQOzP4a/M+G883NroRt/EJOxtrNcfbGB6x5GSSKsmPVcQ2TfnzWa6D9NqmxQeXamMhzjj0T27Q
-	dzKG2VUNjWe1aAFi+ShxOgJWmVbZcJEhC7bhcw+88LMPT9T6AIk5tUgs78VEl/knlsfIBXPJWiL
-	XEUyX09ag3C4twPKcqAZ7wa86c4HlZpJTS1/0UmC7a+K+umF4NPGdiyqjB433Jx4jBcbyXo31Nr
-	kgmNSGc/zoyo97upBqKmCG8G+K0g1mAIhWnAVpEa3Jg3A2BLBZm2oSkRgioZsJnMcMcTLJHHKpy
-	3MAnVBVAN/IB0p3jXPkjrXg7NgCw
-X-Received: by 2002:a05:620a:1791:b0:93b:f246:bae8 with SMTP id af79cd13be357-93c15e78ed6mr305051085a.37.1790035759325;
-        Mon, 21 Sep 2026 17:09:19 -0700 (PDT)
-Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c19a812d4sm53263785a.22.2026.09.21.17.09.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 17:09:18 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Myeonghun Pak <mhun512@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net] net: airoha: npu: cancel wdt_work after releasing the WDT IRQ
-Date: Mon, 21 Sep 2026 20:09:14 -0400
-Message-ID: <20260922000914.542068-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYayYgjQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC731F000FF;
+	Tue, 22 Sep 2026 00:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790035987;
+	bh=bJmeASWMRtbK0V1j7SJ1MCYXQ8XtE4OhoMrkDYs8Who=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YYayYgjQRq2Q+zuk6Ley3QPIUo8nAqZ7eqaA5yA6A8uTumXn4fHYbtOaAcPJTFSaN
+	 fMF8go8lNrEAlhGOj189KeTjaqBSDfR3oQ+zTld5VRNZ/iZ7sW6l+0swXQ8RRtLaYP
+	 DaoKoRaVWv3avfHwZDn8aYKezLUd83WcfCoYstFkt0iy092ctGcC0v3YfShhBagAY6
+	 uKKGY0CczZCCQjUWHZAiLTVubRED+vyrwU8j90JGnZzoQDQH02rU89nYenr7P5UuDQ
+	 Uc/UhDGcO0DzwO/ZivRihVlB/P2RFF7gFK6YTp2efAjELqncHI5IJqItB92At3l+kG
+	 OTL5hHgpqqZbA==
+Date: Mon, 21 Sep 2026 17:13:06 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bhargava.marreddy@broadcom.com,
+ rahul-rg.gupta@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+ rajashekar.hudumula@broadcom.com, dharmender.garg@broadcom.com,
+ ajit.khaparde@broadcom.com
+Subject: Re: [net-next, v3 00/11] add features to bnge
+Message-ID: <20260921171306.137f5e36@kernel.org>
+In-Reply-To: <20260917064548.773334-1-vikas.gupta@broadcom.com>
+References: <20260917064548.773334-1-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-airoha_npu_remove() calls cancel_work_sync() on each core's wdt_work,
-but the watchdog IRQ that queues it is requested with devm_request_irq()
-and is freed only after .remove() returns.  airoha_npu_wdt_handler() can
-therefore schedule_work() again once the cancel has returned.  struct
-airoha_npu, which contains the work, is devm_kzalloc()'d and is freed in
-that same unwind, so the late work dereferences freed memory.
+On Thu, 17 Sep 2026 12:15:37 +0530 Vikas Gupta wrote:
+> This series adds ntuple filter, RSS context, and flow steering
+> support to bnge driver.
+> Patch 2 is a pure refactor (no functional change) that relocates the
+> filter and VNIC related code into the appropriate files. Patch 7 drops
+> the refcount usage from L2 filters, also with no functional change.
+> The subsequent patches then add the ethtool commands for configuring 
+> ntuple flows and RSS contexts.
 
-Register the work with devm_work_autocancel() before devm_request_irq()
-and drop .remove().  Devres runs in reverse order, so the IRQ is freed
-before cancel_work_sync(), including when probe fails.  A cancel left in
-.remove() cannot get that order.  Initializing the work first also stops
-a pending watchdog interrupt from queuing an uninitialized work item.
-Probe currently calls INIT_WORK() only after devm_request_irq().
+Please look thru the review here:
 
-This issue was identified during our ongoing static-analysis research
-while reviewing kernel code.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917064548.773334-2-vikas.gupta@broadcom.com
 
-Fixes: 23290c7bc190 ("net: airoha: Introduce Airoha NPU support")
-Cc: stable@vger.kernel.org # 6.15+
-Assisted-by: LLM
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
- drivers/net/ethernet/airoha/airoha_npu.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index 5bb4817a898d..4d3195eb00f7 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/devcoredump.h>
-+#include <linux/devm-helpers.h>
- #include <linux/firmware.h>
- #include <linux/platform_device.h>
- #include <linux/of_net.h>
-@@ -751,12 +752,15 @@ static int airoha_npu_probe(struct platform_device *pdev)
- 		if (irq < 0)
- 			return irq;
- 
-+		err = devm_work_autocancel(dev, &core->wdt_work,
-+					   airoha_npu_wdt_work);
-+		if (err)
-+			return err;
-+
- 		err = devm_request_irq(dev, irq, airoha_npu_wdt_handler,
- 				       IRQF_SHARED, "airoha-npu-wdt", core);
- 		if (err)
- 			return err;
--
--		INIT_WORK(&core->wdt_work, airoha_npu_wdt_work);
- 	}
- 
- 	/* wlan IRQ lines */
-@@ -803,18 +807,8 @@ static int airoha_npu_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static void airoha_npu_remove(struct platform_device *pdev)
--{
--	struct airoha_npu *npu = platform_get_drvdata(pdev);
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(npu->cores); i++)
--		cancel_work_sync(&npu->cores[i].wdt_work);
--}
--
- static struct platform_driver airoha_npu_driver = {
- 	.probe = airoha_npu_probe,
--	.remove = airoha_npu_remove,
- 	.driver = {
- 		.name = "airoha-npu",
- 		.of_match_table = of_airoha_npu_match,
-
-base-commit: 238650ef6c7c7cca08e032527329424c9fbd70e5
+We had 3 models enabled for some time and 3x the huge number of
+findings in this series seems to have choked the LLM's input limit 
+on patch 9. So the review won't get emailed out. But the first finding
+already looks legit so..
 -- 
-2.53.0
+pw-bot: cr
