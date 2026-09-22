@@ -1,46 +1,46 @@
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D205505D6;
-	Tue, 22 Sep 2026 13:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E20E54B1B8;
+	Tue, 22 Sep 2026 13:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082947; cv=none; b=sKDwTv0nJn+V4jnIHsXVUh0QG1uDyhApZyk33PXOxPEZhQbuxaKU0NfGRyfyHY8zvcgNZUF9FOSVCzZ1QAbscXwIHPZWdcUNG5d5r3+WC6HJXuGLwDnxMvwlk189wXwaaN22x8XMn1/yUKDwpwxKPY/rEn98iT7hxHEIzNn0iBk=
+	t=1790082943; cv=none; b=JawPf5LqpitkFL1Ap2bH42WfGMOwE3eKOFxANJw6rUG3aqS3JnrltJCOVWAv5Dy8UOGSADGVOVLHspBpH2KF6cYuv17AlywTCvry7pY9OsMpcr9J2UxOXf9kSsAI7WhF0Gs40fFRrAF4Wq0sTYsbxZli17FEPeqdBmljF/Gx4h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082947; c=relaxed/simple;
-	bh=COxZrODMiG7wpwflNvDJFwyGJhZfUhncxZCYcHISVNk=;
+	s=arc-20240116; t=1790082943; c=relaxed/simple;
+	bh=Z3JNUkcIru63O0NeHXDbc+QM3RTFQuGiytm1kM/XnFk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LVmBXMtGP38VAcz/26loQ47eVciCL0ew34KmpAMLu1qf5gMgH1S818Tr5FnbVLmHAVZVFJepP8zhjI1gJR+57Fz8YPiplwN8pFkd5+B7C+MM9Nx0PRBseZ3SxQbdhEsxiKKOQzZD+xdJ3mCML3PZtZ+6eKNNEhjnGhsu1kHxL7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=nk+X5nxP; arc=none smtp.client-ip=185.226.149.38
+	 In-Reply-To:To:Cc; b=RwK+eBbt7vkrVqrUZzErdPJu39PlCQ4ydcO8P8j7EKbRqFfjkER28r+5/OKgqg1zBde/qNPEUM8ASh3ApRMy0qPb82k1JoRc5SvB1QtjkBOb6hW9pFsErxNzIaXJGwOp6dxJPZKoutiJ33CTYDuPlQiqE1VyVjOaDYvdL7BSXok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=DMXBSwDG; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="nk+X5nxP"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="DMXBSwDG"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1x90LK-005SFV-MV; Tue, 22 Sep 2026 15:15:30 +0200
+	id 1x90LH-005SDM-Vz; Tue, 22 Sep 2026 15:15:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=h3c4JhoACmkDINEFsPgIY9AtPg/o1ylbFwdojB2jwYs=; b=nk+X5nxPTjjrwGFmtFlogUDUfW
-	qFG9NvJ1BWKIU4T7xA4uOTGkKeus8B9UA7Z+vUYlP/0xxO5XwrwySVa/UQhaarG52iNUFK9wj0uRz
-	8vnWp2jr6L59GELRCThq8/CauIxkrA2JESra56h0QF69DR98NYHN3TdIkk6kn/dM96ALyiqz/ozse
-	4Z0QwtB1AmIKKncIWU0d3JI7G7bOuTpKZopx9Aw+RM+NjdyWwv4liqI4IEAhbLJeEDoL+2yRU8Uo7
-	fc28cjImFVk3abQJIaKWomTlSDlvFUTXMLAf9fZM2VQAPGqQ5Br48ibYX0XRkuiI6YvSvfyhWP9za
-	C7eTT0gA==;
+	bh=upTrSuyY4wF/GArbfk07giPQMunbifrM/wIJL3iqI5Q=; b=DMXBSwDGEyJBi5h6BGFctMc9V4
+	SuD5mHAELXA+QfGqbh3gDV36Qwqym/61BdZ9rGuDyU6Koj8SKRt3gUSs0tmTJftNCD2Y5lWCnfzjm
+	tteoY4Ud6DzvBTRsm+3Mcf2iqg+o1oUpr8j043NwMBzmmnAaLoKzTAy/L/rQMES4JGvBfndaqj575
+	HAtnRYCE5PO3m8AoC9oqv+Ss2oMio0j9ZNyFVFQMvkZWlyET7POb0C0MUWZU2Lkj53TJtqmerL3AJ
+	bI7mM64g8kiEddoAnBX6gxkzTTrbMlCmpJb0/WXZW66YvdkV/yfr7k5dRGzZQe8ZvtKnpipfyfh5X
+	8Zepvl0w==;
 Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1x90LC-0006N5-S1; Tue, 22 Sep 2026 15:15:25 +0200
+	id 1x90LC-0004lG-Fs; Tue, 22 Sep 2026 15:15:22 +0200
 Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1x90L0-00FyKH-EN;
-	Tue, 22 Sep 2026 15:15:10 +0200
+	id 1x90Kz-00FyKH-JI;
+	Tue, 22 Sep 2026 15:15:09 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 22 Sep 2026 15:14:56 +0200
-Subject: [PATCH net v3 2/8] vsock: simplify error check condition
+Date: Tue, 22 Sep 2026 15:14:55 +0200
+Subject: [PATCH net v3 1/8] vhost/vsock: Fix socket state constant
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,7 +49,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-vsock-connect-reset-closing-v3-2-78907b8200d4@rbox.co>
+Message-Id: <20260922-vsock-connect-reset-closing-v3-1-78907b8200d4@rbox.co>
 References: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
 In-Reply-To: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
 To: Stefan Hajnoczi <stefanha@redhat.com>, 
@@ -65,28 +65,29 @@ Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
  Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.15.2
 
-On success, vsock_assign_transport() ensures transport != NULL.
-Drop the redundant check.
+Refactor under Fixes missed one: SS_UNCONNECTED (1) -> TCP_CLOSE (7).
+Until now, sk->sk_state = 1 stood for TCP_ESTABLISHED.
 
+Fixes: 3b4477d2dcf2 ("VSOCK: use TCP state constants for sk_state")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/vmw_vsock/af_vsock.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/vhost/vsock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 9b71479a2b29..5c8e7e7d35b4 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1757,8 +1757,7 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
- 		/* The hypervisor and well-known contexts do not have socket
- 		 * endpoints.
- 		 */
--		if (!transport ||
--		    !transport->stream_allow(vsk, remote_addr->svm_cid,
-+		if (!transport->stream_allow(vsk, remote_addr->svm_cid,
- 					     remote_addr->svm_port)) {
- 			err = -ENETUNREACH;
- 			goto out;
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index abed1fbcf66c..6051533456f6 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -774,7 +774,7 @@ static void vhost_vsock_reset_orphans(struct sock *sk)
+ 
+ 	sock_set_flag(sk, SOCK_DONE);
+ 	vsk->peer_shutdown = SHUTDOWN_MASK;
+-	sk->sk_state = SS_UNCONNECTED;
++	sk->sk_state = TCP_CLOSE;
+ 	sk->sk_err = ECONNRESET;
+ 	sk_error_report(sk);
+ }
 
 -- 
 2.55.0
