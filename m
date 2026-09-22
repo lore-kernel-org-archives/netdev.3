@@ -1,552 +1,405 @@
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948134E73B6
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790109469; cv=pass; b=nrBgcIsyzvKuY5bEP0hhjaOe/XeqLVwehyLWHxt6XMmgE9J/8h7ngu3txuKqp0npngeX//waXaNXm+5jJTWvlcH3XNHHjLQWMVm6EBbybtcSiX4gtD4bhzTjmRtwhR7ms1M4P1a3GsZJzDxxEyeq80yGHOqlgpAhbYg7iIi9S9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790109469; c=relaxed/simple;
-	bh=1xMGOARwEIu2DR8benDMyCtm2caKFbpPVYwP0MkMm9w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ILV6Xh0zr9QBd/a89aFL+bPPv4C5BbcanJqtonDZ0sWo+nsWbEFLboHQJ1c/t4A4yD8+X4YsHbNQBwxJGC4F7aDADMF4xjiDjXAEFToVJcu+83Ky4YVXKD5U5kAyFtDeS15pCXQqf12Q26aRFrag3yQu+hStdjd3k4ppBjqfh18=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=odukhIZn; arc=pass smtp.client-ip=74.125.231.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB3A4BD365;
+	Tue, 22 Sep 2026 20:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790109480; cv=none; b=KBWnZefRIsUQp1MaZMyKSFRqydLZIDUzVY96psdJUxyCRSRwkg9vV/+DDfWnyVKuruNQRQmu/UAvdwRZpQCcWrjICOqL1CIqsl8uuT2qj9qc4GFxKPs7LuiDkorOg3WeoHqpi006QAij+6JRb0pa+BhAUr4+aOyB9glUclBiShg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790109480; c=relaxed/simple;
+	bh=kjpw4SxdqzSCXxTXP/7WjWB9WM1yZBrTdsPjT6zL1/A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=m4g+R9Lrvw0VbwWoAN9wGRnOw/yx5atMF3hTVu0/mezf2ZoU+sgQk+h0R68TWQEKMPIp9yxF8BR13Kf17qRp21bKTCBJS8tgQokqjhQuSew1QllqQWZit9fnF4HvERZkuROS+v0urrxQvghgySum65qMXI/4tGl/zvkEL67nAnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZP51kpEv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="odukhIZn"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c6d6660191so221658b6e.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:37:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790109450; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EFFvDJ3aFslViIy49/4eniD5UyYbEpTGFqrAsdXr+CDnUMsCc9UBAHqkcoSNT9wT8a
-         z7K4mfZMBxjN37MiexnQiy1aBLdJfDOJfsyHBjvwDwxFAz1tCWCgi2yvu8R2iMYmNebc
-         UmhzcFid1jeRWqFcsv7yX5oWRH3PV1ed2emZRn32oZAxnDhWlbp3er9v8lJXx8Bk7nli
-         amKmL11OPiH/EBVmI5RTXRVwLOAalUfAX9Panv3MQJ/Q0Lt/f6eq/S6OD0PVC8JJl05N
-         kSW/X06Fn5z9vqg0dr2jw6JbV3BvN+o8HpN8xEdZubqzeyBeRP+mQhKdB6Fq8dFteExV
-         RB/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=YajuveCYvFAe8RQ5HhGjiKFAe4wxkAmcf+W9ebvlvgM=;
-        fh=TJcr6HRC+ePOr+o9yC5t57BPC/EHwLn8D7/9DYhWv6Y=;
-        b=F9xsR+5rHJLCNQU8SjRTxeY5a8Jllg1FWCClg1s2k40a1HiT8yRf8knQwmRtSjcoGx
-         vacYqdTYmR0CVXIMzHEmZ52rXt8n5pAqIrPqcsbK1fQzOjt7xjyqVe7cmyeNZbNIeUxo
-         wV/n02dz3AD4C7s8rgdE8c2yRSJv9QNJOklM7UQ80wXrqhmgXjLQwcIbUImjSfNTpxlj
-         Xhjz6zyZ+zb62ya1r1ejCY6ucO9LsieT7+R3oNjYpv1qhHaYFeOq3DWWdVJOXtwZ0087
-         w1+NOzmShy2UXpcKEYwqhBa/pyUKTlxMKANaTiGIbfEA+wz/mnK3M3jdxxZVfIwGEjQB
-         Q4ZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790109450; x=1790714250; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YajuveCYvFAe8RQ5HhGjiKFAe4wxkAmcf+W9ebvlvgM=;
-        b=odukhIZnXKlRifrUj/SxJdA1EYeFmC82oSVZYEWQjaFS7GOsMc6yjkIItU5Gf25jT1
-         7JG4ZuU5dhfFnKRMAM8J9WhL6FMnbfQlOZ4GgeoGbFXB55kFa8/t7fIowtFWeJOK5LFp
-         Z43+l9remWOGrKO5g7lC+dV0ZxombgQh5C4TKsW0CLeJyRhGdyCooDtSIEmwPKBwqYbF
-         BL7ZIry2+lK+y7w0aMGbotH0pxR4Gemf5u0B4TgVg1RNLB98fkOV0N/5gSG7Nf6gSP7h
-         iGwvyJ48nGKyPdFFakkHrq8Jzs8op2hWY8g9p4hNT5QEvDRoaBs26NNmGoCjqKH3LwGm
-         BFbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790109450; x=1790714250;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=YajuveCYvFAe8RQ5HhGjiKFAe4wxkAmcf+W9ebvlvgM=;
-        b=G/M85JHh267WhFyCj+3OLb5t9ZvBLggZmFvQucjuNgRWmKlCodMdt35vbX9DUIaqeR
-         0EdJBeHekOYCht5tqEtRmJjcyuIxEDyy7NIJFDp2vIraGZvSNiFPXYF/kqNrkPt5xKZq
-         bMqR3WxU4qznoTY6AWNIdobDONZGF8oC4bbmPdzkLbho6BoUkmKYTMc/noqLTaHu2GbA
-         nHIHmMJrCKQxif91bRTAkePFr8N1iCyBKdwK74OjX3k7r7CNVlEMsvvhPr4nDsu7jEMG
-         meTGdT99ruAED+T4lEa3E/+t7BlpCES5UlZJ+oDolO00BT/K1SgBovluwAcQTCkcqLfN
-         0D/g==
-X-Gm-Message-State: AFuF++kMN0NaC0VLm/t6G+51ST5kUCGbS4yfF8HcGTSWaMS9tVQT70g7
-	mR29waFT3eGK56egSwkRcWVWBADaHxDpIli5kJWHQ9MkRAijPY4RP7Ala4MDI6OnHuUCMgz/1PR
-	8tWHj1MrSdrcVkFpDEQDzkaNB0WWSIrHzJ3Bv
-X-Gm-Gg: AYBFou3NpbaYrXn3BVmM/sRi18x1vJcRefe66CFVCc2A+p7rK+xMctIDxcw28BSp+eE
-	V9UZ3K39u3aGSu4PCeAGE9BhRY2t97KgZkrqpegEwpalExzC5UjUgXa1kKGE1Nedj8Ae6Gun3oU
-	k0mfxHl2ZAYSr0ZouqSE61hvPXe57vCZ7OBuOe2Pa0Fp7hQMMLrJV0cXdEveLwV9L9CCdOfm/Oo
-	bO/Wsw1AhR9PX64BOoekzkRvrmj3vXuu7LaZ9Jvoq2ENSW29GVbOQN28K3+69CLMbQYizn20yyu
-	bTi8c0rJFcB61k3sawPqljlJWucSsEuB0hFCgi2OeLQkYwPMxjxG+NeNnpGHYy7bwwIjcSCc6rq
-	HsCoFEB+S4A==
-X-Received: by 2002:a05:6808:4f5f:b0:4b9:a829:f012 with SMTP id
- 5614622812f47-4d5b940eafdmr643857b6e.30.1790109450424; Tue, 22 Sep 2026
- 13:37:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZP51kpEv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4D11F0089F;
+	Tue, 22 Sep 2026 20:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790109424;
+	bh=PZv3/R7eGwsuzZi6fMOAF2FdovspvlwnVzvxXecbV6g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZP51kpEv28LdkCwNxX24tDbQXN2WDoWddQvIx9kyg5o0NreP3OBVMTfKuPJiGN9Ad
+	 49qS6OVsre+dUyjRUuxdp5LCtmfmMNd7uUKB+vhMERSdXb/kppKasKj5YDrCoWyIJL
+	 rxNSoGP7mm/PnLxyw5voro3Ka4wXTjA27Y1cEjTPzIcs+D6gwJJts6s5C0q5DGiEpE
+	 7LRqirSkEfSV6NljnfWS5SZju9KY+QtgoE8qc0IqcQ51YH/mJ9CAA8QxaqvnFEVgHk
+	 5qoGoeeMmLI4dqZUmMhQoWvH70x4C61kuKeh8CqOE4dfrbY2g2kfY6cTbzhDGoh74n
+	 iEcG+4FJzVjMQ==
+Subject:
+ Re: [PATCH net 3/3] net: macb: quiesce IRQs and drain BH on interface close
+From: netdev-bot+sashiko@kernel.org
+To: theo.lebrun@bootlin.com
+Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ nicolas.ferre@microchip.com, sean.anderson@linux.dev, atenart@kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nb@tipi-net.de, vladimir.kondratiev@mobileye.com, gregory.clement@bootlin.com,
+ tawfik.bayouk@mobileye.com, thomas.petazzoni@bootlin.com,
+ maxime.chevallier@bootlin.com, stable@vger.kernel.org
+Date: Tue, 22 Sep 2026 20:37:03 +0000
+Message-ID: <179010942347.2160803.5970158668197373074@kernel.org>
+In-Reply-To: <20260918-macb-close-v1-3-05e32ce98813@bootlin.com>
+References: <20260918-macb-close-v1-3-05e32ce98813@bootlin.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260920194710.1114748-1-devnexen@gmail.com> <20260920194710.1114748-3-devnexen@gmail.com>
- <arK8L3S5F+9XREpe@devvm29614.prn0.facebook.com>
-In-Reply-To: <arK8L3S5F+9XREpe@devvm29614.prn0.facebook.com>
-From: David CARLIER <devnexen@gmail.com>
-Date: Tue, 22 Sep 2026 21:37:19 +0100
-X-Gm-Features: AcwNN1WKoxG4IBZqxkv2vlA5ApCCJffe59_-wPbMkNo4-oryaAuwKGBxd1LTreU
-Message-ID: <CA+XhMqyEPSZEFY7j3eYXfrtbNMd7w3B0AYFEv1f_FEax4rKtng@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/2] vsock/test: cover receive queue hints
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: netdev@vger.kernel.org, sgarzare@redhat.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Bobby.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Indeed, io_uring presets msg_inq to -1, so that check passes either
-way. Sending two chunks makes sense: SOCK_NONEMPTY on the first
-completion, not on the second.
+Critical: 0 · High: 0 (2) · Medium: 1 (1) · Low: 0
 
-The empty queue case passing without patch 1 is expected. It is there
-to catch a stale positive hint on the error path rather than to show
-the new behaviour.
-Cheers.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-On Tue, 22 Sept 2026 at 18:34, Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
->
-> On Sun, Sep 20, 2026 at 08:47:10PM +0100, David Carlier wrote:
-> > Add io_uring receive tests checking IORING_CQE_F_SOCK_NONEMPTY across a
-> > partial receive, draining while the peer stays connected, EOF, a
-> > nonblocking receive on an empty queue, a zero-length request, and a
-> > multishot receive with provided buffers.
-> >
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > ---
-> >  tools/testing/vsock/vsock_uring_test.c | 367 +++++++++++++++++++++++++
-> >  1 file changed, 367 insertions(+)
-> >
-> > diff --git a/tools/testing/vsock/vsock_uring_test.c b/tools/testing/vsock/vsock_uring_test.c
-> > index 5c3078969659..318e17bd28bc 100644
-> > --- a/tools/testing/vsock/vsock_uring_test.c
-> > +++ b/tools/testing/vsock/vsock_uring_test.c
-> > @@ -13,7 +13,10 @@
-> >  #include <liburing.h>
-> >  #include <unistd.h>
-> >  #include <sys/mman.h>
-> > +#include <sys/ioctl.h>
-> >  #include <linux/kernel.h>
-> > +#include <linux/sockios.h>
-> > +#include <errno.h>
-> >  #include <error.h>
-> >
-> >  #include "util.h"
-> > @@ -28,6 +31,10 @@
-> >
-> >  #define VSOCK_TEST_DATA_MAX_IOV 3
-> >
-> > +#define HINT_CHUNK_SIZE              4096
-> > +#define HINT_BUF_GROUP               1
-> > +#define HINT_BUF_ENTRIES     4
-> > +
-> >  struct vsock_io_uring_test {
-> >       /* Number of valid elements in 'vecs'. */
-> >       int vecs_cnt;
-> > @@ -211,6 +218,341 @@ void test_stream_uring_msg_zc_client(const struct test_opts *opts)
-> >               vsock_io_uring_client(opts, &test_data_array[i], true);
-> >  }
-> >
-> > +struct uring_inq_ctx {
-> > +     struct io_uring ring;
-> > +     int fd;
-> > +};
-> > +
-> > +static void inq_server_init(struct uring_inq_ctx *ctx,
-> > +                         const struct test_opts *opts)
-> > +{
-> > +     ctx->fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-> > +     if (ctx->fd < 0) {
-> > +             perror("accept");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +
-> > +     if (io_uring_queue_init(RING_ENTRIES_NUM, &ctx->ring, 0))
-> > +             error(1, errno, "io_uring_queue_init");
-> > +}
-> > +
-> > +static void inq_server_exit(struct uring_inq_ctx *ctx)
-> > +{
-> > +     io_uring_queue_exit(&ctx->ring);
-> > +     close(ctx->fd);
-> > +}
-> > +
-> > +/* Submit a single receive and report both its result and its CQE flags. */
-> > +static int inq_recv(struct uring_inq_ctx *ctx, void *buf, size_t len,
-> > +                 int flags, unsigned int *cflags)
-> > +{
-> > +     struct io_uring_sqe *sqe;
-> > +     struct io_uring_cqe *cqe;
-> > +     int res;
-> > +
-> > +     sqe = io_uring_get_sqe(&ctx->ring);
-> > +     io_uring_prep_recv(sqe, ctx->fd, buf, len, flags);
-> > +
-> > +     if (io_uring_submit(&ctx->ring) != 1)
-> > +             error(1, errno, "io_uring_submit");
-> > +
-> > +     if (io_uring_wait_cqe(&ctx->ring, &cqe))
-> > +             error(1, errno, "io_uring_wait_cqe");
-> > +
-> > +     res = cqe->res;
-> > +     *cflags = cqe->flags;
-> > +     io_uring_cqe_seen(&ctx->ring, cqe);
-> > +
-> > +     return res;
-> > +}
-> > +
-> > +static void expect_res(int res, int expected, const char *what)
-> > +{
-> > +     if (res != expected) {
-> > +             fprintf(stderr, "%s: expected %d, got %d\n", what, expected,
-> > +                     res);
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +}
-> > +
-> > +static void expect_nonempty(unsigned int cflags, bool expected,
-> > +                         const char *what)
-> > +{
-> > +     bool nonempty = !!(cflags & IORING_CQE_F_SOCK_NONEMPTY);
-> > +
-> > +     if (nonempty != expected) {
-> > +             fprintf(stderr, "%s: expected SOCK_NONEMPTY %d, got %d\n",
-> > +                     what, expected, nonempty);
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +}
-> > +
-> > +/* Wait until the whole payload is queued, so the hint is deterministic. */
-> > +static void inq_wait_queued(int fd, int len)
-> > +{
-> > +     if (!vsock_ioctl_int(fd, SIOCINQ, len)) {
-> > +             fprintf(stderr, "SIOCINQ not supported\n");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +}
-> > +
-> > +static void inq_send_chunks(const struct test_opts *opts, int chunks)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     int fd, i;
-> > +
-> > +     fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-> > +     if (fd < 0) {
-> > +             perror("connect");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +
-> > +     memset(buf, 0xa5, sizeof(buf));
-> > +     for (i = 0; i < chunks; i++)
-> > +             send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-> > +
-> > +     control_writeln("SENT");
-> > +     control_expectln("DONE");
-> > +     close(fd);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_client(const struct test_opts *opts)
-> > +{
-> > +     inq_send_chunks(opts, 2);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_server(const struct test_opts *opts)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     struct uring_inq_ctx ctx;
-> > +     unsigned int cflags;
-> > +     int res;
-> > +
-> > +     inq_server_init(&ctx, opts);
-> > +
-> > +     control_expectln("SENT");
-> > +     inq_wait_queued(ctx.fd, 2 * HINT_CHUNK_SIZE);
-> > +
-> > +     /* Data remains after this receive, so the flag must be set. */
-> > +     res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-> > +     expect_res(res, HINT_CHUNK_SIZE, "partial receive");
-> > +     expect_nonempty(cflags, true, "partial receive");
-> > +
-> > +     /* This receive drains the queue while the peer stays connected. */
-> > +     res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-> > +     expect_res(res, HINT_CHUNK_SIZE, "draining receive");
-> > +     expect_nonempty(cflags, false, "draining receive");
-> > +
-> > +     control_writeln("DONE");
-> > +     inq_server_exit(&ctx);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_eof_client(const struct test_opts *opts)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     int fd;
-> > +
-> > +     fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-> > +     if (fd < 0) {
-> > +             perror("connect");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +
-> > +     memset(buf, 0x5a, sizeof(buf));
-> > +     send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-> > +     control_writeln("SENT");
-> > +
-> > +     control_expectln("DRAINED");
-> > +     close(fd);
-> > +     control_writeln("CLOSED");
-> > +
-> > +     control_expectln("DONE");
-> > +}
-> > +
-> > +static void test_stream_uring_inq_eof_server(const struct test_opts *opts)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     struct uring_inq_ctx ctx;
-> > +     unsigned int cflags;
-> > +     int res;
-> > +
-> > +     inq_server_init(&ctx, opts);
-> > +
-> > +     control_expectln("SENT");
-> > +     inq_wait_queued(ctx.fd, HINT_CHUNK_SIZE);
-> > +
-> > +     res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-> > +     expect_res(res, HINT_CHUNK_SIZE, "drain before EOF");
-> > +     expect_nonempty(cflags, false, "drain before EOF");
-> > +
-> > +     control_writeln("DRAINED");
-> > +     control_expectln("CLOSED");
-> > +
-> > +     /* The queue is empty and the peer is gone.  The hint stays non-zero
-> > +      * so that this receive happens and reports EOF, as TCP does after a
-> > +      * FIN.
-> > +      */
-> > +     res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
-> > +     expect_res(res, 0, "receive at EOF");
-> > +     expect_nonempty(cflags, true, "receive at EOF");
-> > +
-> > +     control_writeln("DONE");
-> > +     inq_server_exit(&ctx);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_empty_client(const struct test_opts *opts)
-> > +{
-> > +     int fd;
-> > +
-> > +     fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-> > +     if (fd < 0) {
-> > +             perror("connect");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +
-> > +     control_writeln("READY");
-> > +     control_expectln("DONE");
-> > +     close(fd);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_empty_server(const struct test_opts *opts)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     struct uring_inq_ctx ctx;
-> > +     unsigned int cflags;
-> > +     int res;
-> > +
-> > +     inq_server_init(&ctx, opts);
-> > +
-> > +     control_expectln("READY");
-> > +
-> > +     /* A failed receive must not leave a stale positive hint. */
-> > +     res = inq_recv(&ctx, buf, sizeof(buf), MSG_DONTWAIT, &cflags);
-> > +     expect_res(res, -EAGAIN, "empty nonblocking receive");
-> > +     expect_nonempty(cflags, false, "empty nonblocking receive");
->
->
->
-> > +
-> > +     control_writeln("DONE");
-> > +     inq_server_exit(&ctx);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_zerolen_client(const struct test_opts *opts)
-> > +{
-> > +     inq_send_chunks(opts, 1);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_zerolen_server(const struct test_opts *opts)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     struct uring_inq_ctx ctx;
-> > +     unsigned int cflags;
-> > +     int res;
-> > +
-> > +     inq_server_init(&ctx, opts);
-> > +
-> > +     control_expectln("SENT");
-> > +     inq_wait_queued(ctx.fd, HINT_CHUNK_SIZE);
-> > +
-> > +     /* A zero-length request is not an error and still describes the
-> > +      * queue behind it.
-> > +      */
-> > +     res = inq_recv(&ctx, buf, 0, 0, &cflags);
-> > +     expect_res(res, 0, "zero-length receive");
-> > +     expect_nonempty(cflags, true, "zero-length receive");
-> > +
-> > +     control_writeln("DONE");
-> > +     inq_server_exit(&ctx);
-> > +}
-> > +
-> > +static void test_stream_uring_inq_mshot_client(const struct test_opts *opts)
-> > +{
-> > +     char buf[HINT_CHUNK_SIZE];
-> > +     int fd;
-> > +
-> > +     fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-> > +     if (fd < 0) {
-> > +             perror("connect");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +
-> > +     memset(buf, 0x3c, sizeof(buf));
-> > +     send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
-> > +     control_writeln("SENT");
-> > +
-> > +     control_expectln("DRAINED");
-> > +     close(fd);
-> > +     control_writeln("CLOSED");
-> > +
-> > +     control_expectln("DONE");
-> > +}
-> > +
-> > +static void test_stream_uring_inq_mshot_server(const struct test_opts *opts)
-> > +{
-> > +     static char bufs[HINT_BUF_ENTRIES][HINT_CHUNK_SIZE];
-> > +     struct io_uring_buf_ring *br;
-> > +     struct uring_inq_ctx ctx;
-> > +     struct io_uring_sqe *sqe;
-> > +     struct io_uring_cqe *cqe;
-> > +     int i, ret;
-> > +
-> > +     inq_server_init(&ctx, opts);
-> > +
-> > +     br = io_uring_setup_buf_ring(&ctx.ring, HINT_BUF_ENTRIES,
-> > +                                  HINT_BUF_GROUP, 0, &ret);
-> > +     if (!br) {
-> > +             fprintf(stderr, "io_uring_setup_buf_ring: %d\n", ret);
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +
-> > +     for (i = 0; i < HINT_BUF_ENTRIES; i++)
-> > +             io_uring_buf_ring_add(br, bufs[i], HINT_CHUNK_SIZE, i,
-> > +                                   io_uring_buf_ring_mask(HINT_BUF_ENTRIES),
-> > +                                   i);
-> > +     io_uring_buf_ring_advance(br, HINT_BUF_ENTRIES);
-> > +
-> > +     sqe = io_uring_get_sqe(&ctx.ring);
-> > +     io_uring_prep_recv_multishot(sqe, ctx.fd, NULL, 0, 0);
-> > +     sqe->flags |= IOSQE_BUFFER_SELECT;
-> > +     sqe->buf_group = HINT_BUF_GROUP;
-> > +
-> > +     if (io_uring_submit(&ctx.ring) != 1)
-> > +             error(1, errno, "io_uring_submit");
-> > +
-> > +     control_expectln("SENT");
-> > +
-> > +     /* The payload completion drains the queue and keeps the request
-> > +      * armed, so the hint must report the queue as empty.
-> > +      */
-> > +     if (io_uring_wait_cqe(&ctx.ring, &cqe))
-> > +             error(1, errno, "io_uring_wait_cqe");
-> > +
-> > +     expect_res(cqe->res, HINT_CHUNK_SIZE, "multishot payload");
-> > +     expect_nonempty(cqe->flags, false, "multishot payload");
->
-> It looks like this assertion holds true even without the first patch,
-> since msg_inq is initalized to -1 and nonempty is only set if msg_inq >
-> 0.
->
-> As of right now, this test actually passes without the first patch.
-> After cherry-picking only the tests to net-next and yanking out the
-> other test cases, I see:
->
->         client exit=0
->         server exit=0
->         Control socket listening on 0.0.0.0:5200
->         Control socket connection accepted...
->         0 - SOCK_STREAM io_uring receive hint on empty queue...ok
->         1 - SOCK_STREAM io_uring multishot receive hint...ok
->         All tests have been executed. Waiting other peer...ok
->
->
-> I wonder if it might be better to have the sender send two chunks so we
-> can first assert that NONEMPTY is flipped on, and then again that it has
-> flipped back off?
->
-> Best,
-> Bobby
->
-> > +     if (!(cqe->flags & IORING_CQE_F_MORE)) {
-> > +             fprintf(stderr, "multishot payload: request not rearmed\n");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +     io_uring_cqe_seen(&ctx.ring, cqe);
-> > +
-> > +     control_writeln("DRAINED");
-> > +     control_expectln("CLOSED");
-> > +
-> > +     /* EOF ends multishot regardless of the hint. */
-> > +     if (io_uring_wait_cqe(&ctx.ring, &cqe))
-> > +             error(1, errno, "io_uring_wait_cqe");
-> > +
-> > +     expect_res(cqe->res, 0, "multishot EOF");
-> > +     if (cqe->flags & IORING_CQE_F_MORE) {
-> > +             fprintf(stderr, "multishot EOF: request still armed\n");
-> > +             exit(EXIT_FAILURE);
-> > +     }
-> > +     io_uring_cqe_seen(&ctx.ring, cqe);
-> > +
-> > +     control_writeln("DONE");
-> > +     io_uring_free_buf_ring(&ctx.ring, br, HINT_BUF_ENTRIES,
-> > +                            HINT_BUF_GROUP);
-> > +     inq_server_exit(&ctx);
-> > +}
-> > +
-> >  static struct test_case test_cases[] = {
-> >       {
-> >               .name = "SOCK_STREAM io_uring test",
-> > @@ -222,6 +564,31 @@ static struct test_case test_cases[] = {
-> >               .run_server = test_stream_uring_msg_zc_server,
-> >               .run_client = test_stream_uring_msg_zc_client,
-> >       },
-> > +     {
-> > +             .name = "SOCK_STREAM io_uring receive queue hint",
-> > +             .run_server = test_stream_uring_inq_server,
-> > +             .run_client = test_stream_uring_inq_client,
-> > +     },
-> > +     {
-> > +             .name = "SOCK_STREAM io_uring receive hint at EOF",
-> > +             .run_server = test_stream_uring_inq_eof_server,
-> > +             .run_client = test_stream_uring_inq_eof_client,
-> > +     },
-> > +     {
-> > +             .name = "SOCK_STREAM io_uring receive hint on empty queue",
-> > +             .run_server = test_stream_uring_inq_empty_server,
-> > +             .run_client = test_stream_uring_inq_empty_client,
-> > +     },
-> > +     {
-> > +             .name = "SOCK_STREAM io_uring receive hint zero-length",
-> > +             .run_server = test_stream_uring_inq_zerolen_server,
-> > +             .run_client = test_stream_uring_inq_zerolen_client,
-> > +     },
-> > +     {
-> > +             .name = "SOCK_STREAM io_uring multishot receive hint",
-> > +             .run_server = test_stream_uring_inq_mshot_server,
-> > +             .run_client = test_stream_uring_inq_mshot_client,
-> > +     },
-> >       {},
-> >  };
-> >
-> > --
-> > 2.55.0
-> >
+- [Medium] macb_close() now calls macb_quiesce_start() (synchronize_irq()
+  on every queue IRQ, cancel_work_sync(&bp->hresp_err_bh_work),…
+
+Pre-existing issues:
+- [High] macb_suspend()/macb_resume() still open-code the per-queue
+  napi_disable()/napi_enable() loops without setting/clearing…
+- [High] macb_set_ringparam() calls macb_close() and then macb_open()
+  while discarding macb_open()'s return value and always returning 0.
+- [Medium] bp->hresp_err_bh_work and bp->tx_lpi_work are initialized by
+  INIT_WORK()/INIT_DELAYED_WORK() only *after* register_netdev() in…
+
+--
+
+net: macb: quiesce IRQs and drain BH on interface close
+
+This adds macb_quiesce_start()/macb_quiesce_end() helpers plus a new
+bp->irq_quiesced flag so that macb_interrupt() self-disarms while the
+interface is down, and reorders macb_close() to drain IRQs, the two work
+items, NAPI and the LPI delayed work in a defined order. macb_open() uses
+the same helpers on its success and error paths.
+
+A few questions below.
+
+> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+> index cfaa0ca49f1a..1cb2778fe49e 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -1382,6 +1382,11 @@ struct macb {
+>  	struct delayed_work	tx_lpi_work;
+>  	u32			tx_lpi_timer;
+>  
+> +	/* ISR must not drive NAPI & BH mechanisms. True when the interface
+> +	 * is closed. Protected by bp->lock.
+> +	 */
+> +	bool			irq_quiesced;
+> +
+>  	int	rx_bd_rd_prefetch;
+>  	int	tx_bd_rd_prefetch;
+>  
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index c418f859cc34..75bbde81d62c 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1995,6 +1995,53 @@ static int macb_tx_poll(struct napi_struct *napi, int budget)
+>  	return work_done;
+>  }
+>  
+> +static void macb_quiesce_start(struct macb *bp)
+> +{
+> +	struct macb_queue *queue;
+> +	unsigned long flags;
+> +	unsigned int q;
+> +
+> +	spin_lock_irqsave(&bp->lock, flags);
+> +	bp->irq_quiesced = true;
+> +	spin_unlock_irqrestore(&bp->lock, flags);
+> +
+> +	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
+> +		synchronize_irq(queue->irq);
+> +
+> +	cancel_work_sync(&bp->hresp_err_bh_work);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but can this cancel_work_sync()
+run on a work_struct that has not been initialized yet?
+
+In macb_probe(), register_netdev() happens before the two work items are
+set up:
+
+	err = register_netdev(netdev);
+	if (err) {
+		dev_err(&pdev->dev, "Cannot register net device, aborting.\n");
+		goto err_out_free_tieoff;
+	}
+
+	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
+	INIT_DELAYED_WORK(&bp->tx_lpi_work, macb_tx_lpi_work_fn);
+
+The queue IRQ handlers were already installed earlier by
+macb_init_dflt()'s devm_request_irq(..., macb_interrupt, ...), and
+register_netdev() publishes the device, so an 'ip link set up' racing with
+the tail of probe can reach macb_open() -> macb_quiesce_end(), which clears
+bp->irq_quiesced. From there an HRESP interrupt would let
+macb_interrupt_misc() do queue_work(system_bh_wq, &bp->hresp_err_bh_work)
+on a zeroed work_struct whose ->func is NULL, and macb_close() or the
+macb_open() error path would call cancel_work_sync() /
+cancel_delayed_work_sync() on the same uninitialized objects.
+
+The pre-existing macb_close() already had the cancel_delayed_work_sync() on
+bp->tx_lpi_work, so this only widens an existing window. Would moving both
+INIT_WORK()/INIT_DELAYED_WORK() calls ahead of macb_init()/register_netdev()
+be reasonable?
+
+> +
+> +	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> +		/* Must be done before NAPI is disabled: the task ends with a
+> +		 * napi_enable() call.
+> +		 */
+> +		cancel_work_sync(&queue->tx_error_task);
+> +
+> +		napi_disable(&queue->napi_rx);
+> +		napi_disable(&queue->napi_tx);
+> +	}
+> +
+> +	/* Must be done after napi_tx is disabled: its completion re-arms
+> +	 * the LPI timer.
+> +	 */
+> +	cancel_delayed_work_sync(&bp->tx_lpi_work);
+> +}
+> +
+> +static void macb_quiesce_end(struct macb *bp)
+> +{
+> +	struct macb_queue *queue;
+> +	unsigned long flags;
+> +	unsigned int q;
+> +
+> +	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> +		napi_enable(&queue->napi_rx);
+> +		napi_enable(&queue->napi_tx);
+> +	}
+> +
+> +	spin_lock_irqsave(&bp->lock, flags);
+> +	bp->irq_quiesced = false;
+> +	spin_unlock_irqrestore(&bp->lock, flags);
+> +}
+> +
+>  static void macb_hresp_error_task(struct work_struct *work)
+>  {
+>  	struct macb *bp = from_work(bp, work, hresp_err_bh_work);
+> @@ -2137,8 +2184,8 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+>  	spin_lock(&bp->lock);
+>  
+>  	while (status) {
+> -		/* close possible race with dev_close */
+> -		if (unlikely(!netif_running(netdev))) {
+> +		/* self-disarm while the netdev is closed */
+> +		if (unlikely(bp->irq_quiesced)) {
+>  			queue_writel(queue, IDR, -1);
+>  			macb_queue_isr_clear(bp, queue, -1);
+>  			break;
+
+[Severity: High]
+This is a pre-existing issue, but does the new gating condition need a
+companion change in macb_suspend()/macb_resume()?
+
+macb_suspend() still open-codes the NAPI loop, with no bp->irq_quiesced
+update, no synchronize_irq() and no draining of queue->tx_error_task or
+bp->hresp_err_bh_work:
+
+	netif_device_detach(netdev);
+	for (q = 0, queue = bp->queues; q < bp->num_queues;
+	     ++q, ++queue) {
+		napi_disable(&queue->napi_rx);
+		napi_disable(&queue->napi_tx);
+	}
+
+	if (!(bp->wol & MACB_WOL_ENABLED)) {
+		rtnl_lock();
+		phylink_stop(bp->phylink);
+		rtnl_unlock();
+		...
+		macb_reset_hw(bp);
+
+In the non-WOL path the interrupt enables left by macb_mac_link_up()
+(bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP)) are still unmasked
+until that later macb_reset_hw(), and netif_device_detach() does not affect
+netif_running(), so the ISR stays armed with bp->irq_quiesced == false.
+
+A TX error interrupt in that window reaches macb_interrupt_misc():
+
+	if (unlikely(status & (MACB_TX_ERR_FLAGS))) {
+		queue_writel(queue, IDR, MACB_TX_INT_FLAGS);
+		schedule_work(&queue->tx_error_task);
+
+and macb_tx_error_task() begins with napi_disable(&queue->napi_tx) on a NAPI
+that macb_suspend() already disabled. napi_disable_locked() then never
+returns:
+
+net/core/dev.c:napi_disable_locked() {
+	...
+		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+			usleep_range(20, 200);
+			val = READ_ONCE(n->state);
+		}
+	...
+}
+
+The worker wedges holding the netdev instance lock, so macb_resume()'s
+napi_enable() blocks as well. The same window lets macb_hresp_error_task()
+re-init every ring and rewrite IER/NCR/carrier behind suspend's back.
+
+The new comment says "ISR must not drive NAPI & BH mechanisms. True when
+the interface is closed.", and the commit message lists suspend/WOL as
+future work ("we'll reuse that flag in suspend/WOL, set_ringparam and
+change_mtu"). Given that the old netif_running() check is now gone, should
+macb_suspend()/macb_resume() switch to macb_quiesce_start()/
+macb_quiesce_end() in this patch rather than later?
+
+> @@ -3155,8 +3202,6 @@ static int macb_open(struct net_device *netdev)
+>  {
+>  	size_t bufsz = netdev->mtu + ETH_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
+>  	struct macb *bp = netdev_priv(netdev);
+> -	struct macb_queue *queue;
+> -	unsigned int q;
+>  	int err;
+>  
+>  	netdev_dbg(bp->netdev, "open\n");
+> @@ -3180,10 +3225,7 @@ static int macb_open(struct net_device *netdev)
+>  		goto free_rings;
+>  	macb_init_buffers(bp);
+>  
+> -	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> -		napi_enable(&queue->napi_rx);
+> -		napi_enable(&queue->napi_tx);
+> -	}
+> +	macb_quiesce_end(bp);
+>  
+>  	macb_init_hw(bp);
+>  
+> @@ -3210,11 +3252,10 @@ static int macb_open(struct net_device *netdev)
+>  	phy_power_off(bp->phy);
+>  
+>  reset_hw:
+> +	/* The netdev stays down: quiesce and drain, as macb_close() does. */
+> +	macb_quiesce_start(bp);
+> +
+>  	macb_reset_hw(bp);
+> -	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> -		napi_disable(&queue->napi_rx);
+> -		napi_disable(&queue->napi_tx);
+> -	}
+>  free_rings:
+>  	macb_free(bp);
+>  pm_exit:
+
+[Severity: High]
+This is a pre-existing issue, but does the new reset_hw path make the
+macb_set_ringparam() failure case worse?
+
+macb_set_ringparam() drops the macb_open() return value entirely:
+
+	if (netif_running(bp->netdev)) {
+		reset = 1;
+		macb_close(bp->netdev);
+	}
+
+	bp->rx_ring_size = new_rx_size;
+	bp->tx_ring_size = new_tx_size;
+
+	if (reset)
+		macb_open(bp->netdev);
+
+	return 0;
+
+Failures before macb_quiesce_end() (pm_runtime_resume_and_get(),
+macb_alloc()'s dma_alloc_coherent(), mog_init_rings() RX skb allocation)
+return with the NAPI instances still disabled from the preceding
+macb_close(). Failures after it now take the reset_hw label, which calls
+macb_quiesce_start() and disables them a second time.
+
+Since this path bypasses dev_open()/dev_close(), netif_running() stays
+true, so the next ndo_stop ('ip link set dev ethX down', another
+ethtool -G, or macb_suspend()) re-enters macb_close() ->
+macb_quiesce_start() -> napi_disable() on an already disabled NAPI, and
+napi_disable_locked() spins forever with RTNL and the netdev instance lock
+held.
+
+Should macb_set_ringparam() propagate macb_open()'s error, and should
+macb_quiesce_start()/macb_quiesce_end() be made robust against being
+called twice in a row?
+
+> @@ -3225,19 +3266,17 @@ static int macb_open(struct net_device *netdev)
+>  static int macb_close(struct net_device *netdev)
+>  {
+>  	struct macb *bp = netdev_priv(netdev);
+> -	struct macb_queue *queue;
+>  	unsigned long flags;
+>  	unsigned int q;
+>  
+> -	netif_tx_stop_all_queues(netdev);
+> +	macb_quiesce_start(bp);
+>  
+> -	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> -		napi_disable(&queue->napi_rx);
+> -		napi_disable(&queue->napi_tx);
+> +	/* Drain the BH contexts before stopping the queues: NAPI completion
+> +	 * and tx_error_task wake them up.
+> +	 */
+> +	netif_tx_stop_all_queues(netdev);
+> +	for (q = 0; q < bp->num_queues; ++q)
+>  		netdev_tx_reset_queue(netdev_get_tx_queue(netdev, q));
+> -	}
+> -
+> -	cancel_delayed_work_sync(&bp->tx_lpi_work);
+
+[Severity: Medium]
+Moving netif_tx_stop_all_queues() after the whole quiesce sequence looks
+fine for the ndo_stop path, where the core already ran
+dev_deactivate_many() so no xmit can happen. Is it also safe for the direct
+caller?
+
+macb_set_ringparam() calls macb_close() with the netdev up and the qdisc
+still live:
+
+	if (netif_running(bp->netdev)) {
+		reset = 1;
+		macb_close(bp->netdev);
+	}
+
+In that path macb_start_xmit() remains callable for the whole
+macb_quiesce_start() window (synchronize_irq() per queue,
+cancel_work_sync() on hresp_err_bh_work and each tx_error_task,
+two napi_disable() per queue, cancel_delayed_work_sync() on tx_lpi_work),
+since ethtool only holds RTNL.
+
+Two consequences I am unsure about:
+
+Frames mapped into the TX ring and kicked with NCR.TSTART after napi_tx is
+disabled and after macb_interrupt() started answering with
+queue_writel(queue, IDR, -1) will never be reaped; they are dropped by
+macb_free()'s unmap loop and only counted in queue->stats.tx_dropped.
+
+An xmit landing after netdev_tx_reset_queue()'s dql_reset() calls
+netdev_tx_sent_queue() for completions that are never accounted, since
+macb_free() does no BQL accounting and macb_open() does not reset BQL
+again, so dql->num_queued > num_completed persists across the resize. Can
+that leave the queue XOFF-ed?
+
+The commit message explains the new ordering as "Drain the BH contexts
+before stopping the queues: NAPI completion and tx_error_task wake them
+up", and the recap table only lists 'swap' as a future context. Would
+keeping netif_tx_stop_all_queues() first, or converting
+macb_set_ringparam() to dev_close()/dev_open() semantics, address this?
+
+>  	phylink_stop(bp->phylink);
+>  	phylink_disconnect_phy(bp->phylink);
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-macb-close-v1-0-05e32ce98813%40bootlin.com
