@@ -1,104 +1,158 @@
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891A05625E2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 23:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790118158; cv=none; b=rsfXs9ZQ43oqPeCHNUA/7I52X8P+NGyWxyAT1T1JRKa2HFReHE8Yu3a0jgezm9Y7FbUDbAOT+XMBzNKxR4qm/qawRvWrcbKqREDno/WkJIYRfwrfUwe7GGf5CTQ/LI7ncPq4BIBfQy6CpgyckGITCOeaQQ7QG1n7FjiXkhSPEAo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790118158; c=relaxed/simple;
-	bh=iaIamMi8MPkJ1yd2GOX8Iq4hZUSjj88CopXy/MvsCpw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kmHIL6TQ9ZWbIR3yWyhvNQHFNygfkjfxeZ1fuaOkjSj0ZUfZRkg9bkgKXfAwSYSDbWl208Tbw/8t6cXarFTmW+5LRTBrnQ2I+YbY6tfKAWI0Syc5/xkG6z7jglNDz0pAajz39MbhJzz+vo4rqflqie9VQhAeqaA3KJz1y5/r4jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AW2Bsdb9; arc=none smtp.client-ip=74.125.227.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BD33BCD19
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 23:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790118858; cv=pass; b=j5A+IZJg2h00jv3yRJCsVwD5QXa2Wp4pWRKwj53IX8bKxAaus26iet/fJRYgQ8c8TQa8y2qOC7D8cGVZXHI3K8L58f8l1t2p6DLyepmPpK8ZurHOk8TcP0M0TfhJdajj1zQ9SbzmJCm3Xadgz6QtdwK4gCJ2X57f6OTU6/7hHFM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790118858; c=relaxed/simple;
+	bh=XzmrFGXevgu0aXvSM1lRNDbtFQ/4dOk5WN4cs/ZFEg0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sx6JCgNvV1Aevc/KeAC7yPdCyf9K7t1vggEi3cx8qxh8FRcqqe8iAG6Fcif6/2gqUDMIUHvC83Cr6Z5wu7f9dXygZJnJLiD0dZC6JejkLylBu8s59Q7q3vLiIJ4JJrg56cM6BvC+NFZiTKFsJ4xiuYVOwuWSpnuelw08ng3Q8i0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c/woH7kl; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AW2Bsdb9"
-Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2d9080b18b6so2552995ad.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:02:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c/woH7kl"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6063d7daaso502471a12.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:14:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790118855; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fI/yH3PU164PdH1wvtO3w0didCdkGIWqy/K3LPZczHg8NyHu+EjD15n5ogAy/Sznwk
+         WzSyr7VBUDN0zfBH7S1Zs7Y33wM8LzNBkjf7JIjCqMT8XdrPvBkMUdm3P+S+Gb5lV2IE
+         ZxsrzQ/kNLFfcCBO71DDMJveYPlU3NYr2/PV0oQgwRUZPP0c5Lf9tFfrBEsPNO45i4ex
+         arz4+R4KClrWz6wwxaUUiNuQRFRBffjyLrYiGvrwG8sa6kym2YBI4H6iUWxpJcY9poMM
+         WDF7j/fTGrbUR2LXxMONC+hpEJhDzmrsB2dQCTQq2BY4+pMK08r3aCCU5iFTUarYK8rB
+         5PQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=B0dFRptqRd7KQ3pJ5dVThTpLmZi/C91RkoLlwpKtDjE=;
+        fh=oMrKKwR9m/sT7ZtqgjZSDQ2eW+UA8ufgyrUSJ3VEhCw=;
+        b=FIHYeHdNosF8V/2l1tn4Yziqo2MqaDT7w50YlaWq+WS3E/NlayAZZ6fV2mkYZ7i5hg
+         lzzXqajApXpq40T960dkw/zp2vaVUjDj6V9AnR1bSYBtJh0yRPN5UIx/7lfp5rauNeTE
+         QzwAvsN+/a+ZYRKLNI8VAEuOEM6fa5YDLh3NRwwObVXGbKtSif7jnxikaWIqOTao5EBU
+         xdegBuvipzmTDeNFQShoBApT4d08FVJKtaF2Xz8eQHOZPsANzP/vFlm8+I7YevgWDhYw
+         o7so82anDK2V9LaA8UTMpvd6M46+Rjxl2Zo64Ai/mIucVBSienSKR6lY4z+vB4phDK6Y
+         k4Xg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790118156; x=1790722956; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1790118855; x=1790723655; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=xTGlIMPYLlSzDXY6D6YOIeUy0r70YVs3+BkE+ZR4VLM=;
-        b=AW2Bsdb9tIirWKjumpF8p/+EUBvifrCGMY8SIPPSMbTrbMal/dyss0s+rnEFrJXIY8
-         vZoMKkK2rIB+iYgJJfLAiPdm/OfbbGO7ecq81U9PZeNGUQxYIE3AffQapbKvDmWVDH3O
-         rbOTY4HERzZviCbJS6yeyQarDRiH+0uDfjm709+rrZ3IcARTV8lmeQgMGhFladVQKKgc
-         3n2y3S2iqIia83gphmYz9MgnL5An7Bo+Ewegne2KjXY8SoYP/3d32N0Q00y7hIW3vEPl
-         4HMO4cLbnBBFFfFG3oeUU5V0vGmQfynKp/2/gEujB0hnaF374wyGCMG0mI/Iv3REmwRT
-         K3rA==
+        bh=B0dFRptqRd7KQ3pJ5dVThTpLmZi/C91RkoLlwpKtDjE=;
+        b=c/woH7kl8+72JTvu1sv55cGVhVvYJm3o2axYMY+5gkTj9C+JxmH+FLgLAF6Yic1rgd
+         LLIC4HRmVjTy1FETKAe6dNwDrwEcyquq+WACGaP2WsM7bqFZKl1oKFN0bGYos81mJcsX
+         6gz9aCmHnl2S5axn+ZIDLBc7qIYrDMexlweajWift+9Au+eaOYth5ON831imO7ulpKPh
+         rpk28d94HNmtL2TTaJ7VGWO/yHy/l2A6+uZTR9fx2KhNWS3qNqRQ9tQvtHlW9/GQIW/v
+         OLUWdUX1hsPP/+tciqBjWAWFbu5obxkeKIcaXZ3RrKFb/gvS2BDBF3FMerrlBxQpIUiO
+         Rr7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790118156; x=1790722956;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790118855; x=1790723655;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xTGlIMPYLlSzDXY6D6YOIeUy0r70YVs3+BkE+ZR4VLM=;
-        b=wisD1yuU8pq0LNAaqX51YrGb4IJEyPjf/GLtUC+2RrJu++Y38qhLlvhpET8ENmKUr0
-         sjoHN1X+yg5818lQZ+8Kgo8lT44tpCMxVPQOpi/VotcB5FEaV50No7WgUNd4jZ7e0JuM
-         3sMB1/7LNN/Eny51su8l4U1RaZgTYyhCA2cVhs4jSa5OplgtWvXI6USyNA59+o1j6lxQ
-         xH/LjGjRzvka+fXWfBWCLcM5zxhQJ4TCp/uPyyL400h0RiDZOhg67O8xBZQ6vzSaAKIb
-         /Sqmc0sFP6dT4TJuIwubmxwETI3tjQVgOqrzEz774mqt67MNozqA4sOMdDMk/Y0w6B1e
-         dw0A==
-X-Forwarded-Encrypted: i=1; AKwUvBwvKEIwmogl1L/TccOagdQJMKEBZ7j5xN2xHje6X+GKus8q497JrULLuljMJDV9e79BuPQ5jQQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++l2LMRzP/zDidJw8BhLEOOv92sBM5Qy05YKl8Z93cbJJ8z/wW+M
-	fYY0sSqwd+NwS3VsNwTogIlVTW8lY1HnPvT6Kg4cwVwCQfZ4OjfsI/8Q
-X-Gm-Gg: AYBFou12+IVzjgOpfXTsndqM1jq+lE2c1tgmWyiTcS+33bFoJmCH01nMRqy3LrvX4sS
-	S5hW0GisrXAfzflcp1Vq1RsB05ncMAWnTmNPXqXDtOScJYmBXokDFx3QXz2c16smm3y5rPiRAPO
-	EyfhreDv1hNMrXNzw0hMlMqMkx/XsyU30GeR1B7y6JGVoPAPKtUlgUqicntHQh/eGGAkTBwGWAO
-	FHhMBdxZ+9pj7IG9diwqsVmgNXDx6VM+I3QdtS4EYW9qdhrYMU3rGPjrGtmjsaaLKGXEKzrHBRT
-	3HC0qJqTvxaa8ljwK7RYzee2KP3ZOozga+QIylY+FNmGkuoNEvl78GQ5cMFe8BjapJf7t8jfMmz
-	IqhVgYk30uv1NkXP5bAhiu4B3jLAM+c1gSLZ+Wj00y8zhpbw2KBn9aJTR8m6JoUZtWQJGTY3YX0
-	W5cPuAjLyJUlkFft166izXf1HQgLQL34IBfmrZmtwHoGCITscPjOUHP8wEqVKvTzhx
-X-Received: by 2002:a17:902:f683:b0:2d7:1cee:3682 with SMTP id d9443c01a7336-2df69d1aaa1mr8204935ad.5.1790118155678;
-        Tue, 22 Sep 2026 16:02:35 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:40::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a516bfdsm1760745ad.5.2026.09.22.16.02.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 16:02:34 -0700 (PDT)
-Date: Tue, 22 Sep 2026 16:02:31 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	Weiming Shi <bestswngs@gmail.com>
-Subject: Re: [PATCH net v2] veth: manage XDP program pointers during channel
- resize
-Message-ID: <arMI-9VqZ4_UvcpK@devvm7509.cco0.facebook.com>
-References: <20260921231856.1798630-1-kuba@kernel.org>
+        bh=B0dFRptqRd7KQ3pJ5dVThTpLmZi/C91RkoLlwpKtDjE=;
+        b=HuKzfQUpejvmQR/3S4RPBjpA5bu0kQ6do/OKTxQhf3YuoxUQ1OCKEAWyaEipnpMZZ0
+         1X5Yz28Xz6Swfo8SiKJ2xWM8Wl/RfJbk/gcLUsMBUK0gEAA+MsN24Qifw3VBtvQTGxQ9
+         gYGNdxc5Oo+KeMlS4r5xiAHJQ9NbQLU+5fr9YvDO29xvvInaU3UU+ehrwuBs+4mEQv+r
+         8BKVn4dFCddFZ9aEtrCF88nnhJrOVmAjIgXhHs/9NRCV3mR/eUDgfqmTSPJ8UVFwsAbY
+         8ha1rx/A3WKqdyJRCjeyERDVhlnY6GwObpGE/xx87+DRG731RXSmVW2CB4mmxBUmG/5r
+         Ccxg==
+X-Forwarded-Encrypted: i=1; AKwUvByou32D3oBgJglZ+PwFQiroYEwa8VsRG1EvwdI3rdZdFX6xQ+XXsYcKroQ/xWRMPnkTAPF5/94=@vger.kernel.org
+X-Gm-Message-State: AFuF++nuOOlMm3FMcWgKmSAY+avlrk/WM1ThyBXR9PDy/Fjs0dDfnSag
+	2AJEUoMj3jnPnLZPLKf5JjNi5woDpHOl+Q5RPAOpq7JeVxSToGvLM5SN3fqB0/52PhYKagUW5pc
+	7xWCX1xRpeLQpVb+UswR4p7/B8P71SuyGVv7gjb2S
+X-Gm-Gg: AYBFou1Ckg/A51+TiBguXRobsky9grqtUAq/14FDgyEyflpQ/Fsl60XiuSID5gXrz/D
+	8TVGsttygclik2ybnaqxnNLLY7pLeb+wubhtPnqsv2l6PqE5xcg7KYITwjmR2CW6t8llLEQuW4j
+	MTjK0X2yV8v/NBL+nIG2NTlpcOZeZQ490tHvBVVR5HrZopE9GGZ5mqIkU5rpHl2wse83+f9PeyH
+	P0fb8oiYqGlwJaXEK7Z9IVELqSG0FN7PzY5NkkUZyB01QxCM3xIISNe1FybsVin1EqZIpB3fGyV
+	5s8xjQxhRFRk4Uy1zZn4DgPa7zaLOo/EYM4bybE1nJV5MuGdGovcZ5gPiOZNp6u8gJZHNgCla8g
+	ipEIW3IKWm+aDb+vRF2ZE1PN1nu7tTTplcmUiJS5Yev4IZF7y0NIqJK53L6DOQnZWbLxU+oEZzY
+	6cxUET4qAKCLYG4AD0zGsySw==
+X-Received: by 2002:a05:6402:42c5:b0:6aa:734b:1a33 with SMTP id
+ 4fb4d7f45d1cf-6aab3b87f76mr617243a12.45.1790118854995; Tue, 22 Sep 2026
+ 16:14:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260921231856.1798630-1-kuba@kernel.org>
+References: <20260920195633.3033620-1-kuniyu@google.com> <20260920195633.3033620-8-kuniyu@google.com>
+In-Reply-To: <20260920195633.3033620-8-kuniyu@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 22 Sep 2026 16:14:01 -0700
+X-Gm-Features: AclHuK98iIjsApxg5DATUyS2svgHdgR8okQeN0Kcw81aR5LsnSsr5UG44LuOVk4
+Message-ID: <CAAVpQUAxLHoXGX4H32SZ2_Wjwq9qnkO3oheQL_1Z8FC4QsiqgQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 7/7] selftest: bpf: Add test for bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 09/21, Jakub Kicinski wrote:
-> veth_set_channels() tears down XDP resources for removed RX queues
-> without clearing rq->xdp_prog.  If the program is then detached or
-> replaced, those queues keep the old pointer after bpf_prog_put().
-> A later channel increase can re-enable NAPI and run the freed program.
-> 
->   BUG: unable to handle page fault for address: ffffc90000256048
->   Oops: Oops: 0000 [#1] SMP KASAN NOPTI
->   RIP: veth_xdp_rcv_skb (include/linux/filter.h:779
->                          include/net/xdp.h:696 drivers/net/veth.c:820)
->   Call Trace:
->    veth_xdp_rcv (drivers/net/veth.c:941)
->    veth_poll (drivers/net/veth.c:986)
->    __napi_poll (net/core/dev.c:7787)
->    net_rx_action (net/core/dev.c:7850 net/core/dev.c:8007)
->    handle_softirqs (kernel/softirq.c:645)
->   Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op")
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On Sun, Sep 20, 2026 at 12:56=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.c=
+om> wrote:
+[...]
+> diff --git a/tools/testing/selftests/bpf/progs/tcp_autolowat.c b/tools/te=
+sting/selftests/bpf/progs/tcp_autolowat.c
+> new file mode 100644
+> index 000000000000..bb96e19e7589
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/progs/tcp_autolowat.c
+[...]
+> +static int tcp_parse_descriptor(struct tcp_autolowat_cb *cb,
+> +                               struct bpf_dynptr *dptr,
+> +                               u32 seq, u32 end_seq)
+> +{
+> +       struct rpc_descriptor *rpc_desc;
+> +       u32 rpc_copied_seq;
+> +       u64 copy_len; /* u32 should work, but not for no_alu32 :/ */
+> +       u64 rpc_len;
+> +       int err;
+> +
+> +       rpc_copied_seq =3D cb->rpc_desc_seq + cb->rpc_desc_buff_len;
+> +
+> +       if (before(cb->rpc_desc_seq + RPC_DESC_SIZE, end_seq))
+> +               copy_len =3D RPC_DESC_SIZE - cb->rpc_desc_buff_len;
+> +       else
+> +               copy_len =3D end_seq - rpc_copied_seq;
+> +
+> +       if (copy_len =3D=3D 0)
+> +               goto disable; /* FIN. */
+> +       if (copy_len > RPC_DESC_SIZE)
+> +               goto disable; /* always false, only for verifier. */
+> +       if (cb->rpc_desc_buf + cb->rpc_desc_buff_len >=3D &cb->rpc_desc_b=
+uf[RPC_DESC_SIZE])
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+It seems clang on my local host omit the base pointer offset
+from the comparison while gcc used in BPF CI didin't and CI failed.
+https://github.com/kernel-patches/bpf/actions/runs/35774477359/job/10691055=
+8464?pr=3D13945
+
+By changing the line to
+
+if (cb->rpc_desc_buff_len >=3D RPC_DESC_SIZE)
+
+, CI passed.
+
+https://github.com/kernel-patches/bpf/pull/13991/commits
+
+
+> +               goto disable; /* always false, only for verifier. */
+> +
+> +       err =3D bpf_dynptr_read(cb->rpc_desc_buf + cb->rpc_desc_buff_len,
+> +                             copy_len, dptr, rpc_copied_seq - seq, 0);
+> +       if (err)
+> +               goto disable;
