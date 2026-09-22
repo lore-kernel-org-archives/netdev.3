@@ -1,64 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0D53769EC;
-	Tue, 22 Sep 2026 01:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D13B35A3BF
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790041446; cv=none; b=eHVF3H18rcspLu0m/XvTYfLuVZYLdmJjRBqlJT/8Hg9Fi+7BkUjzYtcJTgrXtqSty4H6LUXkVkMgUm/ddq8nOSHU75STcJI4mc8rPF8+qtXEdLmvoFQXZasyNSIloykDctdXK7MhtJYwrLFvuXpE7YNRfyDEphwsXMWIe44kkcM=
+	t=1790041573; cv=none; b=iJJFuVbotr+8LcmJyIqaNUVSFiasHODGcm0cNDdcc1dxXBLGvol5XgTVl4ES0kKoEKmeyK+uGuyEduxuES3zTlzwQ+O8DxvRHrEmh+YP+/GfLW7D3GoCaSvqd2cfPxQcAfHzs6xZoXMM58/XKHCQzwAXfTHZ4DrdCAVwnLTpsnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790041446; c=relaxed/simple;
-	bh=jK8JIyhGREW0TMylI1y9XEKxchWa3qkkmjrO5RGrnWc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YyEHcGRiTU3W3yget7qFxlgHqH/O1pMMvMgRcwL/t1inwnbHgt9Y0qBk/UrU2mRU+f1tsOCk4a+xmWro9qI0YmTExfPZR0LUZiFmZdmHxyJUmSUkVmAQYsL5OI8Rb9X45qQsOM7EyfZgNDYEFeb2drNzxqOKAF4D71/IOyZOcc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SLV4Lk09; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790041573; c=relaxed/simple;
+	bh=y+XAD1bzLlPmvSg9e/3OC75RDcM7A3CrfnaE1zi3yj8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=flUmuNvS6RM3Ss32y/udA7xKhykEJt65fbP50v5vCDGtmV+3LzI3Cds5Dro3T1Tbt0EqxZFg3Lk9ht3rSE2vMYkJS8FyaHWUxc9uZ9AQknBvd8QZxo62rshJ4Qj0fVCNeYIKIXdYsJXT1gk8rpdUTtY2SYoKI3w1hz4Va3zNPsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwNHhgDL; arc=none smtp.client-ip=74.125.230.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SLV4Lk09"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790041444; x=1821577444;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jK8JIyhGREW0TMylI1y9XEKxchWa3qkkmjrO5RGrnWc=;
-  b=SLV4Lk09iYk8iOdLMjA4CZucI2KZE/747GB7gYub77tGGQtu3nqzDEoc
-   +LuOF9WQLa+H9Mx5T6J7s/NX4CCmubZHcNSm/QM09COdPDBqFyaFJW8R5
-   n3Un9UCtP0TtjD+h+j85fLKsLz9IRqWLA+CQg/vX1fGxUsG8Sh5VB0wRx
-   mqVWmciVkTMQ5vna7/svJGoFoSJo3s/aYqVIIvUJlRmb4ofusIXHGE/6D
-   Z7DBlYCeMhCR8AlJQZ3r40L58dvayj1a+MCcBoAyt7sWQ59d9mUD1HpRv
-   epVvSnVomcKsoms2EYAPq84njyrwfmcv4gAs6+FpffQlq++alRvZxYf+R
-   Q==;
-X-CSE-ConnectionGUID: Z432NT2pQZ+EafDKGwcdCQ==
-X-CSE-MsgGUID: g+8EpNpiTS+K/Vn40IwEIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101198401"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="101198401"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 18:44:03 -0700
-X-CSE-ConnectionGUID: MHJ3wyiTR1q0HaItK+rP4g==
-X-CSE-MsgGUID: 5bIAnYVXQWatD0AcS/ERow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="3995330"
-Received: from qat-server-366.sh.intel.com ([10.239.92.87])
-  by fmviesa011.fm.intel.com with ESMTP; 21 Sep 2026 18:44:01 -0700
-From: Jie Wang <jie.wang@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chas Williams <3chas3@gmail.com>
-Cc: linux-usb@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwNHhgDL"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfc6db0aso32043516d6.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:46:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790041570; x=1790646370; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y8xPShnnQq1RRm8SZPF19MXAMPQrqUo2Z2vKGdJI+3o=;
+        b=NwNHhgDL4rP/C/q35BW5E+4t4rw7psMkxYpIWrRf7Rtw2yYmiE82xVbc7x9E69lbgL
+         ccBJ6OPJkKusO0h8nCldSxZwLhojVaYSsXxJ5jf6JRHSk45SlmTy53ncHVocjs2pXq9e
+         ji//CEeZUuuSUtYufvXJ4IVhufQN6gA6Z5jRHqZ6nS8atrvq1Zf/yCmeVbThH2PSobvG
+         TMQS7qBTvmSJpMEZqfkudm1R5GpPeubd/iL0Gkzl6KFr/BAdbX/+YrLtfX37x7Afgf4f
+         XdtRwkyY7O1UjXwHGT5CoK2lvrgXIP+17QaR27EcEuMtfiw3ql8KpKDbsCf9jy4dMoI7
+         Us5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790041570; x=1790646370;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Y8xPShnnQq1RRm8SZPF19MXAMPQrqUo2Z2vKGdJI+3o=;
+        b=P93wj2/x7I5+A9jTW6pOIEJaLNPpBvPwz/n7OOLm8+4cweplEAXE/ckeD41Uz0RCxm
+         /n7EdTBbFZcDYQQ67ifB0h4VIrWgzUuEFeHmV8PF7CTqXCrEgK/xjO81gRdq9ZCHjZV/
+         82dLXWPmMtzbt+FZV/WC4O5MqHmzlu8X2AQpZXfgp+T4JXx2mmzs5mDh4J1EnUhRWPY8
+         AH9PNXiHKmCmI738YNGmmlRM8cocNmGxUA0hw6dVJn/kANVvAUtQY9DFOspUCs2eec04
+         xdm5KeyRIULP8jJFqlijABzAvhgl7FRNMnUg7JnHsFAm2fUDSSzO/bYzT+FWcTnTO52t
+         mU1w==
+X-Forwarded-Encrypted: i=1; AKwUvBxrx0mYBDavtU0GTrXDK3CKCkw2OHxc0CBJItp54sAGlS3Q+QB0Nf9+VCL+XmaPUjP0UuyPeiY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mDU3ZUMeqVK1mWnVbs4R4x1xMgfoJv76M2VWL7nCU7kd9oOVzJ
+	xiFJsjjFgc1+9rtB8xvM76YbY0IcdSIztp0u9khHgqZcjLNE9OXfyKY=
+X-Gm-Gg: AYBFou27fRiNazC55KMLCk4dbXOkG0ghmHY4Z5+OlQzKVxr5km5d3YBJEKDSZq0cqj7
+	O4QgR2Up6HA4VcSmOD5ycoNt/OiCeXUoFFvF+0Gh97v9pv/WJbdKmugF55pW3RNhNdLNXV1QcWK
+	+uhsS7BhgDtPy8rsq/szrUGIhrZmtFfe5pcxtuv4yqPEUH0eHELMr0ZqyMhadC8kNizgZauD+pL
+	GSKbLc2vFuvLvfNwj/ZecpNbm97MDPASU01f7/FjjqKxpzUQaa2nWcL+xIwKVo+lYjmg6h/vHDp
+	Qjf3w973eZVs0dzEGY0ZqCeegog9Y2wGzjmyozeFdaTNLFJpv1q7rIZjTJffbIQUI0Cc73HFL71
+	1wVW+IZ9ji22gW7Sp8Anw5g93B4v+xJ6WRpSCM6FzZvFjfdIhMDmU0NCkSp5RkgRJ/eMX0wmVOa
+	qrwmxDKOwK21HVKVVE67E/T0hcoTPC8URfedymMb3QAvJelhoaIHw8RwEis5NliQE4V5AACNBuO
+	SHlwNJvadgaMtjxmjYY2atr89n+/LdXZ5LoMQ/rVyWFABghFOImQn6fKD4morFrblSXBMDBG+t9
+	QlAf9wiqYzrF/CDL7M72OUqLZLgm
+X-Received: by 2002:a05:622a:1cc5:b0:532:c925:c31e with SMTP id d75a77b69052e-532d8d34820mr37916871cf.16.1790041570399;
+        Mon, 21 Sep 2026 18:46:10 -0700 (PDT)
+Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532e17123casm1228641cf.3.2026.09.21.18.46.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 18:46:09 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Rasesh Mody <rmody@marvell.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: GR-Linux-NIC-Dev@marvell.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	accessrunner-general@lists.sourceforge.net,
-	syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com,
-	Jie Wang <jie.wang@intel.com>
-Subject: [PATCH v3] usb: atm: cxacru: fix NULL deref of atm_dev on sysfs writes
-Date: Tue, 22 Sep 2026 09:29:53 +0000
-Message-Id: <20260922092953.4048507-1-jie.wang@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026091012-nastiness-coveted-74e3@gregkh>
-References: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org> <20260908150203.2119844-1-jie.wang@intel.com> <2026091012-nastiness-coveted-74e3@gregkh>
+	stable@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net] bna: prevent IOC timer rearm during teardown
+Date: Mon, 21 Sep 2026 21:46:05 -0400
+Message-ID: <20260922014605.588040-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,101 +83,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The adsl_state and adsl_config sysfs attributes are created via
-dev_groups, so the driver core exposes them as soon as ->probe()
-returns. At that point instance->atm_dev can still be NULL:
-usbatm_heavy_init() waits only for the heavy-init kthread to start, and
-atm_dev is assigned later, in usbatm_atm_init(). A write in that window
-passes the "instance == NULL" check and then dereferences the NULL
-atm_dev: atm_err()/atm_info() expand to
-instance->usbatm->atm_dev->number, and a poll/start request also calls
-cxacru_poll_status() directly, which touches atm_dev via
-atm_dev_signal_change() and atm_dev->link_rate.
+bna: prevent IOC timer rearm during teardown
 
-Log via usb_err()/usb_info() instead; they use the USB interface
-device, which stays valid for the whole write. Reject a poll/start
-request with -ENODEV before poll_state is advanced to CXPOLL_POLLING,
-so that cxacru_atm_start() still starts polling once atm_dev is ready.
+bnad_pci_remove() and the probe disable_ioceth path call
+timer_delete_sync() for ioc_timer, sem_timer and hb_timer, but not for
+iocpf_timer.  bnad_iocpf_timeout() then takes bnad->bna_lock after
+free_netdev() has freed the struct bnad.
 
-Fixes: e605c30977bb ("USB: atm: cxacru: convert to use dev_groups")
-Assisted-by: Gemini:gemini-3.6-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b195c4f412ea5c4e56a
-Tested-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
-Signed-off-by: Jie Wang <jie.wang@intel.com>
+Deleting iocpf_timer last does not fix this.  sem_timer and
+iocpf_timer rearm each other: bnad_iocpf_sem_timeout() can arm
+iocpf_timer, and bnad_iocpf_timeout() arms sem_timer from
+bfa_ioc_hw_sem_get() when the semaphore is busy.
+timer_delete_sync() only waits out its own callback.
+bnad_ioceth_disable() can time out and leave that callback live.
+
+Shut all four IOC timers down with timer_shutdown_sync() on both
+paths, so a later mod_timer() is ignored.
+
+This issue was identified during our ongoing static-analysis research
+while reviewing kernel code.
+
+Fixes: 1d32f7696286 ("bna: IOC failure auto recovery fix")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
-v3:
- - Guard in adsl_state_store() instead of cxacru_poll_status(); the v2
-   guard left poll_state wedged at CXPOLL_POLLING with no work queued, so
-   polling never restarted (Sashiko).
- - Restore the Assisted-by tag.
+ drivers/net/ethernet/brocade/bna/bnad.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-v2:
- - Drop the ->atm_dev entry gate (an unsynchronized TOCTOU); remove the
-   ->atm_dev dereference from the logging paths instead.
-
-v1: https://lore.kernel.org/all/f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org/
-v2: https://lore.kernel.org/all/20260908150203.2119844-1-jie.wang@intel.com/
-
- drivers/usb/atm/cxacru.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index 636f7886fc260..501a51b27e466 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -356,7 +356,7 @@ static ssize_t adsl_state_store(struct device *dev,
- 	if (!strcmp(str_cmd, "stop") || !strcmp(str_cmd, "restart")) {
- 		ret = cxacru_cm(instance, CM_REQUEST_CHIP_ADSL_LINE_STOP, NULL, 0, NULL, 0);
- 		if (ret < 0) {
--			atm_err(instance->usbatm, "change adsl state:"
-+			usb_err(instance->usbatm, "change adsl state:"
- 				" CHIP_ADSL_LINE_STOP returned %d\n", ret);
+diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
+index 8b75004ba7c9..55dfd4896785 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad.c
++++ b/drivers/net/ethernet/brocade/bna/bnad.c
+@@ -2571,6 +2571,22 @@ bnad_ioceth_disable(struct bnad *bnad)
+ 	return err;
+ }
  
- 			ret = -EIO;
-@@ -376,7 +376,7 @@ static ssize_t adsl_state_store(struct device *dev,
- 	if (!strcmp(str_cmd, "start") || !strcmp(str_cmd, "restart")) {
- 		ret = cxacru_cm(instance, CM_REQUEST_CHIP_ADSL_LINE_START, NULL, 0, NULL, 0);
- 		if (ret < 0) {
--			atm_err(instance->usbatm, "change adsl state:"
-+			usb_err(instance->usbatm, "change adsl state:"
- 				" CHIP_ADSL_LINE_START returned %d\n", ret);
- 
- 			ret = -EIO;
-@@ -396,6 +396,15 @@ static ssize_t adsl_state_store(struct device *dev,
- 		poll = -1;
- 	}
- 
-+	/* cxacru_poll_status() below dereferences atm_dev, which may not be
-+	 * set up yet; reject before poll_state is advanced so that
-+	 * cxacru_atm_start() can still start polling once it is.
-+	 */
-+	if (poll == CXPOLL_POLLING && !instance->usbatm->atm_dev) {
-+		ret = -ENODEV;
-+		poll = -1;
-+	}
++/*
++ * The IOC timers rearm one another, so deleting one cannot stop a
++ * sibling callback from arming it again.  Shut them down so a later
++ * mod_timer() is ignored.
++ */
++static void
++bnad_ioc_timers_shutdown(struct bnad *bnad)
++{
++	struct bfa_ioc *ioc = &bnad->bna.ioceth.ioc;
 +
- 	if (poll == CXPOLL_POLLING) {
- 		mutex_lock(&instance->poll_state_serialize);
- 		switch (instance->poll_state) {
-@@ -481,7 +490,7 @@ static ssize_t adsl_config_store(struct device *dev,
- 			ret = cxacru_cm(instance, CM_REQUEST_CARD_DATA_SET,
- 				(u8 *) data, 4 + num * 8, NULL, 0);
- 			if (ret < 0) {
--				atm_err(instance->usbatm,
-+				usb_err(instance->usbatm,
- 					"set card data returned %d\n", ret);
- 				return -EIO;
- 			}
-@@ -490,7 +499,7 @@ static ssize_t adsl_config_store(struct device *dev,
- 				snprintf(log + tmp*12, 13, " %02x=%08x",
- 					le32_to_cpu(data[tmp * 2 + 1]),
- 					le32_to_cpu(data[tmp * 2 + 2]));
--			atm_info(instance->usbatm, "config%s\n", log);
-+			usb_info(instance->usbatm, "config%s\n", log);
- 			num = 0;
- 		}
- 	}
++	timer_shutdown_sync(&ioc->ioc_timer);
++	timer_shutdown_sync(&ioc->sem_timer);
++	timer_shutdown_sync(&ioc->hb_timer);
++	timer_shutdown_sync(&ioc->iocpf_timer);
++}
++
+ static int
+ bnad_ioceth_enable(struct bnad *bnad)
+ {
+@@ -3727,9 +3743,7 @@ bnad_pci_probe(struct pci_dev *pdev,
+ 	bnad_res_free(bnad, &bnad->mod_res_info[0], BNA_MOD_RES_T_MAX);
+ disable_ioceth:
+ 	bnad_ioceth_disable(bnad);
+-	timer_delete_sync(&bnad->bna.ioceth.ioc.ioc_timer);
+-	timer_delete_sync(&bnad->bna.ioceth.ioc.sem_timer);
+-	timer_delete_sync(&bnad->bna.ioceth.ioc.hb_timer);
++	bnad_ioc_timers_shutdown(bnad);
+ 	spin_lock_irqsave(&bnad->bna_lock, flags);
+ 	bna_uninit(bna);
+ 	spin_unlock_irqrestore(&bnad->bna_lock, flags);
+@@ -3770,9 +3784,7 @@ bnad_pci_remove(struct pci_dev *pdev)
+ 
+ 	mutex_lock(&bnad->conf_mutex);
+ 	bnad_ioceth_disable(bnad);
+-	timer_delete_sync(&bnad->bna.ioceth.ioc.ioc_timer);
+-	timer_delete_sync(&bnad->bna.ioceth.ioc.sem_timer);
+-	timer_delete_sync(&bnad->bna.ioceth.ioc.hb_timer);
++	bnad_ioc_timers_shutdown(bnad);
+ 	spin_lock_irqsave(&bnad->bna_lock, flags);
+ 	bna_uninit(bna);
+ 	spin_unlock_irqrestore(&bnad->bna_lock, flags);
+base-commit: 238650ef6c7c7cca08e032527329424c9fbd70e5
 -- 
-2.43.0
-
+2.53.0
