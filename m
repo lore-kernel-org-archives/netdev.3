@@ -1,174 +1,165 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012036.outbound.protection.outlook.com [52.101.48.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048C1550DA1
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18D0552924
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082806; cv=pass; b=ZE0TilfgiL/eK3zjkbBtxWhKymz9CUeb6CqzStXUCvFmU5058wa8p02gw8ra8dk5kZbekWIrZlv+xjYdcqZzA+mh+AplLDxXmpW2nTxV8rlIU/8YKm5B+uYuutDwkH0N1nQFP70m/cgwQrIqz+TMEcV/xnFNnQAw+Lhs+HtR/os=
+	t=1790082811; cv=fail; b=iIRyaEjcMbrMsuPbRo6DhykSWKXaK6v22XscpHQCa/yhEnHBwkqzu4Gkvwiyp/js1FHt49wTtvWnetGWDZlK1du3qsPdhFUoYF0baeUyXYam6+qnrz8xxK8a98NR/t2fQomH2QgdgVFnkC82bvH7PHITNfYF1RvMw1Gkqg5eUvk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082806; c=relaxed/simple;
-	bh=inGt7PUIBCSA5jlLsHiRgO+zeea4owkWaXIEd1vTJRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qB0p/J6Wo34LrEMyb6Bq4qE0PKAAnPnBoMI9T+i8r16NYvExdLytU1y4178nyBYWsQkorxzbWqmc7q+JNWYQqy7SqsXHWVGny9A7UG7rB5m1PxP5yfOX/8F0Kn4FcIbZ5uxsq41xshTFdZtztPYIcKPBF75N0lNHWKu1RtSXla4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cCkAa68p; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gCaFalCC; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790082811; c=relaxed/simple;
+	bh=auHGgOZy+kWDVyKxIu7+p0x+ccZpoyNnCgMz5NvLFfE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=nLqRmHrDTIAToQdW2zIZVFhRCuDLwVZhaQr2GDtoVzLl6j4bbEWAGNTL9VPCCVTH1IkazjtX2Jkv+Jpd6xy8uUAUYSEw5I7ANpUoFBw2TQC0A0SHYW7BptfeYizabvCAwehD9YEH2xQXI+coj8pj+U+LokMBRvKarWhujk1Ib+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H+XIuitE; arc=fail smtp.client-ip=52.101.48.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cCkAa68p";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gCaFalCC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790082801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r9I33pkuDN4IfZkeNMg1Yvv3ErOrI5+WYWqPcorUJCE=;
-	b=cCkAa68pfb3wWshn9ZmcYr0s67DUv7Nef+///8N/Yz5XTMBJwbbilSZ+IpN1RunYIwPRJ2
-	SQXw4HBLx9tk4Dr893d8XXEok65qAF1sEsrFm/8KKBR5nd+yivJOfIAsyiUJ7SAuaPjBjk
-	4BKIPlrFe5dO3/F2NkCViaeRnZ17QOU=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-1QdLzwIKM6uDADeNX2poCw-1; Tue, 22 Sep 2026 09:13:20 -0400
-X-MC-Unique: 1QdLzwIKM6uDADeNX2poCw-1
-X-Mimecast-MFC-AGG-ID: 1QdLzwIKM6uDADeNX2poCw_1790082799
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a49dccdb24so18349801fa.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:13:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790082798; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mzq7ucS2KfyKQScOa+RN2s5c9uKCLMC4ceWc0GRHZiPW9S8vPGWtyDXwI1ReXCsdS9
-         u2xKrgd/feFCiNWMdrrPk6hKlrQpK7mEPGjdCHPqIsR8xlsbjY72oZIqk3P82dOBqKCI
-         o29YxGSsncPOvx0QjunxFe9gxP+Wa29QjRssWTFJrVU2PE0C2GJisRtUekJjLt7/MbTb
-         XmIw++c1BgoCq5cgfE/PLYuXPTBHEIVrzRSP1BiE3JQxC5AXIInA4YxfJU+c+Pfq5Yth
-         tNPofRfkQEDAXVGUS3V35TjqOWbjD15lI8/LkiNTgXcGKs0MWe8MxFrLphloaOW3f1Uo
-         LCHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=r9I33pkuDN4IfZkeNMg1Yvv3ErOrI5+WYWqPcorUJCE=;
-        fh=255FujiQMCPdnIIlX6hOjF4ml7/Oq1VEaVOx5cF0N2M=;
-        b=l+44MYdDKSfZn5rM6kFGHJ72kZUHaWNm1D+ohku4KEXOvWgrv8dpvcjayss5PTSd8X
-         y9s2ctFQmTJU9dikwJvxJd1rL1KFElUz1ZfeG0eYAlgj0H2RarCscmwFSj1VnufbW+Eo
-         1rYHcIV6h4E1Utrkpl5ieWwzjkn9Pct9Ioqnbtimm4MaFzXXfWQTlgz1s7Qt6B9h86Uk
-         HTg1Jya5fEKHAlAAm5XeY+DIAC7w+VdJ0+8DybZmyV5Ikp0BxqnbckZ4MYsCIw2X+q+n
-         Cb7hIQTSJndmjI8IVFyAUzfNh1lnu1c5BwYTq6hFxd0drfbncY5+0Kgta81CHyVwfAZR
-         B6FA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790082798; x=1790687598; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=r9I33pkuDN4IfZkeNMg1Yvv3ErOrI5+WYWqPcorUJCE=;
-        b=gCaFalCC6D+kKmSVp4Ec7tQUA29hXN3qQi2UVbi97fOrLvf251rMOwvTMWsex48dTl
-         /vrHNjLifiNwqPh9gprW+D6UFIjn4J3UvNsb/T5iycHHovnIad/0c9JikI9QuJPUgaCS
-         rIkm+six2JGKBuGGe2RzIqwfaLSImSHQ7owFbJN9Rqh3l9YjH38LV3Oxgd2zePX06Nbe
-         i1gfwNe7mLYfeoXtqaZWeOB+Zcm1TMElKti0iCbbSw/vjzL/TolR9xbmawqys1pZDZYS
-         8iwJ2BEDzjmHuCivcYug+jleZK/4HNxn7RHIFiC4ViswjHrG1OljWxHjNZJUFFBJG2YC
-         4H0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790082798; x=1790687598;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r9I33pkuDN4IfZkeNMg1Yvv3ErOrI5+WYWqPcorUJCE=;
-        b=OwZYC+RDd6RcKFbJ4h4BbMv8ZPATbsYdP4W43TXqnjzyQoGsqPXuKKusq4TknaMllE
-         QvI6PnLySqGMpk8mP9FocIONtgFaChSobHSJzuhJFEeGMn5Q1AtxoQjLhoxrNLd5/70g
-         OHicqbNXynYduMj6qN5DCsrZBhBVxxKZSgoLB3mDxgTCCfoZjxRFYapguuPiMzHnKAbE
-         zUNDS4muDbTCzRBIB4vHMVzt8Z1VFepJqYzZspqkyXOQTSgz0tr9+s1jCUhhaKfRmdRM
-         AxjaQEhNza4DwyXOAYmQeeK4hLJZZz5q/4RTxsVcA1qxt9r2KOwbUCjGzlCURT45zBO4
-         nf9w==
-X-Forwarded-Encrypted: i=1; AKwUvBwqQczrgbwIpsPpkDSgwCZWHAJIhGI/4SMDS10VF370asEp9Gx6KDdLd05/g/Ixw7c0LMl2oG0=@vger.kernel.org
-X-Gm-Message-State: AFuF++l8jP50TV6oDTH9N0IedFRqXSW3vhJEntMO9xwm8oICw2VC1MDj
-	VPl6mz+NECeowV/+r5AMyhXdLv4E6xdBh/hK1RNq9SRgy0D+6K46fR20jnnhav9ZXbqOWRHQ7Sa
-	di6aUT7345draMeJWxboYEX+i9cPPDTjNZEfMC7tJ7hcKisayKn3I0g57rRc8FC1ljpYIH+7BYq
-	mUvkTVN3SOhlhFObr8/KpWKUnvyfg6s/gBrWa5v8bijoc=
-X-Gm-Gg: AYBFou0DTgkmuYxX6rbQx8qO0Ir7MxxquDL3Qv5aO5roikz5C10qrLRWJuc1GSAm7c5
-	HzlvErGj8R6AM3eiAHrm4xFPwdHu0XK0OoSlgOmjMpOGtJ5BIbE4iHydWoVswMBdTC1+uGAsqJJ
-	hiIEr4/L/y1hrYkwEfX8cEZlW8bLfIVtLKwOEYFx7IPkTnaHPHNVifmrIc
-X-Received: by 2002:a05:651c:1544:b0:3a3:74b7:fc03 with SMTP id 38308e7fff4ca-3a5fbf8a256mr32602521fa.15.1790082798412;
-        Tue, 22 Sep 2026 06:13:18 -0700 (PDT)
-X-Received: by 2002:a05:651c:1544:b0:3a3:74b7:fc03 with SMTP id
- 38308e7fff4ca-3a5fbf8a256mr32602451fa.15.1790082798009; Tue, 22 Sep 2026
- 06:13:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H+XIuitE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mG4EcVBOK3JmHH8NYqM+m1j6iQRGaHmqNG9sPbsDRzXCiZaM9UqPOlvnJ3SztL67qLRBBBjUeH/uFNGmPTVL/foBtkVPXbwW88f69cZVWDNiaWEGPb3oApie35bk90SGo/LN2fQq4nDk4CrDywQIBocBke21R3kSgSqixg+uf3bvysrEV+QvGmEcR/L3CHGZ+5Cf6zZpbDc+TsraPGyASe0QLf8SRXgLLWU86QlKdbulkqWRS8D4x3BtSDHpyyIKa0gyyFv9rm4/K9pgv62ya9ZtkR8a3ijlh8BrC60NZMwIoC51yJUx7pFMDO3wV2zV1R5la66jJQTD43lkg9M9ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nBRVf6zrAQrGwITKcr1x9GHAN98C5tgqAPdGlYPPXBE=;
+ b=i8JlR3smh1igaxqmavdKCXfDpArsauTlBozqqArebMhNKK2pIBHy7qQMLQQa/y5Qs08Bv3DqRdZh7bdY/xGIIQUT9itpCCXpp872ItttYBDPJCTZj/P3/hOnryJi7JmFUvK9wdESVzMkVAo+x8+L/MLxxIoOTqTVyzDT1iBUQO7WwCYx99KVNy2MgrCiP4Wfrz5kDaa5HEN/qApM+t2GahlfKTz8FgP+Xzu+iDZxxE9v44ftzD39YaCAYIZd3Jtzwfi0A8zMyaMXxqBRx6X0Cmpkgs6ms/VRhfUcKEMlpYV+VafJY5jYw3oMjBGFhOHcBQiy1W0XHX7jWXcLpqZ0sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nBRVf6zrAQrGwITKcr1x9GHAN98C5tgqAPdGlYPPXBE=;
+ b=H+XIuitEtgP8D0MuMv9U9diBuEaL6qmuBKSQJGJKolYADhLF+DO4ySsab0Q4AjGw/RgkvMo6AsWsgGZO260q4UYShCOLpY6czCBOGcJ0cKz5QRO5fsZ0Y/l/TecgHXOg8Dv6lN63Qh5ksyzcfb6ZddBRJdZ0FLmsjOti7IWNIZaOIVgBrnQh6aJPeWm+RjrZUGCsfle491s4K34/oQ7Wz56HwXHU1sf0bhfhLuX9uAQ4lDujmUH60kldNPbPoiaZf51m08XriVm3aTISTchfgTyGG2T74Pt7Fasw3crWQenr69z7OhQoiNlqygng/6OeCwDPAIv5UZbEnF8o+nm/gg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by PH9PR12MB498472.namprd12.prod.outlook.com (2603:10b6:510:42c::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
+ 2026 13:13:21 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.014; Tue, 22 Sep 2026
+ 13:13:21 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	dsahern@kernel.org,
+	andrew+netdev@lunn.ch,
+	andrea.mayer@uniroma2.it,
+	stesasso@gmail.com,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net] vrf: Stop corrupting skb->csum when capturing CHECKSUM_COMPLETE packets
+Date: Tue, 22 Sep 2026 16:12:39 +0300
+Message-ID: <20260922131239.2509494-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0041.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4a::17) To SN7PR12MB7954.namprd12.prod.outlook.com
+ (2603:10b6:806:344::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922122721.3568295-1-edumazet@google.com> <20260922122721.3568295-2-edumazet@google.com>
-In-Reply-To: <20260922122721.3568295-2-edumazet@google.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Tue, 22 Sep 2026 09:13:06 -0400
-X-Gm-Features: AcwNN1XoYqAwm8srY56UmfIOpo6hB-1PvtnqRUeFXnGwYarvIsoKH-_lnD-tgYs
-Message-ID: <CAK-6q+isdiPsQFr0JbRvAHDf32kcYwad4t4Q-C24+WnHvCVTRA@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/9] dlm: fix send buffer backpressure handling
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	stable@vger.kernel.org, David Teigland <teigland@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH9PR12MB498472:EE_
+X-MS-Office365-Filtering-Correlation-Id: c36aaf5b-9089-4e3e-622b-08df18ab45d2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|10067099003|11063799006|3023799007|4133799003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	u3FjYMdoQJIZqS/BHbne7Z5htEaGvabrzG4CdwtDRrRnWxEBRihe1wIySeXn6LNs7UvJLs+RPIzSC9cpJqC/No0Vvx97vTkp2FUhE+ioeP6vGF67s4Hir6wgTWzG5VEI2uGVInnzVRHsGs7/GGcGAPf8Zi7fCj3tPkjyvOlGl2Id6fRGj3sO21zNuOlN7SuncIky2qR6HOBTP3o3yMFVy+CEbDqhcv4z+BnjQfeOgF1hkrunRADjXdMmbePOaQWIoN/cCgKgFjCyQ03PxFIT2UwO3whFhfi0WeE8FfZcn+SoLKjJbcOpHQ2JwJyHRwVcJo6XKdWvg4ve4nBDeiSxSfmedCJ79OGVIfl6cge5t60K3V1aUagtIACyN3xXYXzqSJo2ZU3uuI58xzduCIk4+vHnvB0YntXyTFG0Uj8gH2KGbzFR6oWC4no3D8Kqon1huy3xDCQOz9h+NwkOI82rUZjSbJfXl2H+NUk/j2SYZRSk4VtOdsU4QkgO1y5/rwa3EqbjEyOONfZZtHmxukMfbIU2zMfJNYrswfVHGxW5acGK/rMRVUVlkxL756JIKLiRuaAaNfK81cXtG55OUTslGZ1hhanA0Vyl+3Um7JpjyZ+O38hWJ5NgodBey+XOnGbsOAJsDE3IpyssYhzJ9oTK16SZ8meopTB1d9P6esrlFIs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(10067099003)(11063799006)(3023799007)(4133799003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yptLyOamEp1QLtlzpEP94qLj7gqNIjc07cW8MXpAdo7AUFWoCjoX09dWikrf?=
+ =?us-ascii?Q?3WPiENEaaYM8eru0vc6BohCew57uMVoctXNg1spy4UR1RjIAF7J3KrQIR74K?=
+ =?us-ascii?Q?UIbjwPQhBNir+HNMhUum7KMLqmGE7fhlbBFG9rOmPLVDPRxfqaugynx9StFb?=
+ =?us-ascii?Q?wcSAIRloN+z6+lhk3mfh8/Jw4T6K3VQid6V/aitWAx471AAjd56Ju4EupCIA?=
+ =?us-ascii?Q?Z4gfK304laKJXX23dI5c6eP9woOR3EXabysARPW9WEFD8XU6PnP3kq3eX0v4?=
+ =?us-ascii?Q?suEVUMEyyMtlGOFysYV/sJGjCixuz/esjVeg/wmlmjbmmiWhsIkihWRj7Z2B?=
+ =?us-ascii?Q?gYgOmpWS4IRy2VSvUKqGWqaCxR10jFUD6px2DnxbFvPfMYlRbKVuSwLm/76y?=
+ =?us-ascii?Q?PMkRqz5ZGSe2FAtZTLYcDoDoNO5JAOonq25Z1kEUXPBig0iDPoyNhXfCVaPc?=
+ =?us-ascii?Q?9EjrXolDJiFYdplY3s1K8bqxJakll25RMAObrb6qFUcE47tXw97idPDUyaxi?=
+ =?us-ascii?Q?neohyg0HdxFr2qTH6HzxBcoMKtccrczLYLtxHC2yqzhTgAFvH4YgR8zBNyHx?=
+ =?us-ascii?Q?Pda3ZT4Op/9VZGjU4z3mmxy/F2vy3l29EKACmpowf/7dEF3VPHOrqX+e2l5s?=
+ =?us-ascii?Q?LL8JZTq2om7lSEFh0nzcnvzFfy9NggIAcgyhLSHEqSL3c9XooxyfU8+mvfEz?=
+ =?us-ascii?Q?jhaSfqBX039eG3HTFPMbX6G+V+bCahMNyi8T+akElW9xffL6yr78kGdUjHyI?=
+ =?us-ascii?Q?SqjW/hirH4ld8noDH01zVb33jpFmsUa46Pqf/aTiwq93NXgx74R7JtogNMGN?=
+ =?us-ascii?Q?aCFaiDBjeCKDND9fQHMX4gOUD7KKX3/8dRzjT3TtgNZJCBEuWpy8QNPAMjnF?=
+ =?us-ascii?Q?XO1T/QkhZRklyctIyWASLJIxsincGuNXxz6Ra+Oyruiz+Z5gG3m2HfFAKWRK?=
+ =?us-ascii?Q?TtvocF3tc00LdpcqX7Ch7TKgQlop21vt+yv/pRaHUq5LnPN8dG63PdGYiJyt?=
+ =?us-ascii?Q?esSWAKEQG65mbxbmc4S/ufnD9NRYmKGhPq1xl5ifGOEnwxb7hwApz1TOLXC2?=
+ =?us-ascii?Q?B4Ac0kU4OPb9dy0pny7pZnv8+KSf1X/bbbiVSiOzKfPT/Eid6byMWo0QJSdC?=
+ =?us-ascii?Q?W/Bl8a/aYMeqAOKIjbzk0fNiSC2c6TDFyjatiU9QM8xfI/BWhY4/foFAg/FM?=
+ =?us-ascii?Q?n5V3WAmX0XVpherYH4WJQ1vLYM4jZi2bwmJjqucmRprFrP/OOb7mRGqjAVG9?=
+ =?us-ascii?Q?lAE1w/z1jQRnMAvAg2bJjrnuFwh4WkmFYRoWeKZfF041Qa/Z4TrTiXwekebz?=
+ =?us-ascii?Q?gQ2W+qGvmFI0oGQpPiUq2a013WvL4/PeM6HRhvBU9b+WdQSJabd+B1m2wbMO?=
+ =?us-ascii?Q?E+O9uIdHacaSp+2WKz7gxkkljgHA0TQkfTrvVvq5xHs3WnpJHTs568AP4Two?=
+ =?us-ascii?Q?Ml88sQkIiHB/iOwntV5Xq2XAnw5edoWLBqlzD5o8ysCzYXZZO3n4OfCu9Xft?=
+ =?us-ascii?Q?esFEF3b808eSJQpM/YP5fWJ+auiwfmFM0LTLDIJAR95Mn5w9SFuhXIUWkEjc?=
+ =?us-ascii?Q?D4vctCH/zfikh+92P/7HiVBEoVQNdaeSl8NmLFzYVOGY0sMbATl1ApGGBv3G?=
+ =?us-ascii?Q?SRupIQjf1NckiHQeuTjOu9Z28KgqQ7vimlNn4gMxqEpYGDDUvKkMieeGlETq?=
+ =?us-ascii?Q?qXMpi6wNj63MjGVTntLudzwtEZ0sL452M4KFsSjEbOGe8R/+?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c36aaf5b-9089-4e3e-622b-08df18ab45d2
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB7954.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 13:13:20.9090
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kjAakduNmTutVgfA1ZcQiaZt6Mm+7N+GhGN6L7c6H116dgLsLDCJ4HOrFI/30+PbL3Bsrs9NOh5fH6llp44EPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH9PR12MB498472
 
-Hi,
+The VRF device is an Ethernet device but it can have non-Ethernet ports
+such as IP tunnels. Before the cited commit, capturing packets from such
+ports on the VRF device resulted in these packets being detected as
+malformed since they lack an Ethernet header.
 
-On Tue, Sep 22, 2026 at 8:27=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> lowcomms.c tests and clears SOCKWQ_ASYNC_NOSPACE in con->sock->flags,
-> but this bit has not been stored there for ten years.
->
-> Commit 9cd3e072b0be ("net: rename SOCK_ASYNC_NOSPACE and
-> SOCK_ASYNC_WAITDATA") mechanically renamed the two dlm users, then
-> commit ceb5d58b2170 ("net: fix sock_wake_async() rcu protection") moved
-> the bit from socket->flags to the RCU protected socket_wq->flags, where
-> it is reachable only through sk_set_bit() and sk_clear_bit(), and is
-> only maintained for sockets having SOCK_FASYNC set.  dlm uses kernel
-> sockets, which never have SOCK_FASYNC set, and never sets the bit
-> itself, so the test in send_to_sock() has been false ever since.
->
-> The consequence is that when sock_sendmsg() returns -EAGAIN because the
-> socket send buffer is full, dlm no longer sets CF_APP_LIMITED, does not
-> increment sk_write_pending, and does not return DLM_IO_END to wait for
-> lowcomms_write_space().  It returns DLM_IO_RESCHED instead, and
-> process_send_sockets() immediately requeues the send work.  A connection
-> to a peer that is slow to drain thus keeps cycling through
-> sock_sendmsg() and -EAGAIN, burning CPU, instead of sleeping until TCP
-> reports that space is available again.
->
-> Test SOCK_NOSPACE instead.  This is the bit that lives in socket->flags,
-> that TCP sets whenever sendmsg() returns -EAGAIN for lack of send buffer
-> space (tcp_sendmsg_locked() and sk_stream_wait_memory()), and that
-> lowcomms_write_space() already clears.  This restores the semantics dlm
-> had before the bit moved.
->
-> Also remove the clear_bit() of SOCKWQ_ASYNC_NOSPACE from
-> lowcomms_write_space(), for the same reason.
->
-> SCTP connections are deliberately left as they are.  SCTP does not set
-> SOCK_NOSPACE, and it never calls sk->sk_write_space(): sctp_wfree() ends
-> up in sctp_wake_up_waiters(), which calls sctp_write_space() directly.
-> lowcomms_write_space() is thus never invoked for an SCTP connection, and
-> the test added here stays false, so send_to_sock() keeps returning
-> DLM_IO_RESCHED as it does today.  This is the only safe behavior, as
-> returning DLM_IO_END would wait for a callback that never comes.
->
-> Fixes: ceb5d58b2170 ("net: fix sock_wake_async() rcu protection")
-> Cc: stable@vger.kernel.org
-> Cc: Alexander Aring <aahringo@redhat.com>
-> Cc: David Teigland <teigland@redhat.com>
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+The cited commit fixed it by pushing a dummy Ethernet header to such
+packets before the capture and pulling it afterwards. In the case of
+CHECKSUM_COMPLETE packets it also updated skb->csum with the checksum of
+the dummy Ethernet header. This is wrong as skb->csum should not include
+the checksum of the Ethernet header ("checksum of the _whole_ packet as
+seen by netif_rx()").
 
+This also means that L4 protocols receive a corrupted skb->csum and
+potentially drop the packet, as is the case with UDP packets whose
+checksum was completed by software.
 
-Acked-by: Alexander Aring <aahringo@redhat.com>
+Fix by removing the unnecessary call to skb_postpush_rcsum().
 
-thanks for looking into that!
+Fixes: 048939088220 ("vrf: add mac header for tunneled packets when sniffer is attached")
+Reported-by: Stefano Sasso <stesasso@gmail.com>
+Closes: https://lore.kernel.org/netdev/CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+---
+ drivers/net/vrf.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-- Alex
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index a0557a3a7026..d4dc6d690a75 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1175,8 +1175,6 @@ static int vrf_prepare_mac_header(struct sk_buff *skb,
+ 	skb->protocol = eth->h_proto;
+ 	skb->pkt_type = PACKET_HOST;
+ 
+-	skb_postpush_rcsum(skb, skb->data, ETH_HLEN);
+-
+ 	skb_pull_inline(skb, ETH_HLEN);
+ 
+ 	return 0;
+-- 
+2.55.0
 
