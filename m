@@ -1,229 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814BA35DA40;
-	Tue, 22 Sep 2026 03:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030B8292B2E
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790046658; cv=none; b=BmkY9Fg/Mw/OMcWpt3a2mgDZEtalp0AOqrm53ksbEpBMTGZej8p3exC5l7rsgEnndngsXY3YbGQv3tGUmk8ztTuC93XKOQPP6oB0t3SsF1SH9DCQdJ3adNbkeYY6hIKqL0lmNm9440AszrPl7pg3rsTJGFxdUJU1BXLHHSOjFeg=
+	t=1790046956; cv=none; b=ZqvVbLihIJHlUFTrmDaHs95er0DdZ1cc+W+JySeC3qdIJb2OhAurvTX7DL1UYVgUhzFkVehNEVcwvEsqQ4x7cHl2toRP7fE6x6Uo1iwy9zcFGISe5JUiMWDOP2IiQaaysqbxJyUlkj9yl5G6eJO3GVCBACJC+HIDA1Vbmo3RxYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790046658; c=relaxed/simple;
-	bh=NllU/WOrUsmJskpSVrPDTGRzxl46+qwRZZY2NvEUyxE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p4uNxR2r7FOQJ0xPowQJz4JLWEdMmFG/NI8zD6RgdAUprIyMVlRz0xNOAtvdlBR1QuFhOh08DCuftEFQPnoX8rOxcQBrquB6UjLfwWcI/h9OqkLdob7sIhXb9BlWCuL2rVIbgZDozNz5pIpsVuQAR7VnMGLAT4U3AuM2C4v5k+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zr4rXcS8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790046956; c=relaxed/simple;
+	bh=iSmmkgyOikY+CwgD/N7u04Ao1UfAh/QWnDwyIjtT3rQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EJnn+RDymqTqPgUQPXAjUfbprPDHjmUyYnh0uDo0YQGHEd59J2rJCxaeegjNb47EZ9WnDiIEa2gPMMlseMxqsZuRMSMUUTkxh24T5L/eKdO+Z+XByuakEFy6CsLKc6XlIIJd9YUVFDZwX1Ub8rGXEiNfLxoApyOjelrUkhWBj98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BoytIRsp; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zr4rXcS8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8771F000FF;
-	Tue, 22 Sep 2026 03:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790046657;
-	bh=JuRCpvKO2FyROzwUiWDogYR8vNf+2vmDwHRyUrGgkfU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zr4rXcS8NWbl/AZ1+KRIWVSTmrY0JXrchZDednHjdMwHQAWDMAKWSLWXC3rmg7b3U
-	 qJemHH70twb0wbVmRxadYffvmudSGHw+1pxSuS8jbHk2E4A9oHiZ7zffPg1WNzbAus
-	 ed781A8fePSE/WqP531H7YHO1qXvwPSylFlr1fJrrnsSpgKF4JOp6cdIaVquHd9sK2
-	 gbPjJ4DjRYn7Kkg3tnVnieDLpoWFZpB2jpJwDTxrCq76HFe5KxKVYqOqvJQYns0Oj8
-	 D2s70+VGoaNw7bZk5A5xvsA8tbk92LO1B2oflhx/621hQwyd4ry9Vlq+avkLvrkxGZ
-	 0RL9I33ghv2BA==
-Subject: Re: [PATCH net] net: bcmgenet: add hwtstamp callbacks to restore PHY
- timestamping
-From: netdev-bot+sashiko@kernel.org
-To: jjc@jclark.com
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com, netdev@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, vadim.fedorenko@linux.dev,
- richardcochran@gmail.com, kory.maincent@bootlin.com
-Date: Tue, 22 Sep 2026 03:10:55 +0000
-Message-ID: <179004665570.2160803.5770454161179957984@kernel.org>
-In-Reply-To: <20260918030149.80398-1-jjc@jclark.com>
-References: <20260918030149.80398-1-jjc@jclark.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BoytIRsp"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747f01363so29800205ad.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:15:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790046953; x=1790651753; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Uvk79jd+WkOqoSsKYqTDa1SfAv/OPPokbPe5GWlulBo=;
+        b=BoytIRspLzHOGgFvPKbFZ8AuNmWz6hbkuY/d//8pfnmUlFz787w1Lr8tHMMRDE7PVh
+         kO+k06SdRarVJ94t/06HYAc0kTNCtZIbXupY5aPxE2OrLjgYKuyxurZ2n8VC4jxG6TXS
+         TAZiL9509jCUbNsdHunNSR7KXh5mE7q29p8IT4i91djM62Owt2grIbNzxlzU/1zn0eIE
+         Laoz+ndT2e780Qm19WlzIIK28GzclL0ZyJ2o3ZywUjNC9oTAtx7Ca7AR1p5SJlfNfVTm
+         +zfn+WFxlfuXTZuS52UbyIokIElZiU2igCCZrMR6UnnHOqyFXDRc/wZr2a8YPgM7syhn
+         CwfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790046953; x=1790651753;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Uvk79jd+WkOqoSsKYqTDa1SfAv/OPPokbPe5GWlulBo=;
+        b=RZC2l9bha4MzdwdGV9Bhoy0Vdoh0+hnDVJG3F0vxuicRl7XPf+8G53ytXumV734qKL
+         KWzgGFJIplVpqpKuCvYUZJ8hSIiqfALeGsSRfS/9AbQxwpDiZTqeSy15LTjPxQD3z2Q/
+         XZ+j4vxHUGw08FzufvTJzBIIJGcdb+Dhjnwau8IgDvIa2lLUTKxcdrq49Uoz1TyhvkxR
+         Us5U9xqmYWwrTWOF6JC035iB2fj3E22jDEvAoDzv/tIOGKXiqJq187Lz2yVKezKdkXZV
+         YJNLQcDZPa0i2FeIXFZ3ejg8GEbNtMp314LrHwR7NxjO/Kv4vHtDNqrbZ0XpUOvdZfWG
+         KS2Q==
+X-Gm-Message-State: AFuF++lWJu6EQd8w2lfRuf829lmOulmFF1qpicZG5H9qur3ibQSkd+RG
+	m2BBQfDXhnUCFOZCHOKC1rvR9GQ32FogbSTw4skVDVkjzpPq2RMrzM476pUFxKn6sXSgSQ==
+X-Gm-Gg: AYBFou0FrU8QZnpV+9fHv7m6kb7eKDmJaaZLAczXkPa4uA1aCmbodAWT8U1qxSD8pso
+	+c9zzP5pVv12K4r3K6cdQuk7/lmzQM1v9cOsy8vWITv5NmjwO4auFeQN+5prTBC3pSKQlZf/FTJ
+	Q5V8lW+bKeVvVUOnLvKf6rVWApZ2AmMvk7hbdyR0e7IunRLvuU3JjYvPw6SN+/ACwyjWiRoUb+L
+	dEAqKL3CXsr6k3Wt2z4HykUD/293ZXfg8MltGkh8xYuPtj/I6qOS2flxVMuSxdQ7xEnLgBGgsG/
+	pi1D/AcEKHR+uzDUXPo01KGRbi9gVacq4EdyRCjImBqX4/6bbvj9bNEKAZrTACstoTf6+PRWCAc
+	0YZOqUuvs9d9/FXzlujB8D2CZ/tzfwXrmsKwkjFijJzqYFjwZUtc8vkCuMxtVwhcXJTOb8RKYFw
+	lE+Szk0vi3INkofmCuc2lgLgykkuNLYjK54kp99M4jmXsYFe/NjxaXAx6n1fglT4DFiYPuzRnxy
+	WyE0gaCOAKZ5rwUczCGBz7D
+X-Received: by 2002:a17:903:8c6:b0:2df:42de:f71 with SMTP id d9443c01a7336-2df42de1624mr79060165ad.19.1790046953165;
+        Mon, 21 Sep 2026 20:15:53 -0700 (PDT)
+Received: from localhost.localdomain ([43.224.245.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df5cf84221sm1893045ad.10.2026.09.21.20.15.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 20:15:52 -0700 (PDT)
+From: Dongliang Qin <cccccccccccc777777@gmail.com>
+To: netdev@vger.kernel.org
+Cc: achender@kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Dongliang Qin <cccccccccccc777777@gmail.com>
+Subject: [PATCH net v2] rds: ib: Clear the sg list when mapping an MR fails
+Date: Tue, 22 Sep 2026 11:15:45 +0800
+Message-ID: <20260922031546.3874605-1-cccccccccccc777777@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+rds_ib_map_frmr() stores the caller's scatterlist in the MR before DMA
+mapping and registration can fail. On failure, __rds_rdma_map() unpins
+the pages and frees the scatterlist, but rds_ib_free_frmr() can still
+return the MR to the pool with the stale pointer set.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+This leaves the pool with a dangling scatterlist and can lead to local
+privilege escalation. KASAN detects the resulting use-after-free when the
+MR is later torn down:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+BUG: KASAN: slab-use-after-free in __rds_ib_teardown_mr
+Read of size 8
 
-- [High] Fix applied at the wrong layer: the regression the commit
-  message diagnoses ("the core rejects timestamp configuration requests…
-- [Medium] Registering ndo_hwtstamp_get/ndo_hwtstamp_set on a MAC that
-  has no PHC opens a one-way trap on the ETHTOOL_MSG_TSCONFIG_SET path.
+Call Trace:
+ __rds_ib_teardown_mr
+ rds_ib_unreg_frmr
+ rds_ib_flush_mr_pool
+ rds_ib_flush_mrs
+ rds_free_mr
+ rds_setsockopt
 
---
+Store the scatterlist in the MR only after DMA mapping succeeds. If DMA
+mapping fails, return directly while the MR fields remain clear; the caller
+keeps ownership of the scatterlist and its pinned pages. If a later
+registration step fails, unmap the scatterlist and clear the MR fields
+before returning.
 
-net: bcmgenet: add hwtstamp callbacks to restore PHY timestamping
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dongliang Qin <cccccccccccc777777@gmail.com>
+---
+Changes in v2:
+- Store the scatterlist in the MR only after DMA mapping succeeds.
+- Return directly if DMA mapping fails, leaving the MR fields clear.
+- Link to v1: https://lore.kernel.org/netdev/20260920063449.1594203-1-cccccccccccc777777@gmail.com/
 
-This adds ndo_hwtstamp_get() and ndo_hwtstamp_set() stubs to bcmgenet that
-both return -EOPNOTSUPP, so that the core hwtstamp entry points no longer
-reject SIOCSHWTSTAMP/SIOCGHWTSTAMP before the phylib helpers get a chance to
-dispatch to a timestamp-capable PHY.  No other behaviour is changed.
+net/rds/ib_frmr.c | 11 +++++------
+1 file changed, 5 insertions(+), 6 deletions(-)
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index b916080f4ff1..98d861811328 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -3721,6 +3721,19 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
->  	return 0;
->  }
->  
-> +static int bcmgenet_hwtstamp_get(struct net_device *dev,
-> +				 struct kernel_hwtstamp_config *cfg)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static int bcmgenet_hwtstamp_set(struct net_device *dev,
-> +				 struct kernel_hwtstamp_config *cfg,
-> +				 struct netlink_ext_ack *extack)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-
-[Severity: High]
-
-Should this be fixed in net/core instead of per driver?  The commit message
-describes the failure as "the core rejects timestamp configuration requests
-before they reach the PHY", and the rejecting code is provider independent:
-
-net/core/dev_ioctl.c:dev_get_hwtstamp() {
-	if (!ops->ndo_hwtstamp_get)
-		return -EOPNOTSUPP;
-	...
-}
-
-net/core/dev_ioctl.c:dev_set_hwtstamp() {
-	...
-	if (!ops->ndo_hwtstamp_set)
-		return -EOPNOTSUPP;
-	...
-}
-
-The same presence test exists in generic_hwtstamp_get_lower(),
-generic_hwtstamp_set_lower() and in ethnl_set_tsconfig_validate()
-(net/ethtool/tsconfig.c):
-
-	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
-		return -EOPNOTSUPP;
-
-These are the lines 5062245a5a7f turned from a dev_eth_ioctl() fallback into
-a hard error, so every MAC whose PTP comes only from the PHY is affected, not
-just bcmgenet.
-
-Two drivers in the same directory still have no ndo_hwtstamp_* and rely on
-phylib ioctl handling:
-
-drivers/net/ethernet/broadcom/bgmac.c:
-	.ndo_eth_ioctl           = phy_do_ioctl_running,
-
-drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c:
-	.ndo_eth_ioctl		= phy_do_ioctl_running,
-
-arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts wires bgmac's gmac0 to
-a BCM54210E, and that PHY driver calls bcm_ptp_probe() and sets
-phydev->default_timestamp = true, so that board still fails SIOCSHWTSTAMP
-after this patch.  Would skipping the NDO presence test when
-phy_is_default_hwtstamp(dev->phydev) is true cover all of these at once?
-
-A related question about the stubs themselves: since dev_set_hwtstamp_phylib()
-only calls the MAC callback when !phy_ts or dev->see_all_hwtstamp_requests,
-and bcmgenet sets neither, are these two functions ever invoked in the PHY
-case?  If they exist purely as a capability signal, would a comment saying so
-help, so a later "these always fail, remove them" cleanup does not silently
-bring the failure back?
-
->  static const struct net_device_ops bcmgenet_netdev_ops = {
->  	.ndo_open		= bcmgenet_open,
->  	.ndo_stop		= bcmgenet_close,
-> @@ -3732,6 +3745,8 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
->  	.ndo_set_features	= bcmgenet_set_features,
->  	.ndo_get_stats64	= bcmgenet_get_stats64,
->  	.ndo_change_carrier	= bcmgenet_change_carrier,
-> +	.ndo_hwtstamp_get	= bcmgenet_hwtstamp_get,
-> +	.ndo_hwtstamp_set	= bcmgenet_hwtstamp_set,
->  };
-
-[Severity: Medium]
-
-Can advertising these NDOs on a MAC without a PHC make the
-ETHTOOL_MSG_TSCONFIG_SET path reachable in a way that cannot be undone?
-
-bcmgenet uses .get_ts_info = ethtool_op_get_ts_info, which reports
-info->phc_index = -1.  Before this patch ethnl_set_tsconfig_validate()
-returned -EOPNOTSUPP for bcmgenet, so ethnl_set_tsconfig() was never reached.
-With both NDOs present, validation passes.
-
-Consider this sequence:
-
-1. TSCONFIG_SET selecting the PHY provider (index = the PHY phc_index), so
-   dev->hwprov is non-NULL and PHY timestamping works.
-
-2. TSCONFIG_SET with ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX = 0xFFFFFFFF and
-   QUALIFIER = 0.  ts_parse_hwtst_provider() stores that through
-   ethnl_update_u32() into the int index field of struct
-   hwtstamp_provider_desc, giving -1.
-
-net/ethtool/common.c:ethtool_net_get_ts_info_by_phc() {
-	...
-	if (info->phc_index == hwprov_desc->index &&
-	    net_support_hwtstamp_qualifier(dev, hwprov_desc->qualifier))
-		return 0;
-	...
-}
-
--1 == -1 matches, and net_support_hwtstamp_qualifier() returns true because
-bcmgenet declares no supported_hwtstamp_qualifiers, so the provider becomes
-HWTSTAMP_SOURCE_NETDEV with phydev = NULL.
-
-ethnl_set_tsconfig() first disables the working PHY timestamper with
-dev_set_hwtstamp_phylib(zero_config) and then installs that provider:
-
-net/ethtool/tsconfig.c:ethnl_set_tsconfig() {
-	...
-		__hwprov = rcu_replace_pointer(dev->hwprov, hwprov,
-					       netdev_is_locked_ops_compat(dev));
-	...
-}
-
->From there dev_get_hwtstamp_phylib() and dev_set_hwtstamp_phylib() take the
-HWTSTAMP_SOURCE_NETDEV branch:
-
-net/core/dev_ioctl.c:dev_set_hwtstamp_phylib() {
-	...
-		} else if (hwprov->source == HWTSTAMP_SOURCE_NETDEV) {
-			phy_ts = false;
-	...
-}
-
-so the PHY is never consulted and bcmgenet_hwtstamp_set() returns
--EOPNOTSUPP.
-
-Does that also block recovery?  Reselecting the PHY provider runs the
-zero-config disable step first, which now hits the NETDEV branch and the stub,
-so ethnl_set_tsconfig() bails out through err_free_hwprov without replacing
-dev->hwprov.  dev->hwprov is only cleared in phy_detach() when
-hwprov->phydev matches the detaching phydev, which is NULL here, so ifdown
-and ifup would not clear it either.
-
-The permissive -1 comparison itself lives in core and predates this change,
-but is this patch what makes it reachable for bcmgenet?  Would declaring a
-real .get_ts_info (or rejecting an index of -1) avoid it?
-
+diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
+index bd8611911..8397aa4a1 100644
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -204,19 +204,16 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
+ 	 */
+ 	rds_ib_teardown_mr(ibmr);
+ 
+-	ibmr->sg = sg;
+-	ibmr->sg_len = sg_len;
+-	ibmr->sg_dma_len = 0;
+ 	frmr->sg_byte_len = 0;
+-	WARN_ON(ibmr->sg_dma_len);
+-	ibmr->sg_dma_len = ib_dma_map_sg(dev, ibmr->sg, ibmr->sg_len,
++	ibmr->sg_dma_len = ib_dma_map_sg(dev, sg, sg_len,
+ 					 DMA_BIDIRECTIONAL);
+ 	if (unlikely(!ibmr->sg_dma_len)) {
+ 		pr_warn("RDS/IB: %s failed!\n", __func__);
+ 		return -EBUSY;
+ 	}
+ 
+-	frmr->sg_byte_len = 0;
++	ibmr->sg = sg;
++	ibmr->sg_len = sg_len;
+ 	frmr->dma_npages = 0;
+ 	len = 0;
+ 
+@@ -264,6 +261,8 @@ static int rds_ib_map_frmr(struct rds_ib_device *rds_ibdev,
+ 	ib_dma_unmap_sg(rds_ibdev->dev, ibmr->sg, ibmr->sg_len,
+ 			DMA_BIDIRECTIONAL);
+ 	ibmr->sg_dma_len = 0;
++	ibmr->sg = NULL;
++	ibmr->sg_len = 0;
+ 	return ret;
+ }
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918030149.80398-1-jjc%40jclark.com
+2.43.0
