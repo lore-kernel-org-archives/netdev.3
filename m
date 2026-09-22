@@ -1,64 +1,64 @@
 Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E32577E34
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEAC577E57
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790097655; cv=none; b=A7sfSUPMksh5kkot26PWtSCsC/nxBACKA323Ge0SfNAp5goj32EaEATnsuIlYaYmPa9MEFB5N1iWIGYLT1yh6oj0Cg6FnOgXABxnzpdK9J306rMj/Mm0+IUYlFbGsrdmEPjEWClmwVWgz5aHryW0Qj8KDD0gOg37EGtmRJoNnx0=
+	t=1790097657; cv=none; b=R9ggr6pOTfjoiK+kHiZUmvW7L0/NezTOR4m8B59aVTgYFcmXfR9otDedqTiz1IKXQa7AoT3lGbO3BFhYeOLKb+qCmk7V8Ybsco1tImxAouLn8fZh0dkKZoylBA04EVW1r0HEWM8JLNcUl6XOgBEaoCGVUiBaIRPDCYv+9rEOg7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790097655; c=relaxed/simple;
-	bh=+wqleCA+p9rbs7ppEm2zoLuG3IWPujpJnMYbg025GIc=;
+	s=arc-20240116; t=1790097657; c=relaxed/simple;
+	bh=K1kPVhalzK2p/Oi/++MfwlZAsChdgNM2Rym6IJuVlIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4NEc7j7sYxI4ODNyqE8JHMjdENq3lsbKSFA6X8Ejq5121mQ8T/Hfq9r2EO20cZ+I4EEMWY4wfh0MKul9hyAQKudG92z4kBpSxME0kI54943EZZMO5hOupHpFOZrFDof5twx3CU72QR1SoAIxCcqFqHg9G84qCSf2+xeszTSugo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=UL6E3tYd; arc=none smtp.client-ip=74.125.227.171
+	 MIME-Version; b=jYhlFsa+CGG7UIAZvLAhQJBbIOUEe6xNK+4/a6ghapJVNyunvArjz7SG+8F0c/of4BnAwewFaXlxKO8zGChre5atU3+xjrN6GlQ/bMucJZXOyowrBRAsQ02nRc+wJIjkGjcNFNM0CmN2qRO63y9XRG/tpFaafdux3VauMzWR95o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=Ckanra5P; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="UL6E3tYd"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398a1676000so110272a91.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:20:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="Ckanra5P"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccdaea76so73485a91.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:20:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790097648; x=1790702448; darn=vger.kernel.org;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790097650; x=1790702450; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=DZs2haudTC1Ifx9sckuF8aKv3VP4ro6sJqrcY12YPF0=;
-        b=UL6E3tYdHPIlGHvq+EPDfk0W5rGjuI+xSSvWR3Axywuo6/IZAdhCewlDqa5BClJeyi
-         yyq2JiacpB6sCmj/28pYvVWGA2ogMdnmJ3YqP+JOFhAzU6wbiEvmu6zVZcEBwd7Ciw8j
-         s5ed2nkLilAQ/kaaB/kmRNmuo3rMgfHyKboYTyGUphK9GO42g98mzc4G9isiJFvgiHpI
-         EUsbZy92rS0xdytlnH/bnqigpYTNBETl1vNE2DeFx7L6JVHABSac6SJR+fpf9SKRo53G
-         cd0ZNjmzBGo59F5y5ce0mJC4zmed9c1ibBcPpVrPGn1fSINwwezH9XqXGYNqBWElv0E3
-         hPQw==
+        bh=iqY05vLt4ODQV/QJgRg1j8e1nKXlf81O3e+mqZS/iH0=;
+        b=Ckanra5PxxbZxie5E8MY2JKit7FD/FM8Fx/J+pbBUx4pd+Xpt2mlCPXZsUU6ghTyGm
+         O1UHFHV7drCk3PVZ2CjTukoohLiC6ThARPSY713tuA7U0tdW2+zns+XTD0baf2HBqy8D
+         jXuMTj4PCtpTAnlUwVD0k7rHb2cBiVRVKGxUKRCsf1Mi6b8kMz8q4xlFD7K+RYWzAaNY
+         ZTBVuf3y0EnHNIN0spQsASeFn4tfXWgjdEzkuOdS/RAS+2A+ayBYXTh4mszZeZDBV8k2
+         wWOHPHCcQ/vx0Jq5SlFT5o4jxK2Bq29fR0flpDLvHBmZNETlqTwjj4m4UyRJ9ru3XYV/
+         egtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790097648; x=1790702448;
+        d=1e100.net; s=20260707; t=1790097650; x=1790702450;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DZs2haudTC1Ifx9sckuF8aKv3VP4ro6sJqrcY12YPF0=;
-        b=eOstn3a9291mEj9sY+BvcGLBUAYyB3cvAHp9PR9NXvrQGqddyx692OxvTS95mYjnBQ
-         CjhsF49huzKOCOC4MxgWFGb3c4dy+3JnwEpjIK/nH0v7nE5ou+NMZiSfLMrKnVFsRQz4
-         K/owoo6JfxFoAl+JhKnX6WmFNcEBD+L/yaOWnBsTHkKaWM2/IYn4EeNfah+BHNHhdrRw
-         LPn+RqT/I/O3e13E2MjoASrcKW5ic+6FwW1d2shPR6bOXBuvNAsKSddpsJY/1dSBQ7P8
-         Dim69YcIRk233dCELDSYiVSycqzQoB8DA1DUTypCNE7ebexIp2Xo1hTqSuxAZ3d+kHta
-         j3dA==
-X-Forwarded-Encrypted: i=1; AKwUvBxg/dEIxd4CtuXYmbwA465N9m+jMW1hnzcsLudFtgxvBe9E3p/7SBs3aqivcL4Y8GAM8KHUtMc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nJiMaM/gTRwsehYGtfKhojyolm4o/uBrPmd9l05anVmRdYcoJW
-	KXUaec3oEfqIwlSk2puOdwWaZ70hx5fwqsFReVRi+PegxP9eM/7UGY9vf5cB28Wg0uU=
-X-Gm-Gg: AYBFou3lnrIkVupLHrDSy1VPVaWbkA5dxN4vFxMgxtk97SQVm8hKh0saJkRD8N2t9/S
-	Z9G5LzYY76FT/llRTm8H2xx95u3tM3YgZlMHajDmeaeGqFL2XhKwWAact/1UpHkPzFBxuUQJzrl
-	KPQ8/YLuEHGuhB8Tg/nYTIsUFMMr34xum1LboE6pdXeCTVjyVkQ9gv8hB3fbi2r6N3vl2l8vvW4
-	0iWWbSjnwZY5TYBdZzR2EE4zjvjJ7ppM94mZ89DerzAnMhcBJU1FmcP1rTadTTA//xQ4BtEMsSa
-	Ei5dH0WslvJeslZCm6KTKSoGDN2vnl8IZstVMJ8SPj5QDwnKlMCQRNMfh7HQZ9sUuwYxSvAsiwR
-	mMRQdIOcw3oPmcqqkzDcdzwXweLWk8VBkt40EKWZf1bNjKP44SGImAaHnD9Lrqfc2ZPzRmjqIeW
-	aH2YvXqeSXnSdMhnOZGqbuudXigoea2ykHR6NtVpGSzHDAQMM65wF4WQ8Pro1LVWkwohz1cBhNQ
-	BISIgYZe3uDYkZ2h/zHaosGj6RUvaq+Uqx60M63ZA==
-X-Received: by 2002:a17:90b:52d0:b0:39e:1693:c3c1 with SMTP id 98e67ed59e1d1-3a07e5973c4mr163619a91.17.1790097648106;
-        Tue, 22 Sep 2026 10:20:48 -0700 (PDT)
+        bh=iqY05vLt4ODQV/QJgRg1j8e1nKXlf81O3e+mqZS/iH0=;
+        b=I8YjRsE5dXmCc5f9U1LgcrrGh824eEmowWGcKSU7FLy5OK74dMBiqlRPDfT/263WSj
+         NRuCJCBOSxggKFaL7Wub8nziw4TXBDKjQSSz+G4TS+3UV68wZ9trpsDw4kmsb3S0RtTK
+         9eY4e6Efe/2v1FrLuBfmisVEVaujTTWsQh9YGpjQ4U4GSiYJ7uBUz9y3bprUEtPnFbYw
+         zhWlm5dTXFVO2MTeOUWUarlXlawE22MuYqPdjvA5e1GOXCWMyWJVZx7oZm4rd8Htrg8t
+         b7VpHcJPoK41sp/LHkb/5KYJ69St7BHhmFN2Iw/PsX4VA3yJ+8Xe/8mmrs794qxcp62e
+         Dzeg==
+X-Forwarded-Encrypted: i=1; AKwUvBxDY//7Nxw/Nb5Zfm9Eox0ni+5gNNWm9HHqT2WuzQwhX4lqPRUN4ESj2XgvVQznypKVSuWHdZ0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nXk60CCN+zDwAPHGzuiqAhJtxu8aJtHOBRnERUFkrr25Rs7iuN
+	qUjCo2E1lMa/RmngS+OT2AXHnfAYieTdv37GdcqMLc1WGGMGNBXRGiWi+qkYe/Nt5X0=
+X-Gm-Gg: AYBFou2CnZ5IMOOFMUrC0stwn+FGPJ0ZZ11MS3DKnnHjxjUXbHt+3IdFEVaYUkThfjN
+	80OakxHeGzn4InkY9UuJ/2ORUxxMgjVrZ3QhErmr1XvSqfXLuSI95neRMV15Jgyvj59GnVdpRjo
+	D1vn9cBIKQ44ZF5kLtiKWbhpjSQV7hnzJOX+2xns7wyhv8yMCzHw83lYVIOcjYAesM0j24FeGJJ
+	IOrMjNKDzat/ppZfvxKB1um8qhjI9aTUye/E7hftdJTZNT/V1PkIVPd59CPGoeRTixK31RKZEu0
+	CboLjU8W/o/4tEcQgRhPuitTDzxvSbM2WmVxujYmuBWv80LXQ6Dayf4vQ1COLe3Rwok9FuAFMwI
+	Wh8ksI2UVjaCfF861HMhzj6PTpUeusQUNfUNzrsZD5pbOGt8f44y2BzPVp+4uGJMpDA+cZ44WGI
+	TRZ5R66eD3f5l86s2u/jsEA0MXBcYT5PVLYOcxKCL7/gHnd4Wn8O/42L2WO9ItrTsQazdIpRm2l
+	0N1o0ag8akr61Xw3P0PCO0pS4AtZjkZ6SPrP4WQAw==
+X-Received: by 2002:a17:90b:2f48:b0:39e:4c7e:bc4 with SMTP id 98e67ed59e1d1-3a07e4d8773mr89611a91.18.1790097649947;
+        Tue, 22 Sep 2026 10:20:49 -0700 (PDT)
 Received: from alpine05.ht.home (69-172-153-146.cable.teksavvy.com. [69.172.153.146])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06cb7159fsm1774824a91.4.2026.09.22.10.20.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06cb7159fsm1774824a91.4.2026.09.22.10.20.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 10:20:47 -0700 (PDT)
+        Tue, 22 Sep 2026 10:20:49 -0700 (PDT)
 From: Emil Tsalapatis <emil@etsalapatis.com>
 To: bpf@vger.kernel.org
 Cc: ast@kernel.org,
@@ -68,9 +68,9 @@ Cc: ast@kernel.org,
 	daniel@iogearbox.net,
 	netdev@vger.kernel.org,
 	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: [PATCH bpf v2 09/11] bpf: Track whether dynptr type is known
-Date: Tue, 22 Sep 2026 17:20:26 +0000
-Message-ID: <20260922172028.6269-10-emil@etsalapatis.com>
+Subject: [PATCH bpf v2 11/11] selftests/bpf: Test dynptr slice invalidation on skb clobber
+Date: Tue, 22 Sep 2026 17:20:28 +0000
+Message-ID: <20260922172028.6269-12-emil@etsalapatis.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260922172028.6269-1-emil@etsalapatis.com>
 References: <20260922172028.6269-1-emil@etsalapatis.com>
@@ -82,160 +82,217 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The TYPE_LOCAL dynptr type is used for two different
-kinds of dynptrs in the codebase: Those that are created
-locally and backed with a memory region, and those that
-are passed as arguments to a global subprog, whose type
-is not known at verification time. The two kinds require
-different handling in certain scenarios, e.g., packet
-pointer invalidation. However, there is no current way
-to distinguish them.
-
-Add a new field, type_unknown, to bpf_reg_state's  dynptr-
-specific state. The field designates whether the dynptr
-type reported is accurate, or a placeholder for "type
-unknown". Adding an extra field to bpf_reg_state avoids
-unnecessarily splitting TYPE_LOCAL into two types, since
-they would behave identically in most cases.
-
-The change is currently non-functional. The new field is
-first used in the next commit.
+Add tests that ensure that dynptr slices backed by skb memory
+are invalidated on any operation that potentially moves/frees
+the backing skb memory. Also test that only skb-backed dynptrs
+may invalidate pointers into skbs.
 
 Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
 ---
- include/linux/bpf_verifier.h |  2 ++
- kernel/bpf/states.c          |  1 +
- kernel/bpf/verifier.c        | 27 ++++++++++++++++++---------
- 3 files changed, 21 insertions(+), 9 deletions(-)
+ .../testing/selftests/bpf/progs/dynptr_fail.c | 183 ++++++++++++++++++
+ 1 file changed, 183 insertions(+)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index be0ccad15..f57730d1d 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -71,6 +71,7 @@ struct bpf_reg_state {
- 		/* For dynptr stack slots */
- 		struct {
- 			enum bpf_dynptr_type type;
-+			bool type_unknown;
- 			/* A dynptr is 16 bytes so it takes up 2 stack slots.
- 			 * We need to track which slot is the first slot
- 			 * to protect against cases where the user may try to
-@@ -1531,6 +1532,7 @@ struct bpf_map_desc {
- /* The last initialized dynptr; Populated by process_dynptr_func() */
- struct bpf_dynptr_desc {
- 	enum bpf_dynptr_type type;
-+	bool type_unknown;
- 	u32 id;
- 	u32 parent_id;
- };
-diff --git a/kernel/bpf/states.c b/kernel/bpf/states.c
-index 66fb11b6c..360aeb5da 100644
---- a/kernel/bpf/states.c
-+++ b/kernel/bpf/states.c
-@@ -795,6 +795,7 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
- 			old_reg = &old->stack[spi].spilled_ptr;
- 			cur_reg = &cur->stack[spi].spilled_ptr;
- 			if (old_reg->dynptr.type != cur_reg->dynptr.type ||
-+			    old_reg->dynptr.type_unknown != cur_reg->dynptr.type_unknown ||
- 			    old_reg->dynptr.first_slot != cur_reg->dynptr.first_slot ||
- 			    !check_ids(old_reg->id, cur_reg->id, idmap) ||
- 			    !check_ids(old_reg->parent_id, cur_reg->parent_id, idmap))
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index cebed6c9d..da110cdbc 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -694,24 +694,26 @@ static bool dynptr_type_referenced(enum bpf_dynptr_type type)
+diff --git a/tools/testing/selftests/bpf/progs/dynptr_fail.c b/tools/testing/selftests/bpf/progs/dynptr_fail.c
+index 1cd61d72c..0f030f397 100644
+--- a/tools/testing/selftests/bpf/progs/dynptr_fail.c
++++ b/tools/testing/selftests/bpf/progs/dynptr_fail.c
+@@ -13,6 +13,9 @@
  
- static void __mark_dynptr_reg(struct bpf_reg_state *reg,
- 			      enum bpf_dynptr_type type,
--			      bool first_slot, int id, int parent_id);
-+			      bool first_slot, bool type_unknown,
-+			      int id, int parent_id);
+ char _license[] SEC("license") = "GPL";
  
- static void mark_dynptr_stack_regs(struct bpf_verifier_env *env,
- 				   struct bpf_reg_state *sreg1,
- 				   struct bpf_reg_state *sreg2,
--				   enum bpf_dynptr_type type, int parent_id)
-+				   enum bpf_dynptr_type type,
-+				   bool type_unknown, int parent_id)
- {
- 	int id = ++env->id_gen;
- 
--	__mark_dynptr_reg(sreg1, type, true, id, parent_id);
--	__mark_dynptr_reg(sreg2, type, false, id, parent_id);
-+	__mark_dynptr_reg(sreg1, type, true, type_unknown, id, parent_id);
-+	__mark_dynptr_reg(sreg2, type, false, type_unknown, id, parent_id);
++extern int bpf_dynptr_memset(const struct bpf_dynptr *p, __u64 offset, __u64 size,
++			     __u8 val) __ksym __weak;
++
+ struct test_info {
+ 	int x;
+ 	struct bpf_dynptr ptr;
+@@ -1274,6 +1277,186 @@ int skb_invalid_data_slice4(struct __sk_buff *skb)
+ 	return SK_PASS;
  }
  
- static void mark_dynptr_cb_reg(struct bpf_verifier_env *env,
- 			       struct bpf_reg_state *reg,
- 			       enum bpf_dynptr_type type)
- {
--	__mark_dynptr_reg(reg, type, true, ++env->id_gen, 0);
-+	__mark_dynptr_reg(reg, type, true, false, ++env->id_gen, 0);
- }
- 
- static int destroy_if_dynptr_stack_slot(struct bpf_verifier_env *env,
-@@ -723,6 +725,7 @@ static int mark_stack_slots_dynptr(struct bpf_verifier_env *env, struct bpf_reg_
- {
- 	struct bpf_func_state *state = bpf_func(env, reg);
- 	int spi, i, err, parent_id = 0;
-+	bool type_unknown = false;
- 	enum bpf_dynptr_type type;
- 
- 	spi = dynptr_get_spi(env, reg);
-@@ -778,10 +781,12 @@ static int mark_stack_slots_dynptr(struct bpf_verifier_env *env, struct bpf_reg_
- 		}
- 	} else { /* bpf_dynptr_clone() */
- 		parent_id = dynptr->parent_id;
-+		type_unknown = dynptr->type_unknown;
- 	}
- 
- 	mark_dynptr_stack_regs(env, &state->stack[spi].spilled_ptr,
--			       &state->stack[spi - 1].spilled_ptr, type, parent_id);
-+			       &state->stack[spi - 1].spilled_ptr, type,
-+			       type_unknown, parent_id);
- 
- 	return 0;
- }
-@@ -1951,7 +1956,8 @@ static void mark_reg_known_zero(struct bpf_verifier_env *env,
- }
- 
- static void __mark_dynptr_reg(struct bpf_reg_state *reg, enum bpf_dynptr_type type,
--			      bool first_slot, int id, int parent_id)
-+			      bool first_slot, bool type_unknown,
-+			      int id, int parent_id)
- {
- 	/* reg->type has no meaning for STACK_DYNPTR, but when we set reg for
- 	 * callback arguments, it does need to be CONST_PTR_TO_DYNPTR, so simply
-@@ -1963,6 +1969,7 @@ static void __mark_dynptr_reg(struct bpf_reg_state *reg, enum bpf_dynptr_type ty
- 	reg->id = id;
- 	reg->parent_id = parent_id;
- 	reg->dynptr.type = type;
-+	reg->dynptr.type_unknown = type_unknown;
- 	reg->dynptr.first_slot = first_slot;
- }
- 
-@@ -7801,6 +7808,7 @@ static int process_dynptr_func(struct bpf_verifier_env *env, struct bpf_reg_stat
- 		}
- 
- 		meta->dynptr.type = reg->dynptr.type;
-+		meta->dynptr.type_unknown = reg->dynptr.type_unknown;
- 		meta->dynptr.id = reg->id;
- 		meta->dynptr.parent_id = reg->parent_id;
- 	}
-@@ -19963,8 +19971,9 @@ static int do_check_common(struct bpf_verifier_env *env, int subprog)
- 				reg->type = SCALAR_VALUE;
- 				mark_reg_unknown(env, regs, i);
- 			} else if (arg->arg_type == ARG_PTR_TO_DYNPTR) {
--				/* assume unspecial LOCAL dynptr type */
--				__mark_dynptr_reg(reg, BPF_DYNPTR_TYPE_LOCAL, true, ++env->id_gen, 0);
-+				/* Global subprog args may be backed by any dynptr type. */
-+				__mark_dynptr_reg(reg, BPF_DYNPTR_TYPE_LOCAL, true, true,
-+						  ++env->id_gen, 0);
- 			} else if (base_type(arg->arg_type) == ARG_PTR_TO_MEM) {
- 				reg->type = PTR_TO_MEM;
- 				reg->type |= arg->arg_type &
++/*
++ * A kfunc that may clobber packet pointers must invalidate skb data slices.
++ */
++SEC("?tc")
++__failure __msg("invalid mem access")
++int skb_invalid_data_slice_after_dynptr_memset(struct __sk_buff *skb)
++{
++	struct bpf_dynptr ptr;
++	struct ethhdr *hdr;
++	char buffer[sizeof(*hdr)] = {};
++
++	bpf_dynptr_from_skb(skb, 0, &ptr);
++
++	hdr = bpf_dynptr_slice_rdwr(&ptr, 0, buffer, sizeof(buffer));
++	if (!hdr)
++		return SK_DROP;
++
++	bpf_dynptr_memset(&ptr, 0, 0, 0);
++
++	/* this should fail */
++	val = hdr->h_proto;
++
++	return SK_PASS;
++}
++
++/*
++ * A dynptr kfunc that may clobber packet pointers must not invalidate packet
++ * pointers when called with a non-skb dynptr.
++ */
++SEC("?tc")
++__success
++int pkt_ptr_valid_after_dynptr_memset_on_mem(struct __sk_buff *skb)
++{
++	struct bpf_dynptr ptr;
++	int *p = (void *)(long)skb->data;
++
++	if ((void *)(p + 1) > (void *)(long)skb->data_end)
++		return SK_DROP;
++
++	if (bpf_dynptr_from_mem(&val, sizeof(val), 0, &ptr))
++		return SK_DROP;
++
++	bpf_dynptr_memset(&ptr, 0, 0, 0);
++
++	return *p ? SK_PASS : SK_DROP;
++}
++
++__noinline
++int skb_dynptr_memset(struct __sk_buff *skb)
++{
++	struct bpf_dynptr ptr;
++
++	if (bpf_dynptr_from_skb(skb, 0, &ptr))
++		return 0;
++
++	return bpf_dynptr_memset(&ptr, 0, 0, 0);
++}
++
++/*
++ * A global subprog that may clobber packet pointers must invalidate packet
++ * pointers held by its caller.
++ */
++SEC("?tc")
++__failure __msg("invalid mem access")
++int skb_invalid_pkt_ptr_after_dynptr_memset_global(struct __sk_buff *skb)
++{
++	int *p = (void *)(long)skb->data;
++
++	if ((void *)(p + 1) > (void *)(long)skb->data_end)
++		return SK_DROP;
++
++	skb_dynptr_memset(skb);
++
++	/* this should fail */
++	val = *p;
++
++	return SK_PASS;
++}
++
++__noinline
++int skb_dynptr_memset_global_arg(struct __sk_buff *skb,
++				 struct bpf_dynptr *ptr)
++{
++	int *p = (void *)(long)skb->data;
++
++	if ((void *)(p + 1) > (void *)(long)skb->data_end)
++		return SK_DROP;
++
++	bpf_dynptr_memset(ptr, 0, sizeof(*p), 0);
++
++	/* this should fail */
++	val = *p;
++
++	return SK_PASS;
++}
++
++/*
++ * A global subprog must conservatively treat a dynptr argument as possibly
++ * skb-backed when checking whether a kfunc invalidates packet pointers.
++ */
++SEC("?tc")
++__failure __msg("invalid mem access")
++int skb_invalid_pkt_ptr_after_dynptr_memset_global_arg(struct __sk_buff *skb)
++{
++	struct bpf_dynptr ptr;
++
++	if (bpf_dynptr_from_skb(skb, 0, &ptr))
++		return SK_DROP;
++
++	return skb_dynptr_memset_global_arg(skb, &ptr);
++}
++
++__noinline
++int skb_dynptr_write_global_arg(struct bpf_dynptr *ptr)
++{
++	int write_data = 0;
++
++	return bpf_dynptr_write(ptr, 0, &write_data, sizeof(write_data), 0);
++}
++
++/*
++ * A global subprog that calls bpf_dynptr_write() on a dynptr argument must
++ * invalidate packet pointers held by its caller.
++ */
++SEC("?tc")
++__failure __msg("invalid mem access")
++int skb_invalid_pkt_ptr_after_dynptr_write_global_arg(struct __sk_buff *skb)
++{
++	struct bpf_dynptr ptr;
++	int *p = (void *)(long)skb->data;
++
++	if ((void *)(p + 1) > (void *)(long)skb->data_end)
++		return SK_DROP;
++
++	if (bpf_dynptr_from_skb(skb, 0, &ptr))
++		return SK_DROP;
++
++	skb_dynptr_write_global_arg(&ptr);
++
++	/* this should fail */
++	val = *p;
++
++	return SK_PASS;
++}
++
++__noinline
++int skb_dynptr_write_global_arg_with_pkt_ptr(struct __sk_buff *skb,
++					    struct bpf_dynptr *ptr)
++{
++	int write_data = 0;
++	int *p = (void *)(long)skb->data;
++
++	if ((void *)(p + 1) > (void *)(long)skb->data_end)
++		return SK_DROP;
++
++	bpf_dynptr_write(ptr, 0, &write_data, sizeof(write_data), 0);
++
++	/* this should fail */
++	val = *p;
++
++	return SK_PASS;
++}
++
++/*
++ * A global subprog must conservatively treat a dynptr argument as possibly
++ * skb-backed when checking whether bpf_dynptr_write() invalidates packet
++ * pointers in the callee.
++ */
++SEC("?tc")
++__failure __msg("invalid mem access")
++int skb_invalid_pkt_ptr_after_dynptr_write_global_arg_in_subprog(struct __sk_buff *skb)
++{
++	struct bpf_dynptr ptr;
++
++	if (bpf_dynptr_from_skb(skb, 0, &ptr))
++		return SK_DROP;
++
++	return skb_dynptr_write_global_arg_with_pkt_ptr(skb, &ptr);
++}
++
+ /* Read-only skb data slice is invalidated on write to skb metadata */
+ SEC("?tc")
+ __failure __msg("invalid mem access 'scalar'")
 -- 
 2.54.0
 
