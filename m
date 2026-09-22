@@ -1,156 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FEB43DA5E;
-	Tue, 22 Sep 2026 13:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F08143DED4
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790084186; cv=none; b=CA+RqMYlwP27lD1jrnsoWR/o0MLS0fxcRIKjSaY9wyfg7cqX7FQ4/je2SzN5ueRPsx73bFTF2WiR9bHYYNCoaM6f1OuihmpppCinJLkJVHRVMkto/8ELBi7p19gAjofNR9s1Pm4mATB62LUs5KUTLX/7eSz/1h1oSAq2kyozoz8=
+	t=1790084203; cv=none; b=XXb/n+vz4DeB/kLg6sjDrjmLuRpPiVPgHPif1FZWRuH2ZXs1FSTsaqaTaU3m5C02LDKUkhjtCRqCComJLly7yLb5ubZQ1Oi5x3bBSNprjxsHeSKjHj2yF2x3KS70BixAK7+Hhqd5r0vPqx2dBKIAezfN5+PY0mZwDSpnsYjZnzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790084186; c=relaxed/simple;
-	bh=43UXDfn7sNeHDV0sICdY354Wj6rQBtd1ihIgC87V9Pc=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=ZcUFs2qKMb3IkTYq/3UeFTY5o02IKLFnmMzrDyfGeqOJlbjpXP9fpdlhO7UOA+PCDWd/BjGp4QT0DhptLVBdFSuYL8MjuxbtwWcLl6IFmbUi/Cr68Ni3f7SuiAmV2rO2eZx6Bh0SrzhZPfJPgkDoMfVZzm50kaXpIbk7xnWFFK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElCG8u7n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790084203; c=relaxed/simple;
+	bh=CYx87CEfR4uqo0EdKxZaeNEoOSY8JEECADRirN2DhDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=SBfUcebSsKUenCuqFYojhEKJdKhcQZxEfBOwN5vmQflwTvOrliKLGt0bc88anuLi43kk9nKXp59Hkgcwh/C4lUQd25BETsm7gw/IbY3CM8WjmPVD22Xidtcvc5Jg6f4lPaOJ9Z97MnCyt4EwBqWFcDuPEKu9YF7GN9gZWIaQ6O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qpg11n3h; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B7MUDIU4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElCG8u7n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8DD1F000FF;
-	Tue, 22 Sep 2026 13:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790084185;
-	bh=83iYiHkzkMkZMnSJ/zg/iyBsJXlsjdLVxUiYdFZ6Qdg=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=ElCG8u7nFecpheqE7toouV+plJ9108sDuJpjQrdfcILmtI8SM0tJWDNUGy4DSoqpN
-	 MHLOL+y04K6ywuyeHMVMg/Uv0wN/NesmgrZjqTCMWbGPiIG1QNkJB7QDKhIaeIRiZf
-	 hdzq8F7ZIbysbs5+z/1fIZGjH84TVVCNCXznGs3AeKsB5CI+D0fnSU4E59vOtV+BfW
-	 rcg3LzN3X+I6EWGMVmJLBBa2S2jcn7jEGlyI6cEM5w83sMnxtujLSeB6xPMaLgWYkl
-	 tRz/6szLvtrlU492bwaTDIA1F4VvyPmOmQICCVmWFjBCi0baBFkmvkHfIFF1GcBzhO
-	 Ukj9fjMsm032g==
-Content-Type: multipart/mixed; boundary="===============7247518973345400370=="
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qpg11n3h";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B7MUDIU4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790084201;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MDXjlNk0ngo/R8fuvqVhboxL4miIeE6je51J88+F1rQ=;
+	b=Qpg11n3haG4Jz+v6V5JAx2rlepppwqqAAdw6xxn2uFJS5/qdSyKtVAWMoFW9llyn42MlNT
+	4Kn30ontNcdE6ZwA/3FnyU+alqzMy3QgZiB2Mc8Ha3UhEfGYON3q+RgKbHLWLYPOjZz2ZK
+	vPl/rpdRdIYfXSn1NHuVoMpZBwS36zM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-372-jlechLggMqef8YBsYLatUw-1; Tue, 22 Sep 2026 09:36:39 -0400
+X-MC-Unique: jlechLggMqef8YBsYLatUw-1
+X-Mimecast-MFC-AGG-ID: jlechLggMqef8YBsYLatUw_1790084198
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c294442d71dso495909466b.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:36:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790084198; x=1790688998; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MDXjlNk0ngo/R8fuvqVhboxL4miIeE6je51J88+F1rQ=;
+        b=B7MUDIU4oQUe29BhwmkRxaym59m1N1uuebtWHcUBEsTw+v+UeDLH6vah6mzAmyuaFQ
+         Biaio2zFSqXm6x7hv/NyuaB+kABqosTamygxgZEG2S7fxIiI/kM2aJlpakYa2Z1Olyp1
+         6dbpM6sMMIBdzrN0TS9u4X+z181huLofW0vy0U5hx5/h3/ZHwodjP+NYn/riCRzceDTx
+         zMiRYrMzKY3HaEknO2Z+VyRd/5yiDyjeXVDXi5nWuZk9GJN/RYGkpR9MgKmGgOxqKDcd
+         vU4l33CMyF5xiH0OsfFazOHamKAfYrIW/gAx4cgR+AlmJkf5UdQKmrxPnLR88ZUc/33l
+         h4SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790084198; x=1790688998;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MDXjlNk0ngo/R8fuvqVhboxL4miIeE6je51J88+F1rQ=;
+        b=bmC2xL6e4Nh+psHOr/SNi6igibQk2W7vi6Fa5O0c6RvNs0MQXRKrNPNZCpb7lQsmCM
+         x1AU+ZKFndYsvVK53P2Mr4HDzgJpOVKU/FLc4/lY0L1MA5FrJNeBFmtbI+qLLh5OZkxO
+         EkiHWQS8UH5gAESdsRvmd8WuwSg8Dsi+lPPsz76/vUtuY3pkZHlabCNtRGy2SW2BAveB
+         N6gjUvPLQ5CO12l4ZEQEn9p+M1284J96MzZCc/0NVJiDY6nVIaojwCRcOEzgSnrFTkJc
+         G2qjuRrX6IijMu5gCgkyGdstTS9Mo/lODexG7J6Xa2ePRaxY0teUF6ERZswXAC/cxPyH
+         0NhA==
+X-Forwarded-Encrypted: i=1; AKwUvBw2YiR7vjZphRo137Tp3yu8PRZ8ZdyoxVoFsGs9WjNits5dT4XylTclCsyw740ApBXD/IhfNo0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mnqeZUUEgZhPje7oxtlHkVMwTMNRSYuqxlUygm9hOrCH0J6QYP
+	Pw/B/kie3lE2ieXvAvzVrjZ7ciHCRJKaZD89RMFhS9aO+0g5nLJ+JDhJNBbd7ndCJ5wuGYqpC7j
+	8zc2eLkgCiCk0IBj74bPPoUrIcYwk1vCxmnSVqdhVU6nlZm3kAPaQX3+wog==
+X-Gm-Gg: AYBFou0TnY5Y3SyRQaLmpZdGME3iONoLDJXgSdtzNx7w+C7Qnq91WupEL0LcEjhYpfX
+	hfuJb3I4hfqF/wFlta0un0JphOwyKDvZEo0K6j+YcBHZbdaDbCGakbyiVjTb4e4Hw3wL7S/jCNE
+	c/e412xaGuufjtWxwt3bo1UctHf1km61vCAvk06zZV2myvmD1/RH+JoOfIRkuTVUWoX5W3YI4pa
+	gxTj4J26OX9wbH2YE2MBgJRl8N7ux9FFOpi6PKV+1+5orlxZTqFCygA6wn9IEA7gjjxuoY7uuhr
+	Bedck0NFG5Nxp1wpKysviK1FrDqE0LhkNJirV7BkPso2o3Fw0UQYv+eMQx+BOfNJJpqC593BpId
+	7+A+U/zYpZ0dATq8nGWTJCWgREvXaMmOAqQ77BAT+Ng58/7CNQeUw9+uj3wfzHA5OxE/hCFiscQ
+	==
+X-Received: by 2002:a17:907:3c8f:b0:c20:af9d:4533 with SMTP id a640c23a62f3a-c2a15896523mr1137713666b.19.1790084198431;
+        Tue, 22 Sep 2026 06:36:38 -0700 (PDT)
+X-Received: by 2002:a17:907:3c8f:b0:c20:af9d:4533 with SMTP id a640c23a62f3a-c2a15896523mr1137712266b.19.1790084198030;
+        Tue, 22 Sep 2026 06:36:38 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a9c62555fsm86995266b.53.2026.09.22.06.36.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 06:36:37 -0700 (PDT)
+Message-ID: <164304b3-3324-45f1-8766-536767e7b9d7@redhat.com>
+Date: Tue, 22 Sep 2026 15:36:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <f6e17da46b7895d19df3b379a6e879cd0ff237c50dc387127c87c6f48a48a7d1@mail.kernel.org>
-In-Reply-To: <20260922121022.256777-1-jiayuan.chen@linux.dev>
-References: <20260922121022.256777-1-jiayuan.chen@linux.dev>
-Subject: Re: [PATCH bpf v2] bpf: cpumap: fix use-after-free of dev_rx on netdev unregister
-From: bot+bpf-ci@kernel.org
-To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
-Cc: jiayuan.chen@linux.dev,ast@kernel.org,daniel@iogearbox.net,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 22 Sep 2026 13:36:22 +0000 (UTC)
-
---===============7247518973345400370==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] rust: net: netlink: validate attribute length
+ before casting to `c_int`
+To: Sagar Taunk <sagartaunk@proton.me>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Matthew Maurer <mmaurer@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn
+ <andrew@lunn.ch>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260918100016.100988-1-sagartaunk@proton.me>
+ <KZuCCqRjSSbylbLLVhoUD9-xyBpzD9jUB4vGC16N0_hIra8SNxFeh9lEJ6FIMYMgKqf41J_swYT_HVx3w13k0cSrYYkBljOF56suy3gpgAU=@proton.me>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <KZuCCqRjSSbylbLLVhoUD9-xyBpzD9jUB4vGC16N0_hIra8SNxFeh9lEJ6FIMYMgKqf41J_swYT_HVx3w13k0cSrYYkBljOF56suy3gpgAU=@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-> index 5e59ab896f058..0c9647f28034d 100644
-> --- a/kernel/bpf/cpumap.c
-> +++ b/kernel/bpf/cpumap.c
+On 9/22/26 04:31, Sagar Taunk wrote:
+> Hello, are there any updates for this?
+> 
+> Also, I wanted to ask is it fine if I keep fixing stuff pointed out by sashiko for now ? (I.e pre-existing issues pointed out by it in other's patches or should I ask the original authors of it first ?)
+Does not apply cleanly to net. Since a repost is needed, you must
+also avoid empty lines in the tag area (i.e. after the fixes tag).
 
-[ ... ]
+WRT sashiko-reported issues, beyond be aware of false-positives,
+generally speaking net-next is the preferred target tree (i.e. no
+or very limited impact, very old issue, etc...) with no fixes tag.
 
-> @@ -832,3 +879,39 @@ void __cpu_map_flush(struct list_head *flush_list)
->  		wake_up_process(bq->obj->kthread);
->  	}
->  }
-> +
-> +/* Frames in the ring and skbs in GRO hold a raw pointer to the ingress
-> + * device, make every kthread consume them before the device is freed.
-> + */
-                                   ^^^
+Focusing on high stakes changes would be appreciated.
 
-The BPF subsystem requires multi-line comments to have the opening /*
-on its own line, with text starting on the next line. This is a newly
-added comment. Should it be reformatted like this?
+/P
 
-/*
- * Frames in the ring and skbs in GRO hold a raw pointer to the ingress
- * device, make every kthread consume them before the device is freed.
- */
-
-> +static int cpu_map_netdev_event(struct notifier_block *nb,
-> +				unsigned long event, void *ptr)
-> +{
-> +	struct bpf_cpu_map_entry *rcpu;
-> +
-> +	if (event != NETDEV_UNREGISTER)
-> +		return NOTIFY_OK;
-> +
-> +	mutex_lock(&cpu_map_mutex);
-> +	list_for_each_entry(rcpu, &cpu_map_list, list) {
-> +		/* the whole ring, plus a batch already pulled out */
-> +		WRITE_ONCE(rcpu->drain_left, rcpu->queue->size + CPUMAP_BATCH);
-> +		wake_up_process(rcpu->kthread);
-> +	}
-> +	list_for_each_entry(rcpu, &cpu_map_list, list)
-> +		wait_event(rcpu->drain_wq, !READ_ONCE(rcpu->drain_left));
-> +	mutex_unlock(&cpu_map_mutex);
-> +
-> +	return NOTIFY_OK;
-> +}
-
-NETDEV_UNREGISTER notifiers run with RTNL held:
-call_netdevice_notifiers_info() contains ASSERT_RTNL(), and the call
-site in unregister_netdevice_many_notify() also does ASSERT_RTNL() at
-entry.
-
-The wait_event() holds RTNL until every cpumap kthread in the system
-has consumed rcpu->queue->size + CPUMAP_BATCH frames. The ring size is
-bounded only by the 16384 sanity limit in cpu_map_update_elem(), and
-the countdown is decremented by frames actually consumed, so a ring
-that is continuously fed by a different, still-registered device forces
-the full 16392-frame count to be pushed through before returning.
-
-unregister_netdevice_many_notify() calls the notifier once per device
-in the batch, so a batched teardown such as netns exit with many veths
-multiplies this: N devices x 16392 frames of RTNL-held work,
-serialized.
-
-The commit message addresses the bound ("The work is bounded by the
-ring size, and the frames had to be consumed anyway") but not the fact
-that RTNL is held for the whole drain. Also, the "frames had to be
-consumed anyway" statement is only true for frames already queued - the
-size+BATCH countdown can force consumption of many newly produced
-frames belonging to unrelated devices.
-
-This is not a deadlock (the drain is bounded and the kthread cannot
-block indefinitely since its work runs under local_bh_disable()), but
-could this cause latency or stall issues on systems with many devices
-or large ring sizes?
-
-[ ... ]
-
-> -    Fixes: 9c270af37bb6 ("bpf: XDP_REDIRECT enable use of cpumap")
-> +    Fixes: 70280ed91cb8 ("bpf: cpumap convert to use generic xdp_frame")
->      Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
-The Fixes tag points to commit 9c270af37bb6 ("bpf: XDP_REDIRECT enable
-use of cpumap"), but is this the right commit?
-
-That commit (October 2017) introduced the cpu_map_enqueue() function
-signature but did not store dev_rx anywhere - it used data_hard_start
-as a void pointer with a comment saying "Followup patch will generalize
-this".
-
-The actual storage of the device pointer without a reference
-(xdpf->dev_rx = dev_rx;) was added 6 months later in commit
-70280ed91cb8 ("bpf: cpumap convert to use generic xdp_frame", April
-2018) when the code was converted to use the generic xdp_frame
-structure. This is where the use-after-free bug was introduced.
-
-Should the Fixes tag be:
-
-  Fixes: 70280ed91cb8 ("bpf: cpumap convert to use generic xdp_frame")
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35727192473
---===============7247518973345400370==--
