@@ -1,81 +1,40 @@
-Received: from mail-vk1-f226.google.com (mail-vk1-f226.google.com [209.85.221.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B136566C79
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97C8566C79
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790094085; cv=none; b=HJQezBQPqFOSdOSOpd7628DOD+FF/KM3IMdNtMh9RwSjsd7eWx6KrhPvd62D5XncO36BtzNUnnerPIKO7vwxIhWmrLnseaRXc304uHgIclkdcARWqRPRS/HBwdDkpkjtDP0UXRHMSfHkjfAvkrC1t9kybBsCiR2EIJHw1kcdvYg=
+	t=1790094093; cv=none; b=p8YdDWcoIDgBIf2HEeV/KjadDmc66v+wvUgfJ8TZwXmHXoerj1Mgs5cCKJIkfihqzW9BDwAPthzarMmleU8ANI+CyYxXrx26gjfO7VWMpaqg58PMZRqYD5P7sXZOLXwn+tqMym+tA0YdTJwYdkneKOk8zTwQSP695kRsPNdrqwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790094085; c=relaxed/simple;
-	bh=tJtLQV+bO7Nva/4XSyhPEP2Zi7kZ4Kp6hcrD36xSWPc=;
+	s=arc-20240116; t=1790094093; c=relaxed/simple;
+	bh=gdeAzbmxYfga89RQN4R10l3Bi3tZiPcNluKubSX3u2s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EgChWf6D8718KBHsS78iNGP1H+G/SN1d9T3lHhCYYaR79NzhfMf62lrN2EIZT+1ihbYvHMCvZpk2Mg8Jvos6RwmO9+l4AhhXv+9tNM9Hdus7rv/H5kmTfQOEW1MN1OZGZked7R7e6bVvjf4UCPbQ3T+6p1I3wtRM9X2C1+QEI3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O+Jifje3; arc=none smtp.client-ip=209.85.221.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	 In-Reply-To:Content-Type; b=TA1JJpOLtiviZRxsk3agCoQSLH1642L2vjAIgRyyLdITk6DI7Oxppadj8LoHAWrkHGupi1u2UbrpN5hbxFtwzd21jtK9xsaZIsO99vaozXG9802QEv1z/yiH/Up3mCi0WGqGSTGz4S6vEZuq7iOTxU5dgSH/FUG16FnT9uzUG7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lZiYlG9E; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O+Jifje3"
-Received: by mail-vk1-f226.google.com with SMTP id 71dfb90a1353d-5c5f23666d0so1057e0c.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:21:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790094077; x=1790698877;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=4ojZrMQFLGqpJPvFhPFzqOHSZKQtuJ5kORK38PdRnJk=;
-        b=vKV+CG0PneKuz6WeAKKY2EAAWOQRX6C74+3An2WKhZB9ulXTUHYvHbBMksMpvKW5ny
-         wiRqwU5ybrpZXsZ/cj0i9EspQ901mt5MelqAv5mYOZvIW/xs7/0xw/lCerCHv4ZVwP8n
-         lSxP373reKd7tz7/ZWO1qIuWsev1KkaeMC/4FXA5NOQNo5+d+lGyhEMSNyuTQWZ0Ti4N
-         PRVhbVbD0iDLwS+GNsJNA1FunR06smeYcptgSpqahyijFgxQsV5AZSNvZUBB5HSvAIV1
-         ocmtzwFp51EimEQn5/ll5X9gox8hJ7X2IF3vGMRD05rDfbwNrJifKRf2jnqsZpGPK6aD
-         66SQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz3SFJNDd91UBKGhxfHGeZwNZ+6UUrvSAecrnZhty8zIuGNIcMBhljBPRbH5RGZHrYzugIw3CM=@vger.kernel.org
-X-Gm-Message-State: AFuF++n7FXzltQ++WvqM1IUdo5ejw6H9Od3gSXNGACxxQQ5WJjrhh32m
-	xDeHaMNqfKy/vjBRvZRwAPfp7LJDmQWPLaO9F1J+OauI+WRZVg33l2ck8WoQ+JlWnU/tf0AFpZI
-	o1HAT3zoOS81YuBV1PYKMOiIxYTYyHtFdyO3yr9643nMlpQ4CzzGiS9BRJ1wdHFk2twOPpbCbW7
-	B3u2Mv8Tj89ZGKrad2cKb/Mf1jGNIbWRW7Y2M0ah8iS+iJvpCsB3CyaOcfR5aQIXddiBQB4Ewbb
-	CDJA8HL4Q==
-X-Gm-Gg: AYBFou3/r7QxkpIlZTOVyYEW+hRIGNiYI5T5FOVdyhbhlX6dZ9fpOmDLzZSuQ2XiRHK
-	MnawR2kNb1ogp3hsUw878/XAHhyBeXfV1pFr6HCMjzsP2YdD3yy7z/af8x3Xh5C+wD3+i/RHfcl
-	kjrbw0iFo4zljZrWVD8X9iv9fAZMStsZMKnDyBLXTDVlyF42rVYR3UTX1xCGz37+RWMGZNQJA8f
-	tVy9NI8nuoaAAfyLOhtqd2RuxLNNAP6Lnoqu2rTP0yf074/aDn0x//LbzVWHU2MhcBaQ9j4Zofp
-	CZcZi1XEaB+F4xmY783rWTMSRo196H6agSgWNAWIS5rzQAmrxsOxDvs7508pQDxlpqEKMbI/Ncn
-	hTpK3wOyzGYp27omXFhGwUmX/iWpM1k7pIe7DC5D+uswVX2JKm5D3ysR4SJOqVUNkKhiZOAOx30
-	6I+b2r2jhmweiXH/pJhsB0SYGsE1bOd4SlM27nA5NKPMM4f3o=
-X-Received: by 2002:a05:6122:6d1b:b0:5c9:ee5a:e5dd with SMTP id 71dfb90a1353d-5c9ee5ae6a8mr1886808e0c.12.1790094076922;
-        Tue, 22 Sep 2026 09:21:16 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-98516a80ec8sm30869241.4.2026.09.22.09.21.16
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Sep 2026 09:21:16 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-85da2b96c35so3031987b3.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790094076; x=1790698876; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4ojZrMQFLGqpJPvFhPFzqOHSZKQtuJ5kORK38PdRnJk=;
-        b=O+Jifje3oNuzjxV0LcjWHN7ivRqsh3BdeEuh6s3pPsRy3fsRNQbtrjMooz6ZdwEOms
-         lJ1exFp68eJSauyzt9VGARr/FQ8vf6HDj8q4KBvDFJBAFUr9vc7dbC4vqEreRxrtcbxm
-         LPUcg8rCnGpeZV8PtyHj+L2Gin5TDvtPp1xHQ=
-X-Forwarded-Encrypted: i=1; AKwUvByiSDqJ4R5LdFCe1rDsnI3vt5cGJBwTQBXyHdofsJGnLYaFSpGOYTCa8ca+CQ1+qFkFmWOgWzo=@vger.kernel.org
-X-Received: by 2002:a05:690e:4386:b0:671:3036:42d8 with SMTP id 956f58d0204a3-672d58078ccmr3234d50.45.1790094074916;
-        Tue, 22 Sep 2026 09:21:14 -0700 (PDT)
-X-Received: by 2002:a05:690e:4386:b0:671:3036:42d8 with SMTP id 956f58d0204a3-672d58078ccmr3201d50.45.1790094074466;
-        Tue, 22 Sep 2026 09:21:14 -0700 (PDT)
-Received: from ?IPV6:2600:1700:3f50:2990:1945:ab68:117b:9387? ([2600:1700:3f50:2990:1945:ab68:117b:9387])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672c75bbe17sm978519d50.5.2026.09.22.09.21.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 09:21:13 -0700 (PDT)
-Message-ID: <1e8f8d52-e910-440d-9d02-aaed28c94cfc@broadcom.com>
-Date: Tue, 22 Sep 2026 09:21:13 -0700
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lZiYlG9E"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0DA3D4E4103D;
+	Tue, 22 Sep 2026 16:21:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C222260580;
+	Tue, 22 Sep 2026 16:21:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3053610329134;
+	Tue, 22 Sep 2026 18:21:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790094084; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=tueEJexz8lLxUgLlyuxH3o7C1CivlVOYsyBZG5CEAVY=;
+	b=lZiYlG9ETLEEIJzn1Sfr+mR+MzscyvuHooi/aU6paqgH7Rkl4nltqX8V8CMm7iefDQaYmW
+	oZ1L3ePV2V8qtyH+inEccdDVa8EFjQWX47laMVgBDkn6t4hc/PEuwUz7cOJXSmuK3Mwk9m
+	7j8d3YPiiviT5ZVerJQ4FTs8T6wT+eMzZSvfmYtO+jK+4L1Yl916K+nTXaE8odWZ6fXnwy
+	flI87G8OkWO5/AyHCdC5Ansk/AmjePUE8ba9bLTpRyUGX54WVW0giWc+Yd/J84gjiOJzUL
+	q42Tw4oZSdVh1gYYjRiP+LjdbZGBg02eqJJlXwEpZlobMs/UKfOnSXr+QlTEzA==
+Message-ID: <29f42227-d425-4c57-bfb8-e8f34962cef4@bootlin.com>
+Date: Tue, 22 Sep 2026 18:21:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,33 +42,88 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] MAINTAINERS: add Nicolai Buchwitz as GENET
- maintainer
-To: Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org
-Cc: Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- bcm-kernel-feedback-list@broadcom.com, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, linux-kernel@vger.kernel.org
-References: <20260922073140.1471858-1-nb@tipi-net.de>
+Subject: Re: [PATCH net v4 0/7] net: stmmac: More selftest-related fixes
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jan Petrous <jan.petrous@oss.nxp.com>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
+ Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
+ David Laight <david.laight.linux@gmail.com>
+References: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
+ <20260921152202.64d4c67a@kernel.org>
 Content-Language: en-US
-From: Justin Chen <justin.chen@broadcom.com>
-In-Reply-To: <20260922073140.1471858-1-nb@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260921152202.64d4c67a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Jakub,
 
-
-On 9/22/2026 12:31 AM, Nicolai Buchwitz wrote:
-> I have been contributing to and reviewing the GENET driver for a while
-> now. Florian asked if I would like to formalize this commitment, so add
-> myself as a maintainer.
+On 9/22/26 00:22, Jakub Kicinski wrote:
+> On Thu, 17 Sep 2026 23:53:31 +0200 Maxime Chevallier wrote:
+>> This is V4 of stmmac selftest fixes, addressing Sashiko's issues over
+>> the MTU patch. This lead to the introduction of a new one. The
+>> dev_add_pack races have been addressed, however the double-vlan issue
+>> stayed there. Ovidiu is actively working on it, let's wait for his work
+>> to land before fixing that.
+>>
+>> Nicolai, I took the liberty of keeping your review tags on affected
+>> patches, let me know if this isn't ok.
+>>
+>> This is another round of stmmac selftest fixes, mostly about the selftests
+>> themselves but a few things were discovered w.r.t MTU and buffer size
+>> handling, see patch 5 anf 6.
+>>
+>> After this is merged, I consider the selftests to be now reliable enough
+>> to run them nightly on every stmmac series that's sent, and I'll be requiring
+>> clean selftests for new glue drivers.
 > 
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> This got to the top of the stack for me, LMK if none of the AI feedback
+> is legit. You mentioned the VLAN one, not sure about the rest.
+> The EEE complaints look like nit picks but also some are easily
+> addressable? LMK..
 
-Acked-by: Justin Chen <justin.chen@broadcom.com>
+I'd say the AI complaints are legit for EEE, but I have mixed feeling about
+iterating more for that point only.
 
-Thanks for assisting!
+AI points bugs that are related to 3 main classes of problems (for EEE but
+other patches as well) :
 
+ - User reconfigures the interface during the ethtool -t run
+ - The selftest outcome depends on how the link was negotiated (worth for Pause
+   and EEE)
+ - Selftests are sensitive to external traffic being received during the
+   selftests run.
+
+Obviously we don't want the kernel to crash because of ethtool selftests and that
+has been addressed, but for now I'd say ethtool selftests failing because of
+external factors is something we can live with, although we should make them
+more robust.
+
+The main thing is that we've always been subjected to these problems, and addressing
+that is an entire ordeal in itself. I can followup (my goal is to have all
+green runs here [1], this already proved useful for at least 2 patches in the
+past 2 months that broke selftests), so I'll definitely work on the remaining
+points as followup.
+
+Maxime
+
+[1] : https://minimaxwell.github.io/stmmac-ci/
+
+(These are just custom tests, I want to switch to the real kselftests eventually,
+the runner is currently being stress-tested to iron out the last issues before
+submitting that to netdev-ci)
