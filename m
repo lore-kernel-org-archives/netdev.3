@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F5348488E
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5FA4825B1
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790100516; cv=none; b=TifS5uHgGRRb8cZoediP5+L5Us6VNdqG7QDtFonsMUxWCSwLEFhhtU/ZbT+/0eDKHvTPISTfzU9ddaUsAmL6PLkjTWNKTmHzdwqMFHc6HYVSeews9+vG0ZOhQLLUasqizjBYZJVoXq8lJTU3MXzlQ/PVUmrNJFKXm+LecKxuZ2U=
+	t=1790100517; cv=none; b=S7yYWjS3VSxvwps8sY+2dpv0lBlcRzWqmErlw79XNemDv06yeV72GhGwc5Dfcx3EOJFGVLjxhE2PAyhC1htw8OgA0uISjoI3Zhr8bim8MCv174Zw8/SLdlhggoh/Rb4mkdj730pROnAwa8PawUpvqopJOUFt3Lt0IjLBlstTL8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790100516; c=relaxed/simple;
-	bh=C7Ec1UZI8OuV+n2YbfOkK1M6yHR2cHa3IjtGFNfXmOU=;
+	s=arc-20240116; t=1790100517; c=relaxed/simple;
+	bh=Ckp24sqJcKgxFa8rbNUiMvY34Hz8I1/uzZo8ARccLMQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=otua8h+861ybGprKAfYce7HeDSQr+boCcknvY6+HlotpRpNKKayH+vsPuXHbst3Mt9i6vE1alVh7MJipCca5l6uOKsxJb4yW7PwItFCmu3VwHW+GI4Ts2NU1fUV6YOeeb8knlOiDizlt0ZFDuZYmLXa8eKw7Yld8pIka2XqbzAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ByDBkkfs; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:To:Cc; b=MfNJHVUda1Li+ajD0sSdr4H6H0LOjDmjTzVR4GaIM3rxoxXsdmA9QSElhC4YOQxB0ab4cdUQ6WJ48dD46IigiIYx6E6KKYydQOukSs7ySXv4He5HgovrMJLeIpSpssPm2UZEIUvN3ir5zXgel4QB+oA6txSUHoDxkOtvkK7sPbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e93rEBwo; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ByDBkkfs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e93rEBwo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790100515; x=1821636515;
+  t=1790100512; x=1821636512;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=C7Ec1UZI8OuV+n2YbfOkK1M6yHR2cHa3IjtGFNfXmOU=;
-  b=ByDBkkfsa/I/9UWKUMhTMN6L3PTjRksPoewvR2e47Wjm5FRCK/0I6/U6
-   F6wxb3J7M6+lDEJN1dyMOaR4TpRkXtddrquS2PbMFpfIQwpVOE0KnP7nQ
-   NNAcLsjdsTVaVq01naoPivoiEdEL1a9BknT5U4EP2YeQUfk60RvUjx3ns
-   phUGPBxYbP/QeJi6D8nCg3W6IahTzDaBMoleWXWJVBs6iz6avMMZKx0CO
-   ieT7L7cvtoyw2Z7XFrPUMHEzdMh+dlWls5Ny3wuNGsgMl60wSQCZkXU1N
-   QzgfbbSPIHsRrHHAUU+tAx1STVDWKmpnbgAow4Nt7iuQprpCQ4Z5u97en
-   w==;
-X-CSE-ConnectionGUID: /Bhfm3f5Sz6ro4KFuKX9FQ==
-X-CSE-MsgGUID: B/F3PsQDRSCqyYqA0IW6KQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="108232045"
+  bh=Ckp24sqJcKgxFa8rbNUiMvY34Hz8I1/uzZo8ARccLMQ=;
+  b=e93rEBwoWJC26jOIwA/OSeqOak6VxM/tjsePSAstiWz9klYTm/+JUFDY
+   PPnGJ9th1+nyf+rFoYV6Wacgi7Go/KhxAKfY56wt/z4qtbsD7iNABYoFn
+   8McWn6iMra+YjoC0xlTVivieB1aFhf+pROBXMxUpQb3osKL3Bx2ZgfoMg
+   cR+azFJt0hof/g9RVXFwk0j6uOe18HXq+2MhH7QzmSCUv9X5X2NBVmQF+
+   PPom4ZnxNxiJDRwhxVSF3D8ujqgvgth5bgdQQYzIAvf/3h14VbVqFgAoN
+   QpnsPZMT2/lpI+S/69F4qnbGlEyeQZnlgJzFyWN/RUQ5hhtrxQNfDQVBG
+   A==;
+X-CSE-ConnectionGUID: mLQDSQWtTq2/NrzpAnL0sw==
+X-CSE-MsgGUID: WMjERymGSBSx8bwXChI/Nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="108232043"
 X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="108232045"
+   d="scan'208";a="108232043"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
   by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 11:04:24 -0700
-X-CSE-ConnectionGUID: /cu6qgGqRH+evoVu/PnRkw==
-X-CSE-MsgGUID: il3ELlyBTwW+pHd7fvy+BQ==
+X-CSE-ConnectionGUID: 0vpD6wXETpeAmo5W7remVA==
+X-CSE-MsgGUID: igAZSAQARhimxV4PB2UDJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="281315331"
+   d="scan'208";a="281315325"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 11:04:24 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 22 Sep 2026 11:02:42 -0700
-Subject: [PATCH iwl-net v2 09/15] ice: E825: clear PHY_REG_TX_MEMORY_STATUS
- prior to soft reset
+Date: Tue, 22 Sep 2026 11:02:41 -0700
+Subject: [PATCH iwl-net v2 08/15] ice: E825: stop clearing
+ PHY_REG_TX_OFFSET_READY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-9-e55b692d0e6b@intel.com>
+Message-Id: <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-8-e55b692d0e6b@intel.com>
 References: <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-0-e55b692d0e6b@intel.com>
 In-Reply-To: <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-0-e55b692d0e6b@intel.com>
 To: Jacob Keller <jacob.e.keller@intel.com>, 
@@ -66,238 +66,188 @@ To: Jacob Keller <jacob.e.keller@intel.com>,
  Przemyslaw Korba <przemyslaw.korba@intel.com>, netdev@vger.kernel.org, 
  Anthony Nguyen <anthony.l.nguyen@intel.com>
 Cc: Jacob Keller <jacob.e.keller@intel.com>, 
- Maciek Machnikowski <maciej.machnikowski@intel.com>
+ Maciej Machnikowski <maciej.machnikowski@intel.com>
 X-Mailer: b4 0.17-dev-8b7ea
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9921;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7881;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=C7Ec1UZI8OuV+n2YbfOkK1M6yHR2cHa3IjtGFNfXmOU=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqxNh6V99vEF19VdbK5zzGpe+3fuEwGGIwzfGRJPueYvs
- utd+Uy2o5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgInM3MvwV0C94p2t2uu8pe4S
- Gms1m3hnWf/PfzRPukqaP3r71VPndjIydF2y+njYSiJx+sVtb7e7Feus/vPn2hsDiQOH7ufsimm
- cxAMA
+ bh=Ckp24sqJcKgxFa8rbNUiMvY34Hz8I1/uzZo8ARccLMQ=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqxNh6ULzKKae5qFV65Z/UVQketCtVf2Ib7EPyzC6w9Ob
+ 6nUEY7rKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCIxbQz/U5s+hlUfO/er4ien
+ VeiRlx7GhpPuWJ1RYjtxUXp1yOxnpowMh1ItbGbdLJgXu+D/dat57re2357GJ5v96cxvTl2fJT7
+ WTAA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-The current implementation of ice_ptp_reset_ts_memory_eth56g() is flawed.
-It tries to clear the timestamp memory by writing to the
-PHY_REG_TX_MEMORY_STATUS region. This does not work properly, as it does
-not trigger appropriate PHY actions.
+The ice_stop_phy_timer_eth56g() function is called by the driver for E825
+devices to ensure that the PHY timer has been stopped. The equivalent
+function for older E822 devices performed many steps. However, on E825 it
+only clears the PHY_REG_TX_OFFSET_READY and PHY_REG_RX_OFFSET_READY bits to
+indicate to HW that it should no longer treat the PHY offset as valid.
 
-To clear outstanding timestamp memory, the driver must read the timestamps.
-However, naively doing this as part of ice_ptp_reset_ts_memory() is
-problematic. When reading the timestamp index, hardware kicks off a chain
-of actions including clearing the ready bitmap index, and decrementing an
-internal counter if the timestamp index was marked as valid.
+When PHY_REG_TX_OFFSET_READY is cleared, the hardware still captures Tx
+timestamps, but it no longer sets the valid bit for these timestamps. This
+sounds reasonable at first glance. However, this results in the internal
+outstanding timestamp counter becoming out of sync.
 
-This can potentially leave the internal hardware counter out of sync with
-the actual number of timestamps. This occurs because the
-PHY_REG_TX_MEMORY_STATUS region is not zero-initialized when the device
-boots up. Instead, it is filled with garbage. On a cold power on, attempts
-to read the stale data result in the hardware triggering a counter
-decrement for a timestamp that never happened. This underflows the counter,
-and prevents new timestamp interrupts from being triggered for real
-timestamp requests.
+When capturing a timestamp, hardware increments its internal counter and
+sets the associated "ready" bit in the timestamp memory status. Then it
+compares the timestamp count to the threshold to determine if it should
+trigger an interrupt to the MAC.
 
-We must read the PHY_REG_TX_MEMORY_STATUS in order to clear stale
-timestamps. But doing so may cause a desync with the counter. To prevent
-issues, perform this clearing always and only right before initiating a PHY
-soft reset.
+Upon reading the timestamp hardware is supposed to decrement the counter,
+clear the valid bit, and clear the associated bit from the memory status
+register. However, it only performs these steps *if* the valid bit is set.
 
-The soft reset will clear and reset the internal counter and the ready
-bitmap. The reads to PHY_REG_TX_MEMORY_STATUS will reset the region valid
-bits ensuring that no stale data is left behind. This combination ensures
-that we always have a clean slate with no stale data and with the counter
-properly reset to zero.
+Since the valid bit is not set while PHY_REG_TX_OFFSET_READY is clear, the
+timestamp counter is not decremented and the memory status is not cleared.
+This leaves the counter out-of-sync until a PHY soft reset.
 
-If a read fails (i.e. due to a transient sideband queue failure) it is not
-treated as a fatal error. There is already a dynamic debug message for each
-read failure. Keep track of the total number of timestamp registers that
-fail for a given port and log a warning message indicating the total number
-of failures. Continuing is acceptable as clearing the memory is a
-precaution against faulty software. Correct software access won't read the
-index twice and won't read it at all except when it has already confirmed
-that the index is valid by reading ice_get_phy_tx_tstamp_ready().
+According to the hardware engineers, the PHY_REG_TX_OFFSET_READY bit has no
+other effects. It only controls whether hardware captures timestamps with
+the valid bit set or not. Since capturing timestamps with the valid bit
+clear is problematic, they recommend simply not clearing
+PHY_REG_TX_OFFSET_READY.
 
-Fixes: 3ec46e157c7f ("ice: perform PHY soft reset for E825C ports at initialization")
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
+Note that the PHY_REG_RX_OFFSET_READY performs a similar task. However,
+clearing it is fine as there is no associated timestamp counter on the Rx
+side. Receive timestamps are simply inserted into the descriptor. Clearing
+this register clears the valid bit for timestamps until we complete
+calibration and re-enable the register.
+
+Notice that the soft_reset parameter of ice_stop_phy_timer_eth56g() is
+totally unused. It is a relic from a copy-paste of
+ice_stop_phy_timer_e82x() that is unnecessary, so remove it.
+
+Now that we do not clear the PHY_REG_TX_OFFSET_READY, new timestamp
+requests could happen while the PHY is calibrating. To avoid this, set the
+tx.calibrating field of the Tx timestamp tracker when stopping the timer
+and clear it when finishing the restart. This ensures that any new requests
+will be rejected until the PHY timer calibration has completed. Unlike E822
+devices, set the calibrating flag when "stopping" the PHY and clear it
+immediately after the start procedure. The E825 device does not perform
+vernier calibration and thus does not need to wait for hardware to mark the
+offsets as valid.
+
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Suggested-by: Maciej Machnikowski <maciej.machnikowski@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 100 +++++++++++++++-------------
- 1 file changed, 52 insertions(+), 48 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  2 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c    | 24 +++++++++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 21 +++++++++++----------
+ 3 files changed, 35 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+index 16b1988e993d..17000df77ce9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+@@ -378,7 +378,7 @@ int ice_cgu_get_output_pin_state_caps(struct ice_hw *hw, u8 pin_id,
+ 
+ /* ETH56G family functions */
+ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status);
+-int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset);
++int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port);
+ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port);
+ int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold);
+ int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index 328e90dc51aa..657cd78ec738 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -1221,6 +1221,7 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
+ 	struct ice_pf *pf = ptp_port_to_pf(ptp_port);
+ 	u8 port = ptp_port->port_num;
+ 	struct ice_hw *hw = &pf->hw;
++	unsigned long flags;
+ 	int err;
+ 
+ 	lockdep_assert_held(&pf->adapter->ps_lock);
+@@ -1236,7 +1237,12 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
+ 		err = ice_stop_phy_timer_e82x(hw, port, true);
+ 		break;
+ 	case ICE_MAC_GENERIC_3K_E825:
+-		err = ice_stop_phy_timer_eth56g(hw, port, true);
++		/* Disable new Tx timestamp requests */
++		spin_lock_irqsave(&ptp_port->tx.lock, flags);
++		ptp_port->tx.calibrating = true;
++		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
++
++		err = ice_stop_phy_timer_eth56g(hw, port);
+ 		break;
+ 	default:
+ 		err = -ENODEV;
+@@ -1302,7 +1308,23 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
+ 					   0);
+ 		break;
+ 	case ICE_MAC_GENERIC_3K_E825:
++		/* ice_ptp_port_phy_stop() may have already disabled
++		 * timestamps, but some restarts occur without first stopping
++		 * the timer, so we ensure that new requests are disabled
++		 * here.
++		 */
++		spin_lock_irqsave(&ptp_port->tx.lock, flags);
++		ptp_port->tx.calibrating = true;
++		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
++
+ 		err = ice_start_phy_timer_eth56g(hw, port);
++		if (err)
++			break;
++
++		spin_lock_irqsave(&ptp_port->tx.lock, flags);
++		ptp_port->tx.calibrating = false;
++		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
++
+ 		break;
+ 	default:
+ 		err = -ENODEV;
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index c8a67a307832..e1a5ff5793d1 100644
+index 3a41c711e751..c8a67a307832 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -737,24 +737,6 @@ static int ice_read_port_mem_eth56g(struct ice_hw *hw, u8 port, u16 offset,
- 	return ice_read_port_eth56g(hw, port, offset, val, ETH56G_PHY_MEM_PTP);
- }
- 
--/**
-- * ice_write_port_mem_eth56g - Write a PHY port memory location
-- * @hw: pointer to the HW struct
-- * @port: Port number to be read
-- * @offset: Offset from PHY port register base
-- * @val: Pointer to the value to read (out param)
-- *
-- * Return:
-- * * %0      - success
-- * * %EINVAL - invalid port number or resource type
-- * * %other  - failed to write to PHY
-- */
--static int ice_write_port_mem_eth56g(struct ice_hw *hw, u8 port, u16 offset,
--				     u32 val)
--{
--	return ice_write_port_eth56g(hw, port, offset, val, ETH56G_PHY_MEM_PTP);
--}
--
- /**
-  * ice_write_quad_ptp_reg_eth56g - Write a PHY quad register
+@@ -2101,24 +2101,25 @@ static int ice_sync_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+  * ice_stop_phy_timer_eth56g - Stop the PHY clock timer
   * @hw: pointer to the HW struct
-@@ -1134,16 +1116,12 @@ static int ice_read_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx,
-  * @port: the quad to read from
-  * @idx: the timestamp index to reset
+  * @port: the PHY port to stop
+- * @soft_reset: if true, hold the SOFT_RESET bit of PHY_REG_PS
   *
-- * Read and then forcibly clear the timestamp index to ensure the valid bit is
-- * cleared and the timestamp status bit is reset in the PHY port memory of
-- * internal PHYs of the 56G devices.
-+ * Read the timestamp index to ensure that the valid bit is cleared and the
-+ * timestamp status bit is reset in the PHY port memory.
-  *
-- * To directly clear the contents of the timestamp block entirely, discarding
-- * all timestamp data at once, software should instead use
-- * ice_ptp_reset_ts_memory_quad_eth56g().
-- *
-- * This function should only be called on an idx whose bit is set according to
-- * ice_get_phy_tx_tstamp_ready().
-+ * This function should only be called on an index whose bit is set according
-+ * to ice_get_phy_tx_tstamp_ready(), or as part of a full sweep when paired
-+ * with a PHY soft reset via ice_ptp_phy_soft_reset_eth56g().
+- * Stop the clock of a PHY port. This must be done as part of the flow to
+- * re-calibrate Tx and Rx timestamping offsets whenever the clock time is
+- * initialized or when link speed changes.
++ * Disable Rx timestamping by clearing the PHY_REG_RX_OFFSET_READY. This
++ * causes Rx timestamps to be captured with their valid bit clear, ensuring we
++ * discard any timestamp captured while the PHY is being recalibrated.
++ *
++ * Note this does *not* clear PHY_REG_TX_OFFSET_READY. Clearing it would
++ * cause the Tx timestamps to be captured with their valid bit clear.
++ * Unfortunately the captured timestamps still increment the internal counter
++ * and result in off-by-one accounting. Instead, Tx timestamp requests should
++ * be disabled by other means.
   *
   * Return:
   * * %0     - success
-@@ -1152,24 +1130,16 @@ static int ice_read_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx,
- static int ice_clear_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx)
+  * * %other - failed to write to PHY
+  */
+-int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset)
++int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port)
  {
- 	u64 unused_tstamp;
--	u16 lo_addr;
  	int err;
  
--	/* Read the timestamp register to ensure the timestamp status bit is
--	 * cleared.
-+	/* Per the PHY spec, reading the timestamp memory location is what
-+	 * clears the entry's valid bit and its corresponding (read-only)
-+	 * ts_memory_status bit.
- 	 */
- 	err = ice_read_ptp_tstamp_eth56g(hw, port, idx, &unused_tstamp);
- 	if (err) {
- 		ice_debug(hw, ICE_DBG_PTP, "Failed to read the PHY timestamp register for port %u, idx %u, err %d\n",
- 			  port, idx, err);
--	}
+-	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_OFFSET_READY, 0);
+-	if (err)
+-		return err;
 -
--	lo_addr = (u16)PHY_TSTAMP_L(idx);
--
--	err = ice_write_port_mem_eth56g(hw, port, lo_addr, 0);
--	if (err) {
--		ice_debug(hw, ICE_DBG_PTP, "Failed to clear low PTP timestamp register for port %u, idx %u, err %d\n",
--			  port, idx, err);
+ 	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_RX_OFFSET_READY, 0);
+ 	if (err)
  		return err;
- 	}
+@@ -2151,7 +2152,7 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
  
-@@ -1177,19 +1147,43 @@ static int ice_clear_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx)
- }
+ 	tmr_idx = ice_get_ptp_src_clock_index(hw);
  
- /**
-- * ice_ptp_reset_ts_memory_eth56g - Clear all timestamps from the port block
-+ * ice_ptp_clear_tx_memory_status_eth56g - Reset one port's Tx timestamp memory
-  * @hw: pointer to the HW struct
-+ * @port: port number to clear
-+ *
-+ * Fully reset a single PHY port's Tx timestamp memory. Per the PHY spec, the
-+ * only way to clear a timestamp valid bit (and its read-only ts_memory_status
-+ * bit) is to read the timestamp memory location, so read every entry for the
-+ * port (two 32-bit reads each). This discards all timestamp data on the port,
-+ * so it must only be used for a full reset; callers that must preserve
-+ * in-flight timestamps clear individual indices via ice_clear_phy_tstamp().
-+ *
-+ * Due to interactions with an internal HW counter for the number of
-+ * outstanding Tx timestamps, this *must* only be called as part of the
-+ * ice_ptp_phy_soft_reset_eth56g() procedure. Otherwise, the internal counter
-+ * may become out of sync and prevent new timestamp interrupts.
-+ *
-+ * Failure to read a given index (i.e. due to a transient sideband queue
-+ * failure) is not considered fatal as the PHY port is about to be soft reset.
-+ * While the soft reset does not clear the timestamp memory, software
-+ * shouldn't be reading the timestamp memory without already knowing it is
-+ * valid via ice_get_phy_tx_tstamp_ready(), and this sweep is just
-+ * a precaution to ensure the memory is in a known state.
-  */
--static void ice_ptp_reset_ts_memory_eth56g(struct ice_hw *hw)
-+static void ice_ptp_clear_tx_memory_status_eth56g(struct ice_hw *hw, u8 port)
- {
--	unsigned int port;
-+	int err, failed = 0;
-+	u8 idx;
+-	err = ice_stop_phy_timer_eth56g(hw, port, false);
++	err = ice_stop_phy_timer_eth56g(hw, port);
+ 	if (err)
+ 		return err;
  
--	for (port = 0; port < hw->ptp.num_lports; port++) {
--		ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_MEMORY_STATUS_L,
--					 0);
--		ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_MEMORY_STATUS_U,
--					 0);
-+	for (idx = 0; idx < INDEX_PER_PORT; idx++) {
-+		err = ice_clear_ptp_tstamp_eth56g(hw, port, idx);
-+		if (err)
-+			failed++;
- 	}
-+
-+	if (failed)
-+		dev_warn(ice_hw_to_dev(hw), "Failed to clear %d PHY timestamp registers for port %u\n",
-+			 port, failed);
- }
- 
- /**
-@@ -2295,6 +2289,7 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
-  *
-  * Trigger a soft reset of the ETH56G PHY by toggling the soft reset
-  * bit in the PHY global register. The reset sequence consists of:
-+ *   0. Reading every timestamp memory register to clear its valid bit
-  *   1. Clearing the soft reset bit
-  *   2. Asserting the soft reset bit
-  *   3. Clearing the soft reset bit again
-@@ -2303,6 +2298,12 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
-  * to settle. This provides a controlled way to reinitialize the PHY
-  * without requiring a full device reset.
-  *
-+ * To ensure that the internal counter matches the contents of the
-+ * PHY_REG_TX_MEMORY_STATUS, read every timestamp index prior to performing
-+ * the soft reset. The PHY_REG_TX_MEMORY_STATUS reads ensure that the region
-+ * is cleared, while the soft reset procedure ensures that the timestamp
-+ * counter is reset to zero.
-+ *
-  * Return: 0 on success, or a negative error code on failure when
-  *         reading or writing the PHY register.
-  */
-@@ -2311,6 +2312,8 @@ int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
- 	u32 global_val;
- 	int err;
- 
-+	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
-+
- 	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
- 	if (err) {
- 		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
-@@ -5802,8 +5805,9 @@ void ice_ptp_reset_ts_memory(struct ice_hw *hw)
- 		ice_ptp_reset_ts_memory_e82x(hw);
- 		break;
- 	case ICE_MAC_GENERIC_3K_E825:
--		ice_ptp_reset_ts_memory_eth56g(hw);
--		break;
-+		/* E825 hardware must only reset timestamp memory as part of
-+		 * the soft reset procedure.
-+		 */
- 	case ICE_MAC_E810:
- 	default:
- 		return;
 
 -- 
 2.56.0.rc0.395.gd1f3524e15dc
