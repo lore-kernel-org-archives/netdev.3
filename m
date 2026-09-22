@@ -1,242 +1,480 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8443558200
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790090528; cv=pass; b=q/yt+E51HOPcVyakZenrADls2VCy8KA4hJvGfTj4YuzN9zOna7uHHBmMyeviqKWogp3klePmIootgB0Iko2sd2AvdY+KSWGwcQUPf0RRAyjar29pcx0eVh+BU7snHve/ci6sCXGWbOfi/YRo2OskkObx8iAS0tVLIR188sz7eHU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790090528; c=relaxed/simple;
-	bh=Ux57whVgmek86Umyip3QwJFc6Zvz2svPkJYNqoOZN04=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o3GEKUnnPGYbpn1t5sMbE2wkr0xZScKNxonqGJaSJvyjbWblRj0H96MWiulP9aJ8fnkoYqE4UGliWJz5hnRxW2s+q+Bh6eC2HYqfJXHd7qjbRFns5BqZJnlVanlpRb21cnP63qBmcLfXRCxKlsqvBlw5Y+cRlisFkVCf5/ube7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gw7Zm0Og; arc=pass smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A976D3B0597;
+	Tue, 22 Sep 2026 15:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790090663; cv=none; b=DM6AUHClOQ1yPMVdHVpNsoEuO+OT4M8tNJCq62iOxQ/7LnrBD9jVjX9RJskgiGJWd1WTJs/wMnf2ogbHo5J8d+lw1Fdr2up+1UKQEf4i0YeZ683sFTo3rKw2asK1k0b1gkXr2eXZLRCZJ8NutqaIZknNvrmgacF4E9XBp5E1rqE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790090663; c=relaxed/simple;
+	bh=q/XRhxMFde8XIYuNei9CGSftqh0qhQLWAGRhC2Hu3X4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OHGzd3RLKPi6V6sw2FHy1deAFQrrqo9MoYHBePM1DfH++gvHzjS+yhtnhs6qi5ETPnU+JoZ5pjD6WJry8hDFTAGoT0PazG4wjY39X+rr0LGbUj3+S6v0RzGLm/g5DRJrJtxqlyTlorKNWKNL9Y/2E1t4GddRXPrA5UV9BQT4uzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvqC0t1w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gw7Zm0Og"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469a34908so19510b3a.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:22:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790090526; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ae7ValMZEC8aFk13//KLzz78hpbmcRvlBeNvMu2raEZZcfqqLCAMDHqpvQKyo4y8Mf
-         8P0joDh2Oi4DXE0rarEOvnH15L3pv0PM2KLJSr+kzBshxTR3HikEp5GTtcrrNl5VjsPa
-         nJXQ+Cy0b1n/O2FbLwUtWC1Ns1fe3Sx2HX3kzv6XjH7CFDDx0qR8/AinnBIwMNpfKrXq
-         oqUeTaPTjt/4G57B7v3EOV2TahJezcSHH20VjVe3n78SlCITDaSbqTaGnVOH0KRboijt
-         sWjdvOxnsuGUtjQ2a+6jVaEqMw/hedqYGU0+RDkKAnVhfalLQbl84tnDeXIsZCuKXFQp
-         cWxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CvfOZgoOtU/thwhhWKuNi2Vuwt2keTuqPas09RuZUtM=;
-        fh=ruQiqgY/kKwNRaDZz/bdZNi9zddru4X3tyJLV3ySLzE=;
-        b=VknIwcqRt+PNZQvSaWxo3efDP+NPWje4R+3/HlTgSzL/Ku25vQNTuErtd+vBnSvqYE
-         PT5BYJ3hMyK1NjB/18SrVZk0D6Fte5AEA67xtB4+RaUxjEpBetHtggMip3C5PLhBakpZ
-         wgIqNAD7ffVPzvUfZwmqrg30a6zRXXc1AP0L6gb3KRVe14BlJ0yE5UQLlj9NrFWXkObI
-         yZD4Y8ajCOLDLlnlrWP0nezNET12W3FPuKCaolBktko/Wkf0FsS7gnt1nH5amZOscF2M
-         wCcaZU9KuIMwV6GL9QfIpB9rHT7uS7nrutRBwTjtH75Ohu08TzYbuibLWY+7oWo+Iw9u
-         nO9Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790090526; x=1790695326; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CvfOZgoOtU/thwhhWKuNi2Vuwt2keTuqPas09RuZUtM=;
-        b=Gw7Zm0OgiJva8OvI2NtjBX/cKKw8gIOwds6QtftZjdqU7MY0wnms7FRiMLuT07vsjG
-         Pyp6lkIHZGaZJ++twN7zm922t5oEv9Mz7JRHa97uFud3qgsltAYmL89+ailcyeYK0ppT
-         7bKUnxPHqslOspsjXaxp3YdH/rR3zpCH05CQhgq4zPjSkvKa62VbP2aNfO/KbT5J+mAe
-         nrg7s7RB3mdo+91ZHDhXgEYcQe8ZeMjPNcDyjg9uEokM0QecQRCV144FhBOqt6n7szDk
-         QPHzG1o/guwNEAYqZe+gOqcXJbghS37F9a2oBaRbCkF+RvhRznwN3NufUmjemZRvfTsK
-         olKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790090526; x=1790695326;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CvfOZgoOtU/thwhhWKuNi2Vuwt2keTuqPas09RuZUtM=;
-        b=qFwFp/VS+bApS0ioPYKQXc6W0Q9AF5jPHmlF9OS+kUYJjDsiMsBr9zjKVS2GDRpbJP
-         CmZB+YohShZ9noMbvma+8ncQECJ83GF4GmTuXnDPsO9ltdb7WJWMN2efbIrsRENSm2aB
-         sOsNY70PWeJRH4s+XOEJfyofmCm+89AmADAD2/JYMN58Hu5YVROmtb/8HhCLnn43ACSe
-         aK9P0pvc5B4dxXSN90vS7MsNcXjuOpAKQ4bih763SfC/tzZjvjyWeK2530klUUnmBACB
-         Ogge0LnRkJGPKdTj5f1uLYX5Fra6TEG4bUKUppgvkDhG7/OGBZHoCKqeRM1TtFpJlvVJ
-         GehQ==
-X-Gm-Message-State: AFuF++nAUeZCZffFfO4CubqsJbCycbDRIV0v3yPfrDD8An8z9bJdWlSM
-	Xlsz1vKjxgkKKCIbGvEMXkHn40ebMrjPB1FdwYjRCPZEoeG8rNlApRGD4h3gZ+d57CnlTIeA/59
-	KeMakoyxeMzqrB6am+BhTDe7Yw2Q7kvg=
-X-Gm-Gg: AYBFou1Ni8dLqiW0c9UB0WtXM8liGq/i2jEY7jTHFAp1bkQEDkvI9y2bdmQayrdeNsA
-	kzCh8Tx7kiaHK5Fum4rgQK0UQkE63oaNf/Mx12T1pRjX3EFwbriFCwUT+ws+MWgg8NSjs9wcbIT
-	c/5xywdFvra/FPd7rWysVbj/iDh1xWZn+1kIaoRn8GojXZqlHCQGKOABVYdlOJkXuZtPqf7Sl0f
-	oeFrhpC3mNn0opMWtfNthJn/l/PVVgzUwvmrtSOXWWJuiBDl8j/qopM8Z2rquVEOOEwiVD02JeQ
-	FI2m9kVwVoWE2HB/pd8LqQ8hMqPIL3Ks4jnLuq42nwyds337SSYV4yH1P64cIWL4e8kF1CczKxM
-	JOUPHfmDrY7gDIKBnnsDBZK7fFv2zyGWoMhOL7ezrhdlUTBJJ4Z1LtMPh
-X-Received: by 2002:a05:6a00:92a4:b0:874:708d:b62d with SMTP id
- d2e1a72fcca58-87c83c4a1f3mr1664017b3a.34.1790090525563; Tue, 22 Sep 2026
- 08:22:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvqC0t1w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8349F1F00893;
+	Tue, 22 Sep 2026 15:24:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790090661;
+	bh=5TPkxdbhS6TT4rsbpRuXg269XY09+Drk3QiXnZyIKow=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bvqC0t1w2oVHGD1V/n7O4txWzZB8n08UchCwoOTkjT8nioaUbmZO7P5syinvsbuFR
+	 pOL07m1/Vr2upPm/1ERzXQHWcN/vszVEvhiXWUP7AZI3oZ+M/M79fdxTCZ77Q4N47h
+	 AOeBLS+VMJipcprKcmsnOM6GPCWoJmhjD4hmIhA4tFLJmXCCkUKQoqnfgbdaoceumn
+	 NWOfp2un5VpLOsf2Mee+99l/LNnQ/oFwa7JmgkWSpv0qF9WpDwDNyBd6eoyOoJAETU
+	 kLUMNsIxKJF3BIZ7tP0xTWLSfH+dYmgYxLqTaBqkSGRLTeIO3/xLKKtnvGpgiIigxO
+	 oBzbHryjojang==
+Subject: Re: [PATCH net-next] net: stmmac: rework stmmac_rx to support XDP rx
+ multi-buff
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Tue, 22 Sep 2026 15:24:20 +0000
+Message-ID: <179009066006.2160803.5369744103643817334@kernel.org>
+In-Reply-To: <20260918-stmmac-rx-mb-v1-1-0b4517d404af@oss.qualcomm.com>
+References: <20260918-stmmac-rx-mb-v1-1-0b4517d404af@oss.qualcomm.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADvbK_eQjfg_-HLT3zJ5Bt5LWbUTx_+fLG5ggLPNY1Ah+sF9GA@mail.gmail.com>
- <20260921093707.1432184-1-ljp1205831794@gmail.com>
-In-Reply-To: <20260921093707.1432184-1-ljp1205831794@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 22 Sep 2026 11:21:52 -0400
-X-Gm-Features: AcwNN1VaL5YpI7cXSQJvRWkj7ir1pHQpUQ28632JQSb9uVIAxMUZLTctxev2-Pc
-Message-ID: <CADvbK_dXMHK=1mzofgCchuhEo2LZ95=P72M+nyEyOTuF5m2egw@mail.gmail.com>
-Subject: Re: [PATCH net v2] sctp: discard the rest of the packet on a
- stale-cookie error
-To: Aohan Mei <ljp1205831794@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	marcelo.leitner@gmail.com, imv4bel@gmail.com, 
-	Aohan Mei <henrymei@tencent.com>, TencentOS Corvus AI <corvus@tencent.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 21, 2026 at 5:37=E2=80=AFAM Aohan Mei <ljp1205831794@gmail.com>=
- wrote:
->
-> From: Aohan Mei <henrymei@tencent.com>
->
-> When an association is in COOKIE-ECHOED state and the peer sends a
-> bundled [ERROR(Stale Cookie)][DATA] packet from one of its non-primary
-> addresses, processing the ERROR chunk takes the non-fatal stale-cookie
-> retry path sctp_sf_do_5_2_6_stale(), which queues
-> SCTP_CMD_DEL_NON_PRIMARY while keeping the association alive.
-> sctp_cmd_del_non_primary() removes every non-primary transport -
-> including the very transport this packet arrived on, which is still
-> referenced by the receive lookup and shared by all chunks of the
-> packet via chunk->transport.
->
-> sctp_assoc_rm_peer() does redirect asoc->peer.last_data_from away from
-> the removed transport, but right afterwards the bundled DATA chunk
-> makes sctp_assoc_bh_rcv() re-register
-> asoc->peer.last_data_from =3D chunk->transport unconditionally, undoing
-> the redirection with the just-removed transport.
->
-> Once the packet is done, the receive reference is dropped and the
-> transport is RCU-freed, while the surviving association keeps the
-> dangling last_data_from.  A later FWD-TSN (or the delayed SACK timer)
-> makes sctp_gen_sack() dereference it (->param_flags and friends), and
-> sctp_make_sack()/sctp_outq_select_transport() may write to the freed
-> object and link it into the live transport list.  This is a
-> use-after-free triggerable by any malicious SCTP peer (or a local
-> unprivileged user acting as one) with no capabilities required:
->
->   BUG: KASAN: slab-use-after-free in sctp_do_sm+0x498a/0x5660
->   Read of size 4 at addr ffff88800e1e356c by task poc/115
->   Call Trace: sctp_do_sm <- sctp_assoc_bh_rcv <- sctp_inq_push <-
->               sctp_rcv <- ip_protocol_deliver_rcu <- ip_rcv
->   Allocated: sctp_transport_new <- sctp_assoc_add_peer <-
->              sctp_process_init (INIT-ACK processing)
->   Freed: kfree <- sctp_transport_destroy_rcu <- rcu_core
->          (call_rcu queued by sctp_transport_put at end of sctp_rcv)
->   The buggy address is located 364 bytes inside of freed 1024-byte
->   region [ffff88800e1e3400, ffff88800e1e3800), cache kmalloc-1k
->
-> Note that commit 03a9d10ecf71 ("sctp: drop a chunk if its transport
-> was removed") only covers the window between the receive lookup and
-> the chunk processing (e.g. an ASCONF DEL-IP racing the socket backlog);
-> here the transport is removed *while* the packet is being processed,
-> by an earlier chunk of the same packet, so the drop in sctp_inq_push()
-> does not reach this path.  Verified with the bundled [ERROR(Stale
-> Cookie)][DATA] + FWD-TSN reproducer: the KASAN report above still
-> fires with that commit applied, and is gone with this patch on top.
->
-> Fix it by discarding the rest of the packet on this path, as suggested
-> by Xin.  After the stale-cookie ERROR has sent the association back to
-> COOKIE-WAIT and removed the non-primary transports, the remaining
-> chunks of the packet can only run against the restarted handshake
-> while referencing the removed arrival transport through
-> chunk->transport: besides the last_data_from registration above,
-> sctp_cmd_setup_t2() and the sctp_make_*() reply builders would also
-> copy that pointer into association-lifetime state that
-> sctp_assoc_rm_peer() has already sanitized.  Let the peer retransmit
-> them, in line with what sctp_inq_push() does for chunks whose
-> transport was removed before processing.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> Cc: stable@vger.kernel.org
-> Assisted-by: CodeBuddy:Kimi-K3
-> Signed-off-by: Aohan Mei <henrymei@tencent.com>
-> ---
->
-> Hi Xin,
->
-> Thanks a lot for the review and the suggestion.  Implemented in v2:
-> SCTP_CMD_DISCARD_PACKET queued at the end of the stale-cookie retry.
->
-> Verified with the reproducer: the kprobe trace now shows the ERROR
-> chunk still removing the transport (sctp_assoc_rm_peer/
-> sctp_transport_free fire as before) but no further chunk of the packet
-> being processed, and asoc->peer.last_data_from keeps the redirection
-> done by sctp_assoc_rm_peer().  The KASAN use-after-free is gone and
-> the association completes the retry handshake normally.
->
-> This also takes care of the other same-packet sinks the sashiko review
-> pointed out (sctp_cmd_setup_t2() and the sctp_make_*() reply chunks
-> copying chunk->transport into association-lifetime state): the
-> remaining chunks are now dropped before they can run, in line with
-> what sctp_inq_push() does for chunks whose transport was removed
-> before processing.
->
-> Regarding the cookie-echo restart path the review mentioned
-> (sctp_assoc_update() removing the arrival transport mid-packet, with a
-> bundled [COOKIE ECHO][SHUTDOWN] reaching SCTP_CMD_SETUP_T2): discarding
-> the packet does not look like an option there, as bundling DATA with
-> COOKIE-ECHO is a legitimate fast path.  I can look into clearing the
-> in-progress chunk's transport on removal, or a loop-level check, as a
-> follow-up - please let me know if you'd rather have it handled here.
->
-> On the bitfield concern: v2 no longer reads transport->dead at all.
-> The race described (sctp_icmp_frag_needed() in softirq doing a
-> non-atomic read-modify-write of pmtu_pending racing dead =3D 1) would
-> also defeat the existing transport->dead check in sctp_inq_push() from
-> 03a9d10ecf71, so it might be worth moving that flag into its own word
-> separately.
->
-> As for the reproducer: it is a single static binary that plays both
-> roles over a TUN device - the victim side is a plain SCTP client
-> socket, while the peer side answers the INIT-ACK advertising a primary
-> and a non-primary address plus FWD-TSN support, injects the bundled
-> [ERROR(Stale Cookie)][DATA] from the non-primary address while the
-> association is COOKIE-ECHOED, completes the retry handshake, and sends
-> an FWD-TSN one second later to consume the dangling pointer.  It was
-> verified on tlinux 6.6.119 and on mainline v7.2-rc6-343, where it
-> still fires with 03a9d10ecf71f applied and is clean with this patch on
-> top.
->
-> Since it is a ready-to-run trigger for the bug, I'd prefer not to post
-> it to the public list - would it be OK if I send it to you and Marcelo
-> off-list instead?  Happy to share it in whatever way you prefer.
->
-> Thanks again!
->
->  net/sctp/sm_statefuns.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-> index 708fa07d5fffc..43ebceb5e15f5 100644
-> --- a/net/sctp/sm_statefuns.c
-> +++ b/net/sctp/sm_statefuns.c
-> @@ -2654,6 +2654,8 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale=
-(
->
->         sctp_add_cmd_sf(commands, SCTP_CMD_REPLY, SCTP_CHUNK(reply));
->
-> +       sctp_add_cmd_sf(commands, SCTP_CMD_DISCARD_PACKET, SCTP_NULL());
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
+
+Critical: 0 · High: 2 · Medium: 3 (1) · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] stmmac_rx(): after stmmac_build_skb() fails (napi_build_skb()
+  returns NULL), the code does `rx_dropped++; count++; goto read_again;`…
+- [High] The patch introduces a new invariant — 'rx_q->state_saved ==
+  true implies rx_q->state.xdp holds a valid in-progress xdp_buff' — but…
+- [Medium] stmmac_rx() now ends with an unconditional `rx_q->state_saved
+  = !first_desc;` (line 6056).
+- [Medium] The new RX code can hand the XDP program a fragmented xdp_buff
+  (stmmac_build_xdp_frags() calls xdp_buff_set_frags_flag() and fills…
+- [Medium] The commit subject and message state that the XDP program now
+  'runs on the full (possibly fragmented) packet instead of just the…
+- [Low] Concern (assessed as a false positive): stmmac_build_xdp_frags()
+  recycles the excess page via page_pool_put_full_page() once…
+
+Pre-existing issues:
+- [Medium] Concern (assessed as not reportable): stmmac_rx_buf2_len()
+  returns the unsigned expression 'plen - len' with no check that plen…
+
+--
+
+net: stmmac: rework stmmac_rx to support XDP rx multi-buff
+
+The RX path now accumulates every descriptor of a frame into a single
+xdp_buff so the XDP program sees the whole (possibly fragmented) packet, and
+builds the skb from that buffer with napi_build_skb() plus
+xdp_update_skb_frags_info(). The in-progress xdp_buff is stored in
+rx_q->state instead of a partially built skb so it survives a NAPI poll
+boundary.
+
+A few questions below about the new failure paths and the saved state.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> index 4fc96b317d79..69bdbbf4b920 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> @@ -132,7 +132,7 @@ struct stmmac_rx_queue {
+>  	dma_addr_t dma_rx_phy;
+>  	unsigned int state_saved;
+>  	struct {
+> -		struct sk_buff *skb;
+> +		struct xdp_buff xdp;
+>  		unsigned int len;
+>  		unsigned int error;
+>  	} state;
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index bf9e7e4cb1c3..1de8d9626c64 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -5735,6 +5737,82 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+>  	return failure ? limit : (int)count;
+>  }
+>  
+> +static void
+> +stmmac_xdp_put_buff(struct stmmac_rx_queue *rx_q, struct xdp_buff *xdp,
+> +		    int sync_len)
+> +{
+> +	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+> +	int i;
 > +
->         return SCTP_DISPOSITION_CONSUME;
->
->  nomem:
-> --
-> 2.43.7
->
-Acked-by: Xin Long <lucien.xin@gmail.com>
+> +	if (likely(!xdp_buff_has_frags(xdp)))
+> +		goto out;
+> +
+> +	for (i = 0; i < sinfo->nr_frags; i++)
+> +		page_pool_put_full_page(rx_q->page_pool,
+> +					skb_frag_page(&sinfo->frags[i]), true);
+> +out:
+> +	page_pool_put_page(rx_q->page_pool, virt_to_head_page(xdp->data),
+> +			   sync_len, true);
+> +}
+> +
+> +static struct sk_buff *stmmac_build_skb(struct xdp_buff *xdp)
+> +{
+> +	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+> +	u32 metasize = xdp->data - xdp->data_meta;
+> +	struct sk_buff *skb;
+> +	u8 num_frags;
+> +
+> +	if (unlikely(xdp_buff_has_frags(xdp)))
+> +		num_frags = sinfo->nr_frags;
+> +
+> +	skb = napi_build_skb(xdp->data_hard_start, xdp->frame_sz);
+> +	if (!skb)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	skb_mark_for_recycle(skb);
+> +	skb_reserve(skb, xdp->data - xdp->data_hard_start);
+> +	skb_put(skb, xdp->data_end - xdp->data);
+> +	if (metasize)
+> +		skb_metadata_set(skb, metasize);
+> +
+> +	if (unlikely(xdp_buff_has_frags(xdp)))
+> +		xdp_update_skb_frags_info(skb, num_frags, sinfo->xdp_frags_size,
+> +					  num_frags * xdp->frame_sz,
+> +					  xdp_buff_get_skb_flags(xdp));
+> +	return skb;
+> +}
+> +
+> +static void stmmac_build_xdp_frags(struct stmmac_priv *priv,
+> +				   struct stmmac_rx_queue *rx_q,
+> +				   unsigned int len, struct page *page,
+> +				   unsigned int offset,
+> +				   enum dma_data_direction dma_dir,
+> +				   struct xdp_buff *xdp)
+> +{
+> +	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+> +	dma_addr_t dma_addr = page_pool_get_dma_addr(page) + offset;
+> +
+> +	dma_sync_single_for_cpu(priv->device, dma_addr, len, dma_dir);
+> +
+> +	if (!xdp_buff_has_frags(xdp)) {
+> +		xdp_buff_set_frags_flag(xdp);
+       ^^^^
+
+[Severity: Medium]
+
+This marks buffers that are subsequently passed to the XDP program as
+multi-buffer, but the advertised feature mask in stmmac_dvr_probe() is
+unchanged:
+
+	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
+			     NETDEV_XDP_ACT_XSK_ZEROCOPY;
+
+Should NETDEV_XDP_ACT_RX_SG be set here, so core and userspace (netlink
+NETDEV_A_DEV_XDP_FEATURES, bpftool, the AF_XDP selftests) can tell that this
+NAPI callback may hand non-linear buffers to a program?
+
+The commit message says the XDP program now "runs on the full (possibly
+fragmented) packet instead of just the first buffer". Is that reachable with
+this patch alone? stmmac_xdp_set_prog() is untouched and still has:
+
+	if (prog && dev->mtu > ETH_DATA_LEN) {
+		NL_SET_ERR_MSG_MOD(extack, "Jumbo frames not supported");
+		return -EOPNOTSUPP;
+	}
+	...
+	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
+
+so with a program attached the MTU is at most 1500 and split-header is off,
+and stmmac_set_bfsize() then returns at least DEFAULT_BUFSIZE, which holds a
+whole frame in one descriptor. Should the gating rework come with this
+patch, or should the message describe the change as preparatory?
+
+> +		sinfo->xdp_frags_size = 0;
+> +		sinfo->nr_frags = 0;
+> +	}
+> +
+> +	if (sinfo->nr_frags < MAX_SKB_FRAGS) {
+> +		skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags++];
+> +
+> +		skb_frag_fill_page_desc(frag, page, offset, len);
+> +		sinfo->xdp_frags_size += len;
+> +
+> +		if (page_is_pfmemalloc(page))
+> +			xdp_buff_set_frag_pfmemalloc(xdp);
+> +	} else {
+> +		page_pool_put_full_page(rx_q->page_pool, page, true);
+> +	}
+> +}
+> +
+
+[ ... ]
+
+> @@ -5780,9 +5859,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  		u32 hash;
+>  
+>  		if (!count && rx_q->state_saved) {
+> -			skb = rx_q->state.skb;
+> +			ctx.xdp = rx_q->state.xdp;
+>  			error = rx_q->state.error;
+>  			len = rx_q->state.len;
+> +			first_desc = false;
+
+[Severity: High]
+
+This restore assumes that state_saved == true implies state.xdp holds a
+valid in-progress buffer. Is that invariant maintained everywhere?
+
+stmmac_rx_zc() still ends with:
+
+	if (status & rx_not_ls) {
+		rx_q->state_saved = true;
+		rx_q->state.error = error;
+		rx_q->state.len = len;
+	}
+
+and never writes rx_q->state.xdp. If an AF_XDP socket is unbound after a
+multi-descriptor frame straddled the budget boundary, the next non-zero-copy
+stmmac_rx() takes the branch above with first_desc = false and a state.xdp
+that was never written, and the first non-zero buf1_len/buf2_len reaches
+stmmac_build_xdp_frags():
+
+	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+	...
+	sinfo->xdp_frags_size = 0;
+	sinfo->nr_frags = 0;
+
+with sinfo == data_hard_start + frame_sz - SKB_DATA_ALIGN(sizeof(struct
+skb_shared_info)). For a zeroed state that is a write near (void *)-320.
+Should stmmac_rx_zc() either store a buffer too, or leave state_saved clear?
+
+Separately, is anything releasing state.xdp on teardown?
+dma_free_rx_skbufs() and __free_dma_rx_desc_resources() only walk
+buf_pool[], while the head page and the already-collected fragments were
+detached from it (buf->page = NULL, buf->sec_page = NULL), so
+page_pool_destroy() would still see them in flight.
+
+And after a reconfiguration that reuses the same struct stmmac_rx_queue with
+a fresh rx_q->page_pool (ethtool ring/channel change, MTU change, XDP
+attach/detach, tx-timeout reset), state_saved is still set, so the stale
+buffer is restored, written to, and finally returned with
+page_pool_put_page(rx_q->page_pool, ...) of a different pool than the one
+that owns those pages. Should the init/teardown paths clear state_saved and
+release state.xdp?
+
+>  		} else {
+>  			rx_q->state_saved = false;
+>  			skb = NULL;
+
+[ ... ]
+
+> @@ -5831,6 +5911,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  		if (unlikely(error && (status & rx_not_ls)))
+>  			goto read_again;
+>  		if (unlikely(error)) {
+> +			if (!first_desc) {
+> +				stmmac_xdp_put_buff(rx_q, &ctx.xdp, -1);
+> +				first_desc = true;
+> +			}
+>  			dev_kfree_skb(skb);
+>  			skb = NULL;
+>  			count++;
+
+[ ... ]
+
+> @@ -5866,6 +5948,28 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  			xdp_init_buff(&ctx.xdp, bufsz, &rx_q->xdp_rxq);
+>  			xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
+>  					 buf->page_offset, buf1_len, true);
+> +			first_desc = false;
+> +			buf->page = NULL;
+> +		} else if (buf1_len) {
+> +			stmmac_build_xdp_frags(priv, rx_q, buf1_len, buf->page,
+> +					       buf->page_offset, dma_dir,
+> +					       &ctx.xdp);
+> +			buf->page = NULL;
+> +		}
+> +
+> +		if (buf2_len) {
+> +			stmmac_build_xdp_frags(priv, rx_q, buf2_len,
+> +					       buf->sec_page, buf->page_offset,
+> +					       dma_dir, &ctx.xdp);
+> +			buf->sec_page = NULL;
+> +		}
+> +
+> +		if (likely(status & rx_not_ls))
+> +			goto read_again;
+> +
+> +		first_desc = true;
+> +		if (!skb) {
+> +			unsigned int pre_len, sync_len;
+>  
+>  			pre_len = ctx.xdp.data_end - ctx.xdp.data_hard_start -
+>  				  buf->page_offset;
+
+[ ... ]
+
+> @@ -5906,7 +6007,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  				} else if (xdp_res & (STMMAC_XDP_TX |
+>  						      STMMAC_XDP_REDIRECT)) {
+>  					xdp_status |= xdp_res;
+> -					buf->page = NULL;
+>  					skb = NULL;
+>  					count++;
+>  					continue;
+
+[Severity: Medium]
+
+An XDP_TX verdict is treated as a successful hand-off here, but is the TX
+side fragment aware? stmmac_xdp_xmit_xdpf() never tests
+xdp_frame_has_frags(); it maps xdpf->data for xdpf->len, programs one
+descriptor and then calls:
+
+	stmmac_set_tx_dma_last_segment(tx_q, entry);
+
+xdp_update_frame_from_buff() copies xdp->flags into the frame but leaves
+xdpf->len as the linear head length only, the total being
+xdp_get_frame_len() = xdpf->len + sinfo->xdp_frags_size. Can a fragmented
+buffer therefore be transmitted with only the head on the wire while still
+counted as STMMAC_XDP_TX?
+
+stmmac_xdp_set_prog() also calls xdp_features_set_redirect_target(dev,
+false), which states that this xmit path cannot take scatter-gather frames.
+Should fragmented frames be linearised or refused before XDP_TX?
+
+> @@ -5914,51 +6014,13 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  			}
+>  		}
+>  
+> -		if (!skb) {
+> -			unsigned int head_pad_len;
+> -
+> -			/* XDP program may expand or reduce tail */
+> -			buf1_len = ctx.xdp.data_end - ctx.xdp.data;
+> -
+> -			skb = napi_build_skb(page_address(buf->page),
+> -					     rx_q->napi_skb_frag_size);
+> -			if (!skb) {
+> -				page_pool_recycle_direct(rx_q->page_pool,
+> -							 buf->page);
+> -				rx_dropped++;
+> -				count++;
+> -				goto drain_data;
+> -			}
+> -
+
+[ ... ]
+
+> -drain_data:
+> -		if (likely(status & rx_not_ls))
+> +		skb = stmmac_build_skb(&ctx.xdp);
+> +		if (IS_ERR(skb)) {
+> +			stmmac_xdp_put_buff(rx_q, &ctx.xdp, -1);
+> +			rx_dropped++;
+> +			count++;
+>  			goto read_again;
+> -		if (!skb)
+> -			continue;
+> +		}
+
+[Severity: High]
+
+When napi_build_skb() inside stmmac_build_skb() fails, skb keeps
+ERR_PTR(-ENOMEM) and len keeps the aborted frame's length, and the jump
+lands on read_again:, which sits below the per-frame reset:
+
+		} else {
+			rx_q->state_saved = false;
+			skb = NULL;
+			error = 0;
+			len = 0;
+		}
+
+read_again:
+
+Is the next frame then processed with the error pointer and the stale length
+still in place?
+
+If the next descriptor reports discard_frame, the error path above runs
+dev_kfree_skb(skb), and dev_kfree_skb() is consume_skb(), which only checks
+for NULL before calling skb_unref(). Can that dereference ERR_PTR(-ENOMEM)
+in softirq context?
+
+The gate ahead of stmmac_xdp_run_prog() is "if (!skb)", which is false for a
+non-NULL error pointer, so the program is skipped for the following frame
+and that frame is then rebuilt by stmmac_build_skb() and passed to
+napi_gro_receive(). Does this silently bypass the attached program for one
+frame?
+
+With split-header active, the stale non-zero len makes stmmac_rx_buf1_len()
+return 0 and stmmac_rx_buf2_len() compute the unsigned
+
+	return plen - len;
+
+which wraps when the following frame is shorter than the aborted one. That
+value is then used as the dma_sync_single_for_cpu() size and as the fragment
+length in stmmac_build_xdp_frags(). Would resetting skb and len (or using
+continue, as the pre-patch code effectively did by falling through
+drain_data into "if (!skb) continue;") be safer here?
+
+>  
+>  		/* Got entire packet into SKB. Finish it. */
+>  
+
+[ ... ]
+
+> @@ -5991,9 +6053,9 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  		count++;
+>  	}
+>  
+> -	if (status & rx_not_ls || skb) {
+> -		rx_q->state_saved = true;
+> -		rx_q->state.skb = skb;
+> +	rx_q->state_saved = !first_desc;
+> +	if (!first_desc) {
+> +		rx_q->state.xdp = ctx.xdp;
+>  		rx_q->state.error = error;
+>  		rx_q->state.len = len;
+>  	}
+
+[Severity: Medium]
+
+This assignment is now unconditional. netpoll polls with a zero budget:
+
+net/core/netpoll.c:poll_one_napi()
+	/* We explicitly pass the polling call a budget of 0 to
+	 * indicate that we are clearing the Tx path only.
+	 */
+	work = napi->poll(napi, 0);
+
+and stmmac_napi_poll_rx() forwards that budget to stmmac_rx() with no early
+return. With limit == 0 the while (count < limit) body never runs, so
+first_desc keeps its initialiser value true and state_saved is cleared while
+state.xdp still owns the head page plus the fragments collected so far,
+which were detached from buf_pool with buf->page = NULL.
+
+Can this orphan those page pool pages, and can the remaining descriptors of
+that frame then be parsed as the start of a new frame, with
+xdp_prepare_buff() run on a middle or last descriptor? The previous tail
+condition "if (status & rx_not_ls || skb)" left state_saved untouched in
+that case, since status is 0 and skb is NULL.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-stmmac-rx-mb-v1-1-0b4517d404af%40oss.qualcomm.com
