@@ -1,128 +1,148 @@
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91ECB364EBF
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3A137646E;
+	Tue, 22 Sep 2026 01:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790040670; cv=none; b=KLQz8o/F+aXGxS7Thzlb8qozdE6owlPSVVxX7TX8vLazw3F4mN41egA/z2+APsoNR8aq8Au6DplUwD3FCVgPSE9qfIk11oqzvpxjZJ70e4Og9b/yscs9chi3KvSdp6sNdRNob4jop4zxwYUe4mFvTVCbntIleeVCyUlTmHphS9w=
+	t=1790040670; cv=none; b=eV7EwwYhgaDjDrg18XpG0smGik5a7IMXlupMdGxx5xntvmgwV0EjMjqd977qPDdXqA/wI2jZpcPrygWCpW81/8P5Ljr8sUmS/czdrBBx3iHWuF7uesumNzTvuhjcTpBg3Bj+g20jf8YGF37xNEkulIIon4EClU5zKwximzDwhWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790040670; c=relaxed/simple;
-	bh=pLQIzyAXx9BXS4Jj3YBYF1I98hZkelIy5fkVP6OLqRQ=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=pyE+sTPwGysRuzqgoqQAW5p8rY/XEdtLH7x/2eiIkl4NX0DZyooMJgprfJjX38EpPj1KWKh8dGX9CH9ms2ptts+bbOTgM3kIyxG0kuNhKEl7Ch/4SfOJNbVMs88PfjSEJ2E3vi1Czm8Oud267LAr6L2FfcdakXm/YrneNC1oV24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XatlDfpl; arc=none smtp.client-ip=74.125.224.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=Z8PfvQlmBXOdFLEzqyO06gaJ6sORa6rgehL/zGzxvOc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bMpxJf2UcrPMPXISUGJtDu+i4C8wOJ67W96rNrd0NLsriB2xtMoAasT8nYJQZNmhkiP94S3bLEBK9w6p7wz5tAZBdy68GLNEN1TLnRVdQkNeX0Lssx6pDpAGhNJ5CunQPDPQqa+9gfbdP09pyXEGLrjxVAJH9Zn5o40vkt73Dtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0K5qEw1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XatlDfpl"
-Received: by mail-yx2-f43.google.com with SMTP id 956f58d0204a3-66e4aae3147so2623287d50.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 18:31:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790040667; x=1790645467; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xZPM204BsQkvGwo/0VKtkWmPTs7CeisxuHS7DMwf2J0=;
-        b=XatlDfplU5jxFj8s/qAjvIWuO09vLiCrFRHLWy3G3OMxOBIlmqsKvCBweD5Z9x04J2
-         fHbLptA2LTwou8yktuWkEmPJSoWtG80LZ6ZpJusja/SCSJ0jdI+5mqQPCo/VpNci/MV+
-         VeFWKN62iC/IhUG4gwPS/+JXebnSBmbCT2NNJHZ53ty07r886qGFokGjnbm9hXiQO+hE
-         vo954ke5JmAezi00JegrecUtgblI0vEvvsqSSR9AAcmQqqbKma/dNAPj9rtHUA62ZaXm
-         uPeIlBly1lbF+3rx9s6jm8rAi+4ZtVF0wFzqtwnxQ+45bycnL5jymiM9vrB8hz8uqYc6
-         Fugg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790040667; x=1790645467;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xZPM204BsQkvGwo/0VKtkWmPTs7CeisxuHS7DMwf2J0=;
-        b=OQqHPUhal36wGzaCR5EmgPClWiJpeDAs4bQSkpNdEuVi48MXUNc+HpIeh7TkIJcHK3
-         S2eHxzv4AbWPcZ2zr9mQ7cGfD7Rwy28rViJW9R6gstp36lek7aMReOoMcA63kctyshk/
-         nDQPxeQkQ7B+cIG8OMSxEKJ3rFkrskr3yru86AC3JsVayCwnxsrv963PdP9FiSBYJ4HO
-         yStLiFjGQanqL27TL3w1yx9FT+z+7FeSzW9Y+w/bH1JBAkdS4IssYdGoiLaNegVKdbX3
-         hDnZtKAG8lpQNbHqXOtOKvswIuDbTsg6HOSIUlZ2qWzoC1eFaparGQr/2GyevcnoxPvs
-         2HAQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwPIziwLZOqvsvmvo5WwXhBlaEfm5n/zXvA5UrZX/K5kn9Mhdkd6VpZ1LfRZMZpLW3EWZpDQzI=@vger.kernel.org
-X-Gm-Message-State: AFuF++mfhXX+7LEchILm1C1zRaX3ZkoVvQeFdkFZcDlE4i5NButfkUe9
-	qqGXvIHsJ9DFf2cFMbhMJPzSX8qz2w/OlpI2mwaSSrRfKBVFHzxe8Mj5
-X-Gm-Gg: AYBFou1uMfwVD8k9lfg9zG4Iaotyu1dx9EJa9ST7eoBCRs7heYakC7HEP86EVySBzvU
-	6jmwS2DAa3++Uh7ptUVPNFMz+cgebre1vZjGPkIi3ZRZ+IaG851nVhlYXKFRZODvHfFmwxVYhHA
-	0U0AV0aFpXX4/GhHV5geh1A86yuE9YckC5u7h+4D0uDeALtmpb29XxqmoZKDQOUT+7iKhF/HuAU
-	px6Jwa0y5SfLy2w7+pFUmPcJhii/XM/SlPg01LWGY+EKVeXyb93nCYz14TYzkiPSePoO9Zf72b+
-	wopTBgGhZ0IsfSDkWTNY8YDhr5sysoy5mhLbgroxBZlIte+Dhu7gXCl+MXREeWw5O941G8mdY9F
-	8wEmcXbUUlkzPEf2nD8uKTyUMUDIqhKYIhFWeQryDn3BdJ5BQQU57TFwTHOWw4vgAkWIukBXaAg
-	pd3OnucQ7aE/2S2IEgiDmer3doz889ARei2QL7wWpVbgJUUUaWueLBxwBQqha585ebtv+0kjjlh
-	6vw2JSQHpu0C69yOlIKLi4zlq1ixJV79iz7mdUUGXeWxwWjwySp
-X-Received: by 2002:a05:690e:138a:b0:672:a83b:9964 with SMTP id 956f58d0204a3-672c199f5d8mr821945d50.38.1790040667423;
-        Mon, 21 Sep 2026 18:31:07 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672c766dfcbsm157903d50.17.2026.09.21.18.31.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 18:31:05 -0700 (PDT)
-Date: Mon, 21 Sep 2026 21:31:04 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Jason Wang <jasowangio@gmail.com>
-Cc: virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, 
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <willemdebruijn.kernel.2e1c6881ed336@gmail.com>
-In-Reply-To: <20260921-v6-7-topic-virtio-net-ptp-v3-0-3350851c4f88@pengutronix.de>
-References: <20260921-v6-7-topic-virtio-net-ptp-v3-0-3350851c4f88@pengutronix.de>
-Subject: Re: [PATCH RFC v3 0/2] virtio-net: add flow filter for receive
- timestamps
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0K5qEw1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F04B1F0089D;
+	Tue, 22 Sep 2026 01:31:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790040668;
+	bh=eZeEmW+uTU31jMnOzaYBitH3PnSJX14zjvkqMO8aw2U=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=P0K5qEw1uh6ny3nFqoX23T48JRZe+NEqojOQdm9URdv0EGw1NHPvjywPRs+lG+H7c
+	 3kvAcppVUPLyFwwS9gB66Qgkh/EEr1pNKknOT66+EC0mTv2PHGnx+uTs0HOutkcIh4
+	 tcZskSk7LcHsP+d/OVPHrJeqbIKiQxa/fsSY+he8psk/G/xdig1EZ36hAFxUIf2m/W
+	 Zl9NYc9BX1Xa6nMCyrbUjcj/VQExsHjbSxUV0igfHlAaxB2qmLHDI4WQFWxoWXxYEl
+	 JVzkdl5g79ZSIDg5TfIGfrcjh3Xp+dFRNfRBy7RzwOHhruD6waRAABALsHIM9IkeBL
+	 jtfMezIL+PyJg==
+Subject:
+ Re: [PATCH net 2/8] i40e: avoid null ptr dereference in i40e_ptp_stop()
+From: netdev-bot+sashiko@kernel.org
+To: anthony.l.nguyen@intel.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ maciej.fijalkowski@intel.com, zhaochenguang@kylinos.cn,
+ magnus.karlsson@intel.com, jacob.e.keller@intel.com,
+ przemyslaw.kitszel@intel.com, jbrandeb@kernel.org, horms@kernel.org,
+ kerneljasonxing@gmail.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ bpf@vger.kernel.org, sunithax.d.mekala@intel.com
+Date: Tue, 22 Sep 2026 01:31:06 +0000
+Message-ID: <179004066689.2160803.12484884497586238643@kernel.org>
+In-Reply-To: <20260918212458.550425-3-anthony.l.nguyen@intel.com>
+References: <20260918212458.550425-3-anthony.l.nguyen@intel.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Steffen Trumtrar wrote:
-> This series tries to pick up the work on the virtio-net timestamping
-> feature from Willem de Bruijn.
-> 
-> Original series
->     Message-Id: 20210208185558.995292-1-willemdebruijn.kernel@gmail.com
->     Subject: [PATCH RFC v2 0/4] virtio-net: add tx-hash, rx-tstamp,
->     tx-tstamp and tx-time
->     From: Willem de Bruijn <willemb@google.com>
-> 
->     RFC for four new features to the virtio network device:
-> 
->     1. pass tx flow state to host, for routing + telemetry
->     2. pass rx tstamp to guest, for better RTT estimation
->     3. pass tx tstamp to guest, idem
->     3. pass tx delivery time to host, for accurate pacing
-> 
->     All would introduce an extension to the virtio spec.
-> 
-> The changes in this series are to the driver side. For the changes to qemu see:
->     https://github.com/strumtrar/qemu/tree/v11.0.1/virtio-rx-stamps    
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-What is the plan wrt the virtio spec? +1 on demonstrating working code
-first for feasibility.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Does this now also need a spec proposal to virtio-comment@lists.linux.dev?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] Symptom-only fix: when `i40e_rebuild()` aborts because the
+  main VSI could not be re-created, the PTP subsystem is left in an…
+
+--
+
+i40e: avoid null ptr dereference in i40e_ptp_stop()
+
+If the main VSI cannot be re-created during a reset, i40e_rebuild() aborts
+after i40e_vsi_clear() has freed the main VSI, so a later i40e_remove()
+calls i40e_ptp_stop() with pf->vsi[pf->lan_vsi] == NULL.  The patch adds a
+main_vsi NULL check around the dev_info() that dereferences
+main_vsi->netdev->name.
+
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> index ff62b5f2c815..ca93df4d6785 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> @@ -1556,8 +1556,9 @@ void i40e_ptp_stop(struct i40e_pf *pf)
+>  	if (pf->ptp_clock) {
+>  		ptp_clock_unregister(pf->ptp_clock);
+>  		pf->ptp_clock = NULL;
+> -		dev_info(&pf->pdev->dev, "%s: removed PHC on %s\n", __func__,
+> -			 main_vsi->netdev->name);
+> +		if (main_vsi)
+> +			dev_info(&pf->pdev->dev, "%s: removed PHC on %s\n", __func__,
+> +				 main_vsi->netdev->name);
+>  	}
+
+[Severity: Medium]
+
+Is guarding the log message here enough, or does it just make the window
+between the failed rebuild and the eventual remove survivable?
+
+In that window nothing appears to touch PTP at all.  i40e_ptp_stop() has
+only two callers, i40e_probe() (error path) and i40e_remove(), and none of
+the abort paths in i40e_rebuild() (end_unlock / end_core_reset /
+clear_recovery) call i40e_ptp_init() or i40e_ptp_stop():
+
+drivers/net/ethernet/intel/i40e/i40e_main.c:i40e_setup_pf_switch() {
+	...
+		if (!main_vsi) {
+			dev_info(&pf->pdev->dev, "setup of MAIN VSI failed\n");
+			i40e_cloud_filter_exit(pf);
+			i40e_fdir_teardown(pf);
+			return -EAGAIN;
+		}
+	...
+}
+
+Across the reset, the only PTP action is i40e_prep_for_reset() calling
+i40e_ptp_save_hw_time(), which is a pure read.
+
+So after the abort, pf->ptp_clock stays registered and I40E_FLAG_PTP_ENA,
+pf->ptp_tx, pf->ptp_rx and pf->tstamp_config stay set, even though the main
+VSI and its netdev were freed, and the register programming that
+i40e_ptp_init() normally redoes after a reset never runs:
+
+drivers/net/ethernet/intel/i40e/i40e_ptp.c:i40e_ptp_init() {
+	...
+		regval = rd32(hw, I40E_PRTTSYN_CTL0);
+		regval |= I40E_PRTTSYN_CTL0_TSYNENA_MASK;
+		wr32(hw, I40E_PRTTSYN_CTL0, regval);
+	...
+}
+
+i40e_ptp_set_increment(), i40e_ptp_set_timestamp_mode(),
+i40e_ptp_restore_hw_time() and i40e_ptp_set_1pps_signal_hw() are skipped in
+the same way, and i40e_ptp_init()'s own kerneldoc describes it as
+reconfiguring the device after a reset.
+
+Does that leave userspace with an openable /dev/ptpN whose gettime/settime/
+adjfine operate on a timesync block the reset left disabled, and PF flags
+still advertising timestamping that hardware will not deliver?  A Tx
+timestamp request in that state would set __I40E_PTP_TX_IN_PROGRESS for a
+timestamp that never arrives, recovered only by the watchdog.
+
+Would it be better to quiesce PTP on the rebuild-failure path, for example
+unregistering the PHC or at least clearing I40E_FLAG_PTP_ENA, rather than
+adding a NULL check per consumer?  As written, every future user of the main
+VSI or of the PTP state in this window needs its own check.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918212458.550425-1-anthony.l.nguyen%40intel.com
