@@ -1,36 +1,52 @@
-Received: from mta0.migadu.com (out-102.mta0.migadu.com [91.218.175.102])
+Received: from mail-wr2-f9.google.com (mail-wr2-f9.google.com [74.125.225.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132D0549374
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793C233937B
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790091675; cv=none; b=p5SFCCC4KhuxUPSRxodwZgmVzXlhfY3tJ+fyqeRP8eiOlIzFtur7nklgSuMI8RxDaHVkYNhxRVls3iQmTREeyD5cy8DGh+EozdhK/yHpYny5h4xZnMlymDsk5VFEkFxspgserkJQXkKVDFALI/gZxvfnvcSVvRVqqWwIgPDhkME=
+	t=1790091806; cv=none; b=Q6yq3u62wUOheqnMUqfUG1KOIPyXHSYNP/i6XDb7cMhaQqpA/uCQfVoPI7Ed6IZEwMr6+c+GjFZsHF2hcuzbGwAj2Et7K87VQmuM4hzxygM6erhpRTrwFnMQXKxcZ67wXl6ZpjWG7iSnPuF6s6BHAVZ7n4MK29tkSd1mxp6nkr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790091675; c=relaxed/simple;
-	bh=dHMxnUNtaUY6rvFit1CCqRauzQAmyxSzNleLDs0LNWw=;
+	s=arc-20240116; t=1790091806; c=relaxed/simple;
+	bh=GRqgTHPRWnG9IwMRRfG26N3mDu61p8pYCpytvjGSY1I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y7NIjNZyQ7ARyvdYyLLXLRFRea02tlvO8bSOoTAhYrBig7/f5tMMyTnoaDKBOzhIMBiPtleO0D7wld0z5kfVEFOHr8H1HQ/TPi+fgWH+wonk2fUWQTLF+3kBNkNqKwb+AbHkg6paTnQe7mS643TSP1QMfbp2da5gYa521Vl8ckQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=d7Apm4g2; arc=none smtp.client-ip=91.218.175.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="d7Apm4g2"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=dHMxnUNtaUY6rvFit1CCqRauzQAmyxSzNleLDs0LNWw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790091670; v=1; x=1790696470;
- b=d7Apm4g2R0FwIFu07jchxmzS7ZOXTEE77/GgfPL01lg5M903E01xpwO7VMJXby1m7QE53d+u
- n2ZysCCo4JfZb22OQFEW362NyRSUHmcNXKuC1n1PX3d/Sy0oAI4Ol8q90vIQ/VF7tYty4c16Lx2
- 7cmiHSerCQNpza94h9+/veY0=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c035e23439589bfb;
-	Tue, 22 Sep 2026 15:41:00 +0000
-X-Mizu-Trace-ID: c035e23439589bfb
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e56bce9d-ddfb-4ff3-ab14-4dc3778e2337@linux.dev>
-Date: Tue, 22 Sep 2026 23:40:48 +0800
+	 In-Reply-To:Content-Type; b=Hwf75GCmgNKLjiZQJEbcIygVILL7nMTlonTYADZcGhl11KgKCRuOuswS1Ab16ktI3kEG4XEqaCsu/D+UYMJhlM1b7z+2CBxpxQHf/2m2agaN1/1t3cNjFHm7X7osj4icvc3l0a3tRxyaQrZ3RHKoF/+ct7QAGZ07orr1jZnCYl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr2-f9.google.com with SMTP id ffacd0b85a97d-485850cf4deso26092f8f.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:43:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790091801; x=1790696601;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QhvTPOuk38OAJeKZ6IPjN37kqjVi+x1d9H+4Ju5mOtw=;
+        b=t8qRnJjbYASGPcxFLCO7zA0L/f8xmkSeDa4DpwVrq0/wGq66lr73cHasvEB7y7bne7
+         KhNxdPvvBqUtdalfW/2pKAV2ABvOkjk1RsNPaiWxcHUeRvqS5YZw7g8YNh1tttQhkPho
+         ft7u4whJ8XgNhn7a/21Ve+miMS98nIdOh/cgVf1H18fSitQ81UmNzqwc0hn7tQkNv67L
+         yYfTrcO415xvEJZWZKwT3w3w9voij7wNNBzSuECMBQ57VGEmxbCbh+PKm2YZGZmEI6j/
+         9CJkL2YnPC4OwWtK6Pxwzt5YcixsnumUdd7Q9e/73YNrtCRra38q+YdhGc6b7oTz4PBu
+         SoxA==
+X-Gm-Message-State: AFuF++kr8YubadCPB1taGTUl23PLUyuVDsuheIZqHRBSwSDsE83kPX5g
+	MFDUKHuJvOtpp93Jo0WoVM+k2c5AEx+sy8Ed9Jfe2r+suDqsoM0FBAuA
+X-Gm-Gg: AYBFou3HwaJsjvkoejvULNhVTvHLTsZTemCngMNDldt9HE7uN/PWyJQ+ROMV2uuXbUq
+	Tbh8a8RT13C/cOOgqotHbf3bDmXXn4RokLU3SXrQYF/h8mbQeVws33kHc0mHGGWXkz1qR1dfnGg
+	wHb8I7IvhK+5JbhSO2U76vw3fz18RqWMboujUY3G+hvDXx1fC2MkJ4+5OfoopOFffIwzOZ823Zm
+	JqF47ehsLcEWIHEr8NVLq24BU7NjLuJAZ5wkCP5qi1Cq40/oLiSWgZd5B+kXMsgg1JwtuxJKH+J
+	yjp5D+psFoNBbbcz1mHGCcBlcO2fS6KtgEvRrMUBJOoOID8vtBjdqXi9S+Enhk1bjaBS8mI6WNW
+	K9ZljwFsSQGUW1pRynaW1yR8qrA2WZ9zvY8uzcNyC60/6UIRA2pWf2d/SLF7wcUvJiCPziPilCE
+	byuMW4rT0d5D+k0pjzBjpqaxwm6NGj9LGFYM4JWVIEM47hUd8Kh1G2dClkyhx1q7q5X3wXbJZhc
+	Dk3k0F+hQ1omLvPpQaSVrxHQg6k7UgyH0s5SkOGkr8i32M=
+X-Received: by 2002:a05:6000:2004:b0:487:242a:c020 with SMTP id ffacd0b85a97d-4886704a921mr11085f8f.6.1790091800734;
+        Tue, 22 Sep 2026 08:43:20 -0700 (PDT)
+Received: from [192.168.88.241] (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862773ee0sm5831124f8f.6.2026.09.22.08.43.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 08:43:20 -0700 (PDT)
+Message-ID: <51f0cbae-71e3-4b9f-af91-55a610eb15d0@ovn.org>
+Date: Tue, 22 Sep 2026 17:43:18 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,148 +54,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v2] bpf: cpumap: fix use-after-free of dev_rx on
- netdev unregister
-To: bot+bpf-ci@kernel.org, bpf@vger.kernel.org
-Cc: ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
- kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
- martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, martin.lau@kernel.org,
- mason@kernel.org
-References: <20260922121022.256777-1-jiayuan.chen@linux.dev>
- <f6e17da46b7895d19df3b379a6e879cd0ff237c50dc387127c87c6f48a48a7d1@mail.kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <f6e17da46b7895d19df3b379a6e879cd0ff237c50dc387127c87c6f48a48a7d1@mail.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net 3/6] net: openvswitch: conntrack: fix helper UAF due
+ to extensions realloc
+To: netdev-bot+sashiko@kernel.org, i.maximets@ovn.org
+Cc: netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, aconole@redhat.com,
+ echaudro@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
+ lucien.xin@gmail.com, marcelo.leitner@gmail.com,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ linux-kernel@vger.kernel.org, dev@openvswitch.org, stable@vger.kernel.org
+References: <20260921145655.3167436-4-i.maximets@ovn.org>
+ <179008911935.2160803.14933035266780079917@kernel.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <179008911935.2160803.14933035266780079917@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 9/22/26 4:58 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
+> 
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] Inaccurate newly added comment in __ovs_ct_lookup()
+>   (net/openvswitch/conntrack.c:820-826).
 
-On 9/22/26 9:36 PM, bot+bpf-ci@kernel.org wrote:
->> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
->> index 5e59ab896f058..0c9647f28034d 100644
->> --- a/kernel/bpf/cpumap.c
->> +++ b/kernel/bpf/cpumap.c
-> [ ... ]
->
->> @@ -832,3 +879,39 @@ void __cpu_map_flush(struct list_head *flush_list)
->>   		wake_up_process(bq->obj->kthread);
->>   	}
->>   }
->> +
->> +/* Frames in the ring and skbs in GRO hold a raw pointer to the ingress
->> + * device, make every kthread consume them before the device is freed.
->> + */
->                                     ^^^
->
-> The BPF subsystem requires multi-line comments to have the opening /*
-> on its own line, with text starting on the next line. This is a newly
-> added comment. Should it be reformatted like this?
->
-> /*
->   * Frames in the ring and skbs in GRO hold a raw pointer to the ingress
->   * device, make every kthread consume them before the device is freed.
->   */
->
->> +static int cpu_map_netdev_event(struct notifier_block *nb,
->> +				unsigned long event, void *ptr)
->> +{
->> +	struct bpf_cpu_map_entry *rcpu;
->> +
->> +	if (event != NETDEV_UNREGISTER)
->> +		return NOTIFY_OK;
->> +
->> +	mutex_lock(&cpu_map_mutex);
->> +	list_for_each_entry(rcpu, &cpu_map_list, list) {
->> +		/* the whole ring, plus a batch already pulled out */
->> +		WRITE_ONCE(rcpu->drain_left, rcpu->queue->size + CPUMAP_BATCH);
->> +		wake_up_process(rcpu->kthread);
->> +	}
->> +	list_for_each_entry(rcpu, &cpu_map_list, list)
->> +		wait_event(rcpu->drain_wq, !READ_ONCE(rcpu->drain_left));
->> +	mutex_unlock(&cpu_map_mutex);
->> +
->> +	return NOTIFY_OK;
->> +}
-> NETDEV_UNREGISTER notifiers run with RTNL held:
-> call_netdevice_notifiers_info() contains ASSERT_RTNL(), and the call
-> site in unregister_netdevice_many_notify() also does ASSERT_RTNL() at
-> entry.
->
-> The wait_event() holds RTNL until every cpumap kthread in the system
-> has consumed rcpu->queue->size + CPUMAP_BATCH frames. The ring size is
-> bounded only by the 16384 sanity limit in cpu_map_update_elem(), and
-> the countdown is decremented by frames actually consumed, so a ring
-> that is continuously fed by a different, still-registered device forces
-> the full 16392-frame count to be pushed through before returning.
->
-> unregister_netdevice_many_notify() calls the notifier once per device
-> in the batch, so a batched teardown such as netns exit with many veths
-> multiplies this: N devices x 16392 frames of RTNL-held work,
-> serialized.
->
-> The commit message addresses the bound ("The work is bounded by the
-> ring size, and the frames had to be consumed anyway") but not the fact
-> that RTNL is held for the whole drain. Also, the "frames had to be
-> consumed anyway" statement is only true for frames already queued - the
-> size+BATCH countdown can force consumption of many newly produced
-> frames belonging to unrelated devices.
->
-> This is not a deadlock (the drain is bounded and the kthread cannot
-> block indefinitely since its work runs under local_bh_disable()), but
-> could this cause latency or stall issues on systems with many devices
-> or large ring sizes?
->
-> [ ... ]
+Same thing as for the previous patch.  Comments do not need to
+spell out everything that happens in the code.  The intention of
+the comment and the code seems clear enough to me.  So, I'd keep
+it as-is, unless someone thinks it needs more clarification.
 
+> 
+> Pre-existing issues:
+> - [Low] Concern (INVALIDATED by later patch in the same series): the
+>   identical helper/expectation use-after-free was claimed to remain…
 
-The concern is an unbounded wait under RTNL. It is bounded: qsize is
-capped at 16384 in cpu_map_update_elem(), so each entry consumes at
-most one ring plus a GRO flush, and the kthreads do that in parallel.
+Preexisting and fixed later in the set.
 
-Those frames had to be consumed anyway, the drain only moves that
-work before free_netdev(). We can't tell which ring holds frames of
-the device without tracking it per frame, and that would touch the
-fast path.
-
-
->> -    Fixes: 9c270af37bb6 ("bpf: XDP_REDIRECT enable use of cpumap")
->> +    Fixes: 70280ed91cb8 ("bpf: cpumap convert to use generic xdp_frame")
->>       Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> The Fixes tag points to commit 9c270af37bb6 ("bpf: XDP_REDIRECT enable
-> use of cpumap"), but is this the right commit?
->
-> That commit (October 2017) introduced the cpu_map_enqueue() function
-> signature but did not store dev_rx anywhere - it used data_hard_start
-> as a void pointer with a comment saying "Followup patch will generalize
-> this".
->
-> The actual storage of the device pointer without a reference
-> (xdpf->dev_rx = dev_rx;) was added 6 months later in commit
-> 70280ed91cb8 ("bpf: cpumap convert to use generic xdp_frame", April
-> 2018) when the code was converted to use the generic xdp_frame
-> structure. This is where the use-after-free bug was introduced.
->
-> Should the Fixes tag be:
->
->    Fixes: 70280ed91cb8 ("bpf: cpumap convert to use generic xdp_frame")
-
-
-Right, 9c270af37bb6 only added the dev_rx argument. The pointer is
-
-stored and used from 1c601d829ab0 ("bpf: cpumap xdp_buff to skb
-
-conversion and allocation").
-
-pw-bot: cr
-
-
-Sorry for the noise
-
->
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
->
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35727192473
+Best regards, Ilya Maximets.
