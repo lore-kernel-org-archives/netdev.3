@@ -1,184 +1,226 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608F6409275;
-	Tue, 22 Sep 2026 10:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EBE5349CC;
+	Tue, 22 Sep 2026 10:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790074479; cv=none; b=Nnft7vaLQNyvacCejAzckSZg64eUQJgVcccuNPHdGo6f1NmCUdV/0FBtK3hRNmQDSFr+H8UCgTx6epd0wTK/W2Kbm/0DKAzUPHR83mTR9nBIrxTaRaMaOioG+5P4PaA9jKLjjP7yjCtMALbgd2S8vIB+x5Qm+T7b/4WT547XWl0=
+	t=1790074590; cv=none; b=S4rmfQzjq50VdmVHtKG/peepWRhQi/uvTWGcDiRXLT93l5Jrj7DjBjApx9SITVQrE/TeHpZBaRQp+Msr0Z53uteLPv5Rd4QQL9VHAfRvzDmR8TBws20Tzc27c/aImcNET2SBInVWI61y0j2vgHCVm50/Csnyh2aZPcuuOMhOKdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790074479; c=relaxed/simple;
-	bh=oJwNptDZcD5/WvZrtVwL7zTqFDuJc9l2duAZ3uiRITg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Irj6uUMqpg3ILlTljBHZ6XPTnWyWI35ecJKr75iOuU53ciW58sdfvgSMWY2O1Vv3+naZ9Btkbr1bzxf4fyBSolOIKiJRDpLrdGFHD0C5jAw7/N4YRg5hmsYJ/z6zZuAAR88eB+GXjKSe55Msfb+hKntvtWYBvZexp+83adZY70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Fa9jPokF; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790074590; c=relaxed/simple;
+	bh=BaOKa6gDiwdZMHlzoNnkDZljCU8CLAL3hHHAvlsR814=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZGoxLTaQ6wwbjR9OLmY6CiFw+acACtJ4NH0w1fKpG1NEVoYDtSZ+4d6Uwjlr3teqc3XvCWT65rXfc84ne0rmx3l6LEdRGj0caaRitMttPWwj5SJDq/0o6AzwutLTYnGjurjq5HTBWxpyy3TbPR3dENC8bgd+Ucpcs9isIX99VRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXawFPrw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Fa9jPokF"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68M05ZIA2980352;
-	Tue, 22 Sep 2026 10:54:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ww5/Xb
-	xna6uERz6s5dtWeyVzbQpR9YLcjUoFn223sgk=; b=Fa9jPokFTNXoFgMxfBKeQw
-	9tb5pU+1J/9xUje+rJxAKIGMslC8twW/RUsIfkW2VAuXSx2/LiIo2XoLx5oNmTNF
-	yWgZt1oT+9wkYMZwTledDVtvCIZrU6vzRXSViVhx1J0EX/XepXldYphQLsrRoRxF
-	7FXWaYnuvGNewCKEA6YPz18IuUoTjJA1r+RugT8R40uWLhImQiar3OcyCueR9e4J
-	EIevfOilqmgxjjnYaFEAooq4qYyxdghRuIiiqHjQSjkiyfExKJ0kdVdvm3f+hp5h
-	mYhUqgYXoLHGQ6wQRbihSms3j/ewygRstqK+82u/DLj+/xTDmXmzJGI9shziorsA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskdv510s-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 10:54:26 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68MA4JAf2002282;
-	Tue, 22 Sep 2026 10:54:25 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt5qjsest-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 10:54:25 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68MAsLMw47120810
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Sep 2026 10:54:21 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9425520043;
-	Tue, 22 Sep 2026 10:54:21 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EAB2020040;
-	Tue, 22 Sep 2026 10:54:17 +0000 (GMT)
-Received: from [9.39.20.68] (unknown [9.39.20.68])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Sep 2026 10:54:17 +0000 (GMT)
-Message-ID: <cca9b841-2719-4691-943c-d2aa7d7d98ae@linux.ibm.com>
-Date: Tue, 22 Sep 2026 16:24:16 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXawFPrw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB961F000FF;
+	Tue, 22 Sep 2026 10:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790074581;
+	bh=z+tMrQ5pPFejRapMiyMQ81+N3hZiDVmPs4BB/RN3mzI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=VXawFPrwoY33mMHkG7u7UoVI7k7FsDInE545MA+t+F9Snz4PCQV/foxyUZr4uI+OK
+	 KrhI/anzi9WQKDBAUR5bnA1pNV0jlSD79Epi48y6z6LsNP3cOZF/cL2zt6h1b4AHuX
+	 SyznAL4rVPfhnQnuoZwk2u3qhr8ROh90PiNuNa1wpqXhCgaLtYJ8PpL0eeVDYNcgwZ
+	 8k/TrwFFMgrBithkGna607KSVwOQUjLSTzJA8U7Bjg0uN/eYWoexPMHGDFN+xRYKHr
+	 lTtqhO/BUDyMhNH+jjYCBzsOz1lQyupmd9VmrDTveurrkAQ8QXQy+u2D3NULfmdDxf
+	 Rqy3VQ6lLvmrQ==
+Subject: Re: [PATCH net-next v1] net: devmem: document that bind-tx is
+ unprivileged by design
+From: netdev-bot+sashiko@kernel.org
+To: almasrymina@google.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ donald.hunter@gmail.com, sdf@fomichev.me, razor@blackwall.org,
+ daniel@iogearbox.net, bobbyeshleman@meta.com
+Date: Tue, 22 Sep 2026 10:56:20 +0000
+Message-ID: <179007458060.2160803.1077952399417880240@kernel.org>
+In-Reply-To: <20260921195545.493253-1-almasrymina@google.com>
+References: <20260921195545.493253-1-almasrymina@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 0/2] s390/ctcm: Fix timer bugs in fsm.c
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        pabeni@redhat.com, wintera@linux.ibm.com, aswin@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, kees@kernel.org,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org
-References: <20260907144511.3810194-1-nagamani@linux.ibm.com>
- <20260916132149.4185912-1-nagamani@linux.ibm.com>
- <20260921161519.17f77cae@kernel.org>
-Content-Language: en-US
-From: Nagamani PV <nagamani@linux.ibm.com>
-In-Reply-To: <20260921161519.17f77cae@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 45K6JPrXP6KjSpYEBAf-8J7JuMAwwlp-
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDE1MiBTYWx0ZWRfX09QxjKQ4FvHs
- 9BtOImu5MdUtOY9+l1mGK7fIOphJHENeIJ7ylt3rAzhI1wXL4F4XPyFYDOKGb2XP6pZqqmJrTJ/
- UJpxA5PCJ1H4RAXcgV11jjOmtjI03HM=
-X-Authority-Analysis: v=2.4 cv=FLiOVOos c=1 sm=1 tr=0 ts=6ab25e62 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=9R54UkLUAAAA:8
- a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=DMUOFhj9m736tlyUx-QA:9 a=QEXdDO2ut3YA:10
- a=YTcpBFlVQWkNscrzJ_Dz:22
-X-Proofpoint-GUID: CtO8W81s9c5Ec54rVBiO-SMfEpt5BW61
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDE1MiBTYWx0ZWRfX7bLhAw3TM9bK
- 1gz0mJPMLKocDLp5wtyKHElJcl8UwYLGFEl+vZawl3plm4AjqVTAoy2nZA5MkDBNIQaOXT5TAQ9
- vCIgOF7P93b2Fw0klzYgwow/AyefnS/afnThCzoBSllIoj9S2LhbcH8pVE4IxUi6drWpCRTdEHY
- gNOD20ewCgijWRwitw/x/x58GUxqkIlILElYb2VJd2GdNe0rnJxh9uOyFxT80hPAH5d1E61fZy0
- ea0cf/ZUwpvT5wLgRbccvPVFaOR5rl9ric1jGOuWjWOM0ekuwooj6MSUC3fb8uHtlBj1hAwCjID
- FR8UjjKObWPzyoFiGT3UmsPvdXEgJt9C/UYhKmphnv1VIzdWndCr43Zu+cPI8EIYP6O9ayKMM+U
- pVtO6lIUpCJ2Sa1ACNedv2IEFCFfhfcL/FTHCLPX45oA9Tk0X4zvC/D9lH8fF6gzf0Rlyx9jNkd
- kVZDF6Ox/VlMy52QeIw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_07,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
- suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609220152
 
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-On 22/09/26 4:45 AM, Jakub Kicinski wrote:
-> On Wed, 16 Sep 2026 15:21:47 +0200 Nagamani PV wrote:
->> Fix two bugs in drivers/s390/net/fsm.c found by Sashiko AI code review.
->>
->> Patch 1 fixes timer list corruption when fsm_addtimer() is called on
->> an already-pending timer - timer_setup() re-initializes the timer
->> list_head while it is still enqueued in the wheel.
->>
->> Patch 2 fixes a use-after-free in channel_remove() - timer_delete()
->> returns before any running callback finishes, leaving a window where
->> the timer callback can access freed memory. Fix by waiting for any
->> running callback to complete before freeing the channel.
->>
->> Changes in v2:
->> - Patch 1: fix function name ctcm_send_sweep() -> ctcmpc_send_sweep_req()
->>   in the commit message (Sashiko netdev-bot)
->> - Patch 1: call mod_timer() then return 0 explicitly, preserving the
->>   "Always returns 0" contract documented in fsm.h (Sashiko netdev-bot)
->> - Patch 2: add Fixes: and Cc: stable@vger.kernel.org tags
->>   (Sashiko netdev-bot)
-> 
-> Clashiko won't respond because of the unnecessary threading,
-> but there are 4 high severity findings needing your attention:
-> 
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916132149.4185912-3-nagamani@linux.ibm.com
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thank you for the pointer. I have reviewed all four High findings.
-Two share a root cause and are addressed in v3, sent Tue 22 Sep 2026
-as "[PATCH net v3 0/2] s390/ctcm: Fix timer corruption and use-after-free"
-<20260922101913.239103-1-nagamani@linux.ibm.com> (raw). The remaining two
-are pre-existing issues outside the scope of this series and will be
-fixed in a follow-up patch.
+- [High] NETDEV_CMD_BIND_TX is unprivileged (net/core/netdev-genl-
+  gen.c:240-245: .flags = GENL_CMD_CAP_DO), and this patch cements that…
+- [Medium] The comment added above netdev_nl_bind_tx_doit()
+  (net/core/netdev-genl.c:1183-1188) and the mirrored note in…
+- [Medium] bind-tx is reachable by any unprivileged user
+  (net/core/netdev-genl-gen.c:244: .flags = GENL_CMD_CAP_DO) with no…
 
---- Findings addressed in v3 ---
+--
 
-1. [High] ch_tasklet re-arms sweep_timer after timer_shutdown_sync()
-   returns (Sashiko patch 2/2, finding 2):
+net: devmem: document that bind-tx is unprivileged by design
 
-   ch_tasklet (ctcmpc_bh -> ctcmpc_send_sweep_resp) can re-arm
-   sweep_timer after timer_shutdown_sync() returns because the v2 patch
-   killed tasklets after stopping the timers.
+This adds a comment above netdev_nl_bind_tx_doit() and a matching note in
+Documentation/netlink/specs/netdev.yaml stating that NETDEV_CMD_BIND_TX
+carries no GENL_ADMIN_PERM / GENL_UNS_ADMIN_PERM on purpose, on the grounds
+that bind-tx only DMA-maps the caller's dmabuf.
 
-2. [High] kfree_fsm(ch->fsm) before tasklet_kill() races with a running
-   tasklet accessing ch->fsm (Sashiko patch 2/2, finding 5).
+A few questions about the rationale being recorded here.
 
-   v3 fix for both: kill ch_tasklet and ch_disc_tasklet first, then
-   timer_shutdown_sync(&ch->sweep_timer.tl), then
-   timer_delete_sync(&ch->timer.tl), before freeing ch->fsm.
-   kfree(ch->discontact_th) is also moved into the MPC teardown block
-   after tasklet_kill(ch_disc_tasklet).
+> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+> index e13461cf3fc33..4303593e5003c 100644
+> --- a/Documentation/netlink/specs/netdev.yaml
+> +++ b/Documentation/netlink/specs/netdev.yaml
+> @@ -852,6 +852,8 @@ operations:
+>        name: bind-tx
+>        doc: Bind dmabuf to netdev for TX
+>        attribute-set: dmabuf
+> +      # Intentionally unprivileged (no admin-perm / uns-admin-perm); see
+> +      # comment above netdev_nl_bind_tx_doit().
+>        do:
+>          request:
+>            attributes:
+> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+> index fa9edfdb32c29..690c27f63d260 100644
+> --- a/net/core/netdev-genl.c
+> +++ b/net/core/netdev-genl.c
+> @@ -1180,6 +1180,12 @@ netdev_find_netmem_tx_dev(struct net_device *dev)
+>  	return NULL;
+>  }
+>  
+> +/* Note: NETDEV_CMD_BIND_TX is intentionally unprivileged (no
+> + * GENL_ADMIN_PERM / GENL_UNS_ADMIN_PERM). Unlike bind-rx, which configures
+> + * shared NIC RX queues, bind-tx only DMA-maps the caller's dmabuf so they can
+> + * transmit from it on their own sockets without affecting other traffic or
+> + * device state.
+> + */
 
---- Pre-existing findings tracked for follow-up ---
+[Severity: High]
+Is the "on their own sockets" part of this rationale actually enforced
+anywhere?
 
-3. [High] grp->timer / priv->restart_timer not cancelled before free in
-   ctcm_free_netdevice() (Sashiko patch 1/2 finding 2, patch 2/2
-   finding 1): predates this series (commit 293d984f0e36), out of scope
-   here. Will be fixed in a follow-up patch.
+net_devmem_bind_dmabuf() in net/core/devmem.c allocates the id out of a
+single global xarray and only records the owning netlink socket for cleanup:
 
-4. [High] NULL deref on peekskb->len in ctcmpc_chx_txdone()
-   ctcm_fsms.c:1299 (Sashiko patch 1/2, finding 1): skb_peek() returns
-   NULL when collect_queue empties. Predates this series. Same
-   follow-up patch.
+	err = xa_alloc_cyclic(&net_devmem_dmabuf_bindings, &binding->id,
+			      binding, xa_limit_32b, &id_alloc_next,
+			      GFP_KERNEL);
+	...
+	list_add(&binding->list, &priv->bindings);
 
---- v3 summary ---
+priv->bindings is then only walked by netdev_nl_sock_priv_destroy().
 
-  Patch 1 (fsm.c): unchanged from v2.
-  Patch 2 (ctcm_main.c): tasklet_kill() moved before timer stops;
-    kfree(discontact_th) moved into the MPC teardown block.
+On the TX side, net_devmem_get_binding() resolves whatever u32 the sender
+passed and checks only that a tx_vec exists and that the route egresses the
+bound device:
 
-Aswin Karuvally will review and test the new teardown order.
+	binding = net_devmem_lookup_dmabuf(dmabuf_id);
+	if (!binding || !binding->tx_vec) {
+		err = -EINVAL;
+		goto out_err;
+	}
+	...
+	dst_dev = dst_dev_rcu(dst);
+	if (unlikely(!dst_dev) ||
+	    unlikely(dst_dev != READ_ONCE(binding->dev) &&
+		     dst_dev != READ_ONCE(binding->vdev))) {
+		err = -ENODEV;
 
-Nagamani
+and net_devmem_lookup_dmabuf() is a plain xa_load() with no credential,
+netns or creator comparison.
+
+So can an unrelated unprivileged process reach another user's binding like
+this?
+
+  process A: NETDEV_CMD_BIND_TX -> gets id N, keeps the netlink socket open
+  process B: sendmsg(MSG_ZEROCOPY) with SCM_DEVMEM_DMABUF carrying id N
+
+__sock_cmsg_send() in net/core/sock.c takes the bare id:
+
+	case SCM_DEVMEM_DMABUF:
+		if (cmsg->cmsg_len != CMSG_LEN(sizeof(u32)))
+			return -EINVAL;
+		sockc->dmabuf_id = *(u32 *)CMSG_DATA(cmsg);
+
+tcp_sendmsg_locked() then calls net_devmem_get_binding(sk, sockc.dmabuf_id)
+and zerocopy_fill_skb_from_devmem() builds frags from the resulting niovs at
+attacker-chosen offsets. If B's route egresses the same netdev, does this
+let B transmit the contents of A's dmabuf to a peer of B's choosing?
+
+Ids are allocated cyclically starting low, and the return codes differ
+(-EINVAL for an unknown or non-TX id, -ENODEV for the wrong device), so is
+guessing a live id cheap? Should the TX path check the binding against its
+creating netdev_nl_sock before this is documented as safe, or should the
+command grow a permission flag instead?
+
+[Severity: Medium]
+Separately from the enforcement question above, is the wording here wider
+than what the code does?
+
+Two parts look overstated:
+
+"so they can transmit from it on their own sockets" - nothing in
+net_devmem_get_binding() ties a binding to the socket, task, uid, netns or
+cgroup that created it; the u32 id from the global xarray is the only
+credential.
+
+"without affecting other traffic or device state" -
+netdev_find_netmem_tx_dev() can resolve the bind target to a different,
+shared physical NIC via an rx queue lease:
+
+		phys_dev = lease_rxq->dev;
+		if (netif_device_present(phys_dev) &&
+		    phys_dev->netmem_tx == NETMEM_TX_DMA)
+			return phys_dev;
+
+and net_devmem_bind_dmabuf() then runs dma_buf_attach() and
+dma_buf_map_attachment_unlocked() against that physical device's dma_dev.
+
+Would it be more accurate to state the narrow property that bind-tx does
+not reconfigure RX queues or steering, rather than claiming no effect on
+other traffic or device state? The same wording is mirrored into the uAPI
+spec in Documentation/netlink/specs/netdev.yaml, so it becomes the answer
+future readers get when they ask why this command has no permission flag.
+
+[Severity: Medium]
+Does anything bound how many times an unprivileged caller can do this, or
+account the memory it consumes?
+
+net_devmem_bind_dmabuf() can be called repeatedly on the same dmabuf FD, and
+each call allocates with plain GFP_KERNEL / kvmalloc, so none of it is
+charged to the caller's memcg:
+
+		binding->tx_vec = kvmalloc_objs(struct net_iov *,
+						dmabuf->size / PAGE_SIZE);
+	...
+		owner->area.niovs = kvmalloc_objs(*owner->area.niovs,
+						  owner->area.num_niovs);
+
+and each call installs another mapping on the shared device:
+
+	binding->attachment = dma_buf_attach(binding->dmabuf, dma_dev);
+	...
+	binding->sgt = dma_buf_map_attachment_unlocked(binding->attachment,
+						       direction);
+
+There is no duplicate-binding check, no count limit on entries added to
+priv->bindings, no __GFP_ACCOUNT, and no RLIMIT_MEMLOCK accounting for the
+long-lived mapping. With the rx-lease path in netdev_find_netmem_tx_dev()
+these mappings land on the physical NIC shared with other users.
+
+Given that, is "without affecting other traffic or device state" the right
+thing to document, or should a per-socket or per-user cap and memcg
+accounting come first?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921195545.493253-1-almasrymina%40google.com
