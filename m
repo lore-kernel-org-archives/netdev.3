@@ -1,77 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EE6492E48
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D31448641A
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790102199; cv=none; b=Ei6HFeW1b4FoQME3GHAIHVml+y1pBWIpBeJWAwO4UDaau/E9dhxCM+JufO5sHvyfx+mm8bK+Dc/1N5W2qLGLgrUzxmKs09rsL30BxPJ8rpsQcOnAn8uUp1doRi7AlY2C3VlJoh0IyQi3zsfgh2vWdz+wWUC0y8FC5x/c0O5G4xc=
+	t=1790102241; cv=none; b=M6z3QZc7RdWk26TlCtTJturyT09zLYsZHqjaUxGVyRnBdBFiolmfmgs+rt13+2JeTyC42m2Q0h4y13++fsRwZyNE7vyluVeUaiy9rxgqWytAkMd9W7CZzLpWjNzRIxYndHmTrzD3MUkXWV5btIIVtEj8Husv06M/twQThNfUO8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790102199; c=relaxed/simple;
-	bh=pzaa95eKTIpKOawS/ljYzfkzuYgonZm+DzgE96OTi5E=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=jSqT78gotHINsHMxfem2d1TN0Wze9cCWnwKbR/NK9/rqwaMv7/Hvz2l0jH2KabLL1/H6eldgLW8Mixq6xqs+CVezGIty+2H3jaRMpUT5DuMdfpqzM1c5B2rh0ucXHFxivIgqTNLxvqAyTE43GnhT6QGnbrNkjqAXWhd6pajgYj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZBQSglaI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790102241; c=relaxed/simple;
+	bh=8kXOF0QdlhI9PrSwc2wXPbfYwkXiDdUcLCxqLBm+yBE=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=ijcRoSnIafZR7dHvPnZFytX6qpDLai2fWd26OVI8eTm0tOi1/oHrSnInUfBy0sYMh8J6kMb4fVifkNd/d4ia6AHdL30uqs44jN1aPK+Z9J4Q3tJlJAq8rNrA+Ei0/ZA9MBR0YtSfUeS1Qw0bATYLrCVOiZ+uwL4xcbqqkBI1FUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FaLgY1YO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZBQSglaI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4315A1F00893
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:36:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FaLgY1YO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E302D1F000FF
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790102197;
-	bh=7cm5O6O7EN9qeF3p9Ia+d9wZRn8ejEU5FlkkkFX25fo=;
+	s=k20260515; t=1790102240;
+	bh=Q045fG5Je/JHcNYxW9iyyfQqv27yNAEPatvCPMPuyCk=;
 	h=Date:From:To:Subject;
-	b=ZBQSglaI+Xlx2YDZVfjCiKKqmYqWWpDsHwaaCUb7P9XgwEw12JzxHvsK8GhQJACZk
-	 TorgFaGkA9hsoLwqiIFX86mrYaXgjk8Njm0Kt+CbZph+e2TzOiWf2ld4SLED/2nHH0
-	 /W+MlCEHQ2FhM9RYMfWR7S8TeA/VDBFLNPh3E4w7Cqg+q+kKc/xTTC2JGIj5Dwrb0a
-	 +KN/5ODL2hQbOg8VS1kmec78q6mdDcxG3v+Aj6sRcRN0Kss+UH/DyP2XV+kKVBClCF
-	 DWkfvQibBE76YbBXljybeyiAjc7c5TCNeN2/pJiSvuKCsL1IpPPjw62oov0UtQ9Vfg
-	 4S0CRKYOAREJQ==
-Date: Tue, 22 Sep 2026 11:36:36 -0700
+	b=FaLgY1YOt5eOzWf/Baa5YT6y0d0zJy/FABFNNcG5qMEKVg3d66MSmDrPTd/Fm85Ry
+	 4DYf97bt0dYOw3orvW5BQlDZxkILbcDv+Sz6vv+7AqXkWyrfJlJgrPX9GqlLChBsfi
+	 3MFnr7IRWa3Yxd3cX5+Gmq3ESAm0pgc4Wr+P2/LqeEmY7q7CZM9RMqsgEUPL81xYXT
+	 CE3YMGaeYC6ZwDYB1F6v5+54KbFyE+O8Gy5RSFOG8ptwl5VK644odtmhfVGvr5wdly
+	 kSiRZz329y1nN7ymPg6AZUzsOuJTybgeYFV4b6b7qQj7HoQJqvUcYipFcX0b3tv9+k
+	 vluWLUKFfQ33g==
+Date: Tue, 22 Sep 2026 11:37:19 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: [ANN] netdev round table meeting notes - Sep 22nd
-Message-ID: <20260922113636.2783779a@kernel.org>
+To: netdev@vger.kernel.org
+Subject: [ANN] netdev foundation TSC meeting notes - Sep 22nd
+Message-ID: <20260922113719.07315d78@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Nebusec bug tracker:
- - https://bugtracker.nebusec.ai/
- - any MAINTAINERS email can log in, feel free to request access=20
-   if you're an experienced contributor without a MAINTAINERS entry
- - automatic PoC and patch generation
- - needs human review and polish (like all LLM stuff) so maintainers
-   encouraged to look thru issues relevant to their code
- - issues auto-closed based on what lands in the tree (not just
-   trailers)
+Present: Andrew, Eric, Johannes, Iwashima-san, Jakub, Paolo, Willem, Simon
 
+Next steps for logo
+ - Work finished
+ - Designer to submit the payment request and transfer design files
 
-NIPA perf testing
+Request for funding for more NIC testing
+ - Board approved the $55k USD budget
+ - Needed last minute increase +$10k due to memory module shortage
+   (16GB->32GB DIMM change), also approved
+ - Waiting for PO to be issued by LF, hopefully quote will still be
+   valid (expired on Mon)
 
-Stan:
- - Where do we place the system stats - NIPA or in-tree
-Paolo:=20
- - Using the CPU metrics is quite noisy, the accounting changes between rel=
-eases
- - NIPA side would make it faster to change
- - Some of the naming in the patchset is confusing
-Stan
- - Let=E2=80=99s keep it simple and start with NIPA
-Martin
- - Regression testing is quite difficult, it's not easy to define the
-   representative cases
- - Ensure others can plug in their regression tests
-Mina
- - We need to avoid over-optimizing for trivial benchmarks
-Jakub
- - Would be great to record our preferences about the test quality and
-   guidance on what we accept on some wiki page=20
-Willem
- - How do we store the thresholds, the expectation can fluctuate quite=20
-   a lot
-Jakub
- - Automatic eval in NIPA, same as we do for test case vs HW NIC gating
+Academic research program
+ - Working on this with Brian Haberman (board chair)
+ - Looking to announce in mid-October for 2027-2028 academic year
+
+LPC / conferences
+ - Paolo to attend, will assist in running Networking track
+
+Membership renewal
+ - TSC and Board happy to support members in this process
