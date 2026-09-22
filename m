@@ -1,93 +1,78 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5905616AC;
-	Tue, 22 Sep 2026 13:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316E65616A8
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790083248; cv=none; b=jMw1mp/vz6ENNs5zQBYVTCNHrtp+kjjgBWlqYVwJISrv28uGYZ17fPa/8XCb49Co9geEHiZDmXc4m9uYMkjNk2uvXjAzaxuSD/ZDZnnbOiHU6RlcMHfE/tRqggeAOGsA8XZV8Loag0BBwx4VjuUSYBAFqWpQBoaEXkbs0o9bZBM=
+	t=1790083276; cv=none; b=sssiSRHuTfA8k4AWdi0xBTaqtl+Wrx5PvjoKhBT5gw0kffa06zqCf0DxerGBi6stM5uabbqFvZs70KUnAWzjuhle8CXHXYdHoWJFAE9NxcFdXEQBw8m14rI29zoWHjbvKrRWwdZzm95TRLnvabqg+SuQxeAO7+5mziB9kIimNcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790083248; c=relaxed/simple;
-	bh=/2a9T7JHmwdEY9PAft/uJPme/PjbeFBI98+knDarYq0=;
-	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=M9yEjTAmBytQLII9FdFy5oYLb+XqOiV5iO9Auqytb5K7LXxN9Rzmwn6QEtgv+m9R3bYU3RAuPEuoTDeKn3jkSTu5zdmP0Kz8etXSk+eM7Z11L/NWvhexvbqezr6gl2zPElR03qTlUMrSKbrmikD4s6ppLZrj7zojwCJWrNOp21U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DgnnxVCA; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790083276; c=relaxed/simple;
+	bh=NxF3ztYymLzCx17HkJa3QVVLMKcdMSyqCEMvSd1tnek=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cP0EYNJP4PDuob5UQf7U/dH1tsmRrWVeI0UYxw3EVMJwE1YwLOaakoeUKXPrpye2PNssBEYgSV5F1xBcbREb42awl78hxUzZ8U7YkBLAxkBL7dX8VxvZqJ1DeupO24Ctc+mGEU4T63QgPagyDBaYAXtVgMOywlhu43sYtxAHmoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/F6xGA8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DgnnxVCA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=/2a9T7JHmwdEY9PAft/uJPme/PjbeFBI98+knDarYq0=; b=D
-	gnnxVCAfGxHNuNKjpaYkpTadN6uQbhA5JyxjKlm5ZPUGYDxUIi3WpW5sAWrzvSB8
-	6ANrlAzBzq9/u3dZedcQ7WDvdOvsVpVWQKPESpB4Ih8M6K1sRaJYM1EjqypiQ3QM
-	7632tbOhNyLlUc63feupmYhZ5R63PPOhnY+XaZJ9C4=
-Date: Tue, 22 Sep 2026 21:19:19 +0800 (CST)
-From: "Binbin Deng" <18983559317@163.com>
-To: jk@codeconstruct.com.au, matt@codeconstruct.com.au, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Binbin Deng" <dengbinbin21@nudt.edu.cn>
-Subject: [PATCH net v2] net/mctp: publish the mctp_dev only after it is
- initialised
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-X-NTES-SC: AL_Qu2SAvyTvEku7ymdYukdnUgXgec/X8S1vvwi2YVUc8MFgiXfwgchcW9bDVz7y/yFBTGcqgKuWwNLyORaUI93BeVM7YGA9zxbanXBMdiEyw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/F6xGA8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C2A1F000FF;
+	Tue, 22 Sep 2026 13:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790083274;
+	bh=BWv5lnQJLdhkAeuFVrxPT3dSQux1/bhArOoHFMMbx3s=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=O/F6xGA8VBCDGSorJwosI7uaw9ayng2xCHNt4+BSMPlb+bvXBANBANbZCUKODaHql
+	 MqkkL58EhNDJfHv8XdvtlE4R7AhDtMj1Oc9h2Dnl0j9pUzGDBYvl1+mDJjfjKQeKDf
+	 dMgygUySlUhGtzaDtzyS4D8smd43leI92o50F62pt9wU4vOhIDvXwfjQdIvjWCy0rG
+	 tc0dzmb1+Mg47/NzYW6wBSxtpneNr8T/kT/vX+dlm5X/+L4VHtvmBwSUcAGje3a/WE
+	 7rdrmjuf/UASXYnUe7NfFYJawoFq8bDj/xhpaEyZMSUTCcu3ux/K0CVGcp8WdaFzgD
+	 BqNFAhxKXEnNA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198A538119F4;
+	Tue, 22 Sep 2026 13:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <729830b8.130.1a0c945579d.Coremail.18983559317@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:higvCgDnJ2VYgLJqrd5MAA--.41359W
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+xh9YWqygFgTAgAA3u
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] vsock: remove dev_hold() and dev_put() in
+ __vsock_deliver_tap_skb()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179008320590.3632047.6169227965497983198.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Sep 2026 13:20:05 +0000
+References: <20260921094218.483234-1-edumazet@google.com>
+In-Reply-To: <20260921094218.483234-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ sgarzare@redhat.com
 
-RnJvbTogQmluYmluIERlbmcgPDE4OTgzNTU5MzE3QDE2My5jb20+CgptY3RwX2FkZF9kZXYoKSBs
-aW5rcyB0aGUgbmV3IG1jdHBfZGV2IGludG8gZGV2LT5tY3RwX3B0ciBiZWZvcmUgbWRldi0+ZGV2
-CmlzIGFzc2lnbmVkLCBzbyBhIHJlYWRlciB0aGF0IHBpY2tzIHRoZSBkZXZpY2UgdXAgaW4gdGhh
-dCB3aW5kb3cKZGVyZWZlcmVuY2VzIGEgbmV0X2RldmljZSBwb2ludGVyIHRoYXQgaXMgc3RpbGwg
-TlVMTDoKCktBU0FOOiBudWxsLXB0ci1kZXJlZiBpbiByYW5nZSBbMHgwMDAwMDAwMDAwMDAwMGIw
-LTB4MDAwMDAwMDAwMDAwMDBiN10KQ2FsbCBUcmFjZToKIDxUQVNLPgogPyBfX3BmeF9tY3RwX3Nl
-bmRtc2cgKC4vaW5jbHVkZS9saW51eC9zb2NrcHRyLmg6NDkpCiA/IF9fcGZ4X21jdHBfZHN0X291
-dHB1dCAobmV0L21jdHAvcm91dGUuYzo0MSkKID8gc2VsaW51eF9zb2NrZXRfc2VuZG1zZyAoc2Vj
-dXJpdHkvc2VsaW51eC9ob29rcy5jOjUyNzgpCiBfX19fc3lzX3NlbmRtc2cgKG5ldC9zb2NrZXQu
-Yzo3NzUgKGRpc2NyaW1pbmF0b3IgMSkgbmV0L3NvY2tldC5jOjc5MAogKGRpc2NyaW1pbmF0b3Ig
-MSkgbmV0L3NvY2tldC5jOjI2ODQgKGRpc2NyaW1pbmF0b3IgMSkpCiA/IF9fcGZ4X19fX19zeXNf
-c2VuZG1zZyAobmV0L3NvY2tldC5jOjExMzEpCiA/IF9fcGZ4X2NvcHlfbXNnaGRyX2Zyb21fdXNl
-ciAobmV0L3NvY2tldC5jOjI1OTApCiA/IHVwZGF0ZV9jZnNfcnFfbG9hZF9hdmcgKGtlcm5lbC9z
-Y2hlZC9mYWlyLmM6NTQ3OCkKIF9fX3N5c19zZW5kbXNnIChuZXQvc29ja2V0LmM6MjczOCkKID8g
-X19wZnhfX19fc3lzX3NlbmRtc2cgKG5ldC9zb2NrZXQuYzoyNjI1KQogPyBwZXJmX2V2ZW50X3Rh
-c2tfdGljayAoLi9pbmNsdWRlL2xpbnV4L3JjdXBkYXRlLmg6ODM4KQogPyBzY2hlZF90aWNrIChr
-ZXJuZWwvc2NoZWQvY29yZS5jOjU4MTgpCiA/IGNsb2NrZXZlbnRzX3Byb2dyYW1fZXZlbnQgKGtl
-cm5lbC90aW1lL2Nsb2NrZXZlbnRzLmM6MzcyKQogPyBmZGdldCAoLi9pbmNsdWRlL2xpbnV4L3Jj
-dXBkYXRlLmg6ODczIGZzL2ZpbGUuYzoxMTAwKQogX19zeXNfc2VuZG1zZyAobmV0L3NvY2tldC5j
-OjI3NzApCiA/IF9fcGZ4X19fc3lzX3NlbmRtc2cgKG5ldC9zb2NrZXQuYzoyNzUxKQogZG9fc3lz
-Y2FsbF82NCAoYXJjaC94ODYvZW50cnkvc3lzY2FsbF82NC5jOjYzKQogZW50cnlfU1lTQ0FMTF82
-NF9hZnRlcl9od2ZyYW1lIChhcmNoL3g4Ni9lbnRyeS9lbnRyeV82NC5TOjEyMSkKIDwvVEFTSz4K
-CkZpeCBieSBwdWJsaXNoaW5nIG9ubHkgb25jZSB0aGUgb2JqZWN0IGlzIGZ1bGx5IGluaXRpYWxp
-c2VkOgpfX21jdHBfZGV2X2dldCgpIHJ1bnMgdW5kZXIgcmN1X3JlYWRfbG9jaygpIG9ubHkgYW5k
-IGhhbmRzCnRoaXMgb2JqZWN0IHRvIHJlYWRlcnMgYXMgc29vbiBhcyBtY3RwX3B0ciBpcyBhc3Np
-Z25lZCwgc28KdGhleSBtdXN0IG5ldmVyIG9ic2VydmUgbWRldi0+ZGV2ID09IE5VTEwuCgpGaXhl
-czogNTgzYmU5ODJkOTM0ICgibWN0cDogQWRkIGRldmljZSBoYW5kbGluZyBhbmQgbmV0bGluayBp
-bnRlcmZhY2UiKQpTaWduZWQtb2ZmLWJ5OiBCaW5iaW4gRGVuZyA8MTg5ODM1NTkzMTdAMTYzLmNv
-bT4KLS0tCiBuZXQvbWN0cC9kZXZpY2UuYyB8IDExICsrKysrKysrLS0tCiAxIGZpbGUgY2hhbmdl
-ZCwgOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25ldC9tY3Rw
-L2RldmljZS5jIGIvbmV0L21jdHAvZGV2aWNlLmMKaW5kZXggODIyMTIwZTg2MGM4Li5iNzY3MTVl
-YTUwZTEgMTAwNjQ0Ci0tLSBhL25ldC9tY3RwL2RldmljZS5jCisrKyBiL25ldC9tY3RwL2Rldmlj
-ZS5jCkBAIC0zNDQsMTMgKzM0NCwxOCBAQCBzdGF0aWMgc3RydWN0IG1jdHBfZGV2ICptY3RwX2Fk
-ZF9kZXYoc3RydWN0IG5ldF9kZXZpY2UgKmRldikKIAogCW1kZXYtPm5ldCA9IG1jdHBfZGVmYXVs
-dF9uZXQoZGV2X25ldChkZXYpKTsKIAotCS8qIGFzc29jaWF0ZSB0byBuZXRfZGV2aWNlICovCiAJ
-cmVmY291bnRfc2V0KCZtZGV2LT5yZWZzLCAxKTsKLQlyY3VfYXNzaWduX3BvaW50ZXIoZGV2LT5t
-Y3RwX3B0ciwgbWRldik7Ci0KIAlkZXZfaG9sZChkZXYpOwogCW1kZXYtPmRldiA9IGRldjsKIAor
-CS8qCisJICogQXNzb2NpYXRlIHRvIG5ldF9kZXZpY2UuICBQdWJsaXNoIG9ubHkgb25jZSB0aGUg
-b2JqZWN0IGlzIGZ1bGx5CisJICogaW5pdGlhbGlzZWQ6IF9fbWN0cF9kZXZfZ2V0KCkgcnVucyB1
-bmRlciByY3VfcmVhZF9sb2NrKCkgb25seSBhbmQKKwkgKiBoYW5kcyB0aGlzIG9iamVjdCB0byBy
-ZWFkZXJzIGFzIHNvb24gYXMgbWN0cF9wdHIgaXMgYXNzaWduZWQsIHNvCisJICogdGhleSBtdXN0
-IG5ldmVyIG9ic2VydmUgbWRldi0+ZGV2ID09IE5VTEwuCisJICovCisJcmN1X2Fzc2lnbl9wb2lu
-dGVyKGRldi0+bWN0cF9wdHIsIG1kZXYpOworCiAJcmV0dXJuIG1kZXY7CiB9CiAKLS0gCjIuNDMu
-MAo=
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Mon, 21 Sep 2026 09:42:18 +0000 you wrote:
+> __vsock_deliver_tap_skb() is called from vsock_deliver_tap()
+> under rcu_read_lock().
+> 
+> dev_queue_xmit() does not require the caller to hold a device reference
+> count, and the device lifetime is already protected by RCU.
+> 
+> Remove the redundant dev_hold(dev) and dev_put(dev) calls.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] vsock: remove dev_hold() and dev_put() in __vsock_deliver_tap_skb()
+    https://git.kernel.org/netdev/net-next/c/6598456d72e4
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
