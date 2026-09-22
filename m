@@ -1,164 +1,137 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012057.outbound.protection.outlook.com [52.101.43.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0134E9C20;
-	Tue, 22 Sep 2026 09:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790071108; cv=fail; b=YOPaC6qrTS4cUYUUMjk19CCZsIl/6jgsPO/V+SS7qMSKY+K50iELNG0tG0a2kULX0rYl0nj5WJ/rX1RJgsAb9u4dozVrQxJUfNCaujsXlw3sf7XNMiJnr64SNLoDh7G2Vbv1dZEXHPlUNy6Xt7PTRNUjqQ1hK4FsrHogUJb699w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790071108; c=relaxed/simple;
-	bh=9+1C9JJB5hiRTaV1l0WXRoF1NO/whLi07DtAMBbp778=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tZHGBduiBF+ojDeG5Bwin88ax9OKTSkR9rmMIolg5JbkPmLgHq3B4McipH5a0eq9yFEZM1G2AbBwJu0G5rhO+gHpMdKJPTK7SpD5ao+QiWjA+3kXpIyx0hW+rmWfQRC43t8yYNc/FqPwFw5naDxVxsOs0bs1IH6jC/KSqrvHLpE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1n2Tr+M7; arc=fail smtp.client-ip=52.101.43.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370844D2EE0;
+	Tue, 22 Sep 2026 09:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790071125; cv=none; b=XlA5os/ZCHXMF6/8NMGt3I4LFCu6zAz1i3P1fr8wy3XlsgwjS6vhS0oJUA51TE9T4/1k2VdjipWLMt3CBlYjJADUUfsbBTqYhF5mtq/LXvY65MEiOTMHG7OhcB3DazEeNcz2bOzfPXspynglV3P40luWgZMDI72krE8NLkDnktI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790071125; c=relaxed/simple;
+	bh=HK+yU08m52K64K0cBVvpLuj+tM/+NPiar/AAhtTvtv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PdGN4yM9kQScQhi4HhGl2EE3v5DFOg87AXQ8JHZPY7PsJxFy6cwxe8NS/NrcllDXlP+XWbUK/+dK5qB7GAkPqPbKuK8b+LrvnbAc0+3q1IQlJdf6L01ysW4t5aEQ0MQz2mJ6o7z1iwegCkFOTSvGq1FZFbGN2YlB5Ol/H8XT33w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LiZEolQL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YTCIb160; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Dse2xfk9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5ej2gdRk; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1n2Tr+M7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GsvJbcgAGnOD8feF0kgXI+gV7/oZJDN+KUMdpgnpasRczj0SQkDHDK5tM7XTzlsrcfbBF2/GsJWBRDQhP2IVuOJQz+TCLwSFsB0umhp12wpqRR8P56yq1Ikp1teyHKXfCVRNHrpOAaz/PfW/CZVW4wmqYX1DoaDT+BEUzI7fajmxmvY8N8M5Kv/b6+4vjtOEp0nk52UvAStrp2fZjPjbaLBKJsHo+0cL171MCSsBbTxWy0OALELmG66/tyknAraHXKzCEQggQFyycMuN98YdmEx8VJ2XVbD1X2Hcsp0MU2OcGoCvXSdjV8eiATaBxaYATGee8PjknECh34uSNCDgLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g2AJsY92B5FiVfWxtT8FDdPOD1R8awnKu8mqI1p5o5Q=;
- b=iQnlQ4eSB7XbFSR6cxBEFYvaFXxlhXHkV19c7M5L81J4q44sx4z4+TU77V3LUUTUPPuw62+79QziQvpmSFVZxJXhYh9lp0NMJuRuijZlxk0hojS7UNVKqHOF76X3j3mGSjn/WBuSnq7VNB/OQa+AGDTAk++SVV/FdfHPJHu/aZpD1585VHhVR3VdUipa9QWHGUr7p5G5oV37jJcFUNpjQ239mbj8wiLnYmkl4RkTMt28nyH8W2LeSehc+ockWopFMqYJnnjNmRLa4ZukDC1ZR/6ZHNPd8RfiktEr+3XsOFnS+S6YE210NJS8KZOV+vxdX08/k39KI54+DL08ekt4AA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g2AJsY92B5FiVfWxtT8FDdPOD1R8awnKu8mqI1p5o5Q=;
- b=1n2Tr+M7KNnnVuoi/F7IEnPealp6HxpPw2BttiqKeGPYz1VTCeRQeWsa0oamhM/nPB8o46ADmF9XqpcK7W+U6eC4eDPsVSF4Ooftf24EjWAl9EFGPF/8RYHSt+LhrMRIsvOIYwyeBAdub8Ul3U4eO6qxDt4lnHv7LTtOyoDVVHM=
-Received: from SJ0PR03CA0068.namprd03.prod.outlook.com (2603:10b6:a03:331::13)
- by MW4PR12MB5668.namprd12.prod.outlook.com (2603:10b6:303:16b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.13; Tue, 22 Sep
- 2026 09:58:21 +0000
-Received: from BY1PEPF0001AE17.namprd04.prod.outlook.com
- (2603:10b6:a03:331:cafe::60) by SJ0PR03CA0068.outlook.office365.com
- (2603:10b6:a03:331::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Tue,
- 22 Sep 2026 09:58:21 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BY1PEPF0001AE17.mail.protection.outlook.com (10.167.242.107) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Tue, 22 Sep 2026 09:58:20 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 22 Sep
- 2026 04:58:20 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 22 Sep
- 2026 04:58:20 -0500
-Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Tue, 22 Sep 2026 04:58:16 -0500
-From: Abhijit Gangurde <abhijit.gangurde@amd.com>
-To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <allen.hubbe@amd.com>, <a.k@amd.com>, <nikhil.agarwal@amd.com>,
-	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Abhijit Gangurde <abhijit.gangurde@amd.com>
-Subject: [for-next v2 0/5] RDMA/ionic: add SRQ support and firmware assigned CQ and SRQ IDs 
-Date: Tue, 22 Sep 2026 15:27:19 +0530
-Message-ID: <20260922095724.3683011-1-abhijit.gangurde@amd.com>
-X-Mailer: git-send-email 2.44.4
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LiZEolQL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YTCIb160";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Dse2xfk9";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5ej2gdRk"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E23F41F8B9;
+	Tue, 22 Sep 2026 09:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790071118; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=LiZEolQLtrOcnCpKNhtTGFVrWufQc0pBzKwAnq8xgsyHtt7FOTAXPaGMzM2B/JNZSCQTkP
+	5qfTeqjvY5gtkYNBndsHUXbuVY2JO236TnFlQWs55eJ8IEw1eYvcqTq1xjKJBCZ4UX+YTA
+	sJuczxH3Rovjnb6cpJGa0ZwWvfJOJxU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790071118;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=YTCIb160AgoMyuaZDpwuiYTv1e3GB6uMNI3lb6iPSY56aTD87HB360Q467sPor9jhfSTSP
+	XAq/xJqeWkRW0WAw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790071113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=Dse2xfk9rYhsNzWipCoS1JcIReryX19OOYSEO/y6U6h2/Th6M27X1kd3BZhUtd0bGx7baP
+	UP9EmCy/KL78BGJ5wf2ePGumoYg4w5Paa0AiWxasn1OWy8L39PUyEjwIptrg2VB5Vlwdh/
+	xL4WP2Fe5+ktc2rbQdg+CmKsKBELHGo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790071113;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=5ej2gdRkyDcZftLUT6SaJNLl6a+lu/u772HFMDHv4wdhUy35JgSfKA/2YzV4rMORb7JPRE
+	NuaXw1RHmy24dMCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0640E136D9;
+	Tue, 22 Sep 2026 09:58:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id knt0I0dRsmrVBwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 22 Sep 2026 09:58:31 +0000
+Date: Tue, 22 Sep 2026 10:58:25 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-hardening@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] mm/slab: Mark the kmem_buckets_create() context
+ as a Context: section
+Message-ID: <arJRHFs-r8hkTLhx@pedro-suse.tail5790ac.ts.net>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-1-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE17:EE_|MW4PR12MB5668:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3cf102b3-4266-41b6-e84d-08df189008a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|1800799024|7416014|376014|13003099007|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	kKj3HTn5KMH+qvBw3Hy0YjOUmd7F+1R6BOu5L/jk09vkJTpLfOCe2B5Bl4awHuBxaoeP1H7LHoaMY4dC+VEXujdrJlF3KsQQ8e2R8jDBM283UbLbxUkGvXpS6TrpG7241UvYsJgkP0JlQulvlRs2JksSjzb4tjCVOKjFdHIkx4qfj/V0n9wfQ3MGYS3YcRonzcIm4j3PoHJpHyF+hwfVU+w2jfgo8lxo4CWQz7Qd7CQPkH2sLCt8D9d9pyxIMMMsz8bNnWbXB0pRpszV6VstMQwNA0y1XPU8eadsnhJzbGwDRwSPPQm4AjztEPXt2QPwkXt+65dL2r/pcjyyaYiPgOxsJH6AZN9rGtctr4ej5N2kiwSMUVbiH42nVl1DSD55Jv4N5s1dOP4mXQgqXAFUBqd0RZuHyHEF1ryx0uCFYm8ffzupdVtaw6cVj9UFOLQe6XDEhoHNOAdCeTqNowSujDwhgIjg4//s1VFKdcyV1t7Trplw7Jp/dceCkdMHlOaWteigafwp3vyCvbIeZzaCVugEKLueWpBnliKl2O2Ajg0+8BN7oISqqWHp4ZjTLaUSZVAPHUrBEXC8JCtgOG2Nk4F5KBcZabEFTIVKerPybOg8aCD7ZzfiI91cMR4M5FEwUM6v5be/q72Q28on4/szVA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(1800799024)(7416014)(376014)(13003099007)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	K9THREDifiy0jPVbo28ibdK7JP0LP6AUZ607xTXx4WbAC5R1VKOhywPbFQHfvblsN9zyFuk6bsSv7DTxJXyLF9CEvcsM4I4m3Q33p/eINNXJGDaKVijUAPM18HpwdfpvJkE4RYJlRcqiJcwmTKT/ixHjYkrHpCwbGiIaItcki7Lphznmit0avJwDX8R0LoCamKHhsicQfCopUHW8PhIQEKQuXCZe/yMRH0ZRUkpANNjqVhZ5u7R38aZnnNjHAAtxZr/J2hRSSzbZPfKAtCOxHqFxCzxGOk9aj8QaBkOXj6Gzy/1sdL6bqz8f5cAOW7XW968YVEZmSr5QsWyvYWKkFrYPQBq0UzEUQJBCH6ElA0oG3HX5w8LwKqXG8R+w17SMxTNxsBOme4FRhf6o8zvjFX23YbWyk19l+DDKLlfQZ6vJkGlHyB20/kc0Loh+AoA1
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 09:58:20.8639
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3cf102b3-4266-41b6-e84d-08df189008a4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE17.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5668
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921075820.1718334-1-kees@kernel.org>
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,linux.dev,gentwo.org,google.com,kvack.org,vger.kernel.org,davemloft.net,redhat.com,gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,pedro-suse.tail5790ac.ts.net:mid]
+X-Spam-Flag: NO
 
-This series adds ionic Shared Receive Queue support and lets firmware assign
-CQ/SRQ IDs when the LIF advertises qid-allocation capability.
+On Mon, Sep 21, 2026 at 12:58:12AM -0700, Kees Cook wrote:
+> kmem_buckets_create() had the same sentence about calling context as
+> kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
+> rendered in the body instead of as a "context" section.
+> 
+> Give it the missing prefix. Additionally fix the "a interrupt" typo
+> __kmem_cache_create_args() had.
+> 
+> Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
-Patch 1: extends the RDMA LIF identity with SRQ qtype and alloc_qid_cap.
-Patch 2: uses that for firmware-assigned CQ IDs and splits CQ create/destroy
-so cq_tbl is updated only after the ID is known, and removed before the ID
-is returned to firmware.
-Patches 3: Refactor RQ state into ionic_rq so QP RQ and SRQ share init/destroy.
-Patches 4-5: add SRQ verbs and EQ events. Userspace ABI field srqid is new
-with this series;
-
-rdma-core PR: https://github.com/linux-rdma/rdma-core/pull/1799
-Net changes pull request:
-he following changes since commit 93f51579e7df248780214094418f205253383cc5:
-
-  Linux 7.3-rc4 (2026-09-20 13:48:15 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/abhijitG-xlnx/linux.git ionic-shared
-
-for you to fetch changes up to 0de2c94091670f14c33029a793083516d34ef277:
-
-  net: ionic: Fetch qid allocation and SRQ capability from firmware (2026-09-22 11:14:02 +0530)
-
-
-v2:
-  - Addressed sashiko review comments
-  - https://lore.kernel.org/linux-rdma/20260908090802.152142-1-abhijit.gangurde@amd.com/T/#t
-
-Abhijit Gangurde (2):
-  net: ionic: Fetch qid allocation and SRQ capability from firmware
-  RDMA/ionic: support firmware-assigned CQ IDs
-
-Amit Kumar (3):
-  RDMA/ionic: segregate rq related fields from ionic_qp into a new
-    ionic_rq struct
-  RDMA/ionic: add Shared receive queue (SRQ) support
-  RDMA/ionic: implement SRQ event handling support
-
- drivers/infiniband/hw/ionic/ionic_admin.c     | 117 ++-
- .../infiniband/hw/ionic/ionic_controlpath.c   | 782 +++++++++++++-----
- drivers/infiniband/hw/ionic/ionic_datapath.c  |  98 +--
- drivers/infiniband/hw/ionic/ionic_fw.h        |  74 +-
- drivers/infiniband/hw/ionic/ionic_ibdev.c     |  20 +
- drivers/infiniband/hw/ionic/ionic_ibdev.h     |  85 +-
- drivers/infiniband/hw/ionic/ionic_lif_cfg.c   |   2 +
- drivers/infiniband/hw/ionic/ionic_lif_cfg.h   |   2 +
- .../net/ethernet/pensando/ionic/ionic_if.h    |  31 +-
- include/uapi/rdma/ionic-abi.h                 |   2 +-
- 10 files changed, 922 insertions(+), 291 deletions(-)
+Acked-by: Pedro Falcato <pfalcato@suse.de> 
 
 -- 
-2.43.0
-
+Pedro
