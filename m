@@ -1,139 +1,220 @@
-Received: from mail-oa2-f0.google.com (mail-oa2-f0.google.com [74.125.231.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2733D486439
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A626C3905F9;
+	Tue, 22 Sep 2026 14:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790089070; cv=none; b=hjZUK5AvHxQmN35mgR6/2/Sd58Cj5HkdHn+1pOIrb4gzt+Nub4AXK+Fuv3u/xP1k+Lhhq3FA+525VUkZT2LaQ3Sy990V3prhyOLjQWeNqOqUJJtCWMo5m3ke4dvpgGG9iTbA9GvsurqzB/JwYLkHe7+bG4upmavnVvoH6uYwZjI=
+	t=1790089119; cv=none; b=Q8tBUBhVL5kH8UJY51vCfZCrBjeqq1oK8+NA8cdyTYLKa24Gi+GrUBl8UNaBvq+gD7MTOA3aNrBWyvrfiTlcTCb0YXw1yVP3IUOh+vNcGv9dt9/wBSUKdPEi+pLmthWA1mJKSAIOJDyTMrU/kgUkwbz/y0SAcXf2d48qqmiZBMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790089070; c=relaxed/simple;
-	bh=wo2hhVqXSDFNsEqid+p3Qr8x3erIJj3OEshDQsUgz5c=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=EsAjBbjg8DN/nRUdNuZYrgkA0478NOXOUpejphNpDLVeyGgV/UqJmB1IRqzBDdsw3fBYBaT65/6/jxpLhX8LEo/kflMkMGDJ2NJK1Wr3tK6gmMgPfpYh2Frwc5LzGO/A4enhjQpxBTcOXiFPneYSH3a2MvKxbrbjc2QCsMf0hV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa2-f0.google.com with SMTP id 586e51a60fabf-4511f6a63edso587895fac.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:57:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790089065; x=1790693865;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kOSrLV6iwvAWsPLksNnW/w4j/mbXLy6tE/r1nVS/H88=;
-        b=KSFRJFoEUp6rnfqyRVX6sbVgjQgmJBw3duQz4fQvkyw/k/0agLWcxY3XWvwYL8FwDe
-         M+Yn5afPjIF+UDsYhCpHxDIqg97ztqbmps9ePs2VILbRptYLa8g5HC7GoMolzSDVnrnx
-         8Ze+xxL/OwfLEu3lHZFkPVtYddEso+smM2RFOyZgm4umj9ZVX5Lpm7Yrar69NgxK1Gfq
-         eyJg5i6MIEp2YVf0sZQeYJBYoYv0qtFpGvMfmbr/O8QECf324qo0OXe77sMSbcx7xNtk
-         dDCY1cPi01xDGLCC497Xb+/PXoqtZoN4Uwjgt79VYRRaEOF0bpbYsmXdY+aPp5MA1o8l
-         39Og==
-X-Forwarded-Encrypted: i=1; AKwUvBwTv4DD/4AaQIucZ+loh0D8jX5t8wSYogs8i1uBDoXL0a15p/MH7JA1pMCGtfkeTF1cBibOjJ4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lE0pK7+1SI238ZKK6ADZbcPYbPt4uDywmD9P6C6CjzeM6aN/n0
-	k28yPlwMapY/2cdwq0p8qmd9h4CiMn/W24E2g6TFDht+jJjZJgaokiNfWstWaZ3fNPDdUt0x/Do
-	spfRo6SUHSPteRm39ZO6NZVccz5dk1JfqVx2o/toFQ7OJSoJx+w7DF9nCk5I=
+	s=arc-20240116; t=1790089119; c=relaxed/simple;
+	bh=8CS6daGo9V3Xjsk0EcXTXCP47j5eXnWaKZTS+PoOOMs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Zts4omc0ER+frYI5XXos62N0pXR+BZTkso1O2QHbwgtSC3EGwMf81A5t9uCQ4ctg3rJWTwksTh5YS/gsWCQTPbA51uJJz7mQKBpBbNuD4Ey7K9Yg7a4fJ2d0HpiJNDp+ojoSa6qSjqpp8NsIfNElAosg0BiPGN0doc8BrkttTXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bM+Q9jgH; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bM+Q9jgH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726671F000FF;
+	Tue, 22 Sep 2026 14:58:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790089117;
+	bh=M6nTIIB1x5FwMgcT5MFxWk/QvQSD8W0tvgq+XELplsk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bM+Q9jgHIGa/MYbVHS7TGYGi66VwgcudpUrKNVNG45LO8XYCInWzznFub6WHleTcg
+	 JBJzhAuaQe0wrVEQcze2aAiujYMky5TMg2RulP9Dy0uDDLhlPF0GaOs3aJGF1due/Y
+	 ikLQxhBoZhxl8W8G9ZFCQi5IQFKsqtP+TSST56rCIgvlWv2xzP7KNrWOV6jyvSB4X/
+	 GMghnd3KF78fH4RMgiPwFmgiLuZYXtbAT1XPJPJY37vwxAQnXI+UYK4kNOzlAc2o9P
+	 S/2dTU5L4HGNhJzVmFcIhG2VhnoEDfjSAKH2Z+N1jlKRoXcDxfCyj62mN6HpvvhK+Z
+	 vFWXCrDyKZlYQ==
+Subject: Re: [PATCH net 1/6] net: openvswitch: conntrack: avoid modifying
+ shared unconfirmed ct entry
+From: netdev-bot+sashiko@kernel.org
+To: i.maximets@ovn.org
+Cc: netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, aconole@redhat.com, echaudro@redhat.com, jhs@mojatatu.com,
+ jiri@resnulli.us, lucien.xin@gmail.com, marcelo.leitner@gmail.com,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ linux-kernel@vger.kernel.org, dev@openvswitch.org, stable@vger.kernel.org
+Date: Tue, 22 Sep 2026 14:58:35 +0000
+Message-ID: <179008911592.2160803.15817354196701627708@kernel.org>
+In-Reply-To: <20260921145655.3167436-2-i.maximets@ovn.org>
+References: <20260921145655.3167436-2-i.maximets@ovn.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:168b:b0:6d2:9ab6:471c with SMTP id
- 006d021491bc7-6d29ab64a21mr248105eaf.84.1790089064861; Tue, 22 Sep 2026
- 07:57:44 -0700 (PDT)
-Date: Tue, 22 Sep 2026 07:57:44 -0700
-In-Reply-To: <6a73d174.5aeeccc9.207e63.000c.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab29768.514bccd6.255447.001e.GAE@google.com>
-Subject: Re: [syzbot] [net?] [afs?] kernel BUG in rxrpc_destroy_all_connections
- (2)
-From: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-syzbot has found a reproducer for the following issue on:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-HEAD commit:    f0100363d8c3 Merge tag 'xfs-fixes-7.3-rc5' of gitolite.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17660c5e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7d012d9c67977ee4
-dashboard link: https://syzkaller.appspot.com/bug?extid=89001660f14fb7684c83
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11ecb805580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16e6f525580000
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-f0100363.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/57240753f5ee/vmlinux-f0100363.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2930b9a97546/bzImage-f0100363.xz
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com
+- [Medium] New behaviour change introduced by the guard in
+  __ovs_ct_lookup() (net/openvswitch/conntrack.c:741-747): when two skbs…
+- [Low] nf_ct_shared() is added as an undocumented generic predicate in
+  include/net/netfilter/nf_conntrack.h:188-191 returning…
 
-netdevsim netdevsim0 netdevsim3 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-netdevsim netdevsim0 netdevsim2 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-netdevsim netdevsim0 netdevsim1 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-netdevsim netdevsim0 netdevsim0 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-bridge_slave_1: left allmulticast mode
-bridge_slave_1: left promiscuous mode
-bridge0: port 2(bridge_slave_1) entered disabled state
-bridge_slave_0: left allmulticast mode
-bridge_slave_0: left promiscuous mode
-bridge0: port 1(bridge_slave_0) entered disabled state
-bond0 (unregistering): (slave bond_slave_0): Releasing backup interface
-bond0 (unregistering): (slave bond_slave_1): Releasing backup interface
-bond0 (unregistering): Released all slaves
-rxrpc: Assertion failed
-------------[ cut here ]------------
-kernel BUG at net/rxrpc/conn_object.c:488!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 2 UID: 0 PID: 5766 Comm: kworker/u32:3 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: netns cleanup_net
-RIP: 0010:rxrpc_destroy_all_connections.cold+0x12/0x14 net/rxrpc/conn_object.c:488
-Code: ff 90 0f 0b e8 39 99 99 00 48 c7 c7 60 6a 5d 8d e8 3d c0 af ff 90 0f 0b e8 25 99 99 00 48 c7 c7 60 6a 5d 8d e8 29 c0 af ff 90 <0f> 0b e8 11 99 99 00 49 63 d6 48 83 ce ff 48 c7 c7 40 f3 00 91 e8
-RSP: 0018:ffffc90003f27970 EFLAGS: 00010286
-RAX: 0000000000000017 RBX: ffff8880394c0000 RCX: 0000000000000000
-RDX: 0000000000000017 RSI: ffffffff81ea1579 RDI: fffff520007e4f1f
-RBP: ffff8880394c0064 R08: 0000000000000007 R09: 0000000000000000
-R10: 8000000000000000 R11: 0000000000000001 R12: 1ffff920007e4f30
-R13: ffff8880394c0078 R14: ffff8880394c0088 R15: ffff8880394c0088
-FS:  0000000000000000(0000) GS:ffff8880d5d53000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055a4b15ca000 CR3: 000000003c5bd000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- rxrpc_exit_net+0x7b/0xc0 net/rxrpc/net_ns.c:113
- ops_exit_list net/core/net_namespace.c:200 [inline]
- ops_undo_list+0x2ee/0xab0 net/core/net_namespace.c:253
- cleanup_net+0x499/0x920 net/core/net_namespace.c:706
- process_one_work+0xac7/0x1b10 kernel/workqueue.c:3396
- process_scheduled_works kernel/workqueue.c:3479 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3560
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:rxrpc_destroy_all_connections.cold+0x12/0x14 net/rxrpc/conn_object.c:488
-Code: ff 90 0f 0b e8 39 99 99 00 48 c7 c7 60 6a 5d 8d e8 3d c0 af ff 90 0f 0b e8 25 99 99 00 48 c7 c7 60 6a 5d 8d e8 29 c0 af ff 90 <0f> 0b e8 11 99 99 00 49 63 d6 48 83 ce ff 48 c7 c7 40 f3 00 91 e8
-RSP: 0018:ffffc90003f27970 EFLAGS: 00010286
-RAX: 0000000000000017 RBX: ffff8880394c0000 RCX: 0000000000000000
-RDX: 0000000000000017 RSI: ffffffff81ea1579 RDI: fffff520007e4f1f
-RBP: ffff8880394c0064 R08: 0000000000000007 R09: 0000000000000000
-R10: 8000000000000000 R11: 0000000000000001 R12: 1ffff920007e4f30
-R13: ffff8880394c0078 R14: ffff8880394c0088 R15: ffff8880394c0088
-FS:  0000000000000000(0000) GS:ffff8880d5d53000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055a4b15ca000 CR3: 000000003c5bd000 CR4: 0000000000352ef0
+Pre-existing issues:
+- [Low] Peer call site net/sched/act_ct.c (tcf_ct_act()) performs the
+  same 'cached, unconfirmed ct + commit modifies the extension set'…
 
+--
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+net: openvswitch: conntrack: avoid modifying shared unconfirmed ct entry
+
+This adds a new nf_ct_shared() helper to the conntrack header and uses it in
+__ovs_ct_lookup() to reset the cached conntrack entry when an skb arrives at
+a committing ct action with an unconfirmed entry that is shared with another
+skb.  The goal is to avoid two clones committing the same unconfirmed entry
+with different extension sets, which can lead to a use-after-free.
+
+A few questions below.
+
+> diff --git a/include/net/netfilter/nf_conntrack.h b/include/net/netfilter/nf_conntrack.h
+> index bc42dd0e10e65..c39425e54d87d 100644
+> --- a/include/net/netfilter/nf_conntrack.h
+> +++ b/include/net/netfilter/nf_conntrack.h
+> @@ -185,6 +185,11 @@ static inline void nf_ct_put(struct nf_conn *ct)
+>  		nf_ct_destroy(&ct->ct_general);
+>  }
+>  
+> +static inline bool nf_ct_shared(const struct nf_conn *ct)
+> +{
+> +	return refcount_read(&ct->ct_general.use) > 1;
+> +}
+> +
+
+[Severity: Low]
+Would it be worth documenting that this predicate is only meaningful for
+unconfirmed, non-template entries?
+
+The reference accounting comment on struct nf_conn in this same header says
+the count is "1 for hash table, 1 per skb, plus 1 for any connection(s) we
+are `master' for".  With that, every confirmed entry owned by a single skb
+already has use == 2, since __nf_conntrack_confirm() does:
+
+	/* The caller holds a reference to this object */
+	refcount_set(&ct->ct_general.use, 2);
+
+The same is true for a template in use: nf_ct_tmpl_alloc() sets use = 1 and
+nf_ct_set(skb, tmpl, ...) adds another.  So nf_ct_shared() returns true for
+an ordinary single-owner confirmed entry and for an in-use template, while
+the name reads as "more than one skb owns this ct".
+
+Both consumers at the end of the series check !nf_ct_is_confirmed(ct) first,
+so there is no misbehaviour today, but a future caller without that check
+would get a surprising answer.
+
+There is also already an open-coded twin of this test in
+nf_ct_drop_unconfirmed() in net/netfilter/nfnetlink_queue.c, which states the
+precondition ("conntrack assumes exclusive skb->_nfct ownership for
+unconfirmed entries") and applies it only after:
+
+	if (!ct || nf_ct_is_confirmed(ct))
+		return false;
+
+Should that one be converted to the new helper so there is a single
+definition of "shared"?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the helper lands in the
+shared netfilter header while the equivalent call site in net/sched/act_ct.c
+is left alone here.
+
+tcf_ct_act() runs the same sequence on a cached unconfirmed entry, adding
+extensions and running helpers:
+
+	err = __nf_ct_try_assign_helper(ct, p->tmpl, GFP_ATOMIC);
+	...
+	if (p->ct_action & TCA_CT_ACT_NAT && !nfct_seqadj(ct)) {
+		if (!nfct_seqadj_ext_add(ct))
+			goto drop;
+
+tcf_ct_skb_nfct_cached() has no exclusivity test either.
+
+For what it is worth, the follow-up patch in this series, "net/sched:
+act_ct: avoid modifying shared unconfirmed ct entry", adds the same guard to
+tcf_ct_act() and extends it to the NAT-without-commit case, so the gap is
+closed by the end of the series.  Mentioning that ordering in this changelog
+might help backporters.
+
+> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+> index 0f433688e17b9..a733029c28dd0 100644
+> --- a/net/openvswitch/conntrack.c
+> +++ b/net/openvswitch/conntrack.c
+> @@ -734,6 +734,18 @@ static int __ovs_ct_lookup(struct net *net, struct sw_flow_key *key,
+>  	enum ip_conntrack_info ctinfo;
+>  	struct nf_conn *ct;
+>  
+> +	/* If the ct entry is not confirmed and shared with some other skb,
+> +	 * e.g., a cloned one, we can't just modify it with the commit as we
+> +	 * must not modify the extension set.  Reset.
+> +	 */
+> +	if (cached && info->commit) {
+> +		ct = nf_ct_get(skb, &ctinfo);
+> +		if (ct && !nf_ct_is_confirmed(ct) && nf_ct_shared(ct)) {
+> +			nf_reset_ct(skb);
+> +			cached = false;
+> +		}
+> +	}
+> +
+
+[Severity: Medium]
+Since the test is a point-in-time refcount snapshot, does it exempt the last
+remaining holder?
+
+With two skbs sharing one unconfirmed entry and both executing ct(commit) in
+the same zone:
+
+  - the first one to reach the check sees use == 2, so nf_reset_ct() drops
+    its reference (2 -> 1), nf_conntrack_in() runs again and it commits a
+    brand new entry with the same tuple.
+
+  - the second holder now sees use == 1, so nf_ct_shared() is false, it
+    keeps the stale unconfirmed entry and commits that.
+
+__nf_conntrack_confirm() then finds the equal tuple already in
+nf_conntrack_hash and falls into nf_ct_resolve_clash(), where:
+
+	l4proto = nf_ct_l4proto_find(nf_ct_protonum(ct));
+	if (!l4proto->allow_clash)
+		goto drop;
+
+For TCP, SCTP and DCCP that returns NF_DROP, and verdict_to_errno(NF_DROP)
+== -EINVAL propagates through ovs_ct_commit() and ovs_ct_execute(), so that
+packet is dropped with OVS_DROP_CONNTRACK.  Before the patch both clones
+were accepted, as the second nf_conntrack_confirm() was a no-op on the
+already confirmed shared entry.
+
+For UDP and ICMP the clash resolution succeeds, but __nf_ct_resolve_clash()
+discards the losing entry, so the mark and labels the second clone just
+wrote are silently lost.
+
+The changelog says the reset "doesn't affect any known use cases".  Should
+the drop and the mark/label loss be spelled out there, given both are
+visible consequences for a pipeline that commits two clones into the same
+zone?
+
+The clone precondition itself comes from __nf_copy() in
+include/linux/skbuff.h, which unconditionally takes a ct reference:
+
+	dst->_nfct = src->_nfct;
+	nf_conntrack_get(skb_nfct(src));
+
+and skb_nfct_cached() returns true for the surviving clone since it only
+checks netns, zone, helper, timeout and force.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921145655.3167436-1-i.maximets%40ovn.org
