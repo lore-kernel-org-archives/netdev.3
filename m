@@ -1,219 +1,139 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-oa2-f0.google.com (mail-oa2-f0.google.com [74.125.231.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9037392806
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790088892; cv=pass; b=rzDEfnUcqtfCDzt2DovoYCs0c8LJGxagbfmocFuOKgOVp8aE+SAUu8GgikuNGI97t1dGCuOEiKzswsIZFMyp3f1KMhrbq31P4TpfOx4aXxPaArLwRoC6vvXaoPeaZ5yjWMWZ9L8PHdpm1mhZ9JvpNfdSIzRJ0UXNun9xIvfgemk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790088892; c=relaxed/simple;
-	bh=rPBFj5OgHpPAzdqofII1NYME28RRKuDK+Vnxhgs6ylo=;
-	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=Kc0Kjscc2wWOMfIgMziT3GxcrHA8NeCsGf2xugjr5HChk3BTmKj1X396JmgjpggYtQT+nFtqJfZH3ugR+MokP4H3FwNqPjsTiGKvb9J1MnFRHfu7ge7f5zNRkHVp/6uRa/G1ncoyiMcCVhTXj/IH95xtIvCKI/8DBSbtrPjLCoU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rm4xfgJO; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rm4xfgJO"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1eso654942166b.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:54:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790088889; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EmLRV2r/zShJOUy4roVXAY8W09xUhjKLlmduWAQmBNLwbVfPYzTX7DuzUCIKawymVX
-         X2P2blb9XUIteTiC62P4rW8kjnduwltGYQe5AYwSVSKMybR6bOIrBwqD0A4u/ubncQgt
-         Cn1AnsA+Wi1R6POocRSfnUcm+wqWpC/fVZ75SQPphZ26iEa9DdjzCbuAbfGfPNByGkPl
-         +8uFqDYhx413JQDuZULbohuEZHEkHqscnwP9bqA5UuVpwVcyBSFKKykzTfZ3F0p0IcTf
-         NmU3qWzqwUzRUNqJCVTlS+PSCPg0ddfz6hGrVqJqkXTqZKfePMJuKnFNIHoUv7vPi5uL
-         ItCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=+a1vidkZWMn5yLQTL4wXmDS7ONKk7G2JmZar9AG6UtI=;
-        fh=WTvnx+kaTQZcp6nHnwrk0Eiq8eFEvt1Ug8h2lp0ecEQ=;
-        b=OhxboWojjH4cLdMnvHWgxVBnIJcQd3GEWPhioChprdkL8c6nOzFq6Ml7ZgTcY/W0mR
-         ogWgR+sanhgZZcekLnwpHyOy12sPQ5wBZ8BLv6QSukgx4fGXKncabts8MsCReOq8ajBn
-         V8QuN8HrsrnzXU/VqbNi6YDdyLY4+1K2WFvKdok/GU61iW7/Rlil3FQ90XzRgMOHyvYN
-         0sytL2W9RvIxsg0Qxx8+0pc3S627LgwBXOkR4kk4hgKVkNImRkTcbuOgCse3g5c1Fjcy
-         QRiB2qLT7+LEfRqqibH+d1N5k0pySwOK73GtPsXVJy+CZilxaVzgGGVPj1WEadUWfLNR
-         zOkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790088889; x=1790693689; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+a1vidkZWMn5yLQTL4wXmDS7ONKk7G2JmZar9AG6UtI=;
-        b=Rm4xfgJOSjIGSqxza+e12heW4xXZx7UJlnYcZJ69gkT9v9hAMv4E4ucaMM/PJlJb49
-         Y4M6SzihxcFNNdJAHcEpzRkb7mnQNN2KQjia1CjbcT6r4IOJK/UOKP1/Z9cVNpuvqT+R
-         +1LUNHQZXg+zmMW+TOkrBOfxoS6gebgKbFIapsUKcX6aNX/Fkf6akuKQf70MZR7Hh+FX
-         9z2PnuA6XCgO224UY8GWcpRmZpDlY9Enw7ADA3lM49lNyyqjMpvza4nZrDTwT9g01Bb7
-         QUEV60lOJai2n2/gL9SBxwkqUyniy+4l2Pn/xjs1Xf1cQr9nYRltdp3Iz2Ig/34on9Hd
-         /4QQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2733D486439
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790089070; cv=none; b=hjZUK5AvHxQmN35mgR6/2/Sd58Cj5HkdHn+1pOIrb4gzt+Nub4AXK+Fuv3u/xP1k+Lhhq3FA+525VUkZT2LaQ3Sy990V3prhyOLjQWeNqOqUJJtCWMo5m3ke4dvpgGG9iTbA9GvsurqzB/JwYLkHe7+bG4upmavnVvoH6uYwZjI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790089070; c=relaxed/simple;
+	bh=wo2hhVqXSDFNsEqid+p3Qr8x3erIJj3OEshDQsUgz5c=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=EsAjBbjg8DN/nRUdNuZYrgkA0478NOXOUpejphNpDLVeyGgV/UqJmB1IRqzBDdsw3fBYBaT65/6/jxpLhX8LEo/kflMkMGDJ2NJK1Wr3tK6gmMgPfpYh2Frwc5LzGO/A4enhjQpxBTcOXiFPneYSH3a2MvKxbrbjc2QCsMf0hV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa2-f0.google.com with SMTP id 586e51a60fabf-4511f6a63edso587895fac.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:57:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790088889; x=1790693689;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20260707; t=1790089065; x=1790693865;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=+a1vidkZWMn5yLQTL4wXmDS7ONKk7G2JmZar9AG6UtI=;
-        b=dOSGYixyLKgJnZP6v5RT6sTqV06z9ee7vCdFkaiJt9IgbQI6ylMjdy3dr/mzH9/vhD
-         FT9LBHwjAYShOZlDfshp3rldiTql/jn140BOxPV2hoipV936PbFZOzDzpHl1UTaD9nKv
-         ExOC8HXuTFSdzs53OJnlvUbdJbJH/CrbKWiaXAOYSqTBduhK8b+9ghCuqixGetLEW7IT
-         yPBMu15E6dqhiZ9lBop/qrJx8IycvBXqPzB7yX91ETBOQhbU7C3Ua45WoKGPc2MT5l7w
-         38SqlIuRNSXe26CiCC/xymDhiT7ZKaU/pAJ4s/HQC+k4vNeYpIEJHS+6HwkD4qQfRnS1
-         Fbbw==
-X-Forwarded-Encrypted: i=1; AKwUvBx3FhKhzHkpYiYO/pKOSYDuNrPJxqQa5lBqoq2lrykYdqx37ktyPDC0LKIsAXJtZR9vZ/+6AuI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lB6beewXy3mMcRkts9GmpMQh1Y3sBFFpBVO4hEmLlxNJSvFUo+
-	8hPoeNAA4j0yovmdjWZYRcodmnT0FsdLgNyUqyF87nDCiStdCG02yepSndXXUvBxjaC98/xW3XB
-	5fDRpSamE2EUAbXHmRLVWus4nZ1TQvU0=
-X-Gm-Gg: AYBFou0T33J7e7925pb0h96YpxxPWTRl3RiSupXsxPU9ZGeXPr/SCmhHEOSITBmSS9w
-	2abJcu8++uFUbGZyPvAyVO8PuXoxgYHrk9VPeUiNlBwpGpWXiqCnOIOlNn62aGWMG2Ps5cBDqEU
-	v2vDu42LiCy0lgvj9nhqvqSm1i8LFuOOYy64rvYW4r8bYb5jYPQcFdgiMkdoA9KBldQhmu2pfj5
-	LHKJTUL1/odjP938ngS8TuoGO0AtEcspgzn9+tsxRc8iv6JYSYA2Qgj+sdesYUOlELhcd3LWGeY
-	IwMi7MCc9sPMZxxooO13MTO5iUiE+NKMI2juZOhMxCGKS82OdAI808wiiHDBtKiUNbJ+i0ig4Dg
-	VAoO5obJpBjsvej3tAflSD2mCg7CyTcingDdFggB+at7GlTmm23Bs/uKQ72PplAbEWXQajogLi4
-	0mCgRyev6hM3O9ZcjX98MzfY/R+cIbLXEeB8Sjy2cdqw==
-X-Received: by 2002:a17:907:9813:b0:c29:f5d8:9c71 with SMTP id
- a640c23a62f3a-c2a15812476mr1161704166b.32.1790088888514; Tue, 22 Sep 2026
- 07:54:48 -0700 (PDT)
-Received: from 1057883412519 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 07:54:48 -0700
-Received: from 1057883412519 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 07:54:48 -0700
-From: Zack Gomez <zack.gomez@gmail.com>
+        bh=kOSrLV6iwvAWsPLksNnW/w4j/mbXLy6tE/r1nVS/H88=;
+        b=KSFRJFoEUp6rnfqyRVX6sbVgjQgmJBw3duQz4fQvkyw/k/0agLWcxY3XWvwYL8FwDe
+         M+Yn5afPjIF+UDsYhCpHxDIqg97ztqbmps9ePs2VILbRptYLa8g5HC7GoMolzSDVnrnx
+         8Ze+xxL/OwfLEu3lHZFkPVtYddEso+smM2RFOyZgm4umj9ZVX5Lpm7Yrar69NgxK1Gfq
+         eyJg5i6MIEp2YVf0sZQeYJBYoYv0qtFpGvMfmbr/O8QECf324qo0OXe77sMSbcx7xNtk
+         dDCY1cPi01xDGLCC497Xb+/PXoqtZoN4Uwjgt79VYRRaEOF0bpbYsmXdY+aPp5MA1o8l
+         39Og==
+X-Forwarded-Encrypted: i=1; AKwUvBwTv4DD/4AaQIucZ+loh0D8jX5t8wSYogs8i1uBDoXL0a15p/MH7JA1pMCGtfkeTF1cBibOjJ4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lE0pK7+1SI238ZKK6ADZbcPYbPt4uDywmD9P6C6CjzeM6aN/n0
+	k28yPlwMapY/2cdwq0p8qmd9h4CiMn/W24E2g6TFDht+jJjZJgaokiNfWstWaZ3fNPDdUt0x/Do
+	spfRo6SUHSPteRm39ZO6NZVccz5dk1JfqVx2o/toFQ7OJSoJx+w7DF9nCk5I=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 07:54:48 -0700
-X-Gm-Features: AcwNN1UrauIs-Z038m17bYDGari6DmdyWUeZlNknW_w0fbp_aqbS_LdqLWNugHE
-Message-ID: <CAErB-w3Or6jkhsy9phjf5uo1O-T_hHQLx-XBFZeHX_8tqN38mw@mail.gmail.com>
-Subject: [PATCH net v2] netpoll: bound the deferred transmit queue
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com
-Cc: horms@kernel.org, leitao@debian.org, stephen@networkplumber.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Received: by 2002:a05:6820:168b:b0:6d2:9ab6:471c with SMTP id
+ 006d021491bc7-6d29ab64a21mr248105eaf.84.1790089064861; Tue, 22 Sep 2026
+ 07:57:44 -0700 (PDT)
+Date: Tue, 22 Sep 2026 07:57:44 -0700
+In-Reply-To: <6a73d174.5aeeccc9.207e63.000c.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ab29768.514bccd6.255447.001e.GAE@google.com>
+Subject: Re: [syzbot] [net?] [afs?] kernel BUG in rxrpc_destroy_all_connections
+ (2)
+From: syzbot <syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-__netpoll_send_skb() parks an skb on npinfo->txq whenever the device
-cannot take it at once, and once the queue is non-empty every later skb
-goes straight there to keep ordering. queue_process() drains it from a
-workqueue and, unlike the direct path, never polls the device for
-completions: when the ring is stopped it backs off HZ/10. Nothing limits
-the queue length.
+syzbot has found a reproducer for the following issue on:
 
-A producer that outruns that drain therefore grows the queue until the
-host is out of memory. Observed with netconsole forwarding a GPU driver
-that logged one line at ~1e5/s after a firmware hang. The NIC was
-moving ~17k packets/s: completions for each burst surfaced tens of ms
-later, outside the one-tick window, so queue_process() slept HZ/10 per
-ring while ~1e5 lines/s kept arriving. The queue grew at ~170 MB/s,
-unreclaimable slab reached 51 GiB in five minutes and the OOM killer
-ran from kswapd with 341 MiB of anonymous memory on the whole box. What
-the queue held was the flood itself; the OOM report never left the
-host.
+HEAD commit:    f0100363d8c3 Merge tag 'xfs-fixes-7.3-rc5' of gitolite.ker..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17660c5e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7d012d9c67977ee4
+dashboard link: https://syzkaller.appspot.com/bug?extid=89001660f14fb7684c83
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11ecb805580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16e6f525580000
 
-Reproduced on the same host (netconsole over a 10G ConnectX-4 Lx) under
-the same slow-completion condition: 200k lines to /dev/kmsg in 0.12 s
-grew unreclaimable slab by 173 MiB, about 188k skbs, draining at
-~8-10k packets/s. With prompt completions the same burst drains at line
-rate; a stall on the link while lines keep arriving faster than the
-drain reproduces the growth.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-f0100363.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/57240753f5ee/vmlinux-f0100363.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/2930b9a97546/bzImage-f0100363.xz
 
-Until the 2006 netpoll rework [1] the deferred path drained through
-dev_queue_xmit(), with the stack's own backpressure, and was capped at
-16 skbs (MAX_QUEUE_DEPTH). That series moved it to a direct
-hard_start_xmit() with the HZ/10 back-off and made the queue
-per-device, dropping the cap on the way.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+89001660f14fb7684c83@syzkaller.appspotmail.com
 
-Cap it at 1024 skbs per device and drop new skbs beyond that. The drop
-is counted in tx_dropped of the device whose queue is full and freed
-with SKB_DROP_REASON_FULL_RING. A netconsole target bound directly to
-that device also gets NET_XMIT_DROP and, with CONFIG_NETCONSOLE_DYNAMIC,
-counts it in xmit_drop_count. When a stacked device (bond, bridge,
-team, vlan, macvlan) passes the skb down and the lower device's queue
-is the one that fills, the return value does not reach netconsole and
-the lower device's tx_dropped is the record. The bound holds either
-way. Nothing is logged on the drop path because that would recurse
-into the console being drained.
+netdevsim netdevsim0 netdevsim3 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim0 netdevsim2 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim0 netdevsim1 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim0 netdevsim0 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+bridge_slave_1: left allmulticast mode
+bridge_slave_1: left promiscuous mode
+bridge0: port 2(bridge_slave_1) entered disabled state
+bridge_slave_0: left allmulticast mode
+bridge_slave_0: left promiscuous mode
+bridge0: port 1(bridge_slave_0) entered disabled state
+bond0 (unregistering): (slave bond_slave_0): Releasing backup interface
+bond0 (unregistering): (slave bond_slave_1): Releasing backup interface
+bond0 (unregistering): Released all slaves
+rxrpc: Assertion failed
+------------[ cut here ]------------
+kernel BUG at net/rxrpc/conn_object.c:488!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 2 UID: 0 PID: 5766 Comm: kworker/u32:3 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: netns cleanup_net
+RIP: 0010:rxrpc_destroy_all_connections.cold+0x12/0x14 net/rxrpc/conn_object.c:488
+Code: ff 90 0f 0b e8 39 99 99 00 48 c7 c7 60 6a 5d 8d e8 3d c0 af ff 90 0f 0b e8 25 99 99 00 48 c7 c7 60 6a 5d 8d e8 29 c0 af ff 90 <0f> 0b e8 11 99 99 00 49 63 d6 48 83 ce ff 48 c7 c7 40 f3 00 91 e8
+RSP: 0018:ffffc90003f27970 EFLAGS: 00010286
+RAX: 0000000000000017 RBX: ffff8880394c0000 RCX: 0000000000000000
+RDX: 0000000000000017 RSI: ffffffff81ea1579 RDI: fffff520007e4f1f
+RBP: ffff8880394c0064 R08: 0000000000000007 R09: 0000000000000000
+R10: 8000000000000000 R11: 0000000000000001 R12: 1ffff920007e4f30
+R13: ffff8880394c0078 R14: ffff8880394c0088 R15: ffff8880394c0088
+FS:  0000000000000000(0000) GS:ffff8880d5d53000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055a4b15ca000 CR3: 000000003c5bd000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ rxrpc_exit_net+0x7b/0xc0 net/rxrpc/net_ns.c:113
+ ops_exit_list net/core/net_namespace.c:200 [inline]
+ ops_undo_list+0x2ee/0xab0 net/core/net_namespace.c:253
+ cleanup_net+0x499/0x920 net/core/net_namespace.c:706
+ process_one_work+0xac7/0x1b10 kernel/workqueue.c:3396
+ process_scheduled_works kernel/workqueue.c:3479 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3560
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:rxrpc_destroy_all_connections.cold+0x12/0x14 net/rxrpc/conn_object.c:488
+Code: ff 90 0f 0b e8 39 99 99 00 48 c7 c7 60 6a 5d 8d e8 3d c0 af ff 90 0f 0b e8 25 99 99 00 48 c7 c7 60 6a 5d 8d e8 29 c0 af ff 90 <0f> 0b e8 11 99 99 00 49 63 d6 48 83 ce ff 48 c7 c7 40 f3 00 91 e8
+RSP: 0018:ffffc90003f27970 EFLAGS: 00010286
+RAX: 0000000000000017 RBX: ffff8880394c0000 RCX: 0000000000000000
+RDX: 0000000000000017 RSI: ffffffff81ea1579 RDI: fffff520007e4f1f
+RBP: ffff8880394c0064 R08: 0000000000000007 R09: 0000000000000000
+R10: 8000000000000000 R11: 0000000000000001 R12: 1ffff920007e4f30
+R13: ffff8880394c0078 R14: ffff8880394c0088 R15: ffff8880394c0088
+FS:  0000000000000000(0000) GS:ffff8880d5d53000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055a4b15ca000 CR3: 000000003c5bd000 CR4: 0000000000352ef0
 
-[1] https://lore.kernel.org/netdev/20061026225645.482978803@osdl.org/
 
-Fixes: b6cd27ed3388 ("netpoll per device txq")
-Assisted-by: Claude:claude-fable-5-1
-Signed-off-by: Zack Gomez <zack.gomez@gmail.com>
 ---
-v2:
- - count the drop in tx_dropped of the device whose queue is full, so
-   it is visible when the sender ignores the return value or sits
-   above a stacked device (Breno, Sashiko)
- - free with SKB_DROP_REASON_FULL_RING (Breno)
- - skb_queue_len_lockless() for the unlocked length check; the cap is
-   a soft bound and the comment says so (Sashiko)
- - commit message: xmit_drop_count only covers a directly bound
-   target; slab figures described as what they are; dropped the
-   sentence about the 2006 list discussion
- - Cc Stephen Hemminger (Fixes: author)
-v1: https://lore.kernel.org/netdev/20260914041221.1028092-1-zack.gomez@gmail.com/
-
-Tested on 7.2.5 with this patch applied, same host and reproducer as
-v1. Under the slow-completion condition the 200k-line burst that grew
-unreclaimable slab by 173 MiB on the unpatched kernel grows it by
-2 MiB, with 187229 drops counted in the target's transmit_errors and
-the same number in the device's tx_dropped; with prompt completions
-it drains at line rate with no drops and a sampled peak of ~1.1k
-skbs. Slab figures are deltas sampled at 4 Hz. W=1 build of
-netpoll.o and netconsole.o on this base is clean, checkpatch --strict
-clean.
-
-The first tx_dropped increment on a device allocates its core stats
-with GFP_ATOMIC, the same class of allocation find_skb() already does
-on this path; they could be allocated at netpoll setup instead if
-preferred.
-
-Still open from v1: tail drop keeps the oldest messages and loses the
-newest, which for a console are usually the ones wanted, so dropping
-from the head is a few more lines; and 1024 is arbitrary, about 1 MiB
-of skbs.
-
- net/core/netpoll.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index fe1e0cda5d6..aafbb19a288 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -38,6 +38,15 @@
-
- #define USEC_PER_POLL	50
-
-+/*
-+ * Cap on skbs parked in npinfo->txq while the device is busy. The queue
-+ * exists to ride out a transient stall; a producer that outruns the
-+ * device for longer than that must lose packets, not grow it without
-+ * bound. Checked without the queue lock, so the queue can overshoot
-+ * slightly.
-+ */
-+#define NETPOLL_TXQ_MAX	1024
-+
- /*
-  * carrier_timeout is netconsole-specific and only kept here to preserve the
-  * netpoll.carrier_timeout module-parameter ABI. Its value is exposed to
-@@ -314,6 +323,12 @@ static netdev_tx_t __netpoll_send_skb(struct
-netpoll *np, struct sk_buff *skb)
- 	}
-
- 	if (!dev_xmit_complete(status)) {
-+		if (skb_queue_len_lockless(&npinfo->txq) >= NETPOLL_TXQ_MAX) {
-+			dev_core_stats_tx_dropped_inc(dev);
-+			dev_kfree_skb_irq_reason(skb,
-+						 SKB_DROP_REASON_FULL_RING);
-+			goto out;
-+		}
- 		skb_queue_tail(&npinfo->txq, skb);
- 		schedule_delayed_work(&npinfo->tx_work,0);
- 	}
-
-base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
--- 
-2.55.0
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
