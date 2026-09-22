@@ -1,151 +1,177 @@
-Received: from mail-pz2-f31.google.com (mail-pz2-f31.google.com [74.125.228.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F4B572671
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6AA572663
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790096822; cv=none; b=aPuTw27ASujEdqvsfSoOGRsO1z1o8vnN/YYDtaMdbJBPP1Yn4HR1Z39zCvR/DCwmhEO5Ear1/6KDmATCXXwyneOhT3Gc4Ke3VtzaCheJuifOp8bvuK4QaGla2tFj/XFsSCVdFcrApagDrvQH/yWuyKmJBWOYo9nrr83AxZ2hfRw=
+	t=1790096902; cv=none; b=CidO8dnFMQlGQ30Cri2uxVH7fGAbN+3vihLpvtOxXkuL+nJ5g1PoY3pay6Ztm71cY8NMZL9MG0xrTEDp5RAsv42qOh57JsZLaXdfATiM3A9HLHUXvA/pxaCaCB66Wm2ipQyKx/AuMo91vYLC2YdB0UDrTmZBUr/86Viu0V1tg6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790096822; c=relaxed/simple;
-	bh=4KVFsN/5kuGwpKOa3epF2KYzarXr3UYUxyjwLe7DiVE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jLcyH5JtCh+PxUrpVj9Z6qBWSkIgj7UHL6kIgnVvQnvV3mrRHFPUVw1IKlr4wGVneL8MSDIrjLpq98/1vZ4hksuYBUxjeX9ZzrMRtE9CxHukjINJdqSwGm3S9Z9sJknoKcWJvgcrI5gPWYKrGI9QXBNWDh07Dwh0Gq8Yyi3MAo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLS0VXYB; arc=none smtp.client-ip=74.125.228.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790096902; c=relaxed/simple;
+	bh=iD/zzZgmRhJW4Nl5vQPx14/d2nileWoW87yndp3Ml1c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iRb0/u3Wzz+HyKmz6sbDdnbBqfcc9XKqjA6MiWFj8bsFKpfvxZkqrFxPWAFIytrN5nC6WdQkOAlqp9HYSytfG0BczJhPvUnBBB2F3L8HSBjkpYbAwsrngRhXHuvutN26LJpRinP15+KCjoQTHyojFdFD+BXml5EhLFXuYASocek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Svvt2SmY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YqtxHqxZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLS0VXYB"
-Received: by mail-pz2-f31.google.com with SMTP id 41be03b00d2f7-cc1ceb47d55so49849a12.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:07:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Svvt2SmY";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YqtxHqxZ"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MEjGvH449454
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:08:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	x8oRSt+sEOboeNFCv168cePKrrWr+FqZQJjlgNOUwk0=; b=Svvt2SmY3+ymXzIc
+	CWQFf9FtmUpvg7wLbV3aChiv1BvdzWYKR/XATRtCRlgqY2s232oIzC2ikWZSnQXu
+	vKmpSVO+G+nqMkEI7Qt5YfXiDjx+htW+pI164UPoJdMlFp3uP0aLazcfg0XJhp7w
+	gwPTVTV8fOUliKjD0nluzlof3bxyI6pEtCzXziTVhi4N3kf6Oi0E2dXu7Zon96Os
+	ZVDi5Y6Y5T+LYGee5fJ0vyUlGU6kCeTfIQCLO/hTzJUFMgKkvsIthosPABrg3MK4
+	8e6z3f8/giPGT/MNioYR4oltQpimlJdnMNmZa/7pbfyFqtxo0UAC9ovG0zBojsOe
+	EJChxw==
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com [209.85.217.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gunjytjp0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:08:19 +0000 (GMT)
+Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-7909e307799so9569137.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:08:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790096821; x=1790701621; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qAvCIMMbEInVUoFLnt1nZ1HEAddfmvLREQFEVinPu5Q=;
-        b=CLS0VXYBwCobKG16cZMNhdOp08kyD1sRbA1AMXFXvkyHANnusLmM08Cr18K+qcmPQb
-         dFyFsmUuZVmERl4KYtn16ud8gx75w7lLg3py8m/iDPdmYjJCNC2rlva75lLJTWKnAIFj
-         Mo49Uesxin3afrT6oiSYWZ8N5fnDazkDaTqrUFeHpX5pPu5xYLrL+2hGglucQuVFBai+
-         Xyaj2RC/7iyZPVFDGLjNuw2ixd48ROKfgsIFaQuNWZv9dYDVXfNGFqBF35Fkr7PGXI6d
-         nza44yZE1MoSpoCox3NZH9hSTTOxcDf5ri1F2dXjftAQpph70LNITCrAvnj7cgrgHILA
-         +lSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790096821; x=1790701621;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=oss.qualcomm.com; s=google; t=1790096895; x=1790701695; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qAvCIMMbEInVUoFLnt1nZ1HEAddfmvLREQFEVinPu5Q=;
-        b=EW/raXZOEtoR5iZODJIh7ABS/8oIvBYDDKH/8zHlTRN7Gz9Sy31bd9rIHmY3kprmOr
-         er7MFtuf9kmKGNG55MkXdMMQ4jtDwmp4N1pV7px1pPzPbCrCK8bwO5KGGKQW8GW/OjIg
-         VhIrjB9d0iavqa4LJEFhrurgaugXZsK6bAZ4G5jrCoaLEvC2ldEN1g3jwXdQPilUAzTZ
-         Z6P58KbymbJEzVx0n7DkiHi6blIK0aThVB0RngxGu6lu/KJhggSa6tlTvwtAJ/+g+aSF
-         vLq1txDrGnnVrxrotn8GN68+liORo+lbZDZ416tXv53ziL/pkyh0h8+C4ziLuyRmb36j
-         iQXw==
-X-Forwarded-Encrypted: i=1; AKwUvByllOLOqiNbKvixtdjVJZhZMxppDB3/WgPAIMT251v+ImDbmuPgydKb8Evu/ti3U1CDyZU53s8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kNrV9k3zF4qQL0RGmskVQ6SNAAHse7wqNrJkatn9nP+diF41YX
-	+E3cllW3y1vmPKBB7prSSKHL/hgrVF44stDgsjq/uxfIBR2luYQXnGHH
-X-Gm-Gg: AYBFou1B23tUMb5pNfnOH2WuDEriXPXZZUBWkYUVFvOA+S46dTWKhKGgwD1wWC1DfCA
-	tRAYYKqadJwxE0gFWqbteSAm7l3LGcycT5+tAuhUSLgkUaX9zUcMDHqxBf3G4jCgHi/C9gvgUIc
-	O7pFXudgu5G6LLFERWLpjTRu4U2+O9/3vQVjH4xhdMRG/0JYXGAa7OmJAM6ASZbkErnc2VCjVpJ
-	dsj0nXKuqzYgcgOH9igA4+bKt2RXLjKuxFcyWVNitTRjFxdJWOtdgPHnfFWDJVFVyDL75vb6Hgb
-	2M4MgwPRH/e/gakpsS/W/tZCK1WiQES4rdEIlG5MvWacgbN2zzirlIqOLk1NVJcXwRaNkRjLH/k
-	djhXcV1nVPu7Eu7FsPF8nSUyMYrCF2Rr2MXSGSLKRgiGDxOZTb8ZgOBkN3dQFbklZgbJwlph5Ge
-	hER8bMseVa1+BoIXLVuib/3b/S3yUsii2L747rd7xmaJUn0MLvuZTNdqg0yS2XwQ6b6Hk=
-X-Received: by 2002:a17:90a:d886:b0:3a0:295e:6e61 with SMTP id 98e67ed59e1d1-3a07e494968mr77713a91.12.1790096820503;
-        Tue, 22 Sep 2026 10:07:00 -0700 (PDT)
-Received: from john-p8 ([98.97.43.30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a07dbc5451sm369953a91.7.2026.09.22.10.06.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 10:06:59 -0700 (PDT)
-Date: Tue, 22 Sep 2026 10:06:57 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: zhaogongyi@bytedance.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, jakub@cloudflare.com, jiayuan.chen@linux.dev, 
-	edumazet@google.com, kuniyu@google.com, pabeni@redhat.com, willemb@google.com, 
-	davem@davemloft.net, kuba@kernel.org, horms@kernel.org, ast@kernel.org, 
-	andrii@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com, 
-	yonghong.song@linux.dev, mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf] bpf, sockmap: reject max_entries > INT_MAX in
- sock_map_alloc
-Message-ID: <arK1CpHjWpmX0S55@john-p8>
-References: <20260915071743.29394-1-zhaogongyi@bytedance.com>
- <dc4bd7fb4d98a0066958a4e1582b6a7a407079fd9a284318848909f9594a9295@mail.kernel.org>
+        bh=x8oRSt+sEOboeNFCv168cePKrrWr+FqZQJjlgNOUwk0=;
+        b=YqtxHqxZQbhoKmmMaEipVx19GlMYZcqpSAUTjC6SMlWIoGF726grZESiZ2VeAbtNN/
+         HaioNGT0h+vGjVu9t9E92XABA/yYsvneaxz3BUvmBvn/Mujm44c5EjJI7xRdy40f1r12
+         hVue2LCl1Yp9zsJgh+6FN4BQ7isFSc0XCchPOuxt/GqpHINhw5VCy/NLIlxduZHUiL3t
+         6zGv8p70tNTfhv0nn8T5DFOac7BuYNr4kyTZcU+w+BBc6TU0UpdP0G9lgx7jzqQPXXp4
+         PFWJ64ndEh+sM0yLwCiqGTmJ9+sYDNcCP8UPZnEi3pPVNRt3bDyiRnjBQQmgDwkWjl36
+         oGXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790096895; x=1790701695;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x8oRSt+sEOboeNFCv168cePKrrWr+FqZQJjlgNOUwk0=;
+        b=itT05Zr8cPuaa09XPosAIXGRFmxIDZDINBRMvEdWdyAzG5rsu/nZFTK3jU/CnwZAHw
+         A68L1yZ/TG4UjBBofcRWN5L2ShEwidVaqfpiuawwEm3dsS3yjl8bAZnBwAOtErYV6zGg
+         bx8dEFr9UbfMklRZteXg0ArQUoMFeSY0c4GQAxEWa7uQrWMaID82HgoqvTRPR04/LjK+
+         taX0bZ17Ov3EVRDrlIcXb/L4u6+eRJU8/CY3k4cubKo64jicLeb1do09LWBP7gcxYj99
+         q7ve1ChMk3mHwXdAhUmq3EecardPw+TIA2JEmE9TDB23+CKifbTYGL64E4x4Rj0G6EzB
+         74ng==
+X-Forwarded-Encrypted: i=1; AKwUvBy76wqo0Ftqo/PdAPyD37FLwy4JfUwEsm9erxb4ntUOpqHRN9wpQZGcXxf4QDU+9vX/na3MpHA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mN8OwDARRChkAPzdvFIinPKwSiv/a1Pn/6KUjh8lTk9XnFwEtk
+	aWYATetuQBaZfXN5XOWHrZNKWoluA6Tla4VVU/uJyUKMCV9g43KdQo6JtuXBgMK1CTVErrHr22k
+	v1IxsYZ8B0rMYEv0VEIjzzvoR1igTdEa7sfZrqmffCBx/6BqjIDSEDPtJShs=
+X-Gm-Gg: AYBFou1cZeD+zFaAu4Wz3m29lhsWdJnhtf64+IBQSwFl4vl/DOjXhu9tNPnnm8+68gr
+	E8KMhoF87d+XfB+3KI9MTSQAppVuo+5kr+VvzdM86doFQDToeiq7gNH3ewvaKthRrCYRl4Fb6bu
+	ESUQoe970ls48WXZ8eWrJkOQg+uopv0oyhHBuwEFfQf/jH3iCNBR3vHmKZ0iHkpy+iox+KXszlQ
+	ymVu0s0AFLbcp72sS8IhTVfv9FqONoss1zkrQh7nTn4FwDwqltvL+3bxwL/9bYZLpYlawvc/Xa0
+	nISDwDb5ziEe/rda2k7Eh8TomZNHlehzCqmCVtCk9uBdeavEtrQX9gDc/UAfxwZOguLnp2AeLeH
+	9hwh3fOG0fpQwcBgjVyBiRu4DFF6o4fhFTuLLiV8=
+X-Received: by 2002:a05:6102:8094:b0:7a7:19aa:8a85 with SMTP id ada2fe7eead31-7a719aa90a9mr7105781137.32.1790096895143;
+        Tue, 22 Sep 2026 10:08:15 -0700 (PDT)
+X-Received: by 2002:a05:6102:8094:b0:7a7:19aa:8a85 with SMTP id ada2fe7eead31-7a719aa90a9mr7105724137.32.1790096894617;
+        Tue, 22 Sep 2026 10:08:14 -0700 (PDT)
+Received: from [10.243.142.186] ([212.136.9.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fde1c0f6csm5359905e9.3.2026.09.22.10.08.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 10:08:13 -0700 (PDT)
+Message-ID: <3f5da6c9-7394-4452-92f8-b773cd34aecf@oss.qualcomm.com>
+Date: Tue, 22 Sep 2026 18:08:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <dc4bd7fb4d98a0066958a4e1582b6a7a407079fd9a284318848909f9594a9295@mail.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] net: qrtr: Allow the host QRTR to assign a unique
+ node id
+To: manivannan.sadhasivam@oss.qualcomm.com,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Chris Lew <christopher.lew@oss.qualcomm.com>,
+        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+        Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
+        Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
+        Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+References: <20260921-qrtr-multi-ep-v2-0-27dd80d841a0@oss.qualcomm.com>
+ <20260921-qrtr-multi-ep-v2-1-27dd80d841a0@oss.qualcomm.com>
+Content-Language: en-US
+From: Youssef Samir <youssef.abdulrahman@oss.qualcomm.com>
+In-Reply-To: <20260921-qrtr-multi-ep-v2-1-27dd80d841a0@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: y4N4xKfDHhwxIgT4OgNFZCHqpO1Xujct
+X-Authority-Analysis: v=2.4 cv=KqHYSmWN c=1 sm=1 tr=0 ts=6ab2b603 cx=c_pps
+ a=5HAIKLe1ejAbszaTRHs9Ug==:117 a=dNlqnMcrdpbb+gQrTujlOQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=JX_TeLtU1EXCEf5LEwoA:9 a=QEXdDO2ut3YA:10 a=gYDTvv6II1OnSo0itH1n:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDI1MCBTYWx0ZWRfXzTkG5wn9TVUX
+ rEfES3BFLoFvUPfmusAd+mtzT7FQvcA4jTf6kXhUyiqyNDWTvrqr4ChcQG0h92r48fPDpg1JLzI
+ 58xjp3Dn+/Pn37l/nPx+GEx/mz+/Bp4m0BgT/jxChhXFpZ9BTN+PjD0hIR7JXAGvfcz0+M0Pqe3
+ WaPeWErnPQEFoYd8AS5rnvKMy+oK1qgTQcI/+87BX/BSM7UF70q/oQ97oCQqi96w7AY6dlxtxMm
+ qAtfaYgTtWvGT1tk/ZelyYP2rLrDch6mpR8qvpzykn10ogfrfA6C7902dnqPSSEHNgCagMSkVpy
+ 3sDDl4IAM+8j48K7FRg2diBh+ESltj2hQxuE4bKcesgMY+RJ+Tl7nPjU0TEkwS80D0XwCuOjv1q
+ 69g5o9T1rhJonffox6c3Ka4gWm+1+vxJDKF0TniARC2L3Bz4wBNGVA6iOLKnflEVcDNEFjgRKJV
+ oK5iKYgI4S5LwoF+hKQ==
+X-Proofpoint-ORIG-GUID: y4N4xKfDHhwxIgT4OgNFZCHqpO1Xujct
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDI1MCBTYWx0ZWRfX+kjr+3MzUSE1
+ CFKABWanUjMd+0D1Z1d+FzKzOsRYPwt4yof5QeDoxzy+0nkVwYkFg1XgPj3V5vkgE3wR2QeMAid
+ +gvGjhmoDuS67OWxz3KOInVeeGio7Nk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-22_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220250
 
-On Tue, Sep 15, 2026 at 08:13:48AM +0000, bot+bpf-ci@kernel.org wrote:
->> sock_map_alloc() only rejects max_entries == 0 and never caps the upper
->> bound.  sock_map_free() then walks the sks[] array with a signed int
->> iterator:
->>
->> 	int i;
->> 	for (i = 0; i < stab->map.max_entries; i++)
->> 		struct sock **psk = &stab->sks[i];
->>
->> When a SOCKMAP is created with max_entries = 0xffffffff (UINT_MAX), the
->> allocation of 32 GiB can succeed on large-memory hosts.  During free the
->> counter reaches 0x80000000, wraps to INT_MIN, is sign-extended by movslq
->> and turned into a ~16 GiB negative offset from stab->sks, pointing far
->> below the allocation.  On a KASAN kernel the shadow check for that
->> address hits an unmapped shadow page and oopses:
 
-[...]
 
->> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg 
->> interface")
->
->Is 604326b41a6f the commit that introduced this bug?
->
->Looking at that commit, the version of sock_map_alloc() it created did
->cap max_entries:
->
->    /* Make sure page count doesn't overflow. */
->    cost = (u64) stab->map.max_entries * sizeof(struct sock *);
->    if (cost >= U32_MAX - PAGE_SIZE) {
->            err = -EINVAL;
->            goto free_stab;
->    }
->
->This bound limits max_entries to below (U32_MAX - PAGE_SIZE) / 8, about
->536,870,400 entries, which is far under INT_MAX. With that bound the
->signed iterator in sock_map_free() could not overflow.
->
->The check later moved into bpf_map_charge_init() with the same limit.
->The upper bound was actually removed by 0d2c4f964050 ("bpf: Eliminate
->rlimit-based memory accounting for sockmap and sockhash maps", v5.11),
->which deleted the bpf_map_charge_init() call without replacing the size
->check.
->
->Should the Fixes tag be:
->
->    Fixes: 0d2c4f964050 ("bpf: Eliminate rlimit-based memory accounting for sockmap and sockhash maps")
-
-The fix is good, its probably worth getting the Fixes tag correct?
-
->
->> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
->> index ca49bc7f8687c..38df842843289 100644
->> --- a/net/core/sock_map.c
->> +++ b/net/core/sock_map.c
->> @@ -41,6 +41,7 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
->>  	struct bpf_stab *stab;
->>
->>  	if (attr->max_entries == 0 ||
->> +	    attr->max_entries > INT_MAX ||
->>  	    attr->key_size    != 4 ||
->>  	    (attr->value_size != sizeof(u32) &&
->>  	     attr->value_size != sizeof(u64)) ||
-
-Otherwise,
-
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+On 9/21/2026 12:23 PM, Manivannan Sadhasivam via B4 Relay wrote:
+> +/* Replace the node id in the control packet with 'node->nid', if both are
+> + * different.
+> + */
+> +static void qrtr_node_rewrite_ctrl(struct qrtr_node *node, unsigned int type,
+> +				   struct sk_buff *skb)
+> +{
+> +	struct qrtr_ctrl_pkt *pkt;
+> +	__le32 *nid;
+> +
+> +	if (node->nid == node->ep_nid)
+> +		return;
+> +
+> +	if (skb->len < sizeof(*pkt))
+> +		return;
+> +
+> +	pkt = (struct qrtr_ctrl_pkt *)skb->data;
+> +	if (type == QRTR_TYPE_DEL_CLIENT)
+qrtr_tx_wait() will create a qrtr_tx_flow object keyed by qrtr_node->nid.
+qrtr_tx_resume will attempt to retrieve it with qrtr_node->ep_nid, which
+will fail. This leads to the HTD path pending packets reaching
+QRTR_TX_FLOW_HIGH and block indefinitely. QRTR_TYPE_RESUME_TX should
+be handled here.> +		nid = &pkt->client.node;
+> +	else
+> +		nid = &pkt->server.node;
+> +
+> +	/* Rewrite only the endpoint's node id, not those of bridged nodes */
+> +	if (le32_to_cpu(*nid) == node->ep_nid)
+> +		*nid = cpu_to_le32(node->nid);
+> +}
+> +
+Thanks,
+Youssef
