@@ -1,121 +1,100 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B1F442367;
-	Tue, 22 Sep 2026 08:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA5B4825DC;
+	Tue, 22 Sep 2026 08:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066106; cv=none; b=SbtPAFOg4G5NJKOGuXaqi2zHD291LTqSwiFvBUj8bK4fsj6YdKY7+7S9drUv9V4o2CVJ/SCU2XGqJ0X7Xu/0HAev03Ah0Jfy8MMxup96UX31lVrblrYtq4H85gmUmXx85Nco227KDAm1cvxdK6exukQA4S6J0CGIuPkCCxweLPc=
+	t=1790066196; cv=none; b=oP/8laET/rQ8kgsGilbXSNNgZaOD1V+BZTU9MoKiTCr95MALx2OiYoIb7BCE4XYuO+F0HTxYqan8/WsWqgCgtdV+XyenFrvNcKWOcRugqUF6D7boBTQlSuQx45xCcPTa3ilo0Qaxjz71X5yiGcpMAcXkTDBHeRmjcX9G/MUL7qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066106; c=relaxed/simple;
-	bh=gGUIYieV24A6lUUX1gSh58XZU7HKx2PCY9euDoctP+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SK3QlYhvERcy71XRB22u4SepkTGI/WTSwb2A/rauoNKXAYLRvUwqdxTCMaG64ArtbLbUvKUMYbvK5/K/NUODmAU6EtY/VPwmrC+yTz8ItLjAPzE2gViIdn+1CybsuR58dsDB3KmNXmoFVWZmKCM8nLPQrKDnD3ctXapZN8FWzDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=AHlmL3yv; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1790066196; c=relaxed/simple;
+	bh=OdXW4d0OBvTdeAS4NS/4eGfV1LapWifczJxRiY77+Eg=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=c5KCPb6aEbar1v6w5P+Jr150/uuoS58GNA2IF+8MHz0H/eIHxCrenCGXqVHHCmDXOTtC7z1jsLEtnuVTG4g+dI76y4jgYGvGkWq2nYUEZWAb24JgW5PlbCaSEzqQcZDWdPqAamY9MXV01gKKdtQVVD33u+mbQx2Sji4GGWO9qPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=lFiKivtV; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="AHlmL3yv"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 26C0114C2D6;
-	Tue, 22 Sep 2026 10:34:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1790066102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1wp8p1aEBwAksuFVWvFD43qsY5klCVg78/py079j2N4=;
-	b=AHlmL3yvGghWeG82SismoGhcaDe1YC6MzyvPHcGQNArDWsskn4fs4iWj62tQ817vpfHASp
-	zFUiqC2cC4mQawowwydaT+x/NsNZ9HedPekT73MjsJ94bdN7JqhnR/FNpycft5C6cShlMk
-	B7U8r6TPPq/UCbsRh+IrHgzTQ520jY9OiQ/PNUZkhOQ/OlSOkv/TutmTS2C7mn7GBZS0Nu
-	gQkQmQ4SJKXKNT7OkO2jENSHrDJS3IAPAtZfz15NmcgpIsB/dkbXYh5uBtJ2RgCtjNZLe6
-	CnIkwTbdV8VT4eXEmZoSqEeZMIu/7FvXxKvMldocAVNeUPvrIdQwlATXbTN3SA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5b7922d3;
-	Tue, 22 Sep 2026 08:34:55 +0000 (UTC)
-Date: Tue, 22 Sep 2026 17:34:40 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
-	Haobin Wu <853555@gmail.com>, jack@suse.cz, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org,
-	aneesh.kumar@linux.vnet.ibm.com, willy@infradead.org,
-	dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
-Subject: Re: [PATCH v3 3/3] 9p: skip over-long directory entry names for
- legacy 9p2000 too
-Message-ID: <arI9oOXMsB-iG7jm@codewreck.org>
-References: <20260918024851.51229-1-853555@gmail.com>
- <20260918024851.51229-4-853555@gmail.com>
- <2050867.PYKUYFuaPT@weasel>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="lFiKivtV"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9EAAA4A2E;
+	Tue, 22 Sep 2026 10:36:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790066190; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=xwykvJFdBTPMGF/t3FfOtbQ2mRuqK4UzmM43MIqyX8U=;
+	b=lFiKivtVx55l08uMNmCoztgvC74kn4lnHbQf/y7l3v0b1G67mtlMuwwZ1RjuIeF2hJD8Rg
+	h4sJ+rUzkhUGMreSmWTThqwy4iwXvirW6DX3LtqI/ebjZQA3MLsZ0bQe0xcRcr39PMtHkm
+	q1rYx/c55Ru9KJUW+EFhfFlH4zPNrL/aa6QdF6H6H3a19C9Gqs6hvb4wHNUWA5U6palBzc
+	UcGlW7zA1s4xazIk4Bk8D1SbcmhtAcyPQxmVuayN21OqXozwHgdlFe7//wSPIyewWCk0oI
+	dx/x5IO9ZmkAfzlhHxbyq5QU5LzNUkF0JSJhIQT05BDcBpnG39x55K1TlN5BhQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2050867.PYKUYFuaPT@weasel>
+Date: Tue, 22 Sep 2026 10:36:28 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+ <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 01/12] net: systemport: Fix buffer overflow in
+ bcm_sysport_get_stats()
+In-Reply-To: <20260921231305.394773-2-florian.fainelli@broadcom.com>
+References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
+ <20260921231305.394773-2-florian.fainelli@broadcom.com>
+Message-ID: <d03b360c6fba3c8f67a9233e46d25cc9@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Haobin Wu,
-Thanks, I picked up all three patches
-
-Christian Schoenebeck wrote on Fri, Sep 18, 2026 at 02:08:00PM +0200:
-> On Friday, 18 September 2026 04:48:51 CEST Haobin Wu wrote:
-> > The legacy 9p2000 and 9p2000.u readdir path, v9fs_dir_readdir(), parses
-> > each entry with p9stat_read() and, unlike the 9p2000.L path, never had
-> > a 256-byte name limit: a name of any length up to the wire maximum was
-> > handed to dir_emit(). getdents64() therefore returned names longer than
-> > NAME_MAX that no later syscall can use, and failed with -EIO for names
-> > of PATH_MAX bytes or more.
-> > 
-> > Apply the same NAME_MAX check as the previous patch does for
-> > v9fs_dir_readdir_dotl(), so both protocol variants behave the same.
-> > 
-> > Note that this is a behaviour change for 9p2000 and 9p2000.u: entries
-> > with names longer than NAME_MAX used to be listed and are now skipped.
+On 22.9.2026 01:12, Florian Fainelli wrote:
+> When running on SYSTEMPORT Lite, certain statistics are unsupported and
+> skipped during bcm_sysport_get_stats(). The variable 'j' tracks the
+> compacted index into the destination data buffer, whereas 'i' iterates
+> over all elements in bcm_sysport_gstrings_stats.
 > 
-> That sentence is a bit misleading, isn't it?
+> Because the buffer allocated by ethtool is sized only according to
+> bcm_sysport_get_sset_count(), storing values at data[i] instead of
+> data[j] writes past the allocated array bounds, leading to memory
+> corruption.
 > 
-> Name length 256..4095:
->   - before: listed, but unusable (ENAMETOOLONG)
->   - now: entry skipped, fetch continues
+> Fix this by writing to data[j] instead of data[i].
 > 
-> Name length >=4096:
->   - before: aborts the entire fetch (similar to 9p2000.L side)
->   - now: entry skipped, fetch continues
-
-Right, I've shamelessly copied that in when applying
-https://github.com/martinetd/linux/commit/55d6732b8015705a657d96fc5bd37fbed349624a
-
-> > @@ -126,8 +128,16 @@ static int v9fs_dir_readdir(struct file *file, struct
-> > dir_context *ctx) return -EIO;
-> >  			}
-> > 
-> > -			over = !dir_emit(ctx, st.name, strlen(st.name),
-> > -					QID2INO(&st.qid), dt_type(&st));
-> > +			namelen = strlen(st.name);
-> > +			if (namelen > NAME_MAX) {
+> Fixes: 10377ba7673d ("net: systemport: Support 64bit statistics")
+> Assisted-by: LLM
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> ---
+>  drivers/net/ethernet/broadcom/bcmsysport.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> ... maybe better if (namelen >= PATH_MAX) here for legacy 9p2000(.u)?
+> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c 
+> b/drivers/net/ethernet/broadcom/bcmsysport.c
+> index 4d06c6ba6641..db627cd15fb7 100644
+> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
+> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+> @@ -482,10 +482,10 @@ static void bcm_sysport_get_stats(struct 
+> net_device *dev,
+>  		    s->type == BCM_SYSPORT_STAT_NETDEV64) {
+>  			do {
+>  				start = u64_stats_fetch_begin(syncp);
+> -				data[i] = *(u64 *)p;
+> +				data[j] = *(u64 *)p;
+>  			} while (u64_stats_fetch_retry(syncp, start));
+>  		} else
+> -			data[i] = *(u32 *)p;
+> +			data[j] = *(u32 *)p;
+>  		j++;
+>  	}
 
-Given things won't work after the name is picked up anyway (from what I
-tried at least stat didn't work), I don't think it matters much, but I'm
-fine breaking compatibility here.
-We can bring the limit back up to PATH_MAX if someone claims it's useful
-somewhere.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-> > +				p9_debug(P9_DEBUG_ERROR,
-> > +					 "skip dentry: name length %zu > NAME_MAX\n",
-> > +					 namelen);
-> > +				over = false;
-> 
-> Nit: alternative would be init over = false and dropping explicit assignment 
-> inside loop branch here. But that's already personal taste level.
-
-(I actually had the same comment, so made the swap locally)
-
--- 
-Dominique Martinet | Asmadeus
+Thanks,
+Nicolai
