@@ -1,176 +1,192 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E85548566;
-	Tue, 22 Sep 2026 21:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8495C51DE09
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 21:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790113347; cv=none; b=RK/YWAV+T+JCMwX7ypMaJrRLsI4Q9FhjCPNNcGkASc+xNHPdJzY7f7j3byGKdKfe2eKFFZeIzKJbY7mU29Jx1N+ONrkQsz8X9zMtQRXkqAqS0Q5ESMdoKRtIZwqRZZIJlD3xJmr3uZ2wP6BZEh3G9IkeWmYp4tRZcADeh+pXjO4=
+	t=1790113660; cv=none; b=mohe6qYgs4mO5seYjD0EELYbZJ/GUBhVjUR4XzMNVMVf/nr5LD18tJtS0MVaZXYYDssF17uzoCqkUSPyWfDupf7zhOJzUYUSv/SeAZEdAfefGuosTPOCsIAgWDjwy29shTDNp6PIE0Hw7bsCybjLPF/lxFLvGRrqnIiMA31AQD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790113347; c=relaxed/simple;
-	bh=bdZHWktZQrNVooTNS2xbaoRXXu8ECM/sOZ8cgZBFEzM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sPWwQi+L/4Fw1CYcPBbYD6yXkepLXVuCSmhg3+R3yCkkMwPBR/W2KhVHWwqSOqXwm1+KDL/7RHVS7SM6PzlF1slncZjrgQAHvqndHKdefn03y1jTuqeB6KKT5J7qNCk7E+M3QibMMlCiSDHNGRH+Tooklbbjf9axPOdF13Dzuvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=MZbtuOYB; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1790113660; c=relaxed/simple;
+	bh=FOqR8vAhGr8g9sZu0webAkiaaU1DJsScfo8uOPGzLSM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LCGLh58989GuCI0YgSST3TVX0Tc/7NqpOBR7PA8ZkDcFXoWWoc59Z0tYxPWN0kN0Xof2HRBRHwK0cdXdadLoIXFkjD4Iij+l6bXV2dXX7bJcix6Kn2enxlfHookGevYIujWkda377Jfv5UTe+nq1qVxHbyhinI4sfIlTCK3Xdgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GkzVjr1K; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="MZbtuOYB"
-Received: from localhost.localdomain (unknown [4.194.122.170])
-	by linux.microsoft.com (Postfix) with ESMTPSA id A72BE20B7167;
-	Tue, 22 Sep 2026 14:41:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A72BE20B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1790113283;
-	bh=AwmQ1oWcxi3FY9aiQMRQQPaw3GGCnd6GMquPBV0gKXk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MZbtuOYB1k7EbraxySVx+DrOQ362+k5TLCvOntm2eInzrga6TG929fPEPcrdtYcWx
-	 B3IGGZc7okeoxNligJALt4ZwJn1ySECtff3OGcmeZsQTKQzE8V8/6AcCP97vXFcl3l
-	 TAnJgqOP+lz6T+buJqOm/ItTwsBklW0RTT1d8JLc=
-From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
-To: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	Xiang Mei <xmei5@asu.edu>,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: [PATCH net v2] amt: do not store tunnel pointer in skb control block
-Date: Tue, 22 Sep 2026 17:41:50 -0400
-Message-ID: <20260922214150.13970-1-cenzhang@linux.microsoft.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GkzVjr1K"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1C21BC21A99;
+	Tue, 22 Sep 2026 21:48:13 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5579D60580;
+	Tue, 22 Sep 2026 21:47:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DD6710328B89;
+	Tue, 22 Sep 2026 23:47:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790113640; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=m0JlreyEJJ3u2gi6KYmZFs3Q667NRJY6xEL00ZUN48k=;
+	b=GkzVjr1KUbIzep8704/Oq868HuBRpjy+UE1zRrlKJFA84olbhB5nE+cSD4yyzfdBX3E43S
+	laXVPESvop1qvxsmpSLLADC6KmQp4ER+hey5ZR9XGqIFd3TM8GTfL46EQj4hNC1Qol6AQ8
+	1cdApNAHu0Pkj2FD6nBnnuRIX2oP+iExIHsG/JlbH1lWiQSDPTV0s49sHMVH7ffaFGauoO
+	EapgmWWjn38kySHKIXHWlVFgTtmVosdpxkKonu62c5BjurblPAt05ngUXeLwGtmpp+RdH5
+	pdlSKIqJ3zjfxwpcSmFezYfmn4ekqIcHrcuUT5RTgHK/OJlYKRjOfgUDhL96EA==
+Message-ID: <59edcef4-6b2c-403e-bc36-1e4e222231c3@bootlin.com>
+Date: Tue, 22 Sep 2026 23:47:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 3/3] net: stmmac: close the interface after failed
+ hardware resume
+To: James Hilliard <james.hilliard1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Joakim Zhang <qiangqing.zhang@nxp.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Christian Marangi <ansuelsmth@gmail.com>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
+Cc: Richard Genoud <richard.genoud@bootlin.com>,
+ Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00@gmail.com>
+ <20260921-submit-stmmac-reset-fixes-v1-v1-3-87a4e431ee00@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260921-submit-stmmac-reset-fixes-v1-v1-3-87a4e431ee00@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-An skb queued in a qdisc can outlive the tunnel it references
-through a raw pointer in skb->cb. For example, a netem delay of
-180s exceeds the default tunnel lifetime of 135s (igmp_qrv=1);
-when the tunnel expires and is freed, the subsequent dequeue
-triggers a use-after-free in amt_dev_xmit().
+Hi,
 
-  BUG: KASAN: slab-use-after-free in amt_dev_xmit+0x2763/0x2e20
-  Call Trace:
-   amt_dev_xmit+0x2763/0x2e20 [drivers/net/amt.c:1262]
-   dev_hard_start_xmit+0x22f/0x620
-   sch_direct_xmit+0x12e/0xac0
-   netem_dequeue+0x333/0xc50
-   net_tx_action+0x35c/0xa60
+On 9/21/26 18:54, James Hilliard wrote:
+> System suspend disables NAPI and suspends phylink but retains the IRQs
+> and DMA resources. If hardware setup fails during resume, the interface
+> remains administratively up with NAPI still disabled. Closing it later
+> calls napi_disable() a second time and can hang indefinitely.
+> 
+> On hardware-setup failure, stop DMA and disable the MAC, then release the
+> suspended data path without repeating NAPI disable. Stop phylink directly
+> from its suspended state rather than restarting the link on hardware
+> which failed to resume. Drop the driver mutex before teardown, retaining
+> RTNL across cleanup and network-core close.
+> 
+> Close the netdev to detach the PHY, release its runtime-PM reference and
+> clear its administrative state. Reattach the now-down netdev so a later
+> open can allocate new resources and retry. Preserve the original resume
+> error and leave successful resume unchanged.
 
-Store the tunnel identity (ip4 + source_port) in skb->cb instead
-of a pointer, and re-lookup the tunnel under RCU in amt_dev_xmit().
-If the tunnel is gone, the query is simply dropped.
+So this changes the admin state of the interface upon resume failure ?
 
-A refcount fix would be hard to keep balanced here, as the skb may
-be dropped or cloned by the qdisc layer before reaching
-amt_dev_xmit().
+using netif_close() in drivers is not common at all, only 3 drivers do that,
+and among that, fbnic does that for the selftests...
 
-Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-Reported-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
-Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
----
-v2:
- - Drop the comment above struct amt_skb_cb (Taehee Yoo)
- - Mention in the commit message why a refcount is not used
-   (Taehee Yoo)
- - Rebase on net/main
-v1: https://lore.kernel.org/netdev/20260818164825.63967-1-blbllhy@gmail.com/
+Let's instead focus on making the state coherent.
 
- drivers/net/amt.c | 34 +++++++++++++++++++++++++---------
- include/net/amt.h |  3 ++-
- 2 files changed, 27 insertions(+), 10 deletions(-)
+Before entering suspend, interface is up and running. suspend happens, then
+resume, and something goes wrong. As you mention, the next logical step as
+the interface is now dead is to bring it down, and freshly set it back up.
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index bddc24e1856..b660cebf248 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -791,6 +791,18 @@ static void amt_send_request(struct amt_dev *amt, bool v6)
- 	rcu_read_unlock();
- }
- 
-+static struct amt_tunnel_list *amt_lookup_tunnel(struct amt_dev *amt,
-+						 __be32 ip4, __be16 source_port)
-+{
-+	struct amt_tunnel_list *tunnel;
-+
-+	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
-+		if (tunnel->ip4 == ip4 && tunnel->source_port == source_port)
-+			return tunnel;
-+
-+	return NULL;
-+}
-+
- static void amt_send_igmp_gq(struct amt_dev *amt,
- 			     struct amt_tunnel_list *tunnel)
- {
-@@ -800,7 +812,8 @@ static void amt_send_igmp_gq(struct amt_dev *amt,
- 	if (!skb)
- 		return;
- 
--	amt_skb_cb(skb)->tunnel = tunnel;
-+	amt_skb_cb(skb)->tunnel_ip4 = tunnel->ip4;
-+	amt_skb_cb(skb)->tunnel_port = tunnel->source_port;
- 	dev_queue_xmit(skb);
- }
- 
-@@ -885,7 +898,8 @@ static void amt_send_mld_gq(struct amt_dev *amt, struct amt_tunnel_list *tunnel)
- 	if (!skb)
- 		return;
- 
--	amt_skb_cb(skb)->tunnel = tunnel;
-+	amt_skb_cb(skb)->tunnel_ip4 = tunnel->ip4;
-+	amt_skb_cb(skb)->tunnel_port = tunnel->source_port;
- 	dev_queue_xmit(skb);
- }
- #else
-@@ -1262,15 +1276,17 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 		goto unlock;
- 	} else if (amt->mode == AMT_MODE_RELAY) {
- 		if (query) {
--			tunnel = amt_skb_cb(skb)->tunnel;
--			if (!tunnel) {
--				WARN_ON(1);
--				goto free;
--			}
--
-+			rcu_read_lock();
-+			tunnel = amt_lookup_tunnel(amt,
-+						   amt_skb_cb(skb)->tunnel_ip4,
-+						   amt_skb_cb(skb)->tunnel_port);
- 			/* Do not forward unexpected query */
--			if (amt_send_membership_query(amt, skb, tunnel, v6))
-+			if (!tunnel ||
-+			    amt_send_membership_query(amt, skb, tunnel, v6)) {
-+				rcu_read_unlock();
- 				goto free;
-+			}
-+			rcu_read_unlock();
- 			goto unlock;
- 		}
- 
-diff --git a/include/net/amt.h b/include/net/amt.h
-index a0255491f5b..8727cf007bc 100644
---- a/include/net/amt.h
-+++ b/include/net/amt.h
-@@ -232,7 +232,8 @@ struct amt_relay_headers {
- } __packed;
- 
- struct amt_skb_cb {
--	struct amt_tunnel_list *tunnel;
-+	__be32			tunnel_ip4;
-+	__be16			tunnel_port;
- };
- 
- struct amt_tunnel_list {
--- 
-2.53.0
+I'd say, either the __stmmac_open / __stmmac_release are not at the right 
+granularity, or there's an ordering issue, but we should focus on making
+sure down'ing the interface after such a failure puts it back in a clean
+state. I'm not really convinced with the boolean to the release indicating
+if something's already cleaned or not.
+
+Maxime> 
+> Fixes: 6896c2449a18 ("net: stmmac: Check stmmac_hw_setup() in stmmac_resume()")
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 29 ++++++++++++++++-------
+>  1 file changed, 21 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 44b59d0f56b5..87cb0978ed6a 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -4245,7 +4245,7 @@ static int stmmac_open(struct net_device *dev)
+>  	return ret;
+>  }
+>  
+> -static void __stmmac_release(struct net_device *dev)
+> +static void __stmmac_release(struct net_device *dev, bool napi_disabled)
+>  {
+>  	struct stmmac_priv *priv = netdev_priv(dev);
+>  	u8 chan;
+> @@ -4258,7 +4258,9 @@ static void __stmmac_release(struct net_device *dev)
+>  	/* Stop and disconnect the PHY */
+>  	phylink_stop(priv->phylink);
+>  
+> -	stmmac_disable_all_queues(priv);
+> +	/* Suspend has already disabled NAPI when hardware resume fails. */
+> +	if (!napi_disabled)
+> +		stmmac_disable_all_queues(priv);
+>  
+>  	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+>  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+> @@ -4297,7 +4299,7 @@ static int stmmac_release(struct net_device *dev)
+>  	if (device_may_wakeup(priv->device))
+>  		phylink_speed_down(priv->phylink, false);
+>  
+> -	__stmmac_release(dev);
+> +	__stmmac_release(dev, false);
+>  
+>  	stmmac_legacy_serdes_power_down(priv);
+>  	phylink_disconnect_phy(priv->phylink);
+> @@ -6174,7 +6176,7 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
+>  			return PTR_ERR(dma_conf);
+>  		}
+>  
+> -		__stmmac_release(dev);
+> +		__stmmac_release(dev, false);
+>  
+>  		ret = __stmmac_open(dev, dma_conf);
+>  		if (ret) {
+> @@ -8356,10 +8358,7 @@ int stmmac_resume(struct device *dev)
+>  	ret = stmmac_hw_setup(ndev);
+>  	if (ret < 0) {
+>  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+> -		stmmac_legacy_serdes_power_down(priv);
+> -		mutex_unlock(&priv->lock);
+> -		rtnl_unlock();
+> -		return ret;
+> +		goto error_stop_dma;
+>  	}
+>  
+>  	stmmac_init_timestamping(priv);
+> @@ -8386,6 +8385,20 @@ int stmmac_resume(struct device *dev)
+>  	netif_device_attach(ndev);
+>  
+>  	return 0;
+> +
+> +error_stop_dma:
+> +	stmmac_stop_all_dma(priv);
+> +	stmmac_mac_set(priv, priv->ioaddr, false);
+> +	mutex_unlock(&priv->lock);
+> +	/* Release the suspended data path before ndo_stop(), which must not
+> +	 * disable NAPI or free these resources a second time.
+> +	 */
+> +	__stmmac_release(ndev, true);
+> +	netif_close(ndev);
+> +	netif_device_attach(ndev);
+> +	rtnl_unlock();
+> +
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(stmmac_resume);
+>  
+> 
 
