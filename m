@@ -1,37 +1,37 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDCB531B03;
-	Tue, 22 Sep 2026 23:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA465208B8;
+	Tue, 22 Sep 2026 23:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790119496; cv=none; b=OPPpYea+bqmsC49m4ERrL5d5qN1mfGUJ/yXOU1XAeCVjBOsZVYOXp+7X5+d1GuT8Jxf1puDr2zi2VtgimhEEKuHRPvFH2gDWdbd9ERpJZmcXsO9PJSfTvG805c8w6vF573NJdwKoueODbwGYvFsj5o1JyRS6ZpX9uMfILsODwO0=
+	t=1790119496; cv=none; b=aR0GlxxbEE8QOMKBdj8vjq3784XR5NnfUTrciRloBMqqN90yCi6azHmOw1s+BRpxt79TtncXwff6GaEBv/u0xngJHZB5WJ/om1MvmLIbWkaGJ31vjygrzs9qzF3lPCDxwOthajh+6GBwY2pfUd/P4Si32oxdtanRovT1McXG1jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790119496; c=relaxed/simple;
-	bh=g7xNGG6f6KDhEMF0no2WkSnny9t+AeRAFzePXWpQZ4s=;
+	bh=I9DnMq4KXhMFBvyFhpkMPTrKDNbKAXhlEmUo595ax54=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fXkYCozl/Uc/8l2Ise0hi++py9+DcFfBd0ahlhdd1fvM8+BZyCaqzlaSKo9byRfuhqY3k72UHm/3YiV+vnk+WUrknIsvD0JXMuvpZrE9Dl+nfkOHkzwzajiU0R8BMBm0p+cUBiv9O9BiqfTEOxMiUm3ecdgH7Acxn2wY3CPGmLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GTCWYsnM; arc=none smtp.client-ip=192.19.144.205
+	 MIME-Version; b=QSlJ2bjubHJCOgWiLFfn4p4V3f0QuAzw++9NZQjlAH0Bp3hRWE/AtgtAkGHwZoqKavR6g9oncr02coOfQU6MrglBczKLS1MGHjci0mPKa584oogDQNIAANgdkFjLRxIFDSX2kisGG33byCxX3bZOJpFa/JbxyasofbyPZ3WhKQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bj4E8hae; arc=none smtp.client-ip=192.19.166.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GTCWYsnM"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bj4E8hae"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id D335FC0000FA;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id F2D1CC0000E6;
 	Tue, 22 Sep 2026 16:24:45 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com D335FC0000FA
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com F2D1CC0000E6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1790119485;
-	bh=g7xNGG6f6KDhEMF0no2WkSnny9t+AeRAFzePXWpQZ4s=;
+	s=dkimrelay; t=1790119486;
+	bh=I9DnMq4KXhMFBvyFhpkMPTrKDNbKAXhlEmUo595ax54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTCWYsnMbOf5U8F7+WDaMlhx9xZ8qqTz2oslhb5Yx1u/p9iMCZMZlXSxfClobjq/y
-	 ux6NpkcATX/pSfafcUrXWETaN08K7Gt33pVw2SsN89CpIQlcDlzq53fXdQkmQSNv70
-	 DnXPp++P+JuU7JT6sD4QuFPWt3Sraf9Mxvyxqdiw=
+	b=bj4E8haeAA/VOiy6uAJbeqqbNWKKbZevs0ZOAyuIUDwgkqk3sYEmvWC1j3aGfbbhn
+	 n5qdbyN5m0KSN3xZ0Qst3pbJAZfFKxW/+sP90Go+CpdnGEh2LY/VFYezCXStm674l5
+	 90Dqj+H417xLWoBu5gSIpuAp44RCFXQ7K8cO2hu4=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 741C9ACC;
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id CCEBFB04;
 	Tue, 22 Sep 2026 16:24:45 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Simon Horman <horms@kernel.org>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 02/10] net: systemport: Fix invalid dev_id argument in bcm_sysport_poll_controller()
-Date: Tue, 22 Sep 2026 16:24:32 -0700
-Message-Id: <20260922232440.598918-3-florian.fainelli@broadcom.com>
+Subject: [PATCH net v2 04/10] net: systemport: Fix Wake-on-LAN RXCHK filter enable loop
+Date: Tue, 22 Sep 2026 16:24:34 -0700
+Message-Id: <20260922232440.598918-5-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260922232440.598918-1-florian.fainelli@broadcom.com>
 References: <20260922232440.598918-1-florian.fainelli@broadcom.com>
@@ -62,44 +62,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Both bcm_sysport_rx_isr() and bcm_sysport_tx_isr() expect their second
-argument (dev_id) to be a 'struct net_device *dev', as they call
-netdev_priv(dev) to retrieve the private data structure.
+In bcm_sysport_suspend_to_wol(), the loop enabling programmed RXCHK
+filters in RXCHK_CONTROL used an auxiliary counter 'i' instead of the
+actual set filter index 'index'.
 
-bcm_sysport_poll_controller() was passing 'priv' instead of 'dev',
-causing netdev_priv() inside the ISRs to treat 'priv' as a net_device,
-leading to out-of-bounds pointer calculations and crashes when netconsole
-or netpoll is triggered.
+When non-contiguous filters were configured (for example, if filter 0
+was deleted and filter 1 remained), the code would enable bit
+(RXCHK_BRCM_TAG_MATCH_SHIFT + 0) corresponding to filter 0 rather than
+filter 1, causing Wake-on-LAN filter matching to fail.
 
-Fix this by passing 'dev' instead of 'priv' to the ISRs.
+Fix this by using the filter 'index' to set the appropriate match bit
+in RXCHK_CONTROL.
 
-Fixes: 6cec4f5e00a3 ("net: systemport: Add netconsole support")
+Fixes: bb9051a2b230 ("net: systemport: Add support for WAKE_FILTER")
 Assisted-by: LLM
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index db627cd15fb7..8328fe824d15 100644
+index b91a57540f55..ec43aab11790 100644
 --- a/drivers/net/ethernet/broadcom/bcmsysport.c
 +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -1198,12 +1198,12 @@ static void bcm_sysport_poll_controller(struct net_device *dev)
- 	struct bcm_sysport_priv *priv = netdev_priv(dev);
+@@ -2648,7 +2648,7 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
+ {
+ 	struct net_device *ndev = priv->netdev;
+ 	unsigned int timeout = 1000;
+-	unsigned int index, i = 0;
++	unsigned int index;
+ 	u32 reg;
  
- 	disable_irq(priv->irq0);
--	bcm_sysport_rx_isr(priv->irq0, priv);
-+	bcm_sysport_rx_isr(priv->irq0, dev);
- 	enable_irq(priv->irq0);
- 
- 	if (!priv->is_lite) {
- 		disable_irq(priv->irq1);
--		bcm_sysport_tx_isr(priv->irq1, priv);
-+		bcm_sysport_tx_isr(priv->irq1, dev);
- 		enable_irq(priv->irq1);
+ 	reg = umac_readl(priv, UMAC_MPD_CTRL);
+@@ -2678,10 +2678,8 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
+ 		reg = rxchk_readl(priv, RXCHK_CONTROL);
+ 		reg &= ~(RXCHK_BRCM_TAG_MATCH_MASK <<
+ 			 RXCHK_BRCM_TAG_MATCH_SHIFT);
+-		for_each_set_bit(index, priv->filters, RXCHK_BRCM_TAG_MAX) {
+-			reg |= BIT(RXCHK_BRCM_TAG_MATCH_SHIFT + i);
+-			i++;
+-		}
++		for_each_set_bit(index, priv->filters, RXCHK_BRCM_TAG_MAX)
++			reg |= BIT(RXCHK_BRCM_TAG_MATCH_SHIFT + index);
+ 		reg |= RXCHK_EN | RXCHK_BRCM_TAG_EN;
+ 		rxchk_writel(priv, reg, RXCHK_CONTROL);
  	}
- }
 -- 
 2.34.1
 
