@@ -1,254 +1,211 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3D842E40F;
-	Tue, 22 Sep 2026 21:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB74F5218A9
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 21:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790112900; cv=fail; b=g922fI7ILW7la9w5o0JTtIwwCpELnYFb5UV/n5Zzciik5zIwevHm5ERtaRG8f3ta7eN+FfG0k3/3+zaMvpepDQEzPIt5Qwl4PSi/iAY0c6qAPCgo0GYXtSebclYpOLKXGsvaddcB+7f1IGRwVXnpFg2bq+bWvcn3gPeVb4L/cAg=
+	t=1790112925; cv=pass; b=Q/tPCc6bzt5sUjtY7TWOGyxPj6CQmlCUmX57VwqNHjRi2kkejdltY1Q7lR9CNhHsk8elU1OdTwiq6O4VCUOxm5f0bCmRb536yf2Q8B6CS68t8pR2DeLho0fnHkrxC2nM5tjND7fTsEOy3AwUGjoyA2DSIIUE1hqmfWmcU9cDhwk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790112900; c=relaxed/simple;
-	bh=eyn+CERylyd+axxC++rA7RdiC6vhZqUGtbEH8oX4nhU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=l8z7ovwi/QTE30dPfI9Rabtnu84/sNLm/iySPkE45Tvd54XRQGW2Q3tAFGsdti//szrPfV2pdSZ5neK9nz+j7Ogi+6P0qvl4NOp5z/HaErk2SYWj0qjRyemw3050C8KZAsm+56xnsZDeOLbUiQ6xxlh3T9rISdC8UoACFXRR83c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fp2zqkpS; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790112925; c=relaxed/simple;
+	bh=AykXPbaf6N7N+kbqj1LXLFNG32gUtN0fYqtfCBH03N4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OtjhueDsB9P6zbm/baEEKJ+RafNBAM863v8HsCPelDwuuplRB+KCL0HL1oxEtCegGzI4uHAmaLd5kNSun5pMumuet5SA+2ndTv4aYGVR733LZyTxuz6tyfuNBKMT7EDonfBYxg7uZ5hiAm8u3X2Aa20pfkDRvUHhKSmKjvsO7KI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=MeTrHKAQ; arc=pass smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fp2zqkpS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790112895; x=1821648895;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=eyn+CERylyd+axxC++rA7RdiC6vhZqUGtbEH8oX4nhU=;
-  b=fp2zqkpSL/9vQTwz877bGy8nJHq8HlAUR5AMrMMRjgCGWrpc6ZJb4LrD
-   TdKlO6b0IKuwg2mnwc8VqsnVmGiIt7k89pJNOfywZUcc70FjEjy8PTQEA
-   GXudE4xrWGcIs1O8MHmfPw/MRF5obmnKZA5UGfmqkqLhueLdEO5rylliC
-   8CR94ggaMI4Tsto634kfx+hFw5PwIYE3clduLrP/XnF4tbXPk91bIyK+N
-   4EA25iZsSEIs0gqvmLQQSz9AzR9s3CJ7b0JR73vaEpJbhE0uOUMkx9P1q
-   jhVMTsD0/QhK903Xhi9x9wNQWv7HFm7kofpyVgt7afUtF7nAOv4c4DgWS
-   g==;
-X-CSE-ConnectionGUID: m97o/eGyQXelVcw3kpdbbg==
-X-CSE-MsgGUID: 5PaKf0SLS6iJGt65lYhcdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90779421"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="90779421"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 14:34:48 -0700
-X-CSE-ConnectionGUID: e5h3X9bZTASTSzXWC4+xUw==
-X-CSE-MsgGUID: Qw93aqWYT0aumWisWLCPpQ==
-X-ExtLoop1: 1
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 14:34:48 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 22 Sep 2026 14:34:47 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 22 Sep 2026 14:34:47 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.66) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 22 Sep 2026 14:34:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fe/BkxOLiAjI+FhGXpRB3HWRNDq+rd6EsuPERB/6Uf554EqSXTMCVSvqnn4BfVVVoBTK3CcU7aopqhWJHUMF2YbqeWlFc4eFcx4mdaNsY6leZUfg7YwEE/7wYNy27jtGR+HuotO+rOZV+a6sAKwFnd2jeyX5xQkAKWqf0u2zMhf/RQBFc7070dnCpyCahtoGxrXesMq3fZbnwOb79fkoxrahGL7aIGISQbo40WBO3jaxPWXfOLK2KQLgMEKvfY+171u+AAbjwd6BpatWypX5ZEazavpL3muFbQu4naioZL0AA5gPM7t5dg7j3pZIqj2pZaNNGzLApZPS0dojamBoWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9LKHllK83mVy9/pd9DSjBI0y/N2hNQKhQaB44hgA/zo=;
- b=RveIP4qh++qngxgpaUsfY7WJD+0Mh2uH0454/PY+wvnvXc0jlgRBpFyUsTrYwU/z2vsoilnIBWolV7ffSxa6i9DstVHKS5WtqaYs4JSxCJJhZvpLL8srUZZ5zQV47JSZJ+rtbKE08beSl35KMXKaH6hd0fHXNvH5SG+Yl0CGo1IeqZTmnXQzlacNj9Z3kKUNqBlHJY/yr+ObyuiLK8pymCSf5kD7itGXz6Shv1sxIawQ9T3l6bKAi+tIrPIaYKSEg2Zu6zcLGBTtEEzYjWL9MVLwdXYlM6LhoOTIE5xGvtMKa6fYtfecI2cxOBHF/Fpm2w3oZ3kQPFC7yD0y8hWqDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB6984.namprd11.prod.outlook.com (2603:10b6:303:22e::22)
- by CH3PR11MB7300.namprd11.prod.outlook.com (2603:10b6:610:150::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
- 2026 21:34:10 +0000
-Received: from MW4PR11MB6984.namprd11.prod.outlook.com
- ([fe80::924e:9c6d:73ec:27f2]) by MW4PR11MB6984.namprd11.prod.outlook.com
- ([fe80::924e:9c6d:73ec:27f2%5]) with mapi id 15.21.0451.012; Tue, 22 Sep 2026
- 21:34:10 +0000
-From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
-To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "Oros, Petr" <poros@redhat.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH iwl-net 2/2] ice: skip the SW pin description on boards
- with generic DPLL pins
-Thread-Topic: [PATCH iwl-net 2/2] ice: skip the SW pin description on boards
- with generic DPLL pins
-Thread-Index: AQHdRtdLYaMsW0p2A0Omab//FNh7GbbbJjnw
-Date: Tue, 22 Sep 2026 21:34:10 +0000
-Message-ID: <MW4PR11MB6984BC38C5D4E47699D7B3C59B832@MW4PR11MB6984.namprd11.prod.outlook.com>
-References: <20260917190258.3239282-1-poros@redhat.com>
- <20260917190258.3239282-3-poros@redhat.com>
-In-Reply-To: <20260917190258.3239282-3-poros@redhat.com>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB6984:EE_|CH3PR11MB7300:EE_
-x-ms-office365-filtering-correlation-id: a56f9eb8-c39d-462d-2ca7-08df18f13d37
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|23010399003|7416014|1800799024|376014|38070700021|10067099003|5023799004|11063799006|4143699003|3023799007|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info: KReX6AyzPdfxEiJQVEZBjKWpw6bq1Clw2fioaXWlJPAqTwHkOfe0BDb7tyflsTUEYTZ7pKnGjmRXuJCiUeD3jkeqxzxoOaXoeiy6nanU92ZnA09S07kM9FJEcf0pQcABaTrjq4dlW2GcMZUMsriQt+mi/1E0jAyU0fxoc61GlHozhU7KheEd+tTItDrOsdLy7ovvAECBZjvL5M/HYXoHqEdEJwJrB8jUGStMIZAtKg6K1IigQ0LZ36Srad058gay7PlM+SeS56kIgyMEfl8AYNJYRfWeOQmuoA/saVSWSAh1ugG26toBImccweP5V+PEGlYRvNYXU5NVvSvObhzayyb8PhsCzkX4kg3cYLAA8JygtqU8g0t8Ej7pIF7/3QcGb3j0owJRIhsLCkjI+AHIntuFFKdjArMldNuXW+ApI/x+H7T0Fbk7Dnez6HSlfAyDkrCQDXOyehANsVjL8GZyEWoHcx+/YCTcFSTwgIJk8MYWr6FOoqjb6FnLjEKo3YbJfDsoq/tsAZDjcUYUsNcupdpmL1ledR0lRIKdb2xK5ubP9e6pBQ2ja4ssNdfFpGAbyvi/zf7rbyLg4Js0jJN5zVrcqMP65gv01sfANi2H3PSkSUl2Q0VV0wRU0GEvzTIg8SUgtnmCjH18pXj4Jh4WDI5lLLPONC/qx0XcgJnk1Qr2SvpcNDLkV3unRH2c3OpU3vt58PFeQzUN+Ag7DjWnzWWL66KhPrAsG1sEU93R+/U=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6984.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(1800799024)(376014)(38070700021)(10067099003)(5023799004)(11063799006)(4143699003)(3023799007)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YK1DhfNXMYXKD1uey+/cWsRIkgZ97PnP+yh/AJDQSSsNhzIctn864xjh395M?=
- =?us-ascii?Q?hs70UaTjKoEgCcGWD/KY/EsZ2OepLrtQd1SlcpArH0tSeiK6ZEmfjs7Cxnjm?=
- =?us-ascii?Q?YRnYhWxg2XZqxSYxzHHU55IhbTrHZBmSW1BvgnAmECVyuYG6RILa4zORbsds?=
- =?us-ascii?Q?3Dp3Pnr7RIvXXkcdfAOdOjJ11i0/Mk8XYuqQ9f7e8vZiIGAqpDMgTXwp3wrU?=
- =?us-ascii?Q?sBAcwyS1bHhrpWHWxBr2OaulikKCb5awSgIxmrPncDmDKBg2Sj+my4c/Y9Lo?=
- =?us-ascii?Q?ml4TrQoOBkx+oF1f8waElPjgy8fOfSxkKgyG42+ZLK9DMueTqOAhTfdyanJb?=
- =?us-ascii?Q?oZE/YKcTUBUSWIRg44GomsTxLJUmAfFbRLYbiIzJesBwzIuVk+c3cQZU09B6?=
- =?us-ascii?Q?bntubiitQ9faaX7fMN8pblf+g06Az+PnVtkz3u99yj5bc3e0T+uYLxhdTwEr?=
- =?us-ascii?Q?Kc4rdjDtpoJwQWy9VEjKPxp8HMy1a85yhnhyf2H/KwICCsNnSBBugmyiPu0Q?=
- =?us-ascii?Q?xW8n2r60ERCfUl2zIAxuMGD/MGrSxOSaDPaIVRRLyI/QHo0y+kVHCzQQ9N1H?=
- =?us-ascii?Q?eId5nNYFjEEdN4Jq3UordTU3OS/OYaYzbD+xJ0ECGo1/JtsuU32/jx5+Xqc3?=
- =?us-ascii?Q?pj9wROsQ/nd1rYxlSbmzLNl1r0715bv4D3OYt7KQS1I77cTDMRTYEV34+Qdd?=
- =?us-ascii?Q?qQG/z8vNYJqysve/MwYZIfElD37fGd8ifBCP/FfscJ9mrvOkU8yNzasH17Wz?=
- =?us-ascii?Q?whnGrT9/RDp6FDczg7YEQ88rsLwM+S/2AO4KpZQP1rV1/p0xRm8XCxBK2ZbB?=
- =?us-ascii?Q?03ltdq/mVMkMKRK2pwk35c9+//dndpTlO1fr2fSsxVHH5wJfucietFkB/u5q?=
- =?us-ascii?Q?59rPlu0rxQV3gEXOIkgXlXdjyHxtTj1oYZRAyaKlOAkdE9bYUfWOzw83hTe5?=
- =?us-ascii?Q?Wdki2gSI67TZ7MEeYyea0jeIhq/Ee21HW2diPDtFZZAzTou6DfyWY4w/LxvX?=
- =?us-ascii?Q?MrQ4CVAyDsJn2mm3hOSldXtYL9rRoxtqJMo5UfVN8M0WymYBtJ19py3R4twD?=
- =?us-ascii?Q?MI6oTzUSM1iLYdilENP0jbc7GAsxiTA9KUtH5vzeFKPu5gZqzyKo4/35+k5K?=
- =?us-ascii?Q?3Swao9cfevLdJy5RgJA1lcrk9mdG6/1WFRV7EVQk28AE4cbvRN+Lhnztk6SA?=
- =?us-ascii?Q?cXESBh6E/gMYzWQtLg/vXsc8nRF+49DJUb4WwFza+EyRIWSJU3pVy0k1zkOt?=
- =?us-ascii?Q?zZS1bc1/sbGmOOwjHJGhOs1jbFj3Hi1jACQvMhrksVzMxPrNU9AtYke7JHDP?=
- =?us-ascii?Q?XT3MzhBa5c3gRADbnWFmxYIEW35Advy5cCK4uY5KVVPI+ePoDY5NeLFhAhYn?=
- =?us-ascii?Q?kmZddxnSC9K74manblIxxgqTPd7F87u408SOdlJW8FAwi6jOYKUIdfP9DOnK?=
- =?us-ascii?Q?ji6+5LMez4l0Lj5QxCc2VE6nZgPQYiobuHDS9SVsxU4o5SeuQgScTsmeSXgE?=
- =?us-ascii?Q?IjV1oz/L0HbmE5+7MQnbFix4XweinEok7kpfSXUL4yjYG8PlznNoUaRRfGfl?=
- =?us-ascii?Q?QU79g/VXim9DGg/+RvYF/zH6AKm2TPEzC7RJ3wqBl/JXdb4PSNDn43Hq8Kes?=
- =?us-ascii?Q?tXotBCoNZpLQUmflyjCZFuITOew5zBF/2d3BE1tDJtHRvtbZYGgSZ6ORMQ0q?=
- =?us-ascii?Q?/9dfVLP93VdP/xP/oEF19/Cofs0MaBNoEWKwtLPoPnGm8SHwnYfVJ1huq7Vm?=
- =?us-ascii?Q?lLIkdoyABJIBW8lJtPdi+6Uht0Tu36M=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="MeTrHKAQ"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469f20513so256249b3a.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:35:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790112908; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g2YtvFF8A27iVd9cD8cFpz+/yYutE1tPLpmfDHx8/+UEfJxYucHXyGB71e/u4kHgye
+         Kk82hHjGtCSl8N6RrhnXCwwjGK9W1kQv728U6nvfm0dT+sBiNkZIHmjAdLgmVgs/uD+y
+         pUst+XK2+boFVm9CdzDP51RCmXn1RYcE7vKQAFK97RiO26nfa5p5X9TVmBuzdBFhk7Ft
+         DrmRl43WJ24su713P0nniIUlxGiREfH9ih8fJyx/YfmWMWprLfopFxDNYpwv3oItCCjo
+         RvsZNNBpbFwBVxoM5i5FsBQLlqnPRha7cAxwyZ9J4zi4HNeQoWC1fHg42vjimtxBJYIQ
+         2Jtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zc5vA0MxmvP8ptI7+odGF5wXc/aF6DGcCEAEVujLQo4=;
+        fh=UxWnTNemcreQBom6ZZra+YH79euTrEY7bPLRACemUXk=;
+        b=rf1enSgh+3kM98FgFvBXWJ3r1kzOuQEuiSvCLFBkumNKx5aWQHXF3uIxM9Apd2cfEq
+         V3J4ZxI5dG3w0/8B+DYGY1IpIL0f1vdIw65CKpiqycdhDJaa9OxPPz/RB9lvN5nBY/1m
+         FyCsiF3swWzh4Gn0DpXXxLlHEmYaHyGQ094c2/BoCeX4LTHe7IxMPAoC4BUT0DZjl5D2
+         xk8AsJa9qrShiR+A8dwgVd7XG7UoJJf0aUsV2PKtvGKk8y897n1YoRX3J9qOVWSyop/W
+         KHm+E9fgY8Gv02UqgbUvR+PXrxuRiad9THStbM2b11irk4MnDGXlf5W8J6bXwFr/78nx
+         Vx+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1790112908; x=1790717708; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zc5vA0MxmvP8ptI7+odGF5wXc/aF6DGcCEAEVujLQo4=;
+        b=MeTrHKAQI6NMQjfsR2pp9/+sl71hZZepCzf+EMXyN0UPkfbmSYsQwKw8OoSJU0BTeV
+         3f6EjJow7F+x32a3jchFJTis+cUOWzSBqVcpQX63WHyDYv0L2mszLYLjl0lL1kjhCP//
+         J58/xCUSPFx0JybkBQyuz+6pGEau2IfykapMI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790112908; x=1790717708;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zc5vA0MxmvP8ptI7+odGF5wXc/aF6DGcCEAEVujLQo4=;
+        b=UW/S4kvQYcNc4zAVvFyF+bbaQab+QlvIP5CI0gYaqDN3aIIGeIp2rAjliC+BSTX3F1
+         l6Ql3sf8qvh4IJaAHCCtRHEXj2LIFmv1pdivJI4OF9zCen5rRWxuuLPYlDKrVtw/gv5D
+         K8c8PdY8ase+vTPi6Pn5gvBWlSXwmrhkLf3W8QXwljnnFfKT3tnPuqOQB5U0OJk+8Rjz
+         +cgv7dLLGQKl+ice3asnytGwOvihR1kqkcGpX5EVv2LbLU8v+Ea2dpBxk5ELbV3wb4wd
+         9Tls97hYZiEiEkFJMd8dVLoeFFm5TD/QTpQWJS95di2fO2lNW6lpXM3x7q6WOZEU44l3
+         W3EA==
+X-Gm-Message-State: AFuF++m/5wCdf2bYwpLfznSz7epG+lvnhu9u9gANzTAvRd0v3KRm5Xuf
+	C6MIawCMiXfJM2RDjhZ/MkPHGSZ0lEzdq89TS0lApZFmyX2iCU6EpkOQ9FoKAV6uAIy059gKH77
+	1CTdm7RrJxB+pzAUUoXCbLq2N7sdnh2fxhBlj5cXja2iOz0o9wGzmAA==
+X-Gm-Gg: AYBFou2GGelRh4dEoyiLhSdGO8cPR/PJ+lIFsN6HRHGje9pBubwS817jR1NFZgKi7wz
+	0tJgZfY3VoGs96XzdvzrLZC3VNQ4a7yNlUowGYrCjQSF51wCEnBSFcUS7c4QUM/xmOYxt8KMtqW
+	e0b01HKiRnaodFRbK+wOxJJmFA4HoYr6ek1JTBAdagkvpifLwfozhtrwzyalIGuxPAKCOXE/boX
+	D8ySDpwybC00nfbJ2rVUQ0HaAmJAldsJlZFMCTh3R0kVMSfhCB9uVhuZ20ivFxmj9tGM7eoegmq
+	FoP93jOdEjeFKgD/AtgrW1oW8BxADK6uZXW19AZ4UDhqQexcExZSBbTFuuN3C4ccaIrqfWghinf
+	V18fG1W0RDn20pgCv0+XMQTmzB/OQgPTWeBZLN/iI45jq
+X-Received: by 2002:a05:6a00:2345:b0:848:30c3:45dd with SMTP id
+ d2e1a72fcca58-87d1a7ab57amr763293b3a.11.1790112907764; Tue, 22 Sep 2026
+ 14:35:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: LUOX6CPHulGAirwrrLVIjk2PBc0Mg3hq8c8PYYqhcUNRlCJgqNSisQXYl4NfwzIkE5YwiVTLONrrGVh82OgmQZTVjgWrcPkjsbjgZnkuYWRN0fz70ETQE3txPPXFF9In00GyZMKGPjrc5q/jDv2gIkZ1yBXxI6c1aBhrLUHp74KEobLlDaki5eE2/mYvGcb2eWkGKowmY4U2Lu83mK90AUphkZXHKAhn2nIMIpcDb/cfGhE28Wy4KXotu50LEd24SyyAvT0DzP5w13Zb0WXdqzxpnImFitx8w7uQw5iPIGtm0hlcjF0Wyk0k+V9QyRrYqd2yEcULSDwH0+dMkVn1pw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6984.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a56f9eb8-c39d-462d-2ca7-08df18f13d37
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2026 21:34:10.3015
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DMCToE257Fx1iQm/uwUvKrDNDEQ5FfYxqj8cxvd4e3r98BibvAfEUfx1PmmZyuy5y2Re/X99Kmh/HUdA18G5NI+SKF4ba85ODoXDf226B2c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7300
-X-OriginatorOrg: intel.com
+References: <20260921145655.3167436-1-i.maximets@ovn.org> <20260921145655.3167436-5-i.maximets@ovn.org>
+In-Reply-To: <20260921145655.3167436-5-i.maximets@ovn.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 22 Sep 2026 17:34:56 -0400
+X-Gm-Features: AcwNN1WrLC44FI1bW09mtnu1BxHzgYsw3RKPzqP-LVQgllRxZFMO1YG1oq2WJAM
+Message-ID: <CAM0EoMmKkJ-8snBUMdHqPza3j22zo3bxiL7F79nc8rYhUXE4kA@mail.gmail.com>
+Subject: Re: [PATCH net 4/6] net/sched: act_ct: avoid modifying shared
+ unconfirmed ct entry
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Aaron Conole <aconole@redhat.com>, 
+	Eelco Chaudron <echaudro@redhat.com>, Jiri Pirko <jiri@resnulli.us>, Xin Long <lucien.xin@gmail.com>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, linux-kernel@vger.kernel.org, dev@openvswitch.org, 
+	stable@vger.kernel.org, Axel Mierczuk <axel.mierczuk@1password.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->From: Petr Oros <poros@redhat.com>
->Sent: Thursday, September 17, 2026 9:03 PM
+On Mon, Sep 21, 2026 at 10:57=E2=80=AFAM Ilya Maximets <i.maximets@ovn.org>=
+ wrote:
 >
->ice_dpll_init_info_sw_pins() describes the SMA and U.FL wrappers by
->pointing them at fixed positions of the input and output arrays, inputs
->4 and 5 and outputs 0 and 1 on an E810-C SFP, and reads the ref-sync
->partner of the input it picked. The arrays are sized by the pin counts
->firmware reports. On a board that does not match the Intel reference
->layout the driver has already fallen back to generic pins, and when
->such a board reports fewer pins than the reference the reads run past
->the end of the arrays.
+> In a case where skb with an unconfirmed ct entry gets cloned, we may
+> end up processing both again but with different sets of extensions.
 >
->The wrappers are never registered on a generic board, but
->ice_dpll_init_pins() still calls ice_dpll_pin_ref_sync_register() on
->them, so a stray nonzero partner from the out of bounds read would pair
->NULL pins.
+> The series of events:
 >
->Describe the wrappers only when the static pin table is in use and keep
->their ref-sync registration under the same condition. The default
->programming of the PCA9575 clock mux stays on the generic path, a board
->that has the mux still needs its SMA connectors switched to inputs.
+>  1. The first clone wants to commit and runs the helpers wiring up
+>     the extension pointer into the expectation list.
+>  2. Then it looses the confirmation keeping the entry unconfirmed.
+>  3. Second clone now wants to commit labels or run NAT and adds the
+>     new extension for that breaking the pointer in the expectation
+>     list causing UAF on the destruction path later.
 >
->Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
->Signed-off-by: Petr Oros <poros@redhat.com>
+> While this is possible to trigger, there should be no practical
+> network pipeline where we need to process both clones without
+> modifications in the same zone.  So, let's just reset the entry in
+> case for some reason we got an skb with a shared one.  This doesn't
+> affect any known use cases, but avoids any potential problems with
+> sharing and modification of the unconfirmed ct entry.
+>
+> Unlike openvswitch module, act_ct allows for NAT without commit.
+> Changing that would be a uAPI break.  So, act_ct needs to reset on NAT
+> regardless of the commit flag to avoid reallocation of the extension
+> space.  This, however, doesn't really change the picture for sensible
+> networking cases as there should be no need to run the same packet
+> twice (before and after the clone) through conntrack without packet
+> header or zone changes and without commit.
+>
+> The fixes tag points to the introduction of helpers, since that's the
+> main UAF trigger for the sharing.
+>
+> Fixes: a21b06e73191 ("net: sched: add helper support in act_ct")
+> Cc: stable@vger.kernel.org
+> Reported-by: Axel Mierczuk <axel.mierczuk@1password.com>
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
->---
-> drivers/net/ethernet/intel/ice/ice_dpll.c | 13 ++++++++-----
-> 1 file changed, 8 insertions(+), 5 deletions(-)
->
->diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c
->b/drivers/net/ethernet/intel/ice/ice_dpll.c
->index e0362b6bf332e5..81bb32d2b23012 100644
->--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
->+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
->@@ -4124,15 +4124,15 @@ static int ice_dpll_init_pins(struct ice_pf *pf,
->bool cgu)
-> 			if (ret)
-> 				goto deinit_sma;
-> 			count +=3D ICE_DPLL_PIN_SW_NUM;
->+			ret =3D ice_dpll_pin_ref_sync_register(pf->dplls.sma,
->+							     ICE_DPLL_PIN_SW_NUM);
->+			if (ret)
->+				goto deinit_ufl;
-> 		}
-> 		ret =3D ice_dpll_pin_ref_sync_register(pf->dplls.inputs,
-> 						     pf->dplls.num_inputs);
-> 		if (ret)
-> 			goto deinit_ufl;
->-		ret =3D ice_dpll_pin_ref_sync_register(pf->dplls.sma,
->-						     ICE_DPLL_PIN_SW_NUM);
->-		if (ret)
->-			goto deinit_ufl;
-> 	} else {
-> 		count +=3D pf->dplls.num_outputs + 2 * ICE_DPLL_PIN_SW_NUM;
-> 	}
->@@ -4501,6 +4501,8 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf
->*pf)
-> 	int i, ret;
-> 	u8 data;
->
->+	if (d->generic)
->+		goto init_sma_ctrl;
-> 	if (pf->hw.device_id =3D=3D ICE_DEV_ID_E810C_QSFP)
-> 		input_idx_offset =3D ICE_E810_RCLK_PINS_NUM;
-> 	phase_adj_max =3D max(d->input_phase_adj_max, d-
->>output_phase_adj_max);
->@@ -4566,6 +4568,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf
->*pf)
-> 		ice_dpll_phase_range_set(&pin->prop.phase_range,
->phase_adj_max);
-> 	}
->
->+init_sma_ctrl:
-> 	if (!ice_is_feature_supported(pf, ICE_F_SMA_CTRL))
-> 		return 0;
->
->@@ -4584,7 +4587,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf
->*pf)
-> 	if (ret)
-> 		return ret;
->
->-	ret =3D ice_dpll_pin_state_update(pf, pin, ICE_DPLL_PIN_TYPE_SOFTWARE,
->+	ret =3D ice_dpll_pin_state_update(pf, d->sma,
->ICE_DPLL_PIN_TYPE_SOFTWARE,
-> 					NULL);
-> 	if (ret)
-> 		return ret;
->--
->2.55.0
+cheers,
+jamal
 
+> ---
+>  net/sched/act_ct.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+> index 55f3521edb4c9..e72143d36b119 100644
+> --- a/net/sched/act_ct.c
+> +++ b/net/sched/act_ct.c
+> @@ -979,11 +979,11 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *sk=
+b, const struct tc_action *a,
+>                                  struct tcf_result *res)
+>  {
+>         struct net *net =3D dev_net(skb->dev);
+> +       bool cached, commit, clear, nat;
+>         enum ip_conntrack_info ctinfo;
+>         struct tcf_ct *c =3D to_ct(a);
+>         struct nf_conn *tmpl =3D NULL;
+>         struct nf_hook_state state;
+> -       bool cached, commit, clear;
+>         int nh_ofs, err, retval;
+>         struct tcf_ct_params *p;
+>         bool add_helper =3D false;
+> @@ -998,6 +998,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb,=
+ const struct tc_action *a,
+>         retval =3D p->action;
+>         commit =3D p->ct_action & TCA_CT_ACT_COMMIT;
+>         clear =3D p->ct_action & TCA_CT_ACT_CLEAR;
+> +       nat =3D p->ct_action & TCA_CT_ACT_NAT;
+>         tmpl =3D p->tmpl;
+>
+>         tcf_lastuse_update(&c->tcf_tm);
+> @@ -1046,6 +1047,19 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *s=
+kb, const struct tc_action *a,
+>          * different zone.
+>          */
+>         cached =3D tcf_ct_skb_nfct_cached(net, skb, p);
+> +
+> +       /* If the ct entry is not confirmed and shared with some other sk=
+b,
+> +        * e.g., a cloned one, we can't just modify it with a commit or n=
+at
+> +        * as we must not modify the extension set.  Reset.
+> +        */
+> +       if (cached && (commit || nat)) {
+> +               ct =3D nf_ct_get(skb, &ctinfo);
+> +               if (ct && !nf_ct_is_confirmed(ct) && nf_ct_shared(ct)) {
+> +                       nf_reset_ct(skb);
+> +                       cached =3D false;
+> +               }
+> +       }
+> +
+>         if (!cached) {
+>                 if (tcf_ct_flow_table_lookup(p, skb, family)) {
+>                         skip_add =3D true;
+> @@ -1083,7 +1097,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *sk=
+b, const struct tc_action *a,
+>                 if (err)
+>                         goto drop;
+>                 add_helper =3D true;
+> -               if (p->ct_action & TCA_CT_ACT_NAT && !nfct_seqadj(ct)) {
+> +               if (nat && !nfct_seqadj(ct)) {
+>                         if (!nfct_seqadj_ext_add(ct))
+>                                 goto drop;
+>                 }
+> --
+> 2.55.0
+>
