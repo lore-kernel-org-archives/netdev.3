@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6210024501D
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CFD37B3F7
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790042160; cv=none; b=hlGoBZsZLPQ/18SfaEm3fFEIf4wDgP1I9hr9eGWkEnrWwERB2PX+hrnY+JmI1tf9S5rdxaQcI3SAD4nwLPid2EPma+bXn1lK9GcFxOBNj0YAV3b2d0+ONvSgp3L0xOfJ8YiiNPOSbA9yeH0gXdxqMSOpXWFxPVUmd/WxW65+Fiw=
+	t=1790042162; cv=none; b=ZKHi9cQ8wkNuXRfC/VusioIlWdq4vkx6d2r0QNwGCcPVfIC1M7cFyB+DGbH97sB2icOzLQLdY3eBJKZTz8Kdvxy4/UZVBeEoPRqtR1QAvYJfq2cFm1/QaslkrK2kJLHWeM9Hvf4LyoYeWFddDHafZr9Z+95s0OLgab+HrzJ2DL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790042160; c=relaxed/simple;
-	bh=BpBGgDpqV9ksrqZ16ZXweY+75sFYrMJFOevwWr8kkDg=;
+	s=arc-20240116; t=1790042162; c=relaxed/simple;
+	bh=zFLW/mMYvm78J+sDujqQplOT29MqtwWIURnFbbzNVU8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=awuCQi+Sh8JLZdR1BD5MgaHy/M8RSoDDpmda1hf69pFUjsB7IsncgTjhy6ee/dXjSOFcdOMPmSYM3xRU1MbpAajAheoHcVyVScwIJu4lQe2AjRRbc2xhQwXJMs+oJ2t4p3yosHU4iOL9IJ6kYeHm+XwOfW3bDs9Sx46s3roY3H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQl8/GMC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DoUdKi2l/du5eT6iasNgQ2zrLlB7k7/zmMTWflXo1PqzVooHkkShwQuMLSHZIticU7NsFlbCM9fjB1lPt9Q9B1wKN83Fs3utkCCjIgJoNBG5UtiWiHXsJdIiPRIuaWKaNqCYZ6EsRSHrQmL93KuF+9iqU6Ctdzm0qWnpAc19blI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b299aP/p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQl8/GMC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58761F000FF;
-	Tue, 22 Sep 2026 01:55:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b299aP/p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5718A1F00893;
+	Tue, 22 Sep 2026 01:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790042158;
-	bh=fJt2+IHZ0Tor0dOqF36XcL2IvTrSIBSAjA4aF8eDIx4=;
+	s=k20260515; t=1790042160;
+	bh=b0OmOGCHUBeJsXI2lwWY1QhpBnwZpuAOWWn+r+4yC9w=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AQl8/GMCouXldlClkeo9xI3sj1BkZg1Tq6SIkPJUBP10XfdmDXtphNpKyBth8YY2h
-	 Cckz6gVKkeWEAPwLK+B1njv1BClpF9HAu5Ty9ADLRdMcoVN/YhG+6Z1oX4BkY47OfH
-	 v6bn84Qelaz98YvWex/CEYX0I1ZvT0ao+ClX2HZqBGBWYGX+HuNeBHqvUF898Sxo2E
-	 7AbVsruzRJ1h3Ysdx+ldgEi3gbjwD+MaaLdOJCCY4iMIrTx2zXrQngq4phvWIyqxSj
-	 aDBK+tRoujBMDYTGt0mGAvhKay2B3Psb5Y0x3ueB2dA9wdiYvyPb/rXaXBv4667npo
-	 AlBARAR2qQJ0g==
-Subject: Re: [PATCH net-next v17 01/15] net: tls: reject TLS 1.3 offload in
- chcr_ktls and nfp drivers
+	b=b299aP/pO2F5PdGVAtdzZAPNzlwgjjE2SMjm8RrIA2oRSbrlffqn1qSTzJIUQ1HOz
+	 KUaCvp/hRK/bptPSJk2VhZ4mpdApRdLDV9B8SMs5UpLRa3UAKqbT5phpSMlQ2BkGbC
+	 oJEYjSJTslSlH0GeWCRMS34pbadHbrzMaC6mh8ZMMSVP45BL8lYjW6LoWBfaHA97Oe
+	 OZ+uyTqin0aXrPbJK5xj2WWitfPUBfpAYM+Qsy3WWg+MoAtEt5UHPeIS0TYTitC5XM
+	 +1YiMRpk5YtThVVngm2bBAVBo2oRAzpd/iYIvc+mJJQ2bYz58RIS75uRfmjKyVuCPh
+	 JIMB4QmT5xrjA==
+Subject: Re: [PATCH net-next v17 02/15] net/mlx5e: add TLS 1.3 hardware
+ offload support
 From: netdev-bot+sashiko@kernel.org
 To: rjethwani@purestorage.com
 Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
  mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
  kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
  edumazet@google.com, leon@kernel.org, andrew.gospodarek@broadcom.com
-Date: Tue, 22 Sep 2026 01:55:57 +0000
-Message-ID: <179004215742.2160803.15371116345141495279@kernel.org>
-In-Reply-To: <20260917224355.2288021-2-rjethwani@purestorage.com>
-References: <20260917224355.2288021-2-rjethwani@purestorage.com>
+Date: Tue, 22 Sep 2026 01:55:58 +0000
+Message-ID: <179004215886.2160803.3872789531181206919@kernel.org>
+In-Reply-To: <20260917224355.2288021-3-rjethwani@purestorage.com>
+References: <20260917224355.2288021-3-rjethwani@purestorage.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,112 +54,147 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] Claim: the two new `crypto_info->version != TLS_1_2_VERSION`
-  guards in chcr_ktls_dev_add() and nfp_net_tls_add() are dead code,…
-- [Low] Claim: the patch implements the same rejection with two different
-  semantics — nfp_net_tls_add() returns -EOPNOTSUPP while…
+- [Low] Concern (INVALIDATED by series context): 'net/mlx5e: add TLS 1.3
+  hardware offload support' is claimed to be dead code because net/tls…
+- [Low] Concern (no defect proven): fill_static_params() writes the TLS
+  1.3 8-byte IV tail into the device's implicit_iv field by pointer…
 
 --
 
-net: tls: reject TLS 1.3 offload in chcr_ktls and nfp drivers
+net/mlx5e: add TLS 1.3 hardware offload support
 
-The patch adds an early version check to the ->tls_dev_add callbacks of
-the chcr_ktls and nfp drivers so that a crypto_info whose version is not
-TLS_1_2_VERSION is refused before any hardware state is programmed.
+This adds TLS 1.3 capability checks to mlx5e_is_ktls_device() and
+mlx5e_ktls_type_check(), and teaches fill_static_params() to program the
+TLS 1.3 static params context including the 8-byte IV tail that follows
+the 4-byte salt.
 
-A couple of questions on the two new checks below.
-
-> diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-> index f5acd4be1e69d..29e108ce67645 100644
-> --- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-> +++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ktls/chcr_ktls.c
-> @@ -431,6 +431,9 @@ static int chcr_ktls_dev_add(struct net_device *netdev, struct sock *sk,
->  	atomic64_inc(&port_stats->ktls_tx_connection_open);
->  	u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+> index 07a04a142a2ea..0469ca6a0762e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
+> @@ -30,7 +30,9 @@ static inline bool mlx5e_is_ktls_device(struct mlx5_core_dev *mdev)
+>  		return false;
 >  
-> +	if (crypto_info->version != TLS_1_2_VERSION)
-> +		goto out;
-> +
+>  	return (MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_128) ||
+> -		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256));
+> +		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256) ||
+> +		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_128) ||
+> +		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_256));
+>  }
+>  
+>  static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
+> @@ -40,10 +42,14 @@ static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
+>  	case TLS_CIPHER_AES_GCM_128:
+>  		if (crypto_info->version == TLS_1_2_VERSION)
+>  			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_128);
+> +		else if (crypto_info->version == TLS_1_3_VERSION)
+> +			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_128);
+>  		break;
+>  	case TLS_CIPHER_AES_GCM_256:
+>  		if (crypto_info->version == TLS_1_2_VERSION)
+>  			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
+> +		else if (crypto_info->version == TLS_1_3_VERSION)
+> +			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_256);
+>  		break;
+>  	}
 
 [Severity: Low]
-Is this new check in chcr_ktls_dev_add() reachable as of this commit?  At
-this point net/tls still filters the version before calling
-->tls_dev_add:
+This isn't a bug, but could the commit message mention the core dependency?
+
+At this commit the new TLS_1_3_VERSION arms in mlx5e_ktls_type_check() and
+the TLS 1.3 branch in fill_static_params() cannot be reached, because
+net/tls still rejects 1.3 for device offload:
 
 net/tls/tls_device.c:tls_set_device_offload() {
-	...
+	crypto_info = &ctx->crypto_send.info;
 	if (crypto_info->version != TLS_1_2_VERSION) {
 		rc = -EOPNOTSUPP;
 		goto release_netdev;
 	}
-	...
 }
 
-and the same for the receive side in tls_set_device_offload_rx():
-
+net/tls/tls_device.c:tls_set_device_offload_rx() {
 	if (ctx->crypto_recv.info.version != TLS_1_2_VERSION)
 		return -EOPNOTSUPP;
-
-The guards do become live once those two core checks are dropped later in
-the series, and the ordering here looks bisect-safe, so this is only a
-changelog question: could the commit message say that this is a
-prerequisite for the later core change that starts accepting TLS 1.3
-crypto_info, rather than describing it as preventing attempts that the
-core currently already blocks?
-
-For nfp the guard is also not covered by nfp_net_cipher_supported(), which
-only looks at cipher_type, so a TLS 1.3 AES-GCM-128 crypto_info would pass
-that helper once the core stops filtering versions.
-
-[Severity: Low]
-This isn't a bug, but the two halves of the patch report the same
-condition differently.  nfp_net_tls_add() returns -EOPNOTSUPP while
-chcr_ktls_dev_add() jumps to the shared failure label:
-
-out:
-	atomic64_inc(&port_stats->ktls_tx_connection_fail);
-	return -1;
-
-so chcr reports -EPERM for an unsupported version and also counts the
-request in both ktls_tx_connection_open and ktls_tx_connection_fail.
-
-The errno does not reach userspace on the only reachable path, since
-do_tls_setsockopt_conf() treats any nonzero return from
-tls_set_device_offload() on an initial install as a software fallback:
-
-net/tls/tls_main.c:do_tls_setsockopt_conf() {
-	...
-	rc = tls_set_device_offload(sk);
-	conf = TLS_HW;
-	if (!rc) {
-	...
-	} else {
-		rc = tls_set_sw_offload(sk, 1, update ? crypto_info : NULL);
-	...
 }
 
-and the counter behaviour matches the existing reject branches in the same
-function (RX direction, chcr_get_ktls_tx_info(), u_ctx->detach), which all
-use the same out: label.  Would it still be preferable to return
--EOPNOTSUPP here to match nfp_net_tls_add() and the core?
+Those two guards are dropped by "tls: add TLS 1.3 hardware offload support"
+later in the same series, so the driver code does become live by the end of
+the series and there is no functional problem here.
 
->  	if (direction == TLS_OFFLOAD_CTX_DIR_RX) {
->  		pr_err("not expecting for RX direction\n");
->  		goto out;
-> diff --git a/drivers/net/ethernet/netronome/nfp/crypto/tls.c b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
-> index 9983d7aa2b9cd..13864c6a55dce 100644
-> --- a/drivers/net/ethernet/netronome/nfp/crypto/tls.c
-> +++ b/drivers/net/ethernet/netronome/nfp/crypto/tls.c
-> @@ -287,6 +287,9 @@ nfp_net_tls_add(struct net_device *netdev, struct sock *sk,
->  	BUILD_BUG_ON(offsetof(struct nfp_net_tls_offload_ctx, rx_end) >
->  		     TLS_DRIVER_STATE_SIZE_RX);
+Since the message says "Tested with TLS 1.3 AES-GCM-128 and AES-GCM-256
+cipher suites", would it help to state that the test depends on the later
+core patch, or to reorder so the core change lands first?
+
+Related, mlx5e_is_ktls_device() starts advertising kTLS on hardware that
+only reports tls_1_3_aes_gcm_128/256 caps while the core still offers only
+1.2 sessions, which mlx5e_ktls_type_check() then refuses. Is that
+intermediate state intentional for the two commits it lasts?
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+> index 570a912dd6faf..f3f1be1d40343 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
+
+[ ... ]
+
+> @@ -15,8 +16,10 @@ enum {
+>  #define EXTRACT_INFO_FIELDS do { \
+>  	salt    = info->salt;    \
+>  	rec_seq = info->rec_seq; \
+> +	iv      = info->iv;      \
+>  	salt_sz    = sizeof(info->salt);    \
+>  	rec_seq_sz = sizeof(info->rec_seq); \
+> +	iv_sz      = sizeof(info->iv);      \
+>  } while (0)
+
+[ ... ]
+
+> @@ -59,7 +62,12 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
+>  	memcpy(gcm_iv,      salt,    salt_sz);
+>  	memcpy(initial_rn,  rec_seq, rec_seq_sz);
 >  
-> +	if (crypto_info->version != TLS_1_2_VERSION)
-> +		return -EOPNOTSUPP;
-> +
->  	if (!nfp_net_cipher_supported(nn, crypto_info->cipher_type, direction))
->  		return -EOPNOTSUPP;
->
+> -	tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
+> +	if (crypto_info->crypto_info.version == TLS_1_3_VERSION) {
+> +		memcpy(gcm_iv + salt_sz, iv, iv_sz);
+                        ^^^^^^^^^^^^^^^^
+
+[Severity: Low]
+This isn't a bug today, but would it be clearer to address implicit_iv by
+name rather than walking off the end of gcm_iv?
+
+The layout is:
+
+include/linux/mlx5/mlx5_ifc.h:
+struct mlx5_ifc_tls_static_params_bits {
+	...
+	u8         gcm_iv[0x20];
+
+	u8         implicit_iv[0x40];
+
+	u8         reserved_at_100[0x8];
+	u8         dek_index[0x18];
+	...
+};
+
+gcm_iv is 4 bytes, so gcm_iv + salt_sz with salt_sz == 4 and iv_sz == 8
+lands exactly on the 8 bytes of implicit_iv for both AES-GCM-128 and
+AES-GCM-256, which is why nothing is currently overwritten.
+
+The write does depend on salt_sz staying 4 and on gcm_iv/implicit_iv staying
+adjacent though. Would using
+
+	implicit_iv = MLX5_ADDR_OF(tls_static_params, ctx, implicit_iv);
+
+plus a BUILD_BUG_ON() tying sizeof(info->salt) and sizeof(info->iv) to the
+field widths be preferable, so a future cipher suite with a different salt
+size or a PRM layout change fails to build instead of writing into
+dek_index?
+
+> +		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3;
+> +	} else {
+> +		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
+> +	}
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917224355.2288021-1-rjethwani%40purestorage.com
