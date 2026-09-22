@@ -1,111 +1,115 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90EE2E0914;
-	Tue, 22 Sep 2026 09:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE014189BA;
+	Tue, 22 Sep 2026 09:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790067884; cv=none; b=BQSX8kf6NbDIdWl5QK2y9eaSyArHPwRSdFwF8A523ic+a26dJoBOCpwXDF1Grzz1JaWCCjygmhTmrJk6E5ALXuu1DagxvHYo3LF8f8pfH5dedjntRdCxP9DSPJDmQ6UAx2RrAAXLzOtVVdIM0GRKS58BlmZP1e3VqVdYqySjfHg=
+	t=1790068115; cv=none; b=Ua1P+yz0iEC2EzF72ZlAzRM16SH6nRb4bmhof7IeofHg+8DF++xa8Tgy6sdqteLRT2fmpZEM41VLCu5AUemzwvvpUI9Fh1sW3lo7ENJjk0v6cDFhhlmkfASh38BrPiDMsUKA2nGHOzx9P+QmBLHXAEcO2ZYFxoLpNvFNmlhnfKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790067884; c=relaxed/simple;
-	bh=Jf5TgPOWPr/IWQ3Fxcfs0nj27Ygld0uLJckXIAnNGNg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h1A4qXIudl/8bV90xgubR2hh141z1mUnUPz/69AcqebW7lFXc8t4Uw0XjE4Gtml2wwtrVnZDBNqC+/lcmwALzrMPT+6lIBnAJpSuOMyTfugolLzhQWATjk5REGXpJEhF8znJXNPEto1RDdGwcYehdaAtz5zXnfomqyygPV50jNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=YxeMJOUD; arc=none smtp.client-ip=220.197.31.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1790068115; c=relaxed/simple;
+	bh=aWEqlZnVkFRgp0qQKu7X23kGg0ZHVehrYng8L//OeY0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mA3XSBbtkzAIkfzS7/TibvxeEsK93whXPR5qpqj6xD7PlahDHjvrF6uNOpZ8kuTkxtThavJrSWKerpNAld2zkIgUGRgMhk5UJ4QYbpifvJk2SmjUUMp6lGcHAzfCrvvstMICAvBgRbk0VmiqVDt8n7jlnsdQIbLUA2QlusW314Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwyC67CJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="YxeMJOUD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=6VtLFD1vg5tvTIM6vKNjHT1kkApQA/KZte/hT3YtnlI=;
-	b=YxeMJOUDVswV4aSX/zGsIOqW+2onEoHyh74L+dNKTTQ/bqwyBjcviEo/qcpcbV
-	5t+4VlKk6aXVGaRoJK4XZmEBgC506vEmh5W3msN5gGjNf8AxMz3zvSCunY0BaqSh
-	2HaLCz8GM7Os5Tm9D4riuyH1k9OKyy8Pi40SxkjF5zqzY=
-Message-ID: <ef2b48b9-0f57-46e6-8209-8f4b9d6e42dd@126.com>
-Date: Tue, 22 Sep 2026 17:03:42 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwyC67CJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C8E61C2BCB8;
+	Tue, 22 Sep 2026 09:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790068114;
+	bh=aWEqlZnVkFRgp0qQKu7X23kGg0ZHVehrYng8L//OeY0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=cwyC67CJTTnwPjKJ8FlgqgfhQDe55lCyCaslHwZ3X993TMNn3NocalVYthl8VVuW7
+	 ZfwrnlMAxCq16OHPmZ4FtZs+YKLJZaVA7BZqI0VvwQtLQJRZ33wfmyaCll0EczpW1v
+	 91d8raG6rRq07cOfbzycDBE+AxHHyvnPhr74o8Hwj8IJtiEbyobgUKuPVMqufQXZN7
+	 UvgTwSXn+qb2X20UsRxTlJIXl8Y9ci/rDHIbqsc7jdlvVB7TyrF5XeS2V1b8Cd2QBY
+	 mO+e8LJfu+AY1QJ8RWPqwnr/QUiov15WSvpojqK8rtIVcreK6cboqkfE3MqnUADQl+
+	 943P103SfCoXg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1BB1C982FA;
+	Tue, 22 Sep 2026 09:08:34 +0000 (UTC)
+From: Joel Granados <joel.granados@kernel.org>
+Date: Tue, 22 Sep 2026 11:08:13 +0200
+Subject: [PATCH] ipvs: skip committing sync_threshold when proc_dointvec
+ fails
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH net v2] i40e: limit the DDP profile
- count returned by the firmware
-To: netdev-bot+sashiko@kernel.org
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn,
- aleksandr.loktionov@intel.com
-References: <20260920063244.1927792-1-xiaolinkui@126.com>
- <178997248483.2160803.11710552261264563604@kernel.org>
-Content-Language: en-US
-From: Linkui Xiao <xiaolinkui@126.com>
-In-Reply-To: <178997248483.2160803.11710552261264563604@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wDXtwRvRLJqOwMZAA--.52160S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGrykWw1kWw4fXrykCF17KFg_yoW5Ar1rpF
-	WYq3yDtrykK3y0kw1Ikr4xWa48uws3AFy5Xw1rKa4vk3y5Krs7Xry0qFs0qa47AFsaqr1I
-	yF1293yUAF4DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2-UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBB0S2qyRHDs-gAA3F
+Message-Id: <20260922-lklm-sysctl-retval-fix-v1-1-7290ea4253a4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAHxFsmoC/x2M2wpAQBBAf0XzbIpRxK/Iw9odTNalHYnk320ez
+ 6lzHlAOwgpN8kDgU1S2NUKeJmAns46M4iIDZVRmNRH62S+ot9rDY+DjNB4HudD0xlHtbFH1DmK
+ 8B476H7fd+350fIRlaAAAAA==
+X-Change-ID: 20260922-lklm-sysctl-retval-fix-abad29dc37bd
+To: Simon Horman <horms@verge.net.au>, Julian Anastasov <ja@ssi.bg>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+ lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ coreteam@netfilter.org, linux-kernel@vger.kernel.org, 
+ Joel Granados <joel.granados@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1296;
+ i=joel.granados@kernel.org; h=from:subject:message-id;
+ bh=aWEqlZnVkFRgp0qQKu7X23kGg0ZHVehrYng8L//OeY0=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGqyRZGUA0KCGTVtlF++nMgUcIdQrRiZq3RUU
+ /YgHZ0t3bnNBokBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqskWRAAoJELqXzVK3
+ lkFPDmYMAJI5M0li0IFDoGjBI7dEFL6+2/SLWT6ezLqZGKpiiRPP3nCorSqTS0ybmW666HQuCL5
+ dl+yPbeZ7QhF6ret88F/aAbXd0D24GHNSsgns1igp2JdZSpfgJWVFwYXed3twvuH8C7ZOlkpwTY
+ q1MDtTpBcHHo3iasIgrhs3ve760S3aEWRFx0m5t1X1HsiBqF0OPl/4E4A/0D/lKXV3Xll3mhnSA
+ zH+0b2/bmW/N68hXf1BeUgxPRQzrejpqiGy+VTMxfT/XF0fvpktRdIaDPyOeFVRvIfLX+gkPl8b
+ qjWI21hUbFwmQUmDe+gJ1A743mX4qpKw+PuIcR9xo/hk0P3pN05i4WcBUhtfinx7cYQTmjRwZrh
+ 9//gOU3degccRS6r4Ot/Qqyb3+EX0RtqReRilJAdaB5Kvx46ukpCnBvX8vuYHKfDoc2wXLjiOQg
+ S/GVKugi5BLDPXCSqC1jArJQzeBwgwu7Z11zRLwTe70gaQiOU+S7nkCHMrYk9fTuS93/sayKDF5
+ do=
+X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
+ auth_id=239
 
-Thanks for the review. Both findings are addressed in v3.
+Forward rc value and skip updating sysctl_sync_threshold when
+proc_dointvec fails. This targets a write such as "5 x" which would fail
+with -EINVAL but would store the first element anyway.
 
-- [Medium] Incomplete fix in i40e_ddp_does_profile_exist() and
-   i40e_ddp_does_profile_overlap()
+Signed-off-by: Joel Granados <joel.granados@kernel.org>
+---
+ net/netfilter/ipvs/ip_vs_ctl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-   Agreed on the clamping half. Silently limiting the count and then
-   returning 0 hands i40e_ddp_load() a definite answer derived from a list
-   that was only partially read: the add path proceeds without having
-   examined every profile the firmware reported, and the is_add == false
-   path reports a profile as missing that may in fact be loaded. Both
-   helpers already have an error return that i40e_ddp_load() turns into
-   "Failed to fetch loaded profiles." and aborts the operation, so v3
-   rejects the list instead: if the firmware reports more profiles than
-   I40E_PROFILE_LIST_SIZE can hold, the helpers return -EIO and no scan
-   happens at all.
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index 4c1c739446b76ea455dab2958a844d05e31a46a7..7c260529238cd2015f1d30abd094d25b056b30fa 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -2454,6 +2454,8 @@ proc_do_sync_threshold(const struct ctl_table *table, int write,
+ 	mutex_lock(&ipvs->sync_mutex);
+ 	memcpy(val, valp, sizeof(val));
+ 	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
++	if (rc)
++		goto out;
+ 	if (write) {
+ 		if (val[0] < 0 || val[1] < 0 ||
+ 		    (val[0] >= val[1] && val[1]))
+@@ -2461,6 +2463,7 @@ proc_do_sync_threshold(const struct ctl_table *table, int write,
+ 		else
+ 			memcpy(valp, val, sizeof(val));
+ 	}
++out:
+ 	mutex_unlock(&ipvs->sync_mutex);
+ 	return rc;
+ }
 
-   I did not plumb the response datalen out of i40e_aq_get_ddp_list().
-   For this command the driver has to set desc.datalen to the buffer size
-   it passes in, and i40e_aq_get_ddp_list() does not report the writeback
-   descriptor back to its caller, so the length would have to come either
-   from a new output parameter on that helper (declared in
-   i40e_prototype.h) or from a wb_desc routed through cmd_details. Either
-   way it adds a second firmware supplied number to validate on top of the
-   one this patch is about, and if the firmware leaves the field at the
-   requested 772 bytes the derived bound is exactly the bound we have
-   today. That is a bigger change to the common AQ path than a net fix
-   should carry, so I would rather bound the scan by the size of the
-   buffer the driver owns.
+---
+base-commit: 93f51579e7df248780214094418f205253383cc5
+change-id: 20260922-lklm-sysctl-retval-fix-abad29dc37bd
 
-   The remaining half - comparing against p_info[] slots the firmware
-   never filled - cannot be detected independently of the count, because
-   the driver is not told how many records were actually written. If the
-   firmware reports a count of 16 or less while writing fewer records, the
-   unread slots are indistinguishable from real entries. Zero
-   initialization makes the outcome deterministic (an unwritten entry is
-   all zeroes rather than stale stack) but does not make it correct;
-   deriving the bound from the response length would be needed for that,
-   and that is the larger helper change described above.
+Best regards,
+-- 
+Joel Granados <joel.granados@kernel.org>
 
-- [Medium, pre-existing] uninitialized buff[] handed to
-   i40e_aq_get_ddp_list()
-
-   Agreed, and fixed as suggested: buff[] is now zero initialized in both
-   helpers. i40e_asq_send_command_atomic_exec() copies the full buff_size
-   into the DMA bounce buffer and copies the full buff_size back on
-   completion, so those 772 bytes of stack were both readable by the
-   firmware and compared against afterwards. Both hunks touch these
-   declarations and the root commit is the same (cdc594e00370), so it is
-   handled here rather than as a separate patch; I can split it out if you
-   would rather have it on its own.
-
-v3 keeps the unsigned loop counter from v2, and drops the Reviewed-by tag,
-as the code changed after the review.
-
-pw-bot: cr
 
