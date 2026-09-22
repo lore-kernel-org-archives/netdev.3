@@ -1,205 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAF24570D4;
-	Tue, 22 Sep 2026 10:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344F503BC4;
+	Tue, 22 Sep 2026 10:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790071510; cv=none; b=X/wy20/fGFCnmUIwKGlIapoGUXjQjQfaaLivYJ3HQlloJ8w+mvjdIvQt1kYZ2NhdqyXSXmz/ByipikGUbrD+kvR8vuhShDouZIdKljJOFLgYpuVFxUL2yLKlTYCh0QdYx5ZXt60QueRtvcDFLy4Sr9tyQgHrpZviYwUWroVKXgw=
+	t=1790071566; cv=none; b=kCOgPVYVikZBm1obzD+1OfCHWtwtMdilo+OZlWWtgnDqxqJQtQf1e9/kO50eHh4vOtITf6K/sCvDlWohHsmunSrZbDnB5b0A/YFZxLhGqwAXo+qVfBlApgGm197aw/QH2tEQpaVYy0brX/U4DQ/FDrM1Q7yV1mS60l9rKpsjJ34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790071510; c=relaxed/simple;
-	bh=e1OPguSznv0oaoWEQ835BMLZphcamQK6RYvbQxI3zms=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=U9wnvJn2/Klu7++xRgRZJKpYA+gpgMzcx7yTlyFk8P5IXM3zzhrcZeE4ecx6clrRRbZGAxO0lHT4s21hcBUsfay0AXxKrGCIbfDP5V+ZJya3z8IPZN2si0g5c289Ws9eNR6fatLv8l2gsJHh6MNFwdpvz3gExrYyaQhklC+iWcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKE6s0xy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790071566; c=relaxed/simple;
+	bh=W4nSWtq0rCx2aXdYYlhzNnRlElDXfo22KeIxkEuVqDw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YwI5Xv7H8lgqoL/hz6SM4trUtuRDMYQwSc6DSGnucWAUPsHLWnLaHlHcf+lm3lznJkc2qqnApqTVnf6rnNj9e8hzFzrT9fS7sMSAdxrjIUgKCCUcFdiCDpCC5l8HpVpgTzoVgSpXTfuWdr9mfdoPa2qJdbkVC3ROm9rqRCRy4Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=eobpKmKk; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKE6s0xy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D95E1F000FF;
-	Tue, 22 Sep 2026 10:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790071508;
-	bh=w2sZxf+PXOvNNTzDd/9WHwR+bGg7r6uPFpZLwJ0woQc=;
-	h=Date:From:To:Cc:Subject;
-	b=TKE6s0xyO5zpNxZoQf3uHhv9ip5+KCBng83OcGHn3+tREzOEhut9Hl+xkeeVvNVUH
-	 dfxSX9qwyAHQwXxFBRiTcNabV3FIQEdYbaSLCIEA43wiR2f5SslQ6UuuKJGQ92+qiT
-	 55NYXQ4Yhy4QKTw0RGt6ZUF3PuMTbSCrwGVVTey53KBpRH8nMR70GRiwHNwIXqkwVK
-	 Axt9vijRZK5ovkmoGiVwigZi4G3IsIpjNwYFvbgzgiGfZLzE319dDNR2JfRpJqrBLm
-	 Z8ZIuRnNQUGRZ42SzrZ0QTBi8Dg9J0EirYjyyqf9ZSBUlNGrctLGszbMXJ1yCT/oYh
-	 ublzq4ZqjGfPg==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id DA04F1AC56BF; Tue, 22 Sep 2026 11:05:02 +0100 (BST)
-Date: Tue, 22 Sep 2026 12:05:02 +0200
-From: Mark Brown <broonie@kernel.org>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the bpf-next tree with the bpf tree
-Message-ID: <arJSzo-jhnM-Tkvm@sirena.co.uk>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="eobpKmKk"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 7FF85534096D;
+	Tue, 22 Sep 2026 12:05:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1790071553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vYjbKYQm+3MirI28Nbxa57oqPw0EyhcQBOTmEe/lJi0=;
+	b=eobpKmKkZJR896nYq1Y2ltBucdT5SJy00Xv7LHr1iectgFlYqUuZchSjKoJJASq8MR23sT
+	lKM1bAEplJtA4GtKFnwKf07xm/q1+Y4L+i6CtF6Cn/CYe0lP0NcJcniaig9xVH4j79uAKo
+	felpxt3PQDwACXABtD2Iqg9B9llTaiQ=
+Message-ID: <049e03e2-3648-4a8a-8959-d88a56545f4d@ixit.cz>
+Date: Tue, 22 Sep 2026 12:05:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pyZ6XOk+o1SSkcvv"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] nfc: nci: ignore unexpected CORE_RESET_NTF and
+ CORE_RESET_RSP
+To: Yuchao Zhang <ndaugoing@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260921125805.224979-1-horms@kernel.org>
+ <20260922080750.35929-1-ndaugoing@gmail.com>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260922080750.35929-1-ndaugoing@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 22/09/2026 10:07, Yuchao Zhang wrote:
+> Commit bcd684aace34 ("net/nfc/nci: Support NCI 2.x initial sequence")
+> added handling of CORE_RESET_NTF in nci_core_reset_ntf_packet(). When
+> received, it updates ndev->nci_ver, ndev->manufact_id, and
+> ndev->manufact_specific_info, and calls nci_req_complete(ndev,
+> NCI_STATUS_OK) to finish the pending reset request.
+> 
+> However, unlike other notification handlers in ntf.c (which validate
+> ndev->state before completing requests), nci_core_reset_ntf_packet()
+> does not check whether a core reset request is actually pending.
+> If an unsolicited or delayed CORE_RESET_NTF arrives (e.g. after a reset
+> command times out or from a misbehaving NFCC), it unconditionally:
+> 1. Completes whatever request is currently in-flight (such as CORE_INIT,
+>     RF_DISCOVER, or CONN_CREATE) with NCI_STATUS_OK, leading to kernel
+>     state desynchronization.
+> 2. Overwrites ndev->nci_ver and manufacturer info. Because
+>     ndev->nci_ver is used as a selector for subsequent packet formats
+>     and parsers (e.g., in nci_open_device() and nci_core_init_rsp_packet()),
+>     unexpectedly modifying it can cause protocol format confusion.
+> 
+> A similar issue exists in nci_core_reset_rsp_packet(): an unexpected or
+> delayed response packet can prematurely complete an unrelated in-flight
+> request.
+> 
+> Fix this by ensuring CORE_RESET_NTF and CORE_RESET_RSP are only processed
+> by the core layer when a reset command is actively awaiting them:
+> - Set NCI_RESET_PENDING in nci_reset_req() when sending CORE_RESET_CMD.
+> - In nci_core_reset_rsp_packet(), ignore the response if NCI_RESET_PENDING
+>    is not set. If set, clear the flag and complete the request on failure
+>    or for NCI 1.x (checking skb->len >= sizeof(*rsp)).
+> - In __nci_request(), ensure NCI_RESET_PENDING is cleared upon request
+>    completion, cancellation, or timeout.
+> - In nci_core_reset_ntf_packet(), skip power-on notifications (trigger
+>    0x01, identical in NCI 1.0 and 2.0), then check and clear
+>    NCI_RESET_PENDING before updating device fields and completing the
+>    request. The CORE_RESET_CMD trigger value is revision-dependent
+>    (0x00 in NCI 1.0, 0x02 in NCI 2.0), so both are accepted and gated
+>    on NCI_RESET_PENDING alone. If unexpected, log a warning and return
+>    0 so driver-specific handlers (such as fdp firmware patch handling)
+>    still receive the notification.
+> 
+> Fixes: bcd684aace34 ("net/nfc/nci: Support NCI 2.x initial sequence")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
+> ---
+> v2:
+>   - Do not abort the notification pipeline on unexpected CORE_RESET_NTF (return 0
+>     instead of -EINVAL), preserving driver-level hooks (e.g. fdp firmware
+>     patching) per Simon Horman.
+>   - Skip power-on notifications (trigger 0x01, identical in NCI 1.0 and 2.0)
+>     while gating both NCI 1.0 (0x00) and NCI 2.0 (0x02) command-triggered resets
+>     on NCI_RESET_PENDING alone.
+>   - Check NCI_RESET_PENDING in nci_core_reset_rsp_packet() to avoid completing
+>     unrelated requests on unexpected responses.
+>   - Explicitly check skb->len >= sizeof(*rsp) in nci_core_reset_rsp_packet()
+>     for NCI 1.x handling.
+Hello Yuchao,
 
---pyZ6XOk+o1SSkcvv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+please never send follow-ups as part of the thread. Always send them as a 
+separate message (otherwise they may get lost and we already have patchwork wich 
+can track the submissions.
 
-Hi all,
+Even better, try to use tools such as b4 to submit patches (easier for you, sent 
+in expected format for us).
 
-Today's linux-next merge of the bpf-next tree got a conflict in:
-
-  tools/testing/selftests/bpf/prog_tests/verifier.c
-
-between commit:
-
-  a903f145a8914 ("selftests/bpf: Add tests for the KF_PERFMON gates")
-
-=66rom the bpf tree and commit:
-
-  a8bbd9ee1bbc7 ("selftests/bpf: Cover generic __uninit output initializati=
-on")
-
-=66rom the bpf-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --cc kernel/bpf/helpers.c
-index 712dca5a2c5bd,501c7ce35cba9..0000000000000
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@@ -4920,12 -5049,14 +5049,14 @@@ BTF_ID_FLAGS(func, bpf_wq_set_callback
-  BTF_ID_FLAGS(func, bpf_wq_start)
-  BTF_ID_FLAGS(func, bpf_preempt_disable)
-  BTF_ID_FLAGS(func, bpf_preempt_enable)
- -BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
- +BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW | KF_PERFMON)
-  BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
-  BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
- -BTF_ID_FLAGS(func, bpf_get_kmem_cache)
- +BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE | KF_PERFMON)
-++BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE | KF_PERFMON)
-++BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE | KF_PERFMON)
- +BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE | KF_PERFMON)
- +BTF_ID_FLAGS(func, bpf_get_kmem_cache, KF_PERFMON)
-  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
-  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_next, KF_ITER_NEXT | KF_RET_NULL |=
- KF_SLEEPABLE)
-  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_destroy, KF_ITER_DESTROY | KF_SLEE=
-PABLE)
-diff --cc mm/internal.h
-index 0434dfcfc36f1,9e3be236f18c0..0000000000000
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@@ -24,7 -23,17 +24,10 @@@
-  #include "vma.h"
- =20
-  struct folio_batch;
- -struct hstate;
- =20
-+ int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-+ 		void *buf, int len, unsigned int gup_flags);
-+=20
- -struct huge_bootmem_page {
- -	struct list_head list;
- -	struct hstate *hstate;
- -	unsigned long flags;
- -};
- -
-  /* mm/workingset.c */
-  bool workingset_test_recent(void *shadow, bool file, bool *workingset,
-  			    bool flush);
-diff --cc tools/testing/selftests/bpf/prog_tests/cb_refs.c
-index 490e15e7126d9,c32c6dab49bce..0000000000000
---- a/tools/testing/selftests/bpf/prog_tests/cb_refs.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cb_refs.c
-@@@ -11,9 -11,9 +11,9 @@@ struct=20
-  	const char *prog_name;
-  	const char *err_msg;
-  } cb_refs_tests[] =3D {
-- 	{ "underflow_prog", "release kfunc bpf_kfunc_call_test_release expects r=
-eferenced PTR_TO_BTF_ID passed to R1" },
-- 	{ "leak_prog", "Possibly NULL pointer passed to helper R2" },
-+ 	{ "underflow_prog", "R1 type=3Dscalar expected=3Dptr_, trusted_ptr_, rcu=
-_ptr_" },
-+ 	{ "leak_prog", "Unreleased reference id=3D4 alloc_insn=3D3" }, /* alloc_=
-insn=3D3{2,3} */
- -	{ "nested_cb", "Unreleased reference id=3D4 alloc_insn=3D2" }, /* alloc_=
-insn=3D2{4,5} */
- +	{ "nested_cb", "Unreleased reference id=3D5 alloc_insn=3D2" }, /* alloc_=
-insn=3D2{4,5} */
-  	{ "non_cb_transfer_ref", "Unreleased reference id=3D4 alloc_insn=3D1" },=
- /* alloc_insn=3D1{1,2} */
-  };
- =20
-diff --cc tools/testing/selftests/bpf/prog_tests/verifier.c
-index 8b439e194bcc5,4f1e1c1cd5ab3..0000000000000
---- a/tools/testing/selftests/bpf/prog_tests/verifier.c
-+++ b/tools/testing/selftests/bpf/prog_tests/verifier.c
-@@@ -54,7 -55,9 +56,10 @@@
-  #include "verifier_iterating_callbacks.skel.h"
-  #include "verifier_jeq_infer_not_null.skel.h"
-  #include "verifier_jit_convergence.skel.h"
-+ #include "verifier_kfunc_packet_access.skel.h"
- +#include "verifier_kfunc_perfmon.skel.h"
-+ #include "verifier_kfunc_uninit.skel.h"
-+ #include "verifier_kfunc_uninit_multi.skel.h"
-  #include "verifier_ld_ind.skel.h"
-  #include "verifier_ldsx.skel.h"
-  #include "verifier_leak_ptr.skel.h"
-@@@ -219,7 -224,9 +227,10 @@@ void test_verifier_int_ptr(void
-  void test_verifier_iterating_callbacks(void)  { RUN(verifier_iterating_ca=
-llbacks); }
-  void test_verifier_jeq_infer_not_null(void)   { RUN(verifier_jeq_infer_no=
-t_null); }
-  void test_verifier_jit_convergence(void)      { RUN(verifier_jit_converge=
-nce); }
-+ void test_verifier_kfunc_packet_access(void)  { RUN_TESTS(verifier_kfunc_=
-packet_access); }
- +void test_verifier_kfunc_perfmon(void)        { RUN(verifier_kfunc_perfmo=
-n); }
-+ void test_verifier_kfunc_uninit(void)         { RUN_TESTS(verifier_kfunc_=
-uninit); }
-+ void test_verifier_kfunc_uninit_multi(void)   { RUN_TESTS(verifier_kfunc_=
-uninit_multi); }
-  void test_verifier_load_acquire(void)         { RUN(verifier_load_acquire=
-); }
-  void test_verifier_ld_ind(void)               { RUN(verifier_ld_ind); }
-  void test_verifier_ldsx(void)                  { RUN(verifier_ldsx); }
-
---pyZ6XOk+o1SSkcvv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqyUssACgkQJNaLcl1U
-h9AJLgf/b204gVZX/IeKYjNsCB9oiOd1gN6gDrO/ftoVIVnn1GXoRKJqyV7RC60s
-PewUH50nX3R5Ttqo+hS1upltjwYW0azQ69Z+F2VAOZ+eDpTZTeDbdP0P+DwQqWqg
-OuvRZXgaqFTmuC/cw6GlDJImOwWKFNR67KYU0596NVx690UOBR6X2+oB8luyTu/y
-QTMOT6ThGrqIFTKw/LKUqRDJaCIt8e+CT6ZbAPWSM5HrEfWL6qG8PSnkcC3LcazC
-umNCvfubGCzXxYDwi8U8Qr2dJWWp7EoUD6E7L8RAB6MA6oqOuNpQ4jDrOPJFJx0B
-1ZUUGgeRTDKC3JdAFDpsp+uak+L7RQ==
-=qm5D
------END PGP SIGNATURE-----
-
---pyZ6XOk+o1SSkcvv--
+Thanks
+David
