@@ -1,347 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9938F2EDD53;
-	Tue, 22 Sep 2026 14:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087969; cv=none; b=IewYPJzDObDmJNx/iq3fpasvBkWTPn+uLfyaYRYz6wCL1lYkmf8nAajiKYraQpu/iwfym5CHcV3RVqbAyEBIAkf0v8fyZwqXTK/JTRSXv2ye0g29rswg6MHvN9AJa6sFFxkLKYaexwfal24gFhcGuBxlDYG/Qo4vD/4nOO+cIS8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087969; c=relaxed/simple;
-	bh=2himPEiD7IVYGNC3CLMnnOHkE7F7Dm5FFXDc3XL8nyM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EYkzSKZ5Z1gqTywVPh32xiPlwnA4tFekFDATizZeHKaOyFndHlYbuxL/qlqdds3OObutUZB/IbvOeqwkUWX6XoyjoHV7lgZraymJx0wGB5RjDyF/DUAZ+rS1AjwkoBR7gV8wZ1Z8a8JluTalqD9o1NZub1UNQv69Ej/b0ld8XHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORXj95pv; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688E047F2C4
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790088073; cv=pass; b=PKhxUHIrpTFm50FVBz5an6cFDO35JEofMQ3RmoD4AHcw7zPrsqMA6GwG50S84Rosnb4feOiLHib5llvlJW0zk/j9to/bBu77SJl/hH83Q9gkpVX7fuphCcVu6KnQDUo2rDC3bZ9evwebCJ6OF2zOnxkNNfe0Qc9hicxvIUJDqkA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790088073; c=relaxed/simple;
+	bh=iYkoLLjFuLaOLIFnl2IacK4JF+N4rG+CagfraarYei4=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vs7iEdyK05rPhJPeZdat2dqEZmsRtymQNgITAPGNoNkTusOjiSzCk+NfZRTBKD3BB0jGp1Us2VKQcG+muz9cL1nfQwYjV2zMCnkMqdX58+CFYZW9oJdtFVQo6YPs/qxXoiYyE1/X+UbhEMA0JzH/KNjxFQdWP2B63x7brkdeQhA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pPVxjpNy; arc=pass smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORXj95pv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B421F00893;
-	Tue, 22 Sep 2026 14:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790087967;
-	bh=ccZLMV8/rmUwkGGZvkXAW2bLKoxzbXksggeNpDhRe8g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ORXj95pv7KOyMc3pNi5vvtVRnNz30v2+nysQigo/AYP8xeLMMY9RwFfwqy+rbEE8h
-	 m7c7zkyvWXG/wscdLO9kY1jhO/acCeltEGrelkTcv+PszsWRNuAoJpn2Bc6Jk2jkKK
-	 FFYNJYztZkuRWd8Tj1GMevcG6qZnFvkSdJo4tqrGVKOSX7QbQp1qrBI0HrFbv3YU/y
-	 o1gVEtBI6pwO4KdwDeU3D1a/G05k9SQfooO/lN98Ahlo5XyQ7n/2Ss7cNMzpee0Tw8
-	 afFBFOBKWQDtf5TvI9jN0MELb/ei2HdsYlvRIcwjnAm6LgTQDNTcB8a8DLRbZ/rV9A
-	 gsb0aL+mDCf9g==
-Subject: Re: [PATCH v2] amd-xgbe: fix comm_ownership mutex deadlock on SFP
- module removal
-From: netdev-bot+sashiko@kernel.org
-To: ssvatenko@iit.org.ua
-Cc: kuba@kernel.org, PrashanthKumar.K.R@amd.com, Raju.Rangoju@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- stable@vger.kernel.org, noreply@anthropic.com
-Date: Tue, 22 Sep 2026 14:39:25 +0000
-Message-ID: <179008796590.2160803.4060604455111749767@kernel.org>
-In-Reply-To: <20260918142238.191589-1-ssvatenko@iit.org.ua>
-References: <20260918142238.191589-1-ssvatenko@iit.org.ua>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pPVxjpNy"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f7db0so513962566b.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:41:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790088069; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SDO7V0gT8QfxXXy3BwerBZLI8Ljt5rfNZrvrCPgA0e9wcQHZZIUQC3+FsKmK22kFXR
+         Z0AD7GByt9H17paptHcD2xISbNRMJ8mPtoEjFl86aVTQUqwtm6RW4fTOClyviP1MrQuZ
+         DDJdqrIJXKgc4GCgnvrd5zcU9To7NzxxWG7kp+GoWkcBs7qELxOTs1SIze0iQdpw2Hh9
+         C3G8gGQnHT/QP7IVJYUU1ESRJOykT7haSgYyY4RrqNaMBXeljGfZD4wzjGUFEo/bq56Z
+         fQe3Al32n8KgqKg1GjfblqgRoWgWcUY1U2hr6og87uiCSl1JXZrpERD/Dg48hHItfn1g
+         Gg6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=aobqVTftx2RUrnHTqiqb5TNxJi/O+H0hYNwZcfYit+Y=;
+        fh=oscuMgTh7wHBzrUDKOarO0aBSXBA85T1i+BN/enA+6U=;
+        b=nXLE5WEwdzrHWIz/za3o27x67XdW/6ZTXUQcgYj8UaTooNhiBO54zE/T/4gQ0EDw/a
+         rwDJa8H5LLACqYIk/M2/4+sKJBAlN0lTKj/kjgoR8g5N5YOsobEmrskHxECDrSAEa6Uq
+         64Z8H/eZO4Aj4X3sP7x+aXXewWaI+ZtThB+rwb6VyXRAQUuQ+V+tUH7uA5ueyzBeN/+u
+         1Dlj7i0d6B9jTjX9d33NUE+ceYEmB+Gm90W7bV1Tp/chnIYFKCMY8q/IBcn0/tBjJMCU
+         2hngsK9X7pc93wFAXSm7dBb254xEtqjGxxQHOPMrFrAedbbIZxw8oZsGSHGkFbPgUQLV
+         ZCzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790088069; x=1790692869; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aobqVTftx2RUrnHTqiqb5TNxJi/O+H0hYNwZcfYit+Y=;
+        b=pPVxjpNyTrNK+5ZOq0PM2wCKcDZs7hZyct3huk+9SPzuvcVEW/QIcGiGOrqOaydR/5
+         Zq63oCKR7m97TtIrvMEmWJUzQm4k3CDT8LPJZgbTG36I3hZ7OrUZonzr6Y/RbyFf2LsH
+         LbCxa/SdUf8gJ/0mAZJ7ivod1C0S+6tGCkTLH3SbbEfEv0XaIXyukmGAjTNDQOYL4urZ
+         2QyPbk4QhmyQkGIJ6t9Ib16Erp+tu0l9mpxN2nzih2QhgRmVOA3pzGGt2pTp8ugegUeC
+         7NKABHf6QzukcTJtc1JR07/x+H7IW44H0PmCc6EA+HhcQ+FslOzCKb9xu4TMmMTG0poe
+         BXpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790088069; x=1790692869;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aobqVTftx2RUrnHTqiqb5TNxJi/O+H0hYNwZcfYit+Y=;
+        b=qrv6IpQNpTfPB9DleLfMY1b15c89wbzx0KenDVHsx+1Pnt+0f+T1jA+Dwr1QiGpDhR
+         fWxzSwTqmGP2/62mRa8oXhQuQ674/g/0wM2xM9epdeYvOdJjBTQYHmytSDBSXY6i6UH8
+         ib6IKzvVfe5xgX5Hrdl6j1TdSpaisZWVpjJd7M4CZEhLjjQeC/yG2nHTwI3GU8txhGNg
+         i/RAsaSHLE4sS7Isz/csT8JzN8aeMoZAZ65MDUXbTAdvX+roZ4XL4maoULnqmjoXXdBv
+         bCqZapXl8/h2cEj2k/DpIFc6KMlma5U+xlGM59JH5UYSqO3Sq1N+7LVsYa50jgWIkYAw
+         lpzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw7O0xyU/brRJQKkICfeGyNV/aWuzbMvSdhvu+GiEkvj73rwkiqSsAcJEpEZulmDTdAEKjDTxI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nIH8ced2BrochTrbnyTvIBFjI4jttkZ0L5gUpxFiZML2XfohG9
+	jN2dxDxw16YLcZ05Bhbfo8UxJxq/9zfqs7yHRapzCYlg8aXme0hZDGoHkzpQtwAK49KgnBGlpHf
+	E83cKvvbeL+R0GXhSbYjLXdYbtzNnha0=
+X-Gm-Gg: AYBFou0u2Pzj+g6/2f3lApz4IzIzIIUe61BhIQxqu1Q8NmuDAmDlmOjNG7n7xHjPh27
+	hPxFjEYvRbrQxRusKj5tJT8xrG5YIBAdijXnw6+T3hXpimOCIc10xfUhPQZR7b7Gudrbc05lOLL
+	TQxAjXojjyt+4vCQF1qs3WHPDLfXj8qu29OO8Wk8Lx8D3d/roN3V32idsDacfxbI/+t0eFCfkDz
+	QAtDg7m1UlN8Vk6BE6RoQPWGCByRYOxDqwJ91gX6WY9yfOpLYf0iUe/nwbLVmwaKHyhrPjEhYkp
+	TCskKoNO71PFl4a8iXcIUcf01q5SBbpgjVOKuQriQ4wtH9ksBxWwW7f3IgAYZ2DatFtHGAbzdkf
+	EAwdLHuTglTYkAC+gQXwWwaC/buLoeI/DscPYJ2ylbXNYzSHH5u+EmNAFfvFWV7/x06K2BQFaHx
+	XXu7vI+rwmLLbwjlqh9YiW68uoOBVKBh0jakauTdTW/g==
+X-Received: by 2002:a17:907:7b87:b0:c29:5a49:f8ae with SMTP id
+ a640c23a62f3a-c2a156d4889mr1174425166b.12.1790088068900; Tue, 22 Sep 2026
+ 07:41:08 -0700 (PDT)
+Received: from 1057883412519 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 22 Sep 2026 07:41:07 -0700
+Received: from 1057883412519 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 22 Sep 2026 07:41:07 -0700
+From: Zack Gomez <zack.gomez@gmail.com>
+In-Reply-To: <aqpnhJyXHYrqqohg@gmail.com>
+References: <20260914041221.1028092-1-zack.gomez@gmail.com>
+ <aqeyvaw06I2883Fo@gmail.com> <CAErB-w3fmW4bQqRg7895dZ4ZRqkDJmfb7FSCLPvRCkwrhQzaqQ@mail.gmail.com>
+ <aqpnhJyXHYrqqohg@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Tue, 22 Sep 2026 07:41:07 -0700
+X-Gm-Features: AcwNN1WJEk5oAzhiFwYCAEjZSZzcOxsgWSi9YoYm3E2lZNizP7dV3aoB5UEvxfE
+Message-ID: <CAErB-w0sQ6mg9UpK9_YM-VXjQrf=shY+nwtkWMYbSF=zk+cSeQ@mail.gmail.com>
+Subject: Re: [PATCH net] netpoll: bound the deferred transmit queue
+To: Breno Leitao <leitao@debian.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Wed, Sep 16, 2026 at 03:01:30AM -0700, Breno Leitao wrote:
+> My concern is some other netpoll users that do not check for return
+> value. Is this change going to affect them?
+>
+> For instance, team doesn't even check the return value.
 
-Critical: 0 · High: 3 · Medium: 0 · Low: 0
+They only lose the accounting. bond, bridge, team, vlan, macvlan
+and dsa reach netpoll_send_skb() only under netpoll_tx_running(),
+when the upper device's xmit was itself entered from netpoll, so the
+skb they hand down is always netconsole's, and it is consumed whether
+sent, parked or dropped. The drop lands on the lower device's txq,
+which is the queue that fills, so the bound holds for them too. What
+none of them see is the drop itself, bond included: NET_XMIT_DROP
+from the nested call is below NET_XMIT_MASK, so the outer
+__netpoll_send_skb() reports a completed transmit and xmit_drop_count
+never moves. The existing !npinfo / !netif_running() drops behave
+the same way today, and netconsole never had a delivery promise to
+lose (UDP, and netpoll_send_udp() already drops on pool exhaustion).
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> If a WARN is too heavy and it seems it might be, would a drop with
+> a reason be better than just dev_kfree_skb_irq() ?
+>
+>       dev_kfree_skb_irq_reason(skb, SKB_DROP_REASON_FULL_RING);
 
-- [High] The deferred external-PHY teardown introduced by this patch is
-  silently and permanently lost when rtnl_trylock() fails.
-- [High] The documented precondition that justifies rtnl_trylock() is
-  factually wrong.
-- [High] xgbe_phy_sfp_mod_absent_safe() (xgbe-phy-v2.c:1297-1305) skips
-  the whole module-absent bookkeeping when rtnl_trylock() fails, yet…
+Will do in v2, though it will rarely be seen:
+dev_kfree_skb_irq_reason() defers the free to the completion queue,
+and the next find_skb() on that CPU zaps it with __kfree_skb(), so
+the reason seldom reaches the tracepoint. v2 therefore also does
+dev_core_stats_tx_dropped_inc() on the device whose queue is full,
+so the loss shows in its tx_dropped in the stacked case (tun pairs
+the two the same way for its ring). I'd rather not WARN: the path
+runs from the console being drained, and with a flood in progress
+the splat is one more thing queued behind it.
 
---
-
-amd-xgbe: fix comm_ownership mutex deadlock on SFP module removal
-
-This moves the external PHY teardown out from under xgbe_phy_comm_lock so
-that phy_detach() can no longer re-enter the driver's MDIO callbacks and
-deadlock on the same non-recursive mutex.  The teardown is now done from
-two new helpers that take RTNL with rtnl_trylock() before calling
-xgbe_phy_sfp_mod_absent() / xgbe_phy_free_phy_device().
-
-A few questions about the new trylock-based teardown below.
-
-> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-> index 59a074ed312a..8c625a0340c4 100644
-> --- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-
-[ ... ]
-
-> @@ -1218,7 +1219,13 @@ static int xgbe_phy_sfp_read_eeprom(struct xgbe_prv_data *pdata)
->  		goto put;
->  	}
->  
-> -	/* Check for an added or changed SFP */
-> +	/* Check for an added or changed SFP. Freeing any existing external
-> +	 * PHY device is deferred to the caller: xgbe_phy_free_phy_device()
-> +	 * can end up calling back into this driver's MDIO read/write
-> +	 * routines (via phy_detach() -> phy_suspend()), which take the
-> +	 * comm ownership mutex themselves, and that mutex is held across
-> +	 * this call.
-> +	 */
->  	if (memcmp(&phy_data->sfp_eeprom, &sfp_eeprom, sizeof(sfp_eeprom))) {
->  		phy_data->sfp_changed = 1;
->  
-> @@ -1226,8 +1233,6 @@ static int xgbe_phy_sfp_read_eeprom(struct xgbe_prv_data *pdata)
->  			xgbe_phy_sfp_eeprom_info(pdata, &sfp_eeprom);
->  
->  		memcpy(&phy_data->sfp_eeprom, &sfp_eeprom, sizeof(sfp_eeprom));
-> -
-> -		xgbe_phy_free_phy_device(pdata);
->  	} else {
->  		phy_data->sfp_changed = 0;
->  	}
-
-Note for the comment below: this memcpy() commits the new module's EEPROM
-into phy_data->sfp_eeprom in the very same pass that sets sfp_changed = 1,
-so the "changed" condition is consumed here and cannot be re-derived on a
-later poll.
-
-> @@ -1268,9 +1273,47 @@ static void xgbe_phy_sfp_mod_absent(struct xgbe_prv_data *pdata)
->  
->  	phy_data->sfp_mod_absent = 1;
->  	phy_data->sfp_phy_avail = 0;
-> +	phy_data->sfp_changed = 0;
->  	memset(&phy_data->sfp_eeprom, 0, sizeof(phy_data->sfp_eeprom));
->  }
->  
-> +/* phy_detach()/phy_device_remove(), called from xgbe_phy_free_phy_device()
-> + * below, require RTNL to be held by the caller (phy_detach() itself uses
-> + * rtnl_dereference() and phy_link_topo_del_phy()). The callers below run
-> + * from the service workqueue with no lock held, so a plain rtnl_lock()
-> + * cannot be used here: xgbe_stopdev() (system workqueue) takes rtnl_lock()
-
-[Severity: High]
-Is the statement "The callers below run from the service workqueue with no
-lock held" accurate?  xgbe_phy_sfp_detect() has a second caller,
-xgbe_phy_start() (phy_impl.start), which runs with RTNL already held by the
-current task:
-
-  xgbe_open()            (ndo_open, RTNL taken by the netdev core)
-  xgbe_restart()         (rtnl_lock() before xgbe_restart_dev())
-  xgbe_change_mtu()      -> xgbe_restart_dev()
-    xgbe_start()
-      pdata->phy_if.phy_impl.start()
-        xgbe_phy_start()
-          xgbe_phy_sfp_detect()
-
-rtnl_trylock() is mutex_trylock(&rtnl_mutex), and mutex_trylock() fails when
-the current task already owns the mutex.  So on the ifup / restart / MTU
-change path, don't both new helpers become deterministic no-ops?
-
-That drops more than the RTNL-requiring phy_detach(): all of
-xgbe_phy_sfp_mod_absent()'s pure software bookkeeping (sfp_phy_avail = 0,
-sfp_changed = 0, and the memset of sfp_eeprom above) needs no lock at all,
-yet it is now only reachable through the trylock wrapper.
-
-Would it make sense to split the RTNL-requiring free from the software state
-reset that must always run, and handle the caller-already-holds-RTNL case
-explicitly?
-
-> + * and then calls flush_workqueue(pdata->dev_workqueue) inside xgbe_stop(),
-> + * which would block waiting for this very (dev_workqueue) work item to
-> + * finish - while it is blocked waiting to reacquire RTNL from
-> + * xgbe_stopdev(). That is an ABBA deadlock, the same class of bug this
-> + * driver just fixed elsewhere.
-> + *
-> + * Use a non-blocking rtnl_trylock() instead: on contention, skip the
-> + * teardown for this poll and let the next service poll (100ms-1s later)
-> + * retry it. If the interface is going down concurrently, xgbe_phy_stop()
-> + * (phy_impl.stop) frees the PHY itself, under RTNL already held by its
-> + * own caller - so nothing is lost by skipping here.
-> + */
-> +static void xgbe_phy_sfp_mod_absent_safe(struct xgbe_prv_data *pdata)
-> +{
-> +	if (!rtnl_trylock())
-> +		return;
-> +
-> +	xgbe_phy_sfp_mod_absent(pdata);
-> +
-> +	rtnl_unlock();
-> +}
-
-[Severity: High]
-When the trylock loses here, the whole module-absent transition is skipped,
-but xgbe_phy_sfp_detect() still falls through to xgbe_phy_sfp_phy_settings()
-as though it had been committed.  Can that wedge the port?
-
-xgbe_phy_sfp_mod_absent() is the only place that zeroes phy_data->sfp_eeprom
-and clears sfp_phy_avail/sfp_changed; xgbe_phy_sfp_reset() does not touch
-sfp_eeprom:
-
-  static void xgbe_phy_sfp_reset(struct xgbe_phy_data *phy_data)
-  {
-	phy_data->sfp_rx_los = 0;
-	phy_data->sfp_tx_fault = 0;
-	phy_data->sfp_mod_absent = 1;
-	phy_data->sfp_base = XGBE_SFP_BASE_UNKNOWN;
-	...
-  }
-
-So after a removal where the trylock failed, the old EEPROM stays cached.
-If the module is re-inserted before a later poll wins the trylock,
-xgbe_phy_sfp_read_eeprom() compares against that never-zeroed cache, finds
-it identical and takes the else branch:
-
-	} else {
-		phy_data->sfp_changed = 0;
-	}
-
-and from then on xgbe_phy_sfp_external_phy() early-returns:
-
-	if (!phy_data->sfp_changed)
-		return;
-
-so sfp_phy_avail is never re-validated, xgbe_phy_find_phy_device() returns 0
-on the "!sfp_phy_avail" check, and xgbe_phy_sfp_phy_settings() early-returns
-too:
-
-	if (!phy_data->sfp_mod_absent && !phy_data->sfp_changed)
-		return;
-
-leaving pdata->phy.lks stuck in the absent-module capability set published
-during the removal.  Does the port then stay unlinkable until an ifdown/ifup
-or a physical re-seat?
-
-The same loss applies to the new comm-ownership fallback added further down,
-which calls this helper to "fall back to no module": if the trylock fails
-there, sfp_changed stays 1 and sfp_eeprom stays committed to the new module,
-which is exactly the half-initialized state that branch is meant to prevent.
-
-> +
-> +static void xgbe_phy_free_phy_device_safe(struct xgbe_prv_data *pdata)
-> +{
-> +	if (!rtnl_trylock())
-> +		return;
-> +
-> +	xgbe_phy_free_phy_device(pdata);
-> +
-> +	rtnl_unlock();
-> +}
-> +
->  static void xgbe_phy_sfp_reset(struct xgbe_phy_data *phy_data)
->  {
->  	phy_data->sfp_rx_los = 0;
-
-[ ... ]
-
-> @@ -1296,26 +1339,55 @@ static void xgbe_phy_sfp_detect(struct xgbe_prv_data *pdata)
->  	/* Read the SFP signals and check for module presence */
->  	xgbe_phy_sfp_signals(pdata);
->  	if (phy_data->sfp_mod_absent) {
-> -		xgbe_phy_sfp_mod_absent(pdata);
-> -		goto put;
-> +		/* xgbe_phy_sfp_mod_absent() calls xgbe_phy_free_phy_device(),
-> +		 * which can call back into this driver's MDIO read/write
-> +		 * routines via phy_detach() -> phy_suspend(). Those routines
-> +		 * take the comm ownership mutex themselves, so it must be
-> +		 * released before making this call.
-> +		 */
-> +		xgbe_phy_put_comm_ownership(pdata);
-> +		xgbe_phy_sfp_mod_absent_safe(pdata);
-> +		goto settings;
->  	}
->  
->  	ret = xgbe_phy_sfp_read_eeprom(pdata);
-> +	xgbe_phy_put_comm_ownership(pdata);
->  	if (ret) {
->  		/* Treat any error as if there isn't an SFP plugged in */
->  		xgbe_phy_sfp_reset(phy_data);
-> -		xgbe_phy_sfp_mod_absent(pdata);
-> -		goto put;
-> +		xgbe_phy_sfp_mod_absent_safe(pdata);
-> +		goto settings;
->  	}
->  
-> +	/* Same reasoning as above: this must run without the comm
-> +	 * ownership mutex held.
-> +	 */
-> +	if (phy_data->sfp_changed)
-> +		xgbe_phy_free_phy_device_safe(pdata);
-
-[Severity: High]
-Is the deferred free lost for good when rtnl_trylock() fails here?  The
-commit message says:
-
-  "on contention, skip the teardown for this poll and let the
-   next service poll (100ms-1s later) retry it"
-
-but nothing appears to record that the teardown is still pending.  The only
-condition that reaches this call is sfp_changed, and
-xgbe_phy_sfp_read_eeprom() already wrote the new EEPROM into
-phy_data->sfp_eeprom in the same pass that set sfp_changed = 1, so the next
-poll sees an identical memcmp() and sets sfp_changed = 0.
-
-After that:
-
-  - xgbe_phy_free_phy_device_safe() is never called again
-  - xgbe_phy_sfp_external_phy() returns early on "if (!phy_data->sfp_changed)"
-    so sfp_phy_avail is never re-evaluated
-  - xgbe_phy_find_phy_device() returns immediately:
-
-	/* If we already have a PHY, just return */
-	if (phy_data->phydev)
-		return 0;
-
-and xgbe_phy_link_status() keeps gating link-up on the stale phy_device:
-
-	if (phy_data->phydev) {
-		ret = phy_read_status(phy_data->phydev);
-		if (ret < 0)
-			return 0;
-
-Since RTNL is global, doesn't any concurrent ip/ethtool/netlink operation on
-any interface in the system make the trylock fail for the one poll in which
-the change is observed?  Would it be better to commit sfp_eeprom only after
-a successful teardown, or to keep a sticky "needs free / needs reprobe" flag
-so the next poll can genuinely retry?
-
->  	xgbe_phy_sfp_parse_eeprom(pdata);
->  
-> -	xgbe_phy_sfp_external_phy(pdata);
-> +	/* Re-acquire ownership for the external PHY access below; it talks
-> +	 * to the SFP over I2C directly and needs the mutex held again.
-> +	 */
-> +	ret = xgbe_phy_get_comm_ownership(pdata);
-> +	if (!ret) {
-> +		xgbe_phy_sfp_external_phy(pdata);
-> +		xgbe_phy_put_comm_ownership(pdata);
-> +	} else {
-> +		/* Could not finish bringing up the new module: sfp_changed,
-> +		 * sfp_eeprom and sfp_base/sfp_speed were already updated
-> +		 * above for it, but external_phy() (and thus sfp_phy_avail)
-> +		 * never ran. Fall back to "no module" state instead of
-> +		 * committing to a half-initialized one - same pattern as
-> +		 * the read_eeprom() failure path above.
-> +		 */
-> +		xgbe_phy_sfp_reset(phy_data);
-> +		xgbe_phy_sfp_mod_absent_safe(pdata);
-> +	}
->  
-> -put:
-> +settings:
->  	xgbe_phy_sfp_phy_settings(pdata);
-> -
-> -	xgbe_phy_put_comm_ownership(pdata);
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918142238.191589-1-ssvatenko%40iit.org.ua
+Zack
