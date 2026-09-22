@@ -1,158 +1,191 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDD32222CC;
-	Tue, 22 Sep 2026 12:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA8E544D7F;
+	Tue, 22 Sep 2026 12:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790081133; cv=none; b=uo3Cvsp5ZbNFS/cnREg9Gzgs7jWv1mIQ2wz8U09tL850FRgMhqVj2ub7XdYPBxnX8RD0xJf5kEtnGynzNPt1wOgD+Z7vmR+KdB9HoEoOFKvIeuLr2M356S2c519p6lMbLE6tCk85TyJqlf6xPnP6iYvIF8Y8cWfk89+op3Hof10=
+	t=1790081223; cv=none; b=U/1NZQgr0UZYs2zUkSWh13NzS7P/IbEAmUwx1tQ3hJtYwnOo7eUR/C0jYXlsp2eNTgSO6W6UzWrN4U1hOdXxFZNltRriFgm8U8k7djTuSUuiByFzh5y2X0Kugeoe/9k5cRXA9ohQbpQ5wgu5QjDa7b+0pOsNxH1BasTUrnvLmiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790081133; c=relaxed/simple;
-	bh=SexyDCDDA86IrxgleDDpgNquGCBXEAW+5IL256OLIYg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UQEIxBRxkYVL5ebgJvBWHz9Y6ZaUja6wiRMmp8dFQ+G8zVLM8LDVIPOhFQnX+igH0pJ2B3mRjblgFl6F/0vR4Jsd13XShatZaQb4KgmXyKaTyecsBaiMkztLbQkdAOs96dlV9snZPJaZBe8ZKJ9zRAvLt2s/ceOnHDMo+mJFHNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=pIw/gEsw; arc=none smtp.client-ip=117.135.210.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1790081223; c=relaxed/simple;
+	bh=BudmzbRUBh/nsImbCyxQlRL9pd09aKsZBoGF2/iX0/c=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=At+P3EdUql2+ze6B+xVtLJgSj6Ai32h9QsMdtzs2awrmYRT3h379pzFeYUmF8inhGHMHVhxKQdEC2VewzALxTpONvD5aM4E6ErNzgEh+zKbcZDcGGMuLNSblxq0/NH4LMs0rzea4Y21/F106w4hijsCr53rxMoXABYNFJrGzEQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsHlo2Vc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="pIw/gEsw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=dJ
-	/NF/IKzyTCf3s98R9LljNUJNr1ysT/7jTS8YD1kDA=; b=pIw/gEsw9hc1kv9ou/
-	jvGzbKBcUQ31Ucys3yYzr7CAgtmNo8A2er9874K7ht7fKVc1qN4vqf3b4TwhpFl0
-	nKg7uJXyEiIhv0UwwzGcu6QYNE2CI1lZ0F/ZH1XLBaFFOtHnqhVc+MKcuFFobgw6
-	bmV5IPQs57ZzAChDwKhdApAUc=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3f90ZeLJqrJ0eAA--.64182S2;
-	Tue, 22 Sep 2026 20:44:09 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: maxime.chevallier@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Subject: [PATCH net v3] net: stmmac: do not cache the new TSO MSS before it reaches the DMA
-Date: Tue, 22 Sep 2026 20:44:08 +0800
-Message-Id: <20260922124408.645496-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsHlo2Vc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681821F000FF;
+	Tue, 22 Sep 2026 12:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790081222;
+	bh=D3Jdj3+bSP+YSlJtW/E4z6RFHVsPDAGtj1j45y1Vlsk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=gsHlo2VcQ1iYlQl6UUoLuBDmF/gfgXTAI9xoO++swjzvv4qobB3ohoLU/BSaSXdV1
+	 JHGFJ0TqRWbkt0nKOGhhimXHpU+yFgU1y+9tbTxzfKOLfmKz4oxDSP6KxRqCMbr3+q
+	 7ph38+3JdzPkeXmliA3zfhD8Af6kg9GNcQpAhbmudwK8mz1TOrwwWyYCmRchBa2HaZ
+	 SIc1B/7RwyNSFEkwsyWkZFqlYBuebrZmbsxhJvndXIG7lTrH3Pd8cm2OKyWwmRZvRk
+	 dVl/sLj4/CAHbl5OvvWmTBdMgPVR5GspNPSY+P/q1KxVHeV1n54rzdAp6kOsIGtTP6
+	 i7X7ZXqruBk0A==
+Subject:
+ Re: [PATCH net] net: bcmgenet: stop Tx NAPI before disabling the queues
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ justin.chen@broadcom.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Tue, 22 Sep 2026 12:47:00 +0000
+Message-ID: <179008122084.2160803.1051800375963129894@kernel.org>
+In-Reply-To: <20260921124435.974581-1-nb@tipi-net.de>
+References: <20260921124435.974581-1-nb@tipi-net.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3f90ZeLJqrJ0eAA--.64182S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr17KFyUur4DJw43Aw13Arb_yoWrZrWxpF
-	4UZa90yr95Jr1fWw48C3y0va45Jayrtay5Cw18G3sxCwsIyryvgryfKrWUWa4UAF95ZF1a
-	ka1q9asxAF4UJrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ul-ewUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRlrQmqyeBnq-AAA32
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-stmmac_tso_xmit() fills the MSS context descriptor and stores the new MSS
-in tx_q->mss right away, but the descriptor only gets its OWN bit much
-later, right before the frame is handed to the DMA. Every error path in
-between - the dma_map_single() of the linear part and the
-skb_frag_dma_map() of each fragment - returns with tx_q->mss already
-updated while the MAC is still programmed with the previous MSS.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-The abandoned context descriptor is never handed to the DMA:
-stmmac_set_mss() does not set the OWN bit, and the error paths return
-before stmmac_flush_tx_descriptors(), which is the only place that
-advances the TX tail pointer. When a later xmit advances the tail pointer
-past the abandoned slot, the DMA stops on the not-owned context
-descriptor and suspends; stmmac_tx_clean() then reclaims the slot in
-software but stops at the first descriptor the DMA still owns, so the
-ring can never wrap around. The queue stalls until the watchdog fires
-and stmmac_tx_err() resets the channel, which also clears the stale
-tx_q->mss via stmmac_reset_tx_queue().
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Update tx_q->mss only once the context descriptor has been given to the
-DMA, so that the cached value always describes what the hardware is
-actually programmed with.
+- [High] Incomplete fix: the Wake-on-LAN branch of bcmgenet_suspend()
+  keeps the exact queue-stop-before-Tx-NAPI-stop ordering that this…
 
-The context descriptor is now handled like the data descriptors are:
-tx_q->cur_tx is not advanced while it is being filled. Whether the frame
-can be queued is only known after every dma_map_single() and
-skb_frag_dma_map() has succeeded, so the descriptor stays at the slot
-tx_q->cur_tx points to and the index moves past it later, together with
-the data descriptors. That also keeps the context descriptor outside the
-range stmmac_tx_clean() walks when the ring is cleaned after a failure,
-so the error paths have to release it explicitly. A mapping failure
-therefore leaves the slot reusable instead of parked in the middle of
-the ring as a descriptor the DMA will stop on.
+--
 
-Fixes: f748be531d70 ("stmmac: support new GMAC4")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
-Changes in v3:
-- Rewrote the failure description in the commit message: after a mapping
-  failure the not-owned context descriptor wedges the TX ring (the DMA
-  suspends on it, stmmac_tx_clean() pins dirty_tx, only the watchdog
-  reset recovers), it does not produce mis-sized segments as previously
-  claimed. No code change. (Sashiko AI review)
-- Kept Lorenzo's Acked-by, as the patch is unchanged from v2.
-- Link: https://lore.kernel.org/all/20260920061609.1919876-1-xiaolinkui@126.com/
+net: bcmgenet: stop Tx NAPI before disabling the queues
 
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+This moves bcmgenet_disable_tx_napi() ahead of netif_tx_disable() in
+bcmgenet_netif_stop(), so an in-flight Tx completion can no longer call
+netif_tx_wake_queue() after the queues have been stopped and before
+bcmgenet_fini_dma() frees the rings.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a268cd4acdef..276187f50ee3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4563,10 +4563,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 			mss_desc = &tx_q->dma_tx[tx_q->cur_tx];
- 
- 		stmmac_set_mss(priv, mss_desc, mss);
--		tx_q->mss = mss;
--		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
--						priv->dma_conf.dma_tx_size);
--		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
- 	}
- 
- 	if (netif_msg_tx_queued(priv)) {
-@@ -4577,6 +4573,9 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	first_entry = tx_q->cur_tx;
-+	if (mss_desc)
-+		first_entry = STMMAC_NEXT_ENTRY(first_entry,
-+						priv->dma_conf.dma_tx_size);
- 	entry = first_entry;
- 
- 	WARN_ON(tx_q->tx_skbuff[entry]);
-@@ -4714,6 +4713,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 		 */
- 		dma_wmb();
- 		stmmac_set_tx_owner(priv, mss_desc);
-+		tx_q->mss = mss;
- 	}
- 
- 	if (netif_msg_pktdata(priv)) {
-@@ -4745,6 +4745,9 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 						priv->dma_conf.dma_tx_size);
- 	}
- error:
-+	if (mss_desc)
-+		stmmac_release_tx_desc(priv, mss_desc, priv->descriptor_mode);
-+
- 	dev_err(priv->device, "Tx dma map failed\n");
- 	dev_kfree_skb(skb);
- 	priv->xstats.tx_dropped++;
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index b916080f4ff17..0789b60e664ad 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -3441,6 +3441,8 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+>  {
+>  	struct bcmgenet_priv *priv = netdev_priv(dev);
+>  
+> +	/* Stop completion polling before it can wake a stopped queue */
+> +	bcmgenet_disable_tx_napi(priv);
+>  	netif_tx_disable(dev);
+
+[Severity: High]
+
+The commit message says:
+
+  Close is safe because dev_deactivate_many() stops the qdisc first.
+  bcmgenet_suspend() does not, so stop Tx NAPI before the queues.
+
+bcmgenet_suspend() only reaches bcmgenet_netif_stop() in the non-WoL else
+branch. Does the Wake-on-LAN branch still have the ordering this patch
+declares unsafe?
+
+drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_suspend() {
+	if (device_may_wakeup(d) && priv->wolopts) {
+		netif_tx_disable(dev);
+		...
+		/* HFB programming, interrupt clearing */
+		...
+		if (-ETIMEDOUT == bcmgenet_tdma_disable(priv))
+			netdev_warn(priv->dev,
+				    "Timed out while disabling TX DMA\n");
+
+		bcmgenet_disable_tx_napi(priv);
+		bcmgenet_disable_rx_napi(priv);
+		disable_irq(priv->irq1);
+		bcmgenet_tx_reclaim_all(dev);
+		bcmgenet_fini_tx_napi(priv);
+	} else {
+		/* Teardown the interface */
+		bcmgenet_netif_stop(dev, true);
+	}
+}
+
+Between netif_tx_disable() and bcmgenet_disable_tx_napi() here, priv->irq1
+is still enabled and the Tx NAPI is still live, and bcmgenet_tdma_disable()
+spins in udelay, so the window is not short. Can bcmgenet_tx_poll() run in
+that window and undo the stop?
+
+drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_tx_poll() {
+	work_done = __bcmgenet_tx_reclaim(ring->priv->dev, ring);
+	if (ring->free_bds > (MAX_SKB_FRAGS + 1)) {
+		txq = netdev_get_tx_queue(ring->priv->dev, ring->index);
+		netif_tx_wake_queue(txq);
+	}
+}
+
+Nothing later in the WoL branch re-stops the queue, and suspend does not
+call dev_deactivate(), so the qdisc stays attached. sch_direct_xmit() gates
+only on the per-txq stop bit, not on netif_device_present(), so the
+netif_device_detach() done earlier in bcmgenet_suspend() does not block a
+transmit:
+
+net/sched/sch_generic.c:sch_direct_xmit() {
+	HARD_TX_LOCK(dev, txq, smp_processor_id());
+	if (!netif_xmit_frozen_or_stopped(txq))
+		skb = dev_hard_start_xmit(skb, dev, txq, &ret);
+}
+
+A kernel-generated transmit is enough to hit this (ARP/ND reply, TCP
+retransmit, forwarding), so freezing user space does not close it.
+
+Two follow-on questions about that path:
+
+Can this leak the skb and its DMA mapping? A transmit arriving after
+bcmgenet_tx_reclaim_all() dma_map_single()s the skb into ring->cbs while
+TDMA is already disabled, so no completion reclaims it. On the WoL-success
+resume path, bcmgenet_resume() -> bcmgenet_init_tx_queues() ->
+bcmgenet_init_tx_ring() resets the software and hardware indices without
+walking cbs:
+
+drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_init_tx_ring() {
+	ring->cbs = priv->tx_cbs + start_ptr;
+	ring->size = size;
+	ring->clean_ptr = start_ptr;
+	ring->c_index = 0;
+	ring->free_bds = size;
+	ring->write_ptr = start_ptr;
+	ring->cb_ptr = start_ptr;
+	ring->prod_index = 0;
+}
+
+Neither that function nor the resume path calls netdev_tx_reset_queue(), so
+does the netdev_tx_sent_queue() accounting from the stray xmit leave BQL
+skewed as well?
+
+And on the WoL-failure resume path, can this reproduce the same
+use-after-free quoted in the commit message?
+
+drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_resume() {
+		/* MAC was reset so complete bcmgenet_netif_stop() */
+		umac_enable_set(priv, CMD_RX_EN | CMD_TX_EN, false);
+		bcmgenet_rdma_disable(priv);
+		bcmgenet_intr_disable(priv);
+		bcmgenet_fini_dma(priv);
+}
+
+bcmgenet_fini_dma() kfree()s priv->tx_cbs while the Tx queue is still
+runnable, and bcmgenet_init_dma() only reallocates it after init_umac(),
+phy_init_hw() and genphy_config_aneg(), so bcmgenet_xmit() ->
+bcmgenet_get_txcb() would write through ring->cbs into freed memory.
+
+Would it make sense to reorder the WoL branch as well, moving
+bcmgenet_disable_tx_napi() ahead of netif_tx_disable() there?
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921124435.974581-1-nb%40tipi-net.de
