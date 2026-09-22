@@ -1,134 +1,148 @@
 Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B77F541E75
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213B7542802
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790080045; cv=none; b=jdK9Jb08s/4nYNtJvsjBfYPMQFRWcD1Lvf4fi3WxQoPDmwk41KTFtxuQeENsR8dXHdxEmMsqRkvBlV0cmAeun5iJ4AY0kxpmY5r77en4OsVLgeM2Ai8bJlWL5fC0Nh/+ttdQRAf3kjc9VhWbqL+D6dbdOPaI3IiX6e3Zf6I7Y9Q=
+	t=1790080046; cv=none; b=g/ksHUtLoV13EQTOfFOqBERx9q55dH0FmZOLgApE6BLIwy5oFyja9lRUszbKajJMHYAmInP+HHl8460qh9TizquSaIGu3tHaq966H7Jb9IM+gMcHo6sElZEB2OsPD9+Z8s8pFt97S766lC5lpuQCowU1tNZXFVHB6J5+Mavtjy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790080045; c=relaxed/simple;
-	bh=iE8dfLNcG8isWhV+X/yCgFVHLismpI0oj74WN5mLWrs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JXddJFx3hXVeryKQjDMjNESLLuC3A7ANbUjF77LLUjlGAwwiXJy/KQkZMu6ptysU+kAIrkjfvSheMny3YcBwBkalPTI5J2/TYOAgeEey64Mm5ml465lqC9RaW62pcrQfwPqsn6NBOZOPkng3Pyp7WKUhcVL+QeiOm5d47FNXF7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vMaX54/6; arc=none smtp.client-ip=209.85.222.198
+	s=arc-20240116; t=1790080046; c=relaxed/simple;
+	bh=NGNw34AC3ET6yQ4siYmRTxcAglXAdPlRAWh6v17waAI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CPvSfMT/6j/xkQeg64SOV/8QdIvtnttV6DJuCu0ZQ3vMoBZQarK5N4zaO25wjqZy2qbbMqmaVScfZLkV+S0mhUPqU4ZGz93XTEYskB+U6Ig/ETPTFly1UzWbetUN0TZmI9nGmodRucL4y8ZpwvCqeOkDmRiovE3B2IUSiJkMKxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XxSdXdhh; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vMaX54/6"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93be1861d2dso608445085a.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:27:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XxSdXdhh"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939d6c515deso817823185a.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:27:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790080043; x=1790684843; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Gf0PVeKu3us2T4mPAXTmEo3n0dpwZ5CLPeitvDV6PZM=;
-        b=vMaX54/60UNSsV6yWZspKc1AYdXuM5P32y7b6AALRNed22791jL+eySJI2JVK22be9
-         vAdfWCPs6utf/OkEAWtwFqklJGQ0Z5f1QOF+DphYeRQH4qIfPZ2zpuCa5+f+xUDZtSz2
-         2PJ6wgZo2ZRJItUQwnzhXBtYTl4fa/HO+TBlo9NKxFZAuY68gsJ94+wEQBuzobffb9E5
-         VhD8YUxSgoeoQh7ZBLq3Km26c5nvKiMkYOpJhKwjSIwETeCybRh/Q1UEtD8PXQIMcFV/
-         XrdPHP8NBWo+9mcGRStHHUl7romSNRBbA9FiGNMd/z7CRGu+QVr4j2Fzq2SgDA+m8Hlw
-         YG3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790080043; x=1790684843;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790080044; x=1790684844; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Gf0PVeKu3us2T4mPAXTmEo3n0dpwZ5CLPeitvDV6PZM=;
-        b=Ssqrh4OQw3HIuN6BwnqF3Aef8dohr7ka4MJUugg/DRWKBiV9rZvkiNT5W4oifGyq4D
-         +zqRlrx67+viFo0SXDCnfnHhV5ht4Zi9Y8bJrUppaPeUDVyUoUkPSMpcwDHVQxMPLjo4
-         aBlwaJGGGN+Vq1RxWdl6piAMpVT435iHYTbMrC24cgB3Os8Qj2udl0JVP4H1o8CJlbws
-         JkRFXBOIuzDD4mV1sMRVrK6H0N5rTtXz6Mdg5lkFEyX2xzinUPLHhlPZ/OM5fQBVr+KD
-         kicAswW7lBS2D9k0UOp7rV7OwoyVlPUiSfBA03YPciiuezY6ZMV4wdYWE1f6FGO+e4sG
-         FsJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxT0zhurlxprXIA4JSNb7FHPG5Z5g6HY/546fETZ0w6V+b9mgpMJ25RTqXAHsL00/5pTiPF6qY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lLkymgA2ggtln6SF/aLJ2DlAotHixJR2ajbJMomrzEfItauo6Z
-	CxuTl68pPw67ZtwACHQQfIrRhOJdkawNjt37mCZE0dtK3Txx9dBFPVJ+9ceTeqb75KBFHHlntYe
-	ZE5L8Lc8UX5h1Sg==
-X-Received: from qkbg23.prod.google.com ([2002:a05:620a:a357:b0:93a:d5c:4ae2])
+        bh=kw/aCfaotQ4HaJ3qKwh3HQ7pvI0FmWtuR7ydB0XfF4I=;
+        b=XxSdXdhhpigBDUe3TGWPQx2msxRPxR7t9YwkPguu5Owc81Idr1I0GM6HYJ5AZleya9
+         PrwCYw/b78ydzHw7/2Fp9x7ZWf/bZhqvbXLdzKHBONPl5Or6OYWVDDeMwjlzXpCyXDhf
+         CVvvBRx+o+KrlqoJNdvk86KmLZ8mLCfIYbm0B5oUzzePke0BGvzpaeuJxdRLqlPg8A/v
+         dYtHOhAyZ9iZQU/m5UgtnYyN+lLhrB4HIdKZlDTH5+uUWBP7dwUikN/ji1Pulkuio5XO
+         DXs0JSi/Zv5mGWNLVuaYPnGVUQRmbE8gKSS0V1zfO0uAhu/sM7/IM0ihujuFydNCCJm/
+         f/Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790080044; x=1790684844;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kw/aCfaotQ4HaJ3qKwh3HQ7pvI0FmWtuR7ydB0XfF4I=;
+        b=Mtr0zcKl3Hu5S4Na4MqEeAM/OoaiDSsyNEsKRh9PCtAj9YIN+E+0pTtMsZBDvTM9hr
+         VpW1YIwzK/RuPDxs8Lp+tVVnYS1DBc1p2x0c1a0a3UkxErkIiC+QukINTij4AmaItB+F
+         jD2CY1HLGC5W6grAY6zuEDeJt/XcCZxkhpUfOQ03I6qFIu53QO9LXbZDmRWRWstw1DtK
+         qiQVdMz7ucbARwNoXjfKRp6WQXKJq5vvY4VIZMwcU+ryPNR7iPdhqTCeRQtNJvcFUoSq
+         ou4uczr35ieDMAGvU4PSALrTZZ4+3fpTg1ZLbOx82Svlv1Ui1ofcL5FQl/LcyzvlbQ2J
+         +fCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw9YP4VjyuO7JIP8yOIiCMjkEkA1aJyThHsG6x2YkpjYPCRZLVdOr9/ScBMmQo+30HNTvv/1+A=@vger.kernel.org
+X-Gm-Message-State: AFuF++k/aOLEUBucpfzfy3Fqk7bmCgoWxNmTVRnHzFeIIB16u8tEMsxo
+	MmxrCbU4wm4QDnPQX45fguwizIEWwVUEATPjgYL1gvkpExoYOgkAT+5TVbWBIPFqQyz8d6f18M5
+	W20YkRCYkNw8ivQ==
+X-Received: from qkbi25.prod.google.com ([2002:a05:620a:5219:b0:93c:1df8:e256])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:440d:b0:93b:d7a3:45ce with SMTP id af79cd13be357-93c15e8bf36mr527077585a.55.1790080042326;
- Tue, 22 Sep 2026 05:27:22 -0700 (PDT)
-Date: Tue, 22 Sep 2026 12:27:11 +0000
+ 2002:a05:620a:458a:b0:93b:d79e:18f9 with SMTP id af79cd13be357-93c15e80bfemr540341385a.60.1790080043754;
+ Tue, 22 Sep 2026 05:27:23 -0700 (PDT)
+Date: Tue, 22 Sep 2026 12:27:12 +0000
+In-Reply-To: <20260922122721.3568295-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260922122721.3568295-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260922122721.3568295-1-edumazet@google.com>
-Subject: [PATCH net-next 0/9] tcp: avoid struct socket cache line miss in tcp_check_space()
+Message-ID: <20260922122721.3568295-2-edumazet@google.com>
+Subject: [PATCH net-next 1/9] dlm: fix send buffer backpressure handling
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
 	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org, 
+	Alexander Aring <aahringo@redhat.com>, David Teigland <teigland@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 
-tcp_check_space() is called on every incoming ACK and every transmitted
-packet, and tests SOCK_NOSPACE in sk->sk_socket->flags.  Because struct
-socket lives in its own cache line and the TCP fast paths do not touch
-it for anything else, that test pulls in an extra cache line that is
-cold when the working set of active sockets is large.
+lowcomms.c tests and clears SOCKWQ_ASYNC_NOSPACE in con->sock->flags,
+but this bit has not been stored there for ten years.
 
-This series mirrors SOCK_NOSPACE into a new u8 field, tp->tcp_nospace,
-placed in the tcp_sock_write_txrx cache line group (fitting in an
-existing 4-byte hole after pred_flags, so sizeof(struct tcp_sock) is
-unchanged).  Both the transmit and receive fast paths already dirty
-that cache line, making the fast-path test in tcp_check_space() free of
-extra cache misses while keeping __tcp_check_space() authoritative on
-SOCK_NOSPACE.
+Commit 9cd3e072b0be ("net: rename SOCK_ASYNC_NOSPACE and
+SOCK_ASYNC_WAITDATA") mechanically renamed the two dlm users, then
+commit ceb5d58b2170 ("net: fix sock_wake_async() rcu protection") moved
+the bit from socket->flags to the RCU protected socket_wq->flags, where
+it is reachable only through sk_set_bit() and sk_clear_bit(), and is
+only maintained for sockets having SOCK_FASYNC set.  dlm uses kernel
+sockets, which never have SOCK_FASYNC set, and never sets the bit
+itself, so the test in send_to_sock() has been false ever since.
 
-To maintain the invariant (SOCK_NOSPACE set => tp->tcp_nospace set) from
-a single choke point:
+The consequence is that when sock_sendmsg() returns -EAGAIN because the
+socket send buffer is full, dlm no longer sets CF_APP_LIMITED, does not
+increment sk_write_pending, and does not return DLM_IO_END to wait for
+lowcomms_write_space().  It returns DLM_IO_RESCHED instead, and
+process_send_sockets() immediately requeues the send work.  A connection
+to a peer that is slow to drain thus keeps cycling through
+sock_sendmsg() and -EAGAIN, burning CPU, instead of sleeping until TCP
+reports that space is available again.
 
- - Patch 1 fixes a long-standing bug in dlm where SOCKWQ_ASYNC_NOSPACE
-   was tested and cleared on con->sock->flags instead of SOCK_NOSPACE.
- - Patch 2 introduces sk_set_nospace() and sk_clear_nospace() and
-   converts the core networking callers.
- - Patches 3-8 convert the remaining in-kernel callers (sunrpc, rds,
-   dlm, drbd, nvme-tcp, libceph) so that no open-coded set_bit() or
-   clear_bit() of SOCK_NOSPACE remains in the tree.
- - Patch 9 adds tp->tcp_nospace, wires it into sk_set_nospace() and
-   sk_clear_nospace(), and switches tcp_check_space() to test it.
+Test SOCK_NOSPACE instead.  This is the bit that lives in socket->flags,
+that TCP sets whenever sendmsg() returns -EAGAIN for lack of send buffer
+space (tcp_sendmsg_locked() and sk_stream_wait_memory()), and that
+lowcomms_write_space() already clears.  This restores the semantics dlm
+had before the bit moved.
 
-Eric Dumazet (9):
-  dlm: fix send buffer backpressure handling
-  net: add sk_set_nospace() and sk_clear_nospace()
-  sunrpc: use sk_set_nospace() and sk_clear_nospace()
-  rds: use sk_set_nospace()
-  dlm: use sk_set_nospace() and sk_clear_nospace()
-  drbd: use sk_set_nospace()
-  nvme-tcp: use sk_clear_nospace()
-  libceph: use sk_clear_nospace()
-  tcp: add tp->tcp_nospace
+Also remove the clear_bit() of SOCKWQ_ASYNC_NOSPACE from
+lowcomms_write_space(), for the same reason.
 
- .../networking/net_cachelines/tcp_sock.rst    |  1 +
- drivers/block/drbd/drbd_worker.c              |  3 +-
- drivers/nvme/host/tcp.c                       |  2 +-
- drivers/nvme/target/tcp.c                     |  2 +-
- fs/dlm/lowcomms.c                             | 10 ++--
- include/linux/tcp.h                           |  4 ++
- include/net/sock.h                            |  2 +
- include/net/tcp.h                             | 23 ++++++++-
- net/ceph/messenger.c                          |  2 +-
- net/core/sock.c                               | 47 ++++++++++++++++++-
- net/core/stream.c                             |  6 +--
- net/ipv4/tcp.c                                |  5 +-
- net/ipv4/tcp_bpf.c                            |  2 +-
- net/ipv4/tcp_input.c                          |  8 +++-
- net/kcm/kcmsock.c                             |  4 +-
- net/mptcp/protocol.c                          |  4 +-
- net/mptcp/subflow.c                           |  5 ++
- net/rds/tcp_send.c                            |  5 +-
- net/smc/af_smc.c                              |  2 +-
- net/smc/smc_tx.c                              |  6 +--
- net/sunrpc/svcsock.c                          |  4 +-
- net/sunrpc/xprtsock.c                         |  4 +-
- net/tls/tls_sw.c                              |  2 +-
- 23 files changed, 116 insertions(+), 37 deletions(-)
+SCTP connections are deliberately left as they are.  SCTP does not set
+SOCK_NOSPACE, and it never calls sk->sk_write_space(): sctp_wfree() ends
+up in sctp_wake_up_waiters(), which calls sctp_write_space() directly.
+lowcomms_write_space() is thus never invoked for an SCTP connection, and
+the test added here stays false, so send_to_sock() keeps returning
+DLM_IO_RESCHED as it does today.  This is the only safe behavior, as
+returning DLM_IO_END would wait for a callback that never comes.
 
+Fixes: ceb5d58b2170 ("net: fix sock_wake_async() rcu protection")
+Cc: stable@vger.kernel.org
+Cc: Alexander Aring <aahringo@redhat.com>
+Cc: David Teigland <teigland@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ fs/dlm/lowcomms.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 2aff1c7c17de49c41f9fd02a1fae00bcc9e6af5b..abe9ae4c643fae061d2e168c03219a4f4e1bc007 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -522,10 +522,8 @@ static void lowcomms_write_space(struct sock *sk)
+ 	clear_bit(SOCK_NOSPACE, &con->sock->flags);
+ 
+ 	spin_lock_bh(&con->writequeue_lock);
+-	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
++	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
+ 		con->sock->sk->sk_write_pending--;
+-		clear_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags);
+-	}
+ 
+ 	lowcomms_queue_swork(con);
+ 	spin_unlock_bh(&con->writequeue_lock);
+@@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
+ 	if (ret == -EAGAIN || ret == 0) {
+ 		lock_sock(con->sock->sk);
+ 		spin_lock_bh(&con->writequeue_lock);
+-		if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
++		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
+ 		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
+ 			/* Notify TCP that we're limited by the
+ 			 * application window size.
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
