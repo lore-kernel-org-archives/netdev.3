@@ -1,40 +1,40 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D41543B4A2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3716D4A64F0
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790060370; cv=none; b=gwEgVH4hWPoIgXoPPAFbRGXwB7BM0JZAd5W8wxkx5zCbE+k+XBPiUTODCJWZXMuj13NDFom8ltj6nMgiLA76EyEJmTIGVuElgLOCMSxBeupqLhaftVmyrJkkNoIL7oh5tphttIa4nuURadK4PN0SCOINxndAGwCfbgJ3nXpxkcQ=
+	t=1790060542; cv=none; b=pFhkiL3C1tLUL2YSfP8PY0O0G+RXcGxmrhnjtL4ijfyiBqzX5oq8SR+ythscNQN3WaXM7xXqcq+NAfrqwNc9i7YagQSZZGQ0lsH3FXRjGmuixQ7kK6uAnp44XEc3wCKzrh8aSKhTPm8ZC72eHAWzWyu3OjRDK69cOCko8wdG5o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790060370; c=relaxed/simple;
-	bh=1TiV2Ip4e4Vs333/dEmHkKjYSPHQHH9TAPa+dveTvNc=;
+	s=arc-20240116; t=1790060542; c=relaxed/simple;
+	bh=6dkRJLP/5BVAiu7H1TmYvn256NTDtpUQJ1vIReWXtjw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FKiznIG3ZWGDgdUOi2FW2JGNIkVHcJIJA9fvzmUjmkNBGj6rsWyqfW+NXOS8s3oyHcagP9usFzWoCZr1cgcYE+w5WTqKZNXvR2au6j1OR5UpPl9gfxm0LDoEKMeMsosuT6Yra6JNFfU5Es07OdWzFgwCNpTwUtV0/w5jFscG5xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=04z+sDMf; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:Content-Type; b=rLSCo7sPCc7mw6OTGUssc70a6amf4bqg0hiMi2/lY3upue5UrdfDYbtaWx6blGGCQ2Crv2b+IprdwqYRdK2nddctoohCbFSiiKBmL/J6UjIp0607zLUTrXOWEAejOepMyoKohZqztGL90RkhoxDCGQZgk7XAbpoSMn5o01+Z1KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YFAWr1LL; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="04z+sDMf"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YFAWr1LL"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E123C4E40EC4;
-	Tue, 22 Sep 2026 06:59:22 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 790801A0FBD;
+	Tue, 22 Sep 2026 07:02:18 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9947560580;
-	Tue, 22 Sep 2026 06:59:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AD541032920C;
-	Tue, 22 Sep 2026 08:59:15 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 49D5A60580;
+	Tue, 22 Sep 2026 07:02:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C1E2010329239;
+	Tue, 22 Sep 2026 09:02:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790060361; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1790060536; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=CYJeYVq+zoPSXgvrTiKhlttbrwfDZWH+MXsuurAOmL4=;
-	b=04z+sDMfWGyJYBXSgQNXBy3AkYLFY8XpueASItQKWpzYTtG8+ABBFthFjuGX7LlEsXTh5T
-	2TQ/8CPiNBsIHa5Wxg3NMxlaB/ekvbjTBgF/LPvPYvJjPEd9ZiDyHmMURMMwMt7RSSo09m
-	PRdjI3GEuMVpgPBiFEc45AXbxcuhVOm3pOb3eNgj1Y+hPTojTMjAtUgsZql5UnqYLxEzaf
-	JLQqOFIOz8QGxZOGo/0lln2uuvMiodSirzz3w1ZXmE6Jp/BJP1BoosQEmyTSEaJWT0K/SY
-	MKLBHtp3HUpFOMk+MPyJN35Gd2n1rfSIwY70mcoBkcc0nPUTrmM9FintCMWsJg==
-Message-ID: <839fd50c-f74a-4189-86f4-1d5173050fca@bootlin.com>
-Date: Tue, 22 Sep 2026 08:59:15 +0200
+	bh=ssQctI4h9bdCd7Y/524FINFJI5J01KhR4UPJhm0pNBM=;
+	b=YFAWr1LLVPWBrxuMYK0hZGy1a9yCo0Nryg9J/+kO3L8XBlB5PwXIeteAPxAyT4nVS9qe4b
+	GPOc2KqgV06I4V9vWpO2WPZUpnljfwYP5gKWtfMY3aJ+GGg3rMX5jYtp955pzYzH8GGjrY
+	vUAov3HahwFm+Gcex1Z2BBpHI6r4Xii9g9w6/EvWYqPCI8iUzNnoppvERzT3sFdc4ZEaH4
+	3zuJKBdjX6sqM6Ylt6v5n2Zr80SEA2eeefyT/7lexB9WbF6VtyjDfz1NEdE6bTIYv7QyRn
+	PzY3wJXFJ3ZWHaN8A7l73tH08UG6fl5M67qjFINyf7Enh8Tqfww6Mw6IoX9yow==
+Message-ID: <3c1a0626-f3f7-49ea-8029-2c4cbb994ef9@bootlin.com>
+Date: Tue, 22 Sep 2026 09:02:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,111 +42,165 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 4/4] net: stmmac: dwmac-socfpga: Add support
- for Agilex5 TSN GMAC with FPGA converter
-To: muhammad.nazim.amirul.nazle.asmade@altera.com, dinguyen@kernel.org
-Cc: rmk+kernel@armlinux.org.uk, krzk+dt@kernel.org, conor+dt@kernel.org,
- robh@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260908070557.3585-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
- <20260908070557.3585-5-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Subject: Re: [PATCH net-next v5 1/3] net: stmmac: sun8i: reset the MAC after
+ PHY initialization
+To: James Hilliard <james.hilliard1@gmail.com>,
+ Richard Genoud <richard.genoud@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ LABBE Corentin <clabbe.montjoie@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>
+Cc: Alastair D'Silva <alastair@d-silva.org>,
+ Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20260921-submit-h616-emac1-v1-v5-0-ada661ed9e9b@gmail.com>
+ <20260921-submit-h616-emac1-v1-v5-1-ada661ed9e9b@gmail.com>
 Content-Language: en-US
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260908070557.3585-5-muhammad.nazim.amirul.nazle.asmade@altera.com>
+In-Reply-To: <20260921-submit-h616-emac1-v1-v5-1-ada661ed9e9b@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
 Hi,
 
-On 9/8/26 09:05, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+On 9/22/26 02:45, James Hilliard wrote:
+> The MAC software reset needs a running receive clock from the PHY.
+> Resetting the MAC at the end of probe therefore fails when the PHY driver
+> has not been loaded or its probe has deferred on a missing supplier. The
+> failure removes the MAC and its MDIO bus, so loading the missing driver
+> later cannot recover the interface without reprobing the MAC.
 > 
-> The Agilex5 SoCDK TSN Config2 board uses a GMII-to-RGMII converter
-> implemented as FPGA soft IP between gmac1 and its PHY. This converter
-> provides the RGMII TX/RX clock delays, so the MAC interface selector
-> must be configured for GMII while the PHY is configured without delays.
+> Perform the software reset in the DMA reset callback instead. The stmmac
+> core calls it during hardware setup after attaching and initializing the
+> PHY, and resumes a suspended PHY before reopening or resuming the MAC.
+> Mask interrupts before requesting the reset and retain the existing
+> DMA and interrupt-register clearing even if the reset times out. Return
+> reset errors through the normal hardware-setup error path.
 > 
-> Add the "altr,socfpga-stmmac-agilex5-tsn" compatible with dedicated
-> match .data ops that extend the standard Agilex5 setup: force GMII for
-> the MAC interface selector and strip delay bits from phy_interface so
-> the PHY is not configured to add delays already provided by the FPGA
-> converter.
+> Remove the unconditional reset from probe. Keep the separate H3 MDIO-mux
+> reset after switching the mux and powering the selected PHY, since it is
+> needed to latch the selected interface before MDIO accesses.
 > 
-> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Fixes: 9f93ac8d4085 ("net-next: stmmac: Add dwmac-sun8i")
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 
+Tested on H2S that it doesn't break the platform,
+
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
 Maxime
 
 > ---
-> v6: No changes from v5.
-> v5: Replace of_device_is_compatible() probe check with dedicated
->     socfpga_agilex5_tsn_gmac_ops via match .data, per Krzysztof
->     Kozlowski and Dinh Nguyen.
-> v4: Add Reviewed-by from Andrew Lunn.
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 53 +++++++++++------------
+>  1 file changed, 26 insertions(+), 27 deletions(-)
 > 
->  .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 23 ++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> index 1d7f0a57d288..0632105b420f 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> @@ -69,12 +69,13 @@ struct socfpga_dwmac {
->  	void __iomem *tse_pcs_base;
->  	void __iomem *sgmii_adapter_base;
->  	bool f2h_ptp_ref_clk;
-> +	phy_interface_t mac_interface;
->  	const struct socfpga_dwmac_ops *ops;
->  };
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> index 48c52eb96233..9598c386bb21 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> @@ -269,11 +269,33 @@ static const struct emac_variant emac_variant_h6 = {
+>  #define SYSCON_ETCS_EXT_GMII	0x1
+>  #define SYSCON_ETCS_INT_GMII	0x2
 >  
->  static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
->  {
-> -	return dwmac->plat_dat->phy_interface;
-> +	return dwmac->mac_interface;
->  }
->  
->  static void socfpga_sgmii_config(struct socfpga_dwmac *dwmac, bool enable)
-> @@ -650,6 +651,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
->  	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
->  	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
->  
-> +	dwmac->mac_interface = plat_dat->phy_interface;
-> +
->  	ops->setup_plat_dat(dwmac);
->  
->  	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
-> @@ -670,10 +673,28 @@ static const struct socfpga_dwmac_ops socfpga_agilex5_ops = {
->  	.setup_plat_dat = socfpga_agilex5_setup_plat_dat,
->  };
->  
-> +static void socfpga_agilex5_tsn_gmac_setup_plat_dat(struct socfpga_dwmac *dwmac)
+> +static int sun8i_dwmac_reset(void __iomem *ioaddr)
 > +{
-> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
+> +	u32 v;
 > +
-> +	socfpga_agilex5_setup_plat_dat(dwmac);
+> +	v = readl(ioaddr + EMAC_BASIC_CTL1);
+> +	writel(v | 0x01, ioaddr + EMAC_BASIC_CTL1);
 > +
-> +	/* FPGA converter supplies RGMII delays; MAC uses GMII, PHY gets plain RGMII */
-> +	dwmac->mac_interface = PHY_INTERFACE_MODE_GMII;
-> +	if (phy_interface_mode_is_rgmii(plat_dat->phy_interface))
-> +		plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII;
+> +	/* The timeout was previously set to 10ms, but some board (OrangePI0)
+> +	 * need more if no cable plugged. 100ms seems OK
+> +	 */
+> +	return readl_poll_timeout(ioaddr + EMAC_BASIC_CTL1, v,
+> +				  !(v & 0x01), 100, 100000);
 > +}
 > +
-> +static const struct socfpga_dwmac_ops socfpga_agilex5_tsn_gmac_ops = {
-> +	.set_phy_mode = socfpga_gen10_set_phy_mode,
-> +	.setup_plat_dat = socfpga_agilex5_tsn_gmac_setup_plat_dat,
-> +};
+>  /* sun8i_dwmac_dma_reset() - reset the EMAC
+>   * Called from stmmac via stmmac_dma_ops->reset
+>   */
+>  static int sun8i_dwmac_dma_reset(void __iomem *ioaddr)
+>  {
+> +	int ret;
 > +
->  static const struct of_device_id socfpga_dwmac_match[] = {
->  	{ .compatible = "altr,socfpga-stmmac", .data = &socfpga_gen5_ops },
->  	{ .compatible = "altr,socfpga-stmmac-a10-s10", .data = &socfpga_gen10_ops },
->  	{ .compatible = "altr,socfpga-stmmac-agilex5", .data = &socfpga_agilex5_ops },
-> +	{ .compatible = "altr,socfpga-stmmac-agilex5-tsn", .data = &socfpga_agilex5_tsn_gmac_ops },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, socfpga_dwmac_match);
+> +	writel(0, ioaddr + EMAC_INT_EN);
+> +
+> +	/* The PHY receive clock must be running for the reset to complete. */
+> +	ret = sun8i_dwmac_reset(ioaddr);
+> +
+> +	/* Leave DMA and interrupts disabled even if the reset timed out. */
+>  	writel(0, ioaddr + EMAC_RX_CTL1);
+>  	writel(0, ioaddr + EMAC_TX_CTL1);
+>  	writel(0, ioaddr + EMAC_RX_FRM_FLT);
+> @@ -281,7 +303,7 @@ static int sun8i_dwmac_dma_reset(void __iomem *ioaddr)
+>  	writel(0, ioaddr + EMAC_TX_DESC_LIST);
+>  	writel(0, ioaddr + EMAC_INT_EN);
+>  	writel(0x1FFFFFF, ioaddr + EMAC_INT_STA);
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  /* sun8i_dwmac_dma_init() - initialize the EMAC
+> @@ -738,27 +760,6 @@ static void sun8i_dwmac_flow_ctrl(struct mac_device_info *hw,
+>  	writel(v, ioaddr + EMAC_TX_FLOW_CTL);
+>  }
+>  
+> -static int sun8i_dwmac_reset(struct stmmac_priv *priv)
+> -{
+> -	u32 v;
+> -	int err;
+> -
+> -	v = readl(priv->ioaddr + EMAC_BASIC_CTL1);
+> -	writel(v | 0x01, priv->ioaddr + EMAC_BASIC_CTL1);
+> -
+> -	/* The timeout was previously set to 10ms, but some board (OrangePI0)
+> -	 * need more if no cable plugged. 100ms seems OK
+> -	 */
+> -	err = readl_poll_timeout(priv->ioaddr + EMAC_BASIC_CTL1, v,
+> -				 !(v & 0x01), 100, 100000);
+> -
+> -	if (err) {
+> -		dev_err(priv->device, "EMAC reset timeout\n");
+> -		return err;
+> -	}
+> -	return 0;
+> -}
+> -
+>  /* Search in mdio-mux node for internal PHY node and get its clk/reset */
+>  static int get_ephy_nodes(struct stmmac_priv *priv)
+>  {
+> @@ -895,7 +896,9 @@ static int mdio_mux_syscon_switch_fn(int current_child, int desired_child,
+>  		/* After changing syscon value, the MAC need reset or it will
+>  		 * use the last value (and so the last PHY set).
+>  		 */
+> -		ret = sun8i_dwmac_reset(priv);
+> +		ret = sun8i_dwmac_reset(priv->ioaddr);
+> +		if (ret)
+> +			dev_err(priv->device, "EMAC reset timeout\n");
+>  	}
+>  	return ret;
+>  }
+> @@ -1217,10 +1220,6 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
+>  			dev_err(&pdev->dev, "Failed to register mux\n");
+>  			goto dwmac_mux;
+>  		}
+> -	} else {
+> -		ret = sun8i_dwmac_reset(priv);
+> -		if (ret)
+> -			goto dwmac_remove;
+>  	}
+>  
+>  	pm_runtime_put(&pdev->dev);
+> 
 
