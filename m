@@ -1,273 +1,173 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD1B37F730
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D038DC69
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790046203; cv=none; b=aEyfYJoxUAg1hwy2RF1FsMlDCIo/Cx400avaLkY/CJ+6Wn8l3oGtWEIjJ58XGCZBvp7LVJOFWnIyXQ6qxWD5CoWBTsbERc8brtAVN7iTCHE8VXgM04qeUJMNp7XeV0g9fPB197aFwLS6twDvjmuGAAwM8790Pc1H5ubh0U3HW3Y=
+	t=1790046412; cv=none; b=DK8dR5a/eh4s7RCRT20J2juM/sfDyzNuY6aWudfXtIIP+2wCYt/nXpiSWplpJI2BVme+LfAe2ekaUx1tLsKKjNt0l1edP+qxCeuJBLviLu+ZdB1T88djg2DK49tTBnc6YejlvaKikj5sqvkj54EZIfVYDbzYFyxQv4fsL5R9IM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790046203; c=relaxed/simple;
-	bh=xxPCfoW71C+dY5Vk73+EVbPgQd5ga8fAuuMpvs44aSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esBXNEBlUATUNPW0/AipyF+nuhWRm0+29y7OK2da3ONiexzoRTSsa9pBZn5dwsMLWIRWS5nYCbqkHqVDj0raMqoDh0je8yVgSX++n2/ew1sVXI3dzD9B8r2z1Hsvfx5a79u9NfGQQ8d1pDYTtUdWJ8pAGM5OsNvb0xCwa5ijT7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qh+Elqvl; arc=none smtp.client-ip=74.125.224.141
+	s=arc-20240116; t=1790046412; c=relaxed/simple;
+	bh=gKseP2UPem83UrKFMaWwniyYTAzvUEDYHT63VKc/kdM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=n1t3CZ6+kiZRh1gmVBfo9snfNm6Ot51A4vdq2fs/Nw1iVoxDX5uU1Vir+Gme48kurqCP5S6afc1loiIQPVwBG8h9QfzqFM8bLkz2iRTKEgu5EMEX+6kxO38dIS65492wZdwwArMHVPsBL3zFk99NQuMBLS46cDlAvNVnWlTiP6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qFx5ek6X; arc=none smtp.client-ip=74.125.224.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qh+Elqvl"
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43db0c29so29965957b3.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:03:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qFx5ek6X"
+Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d43f9b119so33405237b3.2
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 20:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790046200; x=1790651000; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=B5rs7+ILfA3J/8r3zuBgSBRVCSTxSnXx2oYi6bmrhLI=;
-        b=Qh+Elqvl8Z+LZ9x6Jhh8EPOVxKwCr38xJ5hf/CvPrLrahEy8nlF+Hw+JbxmuilcEmh
-         KBoTBLvy9b8EgOgmAe6snoUat1GLn32ck5dl3BW0l7eKvH4X8eSmM7bCLpLNHTpzv7Pq
-         q3mCwfa/BFFAtE9GM7hMrTPfnJiTl7+LJhkkl4/FRd5MjiySuUiSVMSF6u9XAK68tHAX
-         KP6lCmEr/KzPVnHwnNvNho93MCcyC5uMMjdgYlw2bEz2XyOLeVQgBYvjac7n0d6l4Twm
-         27kkfNnGymTimznSHf25G+rAWc4q4ec3gtolnEK/3eBeIYgjHewXbreBW+euyJt60qlf
-         Y7qQ==
+        d=gmail.com; s=20251104; t=1790046409; x=1790651209; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=D4L3vIDsc7dnY0rPhCGADvH7oIEWEbf+uUvOLRnQTeQ=;
+        b=qFx5ek6XsNw9i5j4jz8c5TXTZEeSc7WC9b1A1cf62OcojJmdAI/ig5JK/E90HBpL4m
+         QPJAVd6o8Mhv6HFGBD5KwnLi2e63Yjfy7EykhJGZ7pBc5rYV81wGFEzjhOYzy+9uH5lQ
+         Wx//0wkCijxOAdMpA9Bw4iQTuvGNiceowUIldhAkjHN/VLPlYX8a1pXUJI7WKNZStuxL
+         dwLKLiXYs3lBcpirXVmlFTWUloWQD4uXBaNlCOxyu9GXJ602JemT86Qvkf+IeinWe2nF
+         BVK4c0xMyWNQUUeo3v1DKiWj8bi6BaLaG7Qa3gZzJnV36Jlv5fkF2Pp/SUPdikHK5Rah
+         rT9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790046200; x=1790651000;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=B5rs7+ILfA3J/8r3zuBgSBRVCSTxSnXx2oYi6bmrhLI=;
-        b=OO8t6nbUtyb7i+a+ke8aa3fbjPhptFQzKHO9hA+6fMdqKEAqzI3fC7Ez19F8X+xdOU
-         hrnOHVfU0pGp0HLi4izZFiBZD0HQKdmWpfEVvNiS0rF87NGGKjgX2zXu2A5ZRxMLS2uj
-         CArvVLD6TT2FHLNvxBV3iWq/fflvdHFInA8VuOQy2SCwuW8FE2C04Rn32qKciV5faYP3
-         rvh2Aj4rSKQi6Nmi3YUfjvdfhM/bk2B9ijj65eCnAHBC3kzHBu1PId0mYKdf+OJXIK6A
-         hncrd1wY4O0RZdlD0JMLIsP37CHuo6mZ7VrViYJGRPs9+Q4N3Z84/37wlx/jW36JiNiw
-         nSWA==
-X-Gm-Message-State: AFuF++neXjNP0xba0GRj6/g+ncIq3eEz+alY3FRYAHp20uDf38LM4hTA
-	73Rk2XgOyUTyCXvpaDBtAecu05Gotecj+fgCY0bfgyDDqo2sq9z/HcBnF49ds5m7/GCELQ==
-X-Gm-Gg: AYBFou2V4M9CHpqnNKTkrHFjBis2qUxYZN9+fGml/AWfcC4o19RcyxRXEBooggNUmeW
-	ykpwAZBTmjJlTyO1hxha+pNnFrCQM0mck0ZNlmIeYDgVgJtHDuAvHSWz7O0MFggrT1WJ0VXQtwK
-	bJxljqq6cGSGrF1zBVt1pNTNYvv9BiKd8pOT8wor9DxkKshmXS4BxTJMgzLntZVLpB9/xwRcfU3
-	DlN4XWMymaFOb3xgLh+E48unBTh7IHHnTBx7VUsx42Do4J4/scrPt6nXptx9AnSCJl4nhDh/vu6
-	TqjevGulRz7fgpaDgGQjHJEmpVeg7rB6u+HZZQPWgeTghTSLs2jGgXxh2A0qLOCcWoPDtu9d4kM
-	pxLWs1XwmmglENWHCDDuuQm7ZKh1ZNn2Ap6Etj6iAF6mrzfCHyJlMGckgCb8MYATnNSdLKMg882
-	5obIzNYcVFZh7tgZR8wEFLDnHnkDhpTi6Rn7ssv7ZgHNvUat1CmiV4UdeWCi6rOLAE5PqCZzHA2
-	eqt+150cUe0vLtTw3PMhStubkg5a7skKa2dmnolIZ4f/L1zFQlqT2AkGFeHFXAAuVlR1TxS
-X-Received: by 2002:a05:690e:138d:b0:668:1c09:aef1 with SMTP id 956f58d0204a3-6717fc7e75dmr3816179d50.6.1790046200291;
-        Mon, 21 Sep 2026 20:03:20 -0700 (PDT)
-Received: from localhost.localdomain ([2601:155:4200:2c80:2875:43a3:e345:710c])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a2c1b02abdsm1471447b3.17.2026.09.21.20.03.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 21 Sep 2026 20:03:19 -0700 (PDT)
-From: Paulos Yibelo <habte.yibelo@gmail.com>
-To: netdev@vger.kernel.org
-Cc: richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	mst@redhat.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	andrew+netdev@lunn.ch,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	razor@blackwall.org,
-	idosch@nvidia.com,
-	dsahern@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-um@lists.infradead.org,
-	virtualization@lists.linux.dev,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	bridge@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v6 2/2] ip: reject partial checksums covering network headers
-Date: Mon, 21 Sep 2026 23:03:10 -0400
-Message-ID: <20260922030310.8684-3-habte.yibelo@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20260922030310.8684-1-habte.yibelo@gmail.com>
-References: <20260922030310.8684-1-habte.yibelo@gmail.com>
+        d=1e100.net; s=20260707; t=1790046410; x=1790651210;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D4L3vIDsc7dnY0rPhCGADvH7oIEWEbf+uUvOLRnQTeQ=;
+        b=U22sl46ZmumotAARQYIW1RUgKiePNUEQafLFkA4xrAyxaOyrwbSZbnfMKTQEAFODqN
+         yIykFLOk6hCqX+SlpuPs/r3QRg8g0/tjn7e9CEa9hZS4BvtZUI4+i2K1bWWdbqhj/X3t
+         eB5aoFz9fnQOsdqb2d2vhy5iNEgh9wFAPKNnpJDUM4BlElCdqHGu/HEVKwMGWlsXovKc
+         av07WzuWqjRbhNIvWgrQWJ71/tP9VkwR0Yg1n3Q1Ja1SCtYNKdv1xizpQ4XdrAbKfWsm
+         wKrMzsx6vHlRzN6zkz6e6IS3gl8lEWYR8t9jTBN03yoP3bmT3fGMIzJdjn6jc6OTfN22
+         4mhA==
+X-Forwarded-Encrypted: i=1; AKwUvBzOLJbljdVjLYbzxsD9lGdXx9YYmyHI7K98C+LMzS+BlUdqZtHRTmEKYjNuJdxiwKedDK8+zes=@vger.kernel.org
+X-Gm-Message-State: AFuF++k4uLPLGKLS1CXBJX722jDBVxeI6k3P0BpS1LalmV+qvm0esD3T
+	KZD2ocME82Ttio0wDpYAGy9CtjvxVKYtncTbfAErn05Zz+tAljNxptCL
+X-Gm-Gg: AYBFou2YPb6TRhD/nboqKxHdanTv2A2LIYtV37IYepuP8aCOjvfvrtINJtd24VpSX6o
+	LwdyOPZGqxBtymm8FnCo3H3hDN8IeRGR7+QkC6PS+MyDEzZzqRgOzBmd5234TdgJrFMrzKzZS+c
+	x6FKhbxJOv/RQc228NDGsHeyy//kUwa/43IPaYyCk3qEkmnuX8oM+1RO/XpnR5Xkso1s7mq8PLZ
+	Wg76uKKBH4+U83PfvNKPdGwOTlMZrxpopwvt13eF4iZqAJU3V+nns1X2T2KTq7WIcD/XruBryYa
+	gIhaO3sQq5+LHvcX1RqLLnIB1yUickfNV5gYOnGLTQ8fgv7Q9ERLuDsg3qY3wEAVD3Vtr55r5Y+
+	urcsZFJQqjp30rKfaE8M0W9eXt2pCDVn1fLzALozNBL/JWDBzeppF6GUfYKSKidHFSk4VJjhwYi
+	FRb1cuJ9UoT0msHHhtegjFAsWUxv+1Xafo7q9o3fYeJ9Xxudl/mZfsAHk68/i6GJKyCEsu6uxG6
+	ne6Km6KtwzbALr3J7qcbm5LCa3IrD4GIgZcE6CZh89aPNoea7uFSr8kVTuoytg=
+X-Received: by 2002:a05:690c:39b:b0:89a:63da:fa95 with SMTP id 00721157ae682-89a63db043amr31355787b3.80.1790046409598;
+        Mon, 21 Sep 2026 20:06:49 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a2c2f797c4sm1471287b3.32.2026.09.21.20.06.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 20:06:48 -0700 (PDT)
+Date: Mon, 21 Sep 2026 23:06:48 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Dairui Zhang <zhangdairui@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: Dairui Zhang <zhangdairui@gmail.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.1b65de0a75434@gmail.com>
+In-Reply-To: <20260921192608.1420047-1-zhangdairui@gmail.com>
+References: <20260921192608.1420047-1-zhangdairui@gmail.com>
+Subject: Re: [PATCH net] af_packet: fix integer overflow in
+ prb_calc_retire_blk_tmo()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-ip_do_fragment() and nf_br_ip_fragment() complete a CHECKSUM_PARTIAL skb
-before reading the IPv4 header length. ip6_fragment() and br_ip6_fragment()
-complete one after parsing the IPv6 header chain. A virtualization
-interface can supply a checksum start which, after link-layer removal,
-still points inside that parsed network header.
+Dairui Zhang wrote:
+> prb_calc_retire_blk_tmo() computes in 32-bit int arithmetic:
+> 
+>         mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
+> 
+> If I'm reading the validation right, tp_block_size is user
+> controlled and packet_set_ring() only rejects values that are <= 0
+> as int or not page aligned, so a 256MiB block goes right through
+> (and alloc_one_pg_vec_page() even has a vzalloc fallback for it).
+> 0x10000000 * 8 wraps to INT_MIN, and on a NIC reporting 1 Gbps
+> (div == 1) the function ends up returning -2047.
+> 
+> The condition is actually (8 * size) mod 2^32 >= 2^31 && div == 1,
+> so the trigger set is [256,512), [768,1024), [1280,1536) and
+> [1792,2048) MiB. Other sizes wrap to non-negative values and faster
+> links divide the unsigned value back below 2^31, which is why this
+> doesn't blow up for everyone.
+> 
+> What makes it fatal is what happens next in init_prb_bdqc():
+> 
+>         p1->interval_ktime = ms_to_ktime(prb_calc_retire_blk_tmo(...));
+>         hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
+>                       HRTIMER_MODE_REL_SOFT);
+> 
+> A negative relative timeout expires immediately. The callback
+> unconditionally returns HRTIMER_RESTART, and hrtimer_forward() turns
+> the negative interval into hrtimer_resolution:
+> 
+>         if (interval < hrtimer_resolution)
+>                 interval = hrtimer_resolution;
+> 
+> So the SOFT timer re-fires at the maximum rate forever, holding
+> sk_receive_queue.lock each pass. One CPU spins in softirq until the
+> socket is closed. Repeat with more rings and the machine is gone.
+> 
+> This is mostly a new problem: the overflow is ancient, but with
+> msecs_to_jiffies() a negative timeout just got clamped to a huge
+> unsigned value, i.e. the retire timer effectively never fired.
+> f7460d2989fa ("net: af_packet: Use hrtimer to do the retire
+> operation", v6.18) turned it into "fire immediately and spin".
+> Still present in 7.2.6 and in current mainline as of this
+> writing.
+> 
+> (Unrelated to CVE-2019-20812 - that one was the ethtool failure path
+> returning 0, which now returns DEFAULT_PRB_RETIRE_TOV.)
+> 
+> Reproducer, needs CAP_NET_RAW (a --network host container has it by
+> default) and a 1 Gbps NIC (QEMU e1000 works):
+> 
+>         int fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+>         bind(fd, ...);
+>         int v = TPACKET_V3;
+>         setsockopt(fd, SOL_PACKET, PACKET_VERSION, &v, sizeof(v));
+>         struct tpacket_req3 req = {
+>                 .tp_block_size = 0x10000000,
+>                 .tp_block_nr = 1,
+>                 .tp_frame_size = 2048,
+>                 .tp_frame_nr = 0x10000000 / 2048,
+>                 .tp_retire_blk_tov = 0,
+>         };
+>         setsockopt(fd, SOL_PACKET, PACKET_RX_RING, &req, sizeof(req));
+> 
+> Compute in 64 bits instead. The operands are already bounded by the
+> existing validation, so nothing else changes. If you'd prefer a
+> different fix, just say so and I'll respin.
+> 
+> Fixes: f7460d2989fa ("net: af_packet: Use hrtimer to do the retire operation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dairui Zhang <zhangdairui@gmail.com>
+> ---
+> First patch to netdev, and compile-tested only - I don't have a
+> 1 Gbps setup to trigger it live. If I've misread the code, got the
+> Fixes: tag wrong, or picked the wrong fix, please say so and I'll
+> respin.
 
-skb_checksum_help() then writes the completed checksum into header bytes
-the stack has already consumed. For IPv4, changing iph->ihl after routing
-and validation can make fragmentation copy beyond the skb's logical linear
-head into transmitted options. A negative checksum-start offset is rejected
-by skb_checksum_help(), but only after a WARN_ONCE which can panic a
-panic_on_warn system.
+Code Looks good to me. Thanks.
 
-Validate the checksum start against the parsed header length before
-completing it. For IPv4, read and validate IHL first, retain it, and
-reacquire iph after skb_checksum_help() in both implementations. For IPv6,
-use the length returned by ip6_find_1stfragopt() in both implementations.
+As Fixes tag do prefer original commit f6fb8f100b80 ("af-packet:
+TPACKET_V3 flexible buffer implementation.")
 
-Compare the signed checksum-start offset with the bounded signed header
-length so integer promotion cannot bypass either boundary.
+That is where the bug is introduced, and the effect of the bug prior
+to the currenty blamed commit is not as clear-cut as described in the
+commit message.
 
-Fixes: dbd3393c56a8 ("ipv4: add defensive check for CHECKSUM_PARTIAL skbs in ip_fragment")
-Fixes: 405c92f7a541 ("ipv6: add defensive check for CHECKSUM_PARTIAL skbs in ip_fragment")
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Fixes: 764dd163ac92 ("netfilter: nf_conntrack_bridge: add support for IPv6")
-Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-Link: https://lore.kernel.org/netdev/20260920004733.6473-3-habte.yibelo@gmail.com/
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
----
- net/bridge/netfilter/nf_conntrack_bridge.c | 21 +++++++++++++++-----
- net/ipv4/ip_output.c                       | 23 ++++++++++++++++------
- net/ipv6/ip6_output.c                      | 12 ++++++++---
- net/ipv6/netfilter.c                       | 12 ++++++++---
- 4 files changed, 51 insertions(+), 17 deletions(-)
-
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 7ecb8a26b..d81ed8692 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -38,18 +38,29 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 	struct iphdr *iph;
- 	int err = 0;
- 
--	/* for offloaded checksums cleanup checksum before fragmentation */
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
-+	iph = ip_hdr(skb);
-+	hlen = iph->ihl * 4;
-+	if (unlikely(hlen < sizeof(*iph) || hlen > skb_headlen(skb))) {
-+		err = -EINVAL;
- 		goto blackhole;
-+	}
- 
--	iph = ip_hdr(skb);
-+	/* Complete offloaded checksums only after the validated IP header. */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto blackhole;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto blackhole;
-+		iph = ip_hdr(skb);
-+	}
- 
- 	/*
- 	 *	Setup starting values
- 	 */
- 
--	hlen = iph->ihl * 4;
- 	frag_max_size -= hlen;
- 	ll_rs = LL_RESERVED_SPACE(skb->dev);
- 	mtu = skb->dev->mtu;
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index a24cc8ee1..fa6a74d20 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -770,16 +770,28 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	struct ip_frag_state state;
- 	int err = 0;
- 
--	/* for offloaded checksums cleanup checksum before fragmentation */
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto fail;
--
- 	/*
- 	 *	Point into the IP datagram header.
- 	 */
- 
- 	iph = ip_hdr(skb);
-+	hlen = iph->ihl * 4;
-+	if (unlikely(hlen < sizeof(*iph) || hlen > skb_headlen(skb))) {
-+		err = -EINVAL;
-+		goto fail;
-+	}
-+
-+	/* Complete offloaded checksums only after the validated IP header. */
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto fail;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto fail;
-+		iph = ip_hdr(skb);
-+	}
- 
- 	mtu = ip_skb_dst_mtu(sk, skb);
- 	if (IPCB(skb)->frag_max_size && IPCB(skb)->frag_max_size < mtu)
-@@ -789,7 +801,6 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	 *	Setup starting values.
- 	 */
- 
--	hlen = iph->ihl * 4;
- 	if (mtu < hlen + 8) {
- 		err = -EMSGSIZE;
- 		goto fail;
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 550965058..d157b6ade 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -942,9 +942,15 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	frag_id = ipv6_select_ident(net, &ipv6_hdr(skb)->daddr,
- 				    &ipv6_hdr(skb)->saddr);
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto fail;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto fail;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto fail;
-+	}
- 
- 	prevhdr = skb_network_header(skb) + nexthdr_offset;
- 	hroom = LL_RESERVED_SPACE(rt->dst.dev);
-diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
-index a7025ec87..da7ada12f 100644
---- a/net/ipv6/netfilter.c
-+++ b/net/ipv6/netfilter.c
-@@ -144,9 +144,15 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	frag_id = ipv6_select_ident(net, &ipv6_hdr(skb)->daddr,
- 				    &ipv6_hdr(skb)->saddr);
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto blackhole;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (unlikely(skb_checksum_start_offset(skb) < (int)hlen)) {
-+			err = -EINVAL;
-+			goto blackhole;
-+		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto blackhole;
-+	}
- 
- 	prevhdr = skb_network_header(skb) + nexthdr_offset;
- 	hroom = LL_RESERVED_SPACE(skb->dev);
--- 
-2.46.0
-
+The return value of prb_calc_retire_blk_tmo() is stored into an
+unsigned short retire_blk_tov then, so can be truncated. A 0-jiffy
+delay loop can also be programmed. Though its effect is not nearly as
+detrimental as from the blamed commit on.
