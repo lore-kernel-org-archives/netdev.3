@@ -1,309 +1,208 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012063.outbound.protection.outlook.com [52.101.53.63])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5388E52FE3A;
-	Tue, 22 Sep 2026 09:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790071160; cv=fail; b=oZsQdwl04l0yd+0sgRw6nJfpTpb9QBxFYxt4/DHbUKAxAce7DcC+nIDfR2PrzrsYsMPJLL0QvuzZC+7/0usgFXaA5pc6mO9GbOz5HXyJRZxENnYBQXLzt9C9oR39gkpK7KOChuiqwpI9bIHhfKXaRd23CWoHnxBEqfj9KApE9Vo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790071160; c=relaxed/simple;
-	bh=7+3b/3vz5Ph7yUbYTmoqLjc5ybiyzoIonYy9kpyDP90=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WCNC7Pgq2k8eOyr4Hy7uTuSNx0NnhCKc6diRv9tP3D59faFwTQRWDtJDaQKwb9nt/DF5qCUPpKrX+4ZiRd5kpuv9LFfW9nABxahtZ0xrsFYykZdrzOk69wTjfI4rUAbc/kOJvjfZ+7VeEt3p80Yglt+umG6xLvicAhj2W1RmziY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZGVZHsfX; arc=fail smtp.client-ip=52.101.53.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DB44E0B8B
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790071324; cv=none; b=ASy82HfFM8F3d2U8HGIFB4MvTVlj25bXHiNKWKKOzOa2Vt7nsBtVY1cBlVtoeSmkzaN0YBsOp/xW7CIBLIwZHFDl8tL+YCYfzFVgEq+C6SCdfLNq/EjZL+shnqzl86EGUHgC76H+wIuetwN7yS4uvaOJfEGv+OHW57zMDF4Sf8w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790071324; c=relaxed/simple;
+	bh=207cRhtOF6NzUqdPBujl5zqVEED8VL4pXa16JxsEym4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rL0JUx8gvVdUdrqsoXTkqCAyAX6mmjkmqSnEI9O8LOCMS940BU3U0zLSOYziHT7C0ftlm32gUFa0M4cZjO+0CPD4O3wBJQYMPoKxvNR5xe9QdBZbjqZ9IVSJhgOAUjXnhKOk9bJaNY87iqQ5ln4sA6gD6chHLXJb2uL6Hsa+AHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RZVn7zS0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=izfsOyU0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZGVZHsfX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gwy1cdIgreu1Sgloyk18aKRTcgg9OMwWQvcXdW3wlEnYAFUzWKMX1RxMFkpB2F+NbtDfcoeNDhuH4nZx/V0/IPb/DjrN75nOTACWj39dofqUVVfcALfT6G3BK3LHK+5UwDLLBT/RHWrUoB18UQU35YHLIHwFWboBAyfwiLvRkUf/+b/75L5tLtvHN4P5nl20WVSMx8HlPqeM1fZx48+HKNv3maxPQvwg8ClBZzrLENUr4/2SttQnBe5YpMWOXQleTlcYZbjzynMJOxGgErSpvfOytXX6SiBaw3OVdS4/qmOS08pffdTxXst/e+xdpsHL0nVPGv9++jHWlMSViam2Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TENzdZL6Uq0dSc5Sz4tYvL0Fz/X0ANBKuFxvEG9BQQA=;
- b=huJQ3Le0o/HYgOg0uJW9RWIfsM4wE4GodnQXurx/vwY/4Vin+bVMW3nQ0St3uLEvMRlTR1CwZ6ropvvzCIfYuSNo3vp5rp/aSEJuSVV7nHeDxQnBkT0U+c1RXZeAMAgDqSiRe4kYETFpuvuhodclfwEqH8OYpx7pfnWNOyV0IfWRMXJoGp91VGWJGeQLJqlkDQmtx1j4ZMNkMOAxMd5M8XqZamA5R5EeGt+B9aYKHbyR7WBRuyWO+LbRydGuKUulbX2W2D6mKyHGDllT5iJq72Oay5H/Lz57pt0VkUnXW95GKGxzTmAKs6uD3QRhy3KBhx93WyhbTxk2zQCVxIUcUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TENzdZL6Uq0dSc5Sz4tYvL0Fz/X0ANBKuFxvEG9BQQA=;
- b=ZGVZHsfXXWnXFIiMh/stQao4WVh17toE/KBieoHmlwTtk8CUW3aZnctFchTKE8WFHWOQwqPTssQJ/G4gDYmSQ8g7UtmG2dsRSrN3WcASu1sKYzoHipsvShoXyPz3dUWZzrDfksGfOaqQJMB8ib+Qm3iCuGYwOv9FDoELe6iTADA=
-Received: from BY1P220CA0007.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::13)
- by CH3PR12MB9729.namprd12.prod.outlook.com (2603:10b6:610:253::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Tue, 22 Sep
- 2026 09:59:14 +0000
-Received: from BY1PEPF0001AE19.namprd04.prod.outlook.com
- (2603:10b6:a03:59d:cafe::20) by BY1P220CA0007.outlook.office365.com
- (2603:10b6:a03:59d::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.13 via Frontend Transport; Tue,
- 22 Sep 2026 09:59:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BY1PEPF0001AE19.mail.protection.outlook.com (10.167.242.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Tue, 22 Sep 2026 09:59:13 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 22 Sep
- 2026 04:59:12 -0500
-Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Tue, 22 Sep 2026 04:59:09 -0500
-From: Abhijit Gangurde <abhijit.gangurde@amd.com>
-To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <allen.hubbe@amd.com>, <a.k@amd.com>, <nikhil.agarwal@amd.com>,
-	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Abhijit Gangurde <abhijit.gangurde@amd.com>
-Subject: [for-next v2 5/5] RDMA/ionic: implement SRQ event handling support
-Date: Tue, 22 Sep 2026 15:27:24 +0530
-Message-ID: <20260922095724.3683011-6-abhijit.gangurde@amd.com>
-X-Mailer: git-send-email 2.44.4
-In-Reply-To: <20260922095724.3683011-1-abhijit.gangurde@amd.com>
-References: <20260922095724.3683011-1-abhijit.gangurde@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RZVn7zS0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="izfsOyU0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790071321;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XPYZNeIyiYj7gOq6QRXPEwzFCOAwM8Zc2zjq+jeGRJc=;
+	b=RZVn7zS0I9XQtr+Xc+Ca01c/z2lF+HxgqikV2XA+24ZccRFBMGXw4Cx2l6nvXS0Jpe1pBS
+	w+BQUxRB5SrR4R6z+gJ5XURushvvWpnOnxbl4pHdimlPgp5/g7i7wGEFR9VIByaCNMjxQy
+	snJCDpNBeWDTJYOIglFAnHmLp5KqC9g=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-XwhObu9xN5-Qo7YSbaoh9A-1; Tue, 22 Sep 2026 06:02:00 -0400
+X-MC-Unique: XwhObu9xN5-Qo7YSbaoh9A-1
+X-Mimecast-MFC-AGG-ID: XwhObu9xN5-Qo7YSbaoh9A_1790071319
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4870a0f802cso3726359f8f.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790071319; x=1790676119; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XPYZNeIyiYj7gOq6QRXPEwzFCOAwM8Zc2zjq+jeGRJc=;
+        b=izfsOyU0WFguVFQcG+kXD6kF4mRthWdF8+qSKJ0u563lMWVRRBVaBcZN+VOVdsnAB3
+         VWiiWrJBnF8Lq7BPr6RuilBlTq+Lwv8mCzgEU9T2095KpBXbTzL4Dz1yszUBpZfXv70W
+         lim2kjl/J4jQS0+HMmlrfDOzhaVRAFj7zkkFhEKULm30vEvgj7NfV27MdwF0EzXDQA2E
+         oIHW+2PhuPtuIDJXxVAFL5fHK23vOT0qhm5C84N5KyCixi0tADb21THNZtE/QOafsoHO
+         pmwWdrN5t7GeLWyMCYaY4YRR8SLAmPjvM4p/X3UbORfLDellbQwO+Sm647YUETs73Zud
+         iXcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790071319; x=1790676119;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XPYZNeIyiYj7gOq6QRXPEwzFCOAwM8Zc2zjq+jeGRJc=;
+        b=CuWE1xkDgNIL/HHyocyChu31Rq4xav/q5fEGIVlkgya7+Q1qzcbilXWp2d1AZvo9JH
+         Da00E2oWJufeMTtuf5Pz7tH6z9v+edibM2QOnoIMQnLzcFBfKNMHhmkBZf0w9Fbobyol
+         IpPR119NhS0LcFbg3+Brj7pG+FOZo49ABBHYIOeO5GZXoIPZudfUumwnTXyE4CnCFLBs
+         gjIwpWEkbhkTiId65F8QY/gXri3Y6JI0BaRSeD0sYs8M9Bm9fF5l+SYKPlWuYh0TsR78
+         h5jIpvD/6Xd4+00+qXnPhmxyc9IOoUIvPrtNNcq2J7vB6B/p9rhv9kafWNlsF8Xo7rL+
+         gUtA==
+X-Forwarded-Encrypted: i=1; AKwUvBzUBWNnc8Qk1XPeCuqwaVwG9P654k5c7w801M/hq1x+po+MA6kQmFl+4JvaIgkNAelZ29EkOVQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++l9iGvqOj0jafNaX3CpSd9T4IvKI3dfS1Oes+f39N2JENftzGgu
+	PwvMGza2Ym+6QTgIgf17257o9onygKmfSWCfOfZXosWWWySPkk9QUxAKVXHzK8tEDjFdMEzNuY0
+	IWXFiQPNvwvMARz/110msLG5KSemo1yEfXvOfNlgAmXlrVs/7XvzbUDyY1A==
+X-Gm-Gg: AYBFou3YjMSWFEDDLa9GiT5v5jhbrPjLz4j0iFWPlJkFpCPXfQLKImj/PRmWL1USfzz
+	62pv4QXUKfndWixMeeNJynnnFf0RTfhhFaGrvbDXdG+PDk7BJelxYgJ15roz04tzAAALSveChzC
+	REyJKF81PTiQBczPhGA5BkLleeM0JM2WLkMkJgGIe5LWumncJ9oAbGq2DqQjuap8i3JfvkcIo9G
+	8uHPiuXKPc3bLBLsSOU6QYIkICzhYjbO4BxqLfsEEYtj3QLo7gxXBXknn6cOzHin/n7VHWGG5Qj
+	LfLbuG8+JAhUdeSpdBQtAZuecB4Am32coaYjQW7kSiE8Y2b5oAwaN4i9gysOmeVhnCUxNuXmjaI
+	wjNbtBCXcUIvWyFBGikYisPVr7fiL93rW6gHF2ZbE8LyMgcOMoGl3tG+ToGL5xRX7ZMvmcJMnKw
+	==
+X-Received: by 2002:a05:6000:38a:b0:487:36b:1816 with SMTP id ffacd0b85a97d-4871e244bd2mr18225756f8f.7.1790071318719;
+        Tue, 22 Sep 2026 03:01:58 -0700 (PDT)
+X-Received: by 2002:a05:6000:38a:b0:487:36b:1816 with SMTP id ffacd0b85a97d-4871e244bd2mr18225706f8f.7.1790071318182;
+        Tue, 22 Sep 2026 03:01:58 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862795232sm3867019f8f.32.2026.09.22.03.01.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 03:01:57 -0700 (PDT)
+Message-ID: <99bcc883-1cbb-46f9-9283-cd03e5efafe7@redhat.com>
+Date: Tue, 22 Sep 2026 12:01:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: dsa: microchip: save the periodic output
+ request
+To: Bastien Curutchet <bastien.curutchet@bootlin.com>,
+ netdev-bot+sashiko@kernel.org
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, richardcochran@gmail.com, ceggers@arri.de,
+ arun.ramadoss@microchip.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260917-fix-perout-v2-1-d8acf3eea6f7@bootlin.com>
+ <178998077822.2160803.3867886756893254872@kernel.org>
+ <635cfefd-c588-4b3f-bbc4-1cf11ef0a2c5@bootlin.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <635cfefd-c588-4b3f-bbc4-1cf11ef0a2c5@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE19:EE_|CH3PR12MB9729:EE_
-X-MS-Office365-Filtering-Correlation-Id: f166ce84-841d-4f38-826c-08df1890282e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|23010399003|36860700016|11063799006|10067099003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7gOTUuEd+ASgVhgY6unMDnkVluvi4PvtEfnz5auTYXnRiTtHyMI5ybmswLVDt9yQggkiFVZXdi5dKx8gXYKhjxFdaU0jtcvRuO3smpautH+JbORfcrJfupTWK1SOIe2FStNIGOxcN9j+I6MFwNqa55BBTRVf0VY8kzUAOpv0ovz4nTyAJu1sJCjaOd4ULxGlJ+vemJ5tz1SyVbXJ8lb8+feFVfwLGeCWiGTCiPFSpbwAC29b/fvt0A6aTtBEtVKaa9J051gkjNYWJ944Lvwy3o7Q1flNMXJKHuIw2WCTeOW1gbI6XJV6XrxZPb/dnwHCDqfrHOEqOGd/9OWJmHTXxykQ8Ar2h98pnLZc7exQPZlcWOQlcuRIxky9Bc1GDM7YyH8qZRWnt7HHCiM8uZOQ3+I5bNVaZSkOSyfFGmty71klB4CgEND/8Lqtc+QW6ary8T8V9F1b3+S5T6VAK4JEAEi9oYTyvOmusFTnNPOoXJ2oacEut0UxLRPt11gAiLPHR8oUcXAwdyLR1mzjP5rGNsK5BzWaqJpBJZ/V26dc1l7wFOTxjxvrWhjkc7WVHI20D2sypyyO9nBNa0qA6ZafPpsp/hwMdu2xw9JsL/yIKDRTBczpl7VxpLOE16Fwy2JDeb4eeqiuMNOV1UwB17C4qIYGvOdQ76kI2XKVGxVtvAHAC/8K0XEunVTSyE7VrYQA481k2No80GG1unuwMRqQEw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(23010399003)(36860700016)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ijOOHOteOM89jDIEVjWZCr7mxY55VrL6wNp5yv555Q3PencNmwShd1A0fzNn9MiP2mLNWduSzFMaX3oaffuJB+c58Eu1HQ3CtTu29ChdFAxeeNUubA9LpJoN8Mcm8eZn5Zfz7yGZUqkXbM2cvwBy0Avmf3U2UmnwSve6znlfFNQMhXXPFIOfrbKTCuvw7r1z6kxA8NyGbG38XFo/HTPoWnHgVRG7/U4YwZ9Moz3q45nNMY2N2JhmmHvL4sk6wNHrQay0lOJddc7ft7L/MN5sV+y2Mu0KSQKU2DnrnYQj2Vw9P+olM6qM+FhfM8/o+BRyy0MI+bwsxufxu2nLLdCh34i3lDsypv9QzQ58oXAZayUOeGar0+PKxBTzAr//qTayrDTbiksL1F1xFgm1VOUPuwIUVLJZSUzbmTX04C2NRhA8rMOZHU6KBMYpfCPPu9Xf
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 09:59:13.7140
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f166ce84-841d-4f38-826c-08df1890282e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE19.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9729
 
-From: Amit Kumar <a.k@amd.com>
+On 9/22/26 08:32, Bastien Curutchet wrote:
+> On 9/21/26 10:52 AM, netdev-bot+sashiko@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 2 potential
+>> issue(s) to consider.
+>>
+>> Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 0 (1)
+>>
+>> If you believe none of the issues are legitimate, please reply to each
+>> issue of Medium severity or higher and explain why the AI is wrong.
+>> If any of them are legitimate and you plan to respin, please let patchwork
+>> know by including "pw-bot: cr" as a separate line at the end of your reply
+>> (one such reply per series is enough).
+>>
+>> - [High] ksz_ptp_enable_perout()
+>>    (drivers/net/dsa/microchip/ksz_ptp.c:226) commits the caller-supplied…
+>> - [Medium] The commit message states that 'if a flag was set in the
+>>    request that triggered the periodic output, it is lost when the output…
+>>
+>> Pre-existing issues:
+>> - [High] A non-canonical but ABI-accepted period whose timespec64
+>>    conversion is zero (e.g. period.sec = -1, period.nsec = 1000000000;…
+>> - [High] In ksz_ptp_restart_perout()
+>>    (drivers/net/dsa/microchip/ksz_ptp.c) the elapsed-period quotient is…
+>> - [Medium] The device exposes three trigger output units (caps.n_per_out
+>>    = 3 at drivers/net/dsa/microchip/ksz_ptp.c:1056, PTP_TOU_INDEX =…
+>> - [Medium] ksz_ptp_enable_perout() resolves the output pin with
+>>    ptp_find_pin() (drivers/net/dsa/microchip/ksz_ptp.c:206).
+>> - [Low] ksz_ptp_tou_reset() (drivers/net/dsa/microchip/ksz_ptp.c:66-86)
+>>    assigns the result of the TRIG_RESET read-modify-write to 'ret' at…
+>>
+>> -- 
+>>
+>> net: dsa: microchip: save the periodic output request
+>>
+>> The patch replaces the two stored timespec64 values (perout_target_time_first
+>> and perout_period) in struct ksz_ptp_data with a copy of the full
+>> ptp_perout_request, so that the index and flags survive a perout restart.
+>> ksz_ptp_restart_perout() now replays the saved request with only the start
+>> time recomputed.
+>>
+>> A few questions below.
+>>
+>>>      When a periodic output is initialized, only the start and the period are
+>>>      stored, not the flags nor the pin index. So when the periodic output is
+>>>      restarted, the request flags and index are always set to 0. So if a pin
+>>>      other than the first one was used, or if a flag was set in the request
+>>>      that triggered the periodic output, it is lost when the output is
+>>>      restarted.
+>>
+>> [Severity: Medium]
+>> Can request->flags ever be non-zero in this driver?
+>>
+>> ksz_ptp_clock_register() sets caps.n_pins, caps.n_per_out and the callbacks,
+>> but never sets caps.supported_perout_flags, and caps lives in the zeroed
+>> struct ksz_device, so the mask stays 0. The core rejects any flag that is not
+>> advertised before it calls the driver:
+>>
+>> drivers/ptp/ptp_chardev.c:ptp_perout_request() {
+>>     ...
+>>     if (perout->flags & ~ops->supported_perout_flags)
+>>         return -EOPNOTSUPP;
+>>     ...
+>>     return ops->enable(ops, &req, perout->period.sec || perout->period.nsec);
+>> }
+>>
+> 
+> This check is 'fairly' recent, it was added by d9f3e9ecc456 ("net: ptp: introduce .supported_perout_flags to ptp_clock_info") (v6.15). I experienced the reset issue on a v6.12 kernel.
+> 
+> Even if it can't happen right now, as soon as this driver registers any new flag, the bug will come back.
+> 
+> 
+> 
+> All others comments are already existing issues that can be fixed independently from this patch so I don't plan to address them right now.
+This one:
 
-Introduce SRQ event types and associated events. Report these events
-through the SRQ event handler during event processing.
+"""
+Should the request be committed to ptp_data->perout_request only after it has
+been validated and the hardware has actually been programmed?
+[...]
 
-Signed-off-by: Amit Kumar <a.k@amd.com>
-Signed-off-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
----
- drivers/infiniband/hw/ionic/ionic_admin.c     | 47 +++++++++++++++++++
- .../infiniband/hw/ionic/ionic_controlpath.c   | 12 +++++
- drivers/infiniband/hw/ionic/ionic_fw.h        |  6 ++-
- drivers/infiniband/hw/ionic/ionic_ibdev.c     |  4 ++
- drivers/infiniband/hw/ionic/ionic_ibdev.h     | 10 ++++
- 5 files changed, 78 insertions(+), 1 deletion(-)
+There is also a period that this check rejects but the memcpy has already
+stored: period.sec = 4, period.nsec = 294967296 gives 0x100000000 ns, and
+TRIG_CYCLE_WIDTH_M is GENMASK(31, 0), so the request returns -EINVAL. On the
+next clock step, ksz_ptp_restart_perout() feeds that value to
+div_u64(now_ns - first_ns, period_ns), whose divisor parameter is u32, so the
+divisor truncates to 0. Is that a divide error in process context with
+ptp_data->lock held?
+"""
 
-diff --git a/drivers/infiniband/hw/ionic/ionic_admin.c b/drivers/infiniband/hw/ionic/ionic_admin.c
-index bd31594b3690..9b5514c145fb 100644
---- a/drivers/infiniband/hw/ionic/ionic_admin.c
-+++ b/drivers/infiniband/hw/ionic/ionic_admin.c
-@@ -945,6 +945,49 @@ static void ionic_qp_event(struct ionic_ibdev *dev, u32 qpid, u8 code)
- 	kref_put(&qp->qp_kref, ionic_qp_complete);
- }
- 
-+static void ionic_srq_event(struct ionic_ibdev *dev, u32 srqid, u8 code)
-+{
-+	unsigned long irqflags;
-+	struct ionic_srq *srq;
-+	struct ib_event ibev;
-+
-+	xa_lock_irqsave(&dev->srq_tbl, irqflags);
-+	srq = xa_load(&dev->srq_tbl, srqid);
-+	if (srq)
-+		kref_get(&srq->kref);
-+	xa_unlock_irqrestore(&dev->srq_tbl, irqflags);
-+
-+	if (!srq) {
-+		ibdev_dbg(&dev->ibdev,
-+			  "missing srqid %#x code %u\n", srqid, code);
-+		return;
-+	}
-+
-+	ibev.device = &dev->ibdev;
-+	ibev.element.srq = &srq->ibsrq;
-+
-+	switch (code) {
-+	case IONIC_V1_EQE_SRQ_LIMIT_REACHED:
-+		ibev.event = IB_EVENT_SRQ_LIMIT_REACHED;
-+		break;
-+
-+	case IONIC_V1_EQE_SRQ_ERR:
-+		ibev.event = IB_EVENT_SRQ_ERR;
-+		break;
-+
-+	default:
-+		ibdev_dbg(&dev->ibdev,
-+			  "unrecognized srqid %#x code %u\n", srqid, code);
-+		goto out;
-+	}
-+
-+	if (srq->ibsrq.event_handler)
-+		srq->ibsrq.event_handler(&ibev, srq->ibsrq.srq_context);
-+
-+out:
-+	kref_put(&srq->kref, ionic_srq_complete);
-+}
-+
- static u16 ionic_poll_eq(struct ionic_eq *eq, u16 budget)
- {
- 	struct ionic_ibdev *dev = eq->dev;
-@@ -978,6 +1021,10 @@ static u16 ionic_poll_eq(struct ionic_eq *eq, u16 budget)
- 			ionic_qp_event(dev, qid, code);
- 			break;
- 
-+		case IONIC_V1_EQE_TYPE_SRQ:
-+			ionic_srq_event(dev, qid, code);
-+			break;
-+
- 		default:
- 			ibdev_dbg(&dev->ibdev,
- 				  "unknown event %#x type %u\n", evt, type);
-diff --git a/drivers/infiniband/hw/ionic/ionic_controlpath.c b/drivers/infiniband/hw/ionic/ionic_controlpath.c
-index ec9e1188f556..953c0db0d92e 100644
---- a/drivers/infiniband/hw/ionic/ionic_controlpath.c
-+++ b/drivers/infiniband/hw/ionic/ionic_controlpath.c
-@@ -3060,6 +3060,13 @@ int ionic_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *attr,
- 			goto err_srq_cmd;
- 	}
- 
-+	kref_init(&srq->kref);
-+	init_completion(&srq->rel_comp);
-+
-+	rc = xa_insert_irq(&dev->srq_tbl, srq->rq.qid, srq, GFP_KERNEL);
-+	if (rc)
-+		goto err_srq_cmd;
-+
- 	ionic_pgtbl_unbuf(dev, &buf);
- 
- 	attr->attr.max_wr = srq->rq.q.mask;
-@@ -3083,6 +3090,11 @@ int ionic_destroy_srq(struct ib_srq *ibsrq, struct ib_udata *udata)
- 	struct ionic_srq *srq = to_ionic_srq(ibsrq);
- 	int rc;
- 
-+	if (xa_erase_irq(&dev->srq_tbl, srq->rq.qid)) {
-+		kref_put(&srq->kref, ionic_srq_complete);
-+		wait_for_completion(&srq->rel_comp);
-+	}
-+
- 	rc = ionic_destroy_srq_cmd(dev, srq->rq.qid);
- 	if (rc)
- 		return rc;
-diff --git a/drivers/infiniband/hw/ionic/ionic_fw.h b/drivers/infiniband/hw/ionic/ionic_fw.h
-index a625149474e1..426add364898 100644
---- a/drivers/infiniband/hw/ionic/ionic_fw.h
-+++ b/drivers/infiniband/hw/ionic/ionic_fw.h
-@@ -1013,7 +1013,7 @@ enum ionic_v1_eqe_evt_bits {
- 	/* cq error events */
- 	IONIC_V1_EQE_CQ_ERR		= 8,
- 
--	/* qp and srq events */
-+	/* qp events */
- 	IONIC_V1_EQE_TYPE_QP		= 1,
- 	/* qp normal events */
- 	IONIC_V1_EQE_SRQ_LEVEL		= 0,
-@@ -1024,6 +1024,10 @@ enum ionic_v1_eqe_evt_bits {
- 	IONIC_V1_EQE_QP_ERR		= 8,
- 	IONIC_V1_EQE_QP_ERR_REQUEST	= 9,
- 	IONIC_V1_EQE_QP_ERR_ACCESS	= 10,
-+	/* srq events */
-+	IONIC_V1_EQE_TYPE_SRQ		= 2,
-+	IONIC_V1_EQE_SRQ_LIMIT_REACHED	= 0,
-+	IONIC_V1_EQE_SRQ_ERR		= 1,
- };
- 
- enum ionic_tfp_csum_profiles {
-diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.c b/drivers/infiniband/hw/ionic/ionic_ibdev.c
-index 3187f6297946..b45d128a5b51 100644
---- a/drivers/infiniband/hw/ionic/ionic_ibdev.c
-+++ b/drivers/infiniband/hw/ionic/ionic_ibdev.c
-@@ -318,6 +318,8 @@ static void ionic_destroy_ibdev(struct ionic_ibdev *dev)
- 	xa_destroy(&dev->qp_tbl);
- 	WARN_ON(!xa_empty(&dev->cq_tbl));
- 	xa_destroy(&dev->cq_tbl);
-+	WARN_ON(!xa_empty(&dev->srq_tbl));
-+	xa_destroy(&dev->srq_tbl);
- 	ib_dealloc_device(&dev->ibdev);
- }
- 
-@@ -336,6 +338,7 @@ static struct ionic_ibdev *ionic_create_ibdev(struct ionic_aux_dev *ionic_adev)
- 
- 	xa_init_flags(&dev->qp_tbl, GFP_ATOMIC);
- 	xa_init_flags(&dev->cq_tbl, GFP_ATOMIC);
-+	xa_init_flags(&dev->srq_tbl, XA_FLAGS_LOCK_IRQ);
- 
- 	ionic_init_resids(dev);
- 
-@@ -388,6 +391,7 @@ static struct ionic_ibdev *ionic_create_ibdev(struct ionic_aux_dev *ionic_adev)
- 	ionic_destroy_resids(dev);
- 	xa_destroy(&dev->qp_tbl);
- 	xa_destroy(&dev->cq_tbl);
-+	xa_destroy(&dev->srq_tbl);
- 	ib_dealloc_device(&dev->ibdev);
- 
- 	return ERR_PTR(rc);
-diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.h b/drivers/infiniband/hw/ionic/ionic_ibdev.h
-index 3ee7416427fd..f8d580dd4d95 100644
---- a/drivers/infiniband/hw/ionic/ionic_ibdev.h
-+++ b/drivers/infiniband/hw/ionic/ionic_ibdev.h
-@@ -92,6 +92,7 @@ struct ionic_ibdev {
- 
- 	struct xarray		qp_tbl;
- 	struct xarray		cq_tbl;
-+	struct xarray		srq_tbl;
- 
- 	struct ionic_resid_bits	inuse_dbid;
- 	struct ionic_resid_bits	inuse_pdid;
-@@ -270,6 +271,8 @@ struct ionic_rq {
- struct ionic_srq {
- 	struct ib_srq		ibsrq;
- 	struct ionic_rq		rq;
-+	struct kref		kref;
-+	struct completion	rel_comp;
- 	u16			srq_limit;
- 	u8			udma_idx;
- };
-@@ -466,6 +469,13 @@ static inline bool ionic_fw_has_qid_alloc(struct ionic_ibdev *dev,
- 	return dev->lif_cfg.alloc_qid_cap & qtype;
- }
- 
-+static inline void ionic_srq_complete(struct kref *kref)
-+{
-+	struct ionic_srq *srq = container_of(kref, struct ionic_srq, kref);
-+
-+	complete(&srq->rel_comp);
-+}
-+
- /* ionic_admin.c */
- extern struct workqueue_struct *ionic_evt_workq;
- void ionic_admin_post(struct ionic_ibdev *dev, struct ionic_admin_wr *wr);
--- 
-2.43.0
+Looks new to me, and bad.
+
+Also if the issue you are observing on an older kernel is already fixed in
+the vanilla tree, I suggest instead sending to stable the relevant change.
+
+Thanks,
+
+Paolo
 
