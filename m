@@ -1,215 +1,131 @@
-Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BA04FE2E2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AC94F7CC2
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790073704; cv=none; b=MvZpQLo2y/XEdPWcmMcWIJpRFqLZGZ4zxWkPpEY/+iLhDAK7O7b0pCw4CBDIN/GL0s7ehvIbj9LDp+0mAJxJcwdUhT1hEj92l+/vxLCDjpIqvmdMOkxO6rPVJiCn1YUjLUZ7tps4rBTCzblzlSrylaXyUcnAIZjd8kCPoFBziSo=
+	t=1790073898; cv=none; b=W+8fvbnB3u3GpEiV4wFLHRzdjG9HK+mET5mRUwp11Co5Yzpx7WSyPqofioDh+Fkl85qBSc7fjmyMZrKXSQ0wp/MzNhmV6RQzmN9lY0dHyzJSng0Rk15UOdc6U5AhzzRz36d2eIusnTAf1ZnmGP6rkZHhSQiot2wlj9Dj8XR0dr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790073704; c=relaxed/simple;
-	bh=7y+CuiXe43bSt3b6poJ9J8P0PdtDQi2xVeYDvDLvAsI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cTqt58wa+Hpg69NicxG/eqQpZ27TUTGPFbl8GbsAHfSUpsMMfrEeW4R3dfEEamrZPld3W3LW5TT3X3g8B72YQiaNWj5FjRs4QbchyKLT+FZN9JKDZr1NK2G3LFTUaEokyl1c1AVi2l62cRdQ7eHtjFaeMAalWKdHw6jAxhdtWC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=JM1stZ3M; arc=none smtp.client-ip=185.136.64.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1790073898; c=relaxed/simple;
+	bh=cxh/2QahMdTMrSn/S9/tFLpxWD7uh+KmEFc1Vey3WJY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=II1SPrBIEHc1TZi+R4ZXkqA+EJ0rhXGJX0j8Pqb9vUrKpQbE8HMtPyjqcbJkMRSoHyWEXYAtOmzh74273xt7Sz/WlxiF/CInIH6bpMAwl2Cfm9MZmD3L0icW0Y4CL04PdkOGFuS0pwtUvzDjZMOTZat2jLZXxGUtfYh+krydmco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AHfQajuv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=exIzAIIC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="JM1stZ3M"
-Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 202609221041267107b893c90002071b
-        for <netdev@vger.kernel.org>;
-        Tue, 22 Sep 2026 12:41:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=WBqETWon5zt1ABigAm6JISxmN1Fiv0yInSBaLX18UcY=;
- b=JM1stZ3Mv/3EOorFzfSayog6JGegkejRG07NqHFHMzgks99AG3bo+FuqU43IzvVGEXB3ux
- jLv93/be4JCqSjZ1p+gbdW7zV3eTK7Peheg67l9XqV8c/4X5efAr7flwJPnclxCeZRNcfknj
- LKg6mgfJYYCFZ6MtFLg125joBYzC7/1pqJYUHxlJTo4XO1mDwZ16zDcTM0GxjySQvcYPFSx6
- SwSFt0+7hXt76O4D95YPiRZmf+eR4i8T1Ts4+qthAzSxum7nLzHbF5VHpBBTFtkuewsKKtZ9
- PPbw/yLEKtvDkxaU+hWjSWrknQQwxzFiUoLQ7Gs600HIZxabW9f9Ys+A==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: netdev@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4] net: dsa: mxl-gsw1xx: force internal PHYs into a known reset state
-Date: Tue, 22 Sep 2026 12:41:22 +0200
-Message-ID: <20260922104124.311334-1-alexander.sverdlin@siemens.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AHfQajuv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="exIzAIIC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790073896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ei08eeL/NcpLae0J6M0HY6w13WSG9UITooaK8YczBr4=;
+	b=AHfQajuvTdrH6Yictc2xVfFD9OanTtxUNZB6uWPIwRuTuUEO3uoGo7Y9zXA9bxP3ZVgg5U
+	qdLGY8onDFB7uP8FdKd9ibePR+anqZ7iLh1QUKiDNjT0FBv3d7+1mCE/NhS9cbHF0AESsa
+	CAQ26BjnT9QK2/vmLKNPV79YFAMnlWM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-E3zQkay9OW6Ft0ZZzZUZoQ-1; Tue, 22 Sep 2026 06:44:54 -0400
+X-MC-Unique: E3zQkay9OW6Ft0ZZzZUZoQ-1
+X-Mimecast-MFC-AGG-ID: E3zQkay9OW6Ft0ZZzZUZoQ_1790073893
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4886448d257so204552f8f.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 03:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790073893; x=1790678693; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ei08eeL/NcpLae0J6M0HY6w13WSG9UITooaK8YczBr4=;
+        b=exIzAIICUOUq8mLI87J6GGuAHjfauxOS87av0bbdRDqk65VQsVjWiPLD425C8qCdOp
+         +wVRxPAcF8/v1w5nvCU4y3hCVn/04iEFtr7VZq9Vet41CZf3Wx1uwNX21dpIXOopgd5+
+         HIuHEHLUn/Vhvw1X4UUrMQvgKDfQrCvM3IHQTTS1G5vBiPYphQuZUhiPZvQzXTmWJ3zB
+         E6z7kdPxmfNzqifwC1epTwy7X4mK6bCh8r1T6XzcPFNB43YR2Z9mtzV9s5D4YQFv6wFX
+         9AhoBmxm0LLpyzWunrRlTecDiM7s9eg8q7peFXCcnbGbvoxxTQFdO05o9GyszTUUBkUW
+         3MvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790073893; x=1790678693;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ei08eeL/NcpLae0J6M0HY6w13WSG9UITooaK8YczBr4=;
+        b=Fr25cHZ/o3ItyJVuaOwHVE86/jfucA43v3i+lFZCVyJaYgl+C4ZkDKoW8iUZp4r3c0
+         zPH+AhulbWffwRBtr+zgB5ZT2P4C5SjLL68E/oPu1aAaMxcFHNLUdCGh98Ex4XAl6LFp
+         vduZgIU62rgPUQaBSI0Kicd9gBUdPUm9sb43kEzF8UjJfcXAg2CZYYKpLTNzNeU5pSyP
+         bX1/C5IXXB/PdqDKwfWAIdK9RJLluv+RHycWNYIisOifgA+KxPAjrgkqYZRZo0/nMok3
+         SzHNByaxZ9xzhVoQpIuhTrPThkiTRP/La5ZkeMZgIwH8AjxqSvKacECYzEVFX1aI3WiF
+         7uGg==
+X-Forwarded-Encrypted: i=1; AKwUvBw/8nFXDqHT1c8ih/Mkrgufn1SbJojn+WesLMU0EtAW9sG/UUViPgItcnbjvvaDUd00Ja42H3I=@vger.kernel.org
+X-Gm-Message-State: AFuF++lY5cPDfI9JyPZTf1CjY3jpZAiAEPtmnlFQfQIKaF0gGlA2DFGM
+	RKRT5KsiEF0f0yvdyWWOjdYkPmy2XU6/ec7VlF8owd3GDlVEKEowbaMxctV64hf5ZxeKJJzUKfP
+	fuXsmpG8QM+uQWsftwtnLwQzkc50ydzcbQTqIg2cCW3fgdTnUOZDtiPOFvw==
+X-Gm-Gg: AYBFou0CeOEYCR4PNKODq/mrN4AdzCzUR+iR8xplvlEDTKPH/TDCFlHTsDPCVWoEzvl
+	IHsB07DK9biD0obuc4ekNimh9pzV4I94NPaQv+M3n/Fe8RiOmtecpVnOURtSmJo0iyLTxg0I20B
+	gE+Q2m0E5u/Jqf5IS0f2+w1s04N0OCABi51Ozr+SU0ghegfoUXCkYC6mWNJBy9yo/Ky0s9tkegj
+	UuWlFolfoN9kq1+YSjM9jJ0SogbbTMBEAZmRYMFkZUi9wtMSOHw0bwYzjxu6G3OFbXWwTyzGUBa
+	QtgSYhd15u7P5hwxgbra/ztBr8bIoqkYfGODcy2tCrB6gwHtE9WMWqvennKW0uAk+gngJnCKQl3
+	YyHDaRg3a3pUDP7WWcMnN11JgxdD2CR5DqJARjhozS9GScWag0MVP9n251LSfEeF84B3MrwR5uw
+	==
+X-Received: by 2002:a05:6000:220e:b0:487:c43:e577 with SMTP id ffacd0b85a97d-4871e217efcmr19509922f8f.24.1790073893503;
+        Tue, 22 Sep 2026 03:44:53 -0700 (PDT)
+X-Received: by 2002:a05:6000:220e:b0:487:c43:e577 with SMTP id ffacd0b85a97d-4871e217efcmr19509894f8f.24.1790073893140;
+        Tue, 22 Sep 2026 03:44:53 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48862774543sm4571801f8f.11.2026.09.22.03.44.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 03:44:52 -0700 (PDT)
+Message-ID: <4c83e630-4293-42ac-8ce7-d6abd5cf5b17@redhat.com>
+Date: Tue, 22 Sep 2026 12:44:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/7] net/mlx5e: Fix offload lifetime, cleanup and
+ exclusion bugs
+To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Sabrina Dubroca <sd@queasysnail.net>
+Cc: Boris Pismenny <borisp@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>,
+ Cosmin Ratiu <cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>, Emeel Hakim <ehakim@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, Lior Nahmanson <liorna@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Parav Pandit <parav@nvidia.com>,
+ Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+ Roi Dayan <roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>
+References: <20260917175433.4090878-1-tariqt@nvidia.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260917175433.4090878-1-tariqt@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+On 9/17/26 19:54, Tariq Toukan wrote:
+> This series by Cosmin fixes several mlx5e offload issues:
+> 
+> - Block eswitch mode changes before accessing the IPsec context during
+>    policy and SA creation.
+> - Tie TC eswitch and IPsec-blocking references to flow destruction,
+>    covering bulk cleanup and flows with outstanding references.
+> - Track MACsec hardware-object ownership explicitly and delete remaining
+>    SecYs during driver cleanup.
+> - Serialize TC/IPsec exclusion counters with a dedicated mutex.
+> - Prevent SHAMPO from merging PSP packets.
+Some of the clashiko findings look both legit and relevant to me.
 
-When bootstrapped with PS_NOWAIT = 0 the internal PHYs stay held in
-reset, so the driver only worked with PS_NOWAIT = 1 where they are
-released automatically.
+Friendly reminder that you are expected to address them on the ML.
 
-Add a ->setup() hook, run before the MDIO bus is registered so PHY IDs
-are readable during the bus scan, that programs the RST_REQ PHY reset
-lines: release the PHYs of used (DSA user) ports and hold all other
-internal PHYs in reset. Driving both directions yields the same state
-regardless of the PS_NOWAIT bootstrap and keeps unused PHYs from staying
-powered.
-
-A single 300ms settle delay is applied only when at least one PHY is
-released.
-
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
-Changelog:
-v4:
-- dropped PHY_INTERFACE_MODE_INTERNAL and "phy-handle" dance
-- now correctly asserting the reset bits of the unused PHYs
-v3:
-- put unused PHYs into reset state (changed patch subject accordingly)
-- https://lore.kernel.org/all/20260915091856.1375914-1-alexander.sverdlin@siemens.com/
-v2:
-- Reverse Christmas tree.
-- https://lore.kernel.org/all/20260908103030.4032992-1-alexander.sverdlin@siemens.com/
-v1:
-- https://lore.kernel.org/all/20260901165049.672446-1-alexander.sverdlin@siemens.com/
-
- drivers/net/dsa/lantiq/lantiq_gswip.h        |  2 ++
- drivers/net/dsa/lantiq/lantiq_gswip_common.c | 10 ++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.c          | 35 ++++++++++++++++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.h          |  1 +
- 4 files changed, 48 insertions(+)
-
-diff --git a/drivers/net/dsa/lantiq/lantiq_gswip.h b/drivers/net/dsa/lantiq/lantiq_gswip.h
-index 0b75be14dc109..4f95877c59d1d 100644
---- a/drivers/net/dsa/lantiq/lantiq_gswip.h
-+++ b/drivers/net/dsa/lantiq/lantiq_gswip.h
-@@ -261,6 +261,8 @@ struct gswip_hw_info {
- 	const struct gswip_pce_microcode (*pce_microcode)[];
- 	size_t pce_microcode_size;
- 	enum dsa_tag_protocol tag_protocol;
-+
-+	int (*setup)(struct dsa_switch *ds);
- 	void (*phylink_get_caps)(struct dsa_switch *ds, int port,
- 				 struct phylink_config *config);
- 	struct phylink_pcs *(*mac_select_pcs)(struct phylink_config *config,
-diff --git a/drivers/net/dsa/lantiq/lantiq_gswip_common.c b/drivers/net/dsa/lantiq/lantiq_gswip_common.c
-index 6150dc3ffb641..7c53ded178367 100644
---- a/drivers/net/dsa/lantiq/lantiq_gswip_common.c
-+++ b/drivers/net/dsa/lantiq/lantiq_gswip_common.c
-@@ -689,6 +689,16 @@ static int gswip_setup(struct dsa_switch *ds)
- 	 */
- 	regmap_write(priv->mdio, GSWIP_MDIO_MDC_CFG0, 0x0);
- 
-+	/* GSW1xx will wake up the PHYs here, so it makes sense that it happens
-+	 * after the auto-polling deactivation above, but before the MDIO bus
-+	 * registration below
-+	 */
-+	if (priv->hw_info->setup) {
-+		err = priv->hw_info->setup(ds);
-+		if (err)
-+			return err;
-+	}
-+
- 	/* Configure the MDIO Clock 2.5 MHz */
- 	regmap_write_bits(priv->mdio, GSWIP_MDIO_MDC_CFG1, 0xff, 0x09);
- 
-diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.c b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-index 66bf7e3319057..5722a9fadc0a7 100644
---- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-+++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-@@ -589,6 +589,37 @@ static void gsw150_phylink_get_caps(struct dsa_switch *ds, int port,
- 	gsw1xx_phylink_get_lpi_caps(config);
- }
- 
-+static int gsw1xx_setup(struct dsa_switch *ds)
-+{
-+	struct gsw1xx_priv *priv = container_of(ds->priv, struct gsw1xx_priv, gswip);
-+	struct gswip_priv *gswip_priv = ds->priv;
-+	u32 phy_mask = 0, active_mask = 0;
-+	int port, ret;
-+
-+	/* Reset bits exist only for the internal-PHY ports preceding the first
-+	 * MII port.
-+	 */
-+	for (port = 0; port < gswip_priv->hw_info->max_ports; port++) {
-+		if (gswip_priv->hw_info->mii_cfg[port] != -1)
-+			break;
-+
-+		phy_mask |= GSW1XX_RST_REQ_PHY(port);
-+
-+		if (dsa_port_is_user(dsa_to_port(ds, port)))
-+			active_mask |= GSW1XX_RST_REQ_PHY(port);
-+	}
-+
-+	ret = regmap_update_bits(priv->shell, GSW1XX_SHELL_RST_REQ, phy_mask,
-+				 phy_mask & ~active_mask);
-+	if (ret)
-+		return ret;
-+
-+	if (active_mask)
-+		msleep(300);
-+
-+	return 0;
-+}
-+
- static struct phylink_pcs *gsw1xx_phylink_mac_select_pcs(struct phylink_config *config,
- 							 phy_interface_t interface)
- {
-@@ -830,6 +861,7 @@ static const struct gswip_hw_info gsw12x_data = {
- 		[GSW1XX_MII_PORT] = GSWIP_MII_PCDU0,
- 		[GSW1XX_MII_PORT + 1 ... GSWIP_MAX_PORTS - 1] = -1,
- 	},
-+	.setup			= gsw1xx_setup,
- 	.mac_select_pcs		= gsw1xx_phylink_mac_select_pcs,
- 	.phylink_get_caps	= &gsw1xx_phylink_get_caps,
- 	.supports_2500m		= true,
-@@ -852,6 +884,7 @@ static const struct gswip_hw_info gsw140_data = {
- 		[GSW1XX_MII_PORT] = GSWIP_MII_PCDU0,
- 		[GSW1XX_MII_PORT + 1 ... GSWIP_MAX_PORTS - 1] = -1,
- 	},
-+	.setup			= gsw1xx_setup,
- 	.mac_select_pcs		= gsw1xx_phylink_mac_select_pcs,
- 	.phylink_get_caps	= &gsw1xx_phylink_get_caps,
- 	.supports_2500m		= true,
-@@ -874,6 +907,7 @@ static const struct gswip_hw_info gsw141_data = {
- 		[GSW1XX_MII_PORT] = GSWIP_MII_PCDU0,
- 		[GSW1XX_MII_PORT + 1 ... GSWIP_MAX_PORTS - 1] = -1,
- 	},
-+	.setup			= gsw1xx_setup,
- 	.mac_select_pcs		= gsw1xx_phylink_mac_select_pcs,
- 	.phylink_get_caps	= gsw1xx_phylink_get_caps,
- 	.port_setup		= gsw1xx_port_setup,
-@@ -895,6 +929,7 @@ static const struct gswip_hw_info gsw150_data = {
- 		[5] = 1,
- 		[6] = 11,
- 	},
-+	.setup			= gsw1xx_setup,
- 	.phylink_get_caps	= gsw150_phylink_get_caps,
- 	/* There is only a single RGMII_SLEW_CFG register in GSW150 and it is
- 	 * unknown if RGMII slew configuration affects both RGMII ports
-diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.h b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-index caa8f1008587a..a7976a5988bd8 100644
---- a/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-+++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-@@ -110,6 +110,7 @@
- #define GSW1XX_SHELL_BASE			0xfa00
- #define  GSW1XX_SHELL_RST_REQ			0x01
- #define   GSW1XX_RST_REQ_SGMII_SHELL		BIT(5)
-+#define   GSW1XX_RST_REQ_PHY(p)			BIT(p)
- #define  GSW1XX_SHELL_MANU_ID			0x10
- #define   GSW1XX_SHELL_MANU_ID_PNUML		GENMASK(15, 12)
- #define   GSW1XX_SHELL_MANU_ID_MANID		GENMASK(11, 1)
--- 
-2.55.0
+/P
 
