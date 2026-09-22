@@ -1,161 +1,700 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516AA3B5835
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A1A4C10FD
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790070771; cv=none; b=rsQfa6tggkhzcRoT+UwckX4aqi9fHuRYL7n/S044KJI5IZWtzZQn+0jlnsrflhNn/qO/7mkAaEbkG7WRSWDEULHp/CcMr1kZEgPFmB5FfKGp3YuTWyZaLy0sSqaDF9e9yJKJR9QCh8RaM1M0JIs4oSvVsBTlR4DPoDr6ZIotJGQ=
+	t=1790071071; cv=none; b=qaEDJPqbs/0z+MfRwNzx3iNrGiaOcxsd/BVnYDn/cy69yQzQH+xJ6+6QmPZ/43rnnBg9OtBDxiZ14JAPRCTgF8U09By3Sg9AuD7FSLwLurYtgxTpRiKpjQdKCuJYpWWDX5BoYqzeG6yXo/12tMfrntyBjELZo54FzimLL0fEb3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790070771; c=relaxed/simple;
-	bh=oW5fjXkU1LjFKqoyF7Qy3vvc5V+m/IzJ7Oa3bKJcpYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/WAWkXgzKIT6PYjqw6WIv7t3r/UW9HmRz7fcv+PUa2LmKIHcqaV9Nn5GuTxwA6Gw7kC0Mvj07nESA1RS6y4aujRbPgqjT5fUmsFXTrwT27lxWI+/ih5usmzxp52Gwy4KOooCBzi+lv3oCYd3FFZY7w6bRWA3iX2f+fvhFHovnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=rIZb1s8/; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1790071071; c=relaxed/simple;
+	bh=zXhz5KmO0jjEKLfrJkRDWFswR/EGeyYXTsYyac6MWjM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=a3DcIMjCELM9oE2fbubBbEqDh5lzn5s95ie71dehhVTKmFV/9Ba8lS/2/2D2y/ItKA4gn+mZAaP7cWu5ISlii+BxLVU1Ll2IbJzCJnK0q4i/4U7gdBnk9vF1UMUSYKRVSkGygLPUgPPT0TFXx9FFwkMOdr2RrewTz8flbzrA/Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u0RqIj1j; arc=none smtp.client-ip=209.85.222.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="rIZb1s8/"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b31b4281eso3788847a91.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:52:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u0RqIj1j"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a08ff8451so642111685a.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:57:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790070769; x=1790675569; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UnrR1m0kZk2/oAOYVJ8Ilr0rQHlguOaTVy++aK2OkWM=;
-        b=rIZb1s8/XeYrPs2dr+9tO7v/sM09EMTZJb6a6gP//sqvoJNfxvjsVGQ+YcDXVMUpkX
-         AmJfvM3W2DQrg+jF1lqa7/2YSDd4G58yzF5reFSUQgPi3WVLDYclpMAW5SmvzZkKmDSu
-         acQ1Dnjm7QFljTSrw3JDONafkcN1bnT78K0OIf50raXWAMPeKZUs6f3FILz707dmGdYn
-         En1z4fdGlc96OIKShQFo+YCAYLsrvH+WC26s5F3hDoJXHOQt20oWEkCN2g6E92B3NZhN
-         SBmJQs+/zQGtdns8LdRWY6Jd1oU0UFiX990PMmy3VFjhCtI+0JyoqbiFlKrNnqD1sSzF
-         akfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790070769; x=1790675569;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1790071068; x=1790675868; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UnrR1m0kZk2/oAOYVJ8Ilr0rQHlguOaTVy++aK2OkWM=;
-        b=woJlSN2CbWm1+VsuVCT0MO/4jO51ekbto5y1qFoygiwWsCJ/ssvA9Q/zRW03oxDk+G
-         0BDPT8Zbb0vrRWroXaYWZJClSwKwRjNFM1vlLdjMfeBVax4H1WHc4AEe7e+L/Q9uPRL0
-         UvNs0YYfieJ6okwjkLBlaHjyXDMpt2nlKWSrY14GjT0pzGeFTpgiuVrlqGO0U7M77JAS
-         V5NFMDI+E4GwvHVBtm7ruqN9IZlQArcII08yrgU/mxDvuYqt96yVkeTi9LGJ/9w7RXYv
-         lFgpVRmuyLv3s2QDx7d9Q64DWUbRyo3lD17lVSLzV/8wsSkAKbqdtYa1DqhLRO8ElPUT
-         EYKg==
-X-Forwarded-Encrypted: i=1; AKwUvBxMKjS7axB1wfBW6TITJp+ITqA9NDnPz65q/PD4qa1Bubt/nchDjtHGkw3gJmhJCPtov97sqGY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kTQFCvrK0y5Y/8uVCXp2u8ym6pFKkO8PBZLs98CFUnDBSJ3D8c
-	KEYbpwp2OVo5dVq27OLzuKwWlHCM0uN1CchYUbOONV0LvyZCREcCvRztEsJLOYP3a1kl
-X-Gm-Gg: AYBFou1to+GdHAYO+ESYAThhsT6gifQEwPiKQQ4Gx5X+GseGWl425ds344VUOUF9IWg
-	kzgm2RxEUwhF4a3PmxkDHhwXpG6ODEeuT/qeUI1nHazHjcLb7UddpVfQWXgYw+xDDIHnHJIbQBN
-	mOIWdMPstSJ0zHSoS/mkcfA7P4GQm7E4HwlPG0yvq1lrhLSSgmTBcZASN/p+stHq2xQqFjbawf2
-	Z43ZA1N69lecItk/8VFbXLwEhJNu34JnJlIngQeToWfdFo9T7FDx+0J5p6h64IlQ4gMOVm4j9ov
-	0aeGUPexYtVWacfUS6RabXaC2U3KWxDyI8pgZD3+VBOzm09TXYNgUXLozU7NfCCDc0e72D9M3f3
-	RdR+vL7Fxp4tMjezjnTn6ZAoovBe46p9K18F3tloGNWVpgptgdiC7mkNjkH2fNUoAAxy5HjGYkS
-	jpacL+XhrDGYp7eXeBPoOcR5YwXwgb1FWC/8+xQwvm3y713zGRXYz4coS6aC48W3yozgSs7S7bp
-	bE5KQ70JT/ASTJlCuSdiOSKdYCZLyI=
-X-Received: by 2002:a17:90b:2ccb:b0:39e:6c68:c77a with SMTP id 98e67ed59e1d1-3a07323d479mr709033a91.48.1790070768485;
-        Tue, 22 Sep 2026 02:52:48 -0700 (PDT)
-Received: from 954df21a5119.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06dfd6705sm2679525a91.0.2026.09.22.02.52.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 02:52:47 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netfilter-devel@vger.kernel.org
-Cc: zihanx@nebusec.ai,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH nf v3 1/1] netfilter: nf_dup: disable duplication in user namespaces
-Date: Tue, 22 Sep 2026 09:52:31 +0000
-Message-ID: <b9e860571e049e0830d3b08626e28ca571e1ecc0.1790042930.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1790042930.git.zihanx@nebusec.ai>
-References: <cover.1790042930.git.zihanx@nebusec.ai>
+        bh=D7iTM93ut4SwJ25Dy8Nd2P870jnbg/sFtUysYEzMomA=;
+        b=u0RqIj1jdI9qBmmzzgHKa29mt/OaSoqWC7nNUpnhtVjcYw1rFQi5wV9QtFULlJfVyp
+         KMy/5prhoX41oZEW1De7v4En0gH+qV85OP+aM36I+OeOkQV8U8WdQlH49nwGWwsBUDti
+         /xqFZC1cPk3Z5dXLpz+oVY9u2qznDdxU5Sx5Tr6I/tNgXaTY9dX2xsmYx8GxC+/F+NFz
+         fv1T6gdcEEYnN1QDvjnvZK5lEwjkjQ+1OSC+Uq4GxCQFNSbwcjfc8TQGcnqB1mJxk649
+         VSlk2q6aT30Zh24ACCkxgxuQOnR1nhxYDogqaz+7KYIyPS6gXZ3zBnvESBIsl18H2tYC
+         9ZWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790071068; x=1790675868;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D7iTM93ut4SwJ25Dy8Nd2P870jnbg/sFtUysYEzMomA=;
+        b=JoPdRsFH7jVbLAQ+9jG6EWR20E6b28npMcdTkAq86ujE/1K7Wu4ZP62xe80mMgWr0t
+         SEnazzcNyDtby2oG+t8tjjtuZdliHVSAvmPusCfRF3LiiFx8Ak42K8o3pbns/7fvDRg8
+         rARaYA7gmpUOTJEnZ3G5nk40NDI6tXB4kGplcMixAm2YsGbrI6A1rJVgsubbe3/58ihH
+         GEi3hPY0KlCLwuBHge018cdr57JbAT5wt9554DUVZcEpwRJ6pk9Vh7N/yw3yVGwPBhvg
+         cmk2rNoNfj24Cs5iflMMgdSWiE+3M7ze+YkQOY2ocvloeK0JH5aFq6eqB0KQqSX5YD1V
+         ETjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxPIChUsrz0/IjNqS0iiAyoaEaEYkCdnGK2ITk70SCuA6fDhrgTPt6KzMERUE6Jl19GwIFCTzI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLLsGnfTl9qUa6Q7D99ldpLkuK/y32tOz34Lbb/n+aZdpKTyeN
+	aEXD9dLalEfDPxGge1F5dIfJ6NMps8Ee06IHwL1wEVxxqi9c1BrnlEgqZUHHVRAT1ukCn5T9r4w
+	4Sam7Zm7jbPiACA==
+X-Received: from qvbx10.prod.google.com ([2002:a0c:e0ea:0:b0:912:40de:f390])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:290c:b0:93b:d79e:18f4 with SMTP id af79cd13be357-93c15e7de2amr460898885a.55.1790071067807;
+ Tue, 22 Sep 2026 02:57:47 -0700 (PDT)
+Date: Tue, 22 Sep 2026 09:57:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260922095747.3059954-1-edumazet@google.com>
+Subject: [PATCH net] udp: restore hlist_nulls for primary and secondary hash tables
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-nf_dup_ipv4() and nf_dup_ipv6() send a cloned packet through
-ip_local_out() or ip6_local_out(), so the clone can traverse netfilter
-hooks again. A network namespace owned by a non-initial user namespace
-can combine NFQUEUE with TEE or nftables dup and retain the clone until
-a later verdict resumes it. The transient in_nf_duplicate task guard
-has already been cleared by then, so the resumed clone can be
-duplicated again and generate packets without bound.
+Commit ca065d0cf80f ("udp: no longer use SLAB_DESTROY_BY_RCU") switched
+UDP sockets to SOCK_RCU_FREE and converted udptable->hash and
+udptable->hash2 from hlist_nulls_head to hlist_head.
 
-There is no sensible use case for packet duplication in a user
-namespace. Skip IPv4 and IPv6 duplication when the network namespace
-is not owned by the initial user namespace. Keep the existing TEE/dup
-behavior in the initial user namespace.
+While SOCK_RCU_FREE guarantees that a socket is not freed before an RCU
+grace period elapses, a live UDP socket can still be unhashed or moved
+to a different hash bucket without an RCU grace period:
 
-Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
+1. udp_lib_rehash() moves sk->skc_portaddr_node from hslot2 to a
+   different nhslot2 when inet_rcv_saddr changes (for instance via
+   connect() or disconnect() on an wildcard-bound socket).
+2. __udp_disconnect() calls udp_lib_unhash() when an implicitly bound
+   port was used, and a subsequent connect() or bind() can immediately
+   re-insert sk->sk_nulls_node and sk->skc_portaddr_node into different
+   hash and hash2 buckets.
+
+Because hlist_add_head_rcu() overwrites node->next with the new bucket
+chain without waiting for an RCU grace period, a concurrent lockless
+reader in udp4_lib_lookup1/2() or udp6_lib_lookup1/2() traversing the
+old bucket can silently jump to the new bucket chain, terminate early,
+and miss a matching socket that was located later in the original bucket.
+
+Restore hlist_nulls for udptable->hash and udptable->hash2 while keeping
+SOCK_RCU_FREE (so RCU lookups remain refcount-free), and restart the
+bucket traversal if get_nulls_value(node) does not match the expected
+bucket index.
+
+Fixes: ca065d0cf80f ("udp: no longer use SLAB_DESTROY_BY_RCU")
 Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 ---
-changes in v3:
-  - rerolled the unchanged fix against the latest nf.git main
-    after no follow-up was received on v2
-  - add the required Co-developed-by trailer and matching
-    Signed-off-by
-  - v2 Link: https://lore.kernel.org/all/cover.1788425393.git.zihanx@nebusec.ai/
-changes in v2:
-  - drop the persistent struct sk_buff::nf_duplicated field and nf_copy()
-    change from v1
-  - disable IPv4/IPv6 duplication in network namespaces owned by a
-    non-initial user namespace, as preferred on review
-  - v1 Link: https://lore.kernel.org/all/cover.1787903722.git.zihanx@nebusec.ai/
+ include/linux/udp.h |  11 +++--
+ include/net/sock.h  |  23 +++++----
+ include/net/udp.h   |   5 +-
+ net/ipv4/udp.c      | 112 ++++++++++++++++++++++++++++++--------------
+ net/ipv4/udp_diag.c |   5 +-
+ net/ipv6/udp.c      |  40 ++++++++++++----
+ 6 files changed, 131 insertions(+), 65 deletions(-)
 
- net/ipv4/netfilter/nf_dup_ipv4.c | 3 +++
- net/ipv6/netfilter/nf_dup_ipv6.c | 3 +++
- 2 files changed, 6 insertions(+)
-
-diff --git a/net/ipv4/netfilter/nf_dup_ipv4.c b/net/ipv4/netfilter/nf_dup_ipv4.c
-index 9a773502f10ac..c33dae248c477 100644
---- a/net/ipv4/netfilter/nf_dup_ipv4.c
-+++ b/net/ipv4/netfilter/nf_dup_ipv4.c
-@@ -53,6 +53,9 @@ void nf_dup_ipv4(struct net *net, struct sk_buff *skb, unsigned int hooknum,
- {
- 	struct iphdr *iph;
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index 998906ec3b32add4652bde3ee9c28e8b2b98ce51..a1990350fd22f3418724c0e06d4b7405779f7c2b 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -243,14 +243,15 @@ static inline void udp_allow_gso(struct sock *sk)
+ 	udp_set_bit(ACCEPT_FRAGLIST, sk);
+ }
  
-+	if (net->user_ns != &init_user_ns)
-+		return;
-+
- 	local_bh_disable();
- 	if (current->in_nf_duplicate)
- 		goto out;
-diff --git a/net/ipv6/netfilter/nf_dup_ipv6.c b/net/ipv6/netfilter/nf_dup_ipv6.c
-index 6da3102b7c1b3..a5f6f074a7e91 100644
---- a/net/ipv6/netfilter/nf_dup_ipv6.c
-+++ b/net/ipv6/netfilter/nf_dup_ipv6.c
-@@ -47,6 +47,9 @@ static bool nf_dup_ipv6_route(struct net *net, struct sk_buff *skb,
- void nf_dup_ipv6(struct net *net, struct sk_buff *skb, unsigned int hooknum,
- 		 const struct in6_addr *gw, int oif)
+-#define udp_portaddr_for_each_entry(__sk, list) \
+-	hlist_for_each_entry(__sk, list, __sk_common.skc_portaddr_node)
++#define udp_portaddr_for_each_entry(__sk, node, list) \
++	hlist_nulls_for_each_entry(__sk, node, list, __sk_common.skc_portaddr_node)
+ 
+ #define udp_portaddr_for_each_entry_from(__sk) \
+-	hlist_for_each_entry_from(__sk, __sk_common.skc_portaddr_node)
++	for (; __sk; __sk = hlist_nulls_entry_safe((__sk)->__sk_common.skc_portaddr_node.next, \
++						   typeof(*(__sk)), __sk_common.skc_portaddr_node))
+ 
+-#define udp_portaddr_for_each_entry_rcu(__sk, list) \
+-	hlist_for_each_entry_rcu(__sk, list, __sk_common.skc_portaddr_node)
++#define udp_portaddr_for_each_entry_rcu(__sk, node, list) \
++	hlist_nulls_for_each_entry_rcu(__sk, node, list, __sk_common.skc_portaddr_node)
+ 
+ #if !IS_ENABLED(CONFIG_BASE_SMALL)
+ #define udp_lrpa_for_each_entry_rcu(__up, node, list) \
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 60ea55dc18854a9759f5df618cc8c904d2323e95..78626aba52dca6ab9fcae60f5bc277089f143633 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -184,7 +184,7 @@ struct sock_common {
+ 	int			skc_bound_dev_if;
+ 	union {
+ 		struct hlist_node	skc_bind_node;
+-		struct hlist_node	skc_portaddr_node;
++		struct hlist_nulls_node	skc_portaddr_node;
+ 	};
+ 	struct proto		*skc_prot;
+ 	possible_net_t		skc_net;
+@@ -930,7 +930,11 @@ static inline void __sk_nulls_add_node_tail_rcu(struct sock *sk, struct hlist_nu
+ static inline void sk_nulls_add_node_rcu(struct sock *sk, struct hlist_nulls_head *list)
  {
-+	if (net->user_ns != &init_user_ns)
-+		return;
-+
- 	local_bh_disable();
- 	if (current->in_nf_duplicate)
- 		goto out;
+ 	sock_hold(sk);
+-	__sk_nulls_add_node_rcu(sk, list);
++	if (IS_ENABLED(CONFIG_IPV6) && sk->sk_reuseport &&
++	    sk->sk_family == AF_INET6)
++		__sk_nulls_add_node_tail_rcu(sk, list);
++	else
++		__sk_nulls_add_node_rcu(sk, list);
+ }
+ 
+ static inline void __sk_del_bind_node(struct sock *sk)
+@@ -965,18 +969,19 @@ static inline void sk_add_bind_node(struct sock *sk,
+ 	hlist_for_each_entry_safe(__sk, tmp, list, sk_bind_node)
+ 
+ /**
+- * sk_for_each_entry_offset_rcu - iterate over a list at a given struct offset
++ * sk_nulls_for_each_entry_offset_rcu - iterate over a list at a given struct offset
+  * @tpos:	the type * to use as a loop cursor.
+- * @pos:	the &struct hlist_node to use as a loop cursor.
++ * @pos:	the &struct hlist_nulls_node to use as a loop cursor.
+  * @head:	the head for your list.
+- * @offset:	offset of hlist_node within the struct.
++ * @offset:	offset of hlist_nulls_node within the struct.
+  *
+  */
+-#define sk_for_each_entry_offset_rcu(tpos, pos, head, offset)		       \
+-	for (pos = rcu_dereference(hlist_first_rcu(head));		       \
+-	     pos != NULL &&						       \
++#define sk_nulls_for_each_entry_offset_rcu(tpos, pos, head, offset)	       \
++	for (({ barrier(); }),						       \
++	     pos = rcu_dereference_raw(hlist_nulls_first_rcu(head));	       \
++	     (!is_a_nulls(pos)) &&					       \
+ 		({ tpos = (typeof(*tpos) *)((void *)pos - offset); 1;});       \
+-	     pos = rcu_dereference(hlist_next_rcu(pos)))
++	     pos = rcu_dereference_raw(hlist_nulls_next_rcu(pos)))
+ 
+ static inline struct user_namespace *sk_user_ns(const struct sock *sk)
+ {
+diff --git a/include/net/udp.h b/include/net/udp.h
+index 1fee17274745f0b52837b7eb2498dbc423a450fd..1bba33479341e07f2dde9acc19b0b09cafa3ef29 100644
+--- a/include/net/udp.h
++++ b/include/net/udp.h
+@@ -56,10 +56,7 @@ struct udp_skb_cb {
+  */
+ struct udp_hslot {
+ 	union {
+-		struct hlist_head	head;
+-		/* hash4 uses hlist_nulls to avoid moving wrongly onto another
+-		 * hlist, because rehash() can happen with lookup().
+-		 */
++		struct hlist_nulls_head	head;
+ 		struct hlist_nulls_head	nulls_head;
+ 	};
+ 	int			count;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index b090bd1f59e86cd22edd9622b17b5679346ea24d..309220bf2fba9e7ccf48676d312924a6881bc34f 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -136,10 +136,11 @@ static int udp_lib_lport_inuse(struct net *net, __u16 num,
+ 			       unsigned long *bitmap,
+ 			       struct sock *sk, unsigned int log)
+ {
++	struct hlist_nulls_node *node;
+ 	kuid_t uid = sk_uid(sk);
+ 	struct sock *sk2;
+ 
+-	sk_for_each(sk2, &hslot->head) {
++	sk_nulls_for_each(sk2, node, &hslot->head) {
+ 		if (net_eq(sock_net(sk2), net) &&
+ 		    sk2 != sk &&
+ 		    (bitmap || udp_sk(sk2)->udp_port_hash == num) &&
+@@ -171,12 +172,13 @@ static int udp_lib_lport_inuse2(struct net *net, __u16 num,
+ 				struct udp_hslot *hslot2,
+ 				struct sock *sk)
+ {
++	struct hlist_nulls_node *node;
+ 	kuid_t uid = sk_uid(sk);
+ 	struct sock *sk2;
+ 	int res = 0;
+ 
+ 	spin_lock(&hslot2->lock);
+-	udp_portaddr_for_each_entry(sk2, &hslot2->head) {
++	udp_portaddr_for_each_entry(sk2, node, &hslot2->head) {
+ 		if (net_eq(sock_net(sk2), net) &&
+ 		    sk2 != sk &&
+ 		    (udp_sk(sk2)->udp_port_hash == num) &&
+@@ -201,10 +203,11 @@ static int udp_lib_lport_inuse2(struct net *net, __u16 num,
+ static int udp_reuseport_add_sock(struct sock *sk, struct udp_hslot *hslot)
+ {
+ 	struct net *net = sock_net(sk);
++	struct hlist_nulls_node *node;
+ 	kuid_t uid = sk_uid(sk);
+ 	struct sock *sk2;
+ 
+-	sk_for_each(sk2, &hslot->head) {
++	sk_nulls_for_each(sk2, node, &hslot->head) {
+ 		if (net_eq(sock_net(sk2), net) &&
+ 		    sk2 != sk &&
+ 		    sk2->sk_family == sk->sk_family &&
+@@ -323,7 +326,7 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
+ 
+ 		sock_set_flag(sk, SOCK_RCU_FREE);
+ 
+-		sk_add_node_rcu(sk, &hslot->head);
++		sk_nulls_add_node_rcu(sk, &hslot->head);
+ 		hslot->count++;
+ 		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+ 
+@@ -331,11 +334,11 @@ int udp_lib_get_port(struct sock *sk, unsigned short snum,
+ 		spin_lock(&hslot2->lock);
+ 		if (IS_ENABLED(CONFIG_IPV6) && sk->sk_reuseport &&
+ 		    sk->sk_family == AF_INET6)
+-			hlist_add_tail_rcu(&udp_sk(sk)->udp_portaddr_node,
+-					   &hslot2->head);
++			hlist_nulls_add_tail_rcu(&udp_sk(sk)->udp_portaddr_node,
++						 &hslot2->head);
+ 		else
+-			hlist_add_head_rcu(&udp_sk(sk)->udp_portaddr_node,
+-					   &hslot2->head);
++			hlist_nulls_add_head_rcu(&udp_sk(sk)->udp_portaddr_node,
++						 &hslot2->head);
+ 		hslot2->count++;
+ 		spin_unlock(&hslot2->lock);
+ 	}
+@@ -440,10 +443,14 @@ static struct sock *udp4_lib_lookup1(const struct net *net,
+ {
+ 	unsigned int slot = udp_hashfn(net, hnum, udptable->mask);
+ 	struct udp_hslot *hslot = &udptable->hash[slot];
+-	struct sock *sk, *result = NULL;
+-	int score, badness = 0;
++	struct hlist_nulls_node *node;
++	struct sock *sk, *result;
++	int score, badness;
+ 
+-	sk_for_each_rcu(sk, &hslot->head) {
++begin:
++	result = NULL;
++	badness = 0;
++	sk_nulls_for_each_rcu(sk, node, &hslot->head) {
+ 		score = compute_score(sk, net,
+ 				      saddr, sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+@@ -451,6 +458,13 @@ static struct sock *udp4_lib_lookup1(const struct net *net,
+ 			badness = score;
+ 		}
+ 	}
++	/*
++	 * if the nulls value we got at the end of this lookup is
++	 * not the expected one, we must restart lookup.
++	 * We probably met an item that was moved to another chain.
++	 */
++	if (unlikely(get_nulls_value(node) != slot))
++		goto begin;
+ 
+ 	return result;
+ }
+@@ -463,13 +477,16 @@ static struct sock *udp4_lib_lookup2(const struct net *net,
+ 				     struct udp_hslot *hslot2,
+ 				     struct sk_buff *skb)
+ {
++	unsigned int slot2 = UDP_HSLOT_MAIN(hslot2) - net->ipv4.udp_table->hash2;
++	struct hlist_nulls_node *node;
+ 	struct sock *sk, *result;
+ 	int score, badness;
+ 	bool need_rescore;
+ 
++begin:
+ 	result = NULL;
+ 	badness = 0;
+-	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
++	udp_portaddr_for_each_entry_rcu(sk, node, &hslot2->head) {
+ 		need_rescore = false;
+ rescore:
+ 		score = compute_score(need_rescore ? result : sk, net, saddr,
+@@ -510,6 +527,13 @@ static struct sock *udp4_lib_lookup2(const struct net *net,
+ 			goto rescore;
+ 		}
+ 	}
++	/*
++	 * if the nulls value we got at the end of this lookup is
++	 * not the expected one, we must restart lookup.
++	 * We probably met an item that was moved to another chain.
++	 */
++	if (unlikely(get_nulls_value(node) != slot2))
++		goto begin;
+ 	return result;
+ }
+ 
+@@ -562,7 +586,7 @@ static struct sock *udp4_lib_lookup4(const struct net *net,
+ 	 * expected one, we must restart lookup. We probably met an item that
+ 	 * was moved to another chain due to rehash.
+ 	 */
+-	if (get_nulls_value(node) != slot)
++	if (unlikely(get_nulls_value(node) != slot))
+ 		goto begin;
+ 
+ 	return NULL;
+@@ -2251,13 +2275,13 @@ void udp_lib_unhash(struct sock *sk)
+ 		spin_lock_bh(&hslot->lock);
+ 		if (rcu_access_pointer(sk->sk_reuseport_cb))
+ 			reuseport_detach_sock(sk);
+-		if (sk_del_node_init_rcu(sk)) {
++		if (sk_nulls_del_node_init_rcu(sk)) {
+ 			hslot->count--;
+ 			inet_sk(sk)->inet_num = 0;
+ 			sock_prot_inuse_add(net, sk->sk_prot, -1);
+ 
+ 			spin_lock(&hslot2->lock);
+-			hlist_del_init_rcu(&udp_sk(sk)->udp_portaddr_node);
++			hlist_nulls_del_init_rcu(&udp_sk(sk)->udp_portaddr_node);
+ 			hslot2->count--;
+ 			spin_unlock(&hslot2->lock);
+ 
+@@ -2291,13 +2315,18 @@ void udp_lib_rehash(struct sock *sk, u16 newhash, u16 newhash4)
+ 
+ 			if (hslot2 != nhslot2) {
+ 				spin_lock(&hslot2->lock);
+-				hlist_del_init_rcu(&udp_sk(sk)->udp_portaddr_node);
++				hlist_nulls_del_init_rcu(&udp_sk(sk)->udp_portaddr_node);
+ 				hslot2->count--;
+ 				spin_unlock(&hslot2->lock);
+ 
+ 				spin_lock(&nhslot2->lock);
+-				hlist_add_head_rcu(&udp_sk(sk)->udp_portaddr_node,
+-							 &nhslot2->head);
++				if (IS_ENABLED(CONFIG_IPV6) && sk->sk_reuseport &&
++				    sk->sk_family == AF_INET6)
++					hlist_nulls_add_tail_rcu(&udp_sk(sk)->udp_portaddr_node,
++								 &nhslot2->head);
++				else
++					hlist_nulls_add_head_rcu(&udp_sk(sk)->udp_portaddr_node,
++								 &nhslot2->head);
+ 				nhslot2->count++;
+ 				spin_unlock(&nhslot2->lock);
+ 			}
+@@ -2513,9 +2542,9 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	unsigned int hash2, hash2_any, offset;
+ 	unsigned short hnum = ntohs(uh->dest);
+ 	struct sock *sk, *first = NULL;
++	struct hlist_nulls_node *node;
+ 	int dif = skb->dev->ifindex;
+ 	int sdif = inet_sdif(skb);
+-	struct hlist_node *node;
+ 	struct udp_hslot *hslot;
+ 	struct sk_buff *nskb;
+ 	bool use_hash2;
+@@ -2525,7 +2554,7 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	hash2 = 0;
+ 	hslot = udp_hashslot(udptable, net, hnum);
+ 	use_hash2 = hslot->count > 10;
+-	offset = offsetof(typeof(*sk), sk_node);
++	offset = offsetof(typeof(*sk), sk_nulls_node);
+ 
+ 	if (use_hash2) {
+ 		hash2_any = ipv4_portaddr_hash(net, htonl(INADDR_ANY), hnum) &
+@@ -2536,7 +2565,7 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 		offset = offsetof(typeof(*sk), __sk_common.skc_portaddr_node);
+ 	}
+ 
+-	sk_for_each_entry_offset_rcu(sk, node, &hslot->head, offset) {
++	sk_nulls_for_each_entry_offset_rcu(sk, node, &hslot->head, offset) {
+ 		if (!__udp_is_mcast_sock(net, sk, uh->dest, daddr,
+ 					 uh->source, saddr, dif, sdif, hnum))
+ 			continue;
+@@ -2749,6 +2778,7 @@ static struct sock *__udp4_lib_mcast_demux_lookup(struct net *net,
+ {
+ 	struct udp_table *udptable = net->ipv4.udp_table;
+ 	unsigned short hnum = ntohs(loc_port);
++	struct hlist_nulls_node *node;
+ 	struct sock *sk, *result;
+ 	struct udp_hslot *hslot;
+ 	unsigned int slot;
+@@ -2760,8 +2790,9 @@ static struct sock *__udp4_lib_mcast_demux_lookup(struct net *net,
+ 	if (hslot->count > 10)
+ 		return NULL;
+ 
++begin:
+ 	result = NULL;
+-	sk_for_each_rcu(sk, &hslot->head) {
++	sk_nulls_for_each_rcu(sk, node, &hslot->head) {
+ 		if (__udp_is_mcast_sock(net, sk, loc_port, loc_addr,
+ 					rmt_port, rmt_addr, dif, sdif, hnum)) {
+ 			if (result)
+@@ -2769,6 +2800,13 @@ static struct sock *__udp4_lib_mcast_demux_lookup(struct net *net,
+ 			result = sk;
+ 		}
+ 	}
++	/*
++	 * if the nulls value we got at the end of this lookup is
++	 * not the expected one, we must restart lookup.
++	 * We probably met an item that was moved to another chain.
++	 */
++	if (unlikely(get_nulls_value(node) != slot))
++		goto begin;
+ 
+ 	return result;
+ }
+@@ -2785,6 +2823,7 @@ static struct sock *__udp4_lib_demux_lookup(struct net *net,
+ 	struct udp_table *udptable = net->ipv4.udp_table;
+ 	INET_ADDR_COOKIE(acookie, rmt_addr, loc_addr);
+ 	unsigned short hnum = ntohs(loc_port);
++	struct hlist_nulls_node *node;
+ 	struct udp_hslot *hslot2;
+ 	unsigned int hash2;
+ 	__portpair ports;
+@@ -2794,7 +2833,7 @@ static struct sock *__udp4_lib_demux_lookup(struct net *net,
+ 	hslot2 = udp_hashslot2(udptable, hash2);
+ 	ports = INET_COMBINED_PORTS(rmt_port, hnum);
+ 
+-	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
++	udp_portaddr_for_each_entry_rcu(sk, node, &hslot2->head) {
+ 		if (inet_match(net, sk, acookie, ports, dif, sdif))
+ 			return sk;
+ 		/* Only check first socket in chain */
+@@ -3228,6 +3267,7 @@ static struct sock *udp_get_first(struct seq_file *seq, int start)
+ {
+ 	struct udp_iter_state *state = seq->private;
+ 	struct net *net = seq_file_net(seq);
++	struct hlist_nulls_node *node;
+ 	struct udp_table *udptable;
+ 	struct sock *sk;
+ 
+@@ -3237,11 +3277,11 @@ static struct sock *udp_get_first(struct seq_file *seq, int start)
+ 	     ++state->bucket) {
+ 		struct udp_hslot *hslot = &udptable->hash[state->bucket];
+ 
+-		if (hlist_empty(&hslot->head))
++		if (hlist_nulls_empty(&hslot->head))
+ 			continue;
+ 
+ 		spin_lock_bh(&hslot->lock);
+-		sk_for_each(sk, &hslot->head) {
++		sk_nulls_for_each(sk, node, &hslot->head) {
+ 			if (seq_sk_match(seq, sk))
+ 				goto found;
+ 		}
+@@ -3259,7 +3299,7 @@ static struct sock *udp_get_next(struct seq_file *seq, struct sock *sk)
+ 	struct udp_table *udptable;
+ 
+ 	do {
+-		sk = sk_next(sk);
++		sk = sk_nulls_next(sk);
+ 	} while (sk && !seq_sk_match(seq, sk));
+ 
+ 	if (!sk) {
+@@ -3431,12 +3471,12 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ 	for (; state->bucket <= udptable->mask; state->bucket++) {
+ 		struct udp_hslot *hslot2 = &udptable->hash2[state->bucket].hslot;
+ 
+-		if (hlist_empty(&hslot2->head))
++		if (hlist_nulls_empty(&hslot2->head))
+ 			goto next_bucket;
+ 
+ 		spin_lock_bh(&hslot2->lock);
+-		sk = hlist_entry_safe(hslot2->head.first, struct sock,
+-				      __sk_common.skc_portaddr_node);
++		sk = hlist_nulls_entry_safe(hslot2->head.first, struct sock,
++					    __sk_common.skc_portaddr_node);
+ 		/* Resume from the first (in iteration order) unseen socket from
+ 		 * the last batch that still exists in resume_bucket. Most of
+ 		 * the time this will just be where the last iteration left off
+@@ -3488,9 +3528,9 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ 
+ 			/* Pick up where we left off. */
+ 			sk = iter->batch[iter->end_sk - 1].sk;
+-			sk = hlist_entry_safe(sk->__sk_common.skc_portaddr_node.next,
+-					      struct sock,
+-					      __sk_common.skc_portaddr_node);
++			sk = hlist_nulls_entry_safe(sk->__sk_common.skc_portaddr_node.next,
++						    struct sock,
++						    __sk_common.skc_portaddr_node);
+ 			batch_sks = iter->end_sk;
+ 			goto fill_batch;
+ 		}
+@@ -3717,12 +3757,12 @@ static void __init udp_table_init(struct udp_table *table, const char *name)
+ 
+ 	table->hash2 = (void *)(table->hash + (table->mask + 1));
+ 	for (i = 0; i <= table->mask; i++) {
+-		INIT_HLIST_HEAD(&table->hash[i].head);
++		INIT_HLIST_NULLS_HEAD(&table->hash[i].head, i);
+ 		table->hash[i].count = 0;
+ 		spin_lock_init(&table->hash[i].lock);
+ 	}
+ 	for (i = 0; i <= table->mask; i++) {
+-		INIT_HLIST_HEAD(&table->hash2[i].hslot.head);
++		INIT_HLIST_NULLS_HEAD(&table->hash2[i].hslot.head, i);
+ 		table->hash2[i].hslot.count = 0;
+ 		spin_lock_init(&table->hash2[i].hslot.lock);
+ 	}
+@@ -3771,11 +3811,11 @@ static struct udp_table __net_init *udp_pernet_table_alloc(unsigned int hash_ent
+ 	udptable->log = ilog2(hash_entries);
+ 
+ 	for (i = 0; i < hash_entries; i++) {
+-		INIT_HLIST_HEAD(&udptable->hash[i].head);
++		INIT_HLIST_NULLS_HEAD(&udptable->hash[i].head, i);
+ 		udptable->hash[i].count = 0;
+ 		spin_lock_init(&udptable->hash[i].lock);
+ 
+-		INIT_HLIST_HEAD(&udptable->hash2[i].hslot.head);
++		INIT_HLIST_NULLS_HEAD(&udptable->hash2[i].hslot.head, i);
+ 		udptable->hash2[i].hslot.count = 0;
+ 		spin_lock_init(&udptable->hash2[i].hslot.lock);
+ 	}
+diff --git a/net/ipv4/udp_diag.c b/net/ipv4/udp_diag.c
+index f4b24e628cf8ded821d0c1887dd6ca5b83c4c8e2..5e0b4e07d9c1d80a727647273c9793ca11626827 100644
+--- a/net/ipv4/udp_diag.c
++++ b/net/ipv4/udp_diag.c
+@@ -100,15 +100,16 @@ static void udp_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
+ 
+ 	for (slot = s_slot; slot <= table->mask; s_num = 0, slot++) {
+ 		struct udp_hslot *hslot = &table->hash[slot];
++		struct hlist_nulls_node *node;
+ 		struct sock *sk;
+ 
+ 		num = 0;
+ 
+-		if (hlist_empty(&hslot->head))
++		if (hlist_nulls_empty(&hslot->head))
+ 			continue;
+ 
+ 		spin_lock_bh(&hslot->lock);
+-		sk_for_each(sk, &hslot->head) {
++		sk_nulls_for_each(sk, node, &hslot->head) {
+ 			struct inet_sock *inet = inet_sk(sk);
+ 
+ 			if (!net_eq(sock_net(sk), net))
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 93478d1ad5769c6058567ff4deb433b0656b8129..f14132d4006718ce1e065986b734fb098bae4d9a 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -201,10 +201,14 @@ static struct sock *udp6_lib_lookup1(const struct net *net,
+ {
+ 	unsigned int slot = udp_hashfn(net, hnum, udptable->mask);
+ 	struct udp_hslot *hslot = &udptable->hash[slot];
+-	struct sock *sk, *result = NULL;
+-	int score, badness = 0;
++	struct hlist_nulls_node *node;
++	struct sock *sk, *result;
++	int score, badness;
+ 
+-	sk_for_each_rcu(sk, &hslot->head) {
++begin:
++	result = NULL;
++	badness = 0;
++	sk_nulls_for_each_rcu(sk, node, &hslot->head) {
+ 		score = compute_score(sk, net,
+ 				      saddr, sport, daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+@@ -212,6 +216,13 @@ static struct sock *udp6_lib_lookup1(const struct net *net,
+ 			badness = score;
+ 		}
+ 	}
++	/*
++	 * if the nulls value we got at the end of this lookup is
++	 * not the expected one, we must restart lookup.
++	 * We probably met an item that was moved to another chain.
++	 */
++	if (unlikely(get_nulls_value(node) != slot))
++		goto begin;
+ 
+ 	return result;
+ }
+@@ -223,13 +234,16 @@ static struct sock *udp6_lib_lookup2(const struct net *net,
+ 		int dif, int sdif, struct udp_hslot *hslot2,
+ 		struct sk_buff *skb)
+ {
++	unsigned int slot2 = UDP_HSLOT_MAIN(hslot2) - net->ipv4.udp_table->hash2;
++	struct hlist_nulls_node *node;
+ 	struct sock *sk, *result;
+ 	int score, badness;
+ 	bool need_rescore;
+ 
++begin:
+ 	result = NULL;
+ 	badness = -1;
+-	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
++	udp_portaddr_for_each_entry_rcu(sk, node, &hslot2->head) {
+ 		need_rescore = false;
+ rescore:
+ 		score = compute_score(need_rescore ? result : sk, net, saddr,
+@@ -270,6 +284,13 @@ static struct sock *udp6_lib_lookup2(const struct net *net,
+ 			goto rescore;
+ 		}
+ 	}
++	/*
++	 * if the nulls value we got at the end of this lookup is
++	 * not the expected one, we must restart lookup.
++	 * We probably met an item that was moved to another chain.
++	 */
++	if (unlikely(get_nulls_value(node) != slot2))
++		goto begin;
+ 	return result;
+ }
+ 
+@@ -315,7 +336,7 @@ static struct sock *udp6_lib_lookup4(const struct net *net,
+ 	 * expected one, we must restart lookup. We probably met an item that
+ 	 * was moved to another chain due to rehash.
+ 	 */
+-	if (get_nulls_value(node) != slot)
++	if (unlikely(get_nulls_value(node) != slot))
+ 		goto begin;
+ 
+ 	return NULL;
+@@ -956,9 +977,9 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	unsigned int hash2, hash2_any, offset;
+ 	unsigned short hnum = ntohs(uh->dest);
+ 	struct sock *sk, *first = NULL;
++	struct hlist_nulls_node *node;
+ 	int sdif = inet6_sdif(skb);
+ 	int dif = inet6_iif(skb);
+-	struct hlist_node *node;
+ 	struct udp_hslot *hslot;
+ 	struct sk_buff *nskb;
+ 	bool use_hash2;
+@@ -968,7 +989,7 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	hash2 = 0;
+ 	hslot = udp_hashslot(udptable, net, hnum);
+ 	use_hash2 = hslot->count > 10;
+-	offset = offsetof(typeof(*sk), sk_node);
++	offset = offsetof(typeof(*sk), sk_nulls_node);
+ 
+ 	if (use_hash2) {
+ 		hash2_any = ipv6_portaddr_hash(net, &in6addr_any, hnum) &
+@@ -979,7 +1000,7 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 		offset = offsetof(typeof(*sk), __sk_common.skc_portaddr_node);
+ 	}
+ 
+-	sk_for_each_entry_offset_rcu(sk, node, &hslot->head, offset) {
++	sk_nulls_for_each_entry_offset_rcu(sk, node, &hslot->head, offset) {
+ 		if (!__udp_v6_is_mcast_sock(net, sk, uh->dest, daddr,
+ 					    uh->source, saddr, dif, sdif,
+ 					    hnum))
+@@ -1205,6 +1226,7 @@ static struct sock *__udp6_lib_demux_lookup(struct net *net,
+ {
+ 	struct udp_table *udptable = net->ipv4.udp_table;
+ 	unsigned short hnum = ntohs(loc_port);
++	struct hlist_nulls_node *node;
+ 	struct udp_hslot *hslot2;
+ 	unsigned int hash2;
+ 	__portpair ports;
+@@ -1214,7 +1236,7 @@ static struct sock *__udp6_lib_demux_lookup(struct net *net,
+ 	hslot2 = udp_hashslot2(udptable, hash2);
+ 	ports = INET_COMBINED_PORTS(rmt_port, hnum);
+ 
+-	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
++	udp_portaddr_for_each_entry_rcu(sk, node, &hslot2->head) {
+ 		if (sk->sk_state == TCP_ESTABLISHED &&
+ 		    inet6_match(net, sk, rmt_addr, loc_addr, ports, dif, sdif))
+ 			return sk;
 -- 
-2.43.0
+2.55.0.1082.g2b9226bbc0-goog
 
