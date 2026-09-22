@@ -1,139 +1,88 @@
-Received: from mail-vs2-f12.google.com (mail-vs2-f12.google.com [74.125.227.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A9355295B
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087001; cv=pass; b=nc7czKgJP2pfVrzjTaZd4pknRaXgptSHxHETCWS8CsRlzZuCATECSLneUatrE1bESs1G26a+ouLMWaM/GO77Zq1bud0wEwz3QsHytu1VOgl3usErJde3FFFYq6C+VpJT8LSRBEvzd/cKSXWWUJO77vYWxexML5zCy1/2vIr9D0w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087001; c=relaxed/simple;
-	bh=/sRjoFYt9athMMteByZShlOekmvjCMXNM7jbR3+jJgY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pbq0opxBAswxvcAZLsEfYcig92CycVMDrD5C9Xvvju+W6sWNk3t/nf2dx9PaEpO1RCpEGiWKLZxNs1I3n4nBmZL3lUiLv6DEda2ITKjRd/6tU6Fb/3yQgZDex2nC39vnMnDJpisDNHyPeuZNWO/k5RLsX3O0nLpA7p/ml3vHsNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tj8tlYuU; arc=pass smtp.client-ip=74.125.227.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF4554EEA5;
+	Tue, 22 Sep 2026 14:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790087110; cv=none; b=P6y6py8KoypK2f+vTj0ZH5rUgNITG/QWh0xcdoMdnRqNLYmsdlir3NalULONpQJebh6U3e8oVH+yycCzbAqwyEJ59xxh6sjHxO90QtbmMC3OIJBCrk+kRtpGTXD8DpBQnPN97OzTXj3EFL43kKMCzJ7D22wZ1prP5iVd6z2a+lA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790087110; c=relaxed/simple;
+	bh=OEPf1DHbYLRp+U95w3TDZGGq76TMsSYLp5J77gCMCF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0RUfQ3M4jtgYlCPqx4V/fIovCUY9uf4NVdUIgP/oHouWYq/+aXtnALmFa/tG1uY5PGvyhhbtyq6fXM+0d5QUrCs1C8ADXnstUqb56Lz+7zX0Gn5rseU3YzuUrK0w6r8pFZ1/kEG63SIDL6rqqUCc9UMr1Xa7Zu+qgy3yVheAdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfDurrLc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tj8tlYuU"
-Received: by mail-vs2-f12.google.com with SMTP id 71dfb90a1353d-5c67e5292fdso1543636e0c.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:23:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790086999; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DaeLcFGAA3c8xXLI9esGb2fEOjES75JdBYvW88cE/7uz+66yfbT9XXRh2I2nDzCK6o
-         Vigj83TKi0poccie0Z+3Usv/I0wcfODURNN3aahQnSF466G384iD2NXr9eNI9VFfRmqw
-         z5Yo5QTXH6whdYA+6Wrj1uSoMoSAWMlnoDXQTtTjxVkf5DC3u/8/94VSg4fAtkv27zUt
-         OWtdB2lzrt4YfjpPF6BOjb6paWovJhgpUfu1YCzyEWzoJ9nEjVhuYwgSa693Pk5A2u33
-         GmGa8U1BIlauzct1ZaFmb+h0hJV0CLy7NHVoHzsGlLfhTugkNw0dPXPY+yRQIPUi0nW6
-         l7pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Oxbt+XZDS8JEW25sB7UbDhBj24R1C9rPNO1Jj96pTgE=;
-        fh=vvQtwl+vrZVaorDYR6AwJaMmzEAbtiSGzcj23g25lIs=;
-        b=iiRnLJK2VrmPRGnJ2t1NqEL9Shhvv6SAU/e0wTIsiIgCVuV2QfAmWkrkX8Hcf6Y/pc
-         qusGkNsNYPwbmtrEHFRPLBi9vokf4nMtxbPfAWDf3jpXkQXi9Aeg1V0bi8ElMHx4KdM7
-         O7rnFFO4jytU7SHvxo6WH7dhlNVMTfaVvRXgd2hvg98sNPJXU2Xcpw1K5+imPkq+MVc0
-         S5s1mYH/dnfbSITqwMjie/Du2z5Pm1xKNZxMKUzISLKpYL6lxmwVoAvCwftaVulwKZDx
-         Ppnf/r7l6WLoWuqm/GaMV9CfMA4PCB6og2FBnlG3wDBfX3PfoAundwkcWu1ZMFuQs0dC
-         OSbw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790086999; x=1790691799; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Oxbt+XZDS8JEW25sB7UbDhBj24R1C9rPNO1Jj96pTgE=;
-        b=Tj8tlYuUIF6oTv4GUmpmFCnttHkGr2EyYvfeVuh3k7/lCEQBpD3rnuhMMOuz699bph
-         2i/sjYHdff+0yYnLvugcHK/RUr17on2tFglzunKOnuYyMYhEXbOxb5tPolHUMqEBt6LM
-         xTb4Ha8ouDh7QhciM37mKV1JWS2W80tujh+IPZU2xPZLmt7ZvavAy1sGhDE5MrVde9jg
-         YOIMKGzfDI0Bq4X8H8K59OqBmCtzmVOj3+a7tTNSdjOIcWwnr4sQwzQ4Nh0YppoMOenM
-         QbjT1LntDUqY6TAlMGb6dJFESjFGc6mj9OZOWBCapoYB4YOpR/W31dtqcVzr8+brASlc
-         0qKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790086999; x=1790691799;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Oxbt+XZDS8JEW25sB7UbDhBj24R1C9rPNO1Jj96pTgE=;
-        b=eJTUAXrtR2KbBYbyRx2ABathsmifFJCkX3rK3pPD+IYhRJf3Ip8+/jgm0XG++dVdmd
-         hJNtMh/bqtmmADrfDw3pQZD6vG8XQG5sfWiNIaG3n+Y70LTUptLRpbKB7HRY1Waa4gc1
-         NpaYMewuF56BMZRcJ/7cM68D9D1oMCK9xT0hRuc/3uvZ8eRaRzZ7pbzACKdBH0D0tCLG
-         VehR6DsIuO3EQ53lwDv3YCx6ZC/WCxeOb5oKJRVxTEldp5XcEHoGgMZ4ouvX1gBaAAqt
-         gVuTsa+8a27HHFLztYMYB2cp7jH6d4zpSLEQmvM2JqMJHVESgCpUBXfzf2OAqZN+RpvR
-         XSDA==
-X-Forwarded-Encrypted: i=1; AKwUvBzmw7IZEUwW3PdMVA+zILChyYVtAGGete3PABBNwdgGmSE85Ywu7+OfUICBDan7ilPi4LzMUy8=@vger.kernel.org
-X-Gm-Message-State: AFuF++n0e58IlwgwwV3Lu2LHk5cJO7+NChYcMU6Kz78fb9FGi8FH+n02
-	+lo5sgA7HK6LZZ0KlnY+97RnbPWt0tadqwhYPBDZPFpbJkIM0ncrDfx0JjAuXgdpLpmEr9ulLCQ
-	YNm0Gp5xyktc6iNBzHtwh+1Mscgo8QzdIhjGQQOA1
-X-Gm-Gg: AYBFou3p9kt7NKCoh+fR9CGfD+z9YCn2ueGGSorvhqkUv6f82filcYom/aCaCHovcYo
-	9quNFwuSECWHwIEoQhO86tolxTgYyPM8OU1rznuOjVVPx31fuD8wIvTakRNIYl+/Yy/qB/3dzMw
-	U6eido61FrgaSuT1VAvL9KbYkOQGk8K/VcjiVdsQG+nv+xkc3LNnfAs8zoH140MsWa/6HTZxrkm
-	NixhDYFAp/EBCdjmRMeqn0zpKCcHaVfzkCIhLyrlyjo3rpoVQmFITsAMofoNWA8JZzRBxroAbut
-	vVBD+p2TVdHve+kp6SXhvvaNMVJxSGG1gDwv3+OtedU5LqTQfc8d57DhMrO8bUC1a0D6FkZ+kxk
-	/dGeSaek22MVIou6CHDqQ6O9eHSB8M1+sXMIKKndQMvZk7jfz/B8rp5uXe3qdrh3Cop7+ZA==
-X-Received: by 2002:a05:6122:390a:b0:5c1:781:7122 with SMTP id
- 71dfb90a1353d-5c9b58f8e64mr7111747e0c.3.1790086998349; Tue, 22 Sep 2026
- 07:23:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfDurrLc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748C11F000FF;
+	Tue, 22 Sep 2026 14:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790087108;
+	bh=EVZnlPkgPlP0JdUsO54GE+/u6fUDYx0uLnQOtCq0qek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jfDurrLcTaGuy2kSlTJdFaV8U9XmQfz3XVWupekrsh7VHO/6PCN9YT93BVYt9FRbm
+	 9mdHMODKadgSg9WHa2SXxQgW14OTge24xtWajx0rjzfHPrjuIlMka/Q0BfCrSfBd9/
+	 9ka9434fM/4WXKsUymAyAnQk/bQyY8SDA4ytOXOHjSv5sVjr7h0FR+VRwD4qtLZP8T
+	 SUpcIjj5tS34EcVLGEhqV15LnOPrlnvZ4AoyU4H+0YcRsh/rUTu5Xik1saY3DyUZv9
+	 Brj/wLjgvRcwLnv7jqQQr5QkAuodREr7MlvZ6xacSNKKMz1rFP+lqG+1UsR1sawfzt
+	 D7nNQvtde6KbA==
+Date: Tue, 22 Sep 2026 15:25:04 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: benquike@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ppp: fix bsd_decompress() OOB read and
+ ppp_decompress_frame() headroom check
+Message-ID: <20260922142504.GF13925@horms.kernel.org>
+References: <20260919215233.3470411-1-benquike@gmail.com>
+ <178994484954.2160803.7340548461955780287@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922131239.2509494-1-idosch@nvidia.com> <71792738-39d6-4375-9d47-bc4944727ed8@kernel.org>
-In-Reply-To: <71792738-39d6-4375-9d47-bc4944727ed8@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 22 Sep 2026 16:23:07 +0200
-X-Gm-Features: AcwNN1UMtVoiQovfWbxs9eRuIvoDcDqx6yUEURZpfyCzvdBRO3YYprx6pNn4xgQ
-Message-ID: <CANn89iJdt9ON-GgnRCHNAVeAEniXGCcfGWo0YMNSB=HhB68-yg@mail.gmail.com>
-Subject: Re: [PATCH net] vrf: Stop corrupting skb->csum when capturing
- CHECKSUM_COMPLETE packets
-To: David Ahern <dsahern@kernel.org>
-Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	andrea.mayer@uniroma2.it, stesasso@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178994484954.2160803.7340548461955780287@kernel.org>
 
-On Tue, Sep 22, 2026 at 3:55=E2=80=AFPM David Ahern <dsahern@kernel.org> wr=
-ote:
->
-> On 9/22/26 7:12 AM, Ido Schimmel wrote:
-> > The VRF device is an Ethernet device but it can have non-Ethernet ports
-> > such as IP tunnels. Before the cited commit, capturing packets from suc=
-h
-> > ports on the VRF device resulted in these packets being detected as
-> > malformed since they lack an Ethernet header.
-> >
-> > The cited commit fixed it by pushing a dummy Ethernet header to such
-> > packets before the capture and pulling it afterwards. In the case of
-> > CHECKSUM_COMPLETE packets it also updated skb->csum with the checksum o=
-f
-> > the dummy Ethernet header. This is wrong as skb->csum should not includ=
-e
-> > the checksum of the Ethernet header ("checksum of the _whole_ packet as
-> > seen by netif_rx()").
-> >
-> > This also means that L4 protocols receive a corrupted skb->csum and
-> > potentially drop the packet, as is the case with UDP packets whose
-> > checksum was completed by software.
-> >
-> > Fix by removing the unnecessary call to skb_postpush_rcsum().
-> >
-> > Fixes: 048939088220 ("vrf: add mac header for tunneled packets when sni=
-ffer is attached")
-> > Reported-by: Stefano Sasso <stesasso@gmail.com>
-> > Closes: https://lore.kernel.org/netdev/CALtE316UtL3x7LL6uxfXzx8rW6AbzYP=
-eDOb478hqJCr_-dj=3DWg@mail.gmail.com/
-> > Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> > ---
-> >  drivers/net/vrf.c | 2 --
-> >  1 file changed, 2 deletions(-)
-> >
->
-> Reviewed-by: David Ahern <dsahern@kernel.org>
+On Sun, Sep 20, 2026 at 10:54:09PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 3 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] ppp_decompress_frame() (drivers/net/ppp/ppp_generic.c:2555-2557)
+>   now calls pskb_expand_head(skb, 2, 0, GFP_ATOMIC) unconditionally on…
+> - [Medium] The commit message states that the decompressed length 'is
+>   only checked for len < 0 before indexing ns->data[2..3] and calling…
+> - [Medium] The patch hardens only one of the three in-tree implementers
+>   of `struct compressor::decompress`.
+> - [Medium] The new pskb_expand_head(skb, 2, 0, GFP_ATOMIC) in
+>   ppp_decompress_frame() (drivers/net/ppp/ppp_generic.c:2556) creates…
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Hi Hui,
+
+There is an expectation that AI-generated reviews forwarded to
+the netdev ML are responded to. That can take a variety of forms
+including an email response that agrees with or refutes the review,
+or an updated version of the patch with an appropriate changelog.
+
+The expectation is the patch author or submitter handles this.  But in
+order to move things along, I did take a look over these and taken together
+it seems to me that these issues warrant a new revision of the patch.
+
+Please keep in mind that distinct problems should be in separate patches,
+and related patches should be bundled together in a patchset.
+
+-- 
+pw-bot: changes-requested
