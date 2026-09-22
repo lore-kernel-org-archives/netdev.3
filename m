@@ -1,141 +1,194 @@
-Received: from mail-oi2-f5.google.com (mail-oi2-f5.google.com [74.125.231.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C47355295C
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8BA35C1AD;
+	Tue, 22 Sep 2026 15:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790089377; cv=none; b=TqEaphCQen0j9cLvCa3PaGelztxCSYptyOYy7Bfusb+LAVtIq1XP6ZwM8PwQZ6P+AOVmk514D0BX1Si8/qUWXDDBL+VZ9V1Zrm3OPNOYZYLuDVlShnkRA60xc45gEvjVDk3ggUFIP9eCxt1+rR8eDDXpHfU7JQ4s1Hnc226q8mI=
+	t=1790089512; cv=none; b=AoNprcsG3p1E+z+RNyw2Gebw6djhapyeUJzeZJx0v8NPzAoxHnMofCMIunRq0RpEm2MTxTP0jxv/o0VaIFFPyfq3wRJOVt370byEuXq1cBLQ6K7x4BtyQxg1dI39dADaflfE4ZfZBToppdg6E0oZQetlQjvuGXoSseCY8nGJxgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790089377; c=relaxed/simple;
-	bh=YQ7ys8Y0eaSHGJp2vboFfSiYHINwTd2XD0CWPFDYwK0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=owjSu/ijfbgYEF2UXuG7WdRDzpIR582NMS7+icA89oo7aNzahzgJukszxO0Ow/cD1dQ8XKWDpSezDIIRvLG18hb9lNmaoxmgxcII4KRX7f/N1hLEJn1Vm5VDBAfe28txUkThAwJZQHJfLq+z6YqF5ZYVIEtfm5jjWr5rBf/z5Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f5.google.com with SMTP id 46e09a7af769-801706d7e6dso17818a34.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:02:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790089374; x=1790694174;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ArxMwdNqa1Pa4d+hxX0OUt5zftaLEfb4a/34J0DlhTY=;
-        b=GH4ZkCla70AgfeA4OGT8QakvcrAQj6sCv3AoZ6KYUBjcpmZjDyf/pKtaMPKTcitwTk
-         NWQVcqiFPgHzXg6KWEOhWAqJqml9zFlQfoCemLOviPEWWONjhir75/JQMI8mAZWBAmfs
-         HtuYnTwBNlPUw/7G9EhpV4pWaWMs84DJMMOvTpi/J4nDp/8y+H2v19oD6FUtX7awO7q7
-         oSsFJrOIZc8zZCweIok6ZUgsaUTieJgQVWMU/U4x2wxh6Wk7/O/axOMMhWioXIYZdV8G
-         VYxgn4G1XemfrofWiQZZ4CfQwd17/SjNlRawHLBCrzhmjkNO3p6hmX5JvFekTFe5Nwiy
-         WCbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzY5aUHzszalBlz4lhRBsSdc6YXWPEA0Nv6YluZkJ2d+sPmDiR+TzMcJ4dItbgJc6G1tvNqJMU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lHQu4r5409oYIbxmdHdjfJ3eyI6iDZXXrtY2a4zO/+auNY9jd0
-	nRpojMVuJTh5kbr4VkJ3xLNrVR6GxqGaEEER5xlWe0GbX9xcLA9wnXU+9JUEc3ghSGCIVoh4J0i
-	Re9rZrUPdFSyf6AV4VjTzVSvuiDSDC6RtaCdq9MBYdALZWq5WFU/OfhExsTw=
+	s=arc-20240116; t=1790089512; c=relaxed/simple;
+	bh=vZKtwmqX5JGTI1FcPLHLyAMq16Kqkv/lA6S6Anss64s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CAGqmPG7wk0tklHX3j4ikCGvZuwRBEKcgtJIbUqTom5L/u0ACROmNrSBsXNteCXp9PlNFnKnU98HvRtl0qHaiLMXicfjcHMvcdCNyzMAB+3xbdCtgWcqu2pPpMMuZSVyL43oF5X65RzMq5mkFtySuXamIZlCQe8fiESwiXoyVYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hekZjgEx; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hekZjgEx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD801F000FF;
+	Tue, 22 Sep 2026 15:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790089510;
+	bh=TCzshrRO1ZIki5NMcVenkUxrTYuUZop6YN9zEA0sSn4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hekZjgExvPV6O2kgjyujuDe+5YcV3f+peRPg5Ds0j9XiT4C9gGds0zOyk+eI8hiNq
+	 ailXnWizcynDcgRol4HLhxm3yBnh3baNQMAx8nxlhrnHD+dm0fshC+Z5J7aUvgnPSb
+	 /WqczJueR+BPgopDZUTVtSV9QYxVHXNKj+kWTC40LKY237/CA9qgsUib3vKOEpDlwt
+	 phwnob+fqNmOgs6c2F+SM338bq3R7jvcqvuJ9dS4Dgt/VJzf9fzBEsuYAIvg+0zL8t
+	 xSIL3GICXFsv81omdFlbhOlB/9ayH00HhCkuBQn4KMDO7u9yft9PMqC+Pk+teRcjlL
+	 P63ypAcDM39iA==
+Subject: Re: [PATCH net-next v5 1/2] selftests/net/openvswitch: add SCTP flow
+ key test over IPv6
+From: netdev-bot+sashiko@kernel.org
+To: houminxi@gmail.com
+Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
+ i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
+ linux-kselftest@vger.kernel.org
+Date: Tue, 22 Sep 2026 15:05:09 +0000
+Message-ID: <179008950943.2160803.15856491533624064435@kernel.org>
+In-Reply-To: <20260918144647.2024095-2-houminxi@gmail.com>
+References: <20260918144647.2024095-2-houminxi@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:814:b0:6cd:3ffc:ad08 with SMTP id
- 006d021491bc7-6d191112420mr2308553eaf.88.1790089374284; Tue, 22 Sep 2026
- 08:02:54 -0700 (PDT)
-Date: Tue, 22 Sep 2026 08:02:54 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab2989e.a6af0033.177e91.0021.GAE@google.com>
-Subject: [syzbot] [net?] [afs?] kernel BUG in rxrpc_purge_client_connections
-From: syzbot <syzbot+e2f5927fc701355ef101@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-afs@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, marc.dionne@auristor.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-syzbot found the following issue on:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-HEAD commit:    f0100363d8c3 Merge tag 'xfs-fixes-7.3-rc5' of gitolite.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11f20c5e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7d012d9c67977ee4
-dashboard link: https://syzkaller.appspot.com/bug?extid=e2f5927fc701355ef101
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15f20c5e580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11ae34c9580000
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-f0100363.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/57240753f5ee/vmlinux-f0100363.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2930b9a97546/bzImage-f0100363.xz
+- [Medium] The promised skip when IPv6 is unavailable is incomplete in
+  test_sctp_connect_v6().
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e2f5927fc701355ef101@syzkaller.appspotmail.com
+--
 
-rxrpc: AF_RXRPC: Leaked client conn ffff888055bb9000 {1}
-------------[ cut here ]------------
-kernel BUG at net/rxrpc/conn_client.c:64!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5919 Comm: krxrpcio/4660 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:rxrpc_destroy_client_conn_ids net/rxrpc/conn_client.c:64 [inline]
-RIP: 0010:rxrpc_purge_client_connections+0xc0/0x1a0 net/rxrpc/conn_client.c:145
-Code: 2b 31 db 48 8d 6c 24 28 e8 ed 4b 15 f7 48 89 ee 4c 89 ef 89 5c 24 28 e8 1e 7f d0 00 48 89 c3 48 85 c0 75 73 e8 d1 4b 15 f7 90 <0f> 0b e8 c9 4b 15 f7 31 f6 4c 89 ef e8 4f 5f d5 00 31 ff 89 c3 89
-RSP: 0018:ffffc900038e7a80 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff888024d3cb00 RSI: ffffffff8af6d6bf RDI: ffff888024d3cb00
-RBP: ffffc900038e7aa8 R08: 0000000000000007 R09: 000000007fffffff
-R10: 000000002bb346e4 R11: 0000000000000001 R12: ffff888055bb9038
-R13: ffff888054eb7270 R14: ffff888054eb7038 R15: ffff888038d94180
-FS:  0000000000000000(0000) GS:ffff8880d5b53000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000000 CR3: 000000003566e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- rxrpc_destroy_local+0x262/0x300 net/rxrpc/local_object.c:451
- rxrpc_io_thread+0x2e1a/0x3820 net/rxrpc/io_thread.c:579
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:rxrpc_destroy_client_conn_ids net/rxrpc/conn_client.c:64 [inline]
-RIP: 0010:rxrpc_purge_client_connections+0xc0/0x1a0 net/rxrpc/conn_client.c:145
-Code: 2b 31 db 48 8d 6c 24 28 e8 ed 4b 15 f7 48 89 ee 4c 89 ef 89 5c 24 28 e8 1e 7f d0 00 48 89 c3 48 85 c0 75 73 e8 d1 4b 15 f7 90 <0f> 0b e8 c9 4b 15 f7 31 f6 4c 89 ef e8 4f 5f d5 00 31 ff 89 c3 89
-RSP: 0018:ffffc900038e7a80 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff888024d3cb00 RSI: ffffffff8af6d6bf RDI: ffff888024d3cb00
-RBP: ffffc900038e7aa8 R08: 0000000000000007 R09: 000000007fffffff
-R10: 000000002bb346e4 R11: 0000000000000001 R12: ffff888055bb9038
-R13: ffff888054eb7270 R14: ffff888054eb7038 R15: ffff888038d94180
-FS:  0000000000000000(0000) GS:ffff8880d5c53000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b33024008 CR3: 000000000eb96000 CR4: 0000000000352ef0
+selftests/net/openvswitch: add SCTP flow key test over IPv6
 
+This adds test_sctp_connect_v6 to the openvswitch selftest, mirroring the
+existing IPv4 SCTP test: icmpv6() flows forward neighbour discovery while
+ipv6(proto=132),sctp(dst=4443)/sctp(src=4443) flows gate an SCTP
+association across the datapath, with a keyless ipv6(proto=132) install
+expected to be refused with EINVAL.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> index a31f7fb6882d..aa84fafc3201 100755
+> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+[ ... ]
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+> @@ -700,6 +701,114 @@ test_sctp_connect_v4() {
+>  	return 0
+>  }
+>  
+> +# sctp_connect_v6 test
+> +# - sctp(dst=4443) matches client-to-server INIT
+> +# - sctp(src=4443) matches server-to-client INIT-ACK
+> +# - icmpv6 NS/NA flows forward neighbour discovery
+> +# - remove flows and verify connection fails, reinstall and recover
+> +test_sctp_connect_v6() {
+> +	local t="test_sctp_connect_v6"
+> +	local v6="eth_type(0x86dd),ipv6(proto=132)"
+> +	local payload="SCTP6_DATA_OK"
+> +	local rxfile="${ovs_base}/${t}/sctp-rx.txt"
+> +
+> +	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
+> +	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
+> +	socat -V 2>&1 | grep -q "define WITH_IP6" || return "$ksft_skip"
+> +	[ -e /proc/sys/net/ipv6 ] || return "$ksft_skip"
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+[Severity: Medium]
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+Is this gate enough to cover the case the changelog describes as "IPv6 is
+unavailable"?  /proc/sys/net/ipv6 only tells us inet6_init() ran.  Only
+ipv6.disable=1 short-circuits it:
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+net/ipv6/af_inet6.c:inet6_init() {
+	...
+	if (disable_ipv6_mod) {
+		pr_info("Loaded, but administratively disabled, reboot required to enable\n");
+		goto out;
+	}
+	...
+}
 
-If you want to undo deduplication, reply with:
-#syz undup
+With ipv6.disable_ipv6=1 instead, initialization completes and the sysctl
+tree exists, so this check passes, but the module default is copied into
+every new netns:
+
+net/ipv6/addrconf.c:addrconf_init_net() {
+	...
+	/* these will be inherited by all namespaces */
+	dflt->autoconf = ipv6_defaults.autoconf;
+	dflt->disable_ipv6 = ipv6_defaults.disable_ipv6;
+	...
+}
+
+so the veths created for the client and server namespaces come up with
+cnf.disable_ipv6 set, and address assignment is rejected:
+
+net/ipv6/addrconf.c:ipv6_add_addr() {
+	...
+	if (idev->cnf.disable_ipv6) {
+		NL_SET_ERR_MSG_MOD(extack, "IPv6 is disabled on this device");
+		err = -EACCES;
+		goto out;
+	}
+	...
+}
+
+Would testing something that reflects usability, for example whether an
+address can actually be added in a test namespace, match the promised skip
+better?
+
+> +
+> +	sbx_add "$t" || return $?
+> +	ovs_add_dp "$t" sctp6 || return 1
+> +
+> +	info "create namespaces"
+> +	for ns in client server; do
+> +		ovs_add_netns_and_veths "$t" "sctp6" "$ns" \
+> +		    "${ns:0:1}0" "${ns:0:1}1" || return 1
+> +	done
+> +
+> +	ip netns exec client ip addr add fd00::1/64 dev c1 nodad
+> +	ip netns exec client ip link set c1 up
+> +	ip netns exec server ip addr add fd00::2/64 dev s1 nodad
+> +	ip netns exec server ip link set s1 up
+
+[Severity: Medium]
+
+These four setup commands in test_sctp_connect_v6() discard their exit
+status, unlike the surrounding calls which all use "|| return 1".  If the
+ip addr add calls fail with EACCES because disable_ipv6 was inherited by
+the new namespaces, does the test keep going with no IPv6 addresses
+configured and then report a failure at the association check below?
+
+Would checking these with "|| return $ksft_skip" (or at least
+"|| return 1" with an info message naming the failed step) make the
+outcome match the cause?
+
+[ ... ]
+
+> +	info "verify SCTP association with port-keyed flows"
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
+> +	    || return 1
+
+[Severity: Medium]
+
+This is the point where an unusable IPv6 setup surfaces.  With
+ipv6.disable_ipv6=1 the connect cannot succeed, so run_test() reports FAIL,
+while the changelog says:
+
+    Skips when the sctp module is missing, socat lacks SCTP or IPv6
+    support, or IPv6 is unavailable
+
+Should this configuration end up as a skip rather than a failure, or should
+the changelog be narrowed to say the skip only covers IPv6 not being
+initialized at all?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918144647.2024095-1-houminxi%40gmail.com
