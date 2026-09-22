@@ -1,110 +1,155 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0EA211466;
-	Tue, 22 Sep 2026 20:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE173B47FF
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108418; cv=none; b=kgi4XP24fgkHCJj33c3iwvHAcnLWFyFXvauMBAJHvU6n5qBfIihWCwmCvliEw7JMHr4O9FWhzNUnyzeRfIAqMdpMpOU48T+fyT9WDl5TcRyFj7SocSBITk9qjJO6XHzl0/8j647j6xHOT7fMDOEPg8eYMJO1f8ZkGIpJnxxy2qM=
+	t=1790108443; cv=none; b=nNHD2E1LTcj0oc50Ohmvvn7GFpCnnC6wWEn9j56ICl+ZAbzVXVZJWiaIozeKc34fEW/3uOjnT+umSiIXN5JSsjJ7gpZXJCgNv2F9pGdyXREK4BtkS/1av+vXoquf3VC+6P4qAM8g8niAB9AV08BY5GEf1j0rkElmCytUIMxFPso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108418; c=relaxed/simple;
-	bh=dSTxe0P2RFcrntDBINonI5bRhj5di+X+eiadrSk8Rb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=srMOuIwII464B7/sheuR+ikZjgQ/uhLWD3ANh8yIfMBR5BkybDvfKaGRn7SegtBZrSMc3Z1LAqQVcDbfu3R8VEAQbqg8olbNNh6Bw2g3Q6OOhyX8aF5Dyn5LRjNAvhDLUzi+VSYaH4Ucgc5eJVQWu02pF5rsuZolZ3ek47E/uuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2TFLe/IS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790108443; c=relaxed/simple;
+	bh=NfI/Dm5EYDMnMTAl3fxv1BGBbGtmkx+otpGuTeOYlsM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gYSgU3efYk579n7cP3Nq3YV3NVfRyce9WnLTYNctx2/Ros0vy1Nc/EWqwIn1/ziCvaUhoQ1vMYdR+Rr3JpYBA9jm2grC3rsX9DNfryLV4ZJiXMg6UvdZ3m4i70H4j1oltjlh8yOSGvpRKcvS+PcrIw43u7X9x96J9v7v0KBOpSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lm5bcyw8; arc=none smtp.client-ip=74.125.229.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2TFLe/IS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=uqKfszrxLM+TbLTPaUPKkfX5s0W4Y6GnxNMoUScpMa4=; b=2TFLe/ISMZWxiSdSezgecCfyMH
-	WFLV2+PEG06sypfcsHAfJePlmF3Hwh0ogu6ENy+Er3GAUw+SToeLtIbJxs3Z64Fq0hQr2Uqobsg0y
-	WuB5BCLD97qNeXumyUGUKjDLxS2yu6d4DsM7iFbOL6fLYKlyFuF1K0LOxcyXnwEjLx9I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x96xb-006fKs-RH; Tue, 22 Sep 2026 22:19:27 +0200
-Date: Tue, 22 Sep 2026 22:19:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jan Hoffmann <jan@3e8.eu>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: sfp: add quirk for XikeStor SKT-2.5G-100M
-Message-ID: <640a7c34-38d2-48a9-a647-9298318f7c8e@lunn.ch>
-References: <20260920192632.72729-2-jan@3e8.eu>
- <b4a42595-295e-456b-82a0-91076f72407d@lunn.ch>
- <64e712bb-4c2a-4738-9f99-7c8496e2d4d9@3e8.eu>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lm5bcyw8"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144e32aaa1cso141016c88.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:20:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790108423; x=1790713223; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NfI/Dm5EYDMnMTAl3fxv1BGBbGtmkx+otpGuTeOYlsM=;
+        b=lm5bcyw8kOZ1x/vhA0+QxXrRD8amGvH15hMxKrrzHpaa99g+sjEgx8XqN1+AVNGk+F
+         57gwSw+UmANftrxVLDQpYJ20g37w+1T5HqcpHJPhgqoM/MW01P6CaZYeU3jFSdHZ49s4
+         jPvMPl/Hzyb6ZluI0eaQnvPfHj+vcBJNwuxoAbP0NkQS5eiDTiGy3fzWEb8sKegwppOO
+         Ei0sFx1S5YpazUzKxipuJ+0iJE2ejopeYI6LzVs20+mUkT7wQRYac2Na8xp3TYxUWRce
+         blUy11W2J7yONA8zAXORPBuYRA43AA9+ENyucV45g1xQ3uWouxBJ4wwJfKYzenladE4O
+         +jYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790108423; x=1790713223;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NfI/Dm5EYDMnMTAl3fxv1BGBbGtmkx+otpGuTeOYlsM=;
+        b=yLMbUIn68LWWFsbz/J0Uej3ByZDaxPVOuScRptPSfWr6rMFoHBkttV3y7RcJ7HbHm9
+         ihENmn6K8HdfdtlbPyLps6sE1RpsR9dZjRg1S/llCnpGnrDOp6T4o5zO85ZTPgzTUO/+
+         VhplARqV3raH//OyDiKeSaewpwxlKXYNR2Gjb6Ineuxgx/jAtamZxzyf/Zyg2UggvDM0
+         V5A7QElnzJQxGWebxB5vx+HoNPP3Jn6rr5yr1KuMgX7iJsotCAX1Qt7LUQCQrka0qdV4
+         hSui8G0IflFa8w1+UZOVXP26U91CFLcq3tEZDuCILkRmf8IFh7y8Cr5jxPrxSNEIoAeK
+         TyvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzUOJ0CdnmtzWbo5E4DYR/eeGEJD9//kmabDpYg8c4Qd5Qk9XV1BzPpH90d4sxoHZ1khctPPYo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lLUxpJd/rpVAt8DPbQ9DmSGR5jMjtJVYe9eJ/A2+OQDQc34knr
+	DbriMX4RAsNOXiIya/UtBZwGMffGWYnLq3nu8DicBI50yZFeNX/WaE4M
+X-Gm-Gg: AYBFou3qvNuTA1bXUGeIu70M4vb86Mr5DkVTtKev972y0TFwDwqkK6KhO/EoSHQ5c39
+	zKBNpl4Zop9GYykkZfSJ0yBC68tfor1VZq9x2AUdBkzM3Fxa6IIPJUABuHbvptqny62pxbFNEMG
+	Sij6BQyKBIZz/5n1gp6tfoq/zhBhlyIzPV80wCePgKwckUzxGEeYplHZTUm6sPNfgzJDRdbXeMJ
+	UXSEYxP7D2Hyc9TriuMgzYWL6fXwkUi3oHhKQG3d7nBGGq33NGC7SFu1omK7/JHonsEmw9dq6zM
+	NEDvOddhO13pSPYuBFrwElqOkLyB+JrlR00bNpVC5DMLnn1daTS9ea195IxO6E/bJEMlqY3uaJh
+	KdahT1ZDe8FGUPSWtQadtN2WbuEvuUrGhrx6q2rZa8sRlP8tazCgN5uvUCpJTbuWJnprr3O3ku1
+	kcSgT+rYXKX6ukW3RbqGbycaRzyFOm6iEjApojvQO1F8PBx0zJ2NKEvB2ePV4vQMg8tJBZzf7OV
+	IaNr51Thqx/72hnzGLOUZ2TAXAmCIpXbBmHLjC6QVavM/mJC5mk+kqijQy2g8Nxm4Lh08AqCqGO
+	nQ93Fqo1Bu++VOAwVOBq
+X-Received: by 2002:a05:701b:455a:20b0:141:4951:f150 with SMTP id a92af1059eb24-144f90adb56mr519266c88.18.1790108422631;
+        Tue, 22 Sep 2026 13:20:22 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:f16e:2102:25ad:9cdb])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f9820ca5sm716854c88.3.2026.09.22.13.20.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 13:20:22 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	hemendranaik@gmail.com,
+	horms@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	tahiliani@nitk.edu.in,
+	vishy0777@gmail.com
+Subject: Re: [PATCH net-next v6 1/3] net/sched: sch_fq_pie: add per-flow statistics via class ops
+Date: Wed, 23 Sep 2026 01:50:13 +0530
+Message-Id: <20260922202013.25126-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <179002340755.2160803.3742716999091408861@kernel.org>
+References: <179002340755.2160803.3742716999091408861@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64e712bb-4c2a-4738-9f99-7c8496e2d4d9@3e8.eu>
+Content-Transfer-Encoding: 8bit
 
-> If bit 0 of register 0x75f3 on MMD 30 is set, reading any register on MMD 30
-> except for the actual SerDes registers (and also registers 5/6) breaks the
-> PHY.
+Thank you for the review. Replies are inline below.
 
-[Goes and looks at 802.3, clause 45]
+> Is this paragraph describing a change made by this patch? The diff is
+> purely additive and net/sched/sch_fq_pie.c had no delay or avg_dq_rate
+> conversion before it, so the new fq_pie_dump_class_stats() is not
+> replacing any truncating computation.
+>
+> The code that actually contains both of the described defects is
+> pie_dump_stats() in net/sched/sch_pie.c, which this patch does not touch
+> and does not mention, and there is no Fixes: tag.
+>
+> Could the paragraph either be reworded as a deliberate difference from
+> the pie qdisc, or the series extended to fix pie_dump_stats() as well?
 
-> I would really like to have a general fix for cases where neither of these
-> two workarounds happen to already be in place. But I'm not sure how this
-> could be done cleanly, as it requires special handling for these PHYs in the
-> function that reads the PHY ID (or even before that).
+As you noted, the diff here is purely additive, so this paragraph isn't
+describing a fix to existing code in this file - there's nothing in this
+patch's history to carry a Fixes: tag for. It's explaining why the new
+code uses div_u64() and a widened u64 intermediate: to avoid a known
+overflow pattern, not to describe a prior bug in this file.
 
-I assume this PHY does have a valid ID in MMD 1-29?
+The bug you found in pie_dump_stats() is real, but it's independent,
+pre-existing (net/sched/sch_pie.c, ~2014), and unrelated to whether this
+new ABI addition is correct. We'd rather not fold a fix for that into a
+series about adding per-flow statistics - it deserves its own patch,
+separately from this series.
 
-> Downstream in OpenWrt, I added a patch for "get_phy_c45_ids" to avoid
-> reading MMD 30 from RTL8221B PHYs based on the PHY ID in MMD 1:
+We can make the paragraph read as a comparison rather than a claim about
+this file - e.g. "which can wrap" instead of "which wrapped" - a
+wording-only change, no scope change.
 
-This suggests it does.
+> Growing struct tc_fq_pie_xstats from 36 to 64 bytes is visible to
+> userspace in both directions [...] Does the accompanying iproute2
+> change parse defensively, e.g. copying min(RTA_PAYLOAD(xstats),
+> sizeof(st)) bytes into a zeroed local struct rather than bailing out?
+> [...] Could that reasoning be added to the changelog?
+>
+> The alternative would be to leave tc_fq_pie_xstats at 36 bytes entirely
+> and emit a separate struct [...] Was that option considered and
+> rejected?
 
-I wounder if we can make use of:
+Yes to both. iproute2's fq_pie_print_xstats() already does exactly this:
+it copies into a zeroed local struct and memcpy()s only RTA_PAYLOAD()
+bytes when the reply is short, so a short/zero-filled read still
+resolves to TCA_FQ_PIE_XSTATS_QDISC (0) and prints normally. This
+reasoning is already in the changelog - it's there now, not something
+we're planning to add.
 
-	if ((devs_in_pkg & 0x1fffffff) == 0x1fffffff) {
-		/* If mostly Fs, there is no device there, then let's probe
-		 * MMD 0, as some 10G PHYs have zero Devices In package,
-		 * e.g. Cortina CS4315/CS4340 PHY.
-		 */
-		phy_reg = get_phy_c45_devs_in_pkg(bus, addr, 0, &devs_in_pkg);
-		if (phy_reg < 0)
-			return -EIO;
+We did consider a separate struct and rejected it. fq_codel can put its
+discriminator first only because it was designed in from day one;
+tc_fq_pie_xstats already has nine fixed-offset __u32 counters that
+predate this patch, so a discriminator can only be appended here, not
+prepended, without moving those offsets. A new, separate struct would
+still need its own attribute and its own print callback wired up in tc,
+splitting one qdisc's stats across two code paths for no added
+compatibility benefit. Extending the existing struct was thus better.
 
-		/* no device there, let's get out of here */
-		if ((devs_in_pkg & 0x1fffffff) == 0x1fffffff)
-			return -ENODEV;
-	}
 
-I assume this is not hit for this device?
 
-I _guess_ there are ~0 PHYs which probe based on ID values in
-MDIO_MMD_VEND1 or MDIO_MMD_VEND2. So maybe move the code looking for
-device present in MDIO_MMD_VEND1 or MDIO_MMD_VEND2 inside this clause?
-Then in the normal case we never look in these registers.
+pw-bot: cr
 
-If we don't look to see if the MDIO_MMD_VEND1 or MDIO_MMD_VEND2
-devices are present, i assume the next loop:
 
-	/* Now probe Device Identifiers for each device present. */
-	for (i = 1; i < num_ids; i++) {
-		if (!(devs_in_pkg & (1 << i)))
-			continue;
 
-will also leave them alone?
 
-But if there is an oddball PHY around which relies on MDIO_MMD_VEND1
-or MDIO_MMD_VEND2 IDs, we still look there, if we failed to find
-anything anywhere else, and so hopefully it does not cause a
-regression?
-
-	Andrew
