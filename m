@@ -1,165 +1,321 @@
-Received: from mail-oi2-f23.google.com (mail-oi2-f23.google.com [74.125.231.215])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D56D418342
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.215
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790109204; cv=pass; b=P4G6D2zH21kMIOmAKrj3SLDKi3iTusq97fvS0tZRDx8DHkgGfO2+xM9Jj89ny8tcnszqF/DBlwgvJjGul0DDl/r9NsZvrnLbH62eado41fI5DoJB31qinpds3JB7iDjtkUSi1Z4sD4HddgaPiEHILLn8ia3ucF4JV8yd3Iq1fWc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790109204; c=relaxed/simple;
-	bh=YVrKX0LV+9XXawTshmyoqahUAGMDRjhHBTCg4U2uBHU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n11uSML1yUVjpFTL4y1ByWbW1GiAsOXF8lVfo8jG5tjjoRTbqliRxUEprWrAyfcN2w3wkCttClVqJEcSZRVToatP9p+2Sq5cFkglY/cCc3sgFJakI59gDfGhIFlCIDOyS42pVjcYC8pOo1mPYTr4WyNIIYwjj5+/b3ghoPQ/nRw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WuXtR6Sg; arc=pass smtp.client-ip=74.125.231.215
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3A84AB1DC;
+	Tue, 22 Sep 2026 20:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790109438; cv=none; b=rC6kxVXRTrhGVwqRnXo7KT27ABqeOhLsPDaFx0AuLJdAyl1uirqhxJMmu9xUGmJZcSc/CD7uWKoy0KyCZgbp9LO2OTV2rFklSPzzOuF0FovnyYUX2rWT1PnUd0rC3WjyR3ldEazZJVTbcOhO4M2fxZNUFVpRV/x8VFqCWdKmBo4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790109438; c=relaxed/simple;
+	bh=d3csPslYIziOC0R7LhjPuYgG7RxPE7Qu4TLRopm6vTY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gLUjNIzSARVzhBZXnNCNjVaJGjc3nTxpFB1nO+UcbllkR7YWIf7R8utlDdDD6lyz69vMOYZuITsPyIwcR8hmx77sHKfZCY5tdbETbkiXirAQPN31/N8nQvNw4juYL3gYEQjER6G7dkfmBfgbDEx1DmsxhXpFrQcA0ue1OG9sSQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDDiwjoJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WuXtR6Sg"
-Received: by mail-oi2-f23.google.com with SMTP id 46e09a7af769-7f4f0d37dccso195514a34.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:33:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790109191; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dFjcS1YDbVA4UK1YMFvbzggq8/p1rVnStZyhoaBCAESuFX5NQl5wzK5G8pqMnm1A9w
-         0enJ6EkNTgEt5S0ptJA+yia3D10Jhk5tsYokFBPiKF8Eh76C73rkHmEJaRH0lJ9072qD
-         dodza30RCgE+eLSTKxPytBNl+xmO+LYNTMtKAPUH6pVePBOFzTCvP8V3CzfbP2IrqqUl
-         /+V3gyOvd/7Tsc6PVIzDb6tlWpr3rRJKYRl5NtuNSFhbyqod3kl/iT4+Er13g7jnMUkN
-         vE8KK1v2oB0KNwLEemS/TfsXWbuWOqbZ2Kwbq6iRxPbjWeYe5Bk01RaFCZjRFvSTPP+r
-         FQBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=H07YChWgthu6uT5lPpAm/6rWFjM+GWRx5WUSHRQ6MZY=;
-        fh=VVlwAK4shnRlLsNXB1xGTNSb7qParIkiZFP8Aowqa7w=;
-        b=LGaPSXkXGJoV94ZoLXS8LBlPczdDtJtLs48h0xqK7FYGFRMLRk4nYLcAEdrxk9jem9
-         xtKXC5OrJpbUtNv7s/mUZ8wkfeffrh6DbeyE6aqnFnJ0aS4mr/U82ZvJeZcqTgU/8jWs
-         D62B4xzkQBZplnCKOoxnHTsdPGPWJ5yV9g4oi9N0pAGaSdEXXXQYfbWepzXuhP0a5USO
-         9lvU/rGEr3+gnVhmT9yIFgPOa/rdGAS48TR3F3XKMA2ylOD0tsN/9Ap7gJppGnWR8vye
-         sOaXwcU1eUArycNIEwRgpI5Zs1YqFISI+HJ5fhFv6t5mDTXHeW23AtYoGQTOYOYCt7+I
-         5/Uw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790109191; x=1790713991; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H07YChWgthu6uT5lPpAm/6rWFjM+GWRx5WUSHRQ6MZY=;
-        b=WuXtR6Sgw6UVB2U1/iwbEBd/wKvxBh8DkVhl/RgCU8+wLUxa15cxwJ+sr8rfc6Yflp
-         sjTvD/nz+rjjKC6uNB4IjRIBhGtjSN6uLx59wGz3kfsvZ1BK9XigObr3pSyI932zNOM9
-         MBc6iM5kRtfI1cV8WsJ0aNGPFjEDl27KmjRd4+6bRdINBZswfRWhnajQQr/1WEJtUCMS
-         ZNnbPE5MUekjSQ+DtuuSRyQuLnq8Hc1sfhPn9U2W6+WV3TGCpBeX9Jk9QYrd1wINXY6Y
-         yoGlI7shm/6/CRPiJzYCTAP2DelDf5ShoS1MPeuJehzxel5WxMwjRYUXfHY99V1xIjRB
-         HXrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790109191; x=1790713991;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H07YChWgthu6uT5lPpAm/6rWFjM+GWRx5WUSHRQ6MZY=;
-        b=B/eXtrA6aVhbYb8hylyRtEPhFYKX/Hp4Q5rGENG+YHiV6sqSm5/JH9BnsKxFs5sHR9
-         d690MhmyeT88IPETLOgHsea0UsOk74/41yF7O6G9Dvaf7jkFiaIhC/bjmby6W96bFqNN
-         C5PySbhW2hMzqNi1XbDIMQVosMrAa1aGMj3YxWmb6n5/0r1cvA8iTXshjF8iYKNp3sbH
-         iYmLtbeo8/jfea2gkQhgdaFYgi8RfH/BufssnRvhL2ZFGjbSr1J1AOJ6C4rP8e0QJEqA
-         997uq+jjIeobLfcTdjvAIXS14uISEiQP330+REzEORtm4//lBO4zLtauHZ4mlw7Q7mT0
-         n2wQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzfzazly/lqBriQFR/k4sBil0BQSaMuHeU08ifrlRfWWtRRZh3/tOMR8ORSrlE/CMNFrODDxB0=@vger.kernel.org
-X-Gm-Message-State: AFuF++l9MHJDXO1mMHDq0gxhIFvEFbsBcmYX3Zo0HI70EXTZl+D+/QzX
-	KjQB89Aje/mRjo8blxcBhID3C9Ta1jBnEjISRPrN/4i1PP42oPbnsVFqEXKZfFP8db8SRSGLv6O
-	iY4lEeVM55hM0gYAPqEim/9yd9wWarnc=
-X-Gm-Gg: AYBFou2Hpjspap0lQmLbe4y9al++0Ho8B9+23vbidN0RtuMNb0J1SrCRYTl5luSRzae
-	7rO5XjiY9geaF3yCSZKTVgRODKRRiww3l8PxQYgDUknQ1Na2XfI7XNHPEeXewZOvvdTjBc4UqLf
-	riyHc82OCudbQgjw/UrCegs1TytDXsYqugPjigqHvnVQEN6v6vgIH4ZURpoMERltptxSgQN1aj1
-	2eMEL6y7JD8vt+23uqA8nOdjryTWw2f5RdhPEHvrQBeRL3eGJ6nfvnJ69mQZ+BfSGygMetVvmbM
-	OtkRmVoQaFgc0mLhJXI0yUCmDWq5gQeUah479A2gUn6g7KmfrKD1V1fJEfLjPluiB1PdD7AX
-X-Received: by 2002:a05:6820:290d:b0:6be:4eb3:e1c7 with SMTP id
- 006d021491bc7-6d2cff43713mr471043eaf.14.1790109190880; Tue, 22 Sep 2026
- 13:33:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDDiwjoJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6F91F00898;
+	Tue, 22 Sep 2026 20:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790109423;
+	bh=W39bp12GNfWIwx2ln5PK2AHicqGywbx2D2WipXSsH9U=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DDDiwjoJF+t5AKURCuKoLR72enjuGjMRZoHVPY1cQv7TNTaroRi1c9HILFBDJl4OW
+	 vqwpu+r1tTiiUwcD0hULS1VCJzCYJOQ8k6nU31udtE2XlHcgk9ko51ziteobk7UZHw
+	 ppr4TRlysZWL/JG+XupbrOMQ8bIPYGTGuk0K08kKF65vnfzwn02h0sfxn5OaXiL9ky
+	 b3STbK7FewZiyULb1CMfdia9V3YzlICQNta3xd9QerW1PxoZ/Hw5crzO855V5v5Rhz
+	 zvQOnK5223MDjJoq2/AK5Fe18Suxi8LAcmTSSDDMuVZLrVOF9f5eTrHa0YxBZ42qE9
+	 fRcC7vlnoIZsQ==
+Subject: Re: [PATCH net 2/3] net: macb: propagate RX ring refill errors
+From: netdev-bot+sashiko@kernel.org
+To: theo.lebrun@bootlin.com
+Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ nicolas.ferre@microchip.com, sean.anderson@linux.dev, atenart@kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nb@tipi-net.de, vladimir.kondratiev@mobileye.com, gregory.clement@bootlin.com,
+ tawfik.bayouk@mobileye.com, thomas.petazzoni@bootlin.com,
+ maxime.chevallier@bootlin.com, stable@vger.kernel.org
+Date: Tue, 22 Sep 2026 20:37:01 +0000
+Message-ID: <179010942168.2160803.12593263624100762709@kernel.org>
+In-Reply-To: <20260918-macb-close-v1-2-05e32ce98813@bootlin.com>
+References: <20260918-macb-close-v1-2-05e32ce98813@bootlin.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922172028.6269-1-emil@etsalapatis.com> <20260922172028.6269-6-emil@etsalapatis.com>
-In-Reply-To: <20260922172028.6269-6-emil@etsalapatis.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Tue, 22 Sep 2026 13:32:56 -0700
-X-Gm-Features: AcwNN1VGJY6GqpU7_5pCNeCM2-B96aVCqu0qSFJBh6gFAmJnhMxteN-NYUreQhc
-Message-ID: <CAMB2axOmSEshN1jT0MRDLTvnVu6YvbsUw5MhOrB3-mvUNbhmwg@mail.gmail.com>
-Subject: Re: [PATCH bpf v2 05/11] bpf: Reject pkt arguments in mutating subprogs
-To: Emil Tsalapatis <emil@etsalapatis.com>
-Cc: bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, 
-	memxor@gmail.com, daniel@iogearbox.net, netdev@vger.kernel.org, 
-	Nicholas Carlini <nicholas@carlini.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 22, 2026 at 10:24=E2=80=AFAM Emil Tsalapatis <emil@etsalapatis.=
-com> wrote:
->
-> The verifier tracks changes in how PTR_TO_PACKET registers'
-> bounds are modified across subprog boundaries. PTR_TO_PACKET
-> registers are actually passed as PTR_TO_MEM, which is assumed
-> valid for the entire call. This is not the case with packet memory,
-> where a pskb_* call may invalidate its memory region.
->
-> Reject BPF code that passes PTR_TO_PACKET pointers to subprogs that
-> may mutate a packet. We cannot pass the pointer as a true PTR_TO_PACKET
-> because we would also need to somehow pass the PTR_TO_PACKET_META
-> or PTR_TO_PACKET_END to the subprog. Since we cannot avoid representing
-> the pointer in the subprog as PTR_TO_MEM, only permit it if the
-> subprog is guaranteed not to mutate the packet.
->
-> Fixes: 80f281664f5a ("bpf: Support pointers in global func args")
-> Reported-by: Nicholas Carlini <nicholas@carlini.com>
-> Suggested-by: Nicholas Carlini <nicholas@carlini.com>
-> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
-> ---
->  kernel/bpf/verifier.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index d62c0f74c..71ad07a9d 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -10421,6 +10421,16 @@ static int btf_check_func_arg_match(struct bpf_v=
-erifier_env *env, int subprog,
->                         if (check_mem_reg(env, reg, argno, arg->mem_size,=
- BPF_READ | BPF_WRITE, NULL,
->                                           NULL))
->                                 return -EINVAL;
-> +                       /*
-> +                        * PTR_TO_PACKET get passed as PTR_TO_MEM, preven=
-ting
-> +                        * us from adjusting bounds tracking info.
-> +                        */
-> +                       if ((reg_is_pkt_pointer_any(reg) || reg_is_dynptr=
-_slice_pkt(reg)) &&
-> +                           sub->changes_pkt_data) {
-> +                               bpf_log(log, "%s is a packet pointer, but=
- func#%d may change packet data\n",
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-This might seem vague to users. How about something like:
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-  bpf_log(log,
-        "cannot pass packet pointer %s to %s(). The function may
-invalidate packet memory\n",
-        reg_arg_name(env, argno), bpf_subprog_name(env, subprog));
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Reviewed-by: Amery Hung <ameryhung@gmail.com>
+- [High] Incomplete fix: the new errno from
+  gem_rx_refill()/gem_init_rx_ring()/mog_init_rings() is discarded by…
+- [High] macb_set_ringparam()
+  (drivers/net/ethernet/cadence/macb_main.c:3737-3749) closes and…
 
-> +                                               reg_arg_name(env, argno),=
- subprog);
-> +                               return -EINVAL;
-> +                       }
->                         if (!(arg->arg_type & PTR_MAYBE_NULL) &&
->                             (type_may_be_null(reg->type) || bpf_register_=
-is_null(reg))) {
->                                 bpf_log(log, "%s is expected to be non-NU=
-LL\n",
-> --
-> 2.54.0
->
->
+Pre-existing issues:
+- [High] macb_hresp_error_task() (macb_main.c:1998-2035, BH-workqueue
+  context) calls bp->macbgem_ops.mog_init_rings(bp) -> gem_init_rings()…
+
+--
+
+net: macb: propagate RX ring refill errors
+
+This changes gem_rx_refill(), gem_init_rx_ring(), gem_init_rings(),
+macb_init_rings() and the macbgem_ops.mog_init_rings function pointer to
+return errno-style ints, so that macb_open() fails when RX skb allocation
+or DMA mapping fails. The other refill callers (resume, HRESP error task,
+NAPI) keep their best-effort behaviour.
+
+> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+> index d6931c41f39d..cfaa0ca49f1a 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -1197,7 +1197,7 @@ struct macb_queue;
+>  struct macb_or_gem_ops {
+>  	int	(*mog_alloc_rx_buffers)(struct macb *bp);
+>  	void	(*mog_free_rx_buffers)(struct macb *bp);
+> -	void	(*mog_init_rings)(struct macb *bp);
+> +	int	(*mog_init_rings)(struct macb *bp);
+>  	int	(*mog_rx)(struct macb_queue *queue, struct napi_struct *napi,
+>  			  int budget);
+>  };
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index 751fa9e68099..c418f859cc34 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1486,13 +1486,14 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+>  	return packets;
+>  }
+>  
+> -static void gem_rx_refill(struct macb_queue *queue)
+> +static int gem_rx_refill(struct macb_queue *queue)
+>  {
+>  	struct macb *bp = queue->bp;
+>  	struct macb_dma_desc *desc;
+>  	struct sk_buff *skb;
+>  	unsigned int entry;
+>  	dma_addr_t paddr;
+> +	int err = 0;
+>  
+>  	while (CIRC_SPACE(queue->rx_prepared_head, queue->rx_tail,
+>  			bp->rx_ring_size) > 0) {
+> @@ -1509,6 +1510,7 @@ static void gem_rx_refill(struct macb_queue *queue)
+>  			if (unlikely(!skb)) {
+>  				netdev_err(bp->netdev,
+>  					   "Unable to allocate sk_buff\n");
+> +				err = -ENOMEM;
+>  				break;
+>  			}
+>  
+> @@ -1518,6 +1520,7 @@ static void gem_rx_refill(struct macb_queue *queue)
+>  					       DMA_FROM_DEVICE);
+>  			if (dma_mapping_error(&bp->pdev->dev, paddr)) {
+>  				dev_kfree_skb(skb);
+> +				err = -ENOMEM;
+>  				break;
+>  			}
+>  
+> @@ -1558,6 +1561,8 @@ static void gem_rx_refill(struct macb_queue *queue)
+>  
+>  	netdev_vdbg(bp->netdev, "rx ring: queue: %p, prepared head %d, tail %d\n",
+>  		    queue, queue->rx_prepared_head, queue->rx_tail);
+> +
+> +	return err;
+>  }
+
+[Severity: High]
+The commit message says:
+
+    Note that other callers of refill (resume, HRESP error task, NAPI)
+    cannot do anything useful with that error and keep their best-effort
+    refill, hoping it will improve.
+
+Is the "hoping it will improve" part true for those callers, given the
+same analysis used to justify the open() fix?
+
+gem_init_rx_ring() first marks every descriptor as software owned and
+resets both cursors:
+
+	queue->rx_tail = 0;
+	queue->rx_prepared_head = 0;
+
+	for (i = 0; i < queue->bp->rx_ring_size; i++)
+		macb_rx_desc(queue, i)->addr |= MACB_BIT(RX_USED);
+
+	return gem_rx_refill(queue);
+
+gem_rx_refill() then breaks out on the first netdev_alloc_skb() or
+dma_mapping_error() failure, so it can return with zero descriptors handed
+to the hardware.
+
+With no hardware-owned descriptor, can the controller ever complete a
+receive and raise RCOMP?  bp->rx_intr_mask is only MACB_RX_INT_FLAGS
+(RCOMP | ISR_ROVR) unless the part has MACB_CAPS_NEEDS_RSTONUBR:
+
+	bp->rx_intr_mask = MACB_RX_INT_FLAGS;
+	if (bp->caps & MACB_CAPS_NEEDS_RSTONUBR)
+		bp->rx_intr_mask |= MACB_BIT(RXUBR);
+
+and even on those parts macb_interrupt_misc() only toggles NCR.RE without
+refilling.  The single remaining refill trigger, gem_rx(), is only reached
+through napi_schedule on RCOMP/ROVR.
+
+The callers that discard the new return value re-arm the receiver anyway:
+
+macb_resume():
+
+	if (macb_is_gem(bp))
+		gem_init_rx_ring(queue);
+	...
+	macb_init_hw(bp);
+
+macb_hresp_error_task():
+
+	bp->macbgem_ops.mog_init_rings(bp);
+	...
+	ctrl |= MACB_BIT(RE) | MACB_BIT(TE);
+	macb_writel(bp, NCR, ctrl);
+
+gem_rx():
+
+	gem_rx_refill(queue);
+
+	return count;
+
+So can a queue still end up permanently RX-dead after resume, after HRESP
+recovery, or at runtime when a poll drains every armed descriptor and the
+following refill fails on its first allocation, with recovery only through
+an administrative down/up?  Would it make sense for those paths to retry
+(NAPI reschedule or delayed work), or to keep the receiver disabled for
+the affected queue, rather than only propagating the error at open()?
+
+>  
+>  /* Mark DMA descriptors from begin up to and not including end as unused */
+
+[ ... ]
+
+> @@ -2793,14 +2798,16 @@ static int macb_alloc(struct macb *bp)
+>  	for (i = 0; i < queue->bp->rx_ring_size; i++)
+>  		macb_rx_desc(queue, i)->addr |= MACB_BIT(RX_USED);
+>  
+> -	gem_rx_refill(queue);
+> +	return gem_rx_refill(queue);
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but it sits on the call chain
+being changed here, so it may be worth a look: is the HRESP path allowed to
+re-run gem_init_rx_ring()/gem_rx_refill() while an RX poll is in flight?
+
+macb_hresp_error_task() runs in BH workqueue context and only masks the
+device interrupt sources:
+
+	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+		queue_writel(queue, IDR, bp->rx_intr_mask |
+					 MACB_TX_INT_FLAGS |
+					 MACB_BIT(HRESP));
+	}
+	...
+	bp->macbgem_ops.mog_init_rings(bp);
+
+There is no napi_disable() or napi_synchronize(), and neither side takes
+bp->lock around queue->rx_tail, queue->rx_prepared_head, queue->rx_skbuff[]
+or the descriptors.  Can this sequence happen?
+
+CPU0, gem_rx() poll at entry E (hardware has completed that descriptor)
+
+CPU1, HRESP worker, gem_rx_refill() sees rx_skbuff[E] still non-NULL:
+	} else {
+		desc->ctrl = 0;
+		dma_wmb();
+		desc->addr &= ~MACB_BIT(RX_USED);
+	}
+
+CPU0 then continues in gem_rx():
+	queue->rx_skbuff[entry] = NULL;
+	...
+	dma_unmap_single(&bp->pdev->dev, addr,
+			 bp->rx_buffer_size, DMA_FROM_DEVICE);
+
+and passes the skb up.  Once macb_hresp_error_task() rewrites NCR with
+RE|TE, does the DMA engine then write the next frame into a buffer that is
+already unmapped and owned by the stack?  The unsynchronised resets of
+rx_tail and rx_prepared_head to 0 against gem_rx()/gem_rx_refill()'s own
+updates of the same counters also look like they could arm a descriptor
+twice or leak an skb.
+
+[ ... ]
+
+> @@ -3162,7 +3175,9 @@ static int macb_open(struct net_device *netdev)
+>  		goto pm_exit;
+>  	}
+>  
+> -	bp->macbgem_ops.mog_init_rings(bp);
+> +	err = bp->macbgem_ops.mog_init_rings(bp);
+> +	if (err)
+> +		goto free_rings;
+
+[Severity: High]
+This adds a new, fairly easy to hit macb_open() failure path that returns
+before the napi_enable() loop.  Does macb_set_ringparam() need updating for
+it?  It closes and reopens the interface and discards the result:
+
+	if (netif_running(bp->netdev)) {
+		reset = 1;
+		macb_close(bp->netdev);
+	}
+
+	bp->rx_ring_size = new_rx_size;
+	bp->tx_ring_size = new_tx_size;
+
+	if (reset)
+		macb_open(bp->netdev);
+
+	return 0;
+
+Because the ops are called directly rather than through __dev_open(), the
+netdev stays marked running while the rings are freed and both NAPI
+instances are left disabled.  The next close then calls napi_disable() on
+instances that were never re-enabled, and napi_disable_locked() spins:
+
+net/core/dev.c:napi_disable_locked() {
+	...
+	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+		usleep_range(20, 200);
+		val = READ_ONCE(n->state);
+	}
+	...
+}
+
+Nothing clears those bits without an intervening napi_enable(), so can an
+"ethtool -G" resize that fails allocation under memory pressure leave the
+next "ip link set dev down" looping forever with rtnl_lock held?
+
+>  	macb_init_buffers(bp);
+>  
+>  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> @@ -3200,6 +3215,7 @@ static int macb_open(struct net_device *netdev)
+>  		napi_disable(&queue->napi_rx);
+>  		napi_disable(&queue->napi_tx);
+>  	}
+> +free_rings:
+>  	macb_free(bp);
+>  pm_exit:
+>  	pm_runtime_put_sync(&bp->pdev->dev);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-macb-close-v1-0-05e32ce98813%40bootlin.com
