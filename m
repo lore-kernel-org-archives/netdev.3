@@ -1,75 +1,75 @@
 Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C4F3A2E3F
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A3253ECF7
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087455; cv=none; b=kyPY4TaaZ7wgQvxZXFYO4LMYD8kSq7JklYM5073aX8lBFcS50lvV/H3cBEXVbFRk6IYl9rNn8r4YPI5za/qNppJbO9YUJp6spdnHUSY2E5v7zA4El+bIjrlcZRIJz9XSGkhGNJHH0Z1Gx/2jt2FhK7TrkZIPbZ7X5QavhcHEzow=
+	t=1790087465; cv=none; b=G8mufa/rWiOrOKR88IjZiT5A5MKBZRGmeCnzqCU71mIBq25mrMsR6AxCsu8dpNYYQshuybFIeINjcCwgHehoc+tbs3wQIYu7iW9dk72RJ7rPdzVHxMtYMCaMZv05H+T35mmDBgp5odb7T6xa5Q++kYYj2d9vhi91w4I1KE3pZ58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087455; c=relaxed/simple;
-	bh=odVzWdwRMk49vB2c3FmIJ3Hae/AVLuEBoTY80YDJQ1U=;
+	s=arc-20240116; t=1790087465; c=relaxed/simple;
+	bh=tzmNra10DRpKlxzzHDS3f5hrHELF846/timG5QL3w7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDErYwDopbg5Q84PfeCpqXVjxzzEQpVukZHKRVyanbfX7Q076hNZgbq/FWrW3Xtx7qNReKu54FQCIW1kpGdUWkf2c1l2aeBBo4UVEbVLIeCbeBGEhv/0zIfWWGVAWJL1MfbkdpsroZR7cf93RGpt6+JrbnzhF4TaegLvIWD4nso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MtLUFPFJ; arc=none smtp.client-ip=74.125.230.76
+	 MIME-Version; b=j8mfFtxc/64o3f5yJpuBD/R+VF9auZVDeD5HscPyGGB1F1v81nZvWSRHJ4nzV3Xw5HmrOX5ZrZAqdpNDA/MDAltoyfQ+kOxtk6l0rnS/m8eSkwTw2HF5nvz1rqosyQ9hdLicOiqB7BMU+5bM40+a1oESsAW4ZRrq9HCO25b2nlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D5H/6t7J; arc=none smtp.client-ip=74.125.230.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MtLUFPFJ"
-Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a2ff17443dso44732831fa.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:30:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D5H/6t7J"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a47f740839so35256601fa.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790087452; x=1790692252; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790087461; x=1790692261; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oeDp1cvkbE/ujJ++BUYIsVEpjJJJGQFOULTuibn73Ds=;
-        b=MtLUFPFJWnheeHiNFJUR8IPVtukfaKXbGl77oRu3l8Jcw1TuiFxgT9DP/tsyTW7D6b
-         jK7eY1Z3YBwBACBHcpkcBKcldldxZ9WDCzohQG1rDEc/QoIIeR+f1IOp6jmXpNqsSrU3
-         zs/o0bfw0K1uowIGIlYWRC7qqUxxIRQnh3ra1nMWp/S+n3iQbHeR18KuHVKs1NrM9a25
-         cl6zU/sN6eVkDSS9ma5+a6iRE+bJWj49N4+BpoACaioYc7IWPZ0vVE7WGUQa0qE5qGlN
-         HOL5rGcN/A9+zk9OB7DYcbx2tj17GXNY7Mek/44EgWNE8NvoFBqe3KefWu4+Plb+6lBH
-         Lu9g==
+        bh=ejn1Cv3AZYuVHBui/3jgxRQSkdpmmTaViOr0Swl2g9o=;
+        b=D5H/6t7JI3WzYI8dYR15Fxdol7kEIhtBZIvSwZc/7/1rmFNyLW7Huov3lj8MXdwF54
+         3ztNX+0j9AmAEiFlf4bMdkx0RM3gFz4J5rrAT9125EnUmW24RfYBnV8fp6PthCKTV7fG
+         I4UOcAj+gsyKYXmZqHzcW/CpVb+RaTvKq1esDmrmLQZXr4w9oUBUTUXePHMLZRlhDtfb
+         DKAG8hTVmxoxxB6idxOZVjiz7loxJUYYPBvzv35lXnS60Uwovx8nTrapp2fpb6Rhrx7C
+         4j+vPQ8ZBgbWcaIws9XTSHJshbiBL3TIajXwHeXz/dvz3LP7F83jwvXDw7dsVF6S9Hbp
+         FFBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790087452; x=1790692252;
+        d=1e100.net; s=20260707; t=1790087461; x=1790692261;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oeDp1cvkbE/ujJ++BUYIsVEpjJJJGQFOULTuibn73Ds=;
-        b=HJiyvMh+enoPROPrSFLVbIK6kVDNM+x++iFXl0kUpnaSywvw2AacBLgu+su3ABv/lB
-         hNxcocTk01qZRFggn1rwaFGyuEXaldCnwPgsi02B4tvAcGDCBenNbPBizecv7exASC1L
-         7U7li4l5jy2QARJX4mFqpXN6kCMxBqzCLEYj968RQYlN+uBtgvV4lqnulpCvA23nV1q3
-         Ldq+a1FGSXJo3GTljHVjj/gJQDd5Di8zMwDY9pGLkigbmr0ld63W1ihB3F4d5LtoInU2
-         XQIf3jlkykKTg0Oir07BR/MSMdHSymeNTqk3gudcael/uAUn+sUZFkH1D8LknYynvAhw
-         is6g==
-X-Gm-Message-State: AFuF++n8uIYXpHBUQ0AQz2cIyO7s2YHy7uCHhhOW0IFUyxt0/OxClhOK
-	LV9tEUt0e2iO98V9Ns7skx8dXj9HvI4MUkw8x/HNzzrMc70lIVp5r2/7vJ2MgOwX
-X-Gm-Gg: AYBFou2syAdZCmivX32XUNK34llDOm33DOy+e0Ol3hRcc3D+ANIx37m1UKaZVZLva5L
-	iqZIsGRG53vbFAGpITb2TXL975ZvxiUk7clcaXBqC7iO078eGxKYQq20l33iQATndg78GucfNCI
-	qf+z3gRQYUYNJV5KrOdAg/BcJaqpxfai5ncxwVfXIs3CdZr/TeixZo1/e1WgPXzuf8Rcw9jc73c
-	Kwuo5rLO+QyqrDHtuK/C/DafNPZlAx5fofdZg8KU8kOHhrvpc44CG8eeKii2H76nhJDlyzhPbo/
-	ia4JXS3tuJsxrd7+D/XSWH7YGVLxEu0zhoHwExw62FHd2+MEa47SgRdcaKh/pUir1XjbwOM5czn
-	HMQ0eyNrDXEiSohbjP4wulg8BsN5U4ENaDlJeeGbSago1j4TXyr1mKi0bNqPs2i45uBWraB7NlI
-	fjS7e7yhYA70zuThMNTrnYN/SuwjmBWYpbM/2rfM8P448pyRhiW/zfxvQNNffRp8qUOVfC4lCTx
-	NO0a7/OCQJOCKgGBAgaviIfvNkF6vuWn3xAnWqa
-X-Received: by 2002:a05:6512:10cb:b0:5b8:bc5e:b57f with SMTP id 2adb3069b0e04-5b8c1956236mr4732417e87.55.1790087451597;
-        Tue, 22 Sep 2026 07:30:51 -0700 (PDT)
+        bh=ejn1Cv3AZYuVHBui/3jgxRQSkdpmmTaViOr0Swl2g9o=;
+        b=TjIewH7H7b4KgeNCuboz5AJmYx6G7H0GT+8fxkgNJNnUSLjvrPVe07ObU6oAKGaOwZ
+         zL884KS9TGtPnU1Cp3MKdBxdcQcqzOCSJB5e+wWN4yBjD4QNgEuMHrdLuVGHwYXZoYYz
+         jkVpE24iZFgZ9w6BeGa7P04Vxbqq0xu9SV+YrUbye2waLhtoWTq1Zht2YAVtXsywRBcP
+         d2XN8YHXT7pWmkleohHEF+3Xx6xSPycZ55zBJeSYKtJt2LUocmdLeI4QqFlw+ccCoRKN
+         5ln3L1N1lv92JleZi2UzqeMYuTc+kpPPkeGRBaoqoY3Qrx76TuDMM0j70wVE5LM+jkKE
+         mpdQ==
+X-Gm-Message-State: AFuF++nx6LhUmlEh83AxZ2VrzX5yTKpuI6Ly673oXO9sD5D+rmUOa0ab
+	GhEDeT8q+DC7ET04ZYxE8DDGryxpBIMFnbo4oIQE5aKF0YQ39NkyhZbWnCCvDm8M
+X-Gm-Gg: AYBFou1HIqNgveDLNsQT6H7FX8UiGoeDLxFz9lJhox1+i6DijtvMQxxBJSlG8kL/XVs
+	AgX3fLTkfk49/Y9zHavh9UwPlrgWZ3B2eCD2d6hb0E5oHRg7wuZpvxfDhRclDXktAmxb2XtFSLB
+	eorINHuyRR0P78/YxXbs4aLya26hPP5oXC8/rR326bVn8rcz9bmuv9rQmDtuOki/zIiopXVZsT0
+	hH/H1e4XhuQ6Y6cM/aLqsL+CISrkPwl335VBqHaHdJ/ZXJ+5NCZOMcjTR+FhHBzWuNqLHhrral9
+	OmrTJeVS24KJLyTMUZG15/ZNm3cwuRhHZK31vJhmPxAfvWGsSYdTtZBN2x1xLbkH/VJf17uKBX3
+	HVvy2ieY/6pG/MUgGF57OBuPLFJBcBhQ5R90nN7X+IvfQ/hb2vs/RTRiZg9gg3DXXEkOy0aP8su
+	jnqP9exZP2KOYq1iXuIeBCn8F7Iu+wXvuJOZvgwB8cP/3JEwkDRFM6B8cjTzJt4uX3aMbb4WnmP
+	jeYixPZNDQahZbzD+ry9tjOY+Jv7qf/ebFbKSrD
+X-Received: by 2002:a2e:a9a5:0:b0:3a3:476:2e37 with SMTP id 38308e7fff4ca-3a5fbe36d88mr32233001fa.6.1790087460701;
+        Tue, 22 Sep 2026 07:31:00 -0700 (PDT)
 Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d46ed87csm583118e87.79.2026.09.22.07.30.50
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a627d82b71sm6868881fa.34.2026.09.22.07.30.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 07:30:51 -0700 (PDT)
+        Tue, 22 Sep 2026 07:31:00 -0700 (PDT)
 From: Sagi Maimon <maimon.sagi@gmail.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
 Cc: Richard Cochran <richardcochran@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: Re: [PATCH net-next v15 3/4] ptp: ocp: add TAP CPLD access for ADVA TimeCard X1
-Date: Tue, 22 Sep 2026 17:30:49 +0300
-Message-ID: <20260922143049.58545-1-maimon.sagi@gmail.com>
+Subject: Re: [PATCH net-next v15 4/4] ptp: ocp: add TAP CPLD flashing via devlink
+Date: Tue, 22 Sep 2026 17:30:58 +0300
+Message-ID: <20260922143058.58562-1-maimon.sagi@gmail.com>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <178991648135.2160803.1131127618501750446@kernel.org>
-References: <178991648135.2160803.1131127618501750446@kernel.org>
+In-Reply-To: <178991648294.2160803.18070095713191970409@kernel.org>
+References: <178991648294.2160803.18070095713191970409@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,65 +78,128 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sun, 20 Sep 2026 15:01:21 +0000 netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential
+On Sun, 20 Sep 2026 15:01:22 +0000 netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 9 potential
 > issue(s) to consider.
 
-All five are fair and all five are fixed.  The series is already applied
-to net-next, so this is answered with an incremental series rather than a
-respin; no "pw-bot: cr".
+Five of the six Medium findings are fixed in the follow-up series I am
+posting alongside this; the sixth I have answered below rather than
+changed.  All three Low ones are fixed.  The series is already applied to
+net-next, so this is incremental rather than a respin; no "pw-bot: cr".
 
   https://lore.kernel.org/netdev/20260922142829.57740-1-maimon.sagi@gmail.com/T/#u
 
-> [High] adva_x1_bus_release() drops the i2c root-adapter lock and forgets
-> the claim even when adva_x1_mblaze_release() returned -ETIMEDOUT
+> [Medium] ptp_ocp_devlink_info_get() publishes the literal string
+> "unknown" as the devlink *running version* value for the fw.cpld
+> component
+> (...)
+> so passing "" would still register the name for
+> devlink_flash_component_get() while emitting no version attribute
 
-The consequence you spell out is the part I had not thought through:
-ptp_ocp_read_eeprom() stores what it reads without validating it, and
-those values go out over the unprivileged info path.
+Thank you - that is better than what I had, and I had not spotted that
+version_cb runs ahead of the empty-value early-out.  The placeholder
+existed only because naming the component is what makes it flashable, and
+a part left holding a bad image answers neither READ_ID nor
+READ_USERCODE, so gating the name on a successful read would have made
+exactly that state unrecoverable.  An empty value keeps that property
+without publishing a version nobody can use.  Changed, with a
+Suggested-by.
 
-Unlocking unconditionally stays - keeping the root lock after the firmware
-has stopped answering would wedge every other user of the controller with
-no way back - but the driver now records that the routing is unknown and
-refuses to cache an EEPROM read while it is, so it cannot publish TMC bus
-contents as the serial and board id.  A later claim that the firmware
-grants clears it.
+> [Medium] adva_x1_cpld_flash() invalidates the cached CPLD identity only
+> after *both* the ERASE write and its completion wait succeed
 
-This does not fence the at24 and nvmem sysfs paths.  Those do not go
-through the driver and I do not see a way to gate them from here; the fix
-is limited to not publishing the result myself.
+Right.  An ACKed ERASE is running in the part whatever the wait then
+returns, so the invalidation has to happen before the ERASE is issued,
+not after it is confirmed.  Moved.
 
-> [Medium] The one-shot CPLD ID read is executed from ptp_ocp_sync_work(),
-> the driver's 1 Hz in-sync status poller.
+> Since the Lattice IDCODE cannot change when the configuration flash is
+> erased, should cpld.id survive a failed update
 
-Agreed, including the unbind and shutdown consequence - ptp_ocp_remove()
-is also the .shutdown handler.  The read has its own delayed work now,
-queued only on boards with the part and rescheduled only until the
-one-shot read settles.
+It should, and this is the better half of that finding.  cpld.id was
+being dropped along with the USERCODE, so a failed update hid information
+that was still correct and made recovery depend on a re-read that might
+not succeed.  Only the USERCODE is dropped now.  The ABI and .rst text
+claiming the identification is re-read "after a successful CPLD update"
+never matched the code either; both now describe what is actually
+dropped and restored.
 
-> [Low] On an acquire timeout the MicroBlaze hand-back handshake is
-> executed twice
+> [Medium] In adva_x1_cpld_flash() the first status wait after EN_CFG_TP
+> uses adva_x1_cpld_wait_ready()
 
-Fixed.  The acquire path no longer does its own hand-back, since the claim
-already calls the release path for that error.
+This is the most useful finding in the set.  FAILED is latched and
+nothing in the driver clears it, so a part that had failed once would
+return -EIO at the enable step of every later flash, before reaching the
+ERASE and REFRESH that would put it back into a defined state - directly
+contradicting the "recoverable, fw.cpld stays advertised so the image can
+be written again" comment in the page loop.  The enable step uses
+adva_x1_cpld_wait_idle() now, and the ENAB check that follows decides
+whether the part entered configuration mode, which is also what
+machxo2_write_init() does.
 
-> [Low] adva_x1_bus_claim() returns -ENODEV when i2c_get_adapter() finds
-> nothing for the cached number, without clearing bp->cpld_i2c_adap_nr.
+> [Medium] The driver clears its configuration-mode bookkeeping from an
+> I2C ACK alone, and its post-REFRESH success predicate cannot detect a
+> REFRESH that was ACKed but never latched
 
-Correct, and the comment there claiming the number is forgotten was only
-true for the mismatched-adapter case.  Both paths go through one helper
-now.  A newly cached adapter also re-arms the one-shot read, which
-otherwise stayed latched for the rest of the binding.
+Correct, and the reason is exactly the one you give: DONE set, BUSY clear
+and no error code are already true of the state SET_DONE leaves behind,
+so they cannot separate the two cases.  The check now also requires ENAB
+to be clear, since leaving configuration mode is the one thing only a
+REFRESH does, and cpld_in_config_mode is put back when it is not, so the
+exit path and the recovery at the start of the next flash act on the real
+state instead of an ACK.
 
-> [Low] The new struct ptp_ocp member comments overstate the locking
+I have not added the REFRESH retry loop machxo2_write_complete() uses.
+With the ENAB test in place a REFRESH that does not latch is now reported
+as a failure rather than a success, which is the part that mattered; a
+retry would change what goes on the wire for a case I have not been able
+to produce on the part.  Happy to add it if you would rather have it.
 
-Yes.  The design is that the writers are serialised and the readers
-re-validate what they got, which is not what the comments said.  Reworded,
-and the cpld_id_tried stores are marked to match its unlocked readers.
+> [Medium] adva_x1_cpld_flash() holds bp->cpld_lock and the I2C root
+> adapter lock (...) can this trip the hung-task detector?
 
-The series is tested on an ADVA TimeCard X1.  None of it changes what the
-driver puts on the I2C wire - the ISP command sequence, the frame contents
-and the arbitration timing are untouched.
+This is the one I have not changed, and I would rather say why than guess
+at a fix I cannot verify.
 
-Thanks for the review,
+The 100 ms in the page loop is a timeout, not a per-page cost: a real
+6526-page image programs in well under a minute, and the hand-back that
+follows was measured at about 670 ms against its 2 s budget.  The worst
+case you add up is reachable only if the part stops answering at every
+step, in which case the sequence is failing anyway.
+
+Releasing the bus between phases is not safe here: the whole point of
+holding the root lock across the claim is that the controller is routed
+away from the EEPROMs for the duration, so dropping it mid-sequence would
+let an EEPROM read land on the TMC segment - the problem patch 2 of the
+follow-up exists to prevent.  Bounding the total hold would mean
+abandoning a part mid-erase, which is worse than waiting.
+
+Lowering CPLD_MAX_IMAGE_SZ would shrink the arithmetic without changing
+the real behaviour, so I have left the cap where it is rather than
+pretend it is a fix.  If you would rather see the phases split or the cap
+tightened, say so and I will do it.
+
+> [Low] Is "the only check the driver makes" accurate?
+
+No - the size cap arrived after that sentence was written.  Corrected,
+and the .rst now also says what state a failure part-way leaves the part
+in, and that the component stays available to write a valid image again.
+
+> [Low] Should this report offset + CPLD_PAGE_SIZE?
+
+Yes; it was a page behind and never reached fw->size from inside the
+loop.  Fixed.
+
+> [Low] Should these two be WRITE_ONCE() as well?
+
+Yes.  Done, and the struct comments that claimed a lock the readers do
+not take are reworded.
+
+The series is tested on an ADVA TimeCard X1: the CPLD still programs and
+activates with all of it applied, so the two checks that decide whether an
+operation is believed - ENAB after EN_CFG_TP, and ENAB clear after REFRESH
+- agree with the part rather than just with my reading of the datasheet.
+
+Thanks for the review - the enable-step and REFRESH findings were real
+false-success paths and I would not have found them on my own.
+
 Sagi
