@@ -1,62 +1,64 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF93C541E75
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E09254EECE
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087317; cv=none; b=PvJYHPcqFLHsznYbjNQyfuZm8N+3kbdG1JmhRNOTSdy6YWGWZwxXNC58QyDxNQmcXSuasYghtJ3Te4YRwTwKrdyuEIRCNECw8Vu7tC0pVkO58LWkBvkA3xtsDRYkOF0CSZlTwpj8E33yJjobBhutXX5DTpzSnvAdWY6ZWR2MKgo=
+	t=1790087320; cv=none; b=GNI1/NX26r+RsnrmCXWJEJhMQwl7Zw3OxsGHQHPq3UBytIWGL7k5oTU1OGB5+t3PvRInC23oxj/AdlNoatU3GUL+zgFpAEihUCXLMKXhzNgBnp4JGb4lR99gQFS9cgtEdwa4KJt2uIIOAjxv/BZX9tkWxGHCOthMRTXM+J/P+Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087317; c=relaxed/simple;
-	bh=mMUtEEojzt9J8y96cs3e6JAjp06vfiuaPVxbmzHBeZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iX/bXxF9ba+47n8Jc3C6dE2hraZPJ5dAbzoW8610Nf/MqF7BOyTGeVfY/My4YeIhuL+sdKD4/AyhFuZ7YNnsCYi+WaqdQo4ZX4DDOJ5ivfCPRBSB3/3LNu0hHuDEbOI6iTFZ3Ypuo2NAncznvgdL/7a72MfqfbGDp0HTw39xYL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kYEibxN7; arc=none smtp.client-ip=74.125.229.204
+	s=arc-20240116; t=1790087320; c=relaxed/simple;
+	bh=L+4quM8DIZHcLp0rpytZsLw6+jjB2bs2Afpu5C94VdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=csY3/vDIP746GQczSJavnBxq7LYj5U1pUO7vVOXP9gG7b4Fb6tnwBpRcbZNQenhBwC+pcO83ZtEDX90qkYpDqaMIp7teYQFBOjiPDjf+Xl0jElATMDkp3C7UoKiyYwvOd7ENs2j3TzpfrRBcNJlnaNft7xLPI5gdcPzHVORV1CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kFcpiyz0; arc=none smtp.client-ip=74.125.229.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kYEibxN7"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b76ff64d78so3945122e87.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:28:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kFcpiyz0"
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b5e4f13d77so4790169e87.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790087314; x=1790692114; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JLJfF6hhwT/ytTs8DqMt8dJw/Qx7jiDljUxbYquadd4=;
-        b=kYEibxN7VS/1rqlySqbPxRIIt0hsjjgqdM+AUhXpO1r7VmHbJuS3LcSBcAuG/e7vzV
-         kpUoyOSJFh9XZbuQ+z4zyv6KcaOPZ7VLuijCAk5f3/lddNdS4YT5cqtPe79Rz5C+33yi
-         cSXX2NXM7CYD9/FZNi3j/Hj+s8r0ZnJVmHb6g0Z3hIkTVRfOlKBOe7DgZyvLufKPTguq
-         B0xy+5E2Oh7IwxIXgs0u4VXESj++4N528S4l//ICkGUPhW9cK4d/9oSdIUFXK6YXFwZW
-         XillEo2EeuP29Qxl08r4ayd+RK8tQdr3sH6FNf1cq3RkpmhpQNVkLBco383nxRTusiia
-         piXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790087314; x=1790692114;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790087316; x=1790692116; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JLJfF6hhwT/ytTs8DqMt8dJw/Qx7jiDljUxbYquadd4=;
-        b=mIKrvqjNy43oVfGb6l+cph+rzHxsCo5EyOwyjWp4cuqW42j1PyL1EnxOY6Cri3KHUz
-         H8mcH7d6PIuDeggStyRwSkycVV+UZbOIbYfl8Du2HVox/PxVOMsLYVSBBKIUlxLX86gH
-         WiNhVEl4ncNCcCDb3rM8BIbNmaQ0pFtaVFZs69/xAqeoeEty2+QipRdgcgNvE4tZGvNZ
-         EZ1zZxgcZiDCG+wXaUpRNQSALIc88YGqMHU62HpA377KMWtZDaDqlBsmfnJ14AzDp284
-         JUlRYeXS4oUvnBRz+p+oAcxYrUmiHhvE5oNuLVIhzUlkgydkQYlMJamGMLnlBVV9/NWh
-         K5ww==
-X-Forwarded-Encrypted: i=1; AKwUvBx/QF7/n6xlLf2fB8oxlWvqvw+3LORkuFH8b+FdH5cWX41o4LkFbfj8oHr//4cywb0AqifHLjU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lfW8IjVWfqOlngY//mXc6/HjNq196DIZQLkmfljUQ29c+GVrch
-	H7oZgNQsL1YsNNuZTpT6lyqeYB9gA3l0NS/Mwb5uKsuC2kGKVmIT45Pg
-X-Gm-Gg: AYBFou0wPkhpZOXZAun/VLfj1QiYQnKYcF4joIKvlIS0j+TnYB54UuMstFt6TrdTIRp
-	DMdGj6qTr91E0Q3//GrkKuxGOpckds3bx+8fz4c0WCxqxt/0XaYf7pX/oy88d3q8yBaugiJdmX6
-	bTwQZAIw15BkaDSU5wufV9QqcL8nlqJU1Idg7PFDtGRkeHavivTIbQEVOiaN06gtXNeP9K5qVe1
-	XT+ys7kJCdMErJ93tw18ZT8cfLEKP6Y8UZLx4Uj1LjowhKwMG4S2i/gc+DVOFEyTGE69XM7axVV
-	xpjdku6oWl9SDj5gq6hHiCREEUNLM90ws6+1bgzZ4bPzBS3yug0DmQHXdJ0u2uAUd5KBUn8QvNW
-	AP9bzAtOIGu1twhgg/bqOFYi8k6dRzR6MelnSRJkmqmsknEHgXBWqRGTtDYg0CEIjb8Ojd3UCKK
-	HD8uFkgOgP1jZSJwFe1noxD+ulU8SbJ0RZzncnSYxNxnpceOYGR6DS9i1kKytuS6piTBo7fw1yV
-	JNWhvlRbqouCGpLEnGWZJpmD+4g417yEdQifQNW
-X-Received: by 2002:ac2:4e11:0:b0:5b8:99b1:4884 with SMTP id 2adb3069b0e04-5b8c1836e53mr3902709e87.40.1790087313390;
-        Tue, 22 Sep 2026 07:28:33 -0700 (PDT)
+        bh=e2Bt2pbnVu/ApigQk0zS6acL2EWAE6Kw3ktFWRmRY+Q=;
+        b=kFcpiyz0iNrUZNjoH0gTE2Q6n5rOgKW+9hgvkU17NQk15+hIoDafBOpyogzbFZ8mss
+         FzmDJyEDkRuMdI28APMKao5qQx9idrar8jOaCsf7bWFVSxPsuEzVXlqMNLn1WGF/GQ3O
+         O5kcvzmrRvUUromuSbl2xmnxqFKpiHbE8gaeBU3oiCFoE3Pb+DXtde1L7ibo8e6rrDaP
+         LFKdwuKswVdJ3n1uki61zMjjHKDISgC89autGFMpv+zH9n/xoLpqo+jxZ4HKzJsuRtUs
+         Rs/6Qzf72/ZUFA4UubQ1Dbr8vLcd12EvT5p28hXGQBG/4hwndrdWBq/qG5bBrNJtDijR
+         eaWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790087316; x=1790692116;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e2Bt2pbnVu/ApigQk0zS6acL2EWAE6Kw3ktFWRmRY+Q=;
+        b=kl5ObZEQ3T82ZMGosRzPiEG2sEA5XVivClgn2WtZqTwG9X6Jgp6yiWglWYT6WfCOGZ
+         VhtAj7WSHZnN7316smQwXGJgJwIP+7hV1UoB3HY2yuiZNnCopi3Iny2VDiSFFtVQ5rvk
+         kQlv3fx/SuF+CwagR2HdoTaVcg71Vv5J8huNi7i7heXV5FEv5n0mvwQb9w4wNOngsM6E
+         tlU5mn/TZhhcHGa2313bPJhEhBrX7Pf16CniDjzG3UXlr9CE9/O/nG1TKiUpV25W7a3j
+         NVqjlvzJ8WdwDGzlb81yzfoZIeHbbG5H1Yp+XECbnNkKFNIAXIYC2OCHi26o33T7Wh9e
+         Bkrg==
+X-Forwarded-Encrypted: i=1; AKwUvBy3u+nW1Hs4sbVs0lAD5S6OBt5vnE9SPO8ejmfdPVH/xqc546wy9fP+X5ok/u8zAGa/kv/9S/s=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQROnWyoFjew6aA2MhQQiP30SvUOHc37ddaxc9MNPRJIeRzy+e
+	mzPKrwHCYcXvH9sg1rZskZdA9U+DWp1pA8FbwfsFrV2kZD1GGYNqq4Ly
+X-Gm-Gg: AYBFou2y1CdGE+SkysL86oihib9FUnZjmruOrdIDZZRqk0o5cHAy0fYB3qGN3GWFAno
+	1qOsqaQdvmJQROFsG1ZrIe36MIDbg7WqYZfGfyEtHIVfQcTzYrfQ3XsZkrtSLBViShhy8o17nEU
+	xTBtBuu1I+9HDVSq4TJvfT1au6FXSgTZykxbhqr3yKJcUOGNsB4tuvUI0t0oC0i0xqcx6+PTm06
+	+UZawD7zAk12RxvwwFFxqPEmKgfLLGB3ygw4hM50Bo3NOcfREuvKjztwPerq3laSPmusFqLXKiL
+	prdCCox9qzkIIZ923W8wb1CZNr7lCLbv6r6S8/d8Og2l7Us/RaGO56V5xDX/0NsY6yHGtMWma7t
+	wVLv0yrUKRApDzeThS8snYvHjyRtEoNMVAZDBYWQtRCWyhLZ8RUcITY4LeEDmKx/Hb/hnIKLUpU
+	SKQ4Rl/hLtwIwZON9CDFY2eh+9mdO8RraPlicRmi+4jctubTFhUkAYYdpqahkQ/kACYLOADN4Z8
+	9SNVyXcppOiMaBCS3XE0KtWqHFGWCCgV7ENH9peRg==
+X-Received: by 2002:ac2:5681:0:b0:5b6:1a7c:30 with SMTP id 2adb3069b0e04-5b8c1859720mr5678732e87.51.1790087316034;
+        Tue, 22 Sep 2026 07:28:36 -0700 (PDT)
 Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d46d2064sm589691e87.24.2026.09.22.07.28.30
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d46d2064sm589691e87.24.2026.09.22.07.28.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 07:28:32 -0700 (PDT)
+        Tue, 22 Sep 2026 07:28:35 -0700 (PDT)
 From: Sagi Maimon <maimon.sagi@gmail.com>
 To: Richard Cochran <richardcochran@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
@@ -75,10 +77,12 @@ To: Richard Cochran <richardcochran@gmail.com>,
 Cc: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net-next 0/9] ptp: ocp: TAP CPLD follow-up fixes
-Date: Tue, 22 Sep 2026 17:28:20 +0300
-Message-ID: <20260922142829.57740-1-maimon.sagi@gmail.com>
+Subject: [PATCH net-next 1/9] ptp: ocp: move the CPLD identification read off the sync worker
+Date: Tue, 22 Sep 2026 17:28:21 +0300
+Message-ID: <20260922142829.57740-2-maimon.sagi@gmail.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20260922142829.57740-1-maimon.sagi@gmail.com>
+References: <20260922142829.57740-1-maimon.sagi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,73 +91,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Follow-up to the automated review of the TAP CPLD series, as Jakub asked
-for on the v15 posting.  Nothing here changes what the driver puts on the
-I2C wire: the ISP command sequence, the frame contents and the arbitration
-timing are untouched.
+ptp_ocp_sync_work() samples the in-sync bit once a second and emits the
+dpll change notification.  Since the TAP CPLD support it also resolves the
+i2c adapter and performs the one-shot CPLD identification read, and that
+read can block for seconds: adva_x1_bus_claim() waits for the MicroBlaze
+to grant the TMC segment for up to MBLAZE_RETRIES * MBLAZE_RETRY_US, and
+the hand-back polls for the grant to drop for as long again.
 
-Patches 1-5 answer the review of 3/4.  Patch 1 is the one with real
-runtime behaviour to it: the CPLD identification read shared
-ptp_ocp_sync_work() with the 1 Hz in-sync poller, and a claim that has to
-wait for the MicroBlaze can occupy that work item for seconds, delaying
-the dpll change notification and stalling the cancel_delayed_work_sync()
-that ptp_ocp_remove() - also the .shutdown handler - starts with.  Patch 2
-is the point the review rated High: the hand-back can fail, and the driver
-would then cache and publish whatever answered on the TMC segment as the
-board serial and id.
+While that runs the in-sync sampling and the dpll notification are delayed
+by the same amount, and because ptp_ocp_remove() - which is also the
+.shutdown handler - begins with cancel_delayed_work_sync(&bp->sync_work),
+unbind and reboot block for it too.
 
-Patches 6-9 answer the review of 4/4.  Three of them remove ways the
-driver could report success, or keep reporting an identity, when the part
-had not done what was asked:
+Give the identification its own delayed work, queued from probe only on
+boards that have the part and rescheduled only until the one-shot read is
+settled, so a claim that has to wait no longer holds up anything else.
 
- - a latched FAILED made every later flash of a part that had failed once
-   return -EIO at the enable step, before reaching the ERASE and REFRESH
-   that would recover it (patch 8);
- - the post-REFRESH predicate was already satisfied by the state SET_DONE
-   leaves behind, so a REFRESH that was ACKed but never latched passed it
-   with the old image still running (patch 9);
- - the cached identity was dropped after the erase *wait* rather than
-   before the erase was issued, and it dropped cpld.id too, which is the
-   silicon IDCODE and cannot change (patch 7).
+Fixes: 3b815e29966f ("ptp: ocp: add TAP CPLD access for ADVA TimeCard X1")
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+---
+ drivers/ptp/ptp_ocp.c | 39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
-Patch 6 stops publishing the string "unknown" as a devlink running
-version.  The review pointed out that devlink_info_version_put() invokes
-its version_cb before the empty-value early-out, so an empty value still
-registers the component name for devlink_flash_component_get() - which is
-what a placeholder was needed for - while emitting no version attribute.
-
-Tested on an ADVA TimeCard X1: the CPLD programs and activates as before
-with the whole series applied, so the two checks that decide whether an
-operation is believed - ENAB after EN_CFG_TP in patch 8, and ENAB clear
-after REFRESH in patch 9 - agree with the part.  Patches 2-4 sit on the
-hand-back timeout and adapter-lookup failure paths, which do not trigger
-in normal operation; the hand-back measures about 670 ms against its 2 s
-budget.
-
-v15: https://lore.kernel.org/netdev/20260916153242.157171-1-sagi.maimon@adtran.com/T/#u
-
-
-Sagi Maimon (9):
-  ptp: ocp: move the CPLD identification read off the sync worker
-  ptp: ocp: do not cache EEPROM content after a failed TMC bus hand-back
-  ptp: ocp: hand the TMC bus back once on an acquire timeout
-  ptp: ocp: forget a CPLD i2c adapter number that no longer resolves
-  ptp: ocp: correct the CPLD bookkeeping comments and the flash progress
-  ptp: ocp: report fw.cpld with an empty value until the USERCODE is
-    read
-  ptp: ocp: drop only the USERCODE when flashing, and drop it before
-    erasing
-  ptp: ocp: tolerate a latched FAILED when entering configuration mode
-  ptp: ocp: confirm the CPLD really left configuration mode after
-    REFRESH
-
- Documentation/ABI/testing/sysfs-timecard     |   8 +-
- Documentation/networking/devlink/ptp_ocp.rst |  28 ++-
- drivers/ptp/ptp_ocp.c                        | 188 +++++++++++++++----
- 3 files changed, 170 insertions(+), 54 deletions(-)
-
-
-base-commit: 10cfa109c880092df32e396647b4afdca9be8350
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 2802989e8494..4a58bcc14648 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -402,6 +402,8 @@ struct ptp_ocp {
+ 	bool			sync;
+ 	time64_t		gnss_lost;
+ 	struct delayed_work	sync_work;
++	/* CPLD identification, off the 1 Hz sync poller */
++	struct delayed_work	cpld_work;
+ 	int			id;
+ 	int			n_irqs;
+ 	struct ptp_ocp_serial_port	port[__PORT_COUNT];
+@@ -5935,18 +5937,32 @@ ptp_ocp_sync_work(struct work_struct *work)
+ 
+ 	bp->sync = sync;
+ 
+-	/* Resolve the adapter here rather than once in probe, where it can
+-	 * race the adapter's own registration, and read the ID as soon as it
+-	 * turns up.  A claim can fail transiently - the firmware may not
+-	 * grant the segment straight after power-up - so adva_x1_cpld_read_id()
+-	 * retries a bounded number of times before giving up.
+-	 */
++	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
++}
++
++/*
++ * Resolve the i2c adapter and read the CPLD identification.
++ *
++ * Kept off ptp_ocp_sync_work(): a claim can block for seconds - the
++ * MicroBlaze handshake polls for up to MBLAZE_RETRIES * MBLAZE_RETRY_US and
++ * the hand-back does the same - which would delay the in-sync sampling and
++ * the dpll change notification, and stall the cancel_delayed_work_sync() on
++ * the unbind and shutdown paths for as long.
++ *
++ * Reschedules only while there is something left to do, so a board without
++ * the part, or one whose identification is settled, costs nothing.
++ */
++static void ptp_ocp_cpld_work(struct work_struct *work)
++{
++	struct ptp_ocp *bp = container_of(work, struct ptp_ocp, cpld_work.work);
++
+ 	adva_x1_cache_i2c_adap(bp);
+-	if (bp->has_cpld && !READ_ONCE(bp->cpld_id_tried) &&
+-	    READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
++	if (READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
+ 		adva_x1_cpld_read_id(bp);
+ 
+-	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
++	if (!READ_ONCE(bp->cpld_id_tried))
++		queue_delayed_work(system_power_efficient_wq, &bp->cpld_work,
++				   HZ);
+ }
+ 
+ static int
+@@ -5984,6 +6000,7 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	bp->cpld_i2c_adap_nr = -1;
+ 
+ 	INIT_DELAYED_WORK(&bp->sync_work, ptp_ocp_sync_work);
++	INIT_DELAYED_WORK(&bp->cpld_work, ptp_ocp_cpld_work);
+ 
+ 	/* compat mode.
+ 	 * Older FPGA firmware only returns 2 irq's.
+@@ -6046,6 +6063,9 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		}
+ 	}
+ 	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
++	if (bp->has_cpld)
++		queue_delayed_work(system_power_efficient_wq, &bp->cpld_work,
++				   HZ);
+ 
+ 	return 0;
+ out_dpll:
+@@ -6080,6 +6100,7 @@ ptp_ocp_remove(struct pci_dev *pdev)
+ 	int i;
+ 
+ 	cancel_delayed_work_sync(&bp->sync_work);
++	cancel_delayed_work_sync(&bp->cpld_work);
+ 	for (i = 0; i < OCP_SMA_NUM; i++) {
+ 		if (bp->sma[i].dpll_pin) {
+ 			dpll_pin_unregister(bp->dpll, bp->sma[i].dpll_pin, &dpll_pins_ops, &bp->sma[i]);
 -- 
 2.47.0
 
