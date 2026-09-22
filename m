@@ -1,172 +1,205 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86C13A1A23
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B155B3BB119
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087728; cv=pass; b=koIhthe9Hqqnx0dyOM7tPEA7Z/hBZi/zIciDH6dtzEc6J03Prn8ix7FFNEQ6dzmu5KI8dXNE2e2QbLxKAanjlC54zASMcmlWcYO6zRtI/bJj5TdM5L4RfWjjGcs7V8TGUTSTRxqprUhCf/I/IikDQVePRNhbGChkA+5lZQgbz4g=
+	t=1790087801; cv=pass; b=m2GZfHVCVgV8OlSbXsZkLdpqM4B8k2wwPMKe2JtZNn+HMiuuYkkVQTn9eCwmkhACxCCCbVhamN0CJudDwUyHtUy+SXcdBKkp+txxbBNVN31a03ZkOF6cUjQfNgbChl37i1UHqfCpOQP24vGzm0oZmk/BIBdPZ+4TxLBrdeSvcys=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087728; c=relaxed/simple;
-	bh=NEyIVmq/MepCR0DVp6TI3+6kKc1aiUn/+ROhgJ5gksg=;
+	s=arc-20240116; t=1790087801; c=relaxed/simple;
+	bh=wm1mdUOdPY+A9xm9DAzxZQGN1bfMmm1ggAop9ZSmO7M=;
 	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZEK/wHLSWoPoy0WBzfhV1Lr14t8RddjA4JKjfUREHzN9BzCsnyCtBNXL2saNPFYACb9pD4oRLE0gICYD1NTylqClsvHcCqlbWMFJvLYDeTge/adk7uW7W7xkhczDYzC0ZEJ2tesm1pyWOqFWf7dHtfR4UeCwFe9OwI1dfxzBdzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YbNcnKpX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U6tjeKWH; arc=pass smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=BMuAjQ+Xqh7rgwMlH8pLrxeHyUTlx0wzZkjvane9ZeNVT/9hnp6r9JeUQ0cMFqYGV9vrUILnVCV9BNGQpPGKU/VQoNJv0uv1+h5z9J2nn3xthgNWSMGv/2JJ5gQOaiY8S7DYO/wahM1Vk6NejXLX3nLhcHe6Uj05gYAEaiDlGyQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QNt1vtav; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mWoRVEOx; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YbNcnKpX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U6tjeKWH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QNt1vtav";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mWoRVEOx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790087725;
+	s=mimecast20190719; t=1790087798;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gK1S9WSj9Xr3eZwZT3BugPd4DtS8wZ7bJxT3IFUTmCk=;
-	b=YbNcnKpXkQCzeYPQRLp76xmekPlNplIhoaMjzoDqxnhXWheywLE7UoKf05Ncmvxq6Qq4qZ
-	ykShcN9ajRGFzeLHeGmgiq7pLZKzxZVQYb98RAzAHh8gepZ7iG/NPvdTfOXXV2mCg2eA1z
-	ei2GDRISRIVeamLifupRYvb3jilgZL4=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=2Uhf7XUhU0j+LV6kdzlFblwsBGtqhh56gYh3J+aEB9A=;
+	b=QNt1vtavmpZlABfNx2Yq+vtV9+MwkpO91vEQen/sKFxbaX2wpvUsVsQk6fh9ybKNqmrzoE
+	8HvJ0MwJNe31c91CtAnHHMMFoPMKyREX2Futu6nCC4YyMZl/Pj3u4Ph+j34zxIm628lsqP
+	5rms2YgHyPWZ7rUnLKEU6qRWQMY0w5k=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-wEoGqbhMO5C2ecnA5Pob_Q-1; Tue, 22 Sep 2026 10:35:24 -0400
-X-MC-Unique: wEoGqbhMO5C2ecnA5Pob_Q-1
-X-Mimecast-MFC-AGG-ID: wEoGqbhMO5C2ecnA5Pob_Q_1790087724
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-98331b577e4so3227537241.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:35:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790087724; cv=none;
+ us-mta-552-XWRJkKhZOu6I_H3XefiHFQ-1; Tue, 22 Sep 2026 10:36:37 -0400
+X-MC-Unique: XWRJkKhZOu6I_H3XefiHFQ-1
+X-Mimecast-MFC-AGG-ID: XWRJkKhZOu6I_H3XefiHFQ_1790087797
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-67124ce8015so4928656d50.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:36:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790087797; cv=none;
         d=google.com; s=arc-20260327;
-        b=lSF+cBhseAoxrRklZRp6goG4mgNffvK3ewWEAL1Vhcx6ost+q9SHVppGHVbSKBZ+xD
-         Sf+FFvn2D6Sda3JKQu5gQ0JQ5RCamm0B7Yzyt1Ao0zQdpTdUx2ndBkMAwmU+5EvARfRA
-         czhkfgEojceORQEJOv45Ul05SdM/PPBw5pECy4EbJxWIW9oynhmwYfm+aU+6xxz4txr6
-         8Buzg4m2w2hDVzUFb8XBstKvfM4UxHh4QGrR/ZN949TNbEI1dKBBkt4pbOqMU/rRrDNg
-         e7JTQPPS8wmezhC5WiRfMRssFdThXM4Dn90OrgjTJ44Uvs0uGBNLgfnIR2JWEfnXYKpA
-         vdQw==
+        b=hh6eOSANHJ4ddDk9WbnIQGMMNvCieHVPS8WownK3e12TJJGUVXz6IyQgmLQFBPLX0+
+         GxO26bYi3MM8X6Rg85QP2gqLLwChzSdGdgrRBuIMAdZ1WORJD2L79y4gLWMhlABduHx8
+         c6IsYxO+uN5NcIf4bPU+kj0eOc+AinXzoLup07GwjyAwHjXhLOAPGUBMfe2f72CD69z9
+         MtsvDfI5A+RDqakQg1yu6fEV9BUEMViiyfzLF0CNXiLtF/+x36NJ38AlEzoIxtM2Bey4
+         MSIY8TythWizxng91umgKGV6XO2qDRGz5xx7VJjnqvo0duQiRDQ8CUl7KkhsT90a0YuU
+         ndgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
-         :mime-version:references:from:dkim-signature;
-        bh=gK1S9WSj9Xr3eZwZT3BugPd4DtS8wZ7bJxT3IFUTmCk=;
-        fh=LCPqGhZrnBKqiqaofh5uGt+N9wS0p0RbHeUkBytWb7U=;
-        b=lYPCQIwkCx3r5JCumF8IG+YQgcI+5aH2b4O6IGd+IKxJp8yVY5ecmLLlX9YhzKCQne
-         yz6VrmW20Tfeac9xH0pOYk4acJXgiIUqfPidBXCyf4O5KhN4pvKhy6hh7OPfFOfN8jW5
-         liA7+WF4F4x3R86b+hMMrX/iz4brC4kYOW69TF59qSDlDHfdkub24wYtCS7Zlj/m9rD3
-         H7ewREZof+Pg89d8byDsMG/1rZJIkzCI4+rAFRPk4gN29tRCcJ33ucv/cgkSP/upXndy
-         8898Ncs/dI5d6VqAYpOsVyUmob0HW0CdZs4X1jc9EKhT3Wy02/Hh3MoJyGsi501jtqYd
-         0dJw==;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:dkim-signature;
+        bh=2Uhf7XUhU0j+LV6kdzlFblwsBGtqhh56gYh3J+aEB9A=;
+        fh=MaoGU2LsHnondQW8T4sS+IPE5rFIWq8326yefueFIiA=;
+        b=NinTlXcxmW8MpU9cXpNas4Fmc5b57PcJ10zWDQ6/T0hrOp9uSIip3vAUKojRAhGPs7
+         UuZKujbJ+xzU+3At+/LFBdPqw/d+v3vbjiS3/Pt7p9vn6PpPhVUzfQK81TQhcF/gEVAq
+         RwdNQPjQF5BY8i73snBd9a/CZJHYjVIDyz0NOIzBneAXqGecNY0l9eDIHOq/ABB7PNHx
+         lxPeu3e/0Rvx7QaR2I1TH7pvKsvEagAeZ9L26UfV4Hl8huhB2bQCHtB+EcdHqRxODekG
+         BjCMt1r+EFhBsQHXTNRZH7LDwxKr9Xiyd+pUaYgjQ0+Y+ytATVara0ElbdqyWAsv8F5j
+         dDNA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790087724; x=1790692524; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:in-reply-to:mime-version:references:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gK1S9WSj9Xr3eZwZT3BugPd4DtS8wZ7bJxT3IFUTmCk=;
-        b=U6tjeKWH578GfsDCBKzksKVUkacgxUB28Qgss28QTDLCKp2mmCvWTNXI388L7PHS11
-         /jOETlJmvJw7jk6Xcwy3ogotlYnpvLCSFuDn0e4TtQMC9iv2UgUIJxyfCHCC/cJhp0YT
-         bz2H6Pq/FB1s2rSNIS6bO6Q+rD8rt+Ed2luA7FfBGrTL2snL2OSDPfJJS5fMPj+fVTAN
-         KsX2Mz95yqRB7ryUR1MgIuu5mmGFDn6uRQgaj+ijl7vWyCTSoDsJoB9QWzNwNnBeuKLB
-         hNeRtb33Xlt9gf/Evajwb2MHYYPoL8Ci9H2Ngsx8PM/B+kSG4LY8L7MZQGGBGL/pIKTt
-         H4Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790087724; x=1790692524;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:in-reply-to:mime-version:references:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1790087797; x=1790692597; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:in-reply-to:mime-version
+         :references:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gK1S9WSj9Xr3eZwZT3BugPd4DtS8wZ7bJxT3IFUTmCk=;
-        b=eXU1jI7XkSXUqgpaPCnAu7opYZDXNHpMWFHeeOK8grrY0BymgI/B/af5bG2hgR8Phk
-         Nphl8XfCaVKzuTEBdugpZJovDKj2MN72WkHmw6eRyT4hkVPVv+9uBmlOGcCWdLB1Ieju
-         Q64KU3SVfVGleto8FiEemab4wzAoEMkC0Pdsg8qMknvRY0MUVexy5fL0N14eDEuMIOJX
-         VUHJYchgj/x22jcZcd1jItZW6GGOvSxaQBlT3+B699SUQ8q4T9OX5UF6t6QrYh1d/cQN
-         qPnnwKrC0MRo5MAtcAhgAF9mHLk99T+kHbJTsZ7cltMwnjRHNwcJVA5ZOPb5PnXHztRr
-         ty5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBz7p+YcbfTwVhsmqpPs1zgq+1T3YgOuA9ANAwY7m/H797kdzapXMkabQGxiGnAN1hhQsxt6sMs=@vger.kernel.org
-X-Gm-Message-State: AFuF++l0Uv8gwkLnvoW1VoAloAnJPLpXpPOD9w83/SUyzLcy6betLFHW
-	oteaojlAdHo2NlYrPQjzW7++70SqHR3pr/ZyVxmKxpptMdp1oBDvb6yHyAL4NSN0KkS/KRNXSY4
-	3vc/ZBn3KQD459/lk5sIYRyHbHcXGhAOP7plEOwyY1OpKOa+9O4j4C+4rexgay23Qr0/XVNICD2
-	rS5S/GAzgyuVg6pXIk44WmugzISfOL7TOl
-X-Gm-Gg: AYBFou0B1ZnugI5LWt/3mgUwO7mXh9MqsuEuqshwZBmBP9Sj8gD06DLjs1XCrkISuji
-	UaNRBeFDz60mN6gZz21fsk41iXttoNCir7lsZM1HgNvaQRM67r7nkQauJhwmyHmnTN+8BBeRzM0
-	9c4R/2arGJKP+nf8q3Tf0kVI4KlHOdu22vX5ZYuePO/54fTDR8k7iDX/k=
-X-Received: by 2002:a05:6102:6b0a:b0:7a8:1817:2765 with SMTP id ada2fe7eead31-7a8181728f4mr5384417137.11.1790087718406;
-        Tue, 22 Sep 2026 07:35:18 -0700 (PDT)
-X-Received: by 2002:a05:6102:6b0a:b0:7a8:1817:2765 with SMTP id
- ada2fe7eead31-7a8181728f4mr5383871137.11.1790087714634; Tue, 22 Sep 2026
- 07:35:14 -0700 (PDT)
+        bh=2Uhf7XUhU0j+LV6kdzlFblwsBGtqhh56gYh3J+aEB9A=;
+        b=mWoRVEOx4U2EC8oCpg3mslaEhgvUHKFWlNbI57ajkB/SJS/2rElKBUG+W8RhYh+5LC
+         JTB/awgjTuvtI+CAXIDRGw0LS6Wpu/ENUNg1ndZGOcd9uCR454ddRp0mdRihXCl5TUnF
+         f2g1XDeYSOP0pcEw26hC6ZTzhSGzhsfRtdSPoQV5SL6egPQE06ejo0yqqjnAjz42gVOk
+         pLhKUNDzW9qNTXwT0M0i3ZwdgdbGw9A+sYETzrf7hAXXtJ/cRW7zGa8rhlMTvTt3l4JF
+         9zFX/Sy6Am/5ZKoL8cMy3IDZiqR56rkwT1fzaKokiVQnam80jYGAGxrd3Sxy2Lyw/U04
+         Jlbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790087797; x=1790692597;
+        h=content-type:cc:to:subject:message-id:date:in-reply-to:mime-version
+         :references:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2Uhf7XUhU0j+LV6kdzlFblwsBGtqhh56gYh3J+aEB9A=;
+        b=WVwsuWFFZrIAjjAMp7oQafSbdyfu4ojGpy6sw+t3bhkdJdDvamydMewlGq+d3hQi17
+         Il+pS0+sXHSANhI9NveqOOLuOE0SCD+me9wH7GMqRkLFB5E5bP9Xbp8+7CMlbwWV5Mbx
+         ZIchjwhA8zkVjuIV/qPjerMsn6JddN/XXDIX9pmxCrP0z56q0VIJau6vzKU0W0TYgmpy
+         bhRJLUpjRCCc5gaSZhh/IPwoA0VCAsui78LMpdcRZnXVKT6cxmjpXd6/PsDRlDgv0/IH
+         ezIHRNBcMZFyQ2AK+01jOdyGWKeV472jBTXRSSDJDfz+mFXUeKI+Zp4SdUUdcebW+1iv
+         XWOw==
+X-Forwarded-Encrypted: i=1; AKwUvByQ9dWN2h9h+0LpEWJeB3WoLcmzNdE1hz830KnB/A29fTKtCEXKXgnkkNrE8zxtRYv/3rERZTo=@vger.kernel.org
+X-Gm-Message-State: AFuF++la5zkpw9G6KlUn2mhBhYzZLBZ2OJ1Slx95PFLq1uWsEsM56IYH
+	f71qBEQBIvrXEndQFoaRdqnzs1SKNGHBcXTdDKlmal5hlF/dFwlLDlApDJMKaYcufUdTma9L+UI
+	JkZQqWqeZ+kvsWULwy69rK6a5KZL2JRlyKipH5Uvc7DCJDS0mZ/VYW+28LgpzAAECKXlKDl07+L
+	4dzc8dC/ey51zOQ0vdYm53ehpN7CyveeJc
+X-Gm-Gg: AYBFou0CGHvaPdE+myJ9MJD7prOtSk2u3w4mhbySCJj6ewyKPol6nLUAZNzhewmOkOe
+	QB2gec/ArTSS7ksPLY24u+h4NZh3DtM8p1d+iBjkxAMrkleq46WZRxuLWxPpZFPK+GzcN4KuPsY
+	ikL95TndZB1dxpAVaejIWODUr4I7RZq5msZJJW25LZ1qGhua+yKDkUNZ0=
+X-Received: by 2002:a05:690e:168a:b0:672:c55b:6bec with SMTP id 956f58d0204a3-672c55b76b1mr1249995d50.5.1790087796398;
+        Tue, 22 Sep 2026 07:36:36 -0700 (PDT)
+X-Received: by 2002:a05:690e:168a:b0:672:c55b:6bec with SMTP id
+ 956f58d0204a3-672c55b76b1mr1249970d50.5.1790087795940; Tue, 22 Sep 2026
+ 07:36:35 -0700 (PDT)
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 07:35:12 -0700
+ HTTPREST; Tue, 22 Sep 2026 10:36:32 -0400
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 07:35:11 -0700
+ HTTPREST; Tue, 22 Sep 2026 10:36:32 -0400
 From: =?UTF-8?Q?Adri=C3=A1n_Moreno?= <amorenoz@redhat.com>
 References: <20260921101538.97286-6-johannes@sipsolutions.net>
  <20260921101538.97286-9-johannes@sipsolutions.net> <98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
- <7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
+ <7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org> <99e5f7c0d7debc8a59bac96e93f09600bf488ca8.camel@sipsolutions.net>
+ <4a0240a7b9ff87302620a95c73f4f265cd428618.camel@sipsolutions.net> <dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
-Date: Tue, 22 Sep 2026 07:35:11 -0700
-X-Gm-Features: AcwNN1XMie8kM7dwxvbQlHH_l7IaHZoq1hw6XOWcr3XDlRFXqBgXY5EO4nZl-zk
-Message-ID: <CAG=2xmNURzYdR+eL8x_kW64Bo9gEe3ne88YXaKQKT+_Ya7XZFQ@mail.gmail.com>
+In-Reply-To: <dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org>
+Date: Tue, 22 Sep 2026 10:36:32 -0400
+X-Gm-Features: AclHuK_WQy-H4M9Vjbwisdq6E74XDMCt0MUm8uA9loRbh4lJmNGD-_684UY2a9A
+Message-ID: <CAG=2xmOuz6JEqZROE26nHEq5MgwTBNU_PvSqw1sn1MzAohotWg@mail.gmail.com>
 Subject: Re: [PATCH v6 3/4] net: dropreason: use new __print_sym() in tracing
 To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
+Cc: Johannes Berg <johannes@sipsolutions.net>, Matthieu Baerts <matttbe@kernel.org>, 
 	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Johannes Berg <johannes.berg@intel.com>, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, dev@openvswitch.org, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Aaron Conole <aconole@redhat.com>, 
+	Eelco Chaudron <echaudro@redhat.com>, dev@openvswitch.org, 
 	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	netdev@vger.kernel.org, Antoine Tenart <atenart@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 22, 2026 at 12:23:55AM +0200, Ilya Maximets wrote:
-> On 9/22/26 12:03 AM, Matthieu Baerts wrote:
-> > Hi Johannes,
-> >
-> > (+Cc openvswitch devs)
-> >
-> > On 21/09/2026 12:06, Johannes Berg wrote:
-> >> From: Johannes Berg <johannes.berg@intel.com>
+On Tue, Sep 22, 2026 at 11:01:10AM +0200, Ilya Maximets wrote:
+> On 9/22/26 1:20 AM, Johannes Berg wrote:
+> > On Tue, 2026-09-22 at 00:36 +0200, Johannes Berg wrote:
 > >>
-> >> The __print_symbolic() could only ever print the core
-> >> drop reasons, since that's the way the infrastructure
-> >> works. Now that we have __print_sym() with all the
-> >> advantages mentioned in that commit, convert to that
-> >> and get all the drop reasons from all subsystems. As
-> >> we already have a list of them, that's really easy.
+> >> Indeed. Something like this (untested right now, didn't manage to spin
+> >> up a test yet):
 > >>
-> >> This is a little bit of .text (~100 bytes in my build)
-> >> and saves a lot of .data (~17k).
-> > Thank you for working on that! But it looks like it breaks the
-> > openvswitch test:
+> >> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> >> index a31f7fb6882d..9b8edfcd2d1a 100755
+> >> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> >> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> >> @@ -234,7 +234,7 @@ ovs_drop_reason_count()
+> >>  	local reason=$1
+> >>
+> >>  	local perf_output=`perf script -i ${ovs_dir}/perf.data -F trace:event,trace`
+> >> -	local pattern="skb:kfree_skb:.*reason: $reason"
+> >> +	local pattern="skb:kfree_skb:.*reason: $reason$"
+> >>
+> >>  	return `echo "$perf_output" | grep "$pattern" | wc -l`
+> >>  }
+> >> @@ -790,15 +790,6 @@ test_psample() {
+> >>  # - drop packets and verify the right drop reason is reported
+> >>  test_drop_reason() {
+> >>  	which perf >/dev/null 2>&1 || return $ksft_skip
+> >> -	which pahole >/dev/null 2>&1 || return $ksft_skip
+> >> -
+> >> -	ovs_drop_subsys=$(pahole -C skb_drop_reason_subsys |
+> >> -			      awk '/OPENVSWITCH/ { print $3; }' |
+> >> -			      tr -d ,)
+> >> -	if [ -z "$ovs_drop_subsys" ]; then
+> >> -		info "failed to get OVS drop subsys ID"
+> >> -		return $ksft_skip
+> >> -	fi
+> >>
+> >>  	sbx_add "test_drop_reason" || return $?
+> >>
+> >> @@ -842,7 +833,7 @@ test_drop_reason() {
+> >>  		"in_port(2),eth(),eth_type(0x0800),ipv4(src=172.31.110.20,proto=1),icmp()" 'drop'
+> >>
+> >>  	ovs_drop_record_and_run "test_drop_reason" ip netns exec client ping -c 2 172.31.110.20
+> >> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0001 # OVS_DROP_FLOW_ACTION
+> >> +	ovs_drop_reason_count OVS_DROP_LAST_ACTION
+> >>  	if [[ "$?" -ne "2" ]]; then
+> >>  		info "Did not detect expected drops: $?"
+> >>  		return 1
+> >> @@ -859,7 +850,7 @@ test_drop_reason() {
+> >>
+> >>  	ovs_drop_record_and_run \
+> >>              "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 6000
+> >> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0004 # OVS_DROP_EXPLICIT_ACTION_ERROR
+> >> +	ovs_drop_reason_count OVS_DROP_EXPLICIT_WITH_ERROR
+> >>  	if [[ "$?" -ne "1" ]]; then
+> >>  		info "Did not detect expected explicit error drops: $?"
+> >>  		return 1
+> >> @@ -867,7 +858,7 @@ test_drop_reason() {
+> >>
+> >>  	ovs_drop_record_and_run \
+> >>              "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 7000
+> >> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0003 # OVS_DROP_EXPLICIT_ACTION
+> >> +	ovs_drop_reason_count OVS_DROP_EXPLICIT
+> >>  	if [[ "$?" -ne "1" ]]; then
+> >>  		info "Did not detect expected explicit drops: $?"
+> >>  		return 1
+> >>
 > >
-> > https://netdev-ctrl.bots.linux.dev/logview.html?f=3D%2Flogs%2Fvmksft%2F=
-net%2Fresults%2F833743%2F9-openvswitch-sh%2Fstdout#L168
-> >
-> > Maybe the test needs to be adapted to get the same info differently?
-> > (and adding CONFIG_TRACEPOINTS to the selftest config file)
-> The parsing in the test will definitely need to be updated, i.e.,
-> the numbers swapped with the names of the drop reasons.
+> > No longer untested, that works.
 >
-> IIUC, this change only affects the printing and doesn't affect debugging
-> tools like retis that attempt to surface the drop reasons.  But, maybe
-> Adrian and Antoine (CCed) may want to have a glance as well.
+> Looks nicer than parsing obscure numbers indeed!
+
++1, way prettier indeed.
+
 >
-
-I don't think this will affect retis in a bad way. We collect the list
-of drop reasons by inspecting the BTF enums. It generally works but we
-need to keep track of new subsystems enums being added so a
-dynamically-generated full-list of drop reasons is interesting.
-
-IIUC, the only way for userspace to read this list is by looking at the
-event format and parse the printf line, right? Any ideas to make this
-more machine-friendly?
-
-Thanks
---
-Adri=C3=A1n
+> Matthieu mentioned we'll need CONFIG_TRACEPOINTS in the selftest config
+> shard: tools/testing/selftests/net/openvswitch/config
+>
+> Is that a new dependency or was it always there we just missed adding it
+> to the config before?  (it's included in the common net config, so that
+> is probably the reason why CI doesn't fail)
+>
+> Best regards, Ilya Maximets.
+>
 
