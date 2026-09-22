@@ -1,76 +1,76 @@
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922654825B1
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAF848424E
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790055067; cv=none; b=c+rMR0KTz/lh4vaLZUfny0HzXYSXBs90N+YaxieWELkSWa/PFgNN8kxQEnpaZeYovmEDAUshcjn6RQhUNCtU7GBpX3twwPPaQ+jhL8H8OpoVBhWRUgy80ftddcZaKt1ZXQvSGDY8jhqlXQs3iLGlqTQ9a/sT+1bihWYvBU5BiDU=
+	t=1790055071; cv=none; b=vCET7fb0H9Rarqpzu/sL38rTUke17PAp62NN+E4pgdHZWwedFLJCjhWj2ptjKG9t6RqpiyB+Wzo1XrMM32USTfPlstna/A2xc3ruCfbQdptYIrUUSFL/VDO8SN9j5VYBfXZOaQVHZEYQx8b8FCn+c8n2KZjAXP9klGfwfmNspaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790055067; c=relaxed/simple;
-	bh=HMr+FTKSXdaAvtfbSzFFav/sQ1dYA/aUy2gruEkZvXg=;
+	s=arc-20240116; t=1790055071; c=relaxed/simple;
+	bh=iE2EQIj89CjFufdSkRfrh/KJHBUHWO1xT4ECC4lhkH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nz+LlvwGmRf4WRvPlfzrw8KF2qgZgd10yua6L1Iiunrv5j0DY/3CgXjhb7erx0OzFLbs7fAg2pAyhtQh/j9DK0GRXWsaJ5+2zMYN2JOxDoB6bSxq3M1gYfPb+RNuENlg3sQ6Ul7CPg+UVk/4/+RJzNqxFd4b/Exy9UowM+HdDJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bOpFBKQd; arc=none smtp.client-ip=209.85.216.97
+	 MIME-Version; b=pMaXh0FExDPazS5pFWdRJSc329SqUBdbMQb4uLfAnTeFEFn+6HRuluSQbDX/MMeMl7UdToUyK+J+CHVaWxnHgaT7Qw0oXXqw8DtGvbNpWNLdlimCcHxNSlNIvC9kwZK0ZUh81fUoI+dc8I0+8aO+6jD2Uz6/ew3zF4zFTd0JvGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FJ87rkqI; arc=none smtp.client-ip=209.85.214.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bOpFBKQd"
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-39e5fdc23deso1098579a91.1
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:31:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FJ87rkqI"
+Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2dd68a16955so6407255ad.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:31:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790055061; x=1790659861;
+        d=1e100.net; s=20260707; t=1790055066; x=1790659866;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6bjthBBm7uT2MkmTwxK/+W0UJNyCdyeJcyjZyefo08M=;
-        b=KqnJnVoobLF1CdpMhpD8a8+m2e/c2DkQNbvYCYT+V6v2W25eYPZ828BRDtm+zzAbLd
-         caYKghc4JlVKF/6GekK3aJ/bpjp9C1dzGRzfFwUCMPORtVD1aVQnodyY6y9v1HfoQhBX
-         Cxkse85MOfrd6lFL9XUlc5Z/mV0VW1g+ZndGRTCIJAf+dDX/umeY6d77Vk7xu0TfSUx5
-         yVi7MG0GrxJ5RtmuFgt51/J5hV+AOUWK6+jKVcPQiII5ivz19x+s4XSX9FGCN0Fh13J5
-         PbgPtmUkVdlHDBN8BKxvX1OqkGcMbT4DcFaLPLcvQHWI5G8U7abL2QkS9XJ9PTsw2Nu0
-         sj3A==
-X-Gm-Message-State: AFuF++nPITQkFL0OiIuM/BehFmBfLoe5uz0AvsGZLrtLPmWqaCBWP0yR
-	muH1aMazni607TWA3mx3Uq5DXWjJ+uNsItFrhAe4WnNHIDuTbTsYUv9rmPRQVLBACl4MxLwOALe
-	a194Oi3eSzdUyEogqCDvnPJezPMIzfPSytx87rBkUBcMaXrRnre/HobQOFJtBj+hAiHCB52+bTN
-	EpBePY1oxkA0qv6iU0hohHc9wtBF6zQKl2i5W2Wnb/MAhnQGxacAEvup0WWJ3xbgv0IZDPHvO3V
-	VEJa5h/6F9AjwsAGA==
-X-Gm-Gg: AYBFou21Usf5EuMVotxKouULiEFJjUAG4E6+xGXSekT9G6/xWiqATO+MLFEoAMjXfyb
-	AcjwQh98nofDGO8JlSodmmlomzwUI7eZ+ljAqdmBWLUWGe3GkxWbeWS0sTDQ/t9eJ0Mv4MAiuGL
-	filJ/PAXv1SACA7wLw9mFBdMB36VOFJQPFiC5Em6h5v23TV3xL3km0ThjJIC2dKBoHsF/TX8zUA
-	lyqpgz5SAgniriekEPW26HIqkEFv6mQz8nXAfBnPWfdh1yGLsLsjbtDQqQIkNwqwx1wxkR1TZw6
-	UdXLtTD2VMrobUKgc3fIlqdY7AR6Y1gEJAqZ87Bv6iFodNX+fR79GuUAjvk2ImS++V9yoo1fdMp
-	TZ0QrfXiTXg2I/nW8GZ9LnolYIXBj827SmrLCOlYx7W7GbfIY4kruUxuluAtkrpSGaQFPyhXrVt
-	vN0TG0JFRKHvXXVPBClGbiBLJX57gC46LbLxpeFmDHag==
-X-Received: by 2002:a17:90b:4d08:b0:39e:6c69:34da with SMTP id 98e67ed59e1d1-3a0733258ccmr25197a91.62.1790055060847;
-        Mon, 21 Sep 2026 22:31:00 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a06e5041d3sm456363a91.7.2026.09.21.22.31.00
+        bh=yttZlC+kNKcKuY5rxX74d0x76Vc7HjUslVhaenkBtlA=;
+        b=Vv+v+SoqYDiMhftKQ6OXOdFWHQFwYyb+l0gkPa4DlzWR/AsCRHuE2il6oZMGQHhTmb
+         K0o+Ywc35g7nQajRaAt5wFfhYtRUBqubjxnDkNWGvVdQvrObtJ5n8Asimp+nXIYaV8r9
+         xzxKvm4qesRHc4qDzAdSnm6uPTIEnRIEjjhE1Faa6ZQd13kWQnoSHYCRR6SgR7ge5tlc
+         3hAgo1vH51KpZD8x3avM4hiiLArBXNVyrsuSSTpIjM75rtnD9KwB/+kN6lzEUFsVljB8
+         zc+ODyMB7dFhbyZ94RKeR1rmQyn9qhMOtWP50QsElwaHhXR877VhOh+LjHx023ApNQgG
+         FzoQ==
+X-Gm-Message-State: AFuF++nYZ+ZtYzZR///yUmr98l7hbEzqfXrqY59dF3gx84tafpXPWs9S
+	VCu/SHe3dlHQEnkJ/nzhl+bQV+4WrLUVOiaFc4pTtmC1UAQFMbmnFqtNfoG1GKGAnIDMY6mIMQh
+	9hPb/JHMMky3OfTgSsq2RnuUGPFIGhZ3gHgFbsIDhACo5VMCIW8Hbn/L8y8DyvPB+Kh+M7n1JSO
+	KwXLcUkrR9/S0jk+5JWyQuTgmBokyRras5M3k87omYyu4Pjd/0TRhu3xlIvQoX9AdDexGmXDG5b
+	Cjm2hIRNSdhI/mG2g==
+X-Gm-Gg: AYBFou3PIAI8SDAyXCob8O/t4hDF1tx56qKjEZMs1ApfnU1c3xe8U0cXbJ2dE8mC7Wo
+	4yVzkJpQyL7cn8pcD7iRlpFR3/kPu9H7oiIKlZiFQXbDhwWscZctg1o23Vk2P1Y6QG0uHX2rPtd
+	tObwyeKeGi1LEEuICTzT4w5PLXRPCL+DzbnxuAsU5cxTlGqBP2DIBkSPRbYsk0TP8e0Pfi0pgFj
+	L0AigqIbT7UyMejJYO+19M9B6lpFAobOZDkbeCaty4HQN/zt7hWCtyBNH3AIicA1RefS4ezm4Ij
+	RPplI39OHyLX4CYbdZ72vZ3sI/LKMAXN7RcpEdoPIzzDK7ewKtpVyNOfMjI0U6YbuDlY8UY/syB
+	+js7oYPdksVEcccQ46VuijO7clwZhQ+og2rSizKhL3ZRTXD9WIPaGpJKkkXnxAaMEMbUu2VjY5Y
+	IBT1Yhd6DxSnwWdoPQ36NrjwAY4HRTYc5B29k2aU237g==
+X-Received: by 2002:a17:90b:4c07:b0:39e:6c68:fd8d with SMTP id 98e67ed59e1d1-3a073241fa9mr28991a91.34.1790055066351;
+        Mon, 21 Sep 2026 22:31:06 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a06e5041d3sm456524a91.7.2026.09.21.22.31.05
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 21 Sep 2026 22:31:00 -0700 (PDT)
+        Mon, 21 Sep 2026 22:31:06 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc7348bd56fso3230466a12.2
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:30:59 -0700 (PDT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-398dc3d8f0fso579708a91.0
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 22:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790055059; x=1790659859; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1790055065; x=1790659865; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6bjthBBm7uT2MkmTwxK/+W0UJNyCdyeJcyjZyefo08M=;
-        b=bOpFBKQdchqGQicyko/Cf1vPzTkhguGRYD6IRIwAKuDTJKl5McTbo3QzcIuVgr9AJ6
-         oetlthpJMOAuRoRvaK5XHntxFmyAvz6z5GaCHywccBeKgCnTaueXioWi4uDQmgoBZ23C
-         7g1xeuvlWR+1hO1bNQb8YZm3YNLR5YsIu4wTg=
-X-Received: by 2002:a17:90b:3950:b0:39e:6a81:5a8f with SMTP id 98e67ed59e1d1-3a07328562fmr29266a91.35.1790055059049;
-        Mon, 21 Sep 2026 22:30:59 -0700 (PDT)
-X-Received: by 2002:a17:90b:3950:b0:39e:6a81:5a8f with SMTP id 98e67ed59e1d1-3a07328562fmr29239a91.35.1790055058553;
-        Mon, 21 Sep 2026 22:30:58 -0700 (PDT)
+        bh=yttZlC+kNKcKuY5rxX74d0x76Vc7HjUslVhaenkBtlA=;
+        b=FJ87rkqIUHRyGSqZLJhFqbNhQJ3etLGxIdT0vbADOFH3EkhJRrrZ0em2BKHFAhk8+7
+         P9bGsLohKt0ug4y4fs+PP79Cvh7kQcmlvWLloBsGGw1RsSggLU5glhPUEckYOQE72Z2b
+         mmGGW0zwLtUQwdJThPeIjxkXUF2FUUwL/xmr8=
+X-Received: by 2002:a17:90b:48ce:b0:39e:4c97:ce09 with SMTP id 98e67ed59e1d1-3a07320accfmr39314a91.42.1790055064651;
+        Mon, 21 Sep 2026 22:31:04 -0700 (PDT)
+X-Received: by 2002:a17:90b:48ce:b0:39e:4c97:ce09 with SMTP id 98e67ed59e1d1-3a07320accfmr39288a91.42.1790055064112;
+        Mon, 21 Sep 2026 22:31:04 -0700 (PDT)
 Received: from localhost.localdomain ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f29dc903sm2029025c88.3.2026.09.21.22.30.53
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f29dc903sm2029025c88.3.2026.09.21.22.30.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 22:30:58 -0700 (PDT)
+        Mon, 21 Sep 2026 22:31:03 -0700 (PDT)
 From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -85,11 +85,10 @@ Cc: netdev@vger.kernel.org,
 	vsrama-krishna.nemani@broadcom.com,
 	vikas.gupta@broadcom.com,
 	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Dharmender Garg <dharmender.garg@broadcom.com>
-Subject: [PATCH net-next v2 4/6] bnge: Drop obsolete bn->bnapi NULL checks in open/close paths
-Date: Tue, 22 Sep 2026 10:59:02 +0530
-Message-ID: <20260922052904.59237-5-bhargava.marreddy@broadcom.com>
+	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
+Subject: [PATCH net-next v2 5/6] bnge: Quiesce NQ0 around ring teardown in bnge_free_core()
+Date: Tue, 22 Sep 2026 10:59:03 +0530
+Message-ID: <20260922052904.59237-6-bhargava.marreddy@broadcom.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260922052904.59237-1-bhargava.marreddy@broadcom.com>
 References: <20260922052904.59237-1-bhargava.marreddy@broadcom.com>
@@ -102,64 +101,181 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Since bn->bnapi is now allocated during probe in bnge_netdev_alloc() and
-freed in bnge_netdev_free(), it remains non-NULL for the lifetime of the
-open/close path helpers.
+Add bnge_quiesce_nq0() and bnge_resume_nq0() helpers to temporarily disable
+and re-enable NQ0 NAPI. Use these helpers to bracket ring teardown in
+bnge_free_core() and ring rebuild in bnge_alloc_core().
 
-Remove the dead "if (!bn->bnapi)" guards in bnge_free_ring_stats(),
-bnge_clear_bnapi_queues(), bnge_disable_int(), and bnge_hwrm_ring_free().
+Both helpers currently no-op, since no bnge_napi has BNGE_NAPI_NQ0 set
+yet. The next patch creates NQ0 during probe and sets this flag, at
+which point these helpers become load-bearing: because NQ0 will remain
+active while administratively down, its NAPI is not disabled by the
+standard close paths, so temporarily quiescing it during core resource
+free/rebuild windows is required to prevent stray completions from
+accessing uninitialized or freed memory.
 
 Signed-off-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
 Reviewed-by: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
-Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnge/bnge_netdev.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 76 ++++++++++++++-----
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  | 11 +++
+ 2 files changed, 68 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-index 367109dad496..9e606fd1a580 100644
+index 9e606fd1a580..1c12282d7e88 100644
 --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
 +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-@@ -85,9 +85,6 @@ static void bnge_free_ring_stats(struct bnge_net *bn)
- 	struct bnge_dev *bd = bn->bd;
- 	int i;
+@@ -442,6 +442,25 @@ static void bnge_sp_task(struct work_struct *work)
+ 	netdev_unlock(bn->netdev);
+ }
  
--	if (!bn->bnapi)
--		return;
++static void bnge_db_nq_arm(struct bnge_net *bn,
++			   struct bnge_db_info *db, u32 idx)
++{
++	bnge_writeq(bn->bd, db->db_key64 | DBR_TYPE_NQ_ARM |
++		    DB_RING_IDX(db, idx), db->doorbell);
++}
++
++static void bnge_db_nq(struct bnge_net *bn, struct bnge_db_info *db, u32 idx)
++{
++	bnge_writeq(bn->bd, db->db_key64 | DBR_TYPE_NQ_MASK |
++		    DB_RING_IDX(db, idx), db->doorbell);
++}
++
++static void bnge_db_cq(struct bnge_net *bn, struct bnge_db_info *db, u32 idx)
++{
++	bnge_writeq(bn->bd, db->db_key64 | DBR_TYPE_CQ_ARMALL |
++		    DB_RING_IDX(db, idx), db->doorbell);
++}
++
+ static void bnge_free_nq_desc_arr(struct bnge_nq_ring_info *nqr)
+ {
+ 	struct bnge_ring_struct *ring = &nqr->ring_struct;
+@@ -563,6 +582,40 @@ static void bnge_free_nq_tree(struct bnge_net *bn)
+ 	}
+ }
+ 
++static void bnge_quiesce_nq0(struct bnge_net *bn)
++{
++	struct bnge_napi *bnapi = bn->bnapi[BNGE_NQ0_NAPI_IDX];
++	struct bnge_nq_ring_info *nqr = &bnapi->nq_ring;
++	struct bnge_ring_struct *ring;
++	struct bnge_dev *bd = bn->bd;
++
++	if (!BNGE_NQ0_NAPI(bnapi))
++		return;
++
++	if (test_and_set_bit(BNGE_NAPI_QUIESCED, &bnapi->flags))
++		return;
++
++	ring = &nqr->ring_struct;
++	napi_disable_locked(&bnapi->napi);
++	synchronize_irq(bd->irq_tbl[ring->map_idx].vector);
++	bnge_db_nq(bn, &nqr->nq_db, nqr->nq_raw_cons);
++}
++
++static void bnge_resume_nq0(struct bnge_net *bn)
++{
++	struct bnge_napi *bnapi = bn->bnapi[BNGE_NQ0_NAPI_IDX];
++	struct bnge_nq_ring_info *nqr = &bnapi->nq_ring;
++
++	if (!BNGE_NQ0_NAPI(bnapi))
++		return;
++
++	if (!test_and_clear_bit(BNGE_NAPI_QUIESCED, &bnapi->flags))
++		return;
++
++	napi_enable_locked(&bnapi->napi);
++	bnge_db_nq_arm(bn, &nqr->nq_db, nqr->nq_raw_cons);
++}
++
+ static int alloc_one_cp_ring(struct bnge_net *bn,
+ 			     struct bnge_cp_ring_info *cpr)
+ {
+@@ -1260,6 +1313,7 @@ static void bnge_clear_bnapi_queues(struct bnge_net *bn)
+ static void bnge_free_core(struct bnge_net *bn)
+ {
+ 	bnge_free_vnic_attributes(bn);
++	bnge_quiesce_nq0(bn);
+ 	bnge_free_tx_rings(bn);
+ 	bnge_free_rx_rings(bn);
+ 	bnge_free_nq_tree(bn);
+@@ -1275,6 +1329,7 @@ static void bnge_free_core(struct bnge_net *bn)
+ 	bn->rx_ring = NULL;
+ 
+ 	bnge_clear_bnapi_queues(bn);
++	bnge_resume_nq0(bn);
+ }
+ 
+ static int bnge_alloc_core(struct bnge_net *bn)
+@@ -1352,10 +1407,12 @@ static int bnge_alloc_core(struct bnge_net *bn)
+ 	if (rc)
+ 		goto err_free_core;
+ 
++	bnge_quiesce_nq0(bn);
+ 	rc = bnge_alloc_nq_tree(bn);
+ 	if (rc)
+ 		goto err_free_core;
+ 
++	bnge_resume_nq0(bn);
+ 	bn->vnic_info[BNGE_VNIC_DEFAULT].flags |= BNGE_VNIC_RSS_FLAG |
+ 						  BNGE_VNIC_MCAST_FLAG |
+ 						  BNGE_VNIC_UCAST_FLAG;
+@@ -1379,25 +1436,6 @@ u32 bnge_cp_ring_for_tx(struct bnge_tx_ring_info *txr)
+ 	return txr->tx_cpr->ring_struct.fw_ring_id;
+ }
+ 
+-static void bnge_db_nq_arm(struct bnge_net *bn,
+-			   struct bnge_db_info *db, u32 idx)
+-{
+-	bnge_writeq(bn->bd, db->db_key64 | DBR_TYPE_NQ_ARM |
+-		    DB_RING_IDX(db, idx), db->doorbell);
+-}
 -
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		struct bnge_napi *bnapi = bn->bnapi[i];
- 		struct bnge_nq_ring_info *nqr = &bnapi->nq_ring;
-@@ -1247,9 +1244,6 @@ static void bnge_clear_bnapi_queues(struct bnge_net *bn)
- 	struct bnge_dev *bd = bn->bd;
- 	int i;
- 
--	if (!bn->bnapi)
--		return;
+-static void bnge_db_nq(struct bnge_net *bn, struct bnge_db_info *db, u32 idx)
+-{
+-	bnge_writeq(bn->bd, db->db_key64 | DBR_TYPE_NQ_MASK |
+-		    DB_RING_IDX(db, idx), db->doorbell);
+-}
 -
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		struct bnge_napi *bnapi = bn->bnapi[i];
- 		int j;
-@@ -2382,9 +2376,6 @@ static void bnge_disable_int(struct bnge_net *bn)
- 	struct bnge_dev *bd = bn->bd;
- 	int i;
- 
--	if (!bn->bnapi)
--		return;
+-static void bnge_db_cq(struct bnge_net *bn, struct bnge_db_info *db, u32 idx)
+-{
+-	bnge_writeq(bn->bd, db->db_key64 | DBR_TYPE_CQ_ARMALL |
+-		    DB_RING_IDX(db, idx), db->doorbell);
+-}
 -
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		struct bnge_napi *bnapi = bn->bnapi[i];
- 		struct bnge_nq_ring_info *nqr;
-@@ -2576,9 +2567,6 @@ static void bnge_hwrm_ring_free(struct bnge_net *bn, bool close_path)
- 	struct bnge_dev *bd = bn->bd;
- 	int i;
+ static int bnge_cp_num_to_irq_num(struct bnge_net *bn, int n)
+ {
+ 	struct bnge_napi *bnapi = bn->bnapi[n];
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+index 476b5bab96fe..d6e65fc7d038 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+@@ -539,6 +539,15 @@ struct bnge_tx_ring_info {
+ 	struct bnge_ring_struct	tx_ring_struct;
+ };
  
--	if (!bn->bnapi)
--		return;
--
- 	for (i = 0; i < bd->tx_nr_rings; i++)
- 		bnge_hwrm_tx_ring_free(bn, &bn->tx_ring[i], close_path);
++#define BNGE_NQ0_NAPI_IDX	0
++
++enum bnge_napi_flag {
++	BNGE_NAPI_NQ0,
++	BNGE_NAPI_QUIESCED,
++};
++
++#define BNGE_NQ0_NAPI(bnapi)	(test_bit(BNGE_NAPI_NQ0, &(bnapi)->flags))
++
+ struct bnge_napi {
+ 	struct napi_struct		napi;
+ 	struct bnge_net			*bn;
+@@ -555,6 +564,8 @@ struct bnge_napi {
+ #define BNGE_TX_CMP_EVENT		0x10
+ 	bool				in_reset;
+ 	bool				tx_fault;
++
++	unsigned long			flags;
+ };
  
+ #define INVALID_STATS_CTX_ID	-1
 -- 
 2.47.3
 
