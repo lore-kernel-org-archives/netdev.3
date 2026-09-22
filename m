@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809903CA4BC
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37E43C4B64
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790100909; cv=none; b=PWjFv9o/PWPoVc3toR5Fbp7RfTiqpLpQDPqZa8HxhrtPxQ36Co62VhloyExba/v3X0sXDBOY5/XTyzGSkCSlCF3ua+Af9T2kctJFFo+Ke2kuvpcpRb1dbjJ0jZVqnVchj0HxNcOPt8uMqdjtvMZdTDH+qGixGkrUfs345ZJcyHM=
+	t=1790101243; cv=none; b=cheNvAGTDUVtI23EehpoaYkXLpn9dPtRRXFjAL10i4yV6chCHKs3y4sQpBuDTn2E+UdSaQHN2+1CQmAH7z1qfEJ0ZirVhbjmCKAsOa4Fmnx15kpUe3e1A9lX/piNGIWQdnEk6rLRVTCgB/c9hvs51TPH283GDgU2S8tLvjtdP2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790100909; c=relaxed/simple;
-	bh=Z/NEARBwcRN4gucgW1beaJ6RUdf4yT1Mcb5ydRZfw8U=;
+	s=arc-20240116; t=1790101243; c=relaxed/simple;
+	bh=KQZbo3AQeeUTD9ur7ycnKwwUFqoyjq9+6DvdgCGGGkE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TmTxwhYr26SxwXdyD4xhWtkhz0lQbFHArO7+PWyc8FaPa2+CEpf524ZFZalWm7XXI3V7hMkwDmc0KDOghJBuxpvXghrorjUGMasqTeFmKHzGvnlm7iaxHaFduIFj6Z5pN3sXXJ6GksI9l8AKRrHMbYFeq93rKouYDYRgShI7CCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HUq+obgC; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=XU8Zo1r7eMfCaR5aQ2atY8ydOjfmtVnEXOMQsI1TJ4ilSKusJJH2DOejt18cghmSUG+6mjud7Cob78T3eU66Mz4bExhqD7rG5fLEFASXtRRAO/XTs4Bg8y1TTbBnGOpp/jAgHs4RVlDWuYm5+jlWtrRm4K8rOaC0qNmYMDktY/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jqiwWOhu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HUq+obgC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E421F000FF;
-	Tue, 22 Sep 2026 18:15:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jqiwWOhu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DA81F000FF;
+	Tue, 22 Sep 2026 18:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790100908;
-	bh=3hkNbDrZHwt3amQkI6GQaWw6v1TtXPbRje3GNcFKelQ=;
+	s=k20260515; t=1790101242;
+	bh=KQZbo3AQeeUTD9ur7ycnKwwUFqoyjq9+6DvdgCGGGkE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HUq+obgCwM5x17NbFXp59esrrPgNZ91dUed27s/n1cfT2SFRS4s5fBHpoR527YeCr
-	 Gdq/m+46B3XGN52kYefOGsvriGMfvPXdpc5Or4jRt+T7yQRiLPDU2HUWSGlLpwJZG4
-	 JtEShvdfv8Cd+sHW54QGkNVyV+QNRlhxfJZFVRY793k//0QPY9ofTUHsl0ey1dJG2V
-	 SnKN9DhMb77W3SVAs5VPkMVTc+4tfP42JD+oKzN5MWIP9DxKgh2p0BnstEXIk3IXlY
-	 bzR0CbKk6+dE+gJV7XxsI6Mp1Z/kNfGCqB9k5KsuG4mQkNcV0lF5Vh6muzxax1r2xc
-	 voMYNXfr/7N5Q==
-Date: Tue, 22 Sep 2026 11:15:07 -0700
+	b=jqiwWOhuM1Mn3lwuKKJUzPOp+nYZI249TLP/nkobeLytJnj8qNr1ZKTJRrG5I0nWn
+	 HZQGRIwAPm21UoOQlpX5onqYyvwWG6FaYaFFYIMK1jEpLI1cty15dG5ExO90Y7xHHx
+	 gz8VKr+CcYY7n4fvP9iT0WFMeEfbM6LdkAAIf4WC9znJcuwWDCS53e7X7oG2vuDPBa
+	 0GKwcYuEf0qW8NmfyYkl7E6VQmALuHBi+JnHs5GRA3VrMLSRIYfWaMEm9Hzay+iYYN
+	 hAbtN7FNvDjUoa6w/KwR8i3TkqnzSxSUvj81qoBxSMTuIBA1x43TsZ8dcwsd2Vil4A
+	 jZ6RUjkb+r20Q==
+Date: Tue, 22 Sep 2026 11:20:41 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org
-Subject: Re: [PATCH net-next v2] net: opt loopback into instance locking
-Message-ID: <20260922111507.6fae8770@kernel.org>
-In-Reply-To: <arGd3auaaTerBqNb@devvm7509.cco0.facebook.com>
-References: <20260921190452.1467853-1-kuba@kernel.org>
-	<arGd3auaaTerBqNb@devvm7509.cco0.facebook.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH v6 net-next 0/8] vxlan: convert configuration to RCU and
+ enable lockless dumps
+Message-ID: <20260922112041.6d60234b@kernel.org>
+In-Reply-To: <20260922181102.3989489-1-edumazet@google.com>
+References: <20260922181102.3989489-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,26 +46,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Sep 2026 14:14:19 -0700 Stanislav Fomichev wrote:
-> On 09/21, Jakub Kicinski wrote:
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > ---
-> > v2:
-> >  - move setting the request flag from gen_lo_setup() to loopback_setup()
-> >    to avoid splats on the blackhole dev which we don't care about  
-> 
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-> 
-> (mostly because dummy is also ops locked, don't think loopback should
-> bring any problems)
+On Tue, 22 Sep 2026 18:10:54 +0000 Eric Dumazet wrote:
+> This patch series converts struct vxlan_config to RCU protection, eliminates
+> redundant destination fields, and enables lockless RTNL-free link dumping
+> in vxlan_fill_info().
 
-Stan, the issue Matt reported in the BPF CI is a generic sw device +
-netdev lock issue. We are triggering it on lo because.. probability,
-but it reproduces with dummy + netkit already today.
-
-Do you recall why we have separate classes for each device type?
-
-Classes make the lock_set_cmp_fn() ineffective across different device
-types. Quick test removing the classes and sticking to just the cmp fn
-seems make lockdep happy, I'm running the ksft suite now. But maybe you
-can tell me if it's the right idea before it finishes..?
+Eric, please consider obeying the "15 outstanding patches per tree"
+limit. We can discuss changing that, tho I suspect it'd end rather
+poorly.
