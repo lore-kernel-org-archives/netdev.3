@@ -1,312 +1,339 @@
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634D2554094
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0479A391E4B;
+	Tue, 22 Sep 2026 15:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790089642; cv=none; b=O91xzb9S10/HgeTscc0OMes6CuO8pe6XPIY16WwgkyEvh8O+6iUYSmvaZk3BwU/k47ztn+tfntiC/XcDZP3PlYQF1GL5AUvWvLKrUVv3mWsNRKlbIp1rN/bxsA6Rk2TuVHmmqe66RTO9QHMDx7KuETJAZoRPiSfdoyhYP1/ZNAE=
+	t=1790089712; cv=none; b=MIBndUIyglbDGzOlLyesJFDrFRYitbnCCRaYOi8BJnLoUuyJutRd19Sgnc6yumeuL1hY1UUXQ4yUgw5HwRTb7paFgmZQWWxOkZrT8guZnfIZI0Mdqa1Z2aO1vMOJA1UM5fQPSt+O4FYCM78Dv9432o7jKvXNdTe+c5oa34LiV14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790089642; c=relaxed/simple;
-	bh=eYsBKBEhTdI0RzND1OTGM2BlKm4H7blB5pkPXgKcXkg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=poSW6pm+JinNaPKsWpVwvhbCOgWnC1O7rtpZjrKE3GMX3dk88dJW8xrnmdcZUTS03cOo7I7F8jkxQaH38cPn0PI1GqgywlQ6pO73bfCrYtygL976AEfYatGPOuMu19sbICgNqomMStSvn/1ILDp8WFA3sMRZspEGlgK9OZUdF80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XjwZOvhA; arc=none smtp.client-ip=74.125.224.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790089712; c=relaxed/simple;
+	bh=j1+MHVvPwq6k8THNclxHmfc8nYhXDJ5txqHasrT2To0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tByitVJYpSBy1zKZmTCLD/bE/UxT+gr4SSBPi3Y4nLrSPq8n3cobWUXasLX815EtjJdRtmpOzppm7ng1YqzfO9mYG4ksOiFprWO1grzJdF1owMYbYV+Kua3px36M/uqkJgEMgF+V7MbhuENa4Z9V2TDsIJ+0tnpzrauVpZ5hpqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmObI7xK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XjwZOvhA"
-Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-895eaf30817so841437b3.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:07:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790089636; x=1790694436; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=e7snuKKMY8AafgQ14cuSPog3PjlInhdYKOV1MzSg5bg=;
-        b=XjwZOvhAqyipxeCBpa94cemRSURB4I2WznkPY8LPdi68FpS4towCHqeZaq02TumNOi
-         VSgI3CupN7aWKgGl1LlJymnMgpMxTzDvxKjlxCNGHQHEMrAwtEsa6Q5ijMrexMDt5KOh
-         rCc0ycxKjENLBa4X0InxD06JMkw/pKYjtkz/rm50FtDYXuS7UXobmpFii+CmdZpG379i
-         2ybY7+wI3o419hCncgAcGSvOdRnvtAU8u8KpTNqGutcHVXKkdUTsLeOGYizJvzQ5KFeV
-         uB4pKqLzwZZn1xRPmvh9Cdw0Cji7TEBUC+hymlaEi1cr/tHPL1HenDte1qNUP+WcBMtW
-         xRYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790089636; x=1790694436;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e7snuKKMY8AafgQ14cuSPog3PjlInhdYKOV1MzSg5bg=;
-        b=m8YLzBXKfgVQl2IY7xL3fHUPLr47jOUeyM+4l7q1fP1dRyTogbG+5z5ew7rFliwYpW
-         elzYwTwZphhIfQQabWGQOSGQM9LZNT4TQ+rcWrJSfpDcCgS17IorA0dNP52ip99UhceW
-         u8xmIvvy/heJxXe0PBQXJ2p4lnapFeGcNL15v3IvcQRymrFBU1R4ytW9QQnONAYx2bvk
-         OeMp08KnIit6AtCu/EsXHOiGdFX2AQhaKQ9zubGuT08GPFoxBNEb2IXVKyvn43jAyNY1
-         90SR/rLRx/SpDRrGcvIuAqkIp8ySBtn/4Kw2xcgBTxoHxC1eOD1r/yVPCeS+2qNe4lEC
-         s2Qg==
-X-Gm-Message-State: AFuF++mwrb/JtgV/6Nvtd3PFQWU+9WAOnwUB9vkObZEZbzt+voaPN7pk
-	9466wYMhk+ukEAbFmSRX88k5Sk5TpPbTlQUnWPpvwkl2Lk7T7o+j0Msp
-X-Gm-Gg: AYBFou3LWZfLMGYip/ZFkddiFqRfOJx15H2zFXbHj9qCwfWpTcLU58xrV57GSecxfHC
-	HRsG0GDm6wEuDWFWZPAbrPlngOW1Ds8SicsyBthiu07jOUAFjIkDgtjRDxuE3FMfGLxNPNpunkj
-	tdF7HkG8mYM60Mx5r7/Pyo39D01jd3ZWsWWWmdQ0+6JnH3vJBzvuO2t73BFyDkdvr7iUqFtTNYA
-	mWZV+iwjlnEnwqiXoBh6YrTkmvG0I4nwoGgMOfijP3l2KD9jZ0tpMUcCvbH49Itj9/Eei5gKL1q
-	mggTF3s/l8tpAzGRs8KKGV5TSRNDfepcA9CprUNYqh3tng4gmy4nBtt5gOTGzRf0s8rqTAJScFu
-	r7H8eFhW94ntXPG5yaMLWRJtC39cxKbRO26xrd6OIbaj05X+hNEMrg7JihHuaILgbT/P+A/iszJ
-	sKfSonKLT/DK/iALtjpXhOOlo5Sy8x/PAjkdRi7Meg9e/IceKVXFEIFxzPyyOvHFM0pxNIPtXso
-	51vrdQP8fe2KAwXq9FOxADXPxXZYMFRmydd2+m79zZMLfGwh8Qg
-X-Received: by 2002:a05:690c:28b:b0:826:8d02:9c1e with SMTP id 00721157ae682-89732973623mr53220217b3.13.1790089636302;
-        Tue, 22 Sep 2026 08:07:16 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a2c2f8319csm7734977b3.35.2026.09.22.08.07.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 08:07:11 -0700 (PDT)
-Date: Tue, 22 Sep 2026 11:07:10 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev-bot+sashiko@kernel.org, 
- willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew+netdev@lunn.ch, 
- willemb@google.com, 
- kleaver@janestreet.com, 
- doebel@amazon.de, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.3ad8224b38583@gmail.com>
-In-Reply-To: <179004896529.2160803.14644876688990648036@kernel.org>
-References: <20260919004748.1463985-3-willemdebruijn.kernel@gmail.com>
- <179004896529.2160803.14644876688990648036@kernel.org>
-Subject: Re: [PATCH net v2 2/2] packet: use ubuf_info completion for TX_RING
- packets
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmObI7xK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1D71F000FF;
+	Tue, 22 Sep 2026 15:08:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790089707;
+	bh=QzOv9wy4Ubnp4r/CpZrVhQzXMyMMiKAU1g8xFldYWpY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FmObI7xKL3NzW06vSlCuc9VZBx/xwztTf0MjEVVpPpO3t6wMwcQMMwdLp8dN9xdeX
+	 PR8buPRD1mVPsFsYb1iJKgJO5+4O06Ry8oXcOzdigU0jVSEK0oW5HlGlcAgm0ebOma
+	 1ey0Fn/FuoChcEQ0rKm5w09eHttxlVo2RGln7eiO2zkjO1osaGw66ca3fSco9ZIRYR
+	 RLkgPfy+kH5WHARQ1aL4hn2eyIPOTpmpqJC/AxK3zNPQ8Ayp1J+5G0X0qjJQhSLo1c
+	 ZifwAnRJyVoHg0e9tzCpMtnxUtz9LjxXcfCKVa5oP5Mb8OVH7bIwi4tD5XtCMYq9qK
+	 MZZsKj0enzIYg==
+Subject: Re: [PATCH net-next v3 1/4] net: phy: microchip_t1s: fix collision
+ detection on PLCA status change
+From: netdev-bot+sashiko@kernel.org
+To: parthiban.veerasooran@microchip.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ UNGLinuxDriver@microchip.com
+Date: Tue, 22 Sep 2026 15:08:26 +0000
+Message-ID: <179008970611.2160803.1075386282086280507@kernel.org>
+In-Reply-To: <20260918143302.76909-2-parthiban.veerasooran@microchip.com>
+References: <20260918143302.76909-2-parthiban.veerasooran@microchip.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-netdev-bot+sashiko@ wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> =
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 1
-> =
+Critical: 0 · High: 1 · Medium: 4 · Low: 0
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> [Severity: Medium]
-> Should Documentation/networking/packet_mmap.rst be updated along with t=
-his
-> change?  The "Transmission process" section still says:
-> =
+- [High] The failure the commit message sets out to fix — an autonomous
+  (BEACON-driven) PLCA offline transition leaving CDEN cleared so…
+- [Medium] lan86xx_plca_set_cfg() silently changes the interpretation of
+  plca_cfg->enabled from a plain truthiness test (`if…
+- [Medium] The LAN867X Rev.B1 driver entry gains .config_intr =
+  lan86xx_config_intr and .handle_interrupt = lan86xx_handle_interrupt…
+- [Medium] In lan86xx_config_intr() the CDEN re-sync is performed BEFORE
+  unmasking PSTCM, contradicting the commit message, which states that…
+- [Medium] lan86xx_config_intr() performs a multi-register read-modify
+  sequence (read-to-clear STS1 -> read live PLCA status -> write CDEN in…
 
->   The kernel updates each status of sent frames with TP_STATUS_SENDING
->   until the end of transfer.
-> =
+--
 
->   At the end of each transfer, buffer status returns to
->   TP_STATUS_AVAILABLE.
-> =
+net: phy: microchip_t1s: fix collision detection on PLCA status change
 
-> With slot release moved into tpacket_ubuf_complete(), TP_STATUS_AVAILAB=
-LE
-> now means "the kernel no longer references the payload", which the comm=
-it
-> message says can happen before transmission:
-> =
+This adds .config_intr and .handle_interrupt callbacks to the microchip_t1s
+driver so that the PLCA Status Changed (PSTC) interrupt toggles CDEN in
+COL_DET_CTRL0, instead of only adjusting collision detection on explicit
+ethtool PLCA writes.  The callbacks are wired to LAN867X Rev.B1, C1, C2 and
+LAN865X Rev.B0/B1.
 
->   net/core/dev.c:deliver_skb()
->     skb_orphan_frags_rx()
->       skb_copy_ubufs()
->         skb_zcopy_clear()
->           tpacket_ubuf_complete()
+> diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
+> index 73c23d311d72..3333e4801aae 100644
+> --- a/drivers/net/phy/microchip_t1s.c
+> +++ b/drivers/net/phy/microchip_t1s.c
 
-[Medium] This is a pre-existing issue.
+[ ... ]
 
-The slot can be returned prior to the end of transfer after this
-change. But the same was true before this change with skb_orphan().
+> @@ -458,14 +466,29 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (plca_cfg->enabled)
+> +	/* phylib dispatches handle_interrupt() only for PHYs with a real IRQ
+> +	 * number (phy_interrupt_is_valid()). For PHY_POLL and PHY_MAC_INTERRUPT
+> +	 * handle_interrupt() is never called, so apply the static CDEN write
+> +	 * here as a baseline on every ethtool PLCA reconfiguration. The
+> +	 * limitation is that autonomous PLCA mode transitions between ethtool
+> +	 * reconfigurations are not tracked on such boards.
+> +	 */
+> +	if (phy_interrupt_is_valid(phydev))
+> +		return 0;
 
-I can improve this documentation in a follow-up to net-next. But I
-don't think it belongs in a stable patch.
+[Severity: High]
+Does this early return leave the failure described in the changelog reachable
+on boards where the PHY interrupt is not routed?
 
-> =
+The commit message says the problem is that "When PLCA went offline,
+collision detection stayed disabled, leaving CSMA/CD running unprotected".
+For phydev->irq == PHY_POLL or PHY_MAC_INTERRUPT, phy_interrupt_is_valid()
+is false:
 
-> The timestamp section also documents a specific recipe:
-> =
+include/linux/phy.h:phy_interrupt_is_valid() {
+	return phydev->irq != PHY_POLL && phydev->irq != PHY_MAC_INTERRUPT;
+}
 
->   Getting timestamps for the TX_RING works as follows: i) fill the ring=
+so phylib never dispatches lan86xx_handle_interrupt(), and the only remaining
+CDEN write in lan86xx_plca_set_cfg() is derived from the administratively
+requested plca_cfg->enabled, never from live PST.  Nothing in the polled path
+re-reads PLCA status either — lan86xx_read_status() runs every poll interval
+and contains no CDEN logic:
 
->   frames, ii) call sendto() e.g. in blocking mode, iii) wait for status=
- of
->   relevant frames to be updated resp. the frame handed over to the
->   application, iv) walk through the frames to pick up the individual hw=
-/sw
->   timestamps.
-> =
+	phydev->link = 1;
+	phydev->duplex = DUPLEX_HALF;
 
-> When the copy happens before skb_tx_timestamp(),
-> __packet_set_timestamp() returns 0, so the frame is handed back as
-> TP_STATUS_AVAILABLE with no TP_STATUS_TS_* bit and stale tp_sec/tp_nsec=
-,
-> even though timestamping was requested.  Can that documented procedure
-> still be followed, or should the text describe the new semantics?
-> =
+That covers all LAN867X Rev.B1/C1/C2 boards whose device tree does not
+describe a PHY interrupt, and at this commit every LAN865X as well.  Would
+re-syncing CDEN from genphy_c45_plca_get_status() in lan86xx_read_status()
+cover the polled case too?
 
-> > +
-> > +	packet_dec_pending(&po->tx_ring);
-> > +	complete(&po->skb_completion);
-> > +
-> > +	kfree(tu);
-> > +	sk_free(&po->sk);
-> > +}
-> =
+> +
+> +	if (plca_cfg->enabled > 0)
+>  		return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+>  				      LAN86XX_REG_COL_DET_CTRL0,
+>  				      COL_DET_CTRL0_ENABLE_BIT_MASK,
+>  				      COL_DET_DISABLE);
+>  
+> -	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
+> -			      COL_DET_CTRL0_ENABLE_BIT_MASK, COL_DET_ENABLE);
+> +	if (plca_cfg->enabled == 0)
+> +		return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> +				      LAN86XX_REG_COL_DET_CTRL0,
+> +				      COL_DET_CTRL0_ENABLE_BIT_MASK,
+> +				      COL_DET_ENABLE);
+> +
+> +	return 0;
+>  }
 
-> [Severity: Medium]
-> Does releasing the wmem charge through sk_free() here miss a write spac=
-e
-> notification?
-> =
+[Severity: Medium]
+Is this change from "if (plca_cfg->enabled)" to a three-way test a second,
+independent fix that the changelog does not mention?
 
-> sk_free() only does the decrement:
-> =
+ethnl_set_plca() prefills the request and only overwrites the attributes
+actually present:
 
-> net/core/sock.c:sk_free() {
-> 	if (refcount_dec_and_test(&sk->sk_wmem_alloc))
-> 		__sk_free(sk);
-> }
-> =
+net/ethtool/plca.c:ethnl_set_plca() {
+	memset(&plca_cfg, 0xff, sizeof(plca_cfg));
+	plca_update_sint(&plca_cfg.enabled, tb, ETHTOOL_A_PLCA_ENABLED, &mod);
+	...
+}
 
-> whereas the skb charge release path notifies first:
-> =
+so a partial write such as "ethtool --set-plca-cfg <dev> node-id 3" arrives
+with enabled == -1, which genphy_c45_plca_set_cfg() documents as "not to be
+changed":
 
-> net/core/sock.c:sock_wfree() {
-> 	...
-> 		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
-> 		sk_write_space(sk);
-> 		len =3D 1;
-> 	...
-> }
+drivers/net/phy/phy-c45.c
+ * @plca_cfg: structure containing the PLCA configuration. Fields set to -1 are
+ * not to be changed.
 
-[Medium] False positive.
+The old truthiness test treated -1 as enabled and wrote COL_DET_DISABLE even
+though PLCA enablement was untouched.  The new "> 0" / "== 0" split honours
+the -1 contract, which looks like a user-visible fix in its own right.
 
-This sk_free only releases a 1 byte hold for the slot.
+Since the patch carries a Fixes: tag and is a stable candidate, could the
+changelog call this out separately from the PSTC interrupt work, so it is
+clear which part helps boards without a routed PHY IRQ?
 
-The actual release of the truesize attributed to the data (to_write)
-is released in the normal sock_wfree path.
+> @@ -506,6 +529,111 @@ static int lan86xx_read_status(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
 
-It is admittedly odd to have two wmem operations per slot. And perhaps
-even questionable to have truesize and wmem count userspace TX_RING
-data. But the second is pre-existing and for net-next.
+[ ... ]
 
-The first is new, but alternatives like sock_hold were found to be
-less preferable than an extra 1B hold on wmem.
+> +static int lan86xx_config_intr(struct phy_device *phydev)
+> +{
+> +	struct phy_plca_status plca_st;
+> +	int ret;
+> +
+> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+> +		/* Read to clear any pending status before enabling. */
+> +		ret = lan86xx_read_clear_sts1(phydev);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* STS1 may have cleared a PSTC event that occurred while the
+> +		 * interrupt was masked, so synchronize CDEN with the current
+> +		 * PLCA state before enabling PSTC.
+> +		 */
+> +		ret = genphy_c45_plca_get_status(phydev, &plca_st);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> +				     LAN86XX_REG_COL_DET_CTRL0,
+> +				     COL_DET_CTRL0_ENABLE_BIT_MASK,
+> +				     plca_st.pst ? COL_DET_DISABLE :
+> +				     COL_DET_ENABLE);
+> +		if (ret)
+> +			return ret;
+> +
+> +		return lan86xx_set_intr_mask(phydev,
+> +					     LAN86XX_STS1_PLCA_STS_CHANGED,
+> +					     true);
+> +	}
 
-> =
+[Severity: Medium]
+Does the implemented ordering here match the commit message?
 
-> A blocking TX_RING sender reaches sock_wait_for_wmem() via
-> tpacket_snd()->sock_alloc_send_skb()->sock_alloc_send_pskb(), and its o=
-nly
-> wake condition for send space is sk->sk_write_space():
-> =
+The changelog states:
 
-> net/core/sock.c:sock_wait_for_wmem() {
-> 	...
-> 		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
-> 			break;
-> 		...
-> 		timeo =3D schedule_timeout(timeo);
-> 	...
-> }
-> =
+    CDEN is re-synced against current PLCA status right after unmasking
+    PSTCM, since a transition during the masked window is otherwise
+    silently dropped by the STS1 read-to-clear.
 
-> With the default sk_sndtimeo that schedule_timeout() is
-> MAX_SCHEDULE_TIMEOUT.  If the drop below sk_sndbuf is performed by the =
-new
-> uarg charges only, is anything left to wake the sleeper?  A path where =
-the
-> skb charge is gone while the uarg charge is still outstanding is
-> loopback_xmit(), which calls skb_orphan(skb) (running sock_wfree) witho=
-ut
-> skb_orphan_frags(), so the ubuf_info survives in the backlog.
-> =
+The code does the opposite order in lan86xx_config_intr():
 
-> [ ... ]
-> =
+	lan86xx_read_clear_sts1()		/* drops pending PSTC */
+	genphy_c45_plca_get_status()		/* sample */
+	phy_modify_mmd(COL_DET_CTRL0, ...)	/* act on the sample */
+	lan86xx_set_intr_mask(..., true)	/* only now unmask PSTCM */
 
-> > @@ -2908,7 +2918,24 @@ static int tpacket_snd(struct packet_sock *po,=
- struct msghdr *msg)
-> >  			virtio_net_hdr_set_proto(skb, &vnet_hdr);
-> >  		}
-> >  =
+Under the hardware model the commit message describes, a PLCA transition
+occurring between the status sample and the unmask is neither reflected in the
+CDEN value just written nor delivered as an interrupt, so CDEN would stay
+stale until the next autonomous PLCA transition.  Should the re-sync be moved
+after lan86xx_set_intr_mask(), or should the changelog be corrected to match
+the code?
 
-> > -		skb->destructor =3D tpacket_destruct_skb;
-> > +		uarg =3D kmalloc(sizeof(*uarg), GFP_KERNEL);
-> > +		if (unlikely(!uarg)) {
-> > +			if (likely(len_sum > 0))
-> > +				err =3D len_sum;
-> > +			else
-> > +				err =3D -ENOMEM;
-> > +			goto out_status;
-> > +		}
-> > +		uarg->po =3D po;
-> > +		uarg->ph =3D ph;
-> > +		uarg->ubuf.ops =3D &tpacket_ubuf_ops;
-> > +		uarg->ubuf.flags =3D SKBFL_ZEROCOPY_FRAG;
-> > +		refcount_set(&uarg->ubuf.refcnt, 1);
-> > +
-> > +		/* Hold a sk_wmem_alloc reference until completion */
-> > +		refcount_inc(&po->sk.sk_wmem_alloc);
-> > +		skb_zcopy_init(skb, &uarg->ubuf);
-> > +
-> >  		__packet_set_status(po, ph, TP_STATUS_SENDING);
-> >  		packet_inc_pending(&po->tx_ring);
-> >  =
+[Severity: Medium]
+Can lan86xx_config_intr() race with lan86xx_handle_interrupt() over
+COL_DET_CTRL0 and the read-to-clear STS1 latch?
 
-> =
+lan86xx_handle_interrupt() runs with phydev->lock held:
 
-> [Severity: Low]
-> Just below this, the packet_xmit() error handling in tpacket_snd() stil=
-l
-> refers to the destructor that this patch removes:
-> =
+drivers/net/phy/phy.c:phy_interrupt() {
+	mutex_lock(&phydev->lock);
+	ret = phydev->drv->handle_interrupt(phydev);
+	mutex_unlock(&phydev->lock);
+}
 
-> net/packet/af_packet.c:tpacket_snd() {
-> 	...
-> 			if (err && __packet_get_status(po, ph) =3D=3D
-> 				   TP_STATUS_AVAILABLE) {
-> 				/* skb was destructed already */
-> 				skb =3D NULL;
-> 				goto out_status;
-> 			}
-> 			/*
-> 			 * skb was dropped but not destructed yet;
-> 			 * let's treat it like congestion or err < 0
-> 			 */
-> 	...
-> }
-> =
+but lan86xx_config_intr() is reached via phy_config_interrupt() from
+phy_request_interrupt(), phy_free_interrupt() and phy_init_hw(), none of which
+hold that mutex.  phy_request_interrupt() also registers the handler before
+enabling:
 
-> With skb->destructor back to sock_wfree and slot release moved to
-> tpacket_ubuf_complete(), does the slot status still imply anything abou=
-t
-> the skb?  TP_STATUS_AVAILABLE can now be observed while the skb is aliv=
-e
-> (the uarg completed early through skb_copy_ubufs()), and the slot can
-> still read TP_STATUS_SENDING after the skb was freed if a clone or segm=
-ent
-> holds an extra uarg reference.  Should these comments be reworded for t=
-he
-> new completion scheme?
-> =
+drivers/net/phy/phy.c:phy_request_interrupt() {
+	err = request_threaded_irq(phydev->irq, NULL, phy_interrupt,
+				   IRQF_ONESHOT | IRQF_SHARED,
+				   phydev_name(phydev), phydev);
+	...
+		if (phy_enable_interrupts(phydev)) {
+}
 
-> -- =
+and phy_free_interrupt() calls phy_disable_interrupts() while PSTCM is still
+unmasked and the handler is still registered.
 
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
-chset/20260919004748.1463985-1-willemdebruijn.kernel%40gmail.com
+So an interleaving like this looks possible:
 
+CPU0 lan86xx_config_intr()		CPU1 lan86xx_handle_interrupt()
+  lan86xx_read_clear_sts1()
+  plca_get_status() -> pst = 0
+					  lan86xx_read_clear_sts1() -> PSTC
+					  plca_get_status() -> pst = 1
+					  phy_modify_mmd(CDEN = DISABLE)
+  phy_modify_mmd(CDEN = ENABLE)
+  lan86xx_set_intr_mask(..., true)
 
+phy_modify_mmd() only serializes the individual register read-modify-write on
+the MDIO bus, so the status-read-then-CDEN-write pair is not atomic.  Since
+the PSTC latch was already consumed, would CDEN stay wrong until the next
+autonomous PLCA transition?
+
+> +
+> +	ret = lan86xx_set_intr_mask(phydev, LAN86XX_STS1_PLCA_STS_CHANGED,
+> +				    false);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Read to clear any pending status after disabling. */
+> +	ret = lan86xx_read_clear_sts1(phydev);
+> +	return ret < 0 ? ret : 0;
+> +}
+> +
+
+[ ... ]
+
+>  static struct phy_driver microchip_t1s_driver[] = {
+>  	{
+>  		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVB1),
+> @@ -513,6 +641,8 @@ static struct phy_driver microchip_t1s_driver[] = {
+>  		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
+>  		.config_init        = lan867x_revb1_config_init,
+>  		.read_status        = lan86xx_read_status,
+> +		.config_intr        = lan86xx_config_intr,
+> +		.handle_interrupt   = lan86xx_handle_interrupt,
+>  		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
+>  		.set_plca_cfg	    = genphy_c45_plca_set_cfg,
+
+[Severity: Medium]
+Is the Rev.B1 entry intentional?  It gains the two CDEN-managing callbacks
+but keeps .set_plca_cfg = genphy_c45_plca_set_cfg, while the Rev.C1/C2 and
+LAN865X entries use lan86xx_plca_set_cfg.
+
+Two consequences follow from that combination.
+
+First, the new comment in lan86xx_plca_set_cfg() about applying "the static
+CDEN write here as a baseline" for PHY_POLL and PHY_MAC_INTERRUPT boards is
+unreachable for Rev.B1, since genphy_c45_plca_set_cfg() never touches
+COL_DET_CTRL0.  A Rev.B1 board on PHY_POLL therefore gets no CDEN management
+at all, while a Rev.B1 board with a routed IRQ gets PLCA-tracked CDEN.
+
+Second, Rev.B1's mandatory AN1699 init table programs COL_DET_CTRL0 with
+CDEN set:
+
+	0xC000, 0x801C, 0x033F, 0x0404,   /* values, 0x0087 = 0x801C */
+	0xF800, 0x801C, 0x1FFF, 0xFFFF,   /* masks,  mask 0x801C */
+
+lan86xx_handle_interrupt() has no per-revision guard, so it clears that bit
+whenever PLCA is operational.  Commit 78341049fbcd converted only Rev.C1/C2
+and LAN865X to lan86xx_plca_set_cfg and deliberately left Rev.B1 out.  Should
+Rev.B1 either also use lan86xx_plca_set_cfg, or not be wired to the new
+callbacks?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918143302.76909-1-parthiban.veerasooran%40microchip.com
