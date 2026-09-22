@@ -1,195 +1,411 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011056.outbound.protection.outlook.com [52.101.57.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE654F85D2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790059984; cv=fail; b=dmfNI0dSrR/1UaEMsslOV9ZXo2tLnw02QeH5CFC52GSdnPi4Rs6P+xFhQIgE3koGfaa3qASN3KUSgpVkZ9SnB9La2Ypkl3udaCxXoFd1xwpyDcGqZO8UD1f9d1ZYb70obWhHpPodLIkzIGJrwPkFcELTrbZ1Ju5Z1fgHewNDwyg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048FE4F93BC;
+	Tue, 22 Sep 2026 06:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790059984; cv=none; b=AgWIxMrnRX/BXvbgygGrMsMWJsM6z2069hVRLHgWh6n1z8E83bQ92rHx1aBCynvZ1RZDmNyJGODeNAZhPqo/9GT68i0VDWCIowkaF4dGUuJIlbvYmhvjLsVkItInjgdafxzbDfmLWJjMjPGXP/WkttMLGRlp3GDHj18q8ipZdqU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790059984; c=relaxed/simple;
-	bh=HV/XmrL2ZeulQGqGMcISzHKTHduvzA4usS5f5Y+H6LQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FReDXPYb3t6xxZDFY3BePh83bOcAuY6Va5oyYPGL7yXLh7UaUsCPhOgi+N+exkTLg/EHGuiLhfp3J9wdpnWMc/jJ2t+Fx/4YMlIm+0AjtTydXDgTWlhZ45cwdZIhwC+VRL73II5dlmOx4fou7BgKUlOWeZfOXGN6pKkN+8eHaCM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=t/8AHS+M; arc=fail smtp.client-ip=52.101.57.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	bh=LJcXZhIH+ezMTY4P6cxIJsjkg8bnyLIWpjpEB9W1oxA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NhAq/G0fELsnkjqNAaHKnPW2oQaC+DexypkqLOJ90iaZce3g1KJ9V9qMOxrCXnZl5V7sSdH5fnJA/Zk8bte0g4weINBUHhNaanlmPzVxsTDHTud+NdroBAXQkJr3q+3zCUdbX4vvM9WTcS74EdLr7yf23IGc0Zc34GlJeSp25+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5uSqydr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="t/8AHS+M"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DAjKQs/SgIiAsgcPCkNtkDjhQOnvP7hSAJ7HHhvZavIdhwuH79HiFuTfcPzz7qaCqGnh+EdGFoMojeF5WFqUj4SDN5OsT+8vElLm1ux2/IllDJ7SsIz/xNykcLtadc+d6jtAoOlDym3B6yGlEauhUqr3afx54n72bxoFe+DEqvGRCHoXkJbquG35GWvZKwEGyEznP65gzBz0AXHn+l5cc4hV0paHXj3mRF9Ml8HOIweGu7/Fk7qoc2dlXDEWX5jF+GTsFWFtiPDHDqkqXRYUlGlktaW2q7/QxIkR52lZMpBiFsBPpmxDrPblfi7FDjthsz9MRm+XiyKuVjoNxDiF1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c/3C+7dWXZuudrB/AsfcDucnbeNGTIpCgINy89fS4hk=;
- b=k1ZamJpjBi+/z4mn8Cywr/l4b66973eIcIHBmh6ZaLfnfhwNJEqDq6QOac/D+k3i9qO6r3eDrID++DF19yAUeLuJK0NQ5fL5kSsBvG7DJEqekwDZRCuhre4JczSem7DakUBkB433Y0x32tQU+RJS1oKb+EIemRapWBE1MGOszljpmH4rtHrKXTp7iHuE/ItvRxhwWTxKbZWIC03wSIg+jgxKzRXP1pHIakayh8dH9R0kNeCaL014PSt7Gy1HFghjE7x+Zy7/BMi0047MVDoUxMRjUu9au/99p8IUf30OOgWH3c9/xFVQaCwDGtXNZ+O55wGCh+6Aacoh+X6JGxToDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c/3C+7dWXZuudrB/AsfcDucnbeNGTIpCgINy89fS4hk=;
- b=t/8AHS+MnoEivHpFFunXLuI24FRtb9ECpCNtrveYeTU4Bi02itT9i/H8kP+9BZKsHC4G05phvQKf1ISIo8o6JIHpO8MKgt+9o1Ud838K0vo5DhN826maW6bWSzXF4DLVzsq3AOPEjJLWi9Jyxvsm6dAb0AtN5amIXfMw7qxBLy5OOFh5X7VF4/UPL72fRcCTok9EaA3Q2aCC3h/y6ZbxAzt0iVx5byir203i9TyPZv9RRnqKD0Jp/Qa1XLJmqysJ9t+uOBihcdtU/M4k8ej3ziXZ+ptaadfR0qggzgcdnAc+4rAz/TjLbSHqm0Y48hNtpCKkJiRXbDnNkR7yXcq0cA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA0PR12MB4367.namprd12.prod.outlook.com (2603:10b6:806:94::13)
- by DS4PR12MB9795.namprd12.prod.outlook.com (2603:10b6:8:29e::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
- 2026 06:52:59 +0000
-Received: from SA0PR12MB4367.namprd12.prod.outlook.com
- ([fe80::2815:8a95:1a44:be1c]) by SA0PR12MB4367.namprd12.prod.outlook.com
- ([fe80::2815:8a95:1a44:be1c%6]) with mapi id 15.21.0428.011; Tue, 22 Sep 2026
- 06:52:59 +0000
-Message-ID: <b9038692-e31b-4daf-8775-0bac3e99ceac@nvidia.com>
-Date: Tue, 22 Sep 2026 09:52:55 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 2/2] net/mlx5: Bridge, don't fail unlink of
- untracked/unsupported peer ports
-To: Bernardo Soares <bsoares.it@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
- saeedm@nvidia.com, Vlad Buslov <vladbu@nvidia.com>
-References: <20260918095931.29792-1-bsoares.it@gmail.com>
- <20260918095931.29792-3-bsoares.it@gmail.com>
-Content-Language: en-US
-From: Mark Bloch <mbloch@nvidia.com>
-In-Reply-To: <20260918095931.29792-3-bsoares.it@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TLZP290CA0005.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::12) To SA0PR12MB4367.namprd12.prod.outlook.com
- (2603:10b6:806:94::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5uSqydr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5924B1F00893;
+	Tue, 22 Sep 2026 06:53:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790059982;
+	bh=pYR/te7RD6Aq8zKO9fqGxK9I2OTeDZvGuARbkTLE4Ak=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Q5uSqydr3qPkCCiI6IBtY0mZhpPQwOUC/zWuQouLFoAUbJEf+OsHKekzB/Q0wTnmP
+	 Oz6l23SnDTwidcWBSSUbcjZxgjFwctZA25QS52SOXqMf4F3LApd8v7LEmYsc7SxczJ
+	 yECwVUIh0LZbU/7ev8SxiP9SAnbKi0P+1YmLy9LWiI+LInbp/aN5QrvVjg4vsKhz+y
+	 dJJ76UYV0hyxB89C0uq1PxNTyt3Dbczz8OXcHSVZPqRp985seKx4FvbIJU4LNnkgFY
+	 knniYVCrz92KC5iGmBBm9Ycq+cEBqWA3mbQw3vk2sKPkyJYEyge4cD3ROLayRoWz6r
+	 NwQWuPCB7TcFg==
+Subject: Re: [PATCH net-next v14 5/7] r8169: add support and enable rss
+From: netdev-bot+sashiko@kernel.org
+To: javen_xu@realsil.com.cn
+Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 22 Sep 2026 06:53:01 +0000
+Message-ID: <179005998192.2160803.13913852634612357214@kernel.org>
+In-Reply-To: <20260918061923.313-6-javen_xu@realsil.com.cn>
+References: <20260918061923.313-6-javen_xu@realsil.com.cn>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4367:EE_|DS4PR12MB9795:EE_
-X-MS-Office365-Filtering-Correlation-Id: 095e34ff-c03b-4747-f62b-08df187623ad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|11063799006|10067099003|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	qLBnI5w+8egK3wqEN7bTwyM3kfV3BQOyynL4I8kl209ZFPeu42l1lXO1R18YeZIwFi253FnfXItmuw/vqtf4Ddr8JfHii5qDh3OUQ+TkgG7k9OH8Y4eaaVvphAkANlbQvMo3A3G7XLmmM7gZsKmrWVoqBDE6EUKQnSU0X3BkXE5fvZJw+39fh3onrL8XjAVCsLtB6TK2a5arLgyI5fQLwPfUuWwDZcNeibtgD7eucYjW3hkb4zc0MxmAUvClLocGTzjI2+wu0v1u+47iQIGypj3/VxvuMHQqV3kAUSlaaJxmUio5/mXeU/XVmlP6BT+tUf1wC12anW0V9lsG5Ev8qz4YBFcxHBdX1oBjj4OsIesUqP53xKaTlFN9mnhqqbwNVQAd5VC3eI8wUoqxApY1SUdrNMfWkQmwG9HlfeTcTk/LFkATBdB8korZba8EVwrk4oCBZpkqVGsnzW3je0zAytP8RrIUKNRmDVSg8zpnWEM8MHqZvwuqyTKtn31enLltW8rpQaBZzDLYZInWhyMOB3+KxhMiBprCowKy2llP/d1S0bQrrla6CEU0o3ecm9UE5TgcG8qpPoWcBM0mussARLIIfMppFQUzm/7/Tw23SL3HN2e7CVyyp6YJjtpWLAn9dJjgUUvtfF5hQmXOFYClCrcXwsQ4jpXyHsPhiNbpcdQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4367.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(11063799006)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ODdOR3U2cXRPenFPc1MxZDFLaFFYSWpkMXhIZXNsNkdTWmMrdy96UlZidTZx?=
- =?utf-8?B?K1EwQTZMZkNBbjZFajM3SXBQdmorUWpDdG55THRPREhwUWd0MHdLZmp6Tjl5?=
- =?utf-8?B?allGVXB0c2FUS1p4MStiKzNnTG5zVHI0a2wrcjBYb0cxeDYvM0NydkJtNTlZ?=
- =?utf-8?B?bFR2SjhiNHI3YzR5WlE2VThNYVM5U24zVFlaUGVMZW9jaGNuRjNnRFZyOHhl?=
- =?utf-8?B?dFluS0RRMTNNcUNCSkNjUmp6aU1rNFN2Z3V0ZmNLd1BWN0pJSDkvTThjcldx?=
- =?utf-8?B?Mld2T1BNQW9QTHNUUTFLWTNWUFVpMVQzbkl5R0hJeTk0d0dVdllLS2VadEZt?=
- =?utf-8?B?OUlFQ05nd3I1dTVzSWFRMnFzSjd3Z1laaHRxQzN4ZHpDbUliQ1BHZU9GbzQ3?=
- =?utf-8?B?cC80QkVRTTMyZkNjUWdQVk5tckFlT2pmTDdCTG5yWHR1WmpSMWpESDVacVpw?=
- =?utf-8?B?T29GZy83UDlFVnh6VG1TcWhkV1VVdFlHTExsa3MydE9QSk15Y1YwWnJPOThK?=
- =?utf-8?B?dHlNY1l6cC9MSVFiTHJnWTZRU250UTZKU29jc09iWGJrSUlxWThhM1hiNi8r?=
- =?utf-8?B?R0swaHdMMnh1dENJdmpQYnNSczZCejR3TG1CTnFkNit0VGZZRnlJZGFKb3c1?=
- =?utf-8?B?TSsyNHozaU1NaHNJMWhBVmlDdElaU003SlU1THZpMzFkYnBkbmZScVUyZkxs?=
- =?utf-8?B?Vko1Q0hFZm0xUlArVks0a2x2dmdLYnBVbjZ1YVpBVGFoR1crMysrTkNWcU5E?=
- =?utf-8?B?TCtaUmdCWW4xbEpvZVV2Vi9xVlI5K0VIUnVad01mTExNSVhOZCtvaTdyUkNw?=
- =?utf-8?B?ckg5QzliNU1yWVNoSW41eVZUM3lpeFZJZ2lFNDhrUDVUTHBib1Z5WjhyTDM0?=
- =?utf-8?B?TmtXTTZENmR3d0RXUmtaVHdLNTZ2M0l2cEloQ0JZMk5qQk94SEJpNWlCTXlj?=
- =?utf-8?B?a3RHaXpaNGZ5QnBXYzhXRnF0MXhMSit2L3ZhbmVYRlV5UWlobHE0bzJDVWVt?=
- =?utf-8?B?VjYzN1F5YjJwNE81cTNFcXZDSTFwVXg2M3hDZVpCZXNvblhjckhPaWlaMFBo?=
- =?utf-8?B?aENOOHRhOU5KTDd6WUV5M3RFZEpSVWpNMUl1dDF5OTUyVFBlZS93MUc4SXNi?=
- =?utf-8?B?MHN2eHpHRldaWGR1Z2NUN3IxbDZVcjl4S1gwSW9TMnBMNFNCSFN1NnRCdk9F?=
- =?utf-8?B?a0x1VjBXdU5vMDFTcmFqMHVRWWlPTFlvYjNETThRVmp3cVRIK1hRa0xXUzdC?=
- =?utf-8?B?d2dvVGZvRVlMaEJyYVRGR1ZVL2FWbzNvNm1LMnBwaks3L29vNzl5T1pkeTR1?=
- =?utf-8?B?MUJFVE0rcFM0dkd2b1VVYXNiWlFhdVBlcnlnRzArZWdNdHVINCtoU2pNWS9O?=
- =?utf-8?B?RGlhSWUrYjBkUzBKS0M3THd2REkxbXk0RkN5ek1ja0QwUFFWdHlFV2hRR0Fk?=
- =?utf-8?B?ek5jQWpGQXEySElZUk0xc3pxcTZrYTAreVF0QkIvUkhUWlJwblY5Z2NzajQ3?=
- =?utf-8?B?VGhmL0dYN29DaitqTzVqdWl0ZnVqS3UwYWw5UFlJYzZzcFJ4VGY3NWRNck5j?=
- =?utf-8?B?OWZiYnl6U2FkS3o1UjJEcEhHeFhST2JLaUJyZUlNSWc5Z2QzVHpOWkhjWjRo?=
- =?utf-8?B?UUpza2M0RTlzTytOSGphSExGWUc1dDIzS1dQNVk1SGJWTDhSV1NTUmVTb1pU?=
- =?utf-8?B?VlZhd0VuanROWmtYTnBFcFBURW04K0Q5WFpHOFI3VldkZmVWdFRKcHdDOUFZ?=
- =?utf-8?B?ODRxS2h1cW0xUnVzdCtuMzBTdmZsREVIaTlzVGhPRE1MZ203Y011TkwzRk0v?=
- =?utf-8?B?L0ZiY3ZpM3M4cDd6MWt2ZzNNeDZodlIyaGloeHR1cWcvTTBCbUxqb0M5UGE2?=
- =?utf-8?B?NVFmaHAxbjkwbUZneG1ReUs2d1AzU2FFOHFhK2xQQ3pFVkZibGt2Wi9aUHdN?=
- =?utf-8?B?amVrRGZMbTdyWXlmTFFqMm4vVE9WN0hyNEtTeUhyRU9TUWxiNFJyeUtkVTZX?=
- =?utf-8?B?YU9RcXZqM0dDcitkMW45cVdkQmoySFRYbjBhOUJKWHZvRGQwQ0Rhb1dMOGs2?=
- =?utf-8?B?cVNLdThULzYzeVI5ZGpkNUd0WXNuUFJmNlNlVWYzOUp6VFI3elNKdUk0bDFn?=
- =?utf-8?B?dktFenFpcWtpaVRIQmRiaFdyYnBRSnhmWHhzNUZMQ2llOXEwTEMzdmhnWVpV?=
- =?utf-8?B?UVY2Ung4KzQ1cU1Hai9DK1ZjeUhlc2kwb2xLa3NkM3lmUFYwOGRPa3NmY0VW?=
- =?utf-8?B?SHBOcUFCMEwrNU04dUR1ZWptbzcxbUtZVTlSODdpUmVlZ3M4Uzh1WU9YdUEv?=
- =?utf-8?B?eFk4OEFVTmUrU1dsUWdyaUFZakY3ai83QWdwczZpVnRtdVJmWTdPdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 095e34ff-c03b-4747-f62b-08df187623ad
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4367.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 06:52:59.6118
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q6YXG1oa24GHHgtFfTkEY2Zfh1GUbzABnEKh8D2yq/mjAJ//w1gxu+pQt/IsewJ54eRwBpiClwP+TS6FtxbD0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9795
 
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
+Critical: 0 · High: 0 · Medium: 5 · Low: 0
 
-On 18/09/2026 12:59, Bernardo Soares wrote:
-> mlx5_esw_bridge_vport_unlink() returns -EINVAL when the port isn't
-> tracked by this instance's br_offloads. This is reachable on a sibling
-> instance that registered its notifier after the port was already
-> enslaved: it never saw the NETDEV_CHANGEUPPER link event, so
-> peer_link() never created a peer port for it, but it does see the
-> later unlink event and fails. Return 0 instead, and give
-> mlx5_esw_bridge_vport_peer_unlink() the same merged_eswitch capability
-> guard peer_link() already has, since without it peer_link() likewise
-> never creates a port to unlink.
-> 
-> This also matters beyond the -EINVAL itself:
-> mlx5_esw_bridge_switchdev_port_event() runs on the per-netns
-> netdev_chain, and notifier_from_errno(-EINVAL) sets NOTIFY_STOP_MASK,
-> which call_netdevice_notifiers_info() checks to stop calling further
-> listeners on that chain - so the old -EINVAL silently dropped the
-> event for any listener registered later on the same chain, even
-> though none of it was visible to user space since
-> __netdev_upper_dev_unlink() discards the return value.
-> 
-> Fixes: c358ea1741bc ("net/mlx5: Bridge, allow merged eswitch connectivity")
-> Signed-off-by: Bernardo Soares <bsoares.it@gmail.com>
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks,
+- [Medium] The patch silently bundles a fix for a pre-existing integer
+  underflow in the chip-independent RX path into a feature commit.
+- [Medium] The one-line commit message does not disclose the new IRQ
+  allocation policy for RTL8127, which is all-or-nothing and consumes…
+- [Medium] For the new RSS (v4) RX descriptor the patch re-declares the
+  MAC error status bits shifted one position up relative to the legacy…
+- [Medium] Packets received on the newly enabled RSS RX rings are handed
+  to GRO without recording the receiving queue, so per-queue RPS/RFS…
+- [Medium] The new minimum-length guard in rtl_rx() is too weak: it only
+  rejects `pkt_size < ETH_FCS_LEN`, so a descriptor reporting exactly 4…
 
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+--
 
-Mark
+r8169: add support and enable rss
 
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-> index ac90ccda1272..b4cf3c5ac0dd 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-> @@ -1649,10 +1649,8 @@ int mlx5_esw_bridge_vport_unlink(struct net_device *br_netdev, u16 vport_num,
->  	int err;
+This patch adds RSS support for RTL8127 (RTL_GIGA_MAC_VER_80): a second RX
+descriptor layout, an RSS key and indirection table, per-ring RX error
+accounting and a new MSI-X vector allocation policy.  RSS is turned on by
+default when enough MSI-X vectors are granted.  A few questions below.
+
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index ec3643892fe2..ad360f145076 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -82,6 +82,19 @@
+>  #define R8169_MAX_RX_QUEUES	8
+>  #define R8169_DEFAULT_RX_QUEUES	1
+>  #define R8169_MAX_TX_QUEUES	1
+> +#define R8127_MAX_NUM_IRQVEC	32
+> +#define R8127_MIN_NUM_IRQVEC	30
+> +#define R8169_IRQ_DEFAULT	1
+> +#define RTL_RSS_KEY_SIZE	40
+> +#define RSS_CPU_NUM_MASK	GENMASK(18, 16)
+> +#define RSS_HASH_MASK		GENMASK(10, 8)
+> +#define RTL_MAX_INDIRECTION_TABLE_ENTRIES 128
+> +#define RXS_RSS_UDP		BIT(27)
+> +#define RXS_RSS_IPV4		BIT(28)
+> +#define RXS_RSS_IPV6		BIT(29)
+> +#define RXS_RSS_TCP		BIT(30)
+> +#define RXS_RSS_L3_TYPE_MASK	(RXS_RSS_IPV4 | RXS_RSS_IPV6)
+> +#define RXS_RSS_L4_TYPE_MASK	(RXS_RSS_TCP | RXS_RSS_UDP)
 >  
->  	port = mlx5_esw_bridge_port_lookup(vport_num, esw_owner_vhca_id, br_offloads);
-> -	if (!port) {
-> -		NL_SET_ERR_MSG_MOD(extack, "Port is not attached to any bridge");
-> -		return -EINVAL;
-> -	}
-> +	if (!port)
-> +		return 0;
->  	if (port->bridge->ifindex != br_netdev->ifindex) {
->  		NL_SET_ERR_MSG_MOD(extack, "Port is attached to another bridge");
->  		return -EINVAL;
-> @@ -1682,6 +1680,9 @@ int mlx5_esw_bridge_vport_peer_unlink(struct net_device *br_netdev, u16 vport_nu
->  				      struct mlx5_esw_bridge_offloads *br_offloads,
->  				      struct netlink_ext_ack *extack)
->  {
-> +	if (!MLX5_CAP_ESW(br_offloads->esw->dev, merged_eswitch))
-> +		return 0;
+>  #define OCP_STD_PHY_BASE	0xa400
+>  
+> @@ -506,6 +519,9 @@ enum rtl_register_content {
+>  	RxRUNT	= (1 << 20),
+>  	RxCRC	= (1 << 19),
+>  
+> +	RXRUNT_RSS	= (1 << 21),
+> +	RXCRC_RSS	= (1 << 20),
 > +
->  	return mlx5_esw_bridge_vport_unlink(br_netdev, vport_num, esw_owner_vhca_id, br_offloads,
->  					    extack);
->  }
+>  	/* ChipCmdBits */
+>  	StopReq		= 0x80,
+>  	CmdReset	= 0x10,
 
+[ ... ]
+
+> @@ -611,6 +627,20 @@ enum rtl_register_content {
+>  #define	ISRIMR_LINKCHG	BIT(29)
+>  #define	ISRIMR_TOK_Q0	BIT(8)
+>  #define	ISRIMR_ROK_Q0	BIT(0)
+> +#define RTL_DESC_TYPE_CTRL		0xd8
+> +#define RSS_KEY_REG			0x4600
+> +#define RSS_INDIRECTION_TBL_REG		0x4700
+> +#define RSS_CTRL_TCP_IPV4_SUPP		BIT(0)
+> +#define RTL_DESC_TYPE_RSS		BIT(1)
+> +#define RSS_CTRL_IPV4_SUPP		BIT(1)
+> +#define RSS_CTRL_TCP_IPV6_SUPP		BIT(2)
+> +#define RSS_CTRL_IPV6_SUPP		BIT(3)
+> +#define RSS_CTRL_IPV6_EXT_SUPP		BIT(4)
+> +#define RSS_CTRL_TCP_IPV6_EXT_SUPP	BIT(5)
+> +#define RSS_CTRL_UDP_IPV4_SUPP		BIT(11)
+> +#define RSS_CTRL_UDP_IPV6_SUPP		BIT(12)
+> +#define	RX_RES_RSS			BIT(22)
+> +#define RTL_RX_Q_NUM_MASK		GENMASK(4, 2)
+>  };
+
+[ ... ]
+
+> @@ -5093,28 +5299,91 @@ static inline int rtl8169_fragmented_frame(u32 status)
+
+[ ... ]
+
+>  static bool rtl8169_check_rx_desc_error(struct rtl8169_rx_ring *ring,
+> +					struct rtl8169_private *tp,
+>  					u32 status)
+>  {
+> -	if (unlikely(status & RxRES)) {
+> -		u64_stats_update_begin(&ring->stats.syncp);
+> -		if (status & (RxRWT | RxRUNT))
+> -			ring->stats.rx_length_errors++;
+> -		if (status & RxCRC)
+> -			ring->stats.rx_crc_errors++;
+> -		u64_stats_update_end(&ring->stats.syncp);
+> -		return true;
+> +	switch (tp->init_rx_desc_type) {
+> +	case RX_DESC_TYPE_RSS:
+> +		if (unlikely(status & RX_RES_RSS)) {
+> +			u64_stats_update_begin(&ring->stats.syncp);
+> +			if (status & RXRUNT_RSS)
+> +				ring->stats.rx_length_errors++;
+> +			if (status & RXCRC_RSS)
+> +				ring->stats.rx_crc_errors++;
+> +			u64_stats_update_end(&ring->stats.syncp);
+> +			return true;
+> +		}
+> +		break;
+
+[Severity: Medium]
+
+The three v4 error bits are the legacy bits shifted up by one:
+
+	RX_RES_RSS   = BIT(22)  vs  RxRES   = BIT(21)
+	RXRUNT_RSS   = BIT(21)  vs  RxRUNT  = BIT(20)
+	RXCRC_RSS    = BIT(20)  vs  RxCRC   = BIT(19)
+
+Is there also a shifted counterpart of RxRWT (receive watchdog /
+over-length, legacy BIT(22), so BIT(23) here)?  It is neither defined nor
+tested anywhere in the patch, which leads to two differences on the RSS
+path.
+
+First, the RSS branch above never bumps ring->stats.rx_length_errors for a
+watchdog/over-length error, while the default branch counts
+status & (RxRWT | RxRUNT) as a length error, so rx_length_errors is fed by
+two different bit maps depending on descriptor type.
+
+Second, the rx-all bypass in rtl_rx() below drops an RWT frame
+unconditionally on the legacy layout but not on the RSS layout:
+
+	if (tp->init_rx_desc_type == RX_DESC_TYPE_DEFAULT) {
+		if (status & RxRWT || !(status & (RxRUNT | RxCRC)))
+			goto release_descriptor;
+	} else {
+		if (!(status & (RXRUNT_RSS | RXCRC_RSS)))
+			goto release_descriptor;
+	}
+
+So a descriptor carrying the over-length bit together with a CRC or RUNT
+error is delivered to the stack on RTL8127 but discarded on every other
+chip.  Is that difference intended, or is the RWT equivalent simply missing
+from the new bit definitions?
+
+> @@ -5154,11 +5423,21 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
+>  
+>  			if (!(dev->features & NETIF_F_RXALL))
+>  				goto release_descriptor;
+> -			else if (status & RxRWT || !(status & (RxRUNT | RxCRC)))
+> -				goto release_descriptor;
+> +
+> +			if (tp->init_rx_desc_type == RX_DESC_TYPE_DEFAULT) {
+> +				if (status & RxRWT || !(status & (RxRUNT | RxCRC)))
+> +					goto release_descriptor;
+> +			} else {
+> +				if (!(status & (RXRUNT_RSS | RXCRC_RSS)))
+> +					goto release_descriptor;
+> +			}
+>  		}
+>  
+>  		pkt_size = status & GENMASK(13, 0);
+> +
+> +		if (unlikely(pkt_size < ETH_FCS_LEN))
+> +			goto release_descriptor;
+> +
+>  		if (likely(!(dev->features & NETIF_F_RXFCS)))
+>  			pkt_size -= ETH_FCS_LEN;
+
+[Severity: Medium]
+
+This guard is placed after the shared pkt_size = status & GENMASK(13, 0)
+assignment, so it runs for RX_DESC_TYPE_DEFAULT as well.  At the baseline
+the code was:
+
+	pkt_size = status & GENMASK(13, 0);
+	if (likely(!(dev->features & NETIF_F_RXFCS)))
+		pkt_size -= ETH_FCS_LEN;
+
+with no lower bound, so the pkt_size underflow was reachable on every
+r8169/r8168/r8125 chip with rx-all enabled, not only on the new RTL8127 RSS
+path.
+
+The recorded commit message is only "This patch adds support and enable rss
+for RTL8127." — the "fix an integer underflow in rtl_rx()" note lives below
+the scissors line and is stripped from git history, and there is no Fixes:
+tag or Cc: stable.
+
+Would it make sense to split this hunk into its own patch with a Fixes: tag
+so it can be found and backported on its own?
+
+[Severity: Medium]
+
+Is ETH_FCS_LEN a large enough lower bound here?  A descriptor reporting
+exactly 4 gives a zero-length skb, and any reported length in 4..17 (or
+4..13 with rx-fcs on) gives an skb shorter than ETH_HLEN, which is then
+handed to eth_type_trans():
+
+	skb_copy_to_linear_data(skb, rx_buf, pkt_size);
+	skb->tail += pkt_size;
+	skb->len = pkt_size;
+	...
+	skb->protocol = eth_type_trans(skb, dev);
+
+eth_type_trans() uses eth_skb_pull_mac(), which ignores the NULL return of
+skb_pull_inline() when ETH_HLEN > skb->len:
+
+include/linux/etherdevice.h:
+	static inline struct ethhdr *eth_skb_pull_mac(struct sk_buff *skb)
+	{
+		struct ethhdr *eth = (struct ethhdr *)skb->data;
+
+		skb_pull_inline(skb, ETH_HLEN);
+		return eth;
+	}
+
+so eth_skb_pkt_type() reads eth->h_dest and eth_type_trans() reads
+eth->h_proto at offsets 0..13, while only pkt_size bytes were copied into a
+head that napi_alloc_skb() does not zero.  Can skb->protocol, skb->pkt_type
+and the ring->stats.multicast accounting then be derived from stale heap
+bytes?
+
+For an AF_PACKET listener those bytes also become visible, since
+eth_header_parse() copies six source-MAC bytes with no length check:
+
+net/ethernet/eth.c:
+	const struct ethhdr *eth = eth_hdr(skb);
+
+	memcpy(haddr, eth->h_source, ETH_ALEN);
+
+and packet_recvmsg() returns them in sockaddr_ll.sll_addr.
+
+Would testing for a complete Ethernet header be more appropriate here, for
+example ETH_HLEN + ETH_FCS_LEN before the FCS adjustment?  Also, when this
+goto fires no rx_dropped or rx_length_errors counter is updated, so the
+frames disappear without accounting — is that intentional?
+
+> @@ -5191,10 +5470,12 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
+>  		skb->len = pkt_size;
+>  		dma_sync_single_for_device(d, addr, pkt_size, DMA_FROM_DEVICE);
+>  
+> -		rtl8169_rx_csum(skb, status);
+> +		if (tp->num_rx_rings > 1)
+> +			rtl8169_rx_hash(tp, desc, skb);
+> +		rtl8169_rx_csum(tp, skb, status);
+>  		skb->protocol = eth_type_trans(skb, dev);
+
+[Severity: Medium]
+
+Should rtl_rx() also call skb_record_rx_queue() here?  The receiving ring is
+known to the caller, rtl8169_poll_msix_rx() picks it from the MSI-X message
+id and passes it to rtl_rx(), but no driver code records it before
+napi_gro_receive().  git grep skb_record_rx_queue finds no hit in
+r8169_main.c at the baseline, at this commit, or at the end of the series.
+
+rtl_init_one() calls netif_set_real_num_queues(tp->dev, 1,
+tp->num_rx_rings), so sysfs exposes rps_cpus and rps_flow_cnt for every
+ring, but get_rps_cpu() only advances past rx-0 when the queue is recorded:
+
+net/core/dev.c:get_rps_cpu() {
+	struct netdev_rx_queue *rxqueue = dev->_rx;
+	...
+	if (skb_rx_queue_recorded(skb)) {
+		u16 index = skb_get_rx_queue(skb);
+	...
+}
+
+Does this mean per-queue rps_cpus settings on rx-1..rx-7 have no effect, and
+the rx-0 setting is applied to traffic from all rings?  Setting the RSS hash
+does not set skb->queue_mapping, so it doesn't substitute for the missing
+call.
+
+> @@ -5823,6 +6106,32 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
+>  	}
+>  }
+>  
+> +static int get_max_irq_nvecs(struct rtl8169_private *tp)
+> +{
+> +	if (tp->mac_version == RTL_GIGA_MAC_VER_80)
+> +		return R8127_MAX_NUM_IRQVEC;
+> +	return R8169_IRQ_DEFAULT;
+> +}
+> +
+> +static int get_min_irq_nvecs(struct rtl8169_private *tp)
+> +{
+> +	if (tp->mac_version == RTL_GIGA_MAC_VER_80)
+> +		return R8127_MIN_NUM_IRQVEC;
+> +	return R8169_IRQ_DEFAULT;
+> +}
+> +
+> +static void rtl8169_set_rx_ring_num(struct rtl8169_private *tp)
+> +{
+> +	if (tp->irq_nvecs >= get_min_irq_nvecs(tp)) {
+> +		unsigned int rss_queue_num = netif_get_num_default_rss_queues();
+> +
+> +		tp->num_rx_rings = rounddown_pow_of_two(min(rss_queue_num,
+> +							    tp->hw_supp_num_rx_queues));
+> +		if (tp->num_rx_rings >= 2)
+> +			tp->init_rx_desc_type = RX_DESC_TYPE_RSS;
+> +	}
+> +}
+> +
+>  static int rtl_alloc_irq(struct rtl8169_private *tp)
+>  {
+>  	struct pci_dev *pdev = tp->pci_dev;
+> @@ -5843,7 +6152,11 @@ static int rtl_alloc_irq(struct rtl8169_private *tp)
+>  		break;
+>  	}
+>  
+> -	nvecs = pci_alloc_irq_vectors(pdev, 1, 1, flags);
+> +	nvecs = pci_alloc_irq_vectors(pdev, get_min_irq_nvecs(tp),
+> +				      get_max_irq_nvecs(tp), flags);
+> +
+> +	if (nvecs < 0)
+> +		nvecs = pci_alloc_irq_vectors(pdev, 1, 1, flags);
+>  
+>  	if (nvecs < 0)
+>  		return nvecs;
+
+[Severity: Medium]
+
+This makes the RTL8127 allocation all-or-nothing: 30 to 32 vectors, or a
+single vector.  Are the extra reserved vectors used anywhere?
+rtl8169_request_irq() only installs handlers for vectors up to
+R8169_MAX_RX_QUEUES and for MSIX_ID_VEC_MAP_LINKCHG:
+
+	for (i = 0; i < tp->irq_nvecs; i++) {
+		...
+			if (i <= R8169_MAX_RX_QUEUES)
+				rc = request_irq(irq, rtl8169_interrupt_msix, ...);
+			else if (i == MSIX_ID_VEC_MAP_LINKCHG)
+				rc = request_irq(irq, rtl8169_interrupt_other, ...);
+			else
+				continue;
+
+so 21 to 23 of the reserved vectors end up with no handler, and the
+kcalloc() of napi structures is sized by tp->irq_nvecs as well.
+
+Both downgrades are also silent.  If the platform cannot supply 30 vectors
+the fallback to (1, 1) leaves num_rx_rings at 1 and init_rx_desc_type at
+RX_DESC_TYPE_DEFAULT with no message.  On a 2 or 3 CPU machine
+rounddown_pow_of_two(min(netif_get_num_default_rss_queues(),
+hw_supp_num_rx_queues)) can be 1, so RSS stays off while 30 to 32 vectors
+remain reserved.
+
+Would a dev_info() on those paths help, and should the requested count match
+the number of vectors the driver actually hooks up?
+
+The one-line commit message does not describe this new allocation policy at
+all — could it be mentioned there?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918061923.313-1-javen_xu%40realsil.com.cn
