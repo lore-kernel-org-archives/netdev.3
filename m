@@ -1,223 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E999549378;
-	Tue, 22 Sep 2026 16:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF71D5616C5
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 16:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790093364; cv=none; b=siAEKi3/i/bnuH56KFMsAFXm6axwKQW/t0ZElLqfOmeXDetAVNnkH/gHIJYzPp8FCQAS7yy1WJFgPRXQDR1fmCdGCo6I9pYf4LkiqRv2os6jLUDxDwq10Pnn47/LaXOOSJIfCaIZT7CX+sV5nLVC8w9e7W1MTXl4JrTfkLVLd6k=
+	t=1790093466; cv=none; b=BDmiPHhHUfONi8Otdr8JNQAY8x34czAzimy7Uk4Dn395HasH2z6YTpIcEQV492VXWlZvmaVR9SLUoQHcLq+1Pc9nl4q+bVY20nDnAOfYjLJxoAtyuXwEB1xQxRaU6z3wWk33qXkq52+R3Nydti7eovVOf0Bi0nBYAXeqjqH7FeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790093364; c=relaxed/simple;
-	bh=aZis7mWSM6fIM0b/+zVTDdJoxcPKL0dyFAOOK0keljE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FgmX/+NxcLC7kS5i2wy7K3jcPbwKeuoLMLL6IW8kyI1VNBRRmrgicxYPc8u0525aM1j+R9g7ElUMgBxwbJeCJDTNJI58pFfaQfT0ykMThPDMcl+s0f5CZ82H0X2xUwTZT0X4xLwHqgX6NXSdxlxhv/G8QkVjENUaiBJ12SbGjwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7Rulixi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790093466; c=relaxed/simple;
+	bh=8OcaiIxcxYuSc/C1Jq0Z8DDQ51DHv7iQ0Of65bbeS14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aI/Y5O5mvwXin1HJ/ZwicBOuy0JYIGJ8AgHBfFZT2L+Z+iLr4gdZ6n0l2DHP3p4PbIioFpO6k7Zr1X47FoV7bbPFMwKzFP4SxRU3a66z93bKHdU926Syt/rL/nXeOPLStUrQhuE5sd3jmWV/JAeGw6BrxWp4uwKgKXC9d88f9WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dslmH2aE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bN6LS0hZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7Rulixi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC601F000FF;
-	Tue, 22 Sep 2026 16:09:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790093362;
-	bh=wiVk/EjFI5SuvKN7+IRuT9f2lsWVYrIeiAj1aVG8x5Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=k7Rulixin0iQ485dNCuD3yarfLjOOfj5HiQy40zt9k/j7EMBYYCD4ie61lElcLb1U
-	 P+ELCKGNSr7b3hObdd/XUjjH/XO7lmKAYZg5S8ulbKTbOVEMQA6H78FpwWN7L4TYlq
-	 wuIgsbeZNLLDFWSFwPT0PxCUNe8zttVA3k6s+olASYAIdwQJLeBSekqQhAHwAnsbmK
-	 tQFUG1EX6fo8v1eVxABBwwYcx7mTUFvtAWlSEE6JH79VBKSTYuebvA1XTenZ+HP/Uw
-	 pssClQ6HT2kp5tUOtP6CSotpGCTzKLhD7C0h0vo/lZKt9ViLFNFQLLKOJSVph4o9R9
-	 Cc8OJwqRNN53Q==
-Subject: Re: [PATCH net] ipv4: fib: treat an unbuildable encapsulation as a
- nexthop mismatch
-From: netdev-bot+sashiko@kernel.org
-To: g.goller@proxmox.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- roopa@cumulusnetworks.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 22 Sep 2026 16:09:21 +0000
-Message-ID: <179009336183.2160803.4263260062974778447@kernel.org>
-In-Reply-To: <20260918152836.1173368-1-g.goller@proxmox.com>
-References: <20260918152836.1173368-1-g.goller@proxmox.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dslmH2aE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bN6LS0hZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790093463;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C0IssFiMcpMRiclnw6rek8fjNkoT/tOuBrqAfsmSoLo=;
+	b=dslmH2aEsWUo68nP2ugANt4/yoEh/bXcth7+DNTpTeFZcA2o38Z4WIftsUILPc2cbCoR7I
+	oDwyFEFWwsln1OPJjBA5TH3aOjr6yguWeXOUoxOgQ4/k2Vbn59iP7kc5Nm713Ol/yXm6+c
+	V9dIXdzV2P8d69aX7EO6n2+3QwbqYMI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-424-cuEIkRm3NYSXJbT5n4YTNg-1; Tue, 22 Sep 2026 12:11:02 -0400
+X-MC-Unique: cuEIkRm3NYSXJbT5n4YTNg-1
+X-Mimecast-MFC-AGG-ID: cuEIkRm3NYSXJbT5n4YTNg_1790093461
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e6ba4abdfso55480195e9.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:11:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790093461; x=1790698261; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C0IssFiMcpMRiclnw6rek8fjNkoT/tOuBrqAfsmSoLo=;
+        b=bN6LS0hZ6PvOMUBzcva90jabKcU8DLNahgmTSETNau08RALJstUlRFjz8FWolb4CTx
+         eA10/j434jxfyBARDT4Z32W4FdOKnjKZyCY2NlOOqHzXFkLjhVX345ak1jA7htkrQ+I9
+         rEAxfRQpRyGBtOMvJNQyD+g8BHOV4NsjrX5FysZZgs/ptpEqX/btJmXkyOullcY5NjaU
+         MqMDhPPiOIeEtWf1EZ0NkxmMH61dFVjT+aYtNFaG7dHczrFiLvyYt70TUQc8lsPWDche
+         vTRfJkpnoAuepXXzgp5A8uST95UUq+7nixxQaCeKrn2g05r+6id3LDMdQgk1B8gra/ky
+         RHzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790093461; x=1790698261;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C0IssFiMcpMRiclnw6rek8fjNkoT/tOuBrqAfsmSoLo=;
+        b=IFIuHM83703mOXdV53GhfSDmTq+h6tQuhHKG3oQkpzTG2ek8zvSEd1AgIyVCW1rps1
+         S9c0ZlYmLrqaS2Vilr/WO38GY5jJwgj7gT+wCa37PTJdrXUIxamBPSsFRpsRCFa6czlr
+         lEAg+kWI5pqT6eUnJQlOZyJ7Mxy4clzVEHJZsLTRLVvalD96pNqfwsiOOgGm3y87vYZi
+         7V3O2cauRDF5TX4GIeWf5pS0BZVt8dpcaxx23Yk/ObS2B0tHc+BOg13vwLvrlCsbnR6j
+         GKlmEiKKRwh9rl/aobo/VRPFHHYAaS7nVmGpIJxX/HR7EZd/PKKR46rUE6IbyguNHTP9
+         HvGw==
+X-Forwarded-Encrypted: i=1; AKwUvByCXWNYZv3xqk0EYee/iaLrjnBUMRHtv+XgnazKc/hJxexklSaW1zTxXNBPTexyo2tVA2CFYio=@vger.kernel.org
+X-Gm-Message-State: AFuF++nSJiFehMrxA0z3UeDCUlR+MA7c+1VSKxrCBtSJ5HJ2LVEidBLA
+	A/sAJCvRbgkA9bYu9kxIju8bGQmpZ+kfR9JXhQbTMjLK3FynkPEro0bl0YecF8W7dkgvkn4SzGK
+	ha3AN/ZT7DXnzMyxPNHk9eBi9TBR3wf8ae7YREolHM6fs8HUddptjXlERMg==
+X-Gm-Gg: AYBFou1/0GEQqeB1Iyf4haBXKv4M1ja/z2PAhCr9iGemEp/pQPy6DH8iWPGn3T9t6zR
+	40uHgW8Ee/yVMOG4MHb3/9joH812/TYOEQ/Bn7ruJaQKE425ohd4Wc00FiYYJFCIFDcJZa060jD
+	ayfHmhvaH9Y8DLzQJcGjw5HuBUJvrrCng+7smiudeb1/3IWad/Rc3D5NygpfB9IKFkU5WrJAyhf
+	faHuT2kkMs8FO5OlBl4SFncLQzHbnoFppzXxJ/ECTalGrUJByD2vuPA2MEvDdObwR3Dfdm/VuF8
+	ivIhQB0AGdtRV+INeFlfAMHth5gO3uCPUCLxbu1pMdsZZCrvD4umTcsvbCw12XLvwcj5Zy38YoO
+	BRmqiK/U/6Hh3CPUj/ReCbCQLSUefMzbc7WpSmDBEGe5lZVWVlE8qouxoWDlhgau9SjgKoeRc2g
+	==
+X-Received: by 2002:a05:600c:354c:b0:49d:1cc7:5ec3 with SMTP id 5b1f17b1804b1-49fc568f76dmr204801745e9.9.1790093461022;
+        Tue, 22 Sep 2026 09:11:01 -0700 (PDT)
+X-Received: by 2002:a05:600c:354c:b0:49d:1cc7:5ec3 with SMTP id 5b1f17b1804b1-49fc568f76dmr204801225e9.9.1790093460495;
+        Tue, 22 Sep 2026 09:11:00 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fde1e60c4sm507825e9.13.2026.09.22.09.10.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 09:11:00 -0700 (PDT)
+Message-ID: <9ff98cfc-392c-434c-a0c0-04dd4fa643e5@redhat.com>
+Date: Tue, 22 Sep 2026 18:10:59 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC net-next 1/6] selftests: net: py: add timestamped metric
+ output
+To: Stanislav Fomichev <sdf.kernel@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org
+References: <20260916190409.1222272-1-sdf@fomichev.me>
+ <20260916190409.1222272-2-sdf@fomichev.me>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260916190409.1222272-2-sdf@fomichev.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Incomplete fix: the RTA_MULTIPATH branch of fib_nh_match() never
-  compares per-nexthop encapsulation, so the wrong-route-deletion the…
-- [High] The fix is gated so narrowly that the bug class the commit
-  message claims to close remains reachable: fib_nh_match()…
-- [Medium] fib_encap_match() still reports "match" (returns 0) for an
-  RTM_DELROUTE that carries RTA_ENCAP but no RTA_ENCAP_TYPE, i.e.…
-
---
-
-ipv4: fib: treat an unbuildable encapsulation as a nexthop mismatch
-
-fib_encap_match() previously left its result at 0 when
-lwtunnel_build_state() failed, which fib_nh_match() reads as "the nexthop
-matches".  The patch makes a failed build return 1 so the candidate route
-is treated as a mismatch.
-
-A few questions about how far this closes the case described in the
-changelog.
-
-> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-> index 50e96f86ca59..951e48ae87da 100644
-> --- a/net/ipv4/fib_semantics.c
-> +++ b/net/ipv4/fib_semantics.c
-> @@ -911,17 +911,17 @@ static int fib_encap_match(struct net *net, u16 encap_type,
->  			   struct netlink_ext_ack *extack)
->  {
->  	struct lwtunnel_state *lwtstate;
-> -	int ret, result = 0;
-> +	int result;
->  
->  	if (encap_type == LWTUNNEL_ENCAP_NONE)
->  		return 0;
-
-[Severity: Medium]
-Does this early return leave one form of kernel-rejected encapsulation
-still reporting a match?
-
-rtm_to_fib_config() in net/ipv4/fib_frontend.c parses the two attributes
-independently:
-
-	case RTA_ENCAP:
-		cfg->fc_encap = attr;
-		break;
-	case RTA_ENCAP_TYPE:
-		cfg->fc_encap_type = nla_get_u16(attr);
-		err = lwtunnel_valid_encap_type(cfg->fc_encap_type, extack);
-
-so an RTM_DELROUTE carrying RTA_ENCAP without RTA_ENCAP_TYPE yields
-fc_encap != NULL and fc_encap_type == 0 == LWTUNNEL_ENCAP_NONE.
-fib_nh_match() enters fib_encap_match() purely because cfg->fc_encap is
-set, and the encap_type == LWTUNNEL_ENCAP_NONE test above then returns 0
-before the new build_state check, without ever looking at nh->fib_nh_lws.
-
-The add path rejects the same input: fib_nh_common_init() calls
-lwtunnel_build_state() with encap_type 0 and gets -EINVAL ("Unknown LWT
-encapsulation type" in net/core/lwtunnel.c).  For comparison,
-nh_create_ipv4()/nexthop parsing in net/ipv4/nexthop.c rejects NHA_ENCAP
-without NHA_ENCAP_TYPE with "LWT encapsulation type is missing".
-
-Should the delete path likewise refuse RTA_ENCAP without RTA_ENCAP_TYPE,
-rather than having fib_nh_match() fall through to comparing oif and
-gateway only and letting fib_table_delete() pick the alias?
-
->  
-> -	ret = lwtunnel_build_state(net, encap_type, encap, AF_INET,
-> -				   cfg, &lwtstate, extack);
-> -	if (!ret) {
-> -		result = lwtunnel_cmp_encap(lwtstate, nh->fib_nh_lws);
-> -		lwtstate_free(lwtstate);
-> -	}
-> +	if (lwtunnel_build_state(net, encap_type, encap, AF_INET, cfg,
-> +				 &lwtstate, extack))
-> +		return 1;
-
-[Severity: High]
-Is fib_encap_match() reached for every delete request that carries an
-encapsulation?  In fib_nh_match() the call site sits inside the oif/gateway
-branch:
-
-	if (cfg->fc_oif || cfg->fc_gw_family) {
-		struct fib_nh *nh;
-
-		nh = fib_info_nh(fi, 0);
-		if (cfg->fc_encap) {
-			if (fib_encap_match(net, cfg->fc_encap_type,
-					    cfg->fc_encap, nh, cfg, extack))
-				return 1;
-		}
-
-A request with RTA_ENCAP and RTA_ENCAP_TYPE but no RTA_OIF, no gateway and
-no RTA_MULTIPATH skips that block entirely and lands on:
-
-	if (!cfg->fc_mp)
-		return 0;
-
-which reports a match without the requested encapsulation ever being built
-or compared.  rtm_to_fib_config() records fc_encap/fc_encap_type with no
-requirement for an oif or gateway, and it only validates the encap type via
-lwtunnel_valid_encap_type() - the per-type payload check in
-ops->build_state (for example mpls_build_state()) never runs on this path.
-
-So does "ip route del <prefix> encap mpls 100" still remove a route
-installed as "<prefix> encap mpls 200 dev X"?  Would moving the encap
-comparison out of the oif/gw branch address that?
-
-[Severity: High]
-For the RTA_MULTIPATH case, fib_encap_match() is not called at all.  The
-loop under CONFIG_IP_ROUTE_MULTIPATH in fib_nh_match() looks only at
-rtnh_ifindex plus RTA_GATEWAY, RTA_VIA and RTA_FLOW:
-
-	for_nexthops(fi) {
-		...
-		if (rtnh->rtnh_ifindex && rtnh->rtnh_ifindex != nh->fib_nh_oif)
-			return 1;
-
-		attrlen = rtnh_attrlen(rtnh);
-		if (attrlen > 0) {
-			struct nlattr *nla, *nlav, *attrs = rtnh_attrs(rtnh);
-			...
-			nla = nla_find(attrs, attrlen, RTA_GATEWAY);
-			nlav = nla_find(attrs, attrlen, RTA_VIA);
-			...
-			nla = nla_find(attrs, attrlen, RTA_FLOW);
-
-There is no nla_find(attrs, attrlen, RTA_ENCAP) anywhere in that section,
-even though the add side consumes exactly those per-hop attributes in
-fib_get_nhs():
-
-		fib_cfg.fc_encap = nla_find(attrs, attrlen, RTA_ENCAP);
-		nla = nla_find(attrs, attrlen, RTA_ENCAP_TYPE);
-		if (nla)
-			fib_cfg.fc_encap_type = nla_get_u16(nla);
-
-and feeds it through fib_nh_init() -> fib_nh_common_init() ->
-lwtunnel_build_state().  Pre-dispatch validation of the nested attributes in
-lwtunnel_valid_encap_type_attr() (net/core/lwtunnel.c) only checks that the
-nested type is registered:
-
-			if (lwtunnel_valid_encap_type(encap_type, extack))
-				return -EOPNOTSUPP;
-
-so both a differing and an unbuildable nested encap pass.  An RTM_DELROUTE
-with RTA_MULTIPATH whose nexthops agree on ifindex, gateway and flow still
-returns 0 from fib_nh_match(), and fib_table_delete() in
-net/ipv4/fib_trie.c acts on it:
-
-		    fib_nh_match(net, cfg, fi, extack) == 0 &&
-		    fib_metrics_match(cfg, fi)) {
-			fa_to_delete = fa;
-
-Can the multipath loop also compare each nexthop's encapsulation, so the
-case in the changelog is covered for multipath routes too?
-
+On 9/16/26 21:04, Stanislav Fomichev wrote:
+> Add ksft_metric() to record timestamped JSON observations for the current
+> test case.
+> 
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> ---
+>   .../testing/selftests/drivers/net/README.rst  | 27 ++++++++++++
+>   .../drivers/net/hw/lib/py/__init__.py         |  8 ++--
+>   .../selftests/drivers/net/lib/py/__init__.py  |  8 ++--
+>   .../testing/selftests/net/lib/py/__init__.py  |  9 ++--
+>   tools/testing/selftests/net/lib/py/ksft.py    | 44 ++++++++++++++++++-
+>   5 files changed, 83 insertions(+), 13 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
+> index 3fe49bce4f3a..a6a8605844eb 100644
+> --- a/tools/testing/selftests/drivers/net/README.rst
+> +++ b/tools/testing/selftests/drivers/net/README.rst
+> @@ -259,6 +259,33 @@ ksft_pr()
+>   
+>   Use ``ksft_pr()`` instead of ``print()`` to avoid breaking TAP format.
+>   
+> +ksft_metric()
+> +~~~~~~~~~~~~~
 > +
-> +	result = lwtunnel_cmp_encap(lwtstate, nh->fib_nh_lws);
-> +	lwtstate_free(lwtstate);
->  
->  	return result;
->  }
+> +Use ``ksft_metric()`` to report a numeric measurement for the current test
+> +case. The helper records the time relative to the start of the case and emits
+> +each observation immediately before the test result as compact JSON. For
+> +example::
+> +
+> +  ksft_metric("throughput", 100.5, shape="scalar", direction="rx")
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918152836.1173368-1-g.goller%40proxmox.com
+Minor nits:
+- find the 'shape' name confusing/unclear. I would like more 'type' instead.
+   also it would ne nice to list explicitly somewhere in the doc the suppored
+   shapes/types. (If such list is already there I could not find it easily).
+- do we need a separare 'direction'? or can it be embedded into the name
+   metric itself? i.e. 'throughput-rx'?
+
+/P
+
