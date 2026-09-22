@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F91552938
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43387552956
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790084242; cv=none; b=dWjz47DhPbbC7mm8R31GpdH1zb2zo8hsk6aPJrK8XV2r+FV0GjADspxcGlCdGc03FB4lIl5hzoUGeGYKfEK6FKFaycPU4pMjPuQfrg0IXo5+UkSCjXW21QJpF481ZyHzEWdPZq1OI2rjYD+1JMHIuq+dBFm396nhdunYhtuOaeA=
+	t=1790084245; cv=none; b=GnKt+y4hSWX8qkDuMXxn+IBkPJvB7Xu1xwqiR7tiahqPC2OMPwiONYrWgLHyAjuBXmUBGHuXITr9b7VovPAiCyCisSm2bKu/xkGsUNnvVoSsQr87M8wspDIr4kJf/gOsGXxtydlSvrR09TKfeEpxiiMedQB1FUtz3U4C7xNZnLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790084242; c=relaxed/simple;
-	bh=mBdcqcN172KO80HSi7Th8858r5FrM5kirxRy5AQ3cSg=;
+	s=arc-20240116; t=1790084245; c=relaxed/simple;
+	bh=4SlchRATHbQIMfeWnGPHSC4zXqQ9oQRyDSLhp31lhMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWhDgRJd2uG1yT1rG3fPQ9LSKJWtos6xnxXDy56YVTUHPNqehUtOmJ6KYAfX3cSypN4JFayREW/g7Ld+Q3jXFbxj61yURJTF2/icfE6CB9t/b0bvmgqkWrFLHXXIiUcYVhcgtGeI18Kt2jSQ+PZgaqpXCTGAHPmFpt6qa7V5n9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHYQDAea; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=JpfvnZa1qGSvDsP4COt1v7lCUXO//AGSlYFrbHvZRI/jCJa73AqVeRYYAohWXBT1CDkNm+A9PyddQip+7FK6ZoYG62d9YPP7lmOzdJS1SjRj6AHzRc/7lHRfcTO3qNby6EtM2pRnEBC2qQbj0sfKCx+w+a9MJpaBO/sDKz8k+cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HobNQjy0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHYQDAea"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D941F00898;
-	Tue, 22 Sep 2026 13:37:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HobNQjy0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2E01F0089A;
+	Tue, 22 Sep 2026 13:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790084241;
-	bh=PCJLpRfxtct7DbafgSfwq4uII75Mlz+xgFX95QdMSj8=;
+	s=k20260515; t=1790084243;
+	bh=Pg18Pbgc69cV/gMwftuCBy3l3rv1TNxDzsc3uJalHFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UHYQDAeaZmEPkGZUIYDYbz8ItZVCEMU1kf5ewfwNr7Pr4kAtXOIY89sTbMDNDKmEs
-	 dke1qMWCtITm+rq4aIBUT9OZi7gsQAmUEeCQYjYA8VqcW46LlkagFpSx+3oJKW82T7
-	 PvhTSq2So11dmhiNu6bGA+03Dg6TcWfykM/IghSA0qUw+RIy9WXH6QxiONhJ6gOPUL
-	 S5nIU/cwaBK13Y24a6LVBGg8xFzzZT3iQBnfj5TtEa60seHq4H6vgsTidLRmUdsEGZ
-	 L6Y/WXAek8A++k5uQfo4BKTdxOOUb4HSzWkMDJguYzc82Ms920eDtLAnpijHL9nnAJ
-	 tkhfjrkvV8OzA==
+	b=HobNQjy0ovN9pu/OlHwLLFLYVz4krXttMJRS75AuUrHuQmdYFg5X1zi6n2FiLkfSX
+	 lkF9iPH+ih2GG4NUwO6eTrqXOq3vRqFqqmNmd8YkpkxhnLr0ebJuElVXj2ZATb5U3S
+	 1JdlZNud9snmXFhj0WwairRVttOasKOSWkmsQDpDchkVehB5ycnjRlhes+6cbG2I0O
+	 yqphrj0tr5c1s6kPGeWTEd04GQGMb/Y/lKIIchK3U1XsnhDJ1zhURu+m2V8cRI/uqM
+	 XwDPJRqeJ2GyV3gdeRDhFPuEfiJQXFfhtyX+NfG8rEUSpdfdVAwc4WO6oAzledQCRx
+	 x5LYq/kBJCe6w==
 From: Hannes Reinecke <hare@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
 Cc: Keith Busch <kbusch@kernel.org>,
@@ -36,9 +36,9 @@ Cc: Keith Busch <kbusch@kernel.org>,
 	netdev@vger.kernel.org,
 	Martin Belanger <martin.belanger@dell.com>,
 	Hannes Reinecke <hare@kernel.org>
-Subject: [PATCH 1/2] nvme-tcp: start error recovery when read_sock fails
-Date: Tue, 22 Sep 2026 15:37:07 +0200
-Message-ID: <20260922133708.84522-2-hare@kernel.org>
+Subject: [PATCH 2/2] tls: return a distinct error for control records from read_sock
+Date: Tue, 22 Sep 2026 15:37:08 +0200
+Message-ID: <20260922133708.84522-3-hare@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260922133708.84522-1-hare@kernel.org>
 References: <20260922133708.84522-1-hare@kernel.org>
@@ -52,51 +52,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Martin Belanger <martin.belanger@dell.com>
 
-nvme_tcp_recv_skb() disables the queue and starts error recovery on any
-errors. But if the transport encounters an error before ->read_sock()
-is called (and hence before nvme_tcp_recv_skb() is called) no further
-action is taken. This causes nvme_tcp_io_work() to stall until a command
-times out.
+tls_sw_read_sock() leaves a non-data record on the receive list and
+returns -EINVAL. The same function returns -EINVAL when an sk_psock is
+attached, and an actor may return it for other reasons, so callers
+cannot determine whether a control record is waiting.
 
-This patch checks for any error returned from ->read_sock(), and starts
-error recovery when the queue is still enabled (ie if nvme_tcp_recv_skb()
-has not detected the error).
+Return -EPROTO instead. The record can then be read with recvmsg()
+and a control buffer, which reports its type.
 
 Signed-off-by: Martin Belanger <martin.belanger@dell.com>
 Signed-off-by: Hannes Reinecke <hare@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 7eec983c0ead..2f1ae3968678 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1422,7 +1422,23 @@ static int nvme_tcp_try_recv(struct nvme_tcp_queue *queue)
- 	queue->nr_cqe = 0;
- 	consumed = sock->ops->read_sock(sk, &rd_desc, nvme_tcp_recv_skb);
- 	release_sock(sk);
--	return consumed == -EAGAIN ? 0 : consumed;
-+	if (consumed == -EAGAIN)
-+		return 0;
-+
-+	/*
-+	 * read_sock() might encounter an error before calling
-+	 * nvme_tcp_recv_skb(), so we need to check if we need
-+	 * to start error recovery here.
-+	 */
-+	if (unlikely(consumed < 0 && queue->rd_enabled)) {
-+		dev_err(queue->ctrl->ctrl.device,
-+			"queue %d: receive failed: %d\n",
-+			nvme_tcp_queue_id(queue), consumed);
-+		queue->rd_enabled = false;
-+		nvme_tcp_error_recovery(&queue->ctrl->ctrl);
-+	}
-+
-+	return consumed;
- }
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index d1ad31986cf2..7ac606900ff8 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2044,7 +2044,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
  
- static void nvme_tcp_io_work(struct work_struct *w)
+ 	/* splice does not support reading control messages */
+ 	if (tlm->control != TLS_RECORD_TYPE_DATA) {
+-		err = -EINVAL;
++		err = -EPROTO;
+ 		goto splice_requeue;
+ 	}
+ 
+@@ -2132,7 +2132,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+ 
+ 		/* read_sock does not support reading control messages */
+ 		if (tlm->control != TLS_RECORD_TYPE_DATA) {
+-			err = -EINVAL;
++			err = -EPROTO;
+ 			goto read_sock_requeue;
+ 		}
+ 
 -- 
 2.51.0
 
