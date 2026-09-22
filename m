@@ -1,278 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f26.google.com (mail-qk2-f26.google.com [74.125.230.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB032EEE85;
-	Tue, 22 Sep 2026 03:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41923E49ED
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 04:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790048968; cv=none; b=u+FaVPueSgl+g0LG/fZz6u/VkJh69auQGKSHq2Bv2YnSVWRdfbA8WROT5butTQBeo/Fc0nkEczFk4W9pmCeM0STzivZOYL+LwN3BNZapoczZAWgc8rhzIYxvQe2LlUk/61IW1jMp66dBRifM0IhXYbxZYzWBHOMJFyyGZGKUJLg=
+	t=1790051589; cv=none; b=ZeDjeTj1QkV6Pmft5vd5KJkjyvSQrGlesM4jTcDI6TZf/dNLA1yzdxp4EZPdFccyGcyFQSBukJpkw9m63g2o3wt3FYbH4eyRBPgy+3obMUsmX2pVoZmJRnsLNNtbuGw6blgLklypZAkylaHl57h8eGNvUQ8NDb/vWlkskvO5qSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790048968; c=relaxed/simple;
-	bh=04fweWYgP4tzb9dihvvNf6pAuAit0WBMaqTDHKcUBrE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z3Kq/St8kwsMa8jXjDMQbLNkRN5Uv3UyHlkuFPY8k8/vtIIMcfWjcOsROeYR1Bc+9nP85ojxCJZgA5eQQ5PTeYwN+AxWVZma+KVyOLR9T7Pz6eK+koHXePKVwJrnl9GEwo2YsDvQhFpDjOHEW7AmFMb6K1kkp/vffZjOgdsQjKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3B7As6B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790051589; c=relaxed/simple;
+	bh=jOsq6u4GxP4+4otPjCoyuUQDELVcpp12xkpbUnN0QYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f7CaCC3/YpC4EUhudzf9Tc/RABK8FJ9KqaeWBcEydPcG/kjjZm5hfJNb4Pf+l7e/MovsG/1p66DebGCXeCx7i6tyQi6OEd0QTJTAeFIEoBZOQrqq+JO/dscB3RCqdMpGAaA3EQIXzlCaQCJLMBKMh4+PxbC5SddvT5ebj76syoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=SwwFKotn; arc=none smtp.client-ip=74.125.230.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3B7As6B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55711F00893;
-	Tue, 22 Sep 2026 03:49:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790048966;
-	bh=8Di8dG2HzKR6XKcHMzmhu4LwQUFVMCXRw5bLUr91F7U=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=b3B7As6B0gBqa8si6+TyyJkp98RNSG8aVT4tWZOlVep74AjowSXOWFnnyeI1F0OBp
-	 bTzCLRW6eFSMNS5aIU39NBwyhR3+nXNfxzBnMEqGCfAU5yqM4JjzSe+7peb9r8fEkr
-	 UCr/Ej3IdBdYyQRKPD9K1di305p8Tg3SW4lBVP3EEwq154RcdFJndCRdNB1kSHyqCG
-	 WEA5osYgiOmlI6HtmoTT2ds+72HAhsjHgZFT8YEPzfnHQ9aOyWn49dXaaBkKx6wpho
-	 2F8b7zGB8KxKpcUAvoVg6S8+RDVGk/Jz4PqMj8nbxFwjt7s5JJIfVpGkHZkKdGfxW5
-	 M6MtTqkB0QPYw==
-Subject:
- Re: [PATCH net v2 2/2] packet: use ubuf_info completion for TX_RING packets
-From: netdev-bot+sashiko@kernel.org
-To: willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, willemb@google.com, kleaver@janestreet.com,
- doebel@amazon.de, stable@vger.kernel.org
-Date: Tue, 22 Sep 2026 03:49:25 +0000
-Message-ID: <179004896529.2160803.14644876688990648036@kernel.org>
-In-Reply-To: <20260919004748.1463985-3-willemdebruijn.kernel@gmail.com>
-References: <20260919004748.1463985-3-willemdebruijn.kernel@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="SwwFKotn"
+Received: by mail-qk2-f26.google.com with SMTP id af79cd13be357-93a0299c787so278348385a.1
+        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 21:33:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1790051586; x=1790656386; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jOsq6u4GxP4+4otPjCoyuUQDELVcpp12xkpbUnN0QYI=;
+        b=SwwFKotnPBXyAbiOip6KsvyrvaAEbPUrIfT80hNkZjo47vt2S7zb46+DsrO824Kju8
+         puzQblb2Wd8o/O/NwysSgAn5MJOykWDfo/D4/aXt2o756MdsFmrk6Nu/TEZqUeAYjumz
+         MzUTkori8hd3yjHDVyWBCSicVhkOnCraKpaS8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790051586; x=1790656386;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jOsq6u4GxP4+4otPjCoyuUQDELVcpp12xkpbUnN0QYI=;
+        b=jLfp95Sr25ZJBfAuEp6KNGIv7Al2aXeKuDavP22JTvBDplWmFZZZT5YdHV/zK5f2i1
+         dxBTgFojWek47tV5mToDI67tVVn6s715GiGLg5JJxKjBA0PuWuspHlWQqXJfBnho2gUF
+         B6wkr+LidtkE2ZqcqIH44jMB6S+xHxQJ8iU92fK6uGI8LBLV3u/onYLrII4Vv6rdCXji
+         6ytMZ4PISQgZKcuBox9vWCT20r/1w2a/6e5H8lbMrWm+MiEYVhfqK2Y79Dj43vWN+6Ge
+         rndq7VoOExbLR4hj+jSd6TT9IuTzW+DsCkczXtdW4i30KoCusu837Ry5Sb9BpvJNnu9i
+         /k6A==
+X-Gm-Message-State: AFuF++n9erF0f7YBLwo8KaaQ3+3CW0Uwuhz+LoGgkD9OVprgOy4rBwBq
+	1L5I6DGSssHF5P/p8vh1XG2oNNqIsxHJU9sSeN8a0b1IL1vY9oLW1EVP5NOooxAKMpE=
+X-Gm-Gg: AYBFou2RI4OJs98LEKyX0kY25PKRuUDcO8kf8A0CJeaRbHy6r6KLla819TOc3LKBkP7
+	RZxv8Eb0FPWnc9cy1Mp15tgee0xhykW9GmJHocAnWWi7baQQU3ANqSLqrTw8Wkzr3UqxpDXvlI4
+	JjHwqUhFvvwTi3Q17GvnOoMvGAYq+MWrJCW7RwmN7G03AaYtMeUi99w7w5miEILbKnYSBFcxwEY
+	xWS4fDF0rVa0NfI23r4WxQZkVg8pSglrfgQt0KAWa2nGuEj1kDSTUm9bdO8H2o6i3edJuf4Hc7k
+	1ieD7B2kMnLSlslWUcBTeHWyKblPqtGdEAAFUGYmwJJhzAd1+5fWYIBLkHDPVD029W4IM6gQgHc
+	oSrMfBqvw8008RRIY1PbPpWDxCvuYuCdCqUyemoQuQ/OIBXVzvy2/PxxWIKOFpdPJdkZXJhcAGY
+	WFTYNUvfH4Mv6/0ArCpCLKxORcISj3WleLGg+OUFRldoHAwpF6aiw6aIGWkUqtzSKEVcxXDsfdR
+	XJ1LFaKNs8B6X2Y54R69J22Wm7cvnlGijS/HrFNs7b06q9p9PxUPQ==
+X-Received: by 2002:a05:620a:44ca:b0:93a:10b8:4c3b with SMTP id af79cd13be357-93c15d583a0mr373213285a.2.1790051586610;
+        Mon, 21 Sep 2026 21:33:06 -0700 (PDT)
+Received: from com-94485 ([199.47.143.14])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1cf0e6bbsm45125785a.1.2026.09.21.21.33.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 21:33:06 -0700 (PDT)
+Date: Mon, 21 Sep 2026 21:33:02 -0700
+From: Jeff Jo <jeffjo@openai.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, shuah@kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 2/2] selftests: net: check timestamp echo after an
+ old ACK
+Message-ID: <arIE_i8Ysz5nOI2W@com-94485>
+References: <20260921222609.50824-4-jeffjo@openai.com>
+ <20260921222609.50824-6-jeffjo@openai.com>
+ <CANn89iK00zXGA8sdpH9Y1CkFK3n=uKG9Bci3+=69fGV0UDQ80w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89iK00zXGA8sdpH9Y1CkFK3n=uKG9Bci3+=69fGV0UDQ80w@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Tue, Sep 22, 2026 at 02:08:47AM +0200, Eric Dumazet wrote:
+> Note: Even with existing packetdrill binaries in the wild that don't
+> check TS ecr,
+> tp->rx_opt.ts_recent is still directly testable in pure .pkt via PAWS
+> (tcp_paws_discard()),
+> the same way tcp_ts_recent_invalid_ack.pkt works:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Thanks for the feedback. I'll send a v2 series tomorrow removing the
+redundant SYN_RECV check and replacing the test with a plain .pkt test
+that uses PAWS for the assertion. I've verified that the revised test
+detects the bug with unmodified packetdrill and passes with the
+simplified kernel fix.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+For the PAWS probe, I used TSval 300998 rather than 300999, since
+Linux's one-tick PAWS tolerance allows the latter through.
 
-- [Medium] The new per-packet `sk_wmem_alloc` charge taken in
-  tpacket_snd() (`refcount_inc(&po->sk.sk_wmem_alloc)` at…
-- [Medium] Documentation/networking/packet_mmap.rst still describes the
-  old TX_RING contract that this patch changes.
-- [Low] tpacket_snd() still carries the comments `/* skb was destructed
-  already */` (net/packet/af_packet.c:2949) and `/* skb was dropped but…
-
---
-
-packet: use ubuf_info completion for TX_RING packets
-
-This converts tpacket_snd() from a custom skb->destructor
-(tpacket_destruct_skb) to standard zerocopy completion, so a TX_RING slot
-is only released once all references to the payload are gone or copied.
-The uarg is allocated per packet and holds an sk_wmem_alloc reference, and
-the now unused skb_zcopy_*_nouarg helpers are removed.
-
-Closes: https://lore.kernel.org/netdev/20260909085542.3370986-1-doebel@amazon.de/
-
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 50cae32ae269..64b501db660a 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -2530,26 +2530,6 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
->  	goto drop_n_restore;
->  }
->  
-> -static void tpacket_destruct_skb(struct sk_buff *skb)
-> -{
-> -	struct packet_sock *po = pkt_sk(skb->sk);
-> -
-> -	if (likely(po->tx_ring.pg_vec)) {
-> -		void *ph;
-> -		__u32 ts;
-> -
-> -		ph = skb_zcopy_get_nouarg(skb);
-> -
-> -		ts = __packet_set_timestamp(po, ph, skb);
-> -		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
-> -
-> -		packet_dec_pending(&po->tx_ring);
-> -		complete(&po->skb_completion);
-> -	}
-> -
-> -	sock_wfree(skb);
-> -}
-> -
-
-[ ... ]
-
-> @@ -2589,27 +2569,56 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
->  	return 0;
->  }
->  
-> +struct tpacket_uarg {
-> +	struct ubuf_info	ubuf;
-> +	struct packet_sock	*po;
-> +	void			*ph;
-> +};
-> +
-> +static void tpacket_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
-> +				  bool success)
-> +{
-> +	struct tpacket_uarg *tu = container_of(uarg, struct tpacket_uarg, ubuf);
-> +	struct packet_sock *po = tu->po;
-> +	void *ph = tu->ph;
-> +	__u32 ts;
-> +
-> +	DEBUG_NET_WARN_ON_ONCE(!skb);
-> +
-> +	if (!refcount_dec_and_test(&uarg->refcnt))
-> +		return;
-> +
-> +	ts = __packet_set_timestamp(po, ph, skb);
-> +	__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
-
-[Severity: Medium]
-Should Documentation/networking/packet_mmap.rst be updated along with this
-change?  The "Transmission process" section still says:
-
-  The kernel updates each status of sent frames with TP_STATUS_SENDING
-  until the end of transfer.
-
-  At the end of each transfer, buffer status returns to
-  TP_STATUS_AVAILABLE.
-
-With slot release moved into tpacket_ubuf_complete(), TP_STATUS_AVAILABLE
-now means "the kernel no longer references the payload", which the commit
-message says can happen before transmission:
-
-  net/core/dev.c:deliver_skb()
-    skb_orphan_frags_rx()
-      skb_copy_ubufs()
-        skb_zcopy_clear()
-          tpacket_ubuf_complete()
-
-The timestamp section also documents a specific recipe:
-
-  Getting timestamps for the TX_RING works as follows: i) fill the ring
-  frames, ii) call sendto() e.g. in blocking mode, iii) wait for status of
-  relevant frames to be updated resp. the frame handed over to the
-  application, iv) walk through the frames to pick up the individual hw/sw
-  timestamps.
-
-When the copy happens before skb_tx_timestamp(),
-__packet_set_timestamp() returns 0, so the frame is handed back as
-TP_STATUS_AVAILABLE with no TP_STATUS_TS_* bit and stale tp_sec/tp_nsec,
-even though timestamping was requested.  Can that documented procedure
-still be followed, or should the text describe the new semantics?
-
-> +
-> +	packet_dec_pending(&po->tx_ring);
-> +	complete(&po->skb_completion);
-> +
-> +	kfree(tu);
-> +	sk_free(&po->sk);
-> +}
-
-[Severity: Medium]
-Does releasing the wmem charge through sk_free() here miss a write space
-notification?
-
-sk_free() only does the decrement:
-
-net/core/sock.c:sk_free() {
-	if (refcount_dec_and_test(&sk->sk_wmem_alloc))
-		__sk_free(sk);
-}
-
-whereas the skb charge release path notifies first:
-
-net/core/sock.c:sock_wfree() {
-	...
-		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
-		sk_write_space(sk);
-		len = 1;
-	...
-}
-
-A blocking TX_RING sender reaches sock_wait_for_wmem() via
-tpacket_snd()->sock_alloc_send_skb()->sock_alloc_send_pskb(), and its only
-wake condition for send space is sk->sk_write_space():
-
-net/core/sock.c:sock_wait_for_wmem() {
-	...
-		if (refcount_read(&sk->sk_wmem_alloc) < READ_ONCE(sk->sk_sndbuf))
-			break;
-		...
-		timeo = schedule_timeout(timeo);
-	...
-}
-
-With the default sk_sndtimeo that schedule_timeout() is
-MAX_SCHEDULE_TIMEOUT.  If the drop below sk_sndbuf is performed by the new
-uarg charges only, is anything left to wake the sleeper?  A path where the
-skb charge is gone while the uarg charge is still outstanding is
-loopback_xmit(), which calls skb_orphan(skb) (running sock_wfree) without
-skb_orphan_frags(), so the ubuf_info survives in the backlog.
-
-[ ... ]
-
-> @@ -2908,7 +2918,24 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
->  			virtio_net_hdr_set_proto(skb, &vnet_hdr);
->  		}
->  
-> -		skb->destructor = tpacket_destruct_skb;
-> +		uarg = kmalloc(sizeof(*uarg), GFP_KERNEL);
-> +		if (unlikely(!uarg)) {
-> +			if (likely(len_sum > 0))
-> +				err = len_sum;
-> +			else
-> +				err = -ENOMEM;
-> +			goto out_status;
-> +		}
-> +		uarg->po = po;
-> +		uarg->ph = ph;
-> +		uarg->ubuf.ops = &tpacket_ubuf_ops;
-> +		uarg->ubuf.flags = SKBFL_ZEROCOPY_FRAG;
-> +		refcount_set(&uarg->ubuf.refcnt, 1);
-> +
-> +		/* Hold a sk_wmem_alloc reference until completion */
-> +		refcount_inc(&po->sk.sk_wmem_alloc);
-> +		skb_zcopy_init(skb, &uarg->ubuf);
-> +
->  		__packet_set_status(po, ph, TP_STATUS_SENDING);
->  		packet_inc_pending(&po->tx_ring);
->  
-
-[Severity: Low]
-Just below this, the packet_xmit() error handling in tpacket_snd() still
-refers to the destructor that this patch removes:
-
-net/packet/af_packet.c:tpacket_snd() {
-	...
-			if (err && __packet_get_status(po, ph) ==
-				   TP_STATUS_AVAILABLE) {
-				/* skb was destructed already */
-				skb = NULL;
-				goto out_status;
-			}
-			/*
-			 * skb was dropped but not destructed yet;
-			 * let's treat it like congestion or err < 0
-			 */
-	...
-}
-
-With skb->destructor back to sock_wfree and slot release moved to
-tpacket_ubuf_complete(), does the slot status still imply anything about
-the skb?  TP_STATUS_AVAILABLE can now be observed while the skb is alive
-(the uarg completed early through skb_copy_ubufs()), and the slot can
-still read TP_STATUS_SENDING after the skb was freed if a clone or segment
-holds an extra uarg reference.  Should these comments be reworded for the
-new completion scheme?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919004748.1463985-1-willemdebruijn.kernel%40gmail.com
+I'll follow up with a separate packetdrill fix. How does that sound?
