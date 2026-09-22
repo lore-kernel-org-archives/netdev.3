@@ -1,91 +1,125 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8D24A2E32
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 19:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0672149E5C3
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 19:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790105269; cv=none; b=eTbHuZzcfXEmwQqxAWie2trqEokdayxaCSTIK9Eik9pXtEXhqqOoYQMCel6oVi+UlkEnvGxMCNyuTGLSSAU8il7hwSBEr6rq1rjfRyFkg8tyKVx6vQIGUyXEXReEugHV3mtsxqLiCXBVLwia5AI69A+Au7TmFMIG+lvjcuc5NQA=
+	t=1790105656; cv=none; b=cqJ7Kzj80JaG30tMULQfACuHSP9tq54+BAyky0n2RbuhkuSCK86SMzGw3J2zej7qKvVEM+HYpLslM6bFDRoF9fKE/wA/HHfrIqBdr8igLmRsld1YYG5bZ4jNM2yFnsacrBFFOpUIkpjyQkdPoF8vKcjiukA58sBAMZDq9CRJXE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790105269; c=relaxed/simple;
-	bh=uvBnHy552IQoM71uHW58RtnJVBBlbl/lza+o7JxRrY0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=E86fwbDl15yoGFpPiagu0L8/oNOR582JFG17N1p1yD3lhMkNR8o0zqOONzNr9/wug6nJQ3wKHEetL9attalGbzgB34qwAo9wBpP3o/81m0UecbNwICWpvN3Un7KdGnCtto/SmBbj7CLv+fCO1vKrwBYJhwURib+XOq2CDvQwNmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UBfz0KIT; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790105656; c=relaxed/simple;
+	bh=yDBNrwWJwf5FhuRoCHjrQ6GFZcedsDXJbmWOSp8weaQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=E78gEUOXR3P1VcqPDXHLuKswpKAEu5uEit5HgOKtpW7hkkVx7jR45PZIlr1/tD2jSlM9edkAJ+NjgPcyzeeY38JqSYATsquCSy6mABRkvWWqb/sby1DF4nzOyH2j9WjVIbP6rwiSeCHF9QBL8xfssN9ar0OXW9b8VQx4UYI2jTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k9O79WGC; arc=none smtp.client-ip=74.125.82.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UBfz0KIT"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 486934E4102F;
-	Tue, 22 Sep 2026 19:27:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0C5CF60580;
-	Tue, 22 Sep 2026 19:27:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 830C7103293A3;
-	Tue, 22 Sep 2026 21:27:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790105260; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=uvBnHy552IQoM71uHW58RtnJVBBlbl/lza+o7JxRrY0=;
-	b=UBfz0KITD/1RHENlPGAkMPvqI+aoihOYMXo6zpYy6DZWXdpaN8Ste+AK9ys5R19L2Iklke
-	GAy8l4CueoweUb1VuZcrdB+4ViEwdhJVE1l2+DnP11fi91eG7HBWwUtzO9rUBWSt8JF6uA
-	kvhJ7HnxfGn3m67zJlV5/b72tFNRAfcnzd6xLCEwXFku5BR5MV2bikkoP9a3qvQCB/vIcZ
-	IOe894tdu9rZu6IvdWJc+BnAmsF72YbLx+1h6YhYtBbqG/agq74986aZKl4+2ctnHBhR4K
-	ofJEvXnfoPgSj+EcnzGnqa4dfOt86LZMkx3VQ0NU71YS+qDg6H39bUihpl0gpA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k9O79WGC"
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30bcb065bfdso186238eec.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790105654; x=1790710454; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ymirBoiEOHofxcXtdlpyBstNGlWIgIPDHZMqR8FvNhI=;
+        b=k9O79WGCsYjMjCBaq9Lrj2bnUMOT98uiDyrS7Ylf2tgLlYmHhzQF0OGmiinaJ855/5
+         2NrorTb5bBNywaER7DDZtTEaN3lqtwvhzW/1BsQBOmq/zxWifnwhx40cktn388lRN3q8
+         5ZGlkkLoh/dHo5LHRiLjPk/wnKqcH/SOrCbBpcedcW0fOGYkrv6G1PCIuGkXZ/ilnF6/
+         Hd6cDaMzeWtXloAz0dAyKQ8Z2frsYO2VflfaeIGCMZINUgiRynGAIsT0tpY4dcw17DE/
+         ihmnurFY1NXONSlt4mI4WZYgFgpWkcnpMW0k68m18z+5JEkNbCdpspdxGd+qYEUoR8uf
+         QeyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790105654; x=1790710454;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ymirBoiEOHofxcXtdlpyBstNGlWIgIPDHZMqR8FvNhI=;
+        b=NR3VJ5FqPGppu3wJy5nlrZdaZQoh87udbwNi/N11fELhv14Ge//LGgPs7cY5uTcVYj
+         ROTG7nRs0ThhvyKWCdZmLSX9lLA/+pUphiX75MJN9NxBFaO+5xCA3zCuFjQVSHv+DZmt
+         Pso2wBfOcR77t3zjM46BFiSzFQZ0ISWcNazeYp6dz5ME0pQ0DQ2/wEWSCi+KBQHB4bMQ
+         3hUiNPWJqYGBzYfc92C7jdlSUMuxGfOhIpAwvfiBJbcpitN2CgmxjXXKMinihuxMG70Z
+         CjLeltYLkXfLzgwQrN8VF15QYuFbdktujUnHyKCHGXC3jZDc0aNpr2HJbkYcbsU/7+3v
+         Hl9w==
+X-Gm-Message-State: AFuF++lqypxlI8Z7HGI2zoghxaXzKLlck0TRRpxH9X/8f8lRZM0cHdEl
+	uZV//vk2i03MfF8YdFrSJBu8pcpef80vIcP4PGsuxbwEMwg+H/hnQmfOuu4aAtQVh3CMzlD+L0u
+	SWuxptkmv7+nS9K4Qpti73e7+5Zezq4avODICGG0rqNzqGAMF38cdGoQFYPfOECR2rkE3BXqhPO
+	zRyKUs16x++W/KfhrQ4AYkezIy3lUzBCF73KdqhEhvYCjRLss=
+X-Received: from dybvk2.prod.google.com ([2002:a05:7301:53c2:b0:339:69b7:3cf7])
+ (user=kaifengw job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7300:c01c:10b0:33b:fa29:4a66 with SMTP id 5a478bee46e88-33e8ddbcfc1mr273275eec.31.1790105653596;
+ Tue, 22 Sep 2026 12:34:13 -0700 (PDT)
+Date: Tue, 22 Sep 2026 19:33:56 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Sep 2026 21:27:30 +0200
-Message-Id: <DLM3CNDZHKHA.1ATQW7HR63M3J@bootlin.com>
-Subject: Re: [PATCH net-next 4/4] net: macb: Clear SRTSM outside PTPv2
- receive filters
-Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Richard Cochran" <richardcochran@gmail.com>,
- "Nicolai Buchwitz" <nb@tipi-net.de>, <linux-kernel@vger.kernel.org>
-To: <5mghybrid@khu.ac.kr>, <netdev@vger.kernel.org>, "Rafal Ozieblo"
- <rafalo@cadence.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260922-codex-macb-hwtstamp-submit-v1-0-9d1abaa53296@khu.ac.kr> <20260922-codex-macb-hwtstamp-submit-v1-4-9d1abaa53296@khu.ac.kr>
-In-Reply-To: <20260922-codex-macb-hwtstamp-submit-v1-4-9d1abaa53296@khu.ac.kr>
-X-Last-TLS-Session-Version: TLSv1.3
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260922193356.542922-1-kaifengw@google.com>
+Subject: [PATCH net-next] net: devmem: use page_pool_put_netmem_bulk
+From: Kaifeng Wang <kaifengw@google.com>
+To: netdev@vger.kernel.org
+Cc: almasrymina@google.com, edumazet@google.com, kuniyu@google.com, 
+	pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org, 
+	horms@kernel.org, linux-kernel@vger.kernel.org, 
+	Kaifeng Wang <kaifengw@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello Kim,
+Instead of looping over napi_pp_put_page() and repeatedly acquiring the
+page_pool producer lock in sock_devmem_dontneed(), use
+page_pool_put_netmem_bulk() to return the netmem references in batches.
 
-On Tue Sep 22, 2026 at 11:10 AM CEST, Kim Wooseok via B4 Relay wrote:
-> From: Kim Wooseok <5mghybrid@khu.ac.kr>
->
-> A PTPv2 receive filter sets NCR.SRTSM, but switching to NONE, ALL or a
-> PTPv1 filter leaves it set. As a result, selecting the same filter can
-> produce a different register setting depending on whether PTPv2 was
-> used before.
->
-> Update SRTSM whenever the RX filter changes, setting it only for PTPv2.
-> Switching away from PTPv2 then clears the old setting, so the bit follows
-> the currently selected filter.
->
-> Assisted-by: GPT-6 Astra
-> Signed-off-by: Kim Wooseok <5mghybrid@khu.ac.kr>
+This reduces the number of lock acquisitions on the page pool ring
+producer lock when releasing user tokens.
 
-This one sounds more relevant to keep (compared to patch 3). We have
-NCFGR.DRFCS always set so the FCS is always discarded so I don't think
-we fix any bug here. But we avoid a footgun that could hit later if we
-add Rx FCS support.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Signed-off-by: Kaifeng Wang <kaifengw@google.com>
+---
+ net/core/sock.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 2948dffcc3e1..a6b6d5b2051d 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -129,6 +129,7 @@
+ #include <net/request_sock.h>
+ #include <net/sock.h>
+ #include <net/proto_memory.h>
++#include <net/page_pool/types.h>
+ #include <linux/net_tstamp.h>
+ #include <net/xfrm.h>
+ #include <linux/ipsec.h>
+@@ -1086,7 +1087,7 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+ static noinline_for_stack int
+ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+ {
+-	unsigned int num_tokens, i, j, k, netmem_num = 0;
++	unsigned int num_tokens, i, j, netmem_num = 0;
+ 	struct dmabuf_token *tokens;
+ 	int ret = 0, num_frags = 0;
+ 	netmem_ref netmems[16];
+@@ -1123,8 +1124,7 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+ 			netmems[netmem_num++] = netmem;
+ 			if (netmem_num == ARRAY_SIZE(netmems)) {
+ 				xa_unlock_bh(&sk->sk_user_frags);
+-				for (k = 0; k < netmem_num; k++)
+-					WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
++				page_pool_put_netmem_bulk(netmems, ARRAY_SIZE(netmems));
+ 				netmem_num = 0;
+ 				xa_lock_bh(&sk->sk_user_frags);
+ 			}
+@@ -1134,8 +1134,7 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+ 
+ frag_limit_reached:
+ 	xa_unlock_bh(&sk->sk_user_frags);
+-	for (k = 0; k < netmem_num; k++)
+-		WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
++	page_pool_put_netmem_bulk(netmems, netmem_num);
+ 
+ 	kvfree(tokens);
+ 	return ret;
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
