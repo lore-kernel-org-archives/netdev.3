@@ -1,173 +1,278 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00C64E73D9
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4FD4C653B
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790110079; cv=none; b=W7ux+X7KKLEImqMClZU0kP6ap9T2CQ2E+uafrz1Q4UxQ+CayyKfKzPF8Bsxgr8IKFA83WxUIxx/nkLNes7JuQxJjaMHtWCAGSM+1HlNgenk4qYULObRUISvCINhXmyZsUeqeWzfIDJJEPcaInMOuW87YqBORVVTFr3gbdiMTIVo=
+	t=1790110385; cv=none; b=uQZL54wVw9wfflfV+H9lGhrjkcQ72QQuu+161FkynzObP2wE2fyIn+5DfhccCsSoy8bBuCOnPcumO7tiWgjbHZF7kX1mBbD0rPAxyOHAXUrMbhRI/8Jopm7bzt6kUSe+OLCzhx6rNeW2aGirPARGDSb46oNbEhMdk+I6f9thmBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790110079; c=relaxed/simple;
-	bh=sq3e6uiy+IP4EDpy0ZZwpI2pGouZssnnQSW2A9x83Ro=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qv0QddotNWpaeESUhdK1WTVQFOSQMU4IekXeekDaz1MPXzJBNoeGU0cgTp/ZkJcOdHtSML2ee1UNXKSQVrvMgcpMGev2s2ldpWUNmQcRAyckq7u0zJuWl3ILWSEq4GmAKfV2rQbGFUSBvPl4yGsnOa1YvSIrpyz4ErZ9B+kQA9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cpwFUDof; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790110385; c=relaxed/simple;
+	bh=NbjEBeyu2VLG3EhojRaSrC/sVKTJa1ExSwsAOz1USUQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ed3g/33ddidfEGB2UjLSScqoU/DUvd6TpkkBZDDn+R7cZn+UGpAxgmdeKyzLA9inP8xbFIiDmqK903fgnh4W5LMK1dpV05Q+FjRZxFWNCBWvGjvY8PyE4tEK3irzdBl4GPEYOzmhicPiMzgThut03pJaiWTAEes+nkU1LdhIrN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sunnytiwari.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lA25J6lg; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sunnytiwari.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cpwFUDof"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id AA444C21A95;
-	Tue, 22 Sep 2026 20:48:22 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CDE7960580;
-	Tue, 22 Sep 2026 20:47:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EC954103293A2;
-	Tue, 22 Sep 2026 22:47:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790110051; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=XpaQDgz3fdEzNjsK4nSLNvmrPAQ15E8c22RyFXzvB9g=;
-	b=cpwFUDofdzjge+jC7MWGP4O6tv1sPoJgGONwidu7fJCgaiPEmMktrtp2NYxJtk7gT7QeJ/
-	9T/JgUaCWBgAbYeMcFILw4XknTYCE4vBnI0w05obw/uaRjN0tmnWN3MCb7t3iEMTwkRggf
-	L74BmAo2fvSpgQsc8cGHBHiy6h2abagQZL7OuIryc+vRRoDaSjdB8vaQ1BiAlwGSNB5/gj
-	9R8ds+0RElWW6EqScwBMErxGOmmk9mdwksKMHdShDTI+Ahn8xvZHnUcZe3UubQOQFtCjW+
-	EBcb4it9Yp8TzhTgFtPXDtlwm1NLBJCbjHgX8NbEcXpgHpZIEZj3PhvHa+kf3Q==
-Message-ID: <cccfc8a4-22ca-4501-9cd8-4e6b5dfa6a21@bootlin.com>
-Date: Tue, 22 Sep 2026 22:47:23 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lA25J6lg"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cec4226c70so2262075ad.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790110360; x=1790715160; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+kls6zOn4bhEu16C4wUuQeZkdxufVxysuFtvApSFdDQ=;
+        b=lA25J6lg8CmdsTdDZr26h2PjdxLq2i/Z4ERNmmh8KWwCVm0D+yDpEkoV5C8711NuH6
+         5DhtvlMGqlN9uhiTgFfhq7EFElrL/aX1yCosTInyXuvfIIRoAn4o3f4rpqt065rwJ8Ux
+         DSfCQe7q91nOc1GV0yyRtQclTMfKUhZ8LVJYkTBZ7qyugMZND3ESEqHEQeEHgykSDgg5
+         B5W4dz8StT+RGKPgBoX6zZv+GK3fIiVM0WNYB4ZIevSUvmfmgOqCcb3CiIELDKolaZ7C
+         8TdwnwV3vpqT4vXQ8Dz44alQOsVKHh7SEc8QK9EjoYfRmZPfbG7icPF8YnO4dXvQje/Z
+         dBqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790110360; x=1790715160;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+kls6zOn4bhEu16C4wUuQeZkdxufVxysuFtvApSFdDQ=;
+        b=PTCQUCcMyZzEX4KwHj1fUkNr0ur3pKq8dKqgX8AvKlco80dva+fA0oI4gvBuf+sM9J
+         +x5fkXLrOnumf4eUVfm/dWLD0x6a4iTp5gZm/YGqMrTH5fawvjGwY/de+b2j9xP9OhQc
+         xlVR6Xuy0lx1QIVSiXjX/ttQuvbYls1F7oFyuLxW7Sgwm/DWhhysYLvDY9yP5ECYKNnN
+         H3mLQhyMwtgKZDiU00uQV8jUC5v5v/CvFpUsx9zIzG6RTzJqBHT74Ypxi9xMzILIsYbe
+         VbU/OpLa9x2AMyZCJD7rFug5V5oMHwps2BWxOz1ylAXFGSzcRneOwA1zWu3x2M4oLeYj
+         2XpA==
+X-Forwarded-Encrypted: i=1; AKwUvBw4+375bL/cuuRRt5+qjdJA44nNe29AwY81wdW0QscN2spXYul7cmszWN7AnnXgXo/vpn6hRIc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQ+H/G3QQz48ByKnZ80j3P7xBdrO9yKhd3q5iFFC4AOuBm0SEq
+	Xn9L706z9cVl01ebyO/E8x//0MRB10gAxuY2JcM9FLgITFwju7ojZYhXimX7gESexe+T4AXFfrk
+	d/vHiESQKKKCMoThJNvLzim2lmQ==
+X-Received: from plrp17.prod.google.com ([2002:a17:902:b091:b0:2db:1a39:c145])
+ (user=sunnytiwari job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:1a2d:b0:2dd:c053:82f1 with SMTP id d9443c01a7336-2df69dc4162mr4741375ad.40.1790110359533;
+ Tue, 22 Sep 2026 13:52:39 -0700 (PDT)
+Date: Tue, 22 Sep 2026 20:52:36 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: emac: move setting of netops to fix crash
-To: Christian Lamparter <chunkeey@gmail.com>, netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- jacob.e.keller@intel.com, nb@tipi-net.de, edumazet@google.com
-References: <49cd7343bc0e507c022071f3e2b5662b053dca73.1790007431.git.chunkeey@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <49cd7343bc0e507c022071f3e2b5662b053dca73.1790007431.git.chunkeey@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <6b07af04b3ba66a09009e1a0a7b98ec5ec85d3a0.1790109248.git.sunnytiwari@google.com>
+Subject: [PATCH net-next] net/rds: replace tasklets with workqueue
+From: Sunny Tiwari <sunnytiwari@google.com>
+To: Santosh Shilimkar <santosh.shilimkar@oracle.com>, Allison Henderson <achender@kernel.org>, 
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+Cc: rds-devel@oss.oracle.com, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	Simon Horman <horms@kernel.org>, Sunny Tiwari <sunnytiwari@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+tasklet_struct is deprecated. Convert the send and receive completion
+handlers in net/rds/ib to work items on a dedicated high-priority
+workqueue.
 
-On 9/21/26 18:28, Christian Lamparter wrote:
-> fixes the following crash on driver initialization:
-> 
-> |BUG: Kernel NULL pointer dereference on read at 0x00000158
-> |Faulting instruction address: 0xc0566b40
-> |Oops: Kernel access of bad area, sig: 11 [#1]
-> |BE PAGE_SIZE=4K  PowerPC 44x Platform
-> |Modules linked in:
-> |CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: GW 7.3.0-rc3+ #1
-> |Tainted: [W]=WARN
-> |Hardware name: MyBook Live APM821XX 0x12c41c83 PowerPC 44x Platform
-> |NIP:  c0566b40 LR: c05648f8 CTR: c04c1e9c
-> |REGS: c1053a20 TRAP: 0300   Tainted: GW  (7.3.0-rc3+)
-> |MSR:  0002b000 <CE,EE,FP,ME>  CR: 24008808  XER: 00000000
-> |DEAR: 00000158 ESR: 00000000
-> |GPR00: c05648f8 c1053b10 c1063600 c1030000 c5ab3000 00000000 [...]
-> |GPR08: 00000002 00000000 00000000 c1053b40 84002808 00000000 [...]
-> |GPR16: cfffd210 00000002 c0beafcc cfffc960 00000000 c1030644 [...]
-> |GPR24: c0beafbc c1037000 00000000 0000000a 00000000 c1030000 [...]
-> |NIP [c0566b40] phy_link_topo_add_phy+0x2c/0x1d0
-> |LR [c05648f8] phy_attach_direct+0x1a4/0x368
-> |Call Trace:
-> |[c1053b10] [c0811e04] klist_put+0x54/0xb4 (unreliable)
-> |[c1053b40] [c05648f8] phy_attach_direct+0x1a4/0x368
-> |[c1053b70] [c0564ae8] phy_connect_direct+0x2c/0x60
-> |[c1053b90] [c056c7a8] of_phy_connect+0x50/0x74
-> |[c1053bc0] [c0572a88] emac_probe+0xd50/0x119c
-> |[c1053c90] [c04cb770] platform_probe+0x74/0xa4
-> |[c1053cb0] [c04c8f08] really_probe+0x120/0x2b0
-> |[c1053cd0] [c04c9254] __driver_probe_device+0x1bc/0x1fc
-> |[c1053d00] [c04c9334] driver_probe_device+0x38/0xa8
-> |[c1053d30] [c04c9560] __driver_attach+0xf4/0x10c
-> |[c1053d50] [c04c6af8] bus_for_each_dev+0x68/0xd0
-> |[c1053d90] [c04c7c34] bus_add_driver+0xcc/0x1ec
-> |[c1053dc0] [c04c9f6c] driver_register+0xcc/0x110
-> |[c1053de0] [c0aa3f40] emac_init+0x1c4/0x200
-> 
-> This bug showed up starting with v7.3-rc1. At the NIP in
-> phy_link_topo_add_phy() is a netdev_need_ops_lock() check.
-> This was added by the following
-> commit ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() locking assertion")
-> 
-> The bug shows up because at the time of_phy_connect() was called, the
-> netdev_ops were *not yet* determined. My fix is to move the code that
-> sets netdev_ops+commac.ops+ethtool_ops further up as emac_init_config()
-> derives that by looking at the device-tree and sets the required
-> dev->phy_mode accordingly.
-> 
-> During review, the Sashiko bot's AI stated that the commac assignment
-> became a dead store. Great catch! To keep the original behavior as-is,
-> one mentioned option "set dev->commac.ops = &emac_commac_ops only in
-> the non-gige case?" sounded like a great plan. So the dev->commac.ops
-> assignment for the non-gige-case moves into the else block.
-> 
-> This patch was tested on a WD MyBook Live (RGMII). the device now works again.
-> 
-> Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() locking assertion")
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+Allocate per-CPU bound rds_ib_wq with WQ_HIGHPRI | WQ_MEM_RECLAIM in
+rds_ib_init() and destroy it in rds_ib_exit(). Per-CPU binding preserves
+cache locality with the completion vector, matching original tasklet
+affinity without cross-core migration.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Replace i_send_tasklet and i_recv_tasklet with struct work_struct. Order
+quiescence via atomic_set_release() and atomic_read_acquire() prior to
+cancel_work_sync() during connection shutdown.
 
-Maxime
+Assisted-by: Gemini
+Signed-off-by: Sunny Tiwari <sunnytiwari@google.com>
+---
+ net/rds/ib.c    | 22 +++++++++++++++++++++-
+ net/rds/ib.h    |  7 +++++--
+ net/rds/ib_cm.c | 39 +++++++++++++++++++++++----------------
+ 3 files changed, 49 insertions(+), 19 deletions(-)
 
-> ---
-> 
-> v2:
->   - "set dev->commac.ops = &emac_commac_ops only in the non-gige case"
->   - reworded commit message to include commac_ops and Sashiko
-> v1: https://lore.kernel.org/all/178999551085.2160803.13630958553679103031@kernel.org/
-> ---
->  drivers/net/ethernet/ibm/emac/core.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
-> index 1d46cf6c2c12..e7043523457c 100644
-> --- a/drivers/net/ethernet/ibm/emac/core.c
-> +++ b/drivers/net/ethernet/ibm/emac/core.c
-> @@ -3044,6 +3044,15 @@ static int emac_probe(struct platform_device *ofdev)
->  	if (err)
->  		goto err_gone;
->  
-> +	if (emac_phy_supports_gige(dev->phy_mode)) {
-> +		ndev->netdev_ops = &emac_gige_netdev_ops;
-> +		dev->commac.ops = &emac_commac_sg_ops;
-> +	} else {
-> +		ndev->netdev_ops = &emac_netdev_ops;
-> +		dev->commac.ops = &emac_commac_ops;
-> +	}
-> +	ndev->ethtool_ops = &emac_ethtool_ops;
-> +
->  	dev->emacp = devm_platform_ioremap_resource(ofdev, 0);
->  	if (IS_ERR(dev->emacp)) {
->  		err = PTR_ERR(dev->emacp);
-> @@ -3076,7 +3085,6 @@ static int emac_probe(struct platform_device *ofdev)
->  		dev->mdio_instance = platform_get_drvdata(dev->mdio_dev);
->  
->  	/* Register with MAL */
-> -	dev->commac.ops = &emac_commac_ops;
->  	dev->commac.dev = dev;
->  	dev->commac.tx_chan_mask = MAL_CHAN_MASK(dev->mal_tx_chan);
->  	dev->commac.rx_chan_mask = MAL_CHAN_MASK(dev->mal_rx_chan);
-> @@ -3144,12 +3152,6 @@ static int emac_probe(struct platform_device *ofdev)
->  		ndev->features |= ndev->hw_features | NETIF_F_RXCSUM;
->  	}
->  	ndev->watchdog_timeo = 5 * HZ;
-> -	if (emac_phy_supports_gige(dev->phy_mode)) {
-> -		ndev->netdev_ops = &emac_gige_netdev_ops;
-> -		dev->commac.ops = &emac_commac_sg_ops;
-> -	} else
-> -		ndev->netdev_ops = &emac_netdev_ops;
-> -	ndev->ethtool_ops = &emac_ethtool_ops;
->  
->  	/* MTU range: 46 - 1500 or whatever is in OF */
->  	ndev->min_mtu = EMAC_MIN_MTU;
-
+diff --git a/net/rds/ib.c b/net/rds/ib.c
+index 786f39169..3e3551c6a 100644
+--- a/net/rds/ib.c
++++ b/net/rds/ib.c
+@@ -50,6 +50,7 @@ static unsigned int rds_ib_mr_1m_pool_size = RDS_MR_1M_POOL_SIZE;
+ static unsigned int rds_ib_mr_8k_pool_size = RDS_MR_8K_POOL_SIZE;
+ unsigned int rds_ib_retry_count = RDS_IB_DEFAULT_RETRY_COUNT;
+ static atomic_t rds_ib_unloading;
++struct workqueue_struct *rds_ib_wq;
+ 
+ module_param(rds_ib_mr_1m_pool_size, int, 0444);
+ MODULE_PARM_DESC(rds_ib_mr_1m_pool_size, " Max number of 1M mr per HCA");
+@@ -533,6 +534,8 @@ static bool rds_ib_is_unloading(struct rds_connection *conn)
+ 
+ void rds_ib_exit(void)
+ {
++	struct workqueue_struct *wq = rds_ib_wq;
++
+ 	rds_ib_set_unloading();
+ 	synchronize_rcu();
+ 	rds_info_deregister_func(RDS_INFO_IB_CONNECTIONS, rds_ib_ic_info);
+@@ -545,6 +548,10 @@ void rds_ib_exit(void)
+ 	rds_ib_recv_exit();
+ 	rds_trans_unregister(&rds_ib_transport);
+ 	rds_ib_mr_exit();
++
++	rds_ib_wq = NULL;
++	if (wq)
++		destroy_workqueue(wq);
+ }
+ 
+ static u8 rds_ib_get_tos_map(u8 tos)
+@@ -587,6 +594,7 @@ struct rds_transport rds_ib_transport = {
+ 
+ int rds_ib_init(void)
+ {
++	struct workqueue_struct *wq;
+ 	int ret;
+ 
+ 	INIT_LIST_HEAD(&rds_ib_devices);
+@@ -595,9 +603,16 @@ int rds_ib_init(void)
+ 	if (ret)
+ 		goto out;
+ 
++	rds_ib_wq = alloc_workqueue("rds_ib_wq",
++				    WQ_HIGHPRI | WQ_MEM_RECLAIM, 0);
++	if (!rds_ib_wq) {
++		ret = -ENOMEM;
++		goto out_mr_exit;
++	}
++
+ 	ret = ib_register_client(&rds_ib_client);
+ 	if (ret)
+-		goto out_mr_exit;
++		goto out_wq;
+ 
+ 	ret = rds_ib_sysctl_init();
+ 	if (ret)
+@@ -620,6 +635,11 @@ int rds_ib_init(void)
+ 	rds_ib_sysctl_exit();
+ out_ibreg:
+ 	rds_ib_unregister_client();
++out_wq:
++	wq = rds_ib_wq;
++	rds_ib_wq = NULL;
++	if (wq)
++		destroy_workqueue(wq);
+ out_mr_exit:
+ 	rds_ib_mr_exit();
+ out:
+diff --git a/net/rds/ib.h b/net/rds/ib.h
+index 5ff346a1e..5f617f66e 100644
+--- a/net/rds/ib.h
++++ b/net/rds/ib.h
+@@ -159,8 +159,8 @@ struct rds_ib_connection {
+ 	atomic_t		i_fastreg_inuse_count;
+ 
+ 	/* interrupt handling */
+-	struct tasklet_struct	i_send_tasklet;
+-	struct tasklet_struct	i_recv_tasklet;
++	struct work_struct	i_send_work;
++	struct work_struct	i_recv_work;
+ 
+ 	/* tx */
+ 	struct rds_ib_work_ring	i_send_ring;
+@@ -276,6 +276,7 @@ struct rds_ib_statistics {
+ 	uint64_t	s_ib_connect_raced;
+ 	uint64_t	s_ib_listen_closed_stale;
+ 	uint64_t	s_ib_evt_handler_call;
++	/* Retained as s_ib_tasklet_call for userspace rds-info -I ABI */
+ 	uint64_t	s_ib_tasklet_call;
+ 	uint64_t	s_ib_tx_cq_event;
+ 	uint64_t	s_ib_tx_ring_full;
+@@ -452,4 +453,6 @@ extern unsigned long rds_ib_sysctl_max_unsig_bytes;
+ extern unsigned long rds_ib_sysctl_max_recv_allocation;
+ extern unsigned int rds_ib_sysctl_flow_control;
+ 
++extern struct workqueue_struct *rds_ib_wq;
++
+ #endif
+diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+index 6e3110a04..976a9d7e8 100644
+--- a/net/rds/ib_cm.c
++++ b/net/rds/ib_cm.c
+@@ -253,7 +253,10 @@ static void rds_ib_cq_comp_handler_recv(struct ib_cq *cq, void *context)
+ 
+ 	rds_ib_stats_inc(s_ib_evt_handler_call);
+ 
+-	tasklet_schedule(&ic->i_recv_tasklet);
++	if (unlikely(!rds_ib_wq || atomic_read_acquire(&ic->i_cq_quiesce)))
++		return;
++
++	queue_work(rds_ib_wq, &ic->i_recv_work);
+ }
+ 
+ static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
+@@ -279,9 +282,10 @@ static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
+ 	}
+ }
+ 
+-static void rds_ib_tasklet_fn_send(unsigned long data)
++static void rds_ib_send_worker(struct work_struct *work)
+ {
+-	struct rds_ib_connection *ic = (struct rds_ib_connection *)data;
++	struct rds_ib_connection *ic =
++		container_of(work, struct rds_ib_connection, i_send_work);
+ 	struct rds_connection *conn = ic->conn;
+ 
+ 	rds_ib_stats_inc(s_ib_tasklet_call);
+@@ -319,9 +323,10 @@ static void poll_rcq(struct rds_ib_connection *ic, struct ib_cq *cq,
+ 	}
+ }
+ 
+-static void rds_ib_tasklet_fn_recv(unsigned long data)
++static void rds_ib_recv_worker(struct work_struct *work)
+ {
+-	struct rds_ib_connection *ic = (struct rds_ib_connection *)data;
++	struct rds_ib_connection *ic =
++		container_of(work, struct rds_ib_connection, i_recv_work);
+ 	struct rds_connection *conn = ic->conn;
+ 	struct rds_ib_device *rds_ibdev = ic->rds_ibdev;
+ 	struct rds_ib_ack_state state;
+@@ -381,7 +386,10 @@ static void rds_ib_cq_comp_handler_send(struct ib_cq *cq, void *context)
+ 
+ 	rds_ib_stats_inc(s_ib_evt_handler_call);
+ 
+-	tasklet_schedule(&ic->i_send_tasklet);
++	if (unlikely(!rds_ib_wq || atomic_read_acquire(&ic->i_cq_quiesce)))
++		return;
++
++	queue_work(rds_ib_wq, &ic->i_send_work);
+ }
+ 
+ static inline int ibdev_get_unused_vector(struct rds_ib_device *rds_ibdev)
+@@ -1099,14 +1107,15 @@ void rds_ib_conn_path_shutdown(struct rds_conn_path *cp)
+ 		while (!wait_event_timeout(rds_ib_ring_empty_wait,
+ 					   rds_ib_conn_path_shutdown_check_wait(cp) == 0,
+ 					   msecs_to_jiffies(1000))) {
+-			tasklet_schedule(&ic->i_send_tasklet);
+-			tasklet_schedule(&ic->i_recv_tasklet);
++			if (rds_ib_wq) {
++				queue_work(rds_ib_wq, &ic->i_send_work);
++				queue_work(rds_ib_wq, &ic->i_recv_work);
++			}
+ 		}
+ 
+-		tasklet_kill(&ic->i_send_tasklet);
+-		tasklet_kill(&ic->i_recv_tasklet);
+-
+-		atomic_set(&ic->i_cq_quiesce, 1);
++		atomic_set_release(&ic->i_cq_quiesce, 1);
++		cancel_work_sync(&ic->i_send_work);
++		cancel_work_sync(&ic->i_recv_work);
+ 
+ 		/* first destroy the ib state that generates callbacks */
+ 		if (ic->i_cm_id->qp)
+@@ -1234,10 +1243,8 @@ int rds_ib_conn_alloc(struct rds_connection *conn, gfp_t gfp)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&ic->ib_node);
+-	tasklet_init(&ic->i_send_tasklet, rds_ib_tasklet_fn_send,
+-		     (unsigned long)ic);
+-	tasklet_init(&ic->i_recv_tasklet, rds_ib_tasklet_fn_recv,
+-		     (unsigned long)ic);
++	INIT_WORK(&ic->i_send_work, rds_ib_send_worker);
++	INIT_WORK(&ic->i_recv_work, rds_ib_recv_worker);
+ 	mutex_init(&ic->i_recv_mutex);
+ #ifndef KERNEL_HAS_ATOMIC64
+ 	spin_lock_init(&ic->i_ack_lock);
