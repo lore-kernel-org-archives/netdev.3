@@ -1,113 +1,111 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9501C456DE2
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 09:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516D545C6E1;
+	Tue, 22 Sep 2026 09:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790068664; cv=none; b=NgsAp2CufZwTAZ5dt2yUHciHdZILVkTIVIuy2LwnGrWrar0QT6e28bybZ4JWwftD4dB4j0Y88KuSZ6K8CkiDlPJpfnR7eMI9aqJqrFzSRJLsY5XfJPSl7p8HpTY3p3h8eLIHbpfvGsnRSHUp+RJVsz8pldm4qBbx2t2PCTBJUFU=
+	t=1790068670; cv=none; b=StuCrmXzW9OycvMKuKnmPMmcjgIPRu918n85Vh583+n2njiUzE8QiSDr/eVmKSBJxSJkHu+0cOmv6FJhYD8+FLCSwu2PMQIKLN7XW7SJ+3r3t5OegWgK2BgwbMPOHV2HJwV9nc73E7sE2ERHtMC21Tfl5EVxhpwLaUHxKOU3qFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790068664; c=relaxed/simple;
-	bh=CZ3oPkSBqFVLdsQgqxzEWOijGFMKadDxp1f+3SNDcts=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EMW7IqJLZc2ltM7wVa/LczgI3ZcZ9702JQG9Y95oG+9vjJ3OoQuhnJ3HPiBtm/uehqkqweh+uCjNwY8hrzxpFBWhJmhc5DZH3a7Nu0sKPal+doNkpCzyZ7rPGn3BXlm6RE1WWl1DoiYo31F4tY9mfTqB0AHx5tiJsC9taB5VZD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-982dd15d169so2215870241.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:17:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790068661; x=1790673461;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=oT5SmnnEiCJkeSE3HgFIBSVwvA/3E4ZeuxsouiwktnY=;
-        b=FFpcIFCvPIkvQjg8Cs3QmGkwdme3CPoGCMZgSnGfOnDTrcAkxPWHqe6KQ48JLN0iDk
-         wfVnUf0eT3kwf4QMtfw7pvllIfltVYlNFSDi12KT0UPDsp7cC0qp+xbm4sLrYZqLMawz
-         3AMAJCjfTXsD4g6fm0tIV1V1Et9Z/1yKT/VR0zd0YTZEAnIbW1GIv7jzyd3F8HFKqosW
-         M6vWhO1dXeGCY55k8nV7/GncpqsUy/u/xwed6icY9i7xEGotkYZPj+AdogiF1HY1WOmW
-         /xOV1+FDIkY5mhSOqBthwePjjFlQb3Rsirt8/lZbJjJYwWeAi+3I4y/KREQfwM65WDQa
-         jwhw==
-X-Forwarded-Encrypted: i=1; AKwUvBzVkxB56rMFsOiNEA+lu2ZHKVoeoFEzuGSFHhqSOyJSQ38M1uzQgC0i/22y9dkWCfQGDHbd9vs=@vger.kernel.org
-X-Gm-Message-State: AFuF++mmK/KgklldvlIZWyCF9jgVCCkWNWWsq+Ip+E7LSBL6Njd7X9kl
-	v4q+5s2HytHCBYCkWqsc+AzGp0J1Cf64M9XamOS0m0uUHNiFrDGMzOlJcTv48ndUBa4=
-X-Gm-Gg: AYBFou16XgUgAFhp75lRjDPCmdbm8gHBiJTprQmLGsdpnSv6dZb/oOHOl4BXWgacoFW
-	cJcXyQGfF9i7d/apnwvkIGXIW+J+0c66TINXDMttm12KYE5fWUSfjrf+dyDhUlzNoTFz0Y4jfAy
-	CWprVK4ujKoNmiVlode5ONXwdTYiMMPb4WmtZLL+aXEd2qkDaMJMA2fTVnnG1c7dbm9UmVP0Xb1
-	aVfcxrCd4d6/iIMOwjF3ymRgdNVWgioNQHX4+3oRvgwHrj1Zlbl6Qa4O5v0Bp7h+nZGQJyG2sg3
-	maf7vGParmEvufN8U+C2xG0s4lGlP7aAybIX+YwOVYflBofjpl7IprxNX4VineKq0I/6NZg+beX
-	LlOkwtdsPdYrHZt0gwQhF/AKRNWywfh+ftXDuDXMgq4YN95+azXG/bF3iSB0IA/dp772EgSS6wH
-	C9unU8KvfMRnNTbdMEZpsrDIM7TF+Vxvv0a5OE/WUNfOoK+93eB5I2ynMYSSWreRaGaCTYmm24/
-	q0m8jouKHKsKGRR+IAuKCcHVCHMcKJvGUA5avwee7q8Ss8=
-X-Received: by 2002:a05:6102:148c:b0:7a7:198a:c2b5 with SMTP id ada2fe7eead31-7a7198ad369mr5340575137.29.1790068661135;
-        Tue, 22 Sep 2026 02:17:41 -0700 (PDT)
-Received: from mail-vs2-f40.google.com (mail-vs2-f40.google.com. [74.125.227.40])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7ab17f3be4asm1076835137.8.2026.09.22.02.17.39
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 02:17:39 -0700 (PDT)
-Received: by mail-vs2-f40.google.com with SMTP id ada2fe7eead31-7a805351f5eso1225959137.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:17:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx9YmBGfyzWM2guw/fUqAHWWiF9mv5NIpc53yVIp++oQLZy7JQLscPuQqg5ngfH7hWINrzzel4=@vger.kernel.org
-X-Received: by 2002:a05:6102:1492:b0:7a7:198a:c2b6 with SMTP id
- ada2fe7eead31-7a7198ad381mr4988859137.30.1790068658957; Tue, 22 Sep 2026
- 02:17:38 -0700 (PDT)
+	s=arc-20240116; t=1790068670; c=relaxed/simple;
+	bh=H87Lb3XTMZZWB+Vhsj+gWSLAorO4qD6yFRN0vdGl6ZA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=exTIhhkFJlKJBhHpAxgRTdc8lSG8dCJwWYQSkZ2p9hCoo0s/UGXlCh1mnw8sUgiJsjPdp2B+bCHVg/9SR8s/mDAvuHLDVzcMS/RVkGkySn9AvyJ93oULMNFJEZeOYgRA1xOnXvjZCX2S5sFobL+e3Sejs4F4Mq/wQcHFjsi8MFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=0V8zPwT7; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="0V8zPwT7"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 01C2EA02D4;
+	Tue, 22 Sep 2026 11:17:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790068664; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=mEMUGsXWMu6me45Tt9gXUyFdAtqIBQMDg1NztzEGnKw=;
+	b=0V8zPwT7YjufRFyXEz8X0EzQw3LSggG4VHK0JAeWZWC2i9CQw4Uzcg6T+TB+IRyZKaaspN
+	8LoVXzLQW57ltIJ8AUlsk5wnd4u0eGpStbgTVus14F4NV34xpGOfKHTuP7Z2yby4i2KZvS
+	ip3Xoxk6S4f+p1NltelsOQu5/XXbfFP2JKbRC3kaeYjULfrG7uTW1ZCpkmH9cnS9M8nWKJ
+	X1DlLbN5WGbvEJaFyjL99jCRtWfA5zRdQKDj7r12kOo3QvXY1JdpEyUXKY5F7zKsnThJWD
+	YSM/NH9l5iothO501ohJVh/+MpRA20A4dG9KojjhG3Mx6TPlSATeRVDTSNTuXg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net>
-In-Reply-To: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 22 Sep 2026 11:17:27 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXMjxgj+pT5A=jd_A5BVQctHXJqeiU4EhPA_ZSANZAAmQ@mail.gmail.com>
-X-Gm-Features: AclHuK9pjyjJZh6DYzu8j0CaKCcKmJ8CfBcbQ8aIBw9Bf-OTlVvyy4dIW39Xywc
-Message-ID: <CAMuHMdXMjxgj+pT5A=jd_A5BVQctHXJqeiU4EhPA_ZSANZAAmQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] describe RTL8125 PCIe NICs on Rockchip boards (and
- add DT binding)
-To: ricardo@pardini.net
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Sebastian Reichel <sebastian.reichel@collabora.com>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 22 Sep 2026 11:17:42 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+ <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 08/12] net: systemport: Fix out-of-bounds array
+ accesses in DSA queue mapping
+In-Reply-To: <20260921231305.394773-9-florian.fainelli@broadcom.com>
+References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
+ <20260921231305.394773-9-florian.fainelli@broadcom.com>
+Message-ID: <298e25518323e05b6daf9e12d7302ae8@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Ricardo,
+Hi Florian
 
-On Thu, 10 Sept 2026 at 22:08, Ricardo Pardini via B4 Relay
-<devnull+ricardo.pardini.net@kernel.org> wrote:
-> Several Rockchip rk35xx boards carry on-board Realtek RTL8125 2.5GbE
-> NICs whose PCI function nodes are not described in the DT. Describing
-> them allows for stable ethernetN aliases (matching the GMAC alias
-> convention on these boards) and lets U-Boot's fdt_fixup_ethernet()
-> inject mac-address properties from its ethaddr/ethNaddr env, so MACs
-> stay stable across boots and U-Boot and kernel MAC match.
->
-> Tested on a NanoPC-T6: /sys/bus/pci/devices/0004:41:00.0/of_node ->
-> /sys/firmware/devicetree/base/pcie@fe190000/pcie@0,0/ethernet@0,0 and
-> u-boot correctly adds local-mac-address property there which is
-> correctly picked up kernel-side:
+On 22.9.2026 01:13, Florian Fainelli wrote:
+> The priv->ring_map array has a fixed size of (DSA_MAX_PORTS * 8). In
+> bcm_sysport_select_queue(), bcm_sysport_map_queues(), and
+> bcm_sysport_unmap_queues(), indices calculated as
+> (qp + port * num_tx_queues) were accessed without checking against
+> ARRAY_SIZE(priv->ring_map). If unusual port or queue configurations are
+> encountered, this could lead to out-of-bounds array accesses.
+> 
+> Additionally, on SYSTEMPORT Lite, netif_set_real_num_tx_queues() was
+> called with slave_dev->num_tx_queues / 2, which could evaluate to 0 if
+> slave_dev->num_tx_queues is 1, causing netif_set_real_num_tx_queues() 
+> to
+> fail with -EINVAL.
+> 
+> Fix these by clamping the real number of queues to at least 1 and 
+> adding
+> bounds checks on priv->ring_map.
+> 
+> Fixes: d156576362c0 ("net: systemport: Establish lower/upper queue 
+> mapping")
+> Assisted-by: LLM
+> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> ---
+>  drivers/net/ethernet/broadcom/bcmsysport.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c 
+> b/drivers/net/ethernet/broadcom/bcmsysport.c
+> index 95cead1df160..130545cce045 100644
+> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
+> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
 
-Have you tested this at 2.5Gbps? With which firmware?
-I am asking because I have problems at 2.5Gbps using the firmware from
-linux-firmware (on a different platform, though)
-https://lore.kernel.org/CAMuHMdXPAeHoeaQbM9rXbXukoMbFV+0k28n6sRMw8XF8720WUA@mail.gmail.com
+> [...]
 
-Thanks!
+> @@ -2352,7 +2356,8 @@ static int bcm_sysport_map_queues(struct 
+> net_device *dev,
+>  		ring->switch_queue = qp;
+>  		ring->switch_port = port;
+>  		ring->inspect = true;
+> -		priv->ring_map[qp + port * num_tx_queues] = ring;
+> +		if (qp + port * num_tx_queues < ARRAY_SIZE(priv->ring_map))
+> +			priv->ring_map[qp + port * num_tx_queues] = ring;
 
-Gr{oetje,eeting}s,
+Out of range rings would still have inspect = true but no ring_map
+entry, so select_queue() can never pick them.
 
-                        Geert
+Bail out before marking the ring?
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> [...]
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks,
+Nicolai
