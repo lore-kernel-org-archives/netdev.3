@@ -1,471 +1,323 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tpecef21.compal.com (exmail3.compal.com [59.120.207.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11D24A5EA4
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC39C4C77D9;
+	Tue, 22 Sep 2026 06:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790057347; cv=none; b=lqkMLRLsohUfj1cgHyh7lsRC9OY076rdUimM0e+bSqei/i/bW6jcRhvVAW/ZM8Qe0mbYMLtXhmfTjxBL3+TrxBbtgHLJ+2dSylyYCclJa68kF0nGbEQdy2nIe+v8UjCkwJCVa7rld1sIvzfSgxblPAoGP/o/Rta8k00aylHWvl0=
+	t=1790058512; cv=none; b=mE/HKNDOxIZUgarL25r7+FmvxcZaHIwgrFve7Y+2+81tc11pwRMlGVUecxbcc0dfbbjvyLpYn+BbwWGc5lncQOW4cCel2r9LK3M8jdjXMY/hTWDrTgWK2GSaXqxZdn8zL94AcaRYmB4CSHxd1fln53Y8kGHEFNH47cR8T+ywULA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790057347; c=relaxed/simple;
-	bh=MFHR4VsECxiiH3uP/JJBa0l95bcvABMvrxG5ghEBgVg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbBOnlxdl0bg2PXRHknvlrUFNuWorxWpDhqErAT4XN3yOLteIDF7jAvPlXw2FT8Pv9e/vulLEun1sd9u+gx3bFlcTSojC1TSDghywyAY/4MdmQy2lT74xJFZ6dkS4pa4uifI2ejLR9ITfkLlNckIHVvDoyvxEsy8gSmInlTTBFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Q//qpqqv; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Q//qpqqv"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d3931so27941955e9.3
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 23:09:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1790057343; x=1790662143; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=y00sQ5PJ4emPnR7XatNNnmIU8Js0sYzL+xMRMQlq/Jc=;
-        b=Q//qpqqvMXwchxDZTsS+e11nLgqEO2oEsyh3VzjPtK71SmcVXEnnrowZDe7NwLKXjN
-         qjZI62XFgm6C23cVKKUF/H7uPxre30Dkb8yMeOeBzHiI4c2wNXFtu+cUHnx0+am3XW5b
-         /mkijACiZZVvp/1oRg+545rS3zoncauA+jy1WBmV4ZTvSHfOMW9vmz7q5lEhIFxuq79f
-         G6IB/SE/jyZL7Yl9Bdc/T1ihPivVXg4xtmQhz3Y4Gmt0Z3a+mdyj8bWnXMFecPaG+u5v
-         6lCOlY4KAJp5fHSU6mfX5OWh2seyvL2ksTMxluP2F6D1Tun9J6D48fVTHmHZukbNHLvx
-         enEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790057343; x=1790662143;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=y00sQ5PJ4emPnR7XatNNnmIU8Js0sYzL+xMRMQlq/Jc=;
-        b=l1Aiv381U7v/7PSioIj+XO4/ULx9g/1ZNjALrwbfPN2ozmgU1nYNpyTlbqvIAYYEpL
-         s+oHS69XY4sxPa4vjVRRLPjBzxebaduRHF5TOSoKpVR11XU2zrsDMi0HWEriwYo3256b
-         gbEjq7EHn9aEB+1rCy8dXxshxHDTbAdCgyoKFkEeqEFIfhWaHlCy8vyo43K5Y4DLb7UD
-         efMsTvFyX5fkDlI5zTVhOwvfHgyrmUwbtlCqn5jus44cItXxFQM0I9xivilimfDITPEA
-         n7Zxhzoe0qDait5b1K1/T5/0ci52FrXj4hbTRcWQ+ZpVaT0AU9tdwWpH7b9hjslxgyvv
-         Mc9A==
-X-Gm-Message-State: AFuF++lLgHneA9joBBLWk0mJl6YCLzwYN4dePDqbjPbPrkj0HrMjAl+s
-	QLe50fI0iMI01PFaRTi9ZgIEb/WFeieEaz38gqE4pVmIfyapBj+ckc+ilDQdIQJeyJVMwGOdl5D
-	3rWVaP2MY70rgl7cWQv1JD7ED9P+NMGt8JRGwPC0HNiti5RoxCbZILoP+AgXshkCVni0=
-X-Gm-Gg: AYBFou1LwIeNCtzlTXfdZSvP67eO+UcYjpqyPsr3Wiq4cpM+cdRXxZX19Xq9XMHVYCf
-	TKSqFNTCML9F2yhXYnH1b0x18rQ19bKyxRzpzLCrASuDij1zakDXheUx/MECHU7KcI++O2FkySH
-	hxfbP4rtmVi+kwl51LoqjvWHBuRZ5CblcitIHjDBh2UAskYUcPAoO6yVGyi/FRnYyKTmF/8Tu8R
-	QQEq2wHPmBzE21R0wgY3mQKsrIPpNBf7qlrhVGOSNsBhaPhl1sZHHXrozqDgQFAVN3FcIr9KU7K
-	fDKeMInu0vrBsGoV3Ui8mV+g9CjV+pJV+7PFsJYMiyoQyjIKwsmuU59vUBlwlW7f+pWO/Nby63E
-	MZree2rnq/TyrdaC3dBge0vCQ2i214nAs3cdXgZpchXAf0fuOYUC0yWiNDtJcooOSnORXeNU1TO
-	a9MsYI4Zgank13bqFMBg/YAap3Z3CLLcLQNCf5qMeCcNNGWL4gpwhG21ydq+NJHh24jVBFSNPK8
-	6G61d8mDbQ=
-X-Received: by 2002:a05:600c:8518:b0:49d:28c4:b304 with SMTP id 5b1f17b1804b1-49fc5741563mr192455235e9.29.1790057342942;
-        Mon, 21 Sep 2026 23:09:02 -0700 (PDT)
-Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:b03b:2cfc:7208:2ecf])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdad6306esm25814125e9.15.2026.09.21.23.09.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 23:09:02 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net-next 5/5] ovpn: send peer object along with PEER_DEL_NTF
-Date: Tue, 22 Sep 2026 08:08:51 +0200
-Message-ID: <20260922060852.2266148-6-antonio@openvpn.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260922060852.2266148-1-antonio@openvpn.net>
-References: <20260922060852.2266148-1-antonio@openvpn.net>
+	s=arc-20240116; t=1790058512; c=relaxed/simple;
+	bh=rDu8ovfSNgIwrscLkZIJub9CV9fyr9jZYl3Wv/S9Qnw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=M4N2JDi+sIQewcLUyZCnSuq2NN5xEUeIz/meq7FWZIj8QaPMbtEYpmnw/6e0a5HSkjk92AkL8Bl0S3jyPSLBC+AjVApUsJAKJfkqkV0ioQWySUETeY+wj9xvUE7PZQKUSCVHqDvVa/zy+70hAB+2I3YAKKgfAFL0z+WMRvk3s+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
+X-UUID: cd026d02b64e11f1b2470fb4f881575f-20260922
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:c1ef0b95-a7ec-4c2b-bc12-dbb5273d3242,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7f1ae54,CLOUDID:49c89f28-9ebf-4787-bb42-3cd26eee85aa,B
+	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
+	Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:n
+	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: cd026d02b64e11f1b2470fb4f881575f-20260922
+Received: from sdmg12.sdbg.compal.com [(10.113.168.10)] by tpecef21.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1881729282; Tue, 22 Sep 2026 14:28:18 +0800
+X-UUID: c8b9ed88b64e11f1a9f9c99e036204b4-20260922
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:61e296d1-af83-47fe-bbb9-dbca1edea9cd,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:b8cc677c-2058-4298-90ad-1156c3f1dffd,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
+	RC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: c8b9ed88b64e11f1a9f9c99e036204b4-20260922
+Received: from sdbmbx13.tpe.compalcomm.com [(10.113.2.137)] by sdmg12.sdbg.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES128-SHA 128/128)
+	with ESMTP id 368193852; Tue, 22 Sep 2026 14:28:11 +0800
+Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
+ SDBMBX13.tpe.compalcomm.com (10.113.2.137) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Tue, 22 Sep 2026 14:28:09 +0800
+Received: from SDBMBX13.tpe.compalcomm.com ([fe80::d3a3:2665:d306:e36a]) by
+ SDBMBX13.tpe.compalcomm.com ([fe80::d3a3:2665:d306:e36a%11]) with mapi id
+ 15.02.2562.043; Tue, 22 Sep 2026 14:28:09 +0800
+From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "loic.poulain@oss.qualcomm.com" <loic.poulain@oss.qualcomm.com>,
+	"ryazanov.s.a@gmail.com" <ryazanov.s.a@gmail.com>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "wen-zhi.huang@mediatek.com"
+	<wen-zhi.huang@mediatek.com>, "shi-wei.yeh@mediatek.com"
+	<shi-wei.yeh@mediatek.com>, "Minano.tseng@mediatek.com"
+	<Minano.tseng@mediatek.com>, "matthias.bgg@gmail.com"
+	<matthias.bgg@gmail.com>, "angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>, "horms@kernel.org"
+	<horms@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>,
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "Yu. Robert (GSM)"
+	<robert_yu@compal.com>, "Chang. Jeff (GSM)" <Jeff_Chang@compal.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>
+Subject: Re: [PATCH v8 4/6] net: wwan: t9xx: Add control port
+Thread-Topic: [PATCH v8 4/6] net: wwan: t9xx: Add control port
+Thread-Index: AQHdSluJ1yagq+dtk0yqqhzE5p2ARw==
+Date: Tue, 22 Sep 2026 06:28:09 +0000
+Message-ID: <5a63bab842d74a16afc926a8dfe57292@compal.com>
+References: <20260914-t9xx_driver_v1-v8-4-5206c2e6bea0@compal.com>,<20260919235451.839752-1-kuba@kernel.org>
+In-Reply-To: <20260919235451.839752-1-kuba@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30212.004
+x-tm-as-result: No-10--19.972100-8.000000
+x-tmase-matchedrid: YJd3j4I3X6kuv++HU7VXryRFbfQbCufdN0X64jGy2dZJTOxleK2tZuZd
+	NI5cmL7EjKwI1G5RpVtl1C77Mwxv1mx/QwKczNCA5enkh7Jrzn7n0oaU6WM++7IHDXkfbgxHx8U
+	8N5FBdX+2HNqinsgzu8l4WkZTCLUZq+hrZwzow1gMOAyFr9Y0lW1Pl2xWLNcSnNicWw98Dxdz1a
+	JxUmt5l9uGPRtWbaTw6L+pIP3le4K2yjOjC2S3r3ENRUATMkjYadOpqX8aWKYTkjVz57fmPuTLo
+	ZjunT/uq5yIL3d1s0/1K0+Ruk5Cbt1iOYu+yFwp5Urh5aukb3/Qnvfn8hth7Y4FOSFdB0Zt8tUY
+	ukAWLTSsfN3JESww3iiZKHQK1fdgHUPm0Zkd/JcnDrpxCH9Hl5uXjEKWmxV2cTNQd/h+dNQm47H
+	Td9puLuCtX6l/7k/xftdHoA8brSEX/d6xGo75+rYc111H0p4af0Zn2kXlaHjgNbcxF5mJJma9UI
+	WnL/J5gEuyIjAh9YPOO9gQ3v6YHINtOxGpNfG7JybHZJNdL7wcqqBhuk/aHPEeUWBXzlha806ra
+	vf6BGv2pzCoByCrAsAhVhcSsBEpFJ33POd4S7udYRN1L2Va2M9pbisPwZaMLzJeA+juOa/YWML+
+	TYOvXMDv85LzyHOTidYhdY7hMzKNEdKT+E1bVDvQG0xdFpDCcFomghW9dptJFPBcgYmFIoyDIPO
+	At5xjLNwQAgxJ4zkihTV3Ttct88oSAaWPXaixSgS55u62GBrv6Ah2b77LRBrqK38898cNGM8FnF
+	seFmM8FRHJWgw4Hx+lo9iz9JXelJgCJG2VxP0RLjqoJJt/9frDHrB5YKTLXFAIRSIiEKJxg7svM
+	tapLiJsZ0L4JGotOvT30G5nOJt+3BndfXUhXQ==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--19.972100-8.000000
+x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30212.004
+x-tm-snts-smtp: 6C45D55932D495247A6EA43C12C52170416ADE9EFBC0A2516AF937ECEFC59DD62000:8
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Ralf Lici <ralf@mandelbit.com>
-
-OpenVPN userspace needs the final statistics of a disconnecting peer.
-Today this is done by issuing a PEER_GET request after receiving
-PEER_DEL_NTF. When several peers disconnect at the same time, those
-extra request/reply transactions overlap with notification processing on
-the same netlink socket and can make userspace hit transient netlink
-errors such as NLE_BUSY or NLE_NOMEM.
-
-Include a peer snapshot directly in PEER_DEL_NTF, using the same peer
-object format returned by PEER_GET. This lets userspace consume the last
-known counters from the notification itself, without issuing one netlink
-request per deleted peer.
-
-Update the ovpn selftest notification fixtures to validate the new
-payload while normalizing timing-dependent counters.
-
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
----
- drivers/net/ovpn/netlink.c                    | 60 ++++++++++++-------
- tools/testing/selftests/net/ovpn/common.sh    | 39 +++++++++++-
- .../selftests/net/ovpn/json/peer0-float.json  | 12 ++--
- .../net/ovpn/json/peer0-symm-float.json       | 10 +++-
- .../selftests/net/ovpn/json/peer0-symm.json   |  7 ++-
- .../selftests/net/ovpn/json/peer0.json        | 12 ++--
- .../selftests/net/ovpn/json/peer1-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer1.json        |  2 +-
- .../selftests/net/ovpn/json/peer2-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer2.json        |  2 +-
- .../selftests/net/ovpn/json/peer3-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer3.json        |  2 +-
- .../selftests/net/ovpn/json/peer4-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer4.json        |  2 +-
- .../selftests/net/ovpn/json/peer5-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer5.json        |  2 +-
- .../selftests/net/ovpn/json/peer6-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer6.json        |  2 +-
- 18 files changed, 112 insertions(+), 52 deletions(-)
- mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
- mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm.json
-
-diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-index 4dad85294198..aaca0612d6f4 100644
---- a/drivers/net/ovpn/netlink.c
-+++ b/drivers/net/ovpn/netlink.c
-@@ -546,27 +546,15 @@ int ovpn_nl_peer_set_doit(struct sk_buff *skb, struct genl_info *info)
- 	return 0;
- }
- 
--static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
--			     const struct ovpn_peer *peer, u32 portid, u32 seq,
--			     int flags)
-+static int ovpn_nl_fill_peer(struct sk_buff *skb, const struct genl_info *info,
-+			     const struct ovpn_peer *peer)
- {
- 	const struct ovpn_bind *bind;
- 	struct ovpn_socket *sock;
- 	int ret = -EMSGSIZE;
--	struct nlattr *attr;
- 	__be16 local_port;
--	void *hdr;
- 	int id;
- 
--	hdr = genlmsg_put(skb, portid, seq, &ovpn_nl_family, flags,
--			  OVPN_CMD_PEER_GET);
--	if (!hdr)
--		return -ENOBUFS;
--
--	attr = nla_nest_start(skb, OVPN_A_PEER);
--	if (!attr)
--		goto err;
--
- 	rcu_read_lock();
- 	sock = rcu_dereference(peer->sock);
- 	if (!sock) {
-@@ -574,7 +562,7 @@ static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
- 		goto err_unlock;
- 	}
- 
--	if (!net_eq(genl_info_net(info), sock_net(sock->sk))) {
-+	if (info && !net_eq(genl_info_net(info), sock_net(sock->sk))) {
- 		id = peernet2id_alloc(genl_info_net(info),
- 				      sock_net(sock->sk),
- 				      GFP_ATOMIC);
-@@ -585,26 +573,26 @@ static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
- 	rcu_read_unlock();
- 
- 	if (nla_put_u32(skb, OVPN_A_PEER_ID, peer->id))
--		goto err;
-+		return -EMSGSIZE;
- 
- 	if (nla_put_u32(skb, OVPN_A_PEER_TX_ID, peer->tx_id))
--		goto err;
-+		return -EMSGSIZE;
- 
- 	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY))
- 		if (nla_put_in_addr(skb, OVPN_A_PEER_VPN_IPV4,
- 				    peer->vpn_addrs.ipv4.s_addr))
--			goto err;
-+			return -EMSGSIZE;
- 
- 	if (!ipv6_addr_equal(&peer->vpn_addrs.ipv6, &in6addr_any))
- 		if (nla_put_in6_addr(skb, OVPN_A_PEER_VPN_IPV6,
- 				     &peer->vpn_addrs.ipv6))
--			goto err;
-+			return -EMSGSIZE;
- 
- 	if (nla_put_u32(skb, OVPN_A_PEER_KEEPALIVE_INTERVAL,
- 			peer->keepalive_interval) ||
- 	    nla_put_u32(skb, OVPN_A_PEER_KEEPALIVE_TIMEOUT,
- 			peer->keepalive_timeout))
--		goto err;
-+		return -EMSGSIZE;
- 
- 	rcu_read_lock();
- 	bind = rcu_dereference(peer->bind);
-@@ -652,14 +640,39 @@ static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
- 			 atomic64_read(&peer->link_stats.tx.bytes)) ||
- 	    nla_put_uint(skb, OVPN_A_PEER_LINK_TX_PACKETS,
- 			 atomic64_read(&peer->link_stats.tx.packets)))
-+		return -EMSGSIZE;
-+
-+	return 0;
-+err_unlock:
-+	rcu_read_unlock();
-+	return ret;
-+}
-+
-+static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
-+			     const struct ovpn_peer *peer, u32 portid, u32 seq,
-+			     int flags)
-+{
-+	struct nlattr *attr;
-+	int ret = -EMSGSIZE;
-+	void *hdr;
-+
-+	hdr = genlmsg_put(skb, portid, seq, &ovpn_nl_family, flags,
-+			  OVPN_CMD_PEER_GET);
-+	if (!hdr)
-+		return -ENOBUFS;
-+
-+	attr = nla_nest_start(skb, OVPN_A_PEER);
-+	if (!attr)
-+		goto err;
-+
-+	ret = ovpn_nl_fill_peer(skb, info, peer);
-+	if (ret < 0)
- 		goto err;
- 
- 	nla_nest_end(skb, attr);
- 	genlmsg_end(skb, hdr);
- 
- 	return 0;
--err_unlock:
--	rcu_read_unlock();
- err:
- 	genlmsg_cancel(skb, hdr);
- 	return ret;
-@@ -1193,7 +1206,8 @@ int ovpn_nl_peer_del_notify(struct ovpn_peer *peer)
- 	if (nla_put_u32(msg, OVPN_A_PEER_DEL_REASON, peer->delete_reason))
- 		goto err_cancel_msg;
- 
--	if (nla_put_u32(msg, OVPN_A_PEER_ID, peer->id))
-+	ret = ovpn_nl_fill_peer(msg, NULL, peer);
-+	if (ret < 0)
- 		goto err_cancel_msg;
- 
- 	nla_nest_end(msg, attr);
-diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
-index de96d333ee2b..611d528c7de8 100644
---- a/tools/testing/selftests/net/ovpn/common.sh
-+++ b/tools/testing/selftests/net/ovpn/common.sh
-@@ -19,9 +19,42 @@ OVPN_VERBOSE=${OVPN_VERBOSE:-0}
- 
- export OVPN_ID_OFFSET=$(( 9 * (OVPN_SYMMETRIC_ID == 0) ))
- 
--OVPN_JQ_FILTER='map(if type == "array" then .[] else . end) |
--	map(select(.msg.peer | has("remote-ipv6") | not)) |
--	map(del(.msg.ifindex)) | sort_by(.msg.peer.id)[]'
-+# Peer delete notifications include traffic counters whose values depend on
-+# timing. zero_attr() sets a counter to zero only when that counter is present,
-+# so missing stats still fail the comparison. zero_peer_stats is just the list
-+# of counters to normalize. normalize_peer_del_ntf applies that to peer-del-ntf
-+# messages and drops transport endpoint details, while leaving other
-+# notifications unchanged.
-+OVPN_JQ_FILTER='
-+	def zero_attr(key):
-+		if has(key) then .[key] = 0 else . end;
-+
-+	def zero_peer_stats:
-+		zero_attr("vpn-rx-bytes") |
-+		zero_attr("vpn-rx-packets") |
-+		zero_attr("vpn-tx-bytes") |
-+		zero_attr("vpn-tx-packets") |
-+		zero_attr("link-rx-bytes") |
-+		zero_attr("link-rx-packets") |
-+		zero_attr("link-tx-bytes") |
-+		zero_attr("link-tx-packets");
-+
-+	def normalize_peer_del_ntf:
-+		if .name == "peer-del-ntf" then
-+			.msg.peer |= (
-+				del(.["remote-ipv4"], .["remote-ipv6"],
-+				    .["remote-ipv6-scope-id"], .["remote-port"],
-+				    .["local-ipv4"], .["local-ipv6"],
-+				    .["local-port"]) |
-+				zero_peer_stats
-+			)
-+		else . end;
-+
-+	map(if type == "array" then .[] else . end) |
-+	map(del(.msg.ifindex)) |
-+	map(normalize_peer_del_ntf) |
-+	sort_by(.msg.peer.id)[]'
-+
- OVPN_LAN_IP="11.11.11.11"
- 
- declare -A OVPN_TMP_JSONS=()
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-float.json b/tools/testing/selftests/net/ovpn/json/peer0-float.json
-index 682fa58ad4ea..9711f2cf9cf6 100644
---- a/tools/testing/selftests/net/ovpn/json/peer0-float.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer0-float.json
-@@ -1,9 +1,9 @@
- {"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 1, "remote-ipv4": "10.10.1.3", "remote-port": 1}}}
- {"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 2, "remote-ipv4": "10.10.2.3", "remote-port": 1}}}
- {"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 3, "remote-ipv4": "10.10.3.3", "remote-port": 1}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 10, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 11, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 12, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 13, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 14, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 15, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json b/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-deleted file mode 120000
-index e31a5bd59863..000000000000
---- a/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-+++ /dev/null
-@@ -1 +0,0 @@
--peer0-float.json
-\ No newline at end of file
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json b/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-new file mode 100644
-index 000000000000..c94dcc81c80e
---- /dev/null
-+++ b/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-@@ -0,0 +1,9 @@
-+{"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 1, "remote-ipv4": "10.10.1.3", "remote-port": 1}}}
-+{"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 2, "remote-ipv4": "10.10.2.3", "remote-port": 1}}}
-+{"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 3, "remote-ipv4": "10.10.3.3", "remote-port": 1}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 1, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 2, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 3, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 4, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 5, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 6, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm.json b/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-deleted file mode 120000
-index 57a163048eed..000000000000
---- a/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-+++ /dev/null
-@@ -1 +0,0 @@
--peer0.json
-\ No newline at end of file
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm.json b/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-new file mode 100644
-index 000000000000..2899913ea064
---- /dev/null
-+++ b/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-@@ -0,0 +1,6 @@
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 1, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 2, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 3, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 4, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 5, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 6, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0.json b/tools/testing/selftests/net/ovpn/json/peer0.json
-index 7c46a33d5ecd..fff2a86b41ab 100644
---- a/tools/testing/selftests/net/ovpn/json/peer0.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer0.json
-@@ -1,6 +1,6 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 10, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 11, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 12, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 13, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 14, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 15, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer1-symm.json b/tools/testing/selftests/net/ovpn/json/peer1-symm.json
-index 5da4ea9d51fb..41b358e1be51 100644
---- a/tools/testing/selftests/net/ovpn/json/peer1-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer1-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 1, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer1.json b/tools/testing/selftests/net/ovpn/json/peer1.json
-index 1009d26dc14a..6332709d2a88 100644
---- a/tools/testing/selftests/net/ovpn/json/peer1.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer1.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 10}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 10, "tx-id": 1, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer2-symm.json b/tools/testing/selftests/net/ovpn/json/peer2-symm.json
-index 8f6db4f8c2ac..b1840bf979e8 100644
---- a/tools/testing/selftests/net/ovpn/json/peer2-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer2-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 2, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer2.json b/tools/testing/selftests/net/ovpn/json/peer2.json
-index 44e9fad2b622..431427e4eb53 100644
---- a/tools/testing/selftests/net/ovpn/json/peer2.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer2.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 11}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 11, "tx-id": 2, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer3-symm.json b/tools/testing/selftests/net/ovpn/json/peer3-symm.json
-index bdabd6fa2e64..f9ab2a15dd9f 100644
---- a/tools/testing/selftests/net/ovpn/json/peer3-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer3-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 3, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer3.json b/tools/testing/selftests/net/ovpn/json/peer3.json
-index d4be8ba130ae..4f9522a664ee 100644
---- a/tools/testing/selftests/net/ovpn/json/peer3.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer3.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 12}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 12, "tx-id": 3, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer4-symm.json b/tools/testing/selftests/net/ovpn/json/peer4-symm.json
-index c3734bb9251b..b41ab838a304 100644
---- a/tools/testing/selftests/net/ovpn/json/peer4-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer4-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 4, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer4.json b/tools/testing/selftests/net/ovpn/json/peer4.json
-index 67d27e2d48ac..7d6b3c8af0e4 100644
---- a/tools/testing/selftests/net/ovpn/json/peer4.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer4.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 13}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 13, "tx-id": 4, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer5-symm.json b/tools/testing/selftests/net/ovpn/json/peer5-symm.json
-index 46c4a348299d..962def1ec16f 100644
---- a/tools/testing/selftests/net/ovpn/json/peer5-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer5-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 5, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer5.json b/tools/testing/selftests/net/ovpn/json/peer5.json
-index ecd9bd0b2f37..963dc74cdaa6 100644
---- a/tools/testing/selftests/net/ovpn/json/peer5.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer5.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 14}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 14, "tx-id": 5, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer6-symm.json b/tools/testing/selftests/net/ovpn/json/peer6-symm.json
-index aa30f2cff625..3ff352fae60f 100644
---- a/tools/testing/selftests/net/ovpn/json/peer6-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer6-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 6, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer6.json b/tools/testing/selftests/net/ovpn/json/peer6.json
-index 7fded29c5804..0db187f3af18 100644
---- a/tools/testing/selftests/net/ovpn/json/peer6.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer6.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 15}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 15, "tx-id": 6, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
--- 
-2.55.0
-
+VGhhbmtzIGZvciB0aGUgcmV2aWV3LiAgQWxsIGZpdmUgZmluZGluZ3MgbGVhZCB0byBjb2RlIGNo
+YW5nZXMgaW4gdjksDQphbGwgb2YgdGhlbSBpbiB0aGlzIHBhdGNoLCB3aGljaCBpcyB3aGVyZSB0
+aGUgY29kZSBpcyBpbnRyb2R1Y2VkLg0KDQpUd28gb2YgdGhlbSBhcmUgYW5zd2VyZWQgYnkgYSBk
+ZWxldGlvbiByYXRoZXIgdGhhbiBieSBhIGNoZWNrOiBsb29raW5nDQphdCB0aGUgcGF0aHMgeW91
+IHBvaW50IGF0LCB0aGUgc3RhbGUgbGlzdCBhbmQgdGhlIGRldmljZS1pZCBpZGEgY2Fubm90DQpy
+dW4gYXQgYWxsIGluIHRoaXMgc2VyaWVzLCBzbyB2OSByZW1vdmVzIHRoZW0gaW5zdGVhZCBvZiBo
+YXJkZW5pbmcNCnRoZW0uICBEZXRhaWxzIHVuZGVyIHRoZSBmaXJzdCBhbmQgZm91cnRoIGFuc3dl
+cnMuDQoNCk9uZSBhbnN3ZXIgYmVsb3cgaXMgbG9uZzogdGhlIHVzcl9jbnQgc2VxdWVuY2UsIHdo
+ZXJlIHdlIGFyZSBjaGFuZ2luZw0KdGhlIGNvZGUgeW91IHBvaW50ZWQgYXQgYnV0IGRlbGliZXJh
+dGVseSBub3QgY2hhbmdpbmcgdGhlIGJlaGF2aW91ciB5b3UNCmV4cGVjdGVkIHRvIGNoYW5nZS4g
+IFRoYXQgb25lIG5lZWRzIHRoZSBmdWxsIHdhbGstdGhyb3VnaC4NCg0KT24gU3VuLCAyMCBTZXAg
+MjAyNiAwNzo1NDowMCArMDgwMCBKYWt1YiBLaWNpbnNraSB3cm90ZToNCj4gbXRrX3BvcnRfcmVz
+dG9yZV9mcm9tX3N0YWxlX2xpc3QoKSByZXBvcnRzIGZhaWx1cmUgdGhyb3VnaCBFUlJfUFRSKCks
+IGJ1dA0KPiBtdGtfcG9ydF90YmxfY3JlYXRlKCkgZGlzY2FyZHMgdGhlIHJlc3VsdC4gU2hvdWxk
+IHRoaXMgYmUgY2hlY2tlZCB3aXRoDQo+IElTX0VSUigpLCBrZWVwaW5nIGluIG1pbmQgdGhlIHN1
+Y2Nlc3MgcmV0dXJuIGlzIE5VTEwgcmF0aGVyIHRoYW4gYSBwb3J0Pw0KDQpXaWxsIGZpeCBpbiB2
+OSBieSBkZWxldGluZyB0aGUgaGVscGVyLCB0b2dldGhlciB3aXRoIHRoZSByZXN0IG9mIHRoZQ0K
+c3RhbGUgbGlzdC4gIE5vdGhpbmcgaW4gdGhpcyBzZXJpZXMgY2FuIHB1dCBhIHBvcnQgb24gdGhh
+dCBsaXN0Og0KbXRrX3BvcnRfZnJlZV9vcl9iYWNrdXAoKSBiYWNrcyBhIHBvcnQgdXAgb25seSBp
+ZiBpdCBpcyBub3QNClBPUlRfVFlQRV9JTlRFUk5BTCBhbmQgc3RpbGwgaGFzIFBPUlRfU19PUEVO
+IHNldCwgYW5kIGl0cyBvbmx5IGNhbGxlcg0KcnVucyAtPmRpc2FibGUoKSBvbiBldmVyeSBwb3J0
+IGZpcnN0IC0gd2hpY2ggZm9yIHRoZSB3d2FuIHBvcnRzIHBhdGNoDQo2LzYgYWRkcyBpcyB3d2Fu
+X3JlbW92ZV9wb3J0KCkgZm9yY2luZyBzdG9wKCkgYW5kIGNsZWFyaW5nIHRoYXQgYml0Lg0KVGhl
+IGxpc3QgaXMgdGhlcmVmb3JlIGFsd2F5cyBlbXB0eSBhbmQgdGhlIHJlc3RvcmUgYWx3YXlzIGEg
+bm8tb3AuDQoNClNvIHY5IHJlbW92ZXMgbXRrX3BvcnRfcmVzdG9yZV9mcm9tX3N0YWxlX2xpc3Qo
+KSwgc3RydWN0IG10a19zdGFsZV9saXN0LA0KUE9SVF9TX09OX1NUQUxFX0xJU1QsIHRoZSBiYWNr
+dXAgYnJhbmNoIG9mIG10a19wb3J0X2ZyZWVfb3JfYmFja3VwKCksDQptdGtfcG9ydF9zdGFsZV9s
+aXN0X3tjcmVhdGUsZGVzdHJveSxzZWFyY2gsaW5pdCxleGl0LGdycF9jbGVhbnVwfSgpLCB0aGUN
+CnBvcnQgZmllbGRzIHRoYXQgb25seSBzZXJ2ZWQgdGhlbSAoc3RhbGVfZW50cnksIGRldl9zdHIs
+IG1pbm9yKSwgYW5kIHRoZQ0KLT5yZXNldCBwb3J0IG9wLCB3aG9zZSBvbmx5IGNhbGwgc2l0ZSBp
+cyBpbnNpZGUgdGhlIHJlc3RvcmUuDQoNCj4gU2luY2UgdGhlIGVycm9yIGlzIHN3YWxsb3dlZCwg
+dGhlIGxvb3AgYmVsb3cgdGhlbiBmaW5kcyBub3RoaW5nIGZvciB0aG9zZQ0KPiByeF9jaCB2YWx1
+ZXM6DQo+DQo+ICAgICAgICAgaWYgKCFtdGtfcG9ydF9zZWFyY2hfYnlfaWQocG9ydF9tbmdyLCBk
+Zmx0X3BvcnQtPnJ4X2NoKSkgew0KPiAgICAgICAgICAgICAgICAgcG9ydCA9IG10a19wb3J0X2Fs
+bG9jX2FuZF9hZGQocG9ydF9tbmdyLCBkZmx0X3BvcnQpOw0KPg0KPiBhbmQgY3JlYXRlcyBhIHNl
+Y29uZCBwb3J0IG9iamVjdCBmb3IgdGhlIHNhbWUgY2hhbm5lbCwgd2hpbGUNCj4gbXRrX3BvcnRf
+bW5ncl9pbml0KCkgc3RpbGwgcmV0dXJucyAwLg0KDQpUaGF0IGdvZXMgd2l0aCBpdDogbXRrX3Bv
+cnRfdGJsX2NyZWF0ZSgpIGxvc2VzIGJvdGggdGhlIHJlc3RvcmUgY2FsbCBhbmQNCml0cyBzX2xp
+c3QgcGFyYW1ldGVyLCBzbyB0aGUgbG9vcCBhbGxvY2F0ZXMgZWFjaCBlbnRyeSBvZiB0aGUgY2Zn
+IHRhYmxlDQpleGFjdGx5IG9uY2UsIGFuZCB0aGUgb25seSBlcnJvciBpdCBjYW4gcmVwb3J0IGlz
+DQptdGtfcG9ydF9hbGxvY19hbmRfYWRkKCkncywgd2hpY2ggaXQgYWxyZWFkeSBwcm9wYWdhdGVz
+Lg0KDQo+IHJhZGl4X3RyZWVfZGVyZWZfc2xvdCgpIGlzIHJjdV9kZXJlZmVyZW5jZSgqc2xvdCks
+IGFuZCB0aGlzIGxvb3AgcnVucyBpbg0KPiBwbGFpbiBwcm9jZXNzIGNvbnRleHQgKGRyaXZlciBy
+ZW1vdmFsIGFuZCB0aGUgbXRrX3BvcnRfbW5ncl9pbml0KCkgZXJyb3INCj4gcGF0aCkgd2l0aCBu
+byByY3VfcmVhZF9sb2NrKCkgaGVsZC4gV2l0aCBDT05GSUdfUFJPVkVfUkNVPXksIGRvZXMgdGhp
+cw0KPiBwcm9kdWNlIGEgInN1c3BpY2lvdXMgcmN1X2RlcmVmZXJlbmNlX2NoZWNrKCkgdXNhZ2Ui
+IHNwbGF0IG9uIGV2ZXJ5DQo+IHRlYXJkb3duPw0KDQpXaWxsIGZpeCBpbiB2OS4gIFllcywgYW5k
+IHlvdSBhcmUgcmlnaHQgdGhhdCByY3VfcmVhZF9sb2NrKCkgaXMgbm90IHRoZQ0Kd2F5IG91dC4g
+IFRoZSBmaWxlIGFscmVhZHkgaGFzIHRoZSByaWdodCBhY2Nlc3NvciAtDQpNVEtfUE9SVF9TRUFS
+Q0hfRlJPTV9SQURJWF9UUkVFKCksIHdoaWNoIHVzZXMgcmN1X2RlcmVmZXJlbmNlX3JhdygpIGFu
+ZA0KaXMgd2hhdCB0aGUgb3RoZXIgdHdvIGl0ZXJhdG9ycyBpbiB0aGlzIGZpbGUgdXNlOyBtdGtf
+cG9ydF90YmxfZGVzdHJveSgpDQp3aWxsIHVzZSBpdCB0b28sIGFsb25nIHdpdGggdGhlIHJhZGl4
+X3RyZWVfaXNfaW50ZXJuYWxfbm9kZSgpIGd1YXJkIGl0DQppcyBhbHNvIG1pc3NpbmcuDQoNCj4g
+TW9yZSBnZW5lcmFsbHksIHRoZSBzeW5jaHJvbmlzYXRpb24gdGhlIHJhZGl4LXRyZWUgQVBJIGFz
+a3MgY2FsbGVycyB0bw0KPiBwcm92aWRlIGxvb2tzIGluY29tcGxldGUgaGVyZS4gVGhlIG11dGF0
+b3JzIHJ1biB1bmRlciBwb3J0X21uZ3JfZ3JwX210eA0KPiBmcm9tIG10a19wb3J0X3Jlc3RvcmVf
+ZnJvbV9zdGFsZV9saXN0KCkgYW5kIG10a19wb3J0X2ZyZWVfb3JfYmFja3VwKCksIGJ1dA0KPiB3
+aXRoIG5vIGxvY2sgYXQgYWxsIGZyb20gbXRrX3BvcnRfdGJsX2NyZWF0ZSgpIC0+IG10a19wb3J0
+X2FsbG9jX2FuZF9hZGQoKQ0KPiAtPiBtdGtfcG9ydF90YmxfYWRkKCk7IHRoZSByZWFkZXJzIG10
+a19wb3J0X3NlYXJjaF9ieV9pZCgpIGFuZA0KPiBtdGtfcG9ydF9zZWFyY2hfYnlfbmFtZSgpIGhv
+bGQgbmVpdGhlciB0aGUgbXV0ZXggbm9yIHJjdV9yZWFkX2xvY2soKSwgYW5kDQo+IG10a19wb3J0
+X3JlbGVhc2UoKSBmcmVlcyBhIHRyZWUtcHVibGlzaGVkIG9iamVjdCB3aXRoIGEgcGxhaW4ga2Zy
+ZWUoKToNCj4NCj4gICAgICAgICBwb3J0c19vcHNbcG9ydC0+aW5mby50eXBlXS0+ZXhpdChwb3J0
+KTsNCj4gICAgICAgICBrZnJlZShwb3J0KTsNCj4NCj4gV291bGQgYSBzaW5nbGUgd3JpdGVyIGxv
+Y2sgY292ZXJpbmcgYWxsIG11dGF0b3JzIChpbmNsdWRpbmcgdGhlIHBvcnRfY250DQo+IHVwZGF0
+ZXMpIHBsdXMgUkNVLWRlZmVycmVkIGZyZWVpbmcgYmUgbW9yZSBhcHByb3ByaWF0ZT8NCg0KV2ls
+bCBkbyBib3RoIGluIHY5OiBhIHN0cnVjdCBtdXRleCBpbiBtdGtfcG9ydF9tbmdyLCB0YWtlbiBp
+bnNpZGUNCm10a19wb3J0X3RibF9hZGQoKSBhbmQgbXRrX3BvcnRfdGJsX2RlbCgpIHNvIGl0IGNv
+dmVycyB0aGUgcmFkaXgtdHJlZQ0Kb3BlcmF0aW9uIGFuZCB0aGUgcG9ydF9jbnQgdXBkYXRlIHRv
+Z2V0aGVyOyBhbmQgYSBzdHJ1Y3QgcmN1X2hlYWQgaW4NCnN0cnVjdCBtdGtfcG9ydCBzbyBtdGtf
+cG9ydF9yZWxlYXNlKCkgY2FuIHVzZSBrZnJlZV9yY3UoKS4gIFRoZSBrZnJlZSgpDQpvbiB0aGUg
+bXRrX3BvcnRfYWxsb2NfYW5kX2FkZCgpIGVycm9yIHBhdGggc3RheXMgcGxhaW4sIHNpbmNlIHRo
+YXQgcG9ydA0KbmV2ZXIgcmVhY2hlZCB0aGUgdHJlZS4NCg0KPiBUaGUgaWRhX2FsbG9jX3Jhbmdl
+KCkgcmV0dXJuIHZhbHVlIGlzIHN0b3JlZCBpbiAqZGV2X2lkIHdpdGhvdXQgYmVpbmcNCj4gdGVz
+dGVkLCBhbmQgbXRrX3BvcnRfc3RhbGVfbGlzdF9pbml0KCkgc3RpbGwgcmVwb3J0cyBzdWNjZXNz
+LiBPbiAtRU5PTUVNLA0KPiBvciAtRU5PU1BDIG9uY2UgTVRLX0RGTFRfTUFYX0RFVl9DTlQgKDEw
+KSBkZXZpY2VzIGFyZSBib3VuZCwgZG9lcyBhbiBlcnJubw0KPiBlbmQgdXAgaW4gcG9ydF9tbmdy
+LT5kZXZfaWQgd2hpbGUgbXRrX3BvcnRfbW5ncl9pbml0KCkgcmV0dXJucyAwPw0KDQpZZXMuICBJ
+biB2OSB0aGUgYWxsb2NhdGlvbiBpcyByZW1vdmVkIHJhdGhlciB0aGFuIGNoZWNrZWQ6IGRldl9p
+ZCBpcw0Kd3JpdHRlbiBvbmNlIGFuZCByZWFkIG9uY2UsIHRvIGhhbmQgaXQgc3RyYWlnaHQgYmFj
+ayB0byBpZGFfZnJlZSgpLCBzbw0KaXQgbmFtZXMgbm90aGluZyBpbiB0aGlzIHNlcmllcy4gIGNj
+Y2lfZGV2X2lkcywgTVRLX0RGTFRfTUFYX0RFVl9DTlQgYW5kDQpib3RoIGRldl9pZCBmaWVsZHMg
+YXJlIHBhcmtlZCBvbiB0aGUgc3RhbGUgbGlzdCBhbmQgZ28gd2l0aCBpdC4NCg0KVGhhdCBpcyBh
+bHNvIHdoeSBub3RoaW5nIGlzIG9ic2VydmVkIHRvZGF5IC0gaWRhX2ZyZWUoKSBpZ25vcmVzIG5l
+Z2F0aXZlDQppZHMsIHNvIHRoZSBlcnJubyBuZXZlciByZWFjaGVkIGFueXRoaW5nIHRoYXQgbG9v
+a2VkIGF0IGl0Lg0KDQo+IFRoaXMgaXNuJ3QgYSBidWcsIGJ1dCBQT1JUX0ZfQUxMT1dfRFJPUCBo
+YXMgbm8gcmVhZGVyIGFueXdoZXJlLiBJdCBpcyBzZXQNCj4gb24gZXZlcnkgZW50cnkgb2YgcG9y
+dF9jZmdfbTl4eFtdLCB5ZXQgdGhlIG9ubHkgcnVudGltZSBjb25zdW1lciBvZg0KPiBwb3J0LT5p
+bmZvLmZsYWdzIGlzIG10a19wb3J0X2ludGVybmFsX3dyaXRlKCk6DQoNCldpbGwgZml4IGluIHY5
+IGJ5IHJlbW92aW5nIGl0LiAgVGhlIGZsYWcgYW5kIGJvdGggb2YgaXRzIHVzZXJzIGFyZQ0KaW50
+cm9kdWNlZCBieSB0aGlzIHBhdGNoLCBzbyB0aGUgd2hvbGUgcmVtb3ZhbCBpcyBoZXJlOyB0aGUg
+ZW50cmllcw0KcGF0Y2ggNi82IGFkZHMgYXJlIHNpbXBseSB3cml0dGVuIHdpdGhvdXQgaXQuDQoN
+Cj4gbXRrX3BvcnRfaW50ZXJuYWxfZGlzYWJsZSgpIGNsZWFycyBQT1JUX1NfRU5BQkxFIGFuZCB0
+aGVuIGRpc2NhcmRzIHRoZQ0KPiByZXR1cm4gdmFsdWUgb2YgbXRrX3BvcnRfY2hfZGlzYWJsZSgp
+LCB3aGljaCBjYW4gZmFpbCB3aXRoIC1FTk9NRU0gKHNrYg0KPiBhbGxvY2F0aW9uKSwgLUVJTyAo
+bXRrX3BjaWVfaGlmX3N1Ym1pdF9za2IoKSB3aGVuZXZlcg0KPiBhdG9taWNfcmVhZCgmdHJhbnMt
+PmF2YWlsYWJsZSkgPT0gMCkgb3IgLUVUSU1FRE9VVCBhZnRlcg0KPiBNVEtfREZMVF9UUkJfVElN
+RU9VVC4gQ2FuIHRoaXMgbGVhdmUgdGhlIHNvZnR3YXJlIHN0YXRlIGNsYWltaW5nIHRoZQ0KPiBj
+aGFubmVsIGlzIGRvd24gd2hpbGUgdHJhbnMtPnVzcl9jbnRbaGlmX2lkXVt0eHFub10gc3RpbGwg
+Y291bnRzIGEgdXNlcj8NCg0KVGhlcmUgYXJlIHR3byB0aGluZ3MgaGVyZSwgYW5kIHdlIGFyZSBj
+aGFuZ2luZyBvbmUgb2YgdGhlbS4NCg0KVGhlIGRpc2NhcmRlZCByZXR1cm4gdmFsdWU6IHdpbGwg
+Zml4IGluIHY5Lg0KbXRrX3BvcnRfaW50ZXJuYWxfZGlzYWJsZSgpIGNhcHR1cmVzIGl0IGFuZCBk
+ZXZfd2FybigpcyBvbiBmYWlsdXJlLg0KDQpUaGUgYmVoYXZpb3VyOiBubyBjaGFuZ2UuICBQT1JU
+X1NfRU5BQkxFIGlzIHN0aWxsIGNsZWFyZWQgYmVmb3JlIHRoZQ0KY2FsbCwgYW5kIGEgZmFpbHVy
+ZSBzdGlsbCBkb2VzIG5vdCBhYm9ydCB0aGUgdGVhcmRvd24uICBCb3RoIGFyZQ0KZGVsaWJlcmF0
+ZSwgYW5kIHRoZSByZXN0IG9mIHRoaXMgYW5zd2VyIGlzIHdoeSAtIHlvdXIgc2VxdWVuY2UgYmVs
+b3cgaXMNCmV4YWN0bHkgdGhlIGNhc2UgdGhhdCB3b3VsZCBtYWtlIHRoZW0gd3JvbmcsIHNvIGl0
+IG5lZWRzIGFuc3dlcmluZyBzdGVwDQpieSBzdGVwLg0KDQpUbyB0aGUgcXVlc3Rpb24gYXMgYXNr
+ZWQ6IHdpdGhpbiBvbmUgcG93ZXIgY3ljbGUsIHllcywgdXNyX2NudCBjYW4gYmUNCmxlZnQgY291
+bnRpbmcgYSB1c2VyLiAgQWNyb3NzIGN5Y2xlcywgbm8uDQoNCj4gT24gdGhlIG5leHQgYm9vdHVw
+IHRoZSBFTkFCTEUgcmFpc2VzIHVzcl9jbnQgdG8gMiwgc28NCj4gbXRrX2NoX3N0YXR1c19jaGVj
+aygpIHRha2VzIHRoZSAiYWxyZWFkeSBvcGVuIiBicmFuY2gsDQo+IG10a19jbGRtYV9jaGVja19j
+aF9jZmcoKSBmaW5kcyBkcnZfaW5mby0+dHhxL3J4cSA9PSBOVUxMIGFuZCByZXR1cm5zDQo+IC1F
+SU5WQUwsIGFuZCBtdGtfcG9ydF9jaF9lbmFibGUoKSBmYWlscy4gVGhlIGNvbXBlbnNhdGluZw0K
+PiBtdGtfcG9ydF9jaF9kaXNhYmxlKCkgaW4gbXRrX3BvcnRfaW50ZXJuYWxfZW5hYmxlKCkgdGhl
+biBvbmx5IHRha2VzDQo+IHVzcl9jbnQgZnJvbSAyIGJhY2sgdG8gMSwgbmV2ZXIgdG8gMC4NCg0K
+RXZlcnkgc3RlcCBiZWZvcmUgdGhpcyBvbmUgaXMgYWNjdXJhdGUgLSBpbmNsdWRpbmcgdGhhdCB0
+aGUgZmx1c2ggcGF0aA0KY29tcGxldGVzIHRoZSBxdWV1ZWQgRElTQUJMRSB3aXRob3V0IGdvaW5n
+IHRocm91Z2gNCm10a19jaF9zdGF0dXNfY2hlY2soKSwgc28gdXNyX2NudCBpcyBsZWZ0IGF0IDEg
+YnkgdGhhdCB0ZWFyZG93bi4gIFdoYXQNCmRvZXMgbm90IGZvbGxvdyBpcyB0aGUgbmV4dCBFTkFC
+TEUgcmFpc2luZyBpdCB0byAyOiB0aGUgY291bnQgc3RhcnRzDQplYWNoIGJyaW5nLXVwIGF0IHpl
+cm8uICBtdGtfcGNpZV9oaWZfaW5pdCgpIGluIG10a190cmFuc19jdHJsLmM6DQoNCiAgICAgICAg
+Zm9yIChpID0gMDsgaSA8IE5SX0NMRE1BOyBpKyspIHsNCiAgICAgICAgICAgICAgICBmb3IgKGog
+PSAwOyBqIDwgSFdfUVVFX05VTTsgaisrKSB7DQogICAgICAgICAgICAgICAgICAgICAgICBza2Jf
+cXVldWVfaGVhZF9pbml0KCZ0cmFucy0+dHJhbnNfbGlzdFtpXS5za2JfbGlzdFtqXSk7DQogICAg
+ICAgICAgICAgICAgICAgICAgICB0cmFucy0+dHJhbnNfbGlzdFtpXS50eF9idXJzdF9jbnRbal0g
+PSAwOw0KICAgICAgICAgICAgICAgICAgICAgICAgLyogdXNyX2NudCB0cmFja3MgdGhlIHF1ZXVl
+cyByZWJ1aWx0IGJ5IG10a19jbGRtYV9pbml0KCkNCiAgICAgICAgICAgICAgICAgICAgICAgICAq
+IGJlbG93LCBzbyBpdCBtdXN0IGJlIHJlc2V0IHdpdGggdGhlbS4gLi4uDQogICAgICAgICAgICAg
+ICAgICAgICAgICAgKi8NCiAgICAgICAgICAgICAgICAgICAgICAgIHRyYW5zLT51c3JfY250W2ld
+W2pdID0gMDsNCiAgICAgICAgICAgICAgICB9DQogICAgICAgIH0NCiAgICAgICAgcmV0ID0gbXRr
+X2NsZG1hX2luaXQodHJhbnMpOw0KDQphbmQgdGhhdCBpcyBvcHMtPmluaXQsIHJ1biBvbiBldmVy
+eSBGU01fU1RBVEVfT04uICBUaGUgY291bnQgYW5kIHRoZQ0KcXVldWVzIGl0IGNvdW50cyBhcmUg
+Y3JlYXRlZCBhbmQgZGVzdHJveWVkIHRvZ2V0aGVyLCBzbyBhIHJlc2lkdWUgZnJvbSBhDQp0b3Ju
+LWRvd24gY3ljbGUgY2Fubm90IHJlYWNoIHRoZSBuZXh0IG9uZS4gIFRoZSBjb21tZW50IGlzIHRo
+ZXJlIGJlY2F1c2UNCnRoaXMgbGlmZXRpbWUgbWlzbWF0Y2ggZGlkIGVzY2FwZSB1cyBvbmNlLCBp
+biBhbiBlYXJsaWVyIHZlcnNpb247IHRoZQ0KcmVzZXQgaXMgdGhlIGZpeCBmb3IgaXQuDQoNClRo
+ZSBwb3J0LWxheWVyIGhhbGYgb2YgdGhlIHN0YXRlIGlzIHJlc2V0IGp1c3QgYXMgdW5jb25kaXRp
+b25hbGx5LCBhbmQNCnRoYXQgaXMgd2hhdCBtYWtlcyB0aGUgZGlzY2FyZGVkIHJldHVybiB2YWx1
+ZSB0aGUgcmlnaHQgYmVoYXZpb3VyIHJhdGhlcg0KdGhhbiBhbiBvdmVyc2lnaHQuICBPbiBGU01f
+U1RBVEVfT0ZGIHRoZSBwb3J0IGhhbmRsZXIgcnVucyBiZWZvcmUgdGhlDQpISUYgaGFuZGxlciwg
+YW5kIG10a19wb3J0X2Rpc2FibGUoKSB3YWxrcyBldmVyeSBwb3J0IHRocm91Z2gNCnBvcnRzX29w
+c1tdLT5kaXNhYmxlKCkuICBCZWNhdXNlIG10a19wb3J0X2ludGVybmFsX2Rpc2FibGUoKSBjbGVh
+cnMNClBPUlRfU19FTkFCTEUgd2l0aCB0ZXN0X2FuZF9jbGVhcl9iaXQoKSBiZWZvcmUgdGhlIGNh
+bGwgdGhhdCBtYXkgZmFpbCwNCmV2ZXJ5IHBvcnQgZW50ZXJzIHRoZSBuZXh0IGN5Y2xlIHdpdGgg
+dGhlIGJpdCBjbGVhciBhbmQgcmUtaXNzdWVzIGl0cw0KRU5BQkxFLiAgSG9ub3VyaW5nIHRoZSBy
+ZXR1cm4gdmFsdWUgLSBiYWlsaW5nIGJlZm9yZSB0aGUgY2xlYXIsIG9yDQpyZXN0b3JpbmcgdGhl
+IGJpdCBvbiBmYWlsdXJlIC0gaXMgd2hhdCB3b3VsZCBwcm9kdWNlIHRoZSBwZXJtYW5lbnQNCmZh
+aWx1cmUgeW91IGRlc2NyaWJlOiBtdGtfcG9ydF9pbnRlcm5hbF9lbmFibGUoKSByZXR1cm5zIGVh
+cmx5IHdoZW4NClBPUlRfU19FTkFCTEUgaXMgc2V0LCBzbyBhIHBvcnQgdGhhdCBrZXB0IHRoZSBi
+aXQgd291bGQgbmV2ZXIgcmVvcGVuIGl0cw0KY2hhbm5lbCBvbiBhIGRldmljZSB3aG9zZSB1c3Jf
+Y250IGhhZCBtZWFud2hpbGUgYmVlbiByZXNldCB0byB6ZXJvLg0KDQpXaXRoaW4gYSBzaW5nbGUg
+Y3ljbGUgdGhlIHRocmVlIGZhaWx1cmVzIGRpZmZlcjogLUVJTyBtZWFucyBzdWJtaXRfc2tiKCkN
+CnJlZnVzZWQgYmVjYXVzZSB0cmFucy0+YXZhaWxhYmxlIGlzIGFscmVhZHkgMCwgaS5lLiB0ZWFy
+ZG93biBpcyB1bmRlcg0Kd2F5OyAtRVRJTUVET1VUIG1lYW5zIHRoZSBUUkIgaXMgc3RpbGwgcXVl
+dWVkIGFuZCB0aGUga3RocmVhZCBkZWNyZW1lbnRzDQp3aGVuIGl0IHJlYWNoZXMgaXQ7IG9ubHkg
+LUVOT01FTSBsZWF2ZXMgbm90aGluZyB0byBkZWNyZW1lbnQsIGFuZCB0aGVuIGENCnJlLWVuYWJs
+ZSBpbiB0aGUgc2FtZSBjeWNsZSB0YWtlcyB0aGUgY291bnQgMC0+MS0+MiBhZ2FpbnN0IGEgcXVl
+dWUgdGhhdA0KcmVhbGx5IGlzIG9wZW4sIG10a19jaF9zdGF0dXNfY2hlY2soKSByZXR1cm5zIC1F
+QlVTWSwgYW5kIHRoZSBwb3J0IHdvcmtzLg0KVGhlIGNvdW50IGlzIG9uZSB0b28gaGlnaCB1bnRp
+bCB0aGUgbmV4dCBGU01fU1RBVEVfT04gYW5kIG5vdGhpbmcgZWxzZQ0KcmVhZHMgaXQuICBUaGUg
+Zmx1c2ggY2Fubm90IHVuYmFsYW5jZSBpdCB0aGUgb3RoZXIgd2F5OiB0aGUgaW5jcmVtZW50DQpo
+YXBwZW5zIGluIG10a19jaF9zdGF0dXNfY2hlY2soKSwgd2hpY2ggdGhlIGZsdXNoIHBhdGggc2tp
+cHMsIHNvIGENCmZsdXNoZWQgRU5BQkxFIG5ldmVyIGNvdW50ZWQuDQoNCj4gRG9lcyB0aGF0IG1h
+a2UgdGhlIGNvbnRyb2wgY2hhbm5lbCB1bnVzYWJsZSBmb3IgdGhlIHJlc3Qgb2YgdGhlIHByb2Jl
+LCBzbw0KPiB0aGUgTUQvU0FQIGhhbmRzaGFrZSBuZXZlciBjb21wbGV0ZXMgYW5kIHRoZSBtb2Rl
+bSBuZXZlciByZWFjaGVzDQo+IEZTTV9TVEFURV9SRUFEWSwgd2l0aCBldmVyeSBsYXRlciBib290
+IGN5Y2xlIHJlcGVhdGluZyBpdD8NCg0KTm8sIGZvciB0aGUgcmVhc29uIGFib3ZlOiB0aGUgbmV4
+dCBGU01fU1RBVEVfT04gemVyb2VzIHVzcl9jbnQgYmVmb3JlDQptdGtfY2xkbWFfaW5pdCgpIHJl
+YnVpbGRzIHRoZSBxdWV1ZXMsIHNvIHRoZSBoYW5kc2hha2Ugc3RhcnRzIGZyb20gYQ0KY2xlYW4g
+Y291bnQuDQoNCj4gUmVsYXRlZCBxdWVzdGlvbiBvbiB0aGUgc2FtZSBmdW5jdGlvbjogaXMgLUVC
+VVNZIHNhZmUgdG8gdHJlYXQgYXMgYQ0KPiBzdWNjZXNzZnVsIGVuYWJsZSB3aXRob3V0IGRpc3Rp
+bmd1aXNoaW5nIHdoZXJlIGl0IGNhbWUgZnJvbT8NCj4gbXRrX2NsZG1hX29wZW4oKSByb2xscyB0
+aGUgdXNyX2NudCByZWZlcmVuY2UgYmFjayBhdCBpdHMgb3V0OiBsYWJlbCB3aGVuDQo+IGl0IHJl
+dHVybnMgLUVCVVNZLCB3aGlsZSBtdGtfY2hfc3RhdHVzX2NoZWNrKCkga2VlcHMgaXQuDQoNClll
+cywgaXQgaXMgc2FmZSwgYW5kIG5vIGNoYW5nZSBpcyBwbGFubmVkIGZvciB0aGlzIHBhcnQuICBU
+aGUgdHdvIGRvIG5vdA0KZGlzYWdyZWU7IHRoZXkgZGVzY3JpYmUgZGlmZmVyZW50IHN0YXRlcywg
+YW5kIGJvdGgga2VlcCB0aGUgc2FtZQ0KaW52YXJpYW50IC0gdXNyX2NudCBlcXVhbHMgdGhlIG51
+bWJlciBvZiBlbmFibGVzIHRoYXQgYSBsYXRlciBkaXNhYmxlDQp3aWxsIG1hdGNoLg0KDQptdGtf
+Y2hfc3RhdHVzX2NoZWNrKCkgaW5jcmVtZW50cywgZmluZHMgdGhlIGNvdW50IGFscmVhZHkgYWJv
+dmUgb25lLA0KY29uZmlybXMgdGhyb3VnaCBtdGtfY2xkbWFfY2hlY2tfY2hfY2ZnKCkgdGhhdCB0
+aGUgcXVldWVzIGV4aXN0LCBhbmQNCnJldHVybnMgLUVCVVNZIGtlZXBpbmcgdGhlIHJlZmVyZW5j
+ZS4gIFRoZSBjYWxsZXIgcmVhbGx5IGlzIGFuDQphZGRpdGlvbmFsIHVzZXIgb2YgYW4gb3BlbiBx
+dWV1ZSBhbmQgaXRzIGxhdGVyIERJU0FCTEUgd2lsbCBkZWNyZW1lbnQNCml0LCBzbyB0cmVhdGlu
+ZyB0aGF0IC1FQlVTWSBhcyBhIHN1Y2Nlc3NmdWwgZW5hYmxlIGlzIGNvcnJlY3QuDQoNCm10a19j
+bGRtYV9vcGVuKCkgaXMgb25seSByZWFjaGVkIHdoZW4gc3RhdHVzX2NoZWNrIHNhdyB0aGUgY291
+bnQgZ28gMC0+MSwNCnRoYXQgaXMsIHdoZW4gdGhpcyBjYWxsZXIgaXMgc3VwcG9zZWQgdG8gYmUg
+dGhlIGZpcnN0IHVzZXIgYW5kDQpkcnZfaW5mby0+dHhxL3J4cSBuZXZlcnRoZWxlc3MgYWxyZWFk
+eSBleGlzdC4gIFRoZXJlIHRoZSBjb3VudCBhbmQgdGhlDQpoYXJkd2FyZSBkaXNhZ3JlZSBhbmQg
+bm90aGluZyB3YXMgb3BlbmVkLCBzbyByb2xsaW5nIGJhY2sgYXQgb3V0OiBpcw0Kd2hhdCBrZWVw
+cyB0aGUgaW52YXJpYW50Lg0KDQpUaGUgLUVJTlZBTCBicmFuY2ggb2Ygc3RhdHVzX2NoZWNrIGtl
+ZXBzIGl0cyBpbmNyZW1lbnQsIHdoaWNoIGlzDQpiYWxhbmNlZCBhcyB3ZWxsIC0gYnkgdGhlIGNv
+bXBlbnNhdGluZyBtdGtfcG9ydF9jaF9kaXNhYmxlKCkgaW4NCm10a19wb3J0X2ludGVybmFsX2Vu
+YWJsZSgpIHRoYXQgdGhlIGNvbW1lbnQgdGhlcmUgZGVzY3JpYmVzLg0KDQpPbmUgbW9yZSBkaXNh
+YmxlIHBhdGggaGFzIHRoZSBzYW1lIGRpc2NhcmRlZCByZXR1cm46IHRoZSBvbmUgaW4NCm10a19w
+b3J0X3d3YW5fZGlzYWJsZSgpLiAgVGhhdCBmdW5jdGlvbiBpcyBhZGRlZCBieSBwYXRjaCA2LzYs
+IHNvIHRoZQ0KaWRlbnRpY2FsIGRldl93YXJuKCkgZ29lcyB0aGVyZSByYXRoZXIgdGhhbiBoZXJl
+LiAgVGhlIGNvbXBlbnNhdGluZw0KbXRrX3BvcnRfY2hfZGlzYWJsZSgpIGNhbGxzIG9uIHRoZSBl
+bmFibGUgcGF0aHMga2VlcCBpZ25vcmluZyB0aGVpcg0KcmV0dXJuLCBzaW5jZSB0aGVyZSB0aGUg
+ZW5hYmxlIGlzIGFscmVhZHkgZmFpbGluZyBhbmQgaXQgaXMgdGhhdCBlcnJvcg0KdGhhdCBnZXRz
+IHByb3BhZ2F0ZWQu
