@@ -1,111 +1,80 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516D545C6E1;
-	Tue, 22 Sep 2026 09:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D49C4519A6;
+	Tue, 22 Sep 2026 09:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790068670; cv=none; b=StuCrmXzW9OycvMKuKnmPMmcjgIPRu918n85Vh583+n2njiUzE8QiSDr/eVmKSBJxSJkHu+0cOmv6FJhYD8+FLCSwu2PMQIKLN7XW7SJ+3r3t5OegWgK2BgwbMPOHV2HJwV9nc73E7sE2ERHtMC21Tfl5EVxhpwLaUHxKOU3qFM=
+	t=1790068877; cv=none; b=FM5Y1Tr3Fcjysa5+zqgVrcFPU0ijPiNBICvg7kgkHRF56H7NQUBpuOBvxljVLALYtqYUpObf8ojXucrswtdzHJ1arP3fMof2qQMVuQfZiMttuoEzYjJU8GiWGT+4bEUS8qI3+4wsjXVprHKk+zLTeheT5cHIOjl5zd0ER0rbpJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790068670; c=relaxed/simple;
-	bh=H87Lb3XTMZZWB+Vhsj+gWSLAorO4qD6yFRN0vdGl6ZA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=exTIhhkFJlKJBhHpAxgRTdc8lSG8dCJwWYQSkZ2p9hCoo0s/UGXlCh1mnw8sUgiJsjPdp2B+bCHVg/9SR8s/mDAvuHLDVzcMS/RVkGkySn9AvyJ93oULMNFJEZeOYgRA1xOnXvjZCX2S5sFobL+e3Sejs4F4Mq/wQcHFjsi8MFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=0V8zPwT7; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790068877; c=relaxed/simple;
+	bh=iYFylkrRCYiHafmlZNQXvYWQiWJntKKmIo6ABcCZUdA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=KgKLNI4YV4kzZD5L3zLmNgNiFZLYSDiQ+g1v1gOByMm3WS4uNWAhqI93VqTJzC2dLAtl0RwNRdQTcWSSaXcc6qEkRoQ3bOFMtL5zSi5zv53ItK86T2lkJIgBLGS352XScmN6DdEp3qCCx0MjL2GUvk0VoROLq2pzcjgBXkkxQ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDzTdj76; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="0V8zPwT7"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 01C2EA02D4;
-	Tue, 22 Sep 2026 11:17:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790068664; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=mEMUGsXWMu6me45Tt9gXUyFdAtqIBQMDg1NztzEGnKw=;
-	b=0V8zPwT7YjufRFyXEz8X0EzQw3LSggG4VHK0JAeWZWC2i9CQw4Uzcg6T+TB+IRyZKaaspN
-	8LoVXzLQW57ltIJ8AUlsk5wnd4u0eGpStbgTVus14F4NV34xpGOfKHTuP7Z2yby4i2KZvS
-	ip3Xoxk6S4f+p1NltelsOQu5/XXbfFP2JKbRC3kaeYjULfrG7uTW1ZCpkmH9cnS9M8nWKJ
-	X1DlLbN5WGbvEJaFyjL99jCRtWfA5zRdQKDj7r12kOo3QvXY1JdpEyUXKY5F7zKsnThJWD
-	YSM/NH9l5iothO501ohJVh/+MpRA20A4dG9KojjhG3Mx6TPlSATeRVDTSNTuXg==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDzTdj76"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA75D1F0089B;
+	Tue, 22 Sep 2026 09:21:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790068874;
+	bh=baWabGjQWvZYqPpIWsZhMX4j2Buumq3WHDl6HOiphcQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=EDzTdj76fX5PnA/25GZTn3IHPva/SMU3IRCXHVctHXVbiAQpgznRSAdsnfJEwuURG
+	 Zu4H0/z2QhDbZa+wv+12xvBXhECE3KQ+a82HlWRUPW05LYUUk1FXQE0SMzyxW4fl9M
+	 ek2w0F4GV4R4FPDex0tkworDjyVT7zBfgAJns2yLw3wwLYbboi3EysfPROw0yRqD3H
+	 PCII92ZzUtUII5t2o9YiyC4ilUQtmY20LW7saX/kSfKWyHTifDQ2RInHxcAAvp5dHX
+	 vodeTIof2HNxBbbsUKDgDBQ1m3xtbpA0vvIENQqq6xoPH3i0nHCs9A6tf0J5TokpUa
+	 4pvijGFKqDJyQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B5F3811954;
+	Tue, 22 Sep 2026 09:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 11:17:42 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
- <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 08/12] net: systemport: Fix out-of-bounds array
- accesses in DSA queue mapping
-In-Reply-To: <20260921231305.394773-9-florian.fainelli@broadcom.com>
-References: <20260921231305.394773-1-florian.fainelli@broadcom.com>
- <20260921231305.394773-9-florian.fainelli@broadcom.com>
-Message-ID: <298e25518323e05b6daf9e12d7302ae8@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] tg3: clean up PHYLIB resources on probe failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179006880515.3509277.1692281209215676980.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Sep 2026 09:20:05 +0000
+References: <20260917183336.36239-1-mhun512@gmail.com>
+In-Reply-To: <20260917183336.36239-1-mhun512@gmail.com>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: pavan.chebbi@broadcom.com, mchan@broadcom.com, andrew@lunn.ch,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ae878000@gmail.com
 
-Hi Florian
+Hello:
 
-On 22.9.2026 01:13, Florian Fainelli wrote:
-> The priv->ring_map array has a fixed size of (DSA_MAX_PORTS * 8). In
-> bcm_sysport_select_queue(), bcm_sysport_map_queues(), and
-> bcm_sysport_unmap_queues(), indices calculated as
-> (qp + port * num_tx_queues) were accessed without checking against
-> ARRAY_SIZE(priv->ring_map). If unusual port or queue configurations are
-> encountered, this could lead to out-of-bounds array accesses.
-> 
-> Additionally, on SYSTEMPORT Lite, netif_set_real_num_tx_queues() was
-> called with slave_dev->num_tx_queues / 2, which could evaluate to 0 if
-> slave_dev->num_tx_queues is 1, causing netif_set_real_num_tx_queues() 
-> to
-> fail with -EINVAL.
-> 
-> Fix these by clamping the real number of queues to at least 1 and 
-> adding
-> bounds checks on priv->ring_map.
-> 
-> Fixes: d156576362c0 ("net: systemport: Establish lower/upper queue 
-> mapping")
-> Assisted-by: LLM
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> ---
->  drivers/net/ethernet/broadcom/bcmsysport.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c 
-> b/drivers/net/ethernet/broadcom/bcmsysport.c
-> index 95cead1df160..130545cce045 100644
-> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
-> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
+On Thu, 17 Sep 2026 14:33:36 -0400 you wrote:
+> tg3_get_invariants() can register an MDIO bus and connect a PHY for
+> USE_PHYLIB devices. If tg3_init_one() later fails, its common error path
+> releases the mappings and netdev without undoing those PHYLIB resources.
+> 
+> Disconnect the PHY and unregister the MDIO bus before the remaining
+> teardown. Guard PHY cleanup with USE_PHYLIB to match tg3_phy_init(), and
+> call tg3_mdio_fini() unconditionally to match tg3_mdio_init(). The existing
+> IS_CONNECTED and MDIOBUS_INITED flags make both helpers safe when
+> initialization only completed partially.
+> 
 > [...]
 
-> @@ -2352,7 +2356,8 @@ static int bcm_sysport_map_queues(struct 
-> net_device *dev,
->  		ring->switch_queue = qp;
->  		ring->switch_port = port;
->  		ring->inspect = true;
-> -		priv->ring_map[qp + port * num_tx_queues] = ring;
-> +		if (qp + port * num_tx_queues < ARRAY_SIZE(priv->ring_map))
-> +			priv->ring_map[qp + port * num_tx_queues] = ring;
+Here is the summary with links:
+  - [v3] tg3: clean up PHYLIB resources on probe failure
+    https://git.kernel.org/netdev/net/c/a92e1a412c53
 
-Out of range rings would still have inspect = true but no ring_map
-entry, so select_queue() can never pick them.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Bail out before marking the ring?
 
-> [...]
-
-Thanks,
-Nicolai
