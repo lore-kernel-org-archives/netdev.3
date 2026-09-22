@@ -1,35 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F6041D12B;
-	Tue, 22 Sep 2026 09:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F7952E07F;
+	Tue, 22 Sep 2026 09:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790068277; cv=none; b=kCRenUCODv3Zo27BNrqKowf5AH4+fB7O8IcNCxpJEcOjPDWUxFFfLjVc9N5ktvHMSSK0VmCuexEGGn3akbsQ4HLkmc0LVkouWWfIBDi5qr2rdQa7gP2HVkLX0HQIhMrUbyI/W3zH7ya93dEekYEo0j4UqTmdao7rxpnwl0hGxZw=
+	t=1790068341; cv=none; b=Pu1/kv3Hli7QKXl4/jCGrOI/IFnDbWcwfUhZJ/egbKlkjy6YKuJ8VpUi9+pHoeQ49+zeQ2oKWFYmHHiB2wgrgdCkn0RxmGzBpJY2apdyDw8mMGTj8Hj8ggjemGTlSJD8BlAj6I/DHw/joVOZYggKpFHtBWSq2zVJdrNSyMioqiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790068277; c=relaxed/simple;
-	bh=NdAM3lhu4Syrf6HWwOE3CJcFRtcpFL40ccfp5swmHc0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cis+ACEMmtHhM6RVPFgPFaugbMHE2SArWRZU2/jLor4u5iZDQPqCzCmVYsXXjnhG+OB5rngdNm7B2ze+InHUG4tiN+noiroXM9sea0uRabfsib2m6BbOBzFKQHjsTtJs0ltRPtRzC3NevQQYk1TG37FNX6k036URG5pTiQfWbnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YudHlnb6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790068341; c=relaxed/simple;
+	bh=egUmLikhuwhkzquqLxqxqCXwr1NaX2em5TiZk+sZ1Yg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Eut1c9YIpF8tPYYeytoQwJkMKmSc4fNxTkwDEh9Oy9HnT9nX2rZtp3rhD2q4oNFHt/viak8EpAgqVeeGD3Xu/zYsW6mIu6ux2HOmxj1y/aqXtNHM4huRLTrcM7wrctGP5ySD/cKyKwfEyNsVjdABcpmnjX+FmnGpZaUVuBNp6Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=eT14op8Z; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YudHlnb6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F4F1F000FF;
-	Tue, 22 Sep 2026 09:11:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790068275;
-	bh=QDT/80Q3OpMMraM2DIDoctNa0y0Fe8/45rumRNYvbyI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YudHlnb6sy6sRY0Wgd5q/6WD8FsrUY8a9XPXzNGzN2XjINtBZVL4kcPdsdDhRVRrh
-	 cu/S1lkDMqyJgseItGT/ZDQWtGOKwDYvU8p4QDI+dHukLb9ohkpxnV5RxcDjdWBhp7
-	 OY5xryawVJSQdVAAlOBoMZ1saZflg8+OMzkcSUQNegU+yp9lAhEZRqA0OWG+6nuYGI
-	 /8umP9QO9T94j5XeXYsP3cLfUAJvy9ZFmgtQilvRzUglzkwvjhInf87uR8ILk4JNXG
-	 TdIzz77CKXSz7yrLSiKNcOCblcCSW1KDpIiHFBatdZ1VhTfL2IBTCrWoGUEROh27Ut
-	 RujSyhIHkGycQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A043811954;
-	Tue, 22 Sep 2026 09:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="eT14op8Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=JZ
+	B0Slkp1cTB3zAnWSwmos8fcy3POuFLh4py+bqB5yk=; b=eT14op8ZJEjCwld797
+	9NeAezOI4tg/JlPsp4eTU74QEi8ZGnglumaAZ9qg4QvlMEXKBCcn5qhzDn+08rwE
+	lrnz6dJFjcphyWHnfF8YK7bysyiIofF4sAArEWhHqoriZS+D8pMySqT0Ij9IKrJ7
+	9ERRHZEgTrofJv37soEks7LkI=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3HzY9RrJq0uQVAA--.17646S2;
+	Tue, 22 Sep 2026 17:11:25 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: aleksandr.loktionov@intel.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH net v3] i40e: limit the DDP profile count returned by the firmware
+Date: Tue, 22 Sep 2026 17:11:23 +0800
+Message-Id: <20260922091123.506598-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,46 +48,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] udp: two fixes for the 4-tuple hash table
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179006820639.3502956.2214093517596675579.git-patchwork-notify@kernel.org>
-Date: Tue, 22 Sep 2026 09:10:06 +0000
-References: <20260917-udp_hash4_fix_v1-v1-0-718891af0d7a@mpiricsoftware.com>
-In-Reply-To: <20260917-udp_hash4_fix_v1-v1-0-718891af0d7a@mpiricsoftware.com>
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- lulie@linux.alibaba.com, fred.cc@alibaba-inc.com,
- yubing.qiuyubing@alibaba-inc.com, kuniyu@google.com, willemb@google.com,
- cambda@linux.alibaba.com, janak@mpiric.us, kalpan.jani@mpiricsoftware.com,
- shardulsb08@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-CM-TRANSID:_____wD3HzY9RrJq0uQVAA--.17646S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGw4UWw1Utw18JF1DKw4xtFb_yoWrXr4fpF
+	W5JFWDGryDJa1j93yUGFW7uFyfu3WfAryYga4a93s8urn8tF4kWa48tFWFkFy7ZrWvkr90
+	qFs5Cry8CF4DJwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ul-ewUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlB3nvmqyRj0E1QAA3i
 
-Hello:
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+i40e_aq_get_ddp_list() writes into a I40E_PROFILE_LIST_SIZE buffer, which
+is sized for I40E_MAX_PROFILE_NUM (16) i40e_profile_info entries plus the
+4 byte p_count header. i40e_ddp_does_profile_exist() and
+i40e_ddp_does_profile_overlap() then loop over profile_list->p_count
+without bounding it, so a firmware reporting more than 16 profiles makes
+both helpers walk past the end of the on-stack buff[] and compare against
+whatever happens to follow it on the stack.
 
-On Thu, 17 Sep 2026 14:55:31 +0530 you wrote:
-> Two ways a UDP socket ends up in the wrong place in the 4-tuple hash table.
-> The patches are independent, with different Fixes: tags and no dependency
-> between them.
-> 
-> Patch 1: a socket that connects a second time is not relocated, so it stays
-> filed under its first peer's hash and packets for it fall back to scoring
-> the hash2 chain for its address and port.
-> 
-> [...]
+The same buffer is handed to the firmware as an indirect admin queue
+buffer, and the admin queue code copies all of it into the DMA bounce
+buffer before submitting the command, so its uninitialized contents were
+visible to the device as well.
 
-Here is the summary with links:
-  - [net,1/2] udp: relocate a connected socket in the 4-tuple hash table on re-connect
-    https://git.kernel.org/netdev/net/c/5fd0783b99d4
-  - [net,2/2] udp: remove a disconnected socket from the 4-tuple hash table
-    https://git.kernel.org/netdev/net/c/9e95b1a94c9c
+Zero initialize buff[] and reject the list when the firmware reports more
+profiles than the buffer can hold, instead of answering from a list that
+was only partially read. Both helpers already report errors to
+i40e_ddp_load(), which aborts the operation.
 
-You are awesome, thank you!
+Fixes: cdc594e00370 ("i40e: Implement DDP support in i40e driver")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+Changes in v3:
+- Zero initialize buff[] in both helpers: the whole buffer is copied into
+  the admin queue DMA bounce buffer and copied back afterwards, so its
+  contents were exposed to the device, and entries the firmware never
+  wrote were compared against. (Sashiko AI review)
+- Reject the list when the firmware reports more profiles than buff[] can
+  hold, instead of silently clamping the scan and then answering from a
+  list that was only partially read. (Sashiko AI review)
+- Dropped the Reviewed-by tag, as the code changed after the review.
+
+ drivers/net/ethernet/intel/i40e/i40e_ddp.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ddp.c b/drivers/net/ethernet/intel/i40e/i40e_ddp.c
+index daa9f2c42f70..49a98c0e001a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ddp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ddp.c
+@@ -53,9 +53,9 @@ static int i40e_ddp_does_profile_exist(struct i40e_hw *hw,
+ 				       struct i40e_profile_info *pinfo)
+ {
+ 	struct i40e_ddp_profile_list *profile_list;
+-	u8 buff[I40E_PROFILE_LIST_SIZE];
++	u8 buff[I40E_PROFILE_LIST_SIZE] = {};
+ 	int status;
+-	int i;
++	u32 i;
+ 
+ 	status = i40e_aq_get_ddp_list(hw, buff, I40E_PROFILE_LIST_SIZE, 0,
+ 				      NULL);
+@@ -63,6 +63,13 @@ static int i40e_ddp_does_profile_exist(struct i40e_hw *hw,
+ 		return -1;
+ 
+ 	profile_list = (struct i40e_ddp_profile_list *)buff;
++	/* The firmware is not required to report a profile count that fits
++	 * into the buffer we gave it; refuse to read such a list instead of
++	 * walking past the end of buff[].
++	 */
++	if (profile_list->p_count > I40E_MAX_PROFILE_NUM)
++		return -EIO;
++
+ 	for (i = 0; i < profile_list->p_count; i++) {
+ 		if (i40e_ddp_profiles_eq(pinfo, &profile_list->p_info[i]))
+ 			return 1;
+@@ -108,9 +115,9 @@ static int i40e_ddp_does_profile_overlap(struct i40e_hw *hw,
+ 					 struct i40e_profile_info *pinfo)
+ {
+ 	struct i40e_ddp_profile_list *profile_list;
+-	u8 buff[I40E_PROFILE_LIST_SIZE];
++	u8 buff[I40E_PROFILE_LIST_SIZE] = {};
+ 	int status;
+-	int i;
++	u32 i;
+ 
+ 	status = i40e_aq_get_ddp_list(hw, buff, I40E_PROFILE_LIST_SIZE, 0,
+ 				      NULL);
+@@ -118,6 +125,13 @@ static int i40e_ddp_does_profile_overlap(struct i40e_hw *hw,
+ 		return -EIO;
+ 
+ 	profile_list = (struct i40e_ddp_profile_list *)buff;
++	/* The firmware is not required to report a profile count that fits
++	 * into the buffer we gave it; refuse to read such a list instead of
++	 * walking past the end of buff[].
++	 */
++	if (profile_list->p_count > I40E_MAX_PROFILE_NUM)
++		return -EIO;
++
+ 	for (i = 0; i < profile_list->p_count; i++) {
+ 		if (i40e_ddp_profiles_overlap(pinfo,
+ 					      &profile_list->p_info[i]))
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
