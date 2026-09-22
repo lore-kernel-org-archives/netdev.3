@@ -1,246 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua2-f43.google.com (mail-ua2-f43.google.com [74.125.226.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3692D541459
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5729A4779A9
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790080639; cv=none; b=cHEP5hoRBUrEKGIwP3rC43joXSmo4NUMjTOXSah54srfvg2mYyCwWzWFHqs6ETUVeIUX0fstygYN9PV1T7nvSCv2EDPHQLGaQfGIGARwLlfFz77Hb3nNVp3eJCFRrEZcvvJTazfZiDpO/mkfegiHdM3kbH0i81bvjG5pNd+9yE0=
+	t=1790080804; cv=none; b=ovmZVDVRDTjjQyQxD6BYp+HTpteBko0lKsrWwHeUREaB8kjzmZ7uyUBP486GuigV9o5SjrUz8DrCRkoPEE9gVa+43QUMWxONk/UnOvwX4L65LcwIYqIyvuEXe2LkAR31Dc1P012jXQBDOhEsqp6et5OsofrG1zqqs2qrr33acao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790080639; c=relaxed/simple;
-	bh=NIgXoOhxYU4sgtvuZnnQn48ePcg9HlNF9yvJOgFStXE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lYs6pWlmovIpVHA/Fk56eRzgZ505im83SLU3YhXpb5B3U14R3UMiv/sNoc4Ow+syRH5WGWHtNijvumAGxrKRvEsgIjNooDafs9KWiblBNXuG1H4kbeUJeubWUtyAQA3taVVbtYX30qxX3WboA7Abef+C5C46YH3T7UOKOYGXOKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZO6DMBu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790080804; c=relaxed/simple;
+	bh=wFmJBrwWil7bpAeYIpoN4GzUL1HvXOt5ldn6IIIiFHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M6Vul1G8kCk9QCc6ZAwk03kmzGNGFX2gAEshghWyARzraS7X2qQNefpFW4cFXc1GiyFmsKN1nT8hkWVJiz2rsR9/WPpwpm5Y19OyTBdfqSmJNnx0DCh2khKA6ETGfAwZLwlNxRHqtiV+qbX5hA4E9G8hsO/F9EMYUM8gy1NAGTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=O2oXCldz; arc=none smtp.client-ip=74.125.226.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZO6DMBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4791F00893;
-	Tue, 22 Sep 2026 12:37:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790080635;
-	bh=IniJ8j342yCe6zE7HBu2n9lcoyu/DUxNcJqPqnvH5ZU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NZO6DMBupH+to3J3PS7rUr+v+GNfP4sA8GtAjDLbBucbT96y9pORrb5yc40tf10TP
-	 VUdiq4hgjgtNc5kxbXWjlChm/Y5F96zik0T81oqHNtpuh8k8aRtwaAksVajT2NRlbh
-	 H+TgSJaVJCnNFexVzC2CweNUNC/tRRxY5cIL1dvviquW6MHdRx3ViwT7wY+TSTivjl
-	 sP+5/kB+ELs3b59Jg9s/KT7Y3FRNkgCRo6p5qsR/MDKyOPJm7PiBFVc8ITJ3M/OksK
-	 2enhTH3ZiEyl5ZxxwK++2f9ZtaeALHWrM2/fprHkmoBrHt83zTXeRIf79kvVZfR/HT
-	 HI50hLy99xNXw==
-Subject: Re: [PATCH net v2] net: skbuff: fix pull-bound underflow in
- skb_checksum_setup_ipv6()
-From: netdev-bot+sashiko@kernel.org
-To: shlomojune6@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Date: Tue, 22 Sep 2026 12:37:14 +0000
-Message-ID: <179008063497.2160803.9963353619055078588@kernel.org>
-In-Reply-To: <20260919133604.50948-1-shlomojune6@gmail.com>
-References: <20260919133604.50948-1-shlomojune6@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="O2oXCldz"
+Received: by mail-ua2-f43.google.com with SMTP id a1e0cc1a2514c-97e96a8ba8cso2705510241.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:40:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1790080799; x=1790685599; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o9blDfaIlaDE7zWOzf7sAkl81n8mIgiGQIMLz8R8dVg=;
+        b=O2oXCldzJ3LpA4QHBbXInqG6gPFkiSS8IpezgH8R+ZrmCNrQGw2qZ3cz2HJXPR/LD3
+         nDnwu+h/q1ydJlARyj62co9tTwdWIgt6A4ziEIgZPoWy6ktNQVyLZgBsOE9UYoUt4d3f
+         ApfWcUtfyoMebnbxzEyQSfJL5IYMdQPZlYtb0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790080799; x=1790685599;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o9blDfaIlaDE7zWOzf7sAkl81n8mIgiGQIMLz8R8dVg=;
+        b=vAJnmhPw+ziafvNARuvcJ0Xz9feJszw6R3dBq56o/7aPdsnPVa6mJ0fzOnTKprN7h5
+         tRJRWiecMCB1JTCqjHZr0zdzrM5u+qH7QmLFN7CTBwIkO0gXoG/yAG7mkXxPgKruZJ8N
+         udday8lZ3kItRy6evp7f3bfa6VSPtuAqYEjHEoQ46/VzEfUR9/cLvANJ1jdPDhgixSgJ
+         MXWAyGqboydDt+IuU0qinorOhFpc0BOVXY9ozuUg44t5aSE6CVUs9YqlWPJhI5HQOfvF
+         yIHRUWDPmLnaKK+6iJIulhs4eITZuoG+EyKo0fTohoPi3rb2aL+uBlQfXvVlCzCgd8Ep
+         xytA==
+X-Forwarded-Encrypted: i=1; AKwUvBx8Hz1RWoFKPImAxypqzt0kB1vHRhi23D0VEDfNBa5+0O43brCyFfwdVWT4ZUFVfxq4c4Jf+Yw=@vger.kernel.org
+X-Gm-Message-State: AFuF++klHPA97TWZOvm7RZlHzOu/2qOzpuy2N7qDmo0J2DMexbQ4N+8s
+	Ax9h+6K+JaPwwoYI6Cp/nxTbYBFv0uStoeIEqNadVMYH9cYiYF4DIjn5ZCFXnz5Kvg==
+X-Gm-Gg: AYBFou1BukQoD1amJakqCCaWDQOk2n8c3+PLuxXN06GFnvSNLVpDgR0PVPRr75fSHe6
+	uzrQIkibOsYVyHNTx9bBNlkbp1TAfeTzON9UY0Er2Z81ElAqyhepUqRHm5o7hcXdcPuJbiHxq9c
+	+il4Yf9sHPlmTFlF/gidX+MXYFvxGYxTOiriOnHiXBZRFRegHbX6rLUGpeXvP8RQbZ4bJI2W5K9
+	++ondwJTzjeTuPadXg/Fu3urP2KX6c/pc93x0/D9rTHIZwtJbwZ+sTIGJJVv67TFVX59uACKExC
+	kAZS12HxGTIbOwe4KFpmBql2kGkc6lD2FxnwHvnFqULI2UzL7xgbt17PrCBzUl7xcwV0M2ooBnI
+	JTm8EjkkLwkcTu81bTxE1ShYnJ/WQ/ts0CXupSzl2Dq7MG+4C/UnRyL9oDYxDUVcDGy0fyluP62
+	Mpkl/7ocQ5y9014nOY6D1QlZ9HxZg+HiZia3xsKNYDxYTKUX0QaoykI6818tx1Ewoga1KmBS7iT
+	RUJ
+X-Received: by 2002:a05:6122:e22b:b0:5c9:a60c:2736 with SMTP id 71dfb90a1353d-5c9b598e442mr8405960e0c.14.1790080799199;
+        Tue, 22 Sep 2026 05:39:59 -0700 (PDT)
+Received: from [172.22.22.28] ([73.62.185.64])
+        by smtp.googlemail.com with ESMTPSA id 6a1803df08f44-91402535ce1sm14566906d6.48.2026.09.22.05.39.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 05:39:53 -0700 (PDT)
+Message-ID: <d2052425-3fb4-4104-b1ed-f2d53e5a710d@ieee.org>
+Date: Tue, 22 Sep 2026 07:39:47 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] umh, treewide: Explicitly include linux/umh.h
+ where needed
+To: Petr Pavlu <petr.pavlu@suse.com>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>,
+ =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+ Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>,
+ Alex Elder <elder@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Michal Januszewski <spock@gentoo.org>, Helge Deller <deller@gmx.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Nikolay Aleksandrov
+ <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Kentaro Takeda <takedakn@nttdata.co.jp>,
+ Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+ drbd-dev@lists.linux.dev, linux-block@vger.kernel.org,
+ greybus-dev@lists.linaro.org, linuxppc-dev@lists.ozlabs.org,
+ linux-acpi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+ cgroups@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-pm@vger.kernel.org, driver-core@lists.linux.dev,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+References: <20260911-module-include-kmod-v3-0-6ebccc3e0731@suse.com>
+ <20260911-module-include-kmod-v3-1-6ebccc3e0731@suse.com>
+Content-Language: en-US
+From: Alex Elder <elder@ieee.org>
+In-Reply-To: <20260911-module-include-kmod-v3-1-6ebccc3e0731@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net/core/skbuff.c, skb_checksum_setup_ipv6(): replacing
-  MAX_IPV6_HDR_LEN with the per-header requested length (max == len) at…
-- [Medium] Because the patch lets skb_checksum_setup_ipv6() walk an
-  arbitrarily long extension-header chain in a non-linear skb, `off` can…
-
---
-
-net: skbuff: fix pull-bound underflow in skb_checksum_setup_ipv6()
-
-The patch changes the three IPv6 extension-header call sites in
-skb_checksum_setup_ipv6() so that the max argument passed to
-skb_maybe_pull_tail() is the requested length instead of
-MAX_IPV6_HDR_LEN, which prevents max - skb_headlen(skb) from wrapping
-negative.
-
-v1: https://lore.kernel.org/r/20260823142620.126424-1-shlomojune6@gmail.com/
-
-A couple of questions about the behaviour change this introduces.
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 609f2c7f4a47..b4edbd06655e 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -5977,7 +5977,8 @@ static int skb_checksum_setup_ipv6(struct sk_buff *skb, bool recalculate)
->  			err = skb_maybe_pull_tail(skb,
->  						  off +
->  						  sizeof(struct ipv6_opt_hdr),
-> -						  MAX_IPV6_HDR_LEN);
-> +						  off +
-> +						  sizeof(struct ipv6_opt_hdr));
->  			if (err < 0)
->  				goto out;
-
-[Severity: High]
-Does passing max == len here also remove the 256-byte parse bound for
-non-linear skbs?
-
-Before the change, on an skb whose linear area is smaller than
-MAX_IPV6_HDR_LEN, once off + sizeof(hdr) grew past 256 the helper
-clamped max:
-
-net/core/skbuff.c:skb_maybe_pull_tail() {
-	if (max > skb->len)
-		max = skb->len;
-
-	if (__pskb_pull_tail(skb, max - skb_headlen(skb)) == NULL)
-		return -ENOMEM;
-
-	if (skb_headlen(skb) < len)
-		return -EPROTO;
-}
-
-so skb_headlen(skb) stayed at 256, the len test failed, and the frame
-was dropped with -EPROTO after exactly one bounded pull.
-
-With max == len the same frame is now accepted and the walker keeps
-pulling instead:
-
-	while (off <= len && !done) {
-
-where len = sizeof(struct ipv6hdr) + ntohs(ipv6_hdr(skb)->payload_len),
-and off advances by as little as 8 bytes per iteration because
-ipv6_optlen(hp) and ipv6_authlen(hp) are derived from the peer-supplied
-hp->hdrlen. For a 64 KiB frame built out of ~8000 eight-byte DSTOPTS or
-HOPOPTS headers, is that not up to ~8K __pskb_pull_tail() calls per
-packet, each walking the frag array, with repeated
-pskb_expand_head(skb, 0, eat + 128, GFP_ATOMIC) reallocations growing
-the head towards ~64 KiB in softirq context?
-
-The path looks reachable from untrusted input: xen-netback
-checksum_setup() -> skb_checksum_setup() -> skb_checksum_setup_ipv6(),
-where xenvif_tx_build_gops() builds exactly this shape of skb:
-
-drivers/net/xen-netback/netback.c:xenvif_tx_build_gops() {
-	data_len = (txreq.size > XEN_NETBACK_TX_COPY_LEN) ?
-		XEN_NETBACK_TX_COPY_LEN : txreq.size;
-}
-
-i.e. a 128-byte linear head with the remainder in frags. xen-netfront
-handle_incoming_queue() -> checksum_setup() has the same shape with
-pull_to capped at RX_COPY_THRESHOLD (256).
-
-Would keeping the bound and rejecting the chain instead fix the
-underflow without changing what the parser accepts, for example by
-returning -EPROTO when skb_headlen(skb) >= max, or by leaving
-max = MAX_IPV6_HDR_LEN and refusing chains that reach beyond it?
-
-Two related comments now disagree with the code. MAX_IPV6_HDR_LEN still
-says:
-
-/* This value should be large enough to cover a tagged ethernet header plus
- * an IPv6 header, all options, and a maximal TCP or UDP header.
- */
-#define MAX_IPV6_HDR_LEN 256
-
-but after this change the constant only bounds the 40-byte base-header
-pull, and no code enforces the "all options" part. Likewise
-skb_maybe_pull_tail() still says:
-
-	/* If we need to pullup then pullup to the max, so we
-	 * won't need to do it again.
-	 */
-
-which no longer holds for these three callers, since each iteration
-pulls only the next header.
-
-The v2 changelog says the change keeps "the helper's fast path
-untouched", and the patch carries a Fixes: tag so it is stable
-material. Could the changelog spell out that extension-header chains
-longer than 256 bytes in paged data change from dropped to accepted?
-
-> @@ -5992,7 +5993,8 @@ static int skb_checksum_setup_ipv6(struct sk_buff *skb, bool recalculate)
->  			err = skb_maybe_pull_tail(skb,
->  						  off +
->  						  sizeof(struct ip_auth_hdr),
-> -						  MAX_IPV6_HDR_LEN);
-> +						  off +
-> +						  sizeof(struct ip_auth_hdr));
->  			if (err < 0)
->  				goto out;
+On 9/11/26 9:46 AM, Petr Pavlu wrote:
+> The usermode helper declarations were previously provided by linux/kmod.h
+> but commit c1f3fa2a4fde ("kmod: split off umh headers into its own file")
+> moved them to linux/umh.h in 2017.
 > 
-> @@ -6007,7 +6009,8 @@ static int skb_checksum_setup_ipv6(struct sk_buff *skb, bool recalculate)
->  			err = skb_maybe_pull_tail(skb,
->  						  off +
->  						  sizeof(struct frag_hdr),
-> -						  MAX_IPV6_HDR_LEN);
-> +						  off +
-> +						  sizeof(struct frag_hdr));
->  			if (err < 0)
->  				goto out;
+> Add explicit includes of linux/umh.h to files that use usermode helpers and
+> remove linux/kmod.h where it is no longer needed.
+> 
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> ---
+>   arch/x86/kernel/cpu/mce/dev-mcelog.c | 2 +-
+>   drivers/block/drbd/drbd_nl.c         | 1 +
+>   drivers/greybus/svc_watchdog.c       | 1 +
 
-[Severity: Medium]
-Since the walk is no longer capped at 256 bytes, can off now exceed
-65535 before the transport header is reached, and get truncated on the
-way into skb_partial_csum_set()?
+For Greybus:
 
-skb_checksum_setup_ip() keeps off as unsigned int:
+Acked-by: Alex Elder <elder@riscstar.com>
 
-net/core/skbuff.c:skb_checksum_setup_ip() {
-	case IPPROTO_TCP:
-		err = skb_maybe_pull_tail(skb, off + sizeof(struct tcphdr),
-					  off + MAX_TCP_HDR_LEN);
-		if (!err && !skb_partial_csum_set(skb, off,
-						  offsetof(struct tcphdr,
-							   check)))
-			err = -EPROTO;
-}
-
-but the callee takes u16:
-
-net/core/skbuff.c:skb_partial_csum_set() {
-bool skb_partial_csum_set(struct sk_buff *skb, u16 start, u16 off)
-{
-	u32 csum_end = (u32)start + (u32)off + sizeof(__sum16);
-	u32 csum_start = skb_headroom(skb) + (u32)start;
-
-	if (unlikely(csum_start >= U16_MAX || csum_end > skb_headlen(skb))) {
-}
-
-With off == 65536 the argument arrives as start == 0, the range check
-cannot see the original value, and skb->csum_start and
-skb->transport_header end up pointing at the IPv6 header. With
-recalculate == true the caller then writes through
-&tcp_hdr(skb)->check, i.e. two bytes at network_header + 16, over the
-IPv6 source address; with recalculate == false the skb goes up the
-stack with CHECKSUM_PARTIAL metadata describing the IP header as the
-transport header.
-
-Reaching off >= 65536 also requires the pull in skb_checksum_setup_ip()
-to succeed, so skb->len must be at least off + 20. That looks possible
-on the netfront RX side, where xennet_get_responses() allows up to
-XEN_NETIF_NR_SLOTS_MIN slots:
-
-drivers/net/xen-netfront.c:xennet_get_responses() {
-	int max = XEN_NETIF_NR_SLOTS_MIN + (rx->status <= RX_COPY_THRESHOLD);
-}
-
-and xennet_fill_frags() allows up to MAX_SKB_FRAGS frags, giving an
-skb->len around 69632. On the xen-netback side the guest cannot get
-there because xen_netif_tx_request.size is u16 and
-xenvif_count_requests() rejects totals above 65535. Pre-patch this was
-unreachable from either driver because MAX_IPV6_HDR_LEN stopped the
-walk at 256. Should skb_checksum_setup_ip() reject off > U16_MAX
-explicitly?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919133604.50948-1-shlomojune6%40gmail.com
+>   drivers/macintosh/windfarm_core.c    | 1 +
+>   drivers/pnp/pnpbios/core.c           | 2 +-
+>   drivers/video/fbdev/uvesafb.c        | 1 +
+>   fs/coredump.c                        | 2 +-
+>   fs/nfs/cache_lib.c                   | 2 +-
+>   fs/nfsd/nfs4layouts.c                | 2 +-
+>   fs/nfsd/nfs4recover.c                | 1 +
+>   fs/ocfs2/stackglue.c                 | 1 +
+>   kernel/cgroup/cgroup-v1.c            | 2 +-
+>   kernel/module/kmod.c                 | 1 +
+>   kernel/power/process.c               | 2 +-
+>   kernel/reboot.c                      | 2 +-
+>   kernel/umh.c                         | 2 +-
+>   lib/kobject_uevent.c                 | 2 +-
+>   net/bridge/br_stp_if.c               | 2 +-
+>   security/keys/request_key.c          | 2 +-
+>   security/tomoyo/common.h             | 2 +-
+>   20 files changed, 20 insertions(+), 13 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/mce/dev-mcelog.c b/arch/x86/kernel/cpu/mce/dev-mcelog.c
+> index 053555206d81..af4e76babe7a 100644
+> --- a/arch/x86/kernel/cpu/mce/dev-mcelog.c
+> +++ b/arch/x86/kernel/cpu/mce/dev-mcelog.c
+> @@ -11,7 +11,7 @@
+>   
+>   #include <linux/miscdevice.h>
+>   #include <linux/slab.h>
+> -#include <linux/kmod.h>
+> +#include <linux/umh.h>
+>   #include <linux/poll.h>
+>   
+>   #include "internal.h"
+> diff --git a/drivers/block/drbd/drbd_nl.c b/drivers/block/drbd/drbd_nl.c
+> index b77f901fc3ef..6f5d059394b3 100644
+> --- a/drivers/block/drbd/drbd_nl.c
+> +++ b/drivers/block/drbd/drbd_nl.c
+> @@ -14,6 +14,7 @@
+>   #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
+>   
+>   #include <linux/module.h>
+> +#include <linux/umh.h>
+>   #include <linux/drbd.h>
+>   #include <linux/in.h>
+>   #include <linux/fs.h>
+> diff --git a/drivers/greybus/svc_watchdog.c b/drivers/greybus/svc_watchdog.c
+> index 16e6de5e9eff..b318eb34bcca 100644
+> --- a/drivers/greybus/svc_watchdog.c
+> +++ b/drivers/greybus/svc_watchdog.c
+> @@ -7,6 +7,7 @@
+>   
+>   #include <linux/delay.h>
+>   #include <linux/suspend.h>
+> +#include <linux/umh.h>
+>   #include <linux/workqueue.h>
+>   #include <linux/greybus.h>
+>   
+. . .
