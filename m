@@ -1,198 +1,140 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C585D39F190
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790088825; cv=none; b=QaKg3NmUFKvTRnlJPA/qazId4dJ2lxUxPYMeh/DuwYRnjcejkFVjmEwesodCXOsmQoJAL7JueiEHAD1WfZl9AnAYg/dCwBafX1PzEgyFtg3Cuh2K3QfCbTkU0OWJmieh1BzJVeKLKNHLzSYYmrtH4ynGHvQYwe/oJmgDXY9K96s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790088825; c=relaxed/simple;
-	bh=hghF98NYK78YNHXX1dgieJtN7r6JRJ6pzIa0JQe6vbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PVWcOx69/7Me/cPhcCek0Dk2QrhR2v3tmS3z6OeirhPRdk7MCF+RwtXuJ7GXmLxVwGSjh3T3CdDmO6erYxzYsmO8GpkJ6H8EVjxs6DBNE7y4HDmBu5pvvoSA5KyhxBTkp3dH/ZKQ/i9vpvGnFk/l6/inAoUVN162Msg6FxTuYJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=CwKohdlU; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7318F306776;
+	Tue, 22 Sep 2026 14:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790088872; cv=pass; b=t7wCv55CXSNmfILOLNm2DK77kFfNtl+vfSNFtIbhXjt94oGB4zdLpf2ZyRfmJl2Nk0nvDEvoU8qEONvUaxRuMdJO1XxTAsV9o8jfZRA8/Av8RI7WocRx9aEuOkNErDjklZo0AHhbb32DhgamvkQYkze8iVs4vWuuRB6OsQNQHdY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790088872; c=relaxed/simple;
+	bh=vt+mWNUJ/FcDxrT5/Z434rZnwRK1qBXsWU4+bkU32Iw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=txnGq7tJtxIJBDP7kuCWt/4gvROnJgY4Ewhd2U6sIlGimlrtgUZcwiGZ/SV5PDls18+yz3LahM9pLYh9upaCxY6hFE/E5Dry2pUDbLl+j/TlriFE/ifpJfjx1wcgxtxtNL2cZ1e/OkRdlpVCCdtZS96JCVmXa8zl/qBI0jFuApw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=hQpCmRBR; arc=pass smtp.client-ip=195.140.195.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="CwKohdlU"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b6so21173455e9.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:53:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790088821; x=1790693621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZdXUXs+Kfd08foCbufXmHwGq0BzwF/4pD5Iu/UeB7bk=;
-        b=CwKohdlUD17rHg35WuwS78r95cJg4lU9oAXAGfUbvlyRzxxSbpq/dyvXNaGan62JtZ
-         PT3/EuzzPEGnsEVmBc/bECCNU7e1qVB3BAMPEd6dA+jBiEcrX7dP8X4Jd6+quw8RiSb8
-         J4VoQuVGZENc75ggYvnoqeB2+HeVHf3E/YUiSvgd+Vbl2sPhR5Qnj+g/4IMgzKIat0FJ
-         FJ8LyJsulV8C8FllKniX5P41gwSR94e6tal4mIc51LeGZvsBMEtELIenNMzUDmsO5tMU
-         ylgtRoMZwS2cSBw61whJA8/ZRdbE8i2OtmpIJa9FzvOtOHpciXqN5vLrVaQ9T7ulDVpQ
-         8Gxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790088821; x=1790693621;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZdXUXs+Kfd08foCbufXmHwGq0BzwF/4pD5Iu/UeB7bk=;
-        b=Sy69O2bbdOSgGSqClNmaT0+jyj0YESnCm1h/rUY442X781Ymmgn/A8a99s8jVwdUd8
-         OsGRm82Okv52YMMqRzj0vsJfzas4Z/Vr0iDdGV/ukJaQsMysXaDBrVkb2lS5ghaHXSn3
-         NWoliaP3PwBeDN4QekwIPAHrLZ591lwJ4MgteopkuqDB6PnJUYjySJ+6suD79vDi9PO7
-         lY435sLebbv7bjGw3vupENWcwsIP6vFH2lDSD0L8jiQdVfSjGUBJTb1kJN7C23IZ/SMj
-         fUEP4xKNo52jE8h12QwsiR/qELOdhG/RJGKvq9dTAQ2z7s57I71m1Ao7xGl3vVxl4LgK
-         IETg==
-X-Gm-Message-State: AFuF++l4BBnb5hS5vfg3K772JRQZ2VOW6d1dxMrxnon7nmqC69FzBXoM
-	X9PYrNU9ZxKoCViBWCbHTH1T29IAc3kPdq1Xq4GFhnaawS2gQlWE7M2M74vR5QHMXqQ=
-X-Gm-Gg: AYBFou2Q6Alb4zqCefiA7GfWqMi5Lmwcpq1CglkcAa47RDsuj/J/1IoszGh4RZiNdnw
-	KlCmIU92Uw6MsSGsYvtM5fac0B2QYLeQCUGb+LYSqmk/Z7giDp1melN3W0z58MPKQgyQ56WevgA
-	mjmM4XraItan8W+8o5onpqGhNzVcYs39DnNc8eC2RBBgl1Ze4SQ/z3xjsXDqm6pepf119MBatJq
-	+fAvA0iVpynjQHtUH44LHiUb73DWecvVePRO99oaWQ9RDm5FWsXFzr2yJBUx1IL6sITEJiKQjj/
-	BQlhHGLjsU8PaX58ymPOa5i5C7ZmdqALv3URNa3824EL5BjHIvaOnEdnJ3wr6HLrJH19YYk2DnP
-	MO4Yt+GpvbhUtVV8utELUjGTpLRqNo302BViLOtmGSOfgUMWOwE46zqCXy7HQtx7NVwA05N0PGt
-	ZjnvAUgVeFrorrQmYHLApJkHOAhmRRQgEXkZOWGjoQktf94oE40RpxjYpRcrAQy12MFtaipq11W
-	/nqLJXI
-X-Received: by 2002:a05:600c:a415:b0:49f:ddc0:6e8f with SMTP id 5b1f17b1804b1-49fddc06f09mr4681645e9.5.1790088820973;
-        Tue, 22 Sep 2026 07:53:40 -0700 (PDT)
-Received: from localhost ([2a02:168:9d56:1:84ba:d001:a11c:487b])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4886279298asm4771587f8f.34.2026.09.22.07.53.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 07:53:40 -0700 (PDT)
-From: Bruno Produit <bruno.produit@trailofbits.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>
-Cc: netdev@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	linux-kernel@vger.kernel.org,
-	Dominik Czarnota <dominik.czarnota@trailofbits.com>,
-	stable@vger.kernel.org,
-	Bruno Produit <bruno.produit@trailofbits.com>
-Subject: [PATCH] xfrm: espintcp: build sk_msg locally before publishing
-Date: Tue, 22 Sep 2026 16:53:35 +0200
-Message-ID: <20260922145335.2016559-1-bruno.produit@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="hQpCmRBR"
+Received: from fauth-c1-smtp.messagingengine.com (fauth-c1-smtp.messagingengine.com [204.75.18.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: jmtilli)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4hq35q39fczyQq;
+	Tue, 22 Sep 2026 17:54:23 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1790088864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z0GiNNz7mvXA6xuheXPBRxDg0LpQpCzQPfazm+MFnlQ=;
+	b=hQpCmRBRPkO1lnjRQbCSLsOAIeVHDbpzroswlW0jjY9Pwu/2we1ykG7q8xbKGSVnAfdsBD
+	GfltrlWKkzkPfuXkvuUdtVI8sfKUWct9fPlly+cXoE4UZoJeEr06SiLziXrw+wx4bjEwYb
+	OHNlEzi1pE5Uj2+EmISmCmHe8YQKKE8=
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=meesny; cv=none; t=1790088864;
+	b=OzIp9i+y6MKmaCKay58FEkapWMtaKXCAh+p5pZYaxAXFhVfwBtHLpa6FQchxsOUnQWk1dc
+	4kZ6ewtyFi1sE3piBjPoC2yX2YoAJMqZfs+ETG1NvCITaxy2m9GoMqQXqK7eW8PANaF8IK
+	a6vTItxAVTACgkDIq/T69QzkES3wY8I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1790088864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z0GiNNz7mvXA6xuheXPBRxDg0LpQpCzQPfazm+MFnlQ=;
+	b=bKkwHvlOPzrWTnxsmzfxfjGrv+kdeoWQO7DFfIFPEh9tEr1jTkp6Ybh4k3Oji8jSM5nLkb
+	m+E5foQE7LPHFfUT3+02Y9GiABNA9ZsICriyPTtoJKIhq5tWzEY37p0OquxZnlHwFl2Lzu
+	H2J/jarebpztIGyz3fTtiB3tFdf0jP0=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 9A38A1980047;
+	Tue, 22 Sep 2026 10:54:22 -0400 (EDT)
+Received: from ams-imap-13 ([10.64.2.33])
+  by ams-compute-02.internal (MEProxy); Tue, 22 Sep 2026 10:54:22 -0400
+X-ME-Sender: <xms:nJayahOoafvGRBHnapWIyTJk6EhrmhVJY0GvCoTm60wkzaZGn_c4Iw>
+    <xme:nJayaux1EEDSx5z2uUL6LKtq4wLmKBLayvDqdFnN2fvuYW7VX5N1W3mRdMLdoiZ40
+    OIEyOIr8gKynWfvbkndsLOzu5snXRJ_tVMVWXru4eGmJOA5ANdBzRz8>
+X-ME-Proxy-Cause: dmFkZTFHpedGAVLKiQnrNYraarc+m8y6pLFP5Ws5yDrx6JiPDe99pKJ36EE4458D8owMzI
+    CVyo4xyRD/1B3H7QMoDwJozOc+q/Qd0uLw0fzgf+wNbXR7DBV6y68OpQi/yydjLyfs3u2j
+    9ub+qnoI5s1SO7rmds48axDjne3beJ7ZSCdGoucQ9oqMX9AhRyd/5Wk1qRDJAg6SYH6B78
+    ynBy9qOdx+4dqAHjn76/cFsXf0dY9JupyHdpSRkc2JRH65rRxREBrIRGKsa0HaQZ+1ya2m
+    j8Ryquurp9LnkGsEOIW9eTjSLyAN2uq5fOFQxiRf//ZisjfE8+ttENVOKUvTh8JumdRSLj
+    p+V2YKSBbxHflVNgbuG3pGSsvZ1uhHJkUn8Vxqq+zjf82EI7Cjz8tLP0s5ZvPlJUHwSGCh
+    pfN9xT0fgl+poHmSbIdOAtNVsuUpuFyxhLaM2/BfsltmkEo/IUZVYBkaHk0+y9F9UBlpEg
+    qV4CTCisVOl6Ujz6Lzo+kwyBYVLuCDgMWyLRw05vlu3cRzm6QYkkIRuqkU9LFGpkAz+2Hc
+    Qye07P78PbHmTjNdIeyyX/peVk1yqCmoAl3ZWNsVld/58+wdy3AHFb2YAba32HcCuB71xH
+    MHNmIHKRQpdAJmfJTPH/Ni9E8t4LZeQCIkDzRBIMyePRFtGu60aNXJg6zGYw
+X-ME-Proxy: <xmx:npayapTb__p_DydNxb3WN6NoMrFnM88L_Fnpa3c2v7WL4lxTvMZUcQ>
+    <xmx:npayahJgGtZlTJtQfoOd0qA9wiKp3saf9VLhoRc9mB5Mx4fVdgd_hQ>
+    <xmx:npayaq3MjoMpyT20e6fEpDiQmW5LN-38-EYKJuRpisdiWp6JT7lkUw>
+    <xmx:npayakIqiMXo49KaBxMDixyAp9w5j9_CtFWIg4-oXLOh9XwbihIPXQ>
+    <xmx:npayaqlrk6tNoyC_B_CpQ4aBKPvFqbLV33GpgSXznrmb2MXaV7Y0l7ic>
+Feedback-ID: i02414972:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 1BF8BF80089; Tue, 22 Sep 2026 10:54:20 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: AtmlxWozq_rN
+Date: Tue, 22 Sep 2026 17:53:59 +0300
+From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
+To: "Manivannan Sadhasivam" <mani@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Jeff Johnson" <jjohnson@kernel.org>, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ ath12k@lists.infradead.org, "Bjorn Andersson" <andersson@kernel.org>,
+ "Chris Lew" <christopher.lew@oss.qualcomm.com>,
+ "Deepak Kumar Singh" <deepak.singh@oss.qualcomm.com>,
+ "Raj Kumar Bhagat" <raj.bhagat@oss.qualcomm.com>,
+ "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>
+Message-Id: <ce12d73a-ca7d-4e89-9c88-53029d58260a@app.fastmail.com>
+In-Reply-To: 
+ <g63vg7ho5al6f2hfxbgssrisnjl5ui6isxlrv3265ocatvdmay@anmhz3vcxcbo>
+References: <20260921-qrtr-multi-ep-v2-0-27dd80d841a0@oss.qualcomm.com>
+ <20260921-qrtr-multi-ep-v2-4-27dd80d841a0@oss.qualcomm.com>
+ <e7e8a499-9e89-4efa-a99f-18ce7dc37ab5@app.fastmail.com>
+ <g63vg7ho5al6f2hfxbgssrisnjl5ui6isxlrv3265ocatvdmay@anmhz3vcxcbo>
+Subject: Re: [PATCH v2 4/4] wifi: ath12k: Connect to the QMI server belonging to the
+ device owned by this driver
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-From: Kyle Zeng <kylebot@openai.com>
+On Tue, Sep 22, 2026, at 16:30, Manivannan Sadhasivam wrote:
+> On Tue, Sep 22, 2026 at 02:43:05PM +0300, Juha-Matti Tilli wrote:
+> > So, I believe the patch works.
+> 
+> Thanks a lot for testing. I asked our WLAN team member to test this series on
+> multi-ath12k setup and found one issue with QRTR_TYPE_RESUME_TX. After fixing
+> it, multi-ath12k setup works fine.
+> 
+> I'll submit v3 with that fix. Please give it a shot on this setup, one final
+> time :) Appreciate your help here.
 
-espintcp_sendmsg() builds a new message directly in ctx->partial. If
-allocation fails, sk_stream_wait_memory() drops the socket lock while
-the shared sk_msg remains unpublished with emsg->len equal to zero. A
-concurrent sender can then reuse the same slot. If the first sender is
-interrupted, its failure path frees state now owned by the second sender
-while TCP may still be consuming it, causing a use-after-free.
+Is this issue perhaps related to this (2x ath12k):
 
-Construct the message in a call-local sk_msg instead. After allocation
-and any lock-dropping wait, recheck that the shared partial slot is still
-free, then transfer the completed message into it. Failure cleanup
-consequently releases only state owned by the current call. The recheck
-also covers packets submitted through the common IPv4 and IPv6
-espintcp_push_skb() path.
+ath12k_pci 0001:01:00.0: dp_tx: failed to find the peer with peer_id 2
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Bruno Produit <bruno.produit@trailofbits.com>
----
- net/xfrm/espintcp.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+I managed to switch to 6.18.53 kernel and now the regulatory DB issue
+is gone, but I'm getting this repeatedly to dmesg.
 
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 674aedc..1642b34 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -311,6 +311,7 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	struct espintcp_msg *emsg = &ctx->partial;
- 	struct iov_iter pfx_iter;
- 	struct kvec pfx_iov = {};
-+	struct sk_msg *skmsg;
- 	size_t msglen = size + 2;
- 	char buf[2] = {0};
- 	int err, end;
-@@ -324,6 +325,11 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	if (msg->msg_controllen)
- 		return -EOPNOTSUPP;
- 
-+	skmsg = kmalloc_obj(*skmsg);
-+	if (!skmsg)
-+		return -ENOMEM;
-+	sk_msg_init(skmsg);
-+
- 	lock_sock(sk);
- 
- 	err = espintcp_push_msgs(sk, msg->msg_flags & MSG_DONTWAIT);
-@@ -337,10 +343,9 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 		goto unlock;
- 	}
- 
--	sk_msg_init(&emsg->skmsg);
- 	while (1) {
- 		/* only -ENOMEM is possible since we don't coalesce */
--		err = sk_msg_alloc(sk, &emsg->skmsg, msglen, 0);
-+		err = sk_msg_alloc(sk, skmsg, msglen, 0);
- 		if (!err)
- 			break;
- 
-@@ -348,25 +353,30 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 		if (err)
- 			goto fail;
- 	}
-+	if (emsg->len) {
-+		err = -ENOBUFS;
-+		goto fail;
-+	}
- 
- 	*((__be16 *)buf) = cpu_to_be16(msglen);
- 	pfx_iov.iov_base = buf;
- 	pfx_iov.iov_len = sizeof(buf);
- 	iov_iter_kvec(&pfx_iter, ITER_SOURCE, &pfx_iov, 1, pfx_iov.iov_len);
- 
--	err = sk_msg_memcopy_from_iter(sk, &pfx_iter, &emsg->skmsg,
-+	err = sk_msg_memcopy_from_iter(sk, &pfx_iter, skmsg,
- 				       pfx_iov.iov_len);
- 	if (err < 0)
- 		goto fail;
- 
--	err = sk_msg_memcopy_from_iter(sk, &msg->msg_iter, &emsg->skmsg, size);
-+	err = sk_msg_memcopy_from_iter(sk, &msg->msg_iter, skmsg, size);
- 	if (err < 0)
- 		goto fail;
- 
--	end = emsg->skmsg.sg.end;
--	emsg->len = size;
-+	end = skmsg->sg.end;
- 	sk_msg_iter_var_prev(end);
--	sg_mark_end(sk_msg_elem(&emsg->skmsg, end));
-+	sg_mark_end(sk_msg_elem(skmsg, end));
-+	sk_msg_xfer_full(&emsg->skmsg, skmsg);
-+	emsg->len = size;
- 
- 	tcp_rate_check_app_limited(sk);
- 
-@@ -374,14 +384,15 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	/* this message could be partially sent, keep it */
- 
- 	release_sock(sk);
-+	kfree(skmsg);
- 
- 	return size;
- 
- fail:
--	sk_msg_free(sk, &emsg->skmsg);
--	memset(emsg, 0, sizeof(*emsg));
-+	sk_msg_free(sk, skmsg);
- unlock:
- 	release_sock(sk);
-+	kfree(skmsg);
- 	return err;
- }
- 
--- 
-2.53.0
+Yet, despite this issue, I see the network and data flows (with v2).
 
+Also the other card gives:
+
+ath12k_pci 0000:01:00.0: failed to pull fw stats: -71
+ath12k_pci 0000:01:00.0: time out while waiting for get fw stats
+
+...but it's lacking antennas so could be related to that.
+
+BR, Juha-Matti
