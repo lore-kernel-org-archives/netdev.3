@@ -1,170 +1,234 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8343E1D05
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F254DACC
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790084819; cv=none; b=bBQvKH0eTzqghWBNvvZezWJibuaMZAbLeSVxUyMZuONOIm+a+oUppGnM6lIcJHg2s67wEakVOvaqhdYzVlHMrUwvTOwZOse66smOhkoVAGWLkc4r6xIGMkVzA8OI0PHs0PKm1GgbAq/wK9X1LrhECu8iltGHJrZ+Z2mJcVLk07o=
+	t=1790084826; cv=none; b=WVs0OunC6KMs8x6yrOreD662STOsIoERRuSQEqO4HxH5zf41ppMdURUt/nfVBg5f6nHrq8XgOgreuLY67eN3mkqMEOyflxKXgOKX+NAlPU7IYVssMsCDG1jBD+O0xb6CPITv8p8NxkRvNG+Qj21s2Sr9otIUr34/ABewx0xdJJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790084819; c=relaxed/simple;
-	bh=A6mptCTqc8JYmR78HHITrrmFcDLHarfAJCWSHu//3Wc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KhthgnbBFVT/3BJ+1LY8QVXHxv9r3OFkjeXW3BFGupeBYdM1WEl+R2juDeEpEZ1mbbklrU7DWGS1E2lmPuTda/UP+W4uyc/tQW0U16Rldm5FPTaBotQODwZJZCasPdKuTD+LSqdOcx/77BE3hg7ldgkqWTAc2xZ7WhfitW58HAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ETN1UzYD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fxP84dWm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790084826; c=relaxed/simple;
+	bh=/WV6UcnYJb59+aISOqYnJ6c8jl3+NFWBfdwZyU/KRWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=Yhfikeljv33RIZEH9ei820Y03maOUElLBCiH1n9W9H3VI0f75o/HUlp3d8k739HDeuB6YGN4gihPOQnl+6SzZRLET8P9oJXSk5FvPtAOLnLLFfsgB7NsuQ5URqrzze7HwfHYndNOjdaq16J1bEPS/R06f9yjnAXNHI5J3O5P3Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D0t8ElE1; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ETN1UzYD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fxP84dWm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790084816;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dRpz33ELk1+JRMOqNwfvb0Y3S56rs1Q7qrR4OEuociQ=;
-	b=ETN1UzYDakwM6l7eWIafqVIEHy0Zn90Rk9MEUyUpDYu0uWaBbsTQxhnk2irBgrEV8xj2fL
-	2lP4uVE9CzDynPCTGFp368402QAUVrBsok8vw7/1HZsKQpcEdgu2uAxlrCEs68ZeiRXsbT
-	uKdl8WPmTrjqLTZ97dh4dvO6rQmeO30=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-8LX7hwd0PZOljw-rB01OLg-1; Tue, 22 Sep 2026 09:46:54 -0400
-X-MC-Unique: 8LX7hwd0PZOljw-rB01OLg-1
-X-Mimecast-MFC-AGG-ID: 8LX7hwd0PZOljw-rB01OLg_1790084813
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495689bfcc8so30912355e9.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:46:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0t8ElE1"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc433d52421so2482418a12.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 06:47:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790084813; x=1790689613; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1790084824; x=1790689624; darn=vger.kernel.org;
+        h=content-transfer-encoding:lines:status:content-disposition
+         :content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dRpz33ELk1+JRMOqNwfvb0Y3S56rs1Q7qrR4OEuociQ=;
-        b=fxP84dWmDETI1q9zz5InT22xV4otHrrILkUz6OCI8GLWA7K0y/0Jd9mLl/DiyuM1R1
-         T0Cqzm1wugmmGPAs07QtcUS/Nkq8Lx8uy9rPwMdXUtaLuF4WaanjBMz+cCMOsm4I00Az
-         zZhmMcNtIf++Mdyl1op7djHRgo+jVvGAIrKj7t9oDLx7lPgr/786ZKfd2VTqeCJxPUnx
-         ipTIWgu0WL+22egXVtF1krSSvQ1OiKhfUbRXz/bK+N+nu/bOhapmy9Agp0S8RGP4jIig
-         /y+CDWyZ8+URb/AMd5BdJBZ7AFnt2YwJxeVzifJM3TkVQKACI9uj0rX0UoNGlpwjZTzf
-         xfVQ==
+        bh=rf3NcYvAmItVxbqtkxxzSpUPurh9H42FsWoY744N9zk=;
+        b=D0t8ElE1PtDL708QOVh3ERdEGhjujno5L+rRCINOI/IgqxswUwQz5W36uPgHqQvDdm
+         cIT0joE/ArPAXHZafNvl2L51AVZT5KZsHx+W3mBy3yM6baezxTCPbyFD6EINOILIQSFh
+         9kVsdJs+RaQsLjyMQa0bJt0trsCpeKSD51qlJAi43wmuOEIJT2o+MHQyWerr42wPxJ0t
+         VSGh/YHY0sSBGOJwnmVg9nsN/+UXNoAcLE76WcofZu8ef0ewWrdt/1cpDGIIRF0QiIke
+         xKs/YGgYLabz9Jrsn31z5FIneQnzoobyHPYe6pLCOzlYgNPP5/Qalmsu3nnxtc6m/z1l
+         Zz0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790084813; x=1790689613;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dRpz33ELk1+JRMOqNwfvb0Y3S56rs1Q7qrR4OEuociQ=;
-        b=UO0VjD4M4oaw/VkS2+W+l1gJaah+qRF3ZurVNM1wIxsiJHSs2Ge0/HDkYRAikV7iO7
-         R5wasCO74ZkkNcrG2XNrLR7gWV5kvU5cr7G/LSFeMQJqwaWQBWeuN26Gf+EIlfzX7f6h
-         /72q0wx/6Xcpz4PLpOkgJH+5S3qwGU0agAhR+V+p5BwpuEO/2Ld00jVyqNhUxQ25fvkH
-         bzcpwz6XFLlBOt/RRszY+rl7HpFHz/4g4f0hk1jpxXEYinzg0/jFy7VE/cU0KH0OZozk
-         d2VtkTuWOXHeWp8wY/WCriKhHpRuoYBvXzwoo9M7otAdqyfVtohiWXbPzcnlSRodtwuP
-         LQVA==
-X-Gm-Message-State: AFuF++kwUrAsCo+S1n1nXi2bsW47gSipXaJRNwmq13qBXHKW8AQ2h31Z
-	0svB35Jd69/Boy8qCAn+GPZITSFDxO4LgK0ttebxaXdwLoqlOAx4h8R+lN6tJQSzX3w1M3gfxLW
-	sWB03Cx9axOKFPMNi9NbEvUMNmprGVR3GG6bDNNCZ1BbIzs7JWqHYc1/UYg==
-X-Gm-Gg: AYBFou0859lH7QY+k+1kcE4qNKqrzG5GetO5/RRyRvuOtkWHfuYk9GSZARtvKROxJGq
-	YFOzyDLAp+A/1sbdtkIX5vW/CjgC+gKctZrll0N3hDQR7RwZ0LX0lubwmjEn/HaZHvA+I1Uap7s
-	BuyIn3Z1uqKGcYXNJblpzSPXZ3WDeUwvwpcFzKrM6rkxGrHNlNCeem6ATqRgy3cdUr2u0vQ0gGX
-	ls8GNr32/J4nekHYU8NvmXnhLwOok3pV2fC6iXJkfmmge9JL7OW6k36NagJjg+fz881v8Oba5fb
-	eADPhkJ65TEVwe4tX5bP2UyKcJGEF7NBIG1jLO76lTF1iys+6X3Wlw7ogGcFjioTiMRESWP7Ks+
-	9FvxJZDNZqrFv8p5310FnPQMHJKPBg+Z3GNTqd8TH/7n5rD9mMGtOczdXm6bbD06VkKhW9Fsjig
-	==
-X-Received: by 2002:a05:600c:3f07:b0:49e:7caa:e7b2 with SMTP id 5b1f17b1804b1-49fc5756f60mr191055425e9.29.1790084812984;
-        Tue, 22 Sep 2026 06:46:52 -0700 (PDT)
-X-Received: by 2002:a05:600c:3f07:b0:49e:7caa:e7b2 with SMTP id 5b1f17b1804b1-49fc5756f60mr191055105e9.29.1790084812619;
-        Tue, 22 Sep 2026 06:46:52 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdaafa9cfsm56898185e9.4.2026.09.22.06.46.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 06:46:52 -0700 (PDT)
-Message-ID: <11c3ed15-9694-4b03-832f-6c49abd742d9@redhat.com>
-Date: Tue, 22 Sep 2026 15:46:51 +0200
+        d=1e100.net; s=20260707; t=1790084824; x=1790689624;
+        h=content-transfer-encoding:lines:status:content-disposition
+         :content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rf3NcYvAmItVxbqtkxxzSpUPurh9H42FsWoY744N9zk=;
+        b=LkyVKl/GZoW712A4UMBnR+oQxUu5xKdM2k0BMQ8TUeWvTO9LL42G280B0cHiAS0Boj
+         8xW8T1gB1MXAIM+XPl2ZJ1lppxTNuF1plAM00+nV/P7qWIasxNwNadzBmQIrKIyAA+9Z
+         iOjVyIjVx3IXx+V9Ih45X1PnA4AvJeZNIw5UCJlcF2SYlUk+d/GobnOOmdLz0IzN0k07
+         VqPNIOlNmeZ0Bfh5miAHQsKqT3QBNMAr/BYsVKh5azZ9nhFUKeo1YsQK+Ddup4RZvXGI
+         l8EOnTY+mB1r6Ba/eJhrYS+4+wHyYRpL0wNZP9HILQxSkZPcqH75RdDBdT+o1JtfTOc5
+         HTYg==
+X-Forwarded-Encrypted: i=1; AKwUvByxPS3ZTbt9WJ9tyIQdn3Wnua86e8A1TOPIvpveG3XqMpOtQXgtcja2D88FIGWVxLmVvh/o1VM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kDBM9B0yhhhrEGnmLmkcoiKr/lB1gQKly2vhFP1dEFyjFE/RFz
+	Oly8XMwxPsU8eMXm/WGNo5UdFA2KjwQCV7izTF5vr5+sv4n9GgScHXeW
+X-Gm-Gg: AYBFou0ior9iRGlA91XkNwFB+tR8dmMuCZHqEBQIL64E6Er7tcRRU7J10jKu9zuG9dT
+	6gOBZ0j0Tib/PQ6bKG4v8pCfyfXyWk96NiPVAZWyEqFAgr43XK/gbMRkrorKErpq4fR7S7kK2oq
+	vYLmPxfphsIWZYmeVm/hogCR3zSp3gHb8EuyFxlV09bZ79g8FEFam7zfRvD90KcTvcQWO2Bmu8L
+	5L5ug1PJPJyFDF+gS1Ef2wNVSMU3iJIyD9VtNITfXyuRDiatsXKx24Wo47lGx/xFEDHd4JbH1jg
+	vE9UGjsSPzfaunDcg95aYb3RY+Z8bNF4y4uukBHDBmFy8xvpWJ6mOdfByvM86q/ssnvgl5NJFp+
+	I6LOwp1dElZFk+MWbMUh9vwTbI+QWYqwZX3XuECFgeDqPUqobESkyVkrLyaZyPO/RnoWz6wlrJM
+	bJSt3dii3JQ/CS7jgwBsWpMrr+IS13pGc/IFYg6urxk5xtqjje1BNBLAbCR7RhBlTZXvDMBql/y
+	AZMtaw07VqgqqjdQI7y3eZw3Ibk8MByS+z96ns=
+X-Received: by 2002:a17:90b:35cb:b0:39e:6c69:f479 with SMTP id 98e67ed59e1d1-3a073262d85mr1337283a91.56.1790084823601;
+        Tue, 22 Sep 2026 06:47:03 -0700 (PDT)
+Received: from DESKTOP-VNSSJ2S.lan (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06caf4a73sm1381225a91.2.2026.09.22.06.46.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 06:47:03 -0700 (PDT)
+From: Zhi-Jun You <hujy652@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Rex.Lu@mediatek.com,
+	andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hujy652@gmail.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	lorenzo@kernel.org,
+	matthias.bgg@gmail.com,
+	nbd@nbd.name,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sujuan.chen@mediatek.com
+Subject: Re: [PATCH net v4 3/3] net: ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
+Date: Tue, 22 Sep 2026 21:46:04 +0800
+Message-ID: <20260922134604.617-1-hujy652@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179000700034.2160803.10594281691384015089@kernel.org>
+References: <20260917144335.19466-3-hujy652@gmail.com> <179000700034.2160803.10594281691384015089@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: ipv6: keep room for the mac header when
- growing the headroom
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>,
- Andrea Mayer <andrea.mayer@uniroma2.it>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Justin Iurman <justin.iurman@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260918-seg6-maclen-headroom-v2-1-4d370af55b2e@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260918-seg6-maclen-headroom-v2-1-4d370af55b2e@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename=v4reply
+X-Mutt-References: <179000700034.2160803.10594281691384015089@kernel.org>
+X-Mutt-Fcc: ~/sent
+Content-Transfer-Encoding: 8bit
 
-On 9/18/26 03:28, Yuya Kusakabe wrote:
-> The seg6, ioam6 and rpl lwtunnels all grow the headroom with
-> skb_cow_head(), push their new headers into it, and then rebuild the mac
-> header below them with skb_mac_header_rebuild().  The headroom left
-> after the push has to be at least skb->mac_len for that rebuild, but the
-> requests ask for the pushed length plus dst_dev_overhead(), which leaves
-> LL_RESERVED_SPACE() of the egress device, 16 bytes for plain Ethernet.
+On Mon, Sep 21, 2026 at 04:10:00PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> Where the mac header is longer than that, as it is on ingress through a
-> VLAN device with reorder_hdr off, the rebuild runs out of room:
-> skb_set_mac_header(skb, -skb->mac_len) computes a negative offset,
-> stores it unchecked in the u16 skb->mac_header, and the memmove that
-> follows writes skb->mac_len bytes about 64 KB past skb->head.
-> Forwarding plain ping6 traffic through such a device reproduces it on
-> all five seg6 encapsulation modes and on the rpl and ioam6 inline paths;
-> skb->mac_header comes back as 65534 on a 704-byte head.
+> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 > 
-> Ask for whichever of the two is larger.  These requests carried
-> skb->mac_len until the egress overhead took its place rather than
-> joining it.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> Fixes: 40475b63761a ("net: ipv6: seg6_iptunnel: mitigate 2-realloc issue")
-> Fixes: dce525185bc9 ("net: ipv6: ioam6_iptunnel: mitigate 2-realloc issue")
-> Fixes: 985ec6f5e623 ("net: ipv6: rpl_iptunnel: mitigate 2-realloc issue")
-> Assisted-by: LLM
-> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-> Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-> ---
-> Changes in v2:
-> - Use max_t(unsigned int, ...) rather than max() [Justin]
-> - Make the same change in ioam6_iptunnel and rpl_iptunnel [Justin]
-> - Reproduce and verify the fix on those two as well: unpatched, rpl
->    underflows in 12 of 16 probed configurations and ioam6 in 3 of 13,
->    both reaching about 64 KB past a 320-byte head; patched, neither
->    underflows in 18
-> - Rewrap the requests so they no longer exceed 80 columns
-> - Retitle for net: ipv6, now that the change spans three files
-> - Link to v1: https://lore.kernel.org/r/20260917-seg6-maclen-headroom-v1-1-02ccec50f096@gmail.com
-> ---
->   net/ipv6/ioam6_iptunnel.c |  8 ++++++--
->   net/ipv6/rpl_iptunnel.c   |  4 +++-
->   net/ipv6/seg6_iptunnel.c  | 12 +++++++++---
->   3 files changed, 18 insertions(+), 6 deletions(-)
+> - [Medium] In mtk_wed_start()
+>   (drivers/net/ethernet/mediatek/mtk_wed.c:2346-2347) the newly added…
 > 
-> diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-> index cfb2c41634a0..4fc745f78eaf 100644
-> --- a/net/ipv6/ioam6_iptunnel.c
-> +++ b/net/ipv6/ioam6_iptunnel.c
-> @@ -262,7 +262,9 @@ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
->   
->   	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
->   
-> -	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
-> +	err = skb_cow_head(skb, hdrlen +
-> +			   max_t(unsigned int, skb->mac_len,
-> +				 dst_dev_overhead(cache_dst, skb)));
+> Pre-existing issues:
+> - [Medium] This problem wasn't introduced by this patch, but the patch
+>   widens it: dev->tx_wdma[] descriptor rings are allocated with…
+> 
+> --
+> 
+> net: ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
+> 
+> On a non-DBDC MT7986 only rx_ring[1]/tx_wdma[1] get set up, so
+> WDMA_RING_TX(0) is never programmed even though WED needs it for RX
+> offload.  The patch adds a call to mtk_wed_wdma_tx_ring_setup() for ring 0
+> from mtk_wed_start() when the device is WED v2 and rx_ring[0] was not
+> allocated, passing reset=true when tx_wdma[0] already exists.
+> 
+> > diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+> > index 3f0be70c3f145..3800e602d3c48 100644
+> > --- a/drivers/net/ethernet/mediatek/mtk_wed.c
+> > +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+> > @@ -2339,6 +2339,13 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
+> >  		if (!dev->rx_wdma[i].desc)
+> >  			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
+> >  
+> > +	/*
+> > +	 * non-DBDC MT7986 allocates only rx_ring[1] and tx_wdma[1] during setup
+> > +	 * but tx_wdma[0] is also needed for WED to function.
+> > +	 */
+> > +	if (mtk_wed_is_v2(dev->hw) && !dev->rx_ring[0].desc)
+> > +		mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, !!dev->tx_wdma[0].desc);
+> 
+> [Severity: Medium]
+> Should the return value of mtk_wed_wdma_tx_ring_setup() be checked here?
+> 
+> On the first start of a non-DBDC v2 device dev->tx_wdma[0].desc is NULL, so
+> reset is false and the helper takes the allocation path:
+> 
+> drivers/net/ethernet/mediatek/mtk_wed.c:mtk_wed_wdma_tx_ring_setup() {
+> 	wdma = &dev->tx_wdma[idx];
+> 	if (!reset && mtk_wed_ring_alloc(dev, wdma, MTK_WED_WDMA_RING_SIZE,
+> 					 dev->hw->soc->wdma_desc_size, true))
+> 		return -ENOMEM;
+> 	...
+> }
+> 
+> mtk_wed_ring_alloc() does a dma_alloc_coherent() of
+> MTK_WED_WDMA_RING_SIZE * wdma_desc_size (32 KiB on MT7986), and on failure
+> the helper returns before writing MTK_WDMA_RING_TX(0) BASE/COUNT/CPU_IDX/
+> DMA_IDX and before the "if (!idx)" block that programs the WED side
+> MTK_WED_WDMA_RING_TX window.
+> 
+> Since the status is dropped, mtk_wed_start() keeps going through
+> mtk_wed_hw_init(), mtk_wed_configure_irq() and mtk_wed_dma_enable(), which
+> arms MTK_WDMA_GLO_CFG_TX_DMA_EN and, for rx-capable v2,
+> MTK_WED_WDMA_GLO_CFG_TX_DRV_EN | MTK_WED_WDMA_GLO_CFG_TX_DDONE_CHK, and
+> then sets dev->running = true.  Can the hardware then fetch descriptors
+> from a ring whose base register was left at 0 by the preceding
+> mtk_wdma_tx_reset()/mtk_wed_reset(), leaving the WED offload silently
+> non-functional with no message?
+> 
+> The other caller of the same helper propagates the failure:
+> 
+> drivers/net/ethernet/mediatek/mtk_wed.c:mtk_wed_rx_ring_setup() {
+> 	if (mtk_wed_wdma_tx_ring_setup(dev, idx, MTK_WED_WDMA_RING_SIZE,
+> 				       reset))
+> 		return -ENOMEM;
+> 	...
+> }
+> 
+> and mtk_wed_start() itself already bails out on mtk_wed_rx_buffer_alloc()
+> and mtk_wed_rro_cfg() failures.  Since mtk_wed_ops.start is void and
+> mt7915_dma_start() cannot observe the error, would it make sense to abort
+> the start sequence locally here (skipping mtk_wed_dma_enable() and
+> dev->running = true) and log the failure?
 
-The above snipped is repeated 6 times verbatim: it's calling loudly for
-some deduplication.
+ACK I will add error messages and return when there's an error.
 
-Since all the existing dst_dev_overhead() users are touched here, I
-suggest moving the max() computation inside dst_dev_overhead().
+> 
+> [Severity: Medium]
+> This isn't a problem introduced by this patch, but does this new call add
+> another leak of dev->tx_wdma[0]?
+> 
+> dev->tx_wdma[] rings are allocated by mtk_wed_ring_alloc() via
+> mtk_wed_wdma_tx_ring_setup(), but the ring-release helpers never free that
+> array:
+> 
+> drivers/net/ethernet/mediatek/mtk_wed.c:mtk_wed_free_tx_rings() {
+> 	for (i = 0; i < ARRAY_SIZE(dev->tx_ring); i++)
+> 		mtk_wed_free_ring(dev, &dev->tx_ring[i]);
+> 	for (i = 0; i < ARRAY_SIZE(dev->rx_wdma); i++)
+> 		mtk_wed_free_ring(dev, &dev->rx_wdma[i]);
+> }
+> 
+> drivers/net/ethernet/mediatek/mtk_wed.c:mtk_wed_free_rx_rings() {
+> 	mtk_wed_free_rx_buffer(dev);
+> 	mtk_wed_free_ring(dev, &dev->rro.ring);
+> }
+> 
+> __mtk_wed_detach() calls those helpers and then does
+> memset(dev, 0, sizeof(*dev)), so tx_wdma[].desc/desc_phys are discarded and
+> the 32 KiB coherent allocation can no longer be released.
+> 
+> The existing allocation site is mtk_wed_rx_ring_setup(), so the omission
+> predates this change, but non-DBDC MT7986/MT7981 previously never allocated
+> tx_wdma[0] at all, and now every attach/start/detach cycle would leak one
+> more ring.  Would adding dev->tx_wdma[] to mtk_wed_free_tx_rings() be the
+> right way to restore alloc/free symmetry?
+> 
 
-/P
+There is a patch in MediaTek SDK fixing this exact issue.
+I will pull the patch from there.
+
+Link:https://github.com/mediatek/mtk-openwrt-feeds/blob/main/25.12/files/target/linux/mediatek/patches-6.12/999-wed-04-Fix-reinsert-wifi-module-cause-memory-leak-issue.patch
+
+Best regards,
+Zhi-Jun
+
+pw-bot: cr
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917144335.19466-1-hujy652%40gmail.com
+> 
 
