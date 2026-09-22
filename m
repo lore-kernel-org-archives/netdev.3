@@ -1,165 +1,126 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7DB48F004
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790101466; cv=none; b=LHLfSLFyPBcVPREa43j4vm2Xv651UE36V98iEwyXIHtgyBXIAeaXffJnL4jMa7KCjW1KgL+ROZuisydnd3ieMRuPijqi57SynWu7tvy0+URwdHSiZJaNRhJ3tDfQElc6n9jKWGzTYubkIESOXAXN+XaZAj+PF1lCuaryqAY52To=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790101466; c=relaxed/simple;
-	bh=0U/i3+N7RWpmWdB2K1SYwzNCBGMxTC5Yl1aUMawg65s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giZvNIJQ5IWpHd5CaJ53uD7cl6n3ILztl+VlTBT3Gh+VoSTZle8b7Z2Zb4puM2xk2EVUMcP2lOBihZhsqbrCC4vmBCyJj37QP8CmGzFE9DCc24mxNQ8ku7qYqe8We0/ZYTtBK2WlkgGyq73DIHfTFwrrGgah9vsfGRxt4TsQSn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=UlrURzwG; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F70648E0C1
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790101523; cv=pass; b=L6cG1E1gRVEnF+36+/4rijouTxFFkPudhxzeUg1JemLIWMv2wQ6FSk/R9pvI66m3b1evEkduu0iaIZP3LIgyFXJhgna4Y7IihgfUidcupDqKLmfTuXZ2Ac2GzGetpu6MPS8svJAQ4K4yd0ZiXVRQd3HVZ7uSCQKBYWYdqbp0VQ8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790101523; c=relaxed/simple;
+	bh=V0dB/2hLh2BY18gu/5VxbqVPnFHEO7kUHoe9YwYQ26o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mwZ7KEJOMEf9HmrVD2EW30pZlW0lIO8mnrKh9Q5yXX6Eac6vfjPd85Nvr4r3pryE47eaXSR51zjvaBqiWXoWENhxWuiSZ2tHxVsLLj/rKeuAzBIu5ZCc9PuDqr30I3eNteXkGv1hRKgT+bL9N4/cU7siR7ZGsR6oibnJaIsx3FE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZaYZ3Ut3; arc=pass smtp.client-ip=74.125.224.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="UlrURzwG"
-Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc75e33cc69so107236a12.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 11:24:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZaYZ3Ut3"
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-6729ca45e37so149051d50.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 11:25:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790101520; cv=none;
+        d=google.com; s=arc-20260327;
+        b=okrmPuDk/iDdKFHXJVcOOhhamXVBDjpjiokoiro9qlXLE8v0kwHcAgk6VBpSf75hC6
+         H8F805Cedkb6X9nvNxGD/w7ChA2sZuVrjezlfpsqFdF6KlC6zhYcWr/WZ6mqpzbTPBJH
+         fFtdJvovDkUEIVK/3/QbRUEr7R6/17qRtUKtfH9KoV+Sqk97+IJJK0QP3GJNudfJUriK
+         RAQRsvBpRkA+u9z1EqTZ+0JweF+ZWNID/ZjOixumWaL3h49HwMl4A9DPtRKYuOfu92Zs
+         ALBVKzJybM8XLtHikGSW8hK2wN4dVXOaVY787JYtJdZQbmUzjsKOgxH/zqoJ67TqZxQV
+         Wccg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=V0dB/2hLh2BY18gu/5VxbqVPnFHEO7kUHoe9YwYQ26o=;
+        fh=pVXaPI9hC8+1ghpKKRc/xgDsIhHDPKnBroJJLrR6pKg=;
+        b=LV9AaPId3ySzwnNPpYGwcSE2Dy47vKH1hRjO96dwuc1+iEtjI9KuqB2+Jq4l8pwn85
+         rd538l8pDYdpyYnTKrW9U4lRjr1K4W5W4emBjWVS/4GgLdZsf1LRh/noepisv2rlTqcJ
+         HAEbYqPytsy3xXehIFATk8IDvjMY+FzVcV3XwwV/zWtvnKDoC7R3UJ7p3pQIbAqp5kRF
+         TXJVS1cUNMwHKijR6q1hwx45y0PaRIUqlqBwMiOfeMuAoDnKoP4vJgyUnRmvboWfDsee
+         Om/2UNviWIc5cRgerZWfS8amN5o+8iF4z2SvsysF2+oqn7ML5KlqrPCzrbz8G5/tlXdz
+         iLmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790101464; x=1790706264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ak//GM/1EUqa8AvscB+gM/3Fh5QvD3sB1gF17iE3yxo=;
-        b=UlrURzwG8R4Ue7r+jYLcgun72YCjcev4xA+SVqqb6s6GcCTbFpB/BEhl2bngcNQQL+
-         yvzfaRqNHQ5HSO3dlRwo3K/1G6pA53QY7gn5+iavm3c4m0FUdeShVVl0PJ8JwrUDxTBI
-         l6J6fadvm6eR4EjzVR+PUHZ3H4CCKDdtTlVWxvmn4rkwemO6oI8Zylh5mCd3yWDIMHVt
-         24u+WdSD+5PhlzlFpZtK0sit6ETjy2zZGUuGnmUwR2jNUtQX5Zt7ukYClANQz/5OQufb
-         PGFRKPnsCxHsYU3K1dQiUOTkCl8+11js7TBnUqDMqS1wLmhc43zUL3tkuDyKHlqMQo8i
-         7L/g==
+        d=gmail.com; s=20251104; t=1790101520; x=1790706320; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=V0dB/2hLh2BY18gu/5VxbqVPnFHEO7kUHoe9YwYQ26o=;
+        b=ZaYZ3Ut3aJMdUl3eV1GZA6DDidQey7eHo0s5JCfQJgmIMPdBAd17eumcVPpM4zACg+
+         rQltV7qFbuI+yqJVImMd2gm8DwH0fWFBOCVJmu/e6ZwvIXYS+fbT7Tu3sxA4RWoSXQKd
+         QdXqOD4Qt2O1gCeW/qj0fpJaVSyk7EYOfx4Di7se1Hl3nSfJ2yhMOiR7pZ9z7Ng5jwSZ
+         u5c8PcFNjY/k49EgHIQk1rXSSIIOBjYm5ZXYYpltkAu0y863Yv3iZiUwnovkRhIn2+OK
+         1Neh+yt+H6xOKsf4mySkUHbUtIqHVmAV4m3u21n4yzEWEAnanXVqvMP29mAWNj5LONmo
+         rziw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790101464; x=1790706264;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ak//GM/1EUqa8AvscB+gM/3Fh5QvD3sB1gF17iE3yxo=;
-        b=x5hUUnhePo+0H9XkJ4PfJd5ZvnnIUOvvQtT8EHEdF6G/PlMFzpCtlWu9YVoc3KCa/B
-         jG/orHBcSDBwFdRt15ZWdfZ3/QbgHIDUhtWalkOfrloKMQAISnPAvjTCaVVI93x4hoP9
-         j85kF2nsJCmdP76ZJEEnrJUXH5MQww/grr9U0vdptbWoyw+/kX+m+w5y0LZ47L0Hw/jw
-         Kbt+cjV+BZvTU+Ky5V0a1RcwWjmMJteGtPW5A2yF0NtTBC3uZgf9gSTye90dxOv8w4VJ
-         7OeYdjb6U89wgDm+ehBCIl8vdBFGrSuk2ruyhSKby7JjBGNA3IHLnldtd2s44k7m3n1d
-         4uIQ==
-X-Gm-Message-State: AFuF++kBhff57n91U4z0rj+NEXpjopeJw1UnlOgjLV42WpvO8OVvQC4x
-	2rmpJ+Jx0UMmkpmLd+Py+bYwkAgXXaD5Tr6xhfNBTZoDmSh6Lemfv2ZZSPTUGx3xXEkKADLEqn0
-	v8I/J
-X-Gm-Gg: AYBFou3ouZ+T0tk27J/6pw9gnqtBh2NPniNV+9cXnYEi1uBfkI9uLdQfDwQzRyu398d
-	1MF9hw6dH1ziBK4HQwxPCF/MdTifiwSrWd1zyJM/Bu4mT0ORi2o0Y6hZ25Apx8bFaxtF/Jzw9uk
-	WivtDlOOP5Tj6SFp9KCB88m4akjsk4NMQMoJziCnfNbcYYEwxhsNfBX0HoqXHwLDRVQH9aW0c/j
-	HyJFhrz0TbmVkfOMoa5KkYMMe53dh+/CjvKf3u1lJC/AFjtZvpwGuznXnh3rzYo2/3A8nBvJ9z0
-	8DrYocNlwKZARGRdbIZBpD7nqVyLeWWj4cG2Bfyh0b/EQTBfsKUnepvstSgptnNVqZZk04/NwpV
-	sRWx2urTOGvQK+cLm6BgwDGX/BeiiFWytlUWRVFwSu3AGJyS19M2BMIbIDb6xYix+KG/UwweosJ
-	IISOaBzXkGSAs9umOgZk1HtLuxp8DIo+OTK5m5FGPskqx9w/zI/zHh
-X-Received: by 2002:a05:6a21:9082:b0:3dd:a195:dd60 with SMTP id adf61e73a8af0-3ddf82e5f1fmr256497637.66.1790101463748;
-        Tue, 22 Sep 2026 11:24:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:55::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc75f3ba8b6sm12098a12.5.2026.09.22.11.24.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 11:24:23 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Prashant Sreedharan <prashant@broadcom.com>
-Cc: horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joe Damato <joe@dama.to>
-Subject: [RFC net v2 3/3] bnxt_en: stop DMA before releasing rings the firmware did not free
-Date: Tue, 22 Sep 2026 11:24:03 -0700
-Message-ID: <20260922182405.1290749-4-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260922182405.1290749-1-joe@dama.to>
-References: <20260922182405.1290749-1-joe@dama.to>
+        d=1e100.net; s=20260707; t=1790101520; x=1790706320;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V0dB/2hLh2BY18gu/5VxbqVPnFHEO7kUHoe9YwYQ26o=;
+        b=WP3vwHa1G+Wh9SrpsP1DVu4ERQLYbZ1biJRxgV4S1URbEK1TRA9qvoy7acFWlCJCgG
+         VaVRRNZZY08gF8j23rfnzKD428GYEyaQZw3ocA0crkWaKslDLf66fIhcNWoN2ExRIHQ6
+         dPHAwFYlshUDyj7jw9IY49dklFMeW5B7YkO+tXaf6M0pGm6k0mQM39YN1sVyRrUcx51G
+         Gs96S6kMG8gM8L5K0Re3kUFEOQeWFNfGDSQoj1kNCzvq3RUDtmM7QIzwXbJgQoFok6Og
+         LdErQW0QAGYZcIsGdoqfFApBwF8W7/h8yNjtoBVl7ZzNMgIdg0qBG2ffx/8LRTMu+AF1
+         31fA==
+X-Forwarded-Encrypted: i=1; AKwUvBw0wDfhqDx7jHG74Iwec/nMCN5cTAJzlqdsLrSOJ+cyIPoaUf5sdDJQS3e5EI/91jj6u3wqmEI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nnqCPRDttdN4LPKI0nUPMQtxhmNOFiIVqgrZIE+Y2InxqTt0M8
+	DTAV0JfB2BQKXZs5GCb85Pv69qAbyY6NQWHX++fQHnOFuD6yHXcNtkLDWjmQ29INvO7qB7Y7g0I
+	aBb3c9a/JhaTWEikJWztt5FsNQ2RPg8g=
+X-Gm-Gg: AYBFou1x9PtGs34bePs23VZpbMct6uXqhjQpbZUHL7iiXhQnApm+s8XCsdx6dXhg9Pa
+	4zTXMv+xHy8i2abN6488lvZtHl8NBAhx+fmwW/fxyU7aT6SzPmokc9K5QBD/wZuiAXNAK6zFKL9
+	rqcs4N5D9nyEc3n8raSGSk0c2igZcI3G0DsYr2oekoG6fMBU1BFZlXRw4seLSQVmMtxP7nbxVHX
+	dniQ/yd4JhMANZPnNJIox95Ql2Fpl6SYtIdCgKG/Laiy34XhCXU9ytFjAwwisYqQhz3yh9WlakY
+	ocPE/EdNNJIIaHTs8MpKmy6f3L88gJAAWo6i17V4RjfMKOIK9YZM2Bfil3ek1jgO+xKfULjocL0
+	vyiiAy16lMDnZuaJwiMozC2bdYWcx9A3qC9mjBkSGfp5Wwpy/NceNt0RgW5uZv38RBBQULgU2Rp
+	Omx+f8s9cfB7E6WGqhewrKzk1GLXZAWw==
+X-Received: by 2002:a05:690e:144f:b0:671:2f98:1d4a with SMTP id
+ 956f58d0204a3-672d57ad1b5mr220702d50.56.1790101520428; Tue, 22 Sep 2026
+ 11:25:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAOiHx=mJZKk9dT93am0o58Th+yPo2aGj6T4aFWkyeQphPwu4YA@mail.gmail.com>
+ <20260922174801.261426-1-chrismelnu@gmail.com>
+In-Reply-To: <20260922174801.261426-1-chrismelnu@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Tue, 22 Sep 2026 20:25:09 +0200
+X-Gm-Features: AcwNN1UEvy6TdjYYAWkeuYOPQ_NK0GTqepljOJUu3EhCkadF-JTRqyfAGfbDh9s
+Message-ID: <CAOiHx==_ixY-VNWX=XxqCFoJvE-80i+r2y6SNnxwQe9uZQJL6w@mail.gmail.com>
+Subject: Re: b53.rst: is the 5325/5365 "no tagging support" section still accurate?
+To: Christian Melendez <chrismelnu@gmail.com>
+Cc: =?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When HWRM_RING_FREE is not answered, bnxt_hwrm_ring_free() clears
-fw_ring_id and __bnxt_close_nic() goes on to call bnxt_free_mem(), which
-unmaps the ring memory and the RX buffers that the FW may still be
-using.
+Hi Christian,
 
-This is reachable in production. On a BCM57504 the first sign is the TX
-watchdog; the close that follows times out a subset of its RING_FREEs and
-the driver releases those rings anyway:
+On Tue, Sep 22, 2026 at 7:48=E2=80=AFPM Christian Melendez <chrismelnu@gmai=
+l.com> wrote:
+>
+> Hi Jonas,
+>
+> Thanks for confirming!
+>
+> Quick follow-up on the "configuration examples look horribly outdated"
+> part. Once 5325/5365 move to the tagging-supported section, the single
+> port/bridge/gateway examples further down only apply to 539x/531x5. Were
+> those outdated specifically for 5325/5365, or wrong in general?
 
-  05:30:12  NETDEV WATCHDOG: transmit queue 0 timed out 6073 ms
-  05:30:12  Resp cmpl intr err msg: 0x51                  x20
-  05:30:12  hwrm_ring_free type 1 failed                  x12
-  05:30:12  hwrm_ring_free type 2 failed                  x8
-  05:30:12  AMD-Vi: IO_PAGE_FAULT  x3
+Looking at Documentation/networking/dsa/configuration.rst, which has
+similar examples, the configuration examples are actually part of the
+"without tagging support" section.
 
-Count the rings the firmware did not free and, if there are any, disable
-the device before the close path releases memory.
+And since "without tagging support" doesn't apply to any b53 switches
+anymore, the whole section and the configuration examples can be
+dropped, and it doesn't matter anymore whether this is (still) valid
+configuration or not ;-)
 
-The device stays unusable until a firmware reset.
-
-Fixes: 74608fc98d28 ("bnxt_en: Ring free response from close path should use completion ring")
-Signed-off-by: Joe Damato <joe@dama.to>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index a7f6facca7b4..574532d7047b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -7756,6 +7756,7 @@ static void bnxt_clear_one_cp_ring(struct bnxt *bp, struct bnxt_cp_ring_info *cp
- 
- static void bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
- {
-+	int stuck = 0;
- 	u32 type;
- 	int i;
- 
-@@ -7763,12 +7764,15 @@ static void bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
- 		return;
- 
- 	for (i = 0; i < bp->tx_nr_rings; i++)
--		bnxt_hwrm_tx_ring_free(bp, &bp->tx_ring[i], close_path);
-+		if (bnxt_hwrm_tx_ring_free(bp, &bp->tx_ring[i], close_path))
-+			stuck++;
- 
- 	bnxt_cancel_dim(bp);
- 	for (i = 0; i < bp->rx_nr_rings; i++) {
--		bnxt_hwrm_rx_ring_free(bp, &bp->rx_ring[i], close_path);
--		bnxt_hwrm_rx_agg_ring_free(bp, &bp->rx_ring[i], close_path);
-+		if (bnxt_hwrm_rx_ring_free(bp, &bp->rx_ring[i], close_path))
-+			stuck++;
-+		if (bnxt_hwrm_rx_agg_ring_free(bp, &bp->rx_ring[i], close_path))
-+			stuck++;
- 	}
- 
- 	/* The completion rings are about to be freed.  After that the
-@@ -7798,6 +7802,17 @@ static void bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
- 			bp->grp_info[i].cp_fw_ring_id = INVALID_HW_RING_ID;
- 		}
- 	}
-+
-+	if (!stuck)
-+		return;
-+
-+	/* FW never acknowledged freeing these rings, so it may still be
-+	 * DMAing to them. Stop the device before handing memory back.
-+	 */
-+	netdev_err(bp->dev,
-+		   "Firmware did not free %d ring(s); disabling DMA before releasing ring memory. A firmware reset is required.\n",
-+		   stuck);
-+	pci_disable_device(bp->pdev);
- }
- 
- static int __bnxt_trim_rings(struct bnxt *bp, int *rx, int *tx, int max,
--- 
-2.53.0-Meta
-
+Best regards,
+Jonas
