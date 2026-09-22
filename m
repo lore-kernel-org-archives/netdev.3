@@ -1,309 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566D952940D;
-	Tue, 22 Sep 2026 08:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2AF437852
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790067260; cv=none; b=LTQo7wK63n3YDiuE1wG5pLy6e63TISt0CNlSpfALfpDM94YWFTWn3iQitXejI3Wa13lP9otsInwGvFcSzvUQOjaLPcc0o+OReBuq4f0+7vNYUYF9W1H8vvfgX4e3I3YSqMSwy86FtmU416eQcckVC1WH+BAfh4XMdjJQqCP2SL0=
+	t=1790067298; cv=none; b=NavPG+DW0yLSGp6vlXrEkEYEL4Cpm0Mdv/IYOXVJ/YmE2RkVKyaMS62Y7gABIGaMs2ewlCuLVNsGM7QfNIQlmBIVhJg+kk3B/WOD+c3aAxpjGcag9iP//RAZWtNcO6zEnIN31/5OAiZY4msSLLl3krQJ4o2nZfV8rBk4Onft0WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790067260; c=relaxed/simple;
-	bh=7b6x1iPJBqhZxE3iVxJ4V6wLrecCjEQZUm6mSgGXWR4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JT2Bhx+yI95hh3UF16TzlqH0IEp+XzAtpT6xJpxRo9Kwz6I1iaOVr+UECNMMQE84H9tH/x5IAyjWOEEuRYwIzxzFrtbp/R0kwV/2veYDyyK7QP8fmaM8hKp/SN7U2QGwHpi/zfk/g4UZx93tVNRuBv7lkf70Zn9m51FLAdGTYJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mluKtLZD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790067298; c=relaxed/simple;
+	bh=hqy04BB/HgDINoVUhWeFWFYZZ6xOyJXokN9oZJ8qz1U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XrJzyAlWd2Y87akE3Tt/MwNB89hSjyTCIGytHFASWZ/Ia/d4Ha1aGtX7UPx/5/9n20/i0fG32WJEYJmQAtHEAAV3Dz6/xCOpPOCCOPBeBgoxsmrMW1rC2ysSZDwhdGrUCAViL/0wwFZQGPXrMj/YkUoJpPLXFLa3wcUO9/5Gr7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CULimMPq; arc=none smtp.client-ip=95.215.58.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mluKtLZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBDF1F0089C;
-	Tue, 22 Sep 2026 08:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790067258;
-	bh=ztFUTQ/Xb0JCqkSpl/vWxy9EoiuZ2FshYMashwoKPxg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mluKtLZDnAwHWlwVTRUtICq+euH7qDJRRDX4HPmmhl4gvklmB1zn9NCTLXp2dCqPh
-	 JcXW1rOe3Xc3ncJb6W+ESsL/k7S04lX+gOFNVmOtsuGeCrJ2dBYm367LeQPpeQHt1V
-	 CjEgV4oAqwbB+LZIgb14WhDIo+jirViHZgHwrgJ4A0g6fcuLUasDyOhVseN5f77SLG
-	 XnHxTyOLsYuzV0kZLxLrCek9nJsUShbGufbJKoRWrMobT9VFSRKvDE9rwLj8nuwQhA
-	 dfV/Tyzof7ZRt1EE1FX8G2MGFNsvtqOK0c9yaxvAtq52RmNcIC7b3OSnOL1L9rgnLh
-	 3dGpVBhLdtaWg==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org
-Subject: [PATCH net-next v6 12/12] net/rds: hold a connection reference from struct rds_incoming
-Date: Tue, 22 Sep 2026 01:54:10 -0700
-Message-Id: <20260922085410.391323-13-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260922085410.391323-1-achender@kernel.org>
-References: <20260922085410.391323-1-achender@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CULimMPq"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=hqy04BB/HgDINoVUhWeFWFYZZ6xOyJXokN9oZJ8qz1U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790067292; v=1; x=1790672092;
+ b=CULimMPqjog3vYFao2ra1v6r7+3q8YCINcUAiC+CrtiUpKCI6V74Cb2aa8jEjyVpDoJP5tap
+ BFl1I1KRsqN1HMNlf2Z7zkqONiKzyhv4Djdkc5dx1u+86us1upo0eYMjKw0MVT5Td3tzjDAVdz7
+ 0+d1mWiuv49JXtSEuqiIRQ+M=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id de27700ab8f48a64;
+	Tue, 22 Sep 2026 08:54:52 +0000
+X-Mizu-Trace-ID: de27700ab8f48a64
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Subject: [PATCH net-next 0/5] seg6: add End.X PSP flavor support and
+ selftests
+Date: Tue, 22 Sep 2026 16:54:42 +0800
+Message-Id: <20260922-srv6_flavors_endx-v1-0-4d01c05c47b7@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQrDIBBA0auEWUdQSaX2KiWEEMd2oEzKTBAhe
+ PdIlm/x/wmKQqjwGk4QLKS0c4cbB9i+K3/QUOoGb32w0XujUsKSf2vZRRfkVE2cntG5kB52m6B
+ 3f8FM9X6+gfEwjPWAubULuyNQX20AAAA=
+X-Change-ID: 20260922-srv6_flavors_endx-9489116d50c4
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+This series adds End.X PSP flavor handling in seg6local and extends the
+SRv6 selftests to cover it.
 
-struct rds_incoming->i_conn stores a pointer to the connection a message
-it belongs to, for both received messages and messages the socket sends.
-But without taking a reference, nothing keeps that connection alive.
-Embedded as the messages m_inc, an inc routinely outlives the connection
-it points at, by sitting in the socket's receive queue until the
-application reads it, while the connection is destroyed by device removal,
-netns teardown or module unload - and every dereference of i_conn after
-that point touches freed memory.
+Patch 1 splits the final forwarding step out of end_flv8986_core() so
+RFC8986 flavor logic can be reused outside the End path.
+Patch 2 uses that to add End.X PSP support through the same
+end_flv8986_core() path.
+Patches 3-4 refactor the PSP selftest setup/cleanup so flavor tests can
+be added more cleanly.
+Patch 5 adds End.X PSP connectivity coverage and updates the selftest
+policy parser to accept an explicit action field.
 
-Chengfeng Ye reported one way to reach it, where the socket info
-callbacks walk a receive queue after rmmod freed the connections:
+The goal is to make End.X PSP behavior consistent with End PSP, while
+keeping the selftest structure easier to extend for later flavors.
 
-  BUG: KASAN: slab-use-after-free in rds6_inc_info_copy+0x459/0x530 [rds]
-  Read of size 1 at addr ffff888106031c50 by task poc/101
-  Call Trace:
-   rds6_inc_info_copy+0x459/0x530 [rds]
-   rds6_sock_inc_info+0x2b9/0x3c0 [rds]
-   rds_info_getsockopt+0x19d/0x380 [rds]
-   do_sock_getsockopt+0x2ac/0x480
-   __sys_getsockopt+0x128/0x210
-  Freed by task 102:
-   kmem_cache_free+0x1b5/0x3d0
-   rds_conn_destroy+0x484/0x600 [rds]
-   rds_loop_exit_net+0x32/0x50 [rds]
-   unregister_pernet_device+0x2c/0x50
-   rds_conn_exit+0x13/0xa0 [rds]
-   rds_exit+0x1a/0xc40 [rds]
-   __do_sys_delete_module+0x30a/0x4d0
+Run all srv6 selftests on debug kernel. All passed without error.
 
-Closing the socket gets there too, with no reader of i_conn other than
-RDS itself: freeing an IB inc dereferences i_conn to hand the inc and
-its fragments back to the connection's recycle cache, so draining the
-receive queue of a socket whose connection is gone crashes in the
-transport:
-
-  panic
-  ...
-  rds_ib_recv_cache_put (net/rds/ib_recv.c:703)
-  rds_ib_inc_free (net/rds/ib_recv.c:207)
-  rds_clear_recv_queue (net/rds/recv.c:909)
-  rds_release (net/rds/af_rds.c:212)
-  __sock_release (net/socket.c:649)
-  sock_close (net/socket.c:1336)
-
-with the freed connection confirmed by its now-zero reference count:
-
-  -trace[9]["inc"].i_conn.c_refcount
-  (struct kref){
-          .refcount = (refcount_t){
-                  .refs = (atomic_t){
-                          .counter = (int)0,
-                  },
-          },
-  }
-
-Now that connections are reference counted, make every holder of i_conn
-own a reference.  The pointer is assigned in six places - rds_inc_init()
-and rds_inc_path_init() for received messages, rds_recv_incoming() when
-it re-points an inc at the connection it arrived on, and
-rds_send_queue_rm(), rds_send_probe() and the congestion-map path of
-rds_send_xmit() for m_inc - and each of them now takes a reference.  The
-references are dropped from rds_inc_put() and rds_message_put(), which
-are the points where the last user of the pointer goes away.
-rds_recv_incoming() takes the new reference before dropping the old one,
-so re-pointing an inc at the connection it already refers to cannot free
-it.  rds_inc_put() drops its reference through a local copy, since
-inc_free() may free the memory the inc lives in.
-
-This keeps a connection allocated for as long as messages that arrived
-over it are queued on sockets, which is longer than before.  What
-lingers is the quiesced connection, its per-path workqueues (idle,
-every work cancelled) and the transport's per-connection state,
-including an IB connection's receive caches: rds_conn_destroy() still
-quiesces the connection synchronously, so nothing runs on any of it.
-It also means the transport cannot unload while such a datagram is
-unread - rds_conn_wait_conns_freed() waits, warning every ten seconds,
-until the application reads or closes.  That is the intended
-behaviour: teardown does not discard queued data, and unloading over a
-live reference would be a use-after-free in the transport's text.
-
-The final rds_conn_put() runs the free path, which destroys the per-path
-workqueues and therefore may sleep, so the last reference has to be
-dropped from process context.  It always is.  While a connection is
-alive its hash-table entry holds the initial reference, so a put from a
-completion handler or tasklet can never be the last one; that reference
-is dropped by rds_conn_destroy(), from process context, after the
-connection has been quiesced and its queued messages freed.  The
-references that survive that point are the ones held by incs on socket
-receive queues and by messages on socket send queues, and those are
-dropped from recvmsg and from close - process context in both cases.
-
-This is not a stable candidate: reaching the use-after-free requires
-freeing a connection out from under a live socket, which needs
-CAP_SYS_MODULE, netns teardown or physical device removal, and the fix
-depends on the connection reference counting introduced earlier in this
-series.
-
-Based on the Oracle UEK commit "net/rds: fix crash by
-expanding kref coverage to rds_incoming.i_conn".
-
-Reported-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-[achender: port to net-next: same six assignment sites, but upstream
- splits the message free across rds_message_unpin_worker(), so the
- m_inc reference is dropped from a shared rds_message_free() helper
- that both paths call; rds_recv_incoming() takes the new reference
- before dropping the old; rewrite commit message]
-Assisted-by: Claude-Code:claude-opus-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
- net/rds/message.c | 16 ++++++++++++++--
- net/rds/recv.c    | 26 +++++++++++++++++++++++---
- net/rds/send.c    |  4 ++++
- 3 files changed, 41 insertions(+), 5 deletions(-)
+Hangbin Liu (5):
+      seg6: split final End process out of flavor processing
+      seg6: add RFC8986 flavor support for End.X
+      selftests: seg6: move SRv6 End PSP setup into its own helper
+      selftest: seg6: add explicit cleanup for SRv6 End PSP test
+      selftests: seg6: add End.X PSP selftest
 
-diff --git a/net/rds/message.c b/net/rds/message.c
-index 47d5e9ab9b10..cea48ad745ca 100644
---- a/net/rds/message.c
-+++ b/net/rds/message.c
-@@ -182,6 +182,18 @@ static void rds_message_purge(struct rds_message *rm)
- 		kref_put(&rm->atomic.op_rdma_mr->r_kref, __rds_put_mr_final);
- }
- 
-+static void rds_message_free(struct rds_message *rm)
-+{
-+	/* get in rds_send_queue_rm(), rds_send_probe() or the congestion
-+	 * map path of rds_send_xmit().  Messages that were never queued on
-+	 * a connection have no reference to drop.
-+	 */
-+	if (rm->m_inc.i_conn)
-+		rds_conn_put(rm->m_inc.i_conn);
-+
-+	kfree(rm);
-+}
-+
- static void rds_message_unpin_worker(struct work_struct *work)
- {
- 	struct rds_message *rm = container_of(work, struct rds_message,
-@@ -192,7 +204,7 @@ static void rds_message_unpin_worker(struct work_struct *work)
- 	if (rm->atomic.op_unpin_deferred)
- 		rds_atomic_op_unpin_page(&rm->atomic);
- 
--	kfree(rm);
-+	rds_message_free(rm);
- }
- 
- void rds_message_put(struct rds_message *rm)
-@@ -217,7 +229,7 @@ void rds_message_put(struct rds_message *rm)
- 			return;
- 		}
- 
--		kfree(rm);
-+		rds_message_free(rm);
- 	}
- }
- EXPORT_SYMBOL_GPL(rds_message_put);
-diff --git a/net/rds/recv.c b/net/rds/recv.c
-index 6204e577a90a..1fcd4483d3be 100644
---- a/net/rds/recv.c
-+++ b/net/rds/recv.c
-@@ -46,6 +46,7 @@ void rds_inc_init(struct rds_incoming *inc, struct rds_connection *conn,
- {
- 	refcount_set(&inc->i_refcount, 1);
- 	INIT_LIST_HEAD(&inc->i_item);
-+	rds_conn_get(conn);	/* put in rds_inc_put() */
- 	inc->i_conn = conn;
- 	inc->i_conn_path = NULL;
- 	inc->i_saddr = *saddr;
-@@ -61,6 +62,7 @@ void rds_inc_path_init(struct rds_incoming *inc, struct rds_conn_path *cp,
- {
- 	refcount_set(&inc->i_refcount, 1);
- 	INIT_LIST_HEAD(&inc->i_item);
-+	rds_conn_get(cp->cp_conn);	/* put in rds_inc_put() */
- 	inc->i_conn = cp->cp_conn;
- 	inc->i_conn_path = cp;
- 	inc->i_saddr = *saddr;
-@@ -81,9 +83,19 @@ void rds_inc_put(struct rds_incoming *inc)
- {
- 	rdsdebug("put inc %p ref %d\n", inc, refcount_read(&inc->i_refcount));
- 	if (refcount_dec_and_test(&inc->i_refcount)) {
-+		struct rds_connection *conn = inc->i_conn;
-+
- 		BUG_ON(!list_empty(&inc->i_item));
- 
--		inc->i_conn->c_trans->inc_free(inc);
-+		/* inc_free() can free the memory @inc lives in, so the
-+		 * connection reference has to be dropped through the
-+		 * copy taken above.
-+		 */
-+		conn->c_trans->inc_free(inc);
-+		/* get in rds_inc_init(), rds_inc_path_init() or
-+		 * rds_recv_incoming()
-+		 */
-+		rds_conn_put(conn);
- 	}
- }
- EXPORT_SYMBOL_GPL(rds_inc_put);
-@@ -325,6 +337,13 @@ void rds_recv_incoming(struct rds_connection *conn, struct in6_addr *saddr,
- 	unsigned long flags;
- 	struct rds_conn_path *cp;
- 
-+	/* every caller initialized @inc with rds_inc_init() or
-+	 * rds_inc_path_init() first, so i_conn already holds a reference.
-+	 * Take the new one before dropping the old, so that re-pointing an
-+	 * inc at the connection it already refers to cannot free it.
-+	 */
-+	rds_conn_get(conn);
-+	rds_conn_put(inc->i_conn);
- 	inc->i_conn = conn;
- 	inc->i_rx_jiffies = jiffies;
- 	if (conn->c_trans->t_mp_capable)
-@@ -406,8 +425,9 @@ void rds_recv_incoming(struct rds_connection *conn, struct in6_addr *saddr,
- 	 * rds_find_bound() uses a global (netns-agnostic) hash table.
- 	 * An RDS connection created in netns A can match a socket bound
- 	 * in the init netns, delivering inc cross-netns with inc->i_conn
--	 * pointing into netns A.  When cleanup_net() then frees that conn,
--	 * any subsequent dereference of inc->i_conn is a use-after-free.
-+	 * pointing into netns A.  Cross-netns delivery is wrong on its
-+	 * own, and the inc's connection reference would keep a
-+	 * connection of a dead netns around, with a stale c_net.
- 	 * Drop the inc if the receiving socket lives in a different netns.
- 	 */
- 	if (!net_eq(sock_net(rds_rs_to_sk(rs)), rds_conn_net(conn))) {
-diff --git a/net/rds/send.c b/net/rds/send.c
-index 2d7839438abd..9b0a77ef7f38 100644
---- a/net/rds/send.c
-+++ b/net/rds/send.c
-@@ -290,6 +290,8 @@ int rds_send_xmit(struct rds_conn_path *cp)
- 			}
- 			rm->data.op_active = 1;
- 			rm->m_inc.i_conn_path = cp;
-+			/* put in rds_message_put() */
-+			rds_conn_get(cp->cp_conn);
- 			rm->m_inc.i_conn = cp->cp_conn;
- 
- 			cp->cp_xmit_rm = rm;
-@@ -947,6 +949,7 @@ static int rds_send_queue_rm(struct rds_sock *rs, struct rds_connection *conn,
- 		/* The code ordering is a little weird, but we're
- 		   trying to minimize the time we hold c_lock */
- 		rds_message_populate_header(&rm->m_inc.i_hdr, sport, dport, 0);
-+		rds_conn_get(conn);	/* put in rds_message_put() */
- 		rm->m_inc.i_conn = conn;
- 		rm->m_inc.i_conn_path = cp;
- 		rds_message_addref(rm);
-@@ -1570,6 +1573,7 @@ rds_send_probe(struct rds_conn_path *cp, __be16 sport,
- 	list_add_tail(&rm->m_conn_item, &cp->cp_send_queue);
- 	set_bit(RDS_MSG_ON_CONN, &rm->m_flags);
- 	rds_message_addref(rm);
-+	rds_conn_get(cp->cp_conn);	/* put in rds_message_put() */
- 	rm->m_inc.i_conn = cp->cp_conn;
- 	rm->m_inc.i_conn_path = cp;
- 
+ net/ipv6/seg6_local.c                              |  20 ++-
+ .../testing/selftests/net/srv6_end_flavors_test.sh | 168 +++++++++++++++++++--
+ 2 files changed, 172 insertions(+), 16 deletions(-)
+---
+base-commit: 10cfa109c880092df32e396647b4afdca9be8350
+change-id: 20260922-srv6_flavors_endx-9489116d50c4
+
+Best regards,
 -- 
-2.25.1
+Hangbin Liu <liuhangbin@kylinos.cn>
 
