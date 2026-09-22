@@ -1,199 +1,191 @@
-Received: from mail-wm2-f7.google.com (mail-wm2-f7.google.com [74.125.225.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8DB544D4F
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A73E55C1C9
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790090973; cv=none; b=KVWyGFDBMfyvlTGgWIFxAKrxuhaBIpsZhTt3Jm2uFBb8rm6BqkGw3nBIyVzH68JNcp3cmX+OyhY5jPVMDcZHhvgOrV/jlxfhBSQ/rchEBv45nt4GvxqMyD2QoYDFJyyChjMjksJhYisoaPI83wlD69GiYHcbe/s1Y0f2s7OT3Vk=
+	t=1790091264; cv=none; b=jHPb+MgKNAr5olFz4BUTDSfvcgnyKU74DyqDnj0mNF2oFt1nSEYjJXh1TE+vbExoe6yRn6Ykq9Ojwh8PBo1emZ31EW0p5kRPI53gNOR/xvKquNjv+uQ+ZL4S92N1BWSpiYCFodzD7OEItFc2o97YQ668uxJofE9eiRtgyLXt3W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790090973; c=relaxed/simple;
-	bh=WGdxf4JWgsj7qXEES4uwLAJCsB8IbrSJIDy8qKtOpcM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rbGDw3PY2jagVhwvP0kHtjX5i/Yqky+tg6G/PezI9OVki6gvwHuNP9HSnSJ6M81FFXCQpQ89iuB0qCXH9A9BHVgHpoNVhCCPQ++pnsj/YIjZkA8pzTImfSCtmBYYRIAmfFsnvHMRu7uTNIIzmNqWCVX9p+bSyDg/Y1CRZtIt4m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f7.google.com with SMTP id 5b1f17b1804b1-49e7f43f439so1630425e9.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:29:31 -0700 (PDT)
+	s=arc-20240116; t=1790091264; c=relaxed/simple;
+	bh=EJDiYeiJhHLqMS4QEKjrDDO5ntp031Qoz8AN4F9L8IY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S0vHRp4Vbt3CesNiTEQWoiNxoDLaCRXZ5iOhUzRkF7jGKYZAMuYwZg5yntWsq+ZBQZPIFNgb/tJ9Y7Gc+QXvwqtPC9k2AoYnjJ47Chx/Ew/nOyHwntm2OvZPUUAX7JOsFjXJd3ZKj6eu2FdiubNEBhUgJ5A/4IYflyRp82DKMeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tr/8VGAX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B3Y7QpCa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tr/8VGAX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B3Y7QpCa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790091261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tfNl2I4x4/cNHRA9ep8x0OYkNfYTKx3divzOhknoMxE=;
+	b=Tr/8VGAXL5srt9wD9SW4FbktALjJKZB6icnh6tEzYC5uEr2+/MwMfaW6X0WQJOTobZk1vu
+	j7jj3FSNIexMi3kBbcWxRXKAlyMsKdiysq+FOyL6hX8kz/t8e1xsXxM+BoxXhaR5RP33IL
+	lnsPSEjYEd3P4GwxTjD508HUyazcmW8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-136-OP2jHxBsPye3a0wt5PyIfg-1; Tue, 22 Sep 2026 11:34:19 -0400
+X-MC-Unique: OP2jHxBsPye3a0wt5PyIfg-1
+X-Mimecast-MFC-AGG-ID: OP2jHxBsPye3a0wt5PyIfg_1790091258
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e661c6440so23884285e9.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790091258; x=1790696058; darn=vger.kernel.org;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tfNl2I4x4/cNHRA9ep8x0OYkNfYTKx3divzOhknoMxE=;
+        b=B3Y7QpCaxE1B8dQGISb0d5CAJ4WXA9msrh6YLjRJslTWt0vup6VshfYBUzap+OyNvi
+         fzZ8wmxfomT6BKdZGb+R9WZl49x9RvOHHNFQk5clpz9Eh9nPISPYPq0e/nK5XXxpz0df
+         Sq32C5yo6XI4ExMvurpkqB/tjj7ZDyCeiRTovx7PL1+n1zVRdADl2xg/pbcxIWY2OiMK
+         yE+oPTdcHtyshl02Ht9AF1msLzzp73OF0jilnAtmBQxq021MZzaXb/9Xyq6OeMkHceWF
+         A0lnEJ3VVb/7ys8DfAnyu3pF78QLcR44scsEU+3PPDRO8Ar/OzQE6P8PXPaLr1841Rwg
+         KUzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790090970; x=1790695770;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QFN5eT2UnxXyQbw0Bbtp+XvC5zxP4g1xuK4mAIg36L4=;
-        b=Dy+EBJXgcd2ZMpnyOwaOMOS1enZy458GW+m+vStyqJA/ohEmQ5csza9SNQXXchA6AM
-         yLPB0Sx7WG/xRulfziLLzRn0GIO2M89KJFuMEFr/FZ+qM4i1Z/5rikKkXsIg089Y0tov
-         3X2Co/l+Uf2bL2mROBsmD3WXoBuRfsoi3YdeeRdjDWiQ8h+J0tZkuDivT8bfXfH69lhQ
-         AXNVjdWp/h/C++BFCfDsU6wS9+GylZv2xJ4/C6uBuyBtZzh7GpuNiwxLVfV5/i7y8QBG
-         UNuO62uzZgXwlANiB1A/Mo4fqqh7+0va+Ii/F3NFWRJN2skPtQi7szl0T0+eRlhzJZFi
-         UQeA==
-X-Gm-Message-State: AFuF++nVoxd56UmtRjqbKG7y4jXRejPjBDDBNiS806RwPyvboBjBzcuc
-	kh+A9aGLZbYj7WT7oLkRab8KTcblhw7M3+3m4lK/mjTkxz7p8+enqylF
-X-Gm-Gg: AYBFou1A5vYLWIBFraYThkAc/60It0ehVB6u4C4PxaRCbQS36RQH5B4xbUppecpRn3s
-	GN2uVeZRert1e9L84Ru0XiJtXgNhW1c+Mn03rbxYRuZlAhi+wEfnFpYqWjFze1ySMUoevErF1YF
-	KwXEa9jcfcJz03i58LBr0mVNjysdLyjGRUaerAa5MhI91reIL1W8lU564GL64xEPZxgdi3YzjAQ
-	y1utueXZL9MQtj9/uj4ZWE0bjF3Qw/lfFxD0xy2XFI5KJ+faHJqPmWaeEpYn0asjRxwLGUfBPP/
-	E5Z0u4PCd7dIhN/ZRbzVQ4tc8VLS/gQRk8+WL2KRO1K+zmW/HlV4ukNLYMgoNslCl3lJVNK2hjx
-	x992n7H6ZXBmjNt1oT3uoFzC09WqKBndvXzExESIj7qnUGaldGdH+28Gusm3CC9LEMBeq1DHfv5
-	EON46qEMhM1r2cdhxL1pNOSfgxZOJQ+q1wP+yOYlUGdZNMx5wSwhoAfC/tLyFTF6Uly93Vv+TIS
-	hAvqo3drRpioAeAttl4koEMvtB9aN4czUmcZGzoNs++nBo=
-X-Received: by 2002:a05:600c:8b10:b0:49d:2936:8ad1 with SMTP id 5b1f17b1804b1-49fd8853834mr49427975e9.1.1790090969679;
-        Tue, 22 Sep 2026 08:29:29 -0700 (PDT)
-Received: from [192.168.88.241] (78-80-107-225.customers.tmcz.cz. [78.80.107.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fda8f04f7sm96753605e9.0.2026.09.22.08.29.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 08:29:29 -0700 (PDT)
-Message-ID: <e3e001ae-cf08-408a-9059-4255de915110@ovn.org>
-Date: Tue, 22 Sep 2026 17:29:27 +0200
+        d=1e100.net; s=20260707; t=1790091258; x=1790696058;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=tfNl2I4x4/cNHRA9ep8x0OYkNfYTKx3divzOhknoMxE=;
+        b=PY1w7eraxn+p4+dcpyMvtF2ba3D+6/zh4o/I9fTIbwf4qYpH/ZNGW0bFH5/KqB6AIn
+         kU8TIrZ/OSrSEvrVRciNWfyTfG6O9vnEzvaUtvJEIlOQUTEVtS4W3zWFCYbIP6FBKA/8
+         MVoG2DSdGZJ2+OXqsaB077ZDACHqeu4SpuiZ/W8NfxsPJmhrtj3gfNxBv5je7IDU+Is8
+         8bIzP7pDMBeBpuQ43nmiNiWBFEIZm3MqUoAc9nPIi+rE8MAaihJpell161pR7jWFKe9G
+         90XeTSiLwNVxFe/FNFMGI4dnsC8tgaps12vF4i67Wg+AlD+WAkdnYye4myxoV3sv3t/j
+         YznQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxs9dCR/VokBxzKmZaRWLO1IgB9ZFVQH9Jrwd6lwxcF8CyZbH/uKcL/cppwAXg4U2gqnYdlaC4=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/401en1i3cCFKVEfawB9c8qa8HrAwD5UKUAJeytk6T6ssV+35
+	8KzkneJN6ccESY5L0ouGwXw7XqmiLUyFQbSy+KNYVjDesfIJMeJSa1VEugrTenewxEMpgkvyUjz
+	3YftVctaiiehBJBX0u6Ywpz0/E23lhAVmRyip/mwzrySK3Yb2riUIFkc5Bg==
+X-Gm-Gg: AYBFou2l3UlU3z405xCgIXUdm0HSiJqzg+edX+cx7zgoLWosc3i6vyD9lXFTmYGOTga
+	66bIdf/PyxT0o0qqVq4zcJbK75+JUH71suNYMeNd0Go9le54P/1oOYZ/O5CnxTtM3SdOr5tbWxg
+	n4ieIJLEJ/+ydddGwd3UZfbPj8Q7yfbcBh8SysNwZadfNQs3Rbhg/dvwegu/lmhbpupn/BWGOdW
+	LKjDSqHY093NONlcyN1KfMvClIuNNQ6zKTizXlI01Xkphg94ALp5uUoN0Rx5l2iPJeJ4cIaPglB
+	eetErSfgfRT+MTXZ+PufpFVU7DFQJs2vVe7wphwfNcYbjRncwHJqBjxfP0fzbByqIYz2Fas2Rup
+	RVu6kGInRwsi7fspkFgi1jaDnev7S
+X-Received: by 2002:a05:6000:2012:b0:488:640e:f6ca with SMTP id ffacd0b85a97d-488640ef84bmr2884966f8f.55.1790091258423;
+        Tue, 22 Sep 2026 08:34:18 -0700 (PDT)
+X-Received: by 2002:a05:6000:2012:b0:488:640e:f6ca with SMTP id ffacd0b85a97d-488640ef84bmr2884921f8f.55.1790091258077;
+        Tue, 22 Sep 2026 08:34:18 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488626d29dasm6266794f8f.0.2026.09.22.08.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 08:34:17 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,  Matthieu Baerts
+ <matttbe@kernel.org>,  Steven Rostedt <rostedt@goodmis.org>,  Masami
+ Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>,  Eelco Chaudron <echaudro@redhat.com>,
+  dev@openvswitch.org,  linux-trace-kernel@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org,  Adrian Moreno
+ <amorenoz@redhat.com>,  Antoine Tenart <atenart@kernel.org>
+Subject: Re: [PATCH v6 3/4] net: dropreason: use new __print_sym() in tracing
+In-Reply-To: <dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org> (Ilya Maximets's
+	message of "Tue, 22 Sep 2026 11:01:10 +0200")
+References: <20260921101538.97286-6-johannes@sipsolutions.net>
+	<20260921101538.97286-9-johannes@sipsolutions.net>
+	<98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
+	<7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
+	<99e5f7c0d7debc8a59bac96e93f09600bf488ca8.camel@sipsolutions.net>
+	<4a0240a7b9ff87302620a95c73f4f265cd428618.camel@sipsolutions.net>
+	<dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org>
+Date: Tue, 22 Sep 2026 11:34:14 -0400
+Message-ID: <f7tzex99u6h.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/6] net: openvswitch: conntrack: remove 'add_helper'
- dead code
-To: netdev-bot+sashiko@kernel.org, i.maximets@ovn.org
-Cc: netdev@vger.kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, aconole@redhat.com,
- echaudro@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
- lucien.xin@gmail.com, marcelo.leitner@gmail.com,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, dev@openvswitch.org, stable@vger.kernel.org
-References: <20260921145655.3167436-3-i.maximets@ovn.org>
- <179008911774.2160803.5007856848467620850@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <179008911774.2160803.5007856848467620850@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 9/22/26 4:58 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] Concern: after this patch the comment above the helper call reads
->   '- nf_conntrack_in() was executed above ("!cached"), or - When…
-> 
-> --
-> 
-> net: openvswitch: conntrack: remove 'add_helper' dead code
-> 
-> This drops the add_helper variable in __ovs_ct_lookup(), since it is only
-> ever set for unconfirmed connections while it is only read on the
-> confirmed branch of the helper-call condition.  The helper-call condition
-> is simplified to nf_ct_is_confirmed(ct) ? !cached : info->commit.
-> 
->> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
->> index a733029c28dd0..c20f096eef40e 100644
->> --- a/net/openvswitch/conntrack.c
->> +++ b/net/openvswitch/conntrack.c
-> 
-> [ ... ]
-> 
->> @@ -821,13 +818,10 @@ static int __ovs_ct_lookup(struct net *net, struct sw_flow_key *key,
->>  		}
->>  
->>  		/* Call the helper only if:
->> -		 * - nf_conntrack_in() was executed above ("!cached") or a
->> -		 *   helper was just attached ("add_helper") for a confirmed
->> -		 *   connection, or
->> +		 * - nf_conntrack_in() was executed above ("!cached"), or
->>  		 * - When committing an unconfirmed connection.
->>  		 */
->> -		if ((nf_ct_is_confirmed(ct) ? !cached || add_helper :
->> -					      info->commit)) {
->> +		if ((nf_ct_is_confirmed(ct) ? !cached : info->commit)) {
-> 
-> [Severity: Low]
-> This isn't a bug, but does the reworded comment still match the condition?
-> 
-> The first bullet now reads as an unqualified statement:
-> 
-> 	/* Call the helper only if:
-> 	 * - nf_conntrack_in() was executed above ("!cached"), or
-> 	 * - When committing an unconfirmed connection.
-> 	 */
-> 
-> while the code only honours "!cached" on the confirmed side of the
-> ternary:
-> 
-> 	if ((nf_ct_is_confirmed(ct) ? !cached : info->commit)) {
-> 
-> For a non-committing ct() action on a new packet in __ovs_ct_lookup(),
-> cached is false, the entry returned by nf_ct_get() is not yet confirmed
-> and info->commit is 0, so nf_ct_helper() is not called even though the
-> first bullet says it should be.
-> 
-> Worth noting that the following patch in the series, "net: openvswitch:
-> conntrack: fix helper UAF due to extensions realloc", rewrites both the
-> comment and the condition to:
-> 
-> 	/* Call the helper only if nf_conntrack_in() was executed
-> 	 * above ("!cached").
-> 	 *
-> 	 * For unconfirmed connections it will be called later during
-> 	 * commit as we need to have all the other extensions allocated
-> 	 * before the call.
-> 	 */
-> 	if (nf_ct_is_confirmed(ct) && !cached) {
-> 
-> so the mismatch only exists in this intermediate commit.  Could the
-> deferral note be pulled into this patch to keep each commit
-> self-consistent, given this one is tagged for stable?
-Comments do not need to spell out verbatim what the code is doing,
-it is pointless for the most part.  The current comment, IMO, is
-conveying the intention clear enough.  It is also re-written in the
-very next patch.
+Ilya Maximets <i.maximets@ovn.org> writes:
 
-Best regards, Ilya Maximets.
+> On 9/22/26 1:20 AM, Johannes Berg wrote:
+>> On Tue, 2026-09-22 at 00:36 +0200, Johannes Berg wrote:
+>>>
+>>> Indeed. Something like this (untested right now, didn't manage to spin
+>>> up a test yet):
+>>>
+>>> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>>> index a31f7fb6882d..9b8edfcd2d1a 100755
+>>> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>>> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>>> @@ -234,7 +234,7 @@ ovs_drop_reason_count()
+>>>  	local reason=$1
+>>>  
+>>>  	local perf_output=`perf script -i ${ovs_dir}/perf.data -F trace:event,trace`
+>>> -	local pattern="skb:kfree_skb:.*reason: $reason"
+>>> +	local pattern="skb:kfree_skb:.*reason: $reason$"
+>>>  
+>>>  	return `echo "$perf_output" | grep "$pattern" | wc -l`
+>>>  }
+>>> @@ -790,15 +790,6 @@ test_psample() {
+>>>  # - drop packets and verify the right drop reason is reported
+>>>  test_drop_reason() {
+>>>  	which perf >/dev/null 2>&1 || return $ksft_skip
+>>> -	which pahole >/dev/null 2>&1 || return $ksft_skip
+>>> -
+>>> -	ovs_drop_subsys=$(pahole -C skb_drop_reason_subsys |
+>>> -			      awk '/OPENVSWITCH/ { print $3; }' |
+>>> -			      tr -d ,)
+>>> -	if [ -z "$ovs_drop_subsys" ]; then
+>>> -		info "failed to get OVS drop subsys ID"
+>>> -		return $ksft_skip
+>>> -	fi
+>>>  
+>>>  	sbx_add "test_drop_reason" || return $?
+>>>  
+>>> @@ -842,7 +833,7 @@ test_drop_reason() {
+>>>  		"in_port(2),eth(),eth_type(0x0800),ipv4(src=172.31.110.20,proto=1),icmp()" 'drop'
+>>>  
+>>>  	ovs_drop_record_and_run "test_drop_reason" ip netns exec client ping -c 2 172.31.110.20
+>>> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0001 # OVS_DROP_FLOW_ACTION
+>>> +	ovs_drop_reason_count OVS_DROP_LAST_ACTION
+>>>  	if [[ "$?" -ne "2" ]]; then
+>>>  		info "Did not detect expected drops: $?"
+>>>  		return 1
+>>> @@ -859,7 +850,7 @@ test_drop_reason() {
+>>>  
+>>>  	ovs_drop_record_and_run \
+>>>              "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 6000
+>>> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0004 # OVS_DROP_EXPLICIT_ACTION_ERROR
+>>> +	ovs_drop_reason_count OVS_DROP_EXPLICIT_WITH_ERROR
+>>>  	if [[ "$?" -ne "1" ]]; then
+>>>  		info "Did not detect expected explicit error drops: $?"
+>>>  		return 1
+>>> @@ -867,7 +858,7 @@ test_drop_reason() {
+>>>  
+>>>  	ovs_drop_record_and_run \
+>>>              "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 7000
+>>> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0003 # OVS_DROP_EXPLICIT_ACTION
+>>> +	ovs_drop_reason_count OVS_DROP_EXPLICIT
+>>>  	if [[ "$?" -ne "1" ]]; then
+>>>  		info "Did not detect expected explicit drops: $?"
+>>>  		return 1
+>>>
+>> 
+>> No longer untested, that works.
+>
+> Looks nicer than parsing obscure numbers indeed!
+
++1 !
+
+> Matthieu mentioned we'll need CONFIG_TRACEPOINTS in the selftest config
+> shard: tools/testing/selftests/net/openvswitch/config
+>
+> Is that a new dependency or was it always there we just missed adding it
+> to the config before?  (it's included in the common net config, so that
+> is probably the reason why CI doesn't fail)
+
+Yes, we missed it the first time around.
+
+> Best regards, Ilya Maximets.
+
