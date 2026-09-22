@@ -1,152 +1,100 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F7952E07F;
-	Tue, 22 Sep 2026 09:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360414E0B68;
+	Tue, 22 Sep 2026 09:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790068341; cv=none; b=Pu1/kv3Hli7QKXl4/jCGrOI/IFnDbWcwfUhZJ/egbKlkjy6YKuJ8VpUi9+pHoeQ49+zeQ2oKWFYmHHiB2wgrgdCkn0RxmGzBpJY2apdyDw8mMGTj8Hj8ggjemGTlSJD8BlAj6I/DHw/joVOZYggKpFHtBWSq2zVJdrNSyMioqiE=
+	t=1790068345; cv=none; b=VCJq9k81/Xy27G0uXd3TX0/RpcGvy495XZu5Dbsurbog/7r8t3uV1oyxeyzPT1kzc7hfloqfZR2c1cOskQsstBewHoXQEBmSbQfKjXOM23Awe/Cqa/ZSMteJIfkvM/MuwcakFKzTECAawCF9u+8+RuI6PQJVdfFTwyal5AOLdW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790068341; c=relaxed/simple;
-	bh=egUmLikhuwhkzquqLxqxqCXwr1NaX2em5TiZk+sZ1Yg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Eut1c9YIpF8tPYYeytoQwJkMKmSc4fNxTkwDEh9Oy9HnT9nX2rZtp3rhD2q4oNFHt/viak8EpAgqVeeGD3Xu/zYsW6mIu6ux2HOmxj1y/aqXtNHM4huRLTrcM7wrctGP5ySD/cKyKwfEyNsVjdABcpmnjX+FmnGpZaUVuBNp6Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=eT14op8Z; arc=none smtp.client-ip=117.135.210.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="eT14op8Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=JZ
-	B0Slkp1cTB3zAnWSwmos8fcy3POuFLh4py+bqB5yk=; b=eT14op8ZJEjCwld797
-	9NeAezOI4tg/JlPsp4eTU74QEi8ZGnglumaAZ9qg4QvlMEXKBCcn5qhzDn+08rwE
-	lrnz6dJFjcphyWHnfF8YK7bysyiIofF4sAArEWhHqoriZS+D8pMySqT0Ij9IKrJ7
-	9ERRHZEgTrofJv37soEks7LkI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3HzY9RrJq0uQVAA--.17646S2;
-	Tue, 22 Sep 2026 17:11:25 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: aleksandr.loktionov@intel.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net v3] i40e: limit the DDP profile count returned by the firmware
-Date: Tue, 22 Sep 2026 17:11:23 +0800
-Message-Id: <20260922091123.506598-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1790068345; c=relaxed/simple;
+	bh=H0WC2f2axQ4K85ZaqjCHRua8MLT+Rbu9nuzLRuMvsOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O+bfas4PPnUHE2hNfQH3efC3IdcjXn3lCEJRwXLf86t520M9/TgdJyD9jkajCv3m0p7IhP0NHFnfPtalHnHLTkBGqMbqXCGDzelCtJq3rvTzMXNbR3hqiH9mA79cEoeu1Cq0zyLmGIRUITnOZhkLAWBAry2rT7QFQLw5xRPeHHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id EB5FD421BC;
+	Tue, 22 Sep 2026 11:12:19 +0200 (CEST)
+Date: Tue, 22 Sep 2026 11:12:17 +0200
+From: Gabriel Goller <g.goller@proxmox.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: David Ahern <dsahern@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Roopa Prabhu <roopa@cumulusnetworks.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] ipv4: fib: treat an unbuildable encapsulation as
+ a nexthop mismatch
+Message-ID: <arJGLBXVpPTe3J96@luna.proxmox.com>
+References: <20260921130736.210845-1-g.goller@proxmox.com>
+ <20260921151120.GA2269691@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3HzY9RrJq0uQVAA--.17646S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw4UWw1Utw18JF1DKw4xtFb_yoWrXr4fpF
-	W5JFWDGryDJa1j93yUGFW7uFyfu3WfAryYga4a93s8urn8tF4kWa48tFWFkFy7ZrWvkr90
-	qFs5Cry8CF4DJwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ul-ewUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlB3nvmqyRj0E1QAA3i
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260921151120.GA2269691@shredder>
+User-Agent: NeoMutt/20260504
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1790068339079
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On 21.09.2026 18:11, Ido Schimmel wrote:
+> On Mon, Sep 21, 2026 at 03:07:30PM +0200, Gabriel Goller wrote:
+> > fib_encap_match() builds the requested lwtunnel state and compares it
+> > against the nexthop of a candidate route. When lwtunnel_build_state()
+> > failed it left result at 0, which is interpreted as "the nexthop
+> > matches", so fib_nh_match() continues to compare only oif and gateway.
+> > 
+> > So if there comes along a RTM_DELROUTE which carries an encapsulation
+> > the kernel rejects, it could delete a different route with a different
+> > encapsulation.
+> > 
+> > Report a mismatch instead. This also covers LWTUNNEL_ENCAP_NONE, which
+> > lwtunnel_build_state() rejects with -EINVAL, so the separate check for
+> > it can go away. It used to claim a match for an encapsulation type the
+> > kernel refuses to build.
+> > 
+> > Fixes: 571e722676fe ("ipv4: support for fib route lwtunnel encap attributes")
+> > Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+> 
+> I asked Claude to check if this can result in routes that are no longer
+> deleted and it came up with the following scenario which I verified:
+> 
+> Before:
+> 
+> # ip link add name dummy1 up type dummy
+> # ip route add 192.0.2.0/24 encap bpf xmit obj ./lwt_ok.o sec xmit dev dummy1
+> # ip route flush dev dummy1
+> # ip route show
+> 
+> After:
+> 
+> # ip link add name dummy1 up type dummy
+> # ip route add 192.0.2.0/24 encap bpf xmit obj ./lwt_ok.o sec xmit dev dummy1
+> # ip route flush dev dummy1
+> Failed to send flush request: No such process
+> # ip route show
+> 192.0.2.0/24  encap bpf xmit lwt_ok.o:[xmit] dev dummy1 scope link
+> 
+> The flush is dump followed by delete and bpf_fill_encap_info() doesn't
+> fill enough information for bpf_build_state() to reconstruct the state
+> and it returns an error.
+> 
+> I don't know if anyone is relying on this behavior, but AFAIK nobody
+> complained about the issue that this patch is fixing for 11 years and
+> according to [1] you didn't hit it either. Given the above and the fact
+> that the modern alternative (nexthop objects) avoids this issue, I'm
+> tempted to keep the code as-is.
+> 
+> [1] https://lore.kernel.org/netdev/arEQHeBlqKWCu3l5@luna.proxmox.com/
 
-i40e_aq_get_ddp_list() writes into a I40E_PROFILE_LIST_SIZE buffer, which
-is sized for I40E_MAX_PROFILE_NUM (16) i40e_profile_info entries plus the
-4 byte p_count header. i40e_ddp_does_profile_exist() and
-i40e_ddp_does_profile_overlap() then loop over profile_list->p_count
-without bounding it, so a firmware reporting more than 16 profiles makes
-both helpers walk past the end of the on-stack buff[] and compare against
-whatever happens to follow it on the stack.
+Ah, I missed the whole `ip route flush` path. Makes sense, we can drop this
+patch. Notably because ipv6 also doesn't check the encap value :)
 
-The same buffer is handed to the firmware as an indirect admin queue
-buffer, and the admin queue code copies all of it into the DMA bounce
-buffer before submitting the command, so its uninitialized contents were
-visible to the device as well.
-
-Zero initialize buff[] and reject the list when the firmware reports more
-profiles than the buffer can hold, instead of answering from a list that
-was only partially read. Both helpers already report errors to
-i40e_ddp_load(), which aborts the operation.
-
-Fixes: cdc594e00370 ("i40e: Implement DDP support in i40e driver")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
-Changes in v3:
-- Zero initialize buff[] in both helpers: the whole buffer is copied into
-  the admin queue DMA bounce buffer and copied back afterwards, so its
-  contents were exposed to the device, and entries the firmware never
-  wrote were compared against. (Sashiko AI review)
-- Reject the list when the firmware reports more profiles than buff[] can
-  hold, instead of silently clamping the scan and then answering from a
-  list that was only partially read. (Sashiko AI review)
-- Dropped the Reviewed-by tag, as the code changed after the review.
-
- drivers/net/ethernet/intel/i40e/i40e_ddp.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ddp.c b/drivers/net/ethernet/intel/i40e/i40e_ddp.c
-index daa9f2c42f70..49a98c0e001a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ddp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ddp.c
-@@ -53,9 +53,9 @@ static int i40e_ddp_does_profile_exist(struct i40e_hw *hw,
- 				       struct i40e_profile_info *pinfo)
- {
- 	struct i40e_ddp_profile_list *profile_list;
--	u8 buff[I40E_PROFILE_LIST_SIZE];
-+	u8 buff[I40E_PROFILE_LIST_SIZE] = {};
- 	int status;
--	int i;
-+	u32 i;
- 
- 	status = i40e_aq_get_ddp_list(hw, buff, I40E_PROFILE_LIST_SIZE, 0,
- 				      NULL);
-@@ -63,6 +63,13 @@ static int i40e_ddp_does_profile_exist(struct i40e_hw *hw,
- 		return -1;
- 
- 	profile_list = (struct i40e_ddp_profile_list *)buff;
-+	/* The firmware is not required to report a profile count that fits
-+	 * into the buffer we gave it; refuse to read such a list instead of
-+	 * walking past the end of buff[].
-+	 */
-+	if (profile_list->p_count > I40E_MAX_PROFILE_NUM)
-+		return -EIO;
-+
- 	for (i = 0; i < profile_list->p_count; i++) {
- 		if (i40e_ddp_profiles_eq(pinfo, &profile_list->p_info[i]))
- 			return 1;
-@@ -108,9 +115,9 @@ static int i40e_ddp_does_profile_overlap(struct i40e_hw *hw,
- 					 struct i40e_profile_info *pinfo)
- {
- 	struct i40e_ddp_profile_list *profile_list;
--	u8 buff[I40E_PROFILE_LIST_SIZE];
-+	u8 buff[I40E_PROFILE_LIST_SIZE] = {};
- 	int status;
--	int i;
-+	u32 i;
- 
- 	status = i40e_aq_get_ddp_list(hw, buff, I40E_PROFILE_LIST_SIZE, 0,
- 				      NULL);
-@@ -118,6 +125,13 @@ static int i40e_ddp_does_profile_overlap(struct i40e_hw *hw,
- 		return -EIO;
- 
- 	profile_list = (struct i40e_ddp_profile_list *)buff;
-+	/* The firmware is not required to report a profile count that fits
-+	 * into the buffer we gave it; refuse to read such a list instead of
-+	 * walking past the end of buff[].
-+	 */
-+	if (profile_list->p_count > I40E_MAX_PROFILE_NUM)
-+		return -EIO;
-+
- 	for (i = 0; i < profile_list->p_count; i++) {
- 		if (i40e_ddp_profiles_overlap(pinfo,
- 					      &profile_list->p_info[i]))
--- 
-2.25.1
+Thanks
+Gabriel
 
