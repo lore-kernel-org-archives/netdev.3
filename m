@@ -1,80 +1,80 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDD355C1C4
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93178548570
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790090844; cv=none; b=A9jE0DyqDtPVz8Ui8QZG+jjtjLNLSp+fSRDh0PflTFhzwN7WV2qgc1HpxF/s1p/NcCBbvqP/w3n5knoAAVCwRGetxXQZ+gydqN7Ok6pOOXIXh7cycCkuFLpk0uFSEQTgaQjeAZe05mubGPrmfiB43bmCt5dTYpGlA+CPCwJSkc4=
+	t=1790090876; cv=none; b=C20D51rVlAsj7QlVOQjYzxmCclxjRXnzpAWZD+EAbKvApMRr4vT2F/+3OBFyU0DGsPyvv6nj+29/U7XYGYnqK4iW6F0A3aHGXUJu32THarfTo5jWNporqENPbwsmeGYeUeO/h41Huf8ptmPCiIWa9tOLQFaL+lwk9xBzYpW+Q1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790090844; c=relaxed/simple;
-	bh=0AumlRwlWfNJNnKw4BdPtTBb/Y9n3FIbSvp1JQRP+Ws=;
+	s=arc-20240116; t=1790090876; c=relaxed/simple;
+	bh=H6M2+2ePKHnNXtCxv8bZ8wAVt5XsjCTjUh+IXXp4Ros=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=czVmQyCjkHxtQVRNg/k3Bnc/F/0Hu1QOS5tE5fngStSiJfZ9vWyNLB6g4eGUO57aiJk5BVkrA6yhSquGioR5QlWUhz8fZGRB/iiz5XBcCm3QcwaqeK2DJ1JXFz+kxFBZ0c625rMVe1fFtIIPXah9eQWX7b0cYR7ffVAsPBFc4ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Chux5DDb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TsA4e4TA; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=iv5fWscUAB4tpOTskeGd3BVG1cdsJcKBNG74yk+bwyA6eaU7O9ghLqaB4GCLM5jCsuKD5tMHMvk1kK3lsO1sq1T8V4bpQoAms8oVmlQYzxOZwwHqKB7MJThcUkirw4eKGcRy+vppCn8/BSI8St+c2gGAJszDrCtHsb1ODJikXL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EbKsA/z9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=q1ZVVWLH; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Chux5DDb";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TsA4e4TA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EbKsA/z9";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="q1ZVVWLH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790090840;
+	s=mimecast20190719; t=1790090874;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PiMRQI9uNvgikrTB+A1HHyTYpeJRXwwSNICkcWjdkhM=;
-	b=Chux5DDbWvTIn1i6QKO9GqrwlvE8Twrw3KvjtmbNYCmf3+WQS2qjMSe22yzaTwV51PYm+r
-	mNWzKvLiAoh9dgQr0m+OtJuzB/TUsPs2JyJnZBTQbTxZCtqTeGWZ3f/Vtl5CGFt3cbX/8D
-	zpXb0snoUqbVAxc4E1NrJt+6cA6zmcA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=SEowbgJIDHpYJATL6KIUYHLNQoCqqGPHET4KCWOduog=;
+	b=EbKsA/z9eGmHarB+w4uXD8M4+85YbNAjj5bKNoB59oDPckb9L2Ck1ThlJAQMCezrYTgKWn
+	tF1gYQwWJGvmtJ+cgwNcg0TwlpsGey7mQVW0Do7s8JnIcr3QU9n7fFZ5vQtd6BPdMOaZML
+	vz97beOtkOXowGPdG8YzUyTYraO4M3A=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-7TJlZNrtPyqOObBHxvxkZw-1; Tue, 22 Sep 2026 11:27:19 -0400
-X-MC-Unique: 7TJlZNrtPyqOObBHxvxkZw-1
-X-Mimecast-MFC-AGG-ID: 7TJlZNrtPyqOObBHxvxkZw_1790090838
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e6ba4abdfso54830715e9.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:27:19 -0700 (PDT)
+ us-mta-633-S726npSHPImKtfnHyOOJUg-1; Tue, 22 Sep 2026 11:27:53 -0400
+X-MC-Unique: S726npSHPImKtfnHyOOJUg-1
+X-Mimecast-MFC-AGG-ID: S726npSHPImKtfnHyOOJUg_1790090872
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49cf4cc2125so22805405e9.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:27:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790090838; x=1790695638; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1790090872; x=1790695672; darn=vger.kernel.org;
         h=content-type:mime-version:user-agent:message-id:date:references
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=PiMRQI9uNvgikrTB+A1HHyTYpeJRXwwSNICkcWjdkhM=;
-        b=TsA4e4TAbMfzwf64rTF3v0cacn/b7zgMB2lTGMdXusbenBgvY7XFcb8LFRknXl4320
-         4cUdSum9AePsiJrhlTz+qcK141s+GcwyKvi+hVEuDvDak0hO6MRK+feuUfZ9qa/eWOPh
-         R+BuxSrBIsuDPk9iJfqyaTrEfjp6sNmWnhepJ17nbS/E1WATAfZi2cwxp6flwZXnRb2g
-         1F+tHfMIkVllcepOzo/Nk7Kn4MuR21edjVF8wTWzlCUAq/sWoe8elJH/pmF0HqbtPHir
-         mRnYb8iBkxLMsVr863rChTS7W9M5qa4uJSvP9oeHXBzYU3m62al6938BFFQJJoskZ2SB
-         hGKA==
+        bh=SEowbgJIDHpYJATL6KIUYHLNQoCqqGPHET4KCWOduog=;
+        b=q1ZVVWLHBMNKLX5Dgtn0l2hy+SfwNay+/vcl53sIsxL42H5I41/aFCw0Ys3VVYidms
+         SNT9URUmdBI0xJqQjRxD3sBVU2g1KBR//8efVevHvLvJwIritEebmv/PMaEtGlRM7jaC
+         3Vksk86Hg2+4o3bxfHMYc2cS7Zc38XeuFM1Auji1FMtSk9X1uf+ERGq0wuDFOHrihgoJ
+         WnXCENGLe2XWRu6WTQN7vROSAC1l90nEeowztGywa3PHBlRjy386b46GQemPr2u6t0EZ
+         Zr5UFK9lzm4LDTk5PNYleN/xjjv/TwCQiez/QwpoBPAke2oT659vipfDRlSgko/UZYsb
+         EePg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790090838; x=1790695638;
+        d=1e100.net; s=20260707; t=1790090872; x=1790695672;
         h=content-type:mime-version:user-agent:message-id:date:references
          :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=PiMRQI9uNvgikrTB+A1HHyTYpeJRXwwSNICkcWjdkhM=;
-        b=zzLBozbbBTSWjoxHmZQqaEkrJx1T6ZNkOAN6oqoQyMnppj4VBuH5nzzOHJX5FSQpzv
-         g+0gHj5plvYB+3/ZIEPTLA2OKaeWgy8SPgGjU0Jt28vlukWDwnW5bRzHHSv5PVDfAd5O
-         17v96FWUAazGRquigEB5e9jnviJo7dXP22tzRS3AJ1KWCOhEq0LeSfHA8znY7kJ7GJN/
-         wmApkQ+ieumpf6O+ocVsA1LxVcUV5PaJBuIO0M1I+XMV/zL76vV0ppUNje+SopQxFH2N
-         7A5ehWhvbQB4P937QRVbAMPFExhk2TBcwrBEDY86ngBI2jL7pr+jlMGNf/xl+jPNNVCU
-         14Gg==
-X-Gm-Message-State: AFuF++kab6MxnnE6g8jn8xlhom568+JDtYv/zNuoLgxL7uzORiM9ChPF
-	e6yt/m2OmDkLeBSIRAxZMWwP07MvpgB4DvlHnA7AiiOi+DeX2T8MrB5B4PtkNdhShWrQdjPv6vJ
-	PGGZCOTWr2wFFsCLKjmwLohWIjk55HGV/cul/5EFInnluSlqulIvggJ/jGA==
-X-Gm-Gg: AYBFou30/+PWetbBSqlswOqcYbXXvbeV50ZD5S7oBs2cZjIR9eJ7HuODTgVnV2HEXW5
-	KXyepU+mZk2NYq3k2Nh0Y5W5uECk78lxZnN7IOUcpdpvkZsXYxaKVqphLu19MhU9ZhQZSSGqKzR
-	gZe6naLuzp1SYiBn3BUR1KNkJzIiEaLlR3dav/LKii6uGVGWmM0RyNy+AnwmrJFVbksCjran9CN
-	2uAerfBTl3RP2/0FyEE9HE331zWsZBDi+ElngmW1l5roTTFlgA4+ypSq0QsDVosoutgg5Mk9U9L
-	kWXH/i3mSEMsADNzKS09Gr0b28Rz4aKcOUhdNBh/39TSbG4WxX6RzUJWHb9WOHTFXnu6SSE+tHg
-	SzgEE3BFYI7TgZSyQIxEG1E5UfYVF
-X-Received: by 2002:a05:600d:6413:10b0:49f:dcc8:c735 with SMTP id 5b1f17b1804b1-49fdcc8c74dmr17236865e9.18.1790090838110;
-        Tue, 22 Sep 2026 08:27:18 -0700 (PDT)
-X-Received: by 2002:a05:600d:6413:10b0:49f:dcc8:c735 with SMTP id 5b1f17b1804b1-49fdcc8c74dmr17236665e9.18.1790090837791;
-        Tue, 22 Sep 2026 08:27:17 -0700 (PDT)
+        bh=SEowbgJIDHpYJATL6KIUYHLNQoCqqGPHET4KCWOduog=;
+        b=0yKVosp6FsWoXKGxOeOHS+vim+h53ksj0oOzee9e46pvLsNT/JO3j5HdtMBgK0p8eY
+         oYQU8bhMjgLKfAqez+mKypDafOrM2LDQa1cmqXOp+JOBEhbK6Fr1BQDg+z9aqNbfLSZE
+         a3arNKLR4NJ5brGaRFW716METQ4CVrq+jBkTpmdphfCsOrktmpd+39tFkLITwLKvo6Yi
+         gxkorAsHK2eI5d/Nsa59VYSjrWsl/yQ7JNNBdqChEqetwo5del49ov8hHOK6dY85cyWV
+         auH5b0P/nHIhpP7Hla74N/1gqybpVcQrxaZa62bTfh3H8Kr9cQxHLLFHqRHySPjO6b50
+         d5cA==
+X-Gm-Message-State: AFuF++kuVXgY6PYGLQFjn6WFM6pu4XYx1ISVf5uEKR/myXu0n/AZlaC3
+	TxAS0++EZ0SZwDBh4cm0168Bu43liSlMC86Ed5xvIMs6yQjQmXl5GnnXHvNPPjNcd6lplA5mQHF
+	uPSledsHBNWm57/NYajIH9Ba3PFLKMT6P5nGgiXbnC6ceYrek3HPga4SeLg==
+X-Gm-Gg: AYBFou2iwflcbg7I/pZM1MNwkc3T4/k/d9vT5apXF7Q1fzXNd5C3quad5LbzbquDVZL
+	EFQ25R5rUjrXoC4/zqrZl8IbDRiDitwe4D3W9n51XemS1Hs05Jw67t2nH7hSqEPnY/g5soyVZSu
+	nZxZFQp+9dXXGtuFVqiN04+n5NgATNosVFqF2V3fdRHLyIgCoDOqtav1K2zCkD6bjBn9RE3ZG57
+	vsc5dltP23DrPrjenrB1QAKgGfpW8UEZZZDiLw7zrAbYt/NtnMRmfuturgDrX28BbRHfy/FXW/1
+	DjGLwCVBVkpwqBrg8ki6PzpTryXE8IU24R16sapTNd4QsdOwB29/mcAY8K6P8CYiBQ9kRGbUnWr
+	5b8kS1raOpNfcr//H6iEwiTXPCRUz
+X-Received: by 2002:a05:600c:34c7:b0:49c:ff8d:b548 with SMTP id 5b1f17b1804b1-49fc5726cfcmr277170325e9.11.1790090872306;
+        Tue, 22 Sep 2026 08:27:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:34c7:b0:49c:ff8d:b548 with SMTP id 5b1f17b1804b1-49fc5726cfcmr277166705e9.11.1790090867129;
+        Tue, 22 Sep 2026 08:27:47 -0700 (PDT)
 Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fde064a64sm972975e9.1.2026.09.22.08.27.14
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdab0e46fsm13166415e9.3.2026.09.22.08.27.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 08:27:17 -0700 (PDT)
+        Tue, 22 Sep 2026 08:27:46 -0700 (PDT)
 From: Aaron Conole <aconole@redhat.com>
 To: Ilya Maximets <i.maximets@ovn.org>
 Cc: netdev@vger.kernel.org,  Pablo Neira Ayuso <pablo@netfilter.org>,
@@ -86,16 +86,14 @@ Cc: netdev@vger.kernel.org,  Pablo Neira Ayuso <pablo@netfilter.org>,
  <lucien.xin@gmail.com>,  Marcelo Ricardo Leitner
  <marcelo.leitner@gmail.com>,  netfilter-devel@vger.kernel.org,
   coreteam@netfilter.org,  linux-kernel@vger.kernel.org,
-  dev@openvswitch.org,  stable@vger.kernel.org,  Axel Mierczuk
- <axel.mierczuk@1password.com>
-Subject: Re: [PATCH net 4/6] net/sched: act_ct: avoid modifying shared
- unconfirmed ct entry
-In-Reply-To: <20260921145655.3167436-5-i.maximets@ovn.org> (Ilya Maximets's
-	message of "Mon, 21 Sep 2026 16:55:46 +0200")
+  dev@openvswitch.org,  stable@vger.kernel.org
+Subject: Re: [PATCH net 5/6] net/sched: act_ct: remove 'add_helper' dead code
+In-Reply-To: <20260921145655.3167436-6-i.maximets@ovn.org> (Ilya Maximets's
+	message of "Mon, 21 Sep 2026 16:55:47 +0200")
 References: <20260921145655.3167436-1-i.maximets@ovn.org>
-	<20260921145655.3167436-5-i.maximets@ovn.org>
-Date: Tue, 22 Sep 2026 11:27:13 -0400
-Message-ID: <f7ta4p9b92m.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+	<20260921145655.3167436-6-i.maximets@ovn.org>
+Date: Tue, 22 Sep 2026 11:27:43 -0400
+Message-ID: <f7t8q4tb91s.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -107,39 +105,12 @@ Content-Type: text/plain
 
 Ilya Maximets <i.maximets@ovn.org> writes:
 
-> In a case where skb with an unconfirmed ct entry gets cloned, we may
-> end up processing both again but with different sets of extensions.
->
-> The series of events:
->
->  1. The first clone wants to commit and runs the helpers wiring up
->     the extension pointer into the expectation list.
->  2. Then it looses the confirmation keeping the entry unconfirmed.
->  3. Second clone now wants to commit labels or run NAT and adds the
->     new extension for that breaking the pointer in the expectation
->     list causing UAF on the destruction path later.
->
-> While this is possible to trigger, there should be no practical
-> network pipeline where we need to process both clones without
-> modifications in the same zone.  So, let's just reset the entry in
-> case for some reason we got an skb with a shared one.  This doesn't
-> affect any known use cases, but avoids any potential problems with
-> sharing and modification of the unconfirmed ct entry.
->
-> Unlike openvswitch module, act_ct allows for NAT without commit.
-> Changing that would be a uAPI break.  So, act_ct needs to reset on NAT
-> regardless of the commit flag to avoid reallocation of the extension
-> space.  This, however, doesn't really change the picture for sensible
-> networking cases as there should be no need to run the same packet
-> twice (before and after the clone) through conntrack without packet
-> header or zone changes and without commit.
->
-> The fixes tag points to the introduction of helpers, since that's the
-> main UAF trigger for the sharing.
+> This variable can only become 'true' when the connection is not
+> confirmed, but it is only checked when it is confirmed.  So, it can be
+> treated as being always false and just removed.
 >
 > Fixes: a21b06e73191 ("net: sched: add helper support in act_ct")
 > Cc: stable@vger.kernel.org
-> Reported-by: Axel Mierczuk <axel.mierczuk@1password.com>
 > Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 > ---
 
