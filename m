@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2AC37F8B6
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7855637F8DD
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 01:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790042169; cv=none; b=jJx9355P2X73FFcdjo4LXXuIqmx4AEhVFOlLrLZoFfrisUPHk026ODwBno4KAUiPM8V/cL46By/EMxf2QS+KVvxdwHBQ3HI4JMrh/I7JvXMNCDg4bNUwvRr5gwFLqh6YRQe6smQiyzKjkVzA54fZegF/AAC9Wk53raK4AFXKBqs=
+	t=1790042170; cv=none; b=WD347WwA42SX4+ul7W0vBnoa5Giba0OLnjq6VClO7rGBbj+vQQHT5+v2inMYATRkdO9Zf9UDWNE3aI4w940Venzqf01u1/h1lId2IVeY0OpC8Kv9YY8Rnuao63a8lFptw9vhYAob7KgUfaB0oMnEd7vzohKVsFpoMFt74DwnSWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790042169; c=relaxed/simple;
-	bh=CcUwxQFEusO4FuByUdLamrfvOYeGfle3L9iT5IfliHo=;
+	s=arc-20240116; t=1790042170; c=relaxed/simple;
+	bh=pKtYkTu02QSj0E4JpnAVh0WgCP6Z9p0Mgig4yTlUaqU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D4fK3fdCzSUK8Us534b69E67TnA6qa5+rvdCN7JA4YU42mZx/bQxtx8Ye4yzaEvvkM6bzEX1YprUEjsMkuRshjmDPwWkmKRy/PLdtibdKAQCB6cF1iqaVu4x8kpjaaH7LQ4wibcIR3AnQrkLvStOBPY7/YbNakhksTSqn6p9Rg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpZwHkc6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=sOsnAXzYHiDm8GkmxfF4cWYeGjlqY+SSFTapeMm0vPu9oc61lc55a8ZSMdwz6IGyqSPE2ZitKeuqqIebvbXQotdjjcQ+rXtoj4WhHQSY98a02gKPnE4x+BNQgABzqgNiPshsCwDpt5TNTzIlHo2P1NRCJ/vtFWrykwCj6jcGtRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lgWQPQIC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpZwHkc6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9249E1F00893;
-	Tue, 22 Sep 2026 01:56:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lgWQPQIC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9591F000FF;
+	Tue, 22 Sep 2026 01:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790042167;
-	bh=GRLRGTQ+TNU1bI48qcBRJrGhM/kF03R8t7D4309L1UQ=;
+	s=k20260515; t=1790042168;
+	bh=zx6/lXFlMcNAYX7/QGACa6GCCphkqimIkzwLnyBSKHI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XpZwHkc6FeJO+F58OQRpUYATiJblv7m9Rowq7cYtT18qjo4/VtKzdSnqRqFwVgbr/
-	 mlPZrFbksR+VUoVye4Luce9W9kWidzSa9T46qRwDIntC7yDQ1q4cJtifia0/fCvWLX
-	 5By+nZ1A81qe0OuWI/mE6cUavbAHcbpKifE+zPXJXane2xec/Gk2Biu46izIHa7+7x
-	 cGXy1/2oIrrup6T0NlAcDt67qkD1eKQqhNaFdB8U3fzIlmc352wbEKMhGmJMwYbCkJ
-	 BMOo2A0cTGZwMgqXXlmdPz7T//Z45WVh8KUZpchA9xTTJsSEq/364+sG4bCmabk8HP
-	 8L7HWirn2pc7Q==
-Subject:
- Re: [PATCH net-next v17 09/15] net: skbuff: add skb->decrypt_failed bit
+	b=lgWQPQICWtH1zTWp5CDumccVAvUD9dvR/0lavbGa+Fkxhbfnz2BDQffptYG5nfbD+
+	 iOgIfOTDRPKCOxiu5rKC+nWqZrSrJPOqqKOVSwqc6yryV+pwTHbQ2dibM89dGoew0L
+	 fA4zQC/9UlUEGzYIUI0FydfartR8BZwTGGmfkH/5wxqFoOTfOVZ8LbzdOYoqwmkm5+
+	 Bu7PREI2fORchuxFltqXf/Q5tP4h0hQatIqIXCLjn/ucDq/1cLGUmk6BDIrVAq2SLA
+	 RiK8d2XkspqtyiaHIU+cFY+BeSpwqao6kEqJFkdjYLxmhXL59tkAsv6nn6obJ6MQUu
+	 lCoSyfUiXKQwQ==
+Subject: Re: [PATCH net-next v17 10/15] net/mlx5e: flag TLS RX records that
+ failed device decryption
 From: netdev-bot+sashiko@kernel.org
 To: rjethwani@purestorage.com
 Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
  mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
  kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
  edumazet@google.com, leon@kernel.org, andrew.gospodarek@broadcom.com
-Date: Tue, 22 Sep 2026 01:56:06 +0000
-Message-ID: <179004216615.2160803.3526982338687355382@kernel.org>
-In-Reply-To: <20260917224355.2288021-10-rjethwani@purestorage.com>
-References: <20260917224355.2288021-10-rjethwani@purestorage.com>
-X-sashiko-severity: Medium
+Date: Tue, 22 Sep 2026 01:56:07 +0000
+Message-ID: <179004216751.2160803.17789350098621375031@kernel.org>
+In-Reply-To: <20260917224355.2288021-11-rjethwani@purestorage.com>
+References: <20260917224355.2288021-11-rjethwani@purestorage.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,128 +59,130 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch makes `decrypt_failed` a per-SKB (per-segment)
-  crypto-state bit that is propagated by `skb_copy_decrypted()`…
+- [High] mlx5e_ktls_handle_rx_skb()
+  (drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c:614) sets…
 
 --
 
-net: skbuff: add skb->decrypt_failed bit
+net/mlx5e: flag TLS RX records that failed device decryption
 
-This adds a new skb->decrypt_failed bit under CONFIG_SKB_DECRYPTED, set
-when the NIC could not authenticate an skb's TLS payload, and propagates
-it in skb_copy_decrypted() next to skb->decrypted.  It is described as a
-prerequisite for TLS 1.3 device-offload RX KeyUpdate support.
+The patch splits CQE_TLS_OFFLOAD_ERROR out of the default case in
+mlx5e_ktls_handle_rx_skb() and sets the new skb->decrypt_failed bit while
+leaving skb->decrypted clear, then falls through to the existing tls_err
+accounting. The bit is intended to be consumed by the TLS 1.3 device-offload
+RX KeyUpdate support added later in the series.
 
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 421f6fc45451..5da2c1149d98 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -851,6 +851,10 @@ enum skb_tstamp_type {
->   *		unreadable.
->   *	@dst_pending_confirm: need to confirm neighbour
->   *	@decrypted: Decrypted SKB
-> + *	@decrypt_failed: hardware could not authenticate this skb's TLS payload.
-> + *		The payload may have been transformed (XORed) or left as wire
-> + *		ciphertext, so software must re-authenticate the record and undo the
-> + *		transform on any XORed fragment before it can be decrypted
->   *	@slow_gro: state present at GRO time, slower prepare step required
->   *	@tstamp_type: When set, skb->tstamp has the
->   *		delivery_time clock base of skb->tstamp.
-> @@ -1025,6 +1029,7 @@ struct sk_buff {
->  #endif
->  #ifdef CONFIG_SKB_DECRYPTED
->  	__u8			decrypted:1;
-> +	__u8			decrypt_failed:1;
->  #endif
->  	__u8			slow_gro:1;
->  #if IS_ENABLED(CONFIG_IP_SCTP)
-> @@ -1716,6 +1721,7 @@ static inline void skb_copy_decrypted(struct sk_buff *to,
->  {
->  #ifdef CONFIG_SKB_DECRYPTED
->  	to->decrypted = from->decrypted;
-> +	to->decrypt_failed = from->decrypt_failed;
->  #endif
->  }
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+> index bca45679e201..8ec40f5fd5b5 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
+> @@ -602,7 +602,18 @@ void mlx5e_ktls_handle_rx_skb(struct mlx5e_rq *rq, struct sk_buff *skb,
+>  		stats->tls_resync_req_pkt++;
+>  		resync_update_sn(rq, skb);
+>  		break;
+> -	default: /* CQE_TLS_OFFLOAD_ERROR: */
+> +	case CQE_TLS_OFFLOAD_ERROR:
+> +		/* The device could not authenticate the payload. Depending on
+> +		 * where the failure occurred the bytes may have been transformed
+> +		 * (XORed) or left as wire ciphertext. Flag it so that, during a
+> +		 * TLS 1.3 rekey transition, the re-encrypt path undoes the
+> +		 * transform on any XORed frag of a mixed record while software
+> +		 * re-authenticates; a non-mixed record stays wire ciphertext and
+> +		 * is decrypted directly.
+> +		 */
+> +		skb->decrypt_failed = 1;
 
-[Severity: Medium]
-Should skb_cmp_decrypted() be extended with the new bit as well?  After
-this patch the copy side carries two bits while the compare side still
-only looks at ->decrypted:
+[Severity: High]
 
-include/linux/skbuff.h:
-static inline int skb_cmp_decrypted(const struct sk_buff *skb1,
-				    const struct sk_buff *skb2)
-{
-#ifdef CONFIG_SKB_DECRYPTED
+Can this per-skb distinction survive coalescing?  The bit is set here with
+skb->decrypted left at 0, but the only comparator the stack uses to decide
+whether two skbs may be merged still looks at decrypted alone:
+
+include/linux/skbuff.h:skb_cmp_decrypted() {
+	...
 	return skb2->decrypted - skb1->decrypted;
-#else
-	return 0;
-#endif
+	...
 }
 
-skb_cmp_decrypted() is the only merge-compatibility gate the receive side
-has:
+So a segment flagged here and a segment the device never touched compare
+equal.  That comparator gates the merge in tcp_gro_receive():
 
-net/ipv4/tcp_offload.c:tcp_gro_receive()
 	flush |= skb_cmp_decrypted(p, skb);
 
-include/net/tcp.h:tcp_skb_can_collapse_rx()  (tcp_try_coalesce(),
-tcp_collapse())
+and in tcp_skb_can_collapse_rx(), used by tcp_try_coalesce(),
+tcp_collapse() and tcp_add_backlog():
+
 	return likely(mptcp_skb_can_collapse(to, from) &&
 		      !skb_cmp_decrypted(to, from));
 
-net/tls/tls_strp.c:tls_strp_copyin()
+After such a merge only one flag value survives for bytes contributed by
+several skbs, since tcp_collapse() copies it from the first skb only:
+
+		skb_copy_decrypted(nskb, skb);
+
+Note that the prerequisite patch extended skb_copy_decrypted() to propagate
+decrypt_failed but left skb_cmp_decrypted() unchanged.  Is that asymmetry
+intentional?
+
+The same comparator feeds the mixed-record notion this commit message relies
+on:
+
+net/tls/tls_strp.c:tls_strp_copyin() {
+	...
 	strp->mixed_decrypted |= !!skb_cmp_decrypted(skb, in_skb);
+	...
+}
 
-net/tls/tls_strp.c:tls_strp_check_queue_ok()
-	if (skb_cmp_decrypted(first, skb))
-		return false;
+If two segments of one record differ only in decrypt_failed, the record is
+never classified as mixed.  Does the consumer added later in the series then
+act on the wrong value?  It restores a whole frag based on the single bit:
 
-net/core/skbuff.c:skb_shift()
-	DEBUG_NET_WARN_ON_ONCE(skb_cmp_decrypted(tgt, skb));
+net/tls/tls_device.c:tls_device_reencrypt() {
+	...
+		if (skb_iter->decrypted || skb_iter->decrypt_failed) {
+			err = skb_store_bits(skb_iter, frag_pos, buf, copy);
+	...
+}
 
-A decrypt_failed segment and an untouched segment both have
-decrypted == 0, so all of the above treat them as compatible.  Can two
-such skbs then be coalesced into a single skb that carries only the
-head's decrypt_failed value, and can the same mismatch leave
-strp->mixed_decrypted clear so tls_strp_copyin() flattens the bytes?
+For a merged skb covering both XORed bytes and untouched wire ciphertext,
+does this either undo the transform on bytes the device never touched, or
+leave the transform in place on bytes it did XOR, so that software AEAD
+authentication fails with -EBADMSG?
 
-The consumer added later in the series works at fragment granularity:
+A second consequence is in the rekey boundary tracking:
 
-net/tls/tls_device.c:tls_device_reencrypt()
-	if (skb_iter->decrypted || skb_iter->decrypt_failed) {
-		err = skb_store_bits(skb_iter, frag_pos, buf, copy);
+net/tls/tls_device.c:tls_device_decrypted() {
+	...
+		bool nic_touched = !is_encrypted || skb->decrypt_failed;
+	...
+}
 
-If a merged skb reports decrypt_failed for a byte range that was never
-XORed, or loses the mark for a range that was, does this restore the
-wrong bytes and make the record fail software authentication with
--EBADMSG?
+If a record the device never processed inherits decrypt_failed from a
+GRO- or collapse-merged neighbour, does ctx->rekey.old_nic_boundary slide
+past that record, keeping the retired old AEAD alive and postponing the
+deferred tls_dev_add()?
 
-tls_device_decrypted() reads the mark from the message head only:
+The series documentation appears to describe exactly this mismatch while at
+the same time permitting the merge:
 
-	bool nic_touched = !is_encrypted || skb->decrypt_failed;
-
-If the head is the unmarked segment of such a merge, can nic_touched come
-out false for a record the NIC did transform, retiring
-rekey.old_aead_recv early so a later XORed record is reconstructed with
-the wrong key?
-
-The documentation patch in this series states the asymmetry is intended:
-
+Documentation/networking/tls-offload.rst
 	Coalescing (GRO, socket layer) and record classification are keyed on
-	:c:member:`decrypted` alone, so :c:member:`decrypt_failed` segments may be
-	merged with unmarked ones.
+	decrypted alone, so decrypt_failed segments may be merged with unmarked
+	ones. ... A transformed segment delivered without decrypt_failed, or an
+	untransformed segment of a mixed record delivered with it, is restored
+	incorrectly and the record fails software authentication.
 
-but the same contract then requires that, within a mixed record, a
-decrypt_failed segment holds XOR-transformed payload while a segment with
-neither mark holds the payload as it was on the wire.  How is that
-per-segment property preserved once the merge described above happens?
+Since GRO and TCP coalescing run after mlx5e_ktls_handle_rx_skb() has set
+the bit, can the driver honour that contract at all?  Would extending
+skb_cmp_decrypted() to also compare decrypt_failed (and thus forbidding
+coalescing across the new bit) be needed before this flag can be relied on?
 
-For what it is worth, this does not look like an authentication bypass:
-mlx5e sets decrypt_failed without also setting decrypted, and an skb with
-decrypted == 0 is still never merged into a decrypted == 1 skb, so the
-record is always authenticated in software.  The failure mode appears to
-be a rejected record and a torn-down kTLS stream instead.
+The segmentation and arrival pattern is driven by peer traffic and a
+peer-initiated KeyUpdate, so the merge condition is reachable from a remote
+endpoint.
+
+For reference, skb_cmp_decrypted() is unchanged at the end of the series, so
+the gap does not appear to be closed by a later patch.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917224355.2288021-1-rjethwani%40purestorage.com
