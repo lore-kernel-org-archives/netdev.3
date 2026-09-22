@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AA347A89D;
-	Tue, 22 Sep 2026 11:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5BA4F4CFF;
+	Tue, 22 Sep 2026 11:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790077645; cv=none; b=QjjgymVbkQ+ZWfgwRhBsmWDe0gIzs87vuT6UDwgpPxcIpyl2m4JX1jiJCEypool+j4ILXbBvoRvWlqTz5YE80fSge/ROpY+lX+nPwzDTP+eWZt4o/NMwxslJf2IYCmhkyDJJ0kl/VIpjXIAu3lUsS3VFuOCPXUfNsrEqoB0V6HU=
+	t=1790077734; cv=none; b=JPw72Vbd7MD0k9O4Ln2kXBHfyx3p7vbSSnEGSF79mspn37PEr+3i5oOv6Mw+pfGe3XHwp/hZ4iBls4hmef5RODckKWBA/8v65AVbcQDBGa28MXHSDKVBdkRFdiWbZqVE2F1D/m8zjpQHYNVgebtMCmBuTsoOtN6CymY8ECL0lrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790077645; c=relaxed/simple;
-	bh=fDvABMmn2gF+dxKZ5yEeqCVmQLNzq2xUNYxqDoYBvyA=;
+	s=arc-20240116; t=1790077734; c=relaxed/simple;
+	bh=vW1Ol1BVKUr1haiJQnrDA/kESi2UGu6ZufvqWMjgDcY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IwN+dDsLlCOsbNuCzC6TLK5PKZg/W5yvqbhn4+Ha41kzCeb+RtGCAl9gStG96mQ1pM7ojOaYfzyA3xVD3zefbhbEamlvVPHXFtcgLMlws473N2aKCR3OMtrp7kKujBHwgOk0wGyl657riN7a0Pvh9C9F6SQqWQGCU9COD/FL07A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1Vgs6zbA; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=GTvt9o1YPE7pprt2xxyV1Bp80FbxdXPJJkip83gpSyPHmVKS7eZTFl+vS+8DYqVnhRpxg6+xgw+jCQBUGv7YY5AxGhc277LrulvI3XTRnCvhZrRa6C++NPmiAF58T3MJYyGUxO1Cw0tmHuAOLCQCgCm/8tJF0wv9QeGNRSlRLsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=z0O+tWYQ; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1Vgs6zbA"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="z0O+tWYQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xwh0UeYuRKjonVg6AFJmOLkV18tksckswMbSauTQoJg=; b=1Vgs6zbAFKKdPhe8r/RTlnXpzz
-	bAH3NnVJC1PFkcf1JTfFWUid/FVM5DpIvAi8qw1T9SmT/z0c1T2W4qyeHyVozIFL1h/3+7/TNRcMC
-	vFH9X5uPExiLLOkFq7IBe2/9Sa7/IzrWiWq6Ej4g9HNV7M4UauId8YfhWkYJi+u/OkV0=;
+	bh=NMTJ1NkWpe9BZuhiFKqO3Dp8+T7bLXsGAjYG1UAn3eU=; b=z0O+tWYQoNeI9u9qrg0RnxBlud
+	VLQnTw9mP21mDzK1DgivRUTCQow8LMRoTS/LHROjn5608SHSeq8ZwnH7cDSWYnbaWsr5S2s3oA118
+	6od9ZKtM6V4dt6aE7JE2pkbKIOkXz0YTH7fvwir14rED615tguQvfWJKlPrhaAnkfPSs=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1x8yxv-006Zgb-QJ; Tue, 22 Sep 2026 13:47:15 +0200
-Date: Tue, 22 Sep 2026 13:47:15 +0200
+	id 1x8yzN-006Zi3-I0; Tue, 22 Sep 2026 13:48:45 +0200
+Date: Tue, 22 Sep 2026 13:48:45 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: David Yang <mmyangfl@gmail.com>
 Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
@@ -35,11 +35,11 @@ Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/8] net: dsa: motorcomm: Split xMII and
- SERDES port masks
-Message-ID: <2091d719-ae00-42ce-aba9-3aa7fb0ebb2f@lunn.ch>
+Subject: Re: [PATCH net-next v3 4/8] net: dsa: motorcomm: Fix register bit
+ field names
+Message-ID: <47557718-605d-4a58-8670-cd9f1481024a@lunn.ch>
 References: <20260917185010.3189199-1-mmyangfl@gmail.com>
- <20260917185010.3189199-3-mmyangfl@gmail.com>
+ <20260917185010.3189199-5-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,13 +48,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917185010.3189199-3-mmyangfl@gmail.com>
+In-Reply-To: <20260917185010.3189199-5-mmyangfl@gmail.com>
 
-On Fri, Sep 18, 2026 at 02:49:49AM +0800, David Yang wrote:
-> Replace external_mask with xmii_mask and serdes_mask, and advertise the
-> interface modes it actually supports.
-> 
-> Also move struct yt921x_info into chip.h for future use.
+On Fri, Sep 18, 2026 at 02:49:51AM +0800, David Yang wrote:
+> Review and fix the incorrectness in the bit field names. No functional
+> change.
 > 
 > Signed-off-by: David Yang <mmyangfl@gmail.com>
 
