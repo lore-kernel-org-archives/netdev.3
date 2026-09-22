@@ -1,177 +1,289 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352D9366553
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 02:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790043216; cv=pass; b=FdDk67U4hB8zaI5EmngDmcpvKsRF/DuWRS/pVMCpsygajL/cF21HBBvushZMcLO8tLDKm/IG5wAw4UeQPfPJEpfCZ/BU99PaJaPk58TMYFle0A0WFfbigK0Llnsu00aj4LKePJw6VJdRyDFnKtx14+w0+KrLBASrAlN7BxnPNZg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790043216; c=relaxed/simple;
-	bh=Ap/YzZGyzo2cO+qILnS+HOrD1LlO3Fjr9oA3SoqgiQI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hnWG/fM1E+tFWO1NvU+iXyf/ovqRP+GrZ9s2Z44Bqe5NRWEEjlm8Z/osAnBm0iYB7nVUH+GC4cIoL3s0lu+zgQnyj0iuC8amnjrSk6tDROTC5fTe8nhHqwxhNjz3sYn59jZJd0QTJQRblEkX/jjCjjkuaCs9Ynw8qoKx0vOzjlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cn7o6r3g; arc=pass smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCEB38C40E;
+	Tue, 22 Sep 2026 02:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790043356; cv=none; b=FoFaLMRKxV0hbLaZlhNgyEtGyuGKuR3InHCCQgJCvLUjqRtTs9hMbEUNg6ZNj8ee0CmmffBV3ODUB8SCTfUYCXhJt4k7OM2TOyQQYDBmDRc8IIjy3lfGTkmiKH+zZw7ShLRou8yxsQDNcvQwi1aDS0TQz0KtMRECjhi1T9jDkp8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790043356; c=relaxed/simple;
+	bh=v2tYyLwKPZEXHdgRYLKuFwtXABUV6GEJawzCA5QvXSk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QtLhjltusVbllqmGPZYIPs2z0NpPdg0UmtF19vPDXgBke91RBxZlcoKacxcvBRnd+NbYBKiP9u/6hbmKS6vOl8kXdoAj2cWE7WdDJgGZF5z3pQ6Yldo7H22TQxhmBE39+E2fTtIREP1thaIL8WJK86WRIWhmevT0Q57cnZ4uRKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfUGiGY6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cn7o6r3g"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab201f9so3143735d50.0
-        for <netdev@vger.kernel.org>; Mon, 21 Sep 2026 19:13:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790043214; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fAklnEwVy2awiyXyGiV86vK0umVx0RrL3do10ytcyhTpIFMPRJfZXeDcaa5RfBdviC
-         NecU+QSzESjU1NCFIYQLX48aYeNcNXOcp1G8MBhH2z69QdXq2NNoyr4fGzlHsQP2YblM
-         3FhTSoz9SZaqSM/pl4hdSWF8ym409RWR1g4Nkrsef+Lf9RZniBkv39XiUifldSi4lOrA
-         WcaS4XYV7BThhLX6PgBOAN2bpT2PZts/8TQWtgMQEMHt5AgoWuo/GwQqMQg352nVjHjg
-         vcx/qHwjFo94ph+qgrAFRUtQ0b+qc+kdSYhxC6t0ER4KRRrv7r2wiHhWBtVdi5dNBSYr
-         NbEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=OCxAavhsCK8ZFakY3+2+r6Yw5rmMKHTrZRwA8H/yqhM=;
-        fh=WBF1DAhtllOMUioA5laWXKqIwCKkATP9IAub44Qo+SI=;
-        b=OaCD7BrmK0SXxJXcbkI2LKOoWDGsWqFXqdhqJlyeHMAwMMU0SbF0hcR4CMo5i0PITI
-         7lpsuW7ewzw7fGBYjWCJHvv2EZdBXN+SKNdOHgO8fSuZKgf3fYpM756hLY4b5TGG9Awu
-         +59BMDT8d6F6OQecd5La17/ESYecia0JzqBF1Jujf+u9d7QY0xwBYqLaDovy7W7lmHTT
-         btUxyt4F6xGfCRXDCPW91rhR2F84+wrOyw061DTBMf9mPtorfjwXARFtrgtb8OBk+7j5
-         tlIMi/cE8ya50nvhN9yVoCCvn+CUF2YWq26Ck+fFmMeeg+5GXvk1CuyuK8QZ+/lc0sG/
-         Qtog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790043214; x=1790648014; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OCxAavhsCK8ZFakY3+2+r6Yw5rmMKHTrZRwA8H/yqhM=;
-        b=cn7o6r3gMueb+t4GKFvoTSxKU1SJovRPQ+4SbRkDpdy3j/ZIb/rqwd8WMrH0u94Gt9
-         dzrto80zXH5FL8YnwxOAAyG2KHbw6QXO9XnR+iYVc6kQxrxUUhSNMBPdaPnM8laUPYW5
-         DzAkkf8yeyLQGHxr//dkZNYMfXhGv/bAgEMFJp1g1H8K1ytMAPUq6LZGSHfAE6prNAnF
-         V54tcvc1AMnt3aBhOI2QT7UDypM9v3QVVTnTUWwHIapQfQmo9r9gVmLHX5TeLGHzNzHU
-         Qnw23dIP/MquuXx7AXzJioBQ2Pr7xOOiDOb6oDFkKEDhrZKUJUeJTSqilIl0LKC+7l8V
-         p3WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790043214; x=1790648014;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OCxAavhsCK8ZFakY3+2+r6Yw5rmMKHTrZRwA8H/yqhM=;
-        b=jgAcUnLJPF4YFF/gVeYQiHK93tq/LvZCLrB0m34BxOXb7n88aQEZPfFoOUpNQfvYQa
-         /lO/gBTB/WKZZi4qBkOA+lfXXMXtdS589P0OzKGOEo59FfAMMsnxGsQa68u0tH5G24kv
-         xjxLmgsr8h+ou3I8i/yG2c7fFklcWU9vyZ6fHU5XmofQLSkPkSCgtv75fGUr02wg/r+Q
-         DQTtdYOpg4/AQSXVRqiuPUyULKeOHzaF26f8Lb8I5JKKkO/sgMDhePauhFBL+QWJ0f8G
-         TWb6AHw44BWPlzsNJ5xZ3bqrK7YmohdcRTIGdTLZYjukCIqsFNWD8xEp3+rz6p4vNAY6
-         +q+g==
-X-Forwarded-Encrypted: i=1; AKwUvBy9gdvXY9M96K7pz+el68pqw15IGsbNpHRb53B1Tb/S2iz3PRaRVRQ91mw9PXowYI4emaAKgwc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lv5rPlHgrGUrFyUILy964D5DOfGQkolIzmgiTQChYwXNd/JFUT
-	lOYGBtOG+5+5WrVKAWxYFb1svevixY6SkOj4xWHyZIe8Pbo30wDjMoFDs9h7z0HHqYM7eHuf2P/
-	NwnIt0MYLc8GTfC/IucQ0NIgKpEy9Uig=
-X-Gm-Gg: AYBFou3nPROfCZo5w3q1IQAfUHLzkfb7tMRNk3EjoVcTZe9gEk7avzud+7Ioj5chRk5
-	TOOjXsddMCzqUJUsbOz1+ADI3SALygb7N4+xrD1C7/lfCDnHSaE3kyHm6Mts4RUoYwP1vF06uj1
-	HpKcCCCk/aqbYBzEPlyIng16FTv8qSaB3ONZeB/SkQa/P4dWuMSMsEWOWEX/DSksHhSYeg3AxIz
-	4Mh5ycBoZi8dbyqEdQWgbx5gWSsFadcsHKNV7pWYfIcFKtcTSp9xeauckcgYBrSyCTKyiqiVMgo
-	m2LSopC0DpuHsMKk80J2TDOfPlJSU9ck8TiEk46MDnP/uBlaJshyYPKjmA==
-X-Received: by 2002:a05:690e:4192:b0:672:99e1:11e3 with SMTP id
- 956f58d0204a3-67299e1168fmr2220506d50.128.1790043214123; Mon, 21 Sep 2026
- 19:13:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfUGiGY6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E991F000FF;
+	Tue, 22 Sep 2026 02:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790043354;
+	bh=0ASA5JW6b5bnDhsby8kSTB9776aPdBxV6ZarEwfGUYA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PfUGiGY6exW5Q7gji0YFSkvi13LVMyGzTvOjVsTxfVtzbGXGK+rRzSL28X9Wndv0i
+	 C6adaZKgC6jHsvjI1OxafymgqF42Ap5wxVQDJaBqU+oN5IMp0ue/GgFgnva8ya721p
+	 GzmG6hOSdv2AIRKesaUdDG1Abw53zGJeYPNeOgrbWD1GgVSU8OmrmPo2Vh49GdcTJx
+	 fJo1HQ5B60ixEAJihe6wqxxhR6UjIGAVumnoL6IugL5u3vZ/8R2orpkU7C/xvvzP5g
+	 VleMGt9tx2VOUfCdaZqfFbfZbxdWp3i5jwSveShtQpQ9EGMBUFIlzoW9f/SkaaJNJx
+	 ixp+W8dl01Q7g==
+Subject: Re: [PATCH net v2 1/2] net: dsa: mt7530: fix NULL dereference on
+ unbind of MT7531 and MT7621
+From: netdev-bot+sashiko@kernel.org
+To: f@lex.la
+Cc: netdev@vger.kernel.org, chester.a.unal@arinc9.com, daniel@makrotopia.org,
+ andrew@lunn.ch, olteanv@gmail.com, gerg@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Date: Tue, 22 Sep 2026 02:15:52 +0000
+Message-ID: <179004335292.2160803.1657607362233554719@kernel.org>
+In-Reply-To: <20260918015020.2518315-2-f@lex.la>
+References: <20260918015020.2518315-2-f@lex.la>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260916063118.2924049-1-lgs201920130244@gmail.com> <arFJ_2HfXWuWCsUO@quoll>
-In-Reply-To: <arFJ_2HfXWuWCsUO@quoll>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Tue, 22 Sep 2026 10:13:20 +0800
-X-Gm-Features: AcwNN1VtWhrPTDbeTQKN8w96m2efeF0oPfkRnX5dnHLNyPZ4NdQAmU7V51gzM7I
-Message-ID: <CANUHTR84U+tLdA6SCqyB9p0PnZ_Six0nD688goE9q8K2qvXb3g@mail.gmail.com>
-Subject: Re: [PATCH] net: wan: farsync: disable PCI device on removal
-To: krzk@kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, stable@vger.kernel.org, 
-	Eric Dumazet <edumazet@google.com>, linux-kernel@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Kevin Curtis <kevin.curtis@farsite.co.uk>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Krzysztof,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Thank you for your feedback.
+Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0 (1)
 
-On Mon, 21 Sept 2026 at 23:15, <krzk@kernel.org> wrote:
->
->
-> On Wed, 16 Sep 2026 14:31:18 +0800, Guangshuo Li wrote:
-> > fst_add_one() calls pci_enable_device() to enable the PCI device. The
-> > probe failure paths call pci_disable_device() to release the matching
-> > enable reference, but fst_remove_one() does not disable the device
-> > after a successful probe.
-> >
-> > As a result, the PCI device enable reference remains unbalanced after
-> > the driver is removed.
-> >
-> > Call pci_disable_device() after the existing interrupt, tasklet,
-> > mapping, DMA and PCI region cleanup to release the enable reference.
-> >
-> > This issue was found by manual code inspection.
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> > ---
-> >  drivers/net/wan/farsync.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
->
->
-> You sent multiple independent patches, to multiple independent
-> subsystems. The amount of these patches clearly suggest this was
-> AI generated and most likely not tested.
->
-> More importantly, you sent all this work without properly organizing
-> relevant patches into patchsets. This makes reviewing difficult
-> and might cause multiple reviewers to address the same issue.
-> Replying to the entire set is impossible and requires handling each
-> patch independently, instead of applying or discarding the set.
-> Maintainers also won't see the bigger picture of your work. Quite
-> worrying.
->
-> This is on the verge of hostile patch: bomb us with so many
-> contributions, we won't be able to handle them in efficient manner,
-> like responding ONCE to ask you to slow down.  Considering all this
-> is untested and LLM generated, I have even more doubts whether this
-> should be considered for review.
->
-> Please read kernel documentation BEFORE posting more work. It will
-> explain you how to identify subsystems, how to organize your work per
-> subsystem, how to document usage of LLM and how what you should not
-> do if this was posted in a good faith.
->
-> Best regards,
-> Krzysztof
->
->
->
-I would like to clarify that these patches were manually reviewed and
-audited by us; they were not simply generated and submitted by an LLM.
-However, I understand why the recent submission pattern may have given
-that impression. We sent too many patches in a short period of time,
-and we also failed to respond to some discussions in a timely manner,
-which made the situation look worse.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Many of the recent patches, especially the v2 revisions, are
-corrections and improvements based on previous review feedback rather
-than completely new untested changes. That said, we recognize that the
-way we submitted them increased the burden on maintainers and
-reviewers.
+- [Medium] The regulator enable reference is taken in the DSA `.setup`
+  callback (mt7530_setup(), drivers/net/dsa/mt7530.c:2493-2509) but…
 
-We apologize for the pressure this caused to the community. We will be
-more careful about organizing patches by subsystem, preparing proper
-patchsets, and following the kernel contribution guidelines before
-sending future work.
+Pre-existing issues:
+- [Medium] On the ID_MT7530 path the patch keeps
+  regulator_disable(core_pwr)/regulator_disable(io_pwr) ahead of…
+- [Medium] In mt7530_setup() (drivers/net/dsa/mt7530.c:2494 and :2502)
+  the return values of `regulator_set_voltage(priv->core_pwr, 1000000,…
+- [Low] Binding/driver disagreement about which compatibles the `core-
+  supply`/`io-supply` properties apply to.
 
-Thank you again for pointing this out.
+--
 
-Best regards,
-Guangshuo
+net: dsa: mt7530: fix NULL dereference on unbind of MT7531 and MT7621
+
+The core and io supplies are only requested for ID_MT7530, but
+mt7530_remove() disabled them unconditionally, so unbinding an MT7531 or
+MT7621 called regulator_disable() on a NULL pointer.  The patch gates the
+two regulator_disable() calls on priv->id == ID_MT7530.
+
+> diff --git a/drivers/net/dsa/mt7530-mdio.c b/drivers/net/dsa/mt7530-mdio.c
+> index 784dd58a71589..de42f70afcfa1 100644
+> --- a/drivers/net/dsa/mt7530-mdio.c
+> +++ b/drivers/net/dsa/mt7530-mdio.c
+> @@ -227,15 +227,17 @@ mt7530_remove(struct mdio_device *mdiodev)
+>  	if (!priv)
+>  		return;
+>  
+> -	ret = regulator_disable(priv->core_pwr);
+> -	if (ret < 0)
+> -		dev_err(priv->dev,
+> -			"Failed to disable core power: %d\n", ret);
+> -
+> -	ret = regulator_disable(priv->io_pwr);
+> -	if (ret < 0)
+> -		dev_err(priv->dev, "Failed to disable io pwr: %d\n",
+> -			ret);
+> +	if (priv->id == ID_MT7530) {
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the id test here is now the
+third place that encodes "these supplies belong to ID_MT7530", while the
+binding does not say that.
+
+In Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml both
+core-supply and io-supply are defined as generic top-level properties and
+are only listed under required: for the mediatek,mt7530 branch.  The
+mediatek,mt7531 branch disallows other properties explicitly:
+
+      properties:
+        gpio-controller: false
+        mediatek,mcm: false
+
+but leaves the two supplies permitted, and the mediatek,mt7621 branch only
+adds mediatek,mcm to required:.
+
+So a schema-valid DT with core-supply on compatible = "mediatek,mt7531" has
+that phandle silently ignored, since mt7530_probe() never calls
+devm_regulator_get() for any other id:
+
+	if (priv->id == ID_MT7530) {
+		priv->core_pwr = devm_regulator_get(&mdiodev->dev, "core");
+		...
+	}
+
+Should the binding set core-supply: false / io-supply: false on the
+mt7531 and mt7621 branches so the two sides agree?
+
+> +		ret = regulator_disable(priv->core_pwr);
+> +		if (ret < 0)
+> +			dev_err(priv->dev,
+> +				"Failed to disable core power: %d\n", ret);
+> +
+> +		ret = regulator_disable(priv->io_pwr);
+> +		if (ret < 0)
+> +			dev_err(priv->dev, "Failed to disable io pwr: %d\n",
+> +				ret);
+> +	}
+
+[Severity: Medium]
+Is priv->id the right condition for the disable side?  It records that the
+supplies were requested in mt7530_probe(), not that they were ever enabled.
+The enable happens in a different callback, mt7530_setup() in mt7530.c,
+reached through ds->ops->setup.
+
+Can this produce an unbalanced disable on an ID_MT7530 board?
+mt7530_probe() -> dsa_register_switch() -> dsa_tree_setup() can return
+success without ever running ds->ops->setup:
+
+net/dsa/dsa.c:dsa_tree_setup() {
+	...
+	complete = dsa_tree_setup_routing_table(dst);
+	if (!complete)
+		return 0;
+	...
+}
+
+A later unbind then takes this new ID_MT7530 branch with
+regulator->enable_count still zero:
+
+drivers/regulator/core.c:_regulator_disable() {
+	if (WARN(regulator->enable_count == 0,
+		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
+		return -EIO;
+	...
+}
+
+which also means the dev_err() above prints -EIO.  A tree teardown and
+re-setup cycle, e.g. a peer switch in the same tree unbinding and binding
+again, runs mt7530_setup() and therefore regulator_enable() more than once
+against this single disable.
+
+Does the opposite direction leak the enable reference?  Every error return
+in mt7530_setup() after the core rail is up:
+
+	if (priv->id == ID_MT7530) {
+		regulator_set_voltage(priv->core_pwr, 1000000, 1000000);
+		ret = regulator_enable(priv->core_pwr);
+		...
+		regulator_set_voltage(priv->io_pwr, 3300000, 3300000);
+		ret = regulator_enable(priv->io_pwr);
+		if (ret < 0) {
+			dev_err(priv->dev, "Failed to enable io pwr: %d\n",
+				ret);
+			return ret;
+		}
+	}
+
+	/* Waiting for MT7530 got to stable */
+	INIT_MT7530_DUMMY_POLL(&p, priv, MT753X_TRAP);
+	ret = readx_poll_timeout(_mt7530_read, &p, val, val != 0,
+				 20, 1000000);
+	if (ret < 0) {
+		dev_err(priv->dev, "reset timeout\n");
+		return ret;
+
+propagates out through mt753x_setup() and dsa_register_switch() to
+mt7530_probe(), so .remove is never called.  The devm release path only
+puts the regulator:
+
+drivers/regulator/core.c:_regulator_put() {
+	...
+	/* Docs say you must disable before calling regulator_put() */
+	WARN_ON(regulator->enable_count);
+	...
+}
+
+so the 1.0 V core and 3.3 V I/O rails stay enabled for the lifetime of the
+system, with a WARN.  The MT7530_CREV id mismatch and the 20 MHz XTAL
+rejection reach the same point.
+
+Would pairing the enable with the existing symmetric hook,
+mt753x_teardown() in mt7530.c, or tracking an explicit "enabled" flag and
+unwinding the mt7530_setup() error paths, cover the NULL case this patch
+targets as well as these two?
+
+>  
+>  	mt7530_remove_common(priv);
+>  
+
+[Severity: Medium]
+This is a pre-existing ordering issue rather than something this patch
+introduces, and the cover text says as much, but it may be worth recording
+here since the ID_MT7530 path keeps it.
+
+Everything mt7530_remove_common() still does runs against a die whose rails
+have just been switched off:
+
+drivers/net/dsa/mt7530.c:mt7530_remove_common() {
+	dsa_unregister_switch(priv->ds);
+
+	mutex_destroy(&priv->reg_mutex);
+}
+
+dsa_unregister_switch() reaches mt753x_teardown(), the per-port
+mt7530_port_disable() PCR read-modify-writes such as
+
+	mt7530_rmw(priv, MT7530_PCR_P(port), PCR_MATRIX_MASK, PCR_MATRIX_CLR);
+
+the mac_link_down() PMCR writes and the internal-PHY suspend writes that go
+through the switch's own MDIO bus.  Are those writes simply lost at that
+point, leaving the driver's bookkeeping describing a state the hardware
+never reached?
+
+Can the MIB poller also read an unpowered die?  mt753x_teardown() is the
+only place the self-rearming stats work is cancelled:
+
+drivers/net/dsa/mt7530.c:mt753x_teardown() {
+	struct mt7530_priv *priv = ds->priv;
+
+	if (priv->bus)
+		cancel_delayed_work_sync(&priv->stats_work);
+}
+
+and it runs from inside dsa_unregister_switch(), i.e. after the disables
+above.  mt7530_stats_poll() re-arms itself unconditionally:
+
+		mt7530_stats_refresh(priv);
+		schedule_delayed_work(&priv->stats_work,
+				      MT7530_STATS_POLL_INTERVAL);
+
+so it can be doing MDIO reads while mt7530_remove() drops the rails,
+folding all-ones reads into the cached per-port counters.
+
+[Severity: Medium]
+This is also pre-existing and untouched by the patch, but while in this
+area: mt7530_setup() in drivers/net/dsa/mt7530.c discards the return value
+of both regulator_set_voltage() calls:
+
+	if (priv->id == ID_MT7530) {
+		regulator_set_voltage(priv->core_pwr, 1000000, 1000000);
+		ret = regulator_enable(priv->core_pwr);
+		...
+		regulator_set_voltage(priv->io_pwr, 3300000, 3300000);
+		ret = regulator_enable(priv->io_pwr);
+
+If machine constraints do not permit the requested range, or
+REGULATOR_CHANGE_VOLTAGE is not allowed, or a second consumer holds a
+shared rail at another voltage, the rail is still enabled and the driver
+goes on to reset the die, poll MT753X_TRAP and read MT7530_CREV as if the
+1.0 V core / 3.3 V I/O operating points had been applied.  Should these two
+calls be checked so the failure surfaces as an error instead of as
+intermittent register access failures?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918015020.2518315-1-f%40lex.la
