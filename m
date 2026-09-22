@@ -1,113 +1,165 @@
-Received: from mail-oi2-f26.google.com (mail-oi2-f26.google.com [74.125.231.218])
+Received: from mail-oi2-f23.google.com (mail-oi2-f23.google.com [74.125.231.215])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2B73C5DB6
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D56D418342
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.215
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790109099; cv=pass; b=s/s0HpNXBMwAxYX/xIVVjHJvV/xZGuDbFvclMI3ETdjF8pwhILV8fLiIYoja/NWWPjvakBe59H4zVpPDj7NSepqc10gw0RMieP0J9ydmjEP2MUabldGrsCBI1PhAOcaunNHelOQoGmnLjSBkRcIWeXw9Bkxj4qn33tvqmtiSXfI=
+	t=1790109204; cv=pass; b=P4G6D2zH21kMIOmAKrj3SLDKi3iTusq97fvS0tZRDx8DHkgGfO2+xM9Jj89ny8tcnszqF/DBlwgvJjGul0DDl/r9NsZvrnLbH62eado41fI5DoJB31qinpds3JB7iDjtkUSi1Z4sD4HddgaPiEHILLn8ia3ucF4JV8yd3Iq1fWc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790109099; c=relaxed/simple;
-	bh=pyQVQX6jKLamp0uCXxk31zCcsl4nBlJoDrluWIu4huc=;
+	s=arc-20240116; t=1790109204; c=relaxed/simple;
+	bh=YVrKX0LV+9XXawTshmyoqahUAGMDRjhHBTCg4U2uBHU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p/C9wbRlVOiiWsw4kT0K2qDEw9jJWHVB5ykQMqyiZrqroevSaCQnoKgrYsl1bnmvCGbcvvR35SRu1SL8LPuilvXlki+eftaiPN7VydqrVkmeVaaJUoFz6PS+q/42nFviRQqadkKo3ljzEWt8A1z2c7E2timwWJe5IfnIhZrYV00=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0gY6i1Z; arc=pass smtp.client-ip=74.125.231.218
+	 To:Cc:Content-Type; b=n11uSML1yUVjpFTL4y1ByWbW1GiAsOXF8lVfo8jG5tjjoRTbqliRxUEprWrAyfcN2w3wkCttClVqJEcSZRVToatP9p+2Sq5cFkglY/cCc3sgFJakI59gDfGhIFlCIDOyS42pVjcYC8pOo1mPYTr4WyNIIYwjj5+/b3ghoPQ/nRw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WuXtR6Sg; arc=pass smtp.client-ip=74.125.231.215
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0gY6i1Z"
-Received: by mail-oi2-f26.google.com with SMTP id 46e09a7af769-80a18990c76so281977a34.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:31:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790109088; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WuXtR6Sg"
+Received: by mail-oi2-f23.google.com with SMTP id 46e09a7af769-7f4f0d37dccso195514a34.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:33:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790109191; cv=none;
         d=google.com; s=arc-20260327;
-        b=SlWKMW/WjyfCg+BWQ0xAcf2YNqSvSr39nhnNfmC4aHW4eCuzEFjLSz/0M3cbek8DDB
-         Z9KcUlTW99QwiWYbzHLm/++rHDJyG9DNKqvBVpfzYHxvkKAW8GycKJEiZBTtFY/7jRHR
-         W7+jFIliClTuqOUQ3eEofcxSSlOAdp1yi/i+KGI7bjLgo6Sk5ixs7kPIby5VAVUUL0BE
-         2VfV/9iEQAsfb74Zs3ais40F/Rd6gCfk1eDwlJpY3HTxh7C1FEiryWzssgtrsLlwGNP2
-         iqIl7q7oRwIE+1wvN3X/06CRvnhwwpG2rCvVEWK/P6Xon+d5paCt0HY9K2ZTjqzhy+D8
-         K/lg==
+        b=dFjcS1YDbVA4UK1YMFvbzggq8/p1rVnStZyhoaBCAESuFX5NQl5wzK5G8pqMnm1A9w
+         0enJ6EkNTgEt5S0ptJA+yia3D10Jhk5tsYokFBPiKF8Eh76C73rkHmEJaRH0lJ9072qD
+         dodza30RCgE+eLSTKxPytBNl+xmO+LYNTMtKAPUH6pVePBOFzTCvP8V3CzfbP2IrqqUl
+         /+V3gyOvd/7Tsc6PVIzDb6tlWpr3rRJKYRl5NtuNSFhbyqod3kl/iT4+Er13g7jnMUkN
+         vE8KK1v2oB0KNwLEemS/TfsXWbuWOqbZ2Kwbq6iRxPbjWeYe5Bk01RaFCZjRFvSTPP+r
+         FQBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=pyQVQX6jKLamp0uCXxk31zCcsl4nBlJoDrluWIu4huc=;
-        fh=Dw+SU76GjhTWF1bFuCcAlzmfBmFaGYLXqsiIqBUW2pw=;
-        b=pcNBtfx/Qthzlw6WGyfHqUG8vvwtfwt5wvEeik+0FuygAzTVHuBv8v/LyKgyXS+a4z
-         kAvBIYJ3F4a25MzZUNWiH37gflctILaPFD64dkUHjWj/Wruy7OKc9u3ozzwdi8+4uhaE
-         TmHXtT8N43ksp9QiR2ZkQsvt13hM5lk2QwWlm1JS/MQkkyilOfnFA1XkHiNZSduI/4j/
-         Bgeb8pQOSKnczU/qYdz83GYVx75FLvFU+X4BLcFYPfg0518ja4zH6bVvmtzKC3ekptWi
-         5SJtZtfkajgvUBxc4FRSOsRCMnw/03Bu9qThzkeCk5g7tNJySyU39nzIRUCyMKZBjfnw
-         qxtg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=H07YChWgthu6uT5lPpAm/6rWFjM+GWRx5WUSHRQ6MZY=;
+        fh=VVlwAK4shnRlLsNXB1xGTNSb7qParIkiZFP8Aowqa7w=;
+        b=LGaPSXkXGJoV94ZoLXS8LBlPczdDtJtLs48h0xqK7FYGFRMLRk4nYLcAEdrxk9jem9
+         xtKXC5OrJpbUtNv7s/mUZ8wkfeffrh6DbeyE6aqnFnJ0aS4mr/U82ZvJeZcqTgU/8jWs
+         D62B4xzkQBZplnCKOoxnHTsdPGPWJ5yV9g4oi9N0pAGaSdEXXXQYfbWepzXuhP0a5USO
+         9lvU/rGEr3+gnVhmT9yIFgPOa/rdGAS48TR3F3XKMA2ylOD0tsN/9Ap7gJppGnWR8vye
+         sOaXwcU1eUArycNIEwRgpI5Zs1YqFISI+HJ5fhFv6t5mDTXHeW23AtYoGQTOYOYCt7+I
+         5/Uw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790109088; x=1790713888; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pyQVQX6jKLamp0uCXxk31zCcsl4nBlJoDrluWIu4huc=;
-        b=W0gY6i1ZQGKY1GhTGAYJT1Zysmc6u4VOq4inZtEwpVPrSt3tcJJGzZpmHOE4DdRM0Z
-         OeoGLxhhHimmDgtdjmOjT6J2nrLUUZawwRD1XveaYcNuEL1YzGAaqRrDFPX6f+6b5eI2
-         x0nia3j+mwbHL0cNzDNb4wcQ5RWdI3z/QHotHzlWZRuL5g69V54X78cGb8iT0/YnTh3G
-         QzgqUAT3ZrzvRJsyUOtajzC8SnCZGq/TLNDLoN6HfzGGHvxngUUNW7gzEHqvELMIa3wC
-         7X0CJYACHIHDjFZ59YVV60l0P8gsG+qMhu3AdCo7iijJtIkJSQV0cl8FVIelnLONwblg
-         iF2w==
+        d=gmail.com; s=20251104; t=1790109191; x=1790713991; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H07YChWgthu6uT5lPpAm/6rWFjM+GWRx5WUSHRQ6MZY=;
+        b=WuXtR6Sgw6UVB2U1/iwbEBd/wKvxBh8DkVhl/RgCU8+wLUxa15cxwJ+sr8rfc6Yflp
+         sjTvD/nz+rjjKC6uNB4IjRIBhGtjSN6uLx59wGz3kfsvZ1BK9XigObr3pSyI932zNOM9
+         MBc6iM5kRtfI1cV8WsJ0aNGPFjEDl27KmjRd4+6bRdINBZswfRWhnajQQr/1WEJtUCMS
+         ZNnbPE5MUekjSQ+DtuuSRyQuLnq8Hc1sfhPn9U2W6+WV3TGCpBeX9Jk9QYrd1wINXY6Y
+         yoGlI7shm/6/CRPiJzYCTAP2DelDf5ShoS1MPeuJehzxel5WxMwjRYUXfHY99V1xIjRB
+         HXrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790109088; x=1790713888;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pyQVQX6jKLamp0uCXxk31zCcsl4nBlJoDrluWIu4huc=;
-        b=K5iEqixvR5KB/90dsHv3vYtymSBScThI160AJ5LcqgLPI7835w+WTqDqmmg1V5KEeE
-         O+7vPG4i6/Dco/l3l3t43gRjYeVrbZUNcIkfbjPWw7dCsQ/ZIaNFYu2tJApol/qqlhW9
-         xhrBrIdUcPdGp4DE3R44Ecl0fVpRPrXh48VIK7rcu/ZJaA1MMf8zN15VapJIxPWgPkTN
-         6SFlj7dKXfJdXwKI2qYZr+rna8mGHS8isXF8B6SCnwG2zvVm1f6oaAV8s3gXiO7qCNKj
-         m0oTdL252uWRJwV95a0XtnwWFhG1qZbK90+P0GxKtpimFo6tc3razeKXi5itVfPtaKb/
-         S/Kw==
-X-Gm-Message-State: AFuF++kkjs2YvQtvxjfvCE+DPIHTZvBYtGn+Df8fv/5sdiMmltc8Ssak
-	PLlrmVbdUsEWQMHuv1DTNrbNBeTY76YyYAc7MNnB1Ahy7fhWuxVa3ha3t0iYstWovKxo8tJzDDN
-	QbmBissrAhRGd/ekG3MPUz2PJx6tXVJQ=
-X-Gm-Gg: AYBFou0GdhjaAsVhg8pcGTfjMIhAfD19ysJCccjRZiCabGJJYadunv7GdpdzuS26p+d
-	ZSUGVw9/bK2dsVcNgIJU9Vd3jehPUm7J11kDp568OSRV8SmrvEkMOsEcI3It7WjyJaGnPqcY7cV
-	SFLqNKeDxl7IHLoPjzsS1mVzcMKdpKMOifBN7r7or9qnWxvbnrxOegdJSuM4+XFwq4Przt3dzQu
-	L3RkPkebIluMdalsQzRnF9DwbffkdZHZC4JObsZzTKnugn+gyUc8F45w8IGDZzjowyzQjNgydUU
-	I/8mXA9b0O1K+z11a5422to6RsOmDxw21ewxqN+TKK/d1Udf0r79ydhXB4QBUcsrtjdJNU1wE1v
-	8rM8+xmLokw==
-X-Received: by 2002:a05:6830:4109:b0:80c:d34f:5f5f with SMTP id
- 46e09a7af769-815f242b7e1mr808405a34.24.1790109088330; Tue, 22 Sep 2026
- 13:31:28 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790109191; x=1790713991;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H07YChWgthu6uT5lPpAm/6rWFjM+GWRx5WUSHRQ6MZY=;
+        b=B/eXtrA6aVhbYb8hylyRtEPhFYKX/Hp4Q5rGENG+YHiV6sqSm5/JH9BnsKxFs5sHR9
+         d690MhmyeT88IPETLOgHsea0UsOk74/41yF7O6G9Dvaf7jkFiaIhC/bjmby6W96bFqNN
+         C5PySbhW2hMzqNi1XbDIMQVosMrAa1aGMj3YxWmb6n5/0r1cvA8iTXshjF8iYKNp3sbH
+         iYmLtbeo8/jfea2gkQhgdaFYgi8RfH/BufssnRvhL2ZFGjbSr1J1AOJ6C4rP8e0QJEqA
+         997uq+jjIeobLfcTdjvAIXS14uISEiQP330+REzEORtm4//lBO4zLtauHZ4mlw7Q7mT0
+         n2wQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzfzazly/lqBriQFR/k4sBil0BQSaMuHeU08ifrlRfWWtRRZh3/tOMR8ORSrlE/CMNFrODDxB0=@vger.kernel.org
+X-Gm-Message-State: AFuF++l9MHJDXO1mMHDq0gxhIFvEFbsBcmYX3Zo0HI70EXTZl+D+/QzX
+	KjQB89Aje/mRjo8blxcBhID3C9Ta1jBnEjISRPrN/4i1PP42oPbnsVFqEXKZfFP8db8SRSGLv6O
+	iY4lEeVM55hM0gYAPqEim/9yd9wWarnc=
+X-Gm-Gg: AYBFou2Hpjspap0lQmLbe4y9al++0Ho8B9+23vbidN0RtuMNb0J1SrCRYTl5luSRzae
+	7rO5XjiY9geaF3yCSZKTVgRODKRRiww3l8PxQYgDUknQ1Na2XfI7XNHPEeXewZOvvdTjBc4UqLf
+	riyHc82OCudbQgjw/UrCegs1TytDXsYqugPjigqHvnVQEN6v6vgIH4ZURpoMERltptxSgQN1aj1
+	2eMEL6y7JD8vt+23uqA8nOdjryTWw2f5RdhPEHvrQBeRL3eGJ6nfvnJ69mQZ+BfSGygMetVvmbM
+	OtkRmVoQaFgc0mLhJXI0yUCmDWq5gQeUah479A2gUn6g7KmfrKD1V1fJEfLjPluiB1PdD7AX
+X-Received: by 2002:a05:6820:290d:b0:6be:4eb3:e1c7 with SMTP id
+ 006d021491bc7-6d2cff43713mr471043eaf.14.1790109190880; Tue, 22 Sep 2026
+ 13:33:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260920194710.1114748-1-devnexen@gmail.com> <20260920194710.1114748-2-devnexen@gmail.com>
- <arKF7P9gqq7ehX-k@sgarzare-redhat>
-In-Reply-To: <arKF7P9gqq7ehX-k@sgarzare-redhat>
-From: David CARLIER <devnexen@gmail.com>
-Date: Tue, 22 Sep 2026 21:31:17 +0100
-X-Gm-Features: AcwNN1XSk4_n-Pw8whwf_qkZon5EH5z4YSuf40SxLSGrNh11a3Xo3EAHx4U9uBs
-Message-ID: <CA+XhMqwsoW1xyq+URGSuTrwnPo2CR5297bskaAsgHfMyyPPSPQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] vsock: report pending receive data to io_uring
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260922172028.6269-1-emil@etsalapatis.com> <20260922172028.6269-6-emil@etsalapatis.com>
+In-Reply-To: <20260922172028.6269-6-emil@etsalapatis.com>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Tue, 22 Sep 2026 13:32:56 -0700
+X-Gm-Features: AcwNN1VGJY6GqpU7_5pCNeCM2-B96aVCqu0qSFJBh6gFAmJnhMxteN-NYUreQhc
+Message-ID: <CAMB2axOmSEshN1jT0MRDLTvnVu6YvbsUw5MhOrB3-mvUNbhmwg@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 05/11] bpf: Reject pkt arguments in mutating subprogs
+To: Emil Tsalapatis <emil@etsalapatis.com>
+Cc: bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, 
+	memxor@gmail.com, daniel@iogearbox.net, netdev@vger.kernel.org, 
+	Nicholas Carlini <nicholas@carlini.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Stefano,
+On Tue, Sep 22, 2026 at 10:24=E2=80=AFAM Emil Tsalapatis <emil@etsalapatis.=
+com> wrote:
+>
+> The verifier tracks changes in how PTR_TO_PACKET registers'
+> bounds are modified across subprog boundaries. PTR_TO_PACKET
+> registers are actually passed as PTR_TO_MEM, which is assumed
+> valid for the entire call. This is not the case with packet memory,
+> where a pskb_* call may invalidate its memory region.
+>
+> Reject BPF code that passes PTR_TO_PACKET pointers to subprogs that
+> may mutate a packet. We cannot pass the pointer as a true PTR_TO_PACKET
+> because we would also need to somehow pass the PTR_TO_PACKET_META
+> or PTR_TO_PACKET_END to the subprog. Since we cannot avoid representing
+> the pointer in the subprog as PTR_TO_MEM, only permit it if the
+> subprog is guaranteed not to mutate the packet.
+>
+> Fixes: 80f281664f5a ("bpf: Support pointers in global func args")
+> Reported-by: Nicholas Carlini <nicholas@carlini.com>
+> Suggested-by: Nicholas Carlini <nicholas@carlini.com>
+> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+> ---
+>  kernel/bpf/verifier.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index d62c0f74c..71ad07a9d 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -10421,6 +10421,16 @@ static int btf_check_func_arg_match(struct bpf_v=
+erifier_env *env, int subprog,
+>                         if (check_mem_reg(env, reg, argno, arg->mem_size,=
+ BPF_READ | BPF_WRITE, NULL,
+>                                           NULL))
+>                                 return -EINVAL;
+> +                       /*
+> +                        * PTR_TO_PACKET get passed as PTR_TO_MEM, preven=
+ting
+> +                        * us from adjusting bounds tracking info.
+> +                        */
+> +                       if ((reg_is_pkt_pointer_any(reg) || reg_is_dynptr=
+_slice_pkt(reg)) &&
+> +                           sub->changes_pkt_data) {
+> +                               bpf_log(log, "%s is a packet pointer, but=
+ func#%d may change packet data\n",
 
-> Maybe this can go in util.c/h
-Sure.
+This might seem vague to users. How about something like:
 
-> nit: can you add uring or something like that in the function name
-Ack.
+  bpf_log(log,
+        "cannot pass packet pointer %s to %s(). The function may
+invalidate packet memory\n",
+        reg_arg_name(env, argno), bpf_subprog_name(env, subprog));
 
-> Should we avoid to fail if it isn't supported and just skip the test?
-Yes, will skip.
+Reviewed-by: Amery Hung <ameryhung@gmail.com>
 
-> Why we need this barrier?
-That one is not needed, I will drop it. The others might stay; an early peer
-close makes the hint report EOF.
-
-Cheers.
+> +                                               reg_arg_name(env, argno),=
+ subprog);
+> +                               return -EINVAL;
+> +                       }
+>                         if (!(arg->arg_type & PTR_MAYBE_NULL) &&
+>                             (type_may_be_null(reg->type) || bpf_register_=
+is_null(reg))) {
+>                                 bpf_log(log, "%s is expected to be non-NU=
+LL\n",
+> --
+> 2.54.0
+>
+>
