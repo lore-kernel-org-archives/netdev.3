@@ -1,444 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEAD3AE1AF
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 11:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790077337; cv=none; b=Ivk5LGTOmI42jeXEbaoVAdq5bSsl+jSMX9B0d22IT0i+IUPTdMuU2tYBEfjm3YIyHT/FR1bEGVEmDeB1UUQP/yyKN/Cy8IYD5tLI9nLrTi2DI9g1UG6kkfz2HE7eFzsYh6FnHpVbCQRRZUa6kupgpkFNFkMCtnh3CDJkCkI46mU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790077337; c=relaxed/simple;
-	bh=gQThMzmppr8DvzQ1H4TwTbftx+8gbZcmHLEIzYyI+eg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VfaE7AsEGO9oEw0CdGc7KqkdS7uMpIgkAg3O89PXbMbHRytrnKFSdcMFmXGWyiJ4Qx5qTlW1oNE/M9fA4VRfwNZ0CZqfQRhXGQDu2+BjRVxc8qcOh4eEueDovqqXX7IgLl+cZzk43Pu9u7Wiji4QJs2LprLqeGzM1lIE9Th/6ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ea6g8zMd; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEEB47CC67;
+	Tue, 22 Sep 2026 11:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790077421; cv=pass; b=UWRovbnAp00v07TgUD2rJLZvFaQTevqOkoYNWJwfNxKwSv7EHY2f46GG2rK60P0dSTx+ij6jq2XrSiiy6PA8keng68Kx/qwUIg8STUzfV5wmKi2BMGKx3XSJMxUQOHQ8zPkcSqmDGUx2UlkPrs2EFJU1H+QlHuf/MpQFhnc+VAw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790077421; c=relaxed/simple;
+	bh=kSDLKQ3fFz6Q2v+DGB/iXJKvLM0o4PsJsvctLJETZpc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=cQMLp0sKH/kslQUICV/c0NMJNcfA1NCAh8T3UvDnW7AHSQuA0KB2al5HjwMRhILaJQ63UZUXE8dGNmrCfLhA4NO1oBSVllxhyuI7D7PI/3H4C8ImrHFT0lnqGhiIsAQmmkXghz7XUh+NhSRkgan5DbsXACdm5na8A9JPE/7Ey3U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=qUEqdHYI; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ea6g8zMd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A761F000FF;
-	Tue, 22 Sep 2026 11:42:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790077335;
-	bh=jIgkbH9tnLjhPK6n9LDroFNkRjLm4eII85arKy/oCjY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ea6g8zMdHi/HcqVGLiWcHllygfwMVrmVpUzsXt4Glx3D/JbnkQyy1Lj8PrKJrHJ7O
-	 WZNUTEiOPed/swjRqEOiXFRpiQN/s2wXuS00ZAcMH3/BCG+7xkco3KNDjkp+oEFHjY
-	 pRf6rkboa9BD6xSxPWJoFtlJIjI8Llchv4wVOPGboTAq9hvG3hCurvTw5NwpuNWA/K
-	 ihxOThRroBi4KYd91EJiTgULv4pwTqcaxQmGp1bVNS0mO5PESTzn73jnvN7aCDi4gQ
-	 pmBhjH/gym02M5b5SbPoHiK8PixQgYm35yBDvj1/FsUF+fQrpKLE3qp3FkHDzlNWr4
-	 rKBBrgYPmX1Zg==
-Subject: Re: [PATCH net-next] net: stmmac: add tc-mqprio qdisc offload
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, daniel@riscstar.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, dcaratti@redhat.com
-Date: Tue, 22 Sep 2026 11:42:13 +0000
-Message-ID: <179007733391.2160803.15760096543003194202@kernel.org>
-In-Reply-To:
- <20260918-stmmac-mqprio-prio-offload-v1-1-5328157fcb58@oss.qualcomm.com>
-References:
- <20260918-stmmac-mqprio-prio-offload-v1-1-5328157fcb58@oss.qualcomm.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="qUEqdHYI"
+Received: from fauth-c2-smtp.messagingengine.com (fauth-c2-smtp.messagingengine.com [204.75.18.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: jmtilli)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hpysb40S4z49Pxq;
+	Tue, 22 Sep 2026 14:43:31 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1790077412;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDCJSXoI0WbQ0p3ihA1hkvhJFyDcDNp+TMZs8wSGHg4=;
+	b=qUEqdHYIF7fA4Tca/903IzrekZXn5/glnh2FFa5Um1E5x55MCwkv7r8pfOPGw3eKBWc0SY
+	cWWvDZIB14ZsIn6uFm57bfSk0v/a7/akqFWGXe+7i7luAJKQS+LgAtQXjRmnjnnuCaE1ST
+	4iVV/bIzpQrjL63UN1/AcsTXjpygD8LxRdoPIQsko/GHTGvhzPq4cjqh6za7AU0JQPQOEl
+	24hfwHk+QIjrlSoMFkFFTPoifuZJXhQg3ViUPeaaZPbwA1DoWwUFT2RzyBcptGSAL07fwE
+	mJBYYX9zGpHqIsSpLLLdQcqjiN3uAZHloXgEh81ndWf/522xC2ADTzsqC7T2aA==
+ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1790077412;
+	b=k6NBgY5kLTlUAphNIBBMkE+kYrNiXBuTkQgzF/OZXI0A7tZdrMwZrG5wtl0JIevtnsC6fy
+	NvwSqje6YmyBlnGnrXN5b1Bd5doto4LYzgSetUCHBkZLfVGSuIIWMaGRlaAxFIBNHz8daw
+	o34f6/QNmms3mPKN3iDrqjOFNZno/rWhk9Z65XlVYfYK2Yh9GxDDfh3f8vhbV+4SMm+yTl
+	Fn+rDXYHqqc9gHM4KFov7jEEVZpIJ+9Ay2IwJEZVdhNtDxrzNIHiO4EK5TtTgAaQIszQu1
+	l2n6wNNdBhWq01buuRSicleo45cnf1hoSPPoMXyEWnpiYDZiGRdcbokEUjmwXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1790077412;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDCJSXoI0WbQ0p3ihA1hkvhJFyDcDNp+TMZs8wSGHg4=;
+	b=mLofDnIX0DDtUTiy4UJY97SkRAkHo4+Enf2gHhItbHVh/W92QClCKt8TXFRiodLjKKV/vz
+	xjGkB2kx8OGm1w7hFGU0my51kdp0TUZEHGw8ztlK4fOpJulyMQvew4mKw7mcBoCA5zdQKC
+	NuMzMVe3xSCJhF0011njhZ7xQR+Ya7AxUP8iylKFqrPuvtYNkqna47QNeiLRwpJf/g1+Dv
+	aUl5nusQTPmXBSlOE5xt9ZJc2NhtVNiio+x5pZ03df4HCBRFDNkM7Svf/lTPsvR4HapaC+
+	7CBh+UH5iC91Pjsv2wletqIuCtSNvtmM7yyT41zpnpQ2CDI4JeTCe8liJwz5Tw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 794151980062;
+	Tue, 22 Sep 2026 07:43:30 -0400 (EDT)
+Received: from ams-imap-13 ([10.64.2.33])
+  by ams-compute-02.internal (MEProxy); Tue, 22 Sep 2026 07:43:30 -0400
+X-ME-Sender: <xms:32myatg49o2er3dLEHE4r7I9rXsYaGObsp32cn7WyFIZ8RMCdYb-qg>
+    <xme:32myas0Xlzs7SINZs582WaVh3NHceaIt_mfkk9PrpgJZ0sjaIll1l3HZRWoRGBNM5
+    BMbO2czBXLn0qo2YVS27LFjostcQP_vP4_8DYAs49WB2PTs8c47nfdx>
+X-ME-Proxy-Cause: dmFkZTEtbiTwXaJq8lyTxx63pXM8gv6tRPzvjR2XlgYzsPY53oPiafl5LAiPT+3EqcPRxj
+    v+lnvvbg4B8Av2KIvQrtjz0yr+Yq5f7CFnPLCrFT2IdzdKDplNdf8L8t7MZx3Cd/fIDKRA
+    s8ZACR28W2YjgpG0ngf+cr56Qgak+Lbi068lHJIEZWBixODjiI1oxDGT4AxdKTzzYaJL/z
+    jecy55fw/Ba0ydPGzUnkf7k8Xd2WKon0j+ZdBjpgyCnv5XBP0lEqPIChyId3c/E70ctqLW
+    ezkbv0P3olAwKi8GjrrFnskjocGLPncShuhlmTHbIlPxm5wc+VsIYo4qDP3LRm60ZhxrRU
+    UQG+3ayrCDzbUcm0I/qAM9LTWJXZLqJhUiHnvcCn0crK92EN48dWQbzKVxFWK6UqAYb1Ok
+    cotm9QPvuoD56VyyhLXJxuknc5itdvROGsFq3e2LaFnjciBYsgDaDvCtROBhps7EwFg5dE
+    yLxz9saybj0Ru87aZmKqTgp1073H2oEdLV/hJJyzVWl/UYJmvg8VxnM5+YaH6bI+BX9LBz
+    Sm90ijWfu3nY/1tXOMQt6xMt4pDtaM+HwWxJhOXsXtI8DpmPoJNWIR/le2GLmSJBttPEBw
+    E1lzIwDeQWRCwG40xq115NO2pqU7gWGrNVaNEVMvpzupOEaKf75gmaBS0r0A
+X-ME-Proxy: <xmx:4mmyauydh2N1Y6AboU5ILm0kGpsGkeUyAWIrQk4BPNDxzZPh4TNfeQ>
+    <xmx:4mmyakzt6yCgAfqi5gpyTsC75SC8YC0XdoVNMXRrxDjyOEwJJEuGHw>
+    <xmx:4mmyatTu2-u8iMHX_oChV13_xnlwREiNIeABWz4ReB1xVEqwAw1YGg>
+    <xmx:4mmyanPvEyQ1Y3PO_u0I9QwNqDtPpw7x5Al8EF_ZHOmQ-sgIRRqFlA>
+    <xmx:4mmyaoSJYJL9gXz42aPZALcY5cbEB_PMn2dlcjywAGEGIDjHliwnWCCo>
+Feedback-ID: i02414972:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 6F7D7F80089; Tue, 22 Sep 2026 07:43:27 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 6 (1) · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] One-directional AVB/CBS rejection: tc_setup_dwmac510_mqprio()
-  rejects the mqprio offload if any TX queue is already MTL_QUEUE_AVB…
-- [Medium] The patch narrows an mqprio offload that already existed,
-  breaking configurations the driver accepted before, and the commit…
-- [Medium] The new per-TC offset validation bounds qopt->offset[i]
-  against qopt->num_tc (stmmac_tc.c:1340-1343, extack 'TX queue range…
-- [Medium] Replacing an offloaded mqprio qdisc makes the old qdisc's
-  teardown wipe the replacement's just-installed hardware state.
-- [Medium] The new mqprio setup and teardown paths perform read-modify-
-  write MMIO from ndo_setup_tc without a runtime-PM reference and…
-- [Medium] XGMAC index mismatch: the loop at stmmac_tc.c:1367-1390
-  resolves, for each TX queue index i, the traffic class j that owns…
-
-Pre-existing issues:
-- [Medium] The mqprio offload accepts TC_MQPRIO_MODE_CHANNEL with
-  TC_MQPRIO_SHAPER_BW_RATE and returns success while ignoring…
-
---
-
-net: stmmac: add tc-mqprio qdisc offload
-
-The patch implements tc-mqprio offload in stmmac by switching the MTL TX
-scheduler to strict priority and programming each TX queue's PSTQX/PSTC
-priority bitmask from qopt->prio_tc_map. The per-queue masks and the
-scheduling algorithm are cached in the new priv->xmit_qdisc so they can be
-re-applied on reopen, and teardown restores the devicetree configuration.
-
-A few questions below about the new validation and register programming.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-> index c889204a7aa5..b6b5ef7c8fc4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-> @@ -230,7 +230,7 @@ int dwmac5_fpe_map_preemption_class(struct net_device *ndev,
->  		if (count == 1)
->  			continue;
->  
-> -		if (priv->plat->tx_sched_algorithm == MTL_TX_ALGORITHM_SP) {
-> +		if (priv->xmit_qdisc.algo == MTL_TX_ALGORITHM_SP) {
->  			NL_SET_ERR_MSG_MOD(extack, ALG_ERR_MSG);
->  			return -EINVAL;
->  		}
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index bf9e7e4cb1c3..0c9083f8846e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-
-[ ... ]
-
-> @@ -3604,7 +3598,7 @@ static void stmmac_mtl_configuration(struct stmmac_priv *priv)
->  	/* Configure MTL TX algorithms */
->  	if (tx_queues_count > 1)
->  		stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
-> -				priv->plat->tx_sched_algorithm);
-> +					      priv->xmit_qdisc.algo);
->  
->  	/* Configure CBS in AVB TX queues */
->  	if (tx_queues_count > 1)
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> index 42a00446e9b4..a2a9680da5c0 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> @@ -1265,6 +1265,23 @@ static int stmmac_reset_tc_mqprio(struct net_device *ndev,
->  				  struct netlink_ext_ack *extack)
->  {
->  	struct stmmac_priv *priv = netdev_priv(ndev);
-> +	int i;
-> +
-> +	for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
-> +		u32 prio;
-> +
-> +		if (priv->plat->tx_queues_cfg[i].use_prio)
-> +			prio = priv->plat->tx_queues_cfg[i].prio;
-> +		else
-> +			prio = 0;
-> +
-> +		stmmac_tx_queue_prio(priv, priv->hw, prio, i);
-> +		priv->xmit_qdisc.prio[i] = prio;
-> +	}
-> +
-> +	stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
-> +				      priv->plat->tx_sched_algorithm);
-> +	priv->xmit_qdisc.algo = priv->plat->tx_sched_algorithm;
->  
->  	netdev_reset_tc(ndev);
->  	netif_set_real_num_tx_queues(ndev, priv->plat->tx_queues_to_use);
-
-[Severity: Medium]
-Can a qdisc replace end up undoing the offload that was just installed?
-
-For "tc qdisc replace dev X root mqprio ... hw 1" on top of an already
-offloaded mqprio, the core creates and offloads the new qdisc first, and
-only then destroys the old one:
-
-net/sched/sch_api.c:qdisc_graft() {
-	...
-	notify_and_destroy(net, skb, n, classid, old, new, extack);
-
-	if (new && new->ops->attach)
-		new->ops->attach(new);
-}
-
-qdisc_put(old) -> mqprio_destroy() -> mqprio_disable_offload() issues
-num_tc == 0, which tc_setup_dwmac510_mqprio() forwards to
-stmmac_reset_tc_mqprio().  That now rewrites the PSTQX priorities and the
-MTL scheduling algorithm back to the devicetree values, and also resets
-priv->xmit_qdisc, while mqprio_attach() does not re-apply the offload.
-
-The result looks like the replacement qdisc reporting hw offload while the
-MAC is back on the devicetree scheduler and priorities, and the stale
-cached state is re-applied on the next open.  Should the reset path check
-whether an offloaded mqprio is still installed before reprogramming?
-
-[Severity: Medium]
-Is it safe to touch these registers from ndo_setup_tc without a runtime PM
-reference?
-
-stmmac_reset_tc_mqprio() and the setup path both call
-stmmac_tx_queue_prio() and stmmac_prog_mtl_tx_algorithms() unconditionally,
-and those are read-modify-write accesses, e.g.:
-
-drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:dwmac4_tx_queue_priority() {
-	value = readl(ioaddr + base_register);
-
-	value &= ~GMAC_TXQCTRL_PSTQX_MASK(queue);
-	value |= (prio << GMAC_TXQCTRL_PSTQX_SHIFT(queue)) & ...;
-
-	writel(value, ioaddr + base_register);
-}
-
-The driver drops its PM reference at the end of probe and in
-stmmac_release(), and stmmac_runtime_suspend() gates the bus/CSR clocks via
-stmmac_bus_clks_config(priv, false).  Adding or deleting an mqprio qdisc on
-a down interface therefore reaches these accesses with the MAC clock
-gated, where the readl can return an undefined value that is then written
-back over the other queues' PSTQ fields and the other MTL_Operation_Mode
-bits.
-
-Other stmmac control paths that touch registers outside open (set_mac_address,
-VLAN add/del) wrap the access in pm_runtime_get_sync()/pm_runtime_put().
-Would a similar guard, or a netif_running() check, be appropriate here?
-These writes also look redundant while the device is down, since
-stmmac_mtl_configuration() re-applies priv->xmit_qdisc on the next open.
-
-> @@ -1290,6 +1308,17 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
->  	if (qopt->num_tc > ARRAY_SIZE(tc_to_txq))
->  		return -EINVAL;
->  
-> +	if (!priv->dma_cap.dcben)
-> +		return -EOPNOTSUPP;
-> +
-
-[Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but since
-the entry validation is being extended here: should mqprio->mode,
-mqprio->shaper, mqprio->min_rate[] and mqprio->max_rate[] be rejected?
-
-net/sched/sch_mqprio.c:mqprio_enable_offload() copies those into
-tc_mqprio_qopt_offload for TC_MQPRIO_MODE_CHANNEL and relies on the driver
-to refuse what it cannot do:
-
-	case TC_MQPRIO_MODE_CHANNEL:
-		mqprio.flags = priv->flags;
-		...
-		if (priv->flags & TC_MQPRIO_F_MAX_RATE)
-			for (i = 0; i < mqprio.qopt.num_tc; i++)
-				mqprio.max_rate[i] = priv->max_rate[i];
-
-tc_setup_dwmac510_mqprio() only consumes qopt and preemptible_tcs, so
-"mode channel shaper bw_rlimit max_rate ... hw 1" returns success and the
-rate limits are echoed back to userspace without any shaping being
-programmed.
-
-[Severity: Medium]
-Does this narrow an offload that already worked?
-
-The baseline tc_setup_dwmac510_mqprio() validated only num_tc == 0 and
-num_tc > ARRAY_SIZE(tc_to_txq).  The new !priv->dma_cap.dcben check, the
-AVB-queue check below, and the count[i] > 1 check make configurations that
-previously succeeded return -EOPNOTSUPP, including the FPE preemptible-TC
-mapping part of the offload which is unrelated to the new priority
-programming.
-
-The count > 1 case looks like it was intentionally supported:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c:dwmac5_fpe_map_preemption_class() {
-	...
-		if (count == 1)
-			continue;
-
-		if (priv->xmit_qdisc.algo == MTL_TX_ALGORITHM_SP) {
-			NL_SET_ERR_MSG_MOD(extack, ALG_ERR_MSG);
-			return -EINVAL;
-		}
-
-		queue_weight = priv->plat->tx_queues_cfg[offset].weight;
-	...
-}
-
-That weight-checking branch becomes unreachable from the mqprio path now
-that the algorithm is forced to SP before it runs.  Configurations such as
-"mqprio ... queues 2@0 2@2 fp E P hw 1" lose the offload.
-
-Additionally, forcing MTL_TX_ALGORITHM_SP overrides the devicetree
-tx-sched-algorithm and the devicetree per-queue priority masks for every
-mqprio user that is still accepted.  Should the commit message mention
-these behaviour changes for existing users rather than describing them only
-as offload requirements?
-
-> +	/* Forcing strict priority conflicts with the CBS algorithm of AVB
-> +	 * queues, so reject the offload when any queue is configured as AVB.
-> +	 */
-> +	for (i = 0; i < pdata->tx_queues_to_use; i++) {
-> +		if (pdata->tx_queues_cfg[i].mode_to_use == MTL_QUEUE_AVB)
-> +			return -EOPNOTSUPP;
-> +	}
-> +
-
-[Severity: Medium]
-Is this rejection effective in only one direction?
-
-tc_setup_cbs() in the same file has no reciprocal check.  It validates the
-queue index, priv->dma_cap.av and the slope parameters, then converts a DCB
-queue into an AVB queue and programs the shaper:
-
-	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
-	if (mode_to_use == MTL_QUEUE_DCB && qopt->enable) {
-		ret = stmmac_dma_qmode(priv, priv->ioaddr, queue, MTL_QUEUE_AVB);
-		...
-		priv->plat->tx_queues_cfg[queue].mode_to_use = MTL_QUEUE_AVB;
-
-Nothing there consults priv->xmit_qdisc.algo or netdev_get_num_tc(), so the
-usual TSN order
-
-  tc qdisc add dev X root mqprio ... hw 1
-  tc qdisc replace dev X parent <mqprio child> cbs ... offload 1
-
-succeeds and leaves the MAC in strict priority with a CBS/AVB queue, which
-is the combination this new check and the commit message declare
-unsupported.
-
-The mismatch also survives a reopen, since stmmac_mtl_configuration()
-programs the cached SP algorithm and then re-applies CBS:
-
-	stmmac_prog_mtl_tx_algorithms(priv, priv->hw, priv->xmit_qdisc.algo);
-	/* Configure CBS in AVB TX queues */
-	if (tx_queues_count > 1)
-		stmmac_configure_cbs(priv);
-
-Should tc_setup_cbs() carry the symmetric check on priv->xmit_qdisc.algo,
-or is the mqprio-side rejection not needed?
-
-> @@ -1299,6 +1328,20 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
->  		ndev_prio_tc_map[i] = READ_ONCE(ndev->prio_tc_map[i]);
->  
->  	for (i = 0; i < qopt->num_tc; i++) {
-> +		/* The offload switches the MTL scheduler to strict priority,
-> +		 * which only supports a 1:1 TC to TX queue mapping.
-> +		 */
-> +		if (qopt->count[i] > 1) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "SP sched requires 1:1 TXQ map");
-> +			return -EOPNOTSUPP;
-> +		}
-> +
-> +		if (qopt->offset[i] >= qopt->num_tc) {
-> +			NL_SET_ERR_MSG_MOD(extack, "TX queue range exceeded");
-> +			return -EINVAL;
-> +		}
-> +
-
-[Severity: Medium]
-Should this bound be priv->plat->tx_queues_to_use rather than
-qopt->num_tc?
-
-num_tc is only limited by ARRAY_SIZE(tc_to_txq) here and by the core:
-
-net/sched/sch_mqprio_lib.c:mqprio_validate_queue_counts() {
-	...
-		if (qopt->offset[i] >= dev->real_num_tx_queues ||
-		    last > dev->real_num_tx_queues) {
-	...
-}
-
-stmmac allocates the netdev with MTL_MAX_TX_QUEUES queues and only clamps
-real_num_tx_queues to plat->tx_queues_to_use in stmmac_hw_setup(), so
-before the first open a request like "mqprio num_tc 4 ... queues 1@0 1@1
-1@2 1@3 hw 1" on a device with tx_queues_to_use == 2 passes both checks.
-
-The priority programming loop below is bounded by pdata->tx_queues_to_use,
-so the TCs with offset >= tx_queues_to_use never get a PSTQX/PSTC mask
-while the offload still returns success, and netif_setup_tc() remaps those
-priorities to TC0 at the next open.
-
-The same check also rejects a sparse but otherwise legal map, e.g.
-num_tc 2 with "queues 1@0 1@2".  Is that intentional?
-
-> @@ -1315,14 +1358,44 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
->  	if (err)
->  		goto error_reset_tc;
->  
-> +	priv->xmit_qdisc.algo = MTL_TX_ALGORITHM_SP;
->  	err = stmmac_fpe_map_preemption_class(priv, ndev, extack,
->  					      mqprio->preemptible_tcs);
->  	if (err)
-> -		goto error_reset_num_tx_queues;
-> +		goto error_reset_xmit_algo;
-> +
-> +	for (i = 0; i < pdata->tx_queues_to_use; i++) {
-> +		u32 prio = 0;
-> +		int j;
-> +
-> +		for (j = 0; j < qopt->num_tc; j++) {
-> +			int p;
-> +
-> +			if (qopt->offset[j] != i)
-> +				continue;
-> +
-> +			/* The PSTQX/PSTC priority map is 8 bits wide, so only
-> +			 * priorities 0-7 can be represented in hardware.
-> +			 * Priorities 8-15 are handled in software by the
-> +			 * kernel through the netdev prio_tc_map.
-> +			 */
-> +			for (p = 0; p < 8; p++) {
-> +				if (qopt->prio_tc_map[p] == j)
-> +					prio |= BIT(p);
-> +			}
-> +			break;
-> +		}
-> +
-> +		stmmac_tx_queue_prio(priv, priv->hw, prio, i);
-
-[Severity: Medium]
-Is the last argument the right index on XGMAC?
-
-The mask computed here belongs to traffic class j, but the index passed to
-stmmac_tx_queue_prio() is the queue index i.  For XGMAC the callback is:
-
-drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_tx_queue_prio() {
-	reg = (queue < 4) ? XGMAC_TC_PRTY_MAP0 : XGMAC_TC_PRTY_MAP1;
-	...
-	value &= ~XGMAC_PSTC(queue);
-	value |= (prio << XGMAC_PSTC_SHIFT(queue)) & XGMAC_PSTC(queue);
-}
-
-XGMAC_PSTC() selects a traffic-class field in MTL_TC_Prty_Map0/1, while the
-queue to TC association is programmed separately in XGMAC_Q2TCMAP:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c:dwxgmac3_fpe_map_preemption_class() {
-	for (u32 i = 0; i < count; i++) {
-		val = readl(priv->ioaddr + XGMAC_MTL_TXQ_OPMODE(offset + i));
-		writel(u32_replace_bits(val, tc, XGMAC_Q2TCMAP), ...);
-}
-
-Both dwxgmac210 and dwxlgmac2 use dwmac510_tc_ops, and a permuted map such
-as "mqprio num_tc 2 map ... queues 1@1 1@0 hw 1" passes both
-intervals_overlap() in the core and the new offset < num_tc check.  In that
-case TC0's mask would be written into the PSTC field of TC1 and vice versa.
-Should the XGMAC path program PSTC using the TC index, or should
-non-identity offsets be rejected?
-
-> +		priv->xmit_qdisc.prio[i] = prio;
-> +	}
-> +
-> +	stmmac_prog_mtl_tx_algorithms(priv, priv->hw, MTL_TX_ALGORITHM_SP);
->  
->  	return 0;
->  
-> -error_reset_num_tx_queues:
-> +error_reset_xmit_algo:
-> +	priv->xmit_qdisc.algo = priv->plat->tx_sched_algorithm;
->  	if (netif_set_real_num_tx_queues(ndev, ndev_num_tx_queues))
->  		netdev_warn(ndev, "Failed to restore %u TX queues\n",
->  			    ndev_num_tx_queues);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-stmmac-mqprio-prio-offload-v1-1-5328157fcb58%40oss.qualcomm.com
+X-ThreadId: AtmlxWozq_rN
+Date: Tue, 22 Sep 2026 14:43:05 +0300
+From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
+To: "Manivannan Sadhasivam" <manivannan.sadhasivam@oss.qualcomm.com>,
+ "Manivannan Sadhasivam" <mani@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Jeff Johnson" <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ "Bjorn Andersson" <andersson@kernel.org>,
+ "Chris Lew" <christopher.lew@oss.qualcomm.com>,
+ "Deepak Kumar Singh" <deepak.singh@oss.qualcomm.com>,
+ "Raj Kumar Bhagat" <raj.bhagat@oss.qualcomm.com>,
+ "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>
+Message-Id: <e7e8a499-9e89-4efa-a99f-18ce7dc37ab5@app.fastmail.com>
+In-Reply-To: <20260921-qrtr-multi-ep-v2-4-27dd80d841a0@oss.qualcomm.com>
+References: <20260921-qrtr-multi-ep-v2-0-27dd80d841a0@oss.qualcomm.com>
+ <20260921-qrtr-multi-ep-v2-4-27dd80d841a0@oss.qualcomm.com>
+Subject: Re: [PATCH v2 4/4] wifi: ath12k: Connect to the QMI server belonging to the
+ device owned by this driver
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+On Mon, Sep 21, 2026, at 14:23, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> When two identical ath12k PCIe devices are connected to the same host, both
+> advertise the WLFW service with the same service and instance id. The QMI
+> lookup reports both servers to each device, so a device may connect to the
+> firmware running on the other device.
+> 
+> But now, QRTR provides each MHI endpoint a unique node id which is
+> different from the node id announced by the device. So use the same id to
+> pick the correct server. Add a get_qrtr_node_id() HIF callback that returns
+> the node id derived from the MHI controller index and zero for transports
+> that do not assign one. In the new_server callback, skip any service whose
+> node id does not match. A node id of zero disables the check, so transports
+> that do not assign one keep their current behavior.
+
+Tested-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
+Tested-on: 2x WCN7850 hw2.0 WLAN.IOE_HMT.1.1-00018-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+Tested-on: 1x WCN6855 ath11k + 1x WCN7850 ath12k
+
+I'm having some issues with regdb on ath12k cards so I had to test using
+the low-frequency 2.4GHz channels. I tried updating linux-firmware to
+20260810 to match my 6.12.110+multi-QRTR kernel, didn't help. The error
+is:
+
+ath12k_pci 0001:01:00.0: No reg rules available
+ath12k_pci 0001:01:00.0: failed to extract regulatory info from received event
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 12 at /drivers/net/wireless/ath/ath12k/wmi.c:5841 ath12k_reg_chan_list_event+0x171/0x1e0 [ath12k]
+Modules linked in: xt_gmmark(O) xt_bemark(O) w24e2identificator(O) qrtr_mhi ath12k mhi qmi_helpers mac80211 libarc4 cfg80211
+CPU: 0 UID: 0 PID: 12 Comm: kworker/u8:0 Tainted: G           O       6.12.110-yocto-standard-gec77603762c7 #1
+Tainted: [O]=OOT_MODULE
+Hardware name: Freescale LS1021A
+Workqueue: ath12k_qmi_driver_event ath12k_qmi_driver_event_work [ath12k]
+Call trace: 
+ unwind_backtrace from show_stack+0xb/0xc
+ show_stack from dump_stack_lvl+0x35/0x40
+ dump_stack_lvl from __warn+0xaf/0xb0
+ __warn from warn_slowpath_fmt+0xe5/0xe8
+ warn_slowpath_fmt from ath12k_reg_chan_list_event+0x171/0x1e0 [ath12k]
+ ath12k_reg_chan_list_event [ath12k] from ath12k_wmi_op_rx+0x219/0xc08 [ath12k]
+ ath12k_wmi_op_rx [ath12k] from ath12k_htc_rx_completion_handler+0x215/0x2d4 [ath12k]
+ ath12k_htc_rx_completion_handler [ath12k] from ath12k_ce_recv_process_cb+0x149/0x198 [ath12k]
+ ath12k_ce_recv_process_cb [ath12k] from ath12k_pci_ce_tasklet+0x13/0x28 [ath12k]
+ ath12k_pci_ce_tasklet [ath12k] from tasklet_action_common+0x87/0xa8
+ tasklet_action_common from handle_softirqs+0xbf/0x1b4
+ handle_softirqs from irq_exit+0x55/0x78
+ irq_exit from call_with_stack+0xd/0x10
+---[ end trace 0000000000000000 ]---
+
+This error happens with 2x ath12k and 1x ath12k 1x ath11k too.
+
+But, the dual ath12k setup works, and the errors are entirely different
+than what QRTR node id clash does.
+
+So, I believe the patch works.
+
+BR, Juha-Matti
