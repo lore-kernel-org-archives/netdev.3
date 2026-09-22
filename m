@@ -1,278 +1,216 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4FD4C653B
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BBD52BE24
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790110385; cv=none; b=uQZL54wVw9wfflfV+H9lGhrjkcQ72QQuu+161FkynzObP2wE2fyIn+5DfhccCsSoy8bBuCOnPcumO7tiWgjbHZF7kX1mBbD0rPAxyOHAXUrMbhRI/8Jopm7bzt6kUSe+OLCzhx6rNeW2aGirPARGDSb46oNbEhMdk+I6f9thmBM=
+	t=1790110404; cv=none; b=IexIBStYNLoaSWuTNYqqGK38Ec5VRpze8EPhbgUDlif9hm76086jFnwPKPlcGEOKav9x7KUG77HhKcBYIXxbqo2uu27TYbN4CBBVNHJ+HShs8MF5hDgUR8v1nLLrLcVQzXceqfRt1I7Qmw1EYN2em1R+igOQkfAtYcwGJCixt4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790110385; c=relaxed/simple;
-	bh=NbjEBeyu2VLG3EhojRaSrC/sVKTJa1ExSwsAOz1USUQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ed3g/33ddidfEGB2UjLSScqoU/DUvd6TpkkBZDDn+R7cZn+UGpAxgmdeKyzLA9inP8xbFIiDmqK903fgnh4W5LMK1dpV05Q+FjRZxFWNCBWvGjvY8PyE4tEK3irzdBl4GPEYOzmhicPiMzgThut03pJaiWTAEes+nkU1LdhIrN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sunnytiwari.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lA25J6lg; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sunnytiwari.bounces.google.com
+	s=arc-20240116; t=1790110404; c=relaxed/simple;
+	bh=/5Ovrt5SIzUgxaxdFXnnNjtd+rE2C1y05J62Y3qD1Tg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VKPu1NVPjX3r1Xwdg/IYDPD/cKOBhOXfczVA12VH+gzwqedkxsfOUvMwF5msiqDl+xn/infvWNvrJys46PE2cPpIgArYLxlbU/dz8xxjy5IsE49mhe1mHxyuH5HKbCPJLYzXSLlTr27PolTTDqVVZCjPLiV+/Mw0nA6R3jHmYz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wyqwpwcj; arc=none smtp.client-ip=74.125.227.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lA25J6lg"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cec4226c70so2262075ad.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:52:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wyqwpwcj"
+Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2d561173f9fso1808085ad.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:53:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790110360; x=1790715160; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+kls6zOn4bhEu16C4wUuQeZkdxufVxysuFtvApSFdDQ=;
-        b=lA25J6lg8CmdsTdDZr26h2PjdxLq2i/Z4ERNmmh8KWwCVm0D+yDpEkoV5C8711NuH6
-         5DhtvlMGqlN9uhiTgFfhq7EFElrL/aX1yCosTInyXuvfIIRoAn4o3f4rpqt065rwJ8Ux
-         DSfCQe7q91nOc1GV0yyRtQclTMfKUhZ8LVJYkTBZ7qyugMZND3ESEqHEQeEHgykSDgg5
-         B5W4dz8StT+RGKPgBoX6zZv+GK3fIiVM0WNYB4ZIevSUvmfmgOqCcb3CiIELDKolaZ7C
-         8TdwnwV3vpqT4vXQ8Dz44alQOsVKHh7SEc8QK9EjoYfRmZPfbG7icPF8YnO4dXvQje/Z
-         dBqw==
+        d=gmail.com; s=20251104; t=1790110390; x=1790715190; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cN/bUNYr6k4szo+6LYbJD9AWHo4WOhhjO1JliVkVGmw=;
+        b=WyqwpwcjFzQOBQe7yuMlBIiAYtb/Xg0D4qMydtskKUPhrI+DCwv5NJfn7303pDSWGi
+         vOH4T6drnLuUbjL0HiF/9YbVpVbgF8t7fOVKAt9SzqiOnCnZXtfWkLe8NcIjZkkFoEtf
+         vxbBOL3WwkqUKa6/QSTu8HeYnays6QfQCcPy5iOfk11GZ8Oz0d/uz6+BRyJTYlPA90LP
+         bAJCZoDrQvYMTPxKmdSetRai5azSYLrUrmT2/XsntNV4pqq+dyGlsGVoKbpx691IVuP6
+         DGQDTZAD8vs0YTTAG1LUqmUxBxLev2gKfcISk6yw30X83Oy0Y8EUYwoUX4eBgEfLZZld
+         vL1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790110360; x=1790715160;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+kls6zOn4bhEu16C4wUuQeZkdxufVxysuFtvApSFdDQ=;
-        b=PTCQUCcMyZzEX4KwHj1fUkNr0ur3pKq8dKqgX8AvKlco80dva+fA0oI4gvBuf+sM9J
-         +x5fkXLrOnumf4eUVfm/dWLD0x6a4iTp5gZm/YGqMrTH5fawvjGwY/de+b2j9xP9OhQc
-         xlVR6Xuy0lx1QIVSiXjX/ttQuvbYls1F7oFyuLxW7Sgwm/DWhhysYLvDY9yP5ECYKNnN
-         H3mLQhyMwtgKZDiU00uQV8jUC5v5v/CvFpUsx9zIzG6RTzJqBHT74Ypxi9xMzILIsYbe
-         VbU/OpLa9x2AMyZCJD7rFug5V5oMHwps2BWxOz1ylAXFGSzcRneOwA1zWu3x2M4oLeYj
-         2XpA==
-X-Forwarded-Encrypted: i=1; AKwUvBw4+375bL/cuuRRt5+qjdJA44nNe29AwY81wdW0QscN2spXYul7cmszWN7AnnXgXo/vpn6hRIc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mQ+H/G3QQz48ByKnZ80j3P7xBdrO9yKhd3q5iFFC4AOuBm0SEq
-	Xn9L706z9cVl01ebyO/E8x//0MRB10gAxuY2JcM9FLgITFwju7ojZYhXimX7gESexe+T4AXFfrk
-	d/vHiESQKKKCMoThJNvLzim2lmQ==
-X-Received: from plrp17.prod.google.com ([2002:a17:902:b091:b0:2db:1a39:c145])
- (user=sunnytiwari job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1a2d:b0:2dd:c053:82f1 with SMTP id d9443c01a7336-2df69dc4162mr4741375ad.40.1790110359533;
- Tue, 22 Sep 2026 13:52:39 -0700 (PDT)
-Date: Tue, 22 Sep 2026 20:52:36 +0000
+        d=1e100.net; s=20260707; t=1790110390; x=1790715190;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=cN/bUNYr6k4szo+6LYbJD9AWHo4WOhhjO1JliVkVGmw=;
+        b=JEo7tn5PSPY68JTe64LWKKkPA3WZSPz0K8y3dEX3zv3kd4fEKT27EO6AdeZojhIdyJ
+         rUk2utwEi41QT4LJMjKrUW+7ZzCnVfc3CIkaVh9eufT5DxGzx0pMZGdb6TWXIM3EcrRX
+         9aUp4cyqF/k4mQ7oKta2o5u9WpP4bwPjF4kZ+doYv6wk6VVACZkFRpqRKRlldjWBuXCE
+         ebOHtF93Hg6xXEXEWrBGQhltoIxnAu42rkKHmkGB4Y1FbX9sLpX4kuhMFTHmkizY2A79
+         K0Oh9sBa/pIjqNvZT4Gq9cwn5p0l8qujbPE8kv+4SogvrBt31jxQWiPZJBQutLHNFdfK
+         fXnw==
+X-Forwarded-Encrypted: i=1; AKwUvBwrYAMSrwQnoVn5YOcXC67BZwhWf0/eVr6GFw6/RSnhq3g0HRROAy7ciWPpMQyPIsBS56ErpoY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nbIl9DhvkYxgAMrg2UZxSfMkygDj8/oQABDcFIbH1qzWTRDBgu
+	vKxvkpgJ0mN4X8wXzU5X0nyCfNIb5smOyibW6Hi4A8xtgcTvtphuhVTi
+X-Gm-Gg: AYBFou2opTz5Mv0MMxLaXH2etv8XkEJ9puYgfD2H8+Fdww0ueqVxK42wTEyc+ECxnHU
+	Zl5TQmM8P9BDbbHumQdAxtM1WUMlSpkWblZmA6eB3itsT+7yWSXwTc9Eb6CuxwUAjqMVbW6Fz0R
+	M4dD8OOue2AzsCAb2HOyrepgRwixrmyqUVl0Wi4ODAskBhmIUc765Pa142eH9o3O2K7GQEN2Ld2
+	coNCumPvnlCZ9zSlT1rJ0QbM4l0NzvztRZGz7bxOppKHYZDDSNWvf2SNtbLqT6twSIpOzak/Pod
+	uFUV3aIIzgcmHu7YODNWdkZ4cehWtP0VnTluLGhRjArosIK08dTcGd3t4RMcPMm3Atkxhnc87i4
+	CFwC3X/0wdAP4rvCGn/Q47FPA6kVybdcmfJNFjDfJcGqWGOB4gLLS0PNX304km7dUK8azW5x6un
+	bOD7bwBCNGs0dBxA0MjgZFtmsIrjbttS+hSJ8rR+DS6KIcOPibz//hCT8jR6g7LuYbTlV9jW1t5
+	1g=
+X-Received: by 2002:a17:903:2c50:b0:2dd:c100:a5e7 with SMTP id d9443c01a7336-2df69e2b857mr5039605ad.59.1790110389518;
+        Tue, 22 Sep 2026 13:53:09 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:49::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a60c4a8sm931315ad.79.2026.09.22.13.53.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 13:53:09 -0700 (PDT)
+Date: Tue, 22 Sep 2026 13:53:04 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
+Message-ID: <arLpc9BBv_W6nw8c@devvm7509.cco0.facebook.com>
+References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
+ <arF7FGr8rQqDw8Pj@devvm7509.cco0.facebook.com>
+ <CAL+tcoDossUOJCVwZ-6U519L_bNMYngnd82e1_oQB-czA6rL3A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <6b07af04b3ba66a09009e1a0a7b98ec5ec85d3a0.1790109248.git.sunnytiwari@google.com>
-Subject: [PATCH net-next] net/rds: replace tasklets with workqueue
-From: Sunny Tiwari <sunnytiwari@google.com>
-To: Santosh Shilimkar <santosh.shilimkar@oracle.com>, Allison Henderson <achender@kernel.org>, 
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Cc: rds-devel@oss.oracle.com, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
-	Simon Horman <horms@kernel.org>, Sunny Tiwari <sunnytiwari@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL+tcoDossUOJCVwZ-6U519L_bNMYngnd82e1_oQB-czA6rL3A@mail.gmail.com>
 
-tasklet_struct is deprecated. Convert the send and receive completion
-handlers in net/rds/ib to work items on a dedicated high-priority
-workqueue.
+On 09/22, Jason Xing wrote:
+> On Tue, Sep 22, 2026 at 2:45 AM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+> >
+> > On 09/19, Jason Xing wrote:
+> > > From: Jason Xing <kernelxing@gmail.com>
+> > >
+> > > Greeting,
+> > >
+> > > It's BPF Timestamping 2.0 that aims to observe the packet latency
+> > > more efficiently and simply for different protocols. The current
+> > > series is only focused on TCP protocol.
+> > >
+> > > At Netdev 0x1a/Netconf 2026, the history, background, motivation and
+> > > rough implementation of the feature were exhaustively introduced[1].
+> > >
+> > > History
+> > > =======
+> > > - In 2009, Patrick Ohly implemented the basic infrastructure
+> > > - In 2014, Willem de Bruijn enhanced the TCP latency observation
+> > > - In 2024, Jason Xing proposed its lightweight BPF version
+> > > Detailed slides from 28 to 32 [1].
+> > >
+> > > Background
+> > > ==========
+> > > Even though BPF Timetamping 1.0 is comparatively low-overhead,
+> > > transparent, it's still complicated due to a few points inherited
+> > > from the design:
+> > > - Inflexible/fixed reporting phases (qdisc/driver/ack)
+> > >   When we confirm the issue arises from the kernel by using attribution
+> > >   ability of timestamping feature, we need to further minimize the scope
+> > >   until the issue is fixed. That means, we then have to resort to write
+> > >   a few complex BPF progs with the similar functionalities (like skb
+> > >   level tag) which should not happen.
+> > > - Not enough low-overhead
+> > >   Serving the sensitive applications, an always-on latency observation
+> > >   platform should mitigate the self-impact as much as possible. As we
+> > >   can conclude from BPF Timestamping selftests, there are some blocking
+> > >   and time-consuming points like where reading/writing BPF maps happen
+> > >   in the extremely hot paths.
+> > > - Minor flaws
+> > >   There are a few minor flaws inherited from the initial design, like
+> > >   missing tagging the last packet[2][3][4].
+> > > Detailed slides from 33 to 39 [1].
+> > >
+> > > Motivation
+> > > ==========
+> > > During the process of the large scale deployment over the last few years,
+> > > we eventually realized timestamping feature doesn't support container
+> > > scenario and we need a finer-grained and flexible tracing tool (packet
+> > > basis) after a few rounds of attribution of issues.
+> > >
+> > > Design
+> > > ======
+> > > - Start time
+> > >   For the specific protocol, we need to accurately set the start time of
+> > >   each packet first. For TCP, we chose the entry of tcp_sendmsg_locked
+> > >   and the driver time as the start point, so that any BPF program is
+> > >   capable of computing the delta between start time and current time.
+> > > - Simplicity
+> > >   Previous BPF program (like selftests) is too complex to implement. The
+> > >   core idea is to make everything as simple as possible. And it should be
+> > >   decoupled from BPF area and previous timestamping feature as much as
+> > >   possible.
+> > > - Flexibility
+> > >   BPF program hooking any function with skb parameter can get the latency
+> > >   value, which means it's no longer bound to the pre-embeded reporting
+> > >   phases (see __skb_tstamp_tx)
+> > > - Efficiency
+> > >   Avoid the previous BPF operations as much as possible. Make sure the
+> > >   feature achieves the lowest performance impact, which means only time
+> > >   operations remain.
+> > > Detailed slides from 40 to 62 [1].
+> > >
+> > > Implementations
+> > > ===============
+> > > in-kernel
+> > > - Find a suitable place to timestamp for each packet
+> > > - Pick the right start time for TCP
+> > > - Handle the split skb due to various reasons
+> > > BPF prog
+> > > - Hook any functions that carry skb parameter
+> > > - Read out the start time from the skb
+> > > - Generate the current time and then compute the latency
+> > >
+> > > Discussion?
+> > > ===========
+> > > - Do we need a kfunc to allow users to reset the start time of each skb?
+> > >   What I had in mind is if someone tries to observe the latency between
+> > >   two specific functions (rather than tcp_sendmsg_locked).
+> > > - Current implementation is real hardware timestamp always wins, which
+> > >   means BPF prog possibly gets the hardware time that is not aligned
+> > >   with bpf_ktime_get_real_ns.
+> > > - After the series, do we need to implement the same logic for
+> > >   SYN/FIN/PROBE... As far as I know according to numerous user reports,
+> > >   a small handful of issues came from 3-way handshake.
+> > > - Reusing the slot of hwtstamp might bring potential problems or make the
+> > >   code hard to maintain. Can we add a timestamping specific field in
+> > >   skb to deal with the latency observation?
+> > > - netdev_data conflict in IGC driver. It seems unavoidable to pollute
+> > >   start time when it's enabled. Should V2 feature coexist with hardware
+> > >   timestamping?
+> > > - Should V2 coexist with net timestamping and BPF timestamping? If not,
+> > >   the maintenance should be easier.
+> >
+> > After netconf discussion, I was under the impressions that no kernel
+> > changes are needed, so what changed? Is it hard to track start_time
+> 
+> Ah, you refered to the internal version, right? We wrote a kernel
+> module implementing similar logic which differently finds/borrows an
+> unused field of socket to store the start time. It's quite similar to
+> the series actually.
+> 
+> After deploying it at a small scale in production, I think it's
+> meaningful to upstream it. But as you noticed, there are remaining
+> discussion points on which I hope we can share opinions, especially
+> the future shape.
+> 
+> > from tcp_sendmsg_locked on the bpf side that we need kernel support?
 
-Allocate per-CPU bound rds_ib_wq with WQ_HIGHPRI | WQ_MEM_RECLAIM in
-rds_ib_init() and destroy it in rds_ib_exit(). Per-CPU binding preserves
-cache locality with the completion vector, matching original tasklet
-affinity without cross-core migration.
+[..]
 
-Replace i_send_tasklet and i_recv_tasklet with struct work_struct. Order
-quiescence via atomic_set_release() and atomic_read_acquire() prior to
-cancel_work_sync() during connection shutdown.
+> Sure, we need kernel support that why I'm trying to introduce the
+> sk_start_time to help.
+> https://lore.kernel.org/all/20260919143732.11772-4-kerneljasonxing@gmail.com/
 
-Assisted-by: Gemini
-Signed-off-by: Sunny Tiwari <sunnytiwari@google.com>
----
- net/rds/ib.c    | 22 +++++++++++++++++++++-
- net/rds/ib.h    |  7 +++++--
- net/rds/ib_cm.c | 39 +++++++++++++++++++++++----------------
- 3 files changed, 49 insertions(+), 19 deletions(-)
+Why can you not do this on the bpf side? There is even now a sendmsg_locked
+tracepoint with skb/sk argument. Or is it mostly because you can't
+distinguish between cgroups? And looking at your example [1] and don't
+see why a tracepoint won't be enough. Or is it too much overhead? In this
+case, it needs to have some numbers attached...
 
-diff --git a/net/rds/ib.c b/net/rds/ib.c
-index 786f39169..3e3551c6a 100644
---- a/net/rds/ib.c
-+++ b/net/rds/ib.c
-@@ -50,6 +50,7 @@ static unsigned int rds_ib_mr_1m_pool_size = RDS_MR_1M_POOL_SIZE;
- static unsigned int rds_ib_mr_8k_pool_size = RDS_MR_8K_POOL_SIZE;
- unsigned int rds_ib_retry_count = RDS_IB_DEFAULT_RETRY_COUNT;
- static atomic_t rds_ib_unloading;
-+struct workqueue_struct *rds_ib_wq;
- 
- module_param(rds_ib_mr_1m_pool_size, int, 0444);
- MODULE_PARM_DESC(rds_ib_mr_1m_pool_size, " Max number of 1M mr per HCA");
-@@ -533,6 +534,8 @@ static bool rds_ib_is_unloading(struct rds_connection *conn)
- 
- void rds_ib_exit(void)
- {
-+	struct workqueue_struct *wq = rds_ib_wq;
-+
- 	rds_ib_set_unloading();
- 	synchronize_rcu();
- 	rds_info_deregister_func(RDS_INFO_IB_CONNECTIONS, rds_ib_ic_info);
-@@ -545,6 +548,10 @@ void rds_ib_exit(void)
- 	rds_ib_recv_exit();
- 	rds_trans_unregister(&rds_ib_transport);
- 	rds_ib_mr_exit();
-+
-+	rds_ib_wq = NULL;
-+	if (wq)
-+		destroy_workqueue(wq);
- }
- 
- static u8 rds_ib_get_tos_map(u8 tos)
-@@ -587,6 +594,7 @@ struct rds_transport rds_ib_transport = {
- 
- int rds_ib_init(void)
- {
-+	struct workqueue_struct *wq;
- 	int ret;
- 
- 	INIT_LIST_HEAD(&rds_ib_devices);
-@@ -595,9 +603,16 @@ int rds_ib_init(void)
- 	if (ret)
- 		goto out;
- 
-+	rds_ib_wq = alloc_workqueue("rds_ib_wq",
-+				    WQ_HIGHPRI | WQ_MEM_RECLAIM, 0);
-+	if (!rds_ib_wq) {
-+		ret = -ENOMEM;
-+		goto out_mr_exit;
-+	}
-+
- 	ret = ib_register_client(&rds_ib_client);
- 	if (ret)
--		goto out_mr_exit;
-+		goto out_wq;
- 
- 	ret = rds_ib_sysctl_init();
- 	if (ret)
-@@ -620,6 +635,11 @@ int rds_ib_init(void)
- 	rds_ib_sysctl_exit();
- out_ibreg:
- 	rds_ib_unregister_client();
-+out_wq:
-+	wq = rds_ib_wq;
-+	rds_ib_wq = NULL;
-+	if (wq)
-+		destroy_workqueue(wq);
- out_mr_exit:
- 	rds_ib_mr_exit();
- out:
-diff --git a/net/rds/ib.h b/net/rds/ib.h
-index 5ff346a1e..5f617f66e 100644
---- a/net/rds/ib.h
-+++ b/net/rds/ib.h
-@@ -159,8 +159,8 @@ struct rds_ib_connection {
- 	atomic_t		i_fastreg_inuse_count;
- 
- 	/* interrupt handling */
--	struct tasklet_struct	i_send_tasklet;
--	struct tasklet_struct	i_recv_tasklet;
-+	struct work_struct	i_send_work;
-+	struct work_struct	i_recv_work;
- 
- 	/* tx */
- 	struct rds_ib_work_ring	i_send_ring;
-@@ -276,6 +276,7 @@ struct rds_ib_statistics {
- 	uint64_t	s_ib_connect_raced;
- 	uint64_t	s_ib_listen_closed_stale;
- 	uint64_t	s_ib_evt_handler_call;
-+	/* Retained as s_ib_tasklet_call for userspace rds-info -I ABI */
- 	uint64_t	s_ib_tasklet_call;
- 	uint64_t	s_ib_tx_cq_event;
- 	uint64_t	s_ib_tx_ring_full;
-@@ -452,4 +453,6 @@ extern unsigned long rds_ib_sysctl_max_unsig_bytes;
- extern unsigned long rds_ib_sysctl_max_recv_allocation;
- extern unsigned int rds_ib_sysctl_flow_control;
- 
-+extern struct workqueue_struct *rds_ib_wq;
-+
- #endif
-diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
-index 6e3110a04..976a9d7e8 100644
---- a/net/rds/ib_cm.c
-+++ b/net/rds/ib_cm.c
-@@ -253,7 +253,10 @@ static void rds_ib_cq_comp_handler_recv(struct ib_cq *cq, void *context)
- 
- 	rds_ib_stats_inc(s_ib_evt_handler_call);
- 
--	tasklet_schedule(&ic->i_recv_tasklet);
-+	if (unlikely(!rds_ib_wq || atomic_read_acquire(&ic->i_cq_quiesce)))
-+		return;
-+
-+	queue_work(rds_ib_wq, &ic->i_recv_work);
- }
- 
- static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
-@@ -279,9 +282,10 @@ static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
- 	}
- }
- 
--static void rds_ib_tasklet_fn_send(unsigned long data)
-+static void rds_ib_send_worker(struct work_struct *work)
- {
--	struct rds_ib_connection *ic = (struct rds_ib_connection *)data;
-+	struct rds_ib_connection *ic =
-+		container_of(work, struct rds_ib_connection, i_send_work);
- 	struct rds_connection *conn = ic->conn;
- 
- 	rds_ib_stats_inc(s_ib_tasklet_call);
-@@ -319,9 +323,10 @@ static void poll_rcq(struct rds_ib_connection *ic, struct ib_cq *cq,
- 	}
- }
- 
--static void rds_ib_tasklet_fn_recv(unsigned long data)
-+static void rds_ib_recv_worker(struct work_struct *work)
- {
--	struct rds_ib_connection *ic = (struct rds_ib_connection *)data;
-+	struct rds_ib_connection *ic =
-+		container_of(work, struct rds_ib_connection, i_recv_work);
- 	struct rds_connection *conn = ic->conn;
- 	struct rds_ib_device *rds_ibdev = ic->rds_ibdev;
- 	struct rds_ib_ack_state state;
-@@ -381,7 +386,10 @@ static void rds_ib_cq_comp_handler_send(struct ib_cq *cq, void *context)
- 
- 	rds_ib_stats_inc(s_ib_evt_handler_call);
- 
--	tasklet_schedule(&ic->i_send_tasklet);
-+	if (unlikely(!rds_ib_wq || atomic_read_acquire(&ic->i_cq_quiesce)))
-+		return;
-+
-+	queue_work(rds_ib_wq, &ic->i_send_work);
- }
- 
- static inline int ibdev_get_unused_vector(struct rds_ib_device *rds_ibdev)
-@@ -1099,14 +1107,15 @@ void rds_ib_conn_path_shutdown(struct rds_conn_path *cp)
- 		while (!wait_event_timeout(rds_ib_ring_empty_wait,
- 					   rds_ib_conn_path_shutdown_check_wait(cp) == 0,
- 					   msecs_to_jiffies(1000))) {
--			tasklet_schedule(&ic->i_send_tasklet);
--			tasklet_schedule(&ic->i_recv_tasklet);
-+			if (rds_ib_wq) {
-+				queue_work(rds_ib_wq, &ic->i_send_work);
-+				queue_work(rds_ib_wq, &ic->i_recv_work);
-+			}
- 		}
- 
--		tasklet_kill(&ic->i_send_tasklet);
--		tasklet_kill(&ic->i_recv_tasklet);
--
--		atomic_set(&ic->i_cq_quiesce, 1);
-+		atomic_set_release(&ic->i_cq_quiesce, 1);
-+		cancel_work_sync(&ic->i_send_work);
-+		cancel_work_sync(&ic->i_recv_work);
- 
- 		/* first destroy the ib state that generates callbacks */
- 		if (ic->i_cm_id->qp)
-@@ -1234,10 +1243,8 @@ int rds_ib_conn_alloc(struct rds_connection *conn, gfp_t gfp)
- 	}
- 
- 	INIT_LIST_HEAD(&ic->ib_node);
--	tasklet_init(&ic->i_send_tasklet, rds_ib_tasklet_fn_send,
--		     (unsigned long)ic);
--	tasklet_init(&ic->i_recv_tasklet, rds_ib_tasklet_fn_recv,
--		     (unsigned long)ic);
-+	INIT_WORK(&ic->i_send_work, rds_ib_send_worker);
-+	INIT_WORK(&ic->i_recv_work, rds_ib_recv_worker);
- 	mutex_init(&ic->i_recv_mutex);
- #ifndef KERNEL_HAS_ATOMIC64
- 	spin_lock_init(&ic->i_ack_lock);
+1: https://lore.kernel.org/all/CAL+tcoD36zA=TYSzKSNWV0Ypo_HRBRU_Qh6rQtPL51aXR54p7Q@mail.gmail.com/
