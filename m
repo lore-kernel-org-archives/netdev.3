@@ -1,298 +1,139 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-pj2-f18.google.com (mail-pj2-f18.google.com [74.125.227.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEAC577E57
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1349569F33
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790097657; cv=none; b=R9ggr6pOTfjoiK+kHiZUmvW7L0/NezTOR4m8B59aVTgYFcmXfR9otDedqTiz1IKXQa7AoT3lGbO3BFhYeOLKb+qCmk7V8Ybsco1tImxAouLn8fZh0dkKZoylBA04EVW1r0HEWM8JLNcUl6XOgBEaoCGVUiBaIRPDCYv+9rEOg7M=
+	t=1790097721; cv=none; b=qPKg1HauFIdAt13uPDRnP4HLSvWzosLwhERcehiVhGqWHfHbD1hCkS0hP4DV++VjkU7tCBz6Vrid+dK1mXZ+u+zGUyz8+owdHG/jB6uHs/+cM8VOZnF6fszz2oQXcPeqDY5n0Se0DIHO+H6LkNYPeoFkRaV7RrrxL7c8FN0rqZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790097657; c=relaxed/simple;
-	bh=K1kPVhalzK2p/Oi/++MfwlZAsChdgNM2Rym6IJuVlIM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYhlFsa+CGG7UIAZvLAhQJBbIOUEe6xNK+4/a6ghapJVNyunvArjz7SG+8F0c/of4BnAwewFaXlxKO8zGChre5atU3+xjrN6GlQ/bMucJZXOyowrBRAsQ02nRc+wJIjkGjcNFNM0CmN2qRO63y9XRG/tpFaafdux3VauMzWR95o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=Ckanra5P; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1790097721; c=relaxed/simple;
+	bh=r9jsv8Tj/NRGRSHDpREVf7hC5Izki0ZIYbPt+RpePlg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/oaqeY7gcZeB7yIQM8rT+dK702brKTYIIq5NJSDr+/dJQHI2zWdL49DNxlfGRv/a89VXMVIk53TyxYJT2o40/AwysmjK6j8gtzUG/T6oqaSYwGd6SPeXaJJvEIUwYAlulrsdmq72RsHyb2F6ivG/K5iVuuRRRQWl4GuOZhcjOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdEheXsK; arc=none smtp.client-ip=74.125.227.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="Ckanra5P"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccdaea76so73485a91.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:20:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdEheXsK"
+Received: by mail-pj2-f18.google.com with SMTP id d9443c01a7336-2db22383fe8so394075ad.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 10:21:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790097650; x=1790702450; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iqY05vLt4ODQV/QJgRg1j8e1nKXlf81O3e+mqZS/iH0=;
-        b=Ckanra5PxxbZxie5E8MY2JKit7FD/FM8Fx/J+pbBUx4pd+Xpt2mlCPXZsUU6ghTyGm
-         O1UHFHV7drCk3PVZ2CjTukoohLiC6ThARPSY713tuA7U0tdW2+zns+XTD0baf2HBqy8D
-         jXuMTj4PCtpTAnlUwVD0k7rHb2cBiVRVKGxUKRCsf1Mi6b8kMz8q4xlFD7K+RYWzAaNY
-         ZTBVuf3y0EnHNIN0spQsASeFn4tfXWgjdEzkuOdS/RAS+2A+ayBYXTh4mszZeZDBV8k2
-         wWOHPHCcQ/vx0Jq5SlFT5o4jxK2Bq29fR0flpDLvHBmZNETlqTwjj4m4UyRJ9ru3XYV/
-         egtg==
+        d=gmail.com; s=20251104; t=1790097719; x=1790702519; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:sender:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=g51CWbLnarIyJ0OhwzK8Z/JluNHOA330HfdYyzEXpGc=;
+        b=EdEheXsKdSTu4t3H0cohiMqMZFOwP85n1ZIkFKeBG2BJ/QHoe/tlaetP3McRWwmxi5
+         wG2OIsh+DyhS0F3RpOoBcHE+WQfoPuu5Gmk2rsBUJUpv4EQDPYpiOjxQpKcXiBOGsGDl
+         hOiW6R0oAQXXx5u+COYqDaPIBc761UiWxHc3JWJ07Q8KugpRi/bZN7qYMINHtPge7GRA
+         /Cmf4tMoxC945/u4cbMw2EGWthtlKcwAIA7arLsfEzXeUNtXCuQWZQirZGPM4gVRsPSI
+         0XHzHSM5c9kDqAAwsYY4c/6JNeRf403aMpA5POqx3YP2LtLJIV0IKiAP7f/7ZhgfjFId
+         xHCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790097650; x=1790702450;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iqY05vLt4ODQV/QJgRg1j8e1nKXlf81O3e+mqZS/iH0=;
-        b=I8YjRsE5dXmCc5f9U1LgcrrGh824eEmowWGcKSU7FLy5OK74dMBiqlRPDfT/263WSj
-         NRuCJCBOSxggKFaL7Wub8nziw4TXBDKjQSSz+G4TS+3UV68wZ9trpsDw4kmsb3S0RtTK
-         9eY4e6Efe/2v1FrLuBfmisVEVaujTTWsQh9YGpjQ4U4GSiYJ7uBUz9y3bprUEtPnFbYw
-         zhWlm5dTXFVO2MTeOUWUarlXlawE22MuYqPdjvA5e1GOXCWMyWJVZx7oZm4rd8Htrg8t
-         b7VpHcJPoK41sp/LHkb/5KYJ69St7BHhmFN2Iw/PsX4VA3yJ+8Xe/8mmrs794qxcp62e
-         Dzeg==
-X-Forwarded-Encrypted: i=1; AKwUvBxDY//7Nxw/Nb5Zfm9Eox0ni+5gNNWm9HHqT2WuzQwhX4lqPRUN4ESj2XgvVQznypKVSuWHdZ0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXk60CCN+zDwAPHGzuiqAhJtxu8aJtHOBRnERUFkrr25Rs7iuN
-	qUjCo2E1lMa/RmngS+OT2AXHnfAYieTdv37GdcqMLc1WGGMGNBXRGiWi+qkYe/Nt5X0=
-X-Gm-Gg: AYBFou2CnZ5IMOOFMUrC0stwn+FGPJ0ZZ11MS3DKnnHjxjUXbHt+3IdFEVaYUkThfjN
-	80OakxHeGzn4InkY9UuJ/2ORUxxMgjVrZ3QhErmr1XvSqfXLuSI95neRMV15Jgyvj59GnVdpRjo
-	D1vn9cBIKQ44ZF5kLtiKWbhpjSQV7hnzJOX+2xns7wyhv8yMCzHw83lYVIOcjYAesM0j24FeGJJ
-	IOrMjNKDzat/ppZfvxKB1um8qhjI9aTUye/E7hftdJTZNT/V1PkIVPd59CPGoeRTixK31RKZEu0
-	CboLjU8W/o/4tEcQgRhPuitTDzxvSbM2WmVxujYmuBWv80LXQ6Dayf4vQ1COLe3Rwok9FuAFMwI
-	Wh8ksI2UVjaCfF861HMhzj6PTpUeusQUNfUNzrsZD5pbOGt8f44y2BzPVp+4uGJMpDA+cZ44WGI
-	TRZ5R66eD3f5l86s2u/jsEA0MXBcYT5PVLYOcxKCL7/gHnd4Wn8O/42L2WO9ItrTsQazdIpRm2l
-	0N1o0ag8akr61Xw3P0PCO0pS4AtZjkZ6SPrP4WQAw==
-X-Received: by 2002:a17:90b:2f48:b0:39e:4c7e:bc4 with SMTP id 98e67ed59e1d1-3a07e4d8773mr89611a91.18.1790097649947;
-        Tue, 22 Sep 2026 10:20:49 -0700 (PDT)
-Received: from alpine05.ht.home (69-172-153-146.cable.teksavvy.com. [69.172.153.146])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06cb7159fsm1774824a91.4.2026.09.22.10.20.49
+        d=1e100.net; s=20260707; t=1790097719; x=1790702519;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g51CWbLnarIyJ0OhwzK8Z/JluNHOA330HfdYyzEXpGc=;
+        b=yPK+wyyi2i+pitWs1frAbIymDUdumL47KRWQYFPm8gQA10w+0Dg8wghr/FXLYGn51E
+         dxcNRrulwvVrGb7/AJVjwgi+V1SRIgQmRRUvEokGcTCZXy2L0hxGJM8bQaFN62HWNSvp
+         u2lquQj1XDjYR1v4UNgiTYyNN90BkPYOm74IO/vLLMKoGi1f5BvjgvGagfrcn7kCNgUs
+         A2CkhDKl0MOoqREAcPp5bkXvy4f2f1qUYIq478+PN34I1b5n0NVp/EkryjC6pVksnJNO
+         2kwMM5FxYcrbjjdChq93Rji3Q8sVtwR46+eoFdkHeBtIn/N6wcNEZ4CBuqEablTdnmql
+         evrA==
+X-Forwarded-Encrypted: i=1; AKwUvBxulKUqgu5GQprEBtpto6ykAQbBkN7LsmnPF9XXxLRisDkpyZjBBemJ+4kbDUlgrJXXSYAtp5s=@vger.kernel.org
+X-Gm-Message-State: AFuF++lvNWa2RyOAjeT2vTA9vMKHmraBoOLvMvxyx+ceTHP0z1vNd/Hd
+	mqNzu2n/v/dM2wrC9TF12GKZP4imlXX+TfhN3BRNeFyyVzqeDgvMQJaD
+X-Gm-Gg: AYBFou0E0/RoF7yaRtAJLcjbRG7m4DCfkSTPPuy4o50eWw7ipkabuPLew/XYJs2dnDp
+	fz3qV1V/kAgDhBESL68HbDEmTl8BVDAEicjCRukQnobLZg2iv6b4x9jJbyv4TmG+j9WA2Hmx17O
+	LNGaII0enapq8CntCW39wTN38rwAJxcagZ89mdAuHHeDcpvtQFdlmqAner+xGcvdFPW7RfXQ62s
+	UE24JF6qh+LrvhpgR7H3xmm8FhkhYY6rmv8OcjW8WSDO9b+z+vd/ZH50iknqlytQr5pGWxUSFT9
+	TrALD671cj2ipO8UBdK12m8Ihh4gzkUV5qEsOUr6pre8taKus9qYRQOYwUYoF3hribWsDNrxKIF
+	xMdwZb5xqHDvCcGeq3Rdcgq4SZQsAKdh8wPjmJKIq+YQNtwTzLJJhFu47LX6M430Yfwr94l5ih6
+	0wTmhVCSCH1Okt0RmCXU5G8mewmNrSE0auetk7H6Gnowvv3tvbzGKSVOS0RmHoEOkmetDnG++qf
+	7dRTYYTzsPr
+X-Received: by 2002:a17:903:228e:b0:2dd:ad73:c984 with SMTP id d9443c01a7336-2df69d5ac91mr681945ad.28.1790097718673;
+        Tue, 22 Sep 2026 10:21:58 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df5d047c40sm13644575ad.50.2026.09.22.10.21.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 10:20:49 -0700 (PDT)
-From: Emil Tsalapatis <emil@etsalapatis.com>
-To: bpf@vger.kernel.org
-Cc: ast@kernel.org,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	daniel@iogearbox.net,
-	netdev@vger.kernel.org,
-	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: [PATCH bpf v2 11/11] selftests/bpf: Test dynptr slice invalidation on skb clobber
-Date: Tue, 22 Sep 2026 17:20:28 +0000
-Message-ID: <20260922172028.6269-12-emil@etsalapatis.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260922172028.6269-1-emil@etsalapatis.com>
-References: <20260922172028.6269-1-emil@etsalapatis.com>
+        Tue, 22 Sep 2026 10:21:58 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 22 Sep 2026 10:21:57 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Rudolf Marek <r.marek@assembler.cz>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Duncan Sands <duncan.sands@free.fr>,
+	Chas Williams <3chas3@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>, linux-watchdog@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] drivers: Replace __MODULE_STRING() with __stringify()
+Message-ID: <cc03390d-8fc7-422a-bbcf-93bfbb82276f@roeck-us.net>
+References: <20260922-module-string-v1-0-c18766690185@suse.com>
+ <20260922-module-string-v1-2-c18766690185@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922-module-string-v1-2-c18766690185@suse.com>
 
-Add tests that ensure that dynptr slices backed by skb memory
-are invalidated on any operation that potentially moves/frees
-the backing skb memory. Also test that only skb-backed dynptrs
-may invalidate pointers into skbs.
+On Tue, Sep 22, 2026 at 03:32:22PM +0200, Petr Pavlu wrote:
+> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
+> MODULE_PARM support for older modules" [1] in 2002-12. That change also
+> moved it to the graveyard section at the end of linux/module.h
+> 
+> Replace the remaining uses of __MODULE_STRING() with __stringify() in
+> preparation for its removal.
+> 
+> Link: https://git.kernel.org/tglx/history/c/136839a1b4 [1]
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> ---
+>  drivers/comedi/comedi_fops.c                          |  5 +++--
+>  drivers/gpu/drm/drm_fb_helper.c                       |  3 ++-
+>  drivers/hwmon/fschmd.c                                |  3 ++-
+>  drivers/hwmon/nct7904.c                               |  5 +++--
+>  drivers/hwmon/sch56xx-common.c                        |  3 ++-
+>  drivers/hwmon/w83793.c                                |  5 +++--
 
-Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
----
- .../testing/selftests/bpf/progs/dynptr_fail.c | 183 ++++++++++++++++++
- 1 file changed, 183 insertions(+)
+I don't know how other subsystem maintainers want to handle it,
+but please send the hwmon patches separately; I'll want to apply
+it through the hwmon tree to avoid the potential of merge conflicts.
 
-diff --git a/tools/testing/selftests/bpf/progs/dynptr_fail.c b/tools/testing/selftests/bpf/progs/dynptr_fail.c
-index 1cd61d72c..0f030f397 100644
---- a/tools/testing/selftests/bpf/progs/dynptr_fail.c
-+++ b/tools/testing/selftests/bpf/progs/dynptr_fail.c
-@@ -13,6 +13,9 @@
- 
- char _license[] SEC("license") = "GPL";
- 
-+extern int bpf_dynptr_memset(const struct bpf_dynptr *p, __u64 offset, __u64 size,
-+			     __u8 val) __ksym __weak;
-+
- struct test_info {
- 	int x;
- 	struct bpf_dynptr ptr;
-@@ -1274,6 +1277,186 @@ int skb_invalid_data_slice4(struct __sk_buff *skb)
- 	return SK_PASS;
- }
- 
-+/*
-+ * A kfunc that may clobber packet pointers must invalidate skb data slices.
-+ */
-+SEC("?tc")
-+__failure __msg("invalid mem access")
-+int skb_invalid_data_slice_after_dynptr_memset(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+	struct ethhdr *hdr;
-+	char buffer[sizeof(*hdr)] = {};
-+
-+	bpf_dynptr_from_skb(skb, 0, &ptr);
-+
-+	hdr = bpf_dynptr_slice_rdwr(&ptr, 0, buffer, sizeof(buffer));
-+	if (!hdr)
-+		return SK_DROP;
-+
-+	bpf_dynptr_memset(&ptr, 0, 0, 0);
-+
-+	/* this should fail */
-+	val = hdr->h_proto;
-+
-+	return SK_PASS;
-+}
-+
-+/*
-+ * A dynptr kfunc that may clobber packet pointers must not invalidate packet
-+ * pointers when called with a non-skb dynptr.
-+ */
-+SEC("?tc")
-+__success
-+int pkt_ptr_valid_after_dynptr_memset_on_mem(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+	int *p = (void *)(long)skb->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)skb->data_end)
-+		return SK_DROP;
-+
-+	if (bpf_dynptr_from_mem(&val, sizeof(val), 0, &ptr))
-+		return SK_DROP;
-+
-+	bpf_dynptr_memset(&ptr, 0, 0, 0);
-+
-+	return *p ? SK_PASS : SK_DROP;
-+}
-+
-+__noinline
-+int skb_dynptr_memset(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+
-+	if (bpf_dynptr_from_skb(skb, 0, &ptr))
-+		return 0;
-+
-+	return bpf_dynptr_memset(&ptr, 0, 0, 0);
-+}
-+
-+/*
-+ * A global subprog that may clobber packet pointers must invalidate packet
-+ * pointers held by its caller.
-+ */
-+SEC("?tc")
-+__failure __msg("invalid mem access")
-+int skb_invalid_pkt_ptr_after_dynptr_memset_global(struct __sk_buff *skb)
-+{
-+	int *p = (void *)(long)skb->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)skb->data_end)
-+		return SK_DROP;
-+
-+	skb_dynptr_memset(skb);
-+
-+	/* this should fail */
-+	val = *p;
-+
-+	return SK_PASS;
-+}
-+
-+__noinline
-+int skb_dynptr_memset_global_arg(struct __sk_buff *skb,
-+				 struct bpf_dynptr *ptr)
-+{
-+	int *p = (void *)(long)skb->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)skb->data_end)
-+		return SK_DROP;
-+
-+	bpf_dynptr_memset(ptr, 0, sizeof(*p), 0);
-+
-+	/* this should fail */
-+	val = *p;
-+
-+	return SK_PASS;
-+}
-+
-+/*
-+ * A global subprog must conservatively treat a dynptr argument as possibly
-+ * skb-backed when checking whether a kfunc invalidates packet pointers.
-+ */
-+SEC("?tc")
-+__failure __msg("invalid mem access")
-+int skb_invalid_pkt_ptr_after_dynptr_memset_global_arg(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+
-+	if (bpf_dynptr_from_skb(skb, 0, &ptr))
-+		return SK_DROP;
-+
-+	return skb_dynptr_memset_global_arg(skb, &ptr);
-+}
-+
-+__noinline
-+int skb_dynptr_write_global_arg(struct bpf_dynptr *ptr)
-+{
-+	int write_data = 0;
-+
-+	return bpf_dynptr_write(ptr, 0, &write_data, sizeof(write_data), 0);
-+}
-+
-+/*
-+ * A global subprog that calls bpf_dynptr_write() on a dynptr argument must
-+ * invalidate packet pointers held by its caller.
-+ */
-+SEC("?tc")
-+__failure __msg("invalid mem access")
-+int skb_invalid_pkt_ptr_after_dynptr_write_global_arg(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+	int *p = (void *)(long)skb->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)skb->data_end)
-+		return SK_DROP;
-+
-+	if (bpf_dynptr_from_skb(skb, 0, &ptr))
-+		return SK_DROP;
-+
-+	skb_dynptr_write_global_arg(&ptr);
-+
-+	/* this should fail */
-+	val = *p;
-+
-+	return SK_PASS;
-+}
-+
-+__noinline
-+int skb_dynptr_write_global_arg_with_pkt_ptr(struct __sk_buff *skb,
-+					    struct bpf_dynptr *ptr)
-+{
-+	int write_data = 0;
-+	int *p = (void *)(long)skb->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)skb->data_end)
-+		return SK_DROP;
-+
-+	bpf_dynptr_write(ptr, 0, &write_data, sizeof(write_data), 0);
-+
-+	/* this should fail */
-+	val = *p;
-+
-+	return SK_PASS;
-+}
-+
-+/*
-+ * A global subprog must conservatively treat a dynptr argument as possibly
-+ * skb-backed when checking whether bpf_dynptr_write() invalidates packet
-+ * pointers in the callee.
-+ */
-+SEC("?tc")
-+__failure __msg("invalid mem access")
-+int skb_invalid_pkt_ptr_after_dynptr_write_global_arg_in_subprog(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+
-+	if (bpf_dynptr_from_skb(skb, 0, &ptr))
-+		return SK_DROP;
-+
-+	return skb_dynptr_write_global_arg_with_pkt_ptr(skb, &ptr);
-+}
-+
- /* Read-only skb data slice is invalidated on write to skb metadata */
- SEC("?tc")
- __failure __msg("invalid mem access 'scalar'")
--- 
-2.54.0
-
+Thanks,
+Guenter
