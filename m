@@ -1,82 +1,111 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C1E5293E2;
-	Tue, 22 Sep 2026 09:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90EE2E0914;
+	Tue, 22 Sep 2026 09:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790067821; cv=none; b=bIXa6W56jDqox8Oyi/j+kKBZIgax0yY/nFf/kkbuNLearOaagL6WbVtVImHR8wIN2FfvYcwfZ899MNoju5hGPcbIl/MjionbBt152SqbClWVEJ+P2YsAWWGSh7yL2VAjc3stXc+p7/Rs+BAPD6kwdE1SDpeaCeqI6+80izcw8X0=
+	t=1790067884; cv=none; b=BQSX8kf6NbDIdWl5QK2y9eaSyArHPwRSdFwF8A523ic+a26dJoBOCpwXDF1Grzz1JaWCCjygmhTmrJk6E5ALXuu1DagxvHYo3LF8f8pfH5dedjntRdCxP9DSPJDmQ6UAx2RrAAXLzOtVVdIM0GRKS58BlmZP1e3VqVdYqySjfHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790067821; c=relaxed/simple;
-	bh=aYT+mVzhxslav4KMaqbakCWbpNHc8NrsSWL/s9tf+JM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uNWSxzvArYBFjKS6+XJfeJkjaejBZYlQypcDgODb8R48DlnAN5mOj5dJNq891cwD8sKyfhgP3jfHf5hQHtXQsvsA9kN769c5ytoFBBuYI1XJnWpxe3WXwE3WpjkJwPqgau0YeU98IXfDEQ1OIhy1ODK4V+Nfa0G9hDx9DY9ZAd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=T9lObZWE; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1790067884; c=relaxed/simple;
+	bh=Jf5TgPOWPr/IWQ3Fxcfs0nj27Ygld0uLJckXIAnNGNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h1A4qXIudl/8bV90xgubR2hh141z1mUnUPz/69AcqebW7lFXc8t4Uw0XjE4Gtml2wwtrVnZDBNqC+/lcmwALzrMPT+6lIBnAJpSuOMyTfugolLzhQWATjk5REGXpJEhF8znJXNPEto1RDdGwcYehdaAtz5zXnfomqyygPV50jNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=YxeMJOUD; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="T9lObZWE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=8uLeZHTq/tLb8yUdK4wo9lY1ExTBRxuRwq6XRjmQByg=;
-	t=1790067819; x=1791277419; b=T9lObZWE4oX7ETYow+JmjrzX3X+PqmP5xwrbSuajrlWfqNz
-	5U4IIOYt+zuy7m9lqg7EfL2TKv0tclzFC9nEoOgiEj7madjnuWqhiOGLWOy3ekpsXu+qVbn194eQg
-	fI/gX7WRqHP+7cmm9/KvH+s8VI3wmHPQ/U9JJF1w6pZ/SnA6+LCLy+gxBT+9iagsxkcIS96wjhmgo
-	rNzPJUNVAUfgLwduFnK7jKtecDGOqN+JfNklhYNS0Vi4Gw8F3qktymKwfvYBBR+MfmBLiWTSSN+6d
-	w1g6GhQ4j6fkXvF7mP9hrfw00H0FtgpLWmehBJcDE1YKYGNuYo41b3MLttmHjpLw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1x8wPO-00000006mxx-46Ou;
-	Tue, 22 Sep 2026 11:03:27 +0200
-Message-ID: <6c7170af0a7cbe62573fae461b94556f850318ee.camel@sipsolutions.net>
-Subject: Re: [PATCH v6 3/4] net: dropreason: use new __print_sym() in tracing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ilya Maximets <i.maximets@ovn.org>, Matthieu Baerts <matttbe@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>,  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron	 <echaudro@redhat.com>,
- dev@openvswitch.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Adrian Moreno	
- <amorenoz@redhat.com>, Antoine Tenart <atenart@kernel.org>
-Date: Tue, 22 Sep 2026 11:03:26 +0200
-In-Reply-To: <dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org> (sfid-20260922_110114_464147_BE59E097)
-References: <20260921101538.97286-6-johannes@sipsolutions.net>
-	 <20260921101538.97286-9-johannes@sipsolutions.net>
-	 <98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
-	 <7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
-	 <99e5f7c0d7debc8a59bac96e93f09600bf488ca8.camel@sipsolutions.net>
-	 <4a0240a7b9ff87302620a95c73f4f265cd428618.camel@sipsolutions.net>
-	 <dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org>
-	 (sfid-20260922_110114_464147_BE59E097)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="YxeMJOUD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=6VtLFD1vg5tvTIM6vKNjHT1kkApQA/KZte/hT3YtnlI=;
+	b=YxeMJOUDVswV4aSX/zGsIOqW+2onEoHyh74L+dNKTTQ/bqwyBjcviEo/qcpcbV
+	5t+4VlKk6aXVGaRoJK4XZmEBgC506vEmh5W3msN5gGjNf8AxMz3zvSCunY0BaqSh
+	2HaLCz8GM7Os5Tm9D4riuyH1k9OKyy8Pi40SxkjF5zqzY=
+Message-ID: <ef2b48b9-0f57-46e6-8209-8f4b9d6e42dd@126.com>
+Date: Tue, 22 Sep 2026 17:03:42 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net v2] i40e: limit the DDP profile
+ count returned by the firmware
+To: netdev-bot+sashiko@kernel.org
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn,
+ aleksandr.loktionov@intel.com
+References: <20260920063244.1927792-1-xiaolinkui@126.com>
+ <178997248483.2160803.11710552261264563604@kernel.org>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <178997248483.2160803.11710552261264563604@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDXtwRvRLJqOwMZAA--.52160S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGrykWw1kWw4fXrykCF17KFg_yoW5Ar1rpF
+	WYq3yDtrykK3y0kw1Ikr4xWa48uws3AFy5Xw1rKa4vk3y5Krs7Xry0qFs0qa47AFsaqr1I
+	yF1293yUAF4DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2-UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBB0S2qyRHDs-gAA3F
 
-On Tue, 2026-09-22 at 11:01 +0200, Ilya Maximets wrote:
->=20
-> Matthieu mentioned we'll need CONFIG_TRACEPOINTS in the selftest config
-> shard: tools/testing/selftests/net/openvswitch/config
+Thanks for the review. Both findings are addressed in v3.
 
-Right, I was going to comment on that but then while I was writing and
-testing all your emails came in and I forgot.
+- [Medium] Incomplete fix in i40e_ddp_does_profile_exist() and
+   i40e_ddp_does_profile_overlap()
 
-> Is that a new dependency or was it always there we just missed adding it
-> to the config before?  (it's included in the common net config, so that
-> is probably the reason why CI doesn't fail)
+   Agreed on the clamping half. Silently limiting the count and then
+   returning 0 hands i40e_ddp_load() a definite answer derived from a list
+   that was only partially read: the add path proceeds without having
+   examined every profile the firmware reported, and the is_add == false
+   path reports a profile as missing that may in fact be loaded. Both
+   helpers already have an error return that i40e_ddp_load() turns into
+   "Failed to fetch loaded profiles." and aborts the operation, so v3
+   rejects the list instead: if the firmware reports more profiles than
+   I40E_PROFILE_LIST_SIZE can hold, the helpers return -EIO and no scan
+   happens at all.
 
-It can't really be new, perf to capture this was always used, I'm just
-changing how the output is formatted.
+   I did not plumb the response datalen out of i40e_aq_get_ddp_list().
+   For this command the driver has to set desc.datalen to the buffer size
+   it passes in, and i40e_aq_get_ddp_list() does not report the writeback
+   descriptor back to its caller, so the length would have to come either
+   from a new output parameter on that helper (declared in
+   i40e_prototype.h) or from a wb_desc routed through cmd_details. Either
+   way it adds a second firmware supplied number to validate on top of the
+   one this patch is about, and if the firmware leaves the field at the
+   requested 772 bytes the derived bound is exactly the bound we have
+   today. That is a bigger change to the common AQ path than a net fix
+   should carry, so I would rather bound the scan by the size of the
+   buffer the driver owns.
 
-Perhaps better to have that as a separate fix/cleanup?
+   The remaining half - comparing against p_info[] slots the firmware
+   never filled - cannot be detected independently of the count, because
+   the driver is not told how many records were actually written. If the
+   firmware reports a count of 16 or less while writing fewer records, the
+   unread slots are indistinguishable from real entries. Zero
+   initialization makes the outcome deterministic (an unwritten entry is
+   all zeroes rather than stale stack) but does not make it correct;
+   deriving the bound from the response length would be needed for that,
+   and that is the larger helper change described above.
 
-johannes
+- [Medium, pre-existing] uninitialized buff[] handed to
+   i40e_aq_get_ddp_list()
+
+   Agreed, and fixed as suggested: buff[] is now zero initialized in both
+   helpers. i40e_asq_send_command_atomic_exec() copies the full buff_size
+   into the DMA bounce buffer and copies the full buff_size back on
+   completion, so those 772 bytes of stack were both readable by the
+   firmware and compared against afterwards. Both hunks touch these
+   declarations and the root commit is the same (cdc594e00370), so it is
+   handled here rather than as a separate patch; I can split it out if you
+   would rather have it on its own.
+
+v3 keeps the unsigned loop counter from v2, and drops the Reviewed-by tag,
+as the code changed after the review.
+
+pw-bot: cr
+
