@@ -1,119 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A25A550DAC;
-	Tue, 22 Sep 2026 13:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEFD545DB2;
+	Tue, 22 Sep 2026 13:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082062; cv=none; b=dPQHA9F6ILnP/ZfEd7IPlkAkpYeg+0KKvWvlYz6YXTgpr+CF4+YM0ljIje3hAQo3ufgsTbTV5cN8UuK/9jL37GGv7YgAsW175P0gjoVDslVyyoDu05vzrbOsYUn+J2s9XbUkVWfZ+EC/Kic6aP+gMoeTdTZmbxGXa6R+iLjw2wA=
+	t=1790082413; cv=none; b=UAeXVAr1uLnUf5el4rGw8fg37EduJCxEn/72SvnyFJdpZq2WS6wAAeD6OxI4O3CZ6Xtli2UJ443z09hrd0VolxTxj1/KlxgoC7teOO0J1koDhm7UMdhn5dRPZjmDqu+orhPwJkWIYx/RKmlc5Dnh+9gihQeZJKBDG3jKKv+cjHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082062; c=relaxed/simple;
-	bh=TnmBcq19iPivSY1KngWuLjMnr/g513y72ncpsujykOo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hTH26OdUwNGQlARzInZr+qEnlqSrB1MzF9RSM9ouGF3sMhGRfOYaqz0vUiiM17wBrJ0/oSLF1z+ZyskmQpRIf7S/YPQ2RbfRdH1b0u57qfL0evEsgvo2AA8a9du1yEXgelwAY1oYWAqbXieaxVPGi+L2iifnNrkfQbjH29JqWL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e37JHfks; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790082413; c=relaxed/simple;
+	bh=Fp12wKxj5bmoEsYVOY9wTyPnTb70p49Xx6JchL3YLEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s7hPUwQN0hIuISXwNPgoqlJ92HVCsWGLBb+yKpkY8p1hOAKtY6gC+mjLulDZMrXuCJmzIU6Znnvo7hRIBoAZhAn+JmGspppvWeAF8NwyNAZ+/JdTvdJ1sxJaUQ6+uNtsGmKEKQqoUFkewVlkmsEDp5Z5cmDAlt8jPPxjpv9GsQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=xqF4MIR+; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e37JHfks"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0551F008A7;
-	Tue, 22 Sep 2026 13:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790082061;
-	bh=WFwTVnJi02mjfIgr5QoGfThRyGwmOlxJuM0wJDAdo9M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=e37JHfksb2icoaT+Q32VrrzC0lU/t8K+26CLfF2t4cb61wNxn7kqXGBK8Nzmjru0d
-	 u7Bn5x+ADUKOeFdDmrtdoNvhD+sQROCIWXcYJTcpd3Gz7C90ozKPqDQZu85exPmTi7
-	 Tv31dQHNCz0ATMdKhulfn/gPfIsC3UV0RTqnQlY2xmlMvnb7Zbvmytz9geZKen4ZFe
-	 wlUSfLlBom8V8IYxqtTSq81TYVnbocadczji6ph6CzyAk5wk7o5K8Fs6EWgBFavOYh
-	 WTSpp5Fj0QEAR13zvQd1SL5vdyd1yne9MtwWZnNIasdFz7khRSY/O5cQTejdnemJ9N
-	 mrWvn8wuai3nw==
-Subject: Re: [PATCH net-next v7 14/14] misc: lan966x-pci: dts: add fdma
- interrupt to overlay
-From: netdev-bot+sashiko@kernel.org
-To: daniel.machon@microchip.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horatiu.vultur@microchip.com,
- steen.hegelund@microchip.com, UNGLinuxDriver@microchip.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, herve.codina@bootlin.com, arnd@arndb.de,
- gregkh@linuxfoundation.org, mohsin.bashr@gmail.com, richardcochran@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Date: Tue, 22 Sep 2026 13:00:59 +0000
-Message-ID: <179008205925.2160803.1332329555699452493@kernel.org>
-In-Reply-To: <20260918-lan966x-pci-fdma-v7-14-0ecc179c8a2c@microchip.com>
-References: <20260918-lan966x-pci-fdma-v7-14-0ecc179c8a2c@microchip.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="xqF4MIR+"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF263A3A04;
+	Tue, 22 Sep 2026 15:06:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790082407; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=QHHIsnZY8y7FeKU/zlnoGatJ0tWyYBSUhZIOvUfoQW0=;
+	b=xqF4MIR+8Jw1qgbX/sLi1I8mfdMJKVpsbkQzqSsK0NnIGZvSrqhc/KCId+2Ps0/agEMAfd
+	9+7oRXlb0Y7mG0ud2gz3eqv4AuYMyGH3Q79cOMPSq8XRh6zrN4Z+cgLcAPkB13TmPLwC9J
+	4OIitJOvnFCL+rBddylHF223AQWJT8rHcNWCzdTbNHpdo4zlQnXfiRmr506gzJQ4OOyPCC
+	U3mgXDNmulp0w6+aGvFG+WRETsa32FygDz43X/DW7UJTNdm1EBkKh9y8EjKMJzX796zWzK
+	RCRBrO2DMSn0+8zrAQcwDJOXkm1CnoO6w3Q1SvVdVha516xeI8Tu0yp6Cj7BHA==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>,
+	Justin Chen <justin.chen@broadcom.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net: bcmgenet: stop Tx NAPI before disabling the queues
+Date: Tue, 22 Sep 2026 15:06:38 +0200
+Message-ID: <20260922130639.1660797-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+bcmgenet_netif_stop() and the Wake-on-LAN branch of bcmgenet_suspend()
+both disable the Tx queues first and stop Tx NAPI several steps later. A
+completion in flight calls netif_tx_wake_queue() in between, and nothing
+stops the queue again, so a transmit can reach the rings after they have
+been freed.
 
-Low priority / nit picks for your consideration:
+Close is safe because dev_deactivate_many() stops the qdisc first.
+bcmgenet_suspend() does not, so stop Tx NAPI before the queues on both
+paths.
 
-- [Low] Concern retained for combined policy, but my verification says
-  FALSE POSITIVE.
+KASAN on a Raspberry Pi CM4, driven from an MTU change because suspend
+freezes user space before the callback runs:
 
---
+  BUG: KASAN: use-after-free in bcmgenet_xmit+0x17f8/0x2258
+  Write of size 8 at addr ffffff8055844a68 by task ksoftirqd/0/14
+   bcmgenet_xmit+0x17f8/0x2258
+   dev_hard_start_xmit+0x13c/0x588
+   sch_direct_xmit+0x108/0x340
+   __dev_queue_xmit+0x1190/0x3848
 
-misc: lan966x-pci: dts: add fdma interrupt to overlay
+Fixes: 254f3239dd07 ("net: bcmgenet: revise suspend/resume")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+Found this, while I was preparing my jumbo frame series for genet.
+The MTU change in my test comes from that series and is not in tree
+yet.
 
-This adds OIC interrupt 14 to the switch node of the lan966x PCI device tree
-overlay and names it "fdma". With the name present, the lan966x driver picks
-up the FDMA interrupt and uses the FDMA-based injection/extraction path for
-PCIe instances.
+v1: https://lore.kernel.org/netdev/20260921124435.974581-1-nb@tipi-net.de/
 
-> diff --git a/drivers/misc/lan966x_pci.dtso b/drivers/misc/lan966x_pci.dtso
-> index 7bb726550caf..5bb12dbc0843 100644
-> --- a/drivers/misc/lan966x_pci.dtso
-> +++ b/drivers/misc/lan966x_pci.dtso
-> @@ -141,8 +141,9 @@ switch: switch@e0000000 {
->  
->  					interrupt-parent = <&oic>;
->  					interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
-> +						     <14 IRQ_TYPE_LEVEL_HIGH>,
->  						     <9 IRQ_TYPE_LEVEL_HIGH>;
-> -					interrupt-names = "xtr", "ana";
-> +					interrupt-names = "xtr", "fdma", "ana";
+v2: also reorder the Wake-on-LAN branch of bcmgenet_suspend() (Clashiko)
 
-[Severity: Low]
-This isn't a bug, but would it be worth spelling out in the commit message
-that this line alone changes behaviour for every existing PCIe deployment?
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-The overlay is built into the module (drivers/misc/Makefile adds
-lan966x_pci.dtbo.o and lan966x_pci_load_overlay() applies it from
-__dtbo_lan966x_pci_begin), so there is no way for a user to opt out of the
-new name.
-
-In lan966x_probe() the presence of the name is the only thing that selects
-the data path:
-
-	lan966x->fdma_irq = platform_get_irq_byname(pdev, "fdma");
-	if (lan966x->fdma_irq > 0) {
-		...
-		lan966x->fdma = true;
-
-and lan966x_probe_port() then derives the advertised MTU ceiling from it:
-
-	dev->max_mtu = lan966x_is_pci(lan966x) && lan966x->fdma ?
-		       FDMA_PCI_MAX_MTU : ETH_MAX_MTU;
-
-So after this patch PCIe ports report FDMA_PCI_MAX_MTU instead of
-ETH_MAX_MTU, and ndo_change_mtu rejects values above that cap.
-
-FDMA_PCI_MAX_MTU is derived from PAGE_SIZE << MAX_PAGE_ORDER, which the
-preceding commit "net: lan966x: add PCIe FDMA MTU change support" documents
-as 15498 on a 4KB-page, MAX_PAGE_ORDER=10 build, i.e. above any practical
-jumbo value, so the change looks intentional and harmless in practice.
-Would a sentence in this commit message noting the switch to FDMA and the
-resulting max_mtu change make the series easier to bisect against later?
-
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index b916080f4ff1..ca62041efecd 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3441,6 +3441,8 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 
++	/* Stop completion polling before it can wake a stopped queue */
++	bcmgenet_disable_tx_napi(priv);
+ 	netif_tx_disable(dev);
+ 
+ 	/* Disable MAC receive */
+@@ -3455,7 +3457,6 @@ static void bcmgenet_netif_stop(struct net_device *dev, bool stop_phy)
+ 	/* Disable MAC transmit. TX DMA disabled must be done before this */
+ 	umac_enable_set(priv, CMD_TX_EN, false);
+ 
+-	bcmgenet_disable_tx_napi(priv);
+ 	bcmgenet_disable_rx_napi(priv);
+ 	bcmgenet_intr_disable(priv);
+ 
+@@ -4320,6 +4321,8 @@ static int bcmgenet_suspend(struct device *d)
+ 	netif_device_detach(dev);
+ 
+ 	if (device_may_wakeup(d) && priv->wolopts) {
++		/* Stop completion polling before it can wake a stopped queue */
++		bcmgenet_disable_tx_napi(priv);
+ 		netif_tx_disable(dev);
+ 
+ 		/* Suspend non-wake Rx data flows */
+@@ -4348,7 +4351,6 @@ static int bcmgenet_suspend(struct device *d)
+ 			netdev_warn(priv->dev,
+ 				    "Timed out while disabling TX DMA\n");
+ 
+-		bcmgenet_disable_tx_napi(priv);
+ 		bcmgenet_disable_rx_napi(priv);
+ 		disable_irq(priv->irq1);
+ 		bcmgenet_tx_reclaim_all(dev);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-lan966x-pci-fdma-v7-0-0ecc179c8a2c%40microchip.com
+2.53.0
+
