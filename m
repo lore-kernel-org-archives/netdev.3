@@ -1,64 +1,64 @@
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C5A556B87
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7865581FD
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 14:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087325; cv=none; b=m5JA9lCHqcLNHp7MG4w45COUcz54IjrEyj0aoQw9AJbw8OiLYnA1hznckX82xL0eP2uaAR7Rgz2twVGqfehHoK05+diq23a/vmRTBVTeJgUULkxwemNue0n4LMHR5RutwRjE1gcnDsBftAa30e/78AP5tyj1Ra1IzApxOv9va5Q=
+	t=1790087327; cv=none; b=rFCdwAuChLhHutYiE4EAVpt4ccyRbbRidpB3DoZRbUgdS4ghdFlxdocYOoZx4oMhr+li9MKLpnFZecXDIVAS/qSzP0+os+CJN6ZL53nQvhU4C1Ybua41UNOZgNKYp4ul0IMQngwRTqIqjSx9GDFF9NaLJMwcZDa1MWGN+bxPFL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087325; c=relaxed/simple;
-	bh=SVtzUg4Eb+h//swwQumGXMTtjoutlA+uq+ys1ApPWSc=;
+	s=arc-20240116; t=1790087327; c=relaxed/simple;
+	bh=xIgy530ICC4m3NkKuadi/zzirqDT04Q8w/kPC5TSRsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZZ5aYdJEKxQB88ss86GvRpKd7TJUSaDd7Z2iEm2w+Z7KQzLagOdE5e2G4Veg6AzFzs3pMYkuzxBZqRUM7YYc10v8gyA0GzbtEawqgHoPfdbZct0Nupr42pExRA4sSEXVdztlCb6pBfnkt3gCcL6bYOmzL8MsPvEPR2bfkDhDF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bdB02Ipb; arc=none smtp.client-ip=74.125.229.205
+	 MIME-Version; b=q/PZyNo0yWxIrkavo5SSP79UITV5b7H/AkmgehQFOcXd1so5gqXgJ55mEe/XYAo/MbA8VpIysFH7LIgAOZjBxm/ElQaeRpL7bvInvPeesPIWwhsfw8Y31RrYyQK2Qx+gYIQG7YpRmoxdLJiwJUxb5FeeU9EBowjLafIRMoq4mHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WAhbLqQ0; arc=none smtp.client-ip=74.125.229.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bdB02Ipb"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8cbb7b9cfso1763533e87.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:28:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WAhbLqQ0"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b76668f4ddso1536718e87.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790087321; x=1790692121; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790087324; x=1790692124; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=C2cIcFD9n/tIhle0FL6VW14T8JQcamu6z/X7FWTdDmM=;
-        b=bdB02IpbBAv4XESwKAcJhUt9dgcHa2erpxr9NqcM1HXuWC5Uzyt+Kidg3uKs4LwkYq
-         8IJVUfJ+7WJRtirgB7oeAQ2xn5xFPJgocGqpERQjaEGcr7cNFVGMRq1gopkUaxBr0eK/
-         dO2AjVfBEWrtDyo1bAX2i9x95oCspoZ2J26BcJ1eoAtfZZw4yLZP1S4jQyElMH+IwKvf
-         24BJhV5Xw+yCEnRYvTmIk/sWWD5Syp7aCYs0/IGYzPqPTPOpvwT4Yt14ZqT5USp6SSta
-         AT449txM9XKTszVDeIPq8q7pKLGm6cCQ9FKo9Na2XXwtsFuyOIkcwjEoPJ2V3BNkaC8I
-         Mj/A==
+        bh=8Qx6sfb6upNLcj5IsqKTL87bc3YDUS09h8egDr62oaQ=;
+        b=WAhbLqQ0L0Lm2DdQD8jamZaGUYd4uJJ+iAyP6l4/XSjA7qxCRLIm4joOjNbhKRojx0
+         2EccsASsw8d33gwRDvxXsFj3VnPP988EOM6nGS9p5bIwZ4kdNziuv/fGZXXD+BDVFSYO
+         1yw7MvB1oVHdymO+dcNC0vesmJE9V3jvXMoUNvPBM4oB2ZKBdfuHjwVAlkKBgU8w6p0D
+         zIsgIh7AUHcZE5TItwMxKMJa1AaaZmJPI0k9Ycahcgf1f4UXoVgmmBus78nJqP7fGvzB
+         xYvYCgGrrYgaVyG4f8ydWm575BBzu9ftL0pLEl2mEc9MpmmbFvNu6JCdRJ1AbDF5lBZz
+         Rqrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790087321; x=1790692121;
+        d=1e100.net; s=20260707; t=1790087324; x=1790692124;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C2cIcFD9n/tIhle0FL6VW14T8JQcamu6z/X7FWTdDmM=;
-        b=lRlyL5IS76T5/+kZYuZAtqBZqF/xSiQ7gvHWRvCvl2LwaZhvfztbtZ6hiRdqNsWhI+
-         NtpdQbPiEoQILU0c1O56D8NNXROEF5dYxL7Cf/oKpAM7+slGYlt5t0tYoJxQ48pP9dhM
-         mbJHfurKY+OWu8uiy3D6iOrD4/l2i7vPNCl2He+sPZLjpiGv2UCHAUSKz9VGr8zAcNDI
-         NZciLS4Zsp6xJMhdqpGeEB5CoYYNAIyCgfCcVHZZoMkz1AvnFsBYW8ioCeYdTnq2YDVr
-         P9RV6uqq5vvOU6e9vI3frMPQg1Qb6ToKBoC5c3gdZ2UAOPmO8OIZ2VMoqOm3svwxa3wP
-         wdtw==
-X-Forwarded-Encrypted: i=1; AKwUvBzedLSJqfHLfQzfVOlh3rXm7VhPmTma9E7l3kVmJ8M+20V7hdoHtXsiMUggBYkvjw2DFdjt0Tg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mkW68fH5rI8hEGylZvntkDPzl6Av/B4m4zTaN07zepHtNZbKSC
-	jcVAQc82MzFb3uycuxsnPHMh2epCW7Tb5UkfAjI0bvzBz+B+L+iGQUB3
-X-Gm-Gg: AYBFou3RUKDJxYCbWtV8srNVoboKlrTM9SQyJp8I1sUqDaz2QM4NSHzZC8wF92hWQrv
-	gs+22qyy7HqD+SnlCevf8lhBwK7Gjw/OeVkUpwrLGysYlb7bBoDPI0I9htNL03peqjKf8zEYRmF
-	VTbzvb5mb4MYZdSvW3WOpwFpNLnQsCmOmbVOuRAdP70yyPqzLmd7xIyWPesrcTCOXOe1XxKo9tZ
-	Y2iiZBT3nfVvvyN6uOWScNOJOUocV6IW7aN5x6CPjpn6HiT0wRzLdEabVmqA6yLO0Z1UB94ZTIK
-	JjH1abu0GlBZOkhqrDJQxNep5Kr2ZVQMXl+/h4q6JWvLLGoq1eK0/GZNzAQI7TjlDEXBxj3dt0C
-	Bcgz4IiiAphYryfxrRM+BPGFYahZntcdAtynyZR6aDpFQXxsyrJTx0C15C7h4e6XKyXL9WH6m4n
-	665v2TIbxn+EVBiLCf/3cizbK4//QgLVgSg2nYmiGO6y+jeK3x9BhhEfw6oxUrrDkwTVHKYUNO4
-	66euLE0qN5B8r7ZzLHgoDgZtgEXlljo2cszt0ns
-X-Received: by 2002:a05:6512:1329:b0:5b4:adb1:b25b with SMTP id 2adb3069b0e04-5b8c17f1feamr4505886e87.14.1790087321044;
-        Tue, 22 Sep 2026 07:28:41 -0700 (PDT)
+        bh=8Qx6sfb6upNLcj5IsqKTL87bc3YDUS09h8egDr62oaQ=;
+        b=NXDp+DrVTUYznK/j7U410BMc9/Bi77xXB4LMm3ey3L/q6Pt2da1k+6+LZZXUKiSUUP
+         XAKGZbtE0itGj/hdtgbRJPNWjrKC9/Vb+a8dL2EM0V/yuobYedY2JmWY60VBVmFKErq0
+         bG3tG7r48ZZ7W0iWFn1O0h+xccdebqGzn9Q7Zjn2JkVR6a4cZSm8A97vTolewRCq4iXA
+         QLJRVJL9JwlaF0A9GLq46uqSeUsayIq8I4Y74v5zpjB4CmMfMZOuUWrf2z4WnidZNqZj
+         EwbQp8w5BLPhOk+/8D8YVTyiqzHTtSlz/ZJAKQNw7K+kE4o0nXTflKN469dfD/JzVPAQ
+         WIjw==
+X-Forwarded-Encrypted: i=1; AKwUvBxgQZVXhMW7ZG0VrACKTZSY+gTTJ8OtN+67PxriDKqZQGuwm28nJtXwsW3YG7JUwzsi9r1lxms=@vger.kernel.org
+X-Gm-Message-State: AFuF++mVeOZl1zY0uxDhYzULawcFSeSRpHa3blRGFMxeEDmevVJYulxY
+	iW1LmtJG+ryjgIX//ELZjB0qleqI/hMe++mIfJgqjE7umYCSEqk7ycYs
+X-Gm-Gg: AYBFou2Py+HAX87EGh/TNPzTxklw76c9zVdrTFn6ScfGdCDnc0v7obpFrlvbNpCra1q
+	pB+VrdgyxGRdZ6AgeJWN6LJe5c4/ASfaiTXFbSmhIDCnjvzrIvqV9302t+XTW2H8ySofUkue1/i
+	y+6v/lwsImOSUugd7zsm7avF2AAZXceZOfN+HVd/B/4CSAgZXgGkbPS2LpSe+/OQsnUWkU9xAzj
+	OdAua0xtJuPWP2OVyEZXLDxisv1EKjbn7m7TNvY0KPQ2bQv0bKvJxQKbV2ZMWEX6iS2oe6vSlQu
+	sOmOwCmFLNkjLUAyPESfcBlUY4maSFR0ioKEtrbkUpBMK+p5cPFfH8BbBHGCd8oajfo3yfKYxAU
+	c+NRHWQQm7BGvS0uC2wEinbr0xWokLSdIe7bwgjjD+Lml0OTeu3tOpzjSq+pTrNMjPXXwxIfwVP
+	56TQHQrm8GPU7Bkuej3ntC50vk1ima9aP8gwodMOMmC0YxOK/UC25wirXpj4TvetQHkJKfEmgGM
+	o0N5fsW7uJdRGcG+ZQsoVDeqvn6IvyfWX1cCaWnqw==
+X-Received: by 2002:a05:6512:23a9:b0:5b4:ac27:8f76 with SMTP id 2adb3069b0e04-5b8d28fe7e6mr1013908e87.7.1790087323448;
+        Tue, 22 Sep 2026 07:28:43 -0700 (PDT)
 Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d46d2064sm589691e87.24.2026.09.22.07.28.38
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d46d2064sm589691e87.24.2026.09.22.07.28.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 07:28:40 -0700 (PDT)
+        Tue, 22 Sep 2026 07:28:43 -0700 (PDT)
 From: Sagi Maimon <maimon.sagi@gmail.com>
 To: Richard Cochran <richardcochran@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
@@ -77,9 +77,9 @@ To: Richard Cochran <richardcochran@gmail.com>,
 Cc: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net-next 3/9] ptp: ocp: hand the TMC bus back once on an acquire timeout
-Date: Tue, 22 Sep 2026 17:28:23 +0300
-Message-ID: <20260922142829.57740-4-maimon.sagi@gmail.com>
+Subject: [PATCH net-next 4/9] ptp: ocp: forget a CPLD i2c adapter number that no longer resolves
+Date: Tue, 22 Sep 2026 17:28:24 +0300
+Message-ID: <20260922142829.57740-5-maimon.sagi@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20260922142829.57740-1-maimon.sagi@gmail.com>
 References: <20260922142829.57740-1-maimon.sagi@gmail.com>
@@ -91,52 +91,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-adva_x1_mblaze_acquire() ran the hand-back itself before returning
--ETIMEDOUT, and adva_x1_bus_claim() then called adva_x1_bus_release() for
-the same error, which runs it again.
+adva_x1_bus_claim() returned -ENODEV when i2c_get_adapter() found nothing
+for the cached number but left the number in place, so
+adva_x1_cache_i2c_adap() kept bailing out on its first test and never
+resolved the adapter again.  The comment on the parent check claimed a bad
+number is forgotten and looked up again on the next sweep; that only held
+for a mismatched adapter, not for one that had gone away.
 
-Both write MBLAZE_RELEASE and poll for the grant to drop for up to
-MBLAZE_RETRIES * MBLAZE_RETRY_US, and both run with the i2c root adapter
-lock held, so a single failed claim could hold the shared controller for
-half as long again and log "TMC bus still granted after release" twice for
-one failure.
+Factor the invalidation out and use it on both paths.
 
-Leave it to the release path, which the claim already calls.
+Re-arm the one-shot identification when a new adapter is cached as well: a
+different adapter may answer where the previous one did not, and leaving
+cpld_id_tried set kept cpld.id absent for the rest of the binding.
 
 Fixes: 3b815e29966f ("ptp: ocp: add TAP CPLD access for ADVA TimeCard X1")
 Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
- drivers/ptp/ptp_ocp.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/ptp/ptp_ocp.c | 35 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 510083dc750a..feb61355078a 100644
+index feb61355078a..45313143b6f7 100644
 --- a/drivers/ptp/ptp_ocp.c
 +++ b/drivers/ptp/ptp_ocp.c
-@@ -4526,10 +4526,6 @@ static int adva_x1_mblaze_acquire(struct ptp_ocp *bp)
- 			return 0;
+@@ -4574,6 +4574,19 @@ static int adva_x1_i2c_adap_match(struct device *dev, const void *data)
+  * both the notifier and a single lookup here can miss the same adapter.
+  * Retrying costs a short klist walk per tick until one of them succeeds.
+  */
++/*
++ * Forget the cached adapter number so the next sweep resolves it again.
++ * @nr < 0 forgets whatever is cached; otherwise only that number, so a
++ * caller that raced the notifier cannot clear a newer one.
++ */
++static void adva_x1_forget_i2c_adap(struct ptp_ocp *bp, int nr)
++{
++	scoped_guard(spinlock, &bp->cpld_adap_lock) {
++		if (nr < 0 || bp->cpld_i2c_adap_nr == nr)
++			bp->cpld_i2c_adap_nr = -1;
++	}
++}
++
+ static void adva_x1_cache_i2c_adap(struct ptp_ocp *bp)
+ {
+ 	struct device *child;
+@@ -4598,6 +4611,15 @@ static void adva_x1_cache_i2c_adap(struct ptp_ocp *bp)
+ 			bp->cpld_i2c_adap_nr = i2c_verify_adapter(child)->nr;
  	}
  
--	/* Drop the request we gave up on.  Any error from the hand-back is
--	 * subsumed by the -ETIMEDOUT we are already returning.
--	 */
--	adva_x1_mblaze_release(bp);
- 	return -ETIMEDOUT;
++	/* A different adapter may answer differently, so let the one-shot
++	 * identification run again rather than leaving cpld.id absent for
++	 * the rest of the binding.
++	 */
++	scoped_guard(mutex, &bp->cpld_lock) {
++		bp->cpld_id_tried = false;
++		bp->cpld_id_attempts = 0;
++	}
++
+ 	put_device(child);
  }
  
-@@ -4647,6 +4643,12 @@ static int adva_x1_bus_claim(struct ptp_ocp *bp)
- 	i2c_lock_bus(adap, I2C_LOCK_ROOT_ADAPTER);
- 	bp->cpld_adap = adap;
+@@ -4614,8 +4636,14 @@ static int adva_x1_bus_claim(struct ptp_ocp *bp)
+ 	lockdep_assert_held(&bp->cpld_lock);
  
-+	/* adva_x1_bus_release() runs the hand-back, so the acquire path does
-+	 * not do it itself: both poll for the grant to drop for up to
-+	 * MBLAZE_RETRIES * MBLAZE_RETRY_US with the adapter lock held, and
-+	 * doing it twice only holds the shared controller for longer and
-+	 * logs the same failure twice.
-+	 */
- 	ret = adva_x1_mblaze_acquire(bp);
- 	if (ret) {
- 		adva_x1_bus_release(bp);	/* keeps the acquire error */
+ 	adap = i2c_get_adapter(READ_ONCE(bp->cpld_i2c_adap_nr));
+-	if (!adap)
++	if (!adap) {
++		/* The adapter behind the cached number is gone.  Forget it,
++		 * or adva_x1_cache_i2c_adap() keeps bailing out on its first
++		 * test and never resolves the adapter again.
++		 */
++		adva_x1_forget_i2c_adap(bp, -1);
+ 		return -ENODEV;
++	}
+ 
+ 	/* The number is freed before the notifier clears it, so it can
+ 	 * already be another adapter's.  Check this is still ours, and drop
+@@ -4623,10 +4651,7 @@ static int adva_x1_bus_claim(struct ptp_ocp *bp)
+ 	 * way, where forgetting it lets the worker look the adapter up again.
+ 	 */
+ 	if (!bp->i2c_ctrl || adap->dev.parent != &bp->i2c_ctrl->dev) {
+-		scoped_guard(spinlock, &bp->cpld_adap_lock) {
+-			if (bp->cpld_i2c_adap_nr == adap->nr)
+-				bp->cpld_i2c_adap_nr = -1;
+-		}
++		adva_x1_forget_i2c_adap(bp, adap->nr);
+ 		i2c_put_adapter(adap);
+ 		return -ENODEV;
+ 	}
 -- 
 2.47.0
 
