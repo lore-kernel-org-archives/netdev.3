@@ -1,86 +1,86 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997655221DA;
-	Tue, 22 Sep 2026 10:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C47539762;
+	Tue, 22 Sep 2026 11:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790074731; cv=none; b=u6kYk4wvhWLoxmSVxomsRLtGJHSsboeDJ5rSwUG9hEesOPAke0Uk2mTAERkKLj1YrMMNYiYg/qv0j4tKJyYlGoKeriAOK9ZBmYtUodNe+1ZHJIybWqMiGKNzNQEKsbNq3YiO47Tp4t/CJz/N8Ya9C4wQpYAXFkt3Au5anWPocLs=
+	t=1790074877; cv=none; b=WvKgp/eit0bDi06IiylmwKNH+jrwZj02BlAcbM5Zbk+/LfSqWn/mcvmuLtC11P3HZdH2D7nLz7AJFzuHJeIma6zbaLa6xeoBuCH5A/eAX4cBrnOLX0rjsR1/wPThqAUohMz6Kg43tSc8LUUJIcb0Fz/KxMnvSKfbOVetFDNwdGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790074731; c=relaxed/simple;
-	bh=fbAc7ebwCqxuH0VG1ksDAeVSDAb6yVypBrz5cAKdMRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=myUgYLNrUcm3bWmzQItce7hFzWDJPZ0DpcYcGHESXW1CtAmycgV7z5D+TjlOEaC5KjHg2AKwl8JbSzIU/JNQQmk20Bl8QCyIjA5P8sFVmtv6zv6pkIaCsmhDRF67hyoyg/klblOJ+enqNaXzUrrNChghd3gyivR3TMaaw+2PblU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=fNWUDqX8; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1790074877; c=relaxed/simple;
+	bh=WIFqIyjzWt+/9sQwK068IvZyxXOO2WqnStzPOAksiio=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=moFHmMx5qqnZB26PN3tBf42zyMCvnn7t1/j28fOMFXCEJ+lxxs2ZdBJF6gE6J/lbV1FqpfPRMc9XWAQaKAsnyq1j7v8WNiwh7sZOUqgNKMrtY01I/sE6dX5Xxqye9zcuTB4eH0tmCypHn9iBGiXdR4AaBVasFR5HdsRq/8EGRpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=au3gdWzb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="fNWUDqX8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QC6dGDqXkFixLgf757zeEyQ66heKcQh39eXEjVnWscw=; b=fNWUDqX8vriA1q8ith05IO5rqS
-	D3MlLBl/jttxfHlkHKZycMHYCwtD8FoZtGqYuyHDICmM/msHYfoexppcdh23KTi3Y4j7jUtuvzhea
-	n/AV62kIe6FYySLnORFFBdyKhO0phHdRmlve2y+BG3zRFKjOC/piXjLKrfd+Jt+Pusm20EVSd4b2q
-	5AhfW+REXE6P1YUqDLMt9wvXUOOWNOlv5UiX1cxJlXGA5bc4CydjY28aS795B9b+vyrtGjq+hG4zR
-	KPvbAkRhVxmDZ+DdHvSjSyqy9IP+XQ+kBYyvyHOR176SB0b/3mBWXJ9g68ZynlZGhiSSGDopSAG3l
-	+/t7vypg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x8yCt-002vqp-2w;
-	Tue, 22 Sep 2026 10:58:40 +0000
-Date: Tue, 22 Sep 2026 03:58:34 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Zhang Yunfei <zhangyunfei1@kylinos.cn>
-Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com, 
-	mengyuanlou@net-swift.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com, 
-	weirongguang@kylinos.cn, u.kleine-koenig@baylibre.com, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2 2/2] net: ngbe: clear DRV_LOAD bit when
- ngbe_open() fails
-Message-ID: <arJev7h-_lEii1Z2@gmail.com>
-References: <20260922100836.1147718-1-zhangyunfei1@kylinos.cn>
- <20260922100836.1147718-3-zhangyunfei1@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="au3gdWzb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F771F000FF;
+	Tue, 22 Sep 2026 11:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790074876;
+	bh=Y1vdsGOY/KDvyzcJWbwWtxtfK60TGHQsGcIdVzaWuz4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=au3gdWzbGbTFqrEnZJR+b/2Tlg2WMPlv3PsxS+oPZN/5GhLsAbD1m1Sxb4nq5W9AM
+	 zGe6/az5pmJZQoCiYmU22mUrdPDYUfxTyCA062u5imaevgjMgj0ieyXHMh7nZPhfUI
+	 b66Vp3L2qt+Bs0Tvw1NA5jY8DnLjsGorJXcxGaqjUWvu/pVBw/hWPI3OEMFwvXRKB3
+	 B+p/9RE5oomLxr9y6EGk/YuoN42fRvWsPvtJUz2z6O5jvfYM2skc8oU1+aSCobP8Hs
+	 l0i8o/T3CWrAWzOwoQ1UFQSmx5/fQbrTC2dcMmFz+I2FqF81taNFfYYV3yTckO5zdx
+	 sI6Bt9TZ7GhjQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9390738119DF;
+	Tue, 22 Sep 2026 11:00:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260922100836.1147718-3-zhangyunfei1@kylinos.cn>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 0/3] net: dsa: realtek: EEE support for
+ RTL8365MB-VC
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179007480745.3557644.10659834331217655473.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Sep 2026 11:00:07 +0000
+References: <20260918091722.3270534-1-o.rempel@pengutronix.de>
+In-Reply-To: <20260918091722.3270534-1-o.rempel@pengutronix.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: linusw@kernel.org, luizluca@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ kernel@pengutronix.de, linux-kernel@vger.kernel.org, a.fatoum@pengutronix.de,
+ alvin.sipraga@analog.com, netdev@vger.kernel.org
 
-On Tue, Sep 22, 2026 at 06:08:36PM +0800, Zhang Yunfei wrote:
-> ngbe_open() sets the WX_CFG_PORT_CTL_DRV_LOAD bit via
-> wx_control_hw(wx, true) to tell the management firmware that the
-> host driver has taken over the port (NCSI/OOB firmware stops using
-> its management channel). Every error path of ngbe_open() returns
-> without clearing it, leaving rings, IRQs and the PHY torn down
-> while the firmware still believes the host owns the port, an
-> inconsistent driver-firmware handshake state that persists until
-> the next successful ifup.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 18 Sep 2026 11:17:19 +0200 you wrote:
+> On these switches EEE is enabled by default, but so far it is neither
+> visible nor controllable from user space. This series wires EEE up to
+> phylib/phylink on the RTL8365MB-VC integrated-PHY ports so it can be
+> observed and controlled per port via ethtool
 > 
-> Roll the bit back on all open error paths, matching ngbe_close()
-> and ngbe_dev_shutdown(), which already clear it.
+> Oleksij Rempel (3):
+>   net: phy: realtek: use C45 for RTL8365MB-VC internal PHY MMD access
+>   net: dsa: realtek: rtl8365mb: extract PHY OCP address halves with
+>     FIELD_GET
+>   net: dsa: realtek: rtl8365mb: add EEE support
+> 
+> [...]
 
-silly question, why unwind, rather than not taking hw control until the
-port is actually up, as the last thing in ngbe_open()?
+Here is the summary with links:
+  - [net-next,v4,1/3] net: phy: realtek: use C45 for RTL8365MB-VC internal PHY MMD access
+    https://git.kernel.org/netdev/net-next/c/4ef25721f7c8
+  - [net-next,v4,2/3] net: dsa: realtek: rtl8365mb: extract PHY OCP address halves with FIELD_GET
+    https://git.kernel.org/netdev/net-next/c/e9ba480ec820
+  - [net-next,v4,3/3] net: dsa: realtek: rtl8365mb: add EEE support
+    https://git.kernel.org/netdev/net-next/c/61c59309b6f8
 
-Looking at txgbe, it does something like:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-	static int txgbe_open(struct net_device *netdev) {
-	.....
-		txgbe_up_complete(wx);
 
-		return 0;
-	}
-
-Would ngbe_open() be able to follow a similar approach?
-
---breno
