@@ -1,85 +1,162 @@
-Received: from out28-149.mail.aliyun.com (out28-149.mail.aliyun.com [115.124.28.149])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97862544D57;
-	Tue, 22 Sep 2026 12:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956FC422531
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 12:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790080211; cv=none; b=Jaam7sik+025mVaQ1M2vqxN4bCEf3v2crrV7d16UTwKbOqN4rdIIrRNdUFMT2elSPdTEMd761XikCxcmcTvcbhXGTTHAjQuYmiwfC8StmnNUNafdqiWRONEnSeJfNJ5jRLY1p/UdUagL9shxycGkF7CqJWzzQmN9T4L09GWX/ug=
+	t=1790080401; cv=none; b=L0+Zgv7WjOiTcVopDJjiZiiIPwLSCPGncrm6n7Ag8bWyABwwG5a0Erl4EliZR1MTlarHiht9i3n3TDpVnqQuoj2VDkkY6mqZqUU1AbMEMjcyj73I4KbqWcYhgF7PXmCNHm59ESmiRDN0F/IsnHVJStaVPlqe5uDXXB5Qw1kbYQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790080211; c=relaxed/simple;
-	bh=PrMay2PDMio4LPM/Stxs8Q0612AEyOHv2dZQKcrIV8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J1jKmtZQjUC0oFyV6+bRpHBlU6FmPcPLTjCEmuZtegLW7FlG4EUJDVaSfh2IqmrYpMqKxVpfxLXo49O+pjgWo1VhBs5RGpj0Slqvs/fbRsH7FJHjAUiWkqDEia16nF9x0j+r5NWr/FuKJ5QlzGqG3te4aux9oVLsb5Xkhyi3EFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=Ng9k4T0L; arc=none smtp.client-ip=115.124.28.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1790080401; c=relaxed/simple;
+	bh=xNKemUhCfIwyBaFE3dn18rH9FQX5gQ/I3YDv1HbBj6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nAaWwr7JBvpWJDegM55xUl1bhGrGsk3OfDzYn9TNg924MSj+3fcTAFedTrq3zqkogAtT1a6L64F3oss18Z8/eipv/Lhk16rE0aumjJgXswGHQbCT/bCmo3EBNxF4JwnilgY6LOzUT+FNkr0JM8hU7JuS0jevD8+8p1xFBu15pyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fzyJucyg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DTGLEB6d; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="Ng9k4T0L"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1790080198; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=wIvs6Bzn9Mhp/rPNaBk6Z8IGAyJ/9Lyz4gAF5i82P1A=;
-	b=Ng9k4T0LT9ePd1kU9A/wM1eZCBQdibgDcXA+rtaVBA1JlIUnkdjWmxd+GtS9qMfgGj8pA611lDcl3ZW3prFeZAwAoXrofNzZpzKiOOXkfdWQnu7YxB/Ff3fMsxqlhjyf11F0huKgsTNetG1lYfNmFVTadbpjA70pULAEPs42ubI=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09716257|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0150629-0.000352776-0.984584;FP=2088973265481694556|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=10;RT=10;SR=0;TI=SMTPD_---.jK24y5D_1790080195;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jK24y5D_1790080195 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Sep 2026 20:29:57 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Xie Yongji <xieyongji@bytedance.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	stable@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] vringh: fix infinite loop on cyclic top-level indirect descriptor
-Date: Tue, 22 Sep 2026 20:29:53 +0800
-Message-ID: <20260922122955.69433-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fzyJucyg";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DTGLEB6d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790080398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gp/RspYrZJwOpb3gUhpDI38PyXinoO4/BBI7aDbJ9o0=;
+	b=fzyJucygqZn4ysJVgYNRGT/X67qefxq+MuWgtjWbaxIyS/dLFllVWzU4VVj5Z4S0+l35bm
+	m/3NR/meIv7ZJ60QpL2pQUz0UlKXzsCF78O7l/HZ4uTrhda/L9tHzPvKm2EOcAR3jv5J3C
+	WSzRz2/2lAsTf6+aqYrqvYE6C3QRpRw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213--mbagdXCNtCDAbN6PaWGYA-1; Tue, 22 Sep 2026 08:33:17 -0400
+X-MC-Unique: -mbagdXCNtCDAbN6PaWGYA-1
+X-Mimecast-MFC-AGG-ID: -mbagdXCNtCDAbN6PaWGYA_1790080396
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49cf9df1eadso36293745e9.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 05:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790080396; x=1790685196; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gp/RspYrZJwOpb3gUhpDI38PyXinoO4/BBI7aDbJ9o0=;
+        b=DTGLEB6d/+DrFGhsQgrW74/Fx7d9pdj3KXCKaKioczvI73pmlBYMiqv8cuZ0lKUym0
+         jFw46evDoQYrf457J7RxAZPYXL5UDZkcTwEs28UQHd/+QXTSBrYjwpRQz+lQ1dxqRk3K
+         9wxsTiih9vAh0zKqtsOReAKOV1RtA8lEg1iVJBaH52Loj34Dj8aD4zAOnhMVPImG7JZk
+         IMcbyzjpvQUGv7+KWRM8oghM7eC5TdT5Q4ObmPTcHoZkdu3Q4GrHGJ6rod/HuxOI6DCN
+         aTswWXjqh7Ndn3+10EYYjrB7vvCmB1OdccFJ0KRxhER2XtNu/9I8uCkPghOc92HHVrkQ
+         ZNzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790080396; x=1790685196;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gp/RspYrZJwOpb3gUhpDI38PyXinoO4/BBI7aDbJ9o0=;
+        b=byJ8ae0R+ZuOYP6EhSMx4pH0J/+m0/KVlfeDnCKSpNvBwyxLUZHus3jpm+LXnn2zUc
+         8DexFFrzVy4qSU7uJC1Q8QblMANfitjIGStR2j7I6dJn9zXiO6fLV4QRpQInA3EH14zK
+         PQjCUqVWP8WbCV98gIs/fRYBQA2/LahD8jdRAzcsWqjzyrFAYn5yrGJVxlCCVQ1u8SvK
+         MsYT7Ujbm+jVIj9XTXKeCa68n8VgYFz08ZGSA6HBIVfN8Nb0n/nixVK7tNPEGPY+9tgg
+         Nrp/xCRO1fK9p2xmI4rRyeGxc6wPNKYvw+co9BEm/GYFO4PBwvhuzg+Q5nkS7oygt0fg
+         YWsg==
+X-Forwarded-Encrypted: i=1; AKwUvByVHB/EKZctZb/XVAAZufJYBYicjlnzWJYONjUZWAgSLJ5BycLCQl8f2ekz+UkSFm2qUwVFap4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mA3irJ2fbyEjMYjDzly21D93SvQDTfjzIBRGenLhYs2/Pzp9g9
+	fCyO/XcTu8G/CDafZ1JMz0VFpFNSRnAlRYuvammv3Psq5TmPMLklK6J2cK2PrIhZn08hajDPivM
+	5rM2xGWWeQpnKh4wxLGnmtnLR5iFYh0cC9+PQSeI3jNlFjcBgjXMfDdX08A==
+X-Gm-Gg: AYBFou024BrzKEHGuCj5rgpcNEzT2J8PxoI5iE27ZmPs2wDqdkSl9aFxm8cV6KbJV7k
+	Y4oN5hbRllcelVYVt73GGHK++5StE73SOUFYR/wcgbRMo9c0xGbfL1tAqHmMz0R3rmj9MeHpCqt
+	P08NPcLQ2RXuywriY0wfSbwjsq4miB6TgLwzJDnGPQZyBwHt8Ztv2dz7gVxA3uFYOi7fD9FntvQ
+	yZVSTyo0YZP6VcaLT/01BJWvo2/kqUM7pYo9gFKuTVG3k4Cf6eOkLbEVAahbGtP7FI2ZrgzF3w/
+	qbYG/M8sbCa/FTe79mYyfOlo70MnU14DY5oXBS4S2Ego2tdfMMyn2aEG1ziMMF2KP/3J4tmrw86
+	pj2fk2DDTlkCEr1ZR9GxcRkSQevwVkcgNrZ/ozh6xRZAMy8Bn7mI=
+X-Received: by 2002:a05:600c:34d0:b0:49c:eb16:9fd with SMTP id 5b1f17b1804b1-49fc5671650mr196407415e9.3.1790080395921;
+        Tue, 22 Sep 2026 05:33:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:34d0:b0:49c:eb16:9fd with SMTP id 5b1f17b1804b1-49fc5671650mr196407095e9.3.1790080395480;
+        Tue, 22 Sep 2026 05:33:15 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-134-131.retail.telecomitalia.it. [82.53.134.131])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488627314d2sm4904907f8f.2.2026.09.22.05.33.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 05:33:14 -0700 (PDT)
+Date: Tue, 22 Sep 2026 14:33:04 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: =?utf-8?Q?Bart=C5=82omiej?= Dmitruk <bartlomiej.dmitruk@isec.pl>
+Cc: "K . Y . Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Long Li <longli@microsoft.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vsock/hv_sock: don't finish a connection on a socket
+ being released
+Message-ID: <arJ0NhXGdCOqRjlj@sgarzare-redhat>
+References: <20260919123128.28868-1-bartlomiej.dmitruk@isec.pl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260919123128.28868-1-bartlomiej.dmitruk@isec.pl>
 
-__vringh_iov()'s F_INDIRECT branch does `continue` before the descriptor
-accounting block, so a top-level indirect descriptor is never charged to
-`count`.  When such a descriptor also carries NEXT pointing to itself,
-returning from the indirect table resumes at the same uncharged descriptor;
-`count` stays flat and `indirect_count` is reset to 0 on every return, so
-neither bound in the loop check can ever trip.  A guest can keep the host
-vringh worker spinning inside __vringh_iov(), causing a host DoS.
+On Sat, Sep 19, 2026 at 02:31:27PM +0200, Bartłomiej Dmitruk wrote:
+>hvs_open_connection() only checks sk->sk_state (TCP_LISTEN for a
+>host-initiated connection, TCP_SYN_SENT for a guest-initiated one) before
+>proceeding. __vsock_release() sets sk->sk_shutdown = SHUTDOWN_MASK and, for
+>a listener, flushes the accept queue, while leaving sk_state unchanged. A
+>VMBUS channel offer that races close() therefore still passes the state
+>check and either enqueues a child onto the already-flushed accept queue
+>(conn_from_host) or completes a connection on a socket being torn down
+>(!conn_from_host); the socket and its VMBUS channel then leak.
+>
+>The virtio transport guards the listener case in
+>virtio_transport_recv_listen(); hv_sock has no equivalent. Add a
+>sk_shutdown == SHUTDOWN_MASK check to the common path right after
+>lock_sock(), so both the host- and guest-initiated paths bail out.
+>hv_sock holds lock_sock(sk) across hvs_open_connection(), so the check is
+>race-free.
+>
+>This was found by code inspection; I do not have Hyper-V hardware to test on.
+>
+>Fixes: ae0078fcf0a5 ("hv_sock: implements Hyper-V transport for Virtual Sockets (AF_VSOCK)")
+>Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+>---
+>v2: move the SHUTDOWN_MASK check to the common checks after lock_sock() so it
+>    also covers the guest-initiated (!conn_from_host) path; add Fixes tag
+>    (Stefano Garzarella).
+>v1: https://lore.kernel.org/netdev/20260917220156.56015-1-bartlomiej.dmitruk@isec.pl/
+>
 
-Patch 1/2 moves the accounting block above the INDIRECT switch so each
-top-level descriptor, including INDIRECT ones, is charged one traversal step
-before the walk descends.  Legitimate chains and indirect descriptors stay
-within vring.num; a cyclic indirect descriptor is now rejected with -ELOOP.
-Patch 1 carries the Fixes tag and is Cc'd to stable.
+About v1, I see sashiko reporting some pre-existing issues
+https://lore.kernel.org/netdev/179003264046.2160803.3176959842906352107@kernel.org/
 
-Patch 2/2 appends a regression test to tools/virtio/vringh_test.c.  It builds
-the offending ring: top-level desc[1].flags = VRING_DESC_F_INDIRECT |
-VRING_DESC_F_NEXT and desc[1].next = 1, with a single-entry indirect table,
-and asserts that vringh_getdesc_user() returns -ELOOP.
+The critical one seems real, can you check?
+Maybe it should be fixed before this change.
 
-Verified against v7.3-rc3: both patches pass git apply --check.  With the fix,
-vringh_test --indirect observes -ELOOP and exits 0.  With the fix reverted, the
-walk re-enters the same descriptor without making forward progress and never
-returns -ELOOP, so the assertion does not hold and the regression is caught
-either way.
+Stefano
 
-Fang Xieyan (2):
-  vringh: bound top-level re-entry into indirect tables
-  vringh: add regression test for cyclic indirect descriptor
-
- drivers/vhost/vringh.c     | 22 ++++++++++----------
- tools/virtio/vringh_test.c | 41 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+), 11 deletions(-)
-
--- 
-2.50.1
+>diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+>--- a/net/vmw_vsock/hyperv_transport.c
+>+++ b/net/vmw_vsock/hyperv_transport.c
+>@@ -322,6 +322,15 @@
+> 	    (!conn_from_host && sk->sk_state != TCP_SYN_SENT))
+> 		goto out;
+>
+>+	/* __vsock_release() may have already set sk_shutdown = SHUTDOWN_MASK
+>+	 * (and, for a listener, flushed the accept queue) while leaving the
+>+	 * socket in TCP_LISTEN/TCP_SYN_SENT.  Proceeding would enqueue a child
+>+	 * onto a released listener, or complete a connection on a released
+>+	 * socket, leaking it and its VMBUS channel.
+>+	 */
+>+	if (sk->sk_shutdown == SHUTDOWN_MASK)
+>+		goto out;
+>+
+> 	if (conn_from_host) {
+> 		if (sk_acceptq_is_full(sk))
+> 			goto out;
+>
 
