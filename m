@@ -1,107 +1,147 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D433C5218A9;
-	Tue, 22 Sep 2026 07:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B6B5237B7
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 07:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790063459; cv=none; b=oUKtPlVBrrQzwY2T8vVC01XbfXpGc+MSe4d9iXYVtdLY2RmOxgrZFYSVjsC55fCe6qB3maVEkKyWkrNo8PYPjn6GG3uNshxCbv/O25NfBhQJpyoLQ6rJTT58/4NPDkvFrRDdQAx+G/3saMQ+wajULCm0LWpDH0D9rIXrTg0BzWQ=
+	t=1790063596; cv=none; b=WATynLPo7dnMYQ03S88O9XOiutfhaC8XVjTtCxN/3SscB2l5MUUsKLwAJiNPQmShcLRUBBlV8EOKU4tLUCqsjjvJoEi6SgzYPVQQUfdyXTKWCbi0HJnnjapZm5OciZ3iBsqlE9K19LX+nmEg7PQ2h+EFI4CqcdOoLrSsOTmnc3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790063459; c=relaxed/simple;
-	bh=Ehb0qutR8MenPgNu9E+e1P2VW64xTQzLJGfwUv6414k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CfQcP4BoX/PtXeK53SSPMeNPjm9WCOifEm4KJV7gUJSn4Z+VOfssRvryZBJqv7gTuRxJWJXHinPuRva7ebUGtZ/hD+r7CLWsN6cBFpBKfHMMiDlX/pdl12pTXohP0tL2A0DPIYLM8ebPRB8mS7qhjRx1zPuU16cpy3YEOKtP2D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Gjl8kPDH; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	s=arc-20240116; t=1790063596; c=relaxed/simple;
+	bh=m5EoRua0q9A2AIEu5UEySzNXUjtv5J9RR+mgTqZVnTQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tqHCNDAwXjf2qyedJQNxw814cttuh/E6to7LZmbYTWcq09akisyu3DGcnZwx02CX4u69qegaH0mA96ae/MfZ+QBcMx5WMlMbjCf9h7t5M2R+NDIc4whhJqksWNRwTANCBxXkJVJ5r76F7m/0lT/QuFb6VOGsJVT8QlWWgIVblpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=KUZSIUrX; arc=none smtp.client-ip=185.136.65.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Gjl8kPDH"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6C0C91D000EA;
-	Tue, 22 Sep 2026 03:50:47 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 22 Sep 2026 03:50:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790063447; x=1790149847; bh=CLTOomVvwyhaIVz87iePe3y/WJq8UrZa/EE
-	6k4DqZi0=; b=Gjl8kPDHqaXVFTZhrK0tVPA6mwrn5xeq47RO4UjBfJ/RnjGrtpA
-	hw85QrPxDW18yYDS1QuipXOqbGLNEk+EF/7FMEU+m/hEWJWekwG1GHg2S6GHF9X/
-	kZiahBaMrcVZIf5Adwh7fRpjLUALEJE2HP08N3n2a8AR9zkTwUtOhJz0PrJWocCK
-	gdSVTpvWW0r+HpIdxhCnuX2UpLG4nHRMxTAJNy6JD/y4WXprwTuTdSpZ8vQ57bZL
-	cztl9GdxXfK/8wP3kvtZBlhwxVzth/77o92tXRcXWHHbhsXXvcbQLsHeMRs5z0l/
-	Z4XrWbO3U0NH5SYZNevEFtnU0GAAAZYAGRQ==
-X-ME-Sender: <xms:VjOyamt_9lxJ8XC2idd5jFG2Uk2iNDob6iP-HAPxXdZnYVA4f3XQKQ>
-    <xme:VjOyagYYn1mDBK5Ncr9VYB5K6seYdxlMBGVITm8yCRdxCD9OlAN6lEI7ems51RIOK
-    YFz2StjKxWHIzvW0THksB0bGaG_CVHDhV4NAWNmxrXekdTyazxs>
-X-ME-Received: <xmr:VjOyamDOWvMJg1gG3uvEfDeJ2y_tlc-tF4sWrddw01FAGhG6fAz97ASu>
-X-ME-Proxy-Cause: dmFkZTEqOfxk5KetvJAl/TK5VbeQw7ocLoRNt8Rri1qUHaBlUxZAGQ+Wr2dIfLKcHDObO5
-    wZZPiDV3wqpb9ppN0GB0lfXmvnh177q6/ouvggY7dc7DaU+OfSaYOXe7ikToQ5D/agkDMn
-    ofN0V0CHMLdo9btn7yIe3ajPKQaBY351OamH8O5TvEIHWS6t4SQQnXu9kvPPtPCt7cxlt7
-    bfTwnpbxguwVtAoO0l15fULlrtzd3DYllK4TpwVFkWxzTzfVlduMqvzTZEJ3DBAUOAhKKe
-    2CCR6Gi5b1oLyO2ICXRbmSpNfjiFqxlh4vOFxYRmg71BkFJW63B3cRpnGRNWyTrDo3i1ap
-    IOGBR/YF9/UJA8tCwn64NcVJmx+ED5JiRl6qqkyipAfeGQXsI8JJCu144XbhrcB+KDOJpv
-    a44X49XZwTFXdsxPF9g1u5Shux98YUzbkswJbl1BsljjcA/PfZWHGo61xNMO08vv1Ak7/K
-    a0tsu3OQlvyV3giFhO4WYT01lQKjy0WkzjjKk/eE8frJTjGWzBDlEZips+cAVC9dQbJKsb
-    9IkJ+ZZy+wC+qWehAM6sMwHz2gvP2cnrbgvT2ImZ/ePvjPhyjeLPi2KmlZajE9kKVs3yhB
-    z0cDKuUvux74T4UcijR5NNnXFKkdbYY+ef1tUl7PdRk2kjkh1UhHlUsaCXSw
-X-ME-Proxy: <xmx:VjOyag_VNcX5tt4cYNx5WPGSQgUHTS56pHWaF2ptoEaaqxwBFiriRQ>
-    <xmx:VjOyaqQtMopVxFqOxgKBSB4J35E8Y_XrDFCteoXFP0OJ--vdUoYD_g>
-    <xmx:VjOyasWtWq-tZNCegammSUopTWpuJZ6mh55sufgL5w2u6whVyDZjgA>
-    <xmx:VjOyasQz_Zwp_bq3R2VfpQVuPFH_6cVsEXNFyIPRtZG5imcP8USZ2Q>
-    <xmx:VzOyanyDOrSinpRYdhICu8nsqNhAnCp32XmTOuptyTm6hrKeGz9JOAOi>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 22 Sep 2026 03:50:46 -0400 (EDT)
-Date: Tue, 22 Sep 2026 10:50:44 +0300
-From: Ido Schimmel <idosch@idosch.org>
-To: Stefano Sasso <stesasso@gmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="KUZSIUrX"
+Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 20260922075254813e3558ca00020779
+        for <netdev@vger.kernel.org>;
+        Tue, 22 Sep 2026 09:52:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=5SshI8N4ivJLLkeBdfLpv1CjXhh2GgUQgsKDnILaqkg=;
+ b=KUZSIUrXUhFpgCNQ644uND8V0eOC3R4jjQfW3wzpmpiRJfRR/NwDwedlMwxy96G4Btq/lx
+ ZLV7+6KH8c0F+nAleoD351nfJlR45QFq04QqUg2xzgF0ILmNqt+r/4GttXhRxufz6iqWgWkV
+ EYaGhh+0tJhhjwMTzfCni2bz/OQhrqoCVuATp50HDiM7M3Xnoq1fiHuSG+fJfl+8FQinhFET
+ mDUkMko3zEqroujh+2mltR6RsIqQwRIXtRMMhoX1HlPVqTh3Ss/B1uhNKE0il9SDIBlVEczw
+ rGZU/unDJCY5hx0qDxxg69mIgvJPOSFAFMMvgRgG4zEbPZfXE52g+Wyw==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] vrf: attaching a packet tap to a VRF device corrupts
- skb->csum for packets from L3 ingress devices (Udp6InCsumErrors, packets
- dropped)
-Message-ID: <20260922075044.GA2349844@shredder>
-References: <CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	"Aleksander Jan Bajkowski" <olek2@wp.pl>,
+	Daniel Golle <daniel@makrotopia.org>,
+	John Crispin <john@phrozen.org>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: phy: intel-xway: workaround 100BASE-TX Link-Up issue
+Date: Tue, 22 Sep 2026 09:52:46 +0200
+Message-ID: <20260922075251.23386-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALtE316UtL3x7LL6uxfXzx8rW6AbzYPeDOb478hqJCr_-dj=Wg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On Sat, Sep 05, 2026 at 02:59:13PM +0200, Stefano Sasso wrote:
-> Naively, the fix looks like it should be to make the accounting symmetric:
-> either drop the `skb_postpush_rcsum()` call, since the push/pull pair leaves the
-> packet unchanged, or add the matching `skb_postpull_rcsum()` before
-> `skb_pull_inline()`. I do not feel qualified to say which is correct, or whether
-> there are other callers/paths that rely on the current behaviour, so I am not
-> sending a patch.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-I believe your analysis is correct. I will test [1]. Drivers that
-support CHECKSUM_COMPLETE don't include the checksum of the Ethernet
-header in skb->csum.
+MaxLinear GSW12x/GSW14x Ethernet Switch Errata Sheet states:
+"An issue has been sporadically observed after device power-on on the first
+link-up attempt in 100BASE-TX mode resulting in either the link-up taking a
+long time, or failing to link-up altogether...
 
-[1]
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index a0557a3a7026..d4dc6d690a75 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1175,8 +1175,6 @@ static int vrf_prepare_mac_header(struct sk_buff *skb,
- 	skb->protocol = eth->h_proto;
- 	skb->pkt_type = PACKET_HOST;
+Workaround:
+After power-on, enable Cable Diagnostic Mode for all ports and disable
+it..."
+
+Implement the proposed workaround unconditionally in the Intel XWAY driver
+(MaxLinear GSW1xx switches incorporate Intel XWAY PHYs) because the
+diagnostic bits have the same meaning even in older integral PHYs such as
+GPY111/PEF7071/PHY11G. So it's not clear how to distinguish the affected
+newer integrated PHYs, but the workaround should not hurt the older PHYs.
+
+Cc: stable@vger.kernel.org
+Fixes: 22335939ec90 ("net: dsa: add driver for MaxLinear GSW1xx switch family")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+Changelog:
+v2:
+- added "Fixes:" tag (refers GSW1xx introduction commit, because it's the
+  first known silicon to contain affected IP, kernels w/o GSW1xx support
+  do not need XWAY PHY workaround)
+v1:
+- https://lore.kernel.org/all/20260915085921.1354706-1-alexander.sverdlin@siemens.com/
+
+ drivers/net/phy/intel-xway.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/intel-xway.c b/drivers/net/phy/intel-xway.c
+index afbcec7117443..3cee31bb931f2 100644
+--- a/drivers/net/phy/intel-xway.c
++++ b/drivers/net/phy/intel-xway.c
+@@ -16,6 +16,11 @@
+ #define XWAY_MDIO_ISTAT			0x1A	/* interrupt status */
+ #define XWAY_MDIO_LED			0x1B	/* led control */
  
--	skb_postpush_rcsum(skb, skb->data, ETH_HLEN);
--
- 	skb_pull_inline(skb, ETH_HLEN);
- 
++#define XWAY_MDIO_GCTRL_TM_MASK		GENMASK(15, 13)
++#define XWAY_MDIO_GCTRL_TM(mode)	FIELD_PREP(XWAY_MDIO_GCTRL_TM_MASK, (mode))
++#define XWAY_MDIO_GCTRL_TM_NOP		XWAY_MDIO_GCTRL_TM(0)	/* Normal operation */
++#define XWAY_MDIO_GCTRL_TM_CDIAG	XWAY_MDIO_GCTRL_TM(6)	/* Cable diagnostics */
++
+ #define XWAY_MDIO_ERRCNT_SEL		GENMASK(11, 8)
+ #define XWAY_MDIO_ERRCNT_COUNT		GENMASK(7, 0)
+ #define XWAY_MDIO_ERRCNT_SEL_RXERR	0
+@@ -326,6 +331,28 @@ static int xway_gphy_probe(struct phy_device *phydev)
  	return 0;
+ }
+ 
++static int xway_11g_int_config_init(struct phy_device *phydev)
++{
++	int err;
++
++	/* An issue has been sporadically observed after device power-on on the
++	 * first link-up attempt in 100BASE-TX mode resulting in either the
++	 * link-up taking a long time, or failing to link-up altogether.
++	 *
++	 * Workaround:
++	 * After power-on, enable Cable Diagnostic Mode for all ports and
++	 * disable it.
++	 */
++	err = phy_modify(phydev, MII_CTRL1000, XWAY_MDIO_GCTRL_TM_MASK, XWAY_MDIO_GCTRL_TM_CDIAG);
++	if (err)
++		return err;
++	err = phy_modify(phydev, MII_CTRL1000, XWAY_MDIO_GCTRL_TM_MASK, XWAY_MDIO_GCTRL_TM_NOP);
++	if (err)
++		return err;
++
++	return xway_gphy_config_init(phydev);
++}
++
+ static int xway_gphy14_config_aneg(struct phy_device *phydev)
+ {
+ 	int reg, err;
+@@ -735,7 +762,7 @@ static struct phy_driver xway_gphy[] = {
+ 		.phy_id_mask	= 0xffffffff,
+ 		.name		= "Intel XWAY PHY11G (xRX v1.2 integrated)",
+ 		/* PHY_GBIT_FEATURES */
+-		.config_init	= xway_gphy_config_init,
++		.config_init	= xway_11g_int_config_init,
+ 		.probe		= xway_gphy_probe,
+ 		.handle_interrupt = xway_gphy_handle_interrupt,
+ 		.config_intr	= xway_gphy_config_intr,
+-- 
+2.55.0
+
