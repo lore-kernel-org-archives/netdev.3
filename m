@@ -1,147 +1,137 @@
-Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6253B8BB6
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.167
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108669; cv=pass; b=YmRtRlxOj/4Qr7vOuTB4XTMMe16OYyWy+w2kfZ6ADB4rnJ6MAyNTQ9IWydWnD0q0HFBWEppHIH5guC/bS8yBA/M+BiixyHIN+pajxNUm3VHjKELHgvTlz+oin/7xcFXPVpzIRVu3fxDWQ8MSB3xa6wD4AlcMneWx0JY/IWi9Bvs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108669; c=relaxed/simple;
-	bh=+sfK3/3ZZLF+ZbTCtO0+5guiWMUXrvSJ8jXz2wEwafs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o+FbHn4rO2ilk0WQqlyCIcWpXT7Ryq9fsQrNSmCJqadZu/4YceVoFlFTqxWDrJ5Ey9HshzAlG5Rh3mqLXkW4C7ikk0qnGLVMzlJu7haRENpyzpbIM9+5GYYLLRKL8xBiZ8910ydWAB41fAaIUjB9+jcDdFGe2Y+HKC4LMeYiVM4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zk0NHcbD; arc=pass smtp.client-ip=74.125.231.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29063CB567
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790108795; cv=none; b=pO8kqHAaY6N6nQpk60n5BDmr+T8jbk2YM+Ou5f4b3C9vuGpiMLGhYtRcAsCbeEN1XhZSoqLj30uyiOnhzTnQGfgO7FMVKN9Tmpn4VkF2g0wDY57f9MzCljzO22YbDLP0BLBSWe4YYgP7W8EicrLOXJTu7+0NefBujZHQ6ymBhpY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790108795; c=relaxed/simple;
+	bh=b7yiiiVzjNolnX+5vmFrNaqT8CYZKoWM7E7gNxa2Uq8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=V6JMFCMykP7+cDdOeb8wP4E85lcIYXejCZHajqB4BtAoLyG/arqYrTDL3/sC21KLTP2A1gYW2K5cckVA9XcUvm1J9UUf7fFJEA0ITilsY5DcHQ9NtgYlZR0u3B0Q08MPLVuQQA60JXJ4jcmQ0RgMjJC1rOk6fxUAvl4DKrjq2Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QM+/jddd; arc=none smtp.client-ip=74.125.229.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zk0NHcbD"
-Received: by mail-oo2-f39.google.com with SMTP id 006d021491bc7-6bcc0c495efso143249eaf.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:24:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790108650; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WVwJq5kLhjiZ3X1zJQW8g8eTrS5pwEOj8OV/0MmG8G1Q0gzu5J+PsjN6JIhjWfcXLh
-         AIvxXStaK+jI+BbRArLqaosYMvL18RXaDUQKXYNpx2VmvPyXh9bcFcFWpb/zFsO7pgf1
-         n1WYxi2x2w+BRenJTC+dpBy7Bgvbe+pwhAYXiFupULlap56V6f3s4sXSYQTE91w5SJP4
-         Vmx9vv9cmkjXdfDC6Qf968iYo5R+f98C7/vK6XjGbzPdtZ+U0xDIacqnx7M+IRrT80Qx
-         wXf26EiNCL+va5osMx6haBXVdgrUyzyvnYplRDhTiLDHV3f/7H7CTt1geYFWwHMdSF5Q
-         5j8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MGlxY/stF9UV9Yd5mArTkSQ33aYUoCNMkwZq4NryLYc=;
-        fh=WnBwU7wUFalknE2F5mezfTtJvbJu0fxiF6oXJMo6IOw=;
-        b=V1l+JzOe2AspaHI0ohWY7SnHS8aSAYOhnVtE1Njj5BN5V/9mUtiGyqSz2YQRXNQjv2
-         byRzeMWd2feutndMuUAWaHuLLocXcDES0RRAiefZO1qRFtK5jbJAMU5tjRoMUPCiNrQG
-         GNbGw1xag3eSVQVJ66SIvbtk0KsvMyvfPAnsmdRY27qpI7GZsOX1QBR8QhMSziM7HCin
-         pDAdzKf/uKEz63Dn73cgTl2puxd7hAUDOpZt3vSul8hNqMzIvGzBy6SbDVw6l6wSFsn+
-         scrgzXGcLhOrS9m/7Q8Ww/08aEFvJSoXyljZasY1cc52EqByYczPIg3l9eJS4ipNSCTS
-         V/Gg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QM+/jddd"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144f089b1e3so222711c88.2
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 13:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790108650; x=1790713450; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MGlxY/stF9UV9Yd5mArTkSQ33aYUoCNMkwZq4NryLYc=;
-        b=Zk0NHcbDSuljmxQ/1VUDrRiCB5dLvex9ZCcpBWXOVe0dAdF3mQUeJEHqY0oD1eO7X9
-         6F1TxssewITq1gtquVFmyB4oOAgvgFr9Tjk/1jzXdAf2pldk5Njkf+fvz5QzD4bR+e0e
-         Ov+Msy9TN2u3X3ymxNaedMn8sQgUdmjywjPcu1gRihdGSmVj6bVBxeLpoGucDMQjZKAq
-         q4Q9ECV5ekOTAJmlvvgAkAZxoUs+/EQBfcqwiR660H9WXLNJUhFRrSg0cGhBZx4zOFge
-         qRzo6qXkjvydz67Bmha7/hSF8gw+Zr/kPLAHvRpxcXZvufgSNuaUab04GFvxMtE4ZzEw
-         ynyg==
+        d=gmail.com; s=20251104; t=1790108787; x=1790713587; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DmZHmFTN/GI+Q0CTZwWa92OwQr166WO/bCQuEomtguQ=;
+        b=QM+/jddd7ZJk5RM42t2RB4Q4/3g6jjfUe9fIxR75XvaQBVmBg5snPw20a6GAfP8SCO
+         3GdK0mh/2IWbIk6S8F/ldDJkkJBY8T08twPnuvbX3zMe/6aiqjnBRP3C4RGbczdKKoEr
+         A19FwjX1fNFlQ2gtF76j/KtIQHTFuD05M0oYP3qQvl5XA6uAiBlYqIsa3/5QsvRa3LHi
+         1MwUY7/XAqScJ2s0uinK03fn/Tm0L3eO2fPsrC71dwzYs5dKFUZ2rV7qK5Ks8lii5tk7
+         Mbhel+wCtN2TvPYLEoU5KZtxWu2VRXc0H77msMdKV8wrV2gb2XknQsSswB9wcgShx4gk
+         PuQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790108650; x=1790713450;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MGlxY/stF9UV9Yd5mArTkSQ33aYUoCNMkwZq4NryLYc=;
-        b=QNKG7K21KeIYLtJ6hXId5jXFtW2RLQAYDWAafRAoeKUirOsVK8a+jKdpUAlNpprpML
-         uo2ClSIssO1vIL/93QJ3GITDZ7NAfAhzBuqMr6JgLFxCJbyuKUtI1vAXGE4XBaLfy+2H
-         lNKXnZ+e5KvtEIAfqNm1Yes+WJFqB4j09dHD647RlpCpPwjflP1wfQUoR6JfZpIqx9ya
-         Pv3HmlGCg5lTfSkFB1pPZanFVvi2m8u33ZKjf0bJyVWcd13ZyCBj3dKFc12ZfoTTCsbt
-         5DzurrQow6xGhdWSi3vH5i3Wrs81roffLGavra6954JYtePK7bllHrMOzTllxB1ry8Cj
-         1PpA==
-X-Forwarded-Encrypted: i=1; AKwUvBx3Abx2MQCbih7JqMP0jrzPXyqbpobZzbx9eAURkoIIQNlYCigbPTiy/eGFa5XiEzpwS1a1Vaw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mLDBKj/7/IkMtSrf3yBAcemqWMTb8GF0vxXzSitfSOpjhwBEiC
-	qIfT73WoxHon1bRFM2scQcV35Ekoxhiid46Iz3H5NAtTJBX9gAsSpsqummqY/ltIrV/gIPG1yVE
-	UQS3InGXvgDQwf7EomPAxI+PZ5OsNZTc=
-X-Gm-Gg: AYBFou0GTNUqH1NjRLwkRKegv7wHGlWjz4wKfUdnmeDkR1qAPLEoibV9DKEWIJWHE/Q
-	xfgIqq04AvIzJVmdIhlZfAwLSK6Lry17LCHHoQ0sqRKKlLnddH2l4MTTefdxYZdqGJbPPRGpbHh
-	W12u1asshzScQtke0LVCWQ/faXCvMUlyncGN4EkDW8FKpY79wNJVqYryZ1DMDTYXsjAkjavdMZm
-	fi2TaVRBIQh8hfUT4FQV5gAUyFBXSx+KtbacwzZoLEQBXkDLaXIEgO/4jL3A5kUOqYRWtxqYqFo
-	Xl0bvw7oPzyU01dKPAz7w8w1zQvcnGWJboYGcg6ROs/M3Bhglfd+SANhvJI5wqwoWfj1MwuHVNv
-	3sZraSw==
-X-Received: by 2002:a05:6820:c91:b0:6b7:8415:d786 with SMTP id
- 006d021491bc7-6d2d261c823mr453823eaf.49.1790108649854; Tue, 22 Sep 2026
- 13:24:09 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790108787; x=1790713587;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DmZHmFTN/GI+Q0CTZwWa92OwQr166WO/bCQuEomtguQ=;
+        b=KieFADo+hbJ/63ZFjHY0Lmkj9n2d24FpYXVv8lByxAHaip4Eu6VpjZxPWHchAah52Z
+         4SFgS3x804AigiguV28+rP/0IyX42PLQmyvholZjizkaGNOj8BA4rVOLMS3X+NKJ4cP2
+         x+4qtNyk3ip1Ad7iXmgClcJQyCnGKp4lcSqW4cuJ0LjNIcZe/1O0+npYGR0xem0uSU2u
+         ZSta64zqGwigaPW+/RmpKEUehxWxGiWQYXsZOsHCOqjhNCNqundImNRl0OKbTWcBW39s
+         h7Yjuns4qe+XZ+qPWp7st4+T47Dt1wTJ2feUlfL3t6erD6KarrZtJlqx0mXXGBlgd3e9
+         ZTLA==
+X-Forwarded-Encrypted: i=1; AKwUvBzho1pe8n2JZR7zDZ7pH66291yrG869V8vWhm+uYfvRtnLx/N/bBqDYWvadGhJdTeYV2YTN/s0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nyD8pajk4HaF3cz9js/AirJnVjGAGW2GyJUQStCAKZIh2VIgOs
+	nQj8ruEb0goDl2Vt9RfmpwDe/Boh4IK5Za3gqhyPq9EwcYB15lFWrhVN
+X-Gm-Gg: AYBFou2FBecHQ1mBQgjxKiDc13jylCA0IbqyxUezlVl6YhoiookbIzxQ+THuiTTuPd7
+	kIfNNRIYHRcq6orgeUs+WKiB60ThhesQL24F2AQstx2hIyZshI91ecjBd1m9tlFVBevlzpx2U7/
+	m8vGv0zUbdLSRyeYZ+1+oeS9AAyq8UlPgQwwQXyoJE0SeSJi/lEYOBb9cRSfNszFHTnOPJr8rXc
+	zodIaYyhY8KyIPihSKhPgu4I00ai/5/NKBQmYi5ZZvfbiqmthG5QoS5fQt7OKri8blHw6UG7Xu1
+	/1kC2SgvWWdl1bv2J9hlnYc/PiNYzdg48XUpkZzz6X0Lb9wgBQUL6GFI5eCRl/U+y/3GuI+M8UH
+	CF8sTHpVL3tVHRTAyIgrQccHcpcqLQ7+gLRb12OPphqu0CYEyvv1TR2Ukjij7kF6utaIQ3RoARK
+	anWA3l/xMgEgt66COdrhEoXGSg49qGN8VMx4nqgX9eg0Hv6RYiq79pq710AcD3FwldMLD1GetOh
+	Pox6U7CAIYqFt9v1hVEAo9W89fWsWCkUAdCmm9w2Ehhl3E607bHpyRXwg+THL1nXo4TpJ2en7E=
+X-Received: by 2002:a05:701b:4546:10b0:143:298b:ba79 with SMTP id a92af1059eb24-144f91ed3eemr496551c88.40.1790108786209;
+        Tue, 22 Sep 2026 13:26:26 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:f16e:2102:25ad:9cdb])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f983d73fsm1149953c88.6.2026.09.22.13.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 13:26:25 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	hemendranaik@gmail.com,
+	horms@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	tahiliani@nitk.edu.in,
+	vishy0777@gmail.com
+Subject: Re: [PATCH net-next v6 2/3] selftests: tc-testing: add fq_pie per-flow class stats test
+Date: Wed, 23 Sep 2026 01:56:18 +0530
+Message-Id: <20260922202618.25970-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <179002340887.2160803.8030592378545876774@kernel.org>
+References: <179002340887.2160803.8030592378545876774@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922172028.6269-1-emil@etsalapatis.com> <20260922172028.6269-10-emil@etsalapatis.com>
- <DLM2H0M84V64.3DRNAWAWXR4FZ@gmail.com>
-In-Reply-To: <DLM2H0M84V64.3DRNAWAWXR4FZ@gmail.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Tue, 22 Sep 2026 13:23:56 -0700
-X-Gm-Features: AcwNN1W5N_KIAWLFVCBSFDm-7vSGi6EFTLU4zBKjmbFVIMO1UfWu6-IsRp4hrsE
-Message-ID: <CAMB2axPbLQhGq-LRLzW4p27YVMowcv0XLdF6gNrLn8U3mG_fJA@mail.gmail.com>
-Subject: Re: [PATCH bpf v2 09/11] bpf: Track whether dynptr type is known
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org, ast@kernel.org, 
-	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, daniel@iogearbox.net, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 22, 2026 at 11:49=E2=80=AFAM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> On Tue Sep 22, 2026 at 5:20 PM UTC, Emil Tsalapatis wrote:
-> > The TYPE_LOCAL dynptr type is used for two different
-> > kinds of dynptrs in the codebase: Those that are created
-> > locally and backed with a memory region, and those that
-> > are passed as arguments to a global subprog, whose type
-> > is not known at verification time. The two kinds require
-> > different handling in certain scenarios, e.g., packet
-> > pointer invalidation. However, there is no current way
-> > to distinguish them.
-> >
-> > Add a new field, type_unknown, to bpf_reg_state's  dynptr-
-> > specific state. The field designates whether the dynptr
-> > type reported is accurate, or a placeholder for "type
-> > unknown". Adding an extra field to bpf_reg_state avoids
-> > unnecessarily splitting TYPE_LOCAL into two types, since
-> > they would behave identically in most cases.
-> >
-> > The change is currently non-functional. The new field is
-> > first used in the next commit.
-> >
-> > Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
-> > ---
-> >  include/linux/bpf_verifier.h |  2 ++
-> >  kernel/bpf/states.c          |  1 +
-> >  kernel/bpf/verifier.c        | 27 ++++++++++++++++++---------
-> >  3 files changed, 21 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.=
-h
-> > index be0ccad15..f57730d1d 100644
-> > --- a/include/linux/bpf_verifier.h
-> > +++ b/include/linux/bpf_verifier.h
-> > @@ -71,6 +71,7 @@ struct bpf_reg_state {
-> >               /* For dynptr stack slots */
-> >               struct {
-> >                       enum bpf_dynptr_type type;
-> > +                     bool type_unknown;
->
-> why extra bool? Can it be another value in enum?
+Thank you for the review. Replies are inline below.
 
-Second this. Could be a BPF_DYNPTR_TYPE_UNKNOWN or BPF_DYNPTR_TYPE_ANY.
+> Can this case ever pass with a released iproute2? [...] Turning that
+> blob into the literal tokens "prob", "delay" and "deficit" requires the
+> companion iproute2 change [...] which is not merged. [...] Would it make
+> sense to add a 'dependsOn' probe so the case skips when the userspace
+> support is absent, or to assert only what current tc prints?
+>
+> A related question: the pattern hard-codes the exact label text and
+> ordering of the not-yet-reviewed userspace formatter. If the iproute2
+> side lands with different wording or field order [...] does this
+> kernel selftest then break while the kernel itself is unchanged?
 
->
->
+We'd like to keep the check as it is, without a dependsOn probe.
+There are several cases that were written against, and still assume, 
+newer tc wording with no dependsOn guard at all, e.g.:
+  - tc-tests/qdiscs/fq.json (commit 3007d8712c9b, "adjust fq test to
+    latest iproute2")
+  - tc-tests/infra/qdiscs.json (commit 56acc7f51974, "Adapt test's
+    output to HFSC's iproute2 printing changes")
+  - tc-tests/actions/police.json (commit b7df2e7eaef7, "Adapt tc
+    police action tests for Gb rounding changes")
+  - tc-tests/actions/bpf.json (commit ac2944abe4d7, "Be compatible
+    with newer tc output")
+
+We're doing the same thing here: this test is paired with the
+companion iproute2 patch, same as those cases were paired with the tc
+versions they were written for.
+
+> Can this case fail intermittently depending on the host environment?
+> The assertion needs a backlogged flow at the instant the dump runs
+> [...] its exit status is discarded with '|| true'. If ping is not
+> installed, or the installed iputils rejects the fractional -i 0.001 /
+> -W 0.01 arguments, the fq_pie queue stays empty [...] Would it be
+> better to check the ping result, or to enqueue traffic in a way that
+> does not depend on neighbour solicitation timing?
+
+We'd like to keep the ping command as it is. The same pattern
+('-W 0.01 -i 0.001 ... || true') is already used, unguarded, elsewhere
+in this test suite - for example in case a4c3 in
+tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json. So this
+isn't a new risk, it's existing practice..
+
+
+
+
