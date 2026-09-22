@@ -1,176 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5296522694;
-	Tue, 22 Sep 2026 08:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679443CAA49
+	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790066919; cv=none; b=msSpPCzJb/zw6jrPj6r05Mr1YPLEAoXCxMIieXvrQDt6QDLOYF+HkRfl1fczUn6/GKLvoVsksk2nqgwofQzrMH3Y2AydFU4fVhmsJBkOYTv2pdZQMVQQm4PvIKDe1T+leujvbdhQDvQu9iIp7EJt5b5nhAxO/ZVFhdpLl1UJGcY=
+	t=1790066995; cv=none; b=m32BSdu7qYDabp+j3H6Imw8wzXyMbvY6lVVKAC+oF/yOjzM4aqSxHps1LP+bLbMK+PcO5sZbi6wiUoeT1qQDDkbvcXQXw/Heh5vBx6DwgtR8RCZaMMCOA8EgHsJwq5SSd9bWyEg3/MQQ6O4YFIJmznOySWYvFRuazqqjd2nIK5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790066919; c=relaxed/simple;
-	bh=0P2wtBTJ20cgbxtYWMS963Nv6Vkt2v8yy/cVQgexV6Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=df+5+hmERWozlqmgGnIP5Ufe4NsUAdLqNxDxHv+Hu5QjmIzLgBmQ9kD2pjUpcHCg//g7W6loH/TPzdD4ORTDsNAop1xEoS17D+dSHg9Vp0N3WyRytqAqu8tDLgC2GGMmfYwgNjh3aCwxSOcEso71cToQOzAEsQyXOkynSTU8lXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BMeU66vr; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BMeU66vr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5F01F000FF;
-	Tue, 22 Sep 2026 08:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790066918;
-	bh=WPUcupXJ2dwYdN0gYAZS3UUX1i+FQxTsoZ9ZfxrgN4A=;
-	h=From:To:Cc:Subject:Date;
-	b=BMeU66vrAN4VG/M4Van+kI8iEMeGG/BWoi6CRe9MqiDyL84QyUbOIB1b/gU6ul0le
-	 rJx2G/tvobqRoInTIJNhKv8gbJRG7y8lXz8slExDQQ9yE92FNzX9/h0eRm10zXysFq
-	 ell6wR9zf/JBRP87KskZYDcmeEqaFCRt4pgOPbJI2lF8J+lC3zlslSyj4OrskLF195
-	 Fhu1naNtZyzzCFczlSG9ELiKTdWXnX1QXxPjPVHjUSNfR+LPhiGXLFymnjv8EaUNZt
-	 bGJUi+yQ6qFu60jAlXj3jCjP7Ocrc9h5S0FnqhoSOEaX0vUmEK2rJFou1Pm7s6QUai
-	 y9ddK1ENAk4sA==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org
-Cc: achender@kernel.org
-Subject: [PATCH net-next v3] net/rds: restrict the rdma_cm ids to IB devices
-Date: Tue, 22 Sep 2026 01:48:37 -0700
-Message-Id: <20260922084837.390414-1-achender@kernel.org>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1790066995; c=relaxed/simple;
+	bh=TgNasWwDbcJXHGmUtH86NitPAbH898schrr4zZKneGg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Qc1bZE2GfAEVVHHvQpmGWoT/lMz7QPG0sx4aQylLQtK5LiQhgli+kYVGfeHbnPpdHCs9waXxB4ASZ37lc1QE+1gTHsjPYZ112gJa4oHYej56w5CRD7mUpGz0wb7csQIQ2TVXL0N+PYqwmi6fuMKsuHuzSRUlvBWNKjCzWE3VG6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpsz6t1790066909t34c89566
+X-QQ-Originating-IP: K6y/XmCc7WK3M+jd+w8VnqpMCSi8XkweJb3Djgkk/ec=
+Received: from smtpclient.apple ( [115.205.193.132])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 22 Sep 2026 16:48:26 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16857174221905166129
+EX-QQ-RecipientCnt: 11
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH net v6] net: Wangxun: protect ring accesses with RCU
+From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
+In-Reply-To: <20260921170509.3f471b54@kernel.org>
+Date: Tue, 22 Sep 2026 16:48:16 +0800
+Cc: netdev@vger.kernel.org,
+ jiawenwu@trustnetic.com,
+ duanqiangwen@net-swift.com,
+ linglingzhang@net-swift.com,
+ andrew+netdev@lunn.ch,
+ davem@davemloft.net,
+ edumazet@google.com,
+ pabeni@redhat.com,
+ jacob.e.keller@intel.com,
+ richardcochran@gmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BE54C737-C413-4A44-A27B-55040D41B1FD@net-swift.com>
+References: <20260915065731.6007-1-mengyuanlou@net-swift.com>
+ <20260921170509.3f471b54@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: OYY1qefrNk1aUY2rVUEQCV1w2dPuQyVIuI/4BwPwBfpF93dPYjjDk0F1
+	7C1+H7bij2OTczBGGY13QDFNC7YQ90Bl7KNzkHdZ0y0E/CghrnZz1wmtbyrmdPh7e/4y1He
+	i0XaD/00B2cj4J80UyzLAx8v5CfSXJAkSutgNwx1IHezkq9xYGGLKU58ZYW7anh5Qc7YeFp
+	qCOblXSX2cNjm/JkFfhDkZB/l3rzPxgkzVu6KnNAnHoshbo2EZnYnftgy6DfMGHyW0LC3CE
+	2IG0siPGHizjgD/YtXMrAcShEpAq+2ZFDvBRbKnR1m3MKlgGV+7uZ9Thv2oXPzZKeYmKA9N
+	x69YekWD7tdhBZobqdaHUMAkbIlo3MzQgoEcSfuwvMYgdSfesY4hrU42Hsx/iuz6oLl/bfP
+	fGKWGW2SwZe2zQBeRHpbHJFhptYBkmdW5ngfz/srbMuxiL0PQr16sQD6M/ESutXbspvN7Re
+	rppjFJfxFDOxRgxHxWt2A6mPjxoRzUTfEFR0Bwaz9UG+NpOsOAuOI7Ul1nngXGYmBnVk4Wr
+	3pQBRHY6rPFLOdcS/rDJvz6f5sjZ2ABftrzCMfuYPJaSc5fJcF5xX7jpNE1NGFb8+oIgsAr
+	C6IqBWKvdH01YNe7sCs8NPL4FCKsVFkS8Z4fXHJdCIgs7yEW3cfsgoK4nl1MBFv236DWiSZ
+	KhLuMTv2GD744AZdMusm5uasLkrf6gyRwV4CS6u6R58Z4l7L1oUQ+HszI/LN3QqxatpIJmP
+	8H1kl+7IB7/p5INApDu9/SZAfZyW6DOil6e4ZTFUkLvZFaRzCE8qpIRlcZJvOWqtuJoUx7W
+	R3LttcHsHIkV5mKdTAAt0EG1BnWXRn2yLdRh3IYX4a5JbCiqj3bPGHF850XUhUp6SAwYcWo
+	uF075W4lPtRAen4IiqFeUka0yCLe/1C1qWSyhHvPTznkrcrH1upkDf3sKmLRB6vfJtUqZ0t
+	LwMvTB3gFSjP42ZTw6Pt/a+5x9kO4An/AgCA7mSR5CSxfCgnVqca45vjfEKfcGNfYmxaPAr
+	HZrDVUKPnsTgo+T5o1YJShRpUOAhLyUjZDAvB+UDLMTL6dY+qjSo6ygz++9UCu23Jwreqjf
+	RqQMmDzM/3eEh4UrAKlyaNECTva6w5SRQ==
+X-QQ-XMRINFO: NI4Ajvh11aEjENrZhaU8/McKWNRU4Of8nA==
+X-QQ-RECHKSPAM: 0
 
-RDS only has an IB transport, but it never tells the rdma_cm so.  The
-listener created in rds_rdma_listen_init() is therefore installed on
-every RDMA device in the system, including iWARP RNICs, and the id an
-outgoing connection resolves through in rds_ib_conn_path_connect()
-may be bound to whichever device the address resolution picks:
-rds_ib_laddr_check() only vouched for the local address being served
-by one of RDS's IB devices, while cma_acquire_dev_by_src_ip() walks
-every RDMA device for the same address, so a software iWARP device
-attached to the same netdev can win.  The event handler then runs
-the IB transport's callbacks against a device that is not one.
 
-The rdma_cm has an API for exactly this since commit a760e80e90f5
-("RDMA/core: introduce rdma_restrict_node_type()").  Restrict all
-three ids RDS creates - the listener, the per-connection id and the
-probe id in rds_ib_laddr_check_cm() - to RDMA_NODE_IB_CA before they
-are bound, so that the listener is only installed on IB devices, an
-outgoing connection can only bind one, and the address check's bind
-fails outright on anything else - which makes its explicit node_type
-test dead, so it goes; the check that the bind produced a device at
-all stays.
 
-With that, no rdma_cm event reaches RDS's handler from a device it
-has no transport for.  The handler itself still assumes IB: it assigns
-its transport pointer only for RDMA_NODE_IB_CA and dereferences it
-regardless, which is the crash that first surfaced this.  The fix for
-that is a separate net patch, Aohan Mei's "net: rds: fix uninitialized
-trans dereference in CM event handler", and is what stable kernels
-without rdma_restrict_node_type() - which arrived in commit
-a760e80e90f5 ("RDMA/core: introduce rdma_restrict_node_type()") - have
-to take; this patch is hardening on top of it, not a fix in its own
-right, hence no Fixes tag.
+> 2026=E5=B9=B49=E6=9C=8822=E6=97=A5 08:05=EF=BC=8CJakub Kicinski =
+<kuba@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> On Tue, 15 Sep 2026 14:57:31 +0800 Mengyuan Lou wrote:
+>> - wx->tx_ring[i]->count =3D new_tx_count;
+>> + rcu_dereference_protected(wx->tx_ring[i],
+>> +  lockdep_is_held(&wx->reset_lock))->count =3D
+>> + new_tx_count;
+>=20
+> Do you really think this is acceptable code formatting?
+>=20
+> Plus I quite clearly asked you to add a helper:
+> https://lore.kernel.org/all/20260915184127.25de623e@kernel.org/
 
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
----
-v3: the changelog no longer claims a handler-side rejection exists in
-    this tree; it names the separate net fix for the handler and the
-    a760e80e90f5 prerequisite.  The node_type half of the
-    rds_ib_laddr_check_cm() test, dead once the id is restricted, is
-    removed rather than described.
-v2: https://lore.kernel.org/netdev/20260919061149.250658-1-achender@kernel.org/
-v1: https://lore.kernel.org/netdev/20260917074108.174262-1-achender@kernel.org/
- net/rds/ib.c             | 14 ++++++--------
- net/rds/ib_cm.c          | 12 ++++++++++++
- net/rds/rdma_transport.c |  8 ++++++++
- 3 files changed, 26 insertions(+), 8 deletions(-)
+>=20
+>> @@ -1797,7 +1801,8 @@ static void wx_set_rx_buffer_len(struct wx *wx)
+>> * the Base and Length of the Rx Descriptor Ring
+>> */
+>> for (i =3D 0; i < wx->num_rx_queues; i++) {
+>> - rx_ring =3D wx->rx_ring[i];
+>> + rx_ring =3D rcu_dereference_protected(wx->rx_ring[i],
+>> +    lockdep_rtnl_is_held());
+>=20
+> And also to use:
+>=20
+> /**
+> * rtnl_dereference - fetch RCU pointer when updates are prevented by =
+RTNL
+> * @p: The pointer to read, prior to dereferencing
+> *
+> * Return: the value of the specified RCU-protected pointer, but omit
+> * the READ_ONCE(), because caller holds RTNL.
+> */
+> #define rtnl_dereference(p) \
+> rcu_dereference_protected(p, lockdep_rtnl_is_held())
+>=20
+> Please, this is not rocket science. Pay more attention to what you're =
+doing,
+> this sort of change should not require 10 revisions.
 
-diff --git a/net/rds/ib.c b/net/rds/ib.c
-index 786f39169bc1..4ea9838d090c 100644
---- a/net/rds/ib.c
-+++ b/net/rds/ib.c
-@@ -414,13 +414,14 @@ static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
- 	bool isv4;
- 
- 	isv4 = ipv6_addr_v4mapped(addr);
--	/* Create a CMA ID and try to bind it. This catches both
--	 * IB and iWARP capable NICs.
--	 */
-+	/* Create a CMA ID restricted to IB devices and try to bind it. */
- 	cm_id = rdma_create_id(&init_net, rds_rdma_cm_event_handler,
- 			       NULL, RDMA_PS_TCP, IB_QPT_RC);
- 	if (IS_ERR(cm_id))
- 		return PTR_ERR(cm_id);
-+	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
-+	if (ret)
-+		goto out;
- 
- 	if (isv4) {
- 		memset(&sin, 0, sizeof(sin));
-@@ -473,12 +474,9 @@ static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
- #endif
- 	}
- 
--	/* rdma_bind_addr will only succeed for IB & iWARP devices */
-+	/* the restriction above means this only succeeds for IB devices */
- 	ret = rdma_bind_addr(cm_id, sa);
--	/* due to this, we will claim to support iWARP devices unless we
--	   check node_type. */
--	if (ret || !cm_id->device ||
--	    cm_id->device->node_type != RDMA_NODE_IB_CA)
-+	if (ret || !cm_id->device)
- 		ret = -EADDRNOTAVAIL;
- 
- 	rdsdebug("addr %pI6c%%%u ret %d node type %d\n",
-diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
-index 6e3110a04ae6..e7014453eaec 100644
---- a/net/rds/ib_cm.c
-+++ b/net/rds/ib_cm.c
-@@ -999,6 +999,18 @@ int rds_ib_conn_path_connect(struct rds_conn_path *cp)
- 		goto out;
- 	}
- 
-+	/* rds_ib_laddr_check() only vouched for the local address being
-+	 * on an IB device; the address resolution below picks the device
-+	 * on its own, so restrict it to the same kind.
-+	 */
-+	ret = rdma_restrict_node_type(ic->i_cm_id, RDMA_NODE_IB_CA);
-+	if (ret) {
-+		rdsdebug("rdma_restrict_node_type() failed: %d\n", ret);
-+		rdma_destroy_id(ic->i_cm_id);
-+		ic->i_cm_id = NULL;
-+		goto out;
-+	}
-+
- 	rdsdebug("created cm id %p for conn %p\n", ic->i_cm_id, conn);
- 
- 	if (ipv6_addr_v4mapped(&conn->c_faddr)) {
-diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
-index b15cf316b23a..91ff1dde26af 100644
---- a/net/rds/rdma_transport.c
-+++ b/net/rds/rdma_transport.c
-@@ -210,6 +210,14 @@ static int rds_rdma_listen_init_common(rdma_cm_event_handler handler,
- 		return ret;
- 	}
- 
-+	/* Only the IB transport is left, so only listen on IB devices */
-+	ret = rdma_restrict_node_type(cm_id, RDMA_NODE_IB_CA);
-+	if (ret) {
-+		pr_err("RDS/RDMA: failed to setup listener, rdma_restrict_node_type() returned %d\n",
-+		       ret);
-+		goto out;
-+	}
-+
- 	/*
- 	 * XXX I bet this binds the cm_id to a device.  If we want to support
- 	 * fail-over we'll have to take this into consideration.
--- 
-2.25.1
+Hi,
+Sorry about that. I=E2=80=99ll fix both issues in the next revision and =
+make sure to
+address the previous review comments more carefully.
+Thanks.
+
+Another question:
+
+wx_init_interrupt_scheme() =E2=86=92=20
+wx_lib.c:2392 wx_cache_ring_rss() =E2=86=92=20
+wx_lib.c: rcu_dereference_protected(..., lockdep_rtnl_is_held())
+
+When wx_init_interrupt_scheme is in xxx_probe, unlike other =
+txgbe_setup_tc
+and ngbe_resume, at this point the netdev has not yet been registered.
+
++rtnl_lock();
+err =3D wx_init_interrupt_scheme(wx);
++rtnl_unlock();
+if (err)
+goto err_cancel_service;
+
+At this point, rntl_lock is merely used to address RCU_LOCKDEP_WARN.
+Is this approach appropriate?
+
+
+> --=20
+> pw-bot: cr
+>=20
 
