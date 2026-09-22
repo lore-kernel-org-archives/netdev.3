@@ -1,191 +1,219 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A73E55C1C9
-	for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 15:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F3355C33D;
+	Tue, 22 Sep 2026 15:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790091264; cv=none; b=jHPb+MgKNAr5olFz4BUTDSfvcgnyKU74DyqDnj0mNF2oFt1nSEYjJXh1TE+vbExoe6yRn6Ykq9Ojwh8PBo1emZ31EW0p5kRPI53gNOR/xvKquNjv+uQ+ZL4S92N1BWSpiYCFodzD7OEItFc2o97YQ668uxJofE9eiRtgyLXt3W4=
+	t=1790091424; cv=none; b=WJtpNdr541YcnFTGyU7ZmMz88VG0Zho2SMbKzds4rpm38yQt/VykTTDgVEaDI1rUEVm3ZsHxV1d24b+oU4zeaaPRNs1kfBDyOYybQIlQjfa4V4yFdvvXdshDjlDuqJeWTeD0YzOTlBrrYQTm16MtKBqL+V0VTP1jDyHFWWrZQp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790091264; c=relaxed/simple;
-	bh=EJDiYeiJhHLqMS4QEKjrDDO5ntp031Qoz8AN4F9L8IY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=S0vHRp4Vbt3CesNiTEQWoiNxoDLaCRXZ5iOhUzRkF7jGKYZAMuYwZg5yntWsq+ZBQZPIFNgb/tJ9Y7Gc+QXvwqtPC9k2AoYnjJ47Chx/Ew/nOyHwntm2OvZPUUAX7JOsFjXJd3ZKj6eu2FdiubNEBhUgJ5A/4IYflyRp82DKMeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tr/8VGAX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B3Y7QpCa; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790091424; c=relaxed/simple;
+	bh=rsMDvdAbtvoABYwhg/X/cTGymXJ9hKGwhRWcnnt6A68=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QlAmMPpWIyGjpwDM8uhjao+qgwZr7Wy5d4Tv46XHIQDyHpFUODE9NgQOruKwga7E3wAivT7kc/lXbFddvobeNIXXlZSGEKtCNmKOjPLAVERDle1lAN6DnvGuKZTjWvi5IQJkeUBpb178q1OYN/mOT3nGFvP9KjECn6VrWcgGKqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGuqbTJ8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tr/8VGAX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B3Y7QpCa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790091261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tfNl2I4x4/cNHRA9ep8x0OYkNfYTKx3divzOhknoMxE=;
-	b=Tr/8VGAXL5srt9wD9SW4FbktALjJKZB6icnh6tEzYC5uEr2+/MwMfaW6X0WQJOTobZk1vu
-	j7jj3FSNIexMi3kBbcWxRXKAlyMsKdiysq+FOyL6hX8kz/t8e1xsXxM+BoxXhaR5RP33IL
-	lnsPSEjYEd3P4GwxTjD508HUyazcmW8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-OP2jHxBsPye3a0wt5PyIfg-1; Tue, 22 Sep 2026 11:34:19 -0400
-X-MC-Unique: OP2jHxBsPye3a0wt5PyIfg-1
-X-Mimecast-MFC-AGG-ID: OP2jHxBsPye3a0wt5PyIfg_1790091258
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e661c6440so23884285e9.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 08:34:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790091258; x=1790696058; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tfNl2I4x4/cNHRA9ep8x0OYkNfYTKx3divzOhknoMxE=;
-        b=B3Y7QpCaxE1B8dQGISb0d5CAJ4WXA9msrh6YLjRJslTWt0vup6VshfYBUzap+OyNvi
-         fzZ8wmxfomT6BKdZGb+R9WZl49x9RvOHHNFQk5clpz9Eh9nPISPYPq0e/nK5XXxpz0df
-         Sq32C5yo6XI4ExMvurpkqB/tjj7ZDyCeiRTovx7PL1+n1zVRdADl2xg/pbcxIWY2OiMK
-         yE+oPTdcHtyshl02Ht9AF1msLzzp73OF0jilnAtmBQxq021MZzaXb/9Xyq6OeMkHceWF
-         A0lnEJ3VVb/7ys8DfAnyu3pF78QLcR44scsEU+3PPDRO8Ar/OzQE6P8PXPaLr1841Rwg
-         KUzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790091258; x=1790696058;
-        h=content-type:mime-version:user-agent:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=tfNl2I4x4/cNHRA9ep8x0OYkNfYTKx3divzOhknoMxE=;
-        b=PY1w7eraxn+p4+dcpyMvtF2ba3D+6/zh4o/I9fTIbwf4qYpH/ZNGW0bFH5/KqB6AIn
-         kU8TIrZ/OSrSEvrVRciNWfyTfG6O9vnEzvaUtvJEIlOQUTEVtS4W3zWFCYbIP6FBKA/8
-         MVoG2DSdGZJ2+OXqsaB077ZDACHqeu4SpuiZ/W8NfxsPJmhrtj3gfNxBv5je7IDU+Is8
-         8bIzP7pDMBeBpuQ43nmiNiWBFEIZm3MqUoAc9nPIi+rE8MAaihJpell161pR7jWFKe9G
-         90XeTSiLwNVxFe/FNFMGI4dnsC8tgaps12vF4i67Wg+AlD+WAkdnYye4myxoV3sv3t/j
-         YznQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxs9dCR/VokBxzKmZaRWLO1IgB9ZFVQH9Jrwd6lwxcF8CyZbH/uKcL/cppwAXg4U2gqnYdlaC4=@vger.kernel.org
-X-Gm-Message-State: AFuF++n/401en1i3cCFKVEfawB9c8qa8HrAwD5UKUAJeytk6T6ssV+35
-	8KzkneJN6ccESY5L0ouGwXw7XqmiLUyFQbSy+KNYVjDesfIJMeJSa1VEugrTenewxEMpgkvyUjz
-	3YftVctaiiehBJBX0u6Ywpz0/E23lhAVmRyip/mwzrySK3Yb2riUIFkc5Bg==
-X-Gm-Gg: AYBFou2l3UlU3z405xCgIXUdm0HSiJqzg+edX+cx7zgoLWosc3i6vyD9lXFTmYGOTga
-	66bIdf/PyxT0o0qqVq4zcJbK75+JUH71suNYMeNd0Go9le54P/1oOYZ/O5CnxTtM3SdOr5tbWxg
-	n4ieIJLEJ/+ydddGwd3UZfbPj8Q7yfbcBh8SysNwZadfNQs3Rbhg/dvwegu/lmhbpupn/BWGOdW
-	LKjDSqHY093NONlcyN1KfMvClIuNNQ6zKTizXlI01Xkphg94ALp5uUoN0Rx5l2iPJeJ4cIaPglB
-	eetErSfgfRT+MTXZ+PufpFVU7DFQJs2vVe7wphwfNcYbjRncwHJqBjxfP0fzbByqIYz2Fas2Rup
-	RVu6kGInRwsi7fspkFgi1jaDnev7S
-X-Received: by 2002:a05:6000:2012:b0:488:640e:f6ca with SMTP id ffacd0b85a97d-488640ef84bmr2884966f8f.55.1790091258423;
-        Tue, 22 Sep 2026 08:34:18 -0700 (PDT)
-X-Received: by 2002:a05:6000:2012:b0:488:640e:f6ca with SMTP id ffacd0b85a97d-488640ef84bmr2884921f8f.55.1790091258077;
-        Tue, 22 Sep 2026 08:34:18 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488626d29dasm6266794f8f.0.2026.09.22.08.34.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 08:34:17 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,  Matthieu Baerts
- <matttbe@kernel.org>,  Steven Rostedt <rostedt@goodmis.org>,  Masami
- Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  Eelco Chaudron <echaudro@redhat.com>,
-  dev@openvswitch.org,  linux-trace-kernel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org,  Adrian Moreno
- <amorenoz@redhat.com>,  Antoine Tenart <atenart@kernel.org>
-Subject: Re: [PATCH v6 3/4] net: dropreason: use new __print_sym() in tracing
-In-Reply-To: <dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org> (Ilya Maximets's
-	message of "Tue, 22 Sep 2026 11:01:10 +0200")
-References: <20260921101538.97286-6-johannes@sipsolutions.net>
-	<20260921101538.97286-9-johannes@sipsolutions.net>
-	<98b93c98-21ae-4248-a60a-9625a20508ad@kernel.org>
-	<7f557f5a-b21e-45cc-9d3a-cd4f8b5f799b@ovn.org>
-	<99e5f7c0d7debc8a59bac96e93f09600bf488ca8.camel@sipsolutions.net>
-	<4a0240a7b9ff87302620a95c73f4f265cd428618.camel@sipsolutions.net>
-	<dca799b4-23f5-4b6f-be73-bad5a3d88007@ovn.org>
-Date: Tue, 22 Sep 2026 11:34:14 -0400
-Message-ID: <f7tzex99u6h.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGuqbTJ8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78E31F000FF;
+	Tue, 22 Sep 2026 15:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790091422;
+	bh=S13S5usVPAem3KF3x7SHy0e4q0NgWKp/T4RI6TxtJjw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jGuqbTJ85HdCyG9Ktgs4IzfMWqgI9cPqd9NFr39PjZnZI9NnpkrObG0x8QVVVKy2U
+	 WS+KIEK4DmnSbpS0sqkP3chZjqptyB6cY1VKuCaorDB73cHof0QdP6yuAY0N2EUtOF
+	 S9JzxEbFdWV/sYhhAaVFpcFaL1hEx7+pYWKcozC/g9q2po8gN7hRC4taW2xpNARYTv
+	 BNr0c1NwW7ly8X2lsr2VO8es0Wxd40e2yS1SCJwh5B7gWIQoGA12948iGkPDbaw5x/
+	 2S6tBqFjc9vw0G15i+OA8HIkcNXGzu36WlZEpvTsaONYj8Y4akn1idnGBsgQiGoVld
+	 9SkWrENTKfmnA==
+Subject:
+ Re: [PATCH] ipv6: check per-interface proxy_ndp in forwarding and NA paths
+From: netdev-bot+sashiko@kernel.org
+To: adrianox@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 22 Sep 2026 15:37:01 +0000
+Message-ID: <179009142113.2160803.656958485064300227@kernel.org>
+In-Reply-To: <20260918151405.716075-1-adrianox@gmail.com>
+References: <20260918151405.716075-1-adrianox@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
 
-Ilya Maximets <i.maximets@ovn.org> writes:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> On 9/22/26 1:20 AM, Johannes Berg wrote:
->> On Tue, 2026-09-22 at 00:36 +0200, Johannes Berg wrote:
->>>
->>> Indeed. Something like this (untested right now, didn't manage to spin
->>> up a test yet):
->>>
->>> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
->>> index a31f7fb6882d..9b8edfcd2d1a 100755
->>> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
->>> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
->>> @@ -234,7 +234,7 @@ ovs_drop_reason_count()
->>>  	local reason=$1
->>>  
->>>  	local perf_output=`perf script -i ${ovs_dir}/perf.data -F trace:event,trace`
->>> -	local pattern="skb:kfree_skb:.*reason: $reason"
->>> +	local pattern="skb:kfree_skb:.*reason: $reason$"
->>>  
->>>  	return `echo "$perf_output" | grep "$pattern" | wc -l`
->>>  }
->>> @@ -790,15 +790,6 @@ test_psample() {
->>>  # - drop packets and verify the right drop reason is reported
->>>  test_drop_reason() {
->>>  	which perf >/dev/null 2>&1 || return $ksft_skip
->>> -	which pahole >/dev/null 2>&1 || return $ksft_skip
->>> -
->>> -	ovs_drop_subsys=$(pahole -C skb_drop_reason_subsys |
->>> -			      awk '/OPENVSWITCH/ { print $3; }' |
->>> -			      tr -d ,)
->>> -	if [ -z "$ovs_drop_subsys" ]; then
->>> -		info "failed to get OVS drop subsys ID"
->>> -		return $ksft_skip
->>> -	fi
->>>  
->>>  	sbx_add "test_drop_reason" || return $?
->>>  
->>> @@ -842,7 +833,7 @@ test_drop_reason() {
->>>  		"in_port(2),eth(),eth_type(0x0800),ipv4(src=172.31.110.20,proto=1),icmp()" 'drop'
->>>  
->>>  	ovs_drop_record_and_run "test_drop_reason" ip netns exec client ping -c 2 172.31.110.20
->>> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0001 # OVS_DROP_FLOW_ACTION
->>> +	ovs_drop_reason_count OVS_DROP_LAST_ACTION
->>>  	if [[ "$?" -ne "2" ]]; then
->>>  		info "Did not detect expected drops: $?"
->>>  		return 1
->>> @@ -859,7 +850,7 @@ test_drop_reason() {
->>>  
->>>  	ovs_drop_record_and_run \
->>>              "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 6000
->>> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0004 # OVS_DROP_EXPLICIT_ACTION_ERROR
->>> +	ovs_drop_reason_count OVS_DROP_EXPLICIT_WITH_ERROR
->>>  	if [[ "$?" -ne "1" ]]; then
->>>  		info "Did not detect expected explicit error drops: $?"
->>>  		return 1
->>> @@ -867,7 +858,7 @@ test_drop_reason() {
->>>  
->>>  	ovs_drop_record_and_run \
->>>              "test_drop_reason" ip netns exec client nc -i 1 -zuv 172.31.110.20 7000
->>> -	ovs_drop_reason_count 0x${ovs_drop_subsys}0003 # OVS_DROP_EXPLICIT_ACTION
->>> +	ovs_drop_reason_count OVS_DROP_EXPLICIT
->>>  	if [[ "$?" -ne "1" ]]; then
->>>  		info "Did not detect expected explicit drops: $?"
->>>  		return 1
->>>
->> 
->> No longer untested, that works.
->
-> Looks nicer than parsing obscure numbers indeed!
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-+1 !
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> Matthieu mentioned we'll need CONFIG_TRACEPOINTS in the selftest config
-> shard: tools/testing/selftests/net/openvswitch/config
->
-> Is that a new dependency or was it always there we just missed adding it
-> to the config before?  (it's included in the common net config, so that
-> is probably the reason why CI doesn't fail)
+- [Medium] Incomplete alignment in ndisc_recv_na(): the patch makes the
+  proxy_ndp half of the proxy-NA suppression test per-interface aware…
+- [Medium] In ip6_forward() the newly added per-interface test reads
+  `idev->cnf.proxy_ndp`, where `idev` is derived from `IP6CB(skb)->iif`…
 
-Yes, we missed it the first time around.
+--
 
-> Best regards, Ilya Maximets.
+ipv6: check per-interface proxy_ndp in forwarding and NA paths
 
+This makes ip6_forward() and ndisc_recv_na() consider the per-interface
+proxy_ndp setting in addition to the global net.ipv6.conf.all.proxy_ndp,
+matching what ndisc_recv_ns() already does.
+
+> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+> index 550965058991..738fa46a892a 100644
+> --- a/net/ipv6/ip6_output.c
+> +++ b/net/ipv6/ip6_output.c
+> @@ -581,8 +581,8 @@ int ip6_forward(struct sk_buff *skb)
+>  		return -ETIMEDOUT;
+>  	}
+>  
+> -	/* XXX: idev->cnf.proxy_ndp? */
+> -	if (READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
+> +	if ((READ_ONCE(net->ipv6.devconf_all->proxy_ndp) ||
+> +	     (idev && READ_ONCE(idev->cnf.proxy_ndp))) &&
+>  	    pneigh_lookup(&nd_tbl, net, &hdr->daddr, skb->dev)) {
+
+[Severity: Medium]
+Is the device used for the new per-interface read the same one used by the
+lookup on the next line?  In ip6_forward(), idev comes from IP6CB(skb)->iif:
+
+net/ipv6/ip6_output.c:ip6_forward() {
+	idev = __in6_dev_get_safely(dev_get_by_index_rcu(net, IP6CB(skb)->iif));
+	...
+}
+
+while pneigh_lookup() is called with skb->dev.
+
+IP6CB(skb)->iif is recorded in ip6_rcv_core() before the l3mdev receive
+handler runs:
+
+net/ipv6/ip6_input.c:ip6_rcv_core() {
+	IP6CB(skb)->iif = skb_valid_dst(skb) ?
+				ip6_dst_idev(skb_dst(skb))->dev->ifindex :
+				dev->ifindex;
+}
+
+and vrf_ip6_rcv() then replaces skb->dev without rewriting IP6CB->iif:
+
+drivers/net/vrf.c:vrf_ip6_rcv() {
+	if (!is_ndisc) {
+		struct net_device *orig_dev = skb->dev;
+
+		dev_dstats_rx_add(vrf_dev, skb->len);
+		skb->dev = vrf_dev;
+		skb->skb_iif = vrf_dev->ifindex;
+	...
+}
+
+The device-preserving NDISC branch is chosen by ipv6_ndisc_frame(), which
+only matches when iph->nexthdr == NEXTHDR_ICMP, with the in-file comment
+noting "This really fails for multiple next protocols (e.g., NEXTHDR_HOP).
+But it is a start."
+
+So for non-NDP traffic to a proxied address, or an NS/NA behind a
+hop-by-hop or destination-option header, idev is the slave while skb->dev
+is the VRF master.  pneigh_lookup() only matches the requested device or a
+wildcard entry:
+
+net/core/neighbour.c:pneigh_lookup() {
+		if (!memcmp(n->key, pkey, key_len) &&
+		    net_eq(pneigh_net(n), net) &&
+		    (n->dev == dev || !n->dev))
+	...
+}
+
+Can this end up consulting proxy_ndp on one interface while looking up
+proxy entries on another?  In that case the master's own proxy_ndp is
+ignored (the packet is forwarded with the hop limit decremented instead of
+going to ip6_input(), and the link-local dst_link_failure() path in
+ip6_forward_proxy_check() is skipped), and conversely a slave's flag can
+enable the proxy check against a wildcard entry on the master.
+
+Both ndisc.c call sites use skb->dev for the per-device read and for the
+lookup, and the removed "/* XXX: idev->cnf.proxy_ndp? */" comment sat
+directly above the skb->dev based lookup.  Would reading
+__in6_dev_get(skb->dev) here (or doing the lookup on the iif device) be
+more consistent?
+
+> diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+> index 75515fd99383..f787082069b7 100644
+> --- a/net/ipv6/ndisc.c
+> +++ b/net/ipv6/ndisc.c
+> @@ -1097,9 +1097,9 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+>  		 */
+>  		if (lladdr && !memcmp(lladdr, dev->dev_addr, dev->addr_len) &&
+>  		    READ_ONCE(net->ipv6.devconf_all->forwarding) &&
+> -		    READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
+> +		    (READ_ONCE(net->ipv6.devconf_all->proxy_ndp) ||
+> +		     (idev && READ_ONCE(idev->cnf.proxy_ndp))) &&
+>  		    pneigh_lookup(&nd_tbl, net, &msg->target, dev)) {
+> -			/* XXX: idev->cnf.proxy_ndp */
+>  			goto out;
+>  		}
+
+[Severity: Medium]
+Should the forwarding test here be made per-interface too?  The condition
+still short-circuits on devconf_all->forwarding, so with global forwarding
+at 0 the newly added per-interface proxy_ndp term is never evaluated.
+
+The site the changelog names as the reference uses the per-device value:
+
+net/ipv6/ndisc.c:ndisc_recv_ns() {
+		if (ipv6_chk_acast_addr(net, dev, &msg->target) ||
+		    (READ_ONCE(idev->cnf.forwarding) &&
+		     (READ_ONCE(net->ipv6.devconf_all->proxy_ndp) ||
+		      READ_ONCE(idev->cnf.proxy_ndp)) &&
+	...
+}
+
+and ndisc_recv_na() itself uses the per-device value a little earlier for
+the RFC 9131 decision:
+
+	if (!neigh && lladdr && idev && READ_ONCE(idev->cnf.forwarding)) {
+
+ip6_forward() also admits forwarding on the per-device flag alone:
+
+net/ipv6/ip6_output.c:ip6_forward() {
+	if (!READ_ONCE(net->ipv6.devconf_all->forwarding) &&
+	    (!idev || !READ_ONCE(idev->cnf.force_forwarding)))
+		goto error;
+}
+
+with Documentation/networking/ip-sysctl.rst describing force_forwarding as
+"Enable forwarding on this interface only -- regardless of the setting on
+``conf/all/forwarding``".
+
+For conf/all/forwarding=0, conf/<dev>/forwarding=1,
+conf/<dev>/force_forwarding=1, conf/all/proxy_ndp=0 and
+conf/<dev>/proxy_ndp=1 with a proxy neigh entry, ndisc_recv_ns() answers
+the proxy NS and ip6_forward() now takes the proxy path, but this test
+falls through to ndisc_update() for a proxy NA carrying the router's own
+MAC, which is what the "Don't update the neighbor cache entry on a proxy NA
+from ourselves" comment is guarding against.
+
+For an entry that is not NUD_VALID, __neigh_update() installs the supplied
+lladdr without the override restriction:
+
+net/core/neighbour.c:__neigh_update() {
+	if (old & NUD_VALID) {
+		if (lladdr != neigh->ha && !(flags & NEIGH_UPDATE_F_OVERRIDE)) {
+	...
+}
+
+so can the proxied target's entry end up holding the router's own MAC in
+that configuration?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918151405.716075-1-adrianox%40gmail.com
