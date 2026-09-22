@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002A735CB7B;
-	Tue, 22 Sep 2026 00:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71B23546ED;
+	Tue, 22 Sep 2026 00:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790038735; cv=none; b=oegdew4n5jCE/a4XyD1cdZtWCyBCfIo0jnexD0/OPqYkcXJLy7CiBpP4Ql0q/X1fbtMRRuF1E2GSW8U0KxpQwWuvn+e+NO7hPBxYYw3LBzQnY8u7rCZcUisAZv0mxWtXvbdbAGOjlvQoWMDeSab1krcXeORHFV02Zg/wCtfN1dI=
+	t=1790038736; cv=none; b=qF4c81GlaUNC+9+vT3gLaDS9BMkHiANPb7FCk1caCGf7015lbLo3Udk5sCZfVPzMKXNY9WwJYTGN2/zMiDYMbddTmnMDz5CwpoaTZdjFQstGhZAHCUQR0QPsr2rs3OgYVZzvBuPvuOIGc/SKRaCyA/HBhGzqgQ6YlEH5NPzwM2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790038735; c=relaxed/simple;
-	bh=uWfaWMqN1VkUmAWIn3LDZmBypajhfb0dsrB8AaxsYI0=;
+	s=arc-20240116; t=1790038736; c=relaxed/simple;
+	bh=8XHsDEdXLcnk+nnPvSiAj0PHOSHLiFLxQVcrONptJYE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gi6kooMO/PG4TULlcMZ4IlCxVYHdpfZ58pWEIh1NmoHZstRU05cUVJ8HvaRPS+l3kfT3JIXS8bZTWmqSAi40rkwCFMHHt6G5zjBujbO2pr9+IrO1Ww9wRAmbu7YQ+pXh3+SvKVmKXbLOzIbT1TCq42zAASaZUlW2P6F3wA5+aVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bzr0uNIN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fbMHS+bgYhxSnFz0teBYpLkWw1LicrsK7TXZ6GtZyYUkQKQgNVKytfNmJKO5zlVpF+WH6tFlF1owsBVE4TMczDE4Z7OBT8Gi4DfVVTju/Fv/L2A3drU3I4M2KTAHmFRJoIVC4id8vsDkpd4moYhtLXibfGNUcq8yMz+4xMYg6M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwZOoE1o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bzr0uNIN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C00F1F000FF;
-	Tue, 22 Sep 2026 00:58:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwZOoE1o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8091F00899;
+	Tue, 22 Sep 2026 00:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790038731;
-	bh=s/D+XUHsZNAJA1Pwb/08xGti8CHBf5baS0DNv2LgSBc=;
+	s=k20260515; t=1790038734;
+	bh=VH73kCxCtAR3SnqZhgoqjYc7pV+x8YfFMPJuAB9Nq6I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Bzr0uNIN0Y0ihE0ReyRS31UlT46CKw0C5BzKw8grBIO9M+dOK1jOfT1v3kRHka2+e
-	 1GO6hO3vyGpwN+I5AVeNxVozED8a/XUCVXmbemDKt98IOx2ftBoO9+VZZStVKT6FJ7
-	 IgQORpUSXb+mgKgAdOtK2pEnkPMupMioT1GxPs47TP/yfRtUMznG6UDZy6bu5ECj3Q
-	 tMLNsrMm2YjYG4RrXYtJQkLyiF7vT6AcsvC13AhbeG036bOEZIdx64Be5AALM+YUVl
-	 X8x+BNlmg7z+0XsQF0moO4E2PBO9CDNlDRXD/LA8Bq4CODJ3MYjPWiP4LDIA4ii1tR
-	 9fxZt+7NqJvaw==
-Subject: Re: [PATCH net 5/8] net: bcmgenet: acquire ring lock with BH disabled
- in bcmgenet_dump_tx_queue
+	b=WwZOoE1ofeZz586zr0momMVjduNX7NHVcIlfnlSN2BQUlDZHv/r35aFBn+SdZEsUP
+	 utKA7jkHN3kwfFYgAsYVZdkFUXKvDfBwyDCAQ3BiItr+mc9LRzwxcX/MoApo6xj82N
+	 Sg0adfC9lN2mV6cjVrGJOj7qPj6oaZ/n3B3rG0BR1RJBRM2NNuS7LASiLBBu/6vFtP
+	 WVWzWgex+YkY2HSZYvcO0fGBS69MYcBFkD84fKGD3xB+pEFVmQHBUm6ZJ9LEFyuT29
+	 Ejt+J+q4pj1joSBsm+F4fbOuObOqIR/Z/q3re6N4OicaWcoG8oReb6v6N6HcQosh1n
+	 JNDCyRjs792eA==
+Subject: Re: [PATCH net 7/8] net: bcmgenet: zero-initialize Transmit Status
+ Block in bcmgenet_add_tsb
 From: netdev-bot+sashiko@kernel.org
 To: florian.fainelli@broadcom.com
 Cc: netdev@vger.kernel.org, cursoragent@cursor.com, opendmb@gmail.com,
@@ -35,10 +35,10 @@ Cc: netdev@vger.kernel.org, cursoragent@cursor.com, opendmb@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
  linux-kernel@vger.kernel.org, nb@tipi-net.de
-Date: Tue, 22 Sep 2026 00:58:50 +0000
-Message-ID: <179003873076.2160803.5036239570797496188@kernel.org>
-In-Reply-To: <20260918000732.276506-6-florian.fainelli@broadcom.com>
-References: <20260918000732.276506-6-florian.fainelli@broadcom.com>
+Date: Tue, 22 Sep 2026 00:58:53 +0000
+Message-ID: <179003873336.2160803.15332109108263126617@kernel.org>
+In-Reply-To: <20260918000732.276506-8-florian.fainelli@broadcom.com>
+References: <20260918000732.276506-8-florian.fainelli@broadcom.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,112 +60,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message's justification for converting
-  spin_lock()/spin_unlock() to spin_lock_bh()/spin_unlock_bh() in…
-
-Pre-existing issues:
-- [Low] bcmgenet_dump_tx_queue()
-  (drivers/net/ethernet/broadcom/genet/bcmgenet.c:3500-3535) snapshots…
+- [Medium] bcmgenet_add_tsb() now unconditionally writes 64 bytes into
+  the skb head (memset(status, 0, sizeof(*status)) at…
+- [Low] The commit carries no Signed-off-by: line and includes
+  tool/Gerrit-specific trailers.
 
 --
 
-net: bcmgenet: acquire ring lock with BH disabled in bcmgenet_dump_tx_queue
+net: bcmgenet: zero-initialize Transmit Status Block in bcmgenet_add_tsb
 
-This converts the ring->lock acquisition in bcmgenet_dump_tx_queue() from
-spin_lock()/spin_unlock() to spin_lock_bh()/spin_unlock_bh(), with the
-stated goal of avoiding a self-deadlock against TX NAPI on the same CPU.
-It carries a Fixes tag pointing at 13ea657806cf ("net: bcmgenet: improve
-TX timeout").
+This adds a memset() of the 64-byte Transmit Status Block after the
+skb_push() in bcmgenet_add_tsb(), so that fields other than
+tx_csum_info, and the whole block for packets without CHECKSUM_PARTIAL,
+are no longer left holding whatever was in the skb headroom before.
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index ef155a170fa62..799da63e3a4e4 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+Two observations below, one on the trailer block and one on the new write.
 
-> bcmgenet_dump_tx_queue() is called from bcmgenet_timeout() in process or
-> timer context and acquires ring->lock using spin_lock(). If a softirq
-> such as TX NAPI (bcmgenet_tx_poll()) fires on the same CPU while the lock
-> is held, it will deadlock trying to acquire ring->lock.
-
-[Severity: Medium]
-Can bcmgenet_dump_tx_queue() actually run in process context?
-
-The only caller is bcmgenet_timeout(), which is only installed as
-.ndo_tx_timeout in the driver's netdev_ops.  The only generic caller of
-ndo_tx_timeout is dev_watchdog() in net/sched/sch_generic.c:
-
-static void dev_watchdog(struct timer_list *t)
-{
-	...
-			netif_freeze_queues(dev);
-			dev->netdev_ops->ndo_tx_timeout(dev, i);
-			netif_unfreeze_queues(dev);
-
-dev_watchdog() is a timer_list callback, so it already runs in
-TIMER_SOFTIRQ context with BH disabled.  Since softirq handlers do not
-nest on the same CPU, can bcmgenet_tx_poll() (NET_RX softirq) ever
-preempt the lock holder here and deadlock as described?
-
-If not, the call chain is:
-
-dev_watchdog()			/* timer softirq, BH already disabled */
-  ndo_tx_timeout()
-    bcmgenet_timeout()
-      bcmgenet_dump_tx_queue()	/* spin_lock_bh() nests local_bh_disable() */
-
-which would make this change a functional no-op rather than a deadlock
-fix.  No hardirq handler takes ring->lock either (bcmgenet_isr1 only
-touches priv->lock and the interrupt status), so a stronger variant does
-not look necessary either.
-
-Would it make sense to either drop the patch, or respin it as a
-consistency-only change without the Fixes tag, so that the no-op is not
-backported to stable under a deadlock rationale?
-
-> @@ -3508,14 +3508,14 @@ static void bcmgenet_dump_tx_queue(struct bcmgenet_tx_ring *ring)
->  
->  	txq = netdev_get_tx_queue(priv->dev, ring->index);
->  
-> -	spin_lock(&ring->lock);
-> +	spin_lock_bh(&ring->lock);
->  	intsts = ~bcmgenet_intrl2_1_readl(priv, INTRL2_CPU_MASK_STATUS);
->  	intmsk = 1 << ring->index;
->  	c_index = bcmgenet_tdma_ring_readl(priv, ring->index, TDMA_CONS_INDEX);
->  	p_index = bcmgenet_tdma_ring_readl(priv, ring->index, TDMA_PROD_INDEX);
->  	txq_stopped = netif_tx_queue_stopped(txq);
->  	free_bds = ring->free_bds;
-> -	spin_unlock(&ring->lock);
-> +	spin_unlock_bh(&ring->lock);
->  
->  	netif_err(priv, tx_err, priv->dev, "Ring %d queue %d status summary\n"
->  		  "TX queue status: %s, interrupts: %s\n"
+>     Fixes: 9a9ba2a4aaaa ("net: bcmgenet: always enable status blocks")
+>     Assisted-by: LLM
+>     Co-authored-by: Cursor <cursoragent@cursor.com>
+>     Change-Id: I6935e24408ea10f68eb61dce4cced9b0ead5c005
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but while the critical section
-is being touched: only free_bds and the two hardware indices are captured
-under ring->lock, while the remaining software state is read after the
-unlock in the netif_err() argument list:
+This isn't a code bug, but the trailer block has no Signed-off-by: line,
+and it still carries a Gerrit Change-Id:.
 
-	free_bds = ring->free_bds;
-	spin_unlock_bh(&ring->lock);
-	...
-		  ring->prod_index, p_index & DMA_P_INDEX_MASK,
-		  ring->c_index, c_index & DMA_C_INDEX_MASK,
-		  ring->clean_ptr, ring->write_ptr,
+Documentation/process/submitting-patches.rst requires the Signed-off-by
+(Developer's Certificate of Origin), and Change-Id is normally stripped
+before posting, so as-is checkpatch/b4 and the netdev CI will reject this.
 
-__bcmgenet_tx_reclaim() updates those same fields under ring->lock:
+Can the Signed-off-by be added and the Change-Id dropped, here and in the
+rest of the series?
 
-	ring->clean_ptr = ...
-	...
-	ring->free_bds += txbds_processed;
-	ring->c_index = c_index;
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index 90ca4f220cc7c..3a6a2f0759598 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -2084,6 +2084,7 @@ static struct sk_buff *bcmgenet_add_tsb(struct net_device *dev,
+>  
+>  	skb_push(skb, sizeof(*status));
+>  	status = (struct status_64 *)skb->data;
+> +	memset(status, 0, sizeof(*status));
 
-and it is reachable from bcmgenet_tx_poll() on another CPU, since
-netif_freeze_queues() in dev_watchdog() only blocks the xmit path and does
-not quiesce TX NAPI.  Can the printed summary then mix free_bds from one
-instant with c_index/clean_ptr from a later one, giving an inconsistent
-picture of the stall being debugged?  Would moving the remaining reads
-inside the critical section into locals be preferable?
+[Severity: Medium]
+Can this memset() scribble over headroom that is shared with a clone?
+
+The only unsharing step in bcmgenet_add_tsb() is keyed off available
+headroom, not off ownership of the head:
+
+	if (unlikely(skb_headroom(skb) < sizeof(*status))) {
+		new_skb = skb_realloc_headroom(skb, sizeof(*status));
+		...
+	}
+
+	skb_push(skb, sizeof(*status));
+	status = (struct status_64 *)skb->data;
+	memset(status, 0, sizeof(*status));
+
+A cloned skb that already has 64 bytes of headroom skips the realloc
+entirely, and that is the common case because bcmgenet_probe() does:
+
+	dev->needed_headroom += 64;
+
+bcmgenet_xmit() calls bcmgenet_add_tsb() without any copy-on-write of its
+own, so the memset() lands in memory shared with the other clone.
+
+Clones of one head do get transmitted on two devices concurrently, for
+example bond_xmit_broadcast():
+
+	skb2 = skb_clone(skb, GFP_ATOMIC);
+
+and tcf_mirred_to_dev():
+
+	skb_to_send = skb_clone(skb, GFP_ATOMIC);
+
+If the second device's transmit path pushes its own header (VLAN tag, DSA
+tag, tunnel or USB-ethernet header) into the same headroom bytes, do the
+two writes overlap and corrupt one of the frames?
+
+Before this patch the driver wrote 4 bytes (tx_csum_info) and only for
+CHECKSUM_PARTIAL packets; the memset() extends that to all 64 bytes for
+every packet, which widens the overlap considerably.
+
+Would skb_cow_head(skb, sizeof(*status)) before the skb_push(), with the
+allocation failure handled like the existing skb_realloc_headroom() path,
+be preferable here? That is what the sibling driver does in
+bcmasp_csum_offload():
+
+	ret = skb_cow_head(skb, sizeof(*offload));
+	if (ret < 0) {
+		intf->mib.tx_realloc_offload_failed++;
+		goto help;
+	}
+
+The missing copy-on-write predates this patch and the same pattern exists
+in bcm_sysport_insert_tsb(), so it is not newly introduced, but the larger
+write makes it more visible.
+
+>  
+>  	if (skb->ip_summed  == CHECKSUM_PARTIAL) {
+>  		ip_ver = skb->protocol;
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918000732.276506-1-florian.fainelli%40broadcom.com
