@@ -1,226 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EBE5349CC;
-	Tue, 22 Sep 2026 10:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997655221DA;
+	Tue, 22 Sep 2026 10:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790074590; cv=none; b=S4rmfQzjq50VdmVHtKG/peepWRhQi/uvTWGcDiRXLT93l5Jrj7DjBjApx9SITVQrE/TeHpZBaRQp+Msr0Z53uteLPv5Rd4QQL9VHAfRvzDmR8TBws20Tzc27c/aImcNET2SBInVWI61y0j2vgHCVm50/Csnyh2aZPcuuOMhOKdQ=
+	t=1790074731; cv=none; b=u6kYk4wvhWLoxmSVxomsRLtGJHSsboeDJ5rSwUG9hEesOPAke0Uk2mTAERkKLj1YrMMNYiYg/qv0j4tKJyYlGoKeriAOK9ZBmYtUodNe+1ZHJIybWqMiGKNzNQEKsbNq3YiO47Tp4t/CJz/N8Ya9C4wQpYAXFkt3Au5anWPocLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790074590; c=relaxed/simple;
-	bh=BaOKa6gDiwdZMHlzoNnkDZljCU8CLAL3hHHAvlsR814=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZGoxLTaQ6wwbjR9OLmY6CiFw+acACtJ4NH0w1fKpG1NEVoYDtSZ+4d6Uwjlr3teqc3XvCWT65rXfc84ne0rmx3l6LEdRGj0caaRitMttPWwj5SJDq/0o6AzwutLTYnGjurjq5HTBWxpyy3TbPR3dENC8bgd+Ucpcs9isIX99VRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXawFPrw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790074731; c=relaxed/simple;
+	bh=fbAc7ebwCqxuH0VG1ksDAeVSDAb6yVypBrz5cAKdMRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=myUgYLNrUcm3bWmzQItce7hFzWDJPZ0DpcYcGHESXW1CtAmycgV7z5D+TjlOEaC5KjHg2AKwl8JbSzIU/JNQQmk20Bl8QCyIjA5P8sFVmtv6zv6pkIaCsmhDRF67hyoyg/klblOJ+enqNaXzUrrNChghd3gyivR3TMaaw+2PblU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=fNWUDqX8; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXawFPrw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB961F000FF;
-	Tue, 22 Sep 2026 10:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790074581;
-	bh=z+tMrQ5pPFejRapMiyMQ81+N3hZiDVmPs4BB/RN3mzI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VXawFPrwoY33mMHkG7u7UoVI7k7FsDInE545MA+t+F9Snz4PCQV/foxyUZr4uI+OK
-	 KrhI/anzi9WQKDBAUR5bnA1pNV0jlSD79Epi48y6z6LsNP3cOZF/cL2zt6h1b4AHuX
-	 SyznAL4rVPfhnQnuoZwk2u3qhr8ROh90PiNuNa1wpqXhCgaLtYJ8PpL0eeVDYNcgwZ
-	 8k/TrwFFMgrBithkGna607KSVwOQUjLSTzJA8U7Bjg0uN/eYWoexPMHGDFN+xRYKHr
-	 lTtqhO/BUDyMhNH+jjYCBzsOz1lQyupmd9VmrDTveurrkAQ8QXQy+u2D3NULfmdDxf
-	 Rqy3VQ6lLvmrQ==
-Subject: Re: [PATCH net-next v1] net: devmem: document that bind-tx is
- unprivileged by design
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- donald.hunter@gmail.com, sdf@fomichev.me, razor@blackwall.org,
- daniel@iogearbox.net, bobbyeshleman@meta.com
-Date: Tue, 22 Sep 2026 10:56:20 +0000
-Message-ID: <179007458060.2160803.1077952399417880240@kernel.org>
-In-Reply-To: <20260921195545.493253-1-almasrymina@google.com>
-References: <20260921195545.493253-1-almasrymina@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="fNWUDqX8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QC6dGDqXkFixLgf757zeEyQ66heKcQh39eXEjVnWscw=; b=fNWUDqX8vriA1q8ith05IO5rqS
+	D3MlLBl/jttxfHlkHKZycMHYCwtD8FoZtGqYuyHDICmM/msHYfoexppcdh23KTi3Y4j7jUtuvzhea
+	n/AV62kIe6FYySLnORFFBdyKhO0phHdRmlve2y+BG3zRFKjOC/piXjLKrfd+Jt+Pusm20EVSd4b2q
+	5AhfW+REXE6P1YUqDLMt9wvXUOOWNOlv5UiX1cxJlXGA5bc4CydjY28aS795B9b+vyrtGjq+hG4zR
+	KPvbAkRhVxmDZ+DdHvSjSyqy9IP+XQ+kBYyvyHOR176SB0b/3mBWXJ9g68ZynlZGhiSSGDopSAG3l
+	+/t7vypg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x8yCt-002vqp-2w;
+	Tue, 22 Sep 2026 10:58:40 +0000
+Date: Tue, 22 Sep 2026 03:58:34 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Zhang Yunfei <zhangyunfei1@kylinos.cn>
+Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com, 
+	mengyuanlou@net-swift.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com, 
+	weirongguang@kylinos.cn, u.kleine-koenig@baylibre.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] net: ngbe: clear DRV_LOAD bit when
+ ngbe_open() fails
+Message-ID: <arJev7h-_lEii1Z2@gmail.com>
+References: <20260922100836.1147718-1-zhangyunfei1@kylinos.cn>
+ <20260922100836.1147718-3-zhangyunfei1@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922100836.1147718-3-zhangyunfei1@kylinos.cn>
+X-Debian-User: leitao
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Tue, Sep 22, 2026 at 06:08:36PM +0800, Zhang Yunfei wrote:
+> ngbe_open() sets the WX_CFG_PORT_CTL_DRV_LOAD bit via
+> wx_control_hw(wx, true) to tell the management firmware that the
+> host driver has taken over the port (NCSI/OOB firmware stops using
+> its management channel). Every error path of ngbe_open() returns
+> without clearing it, leaving rings, IRQs and the PHY torn down
+> while the firmware still believes the host owns the port, an
+> inconsistent driver-firmware handshake state that persists until
+> the next successful ifup.
+> 
+> Roll the bit back on all open error paths, matching ngbe_close()
+> and ngbe_dev_shutdown(), which already clear it.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+silly question, why unwind, rather than not taking hw control until the
+port is actually up, as the last thing in ngbe_open()?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Looking at txgbe, it does something like:
 
-- [High] NETDEV_CMD_BIND_TX is unprivileged (net/core/netdev-genl-
-  gen.c:240-245: .flags = GENL_CMD_CAP_DO), and this patch cements that…
-- [Medium] The comment added above netdev_nl_bind_tx_doit()
-  (net/core/netdev-genl.c:1183-1188) and the mirrored note in…
-- [Medium] bind-tx is reachable by any unprivileged user
-  (net/core/netdev-genl-gen.c:244: .flags = GENL_CMD_CAP_DO) with no…
+	static int txgbe_open(struct net_device *netdev) {
+	.....
+		txgbe_up_complete(wx);
 
---
-
-net: devmem: document that bind-tx is unprivileged by design
-
-This adds a comment above netdev_nl_bind_tx_doit() and a matching note in
-Documentation/netlink/specs/netdev.yaml stating that NETDEV_CMD_BIND_TX
-carries no GENL_ADMIN_PERM / GENL_UNS_ADMIN_PERM on purpose, on the grounds
-that bind-tx only DMA-maps the caller's dmabuf.
-
-A few questions about the rationale being recorded here.
-
-> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-> index e13461cf3fc33..4303593e5003c 100644
-> --- a/Documentation/netlink/specs/netdev.yaml
-> +++ b/Documentation/netlink/specs/netdev.yaml
-> @@ -852,6 +852,8 @@ operations:
->        name: bind-tx
->        doc: Bind dmabuf to netdev for TX
->        attribute-set: dmabuf
-> +      # Intentionally unprivileged (no admin-perm / uns-admin-perm); see
-> +      # comment above netdev_nl_bind_tx_doit().
->        do:
->          request:
->            attributes:
-> diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-> index fa9edfdb32c29..690c27f63d260 100644
-> --- a/net/core/netdev-genl.c
-> +++ b/net/core/netdev-genl.c
-> @@ -1180,6 +1180,12 @@ netdev_find_netmem_tx_dev(struct net_device *dev)
->  	return NULL;
->  }
->  
-> +/* Note: NETDEV_CMD_BIND_TX is intentionally unprivileged (no
-> + * GENL_ADMIN_PERM / GENL_UNS_ADMIN_PERM). Unlike bind-rx, which configures
-> + * shared NIC RX queues, bind-tx only DMA-maps the caller's dmabuf so they can
-> + * transmit from it on their own sockets without affecting other traffic or
-> + * device state.
-> + */
-
-[Severity: High]
-Is the "on their own sockets" part of this rationale actually enforced
-anywhere?
-
-net_devmem_bind_dmabuf() in net/core/devmem.c allocates the id out of a
-single global xarray and only records the owning netlink socket for cleanup:
-
-	err = xa_alloc_cyclic(&net_devmem_dmabuf_bindings, &binding->id,
-			      binding, xa_limit_32b, &id_alloc_next,
-			      GFP_KERNEL);
-	...
-	list_add(&binding->list, &priv->bindings);
-
-priv->bindings is then only walked by netdev_nl_sock_priv_destroy().
-
-On the TX side, net_devmem_get_binding() resolves whatever u32 the sender
-passed and checks only that a tx_vec exists and that the route egresses the
-bound device:
-
-	binding = net_devmem_lookup_dmabuf(dmabuf_id);
-	if (!binding || !binding->tx_vec) {
-		err = -EINVAL;
-		goto out_err;
+		return 0;
 	}
-	...
-	dst_dev = dst_dev_rcu(dst);
-	if (unlikely(!dst_dev) ||
-	    unlikely(dst_dev != READ_ONCE(binding->dev) &&
-		     dst_dev != READ_ONCE(binding->vdev))) {
-		err = -ENODEV;
 
-and net_devmem_lookup_dmabuf() is a plain xa_load() with no credential,
-netns or creator comparison.
+Would ngbe_open() be able to follow a similar approach?
 
-So can an unrelated unprivileged process reach another user's binding like
-this?
-
-  process A: NETDEV_CMD_BIND_TX -> gets id N, keeps the netlink socket open
-  process B: sendmsg(MSG_ZEROCOPY) with SCM_DEVMEM_DMABUF carrying id N
-
-__sock_cmsg_send() in net/core/sock.c takes the bare id:
-
-	case SCM_DEVMEM_DMABUF:
-		if (cmsg->cmsg_len != CMSG_LEN(sizeof(u32)))
-			return -EINVAL;
-		sockc->dmabuf_id = *(u32 *)CMSG_DATA(cmsg);
-
-tcp_sendmsg_locked() then calls net_devmem_get_binding(sk, sockc.dmabuf_id)
-and zerocopy_fill_skb_from_devmem() builds frags from the resulting niovs at
-attacker-chosen offsets. If B's route egresses the same netdev, does this
-let B transmit the contents of A's dmabuf to a peer of B's choosing?
-
-Ids are allocated cyclically starting low, and the return codes differ
-(-EINVAL for an unknown or non-TX id, -ENODEV for the wrong device), so is
-guessing a live id cheap? Should the TX path check the binding against its
-creating netdev_nl_sock before this is documented as safe, or should the
-command grow a permission flag instead?
-
-[Severity: Medium]
-Separately from the enforcement question above, is the wording here wider
-than what the code does?
-
-Two parts look overstated:
-
-"so they can transmit from it on their own sockets" - nothing in
-net_devmem_get_binding() ties a binding to the socket, task, uid, netns or
-cgroup that created it; the u32 id from the global xarray is the only
-credential.
-
-"without affecting other traffic or device state" -
-netdev_find_netmem_tx_dev() can resolve the bind target to a different,
-shared physical NIC via an rx queue lease:
-
-		phys_dev = lease_rxq->dev;
-		if (netif_device_present(phys_dev) &&
-		    phys_dev->netmem_tx == NETMEM_TX_DMA)
-			return phys_dev;
-
-and net_devmem_bind_dmabuf() then runs dma_buf_attach() and
-dma_buf_map_attachment_unlocked() against that physical device's dma_dev.
-
-Would it be more accurate to state the narrow property that bind-tx does
-not reconfigure RX queues or steering, rather than claiming no effect on
-other traffic or device state? The same wording is mirrored into the uAPI
-spec in Documentation/netlink/specs/netdev.yaml, so it becomes the answer
-future readers get when they ask why this command has no permission flag.
-
-[Severity: Medium]
-Does anything bound how many times an unprivileged caller can do this, or
-account the memory it consumes?
-
-net_devmem_bind_dmabuf() can be called repeatedly on the same dmabuf FD, and
-each call allocates with plain GFP_KERNEL / kvmalloc, so none of it is
-charged to the caller's memcg:
-
-		binding->tx_vec = kvmalloc_objs(struct net_iov *,
-						dmabuf->size / PAGE_SIZE);
-	...
-		owner->area.niovs = kvmalloc_objs(*owner->area.niovs,
-						  owner->area.num_niovs);
-
-and each call installs another mapping on the shared device:
-
-	binding->attachment = dma_buf_attach(binding->dmabuf, dma_dev);
-	...
-	binding->sgt = dma_buf_map_attachment_unlocked(binding->attachment,
-						       direction);
-
-There is no duplicate-binding check, no count limit on entries added to
-priv->bindings, no __GFP_ACCOUNT, and no RLIMIT_MEMLOCK accounting for the
-long-lived mapping. With the rx-lease path in netdev_find_netmem_tx_dev()
-these mappings land on the physical NIC shared with other users.
-
-Given that, is "without affecting other traffic or device state" the right
-thing to document, or should a per-socket or per-user cap and memcg
-accounting come first?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921195545.493253-1-almasrymina%40google.com
+--breno
