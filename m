@@ -1,174 +1,120 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mta0.migadu.com (out-107.mta0.migadu.com [91.218.175.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B02D47DD5C
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790157405; cv=pass; b=KIOKxrlFtvobWDUXch7YijKZsJXJXJiy8wupxL6Cv9L9J0T0QmxEtGaPENYAjW2Ra15JGrfOuRiuvHfDUiWncYFr9TmNOElLB1sTKfLy6rj+sMdS6UuXa06Pcg/FakAIfhxNIeZAtnJF73aysXAOuMzRzxnp4vMdl1DhzCNALNo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790157405; c=relaxed/simple;
-	bh=gepP1A9ysh0N6NHB47FJTCQrzM4iGML9jXyRBN95fA4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YdIcADg/jOIoa/27+Mr6X9DqiHQAUhl4QjtvTTvmQMe6dDNSjHSA+Ay4wnVCcwGip8htNrJd+d/BfP8SB39cx8hDvQ5x2TTdcy7hDsoTEf02MvFi8S3Pt6gCxxXDWD92hssUpwQjCUI7aycOnCzOnmdD/vCjU9OpAqMzpgQCqaw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alkira.net; spf=pass smtp.mailfrom=alkira.net; dkim=pass (2048-bit key) header.d=alkira.net header.i=@alkira.net header.b=NPk+ydVG; arc=pass smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alkira.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alkira.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F26411F88
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.107
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790157446; cv=none; b=bVDqCW4ynYbsBTUolA8mnI5oaBtnXsBPs+XlfwsjWBuQneUtRT0VDQOn7moR4lIt4CLSTjNQ/mgw8l8UE/WMY/d7FtjrTxj4fGRXi0G3Ed/5GPdBkEcCG1na0H9w020wQyJLERpWREIRGn4FLJOH6l31/KLu+6KCLkdbGTKcRe8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790157446; c=relaxed/simple;
+	bh=6d7CmGfi1oUosIcp8Gxd5YdKxwhrzKotaECyrpU929A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kSH/7d5xNqEI6tyLupTQMRBPd++iXeFj3OqhXgcOQFd+Cd9dRNXNuP9kwFejWSdW01YftfYB94pXrB0MyEqET4RTVgS4wES1PFuKmLiErIr8O/PrlMKLIwwxF0fzm3u4uELxCgz0zXwB58/iN+Zq6Lz7VYZCyg44APN+hKswZvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sLjJdQkh; arc=none smtp.client-ip=91.218.175.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alkira.net header.i=@alkira.net header.b="NPk+ydVG"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8674704dab1so733484b3a.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:56:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790157402; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JASnCiUX64950GBcrKb8+sgjIYFzrW2/N4FheCfAyMA/tqws4lmYxHkgoYuC3qYp6I
-         WTmUH5f4SUEXLyz4v3Ev9udUpKAZW6Z/BFSqd5zoxmETXUIv5TohYjJL8XIQL5ibexMP
-         pyTc4DrrFDJy3xZ+zTTYfOKVuc2BvYgjlPs+Iq/4tU3NcIl4Nz5nshXHCNexC7T6L52g
-         1YX1VVKew8UZXaYWI32kuhwGEJ62fGY2RxqVC1I5MBNqT8W3iP7IFEu04dC99K+ulNIq
-         SSxKeVjcrGWBxShbtvCoLJdORgrt+JsDb1dh5maeytTKt/+zv8Umugh548RynxE7FdZ2
-         mBig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cpgKIz/nl9xM6UgCUL7AH6mkw+l4ifqbDGv3fT/fFSE=;
-        fh=7MOJDvNNoshr7w5yRSZKGyxd0WW+XTRPcCgXOmC4y34=;
-        b=rc9QcmUTZc/k299uuCcVOVEiSb4oQuJX8oh0XiDi+rO8ngFXr4EyIAteklwqAEDa78
-         3UnMkPuchbwGtbsw30R8kmisdSrpoh5HqiSD+/4DqW5EsRf6CSjyULmVsTXRgpfSH+XC
-         2Kxepdra6tAnWIUxKVBAfm8NC/n9wsAW3kOByeDyrpFU2ECcruZ9KUPWZbPM8rPVNQhO
-         T1lc9qN9LsPd3vikC4nK/dedGrl/CmOB5ZOWOFLi3zespoze1ew0dW6DOFXxFJ0fMirQ
-         4FdeiAsUOgTVjLt9Egeb0Ubk4YWfT1i5yCRio6sV4f94del0VnXLrqBeJEFsHo0N+rK+
-         6BPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=alkira.net; s=alkiranet; t=1790157402; x=1790762202; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cpgKIz/nl9xM6UgCUL7AH6mkw+l4ifqbDGv3fT/fFSE=;
-        b=NPk+ydVGBcqG37jr3+4H/Wbr5Ko3cBO6T6DsA7KQdjHHvJ57IYYwYY7g4FluV0I4LA
-         lKJxUqUtOqakKD9KjFMSPrZ7ZI6OFLYqqUUKxOtxsppeOxKsT3BB9OyaCSV/erfYlsPm
-         YSYBl+GnPdBmfRrbe8srYyhakmmKtha7IC6yoIT2WQMX9lE5K2WhPH5u1XvkdYASs0aT
-         /OI0jrZUEdyMTRqkUhgZsF6/I4SiJVA8FRKarCJ2TE2oM3PWS+R4NiyPmP30AT9s3eY9
-         qWeSnmvRz2pfQwAkzMFizI/bw9f2KizImUWuYXO7s+G/+jdwFkZdfmdJn2/Dhoa150Gj
-         l5mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790157402; x=1790762202;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cpgKIz/nl9xM6UgCUL7AH6mkw+l4ifqbDGv3fT/fFSE=;
-        b=O4NLNQYVI7haV/ppR9sz6atywhrNnyKegqQXRGYl5pjaQAsPo/ePgFAzC073ce5xwx
-         sy6QnkGkO16F3Hln7lN9po/eSGE03t244BRiosZNqz+u6GYjZP0fwgPtkV58ukh1JcxO
-         lviuDAZNI5nt/Cfj32xRzbpAc5bIsvC+f6KHp2JAcrm0CrSbEtXRgKTHZg24bLaw9W5h
-         40i7aHutii4BC8q+KqmnYKypPE3SCK5q1z0DSHn2q0Uh9XubZJcpjWE8/y8WTOw9d5Aj
-         fSlTfTvfWoSE1LSuc6ErVyPPQpOM4uSmw0wWJ5aezPLdaLXTZWBSscb6D9+GQqM6t3MY
-         pszQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzHQYMGHvaqDM+d9p3WdkG14QQYE7F0RcOoo+BFaBo6AM/6QS2fQMIiXf4veiXTJpZkTkiwIUI=@vger.kernel.org
-X-Gm-Message-State: AFuF++k/dugPY/5Y4bm3h5Rhsiq+JJrjcgnvvS5LgLH+/MNdADHAIg80
-	pjj19P6Hi5bt3lnL8Sp6dLpLOwxmt28oTcd9PIfdiEC1KSKwy64vEgUrSx4ZNXOx8xdKjGKcj9X
-	RGqVldQxU0Qi8qFwGXoS3x6n5fLx8IWi31MNTbuClEg==
-X-Gm-Gg: AYBFou0F9gUtxHK21KKtP1nVzlhzCZUWAEI05uy8+YfmBWASmz6EUm8O3gpZqGucxfE
-	9pEXTcr73Ua2fAIfHm++SKRMUSJjv90yXVKq/Dz+90zaqiTyb109XMJudiWWNXchveq1o5Vh9NH
-	5TVnXBffaIwe2Db98Zx7zYqkbBUJ8P99JDMA8/5eV1dKieJAi6fh3JmOVLr/9I7OXkaLq9t5RY+
-	KcCbk2pYHeEMjvNRpKkZiE3ZoEaLuGDITKUtJi5OxW5ajBjKF2MGZIQhbzrMO22bZInC9JaSP00
-	DX1eqdPH4dL4za6nOYGyiePQ/9/fl+2ga9o4j0KAYaw9BUw8TEbmGl+t6S+QvEVfjg==
-X-Received: by 2002:a05:6a00:8005:b0:87c:d962:72cb with SMTP id
- d2e1a72fcca58-87d1d4b9b3fmr1845440b3a.40.1790157402155; Wed, 23 Sep 2026
- 02:56:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sLjJdQkh"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6d7CmGfi1oUosIcp8Gxd5YdKxwhrzKotaECyrpU929A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790157442; v=1; x=1790762242;
+ b=sLjJdQkhOgqwuJHRdvhKmL6TglD0VX+VhZsx7+TrQB81HkRf/xIQ9rUPCl6bZ3AOmqoil6ez
+ dKo6lRcRWhEon+ArxBneXDaEWWhh0ozDGVu4D6rhaOAxGVv9qPGMwqVDkk009+arqd+aVoWn6/u
+ lr72knvRKB1bu3jn/t7wfeE8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id aef8c51cf6c77559;
+	Wed, 23 Sep 2026 09:57:22 +0000
+X-Mizu-Trace-ID: aef8c51cf6c77559
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fcd7d1ec-d2d1-4dac-ad8f-245392f92fcd@linux.dev>
+Date: Wed, 23 Sep 2026 17:57:12 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMcJb7NLooAw=6Vyzbq-7JnE9L=gfTbLL0Y=L1pTFMTg3Vf76A@mail.gmail.com>
- <2026092316-mouse-scallion-6eb2@gregkh>
-In-Reply-To: <2026092316-mouse-scallion-6eb2@gregkh>
-From: Kusuma DS <kusuma.ds@alkira.net>
-Date: Wed, 23 Sep 2026 15:26:31 +0530
-X-Gm-Features: AclHuK8wU4Sksj2iVp3kwEncGRLBwmdao0VGz_A6m0crpM3c4XTeRAUiXv8rTnA
-Message-ID: <CAMcJb7OPfN3jSmaqW14CqBESDv=m7Lc+CQ9hms6kVKMWoeHfCw@mail.gmail.com>
-Subject: Re: [6.12.y] Please backport 8045c0df98d4 ("xfrm: Fix dev
- use-after-free in xfrm async resumption")
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org, 
-	Chakradhar Kar <chakradhar.kar@alkira.net>, Ramakanth Gunuganti <ramakanth@alkira.net>, 
-	Sripathy Ramaswamy <sripathy@alkira.net>, steffen.klassert@secunet.com, sashal@kernel.org, 
-	dongchenchen2@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] pfcp: fix socket lifetime on netdevice
+ registration failure
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ aleksander.lobakin@intel.com, wojciech.drewek@intel.com,
+ marcin.szycik@linux.intel.com, linux-kernel@vger.kernel.org,
+ Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20260918123158.5631-1-xuanqiang.luo@linux.dev>
+ <20260923092638.GS13925@horms.kernel.org>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260923092638.GS13925@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Greg,
+On 2026/9/23 at 17:29 Simon Horman wrote:
+> On Fri, Sep 18, 2026 at 08:31:58PM +0800, Xuanqiang Luo wrote:
+>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>
+>> pfcp_newlink() creates the UDP socket before register_netdevice().
+>> If registration fails after pfcp_dev_init() succeeds, the core calls
+>> pfcp_dev_uninit(), which releases the socket and clears pfcp->sk.
+>> The newlink error path then releases it again, causing a NULL pointer
+>> dereference. This was observed with failslab fault injection:
+>>
+>>    FAULT_INJECTION: forcing a failure.
+>>    kobject: kobject_add_internal failed for pfcp0 (error: -12 parent: net)
+>>    BUG: KASAN: null-ptr-deref in udp_tunnel_sock_release+0x1c/0x50
+>>    Read of size 8 at addr 0000000000000120 by task ip/1037
+>>    Call trace:
+>>     show_stack+0x18/0x24 (C)
+>>     dump_stack_lvl+0x78/0x90
+>>     print_report+0x468/0x5cc
+>>     kasan_report+0xa4/0xf0
+>>     __asan_load8+0x7c/0xd0
+>>     udp_tunnel_sock_release+0x1c/0x50
+>>     pfcp_newlink+0x128/0x184
+>>     rtnl_newlink+0x848/0xe44
+>>     rtnetlink_rcv_msg+0x468/0x514
+>>     netlink_rcv_skb+0xc0/0x1f0
+>>     rtnetlink_rcv+0x18/0x24
+>>     netlink_unicast+0x4b8/0x558
+>>     netlink_sendmsg+0x2b8/0x584
+>>     ...
+>>
+>> Create the socket in pfcp_dev_init() after initializing the GRO cells,
+>> and let pfcp_dev_uninit() release it on registration failure or removal.
+>>
+>> Move the RCU wait into pfcp_dev_uninit(), using synchronize_net() after
+>> socket release to drain receive callbacks before destroying the GRO cells.
+>>
+>> Fixes: 76c8764ef36a5 ("pfcp: add PFCP module")
+>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>> ---
+>> A NULL check would fix the crash. Moving socket creation into ndo_init
+>> also removes the duplicate cleanup and ensures the receive state is
+>> initialized before enabling the socket's receive callback.
+> 
+> Assuming the NULL check is significantly simpler than this patch,
+> and that it resolves the bug, think that we should consider:
+> 
+> 1. A patch that minimal NULL check for net
+> 2. Follow-up with the approach taken by this patch in net-next
+> 
+> I say this because this seems to be lower risk than skipping to applying
+> 2 to net.
+> 
+> Also, please consider CCing stable on bug fixes.
+> 
+> Link: https://docs.kernel.org/process/maintainer-netdev.html#stable-tree
 
-Thanks for replying.
+That makes sense. I left stable off Cc because the lifecycle changes
+seemed too broad for a stable fix. Splitting the two makes sense now.
 
-You're right - I had not checked whether it applies cleanly, I only saw the
-change was small. My mistake.
+I'll send a v2 for net with just the NULL check and Cc stable, then
+follow up with the lifecycle changes once the fix reaches net-next.
 
-Is anything planned for bringing this into 6.12.y, or does it need a tested
-backport first?
+Thanks for the suggestion!!
 
-Thanks,
-Kusuma D S
-Alkira Networks
-
-
-
-On Wed, Sep 23, 2026 at 3:02=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Sep 23, 2026 at 01:23:01PM +0530, Kusuma DS wrote:
-> > Hi,
-> >
-> > 6.12.y picked up a bug without its fix. Details below; the request is t=
-o queue
-> > 8045c0df98d4 for linux-6.12.y.
-> >
-> > The issue: on every packet whose ESP decrypt goes async, dev_hold() is =
-taken on
-> > the ingress device but dev_put() lands on the VTI, because vti_rcv_cb r=
-eassigns
-> > skb->dev without taking a reference. The VTI refcount is driven negativ=
-e during
-> > normal traffic, and a later `ip tunnel del` then hangs forever in
-> > netdev_wait_allrefs_any(). The process is stuck in D state, unkillable,=
- and the
-> > netdev is pinned for the rest of the boot.
-> >
-> > Introduced in 6.12.y by:
-> >
-> >     4236c30b437b ("xfrm: hold dev ref until after transport_finish NF_H=
-OOK")
-> >     =3D mainline 1c428b038400, backported 2026-06-19, first in v6.12.94=
-,
-> >     together with its dependency af4b8c5e9d6d
-> >
-> > Fixed upstream by:
-> >
-> >     8045c0df98d4 ("xfrm: Fix dev use-after-free in xfrm async resumptio=
-n")
-> >     Fixes: 1c428b038400
-> >     mainline v7.2-rc1; in 7.1.y as 63a300151999
-> >
-> > The fix was not queued alongside the commit it fixes, and is still abse=
-nt from
-> > 6.12.y as of v6.12.111. So every 6.12.94+ kernel carries the bug.
-> >
-> > Confirmed on 6.12.96+deb13-cloud-amd64 with a strongSwan tunnel-mode IP=
-sec VTI
-> > under inbound load; kernels up to 6.12.93 do not contain the code and a=
-re
-> > unaffected.
-> >
-> > The fix touches only net/xfrm/xfrm_input.c, net/ipv4/xfrm4_input.c and
-> > net/ipv6/xfrm6_input.c, against code 6.12.y already has, so it should a=
-pply
-> > cleanly. I can test a 6.12.y-rc against the reproducer if useful.
->
-> It does not apply cleanly.  Please send a working and tested version if
-> you wish to have this applied.
->
-> thanks,
->
-> greg k-h
+Xuanqiang
