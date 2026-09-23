@@ -1,140 +1,109 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-232.mta1.migadu.com [95.215.58.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE01334D4F9;
-	Wed, 23 Sep 2026 01:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629583603D7
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790128022; cv=none; b=CnG6N2h2Cpuuy984TJgPLkjU0SusPj6RPhrjDPxCqchfiUPJ9aiLgBigmbGkfzO3sOxrswBZ7UZkulpSInfAZykTGKjr6S5VWSqHhOypEwRz38QQwzfqvju57E72hZxpAUmzIx9v6cR8tPEjWxhhxoHeJ+hH5749Rj/JrQcaIl4=
+	t=1790128099; cv=none; b=dmCYACSfvzvOCmUuUYx5Ctdk8OO4siHUUq3fZBMeN6DZ6O8xrPubHrqh5c/+0g8m/VVXpPNfMTdbrG8bkRfXm9LW392s6wT8ORY0bp2ZXikqmHR0K7W1nU02aA/BB/yDiKD+UYJMm+Pd4AIqlYQrFnY5I+wujGQpXN2LoN3yXH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790128022; c=relaxed/simple;
-	bh=XDuCX5mpDUYPZq4gdQrExw0wdk9ti/C0Roso2HobxSo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SskgBSmnoYxxBjOC3I61MtnE3AGBi9ghNhuv4tScvDYsuJVuPBQXknhNdk0bwtEn6Dk0k1Z3xHNIh7GSgzK2yej7v8LyAvcrt90umAsOZo6zx6qu8iKOHXgfOVrZqueOcXE0JWi/aPe9y/FqoyKonAlYeOtlJieMcpMwiKWDM5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=D+bhSRva; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1790128099; c=relaxed/simple;
+	bh=u+X6/vxg2v3iHeoqAYncrYBLXI0Jh253vVMVoJ9VuHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EgQZGlenC7Uo+lzZODhv4+IxJyHUkGQzFK1BHVVEFMp+jMEwBuEK6ZfxNPhdBCI7ZHOYcrE6tppOubBbiC74ApHzO1h9UuYmFE8I56WIRmyY9Hpjd7hSgzmPLClR39TILtOIJVcczypFoJB7jyA72FapGIvv2ibc8nBMVSZFVZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qa/yn8YB; arc=none smtp.client-ip=95.215.58.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="D+bhSRva"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MIJhnf008855;
-	Tue, 22 Sep 2026 18:46:27 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
-	ynuKi0WJ7na1xrBPe/e2ovkHYbRbpN2M+SWPcznReY=; b=D+bhSRvaZycsnROvH
-	8STmDLw0PIzVnIEO8sM+DlJn51cJqIBvrX0ZpXXls+EWwNklcEnSoYQtQaIa7704
-	DZ6QcqcC/KXNeUTVOMTpscjdjHls2qGjY0VMjErvThmma1kyZDR9XZyRIM/O2IYU
-	u1UHla+ziDNcPBWGcZEvljhPXiTcyiimi1padCPCUx6aasCM1L6DU4epZ+o0/grz
-	XBAn2bCYC6indQv9KYU2+Fbe9Jhp0XeocDt+yWt5RBmHOEqFXF9rwEUpHPvBHWaW
-	5oFkx8RRfLmmKGJ7/r5euMElQjGsfLMJIqkduzhSg974ID7GPvJU85VbpNpR4FI/
-	lUofQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4guvwu304f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 18:46:26 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 22 Sep 2026 18:46:25 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 22 Sep 2026 18:46:25 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 3CD313F7072;
-	Tue, 22 Sep 2026 18:46:20 -0700 (PDT)
-Date: Wed, 23 Sep 2026 07:16:15 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <ast@kernel.org>,
-        <daniel@iogearbox.net>, <davem@davemloft.net>, <edumazet@google.com>,
-        <hawk@kernel.org>, <john.fastabend@gmail.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <sdf@fomichev.me>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v16 net-next 2/2] octeontx2-pf: add mqprio bandwidth
- offload for NIX TX schedulers
-Message-ID: <arMvZ-N227m8lpCL@rkannoth-OptiPlex-7090>
-References: <20260918015906.1255204-3-rkannoth@marvell.com>
- <179004355373.2160803.6964448826928226346@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qa/yn8YB"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=u+X6/vxg2v3iHeoqAYncrYBLXI0Jh253vVMVoJ9VuHI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790128095; v=1; x=1790732895;
+ b=qa/yn8YBih4LMpi3db42eaNAP2yLhX9XrHDF/GkwmL/BL0ekx+QcyJCEVavhSQBSJd2awIXg
+ Rgs3ZeuuCzQk8JFJ/VEh+QBDCBCQziXWLgojLtxA+RYj9hX7f32SukLhOgmYiYUwhUySEAf6ADa
+ R/Q2asSgaVCcjXcmqfMjNBz4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 3968b3c81cea4a5f;
+	Wed, 23 Sep 2026 01:48:14 +0000
+X-Mizu-Trace-ID: 3968b3c81cea4a5f
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 23 Sep 2026 09:48:08 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next 5/5] selftests: seg6: add End.X PSP selftest
+Message-ID: <arMv2FE49vEwM7BP@fedora>
+References: <20260922-srv6_flavors_endx-v1-0-4d01c05c47b7@kylinos.cn>
+ <20260922-srv6_flavors_endx-v1-5-4d01c05c47b7@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179004355373.2160803.6964448826928226346@kernel.org>
-X-Proofpoint-ORIG-GUID: jFBeiJTeTOdqrDBvCUyyXwO4iWTvbSIH
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAwNiBTYWx0ZWRfX4sjzAGjC1G27
- hMbe1stVRpa43V9985Ax1HAnJRoLbiBGhciOVYXL3X1ujI5imLQJoBHAPUfNwsmG0lYd4vjpEuC
- yDKBJi8sh6/ZjyI08OHcITRHSKe4FCM=
-X-Authority-Analysis: v=2.4 cv=b/UncdGx c=1 sm=1 tr=0 ts=6ab32f72 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=VwQbUJbxAAAA:8
- a=4cC4gU3_DxgSVQyE84wA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAwNiBTYWx0ZWRfX8VW4lKZh3cWT
- gfq/sxwhWvidv7Z/NjBzZAsUatlPDl5Y84VV0aGYPEvNRu5aawKWwbijkID/eb0GzcJYYD+EhPP
- i3a/o7OSH+VQkWrz0uucI2KLALw+uC8FGlPyUav9LI5EZThdx0JFgqt8ktCwD9rn166zbL/wzej
- e9dv18LBtxXrDzdLE+24OXRkYdMcFXFZUcbP+5iplEGSD9W2n4RNmIf3RKTitAoCxYBtLCIgTS2
- jLoD8CkMvUoTnaCD4XikN4dth5QNqzvL80qrUV9LXZhYRpXbROSsybMYVt4oDK49uEguzvwu/ZH
- blLa61PIUUINcrXZMUPA2oDv4JUx+u/8B9x9nS9M81wepeyXEBYbDBcwZAVaM/4SMFa99TUXGvr
- 5UuqNUQZpAvvr0O8i1GntcRsYYjiIZFRwU9wfPv44Wez+a62dqw0S6PHIij3RQlNkMthwwXfM+3
- qeDjGgyHxqDcGQ5GA3g==
-X-Proofpoint-GUID: jFBeiJTeTOdqrDBvCUyyXwO4iWTvbSIH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
+In-Reply-To: <20260922-srv6_flavors_endx-v1-5-4d01c05c47b7@kylinos.cn>
 
-On 2026-09-22 at 07:49:13, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
-> Thank you for your contribution! Sashiko AI review found 17 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 7 · Medium: 9 · Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [High] otx2_mqprio_restart_netdev() manipulates the core-owned
->   __LINK_STATE_START bit directly (clear_bit()/set_bit()) to fake…
-> - [High] When otx2_nix_tm_clear_queue_shaper() fails, otx2_mqprio_down()
->   deliberately returns the error and keeps pfvf->mqprio.rate_limit =…
-> - [High] otx2_mqprio_netdev_tc_work() reads pfvf->mqprio.rate_limit and
->   pfvf->old_mq_snap before taking rtnl_lock() and never re-validates…
-> - [High] Every early validation return in otx2_setup_tc_mqprio()
->   (interface not UP, wrong shaper, no CIR+PIR, SDP rep, PFC enabled, XDP…
-> - [High] A successful mqprio replacement is rolled back when
->   NETIF_F_HW_TC is not enabled, which is the default for these devices.
-> - [High] Replacing a software mqprio root with an offloaded mqprio
->   succeeds but loses the newly installed traffic-class layout.
-> - [High] The new mqprio.netdev_tc_work dereferences pfvf->netdev and
->   pfvf->old_mq_snap and mutates core netdev TC state, but…
-> - [Medium] Two changes to code shared by all PF/VF configurations are
->   bundled into this feature patch with no mention in the commit message:…
-> - [Medium] The commit message claims failed setup 'rolls back via netdev
->   restart' and the code reports 'mqprio: replace failed; prior…
-> - [Medium] otx2_mqprio_max_rate_bytes_ps() derives a maximum *rate*
->   (bytes/s) from the NIX *burst-size* constants MAX_BURST_SIZE (130816…
-> - [Medium] The driver reconstructs the core qdisc replace state machine:
->   otx2_mqprio_keep_netdev_tc() strcmp()s…
-> - [Medium] otx2_txschq_stop() now zeroes pfvf->hw.txschq_cnt[] on every
->   interface stop, but otx2_get_smq_idx() computes 'idx = qidx %…
-> - [Medium] A failed mqprio replacement can leave the surviving old qdisc
->   inconsistent with both the driver's cached state and the programmed…
-> - [Medium] pf->refill_wrk (devm_kcalloc'd array of INIT_DELAYED_WORK'd
->   struct refill_work, allocated in otx2_config_nix_queues() from…
-> - [Medium] INIT_WORK(&nic->mqprio.netdev_tc_work,
->   otx2_mqprio_netdev_tc_work) is performed in otx2_init_tc(), which runs…
-> - [Medium] otx2_nix_tm_set_queue_shaper() programs both MDQ PIR and CIR
->   via otx2_get_txschq_rate_regval(pfvf, rate, 0), and burst == 0 in…
-> - [Low] Two new comments describe the hard-coded burst value 65536 in the
->   HTB shaper path as 'the kernel-side default burst when HTB does not…
->
-Will address in v17.
+On Tue, Sep 22, 2026 at 04:54:47PM +0800, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> The current selftest only exercises End with PSP. Add a new test that
+> uses End.X on the PSP path so the kernel's End.X flavor handling is
+> validated end to end.
+> 
+> Extend __setup_rt_policy() to parse End.X action field from the
+> router description, allowing entries like:
+>   4:psp:End.X,4,2
+>   3:psp:End.X,3,1
+> 
+> Since SETUP_ERR is not set in one setup function, and the middle test may
+> set ret to 1, we also need to check ret before setting the result as SKIP.
+> 
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> ---
+>  .../testing/selftests/net/srv6_end_flavors_test.sh | 83 ++++++++++++++++++++--
+>  1 file changed, 78 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> index 52731983b4cc..e130d0d71b3d 100755
+> --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+[...]
+>  
+> +setup_endx_flv_psp()
+> +{
+> +	# Direction hs-1 -> hs-2 (End.X PSP flavor)
+> +	# SID List=fcff:3::e,fcff:4::ef1,cafe::2
+> +	#  - rt-1 (SRv6 H.Insert policy)
+> +	#  - rt-3 (SRv6 End behavior)
+> +	#  - rt-4 (SRv6 End.X flavor PSP with SL=1)
+> +	#  - rt-2 (Route to hs-2 via nh and oif)
 
-pw-bot: changes-requested
+Oh, just noticed that I made a mistake comment. It should be
+
+	#  - rt-4 (SRv6 End.X flavor PSP with SL=1, route to rt-2 via nh and oif)
+	#  - rt-2 (Route to hs-2 with same subnet)
+
+> +	#
+> +	# Direction hs-2 -> hs-1 (End.X PSP flavor)
+> +	# SID List=fcff:3::ef1,cafe::1
+> +	#  - rt-2 (SRv6 H.Insert policy)
+> +	#  - rt-3 (SRv6 End.X flavor PSP with SL=1)
+> +	#  - rt-1 (Route to hs-1 via nh and oif)
+
+Same here.
+
+> +	setup_rt_policy_ipv6 2 1 "3:noflv:End 4:psp:End.X,4,2"
+> +	setup_rt_policy_ipv6 1 2 "3:psp:End.X,3,1"
+
+Thanks
+Hangbin
