@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23DD334C1C
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 23:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565A13A71A8;
+	Wed, 23 Sep 2026 23:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790207477; cv=none; b=Tafl6ZWkoz5yljWCB8J99rq74cgtemekYvs7W2/kUb/+/dRWaFrWEzKL9RUof22K/yN7+rLUYE1FnITZ4aLvijQ6KLxK5JSjGRmRw8qNEhtzovEgS4dzkAcbKupAX8bcdR1htI5MhmK2RITpQPFQDpMZGw/MHuWECDUH5bBwbPM=
+	t=1790207481; cv=none; b=dyAIsw8HKdqgtLVLItxpcBO52I2tf7kScb554q0FJuTQ5XVbSLKVFcCO2WwBWnFY0PNmFRge3flF6QqJlnq8w0S9jxrQ7HteXZNJRlDQTyc60taSY2m9vyIBvgOWUu90cNEiP+88zbudBTMA4i9YYaTfd31nN99pKxvkVUwIwk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790207477; c=relaxed/simple;
-	bh=HRWap01Ch2guv4NiHbEQgrEqMQX0KxOfAo0cLDAb6jM=;
+	s=arc-20240116; t=1790207481; c=relaxed/simple;
+	bh=1e9LQbt+X6yyOphfcnXgsEW45Y592U08huJX51Uzf3M=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=laCAcFt8XutCLAZtiiwbI97LI4tVMkjJt3UV+BjdNE+q21DpSgJc7jNeQuD0srDtcTUw22tjHq3FmFAGwn3YJ5iRNPjeM9mY8DIeeeDRlkkO6rUfRR8MnKmylfJze0YcgF5cM1c0l8yu9RGj2lpl1N6W5VlOB+sYeiUd2Z/JZbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByU5WzBG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=W3mgmelwnXFSQgzIR+P4mnlAZ6RUwhz3wJHmoQ7qunWHtBfbe4gT5e5yrPhFBPF0aJjElqKOEXlQEX1QlzV2v9OHP1S21eqmWoXqGddx+n9JkA0bYHNrDdU3oVwk0vljoYjYBilHdSvqL4W46R8Q6pMles+JdB2aC4nivYrvPA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E13OI+yG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByU5WzBG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF201F00893;
-	Wed, 23 Sep 2026 23:51:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E13OI+yG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E706D1F00893;
+	Wed, 23 Sep 2026 23:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790207476;
-	bh=HakspCagm3ScCF2M/Fa+q4tSniApF6HaE4ECUDCvJLk=;
+	s=k20260515; t=1790207480;
+	bh=mbCwRTgn9fV8AwDIlQlyn3JYMSLiwU3wb3k1ZoQIaaA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ByU5WzBGc3PnF5NAUcSSMQkg46BHx21T+FVUiG5HO7+QQtd0hxwMI9X7iVHm3zILE
-	 mrB9imXSrimFUamWAmuTPdOp4/a4Y6pf6hxBSKIOAndqFCwXD830hlHT8LMrVxvRZu
-	 z9hclidEaqDw5pQf2bh71uK4WbiVZN4vdcweV7Bc89goJ1kVPTp7JghNmiNw0kkS3F
-	 ltZbFRkOQO0S5A00+0/SQGGdYBgxqEabsoOJE6eykX1k4wkjhtIiSWcoGQhbG+qbUA
-	 9AbFqmRgIyfOWrpEfI8HceqBbXelbdc0XeWDQi4axW+YOPSD6AZQ1KF1hj/P+CzGcH
-	 Q15adTd2UCZiA==
+	b=E13OI+yGGfCKHoId8Otw2313St8xQBfbw6db25z0B1FvOLn7BUYOuTs7ubULB+oi3
+	 tc2A1pHHWdJKo3ATDSv7a8wuogmIZMMgRNPhPfIVFVws/nn2JjdTYt6ThrLylbqYUi
+	 Ndp8fJEdfbp7ui+8fYcpLBpalhYGVejMJCC8ZNnfN8gKa3gRLxcVzU4WCDXnbn3pzK
+	 u7MWDW2Xgczxxl9t73hk2gJoQrAGzryyLYc6Rzp1zc0u3ZAJMaVptxtiZWpvOMBhhP
+	 TtFzOD4uDC/dXwPcqUm7I7GTD4xwrjbKsN8qwmPEsiEPIgBIiGVkZMcucTkHL4ZJmO
+	 wIEtRXqQh1csA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A7E39E9602;
-	Wed, 23 Sep 2026 23:50:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D092E39E9602;
+	Wed, 23 Sep 2026 23:50:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/sched: act_gate: budget the per-entry list in
- get_fill_size
+Subject: Re: [PATCH net] ppp_synctty: remove redundant skb null check in
+ ppp_sync_txmunge()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179020740618.999807.15161561763499463273.git-patchwork-notify@kernel.org>
-Date: Wed, 23 Sep 2026 23:50:06 +0000
-References: <QDISC-3BLH.v1.20260914203033@mojatatu.com>
-In-Reply-To: <QDISC-3BLH.v1.20260914203033@mojatatu.com>
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
- netdev@vger.kernel.org, horms@kernel.org, hybris@mojatatu.ai,
- sashiko-bot@kernel.org
+ <179020740939.999807.4999315153340387066.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Sep 2026 23:50:09 +0000
+References: <20260920114945.2517-1-qingfang.deng@linux.dev>
+In-Reply-To: <20260920114945.2517-1-qingfang.deng@linux.dev>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, jirislaby@kernel.org,
+ elfring@users.sourceforge.net, kees@kernel.org, linux-ppp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, lkp@intel.com,
+ error27@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 20 Sep 2026 14:07:01 -0300 you wrote:
-> tcf_gate_get_fill_size returns only the TCA_GATE_PARMS size, but
-> tcf_gate_dump also emits three 64-bit timestamps, the clock id, flags,
-> priority and the variable-length TCA_GATE_ENTRY_LIST nest. The per-entry
-> nest is unbounded: parse_gate_list places no cap on the number of
-> sched-entries, so a gate with many entries can push the real dump well
-> past the skb that tca_get_fill allocates from this size.
+On Sun, 20 Sep 2026 19:49:43 +0800 you wrote:
+> The skb is already dereferenced before the check. In addition, a TX skb
+> passed from the generic layer can never be null.
+> 
+> Remove the redundant null check.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Closes: https://lore.kernel.org/r/202609132245.txZXoUxc-lkp@intel.com/
+> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/sched: act_gate: budget the per-entry list in get_fill_size
-    https://git.kernel.org/netdev/net/c/cfa165cbfbed
+  - [net] ppp_synctty: remove redundant skb null check in ppp_sync_txmunge()
+    https://git.kernel.org/netdev/net-next/c/1196e46f6d42
 
 You are awesome, thank you!
 -- 
