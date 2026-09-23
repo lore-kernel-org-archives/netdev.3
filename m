@@ -1,65 +1,65 @@
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B8E41E6A7
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF55421226
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790185593; cv=none; b=QgbQ9kUEGlmMCidwuw+vSVjBoOmjbaCZzZF7NwYPp0Psz8ud7co7ZD6rd2sRy+Cyp0rI0haPdHEnqhSd7Uxlbim4eVFr6lVDOXkNLE+W+Yx2Wf8+7vwsFIoLTqQomoT8S0Ht3uvXQ6GUrEDbv1GBETDzq8nsfO/EEEjq/eeRve0=
+	t=1790185778; cv=none; b=b0luODzeJZdDU28vPTWyEKpEofMUsczybICUKsxOU4zZtaJi+rUDtTKQHurDoZjW417AwA3fAI2vfcB8yXJeDxuWJ5++aB6gyS59V6rriWnku0eQuypkTQE2LYAyhpTANej+6tEjye8Lb44w/z0OBKSs0m+tD7LERGwXDQRthCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790185593; c=relaxed/simple;
-	bh=f3YevRKPlnVtTSjlt1kYTG3kL0FTQuzETu7ncmtuDpE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=RzmgyqdGfJkRAbFqIgOjtJW3D7uMKoRPEw3U+HpPMgjKt5cQ4mKaTxJHQIfZCC76kCGTFB7VG3WRm1PXQbpwN/xHD/jSKU8+i63DIIP9KRipP7pi/a7nt6g6bFDS2j09qbZxttGBRQ/dHpjl+bP/AvzvWQj4Le7JOHZg6GSsLng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QT/zpSu7; arc=none smtp.client-ip=74.125.230.234
+	s=arc-20240116; t=1790185778; c=relaxed/simple;
+	bh=b0qrLZrXHcjxaMdguIqby07pC/TpQhegHwKy5tJHNHA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=fiuZlpLpVPjfGNOUgaHa9EuYPg4VnVNnk0b1GWVnOlWivOnIClYziF6HAmrsX2wlZS6492Tnv6RVCKJzQG4xz4qNha6rvk9vawJuZruT6K6ym9yhu1LYgIjeop1CHgSejv6jsQm+uSII7G8qjWbWRnoQTWAKXWVGiZuNmsxwNK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RWaan63S; arc=none smtp.client-ip=74.125.228.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QT/zpSu7"
-Received: by mail-qk2-f42.google.com with SMTP id af79cd13be357-93bef17c191so88728885a.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:46:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RWaan63S"
+Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc5256c2a4bso558697a12.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:49:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790185590; x=1790790390; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20251104; t=1790185775; x=1790790575; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=f3YevRKPlnVtTSjlt1kYTG3kL0FTQuzETu7ncmtuDpE=;
-        b=QT/zpSu7PHKyQvPMsOlkRTcW3Vav5VLW0SGpwrw+lUwVe5VwPHwqwBeTB6mgJUjR26
-         tA5OQfSzn1n9RJXhLhugYU7E3mWwCyagCPm+PsiAAAgYMcEH21HxXqhZeokoMIjQKJEE
-         cNuUl2M5RkQe9Bg67nY2KWVxVDiZEO2TQffg6f+ptogKPz3rnN2KJmruEscGgz0zuhgZ
-         AvMnoU6kWCJr/XupHeclmn1a41w+9LWUbCUPCEyWmaiT9EomZYb+sobagFbUG63MbiZE
-         gMqKzHz0Xn2mrD+KNWV/2UcJywClWJjw4PfNyWrmHE9Pn3srOWXIveTNDLI+6kZc6VrK
-         JIZw==
+        bh=b0qrLZrXHcjxaMdguIqby07pC/TpQhegHwKy5tJHNHA=;
+        b=RWaan63S3XBEf34onYxukqlDJ74B6rL/lbo4PsN/sDumTwMMfjCMq4PyeVSdY8PiN+
+         OGeiCDbzWk8O/y0HJW2nF/AuxjwrCc2nrC1Ig03c2FMQi0BTq3RniXwuzREoFY1+mHlR
+         CSlVKYeZwVo/zPSbfLBLgf8ubdiURu7aJTqVsVDHjdMLWqBCWmDtu2CrMBnQjjrmMM9f
+         tc5TFAscc65Ndsgcq9k53aRY869HVBGU4g76GyOIxt86Dmx6Jk9l59oNNwUvb4gwZjN9
+         Sy9QLGhWMyK6IkEgacSPsoRHjV0WEkg091LffqoLBRodv0z+y2K9g0AjvWh4g/i6jIeU
+         tXzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790185590; x=1790790390;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20260707; t=1790185775; x=1790790575;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=f3YevRKPlnVtTSjlt1kYTG3kL0FTQuzETu7ncmtuDpE=;
-        b=mDkWrcIUIBwfW4yaZGqy1kHJmLVD1m+nnTHBFUaV7PCWcNvyT61mXzpTJ+F4bRDKZn
-         YVPwPARKrLsgVMWQAcKXCGgZF2hYrFpKjDknClPDFGjtTpE1Z6gl9taYMi5iwGazUe0A
-         SorZwe5i4X8rzGXXHu7sM/Hdm4QW+/RqiWPFh7hexAlRIUk8Eg7SLNoLDmkPMh3RxXLb
-         JxmDfe3KdEJZqvcPwBTOBx2loMAeAoDVJKCB3oe7Vn57EjiqQyYrLvxhp3Gdn6m1+Ql5
-         Cw09Z+dBQUqzao0UbszOgq7MSvERqb5yJrVGsUsUYWZL/tFEz8m7/cKyvdI30yrO5xpi
-         Nbmg==
-X-Forwarded-Encrypted: i=1; AKwUvBzc15FfEtgTCpBacGOysIqox6nc2A/I6wVmh+iEBIemmhUTpvOeBFbFVgWLefP4JhsS3sEMN84=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWRZauRdFJB239Rnp5foJwa/QNmGQnL81SkFjkUnVRk/DgxPs4
-	S5jLH4Kz8tD85rxxeAHqVeRVZnkl4U3Bfx5okqglTeM3COksHPiX0ejA
-X-Gm-Gg: AYBFou35QwnOSy5BSQBb23x9NzV5FkbZ1pyq3EernN/0KK6R01mN5qq5iJMv1GbMOl/
-	6p+ckV/Gt5cto1vvAHavJQxrqwNCZcJKC5oI6D6M7JpeDJ1wNI9dNcH1aBzAGGUd8qmM8jXSHaJ
-	qxWaDeDa5hKniq52ncElSK19G7thrpmiSqcLi/tUVFWP6qutsl63qpvliZtMf79kGth1d/snaCL
-	8SmUPB5mPlO3zAD0ml4h+5WiCTdqxYNkf4koTQ0vkAnJNTd2DIPiv40/SUZM1n5Gb0cfW2EvZVF
-	4B38lTCUXtxCw36Fv0FMcUBKJ3LRtbmEZtWGuCYWkv90tt2jllDmxmuK++kOs/I/fQz48Niez5d
-	Ke9ZZs7GlJq6kmB62pOlzbLW5kqVhe87rwOREct16nC4xpPf4i7MwP3ccPlMh1/iLC1GjNAr1Bu
-	/kBg3LUfvq5MasUuUWc7Pms37auDOwox+j4/UGnA3tQidvPeX/FD28RC0IrVcvuOF+zEGp5xy+Z
-	iw=
-X-Received: by 2002:a05:620a:4054:b0:939:ff11:5328 with SMTP id af79cd13be357-93c250cc995mr521143685a.24.1790185590396;
-        Wed, 23 Sep 2026 10:46:30 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2485883asm278842585a.20.2026.09.23.10.46.29
+        bh=b0qrLZrXHcjxaMdguIqby07pC/TpQhegHwKy5tJHNHA=;
+        b=Nr1obZaDa1iMAEXTGKnKhaG7nzYuiKFh+VDvvNdolJfOPb5Dcb3n1TRu2z1cilKe6Z
+         RwzUMq0khmdhkwX6QpTPieMADahGbbxX69HzLIwh04DukaNq5XoCT7S7WMmF7N5a1kHV
+         OSCxFk4mzWxZZJSk1l/7+V1XVPySrYozZI86Bv/03ccpmvc7C3ZP0OxyYBFVS2KuAsOS
+         hBSSsUlyX3Zun/S2goHRlFfMPwGWaSfr6FHnCjAv2yf7+i3L0vT4gx6siNvsywrrajPf
+         MuC4DOGcoYCcpKqLva7B6U1FW4ldQluWFuXf0G/n+y9UVls5aZ5Ae/to8oYN7eatDLju
+         mIjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwZ0GG2LgAud+l7VphaZeICi3XBW0VmT7C3kRLaGJqyfzfpyAHrekmZDIjE7EGnJAqF5eHqTRM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKM54cTGiPgdEZ0bRqgGZ5AEWw7k3C0Vyoxd0zHAk34WA65A3l
+	XSZadtq4CF18Sus+r9kY0l2wyR8vBuHcgDF0+LI06XmWt1c9kSil3dU7
+X-Gm-Gg: AYBFou1wNZwdWlC1dtdUaNIlxFLNfREPRjRrf2kDAE6SCguWDE+YBdwtFE9ch1uQ20r
+	W/063eO7oxNiX3o/iSMT0Zyb0saoBmgMz1H2U7W5jLGefL1SjmAnMaEr09ulLjp236TFg88jXWU
+	6HBfKUVYsGBYGUpM+BrFwqRTymqOcknytyHz2nDqZiJLtphB0gnIkxWmAP2+JL10oVvGuNG6oAK
+	tWuhE6Dt24/UlmAarlCHMS6oLQ0e95ophJW4czNgXdXTXGwInuaFK8Jj+7chr6ZpWJsI2oKKYCg
+	loEONcRXeu7nveXSvIMPNptM7s95kWUlV0QsjwiogEZhLOvwKSOXygNKE0CteOyHXkT7S6jMx07
+	U47GcdjoDIVA30QktUbW+xNJUgjicy9/imzXcYfSnouMpUQUzxuS7ddBD+x5aGY8/mfQvUWt0f/
+	ULNPD+xfRGik5np0MC81WIIOggMNLBiVjaXC2D73ECx67U3tCPDWjsR7v63ANTgGl81XkE4hsI0
+	0GIURoyUBLeW+kANJr/2qHAKf7mr9eLdAHQ
+X-Received: by 2002:a17:90b:1cc5:b0:3a0:9640:8036 with SMTP id 98e67ed59e1d1-3a09640858dmr258738a91.6.1790185775461;
+        Wed, 23 Sep 2026 10:49:35 -0700 (PDT)
+Received: from localhost ([13.93.150.60])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a081274d7fsm2065754a91.2.2026.09.23.10.49.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 10:46:29 -0700 (PDT)
+        Wed, 23 Sep 2026 10:49:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,64 +68,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 23 Sep 2026 13:46:28 -0400
-Message-Id: <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com>
-Cc: <bpf@vger.kernel.org>, <kernel-team@cloudflare.com>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
- <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
- Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
- <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
-Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
- packet scrubbing
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Jakub Sitnicki" <jakub@cloudflare.com>, <netdev@vger.kernel.org>,
- "Alexei Starovoitov" <ast@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Stanislav Fomichev" <sdf@fomichev.me>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com>
-In-Reply-To: <20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com>
+Date: Wed, 23 Sep 2026 17:49:33 +0000
+Message-Id: <DLMVW6Z8IU9P.31OHF60Q6YCWP@gmail.com>
+Subject: Re: [PATCH net-next v4 2/2] selftests: net: test untracked NA
+ recovery of FAILED neighbors
+From: "Lawrence Lee" <lfqlee314@gmail.com>
+To: "Ido Schimmel" <idosch@nvidia.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
+ <netdev@vger.kernel.org>, "Arun Ajith S" <aajith@arista.com>, "Roopa
+ Prabhu" <roopa@nvidia.com>, "Jaehee Park" <jhpark1013@gmail.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Shuah
+ Khan" <shuah@kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1790127207.git.lfqlee314@gmail.com>
+ <ce40008682ed26ab039168a5fcb515eff8d30c3a.1790127207.git.lfqlee314@gmail.com> <20260923083633.GA2626135@shredder>
+In-Reply-To: <20260923083633.GA2626135@shredder>
 
-On Thu Sep 10, 2026 at 10:02 AM EDT, Jakub Sitnicki wrote:
-> skb_scrub_packet() drops all skb extensions unconditionally via
-> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rcv,
-> etc.) and cross-netns forwarding (dev_forward_skb).
+On Wed Sep 23, 2026 at 8:36 AM UTC, Ido Schimmel wrote:
+> You shouldn't have added a Fixes tag. Backporting this patch to older
+> kernels will make the test fail. Wait for feedback from Jakub / Paolo
+> before posting v5. They might agree to strip it before applying.
 >
-> This makes it impossible for a BPF program to pass metadata via bpf_skb_e=
-xt
-> through a tunnel or across a netns boundary. The extension is always lost
-> at the scrub point.
->
-> Introduce skb_ext_scrub(), a selective variant of skb_ext_reset(). It
-> deletes every extension except SKB_EXT_BPF. Scrubbing is safe when the
-> extension slab is shared with clones: deleting an extension only clears t=
-he
-> per-skb active_extensions bit, and the shared slab payload is released
-> lazily by __skb_ext_put() once the last reference goes away.
->
-> Replace the skb_ext_reset() call in skb_scrub_packet() with skb_ext_scrub=
-()
-> and also switch udp_try_make_stateless() to skb_ext_scrub() as well, so t=
-he
-> BPF metadata survives queueing onto a UDP socket receive queue and stays
-> readable there (e.g. for a sockmap verdict program). Only mark the skb
-> stateless when no extension survives the scrub. Otherwise skb_consume_udp=
-()
-> would take the __consume_stateless_skb() fast path, which skips
-> skb_release_head_state(), and leak the extension slab.
->
-> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-> ---
 
-Hello Jakub,
-What are your current plans for this series? This commit solves the same
-problem I have with wanting to preserve the PSP skb extension across
-netns forwarding.
-
-Daniel
+That's my mistake, I added it in response to Sashiko review feedback on=20
+v3 but thought it was just for documentation purposes, I didn't realize=20
+the tag would cause it to get backported since I only submitted to=20
+net-next. Sorry about that, will wait to hear from Jakub/Paolo before=20
+sending any new versions.
