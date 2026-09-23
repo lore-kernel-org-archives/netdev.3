@@ -1,72 +1,71 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D56497B77
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBEC49C4B0;
+	Wed, 23 Sep 2026 10:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790160199; cv=none; b=Hey2C9i0zEEKS39OcimbiFH9+RHW2Mx8JH7DPgbawBq8mIBnbe1t96c/sl54AsalGoOk7DGVLjPE26Uj15U3wzNUtJFj0VCMBAqvbCFROkJnS2jo0v54lUXfS63wn+EXPnFpogaqxM+JBahZ/gdcQK+StpBUE29/aVr1OdJ0zUg=
+	t=1790160248; cv=none; b=TeemwwO4ff22V54l1wiQ+xTTfBTYJLzk5GCm/m0sGz2J44O1XFJwLjEA7UGkAsEdH8NJRybGzh1Yb0lzf4Canqb1tq2Ni1edkxICDsr2fktLPgmJsRS5r4xra0c/YFvegfF3an3wphEBbq28IeGSsl7YqWOhC74HdPBUoW/Y8fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790160199; c=relaxed/simple;
-	bh=PLpGa0xqGogXo/lsCeMPkcUMsMYjj9RhF8TNPBpQFdA=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OcbdikBijK22f3JRuYmI0iy1lZBNThbtAARggfmKHYvZPPqXRVO4sDPnBC7YcWGPbh3H0Db/maUCVHW5+C/5yBB3uDYy1xQn0w0xdYVSRcPFeTHo6efscdHreXxAUjE6NIxQeXGwGt+lFrFiKa5Uo7l7sdcbX5ITJKXdlnQg7t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 881c3036b73b11f19a56ed5b684f684d-20260923
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:a26c5c47-06d9-4a7f-af2d-1890c95cafcc,IP:0,U
-	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:25
-X-CID-META: VersionHash:7db8b62,CLOUDID:d31e98d2dc5902b90057bdc7252be9fe,BulkI
-	D:nil,BulkQuantity:0,SF:82|83|102|850|865|898,TC:nil,Content:0|15|50|99,ED
-	M:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
-	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 881c3036b73b11f19a56ed5b684f684d-20260923
-X-User: zhangyunfei1@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhangyunfei1@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1920627597; Wed, 23 Sep 2026 18:42:53 +0800
-From: Zhang Yunfei <zhangyunfei1@kylinos.cn>
-To: netdev@vger.kernel.org
-Subject: Re: [PATCH net v2 2/2] net: ngbe: clear DRV_LOAD bit when ngbe_open() fails
-Date: Wed, 23 Sep 2026 18:42:51 +0800
-Message-Id: <20260923104251.1514090-1-zhangyunfei1@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <arJev7h-_lEii1Z2@gmail.com>
-References: 
+	s=arc-20240116; t=1790160248; c=relaxed/simple;
+	bh=XvRTG431l92TtO9lmCm1PxcEwMrhHJEggB4RWtQwXoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IySXGhekYJhxRl9vVYw/5D7Wke5Qrs9vnH/HhRutQm7mRybTCy0Hn3TdGMu+0cfZCnxbZmeVJw4GT7oUF3owfcyouZqPsmcR+XFdGC2/G9obVHCIJLQUlzg9Bl4x/K0gyPLQoiH1aKU+zA4wbnAkeQZqsBtjpCLIfKe6wgVQ1Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eS8AFRXP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Fifc+0ae; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eS8AFRXP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Fifc+0ae"
+Date: Wed, 23 Sep 2026 12:43:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1790160227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gvCXDUOLOu+Ia2p9CgJqLnqgSQsSoYjyjZdMuJqNEBM=;
+	b=eS8AFRXPfE/UNrVT3y152JRW+dWVLA2lOAysGODRnGfzO2YHmHeWn31SDfYv6Q9io2Ojfo
+	zb0aVaJg+o73BFtg6qCmp3X3xB632tgqUQruD0RTkh/nY4fsODM61dFCRnmCaHIWsHIOUC
+	RtPz5iuxSFFLze2LdtpIrXwxlyCA9jJQWhKmQWbPZalESrUuKhMMCd8p+JYexE/M54xv/x
+	3lJI2aw1CX9m2gaxBLfX0ijSg2orD4ip2iNFLBAr1ll5IuIcci4HlY5vsFXKr1RKn4s9J+
+	AivTbigxmvGVP69h+dTPghgwAIDFJ/5uIsbPt9H695pL3jUalbmN5OXBmod4JQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1790160227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gvCXDUOLOu+Ia2p9CgJqLnqgSQsSoYjyjZdMuJqNEBM=;
+	b=Fifc+0aeBqxiODwcsR112GJu5mjkqXr/3sWTDv2+VClwmMaFcRECfXIu+YYsTZ0+6Cd0Pf
+	CMQ1zkls3RVbSsBA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Xin Xie <xiexinet@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, andrew+netdev@lunn.ch, shuah@kernel.org,
+	kees@kernel.org, petr.wozniak@gmail.com, qingfang.deng@linux.dev,
+	fmaurer@redhat.com, luka.gejak@linux.dev, xiaoliang.yang_1@nxp.com,
+	skhawaja@google.com, liuhangbin@gmail.com, stable@vger.kernel.org,
+	sdf.kernel@gmail.com
+Subject: Re: [PATCH 3/4] net: hsr: unfold GSO super-packets at the forward
+ entry
+Message-ID: <20260923104346.ur63K3h2@linutronix.de>
+References: <20260809121455.1745-1-xiexinet@gmail.com>
+ <20260809121455.1745-4-xiexinet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260809121455.1745-4-xiexinet@gmail.com>
 
-Hi Breno,
+On 2026-08-09 14:14:53 [+0200], Xin Xie wrote:
+> HSR/PRP require per-wire-frame tags and sequence numbers; treating a
+> GSO skb as one frame breaks those semantics.
 
-Not silly at all -- txgbe's approach is indeed cleaner, and you read it
-right: wx_control_hw(wx, true) lives at the top of txgbe_up_complete()
-(txgbe_main.c:160), so txgbe's open error paths never have to unwind
-the bit.
+Wouldn't it be simpler to not allow such packets? 
 
-For ngbe I kept the claim where the vendor put it (top of ngbe_open())
-and added the missing rollback, because moving the claim into
-ngbe_up_complete() changes the driver-firmware handshake timing: the
-whole setup/configure window would then run while the NCSI/OOB
-firmware still believes it owns the port. Whether ngbe's management
-firmware tolerates that window is a firmware-contract question I
-cannot answer from the code alone (txgbe is a different product line),
-so Jiawen/Mengyuan are better placed to judge it. Deferring the claim
-into ngbe_up_complete() would look like the cleaner long-term shape;
-this patch only closes the existing inconsistency.
-
-Thanks for the suggestion!
-
-Zhang Yunfei
+Sebastian
