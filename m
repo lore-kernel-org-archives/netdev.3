@@ -1,187 +1,95 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC9F345CCA
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D652621ABC9
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790126441; cv=none; b=AA+jwpJbTTHkywMZQvJ2beh28OcO/dcFj0H/vhy6aEq4XfIvJi+Jx98yHCMzb0ZdoOuKIUJToC7t9A2TNM9stWT71SmaA2t0vFO/3yGGu1lSl+eSGb+nmEUaOOJLhMIMlzePk2AFtRk8ewn2CQuB7EESGV4w56KXFYqLcblXmYg=
+	t=1790126477; cv=none; b=DzzC1JxmYQ5AxE+ZzaCiwl8jOYpGs5yT4mZ63x48wzjNTwjSUsKY0yMUiZ4q4HnYts+htx3yVUu0hAK1GY4ECKk225u+Pbvk/E7oF7YWBUgb3LbxTVE4HBZAZR56EArRty+brp03aOKf+D98zkpeIc43ZibiGaklwl1F5U3xWbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790126441; c=relaxed/simple;
-	bh=I81iv3lczUS3G6IPpI6uKZ4DjFCsc5VGR7jHPqYVRgs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ot54fGUhm11P7yIo5nJrf4bENySQymz8p0TOe2UWiV0d3MCWEJwx0VdLxQ1G4GB6y+4fwRO1nfp3L/3wlN4T9Lbjzmu8Il6wDJv52RCQdTCrXe7w9g/w5VSS81kopskQvYB5U1FXGDuizrqLkMPGZTjcMyKs9GTqDKXFOnCfWng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BuDUsr2i; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790126477; c=relaxed/simple;
+	bh=wRTs5mB7lbr1O6h9EptkHT14EBpTmkUtfmKFrd+Ag7I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=sqx8ETjkqpsc92UYacynyC+Uyg73YExh9t0g8u91e3sP3fno5AO25kOZdgmWoUNgwPVmOecOUxkG86CIjW9GOLE2CDjp5ATTTMetyU94yyMhQAWx/ZZ1cjETfxhs6jA5oaxF5ox5Pn7Jsm4mRntfWIpF9rQN3TYs/0YUuGOqN0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNZy42tE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BuDUsr2i"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33bfb26865fso317948eec.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:20:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790126438; x=1790731238; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=bexp4Cp8y+5hA37h2dF2gaOO9AQzqDKE3dHgoAsDxks=;
-        b=BuDUsr2iFSI6goqLTQcNUXI2wUY6rHleI30cULIc5XYxmWUBbSLBePQgdhl02a0qfE
-         kefcvMTi5XTKPoANKdSykYk+0aPfMfkNLRc89wFh1FkoBB7Oeoq3VumV11NAYFlABqZe
-         N9ykxm/lA0jy0WDfFlE0OdVQcZpkqt4IjFfQEG0XhvjzZJjfe2mK6vMArZHwg+eQpRd0
-         qiXpnrtJr2+n3suEOQ4ad1cC38ZkpOZWe+roXDBJO/71sUrTFm4I11FJkpLWSX/6M+E+
-         t0FRdbeChzmmoqRcutl0ha0MyZybBvSh8opSEUcPFjOjANGi2tu2HLkZPyqI1WmUvSs6
-         PbYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790126438; x=1790731238;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bexp4Cp8y+5hA37h2dF2gaOO9AQzqDKE3dHgoAsDxks=;
-        b=gk6/B5miv15CYvvmuE9GuyFCHNomiVDrRFtcstcNY6GoW5VaU8ndm/CUhxuqjJRRwv
-         X7AfP7+zqwz2fx0I21WLdjWOvE+hrHA+MBbsAtIHt8PBY4RZT95l3FPiHmm9TPVzaa/D
-         gFVvrzr1A+zn66kXNtRW6ubE+d1zn5hgDsQ4Bnq+4tUUWUJ1Xnso5PQmXQcBzQrjkuzJ
-         LhYp7pIV4qi+W+sfS7ADuvLwzuWXIkQ+GZkaComP1ckKTR/95Kqm40lqV7Y2zsGzznct
-         1CfDBwKD2UMmR3aBWCgzcmRJK1vCx3nHM4gOmbzANxUm5aq/AxnpCoz5GfZm7qT2IiPb
-         hGNw==
-X-Forwarded-Encrypted: i=1; AKwUvBwjcEsfuzUlb05uI/6BliXtaJz5tY39oe6QDMhhE8tHTkvg0JInE2HiYSGDhl+3bvYoDki0X3M=@vger.kernel.org
-X-Gm-Message-State: AFuF++lnKjKMqcxmYkvyAfpjzB44t/bf/leDX2zkK0TkX+XpjeAkEz0v
-	SefibuUGmzCQJBRYOjbjx9BX0gfBpKrrgh+24k2taNc+MMC8SdYDgvNS
-X-Gm-Gg: AYBFou0ZGRrN6bf1YA2/BjfOo35fcS8AxxBoYVVpGLW669M9SMu7GCCMD9pMUDaYXzb
-	u6+T0nVUw5oSDex1wF58hg05oODmtPuxtkBXIiblXnHV6AZTjbA2ySY/wZ9RtJa6lZ5IfRzf2rl
-	mffZlfA6Re1oDTiIXNZvpzoXEMAi2MB9kBZcGz2VLAWahDxyY7c1cgJHyu62qn0hm5IcfSTXD3o
-	0dCl2R6FvkVkCkOlKKwy9BI28dlge8eCOZvmhWSUm9TqtmPhejRR+wnjGTrtgwgrwGpqd7qICKy
-	W1hWUrJNy8J4q8IIOkpYFPpiqLwnA29vLsh/AvtcoCvINVXdLsbK0X87WE/nEobuLXKeT9XK5++
-	drsV0h1M/JxwZ/Y4dVnAG/kwArE/2Wl6668aUOX8VE5Rtx3gNtvvYXwStTypUtyTtbAdK0fxoja
-	QniNsEGqm1A7+kO1i3Ymw+Mw3o4pErGJvJyG6vTVoOT3PypUTILpSj+q4D+qquQ0L4xPgwxEcdV
-	kL1ZRptR2wUkCuMbgsZ0aBa3A==
-X-Received: by 2002:a05:693c:60cd:b0:33b:e306:2e27 with SMTP id 5a478bee46e88-33ea3eb055bmr1139528eec.5.1790126437786;
-        Tue, 22 Sep 2026 18:20:37 -0700 (PDT)
-Received: from localhost ([13.93.150.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e96f47d52sm1953755eec.28.2026.09.22.18.20.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 18:20:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNZy42tE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1C51F000FF;
+	Wed, 23 Sep 2026 01:21:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790126476;
+	bh=l6UO0vWE1Nw/6etMkEunqZ/ufuKDV3Nt2QfQMCAUPD0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DNZy42tE2nmbUxaNDtOtUmqF1bj+yXtpoCaHi9hpzshr8h9jzOxgg2DViRzy3Q8GK
+	 EcztGvIwHPTAUXEQOWYUev9MlXQi9wj/DyyRl3bIILmKLgP5tGBCKqe0DGG+wTjn/H
+	 llinqHm1jM/WgsrRMhwzE8B05LoKLB1kFKUvmI17qnMfvF/NdSNA+dOyqpDWxVUvvF
+	 r+px37c9xYV8VmWqKvItKwv+9d6z9XPUhljthJmp1Bxvmg+gXWLM/bHzVwSGQZwagA
+	 QCSBf0KYs5kxx7u9Cyznpp8H5s9IlILduFcGKbx6lF2mMfDMj5S6FLx9nc42J9dINS
+	 YBUKEwyvGhMzA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569F73924463;
+	Wed, 23 Sep 2026 01:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 23 Sep 2026 01:20:35 +0000
-Message-Id: <DLMAUZF2EY4Z.2FZ7BR3O62LAS@gmail.com>
-Cc: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <horms@kernel.org>, <rdunlap@infradead.org>, <netdev@vger.kernel.org>,
- <aajith@arista.com>, <roopa@nvidia.com>, <jhpark1013@gmail.com>,
- <corbet@lwn.net>, <skhan@linuxfoundation.org>, <shuah@kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 2/2] selftests: net: test untracked NA
- recovery of FAILED neighbors
-From: "Lawrence Lee" <lfqlee314@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <7285b55a1e29d2f04de4e3fe1e723a9724e0377e.1789734885.git.lfqlee314@gmail.com> <179011668031.2160803.1030111847497325728@kernel.org>
-In-Reply-To: <179011668031.2160803.1030111847497325728@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4 0/2] net/mlx5: Bridge,
+ fix remaining switchdev ownership gaps on merged eswitch
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179012640714.161587.5863662668734138663.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Sep 2026 01:20:07 +0000
+References: <20260918095931.29792-1-bsoares.it@gmail.com>
+In-Reply-To: <20260918095931.29792-1-bsoares.it@gmail.com>
+To: Bernardo Soares <bsoares.it@gmail.com>
+Cc: mbloch@nvidia.com, daniel@iogearbox.net, netdev@vger.kernel.org,
+ saeedm@nvidia.com, vladbu@nvidia.com
 
-On Tue Sep 22, 2026 at 10:38 PM UTC,  wrote:
-> [Severity: Low]
-> tcpdump is now a background child, and cleanup_tcpdump() is the only plac=
-e
-> that kills and reaps it. Can that child be left running when the script
-> leaves through a path that never reaches cleanup()?
->
-> cleanup_tcpdump() is reached only from cleanup(), which runs at the tail =
-of
-> test_unsolicited_na_combination() after log_test() returns:
->
-> 	log_test "${rc}" 0 "${test_msg[*]}"
-> 	cleanup
->
-> log_test() can exit first when the script is run with -p or -P and the
-> operator answers 'q':
->
-> 	if [ "${PAUSE}" =3D "yes" ]; then
-> 		echo
-> 		echo "hit enter to continue, 'q' to quit"
-> 		read a
-> 		[ "$a" =3D "q" ] && exit 1
-> 	fi
->
-> setup() also runs under set -e, so a failing sysctl there (for example
-> accept_untracked_na=3D2 on a kernel without mode 2) exits the shell direc=
-tly.
-> There is no trap cleanup EXIT INT TERM anywhere in the file, so in those
-> cases the two namespaces from setup_ns and both mktemp files are left
-> behind, and if the failure happens between start_tcpdump() and
-> wait_tcpdump() (for instance the new slowwait 5 grep for "listening on"
-> timing out, or host_link_up failing) a live timeout 15s tcpdump keeps a
-> packet socket and a netns reference until its own timeout expires.
->
-> Would adding a trap that calls cleanup on EXIT, INT and TERM be reasonabl=
-e
-> here?
->
+Hello:
 
-I would lean towards no, since tcpdump already times out on its own and=20
-any orphaned tempfiles or netns are a pre-existing issue. No change=20
-planned.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> [Severity: Low]
-> This isn't a problem introduced by this patch, but the absent-entry branc=
-h
-> of verify_ndisc() still discards the exit status of ip neigh show and onl=
-y
-> tests that the output is empty. If the command itself fails, is the empty
-> output then reported as a pass without the neighbour table ever having be=
-en
-> read? The same pattern is present in the baseline version of the function=
-,
-> so this is pre-existing; the new expected_state branch fails closed. Woul=
-d
-> checking the exit status of the query in the else branch be worth folding
-> in while this function is being touched?
->
+On Fri, 18 Sep 2026 10:59:29 +0100 you wrote:
+> v4 of "net/mlx5: Bridge, don't fail switchdev events of sibling
+> eswitch ports" (5f324c5d1b12), addressing reviewer feedback on v3:
+> 
+>  - The v3 commit message for patch 1 wrongly attributed the recursive
+>    lower-device walk fix to LAG bond enslavement order. As pointed
+>    out in review, mlx5_esw_bridge_lag_rep_get() already filters on
+>    mlx5_esw_bridge_dev_same_esw() per candidate and cannot select a
+>    sibling's rep. The actual bug is in the generic recursive walk
+>    used when attribute changes are emitted against the bridge master
+>    netdevice directly (a bridge with representors of more than one
+>    eswitch instance enslaved, no LAG involved): the walk returns as
+>    soon as any lower device yields a rep, and the underlying base
+>    case only checks same-HW, not ownership. Commit message rewritten
+>    to describe this correctly; no functional change from v3.
+>  - The v3 commit message for patch 2 claimed a "replayed/duplicate"
+>    NETDEV_CHANGEUPPER unlink as one of the reachable cases. As
+>    pointed out in review, netdevice notifiers are not replayed, so
+>    there is no such duplicate delivery. The actual (and only)
+>    reachable case is a sibling instance whose bridge offload notifier
+>    registers after a peer port was already enslaved, so it misses
+>    the link event and never tracks the port, then genuinely receives
+>    the later unlink event. Commit message rewritten accordingly; no
+>    functional change from v3.
+> 
+> [...]
 
-Pre-existing issue, will leave as-is
+Here is the summary with links:
+  - [net,v4,1/2] net/mlx5: Bridge, don't fail switchdev events of sibling eswitch ports
+    https://git.kernel.org/netdev/net/c/35e6f970f553
+  - [net,v4,2/2] net/mlx5: Bridge, don't fail unlink of untracked/unsupported peer ports
+    https://git.kernel.org/netdev/net/c/2e51097c982b
 
-> [Severity: Medium]
-> The new rc=3D$? capture also repairs a reporting bug that existed before =
-this
-> patch. In the baseline the sequence was:
->
-> 	test_unsolicited_na_common $1 $2 $3
-> 	test_msg=3D("test_unsolicited_na: "
-> 		"drop_unsolicited_na=3D$1 "
-> 		"accept_untracked_na=3D$2 "
-> 		"forwarding=3D$3")
-> 	log_test $? 0 "${test_msg[*]}"
->
-> The array assignment between the helper call and log_test sets $? to 0
-> (none of the assigned words contain a command substitution), so log_test
-> always received 0 and all eight existing combinations reported OK no matt=
-er
-> what verify_ndisc returned. Capturing rc immediately after
-> test_unsolicited_na_common() changes the pass/fail semantics of those eig=
-ht
-> pre-existing cases so they can now actually fail.
->
-> The changelog describes only the new FAILED-neighbour coverage and does n=
-ot
-> mention that the existing reporting was broken, and there is no Fixes: ta=
-g
-> (git blame points the log_test $? line at f9a2fb73318eb).
->
-> Would it make sense to split this into its own patch with a Fixes: tag, s=
-o
-> it can be applied and backported independently of the new mode 2 and
-> FAILED-state coverage, which needs kernel features not present in older
-> trees?
->
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-An entirely new patch submission seems like overkill for this. I'll=20
-update the commit message to mention this change and add the Fixes tag.
-
-pw-bot: changes-requested
 
