@@ -1,119 +1,69 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EAA46AF1B;
-	Wed, 23 Sep 2026 22:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8589B282F17;
+	Wed, 23 Sep 2026 22:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790204023; cv=none; b=P0+vkeBHdf7MFOeGM0DBpeY8rqUkfiyyjhtndq9Irizu9jcxEOlXOIGxTXbWJe+IDy3cIdXj7Vh76BWoz9GrK03iDi6O/KkdbGgB5C7ktyZtr06PnfSTlNk6Us4nRt1xU6ofiSHuO0gIXOz6JQ+BfgJxATcPEAqBMShCeKshMbM=
+	t=1790204078; cv=none; b=EypypDvYfRKw9IKRKoXdtYj0LtZPtmpvtXAxhvNhXxMUeQ360JzeSW1HtXh+EszWR5ywdVqENOkiaNn89yuh0MXykrb7YzA6Kiv7vdEWlEH1bEt6YWU9ZSVPwjXZz5Siu1k3oykt5tA5GRcpX7LUKUYKNzAmT9fGV8TSzW8fXx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790204023; c=relaxed/simple;
-	bh=W8S48tbaPTnLUEOz3HvvWSqKmgMP3Wwkjm55l323Nwk=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=m+0U+NUmG3Zdi+JBkIVhT70Lu/gR8pvRY1j3c6F4fMU272bVoYtrgfGits8XylHa4oPQivhWLXRZHG4zAd7bi1HyXSBoeJLc2FsQg9a912IfZTHZm7u1gYEMo3QEvQAM0aiOLNXKEUkk5Nbxvq/Ahx6Y5niK6KqhQ3Yo/Tfy1i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=CdbA89bQ; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=jOgsmJu7; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1790204078; c=relaxed/simple;
+	bh=BLoiTVOtwkjTpKLxUH/fCJJp5XbtLMkshSmZF6wBusg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lbnadSadKErBt1tNTPRbjhPImU8LZoM+KNIjucgF0SZpeyN29uNtWJmVR0QrnowQYryhfI4eKHIXli/L2swxtsQ+r0GDB+p0B26/HLanD8EJ/sI7f0kUOiz5jK7JXowIPqOel2Itsz89asjewi8d/0RKEuDlj1fgelcuL+G+0Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=6brhv5+j; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="CdbA89bQ";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="jOgsmJu7"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68NMr3Wo019426;
-	Thu, 24 Sep 2026 00:53:09 +0200
-Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 479D9122885;
-	Thu, 24 Sep 2026 00:53:00 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1790203980; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1StVDwsPdpfkCmAnM7HUPkMtndRgp/KLXORxVAS5bV4=;
-	b=CdbA89bQ0lLjP3/DrwQx7LvG4XmwxTMGZTYQLj4bsxSIomFKrRHWYFnNF3UeZXxDsIl+40
-	TABMkE12wCsoG+BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1790203980; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1StVDwsPdpfkCmAnM7HUPkMtndRgp/KLXORxVAS5bV4=;
-	b=jOgsmJu7ZRauc6MQDfHpzRA0PmQ5IorBj8k41nMAwJv2gZ5nhiU8LaZS+l6vo07gNnyYRG
-	MwOEvnduloL6adGnElU1xXlYZvnzcVhEdQstaDX7P2QYfqYCbTZcOOQlPvJIQI2zyeo6+l
-	p8AQ6d81IQs3Om8GtScq/k3zITwzVuSpcaA9DW4TdUlsHmVP91j6eoWWPXzZ8d3ulsSGYL
-	SojqWlWQM6i3Vjb1pWv98JZYdsRRADdM8u0sjdHfDyQ3kKI2GLdN4zT/nlFYo1kj8M5wtV
-	cBz8lB1ST6OI3fQIPwbRb1JvuKG+/87GMb+u5LD9x+3ga3ytm9R4SgtGVcJNIw==
-Date: Thu, 24 Sep 2026 00:52:59 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Hui Peng <benquike@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Hangbin Liu <hangbin.liu@linux.dev>,
-        Simon Horman
- <horms@kernel.org>,
-        David Lebrun <david.lebrun@uclouvain.be>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v2] ipv6: sr: enforce exact attribute length for
- SEG6_ATTR_DST
-Message-Id: <20260924005259.191035d085d7638ac6c0f97b@uniroma2.it>
-In-Reply-To: <20260921044025.1535982-1-benquike@gmail.com>
-References: <aq-E5MPYZS5s9_bk@fedora>
-	<20260921044025.1535982-1-benquike@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="6brhv5+j"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Hwp3buGvqeazOgPHYWP1T8YE6Ogl+I4cqEaOOWpq5+s=; b=6brhv5+jQUXJmbhNfrSR+yncLD
+	sP2c7aOQLeOu6k4XwYNybi9CvKyXp5xwGbPOze9HA0gZial50bMkJiwhkkvmX74rrzJ8ScdddSzg8
+	uWD0xeiKH4RWeMBgMPzCygXKCfjSy9HBYkvSulLJYC4MrZ0WFlnsRKaWGUzKQpFDzeHY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9VrA-006tIk-Ll; Thu, 24 Sep 2026 00:54:28 +0200
+Date: Thu, 24 Sep 2026 00:54:28 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksander Jan Bajkowski <olek2@wp.pl>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: phy: marvell: add support for PHY LEDs
+ polarity modes
+Message-ID: <c9c0e770-6bea-4acb-aca2-ac56f044ddef@lunn.ch>
+References: <20260923204614.471409-1-olek2@wp.pl>
+ <ac224909-5f7d-447e-a0f9-be0d1565a700@lunn.ch>
+ <a174b2c7-3778-4f8c-be5a-2bd94bfe09ed@wp.pl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a174b2c7-3778-4f8c-be5a-2bd94bfe09ed@wp.pl>
 
-On Mon, 21 Sep 2026 04:40:25 +0000
-Hui Peng <benquike@gmail.com> wrote:
+> The number of LEDs depends on the PHY variant:
+> 88E1112 -> 4
+> 88E1116R -> 3
+> 88E1240 -> 4
+> 88E1318S -> 3
+> 88E1510 -> 3
+> 88E1545 -> 4
+> 88E1548P -> 4
 
-> In seg6_genl_policy, SEG6_ATTR_DST is defined with .type = NLA_BINARY and
-> .len = sizeof(struct in6_addr). For NLA_BINARY, .len only enforces the
-> maximum payload length and permits shorter payloads (e.g., 0 bytes).
-> When seg6_genl_set_tunsrc() copies sizeof(struct in6_addr) bytes via
-> kmemdup(val, sizeof(*val), GFP_KERNEL), a short SEG6_ATTR_DST attribute
-> triggers a 16-byte out-of-bounds read past skb->tail into uninitialized
-> skb->head memory, which is stored in sdata->tun_src and leaked back to
-> userspace via SEG6_CMD_GET_TUNSRC.
-> 
-> Switch SEG6_ATTR_DST in seg6_genl_policy to
-> NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)) so that generic netlink
-> validation rejects any attribute whose length is not exactly
-> sizeof(struct in6_addr) with -ERANGE.
-> 
-> Tested in QEMU against Linux 7.3.0-rc3 by sending a SEG6_CMD_SET_TUNSRC
-> Generic Netlink message with a 0-byte SEG6_ATTR_DST attribute followed
-> by SEG6_CMD_GET_TUNSRC. On the unfixed kernel, SEG6_CMD_SET_TUNSRC
-> succeeds (err = 0) and SEG6_CMD_GET_TUNSRC leaks 16 bytes of
-> uninitialized kernel heap memory (tun_src =
-> 836a61ecc4d25a1042a8d60411cfb378); with this patch applied,
-> SEG6_CMD_SET_TUNSRC is rejected by netlink policy validation with
-> -ERANGE (-34) and tun_src remains zeroed.
-> 
-> Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> ---
-> Changes in v2:
-> - Drop the redundant nla_len(info->attrs[SEG6_ATTR_DST]) !=
->   sizeof(struct in6_addr) check in seg6_genl_set_tunsrc() since
->   NLA_POLICY_EXACT_LEN() in seg6_genl_policy already enforces the exact
->   length, as pointed out by Hangbin Liu.
-> 
->  net/ipv6/seg6.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Ah, i had a quick look at the current code, and all the functions have
+a switch statement with case 0, 1, 2. So i assumed that all PHYs have
+the same number of LEDs.
 
-Thanks,
-Andrea
+So any PHY which does have 4 is currently not supported?
 
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+So i agree NB_MAX_LED is not a great idea.
+
+   Andrew
