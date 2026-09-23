@@ -1,246 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6343569F1F;
-	Wed, 23 Sep 2026 19:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE4C53A39F;
+	Wed, 23 Sep 2026 19:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790191271; cv=none; b=Ti3f9hU6vR0mLIP56rworNxhnbVr9WWiRd985R77ZTOebTCMhO/3Gj6QA2DewxOK++7hPkmyLivmH+Utf2zZgUmT7eAiqmbvI4fkNyx2vnb3tM/503HB3to5MXvJVzL0eVbBLdJk38fNpPCvrQqCYDFI7Q9yEKIy8hydlrj9sGM=
+	t=1790191377; cv=none; b=KtQyHRxTXx52h1EWltrrRNRZpaTQxWwUurRWXmIaZE/RV7e6WxkQKG1D62qyzt811nzH8r36WRa5miiVycEwDVzBznapNzED1/RbMctfNYD603v4daRYyM4FF9kdV2MopL7zXNleD1SLrxVZSNRchfZ0sb3EMsDNqrRrVHqoPz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790191271; c=relaxed/simple;
-	bh=JyB88lU8D8plLkT8atp1POiJmxbZ97970p8UnhC5dIY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e3K+pUhI3if/QL7Kfsrh9cO+PcJ9NEdwulD7tpJZ/nvISA55TigSR5d1rKM5m6EFeuCdlT6Gz8X8I3XmrVhVq+XxgUct+bD79WY39vzkfdMQZ17ZYlUmALcaA1mUgrbvOhJNp3glFS62d3KQu1n83b2tZM9VAoIcViFxnkyvjxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XODkItKQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790191377; c=relaxed/simple;
+	bh=F8HR+tNPShG3HJOrfA/Cf+6loumebKWu/Yq0oyHeBHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZR2ARZ3YzjAN3bWjk/ompiBbaYzx5qCuMT600VvwofJ3AofWuSIAMZuQO0+T6VMOnTFuy3HYtnY8QN06LFyMHZjT76Oi8NMXWo2urZ9DwdpfmW+makOsg/rci4cFbRkHC7xG3Vj5jGWQbsdGvTp0Qs7czzEs+V5eH3W+WmBBaSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gc4zukmT; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XODkItKQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFA21F00893;
-	Wed, 23 Sep 2026 19:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790191269;
-	bh=MvAguG7XJjS5iXlWWMhU76RJL95W7uHcHbawUFlVNyE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XODkItKQaAOYarTSRjvSHqTRRZDng4evF9SQnTCxxfKxvXVwlGXwlNvA2xO+PZvMA
-	 9rg234UN9nnIZV6CT+cpxITrLHKJApSUMzE1pdNzCMnHr7jx8JZcJ90fozg9LKEnAV
-	 O1bppkT07sCdBQ/GCEdQa4GcGMRkoiHrwVaCO1uW2x8AtCPa/yGMr/hCzeXyVKIvW9
-	 ULlSzSErYp7xykehvOJzQEtDjc79zbWmVioe6qxQ7S2SQ1t7F15olxROeaqEVSstIq
-	 rsYOu9VbkP6/uX95VJjQFiFZwG7ouOrBrzObnBzQiGsDsKHspgORIsz2MqWWxxmx7N
-	 l3D/qPPmKcPIw==
-Subject: Re: [PATCH net-next v2 6/6] selftests/vsock: test the netns assign
- privilege checks
-From: netdev-bot+sashiko@kernel.org
-To: bobbyeshleman@gmail.com
-Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, stefanha@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- shuah@kernel.org, rdunlap@infradead.org, donald.hunter@gmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
- sdf.kernel@gmail.com, bobbyeshleman@meta.com
-Date: Wed, 23 Sep 2026 19:21:07 +0000
-Message-ID: <179019126776.2160803.16648507383433583043@kernel.org>
-In-Reply-To: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
-References: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gc4zukmT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790191375; x=1821727375;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=F8HR+tNPShG3HJOrfA/Cf+6loumebKWu/Yq0oyHeBHk=;
+  b=gc4zukmTa0n1Pgg/F/H2KtASCzjYa8PsHFSmVoY89MHjqw/MwMHJBBsC
+   Wvco8WOw7jsdCKagcItaN3vYhMaVuX1t8jEFveZ1Efn6K4fmky67pfHPt
+   +hr+NLz2POWMNwnnBcyb4UD5qUYLl89SmsQsOEUlDtptoeVDRHaa+IR4d
+   eHwa0xqCkiap1YeTBIInOWtZexTIJLO1zmnGdxidCIYD6u30lFemU8vCS
+   XZQQykYX0KpdF/mLndumsXOTO+mu/yZtMD/U05JB2nXBpikI7ZAbDt05L
+   5G+F2bn1l7bHwrNraMMblr9bE2lKdUOSnhYhYiewYU790tsPVKTh+Prjb
+   A==;
+X-CSE-ConnectionGUID: /yFMJ6bLRw2w1PUZKC7qJw==
+X-CSE-MsgGUID: teTgM7LvQXGiyH7/M0S1IQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="94743774"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="94743774"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 12:22:54 -0700
+X-CSE-ConnectionGUID: vojxitKfRJ6ARiM2ehI79w==
+X-CSE-MsgGUID: BArZV53CQUKGHTBGi1IVMA==
+X-ExtLoop1: 1
+Received: from igk-lkp-server01.igk.intel.com (HELO 1bbc298b9a73) ([10.211.93.152])
+  by fmviesa003.fm.intel.com with ESMTP; 23 Sep 2026 12:22:52 -0700
+Received: from kbuild by 1bbc298b9a73 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x9SYL-000000000mt-3BSq;
+	Wed, 23 Sep 2026 19:22:49 +0000
+Date: Wed, 23 Sep 2026 21:22:36 +0200
+From: kernel test robot <lkp@intel.com>
+To: Coia Prant <coiaprant@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Coia Prant <coiaprant@gmail.com>
+Subject: Re: [PATCH net] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak
+ when the PHY clock fails
+Message-ID: <202609232146.QdgAwbzd-lkp@intel.com>
+References: <20260919174223.2356964-1-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260919174223.2356964-1-coiaprant@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Coia,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+kernel test robot noticed the following build warnings:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+[auto build test WARNING on net/main]
 
-- [Medium] Both new selftests
-  (`test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails`,…
-- [Low] The two new shared-VM tests omit the `vm_reset_g2h()` cleanup
-  that every other ns_guest_assign_g2h_netns_* test in USE_SHARED_VM…
+url:    https://github.com/intel-lab-lkp/linux/commits/Coia-Prant/net-ethernet-stmmac-dwmac-rk-fix-bulk-clock-leak-when-the-PHY-clock-fails/20260920-014223
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260919174223.2356964-1-coiaprant%40gmail.com
+patch subject: [PATCH net] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak when the PHY clock fails
+config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20260923/202609232146.QdgAwbzd-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260923/202609232146.QdgAwbzd-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609232146.QdgAwbzd-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1168:5: warning: misleading indentation; statement is not part of the previous 'if' [-Wmisleading-indentation]
+    1168 |                                 return ret;
+         |                                 ^
+   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1165:4: note: previous statement is here
+    1165 |                         if (ret)
+         |                         ^
+>> drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1177:2: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+    1177 |         } else {
+         |         ^
+   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1177:4: error: expected identifier or '('
+    1177 |         } else {
+         |           ^
+   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1189:2: error: expected identifier or '('
+    1189 |         return 0;
+         |         ^
+   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1190:1: error: extraneous closing brace ('}')
+    1190 | }
+         | ^
+   2 warnings and 3 errors generated.
+
+
+vim +1177 drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+
+7ad269ea1a2b7d Roger Chen            2014-12-29  1152  
+7ad269ea1a2b7d Roger Chen            2014-12-29  1153  static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
+7ad269ea1a2b7d Roger Chen            2014-12-29  1154  {
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1155  	int ret;
+7ad269ea1a2b7d Roger Chen            2014-12-29  1156  
+7ad269ea1a2b7d Roger Chen            2014-12-29  1157  	if (enable) {
+7ad269ea1a2b7d Roger Chen            2014-12-29  1158  		if (!bsp_priv->clk_enabled) {
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1159  			ret = clk_bulk_prepare_enable(bsp_priv->num_clks,
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1160  						      bsp_priv->clks);
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1161  			if (ret)
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1162  				return ret;
+7ad269ea1a2b7d Roger Chen            2014-12-29  1163  
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1164  			ret = clk_prepare_enable(bsp_priv->clk_phy);
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1165  			if (ret)
+cb278e6780d874 Coia Prant            2026-09-20  1166  				clk_bulk_disable_unprepare(bsp_priv->num_clks,
+cb278e6780d874 Coia Prant            2026-09-20  1167  							   bsp_priv->clks);
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1168  				return ret;
+cb278e6780d874 Coia Prant            2026-09-20  1169  			}
+23c94d63a7e395 David Wu              2018-06-28  1170  
+5c1fc7cb81dfed Russell King (Oracle  2026-02-04  1171) 			rk_configure_io_clksel(bsp_priv);
+5c1fc7cb81dfed Russell King (Oracle  2026-02-04  1172) 			rk_ungate_rmii_clock(bsp_priv);
+2f2b60a0ec2826 David Wu              2022-08-30  1173  
+7ad269ea1a2b7d Roger Chen            2014-12-29  1174  			mdelay(5);
+7ad269ea1a2b7d Roger Chen            2014-12-29  1175  			bsp_priv->clk_enabled = true;
+7ad269ea1a2b7d Roger Chen            2014-12-29  1176  		}
+7ad269ea1a2b7d Roger Chen            2014-12-29 @1177  	} else {
+7ad269ea1a2b7d Roger Chen            2014-12-29  1178  		if (bsp_priv->clk_enabled) {
+5c1fc7cb81dfed Russell King (Oracle  2026-02-04  1179) 			rk_gate_rmii_clock(bsp_priv);
+7f864458e9a6d2 Sebastian Reichel     2025-10-14  1180  
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1181  			clk_bulk_disable_unprepare(bsp_priv->num_clks,
+ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1182  						   bsp_priv->clks);
+fecd4d7eef8b21 David Wu              2017-08-10  1183  			clk_disable_unprepare(bsp_priv->clk_phy);
+fecd4d7eef8b21 David Wu              2017-08-10  1184  
+7ad269ea1a2b7d Roger Chen            2014-12-29  1185  			bsp_priv->clk_enabled = false;
+7ad269ea1a2b7d Roger Chen            2014-12-29  1186  		}
+7ad269ea1a2b7d Roger Chen            2014-12-29  1187  	}
+7ad269ea1a2b7d Roger Chen            2014-12-29  1188  
+7ad269ea1a2b7d Roger Chen            2014-12-29  1189  	return 0;
+7ad269ea1a2b7d Roger Chen            2014-12-29  1190  }
+7ad269ea1a2b7d Roger Chen            2014-12-29  1191  
 
 --
-
-selftests/vsock: test the netns assign privilege checks
-
-Adds two vmtest.sh cases that attempt VSOCK_CMD_DEV_NETNS_SET without
-CAP_NET_ADMIN and from an unprivileged user namespace, and enables
-CONFIG_USER_NS in the vsock selftest config.
-
-> diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> index e94cc2fd90ccd..4f42bcdac3f6c 100755
-> --- a/tools/testing/selftests/vsock/vmtest.sh
-> +++ b/tools/testing/selftests/vsock/vmtest.sh
-
-[ ... ]
-
-> @@ -187,6 +195,8 @@ readonly TEST_DESCS=(
->  	ns_guest_assign_g2h_netns_host_connect_ok
->  	ns_guest_assign_g2h_netns_reset_on_ns_delete_ok
->  	ns_guest_assign_g2h_netns_old_conn_send_fails
-> +	ns_guest_assign_g2h_netns_no_cap_net_admin_fails
-> +	ns_guest_assign_g2h_netns_unpriv_user_ns_fails
->  )
->  readonly NS_MODES=("local" "global")
-
-[Severity: Low]
-Both new tests are added to USE_SHARED_VM but neither calls
-vm_reset_g2h() on any exit path, unlike every other
-ns_guest_assign_g2h_netns_* test in that list.
-
-Should these follow the sibling pattern?  If the privilege check under
-test is broken, the assign succeeds and the guest's single g2h device is
-left owned by the transient namespace created by unshare, while the
-harness moves on to the next test in the same VM.
-
-The kernel does restore this by itself once that namespace is reaped:
-
-net/vmw_vsock/af_vsock.c:vsock_g2h_net_reset() {
-	if (likely(rcu_access_pointer(vsock_g2h_net) != net))
-		return;
-
-	mutex_lock(&vsock_register_mutex);
-	if (rcu_access_pointer(vsock_g2h_net) == net)
-		rcu_assign_pointer(vsock_g2h_net, &init_net);
-	...
-}
-
-registered as .pre_exit in vsock_pernet_ops, and the next test's
-vm_ns_assign_g2h() overwrites the pointer anyway.  The residual window is
-the asynchronous teardown that ..._reset_on_ns_delete_ok already documents
-("the namespace itself is dismantled from a workqueue, so the device does
-not come back the same instant").  Since the new tests are appended last
-in TEST_NAMES and USE_SHARED_VM, a default run is unaffected; this only
-shows up with selective or reordered invocation.
-
-[ ... ]
-
-> @@ -1832,6 +1842,48 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
->  	return "${KSFT_PASS}"
->  }
->  
-> +test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails() {
-> +	local cmd="unshare -n setpriv --bounding-set=-net_admin"
-> +	local rc
-> +
-> +	vm_ssh "init_ns" -- "${cmd}" python3 /root/ynl/cli.py --no-schema \
-> +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
-> +	rc=$?
-> +
-> +	if [[ "${rc}" -eq 0 ]]; then
-> +		log_host "assign unexpectedly succeeded without CAP_NET_ADMIN"
-> +		return "${KSFT_FAIL}"
-> +	fi
-> +
-> +	return "${KSFT_PASS}"
-> +}
-
-[Severity: Medium]
-Can this test pass without the capability check ever being reached?  The
-only assertion is rc -eq 0 => FAIL, output is discarded with &>/dev/null,
-and there is no positive control, so any nonzero status reads as
-KSFT_PASS.
-
-A few concrete sources of a nonzero status that are not -EPERM:
-
-net/vmw_vsock/af_vsock.c:vsock_nl_dev_netns_set_doit() {
-	int err = vsock_g2h_net_assign(genl_info_net(info));
-
-	if (err == -ENODEV)
-		NL_SET_ERR_MSG(info->extack,
-			       "no guest-to-host transport is loaded");
-	else if (err == -EOPNOTSUPP)
-	...
-}
-
-and cli.py collapses all of those to the same status as -EPERM:
-
-tools/net/ynl/pyynl/cli.py:main() {
-    except NlError as e:
-        print(e)
-        sys.exit(1)
-}
-
-vm_ssh() also returns ssh's own status, so a transport failure (255) or a
-remote shell failure (127, e.g. an installed util-linux that does not
-accept setpriv --bounding-set=-net_admin) is indistinguishable from the
-expected refusal.  A python-side failure such as a missing
-/root/ynl/vsock.yaml exits 1 too.
-
-Would it be worth asserting the privileged case succeeds first?  The file
-already has the helper the sibling tests use as a precondition:
-
-vm_ns_assign_g2h() {
-	local ns=$1
-	local nspid=$2
-
-	vm_ns_exec "${ns}" "${nspid}" "python3 /root/ynl/cli.py --no-schema \
-		--spec /root/ynl/vsock.yaml --do dev-netns-set"
-}
-
-On the changelog note "ynl's cli.py does not report the errno": is that
-accurate?  NlError.__str__() in tools/net/ynl/pyynl/lib/ynl.py does:
-
-        msg += os.strerror(self.error)
-
-so the error string is printed and the test could match "Operation not
-permitted" instead of sending everything to /dev/null.
-
-> +
-> +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
-> +	local unpriv_uid=65534
-> +	local unpriv
-> +	local rc
-> +
-> +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
-> +	unpriv="${unpriv} --clear-groups"
-> +
-> +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
-> +		log_host "unprivileged user namespaces unavailable, skipping"
-> +		return "${KSFT_SKIP}"
-> +	fi
-> +
-> +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn" \
-> +		python3 /root/ynl/cli.py --no-schema \
-> +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
-> +	rc=$?
-> +
-> +	if [[ "${rc}" -eq 0 ]]; then
-> +		log_host "assign unexpectedly succeeded for unprivileged user"
-> +		return "${KSFT_FAIL}"
-> +	fi
-> +
-> +	return "${KSFT_PASS}"
-> +}
-
-[Severity: Medium]
-Same rc != 0 => KSFT_PASS inference here, plus the availability probe is
-not the command being measured:
-
-	probe:    ${unpriv} unshare -U true
-	measured: ${unpriv} unshare -Urn python3 /root/ynl/cli.py ...
-
-If the extra -r/-n setup or the python startup under uid 65534 fails, the
-result is KSFT_PASS rather than KSFT_SKIP or KSFT_FAIL, and the child user
-namespace never actually holds CAP_NET_ADMIN, which is the condition the
-commit message says is being tested:
-
-    the other confirms that CAP_NET_ADMIN in an unprivileged user ns
-    alone is insufficient.
-
-Would checking the reported error string, or asserting the privileged
-assign works in the same test, make these two cases fail if
-GENL_ADMIN_PERM is ever dropped from VSOCK_CMD_DEV_NETNS_SET?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921-vsock-guest-ns-v2-0-693bd78fde9e%40meta.com
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
