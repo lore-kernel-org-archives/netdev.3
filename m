@@ -1,204 +1,346 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B513F410D
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA3541440F;
+	Wed, 23 Sep 2026 10:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790158185; cv=none; b=OtRQtVM2Tt5DnGmGPomBpYlA38vNkUjDiOpna4sdJ2yMJ2YSAljOFen4kJoB45JhLHKb9vgP0Sb9u1sqZovcxI5FcMgsu7dm1gn+jgNmIiECD4iHTdOm4daEPDaoPnYteSkn77wIVFJd6LKZm2Nen9rxnNkaGXg9lgYUUQ86OZE=
+	t=1790158210; cv=none; b=U6e4U+nahqE1elhA5oaa927N5Gn+37218n5H9mVrht+8tTfZbGEhWo4hewURlf4MMJtOzrKV6y7g0iFa6IsXu8exhFDxCcTM1CgvoXkR1066IFij9WzstXNjayR2ED1MqxVYgnYMJexZg8nT1N+IeRDsKsGqgG7Bw38i3DePHW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790158185; c=relaxed/simple;
-	bh=27NDRv7p/PzfpWXoS/zZNQr2ctrGSxIFX0ZQ0a9Tp7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWSfocYIQtOQdNO9NwPcFXwuwrEMv9MX4kXPMX/pvCF+UXg62JHSAtL3xbpucbrPXOwq+DCNsmV48Bw/ORKHMZEWYRVnbc9Ad3h6O5V2BNi96Bnf6vwaNhQ03+nQ+JlKjm7W8LI2IZRQTFM0UkYt732yqJAcoLxCtUHa9XE7JTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bJ042nM3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PEc2cd/c; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790158210; c=relaxed/simple;
+	bh=YlRjqU7qdRO3t9HF1d76XSpTza3WLe/iIEq0QQAcP1Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fJTkt99M3A9g/lD5to8Yk0ITujhchV4jEKD0IIQtGbSUjgI0nBcCUvm1WozNCsoHdJBbAY68T3eK66M22lFBxF49qWfXYzw7t9o3G0v7fBok4MgFoYcp4XtGV8BATF0GXr/psFM7O6LkFTx58GKCnuf8sWB6EVdR00W+B1JLKoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fHj2Z7Os; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bJ042nM3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PEc2cd/c"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NA30r54087733
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:09:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=WjGscos/B1PE5WOtCOqAZRk+
-	UbUZMAQeunmZh02EZbs=; b=bJ042nM3DgRDhzbpaz3QpPZ4KeDxXVzNjcgvQq+Z
-	/PgINWDk+drldnqz9WtBd1EKq2uodv8YpmHIypSVtJnRCrH091PGUbkL7JjaTinI
-	z3j4WSiH3bR/yr5rxS9DpFY+1SkY8S9KqpGnlH252XDD0hcCH4M/NWOm6vj8kPG5
-	YQ30BPb6wgqtfzX3WSzkht0HfF5w8hi8TSlR7s8vnZaI4MVpoe6xJteo6VCivLIl
-	D+fTUWHC8Q2bQhMiZoWi4KvYZy3bv05IIUw52yPNVu6l6rlv4+d0kkn8dafHS6BF
-	6CKFR7h6x1FbJDqxkweCYCBQC4Y2q15SP9/gnK3biAiEKg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gux8c3tek-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:09:38 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-9308eafb465so194766785a.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790158178; x=1790762978; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WjGscos/B1PE5WOtCOqAZRk+UbUZMAQeunmZh02EZbs=;
-        b=PEc2cd/ceE5PaZURQUR2I01QrmVp4/4/Tu9e5KIgi/0Z2m5aKeVB8cHTaFddCnepeh
-         h64UfE5aYc/bssKLzCsbHD2z3RCqD4HFBKsacbmnrXsb4IfCrwc8aFrjhd+awwzdpmC4
-         gJSyZevQoRBchBl37Z8u0MYyu6MFqGIqe0mazE4F4pYZMI4kpsWzZZLoLociK02z59OG
-         TKThPwvXo1X3KCRLYbrEEO4DLMVmxZq7Qq9E/eWHOYm9+xsaNUvA6Kyr589gwsApj86r
-         3caKBQBwVYHReJLzJYtptXQ9XQgVWhBBLDanZecwdODhEW1kB62OZ/tfXA6/iTMcIy92
-         tS4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790158178; x=1790762978;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WjGscos/B1PE5WOtCOqAZRk+UbUZMAQeunmZh02EZbs=;
-        b=VwfUd1gU8wwCs6+xEUFOQAoAgv0x4gPzarMR9/m93jLTfgPeUoQh/UtSA1SSqs7Qia
-         xSbwhGt6+RRiyoWFejoG2k57ryoFEQ8wkQ49Li56q3Hyx0dFRmZ2u0A+bWs0ztiGdDA6
-         8hJp95+7d8QHtXhkjGLdGBtFQr6Zz54ce/xALMJzENF+KTaqSsfCEXNb/wXhAmLuzIl6
-         emtJgLzcMAGxfBhZtrN1vYO4amHafMkEMLGcA2pUqLeBvKpgt/FdHuQjQL8udgiewDyq
-         mCgGzUeP2U3XpGGR2MwKYQOU3KYmqnw8XZmM+bj3UCZeFCzcD2x+3wihrW9p0ToNLaQI
-         OPmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzHbBH2HK1riIj0t9aXs2jC4NN3lRuil0uYa8t0mGkxi5DYyj6mN5hSm6jo5O2LM21vx5e0EF4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nMOrpq1heF6Y3ZGeUz6GCORz8jJZiwZVxGXQmr2jSjZje89gFV
-	C1EoS4H1M8K3b/B61J+tm2XfEShiE5sYTZxe/n2BmQ13jqcl0K1QhAokiTAOxCFdfjEAZ32AtrR
-	ROYsQ67tyipiAVHqEnTYLkoWf2erh1Rsm/3+emCdw9ve0rO/FACNmvw6fFM8=
-X-Gm-Gg: AYBFou0y7VjydUbXn2OuwYzbc1EjwHZ3lwCpqWwhKNmXGBv1quknJeSqLhnDHZyYXZE
-	tk4wAJpUndclnsXTRaLTsL5rXgSZxioiNaZEvkE6n/i5NP3CvrprMWfO59dYPAaJJpVi2b1gyS7
-	EGupCzP69ShYLVt5YBWxuVO3zYnnbWiqWrYUOoORKcErJcQB/5hGyNa+TvkJh+hM3vn+K2BbiWG
-	4uXVFlVkdC1q8r0s0rDB12TSkykl40TOyAtAfoWhAYcU8mFQFddXb7HGui3IJ1WNiHzjCD+L/yK
-	WvbVlgJpJ6axZa4co5PjrhmsoZOIBt2IKVzOHryaFMesnyeFujGKdJb9tuX5J3vAJb0fhdrlkul
-	HhDRxZ+5W+nxbtg==
-X-Received: by 2002:a05:620a:6f9a:20b0:93c:29b3:3536 with SMTP id af79cd13be357-93c29b3421dmr114400285a.36.1790158177649;
-        Wed, 23 Sep 2026 03:09:37 -0700 (PDT)
-X-Received: by 2002:a05:620a:6f9a:20b0:93c:29b3:3536 with SMTP id af79cd13be357-93c29b3421dmr114397585a.36.1790158177068;
-        Wed, 23 Sep 2026 03:09:37 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fde1acb91sm63138295e9.15.2026.09.23.03.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 03:09:36 -0700 (PDT)
-Date: Wed, 23 Sep 2026 12:09:35 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Toke Hoiland-Jorgensen <toke@redhat.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: Re: [PATCH net] net: mvneta: clear XDP pfmemalloc flag between frames
-Message-ID: <arOlX0y3-wNMoB8L@lore-desk>
-References: <20260920-mvneta-xdp-clear-frag-fix-v1-1-d7efadecf959@oss.qualcomm.com>
- <20260922190118.1f1ffb81@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fHj2Z7Os"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085A71F000FF;
+	Wed, 23 Sep 2026 10:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790158203;
+	bh=ZuKrVehW9NyrajvUxUA+Rr/3wR8H3So0oZQUFWwChDQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fHj2Z7OsugRX4pu2dhgT0sLcUnWK6BOQ1TBTe8Y41dPlDWZ6cj/3ixsSJ7VkKsa8y
+	 3aParcnFSkyaaAnnRkZn7lg50efs350aETmqeROowAI486EMr593U3cyzHCnidBmaH
+	 HJqCNQ95/fBJecSBVSAm8ji/9fIgaDI4kVnZUvJ6WlTX4lYP/gAzLTcy4uTTbqxrXB
+	 cOlGnv4KahET5mRBIaO/ItoLk+dFMiniwR5y0OgMp7FH6s/gLm8EdQxoQ8X688ILIW
+	 xzAi3IuCWMjsKKHSnR9gMKuDd70wbZRxkdOhYczKLUUESZxn6bp8lAy2XHSLfo2dqc
+	 oarFCPVdtha2g==
+Subject: Re: [PATCH net] net: ethtool: let tsconfig reach a PHY-only timestamp
+ provider
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch,
+ kory.maincent@bootlin.com, jjc@jclark.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 23 Sep 2026 10:10:02 +0000
+Message-ID: <179015820246.2160803.17295463468229392731@kernel.org>
+In-Reply-To: <20260922070813.1458713-1-nb@tipi-net.de>
+References: <20260922070813.1458713-1-nb@tipi-net.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Qzm8HG7bSHfYQdPa"
-Content-Disposition: inline
-In-Reply-To: <20260922190118.1f1ffb81@kernel.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAzOSBTYWx0ZWRfX3ElvwonOwIeU
- U02cmY64hXPfw+ei7uuNZcnoyHkL1EayIRNAIHpyApIxL2Z70+jcmOO7ebbmf9m9j+QUWIZNzo8
- S0J5Xl/VurXUMUKULw0OTEUA4Ffc8i7UWHokYaa0tdGhdlovJ9m/I3pSMOm/81VWXO1XBdD3oOf
- BDQwFJs/jaGtqToU/59hC9zq3DBt6TkcEDLw9uO4N/pjroNPI+XsNzxmR1M81CS4r5V5NDdPRuK
- qGiGH+uceljuBwKL/oug9nXCwNy7UG89Q+5UQn7FC8G/SzaSmHofmZIkex/BPuw2VDu6kK/Vh71
- gAEncehO2ikC0Z8EWqFwhQAjX/zlC28dayvuNPfRNxFPjPuZNaIV7fXkOB1FXgU7vgdiSGhgrBR
- xCwWYXJVdXC7bo+5h34+2N3pP7yjGeLvQEmil4mLZzABQSAr6hrETDcpaNgOhH+3BZwyf0tvedZ
- 6j+P15McVouAGuv+dSw==
-X-Authority-Analysis: v=2.4 cv=P9evFSAu c=1 sm=1 tr=0 ts=6ab3a562 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
- a=Wk1q40mINxl-DWuuGNYA:9 a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19 a=CjuIK1q_8ugA:10
- a=2q5E11mNeA-3wjOBgwEA:9 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: k48ydyHZiTkUH53wOg9Dr1BEM1roZaYm
-X-Proofpoint-GUID: k48ydyHZiTkUH53wOg9Dr1BEM1roZaYm
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAzOSBTYWx0ZWRfX10bnhXVyi34T
- lr8CT1CvyU6MGNjyQJ6wUu0HmbHAEXmSrqVYfh+vs2hlmECWxZGt5FHYTfIVPq7S0PxkRugRyXg
- RAbaoTSe07XUL2dluEd6+iNknsxYts4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230039
 
---Qzm8HG7bSHfYQdPa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-> On Sun, 20 Sep 2026 09:55:09 +0200 Lorenzo Bianconi wrote:
-> > In mvneta_swbm_add_rx_fragment() the XDP pfmemalloc flag is set on the
-> > xdp_buff if the page under pressure is a pfmemalloc one. The xdp_buff is
-> > reused for the next packet and the flag is never cleared, so a pfmemall=
-oc
-> > fragment in one packet wrongly marks the skb of a subsequent packet as
-> > pfmemalloc. Clear the flag in mvneta_swbm_rx_frame(), which is invoked =
-for
-> > each new frame.
-> >=20
-> > Fixes: ed7a58cb40bd ("net: marvell: rely on xdp_update_skb_shared_info =
-utility routine")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> > ---
-> >  drivers/net/ethernet/marvell/mvneta.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethern=
-et/marvell/mvneta.c
-> > index 543e566425c1..32416999f3d6 100644
-> > --- a/drivers/net/ethernet/marvell/mvneta.c
-> > +++ b/drivers/net/ethernet/marvell/mvneta.c
-> > @@ -2341,6 +2341,7 @@ mvneta_swbm_rx_frame(struct mvneta_port *pp,
-> >  	/* Prefetch header */
-> >  	prefetch(data);
-> >  	xdp_buff_clear_frags_flag(xdp);
-> > +	xdp_buff_clear_frag_pfmemalloc(xdp);
->=20
-> bit of a trap for your future self to clear the flags one by one.
-> Should we not write the flags to 0 ? Or maybe add:
->=20
-> /* Clear xdp_buf state for reuse on the same ring */
-> static __always_inline void xdp_reinit_buff(struct xdp_buff *xdp)
-> {
-> 	xdp->flags =3D 0;
-> }
->=20
-> and call that?
+Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0
 
-ack, I agree. I will fix it in v2.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Regards,
-Lorenzo
+- [High] TSCONFIG_SET now reports success (bare ACK, ret 0) with no
+  ETHTOOL_MSG_TSCONFIG_SET_REPLY on devices that have no hardware…
+- [Medium] With ethnl_set_tsconfig_validate() gone, ethnl_set_tsconfig()
+  is reachable on netdevs that implement neither ndo_hwtstamp_get nor…
+- [Medium] net: ethtool: TSCONFIG_SET provider switch fails on devices
+  lacking ndo_hwtstamp_set
 
->=20
-> >  	xdp_prepare_buff(xdp, data, pp->rx_offset_correction + MVNETA_MH_SIZE,
-> >  			 data_len, true);
-> >  }
->=20
+Pre-existing issues:
+- [Medium] A struct hwtstamp_provider installed into dev->hwprov by
+  TSCONFIG_SET is never freed when the netdevice is unregistered/freed…
 
---Qzm8HG7bSHfYQdPa
-Content-Type: application/pgp-signature; name=signature.asc
+--
 
------BEGIN PGP SIGNATURE-----
+net: ethtool: let tsconfig reach a PHY-only timestamp provider
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCarOlXwAKCRA6cBh0uS2t
-rM3tAQCYKmgng//tYI4+xIQ2ArUjBsrSxxUUtF4YIPt1WcG6EgD/Qn+Q84ka9ZDQ
-9fGp7+cYn26JOsS60d0sMg3NhFxx8A8=
-=rdTF
------END PGP SIGNATURE-----
+This drops the ndo_hwtstamp_get check in tsconfig_prepare_data() and the
+whole ethnl_set_tsconfig_validate() gate so that TSCONFIG_GET/SET can be
+served by a PHY on a MAC that implements no hwtstamp NDO. A guard is added
+in dev_get_hwtstamp_phylib() before calling ndo_hwtstamp_get.
 
---Qzm8HG7bSHfYQdPa--
+Related discussion for the ioctl side:
+https://lore.kernel.org/netdev/20260918095540.34286-1-nb@tipi-net.de/
+
+> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+> index 164643140a523..f6029f60c1dc9 100644
+> --- a/net/core/dev_ioctl.c
+> +++ b/net/core/dev_ioctl.c
+> @@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
+>  		    hwprov->phydev)
+>  			return phy_hwtstamp_get(hwprov->phydev, cfg);
+>  
+> -		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
+> +		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
+> +		    dev->netdev_ops->ndo_hwtstamp_get)
+>  			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
+>  
+>  		return -EOPNOTSUPP;
+
+[Severity: Medium]
+This guard makes the read side safe, but can the install side now latch a
+HWTSTAMP_SOURCE_NETDEV provider on a device that has no hwtstamp NDOs at
+all, with no way back?
+
+With ethnl_set_tsconfig_validate() gone, ethnl_set_tsconfig() runs on a MAC
+like bcmgenet (no ndo_hwtstamp_*, .get_ts_info = ethtool_op_get_ts_info)
+that has a default-timestamp PHY, e.g. BCM54213PE. Two requests:
+
+1) TSCONFIG_SET with provider {index = PHY phc index, qualifier = precise}.
+   dev->hwprov is still NULL and phy_is_default_hwtstamp(dev->phydev) is
+   true, so dev_set_hwtstamp_phylib(&zero_config) succeeds through
+   phy_hwtstamp_set() and the PHYLIB provider is installed.
+
+2) TSCONFIG_SET with provider {index = 0xFFFFFFFF, qualifier = precise}.
+   ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX is a plain NLA_U32 stored into the
+   int hwtstamp_provider_desc.index, so the request index becomes -1. In
+   ethtool_net_get_ts_info_by_phc():
+
+	if (info->phc_index == hwprov_desc->index &&
+	    net_support_hwtstamp_qualifier(dev, hwprov_desc->qualifier))
+		return 0;
+
+   ethtool_init_tsinfo() presets phc_index = -1 and ethtool_op_get_ts_info()
+   leaves it at -1, and net_support_hwtstamp_qualifier() returns true for
+   PRECISE when the driver declares no qualifier mask, so
+   tsconfig_set_hwprov_from_desc() picks source = HWTSTAMP_SOURCE_NETDEV
+   with phydev == NULL.
+
+In ethnl_set_tsconfig() the hwprov_mod block then only disables the old
+provider before committing the new one:
+
+	ret = dev_set_hwtstamp_phylib(dev, &zero_config, info->extack);
+	if (ret < 0)
+		goto err_free_hwprov;
+
+	/* Change the selected hwtstamp source */
+	__hwprov = rcu_replace_pointer(dev->hwprov, hwprov,
+				       netdev_is_locked_ops_compat(dev));
+
+Nothing checks that the new NETDEV provider can be programmed, and there is
+no rollback. After that, this hunk's guard returns -EOPNOTSUPP for every
+GET, and dev_set_hwtstamp_phylib() takes the phy_ts = false path and stops
+at its "if (!ops->ndo_hwtstamp_set)" check, so SIOCGHWTSTAMP/SIOCSHWTSTAMP
+fail too.
+
+Is recovery possible through the same interface? A later TSCONFIG_SET
+re-selecting the PHY provider enters the hwprov_mod block and fails on its
+first statement, dev_set_hwtstamp_phylib(&zero_config) evaluated against the
+current NETDEV provider, jumping to err_free_hwprov before ever reaching
+rcu_replace_pointer(). phy_detach() only clears dev->hwprov when
+hwprov->phydev == phydev, which is NULL here, so ifdown or PHY disconnect
+does not clear it either.
+
+> diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
+> index 6be3aa5d4bc1e..8c99b2dc26d03 100644
+> --- a/net/ethtool/tsconfig.c
+> +++ b/net/ethtool/tsconfig.c
+> @@ -42,9 +42,6 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
+>  	struct kernel_hwtstamp_config cfg = {};
+>  	int ret;
+>  
+> -	if (!dev->netdev_ops->ndo_hwtstamp_get)
+> -		return -EOPNOTSUPP;
+> -
+>  	ret = ethnl_ops_begin(dev);
+>  	if (ret < 0)
+>  		return ret;
+> @@ -248,17 +245,6 @@ static int tsconfig_send_reply(struct net_device *dev, struct genl_info *info)
+>  	return ret;
+>  }
+>  
+> -static int ethnl_set_tsconfig_validate(struct ethnl_req_info *req_base,
+> -				       struct genl_info *info)
+> -{
+> -	const struct net_device_ops *ops = req_base->dev->netdev_ops;
+> -
+> -	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
+> -		return -EOPNOTSUPP;
+> -
+> -	return 1;
+> -}
+> -
+
+[Severity: Medium]
+With ethnl_set_tsconfig_validate() gone, a TSCONFIG_SET that selects
+the PHY provider now reaches ethnl_set_tsconfig() on a MAC without
+hwtstamp NDOs. Does the provider switch itself ever succeed there
+unless the PHY happens to be the default timestamper?
+
+Take this setup:
+
+  - a MAC with no ndo_hwtstamp_get/set
+  - a PHY that implements timestamping but has
+    phydev->default_timestamp cleared
+  - dev->hwprov still NULL
+
+A TSCONFIG_SET naming the PHY's phc index makes
+tsconfig_set_hwprov_from_desc() return a HWTSTAMP_SOURCE_PHYLIB
+provider. hwprov_mod is then true, and the handler first tries to turn
+the current provider off:
+
+	ret = dev_set_hwtstamp_phylib(dev, &zero_config, info->extack);
+	if (ret < 0)
+		goto err_free_hwprov;
+
+In dev_set_hwtstamp_phylib(), hwprov is NULL and
+phy_is_default_hwtstamp(dev->phydev) is false, so phy_ts is false and
+the function ends up at:
+
+	if (!ops->ndo_hwtstamp_set)
+		return -EOPNOTSUPP;
+
+The request then fails with -EOPNOTSUPP before rcu_replace_pointer() is
+reached, so the PHY provider is never installed. The provider being
+disabled here is an implicit netdev source that cannot have been
+enabled in the first place.
+
+The GET side does not improve for this hardware either.
+dev_get_hwtstamp_phylib() still falls through to the !ndo_hwtstamp_get
+check and returns -EOPNOTSUPP. The ioctls cannot select a non-default
+PHY either, so TSCONFIG_SET is the only way to reach it, and that path
+still refuses.
+
+Should the disable step tolerate -EOPNOTSUPP when the outgoing provider
+is the implicit netdev one and ndo_hwtstamp_set is absent? That would
+match how the !hwprov_mod branch already ignores -EOPNOTSUPP from
+dev_get_hwtstamp_phylib(). Or is only the default-timestamp PHY case
+meant to be covered, in which case could the commit message say so?
+
+[Severity: High]
+Does removing this gate turn TSCONFIG_SET into a silent success on devices
+that have no timestamp provider at all?
+
+On a netdev with neither ndo_hwtstamp_get/set nor a default-timestamp PHY
+(loopback, veth, tun, bcmgenet without a PTP PHY), a TSCONFIG_SET carrying
+only the header, or asking for tx-type off / rx-filter none:
+
+  - no ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER attribute, so hwprov_mod stays
+    false and ethnl_set_tsconfig() calls:
+
+	if (!hwprov_mod) {
+		ret = dev_get_hwtstamp_phylib(dev, &hwtst_config);
+		if (ret < 0 && ret != -EOPNOTSUPP)
+			goto err_free_hwprov;
+	}
+
+    dev_get_hwtstamp_phylib() returns -EOPNOTSUPP here (hwprov NULL,
+    phy_is_default_hwtstamp(NULL) false, no ndo_hwtstamp_get) and that is
+    deliberately swallowed, leaving hwtst_config all zero.
+
+  - ethnl_update_bitset32() reports no change, so config_mod stays false and
+    the "if (config_mod)" dev_set_hwtstamp_phylib() call is skipped.
+    net_hwtstamp_validate({0,0,0}) returns 0 because HWTSTAMP_TX_OFF and
+    HWTSTAMP_FILTER_NONE are both valid.
+
+  - the tail then swallows the error from the reply path as well:
+
+	ret = tsconfig_send_reply(dev, info);
+	if (ret && ret != -EOPNOTSUPP) {
+		NL_SET_ERR_MSG(info->extack,
+			       "error while reading the new configuration set");
+		return ret;
+	}
+
+	/* tsconfig has no notification */
+	return 0;
+
+    tsconfig_send_reply() -> tsconfig_prepare_data() ->
+    dev_get_hwtstamp_phylib() is the -EOPNOTSUPP that gets filtered out, so
+    the handler returns 0.
+
+Two consequences follow. First, the user space contradiction the commit
+message sets out to remove seems to get worse rather than better:
+TSCONFIG_GET on the very same device still fails with -EOPNOTSUPP from
+tsconfig_prepare_data(), and SIOCSHWTSTAMP still fails in
+dev_set_hwtstamp_phylib() at "if (!ops->ndo_hwtstamp_set)", while
+TSCONFIG_SET now reports success.
+
+Second, a successful do operation completes with a bare ACK and no
+ETHTOOL_MSG_TSCONFIG_SET_REPLY, although the spec declares a full reply:
+
+Documentation/netlink/specs/ethtool.yaml, tsconfig-set:
+      do:
+        request:
+          attributes: *tsconfig
+        reply:
+          attributes: *tsconfig
+
+That is the case commit e8ab231782e9 ("net: ethtool: tsconfig: set command
+must provide a reply") closed.
+
+The commit message says "Drop both checks and let the phylib helpers
+decide, like the ioctls do." On the SET path, is the phylib helper
+consulted at all when config_mod is false? Would narrowing the gate to
+reject only when neither a PHY nor an NDO provider can serve the device, or
+building the reply from the configuration SET already has, keep both the
+error and the reply semantics intact?
+
+Could the change in SET error and reply semantics also be mentioned in the
+commit message?
+
+>  static struct hwtstamp_provider *
+>  tsconfig_set_hwprov_from_desc(struct net_device *dev,
+>  			      struct genl_info *info,
+> @@ -459,6 +445,5 @@ const struct ethnl_request_ops ethnl_tsconfig_request_ops = {
+>  	.reply_size		= tsconfig_reply_size,
+>  	.fill_reply		= tsconfig_fill_reply,
+>  
+> -	.set_validate		= ethnl_set_tsconfig_validate,
+>  	.set			= ethnl_set_tsconfig,
+>  };
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the dev->hwprov lifetime
+looks unbalanced and dropping .set_validate widens the set of devices that
+can reach the install path.
+
+tsconfig_set_hwprov_from_desc() kzalloc's the provider and
+ethnl_set_tsconfig() publishes it, freeing only the one it replaced:
+
+	__hwprov = rcu_replace_pointer(dev->hwprov, hwprov,
+				       netdev_is_locked_ops_compat(dev));
+	if (__hwprov)
+		kfree_rcu(__hwprov, rcu_head);
+
+The only teardown-time free is in phy_detach():
+
+	hwprov = rtnl_dereference(dev->hwprov);
+	/* Disable timestamp if it is the one selected */
+	if (hwprov && hwprov->phydev == phydev) {
+		rcu_assign_pointer(dev->hwprov, NULL);
+		kfree_rcu(hwprov, rcu_head);
+	}
+
+A HWTSTAMP_SOURCE_NETDEV provider has phydev == NULL, so that branch never
+matches, and neither unregister_netdevice() nor free_netdev() releases
+dev->hwprov. Does the allocation then outlive the struct net_device when an
+interface with a netdev-source provider selected is unbound or its netns
+goes away?
+
+With the ndo_hwtstamp_get/set gate gone, provider selection now depends only
+on ethtool_ops->get_ts_info() plus net_support_hwtstamp_qualifier(), so more
+devices can install such a provider.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922070813.1458713-1-nb%40tipi-net.de
