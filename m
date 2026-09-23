@@ -1,572 +1,290 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E13D352C34;
-	Wed, 23 Sep 2026 09:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790156797; cv=none; b=tgekmACTeCH6/S7Sx721x6T83DIYllgWdrMPnYeP1Y69wsaKk8T0F/Pu9BPh3577cR8GPobEXb71oVT7aVPypzBca/0qRPRkqvNg0ldbLtFLUkLRCqemdPeX0YMnRUEdtf7hTOdVeQ1LFvzKdTFMsK/MxGmxdzU07Gt5fm6St2g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790156797; c=relaxed/simple;
-	bh=Yup1gX9DfP4ksR8ZD2Pyfkau+dyrndpWzeF6780RweI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M+EvQUxDx7tVZAvyHBFbfpls/UBj0iogJ7meyX59I+npj60sz5EHMQZO8dinf8TslhpqpuGG+ADKYjZRwI1faIjaW9ctQk9ZlRSo2NQ0btAjMfGMsGTV4Z8w2XtAOgLg2P48fh2Z0Mek5ANvrnQUc4Fa2g1sDem8eE3p1PdecbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=kjNuhyKz; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BF2471421
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790156884; cv=fail; b=tcISmWythuK7/uKv9yk3/sdcBDNsSs8sPMk58QvnvmUIrB3tBRtFvS2OrbUNcIlaN+iVayV/Cf5MOqzpvoDBp+AVdKu3jvj+wInWS83UqWom/CmuWoV/YTt4DtSLhqmlm4BspDpLB9vwZUJ/jvW+YMM5pndwaBoKR73XL/hd+pw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790156884; c=relaxed/simple;
+	bh=s/+1Sw0GOhAV6aEyxDh3k52oJXron9DMmutyu+sNPUs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QaUMFNmmHpvIEovZLDgnN7E5Ay4Em5Jy3WFPs6Mf+n2k/5wuQz/h1ydC9MX+ubbzdjmLdhlvuoVDTdcD57/D6Z2JGH4e3kNzt+JG6bf0VeMTlnCtdaBNti6vckcpVAeudGufvc+PET/RA6B5mFqFfih8OLnTLr02Rj5kviD0YqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EOZFaPB2; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="kjNuhyKz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EOZFaPB2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790156796; x=1821692796;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Yup1gX9DfP4ksR8ZD2Pyfkau+dyrndpWzeF6780RweI=;
-  b=kjNuhyKz7hA3SEAGvQCR0r+EY+htM5rBSAa1B2fjR0FmdFKzLvVCgwDc
-   LFuJYjGBq1qosTHONtYfsOxoGOduLZ2yhun/eLr0N+7xC89QZnoF97Zkr
-   stsC1xc6uOl/DNWiVwBc4nGi7kWKwZ8QLlFi7iNrVCeJiOeB7DQGui6pf
-   YDOuq1OKb6T6myA4k7sd1Xl+EBY7Mli+bIJ3WWx/61gsEwRRQ7Dsedizu
-   Q9dNq6Fg2s4fMh4+eX+yoVOo5x8GQbzA2jWLXBU4Iju1N8DY5vSwcgfs8
-   veCw9jmDJzKtdWpQxMQ1VNmO/JNdjpn+bVTX1nULiNwkRNrbBScll83rG
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790156882; x=1821692882;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=s/+1Sw0GOhAV6aEyxDh3k52oJXron9DMmutyu+sNPUs=;
+  b=EOZFaPB2xlWNUExTyQaSTQX514kk1mC/55ev4oXR/NbjAPLQ7HtZKvLO
+   F/YfQkjBRstoN57UFtZ8LI+gmoG3bWXisf5B8pau8C252rXne3g6yqX8W
+   lDm+S+Uy8V8U+yry2V+1b/ED73GWcT6HnFpbiAn5wb7P1uC3SjgsejqoK
+   PVZE7iKX3l39MqJaZ5CBIVSGf8BB0D1Rtcur16chVmZ3PXfehs2eVKVzx
+   oq6Gfi5O/hIFXThUefA/RCq6yucVoYXVgr37uovXTG/lDnXu48pjlhymd
+   f8AoYlw0UBoYA/7VgnQh/dhN87juFf2LhD58ApKxhsMrscw2+xmWAeCJj
    A==;
-X-CSE-ConnectionGUID: AVDlGNA5SGew5AlK3h/b2A==
-X-CSE-MsgGUID: FTG2eZL/Tta3HdQ39cfm7g==
+X-CSE-ConnectionGUID: hFymOszaQDGIBplf4tZltg==
+X-CSE-MsgGUID: JBvJjL8+TrqqYiyRHuVI3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101421764"
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="64026580"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 02:46:29 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Wed, 23 Sep 2026 02:46:27 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 23 Sep 2026 02:46:23 -0700
-Date: Wed, 23 Sep 2026 11:46:22 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v7 11/14] net: lan966x: add PCIe FDMA MTU change
- support
-Message-ID: <20260923094622.gmxyw46ligz4rsyd@DEN-DL-M70577.microsemi.net>
-References: <20260918-lan966x-pci-fdma-v7-11-0ecc179c8a2c@microchip.com>
- <179008205354.2160803.17637640817184992984@kernel.org>
+   d="scan'208";a="101421764"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 02:48:01 -0700
+X-CSE-ConnectionGUID: zUj8W4rRRfqCi4Qlj0fo6Q==
+X-CSE-MsgGUID: XfvPB8ihSNeHDG7ux4gyKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="272133689"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 02:48:01 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 02:48:00 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 02:48:00 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.62) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 02:48:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oqZgwJzYWG3Ay51dwzgc34TLF7ImUe/VnRhlrOdtvpae9CpqtEmpLRAsHA6bCVKU3RNo33oI1Vww0Gkr8axGoYZQyJXM673aKEz1s13jEmAIAWnMPTo0n9uPxFzeygVQmzI7bMs7iIrO2smzkbiv1KH3Q7Ovav/qACT0uoqE9wvw6fXXEUdllM4nE88dMVZo6qRJRg28Ygy8/lcRKfAv1XlObKmd1mZdRpG9z5rfnbxCjOME9EIkNl3l+fnKEDQNoYpO8iB2rMf19gYiixUg1RKnLR/mCCGXdlVCMxTa0SPyhbOuzHqxQ3pdElyd5b+ZnLpf3QyhdUy44b2nqVTa3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s/+1Sw0GOhAV6aEyxDh3k52oJXron9DMmutyu+sNPUs=;
+ b=hvjf3cBM9tE+m0okNczsdfOnZFz6OlNp2H1sihvuItQFdnlHUQ0FEjCl5bQVAPpePlwtaZsADTQES5wtvOcH7pzIJP1QfR2fAxhldGmvGzc2H9Sy+vTPEHtSz6F4ItTCjrKwi+OsSLQ1JGTfnh1yBq8ENnQ6oUROMpYP3Mb26DGUIR2dpZ1nlqZUHla/B+7Do90TeIr/49Mv7wFy7wkQNKYDwyQ+6/orow3S9UnE6JQ8NJMyTzm11mO1l4oCjn+qDXLuIknVr9EqQUfcjMTlIHJ1rQo6WSZSr2wwVNZjWJZfIDBM+let8vU6QP08I66t8RtcLJM7Q3bHzQ6dWf0WAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by SA3PR11MB9487.namprd11.prod.outlook.com (2603:10b6:806:47e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.16; Wed, 23 Sep
+ 2026 09:47:53 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 09:47:53 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Keller, Jacob E" <jacob.e.keller@intel.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, "Nitka, Grzegorz" <grzegorz.nitka@intel.com>,
+	"Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>, Intel Wired LAN
+	<intel-wired-lan@lists.osuosl.org>, "Machnikowski, Maciej"
+	<maciej.machnikowski@intel.com>, "Korba, Przemyslaw"
+	<przemyslaw.korba@intel.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
+CC: "Keller, Jacob E" <jacob.e.keller@intel.com>, "Machnikowski, Maciej"
+	<maciej.machnikowski@intel.com>
+Subject: RE: [PATCH iwl-net v2 01/15] ice: use reference counting and SRCU for
+ PTP port access
+Thread-Topic: [PATCH iwl-net v2 01/15] ice: use reference counting and SRCU
+ for PTP port access
+Thread-Index: AQHdSr2v4a/LDrjZAUOcY8aDqAOZhrbb61lg
+Date: Wed, 23 Sep 2026 09:47:53 +0000
+Message-ID: <IA3PR11MB89865E16941481F634A03E9EE5822@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-0-e55b692d0e6b@intel.com>
+ <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-1-e55b692d0e6b@intel.com>
+In-Reply-To: <20260922-jk-e825c-timestamp-processing-logic-fixes-srcu-v2-1-e55b692d0e6b@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA3PR11MB9487:EE_
+x-ms-office365-filtering-correlation-id: f3a92e81-2727-4a34-537e-08df1957bcd6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|6133799003|22082099003|18002099003|921020|56012099006|11063799006|5023799004|10067099003|38070700021|4143699003;
+x-microsoft-antispam-message-info: TyyNCPqr2nHl2su6XUoT/UhcPv6FodRVPHmTuoKoKGS7B1OdF7rntMbvuB0QjoLSEGRxmh0awA9fzp3/H8cFz1EUbj62S6ZEZf1J2fpQCPjhC5GAL3QkRnmcWbYtVrN0kVcgn25wluK2eQq9CWlcpJZ81riZDGFSWgd1rPVEN11cI6T3RB2KxCIpWxt1xYWdihWMoaicpH5TR2ywYsn53ylguyppgOeMwOXABdi0CbDQJoysh0a4iocX4ueAcEjvKTx9rxUhABDs29LrDYbhkKBJV9alzdMPwYOPgvRTdANgb/KkTsJbPm4cVGxbedfWGnVdddmU3Pv2E8qtyVuSudV3JvmWGJPBZNB/g9uzCI8M0U0DUJJqQiSiP9Wis57xQbYl+cnZpRG6JHs2pPRpDJ1U6By5inU4IWILkP9mSebjSfjNqYtuk7VW6XRCFa0vnDNnojtYHOhue180kKVIa1wrAOvXeAmcJzbHehuIl51Fu3qCgtKI66yYuTbPouqRZOM1K33B6jXX9tHnsBGK/oEQvbMYJFZuArmvyMpYuXG+HSgnan27dfHq34rCYQBST7XNL/iBxQWbXuYDPlTD3dZk0iHgjjw4aZDNDM7m6eBH/JxRkFCvS7M5kiRVZgdyzkL1epFQEjwUOuUa9JxnbLLxpnM/IXfrE+bNIJJQKZvMKyc/NnA23UrI9TRrPrRn1zTrUfcYjCiGAgtj9nC2q9s9tUZ574N3IIU66oumleweKYuSIpzckKBNWKOf/pYx
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(921020)(56012099006)(11063799006)(5023799004)(10067099003)(38070700021)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q3VHL2hRTzZaak1JQmQrUUU2NjczRmU3YXBxRWlmSnU3b3hnTGoyM29lcWdM?=
+ =?utf-8?B?ZisxUXk5ejg5L3k0ckF5aWgvMjh4QUlLYmZwSjB5S1ZleitBNkhhRVE0cHUv?=
+ =?utf-8?B?bUFtTDZCTE52RTRYOTRKcDdIOWgzMlVjS1dQS3A4bnU5bTZHN0VUT1BXUlps?=
+ =?utf-8?B?M1ltR0VNN1lvbWZib1RvTGVuYUkvUG05NGFaNjhTT3YrMVF4UWJJOTF4V3FR?=
+ =?utf-8?B?T2NCa3Y2WXdvei9vYVptRnBBbTVra1F0dGF1YmtEaDMwSlRJQytDenVuVWQz?=
+ =?utf-8?B?Z25Bb2JUZEtNZ1dtTGFnZlVVOHRITDdBSkp0Y0xkZXo0N0FuSU9Dek9GcUhh?=
+ =?utf-8?B?SFc0NjRnSzVqc0E0Nm4rMnRJMThzejB0RHNTVmFveHFrZ3VaaFdqVE1yQm9P?=
+ =?utf-8?B?cVpHTSt4bnFSbDZWR2hqNnRqc0dOaytQSTVETHN2T0JObzRkRHlEeU9SdFBt?=
+ =?utf-8?B?MmFaeVB0MUlSNURKSWdrV051cUN2b2sramRCbGVVTHZsSStrWkZRRS9nQW5G?=
+ =?utf-8?B?NXNuQUxIbWxXZ1FDTFJGM3FiWmc2d200VU9VZ1hQUm1DUUJYbFBmMkxkRlVV?=
+ =?utf-8?B?VStrMHFJaGplRHpMVnh3MkRqSWVEdFZTOENvTW9GNGt1ZnBzMllNWVRvWXBi?=
+ =?utf-8?B?N003QVgvMDkyclpDZXRidmF1UTQxYmVTS1YyaXoyTzFpSmdCL2dUcDFDZlRO?=
+ =?utf-8?B?RjFZbmw4Sk9JS2hMQnhsY3F4c3hqWUhWekhqSGYwQy9YaFhNMkp4NXlvbWxD?=
+ =?utf-8?B?Y0lLNXVReVBIS1NBWkpvSVJzVEFRZWlUa1paOFl5QTJpT2xzcytHcVhkNG55?=
+ =?utf-8?B?dVdzOTE1UzJXVmNsSW05TXBrN25zbEx3TXNoK1d2WTNiM2xqSHE0RjFXK2xP?=
+ =?utf-8?B?a0lFU29XcEcxZWRmelJoODltOGVrd0pQU202SVZkRkwxRnQ4V25xbVBCTkVx?=
+ =?utf-8?B?K2ZkNVZqZ1d6MjZwc01rdGN4Y2I3Tm9lRDAvcmpXQW1pcW1UZlEwcTFuWito?=
+ =?utf-8?B?MWdJSmFPMVVpZmRhemwvZXRHZWxHeC8zZWw3QzBENUEyU2xjNms4TjdaL2Vk?=
+ =?utf-8?B?TlFIcUw4a3hyVE4wc3Y3L2Q3c0ZsZ2h2TGp3M0pQM3NJOVhZbjZjdWhqTWM5?=
+ =?utf-8?B?alRaczlPVTl0VGEzVExBczA3TEJvU3ZHbzliNWVrUkJiOEcrTUwzZU0vRFdV?=
+ =?utf-8?B?OTJMV1ZPNXhxeUJRS1hHS1pLajMrOHBYZWhEYjA3enBVK1pjeTJ6RVRGQVhN?=
+ =?utf-8?B?SW9PdXE2dVhyNFBUdzdiOGpuRDQvbVZZZXdJMVEyNmNRWG1UOFY5YUlLZ25H?=
+ =?utf-8?B?ODllSWdpSlVSSE10Vm1JeVV1VjM2RThGUnpIVFE0bWlhOUJwWGhOQkNtVkdm?=
+ =?utf-8?B?bkRTck9DcVp5QkY4SjlrcTJNWjlGUnRZWkdpeEU3MUorV1Y4WlIrNGRVcWgy?=
+ =?utf-8?B?VklhNUFvdVJVZ3NYQ0VGanl0WkdYZDJiRHJIN3J1T3JqQ2VaOWREQ1UxZ0V5?=
+ =?utf-8?B?MklxVk1KSzNPU3NyeWtEYWNwTElBaHVmUFBuaWpoYk94am9FNTRsWkVjdlVX?=
+ =?utf-8?B?K05mNFhxMi9YSm9EUzJpVmFTZ2RRYnVoVUllaUhzRFpUZmNxd0JPOTFxRmN3?=
+ =?utf-8?B?TjBweGU5ejgreGZtRXZmdVZnSVI2VytYSEhwU3pLQzdsRnplZHRuS1lKb2tE?=
+ =?utf-8?B?QzQydzR1MGUvNENVUWZiQndoUjloa3Rob0hGZDQ5dmd6SmpaZnM5NU1GUWwv?=
+ =?utf-8?B?ZGpsL2R0dXJSeWpYSjJaZTIvYmduMDVnek9xL2NnRTJIUTRwUTRDak9vaEJB?=
+ =?utf-8?B?czhzaDFNa3NoQnNxbDZmZlVQR3dra2RMbGovc0JEZUY0UVpqRGpFREtleWtI?=
+ =?utf-8?B?THhlRUlNSGlIbWlhdUpqelY5OWFYUVp1SzB6R3dBUENURGgzYXNYTGVsNFBM?=
+ =?utf-8?B?RzRTTnhXdVFGdHE2dUZTcEJKQnJuMEFjRTFWc1IwTk5MMzhXWUFPakQrMlh5?=
+ =?utf-8?B?QUNOV1RpNGdxNHA1OEhUelRDcmVHeWt1SHV3R3BKMG5BWDZQMVFsQnd0LzF0?=
+ =?utf-8?B?bWRkOGx2WFZuRTN5bTFkdGRnejB6bmpNNzluRjhNYWIxNS82NnJVcUpMK3lS?=
+ =?utf-8?B?djZERW4ySmIra1lGSTlVSEI5STV1NVgvc2E4b1pTajFWUndlVkVaRFNMVzZX?=
+ =?utf-8?B?OUdpT3dMdXVGOUFvcERGc0NoUVBkZE53d1NSbkozbEY4Z0RQaDZ1bnlJNC9v?=
+ =?utf-8?B?dU4vS1ZpYnpsWFFlb1BRV1B2SWpiVW5hbEk1b1ZsZ3F4UWRCNUZnQlUrZ3kz?=
+ =?utf-8?B?ZzV2WktGbWJFMTZIbk1FeXA2NEM3Yys0ckliMmM0OXRkMVhDNXgwNG5aWk1u?=
+ =?utf-8?Q?vMyhVCCetIKeDVX0=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179008205354.2160803.17637640817184992984@kernel.org>
+X-Exchange-RoutingPolicyChecked: Lcza7Dz27X4J8mEfCa8mMetBAkEftJLkM4talopEoj3w0bhia/j7pEOTU/sOpnBtShrCsdaTUD4hWYVWRNEAh9qUEPE1Rvm499Hhn75Qk+ehvWrKR/iVDfwdVUdmfsEcPVba2p/n046xUBhhmBiRdZOqa6Vz+DvIyeTzfMckhaISkIGFvwTvArg01nPhSPtt/UwqdSOszt0LK+oFQQOZGteVyXsqqnIrDmkoxc2/JWUdicyfJ68ZWBMkQe5WmfwNl48EraJ+Gi5xNB2xwpbkiP7MvzwrUtNYPKAYFuuR286RtQRxIiGnrj5XodkT9XIaaE19S5Ewn2TgYHzvRDV6xA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3a92e81-2727-4a34-537e-08df1957bcd6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 09:47:53.0684
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rhJ83NRacoZ3jBAKRcH11hEFv+io5fcDAB54u9df6Xu9a42yqycXw562tIiZqF1ojiPIuE9TZMCGzeCQLiF0pAI6XlcZM4aglHKtVTG64ac=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB9487
+X-OriginatorOrg: intel.com
 
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 2 (2) · Medium: 1 (1) · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] MTU change during or after PCIe FDMA teardown runs the full
->   reload on freed/quiesced state: unbounded napi_disable() while holding…
-> - [High] The new resize readiness check publishes lan966x->rx.lan966x
->   before the PCI FDMA rings exist, so an MTU change can race with ring…
-> - [Medium] The new PCIe resize path retires DMA rings and tears down
->   their ATU outbound window without ever confirming the hardware is…
-> - [Low] FDMA_PCI_DB_SIZE_MAX / FDMA_PCI_MAX_MTU perform unsigned
->   arithmetic with no underflow guard and no BUILD_BUG_ON, even though…
-> 
-> Pre-existing issues:
-> - [High] The hazard the new PCIe reload path documents and avoids is
->   still live in the sibling platform reload path, which this series…
-> - [High] The two implementers of lan966x_fdma_ops::fdma_resize now
->   disagree about the 'rings not built yet' precondition, and the…
-> - [Medium] Window in which DEV_MAC_MAXLEN_CFG exceeds the DCB buffer
->   size, combined with a missing SOF/EOF check in…
-> 
-> --
-> 
-> net: lan966x: add PCIe FDMA MTU change support
-> 
-> This adds MTU change support to the PCIe FDMA path by reallocating the
-> contiguous ATU-mapped RX and TX rings at the new size and falling back to
-> the old buffers on failure.  It also caps the PCIe DCB ring at 256 entries
-> and advertises a derived dev->max_mtu (FDMA_PCI_MAX_MTU) when the FDMA is
-> in use.
-> 
-> A few questions below about the new reload path and the new size macros.
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > index 5d6902459f20..940425beec2f 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > @@ -358,7 +358,7 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
-> >       lan966x->rx.lan966x = lan966x;
-> >       lan966x->rx.max_mtu = lan966x_fdma_get_max_frame(lan966x);
-> >       rx_fdma->channel_id = FDMA_XTR_CHANNEL;
-> > -     rx_fdma->n_dcbs = FDMA_DCB_MAX;
-> > +     rx_fdma->n_dcbs = FDMA_PCI_DCB_MAX;
-> >       rx_fdma->n_dbs = FDMA_RX_DCB_MAX_DBS;
-> >       rx_fdma->priv = lan966x;
-> >       rx_fdma->db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-> 
-> [Severity: High]
-> Can an MTU change race with ring construction here?  lan966x_fdma_pci_init()
-> sets rx.lan966x before it fills in channel_id/n_dcbs/n_dbs/db_size/size and
-> before the two sleeping allocations in lan966x_fdma_pci_rx_alloc() and
-> lan966x_fdma_pci_tx_alloc().
-> 
-> The netdevs are already live at that point: lan966x_probe() runs the whole
-> port loop, including lan966x_probe_port()->register_netdev() and
-> lan966x_port_init()->lan966x_fdma_netdev_init()->netif_napi_add()+
-> napi_enable(), and only calls ops->fdma_init() afterwards, without holding
-> RTNL.
-> 
-> So an rtnl-held ndo_change_mtu in that window sees rx.lan966x != NULL, passes
-> the new guard in lan966x_fdma_pci_resize(), finds a max_mtu that differs from
-> the partially initialised rx.max_mtu, and enters __lan966x_fdma_pci_reload().
-> Both contexts then write the same lan966x->rx.fdma / lan966x->tx.fdma:
-> 
->   lan966x_fdma_pci_reload()
->       lan966x_fdma_rx_disable(&lan966x->rx)   /* channel_id still 0 */
->       lan966x->rx.fdma.atu_region = NULL;     /* under probe's feet */
->       lan966x_fdma_pci_rx_alloc(&lan966x->rx) /* second ring */
-> 
-> Does this leak probe's ring plus its ATU region (only
-> FDMA_PCI_ATU_REGION_MAX == 6 exist), or trip WARN_ON(fdma->atu_region) /
-> -ENOSPC in fdma_pci_atu_region_map()?  And on the failure branch,
-> lan966x_fdma_pci_reset_mem() dereferences tx->fdma.atu_region->base_addr,
-> which is NULL in a snapshot taken before probe allocated it.
-
-Yes, same issue as adressed in #4. Theres a race because netdevs are registered
-before initialization (in this case FDMA) has happened. The proper fix is a
-reordering of the probe initialization.
-
-> 
-> [ ... ]
-> 
-> > @@ -391,9 +391,156 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
-> >       return 0;
-> >  }
-> >
-> > +/* Reset existing rx and tx buffers. */
-> > +static void lan966x_fdma_pci_reset_mem(struct lan966x *lan966x)
-> > +{
-> > +     struct lan966x_rx *rx = &lan966x->rx;
-> > +     struct lan966x_tx *tx = &lan966x->tx;
-> > +
-> > +     memset(rx->fdma.dcbs, 0, rx->fdma.size);
-> > +     memset(tx->fdma.dcbs, 0, tx->fdma.size);
-> > +
-> > +     fdma_dcbs_init(&rx->fdma,
-> > +                    FDMA_DCB_INFO_DATAL(rx->fdma.db_size - XDP_PACKET_HEADROOM),
-> > +                    FDMA_DCB_STATUS_INTR);
-> > +
-> > +     fdma_dcbs_init(&tx->fdma,
-> > +                    FDMA_DCB_INFO_DATAL(tx->fdma.db_size),
-> > +                    FDMA_DCB_STATUS_DONE);
-> > +
-> > +     lan966x_fdma_llp_configure(lan966x,
-> > +                                tx->fdma.atu_region->base_addr,
-> > +                                tx->fdma.channel_id);
-> > +     lan966x_fdma_llp_configure(lan966x,
-> > +                                rx->fdma.atu_region->base_addr,
-> > +                                rx->fdma.channel_id);
-> > +}
-> > +
-> 
-> [ ... ]
-> 
-> > +static int lan966x_fdma_pci_reload(struct lan966x *lan966x, int new_mtu)
-> > +{
-> > +     struct fdma tx_fdma_old = lan966x->tx.fdma;
-> > +     struct fdma rx_fdma_old = lan966x->rx.fdma;
-> > +     u32 old_mtu = lan966x->rx.max_mtu;
-> > +     int err;
-> > +
-> > +     napi_disable(&lan966x->napi);
-> > +     lan966x_fdma_tx_disable_netdev(lan966x);
-> > +     lan966x_fdma_rx_disable(&lan966x->rx);
-> > +     lan966x_fdma_tx_disable(&lan966x->tx);
-> 
-> [Severity: High]
-> What happens if an MTU change lands after the PCIe FDMA has already been torn
-> down?  lan966x_fdma_pci_deinit() disables NAPI and frees both coherent rings,
-> but it leaves lan966x->rx.lan966x set, lan966x->fdma true and fdma->dcbs
-> dangling.  It also runs before the netdevs are unregistered and without RTNL:
-> 
->   lan966x_remove()
->       lan966x->ops->fdma_deinit(lan966x);
->       lan966x_cleanup_ports(lan966x);   /* unregister_netdev() here */
-> 
-> The new guard in lan966x_fdma_pci_resize() only rejects "rings not built
-> yet", so an ndo_change_mtu in that window passes it and reaches this
-> function.  Three things then follow in order:
-> 
-> napi_disable(&lan966x->napi) on an already-disabled NAPI.  Does
-> napi_disable_locked() spin forever in
-> 
->         while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC))
->                 usleep_range(20, 200);
-> 
-> since nothing clears those bits until napi_enable()?  That task holds RTNL,
-> so unregister_netdev() in lan966x_remove() can never complete.
-> 
-> If that is somehow passed, the success path below calls
-> fdma_free_coherent_and_unmap() on the stale rx_fdma_old/tx_fdma_old
-> snapshots, so dma_free_coherent(dev, fdma->size, fdma->dcbs, fdma->dma) runs
-> a second time on the multi-MB blocks deinit already released.
-> 
-> And the restore: path calls lan966x_fdma_pci_reset_mem(), which memsets up to
-> rx->fdma.size bytes into freed DMA memory and then dereferences
-> tx->fdma.atu_region->base_addr, which fdma_free_coherent_and_unmap() already
-> set to NULL.
-> 
-> Would a "rings are live" state check (or clearing rx.lan966x and dcbs in
-> deinit, or unregistering the netdevs before fdma_deinit) close this?
-
-lan966x_remove() is not touched by this series (apart from calling
-ops->fdma_deinit), so I'd say pre-existing. But I believe this issue will also
-disappear, when we refactor probe init as described above.
-
-> 
-> [Severity: Medium]
-> Is the hardware guaranteed to be quiesced at this point?  Both
-> lan966x_fdma_rx_disable() and lan966x_fdma_tx_disable() are void and swallow
-> the result of
-> 
->         readx_poll_timeout_atomic(lan966x_fdma_channel_active, lan966x,
->                                   val, !(val & BIT(fdma->channel_id)),
->                                   READL_SLEEP_US, READL_TIMEOUT_US);
-> 
-> so a -ETIMEDOUT never reaches this caller, and the EQ_AVAIL drain poll in
-> __lan966x_fdma_pci_reload() is discarded too (see below).  If either poll
-> times out, the extraction/injection engine still owns the old DCB ring while
-> this function reprograms FDMA_DCB_LLP and then calls
-> fdma_free_coherent_and_unmap(&rx_fdma_old), which does:
-> 
->   fdma_free_coherent_and_unmap()
->       fdma_pci_atu_region_unmap(fdma->atu_region);  /* ENA=0, translation cleared */
->       fdma->atu_region = NULL;
->       fdma_free_coherent(dev, fdma);                /* pages returned */
-> 
-> On the PCIe path the ATU window is the address translation itself, so
-> in-flight writes land on a disabled outbound window or into memory already
-> handed back to the DMA allocator.  Should a timeout abort the resize and
-> propagate the error so the MTU change is rejected instead?
-
-I believe the quiesce poll before teardown is also discarded on lan966x, lan969x
-and sparx5 alltogether, same pattern.  READL_TIMEOUT_US is 100 seconds, so a
-timeout means the channel was already wedged for a long time.
-
-> 
-> > +
-> > +     lan966x->rx.max_mtu = new_mtu;
-> > +
-> > +     /* Must be NULL'ed in order to realloc them. */
-> > +     lan966x->rx.fdma.atu_region = NULL;
-> > +     lan966x->tx.fdma.atu_region = NULL;
-> > +
-> > +     lan966x->tx.fdma.db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-> > +     lan966x->tx.fdma.size = fdma_get_size_contiguous(&lan966x->tx.fdma);
-> > +     lan966x->rx.fdma.db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-> > +     lan966x->rx.fdma.size = fdma_get_size_contiguous(&lan966x->rx.fdma);
-> > +
-> > +     err = lan966x_fdma_pci_rx_alloc(&lan966x->rx);
-> > +     if (err)
-> > +             goto restore;
-> > +
-> > +     err = lan966x_fdma_pci_tx_alloc(&lan966x->tx);
-> > +     if (err) {
-> > +             fdma_free_coherent_and_unmap(lan966x->dma_dev,
-> > +                                          &lan966x->rx.fdma);
-> > +             goto restore;
-> > +     }
-> > +
-> > +     /* Free and unmap old memory. */
-> > +     fdma_free_coherent_and_unmap(lan966x->dma_dev, &rx_fdma_old);
-> > +     fdma_free_coherent_and_unmap(lan966x->dma_dev, &tx_fdma_old);
-> > +
-> > +     /* Order matters: napi_enable() must precede the wakes, or a TX that
-> > +      * completes first clears FDMA_INTR_DB_ENA with nothing scheduled to
-> > +      * restore it, leaving RX dead until the next reload.
-> > +      */
-> > +     napi_enable(&lan966x->napi);
-> > +     lan966x_fdma_rx_start(&lan966x->rx);
-> > +     lan966x_fdma_pci_wakeup_netdev(lan966x);
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but the hazard this comment
-> describes looks like it is still live in the sibling register-path reload,
-> which the series leaves untouched and the commit message does not mention.
-> 
-> lan966x_fdma_reload() uses exactly the order this comment forbids, in both
-> its success and its restore path:
-> 
->         lan966x_fdma_rx_start(&lan966x->rx);    /* re-arms RX bit in DB_ENA */
->         ... page_pool_put_full_page() over 512 DCBs ...
->         fdma_free_coherent();
->         page_pool_destroy();
->         lan966x_fdma_wakeup_netdev(lan966x);
->         napi_enable(&lan966x->napi);
-> 
-> The mechanism matches what the comment states.  lan966x_fdma_irq_handler()
-> does:
-> 
->         if (db) {
->                 lan_wr(0, lan966x, FDMA_INTR_DB_ENA);
->                 lan_wr(db, lan966x, FDMA_INTR_DB);
-> 
->                 napi_schedule(&lan966x->napi);
->         }
-> 
-> With NAPI disabled, napi_schedule_prep() returns false and only sets
-> NAPIF_STATE_MISSED; napi_enable_locked() clears SCHED/NPSVC but does not
-> re-check MISSED, so no poll runs and the only code that restores DB_ENA
-> (the lan_wr(0xff, lan966x, FDMA_INTR_DB_ENA) after napi_complete_done()) is
-> never reached.  Since DB_ENA is now 0, no further DB interrupt can be raised
-> either.
-> 
-> The TX channel is not disabled during that window, so an in-flight TX
-> completion or RX DB interrupt there appears to mask all FDMA interrupts
-> permanently until another MTU change happens to reload.  Should the platform
-> path get the same ordering fix?
-> 
-> > +
-> > +     return err;
-> > +restore:
-> > +
-> > +     /* No new buffers are allocated at this point. Use the old buffers,
-> > +      * but reset them before starting the FDMA again.
-> > +      */
-> > +
-> > +     memcpy(&lan966x->tx.fdma, &tx_fdma_old, sizeof(struct fdma));
-> > +     memcpy(&lan966x->rx.fdma, &rx_fdma_old, sizeof(struct fdma));
-> > +
-> > +     lan966x->rx.max_mtu = old_mtu;
-> > +
-> > +     lan966x_fdma_pci_reset_mem(lan966x);
-> > +
-> > +     napi_enable(&lan966x->napi);
-> > +     lan966x_fdma_rx_start(&lan966x->rx);
-> > +     lan966x_fdma_pci_wakeup_netdev(lan966x);
-> > +
-> > +     return err;
-> > +}
-> 
-> [Severity: Medium]
-> This is a pre-existing ordering issue, but does this patch widen it
-> noticeably?  lan966x_port_change_mtu() programs the new frame length before
-> the buffers are grown:
-> 
->         lan_wr(DEV_MAC_MAXLEN_CFG_MAX_LEN_SET(LAN966X_HW_MTU(new_mtu)),
->                lan966x, DEV_MAC_MAXLEN_CFG(port->chip_port));
->         WRITE_ONCE(dev->mtu, new_mtu);
-> 
->         if (!lan966x->fdma)
->                 return 0;
-> 
->         err = lan966x->ops->fdma_resize(lan966x);
-> 
-> and only restores the old value after the callback returns.  On the PCIe path
-> the callback now does real work: the CPU-queue flush, a
-> usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC), two multi-megabyte coherent
-> allocations, and on this restore: path a full RX/TX restart with db_size and
-> DATAL back at the old smaller value while the larger MAXLEN is still
-> programmed.
-> 
-> With n_dbs == 1 the FDMA bounds each write by DATAL but continues an
-> oversized frame in the next DCB, and lan966x_fdma_pci_rx_check_frame() only
-> validates BLOCKL:
-> 
->         blockl = FDMA_DCB_STATUS_BLOCKL(db->status);
->         if (!lan966x_fdma_pci_rx_size_fits(fdma, blockl))
->                 return FDMA_ERROR;
-> 
-> It never checks FDMA_DCB_STATUS_SOF/EOF, so a continuation DB is treated as a
-> complete frame and lan966x_ifh_get_src_port(virt_addr, src_port) parses
-> payload bytes as the IFH source port.  src_port is range-checked and data_len
-> is bounded, so this is not an out-of-bounds access, but can a remote sender
-> that injects an oversized frame in this window get frames delivered to the
-> stack attributed to a source port of its choosing?
-> 
-> > +
-> > +static int __lan966x_fdma_pci_reload(struct lan966x *lan966x, int max_mtu)
-> > +{
-> > +     int err;
-> > +     u32 val;
-> > +
-> > +     /* Disable the CPU port. */
-> > +     lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(0),
-> > +             QSYS_SW_PORT_MODE_PORT_ENA,
-> > +             lan966x, QSYS_SW_PORT_MODE(CPU_PORT));
-> > +
-> > +     /* Flush the CPU queues. */
-> > +     readx_poll_timeout(lan966x_qsys_sw_status,
-> > +                        lan966x,
-> > +                        val,
-> > +                        !(QSYS_SW_STATUS_EQ_AVAIL_GET(val)),
-> > +                        READL_SLEEP_US, READL_TIMEOUT_US);
-> 
-> [Severity: Medium]
-> The return value of this readx_poll_timeout() is discarded, so "CPU queues
-> drained" is assumed rather than verified before the rings are retired in
-> lan966x_fdma_pci_reload().  Should a -ETIMEDOUT here abort the resize?
-> 
-> > +
-> > +     /* Add a sleep in case there are frames between the queues and the CPU
-> > +      * port
-> > +      */
-> > +     usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
-> > +
-> > +     err = lan966x_fdma_pci_reload(lan966x, max_mtu);
-> > +
-> > +     /* Enable back the CPU port. */
-> > +     lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(1),
-> > +             QSYS_SW_PORT_MODE_PORT_ENA,
-> > +             lan966x, QSYS_SW_PORT_MODE(CPU_PORT));
-> > +
-> > +     return err;
-> > +}
-> > +
-> >  static int lan966x_fdma_pci_resize(struct lan966x *lan966x)
-> >  {
-> > -     return -EOPNOTSUPP;
-> > +     int max_mtu;
-> > +
-> > +     /* Nothing to resize until fdma_pci_init() has built the rings; it
-> > +      * sizes them from DEV_MAC_MAXLEN_CFG, which the caller already set.
-> > +      */
-> > +     if (!lan966x->rx.lan966x)
-> > +             return 0;
-> 
-> [Severity: High]
-> This is a pre-existing gap in the other callback rather than something this
-> patch introduces, but the two implementers of
-> lan966x_fdma_ops::fdma_resize now disagree about this precondition.  The
-> platform one has no equivalent check:
-> 
-> lan966x_fdma.c:lan966x_fdma_change_mtu() {
->         max_mtu = lan966x_fdma_get_max_frame(lan966x);
->         if (max_mtu == lan966x->rx.max_mtu)
->                 return 0;
-> 
->         return __lan966x_fdma_reload(lan966x, max_mtu);
-> }
-> 
-> lan966x_fdma_init() sets rx.lan966x = lan966x only at its own start, so in
-> the window between register_netdev() in lan966x_probe_port() and
-> ops->fdma_init() in lan966x_probe(), rx.max_mtu is 0, the comparison always
-> differs, and the reload runs against an unbuilt ring:
-> 
->   __lan966x_fdma_reload()->lan966x_fdma_reload()
->       lan966x_fdma_rx_disable(&lan966x->rx)
->           struct lan966x *lan966x = rx->lan966x;   /* NULL */
->           lan_rmw(..., lan966x, FDMA_CH_DISABLE);  /* lan966x->regs */
-> 
-> lan966x->fdma is already true before the port loop and the NAPI instance is
-> added and enabled by lan966x_port_init()->lan966x_fdma_netdev_init(), so
-> nothing else stops the path.  Would the guard be better placed once in the
-> shared caller lan966x_port_change_mtu(), or duplicated in both callbacks?
-> 
-> > +
-> > +     max_mtu = lan966x_fdma_get_max_frame(lan966x);
-> > +     if (max_mtu == lan966x->rx.max_mtu)
-> > +             return 0;
-> > +
-> > +     return __lan966x_fdma_pci_reload(lan966x, max_mtu);
-> >  }
-> >
-> >  static void lan966x_fdma_pci_deinit(struct lan966x *lan966x)
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > index c803619d83e2..2177e2bbfbd3 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > @@ -823,7 +823,8 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
-> >       port->chip_port = p;
-> >       lan966x->ports[p] = port;
-> >
-> > -     dev->max_mtu = ETH_MAX_MTU;
-> > +     dev->max_mtu = lan966x_is_pci(lan966x) && lan966x->fdma ?
-> > +                    FDMA_PCI_MAX_MTU : ETH_MAX_MTU;
-> >
-> >       dev->netdev_ops = &lan966x_port_netdev_ops;
-> >       dev->ethtool_ops = &lan966x_ethtool_ops;
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-> > index 16bc28c8f11f..1877f1916d71 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-> 
-> [ ... ]
-> 
-> > @@ -87,6 +88,33 @@
-> >  #define FDMA_INJ_CHANNEL             0
-> >  #define FDMA_DCB_MAX                 512
-> >
-> > +/* Ring must fit in one MAX_PAGE_ORDER DMA block; 512 DCBs overflows
-> > + * at jumbo MTU.
-> > + */
-> > +#define FDMA_PCI_DCB_MAX             256
-> > +
-> > +#define FDMA_OVERHEAD                                                        \
-> > +     (IFH_LEN_BYTES +                                                \
-> > +      SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) +               \
-> > +      VLAN_HLEN * 2 +                                                \
-> > +      XDP_PACKET_HEADROOM)
-> > +
-> > +/* Largest db_size keeping the ATU-padded ring inside one MAX_PAGE_ORDER
-> > + * block and within the 16-bit DCB DATAL field. Inverts ALIGN(x, R) <= L
-> > + * into x <= ALIGN_DOWN(L, R) to bound x directly.
-> > + */
-> > +#define FDMA_PCI_DB_SIZE_MAX                                         \
-> > +     MIN_T(u32,                                                      \
-> > +           (ALIGN_DOWN(PAGE_SIZE << MAX_PAGE_ORDER,                  \
-> > +                       FDMA_PCI_ATU_REGION_ALIGN) -                  \
-> > +            FDMA_PCI_DCB_MAX * sizeof(struct fdma_dcb)) /            \
-> > +           (FDMA_PCI_DCB_MAX * FDMA_RX_DCB_MAX_DBS),                 \
-> > +           ALIGN_DOWN(GENMASK(15, 0), FDMA_PCI_DB_ALIGN))
-> > +
-> > +#define FDMA_PCI_MAX_MTU                                             \
-> > +     (FDMA_PCI_DB_SIZE_MAX - FDMA_OVERHEAD -                         \
-> > +      (ETH_HLEN + ETH_FCS_LEN))
-> 
-> [Severity: Low]
-> Would a BUILD_BUG_ON help here?  Both subtractions are unsigned and
-> unguarded, and this macro is the only enforcement point for the
-> MAX_PAGE_ORDER ring-size limit, the 16-bit DATAL limit, and dev->max_mtu.
-> 
-> FDMA_PCI_DCB_MAX * sizeof(struct fdma_dcb) is 256 * 256 = 65536.  If
-> PAGE_SIZE << MAX_PAGE_ORDER is at or below 128 KB, the first subtraction
-> wraps and MIN_T(u32, ...) then picks the 65408 branch.  In between, the
-> second subtraction wraps: with 4 KB pages and MAX_PAGE_ORDER == 5 the
-> quotient is 256 while FDMA_OVERHEAD + ETH_HLEN + ETH_FCS_LEN is 630, so
-> FDMA_PCI_MAX_MTU becomes roughly 4G and is assigned straight into
-> dev->max_mtu, so dev_validate_mtu() accepts anything up to INT_MAX and the
-> cap this patch installs disappears.
-> 
-> In the other direction, 4 KB pages with MAX_PAGE_ORDER 6 or 7 yield 138 and
-> 1162, i.e. dev->max_mtu below ETH_DATA_LEN, so a plain 1500-byte MTU cannot
-> be set.  Nothing asserts FDMA_PCI_MAX_MTU >= ETH_DATA_LEN.
-> 
-> The default 4 KB-page, MAX_PAGE_ORDER=10 build does give 16128 and MTU 15498
-> as the commit message says, and arch/arm/Kconfig declares ARCH_FORCE_MAX_ORDER
-> as a plain int prompt with no range constraint (it already ships
-> default "8" if SA1111), so these values are at least legal.
-> 
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-lan966x-pci-fdma-v7-0-0ecc179c8a2c%40microchip.com
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmFjb2IgS2VsbGVyIDxq
+YWNvYi5lLmtlbGxlckBpbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIFNlcHRlbWJlciAyMiwg
+MjAyNiA4OjAzIFBNDQo+IFRvOiBLZWxsZXIsIEphY29iIEUgPGphY29iLmUua2VsbGVyQGludGVs
+LmNvbT47IE5pdGthLCBHcnplZ29yeg0KPiA8Z3J6ZWdvcnoubml0a2FAaW50ZWwuY29tPjsgS3Vi
+YWxld3NraSwgQXJrYWRpdXN6DQo+IDxhcmthZGl1c3oua3ViYWxld3NraUBpbnRlbC5jb20+OyBJ
+bnRlbCBXaXJlZCBMQU4gPGludGVsLXdpcmVkLQ0KPiBsYW5AbGlzdHMub3N1b3NsLm9yZz47IE1h
+Y2huaWtvd3NraSwgTWFjaWVqDQo+IDxtYWNpZWoubWFjaG5pa293c2tpQGludGVsLmNvbT47IEtv
+cmJhLCBQcnplbXlzbGF3DQo+IDxwcnplbXlzbGF3LmtvcmJhQGludGVsLmNvbT47IG5ldGRldkB2
+Z2VyLmtlcm5lbC5vcmc7IE5ndXllbiwgQW50aG9ueQ0KPiBMIDxhbnRob255Lmwubmd1eWVuQGlu
+dGVsLmNvbT4NCj4gQ2M6IEtlbGxlciwgSmFjb2IgRSA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29t
+PjsgTWFjaG5pa293c2tpLCBNYWNpZWoNCj4gPG1hY2llai5tYWNobmlrb3dza2lAaW50ZWwuY29t
+Pg0KPiBTdWJqZWN0OiBbUEFUQ0ggaXdsLW5ldCB2MiAwMS8xNV0gaWNlOiB1c2UgcmVmZXJlbmNl
+IGNvdW50aW5nIGFuZCBTUkNVDQo+IGZvciBQVFAgcG9ydCBhY2Nlc3MNCj4gDQo+IFRoZSBpY2Ug
+YWRhcHRlciBzdHJ1Y3R1cmUgbWFpbnRhaW5zIGEgbGlzdCBvZiBwb3J0cyBhc3NvY2lhdGVkIHdp
+dGgNCj4gdGhlIGFkYXB0ZXIuIFRoaXMgaXMgdXNlZCBmb3Igc3VwcG9ydGluZyBQVFAsIHdoZXJl
+IHRoZSBjbG9jayBvd25lcg0KPiBtdXN0IGhhbmRsZSBtYW55IG9wZXJhdGlvbnMgdGhhdCByZXF1
+aXJlIGFjY2VzcyB0byB0aGUgUFRQIHBvcnQNCj4gc3RydWN0dXJlcyBvZiB0aGUgYXNzb2NpYXRl
+ZCBQRnMuDQo+IA0KPiBUaGlzIGlzIGltcGxlbWVudGVkIHVzaW5nIGEgbGlua2VkIGxpc3QgYW5k
+IGEgbXV0ZXguIFRoaXMgc29ydCBvZg0KPiB3b3JrcywgYnV0IGEgZmV3IHBsYWNlcyB3aXRoaW4g
+dGhlIGNvZGUgZG8gbm90IGFjcXVpcmUgdGhlIG11dGV4IHdoZW4NCj4gaXRlcmF0aW5nIHRoZSBs
+aXN0LiBUaGlzIGluY2x1ZGVzIGljZV9wdHBfZmx1c2hfYWxsX3R4X3RyYWNrZXIoKSwNCj4gaWNl
+X3B0cF9yZXN0YXJ0X2FsbF9waHkoKSwgYW5kIGljZV9wdHBfcHJlcGFyZV9yZWJ1aWxkX3NlYygp
+Lg0KPiANCj4gRml4aW5nIHRoaXMgaXMgdHJpY2t5LCBlc3BlY2lhbGx5IHNpbmNlIGl0IGlzIG5v
+dCBjbGVhciBpZiB3ZSBjYW4NCj4gc2ltcGx5IGFjcXVpcmUgdGhlIGxvY2sgYXJvdW5kIHRoZSBj
+b21wbGV0ZSBpdGVyYXRpb25zLg0KPiANCj4gVGhlIHBhdHRlcm4gb2YgdXNlIGZvciB0aGUgcG9y
+dCBsaXN0IGlzIHJlYWQtbW9zdGx5IHdpdGggbW9kaWZpY2F0aW9ucw0KPiBvbmx5IGhhcHBlbmlu
+ZyBkdXJpbmcgUEYgaW5pdGlhbGl6YXRpb24gd2hlbiBlbGVtZW50cyBhcmUgaW5zZXJ0ZWQuDQo+
+IFRoaXMgdHlwaWNhbGx5IG9ubHkgaGFwcGVucyBkdXJpbmcgZWFybHkgYm9vdCwgdGhvdWdoIGEg
+UEYgY291bGQgaW4NCj4gcHJpbmNpcGxlIGJlIHJlbW92ZWQgb3IgbG9hZGVkIGF0IGFyYml0cmFy
+eSB0aW1lcyB2aWEgYmluZCBhbmQgdW5iaW5kDQo+IG9wZXJhdGlvbnMuDQo+IA0KPiBUaGUgdXNl
+IG9mIGEgbXV0ZXggZG9lcyBtZWFuIHRoZSBkcml2ZXIgY2FuIHNsZWVwIHdoaWxlIGhvbGRpbmcg
+aXQsDQo+IGJ1dCBpdCBzdGlsbCBjcmVhdGVzIGNvbXBsaWNhdGVzIHdpdGggbG9jayBvcmRlcmlu
+ZyBhbmQgcHJldmVudHMNCj4gaXRlcmF0aW5nIHRoZSBsaXN0IGluIGFueSBjb2RlIHBhdGggdGhh
+dCAqY2FuJ3QqIHNsZWVwLg0KPiANCj4gSW5zdGVhZCwgdXNlIFNSQ1UgcHJpbWl0aXZlcyBmb3Ig
+dGhlIHBvcnQgbGlua2VkIGxpc3QsIGFsb25nIHdpdGggYQ0KPiByZWZlcmVuY2UgY291bnQgb24g
+dGhlIHBvcnQuIFRoZSBrcmVmIHJlZmVyZW5jZSBjb3VudGVyIGVuc3VyZXMgdGhhdCBhDQo+IFBG
+IHdpbGwgaGF2ZSBhIHZhbGlkIGxpZmV0aW1lIGFuZCBub3QgYmUgcmVtb3ZlZCB1bnRpbCB0aGUg
+cmVmZXJlbmNlDQo+IGlzIHJlbGVhc2VkLiBOb3RlIHRoYXQgdGhpcyBjaGFuZ2UgZm9jdXNlcyBz
+b2xlbHkgb24gdGhlIHBvcnQgbGlzdCBhbmQNCj4gZG9lcyBub3QgbWFrZSBhbiBlZmZvcnQgdG8g
+cmVzb2x2ZSBhY2Nlc3MgdG8gY3RybF9wZiwgd2hpY2ggaXMNCj4gY3VycmVudGx5IGJlaW5nIGlu
+dmVzdGlnYXRlZCBieSBhbm90aGVyIGRldmVsb3Blci4NCj4gDQo+IFVzZSBvZiBzbGVlcGFibGUg
+UkNVIGlzIHJlcXVpcmVkIGJlY2F1c2Ugd2Ugb2Z0ZW4gaXRlcmF0ZSB0aGUgUFRQIHBvcnQNCj4g
+bGlzdCBhbmQgcGVyZm9ybSBvcGVyYXRpb25zIHRoYXQgbWlnaHQgc2xlZXAuIEF0dGVtcHRzIGF0
+IGltcGxlbWVudGluZw0KPiByZWd1bGFyIFJDVSBoYXZlIHRodXMgZmFyIG5vdCBwcm92ZW4gdG8g
+YmUgYWNjZXB0YWJsZS4NCj4gDQo+IFRoZSByZW1vdmUgcGF0aCBmaXJzdCByZW1vdmVzIHRoZSBw
+b3J0IGZyb20gdGhlIGxpc3QsIGFuZCB3ZSB1c2UNCj4ga3JlZl9nZXRfdW5sZXNzX3plcm8gdG8g
+ZW5zdXJlIHRoYXQgc3VjaCBwb3J0cyBhcmUgc2tpcHBlZCB3aGVuDQo+IGl0ZXJhdGluZyB0aGUg
+bGlzdC4gVGhpcyBlbnN1cmVzIHRoYXQgb25jZSBhIHBvcnQgc3RhcnRzIHJlbW92aW5nIHdlDQo+
+IHdpbGwgZHJvcCByZWZlcmVuY2VzIGFuZCBubyBsb25nZXIgYmUgYWJsZSB0byBhY3F1aXJlIG5l
+dyBvbmVzLiBUaGlzDQo+IGF2b2lkcyBsb29wIGl0ZXJhdGlvbnMgY2hhaW5pbmcgdG9nZXRoZXIg
+dG8gaW5kZWZpbml0ZWx5IGJsb2NrDQo+IHJlbW92YWwuDQo+IA0KPiBUaGUgaWNlX3B0cF9yZWxl
+YXNlX3BvcnRfc3JjdSgpIGZ1bmN0aW9uIGlzIHVzZWQgYXMgdGhlIHJlbGVhc2UNCj4gZnVuY3Rp
+b24gZm9yIHRoZSBrcmVmX3B1dCgpIGNhbGwuIFRoaXMgdXNlcyB3YWtlX3VwX3ZhcigpIHRvIHdh
+a2UgdGhlDQo+IHJlbW92aW5nIHRocmVhZC4NCj4gVGhlIHdhaXRpbmcgdGhyZWFkIHdpbGwgYmxv
+Y2sgdW50aWwgdGhlIGZpbmFsIHJlZmVyZW5jZSBoYXMgYmVlbg0KPiByZW1vdmVkLCB0aGVuIGl0
+IHdpbGwgdXNlIHN5bmNocm9uaXplX3NyY3UoKSB0byBlbnN1cmUgYW55IG91dHN0YW5kaW5nDQo+
+IFNSQ1UgY3JpdGljYWwgc2VjdGlvbnMgaGF2ZSBoYWQgdGhlIG5lY2Vzc2FyeSBncmFjZSBwZXJp
+b2QuDQo+IA0KPiBUaGlzIGZsb3cgZW5zdXJlcyB0aGF0IGFjY2Vzc2VzIHRvIHBvcnRzIHZpYSB0
+aGUgYWRhcHRlciBwb3J0IGxpc3QNCj4gd2lsbCByZW1haW4gdmFsaWQgdW50aWwgYm90aCB0aGUg
+U1JDVSBjcml0aWNhbCBzZWN0aW9ucyBoYXZlIGVuZGVkIGFuZA0KPiBhbGwgdGhlIHJlZmVyZW5j
+ZXMgdG8gdGhlIHBvcnRzIGhhdmUgYmVlbiBkcm9wcGVkLiBTdHJpY3RseSBzcGVha2luZywNCj4g
+U1JDVSBhbG9uZSBtaWdodCBiZSBzdWZmaWNpZW50IGZvciBleGlzdGluZyBjb2RlIHBhdGhzLCBi
+dXQgdGhlDQo+IHJlZmVyZW5jZSBjb3VudCBhbGxvd3MgdGhlIG9wdGlvbiBmb3IgcGFzc2luZyBh
+IHBvaW50ZXIgdG8gdGhlIHBvcnQgb24NCj4gdG8gb3RoZXIgZnVuY3Rpb25zIGlmIG5lY2Vzc2Fy
+eSBpbiB0aGUgZnV0dXJlLg0KPiANCj4gT25lIG1ham9yIGNvbXBsaWNhdGlvbiBvZiB0aGlzIHJl
+ZmVyZW5jZSBjb3VudCBpcyB0aGF0IGljZV9wdHBfcG9ydCBpcw0KPiBlbWJlZGRlZCBpbnNpZGUg
+b2Ygb3RoZXIgc3RydWN0dXJlcyBhbmQgbm90IG1lcmVseSBhbGxvY2F0ZWQuIEFzIGENCj4gcmVz
+dWx0LCB3ZSBjYW4ndCB1c2UgdGhlIHN0YW5kYXJkIHBhdHRlcm4gb2Yga2ZyZWVfcmN1KCkgdG8g
+anVzdCBkZWxheQ0KPiBmcmVlaW5nIHVudGlsIHJlZmVyZW5jZXMgYXJlIGRyb3BwZWQsIGFuZCBp
+bnN0ZWFkIGFyZSBkZWxheWluZyBQRiBwb3J0DQo+IHRlYXJkb3duLiBJZiBhbnkgY29kZSBwYXRo
+IGxlYWtzIHRoZSByZWZlcmVuY2UsIHRoZSBkcml2ZXIgd2lsbCBiZQ0KPiB1bmFibGUgdG8gdGVh
+cmRvd24uDQo+IEluc3RlYWQsIGEgMTUgc2Vjb25kIHRpbWVvdXQgd2l0aCBhIFdBUk4oKSBpcyB1
+c2VkIHdoZW4gd2FpdGluZyB0bw0KPiBmaW5hbGx5IGFsbG93IFBGIHRlYXJkb3duIHRvIGNvbnRp
+bnVlLiBUaGlzIGhhcyB0aGUgcmlzayBvZg0KPiBwb3RlbnRpYWxseSBhbGxvd2luZyB1c2UtYWZ0
+ZXItZnJlZSwgYXNzdW1pbmcgc29tZSBwYXRoIHJlYWxseSBpcw0KPiBzdHVjayBmb3IgMTUgc2Vj
+b25kcy4gSG93ZXZlciwgdGhpcyBib3RoIGxlc3MgbGlrZWx5IGFuZCBhIGxlc3MgYmFkDQo+IG91
+dGNvbWUgY29tcGFyZWQgdG8gYmxvY2tpbmcgaW5kZWZpbml0ZWx5IG9uIGEgcmVmZXJlbmNlIGxl
+YWsuDQo+IA0KPiBGaXhlczogZTgwMDY1NGU4NWI1ICgiaWNlOiBVc2UgaWNlX2FkYXB0ZXIgZm9y
+IFBUUCBzaGFyZWQgZGF0YSBpbnN0ZWFkDQo+IG9mIGF1eGRldiIpDQo+IFJldmlld2VkLWJ5OiBN
+YWNpZWsgTWFjaG5pa293c2tpIDxtYWNpZWoubWFjaG5pa293c2tpQGludGVsLmNvbT4NCj4gU2ln
+bmVkLW9mZi1ieTogSmFjb2IgS2VsbGVyIDxqYWNvYi5lLmtlbGxlckBpbnRlbC5jb20+DQo+IC0t
+LQ0KPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9hZGFwdGVyLmggfCAgMTYg
+Ky0tDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX3B0cC5oICAgICB8ICAg
+NCArDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2FkYXB0ZXIuYyB8ICAx
+MSArLQ0KPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9wdHAuYyAgICAgfCAx
+NDUNCj4gKysrKysrKysrKysrKysrKysrKysrLS0tLS0tDQo+ICA0IGZpbGVzIGNoYW5nZWQsIDEz
+NCBpbnNlcnRpb25zKCspLCA0MiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2FkYXB0ZXIuaA0KPiBiL2RyaXZlcnMvbmV0
+L2V0aGVybmV0L2ludGVsL2ljZS9pY2VfYWRhcHRlci5oDQo+IGluZGV4IDRmNjk1ZjMyZGEzZC4u
+OTNmMDQxOTQzYmRkIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9p
+Y2UvaWNlX2FkYXB0ZXIuaA0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2Uv
+aWNlX2FkYXB0ZXIuaA0KPiBAQCAtMTcsMTUgKzE3LDE5IEBAIHN0cnVjdCBpY2VfcGY7DQo+ICAv
+KioNCj4gICAqIHN0cnVjdCBpY2VfcG9ydF9saXN0IC0gZGF0YSB1c2VkIHRvIHN0b3JlIHRoZSBs
+aXN0IG9mIGFkYXB0ZXINCj4gcG9ydHMNCj4gICAqDQoNCi4uLg0KDQo+ICAJc3RydWN0IGljZV9w
+dHBfdHggdHg7DQo+ICAJc3RydWN0IGt0aHJlYWRfZGVsYXllZF93b3JrIG92X3dvcms7DQo+ICAJ
+c3RydWN0IG11dGV4IHBzX2xvY2s7IC8qIHByb3RlY3RzIG92ZXJhbGwgUFRQIFBIWSBzdGFydA0K
+PiBwcm9jZWR1cmUgKi8gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2lj
+ZS9pY2VfYWRhcHRlci5jDQo+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9h
+ZGFwdGVyLmMNCj4gaW5kZXggMmRjMzYyOWQ2ZDBmLi44NGFjNWVlNWE3MzkgMTAwNjQ0DQo+IC0t
+LSBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2VfYWRhcHRlci5jDQo+ICsrKyBi
+L2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2VfYWRhcHRlci5jDQo+IEBAIC02LDYg
+KzYsNyBAQA0KPiAgI2luY2x1ZGUgPGxpbnV4L3BjaS5oPg0KPiAgI2luY2x1ZGUgPGxpbnV4L3Ns
+YWIuaD4NCj4gICNpbmNsdWRlIDxsaW51eC9zcGlubG9jay5oPg0KPiArI2luY2x1ZGUgPGxpbnV4
+L3NyY3UuaD4NCj4gICNpbmNsdWRlIDxsaW51eC94YXJyYXkuaD4NCj4gICNpbmNsdWRlICJpY2Vf
+YWRhcHRlci5oIg0KPiAgI2luY2x1ZGUgImljZS5oIg0KPiBAQCAtNjYsMTggKzY3LDIwIEBAIHN0
+YXRpYyBzdHJ1Y3QgaWNlX2FkYXB0ZXIgKmljZV9hZGFwdGVyX25ldyhzdHJ1Y3QNCj4gcGNpX2Rl
+diAqcGRldikNCj4gIAkJbXV0ZXhfaW5pdCgmYWRhcHRlci0+Y3BpX3BoeV9sb2NrW2ldKTsNCj4g
+IAlyZWZjb3VudF9zZXQoJmFkYXB0ZXItPnJlZmNvdW50LCAxKTsNCj4gDQo+IC0JbXV0ZXhfaW5p
+dCgmYWRhcHRlci0+cG9ydHMubG9jayk7DQo+IC0JSU5JVF9MSVNUX0hFQUQoJmFkYXB0ZXItPnBv
+cnRzLnBvcnRzKTsNCj4gKwlzcGluX2xvY2tfaW5pdCgmYWRhcHRlci0+cG9ydHMubG9jayk7DQo+
+ICsJSU5JVF9MSVNUX0hFQUQoJmFkYXB0ZXItPnBvcnRzLmxpc3QpOw0KPiArCWluaXRfc3JjdV9z
+dHJ1Y3QoJmFkYXB0ZXItPnBvcnRzLnNyY3UpOw0KSW4gdGhlb3J5IGluaXRfc3JjdV9zdHJ1Y3Qo
+KSBjYW4gZmFpbCwgc28gZXJyb3IgY29kZSBzaG91bGQgYmUgaGFuZGxlZCwgaXNuJ3QgaXQ/DQoN
+ClJldmlld2VkLWJ5OiBBbGVrc2FuZHIgTG9rdGlvbm92IDxhbGVrc2FuZHIubG9rdGlvbm92QGlu
+dGVsLmNvbT4NCg0KPiANCj4gIAlyZXR1cm4gYWRhcHRlcjsNCj4gIH0NCj4gDQo+ICBzdGF0aWMg
+dm9pZCBpY2VfYWRhcHRlcl9mcmVlKHN0cnVjdCBpY2VfYWRhcHRlciAqYWRhcHRlcikgIHsNCg0K
+Li4uDQoNCj4gIH0NCj4gDQo+ICAvKioNCj4gDQo+IC0tDQo+IDIuNTYuMC5yYzAuMzk1LmdkMWYz
+NTI0ZTE1ZGMNCg0K
