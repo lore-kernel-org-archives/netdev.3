@@ -1,140 +1,312 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE85738D6A2
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790173410; cv=pass; b=ggTdck7OIagUqLJOStclAiIKtkrnjyBbERDM/QQqA9j92WBV7B7XHywfIQ+h/kEaAA4nriVaExhxVMokAqw6PgYPQZJWDWgCNYe0/M/XQXXraj/Tylb7nN7Io8zbgSZPcK5oAjw/G/ersLVmWHLRnFAPphgtOwD5xk6xcqju72E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790173410; c=relaxed/simple;
-	bh=gahBeHvpwkmCZN7wJgEDtK7m+Jh/or0CY/c3PCC6rsM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CSMEGXvkYo8Si0aiAf/mv27d3VORxqUFV+UIvRLhT49vyyjsVKMVTqnmKKvTJ9lGDaQFOYkWv31Jwn5LkeZVAQGcMqkSvLyLct5UCWytIfnrhPZUm/q9D3HvxyAhl2lflckuw6D5QHpF6YkYPbch/isJr3Fw9M0BxkMVtpdVkSY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OyFaiG9N; arc=pass smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB9D51EE0C
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790173637; cv=none; b=D6KcBeL6slLo0Fz7CHM9aBhjbgCmQbp9exQeSGtLWzDf7Fgs/TnJh7aGzUWMrHYV3ZK3g+6bzsLEJgifDnzfiQ15MZkuHKbFH/HYpBBoJlzS+d7shhhqcwUY0NY3/w/o3VKzZlpp6xW/xViPvjL9uiiDifNKk3owX4xkrRXfaS8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790173637; c=relaxed/simple;
+	bh=8h06L4zgt0xbnYaqADQB9yddRobQhsv4hVUNTqVY1jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PHFb5jc+/WwmBcowezqv5ywVtSZuN11CRwFq/6vazYwXLuawguI4DPPm1tbb4plIr9wAbFYsTPomgh0aYMklPIB1oyP6PrD/RLpfidiUVp9ppHrBKFc9z1T4BUJMgndVwsbJcWYOQLNJzCPZW7OmRIbxPq+MoEG1zyQfrNxYvDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bzNC1eNM; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OyFaiG9N"
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d43da99easo12992967b3.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:23:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790173407; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lFWvX0/zYtBdLQ1/F1w5IbaJ/HFfQmE9cas03Md1F/W4s27xirj3DRYqkqSI6ceINV
-         fcKpleUFqg+oKx7qcKMQ8zv8tBhX42IXibMy9iM0L18VIlIee4B2GsNHVntQokVyC/NV
-         LhWFOk18mvbde0JUhv8wM3fhnKimj9GrgMKeBqns4anYdpDPnVHA7jsqM2hBxzSforGM
-         qjoGMz4N8hemUSBmv14ayksxuUoMk8WFEXwVJZ2dGlmlljoUxGwlRim34fgPDr46avk4
-         /hdEN0OJAyEJjTc9sOj1QX0Yo5I9Mr0MSIOoek73V7W2zz0X8EADS60ac3BErQBEf2cQ
-         da4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gahBeHvpwkmCZN7wJgEDtK7m+Jh/or0CY/c3PCC6rsM=;
-        fh=MPxEi+mhYrJ2F+AzZWvK1N3e3LNQGK5FVNDo4LivLb8=;
-        b=cTfJh8RgNi08nG4mFVeMd5HJM/xtSpYPqgE0lgbUy5EsNO7IC1icYn3rtnG+takhnR
-         9IrTcILsRq/eGNt+oYspxODQE9PKsRFwJ6L+NxOz2tGZ/doE8NgdE6mJkSyKJ+qh59PD
-         Ddu4jojREgjusdnxneTJt6K9MEEUZfHe40+IbjSFkgXV20FkIKqaWti9PjXXzXIuPPG/
-         GCMURPD1tm64BVwDSoQe++XecqmmOOJNicb61lNNuV+nxalZW8JbcHlhq7N3efdjvw23
-         mkxi3XQ7iXfXh9L7wWHb+04TFE40MB3MAEf2RNWKdgNUtCk3hhWoMmamF+lITRxiwUY5
-         Ze1g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bzNC1eNM"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ccead2aecso4566825e9.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:27:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790173407; x=1790778207; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gahBeHvpwkmCZN7wJgEDtK7m+Jh/or0CY/c3PCC6rsM=;
-        b=OyFaiG9NEd3FnzVPfmulV+PQqtv3dbhhvLcJTtdkaFdUdGU0y3Rk7PSjmpmn0AJN1t
-         x/0Xxp/gL5yirPR3tAQXN64BY7Iyvf9iLocnhm9rt7T2ygSO+gcZkOM14TB/tEJdmlmY
-         2tk27gQQdfQACFG9lhH7YCm7aZh4VfJclvN8e3CKVF5jsJNCEjlqFLbCpW2T6H0WE8Cf
-         VBSZJ9bHVjoBqdV5pSOyRb6oRFGUVN19BXK2/5IvDcapy/qEbh2Iv2zmp34ZmvCKRnxl
-         VRsnMOGxdWFFCTsrLMyfOvzOKxWZ1XJuipT2FdThJDPRZZTrmCKtwPbxurSY+/cSq6wC
-         LNnQ==
+        d=google.com; s=20251104; t=1790173633; x=1790778433; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PSzGnM9hkcOoFtPupK98ZapwC/NnVGSiD0/uooo0h9E=;
+        b=bzNC1eNMuM1eShI2U0vCqWsQQzIXyrxi5Ku7mDQ80V18DQ8f9v4n092LXfBPxCI79z
+         mx6Go3u6l9OkhDFe5z3gBNTrlFO7OUUSahlV9m4pZvi0mRsNyRdrveD3JhX5SZ2nzvhp
+         NMlJ1Se3WgL4FBwhVj4GRmmCI+c/4nStaF8WTlWeQhP+bJ6i4/wRPgsyUTWMOHcibOXP
+         mYWpHJ6A1JAjGBC29D1AE26M8diqDcNSEHStT1IOPpc5WMzmJW0rEPmy/7BXJNvD45x7
+         wDRlZMB7kZqYENcuaXsf5GMevY1rjmsuX0CEqik6hHewgkzOaPBqvq1H/OvRjl4rCgme
+         GkLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790173407; x=1790778207;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gahBeHvpwkmCZN7wJgEDtK7m+Jh/or0CY/c3PCC6rsM=;
-        b=i/BdDHs7r9fqBEChQsjZy6gJbTIRWPdZMYG2g5OVSWnnNbEsyoyX77TwYm78dBndmk
-         mETYfX0aFG7NsU9/1hduEj9MWNLFDBu8F35SN4a46QeJP1SxNhqHlcWuEBeSLeBweMMN
-         jtu9cGblSo8m8Fx8ANdnu56kEtipSEJwlNjs28whcJAmt/tycjJAYxey0Ezu2BVeUNMt
-         rx4PdQLP3RUl0A/tNxtS4A3EUwFBfchYz2NzSk7BAYdpuWyBap5aSA46p2r0CAkM7YT+
-         R8kEYYn4pL2azrJhLJXVLLlrzbC1W8a3J1PNRaJlTdT2ACQt7vTCT2GebF9D+Kpy9bMd
-         qxow==
-X-Forwarded-Encrypted: i=1; AKwUvBzXbsZWKUClW0iH8dJJYL+uz9/oy5vQ9LilBwFABFqsJHm+RInkXQIPqV1XJ4KdO/yqdS2Aa2s=@vger.kernel.org
-X-Gm-Message-State: AFuF++mFwlakgeNkot4YKkJKygrepmhtrFxlNLBy1eTyJIGJeSvfIqfD
-	xoIQU66IeKXLTQZBRpu0rNIYdcoML3dwbIU+ezUw8nO6j0pL+WrmfdoEShfukezeoKgmyHFMYBW
-	bNxW+R6Wh3dUaHyD8K/CjclHvImq4nnXkjGY7kKVm
-X-Gm-Gg: AYBFou2FIESQHyyQRBkqS5gjj9SzQ33Yh2eSmrELXvsx12J4tLRS+iEhdNnBv62QiAn
-	PQLeGcsl3aIU3ucAWNO5ePXtKR/yuxBUJa5I27P4y++7rnDqFAuFYhEPgkRU2LA+UvaEgJwcSm9
-	11pvPuJftqj17KxDbzj+EKh24h6RcruBHraySxeHORZYVzeDEjRP0FOZM1k6BCUwWFNfEjTeR7P
-	609V7SqVm5AExvl0JwA2mfbV6UGc6u3E4lwGaUCTTvKQPk8xbQTa7gh4jbioOvl0xbsCHzm4lYL
-	d93GPptbL2Dkxvrw9Qlcm/3fS4aRZPjDOI70fqfKyHwRIYQdAdAeUBKSPCz7I5OFuDSRuFly2QN
-	uL+zxHIJ/fB9pu7jONkw2tLq0MYJYiZJxBK7Af3vuKDqk6yF5nO1pYwPZFwM2t17aRYLE
-X-Received: by 2002:a05:690c:385:b0:892:fa17:aa28 with SMTP id
- 00721157ae682-8a458b22d54mr12803967b3.20.1790173406059; Wed, 23 Sep 2026
- 07:23:26 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790173633; x=1790778433;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=PSzGnM9hkcOoFtPupK98ZapwC/NnVGSiD0/uooo0h9E=;
+        b=k/5eut9Qf0VkdROlHQO/TTkChGMzL+1bM68hml3Re8KLbJv8lUckbtyaDAANizsZV5
+         y3sjYAumT01fp8sGnq1V8HEgcbfTHVgxz/LciqH+7aGWqIltJWPbiuk8BtYI6rBfarLp
+         VUlYe3ZhXherrJ1iKuCF0GfMbA/3dYASivvhXUD6anZdZXAANAS2nCU9dDO1ambkjOMk
+         z48m084B0vRYTjKJXTsk+iPH+/vRP5uNrcorxRB/Z73V2qfgS6/aP77dZpxPOxrE8nv9
+         sGiG+6dzn7NnLwQtqueprbV23Er+SyPZdkRZrTVN/tpKPyUvcIHnzvS/WPGPV9jtPTMv
+         cbrg==
+X-Forwarded-Encrypted: i=1; AKwUvByRLBCBFU7A3/TdPZWolOEI05bKwZX9FHpDPUA8mcLlEPV72wvYsMrF8S5RtH/hcZ6q8dc2/P8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lX43wvqwFGqkAvBHJa0M8yQM7wR1JB3T0WLrMB3w1VpIlPS6kW
+	DdOK01+p9nhU3JT8e+S1ocLCcWZ3Rgv2O8FN4GE9/ZjH5BBa6rNZsHUfyN45eE86Jw==
+X-Gm-Gg: AYBFou0xcOqpOmenXlS58KAjLh5l7hpxrDHL5JIpD+6cPWt6lTsGsCPbOPVmH/tBrYD
+	yvyFk01j7JRicm7Uo03K/OM6CacIV14PGxyD2jkgkrmAgXe19XvYida3UXik5OvAe9NKkr0lLZp
+	6Pc5RTNC5Tse9bFdPryhtl6Bk6ZtLMZzmtyEdwdsGrOx/ca/FUg/Q5eQu/Rb47jxCtYtKPrTYp1
+	BX7c+pdieeM4H6qZfViH1zJ1xiVy7o9HgsPoaEgwyMicLpPYG/jHpdIZYsaAJv/LlRm5SdNfeDr
+	GVAiXHbJUmvo0eglu+7Kyi7H/EoLKM9WE1o+nxGkTDRg6+A49A5CyJEbhyHCcsy+mgF8NPTIwi0
+	glLEiyz2LHkktEGj15rGNZDXOhWCo2sP5oWu4Wo2EuE47HKtERu9PVxvBkfW0VWMR90k+6ppEV9
+	uGSKqf1FaOzw+qfAZKTQ6T6N4Eeb04/m8ZHNPEbtj9U5jfIwVCn3Ckj90rGRZk958q0IVLbQc9T
+	QBnNgbxRL7YZ6lAv8IpzuDW3w/1LuDjoofUpF12
+X-Received: by 2002:a05:600c:8a0a:10b0:49f:df99:ff1a with SMTP id 5b1f17b1804b1-49fdf99ffb9mr29806345e9.17.1790173632836;
+        Wed, 23 Sep 2026 07:27:12 -0700 (PDT)
+Received: from google.com ([2a00:79e0:288a:8:c20f:9e7a:eeee:1b06])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886848636asm6964795f8f.6.2026.09.23.07.27.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 07:27:12 -0700 (PDT)
+Date: Wed, 23 Sep 2026 16:27:07 +0200
+From: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>
+To: Geliang Tang <geliang@kernel.org>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>,
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	mptcp@lists.linux.dev, netdev@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 3/6] landlock: Add MPTCP bind and connect access rights
+Message-ID: <arPhu-qFxCgmfk87@google.com>
+References: <20260830201650.67050-1-gnoack3000@gmail.com>
+ <20260830201650.67050-4-gnoack3000@gmail.com>
+ <c0bf0918bd97105ee50f1436e6ff729e84cedf03.camel@kernel.org>
+ <a5a2f4353d0c2a1b1f86ebf466838f5ef3de27ce.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923141047.14047-1-hannu@varjosoft.com>
-In-Reply-To: <20260923141047.14047-1-hannu@varjosoft.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 23 Sep 2026 16:23:14 +0200
-X-Gm-Features: AcwNN1Uw6x1C2DgCe-AKPurmMSH3BQ-JKGsFh7FS8lfjdLGw6nlcv1k6mmolgds
-Message-ID: <CANn89iLq9kyTqUW4w46wjKNNr-n+jypQX-3hwPE2yjtSkLw00w@mail.gmail.com>
-Subject: Re: [PATCH net] gve: DQO: accept TSO packets with non-protocol
- gso_type bits
-To: Hannu Varjoranta <hannu@varjosoft.com>
-Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ankit Garg <nktgrg@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a5a2f4353d0c2a1b1f86ebf466838f5ef3de27ce.camel@kernel.org>
 
-On Wed, Sep 23, 2026 at 4:11=E2=80=AFPM Hannu Varjoranta <hannu@varjosoft.c=
-om> wrote:
->
-> Since commit 014c607f86ab ("gve: add support for UDP GSO for DQO
-> format"), gve_prep_tso() matches shinfo->gso_type exactly. gso_type is
-> a bitmask, though: SKB_GSO_DODGY is set on every GSO packet that comes
-> from tun/tap, packet sockets or other untrusted sources, and
-> SKB_GSO_TCP_ECN and SKB_GSO_TCP_FIXEDID can be set as well. Such packets
-> hit the default case, gve_tx_add_skb_dqo() fails and gve_try_tx_skb()
-> drops them, counting them in tx_dropped.
->
-> These packets do reach the driver: tcp_gso_segment() passes DODGY skbs
-> through unsegmented to devices that support TSO, after recomputing
-> gso_segs, so drivers must tolerate the bit.
->
-> This breaks virtual machines behind a tap on GCE instances using the DQO
-> queue formats. Every TSO packet forwarded from a guest (gso_type
-> SKB_GSO_TCPV4 | SKB_GSO_DODGY) is dropped, and guest uploads slow to a
-> crawl of retransmissions or stall entirely, while the host's own TSO
-> traffic (gso_type SKB_GSO_TCPV4) is unaffected. On an n4 instance
-> (DQO-QPL) with a Cloud Hypervisor guest, a 64 MB upload from the guest
-> went from a 60 s timeout at ~0.9 MB/s to 0.19 s with this change, with
-> tx_dropped no longer increasing.
->
-> Restore the bitmask test that commit 1b9f75634441 ("gve: ignore
-> nonrelevant GSO type bits when processing TSO headers") introduced for
-> the same problem, keeping the UDP GSO support.
->
-> Fixes: 014c607f86ab ("gve: add support for UDP GSO for DQO format")
-> Signed-off-by: Hannu Varjoranta <hannu@varjosoft.com>
+On Wed, Sep 23, 2026 at 01:04:40PM +0800, Geliang Tang wrote:
+> On Mon, 2026-08-31 at 12:09 +0800, Geliang Tang wrote:
+> > On Sun, 2026-08-30 at 22:16 +0200, Günther Noack wrote:
+> > > MPTCP sockets have equivalent bind(2) and connect(2) operations as
+> > > TCP
+> > > sockets, but can not currently be restricted with Landlock without
+> > > explicit MPTCP access rights.  As MPTCP operates on the same TCP
+> > > port
+> > > number space as TCP, this is a gap in Landlock's policies.
+> > > 
+> > > Add access rights for MPTCP bind(2) and connect(2) operations
+> > > and document them in the header.
+> > > 
+> > > Treat TCP Fast Open the same as done for plain TCP in
+> > > commit 33cb713db016 ("landlock: Fix TCP Fast Open connection
+> > > bypass")
+> > > 
+> > > The port numbers used in MPTCP subflows are negotiated by the
+> > > kernel
+> > > and therefore not subject to these access rights.
+> > > 
+> > > Bump the Landlock ABI version to 12.
+> > > 
+> > > Closes: https://github.com/landlock-lsm/linux/issues/54
+> > > Signed-off-by: Günther Noack <gnoack3000@gmail.com>
+> > > ---
+> > >  include/linux/landlock.h                     |  5 +-
+> > >  include/uapi/linux/landlock.h                | 24 +++++++
+> > >  security/landlock/limits.h                   |  2 +-
+> > >  security/landlock/net.c                      | 68 ++++++++++++++--
+> > > --
+> > > --
+> > >  security/landlock/syscalls.c                 |  2 +-
+> > >  tools/testing/selftests/landlock/base_test.c |  2 +-
+> > >  6 files changed, 79 insertions(+), 24 deletions(-)
+> > > 
+> > > diff --git a/include/linux/landlock.h b/include/linux/landlock.h
+> > > index 004cbd0b9298..b04ffc7caa21 100644
+> > > --- a/include/linux/landlock.h
+> > > +++ b/include/linux/landlock.h
+> > > @@ -46,7 +46,10 @@
+> > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_TCP,
+> > > "connect_tcp"), \
+> > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_BIND_UDP,
+> > > "bind_udp"), \
+> > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP,
+> > > \
+> > > -			     "connect_send_udp")
+> > > +			     "connect_send_udp"), \
+> > > +	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_BIND_MPTCP,
+> > > "bind_mptcp"), \
+> > > +	_LANDLOCK_NAME_ENTRY(LANDLOCK_ACCESS_NET_CONNECT_MPTCP, \
+> > > +			     "connect_mptcp")
+> > >  
+> > >  #define _LANDLOCK_SCOPE_NAMES \
+> > >  	_LANDLOCK_NAME_ENTRY(LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET,
+> > > \
+> > > diff --git a/include/uapi/linux/landlock.h
+> > > b/include/uapi/linux/landlock.h
+> > > index cceda3b3b961..2a953ba7ce25 100644
+> > > --- a/include/uapi/linux/landlock.h
+> > > +++ b/include/uapi/linux/landlock.h
+> > > @@ -448,6 +448,9 @@ struct landlock_net_port_attr {
+> > >   * - %LANDLOCK_ACCESS_NET_CONNECT_TCP: Connect TCP sockets to the
+> > > given
+> > >   *   remote port. Support added in Landlock ABI version 4.
+> > >   *
+> > > + * .. note:: These rights do not apply to MPTCP sockets, which
+> > > have
+> > > their own
+> > > + *   access rights (see below).
+> > > + *
+> > >   * And similarly for UDP port numbers:
+> > >   *
+> > >   * - %LANDLOCK_ACCESS_NET_BIND_UDP: Bind UDP sockets to the given
+> > > local
+> > > @@ -474,12 +477,33 @@ struct landlock_net_port_attr {
+> > >   * .. note:: Sending datagrams to an ``AF_UNSPEC`` destination
+> > > address
+> > >   *   family is not supported for IPv6 UDP sockets: you will need
+> > > to
+> > > use a
+> > >   *   ``NULL`` address instead.
+> > > + *
+> > > + * MPTCP sockets (created with ``IPPROTO_MPTCP``) use TCP port
+> > > numbers, but
+> > > + * they are controlled by their own access rights:
+> > > + *
+> > > + * - %LANDLOCK_ACCESS_NET_BIND_MPTCP: Bind MPTCP sockets to the
+> > > given local
+> > > + *   port. Support added in Landlock ABI version 12.
+> > > + * - %LANDLOCK_ACCESS_NET_CONNECT_MPTCP: Connect MPTCP sockets to
+> > > the given
+> > > + *   remote port. Support added in Landlock ABI version 12.
+> > > + *
+> > > + * .. note:: The TCP and the MPTCP access rights are independent,
+> > > even though
+> > > + *   they refer to the same port number space. Handling only
+> > > + *   %LANDLOCK_ACCESS_NET_BIND_TCP and
+> > > %LANDLOCK_ACCESS_NET_CONNECT_TCP leaves
+> > > + *   MPTCP sockets unrestricted, and vice versa. A sandbox that
+> > > wants to
+> > > + *   control all TCP-based traffic needs to handle both sets.
+> > > + *
+> > > + * .. note:: These MPTCP access rights restrict the ports passed
+> > > to
+> > > + *   :manpage:`bind(2)` and :manpage:`connect(2)`. The ports used
+> > > in
+> > > MPTCP
+> > > + *   subflows are negotiated in the MPTCP protocol by the kernel
+> > > and
+> > > are not
+> > > + *   subject to these restrictions.
+> > >   */
+> > >  /* clang-format off */
+> > >  #define LANDLOCK_ACCESS_NET_BIND_TCP			(1ULL <<
+> > > 0)
+> > >  #define
+> > > LANDLOCK_ACCESS_NET_CONNECT_TCP			(1ULL << 1)
+> > >  #define LANDLOCK_ACCESS_NET_BIND_UDP			(1ULL <<
+> > > 2)
+> > >  #define LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP		(1ULL <<
+> > > 3)
+> > > +#define LANDLOCK_ACCESS_NET_BIND_MPTCP			(1ULL <<
+> > > 4)
+> > > +#define LANDLOCK_ACCESS_NET_CONNECT_MPTCP		(1ULL <<
+> > > 5)
+> > >  /* clang-format on */
+> > >  
+> > >  /**
+> > > diff --git a/security/landlock/limits.h
+> > > b/security/landlock/limits.h
+> > > index 1a7c5fb8f6fd..d25e056b7ca2 100644
+> > > --- a/security/landlock/limits.h
+> > > +++ b/security/landlock/limits.h
+> > > @@ -23,7 +23,7 @@
+> > >  #define
+> > > LANDLOCK_MASK_ACCESS_FS		((LANDLOCK_LAST_ACCESS_FS << 1) -
+> > > 1)
+> > >  #define
+> > > LANDLOCK_NUM_ACCESS_FS		__const_hweight64(LANDLOCK_MASK_AC
+> > > CESS_FS)
+> > >  
+> > > -#define
+> > > LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_SEND_U
+> > > DP
+> > > +#define
+> > > LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_MPTCP
+> > >  #define LANDLOCK_MASK_ACCESS_NET	((LANDLOCK_LAST_ACCESS_NET
+> > > << 1) - 1)
+> > >  #define
+> > > LANDLOCK_NUM_ACCESS_NET		__const_hweight64(LANDLOCK_MASK_AC
+> > > CESS_NET)
+> > >  
+> > > diff --git a/security/landlock/net.c b/security/landlock/net.c
+> > > index 8f2aaac54b33..8541b0c07d64 100644
+> > > --- a/security/landlock/net.c
+> > > +++ b/security/landlock/net.c
+> > > @@ -11,6 +11,7 @@
+> > >  #include <linux/net.h>
+> > >  #include <linux/socket.h>
+> > >  #include <net/ipv6.h>
+> > > +#include <net/mptcp.h>
+> > >  
+> > >  #include "common.h"
+> > >  #include "cred.h"
+> > > @@ -53,6 +54,26 @@ int landlock_append_net_rule(struct
+> > > landlock_ruleset *const ruleset,
+> > >  	return err;
+> > >  }
+> > >  
+> > > +static bool sk_is_mptcp_socket(const struct sock *sk)
+> > > +{
+> > > +	return sk_is_inet(sk) && sk->sk_type == SOCK_STREAM &&
+> > > +	       sk->sk_protocol == IPPROTO_MPTCP;
+> > > +}
+> > 
+> > This helper should be placed in include/net/mptcp.h. I had already
+> > implemented one in [1], called sk_is_msk(), to differentiate it from
+> > sk_is_mptcp(). If you have no concerns with my implementation, please
+> > feel free to pick it up and use it in your series.
+> 
+> Sorry, let me correct myself. I thought about this more carefully, and
+> the ideal place to define sk_is_msk() is in include/net/sock.h, between
+> sk_is_tcp() and sk_is_udp():
+> 
+> static inline bool sk_is_tcp(const struct sock *sk) 
+> {
+>         return sk_is_inet(sk) &&
+>                sk->sk_type == SOCK_STREAM &&
+>                sk->sk_protocol == IPPROTO_TCP;
+> }
+> 
+> static inline bool sk_is_msk(const struct sock *sk) 
+> {
+>         return sk_is_inet(sk) &&
+>                sk->sk_type == SOCK_STREAM &&
+>                sk->sk_protocol == IPPROTO_MPTCP;
+> }
+> 
+> static inline bool sk_is_udp(const struct sock *sk) 
+> {
+>         return sk_is_inet(sk) &&
+>                sk->sk_type == SOCK_DGRAM &&
+>                sk->sk_protocol == IPPROTO_UDP;
+> }
+> 
+> If possible, please fold this code into this patch.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Thank you for the review, Geliang!
 
-Thanks for the fix!
+I'll include something like this in the next review round.
+(We are a bit bottlenecked on doing Landlock code reviews at the moment,
+so some delays are unfortunately expected.)
 
-Note the breakage is not limited to tap/VM traffic: gve sets
-NETIF_F_TSO_ECN, and tcp_ecn_send() sets SKB_GSO_TCP_ECN on TSO skbs
-carrying CWR, so plain host TCP with ECN has been losing those packets
-as well since v7.1.
+Small question about the function name sk_is_msk(): Is "msk" the right
+name for this?  It seems to be used as abbreviation for "MPTCP" in
+net/mptcp, but it's also used in net/mctp as an abbreviation, and I
+could not find a function name in include/net/mptcp.h which used "msk"
+to mean "MPTCP".  Should that say sk_is_mptcp() instead?
+
+Thanks,
+—Günther
