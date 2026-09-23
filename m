@@ -1,102 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD7D53B604;
-	Wed, 23 Sep 2026 14:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770333932EE
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790175271; cv=none; b=RJXeJYHneo4W/64IkBR142he/hZqlAGRoYeA1xTMUxZO3OiGuzCfjkTXQzHFENm/QJck5xXZ2OKjaK/IzU9Oh2fCpyK9eXPRMEQUbk6zhydDAXFGOJwjkTix/E928N5GKYenjRz1MRE/R9uA/JcP/onYiUDe5iKu79/YWJyD2sY=
+	t=1790175589; cv=none; b=aFd3GUZagKWNf/tDMulN09MIvV1oE8iBF0EcM0ENvccRqzUX3eJqWesyr2Xn5Odd3vjJDMQhZg4yCz5zr5ae9Byb432RUKM/7Imh1vvUnTlZaYhNXjXwxMTqQ+WrHUibZjiXwPJwhg5FGd0GfXNAsvc90NtpH3ljywTQm1KJSts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790175271; c=relaxed/simple;
-	bh=D53GyH0Tb6ROoRk8E1tIhj0ShQs6mzgmyconHj1dkUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I0CgIyyWxavcIcHV2j0ZV/ws/U9dlVjpcyk027uH+6sHtaMIaw/X9Mw24zDqDqn5DrsFDKrYJm7JeQAQhMh9jJsOuU1r29JGfcY4XlnnIphfjIrTxNQ3ZMWlxIE3UIjsfYqC4jUEOcT7agqy8VavT/wkbmZYOkA7sRCZXsxzRjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0BPuiK0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790175589; c=relaxed/simple;
+	bh=xHE6wF/f0J3wE4ftwKdaNVrrWjYIcQCMiWmeIyaza4w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JJPkY7e+PrQyGKhQyuylIec18jebLJcBLBWv2vPXH1AInyOzdey8OVdGclI1xlDq7omHycyUMTFH3ncRzKHSk2X7xNV/3MieS+rFzNmeCVGogFRoouH/WW+9x491hBwhsDC/iF1XNHlXYhgBFt5GQbO3/5V+boV6vAB3iz4ikhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s3kX6eJG; arc=none smtp.client-ip=209.85.222.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0BPuiK0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152C61F000FF;
-	Wed, 23 Sep 2026 14:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790175270;
-	bh=UgEqI04yL+VQM5M2VBuGJl0XwzPFtN6t4fu0Tj3qgzc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E0BPuiK0XBil6SmBlNlC3vBE0M3O2STfGE8/Vj6xo409s6JQ+jC/uN24x3QMxhykJ
-	 kW66Pm5lzye3kO4iM7RM56buomGHrWLpnDbIQi6beU8CfyAn0trqtuoc4ScZA1jn+U
-	 6q58/j/ZOZz5OZVx59YkhKEwGOkWgQmImpFdPbX7dzOWYEsDKkTuUfPwqN6EpvF0oX
-	 D8yb2FncJPfjRQjSFx9+712YOFv/IK5/JugbG5zaDLYIOtWSKNo9XywkdPe/fiVIqk
-	 lLYaQx+WmRQRkBXzXLAD6YbDERcbx/1bFtIB1lmwcC6HpWRSSquwcLQ+EQQXaieuim
-	 mW807FOWJcEag==
-Date: Wed, 23 Sep 2026 15:54:25 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yuqi Xu <xuyuqiabc@gmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org, Vega <vega@nebusec.ai>,
-	Ren Wei <weir@nebusec.ai>, xuyq21@lenovo.com
-Subject: Re: [PATCH net 1/1] net: ipconfig: bound DHCP option construction
-Message-ID: <20260923145425.GU13925@horms.kernel.org>
-References: <7808dfbfa2162dfd0b19f59aff5742d6e0db2abb.1789798023.git.xuyuqiabc@gmail.com>
- <20260920072503.60706-1-xuyuqiabc@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s3kX6eJG"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93a0312937eso124389585a.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790175586; x=1790780386; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DyX4a/XU9qqMwAQtKliGGYuo8jxWZIV9wJF2N3/90Zk=;
+        b=s3kX6eJGNV785a/O1rQffOrAaLs5GKw7okZPH7wtpEkN9ZOuE9Xolp/tPGutJFJB2N
+         s1DHEJPTjGrwm1NmNEu+1WepjYNUea70/7DDLoFk/e8Ot/BPHVOgYlhfq6EFvBN/luFW
+         Wa9xFVpsvoGaZ3chys8Y9cUXxuBPOLzUOntnFmC2MKoYADEFjZVTj0AmgXUBT6pxWuyZ
+         3iEQ0+0gc2fTdI/LqIJLVgdxtCG3WvHQfGJrX/M/BhhfeTPoXHg7s5Pcsoa4KtEEGxme
+         nBtMafAPoYfwMVIBPMzbRG9ctYx02s4OGYVbGExVUU46+Xn2EE8DsuWAgTvf4GpKKvR8
+         AgtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790175586; x=1790780386;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DyX4a/XU9qqMwAQtKliGGYuo8jxWZIV9wJF2N3/90Zk=;
+        b=B2xlfRMp4aM4VesI0UjyNnB400kajXXjpPxk51SchYXKj/LmIYXKf2aCxVzxEwFV+1
+         AHcdaxuwI/fZbvX/lm8ri48BLyJ6NieqiL+KlcscwvpDAJQCz+JzQbjTC4tL12qrC1r6
+         GgXMjHzj6stQ/ON061fC2haR03o1DsEmxRLLglkmFO3s4uoyMjV1ylF/8RVY+sbYi269
+         WVYfGn9yyhX46xpXSY0uRkoismRNNfZv4NDsbm6F3oyw+Gp7fyaTQC4RjFa4maKKOQo/
+         EI2vwyzKlpsm9akD6pVwr4BCfYL0GUgom84AvSlNXR46oyNydXOEKHXn3CWFuNAv93X7
+         44zA==
+X-Forwarded-Encrypted: i=1; AKwUvBwFKaIQT+AKECN6ZS42ReIXnAgy4rWQTygHzz+BaDdrEO0nzFMj0wuGjGHuC+RRW4NPhKGWKMQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++n4Ob12FcclA6zEbeUFPvVkPj1AWwrpHxknK1U1dup6PuJFvirJ
+	Sprzo3QLKRBf3fpyTeVfdiunsvQ+zRtew3S12i3+dphpJa22ijE8T07mK1KkaxNzYy9Zl8h9i+0
+	p41PGB2Umm/Vm2Q==
+X-Received: from qknxj56.prod.google.com ([2002:a05:620a:5bf8:b0:93c:25ac:821b])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:46aa:b0:93b:b846:bfd7 with SMTP id af79cd13be357-93c250cdf85mr434330685a.28.1790175585766;
+ Wed, 23 Sep 2026 07:59:45 -0700 (PDT)
+Date: Wed, 23 Sep 2026 14:59:42 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920072503.60706-1-xuyuqiabc@gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260923145942.731365-1-edumazet@google.com>
+Subject: [PATCH net] gve: DQO: fix header length used by gve_can_send_tso()
+ for UDP GSO
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Willem de Bruijn <willemb@google.com>, eric.dumazet@gmail.com, edumazet@kernel.org, 
+	Eric Dumazet <edumazet@google.com>, Ankit Garg <nktgrg@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Joshua Washington <joshwash@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Sep 20, 2026 at 03:25:03PM +0800, Yuqi Xu wrote:
-> Sashiko reported the following finding on the patchset page; it has not
-> been posted to lore:
-> 
-> > Blind copies in BOOTP extension parsing (`ic_do_bootp_ext`) cause
-> > out-of-bounds reads if an attacker provides a truncated option length.
-> > location: net/ipv4/ipconfig.c
-> 
-> This finding is about the receive path, not the code this patch changes.
-> It is a real, pre-existing issue; this series does not introduce it.
-> 
-> This series only touches the transmit side, ic_dhcp_init_options()
-> (net/ipv4/ipconfig.c:698) and the new ic_dhcp_add_option() helper
-> (net/ipv4/ipconfig.c:680). The function named in the finding,
-> ic_do_bootp_ext() (net/ipv4/ipconfig.c:919), is reached only from
-> ic_bootp_recv() (net/ipv4/ipconfig.c:1156) and is not modified here; the
-> diff contains no receive-path hunks, so this series neither introduces
-> nor worsens the issue.
-> 
-> The receive loop is:
-> 
-> 	u8 *opt = ext++;
-> 	if (*opt == 0)
-> 		continue;
-> 	ext += *ext + 1;
-> 	if (ext < end)
-> 		ic_do_bootp_ext(opt);
-> 
-> with end = (u8 *)b + ntohs(b->iph.tot_len) (net/ipv4/ipconfig.c:1078).
-> An option whose length byte overruns the remaining space drives ext to
-> or past end and is skipped. That is not the case the finding describes.
-> 
-> The truncated length in the finding is a short option length, not a
-> length greater than the remaining space. After switch (*ext++), ext
-> points at the length byte; the copies ignore it and memcpy a fixed-size
-> value at ext+1. Option 1 and 3 always memcpy 4 bytes
-> (net/ipv4/ipconfig.c:935 and :939); option 26 always memcpy 2 bytes
-> (:968). When that option still satisfies ext < end, those copies can
-> read past the declared option and past end. Options 1 and 3 do so even
-> at length 2; option 26 only at length 0 with 3 bytes remaining. With
-> skb->len == tot_len that is a real KASAN out-of-bounds read. It
-> predates this patch.
-> 
-> Since the receive-path issue is independent of the send-side overflow
-> addressed here, we have kept it out of this series.
+gve_can_send_tso() computes how many buffers each segment of a GSO
+packet would span, and for this it needs the length of the headers
+that the device replicates in front of every segment.
 
-Yes, agreed.
+It unconditionally uses skb_tcp_all_headers(), which reads the doff
+field of the TCP header. SKB_GSO_UDP_L4 packets have no TCP header:
+tcp_hdrlen() then reads one byte of the UDP payload, and header_len
+can be anything in [0, 60] instead of the transport offset plus the
+eight bytes of the UDP header that gve_prep_tso() programs into the
+TSO context descriptor.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+A wrong header length shifts all the segment boundaries computed in
+the loop, so the number of buffers per segment can be over or under
+estimated. In the first case, GSO is needlessly disabled for this
+packet by gve_features_check_dqo() and the stack has to segment it.
+In the second case, the driver hands the device a packet whose
+segments span more than GVE_TX_MAX_DATA_DESCS buffers.
+
+Use the UDP header length for SKB_GSO_UDP_L4 packets, matching what
+gve_prep_tso() does.
+
+Fixes: 014c607f86ab ("gve: add support for UDP GSO for DQO format")
+Closes: https://lore.kernel.org/netdev/CANn89i+MS4L60sFQ49=-f-mibeveUfcrpVkD5X+Qy6SOnEpd6w@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Ankit Garg <nktgrg@google.com>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: Joshua Washington <joshwash@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index 80ab0a449ff54e3d19e9c69226949465d48dfe3f..0f6f7c5dbb2e027bb0a45eeaf76cfabff558ec79 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -918,13 +918,19 @@ static bool gve_can_send_tso(const struct sk_buff *skb)
+ {
+ 	const int max_bufs_per_seg = GVE_TX_MAX_DATA_DESCS - 1;
+ 	const struct skb_shared_info *shinfo = skb_shinfo(skb);
+-	const int header_len = skb_tcp_all_headers(skb);
+ 	const int gso_size = shinfo->gso_size;
+ 	int cur_seg_num_bufs;
+ 	int prev_frag_size;
+ 	int cur_seg_size;
++	int header_len;
+ 	int i;
+ 
++	/* Must match the header length programmed by gve_prep_tso(). */
++	if (skb_is_gso_tcp(skb))
++		header_len = skb_tcp_all_headers(skb);
++	else
++		header_len = skb_transport_offset(skb) + sizeof(struct udphdr);
++
+ 	cur_seg_size = skb_headlen(skb) - header_len;
+ 	prev_frag_size = skb_headlen(skb);
+ 	cur_seg_num_bufs = cur_seg_size > 0;
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
