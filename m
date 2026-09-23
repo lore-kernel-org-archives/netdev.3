@@ -1,87 +1,87 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374F6331EB7
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13575331A65
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790125706; cv=none; b=G6dj2XjGCJqp+R2ZBJtdrC+ZIMYKZioN7JkoNF1LuctwHou8Dok1IO9/be6wkOxHzQaB8LZUurIi/dG2wGstJYueU+iXJ58ISd8a90u1LO98aTEgYhuYsYvcaw5nL8pru2luQs5V1uyQdlPSE4UdHigu0OMXVKXwtwcLese7sCI=
+	t=1790125715; cv=none; b=jjreIZa96W5hrk374i1EPnSYILiVOADzH2aJWWqQZsboIO5BPkP0GYk4QV9St8OOLnWRxEmaDs6yBtkaMipqL9OIc6/7DKc1ljibQhdF94pCOTrnZXEeFUHjCKm4KfHDlFovD3NTdNMGfgQYR0d5tpp+/ypvAOTQQ0twlTD7JOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790125706; c=relaxed/simple;
-	bh=ec5frk+YtDQMLnumPZGZWsIFPqUU4OVg7LaYLxO10tQ=;
+	s=arc-20240116; t=1790125715; c=relaxed/simple;
+	bh=vTpkG/qLTuJE+J7YjR6oDiP44e7ht3jSUR2yy/OPtwY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AUTEMt50ltqUr72YY0vsd3iqsVXTuNYeBZxSIZC2XmW9wiFnhyvY1LfvOUF80o6uEAdAek/fGxdB02c3JesSJSiZw9YEUANKAZCvMTEhDv09FkBF5zUBvnC3IPNdFSolLY6E2GkpdzYtz3PZi1lsnNoTJ3Xds1rDBw3ugBQ12es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VO1kOw3s; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IfmPv9MD; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=peRMZH9930VZYAXk5yqW+XZ9UbIEjfOK4G8k3ojiKPmkzxEwTu9sc83knxEeicHquz+Y4oinTWm1COO3V9BIbeYxKtkoiGralpXs+dlkmRnPdccCzGH1I2bE82mmxpwb0VrzIyxX7RembUTcBF1J0eBWchNUU3IUXGS2SSX6bkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jzpgNFTd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bb4S594n; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VO1kOw3s";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IfmPv9MD"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI74bR1509184
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:08:24 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jzpgNFTd";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bb4S594n"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MN7Fqf1529713
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:08:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pPuoSkJqnskwsDSUR3d4HyJ4r5DX3/yxD5kDVEbQS+g=; b=VO1kOw3s6TpM0iKO
-	HXNEL83f//yG/H5EgWL0rMTymC9GpM6ATvGYmWu+mqkB+ES49+U9V9vsu+sWSUK1
-	8UwriwBUDa35wO6KsR50bsPHP4DAZdPZYM+l/tm6ivc/sVEs5ljAV1DfyXcidEaW
-	t0HxZ3APfu/gCLlP6ZrN+KiVE0ulionVeSoW5TWaGW+6B1p9/rfFGWKFnV2pn/sn
-	7yGvaHPgx2K/SWUAvT558C+ollfT7xuV7D1t+sd19qO80JfrnicJOA9L9zAfc3Sl
-	yPkdYv52Dewg9/pdrv8ILBTWt87o64aF18YyECUuTlkhEfT0ngFez046VL0lhTQU
-	uGP7Ow==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gux7xsu5h-1
+	ITf6no6wB7oYYT53ITMZgl1OL+FCjLKzAM5fnbJXjDk=; b=jzpgNFTdU68jOBjK
+	xDF8ju0tIID9eu/mXx4W6ha7GMJkCKuW6a1MJYfXDxPjGy0zaDrC7GueCdsLMA0k
+	NOn+oSYyibSkNRqRJAhwQD+Pe+6A/krgZWcYMYrwwdut+ng3kAYvaWKrr8pBdhBD
+	30IdMm7PLQptX7oIGMGveEBxD9JKBySxQKGuqLe9XytlDKGZ7uuukyCJb/NIInUh
+	zVriGDl8/I2QkyBhj4V2BuXPsWN8yMsTVm8Y59cREvJ89IF/Q623O9u+7ue9JWp4
+	6EdM7/WDI9ORdhGT8v5lR7H+lbwXCRWfRNcesVPnOqp52a7kQ/8vchRCRnKMjlqM
+	KGZlKA==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gv32qrajb-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:08:24 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-33bb08e80a8so369832eec.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:08:23 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:08:33 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-32ab0911226so427779eec.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:08:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790125703; x=1790730503; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1790125712; x=1790730512; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pPuoSkJqnskwsDSUR3d4HyJ4r5DX3/yxD5kDVEbQS+g=;
-        b=IfmPv9MDrH3m+PDtPWbhx70AlApNY92Qpk6LbyMnCvx5ESLkfFrkXNXwKX5JtXa1e0
-         zvPgy7LqYokoKOrEvD6SsWSNd3KUyyLSfcabhRP/Wth4YOz8i4E8mfRtO260Oq6Q2e9s
-         CtghL9fFXWybk65BEhxQUaleJUnxddVPGGGQ+mGthr/GULyXIKOJdMbfYHss0+u4LIBo
-         YGqhq41CmDGCB7dKeZ6B5j0qEV1o2GuJYMK7xyXLB+Mx900Ulz7yYg8/nDR9+QJIkC3H
-         QAAXWSKSKGf8C/TSkT5aoVjPA4/IuSdLUdN8NeJYZjhi2xQA7hVO59Yso4l4l0pWY+So
-         sk8g==
+        bh=ITf6no6wB7oYYT53ITMZgl1OL+FCjLKzAM5fnbJXjDk=;
+        b=bb4S594nXlmDgl2eJUZY1NW0kjn95C1s930cpubeHPdUyUUKqRseQGv0ZhQColr/e9
+         kgx7jCMcP65Xf0bbOmbZLYdVibWys472bwxy1rPqv8plCY9NzqJbL9/RZFaGxoszgrSE
+         Cf4/t4rG+4B3KwpJxV4cTQt2lsSV0HSMqORQ1yPi7rKYEW4y+oXxZ0sELLC9cWYuBVfm
+         fWCOT+n9Y5ZJ6Ys6/pVSvgHwOoXTEwszy1IB0NtGC/S6NyY32nHdlcgfYIaroD6ODAE/
+         xX/PB092vrccjkWfuV1ChoeLHXSCLmfXwMFkj4ppoPgbjQbzZcrBPfvWKhnZTg6/SH8e
+         GLZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790125703; x=1790730503;
+        d=1e100.net; s=20260707; t=1790125712; x=1790730512;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pPuoSkJqnskwsDSUR3d4HyJ4r5DX3/yxD5kDVEbQS+g=;
-        b=XuAiZ70rJCog5NixjnLbUEUCc1eQ4xC10aGcCLHEV1yAQoLq+fttzRlx+9BtHHADA3
-         U1Bgo+t/CdUCb0zblSQFrVnOccGfRNCVLzIzGa3hdhS+ujxicobz9/hxD37F4QfuGoF3
-         ogcq3zzM/AEkdYf3IepOjQs5qxMmYBYx7CdaQVBRgkh8ovD9NotM8CqG87SX4ito8WoI
-         6vjV/YQlm7e9MSH17pkroHdlxDJ0Ud21v+NBDaHy3kLJwVxR3kLvXeWHYiclS2iOG5AA
-         14YPjyT2VBuSwh+ugCpdhruTX8x86LNKjOfwjSPSYRVin2fJSoF7/iGd+byrWOyPxjUz
-         vXDw==
-X-Gm-Message-State: AFuF++lmCCNzeplpjAprE1YDbi1IAZrCHq7Vd8ewy/cuhZamvAKrFAYZ
-	kW7sZlK/91q2bdal8emmquL2waUl2ckkJpTTx2pJvS0eOuzXP0WkZREXaGxppfUW7OisxG7nKsH
-	j2tzDtuIT1NMDrDxQQM4kAH5tE7x+RR6lt3pGixJ4TXQZMz0XuubjkypLe5M=
-X-Gm-Gg: AYBFou1N+7IhTNH4DbrA8VpQYHocf7hYYjQY3AMyedtrxklp4pZAo2wDTjy2DZIlCPo
-	wq0d83PMfmf3zH11gJ0fUN6emwa3aAovVjgL6qykFtyt5CKAMmyyS9SDCpuJFc7FcznfR0AMP66
-	AjzmUmLlz6eSz7BCCmSvveDYmWCrrzmtTJWlUwYGuK/t5oPROjlM4zgWKQIlibtlYahZ1UhuP+P
-	77X/Tpyrenlglc2c9J9J05IAftSWKFSesKYnAqBt5nwopJiIoV49f5CO9lYcI1uy27S1QQ7CWhR
-	0FR0TwlS4mwJzVqyhh83wIcMWkStfTNS7tIiB0qkFySBgEXP0s519e3ANbVOGjWpctUfCXxQyB4
-	qspVSZJ4qc/1YRFiC2PnccFRL+wp8
-X-Received: by 2002:a05:701b:458e:10b0:143:1bb1:3307 with SMTP id a92af1059eb24-144ef207dbemr1143993c88.24.1790125702864;
-        Tue, 22 Sep 2026 18:08:22 -0700 (PDT)
-X-Received: by 2002:a05:701b:458e:10b0:143:1bb1:3307 with SMTP id a92af1059eb24-144ef207dbemr1143959c88.24.1790125702234;
-        Tue, 22 Sep 2026 18:08:22 -0700 (PDT)
+        bh=ITf6no6wB7oYYT53ITMZgl1OL+FCjLKzAM5fnbJXjDk=;
+        b=RUmQd5KBsee98Z6T/oaFMsNo0Q/0Q9cRI8gZmPNO+KOclT1NRn9CXl/cUfK7uy1V4o
+         Xaodkqc1Y9JQsokP3nyIw5o2zIFGzeM/56DGyUgtARPQAl38iI3tTyljnDYdOMx+fzgv
+         FVLaUbINLhbmGMKajTQ1VG3yHzRoSzk2hST1Idehc03BQvkoefjVzKCiDOAm1DLDOuQF
+         5qYfJxEu8dS0J91rBpH2gp7AMwqq6uS33dIZYy8rjZpY8zG4sUO4G8HgUGC6+SiObNH+
+         vxhD2cTC7Eramlz+iiP6cMaaMwAESgaVdwfhZ3OQWWpAa50SUTE5aMv0PXtOZ/8cpFWA
+         P5QQ==
+X-Gm-Message-State: AFuF++kAOVvlUQNi6jmYtMJ0UDUKHSBZKnrn2s2TzrU9JBvP3p/OUHLY
+	OVdhNAY0WbpYl6id5PeoRvesHZBm52/KUB1NCGzhzDs/CxpC87ca7Pdj7LMo35ePidPlsCBC0zP
+	Zj7TjopS7t6tKz/cV56Aie0BLRrisRCmAqOPXrgmOpmdZ0GJGHFtY0WjOcJkIbNGyCdM=
+X-Gm-Gg: AYBFou05OnVDyIf+6zQyp2XpyWmykO60UISBfkB4Ej93eMLJGY/AaCgaUE153kje/tK
+	1w4jLvSUNKIN8TTiUAZXpHXGxnWaaPUVifv96TuL6+6BlWNSRLSiEV3kkqM7QrL6elFfT+rv8EA
+	KtA5cvV3xbnaa3KVj0Eo/vUNCLEUvdABXSZNDRtAetLEi2R4qyqD7OtHXdGRh3L2yoEXO8q9bQD
+	Jm3S5za2KTcJ4ZGcN9wl/YT7JJP0Vp+CnDvd7gxGMbmBeS3GCiFAYLij4Q1EfOJFe6NRGLrkb3L
+	kKMOfjwiAdvgHD9FruIBHXb5MP45kSXm5jnHqSxf/wzS/rJOAXjoC6A/LxAzVrMbZsqTgcU0S3n
+	BetPRGLchacawNw1aNsZZUa2k9Yyh
+X-Received: by 2002:a05:701b:4184:20b0:143:6328:2a93 with SMTP id a92af1059eb24-144f8da1343mr1183121c88.10.1790125712074;
+        Tue, 22 Sep 2026 18:08:32 -0700 (PDT)
+X-Received: by 2002:a05:701b:4184:20b0:143:6328:2a93 with SMTP id a92af1059eb24-144f8da1343mr1183087c88.10.1790125711497;
+        Tue, 22 Sep 2026 18:08:31 -0700 (PDT)
 Received: from hu-mohdayaa-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f98ca0edsm1651831c88.15.2026.09.22.18.08.13
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f98ca0edsm1651831c88.15.2026.09.22.18.08.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 18:08:21 -0700 (PDT)
+        Tue, 22 Sep 2026 18:08:31 -0700 (PDT)
 From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Date: Wed, 23 Sep 2026 06:37:28 +0530
-Subject: [PATCH RFC net-next 2/9] net: pcs: xpcs: add USXGMII Clause 37
- autoneg support
+Date: Wed, 23 Sep 2026 06:37:29 +0530
+Subject: [PATCH RFC net-next 3/9] net: pcs: xpcs: add custom platform
+ register accessors
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,7 +90,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-qcom_xpcs_nord_emac-v1-2-4b1c682af70f@oss.qualcomm.com>
+Message-Id: <20260923-qcom_xpcs_nord_emac-v1-3-4b1c682af70f@oss.qualcomm.com>
 References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
 In-Reply-To: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -120,279 +120,116 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
         Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
         Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790125674; l=7650;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790125674; l=2649;
  i=mohd.anwar@oss.qualcomm.com; s=20250907; h=from:subject:message-id;
- bh=ec5frk+YtDQMLnumPZGZWsIFPqUU4OVg7LaYLxO10tQ=;
- b=Oe2dGKX5HImnogO3tEsFXNOVtvfzBGrsRPstHAhtUaSNg2Y/WyV5elH2n/DazKr0XJ9avzejN
- NzAt93U2jOAD2PcZlv9wQDR54sdI4vmZyVYij5lJIyA/l013If1HqL/
+ bh=vTpkG/qLTuJE+J7YjR6oDiP44e7ht3jSUR2yy/OPtwY=;
+ b=qgcKAJR8ofneY0NWHELelT27YbbL+m9wsE/nUE+ou70S3/HbqNREQeX8dBZXH7l8lE0lM0FZk
+ AfvkZMxnILNDRy9ZfoNRRuaWzPFygF2Ey5jyOZFwKgQyjr1wOs+4kqD
 X-Developer-Key: i=mohd.anwar@oss.qualcomm.com; a=ed25519;
  pk=7JNY72mz7r6hQstsamPYlUbLhQ5+W64pY4LgfSh9DJU=
-X-Proofpoint-GUID: VgxpfMuSsjK_Z46Fi2bpJlywrQtbBwwc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAwNCBTYWx0ZWRfXyUJWoYeYi2C5
- dweZ1gxWc86eOCdQVAvdNPAkuhWQ8Xn0UZFeKulpzhKSK1bD+LTafDwkRKC80ceed4GRqWrm3rt
- 4+lB2VWJzcB9V3E1fTabShcmPKNcs/ulQNQewx9toIRu8ULQBZ2lXTviF+XXmHkguo7anRTzCBI
- S5W67Ue/b3O/IEmXbzqvyKPG2M8UcZDCEWlnPuctBiGwQ2KX6S3H2S35PFej3VEQ51Vv8hNr5KX
- 5VmJtBeDeCYbvHdsDegd3rD9SSfW6HsskjHsNQb28Do/tFjnSaw1wskv2s7wZxEhIYSjkHKR0h0
- +TV+5QE70eq/HjjKKzmbkjOUUtGrzXYfsXk5y2MZ3RMyQ3jbzv3GLTEdfocXzmJXF/WnyqnDXWx
- zE1XrMAbGqusIt6cwcRrQS+tA+4JPix69oDiyn+R+/TDnSACjd0+MYr9uG77ssHPVzIRapa2QYN
- /pU2XN13utXKjfOPqdg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAwNCBTYWx0ZWRfX1TDqpCSrtBg9
- 7KqC8cVD13m8tbiCDZGf+rhokdfCI8hCyidBwnPnUQlG7g+5RzXmmQWEqDG42AQFwPrfsjm/rbz
- yhBxZFz6yh2NNq/GTDtkj2RNiDfRjWM=
-X-Authority-Analysis: v=2.4 cv=QsDLTlyd c=1 sm=1 tr=0 ts=6ab32688 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Authority-Analysis: v=2.4 cv=SJnXx+vH c=1 sm=1 tr=0 ts=6ab32691 cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=CxBzW-8FhjC1KXsKZjIA:9 a=QEXdDO2ut3YA:10
- a=scEy_gLbYbu1JhEsrz4S:22
-X-Proofpoint-ORIG-GUID: VgxpfMuSsjK_Z46Fi2bpJlywrQtbBwwc
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=EUspDBNiAAAA:8 a=vuQw3E1rjvSkk4ldrVgA:9 a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19
+ a=QEXdDO2ut3YA:10 a=bBxd6f-gb0O0v-kibOvt:22
+X-Proofpoint-GUID: xQND5rr0O944A9AdM4ftraDrvpD6bzk1
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAwNCBTYWx0ZWRfX+b4nzW+Y2tCs
+ ufAq+cP4qFMJF7zqLVy9vjc/ShMmaMsI6K061pvB7JMDwwEDDwGMczKAKf5wPR3WxxKA3cShVdN
+ SEEwm2nHXBwQVIAx1yOAFUItlFALrGE=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAwNCBTYWx0ZWRfX1vJZDaoyVOIC
+ +al4+GPupeV3eIQ09LzJf6qPLaXtu+bYfCgXbIxHDd8M8dbCZooo/GIATfZT08/mxt88VMTGawG
+ 49j+gtExtoarSPpdiFNz3l6sTVxocIykXPGPiTpYR2t0zPhWhrhvkg+KcZMZ8bVzGKGv9FDAU78
+ FW5Jvug3tjV55HgS8RMMEQlbCAIXRDkOVLu96jXsDENoubS5VVxN+HdMkFrPbVqK2DzPvyedRZP
+ Bch774RhdKIn68AdLzafzGJe73yCdXV8T3jB/s2ngZx1urKr2apQ8QdTdI664C7J8a4TBlvrNOZ
+ HGHcwU5e+yoXcd9MkAtO4EkxTSg8Ctk4+09YNzVSMoY4bRclxu4ijWkcP/XrbkuV+GVXwx7tduF
+ 6ebMPqhJOr6ul1d7wViRx72BId4r1dvTX6stZyPRVGx70r6ewyOk11rPBN6S2X3BRHrJn1byweX
+ 7NN3Sssuo9hl+tA6a2A==
+X-Proofpoint-ORIG-GUID: xQND5rr0O944A9AdM4ftraDrvpD6bzk1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 lowpriorityscore=0 phishscore=0 bulkscore=0
- suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0 spamscore=0
+ phishscore=0 impostorscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 adultscore=0 priorityscore=1501 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230004
 
-The generic DesignWare XPCS support currently associates USXGMII with
-Clause 73 auto-negotiation. The XPCS integration on Qualcomm Nord
-instead uses the vendor MII register block and Clause 37 control and
-status for USXGMII.
-
-Add a separate Clause 37 USXGMII mode which configures the PCS for
-BASE-R, enables single-port 10G-SXGMII operation and enables
-PHY-side Clause 37 auto-negotiation.
-
-Also decode the negotiated link, speed and duplex from the vendor
-Clause 37 status register. This supports 10 Mbps through 10 Gbps link
-rates exposed by the USXGMII status fields.
+Some XPCS integrations do not expose the standard direct or indirect
+register layout. Allow the platform driver to use optional register read
+and write callbacks for both Clause 22 and Clause 45 accesses, while
+retaining the existing access paths when no callbacks are supplied.
 
 Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 ---
- drivers/net/pcs/pcs-xpcs.c   | 113 +++++++++++++++++++++++++++++++++++++++++++
- drivers/net/pcs/pcs-xpcs.h   |  15 ++++++
- include/linux/pcs/pcs-xpcs.h |   1 +
- 3 files changed, 129 insertions(+)
+ drivers/net/pcs/pcs-xpcs-plat.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-index 0337e2bcc01258e102a649e3b7fce41c65a3dd05..7f5c7a275630f2b064e4b9abdd6c3619e9346cec 100644
---- a/drivers/net/pcs/pcs-xpcs.c
-+++ b/drivers/net/pcs/pcs-xpcs.c
-@@ -283,6 +283,7 @@ static int xpcs_soft_reset(struct dw_xpcs *xpcs,
- 	switch (compat->an_mode) {
- 	case DW_AN_C73:
- 	case DW_10GBASER:
-+	case DW_AN_C37_USXGMII:
- 		dev = MDIO_MMD_PCS;
- 		break;
- 	case DW_AN_C37_SGMII:
-@@ -355,6 +356,54 @@ static int xpcs_read_fault_c73(struct dw_xpcs *xpcs,
- 	return 0;
- }
+diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
+index e669a7b248ac4677aeb5cd1874108f5c87f837d2..e78a233fb198d940951064a71e8597c6c666bc9d 100644
+--- a/drivers/net/pcs/pcs-xpcs-plat.c
++++ b/drivers/net/pcs/pcs-xpcs-plat.c
+@@ -24,8 +24,16 @@
+ /* Page select register for the indirect MMIO CSRs access */
+ #define DW_VR_CSR_VIEWPORT		0xff
  
-+static int xpcs_config_aneg_c37_usxgmii(struct dw_xpcs *xpcs)
-+{
-+	u16 mask, val;
-+	int ret;
++struct dw_xpcs_plat_ops {
++	int (*reg_read)(struct platform_device *pdev, void __iomem *reg_base,
++			int dev, int reg);
++	int (*reg_write)(struct platform_device *pdev, void __iomem *reg_base,
++			 int dev, int reg, u16 val);
++};
 +
-+	/* Select BASE-R PCS mode. */
-+	ret = xpcs_modify(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
-+			  DW_PCS_TYPE_SEL, MDIO_PCS_CTRL2_10GBR);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Enable USXGMII before accessing the MII MMD registers. */
-+	ret = xpcs_modify_vpcs(xpcs, DW_VR_XS_PCS_DIG_CTRL1,
-+			       DW_USXGMII_EN, DW_USXGMII_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Select single-port 10G-SXGMII mode. */
-+	ret = xpcs_modify_vpcs(xpcs, DW_VR_XS_PCS_KR_CTRL,
-+			       DW_USXG_MODE_SEL,
-+			       FIELD_PREP(DW_USXG_MODE_SEL,
-+					  DW_USXG_MODE_10G_SXGMII));
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Disable Clause 37 AN before changing its configuration. */
-+	ret = xpcs_modify(xpcs, MDIO_MMD_VEND2, MII_BMCR,
-+			  BMCR_ANENABLE, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Configure USXGMII per XPCS databook section 7.6. */
-+	mask = DW_VR_MII_AN_CTRL_8BIT | DW_VR_MII_SGMII_LINK_STS |
-+	       DW_VR_MII_TX_CONFIG_MASK | DW_VR_MII_PCS_MODE_MASK |
-+	       DW_VR_MII_AN_INTR_EN;
-+	val = FIELD_PREP(DW_VR_MII_TX_CONFIG_MASK,
-+			 DW_VR_MII_TX_CONFIG_PHY_SIDE_SGMII) |
-+	      DW_VR_MII_SGMII_LINK_STS;
-+
-+	ret = xpcs_modify(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_CTRL,
-+			  mask, val);
-+	if (ret < 0)
-+		return ret;
-+
-+	return xpcs_modify(xpcs, MDIO_MMD_VEND2, MII_BMCR,
-+			   BMCR_ANENABLE, BMCR_ANENABLE);
-+}
-+
- static void xpcs_link_up_usxgmii(struct dw_xpcs *xpcs, int speed)
- {
- 	int ret, speed_sel;
-@@ -687,6 +736,7 @@ static unsigned int xpcs_inband_caps(struct phylink_pcs *pcs,
+ struct dw_xpcs_plat {
+ 	struct platform_device *pdev;
++	const struct dw_xpcs_plat_ops *ops;
+ 	struct mii_bus *bus;
+ 	bool reg_indir;
+ 	int reg_width;
+@@ -169,6 +177,10 @@ static int xpcs_mmio_read_c22(struct mii_bus *bus, int addr, int reg)
+ 	if (addr != 0)
+ 		return -ENODEV;
  
- 	case DW_10GBASER:
- 	case DW_2500BASEX:
-+	case DW_AN_C37_USXGMII:
- 		return LINK_INBAND_DISABLE;
++	if (pxpcs->ops)
++		return pxpcs->ops->reg_read(pxpcs->pdev, pxpcs->reg_base,
++					    MDIO_MMD_VEND2, reg);
++
+ 	if (pxpcs->reg_indir)
+ 		return xpcs_mmio_read_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg);
+ 	else
+@@ -182,6 +194,10 @@ static int xpcs_mmio_write_c22(struct mii_bus *bus, int addr, int reg, u16 val)
+ 	if (addr != 0)
+ 		return -ENODEV;
  
- 	default:
-@@ -950,6 +1000,11 @@ static int xpcs_do_config(struct dw_xpcs *xpcs, phy_interface_t interface,
- 		if (ret)
- 			return ret;
- 		break;
-+	case DW_AN_C37_USXGMII:
-+		ret = xpcs_config_aneg_c37_usxgmii(xpcs);
-+		if (ret)
-+			return ret;
-+		break;
- 	case DW_2500BASEX:
- 		ret = xpcs_config_2500basex(xpcs);
- 		if (ret)
-@@ -1158,6 +1213,58 @@ static int xpcs_get_state_2500basex(struct dw_xpcs *xpcs,
- 	return 0;
- }
++	if (pxpcs->ops)
++		return pxpcs->ops->reg_write(pxpcs->pdev, pxpcs->reg_base,
++					     MDIO_MMD_VEND2, reg, val);
++
+ 	if (pxpcs->reg_indir)
+ 		return xpcs_mmio_write_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg, val);
+ 	else
+@@ -195,6 +211,10 @@ static int xpcs_mmio_read_c45(struct mii_bus *bus, int addr, int dev, int reg)
+ 	if (addr != 0)
+ 		return -ENODEV;
  
-+static int xpcs_get_state_c37_usxgmii(struct dw_xpcs *xpcs,
-+				      struct phylink_link_state *state)
-+{
-+	u16 speed;
-+	int ret;
++	if (pxpcs->ops)
++		return pxpcs->ops->reg_read(pxpcs->pdev, pxpcs->reg_base,
++					    dev, reg);
 +
-+	state->link = false;
-+	state->an_complete = false;
-+	state->speed = SPEED_UNKNOWN;
-+	state->duplex = DUPLEX_UNKNOWN;
-+	state->pause = 0;
-+
-+	ret = xpcs_read(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS);
-+	if (ret < 0)
-+		return ret;
-+
-+	state->an_complete = !!(ret & DW_VR_MII_AN_STS_C37_ANCMPLT_INTR);
-+	state->link = !!(ret & DW_VR_MII_USXG_LINK);
-+	if (!state->link)
-+		return 0;
-+
-+	speed = FIELD_GET(DW_VR_MII_USXG_SPEED, ret);
-+	switch (speed) {
-+	case DW_VR_MII_USXG_SPEED_10:
-+		state->speed = SPEED_10;
-+		break;
-+	case DW_VR_MII_USXG_SPEED_100:
-+		state->speed = SPEED_100;
-+		break;
-+	case DW_VR_MII_USXG_SPEED_1000:
-+		state->speed = SPEED_1000;
-+		break;
-+	case DW_VR_MII_USXG_SPEED_10000:
-+		state->speed = SPEED_10000;
-+		break;
-+	case DW_VR_MII_USXG_SPEED_2500:
-+		state->speed = SPEED_2500;
-+		break;
-+	case DW_VR_MII_USXG_SPEED_5000:
-+		state->speed = SPEED_5000;
-+		break;
-+	default:
-+		state->link = false;
-+		return 0;
-+	}
-+
-+	state->duplex = ret & DW_VR_MII_USXG_FULL ?
-+			DUPLEX_FULL : DUPLEX_HALF;
-+
-+	return 0;
-+}
-+
- static void xpcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
- 			   struct phylink_link_state *state)
- {
-@@ -1191,6 +1298,12 @@ static void xpcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
- 			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
- 				"xpcs_get_state_c37_1000basex", ERR_PTR(ret));
- 		break;
-+	case DW_AN_C37_USXGMII:
-+		ret = xpcs_get_state_c37_usxgmii(xpcs, state);
-+		if (ret)
-+			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
-+				"xpcs_get_state_c37_usxgmii", ERR_PTR(ret));
-+		break;
- 	case DW_2500BASEX:
- 		ret = xpcs_get_state_2500basex(xpcs, state);
- 		if (ret)
-diff --git a/drivers/net/pcs/pcs-xpcs.h b/drivers/net/pcs/pcs-xpcs.h
-index 929fa238445ed550677850b9b89149e952ac9fd6..cbf583ff55ba0884efb9c8b63a07154628ee5ea2 100644
---- a/drivers/net/pcs/pcs-xpcs.h
-+++ b/drivers/net/pcs/pcs-xpcs.h
-@@ -13,6 +13,7 @@
- #define DW_VENDOR			BIT(15)
+ 	if (pxpcs->reg_indir)
+ 		return xpcs_mmio_read_reg_indirect(pxpcs, dev, reg);
+ 	else
+@@ -209,6 +229,10 @@ static int xpcs_mmio_write_c45(struct mii_bus *bus, int addr, int dev,
+ 	if (addr != 0)
+ 		return -ENODEV;
  
- /* VR_XS_PCS */
-+#define DW_PCS_TYPE_SEL			GENMASK(3, 0)
- #define DW_USXGMII_RST			BIT(10)
- #define DW_USXGMII_EN			BIT(9)
- #define DW_VR_XS_PCS_DIG_CTRL1		0x0000
-@@ -20,6 +21,9 @@
- #define DW_EN_VSMMD1			BIT(13)
- #define DW_CL37_BP			BIT(12)
- #define DW_VR_XS_PCS_DIG_STS		0x0010
-+#define DW_VR_XS_PCS_KR_CTRL		0x0007
-+#define DW_USXG_MODE_SEL		GENMASK(12, 10)
-+#define DW_USXG_MODE_10G_SXGMII		0
- #define DW_RXFIFO_ERR			GENMASK(6, 5)
- #define DW_PSEQ_ST			GENMASK(4, 2)
- #define DW_PSEQ_ST_GOOD			FIELD_PREP(GENMASK(4, 2), 0x4)
-@@ -68,6 +72,7 @@
- #define DW_VR_MII_PCS_MODE_C37_1000BASEX	0x0
- #define DW_VR_MII_PCS_MODE_C37_SGMII		0x2
- #define DW_VR_MII_AN_INTR_EN			BIT(0)
-+#define DW_VR_MII_SGMII_LINK_STS		BIT(4)
- 
- #define DW_VR_MII_AN_INTR_STS		0x8002
- #define DW_VR_MII_AN_STS_C37_ANCMPLT_INTR	BIT(0)
-@@ -78,6 +83,16 @@
- #define DW_VR_MII_C37_ANSGM_SP_1000		0x2
- #define DW_VR_MII_C37_ANSGM_SP_LNKSTS		BIT(4)
- 
-+#define DW_VR_MII_USXG_LINK		BIT(14)
-+#define DW_VR_MII_USXG_FULL		BIT(13)
-+#define DW_VR_MII_USXG_SPEED		GENMASK(12, 10)
-+#define DW_VR_MII_USXG_SPEED_10		0
-+#define DW_VR_MII_USXG_SPEED_100	1
-+#define DW_VR_MII_USXG_SPEED_1000	2
-+#define DW_VR_MII_USXG_SPEED_10000	3
-+#define DW_VR_MII_USXG_SPEED_2500	4
-+#define DW_VR_MII_USXG_SPEED_5000	5
++	if (pxpcs->ops)
++		return pxpcs->ops->reg_write(pxpcs->pdev, pxpcs->reg_base,
++					     dev, reg, val);
 +
- #define DW_VR_MII_EEE_MCTRL0		0x8006
- #define DW_VR_MII_EEE_LTX_EN			BIT(0)  /* LPI Tx Enable */
- #define DW_VR_MII_EEE_LRX_EN			BIT(1)  /* LPI Rx Enable */
-diff --git a/include/linux/pcs/pcs-xpcs.h b/include/linux/pcs/pcs-xpcs.h
-index 36073f7b6bb40e02c523112f79b3c55838a778e2..4ea995b70150e33e1e1a47cc7aa324c53742fbdc 100644
---- a/include/linux/pcs/pcs-xpcs.h
-+++ b/include/linux/pcs/pcs-xpcs.h
-@@ -20,6 +20,7 @@
- #define DW_2500BASEX			3
- #define DW_AN_C37_1000BASEX		4
- #define DW_10GBASER			5
-+#define DW_AN_C37_USXGMII		6
- 
- enum dw_xpcs_pcs_id {
- 	DW_XPCS_ID_NATIVE = 0,
+ 	if (pxpcs->reg_indir)
+ 		return xpcs_mmio_write_reg_indirect(pxpcs, dev, reg, val);
+ 	else
 
 -- 
 2.34.1
