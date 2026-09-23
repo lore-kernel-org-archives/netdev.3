@@ -1,66 +1,66 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27225481FCE
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F966544D55
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790181794; cv=none; b=DpXoxVJlNodbWeuRW6n6E2p8QwtJ/qupDKbI1zYz0Za9c1CdeKxloaFjTZ5VBrk9+UsMzq/Niin0rpD0iZ5g112qMvZ/0buLa/lHcXxPqlSOeIhlMjHQ79P7+SlvWcaRDyUTgYa7aCSjbuPbzfMDx60wYpql/3yb8Dzn33iuVzI=
+	t=1790181879; cv=none; b=M7W7wt0Ise7BQfoFTCarZqiOGDmGIo2vpN2ZlicsKn14NWnHI7wAhEJAJt/ODXgx7rBCoBV3ACtT6fiVTCosCEjmx8w91jXzpJc5liq11rbdDRn4YuPXLj9Hc9ZddlAC4w8OdUELAdXDrgMUYrqpWdyDoLkvM9LR7PYH5lrD5+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790181794; c=relaxed/simple;
-	bh=/ahzXPbP/8DZf7NXTQcvwkH04Q+Yl4SAdeO4yp5rUqE=;
+	s=arc-20240116; t=1790181879; c=relaxed/simple;
+	bh=B9EHt92l4cCgBJ3GiYXSWlzX+97wDc8O32okFieiohg=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Rb19cgpHYL8akIXQ/9UqTmNv7PNXngUC5CTYyGaNJN/GJN2I8rziOFaxcn5t9fWxADK4eOnEZlcugv/2CFymo5omT9ss0rURtRNASpjtpTzASTv4bMlBC3q3lGC2BgH5PZ5nzQhSV4xYb196tcmUmalEjTldlIG3zRSMFEuqFBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XayK/llv; arc=none smtp.client-ip=74.125.224.170
+	 MIME-Version:Content-Type; b=MCBhsCgaapuJba1ufFWSGvp9WqOZBTtdPxJALaVkmIRdJRuZAxsDlHLG5mz9ln7+fGYxZQo86nuxKmXHW0NsXhLb+LyL2fbp2Fra5tktjBlmZ8wOL+fRdcX3YsWWIR+8X0pok8/vvDazDssG3exUV4KhhRAejuAtw8g5Wrgp6RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/6yyyto; arc=none smtp.client-ip=74.125.224.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XayK/llv"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-89666ee9b3bso14352737b3.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:43:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/6yyyto"
+Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43db0c16so17372617b3.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790181780; x=1790786580; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790181868; x=1790786668; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=UPnt11W+5wjdu0wkVU47rvuijLvJzmyTF42JLKYmmDA=;
-        b=XayK/llvBbkmUZ83laoXstTdgLHhZjDDT6XM7nUftjK3hLRhQ2V41Oo6XGdttdpMtT
-         C2OJcFFrrKQ4FXcF2j9y6g0XNXs+qPYNXgVIg1yKSNzNM+f1kmJFWvMQTpivaeej3iXm
-         qlEYCI9odsGjrwdc9GDK1cFqGzRP2f2XAXm7AN5Fzunw6cW5ST52p2vubfp7aYesJYdE
-         dKrodqExW6dDWQEBlt2JPkO8zxsfVnFoGfTWUB5wCAT5J9O7QIUN1Xan/Cz7/REcIc0L
-         xmRXyr8cL7FC+TJ8ncOLp3v0T83Fw7aUGxh3zxLYut/AmVpBmJzNYUtldG2tNnPdnlMR
-         m2rQ==
+        bh=/OQhA8DS7XwrIGnSaeM2sMN8OtyGqVT7s29pdTvBStQ=;
+        b=W/6yyytoCjPgjpJCHZLzhTswf2+ed9prtlviOTIaP0gPVCCyMZqLQyADqkLfgpMnrY
+         Qi1uhTu0XNKErYCquFVpo2LLZneFkTEgVTJ5rGvm6Lh/foCzV4i3sag0ifmAlo1sKozE
+         QosRIwY4NZnPNTEUMXKtzWb0kGsaydSkcd7CPC+u43caseWl0d9y3uF7XXFxDexHQRnX
+         jBUMkE54+9uq5kx0/otscvr2WKJsjNLIK6FYaYWqRfKUJrucB0gcX+8dVspMoIN09NLK
+         +SZ95++1X/ef2JoYAClkpTR16J55L+2e/JmFIGZq7TznrSvfm8Usjh+NJxK8Xo20apYM
+         pKIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790181780; x=1790786580;
+        d=1e100.net; s=20260707; t=1790181868; x=1790786668;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UPnt11W+5wjdu0wkVU47rvuijLvJzmyTF42JLKYmmDA=;
-        b=ZR45WurX/cZbUFZ///lhTJYxqYDkUlYgq2Gi+O+S8URY091sEMQQu2LYJt96sT68D4
-         KFutOf93Q4s/HxNLPlG/jjrctEaCOX/5eABbo3A8v+ZGuDs6Ofv4npB3ZCWVfPfFvTt0
-         eB9W0KoVO8j1LVdJU24aBu6YkV3np/vtULop4X6LQhMGhh3e5EG4sDJmfNzgF2jMV71H
-         xJUZBD6XbhQjy+2cvf+m8dv2H/mhA/SxhlAZv8vjBKvTMzECA8Xots3+gUwXD5r8TSLn
-         aw9dltIfTk2rtpS0H6mWzir8sqN9pL16n2/Rsgf8u4L/Wllaia8AOO8udPZTXLS1KZ8X
-         I2Ag==
-X-Forwarded-Encrypted: i=1; AKwUvBxXq5pQspgk5QwZLDAiJcuonBSvfBzvQW4X+G5h09Cb88JLh+wGHNX7xB4vy721JninzX7U3vQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kK9dOzyQU+q3lQgtapY8xXIwWRLYYRVocSmLzV+kIa0Ufpp65J
-	/WXvE0B77Bg6jnQYAonxhSuwF/rwtU/wAGBFVSwiwzsOcoStL11VqB28
-X-Gm-Gg: AYBFou1twEpkgOA1pYp+zHhVfARXkYIkSaditA7ZHL5n5uKaoIpMr09NZuKxMMr3S+L
-	LIBS+9lkwPzz14kZMcjrJ5X/M6TxYPwnctEjOVwEAGf2nIp6U5CekvBqAtAL4L+RwyGoCVgYTgN
-	SxvPCH1HsxLuOO2tdw72yj4ENWw8CT4Za6KytvY/3xub9Bzh6TxRliBCRXyUrF7/lq1qiV/SU1F
-	OpF1k/mIU085v0BGRCfMWD/ou2h3IiInURJdbInkBEC7ckaea8xW1fY9/qXxkj9Mxp4xdpjNHla
-	ij549t66eS5uBVpMkPo1+ud72Ua3bT30aTU4fIINz0BfKMBASIe41GQDs5OmL8Hx7h7qzwpOGsP
-	2GetotxPDCNmxfRJL1TcNEZPAt0tkbiNbTcf/E+gr3RzZgUV8H+DGPjTMk7osa8dOxMWucrfUki
-	VawrEt5IVx1jpXh2eLbs2LVndHGHJgJ8lQz3wKQXxDJXV1stBFxwHbgI+XwFhlJ8ATsq/a4HWAG
-	oerSloK1TTkp/9nokBLsVFwfdjIIGJUwLMMqQaKdYh7kIfrUV0d
-X-Received: by 2002:a05:690c:9988:b0:8a5:208a:d928 with SMTP id 00721157ae682-8a5208add36mr17090337b3.42.1790181780465;
-        Wed, 23 Sep 2026 09:43:00 -0700 (PDT)
+        bh=/OQhA8DS7XwrIGnSaeM2sMN8OtyGqVT7s29pdTvBStQ=;
+        b=ABL4jYG/m4830labhO38DMw76OIj1eywdffA5bQsoKBLqYTS6yBSS+NGS+Ta3htp+/
+         XqUEVQgLuTgMIRWAbEo5fPwhuh4p5Pow/y0VDVzU9CZoYQmQTRAHqD8NiZuBi6xKguim
+         NQ0I0pVUBod8te67px0hoS8JOlI8SrCmF59FjLi7txXP+UWWadgxQQAZicfqwILhb9k5
+         btNpv67Bqd8TyHJPNyfvz2p4Xp2R4DLKcVbdLjTrFLm9iioKFCveqTJZHTClnEM92OO2
+         WPv2f63bcFEAqSoTMwHDNnx1g1mva3pmuJ0EkL2Jtund2moFJhDYDwR+ZoQnewP9TeN1
+         uzgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwzpqA+BJVgACPaDvpeM+oK04N+jQ5pn5x9LApFPhSCVkxnUbW982Il8qQaAWH9QZ6U/rT2znk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mYkObza2/I7IAwgCuDHUav1IqmlWENYdHpS6rAogobFkkkcmWE
+	+K3lNblIL2Kb+ATl7eoZw2mruEGtrk6ndi7/oTssHNZuXky+kBStriCK
+X-Gm-Gg: AYBFou1gD6gNtb+hAXoSvV3qY1A47Jh8huWRpqp/TjmWfEzmJU7GfcSOEQp9DuMxeGM
+	M+sykexrTHdpMAQb1jdvfyeYrQpTpVCg7GWghGx0TNDk8DjYxJ8EXqZJGv0fkQGMTVff+dAmtNB
+	oSSJv8KRMktlnyuYKmNtWl+4br6Y/5+ZyRofyWuiWmWiRZgwkbs4AifQC3gGpDXat+mY5ARMSDR
+	j99djLN6QWtlf7PFmVK+WBkvBy9wE40CtjhgIz8S7/B7DoUjbZoztoGqIJ9sZ7UR1E/EVRH2Th1
+	qmTG2/QCponHffLbxkf5uhP6YpxIcqZh/JzTwFWFhiK86vqNgLHQiHXr2CKN9w4J5vWF6eVnQ97
+	6NIASuFyIiSmqPEQ0OkY6+E2rz/Cdr7VqgXMExfhD+AeLCXYS+gwU55clnuXd63NwXDet7kINq6
+	9JyyjvYeuXAe+l+Vfb05q/6IUrEAvJMYHRPdKO3ndb9D+5SS2OhqSGNikGbxo4i7AZt7h8tApT+
+	ldaxlRmpoQKeIZmw6Lv44Mtcpt24wrXJutqyG40oZLlFG3RRiT3ejTVi/zVumo=
+X-Received: by 2002:a05:690c:dd6:b0:81e:9b09:7210 with SMTP id 00721157ae682-8a4584510a1mr21559537b3.16.1790181868432;
+        Wed, 23 Sep 2026 09:44:28 -0700 (PDT)
 Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a46147e3d5sm12902897b3.1.2026.09.23.09.42.59
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a4662b8259sm12757897b3.28.2026.09.23.09.44.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 09:42:59 -0700 (PDT)
-Date: Wed, 23 Sep 2026 12:42:59 -0400
+        Wed, 23 Sep 2026 09:44:27 -0700 (PDT)
+Date: Wed, 23 Sep 2026 12:44:27 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: Wang Zhan <wang.zhan@smartx.com>, 
  netdev@vger.kernel.org, 
@@ -81,14 +81,14 @@ Cc: davem@davemloft.net,
  Aaron Conole <aconole@redhat.com>, 
  Eelco Chaudron <echaudro@redhat.com>, 
  dev@openvswitch.org
-Message-ID: <willemdebruijn.kernel.c1280e613430@gmail.com>
-In-Reply-To: <20260923094517.3998941-1-wang.zhan@smartx.com>
+Message-ID: <willemdebruijn.kernel.203ea450da2a2@gmail.com>
+In-Reply-To: <20260923103825.4000903-1-wang.zhan@smartx.com>
 References: <20260918084651.3022878-1-wang.zhan@smartx.com>
  <20260918084651.3022878-3-wang.zhan@smartx.com>
  <willemdebruijn.kernel.7b2e4c8d0d45@gmail.com>
  <20260920131231.3610688-1-wang.zhan@smartx.com>
- <willemdebruijn.kernel.2984a0c37a5cf@gmail.com>
- <20260923094517.3998941-1-wang.zhan@smartx.com>
+ <willemdebruijn.kernel.eb2b72530041@gmail.com>
+ <20260923103825.4000903-1-wang.zhan@smartx.com>
 Subject: Re: [PATCH net-next v2 2/4] net: gso: support bounded TCP
  segmentation
 Precedence: bulk
@@ -102,50 +102,14 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 7bit
 
 Wang Zhan wrote:
-> On Mon, 21 Sep 2026 16:36:37 -0400 Willem de Bruijn wrote:
-> > Wang Zhan wrote:
-> >> I tried it: https://github.com/zwtop/linux/pull/3
-> >>
-> >> It does read better, but whether to resegment is the caller's choice: the
-> >> qdiscs strip the GSO bits to get one packet per segment (sch_netem.c:443),
-> >> and a device-derived limit groups that output instead - which sch_netem then
-> >> drops, because skb_checksum_help() on the first segment rejects a GSO skb
-> >> (sch_netem.c:538, net/core/dev.c:3626).
-> >
-> > So this is a rare netem edge case we need to handle.
+> On Mon, 21 Sep 2026 17:07:09 -0400 Willem de Bruijn wrote:
+> > Somewhat tangential, but an entirely different practical approach
+> > could be to disable BIG-TCP when such a patch from BIG-TCP capable to
+> > non-capable device is encountered.
 > 
-> That is only one example.  I have not checked every caller, but at least tc
-> sched tbf/cake and the OVS upcall are as well.
-> 
-> > In the hot path, we should be able to defer the decision whether to
-> > segment entirely or segment to the capabilities of the device to
-> > skb_segment itself.
-> 
-> Deciding it entirely inside skb_segment(), without passing extra
-> information, is difficult: the oversize case overlaps with the cases above.
-> And the features we pass in may also have had NETIF_F_GSO_MASK cleared, so
-> it would have to take the device from skb->dev (that should not be much of a
-> problem if we only handle the TX path).
-> 
-> >> The features cannot tell the two
-> >> cases apart either: gso_features_check() clears the same bits for an
-> >> over-limit skb (net/core/dev.c:3843).
-> >
-> > I wonder if we can refine this instead.
-> 
-> Maybe we can add a bool to skb_gso_cb saying whether GSO output is allowed,
-> and leave it to skb_segment() to decide whether a GSO packet is actually
-> emitted, and the max-segs.
+> That means a single device in the topology which does not support BIG TCP
+> forces every other device to turn BIG TCP off, to avoid the degradation.
+> So with mixed devices and a dynamic topology, BIG TCP cannot be enabled at all.
 
-Precomputing in the caller, as the current series does, is fine too,
-if some caller-specific context is needed.
-
-I'm mostly concerned about duplicating logic and the number of
-functions touched in this series. But skb_segment itself is too
-complex already, so preferable to minimize complication there.
-(The reuse of partial for this purpose is very neat.)
-
-If only validate_xmit_skb allows this, because all other segmentation
-callers do want full segmentation (not checked, but I can believe
-that), the current approach is fine. If we can clean up the repeated
-tests and simplify the code in general.
+True. A question is how likely such a scenario with mixed devices is.
+I.e., is it worth the code complexity.
