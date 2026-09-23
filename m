@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD142765E2;
-	Wed, 23 Sep 2026 15:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E257C70C;
+	Wed, 23 Sep 2026 15:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790177526; cv=none; b=JzAs11aJguqa/bCWQ97vcMRFD6tRwU0dS5YnpBhkDMFLrfGHKmijlOJbwI4DUjMoEpxzDNxSH3U3EuaK9nqP8wyUW5O5BsjHG+GEt6Z7LwdhlOYOC32iGWewuOYFdbsSSeOdOfPzNEE1etf+Jx506H8n8PecAoa/JkSuhIT5lCI=
+	t=1790177526; cv=none; b=VSlBUFioksPR3NDvngAKF0/xhSN3hMbQD19EzMNOVII8reAHArwS2taIh7qlow3AKDOroWdFgWSjwZ0uguZTT5STfHm6G2a/A19G/k7Jl5EsNumf4ZiTqn/BIaUMNXWnfQhXfy8R/nZ7p1QvOd1g1lK9VHK/8eMnz++Dc/zWhQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790177526; c=relaxed/simple;
-	bh=16GtAyWXg9XHT6NYcnN6c6+63crY4W8msaHGFRCzii4=;
+	bh=VTKGwo6LoVGstSXXjlbhVu+SDOuyIzugKyGt27rL1O8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rXMI82gydl9u2w9wiRvvoa3Od4/YXfGloy6y+3/rkxfYRT+m+3AF8ly4zQ8D8ZBPCHXVMMajvsUg1zGVokTUoiSZXOjQv5rKtgJoKTI5ve/SQxB7npXd6XNz73+pqM3tJ6Uz/N8d3s25X94WbfsZ2oPeEFxXLCboR3KwT7KqXB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQrd7bY3; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=UxNFcLSseeF7xeNSH8rGx8oK7Lj37bcpZQF5ZaLpAEFIQjK9qBtfX/jWpQLCrTt7pwYsJOlZby+1bYcSL5GclzOHKAM1TYFvNrQDLpncVzVtV4y+3ZNX/mq+KGAOM4DkWohHb+VaShaxWJnrmheA70kqsnuO0wVSFDkg9TiXqcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOJVYqOQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQrd7bY3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AF51F000FF;
-	Wed, 23 Sep 2026 15:31:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOJVYqOQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8C21F00898;
+	Wed, 23 Sep 2026 15:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790177517;
-	bh=U1Bvd6/p/gkQXGYEOxDXN7iUZg0k/gL9HPhVzPJ3J5o=;
+	s=k20260515; t=1790177520;
+	bh=AsmHmr4Wa7aVFd4oyPu7QduJaGJGRGUqPmIIMvb1cvE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KQrd7bY3+yTVOBqTgyfdP0Yqd7j6FFJkIPqNGFL8t1+/xnf9K+ZSMfc2WXZ0y8mTv
-	 FgeAafl+mjI/N1YuknJtgANlyVLJRFGoa8UpN7Zm4KtimcLy3duVE42sw+zlju0bNa
-	 iTUaODYP82jQKSiNmCRavjXzuwhKpcyNKvtf+7DJb+WLv3wTpY12ONZ5ypOFcOAdxi
-	 +6IU4FO+Tj75bqkK/846/OewWIY+jWGLmA74ic3PURKdzg891A3Bifrqu98B1CN0eG
-	 LE4+immFNaHHVNEaXKknGA7zdqrMx4jc012cQlGpOb91mzAdYhxmKeivn7iCfzpoeG
-	 wjpqWVz7XDl+g==
-Subject: Re: [PATCH] net: qrtr: ns: validate msglen and sq_port in
- qrtr_ns_worker() and ctrl_cmd_bye()
+	b=EOJVYqOQvcSX+MBdvX7/XIlTHobRhcz/c2v/Bpor3lXPUhC85BDRnGAEfKxT3tqbI
+	 asSH/qq0bceZrmvR2Jp+QElhD4iN+Nrr+0ihPARyuxEdPdglJiEzC26m3a54lhcEmi
+	 pETAWRX/y+q77LmDftO90LKHTU1UX8JShIV05xhvOaojFjtdVyzajL9oLq0UL21dYH
+	 djPnP9rO/NelmVv5Hqf/jgNlX6JJCoy7jsX6Vysgk5XnGBZcQ2brAhGiB+t9IbBbAn
+	 6rMOV/hhh8IiKcBAtX9BDKXSmvtEufv/PYBpdvQXxPEs3KYlBAuhYVVCdbltt5t+M4
+	 GrwmJqGXrVPPA==
+Subject: Re: [PATCH] tipc: fix TLV out-of-bounds read in
+ tipc_nl_compat_net_set() and depth mask
 From: netdev-bot+sashiko@kernel.org
 To: benquike@gmail.com
-Cc: mani@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-arm-msm@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 15:31:56 +0000
-Message-ID: <179017751615.2160803.4681331359759254914@kernel.org>
-In-Reply-To: <20260919212850.3240353-1-benquike@gmail.com>
-References: <20260919212850.3240353-1-benquike@gmail.com>
-X-sashiko-severity: High
+Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org
+Date: Wed, 23 Sep 2026 15:31:59 +0000
+Message-ID: <179017751912.2160803.802056507685231815@kernel.org>
+In-Reply-To: <20260919212857.3241483-1-benquike@gmail.com>
+References: <20260919212857.3241483-1-benquike@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,200 +59,183 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Over-broad minimum-length gate in net/qrtr/ns.c:qrtr_ns_worker()
-  (lines 645-646, `if (msglen < sizeof(*pkt)) continue;`) silently…
-- [Medium] The commit message contains two factually incorrect supporting
-  claims.
-- [Medium] The new unconditional `if (from->sq_port != QRTR_PORT_CTRL)
-  return -EINVAL;` in net/qrtr/ns.c:ctrl_cmd_bye() (lines 350-351) also…
+- [Medium] The commit message mischaracterizes the code it changes.
+- [Medium] The new mask introduces a header/row mismatch for a request
+  whose depth field is exactly TIPC_NTQ_ALLTYPES (0x80000000, flag set…
+- [Low] Two unrelated fixes with two different Fixes: tags are bundled in
+  one commit.
+
+Pre-existing issues:
+- [Medium] When TIPC_NTQ_ALLTYPES is set,
+  tipc_nl_compat_name_table_dump() only bypasses the type comparison…
 
 --
 
-net: qrtr: ns: validate msglen and sq_port in qrtr_ns_worker() and ctrl_cmd_bye()
+tipc: fix TLV out-of-bounds read in tipc_nl_compat_net_set() and depth mask
 
-This adds two checks to the in-kernel QRTR nameservice: a minimum length
-test of sizeof(struct qrtr_ctrl_pkt) on every control datagram received by
-qrtr_ns_worker(), and a requirement that BYE messages arrive with
-from->sq_port == QRTR_PORT_CTRL in ctrl_cmd_bye().
+This adds a missing TLV payload length check in tipc_nl_compat_net_set()
+before dereferencing the request payload as a __be32, and masks
+TIPC_NTQ_ALLTYPES out of the display depth in
+tipc_nl_compat_name_table_dump_header() and
+tipc_nl_compat_name_table_dump().
 
-A few questions about the commit message and the two new checks below.
-
-> 1. `qrtr_ns_worker()` receives control packets into a single reused
->    4096-byte `recv_buf` via `kernel_recvmsg()` without checking that
->    `msglen >= sizeof(*pkt)` (20 bytes). If a short packet arrives on
->    `qrtr_ns.sock`, `qrtr_ns_worker()` reads stale bytes from previous
->    control messages (or uninitialized heap memory on the first packet)
->    when parsing `pkt->cmd` and its union fields.
+A few questions below about the commit message and about the masking hunks.
 
 [Severity: Medium]
-Is the "uninitialized heap memory on the first packet" part accurate?
-qrtr_ns_worker() allocates the buffer with kzalloc():
+The commit message says:
 
-net/qrtr/ns.c:qrtr_ns_worker() {
-	recv_buf = kzalloc(recv_buf_size, GFP_KERNEL);
-	if (!recv_buf)
-		return;
-}
+    `tipc_nl_compat_name_table_dump()` checks `depth > 1` and `depth > 2`
+    with `TIPC_NTQ_ALLTYPES` still set in `depth`
 
-so every byte not written by the first kernel_recvmsg() reads as zero.  The
-remaining exposure looks like stale data from an earlier, longer datagram
-handled in the same worker invocation, since the buffer is reused across
-loop iterations without being re-zeroed.  Could the changelog be narrowed
-to that, so the bug is not triaged as an uninitialized-memory/infoleak
-class issue?
+Is that description accurate?  tipc_nl_compat_name_table_dump() uses
+equality tests, not greater-than tests:
 
-> 2. Unlike `ctrl_cmd_del_client()`, `ctrl_cmd_bye()` does not verify that
->    `from->sq_port == QRTR_PORT_CTRL`, allowing any unprivileged local
->    `AF_QIPCRTR` socket to send a `QRTR_TYPE_BYE` packet and purge all
->    registered services for the local node.
+	if (depth == 1)
+		goto out;
+	...
+	if (depth == 2)
+		goto out;
+	...
+	if (depth == 3)
+		goto out;
 
-Does ctrl_cmd_del_client() actually contain that check?  The sender
-validation there is:
+With TIPC_NTQ_ALLTYPES set, none of those equality tests matched before
+this patch, so all four columns were printed, which agreed with the
+header path where 0x80000000 > 4 clamped the title count to four.
 
-net/qrtr/ns.c:ctrl_cmd_del_client() {
-	/* Don't accept spoofed messages */
-	if (from->sq_node != node_id)
-		return -EINVAL;
+Given that, isn't the real effect of the masking hunks to start honouring
+the low depth bits for ALLTYPES requests, that is, to print fewer columns
+than before (depth = TIPC_NTQ_ALLTYPES | 1 now yields one column instead
+of four)?  Could the changelog describe that behaviour change instead?
 
-	/* Local DEL_CLIENT messages comes from the port being closed */
-	if (from->sq_node == qrtr_ns.local_node && from->sq_port != port)
-		return -EINVAL;
-}
+The message also calls both changes "validation flaws".  In
+tipc_nl_compat_name_table_dump_header() the header[] array is only indexed
+after the clamp:
 
-QRTR_PORT_CTRL does not appear, and the second test deliberately requires
-the client port being closed rather than the control port.  The new BYE
-rule is an unconditional authorization requirement instead of a match to an
-existing sibling check, so could the comparison be reworded?
+	if (depth > 4)
+		depth = 4;
+	for (i = 0; i < depth; i++)
+		tipc_tlv_sprintf(msg->rep, header[i]);
 
-> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> index bcb090ee79d4..d7e1a37f0717 100644
-> --- a/net/qrtr/ns.c
-> +++ b/net/qrtr/ns.c
-> @@ -347,6 +347,9 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
->  	iv.iov_base = &pkt;
->  	iv.iov_len = sizeof(pkt);
+so there is no out-of-bounds access in that path.  Should the depth-mask
+part be described as an output formatting change rather than a validation
+or memory-safety fix?
+
+> diff --git a/net/tipc/netlink_compat.c b/net/tipc/netlink_compat.c
+> index d9a4f94ea2d4..9b2d93704e23 100644
+> --- a/net/tipc/netlink_compat.c
+> +++ b/net/tipc/netlink_compat.c
+> @@ -881,7 +881,7 @@ static int tipc_nl_compat_name_table_dump_header(struct tipc_nl_compat_msg *msg)
+>  	if (TLV_GET_DATA_LEN(msg->req) < (int)sizeof(struct tipc_name_table_query))
+>  		return -EINVAL;
 >  
-> +	if (from->sq_port != QRTR_PORT_CTRL)
-> +		return -EINVAL;
-> +
+> -	depth = ntohl(ntq->depth);
+> +	depth = ntohl(ntq->depth) & ~TIPC_NTQ_ALLTYPES;
+>  
+>  	if (depth > 4)
+>  		depth = 4;
 
 [Severity: Medium]
-Can this reject BYE messages from remote endpoints that encode their
-control source port as the legacy value?  net/qrtr/af_qrtr.c defines:
+What happens for a request whose depth field is exactly TIPC_NTQ_ALLTYPES,
+that is the flag bit set and all low depth bits zero?
 
-#define QRTR_PORT_CTRL_LEGACY 0xffff
+In tipc_nl_compat_name_table_dump_header() the masked depth becomes 0, so
+the clamp does not trigger, the title loop body never runs, and only "\n"
+is emitted:
 
-and qrtr_endpoint_post() only normalizes the destination:
+	depth = ntohl(ntq->depth) & ~TIPC_NTQ_ALLTYPES;	/* 0 */
 
-net/qrtr/af_qrtr.c:qrtr_endpoint_post() {
-	...
-	if (cb->dst_port == QRTR_PORT_CTRL_LEGACY)
-		cb->dst_port = QRTR_PORT_CTRL;
-}
+	if (depth > 4)					/* false */
+		depth = 4;
+	for (i = 0; i < depth; i++)			/* no iterations */
+		tipc_tlv_sprintf(msg->rep, header[i]);
+	tipc_tlv_sprintf(msg->rep, "\n");
 
-For QRTR_PROTO_VER_1 the source port is taken raw:
+Meanwhile the row formatter below stops only on depth == 1, 2 or 3, none
+of which match 0, so every publication still prints all four columns.
+Does that leave the report with an empty header line followed by
+four-column rows?
 
-	cb->src_port = le32_to_cpu(v1->src_port_id);
+Before this patch the same request was self-consistent: 0x80000000 > 4
+clamped the header to four titles and the rows printed four columns.
 
-and the v2 path only maps (u16)QRTR_PORT_CTRL, i.e. 0xfffe, not 0xffff.
-qrtr_recvmsg() then copies it verbatim:
+The legacy implementation that this code replaced handled depth 0
+explicitly, in nametbl_list() in net/tipc/name_table.c before commit
+44a8ae94fd55:
 
-	addr->sq_port = cb->src_port;
+	depth = (depth_info & ~TIPC_NTQ_ALLTYPES);
+	if (depth == 0)
+		return 0;
 
-So a BYE arriving with src_port 0xffff would now return -EINVAL before any
-teardown runs.  Since ctrl_cmd_bye() is the only place that does:
+Would it make sense to normalise or reject a masked depth of 0 here, or to
+have the row formatter use the same clamp semantics as the header?
 
-net/qrtr/ns.c:ctrl_cmd_bye() {
-	xa_for_each(&node->servers, index, srv)
-		server_del(node, srv->port, true);
-	...
-delete_node:
-	xa_erase(&nodes, from->sq_node);
-	kfree(node);
-	node_count--;
-}
-
-does an early return here leak the struct qrtr_node and all of its struct
-qrtr_server objects, keep one of the QRTR_NS_MAX_NODES slots occupied for
-the module lifetime, and leave the dead node's services advertised, with
-only a rate-limited pr_err as a symptom?
-
-The neighbouring handlers restrict the source port only for local-node
-messages:
-
-net/qrtr/ns.c:ctrl_cmd_del_client() {
-	/* Local DEL_CLIENT messages comes from the port being closed */
-	if (from->sq_node == qrtr_ns.local_node && from->sq_port != port)
-		return -EINVAL;
-}
-
-Would gating the BYE check on from->sq_node == qrtr_ns.local_node, or
-normalizing legacy source ports in qrtr_endpoint_post(), block the local
-abuse described in the changelog while keeping remote node cleanup working?
-
->  	node = node_get(from->sq_node);
->  	if (!node)
+> @@ -932,6 +932,7 @@ static int tipc_nl_compat_name_table_dump(struct tipc_nl_compat_msg *msg,
+>  	if (!(depth & TIPC_NTQ_ALLTYPES) &&
+>  	    (type != nla_get_u32(publ[TIPC_NLA_PUBL_TYPE])))
+>  		return 0;
+> +	depth &= ~TIPC_NTQ_ALLTYPES;
+>  	if (lowbound && (lowbound > nla_get_u32(publ[TIPC_NLA_PUBL_UPPER])))
+>  		return 0;
+>  	if (upbound && (upbound < nla_get_u32(publ[TIPC_NLA_PUBL_LOWER])))
 >  		return 0;
 
-[ ... ]
+[Severity: Medium]
+This is a pre-existing issue and not something introduced by this patch,
+but since the new mask lands directly above these two bounds checks it
+seems worth raising.
 
-> @@ -639,6 +642,9 @@ static void qrtr_ns_worker(struct work_struct *work)
->  			break;
->  		}
+TIPC_NTQ_ALLTYPES only bypasses the type comparison; the lowbound and
+upbound filters still run, so publications get dropped from an "all types"
+dump.  The uAPI contract in include/uapi/linux/tipc_config.h says all
+three selectors are ignored when the high depth bit is set:
+
+	__be32 type;	/* {t,l,u} info ignored if high bit of "depth" is set */
+	__be32 lowbound; /* (i.e. displays all entries of name table) */
+	__be32 upbound;
+
+With depth = TIPC_NTQ_ALLTYPES | 1 and lowbound = 200, does
+
+	if (lowbound && (lowbound > nla_get_u32(publ[TIPC_NLA_PUBL_UPPER])))
+		return 0;
+
+still skip every publication whose upper bound is below 200, even though
+lowbound should be irrelevant for that request?
+
+The legacy code enforced this, in nametbl_list() before commit
+44a8ae94fd55:
+
+	if (all_types) {
+		...
+		lowbound = 0;
+		upbound = ~0;
+		...
+	}
+
+Should the lowbound/upbound tests be gated on the ALLTYPES flag as well?
+
+> @@ -1139,6 +1140,9 @@ static int tipc_nl_compat_net_set(struct tipc_nl_compat_cmd_doit *cmd,
+>  	u32 val;
+>  	struct nlattr *net;
 >  
-> +		if (msglen < sizeof(*pkt))
-> +			continue;
+> +	if (TLV_GET_DATA_LEN(msg->req) < (int)sizeof(__be32))
+> +		return -EINVAL;
 > +
+>  	val = ntohl(*(__be32 *)TLV_DATA(msg->req));
 
-[Severity: High]
-Does this blanket 20-byte floor drop control packets that the router itself
-treats as valid?  qrtr_endpoint_post() only requires the full
-struct qrtr_ctrl_pkt for two types:
+[Severity: Low]
+Could this be split into two patches?
 
-net/qrtr/af_qrtr.c:qrtr_endpoint_post() {
-	if (!size || size > len || len != ALIGN(size, 4) + hdrlen)
-		goto err;
+This hunk is the out-of-bounds read fix in tipc_nl_compat_net_set(), where
+only TLV_CHECK_TYPE() ran before it from tipc_nl_compat_doit(), and it
+matches Fixes: d7cc75d3cb6b.  The two earlier hunks only change how
+TIPC_NTQ_ALLTYPES is masked out of the display depth for
+TIPC_CMD_SHOW_NAME_TABLE and match Fixes: 44a8ae94fd55.
 
-	if ((cb->type == QRTR_TYPE_NEW_SERVER ||
-	     cb->type == QRTR_TYPE_RESUME_TX) &&
-	    size < sizeof(struct qrtr_ctrl_pkt))
-		goto err;
-
-	if (cb->dst_port != QRTR_PORT_CTRL && cb->type != QRTR_TYPE_DATA &&
-	    cb->type != QRTR_TYPE_RESUME_TX)
-		goto err;
-}
-
-Everything else with a 4-byte payload is accepted and queued to
-QRTR_PORT_CTRL, and qrtr_sendmsg() states the same lower bound for control
-port senders:
-
-net/qrtr/af_qrtr.c:qrtr_sendmsg() {
-	if (ipc->us.sq_port == QRTR_PORT_CTRL) {
-		if (len < 4) {
-			rc = -EINVAL;
-}
-
-The per-command needs in ns.c look like 4 bytes for HELLO and BYE (neither
-handler reads the union), 12 bytes for DEL_CLIENT, NEW_LOOKUP and
-DEL_LOOKUP, and 20 bytes only for NEW_SERVER and DEL_SERVER.
-
-With this check, does a 4-byte HELLO get discarded by the bare continue
-with no diagnostic, so ctrl_cmd_hello() and announce_servers() never run
-and local services are never announced to that node?
-
-And does a 4-byte BYE now skip ctrl_cmd_bye() entirely, leaking the
-struct qrtr_node plus its struct qrtr_server objects and consuming a node
-slot permanently, since that function is the only node teardown path?
-
-Would per-command length checks mirroring af_qrtr.c (4 /
-offsetofend(struct qrtr_ctrl_pkt, client.port) / sizeof(*pkt)), or simply
-memset()ing recv_buf at the top of each loop iteration, remove the stale
-byte read without dropping traffic the router considers legal?
-
->  		pkt = recv_buf;
->  		cmd = le32_to_cpu(pkt->cmd);
->  		if (cmd < ARRAY_SIZE(qrtr_ctrl_pkt_strings) &&
+The two changes touch disjoint commands: TIPC_CMD_SET_NODE_ADDR and
+TIPC_CMD_SET_NETID versus TIPC_CMD_SHOW_NAME_TABLE.  Splitting them would
+let the memory-safety fix be backported and reverted independently of the
+output format change.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212850.3240353-1-benquike%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212857.3241483-1-benquike%40gmail.com
