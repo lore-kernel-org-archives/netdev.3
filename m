@@ -1,189 +1,195 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F3335E955
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790170295; cv=none; b=raySnd/bma+6wDCOejTLG7NWzx/Kwn7Z1eCZShUKYlvsxJzmFEl+aFJUgxQM/HYW1dwzZAazWXyrsnGktmYovSjUPu9QId+oaXfuZZE9BR4i9IeIjDjat3wlClULFMBS8iYq99wRW2A5XMJwoEUkjfBtTjjm2T9T1GqvccQGANI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790170295; c=relaxed/simple;
-	bh=ASCO0Lh4SYfqFZo+QWVw9DfS6fnJxkZnm06PI6d+M88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f7GUJhsq8k7j8F6/3DXOSEfpVxhnEVkolwGtAhfnGQP9AfjSAAnHNI/4e6vDp/3pNwbQCE74GsD5KYm2pINYkMeSquw57c9lFYyCQOUP1patLQqBedahCY17dHQQnX93+vPE6xMxe7RqQzpsNMDspl8l/BSA2DpT6U17g6UweeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xe7bp9sb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kYriovbz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA963246F4
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790170355; cv=pass; b=XQrZgt3VV+5LUHfWXhns4+llRlqz2/oHmkNFt7L5wVvj63qkvvsYvjMj0jfWsyModtVWIuBivWxSjCxWdLonlaOZXpBzvV6lMQeDdw4FDAo/b/CX4r7CGSPm0JLYHa1MYJE078/YYr6eOEJA3Muv/XONEltdHWG6OefoJtWNXqc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790170355; c=relaxed/simple;
+	bh=HFj/obFOXaUrFy7Dz36eNeZIP3Dw6LmoxFR/Prws1fw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nKUZ+yhh3HwpAbY+ezGkp0ubgRNZl7pi454P6IDEX1rlKpv31/bCn1Ey0dbZzhephqZBBiPb97o6wkqRr4Pe/nNtaEixhMsINt2DGycduldsjeAuo9MQxivpqBpyhLbmHgr3X5jUWPOeRg+AgPj6BivkBLyUU867grGE3dinCPM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pisgcede; arc=pass smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xe7bp9sb";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kYriovbz"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NBbdXF3414037
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:31:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=Qq6xeq+5N6XfyP0fS9pBoOWP
-	w0EfK2lsnoPvPTiFh/k=; b=Xe7bp9sbIhdsqaUU+Tp+K0Y+SLJ+Vscvz99AoTUM
-	JXaeKQTGH7Y2onQk0FVAHZd7oIZxf+r9U/22PbkJ+HFqBn+hhnY6D4NRMDSsOJjw
-	UmFVWC+Ft9yf4ZBtuGLaH99BwdE2GIv9MMgxol+PhoYAk3e+VJtlPpSgUuUMNbu9
-	bzJk2jbU5YYUQaFMoSPgyss/rCskrML562gC4vToTHNy/NJ3HS3zCN91njsZ5T50
-	x06PJt34V+fDI90RaNbbz4mU0QlIuCsdg4w8tl+VVR8a+gzI64QLHBcVbkyCqon0
-	V2D6Zd8YLVfX30mWUn5REjYQf4nFSXPfaOXmqy8XUhccdw==
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com [74.125.224.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gv78n26xw-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:31:31 +0000 (GMT)
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-66fae2bc827so1160801d50.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 06:31:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pisgcede"
+Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43f9b119so14843207b3.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 06:32:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790170352; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LmRkCP1zmmlf06bcV82bP6Xy6PQ/709VSW3/q8cHrW9Wf34MXAOGR8XH6yytEHlHEJ
+         TaYPYTzhiMJrTQa2/L3Z3LKZ61YlsSNa5R8+bFkqoah0BpHUfRbHNo3OZQd7QmNQRIgL
+         uKgj+t2IFq3eeRxHVqXpTpYUKRjpQej2VU/OMH4gsFyy8UKHHrH1w/HnaI33hnSXP5+B
+         FXEF9KRAU+iry33ezTp8/n5ngcm1w7czPBuG7jdNc2oedj2oU/y3T6pUyHGK+YdO8MrD
+         jixuUDD6ScKQbRVBLFSDBJS77xsbYKtWqwTjm4lS5/6E8TdHR/+J852VdK8m0Tl3zSVW
+         n+YQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+KXKbg+/vq0efEsOnUfo7nGAJCLpwCKe1MmmSmCgjy8=;
+        fh=+QamZ9UiKndnjRSYvXX4zLieQpl/U6HU0HjTByegx+4=;
+        b=W5gdy8VqOyXY6tMDf/UZBSx7cKVOsSxnNYC6O2tpzIAY+/ruKKKZvQSoxW1oFapSY4
+         NnC+Frqs/FMuhIKOrLyB05CvVRYTvvpCuXWaJeP++5MDu86KpJ271G99s6J0tj6oK+0r
+         qo7bGS88TGBBVeglklxafdwxUg/dWhe+IOtDZUAGH9FIs9jAk8nLXMDSOsd7w3rg3fHL
+         MkA3tgN3o64yr+mPjhdc0NPB4VkfmUpl8vnu2xk+h8XWrQjqr1Huu3NIzISn+t0n7K1M
+         VRYUkzwzjnBLYkYcH4vh8IU+JzN3FXXDu277bO+8hW5Vp19UMdCJ/eUS1RHXzl6MPgps
+         edtA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790170291; x=1790775091; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1790170352; x=1790775152; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Qq6xeq+5N6XfyP0fS9pBoOWPw0EfK2lsnoPvPTiFh/k=;
-        b=kYriovbzX41ksgH3RiD8fBPLYA2dpM8rWtGplPzbDhBzYqkzpGkoo1c6ZdTLWVbyFv
-         Wqxc7cZitQgASM8AwbDKfPWigqCPEKYCrgYjm1kX4BqkMBot8DIoHFbnI9SXqGKTVGh+
-         jcn0+qBVAgilNSXtvRM5u5BMDRxhXk2mnpsOMqt4+2ijU9ltnqWo1S38bDm+HMGbFhvw
-         JZPcuS6Sm6VaRFhzMtC5Asy38OJxKls28DtDE67NHtzWZhnr8ONcYfe/uKa0qVKfQW/A
-         IFQk4Wp8jH8XAZ+OQEvtoy4cbW27G0CMdrYnaMFey+rZTaUzE3mZni3vvzApxgA8UhV/
-         wJlQ==
+        bh=+KXKbg+/vq0efEsOnUfo7nGAJCLpwCKe1MmmSmCgjy8=;
+        b=pisgcederrBsRoY4XNzZMQ6y+psbbImhkjFhBRbOqSwYADI2OV3FuXoC4kLRYcQycF
+         t7yXz9Z+ys9vui/zXsRMnrCzYGJZOf2pg+ub5lawxt1abh3KOe+C5P2BLLd4Oz2i4E3P
+         pxSdP9eiePoqHNst6eT1TOdfDRVFCJD2C+5Q7bX6naeTnSk5n+fQpHKJ7JUir24kV9Ep
+         lWeh3Fii+OlWDSD44iAxR+eAQNbs58LXxKs0vB+FJQTP3MZikkHRpvZGdz3j7w0JZwiK
+         rQK+Cussl3IGFLpNkQWFTMixoeZh1sFA4DM1Cuq5HyyLow7Jmzt8GKZIxjVDKq6JdzJp
+         To1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790170291; x=1790775091;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790170352; x=1790775152;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Qq6xeq+5N6XfyP0fS9pBoOWPw0EfK2lsnoPvPTiFh/k=;
-        b=o5bpNa5WpwUrC6MCUOhaDdYiP+eqR8B4wuR84vvYXcifP9VCeaUKDa8Apr2/oPF5zq
-         TGGla10aGdHpdR7Hh262/tJ6VsJGTtKHhx9+nJBJ4JmZhzn5sOwl+aPehJVitr0mLJDL
-         z2hwQSMD4lYkpXaKlkKzC3ttGUcZPrHQCTV9oBYfMPIqICSIkpG9mE3mIg4sU+Omrr4y
-         VeP0qEzsPf23VIT1BNIaakZjYxjMsaFBk2+Tk85cKcMCDnCToiOoryRieEDO+YXG34f9
-         jd1H7tjkj75LS3/iXBulqXXpksunpw5aUuo6LlDhfP3ZoICQkq26OC/kYyIc5Luvt1Xy
-         2Gpg==
-X-Gm-Message-State: AFuF++mQ/f9IZ4vKGasCTe8Y071xAayDW6CwIMq6Xb478keq0O79FQUj
-	Sxoigrxi3CNcxW47cqCj4NbYytYvd1hPkzxxsaSP0uLuMfuOpen0HTVo8wPAbc4ghk3Vqr9UUAy
-	mI4I2DhqlVeKfDRzC+kw7GadpFE0niA6rhkLnJZQ3kyd5hFB4mxWy5aQ7Hro=
-X-Gm-Gg: AYBFou0aDPafQjAMUtIb9dMG0SILLa8QhLJRwxKo3RK9qCu2BHAibEMoy3LyMwBVQ56
-	u3MAMLRlMzOniFnRhFvuQhWvSnhWluqZMk6xo0HG+AONl+61oDknPLjTEJ235L7qSifm87PaR19
-	ilvyMncz6tp8kNBxCj4QQoXgtvJulLqdkbu+I9W3CGnvlU6kC7c9ZXXFKTrJwTNw+ByQaxm5RR5
-	1tVwYnd3/6r5qNF2HZaBVaH9OjGjPqe0E5nwuNlYFIJWJGFp/g51OwfNVxnIZGyhFwCBbKojNwu
-	P7rZMu/N0sA4WtC6tDfR2r94vA9ItU4GDPrPWPKwJDNZoqI+BOEyGCk2GK4LhSjVimI2ETZA06C
-	b3Pwg2038GHim
-X-Received: by 2002:a05:690e:4503:20b0:672:a4a6:298c with SMTP id 956f58d0204a3-672d5728d7amr1011733d50.6.1790170291076;
-        Wed, 23 Sep 2026 06:31:31 -0700 (PDT)
-X-Received: by 2002:a05:690e:4503:20b0:672:a4a6:298c with SMTP id 956f58d0204a3-672d5728d7amr1011687d50.6.1790170290514;
-        Wed, 23 Sep 2026 06:31:30 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9140c43b6dfsm20549436d6.31.2026.09.23.06.31.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:31:30 -0700 (PDT)
-Date: Wed, 23 Sep 2026 19:01:18 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-        Shawn Guo <shengchao.guo@oss.qualcomm.com>,
-        Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
-        Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
-Subject: Re: [PATCH RFC net-next 2/9] net: pcs: xpcs: add USXGMII Clause 37
- autoneg support
-Message-ID: <arPUpiLe/y/aKR/a@oss.qualcomm.com>
-References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
- <20260923-qcom_xpcs_nord_emac-v1-2-4b1c682af70f@oss.qualcomm.com>
+        bh=+KXKbg+/vq0efEsOnUfo7nGAJCLpwCKe1MmmSmCgjy8=;
+        b=eBfXInuYNwpVM+IvrupDKexWR8gMXPcSX6uqvOp87J5J2KbZeVo7tXaCIsgUDhgaj0
+         cOeqpNziMefoPmWDTTxruLtBdJHR36n07e646h5oOSi6ZzIFC9CJSGei9scG5pZUwj42
+         ICsWvrIiN6q0MlsX3Kwn4eZRdixWErL+nrO9qPC5GsgzUojwnO67aJmtqOfKJyX+/de5
+         faL4ChAeK1xD7ciqLtybTSO9KtM944ZUAZKi+epzUByeTkVOAuGQn8pGEqaFEpzVn1sy
+         h+ZZqLRBrl27BM3zhNa66Y79IIok6lDLnTjuXYLrgJD/FPLzrghVRkqf4AyjoGyO3gc1
+         938A==
+X-Forwarded-Encrypted: i=1; AKwUvBwCtkalpvIb1TGAcWVy+Ce1nrzmRY/goAW3oKIsM5jEIm1/PQ4f6r9QiFUJYgPStrCrb5nOCbc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mXbbSzAG0HbwBziTHyIFG2bctDzKlsMC/PblNzYARRBD1s4qAS
+	ar5yvW0vQhg8fjAsmH5Ie3w7an2wSur6gxTgSwLjDTuXNxjRL1tuH+LaueWonT9tE3hbBqTIZDq
+	5XzM1YrFxCdV8EhTBfQ0ruk+DQ0HlkLMI+j7BB1/U
+X-Gm-Gg: AYBFou3Vf6UjFNuEnXd6RIMofaf1hnSkxdRQGo4pMhosQZHH7Oq3B8Ms/keCTeB5KQn
+	IJqP7I+kdfV9umSbjd05rXJ21MJzZq7ZUO/XErbUcHdaLbXJ5Ddzloa1K+/+2Mb+9VHHisAzDLd
+	BYuF7vpWiwXqNRG9lS/X6tDQXkouGbOZyRCuC3V+p0vCFoQEG7wRQX4V6+rS4fBs2rxoOk3SdM3
+	VALkjJdnHdVKhRU+PaITNiYYhKUB1r/ycnLyBVCeWSVLPy1385AysLcQHE+FnqlEnowZrU3KaWm
+	HzWgu5Fmyw8vTvR8qw+y7E1iWS+QM0BAXfh1+eRgKKldr3lwmbNIWhQ7xMzn8DzGVwi1gviolbW
+	lVX73w+K8SXenDaoVxsX0ukHVLNGQTPNlW+YNFNNFRmvSpgb4KSJUcpF3yyvufi8v/eeC
+X-Received: by 2002:a05:690c:4990:b0:873:5ddf:d86d with SMTP id
+ 00721157ae682-8a45b48cd79mr15565207b3.56.1790170351507; Wed, 23 Sep 2026
+ 06:32:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923-qcom_xpcs_nord_emac-v1-2-4b1c682af70f@oss.qualcomm.com>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1MyBTYWx0ZWRfX0XHLuFM6Kc4a
- vILt9+MhlKQNc1g71g/4xdqK5VLgfp6n3UH1AuAtpmW/3qLDzEhI5X9wv1A/BbQSseGrdcvD/h3
- eVFl0NmWaYwS84Jk5/om7JcTxBDPJeU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1MyBTYWx0ZWRfX5SjtnLzUKjmL
- sOHmELtZNzcZZTNMXMhjfJSKLyYx99sW2vLrmSP8NEcPaJW1oRMb/pus3GzOL5W5oktzBYfw5LX
- PynCkhDVR8zgKnxtEPPgACVVfjMyYIbWhyg+fhFL1RmFhKwt6YzXs3yiTaJr5fS1qhCS/K/cB2k
- 7GBpwGxzaBajjJtZ5+lcPNZOVE8cTK7/dUetVGYt5NsVTcTnpydF7kilwI0+HI5l/f7exUYHC4u
- apPv9sKC3YGomVrShrL6oE+iYN0+Ys7eoibqqFeccwM19v2Ja+/yf1tc785R6I58PQn2x4JYAGE
- 35qw4BPbI5QkwdeGwwGVBWWgRBIuMccsLx3r7msbnsOmnclNYaqZrl9iOMX6uYOpeJfcOUF8MtQ
- cL04wfGXn72vStg7S0luueP6Ffy1Orz1RXJqjL7Fop9HlSAllEaWMvDggdYmcz+g/nJelO/np+U
- BHgmASA/31M8ChKQtVA==
-X-Proofpoint-ORIG-GUID: e6bz9CuDkHWUKioeLaDhuC3cePOtyBz6
-X-Authority-Analysis: v=2.4 cv=aNFlOr9m c=1 sm=1 tr=0 ts=6ab3d4b3 cx=c_pps
- a=ngMg22mHWrP7m7pwYf9JkA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=U1nmBBJXYHZWlwlGUpAA:9 a=CjuIK1q_8ugA:10
- a=yHXA93iunegOHmWoMUFd:22
-X-Proofpoint-GUID: e6bz9CuDkHWUKioeLaDhuC3cePOtyBz6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230053
+References: <20260922095747.3059954-1-edumazet@google.com> <179016837127.2160803.11508533385406825812@kernel.org>
+In-Reply-To: <179016837127.2160803.11508533385406825812@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 23 Sep 2026 15:32:18 +0200
+X-Gm-Features: AclHuK9G1LwY60nItqHgHRaQMXQToZBqCE9yJlUT8JrhRdwfeEvhupBd-SBJo6A
+Message-ID: <CANn89iKmREFPZLDXUUG7SV3qSHvXPW40eo7qWNN_Tu46CofLzA@mail.gmail.com>
+Subject: Re: [PATCH net] udp: restore hlist_nulls for primary and secondary
+ hash tables
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	willemb@google.com, kuniyu@google.com, horms@kernel.org, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andrew,
-On Wed, Sep 23, 2026 at 06:37:28AM +0530, Mohd Ayaan Anwar wrote:
-> The generic DesignWare XPCS support currently associates USXGMII with
-> Clause 73 auto-negotiation. The XPCS integration on Qualcomm Nord
-> instead uses the vendor MII register block and Clause 37 control and
-> status for USXGMII.
-> 
-> Add a separate Clause 37 USXGMII mode which configures the PCS for
-> BASE-R, enables single-port 10G-SXGMII operation and enables
-> PHY-side Clause 37 auto-negotiation.
-> 
-> Also decode the negotiated link, speed and duplex from the vendor
-> Clause 37 status register. This supports 10 Mbps through 10 Gbps link
-> rates exposed by the USXGMII status fields.
-> 
-> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-> ---
+On Wed, Sep 23, 2026 at 2:59=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 2 =C2=B7 Low: 2
 
-Seeing your question below, I think I should have probably mentioned
-here that this sequence is given in the programming guidelines of the
-XPCS 3.50a databook. Section 7.6 Switching to USXGMII Mode, point 10.
-states:
-  Set bit(12) of SR_MII_CTRL to 1 to enable CL37 auto-negotiation
-  (paraphrased).
+Thanks for the review, comments below.
 
-So this is a part of the licensed IP, rather than a Qualcomm specific
-addition.
+> [Severity: Medium]
+> The pre-image here was an unconditional head insert.  Is the new IPv6 plu=
+s
+> SO_REUSEPORT tail insert part of the hlist_nulls conversion?  The changel=
+og
+> only describes restoring hlist_nulls and adding the traversal restarts, s=
+o
+> this chain ordering change is not mentioned.
 
-> @@ -687,6 +736,7 @@ static unsigned int xpcs_inband_caps(struct phylink_pcs *pcs,
->  
->  	case DW_10GBASER:
->  	case DW_2500BASEX:
-> +	case DW_AN_C37_USXGMII:
->  		return LINK_INBAND_DISABLE;
->  
+No, it is not, and it should not have been there.  It was an attempt to
+make udp_lib_rehash() consistent with udp_lib_get_port(), but it is not
+needed for the hlist_nulls conversion and does not belong in this patch.
 
-This is incorrect and I did not find out its side effect as I was
-working with a firmware managed external sitch. The XPCS supports
-USXGMII with AN always, so this case should return LINK_INBAND_ENABLE.
+v2 keeps the unconditional head insert.  The CONFIG_BASE_SMALL
+misdelivery you describe is a consequence of this hunk and goes away
+with it.
 
-	Ayaan
+> [Severity: Medium]
+> Can this tail insertion defeat the nulls-value check added elsewhere in t=
+he
+> patch?
+
+Yes, and this is the better argument for dropping that hunk.
+
+hlist_nulls_add_tail_rcu() sets n->next =3D last->next, that is the nulls
+marker of the bucket itself, while hlist_nulls_add_head_rcu() sets
+n->next =3D h->first.  Only the latter is compatible with the nulls
+scheme: a reader parked on a node that leaves a bucket and comes back
+must be sent to the head of the chain, not to its end marker.  With the
+tail insert the reader stops with a matching nulls value, so the check
+can not fire and the rest of the chain is silently skipped, exactly as
+you describe.
+
+v2 keeps head insertion at this site and says why.
+
+Note I am keeping the tail insert in sk_nulls_add_node_rcu(): the
+pre-image sk_add_node_rcu(), used by udp_lib_get_port(), already did
+hlist_add_tail_rcu() for IPv6 SO_REUSEPORT sockets, see d894ba18d4e4
+("soreuseport: fix ordering for mixed v4/v6 sockets").  udp_lib_get_port()
+only inserts unhashed sockets, and for the same-bucket re-insert case it
+behaves as before the conversion, since hlist_add_tail_rcu() left
+n->next =3D NULL and readers stopped there as well.  No change in
+behavior, so not something to address in a fix for net.
+
+> [Severity: Low]
+> This path now does an O(N) chain walk with softirqs disabled.
+
+Goes away with the above.
+
+> [Severity: High]
+> Should this walk also validate the terminating nulls value?
+
+I do not think so, and this is not a regression.
+
+Before this patch the same loop walked a plain hlist.  A socket moved by
+udp_lib_rehash() kept its ->next pointing into the new chain, so the
+reader already wandered into the other bucket, stopped on that bucket's
+NULL and missed the remaining listeners of the original chain, and the
+hash2_any pass could already revisit sockets.  The conversion does not
+make this worse, it only makes the condition detectable.
+
+Detecting it does not help.  As you note, by the time we reach the end
+of the chain skbs have been cloned and queued, so a "goto begin" restart
+would deliver duplicates, which is worse than missing a listener during
+a concurrent rehash.  Multicast delivery here is best effort.
+
+v2 adds a comment at both mcast_deliver() sites to record this.
+
+> For completeness, __udp4_lib_demux_lookup() and __udp6_lib_demux_lookup()
+> were also converted to nulls iteration without the check.
+
+These look at the first entry only and break out, and
+inet_match()/inet6_match() validate the 4-tuple, so there is nothing to
+restart.
+
+> [Severity: Low]
+> This isn't a bug, but .clang-format still lists only the old name in
+> ForEachMacros:
+
+Good catch, v2 renames the entry.
+
+Thanks !
+
+pw-bot: cr
