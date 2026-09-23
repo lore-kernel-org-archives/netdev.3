@@ -1,262 +1,183 @@
-Received: from out-utut-a221.jellyfish.systems (out-utut-a221.jellyfish.systems [198.177.127.221])
+Received: from mta0.migadu.com (out-150.mta0.migadu.com [91.218.175.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E9441CB31
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.177.127.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302FF3905E3
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790183720; cv=none; b=Dtn6KyJcB1VpyBAU7u/Fob2LJzX4J8tl87PfaD7QmKkQcURwMGKVcoiRTSS+HYVV4w9A++j1aDPWKZeWXjrlWcxOZqKP4fGt3TWay21slCr9d5FEuzX9EUFtqZqGPYmCCn1pzwsPzrDwN4le3jWuV6JKfaCBijhufM+kA+FqIQQ=
+	t=1790183751; cv=none; b=Cvgp+fI/KkTB1VQTbwpjoo6ofSDRzaIY15vhdxV0T2U9ZkSOIYT9ypEuNOcC5nWTnOkkRoRcQghZ4RCiduDfdifDHMroI0IR1IlunJXrd/4ze5+UcbXvRDhdOfkGg7alfwyoRoAOZs9zFibSXgVj8xzFwVt+1Pe86M3l6ru7BVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790183720; c=relaxed/simple;
-	bh=+yAObyg9AjPPHU0YWZS9QF6DR36gmQbDBSAXhaVXN70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVkoiU0BisBk+x74kpj56wv9tuwbLrdv33+uTXYXWbeP+oLr0csaXj1JWPCWIxchV64SeO2rQVg29dHxKb9hRQBUGLkMASc+Iba/+70aoF2vTfIH4CvOnSF/cQXVi3P97UCVkLIiqz4wxHu8vyAP5xpru2U03DqxQHB8RpLFM3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=LAcvf41B reason="key not found in DNS"; arc=none smtp.client-ip=198.177.127.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	s=arc-20240116; t=1790183751; c=relaxed/simple;
+	bh=jxGuprUYi106B5t11FFkgi+yqb+rQeyTVQAW+p12YwA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=EsqIoNvdeyIfd4mKOxIP1BLxAASTcXC7sQgbKf6PIYe8wdfWChQuKmewpPa7qYJ9IUgh8kCYtvhxNvgeYVb0wRPZeYMmlAw7+dmzDqDMgnYtatuF+qNen9Fr15ytDcl2KlcqidqmU42zxuQelX81fGcQ9vSbIHGk3ZyOSAeNAbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=ZVe0P3h1; arc=none smtp.client-ip=91.218.175.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="LAcvf41B"
-Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqk9d73PYz8sWw;
-	Wed, 23 Sep 2026 17:15:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1790183703;
-	bh=HaQLWqTSErHKY3W1YmD+/JWmiBIitU4a23n6Bxbj3LY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAcvf41Bynije6rsV+60ZzzlYrN4MIMAWHI9hrqwBM5K3c2Ofubnv2iMw3qHwE5uf
-	 f85YRi3N5I7IYZJk8rKrTcbMrGzxMBUCn3vXre5PXA6jwXfdIFjI9dw5YIbElYGHlW
-	 PdhtW17yLnkdpV/FSG2HJyCaqr7u19zPsTfGaIFdhUdnS/Ulx8WhlE0MrwuZKA5ig1
-	 zTiDCN0xudClzF2g1Ozy25lq8p/ONXO3+ffGncK4Hd4m2MhG2vENVD9qWeBHs8Cl5k
-	 4ypAsDpJcCDUGBM6wpRmzrhnH1PWty+7Bm5iXVC6a0P6i9VAEDje1t/he5KHD8LA0w
-	 ay4cyURZZ0Rrg==
-From: Rahul Chandelkar <rc@rexion.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	Rahul Chandelkar <rc@rexion.ai>
-Subject: [PATCH nf-next v4 4/4] netfilter: nf_conntrack_sip: use shared helper parsers
-Date: Wed, 23 Sep 2026 17:15:01 +0000
-Message-ID: <20260923171501.3254823-1-rc@rexion.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260923091608.2617604-1-rc@rexion.ai>
-References: <20260923091608.2617604-1-rc@rexion.ai>
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="ZVe0P3h1"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=jxGuprUYi106B5t11FFkgi+yqb+rQeyTVQAW+p12YwA=;
+ c=simple/simple; d=cknow-tech.com;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790183736; v=1; x=1790788536;
+ b=ZVe0P3h1vL/8qbgOqkx72olxY4ujSROqjM5GA/cl7qJF6JFSNt2gDq2Pzo1UvKljCgDNsOkA
+ u0rlqhNm2fR3+NuPptvnQV1bAWCpK6jEUOqfEW/oqZ95g9e/cmfCSQs1u7f8QfvAfT1b8Xsbjde
+ B0BNy5tQfRQSRdFPaJ6bmH7++YW9IyvUL+eMHXgaBBbBUiqSey1YABoPxKuX03yKhxhypFrd1Xg
+ Yn/ldhH/mCSv4TOFo+JpYYMZ1w7fFKLyEE25rzRj5s5RT6+eOt2QL2u8EUkEK6Gaae0GHzoJzbr
+ 2ThwUJ0DqxwMQkKG6K5FDaxBmAskcbxYzBMGFbqUlrvTg==
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 6f9c8085352aaf04;
+	Wed, 23 Sep 2026 17:15:17 +0000
+X-Mizu-Trace-ID: 6f9c8085352aaf04
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 23 Sep 2026 19:15:13 +0200
+Message-Id: <DLMV5WTF5TR1.BXDY94L4J4H7@cknow-tech.com>
+Cc: "Sebastian Reichel" <sebastian.reichel@collabora.com>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rockchip@lists.infradead.org>, "Jonas Karlman" <jonas@kwiboo.se>
+Subject: Re: [PATCH v5 5/7] arm64: dts: rockchip: describe PCIe RTL8125
+ Ethernet on NanoPi R5S
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+To: <ricardo@pardini.net>, "Heiner Kallweit" <hkallweit1@gmail.com>,
+ <nic_swsd@realtek.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Heiko Stuebner" <heiko@sntech.de>
+X-Mailer: aerc 0.22.0-24-g39041fd9f179
+References: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net> <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-5-c1b9e5f10cd6@pardini.net>
+In-Reply-To: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-5-c1b9e5f10cd6@pardini.net>
 
-nf_conntrack_sip open-coded its own bounded integer parser
-(sip_strtouint()) and its own digit loop in sip_parse_port().  Now that
-equivalent parsers live in the conntrack helper core, drop the private
-copies:
+Hi,
 
-  - sip_strtouint() is replaced by nf_ct_helper_parse_uint() (same
-    signature and semantics) at all call sites and removed.
+On Thu Sep 10, 2026 at 10:07 PM CEST, Ricardo Pardini via B4 Relay wrote:
+> From: Ricardo Pardini <ricardo@pardini.net>
+>
+> The FriendlyElec NanoPi R5S (rk3568) carries two on-board Realtek
+> RTL8125 NICs behind pcie2x1 and pcie3x1, alongside the existing gmac0
+> RGMII PHY.
+>
+> Describe the fixed function nodes and attach ethernet1/ethernet2
+> aliases (ethernet0 stays mapped to gmac0), so that U-Boot's
+> fdt_fixup_ethernet() can inject mac-address properties from its
+> eth1addr/eth2addr env, for stable MACs across boots that both U-Boot
+> and the kernel agree on.
+>
+> Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
+> ---
+>  arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dts | 30 ++++++++++++++++=
+++++++
+>  1 file changed, 30 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dts b/arch/ar=
+m64/boot/dts/rockchip/rk3568-nanopi-r5s.dts
+> index 90ce6f0e1dcff..9ed11663c31c9 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dts
+> @@ -15,6 +15,8 @@ / {
+> =20
+>  	aliases {
+>  		ethernet0 =3D &gmac0;
+> +		ethernet1 =3D &rtl_eth1;
+> +		ethernet2 =3D &rtl_eth2;
+>  	};
 
-  - sip_parse_port() uses nf_ct_helper_parse_port() for the numeric part,
-    keeping the SIP-specific handling of the ':' separator, the default
-    SIP_PORT and the minimum port of 1024.
+With my NanoPi-R5S I'm still getting the following warning:
 
-No functional change intended.
+  r8169 0001:11:00.0: can't read MAC address, setting random one
 
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
----
- net/netfilter/nf_conntrack_sip.c | 86 +++++++-------------------------
- 1 file changed, 18 insertions(+), 68 deletions(-)
+```
+root@nanopi-r5s:~# ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DE=
+FAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: end1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state =
+DOWN mode DEFAULT group default qlen 1000
+    link/ether 4e:52:85:9e:22:f9 brd ff:ff:ff:ff:ff:ff
+    altname enp1s0
+    altname enx4e52859e22f9
+3: end2: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state =
+DOWN mode DEFAULT group default qlen 1000
+    link/ether 12:e5:47:9e:e2:f1 brd ff:ff:ff:ff:ff:ff
+    altname enP1p17s0
+4: end0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode =
+DEFAULT group default qlen 1000
+    link/ether 4e:52:85:9e:22:f8 brd ff:ff:ff:ff:ff:ff
+    altname enx4e52859e22f8
+```
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 64bc440b1181..0e12426227a8 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -183,8 +183,8 @@ static int sip_parse_addr(const struct nf_conn *ct, const char *cp,
- static bool sip_parse_port(const char *dptr, const char **endp,
- 			   const char *limit, __be16 *port)
- {
--	unsigned int p = 0;
--	int len = 0;
-+	char *end;
-+	u16 p;
- 
- 	if (dptr >= limit)
- 		return false;
-@@ -199,29 +199,22 @@ static bool sip_parse_port(const char *dptr, const char **endp,
- 
- 	dptr++; /* skip ':' */
- 
--	while (dptr < limit && isdigit(*dptr)) {
--		p = p * 10 + (*dptr - '0');
--		dptr++;
--		len++;
--		if (len > 5) /* max "65535" */
--			return false;
--	}
--
--	if (len == 0)
-+	if (nf_ct_helper_parse_port(dptr, limit - dptr, &p, &end))
- 		return false;
- 
- 	/* reached limit while parsing port */
--	if (dptr >= limit)
-+	if (end >= limit)
- 		return false;
- 
--	if (p < 1024 || p > 65535)
-+	/* SIP ports below 1024 are not accepted */
-+	if (p < 1024)
- 		return false;
- 
- 	if (port)
- 		*port = htons(p);
- 
- 	if (endp)
--		*endp = dptr;
-+		*endp = end;
- 
- 	return true;
- }
-@@ -270,51 +263,6 @@ static int skp_epaddr_len(const struct nf_conn *ct, const char *dptr,
- 	return epaddr_len(ct, dptr, limit, shift);
- }
- 
--/* simple_strtoul stops after first non-number character.
-- * But as we're not dealing with c-strings, we can't rely on
-- * hitting \r,\n,\0 etc. before moving past end of buffer.
-- *
-- * This is a variant of simple_strtoul, but doesn't require
-- * a c-string.
-- *
-- * If value exceeds UINT_MAX, 0 is returned.
-- */
--static unsigned int sip_strtouint(const char *cp, unsigned int len, char **endp)
--{
--	const unsigned int max = sizeof("4294967295");
--	unsigned int olen = len;
--	const char *s = cp;
--	u64 result = 0;
--
--	if (len > max)
--		len = max;
--
--	while (olen > 0 && isdigit(*s)) {
--		unsigned int value;
--
--		if (len == 0)
--			goto err;
--
--		value = *s - '0';
--		result = result * 10 + value;
--
--		if (result > UINT_MAX)
--			goto err;
--		s++;
--		len--;
--		olen--;
--	}
--
--	if (endp)
--		*endp = (char *)s;
--
--	return result;
--err:
--	if (endp)
--		*endp = (char *)cp;
--	return 0;
--}
--
- /* Parse a SIP request line of the form:
-  *
-  * Request-Line = Method SP Request-URI SP SIP-Version CRLF
-@@ -682,7 +630,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
- 		return 0;
- 
- 	start += strlen(name);
--	*val = sip_strtouint(start, limit - start, (char **)&end);
-+	*val = nf_ct_helper_parse_uint(start, limit - start, (char **)&end);
- 	if (start == end)
- 		return -1;
- 	if (matchoff && matchlen) {
-@@ -1166,7 +1114,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 		mediaoff += t->len;
- 		medialen -= t->len;
- 
--		port = sip_strtouint(*dptr + mediaoff, *datalen - mediaoff, (char **)&end);
-+		port = nf_ct_helper_parse_uint(*dptr + mediaoff, *datalen - mediaoff,
-+					       (char **)&end);
- 		if (port == 0 || *dptr + mediaoff == end)
- 			continue;
- 		if (port < 1024 || port > 65535) {
-@@ -1357,7 +1306,7 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
- 	 */
- 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
- 			      &matchoff, &matchlen) > 0)
--		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
-+		expires = nf_ct_helper_parse_uint(*dptr + matchoff, *datalen - matchoff, NULL);
- 
- 	ret = ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
- 				      SIP_HDR_CONTACT, NULL,
-@@ -1467,7 +1416,7 @@ static int process_register_response(struct sk_buff *skb, unsigned int protoff,
- 
- 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
- 			      &matchoff, &matchlen) > 0)
--		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
-+		expires = nf_ct_helper_parse_uint(*dptr + matchoff, *datalen - matchoff, NULL);
- 
- 	while (1) {
- 		unsigned int c_expires = expires;
-@@ -1531,8 +1480,8 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
- 
- 	if (*datalen < strlen("SIP/2.0 200"))
- 		return NF_ACCEPT;
--	code = sip_strtouint(*dptr + strlen("SIP/2.0 "),
--			     *datalen - strlen("SIP/2.0 "), NULL);
-+	code = nf_ct_helper_parse_uint(*dptr + strlen("SIP/2.0 "),
-+				       *datalen - strlen("SIP/2.0 "), NULL);
- 	if (!code) {
- 		nf_ct_helper_log(skb, ct, "cannot get code");
- 		return NF_DROP;
-@@ -1543,7 +1492,7 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
- 		nf_ct_helper_log(skb, ct, "cannot parse cseq");
- 		return NF_DROP;
- 	}
--	cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
-+	cseq = nf_ct_helper_parse_uint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
- 	if (*dptr + matchoff == end) {
- 		nf_ct_helper_log(skb, ct, "cannot get cseq");
- 		return NF_DROP;
-@@ -1613,7 +1562,8 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
- 			nf_ct_helper_log(skb, ct, "cannot parse cseq");
- 			return NF_DROP;
- 		}
--		cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
-+		cseq = nf_ct_helper_parse_uint(*dptr + matchoff, *datalen - matchoff,
-+					       (char **)&end);
- 		if (*dptr + matchoff == end) {
- 			nf_ct_helper_log(skb, ct, "cannot get cseq");
- 			return NF_DROP;
-@@ -1690,7 +1640,7 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- 				      &matchoff, &matchlen) <= 0)
- 			break;
- 
--		clen = sip_strtouint(dptr + matchoff, datalen - matchoff, (char **)&end);
-+		clen = nf_ct_helper_parse_uint(dptr + matchoff, datalen - matchoff, (char **)&end);
- 		if (dptr + matchoff == end)
- 			break;
- 
--- 
-2.43.0
+I did not do anything (explicitly) in U-Boot, but it seems it created a
+non-random MAC address for end0 and end1 ... and then stopped.
+AFAIK gmac0=3Dend0 already had a non-random MAC address and I hoped/expecte=
+d
+it would create non-random addresses for end1 and end2, which would've made
+the above warning go away too.
+
+Is this an issue with this patch, with U-Boot or me?
+
+Full details:
+https://paste.sr.ht/~diederik/8ae7d354985afcd1c3464e3a4ad81da1b4442364
+
+Side note:
+I wonder how 'random' those addresses are as during testing ``ssh rock5b``
+landed me on another device (NanoPC-T6 Plus), f.e. My router has DHCP
+reservations based on MAC addresses and it looks like it got confused ;-)
+
+Cheers,
+  Diederik
+
+>  	gpio-keys {
+> @@ -107,6 +109,20 @@ &pcie2x1 {
+>  	num-lanes =3D <1>;
+>  	reset-gpios =3D <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
+>  	status =3D "okay";
+> +
+> +	pcie@0,0 {
+> +		reg =3D <0x000000 0 0 0 0>;
+> +		#address-cells =3D <3>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+> +		device_type =3D "pci";
+> +		bus-range =3D <0x00 0x0f>;
+> +
+> +		rtl_eth1: ethernet@0,0 {
+> +			compatible =3D "pci10ec,8125";
+> +			reg =3D <0x010000 0 0 0 0>;
+> +		};
+> +	};
+>  };
+> =20
+>  &pcie30phy {
+> @@ -119,6 +135,20 @@ &pcie3x1 {
+>  	reset-gpios =3D <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
+>  	vpcie3v3-supply =3D <&vcc3v3_pcie>;
+>  	status =3D "okay";
+> +
+> +	pcie@0,0 {
+> +		reg =3D <0x100000 0 0 0 0>;
+> +		#address-cells =3D <3>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+> +		device_type =3D "pci";
+> +		bus-range =3D <0x10 0x1f>;
+> +
+> +		rtl_eth2: ethernet@0,0 {
+> +			compatible =3D "pci10ec,8125";
+> +			reg =3D <0x110000 0 0 0 0>;
+> +		};
+> +	};
+>  };
+> =20
+>  &pcie3x2 {
+
 
