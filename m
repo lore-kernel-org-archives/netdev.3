@@ -1,305 +1,116 @@
-Received: from mail-lr2-f35.google.com (mail-lr2-f35.google.com [74.125.230.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E8443F08F
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790156482; cv=pass; b=sfZ9TMJ4+Q5o0FJXShLCYuDkL0nY6yPJEbVmSlQKvjOzsG967iPa7wZpD4EUfZRSFK1BugGjSsAjCEaFVEHlJcPK+OqppnzQ7FKzCj0gmmLl/PGfDESHqbMQGrbmPTkADmvi0TDsWJkkrxDafjfzHfQ7alU4ZjVRiZFcXmHTjMc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790156482; c=relaxed/simple;
-	bh=nyggQDgw6t0wPOAxA+hYNPIEmbpYLxztlatxyx2+00M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gICwJ3T4480XpaCRjMm3AI4pTZi1X7QTcmQf6m/NPcE0PvSDOwuYtnum+FRrTq/Cf2jW+xdgycuPcM4PcZDuBtmiDW+XgejgHczhrsJCi17X8qq9E4pmsvnR2A1ZvuFqik4xVqGKgAwAGTbZvGnbFFBwN/R8KK8hYIqnnGo4twc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gEGtARDB; arc=pass smtp.client-ip=74.125.230.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6DE42901D;
+	Wed, 23 Sep 2026 09:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790156502; cv=none; b=UwGjojRieYVAKWzu4bmb7GWW0mF9UXbyWbwGMW5etiIl7Ps4eH+8uPPgVaHebHfeV+DgiMn/guj5uzbnFNrTuNq4hTzswpIchOUYtsZHHT/IJbZlQ56G/1GmR1O6tkfoAqdnaU6bOnTWzTIoe92v7ZuzP3ayPImiEMYmHNObvIE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790156502; c=relaxed/simple;
+	bh=H7g9+yDN3x5kwltj5KPOLI2Ok2pctzcjorpZkubHj0o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=imkCAxQggVyt9jDqmCCiIvJfQCAMNhLkHJB+MyVU2BeZpI/kh4PDmIHe1knTL3Vdjp3FgIM5/CX/ZEwOrithJ+fZgE7E7KOl1TPiiTdvx5TRAyN+/KS0rPv8FPkKrSdJDt7v5/IQdsaTVdJ/zjnYAtXO3xgbb53+us/a8BQe+TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OLRLlN9l; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gEGtARDB"
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a302a4e42aso4786231fa.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:41:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790156478; cv=none;
-        d=google.com; s=arc-20260327;
-        b=G6UcAqMBHXkQnYHqRJyJIj7M5GLSHgH1PemtRGRP/GAF3wtB+SdOly1cHxZ1tu6hOO
-         WNaP4T6RyXNC0i/4m4GADZeI1at0Pmb+Q3YrNq699Kf5YMqBtkAPi7nhd7d7x32NDIoc
-         qSoJCowXMBZSE1Hpp6tAfkxp4dd0R0shSuH0eIZS4mQOteJa0nQT7LZlC/GcN+qdYrvY
-         yVDFA5ky71dNzpcwa3iP642l7u9Kqk7JPpgz99o9BdyjnpvxN3kfUMNnTqHkXmxA0U3C
-         fAP5eKiLbP5RYTb3RlSdh9fqXJms3UNTY9sANbktxp26Cj75fiBZY74hZz9U2JR4WvLl
-         vC4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LLEKHnzRC7zsQJRJ6heX63AtqGj1/BSwRwuk1jfCOso=;
-        fh=Zi5hEGyPzWQacOHlIg8WPayu8Vd1CMvKQYS6EhK+m3c=;
-        b=GM+Xr04q3mciagWjDJY6u+RisGaso7gD62oLqk2FHw/yJwmpK7JdDyERWxHJLR/6I3
-         Aa8N+GSHUHeChfOskOgO5PxS/v4gDQVY53CYtr7867XwqEc8sRAvZJyyv4/eVr289iW9
-         MFq8Co0Fn2KA6zdsL6LR+ItbFucvIfzjv/CYxFzpxMXe13J5cz2ZljVAEon8r4sw9HrX
-         6bRMe+Moq+nUutuPdDBRtwmNdcV6XOTcPl+NXsGWvADneMZcoRcsjLxXexFWVayYfTKa
-         5zvvxAaa7zLrb4PV0raLtMIspwY4Q5e75phUTjmKJfoFtnTjEM4i6Xdj2wV9cf8pVJcG
-         wV7g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790156478; x=1790761278; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LLEKHnzRC7zsQJRJ6heX63AtqGj1/BSwRwuk1jfCOso=;
-        b=gEGtARDBrPVUb419IIEN78MswtA8tlAvQ1Mq7PSVl2+ZoRy7eovHuB+dweOUmo9Qj6
-         cheBJwqlHstJITBDOuNbthxZ8Eo0I6fc4/Uw6h9IDJQCDsZzORxIshwG/bkZg9SdfwFc
-         FqimNRW4rkJ4pAGKZmzTf+0NtdyZ1Sm4NSrPxfU4icfC5+Wk26eATCWAFzlvgaX5AKw2
-         7JTkM9+SZNE457G+ZlYX92AduES2nt1X4jHyvb7HWMjvGw50CmoamU8QFHmmPAQ33jij
-         m/F7958d7ubkqrJbfV7CZHsg6qe2WcsSTOdh6eLZcVKYc2NuD7eV2pSYPWIKtXW/Zj40
-         lMfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790156478; x=1790761278;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LLEKHnzRC7zsQJRJ6heX63AtqGj1/BSwRwuk1jfCOso=;
-        b=fCeQDPOHXy9MVH/6hGiQDKXscFyK+AJgZ39k2wc3Se2W2/ZiavafHwMdiA6FQgSOo8
-         Ur247iZndlgq8nGDICa5xFYViu76JclMcfWHiOmOcFWwgLVfE3IlG80Y2dJEy1YezBx+
-         1CAzOu21XBCInA7dOmTM21Dxhis72l8itGngsTZ3N0zimbT/Fx94E0kPiYiwXFWJ7ZsW
-         VbdkGvbOJA3iBq7hu3yt1U1h9vDsQ119akY5hAgKgDXNNPV+pgWnix+qvRS+mXmPwCmj
-         rzDBDqmwzGI8o9PjiRwB4jYgIh/ClprAJLxKuz2f2hfLg+tSw99+fyqdF4c1HOZjDu5R
-         qzag==
-X-Forwarded-Encrypted: i=1; AKwUvBx7nB9RPcTeC+gZuILKXT7/c6eFdihviEbXrYcMk2uYlhm86UPClojU/M4Ojkmkx4FZUc2FYw0=@vger.kernel.org
-X-Gm-Message-State: AFuF++lDb6qSBVFSKJyeuwiCRvCHGma5f7DgYai0ESoejDJybebQ2gS3
-	oGa/6wE+npXL8ABYRg8f6v2sxwhMqScyf2c/qodsChSTJfA0mDh+68jh0sAbkIRtcWHUSOq8d2d
-	C0DHQUw9LbJeWeabYLQq143E2zyMY3sA=
-X-Gm-Gg: AYBFou1j4tmuEwoGoJTjg58CEFuWpztqYik9JAxObJiNTEWKdaLDKcqKdtJfyC/oNLR
-	P7O51LLp5yaK582GmdN6AXIdNeVZhqi4/SuZJsbInB7vWSE1pFzYLIKU8QLl0WsRXuI0Q8/1+2Q
-	b6ZkbpkrgPEh+wFErRW6LPa2ThdzUJlJDi15B9tqbFTPc/g01gclA4Ih+7J3nXFHKE6HU9PUPSq
-	oGGTkXlcDF3RW0S3SgZVGxh9rchLfb8Tvwt5l0jVSFrznLf+zrZXHucz2teggWTsQY4zxB3RRBZ
-	rYRb7YmWoF+8vWuW17qyjyXwQfOPVqmYPXcBvLKyRYxvSnB0Wv0dyvDzaJ+5N7CKHkPqXuqOu6G
-	joT31+mfasSCqCsUivCeIUda3XsTQR6cp5xCtsCl8Hdynx6nHkcr0tPbU7bCxYQhQGGLz6Of3+s
-	+vdKMP
-X-Received: by 2002:a2e:b88e:0:b0:3a6:1694:8233 with SMTP id
- 38308e7fff4ca-3a630675898mr4370951fa.25.1790156477862; Wed, 23 Sep 2026
- 02:41:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OLRLlN9l"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9525CC21AAF;
+	Wed, 23 Sep 2026 09:42:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 941C460580;
+	Wed, 23 Sep 2026 09:41:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 11D91103293EF;
+	Wed, 23 Sep 2026 11:41:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790156495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=14/vh+QzZPhsx5uvQM0Uz7p1ZDkGwAb8ilKyyQwVJng=;
+	b=OLRLlN9lAltV/1QbWWGR8Pkwn1w2rOSYmM9jOs/uT+NrrfciKSQQCasv29uuO5DEMaFR58
+	kiPMFvNV8H6IE3jBlcPiiCjNNx/R/Nqr7q04XX0GiAX23f/h6yviJEx+jFfsPPAqEmwuyY
+	a4SYRoP6aAFTY11A/ccCU1un7OFtTElsmd2lrlkZC5q9iPcW9SWiZ2VatsdINJfOxhKkgm
+	E3GL4eyV5t89ETSfKPYSgaPcJGOaWJlASpKxlHRm6aZhaBnOD95TDLcy11Cl565UDL4dnK
+	Z7zC92+KvlCltjZzeUQtLgh1HOnkzmlDpGYVQ6ysLRtkFvkjkVGCoyg1+HiMbg==
+Message-ID: <5135e15d-b6ac-476c-9a7d-b7d64e4eed5c@bootlin.com>
+Date: Wed, 23 Sep 2026 11:41:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
- <arF7FGr8rQqDw8Pj@devvm7509.cco0.facebook.com> <CAL+tcoDossUOJCVwZ-6U519L_bNMYngnd82e1_oQB-czA6rL3A@mail.gmail.com>
- <arLpc9BBv_W6nw8c@devvm7509.cco0.facebook.com>
-In-Reply-To: <arLpc9BBv_W6nw8c@devvm7509.cco0.facebook.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 23 Sep 2026 17:40:39 +0800
-X-Gm-Features: AclHuK9fy-ahoDrY3GpGjYtS2oLvfELFozp55I3DKx16zDwZlBD2euppcOCOfmE
-Message-ID: <CAL+tcoCE1MmEQKZRX2ct4zrWxZiSj53ztVuRWU_o1+9AmO7B_g@mail.gmail.com>
-Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
-	netdev@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next 0/9] net: introduce Qualcomm XPCS support and
+ add Nord Ethernet plumbing
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Serge Semin <fancer.lancer@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Coia Prant
+ <coiaprant@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>,
+ "Jose.Abreu@synopsys.com" <Jose.Abreu@synopsys.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Shawn Guo <shengchao.guo@oss.qualcomm.com>,
+ Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
+ Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Sep 23, 2026 at 4:53=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
-l.com> wrote:
->
-> On 09/22, Jason Xing wrote:
-> > On Tue, Sep 22, 2026 at 2:45=E2=80=AFAM Stanislav Fomichev <sdf.kernel@=
-gmail.com> wrote:
-> > >
-> > > On 09/19, Jason Xing wrote:
-> > > > From: Jason Xing <kernelxing@gmail.com>
-> > > >
-> > > > Greeting,
-> > > >
-> > > > It's BPF Timestamping 2.0 that aims to observe the packet latency
-> > > > more efficiently and simply for different protocols. The current
-> > > > series is only focused on TCP protocol.
-> > > >
-> > > > At Netdev 0x1a/Netconf 2026, the history, background, motivation an=
-d
-> > > > rough implementation of the feature were exhaustively introduced[1]=
-.
-> > > >
-> > > > History
-> > > > =3D=3D=3D=3D=3D=3D=3D
-> > > > - In 2009, Patrick Ohly implemented the basic infrastructure
-> > > > - In 2014, Willem de Bruijn enhanced the TCP latency observation
-> > > > - In 2024, Jason Xing proposed its lightweight BPF version
-> > > > Detailed slides from 28 to 32 [1].
-> > > >
-> > > > Background
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > Even though BPF Timetamping 1.0 is comparatively low-overhead,
-> > > > transparent, it's still complicated due to a few points inherited
-> > > > from the design:
-> > > > - Inflexible/fixed reporting phases (qdisc/driver/ack)
-> > > >   When we confirm the issue arises from the kernel by using attribu=
-tion
-> > > >   ability of timestamping feature, we need to further minimize the =
-scope
-> > > >   until the issue is fixed. That means, we then have to resort to w=
-rite
-> > > >   a few complex BPF progs with the similar functionalities (like sk=
-b
-> > > >   level tag) which should not happen.
-> > > > - Not enough low-overhead
-> > > >   Serving the sensitive applications, an always-on latency observat=
-ion
-> > > >   platform should mitigate the self-impact as much as possible. As =
-we
-> > > >   can conclude from BPF Timestamping selftests, there are some bloc=
-king
-> > > >   and time-consuming points like where reading/writing BPF maps hap=
-pen
-> > > >   in the extremely hot paths.
-> > > > - Minor flaws
-> > > >   There are a few minor flaws inherited from the initial design, li=
-ke
-> > > >   missing tagging the last packet[2][3][4].
-> > > > Detailed slides from 33 to 39 [1].
-> > > >
-> > > > Motivation
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > During the process of the large scale deployment over the last few =
-years,
-> > > > we eventually realized timestamping feature doesn't support contain=
-er
-> > > > scenario and we need a finer-grained and flexible tracing tool (pac=
-ket
-> > > > basis) after a few rounds of attribution of issues.
-> > > >
-> > > > Design
-> > > > =3D=3D=3D=3D=3D=3D
-> > > > - Start time
-> > > >   For the specific protocol, we need to accurately set the start ti=
-me of
-> > > >   each packet first. For TCP, we chose the entry of tcp_sendmsg_loc=
-ked
-> > > >   and the driver time as the start point, so that any BPF program i=
-s
-> > > >   capable of computing the delta between start time and current tim=
-e.
-> > > > - Simplicity
-> > > >   Previous BPF program (like selftests) is too complex to implement=
-. The
-> > > >   core idea is to make everything as simple as possible. And it sho=
-uld be
-> > > >   decoupled from BPF area and previous timestamping feature as much=
- as
-> > > >   possible.
-> > > > - Flexibility
-> > > >   BPF program hooking any function with skb parameter can get the l=
-atency
-> > > >   value, which means it's no longer bound to the pre-embeded report=
-ing
-> > > >   phases (see __skb_tstamp_tx)
-> > > > - Efficiency
-> > > >   Avoid the previous BPF operations as much as possible. Make sure =
-the
-> > > >   feature achieves the lowest performance impact, which means only =
-time
-> > > >   operations remain.
-> > > > Detailed slides from 40 to 62 [1].
-> > > >
-> > > > Implementations
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > in-kernel
-> > > > - Find a suitable place to timestamp for each packet
-> > > > - Pick the right start time for TCP
-> > > > - Handle the split skb due to various reasons
-> > > > BPF prog
-> > > > - Hook any functions that carry skb parameter
-> > > > - Read out the start time from the skb
-> > > > - Generate the current time and then compute the latency
-> > > >
-> > > > Discussion?
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > - Do we need a kfunc to allow users to reset the start time of each=
- skb?
-> > > >   What I had in mind is if someone tries to observe the latency bet=
-ween
-> > > >   two specific functions (rather than tcp_sendmsg_locked).
-> > > > - Current implementation is real hardware timestamp always wins, wh=
-ich
-> > > >   means BPF prog possibly gets the hardware time that is not aligne=
-d
-> > > >   with bpf_ktime_get_real_ns.
-> > > > - After the series, do we need to implement the same logic for
-> > > >   SYN/FIN/PROBE... As far as I know according to numerous user repo=
-rts,
-> > > >   a small handful of issues came from 3-way handshake.
-> > > > - Reusing the slot of hwtstamp might bring potential problems or ma=
-ke the
-> > > >   code hard to maintain. Can we add a timestamping specific field i=
-n
-> > > >   skb to deal with the latency observation?
-> > > > - netdev_data conflict in IGC driver. It seems unavoidable to pollu=
-te
-> > > >   start time when it's enabled. Should V2 feature coexist with hard=
-ware
-> > > >   timestamping?
-> > > > - Should V2 coexist with net timestamping and BPF timestamping? If =
-not,
-> > > >   the maintenance should be easier.
-> > >
-> > > After netconf discussion, I was under the impressions that no kernel
-> > > changes are needed, so what changed? Is it hard to track start_time
-> >
-> > Ah, you refered to the internal version, right? We wrote a kernel
-> > module implementing similar logic which differently finds/borrows an
-> > unused field of socket to store the start time. It's quite similar to
-> > the series actually.
-> >
-> > After deploying it at a small scale in production, I think it's
-> > meaningful to upstream it. But as you noticed, there are remaining
-> > discussion points on which I hope we can share opinions, especially
-> > the future shape.
-> >
-> > > from tcp_sendmsg_locked on the bpf side that we need kernel support?
->
-> [..]
->
-> > Sure, we need kernel support that why I'm trying to introduce the
-> > sk_start_time to help.
-> > https://lore.kernel.org/all/20260919143732.11772-4-kerneljasonxing@gmai=
-l.com/
->
-> Why can you not do this on the bpf side? There is even now a sendmsg_lock=
-ed
-> tracepoint with skb/sk argument. Or is it mostly because you can't
-> distinguish between cgroups? And looking at your example [1] and don't
-> see why a tracepoint won't be enough. Or is it too much overhead? In this
-> case, it needs to have some numbers attached...
+Hi,
 
-I understand what you meant. Sure, we can generate the initial time in
-the tcp_sendmsg_locked() and try to pass it on to each skb in
-skb_entail(), which means 1) we need at least two hooks, which brings
-obvious overhead, 2) it's still not that easy to use as I expect it to
-be super easy to use/write/deploy, 3) I try to decouple it from BPF
-infra or complex use for the convenience. It looks like we now go back
-to BPF Timestamping V1.0.
+On 9/23/26 03:07, Mohd Ayaan Anwar wrote:
+> Hi,
+> 
+> This is an early RFC which adds the XPCS and ETHQOS plumbing required
+> to enable 10 Gigabit Ethernet on the Qualcomm Nord SoC. This is the
+> first time USXGMII together with an external PCS is being supported by
+> the dwmac-qcom-ethqos driver.
 
-Adding hooks does harm to the performance to those real
-latency-sensitive users who were actually yelling at us. There are
-some interesting numbers I collected previously (Sorry, I will not be
-able to collect more real data because I left that company:( ):
-1) The kernel module introduces around 5-15% performance impact in the
-real workload. After we removed the hook in tcp_sendmsg_locked, even
-though the module didn't have the full function to calculate the
-latency, the cost was decreased by ~3-5%.
-2) Fentry has ~4% impact on some workloads. It's very similar to what
-we use netperf on loopback [1].
+There are currently 3 in-flight series that adds glues to DW XPCS and stmmac: 
 
-The crucial idea behind the feature is that we're trying so hard to
-deploy the latency platform 7x24 without any selective sampling. It
-now looks like an advanced/21-century tcpdump and it can be
-_always-on_. If someone is just looking for one-shot tools, of course
-there are a few alternatives that are not good enough though.
+This one,
+The Rockchip one from Coia [1]
+The S32 one from Jan [2]
 
-[1]: sides 25
-https://netdevconf.info/0x19/sessions/talk/the-future-of-so_timestamping.ht=
-ml
 
-Thanks,
-Jason
+[1] : https://lore.kernel.org/netdev/20260922200336.2201212-1-coiaprant@gmail.com/
+[2] : https://lore.kernel.org/netdev/20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com/
+
+MAINTAINERS entry for XPCS says :
+
+SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
+L:      netdev@vger.kernel.org          
+S:      Orphan                          
+F:      drivers/net/pcs/pcs-xpcs.c      
+F:      drivers/net/pcs/pcs-xpcs.h      
+F:      include/linux/pcs/pcs-xpcs.h    
+
+It would nice if some of you could help maintain the core XPCS driver, and make sure
+these series aren't stepping on one another :( I personnaly don't have any XPCS HW
+for tests.
+
+You don't have to do it alone, multiple people can co-maintain that :) Maybe
+Synopsys folks can also chime in ?
+
+Maxime
