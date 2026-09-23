@@ -1,241 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E257C70C;
-	Wed, 23 Sep 2026 15:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790177526; cv=none; b=VSlBUFioksPR3NDvngAKF0/xhSN3hMbQD19EzMNOVII8reAHArwS2taIh7qlow3AKDOroWdFgWSjwZ0uguZTT5STfHm6G2a/A19G/k7Jl5EsNumf4ZiTqn/BIaUMNXWnfQhXfy8R/nZ7p1QvOd1g1lK9VHK/8eMnz++Dc/zWhQM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790177526; c=relaxed/simple;
-	bh=VTKGwo6LoVGstSXXjlbhVu+SDOuyIzugKyGt27rL1O8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UxNFcLSseeF7xeNSH8rGx8oK7Lj37bcpZQF5ZaLpAEFIQjK9qBtfX/jWpQLCrTt7pwYsJOlZby+1bYcSL5GclzOHKAM1TYFvNrQDLpncVzVtV4y+3ZNX/mq+KGAOM4DkWohHb+VaShaxWJnrmheA70kqsnuO0wVSFDkg9TiXqcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOJVYqOQ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC42496D33
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790177909; cv=pass; b=GeO2+VA9wLDxCFb35neZ0BwOxpyDpPkUIoYgQ3sEyFyx73xKQPTvO9zRtmWWtAVoufq54ytOxf0J7/n2hGqzn7tfZE3pkzr+PLterm08ELNoS0TRK6eKO1lfhby0/kwG0IfVDiwlygEA5CxU/EtZNmadhomR5W9/gT4A6hKfhqw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790177909; c=relaxed/simple;
+	bh=gEeSEkSOfRu+0wU1/5d2sKj9+XsQVOzf6RYN8jzfDRo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r4tvjI+WgCxKOr42WGDQLAlYcnmJ8M6FOtun8BwJdfUMPh0hZlgMP/ZAikIdO6m/Pv/pB3XdiKQTfZurVE0fIdBcEK5bMrlI42A6KCEtXoKX0JzPUzbZk66L7XldL0WMmbXTU/Fz2zyMg79VpFVPclBYLHCvPGwvnXMtA+m5JQA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1rfZCpV; arc=pass smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOJVYqOQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8C21F00898;
-	Wed, 23 Sep 2026 15:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790177520;
-	bh=AsmHmr4Wa7aVFd4oyPu7QduJaGJGRGUqPmIIMvb1cvE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EOJVYqOQvcSX+MBdvX7/XIlTHobRhcz/c2v/Bpor3lXPUhC85BDRnGAEfKxT3tqbI
-	 asSH/qq0bceZrmvR2Jp+QElhD4iN+Nrr+0ihPARyuxEdPdglJiEzC26m3a54lhcEmi
-	 pETAWRX/y+q77LmDftO90LKHTU1UX8JShIV05xhvOaojFjtdVyzajL9oLq0UL21dYH
-	 djPnP9rO/NelmVv5Hqf/jgNlX6JJCoy7jsX6Vysgk5XnGBZcQ2brAhGiB+t9IbBbAn
-	 6rMOV/hhh8IiKcBAtX9BDKXSmvtEufv/PYBpdvQXxPEs3KYlBAuhYVVCdbltt5t+M4
-	 GrwmJqGXrVPPA==
-Subject: Re: [PATCH] tipc: fix TLV out-of-bounds read in
- tipc_nl_compat_net_set() and depth mask
-From: netdev-bot+sashiko@kernel.org
-To: benquike@gmail.com
-Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 15:31:59 +0000
-Message-ID: <179017751912.2160803.802056507685231815@kernel.org>
-In-Reply-To: <20260919212857.3241483-1-benquike@gmail.com>
-References: <20260919212857.3241483-1-benquike@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1rfZCpV"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b34ee88df5so139536b6e.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 08:38:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790177906; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AGkA4oAsPzAc3XJtr82/tIoZFNTJ+brBDsD2ZzbBb/AxtV4IKQpQukQcrjqqrDrXGC
+         cmM1ZhgcyIiZ/JLZoYxKOADoXz/2zDJ4qGwE9pxzCmjg0JG+cJTebbjRek05yIkkOg1r
+         9sGpUr+7WPX6v9ZmqipR77hDGMNwvIjrzV9M9ta/HbPqtCiIjX5wS8/1QjD7wT3Nfw5t
+         kPV6niqK5dVuAXMd/4/5lN6I59s4cJCIQAyuW9fjI2vV7LEGjb9JUGwDhZ1t0cWrkysE
+         Wc17cdNbbCT9Q1qCjN9leEu01WdQs5g4R3CC05aTauAxVd+4iutcrktB0Mg+H0XP0MBR
+         h7LQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gEeSEkSOfRu+0wU1/5d2sKj9+XsQVOzf6RYN8jzfDRo=;
+        fh=6hluYE91nby+wQ5qRT9CeUYPv5enDaaaFjLbwqxDJIw=;
+        b=PISAMMGKj5gq/mXLQPg6wZYJjqqu4j2z8gxOqGenzIgNdxH5Vu2mh02poU/6IVrfzA
+         auGOf7YXm12gW4KFlxQu99FI8I7+hGkWucZp5/FpRUO8NXY/yBMyWRoLepyRC4NPbvcO
+         Rv0c4XC7j/4q17ul8Vz5czwv/3Qm+oZsI2JbU/dJ8OjLxc5E2+DVvda8nNpmTP+sPmuq
+         +GWr/dwCrd8/OzFD75Td1xMVkahGsSYoP8M3WqNYIbnWtA6mIENzINMhwnEQ+7k5kPyY
+         Vt29/0gsy/C5znPtgfD+GRWD0R7iacBSYzP6fmj4VNIRDeROUQZijTNsLBPqLWk7Sh8R
+         UePg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790177906; x=1790782706; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gEeSEkSOfRu+0wU1/5d2sKj9+XsQVOzf6RYN8jzfDRo=;
+        b=R1rfZCpVaoeS1I2e9V3K7gFOBN4qX9lpx2qWsDz6TSFzILf9pqdosDuJZkprYzJUqy
+         mPSNCdaCsCRHbpk6WVGCjxaAALCpoiyA30X/TtQbkLIz1p4ceuY6XUPBKEdEBXv4EE9S
+         2fnqvMF+M+RxE6Kgwj8mBgt12nP7s+GU9YdFI7tJbg+4wH3JmHZwJNGEVvwPJVaBrIo2
+         VbHltlbqfqRtmHgK6nkQyVs7NwGN4y/3T/7N7X0qCtJvrBZ5D8pCB62U4Vz/hOvHUKi4
+         seRU0faKnD9B/KzQxPXca3DwxLerTBl0nDK9kHyaN+DvX+i5ebUXe7rwbaDdIJmBDZuH
+         CJlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790177906; x=1790782706;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gEeSEkSOfRu+0wU1/5d2sKj9+XsQVOzf6RYN8jzfDRo=;
+        b=cpNNqlLmvko0/V4o23gT0PxP4EABzYI7SWTBJPafGbKsNHiKZrR8+ZwBWvg43Aufrz
+         hQMwrZlNi8aq3L9plw+8aQiyynx83lTeGssMOEudycnbqEnRaQxHDKwm8mgjjBdy1byC
+         yKqRe3mb+SFXdEjyzyhHvCkQanWo8V7h0b5igddxz/g5uWPR0zqpWzVEUU4q48DYktZX
+         LKHUSXvRtWbpsEMXnlNAprojTKvWMytU57TbmS50ifJNt9vYGAU3/CphuyeAOdF7+je3
+         8YcRp95INJtN30QU08j1bheswA4jVkQRFmZZCDWMp4f+NuqPLdGUDwfOssCpRjmqI+m+
+         uiIg==
+X-Forwarded-Encrypted: i=1; AKwUvBxR6Jg2mrCCqn5jlhr5obOK/cPda86PNFP5TX827Fp5fQGPwNmf3AfkwBdGP6sRj0FYXXgu95E=@vger.kernel.org
+X-Gm-Message-State: AFuF++mT5MRC9OFRuNWhvetFdC5a0vfIdKqBOYtH8iTu2PQ6hvkm+GUj
+	GdxmEakw+VIBHAIpPOjsysm/sMy+qStlbW/nLViYNmVBMoUhIDkXwJ9+v51vqUhXTLDTe9Yrzcb
+	yqheqkWS4y+ySNkGNbj8/Vl/uNGW6Ut8=
+X-Gm-Gg: AYBFou08toCcXc+Lc4h/JaI7JD53sAYeFXJTwduPLRvmeCes1LAwv4u5bXFF8m/Q5U2
+	CX3FZMDvh2XKcg03bNhzksEFvdFVwRSs9DNXU/EX3yYI1msArZAXM6ZN0XwxNUFnAwO3Gpyh5Ud
+	MEf76WIyK0rMoDY5f1SKKHvGirLTETxmDw8QOU9blPx5amh6RARI+jC/McmUR1Y5FF+Wc4qevYw
+	30yzKMhxiR+t0W//tkYh7QchrTEN+QhBFYnSZ65N+ArOPijpuxO2zpiJl4jTbVxw23Q5EQoQoY0
+	55Fn7MhP215i+BdSCxE/nhIjZCIjsRbZODFnefvPCy0qAuDMs3eKV3/g0lTbcZUB+kTM2Hc=
+X-Received: by 2002:a05:6808:ed0:b0:4b3:9985:1734 with SMTP id
+ 5614622812f47-4d5ba3c4acbmr3726514b6e.4.1790177906420; Wed, 23 Sep 2026
+ 08:38:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260914-netcons_ratelimit-v3-0-8e81b789ab37@debian.org> <20260914-netcons_ratelimit-v3-1-8e81b789ab37@debian.org>
+In-Reply-To: <20260914-netcons_ratelimit-v3-1-8e81b789ab37@debian.org>
+From: Gustavo Luiz Duarte <gustavold@gmail.com>
+Date: Wed, 23 Sep 2026 16:38:14 +0100
+X-Gm-Features: AclHuK-2YGSrpzgft7by3_dFRSTPGzkf9KPty-TIWRA5mQOXoN0qwCVvVkFO1d8
+Message-ID: <CAGSyskXex-Pu1n1wp+YfpVgbZnCRrd3CmGcLR9XWxenVNnk6NQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 1/5] netconsole: send the oops when oops_only
+ is set
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, paulmck@kernel.org, asantostc@gmail.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Mon, Sep 14, 2026 at 1:10=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
+ote:
+>
+> A target running with oops_only=3D1 receives nothing when the kernel
+> oopses, which is the one thing the option exists for. Only a panic
+> still gets through.
+>
+> netconsole_write() bails out unless oops_in_progress is set, and that
+> flag is already gone by the time netconsole runs. netconsole is
+> CON_NBCON_ATOMIC_UNSAFE, so console_is_usable() keeps it out of the
+> emergency flush an oops prints in, and the records only leave the box
+> once the printer thread runs.
+>
+> die() wakes that thread from oops_exit(), by which point
+> bust_spinlocks(0) has cleared oops_in_progress again. TAINT_DIE is set
+> in between, so test that as well, behind a helper.
+>
+> With oops_only=3D1 on a netdevsim target, an lkdtm EXCEPTION produces 44
+> lines of oops. The receiver gets none of them before this change and
+> all of them after it, while ordinary messages stay suppressed.
+>
+> The taint never clears, so from the first oops on, an oops_only target
+> sends everything instead of going quiet again. Sending the aftermath of
+> a crash beats sending nothing.
+>
+> Fixes: 7eab73b18630 ("netconsole: convert to NBCON console infrastructure=
+")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message mischaracterizes the code it changes.
-- [Medium] The new mask introduces a header/row mismatch for a request
-  whose depth field is exactly TIPC_NTQ_ALLTYPES (0x80000000, flag set…
-- [Low] Two unrelated fixes with two different Fixes: tags are bundled in
-  one commit.
-
-Pre-existing issues:
-- [Medium] When TIPC_NTQ_ALLTYPES is set,
-  tipc_nl_compat_name_table_dump() only bypasses the type comparison…
-
---
-
-tipc: fix TLV out-of-bounds read in tipc_nl_compat_net_set() and depth mask
-
-This adds a missing TLV payload length check in tipc_nl_compat_net_set()
-before dereferencing the request payload as a __be32, and masks
-TIPC_NTQ_ALLTYPES out of the display depth in
-tipc_nl_compat_name_table_dump_header() and
-tipc_nl_compat_name_table_dump().
-
-A few questions below about the commit message and about the masking hunks.
-
-[Severity: Medium]
-The commit message says:
-
-    `tipc_nl_compat_name_table_dump()` checks `depth > 1` and `depth > 2`
-    with `TIPC_NTQ_ALLTYPES` still set in `depth`
-
-Is that description accurate?  tipc_nl_compat_name_table_dump() uses
-equality tests, not greater-than tests:
-
-	if (depth == 1)
-		goto out;
-	...
-	if (depth == 2)
-		goto out;
-	...
-	if (depth == 3)
-		goto out;
-
-With TIPC_NTQ_ALLTYPES set, none of those equality tests matched before
-this patch, so all four columns were printed, which agreed with the
-header path where 0x80000000 > 4 clamped the title count to four.
-
-Given that, isn't the real effect of the masking hunks to start honouring
-the low depth bits for ALLTYPES requests, that is, to print fewer columns
-than before (depth = TIPC_NTQ_ALLTYPES | 1 now yields one column instead
-of four)?  Could the changelog describe that behaviour change instead?
-
-The message also calls both changes "validation flaws".  In
-tipc_nl_compat_name_table_dump_header() the header[] array is only indexed
-after the clamp:
-
-	if (depth > 4)
-		depth = 4;
-	for (i = 0; i < depth; i++)
-		tipc_tlv_sprintf(msg->rep, header[i]);
-
-so there is no out-of-bounds access in that path.  Should the depth-mask
-part be described as an output formatting change rather than a validation
-or memory-safety fix?
-
-> diff --git a/net/tipc/netlink_compat.c b/net/tipc/netlink_compat.c
-> index d9a4f94ea2d4..9b2d93704e23 100644
-> --- a/net/tipc/netlink_compat.c
-> +++ b/net/tipc/netlink_compat.c
-> @@ -881,7 +881,7 @@ static int tipc_nl_compat_name_table_dump_header(struct tipc_nl_compat_msg *msg)
->  	if (TLV_GET_DATA_LEN(msg->req) < (int)sizeof(struct tipc_name_table_query))
->  		return -EINVAL;
->  
-> -	depth = ntohl(ntq->depth);
-> +	depth = ntohl(ntq->depth) & ~TIPC_NTQ_ALLTYPES;
->  
->  	if (depth > 4)
->  		depth = 4;
-
-[Severity: Medium]
-What happens for a request whose depth field is exactly TIPC_NTQ_ALLTYPES,
-that is the flag bit set and all low depth bits zero?
-
-In tipc_nl_compat_name_table_dump_header() the masked depth becomes 0, so
-the clamp does not trigger, the title loop body never runs, and only "\n"
-is emitted:
-
-	depth = ntohl(ntq->depth) & ~TIPC_NTQ_ALLTYPES;	/* 0 */
-
-	if (depth > 4)					/* false */
-		depth = 4;
-	for (i = 0; i < depth; i++)			/* no iterations */
-		tipc_tlv_sprintf(msg->rep, header[i]);
-	tipc_tlv_sprintf(msg->rep, "\n");
-
-Meanwhile the row formatter below stops only on depth == 1, 2 or 3, none
-of which match 0, so every publication still prints all four columns.
-Does that leave the report with an empty header line followed by
-four-column rows?
-
-Before this patch the same request was self-consistent: 0x80000000 > 4
-clamped the header to four titles and the rows printed four columns.
-
-The legacy implementation that this code replaced handled depth 0
-explicitly, in nametbl_list() in net/tipc/name_table.c before commit
-44a8ae94fd55:
-
-	depth = (depth_info & ~TIPC_NTQ_ALLTYPES);
-	if (depth == 0)
-		return 0;
-
-Would it make sense to normalise or reject a masked depth of 0 here, or to
-have the row formatter use the same clamp semantics as the header?
-
-> @@ -932,6 +932,7 @@ static int tipc_nl_compat_name_table_dump(struct tipc_nl_compat_msg *msg,
->  	if (!(depth & TIPC_NTQ_ALLTYPES) &&
->  	    (type != nla_get_u32(publ[TIPC_NLA_PUBL_TYPE])))
->  		return 0;
-> +	depth &= ~TIPC_NTQ_ALLTYPES;
->  	if (lowbound && (lowbound > nla_get_u32(publ[TIPC_NLA_PUBL_UPPER])))
->  		return 0;
->  	if (upbound && (upbound < nla_get_u32(publ[TIPC_NLA_PUBL_LOWER])))
->  		return 0;
-
-[Severity: Medium]
-This is a pre-existing issue and not something introduced by this patch,
-but since the new mask lands directly above these two bounds checks it
-seems worth raising.
-
-TIPC_NTQ_ALLTYPES only bypasses the type comparison; the lowbound and
-upbound filters still run, so publications get dropped from an "all types"
-dump.  The uAPI contract in include/uapi/linux/tipc_config.h says all
-three selectors are ignored when the high depth bit is set:
-
-	__be32 type;	/* {t,l,u} info ignored if high bit of "depth" is set */
-	__be32 lowbound; /* (i.e. displays all entries of name table) */
-	__be32 upbound;
-
-With depth = TIPC_NTQ_ALLTYPES | 1 and lowbound = 200, does
-
-	if (lowbound && (lowbound > nla_get_u32(publ[TIPC_NLA_PUBL_UPPER])))
-		return 0;
-
-still skip every publication whose upper bound is below 200, even though
-lowbound should be irrelevant for that request?
-
-The legacy code enforced this, in nametbl_list() before commit
-44a8ae94fd55:
-
-	if (all_types) {
-		...
-		lowbound = 0;
-		upbound = ~0;
-		...
-	}
-
-Should the lowbound/upbound tests be gated on the ALLTYPES flag as well?
-
-> @@ -1139,6 +1140,9 @@ static int tipc_nl_compat_net_set(struct tipc_nl_compat_cmd_doit *cmd,
->  	u32 val;
->  	struct nlattr *net;
->  
-> +	if (TLV_GET_DATA_LEN(msg->req) < (int)sizeof(__be32))
-> +		return -EINVAL;
-> +
->  	val = ntohl(*(__be32 *)TLV_DATA(msg->req));
-
-[Severity: Low]
-Could this be split into two patches?
-
-This hunk is the out-of-bounds read fix in tipc_nl_compat_net_set(), where
-only TLV_CHECK_TYPE() ran before it from tipc_nl_compat_doit(), and it
-matches Fixes: d7cc75d3cb6b.  The two earlier hunks only change how
-TIPC_NTQ_ALLTYPES is masked out of the display depth for
-TIPC_CMD_SHOW_NAME_TABLE and match Fixes: 44a8ae94fd55.
-
-The two changes touch disjoint commands: TIPC_CMD_SET_NODE_ADDR and
-TIPC_CMD_SET_NETID versus TIPC_CMD_SHOW_NAME_TABLE.  Splitting them would
-let the memory-safety fix be backported and reverted independently of the
-output format change.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212857.3241483-1-benquike%40gmail.com
+Reviewed-by: Gustavo Luiz Duarte <gustavold@gmail.com>
