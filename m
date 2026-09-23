@@ -1,81 +1,119 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDDD37F313;
-	Wed, 23 Sep 2026 22:49:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EAA46AF1B;
+	Wed, 23 Sep 2026 22:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790203799; cv=none; b=SpxzNeH3QAH3W9m6Yj4QZ6VqyI029rZoCJP4hlWJ9KHshkcrsQCc+m/QZjkb0BCF1GfLEKj02fHpCKW5KlrgwxeU7mxyo4CK4+Z8KPlqS1QUhJsi3N+AO4UAcVwdC6isgF6iupC6mwaEgSRnP34ezbBHBC6luHQrdwreCs8JfNU=
+	t=1790204023; cv=none; b=P0+vkeBHdf7MFOeGM0DBpeY8rqUkfiyyjhtndq9Irizu9jcxEOlXOIGxTXbWJe+IDy3cIdXj7Vh76BWoz9GrK03iDi6O/KkdbGgB5C7ktyZtr06PnfSTlNk6Us4nRt1xU6ofiSHuO0gIXOz6JQ+BfgJxATcPEAqBMShCeKshMbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790203799; c=relaxed/simple;
-	bh=7N+PHYhwYb4DDxIKQU9bG1rsHVF5yIkzKWglWZwr0YE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FWr2n/sYMMBmdxkuwdQcn+/GoCEUIr30rb+WBcfjVUC8V5ZqSAYVO0CZcnGYunn0IthqKj+httqNuHshtVC+v1dOeNROcRDvaO86t6fY4Epgvpmu9fan7i0luCVf6AStR1N/bhIPsOGQ5w1zFJmA7YkFgq/R+VkF7zGxjK7k+LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=l8as964Z; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790204023; c=relaxed/simple;
+	bh=W8S48tbaPTnLUEOz3HvvWSqKmgMP3Wwkjm55l323Nwk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=m+0U+NUmG3Zdi+JBkIVhT70Lu/gR8pvRY1j3c6F4fMU272bVoYtrgfGits8XylHa4oPQivhWLXRZHG4zAd7bi1HyXSBoeJLc2FsQg9a912IfZTHZm7u1gYEMo3QEvQAM0aiOLNXKEUkk5Nbxvq/Ahx6Y5niK6KqhQ3Yo/Tfy1i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=CdbA89bQ; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=jOgsmJu7; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="l8as964Z"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+L5gxY5rh4nIH2Gf98GBghWlzuQmbFzFgvb3CQBZaFY=; b=l8as964ZT6nGCW65whU2xXAnqD
-	oXPLOPtXKMZ+QK8B4o9CEuIpg/98nkGFvLCUehUS/Q3lAiiqkdyH/5YT4kXNXnCzzkTXDMBYi6tPC
-	lf0qnh2TfnUFhU1CIfkHjVQ7CAkk9QVA0AhP9wrRQxqCRQC+Wm8IXjqBVk/uFH8ienYM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x9VmY-006tGu-UH; Thu, 24 Sep 2026 00:49:42 +0200
-Date: Thu, 24 Sep 2026 00:49:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: Liu Changjie <liucj1228@outlook.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Luo Jie <jie.luo@oss.qualcomm.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/2] net: phy: Add Maxio MAE0621A support
-Message-ID: <2ecfaee1-921b-4d2a-bac3-ce2467b24ea7@lunn.ch>
-References: <MN0PR19MB609154F210DF84DCB29D3696ACC62@MN0PR19MB6091.namprd19.prod.outlook.com>
- <2635661d-4be2-4abf-84aa-c3024941f787@arm.com>
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="CdbA89bQ";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="jOgsmJu7"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 68NMr3Wo019426;
+	Thu, 24 Sep 2026 00:53:09 +0200
+Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 479D9122885;
+	Thu, 24 Sep 2026 00:53:00 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1790203980; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1StVDwsPdpfkCmAnM7HUPkMtndRgp/KLXORxVAS5bV4=;
+	b=CdbA89bQ0lLjP3/DrwQx7LvG4XmwxTMGZTYQLj4bsxSIomFKrRHWYFnNF3UeZXxDsIl+40
+	TABMkE12wCsoG+BQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1790203980; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1StVDwsPdpfkCmAnM7HUPkMtndRgp/KLXORxVAS5bV4=;
+	b=jOgsmJu7ZRauc6MQDfHpzRA0PmQ5IorBj8k41nMAwJv2gZ5nhiU8LaZS+l6vo07gNnyYRG
+	MwOEvnduloL6adGnElU1xXlYZvnzcVhEdQstaDX7P2QYfqYCbTZcOOQlPvJIQI2zyeo6+l
+	p8AQ6d81IQs3Om8GtScq/k3zITwzVuSpcaA9DW4TdUlsHmVP91j6eoWWPXzZ8d3ulsSGYL
+	SojqWlWQM6i3Vjb1pWv98JZYdsRRADdM8u0sjdHfDyQ3kKI2GLdN4zT/nlFYo1kj8M5wtV
+	cBz8lB1ST6OI3fQIPwbRb1JvuKG+/87GMb+u5LD9x+3ga3ytm9R4SgtGVcJNIw==
+Date: Thu, 24 Sep 2026 00:52:59 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Hui Peng <benquike@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, Hangbin Liu <hangbin.liu@linux.dev>,
+        Simon Horman
+ <horms@kernel.org>,
+        David Lebrun <david.lebrun@uclouvain.be>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v2] ipv6: sr: enforce exact attribute length for
+ SEG6_ATTR_DST
+Message-Id: <20260924005259.191035d085d7638ac6c0f97b@uniroma2.it>
+In-Reply-To: <20260921044025.1535982-1-benquike@gmail.com>
+References: <aq-E5MPYZS5s9_bk@fedora>
+	<20260921044025.1535982-1-benquike@gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2635661d-4be2-4abf-84aa-c3024941f787@arm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-> https://www.lcsc.com/datasheet/C49308069.pdf
+On Mon, 21 Sep 2026 04:40:25 +0000
+Hui Peng <benquike@gmail.com> wrote:
 
-Cool, thanks for the link.
+> In seg6_genl_policy, SEG6_ATTR_DST is defined with .type = NLA_BINARY and
+> .len = sizeof(struct in6_addr). For NLA_BINARY, .len only enforces the
+> maximum payload length and permits shorter payloads (e.g., 0 bytes).
+> When seg6_genl_set_tunsrc() copies sizeof(struct in6_addr) bytes via
+> kmemdup(val, sizeof(*val), GFP_KERNEL), a short SEG6_ATTR_DST attribute
+> triggers a 16-byte out-of-bounds read past skb->tail into uninitialized
+> skb->head memory, which is stored in sdata->tun_src and leaked back to
+> userspace via SEG6_CMD_GET_TUNSRC.
+> 
+> Switch SEG6_ATTR_DST in seg6_genl_policy to
+> NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)) so that generic netlink
+> validation rejects any attribute whose length is not exactly
+> sizeof(struct in6_addr) with -ERANGE.
+> 
+> Tested in QEMU against Linux 7.3.0-rc3 by sending a SEG6_CMD_SET_TUNSRC
+> Generic Netlink message with a 0-byte SEG6_ATTR_DST attribute followed
+> by SEG6_CMD_GET_TUNSRC. On the unfixed kernel, SEG6_CMD_SET_TUNSRC
+> succeeds (err = 0) and SEG6_CMD_GET_TUNSRC leaks 16 bytes of
+> uninitialized kernel heap memory (tun_src =
+> 836a61ecc4d25a1042a8d60411cfb378); with this patch applied,
+> SEG6_CMD_SET_TUNSRC is rejected by netlink policy validation with
+> -ERANGE (-34) and tun_src remains zeroed.
+> 
+> Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Hui Peng <benquike@gmail.com>
+> ---
+> Changes in v2:
+> - Drop the redundant nla_len(info->attrs[SEG6_ATTR_DST]) !=
+>   sizeof(struct in6_addr) check in seg6_genl_set_tunsrc() since
+>   NLA_POLICY_EXACT_LEN() in seg6_genl_policy already enforces the exact
+>   length, as pointed out by Hangbin Liu.
+> 
+>  net/ipv6/seg6.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-24.13 1: A broadcast from MAC (A command with PHY address = 0) is
-valid. MDC/MDIO will respond to this command.
+Thanks,
+Andrea
 
-Please ensure this is disabled. Doing that now before anything is
-merged will make life easier in the future.
-
-I don't see any way to control the RGMII delays, or know how it has
-been strapped. So this PHY is going to be a real problem. DT
-developers make a mess of RGMII delays even when the MAC and PHY do
-the right think.
-
-Unless a way is found to either control the delays, or at least know
-what it is doing, the only phydev->interface accepted should be
-PHY_INTERFACE_MODE_NA. This means 'don't touch'. We have to assume
-something else has correctly set the delays in a consistent way. That
-is likely to be strapping.
-
-	  Andrew
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
