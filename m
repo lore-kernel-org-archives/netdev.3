@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565A13A71A8;
-	Wed, 23 Sep 2026 23:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92809409289;
+	Wed, 23 Sep 2026 23:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790207481; cv=none; b=dyAIsw8HKdqgtLVLItxpcBO52I2tf7kScb554q0FJuTQ5XVbSLKVFcCO2WwBWnFY0PNmFRge3flF6QqJlnq8w0S9jxrQ7HteXZNJRlDQTyc60taSY2m9vyIBvgOWUu90cNEiP+88zbudBTMA4i9YYaTfd31nN99pKxvkVUwIwk0=
+	t=1790207482; cv=none; b=estZHZzZXxwA+fbaih5yLFt5fEDpoqgLXnkMAP+j7XISPaSgfZUP79GbpKYZHKGzcdgg+URLvY8glw1rIwsyR5XvYeIpLQ5tCJVXMS6EcKgsHrHgPXRw8JGQt3T5HN8EFYfPfBOFQwvJXBCPXyL+89SIpxBdIYYH/YBdvt5ojW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790207481; c=relaxed/simple;
-	bh=1e9LQbt+X6yyOphfcnXgsEW45Y592U08huJX51Uzf3M=;
+	s=arc-20240116; t=1790207482; c=relaxed/simple;
+	bh=IV39LzdXi9w0N8wUuz0GXpNT3PBeOwlXh6SfY9+EsNw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W3mgmelwnXFSQgzIR+P4mnlAZ6RUwhz3wJHmoQ7qunWHtBfbe4gT5e5yrPhFBPF0aJjElqKOEXlQEX1QlzV2v9OHP1S21eqmWoXqGddx+n9JkA0bYHNrDdU3oVwk0vljoYjYBilHdSvqL4W46R8Q6pMles+JdB2aC4nivYrvPA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E13OI+yG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=tdEMWsrLLwC2hPbicZxf9uKLdfZV79F2GW2KVZzVtdre65B97e11MNgm+m7Uq9IhIzvS6BdfdLgy/RBmIZKDc5dVYusDNu8dTwwczv6q6lEvCCgaQiK/dDkyEN0jtIC/MMxylwNDUx3ZGwurREEbE8EovmJz9IC2D18LbwZ8t2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZVvW3hH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E13OI+yG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E706D1F00893;
-	Wed, 23 Sep 2026 23:51:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZVvW3hH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754061F000FF;
+	Wed, 23 Sep 2026 23:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790207480;
-	bh=mbCwRTgn9fV8AwDIlQlyn3JYMSLiwU3wb3k1ZoQIaaA=;
+	s=k20260515; t=1790207481;
+	bh=ru5Myrap6AZnFp1IqzUz1H5DLyFG9FKAqj95PbXWklU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=E13OI+yGGfCKHoId8Otw2313St8xQBfbw6db25z0B1FvOLn7BUYOuTs7ubULB+oi3
-	 tc2A1pHHWdJKo3ATDSv7a8wuogmIZMMgRNPhPfIVFVws/nn2JjdTYt6ThrLylbqYUi
-	 Ndp8fJEdfbp7ui+8fYcpLBpalhYGVejMJCC8ZNnfN8gKa3gRLxcVzU4WCDXnbn3pzK
-	 u7MWDW2Xgczxxl9t73hk2gJoQrAGzryyLYc6Rzp1zc0u3ZAJMaVptxtiZWpvOMBhhP
-	 TtFzOD4uDC/dXwPcqUm7I7GTD4xwrjbKsN8qwmPEsiEPIgBIiGVkZMcucTkHL4ZJmO
-	 wIEtRXqQh1csA==
+	b=CZVvW3hHXS5mh81F3fb3QJm/jfzedcYtrBs8vl6K9QnrEnhJgPFxPpQekkCq4aHbU
+	 EaiiUpkSiYTW1K0GqbzTy3B+PvBR6N5aQkaPNzkOlAKhSQO5NX4kauXQLeuxDra8E8
+	 r+UbBZSFDNksaXErKbdZF+Ub8cbBKDzFAtq83R1EDnqHGe8Nsp5qBDldAosS5juh4k
+	 8WFDiAlB/Hp+nCVpyhZ4v7jgFOZe6mMybs6MLuOshHhJekQzXgeDJ9TSumA8HCkokE
+	 Y93X8e8us6642LMDCAprwGdWFtt+5tYdsuepCds5FUtXTR3KGcATxh90XCfZebiQYD
+	 H+WoUw1IcWt8Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D092E39E9602;
-	Wed, 23 Sep 2026 23:50:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5688C39E9602;
+	Wed, 23 Sep 2026 23:50:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ppp_synctty: remove redundant skb null check in
- ppp_sync_txmunge()
+Subject: Re: [PATCH net-next] net: sfp: add quirk for XikeStor SKT-2.5G-100M
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179020740939.999807.4999315153340387066.git-patchwork-notify@kernel.org>
-Date: Wed, 23 Sep 2026 23:50:09 +0000
-References: <20260920114945.2517-1-qingfang.deng@linux.dev>
-In-Reply-To: <20260920114945.2517-1-qingfang.deng@linux.dev>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, jirislaby@kernel.org,
- elfring@users.sourceforge.net, kees@kernel.org, linux-ppp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, lkp@intel.com,
- error27@gmail.com
+ <179020741089.999807.4569868820819171963.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Sep 2026 23:50:10 +0000
+References: <20260920192632.72729-2-jan@3e8.eu>
+In-Reply-To: <20260920192632.72729-2-jan@3e8.eu>
+To: Jan Hoffmann <jan@3e8.eu>
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 20 Sep 2026 19:49:43 +0800 you wrote:
-> The skb is already dereferenced before the check. In addition, a TX skb
-> passed from the generic layer can never be null.
+On Sun, 20 Sep 2026 21:26:10 +0200 you wrote:
+> This 2.5G copper SFP module contains a RTL8221B-VB-CG PHY which can be
+> accessed using Rollball protocol.
 > 
-> Remove the redundant null check.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Closes: https://lore.kernel.org/r/202609132245.txZXoUxc-lkp@intel.com/
-> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+> Add a SFP quirk to enable Rollball protocol. It includes a small delay
+> to avoid unnecessary attempts at reading PHY registers before the
+> module is ready.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ppp_synctty: remove redundant skb null check in ppp_sync_txmunge()
-    https://git.kernel.org/netdev/net-next/c/1196e46f6d42
+  - [net-next] net: sfp: add quirk for XikeStor SKT-2.5G-100M
+    https://git.kernel.org/netdev/net-next/c/a9e94a7faa56
 
 You are awesome, thank you!
 -- 
