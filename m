@@ -1,76 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF8F2D738F
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 00:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670E52D8364;
+	Wed, 23 Sep 2026 00:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790122786; cv=none; b=Y/bVoHzODBNWHkkSczTxGG+KiiK+67lxZbL0pDm5c4cM/kve78OLfyAcPZqPtk/VjKDw2Qk6GnUcSLZpOTYBUF3+SaBVRZI+j1xxHPQdPGlLcy14G45PBoDWf3rqhc4FRmr7X42wH0UqqR7F8H3g0GkyD/qtljs72zbFxgJZDsw=
+	t=1790122872; cv=none; b=IAtHBG/DBefBo+YnlGr3gUKoTHsdxJBt3FdJy/9VGPs277Hi0gklv3CZjlRcTXma1tYkNO4cyunmyHP9F2Nf5vkttxKhdJG2yJUfIMT2Je6pJd2RnCQnh52bj5DdtV3VPMKETpZbevpf97YXDRsyeidUBLA7g35iqylXfNRxEXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790122786; c=relaxed/simple;
-	bh=oYWXFW2tSb3Frq12vOe4rSgc97KSCMmVurw6T5QGq/4=;
+	s=arc-20240116; t=1790122872; c=relaxed/simple;
+	bh=giO1ZIKP0mFR/FkPOEifG1Q78vinp8tTBn4oAZoyxM8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hi9IBWmvonC/sUk5mIg2yafydaPWgR6SPn3tzkm2fzRuxWM0upi+K8L5dGPGpv7iLNsRAZnCMLQI3Gsxp4Y1GDLm3doRDZKKt64Gj3hIlhkOAD9M59EmEd/EjeSmY+Po3Fjmii7WnqZMppz3q9/UaWzC2GgbkI3OTMdJdNDJWH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kSilNW+X; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=FZfQ9fQHimcsqhjKgy540PuktEDxMEtLa2/agCKzgsAapDQ0r4lbTGcRigBIVwP6cwRNEbaGVZrZJipu+RRMr9CCwbb+n5grA89N6lVjmlNmub1uOFefbJG30qeuwu9AgvjmeGp+Wgd5ef2XqLOAZDIVK4yA8WhcLscBTzgCJz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UP5W3GZl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kSilNW+X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2661F000FF;
-	Wed, 23 Sep 2026 00:19:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UP5W3GZl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2BD1F000FF;
+	Wed, 23 Sep 2026 00:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790122785;
-	bh=oYWXFW2tSb3Frq12vOe4rSgc97KSCMmVurw6T5QGq/4=;
+	s=k20260515; t=1790122870;
+	bh=uzB1bIu4DCAXkv+EdyAIgxF9xElFNSnl6zM2ZgAtCWQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kSilNW+XPG4UaUe+1Q//kvnFThwB2pJXuv1LWl9H801g8frWn3VyS+RiGWv/J1+0I
-	 Ma82t23Zy9uVLRe+aRvatC9AyKzqsVZftaJYCKcL4kz0JfuyUeLOwsL8LQbmJSruAx
-	 OIwdYUVcHCzQ8/4Yn9gUr1wFXyZ3yw1du7/gDQ1TSdxxi100paiIfXp7+eH4XwVFiV
-	 ZPLe2JGJTIoNSK2nypS/H5+01Qj2FsSaO+tX6q3Ybp5fEvc68ahJXfSthK3g0GyCFD
-	 4E6CFFFfxzz8hZUjWrhHututaxrAoR2hx+3dNVxL2WRJidyMZIJh9seAPHjPSqTYQV
-	 Y83jDsdsLTb0Q==
-Date: Tue, 22 Sep 2026 17:19:44 -0700
+	b=UP5W3GZlkEXz0RmChr/UZd5XuxVjbLtw/24ppTpDkV7iRPvGRVoFmS/7rTsUDKWbs
+	 TQEuHvWtVPskwH4QBnZoOYuNkgZ8O3GRJGjuRxa/Wk+GgMAsQlJOow7q+0DcEFEmyW
+	 PpyjJgWaoPsn3EZIY2g4hD8/DaiMrrWFQDaxiXQLvNUSA4dztpn8duHDqjKsP3rv3n
+	 XAS7XoRlTEYPuWL4QpBOMztATDHSMTbO085x9nfyYi/uITT1IbqZr0ZYUCscLmLpFa
+	 0x2SBL42d1tEDMDJb/u564g1YjuxtuFFkLhHTNDH4g49MEn7ckFtHlP9eRZb4gCdj3
+	 Gz7d2tqU9o3tg==
+Date: Tue, 22 Sep 2026 17:21:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, jacob.e.keller@intel.com, richardcochran@gmail.com
-Subject: Re: [PATCH net v6] net: Wangxun: protect ring accesses with RCU
-Message-ID: <20260922171944.6ba2da64@kernel.org>
-In-Reply-To: <BE54C737-C413-4A44-A27B-55040D41B1FD@net-swift.com>
-References: <20260915065731.6007-1-mengyuanlou@net-swift.com>
-	<20260921170509.3f471b54@kernel.org>
-	<BE54C737-C413-4A44-A27B-55040D41B1FD@net-swift.com>
+To: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Vladimir
+ Oltean <olteanv@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>, Daniel Golle
+ <daniel@makrotopia.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, mfd@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v22 4/9] mfd: an8855: Add support for Airoha
+ AN8855 Switch
+Message-ID: <20260922172109.1e666b56@kernel.org>
+In-Reply-To: <CA+_ehUyFH_ZSsjhp-U9WBFoRZR-ZMWnNQ5pY5vAy1LxUU5hSsw@mail.gmail.com>
+References: <20260915123812.14747-1-ansuelsmth@gmail.com>
+	<20260915123812.14747-5-ansuelsmth@gmail.com>
+	<20260921134410.13a7173c@kernel.org>
+	<CA+_ehUyFH_ZSsjhp-U9WBFoRZR-ZMWnNQ5pY5vAy1LxUU5hSsw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 22 Sep 2026 16:48:16 +0800 mengyuanlou@net-swift.com wrote:
-> Sorry about that. I=E2=80=99ll fix both issues in the next revision and m=
-ake sure to
-> address the previous review comments more carefully.
-> Thanks.
->=20
-> Another question:
->=20
-> wx_init_interrupt_scheme() =E2=86=92=20
-> wx_lib.c:2392 wx_cache_ring_rss() =E2=86=92=20
-> wx_lib.c: rcu_dereference_protected(..., lockdep_rtnl_is_held())
->=20
-> When wx_init_interrupt_scheme is in xxx_probe, unlike other txgbe_setup_tc
-> and ngbe_resume, at this point the netdev has not yet been registered.
->=20
-> +rtnl_lock();
-> err =3D wx_init_interrupt_scheme(wx);
-> +rtnl_unlock();
-> if (err)
-> goto err_cancel_service;
->=20
-> At this point, rntl_lock is merely used to address RCU_LOCKDEP_WARN.
-> Is this approach appropriate?
+On Tue, 22 Sep 2026 12:14:22 +0200 Christian Marangi (Ansuel) wrote:
+>  I also didn't receive the email for the AI review... Did it broke also here?
+> If everything else is ok, should I send new revision or maybe we can pick this
+> and I can send followup for this warning?
 
-I think that's acceptable. Maybe add a comment as well just to make it
-clear why we're taking the lock.
+Clashiko gates on build and kdoc being clean, to try to save tokens.
+FWIW this is also how the CI (kselftests) are gated.
