@@ -1,44 +1,47 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D33F48A8D1;
-	Wed, 23 Sep 2026 10:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DA347CA90;
+	Wed, 23 Sep 2026 10:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790159993; cv=none; b=Golwyp5OQ9BD+eYMkwxOiyF3jqeq7cVH5BWzb+dlOwU6YA7x5O+se2WtQg7kVqYKvDIaYa0mfdTJtcui3jChO4QJnd2mC8uS4Mjq4AxEGMUvkYM/RaDvZGq/x84YVUorIeUwCJ6l+dI102M3GiiiJ740Lb3/T4AFfXtl8JJxl+A=
+	t=1790159993; cv=none; b=mqDXP0IpQGTC1/oLDQ4y+Wy+YaLcUD6GhaEv+Jf7uWOq5dQFb7Vq6wASVM2qeohN/76SGNSsA+E6a57Q6SJ4KJVrmB4wCNfO2gf9pRk8X/tmYMyrx/BCX1QSG6HGBRZmt5JtkmJ7NYZsuxrXOb9fgRja2jVC/fCDz/7mlVdpCRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790159993; c=relaxed/simple;
-	bh=mYuxuiI97Ryv2didHFZyqmEcgvep5DTC1EOQo9xd7g4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lchoTpxKojSUYrZPriavh/2bnj4BWow3MMjTsbBXGd0/ggRREEUj6SkS1xERxBkRirLYsrU//7MGtJd4d3QDAof4U3e3eWpXWUGcLhrz9kV470KW/HYEJt9tDtARQJxUBDzmoLNAUjQro+ULolWCql7C7FX3VpJeyhTiswXmubw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VSN/Yvpq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rWSUOIyi; arc=none smtp.client-ip=193.142.43.55
+	bh=eLfyXIHP+DBOk1PaWgQ0C2aUrJQphj77LAyGq2bH0I4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZtUM9nDIrouCji1Q3/6i7awdjXn5hORlBpPGspUNqmPCoBuwOiRdttnd8zbXv1GWyQPjn+0HVMRmde9p+nnR/BYQXHQMoR0vX+DgRCVun8SRoRHELZnvwDUNIEn07qOiCYbFPeKDSfCNDyjpYVAN3YthWUmSP+984R8lYctRQEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yxNYQZ4W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7j7ABW3k; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VSN/Yvpq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rWSUOIyi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yxNYQZ4W";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7j7ABW3k"
 From: Vasilij Strassheim <v.strassheim@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1790159982;
+	s=2020; t=1790159985;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=G38dLMDwun3+wjVpqN310g0Tz5zcKrPGJvzV0sk8Dbw=;
-	b=VSN/Yvpq27tMARlhUv5p5VeQJ+zZiTTAdXJ9y12br8rIvMOxIvcL7JCeorZH767CkYlh/Y
-	yeuBi9hlvwJ/i4qc5RPBJlmojxPRkJMHUiEpv62uKr0qf3iJLip436sT9/o1Pl8F7JowTr
-	Tpk5NPP1/x6hZBV2zRhHEdKVIIP/Srchvq1sZpkuh+YU1mTM6XOargjsdk3e6sSwkU5rY8
-	z5I2SEfVo81WaMFpm1xIvCaXlvIlsDmtS1x1aknAgjRO5RiSb96fMwR5j6VIa4cFQGUd1s
-	+9GT9X+l3H+fiuiH8ZqpWAMKg8s6FN6EdzHCSY2JnvoBr7dv6wmcfC/Xnz81xQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UpUhfJx82Oe5JKxsiqQBFzO4QLK+0xqpIhBiq0nUpi8=;
+	b=yxNYQZ4W0k2ggJCZiDD5tVXQVqUFIpcaoSNIJsrUqvmp7VQ+SJQEwJ7SUD1mDkGzuuOEsV
+	/S/cSsRssgL5LWrQtshU2vyWIhYuYjUZPhoL3sgKHytbycqfaI5/7Onw9EiktSnez8Aync
+	MaDEJzzw2bAnfeHxJEK1+vMonVC65Vv1UVKk53LwLj31lXj3PNgmgraB7P+Q9J/xoWKMT+
+	3a0QcXJgraFZDikiZasojoURuSSr5hcFVjzc4oRkaE0H/nwVcNE8J40FKg0ikUr6TA/WPL
+	fXlz3s2gBtLTpX+HT068/hkWHksULr/6wYg1FY1kpV1VUbC9gr9XPhE/XoBTjw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1790159982;
+	s=2020e; t=1790159985;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=G38dLMDwun3+wjVpqN310g0Tz5zcKrPGJvzV0sk8Dbw=;
-	b=rWSUOIyis0atzAY5EjMorb7zJT61X/kuNICPIo/XjXtg1X3S73DTc1zb2dwc/xVvjP+Wp2
-	hqSX/SXjtjQ70XCQ==
-Subject: [PATCH net-next v3 0/8] net: dsa: Add SoC-e DSA driver
-Date: Wed, 23 Sep 2026 12:39:27 +0200
-Message-Id: <20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UpUhfJx82Oe5JKxsiqQBFzO4QLK+0xqpIhBiq0nUpi8=;
+	b=7j7ABW3kcfWmLKb3qhLQTRa5P4bR45ZAFWzwIYA2oQkWJ0Xt8OdDeXMlXl3jasHq7+f6cb
+	Y06EPrDMTrCc1yDg==
+Date: Wed, 23 Sep 2026 12:39:30 +0200
+Subject: [PATCH net-next v3 3/8] dt-bindings: net: dsa: Add SoC-e SWIP
+ switch
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,11 +50,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAF+ss2oC/43OwQ6CMAwG4FcxO1szhkzw5HsYDxsrUoPDrHPBG
- N5dwIOJFz3+afv9fQrGQMhiv3qKgImYej+FfL0SdWv8GYHclIWSSsudqsBhwg4Sx2CYW6QrcF8
- jODZw7UBJp01hnC3zUkzGLWBDw+IfhccIHocoTu8J3+0F6zjz825LHPvwWF5J2XLxZ2vKQILFQ
- lfOYGaVPHTk7zH0noaNw6UvqY9YyfyXqCaxsbIod7Xdam2/xXEcX/AlVNU8AQAA
-X-Change-ID: 20260729-devel-vstrassheim-soce-dsa-ml-20d6a5adb838
+Message-Id: <20260923-devel-vstrassheim-soce-dsa-ml-v3-3-ddebafcb9ba7@linutronix.de>
+References: <20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
+In-Reply-To: <20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
  Vladimir Oltean <olteanv@gmail.com>, 
@@ -62,153 +63,192 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>, 
  Benedikt Spranger <b.spranger@linutronix.de>, 
- Vasilij Strassheim <v.strassheim@linutronix.de>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ Vasilij Strassheim <v.strassheim@linutronix.de>
 
-Add support for SoC-e Ethernet switch IP cores synthesized for and
-implemented in FPGAs.
+Add a binding for SoC-e FPGA-based Ethernet switch IP cores.
 
-The series introduces the SoC-e vendor prefix and device tree bindings,
-an EtherType-based SDSA tagger, an MDIO controller driver, and a DSA
-switch driver.
+The compatible identifies a register layout characterized by the core
+and feature identification registers at the encoded offsets. The
+concrete synthesis-time configuration is then autodetected from these
+registers.
 
-The switch driver uses a memory-mapped control interface. During probe,
-it detects the core version and the licensed and implemented port
-counts, and verifies that the synthesized core provides DSA support.
-Port counts from 3 through 31 are supported.
-
-It supports Ethernet switching using MII, GMII, RMII, and RGMII port
-interfaces. VLAN filtering and membership are also offloaded when the
-corresponding hardware feature is synthesized. Unsupported hardware STP
-offloading is disabled.
-
-External MDIO outputs are exposed as separate logical MDIO buses sharing
-the integrated MDIO controller. The controller supports Clause 22 and
-Clause 45 transactions, while the generic MMIO MDIO mux selects the
-external bus through the shared control register.
-
-The drivers were tested with a SoC-e MRS 25.01 IP core on a Xilinx
-ZynqMP platform with the following options enabled: 3 ports, DSA, IEEE
-802.1w - RSTP, MAC Table Type with Hybrid SVL/IV, Port-based VLAN, QoS -
-Priorities, Statistic Counters.
+Describe the Ethernet ports and the optional integrated MDIO controller
+with its generic MMIO mux and child buses.
 
 Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
 ---
-Changes in v3:
-- Rebase onto net-next/main and update tag protocol number in dsa.h
-- Drop the deprecated ports and port@ node names and keep only
-  ethernet-ports and ethernet-port@ in the binding.
-- Drop labels from the switch binding example.
-- Rename the MDIO master to MDIO controller.
-- New Patches 2 and 5: Move the integrated MDIO controller into a
-  separate driver and add the corresponding binding, Kconfig entry, and
-  build integration.
-- Switch from internal MDIO multiplexing to the generic MMIO MDIO mux
-  framework for selecting the synthesized external MDIO buses.
-- Check that the MDIO controller is idle before programming a
-  transaction and wait for completion afterward.
-- Replace MDIO magic values and resource indices with named definitions.
-- Reduce MDIO timeout from 1s to more reasonable 1ms.
-- Remove inline declarations and unnecessary checks from the remaining
-  MDIO code.
-- Use mdio-mux-mmioreg for the 11-bit MDIO bus selector at bits 26:16
-  and access it through the upper 16-bit half of the shared control
-  register.
-- Update the switch binding to describe the MDIO controller, generic
-  MMIO mux, child buses, and PHY references.
-- Remove struct soce_probe_desc, since only one register layout is
-  supported.
-- Reject configurations with fewer than three implemented ports.
-- Add port enable and disable callbacks to prevent unmanaged forwarding
-  after driver unbind or module removal.
-- Disable tagging during teardown.
-- Rename and regroup register field macros to identify their associated
-  registers.
-- Remove obsolete and irrelevant comments.
-- Add new comments for proper documentation and clarity.
-- Switch to dev_err_probe() to improve probe error reporting.
-- Embed struct dsa_switch in struct soce_priv instead of allocating it
-  separately.
-- Remove the trailing comma after the sentinel entry in the match table.
+ .../devicetree/bindings/net/dsa/soce,swip.yaml     | 162 +++++++++++++++++++++
+ 1 file changed, 162 insertions(+)
 
-Follow-up validation and feature work using a new IP core:
-- New patch 7: Add basic VLAN hardware offload through
-  port_vlan_filtering, port_vlan_add, and port_vlan_del.
-- Warn when the Port VLAN feature is unavailable and reject VLAN
-  configuration with netlink extended acknowledgements.
-- Reset VLAN offloading configuration during teardown.
-- New patch 8: Disable STP offloading, which is not supported by the
-  initial driver.
-- Improvements in SDSA tag handling:
-  - Add specific skb drop reasons for malformed SDSA frames.
-  - Restore VLAN metadata from the SDSA tag on receive and encode skb
-    VLAN metadata into the SDSA tag on transmit.
+diff --git a/Documentation/devicetree/bindings/net/dsa/soce,swip.yaml b/Documentation/devicetree/bindings/net/dsa/soce,swip.yaml
+new file mode 100644
+index 000000000000..d614fb2a29d3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/dsa/soce,swip.yaml
+@@ -0,0 +1,162 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/dsa/soce,swip.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: SoC-e ethernet switch IP core for FPGAs
++
++maintainers:
++  - Vasilij Strassheim <v.strassheim@linutronix.de>
++
++description:
++  SoC-e Ethernet switch IP cores are FPGA-based switches whose features
++  and number of ports are selected at synthesis time. Ports can connect
++  to CPUs, external PHYs, FPGA logic, or other switch cores. An integrated
++  MDIO controller accesses the per-port external buses through a mux.
++
++$ref: dsa.yaml#
++
++properties:
++  compatible:
++    const: soce,swip-00-04-0c-10
++    description:
++      Register layout with the core version register at offset 0x00 and
++      feature identification registers at offsets 0x04, 0x0c, and 0x10.
++      Switch instances using this register layout are autodetected from
++      these registers and use this compatible regardless of their
++      synthesis-time feature and port configuration.
++
++  reg:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 1
++
++  ranges: true
++
++  mdio@204:
++    $ref: /schemas/net/soce,swip-mdio.yaml#
++    unevaluatedProperties: false
++    description:
++      Integrated MDIO controller bus on the master side of the mux.
++
++  mdio-mux@202:
++    $ref: /schemas/net/mdio-mux-mmioreg.yaml#
++    unevaluatedProperties: false
++
++  ethernet-ports:
++    type: object
++    patternProperties:
++      '^ethernet-port@[0-9a-f]+$':
++        type: object
++        $ref: dsa-port.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          reg:
++            maximum: 30
++            description:
++              Switch port index. Supported switch configurations have
++              up to 31 ports, numbered from 0 through 30.
++
++          phy-mode:
++            enum:
++              - mii
++              - gmii
++              - rmii
++              - rgmii
++              - rgmii-id
++              - rgmii-rxid
++              - rgmii-txid
++
++        required:
++          - reg
++          - phy-mode
++
++required:
++  - compatible
++  - reg
++  - ethernet-ports
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    ethernet-switch@80020000 {
++        compatible = "soce,swip-00-04-0c-10";
++        reg = <0x80020000 0x10000>;
++        #address-cells = <1>;
++        #size-cells = <1>;
++        ranges = <0x0 0x80020000 0x10000>;
++
++        mdio_parent: mdio@204 {
++            compatible = "soce,swip-mdio-23-02";
++            reg = <0x204 0xc>, <0x200 0x4>;
++            reg-names = "data", "control";
++            #address-cells = <1>;
++            #size-cells = <0>;
++        };
++
++        mdio-mux@202 {
++            compatible = "mdio-mux-mmioreg", "mdio-mux";
++            reg = <0x202 0x2>;
++            mux-mask = <0x07ff>;
++            mdio-parent-bus = <&mdio_parent>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            mdio@0 {
++                reg = <0>;
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                switchphy0: ethernet-phy@1 {
++                    compatible = "ethernet-phy-ieee802.3-c22";
++                    reg = <1>;
++                };
++            };
++
++            mdio@1 {
++                reg = <1>;
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                switchphy1: ethernet-phy@1 {
++                    compatible = "ethernet-phy-ieee802.3-c22";
++                    reg = <1>;
++                };
++            };
++        };
++
++        ethernet-ports {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            ethernet-port@0 {
++                reg = <0>;
++                phy-handle = <&switchphy0>;
++                phy-mode = "rgmii-id";
++            };
++
++            ethernet-port@1 {
++                reg = <1>;
++                phy-handle = <&switchphy1>;
++                phy-mode = "rgmii-id";
++            };
++
++            ethernet-port@2 {
++                reg = <2>;
++                ethernet = <&eth0>;
++                phy-mode = "gmii";
++
++                fixed-link {
++                    speed = <1000>;
++                    full-duplex;
++                };
++            };
++        };
++    };
 
-- Link to v2: https://patch.msgid.link/20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de
-
-Changes in v2:
-- Correctly use net-next prefix
-- Rework the binding into a single MMIO-based switch node
-- Model hardware MDIO outputs as separate logical MDIO buses
-- Detect the switch version, features, and port count from hardware
-- Drop incomplete STP, bridge, and FDB offloading
-- Derive phylink capabilities from each port's phy-mode
-- Harden MDIO access and SDSA receive validation
-- Address binding, naming, and coding style review comments
-
-Link to v1: https://patch.msgid.link/20260729-devel-vstrassheim-soce-dsa-ml-v1-0-be569dae1b20@linutronix.de
-
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-To: Vladimir Oltean <olteanv@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Simon Horman <horms@kernel.org>
-To: Russell King <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org
-
----
-Vasilij Strassheim (8):
-      dt-bindings: vendor-prefixes: Add soce
-      dt-bindings: net: Add SoC-e SWIP MDIO controller
-      dt-bindings: net: dsa: Add SoC-e SWIP switch
-      net: dsa: Add tag handling for SoC-e switches
-      net: mdio: Add SoC-e SWIP MDIO controller driver
-      net: dsa: soce: Add basic support for SoC-e switch IP cores
-      net: dsa: soce: Add VLAN offload support
-      net: dsa: soce: Disable unsupported hardware STP
-
- .../devicetree/bindings/net/dsa/soce,swip.yaml     | 162 +++++
- .../devicetree/bindings/net/soce,swip-mdio.yaml    |  47 ++
- .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
- drivers/net/dsa/Kconfig                            |   2 +
- drivers/net/dsa/Makefile                           |   1 +
- drivers/net/dsa/soce/Kconfig                       |  14 +
- drivers/net/dsa/soce/Makefile                      |   4 +
- drivers/net/dsa/soce/soce_dsa.h                    |  38 ++
- drivers/net/dsa/soce/soce_dsa_core.c               | 737 +++++++++++++++++++++
- drivers/net/mdio/Kconfig                           |   7 +
- drivers/net/mdio/Makefile                          |   1 +
- drivers/net/mdio/mdio-soce.c                       | 239 +++++++
- include/net/dsa.h                                  |   2 +
- net/dsa/Kconfig                                    |   6 +
- net/dsa/Makefile                                   |   1 +
- net/dsa/tag_sdsa.c                                 | 158 +++++
- 16 files changed, 1421 insertions(+)
----
-base-commit: 944ae66642b726bd6b25ae71b1e9ff88a0e0bdb0
-change-id: 20260729-devel-vstrassheim-soce-dsa-ml-20d6a5adb838
-
-Best regards,
---  
-Vasilij Strassheim <v.strassheim@linutronix.de>
+-- 
+2.39.5
 
