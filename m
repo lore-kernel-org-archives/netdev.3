@@ -1,130 +1,115 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B975335A1
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA633019BA;
+	Wed, 23 Sep 2026 13:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790170731; cv=none; b=OsfKizwGhYv8Mt8LTs632eihx0DD3PDmCGGX4cm7zC0tpXXemaoSqUT4sbYjwLiXcc1I1ZI7sT4i1DO9iO4uF0pWEIiGujmwOfl8ZaiSlhNySlFW1oFpn0z15FglVdS9aaaJFgrGyG6RQZjLWDMx/qMaUhwDGvRI/7a0UeWVQMY=
+	t=1790171257; cv=none; b=a6QI8Ry4GpeCUecQQTTuCtXzNBrgwGC6RVIJ8iSUKIx/UhewO3TOlRbKPr869ael1ydMWlLyvzZdZcMu6Bmlxl+4il1NORJBF1tLTgSXzKtCEdCH7iLr/USi8sv3hVIZsEkWNGjkrKRDNnDveG0yKEsp8+0upe6q1leSAQI2UNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790170731; c=relaxed/simple;
-	bh=hNd6bIyFAvlFxc6hjuFcDqVwVqg86Zvx1YHzqvt4tLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcNaKB4T+Lq8aAI+N3JwKX8wxlZIBpaCDHx8+0dNxBhe8OwZJWp1nGlkIpL4rVgfLbwqZ60E+1MZd03c+wX7k9ugiD/CAAYWx0FSu4tHyPk5Afu/woJStX/Htu82i8FWQ2ORMi/AJP3BGaYIO8j1zIzc5JN4u8rMjpJ9tdNczME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bSJ3LRPb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790171257; c=relaxed/simple;
+	bh=6wr59utk2f9FPWnpLCJUvqUpS4s4Dy7MJ0vY1g+Q74o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S0ugZlO0phO+QPhGO4AfrOUKADGqaUaZvmibEpOEcSWUCcoUlyzPS7g5O9hWcgM2rXahD3yxmgEWoPTdxQToHc3l/MmFpvS87axO1XZEP8+QjmCpCM0+q9m4uQElA4J4yt1ecXpnqhf0lQcq/rOYw3A3hO/re6+DpIuwu3Yl/S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnKGwI7d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bSJ3LRPb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790170729;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HHCKmh+GTex17viqHU7+p3b1kZPrhM46bDIsKbGkEho=;
-	b=bSJ3LRPbOEbURUE5jQo1JMdB6a+5bsyUb2m3GwjDphgYVceOOViNdExph/jZmtqAlAQ1K/
-	BcS49oxtS4sbeL9A0OUw3sUZ6InQG+1mf80m9aStQay0yxLU4ePpdnwc5bs0eFvRqZvxQS
-	RXBZg6rrJhIigumAem4TFLGGrDM9Vo8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-JkCCGU2pMfud3ac-UALFuQ-1; Wed,
- 23 Sep 2026 09:38:46 -0400
-X-MC-Unique: JkCCGU2pMfud3ac-UALFuQ-1
-X-Mimecast-MFC-AGG-ID: JkCCGU2pMfud3ac-UALFuQ_1790170724
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28299195FD12;
-	Wed, 23 Sep 2026 13:38:44 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.54])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 28704427;
-	Wed, 23 Sep 2026 13:38:39 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Seungwon Bae <qotmddnjs@ajou.ac.kr>,
-	stable@vger.kernel.org
-Subject: [PATCH net v11 17/17] rxrpc: fix use-after-free in rxrpc_poke_conn()
-Date: Wed, 23 Sep 2026 14:37:04 +0100
-Message-ID: <20260923133706.1496540-18-dhowells@redhat.com>
-In-Reply-To: <20260923133706.1496540-1-dhowells@redhat.com>
-References: <20260923133706.1496540-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnKGwI7d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB351F00893;
+	Wed, 23 Sep 2026 13:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790171255;
+	bh=enZrA9KL5KcJYg7045i7Oen8N//oPvSiJBMB0j2xFu4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GnKGwI7drZrdPYc/xI20nDslDydd6Nd1J5vDs0WlY5Yq5qw1JxHcDqN7GSF0hsRJL
+	 ERUrX4urED0VtRkNpHJ52589Cpmg251TUTehCE1dxbEXupIkMI1qA1vaqZ8tn/8sNr
+	 z5L9ARvolKAu8wK7FlUliWXSNjR26szXoziYl7OhATkFNycrJHFBUgA43LPpyVBpgy
+	 SKYpA0BC2v8VEDu4Ra2Kb5pMo7acYfNdaoRMMwnbyBG+S5eQuwpA+ha0aae3mx2mu3
+	 pId1kNywFyDJMA34KdWskk1o+/47qxAC3g35dkJRsgYodfVemXNbtx2xSArrDd2vgE
+	 2o2aBiTlUpEiQ==
+Message-ID: <1554dd31-79ce-4803-a12c-2f806275fe25@kernel.org>
+Date: Wed, 23 Sep 2026 08:47:33 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/4] Add Agilex5 SoCDK TSN Config2 board support
+Content-Language: en-US
+To: muhammad.nazim.amirul.nazle.asmade@altera.com,
+ maxime.chevallier@bootlin.com
+Cc: rmk+kernel@armlinux.org.uk, krzk+dt@kernel.org, conor+dt@kernel.org,
+ robh@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260908070557.3585-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <20260908070557.3585-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Seungwon Bae <qotmddnjs@ajou.ac.kr>
 
-rxrpc_poke_conn() takes a reference on the connection with no liveness
-check, unlike its sibling rxrpc_queue_conn() which gates on
-atomic_read(&conn->active) >= 0.  The per-connection timer is armed with
-no reference held for it, and rxrpc_put_connection() cancels it with a
-non-synchronous timer_delete() only after the refcount reaches 0.
-refcount_t saturates rather than resurrecting, so the connection can be
-kfree()d while still linked in local->conn_attend_q (nothing in teardown
-unlinks attend_link).  The rxrpc I/O thread then performs a UAF write
-(list_del_init) plus UAF reads and indirect calls through conn->security.
 
-Reproduced on a KASAN + PREEMPT kernel: 56 "refcount_t: addition on 0"
-saturations at load, escalating to
+On 9/8/26 02:05, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> This series adds support for the Intel SoCFPGA Agilex5 SoCDK TSN Config2
+> board variant, which enables gmac1 as a TSN Ethernet port alongside the
+> standard gmac2 port.
+> 
+> The TSN port (gmac1) connects to its PHY through a GMII-to-RGMII converter
+> implemented as FPGA soft IP. This converter provides the RGMII TX/RX clock
+> delays, requiring the MAC interface selector to be configured for GMII while
+> the PHY-facing interface is configured as RGMII without delay duplication.
+> 
+> Add altr,socfpga-stmmac-agilex5-tsn for that integration. It is not listed
+> as a DT fallback of altr,socfpga-stmmac-agilex5 because that port has no such
+> converter. Patch 4 adds dedicated match .data ops for the required
+> interface setup.
+> 
+> v6:
+>    - Put altr,socfpga-stmmac-agilex5-tsn in the same compatible enum as
+>      altr,socfpga-stmmac-agilex5 in the net binding, per Krzysztof Kozlowski.
+> 
+> v5:
+>    - Replace of_device_is_compatible() probe check with dedicated
+>      socfpga_agilex5_tsn_gmac_ops via match .data, per Krzysztof Kozlowski
+>      and Dinh Nguyen.
+>    - Drop altr,socfpga-stmmac-agilex5 fallback from the TSN compatible list
+>      and rewrite the net binding commit message to explain the hardware
+>      difference, per Krzysztof Kozlowski.
+> 
+> v4:
+>    - Fix wrong email address in Acked-by tag from Krzysztof Kozlowski on patch 1.
+>    - Add Reviewed-by from Andrew Lunn on patch 4.
+> 
+> v3:
+>    - Add missing Acked-by from Krzysztof Kozlowski on patch 1, inadvertently
+>      dropped in v2.
+> 
+> v2:
+>    - Replace mac-mode DT property with compatible string-based detection per
+>      Andrew Lunn's feedback.
+>    - Use phy-mode = "rgmii-id" to correctly reflect MAC-side delay handling.
+>    - Rename compatible string to altr,socfpga-stmmac-agilex5-tsn for
+>      consistency with existing altr,socfpga-stmmac-* compatibles.
+>    - Fix Makefile indentation reported by Krzysztof Kozlowski.
+>    - Add DT binding documentation for new net compatible string (new patch).
+> 
+> Nazim Amirul (4):
+>    dt-bindings: arm: altera: Add Agilex5 SoCDK TSN Config2 board
+>    arm64: dts: socfpga: agilex5: Add SoCDK TSN Config2 board
+>    dt-bindings: net: altr,socfpga-stmmac: Add
+>      altr,socfpga-stmmac-agilex5-tsn compatible
+>    net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA
+>      converter
+> 
 
-  BUG: KASAN: slab-use-after-free in rxrpc_io_thread   Write of size 8
 
-AF_RXRPC socket creation (rxrpc_create) has no capability check, so this
-is reachable by an unprivileged user.
+Applied patches 1,2.
 
-Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
-rxrpc_queue_conn() uses before taking the poke reference, so a connection
-past its last-active point is not poked/requeued after teardown began.
-
-Verified before/after on KASAN+PREEMPT at equal timer volume: 56
-saturations + 15 KASAN reports unpatched vs 0 and 0 patched.
-
-Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
-Signed-off-by: Seungwon Bae <qotmddnjs@ajou.ac.kr>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
----
- net/rxrpc/conn_object.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 0ece717db0f8..1be50e0c9cee 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
- 	spin_lock_irq(&local->lock);
- 	busy = !list_empty(&conn->attend_link);
- 	if (!busy) {
--		rxrpc_get_connection(conn, why);
-+		if (!rxrpc_get_connection_maybe(conn, why)) {
-+			spin_unlock_irq(&local->lock);
-+			return;
-+		}
- 		list_add_tail(&conn->attend_link, &local->conn_attend_q);
- 	}
- 	spin_unlock_irq(&local->lock);
+Thanks,
+Dinh
 
