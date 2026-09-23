@@ -1,91 +1,218 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73F2479863;
-	Wed, 23 Sep 2026 09:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541B5477E37;
+	Wed, 23 Sep 2026 09:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790154755; cv=none; b=qCtkut0PY+Co8WeXsTUBzO689ykbjdeOyux7tbLDpjCTqhNFSOLMGC/VrimAYVyaO09Se2IQ4euSVXjszZmTOzmrNuScpL0pCGiCYMLOiIoCoDj91bdmmlx+a1vuuIylZcTuisa+I4j/YJr7oALgbKo/lvyC2bf5beF5NiLlKxU=
+	t=1790154807; cv=none; b=qeOliM/X5MHVif/wGK8MbtITwyeVtSdqKOb9OujVRkDkjDntRQVi7eRSH3yWP52WuawXoYVvimX0Y3qIvP0ZBcHial2PYVbYK9PQgi1I4zRa+ffOXWxgJFRy7N3E63RtNcukdDFLbzQqlUzIvwQ1RmNuRCTBBNBHgsAtFg4WvOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790154755; c=relaxed/simple;
-	bh=SAGVK9OPDvqZ1jJKLqmuMYQ2rVjzfprfyjrxl+sHNTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/1vzKVHST3XeMYZ5b1PNFqYxjgCeVpWr5gb4Iyy+wXDbpVsY2l7imW5owez8f1LMzJq7SqJZ8pdEJ+uzi0Fz2xPFK6hf3z8v/dHfZePmY3kn8ibEu2Y7qSinxTaU18Dh8uMiSOoG7mJYKH+uyOhvnndZA5Ga3XfzXX0AZT2TJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=oHfb5M+F; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1790154807; c=relaxed/simple;
+	bh=baQuCNHWQgGvyqp1YInqR3FnINiRqk+cgToOBlhlmjo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IrvOYKUkmh8i12Tp6DNaBSGQFlilB1yMnWf/4H3IgeU+k/NqJq0y98giCdcTR8XxfFN0cZLnq/cZBxgDyEKQYWKCqeYX0mS6Dx6fbhr4PVhaIPneo829pEW82jgzDthgN6NKXos9U6AvyeOKXLkesX6lY/SrHgrbnERZD57Ra+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rV4WYhT2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="oHfb5M+F"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AC7F53EBC9;
-	Wed, 23 Sep 2026 09:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1790154745; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=XaWFynU97Xs0bJVkikFT8nA/Q51SOMSnMNYGzRCbHhg=;
-	b=oHfb5M+FSYpxbL2hzH6kdAlfs2u0jFGnmNU6ywtPYtrJG+D07go/nlkttBqpAaZSBtZdE3
-	PgbhZd1+qdTFBfUtYrvwBDE1QE/uVEVwrUaytqvKKziCLrP2qO/5DlhDF5WZe3GS+hoqj2
-	gDUE5tVN+G40zotFoOIA/aUtlFtdVnyan7gu1Cy/ajvUrQ8/zJfno9MVz+UBrK/09grFfH
-	lN0+I8TFebd7nigqzaw8zjs15vxYfTkOXo2RYVRAnYmcI8tgy2bQcd4h+5R+aVC8m/wFK6
-	p6Ya1plZJO5fKPcBXz5Zq6HFSt47qdwkPuls7nfC9g/awUjxvfXRmS5mEI9sGA==
-Date: Wed, 23 Sep 2026 11:12:21 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v9 1/3] dt-bindings: net: wiznet,w5100: convert
- to DT schema
-Message-ID: <20260923091221.GA90128@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260918-wiznet-link-gpio-v9-1-5536f24d8d6d@marmottus.net>
- <179009180465.2160803.12754142201441824675@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rV4WYhT2"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 055ADC2BCB8;
+	Wed, 23 Sep 2026 09:13:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790154807;
+	bh=baQuCNHWQgGvyqp1YInqR3FnINiRqk+cgToOBlhlmjo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=rV4WYhT2jPNzPZR55ruLP/NiZuYBd2KOntGphNEsZzUKjOUa7BGsVX8SVjwNIY/W+
+	 Xi4n1YNetxRcblBl163yqWhIdJcR0zR4WnKju3LJQuZmpamq5q9sP3w6ZWZ8+lB8Jd
+	 hZT4KQW6I8LYcpyRTQU1ORYiVxNC2xQK5fcy0HXdVHGCCqU/dcIIj3A4ckthIKtFWS
+	 Ze7e89RUSpdkrvVR+tr9h37vzUm4fwL3BZnar6IROPlVE3EWe4CJH/TdyO2Qh3jCIG
+	 qSIgb+YM3ltWnaV19DRxMbNj86WTr9D4neaxbl6M9qwpiJHRhYxo/ySHsU5zC0iPx2
+	 MkYUlOvWzvPfA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9A98C982EA;
+	Wed, 23 Sep 2026 09:13:26 +0000 (UTC)
+From: Kim Wooseok via B4 Relay <devnull+5mghybrid.khu.ac.kr@kernel.org>
+Date: Wed, 23 Sep 2026 18:13:25 +0900
+Subject: [PATCH net-next v2 1/3] net: macb: Preserve timestamp settings on
+ rejected requests
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <179009180465.2160803.12754142201441824675@kernel.org>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-Score: 0
-X-GND-Cause: dmFkZTEbO+S7deTUsJDFY882Iwbc5iPiEjvYLSxRbrdyUBxZ8cKU/OJLRSfMrv9Odm7Wm1uqjo2WHtggfCf+d3x02XnqFbNm7e/idwNvSTj0VoV/5obZ7szriDueefipeyQC4PO8Bu5q+tdPu+Vzwm9grBQlmXo2/eAL7lzvTI97U7bjRkJCYyiproJcYyM8AZiLNbq788XY+mCvyUlr2oRfOCSIpeOZ8tY4ZEXRxcvgz0HSoPTfLrucbG/UcRTvnntgu23/+0703Y1w9Fp9wM3fGlFbc3mCAhufQ7a2dWOhxIbtHzKKDaYyq9xzOxt9NTPh8UGc2tyqh6LJAeCRPtKT5JrzjxJEmz7lgVDJxoX0hvISTJl/fE5zgXk8RBwIsah65FHr1koUKlZY+Mnsify4WTq3+wK4DIpkOawB2se441UnHEBlf0PBvtCFYQ0iuBJ+LqFZbc2zFkq1GMDXztH/VIrZrqRBIr2xQN5YnwlX+3VQC74RnO1p440yNx/QIniyrzNJqmes6LVf2h91z/IJq79vC+Qti6kKQz5EiknU99wxsSqCqlYuFysFt66lRy6kLidIzRKsyBLKAESFLlitpm9D2B5XCAn1EDG0ABXGRVh6wBuXiJRKCMv6s773GEpfyQamtLTZ/uAq9WbYDs3LjttTX9XvviCvJry8X+Qk6ss6uA
-X-GND-State: clean
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260923-macb-hwtstamp-rework-v2-1-75c909b2676d@khu.ac.kr>
+References: <20260923-macb-hwtstamp-rework-v2-0-75c909b2676d@khu.ac.kr>
+In-Reply-To: <20260923-macb-hwtstamp-rework-v2-0-75c909b2676d@khu.ac.kr>
+To: netdev@vger.kernel.org, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Rafal Ozieblo <rafalo@cadence.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, linux-kernel@vger.kernel.org, 
+ Kim Wooseok <5mghybrid@khu.ac.kr>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790154804; l=4775;
+ i=5mghybrid@khu.ac.kr; s=kernel-20260913; h=from:subject:message-id;
+ bh=cZ8HFk0QBR/lBfFLhEs1nXctgIhBJl26Kd7OTZMobvU=;
+ b=jXR2Hp81kDBB3dOP8irV6q2Rx5YAdBZQMd8sWvVWGMMsBH3D1l8FJBewrR/bxeNt+gKTp8ScO
+ 85iVRyD56rfBNfyHJSFTrY6bXEzZLx1vUDk2/T94vRxUxJPIi2lfC/4
+X-Developer-Key: i=5mghybrid@khu.ac.kr; a=ed25519;
+ pk=1az/6lC8Tmd6BcvyarPc8FWoSxsV/WRr5NLs1v+kjlE=
+X-Endpoint-Received: by B4 Relay for 5mghybrid@khu.ac.kr/kernel-20260913
+ with auth_id=1028
+X-Original-From: Kim Wooseok <5mghybrid@khu.ac.kr>
+Reply-To: 5mghybrid@khu.ac.kr
 
-On Tue, Sep 22, 2026 at 03:43:24PM +0000, netdev-bot+sashiko@kernel.org wrote:
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index cae5962045dd..e6a5a4e245a0 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -29439,6 +29439,12 @@ M:	Miloslav Trmac <mitr@volny.cz>
->>  S:	Maintained
->>  F:	drivers/input/misc/wistron_btns.c
->>
->> +WIZNET W5100 ETHERNET DRIVER
->> +M:	Arthur Crepin Leblond <arthur@marmottus.net>
->> +L:	netdev@vger.kernel.org
->> +S:	Maintained
->> +F:	Documentation/devicetree/bindings/net/wiznet,w5100.yaml
->
->[Severity: Low]
->Could the commit message mention this new MAINTAINERS section?  The
->preserved log text only describes the .txt to YAML conversion and the
->edge-falling to level-low trigger change; the new maintainership claim is
->mentioned only in the changelog below the --- separator, which does not end
->up in git history.
->
->The section is named as a driver entry, but its only F: line matches the
->binding file, so at this commit scripts/get_maintainer.pl will not route
->drivers/net/ethernet/wiznet/ changes here.  That part is addressed later in
->the same series: the commit "w5100: detect carrier state using link status
->bit and optional interrupt" adds F: drivers/net/ethernet/wiznet/ to this
->section, so the mismatch exists only between this patch and that one.
->
+From: Kim Wooseok <5mghybrid@khu.ac.kr>
 
-I'll update the commit and the MAINTAINERS file.
+gem_set_hwtst() can reject a request after changing the TX one-step
+setting, because it programs the TX mode before checking the RX
+filter. The call returns -ERANGE, but the hardware may no longer match
+the cached configuration.
 
-Arthur
+Validate both settings first and keep the adjusted RX filter local
+until validation succeeds. Then apply the register settings and update
+the configuration. A rejected request now leaves the hardware, the
+caller's settings and the cached configuration unchanged.
+
+Protect the NCR read-modify-write with bp->lock, keeping the descriptor
+writes and cache update in the same section. With the register writes
+now in the setter, remove gem_ptp_set_one_step_sync() and
+gem_ptp_set_ts_mode().
+
+Fixes: ab91f0a9b5f4 ("net: macb: Add hardware PTP support")
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+Assisted-by: GPT-6 Astra
+Signed-off-by: Kim Wooseok <5mghybrid@khu.ac.kr>
+---
+ drivers/net/ethernet/cadence/macb_ptp.c | 59 ++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 34 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
+index 14ae57fa0..02face93a 100644
+--- a/drivers/net/ethernet/cadence/macb_ptp.c
++++ b/drivers/net/ethernet/cadence/macb_ptp.c
+@@ -374,16 +374,6 @@ void gem_ptp_remove(struct net_device *netdev)
+ 		 GEM_PTP_TIMER_NAME);
+ }
+ 
+-static int gem_ptp_set_ts_mode(struct macb *bp,
+-			       enum macb_bd_control tx_bd_control,
+-			       enum macb_bd_control rx_bd_control)
+-{
+-	gem_writel(bp, TXBDCTRL, GEM_BF(TXTSMODE, tx_bd_control));
+-	gem_writel(bp, RXBDCTRL, GEM_BF(RXTSMODE, rx_bd_control));
+-
+-	return 0;
+-}
+-
+ int gem_get_hwtst(struct net_device *netdev,
+ 		  struct kernel_hwtstamp_config *tstamp_config)
+ {
+@@ -396,25 +386,17 @@ int gem_get_hwtst(struct net_device *netdev,
+ 	return 0;
+ }
+ 
+-static void gem_ptp_set_one_step_sync(struct macb *bp, u8 enable)
+-{
+-	u32 reg_val;
+-
+-	reg_val = macb_readl(bp, NCR);
+-
+-	if (enable)
+-		macb_writel(bp, NCR, reg_val | MACB_BIT(OSSMODE));
+-	else
+-		macb_writel(bp, NCR, reg_val & ~MACB_BIT(OSSMODE));
+-}
+-
+ int gem_set_hwtst(struct net_device *netdev,
+ 		  struct kernel_hwtstamp_config *tstamp_config,
+ 		  struct netlink_ext_ack *extack)
+ {
+ 	enum macb_bd_control tx_bd_control = TSTAMP_DISABLED;
+ 	enum macb_bd_control rx_bd_control = TSTAMP_DISABLED;
++	int rx_filter = tstamp_config->rx_filter;
+ 	struct macb *bp = netdev_priv(netdev);
++	unsigned long flags;
++	u32 ncr_mask = 0;
++	u32 ncr_bits = 0;
+ 	u32 regval;
+ 
+ 	if (!macb_dma_ptp(bp))
+@@ -424,18 +406,19 @@ int gem_set_hwtst(struct net_device *netdev,
+ 	case HWTSTAMP_TX_OFF:
+ 		break;
+ 	case HWTSTAMP_TX_ONESTEP_SYNC:
+-		gem_ptp_set_one_step_sync(bp, 1);
++		ncr_bits |= MACB_BIT(OSSMODE);
++		ncr_mask |= MACB_BIT(OSSMODE);
+ 		tx_bd_control = TSTAMP_ALL_FRAMES;
+ 		break;
+ 	case HWTSTAMP_TX_ON:
+-		gem_ptp_set_one_step_sync(bp, 0);
++		ncr_mask |= MACB_BIT(OSSMODE);
+ 		tx_bd_control = TSTAMP_ALL_FRAMES;
+ 		break;
+ 	default:
+ 		return -ERANGE;
+ 	}
+ 
+-	switch (tstamp_config->rx_filter) {
++	switch (rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+@@ -451,25 +434,33 @@ int gem_set_hwtst(struct net_device *netdev,
+ 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+ 	case HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ:
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+-		rx_bd_control =  TSTAMP_ALL_PTP_FRAMES;
+-		tstamp_config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-		regval = macb_readl(bp, NCR);
+-		macb_writel(bp, NCR, (regval | MACB_BIT(SRTSM)));
++		rx_bd_control = TSTAMP_ALL_PTP_FRAMES;
++		rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
++		ncr_mask |= MACB_BIT(SRTSM);
++		ncr_bits |= MACB_BIT(SRTSM);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+ 	case HWTSTAMP_FILTER_ALL:
+ 		rx_bd_control = TSTAMP_ALL_FRAMES;
+-		tstamp_config->rx_filter = HWTSTAMP_FILTER_ALL;
++		rx_filter = HWTSTAMP_FILTER_ALL;
+ 		break;
+ 	default:
+-		tstamp_config->rx_filter = HWTSTAMP_FILTER_NONE;
+ 		return -ERANGE;
+ 	}
+ 
+-	bp->tstamp_config = *tstamp_config;
++	spin_lock_irqsave(&bp->lock, flags);
++	if (ncr_mask) {
++		regval = macb_readl(bp, NCR);
++		regval = (regval & ~ncr_mask) | ncr_bits;
++		macb_writel(bp, NCR, regval);
++	}
+ 
+-	if (gem_ptp_set_ts_mode(bp, tx_bd_control, rx_bd_control) != 0)
+-		return -ERANGE;
++	gem_writel(bp, TXBDCTRL, GEM_BF(TXTSMODE, tx_bd_control));
++	gem_writel(bp, RXBDCTRL, GEM_BF(RXTSMODE, rx_bd_control));
++
++	tstamp_config->rx_filter = rx_filter;
++	bp->tstamp_config = *tstamp_config;
++	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+ 	return 0;
+ }
+
+-- 
+2.53.0
+
+
