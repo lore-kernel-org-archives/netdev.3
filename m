@@ -1,264 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605AE481641
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4C337F32F;
+	Wed, 23 Sep 2026 10:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790158898; cv=none; b=Wi4Aozm6XUVYiNM4ML1Qr9OKsbAp9Coj13AKNJKqlaJjC9JIDZI7zasPxaaSZChE4Ckk57fl2WTNf3WGLqWZr+LCBdY1l6g8kndmWO9lwUNXV8IUi/m4SUZv7ppv/8TeRjb8z8O3ZvOE0ToNG5r7kebTNTmD28uZtVVD3nRvnSs=
+	t=1790159061; cv=none; b=bA6GlzMOH0cbrIOYh9pKjD52TFYuWmY48TVl4UZ/B3CpwiRvSDasX1c/k2FLTiVnf6ZppudNpVdz6oxBB1uXVf6iKrA4zP9VKLCqtxZzicqiXS+DolF6e61O+quHuCbhkW9ofXpDqMd6elYGpK8fmAvWm9apgzTMJrkDAC6whWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790158898; c=relaxed/simple;
-	bh=4qjSqIjJRSLWY8kT8aUZHOXLRBvJpPrV+p/O0kGjplU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VGZYQnJdRJsE5fPrK0ckj6R9oTEb0qmGTZoFeaA+U4yOhniuI9MBvRbqQQ80PG43wT2uF7+s9c/gtRxJSEx5lZ2HM8VrSES/BpnH2iMmytiOClipH3PPbyHs6iQedos38Uo+Y7k8/Yn193W2GlM9m1kicsw9PKiC731zJEPaODs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Po4whxyI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AgxeiR2B; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790159061; c=relaxed/simple;
+	bh=S474P7HbP/fO8M0Y8lxNVQlbG1trsGbWHCqeuglkRL8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=QQTc4ecpnkDkPKQYUu0QCHdFYBmicHpfxVycoT7dWwaaAQiMx9mltkJYbZRNgzZ2K8ssb2Nt3nItuWy6QN8LQEb64C/iCGfgTJA7uAKHbbrGs1SAjrIDVi4v25fb+GjceZY7LCBA44tZbB3qVYEG9ucRv2OJl3xiPVZufWPHB5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=y6zvexnF; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Po4whxyI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AgxeiR2B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790158877;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A/yNGk5DmsVVa7FPt1z8YmmINF36yskI05CuGhzTjCI=;
-	b=Po4whxyIPwX+uXFs8GVs8XB0kys95jd6YxDPNREAUKPBMSMba11cO+p6I1KpMBVrzsQVck
-	IwLeUJjltTqXtDo9RGKM7swUQjKjNhgDCGe2Z1KCBc7W3qBxytf0a+NhMYYHV9AMZs4rVK
-	oVZmhRg3dvEUAoOvOy68iyII5OGd7IA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-jcxIZBXaNXuD6xO6MzE7Ow-1; Wed, 23 Sep 2026 06:21:16 -0400
-X-MC-Unique: jcxIZBXaNXuD6xO6MzE7Ow-1
-X-Mimecast-MFC-AGG-ID: jcxIZBXaNXuD6xO6MzE7Ow_1790158875
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49ccfad90f1so5633355e9.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790158875; x=1790763675; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A/yNGk5DmsVVa7FPt1z8YmmINF36yskI05CuGhzTjCI=;
-        b=AgxeiR2BD+8mJAlnclSpLHirysbv4xwP4VXXNk6YBp9b7LG0/m4jQxks6dALYqJ3Ef
-         GR/pXQMQCq7Ckk1EBOmMoQW1QJiuYFo+QOePNX06HrxXK1JK11JLj4EUhjfwZvU8AqxJ
-         kYj3hxfuQLMHC/+YlKUqMWe3jfRYBNfEHf4uRzKOWjRwI5KILuYMHKIgSSz3LBY/dxr3
-         ZFCeG0TdBFJRIII0J8W9UG69FycFUAHuVQc1DSuZVLRQak1MdKS/B53gvj4pNDJ1UXcE
-         d+AJ4MDHPCHL1lNs2fNSQAYzVI/fmzHlWW9cpL2PveKrU/tE/+UOwzCX1OXxXQwpsYAr
-         tVSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790158875; x=1790763675;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A/yNGk5DmsVVa7FPt1z8YmmINF36yskI05CuGhzTjCI=;
-        b=n3xKTjKSvcMjkmSmxSd8G3KXMw+CVhpmWzSyPfiiSU+X1BUwK5J4+wOK5KtTmhccDp
-         BGAJiZFI3YXiQY2oLgclX/gYUXI2+9tUhYL8kQkBttwjcqaGVCwVSkNiKl+lRvnEAgtN
-         NSyOJsGCXbpJqO1mYxEZ1kVTpAgqYfWu4Sqxfa1xyJPQVNVTjLJv9aTVRGQp2xgOHKc8
-         cMy8dZtiF9b183Y0DH/wiRytc9YROLyuMQXlYmfSI8DZhQJXeaWmDjvn5BSe63ApyPBH
-         WLnVQT44uEY8HhVy1vxgNjVnqUY0MgwWopvQ/NI1C8X71Gei0OocJnnPwXLpKzTytRRI
-         O1lQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxap3c+LXiKY0rZLf2ww55HPNq0T2TzBYsFdW4JEW+gYMbnp3FcqleVSX7bGu6VPmxNg/hQpW8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mv2EXyHUaX1EkukpfN71tMkO4AP12ZIPHEUTgSzBMc81Ou7RZJ
-	aiDYFzV3ZA1UKQy+z2kDROkZH0nt5TNww6WhN/yUV0zsCD8cSJ1sbfwDP4XFWaSdZqLK9T7bPNf
-	93R+Jkj5IneZFwCG5PI48PFh1X3JTmLSsHs+DEF9YekhnrbarzmjXjxRSlw==
-X-Gm-Gg: AYBFou3it14u6ha347getJn5eABTpslEv2j/rSftBWPOvmL4RGoWTWW/4DGx1G0wTlC
-	dPc3anlr3og+/CDj/CnJE1Wjx0M4ldw8U+8L2mAl43vXhihc2/kaKYWsMIj3Pv+iQExPXVWe7cs
-	teumz7cvvtjiKNDRs7IoU2GaRtkzE5aSzX/qed2Z95jZj4hUGCqN5vhx0xkwFnUrAAhJmI4umj9
-	Wb3d9ph2kePFheJ+kxQjrbltRT4s3JHeCH12ctM0cPn0UncWL2ldZbY+MJD77rp39t9tHGp4P6B
-	9T34Ftmi4AXhwNb30cIMtCG25a5/GP0lFFnzeQNkgEgv4Bul5XF7Nr87CvBDl4W1n9e5zQ==
-X-Received: by 2002:a05:600c:4712:b0:49d:2536:402e with SMTP id 5b1f17b1804b1-49fdf24f928mr27542145e9.30.1790158875127;
-        Wed, 23 Sep 2026 03:21:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:4712:b0:49d:2536:402e with SMTP id 5b1f17b1804b1-49fdf24f928mr27541455e9.30.1790158874532;
-        Wed, 23 Sep 2026 03:21:14 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdf9691e2sm57317795e9.1.2026.09.23.03.21.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 03:21:13 -0700 (PDT)
-Date: Wed, 23 Sep 2026 06:21:09 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Paulos Yibelo <habte.yibelo@gmail.com>, netdev@vger.kernel.org,
-	richard@nod.at, anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net, jasowangio@gmail.com,
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
-	andrew+netdev@lunn.ch, pablo@netfilter.org, fw@strlen.de,
-	phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com,
-	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	linux-um@lists.infradead.org, virtualization@lists.linux.dev,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	bridge@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v6 1/2] net: validate virtio checksum start after
- network header
-Message-ID: <20260923061215-mutt-send-email-mst@kernel.org>
-References: <20260922030310.8684-1-habte.yibelo@gmail.com>
- <20260922030310.8684-2-habte.yibelo@gmail.com>
- <willemdebruijn.kernel.259bc7096258d@gmail.com>
- <willemdebruijn.kernel.2cdfef118aa1d@gmail.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="y6zvexnF"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 487EFA4A35;
+	Wed, 23 Sep 2026 12:24:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790159043; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=OhyAe01gH5uSFkKcaGnj2dUBeWhWIdjzaBUO0Eskhcs=;
+	b=y6zvexnFoi2qGiCGGSgpcHJcbAbdHIiCqfDN6N+9XclxpLvqlTgzU21xlQq2lgddEexm1B
+	okqHdxAEPY4HS5cekCBnROeHBDVX4Sf6j5JW7s1vxrmufR0DWZ92mysMP4YD52UP/jX+hc
+	Ea8psXAAUlfWk8tD0qu+g12YXQYcyAZpOeleLUxyoYuMWBDsmPQDPivlyCUecE+wo4yfW3
+	mSvzXAVwI0z1sIGui/fp/TaZcFXrhzA733GUlCPhorr2jFhtw33Nht6RA721KXaJZgt51y
+	3ygLsQV5dW9Clv+USyrFmNex2ocnBA7RPZ4DV5/ICICcqGd9OvV7Q/3B1EWR2A==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <willemdebruijn.kernel.2cdfef118aa1d@gmail.com>
+Date: Wed, 23 Sep 2026 12:24:00 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch,
+ kory.maincent@bootlin.com, jjc@jclark.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ethtool: let tsconfig reach a PHY-only timestamp
+ provider
+In-Reply-To: <179015820246.2160803.17295463468229392731@kernel.org>
+References: <20260922070813.1458713-1-nb@tipi-net.de>
+ <179015820246.2160803.17295463468229392731@kernel.org>
+Message-ID: <7a817f1e561fb387b0e01784ac4632f8@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 22, 2026 at 09:27:26PM -0400, Willem de Bruijn wrote:
-> Willem de Bruijn wrote:
-> > Paulos Yibelo wrote:
-> > > __virtio_net_hdr_to_skb() checks a minimum network-header length for
-> > > CHECKSUM_PARTIAL packets. Its checksum start is relative to skb->data,
-> > > but some callers have not established skb->network_header when they
-> > > convert the virtio header.
-> > > 
-> > > Pass the data-relative L3 origin explicitly. Ethernet receive paths
-> > > parse the frame and nested VLAN headers without changing skb state.
-> > > AF_PACKET uses the frame's actual L3 origin even when the socket
-> > > protocol is ETH_P_IP and the raw frame carries VLAN tags. Non-Ethernet
-> > > AF_PACKET devices retain their established skb network offset.
-> > > 
-> > > Also pass the actual L3 protocol so IPv6 packets use the 40-byte base
-> > > header minimum even without TCPv6 GSO. IFF_TUN obtains that protocol
-> > > from the packet before skb->protocol is set. Name the Ethernet parser
-> > > accordingly, use the same origin for tunnel validation, and propagate
-> > > conversion failures in UML.
-> > > 
-> > > The bound remains a minimum; fragmentation paths separately validate
-> > > the parsed IPv4 or IPv6 header length before completing a checksum.
-> > > 
-> > > Fixes: 49d14b54a527 ("net: test for not too small csum_start in virtio_net_hdr_to_skb()")
-> > > Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
-> > > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> > > Link: https://lore.kernel.org/netdev/20260920004733.6473-2-habte.yibelo@gmail.com/
-> > > Cc: stable@vger.kernel.org
-> > > Assisted-by: LLM
-> > > Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> > > ---
-> > >  arch/um/drivers/vector_transports.c | 13 ++++-
-> > >  drivers/net/tun_vnet.h              | 52 ++++++++++++++++-
-> > >  drivers/net/virtio_net.c            | 10 +++-
-> > >  include/linux/virtio_net.h          | 87 ++++++++++++++++++++++++-----
-> > >  net/packet/af_packet.c              | 24 +++++++-
-> > >  5 files changed, 163 insertions(+), 23 deletions(-)
-> > 
-> > The fix may still miss the case IPv4 packets have options.
-> > 
-> > This version is a very large patch.
-> > 
-> > Untested shorter first suggestion by bot, which looks plausible as a
-> > starting point for discussion.
+On 23.9.2026 12:10, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
 > 
-> Cleaned up some more:
+> Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0
 > 
->     diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
->     index f4c652b1fa44..c24607af2aad 100644
->     --- a/drivers/net/tun_vnet.h
->     +++ b/drivers/net/tun_vnet.h
->     @@ -180,6 +180,9 @@ static inline int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
->      static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
->                            const struct virtio_net_hdr *hdr)
->      {
->     +    if ((flags & TUN_TYPE_MASK) == IFF_TUN)
->     +        skb_reset_network_header(skb);
->     +
->          return virtio_net_hdr_to_skb(skb, hdr, tun_vnet_is_little_endian(flags));
->      }
->      
->     @@ -199,6 +202,9 @@ tun_vnet_hdr_tnl_to_skb(unsigned int flags, netdev_features_t features,
->                  struct sk_buff *skb,
->                  const struct virtio_net_hdr_v1_hash_tunnel *hdr)
->      {
->     +    if ((flags & TUN_TYPE_MASK) == IFF_TUN)
->     +        skb_reset_network_header(skb);
->     +
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let 
+> patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your 
+> reply
+> (one such reply per series is enough).
 > 
->     diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
->     index c381b916c1b5..02c448de0802 100644
->     --- a/include/linux/virtio_net.h
->     +++ b/include/linux/virtio_net.h
->     @@ -48,6 +48,42 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
->          return 0;
->      }
->      
->     +static inline int virtio_net_hdr_nh_min_len(const struct sk_buff *skb,
->     +                        unsigned int nh_min_len)
->     +{
->     +    int thoff = skb_transport_offset(skb);
->     +    __be16 proto;
->     +    int nhoff;
->     +
->     +    if (skb_network_header_was_set(skb)) {
->     +        nhoff = skb_network_offset(skb);
->     +        proto = skb->protocol;
->     +    } else {
->     +        if (unlikely(thoff < ETH_HLEN))
->     +            return -EINVAL;
->     +        nhoff = ETH_HLEN;
->     +        proto = eth_hdr(skb)->h_proto;
->     +    }
->     +
->     +    if (eth_type_vlan(proto)) {
->     +        proto = __vlan_get_protocol(skb, proto, &nhoff);
->     +        if (!proto)
->     +            return -EINVAL;
->     +    }
->     +
->     +    if (proto == htons(ETH_P_IP)) {
->     +        const struct iphdr *iph = (void *)(skb->data + nhoff);
->     +
->     +        if (unlikely(thoff < nhoff + sizeof(*iph)))
->     +            return -EINVAL;
->     +        nh_min_len = max_t(u32, iph->ihl * 4, sizeof(*iph));
->     +    } else if (proto == htons(ETH_P_IPV6)) {
->     +        nh_min_len = sizeof(struct ipv6hdr);
->     +    }
->     +
->     +    return nhoff + nh_min_len;
->     +}
->     +
->      static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->                            const struct virtio_net_hdr *hdr,
->                            bool little_endian, u8 hdr_gso_type)
->     @@ -98,13 +134,15 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->              u32 start = __virtio16_to_cpu(little_endian, hdr->csum_start);
->              u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
->              u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
->     +        int min_thoff;
->      
->              if (!pskb_may_pull(skb, needed))
->                  return -EINVAL;
->      
->              if (!skb_partial_csum_set(skb, start, off))
->                  return -EINVAL;
->     -        if (skb_transport_offset(skb) < nh_min_len)
->     +        min_thoff = virtio_net_hdr_nh_min_len(skb, nh_min_len);
->     +        if (min_thoff < 0 || skb_transport_offset(skb) < min_thoff)
->                  return -EINVAL;
+> - [High] TSCONFIG_SET now reports success (bare ACK, ret 0) with no
+>   ETHTOOL_MSG_TSCONFIG_SET_REPLY on devices that have no hardware…
+> - [Medium] With ethnl_set_tsconfig_validate() gone, 
+> ethnl_set_tsconfig()
+>   is reachable on netdevs that implement neither ndo_hwtstamp_get nor…
+> - [Medium] net: ethtool: TSCONFIG_SET provider switch fails on devices
+>   lacking ndo_hwtstamp_set
+> 
+> Pre-existing issues:
+> - [Medium] A struct hwtstamp_provider installed into dev->hwprov by
+>   TSCONFIG_SET is never freed when the netdevice is unregistered/freed…
+> 
+> --
+> 
+> net: ethtool: let tsconfig reach a PHY-only timestamp provider
+> 
+> This drops the ndo_hwtstamp_get check in tsconfig_prepare_data() and 
+> the
+> whole ethnl_set_tsconfig_validate() gate so that TSCONFIG_GET/SET can 
+> be
+> served by a PHY on a MAC that implements no hwtstamp NDO. A guard is 
+> added
+> in dev_get_hwtstamp_phylib() before calling ndo_hwtstamp_get.
+> 
+> Related discussion for the ioctl side:
+> https://lore.kernel.org/netdev/20260918095540.34286-1-nb@tipi-net.de/
+> 
+>> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+>> index 164643140a523..f6029f60c1dc9 100644
+>> --- a/net/core/dev_ioctl.c
+>> +++ b/net/core/dev_ioctl.c
+>> @@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device 
+>> *dev,
+>>  		    hwprov->phydev)
+>>  			return phy_hwtstamp_get(hwprov->phydev, cfg);
+>> 
+>> -		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
+>> +		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
+>> +		    dev->netdev_ops->ndo_hwtstamp_get)
+>>  			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
+>> 
+>>  		return -EOPNOTSUPP;
+> 
+> [Severity: Medium]
+> This guard makes the read side safe, but can the install side now latch 
+> a
+> HWTSTAMP_SOURCE_NETDEV provider on a device that has no hwtstamp NDOs 
+> at
+> all, with no way back?
 
+Ack, I will guard the install path in v2.
 
-Certainly looks much better. But I'd like to ask, generally:
-doesn't the net stack need to protect against weird packets?
+> [...]
 
-It seems likely that not all drivers validate headers defensively,
-and incoming packets can easily become outgoing ones.
-So do we even need virtio specific validation, or is it enough to
-validate everything in the net stack, where we are poking at the
-header anyway?
+> [Severity: Medium]
+> With ethnl_set_tsconfig_validate() gone, a TSCONFIG_SET that selects
+> the PHY provider now reaches ethnl_set_tsconfig() on a MAC without
+> hwtstamp NDOs. Does the provider switch itself ever succeed there
+> unless the PHY happens to be the default timestamper?
 
-Or maybe it's more a defense in depth thing?
+Will add a check in v2.
 
-My worries:
-- more poking at the header, more cache misses, where we really
-  do not need that
-- future protocol extensions that now will require surgery in
-  virtio, instead of just being passed through to the host
+> [...]
 
-What do others think?
+> [Severity: High]
+> Does removing this gate turn TSCONFIG_SET into a silent success on 
+> devices
+> that have no timestamp provider at all?
 
--- 
-MST
+Ack, this is an ungly regression and would be the opposite of what 
+e8ab231782e9
+had fixed. I will narrow down the gate.
 
+> [...]
+
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the dev->hwprov lifetime
+> looks unbalanced and dropping .set_validate widens the set of devices 
+> that
+> can reach the install path.
+
+Agree on the issue, but would probably fix this in a separate patch.
+
+> [...]
+
+pw-bot: cr
