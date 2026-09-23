@@ -1,191 +1,105 @@
-Received: from out-zbxj-a65.jellyfish.systems (out-zbxj-a65.jellyfish.systems [198.54.127.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042EE511E8A
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0D55111AF
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790165593; cv=none; b=CzJWfn1pF4BUjXjdLmPdNtiV/bKy9zCgW+gN1Iw1Oiszx0dOcLZnVadpTSbE03FiYwgzNQPNecigq1t+GOCxMohM3pcCUdCce95J3XwNXXMYs8nwJWKSM3mEXrQ9QnwdqERcxasEmwT+/wa4AGrXKd1gV0CoIyL4673B564yctU=
+	t=1790165662; cv=none; b=sohOq2ZyKVvmuwbSoNI9DGL3xrF/E9oh+UtByCGxKNKokWqSrxOKa2k4lsyuz2/ZmmUMYS8EeNVFFeEc5L2eRBT6vtS3WvFOF3mAK4wM3Di4cmnVy6Jae76dOjvM37fzfZSYA055dArJ33/nFeHZAZ6bzyMPPE8nvjJfkV2FATo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790165593; c=relaxed/simple;
-	bh=zFinCXNLEu0ze4nQ76eS+VO5+LQazasf6eYONc0uDFA=;
+	s=arc-20240116; t=1790165662; c=relaxed/simple;
+	bh=c6o52qQJs9QcOYJ0G8+o+ceydWkwkaK19RRs8ZrDRW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqDPCqnX9ImOrGF7maQWcgCtNE0zL3YkSjas5wTIaK8yUv257ejuiN/IPe9+JYg4G8DBCvu65sPm3TDdDWzTiNQvJSct48vvEK54XnsA8Apobl5GH93wazz2XFvj1zSzaNHthX2hxl1u0d/TplFP425l/6WmOMv7BO9RCUC0o0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=f19C2X4t reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+	 MIME-Version:Content-Type; b=c2OrkW+F9twhAYY5Afos9mF9wF+ObFrTpwAk7lnCU2E1/Q8pEOH28JUeYhhXeTWpAirTrhl/iBe8AnQfezc68tlhjpdS/3yJsCb8+94srG93syI0+LOqZRD+XUGniO/yiF24Eta0CYnnuZyW25VLgcUnCvI3HeDU+9WGdT3Hb8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K5vKsAn3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cxTWkyyG; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="f19C2X4t"
-Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqbM132Pbz8sY0;
-	Wed, 23 Sep 2026 12:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1790165262;
-	bh=8SuxllwL7FhyID8IKX9Cc3xbMnHEppmrcasVpdKlnN4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f19C2X4tWCsrqLAP3l0BHWo1F9FR206ZCS4MjcVm3xal4DNo1Jqh2B8ZDVbNxH8tw
-	 2Mi8qevGJSO7EH4OnHTvrPWcPc/GPdn+2MFtVHkjAsqYgzWtH0p1ktAqqh9qDRqF5K
-	 IkVgrfvNOFNFy8+/o9mGzkqAlnPdut3lYpoF9ECjMkx2CmloPZRHHHRwq/nNyqa3gb
-	 2/+dmJKt52a9bVmuaFa27xhoFc2FFK0TnuSFYewHiPYCO83PZKzITj9L2TFHkX9vi2
-	 7E2vAKRFHPowQ9hqOWsJOaUE4svh+AqO54eyAhtXa3eEiVgWY5gpVY3Wv4NQ4zrwnT
-	 xBSNWPv33l+mw==
-From: Rahul Chandelkar <rc@rexion.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	Rahul Chandelkar <rc@rexion.ai>
-Subject: [PATCH nf-next v4 1/4] netfilter: conntrack: add shared uint and port parsers for helpers
-Date: Wed, 23 Sep 2026 12:07:35 +0000
-Message-ID: <20260923120738.2844168-1-rc@rexion.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260923091608.2617604-1-rc@rexion.ai>
-References: <20260923091608.2617604-1-rc@rexion.ai>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K5vKsAn3";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cxTWkyyG"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1790165653;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gaolA8HyCxFnnwhWRTG00R+dZvmZnieOtCIRyueIrP0=;
+	b=K5vKsAn3ZnqEYcIfjxqOTe/gIqyCz7oAYRIZQxRZ9HDHGwqTK4q+LQMFFlCUjWFfzlNTwp
+	1RJHx05ppNFcMADrTXZpTbn79F1KW+a/ZM0jG15tnPRN947JK3c3SuQ/f5v1I9fnsZC5u5
+	8uyZIcvi1/vRik+hDGMJfMdOapCvQ4Hk5z/NKQaAU83hI4SetCG2xR6ZRlT8/t9sXhQgR1
+	emQnQz5Y7UkJAr3yBROTXVZ6S2725lILnyx0Yo0Joz4fUDkE7FF9WCL59wM6oDkVdtlaLe
+	DZDScVAC0Tw2t58Wm7Lx6OhnP3klwTZBvtFacygBo0FavjfOekZ4bXfs/crPPg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1790165653;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gaolA8HyCxFnnwhWRTG00R+dZvmZnieOtCIRyueIrP0=;
+	b=cxTWkyyG/ARPIqU/eBIR6Mv7cGCdQBgMHqKPTxYrjiAjRjfvXkLG6hLCbfN4cYsJ8RAFdd
+	/uuttIm79W6LqXDw==
+To: netdev@vger.kernel.org
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"(JC), Jayachandran" <j-rameshbabu@ti.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Danish Anwar <danishanwar@ti.com>,
+	Daolin Qiu <d-qiu@ti.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Neelima Muralidharan <neelima@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Praneeth Bajjuri <praneeth@ti.com>,
+	Pratheesh Gangadhar TK <pratheesh@ti.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next v6 1/8] hsr: Add header_ops::parse_protocol
+Date: Wed, 23 Sep 2026 14:14:02 +0200
+Message-ID: <20260923-hsr_ptp-v6-1-6ea07b3fb8a8@linutronix.de>
+In-Reply-To: <20260923-hsr_ptp-v6-0-6ea07b3fb8a8@linutronix.de>
+References: <20260923-hsr_ptp-v6-0-6ea07b3fb8a8@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Several conntrack helpers parse integers and port numbers out of
-application-layer payload.  Some open-code simple_strtoul() (which
-requires a NUL-terminated string and returns unsigned long without any
-range check), while nf_conntrack_sip carries its own sip_strtouint().
+af_packet uses dev_parse_header_protocol() to assign skb::protocol.
+The hsr stack does not assign a callback so the field is assigned to 0.
 
-Add two length-delimited parsers to the conntrack helper core so helpers
-can share one implementation:
+The header used by the hsr stack corresponds to the ethernet header for
+the "first" part so the protocol member is at the same position.
 
-  nf_ct_helper_parse_uint() - bounded decimal parser that operates on an
-    unterminated buffer, capping the result at UINT_MAX.  Its body is
-    taken from sip_strtouint() so nf_conntrack_sip can drop its private
-    copy in a later patch.
+Use eth_header_parse_protocol() for the hsr_header_ops's parse_protocol
+callback.
 
-  nf_ct_helper_parse_port() - thin wrapper that parses a port and rejects
-    zero and values above 65535.
-
-Both are exported so the IRC, Amanda and SIP helpers can use them.
-
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- include/net/netfilter/nf_conntrack_helper.h |  5 ++
- net/netfilter/nf_conntrack_helper.c         | 68 +++++++++++++++++++++
- 2 files changed, 73 insertions(+)
+ net/hsr/hsr_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index 335b8c43694f..4d5ad5ae1d13 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -184,6 +184,11 @@ nf_ct_helper_expectfn_find_by_name(const char *name);
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_symbol(const void *symbol);
- 
-+unsigned int nf_ct_helper_parse_uint(const char *cp, unsigned int len,
-+				     char **endp);
-+int nf_ct_helper_parse_port(const char *cp, unsigned int len,
-+			    u16 *port, char **endp);
-+
- extern struct hlist_head *nf_ct_helper_hash;
- extern unsigned int nf_ct_helper_hsize;
- 
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index c30ae3f203be..99b90a54d8a9 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -16,6 +16,7 @@
- #include <linux/random.h>
- #include <linux/err.h>
- #include <linux/kernel.h>
-+#include <linux/ctype.h>
- #include <linux/netdevice.h>
- #include <linux/rculist.h>
- #include <linux/rtnetlink.h>
-@@ -569,6 +570,73 @@ void nf_nat_helper_unregister(struct nf_conntrack_nat_helper *nat)
- }
- EXPORT_SYMBOL_GPL(nf_nat_helper_unregister);
- 
-+/* Parse a decimal unsigned integer from a length-delimited buffer that is not
-+ * necessarily NUL-terminated.  At most @len bytes are examined.  On success
-+ * the parsed value is returned and, if @endp is non-NULL, *@endp points just
-+ * past the last digit consumed.  If no digit is found or the value would
-+ * exceed UINT_MAX, 0 is returned and *@endp is set to @cp.
-+ */
-+unsigned int nf_ct_helper_parse_uint(const char *cp, unsigned int len,
-+				     char **endp)
-+{
-+	const unsigned int max = sizeof("4294967295");
-+	unsigned int olen = len;
-+	const char *s = cp;
-+	u64 result = 0;
-+
-+	if (len > max)
-+		len = max;
-+
-+	while (olen > 0 && isdigit(*s)) {
-+		unsigned int value;
-+
-+		if (len == 0)
-+			goto err;
-+
-+		value = *s - '0';
-+		result = result * 10 + value;
-+
-+		if (result > UINT_MAX)
-+			goto err;
-+		s++;
-+		len--;
-+		olen--;
-+	}
-+
-+	if (endp)
-+		*endp = (char *)s;
-+
-+	return result;
-+err:
-+	if (endp)
-+		*endp = (char *)cp;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nf_ct_helper_parse_uint);
-+
-+/* Parse a TCP/UDP port (1-65535) from a length-delimited buffer using
-+ * nf_ct_helper_parse_uint().  Returns 0 and stores the port in *@port (and the
-+ * end pointer in *@endp) on success, or -1 if no digit is found or the value
-+ * is out of range.
-+ */
-+int nf_ct_helper_parse_port(const char *cp, unsigned int len,
-+			    u16 *port, char **endp)
-+{
-+	char *e = (char *)cp;
-+	unsigned int val;
-+
-+	val = nf_ct_helper_parse_uint(cp, len, &e);
-+	if (e == cp || val == 0 || val > 65535)
-+		return -1;
-+
-+	*port = val;
-+	if (endp)
-+		*endp = e;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(nf_ct_helper_parse_port);
-+
- int nf_conntrack_helper_init(void)
- {
- 	nf_ct_helper_hsize = 1; /* gets rounded up to use one page */
--- 
-2.43.0
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index d14de44e14b7a..6d96bc4a12446 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -247,6 +247,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, st=
+ruct net_device *dev)
+ static const struct header_ops hsr_header_ops =3D {
+ 	.create	 =3D eth_header,
+ 	.parse	 =3D eth_header_parse,
++	.parse_protocol =3D eth_header_parse_protocol,
+ };
+=20
+ static struct sk_buff *hsr_init_skb(struct hsr_port *master, int extra)
+
+--=20
+2.55.0
 
