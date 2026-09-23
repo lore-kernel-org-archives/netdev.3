@@ -1,216 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F00E424668;
-	Wed, 23 Sep 2026 18:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1234266B2;
+	Wed, 23 Sep 2026 18:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790189555; cv=none; b=a0uVy0O5CmGGCD4exGMVA5LlagDa+gF96nwpunGYfWmcjwgoKYVbnjt6UUFq36RX0d4jf6Stt6L1Mq7PhgSfy5YxU5qzUkekZmEbiUKRJwS8iW61CflSF3fqT3PosQCgpzjBTnS2BVLxXkdk7lIbxfNNqfkAPBi9VUQBXPP3Dv0=
+	t=1790189747; cv=none; b=eBpcDyL0jesU7kN7sfMvJdrKo2+M84OKtYj4rfKs3fNbKnari0/k3dWPC4s3Jw5h/cuMv6Uq1fPCSUiyQ1K+F9hJB0vovTUeIe+08l5aclcfbrwQ5vB1ahGuiGwrKyP/nB++s9NvdHzXZ5AuzYSRe+PIvU+cjFPgc5JZXGV0PSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790189555; c=relaxed/simple;
-	bh=o6VNPcEo0cLAHgD8yiZGDuw1f4tKu1q+wyxHGAu7M1w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EFBwGjTxlM0AmkK3SydkM8mG6Scw6r8VcVyTILWjVg3hksZqyQ69elfdxbJkkhkOXx1lbcXNKFP/KVacFI3Kpma3/Udryn4BkhhjDgCS5X529PVpBdTuDczZkW92ym2+m5wa5fNQUqlooetm9LsEb+XCFMDfQYXlWH8FMMmPyn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArPqpY12; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790189747; c=relaxed/simple;
+	bh=Rvm0Z5qWL6QK1cIHCWUfahf4qoEdET4G0nkib51eTqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UngBaE1/Z951ujAOl+ZNb3ajdKAXdOGdPkubGbVebAw+IrYAHzs7ER3fEesAMKfbtdwGDMXNnBCwhI+WsZnXmok+sqV1qoF6WFooDsP3bCyErvT5BF8VBaPrI/Tf58rSPP4Yl7FcQvd4+SOAik5aVZSDU41niogW1N9BYjcFWMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zZ5uBgZQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArPqpY12"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FA91F000FF;
-	Wed, 23 Sep 2026 18:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790189553;
-	bh=4639aOZrqqEi//ezkJvyEz3CljUGoz150LNGFfXx00M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ArPqpY12gRzNjbR/BHkXsL//C9aFdr7zedZbOGkMPIs4MGedO/AwT9AB/YE3t7Ykx
-	 Arqaa1R9TSvBcXnJYH9juMiAN05hU0J6m4xWmhH7H46lUnHY1I5dgnrVNXWRiPkuQl
-	 Rqvp9QCIdTdN733alpsqR5LUDJM+Ab/S5U6cBGFbGxoX1C5Gm7RFYA5IcIGTb3AitE
-	 2kywyueS677UV6ecTEbTK4R4U1hMhzIrukXFbY9x6S9g6oNvCvT9sfBd6eJpSauFTF
-	 V4zY1bGfpRAuFlJolg86bgegmHAWCNGbHz7Zjos3ppaqSK5PFTWPRakUYzj4FfwhJH
-	 +BxG9NunWOk7w==
-Subject: Re: [PATCH net-next] net: mctp: add MCTP_OPT_ROUTE_SRCADDR getsockopt
-From: netdev-bot+sashiko@kernel.org
-To: faizana@nvidia.com
-Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, davem@davemloft.net, horms@kernel.org
-Date: Wed, 23 Sep 2026 18:52:32 +0000
-Message-ID: <179018955261.2160803.4837007906041522245@kernel.org>
-In-Reply-To: <20260921035118.1649687-1-faizana@nvidia.com>
-References: <20260921035118.1649687-1-faizana@nvidia.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zZ5uBgZQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=YAqD79GNVyUpTesDe5713HZbBsCiNT7LXqES/cAv4Fk=; b=zZ5uBgZQMntNm1XebHYJxD4rzg
+	hcGHnezCa/4iVu1p2MoJ4u+SefOFn+9rakT3HpI/vKtOTVXEjcB2Wj+F4HcqPOSPq3sZ+z/VlwbUn
+	qzGqDPeKOUXtXt6nZw6YFFZVhwgNabCzoK0I+2FqrFX95BzshbkHnV4NxVHhTcIo5CMM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9S7y-006rUF-Hw; Wed, 23 Sep 2026 20:55:34 +0200
+Date: Wed, 23 Sep 2026 20:55:34 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ginger Li <ginger.jzllee@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dm9000: Fix a recursive lockup in the TX
+ timeout path
+Message-ID: <2daa63fc-84a3-457b-b7b8-4cb268bad7d3@lunn.ch>
+References: <20260923084055.65091-1-ginger.jzllee@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923084055.65091-1-ginger.jzllee@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] In `mctp_getsockopt()` (net/mctp/af_mctp.c:451-452) a
-  *successful* route lookup whose resolved source EID is MCTP_ADDR_NULL…
-- [Low] The patch adds a permanent MCTP socket ABI but adds no
-  documentation to Documentation/networking/mctp.rst (verified: grep for…
-
---
-
-net: mctp: add MCTP_OPT_ROUTE_SRCADDR getsockopt
-
-This adds a new SOL_MCTP socket option that takes a destination EID and
-network in struct mctp_route_srcaddr and returns the local EID the kernel
-would use as the source address. The implementation reuses
-mctp_route_lookup() and new kunit cases cover the resolvable and
-no-route paths.
-
-Link: https://github.com/CodeConstruct/mctp/issues/147
-
-A couple of questions below about the semantics of the new option.
-
-> diff --git a/include/uapi/linux/mctp.h b/include/uapi/linux/mctp.h
-> index 19ad12a0cd4b..7c3d4a936861 100644
-> --- a/include/uapi/linux/mctp.h
-> +++ b/include/uapi/linux/mctp.h
-> @@ -55,6 +55,19 @@ struct mctp_fq_addr {
->  #define MCTP_TAG_PREALLOC	0x10
+On Wed, Sep 23, 2026 at 04:40:55PM +0800, Ginger Li wrote:
+> dm9000_timeout() takes db->lock with interrupts disabled and then calls
+> dm9000_init_dm9000(), which expects the caller to hold that lock and accesses
+> the chip registers directly.  For DM9000B devices dm9000_init_dm9000() also
+> calls dm9000_phy_write(), and that function takes db->lock again, so the TX
+> timeout path deadlocks on the same CPU.
+> 
+> dm9000_phy_write() already skips db->addr_lock when db->in_timeout is set,
+> because in that case the caller holds db->lock and sleeping is not allowed
+> either.  Skip db->lock as well then, so that the nested call from
+> dm9000_init_dm9000() works as intended.
+> 
+> Fixes: 6741f40 ("DM9000B: driver initialization upgrade")
+> Signed-off-by: Ginger Li <ginger.jzllee@gmail.com>
+> ---
+>  drivers/net/ethernet/davicom/dm9000.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
+> --- a/drivers/net/ethernet/davicom/dm9000.c
+> +++ b/drivers/net/ethernet/davicom/dm9000.c
+> @@ -325,10 +325,10 @@ dm9000_phy_write(struct net_device *dev,
+>  	unsigned long reg_save;
 >  
->  #define MCTP_OPT_ADDR_EXT	1
-> +#define MCTP_OPT_ROUTE_SRCADDR	2
-> +
-> +/* Query structure for MCTP_OPT_ROUTE_SRCADDR getsockopt.
-> + *
-> + * Caller fills in @net and @daddr before calling getsockopt.
-> + * Performs a route lookup and returns the local source EID in @saddr.
-> + */
-> +struct mctp_route_srcaddr {
-> +	unsigned int	net;
-> +	mctp_eid_t	daddr;
-> +	mctp_eid_t	saddr;
-> +	__u8		__pad[2];
-> +};
-
-[Severity: Low]
-Should this new option also be described in
-Documentation/networking/mctp.rst?  A grep for sockopt or MCTP_OPT in
-that file returns no matches, while the same file documents the other
-userspace-visible MCTP interfaces in detail, including
-ioctl(SIOCMCTPALLOCTAG) and ioctl(SIOCMCTPDROPTAG) along with their
-"other fields must be zero" rules.
-
-The four-line comment here is the only in-tree description, and it leaves
-out several behaviours that the implementation has:
-
-- optval is used as both input and output buffer
-- optlen must be exactly sizeof(struct mctp_route_srcaddr)
-- net == MCTP_NET_ANY is translated to mctp_default_net()
-- the resolved net is not written back into @net
-- -EHOSTUNREACH when no route exists
-- -EADDRNOTAVAIL when the route resolves with no local EID
-
-On the MCTP_NET_ANY case in particular: since @net is left as 0 on
-return, how is a caller on a multi-net system supposed to know which
-network the returned EID belongs to?  That is the same ambiguity the
-deprecation note on struct mctp_ioc_tag_ctl warns about.  Would writing
-the resolved net back into rsa.net be reasonable here?
-
-> diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-> index 8af5e2b3c8d1..5c6077e0367e 100644
-> --- a/net/mctp/af_mctp.c
-> +++ b/net/mctp/af_mctp.c
-> @@ -425,6 +425,37 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
->  		return 0;
->  	}
->  
-> +	if (optname == MCTP_OPT_ROUTE_SRCADDR) {
-> +		struct mctp_route_srcaddr rsa;
-> +		struct mctp_dst dst;
-> +		unsigned int net;
-> +		int rc;
-> +
-> +		if (len != sizeof(rsa))
-> +			return -EINVAL;
-> +
-> +		if (copy_from_iter(&rsa, len, &opt->iter_in) != len)
-> +			return -EFAULT;
-> +
-> +		net = rsa.net;
-> +		if (net == MCTP_NET_ANY)
-> +			net = mctp_default_net(sock_net(sock->sk));
-> +
-> +		rc = mctp_route_lookup(sock_net(sock->sk), net, rsa.daddr, &dst);
-> +		if (rc)
-> +			return rc;
-> +
-> +		rsa.saddr = dst.saddr;
-> +		mctp_dst_release(&dst);
-> +
-> +		if (rsa.saddr == MCTP_ADDR_NULL)
-> +			return -EADDRNOTAVAIL;
-
-[Severity: Medium]
-Is this -EADDRNOTAVAIL consistent with what the output path does for the
-same lookup result?
-
-mctp_route_lookup() in net/mctp/route.c deliberately accepts
-saddr == MCTP_ADDR_NULL for a direct route, and only rejects it once a
-gateway has been traversed:
-
-	if (rt->dst_type == MCTP_ROUTE_DIRECT) {
-		mctp_eid_t saddr;
-		...
-		saddr = mctp_dev_saddr(rt->dev);
-
-		/* cannot do gateway-ed routes without a src  */
-		if (saddr == MCTP_ADDR_NULL && depth != 0) {
-			mctp_dev_put(rt->dev);
-			break;
-		}
-
-		if (dst)
-			mctp_dst_from_route(dst, daddr, saddr, mtu, rt);
-
-So for a direct route at depth 0 the lookup succeeds with dst.saddr == 0,
-and mctp_local_output() then uses it without complaint:
-
-	hdr->dest = daddr;
-	hdr->src = dst->saddr;
-
-That state is exercised today by the existing kunit case
-mctp_test_route_output_direct_no_eids, where transmit over a direct route
-with no local EID is expected to succeed.
-
-So if a direct route exists to daddr on a device with no local address
-assigned, sendmsg() transmits with src EID 0 while this new option
-reports -EADDRNOTAVAIL.  Does that conflict with the commit message
-claim:
-
-    the kernel performs the same route lookup used for actual packet
-    output and returns the resolved local EID in saddr
-
-If returning an error for the unassigned-local-EID case is intentional,
-could the commit message and the uapi comment say so, and could a kunit
-case be added for it?  Neither of the two new cases covers a successful
-lookup that yields MCTP_ADDR_NULL.
-
-> +
-> +		if (copy_to_iter(&rsa, len, &opt->iter_out) != len)
-> +			return -EFAULT;
-> +		return 0;
+>  	dm9000_dbg(db, 5, "phy_write[%02x] = %04x\n", reg, value);
+> -	if (!db->in_timeout)
+> +	if (!db->in_timeout) {
+>  		mutex_lock(&db->addr_lock);
+> -
+> -	spin_lock_irqsave(&db->lock, flags);
+> +		spin_lock_irqsave(&db->lock, flags);
 > +	}
-> +
->  	return -ENOPROTOOPT;
->  }
 
-[ ... ]
+This is ugly.
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921035118.1649687-1-faizana%40nvidia.com
+Is it possible to pull the locking out of dm9000_phy_write() to give a
+version which tests the lock is taken using lockdep_assert_held(). Put
+a wrapper around it which takes the lock for the normal case.
+
+I would also take a look at dm9000_phy_read() and understand why its
+locking is different.
+
+Ideally you want to remove db->in_timeout, and make sure locked or
+unlocked functions are called as needed. I assume you have the
+hardware, and can trigger a timeout? So you can do a bigger refactor
+like this?
+
+     Andrew
