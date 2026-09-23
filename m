@@ -1,170 +1,120 @@
-Received: from a11-135.smtp-out.amazonses.com (a11-135.smtp-out.amazonses.com [54.240.11.135])
-	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
+Received: from out-2uec-a122.jellyfish.systems (out-2uec-a122.jellyfish.systems [63.250.43.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A343440627;
-	Wed, 23 Sep 2026 09:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.11.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341AD438FF4
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790155247; cv=none; b=Pp/LR5O0whK5J6d4FM5pdZZu8k6xJ+rRlSpV9Epn51dYHHHbr15Tve5G3gGG/yYrFAO0VDewe6kz8qfSmOpokgwaz1ggWRcA6uOeJjo3zJ5yvolw5HZ0+TSGwks//gLJzx4+APAxNbcseC3ZQ6zOJbtFk4oa5dNyiYL/8NHpRqE=
+	t=1790155288; cv=none; b=lSBHAqcleNsh/BYpO3bkfTrziRsvIGBMVqkO6U0PvSGkHfC99dRnxvXp19K2AxYB49Bim4r9v2qp8Lrf0geRFZfwtQJTd8R34EhhhZBeiNAC/qPr9+5yyyTbfQZ4xTW7Y2BgsCI3Q+gyUDd4RxngNkiGi/JMR583RkEC4jlLAzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790155247; c=relaxed/simple;
-	bh=56F1tJzddi4oAdTxKeSfMiGnCGolC5XbQMVUsr+70Hc=;
-	h=From:To:Cc:Subject:Message-ID:Date:MIME-Version:Content-Type; b=H+iNsGdTdz3jFRh5uczYWlBwIp7eZ68XlnPfiOPLN2GcCqDP9Opz6jhljkZmoXqIKVux62iBC+gunFjuhZkUDGWgkZP3WQoc9p9Bh9uOIsa5DeN4tNMDrO2UB8b5icmmVUemYilChz5aQETuCjd+MEoBXxazUrRE2lL8IltEjsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lollipopkit.com; spf=pass smtp.mailfrom=rsend.lollipopkit.com; dkim=pass (1024-bit key) header.d=lollipopkit.com header.i=@lollipopkit.com header.b=RohbW00V; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=cX/GmMES; arc=none smtp.client-ip=54.240.11.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lollipopkit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsend.lollipopkit.com
+	s=arc-20240116; t=1790155288; c=relaxed/simple;
+	bh=cN6z/Pe0tXCGy/MD8INkQlbrW6q+ydU7Lhd1LS0jMsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hH1HP9KIsQ83xz+Xk5RJX1EyTluNM3QCdmoQ2FT/m7+YbOz2LQR3DbFYk9EAJhx2Xjt0wGAcEbMbj3F8JxQbP6a3FsmuCQxy9xkVD9dA1NqhNIYCNld/d7Oc9DZGmkv6m5R/8vGwXP8XQCZRpBmgZQJBOrkZ+agJHz7u5QKITWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=YPg6FAu3 reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lollipopkit.com header.i=@lollipopkit.com header.b="RohbW00V";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="cX/GmMES"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=lollipopkit.com; t=1790155245;
-	h=From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
-	bh=56F1tJzddi4oAdTxKeSfMiGnCGolC5XbQMVUsr+70Hc=;
-	b=RohbW00VcUwfyMeiba5fg0Va1a5qi6ippFlwkvG/AGjDPF+QqUuJRnLqzvvwXp/6
-	vAnd+DmPvAXP7PaZcnioK9805aqgYOSvAGAAhFd+L048MJN1rfhjkuP+9QWsm90N1DV
-	z/3QOu8KdiAPXP7a6r80eTR4Uu9vqfN1mYzRmgBI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1790155245;
-	h=From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=56F1tJzddi4oAdTxKeSfMiGnCGolC5XbQMVUsr+70Hc=;
-	b=cX/GmMESvqFk8Q1N2q0pKmfdmCl5Bja8faBj1yDvEPr7yFUApM8YJlbf1yJi3xmq
-	DBqwdMW/qjefYwKKk2CWQMnVqbGcmhl8sz1DSqo0QDeJ0hCi5iLx+aoKPUkc/9ru97e
-	yids3lOTf7iprx++u01+OiwWnbF864xlQdAkV1Ac=
-X-Mailer: git-send-email 2.54.0
-From: Junyuan Feng <a@lollipopkit.com>
-To: asml.silence@gmail.com, axboe@kernel.dk
-Cc: dw@davidwei.uk, io-uring@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, a@lollipopkit.com, 
-	stable@vger.kernel.org
-Subject: [PATCH] io_uring/zcrx: requeue multishot receives stopped by a
- local resource
-Message-ID: <010001a0cd914529-23df2f94-bbe0-49cd-ae5d-05922356fa12-000000@email.amazonses.com>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 09:20:44 +0000
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="YPg6FAu3"
+Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqWY95FF6z8sXh;
+	Wed, 23 Sep 2026 09:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1790154974;
+	bh=f0xvgxyic25iqtM158tAljgKODNBCj3X84E9dZhTLy4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YPg6FAu3ejFUTct0z+/bNZN+24U+rIpMEF9HGwl6YMuQCwkP7c08t13f6EO9syiuB
+	 0sfBUiQYQTivWsFS0rcDKnnSgAAic9Awix5PQq15OnnFxnchQcizlW+pJvSTtbeKhE
+	 DTGWuIc5SHrq/ZSwursHEReDvtm0GLIH1A0EBUqXPINJ+H+/w3SAz31rCwD1R3kbn1
+	 rDlGICPXuHtd9Inpl4K1uvieWqlXUAd1YNmo8nG6BzJuiuCFBA1VIiOGChoiAxVuhb
+	 GysdXf54MkWeF4rldilEro86Qsu0D3zg8paueqzdCM1ka/fWng7ytSCZiqIbiNsnQl
+	 mb5FhfOARZLVg==
+From: Rahul Chandelkar <rc@rexion.ai>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	Rahul Chandelkar <rc@rexion.ai>
+Subject: [PATCH nf-next v4 0/4] netfilter: conntrack: shared port parser for helpers
+Date: Wed, 23 Sep 2026 09:16:04 +0000
+Message-ID: <20260923091608.2617604-1-rc@rexion.ai>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Feedback-ID: :1.us-east-1.zZXFpnRVb5v1SY0SyvHElzKYQkSXQPjo9kw1iCidPP/Xszxq/qqJllW0Ln+LCaEVNlbpfAg52fU51cAASENW1Yt7Egb17owWO1eovAvE1fqwD1XvbfSSHmutcmP6wAD73PZKmFk7PoV+NG0E0ET7/U+JZim5HeuAl2eGafhS4Uk=:1.us-east-1.pAEstvQcjyhQNKGKcgSlzI7SVR8ZSG5wSmKwiz/A8Dg=:AmazonSES
-X-SES-Outgoing: 2026.09.23-54.240.11.135
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: rc@rexion.ai
 
-A multishot RECV_ZC can go idle with unread TCP data when a receiver-local
-resource runs out. An empty copy-fallback niov freelist returns -ENOMEM;
-a full CQ returns -ENOSPC. After partial progress the stop reason is
-lost: io_zcrx_copy_chunk() and io_zcrx_recv_skb() report the copied
-bytes, and tcp_read_sock() drops an error from a later call once earlier
-data was consumed. The edge-triggered request is then not requeued, so
-it cannot consume the remaining data until another socket event arrives.
+Both nf_conntrack_irc and nf_conntrack_amanda parsed port numbers from
+application-layer payload with simple_strtoul(), which requires a
+NUL-terminated string and returns unsigned long without any range check,
+so a value above 65535 was silently truncated when stored in a u16 (e.g.
+65537 became 1) and a conntrack expectation was created for a port that
+never appeared in the payload.
 
-Record in io_zcrx_recv_skb() when a walk stops before consuming the
-length it was offered, and requeue if the pass still returned data. The
-failed chunk is first on the next pass. The resource is usually still
-exhausted by then, so that pass fails at once and ends the request with
-an error CQE, which the application must handle by re-arming. The
-request does not spin, and the stall becomes a visible error. Keep the
-existing skb limit and SOCK_DONE handling.
+Instead of open-coding a range check in each helper, this series adds a
+pair of length-delimited parsers to the conntrack helper core and uses
+them from the IRC, Amanda and SIP helpers:
 
-Fixes: 11ed914bbf94 =
-("io_uring/zcrx: add io_recvzc request")
-Fixes: bc57c7d36c4c =
-("io_uring/zcrx: add copy fallback")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-6-sol
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Junyuan Feng <a@lollipopkit.com>
----
-Reproduction and validation (measured on this revision):
-- Loopback CQE-face A/B (mid-skb path), v7.2.6 + this fix behind a =
-test-only
-  runtime switch (one binary, both arms), 64 connections, large =
-area so the
-  pool stays healthy, 64-entry CQ, 10 runs per arm:
-    fix off: 10/10 runs stalled (allocation_errors 0 -- CQ ring, not pool)
-    fix on:  0/10 runs stalled
-- On header-split hardware an skb usually =
-carries a single frag, so resource
-  exhaustion is expected to fall on an =
-skb boundary -- the case a multi-frag
-  loopback run rarely samples. =
-Validated on GCP c4a (gve, TCP data split),
-  v7.2.6 + this fix behind a =
-test-only runtime switch so one binary runs both
-  arms; pool face, 64 =
-connections, 4.03 MiB area, copy-fallback path, 3 runs
-  per arm (numbers in parentheses are stalled connections):
-    fix off: 3/3 runs stalled (1, 10, 9 connections)
-    fix on:  0/3 runs stalled, 64/64 delivered
-  Allocation errors were =
-7141-14995 per run with the fix off and 4796-5213
-  with it on: the pool =
-was exhausted in both arms, but with the fix
-  exhausted requests end with =
-an error CQE that the receiver re-arms and no
-  connection stalls.
-  The off arm behaves as upstream (same binary, fix disabled), so this =
-shows
-  the fix clears the stall; it does not separate the boundary case =
-from the
-  mid-skb case.
-- iou-zcrx selftest (test_zcrx data path, =
-zero-copy on the bound queue) on the
-  same kernel passes with the fix both=
- on and off.
-- Recovery needs an explicit cancel: closing a stalled =
-receiver fd leaves the
-  socket established while the ring is alive; a =
-cancel + rearm recovers it.
+  nf_ct_helper_parse_uint() - bounded decimal parser for an unterminated
+    buffer, capped at UINT_MAX.  Its body is taken from
+    nf_conntrack_sip's sip_strtouint().
 
- io_uring/zcrx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+  nf_ct_helper_parse_port() - wrapper that rejects port 0 and values
+    above 65535.
 
-diff --git =
-a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 1b3b11405..beb35077f 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -374,6 +374,7 @@ struct =
-io_zcrx_args {
- 	struct io_kiocb		*req;
- 	struct io_zcrx_ifq	*ifq;
- 	unsigned		nr_skbs;
-+	bool			stopped_early;
- };
-=20
- static const struct memory_provider_ops io_uring_pp_zc_ops;
-@@ -1899,6 +1900,9 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct =
-sk_buff *skb,
- 	}
-=20
- out:
-+	/* Bytes left in len mean an error stopped =
-the walk early. */
-+	if (len)
-+		args->stopped_early =3D true;
- 	if (offset =3D=3D start_off)
- 		return ret;
- 	desc->count -=3D (offset - =
-start_off);
-@@ -1935,8 +1939,9 @@ static int io_zcrx_tcp_recvmsg(struct =
-io_kiocb *req, struct io_zcrx_ifq *ifq,
- 			ret =3D -ENOTCONN;
- 		else
- 			ret =3D -EAGAIN;
--	} else if (unlikely(args.nr_skbs > =
-IO_SKBS_PER_CALL_LIMIT) &&
--		   (issue_flags & IO_URING_F_MULTISHOT)) {
-+	} else if ((issue_flags & IO_URING_F_MULTISHOT) &&
-+		   (unlikely(args.nr_skbs > IO_SKBS_PER_CALL_LIMIT) ||
-+		    args.stopped_early)) {
- 		ret =3D IOU_REQUEUE;
- 	} else if (sock_flag(sk, SOCK_DONE)) {
- 		/* Make it to retry until it =
-finally gets 0. */
+Patch 1 adds the two helpers.  Patches 2 and 3 convert the IRC and Amanda
+helpers (the actual truncation fixes).  Patch 4 removes the now-duplicate
+sip_strtouint() and the open-coded digit loop in sip_parse_port() from
+nf_conntrack_sip and uses the shared parsers, so there is a single
+implementation in the tree.
 
-base-commit: ab394388d05977f369e8e8d1beceae47fc3c5e72
---=20
-2.54.0 (Apple Git-157)
+Compile-tested (W=1) with NF_CONNTRACK_{IRC,AMANDA,SIP,FTP}=m.
+
+v4:
+  - Rebased onto nf-next.
+  - Move sip_strtouint() into the helper core as
+    nf_ct_helper_parse_uint() and build nf_ct_helper_parse_port() on top
+    of it, rather than adding a second uint parser; convert
+    nf_conntrack_sip to the shared helpers and drop its private copies
+    (Pablo Neira Ayuso, Phil Sutter, Florian Westphal).
+  - Target nf-next (Pablo Neira Ayuso, Jakub Kicinski).
+v3: https://lore.kernel.org/all/20260503083220.630655-1-rc@rexion.ai/
+  - Added nf_ct_helper_parse_uint() as the generic base and a fourth
+    patch converting nf_conntrack_sip (Phil Sutter).
+v2: https://lore.kernel.org/all/20260501063156.2520780-1-rc@rexion.ai/
+  - Introduced a shared nf_ct_helper_parse_port() in the helper core
+    instead of open-coding range checks in each helper (Florian Westphal,
+    Pablo Neira Ayuso).
+v1: https://lore.kernel.org/all/20260430161230.3438973-1-rc@rexion.ai/
+
+Rahul Chandelkar (4):
+  netfilter: conntrack: add shared uint and port parsers for helpers
+  netfilter: nf_conntrack_irc: use nf_ct_helper_parse_port()
+  netfilter: nf_conntrack_amanda: use nf_ct_helper_parse_port()
+  netfilter: nf_conntrack_sip: use shared helper parsers
+
+ include/net/netfilter/nf_conntrack_helper.h |  5 ++
+ net/netfilter/nf_conntrack_amanda.c         |  8 +-
+ net/netfilter/nf_conntrack_helper.c         | 68 ++++++++++++++++
+ net/netfilter/nf_conntrack_irc.c            |  4 +-
+ net/netfilter/nf_conntrack_sip.c            | 86 +++++----------------
+ 5 files changed, 98 insertions(+), 73 deletions(-)
+
+
+base-commit: 87b80c2f6b05cad9f0ff9136709c62a0f59923e3
+-- 
+2.43.0
 
