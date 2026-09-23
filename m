@@ -1,74 +1,68 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8C13AFCF1
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 08:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A489B3E1CE8
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 08:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790152876; cv=none; b=p1BHRrEgpkYjdSlNn3UQ49Oydq8st/eAAjxsf5TpDZlNahFuWIrGH3w/dsdEs+Qi8xX3Z4+jawwH/8SnwjpVjxafSwaHHuAmzu3i/KTM0acgz6YJjt0Ewg5rvG1pdkpPrKr36qlNw+7Rf3TvvJ7D47GIKGS1OsKfNg3sP7PTEUE=
+	t=1790152911; cv=none; b=OKMFWBQl/vxwETm7ppwAKw3S2cCeS0zzJDVjYiUrXKxZ/vTD71lkD39O+p50mdiHrW3a6s32fy3Nwl1/3uO7ou3mWgiN8fRHvX+Qd7qP2bDOQH99NlcGja3qRFb47UTC7M4sFhz8OXuKc/qMojLnD7mNacNcQ0Q6izUoQUfKHsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790152876; c=relaxed/simple;
-	bh=MtElMJ8fbL766bC95A8ZzPRkioZPIOD0KBOOEsCnNBU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cnvhNwG/ljA49C0WRmtcJBX6tHl9zPuLxOdt2NVqLHePNjuaWhCLKYFi7LfDcqfDajktaWcuzB38G5WaNIWRQfeHPDL6JnwCDWkAlkOL7n0YcbdqmXcBjtT4ck7FbDgkegcmb+7qPiiqkM3o+E2kADXW1Abdb2kcw8kKIu9fVbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jz7BOztW; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1790152911; c=relaxed/simple;
+	bh=JBKcOwAEdetIft+G0VLRRMdAb2fsp/mThSWcE/BMWbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gAbWyDhD5tuWx2bu2btt7mNqqr28LHO1RrOS2QK1pMA24iET66n8I9gFq1gdXYfPuZnCiT1jbjNGH7NOD6xWq5dMEzHjl8AzH9DE+Hid2QUtbQI5J+RXq/TA0DGKapd6A/vSBw1cf44Hs1lBJcM5Q6t1Ph48jyf03asp66NZnCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ctNm/6WQ; arc=none smtp.client-ip=74.125.227.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jz7BOztW"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccda24a3so402942a91.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:41:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ctNm/6WQ"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-39e57ee1cb0so100190a91.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:41:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790152865; x=1790757665; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790152900; x=1790757700; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FFMFjnfJDGF+mkKV4NlETqKvpStxbHkejYuXiptoDT8=;
-        b=Jz7BOztW05YtqM24OhZpJabutmbXTXX6pYw434qjpjj+rdWCREpg+bDawCVeUw9nc6
-         YYyB7R28H58WDxoKxCdWyMKGnSxcfRveqrO/hzC0bnmE9Oa5lfosP0dhyF1xvelhK+LC
-         ic1dOvI6jxYDBRveiTYNc+QDlak7hFYkWHVSdQJXmgHwqCHqNOvD/ohA9+8npspw4hrd
-         RV/Ly3HS3dnFmnIkI6HTGtodi4Gmw37ePePOvgwvuhzO0GesBQrMguq8OuAxYFfBo/9B
-         hgt7jL4ZNzZWxMjn3MD9cMlfvRUJXTDm2iJU+9sbMSAqqKvVAzU9w59BkOc8zoTZASFl
-         CErA==
+        bh=IK/9xof0M9dykI6mXJx5UlIoLyJfcd62zRK29ZUyL44=;
+        b=ctNm/6WQ3r37hgjFuQ5izGgfpgFhKMFAIZ3Sk/0ug36W+9UluMXblRAMYNryESnd0N
+         GjulXDrlZ8x9C8FUyMNL7u+yB7HFTeLQCLnMxSzMWBKbkHYSKGv7y2Sf9mbG6kfj7uw7
+         Jk5a9nANU8cN/5OxsKNHZWnZFjatDYx9IbWHhRYYfcI8KYIyw7vaWUVOtpEpUscYB6+i
+         M0VdAgEW1r4AogS6FzDzBVgHa7109npJQp7iYfLFHWuud17Dh4pqcE8ciNPwSsclVzzh
+         zeueFIUpom2kSFGbYj7MXUM07P7gBTeV8UJZQVzIFk1C7TJrI7DFvvqY6TTAoJ0yZkPX
+         mIhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790152865; x=1790757665;
+        d=1e100.net; s=20260707; t=1790152900; x=1790757700;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FFMFjnfJDGF+mkKV4NlETqKvpStxbHkejYuXiptoDT8=;
-        b=0bAENU3m1cTYEy8o01wdy1syUxYOIeGyO+LLvK+gEkXR+m7JaCMAUIHB8hbHR4VfPJ
-         1GQQNxA0HNc/016UmNgA/rKKudJ986YFM0a10POPUI0tKsLdKTfFQT0qkZik8QiSiNgS
-         2rAnmF9oWRa06Ovwta2+pFcBwVn0/PYEfAw7JitQVDLJKqDMd3DJxsa52egDtNDMi5IK
-         bOW3MaT7v9xBLlnrmvQWmqLd7lkbYaiUB44hEyZZ7K+omgdeiWM1uc5ZQ0kyVFGe88Ln
-         bZsr1alFBwSF4FsNf40xhowSgdtIH4pZldNETsGoPe6vvp+0/jPYSP7/qOcU02vEVcDq
-         DP9w==
-X-Gm-Message-State: AFuF++k8JYVgt9A8FHca7WxdYfpfFfD7/dLgRp158QmP/TIoixiwsmVq
-	7LLOm/N1LSP1KaPKBazRZw5qhK+kzM7pI8juYld1zosArx8a3yBdru+ODCz40oZB
-X-Gm-Gg: AYBFou3yHBaJ6icYmLEjtrwIJsHBGe+f5Vm6cZgLeQaUXw6BwaGRLLQoC9W8gUsHWhS
-	cr4sTycjVCKHk7xJf5ixwdZX2fdlnz/ycESUad/aRT7lb+JgMj/ZtrYL19VgsJOvKEsfr9NeYgN
-	ynvhGXQoui+Q+PpedjZ1dDZYdsHKQBwPh5EtiHdkeOVN9xFLJAmwJmjYagosMKBFcF+cp1kn9M9
-	E/lxbs065oy+90LWei295QfWhroTyHRXssRHZ0faDS0bth7Ird9nyNOnA0+bK+SFt4H62POC7Ok
-	fMhe8hkJR9s7qVOW5K2jp0ZBONBthTqvBHizyS7eG16pTnmbnBl4IL5sheuAryrwvw17EoZLlKp
-	l36+kuyTnPXxHSe1sgTz6sfE7qthxLfb7gNxK2Olkp1FFHD1oZ1P9lw4jJVasuIcQhFn3nkaghV
-	LSWUXwKU0C1MAFJUxm9EMoR1tVq5cVuOUWl//D0ViZfuWye2YVMfU0gEI4vIip1LAxmyFZ7lFQ3
-	wTMtjeFJqnxd6v4RYyd/uFxGBqvxGu+f703Tbhbd3q49T13lXKxirI4qIsofoS0GbfZafiFFuTq
-	8A==
-X-Received: by 2002:a17:90a:d645:b0:39d:f317:44cd with SMTP id 98e67ed59e1d1-3a07e554e0dmr1667962a91.14.1790152865102;
-        Wed, 23 Sep 2026 01:41:05 -0700 (PDT)
-Received: from localhost.localdomain (ec2-13-212-242-176.ap-southeast-1.compute.amazonaws.com. [13.212.242.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0812a1eb2sm1105330a91.4.2026.09.23.01.41.02
+        bh=IK/9xof0M9dykI6mXJx5UlIoLyJfcd62zRK29ZUyL44=;
+        b=CrRDQH4jetuXgnrOgEWoNv7Tkj4CSVUYApvnZj2L/ani5DOSRbLS1zbbWcac1Hyl5o
+         JaBL7QdOUjCaNKAA9dVGBvwNoSc7MtA51H+d3IAnAuk0QX9i+ICq/djRVlIHj7fmM1fH
+         CJCbtnYOj/jLeShxGxaFl2XYmJRSwDU4uUevkdeiuqKojuO0DSkdCcnY3BbPTFg0Z4tq
+         /vEeXOPSYPfeeONrxokNyj7rAh1DPf9BNdpvI1ZOz/P4QAImlXm/4xFHKXMUaOh7pAJL
+         w2ARHusJlNgDOZkod8DU5cEwIb6z4maD2DJ9dn4JLdty8Bx2OMY3YeMTLlZM9qLSycF6
+         DiiQ==
+X-Gm-Message-State: AFuF++kndd9h0pn9kBevjlfjC87RxYSLKsfTUdpJPWvnmBf6Xo7+3G7d
+	cn5+tcisTR57lkpsCiw4oIlWG67FMYFQ4Js0qHEX+KWNPZP7gLQpp74L0Fbo5HVb
+X-Gm-Gg: AYBFou3fYfOLciuWx5NqT05fJjh30idH04pMVzRi0nsv248FkhIiFoU229QI6Y80vQ3
+	TCrbgTUESgk6GuJu7IcF0ZdRjDsa14rVrgYTRhHFFf1UBqps9tyz7UmtKk7t5I6CzTtJRFuKYoD
+	T9AV6vsm5/vckO8p7R4nZcEbjCb77Uftq5aRtBmreoHOb4pqUZ38Vp3CXC6hMwB7uBcP59eMDNj
+	xfjZGGc0grq34qZEsgBL9T/IZ5DPqqciMvznznDZB2r+89CKzNbYdddai01qf0C3vSjo4kO/km/
+	3qcNnRYju4bFhI5aVI+g2nlV9FCa8f+U9A7/tWcu3zPjIU2J7LQJ31M7ENMQ+wzKHlYMtFWS0VV
+	6vyiP5XIEKVLnPWF5tF4RafDCtfTQBV29idwoVbglq6Tq75fu/1Ng/GR1URf4nhmaT0nOz0CxLM
+	Jl+OmHWz+77ivxfuOil3ZpP9/oyKThPzljswBE2VID0qzp67uK4JoRn7Xw1j3oRd9NBCBTMAMMF
+	9vroIzGBt4zK3mKSyaUppAI24wc0aYLTvMH82mi82Pb2Nup/sDB8i/0lMyc7Q==
+X-Received: by 2002:a17:90b:2b45:b0:39e:2344:da1 with SMTP id 98e67ed59e1d1-3a07e74759bmr2686964a91.4.1790152900163;
+        Wed, 23 Sep 2026 01:41:40 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.91])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a07de50cbdsm3861002a91.15.2026.09.23.01.41.36
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 23 Sep 2026 01:41:04 -0700 (PDT)
-From: Ginger Li <ginger.jzllee@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: dm9000: Fix a recursive lockup in the TX timeout path
-Date: Wed, 23 Sep 2026 16:40:55 +0800
-Message-ID: <20260923084055.65091-1-ginger.jzllee@gmail.com>
-X-Mailer: git-send-email 2.46.0
+        Wed, 23 Sep 2026 01:41:39 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: herbert@gondor.apana.org.au
+Cc: netdev@vger.kernel.org
+Subject: [PATCH net v4] xfrm: interface: validate the IP header on xmit
+Date: Wed, 23 Sep 2026 16:41:23 +0800
+Message-ID: <20260923084123.10734-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,69 +71,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-dm9000_timeout() takes db->lock with interrupts disabled and then calls
-dm9000_init_dm9000(), which expects the caller to hold that lock and accesses
-the chip registers directly.  For DM9000B devices dm9000_init_dm9000() also
-calls dm9000_phy_write(), and that function takes db->lock again, so the TX
-timeout path deadlocks on the same CPU.
+Packets injected into an xfrm interface (e.g. AF_PACKET on an xfrmi
+device) reach the xfrm output path without IP header validation, but
+xfrm4_transport_output() uses iph->ihl for __skb_pull() and memmove()
+and expects the header to be valid.
 
-dm9000_phy_write() already skips db->addr_lock when db->in_timeout is set,
-because in that case the caller holds db->lock and sleeping is not allowed
-either.  Skip db->lock as well then, so that the nested call from
-dm9000_init_dm9000() works as intended.
+vti_tunnel_xmit() already calls pskb_inet_may_pull() before handing
+packets to the xfrm output path.  Do the same in xfrmi_xmit() and
+perform the header checks ip_rcv_core()/ip6_rcv_core() do on entry
+to the IP stack: reject wrong IP versions and malformed IPv4 header
+lengths.
 
-Fixes: 6741f40 ("DM9000B: driver initialization upgrade")
-Signed-off-by: Ginger Li <ginger.jzllee@gmail.com>
+Fixes: f203b76d7809 ("xfrm: Add virtual xfrm interfaces")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 ---
- drivers/net/ethernet/davicom/dm9000.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+Changes since v3: also check the IP version of both families, like
+ip_rcv_core()/ip6_rcv_core() do (Herbert Xu).
 
-diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
---- a/drivers/net/ethernet/davicom/dm9000.c
-+++ b/drivers/net/ethernet/davicom/dm9000.c
-@@ -325,10 +325,10 @@ dm9000_phy_write(struct net_device *dev,
- 	unsigned long reg_save;
+ net/xfrm/xfrm_interface_core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+index 688306bf62c5..9835fbe63ccb 100644
+--- a/net/xfrm/xfrm_interface_core.c
++++ b/net/xfrm/xfrm_interface_core.c
+@@ -531,8 +531,13 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
  
- 	dm9000_dbg(db, 5, "phy_write[%02x] = %04x\n", reg, value);
--	if (!db->in_timeout)
-+	if (!db->in_timeout) {
- 		mutex_lock(&db->addr_lock);
--
--	spin_lock_irqsave(&db->lock, flags);
-+		spin_lock_irqsave(&db->lock, flags);
-+	}
+ 	memset(&fl, 0, sizeof(fl));
  
- 	/* Save previous register address */
- 	reg_save = readb(db->io_addr);
-@@ -344,11 +344,14 @@ dm9000_phy_write(struct net_device *dev,
- 	iow(db, DM9000_EPCR, EPCR_EPOS | EPCR_ERPRW);
- 
- 	writeb(reg_save, db->io_addr);
--	spin_unlock_irqrestore(&db->lock, flags);
-+	if (!db->in_timeout)
-+		spin_unlock_irqrestore(&db->lock, flags);
- 
- 	dm9000_msleep(db, 1);		/* Wait write complete */
- 
--	spin_lock_irqsave(&db->lock, flags);
-+	if (!db->in_timeout)
-+		spin_lock_irqsave(&db->lock, flags);
++	if (!pskb_inet_may_pull(skb))
++		goto tx_err;
 +
- 	reg_save = readb(db->io_addr);
- 
- 	iow(db, DM9000_EPCR, 0x0);	/* Clear phyxcer write command */
-@@ -356,9 +359,10 @@ dm9000_phy_write(struct net_device *dev,
- 	/* restore the previous address */
- 	writeb(reg_save, db->io_addr);
- 
--	spin_unlock_irqrestore(&db->lock, flags);
--	if (!db->in_timeout)
-+	if (!db->in_timeout) {
-+		spin_unlock_irqrestore(&db->lock, flags);
- 		mutex_unlock(&db->addr_lock);
-+	}
- }
- 
- /* dm9000_set_io
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IPV6):
++		if (ipv6_hdr(skb)->version != 6)
++			goto tx_err;
+ 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+ 		xfrm_decode_session(dev_net(dev), skb, &fl, AF_INET6);
+ 		if (!dst) {
+@@ -548,6 +553,9 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		}
+ 		break;
+ 	case htons(ETH_P_IP):
++		if (ip_hdr(skb)->version != 4 || ip_hdr(skb)->ihl < 5 ||
++		    !pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
++			goto tx_err;
+ 		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
+ 		xfrm_decode_session(dev_net(dev), skb, &fl, AF_INET);
+ 		if (!dst) {
 -- 
-2.43.0
+2.46.0
