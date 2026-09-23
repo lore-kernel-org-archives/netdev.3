@@ -1,89 +1,34 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E3E4ADD9B
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 11:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A084CCDEB;
+	Wed, 23 Sep 2026 12:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790164773; cv=none; b=nwwnvqC1iX1CTLjvhTIYV4JQHzfCW9w3bqMMfiyuWhzr4vTCuWZqrAfv8e8sR7Yz7wtFVJHOY06IgTJL64Z1iyUJJC6bU2UMDz6yIjVh2v0VvD5qKC0YthKbohXLWCz08XqKVLhPqu3i5EinNAoiqwQyW6VnbTJ0tN63E9z7Zb8=
+	t=1790164967; cv=none; b=FXd67OqQ0+1hWfyAAwruybBO+CcO4Cr/KhbMCAdkiuq/Q6irajKzvsNLEyfWHIWKIu4aVcnNGQh/fXXDOICR9EL6kQXkXrI7N0W7r7jrMPUjSKcfrzQf41SOUbKmc0ifDxvzRF/BmiWJRP6e0YBpdLcSiiI0TETykmk/tXJgJ1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790164773; c=relaxed/simple;
-	bh=lyThp7bIz6kj168zSwcpYX6Pcr2CQbMqDAwt8ob+z70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IevIcO5NMpjW6LcokevJvYfb3vsFLHxTVrHtdpDPCySUHPOIsGN1Y4dm5SoBecytWRp298kzJAhrr1Y2xodD+qcAqOQp6N8A+P20LftXEQH77LoScWHrvDAZaE/oU1XP3STZaWTNWZEdr2oLnJ9fPDDfh2bPyi6dd2vKF0jzlj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBXnmgxe; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBXnmgxe"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb751so477719a91.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 04:59:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790164767; x=1790769567; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BrzXSXvlSZQsoju04uUevcVwnOSzbxdAq6pl8JZzW5k=;
-        b=DBXnmgxegbZBUmOsq3ltZ7SoonG/vyLROHa14W3bPLY0yEqB1VWFo7NC0gPqLMMy/K
-         zj/ZBWFLkXNK8uDFTkFYUjWgOGvceYykGRnILOhe9wtj2T564r+wCaDHyGEzOkyX3sQX
-         lvnSNeaEHXbtWqhkMleUt0NePUoJjQ/exLHhmx0BGBMEZVMd05F45669JGghJWgvLcYQ
-         tusInSmiEsXb/dpfKyzy45GxPaM5YyJnEZ/y8+IuSacGQW4T+SPAK7VaL60wmcrN//L3
-         hbzcGzpnlEzriwWqAp312asfccBF1q9rs2k2Eu//HzgJOTcT/89FUG8otdn05cIkCo0J
-         Blhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790164767; x=1790769567;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BrzXSXvlSZQsoju04uUevcVwnOSzbxdAq6pl8JZzW5k=;
-        b=Jy/ETmuaegjS50eAlAXn6NLriu9OseK3QXFJB0Exmmvune+ghFfXPOOJjMUzpoXz59
-         fnh4DffbHZ8VNhbCu1jFxY5N4zAVQW12r18s7DA+F5ViRUHamsC37J/j2BRPry3g0XI2
-         hU6i+S5bbF1W71qL3PJO3yVk+NbvKXlbqcsjNWdNqoQcMqdhtKrlVaVbFBTioqtZRUXL
-         HGbX9iwhvlFU6ImiYd8RguTiBD9d3Sh7+uMvr/Dtnhtg9IOPfnHNvevWZnLtqbhvC+qU
-         sX2Vaj/lBOTaTogC78E/8FKmEH8OqlWj0bHmT/fFZC0rQOcdfqcbhiN3Zi4pV1VF5feH
-         ZAng==
-X-Forwarded-Encrypted: i=1; AKwUvBxxZZ5RDPVSX7NmV00riJ9dXPQ3oOyymUKTkK9IBkB2rYqjr+rf4VrnyXQ2kJZVf9k1+b6VHy4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lKiZt7XOI5FbKpIlVTIFPqGRkVIbrW8hmMmh46G7eNLkrc/xvv
-	7/O1AcBVYtV5VlUzBjrzOGcZl8/i8fOFE/XcD1IQOnM/uezAdU8gR1eh
-X-Gm-Gg: AYBFou3gLmhF8u+dCVPLDCg1ood1HhW/R3YuhBLXMiN0G7GR6FF8sQUmF/gbMSc+Vfi
-	LwiY76NbAC0r47ZgadqKR6P9/ojiIEIEWis19ySShDKoofz6QacH9uAFNqOGPoXgVlVWwuVIdvt
-	2NeHszjT9j5OE+LuY5RgGJZn38wWVxFYjD+xmElvMjJiIz7D/yzdZIPksvM4H5iJzE0bN6TB0N6
-	sQYxqhD8dxNGizpyEENeKvjfqPAuhjoH73hWxSE1Zu41vqv+JQ7DjS2hsgxUOU/6zM0jAZrb1bl
-	Nr5zfvgElSDdAxXbSA34rm2GYm4efFbO6nN5Hegb1RigS04u3/VZg7bJ1OkLZeNuz4fS1OLc3oc
-	qEglhDITSSZBSBNabgbASAEufcbCjv6n+lAcn2rg5nunKy/yRqyc8aN92qwTtormVLkGNGf7bdt
-	RZSAnsNvCBVuL4pMtfm1wEkMgDAcjCQPRveJc7PnZXoL6kW0iSGD2izveH/OGEttU=
-X-Received: by 2002:a17:90b:4a45:b0:39e:2530:2102 with SMTP id 98e67ed59e1d1-3a07e56552cmr2048640a91.11.1790164766974;
-        Wed, 23 Sep 2026 04:59:26 -0700 (PDT)
-Received: from dev ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a07ddae66asm5970635a91.3.2026.09.23.04.59.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 04:59:26 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-To: idosch@nvidia.com
-Cc: dsahern@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	justin.iurman@gmail.com,
-	alex.aring@gmail.com,
-	steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	razor@blackwall.org,
-	eyal.birger@gmail.com,
-	nicolas.dichtel@6wind.com,
-	lucien.xin@gmail.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 0/4] net: lwtunnel: accept encap attributes without NLA_F_NESTED
-Date: Wed, 23 Sep 2026 20:59:14 +0900
-Message-ID: <20260923115914.70760-1-yuya.kusakabe@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260923112917.GA2749166@shredder>
-References: <20260923-lwt-encap-noflag-v1-0-8de7ab6c86e9@gmail.com> <20260923112917.GA2749166@shredder>
+	s=arc-20240116; t=1790164967; c=relaxed/simple;
+	bh=Tjz6WacIRMWzXb0FO4mz/4dyBfn5AlLTlVpLxjQQOIE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MPZAuK/385K2CV4SkBeZTCuZnCs7eOxistyOOctOMtXFWZyqcHft8VGQhDNAgH+de/vnXJgbT4dKHWpifwBAl6H44s59gXSfz5DEBXcBQ4f4S1ricHqGMjH7xZYA3vkWdg17VB2RAt7Hh6ydvDUgUfN3Ls0YJMCAqDsFu1yyBmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 91B6342AEC;
+	Wed, 23 Sep 2026 14:02:34 +0200 (CEST)
+From: Gabriel Goller <g.goller@proxmox.com>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3] net: ipv6: seg6: report lwtunnel setup errors via extack
+Date: Wed, 23 Sep 2026 14:02:04 +0200
+Message-ID: <20260923120228.172643-1-g.goller@proxmox.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,26 +36,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1790164953658
 
-On Wed, Sep 23, 2026 at 02:29:17PM +0300, Ido Schimmel wrote:
-> If this never worked, then why target these patches at net and blaming
-> up to 7 years old commits? I try to follow [1] when deciding between net
-> and net-next.
-You are right, it is not a regression.  If there is a v2 it will go to
-net-next without the Fixes tags.
+seg6_build_state() rejected invalid configurations with a generic -EINVAL,
+so "ip route add ... encap seg6 ..." always reported "Invalid argument".
 
-> Also, did you hit this in practice or was this flagged by AI? If nobody
-> is using save/restore and hitting this in practice, then maybe it's not
-> worth to loosen the validation performed by the kernel.
-It was flagged by an AI review of a new encap I am working on (SRv6
-Mobile User Plane, still RFC).  I reproduced it there, and checking the
-existing encaps showed rpl, ioam6, xfrm and the ip tunnel options behave
-the same.  I have no report from their users.
+Attach an extack message to each of them. The checks themselves and their
+return values are unchanged.
 
-My motivation was that a feature which exists should not silently fail,
-and the series only drops the flag check on the container; everything
-nested inside is still validated strictly.  But if nobody relies on
-save/restore for these encaps, I am fine dropping the series, and the
-new encap will keep nla_parse_nested() like rpl, ioam6 and xfrm.
+Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+---
 
-Thanks
+v3 (https://lore.kernel.org/all/20260922090851.38978-1-g.goller@proxmox.com/):
+ * format fix
+ * use NL_SET_ERR_MSG_ATTR
+
+v2 (https://lore.kernel.org/all/20260918153544.1178884-1-g.goller@proxmox.com/):
+ * dropped tests
+
+ net/ipv6/seg6_iptunnel.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 61c6a27bf202..9f1aecc4f215 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -756,8 +756,11 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	struct seg6_lwt *slwt;
+ 	int err;
+ 
+-	if (family != AF_INET && family != AF_INET6)
++	if (family != AF_INET && family != AF_INET6) {
++		NL_SET_ERR_MSG(extack,
++			       "unsupported address family for SRv6 encapsulation");
+ 		return -EINVAL;
++	}
+ 
+ 	err = nla_parse_nested_deprecated(tb, SEG6_IPTUNNEL_MAX, nla,
+ 					  seg6_iptunnel_policy, extack);
+@@ -765,8 +768,10 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!tb[SEG6_IPTUNNEL_SRH])
++	if (!tb[SEG6_IPTUNNEL_SRH]) {
++		NL_SET_ERR_MSG_ATTR(extack, nla, "missing SRv6 SRH attribute");
+ 		return -EINVAL;
++	}
+ 
+ 	tuninfo = nla_data(tb[SEG6_IPTUNNEL_SRH]);
+ 	tuninfo_len = nla_len(tb[SEG6_IPTUNNEL_SRH]);
+@@ -776,13 +781,18 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	 */
+ 	min_size = sizeof(*tuninfo) + sizeof(struct ipv6_sr_hdr) +
+ 		   sizeof(struct in6_addr);
+-	if (tuninfo_len < min_size)
++	if (tuninfo_len < min_size) {
++		NL_SET_ERR_MSG(extack, "truncated SRv6 SRH attribute");
+ 		return -EINVAL;
++	}
+ 
+ 	switch (tuninfo->mode) {
+ 	case SEG6_IPTUN_MODE_INLINE:
+-		if (family != AF_INET6)
++		if (family != AF_INET6) {
++			NL_SET_ERR_MSG(extack,
++				       "inline mode requires an IPv6 route");
+ 			return -EINVAL;
++		}
+ 
+ 		if (tb[SEG6_IPTUNNEL_SRC]) {
+ 			NL_SET_ERR_MSG(extack, "incompatible mode for tunsrc");
+@@ -798,12 +808,16 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	case SEG6_IPTUN_MODE_L2ENCAP_RED:
+ 		break;
+ 	default:
++		NL_SET_ERR_MSG(extack, "invalid SRv6 encapsulation mode");
+ 		return -EINVAL;
+ 	}
+ 
+ 	/* verify that SRH is consistent */
+-	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo), false))
++	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo),
++			       false)) {
++		NL_SET_ERR_MSG(extack, "invalid SRv6 segment routing header");
+ 		return -EINVAL;
++	}
+ 
+ 	newts = lwtunnel_state_alloc(tuninfo_len + sizeof(*slwt));
+ 	if (!newts)
+-- 
+2.47.3
+
+
