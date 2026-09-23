@@ -1,140 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA1F427A10;
-	Wed, 23 Sep 2026 18:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF5F233944
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 18:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790186858; cv=none; b=Qc+vnjjPgemXkCcC9jhpz+h4KBzilP2/U/5q0tVrgr23Bp+xGnDKVbvhe/MU8wiQ9GQ0PQ8gJOFwAdECZ/CuWpw+ZJ/5QGZzYSib7R3gg6CjO4jKZq9VVDDTHHoS1Wb9L90a0dzxd7M7MAm5BqSC6q5Sl0W9o+BfTj522hGeWAw=
+	t=1790187077; cv=none; b=PbVEb1nMDAnC34FxChklPCsnNfEAP0qfMynmSHIWDf3/ydKOy7Jd+HYZDRj2HHQ08OgeO+st6YsR+VZUd24GZWxSqCGI4e/PBpLrap1h5xbz4LjNNwQdNYvzJN4z9eFCOx1q4fM0sUYYA+Ci1dYzoSXIAKnyeuGwPjsVUn3UInw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790186858; c=relaxed/simple;
-	bh=U5+nhunaLiSVoMI+VdQBIfVkc9YsZ6zc1C4hVwZKmCM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UQODosILX4M9chOGqxsrclKa2ZjPLoqrrLSc/VF3WMgRfIGRas5g1fCqR+O0k8K1cHAa/c3hCMKg1dbayM2N8cCDqVRIVM1YgByd7FHmKYCuZ0ZCTm5P+jNHuFP86PUiZOgthQPRHQJgkLDgmQOf7hG6g64BGKpGkWSkluz+jVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZJpmvu7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790187077; c=relaxed/simple;
+	bh=Nbf7J5/uQxjKUD4SiZ4Ipyp3eMxFGADZSKJEVPUUy4g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YH1x+kddhVKqoljLGKQ3OIxxfUZsNaUpVjVORypa8JWAcCMwXdRfnDJQ4mg2ZacXjeRAG9rlbck34Mgn+CEVc/4J0zEJW8xQcAZKGD9izJnwFTQcnNdY1QgVbhn68xpCtAX6WnjIbGO4p1MWacf916UZe6FDmLBjaCt9jIJ1kyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltTHQEil; arc=none smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZJpmvu7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BA91F000FF;
-	Wed, 23 Sep 2026 18:07:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790186857;
-	bh=+vDPcquJM7GahtjddOoqJJfhDpqWnXxKLvU+vehlwfQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kZJpmvu7LipMdS7s6+mj9xDLvZhIbIEu5iavgnSnpKXpDsyvWxAwjkhQfEWK5EvB3
-	 puajcWtvMf/x7BQSh8XixkLDEZbx1IP0iI8dXlEFD83TJlneF5YQjtadOY6PFulIF6
-	 L0G2y+7enOt+6AmbfvtSPxtYFRJzsw6kPgFlIF6GL0488YwRZ2KqW28I0ftI63c6Jn
-	 Jh8OoFaA4UUyN8HygG5Q4MSkdgZkPKCj3SN2TP2BpTdxH/M1bgouZwMEDeqCyM3OFC
-	 swXiKbV5JxoXCdQRQsVCdO5HqcoPaSEEausVGKdlcYl+OQ9i14JSTEpnH+23iJUVkG
-	 82Dr4cmCduoCA==
-Date: Wed, 23 Sep 2026 19:07:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horatiu.vultur@microchip.com,
-	steen.hegelund@microchip.com, UNGLinuxDriver@microchip.com,
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, herve.codina@bootlin.com,
-	arnd@arndb.de, gregkh@linuxfoundation.org, mohsin.bashr@gmail.com,
-	richardcochran@gmail.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v7 10/14] net: lan966x: add PCIe FDMA support
-Message-ID: <20260923180730.GV13925@horms.kernel.org>
-References: <20260918-lan966x-pci-fdma-v7-10-0ecc179c8a2c@microchip.com>
- <179008205148.2160803.12818321368571406375@kernel.org>
- <20260923084538.wgkw2nt5ergoxcot@DEN-DL-M70577>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltTHQEil"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66f943b286fso1126958d50.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 11:11:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790187075; x=1790791875; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ps7ykDSERcuXzXnfyskR5kOcFO84vVgX7+2fTS/wYAI=;
+        b=ltTHQEil8xVbciZ2FaY5W2Gb7VvGgpTbFDMC+Wf39f3hBZ8jBtSt2LKAs3l5hjU5pT
+         QHimi39Fmx91X+/exymwSELTszDoPQUpp5+L6vlQ2awGfvwO8HQfJQAMzh12alm/shn+
+         A4oJfxHSFiTDszI9Me8oFezncu9WxWZ2vOmdwgLWzOuT83C7+6x2rYWdlVeC4NeiSwMS
+         IXWe8u/Z8945oEhgWqtTDiiXFrwdMDU4dOgTpARuR5wK153QWUdN+eTQeqyjZpyXqCHb
+         x6lHglFhwkHAEAifWMG/It4HCUV+SRqsscd7OaY8mPmkFP95AoUAL1rtDXZwKzcBqvKx
+         b9jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790187075; x=1790791875;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ps7ykDSERcuXzXnfyskR5kOcFO84vVgX7+2fTS/wYAI=;
+        b=MTYsJiTZjmolgb1rD7S8x+eGPy2zMY1xr3STrmQKm91l+B8NXCBJu0ets4M/6s4wfR
+         /YaHbxwRbunNmJvEFgPH+pLWJitScM2ugqqBeU+APNw3w1e/zuwJ7tIR1AF4ebz+a1oA
+         ymLRYZTeIsbVdcdIl/h6xLZebe+COli6B6c7rD0pwVek9eaYIuil+PR7Yj1HOHRJdB1O
+         HyPlJUj8xidD4g8UwV8O6iNifWa5RoEOUmWiNoIoytuZ+vuPhuC+xBul6tmdeZm+OTSo
+         Je9XrOULdAT1TwQ7V3bP0xqrVdaQoVubKrkmEMn3EGEm7lmZt6uFsKa2d3HyKEA5Mons
+         4OGg==
+X-Forwarded-Encrypted: i=1; AKwUvBw0zYRD5cTHvyjUAzUNyl2J/WE1p5pWyJ30lA3P3NaYQKofogFzrY85q49xAPhStri3VuV1pAw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZKA9WrFsSi5ShC8X4O0C++uTdUc3zpOFp7PYBmEF8DpK5qCua
+	U5HVGUVtEMYuW2AdA1NbzmII/lZ08Ksty1T+w6NbTnt1c5oIKZLF/Zik
+X-Gm-Gg: AYBFou37fUHxPq6blm8YU0kwgEjRX02xwoHdRNBEo5IPrXB+ntRGBifWgN5MnKI4e0/
+	ZRvBOKUxICshLzY9PUJ8M9RwDLW9mB73GZT1t0JqpU81yJM5G1cIinpUN7v2l5PXQnQ5cXyID9v
+	IK4SpN8gXnfnjNHf0H+NsGVaXn92MeIQudRDgoFI9+9mi9aAbM5+Um77B/J4+QvNFM6hs7lFFDp
+	y9BNJUH1DuXULVh/oWwtWEyPjlzThDwFbcT//uS/nN3T86D1dqB9sJq7U3QCMYwRhkh2pMFDHRf
+	5z65ObcCA3q+9Wo9KJDSwXf6jJg9E5A2kfwd/hdTfWLAi85iA9AG3H4Z6PdDQ2EoBhj/1oFs/zP
+	kFGQUmhmF0uz+lstRs1ExakrA6c3iDvCYV/skSGwy/OF+qgS+voav6ObRDmgHNO1H9nHBj3e/1I
+	CsWEFkLjw3+V9MHg+68BJzX3kbt/mubmkiMtRNPXxnooYFSh4kYANh1i/hOfdk7E1mbiQcKTGTY
+	0PL+6aiDni+2HaL3uceUbAYi96UEL0Yj/UZN/Bme9YE1DSrjhg3qtWO/O6VgVDRh/XyG8EV7UYP
+	3O/d9NdH1zK6ZphSrO+w9l0ZrNOXg7va7PERyHbQ2rpEppE/Erjw4ygUDEaqVNu5Mt7RjQJ+Gg0
+	NEJfcQpIWGAzp+i7MekXBQ0CAJMOy4K6a17zYWIrmi9JNYl9/WUTrKkVGxf2BsbWUxg==
+X-Received: by 2002:a05:690e:1c09:b0:671:2a71:63ed with SMTP id 956f58d0204a3-672ed1d0186mr63223d50.34.1790187074782;
+        Wed, 23 Sep 2026 11:11:14 -0700 (PDT)
+Received: from edhar.longhair-great.ts.net (pool-173-48-206-252.bstnma.fios.verizon.net. [173.48.206.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9141e217944sm264136d6.9.2026.09.23.11.11.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 11:11:12 -0700 (PDT)
+From: Zack Gomez <zack.gomez@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	leitao@debian.org,
+	stephen@networkplumber.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zack Gomez <zack.gomez@gmail.com>
+Subject: [PATCH net v3] netpoll: bound the deferred transmit queue
+Date: Wed, 23 Sep 2026 14:11:11 -0400
+Message-ID: <20260923181111.1182838-1-zack.gomez@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923084538.wgkw2nt5ergoxcot@DEN-DL-M70577>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 23, 2026 at 10:45:38AM +0200, Daniel Machon wrote:
+__netpoll_send_skb() parks an skb on npinfo->txq whenever the device
+cannot take it at once, and once the queue is non-empty every later skb
+goes straight there to keep ordering. queue_process() drains it from a
+workqueue and, unlike the direct path, never polls the device for
+completions: when the ring is stopped it backs off HZ/10. Nothing limits
+the queue length.
 
-...
+A producer that outruns that drain therefore grows the queue until the
+host is out of memory. Observed with netconsole forwarding a GPU driver
+that logged one line at ~1e5/s after a firmware hang. The NIC was
+moving ~17k packets/s: completions for each burst surfaced tens of ms
+later, outside the one-tick window, so queue_process() slept HZ/10 per
+ring while ~1e5 lines/s kept arriving. The queue grew at ~170 MB/s,
+unreclaimable slab reached 51 GiB in five minutes and the OOM killer
+ran from kswapd with 341 MiB of anonymous memory on the whole box. What
+the queue held was the flood itself; the OOM report never left the
+host.
 
-> > [Severity: Medium]
-> > Is this path expected to work on a big-endian host?
-> > 
-> > Until now the descriptor producer and the FDMA engine were both on the
-> > little-endian SoC, so the native-endian descriptor layout in
-> > drivers/net/ethernet/microchip/fdma/fdma_api.h was fine:
-> > 
-> >   struct fdma_db {
-> >         u64 dataptr;
-> >         u64 status;
-> >   };
-> > 
-> >   struct fdma_dcb {
-> >         u64 nextptr;
-> >         u64 info;
-> >         struct fdma_db db[FDMA_DB_MAX];
-> >   };
-> > 
-> > With PCIe FDMA the descriptors live in host memory and are fetched by the
-> > endpoint, so the host and the engine can disagree on byte order. The
-> > translated addresses written here, and the status/info words written by
-> > __fdma_db_add()/__fdma_dcb_add(), all go out in host byte order, and the
-> > HW-written DONE/BLOCKL fields are read back the same way in
-> > lan966x_fdma_pci_get_next_dcb() and lan966x_fdma_pci_rx_check_frame().
-> > 
-> > CONFIG_MCHP_LAN966X_PCI in drivers/misc/Kconfig only has
-> > 
-> >   depends on PCI
-> >   depends on OF_OVERLAY
-> > 
-> > so a big-endian host (e.g. powerpc) can select it. On such a host, would
-> > the engine see byte-swapped nextptr/dataptr and length fields, i.e. would
-> > RX/TX not work at all? Should the descriptor fields become explicit
-> > little-endian types with accessors at the hardware boundary, or should the
-> > Kconfig entry gain a little-endian dependency?
-> 
-> Hmm. Never tested on PowerPC, not this driver nor the DT overlay mechanism it
-> relies on for PCI deployment, which has only been exercised on ARM and x86 so
-> far (AFAICT) [1].
-> 
-> [1] https://lore.kernel.org/all/20240430183301.46568e35@bootlin.com/
+Reproduced on the same host (netconsole over a 10G ConnectX-4 Lx) under
+the same slow-completion condition: 200k lines to /dev/kmsg in 0.12 s
+grew unreclaimable slab by 173 MiB, about 188k skbs, draining at
+~8-10k packets/s. With prompt completions the same burst drains at line
+rate; a stall on the link while lines keep arriving faster than the
+drain reproduces the growth.
 
-I don't think that the baseline expectation is that drivers are tested
-on big-endian systems, but rather that reasonable effort is made to ensure
-that byte-order usage is correct.
+Until the 2006 netpoll rework [1] the deferred path drained through
+dev_queue_xmit(), with the stack's own backpressure, and was capped at
+16 skbs (MAX_QUEUE_DEPTH). That series moved it to a direct
+hard_start_xmit() with the HZ/10 back-off and made the queue
+per-device, dropping the cap on the way.
 
-In this case I suggest that will involve using __le64 instead of u64,
-coupled with calling le64_to_cpu() and cpu_to_le64() as appropriate.
+Cap it at 1024 skbs per device and drop new skbs beyond that. The drop
+is counted in tx_dropped of the device whose queue is full and freed
+with SKB_DROP_REASON_FULL_RING. A netconsole target bound directly to
+that device also gets NET_XMIT_DROP and, with CONFIG_NETCONSOLE_DYNAMIC,
+counts it in xmit_drop_count. When a stacked device (bond, bridge,
+team, vlan, macvlan) passes the skb down and the lower device's queue
+is the one that fills, the return value does not reach netconsole and
+the lower device's tx_dropped is the record. The bound holds either
+way. Nothing is logged on the drop path because that would recurse
+into the console being drained.
 
-Sparse can aid with getting this right.
+[1] https://lore.kernel.org/netdev/20061026225645.482978803@osdl.org/
 
-...
+Fixes: b6cd27ed3388 ("netpoll per device txq")
+Assisted-by: Claude:claude-fable-5-1
+Signed-off-by: Zack Gomez <zack.gomez@gmail.com>
+---
+v3:
+ - no code change; the v2 mail was line-wrapped and whitespace-stripped
+   in transit and did not apply
+   https://lore.kernel.org/netdev/CAErB-w3Or6jkhsy9phjf5uo1O-T_hHQLx-XBFZeHX_8tqN38mw@mail.gmail.com/
+v2:
+ - count the drop in tx_dropped of the device whose queue is full, so
+   it is visible when the sender ignores the return value or sits
+   above a stacked device (Breno, Sashiko)
+ - free with SKB_DROP_REASON_FULL_RING (Breno)
+ - skb_queue_len_lockless() for the unlocked length check; the cap is
+   a soft bound and the comment says so (Sashiko)
+ - commit message: xmit_drop_count only covers a directly bound
+   target; slab figures described as what they are; dropped the
+   sentence about the 2006 list discussion
+ - Cc Stephen Hemminger (Fixes: author)
+v1: https://lore.kernel.org/netdev/20260914041221.1028092-1-zack.gomez@gmail.com/
 
-> > [Severity: Medium]
-> > Is rx_bytes meant to count the frame as it arrived on the wire?
-> > 
-> > By the time this runs, skb->len has already been reduced twice: the
-> > skb_trim() above drops ETH_FCS_LEN, and eth_type_trans() pulls the
-> > MAC header out of the linear region, so skb->len is short by at least
-> > ETH_HLEN. If lan966x_hw_offload() ends up untagging a VLAN header,
-> > that is another four bytes gone. So every packet delivered through
-> > lan966x_fdma_pci_rx_get_frame() undercounts rx_bytes by 14 bytes or
-> > more, which is visible to userspace via ip -s link.
-> > 
-> > The frame length is available before any of that surgery happens --
-> > data_len from FDMA_DCB_STATUS_BLOCKL(db->status), or skb->len right
-> > after the skb_pull(skb, IFH_LEN_BYTES) -- so accounting could be done
-> > there instead.
-> > 
-> > I realise this mirrors what the existing register/page path in
-> > lan966x_fdma.c does, so if the intent is to keep the two backends
-> > byte-for-byte consistent, please say so; otherwise it would be good
-> > not to copy the miscount into the new file.
-> 
-> Not only lan966x, but sparx5 and lan969x does the exact same thing, increasing
-> rx_bytes after headers are pulled.  The undercount is real, but not visible to
-> userspace. Both implementations (platform and PCI) read hardware counters directly
+Tested on 7.2.5 with this patch applied, same host and reproducer as
+v1. Under the slow-completion condition the 200k-line burst that grew
+unreclaimable slab by 173 MiB on the unpatched kernel grows it by
+2 MiB, with 187229 drops counted in the target's transmit_errors and
+the same number in the device's tx_dropped; with prompt completions
+it drains at line rate with no drops and a sampled peak of ~1.1k
+skbs. Slab figures are deltas sampled at 4 Hz. W=1 build of
+netpoll.o and netconsole.o on this base is clean, checkpatch --strict
+clean.
 
-I'm a little unsure, but if it's consistent then I guess that is ok.
-It's an old interface anyway.
+The first tx_dropped increment on a device allocates its core stats
+with GFP_ATOMIC, the same class of allocation find_skb() already does
+on this path; they could be allocated at netpoll setup instead if
+preferred.
+
+Still open from v1: tail drop keeps the oldest messages and loses the
+newest, which for a console are usually the ones wanted, so dropping
+from the head is a few more lines; and 1024 is arbitrary, about 1 MiB
+of skbs.
+
+ net/core/netpoll.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index fe1e0cda5d6..aafbb19a288 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -38,6 +38,15 @@
+ 
+ #define USEC_PER_POLL	50
+ 
++/*
++ * Cap on skbs parked in npinfo->txq while the device is busy. The queue
++ * exists to ride out a transient stall; a producer that outruns the
++ * device for longer than that must lose packets, not grow it without
++ * bound. Checked without the queue lock, so the queue can overshoot
++ * slightly.
++ */
++#define NETPOLL_TXQ_MAX	1024
++
+ /*
+  * carrier_timeout is netconsole-specific and only kept here to preserve the
+  * netpoll.carrier_timeout module-parameter ABI. Its value is exposed to
+@@ -314,6 +323,12 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 	}
+ 
+ 	if (!dev_xmit_complete(status)) {
++		if (skb_queue_len_lockless(&npinfo->txq) >= NETPOLL_TXQ_MAX) {
++			dev_core_stats_tx_dropped_inc(dev);
++			dev_kfree_skb_irq_reason(skb,
++						 SKB_DROP_REASON_FULL_RING);
++			goto out;
++		}
+ 		skb_queue_tail(&npinfo->txq, skb);
+ 		schedule_delayed_work(&npinfo->tx_work,0);
+ 	}
+-- 
+2.55.0
+
