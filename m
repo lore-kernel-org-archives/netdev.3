@@ -1,186 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A13844C4E2;
-	Wed, 23 Sep 2026 12:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EA64A7C95
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790168183; cv=none; b=CXEfz09W/fLpP/Yqm8r+fK6bxPyQRLbg2pGvTaK+BH/0ICQsY6KlzuQjn79iwTKKvtpohZQCuYDx1MJZmarFw9/cd/obS9xtbvIuSdK+ong3o10cYdwUQUof0BZljT1+GrZhiFFVl8uNjGDMzFeoLyxiCiJXEHHFXCh3m1AShng=
+	t=1790168256; cv=none; b=Xjyh+hh+l/sp/AXhgt6iD74gM/U8ctVxSJAO5zfdZez7+q2u5FCcIAL4FERf9KqfNLUGgnD4sRp+1uVjhfcA03Arab4gDHWIdEiVChAXV+Forj7ElPeEe5nBJLniwVSPpaggdWU1V4Qu+QVOxoNgisFtHeYeN8ztngAjNohfHIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790168183; c=relaxed/simple;
-	bh=LzJEruODDUPU73rqcnJtFWsHFPjSXRP/LTH0UAEBWnI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OKYmdymHrjiBcb00KaV8dOEJcnL4zotClVTTCyCLV/GNUuLpx6ehcXmP0ylP9Dk4gXlt4ZW6PzfJdiFsHZ+YMe2vJ0rBrbzBXfVWKDG1Bs7jeJUfQzNrvrCcERnPMjvdC/Tnh2nNiZmH3mVwJklTK2wU1ZSWWBQhEqRNS1UhaaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvQiQUsf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790168256; c=relaxed/simple;
+	bh=KzkJL9XecANA7DSkd5iLEuklmtZkLKM0ugeoY3qIemo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qzZ7OrZnvwejhC0SJJ7mH/k2sFBOQpL27W7vKzBbb2FLXNzGBj0TNd+u7AL5XSgu75wI3jg288Hp7Po23emh2qlyNDDlPa9yzICFG7qavuKDCJk+zwIstvo2Qtt87hPFA8+y4Pi4u2wC8yBJDhGhF7qHyPhE1Ue+8VV/w8KZ0Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hGAYGIDP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bkjcPUEm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvQiQUsf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870B21F000FF;
-	Wed, 23 Sep 2026 12:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790168182;
-	bh=3uUhtAR2k0hPaE4q7IxQRMBAokmtgKcz0lOtbcN/3eA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SvQiQUsfVQZRXUO5/FwsLtxY+h0jo4b/6HpYlE6vmJ2SvkTIpI8X949Jn1bEH/yYV
-	 orCrR2RIXPB6OqNfTWt7nC58HzbuL4jNGxb3+Gm+zS0fw9ULufsMP2z0t8UQhm+KWJ
-	 vxbLhHKTuol4SaYIsB0C9B9P4UQ+zG085/0k+aJ9jeMU2CrcFjWG5ZOFn0PaV1+5Js
-	 aJOMIgr83zIt1CEtPDdiJRFhsZXYwO0OzZaWFYny5avLUmutE4MbpH7W6g/I5tK2V3
-	 UClqdPdIcbSpo5BzEgjsTdygqYqOvGSTjX+3AusKObMSEXhFQi/fTdgmKwCdtFPwch
-	 QSjlEvxEDEriw==
-Subject: Re: [PATCH v2 2/2] vsock/vmci: enforce per-netns mode on the datagram
- receive path
-From: netdev-bot+sashiko@kernel.org
-To: bartlomiej.dmitruk@isec.pl
-Cc: bryan-bt.tan@broadcom.com, vishnu.dasa@broadcom.com, sgarzare@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- mst@redhat.com, virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 12:56:21 +0000
-Message-ID: <179016818112.2160803.16758605437197754903@kernel.org>
-In-Reply-To: <20260919123208.29032-2-bartlomiej.dmitruk@isec.pl>
-References: <20260919123208.29032-2-bartlomiej.dmitruk@isec.pl>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hGAYGIDP";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bkjcPUEm"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NBbYCd2637962
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:57:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=wJmkchd5FFosOFCSNaAhYNUs
+	9kr6IgwsEZr7XcXzpQc=; b=hGAYGIDPQ4nJy7/DCaS5ax7FHJcRBp8dG0Rj1gpo
+	tusgnm4lFb8uqIP93OQciFk1qwolRc/LNh9Ie83Jp45It/mfT4FMwvxkyIauhFlE
+	mo5IrEaKYt3/BI/epa3kUe38Yb76SEViULYxu2pbUjH0WgrNAv9nxNYU9KQ/S+BX
+	ywHeGGS6rxF+Gx1wzEgsPLTOYZu9UvvyBsM65TVoRLnyYwFFy//y4mKd4P514sfW
+	a6TTFHLMPhog1Q0vUSudfzNZ2VVOux08lkAlfuF9Lgse5vThpxbrffktcMLDTOvI
+	yKpYyFmN+o67oVUJ6aaKHk8IIwIhwEXYPQPOOpuEd1jlfA==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gv9bqhmyj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:57:33 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-381250979d5so818542a91.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790168253; x=1790773053; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wJmkchd5FFosOFCSNaAhYNUs9kr6IgwsEZr7XcXzpQc=;
+        b=bkjcPUEmfADCRA/EwwN8Fk+vIB8j9q8Ps+9kwv2rUFtWfUaIvlASQ/mqV45UIlj3Te
+         KXgZI/hpYjijt9ZGp6UwNmTNn7Qvm5A7Ordw/4NJ2AOcxZayqxPA9+d9NRxHD80xgeew
+         q9UPSbpufD9ueBm7wWIHHofMfNT3WA0qoekHQCHNdbg0A/Vo/42/64Zx6ZA+pBps7u9A
+         keAJS8toizFIHjjqOXU7pyph7h476kfnnHHLalMszn8I5tcLS0o0jZ7BRV4w+egMTglX
+         CmwMOTv0GvLQHDzts24ATWKyOQhIGTUizX2QEZQ8hBLAekZkmBs5mKhj9maOj1yVQJfi
+         8SfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790168253; x=1790773053;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wJmkchd5FFosOFCSNaAhYNUs9kr6IgwsEZr7XcXzpQc=;
+        b=0mFv3ylhWT0LzhRs9wZTXV36O7WDMQQmwZkql8U4z/cw2lAfPNGGvswf0i14vByjB7
+         nl2eRNfZ+zma5euUA7KofyY9WYMNIAu+yL+wSE9UvPuAu01D9dcBJNEEZWB8WjT6vegu
+         roibU26Ex+A4l960KHbogRCwTjdLvi2OoOukoC1HJBjatvGDMPYL+gqx+djp/12f2uXY
+         rNEjT5yvDP2JvoPwMlpBFfaN15NZ1aaNAjha/O7pFBkIWf2UnZtli31i0wNrvctLzRTg
+         RbWEOhwQIMqJ2pCQFKRgHdHUkA2AVac2b+1z9guUHKkjf865VhqaktXj6JWswdnZ1H88
+         1F9A==
+X-Forwarded-Encrypted: i=1; AKwUvBxrrTXaI90jTU2jpxy5IFgpx1D83fSKVTkqDrMx5h25FuP2z2uulSud3U7YG1Q6yIq2ua87sSU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nlrcnEne0PczQdKeaXd+bgYI2hIGYbMqkv6C4RxGaV5KZritEb
+	ju2bfubw32i2a1+1GFZGISL8nhia0ZJgb35OvG/vLFRZ5lC5V08QZYc06lAnewq2LvQKecqBit1
+	onD4/qkqj5WFJWY55e5u077l46OQg5BC55ej14orfz9RLElmrfjkiEjn+AOs=
+X-Gm-Gg: AYBFou2QNdc+PG+/7UHSz6wrRcm/dN7GzsYQ/0T8ot+1Ka5ub/DbBRhLin7cKlBkPuC
+	z3BzLdiPo8cre+PZ9IvIk0E627YLmWfLBtqoUNAPoVJuwzZ16zxkuFd3LhO3Xw9jWDBDBoxMdCb
+	vkHBvgPH67Wk20IfErTgjMjYYa7nHaBH8MxP/8Ml5m1yDpbyNpvZCENHvPE0Ybas1Sv7VXxZdue
+	jai+MepmdLKPRXF5FOmIWne6AZ0yrSeDeMxs5nleji1xqZuoy3r/oroabKSch4L9x26ZCR/9Vwd
+	WjUVF9ZbwsFYlN8RrmLPIuwU62PWQNptlOeMMf6HHsiUD0tTj6fHAEnPPEDv2E4CAeRSj5oLuwX
+	3DnY+poFebNqE
+X-Received: by 2002:a17:90b:33c9:b0:39e:6a81:f34a with SMTP id 98e67ed59e1d1-3a07e6be363mr1943541a91.36.1790168253027;
+        Wed, 23 Sep 2026 05:57:33 -0700 (PDT)
+X-Received: by 2002:a17:90b:33c9:b0:39e:6a81:f34a with SMTP id 98e67ed59e1d1-3a07e6be363mr1943518a91.36.1790168252430;
+        Wed, 23 Sep 2026 05:57:32 -0700 (PDT)
+Received: from oss.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a07dbc5451sm5788341a91.7.2026.09.23.05.57.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 05:57:32 -0700 (PDT)
+Date: Wed, 23 Sep 2026 18:27:22 +0530
+From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+        Shawn Guo <shengchao.guo@oss.qualcomm.com>,
+        Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
+        Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Subject: Re: [PATCH RFC net-next 4/9] net: pcs: xpcs: add Qualcomm Nord
+ platform support
+Message-ID: <arPMslTgeohefnX6@oss.qualcomm.com>
+References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+ <20260923-qcom_xpcs_nord_emac-v1-4-4b1c682af70f@oss.qualcomm.com>
+ <b7cab76a-c2f9-472a-bdde-162e1fcb5fd0@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7cab76a-c2f9-472a-bdde-162e1fcb5fd0@lunn.ch>
+X-Proofpoint-GUID: h41B2otikhx2tZyUGsFA2Ilse9qwR3Tc
+X-Proofpoint-ORIG-GUID: h41B2otikhx2tZyUGsFA2Ilse9qwR3Tc
+X-Authority-Analysis: v=2.4 cv=WZuZ+EhX c=1 sm=1 tr=0 ts=6ab3ccbd cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=mHhYrMsX9GfO8_TZ82YA:9 a=CjuIK1q_8ugA:10 a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1MSBTYWx0ZWRfX7oqBOt3AGuYv
+ 2Vt+k3f2A1o4sFLUxcvUfTc6MV4IThqzCPlOJJyPZaasszD89AqCA9zTfyvYcd9Vc3f92vLAZCc
+ N4O4ibxLKYLAR+psBSjxkGljKOeIieY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1MSBTYWx0ZWRfX3/fa43WreNtb
+ KxviPfkarmWMAojBb1X0JHIvG5AVYWMN5vlUtOyf4b7lOF6/2aK4zCAoJU2mYa47sZWcjY7vKPG
+ yHDngRxy9Bb94hHJVAQHA7mtvtBuU8ROC9Y/hE41C2fhI/H3YUQuNwI0KjpX3wD1tftnokH3DA+
+ V/2QyMMrgkrv+iDMbKEXrSOsTHQHSuHjOE6pSEhh65Q6F/VAGJ6CPlkdiuU+EEOU1wTUNyOZqb4
+ JrgDz/fYQ6X5+j1Axa29E7jGFexUJAz0EfbGodmEtqPj4gLezPZ3rGSgKgWyjYoFQdwfuxUUdjq
+ 1TunNXBHD4wjvDt/idTMA29iRDzwOWDIyCwhba93YQacTkJ+dMVS1Ow0Wg17aVSXxn+ScwQcFdD
+ 2Zsqd0e057k3AN7GtfibRQaRnUeNmxwsBLlDcP3X7+scBVm/cpUqx55QYZgqUkdebKlzELYEVvf
+ O+Q/vFHqZ9In8OPV5iQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ suspectscore=0 clxscore=1015 impostorscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230051
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Wed, Sep 23, 2026 at 02:07:07PM +0200, Andrew Lunn wrote:
+> On Wed, Sep 23, 2026 at 06:37:30AM +0530, Mohd Ayaan Anwar wrote:
+> > Qualcomm Nord exposes the DesignWare XPCS register blocks through
+> > separate direct-MMIO windows instead of the standard contiguous
+> > MMD/register layout. Add accessors that translate MMD accesses to the
+> > Nord windows:
+> > 
+> >   MMD 3 (PCS), standard registers: SR_XS at 0x0000
+> 
+> What does standard mean? 802.3 C45.2.3 defines registers 3.0 -
+> 3.32767 as standardised. 
+> 
+> >   MMD 3 (PCS), vendor registers:   VR_XS at 0x2000
+> 
+> and 3.32768 - 3.65535 as vendor.
+> 
+> However, with a length of 0x2000, there is only space for 8192 of the
+> standardised registers, and 0x1000 gives 4096 vendor registers.
+> 
+> >   MMD 1 (PMA/PMD):                  SR_PMA at 0x3000
+> >   MMD 31 (VEND2), standard regs:    SR_MII at 0x4000
+> 
+> What do you mean by standard registers when talking about VEND2?
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0 (1)
+This is incorrect, these are non-standard VEND2 registers.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+> >   MMD 31 (VEND2), vendor registers: VR_MII at 0x5000
+> 
 
-- [High] Torn 64-bit lockless access to `vsock->cached_peer_access` on
-  32-bit builds defeats the access-control invariant the series claims…
+Overall, it's a mess, with some registers marked as reserved, and some
+not defined. I will go through the list once again and document them
+properly. Thank you for the pointers, this is the first time I am
+working with this IP and I have found the specific version of the
+databook to be confusing.
 
-Pre-existing issues:
-- [Low] Stale justification comments in both lockless callers of
-  `vmci_transport_allow_dgram()`.
-
---
-
-vsock/vmci: enforce per-netns mode on the datagram receive path
-
-This adds a vsock_net_mode_global() check at the top of
-vmci_transport_allow_dgram() so the receive path refuses datagrams when the
-socket's netns is not in global mode, matching the send hook
-vmci_transport_dgram_allow().  The check is placed before the
-VMADDR_CID_HYPERVISOR short-circuit so hypervisor datagrams are gated too.
-
-> diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-> index 31728e26a770..d6791459e2fd 100644
-> --- a/net/vmw_vsock/vmci_transport.c
-> +++ b/net/vmw_vsock/vmci_transport.c
-> @@ -533,6 +533,14 @@ static bool vmci_transport_allow_dgram(struct vsock_sock *vsock, u32 peer_cid)
->  {
->  	u64 access;
->  
-> +	/* Enforce the per-netns mode first, symmetrically with the send hook
-> +	 * vmci_transport_dgram_allow(): a socket in a non-global (local) netns
-> +	 * must not receive datagrams it could never send (this also covers the
-> +	 * hypervisor CID).
-> +	 */
-> +	if (!vsock_net_mode_global(vsock))
-> +		return false;
-> +
->  	if (VMADDR_CID_HYPERVISOR == peer_cid)
->  		return true;
->  
-
-[Severity: High]
-While looking at the rest of vmci_transport_allow_dgram(), can the packed
-cached_peer_access word tear on 32-bit builds?
-
-The helper reads and writes the decision as one u64:
-
-net/vmw_vsock/vmci_transport.c:vmci_transport_allow_dgram() {
-	access = READ_ONCE(vsock->cached_peer_access);
-	if ((access & VMCI_DGRAM_ACCESS_VALID) &&
-	    (u32)(access >> VMCI_DGRAM_ACCESS_CID_SHIFT) == peer_cid)
-		return !!(access & VMCI_DGRAM_ACCESS_ALLOW);
-	...
-	WRITE_ONCE(vsock->cached_peer_access, access);
-	return !!(access & VMCI_DGRAM_ACCESS_ALLOW);
-}
-
-and the comment above it, plus the field comment in include/net/af_vsock.h,
-state that using a single word means the race between the receive tasklet
-and the send path "can never return a stale allow for a restricted peer".
-
-include/asm-generic/rwonce.h says the opposite for a 64-bit access on a
-32-bit architecture:
-
- * Yes, this permits 64-bit accesses on 32-bit architectures. These will
- * actually be atomic in some cases (namely Armv7 + LPAE), but for others we
- * rely on the access being split into 2x32-bit accesses ... and a strong
- * prevailing wind.
-
-drivers/misc/vmw_vmci/Kconfig allows this on 32-bit x86:
-
-	depends on (X86 || ARM64) && !CPU_BIG_ENDIAN && PCI
-
-The reader runs with no socket lock held, from
-vmci_transport_recv_dgram_cb() and vmci_transport_recv_stream_cb(), while
-the writer can run concurrently from vmci_transport_dgram_enqueue() under
-lock_sock(), which does not exclude bottom halves.
-
-So on i386, with the cache holding {cid=B, VALID, ALLOW clear} for a
-RESTRICTED peer B, can this happen?
-
-CPU0 (sendmsg, trusted peer A) in vmci_transport_allow_dgram()
-	WRITE_ONCE(vsock->cached_peer_access, access);
-	  -> low word stored first: VALID|ALLOW
-	  -> high word still holds B
-
-CPU1 (receive tasklet, datagram from restricted peer B)
-	access = READ_ONCE(vsock->cached_peer_access);
-	  -> low = VALID|ALLOW, high = B
-	(u32)(access >> VMCI_DGRAM_ACCESS_CID_SHIFT) == peer_cid  /* matches */
-	return !!(access & VMCI_DGRAM_ACCESS_ALLOW);              /* true */
-
-That would accept a datagram from a VMCI_PRIVILEGE_FLAG_RESTRICTED context
-on a non-trusted socket, and the mirrored tear (new high word, old low word)
-would drop legitimate datagrams.
-
-Would an atomic64_t accessed with atomic64_read()/atomic64_set(), a
-seqcount, or plain serialization be needed here instead of u64
-READ_ONCE()/WRITE_ONCE()?
-
-[Severity: Low]
-This isn't an issue introduced by this patch, but since
-vmci_transport_allow_dgram() is being touched: both lockless callers still
-carry a justification that no longer matches the helper.
-
-vmci_transport_recv_dgram_cb() and vmci_transport_recv_stream_cb() both say:
-
-	 * NOTE: We access the socket struct without holding the lock here.
-	 * This is ok because the field we are interested is never modified
-	 * outside of the create and destruct socket functions.
-	 */
-	vsk = vsock_sk(sk);
-	if (!vmci_transport_allow_dgram(vsk, dg->src.context))
-		return VMCI_ERROR_NO_ACCESS;
-
-but the helper writes socket state on the ordinary receive and send paths:
-
-	WRITE_ONCE(vsock->cached_peer_access, access);
-
-and the field comment in include/net/af_vsock.h documents that both the
-receive tasklet and the lock_sock() send path update it.
-
-Could the NOTE be reworded to name the fields that really are immutable
-(trusted, owner) and mention that cached_peer_access has its own
-READ_ONCE()/WRITE_ONCE() protocol?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919123208.29032-1-bartlomiej.dmitruk%40isec.pl
+	Ayaan
