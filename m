@@ -1,128 +1,211 @@
-Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102FB429024
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 06:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC0F25B091;
+	Wed, 23 Sep 2026 07:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790146363; cv=none; b=Sfc9xuqPfABav0wP/GniWft8Y4sMhdZkXXdnT/wEpW1susVPYz3Lxfe3YTpIKmi+KlQ1pcbZisIvixvBaLh/172l+w9lfEweXoj//hc04DP5BqRuybwgs6o0fxwVLVEWTzLNjguJ1ZLx6PQIWlSGSJc/IUEmnUKnodu1MwrWNEM=
+	t=1790146840; cv=none; b=G8Al1VInYcXMLqD+zzUsN4VvDHhBtRIqNFBznPe0kTtAIJKFOSrm7K6n1W/AVDcAczF6YFP+LMwwd49bihscu0h6MWHshBRNVj6dUaD54IARa9Il1L8/Tvju43T8TaDjGdaUCosHl+c7Q56s21gFlGKDTHS9ijNSwtk03+JSxaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790146363; c=relaxed/simple;
-	bh=1NhVw1L5Qcugjlu5RdWfsKxHx3S0sohBro3S9A8vd4Y=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AlcUYWk5WbFMT6gNrFkuxicZBfg8TguZVCuBp1nKcvZhXoBWni6jO3LWxPYoRHG7KjIkO/fBJtjiZ02mMdClUQlg8Gtgf2afwGiaDV+YVmiKreCg18WSCJ4W5tva+yfvuMiEgR7rryPya7iLVqs4Ete7M6rquupASVqAolzHhpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=T+X2ZV+D; arc=none smtp.client-ip=141.95.128.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
+	s=arc-20240116; t=1790146840; c=relaxed/simple;
+	bh=2E/+CMt+kcx35sEnkY8dw6dj8vvP6NYzTNeYkVhQBeY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NfGqCpqxWD20yhKX1IkErmlMEurnexGh9W9DQ8I90cMOa8/jqp0+KJovcBja5TtuMxEY66ve2147GEcFJfsG+q2PlnsATU1VBU6tyBpcFUgrIMs5rM2U84zVF197ORdR2mk4aNUCfzftgTvAgUAB/ML0CVU8FKYcySDOqXfZeaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i3Mh0bM3; arc=none smtp.client-ip=192.198.163.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="T+X2ZV+D"
-Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
- S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 23 Sep 2026 08:52:27 +0200
-Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
- S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
- 15.02.2562.049; Wed, 23 Sep 2026 08:52:27 +0200
-From: Julien Blanc <julien.blanc@sprinte.eu>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>
-Subject: [PATCH net-next v5] Add config phase for dp83td510e phy
-Thread-Topic: [PATCH net-next v5] Add config phase for dp83td510e phy
-Thread-Index: AQHdSygYN6nNiWAG80qFHEx/wNe0eQ==
-Date: Wed, 23 Sep 2026 06:52:26 +0000
-Message-ID: <30be27333dbf1a83efbe20e7b07acc6290805d65.camel@sprinte.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <548BECB784BDB64895A096CF671CBD47@EX793143.lan>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i3Mh0bM3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790146838; x=1821682838;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2E/+CMt+kcx35sEnkY8dw6dj8vvP6NYzTNeYkVhQBeY=;
+  b=i3Mh0bM3VNc0fA0yVrY+vi2eCu64L5mkyBjLJuVnVgYm3tz4MWoR47ow
+   yEsJYrx1yjioz6qOWsiu3M19lRednAc/vat60YJraqOUvBJs0H8ruNiEs
+   DTKRzFDXsXpVVMTA7W1+luI3c089BOPEATWlcmn/l2Kdtv389DIxjcW3e
+   BRT7YFrruZ2XBJ2stDmB7cCsICJSXaMBC865tqvdbtkqWWFnCIj1tc377
+   A98Om4uhiTjJY4vUFg6CwXPnTcaKKYbHASWO8kYTg3oNz4pFwkw0GnlPD
+   nFDmzCpU9j0/07E1aA+on4qFoyYvncQZWoCQlZ/x/XNVjAfuKHBy7eXJu
+   g==;
+X-CSE-ConnectionGUID: 4dbbSMW3QNStDAa8xIsmvQ==
+X-CSE-MsgGUID: lo3XgpWvStef1PizWhpN0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="1316511"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="1316511"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:00:37 -0700
+X-CSE-ConnectionGUID: HQSuThhOTZ6gfCxqQtR38w==
+X-CSE-MsgGUID: 8Tu5+dbgRpmy+GK+JTxqIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="4551028"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa011.fm.intel.com with ESMTP; 23 Sep 2026 00:00:35 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id C600999; Wed, 23 Sep 2026 09:00:33 +0200 (CEST)
+Date: Wed, 23 Sep 2026 09:00:33 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Yusheng Zheng <yunwei356@gmail.com>
+Cc: westeri@kernel.org, netdev@vger.kernel.org, YehezkelShB@gmail.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
+Subject: Re: [RFC net-next] net: thunderbolt: Allow per-device opt-in Tx E2E
+ flow control
+Message-ID: <20260923070033.GH106095@black.igk.intel.com>
+References: <CAEnnukY8+i7j7A05afKrEz7s9kXEXXzjwGm+wV1wHgACe+iADg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
- c=relaxed/relaxed; t=1790146347; h=from:to:subject:date;
- bh=1NhVw1L5Qcugjlu5RdWfsKxHx3S0sohBro3S9A8vd4Y=;
- b=T+X2ZV+DsXnUUnshI5omUZorOvE1lb0PpFGl/f4NXhTTh79P2JXqWir4k11ucR/Jlj1dG1fjPXqKM6c2N4IrBmjtIlDQvqaot2mR51wny/HfFdvKwpmY7ea8DgIaryQanJa0jizTXbWFi0cam3QL0reCVZ0JdNJqCuuE5ya0MNhL32Hmo3LZ60MfQbO7fgXflCRxWoXabYOIWehNqWw5aNr13RQPpv2+bZeSUtqP7IwFn1IvxcvbhCMAXyZjgQr++08/hNH7xVEOftS7tmA51tpDc/He7qAruW2GhPY99yg4sfd2L+3lTJ2iBbMbQPtujr99yUXPC3fCU5+8eINdQA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAEnnukY8+i7j7A05afKrEz7s9kXEXXzjwGm+wV1wHgACe+iADg@mail.gmail.com>
 
-QWRkIGEgY29uZmlnIHBoYXNlIGZvciB0aGUgVGV4YXMgSW5zdHJ1bWVudHMgRFA4M1RENTEwRSBl
-dGhlbmV0IFBIWQ0KDQpUaGUgY29uZmlnIHBoYXNlIGN1cnJlbnRseSBzZXRzIHRoZSBmb2xsb3dp
-bmcgcHJvcGVydGllcyBmcm9tIHRoZQ0KZGV2aWNlIHRyZWU6DQogICogUk1JSSAvIFJHTUlJIG1v
-ZGUgKG5vdGUgOiBSTUlJIG1hc3RlciAvIHNsYXZlIGNhbiBvbmx5IGJlIHNldA0KICAgIGJ5IHN0
-cmFwcyBhbmQgY2Fubm90IGJlIGNoYW5nZWQgYXQgcnVudGltZSkNCiAgKiBSR01JSSBkZWxheXMu
-IFRoZXNlIGRlbGF5cyBjYW4gYmUgZW5hYmxlZCBvbiB0aGUgcGh5IHNpZGUsIG9ubHkNCiAgICBh
-cyBhIGJvb2xlYW4uIERlbGF5cyBhcmUgZW5hYmxlZCBpZiBwaHktbW9kZSBpcyByZ21paS1pZCwg
-b3INCiAgICByZ21paS1bcnh8dHhdaWQgd2hpY2ggZW5hYmxlcyBvbmx5IHRoZSBjb3JyZXNwb25k
-aW5nIGRlbGF5Lg0KICAqIEluIGNhc2UgYW5vdGhlciBtb2RlIGlzIGVuY291bnRlcmVkLCBkbyBu
-b3RoaW5nIGFuZCByZXR1cm4NCiAgICBzdWNjZXNzIChrZWVwIG9sZCBiZWhhdmlvcikNCg0KU2ln
-bmVkLW9mZi1ieTogSnVsaWVuIEJsYW5jIDxqdWxpZW4uYmxhbmNAc3ByaW50ZS5ldT4NCg0KUmV2
-aWV3ZWQtYnk6IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4NCi0tLQ0KQ2hhbmdlcyBpbiB2
-NToNCi0gZGlmZiBnb3QgbWFuZ2xlZCwgcmVzZW5kaW5nDQoNCkNoYW5nZXMgaW4gdjQ6DQotIGZp
-eGVzIGZvcm1hdHRpbmcgYW5kIGNvbW1lbnQgc3R5bGUgaXNzdWVzDQoNCkNoYW5nZXMgaW4gdjM6
-DQotIGZpeCByZXR1cm5pbmcgYW4gdW5pbml0aWFsaXplZCB2YWx1ZSBpZiBtb2RlIHdhcyBub3Qg
-cmdtaWlbLXh4XQ0KICBvciBybWlpIChtaWkgaXMgYSB2YWxpZCBtb2RlIGZvciB0aGlzIHBoeSBh
-cyB3ZWxsKS4gUmV0dXJuDQogIHN1Y2Nlc3MgaW4gdGhhdCBjYXNlIHRvIGtlZXAgdGhlIG9sZCBk
-cml2ZXIgYmVoYXZpb3IuDQotIHVwZGF0ZWQgY29tbWl0IGRlc2NyaXB0aW9uIGFjY29yZGluZ2x5
-DQoNCkNoYW5nZXMgaW4gdjI6DQotIHJlbW92ZSB0aGUgdXNhZ2Ugb2YgcGh5X2dldF9pbnRlcm5h
-bF9kZWxheQ0KLSB1c2UgYm9vbGVhbnMgdG8gbWFrZSBpdCBjbGVhciB0aGF0IHRoeSBwaHkgc3Vw
-cG9ydHMgb25seSBhDQogIGZpeGVkIGRlbGF5IGFjdGl2YXRpb24sIG5vIGNvbmZpZ3VyYWJsZSBk
-ZWxheQ0KDQogZHJpdmVycy9uZXQvcGh5L2RwODN0ZDUxMC5jIHwgNjkgKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKw0KIDEgZmlsZSBjaGFuZ2VkLCA2OSBpbnNlcnRpb25zKCsp
-DQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMgYi9kcml2ZXJzL25l
-dC9waHkvZHA4M3RkNTEwLmMNCmluZGV4IDllOWE0MWJmNjQ1Ny4uYWE2MTIyMGRiY2UzIDEwMDY0
-NA0KLS0tIGEvZHJpdmVycy9uZXQvcGh5L2RwODN0ZDUxMC5jDQorKysgYi9kcml2ZXJzL25ldC9w
-aHkvZHA4M3RkNTEwLmMNCkBAIC0zMCw2ICszMCwxMiBAQA0KICNkZWZpbmUgRFA4M1RENTEwRV9J
-TlQxX0xJTksJCQlCSVQoMTMpDQogI2RlZmluZSBEUDgzVEQ1MTBFX0lOVDFfTElOS19FTgkJCUJJ
-VCg1KQ0KIA0KKyNkZWZpbmUgRFA4M1RENTEwRV9SQ1NSCQkJCTB4MTcNCisjZGVmaW5lIERQODNU
-RDUxMEVfUk1JSV9NT0RFX0VOCQkJQklUKDUpDQorI2RlZmluZSBEUDgzVEQ1MTBFX1JHTUlJX01P
-REVfRU4JCUJJVCg5KQ0KKyNkZWZpbmUgRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQJCQlCSVQoMTEp
-DQorI2RlZmluZSBEUDgzVEQ1MTBFX1JYX0NMS19TSElGVAkJCUJJVCgxMikNCisNCiAjZGVmaW5l
-IERQODNURDUxMEVfQ1RSTAkJCQkweDFmDQogI2RlZmluZSBEUDgzVEQ1MTBFX0NUUkxfSFdfUkVT
-RVQJCUJJVCgxNSkNCiAjZGVmaW5lIERQODNURDUxMEVfQ1RSTF9TV19SRVNFVAkJQklUKDE0KQ0K
-QEAgLTY0OSw2ICs2NTUsNjggQEAgc3RhdGljIGludCBkcDgzdGQ1MTBfY29uZmlnX2FuZWcoc3Ry
-dWN0IHBoeV9kZXZpY2UgKnBoeWRldikNCiAJcmV0dXJuIGdlbnBoeV9jNDVfY2hlY2tfYW5kX3Jl
-c3RhcnRfYW5lZyhwaHlkZXYsIGNoYW5nZWQpOw0KIH0NCiANCitzdGF0aWMgYm9vbCBkcDgzdGQ1
-MTBfY29uZmlnX3JnbWlpX3J4X2RlbGF5KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpDQorew0K
-KwlyZXR1cm4gcGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX0lE
-IHx8DQorCSAgICAgICBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUkdN
-SUlfUlhJRDsNCit9DQorDQorc3RhdGljIGJvb2wgZHA4M3RkNTEwX2NvbmZpZ19yZ21paV90eF9k
-ZWxheShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KK3sNCisJcmV0dXJuIHBoeWRldi0+aW50
-ZXJmYWNlID09IFBIWV9JTlRFUkZBQ0VfTU9ERV9SR01JSV9JRCB8fA0KKwkgICAgICAgcGh5ZGV2
-LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX1RYSUQ7DQorfQ0KKw0KK3N0
-YXRpYyBpbnQgZHA4M3RkNTEwX2NvbmZpZ19pbml0KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYp
-DQorew0KKwlpbnQgcmdtaWlfZGVsYXkgPSAwOw0KKwlib29sIHJ4X2ludF9kZWxheTsNCisJYm9v
-bCB0eF9pbnRfZGVsYXk7DQorCWludCByZXQ7DQorDQorCWlmIChwaHlfaW50ZXJmYWNlX2lzX3Jn
-bWlpKHBoeWRldikpIHsNCisJCXJ4X2ludF9kZWxheSA9IGRwODN0ZDUxMF9jb25maWdfcmdtaWlf
-cnhfZGVsYXkocGh5ZGV2KTsNCisJCWlmIChyeF9pbnRfZGVsYXkpDQorCQkJcmdtaWlfZGVsYXkg
-fD0gRFA4M1RENTEwRV9SWF9DTEtfU0hJRlQ7DQorDQorCQl0eF9pbnRfZGVsYXkgPSBkcDgzdGQ1
-MTBfY29uZmlnX3JnbWlpX3R4X2RlbGF5KHBoeWRldik7DQorDQorCQlpZiAodHhfaW50X2RlbGF5
-KQ0KKwkJCXJnbWlpX2RlbGF5IHw9IERQODNURDUxMEVfVFhfQ0xLX1NISUZUOw0KKw0KKwkJcmV0
-ID0gcGh5X21vZGlmeV9tbWQocGh5ZGV2LCBNRElPX01NRF9WRU5EMiwgRFA4M1RENTEwRV9SQ1NS
-LA0KKwkJCQkgICAgIERQODNURDUxMEVfUlhfQ0xLX1NISUZUIHwNCisJCQkJICAgICBEUDgzVEQ1
-MTBFX1RYX0NMS19TSElGVCwNCisJCQkJICAgICByZ21paV9kZWxheSk7DQorCQlpZiAocmV0KQ0K
-KwkJCXJldHVybiByZXQ7DQorDQorCQlyZXQgPSBwaHlfc2V0X2JpdHNfbW1kKHBoeWRldiwgTURJ
-T19NTURfVkVORDIsDQorCQkJCSAgICAgICBEUDgzVEQ1MTBFX1JDU1IsIERQODNURDUxMEVfUkdN
-SUlfTU9ERV9FTik7DQorDQorCQlpZiAocmV0KQ0KKwkJCXJldHVybiByZXQ7DQorDQorCX0gZWxz
-ZSBpZiAocGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JNSUkpIHsNCisJ
-CS8qIHNldCBSTUlJX01PREVfRU4sIGNsZWFyIFJHTUlJX01PREVfRU4gKGV4Y2x1c2l2ZSkgKi8N
-CisJCXJldCA9IHBoeV9tb2RpZnlfbW1kKHBoeWRldiwgTURJT19NTURfVkVORDIsIERQODNURDUx
-MEVfUkNTUiwNCisJCQkJICAgICBEUDgzVEQ1MTBFX1JNSUlfTU9ERV9FTiB8DQorCQkJCSAgICAg
-RFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLA0KKwkJCQkgICAgIERQODNURDUxMEVfUk1JSV9NT0RF
-X0VOKTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisJfSBlbHNlIHsNCisJCS8qIG1h
-eSBiZSBNSUksIHdoaWNoIGlzIHN1cHBvcnRlZCwgb3Igc29tZXRoaW5nIGVsc2UuIEp1c3QNCisJ
-CSAqIHJldHVybiBzdWNjZXNzIHRvIGtlZXAgdGhlIG9sZCBiZWhhdmlvciBhbmQgbm90IGJyZWFr
-DQorCQkgKiBhbnl0aGluZy4gQ29uZmlndXJhdGlvbiBtYXkgaGF2ZSBiZWVuIGRvbmUgYnkgc3Ry
-YXBzIHNvDQorCQkgKiBpdCdzIGJldHRlciB0byBub3QgdG91Y2ggaXQuDQorCQkgKi8NCisJCXJl
-dCA9IDA7DQorCX0NCisNCisJcmV0dXJuIHJldDsNCit9DQorDQogc3RhdGljIGludCBkcDgzdGQ1
-MTBfZ2V0X3NxaShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIHsNCiAJaW50IHNxaSwgcmV0
-Ow0KQEAgLTk0Miw2ICsxMDEwLDcgQEAgc3RhdGljIHN0cnVjdCBwaHlfZHJpdmVyIGRwODN0ZDUx
-MF9kcml2ZXJbXSA9IHsNCiAJLm5hbWUJCT0gIlRJIERQODNURDUxMEUiLA0KIA0KIAkuZmxhZ3Mg
-ICAgICAgICAgPSBQSFlfUE9MTF9DQUJMRV9URVNULA0KKwkuY29uZmlnX2luaXQJPSBkcDgzdGQ1
-MTBfY29uZmlnX2luaXQsDQogCS5wcm9iZQkJPSBkcDgzdGQ1MTBfcHJvYmUsDQogCS5jb25maWdf
-YW5lZwk9IGRwODN0ZDUxMF9jb25maWdfYW5lZywNCiAJLnJlYWRfc3RhdHVzCT0gZHA4M3RkNTEw
-X3JlYWRfc3RhdHVzLA0KLS0gDQoyLjQ3LjMNCg==
+Hi,
+
+On Tue, Sep 22, 2026 at 11:43:16PM -0700, Yusheng Zheng wrote:
+> Commit a8065af3346e ("net: thunderbolt: Enable end-to-end flow control
+> also in transmit") enabled E2E flow control on Tx rings. It was reverted
+> after an ASMedia ASM4242 accepted the configuration without returning
+> credits, leaving its Tx ring wedged. A separate report described similar
+> Tx completion wedges with multiple native E2E rings on AMD Strix Halo.
+> The revert kept Rx E2E and suggested a Tx opt-in for known-good
+> controllers.
+
+AMD is also working on a patch that prevents the issue.
+
+> On two Intel Meteor Lake-P NHI (8086:7ec2) hosts, the exact patch built
+> against their running 7.3-rc3 kernel was tested in a same-boot A/B/A run.
+> Each arm used a ten-second, four-stream iperf3 transfer. For lab to g485,
+> Tx E2E on, off, then on again produced 15.43, 15.76, and 15.18 Gbit/s,
+> with 0, 29113, and 0 retransmissions. G485 Rx errors rose by 5097 during
+> the off arm and did not rise during either on arm. In the reverse direction,
+> throughput was about 19.41 Gbit/s in all three arms, with 0, 181, and 0
+> retransmissions; lab Rx errors rose by 14 only during the off arm.
+> 
+> The link was brought down and up to change the flag, so link training was
+> not held fixed. The result supports an integrity improvement on this pair,
+> not a general throughput gain or proof for other controllers. Both hosts
+> were returned to their distribution module after testing.
+> 
+> Add a per-netdev ethtool private flag named tx-e2e. It defaults to off and
+> can only change while the interface is down. Enabling it requires the
+> existing e2e module parameter. At open, the Tx ring uses E2E only if the
+> peer advertises TBNET_E2E. This bit proves protocol support, not working
+> credit return. Administrators must opt in only on controller pairs known
+> to return credits; a bad controller can stall Tx until the flag is
+> disabled.
+
+If we advertise E2E support over XDomain we must enable it as well
+otherwise the other side that can be something else that Linux will be
+disapointed.
+
+I think for this, we should come up a solution that deals with the NHI
+wedge problem directly in the TB driver side (and this is what AMD is
+working on). Then the Thunderbolt service drivers do not need to care.
+
+Also this looks pretty much like LLM generated, so you should add
+Assisted-by tag.
+
+> Link: https://lore.kernel.org/netdev/20260727123002.25225-1-fy15309206903@gmail.com/
+> Signed-off-by: Yusheng Zheng <yunwei356@gmail.com>
+> ---
+> RFC question: Is a per-netdev ethtool private flag an acceptable opt-in for
+> known-good controller pairs, given that the peer protocol bit cannot prove
+> that the controller returns Tx E2E credits?
+> 
+> Validation: The patched module built with W=1 against the running 7.3-rc3
+> headers and ran on both Intel hosts. A same-boot A/B/A test is summarized
+> above. Enabling the flag while the interface was up returned EBUSY; ring
+> flags were observed as FRAME without the opt-in and FRAME|E2E with it.
+> 
+> A net-next allmodconfig W=1 build was attempted but failed on GCC 15
+> -Werror diagnostics in unrelated files including samples/trace_events and
+> kernel/locking; it did not provide a clean whole-tree result.
+> 
+>  drivers/net/thunderbolt/main.c | 60 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 58 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+> index d9fb587a62c5..b17ab8e15c1f 100644
+> --- a/drivers/net/thunderbolt/main.c
+> +++ b/drivers/net/thunderbolt/main.c
+> @@ -162,2 +162,3 @@ struct tbnet_ring {
+>   *                 host
+> + * @tx_e2e: Enable end-to-end flow control on the Tx ring
+>   * @local_transmit_path: HopID we are using to send out packets
+> @@ -192,2 +193,3 @@ struct tbnet {
+>         bool login_received;
+> +       bool tx_e2e;
+>         int local_transmit_path;
+> @@ -950,3 +952,7 @@ static int tbnet_open(struct net_device *dev)
+> -       ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE,
+> -                               RING_FLAG_FRAME);
+> +       flags = RING_FLAG_FRAME;
+> +       /* The peer bit advertises E2E protocol support. */
+> +       if (net->tx_e2e && tbnet_e2e && net->svc->prtcstns & TBNET_E2E)
+> +               flags |= RING_FLAG_E2E;
+> +
+> +       ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE, flags);
+>         if (!ring) {
+> @@ -1339,3 +1345,53 @@
+> +static const char tbnet_priv_flags[][ETH_GSTRING_LEN] = {
+> +#define TBNET_PRIV_FLAG_TX_E2E BIT(0)
+> +       "tx-e2e",
+> +};
+> +
+> +static void tbnet_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+> +{
+> +       if (stringset == ETH_SS_PRIV_FLAGS)
+> +               memcpy(data, tbnet_priv_flags, sizeof(tbnet_priv_flags));
+> +}
+> +
+> +static int tbnet_get_sset_count(struct net_device *dev, int sset)
+> +{
+> +       if (sset == ETH_SS_PRIV_FLAGS)
+> +               return ARRAY_SIZE(tbnet_priv_flags);
+> +
+> +       return -EOPNOTSUPP;
+> +}
+> +
+> +static u32 tbnet_get_priv_flags(struct net_device *dev)
+> +{
+> +       const struct tbnet *net = netdev_priv(dev);
+> +
+> +       return net->tx_e2e ? TBNET_PRIV_FLAG_TX_E2E : 0;
+> +}
+> +
+> +static int tbnet_set_priv_flags(struct net_device *dev, u32 flags)
+> +{
+> +       struct tbnet *net = netdev_priv(dev);
+> +       bool tx_e2e;
+> +
+> +       if (flags & ~TBNET_PRIV_FLAG_TX_E2E)
+> +               return -EINVAL;
+> +
+> +       tx_e2e = flags & TBNET_PRIV_FLAG_TX_E2E;
+> +       if (net->tx_e2e == tx_e2e)
+> +               return 0;
+> +       if (netif_running(dev))
+> +               return -EBUSY;
+> +       if (tx_e2e && !tbnet_e2e)
+> +               return -EOPNOTSUPP;
+> +
+> +       net->tx_e2e = tx_e2e;
+> +       return 0;
+> +}
+> +
+>  static const struct ethtool_ops tbnet_ethtool_ops = {
+>         .get_link_ksettings = tbnet_get_link_ksettings,
+> +       .get_strings = tbnet_get_strings,
+> +       .get_sset_count = tbnet_get_sset_count,
+> +       .get_priv_flags = tbnet_get_priv_flags,
+> +       .set_priv_flags = tbnet_set_priv_flags,
+>  };
+> --
+> 2.55.0
+> 
