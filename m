@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895AB5383F2
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B975335A1
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790170724; cv=none; b=smzYIDNWf+JnzqgULC1MS+Lu9A2y94sc1YDOKHqA1upJ/tbYH0PugXyARPN4KfPdNQAG0RQb3cYllJ+Q/8sSHaeUqYJ8OX0622z84plwfP4Bchh0+PqUDitHH+NaF+pnPC/1QD2Z97wuRFSo4SLv+0ZfNDXd6oQ/WerHRBIcGf0=
+	t=1790170731; cv=none; b=OsfKizwGhYv8Mt8LTs632eihx0DD3PDmCGGX4cm7zC0tpXXemaoSqUT4sbYjwLiXcc1I1ZI7sT4i1DO9iO4uF0pWEIiGujmwOfl8ZaiSlhNySlFW1oFpn0z15FglVdS9aaaJFgrGyG6RQZjLWDMx/qMaUhwDGvRI/7a0UeWVQMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790170724; c=relaxed/simple;
-	bh=C5Z33UK1q9A2DIreWQwpPUin3DP+A9ytD5ps3dEuVDE=;
+	s=arc-20240116; t=1790170731; c=relaxed/simple;
+	bh=hNd6bIyFAvlFxc6hjuFcDqVwVqg86Zvx1YHzqvt4tLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMyd2Ow0Mhx9fHtxAIiJcrf01eU0XiHJ9c5OeNfYjGC3hat6FD+yRWXtFfrvP7wygyVIysOLA0I1tQswyrEjqY1QiBzhR7TV/IaqFNVEg1C15IvAWrluX00wjTB6kHTnPxJfyJFgaTmDK+8YAyWbjKuvi77LI29BUOQya6a4AG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XTd4MsBI; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=RcNaKB4T+Lq8aAI+N3JwKX8wxlZIBpaCDHx8+0dNxBhe8OwZJWp1nGlkIpL4rVgfLbwqZ60E+1MZd03c+wX7k9ugiD/CAAYWx0FSu4tHyPk5Afu/woJStX/Htu82i8FWQ2ORMi/AJP3BGaYIO8j1zIzc5JN4u8rMjpJ9tdNczME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bSJ3LRPb; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XTd4MsBI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bSJ3LRPb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790170721;
+	s=mimecast20190719; t=1790170729;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9h5xcT8+EYkwS6UIVrfYDzPRvAU8rPGMSJ7y80eXqKQ=;
-	b=XTd4MsBITKAujYF0IjVKcGR0wmvmD1UB3ixjRQvmAmw93A2IfGoJwKTcC9i3e1klYe9XP5
-	hBAALmKIyyk0RO9VA4AnbagopBB7X2kWVXD52aS8ErHsT49nqA+H6yNhg8PD2FmXR8iv0R
-	F1/kjiT+Hoc89RAcgCrLlSKUcwswfOc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=HHCKmh+GTex17viqHU7+p3b1kZPrhM46bDIsKbGkEho=;
+	b=bSJ3LRPbOEbURUE5jQo1JMdB6a+5bsyUb2m3GwjDphgYVceOOViNdExph/jZmtqAlAQ1K/
+	BcS49oxtS4sbeL9A0OUw3sUZ6InQG+1mf80m9aStQay0yxLU4ePpdnwc5bs0eFvRqZvxQS
+	RXBZg6rrJhIigumAem4TFLGGrDM9Vo8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-X0GjhdGRMlCSoIo7vPp8GA-1; Wed,
- 23 Sep 2026 09:38:40 -0400
-X-MC-Unique: X0GjhdGRMlCSoIo7vPp8GA-1
-X-Mimecast-MFC-AGG-ID: X0GjhdGRMlCSoIo7vPp8GA_1790170718
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-JkCCGU2pMfud3ac-UALFuQ-1; Wed,
+ 23 Sep 2026 09:38:46 -0400
+X-MC-Unique: JkCCGU2pMfud3ac-UALFuQ-1
+X-Mimecast-MFC-AGG-ID: JkCCGU2pMfud3ac-UALFuQ_1790170724
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7CB451955DCE;
-	Wed, 23 Sep 2026 13:38:38 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28299195FD12;
+	Wed, 23 Sep 2026 13:38:44 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.54])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92DF01956042;
-	Wed, 23 Sep 2026 13:38:35 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 28704427;
+	Wed, 23 Sep 2026 13:38:39 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,10 +52,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v11 16/17] afs: Fix uncleared op->call pointer
-Date: Wed, 23 Sep 2026 14:37:03 +0100
-Message-ID: <20260923133706.1496540-17-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Seungwon Bae <qotmddnjs@ajou.ac.kr>,
+	stable@vger.kernel.org
+Subject: [PATCH net v11 17/17] rxrpc: fix use-after-free in rxrpc_poke_conn()
+Date: Wed, 23 Sep 2026 14:37:04 +0100
+Message-ID: <20260923133706.1496540-18-dhowells@redhat.com>
 In-Reply-To: <20260923133706.1496540-1-dhowells@redhat.com>
 References: <20260923133706.1496540-1-dhowells@redhat.com>
 Precedence: bulk
@@ -65,15 +67,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Fix uncleared op->call pointer in afs_wait_for_operation() to make sure
-that it isn't seen set if server rotation occurs.  Note that
-afs_read_receive() already does this.  Note also that this was spotted by
-AI code inspection rather than by hitting an issue.
+From: Seungwon Bae <qotmddnjs@ajou.ac.kr>
 
-Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907113743.1453210-1-dhowells%40redhat.com
+rxrpc_poke_conn() takes a reference on the connection with no liveness
+check, unlike its sibling rxrpc_queue_conn() which gates on
+atomic_read(&conn->active) >= 0.  The per-connection timer is armed with
+no reference held for it, and rxrpc_put_connection() cancels it with a
+non-synchronous timer_delete() only after the refcount reaches 0.
+refcount_t saturates rather than resurrecting, so the connection can be
+kfree()d while still linked in local->conn_attend_q (nothing in teardown
+unlinks attend_link).  The rxrpc I/O thread then performs a UAF write
+(list_del_init) plus UAF reads and indirect calls through conn->security.
+
+Reproduced on a KASAN + PREEMPT kernel: 56 "refcount_t: addition on 0"
+saturations at load, escalating to
+
+  BUG: KASAN: slab-use-after-free in rxrpc_io_thread   Write of size 8
+
+AF_RXRPC socket creation (rxrpc_create) has no capability check, so this
+is reachable by an unprivileged user.
+
+Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
+rxrpc_queue_conn() uses before taking the poke reference, so a connection
+past its last-active point is not poked/requeued after teardown began.
+
+Verified before/after on KASAN+PREEMPT at equal timer volume: 56
+saturations + 15 KASAN reports unpatched vs 0 and 0 patched.
+
+Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
+Signed-off-by: Seungwon Bae <qotmddnjs@ajou.ac.kr>
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
@@ -82,20 +106,25 @@ cc: Jakub Kicinski <kuba@kernel.org>
 cc: Paolo Abeni <pabeni@redhat.com>
 cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
+cc: stable@vger.kernel.org
 ---
- fs/afs/fs_operation.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/rxrpc/conn_object.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/fs_operation.c b/fs/afs/fs_operation.c
-index 20801b29521d..94fa65548d71 100644
---- a/fs/afs/fs_operation.c
-+++ b/fs/afs/fs_operation.c
-@@ -297,6 +297,7 @@ void afs_wait_for_operation(struct afs_operation *op)
- 			op->call_error = op->call->error;
- 			op->call_responded = op->call->responded;
- 			afs_put_call(op->call);
-+			op->call = NULL;
- 		}
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 0ece717db0f8..1be50e0c9cee 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
+ 	spin_lock_irq(&local->lock);
+ 	busy = !list_empty(&conn->attend_link);
+ 	if (!busy) {
+-		rxrpc_get_connection(conn, why);
++		if (!rxrpc_get_connection_maybe(conn, why)) {
++			spin_unlock_irq(&local->lock);
++			return;
++		}
+ 		list_add_tail(&conn->attend_link, &local->conn_attend_q);
  	}
- 
+ 	spin_unlock_irq(&local->lock);
 
