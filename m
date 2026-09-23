@@ -1,154 +1,252 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4C337F32F;
-	Wed, 23 Sep 2026 10:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790159061; cv=none; b=bA6GlzMOH0cbrIOYh9pKjD52TFYuWmY48TVl4UZ/B3CpwiRvSDasX1c/k2FLTiVnf6ZppudNpVdz6oxBB1uXVf6iKrA4zP9VKLCqtxZzicqiXS+DolF6e61O+quHuCbhkW9ofXpDqMd6elYGpK8fmAvWm9apgzTMJrkDAC6whWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790159061; c=relaxed/simple;
-	bh=S474P7HbP/fO8M0Y8lxNVQlbG1trsGbWHCqeuglkRL8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=QQTc4ecpnkDkPKQYUu0QCHdFYBmicHpfxVycoT7dWwaaAQiMx9mltkJYbZRNgzZ2K8ssb2Nt3nItuWy6QN8LQEb64C/iCGfgTJA7uAKHbbrGs1SAjrIDVi4v25fb+GjceZY7LCBA44tZbB3qVYEG9ucRv2OJl3xiPVZufWPHB5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=y6zvexnF; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F335C4854E6
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790159090; cv=pass; b=kPKCHnk2bHUBiQpwQRw7/e4z7UIbXNHbgncWAxOipeM2OTK6RmptxiAZhMKypZwz2aAEhjjvrnZ256Xy4MPI6EwY3G4VJjpGZXMPKFsKPHHE18RP4nrqV84xfQ5fCwmF/v2ZbcTs5L4mRO+jwvkZHIzajbp9C6s4wK6vIzWA/o8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790159090; c=relaxed/simple;
+	bh=YU9M6lNB1ZyLCMAXQr0VzfJfxQQzH5Vll7bn07q18eY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Zos+Cq/HijTGgt60r+Tusu/z5A3pziLDwH0mwwvtyqa/cCHg+LU0uQvne6ydAiXJkAlSp3lgi+ij43UPdzp34Lv1Mewarz1BUuKbKkTgz2ASLfI63sb2SxLJwFdCAYr7kHAjmnYCcdGiwbnxTOZkWl6yXBsqmDMFLyA0Ln5npwc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGKrGhm5; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="y6zvexnF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 487EFA4A35;
-	Wed, 23 Sep 2026 12:24:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790159043; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=OhyAe01gH5uSFkKcaGnj2dUBeWhWIdjzaBUO0Eskhcs=;
-	b=y6zvexnFoi2qGiCGGSgpcHJcbAbdHIiCqfDN6N+9XclxpLvqlTgzU21xlQq2lgddEexm1B
-	okqHdxAEPY4HS5cekCBnROeHBDVX4Sf6j5JW7s1vxrmufR0DWZ92mysMP4YD52UP/jX+hc
-	Ea8psXAAUlfWk8tD0qu+g12YXQYcyAZpOeleLUxyoYuMWBDsmPQDPivlyCUecE+wo4yfW3
-	mSvzXAVwI0z1sIGui/fp/TaZcFXrhzA733GUlCPhorr2jFhtw33Nht6RA721KXaJZgt51y
-	3ygLsQV5dW9Clv+USyrFmNex2ocnBA7RPZ4DV5/ICICcqGd9OvV7Q/3B1EWR2A==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGKrGhm5"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-53122c5bbb4so8770311cf.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:24:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790159073; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WwJSctUvVyz1bI7qGA64wGDqIQqO8GcXWEfOELOFTCfv7AWUMTBxzoSTGkcT4yvCNN
+         mAwTjhKK6QFg8QHTVJJTnu83MFNbVUgH929WNd+PR5alYHfLRDF//cJ1f+i0yGXwkEw/
+         DTsT5ID+eDVljIgb36Q8pif6GBiiiFPYQW3fkhmasbfKEHCTvyASnEBgRefn9Vp8hblU
+         utsvW4FKW0WEq29U1fHb1R0fILIQA4XfjvqkxLPRz4llTszlmyhCciwir0QZ6en34jGD
+         0bqLpkF6pVwutSgOzSq+nld/GkpxeU+kXGn33/zppMu5PUk7podi0N0szVHKRA8uh/FT
+         75fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3/9GamQb14FQdww9YB29iD9TGuTQWlceV4HeR/O69Gg=;
+        fh=e7ClpZAt7LjWHn7o5jM5EAaNBX/vjHhJsYSjusddMq8=;
+        b=rRYp0qmAVL/Tpn+57moZi+IK7x1JW9zyuXxvXJ9YDDY/zz4SE5BMMSKJyAd9tNVqeq
+         ddMeKlte5f+dGhakVR5TiEhZeo7Kqh2n4y/FGmg9pffb0kPV/jqsPASDdjera4xGEHax
+         t6qZB92jnOmSR6nEkN+KWaB4ofGYjZ2ZeCGFwM0gE1l5+h97h4IsPg8Q7/ElbID6HS7k
+         fUbuTVIMk4n65exYFyUPtoSswpUxcxEQQsQoT3WmqrMB2Z5JC9QgXeD3UL+ZtoQpPJBw
+         gpor2vFD6YNb+LsaomOYs1S4ytuTLejxCusmrMsUvp5mO6Fk0hPlqr04P3Ha3TW+gZ4y
+         plng==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790159073; x=1790763873; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3/9GamQb14FQdww9YB29iD9TGuTQWlceV4HeR/O69Gg=;
+        b=BGKrGhm5Eln2f+cvu3+JF2ww7UueTjhQD/lklIcyZkC8FTHn+uPirB4X/hWxhqVmTP
+         baUaSszRiASLwa8tb/bA7jMxTwqcoEwcYNLffDa1D7vcOzpjt10s9Itj3TgAvY6SgcjS
+         vQYnR5IXHZAkaUjjKIS4bL66N08V7nhyDcnC5CVifFqkBKrHYQ5GrWyFaMBH2EoN7rBM
+         C/AQDOliW9YzpSA8PevAoI3tI9TLvRQYfLhfgDBH1p+boVLl4ddE+2ofS/pYOEP9ssVH
+         n7zVxjmDMFfbGnjPF1zpMryj6cEKh3DhkDcxoZWwwcEgJuhYXnMwL2byst7BbOskZtSg
+         Ay0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790159073; x=1790763873;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3/9GamQb14FQdww9YB29iD9TGuTQWlceV4HeR/O69Gg=;
+        b=tXPAGms9qRv/PCocSUWq0lRhvuIvaecP6k4rf5rQoB6v0SOsmcySLzOwHzydMpNw+T
+         n/q4d1tvcHH2CxyMcizsG2nydxjb8Z7E9U04fvw1YbBmKciLvJN8ivYXNyvwWM0qiVag
+         35M3AFrLU5a9HkcjuDF498+cO4b4ic92QZY2XkTPXGBRWsmaTFFtm2+N/n7GWsqIvy1t
+         ht5q1VvlTA2JIYe5q945cE8Q8NugDPxKLs8M6YUmnu3LrOP5zTWOVG2FqJatNsebt9oC
+         X2WsKVNtb446PPF1QemwSpw37yetowb8RFsKeugO39LICxAq0sOIfm4JkpwdSA8hKWCr
+         H86w==
+X-Gm-Message-State: AFuF++kPw287kXlKvhvlkmUAQ4Xzokdac09YDbVzU3qR1dpKeBd+y5Ia
+	E7FC2CFNDE5ed+ZPgsAGn3+jna9gF+W/4UGpFX8wn72GWI+kMin5xu/0MLfgrrrgPUkgmY0WB+1
+	50jDGDqZhw6nRy12Bc11G608HsQDrhj28whzUmGgz
+X-Gm-Gg: AYBFou1wsyckSIm2QM5LOFmlJ3t+3s+u4iMI3GvjhCC9xKDKIOsmaFDNW2lxt26GFQy
+	mFWx8NB2ecFYfag8jlfRNOrllUUUcek/CAQFRcsDddzRzn58fmUzHHKHeyGmOdWItwebcNqLC3v
+	B89PK2jqCjHtxrVkfEtsvSXNhAWcmeBL30NL3tmT3OJ0YLS7MaY9wbl9u2bRCQ9wIdGqBWno17i
+	MazK97nc9O3Q1R1tzkaIM/rzm+Yr57KPRkhLCZUBdT2Cw6yoRZpHp8F+Nf3NBRs9EBmKjbTy7wR
+	dqn6cHs5ILyBEKfajHQLZyoqyP2mkcRtiyz7fomaad+BEi5E+OEF0gZepjy3YC97FE3JJWHJIHf
+	Fntt1tNOh/yRfC+/1nTy/Jss3nx9CRM+QAC7ZEEpiTxOkehzxNQCRvpDxlPOJ3TCcGu6XosiFeh
+	xoTOE=
+X-Received: by 2002:a05:622a:4016:b0:52f:c0f4:8 with SMTP id
+ d75a77b69052e-532eadccdf0mr33028271cf.40.1790159072657; Wed, 23 Sep 2026
+ 03:24:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 23 Sep 2026 12:24:00 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch,
- kory.maincent@bootlin.com, jjc@jclark.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: ethtool: let tsconfig reach a PHY-only timestamp
- provider
-In-Reply-To: <179015820246.2160803.17295463468229392731@kernel.org>
-References: <20260922070813.1458713-1-nb@tipi-net.de>
- <179015820246.2160803.17295463468229392731@kernel.org>
-Message-ID: <7a817f1e561fb387b0e01784ac4632f8@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260923060547.118748-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260923060547.118748-1-jiayuan.chen@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 23 Sep 2026 12:24:21 +0200
+X-Gm-Features: AcwNN1VNbaaMdh7EQrEDuWI6gfonqDQtcuBO60MQ7CxDiug3yN7KPVmA2XQ4Yz0
+Message-ID: <CANn89iKHH1s+kXqBXVKmDxmELU0fL-SwU4N8qHRUJjaNECMt_g@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] udp: fix auto-selected port colliding with an
+ existing SO_REUSEPORT socket
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Tom Herbert <therbert@google.com>, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 23.9.2026 12:10, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 2 (1) · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let 
-> patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your 
-> reply
-> (one such reply per series is enough).
-> 
-> - [High] TSCONFIG_SET now reports success (bare ACK, ret 0) with no
->   ETHTOOL_MSG_TSCONFIG_SET_REPLY on devices that have no hardware…
-> - [Medium] With ethnl_set_tsconfig_validate() gone, 
-> ethnl_set_tsconfig()
->   is reachable on netdevs that implement neither ndo_hwtstamp_get nor…
-> - [Medium] net: ethtool: TSCONFIG_SET provider switch fails on devices
->   lacking ndo_hwtstamp_set
-> 
-> Pre-existing issues:
-> - [Medium] A struct hwtstamp_provider installed into dev->hwprov by
->   TSCONFIG_SET is never freed when the netdevice is unregistered/freed…
-> 
+On Wed, Sep 23, 2026 at 8:06=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> Observed with two independent servers in the same process:
+>
+>   fd1 =3D socket(AF_INET, SOCK_DGRAM, 0);
+>   setsockopt(fd1, SOL_SOCKET, SO_REUSEPORT, ...);
+>   bind(fd1, port 0);          /* got 40000 */
+>
+>   fd2 =3D socket(AF_INET, SOCK_DGRAM, 0);
+>   setsockopt(fd2, SOL_SOCKET, SO_REUSEPORT, ...);
+>   bind(fd2, port 0);          /* got 40000 as well */
+>
+> Both sockets end up on the same port and join the same reuseport
+> group, so each of them takes part of the other's datagrams. TCP does
+> not do this.
+>
+> udp_lib_lport_inuse() keeps the reuseport rule when it scans for a
+> free port: a socket with the same uid and SO_REUSEPORT set is not a
+> conflict, so its port is never marked in the bitmap and the scan can
+> hand it out again. That rule only makes sense when the user asks for
+> a specific port.
+>
+> TCP fixed the same thing in commit 0643ee4fd1b7 ("inet: Fix get port
+> to handle zero port number with soreuseport set"): reuseport is only
+> honoured for an explicit port, not during a port scan.
+>
+> Do the same for UDP. Mark compatible reuseport sockets in the bitmap
+> during a scan and only skip them when checking a specific port. Using
+> bitmap to tell the two modes apart is not explicit, but
+> udp_lib_lport_inuse() already does that for the port match itself.
+>
+> Note that this still collides when both sockets also have SO_REUSEADDR
+> set: udp_lib_lport_inuse() skips such a pair before it reaches the
+> reuseport check, so the port is never marked either. That is not a
+> common setup and is left as is here.
+>
+> Fixes: ba418fa357a7 ("soreuseport: UDP/IPv4 implementation")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+>  net/ipv4/udp.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index b3887c42adfd..61cb1e3f5d93 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -147,11 +147,10 @@ static int udp_lib_lport_inuse(struct net *net, __u=
+16 num,
+>                     (!sk2->sk_bound_dev_if || !sk->sk_bound_dev_if ||
+>                      sk2->sk_bound_dev_if =3D=3D sk->sk_bound_dev_if) &&
+>                     inet_rcv_saddr_equal(sk, sk2, true)) {
+> -                       if (sk2->sk_reuseport && sk->sk_reuseport &&
+> +                       if (!bitmap && sk2->sk_reuseport && sk->sk_reusep=
+ort &&
+>                             !rcu_access_pointer(sk->sk_reuseport_cb) &&
+>                             uid_eq(uid, sk_uid(sk2))) {
+> -                               if (!bitmap)
+> -                                       return 0;
+> +                               return 0;
+>                         } else {
+>                                 if (!bitmap)
+>                                         return 1;
 > --
-> 
-> net: ethtool: let tsconfig reach a PHY-only timestamp provider
-> 
-> This drops the ndo_hwtstamp_get check in tsconfig_prepare_data() and 
-> the
-> whole ethnl_set_tsconfig_validate() gate so that TSCONFIG_GET/SET can 
-> be
-> served by a PHY on a MAC that implements no hwtstamp NDO. A guard is 
-> added
-> in dev_get_hwtstamp_phylib() before calling ndo_hwtstamp_get.
-> 
-> Related discussion for the ioctl side:
-> https://lore.kernel.org/netdev/20260918095540.34286-1-nb@tipi-net.de/
-> 
->> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
->> index 164643140a523..f6029f60c1dc9 100644
->> --- a/net/core/dev_ioctl.c
->> +++ b/net/core/dev_ioctl.c
->> @@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device 
->> *dev,
->>  		    hwprov->phydev)
->>  			return phy_hwtstamp_get(hwprov->phydev, cfg);
->> 
->> -		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
->> +		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
->> +		    dev->netdev_ops->ndo_hwtstamp_get)
->>  			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
->> 
->>  		return -EOPNOTSUPP;
-> 
-> [Severity: Medium]
-> This guard makes the read side safe, but can the install side now latch 
-> a
-> HWTSTAMP_SOURCE_NETDEV provider on a device that has no hwtstamp NDOs 
-> at
-> all, with no way back?
+> 2.43.0
+>
 
-Ack, I will guard the install path in v2.
+The fix is right and matches what TCP does in inet_csk_find_open_port(),
+but it only covers one of the three cases where UDP's scan differs from TCP=
+'s.
 
-> [...]
+On an unpatched kernel, binding 8 sockets to port 0 inside an 8-port
+IP_LOCAL_PORT_RANGE:
 
-> [Severity: Medium]
-> With ethnl_set_tsconfig_validate() gone, a TSCONFIG_SET that selects
-> the PHY provider now reaches ethnl_set_tsconfig() on a MAC without
-> hwtstamp NDOs. Does the provider switch itself ever succeed there
-> unless the PHY happens to be the default timestamper?
+udp SO_REUSEPORT 7 distinct ports, 9th bind succeeds udp SO_REUSEADDR
+7 distinct ports,
+9th bind succeeds udp REUSEADDR+REUSEPORT 6 distinct ports, 9th bind succee=
+ds
 
-Will add a check in v2.
+(TCP gets 8 distinct and EADDRINUSE in all three.) Your patch only
+fixes the first one;
+the SO_REUSEADDR cases bail out of the conflict test before the reuseport c=
+heck
+so the bitmap is never marked. SO_REUSEADDR on its own is pretty common for=
+ UDP,
+so I don't think we should leave it.
 
-> [...]
+TCP handles all three because inet_csk_find_open_port() passes relax=3Dfals=
+e,
+which disables both relaxations.
 
-> [Severity: High]
-> Does removing this gate turn TSCONFIG_SET into a silent success on 
-> devices
-> that have no timestamp provider at all?
+Please add a comment on top of the loop saying that @bitmap means "scanning=
+",
+since it is not obvious =E2=80=94 or use !num, which is equivalent here sin=
+ce
+udp_lib_get_port()
+passes snum =3D=3D 0 on the scan path.
 
-Ack, this is an ungly regression and would be the opposite of what 
-e8ab231782e9
-had fixed. I will narrow down the gate.
+Please also extend patch 2 to cover SO_REUSEADDR and SO_REUSEADDR|SO_REUSEP=
+ORT;
+the helper refactor is already there, just make the bool a flags argument.
 
-> [...]
+Given this is a 13 year old bind() behaviour change and the collision
+window is tiny
+with the default ephemeral range, net-next seems like the better target.
 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the dev->hwprov lifetime
-> looks unbalanced and dropping .set_validate widens the set of devices 
-> that
-> can reach the install path.
+Perhaps a good candidate for "Cc: stable+noautosel@kernel.org # lets
+not break applications..."
 
-Agree on the issue, but would probably fix this in a separate patch.
 
-> [...]
 
-pw-bot: cr
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index bb8cfc62cb00431faefd0371a9de9346b9bb..8628b723ec946eed6337209f62f683b=
+a4252
+100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -143,21 +143,18 @@ static int udp_lib_lport_inuse(struct net *net, __u16=
+ num,
+                if (net_eq(sock_net(sk2), net) &&
+                    sk2 !=3D sk &&
+                    (bitmap || udp_sk(sk2)->udp_port_hash =3D=3D num) &&
+-                   (!sk2->sk_reuse || !sk->sk_reuse) &&
++                   (bitmap || !sk2->sk_reuse || !sk->sk_reuse) &&
+                    (!sk2->sk_bound_dev_if || !sk->sk_bound_dev_if ||
+                     sk2->sk_bound_dev_if =3D=3D sk->sk_bound_dev_if) &&
+                    inet_rcv_saddr_equal(sk, sk2, true)) {
+-                       if (sk2->sk_reuseport && sk->sk_reuseport &&
+-                           !rcu_access_pointer(sk->sk_reuseport_cb) &&
+-                           uid_eq(uid, sk_uid(sk2))) {
+-                               if (!bitmap)
++                       if (!bitmap) {
++                               if (sk2->sk_reuseport && sk->sk_reuseport &=
+&
++                                   !rcu_access_pointer(sk->sk_reuseport_cb=
+) &&
++                                   uid_eq(uid, sk_uid(sk2)))
+                                        return 0;
+-                       } else {
+-                               if (!bitmap)
+-                                       return 1;
+-                               __set_bit(udp_sk(sk2)->udp_port_hash >> log=
+,
+-                                         bitmap);
++                               return 1;
+                        }
++                       __set_bit(udp_sk(sk2)->udp_port_hash >> log, bitmap=
+);
+                }
+        }
+        return 0;
