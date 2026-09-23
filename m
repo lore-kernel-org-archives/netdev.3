@@ -1,139 +1,242 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B17D44160D
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790201509; cv=none; b=Pp23U54SFCJTw7QIrBW1UPaNaa5k69j4H5W+1GJgR0+OPclpldoRJlVjFoIngdOkcWWoVehy+FEtDtUUGg8X3qSMJ5x+rqLIh4dN62aUDE2I4CInwPdNYvQBkmIJwlfMxrLl9+qInHx71Rzt+jZ5g7Kmxlq4ruDApBdFG7uCIyw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790201509; c=relaxed/simple;
-	bh=G+sXLb5QQACGJWFw2GYB/k46SIVKIpCEAPVvzKkNo84=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IjhMrnjTO4Wmx4Rmpz7dy8ge+EpsJR9/l9lB0bk/1iTT7uCPwnE4IhTSLoe+GO/j5XQo6leT8nkIxL38ibVJqmhhyQUeFTuVWTtIGf9S0t8tC/VaRAvcBC5QlCMiEIPH7BWkqXniDTmnd6YXxvMC0w120xvfpPSbyQJDcuOwYsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=taa0RHq7; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0188552E061
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790201545; cv=pass; b=s3KcpuLuMGr+uRUvvZ7gy2bVXkSgVXfQGIXcPi4Vy9G+CeT1k1Jamz6ETz8tIuq4zaZ0b8LREFBobMRV3RtYpnKJb1vU1dUUFyDz1oiJE/WaVK9jL4eaFI+fgpHRsMNSv0jIEuqHQN0nuEx0clyE2WMaiY5axZC4tW086qpv90U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790201545; c=relaxed/simple;
+	bh=RF09cE7ioD8j+xL9e6cVzbwze+m4bkJrefwNTRLCmd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JtLczW+Z3odzxErDlGnA/lCwNuXalvjJWs/ulKaFBsGUzw3J8z8pMGkWv8VHI3OoopawSg+GrLHzWGhsJnEivjJrVcnfCXTZ8bpp7RrJ05HBFkyZZ7WL4HPZwwvGYKzg2KgFUj0eJx4St2P9t3vyPolU3uIcIW/EchaPiagqufc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G/orQXpd; arc=pass smtp.client-ip=74.125.229.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="taa0RHq7"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd38e0f79so7835675e9.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:11:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G/orQXpd"
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd04f7f2so1604578c88.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:12:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790201543; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GEKPa0FBnnDpD2p9UuZsZTC3f6v9tXE3BX8BG/cAMAD/cppSVDdjF7EJX2vTT7Kh9Y
+         8BOAr9dtTzYloNlPSQui+TT47rzZKGo0wypJTATzAOdEbZUUIdWKKjg5Qra5QG6dmsox
+         Msm1yugwMN+YAD3ZGoqe4O/BkmOub8dpDHJGj1OKY4KVQIzlrAygfQF657PK5YkdSjjy
+         urN23g9xBjFPv+SvbhUwtSosNPd5L9k7okebKLCkUmtrvTlxvJxqYobarYDd+FyEO/bg
+         MIG81pfrSIPznCRal5yr63qVqJtKvo5XboYv2lJ+oEseCkcDdnvPrJG1qNRsb8w8YaX2
+         wTQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NjZO/0op0Il8fdlo4Q38ShHr57bjfTGXucOfCAVH0b0=;
+        fh=UaU4dYmSdUUizSOtgLsZHc7UVcsvgG/jXVqkdleIyJc=;
+        b=CR0TrliRI/w3mxMjK1IcejRjUpCc8+aiASuqMlwsakGm/NgZ03IPvlgU4jICn2c+rT
+         jQuc0eVwbX1hD0hvv2HdFLyFlRcqTEJLyKyRPjE9qIPsNygsWb6KXtxsjIaQ1xzZ58Gq
+         6cU/N3OqRk5HJ1gLx5QLhepAWLl768uyTUA4Jr7zFTXlCasCKMDDKXjq5Qlt4jbMz9bO
+         DwzzFsF2IuAKQpqnWqgEQyHqKtS4a0v9gu49+uIpS0Lo9ikk+ppz4k3EhvXZuHmCvxn5
+         eQuO6SZy63TDr8wTI0fa6oqYpOYsQIHGaefnoKcrzLaMLzImx0QKm4RP4+e1C0/aJeTU
+         5ubA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790201506; x=1790806306; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GAy3js82zkC6BZGrspDqEhBjsPWiuHyN9je/HHFqVI8=;
-        b=taa0RHq7gcEylNl6iCnAL35RW7qHxoCrus8sPHrquAghyLiXANtiWbQZ6LwZYLiwxP
-         LQEqXLzN8r41H1c98UGdhqkxQMSrQlS+cR6MS0iS/7FQ+V37Rilg4opgBVs6lC8mqJUY
-         mhGvsmJfxxgiuswQH99sxcAmzay6rKO9cJP4tGk1/EZKo+es3iOQiVVvcHV0rzYkRi5Q
-         F4LJwiLGVeWQaXihqs4r1ZWNrz5Z1BeHTmM9krFQ0suHLNTWFmx7ikcFySfsi4QGG2fH
-         zHcyHQeoykjQ0RGMe/Kcg28bjyY46n/j1Eq0yx1gW16atbiRFt0LuI6a4ry5ERn2o2R/
-         hSOw==
+        d=google.com; s=20251104; t=1790201543; x=1790806343; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NjZO/0op0Il8fdlo4Q38ShHr57bjfTGXucOfCAVH0b0=;
+        b=G/orQXpdNRHGJd2hyo0vRTQhIuy/C7d08OkwZKq1RTNaj2SAK5hxKTNZLH0hNTUN79
+         14IbbvgH3dl0qSkpMwnnQ78sbO7OKBUtlZXyOox0IuaCI+gQGT6gQZlF0CT5kvfNhULE
+         3159AFsMSGH/wuUpshV69r2qIYTv7XDF87zul4kiWn3pzXlsMWcftEQlCH7Q5d5nyDZ2
+         TQQUazcaRHfIrLnxRNb72Yj51rvbKNJfQFBfyhkwAwJeotw+bIm1HVUnldhHS44yYgXE
+         /BBj+KKimJ/ljcGgKq4XMCh0TSqJPIe9h8IuTyXIYvV2xXE/IufXans/SZBdZGvo/0YR
+         AasA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790201506; x=1790806306;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790201543; x=1790806343;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GAy3js82zkC6BZGrspDqEhBjsPWiuHyN9je/HHFqVI8=;
-        b=y6mBDBF7OJna7tx3gK+hrv9MAK0xW/PaAfd0YdZLhzqdIgixJVLD6AdQi6bgPFjZ69
-         0jWaGAeMKGkFCv0rphKhjVUwA0R8S7lD5a7pHNWe+YuoeH6jb5dqTSvWZDV3Thp3tYHV
-         3o1r6vuQvrMilvCOdZAHEwStZlErokKe9ELynBsS+ugBl+97+Q9QF6sdeBdzxRtcJFC7
-         iWhRPk4q07vXLGn7/uAJWjcsJsZtgqbxb+cbZeA2Xd7fUe3a40jcenlGwjjJHE0DxUit
-         FSfK+BGdn0+Rrnl1R4AVFpau5oaReuZUga2egsTgBRaZ2oa1Co3R846/x2El3UH3BNuV
-         8P9A==
-X-Forwarded-Encrypted: i=1; AKwUvBzy6/mOjlsZDdCqIRvhEW//TYgvdnrNp3ETnT/sSaSjO+mJb7myy0e/MwGwnTxSeK9cB8tzoUE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kHaZCK6+w/R/POglwWwuAWYCKEGMUafXvKmYu0e0qQ6B9RSnIQ
-	9tWf5CaHBPgMtiO1AcVYJsBV3eTBF5wmkYe7GOoTJhNOTy551o4IItknHcj3H+ul0c0=
-X-Gm-Gg: AYBFou0odWzskg8Q2i8VGE5F31Vmpv2thf1ss61nGO59LMaFrKWk1em83FvRdV32PNl
-	xi7fYyRBhCVoSTLJQXTSC0IQy4YCgDAic5iIn5CA/O/qCJBjL6AdEKQdN5BVHE2fYkFzsEkEXMY
-	tQFDAfKLo3aCnlwp1q/LwSyFSqVGM2lrLjXMX/o1YweO9xerywmnF4VZ80U5OAtrrv9OJUQRZXj
-	Wh8dqlumpX4I/zRRDl1n4xFsLj7ru2tHK7dq9u+ugRHJ44sekVevFNW19mqHmjWVcFhTBU7LDMy
-	sWAxSedD4Qml22/EnaKR2O0ZGA5MktwrcKziuJ8dyhxhxOl02DKWJJ28KwU6st+5ILfBvlvcNjA
-	nqT+BF8b2fn2n5SmTVp+uGtx2NSmRg/vjviG2+Wku6YKw7wyKczcQ1tFc90qJN5YT3lfmf/xHnM
-	0DoZuBmTNSHtlR8Mb6H/FcG1gv+uTnkHtKGiKKgpV3VEDyJy8xmCM6NMGYuKzEjj7XXQ==
-X-Received: by 2002:a05:600c:a013:b0:49d:2555:1a6d with SMTP id 5b1f17b1804b1-49fe66f1ac3mr7346185e9.16.1790201505557;
-        Wed, 23 Sep 2026 15:11:45 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:600::1:b92a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5dfa6a7sm26956515e9.12.2026.09.23.15.11.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 15:11:44 -0700 (PDT)
+        bh=NjZO/0op0Il8fdlo4Q38ShHr57bjfTGXucOfCAVH0b0=;
+        b=ZNxFNGISAnbePuUETu4Zb1RVqFVIuzBq3d3vRRheBFmfCRYhHYLBZwoxQAv3d2sdqg
+         SJU4xSpQSNGx3oTf34/L9W0CAmr4MvpyHVHdOpWlOcgALCRlIILUwRrqcbczfItzkKtd
+         hhON4NeT8ql3560WZlXzLdCB6Oen1rpjbmV5Hikrs4OqoPVXXy6StvHpB3qbtZ39DUIe
+         aKPpyikH829/gvRDxiW/sUWhwwllQ4zXiQ/SDqMBs0W25qdX7Br7u4pfxa4SlnroZFKs
+         oib2FuRhb6BZS1SZDesqRVy1bOLocMSSeqpDf/jCefCJJpQQXnJwb0B3aXRIppWzHrgY
+         Jrag==
+X-Forwarded-Encrypted: i=1; AKwUvBzjEN29z2e8lHc+7QREv7K8NfHnA7YjNyiWgihnBf3GcUobw/geydzvn2YmEDylNekFkltqndA=@vger.kernel.org
+X-Gm-Message-State: AFuF++k8T5z/i+H+sSN8VjzlO2hTD8xCFwThrSfFLTz3ImuPffpqv3Xm
+	JjpY+KISmbzG7CeL5uBTsyrt1ihECXRc6PkhxwXprAv9Wu25cGDUlUjcw7lrY5Wspp3Z35gAXGU
+	x3Ak1rwWQCLVg/Cmjkd2vUYwqxL3/fYfTX8NmJvU2
+X-Gm-Gg: AYBFou0Xiaq3XGDS0VoKcbhyyuPJD2lyyRXkDf2UrdjfqwV13SQ+/mneq4MatEziwTu
+	5mVrFCzWJ/6VTVM6Thh/e/JCadaqgGWnVSEcCtZ984fJuNjwcyUcRySIdu3SO3Fl0rhCqbCQgwZ
+	MC29hnimgpZhTTJiRc2PCNU4VvbHPMJcq7783M2GZUKdYM/x3m1hAwUDmWN94LrqbKBI5540SDP
+	JIrxd2fFgOIvf2LkQAv9YbOSkdMtna+CeDdSlVfZzX5AMHlrh8PYBpWmLYfarBgKJkJQkaVL2JT
+	WxUm9GroVP6SDUHEJM4C1osaMAu0FGaVKzplcJT/RPs1kRrsHMg+0pSxgnsghBAZ8FybX+cyeG8
+	eBYDgQ/jDfI+kN0PXEcFRhETcnJWm0KsPruHZa2wFj3suc0ayZP+zqw4HZKmyy4B/+n9p8HOxqQ
+	JBaJce1Cy+Gah6FcgivxPHxsvByCmKRmUy
+X-Received: by 2002:a05:701b:204b:20b0:144:c123:4033 with SMTP id
+ a92af1059eb24-14503fd9160mr398713c88.32.1790201542213; Wed, 23 Sep 2026
+ 15:12:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260921070127.42998-1-runyu.xiao@seu.edu.cn>
+In-Reply-To: <20260921070127.42998-1-runyu.xiao@seu.edu.cn>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 23 Sep 2026 15:12:10 -0700
+X-Gm-Features: AclHuK_cX28lFH9a-TsHKKsw7xvTUTDBMSfKJR-vi5UaPqx05gP3xNIFwct14dQ
+Message-ID: <CAAVpQUBK09EfvhQfAztFzQsXD6-A-30fkG=ShjYN_CPBtthh9A@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: neighbour: Serialize proxy timer teardown
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: "David S . Miller" <davem@davemloft.net>, "Denis V . Lunev" <den@openvz.org>, 
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, 
+	Jianhao Xu <jianhao.xu@seu.edu.cn>, Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 23 Sep 2026 22:11:37 +0000
-Message-Id: <DLN1GUANHOWT.312QCZOCNSGKQ@etsalapatis.com>
-Cc: "Yonghong Song" <yonghong.song@linux.dev>, "John Fastabend"
- <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Eric
- Dumazet" <edumazet@google.com>, "Neal Cardwell" <ncardwell@google.com>,
- "Willem de Bruijn" <willemb@google.com>, "Tenzin Ukyab"
- <ukyab@berkeley.edu>, =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?=
- <cleger@meta.com>, "Kuniyuki Iwashima" <kuni1840@gmail.com>,
- <bpf@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH v2 bpf-next 2/8] selftest: bpf: Use
- BPF_SOCK_OPS_ALL_CB_FLAGS + 1 for bad_cb_test_rv.
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Alexei Starovoitov"
- <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260923213719.224838-1-kuniyu@google.com>
- <20260923213719.224838-3-kuniyu@google.com>
-In-Reply-To: <20260923213719.224838-3-kuniyu@google.com>
 
-On Wed Sep 23, 2026 at 9:35 PM UTC, Kuniyuki Iwashima wrote:
-> Once bpf_sock_ops_cb_flags_set() supports a new flag,
-> tcpbpf_user.c fails due to the hard-coded max value, 0x80.
+On Mon, Sep 21, 2026 at 12:01=E2=80=AFAM Runyu Xiao <runyu.xiao@seu.edu.cn>=
+ wrote:
 >
-> Let's replace 0x80 with BPF_SOCK_OPS_ALL_CB_FLAGS + 1.
+> __neigh_ifdown() purges device-specific entries and then checks whether
+> the shared proxy queue is empty before deleting proxy_timer. A concurrent
+> ARP or NDISC request can enqueue a delayed proxy response between the che=
+ck
+> and timer_delete_sync(). The timer deletion can then leave the new skb
+> queued without a timer to process it.
 >
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-
-> ---
->  tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c | 3 ++-
->  tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+> Serialize proxy queue insertion and timer rearming with the purge, empty
+> check, and timer deletion. The timer callback does not take the new lock,
+> so timer_delete_sync() can still wait for an in-flight callback. Keep
+> timer_delete_sync() rather than timer_shutdown_sync(), since the timer is
+> reused after per-device and carrier teardown.
 >
-> diff --git a/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c b/tools=
-/testing/selftests/bpf/prog_tests/tcpbpf_user.c
-> index 7e8fe1bad03f..e4849d2a2956 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
-> @@ -26,7 +26,8 @@ static void verify_result(struct tcpbpf_globals *result=
+> A check of netif_running() in pneigh_enqueue() alone would not serialize
+> the insertion with the purge, empty check, and timer deletion. An enqueue
+> can pass that check while the device is still up and then be delayed unti=
+l
+> after __neigh_ifdown() has observed an empty queue. Also, __neigh_ifdown(=
 )
->  	ASSERT_EQ(result->bytes_acked, 1002, "bytes_acked");
->  	ASSERT_EQ(result->data_segs_in, 1, "data_segs_in");
->  	ASSERT_EQ(result->data_segs_out, 1, "data_segs_out");
-> -	ASSERT_EQ(result->bad_cb_test_rv, 0x80, "bad_cb_test_rv");
-> +	ASSERT_EQ(result->bad_cb_test_rv, BPF_SOCK_OPS_ALL_CB_FLAGS + 1,
-> +		  "bad_cb_test_rv");
->  	ASSERT_EQ(result->good_cb_test_rv, 0, "good_cb_test_rv");
->  	ASSERT_EQ(result->num_listen, 1, "num_listen");
-> =20
-> diff --git a/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c b/tools=
-/testing/selftests/bpf/progs/test_tcpbpf_kern.c
-> index 6935f32eeb8f..e30cb1fab079 100644
-> --- a/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
-> +++ b/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
-> @@ -92,7 +92,8 @@ int bpf_testcb(struct bpf_sock_ops *skops)
->  		break;
->  	case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:
->  		/* Test failure to set largest cb flag (assumes not defined) */
-> -		global.bad_cb_test_rv =3D bpf_sock_ops_cb_flags_set(skops, 0x80);
-> +		global.bad_cb_test_rv =3D bpf_sock_ops_cb_flags_set(skops,
-> +								  BPF_SOCK_OPS_ALL_CB_FLAGS + 1);
->  		/* Set callback */
->  		global.good_cb_test_rv =3D bpf_sock_ops_cb_flags_set(skops,
->  						 BPF_SOCK_OPS_STATE_CB_FLAG);
+> is used by neigh_carrier_down(), where netif_running() can remain true.
 
+By "dev is down" I meant whatever that creates ordering between
+the teardown thread and insertion, but I missed it's still racy by multiple
+devs.
+
+But still, I think adding a spinlock is not worth it, see below.
+
+
+>
+> Tested in an x86_64 QEMU guest with proxy ARP, three network namespaces,
+> and veth pairs. An AF_PACKET helper sent valid broadcast ARP requests whi=
+le
+> the proxy-ARP ingress interface was repeatedly brought down and up. A
+> temporary test-only build flag added a 5 ms delay before pneigh_enqueue()
+> and after the empty-queue check before timer_delete_sync() to amplify the
+> narrow scheduling window.
+>
+> The unfixed kernel reached both paths and observed a non-empty proxy_queu=
+e
+> with proxy_timer not pending 772 times. The fixed kernel reached both pat=
+hs
+> under the same workload without observing this state. Natural-load runs
+> reached both paths but did not hit the narrow race without the temporary
+> delay.
+>
+> Fixes: 66ba215cb513 ("neigh: fix possible DoS due to net iface start/stop=
+ loop")
+>
+> Assisted-by: LLM Codex
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> ---
+> v2:
+> - Add the QEMU reproduction and buggy/fixed results.
+> - Explain why a device-state check does not serialize carrier teardown.
+>
+>  include/net/neighbour.h | 2 ++
+>  net/core/neighbour.c    | 6 ++++++
+>  2 files changed, 8 insertions(+)
+>
+> diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+> index 8860cc2175fc1c9eb6b67f2c5ef149188c9feb16..15107c00b4df473e53e6cf2e7=
+57fb2ef3c4fd3f7 100644
+> --- a/include/net/neighbour.h
+> +++ b/include/net/neighbour.h
+> @@ -239,6 +239,8 @@ struct neigh_table {
+>         struct list_head        gc_list;
+>         struct list_head        managed_list;
+>         spinlock_t              lock;
+> +       /* Serializes proxy timer rearming with teardown. */
+> +       spinlock_t              proxy_timer_lock;
+>         unsigned long           last_rand;
+>         struct neigh_statistics __percpu *stats;
+>         struct neigh_hash_table __rcu *nht;
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index 1349c0eedb642539b28391390fd82f543e004353..1ea794a541efb6852700062da=
+2e25efac6c060e8 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -471,10 +471,13 @@ static int __neigh_ifdown(struct neigh_table *tbl, =
+struct net_device *dev,
+>         spin_unlock_bh(&tbl->lock);
+>
+>         pneigh_ifdown(tbl, dev, skip_perm);
+> +       /* The callback does not take this lock, so sync deletion can wai=
+t for it. */
+> +       spin_lock_bh(&tbl->proxy_timer_lock);
+>         pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
+>                            tbl->family);
+>         if (skb_queue_empty_lockless(&tbl->proxy_queue))
+>                 timer_delete_sync(&tbl->proxy_timer);
+
+I'd simply remove these two lines.
+
+In net.git, arp_tbl/nd_tbl is still global, and we do not need to worry
+about timer touching the table after being freed.  Even if skb was
+put into the queue after pneigh_queue_purge(), it's harmless
+since skb holds dev refcnt and neigh_proxy_process() will just free it.
+
+In net-next.git, we call timer_shutdown_sync() in neigh_table_clear(),
+where prior synchronize_rcu() guarantees there are no inflight arp/ND,
+and then neigh_ifdown() is called and pneigh_queue_purge() purges
+the queue.
+
+
+
+> +       spin_unlock_bh(&tbl->proxy_timer_lock);
+>         return 0;
+>  }
+>
+> @@ -1729,6 +1732,7 @@ void pneigh_enqueue(struct neigh_table *tbl, struct=
+ neigh_parms *p,
+>         NEIGH_CB(skb)->sched_next =3D sched_next;
+>         NEIGH_CB(skb)->flags |=3D LOCALLY_ENQUEUED;
+>
+> +       spin_lock_bh(&tbl->proxy_timer_lock);
+>         spin_lock(&tbl->proxy_queue.lock);
+>         if (timer_delete(&tbl->proxy_timer)) {
+>                 if (time_before(tbl->proxy_timer.expires, sched_next))
+> @@ -1740,6 +1744,7 @@ void pneigh_enqueue(struct neigh_table *tbl, struct=
+ neigh_parms *p,
+>         p->qlen++;
+>         mod_timer(&tbl->proxy_timer, sched_next);
+>         spin_unlock(&tbl->proxy_queue.lock);
+> +       spin_unlock_bh(&tbl->proxy_timer_lock);
+>  }
+>  EXPORT_SYMBOL(pneigh_enqueue);
+>
+> @@ -1858,6 +1863,7 @@ void neigh_table_init(int index, struct neigh_table=
+ *tbl)
+>                 WARN_ON(tbl->entry_size % NEIGH_PRIV_ALIGN);
+>
+>         spin_lock_init(&tbl->lock);
+> +       spin_lock_init(&tbl->proxy_timer_lock);
+>         mutex_init(&tbl->phash_lock);
+>
+>         INIT_DEFERRABLE_WORK(&tbl->gc_work, neigh_periodic_work);
+> --
+> 2.34.1
