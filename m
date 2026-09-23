@@ -1,105 +1,160 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C345172C2
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 18:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746301A9FB7;
+	Wed, 23 Sep 2026 18:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790187975; cv=none; b=IRBzvxXFGj4P1IHOtg1k/v2JTg2SwOdolQd4i8G7lfnNwTHb5DRAvwfUZEpLUC/8a+q+JzV1GtOmcV3+PWS5rCgQLHT/v8IJLI5cSjB2JjAzR186QLi76UXl7Mi8EXUGbth44gZhmoKNCS9exk+wAy84PBW+JWFbJbLk/G+H4hY=
+	t=1790188243; cv=none; b=ZFXa2mlU0s8la6LeF+OebzEib/znbqZ6If2yf7a+Nqcc0Wn1k55dbqAhdTnwW65jmFjYkjflqnJHM/GbUbwuMhrU+hGQIZjQ16BMlMD8431semfS5CcPXBLdpG7jehol/tMbXbbnDj6P80A6iAzpnMXcagflY9a0xbDgwzViOIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790187975; c=relaxed/simple;
-	bh=LhiPso6phLQM0wA+k6tjmIhIVqDrjbY4C0VTVIyFW7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cSYiP3oJWYdz5GHXty8RUyhFcBY07KqNWzOAyLiFnSg3OUIWmNNMiu7bY+Voodsxf2ICbjpxtkKllSjs1FzVEv0iwf9ja/jtCZiBhI6hPyOzJJTrEQzENuilVyUhLyC5mZQnjI8M0J+1VL/CmNoxA/I6F0aaGdFV2BdH6tLAOok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cb3d6YzW; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790188243; c=relaxed/simple;
+	bh=U7FwIwVCVcdGMgfGj5+JKllpzgJtLEmRpzH7cP3S/qY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LLtMcjzDWikNCKTkbbauqckgcn2ImBDsDB4iWKRmxeff4q/Uj7JtdQSYCZzcqggDlt+QtJPO1TrO74my49F9950TZ53fLIu0knHWuU5YMeo371akxuxDEchWReDZ+mlTKSznEg5ZqKDLmcIwmInOyvvzwPHXfCzTm1dO18f/X40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvZVxpZ7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cb3d6YzW"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2dd53691be5so8626535ad.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 11:26:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790187972; x=1790792772; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LNon7FG4gNvQZ8cTIn7dGZggjcYoEo+V3D2k9W/8Sxo=;
-        b=cb3d6YzW6nrGuRRS6oSU6xIv3mfNSvAfD4J+NhlQOOwGhtfYHTTWnAIK8qaVqc1gkc
-         r0EMkPHPvvuRU99MGAgbwLazKtATFcwxTWwuJdRVO4+8BXBh8alzfX+EQfop05AIYzub
-         06zcGdrRIZeWntKW7Z/GsG8cDvxIw95aqKmtrB4GUybxBPseaSwjRFdzyNfnsxZG72WS
-         i5rhwkf9o7Wlgs9oHqgmGnk8IXv+DAZEyXpVj2V0OHPL8M1QD/gqAlmwtAmJhqAp/zhs
-         SElDmw4UvXWAAA0OKEDvJioloFPEYLJAT8X61OdhF18NghTfdBl6cuVTC59eTKPNsS4b
-         LLKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790187972; x=1790792772;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LNon7FG4gNvQZ8cTIn7dGZggjcYoEo+V3D2k9W/8Sxo=;
-        b=MsMAJ4UwoW1Bl2c7LCz6jxIjpVZ9AuRI9EkVOd7t6ct+HXh3sB+ul3Rd8xbBLcUNf7
-         dSmRllp4grhOQoikUrGI2lkcLe2kErU4R3dVzPsxvX9tmFC4wNablh85vpB7lwPOo3Ox
-         ZacKnRQh788ceSHLSEm3UMILufMk/uUQkzHbRARBcXIbdffFIDpDCLtFDHwXy2ZzxTk5
-         CGnbNlJ0SQPZa/lraRbboo6HDdhVpYVeQbsnc76WdJEoWpXnXrP7qzrpVZagwSEVK7l5
-         h7yAWNI5LECYDZkiIHk4oJn4o0r+/klp3umdHitp2nB4h1z3Il6qo9z/KZz7O0Q8PYgZ
-         w7oQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwuZwyrgOW60LVhDtNOnCD9Hw3fdB4g3SgsfFKWvk9MctheKpDfgzOXLWYiDOggb8XGo+ZE1qo=@vger.kernel.org
-X-Gm-Message-State: AFuF++li+A+x75oVDQmOUYLTfW8wK7kOoqzABspBcYiWrD5ItBR8eQOy
-	LSs7nHr0wmjTBD1Ctd/38UzHH+vv4RdNkC98VOIg+jcWGqQ3r3BIO674Le5EKguN3A==
-X-Gm-Gg: AYBFou2Km4znz0acLA1ipzLT3kznhdGgPltTh/F+TUKZfNhquw70Np2ERLAVSbo9nAF
-	D1BRPwDsY3mVMmz1O+4iuIbyR3dRKafe4DBrCo4NGeML07RtZAqhvJiXVuoXIJ5ZQGrsKBd2UxD
-	tk7Sfalg4f8NQIAKYlcqrMoQHM881QQoCuRLqRT9axiedIQcUrXRZNIFyuSSXBKXz2a7PAd7keP
-	fByV6o3mYMgcCw5owfHi5G0iJ6I5sgenDUCj5s/2KyS7bwBTdID/+KfcteOxcxGKLyUPsWKUG1L
-	upZEU/kAYr0sUWkgZo90Jtcxyi26hHwAy1j4xVb38dUoPKqOEjeiIEUwWh4IcFrwby17P1ZfOR7
-	VoIvP2kZSN/zbQvU5X0S1X6JUbAM99J6QSRr4tJCejlPx4r1dKkNonwShnR2sLqeXjv1wZCto8i
-	sdWFLQm8A25GYyfUQhlMawXCnod5HpO6YEt5AXy4wmyGpgWbs3PDjwpSPgqAZkat4hMlF6nq6JM
-	F3RSW3ZA2HypsHS28HDf0TX0iMJrIb4CJxHioZdnIXOctVZvJE=
-X-Received: by 2002:a17:902:ef52:b0:2df:3b09:664 with SMTP id d9443c01a7336-2df69dcdbf3mr30657015ad.32.1790187971787;
-        Wed, 23 Sep 2026 11:26:11 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5eea15sm15475075ad.64.2026.09.23.11.26.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 11:26:10 -0700 (PDT)
-Date: Wed, 23 Sep 2026 18:26:06 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Steffen Eiden <seiden@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v7 06/10] vfio: selftests: Allow drivers to specify
- required region size
-Message-ID: <arQZvkNtgq-NlUkh@google.com>
-References: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
- <6-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IvZVxpZ7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251FE1F000FF;
+	Wed, 23 Sep 2026 18:30:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790188236;
+	bh=3rRcavay/uZqKxxaOQ8jVX7R9A/LP6u2sfbUr8jvwqQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=IvZVxpZ77OOYiqLrLdt/5qZAh9ajr0XNN7D+BsX5w6EvYtJfpfvnSJ+VkudNl2n6L
+	 bwQSBZ8TLf7KxpupK1qhHr4i4y8+Cc1mFvx+JTATN8XuOxBCBs8H1uQCjar9urSnXg
+	 l3hpzi3+D8Q9Svqo0n32HqOC1n0oHBRVZ3Ch2Dn4jF57fz+i8MjgJWdcOGLjiitw/4
+	 uefA4rEv24/Y32flJDAZV3GDsVB4suiWUHgwQ9p6oQeHDs+lz/l+XU1wasS+2DdMza
+	 wVEc0AtIM30dZb36u4olSNsFa4CcEiKrhDhpoYLi8/lHqZctMay13ux6ib8Y4DoQjE
+	 dPIzQs8MEL0mA==
+Subject: Re: [PATCH] ppp: pptp: fix out-of-bounds read on short payload_len in
+ pptp_rcv_core()
+From: netdev-bot+sashiko@kernel.org
+To: benquike@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 23 Sep 2026 18:30:35 +0000
+Message-ID: <179018823567.2160803.3874112471826535147@kernel.org>
+In-Reply-To: <20260919212856.3241262-1-benquike@gmail.com>
+References: <20260919212856.3241262-1-benquike@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
 
-On 2026-09-21 07:35 PM, Jason Gunthorpe wrote:
-> Add a region_size field to struct vfio_pci_driver_ops so drivers can
-> declare how much DMA-mapped region they need. The mlx5 driver will need
-> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
-> struct. Since drivers all use only their declared state we can use the
-> value directly and remove the SZ_2M hard coding.
-> 
-> Assisted-by: Claude:claude-opus-4.6
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] New unconditional `if (payload_len < 2) goto drop;` in
+  pptp_rcv_core() (drivers/net/ppp/pptp.c:313) narrows the set of PPP…
+
+--
+
+ppp: pptp: fix out-of-bounds read on short payload_len in pptp_rcv_core()
+
+The patch adds a minimum length requirement on the GRE payload_len field in
+pptp_rcv_core() and gates the LCP Echo detection on payload_len >= 5, so the
+PPP header bytes inspected after pskb_may_pull() are known to be present.
+
+> diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+> index a797a0606f6b..2f979294490d 100644
+> --- a/drivers/net/ppp/pptp.c
+> +++ b/drivers/net/ppp/pptp.c
+> @@ -310,6 +310,8 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
+>  	payload_len = ntohs(header->payload_len);
+>  	seq         = ntohl(header->seq);
+>  
+> +	if (payload_len < 2)
+> +		goto drop;
+
+[Severity: Medium]
+Does this unconditional drop narrow the set of frames the PPTP channel will
+deliver to ppp_input()?
+
+A one-octet payload holding a Protocol-Field-Compressed protocol value is a
+valid channel frame for the PPP core, which only requires a single byte:
+
+drivers/net/ppp/ppp_generic.c:ppp_decompress_proto() {
+	/* At least one byte should be present (if protocol is compressed) */
+	if (!pskb_may_pull(skb, 1))
+		return false;
+
+	__ppp_decompress_proto(skb);
+
+	/* Protocol field should occupy 2 bytes when not compressed */
+	return pskb_may_pull(skb, 2);
+}
+
+The transmit side of this same driver produces that format in pptp_xmit():
+
+	/* compress protocol field */
+	if ((opt->ppp_flags & SC_COMP_PROT) && data[0] == 0 && !islcp)
+		skb_pull(skb, 1);
+
+	/* Put in the address/control bytes if necessary */
+	if ((opt->ppp_flags & SC_COMP_AC) == 0 || islcp) {
+
+So with payload_len == 1 a protocol-only frame used to reach ppp_input() and
+is now dropped in pptp_rcv_core().
+
+The only in-window access that needs two bytes is the address/control probe
+further down:
+
+		if (payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI) {
+			/* chop off address/control */
+			if (skb->len < 3)
+				goto drop;
+			skb_pull(skb, 2);
+		}
+
+Would gating that test with payload_len >= 2, in the same style already used
+for the payload_len >= 5 LCP test below, close the read without rejecting
+one-byte frames?
+
+>  	/* check for incomplete packet (length smaller than expected) */
+>  	if (!pskb_may_pull(skb, headersize + payload_len))
+>  		goto drop;
+> @@ -317,9 +319,11 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
+>  	payload = skb->data + headersize;
+>  	/* check for expected sequence number */
+>  	if (seq < opt->seq_recv + 1 || WRAPPED(opt->seq_recv, seq)) {
+> -		if ((payload[0] == PPP_ALLSTATIONS) && (payload[1] == PPP_UI) &&
+> -				(PPP_PROTOCOL(payload) == PPP_LCP) &&
+> -				((payload[4] == PPP_LCP_ECHOREQ) || (payload[4] == PPP_LCP_ECHOREP)))
+> +		if (payload_len >= 5 &&
+> +		    payload[0] == PPP_ALLSTATIONS && payload[1] == PPP_UI &&
+> +		    PPP_PROTOCOL(payload) == PPP_LCP &&
+> +		    (payload[4] == PPP_LCP_ECHOREQ ||
+> +		     payload[4] == PPP_LCP_ECHOREP))
+>  			goto allow_packet;
+
+[Severity: Medium]
+Related question on the same change: payload_len is a peer-supplied GRE
+header field that the rest of pptp_rcv_core() treats as advisory.  It is only
+fed to pskb_may_pull(), the skb is never trimmed to headersize + payload_len,
+and the later checks use skb->len instead.
+
+Using it as the gate here means a peer that under-reports payload_len has its
+out-of-window LCP Echo keepalives dropped rather than recognised, where the
+previous code looked at the bytes actually present in the skb.
+
+Would checking skb->len - headersize (the bytes pskb_may_pull() actually
+guaranteed) be a better gate than the header field?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212856.3241262-1-benquike%40gmail.com
