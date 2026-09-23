@@ -1,90 +1,35 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD54135FF5B
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5CD35E1BD;
+	Wed, 23 Sep 2026 01:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790127268; cv=none; b=UuzZsd3O+I/hq730K3545+p8ZCaM3LtjiRI9t9YlpXLi0TPX8C+9++PGsOMLi1dQW7VoBdlKsTZ7KNO4iO0Swg27ZryBVPkp61ohoGtdFyONhN6yEYAssQj2+6yasMHFj2X5rvqCcmwwe8C1v/4McVTMZnTsF+YaL0nKS8I8i4g=
+	t=1790127676; cv=none; b=kZLHZ6lCam73FSG7RXEyt9lQyyiB68xcyzQ/apHmX0IZTLiimHhkXwgVWOuNWib2xM9E4gmYuNZT2mwHp/B6iLHbrxZi9JwvmvAwXyGEtsxUWKMalncNxIKmoIEhhgzS/foUc3nfxsHUORrBqquS//xC1/BgBloFp7nRb5smJuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790127268; c=relaxed/simple;
-	bh=iU2FuQNmEXQCPbvdO6PlHEX1diONiNT34AcuPNd2qjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngUfQ63IxbriWbiM5BpeKgH4xNPEEGefr7vFFYkMrehPjtr/w4ZbJu5O5tCJZtTgekO7byTGmLh14fJbHKVlLmWDIb5b22MxOre0LhR/C8cufmcuUsKLT8u/+LmKDgOscvOiy/pkDP4Cuvh2XSKlj4WpaR3MA5vIhDXXpA9RjUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QByuSs0N; arc=none smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790127676; c=relaxed/simple;
+	bh=KiXmkd04zIsbMohMQpIZyFcCWd7UAaRQyljY9qo6oAs=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=BWffjGrtm41LAca+5VXUi3uLzEBwPGvdP/1cEKotGFaRxP7kj4WcaRo6eMaG5vD+MO4Wy/bkJTVoBBBzeAKWESsSymo6meoxj9mTWAq3j+2vW5cNlz5v9KX1bqMMHL9iFntWJ2fbE/2a2qSZyYi4CuTW4Dy3M8kqxjQUDVHCFY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbriLNn/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QByuSs0N"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664c1479so244856eec.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 18:34:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790127266; x=1790732066; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=z425s6s/R/+sgdabTRg+eLb5zfe4+RFtNm44lmjghrE=;
-        b=QByuSs0NhvzHWfBVNF8y+JnkxS3sY6M0+ui4WBxikrxr6OwsRY9CXl60GCkwpI4L9p
-         HIXKntmIsf4VRiwisl9mGOQEF+KqPvJCVaz8ulFTIApu5XpaSKlIPuRyYoACIm2sQ+l+
-         6FxG14OsFdawRQ5PX9XxTqCsWdT9v4lbkvjaTiIhgxSbtZh2BDSr0swHl7HsxWUZloT/
-         EHvijuDrJuRuQTOTkAx6vwTxRC0D3yDmemTgGy8dO0nin/VJ5o4Hy5Qttyr5C+V6/30J
-         QDDf0iT5Fs3dueSXrB0vlvb+QgaO0RZiIC2D5Q9TJxi1aaQrg5RV7w3cSNZdcI7E1/PC
-         x1Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790127266; x=1790732066;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z425s6s/R/+sgdabTRg+eLb5zfe4+RFtNm44lmjghrE=;
-        b=xo4pHbViZLRf37vC30Pbvc0foecBlwSYx2GtnCFqF5TDnssSoXayp+B6WswPAAFuvo
-         w+e9gWhrj0X9t1WL8yB2evHhIk1VFVhX3jYzyObhOoO3l2cRIcmN+UGy+4ni8Sl/6KKq
-         fH6MlfylNI4wt9ITEFa9EqclbUWVeQccEsOEFfVTYWL5Evd+b4pOi6WccCNLkKboNNJT
-         hcjLHWITRUAEiV2fmXoIU4ZOWd+zZSG9jitZsgcQ/KzYBgtAHNNqePr0+aYP3Vte/Uf6
-         ZhRL+5XeXGZ0GA91C1mNS0hMniJLJdDkl9eZQT4piVQGmyPMpw9GQd33HRAkuHN19Bki
-         P1lg==
-X-Forwarded-Encrypted: i=1; AKwUvBxEy54ocrhpyUg6hgOsJc6SYM0lhycXXul4oqd3HEI+LHHL/ipCxC4VPb+KOQVUpyh6CXk/2sA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mJyu6nDshLrkrcUh5Nd1sYMO3E5sMXa0YomRazNeeLhcUlddLG
-	6f8hjLViDfZO6/OYZHqdbcPxUziHLkFhzz/WDQ2R4SrHModY+5RWXGPm
-X-Gm-Gg: AYBFou2/FscZPMB56ADIha+5KcEy2/WSIdbF6DA4v+MC7+77zwQAs49FZ4hKd0Aid9v
-	tTtu4+q09mdeZyoSuL7oGVq2ltlKbW4BwDRzmK6g4D7G2SDr54UvReIqlaxUQ/XGSO50CcFR7da
-	RYcm9ED10Zo4qkW4YTVoZ1MxENMVWaWlDB/73Iqk0f2zgzsnlBfIYcTftpR7AAUV0M9fEQIvjZN
-	HMMb1C5AUDdqvetBK8pCc8vsvBpR1tFdP2ZNL7NNlJJQDmFd3HHKDsDLOBKy36trDXFv5tDeI2h
-	+KnlygBVOqQCEvrjHGAyWlnnyYX9t8LlTL+IjfCwPCIgiKQ/DMEHa/7Xneb/X0au33aWd+NHYwh
-	ynrFr2sbvSdKsnN/9LjrPInSL9P9iBj3XmAXqGd2GrSl0VKj3tGjZPZG1X7tPcJlfMZzGYxqvve
-	E4eFAK4u4WY+r4fWez7EDIR1s71NIIQYv/bYppJJ8Y6S0/AR/9VT29RogIabf8+9op3EZpN0N+P
-	cdZ7VfXqRtgBsOoLS7ze5xbLt4SISAoT2YisNb0DridPgua3C4GA4Mo13L+jBw6/Q2yGGqZInD8
-	THKbUX3dzmls+pry5CXohIhn2ka0fXA=
-X-Received: by 2002:a05:693c:8804:20b0:33c:2308:c0af with SMTP id 5a478bee46e88-33e8c05dccfmr1090276eec.17.1790127265904;
-        Tue, 22 Sep 2026 18:34:25 -0700 (PDT)
-Received: from lawlee-vm0.d4y3nv5wwgfelhhopdxv1tqjld.dx.internal.cloudapp.net ([13.93.150.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e96f47d52sm2013520eec.28.2026.09.22.18.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 18:34:25 -0700 (PDT)
-From: Lawrence Lee <lfqlee314@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	netdev@vger.kernel.org,
-	Arun Ajith S <aajith@arista.com>,
-	Roopa Prabhu <roopa@nvidia.com>,
-	Jaehee Park <jhpark1013@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 2/2] selftests: net: test untracked NA recovery of FAILED neighbors
-Date: Wed, 23 Sep 2026 01:34:19 +0000
-Message-ID: <ce40008682ed26ab039168a5fcb515eff8d30c3a.1790127207.git.lfqlee314@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790127207.git.lfqlee314@gmail.com>
-References: <cover.1790127207.git.lfqlee314@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbriLNn/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416E91F000FF;
+	Wed, 23 Sep 2026 01:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790127675;
+	bh=+XC7UpNvlub8+g4abzd7fnYUdwJ3E9mvV38izxIKMkA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=gbriLNn/sq+e3woya4HtM35a7AVJY/xvngCZ5/vnTUdH58kpSfLA2lSNRKoQUWFtE
+	 pVv0isND8ELRNiTZmcXkvROi8qOn84bqOW6DTPQgyNQ+vLH3n7bd5zAhljPoRYr3gH
+	 YRjNE/We7LFhopUjdNuriv7GShEF+uJ5VLyNW2gtdc+9yTY44r9sjdl21ZnftKEC2d
+	 aHq3FnUzIl8I9lew7vNWtz+lY2/2UI3Lnyg5obzpN1oJ1+JbOckeXAzj5GlJc2wt+U
+	 j8hB4gem7qL1LzzrQV0ln12gX21FHxOz/lgSoKaoU/1DLjvKG1CUgsxRR0tJA7kbha
+	 AdclFz/NDbbhw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A313924463;
+	Wed, 23 Sep 2026 01:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,337 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] sctp: discard the rest of the packet on a
+ stale-cookie
+ error
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179012760572.167190.1940324637591255242.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Sep 2026 01:40:05 +0000
+References: <20260921093707.1432184-1-ljp1205831794@gmail.com>
+In-Reply-To: <20260921093707.1432184-1-ljp1205831794@gmail.com>
+To: Aohan Mei <ljp1205831794@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org,
+ marcelo.leitner@gmail.com, lucien.xin@gmail.com, imv4bel@gmail.com,
+ henrymei@tencent.com, corvus@tencent.com, stable@vger.kernel.org
 
-Seed a FAILED neighbor before triggering an unsolicited NA. Verify that
-the entry transitions to STALE and learns the advertised link-layer
-address only when drop_unsolicited_na is disabled, accept_untracked_na
-mode 1 or in-prefix mode 2 is enabled, and IPv6 forwarding is enabled.
-Verify that disabling each gate keeps the entry in FAILED without a
-link-layer address.
+Hello:
 
-Mark the seed externally learned and disable carrier-based eviction so
-the entry cannot be garbage-collected before the NA arrives. Require the
-marker after processing to prove that a recovered entry was updated in
-place instead of deleted and recreated.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Keep the NA source, target, and neighbor key fixed for the mode 2 cases.
-Vary the prefix configured on the router to exercise the source-prefix
-check without changing the entry under test.
+On Mon, 21 Sep 2026 17:37:04 +0800 you wrote:
+> From: Aohan Mei <henrymei@tencent.com>
+> 
+> When an association is in COOKIE-ECHOED state and the peer sends a
+> bundled [ERROR(Stale Cookie)][DATA] packet from one of its non-primary
+> addresses, processing the ERROR chunk takes the non-fatal stale-cookie
+> retry path sctp_sf_do_5_2_6_stale(), which queues
+> SCTP_CMD_DEL_NON_PRIMARY while keeping the association alive.
+> sctp_cmd_del_non_primary() removes every non-primary transport -
+> including the very transport this packet arrived on, which is still
+> referenced by the receive lookup and shared by all chunks of the
+> packet via chunk->transport.
+> 
+> [...]
 
-Arm packet capture before bringing up the host interface and starting
-DAD. Wait for the capture to become ready and for tcpdump to exit so the
-NA cannot be missed and receive processing is complete before checking
-the neighbor entry.
+Here is the summary with links:
+  - [net,v2] sctp: discard the rest of the packet on a stale-cookie error
+    https://git.kernel.org/netdev/net/c/4498467a8af0
 
-Preserve the return code from test_unsolicited_na_common() before
-constructing the test description. The array assignment previously reset
-the return code to zero and caused existing cases to report false success.
-
-Fixes: f9a2fb73318e ("net/ipv6: Introduce accept_unsolicited_na knob to implement router-side changes for RFC9131")
-Link: https://lore.kernel.org/r/20260813233344.445265-1-lfqlee314@gmail.com
-Assisted-by: LLM Sashiko sparse
-Signed-off-by: Lawrence Lee <lfqlee314@gmail.com>
----
- .../net/ndisc_unsolicited_na_test.sh          | 195 ++++++++++++++----
- 1 file changed, 160 insertions(+), 35 deletions(-)
-
-diff --git a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
-index 5db69dad0cfc..ba9e670b5149 100755
---- a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
-+++ b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
-@@ -3,12 +3,18 @@
- 
- # This test is for the accept_untracked_na feature to
- # enable RFC9131 behaviour. The following is the test-matrix.
--# drop   accept  fwding                   behaviour
--# ----   ------  ------  ----------------------------------------------
--#    1        X       X  Don't update NC
--#    0        0       X  Don't update NC
--#    0        1       0  Don't update NC
--#    0        1       1  Add a STALE NC entry
-+# state   drop   accept  fwding                   behaviour
-+# ------  ----   ------  ------  ----------------------------------------------
-+# absent     1        X       X  Don't update NC
-+# absent     0        0       X  Don't update NC
-+# absent     0        1       0  Don't update NC
-+# absent     0        1       1  Add a STALE NC entry
-+# failed     1        X       X  Keep the NC entry in FAILED state
-+# failed     0        0       X  Keep the NC entry in FAILED state
-+# failed     0        1       0  Keep the NC entry in FAILED state
-+# failed     0        1       1  Update the NC entry to STALE
-+# failed     0        2       1  Update the NC entry to STALE if in-network
-+# failed     0        2       1  Keep the NC entry FAILED if out-of-network
- 
- source lib.sh
- ret=0
-@@ -19,14 +25,18 @@ PAUSE=no
- HOST_INTF="veth-host"
- ROUTER_INTF="veth-router"
- 
--ROUTER_ADDR="2000:20::1"
-+ROUTER_ADDR_IN_NETWORK="2000:20::1"
-+ROUTER_ADDR_OUT_OF_NETWORK="2000:21::1"
-+ROUTER_ADDR="${ROUTER_ADDR_IN_NETWORK}"
- HOST_ADDR="2000:20::2"
-+HOST_LLADDR="02:00:00:00:00:02"
- SUBNET_WIDTH=64
- ROUTER_ADDR_WITH_MASK="${ROUTER_ADDR}/${SUBNET_WIDTH}"
- HOST_ADDR_WITH_MASK="${HOST_ADDR}/${SUBNET_WIDTH}"
- 
- tcpdump_stdout=
- tcpdump_stderr=
-+tcpdump_pid=
- 
- log_test()
- {
-@@ -75,6 +85,7 @@ setup()
- 
- 	${IP_ROUTER} link add ${ROUTER_INTF} type veth \
-                 peer name ${HOST_INTF} netns ${HOST_NS}
-+	${IP_HOST} link set dev "${HOST_INTF}" address "${HOST_LLADDR}"
- 
- 	# Enable IPv6 on both router and host, and configure static addresses.
- 	# The router here is the DUT
-@@ -88,6 +99,8 @@ setup()
-                 ${ROUTER_CONF}.drop_unsolicited_na=${drop_unsolicited_na}
- 	${IP_ROUTER_EXEC} sysctl -qw \
-                 ${ROUTER_CONF}.accept_untracked_na=${accept_untracked_na}
-+	${IP_ROUTER_EXEC} sysctl -qw \
-+                ${ROUTER_CONF}.ndisc_evict_nocarrier=0
- 	${IP_ROUTER_EXEC} sysctl -qw ${ROUTER_CONF}.disable_ipv6=0
- 	${IP_ROUTER} addr add ${ROUTER_ADDR_WITH_MASK} dev ${ROUTER_INTF}
- 
-@@ -102,24 +115,39 @@ setup()
- }
- 
- start_tcpdump() {
--	set -e
--	tcpdump_stdout=`mktemp`
--	tcpdump_stderr=`mktemp`
-+	tcpdump_stdout=$(mktemp) || return 1
-+	tcpdump_stderr=$(mktemp) || return 1
- 	${IP_ROUTER_EXEC} timeout 15s \
-                 tcpdump --immediate-mode -tpni ${ROUTER_INTF} -c 1 \
-                 "icmp6 && icmp6[0] == 136 && src ${HOST_ADDR}" \
--                > ${tcpdump_stdout} 2> /dev/null
--	set +e
-+                > "${tcpdump_stdout}" 2> "${tcpdump_stderr}" &
-+	tcpdump_pid=$!
-+
-+	slowwait 5 grep -q "listening on ${ROUTER_INTF}" "${tcpdump_stderr}"
-+}
-+
-+wait_tcpdump()
-+{
-+	local rc
-+
-+	wait "${tcpdump_pid}"
-+	rc=$?
-+	tcpdump_pid=
-+
-+	return "${rc}"
- }
- 
- cleanup_tcpdump()
- {
--	set -e
--	[[ ! -z  ${tcpdump_stdout} ]] && rm -f ${tcpdump_stdout}
--	[[ ! -z  ${tcpdump_stderr} ]] && rm -f ${tcpdump_stderr}
-+	if [ -n "${tcpdump_pid}" ]; then
-+		kill "${tcpdump_pid}" 2> /dev/null
-+		wait "${tcpdump_pid}" 2> /dev/null
-+	fi
-+	[ -n "${tcpdump_stdout}" ] && rm -f "${tcpdump_stdout}"
-+	[ -n "${tcpdump_stderr}" ] && rm -f "${tcpdump_stderr}"
- 	tcpdump_stdout=
- 	tcpdump_stderr=
--	set +e
-+	tcpdump_pid=
- }
- 
- cleanup()
-@@ -129,58 +157,145 @@ cleanup()
- 	ip netns del ${ROUTER_NS}
- }
- 
--link_up() {
--	set -e
-+router_link_up()
-+{
- 	${IP_ROUTER} link set dev ${ROUTER_INTF} up
-+}
-+
-+host_link_up()
-+{
- 	${IP_HOST} link set dev ${HOST_INTF} up
--	set +e
- }
- 
- verify_ndisc() {
- 	local drop_unsolicited_na=$1
- 	local accept_untracked_na=$2
- 	local forwarding=$3
-+	local initial_state=${4:-absent}
-+	local same_subnet=${5:-1}
-+	local expected_lladdr
-+	local neigh_show_output
-+	local expected_state
-+
-+	if [ "${drop_unsolicited_na}" -eq 0 ] &&
-+			[ "${forwarding}" -eq 1 ]; then
-+		case "${accept_untracked_na}" in
-+		1)
-+			expected_state=STALE
-+			expected_lladdr="${HOST_LLADDR}"
-+			;;
-+		2)
-+			if [ "${same_subnet}" -eq 1 ]; then
-+				expected_state=STALE
-+				expected_lladdr="${HOST_LLADDR}"
-+			fi
-+			;;
-+		esac
-+	fi
-+	if [ -z "${expected_state}" ] &&
-+			[ "${initial_state}" = "failed" ]; then
-+		expected_state=FAILED
-+	fi
- 
--	neigh_show_output=$(${IP_ROUTER} neigh show \
--                to ${HOST_ADDR} dev ${ROUTER_INTF} nud stale)
--	if [ ${drop_unsolicited_na} -eq 0 ] && \
--			[ ${accept_untracked_na} -eq 1 ] && \
--			[ ${forwarding} -eq 1 ]; then
--		# Neighbour entry expected to be present for 011 case
--		[[ ${neigh_show_output} ]]
-+	if [ -n "${expected_state}" ]; then
-+		neigh_show_output=$(${IP_ROUTER} neigh show \
-+			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
-+		if [[ " ${neigh_show_output} " != \
-+				*" ${expected_state} "* ]]; then
-+			return 1
-+		fi
-+		if [ -n "${expected_lladdr}" ] &&
-+				[[ " ${neigh_show_output} " != \
-+				*" lladdr ${expected_lladdr} "* ]]; then
-+			return 1
-+		fi
-+		if [[ "${expected_state}" == "FAILED" &&
-+		      "${neigh_show_output}" == *"lladdr"* ]]; then
-+			return 1
-+		fi
-+		if [ "${initial_state}" = "failed" ]; then
-+			[[ "${neigh_show_output}" == *"extern_learn"* ]]
-+		fi
- 	else
--		# Neighbour entry expected to be absent for all other cases
-+		neigh_show_output=$(${IP_ROUTER} neigh show \
-+			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
- 		[[ -z ${neigh_show_output} ]]
- 	fi
- }
- 
- test_unsolicited_na_common()
- {
-+	local same_subnet=${5:-1}
-+	local neigh_show_output
-+
-+	if [ "${same_subnet}" -eq 1 ]; then
-+		ROUTER_ADDR="${ROUTER_ADDR_IN_NETWORK}"
-+	else
-+		ROUTER_ADDR="${ROUTER_ADDR_OUT_OF_NETWORK}"
-+	fi
-+	ROUTER_ADDR_WITH_MASK="${ROUTER_ADDR}/${SUBNET_WIDTH}"
-+
- 	# Setup the test bed, but keep links down
--	setup $1 $2 $3
-+	setup "$1" "$2" "$3"
-+
-+	if [ "${4:-absent}" = "failed" ]; then
-+		if ! ${IP_ROUTER} neigh replace "${HOST_ADDR}" \
-+				dev "${ROUTER_INTF}" \
-+				nud failed extern_learn; then
-+			echo "Unable to create NUD_FAILED neighbor entry"
-+			return 1
-+		fi
-+		neigh_show_output=$(${IP_ROUTER} neigh show \
-+			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
-+		if [[ " ${neigh_show_output} " != *" FAILED "* ]]; then
-+			echo "Unable to verify NUD_FAILED neighbor entry"
-+			return 1
-+		fi
-+		if [[ "${neigh_show_output}" != *"extern_learn"* ]]; then
-+			echo "Neighbor entry is not externally learned"
-+			return 1
-+		fi
-+	fi
- 
--	# Bring the link up, wait for the NA,
--	# and add a delay to ensure neighbour processing is done.
--	link_up
--	start_tcpdump
-+	# Arm the capture before bringing up the host and starting DAD.
-+	router_link_up || return 1
-+	start_tcpdump || return 1
-+	host_link_up || return 1
-+
-+	# Closing tcpdump's packet socket calls synchronize_net(), so waiting
-+	# for it also waits for receive processing of the captured NA.
-+	wait_tcpdump || return 1
- 
- 	# Verify the neighbour table
--	verify_ndisc $1 $2 $3
-+	verify_ndisc "$1" "$2" "$3" "$4" "${same_subnet}"
- 
- }
- 
- test_unsolicited_na_combination() {
--	test_unsolicited_na_common $1 $2 $3
-+	local initial_state=${4:-absent}
-+	local same_subnet=${5:-1}
-+	local rc
-+
-+	test_unsolicited_na_common "$1" "$2" "$3" "${initial_state}" \
-+		"${same_subnet}"
-+	rc=$?
- 	test_msg=("test_unsolicited_na: "
- 		"drop_unsolicited_na=$1 "
- 		"accept_untracked_na=$2 "
- 		"forwarding=$3")
--	log_test $? 0 "${test_msg[*]}"
-+	if [ "${initial_state}" = "failed" ]; then
-+		test_msg+=("initial_state=failed")
-+	fi
-+	if [ "$2" -eq 2 ]; then
-+		test_msg+=("same_subnet=${same_subnet}")
-+	fi
-+	log_test "${rc}" 0 "${test_msg[*]}"
- 	cleanup
- }
- 
- test_unsolicited_na_combinations() {
- 	# Args: drop_unsolicited_na accept_untracked_na forwarding
-+	#       [initial_state] [same_subnet]
- 
- 	# Expect entry
- 	test_unsolicited_na_combination 0 1 1
-@@ -193,6 +308,16 @@ test_unsolicited_na_combinations() {
- 	test_unsolicited_na_combination 1 0 1
- 	test_unsolicited_na_combination 1 1 0
- 	test_unsolicited_na_combination 1 1 1
-+
-+	# Expect FAILED entry to become STALE
-+	test_unsolicited_na_combination 0 1 1 failed
-+	test_unsolicited_na_combination 0 2 1 failed 1
-+
-+	# Expect FAILED entry to remain FAILED
-+	test_unsolicited_na_combination 0 0 1 failed
-+	test_unsolicited_na_combination 0 1 0 failed
-+	test_unsolicited_na_combination 1 1 1 failed
-+	test_unsolicited_na_combination 0 2 1 failed 0
- }
- 
- ###############################################################################
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
