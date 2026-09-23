@@ -1,165 +1,290 @@
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9058C54DAF7
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC62555D88C;
+	Wed, 23 Sep 2026 15:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790177222; cv=none; b=QTToINh83CIgu+QVGQhpj+s5FQSoav67XslKtKJQqRDfzGX7TuSQpP0Mdf/ghbYjvqHh3f40rMCoI6bT1EtgCTiREA/zkT/t7rYLTxKE5KvD+HvFt90uHPi8m3gKm+FDytStpiEjwFXo/JURvom60Pe3jKPknKdVYocePmXioRA=
+	t=1790177525; cv=none; b=N/eu9PcZTfxF+z7+oTMJ8zbCLSlYNVWf7jrIBOuC/XLHs577UJvuvHXB3rdqjrKKaG+jtNCwcGNqH3W5xg+2USRLctgVhEzFd6qNUjhLQzw7V5Lg4thfDc5cFaPhDrVYNI9fpXMvASPRVfzhSPXHcvVkOgpl8z+Hq9v3iF1ebUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790177222; c=relaxed/simple;
-	bh=9ptSO1ytswhM+R/3vhApbg8wWxicmfu9jo6G0XhLqPE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=PjMoX/Q+JUGhr9cr8vV4W3T6DK7UX+WC42ITL070THDITJfXZLbEnjBbvt9IySMFRY/FJFV6RTFYsMp+Oa5FV++1D54XUYV7jed1J0LnWbfANo611VgVDPAf3ZZTAQk6jRlZoitbM2TK09oRMNnn+q2d878xJCQDHiKUxJtu1UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GggU2l7F; arc=none smtp.client-ip=74.125.224.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790177525; c=relaxed/simple;
+	bh=JsPo+YU0MuEfP3CdDiarzkzLbbh+DS3W3mn9L4o0Mws=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=E4XvVYC1RCXW6+sjl13CEXQSEdxlhafOLf5lGi4rq26YCWGUHFd017YY6gmBpMj2QlP7IXLcT2XDbZJS67lyPhL7X6gue4Ue+GSIjHHtAVeETwA9MkTFsCS7sD1tx/FsnsAZhe+U4HBj26R2yaNPG6QYmFkhDHXXOqcL6Poo4cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dU1NV+fg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GggU2l7F"
-Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-8716a5baf64so13565237b3.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 08:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790177215; x=1790782015; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=efdrlHNx11BTy68VJLi3ds9swyNAeXF/5faxI89LuLk=;
-        b=GggU2l7F2f8Tjl/lu6HKvaJcq0NWYd4vhrxjc+g/6HoidMdu/OPex9Kl5HJ/e3LqoZ
-         22JBbFcu9ST2tjrTgXa+bTtzoWtwJecj2pMl6X6VafJ8U5bptp67/2E4fFEyjKn+YuQR
-         gIPEiP+71SC7Pednav/NmHSUXTzeWL0nlKvxL7V9dX0HZ2K6b9hcdv87NETTvwwcpSuy
-         mtJhnit+kivyLcjbO0qYQWkwMerdX3YYNHbqYqk4o+8THN7GGF41ZacIgy/0jwBH9fCa
-         TWmkZbgfUeNlpwM4O/fPA7rQktBBzSdvP4nYPKmLCYkh/p6eKAZNRaX+DjcPe6sZLBeG
-         aw8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790177215; x=1790782015;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=efdrlHNx11BTy68VJLi3ds9swyNAeXF/5faxI89LuLk=;
-        b=WsvxxwtQp17awdMW44j7qqTJyp3okY23g3Wg2SJYahcnV6CiDquW/IKfj/Mco/lu4Q
-         lprKEK4tpFAWCIswajs3zUP9+GfcR6+64T4d/NqAsL+7IEHSWBxbKm02VbdhmDrjBs1+
-         Tk0HT4aLpPM2h+o36EEi7mT+ct59COFzlTDu5EzXK4rJ3Yz5LsdB6fHB7PDWTC4623MC
-         5O1r8Ey5THEM9EReG/DMdDk+OiCYM6lbUPbqJdw0kdiLJDTMk0jRz+oxz4VN/yza/WaU
-         x0L/uxUDMYLkQ5cO6RzxF8Tf+sV35T+i6+HHEAYbiYEHD7gKCNPo3N/8/NG/5Fqw4e8f
-         Gzbw==
-X-Forwarded-Encrypted: i=1; AKwUvBz2sNLE4W7/6IqhLY8d8gXKJUkqfHhi/Z/1Gq21VsrkAZ1BJV+hvnCW/qf2IYMg3VO7Jlib9iE=@vger.kernel.org
-X-Gm-Message-State: AFuF++mSsTvuo/azPkBwtsUuIddwyU5YVOl0StFE+u2z+G9SnL5Y3OZT
-	h2IxeYglRNoCpLnPYWI99eKOhIVmNQ7mAtZ/prkFrn+W0IFoYOpwyRUg
-X-Gm-Gg: AYBFou1xQ/S+1+f38gpF6VcYPTndQizJTXLJhxSc3OVLeF64/Q/bhJRU0xQPqfXxfLr
-	WATyw6QMBxXve7MaReeD3ZrJmn4/cIUAPxZTSIdpli6Pu3bazC1Ro5fTw+7SWPK4GkD/BuWsvKC
-	+pEPIUbZaA9lvJwS44STnrGzvciGHaNyTyr57Z8TcSAmPx2P4yUi3yFsb0O5GoPMv+/r0nRchBV
-	GrkRE4mP2aNB7Pj825scm6LdPuVzSx7qIts/M45pEDgvNhR2YvHECUaRUO0LVYB75pw6l2om5uW
-	NnfLywYGWDOe5SpInyuV11eqocsq2aDHRp1fhKYdZGMGMX0VwiJWKXE9ed1RlCZzShuluWaTKhr
-	L44jtSCv7YTnRJJbeEDlVNLzIhUw0eVCtyxum6m923xRy7/ly237VA9MWKGdvRBA93cHRTdrT6s
-	ohKZQOUGATY5chmsEcKwOt4ppDAUXG/crgHwDiXWUfOk9RW2GwLTZ9WJgBN5VlhQySRmRT7Scsv
-	S86DNYG3F9RcKvnhi6U/1Cf3iLg1jm82eh64nt+izod1P7HRFhJk8BqxY91Hw8=
-X-Received: by 2002:a05:690c:399:b0:81e:6a10:f90f with SMTP id 00721157ae682-8a458c25decmr17614967b3.17.1790177215543;
-        Wed, 23 Sep 2026 08:26:55 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a466bc8bb1sm10941057b3.47.2026.09.23.08.26.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 08:26:54 -0700 (PDT)
-Date: Wed, 23 Sep 2026 11:26:53 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Zihan Xi <zihanx@nebusec.ai>, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- dsahern@kernel.org, 
- idosch@nvidia.com
-Cc: zihanx@nebusec.ai, 
- horms@kernel.org, 
- kees@kernel.org, 
- willemb@google.com, 
- kuniyu@google.com, 
- richardbgobert@gmail.com, 
- netdev@vger.kernel.org, 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dU1NV+fg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6911F00893;
+	Wed, 23 Sep 2026 15:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790177518;
+	bh=WC1P3wTXESA6BgqvPPiBmdyDCM54RO/X3Gr7C82V1sQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dU1NV+fgr3k1lggAXGPqTBUYmrZiYmi7lzDqkzEWCcdWleAZNy9IJOieScVK5YPrz
+	 +uf9F4bIxA+IIHiI49WWYGoL6/UMsNnd0uwcXqQRUoKcCtIh/L2mkwta/6xMukjJ8R
+	 ekd55pEWdgkg3VCWcl28pAzPcqGegzwIkSJzMKfPjiW5B+Tb+/DeZwGYMazjblPUA+
+	 gIHve/UaNYA/a5BIAXrZRzX1JEnaSkucn7XK/gSoxWJDmf5i7Qyts0Wr2bRS4LiZzf
+	 lzm24AsUIjNzKQQRJCEwcAeLDGGSG+8lKK/r3Kx5JUr21mZL9zVaPd6q3+0oGGavR5
+	 i6X7VokIBU58A==
+Subject: Re: [PATCH] phonet: pep: fix out-of-bounds reads in
+ pep_ctrlreq_error() and pep_sock_accept()
+From: netdev-bot+sashiko@kernel.org
+To: benquike@gmail.com
+Cc: courmisch@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.36edefe3b0b17@gmail.com>
-In-Reply-To: <8b7e7dad82a40e7bdb4721516823c8a7ae6106a0.1790161599.git.zihanx@nebusec.ai>
-References: <cover.1790157745.git.zihanx@nebusec.ai>
- <8b7e7dad82a40e7bdb4721516823c8a7ae6106a0.1790161599.git.zihanx@nebusec.ai>
-Subject: Re: [PATCH net v5 1/1] net: gso: limit recursive IP-in-IP
- segmentation
+Date: Wed, 23 Sep 2026 15:31:57 +0000
+Message-ID: <179017751768.2160803.16464935071666517964@kernel.org>
+In-Reply-To: <20260919212852.3240704-1-benquike@gmail.com>
+References: <20260919212852.3240704-1-benquike@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Zihan Xi wrote:
-> IP-in-IP GSO can re-enter inet_gso_segment() or ipv6_gso_segment()
-> for each nested IP header. encap_level tracks header bytes, not callback
-> depth, so a deep chain can exhaust the kernel stack. Making
-> inet_gso_segment() stackable introduced unbounded IPv4 nesting; IPIP
-> GSO/TSO later made the path reachable. The IPv6 stackable path was
-> introduced separately and shares the guard; Fixes identifies the IPv4
-> root cause.
-> 
-> Count IPv4 and IPv6 GSO handler entries in skb_gso_cb, initialized once
-> per top-level GSO operation and preserved across GRE/UDP context changes.
-> Set the cap to five, matching IP_TUNNEL_RECURSION_LIMIT. Allow five
-> entries and reject the sixth with -EINVAL before it can dispatch another
-> GSO callback.
-> 
-> On the patched x86_64 kernel, tracefs observed six
-> inet_gso_segment() entries for the 199-header reproducer; the sixth
-> returned -EINVAL without a stack-guard fault. This validates the tested
-> configuration, not an architecture-independent stack-safety margin.
-> 
-> Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Co-developed-by: Luxing Yin <root@tr0jan.top>
-> Signed-off-by: Luxing Yin <root@tr0jan.top>
-> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> ---
-> changes in v5:
->   - Replace the header-offset budget with a shared IP GSO handler-entry
->     counter. Entries one through five pass; entry six is rejected.
->   - Initialize the count for each top-level GSO operation and preserve it
->     across IPv4/IPv6 dispatch and GRE/UDP context changes.
->   - Use the existing IP_TUNNEL_RECURSION_LIMIT value of five as a
->     practical bound. Tracefs observed the sixth entry return -EINVAL on
->     the final x86_64 revision; rerun both IPv4 PoCs on that revision.
->   - Avoid rejecting a single-level tunnel based only on header length.
->   - v4 Link: https://lore.kernel.org/all/cover.1790041241.git.zihanx@nebusec.ai/
->  include/net/gso.h      | 9 +++++++++
->  net/core/gso.c         | 1 +
->  net/ipv4/af_inet.c     | 2 ++
->  net/ipv6/ip6_offload.c | 2 ++
->  4 files changed, 14 insertions(+)
-> 
-> diff --git a/include/net/gso.h b/include/net/gso.h
-> index 29975440c..18944ff06 100644
-> --- a/include/net/gso.h
-> +++ b/include/net/gso.h
-> @@ -19,10 +19,19 @@ struct skb_gso_cb {
->  	int	encap_level;
->  	__wsum	csum;
->  	__u16	csum_start;
-> +	/* Number of IPv4/IPv6 GSO handler entries for this packet. */
-> +	u8	recursion_counter;
->  };
->  #define SKB_GSO_CB_OFFSET	32
->  #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
+
+Critical: 0 · High: 0 · Medium: 2 · Low: 0 (5)
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch bundles three logically independent changes into one
+  commit: (a) the 1-byte OOB-read hardening in pep_ctrlreq_error() /…
+- [Medium] The changelog misidentifies the out-of-bounds read it fixes.
+
+Pre-existing issues:
+- [Low] In-tree sender and receiver of PNS_PEP_CONNECT_REQ disagree on
+  the 4-byte payload layout that follows the pnpipehdr.
+- [Low] The file-level locking-policy comment for struct pep_sock in
+  net/phonet/pep.c (lines 33-37: 'pep_sock locking: - sk_state, hlist:…
+- [Low] Documentation/networking/phonet.rst describes PNPIPE_HANDLE as 'a
+  read-only integer value', but pep_setsockopt() accepts it: when…
+- [Low] Documentation/networking/phonet.rst states 'The pipe protocol
+  provides two socket options at the SOL_PNPIPE level' and then…
+- [Low] The new writer-side locking in pep_setsockopt() does not remove
+  the data race on pn->ifindex with getsockopt readers:…
+
+--
+
+phonet: pep: fix out-of-bounds reads in pep_ctrlreq_error() and pep_sock_accept()
+
+This adds pskb_may_pull() coverage for the control-request path in
+pep_ctrlreq_error() and pipe_do_rcv(), adds the missing __skb_pull() plus a
+length check before the sub-block loop in pep_sock_accept(), and re-acquires
+the socket lock around the pn->ifindex assignment in the PNPIPE_ENCAP case of
+pep_setsockopt().  No Link: tags are present in the commit header.
+
+A few questions below.
+
+> diff --git a/net/phonet/pep.c b/net/phonet/pep.c
+> index bd1cdd00edfa..5511770bb21c 100644
+> --- a/net/phonet/pep.c
+> +++ b/net/phonet/pep.c
+> @@ -192,15 +192,21 @@ static int pep_reject_conn(struct sock *sk, struct sk_buff *skb, u8 code,
+>  static int pep_ctrlreq_error(struct sock *sk, struct sk_buff *oskb, u8 code,
+>  				gfp_t priority)
+>  {
+> -	const struct pnpipehdr *oph = pnp_hdr(oskb);
+> +	const struct pnpipehdr *oph;
+>  	struct sk_buff *skb;
+>  	struct pnpipehdr *ph;
+>  	struct sockaddr_pn dst;
+> -	u8 data[4] = {
+> -		oph->pep_type, /* PEP type */
+> -		code, /* error code, at an unusual offset */
+> -		PAD, PAD,
+> -	};
+> +	u8 data[4];
+> +
+> +	oph = pnp_hdr(oskb);
+> +	if (!pskb_may_pull(oskb, (unsigned int)((oph->data + 1) - oskb->data)))
+> +		return -EINVAL;
+> +
+> +	oph = pnp_hdr(oskb);
+> +	data[0] = oph->pep_type; /* PEP type */
+> +	data[1] = code; /* error code, at an unusual offset */
+> +	data[2] = PAD;
+> +	data[3] = PAD;
+
+[Severity: Medium]
+The new check looks correct, but does the changelog name the wrong read?  It
+says:
+
+   1. In `pep_ctrlreq_error()`, `oph = pnp_hdr(oskb)` is dereferenced at
+      `oph->pep_type` (`oph->data[0]`, offset 4 from `pnp_hdr(oskb)`)
+
+struct pnpipehdr in include/net/phonet/pep.h is made only of u8 members:
+
+struct pnpipehdr {
+	u8			utid;
+	u8			message_id;
+	u8			pipe_handle;
+	union {
+		u8		state_after_connect;
+		...
+		u8		pep_type;
+		u8		data0;
+	};
+	u8			data[];
+};
+
+So pep_type is at offset 3, data[] begins at offset 4 and sizeof(*hdr) is 4.
+The caller pep_do_rcv() already guarantees those four bytes:
+
+	if (!pskb_may_pull(skb, sizeof(*hdr)))
+		goto drop;
+
+which means oph->pep_type was in bounds.  The read that was not covered is
+the later one in the same function:
+
+	ph->data0 = oph->data[0]; /* CTRL id */
+
+That touches offset 4 and needs five linear bytes, which is exactly what the
+new pskb_may_pull(oskb, (oph->data + 1) - oskb->data) provides.  Could the
+changelog point at oph->data[0] instead of oph->pep_type, so a reader
+checking the named expression does not conclude there is nothing to fix?
+
 >  
-> +#define GSO_RECURSION_LIMIT	5
+>  	skb = pep_alloc_skb(sk, data, 4, priority);
+>  	if (!skb)
 
-The commit-msg explains this as derived from IP_TUNNEL_RECURSION_LIMIT.
-Which makes sense as a choice. Use that directly, rather than
-duplicating it?
+[ ... ]
 
-Or else at least add a comment. Right now it looks like an unexplained
-magic variable.
+> @@ -823,6 +831,7 @@ static struct sock *pep_sock_accept(struct sock *sk,
+>  
+>  	/* Parse sub-blocks (options) */
+>  	n_sb = hdr->data[3];
+> +	__skb_pull(skb, sizeof(*hdr) + 4);
 
-If respinning, no need to send the long cover letter again, imho.
-Reported-by: is expected to be followed by a Closes: tag. That can
-point to the v5 cover letter on lore.kernel.org.
+[Severity: Low]
+This isn't a bug introduced by this patch, but the new __skb_pull() fixes the
+sub-block offset according to the receiver's reading of the message, and the
+in-tree sender disagrees with it.  pep_sock_connect() builds the connect
+request payload as:
+
+	u8 data[4] = { 0 /* sub-blocks */, PAD, PAD, PAD };
+
+so the sub-block count goes at data[0] (header offset 4), while
+pep_sock_accept() decodes peer_type from hdr->other_pep_type (also data[0])
+and the count from hdr->data[3] (offset 7).
+
+The connect-response pair is self-consistent: pep_accept_conn() emits
+PAD, PAD, PAD, 2 and pep_connresp_rcv() reads hdr->data[3].
+
+Nothing misbehaves today since the kernel always announces zero sub-blocks
+and PAD is zero.  Is the request sender's layout worth a separate fix?
+
+>  	while (n_sb > 0) {
+>  		u8 type, buf[1], len = sizeof(buf);
+>  		const u8 *data = pep_get_sb(skb, &type, &len, buf);
+
+[ ... ]
+
+> @@ -1048,8 +1059,16 @@ static int pep_setsockopt(struct sock *sk, int level, int optname,
+>  			release_sock(sk);
+>  			err = gprs_attach(sk);
+>  			if (err > 0) {
+> -				pn->ifindex = err;
+> -				err = 0;
+> +				lock_sock(sk);
+> +				if (sock_flag(sk, SOCK_DEAD) || pn->ifindex) {
+> +					release_sock(sk);
+> +					gprs_detach(sk);
+> +					err = -EINVAL;
+> +				} else {
+
+[Severity: Medium]
+Item 3 of the changelog states:
+
+   3. In `pep_setsockopt()` (`PNPIPE_ENCAP`), `release_sock(sk)` is dropped
+      around `gprs_attach(sk)`, and `pn->ifindex` is assigned afterwards
+      without re-acquiring `lock_sock(sk)`
+
+The release_sock(sk) ahead of gprs_attach() is already present in the
+baseline and this diff keeps it unchanged; only the lock_sock()
+re-acquisition and the SOCK_DEAD / pn->ifindex recheck are new.  Could that
+sentence be reworded?
+
+Separately, this hunk changes what userspace sees: a
+setsockopt(SOL_PNPIPE, PNPIPE_ENCAP, PNPIPE_ENCAP_IP) that previously
+returned 0 can now return -EINVAL and, via gprs_detach(), unregister the
+gprs netdev that gprs_attach() just created and drop the socket reference.
+
+That is unrelated to the parsing changes in pep_ctrlreq_error() /
+pipe_do_rcv() and in pep_sock_accept(), and all three share one Fixes: tag.
+Would splitting this into one logical change per patch make the parsing
+fixes easier to pick up for stable?
+
+> +					pn->ifindex = err;
+> +					err = 0;
+> +					release_sock(sk);
+> +				}
+
+[Severity: Low]
+This is a pre-existing issue and not introduced by this patch, but the store
+to pn->ifindex is now marked while the readers still are not.
+do_pep_getsockopt() reads it for two options:
+
+	case PNPIPE_ENCAP:
+		val = pn->ifindex ? PNPIPE_ENCAP_IP : PNPIPE_ENCAP_NONE;
+		break;
+
+	case PNPIPE_IFINDEX:
+		val = pn->ifindex;
+		break;
+
+and neither pep_getsockopt() nor sock_common_getsockopt() takes the socket
+lock on the way in, so KCSAN can still flag the pair.  Would converting
+these accesses to READ_ONCE()/WRITE_ONCE() while here be reasonable?
+
+>  			}
+>  		} else {
+>  			pn->ifindex = 0;
+
+Two further notes that need no diff context:
+
+[Severity: Low]
+This is a pre-existing gap rather than something this patch introduced, but
+the pep_sock locking policy comment near the top of net/phonet/pep.c reads:
+
+ * pep_sock locking:
+ *  - sk_state, hlist: sock lock needed
+ *  - listener: read only
+ *  - pipe_handle: read only
+
+ifindex is not listed there, even though the fix in pep_setsockopt() relies
+on it being read and written under lock_sock().  Could a line for ifindex be
+added while touching this?
+
+[Severity: Low]
+This is pre-existing and untouched by the patch, but
+Documentation/networking/phonet.rst describes PNPIPE_HANDLE as "is a
+read-only integer value", while pep_setsockopt() accepts it:
+
+	case PNPIPE_HANDLE:
+		if ((sk->sk_state == TCP_CLOSE) &&
+			(val >= 0) && (val < PN_PIPE_INVALID_HANDLE))
+			pn->pipe_handle = val;
+
+Should the documentation say it is writable while the socket is closed?
+
+[Severity: Low]
+Also pre-existing and not caused by this patch: the same file says "The pipe
+protocol provides two socket options at the SOL_PNPIPE level" and then
+documents three of them (PNPIPE_ENCAP, PNPIPE_IFINDEX, PNPIPE_HANDLE).
+PNPIPE_INITSTATE is exported by include/uapi/linux/phonet.h and handled by
+both pep_setsockopt() and do_pep_getsockopt(), but is not documented.  Could
+the count and the missing option be fixed up?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212852.3240704-1-benquike%40gmail.com
