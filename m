@@ -1,177 +1,154 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFFB5221DD
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 21:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790200768; cv=none; b=UWsSs86o1mZ57iRTf0nKg/WjALD4kM40vf5tBimHSgc9uyjh20J/1Hshgqm6xKk34icFiQDsAPo1QYU2xLUM28yKouhc5Zi7zTwVvg4WjFtZkOppu1Iuaf2+N0lLgDHhdW8tr3dg+vmywX9HAe4wUsKfGxhTo8YfE6qDHybJ4Io=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790200768; c=relaxed/simple;
-	bh=saayl3HPeMGDQwP4gpkRoqyOqmY3X//RUk2hQqDBThA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a20Dt7Xn3bgUmfSV7jjPo97tc2pJgbHvxb9K963I50PGi33+WJW7XmN/CZeG6SJTUzRK2sHclAxl6i3NWRHsDDHO/poAX3x6pEHIlGVPYn9/X9NJPvjvOIXXWeQERKaXqkvMs2ak9va442gPbqBTTcv0GHBqfOWvVeekfXuhmEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I6AwzjSj; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F08F568553
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790200922; cv=pass; b=PitaLZq0zWGLSuGKhy5rRKA0R+kYeOfDAE6TDIMSeWntIJMiyIlgZJmv23WKtlbMfv4lV+mgw1fTGo5YM/wY4T2JXQZ39aXt8Sx6bjGUGxkYZOJvxKu7D5NuuWzTxwBwndMruHmNOgO7dUGSUmiPCBn3Uw6xk16An7mR44KZ0cw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790200922; c=relaxed/simple;
+	bh=BxmE6TWumSdxnCF/DfZwHpDmrPK8bOfrOvAJ6PVHIdI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G5NFMDJy4bs2s+r6GkAJroPUnAAhPM30oPw+8EgOTVj8VR+YsuyNM37OPLU5broHAJIUoALYuuaHwSK5kxcHV+zHtqg4yoEQhDRBzjBlNLeIbWj8VrZ/EBoQn7zzC7zivfmly/74x88lCBoJMKeZ81w+9odQLOau43/HhJQzl5g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IlANmcmw; arc=pass smtp.client-ip=74.125.229.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I6AwzjSj"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c29d50b7cf9so193861366b.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:59:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IlANmcmw"
+Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-143880e27dfso399596c88.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:02:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790200920; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AzXiYEas1kXllQnIKjHsnpcZuQppUMWdflkc7n8gHxwt5UKcPUEFtzN9BYs/O5wwOc
+         1GeJoSfzXA2TDyAz712AEMclAm9TmQms/GLB5HKfuBvBn3o+u/ATId6GhqUoBBMbPna/
+         GIMsc+ErtAIzXqUyjq12Ykgi7trPohw3L3Rl3oW5WGQ/3baNA+cea8zg9Wly9phWBcIh
+         WeIVBhneEuTU+JZPUlXoXj5YcdZS8tStlSnaa09/it12/VSykMvHdaQ592QSmusX4OYF
+         rcziMvl0gJ6nZ3TvheHIozgR6cuMSRefGLNECKxH5PrhJ6iAJWQRkGbk0uvCP1ZyK0iU
+         pbHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FfI6pOLVyMhdWWBgVl1aRFnTQKav9Gx6fgY4yEFrfL4=;
+        fh=E1YHgG3XNQwKSb0d9XoptaWDzfrN0C0Fl5u32hWijfk=;
+        b=ZX2VsqwK8mVByk9Dn4hQ8rA/POc98KXEi8Mk4eAvyYr4oc4M/Uprr15cQxHW1MZbFf
+         6MioDcZgYi9u0viYJ51HvjDuW9U3Zai8d9JRyNQucpfd72JkADiRO06g7zX0diJLefSA
+         KN0VSlrK4h84u+rkw6UgoqEiIZwfbJnX0RdReG8rFii4Nyo1Zo7ysg58omv43Qk1ljao
+         Xq5Pgx+fEZwNsvxQxc+4hiY8Vw1z9U0qP0xL6nrByKSmxru+nLLsR6lpBd9wfmXa43Pf
+         XNwSt3ck4Ijlh73EP8fzrKPlIfevGnytI5U46jJ5Sn9v6KPRo7+o8IJdUdeK22RZI0qf
+         rwaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790200761; x=1790805561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Qzbg0xrn+b4txPd4lT64CQhwFT+1jhOzwXJ+cMbTaZM=;
-        b=I6AwzjSjUa1uBmixPexX15VRz02aqnyw1uVoRYW9s+dV2ppnHRe3X1ur6tmIZxA/yo
-         tEaqmv8ceePSvh48v5JZcDJ3uYCH3nJtHHbJFD3WvLCWGmx+NAfIz6B3SRe8KCdjjGGy
-         8HOJCPr7q/lTQbE11Hsw+x9YOSpwK07k9wW0tJRuVZwI/uT6195JMLCU+R7MEEf7Hv0U
-         QpCwrsof2LcfR/nmObkjKe3bxoShACIv9NoMXLQ2APQPvmlzVx7cASpCFYyJ8guPIC5P
-         cq6Pw1/JhNEkG5ft9/CIsGRK5ZSPqOrH6SNQRl2hlKIQ2SF5fBSOosq+lvd0wPqDvF7A
-         EnWQ==
+        d=google.com; s=20251104; t=1790200920; x=1790805720; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FfI6pOLVyMhdWWBgVl1aRFnTQKav9Gx6fgY4yEFrfL4=;
+        b=IlANmcmw1JU1vK7oYd47dVpH5TE/YIivNtMPgvhWwewMm03BHaANGNng5xoVoPRovO
+         8/9OoLSzkGt/mtciZFHinG+TBR+U/my2w2g70Q0IYoLWxyppRCXbngoPYTyEZ+R0sMjP
+         8cd2AxZ0CjdjQ5UG+XP1BvQG1P2Sy29nAUfekBZLHhwKSn/i9SkoaVJnOyX+8KHdAx0P
+         8XwdYz06vHf88v2l98/ZP7tgW/MZ1FIfDCcUIW5F85nquXLVTNexdAQKIZh0bMLj5mct
+         YE29UPag34lHQs8Iq+Qb8ssfKUi4/HnE1H0+4fkLNn2dBYLqHcleDg1oCltibUXE9GkF
+         3ptQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790200761; x=1790805561;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Qzbg0xrn+b4txPd4lT64CQhwFT+1jhOzwXJ+cMbTaZM=;
-        b=jJ39KbMdmRSvVrPtFChDjA/r7dG8V8K+sbjz1bv2qcINiRu8387sKgw5TePYPY/76O
-         QYikJxF07Ai1py+VhrfCFvjLtkJFATCn+/OxDkJWl9ni2DdFTudeByrN4+FHUA6uVEAz
-         fTD/7GThJdJiFWJgsVd5vKf1u66YbfU2qDS/YMcfprnBN2fgXxyIYCrbmU+RUiyJPj/o
-         s5Suvphay1OlstsDDrM14MSFop6TnsXdnmlkASjIIV0BmxSLjysaiB8N7mEqh7N/U2ae
-         fePxdl4elKyXZ7EMi0ef7ipNyl4PIYBcRvroAzxI4MKSW9brr2p5YhQYU3DMY+/8PH1n
-         k1og==
-X-Gm-Message-State: AFuF++nPWRDLOZ6tPJruzT6AHquxA7fT/o4g0uZQrj43ZffNpPDSEex8
-	ECVQeZxcjq5N3fF2Gxbj76hNQoNnGCt/GHbTURBwtmUoNDrUZ4eGj2rXxTSnWG2AHNeM7A==
-X-Gm-Gg: AYBFou09uXmxnkpIwOFWO+2g184+36Io2nKDyLCqnbTzRPxOkFbtHWRFLx5kBqCEeCG
-	LikZhOeMHu0vMnNx0D62/ndt1pQw8tURNIkNChunOxnVvB4bRkiOUUxDGzH8J6YX4nNZpuy3vCT
-	v84wJD8wR1NvvxbQuvClsF6jKS2FmuTAdAh1saH1H1Y8aWCCQsBUtc3Lr2qCs1dcSGvAMWaREAg
-	+zHXhZkwPnsIhVKe2kIrEPfkKJW+ZTjeWyZMWV6JXNQoUSPQ+BsJ2Y7OEGPZxpdBRlknELOvNF7
-	00PM3UNQKyKwpONhGLzyn/Qxh6+4f1RQ54IodZJ/AjFJzGgzzdB5msfD1Ld/JqPlaETxn+aw01L
-	Apblk2kefmXuYHJptPE2NKAVDzflfHZEyQ+HU9Sme3/lSwP31Rg0CWW5VnNFXvYeRaSypLjgXu1
-	CGHmRJU86dOWlyJnNyOWDBttv7/In91oM2oN25hH/k29V3iVa5MFSFYUewD9fYPzlU1gEMGA6HX
-	n3xs+NqQh15X7lHe6zGpI97dL3X30kTP7D+TydkfKsBwCAkKfIxH0kxBM5YC+gjOH1r31tuJYgJ
-	nlUifIMSaI5jjsxz6AMr5UqzNI5d6loZ5+9/mEAYdQ==
-X-Received: by 2002:a17:907:7288:b0:c26:19de:912d with SMTP id a640c23a62f3a-c2ac256dca9mr31793866b.32.1790200760647;
-        Wed, 23 Sep 2026 14:59:20 -0700 (PDT)
-Received: from localhost.localdomain (83-233-130-25.cust.bredband2.com. [83.233.130.25])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae6dcf0dsm197647666b.61.2026.09.23.14.59.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 14:59:19 -0700 (PDT)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	Ziyang Huang <hzyitc@outlook.com>
-Subject: [RFC PATCH net-next v3 5/5] net: phy: qca83xx: disable SmartSpeed before resetting CPU PHYs
-Date: Wed, 23 Sep 2026 23:58:57 +0200
-Message-ID: <20260923215858.1653-6-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.45.2.windows.1
-In-Reply-To: <20260923215858.1653-1-yongzhao.derek@gmail.com>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
+        d=1e100.net; s=20260707; t=1790200920; x=1790805720;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FfI6pOLVyMhdWWBgVl1aRFnTQKav9Gx6fgY4yEFrfL4=;
+        b=pC78KODLoifR+8Zf+F0wFOa+AWoCezDHNqAaTrSOYM2gcByRiPKo9fl0CfLh6KNRJo
+         65kDero+nukn3CkyzRQIwRkal+sr036RRwqAcYU7zGjAwIacSTqZ3jAJfEA9Uxj0hzel
+         tBPAWtGu7XH62rGXY+tQ22qoDRT7RdxqJaL/2jfRDznnHuOKq8Y9XIQhJtVb84jIv69/
+         xRALfiZJBjLQN4liyTzGcNkVaVPo1/MmACekAY2tLVywem0fnL6OKUEhBmRE4J568owm
+         iuaWktQ8QfsSyOhD6YB6O0qt66oDO9GK+5yPGWAQM2NSGamvHtTigCxcFIJ9n3NXTPXo
+         sYDA==
+X-Forwarded-Encrypted: i=1; AKwUvBzeFDvn8t5hnXkhJu80w75bZoKNZnujYAAPiam6ZgI5u5mxf356OPBlMAWXqj2Rcvp97QjJnAs=@vger.kernel.org
+X-Gm-Message-State: AFuF++k8Z4x82axCmQEzQ88n8tCAsh34MWCK5ulYAI8yDnv/tKZ4yeqY
+	90WS2pOw3BMu08QVqt9oMe/6duo8prOQUrYZ8g5/hrmRFtkPugZ6/2EtDtbRCuShc/Z4ujxADuv
+	xp+r6z+C9J9uI67WhlCzI2Z405LB2aB/BJ/+vzilh
+X-Gm-Gg: AYBFou2urSlO3vu61zI2iyEtBb9LNjMuPai4zR421vX2V7YCGEmTxy2XOCDtTQbnqgL
+	I08cv/e3asTuh3FdcsKCrTk1AQo+98mL4B4szyJWpzq8q+tjFHSlhB3f7lLrHLfbzPiCi5blIwb
+	/Xh9vG+vaYDLLB6tj/3Mevw0u+C+pE5vSw85UgFWIrn64a/Vxzm1gpTfp7x3LHZuY3S/3sxogSJ
+	YW37Ke9jTRNRB4HJeUmAZCo/fWJvDuE16E0aMbOKxlrZlr9gsoWNGDNBtWh262LYdSroRFihtjp
+	YDErGaURXI4rDbhfCR6UabjKxO30E8KpAqTT9nsgjCNVhPqPK6gBv4RsM0qcCMCMOpYX5magwMN
+	0Tj8M+gsqulSEf4DqBnodakOfeU7TEgb3tipysMD6vpWD2pRAegpYdMKwOccQDFLzW46gg8WEU9
+	/ndK+SIQYZL1URxCq30bUMrU+noOznGVi2E9F31A5OJpk=
+X-Received: by 2002:a05:701b:4254:10b0:13e:5c8f:ff87 with SMTP id
+ a92af1059eb24-14503fde871mr359786c88.23.1790200918799; Wed, 23 Sep 2026
+ 15:01:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260922122721.3568295-1-edumazet@google.com> <20260922122721.3568295-10-edumazet@google.com>
+In-Reply-To: <20260922122721.3568295-10-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 23 Sep 2026 15:01:47 -0700
+X-Gm-Features: AcwNN1XX7Bp4RXL6-2RL4GYzKxofidszLSs7wL9J9cjszmzLoC_ENtsq69MFP08
+Message-ID: <CAAVpQUAx=UqBz8w5F=_Ken87mJKmPpdsJUcA85w1dcDs=Dh4Ew@mail.gmail.com>
+Subject: Re: [PATCH net-next 9/9] tcp: add tp->tcp_nospace
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For flagged QCA8337 CPU PHYs, clear the SmartSpeed enable and
-bypass-timer bits before invoking genphy_soft_reset(). The register
-update preserves all other bits, and an MDIO read or write error
-prevents the reset. Reapply the clear prior to soft reset on system
-resume. Unflagged QCA8337 PHYs and QCA8327 retain their standard reset
-sequence.
+On Tue, Sep 22, 2026 at 5:27=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> tcp_check_space() runs for every incoming ACK and for every packet we
+> send, and reads SOCK_NOSPACE from sk->sk_socket->flags.
+>
+> struct socket lives in its own cache line, which the TCP fast paths do
+> not otherwise touch, so testing sk->sk_socket->flags pulls in an extra
+> cache line that is cold when the working set is large.
+>
+> Add tp->tcp_nospace, a mirror of SOCK_NOSPACE placed in the
+> tcp_sock_write_txrx group, that is in a cache line both the transmit
+> and the receive paths already have to touch.  It fits in an existing
+> hole, sizeof(struct tcp_sock) is unchanged.
+>
+> The two flags are now only changed from sk_set_nospace() and
+> sk_clear_nospace(), which maintain this invariant:
+>
+>         SOCK_NOSPACE set  =3D>  tp->tcp_nospace set
+>
+> tcp_check_space() can thus test tp->tcp_nospace alone and leave the
+> authoritative SOCK_NOSPACE test to __tcp_check_space().  The
+> invariant is one directional on purpose: a stale tp->tcp_nospace only
+> costs an extra call to __tcp_check_space(), which is what we do
+> unconditionally today, while a stale SOCK_NOSPACE would cost a
+> missed EPOLLOUT.
+>
+> Note the smp_mb() is kept.  tcp_poll() sets the flag without the
+> socket lock, and the store-buffer pattern it forms with
+> tcp_check_space() needs a full barrier on both sides.
+>
+> MPTCP subflows share the struct socket of their parent, hence its
+> SOCK_NOSPACE bit, which can not be mirrored in the subflow tcp_sock.
+> Pin their tp->tcp_nospace in subflow_ulp_init(), so that they always
+> reach __tcp_check_space() and keep the current behavior.
+>
+> Microbenchmark on an AMD EPYC 7B13, 64 threads, each thread calling
+> tcp_check_space() in a loop over a private set of sockets.  Numbers
+> are cycles per call above a baseline loop that performs the work the
+> callers already did (the cache lines tcp_write_xmit() and
+> tcp_clean_rtx_queue() touched) but not tcp_check_space() itself, so
+> they are the marginal cost of the function.  Median of 11 runs.
+> The set size controls whether struct socket is still cached:
+>
+>     sockets/thread      before   after
+>     1                     +0.6    +0.7
+>     256    (64 KB)        +8.3    +3.9
+>     4096   (1 MB)        +22.4    +1.1
+>     262144 (64 MB)       +48.4    -0.8
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-The quirk flag is set on phydev before phy_init_hw() calls soft_reset();
-config_init() executes after the reset completes, and generic
-config_aneg() remains in use. In the RA74 diagnostic trace, generic
-config_aneg() preserved CTRL1000 at 0x0600 and returned success, yet a
-later read returned 0x0400. The trace verified that no intervening
-writes occurred via the instrumented Clause 22 BMCR and CTRL1000 path,
-though it did not isolate the precise timing or cause of the change. A
-read value of 0x0400 reflects the advertised capability rather than an
-active negotiated link speed.
-
-Disabling SmartSpeed before the initial reset maintained a 1 Gb/s
-internal link during the tested RA74 boot sequence. The experiment did
-not establish a broken pair condition or a functional fallback to 100
-Mb/s. Board support for the RA74 is not included in this series.
-
-Link: https://github.com/openwrt/openwrt/issues/24696
-
-Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
-Assisted-by: LLM
----
- drivers/net/phy/qcom/qca83xx.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
-index 0f484cdfe..21ab015f6 100644
---- a/drivers/net/phy/qcom/qca83xx.c
-+++ b/drivers/net/phy/qcom/qca83xx.c
-@@ -91,6 +91,28 @@ static int qca83xx_probe(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int qca8337_disable_smartspeed(struct phy_device *phydev)
-+{
-+	if (!(phydev->dev_flags & QCA8K_DEVFLAGS_NO_SMARTSPEED))
-+		return 0;
-+
-+	/* SmartSpeed settings take effect at software reset. */
-+	return phy_clear_bits(phydev, AT803X_SMART_SPEED,
-+			      AT803X_SMART_SPEED_ENABLE |
-+			      AT803X_SMART_SPEED_BYPASS_TIMER);
-+}
-+
-+static int qca8337_soft_reset(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = qca8337_disable_smartspeed(phydev);
-+	if (ret)
-+		return ret;
-+
-+	return genphy_soft_reset(phydev);
-+}
-+
- static int qca83xx_config_init(struct phy_device *phydev)
- {
- 	u8 switch_revision;
-@@ -160,6 +182,11 @@ static int qca83xx_resume(struct phy_device *phydev)
- 	/* Reinit the port, reset values set by suspend */
- 	qca83xx_config_init(phydev);
- 
-+	/* Reapply the CPU PHY quirk before the resume reset. */
-+	ret = qca8337_disable_smartspeed(phydev);
-+	if (ret)
-+		return ret;
-+
- 	/* Reset the port on port resume */
- 	phy_set_bits(phydev, MII_BMCR, BMCR_RESET | BMCR_ANENABLE);
- 
-@@ -218,7 +245,7 @@ static struct phy_driver qca83xx_driver[] = {
- 	.probe			= qca83xx_probe,
- 	.flags			= PHY_IS_INTERNAL,
- 	.config_init		= qca83xx_config_init,
--	.soft_reset		= genphy_soft_reset,
-+	.soft_reset		= qca8337_soft_reset,
- 	.get_sset_count		= qca83xx_get_sset_count,
- 	.get_strings		= qca83xx_get_strings,
- 	.get_stats		= qca83xx_get_stats,
--- 
-2.43.0
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
