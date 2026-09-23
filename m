@@ -1,28 +1,28 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012019.outbound.protection.outlook.com [40.93.195.19])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011061.outbound.protection.outlook.com [52.101.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3223A49E5E0;
-	Wed, 23 Sep 2026 10:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22284A093D;
+	Wed, 23 Sep 2026 10:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790160086; cv=fail; b=mdKFGFx76tc+9rVg1GI7+C8L6R179MDmEHieslJDQz2vZYDqnRSvVvfuDec2YD/XNlCVWRNBglo2+uLyABF5X+qi1GR7k4DDLtxdi1jn1l9seBYJwpze+VB1xO25xDAd4S2bfLNJK8md6Bk7/Q8Hhpinn6A4ssTc5tiqmsKF9vM=
+	t=1790160092; cv=fail; b=eopVXw9xniAL+6+kvz7YqijlUWyZez8jrq1cAYqBM3z3lMVX9H10lPGv4JFLFyg2246yqbEJ0Y4GhJIIoLHHAQCIe/YSn3wjPAzbwhRD99g6H824BdWlor+cWq3ycH+HdjgyKoH8TFZ+6M9hdi8/MrgUWiU6nDgavUFlmhfkdIc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790160086; c=relaxed/simple;
-	bh=mRWQ7XwTOX3oeSiURMCdPOFcAl185E1YJquGxUw97vI=;
+	s=arc-20240116; t=1790160092; c=relaxed/simple;
+	bh=Ti5cNctTUYwX6QWQdeZrDrLxafslmYTaErRnRozxn64=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q48So6RsvuObNPCkq29JOaxyOf/TFwwl63unXw4jYSj+akqaNLG1DedATVH9ck5wWBA7QQPZsgyvEWAO34PKxTk1H3A4xMQxcW7XdqDES0G5jlURj6uFda+bi+xAMa3EViAz8n6vd3Gf9qSXHGVdD6ZyTyVojcIR3SathVi2lYk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=C5m+DOPB; arc=fail smtp.client-ip=40.93.195.19
+	 MIME-Version:Content-Type; b=ObtdgSGKbDdpZvmOMmt12nvS599LVEjI4/77Y/TLDRmJL92cpOpgfr3SNzs8vo37LtofpObebH4nVu6cL/zsAyDWkR4Bi9cK0BToXF68HcI1sEeuyHaQvJIELn/eCdYqeFzGVyaqzEOPLnTw/4PR5yrN2iwD1nMidyb0rJMblUE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BSFceCWd; arc=fail smtp.client-ip=52.101.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="C5m+DOPB"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BSFceCWd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j/n+E3n1l9NxvuKgOv4j8VlwYzDegumU1f39Vswp5g88NKJqYsBebPcUXKDtqeJkbkM9QvO9DKJnO/vVrGCMp8OJhovKVbnqAd8/vS/zYr2MoObhnRr35ELzvl6WJl0aL2+CkLtEcRTK0G+hEhuYOSwxrz09CljrQS8u3AgzrJRg8kHTPdp4iFmm8TbCxIZ/vXQzw2p8Qs4BHBYtNq/jbHtt9qkDdgpkvlv8/MDbLQ6a9f02vxFbHIqxLDBs4eHk9Xoyj5D1I+bH3HDbRqpN4QWSHSWiBG+8+oem2ovkr0TjbO0IxpY0suz0Y1aAD0fdYNXkviJ0K3HzrO3f6KI7hQ==
+ b=BZRqRxKZ3o1UPwB7VxmOXORjYxTGsZ/zaENQTcaJRhnByz9XXpQyIPc34ekvHA90shE1VjDbLJLjJVu2/g6OTq3QRECUz6deUXIoKcIFjStzC4EfTLCPvlSGH1/UhlO6DI7cXZxhdMrmOJPz58xA7D4FPVJJmG75YufAL4W5uI1FUJmpMZayM117nyyGNS/tWcqWYoZ4T/04snx/F7QKN3PUsfMXdXqUsCyZYxYd2Hh4LH0kpryWYJlvUZoGfONeft2mE2KdWm3GfAZJ/UFmGQKNPa3lrjg+HeKY0dRArR8WBPNyg7A1PAsNhE+PmneGntWweJZcIzawcvdZm2MYlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cXNrUYqZmq0ST+9278A4L7YU8vZCo27DZUwgY4QxpY4=;
- b=WqvuxwYHB1jmU0o4Jyh2kHyaS+GG5UHz6PhTeF2W3tp9FtGw+fOKo5aEq4YXQ8A2F7DXR8yyjpxo8LpNEXBclbSLIjtP3w/wmv9mL96O4PUFUscPHG4fMI/+cNTLYxUF32vKnwFZXt4upreIqM7H/7wLAR1YcIzMuLBPskvT07sN5xINQR/t4IxakPiIbZ0Bmg4mrlcpbP+Uoq8ZNGUNrJHTACbTqb+x9NJqXXCYqU9WWfEBvtmCyswdKQ+iC8vH8celF6qi6K1ycYEH5UPGfXKfKDU4e8DGtXUGyMCVqYANTaJ7JcP8nZGDesa9SnK5fu0r8VeLjCcQWUDzbKu6tw==
+ bh=n6a+hkVaRteaJfvQSavsNbKSNFA/vY23RfLYdPUV2fs=;
+ b=dYU6kGCDAgaNIQ571yRTgW3ViE5iTeVb4GbiEjKOtmKvYUKW1q7XH841MA2sGteg0IVtvOTJB0KwU0yFaiZje55JEAK7ctBzb2m8Rev8Z5C0WVCr2y19rwAS/uK6qlvb7C60DE2yO1oSwW/Iek/uZrsg4DmRoBGfIMIkn4i9NqKnJyB2JJNntYhiRQZFxc8TvDbSiMnTmCi8qzw/WhtxEv40iHkkYrAxl/az9ye0hPkWfSCAwwwOCBJiuJBY/WlWD6WSJb2VZDfKOroL7ZbI51gUp2T1Dk3+y3H/oyPYz8e76YLQJfHgLvmYW7CSsXBwXtNSzo5HJBp201IKaHD7yg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cXNrUYqZmq0ST+9278A4L7YU8vZCo27DZUwgY4QxpY4=;
- b=C5m+DOPBEsTRnpMhyBRGWQJ+stvmDct/uX8v5Pn/vqbxJW4JMk/nTEB8jSrpDejlsvAhzEmKSZ66EwWsHlo7R4Y8FU0jqAC9IM7uAvHakpyRydz+9hB8nLUPdWOJXIFVoDSANgFYkix5Ka9OJ6nQc+FsM15oKdlpl0GWmJ2aAGaTY1XgXIoAU4vwXF28o4kRg9HKlDtP2X8D/G2eXxFqZVjCn/rw0bIlIhFVsqyC2ms6b+fvK+qXE5fmPVr3IN1jmIRyyyOHjW16I56U4H9qTiqMK00owZyReDMMOM9Zyx6ZwfSVWdyC8Cm/im1M59p4u0s+n+iR7pLonChvuwq7+w==
-Received: from BN9PR03CA0505.namprd03.prod.outlook.com (2603:10b6:408:130::30)
- by IA1PR12MB7638.namprd12.prod.outlook.com (2603:10b6:208:426::9) with
+ bh=n6a+hkVaRteaJfvQSavsNbKSNFA/vY23RfLYdPUV2fs=;
+ b=BSFceCWdKgyuuFuPAUhHChc24vf++5EKhxZDbRa6W10ZlOVD0OXj4V8CO1E1anYn0dW27JegZ0Cz/IeNAtj6ZuL2x+PAkjxJiPspdqjc1M5BJFNTB5poYZhjzltzvguIZZr6OqroB7pVj/JvF6U8uU6rqv5Pv5tQq9thG58mXbEN8ZDjdaTO5OnDl83+TESs8sU7jMIwXy6bz/aLsh0G11P0nWRQgUsb7uEYvBmF2ncaFmQB1dy7CN8QHXmiTCcMKkE792Dw5GNMMpEJmvaUHAKgMAwDYKgjEMBF/3Nz9BoLuppW3SWbwn/oeBnFGm1THKXVR1cjFr8LYPvQSKVo8w==
+Received: from BN0PR07CA0030.namprd07.prod.outlook.com (2603:10b6:408:141::13)
+ by BL3PR12MB6594.namprd12.prod.outlook.com (2603:10b6:208:38d::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 10:40:49 +0000
-Received: from BN3PEPF00022BC9.namprd05.prod.outlook.com
- (2603:10b6:408:130:cafe::27) by BN9PR03CA0505.outlook.office365.com
- (2603:10b6:408:130::30) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 10:40:54 +0000
+Received: from BN3PEPF00022BC7.namprd05.prod.outlook.com
+ (2603:10b6:408:141:cafe::1) by BN0PR07CA0030.outlook.office365.com
+ (2603:10b6:408:141::13) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.14 via Frontend Transport; Wed,
- 23 Sep 2026 10:40:49 +0000
+ 23 Sep 2026 10:40:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,20 +49,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- BN3PEPF00022BC9.mail.protection.outlook.com (10.167.248.218) with Microsoft
+ BN3PEPF00022BC7.mail.protection.outlook.com (10.167.248.212) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Wed, 23 Sep 2026 10:40:49 +0000
+ 15.21.451.8 via Frontend Transport; Wed, 23 Sep 2026 10:40:53 +0000
 Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 23 Sep
- 2026 03:40:29 -0700
+ 2026 03:40:34 -0700
 Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
  (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 23 Sep
- 2026 03:40:29 -0700
+ 2026 03:40:34 -0700
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
  with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Wed, 23
- Sep 2026 03:40:24 -0700
+ Sep 2026 03:40:29 -0700
 From: Tariq Toukan <tariqt@nvidia.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
@@ -74,9 +74,9 @@ CC: Akiva Goldberger <agoldberger@nvidia.com>, Cosmin Ratiu
 	<moshe@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Saeed Mahameed
 	<saeedm@nvidia.com>, Shay Drory <shayd@nvidia.com>, Tariq Toukan
 	<tariqt@nvidia.com>
-Subject: [PATCH net-next 07/13] net/mlx5e: TC, anchor peer-flow reverse index on the duplicated flow
-Date: Wed, 23 Sep 2026 13:38:24 +0300
-Message-ID: <20260923103830.1183-8-tariqt@nvidia.com>
+Subject: [PATCH net-next 08/13] net/mlx5e: TC, track peer flows in a vhca_id xarray
+Date: Wed, 23 Sep 2026 13:38:25 +0300
+Message-ID: <20260923103830.1183-9-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20260923103830.1183-1-tariqt@nvidia.com>
 References: <20260923103830.1183-1-tariqt@nvidia.com>
@@ -91,200 +91,209 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC9:EE_|IA1PR12MB7638:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ddc0f5e-1089-4126-5d15-08df195f21f2
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC7:EE_|BL3PR12MB6594:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b763d84-78bb-4fdc-4efe-08df195f24c8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|23010399003|376014|1800799024|82310400026|36860700016|10067099003|56012099006|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	OyEX+V8gW17kXQCGuQQfANVgdyJgbZIlHABPZqY6Epv5+Lf+KM4vPkjJ57bQfszXh+t0+dEKnOkfEH+Ql9Kfw9/UNRtWZAPCA4G7JgNCa0kqcyW+pjxq7ZVGohncEuZUXG/bLYN1AzMUZ8Xri3mALFX0k/CTIJKQKoNrblKC/Pcg1RcARk5Gg4xh7R9wt9Wyr2hRudzT9TeDdB87Mso0VxU+aKZ4YR3t6aJjWWM7UjQF/I3/KJFmTF8iYJkkOM12cvs2XEVYmFUvGFdMhoP6OYaO9qsaLv2jyh45hq7CWyktnsjnzxRb9GxZ376E/fEs0ShT0TRFeoIOvlnDhEE4u5iS6DzRN0o17OMao018aXeZ/VGeHvS9AQxwaMTxqLrl4DqwtzFo67J8KE3SRbGcAN1ePNZ/qgB3uYoa3h10mOoLhoerw8+OP1OlOHKY9kiqekwAUBDDgsthS+b7/Ie1quei5iXQIKhIXO2w8CorOULOUtTYRH+30i74PrcKj2SqTl4dGkuirxeViYasNawh0uKoICkK8MznWPyVyaFBNAs1J3g6DR3jqzCXfY7wHfO/CFTeq8fdxc6uL1kfwCeh9O06+e5pikSco+OWQ6w4I/g2T8gJhDI7tuvzbes7bLsyYCIi01HV7Tg8wNXg4WrNbkhnP8PFBP4sDTPIQjXamL7TQhzJRiUQ3GsTQfOkRrKMDip2fApCO+JO/Sx09gIarw==
+	Fpr4EeaS1MCMxGYa2DCQQuhYIbBz8qv/T5NhHdIC5HoENA/kg7msol1ZOpsuigS3aQYb9AuS2zWX7NVh4yOcK84bJoyCYTV/7VpeWIOZ03+mc48UjKdDUGLWp6LczC03uFt8NdHMB4eaEDUDXY/2SFByE5ZiXo/A15zcyo4jpb/Rbs8tfvB7EkRqGrdxn/sxMqOT6SSPhEnsbfuIXeWdcgU573wA8eXtJxWfC+HFwdGSGWVdMV/E45q/HIMJudMbmBy5cmoVPfqdEgeCipItajIvdTyBARUQxj06sP6AjsGXu1QAlXL+9cRGwMUQOQvm3A+TV8ce5arnh53NiazOfFaArEAwXAAPS5OdLlDjl2qTeFZ6J+qOB4h2aZ1KuVGFzDiMTHQI1uDj5s01BwH/L0h9xZdSf5QZypBjux/MhzI0pP4SVHa5fy+p/uuXaBUBMUJHskKthLOcjNIu7X5fIXCwbnwMqnRgltv3WQmoHU+elbWJP30Ne1DIQMvphcUDL3YghpbYDdcJtN2/RIQm5Sm5dqtmPkWvin6XvnVEv4IvA42fQpuZzj9ZxVclJiivYBmgCCPH1uaGYQ+2uIUV7ufnZFhH28okessahFAtEFPSvnjIaexw1oyXJbE5YohOheTORDMc9+h/+5yVhxOlbfuml4eu7v1RTCwjWcpayjqrmXLVFnu17JqK9bitFAFnHpAcvMBMRJ/0am0hTh08Fw==
 X-Forefront-Antispam-Report:
 	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	v0dL5KulHoyW64Mkain+n4WSb+xw1m0DPrYUS/rDLb76nYcLETpr9jO2CWcUzMBQHFPCCmBdMIAYvZUSVl198XGZ5qtOy7YPBT+WHWnNo7z7MjL18dyJ6R0B2l+gC8PsBfjeOVdRXmYtbOEdvVVqn6hprU3SDFxJgcSMF68cqNiPmiaeynQosp2+nsGw/HVXJ+t0YqgnoiH/SUx+mBELU6t2cT12PEmOhPTP5OAX+x8jU8tSfswN6dG8gijHZATwkqMGv6UUh+SUVCZ/xJ7kGXN0CtcsQ4oz2G6ul96seVuLF0//on0HwlfHC/UxL4yna0nssySdG0bpwCg9TqhXhevTjjFtlA36kcIkHFLBUQ+vxjo5MhdC2hxAfyTb3X0Yr+w0NStgi+98Pk4PD+JhWNbv/rzq5nM8A8X/9f+31o89PGb1RYAzYQIDMcS8nGzN
+	ouapHfzDcSfAjzre65hn3t+cnnWl5G9JBNqS+hugF5B/LXzLKzWhu6F7TNjuo9jSgF7hPJ6PsJjBastTccGtxYHTAyhSn16LtrubMTPa+BFTMJs6TGcxzytJvK2FnXFkSzVzEOzVu6P6c0U36m8pC6d4V4R2eRaShbxJkGmwjGazInpUxs8qN8/qH/9HwAhpoi2myZYx6hRi+iuuh+8zH3zWZTh3BhhJhPClizYgmT47kTmY5eRc54IlFyWRPPJhQ4qV/RiTQzOSxcPdxHd7meqeYqL8pusGyjni5rYcuKbDFY8FRPXx4cnPeUNT1NuJNAfdqmVJTSo6He/JIdY0xJ9zbTK/8QwJXopfNdn9XFqYm4/tU4gq0hLjAdAHthtBN2dX2F123UapHDXXrWk04khK8eAe4GUJ+ijmJcBqqXaN4TjAFLVXVIs5E43LIV0m
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 10:40:49.0146
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 10:40:53.7764
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ddc0f5e-1089-4126-5d15-08df195f21f2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b763d84-78bb-4fdc-4efe-08df195f24c8
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BC9.namprd05.prod.outlook.com
+	BN3PEPF00022BC7.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7638
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6594
 
 From: Shay Drory <shayd@nvidia.com>
 
-A TC eswitch flow offloaded to a shared FDB is duplicated onto every
-peer eswitch. Besides the forward list of duplicates on the origin flow
-(mlx5e_tc_flow.peer_flows), the eswitch keeps a reverse index,
-esw->offloads.peer_flows[], an array of per-peer list heads keyed by the
-peer's LAG sequence number, used to tear down a peer's duplicates when
-it is removed.
+The per-peer reverse index lived in a fixed esw->offloads.peer_flows[]
+array of list heads indexed by the peer's LAG sequence number, capping a
+shared FDB at MLX5_MAX_PORTS members.
 
-That reverse index was anchored on the origin: since one origin can have
-a duplicate on every peer, the origin carried per-peer storage sized to
-the max port count - a peer[MLX5_MAX_PORTS] array of list nodes plus a
-peer_used bitmap - and each duplicate stored its peer_index.
+Replace the array with an xarray keyed by the peer vhca_id. Each entry
+is a heap-allocated list head that chains the flows duplicated to that
+peer via their peer node. This lifts the MLX5_MAX_PORTS cap: the number
+of peers is bounded only by the number of distinct vhca_ids.
 
-Anchor it on the duplicate instead, which belongs to a single peer. Give
-each flow one list node, mlx5e_tc_flow.peer, and place the duplicate -
-not the origin - on its peer's list through it; add a peer_orig back-ref
-so del can reach the origin from the duplicate. One node then replaces
-the origin's per-peer array, and del unlinks the duplicate directly, so
-peer[], peer_used and peer_index are dropped.
+The lifetime of the duplicated peer flows list_head follows the devcom
+pairing of the two eswitches:
+  - pair   (mlx5_esw_offloads_pair): kzalloc_obj + INIT_LIST_HEAD +
+	   xa_store the dup_peer_flows under the peer's vhca_id.
+  - add    (mlx5e_tc_add_fdb_peer_flow): xa_load the dup_peer_flows and
+	   list_add the duplicated flow's peer node.
+  - del    (mlx5e_tc_del_fdb_peer_flow): list_del that node.
+  - flush  (mlx5e_tc_clean_fdb_peer_flows): xa_for_each dup_peer_flows,
+	   drop every duplicated flow on it; called from unpair.
+  - unpair (mlx5_esw_offloads_unpair):  xa_erase + kfree the
+	   dup_peer_flows.
 
-The per-peer list heads remain the fixed esw->offloads.peer_flows[]
-array keyed by the LAG sequence number - that array is replaced in the
-next patch.  No functional change.
+So a dup_peer_flows is created when the local eswitch pairs with a peer
+over devcom and freed when they unpair.
+
+No functional change.
 
 Signed-off-by: Shay Drory <shayd@nvidia.com>
 Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
 Reviewed-by: Akiva Goldberger <agoldberger@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../ethernet/mellanox/mlx5/core/en/tc_priv.h  | 14 ++---
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 59 ++++++++-----------
- 2 files changed, 29 insertions(+), 44 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 22 +++++++---------
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  2 +-
+ .../mellanox/mlx5/core/eswitch_offloads.c     | 26 ++++++++++++++++---
+ 3 files changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_priv.h b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_priv.h
-index 7bfe7cdc5770..1ceebab4ce08 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_priv.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_priv.h
-@@ -97,18 +97,14 @@ struct mlx5e_tc_flow {
- 	struct encap_flow_item encaps[MLX5_MAX_FLOW_FWD_VPORTS];
- 	struct mlx5e_hairpin_entry *hpe; /* attached hairpin instance */
- 	struct list_head hairpin; /* flows sharing the same hairpin */
--	struct list_head peer[MLX5_MAX_PORTS];    /* flows with peer flow */
--	DECLARE_BITMAP(peer_used, MLX5_MAX_PORTS); /* tracks populated peer
--						    * slots
--						    */
-+	struct list_head peer; /* dup: node in origin esw's peer_flows */
- 	struct list_head unready; /* flows not ready to be offloaded (e.g
- 				   * due to missing route)
- 				   */
--	struct list_head peer_flows; /* flows on peer */
--	int peer_index; /* peer-flow index pinned at add time, used at del
--			 * time so removal is independent of LAG state
--			 * changes between add and del.
--			 */
-+
-+	/* origin: its dups; dup: node on that list */
-+	struct list_head peer_flows;
-+	struct mlx5e_tc_flow *peer_orig; /* dup: back-ref to origin flow */
- 	struct net_device *orig_dev; /* netdev adding flow first */
- 	int tmp_entry_index;
- 	struct list_head tmp_list; /* temporary flow list used by neigh update */
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index b290beb4369a..fae4f8625da4 100644
+index fae4f8625da4..c99e824b4c6d 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -2116,43 +2116,35 @@ void mlx5e_put_flow_list(struct mlx5e_priv *priv, struct list_head *flow_list)
- 		mlx5e_flow_put(priv, flow);
- }
- 
--static void mlx5e_tc_del_fdb_peer_flow(struct mlx5e_tc_flow *flow,
--				       int peer_index)
-+static void mlx5e_tc_del_fdb_peer_flow(struct mlx5e_tc_flow *peer_flow)
+@@ -4596,12 +4596,13 @@ static int mlx5e_tc_add_fdb_peer_flow(struct flow_cls_offload *f,
+ 				      unsigned long flow_flags,
+ 				      struct mlx5_eswitch *peer_esw)
  {
--	struct mlx5_eswitch *esw = flow->priv->mdev->priv.eswitch;
--	struct mlx5e_tc_flow *peer_flow;
--	struct mlx5e_tc_flow *tmp;
--
--	if (!flow_flag_test(flow, ESWITCH) ||
--	    !flow_flag_test(flow, DUP))
--		return;
-+	struct mlx5e_tc_flow *flow = peer_flow->peer_orig;
-+	struct mlx5_eswitch *esw;
- 
-+	esw = flow->priv->mdev->priv.eswitch;
- 	mutex_lock(&esw->offloads.peer_mutex);
--	list_del(&flow->peer[peer_index]);
--	clear_bit(peer_index, flow->peer_used);
-+	list_del(&peer_flow->peer);
- 	mutex_unlock(&esw->offloads.peer_mutex);
- 
--	list_for_each_entry_safe(peer_flow, tmp, &flow->peer_flows, peer_flows) {
--		if (peer_index != peer_flow->peer_index)
--			continue;
--
--		list_del(&peer_flow->peer_flows);
--		if (refcount_dec_and_test(&peer_flow->refcnt)) {
--			mlx5e_tc_del_fdb_flow(peer_flow->priv, peer_flow);
--			kfree(peer_flow);
--		}
--	}
--
-+	list_del(&peer_flow->peer_flows);
- 	if (list_empty(&flow->peer_flows))
- 		flow_flag_clear(flow, DUP);
-+
-+	if (refcount_dec_and_test(&peer_flow->refcnt)) {
-+		mlx5e_tc_del_fdb_flow(peer_flow->priv, peer_flow);
-+		kfree(peer_flow);
-+	}
- }
- 
- static void mlx5e_tc_del_fdb_peers_flow(struct mlx5e_tc_flow *flow)
- {
--	int i;
-+	struct mlx5e_tc_flow *peer_flow, *tmp;
- 
--	for_each_set_bit(i, flow->peer_used, MLX5_MAX_PORTS)
--		mlx5e_tc_del_fdb_peer_flow(flow, i);
-+	if (!flow_flag_test(flow, ESWITCH) || !flow_flag_test(flow, DUP))
-+		return;
-+
-+	list_for_each_entry_safe(peer_flow, tmp, &flow->peer_flows, peer_flows)
-+		mlx5e_tc_del_fdb_peer_flow(peer_flow);
- }
- 
- static void mlx5e_tc_del_flow(struct mlx5e_priv *priv,
-@@ -4639,12 +4631,11 @@ static int mlx5e_tc_add_fdb_peer_flow(struct flow_cls_offload *f,
- 		goto out;
- 	}
- 
--	peer_flow->peer_index = i;
-+	peer_flow->peer_orig = flow;
++	u16 peer_vhca_id = MLX5_CAP_GEN(peer_esw->dev, vhca_id);
+ 	struct mlx5e_priv *priv = flow->priv, *peer_priv;
+ 	struct mlx5_eswitch *esw = priv->mdev->priv.eswitch;
+ 	struct mlx5_esw_flow_attr *attr = flow->attr->esw_attr;
+ 	struct mlx5e_tc_flow_parse_attr *parse_attr;
+-	int i = mlx5_lag_get_dev_seq(peer_esw->dev);
+ 	struct mlx5e_rep_priv *peer_urpriv;
++	struct list_head *dup_peer_flows;
+ 	struct mlx5e_tc_flow *peer_flow;
+ 	struct mlx5_core_dev *in_mdev;
+ 	int err = 0;
+@@ -4634,8 +4635,11 @@ static int mlx5e_tc_add_fdb_peer_flow(struct flow_cls_offload *f,
+ 	peer_flow->peer_orig = flow;
  	list_add_tail(&peer_flow->peer_flows, &flow->peer_flows);
  	flow_flag_set(flow, DUP);
++	dup_peer_flows = xa_load(&esw->offloads.peer_flows, peer_vhca_id);
++	if (!dup_peer_flows)
++		return -ENODEV;
  	mutex_lock(&esw->offloads.peer_mutex);
--	list_add_tail(&flow->peer[i], &esw->offloads.peer_flows[i]);
--	set_bit(i, flow->peer_used);
-+	list_add_tail(&peer_flow->peer, &esw->offloads.peer_flows[i]);
+-	list_add_tail(&peer_flow->peer, &esw->offloads.peer_flows[i]);
++	list_add_tail(&peer_flow->peer, dup_peer_flows);
  	mutex_unlock(&esw->offloads.peer_mutex);
  
  out:
-@@ -5539,21 +5530,19 @@ int mlx5e_tc_num_filters(struct mlx5e_priv *priv, unsigned long flags)
+@@ -5530,20 +5534,14 @@ int mlx5e_tc_num_filters(struct mlx5e_priv *priv, unsigned long flags)
  
  void mlx5e_tc_clean_fdb_peer_flows(struct mlx5_eswitch *esw)
  {
--	struct mlx5_devcom_comp_dev *devcom;
--	struct mlx5_devcom_comp_dev *pos;
--	struct mlx5e_tc_flow *flow, *tmp;
-+	struct mlx5_devcom_comp_dev *devcom = esw->devcom, *pos;
-+	struct mlx5e_tc_flow *peer_flow, *tmp_peer_flow;
- 	struct mlx5_eswitch *peer_esw;
- 	int i;
- 
--	devcom = esw->devcom;
+-	struct mlx5_devcom_comp_dev *devcom = esw->devcom, *pos;
+ 	struct mlx5e_tc_flow *peer_flow, *tmp_peer_flow;
+-	struct mlx5_eswitch *peer_esw;
+-	int i;
 -
- 	mlx5_devcom_for_each_peer_entry(devcom, peer_esw, pos) {
- 		i = mlx5_lag_get_dev_seq(peer_esw->dev);
- 		if (i < 0)
- 			continue;
+-	mlx5_devcom_for_each_peer_entry(devcom, peer_esw, pos) {
+-		i = mlx5_lag_get_dev_seq(peer_esw->dev);
+-		if (i < 0)
+-			continue;
++	struct list_head *dup_peer_flows;
++	unsigned long index;
  
--		list_for_each_entry_safe(flow, tmp, &esw->offloads.peer_flows[i], peer[i])
--			mlx5e_tc_del_fdb_peers_flow(flow);
-+		list_for_each_entry_safe(peer_flow, tmp_peer_flow,
-+					 &esw->offloads.peer_flows[i], peer)
-+			mlx5e_tc_del_fdb_peer_flow(peer_flow);
- 	}
++	xa_for_each(&esw->offloads.peer_flows, index, dup_peer_flows)
+ 		list_for_each_entry_safe(peer_flow, tmp_peer_flow,
+-					 &esw->offloads.peer_flows[i], peer)
++					 dup_peer_flows, peer)
+ 			mlx5e_tc_del_fdb_peer_flow(peer_flow);
+-	}
  }
  
+ void mlx5e_tc_reoffload_flows_work(struct work_struct *work)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index 8b1f93b13ea9..e9cbcd73b23f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -319,7 +319,7 @@ struct mlx5_esw_offload {
+ 	struct mlx5_flow_handle *vport_rx_drop_rule;
+ 	struct mlx5_flow_table *ft_ipsec_tx_pol;
+ 	struct xarray vport_reps;
+-	struct list_head peer_flows[MLX5_MAX_PORTS];
++	struct xarray peer_flows;
+ 	struct mutex peer_mutex;
+ 	struct mutex encap_tbl_lock; /* protects encap_tbl */
+ 	DECLARE_HASHTABLE(encap_tbl, 8);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index e7d92d9bde16..c712848b202d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3383,10 +3383,15 @@ static void mlx5_esw_offloads_rep_event_unpair(struct mlx5_eswitch *esw,
+ static void mlx5_esw_offloads_unpair(struct mlx5_eswitch *esw,
+ 				     struct mlx5_eswitch *peer_esw)
+ {
++	struct list_head *dup_peer_flows;
++
+ #if IS_ENABLED(CONFIG_MLX5_CLS_ACT)
+ 	mlx5e_tc_clean_fdb_peer_flows(esw);
+ #endif
+ 	mlx5_esw_offloads_rep_event_unpair(esw, peer_esw);
++	dup_peer_flows = xa_erase(&esw->offloads.peer_flows,
++				  MLX5_CAP_GEN(peer_esw->dev, vhca_id));
++	kfree(dup_peer_flows);
+ 	esw_del_fdb_peer_miss_rules(esw, peer_esw->dev);
+ }
+ 
+@@ -3394,6 +3399,7 @@ static int mlx5_esw_offloads_pair(struct mlx5_eswitch *esw,
+ 				  struct mlx5_eswitch *peer_esw)
+ {
+ 	const struct mlx5_eswitch_rep_ops *ops;
++	struct list_head *dup_peer_flows;
+ 	struct mlx5_eswitch_rep *rep;
+ 	unsigned long i;
+ 	u8 rep_type;
+@@ -3403,6 +3409,20 @@ static int mlx5_esw_offloads_pair(struct mlx5_eswitch *esw,
+ 	if (err)
+ 		return err;
+ 
++	dup_peer_flows = kzalloc_obj(*dup_peer_flows);
++	if (!dup_peer_flows) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++	INIT_LIST_HEAD(dup_peer_flows);
++	err = xa_err(xa_store(&esw->offloads.peer_flows,
++			      MLX5_CAP_GEN(peer_esw->dev, vhca_id),
++			      dup_peer_flows, GFP_KERNEL));
++	if (err) {
++		kfree(dup_peer_flows);
++		goto err_out;
++	}
++
+ 	mlx5_esw_for_each_rep(esw, i, rep) {
+ 		for (rep_type = 0; rep_type < NUM_REP_TYPES; rep_type++) {
+ 			ops = esw->offloads.rep_ops[rep_type];
+@@ -3549,10 +3569,8 @@ void mlx5_esw_offloads_devcom_init(struct mlx5_eswitch *esw,
+ 				   const struct mlx5_devcom_match_attr *attr)
+ {
+ 	int err;
+-	int i;
+ 
+-	for (i = 0; i < MLX5_MAX_PORTS; i++)
+-		INIT_LIST_HEAD(&esw->offloads.peer_flows[i]);
++	xa_init(&esw->offloads.peer_flows);
+ 	mutex_init(&esw->offloads.peer_mutex);
+ 
+ 	if (!MLX5_CAP_ESW(esw->dev, merged_eswitch))
+@@ -3595,6 +3613,8 @@ void mlx5_esw_offloads_devcom_cleanup(struct mlx5_eswitch *esw)
+ 	xa_destroy(&esw->paired);
+ 	xa_destroy(&esw->fdb_table.offloads.peer_miss_rules);
+ 	esw->devcom = NULL;
++	WARN_ON_ONCE(!xa_empty(&esw->offloads.peer_flows));
++	xa_destroy(&esw->offloads.peer_flows);
+ }
+ 
+ bool mlx5_esw_offloads_devcom_is_ready(struct mlx5_eswitch *esw)
 -- 
 2.44.0
 
