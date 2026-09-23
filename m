@@ -1,199 +1,128 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FF83D75AD;
-	Wed, 23 Sep 2026 06:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102FB429024
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 06:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790146295; cv=none; b=Khtzxv+/9rBk40f4pxevh5oVxGuA6lmGhVBkIDi/5K5nB7UMiIcnMyKvr0CVOPF9WbXovARAN5VrXzN2qXfsDmJkn0SFq298gODObfoRyAwAHcACAVhuiB3yvS+Jx//rtIdtKizUavOUn1YnDm4n/wP74DVNIjyYWWWCoHLOHvI=
+	t=1790146363; cv=none; b=Sfc9xuqPfABav0wP/GniWft8Y4sMhdZkXXdnT/wEpW1susVPYz3Lxfe3YTpIKmi+KlQ1pcbZisIvixvBaLh/172l+w9lfEweXoj//hc04DP5BqRuybwgs6o0fxwVLVEWTzLNjguJ1ZLx6PQIWlSGSJc/IUEmnUKnodu1MwrWNEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790146295; c=relaxed/simple;
-	bh=sY4kqUXjV43Z3lxOaoU7+ZK8mTamB5s+/oHuwIJGLg0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RDl6c4rtPGeAnq/wEtmBU5IkgJLAcXO2ZbCcKe4iykpSQGLCSeXb88csVw2GaVLcDzKREHqCKPZKsYKoS2BsFRMGdGElvMteh9dZoYZPDomlm5aet2YUI3Ebii6En43OXQaD/JEa8JBRWSzk4+STOVJUKNEtUYnuoYN7dM9UY+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qXMkOKo7; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790146363; c=relaxed/simple;
+	bh=1NhVw1L5Qcugjlu5RdWfsKxHx3S0sohBro3S9A8vd4Y=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AlcUYWk5WbFMT6gNrFkuxicZBfg8TguZVCuBp1nKcvZhXoBWni6jO3LWxPYoRHG7KjIkO/fBJtjiZ02mMdClUQlg8Gtgf2afwGiaDV+YVmiKreCg18WSCJ4W5tva+yfvuMiEgR7rryPya7iLVqs4Ete7M6rquupASVqAolzHhpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=T+X2ZV+D; arc=none smtp.client-ip=141.95.128.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qXMkOKo7"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id CBE864E41043;
-	Wed, 23 Sep 2026 06:51:26 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9502260580;
-	Wed, 23 Sep 2026 06:51:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C05F510329298;
-	Wed, 23 Sep 2026 08:51:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790146285; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=pUaLIn+oOf0tZ8toMwBTWM8tTKttxaPOWSyDwEVvWuQ=;
-	b=qXMkOKo7SEpYgYtiAU6qu2AmvSM8wBSZsGKhG4UVi9nkUai6K5QQK7ndEU93BPtPIPMrML
-	2h0rJpQQPj2aIb3goOnTanHedJ9AorqcB0bcq9a52xVcHa2YDwveIaNXlV4la7zf5LzcqC
-	q+kjqDEt4sUNAQlRW0EXunL+m/Q+eOVjGp2VhsGPhkhxL0LY3XCbGd9lHnlxhUM28DY6Jj
-	2bmuX6T5tKlmVyhT8Fj4ffGt7+A8905rsuaFTw/vw0Tgrv1nKoTYA7ur1bJDHaYlfYX2ms
-	HJqXYm/Kc1WLy7F2gkld5xwYeVLi83l5rkSRdJOMoO/Oll3VeIW3vpaKOgbCdQ==
-Message-ID: <c1cde6b7-5883-4dbc-87e9-d7b86f727ba7@bootlin.com>
-Date: Wed, 23 Sep 2026 08:51:19 +0200
+	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="T+X2ZV+D"
+Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
+ S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 23 Sep 2026 08:52:27 +0200
+Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
+ S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
+ 15.02.2562.049; Wed, 23 Sep 2026 08:52:27 +0200
+From: Julien Blanc <julien.blanc@sprinte.eu>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>
+Subject: [PATCH net-next v5] Add config phase for dp83td510e phy
+Thread-Topic: [PATCH net-next v5] Add config phase for dp83td510e phy
+Thread-Index: AQHdSygYN6nNiWAG80qFHEx/wNe0eQ==
+Date: Wed, 23 Sep 2026 06:52:26 +0000
+Message-ID: <30be27333dbf1a83efbe20e7b07acc6290805d65.camel@sprinte.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <548BECB784BDB64895A096CF671CBD47@EX793143.lan>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: dsa: microchip: save the periodic output
- request
-To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, richardcochran@gmail.com, ceggers@arri.de,
- arun.ramadoss@microchip.com, pascal.eberhard@se.com,
- miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260917-fix-perout-v2-1-d8acf3eea6f7@bootlin.com>
- <178998077822.2160803.3867886756893254872@kernel.org>
- <635cfefd-c588-4b3f-bbc4-1cf11ef0a2c5@bootlin.com>
- <99bcc883-1cbb-46f9-9283-cd03e5efafe7@redhat.com>
-Content-Language: en-US
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-In-Reply-To: <99bcc883-1cbb-46f9-9283-cd03e5efafe7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
+ c=relaxed/relaxed; t=1790146347; h=from:to:subject:date;
+ bh=1NhVw1L5Qcugjlu5RdWfsKxHx3S0sohBro3S9A8vd4Y=;
+ b=T+X2ZV+DsXnUUnshI5omUZorOvE1lb0PpFGl/f4NXhTTh79P2JXqWir4k11ucR/Jlj1dG1fjPXqKM6c2N4IrBmjtIlDQvqaot2mR51wny/HfFdvKwpmY7ea8DgIaryQanJa0jizTXbWFi0cam3QL0reCVZ0JdNJqCuuE5ya0MNhL32Hmo3LZ60MfQbO7fgXflCRxWoXabYOIWehNqWw5aNr13RQPpv2+bZeSUtqP7IwFn1IvxcvbhCMAXyZjgQr++08/hNH7xVEOftS7tmA51tpDc/He7qAruW2GhPY99yg4sfd2L+3lTJ2iBbMbQPtujr99yUXPC3fCU5+8eINdQA==
 
-Hi Paolo,
-
-On 9/22/26 12:01 PM, Paolo Abeni wrote:
-> On 9/22/26 08:32, Bastien Curutchet wrote:
->> On 9/21/26 10:52 AM, netdev-bot+sashiko@kernel.org wrote:
->>> Thank you for your contribution! Sashiko AI review found 2 potential
->>> issue(s) to consider.
->>>
->>> Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 0 (1)
->>>
->>> If you believe none of the issues are legitimate, please reply to each
->>> issue of Medium severity or higher and explain why the AI is wrong.
->>> If any of them are legitimate and you plan to respin, please let 
->>> patchwork
->>> know by including "pw-bot: cr" as a separate line at the end of your 
->>> reply
->>> (one such reply per series is enough).
->>>
->>> - [High] ksz_ptp_enable_perout()
->>>    (drivers/net/dsa/microchip/ksz_ptp.c:226) commits the caller- 
->>> supplied…
->>> - [Medium] The commit message states that 'if a flag was set in the
->>>    request that triggered the periodic output, it is lost when the 
->>> output…
->>>
->>> Pre-existing issues:
->>> - [High] A non-canonical but ABI-accepted period whose timespec64
->>>    conversion is zero (e.g. period.sec = -1, period.nsec = 1000000000;…
->>> - [High] In ksz_ptp_restart_perout()
->>>    (drivers/net/dsa/microchip/ksz_ptp.c) the elapsed-period quotient is…
->>> - [Medium] The device exposes three trigger output units (caps.n_per_out
->>>    = 3 at drivers/net/dsa/microchip/ksz_ptp.c:1056, PTP_TOU_INDEX =…
->>> - [Medium] ksz_ptp_enable_perout() resolves the output pin with
->>>    ptp_find_pin() (drivers/net/dsa/microchip/ksz_ptp.c:206).
->>> - [Low] ksz_ptp_tou_reset() (drivers/net/dsa/microchip/ksz_ptp.c:66-86)
->>>    assigns the result of the TRIG_RESET read-modify-write to 'ret' at…
->>>
->>> -- 
->>>
->>> net: dsa: microchip: save the periodic output request
->>>
->>> The patch replaces the two stored timespec64 values 
->>> (perout_target_time_first
->>> and perout_period) in struct ksz_ptp_data with a copy of the full
->>> ptp_perout_request, so that the index and flags survive a perout 
->>> restart.
->>> ksz_ptp_restart_perout() now replays the saved request with only the 
->>> start
->>> time recomputed.
->>>
->>> A few questions below.
->>>
->>>>      When a periodic output is initialized, only the start and the 
->>>> period are
->>>>      stored, not the flags nor the pin index. So when the periodic 
->>>> output is
->>>>      restarted, the request flags and index are always set to 0. So 
->>>> if a pin
->>>>      other than the first one was used, or if a flag was set in the 
->>>> request
->>>>      that triggered the periodic output, it is lost when the output is
->>>>      restarted.
->>>
->>> [Severity: Medium]
->>> Can request->flags ever be non-zero in this driver?
->>>
->>> ksz_ptp_clock_register() sets caps.n_pins, caps.n_per_out and the 
->>> callbacks,
->>> but never sets caps.supported_perout_flags, and caps lives in the zeroed
->>> struct ksz_device, so the mask stays 0. The core rejects any flag 
->>> that is not
->>> advertised before it calls the driver:
->>>
->>> drivers/ptp/ptp_chardev.c:ptp_perout_request() {
->>>     ...
->>>     if (perout->flags & ~ops->supported_perout_flags)
->>>         return -EOPNOTSUPP;
->>>     ...
->>>     return ops->enable(ops, &req, perout->period.sec || perout- 
->>> >period.nsec);
->>> }
->>>
->>
->> This check is 'fairly' recent, it was added by d9f3e9ecc456 ("net: 
->> ptp: introduce .supported_perout_flags to ptp_clock_info") (v6.15). I 
->> experienced the reset issue on a v6.12 kernel.
->>
->> Even if it can't happen right now, as soon as this driver registers 
->> any new flag, the bug will come back.
->>
->>
->>
->> All others comments are already existing issues that can be fixed 
->> independently from this patch so I don't plan to address them right now.
-> This one:
-> 
-> """
-> Should the request be committed to ptp_data->perout_request only after 
-> it has
-> been validated and the hardware has actually been programmed?
-> [...]
-> 
-> There is also a period that this check rejects but the memcpy has already
-> stored: period.sec = 4, period.nsec = 294967296 gives 0x100000000 ns, and
-> TRIG_CYCLE_WIDTH_M is GENMASK(31, 0), so the request returns -EINVAL. On 
-> the
-> next clock step, ksz_ptp_restart_perout() feeds that value to
-> div_u64(now_ns - first_ns, period_ns), whose divisor parameter is u32, 
-> so the
-> divisor truncates to 0. Is that a divide error in process context with
-> ptp_data->lock held?
-> """
-> 
-> Looks new to me, and bad.
-> 
-
-I agree it is bad but it's not new IMO. In the current behavior, the 
-period and target time are already stored before the request being 
-validated. This patch only stores the rest of the request with them.
-
-I'll still send a v3 storing the request at the end of the 
-perout_enable() so both issues get fixed at once.
-
-> Also if the issue you are observing on an older kernel is already fixed in
-> the vanilla tree, I suggest instead sending to stable the relevant change.
-> 
-The issue isn't fixed in the vanilla tree, it's only hidden by the fact 
-that the driver doesn't register the flags it supports in 
-.supported_perout_flags.
-And only the flag issue is hidden, the index still gets wrongly set to 0 
-on restart.
-
-
-Best regards,
-Bastien
+QWRkIGEgY29uZmlnIHBoYXNlIGZvciB0aGUgVGV4YXMgSW5zdHJ1bWVudHMgRFA4M1RENTEwRSBl
+dGhlbmV0IFBIWQ0KDQpUaGUgY29uZmlnIHBoYXNlIGN1cnJlbnRseSBzZXRzIHRoZSBmb2xsb3dp
+bmcgcHJvcGVydGllcyBmcm9tIHRoZQ0KZGV2aWNlIHRyZWU6DQogICogUk1JSSAvIFJHTUlJIG1v
+ZGUgKG5vdGUgOiBSTUlJIG1hc3RlciAvIHNsYXZlIGNhbiBvbmx5IGJlIHNldA0KICAgIGJ5IHN0
+cmFwcyBhbmQgY2Fubm90IGJlIGNoYW5nZWQgYXQgcnVudGltZSkNCiAgKiBSR01JSSBkZWxheXMu
+IFRoZXNlIGRlbGF5cyBjYW4gYmUgZW5hYmxlZCBvbiB0aGUgcGh5IHNpZGUsIG9ubHkNCiAgICBh
+cyBhIGJvb2xlYW4uIERlbGF5cyBhcmUgZW5hYmxlZCBpZiBwaHktbW9kZSBpcyByZ21paS1pZCwg
+b3INCiAgICByZ21paS1bcnh8dHhdaWQgd2hpY2ggZW5hYmxlcyBvbmx5IHRoZSBjb3JyZXNwb25k
+aW5nIGRlbGF5Lg0KICAqIEluIGNhc2UgYW5vdGhlciBtb2RlIGlzIGVuY291bnRlcmVkLCBkbyBu
+b3RoaW5nIGFuZCByZXR1cm4NCiAgICBzdWNjZXNzIChrZWVwIG9sZCBiZWhhdmlvcikNCg0KU2ln
+bmVkLW9mZi1ieTogSnVsaWVuIEJsYW5jIDxqdWxpZW4uYmxhbmNAc3ByaW50ZS5ldT4NCg0KUmV2
+aWV3ZWQtYnk6IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4NCi0tLQ0KQ2hhbmdlcyBpbiB2
+NToNCi0gZGlmZiBnb3QgbWFuZ2xlZCwgcmVzZW5kaW5nDQoNCkNoYW5nZXMgaW4gdjQ6DQotIGZp
+eGVzIGZvcm1hdHRpbmcgYW5kIGNvbW1lbnQgc3R5bGUgaXNzdWVzDQoNCkNoYW5nZXMgaW4gdjM6
+DQotIGZpeCByZXR1cm5pbmcgYW4gdW5pbml0aWFsaXplZCB2YWx1ZSBpZiBtb2RlIHdhcyBub3Qg
+cmdtaWlbLXh4XQ0KICBvciBybWlpIChtaWkgaXMgYSB2YWxpZCBtb2RlIGZvciB0aGlzIHBoeSBh
+cyB3ZWxsKS4gUmV0dXJuDQogIHN1Y2Nlc3MgaW4gdGhhdCBjYXNlIHRvIGtlZXAgdGhlIG9sZCBk
+cml2ZXIgYmVoYXZpb3IuDQotIHVwZGF0ZWQgY29tbWl0IGRlc2NyaXB0aW9uIGFjY29yZGluZ2x5
+DQoNCkNoYW5nZXMgaW4gdjI6DQotIHJlbW92ZSB0aGUgdXNhZ2Ugb2YgcGh5X2dldF9pbnRlcm5h
+bF9kZWxheQ0KLSB1c2UgYm9vbGVhbnMgdG8gbWFrZSBpdCBjbGVhciB0aGF0IHRoeSBwaHkgc3Vw
+cG9ydHMgb25seSBhDQogIGZpeGVkIGRlbGF5IGFjdGl2YXRpb24sIG5vIGNvbmZpZ3VyYWJsZSBk
+ZWxheQ0KDQogZHJpdmVycy9uZXQvcGh5L2RwODN0ZDUxMC5jIHwgNjkgKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKw0KIDEgZmlsZSBjaGFuZ2VkLCA2OSBpbnNlcnRpb25zKCsp
+DQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMgYi9kcml2ZXJzL25l
+dC9waHkvZHA4M3RkNTEwLmMNCmluZGV4IDllOWE0MWJmNjQ1Ny4uYWE2MTIyMGRiY2UzIDEwMDY0
+NA0KLS0tIGEvZHJpdmVycy9uZXQvcGh5L2RwODN0ZDUxMC5jDQorKysgYi9kcml2ZXJzL25ldC9w
+aHkvZHA4M3RkNTEwLmMNCkBAIC0zMCw2ICszMCwxMiBAQA0KICNkZWZpbmUgRFA4M1RENTEwRV9J
+TlQxX0xJTksJCQlCSVQoMTMpDQogI2RlZmluZSBEUDgzVEQ1MTBFX0lOVDFfTElOS19FTgkJCUJJ
+VCg1KQ0KIA0KKyNkZWZpbmUgRFA4M1RENTEwRV9SQ1NSCQkJCTB4MTcNCisjZGVmaW5lIERQODNU
+RDUxMEVfUk1JSV9NT0RFX0VOCQkJQklUKDUpDQorI2RlZmluZSBEUDgzVEQ1MTBFX1JHTUlJX01P
+REVfRU4JCUJJVCg5KQ0KKyNkZWZpbmUgRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQJCQlCSVQoMTEp
+DQorI2RlZmluZSBEUDgzVEQ1MTBFX1JYX0NMS19TSElGVAkJCUJJVCgxMikNCisNCiAjZGVmaW5l
+IERQODNURDUxMEVfQ1RSTAkJCQkweDFmDQogI2RlZmluZSBEUDgzVEQ1MTBFX0NUUkxfSFdfUkVT
+RVQJCUJJVCgxNSkNCiAjZGVmaW5lIERQODNURDUxMEVfQ1RSTF9TV19SRVNFVAkJQklUKDE0KQ0K
+QEAgLTY0OSw2ICs2NTUsNjggQEAgc3RhdGljIGludCBkcDgzdGQ1MTBfY29uZmlnX2FuZWcoc3Ry
+dWN0IHBoeV9kZXZpY2UgKnBoeWRldikNCiAJcmV0dXJuIGdlbnBoeV9jNDVfY2hlY2tfYW5kX3Jl
+c3RhcnRfYW5lZyhwaHlkZXYsIGNoYW5nZWQpOw0KIH0NCiANCitzdGF0aWMgYm9vbCBkcDgzdGQ1
+MTBfY29uZmlnX3JnbWlpX3J4X2RlbGF5KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpDQorew0K
+KwlyZXR1cm4gcGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX0lE
+IHx8DQorCSAgICAgICBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUkdN
+SUlfUlhJRDsNCit9DQorDQorc3RhdGljIGJvb2wgZHA4M3RkNTEwX2NvbmZpZ19yZ21paV90eF9k
+ZWxheShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KK3sNCisJcmV0dXJuIHBoeWRldi0+aW50
+ZXJmYWNlID09IFBIWV9JTlRFUkZBQ0VfTU9ERV9SR01JSV9JRCB8fA0KKwkgICAgICAgcGh5ZGV2
+LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX1RYSUQ7DQorfQ0KKw0KK3N0
+YXRpYyBpbnQgZHA4M3RkNTEwX2NvbmZpZ19pbml0KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYp
+DQorew0KKwlpbnQgcmdtaWlfZGVsYXkgPSAwOw0KKwlib29sIHJ4X2ludF9kZWxheTsNCisJYm9v
+bCB0eF9pbnRfZGVsYXk7DQorCWludCByZXQ7DQorDQorCWlmIChwaHlfaW50ZXJmYWNlX2lzX3Jn
+bWlpKHBoeWRldikpIHsNCisJCXJ4X2ludF9kZWxheSA9IGRwODN0ZDUxMF9jb25maWdfcmdtaWlf
+cnhfZGVsYXkocGh5ZGV2KTsNCisJCWlmIChyeF9pbnRfZGVsYXkpDQorCQkJcmdtaWlfZGVsYXkg
+fD0gRFA4M1RENTEwRV9SWF9DTEtfU0hJRlQ7DQorDQorCQl0eF9pbnRfZGVsYXkgPSBkcDgzdGQ1
+MTBfY29uZmlnX3JnbWlpX3R4X2RlbGF5KHBoeWRldik7DQorDQorCQlpZiAodHhfaW50X2RlbGF5
+KQ0KKwkJCXJnbWlpX2RlbGF5IHw9IERQODNURDUxMEVfVFhfQ0xLX1NISUZUOw0KKw0KKwkJcmV0
+ID0gcGh5X21vZGlmeV9tbWQocGh5ZGV2LCBNRElPX01NRF9WRU5EMiwgRFA4M1RENTEwRV9SQ1NS
+LA0KKwkJCQkgICAgIERQODNURDUxMEVfUlhfQ0xLX1NISUZUIHwNCisJCQkJICAgICBEUDgzVEQ1
+MTBFX1RYX0NMS19TSElGVCwNCisJCQkJICAgICByZ21paV9kZWxheSk7DQorCQlpZiAocmV0KQ0K
+KwkJCXJldHVybiByZXQ7DQorDQorCQlyZXQgPSBwaHlfc2V0X2JpdHNfbW1kKHBoeWRldiwgTURJ
+T19NTURfVkVORDIsDQorCQkJCSAgICAgICBEUDgzVEQ1MTBFX1JDU1IsIERQODNURDUxMEVfUkdN
+SUlfTU9ERV9FTik7DQorDQorCQlpZiAocmV0KQ0KKwkJCXJldHVybiByZXQ7DQorDQorCX0gZWxz
+ZSBpZiAocGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JNSUkpIHsNCisJ
+CS8qIHNldCBSTUlJX01PREVfRU4sIGNsZWFyIFJHTUlJX01PREVfRU4gKGV4Y2x1c2l2ZSkgKi8N
+CisJCXJldCA9IHBoeV9tb2RpZnlfbW1kKHBoeWRldiwgTURJT19NTURfVkVORDIsIERQODNURDUx
+MEVfUkNTUiwNCisJCQkJICAgICBEUDgzVEQ1MTBFX1JNSUlfTU9ERV9FTiB8DQorCQkJCSAgICAg
+RFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLA0KKwkJCQkgICAgIERQODNURDUxMEVfUk1JSV9NT0RF
+X0VOKTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisJfSBlbHNlIHsNCisJCS8qIG1h
+eSBiZSBNSUksIHdoaWNoIGlzIHN1cHBvcnRlZCwgb3Igc29tZXRoaW5nIGVsc2UuIEp1c3QNCisJ
+CSAqIHJldHVybiBzdWNjZXNzIHRvIGtlZXAgdGhlIG9sZCBiZWhhdmlvciBhbmQgbm90IGJyZWFr
+DQorCQkgKiBhbnl0aGluZy4gQ29uZmlndXJhdGlvbiBtYXkgaGF2ZSBiZWVuIGRvbmUgYnkgc3Ry
+YXBzIHNvDQorCQkgKiBpdCdzIGJldHRlciB0byBub3QgdG91Y2ggaXQuDQorCQkgKi8NCisJCXJl
+dCA9IDA7DQorCX0NCisNCisJcmV0dXJuIHJldDsNCit9DQorDQogc3RhdGljIGludCBkcDgzdGQ1
+MTBfZ2V0X3NxaShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIHsNCiAJaW50IHNxaSwgcmV0
+Ow0KQEAgLTk0Miw2ICsxMDEwLDcgQEAgc3RhdGljIHN0cnVjdCBwaHlfZHJpdmVyIGRwODN0ZDUx
+MF9kcml2ZXJbXSA9IHsNCiAJLm5hbWUJCT0gIlRJIERQODNURDUxMEUiLA0KIA0KIAkuZmxhZ3Mg
+ICAgICAgICAgPSBQSFlfUE9MTF9DQUJMRV9URVNULA0KKwkuY29uZmlnX2luaXQJPSBkcDgzdGQ1
+MTBfY29uZmlnX2luaXQsDQogCS5wcm9iZQkJPSBkcDgzdGQ1MTBfcHJvYmUsDQogCS5jb25maWdf
+YW5lZwk9IGRwODN0ZDUxMF9jb25maWdfYW5lZywNCiAJLnJlYWRfc3RhdHVzCT0gZHA4M3RkNTEw
+X3JlYWRfc3RhdHVzLA0KLS0gDQoyLjQ3LjMNCg==
