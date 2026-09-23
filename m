@@ -1,176 +1,556 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-oi2-f41.google.com (mail-oi2-f41.google.com [74.125.231.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F323B5678DB
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 19:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790191434; cv=pass; b=FWvqWheXZPYXRQWAtmA1VOpbbmFWaGj5ZAMZR4wYEMeJSSrYx4hjR1e5sfnfZECVtNysgpgJZS4vyUfWsGyvbZUy8qddfgUuEM/CwAKc9Ti9sZASu0VBTEw9GL4kCP1c5rAtGVNwq7SCY4wgi+N66NQYtUSwh1kGQqYnO5A/61o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790191434; c=relaxed/simple;
-	bh=8Ytyzo3Cstyv41FSR2oY9DUCX3JVIiDtDCUz+J7mE9E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YuUwfL/7TeUFWh6ZQCqRPHL3Z2d4zSVkRAmFNEYYnPBSo9YCKGbI77+XHJ0XUUONoPoQlugDboyRS9LRWl/66bjZ+s2RQAsJoBb4g7v9BmVzrLVPmQatHYOPzaTisjeZBwPBRvcETRAnmOKSIAu9Mn12vj7YNA6VxIK2ub5Se0A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKuFa8oL; arc=pass smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D95953B35F
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 19:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790191810; cv=none; b=d/5x/qGKEw1GOpkttP0ZEufo9Rdb4nnXZKYs15oJI6faRWFvlxFGyVOh/OPplAYsJqCLMgC4hUAihVdvPRhxlSGqgNjUFb5yfeefWR/tPU+KEFLYJyczeVQ6BxhtGJh74/Es9N+EIRYK6W5cAiKwCYaA22ZhCyjnM3QzwXDNJWg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790191810; c=relaxed/simple;
+	bh=WCghleGXty4eEeYwlnoVMG4hmT4btZI3IUN9y3hpF68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N+pKD7XGcTxWsWOEF5aO0Ilb/p/Jrit3LP3t9OhLZ/bgV4D/LEDPejlpprEvPRsWJ5hjbL/WlYHwj/392opi/JOSoEQL3RPhqO4OGumMPRLTOFr2dbAkdLCWdRTHIjx8P0OHFzRaWf5ocyyp0duh866nL12j9ooCwp7dPfCNUuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dfR8lc6/; arc=none smtp.client-ip=74.125.231.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKuFa8oL"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2db33db4de9so19365ad.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:23:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790191432; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cw8KyF5NjAbB6wvw9k+aiioikmNkIQPFZK7rPQYwSyfn5MkK7RzGx7tvsV02QYl2Jo
-         qeqYtLwhj//sGdZooJBI80GYLPytAUzmU+2VrNtJIZ/+gx4DLSmYwXAIUrZx9uxplDxI
-         D9exNlgJ6WvrCJFT1wKMGUO+85bqk4EQVYE9cRbi8ztEXsS4n0i4XYyNLYWNmIHVzq9U
-         4ZM4zqPgUWuKz3kQz1KrZxdmZwZWoSA+vCfXyYexcN+FSf3AUp4xmBY7JN0zOU6XQJTW
-         bARbBTMnXTZqhCJUi73vkie05osot2vWg0eOEpVioeqyPku0XL0OPHwDxsozPebx0fzH
-         I89A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cjbpeTzL0D+bm9/wq6fbdsu4mBQdwvLGFrJBuUnOg/Q=;
-        fh=8ye4B41ypQNlPIOTJn4lemsLBNTaRlWzWvccOwpDPRk=;
-        b=AKyaognk8vHq/dK3UrCCbGXviCDqvSg6HgYG18aqHMjGuiXVSQpqljSGOSegdM2xcC
-         zE+YNsefXJTohZ5DVljqpBnVLI75M58drBvyL7K310TNeYsZ57anvLQcBDU7sGuq6M8D
-         68twY9KodS9pm2pODR9qvTcmFsqOeLGY26YLMwV9+S/bmJjx9fZ4+kYgVJtk1gFW5Fi3
-         xPtFQ3in6ITnZWAiCM3w/LufHY0koYbDr3E8olhJXAlZ1brwNCC9LsuffUvITzCpFV3M
-         GX33gjkZZCUY1J3cbh4X6SBAgrn9kpIgXblER42h/sc7ilpUgv7ZYsCou+1xYKEM02Q8
-         Ev3A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dfR8lc6/"
+Received: by mail-oi2-f41.google.com with SMTP id 46e09a7af769-805cc8b4231so896864a34.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:30:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790191432; x=1790796232; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1790191806; x=1790796606; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=cjbpeTzL0D+bm9/wq6fbdsu4mBQdwvLGFrJBuUnOg/Q=;
-        b=JKuFa8oLhEFWv1Ab5Y0Mbcqn1/Z2esfjzkY6tokywS4Pa6hSe1Km+YhLC8PaOX6cv/
-         om52sSMI56T9TmfnINl0jCsTo6iZrUA0gcDZ3PbW2jpW0Lb5e9BFcqBRzTnx1uZTqmNI
-         qTqNxaMMBzhwJZxP5S2CVVuv+msG2N/OkzaYPGz3I5vXqoz3H/2O61QFuByViq+YsUGd
-         +3/3zKQ4m5kicRSZbpQHWSwQMHNnX2AEeC6JvTjT+xP6mfdJpKyqmUm6RdPxMigHo+HC
-         dV29Proeld6TtlIU45QaZMH5NWWQEeyhO2t0UgeG5i+BKujd5d651iGDWbw7kJ+Gi/bK
-         Qqmw==
+        bh=/rt2uB6/AsMMcgokcDKFyREBgoi73mMVHQmkM9v16NY=;
+        b=dfR8lc6/SMWsrnOUB4AqVmodVlz6GeLoqQZeypiP58BB2A6d6MgdCTyimQpuzG0sRN
+         EwThTH0+AUhUV763K+53gwqOp8XSCcj9L2tQll8/afTFjvorQYjJzIXq5ldUdNYD5pA9
+         MaYL7MX17/h14malwOG9bp9wurUl75ZNSIqq4JACzmzCl2lj+akyuqb804GCMdoFds15
+         sz3yLPEgPBOExv5TdzykpwLIipt4H0p0sk3GfObeFOvVqr1qkpWdRS9bV+O0Um8wtRx2
+         ktJv7uIJxLc0CVI6Z0OIx8HP3r9DPzUR3LwwBRCUfKrAeQ1ij3g2EU0ZNCcio/E7uxN3
+         LNRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790191432; x=1790796232;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790191806; x=1790796606;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cjbpeTzL0D+bm9/wq6fbdsu4mBQdwvLGFrJBuUnOg/Q=;
-        b=Bw/tBuK7ucU4xIqtw/QvYdvVbsFNGyPPaInHf3CXm1UxQQVPft8lGJ5AbG8LbfizeT
-         HSbQOaIk2CEVWH4NXwNQJlOQbKgemgA60Bs9D6eWvQ0HspgGwHp155EBGptDVn0ReRXd
-         tsRcYWKKPd414+Ju+TDaYkaWzNduPZeokh7tKdrES4prffXhB9QP/4kCRSQ4oHcsddgI
-         zEjnkE39K5E6G4V+vEtpPbMA+xXjm5uFSJU04/bQa/UHHZap7E8gvlAZkHIP4B2ybAC4
-         rlCucWMiOAKUAXatjmVgZHuThnkRZe0S3A/OjrREkL4rAW0D6OMlHh6ayRW7864CFR5J
-         RuVg==
-X-Forwarded-Encrypted: i=1; AKwUvByKRwOAyYWHV+KBoTI5lPjzeoQIx+4SIcT0k9acxHlfL6JCtV/DM7871/avXm00LrvZ1XUmHM4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nYj6N85av9DtEM7mhB8It7PgGRtorGO5iNlt09GuFPpOY85mAW
-	zXHkgQXw4ag1++A+VUOyFKYoZUzrAUDY6uGPxs5hdvm6s2nVycpQwyAKweItdKeHgP4dKkaaC89
-	TP1jEeJ08iiVTSynBU5STw1IzSBy25X0+3OMKpR1ch9PEso50YJDaHuaXSaA=
-X-Gm-Gg: AYBFou2Vunu78RK9ik1kMWhYK7HsMBoKLluXRZFKpixRFezn8SWorHWpY/tp1vBtclY
-	pVK/PDdo/Gte5cydqzELbt3RJ9ZaLUT8FY++YRcWKqmCGhdmgYZINS7l68+GULppPK7uZuetakf
-	pKuvXpu1XRIffVFoHWIilkcntEDzgjMd6va1d0i8eMqCd6aECkXW49U+NJTyYM55luL93Yostgp
-	Ri89w569d88UtH3bkLcimQExKkdogqKU6TXTGu7wGoZ3dwk5DT38NV4jGDdijHir7IkP2NicVr/
-	JJdzO4T+EKKVplr3BREXMvReOWcNMnoA/4f50bIc6MZ/w1dYW20DuUJUHPyYLzHMjvvtuTCVPgm
-	MenzbVQ4KFdYVFRDO8rMNrYdAOKiO+ErbAr/olfZEzWz1rUgelfaxOsd/
-X-Received: by 2002:a17:903:46cd:b0:2dd:b837:48b8 with SMTP id
- d9443c01a7336-2df7b50e8b2mr1431535ad.14.1790191431686; Wed, 23 Sep 2026
- 12:23:51 -0700 (PDT)
+        bh=/rt2uB6/AsMMcgokcDKFyREBgoi73mMVHQmkM9v16NY=;
+        b=nAOlOGkG600aiSpKsDr8aBpApZc6uts9foWdJsldYtj9sazN3jYdZQZ2z1PYXMKHgX
+         KDFc/GW4zlvbxN3YwnzF9oYAqxpYJIs/nFF3BUuncR0yTRjnako7QMLy1kF8cPyp6Z8c
+         tw5lTNx8Tca/95kf04JQVKGlFKuIw4ZqhG210rFNJsceWli6M0+KwvkKgokrDQnhxEc8
+         slPYT5JUW1RbLpJ2IDZmj8a93etq0BJwbhlDPXMEBW6cB7+i+TQldBSGUcIqXEYZ3w1g
+         72URoLcI0a5ZdnfjEnjtSXFwRTJmdbXeoVBM/t8x7jPFwkZ0nxRBz/OTWQN47/Htr1s9
+         3xcg==
+X-Gm-Message-State: AFuF++m+A74a0b2tNqj2VjtkMmwq43XtLkDAqquXa7SRlJWWus22GUFS
+	EPf85KjjD2Sx0+2Og1Kab4jv2YyKbDIKD23/ZfjlYeWj37yanSPupOYs
+X-Gm-Gg: AYBFou2lxa2LVFwdovdhaIxnY4Z6MPtKJ3VFTpWx4636KiYkbByLKPU1aZWGfiXhMAy
+	lEiESciAarV9KRasmrgMaRJlhXRa/fl78cT7m7OzbvzQ7V0nWdyLu4lfpDdku8nyeSEOF0QPMmq
+	jdYm1sAkKNjj2T8gPrg2ma60pyutjPEn2gwQWVdW1gB+Jqw6n+ax/o9KWMQx3ZCvMXUeLRme6X5
+	IrOyV4Ti8o8RkjuVUYYkXLlZij5gzPEF0B6DT8H2SQqMBmcGGhGlZEM8iGpmkBHshWEl8xNLY0Y
+	AkrzCZ/gYdcrX7dPDR9xnQx21WuArPdo5OJkTYcind8rzcNrmY5xx8lPlliCl9zNRKwkTX38/Me
+	R/ZEejLl6EkJj4sghGFmYS8RLTMc0U9j29rcXo1+qU5pIgpUe4MXxtvs6jZp7vaxy19x5RgYl5R
+	XZSsZ3jWpR2N5eyhh7e3XLZFREboK2PPLtwdb+waSE8Z9Vg5J9RkqhdpQ2MdjOtTah353y8UYkK
+	IK9Q8IcXQ0FpX+8jkAw
+X-Received: by 2002:a05:6808:50a3:b0:4c5:cd9d:c6de with SMTP id 5614622812f47-4d72c635ff8mr198770b6e.7.1790191806332;
+        Wed, 23 Sep 2026 12:30:06 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:42::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4d5c3d75355sm3060141b6e.3.2026.09.23.12.30.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 12:30:04 -0700 (PDT)
+Date: Wed, 23 Sep 2026 12:29:57 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: netdev@vger.kernel.org, sgarzare@redhat.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] vsock/test: cover receive queue hints
+Message-ID: <arQotQ75qCVXkbH8@devvm29614.prn0.facebook.com>
+References: <20260923184008.153541-1-devnexen@gmail.com>
+ <20260923184008.153541-3-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923141047.14047-1-hannu@varjosoft.com>
-In-Reply-To: <20260923141047.14047-1-hannu@varjosoft.com>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Wed, 23 Sep 2026 12:23:40 -0700
-X-Gm-Features: AcwNN1Xxcv_5F3z2tc9CpAyeFwGvleoEfPBFILiv2eW7DdcnaC8Sg9h3_Ps108E
-Message-ID: <CAEAWyHfaV4tYSWTjfCJZ0bAHnk5XcEWQkycfHP-0toqHZ0C6Mw@mail.gmail.com>
-Subject: Re: [PATCH net] gve: DQO: accept TSO packets with non-protocol
- gso_type bits
-To: Hannu Varjoranta <hannu@varjosoft.com>
-Cc: Joshua Washington <joshwash@google.com>, netdev@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Ankit Garg <nktgrg@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923184008.153541-3-devnexen@gmail.com>
 
-On Wed, Sep 23, 2026 at 7:11=E2=80=AFAM Hannu Varjoranta <hannu@varjosoft.c=
-om> wrote:
->
-> Since commit 014c607f86ab ("gve: add support for UDP GSO for DQO
-> format"), gve_prep_tso() matches shinfo->gso_type exactly. gso_type is
-> a bitmask, though: SKB_GSO_DODGY is set on every GSO packet that comes
-> from tun/tap, packet sockets or other untrusted sources, and
-> SKB_GSO_TCP_ECN and SKB_GSO_TCP_FIXEDID can be set as well. Such packets
-> hit the default case, gve_tx_add_skb_dqo() fails and gve_try_tx_skb()
-> drops them, counting them in tx_dropped.
->
-> These packets do reach the driver: tcp_gso_segment() passes DODGY skbs
-> through unsegmented to devices that support TSO, after recomputing
-> gso_segs, so drivers must tolerate the bit.
->
-> This breaks virtual machines behind a tap on GCE instances using the DQO
-> queue formats. Every TSO packet forwarded from a guest (gso_type
-> SKB_GSO_TCPV4 | SKB_GSO_DODGY) is dropped, and guest uploads slow to a
-> crawl of retransmissions or stall entirely, while the host's own TSO
-> traffic (gso_type SKB_GSO_TCPV4) is unaffected. On an n4 instance
-> (DQO-QPL) with a Cloud Hypervisor guest, a 64 MB upload from the guest
-> went from a 60 s timeout at ~0.9 MB/s to 0.19 s with this change, with
-> tx_dropped no longer increasing.
->
-> Restore the bitmask test that commit 1b9f75634441 ("gve: ignore
-> nonrelevant GSO type bits when processing TSO headers") introduced for
-> the same problem, keeping the UDP GSO support.
->
-> Fixes: 014c607f86ab ("gve: add support for UDP GSO for DQO format")
-> Signed-off-by: Hannu Varjoranta <hannu@varjosoft.com>
-
-Thanks for the fix,
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-
+On Wed, Sep 23, 2026 at 07:40:08PM +0100, David Carlier wrote:
+> Add io_uring receive tests checking IORING_CQE_F_SOCK_NONEMPTY across a
+> partial receive, draining while the peer stays connected, EOF, a
+> nonblocking receive on an empty queue, a zero-length request, and a
+> multishot receive with provided buffers.
+> 
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 > ---
->  drivers/net/ethernet/google/gve/gve_tx_dqo.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/e=
-thernet/google/gve/gve_tx_dqo.c
-> index 80ab0a449ff5..675c7644817a 100644
-> --- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-> +++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-> @@ -596,21 +596,20 @@ static int gve_prep_tso(struct sk_buff *skb)
->         l4_start =3D skb_transport_offset(skb);
->         paylen =3D skb->len - l4_start;
->
-> -       switch (shinfo->gso_type) {
-> -       case SKB_GSO_TCPV4:
-> -       case SKB_GSO_TCPV6:
-> +       /* gso_type is a bitmask: SKB_GSO_DODGY, SKB_GSO_TCP_ECN and
-> +        * SKB_GSO_TCP_FIXEDID may be set alongside the protocol bit.
-> +        */
-> +       if (shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)) {
->                 tcp =3D tcp_hdr(skb);
->                 csum_replace_by_diff(&tcp->check,
->                                      (__force __wsum)htonl(paylen));
->                 header_len =3D skb_tcp_all_headers(skb);
-> -               break;
-> -       case SKB_GSO_UDP_L4:
-> +       } else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
->                 udp =3D udp_hdr(skb);
->                 csum_replace_by_diff(&udp->check,
->                                      (__force __wsum)htonl(paylen));
->                 header_len =3D sizeof(struct udphdr) + l4_start;
-> -               break;
-> -       default:
-> +       } else {
->                 return -EINVAL;
->         }
->
-> --
+>  tools/testing/vsock/util.c             |   9 +
+>  tools/testing/vsock/util.h             |   1 +
+>  tools/testing/vsock/vsock_uring_test.c | 391 +++++++++++++++++++++++++
+>  3 files changed, 401 insertions(+)
+> 
+> diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+> index fe316b02a590..299a4e8ecb63 100644
+> --- a/tools/testing/vsock/util.c
+> +++ b/tools/testing/vsock/util.c
+> @@ -483,6 +483,15 @@ void recv_byte(int fd, int expected_ret, int flags)
+>  	}
+>  }
+>  
+> +void expect_res(int res, int expected, const char *what)
+> +{
+> +	if (res != expected) {
+> +		fprintf(stderr, "%s: expected %d, got %d\n", what, expected,
+> +			res);
+> +		exit(EXIT_FAILURE);
+> +	}
+> +}
+> +
+>  /* Run test cases.  The program terminates if a failure occurs. */
+>  void run_tests(const struct test_case *test_cases,
+>  	       const struct test_opts *opts)
+> diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
+> index bf633cde82b0..9dabb547021e 100644
+> --- a/tools/testing/vsock/util.h
+> +++ b/tools/testing/vsock/util.h
+> @@ -94,6 +94,7 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
+>  void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret);
+>  void send_byte(int fd, int expected_ret, int flags);
+>  void recv_byte(int fd, int expected_ret, int flags);
+> +void expect_res(int res, int expected, const char *what);
+>  void run_tests(const struct test_case *test_cases,
+>  	       const struct test_opts *opts);
+>  void list_tests(const struct test_case *test_cases);
+> diff --git a/tools/testing/vsock/vsock_uring_test.c b/tools/testing/vsock/vsock_uring_test.c
+> index 5c3078969659..c6cc51db7adc 100644
+> --- a/tools/testing/vsock/vsock_uring_test.c
+> +++ b/tools/testing/vsock/vsock_uring_test.c
+> @@ -13,7 +13,10 @@
+>  #include <liburing.h>
+>  #include <unistd.h>
+>  #include <sys/mman.h>
+> +#include <sys/ioctl.h>
+>  #include <linux/kernel.h>
+> +#include <linux/sockios.h>
+> +#include <errno.h>
+>  #include <error.h>
+>  
+>  #include "util.h"
+> @@ -28,6 +31,10 @@
+>  
+>  #define VSOCK_TEST_DATA_MAX_IOV 3
+>  
+> +#define HINT_CHUNK_SIZE		4096
+> +#define HINT_BUF_GROUP		1
+> +#define HINT_BUF_ENTRIES	4
+> +
+>  struct vsock_io_uring_test {
+>  	/* Number of valid elements in 'vecs'. */
+>  	int vecs_cnt;
+> @@ -211,6 +218,365 @@ void test_stream_uring_msg_zc_client(const struct test_opts *opts)
+>  		vsock_io_uring_client(opts, &test_data_array[i], true);
+>  }
+>  
+> +struct uring_inq_ctx {
+> +	struct io_uring ring;
+> +	int fd;
+> +};
+> +
+> +static void inq_server_init(struct uring_inq_ctx *ctx,
+> +			    const struct test_opts *opts)
+> +{
+> +	ctx->fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
+> +	if (ctx->fd < 0) {
+> +		perror("accept");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	if (io_uring_queue_init(RING_ENTRIES_NUM, &ctx->ring, 0))
+> +		error(1, errno, "io_uring_queue_init");
+> +}
+> +
+> +static void inq_server_exit(struct uring_inq_ctx *ctx)
+> +{
+> +	io_uring_queue_exit(&ctx->ring);
+> +	close(ctx->fd);
+> +}
+> +
+> +/* Submit a single receive and report both its result and its CQE flags. */
+> +static int inq_recv(struct uring_inq_ctx *ctx, void *buf, size_t len,
+> +		    int flags, unsigned int *cflags)
+> +{
+> +	struct io_uring_sqe *sqe;
+> +	struct io_uring_cqe *cqe;
+> +	int res;
+> +
+> +	sqe = io_uring_get_sqe(&ctx->ring);
+> +	io_uring_prep_recv(sqe, ctx->fd, buf, len, flags);
+> +
+> +	if (io_uring_submit(&ctx->ring) != 1)
+> +		error(1, errno, "io_uring_submit");
+> +
+> +	if (io_uring_wait_cqe(&ctx->ring, &cqe))
+> +		error(1, errno, "io_uring_wait_cqe");
+> +
+> +	res = cqe->res;
+> +	*cflags = cqe->flags;
+> +	io_uring_cqe_seen(&ctx->ring, cqe);
+> +
+> +	return res;
+> +}
+> +
+> +static void expect_uring_nonempty(unsigned int cflags, bool expected,
+> +				  const char *what)
+> +{
+> +	bool nonempty = !!(cflags & IORING_CQE_F_SOCK_NONEMPTY);
+> +
+> +	if (nonempty != expected) {
+> +		fprintf(stderr, "%s: expected SOCK_NONEMPTY %d, got %d\n",
+> +			what, expected, nonempty);
+> +		exit(EXIT_FAILURE);
+> +	}
+> +}
+> +
+> +static void expect_uring_more(unsigned int cflags, bool expected,
+> +			      const char *what)
+> +{
+> +	bool more = !!(cflags & IORING_CQE_F_MORE);
+> +
+> +	if (more != expected) {
+> +		fprintf(stderr, "%s: expected F_MORE %d, got %d\n",
+> +			what, expected, more);
+> +		exit(EXIT_FAILURE);
+> +	}
+> +}
+> +
+> +/* Wait until the whole payload is queued, so the hint is deterministic.
+> + * Return false if the test has to be skipped.
+> + */
+> +static bool inq_wait_queued(int fd, int len)
+> +{
+> +	if (!vsock_ioctl_int(fd, SIOCINQ, len)) {
+> +		fprintf(stderr, "Test skipped, SIOCINQ not supported.\n");
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static void inq_send_chunks(const struct test_opts *opts, int chunks)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	int fd, i;
+> +
+> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+> +	if (fd < 0) {
+> +		perror("connect");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	memset(buf, 0xa5, sizeof(buf));
+> +	for (i = 0; i < chunks; i++)
+> +		send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
+> +
+> +	control_writeln("SENT");
+> +	control_expectln("DONE");
+> +	close(fd);
+> +}
+> +
+> +static void test_stream_uring_inq_client(const struct test_opts *opts)
+> +{
+> +	inq_send_chunks(opts, 2);
+> +}
+> +
+> +static void test_stream_uring_inq_server(const struct test_opts *opts)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	struct uring_inq_ctx ctx;
+> +	unsigned int cflags;
+> +	int res;
+> +
+> +	inq_server_init(&ctx, opts);
+> +
+> +	control_expectln("SENT");
+> +	if (!inq_wait_queued(ctx.fd, 2 * HINT_CHUNK_SIZE))
+> +		goto out;
+> +
+> +	/* Data remains after this receive, so the flag must be set. */
+> +	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
+> +	expect_res(res, HINT_CHUNK_SIZE, "partial receive");
+> +	expect_uring_nonempty(cflags, true, "partial receive");
+> +
+> +	/* This receive drains the queue while the peer stays connected. */
+> +	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
+> +	expect_res(res, HINT_CHUNK_SIZE, "draining receive");
+> +	expect_uring_nonempty(cflags, false, "draining receive");
+> +
+> +out:
+> +	control_writeln("DONE");
+> +	inq_server_exit(&ctx);
+> +}
+> +
+> +static void test_stream_uring_inq_eof_client(const struct test_opts *opts)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	int fd;
+> +
+> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+> +	if (fd < 0) {
+> +		perror("connect");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	memset(buf, 0x5a, sizeof(buf));
+> +	send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
+> +	control_writeln("SENT");
+> +
+> +	control_expectln("DRAINED");
+> +	close(fd);
+> +	control_writeln("CLOSED");
+> +}
+> +
+> +static void test_stream_uring_inq_eof_server(const struct test_opts *opts)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	struct uring_inq_ctx ctx;
+> +	unsigned int cflags;
+> +	int res;
+> +
+> +	inq_server_init(&ctx, opts);
+> +
+> +	control_expectln("SENT");
+> +	if (!inq_wait_queued(ctx.fd, HINT_CHUNK_SIZE)) {
+> +		control_writeln("DRAINED");
+> +		control_expectln("CLOSED");
+> +		goto out;
+> +	}
+> +
+> +	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
+> +	expect_res(res, HINT_CHUNK_SIZE, "drain before EOF");
+> +	expect_uring_nonempty(cflags, false, "drain before EOF");
+> +
+> +	control_writeln("DRAINED");
+> +	control_expectln("CLOSED");
+> +
+> +	/* The queue is empty and the peer is gone.  The hint stays non-zero
+> +	 * so that this receive happens and reports EOF, as TCP does after a
+> +	 * FIN.
+> +	 */
+> +	res = inq_recv(&ctx, buf, sizeof(buf), 0, &cflags);
+> +	expect_res(res, 0, "receive at EOF");
+> +	expect_uring_nonempty(cflags, true, "receive at EOF");
+> +
+> +out:
+> +	inq_server_exit(&ctx);
+> +}
+> +
+> +static void test_stream_uring_inq_empty_client(const struct test_opts *opts)
+> +{
+> +	int fd;
+> +
+> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+> +	if (fd < 0) {
+> +		perror("connect");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	control_writeln("READY");
+> +	control_expectln("DONE");
+> +	close(fd);
+> +}
+> +
+> +static void test_stream_uring_inq_empty_server(const struct test_opts *opts)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	struct uring_inq_ctx ctx;
+> +	unsigned int cflags;
+> +	int res;
+> +
+> +	inq_server_init(&ctx, opts);
+> +
+> +	control_expectln("READY");
+> +
+> +	/* A failed receive must not leave a stale positive hint. */
+> +	res = inq_recv(&ctx, buf, sizeof(buf), MSG_DONTWAIT, &cflags);
+> +	expect_res(res, -EAGAIN, "empty nonblocking receive");
+> +	expect_uring_nonempty(cflags, false, "empty nonblocking receive");
+> +
+> +	control_writeln("DONE");
+> +	inq_server_exit(&ctx);
+> +}
+> +
+> +static void test_stream_uring_inq_zerolen_client(const struct test_opts *opts)
+> +{
+> +	inq_send_chunks(opts, 1);
+> +}
+> +
+> +static void test_stream_uring_inq_zerolen_server(const struct test_opts *opts)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	struct uring_inq_ctx ctx;
+> +	unsigned int cflags;
+> +	int res;
+> +
+> +	inq_server_init(&ctx, opts);
+> +
+> +	control_expectln("SENT");
+> +	if (!inq_wait_queued(ctx.fd, HINT_CHUNK_SIZE))
+> +		goto out;
+> +
+> +	/* A zero-length request is not an error and still describes the
+> +	 * queue behind it.
+> +	 */
+> +	res = inq_recv(&ctx, buf, 0, 0, &cflags);
+> +	expect_res(res, 0, "zero-length receive");
+> +	expect_uring_nonempty(cflags, true, "zero-length receive");
+> +
+> +out:
+> +	control_writeln("DONE");
+> +	inq_server_exit(&ctx);
+> +}
+> +
+> +static void test_stream_uring_inq_mshot_client(const struct test_opts *opts)
+> +{
+> +	char buf[HINT_CHUNK_SIZE];
+> +	int fd, i;
+> +
+> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+> +	if (fd < 0) {
+> +		perror("connect");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	memset(buf, 0x3c, sizeof(buf));
+> +	for (i = 0; i < 2; i++)
+> +		send_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
+> +	control_writeln("SENT");
+> +
+> +	control_expectln("DRAINED");
+> +	close(fd);
+> +	control_writeln("CLOSED");
+> +
+> +	control_expectln("DONE");
+> +}
+> +
+> +static void test_stream_uring_inq_mshot_server(const struct test_opts *opts)
+> +{
+> +	static char bufs[HINT_BUF_ENTRIES][HINT_CHUNK_SIZE];
+> +	struct io_uring_buf_ring *br;
+> +	struct uring_inq_ctx ctx;
+> +	struct io_uring_sqe *sqe;
+> +	struct io_uring_cqe *cqe;
+> +	int i, ret;
+> +
+> +	inq_server_init(&ctx, opts);
+> +
+> +	br = io_uring_setup_buf_ring(&ctx.ring, HINT_BUF_ENTRIES,
+> +				     HINT_BUF_GROUP, 0, &ret);
+> +	if (!br) {
+> +		fprintf(stderr, "io_uring_setup_buf_ring: %d\n", ret);
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	for (i = 0; i < HINT_BUF_ENTRIES; i++)
+> +		io_uring_buf_ring_add(br, bufs[i], HINT_CHUNK_SIZE, i,
+> +				      io_uring_buf_ring_mask(HINT_BUF_ENTRIES),
+> +				      i);
+> +	io_uring_buf_ring_advance(br, HINT_BUF_ENTRIES);
+> +
+> +	control_expectln("SENT");
+> +	if (!inq_wait_queued(ctx.fd, 2 * HINT_CHUNK_SIZE)) {
+> +		control_writeln("DRAINED");
+> +		control_expectln("CLOSED");
+> +		goto out;
+> +	}
+> +
+> +	/* Arm only once both chunks are queued, so every completion knows
+> +	 * what is left behind it.
+> +	 */
+> +	sqe = io_uring_get_sqe(&ctx.ring);
+> +	io_uring_prep_recv_multishot(sqe, ctx.fd, NULL, 0, 0);
+> +	sqe->flags |= IOSQE_BUFFER_SELECT;
+> +	sqe->buf_group = HINT_BUF_GROUP;
+> +
+> +	if (io_uring_submit(&ctx.ring) != 1)
+> +		error(1, errno, "io_uring_submit");
+> +
+> +	/* A buffer holds one chunk, so the other one is still queued. */
+> +	if (io_uring_wait_cqe(&ctx.ring, &cqe))
+> +		error(1, errno, "io_uring_wait_cqe");
+> +
+> +	expect_res(cqe->res, HINT_CHUNK_SIZE, "multishot first chunk");
+> +	expect_uring_nonempty(cqe->flags, true, "multishot first chunk");
+> +	expect_uring_more(cqe->flags, true, "multishot first chunk");
+> +	io_uring_cqe_seen(&ctx.ring, cqe);
+> +
+> +	/* This completion drains the queue and keeps the request armed. */
+> +	if (io_uring_wait_cqe(&ctx.ring, &cqe))
+> +		error(1, errno, "io_uring_wait_cqe");
+> +
+> +	expect_res(cqe->res, HINT_CHUNK_SIZE, "multishot second chunk");
+> +	expect_uring_nonempty(cqe->flags, false, "multishot second chunk");
+> +	expect_uring_more(cqe->flags, true, "multishot second chunk");
+> +	io_uring_cqe_seen(&ctx.ring, cqe);
+> +
+> +	control_writeln("DRAINED");
+> +	control_expectln("CLOSED");
+> +
+> +	/* EOF ends multishot regardless of the hint. */
+> +	if (io_uring_wait_cqe(&ctx.ring, &cqe))
+> +		error(1, errno, "io_uring_wait_cqe");
+> +
+> +	expect_res(cqe->res, 0, "multishot EOF");
+> +	expect_uring_more(cqe->flags, false, "multishot EOF");
+> +	io_uring_cqe_seen(&ctx.ring, cqe);
+> +
+> +out:
+> +	control_writeln("DONE");
+> +	io_uring_free_buf_ring(&ctx.ring, br, HINT_BUF_ENTRIES,
+> +			       HINT_BUF_GROUP);
+> +	inq_server_exit(&ctx);
+> +}
+> +
+>  static struct test_case test_cases[] = {
+>  	{
+>  		.name = "SOCK_STREAM io_uring test",
+> @@ -222,6 +588,31 @@ static struct test_case test_cases[] = {
+>  		.run_server = test_stream_uring_msg_zc_server,
+>  		.run_client = test_stream_uring_msg_zc_client,
+>  	},
+> +	{
+> +		.name = "SOCK_STREAM io_uring receive queue hint",
+> +		.run_server = test_stream_uring_inq_server,
+> +		.run_client = test_stream_uring_inq_client,
+> +	},
+> +	{
+> +		.name = "SOCK_STREAM io_uring receive hint at EOF",
+> +		.run_server = test_stream_uring_inq_eof_server,
+> +		.run_client = test_stream_uring_inq_eof_client,
+> +	},
+> +	{
+> +		.name = "SOCK_STREAM io_uring receive hint on empty queue",
+> +		.run_server = test_stream_uring_inq_empty_server,
+> +		.run_client = test_stream_uring_inq_empty_client,
+> +	},
+> +	{
+> +		.name = "SOCK_STREAM io_uring receive hint zero-length",
+> +		.run_server = test_stream_uring_inq_zerolen_server,
+> +		.run_client = test_stream_uring_inq_zerolen_client,
+> +	},
+> +	{
+> +		.name = "SOCK_STREAM io_uring multishot receive hint",
+> +		.run_server = test_stream_uring_inq_mshot_server,
+> +		.run_client = test_stream_uring_inq_mshot_client,
+> +	},
+>  	{},
+>  };
+>  
+> -- 
 > 2.55.0
->
+> 
+
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
