@@ -1,147 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CFE314A98;
-	Wed, 23 Sep 2026 23:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2123A4F58
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 23:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790207192; cv=none; b=Z+DH4bS/14SMsf7qNJ8w6TMg6mXYuPHKaJD4+pvwovCcEn7Z66jGRoH9qaAof0+yGFYr/ikh+0BzSR3tUnuO/xTpFU8Pujkf+pXGBWQXoNeD/WQ3PKUyVCjAGv8v1Kg7exMRWMAekTkcRk7RbWo1sd40k+XgqWW2E5sZQjTZKGI=
+	t=1790207308; cv=none; b=TMV2XEfqWMOw+4aER/aoEgUzMp+QeCKO+vtKDoB4vIDmC7FEVYSMlI5M3+xCcgo8uWE499mPXFjUkbpmJN/AKCwXjCcxp/vXv8NEZa11kLbMeC18D0i2UgtST3bQtAhFWUKlnlu7uEwzYLVMUnP2lk/pI/EywtRawl58RA7Jk1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790207192; c=relaxed/simple;
-	bh=uPB/zP/1RcV6XkcYHd1sJQE+D7ArbKl4UymCg8uj9VQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UppFykW61kml3cCbIAMvqwMJp9Tq/e9zsIfXpW/LEc32nWFQV9OcB/sCZ01DP0hndfvO/dumicpWpDsqiG4Dzu7K4yY9M5C3IJRMUuIhrFXOCY3f16gDxKZZ1dx8bhEsy34ox5ZddNwh3gzLmzztwfyXyE34AsoNusCdmu5uRxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wtd9g942; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790207308; c=relaxed/simple;
+	bh=fQu8h00EssdjX+65ajgh6Z7/h4WGYUevxgzZ1eNMofw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d8+0i9QZxlckNmVISWCyelwrQEDI1jKWlgBaw+QxDG01Jb26fVfHIJW5Ew000EMopu3E/BEXnRPhBwejvNVW8ojSWgZzd76d9FMQhNsM3G7OCqDCqdsV9cGZOGN9yfBa3dGTkVWDKJVhY8UFvtCp6jlSLon/TQWv1pGaHVv0diI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9waZS0K; arc=none smtp.client-ip=74.125.230.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wtd9g942"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63961F00893;
-	Wed, 23 Sep 2026 23:46:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790207190;
-	bh=vvkmf6PhsFKIr1Rj/+iu1gTg+NqaiZEuldOsD/SuEb0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Wtd9g942cTQ7ObEK6aYwYpHgeDqL+U0jSnDIhN/0qGjiJ/EgUEfXGkivqHNGoeEgW
-	 K4VU7C5rZUa4XuMISO0MAdYeyBS3Y8SYGOIensXKNrUhPhFz/joBkAmmey1aE+MkMU
-	 oXpCc0iy4+7GGyUkZW3F1pUmtptvEbDSC2ojz8xISuuAnCwKoCl60EnPDnIQz1xFMh
-	 NVQcxGjjmytxYN0Nm+CNBR1eLNZblEzKzb9sziNmqrjalyP7XbnTXeW+hDZb4KsgUk
-	 otthNgASv1qlgh82kRE6OuXxX+EUmk0+8asKmKONE3sMUzRGMDVK7VB/xoaTWFEx9J
-	 SGGGqpSP/GvDA==
-Subject: Re: [PATCH net-next 2/3] net: devmem: use memory provider helpers for
- net_iovs
-From: netdev-bot+sashiko@kernel.org
-To: sdf.kernel@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
- ilias.apalodimas@linaro.org, asml.silence@gmail.com, axboe@kernel.dk,
- sdf@fomichev.me, bobbyeshleman@meta.com, almasrymina@google.com,
- kaiyuanz@google.com, linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Date: Wed, 23 Sep 2026 23:46:29 +0000
-Message-ID: <179020718952.2160803.820732555059297637@kernel.org>
-In-Reply-To: <20260922204348.717198-3-sdf@fomichev.me>
-References: <20260922204348.717198-3-sdf@fomichev.me>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9waZS0K"
+Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfa7b2093so156066685a.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:48:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790207305; x=1790812105; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yR6Sw8KFOfic5kEDry7AfTNaMY9N/L+deT07wNcYwmc=;
+        b=i9waZS0Kw/MSqlBl1uxkfnZnp3BusxxUs0VLI+hwq+SU0fkfyd402sGZxdwcblSnnJ
+         wRqdIdUxT0DytJWRzVJamMM40wecie1w06bDZhZoVMO6Xez98hdyq/9ZG3GcY09y95s5
+         bEXPnJwWmOmrNtIbjMypRU4FVbrFYqlDcPxka0FfOHj7zCTrdchBq+b2cpL9oGfuDv0B
+         RqJoSNVh+lQRgIw5Z30Cd54/mFw93PX4htRp12+9Fgdx93og5WR/g0ZQAjqDTeWhu+zZ
+         uN1UW5C0Df+Zvqrrk+031Zroj4wptddWTHRmK00qCoYGnQ4pxWI0W7zZ84ztbo8gBtQQ
+         NW4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790207305; x=1790812105;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yR6Sw8KFOfic5kEDry7AfTNaMY9N/L+deT07wNcYwmc=;
+        b=fvFqHBWOxnOOoBAxmb4KqPzLKWlApEtzIj/Py66CxPY7FJvnwWDYLWSVNNJaXFXvAe
+         hIFTlu0u/uamciCoh7xCwJYvxzRB4fjZ7Iuqi90wu7jRsiStbVKIFJeG68eGqCAs+bga
+         NIglenyIPM3zACFlKFx/2jlRegwKzSY/BwB1nZ4OXsw5XexM2yVJOJYigcdOYweczO8i
+         hbA0iEBRXfWZIgcIuOEgmUeJfXSeeIUVV7QHAK1WhBLnXc/I58Px9Zz71GrwjpXvYFoT
+         gn6HUGy+sl9POFSAGij1A9YQhl1ofTvQG7/QJwXQTKkuLP6uQeaoXfU5/ZX3QSZbpgDn
+         gGEA==
+X-Forwarded-Encrypted: i=1; AKwUvBwrqQcWUXrphtvNZpAS6m3ZjfSPS+zPilpzFMdQjPY0v9uFlLoJUB/KzucnsoXYu/RmZSSo8Do=@vger.kernel.org
+X-Gm-Message-State: AFuF++k8LGGSX2m4nGw2lm+pG6yaJLtecTY4rig+nIAU35FskUYPd+aZ
+	pVBhC9bdhTH0iqzT8VK7wdBTh8gvTvrWzXZN3S8PFMW+SdmoOe5nCREAGVs4L7GR
+X-Gm-Gg: AYBFou3HMINLZcJFUzDflqd0EXj+g6h7h5xRM5fpwdxon5BZjuXcNdTDFAtZqGhHVa6
+	i4dGNAvVhlb/1MBISHCBSEj549H6xPlITwGHq1mlGTUCqCaiMkZxuUAywzGOvjjOXdzFkeCgQqc
+	HGTgrUq2tOKSnTRMxU9eZSI5pYSl9SY8NNy3cp3dD/P4eJHmxCmCGoFIYDmcoB/HsoPc7YEq5X7
+	+w6coapY2vDxBw/d+EruAk2zaCP5TKYMq7CtDH2EHkfv4GPyUnmExAP+uhEwxDXBjQoQA4A7THr
+	/U/6yMf3WXV4f1fn6KFphgaPFf/TQQE+y5G9Y/5UzBHFkBpA3Bp6lAkhrNYuoATUoLBpIWnmmUF
+	ghJ71hafZkU7/g0XOmgEqopqhzBtVULZ05ZyCHEdlax5B7VlGBQh2asjLlQhx2uoimbHs5KiVZH
+	3e7M5l1ssInWpfC3nWqR2OOabYvtQPwkWsZOd5PpXrtWut1A69xUhJwZijzrFHM5I0M0uK9mvSI
+	lrqRU/LiuT0d/BpEahq0w==
+X-Received: by 2002:a05:620a:448b:b0:93a:3aba:a0d4 with SMTP id af79cd13be357-93c3633a150mr43043285a.27.1790207305188;
+        Wed, 23 Sep 2026 16:48:25 -0700 (PDT)
+Received: from i4-gl-tmk5904.ad.psu.edu ([130.203.156.186])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c248a1481sm334514885a.35.2026.09.23.16.48.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 16:48:24 -0700 (PDT)
+From: Yuho Choi <oss.patchbox@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuho Choi <oss.patchbox@gmail.com>
+Subject: [PATCH net v1] idpf: Fix vport IRQ name leak on request failure
+Date: Wed, 23 Sep 2026 19:48:06 -0400
+Message-ID: <20260923234819.702327-1-oss.patchbox@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+idpf_vport_intr_req_irq() allocates a name for each vector IRQ before
+calling request_irq(). On success, the name is released later through
+kfree(free_irq()), but when request_irq() fails, the error path only
+unwinds the previous vectors and the name for the failed one is leaked.
 
-Low priority / nit picks for your consideration:
+Free the allocated name on the request_irq() failure path, as done for
+the mailbox IRQ in commit 9bff30482c10 ("idpf: Fix mailbox IRQ name leak
+on request failure").
 
-- [Low] net: devmem: use memory provider helpers for net_iovs bundles a
-  real bug fix into a patch whose commit message presents it as a…
+Fixes: bf9bf7042a38 ("idpf: avoid bloating &idpf_q_vector with big %NR_CPUS")
+Signed-off-by: Yuho Choi <oss.patchbox@gmail.com>
+---
+Compile-tested only (x86_64 defconfig + CONFIG_IDPF=m, W=1).
 
---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-net: devmem: use memory provider helpers for net_iovs
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 4311ffa30bb1..e7d5e7923371 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -4073,6 +4073,7 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport,
+ 		if (err) {
+ 			netdev_err(vport->netdev,
+ 				   "Request_irq failed, error: %d\n", err);
++			kfree(name);
+ 			goto free_q_irqs;
+ 		}
+ 
 
-This converts net/core/devmem.c to the public memory-provider helpers
-net_mp_niov_set_dma_addr(), net_mp_niov_set_page_pool() and
-net_mp_niov_clear_page_pool() instead of open-coding page_pool state,
-switches the net_iov array to kvzalloc_objs(), and now rejects DMA
-addresses that cannot be represented in net_iov metadata.
-
->  	Zero the net_iov array because net_mp_niov_set_page_pool() ORs
->  	PP_SIGNATURE into pp_magic. Reject DMA addresses that cannot be
->  	represented in net_iov metadata.
-
-[Severity: Low]
-This isn't a bug in the new code, but should the "Reject DMA addresses
-that cannot be represented in net_iov metadata" sentence spell out that
-the old behaviour was a silent truncation, and should the patch carry a
-Fixes: tag?
-
-Before this patch net_devmem_bind_dmabuf() dropped the return value of
-page_pool_set_dma_addr_netmem(), which is the "this address does not
-round-trip through the compressed net_iov metadata" indicator:
-
-net/core/page_pool_priv.h:page_pool_set_dma_addr_netmem() {
-	if (PAGE_POOL_32BIT_ARCH_WITH_64BIT_DMA) {
-		netmem_set_dma_addr(netmem, addr >> PAGE_SHIFT);
-
-		/* We assume page alignment to shave off bottom bits,
-		 * if this "compression" doesn't work we need to drop.
-		 */
-		return addr != (dma_addr_t)netmem_get_dma_addr(netmem)
-				       << PAGE_SHIFT;
-	}
-	...
-}
-
-Every other caller treats a true return as fatal, e.g.
-page_pool_dma_map():
-
-	if (page_pool_set_dma_addr_netmem(netmem, dma)) {
-		WARN_ONCE(1, "unexpected DMA address, please report to netdev@");
-		goto unmap_failed;
-	}
-
-and io_uring/zcrx.c returns -EFAULT. Devmem was the only site that kept
-the truncated address and handed it to the NIC for DMA.
-
-The path looks reachable from user space on 32-bit arches with 64-bit
-dma_addr_t: netdev_nl_bind_rx_doit() only checks is_power_of_2() on
-NETDEV_A_DMABUF_RX_PAGE_SIZE before niov_shift = ilog2(rx_page_size), so
-a sub-PAGE_SIZE niov size is accepted, and the bind loop then advances
-dma_addr += niov_size producing non-page-aligned addresses whose
-compression fails.
-
-Given that the next patch in the series ("net: devmem: decode DMA
-addresses for TX") does carry a Fixes: tag for the other half of the same
-32-bit/64-bit-DMA problem, would it make sense to split this hunk out
-with its own Fixes: tag so it can be picked up for stable?
-
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index c1c1872b88de2..0fc77c1a29569 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-
-[ ... ]
-
-> @@ -274,8 +272,12 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  		for (i = 0; i < nr_niovs; i++, niov_idx++) {
->  			niov = &binding->area.niovs[niov_idx];
->  			net_iov_init(niov, &binding->area, NET_IOV_DMABUF);
-> -			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
-> -						      dma_addr);
-> +			if (net_mp_niov_set_dma_addr(niov, dma_addr)) {
-> +				err = -EFAULT;
-> +				NL_SET_ERR_MSG(extack,
-> +					       "dmabuf DMA address cannot be represented");
-> +				goto err_free_niovs;
-> +			}
->  			if (direction == DMA_TO_DEVICE)
->  				binding->tx_vec[niov_idx] = niov;
->  			else
-
-[ ... ]
-
+base-commit: f0100363d8c374bd8e9ea7c9ba02744f0b802ca4
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922204348.717198-1-sdf%40fomichev.me
+2.43.0
+
