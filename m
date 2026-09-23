@@ -1,178 +1,199 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965C22EC571
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 06:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FF83D75AD;
+	Wed, 23 Sep 2026 06:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790146230; cv=none; b=JUTLV9m6Aw14gugCU7CRJnhphKpL3k07/hXq5fN6gtuJx57axbbADaMykibk6/RzrlFLfR0vWOBWdgbvp3H+tgtnMXrY0PhGwpcH9dvv5iGcXje8S6Hj/wTmLr5vxe+a0koc4bzhPJTsk8lxAIDzLYKftbdxxwQ03kKvgNv+n2U=
+	t=1790146295; cv=none; b=Khtzxv+/9rBk40f4pxevh5oVxGuA6lmGhVBkIDi/5K5nB7UMiIcnMyKvr0CVOPF9WbXovARAN5VrXzN2qXfsDmJkn0SFq298gODObfoRyAwAHcACAVhuiB3yvS+Jx//rtIdtKizUavOUn1YnDm4n/wP74DVNIjyYWWWCoHLOHvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790146230; c=relaxed/simple;
-	bh=/G5yDBNeg5z3c3JkQn6y7fB5XutNM0+jQyJ4HLTck+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GTCvZoJaVaNbLenLexP5GwUGjq50y+7I5REdY8Yvwn2IDOPSEPEuynkDmNI6y6m497r1ApvrspkXnoevtIYLp+YLkWjIdwOfSq2JHOLc33fqL/njr96SZ78Pd6icQtvj2+yaHmkXOh28fh49YXweNpz5iDBrCXnFKktai3hKIpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s2bzKGS9; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790146295; c=relaxed/simple;
+	bh=sY4kqUXjV43Z3lxOaoU7+ZK8mTamB5s+/oHuwIJGLg0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RDl6c4rtPGeAnq/wEtmBU5IkgJLAcXO2ZbCcKe4iykpSQGLCSeXb88csVw2GaVLcDzKREHqCKPZKsYKoS2BsFRMGdGElvMteh9dZoYZPDomlm5aet2YUI3Ebii6En43OXQaD/JEa8JBRWSzk4+STOVJUKNEtUYnuoYN7dM9UY+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qXMkOKo7; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s2bzKGS9"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd38e0f79so2660425e9.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 23:50:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790146225; x=1790751025; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p89oVBps4S+T5LODrobO031ycfpG6AMkiYxzsZO2208=;
-        b=s2bzKGS9gK2wT0K6YYnOPdeNdetk17ZycZw8BHOqcMs4PYc8fZgHxzu6ta7itYWRiI
-         jffWQwYY7MJW39GBFY9adQWhps4sbipVS4uKvo2D12YEKDGrfZ5OIlUFVyrQOOctj9Ss
-         2DVXWArrpyl/Tx0F32+3hxnYnjf+TYHyKEAG2UD9bx+ALzNxFJLVZE8Dqu/ht9RJFR7W
-         zR2Y+FAr24Ra+LCW/7SqoxZnNItX3WvL9MiiKsIkISKElqMg4A6oaZ26KB/A4A6LOVVW
-         LKziwAYDsQMsQnHqWuoiEmlwBKeBkx9Ii52xqTqQSriaZsiSa2szs4DKwxU3/auD6OvY
-         03nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790146225; x=1790751025;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p89oVBps4S+T5LODrobO031ycfpG6AMkiYxzsZO2208=;
-        b=mzdKuh5Lky7NUuhsMm51Ats9TnOGCfGFPDYOyAvqIF0XGOzPDToKgpVxSJtXsfVdz4
-         rAQGhIvsjmm+qlcskrYyJo9ph1zSBQbOtINbTyaiV/9BzFs4CapT6D9UzdROWs2tPaAy
-         jdai6StE2rRszlxN8UWZfYRYGgEH3CaXq5AUMwQJt33a2S4YbUsVNX6vqzZvqbFTKy//
-         Sk7oAVsA5SV2VHRRHUGlCu8LXoV0F2rv3UEUesdN2Pm/rsIT5n6OYVSmzcc3BGfo66Kn
-         RnoXSjJJQcRetEz301/halWajNmeql3onyS6zluzjILNBoJMOm1e8+QZphhjB8P8AGoH
-         vCfg==
-X-Forwarded-Encrypted: i=1; AKwUvBxgtjx5QDdQIFhIvEbiloKu2dXBbUe8agmUnLy6JqEEvkcjrpgVW0O2ObJPxRIB4AmBA+zP2+I=@vger.kernel.org
-X-Gm-Message-State: AFuF++kc/1mNuRStOHP4hPFybiUq5IA9wcTIR0Hr121RiWb3bnmkgDhk
-	UC/iau/pysvkGL3cLRqIfkgi8hAOLJl84PU2GW75GxWrb4UbDYFRMwdn
-X-Gm-Gg: AYBFou26emP2oy3QrIS9N9Tov2k/qR3Qnx6HA681DyuT91kXJHkTD9OZfKNuGY2RQ9N
-	rYFrSJGDuuIxoegUPBUbNXeL1y7yXjI/ObNVffGb2/je1QHR4XrprrlXUUhp2IODT7LPQ/AsXun
-	K5h1PuT/aVOUnQ+fW7VOuoK3cJ9SUwyXafXj6kB0HjRJbg7p2nYMq27VURUQ1AqijFT3FCErj27
-	SORgzpdZDoc7QNptF1EYwIvLvKr+qfZhjvt1ef7c1G1oDM7bU4BTImp0mJhvwpykkmtMzAyjqIl
-	pxxgdauzujVCGP8+kdR+QkuSFMsZ+9kQVZY07MAG3aYsDywfWKMnWJNpVHobg3gP95zTDdAYcXf
-	Yw6QncMTKu7l4hO58xZ2Pq6LhH2fUAG5b7FBQ9Wg9skGO1rwPutsvCUTJwrX8gSV+jlw410ircU
-	5UJbqB5qw83G57toBP3ax5hLt6EoVKKlhme4BVynbP1cKcXwxL+iDIdBOasRiLVYhDLmHocniQ/
-	e+XJuMe7oYLE/8PJOUn9YqLwU3yAaWZ1HigsZi/AgIltDuap0/J3LfRIdQu3avXGFLM425Jqg==
-X-Received: by 2002:a05:600c:c48e:b0:49f:ce78:356a with SMTP id 5b1f17b1804b1-49fdeffdc94mr17172215e9.27.1790146224743;
-        Tue, 22 Sep 2026 23:50:24 -0700 (PDT)
-Received: from Ansuel-XPS24.localdomain (host-79-29-83-136.business.telecomitalia.it. [79.29.83.136])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-49fde1e975asm57882535e9.14.2026.09.22.23.50.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 23:50:24 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Brown Huang <brown.huang@airoha.com>,
-	Christian Marangi <ansuelsmth@gmail.com>
-Subject: [RFC PATCH net v5] net: airoha: Add retry mechanism to airoha_qdma_set_trtcm_param()
-Date: Wed, 23 Sep 2026 08:50:14 +0200
-Message-ID: <20260923065015.5999-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qXMkOKo7"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CBE864E41043;
+	Wed, 23 Sep 2026 06:51:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9502260580;
+	Wed, 23 Sep 2026 06:51:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C05F510329298;
+	Wed, 23 Sep 2026 08:51:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790146285; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=pUaLIn+oOf0tZ8toMwBTWM8tTKttxaPOWSyDwEVvWuQ=;
+	b=qXMkOKo7SEpYgYtiAU6qu2AmvSM8wBSZsGKhG4UVi9nkUai6K5QQK7ndEU93BPtPIPMrML
+	2h0rJpQQPj2aIb3goOnTanHedJ9AorqcB0bcq9a52xVcHa2YDwveIaNXlV4la7zf5LzcqC
+	q+kjqDEt4sUNAQlRW0EXunL+m/Q+eOVjGp2VhsGPhkhxL0LY3XCbGd9lHnlxhUM28DY6Jj
+	2bmuX6T5tKlmVyhT8Fj4ffGt7+A8905rsuaFTw/vw0Tgrv1nKoTYA7ur1bJDHaYlfYX2ms
+	HJqXYm/Kc1WLy7F2gkld5xwYeVLi83l5rkSRdJOMoO/Oll3VeIW3vpaKOgbCdQ==
+Message-ID: <c1cde6b7-5883-4dbc-87e9-d7b86f727ba7@bootlin.com>
+Date: Wed, 23 Sep 2026 08:51:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: dsa: microchip: save the periodic output
+ request
+To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, richardcochran@gmail.com, ceggers@arri.de,
+ arun.ramadoss@microchip.com, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260917-fix-perout-v2-1-d8acf3eea6f7@bootlin.com>
+ <178998077822.2160803.3867886756893254872@kernel.org>
+ <635cfefd-c588-4b3f-bbc4-1cf11ef0a2c5@bootlin.com>
+ <99bcc883-1cbb-46f9-9283-cd03e5efafe7@redhat.com>
+Content-Language: en-US
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+In-Reply-To: <99bcc883-1cbb-46f9-9283-cd03e5efafe7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Brown Huang <brown.huang@airoha.com>
+Hi Paolo,
 
-CPU accesses QDMA via the bus. When multiple modules are using the bus
-simultaneously, CPU access to QDMA may encounter bus timeouts and fails,
-resulting in QDMA configuration failures and potentially causing packet
-transmission issues. In order to mitigate the issue, introduce a retry
-mechanism to airoha_qdma_set_trtcm_param routine in order to ensure the
-configuration is correctly applied to the hardware.
+On 9/22/26 12:01 PM, Paolo Abeni wrote:
+> On 9/22/26 08:32, Bastien Curutchet wrote:
+>> On 9/21/26 10:52 AM, netdev-bot+sashiko@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found 2 potential
+>>> issue(s) to consider.
+>>>
+>>> Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 0 (1)
+>>>
+>>> If you believe none of the issues are legitimate, please reply to each
+>>> issue of Medium severity or higher and explain why the AI is wrong.
+>>> If any of them are legitimate and you plan to respin, please let 
+>>> patchwork
+>>> know by including "pw-bot: cr" as a separate line at the end of your 
+>>> reply
+>>> (one such reply per series is enough).
+>>>
+>>> - [High] ksz_ptp_enable_perout()
+>>>    (drivers/net/dsa/microchip/ksz_ptp.c:226) commits the caller- 
+>>> supplied…
+>>> - [Medium] The commit message states that 'if a flag was set in the
+>>>    request that triggered the periodic output, it is lost when the 
+>>> output…
+>>>
+>>> Pre-existing issues:
+>>> - [High] A non-canonical but ABI-accepted period whose timespec64
+>>>    conversion is zero (e.g. period.sec = -1, period.nsec = 1000000000;…
+>>> - [High] In ksz_ptp_restart_perout()
+>>>    (drivers/net/dsa/microchip/ksz_ptp.c) the elapsed-period quotient is…
+>>> - [Medium] The device exposes three trigger output units (caps.n_per_out
+>>>    = 3 at drivers/net/dsa/microchip/ksz_ptp.c:1056, PTP_TOU_INDEX =…
+>>> - [Medium] ksz_ptp_enable_perout() resolves the output pin with
+>>>    ptp_find_pin() (drivers/net/dsa/microchip/ksz_ptp.c:206).
+>>> - [Low] ksz_ptp_tou_reset() (drivers/net/dsa/microchip/ksz_ptp.c:66-86)
+>>>    assigns the result of the TRIG_RESET read-modify-write to 'ret' at…
+>>>
+>>> -- 
+>>>
+>>> net: dsa: microchip: save the periodic output request
+>>>
+>>> The patch replaces the two stored timespec64 values 
+>>> (perout_target_time_first
+>>> and perout_period) in struct ksz_ptp_data with a copy of the full
+>>> ptp_perout_request, so that the index and flags survive a perout 
+>>> restart.
+>>> ksz_ptp_restart_perout() now replays the saved request with only the 
+>>> start
+>>> time recomputed.
+>>>
+>>> A few questions below.
+>>>
+>>>>      When a periodic output is initialized, only the start and the 
+>>>> period are
+>>>>      stored, not the flags nor the pin index. So when the periodic 
+>>>> output is
+>>>>      restarted, the request flags and index are always set to 0. So 
+>>>> if a pin
+>>>>      other than the first one was used, or if a flag was set in the 
+>>>> request
+>>>>      that triggered the periodic output, it is lost when the output is
+>>>>      restarted.
+>>>
+>>> [Severity: Medium]
+>>> Can request->flags ever be non-zero in this driver?
+>>>
+>>> ksz_ptp_clock_register() sets caps.n_pins, caps.n_per_out and the 
+>>> callbacks,
+>>> but never sets caps.supported_perout_flags, and caps lives in the zeroed
+>>> struct ksz_device, so the mask stays 0. The core rejects any flag 
+>>> that is not
+>>> advertised before it calls the driver:
+>>>
+>>> drivers/ptp/ptp_chardev.c:ptp_perout_request() {
+>>>     ...
+>>>     if (perout->flags & ~ops->supported_perout_flags)
+>>>         return -EOPNOTSUPP;
+>>>     ...
+>>>     return ops->enable(ops, &req, perout->period.sec || perout- 
+>>> >period.nsec);
+>>> }
+>>>
+>>
+>> This check is 'fairly' recent, it was added by d9f3e9ecc456 ("net: 
+>> ptp: introduce .supported_perout_flags to ptp_clock_info") (v6.15). I 
+>> experienced the reset issue on a v6.12 kernel.
+>>
+>> Even if it can't happen right now, as soon as this driver registers 
+>> any new flag, the bug will come back.
+>>
+>>
+>>
+>> All others comments are already existing issues that can be fixed 
+>> independently from this patch so I don't plan to address them right now.
+> This one:
+> 
+> """
+> Should the request be committed to ptp_data->perout_request only after 
+> it has
+> been validated and the hardware has actually been programmed?
+> [...]
+> 
+> There is also a period that this check rejects but the memcpy has already
+> stored: period.sec = 4, period.nsec = 294967296 gives 0x100000000 ns, and
+> TRIG_CYCLE_WIDTH_M is GENMASK(31, 0), so the request returns -EINVAL. On 
+> the
+> next clock step, ksz_ptp_restart_perout() feeds that value to
+> div_u64(now_ns - first_ns, period_ns), whose divisor parameter is u32, 
+> so the
+> divisor truncates to 0. Is that a divide error in process context with
+> ptp_data->lock held?
+> """
+> 
+> Looks new to me, and bad.
+> 
 
-It's enough to try a second time for the TRTCM config to be actually
-applied to make sure we are not in the middle of bucket handling as it does
-operate on fixed time slot internally.
+I agree it is bad but it's not new IMO. In the current behavior, the 
+period and target time are already stored before the request being 
+validated. This patch only stores the rest of the request with them.
 
-Fixes: ef1ca9271313b ("net: airoha: Add sched HTB offload support")
-Signed-off-by: Brown Huang <brown.huang@airoha.com>
-[ improve commit description, drop memory block, apply better loop logic]
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
-Changes v5:
-- Drop memory block (not needed)
-- Loop only 2 times
-- Improve description
-Changes v4:
-- Rebase on top of net
-Changes v3:
-- Init data
-- Use continue instead of negative error for poll
-- Add memobry block after CFG_PARAM
+I'll still send a v3 storing the request at the end of the 
+perout_enable() so both issues get fixed at once.
 
- drivers/net/ethernet/airoha/airoha_eth.c | 32 +++++++++++++++++++-----
- drivers/net/ethernet/airoha/airoha_eth.h |  2 ++
- 2 files changed, 28 insertions(+), 6 deletions(-)
+> Also if the issue you are observing on an older kernel is already fixed in
+> the vanilla tree, I suggest instead sending to stable the relevant change.
+> 
+The issue isn't fixed in the vanilla tree, it's only hidden by the fact 
+that the driver doesn't register the flags it supports in 
+.supported_perout_flags.
+And only the flag issue is hidden, the index still gets wrongly set to 0 
+on restart.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 21ac80bdd084..b164a78ddac9 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -3120,14 +3120,34 @@ static int airoha_qdma_set_trtcm_param(struct airoha_qdma *qdma, int channel,
- 		     FIELD_PREP(TRTCM_METER_GROUP_MASK, group) |
- 		     FIELD_PREP(TRTCM_PARAM_INDEX_MASK, idx) |
- 		     FIELD_PREP(TRTCM_PARAM_RATE_TYPE_MASK, mode);
-+	int i;
- 
--	airoha_qdma_wr(qdma, REG_TRTCM_DATA_LOW(addr), val);
--	airoha_qdma_wr(qdma, REG_TRTCM_CFG_PARAM(addr), config);
-+	/*
-+	 * HW might be in the middle of bucket handling and might
-+	 * require an additional try to actually apply the new TRTCM
-+	 * config.
-+	 */
-+	for (i = 0; i < TRTCM_CONFIG_RETRY_MAX; i++) {
-+		u32 data = 0;
- 
--	return read_poll_timeout(airoha_qdma_rr, val,
--				 val & TRTCM_PARAM_RW_DONE_MASK,
--				 USEC_PER_MSEC, 10 * USEC_PER_MSEC, true,
--				 qdma, REG_TRTCM_CFG_PARAM(addr));
-+		airoha_qdma_wr(qdma, REG_TRTCM_DATA_LOW(addr), val);
-+		airoha_qdma_wr(qdma, REG_TRTCM_CFG_PARAM(addr), config);
-+
-+		if (read_poll_timeout(airoha_qdma_rr, data,
-+				      data & TRTCM_PARAM_RW_DONE_MASK,
-+				      USEC_PER_MSEC, 10 * USEC_PER_MSEC,
-+				      true, qdma, REG_TRTCM_CFG_PARAM(addr)))
-+			continue;
-+
-+		if (airoha_qdma_get_trtcm_param(qdma, channel, addr, param,
-+						mode, &data, NULL))
-+			continue;
-+
-+		if (data == val)
-+			return 0;
-+	}
-+
-+	return -EBUSY;
- }
- 
- static int airoha_qdma_set_trtcm_config(struct airoha_qdma *qdma, int channel,
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 286f73e2e1e0..d270729e22ff 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -184,6 +184,8 @@ enum trtcm_param {
- #define TRTCM_TOKEN_RATE_MASK			GENMASK(23, 6)
- #define TRTCM_TOKEN_RATE_FRACTION_MASK		GENMASK(5, 0)
- 
-+#define TRTCM_CONFIG_RETRY_MAX			2
-+
- enum airoha_dma_map_type {
- 	AIROHA_DMA_UNMAPPED,
- 	AIROHA_DMA_MAP_SINGLE,
--- 
-2.55.0
 
+Best regards,
+Bastien
