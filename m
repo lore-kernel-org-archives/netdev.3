@@ -1,343 +1,264 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EAA47F3C5;
-	Wed, 23 Sep 2026 10:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605AE481641
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790158494; cv=none; b=rHXpvta8rU/HkwJ9qjSlfYRpdpcpF2l7dPtsAAKcueD16aVuMSWIfDKOsL7ipfbiL0Aq4+7PoPJ5YhQsLeBty2QnGFK7k1aITAZjg8lkm7Iq8Aiqow3D+lHxDOnmZwfplUXKfeZH/LnYwb5FoFc3WPnIsv/lkEyjv2jvbW0jZAw=
+	t=1790158898; cv=none; b=Wi4Aozm6XUVYiNM4ML1Qr9OKsbAp9Coj13AKNJKqlaJjC9JIDZI7zasPxaaSZChE4Ckk57fl2WTNf3WGLqWZr+LCBdY1l6g8kndmWO9lwUNXV8IUi/m4SUZv7ppv/8TeRjb8z8O3ZvOE0ToNG5r7kebTNTmD28uZtVVD3nRvnSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790158494; c=relaxed/simple;
-	bh=tT3CGbysE//BgveGLAUWMDCFv0yyOVvgFjvvNhzCT4c=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nzrQyteJCF8C9PjMSDAplbv3Ps7CGVpDT6rKd55P9YdDgGxiP7EoKPIYNzN/aCDLGUMzVOqnLbpmVxiSTy1bwvmVaKlB4/i4F4VVJlQCeyMSWoLS1faPkaSQVveKO/NGeGu/94Cot7V08wrRSCBASRHdJo9DzjdrRcWhjhdqCNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=bPYyqNzD; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790158898; c=relaxed/simple;
+	bh=4qjSqIjJRSLWY8kT8aUZHOXLRBvJpPrV+p/O0kGjplU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VGZYQnJdRJsE5fPrK0ckj6R9oTEb0qmGTZoFeaA+U4yOhniuI9MBvRbqQQ80PG43wT2uF7+s9c/gtRxJSEx5lZ2HM8VrSES/BpnH2iMmytiOClipH3PPbyHs6iQedos38Uo+Y7k8/Yn193W2GlM9m1kicsw9PKiC731zJEPaODs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Po4whxyI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AgxeiR2B; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="bPYyqNzD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790158484; x=1821694484;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=tT3CGbysE//BgveGLAUWMDCFv0yyOVvgFjvvNhzCT4c=;
-  b=bPYyqNzDSsT4jMXxI+XtxbnxXy0sOENcFnAjgdmEBk+I7a/JGCss4/sk
-   wm9a7nKhjMZoKIM1A2Ac5TiiRVYlcEu+I5RhDZqEQcQlJ2EsJBArcKkS4
-   kIZE021wTcKwBkZrLAxAPf63kocT2R+VTJBl0SJ3ojZUmvVwpmKj8P4m+
-   adPhIl9GMv8NMgXlpQMHeH73eDmeCYzE4Q8ka9XAE1oyb3AEyXDmMJ7j3
-   lq6bNkV9+C8UEw9vbAWUb11rry0knpPHO+3ZGIRYMDJQKc4Lz47rhIcoH
-   M/D1e5j0UTZxNKkyoE3L6j2GJWsilzunrwEtW9Kg/fkRVGDrOK6if/gkv
-   A==;
-X-CSE-ConnectionGUID: Pa30JuG2SJq29n2dxociEw==
-X-CSE-MsgGUID: zb0+GdwRRWKi52uCOutGAQ==
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="64333347"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Sep 2026 03:14:36 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 23 Sep 2026 03:14:35 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 23 Sep 2026 03:14:31 -0700
-Date: Wed, 23 Sep 2026 12:14:27 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v7 12/14] net: lan966x: add PCIe FDMA XDP support
-Message-ID: <20260923101427.z7inl6pdkf4tddcc@DEN-DL-M70577.microsemi.net>
-References: <20260918-lan966x-pci-fdma-v7-12-0ecc179c8a2c@microchip.com>
- <179008205544.2160803.323034395102452966@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Po4whxyI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AgxeiR2B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790158877;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A/yNGk5DmsVVa7FPt1z8YmmINF36yskI05CuGhzTjCI=;
+	b=Po4whxyIPwX+uXFs8GVs8XB0kys95jd6YxDPNREAUKPBMSMba11cO+p6I1KpMBVrzsQVck
+	IwLeUJjltTqXtDo9RGKM7swUQjKjNhgDCGe2Z1KCBc7W3qBxytf0a+NhMYYHV9AMZs4rVK
+	oVZmhRg3dvEUAoOvOy68iyII5OGd7IA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-jcxIZBXaNXuD6xO6MzE7Ow-1; Wed, 23 Sep 2026 06:21:16 -0400
+X-MC-Unique: jcxIZBXaNXuD6xO6MzE7Ow-1
+X-Mimecast-MFC-AGG-ID: jcxIZBXaNXuD6xO6MzE7Ow_1790158875
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49ccfad90f1so5633355e9.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:21:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790158875; x=1790763675; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=A/yNGk5DmsVVa7FPt1z8YmmINF36yskI05CuGhzTjCI=;
+        b=AgxeiR2BD+8mJAlnclSpLHirysbv4xwP4VXXNk6YBp9b7LG0/m4jQxks6dALYqJ3Ef
+         GR/pXQMQCq7Ckk1EBOmMoQW1QJiuYFo+QOePNX06HrxXK1JK11JLj4EUhjfwZvU8AqxJ
+         kYj3hxfuQLMHC/+YlKUqMWe3jfRYBNfEHf4uRzKOWjRwI5KILuYMHKIgSSz3LBY/dxr3
+         ZFCeG0TdBFJRIII0J8W9UG69FycFUAHuVQc1DSuZVLRQak1MdKS/B53gvj4pNDJ1UXcE
+         d+AJ4MDHPCHL1lNs2fNSQAYzVI/fmzHlWW9cpL2PveKrU/tE/+UOwzCX1OXxXQwpsYAr
+         tVSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790158875; x=1790763675;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A/yNGk5DmsVVa7FPt1z8YmmINF36yskI05CuGhzTjCI=;
+        b=n3xKTjKSvcMjkmSmxSd8G3KXMw+CVhpmWzSyPfiiSU+X1BUwK5J4+wOK5KtTmhccDp
+         BGAJiZFI3YXiQY2oLgclX/gYUXI2+9tUhYL8kQkBttwjcqaGVCwVSkNiKl+lRvnEAgtN
+         NSyOJsGCXbpJqO1mYxEZ1kVTpAgqYfWu4Sqxfa1xyJPQVNVTjLJv9aTVRGQp2xgOHKc8
+         cMy8dZtiF9b183Y0DH/wiRytc9YROLyuMQXlYmfSI8DZhQJXeaWmDjvn5BSe63ApyPBH
+         WLnVQT44uEY8HhVy1vxgNjVnqUY0MgwWopvQ/NI1C8X71Gei0OocJnnPwXLpKzTytRRI
+         O1lQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxap3c+LXiKY0rZLf2ww55HPNq0T2TzBYsFdW4JEW+gYMbnp3FcqleVSX7bGu6VPmxNg/hQpW8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mv2EXyHUaX1EkukpfN71tMkO4AP12ZIPHEUTgSzBMc81Ou7RZJ
+	aiDYFzV3ZA1UKQy+z2kDROkZH0nt5TNww6WhN/yUV0zsCD8cSJ1sbfwDP4XFWaSdZqLK9T7bPNf
+	93R+Jkj5IneZFwCG5PI48PFh1X3JTmLSsHs+DEF9YekhnrbarzmjXjxRSlw==
+X-Gm-Gg: AYBFou3it14u6ha347getJn5eABTpslEv2j/rSftBWPOvmL4RGoWTWW/4DGx1G0wTlC
+	dPc3anlr3og+/CDj/CnJE1Wjx0M4ldw8U+8L2mAl43vXhihc2/kaKYWsMIj3Pv+iQExPXVWe7cs
+	teumz7cvvtjiKNDRs7IoU2GaRtkzE5aSzX/qed2Z95jZj4hUGCqN5vhx0xkwFnUrAAhJmI4umj9
+	Wb3d9ph2kePFheJ+kxQjrbltRT4s3JHeCH12ctM0cPn0UncWL2ldZbY+MJD77rp39t9tHGp4P6B
+	9T34Ftmi4AXhwNb30cIMtCG25a5/GP0lFFnzeQNkgEgv4Bul5XF7Nr87CvBDl4W1n9e5zQ==
+X-Received: by 2002:a05:600c:4712:b0:49d:2536:402e with SMTP id 5b1f17b1804b1-49fdf24f928mr27542145e9.30.1790158875127;
+        Wed, 23 Sep 2026 03:21:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:4712:b0:49d:2536:402e with SMTP id 5b1f17b1804b1-49fdf24f928mr27541455e9.30.1790158874532;
+        Wed, 23 Sep 2026 03:21:14 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdf9691e2sm57317795e9.1.2026.09.23.03.21.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 03:21:13 -0700 (PDT)
+Date: Wed, 23 Sep 2026 06:21:09 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Paulos Yibelo <habte.yibelo@gmail.com>, netdev@vger.kernel.org,
+	richard@nod.at, anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net, jasowangio@gmail.com,
+	eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+	andrew+netdev@lunn.ch, pablo@netfilter.org, fw@strlen.de,
+	phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com,
+	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-um@lists.infradead.org, virtualization@lists.linux.dev,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	bridge@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v6 1/2] net: validate virtio checksum start after
+ network header
+Message-ID: <20260923061215-mutt-send-email-mst@kernel.org>
+References: <20260922030310.8684-1-habte.yibelo@gmail.com>
+ <20260922030310.8684-2-habte.yibelo@gmail.com>
+ <willemdebruijn.kernel.259bc7096258d@gmail.com>
+ <willemdebruijn.kernel.2cdfef118aa1d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179008205544.2160803.323034395102452966@kernel.org>
+In-Reply-To: <willemdebruijn.kernel.2cdfef118aa1d@gmail.com>
 
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
+On Tue, Sep 22, 2026 at 09:27:26PM -0400, Willem de Bruijn wrote:
+> Willem de Bruijn wrote:
+> > Paulos Yibelo wrote:
+> > > __virtio_net_hdr_to_skb() checks a minimum network-header length for
+> > > CHECKSUM_PARTIAL packets. Its checksum start is relative to skb->data,
+> > > but some callers have not established skb->network_header when they
+> > > convert the virtio header.
+> > > 
+> > > Pass the data-relative L3 origin explicitly. Ethernet receive paths
+> > > parse the frame and nested VLAN headers without changing skb state.
+> > > AF_PACKET uses the frame's actual L3 origin even when the socket
+> > > protocol is ETH_P_IP and the raw frame carries VLAN tags. Non-Ethernet
+> > > AF_PACKET devices retain their established skb network offset.
+> > > 
+> > > Also pass the actual L3 protocol so IPv6 packets use the 40-byte base
+> > > header minimum even without TCPv6 GSO. IFF_TUN obtains that protocol
+> > > from the packet before skb->protocol is set. Name the Ethernet parser
+> > > accordingly, use the same origin for tunnel validation, and propagate
+> > > conversion failures in UML.
+> > > 
+> > > The bound remains a minimum; fragmentation paths separately validate
+> > > the parsed IPv4 or IPv6 header length before completing a checksum.
+> > > 
+> > > Fixes: 49d14b54a527 ("net: test for not too small csum_start in virtio_net_hdr_to_skb()")
+> > > Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
+> > > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > > Link: https://lore.kernel.org/netdev/20260920004733.6473-2-habte.yibelo@gmail.com/
+> > > Cc: stable@vger.kernel.org
+> > > Assisted-by: LLM
+> > > Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > > ---
+> > >  arch/um/drivers/vector_transports.c | 13 ++++-
+> > >  drivers/net/tun_vnet.h              | 52 ++++++++++++++++-
+> > >  drivers/net/virtio_net.c            | 10 +++-
+> > >  include/linux/virtio_net.h          | 87 ++++++++++++++++++++++++-----
+> > >  net/packet/af_packet.c              | 24 +++++++-
+> > >  5 files changed, 163 insertions(+), 23 deletions(-)
+> > 
+> > The fix may still miss the case IPv4 packets have options.
+> > 
+> > This version is a very large patch.
+> > 
+> > Untested shorter first suggestion by bot, which looks plausible as a
+> > starting point for discussion.
 > 
-> Critical: 0 · High: 0 · Medium: 3 · Low: 0
+> Cleaned up some more:
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
+>     diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+>     index f4c652b1fa44..c24607af2aad 100644
+>     --- a/drivers/net/tun_vnet.h
+>     +++ b/drivers/net/tun_vnet.h
+>     @@ -180,6 +180,9 @@ static inline int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
+>      static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
+>                            const struct virtio_net_hdr *hdr)
+>      {
+>     +    if ((flags & TUN_TYPE_MASK) == IFF_TUN)
+>     +        skb_reset_network_header(skb);
+>     +
+>          return virtio_net_hdr_to_skb(skb, hdr, tun_vnet_is_little_endian(flags));
+>      }
+>      
+>     @@ -199,6 +202,9 @@ tun_vnet_hdr_tnl_to_skb(unsigned int flags, netdev_features_t features,
+>                  struct sk_buff *skb,
+>                  const struct virtio_net_hdr_v1_hash_tunnel *hdr)
+>      {
+>     +    if ((flags & TUN_TYPE_MASK) == IFF_TUN)
+>     +        skb_reset_network_header(skb);
+>     +
 > 
-> - [Medium] The same lan966x driver now presents two different XDP frame
->   views depending on the FDMA back-end.
-> - [Medium] lan966x_xdp_pci_run()
->   (drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c) has no…
-> - [Medium] lan966x_fdma_pci_napi_poll() bounds its RX loop only by the
->   caller-supplied weight, and clears the DONE bits solely in the…
-> 
-> --
-> 
-> net: lan966x: add PCIe FDMA XDP support
-> 
-> This adds XDP support to the lan966x PCIe FDMA path, running the BPF
-> program on the contiguous ATU-mapped RX buffer and implementing XDP_TX by
-> rebuilding the IFH and memcpy'ing the post-XDP frame into a TX slot. The
-> IFH and FCS are now stripped in lan966x_fdma_pci_rx_check_frame() before
-> the program runs, and lan966x_xdp_setup() no longer rejects programs on
-> the PCIe path.
-> 
-> A few questions below.
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > index 940425beec2f..e833dbb4fcf0 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> 
-> [ ... ]
-> 
-> > +static int lan966x_xdp_pci_run(struct lan966x_port *port, void *data,
-> > +                            u32 data_len, void **xdp_data, u32 *xdp_len)
-> > +{
-> 
-> [ ... ]
-> 
-> > +     act = bpf_prog_run_xdp(xdp_prog, &xdp);
-> > +
-> > +     *xdp_data = xdp.data;
-> > +     *xdp_len = xdp.data_end - xdp.data;
-> > +
-> > +     switch (act) {
-> > +     case XDP_PASS:
-> > +             return FDMA_PASS;
-> > +     case XDP_TX:
-> > +             return lan966x_fdma_pci_xmit_xdpf(port, *xdp_data, *xdp_len) ?
-> > +                    FDMA_DROP : FDMA_TX;
-> > +     default:
-> > +             bpf_warn_invalid_xdp_action(port->dev, xdp_prog, act);
-> 
-> [Severity: Medium]
-> Should this switch have an XDP_REDIRECT arm, at least for the bonding
-> case?  XDP_TX can be rewritten into XDP_REDIRECT inside
-> bpf_prog_run_xdp() before the driver sees the action:
-> 
-> include/net/xdp.h:bpf_prog_run_xdp() {
->         u32 act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
-> 
->         if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
->                 if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
->                         act = xdp_master_redirect(xdp);
->         }
->         ...
-> }
-> 
-> bond_xdp_set() increments bpf_master_redirect_enabled_key and only
-> requires the slave to provide ndo_bpf and ndo_xdp_xmit, both of which
-> lan966x_port_netdev_ops provides on the PCIe path as well.  Before this
-> patch lan966x_xdp_setup() rejected any program on the PCIe path, so this
-> combination was not reachable; now it is.
-> 
-> With no XDP_REDIRECT case, a program returning XDP_TX on a bonded PCIe
-> port lands in the default arm, so the frame is dropped,
-> bpf_warn_invalid_xdp_action() prints "Driver unsupported XDP return value
-> 4", trace_xdp_exception() fires, and the per-CPU redirect info stashed by
-> xdp_master_redirect() is never consumed - while lan966x_probe_port() now
-> advertises NETDEV_XDP_ACT_BASIC (XDP_TX) for exactly this path.
-> 
-> The other implementer of the same lan966x_fdma_action values,
-> lan966x_xdp_run() in lan966x_xdp.c, does handle XDP_REDIRECT, so the two
-> sides of the shared enum disagree.
-> 
+>     diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+>     index c381b916c1b5..02c448de0802 100644
+>     --- a/include/linux/virtio_net.h
+>     +++ b/include/linux/virtio_net.h
+>     @@ -48,6 +48,42 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
+>          return 0;
+>      }
+>      
+>     +static inline int virtio_net_hdr_nh_min_len(const struct sk_buff *skb,
+>     +                        unsigned int nh_min_len)
+>     +{
+>     +    int thoff = skb_transport_offset(skb);
+>     +    __be16 proto;
+>     +    int nhoff;
+>     +
+>     +    if (skb_network_header_was_set(skb)) {
+>     +        nhoff = skb_network_offset(skb);
+>     +        proto = skb->protocol;
+>     +    } else {
+>     +        if (unlikely(thoff < ETH_HLEN))
+>     +            return -EINVAL;
+>     +        nhoff = ETH_HLEN;
+>     +        proto = eth_hdr(skb)->h_proto;
+>     +    }
+>     +
+>     +    if (eth_type_vlan(proto)) {
+>     +        proto = __vlan_get_protocol(skb, proto, &nhoff);
+>     +        if (!proto)
+>     +            return -EINVAL;
+>     +    }
+>     +
+>     +    if (proto == htons(ETH_P_IP)) {
+>     +        const struct iphdr *iph = (void *)(skb->data + nhoff);
+>     +
+>     +        if (unlikely(thoff < nhoff + sizeof(*iph)))
+>     +            return -EINVAL;
+>     +        nh_min_len = max_t(u32, iph->ihl * 4, sizeof(*iph));
+>     +    } else if (proto == htons(ETH_P_IPV6)) {
+>     +        nh_min_len = sizeof(struct ipv6hdr);
+>     +    }
+>     +
+>     +    return nhoff + nh_min_len;
+>     +}
+>     +
+>      static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+>                            const struct virtio_net_hdr *hdr,
+>                            bool little_endian, u8 hdr_gso_type)
+>     @@ -98,13 +134,15 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+>              u32 start = __virtio16_to_cpu(little_endian, hdr->csum_start);
+>              u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+>              u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
+>     +        int min_thoff;
+>      
+>              if (!pskb_may_pull(skb, needed))
+>                  return -EINVAL;
+>      
+>              if (!skb_partial_csum_set(skb, start, off))
+>                  return -EINVAL;
+>     -        if (skb_transport_offset(skb) < nh_min_len)
+>     +        min_thoff = virtio_net_hdr_nh_min_len(skb, nh_min_len);
+>     +        if (min_thoff < 0 || skb_transport_offset(skb) < min_thoff)
+>                  return -EINVAL;
 
-I think this is fine. We explicitly tell (through dev->xdp_features) that we do
-not support NETDEV_XDP_ACT_REDIRECT in the PCI path, so falling back to a
-warning seems OK to me.
 
-> > +             fallthrough;
-> > +     case XDP_ABORTED:
-> > +             trace_xdp_exception(port->dev, xdp_prog, act);
-> > +             fallthrough;
-> > +     case XDP_DROP:
-> > +             return FDMA_DROP;
-> > +     }
-> > +}
-> > +
-> > +static int lan966x_fdma_pci_rx_check_frame(struct lan966x_rx *rx, u64 *src_port,
-> > +                                        void **data, u32 *data_len)
-> >  {
-> >       struct lan966x *lan966x = rx->lan966x;
-> >       struct fdma *fdma = &rx->fdma;
-> > @@ -168,38 +286,33 @@ static int lan966x_fdma_pci_rx_check_frame(struct lan966x_rx *rx, u64 *src_port)
-> >       if (!lan966x_fdma_pci_rx_size_fits(fdma, blockl))
-> >               return FDMA_ERROR;
-> >
-> > -     return FDMA_PASS;
-> > +     /* Present the Ethernet frame (no IFH, no FCS). HW re-inserts the
-> > +      * FCS on TX; see lan966x_fdma_pci_xmit_xdpf(). May be overridden
-> > +      * by XDP. The FCS strip is unconditional because NETIF_F_RXFCS
-> > +      * is not advertised in hw_features.
-> > +      */
-> > +     *data = virt_addr + IFH_LEN_BYTES;
-> > +     *data_len = blockl - IFH_LEN_BYTES - ETH_FCS_LEN;
-> > +
-> > +     return lan966x_xdp_pci_run(port, virt_addr, *data_len, data, data_len);
-> >  }
-> 
-> [Severity: Medium]
-> The commit message states:
-> 
->     XDP sees the frame with IFH and FCS stripped.
-> 
-> Is that only true for the PCIe back-end?  The platform back-end of the
-> same driver hands the FCS to the program:
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c:lan966x_xdp_run() {
->         ...
->         xdp_prepare_buff(&xdp, page_address(page),
->                          IFH_LEN_BYTES + XDP_PACKET_HEADROOM,
->                          data_len - IFH_LEN_BYTES, false);
->         ...
-> }
-> 
-> and the trailing 4 bytes are only removed afterwards, once the program has
-> already run:
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_rx_get_frame() {
->         ...
->         if (likely(!(skb->dev->features & NETIF_F_RXFCS)))
->                 skb_trim(skb, skb->len - ETH_FCS_LEN);
->         ...
-> }
-> 
-> So one XDP program keyed on xdp->data_end - xdp->data, or doing an IP
-> total-length cross-check or tail parsing, sees 4 extra bytes on a platform
-> lan966x and not on a PCIe lan966x, and for XDP_TX the platform path
-> re-sends the stale FCS as payload while the PCIe path strips it and lets
-> HW insert a fresh one.
-> 
-> Could either the platform path be harmonized in this series, or the commit
-> message say that the divergence is known and intentional?
+Certainly looks much better. But I'd like to ask, generally:
+doesn't the net stack need to protect against weird packets?
 
-Same as my reply to v6. I believe the correct handling (as done here) is to
-strip the FCS before the program runs. Also, the platform path does not even use
-the post-program length, so its not really compareable.
+It seems likely that not all drivers validate headers defensively,
+and incoming packets can easily become outgoing ones.
+So do we even need virtio specific validation, or is it enough to
+validate everything in the net stack, where we are poking at the
+header anyway?
 
-> 
-> [ ... ]
-> 
-> > @@ -287,6 +400,8 @@ static int lan966x_fdma_pci_napi_poll(struct napi_struct *napi, int weight)
-> >       struct sk_buff *skb;
-> >       int counter = 0;
-> >       u64 src_port;
-> > +     u32 data_len;
-> > +     void *data;
-> >
-> >       /* Wake any stopped TX queues if a TX DCB is available. */
-> >       spin_lock(&lan966x->tx_lock);
-> > @@ -303,7 +418,10 @@ static int lan966x_fdma_pci_napi_poll(struct napi_struct *napi, int weight)
-> >               /* Order DONE read before DCB/frame reads below. */
-> >               dma_rmb();
-> >               counter++;
-> > -             switch (lan966x_fdma_pci_rx_check_frame(rx, &src_port)) {
-> > +             switch (lan966x_fdma_pci_rx_check_frame(rx,
-> > +                                                     &src_port,
-> > +                                                     &data,
-> > +                                                     &data_len)) {
-> >               case FDMA_PASS:
-> >                       break;
-> >               case FDMA_ERROR:
-> > @@ -312,8 +430,17 @@ static int lan966x_fdma_pci_napi_poll(struct napi_struct *napi, int weight)
-> >                        */
-> >                       fdma_dcb_advance(fdma);
-> >                       continue;
-> > +             case FDMA_TX:
-> > +                     fdma_dcb_advance(fdma);
-> > +                     continue;
-> > +             case FDMA_DROP:
-> > +                     fdma_dcb_advance(fdma);
-> > +                     continue;
-> >               }
-> 
-> [Severity: Medium]
-> Can the same descriptors be processed twice when the RX loop consumes the
-> whole ring in one poll?
-> 
-> The RX loop is bounded only by the caller-supplied weight, and the DONE
-> bits are cleared solely by the fdma_dcb_add() in the replenish loop, whose
-> trip count comes from a wrapped index comparison:
-> 
-> lan966x_fdma_pci_napi_poll() {
->         dcb_reload = fdma->dcb_index;
-> 
->         while (counter < weight) {
->                 if (!fdma_has_frames(fdma))
->                         break;
->                 ...
->         }
->         while (dcb_reload != fdma->dcb_index) {
->                 old_dcb = dcb_reload;
->                 dcb_reload++;
->                 dcb_reload &= fdma->n_dcbs - 1;
-> 
->                 fdma_dcb_add(fdma, old_dcb, ...);
->                 lan966x_fdma_rx_reload(rx);
->         }
->         ...
-> }
-> 
-> The PCIe ring has FDMA_PCI_DCB_MAX = 256 descriptors.  With all 256 DONE
-> and weight >= 256, fdma_dcb_advance() wraps fdma->dcb_index back to
-> dcb_reload, so the replenish loop runs zero iterations: nothing is
-> re-armed and no DONE bit is cleared.  counter == weight also suppresses
-> napi_complete_done(), so the next poll re-processes the same 256
-> descriptors - duplicate skbs via napi_gro_receive(), and with this patch
-> the same frames are re-run through the BPF program and re-transmitted by
-> lan966x_fdma_pci_xmit_xdpf() on XDP_TX.
-> 
-> A weight >= 256 is reachable through busy polling: SO_BUSY_POLL_BUDGET
-> accepts up to U16_MAX (CAP_NET_ADMIN needed to raise it) and
-> __napi_busy_loop() passes that budget straight into napi->poll():
-> 
-> net/core/dev.c:__napi_busy_loop() {
->         ...
->         work = napi_poll(napi, budget);
->         ...
-> }
-> 
-> The loop shape itself came in with "net: lan966x: add"Can" PCIe FDMA support"
-> earlier in this series, and the platform twin lan966x_fdma_napi_poll() has
-> the same shape with 512 DCBs; this patch extends the switch with
-> FDMA_TX/FDMA_DROP, which adds the repeated XDP execution and repeated
-> transmit to the effects.  Would counting consumed descriptors and capping
-> the loop at fdma->n_dcbs address this?
-> 
+Or maybe it's more a defense in depth thing?
 
-Reachable only if budget is pushed above ring size. The PCI NAPI poll reuses the
-same pattern as the platform path (and lan969x and sparx5), and no issues have
-ever been observed or reported.
+My worries:
+- more poking at the header, more cache misses, where we really
+  do not need that
+- future protocol extensions that now will require surgery in
+  virtio, instead of just being passed through to the host
 
-> > -             skb = lan966x_fdma_pci_rx_get_frame(rx, src_port);
-> > +             skb = lan966x_fdma_pci_rx_get_frame(rx,
-> > +                                                 src_port,
-> > +                                                 data,
-> > +                                                 data_len);
-> >               fdma_dcb_advance(fdma);
-> >               if (!skb) {
-> >                       lan966x->ports[src_port]->dev->stats.rx_dropped++;
-> 
-> [ ... ]
-> 
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-lan966x-pci-fdma-v7-0-0ecc179c8a2c%40microchip.com
+What do others think?
+
+-- 
+MST
+
