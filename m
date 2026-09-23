@@ -1,77 +1,95 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-zbxj-a75.jellyfish.systems (out-zbxj-a75.jellyfish.systems [198.54.127.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A09452843F;
-	Wed, 23 Sep 2026 13:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81052843F
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790168964; cv=none; b=fontmqjTFRWlgkIWaGtn8Vd891jccURn/Mvr3fYk+kZOBS6nS/eAssgjHn6Cm1/LYJZhrZfwxtg7csMnJtzjs5U8VRaXGxKJIU2G5fxBzrApRlgjFiDAj6Nv5eNumfNHJ6ucx/JPEVBbIWvYdPe9mEG9SI6WJI17Gd/bXp9Gmxs=
+	t=1790169320; cv=none; b=sR8L/d5jejRyCTkNdOHO0b0adDnDYQRSqlGQfFpC+gv2snZ2CMj9JyiD6GE4DbGfQmxpbKVWq15KPzRkFyS0wQ/KnCLbWVnWVLu/6POQvN+YDmymZg6Jtpzz7Rofc1CARENtKfRZmuLCqs1ozvNxUD83/PljeB+T7RAOQDusUss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790168964; c=relaxed/simple;
-	bh=PMfQYJu4S+eyo4CBcRx81ldB54dXieCgifT7oTiD4WQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e8RGHUXtUJ2iqkaqzJPCwIXlBZkI0D+rXRtfTCWlXbDX72WxmNy1d61XGqkWsnb6y2+bXMq5EvQn5SdyezZpMPBaL1MA6zwCFzUVHqMmABiKLPeYeZeqayNKsEJfsQWRIBxpsLF8yV3wO6le1823A46/C39WXw5VP8QVIOXlTUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ijRDIoVc; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790169320; c=relaxed/simple;
+	bh=SBbfOKGI8sf0uZR4Zr6/WeThSRVc6pW0M/M42ACFumo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OeGcHtjhKbB9f1dHPb6TgMcPI1O2O7Mflqxr0+jBvw6hiK1rsiuOJI7L5sNF53tpNETX5DDTh7JxFDNCBXr43lXyLbxSSj/KYGc530sLCyK74WwFp0NRI4HSLTp8pRmT9swetgIk1ILG3Xih8+HmdfxWVVzZtLHzo/G9FRl1yjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=PTRkaiwd reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ijRDIoVc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eX4lFJvGPAAq+TJkwdWXeBO2K4L3FS4jS7wg6NEAm3A=; b=ijRDIoVchibeZIUomjltED/2Hq
-	VfxSznYOnK+TKFtBwkXpLs4nqsS0KB4L5IpvK3W62pbep+V5Z3dF8tMMIybdkQA9cUYh/IqgOp9K6
-	ZcJ+7Mrpn3YQg1KknkSRVw7gQn0AIx2TzD0Rpg/giMDIqJxODtoWeq0eZxmzbsHxsFkw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x9Mib-006oGi-Qs; Wed, 23 Sep 2026 15:09:01 +0200
-Date: Wed, 23 Sep 2026 15:09:01 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>
-Cc: shengchao.guo@oss.qualcomm.com, bartosz.golaszewski@oss.qualcomm.com,
-	mohd.anwar@oss.qualcomm.com, maxime.chevallier@bootlin.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] net: stmmac: support low-speed USXGMII validation
-Message-ID: <e05baad3-49ec-4db0-ac70-ffd8e0f52b10@lunn.ch>
-References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
- <20260923084921.3942100-1-zhangfei.gao@oss.qualcomm.com>
- <20260923084921.3942100-2-zhangfei.gao@oss.qualcomm.com>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="PTRkaiwd"
+Received: from research-box.ec2.internal (ec2-3-80-226-50.compute-1.amazonaws.com [3.80.226.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqcrk5rVbz6tkh;
+	Wed, 23 Sep 2026 13:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1790169306;
+	bh=PpWvLYkAetBYUfwKXZZWY3lH6daRUogwJjCH3uHpUlA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PTRkaiwduPN4dlwu+/NkoGP2APoPAK6DCtmgDcUbxdCLK+3Q3jh3tcpSOaTJkiLSe
+	 JV1+A6NQCLIOZ0WaFmMh1XoRu3NCgsAXI5KgSAamVf4/7Zn0N8feiDquipHosSQRu8
+	 DdXANPmhaTluZYFCLyU5SazOOoRhuUkKQxY+NgF9SwDucdOR0kY+9SalfTA2W8IOMp
+	 RdKCBP7LBeyq+s3/jiR1dvKOJIMKt8BlLBDHKYYUGRE8J/G14PReYB/loHDjiIgYYN
+	 V1WREg260jxan7BvRVrFEWj22ytTKomwkriTrM6z2oNM4bFYdVP4Kw17Omt9RXfkkn
+	 Oqy3o8mJ9RKAg==
+From: Rahul Chandelkar <rc@rexion.ai>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	Rahul Chandelkar <rc@rexion.ai>
+Subject: [PATCH nf-next v4 2/4] netfilter: nf_conntrack_irc: use nf_ct_helper_parse_port()
+Date: Wed, 23 Sep 2026 13:15:01 +0000
+Message-ID: <20260923131501.2934482-1-rc@rexion.ai>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260923091608.2617604-1-rc@rexion.ai>
+References: <20260923091608.2617604-1-rc@rexion.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923084921.3942100-2-zhangfei.gao@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: rc@rexion.ai
 
-> The XPCS also consumes the PHY-generated Clause 37 in-band link and
-> speed status, so USXGMII must use in-band signalling.
+parse_dcc() stored the result of simple_strtoul() directly into a u16
+*port, so a DCC port above 65535 was silently truncated (e.g. 65537
+became 1), creating a conntrack expectation for a port that never
+appeared in the DCC command.
 
-Is this a qualcomm specific feature, or defined in the databook of the
-licensed IP.
+Use nf_ct_helper_parse_port(), which parses the length-delimited buffer
+without relying on NUL termination and rejects port 0 and values above
+65535.
 
->  	case DW_AN_C37_USXGMII:
-> -		return LINK_INBAND_DISABLE;
-> +		/* The PCS consumes the PHY's CL37 in-band link and speed status. */
-> +		return LINK_INBAND_ENABLE;
+Fixes: 869f37d8e48f ("[NETFILTER]: nf_conntrack/nf_nat: add IRC helper port")
+Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+---
+ net/netfilter/nf_conntrack_irc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-I ask, because when i look at this, i immediately think is this a
-behaviour change? Is it going to break existing systems? Or was the
-old code broken?
+diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
+index 92360963757a..268ce7c1f9b2 100644
+--- a/net/netfilter/nf_conntrack_irc.c
++++ b/net/netfilter/nf_conntrack_irc.c
+@@ -88,7 +88,9 @@ static int parse_dcc(char *data, const char *data_end, __be32 *ip,
+ 		data++;
+ 	}
+ 
+-	*port = simple_strtoul(data, &data, 10);
++	if (nf_ct_helper_parse_port(data, data_end - data, port, &data))
++		return -1;
++
+ 	*ad_end_p = data;
+ 
+ 	return 0;
+-- 
+2.43.0
 
-The commit message is where you try to guess what reviewers are going
-to ask, and answer the question before they ask. Seeing such answers
-in the commit message gives me a good idea you have done your due
-diligence, and the patch is probably O.K. Without such comments, i
-have to assume this is poor quality code and really exam it in detail.
-
-     Andrew
