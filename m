@@ -1,236 +1,122 @@
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6C23B7B72
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41DA3B993B;
+	Wed, 23 Sep 2026 03:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790135555; cv=none; b=SlYj1GPg8h73ikyEzqEFaaBnRLpddbdR1svFehdsdUauEd7r1fWHTFX66crYYInpoZSwW9RLlCYIePoolajLezWH7YCW4e8zciZPh5FfbsGTjtYwd2eZns+herRRO2YBKK0UhzrkluSD45O4NJxr1ZvUqAd12vbpj9CB/d1v+QA=
+	t=1790135992; cv=none; b=KL9jtX304d4pjDqG+LTSwSXaDmtDBpQ/lLVaLQeZ9CRhTsA/jWoa7v7GkWyaDMfcp8yNauE6HAMzy5pB9U53dNsukBZSe2MqEFqJPsqpQZvModzkxjWOw2mVGFXr40PoVFmueLnakth3l09HCB5FsiN6JAEJQgJ3MRctcy+iXdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790135555; c=relaxed/simple;
-	bh=Dl/7sLT48SGnsqc02ginEt6412z6YI6qpdUrXPg08q0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KV20e+IL7x451l+cy0EJiR5C8WzyANfpGeXz1s1g6pW6imOGryyHPl6ve0NZOd80FSR2IyK17BMtTyBVp/BjY8nX58SKW+o5U5z9JrOLkZIztxjKIFbRejjRtSg977y/zJ7o2zJXR+UywjR4ct1mUxw3fntp1SzT4Ryl/QEvVRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f63gSroa; arc=none smtp.client-ip=209.85.219.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1790135992; c=relaxed/simple;
+	bh=Ade9z2snR8UANxq8D449N9U8rLoOAtRhCLpA06rC1d8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AMnEbthH3HBEzd71SNC8bqDwtcODqjtG8lTRJme59GfilgSci2tPl0uFS3+Imlrd1Mrumy1AEcrOk3J47jrRl3aulvg08vF3P+qc7T4OegKsfMOBUSOq1xs3E47EIvF0zN5YvmIzW9fH/+vhO4XmFVGRI0ycvSGDQ1J23BwlEMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=glmLy8V7; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f63gSroa"
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90e8135d7eeso9079496d6.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790135552; x=1790740352; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7dGWsyugkeBiAvstwI3BqXWrM8JznyumSObXzLvLvUU=;
-        b=f63gSroac+Q00agYD3WqF+XZZcwBEve/LtPKzN8O9xYfwuvs7uNYudh1w3vGj0+JBD
-         mdp6ZvCVqq7hChrOGCQK7xY0MVh1iBxDYSKZymsOJEa5jvPe/ucfXTqYVhvV6id1ttak
-         rjdHvkNU8K0SOUHC3Wf0Ze7l/KbeFNWUOMJvNZPj+NLHr0tINq3t3rvotF04PKyD2WQr
-         xI/Wh1PIcMD6kkrz82rOTPBou4iUBFCv0z3b5jgLYLSIcP3mfyWLBnRq6MPXFsl3fjyx
-         uhNeg/IRW5pleOlXRi/w+7/buiDDrzo8xotvPROoPwdGj5SYWloZn9YkflU+JW5S9Hdm
-         sg7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790135552; x=1790740352;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7dGWsyugkeBiAvstwI3BqXWrM8JznyumSObXzLvLvUU=;
-        b=X+slNZU/mEXVddnI38EoLrJHjdOIeNz8b1qgHL7yXJT6A0gX5Q11BEigSK5Rr06wKl
-         YDbrSAJA+2DOYXG+9LoqKWat6uf60QqZADVZqpSRzHGWHGPfZsCr6cmx069jkjtD70+r
-         Zu/klwr2sNMYYq9DKCBG9+mIAuEwUYZktCc4B0jeaFUgJldBl+2szXYglI4XbUcOu4w6
-         UoAaJKCPJjiW1Cj66P9sT1KbzwZhQ11jmqEt8zhq50PmnxFORhnAOjAQEKfO1m+JzJhY
-         wFyVy3bZ2O5LK/WKaLzTK/eAn+2c8xdg9g3BiHZfjyOxbw8M1hrdSgtPyhPRovlgDrAk
-         kuVg==
-X-Forwarded-Encrypted: i=1; AKwUvBzy9WPQMeWCQMh7pdS9sARkU/T6X3zOqyOZi89orscDYTOF4kDHuiUfrRES8+2NkD7wh6mPXQI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lfXI+T1P2ICZefcu++ANDtLRSQaa5nz9y67/DdSlERdNKohzcD
-	a8FjJFUefB4eiKod/IUsNp2GaO0O1yhtSOWyx4I8fz+yz/eKEskUsTqb0Bvi0rMYlxSo+zv6+8+
-	VksDEF042mdasQA==
-X-Received: from qvc3.prod.google.com ([2002:a05:6214:8103:b0:912:53a1:3e84])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:3197:b0:912:4653:9a80 with SMTP id 6a1803df08f44-9140c41f94emr21645756d6.24.1790135552070;
- Tue, 22 Sep 2026 20:52:32 -0700 (PDT)
-Date: Wed, 23 Sep 2026 03:52:17 +0000
-In-Reply-To: <20260923035217.179102-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="glmLy8V7"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N3jguJ3270954;
+	Tue, 22 Sep 2026 20:59:42 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=583TZTC+aB6USk9lHMGAYPPxI
+	yLBzC0OlAKfReC3We8=; b=glmLy8V7s2dGo6NS/MrbbpzsSGWwm5gUiKnzJPoF1
+	PeL2sPvwm3Jh6RTr2zd2u0Vymww+C0oPNp+ubjYBm1hQkUC1yUjN1fTcAnA3dFP2
+	CVOeKxqSYfXyMa47ciov43JiXcWG6hc9x7liIFtB7IFcQur29oGw/HZgGt2DraPV
+	EvUsNEEtT04W3LdFIeONmeCyjA4zoojJWoDiZMnzUz4Jx+IhhUQ7FCK0ggPHVhts
+	zDwZH8Z1B4FpdEsp4FonnlpSXn68Xn5aJEynDHLgpf9dxZNfooVc3KK2tiK1dI1B
+	af7Ib6Bqbn3BniGNjV2fvnddRaST5d2FLGdnAffwNaDNA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4guabug678-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2026 20:59:42 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 22 Sep 2026 20:59:41 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 22 Sep 2026 20:59:41 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 1A3B93F7072;
+	Tue, 22 Sep 2026 20:59:37 -0700 (PDT)
+Date: Wed, 23 Sep 2026 09:29:31 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v2 net-next] octeontx2-af: Add couple of mailbox support.
+Message-ID: <arNOo2m2UV0R7AOZ@rkannoth-OptiPlex-7090>
+References: <20260923032816.1740106-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260923035217.179102-1-edumazet@google.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260923035217.179102-6-edumazet@google.com>
-Subject: [PATCH net v3 5/5] gre: do not read inner frame as erspan metadata in
- collect_md mode
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, William Tu <u9012063@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260923032816.1740106-1-rkannoth@marvell.com>
+X-Proofpoint-ORIG-GUID: gVm3oQgbp3mLAIAo7zO6K9f75CiZj8Uv
+X-Proofpoint-GUID: gVm3oQgbp3mLAIAo7zO6K9f75CiZj8Uv
+X-Authority-Analysis: v=2.4 cv=PMOaavqC c=1 sm=1 tr=0 ts=6ab34eae cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8
+ a=M5GUcnROAAAA:8 a=FXRivRzO7OE6NwQmqLIA:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAxNSBTYWx0ZWRfX4wnlHyE1Rs3T
+ 0G4QTuGi+ldMPgjCEymB/5PGtR2Dt46yRmfOh4Os/q1Dm1xOdqdXgRVaPSaATl7cbFf3XLzlLHs
+ 2ITM3XunZFAnwfVmx0NcSFUcgUGzfDsCzHUkmVVOwsPm885sGANBRiek716NjEbBt427KIFld2g
+ ClhAnkB3Qo5d9ufTwngte0FBhDL7qX59JrcqMWI2DJp8CBmzdTLb8MYT4bgO4OH35X0uQnbK0m3
+ Eu/E2pNYL7Go4jbJFxHa75luDh1d8635ZQLeGKaOI4lWPbzmML5eXBPClJ7kTAKNef/wrCWeeYK
+ c5+IsvX4NKhstRDwGdEliJA2Yl4R17OPafbRKKccrYoTxzjpuWj7FXHlnptHRz5tDgbz1W59JL3
+ MUyY5qYBpew6bOff+Gfefpv2sealwFNg3TM/NiAKItVa74hZEpk8ukJ5jqMRUyUSxNHyOV5xNo9
+ lbTSI3lznW3K9ohKGmw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAxNSBTYWx0ZWRfX6USUnRXb4BDJ
+ 3+Js1G2lOqEuiWHfHEm+9TqzIZ9WcWtdeQE+KquaINwQffG3tmq/nAwQ9Wkp9UcfJi1p6JkBzqk
+ /0DBtmPEYzdEZTVl/FDdzE8tQySkEOY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_02,2026-09-21_02,2025-10-01_01
 
-erspan_rcv() and ip6erspan_rcv() copy the ERSPAN metadata out of the
-packet for collect_md tunnels:
+On 2026-09-23 at 08:58:16, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> Add IFACE_GET_INFO and NPC batch flow/stats/features handlers for the
+> RVU switch PF, with synchronized NIX context and channel publishing.
+>
+>   IFACE_GET_INFO:           report PF/VF channel and queue topology
+>   NPC_MCAM_FLOW_DEL_N_FREE: delete flows and free MCAM entries in bulk
+>   NPC_MCAM_GET_MUL_STATS:   read MCAM counter stats in bulk
+>   NPC_MCAM_GET_FEATURES:    report supported MCAM features
+>
+> Rework NIX LF context memory publish and teardown so queue context
+> pointers and bitmaps are assigned and cleared under the NIX admin queue
+> lock.  Publish interface channel fields under rsrc_lock so IFACE_GET_INFO
+> can read a consistent snapshot.
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+>
+> ---
+>
+> v1 -> v2:
+> - Drop SWDEV2AF_NOTIFY and the switch skeleton hooks from this patch;
+>   keep the series focused on the AF mailbox handlers above.
+> - Restrict IFACE_GET_INFO to the PAN RVU switch PF (rvu_is_switch_pcifunc())
+>   and return -EPERM for other callers.
+> - Hold rsrc_lock while building the IFACE_GET_INFO topology snapshot.
+> - Publish and clear NIX interface channel fields under rsrc_lock.
+> - Publish NIX LF queue context pointers and bitmaps under the admin queue
+>   lock; propagate assign failures and free partial allocations on error.
+> - Fix nix_get_tx_link() for representor and LBK VF devices.
+> - Propagate NPC flow deletion failures from npc_delete_flow() and the
+>   bulk delete/free handler; ratelimit bulk handler error logs.
+> - Read NPC MCAM features under mcam->lock and clear mul-stats response
+>   on entry verification failure.
+>   https://lore.kernel.org/netdev/20260918050021.1359606-1-rkannoth@marvell.com/
 
-        pkt_md = (struct erspan_metadata *)(gh + gre_hdr_len +
-                                            sizeof(*ershdr));
-        ...
-        memcpy(md2, pkt_md, ver == 1 ? ERSPAN_V1_MDSIZE :
-                                       ERSPAN_V2_MDSIZE);
+Please ignore this version as it was sent with an incorrect commit message and changelog.
+Apologies for the noise.
 
-Both read 8 bytes at 12 bytes from the start of the GRE header, assuming
-an ERSPAN version 1 or 2 header was pulled. Because
-__iptunnel_pull_header() with ETH_P_TEB linearizes an extra ETH_HLEN (14)
-bytes beyond @len, this does not read past skb->tail, but when
-erspan_hdr_len(ver) is 0 it copies bytes from the inner Ethernet frame
-into md->u.md2. Two ways to get there:
-
-- An ERSPAN type I packet has a 4-byte ETH_P_ERSPAN GRE header and no
-  ERSPAN header at all, so erspan_rcv() sets ver = 0 and only pulls the
-  GRE header. It still falls back to a collect_md tunnel through
-  itn->collect_md_tun, and there the ternary above picks ERSPAN_V2_MDSIZE
-  and reads 8 bytes of the inner Ethernet header as ERSPAN v2 metadata.
-  Also check tpi->proto == htons(ETH_P_ERSPAN) in is_erspan_type1() to
-  match gre_parse_header() so a 4-byte ETH_P_ERSPAN2 frame is not treated
-  as Type I.
-
-- A packet with an 8-byte GRE header (or IPv6 ERSPAN) and ershdr->ver == 0
-  is malformed, yet neither erspan_rcv() nor ip6erspan_rcv() validates the
-  version before using it, so erspan_hdr_len(0) pulls 0 bytes (leaving the
-  4-byte ERSPAN base header inside the inner frame) and copies inner frame
-  bytes into md->u.md2. A version above 2 also stores a version that the
-  transmit side (erspan_fb_xmit(), ip6erspan_tunnel_xmit()) rejects.
-
-Reject a base header whose version is neither 1 nor 2, and skip the
-metadata extraction for type I, which has none: ip_tun_rx_dst() hands
-out a zeroed option area, so md->version = 0 alone describes it.
-
-Fixes: f989d546a2d5 ("erspan: Add type I version 0 support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/ip_gre.c  | 43 +++++++++++++++++++++++++++----------------
- net/ipv6/ip6_gre.c |  2 ++
- 2 files changed, 29 insertions(+), 16 deletions(-)
-
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 7385d66a94bf49c84bc674ded51ed3f9f5352e28..a00df7bda0012b03aed50fd569cfd0611a67ce9f 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -255,13 +255,13 @@ static void gre_err(struct sk_buff *skb, u32 info)
- 	ipgre_err(skb, info, &tpi);
- }
- 
--static bool is_erspan_type1(int gre_hdr_len)
-+static bool is_erspan_type1(int gre_hdr_len, __be16 proto)
- {
- 	/* Both ERSPAN type I (version 0) and type II (version 1) use
- 	 * protocol 0x88BE, but the type I has only 4-byte GRE header,
- 	 * while type II has 8-byte.
- 	 */
--	return gre_hdr_len == 4;
-+	return proto == htons(ETH_P_ERSPAN) && gre_hdr_len == 4;
- }
- 
- static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
-@@ -274,7 +274,6 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 	struct ip_tunnel_net *itn;
- 	struct ip_tunnel *tunnel;
- 	const struct iphdr *iph;
--	struct erspan_md2 *md2;
- 	int ver;
- 	int len;
- 
-@@ -282,7 +281,7 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 
- 	itn = net_generic(net, erspan_net_id);
- 	iph = ip_hdr(skb);
--	if (is_erspan_type1(gre_hdr_len)) {
-+	if (is_erspan_type1(gre_hdr_len, tpi->proto)) {
- 		ver = 0;
- 		__set_bit(IP_TUNNEL_NO_KEY_BIT, flags);
- 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, flags,
-@@ -294,6 +293,9 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 
- 		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
- 		ver = ershdr->ver;
-+		if (unlikely(ver != 1 && ver != 2))
-+			return PACKET_REJECT;
-+
- 		iph = ip_hdr(skb);
- 		__set_bit(IP_TUNNEL_KEY_BIT, flags);
- 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, flags,
-@@ -301,7 +303,7 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 	}
- 
- 	if (tunnel) {
--		if (is_erspan_type1(gre_hdr_len))
-+		if (is_erspan_type1(gre_hdr_len, tpi->proto))
- 			len = gre_hdr_len;
- 		else
- 			len = gre_hdr_len + erspan_hdr_len(ver);
-@@ -318,6 +320,7 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 		if (tunnel->collect_md) {
- 			struct erspan_metadata *pkt_md, *md;
- 			struct ip_tunnel_info *info;
-+			struct erspan_md2 *md2;
- 			unsigned char *gh;
- 			__be64 tun_id;
- 
-@@ -334,19 +337,27 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
- 			info = &tun_dst->u.tun_info;
- 			info->options_len = sizeof(*md);
- 
--			/* skb can be uncloned in __iptunnel_pull_header, so
--			 * old pkt_md is no longer valid and we need to reset
--			 * it
--			 */
--			gh = skb_network_header(skb) +
--			     skb_network_header_len(skb);
--			pkt_md = (struct erspan_metadata *)(gh + gre_hdr_len +
--							    sizeof(*ershdr));
- 			md = ip_tunnel_info_opts(&tun_dst->u.tun_info);
- 			md->version = ver;
--			md2 = &md->u.md2;
--			memcpy(md2, pkt_md, ver == 1 ? ERSPAN_V1_MDSIZE :
--						       ERSPAN_V2_MDSIZE);
-+
-+			/* Type I has no ERSPAN header, thus no metadata to
-+			 * extract: pkt_md would point into the inner Ethernet
-+			 * frame just pulled by __iptunnel_pull_header().
-+			 * ip_tun_rx_dst() zeroed @md for us.
-+			 */
-+			if (!is_erspan_type1(gre_hdr_len, tpi->proto)) {
-+				/* skb can be uncloned in __iptunnel_pull_header, so
-+				 * old pkt_md is no longer valid and we need to reset
-+				 * it
-+				 */
-+				gh = skb_network_header(skb) +
-+				     skb_network_header_len(skb);
-+				pkt_md = (struct erspan_metadata *)(gh + gre_hdr_len +
-+								    sizeof(*ershdr));
-+				md2 = &md->u.md2;
-+				memcpy(md2, pkt_md, ver == 1 ? ERSPAN_V1_MDSIZE :
-+							       ERSPAN_V2_MDSIZE);
-+			}
- 
- 			__set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
- 				  info->key.tun_flags);
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index e61cb10b50dc96295c14aa6da4c9c0fe47151335..774975955747ec4d822b66b8aaaee824c8d331df 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -503,6 +503,8 @@ static int ip6erspan_rcv(struct sk_buff *skb,
- 	ipv6h = ipv6_hdr(skb);
- 	ershdr = (struct erspan_base_hdr *)skb->data;
- 	ver = ershdr->ver;
-+	if (unlikely(ver != 1 && ver != 2))
-+		return PACKET_REJECT;
- 
- 	tunnel = ip6gre_tunnel_lookup(skb->dev,
- 				      &ipv6h->saddr, &ipv6h->daddr, tpi->key,
--- 
-2.55.0.1082.g2b9226bbc0-goog
-
+pw-bot: changes-requested
