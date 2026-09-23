@@ -1,123 +1,264 @@
-Received: from mail-ej2-f5.google.com (mail-ej2-f5.google.com [74.125.228.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF04937E310
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.133
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790166684; cv=pass; b=KxeFQZJz33K7yD/loV08B82O9CnhPCBuadUKt5FUUNoLJ2aLTDZI8FPSZolnHkVDa6m0rmsx98VqAzzK/aT1ikP25TlfOdZH64RC+xTjcef9CrS7nkcC5BFXPsY/kjswN7fVG7F/MUn7RtNelJ+91gpeIoPxA150F/cDhGcMHR4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790166684; c=relaxed/simple;
-	bh=N5H/My5yGDkDx9/kp/ToxETnGGeoXC/DTFu6XXuB/a8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=We2XB0YEVvHNt/LVKW8wXILGdvhsoG2N7CvpgHnWSrvM7iWAVLUaWmn+KcDjxQP/q66wZ5oi29FGlrEkFcV4GwkgYQTjLrJzmC6EiDY1mhsaZnYUxJFKbtI5N62GSunRUlXywjxh0y8yR1s4+3uWA+XyY7RIveAW6NvCX9u5jdM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GGLZtH4w; arc=pass smtp.client-ip=74.125.228.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF9D2E4257
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790166707; cv=none; b=oOvM17/u2fsVuJ+Wxqrss79ATzHXytuBVkEM2BTOnJRha56SlaadN5fwE4ZQjcfzpYHn1i8RKIvr76dvoQhVa2WhRNa0+Q6gpiuZ2oCzAQ/ovTAHRl8esdX2pbyvw7KrzGBLHaz/tJAKo9yqTvFaYvdVpapit6iTFDhfTBCrUcw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790166707; c=relaxed/simple;
+	bh=8x/UT7yNCTBqE0gUbAyrfvJfTd1tBx2IpOQcX0TQguA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=klMUUCVbGX+JACGwM3YB3W83tnlk+13a/DqlazqEn0WO5YSD0knQkCQLiATe+aDQ39WxiuJIeZNvjrq7j49Ui0WerkIoHbQYhq1wya152cuCkrFpX2ue1g5eWPUAYFvFrzzmtUA3w+DWlJNA4cpUFRXGLW/SWZgKHv74DDfFDAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gwsAs6pN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RVyOaM+h; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GGLZtH4w"
-Received: by mail-ej2-f5.google.com with SMTP id a640c23a62f3a-c2950c25486so63231266b.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:31:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790166681; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VanXEDZsmDjvyMPaWd9ilg8bA4j0ynlDN3dK2c9uiiMMRv9tz0bKqmO2hdxpJmwqys
-         LoSbgmqJhZ0X31lBD4gNJOUzT3ZX+3NdWPevFVtKDoLqbKW7Eb5CPJikanuavdpAH+NK
-         g5MkxfNwhXqhYo1OKLSFI3norELd0Xjksjcw/k6F038P1kRjTpT90nL6kbfBq1OVT6oP
-         WIcAjDq6cnnfpsHcS9izbHE1VHFNgaZ5kib9721MR0xIUYr04Y7bsEiPbKD10HXNM9mz
-         h/2TzkDzUWpB75S34xbgpwvq/xhh/KeqfPhTTjGxs0nPsYrgoRmuz/3OFPG640hVhJst
-         G9oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=geosNIRimRwfO8HRfTW0XaPt8QyFJOsPlxIx1190dzs=;
-        fh=bi83I5VVDPUySKncZfxd9UoObBVIzEmuYyn4frFhC40=;
-        b=WbW19lryYAdjD6DHm6wZHeQd5CdI9HipvLdTZbf8fTJM2hMwjXflpYc1+4uL7EbXwc
-         vaO7f5BV1OblCHPI9KoYnAGDRwqrt2E19H4npwx2VUIrUe3W6j7GkyIqPte/AzfWZqf6
-         xCdCUGzB0dALXrzy2y3gRCb2obiY0kIHEajjQVLOPenxLwbfkxHPASVD0ss8tzd+ycJ9
-         IWdhTXLhRe9hKdkg0h8FNJFXOxWIJN+XNTrALGNJ+k1O8EM6OsA+5/5cte2rfH7E6g/K
-         hP5R00/XA2+LXcMMFz6esJZfmzs2u3olfeFSIMCo9qa6OIqn+SOWYde887G1kfmkJuwb
-         m3Ig==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gwsAs6pN";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RVyOaM+h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790166701;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Iy4LAVksYVGANuIsEoVI9Hlhk9VjhocmxupJMIEdc3A=;
+	b=gwsAs6pNgS8Tryvd2zk2VQ5eTz6AbrD2W5asFlXKCx6OVohQxSE1ybgYPeKrtnzX+xwLff
+	NcdyoBRIPn9Q7PmzVZl+6vQuXlFbezfn77j3SzLpSrwHYymP1WJwxuZ/kW1c7mq4/qjXcm
+	SEg777onIbgrjrXCDfRhrWPoEfzsToI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-82-QJxUWFoQMLmxDFs6QOgfAg-1; Wed, 23 Sep 2026 08:31:39 -0400
+X-MC-Unique: QJxUWFoQMLmxDFs6QOgfAg-1
+X-Mimecast-MFC-AGG-ID: QJxUWFoQMLmxDFs6QOgfAg_1790166698
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-486f768517dso653065f8f.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:31:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790166681; x=1790771481; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=geosNIRimRwfO8HRfTW0XaPt8QyFJOsPlxIx1190dzs=;
-        b=GGLZtH4wkgEHP3gt/fuSWbFGDdMIcc6K+AUcRCYLM1E95lE38MtYEUG/kIvD13fmLz
-         P4TUqABYomrf6+WZnOWouZXi9EuerYpR1g2nB6Nt4B/TL0z6BSR4bCBUtWjPELJWH/qq
-         obaklekAKBAPxnX/RTD6Y9KsZ2g3ju9sXPUJpQ2CeilwTiNwvpGcuBGnC/2Ion7iUzdD
-         aiV/L1hPlGWcicr0b0YYXAT6f9Y5WYt9apFYDopXFnkkxOidbN99b7QJ6dWB9/vsdYFP
-         vvQkmLbuHOmkV3CljYMSi886E2H6GsnwwWxAJesd4W8/xV1DD+V0ciho/J3m678LnqZZ
-         7DrQ==
+        d=redhat.com; s=google; t=1790166698; x=1790771498; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:references:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Iy4LAVksYVGANuIsEoVI9Hlhk9VjhocmxupJMIEdc3A=;
+        b=RVyOaM+hHkkxMtdSDUTlvIcqSRbP8VJd9t40tpLvQr3x8F0mdPfZrLGdEndzerxfH6
+         9lIp0ceZ6eqReanDU9glSJJfGR8cNHFqe/UMdyzeEuTJK7W0fvzxWpTKzqV4/k2cNYaD
+         PuGyMY1BAimtvFccR2BMGSQGBX7ZH/zs+LdkDY6QcFQh7D4dMvTBjjDTcvLXtesyqC0C
+         hWUdm/YcIQx2+ysELCvLrzvBRg3xAIHVZOpF1+8GWJNhNkpSz08G7ftfltfjdj5ORmVB
+         ZlBjJnHzmjOaKA+K/DRY0j67WtFlZGtP2EvvYxF4ASt1v1I/Kndc4GfLN5YtRyz7snsF
+         j/Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790166681; x=1790771481;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790166698; x=1790771498;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:references:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=geosNIRimRwfO8HRfTW0XaPt8QyFJOsPlxIx1190dzs=;
-        b=gjhStkuMTzR/pTi9pZfl06yEy9dKClnrKKkjG9uJaC5OHmsBmjPMZfmByE0cgBgPZW
-         luLtYu7YGnQLFgT/vesxN3e0Nu+3xyVEIHPj+QluysP/qpQzXv/zuOTMD3OU/3N5KGD+
-         qEYEiPbSMPXz7b1lZh2leyFFM+PsxyHPD+LO/bzqtUpOegEorNhoPBKTglJLMagr7Twk
-         5qOKB8p52hOUKibuOypGcRh1jdaRbSRJ8JlHMRS+PT+A4ygLXl9MQDieyydlHJUsbrZA
-         X9BTm7HlkoSobto1tKs/A8R9jkKmrDQoUMyBA+NdH5oEVIEHkAkDABEC5CITccARkAjS
-         lV5g==
-X-Forwarded-Encrypted: i=1; AKwUvByl0ofTm6o4uycGOmiCo8DyiAw+A73OUVLM565++CoTtilamvfPNI7JmQV6GCGzfocztjO7Wk8=@vger.kernel.org
-X-Gm-Message-State: AFuF++k1+IS8LjIFLr0UK5P90Y0Et9Uud4nHTyt62B3BzrdKq0qoEoXO
-	yxUeMuFrVordkUwlasQ6K4nB3XW/kwzc7iagKZZYne5MEfVzHA1a6hfMwRSs/JaXwiEQOO9hQ6R
-	zsJCjbIgZdElduEkqJ8kpAEkivYO3vqLzQfR6NZk40w==
-X-Gm-Gg: AYBFou1BCkZmqS07P1hml3Bkp38olMyg+K3c1ZKSoxmYY/aODTxuB9ra9gVBgZmkWw4
-	pvgCy5wGCaHqdECr1DoGLs1LnclpOkZUaRld3Ep9zJvu5Ch3ipsNRDgAcwmmgwdKJ6a+yUgub8O
-	DbB/Gk96uf7XfEpnR1kPzj1ew1JR7V1B1/GpwFGNb0E2GqFVyxkG1LaBhmdHgwunOod4uAkP+Cz
-	mFxMEXipXcWVHfE9ouIiZla4PJxg6zSXYnIPvemyf/MJIRO3qMjljWDArvVUQuP8taiJ0RtyHnu
-	f2KsKNqllOE8xWYpYkFJi8e0RX1g5h9fUdrHeXyQ3/q2awfORxN3LWHEz+gSXR7mtVcmPg==
-X-Received: by 2002:a17:907:a312:b0:c29:f5d8:9c6b with SMTP id
- a640c23a62f3a-c2aadc48e63mr193301966b.26.1790166680835; Wed, 23 Sep 2026
- 05:31:20 -0700 (PDT)
+        bh=Iy4LAVksYVGANuIsEoVI9Hlhk9VjhocmxupJMIEdc3A=;
+        b=cXldMi6DlTEsYJWKvVbIHpCJvlzhvCmY9SqMdKBBt39NardauxeZ2G9OHutnynws78
+         MYF6ehoWbaAtrG25A2F82LAPM0NqpS+1MX0xjiiQYJQ0wLfFakwfnbU1YxQXnfGOQBEm
+         mmMGD5YvOw/Bb3cM4V1kLy4fnSEDJ8MjIKwUDHkRZJsd5aB1s7fTFo7zNCKm4hNoRIuR
+         tc8oa+YXlx9WIOCVpz8UyKNS8vvFDDxdIqPzCMv2Iv+eIAHNKANaViTpztbRHBM8kAId
+         wP3yra2AvrURpWMo7QvtKvblPn8zVbWuvz5K/TaP5cCSqK00B1IY7vNpyU0QvEnuKSAv
+         eg6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBylasI6bOfL12882+9McxL51OKKxT/OMVHH7GRQ6UH1lfKOIMLhahqkKCNwR45i+3RtzWfwbQo=@vger.kernel.org
+X-Gm-Message-State: AFuF++nTLHLymfRTylXElFD1jpVHZ/b8BQ1j+R8rhZfSwWDFZOIHXxFG
+	NQ19RRD2kUa0ZCUjZ70WSkqtDgOwfDB9cfLTc+szSIXXpvs1A1vZ+8x4P2RwdAc2iIiqXdD838f
+	Y7CaYb4vFHXfS+mHQfGknhRlk9DnOLwiXJ0+TNGYYDF3CSpyxYsdvqDd6gg==
+X-Gm-Gg: AYBFou3MPtgloN8upfg9ZL0E7R1AHMFHmQGT1hOIGJQE/mrYbU72MhCH/8ShG73xkd6
+	ub6YIxkyKvr5/ESVGX+jDzw+i2J/hRo0d541s9DyUM33p25Qa2Hq+q7a3Pj3lf4Nhv3H7O4Hwvt
+	kUOJakgyHL/C6+zmw6rqkbZSMob+vXmWxikcyNgu/3KvYY23GXFbd7QPIYJCu6t6+qvJsw48lAu
+	sGqhw7ok878+BEQ1WhHuFnnXhjwtQaACemrSnRcv+cXBS12KBoenvUp/mg+PdhOj5uJDwAGCx3V
+	xhPkZ+ul2HWZB/541xZkT7U/+BjYIKRFMYPzP8yB+PaFClVxjIr0AFqgvcUml+TKLCNYN5WOEr3
+	wPnoYiJKf44HcvrcpmYGPxyQww8NH
+X-Received: by 2002:a05:6000:4023:b0:487:10b5:a88a with SMTP id ffacd0b85a97d-4886705fb90mr4236753f8f.9.1790166696249;
+        Wed, 23 Sep 2026 05:31:36 -0700 (PDT)
+X-Received: by 2002:a05:6000:4023:b0:487:10b5:a88a with SMTP id ffacd0b85a97d-4886705fb90mr4236704f8f.9.1790166695767;
+        Wed, 23 Sep 2026 05:31:35 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886877a19bsm7197338f8f.25.2026.09.23.05.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 05:31:34 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: houminxi@gmail.com,  netdev@vger.kernel.org,  echaudro@redhat.com,
+  i.maximets@ovn.org,  davem@davemloft.net,  edumazet@google.com,
+  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,
+  shuah@kernel.org,  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v5 1/2] selftests/net/openvswitch: add SCTP
+ flow key test over IPv6
+In-Reply-To: <179008950943.2160803.15856491533624064435@kernel.org>
+	(netdev-bot's message of "Tue, 22 Sep 2026 15:05:09 +0000")
+References: <20260918144647.2024095-2-houminxi@gmail.com>
+	<179008950943.2160803.15856491533624064435@kernel.org>
+Date: Wed, 23 Sep 2026 08:31:31 -0400
+Message-ID: <f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260919174223.2356964-1-coiaprant@gmail.com> <20260922191758.2730da7a@kernel.org>
-In-Reply-To: <20260922191758.2730da7a@kernel.org>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Wed, 23 Sep 2026 20:31:08 +0800
-X-Gm-Features: AclHuK-NKWB18tJ6bEfQMpRWykl2_zQElAqMu29cCy0C8SHDtVbj2c6Zd_8DHvQ
-Message-ID: <CALj3r0gPjraK9wy_WbTkeYD1OK_HhSeMi8bDmk03gOVJUb825g@mail.gmail.com>
-Subject: Re: [PATCH net] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak
- when the PHY clock fails
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Heiko Stuebner <heiko@sntech.de>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Sebastian Reichel <sebastian.reichel@collabora.com>, netdev@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8823=E6=97=
-=A5=E5=91=A8=E4=B8=89 10:18=E5=86=99=E9=81=93=EF=BC=9A
+netdev-bot+sashiko@kernel.org writes:
+
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 >
-> On Sun, 20 Sep 2026 01:42:23 +0800 Coia Prant wrote:
-> >                       if (ret)
-> > +                             clk_bulk_disable_unprepare(bsp_priv->num_=
-clks,
-> > +                                                        bsp_priv->clks=
-);
-> >                               return ret;
-> > +                     }
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
 >
-> Missing a bracket, EBUILD. I almost appreciate seeing a human error like
-> this these days :)
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [Medium] The promised skip when IPv6 is unavailable is incomplete in
+>   test_sctp_connect_v6().
+>
 > --
-> pw-bot: cr
+>
+> selftests/net/openvswitch: add SCTP flow key test over IPv6
+>
+> This adds test_sctp_connect_v6 to the openvswitch selftest, mirroring the
+> existing IPv4 SCTP test: icmpv6() flows forward neighbour discovery while
+> ipv6(proto=3D132),sctp(dst=3D4443)/sctp(src=3D4443) flows gate an SCTP
+> association across the datapath, with a keyless ipv6(proto=3D132) install
+> expected to be refused with EINVAL.
+>
+>> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>> b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>> index a31f7fb6882d..aa84fafc3201 100755
+>> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>
+> [ ... ]
+>
+>> @@ -700,6 +701,114 @@ test_sctp_connect_v4() {
+>>  	return 0
+>>  }
+>>=20=20
+>> +# sctp_connect_v6 test
+>> +# - sctp(dst=3D4443) matches client-to-server INIT
+>> +# - sctp(src=3D4443) matches server-to-client INIT-ACK
+>> +# - icmpv6 NS/NA flows forward neighbour discovery
+>> +# - remove flows and verify connection fails, reinstall and recover
+>> +test_sctp_connect_v6() {
+>> +	local t=3D"test_sctp_connect_v6"
+>> +	local v6=3D"eth_type(0x86dd),ipv6(proto=3D132)"
+>> +	local payload=3D"SCTP6_DATA_OK"
+>> +	local rxfile=3D"${ovs_base}/${t}/sctp-rx.txt"
+>> +
+>> +	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
+>> +	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
+>> +	socat -V 2>&1 | grep -q "define WITH_IP6" || return "$ksft_skip"
+>> +	[ -e /proc/sys/net/ipv6 ] || return "$ksft_skip"
+>
+> [Severity: Medium]
+>
+> Is this gate enough to cover the case the changelog describes as "IPv6 is
+> unavailable"?  /proc/sys/net/ipv6 only tells us inet6_init() ran.  Only
+> ipv6.disable=3D1 short-circuits it:
 
-That's what I get for hitting send while my brain was EBUSY. Will fix
-and repost shortly.
+We don't do much to check that ipv6 is available.  The ICMPv6 test
+doesn't do any additional safeguards.
 
-Coia
+> net/ipv6/af_inet6.c:inet6_init() {
+> 	...
+> 	if (disable_ipv6_mod) {
+> 		pr_info("Loaded, but administratively disabled, reboot required to enab=
+le\n");
+> 		goto out;
+> 	}
+> 	...
+> }
+>
+> With ipv6.disable_ipv6=3D1 instead, initialization completes and the sysc=
+tl
+> tree exists, so this check passes, but the module default is copied into
+> every new netns:
+>
+> net/ipv6/addrconf.c:addrconf_init_net() {
+> 	...
+> 	/* these will be inherited by all namespaces */
+> 	dflt->autoconf =3D ipv6_defaults.autoconf;
+> 	dflt->disable_ipv6 =3D ipv6_defaults.disable_ipv6;
+> 	...
+> }
+>
+> so the veths created for the client and server namespaces come up with
+> cnf.disable_ipv6 set, and address assignment is rejected:
+>
+> net/ipv6/addrconf.c:ipv6_add_addr() {
+> 	...
+> 	if (idev->cnf.disable_ipv6) {
+> 		NL_SET_ERR_MSG_MOD(extack, "IPv6 is disabled on this device");
+> 		err =3D -EACCES;
+> 		goto out;
+> 	}
+> 	...
+> }
+>
+> Would testing something that reflects usability, for example whether an
+> address can actually be added in a test namespace, match the promised skip
+> better?
+
+We don't generally have a check for this.  Maybe it makes sense, but
+that could be a separate cleanup if it really is needed.
+
+>> +
+>> +	sbx_add "$t" || return $?
+>> +	ovs_add_dp "$t" sctp6 || return 1
+>> +
+>> +	info "create namespaces"
+>> +	for ns in client server; do
+>> +		ovs_add_netns_and_veths "$t" "sctp6" "$ns" \
+>> +		    "${ns:0:1}0" "${ns:0:1}1" || return 1
+>> +	done
+>> +
+>> +	ip netns exec client ip addr add fd00::1/64 dev c1 nodad
+>> +	ip netns exec client ip link set c1 up
+>> +	ip netns exec server ip addr add fd00::2/64 dev s1 nodad
+>> +	ip netns exec server ip link set s1 up
+>
+> [Severity: Medium]
+>
+> These four setup commands in test_sctp_connect_v6() discard their exit
+> status, unlike the surrounding calls which all use "|| return 1".  If the
+> ip addr add calls fail with EACCES because disable_ipv6 was inherited by
+> the new namespaces, does the test keep going with no IPv6 addresses
+> configured and then report a failure at the association check below?
+>
+> Would checking these with "|| return $ksft_skip" (or at least
+> "|| return 1" with an info message naming the failed step) make the
+> outcome match the cause?
+
+See above - same answer.
+
+> [ ... ]
+>
+>> +	info "verify SCTP association with port-keyed flows"
+>> +	ovs_sbx "$t" ip netns exec client \
+>> +	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null=
+ \
+>> +	    || return 1
+>
+> [Severity: Medium]
+>
+> This is the point where an unusable IPv6 setup surfaces.  With
+> ipv6.disable_ipv6=3D1 the connect cannot succeed, so run_test() reports F=
+AIL,
+> while the changelog says:
+>
+>     Skips when the sctp module is missing, socat lacks SCTP or IPv6
+>     support, or IPv6 is unavailable
+>
+> Should this configuration end up as a skip rather than a failure, or shou=
+ld
+> the changelog be narrowed to say the skip only covers IPv6 not being
+> initialized at all?
+
+I don't think either is needed for this series.
+
