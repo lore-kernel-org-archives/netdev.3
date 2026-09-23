@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54117477999;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B213E5EF8;
 	Wed, 23 Sep 2026 09:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790154807; cv=none; b=Xz6nKe1rR8jXYptLeRpTdj9FAjacJh1gnMtjUKh5jI7HDdKy/qcbsLq04J+BSUl+8o7UGW9F9SDZj519fuFLcYiSha5VAWmPjkgkXZI5JoVO2N2iQc96TwyB4dR8QAeBseYpnj1YOzGfqUytQ/+x1FUJ5HLRQpbplmW6agDqpXI=
+	t=1790154807; cv=none; b=PODTPuxzxFWW1jp1cH+U4ZJ9ZNmDACTgv9O2wZ1W8y6NbygnOVelduihnuU1nAJxhHCZQGtGIJEt+jfMKW3cDfdzJftTIbq2Ti/ekAmxf7N1H4nBuA6IMOOzWD+nwzW+ebhMaLWm6w62prBkKAIvEMhNWU/KdAMSJyciLRhc9yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790154807; c=relaxed/simple;
-	bh=qZY2QgNR0DDCBmL7/agNFQ+cU8n1KDmdfs730MvyFjw=;
+	bh=JwH8Q6oNplj3Zfwo9tsLq5vZLEy4iiGulguAjUclFg8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FHBoTlZRGUGzO53AZY58HyvhcV9pEb/p1roLsO3v9VsDR9IpIe4oLX0fZsbceI+YW74HwsYZkmIvzN7P+w5A9tnhdy20vd8rmO7mZZQSLvTyjgfJ7heRc9VV6KuIIMiE1PjOAhZyIrB8Nq5he2LeGppcGX654ZUTFKB6p0l668o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxsEG+1J; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=stSxc63/Twb6E9O1PiEeWExWHVwpW0aWp8Rujdhk56Zykltuvs7rMenqvJ1gPQkBq7oz0HxmEcfQuQbze2WHU4mKWINc5sShfkRkU3pfjToU+RyxCurBBLUw4hebmkhgEqzgR7pqnUrPWm1WuzgdZ1sJ5DpDDCAnnTS36HwpmRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpcSnZj9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxsEG+1J"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19A88C2BCFC;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpcSnZj9"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 31925C2BCFB;
 	Wed, 23 Sep 2026 09:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790154807;
-	bh=qZY2QgNR0DDCBmL7/agNFQ+cU8n1KDmdfs730MvyFjw=;
+	bh=JwH8Q6oNplj3Zfwo9tsLq5vZLEy4iiGulguAjUclFg8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bxsEG+1J9vHN0d+csNbr0GPTQpIMMvWU8WpG0mrU0BALplg5wm+feSoBrJGdtUVh6
-	 3d696PKClsZpZU2XqZRsx6tGjVRYx548Dbzs01PeVk08VVSaVyaMy6eBSfy3gsIi64
-	 GwBLPLV/bq5eIG5/dCiRBX8OXhaioh/UBF7BPerqhT+7R7GnDqKSALJIivxr+/O0nB
-	 iEpuTnpOqqrezXY4tVMu/UejqqLEmui0MyP5bMMRawZkiXuuzLTKVYSLH921iQUTYb
-	 oPjlKIuQ0uAbn0mixUvZDNe/dsvbc/sLBM1XmWQMi+LhqZPa+oFhmdw1SooVjcuJ+R
-	 JETNt67nO7WhA==
+	b=NpcSnZj9eNfJKU00do051Va9MokLBQMMsLTelNH7RRQJrcqgXsqgRzHM90f9DOqsx
+	 7rIUtcZCOQ42JkaynQZXO70UHL+lXbMfNjgvkawl1G4DC7YLVvQLE2pK2JuHyOCXra
+	 aSDpnxLhLzQmqDPWefmBj1YlWONOCPy0HAQ9u+kJ4tGMslFNNoZEPj+XyRvHFh0shP
+	 MbDn20Ai/4zJKMh1XgAzIiNbrCJ6plstYZtWMWyaHJDSoqBle9WnJXOKwamLdWXLP4
+	 5F91WaDcLZo15lLUKiE8+YA6oCGya/drsMFzdmgoxh2pToxraxSfYL8rgGiNNC6sKx
+	 PCDI8zs2YCTqQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3255C98309;
-	Wed, 23 Sep 2026 09:13:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15C96C982FA;
+	Wed, 23 Sep 2026 09:13:27 +0000 (UTC)
 From: Kim Wooseok via B4 Relay <devnull+5mghybrid.khu.ac.kr@kernel.org>
-Date: Wed, 23 Sep 2026 18:13:26 +0900
-Subject: [PATCH net-next v2 2/3] net: macb: Enable RX timestamping for
- specific PTPv1 filters
+Date: Wed, 23 Sep 2026 18:13:27 +0900
+Subject: [PATCH net-next v2 3/3] net: macb: Clear SRTSM outside PTPv2
+ receive filters
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260923-macb-hwtstamp-rework-v2-2-75c909b2676d@khu.ac.kr>
+Message-Id: <20260923-macb-hwtstamp-rework-v2-3-75c909b2676d@khu.ac.kr>
 References: <20260923-macb-hwtstamp-rework-v2-0-75c909b2676d@khu.ac.kr>
 In-Reply-To: <20260923-macb-hwtstamp-rework-v2-0-75c909b2676d@khu.ac.kr>
 To: netdev@vger.kernel.org, 
@@ -55,11 +55,11 @@ Cc: Conor Dooley <conor.dooley@microchip.com>,
  Nicolai Buchwitz <nb@tipi-net.de>, linux-kernel@vger.kernel.org, 
  Kim Wooseok <5mghybrid@khu.ac.kr>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790154804; l=1851;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790154804; l=2127;
  i=5mghybrid@khu.ac.kr; s=kernel-20260913; h=from:subject:message-id;
- bh=6FGYgmpXIFqBwfciSCD9Dq6gBdcnn4TCfNguIzs3JV0=;
- b=oL/mBViDgcttRMU7A2keEjBUTtZ0Qizg4L59MbiZILPop9TKSS/n9jMQnA7s46+g9OV1uxKgZ
- KZHydXlHXtAB28YV1HayygLMbA9NSepjkpOUM0qIfre0BRQ50lOF3m3
+ bh=WiaT0nCaU15dA1T8GkP2fmhDBGDx/aNqNtDuGkweupA=;
+ b=0N7PocSRbYgU05JIYfAPz0pnVoXtFrYkAN3zVWXha3BIC3O+1hbZZA4+qI4C8YWab9iOVP7j1
+ YTZqNNYyCEkAoHtH8nPgJTcqrNTndP/jGaGOY1ELzsAnHZgiMKua6vE
 X-Developer-Key: i=5mghybrid@khu.ac.kr; a=ed25519;
  pk=1az/6lC8Tmd6BcvyarPc8FWoSxsV/WRr5NLs1v+kjlE=
 X-Endpoint-Received: by B4 Relay for 5mghybrid@khu.ac.kr/kernel-20260913
@@ -69,50 +69,61 @@ Reply-To: 5mghybrid@khu.ac.kr
 
 From: Kim Wooseok <5mghybrid@khu.ac.kr>
 
-Selecting a PTPv1 Sync or Delay_Req filter in gem_set_hwtst() returns
-success, but leaves rx_bd_control at its initial value of
-TSTAMP_DISABLED. The requested filter therefore appears to have been
-applied, even though received packets have no hardware timestamps.
+A PTPv2 receive filter sets NCR.SRTSM, but switching to NONE, ALL or a
+PTPv1 filter leaves it set. As a result, selecting the same filter can
+produce a different register setting depending on whether PTPv2 was
+used before.
 
-The PTPv1 event case already enables timestamping for all frames, so
-use that path for Sync and Delay_Req as well. This enables timestamping
-for both requests and returns HWTSTAMP_FILTER_ALL to tell the caller
-which filter was actually applied.
+Update SRTSM whenever the RX filter changes, setting it only for PTPv2.
+Switching away from PTPv2 then clears the old setting, so the bit follows
+the currently selected filter.
 
-Fixes: ab91f0a9b5f4 ("net: macb: Add hardware PTP support")
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
 Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
 Assisted-by: GPT-6 Astra
 Signed-off-by: Kim Wooseok <5mghybrid@khu.ac.kr>
 ---
- drivers/net/ethernet/cadence/macb_ptp.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cadence/macb_ptp.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
-index 02face93a..af2e36f81 100644
+index af2e36f81..2fd063394 100644
 --- a/drivers/net/ethernet/cadence/macb_ptp.c
 +++ b/drivers/net/ethernet/cadence/macb_ptp.c
-@@ -421,10 +421,6 @@ int gem_set_hwtst(struct net_device *netdev,
- 	switch (rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
- 		break;
--	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
--		break;
--	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
--		break;
- 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
- 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
- 	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
-@@ -439,6 +435,8 @@ int gem_set_hwtst(struct net_device *netdev,
- 		ncr_mask |= MACB_BIT(SRTSM);
+@@ -394,8 +394,8 @@ int gem_set_hwtst(struct net_device *netdev,
+ 	enum macb_bd_control rx_bd_control = TSTAMP_DISABLED;
+ 	int rx_filter = tstamp_config->rx_filter;
+ 	struct macb *bp = netdev_priv(netdev);
++	u32 ncr_mask = MACB_BIT(SRTSM);
+ 	unsigned long flags;
+-	u32 ncr_mask = 0;
+ 	u32 ncr_bits = 0;
+ 	u32 regval;
+ 
+@@ -432,7 +432,6 @@ int gem_set_hwtst(struct net_device *netdev,
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+ 		rx_bd_control = TSTAMP_ALL_PTP_FRAMES;
+ 		rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-		ncr_mask |= MACB_BIT(SRTSM);
  		ncr_bits |= MACB_BIT(SRTSM);
  		break;
-+	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
- 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
- 	case HWTSTAMP_FILTER_ALL:
- 		rx_bd_control = TSTAMP_ALL_FRAMES;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+@@ -447,11 +446,9 @@ int gem_set_hwtst(struct net_device *netdev,
+ 	}
+ 
+ 	spin_lock_irqsave(&bp->lock, flags);
+-	if (ncr_mask) {
+-		regval = macb_readl(bp, NCR);
+-		regval = (regval & ~ncr_mask) | ncr_bits;
+-		macb_writel(bp, NCR, regval);
+-	}
++	regval = macb_readl(bp, NCR);
++	regval = (regval & ~ncr_mask) | ncr_bits;
++	macb_writel(bp, NCR, regval);
+ 
+ 	gem_writel(bp, TXBDCTRL, GEM_BF(TXTSMODE, tx_bd_control));
+ 	gem_writel(bp, RXBDCTRL, GEM_BF(RXTSMODE, rx_bd_control));
 
 -- 
 2.53.0
