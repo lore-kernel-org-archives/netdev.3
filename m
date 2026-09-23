@@ -1,185 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF66D44C50E;
-	Wed, 23 Sep 2026 07:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8317136494F;
+	Wed, 23 Sep 2026 07:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790147505; cv=none; b=JYq9HA6hE/8qtc98XUaZhMBcK0U/VUIaDodzDb8iAM/kgYefQKQ6rki6NlhCTztQFXb93wHJTZnCmt3QRl9Uu4iMdwWM/2VRP6rzqvrtGGpR6dm4XNwEnh95KNysYa4nTPrdt++9EBbSU9GlycJ6sTTK/kFg7Q0C9noUWe7wU40=
+	t=1790147540; cv=none; b=WqcSksrdzj1zDX12VI9Q4LSnzNXO9F5Mz9fpsjepIoNczdD2ba+VnnNCZCvxZ9+Cb3wigu5SogNUinT4V3x4iBeMoinF8pzlOZwedUKSjdJIE7cDRFcy/IM+DiHpX2w2q7bH5bW7QfPiBSykvj/5keQOp4FA85LvgaTv5xg/i6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790147505; c=relaxed/simple;
-	bh=csXXt9PlErmFsum9abhDWfvLtDfpFx9yr8dmu2qPmew=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dAZGgPF2MgT319eqfiEexRfJXFndE+tu3n5NLklpn3E6Q9GMQ3nw59jlA0VVd/6e4T66UiWdBCAmMY8lk2+CDneQ/ntE4DrHg4SYim4V1qAeJp0HGghoM1Zs0xQY3D9YRWPxAVsFQ3qQeWp3Qf1C2T4Jwlzj7iMnlt75IqBdcjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xqls9thQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790147540; c=relaxed/simple;
+	bh=WtuhPYdq2X22RcRWlOT9rEtyax2kMlAJhwzzRdK3/0A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gmsDypUUnyevoZDtAeflKsjuuXU05/pAYmTfWT5feY4YCfH2j3ovFaOZaeZTLQpperYNVFOsu14kiHjuWEQNKkThHvcw4nCupr+Py5XJFPg1SZ/4MrJtaKyXzdRcyS3eihn2TGm/0S9+tVLAQcVqOxv8zQIAw6Zp+840kHovezg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dPdmECed; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xqls9thQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BD41F0089C;
-	Wed, 23 Sep 2026 07:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790147503;
-	bh=KDeGd0k5M2qQos7MbfV7qpFjjecHWphsOT0Yr9vZUWU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Xqls9thQuJR0f9QK/mOd5dHj9cjwvZDsdsmiLcz9iz6HwJ6YNT1+XvPreUt1nsUWQ
-	 G4rmNC8VtL7D1X+uKay1aRPQ8nnXailwRQ+EqeVffWmP4vVrUxovLaQIvkgsmDL5k+
-	 quk3sadZoEev7CnNm+K4E06lTbKi++2Zctv7t7MajcnHQQZhgSe7MTlpHNk9Eznl3E
-	 VZUrze7q53soBMpHz+o8NvqgY4eIv+4+94x2xMxGSLEebjQ3d8MwYYyFdZTmpoB8+C
-	 0B6IHnVfMy6iOQXypf0vhpQ42jlbS5j9WgN4ZfS/pzWOqPOcZsYlf6mwM5M794v1FC
-	 awmH7pelcjTEg==
-Subject: Re: [PATCH net-next v5 12/12] net/rds: hold a connection reference
- from struct rds_incoming
-From: netdev-bot+sashiko@kernel.org
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org, nicoyip.dev@gmail.com
-Date: Wed, 23 Sep 2026 07:11:42 +0000
-Message-ID: <179014750256.2160803.7768011493453297137@kernel.org>
-In-Reply-To: <20260919061149.250658-13-achender@kernel.org>
-References: <20260919061149.250658-13-achender@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dPdmECed"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CA28C2BCF5;
+	Wed, 23 Sep 2026 07:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790147539;
+	bh=WtuhPYdq2X22RcRWlOT9rEtyax2kMlAJhwzzRdK3/0A=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=dPdmECedhXq5RAUP2SnRMtjQArDbkSZVexUrf2SSV4/sIMCZ9llo+7YBPPGcNEsxS
+	 zisylgo3O2r8Yc1R7gib9uSEhF4HXcq+UGcbA0G/KwYwxwBOty/iynh8o1sQhHIoWW
+	 2wr2AXJXUD+NrwVyiNepx2nApjlHX7iq+4pu062GT4BUhxSZpoH5IsQfA6Ho3HK1Jn
+	 Q2xFLuCBGwvchfMlFIey1PUeZdTuaS+TuhkWFoRKrCCClH9f9E+PdH5IyIAJUF7D5r
+	 aGn+Iuq7UznJ86aZ5jnqyMi2pk2U1lijcAnLo6J76Z4/TJc5O9NAmhoyvto6OpRBrG
+	 pAX7Ao92HQHWA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E31EAC982FA;
+	Wed, 23 Sep 2026 07:12:18 +0000 (UTC)
+From: Yusheng Zheng via B4 Relay <devnull+yunwei356.gmail.com@kernel.org>
+Date: Wed, 23 Sep 2026 07:12:19 +0000
+Subject: [PATCH RFC net-next] net: thunderbolt: Allow per-device opt-in Tx
+ E2E flow control
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260923-tbnet-tx-e2e-ethtool-v11-v1-1-33a2ca1318f1@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANJ7s2oC/zWNQQrCMBREr1L+2o9tApW6FTyAW3GR1NEENJHkU
+ wKldzcRnN2bYWZWykgemY7dSgmLzz6GCsOuo9mZ8AT7e2VSvRr7SWkWGyAshaHAECcxvngZBp6
+ g1WGEqdJU65+Ehy+/6StdzqfmtWpAEbpVsCaDbTJhdu3hn+3fxgfati+OE7C7mwAAAA==
+X-Change-ID: 20260923-tbnet-tx-e2e-ethtool-v11-9e3276eaaaa3
+To: westeri@kernel.org, netdev@vger.kernel.org
+Cc: YehezkelShB@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+ linux-kernel@vger.kernel.org, Yusheng Zheng <yunwei356@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790147538; l=5750;
+ i=yunwei356@gmail.com; s=20260923; h=from:subject:message-id;
+ bh=WCFfs7uRHtqJO4Rc0AENdaACTCDy+hKD/RkIgWiOEVQ=;
+ b=Cn5vcUpyIXqFjr/PPzd+QMHLwCOiwqUII1a2980P2ccOHV8PJU0PrpO60sPw9LGxwGKUUvNv0
+ /2ofEs/p9gnCiumFa7WN3UhNx/CpkvKNxWh44g7rY+6I7z9AFu1fPJ0
+X-Developer-Key: i=yunwei356@gmail.com; a=ed25519;
+ pk=q8tCkO/6rm59ztJyK05MIyeCgQrTPpMG7Sw0ZV7qqFo=
+X-Endpoint-Received: by B4 Relay for yunwei356@gmail.com/20260923 with
+ auth_id=1050
+X-Original-From: Yusheng Zheng <yunwei356@gmail.com>
+Reply-To: yunwei356@gmail.com
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Yusheng Zheng <yunwei356@gmail.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Commit a8065af3346e ("net: thunderbolt: Enable end-to-end flow control
+also in transmit") enabled E2E flow control on Tx rings. It was reverted
+after an ASMedia ASM4242 accepted the configuration without returning
+credits, leaving its Tx ring wedged. A separate report described similar
+Tx completion wedges with multiple native E2E rings on AMD Strix Halo.
+The revert kept Rx E2E and suggested a Tx opt-in for known-good
+controllers.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On two Intel Meteor Lake-P NHI (8086:7ec2) hosts, the exact patch built
+against their running 7.3-rc3 kernel was tested in a same-boot A/B/A run.
+Each arm used a ten-second, four-stream iperf3 transfer. For lab to g485,
+Tx E2E on, off, then on again produced 15.43, 15.76, and 15.18 Gbit/s,
+with 0, 29113, and 0 retransmissions. G485 Rx errors rose by 5097 during
+the off arm and did not rise during either on arm. In the reverse
+direction,
+throughput was about 19.41 Gbit/s in all three arms, with 0, 181, and 0
+retransmissions; lab Rx errors rose by 14 only during the off arm.
 
-- [Medium] Making every socket-queued `rds_incoming` own a connection
-  reference (`rds_inc_init()`/`rds_inc_path_init()`,…
-- [Low] The patch fixes a real, user-visible use-after-free
-  (`rds6_inc_info_copy()` reading `inc->i_conn` after…
+The link was brought down and up to change the flag, so link training was
+not held fixed. The result supports an integrity improvement on this pair,
+not a general throughput gain or proof for other controllers. Both hosts
+were returned to their distribution module after testing.
 
---
+Add a per-netdev ethtool private flag named tx-e2e. It defaults to off and
+can only change while the interface is down. Enabling it requires the
+existing e2e module parameter. At open, the Tx ring uses E2E only if the
+peer advertises TBNET_E2E. This bit proves protocol support, not working
+credit return. Administrators must opt in only on controller pairs known
+to return credits; a bad controller can stall Tx until the flag is
+disabled.
 
-net/rds: hold a connection reference from struct rds_incoming
+Link: https://lore.kernel.org/netdev/20260727123002.25225-1-fy15309206903@gmail.com/
+Signed-off-by: Yusheng Zheng <yunwei356@gmail.com>
+---
+RFC: Is a per-netdev ethtool private flag the appropriate opt-in for
+controller pairs that return Tx E2E credits? TBNET_E2E from the peer
+advertises protocol support, but cannot prove that its controller
+returns credits. The flag defaults off and changes only while down.
 
-Every site that stores a connection pointer in rds_incoming->i_conn now
-takes a connection reference, and the reference is dropped from
-rds_inc_put() and from a new rds_message_free() helper.  This closes the
-reported use-after-free where an inc queued on a socket outlives the
-connection it points at.
+The exact source built with W=1 against both hosts' 7.3-rc3 headers.
+An A/B/A test on two Intel 8086:7ec2 hosts is described in the patch.
+A net-next allmodconfig W=1 build was attempted but stopped on GCC 15
+Werror diagnostics in unrelated files.
+---
+ drivers/net/thunderbolt/main.c | 60 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 58 insertions(+), 2 deletions(-)
 
-Closes: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index d9fb587a62c5e13b6cb8b4397e0cd31c076cec7b..b17ab8e15c1f3fea926aa95eb074a0f60123dfba 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -160,6 +160,7 @@ struct tbnet_ring {
+  * @login_sent: ThunderboltIP login message successfully sent
+  * @login_received: ThunderboltIP login message received from the remote
+  *		    host
++ * @tx_e2e: Enable end-to-end flow control on the Tx ring
+  * @local_transmit_path: HopID we are using to send out packets
+  * @remote_transmit_path: HopID the other end is using to send packets to us
+  * @connection_lock: Lock serializing access to @login_sent,
+@@ -190,6 +191,7 @@ struct tbnet {
+ 	atomic_t command_id;
+ 	bool login_sent;
+ 	bool login_received;
++	bool tx_e2e;
+ 	int local_transmit_path;
+ 	int remote_transmit_path;
+ 	struct mutex connection_lock;
+@@ -947,8 +949,12 @@ static int tbnet_open(struct net_device *dev)
+ 
+ 	netif_carrier_off(dev);
+ 
+-	ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE,
+-				RING_FLAG_FRAME);
++	flags = RING_FLAG_FRAME;
++	/* The peer bit advertises E2E protocol support. */
++	if (net->tx_e2e && tbnet_e2e && net->svc->prtcstns & TBNET_E2E)
++		flags |= RING_FLAG_E2E;
++
++	ring = tb_ring_alloc_tx(xd->tb->nhi, -1, TBNET_RING_SIZE, flags);
+ 	if (!ring) {
+ 		netdev_err(dev, "failed to allocate Tx ring\n");
+ 		return -ENOMEM;
+@@ -1336,8 +1342,58 @@ static int tbnet_get_link_ksettings(struct net_device *dev,
+ 	return 0;
+ }
+ 
++static const char tbnet_priv_flags[][ETH_GSTRING_LEN] = {
++#define TBNET_PRIV_FLAG_TX_E2E	BIT(0)
++	"tx-e2e",
++};
++
++static void tbnet_get_strings(struct net_device *dev, u32 stringset, u8 *data)
++{
++	if (stringset == ETH_SS_PRIV_FLAGS)
++		memcpy(data, tbnet_priv_flags, sizeof(tbnet_priv_flags));
++}
++
++static int tbnet_get_sset_count(struct net_device *dev, int sset)
++{
++	if (sset == ETH_SS_PRIV_FLAGS)
++		return ARRAY_SIZE(tbnet_priv_flags);
++
++	return -EOPNOTSUPP;
++}
++
++static u32 tbnet_get_priv_flags(struct net_device *dev)
++{
++	const struct tbnet *net = netdev_priv(dev);
++
++	return net->tx_e2e ? TBNET_PRIV_FLAG_TX_E2E : 0;
++}
++
++static int tbnet_set_priv_flags(struct net_device *dev, u32 flags)
++{
++	struct tbnet *net = netdev_priv(dev);
++	bool tx_e2e;
++
++	if (flags & ~TBNET_PRIV_FLAG_TX_E2E)
++		return -EINVAL;
++
++	tx_e2e = flags & TBNET_PRIV_FLAG_TX_E2E;
++	if (net->tx_e2e == tx_e2e)
++		return 0;
++	if (netif_running(dev))
++		return -EBUSY;
++	if (tx_e2e && !tbnet_e2e)
++		return -EOPNOTSUPP;
++
++	net->tx_e2e = tx_e2e;
++	return 0;
++}
++
+ static const struct ethtool_ops tbnet_ethtool_ops = {
+ 	.get_link_ksettings = tbnet_get_link_ksettings,
++	.get_strings = tbnet_get_strings,
++	.get_sset_count = tbnet_get_sset_count,
++	.get_priv_flags = tbnet_get_priv_flags,
++	.set_priv_flags = tbnet_set_priv_flags,
+ };
+ 
+ static void tbnet_generate_mac(struct net_device *dev)
 
-Two questions below, one about the commit trailers and one about the
-lifetime this introduces.
+---
+base-commit: 944ae66642b726bd6b25ae71b1e9ff88a0e0bdb0
+change-id: 20260923-tbnet-tx-e2e-ethtool-v11-9e3276eaaaa3
 
-The changelog documents a confirmed KASAN slab-use-after-free and carries
-Reported-by:/Closes: for it:
-
->     Reported-by: Chengfeng Ye <nicoyip.dev@gmail.com>
->     Closes: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
-
-[Severity: Low]
-Should this also carry a Fixes: tag naming the commit that introduced the
-bare receive-side assignment in rds_inc_init()?
-
-Other bug fixes in this series do carry one, for example "net/rds: guard
-every work-requeueing site with rds_destroy_pending()" with
-Fixes: ebeeb1ad9b8a and "net/rds: make rds_destroy_pending() cover
-single-connection destroy" with Fixes: cdc306a5c9cd3, so the omission
-looks inconsistent within the series.
-
-The explanation for why this is not stable material could stay in the
-changelog next to the tag.
-
-> diff --git a/net/rds/recv.c b/net/rds/recv.c
-> index 6204e577a90a..1fcd4483d3be 100644
-> --- a/net/rds/recv.c
-> +++ b/net/rds/recv.c
-> @@ -46,6 +46,7 @@ void rds_inc_init(struct rds_incoming *inc, struct rds_connection *conn,
->  {
->  	refcount_set(&inc->i_refcount, 1);
->  	INIT_LIST_HEAD(&inc->i_item);
-> +	rds_conn_get(conn);	/* put in rds_inc_put() */
->  	inc->i_conn = conn;
->  	inc->i_conn_path = NULL;
->  	inc->i_saddr = *saddr;
-> @@ -61,6 +62,7 @@ void rds_inc_path_init(struct rds_incoming *inc, struct rds_conn_path *cp,
->  {
->  	refcount_set(&inc->i_refcount, 1);
->  	INIT_LIST_HEAD(&inc->i_item);
-> +	rds_conn_get(cp->cp_conn);	/* put in rds_inc_put() */
->  	inc->i_conn = cp->cp_conn;
->  	inc->i_conn_path = cp;
->  	inc->i_saddr = *saddr;
-
-[Severity: Medium]
-With a reference now attached to every received inc, does this hand an
-unprivileged reader control over how long rds_conn_wait_conns_freed()
-blocks?
-
-The reference taken here is released only from rds_inc_put(), which runs
-from rds_recvmsg() or from rds_clear_recv_queue() on close, so an
-application that simply never reads a queued datagram keeps the
-connection allocated.
-
-rds_conn_wait_conns_freed() then has no way out:
-
-net/rds/connection.c:rds_conn_wait_conns_freed() {
-	while (!wait_event_timeout(rds_conn_freed_waitq,
-				   !atomic_read(&trans->t_conn_count),
-				   msecs_to_jiffies(RDS_CONN_FREE_POLL_MS))) {
-		...
-		if (time_after_eq(jiffies, warn_at)) {
-			pr_warn("RDS/%s: still waiting for %d connection(s) to be freed before unload\n",
-				...
-}
-
-That wait is uninterruptible and is reached from module unload paths,
-rds_tcp_exit() -> rds_conn_wait_conns_freed(), rds_ib_exit() and
-rds_loop_exit(), so the unloading task sits in D state until the
-application reads or closes, and the module stays in MODULE_STATE_GOING
-in the meantime.
-
-A bound socket holds a module reference on its own transport through
-rds_trans_get_preferred(), but rds_find_bound() does not filter on
-transport.  Can a datagram that arrived over, say, a TCP connection sit
-unread on a socket whose rs_transport is a different module, so that
-rmmod rds_tcp hangs rather than failing with -EBUSY?
-
-Would it make sense to bound the wait, discard or quarantine the incs
-still queued at teardown, or hold a module reference for queued incs so
-unload fails instead of blocking?
-
->  	memset(inc->i_rx_lat_trace, 0, sizeof(inc->i_rx_lat_trace));
->  }
-> @@ -81,9 +83,19 @@ void rds_inc_put(struct rds_incoming *inc)
->  {
->  	rdsdebug("put inc %p ref %d\n", inc, refcount_read(&inc->i_refcount));
->  	if (refcount_dec_and_test(&inc->i_refcount)) {
-> +		struct rds_connection *conn = inc->i_conn;
-> +
->  		BUG_ON(!list_empty(&inc->i_item));
->  
-> -		inc->i_conn->c_trans->inc_free(inc);
-> +		/* inc_free() can free the memory @inc lives in, so the
-> +		 * connection reference has to be dropped through the
-> +		 * copy taken above.
-> +		 */
-> +		conn->c_trans->inc_free(inc);
-> +		/* get in rds_inc_init(), rds_inc_path_init() or
-> +		 * rds_recv_incoming()
-> +		 */
-> +		rds_conn_put(conn);
->  	}
->  }
->  EXPORT_SYMBOL_GPL(rds_inc_put);
-
-[ ... ]
-
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919061149.250658-1-achender%40kernel.org
+Yusheng Zheng <yunwei356@gmail.com>
+
+
