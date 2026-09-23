@@ -1,47 +1,47 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010035.outbound.protection.outlook.com [40.93.198.35])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011049.outbound.protection.outlook.com [40.93.194.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA9953D9CC
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDDB389106
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790180320; cv=fail; b=tgurmy5WKU43Wqfa5gqItiELXAZdZpm2Ergbc3D+Jw4LxX8Jwl9uJVPguI3MyCfz7TzMP9oWiY6uxwwZsXLwZaXbASZ8a1ZQpTy2FmtxAl+JdcIhfz3AS5d0MSUPS8FTP4LmozDpMyd+O68S5h0bdBgU/gqA0bjaD+1WafjBDdM=
+	t=1790180335; cv=fail; b=lIakcSDYVA3UgtY9mHh4sSYA/lLEozTffedSiIqraPhpf066TbvgyxMLwcTMKPORE8JKYppRat/y5m9oSvJnQGd9kcZ8L2wE8Quu/ThXbkORI5OV6ozC9iyv9ceBQC/IhgMx9GwnktPzHjRz7faH8HL09yLt1QMLd//NoHfpKDc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790180320; c=relaxed/simple;
-	bh=R3QBLMaypXPr1QZYQdcsQWz+AiTiK0xd8vAhDcShJ4w=;
+	s=arc-20240116; t=1790180335; c=relaxed/simple;
+	bh=TnW30vGivL50fL4OYe1anaxTPyXqcpcFU35CXU70stg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hlPOjwPXnQeE4fqnMCJp+zyoDbTL4nITO4eVGKrWcYepIy9OvEOWT7TWCGBV0IqpWbfxm0RuD/LjzIDIVwT652Z8A5X9fq341VetUBSB5DWrF5TzFYZZKb9gqwPe5BFuGg3rwhlx3MK0wik5o1ydxLGnjj1kE6/P/7UT6g+qyOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rC6qjEGo; arc=fail smtp.client-ip=40.93.198.35
+	 Content-Type:MIME-Version; b=XXFVvJk6LpokQP11JrbheF+Z573pBw3l8xbZ907MR7pbISO8no56/+RzUT8a/6U2+QemA8936Ry78rae8qE2yIz3NugEu30oGkUpBWzXoo4geU3wJ8QbJwngXdPR1cM5SGsIE2jRxYjjTwgLj+U+ShJMRvP+lbOPmZiARtZerc8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MnJUs76t; arc=fail smtp.client-ip=40.93.194.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rC6qjEGo"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MnJUs76t"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QCIL8pDJ1SIUefG002gmlS/6YdWjmKlCZbYY1warfyQmJTfLbwi0+yf3sW5uUmwOmRSHH4YV5NO4Ko3k0t2r980WdIWWhXtptjDlHpSk1eFbrNQdwoxIyaOxM74WVd/YdwnT+yoopOUwFzx06ViEWT6RFqELS6u2RX9PNuSWJ6W4UUzfvAJitUadjGCu6I8ZEDL4TvxdfGnTji88+INsOw0uUFP9xPvqI8qMhuTjvo8n+cGFgj7k5ktze8qOS8A91LBMmnIwLpnCklovbUgK+9KFzKwJfNr1CAp4zaJPEjCUFzMLHHpoWQqQBzLioVuaDfIyYCNg6i2aX5ItHX+Ddw==
+ b=lO1Zeymk2t2jGelu7/lBP2cucEfVQOA+sm4xQT4sw78QTTe6OIq2hcCW8T+TioZQdZp/1KHL7bdXM5YSSNlk6iBvnnXMtYbF+fmH8274elWLxY5ASYOLqH0lqnT63xYP0GrRHKhXDkR39hXhz0sc0T8+/N+LG+tfu7BParjZIqgq8G0Am+Est2irs/AGY5n3ev8nmP30agdUSC7MDI7URwoAKC9jKWE6m/QXAATTXj2c4xMfsuN+jCsqj8YIXXo4uL7wlRLURd97/168++6n6uzwTgRtYJ6AuOeQQYC3w1/pHb+15apBqvz4shjjrnkDbH48ZuDGOHUk0zewMbJNZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ljqf5UvZvt2vRcW6bpB9G9u3mMdN+wRCb9NOrIt2p4w=;
- b=hfLiCSZapHChzLsgmR/AMapAfluPsydj7KDfM+656M8upcUhsFEjGx6y3PoTJgjxUbGFnx3vh39EXZvdg41i7B2Ko7HgUiqP3P2qvD5suhIwn3hBW9SglsN0BH6BfUllVNtlwSORN7npGI/fUmSg6f174cB+lIU07SPw6HZy4STzetXnqSMB7pKSlNAafpXd70b2IjRw6rWWGF+wF9XT1Q8rWai1IMmwOydOlkg8Pb39b1FvL8XbvG/vyiUutkRpFXjStY0HWUR+zjXwpotDD357dGEjc2ozTHj5Y94P28bfjjlcl4SsOxuSe7CvK7vtgqKuHdt6QOAlYqrtYTcQPw==
+ bh=l0z+GfU9IEpPO/QnvYAyfE7lrrJpn2T1Fjas4XuCZQk=;
+ b=qgQVK/P5b2nzZGMLh5BQqRivdmqhXloKMDIeOD5XErZBNQL/6bWqCALJstODMUmhDSIqIbccrI481FppJML0Xi5I+vYgVeTnITRdaegsnABLFHimCZ4boLggWDSQ9/iVBdrQ09WTnBJoe//fETTH2KJKWSTCTV7gez4tSXjx80MmITLiVJF1hgZz7QvnVCEu5DUI61PJlOSeHc0rz9mWge+XoHAXBEqfZcEHGhjMhb82q61O75grNrtMlGVpERKMRXwcFo5nhBKUJ7kEbwjaAB20ZChYYjWZmCdfZVv04u2RiObicB+c1i7TvleGNhd/X0ykTL4rfq9V+hOEors5Hg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ljqf5UvZvt2vRcW6bpB9G9u3mMdN+wRCb9NOrIt2p4w=;
- b=rC6qjEGoTeVs3QScd2CjqxNfZ+tdjipeq0v9UY1Enhr02AaWbI64Rs9fCTv+1kx65aEkJEg14Immokma6+ugplN50qExGTEhD6zgbqkOhnMuC2Vp+0XoaC/rK1mE6s61AukLB/p/d7U67Hy+UkwV9PpI0jJnZ9WCXq8vtaPxw3ARiNH5D6AOuSs34MZx8O/DW39z+6tNSDR+QjK+atA+cIXjckTipmew1DfTLc1bs7QUk5VFzM9M7QOuJCYUDspJt/DvhcE7X2tCYGqvqT/7w7xOyszzpqq+ahutZfbF1En3Fpmc6iULVYurLgoizMVnl3SkM0uqtNc41imyeR3Ilw==
+ bh=l0z+GfU9IEpPO/QnvYAyfE7lrrJpn2T1Fjas4XuCZQk=;
+ b=MnJUs76tC0E++Nea6hAq1SxseFs5FSiFaXePJQn3rrwVX+X587KgAsGMoyTDDmvWVQpLu5mcDDM0FZ+yBmUvW4dTf6eMwVltF0HuS5x14m2alNxWeSaZjIG/MEOKb6BD5NbwMxTY/oveCydXvf2OGrS9fR6kioAv3k8LKiQ6HzWE6gUS23FQRqJN063KYSxATIz1r/988mb/xKGsmQ0VoQZUiD7cQVISEL/qDrt7zsioFDeSCaFXIIfOHmcsHWzGcBc+lR2G8x0mlJ+p79n8AnYjrQz5P0UCsyDyWjZVOi2uk4S52HrLEhhptyIa6OdU2cTP/tU1oKomcph+SO01uQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SN7PR12MB7954.namprd12.prod.outlook.com (2603:10b6:806:344::7)
  by LVUPR12MB999135.namprd12.prod.outlook.com (2603:10b6:408:3a1::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 16:18:36 +0000
+ 2026 16:18:46 +0000
 Received: from SN7PR12MB7954.namprd12.prod.outlook.com
  ([fe80::2567:531c:cdb8:f544]) by SN7PR12MB7954.namprd12.prod.outlook.com
  ([fe80::2567:531c:cdb8:f544%3]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
- 16:18:36 +0000
+ 16:18:46 +0000
 From: Ido Schimmel <idosch@nvidia.com>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
@@ -50,16 +50,16 @@ Cc: dsahern@kernel.org,
 	daniel@iogearbox.net,
 	ferenc@fejes.dev,
 	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH iproute2-next 2/3] ip: netns: report the network namespace cookie
-Date: Wed, 23 Sep 2026 19:17:55 +0300
-Message-ID: <20260923161756.2914560-3-idosch@nvidia.com>
+Subject: [PATCH iproute2-next 3/3] ip: netns: add "ip netns cookie" command
+Date: Wed, 23 Sep 2026 19:17:56 +0300
+Message-ID: <20260923161756.2914560-4-idosch@nvidia.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260923161756.2914560-1-idosch@nvidia.com>
 References: <20260923161756.2914560-1-idosch@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FR3P281CA0109.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a3::9) To SN7PR12MB7954.namprd12.prod.outlook.com
+X-ClientProxiedBy: FR3P281CA0019.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1c::6) To SN7PR12MB7954.namprd12.prod.outlook.com
  (2603:10b6:806:344::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,186 +69,203 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SN7PR12MB7954:EE_|LVUPR12MB999135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c09b6bb-2164-4d86-dc5b-08df198e521e
+X-MS-Office365-Filtering-Correlation-Id: a6f6fd67-89e5-4cd4-9bd7-08df198e583e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|3023799007|10067099003|11063799006|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|10067099003|11063799006|56012099006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	NsOKbjTKjTT1unIeDY4sfptKyhNWZJZfB6KDj3Wq3RZpvrfKzCofNMgpv5wF8+3nc/7JsaPKz47zB7DYlZK3VyCb6kq1OPQ43sWzS4acTCOM0p0sgWDfGNtGHVD6l56XpWrIXeYZagwZWG8Q30OGo8xPnKXx3+9fMjvHZlACCoOr71Zgh0HBi72qP6ia8Ul01YY768Qv4aUit3c+z+Ao2eZtp4b1l5ylPUfL14cUJLP3v9aEMsgD+7FwVN4rWWs0EwNjUHphPp0dhwu8sZgzhMT0UFYxlltEKkbdDeJHBgc6tSLdqrIcd+8+9t283Wf0FRdOmQP52EzUvLWE60vL7BgdReInsb4XP94F609rdHjbiWlMEbic5a00Gx6q45tLDp4KT0GtPpNWFrW3/RtoBV8tVDppoQZM61o+fgJ1uUiIukpGZsvytiZ8FGWDZAq+M/Z8BeiRmmwEwCg0jdVBdZ9vsGrNb2A63Ne/sDvH9FbIGZ50iHtpFZQDe1RqQr7psc4aWZ8dC5clJrT/qXl6oXZo8HhRpC3KQVfoItt2hapHlrsxMDFkMndiikQeADscYq3lqCZJWIz7fz9GPw9csFM7Io4KKS1ZdLlAxvvpNdu0dIWKICzcDRGn76Rx8MQz5glF7VylgCc2d/mFuAilGx9BeV6C8HQW/IgvWWuCarw=
+	tE5PxEIUU7rH6GRGu0O5seDZwusfXB8rHR65sRmu53YdHFcJ9HfK4KxC/KLyd4mZFxZVBPLDRfhXlvYfw3UZEmmpa+ZQaImPT9NCkmftot3WBbIiKZ1G+FtalIRaQhsHOiAGLkiBgs2lg2/9HJm8TXzxMcLOKZGsn00dOYUrLJ9A0egAGrhZ3komd2j2lFdyG1dvk+qiWQVO+sBfgdgL/atBosdxyudJTpKxwlZMBmRnKS40RqNXYrqKWHi9MXzHhZdm3qhxm3Qp6sFc/+EVRxRaypgK6og4uUt+TkgNA+6IHF9/cQmOc0F66z/G6CQHceaExdb3mt7rvnNL9hVIr0sUV/jh7de3teQlQJy6bAdvjIg7/OYJ9BQTCGIOXW0NM8XwCl99/kvkjyx/tJzGgZ855p+S+wQ8/UsC6h6JCl1i6sudmmwDPbRuY8QQlN0g9pgg7WYWgEV6laZgHWsLDn1DK1kHm4VqRfvoKr4v5TvM3CzmuampdvOSXqPt54udTkiAOfHl+HRY2TDiXm39qu4GN8DK8D53ssZBDZZweTetgDEy6C+0ng4+tyS6dlgeGISJGLA/8eJzqlUoDqk/WjLLy3WpyyGSVqkXqSCQH/pryuF6t84g5Pvdcc8b5nDildyG59Lo/rU6EQg5DpAM0dObiLjEeD0S/7vwEDXyjxg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB7954.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(3023799007)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB7954.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?k45a4LZthhZJ13SRQdjjL/TrsAHa2oLRNlEpsSh3KX+Kr2LtsNqKOt1VR22Y?=
- =?us-ascii?Q?KY3frQQe7SwipYjQU8PVo14DGC99OrWZArX17BS1tE1Ozt6QVdanosM09Tk5?=
- =?us-ascii?Q?aPUBwKkwpRE0v2kvd1NmYtylb7D+ZP8XK9bFp6yU+rc35GzkNlho+I500ShO?=
- =?us-ascii?Q?7TMiFqz42H5ZsihcALyuLvtncY3aru9UaouJjqOjEo4lTLX3m4jQQApRiU7X?=
- =?us-ascii?Q?0u2wkn522rUaQeP+8oXG5U45xfEPQmfeCJHKV+0qEH3qnDYsZkHKaUNfy8PV?=
- =?us-ascii?Q?G5O948wBGbn+BswiHa4TmiZk9QE70tF4ot98ZYOd8xq6PwGxmSrCYKtYStSu?=
- =?us-ascii?Q?Xc7rYzWfOVTWHYXek/o58TzVuDNLYoYmsfUlMf8LlyQeC4gzLNccFjsLX96i?=
- =?us-ascii?Q?9s8MNKpXDzUn3uiHlZ4Uu+me+n2TxUFMKoBFLvl4DsJVGn1Edqv0ue4FRfAh?=
- =?us-ascii?Q?PYJc0nAhvSUW/IljCJLdAKCScM3YsExBlfnzEdytz4nR9LkCJiOonj0STGmd?=
- =?us-ascii?Q?IHtGcJEoxQgW99b2aEkgtzY4Fm++kF5M64LdQoWH25rkNkF6tYqbTzE1uiUE?=
- =?us-ascii?Q?fQjMLhz/R7iKsHkFW338Xq23NOkCT9dR9ojv78vwoCsVX/4CJVph7KCqmHBo?=
- =?us-ascii?Q?BRiceYaZpxtWXrlE8OcUysgwpE69tg9LmrUE27nG6y+4g8VExCLUq2LDThxD?=
- =?us-ascii?Q?/rUFH9r+rd+99FgMyHsRLLgMEY5fxkRhJCcGrWYEj+A+4xYDU8Mn0I1Za9C4?=
- =?us-ascii?Q?1g0XUj58j7b1ALIZWxnCUCAhjdGJpdl5d6U9xvOQ74gYfiLbZtZRU6bGFadg?=
- =?us-ascii?Q?Bk6p+H04rCfOUWOFFPRZuxCHbf6c7FFu7qy6pahdz6ZO3E2GTQo/FmYdxDYx?=
- =?us-ascii?Q?NzHJbPNbbhPLiVgdA2UiybVJ3z3Q4Z3xBRV5DmmuvSuz4JfwEleS+t+SSJ7s?=
- =?us-ascii?Q?uR7lAtcIG51GCyPT9UanyZfSBEdw4FkscYOmGNi/PkuEVzWZ4/L/p5cRYcnm?=
- =?us-ascii?Q?CK+NWQ4wBCnRXGbnQK41WIFowS8mY34RiXSUB0uguzZYXF0x3rD09s9y5mzx?=
- =?us-ascii?Q?E+4+pWz4W9OBOHcTkOqqJD4GqDjlQyvGayka83U1L0SIJIBx4i0Gxm6e9ptA?=
- =?us-ascii?Q?DGfp5fxkImc8t/6phbGSLCqFMKlWVjPUuddivsx+TXgWlEK6mxlKIqNKo/kJ?=
- =?us-ascii?Q?+88maYuo7ODTRcEJmwJZ0UtjYhLzrvU4NBICZqMQ7tvCl7pt+g7iDthbJwR3?=
- =?us-ascii?Q?wY0r3UkQ2c9hhImZ5drHq3IIwNScRfUYvq4cQlx+Xh7dbLbZiJYlFfXkIBz0?=
- =?us-ascii?Q?rXu8MWSI2ffRSyGn6450Q20eBzmOl1mDc51VV0jdQFfcMNjfN9N+Uhu5shmG?=
- =?us-ascii?Q?pWTMk0b3+L2t+MOh6fc4nwMaIyYFsWgCl4vq/8dxIuwjrahyM8/nKv1GK7Vp?=
- =?us-ascii?Q?MGvgFq9tSOUGhV8KHwAHCAoWL6SOOyCm3MyrGl244e7qmsSqz+8bUP2qWR0f?=
- =?us-ascii?Q?yWBqiuakpICsxiZz66/NufVeCxFhYfow/DFlfECoLfxtKEo8P7hWRMFxYc5W?=
- =?us-ascii?Q?FjuOtzzQB7MLVlq+sDHhtcvb5aTeIuNqELPEUCSi8OjAMRscGnwu5XpGgWy1?=
- =?us-ascii?Q?89gTvullGUNWzoocKCiMGgz6rbVaaADweTYDd5aj5zj7w1TxKsM0Q1kb2GYv?=
- =?us-ascii?Q?DStksHqRq3BJPsday1o3V8kHHsASVXKzq12oLtl/uyuxxA7B?=
+	=?us-ascii?Q?r9G3fmwxokpUzpkHaFBZ8xajwV2mAQhEl6pQfhmgSeRf+I8Xvy36h/2jtB+v?=
+ =?us-ascii?Q?V8hEl18Bk641MG1Ffx2txKoWrPqpStaBH3LPkrZy0WOcj5jwkm4x9oDZN8Dk?=
+ =?us-ascii?Q?F3iBIz2sGaAyvxX9b0dh8jT9DGgnNvnm3NTPcXaNalcMkNfEnmnxRdRL7mBe?=
+ =?us-ascii?Q?uQaKellux37jsxtuyEOUoqaOE4UEo8pp+MCabMFV+TF8HCID7vsMlNesN7ib?=
+ =?us-ascii?Q?Jk2CKIIpEJJwpP9W/ySH48b+ICcfVBvcZynlqsE+7lk5GFhNKS2Q/Slr9Pee?=
+ =?us-ascii?Q?96X3emVww5/qP6JSElCgzoln5C5VeEGPSRAeLaIPJBu9nhglFeaSHwD9OkcH?=
+ =?us-ascii?Q?tpcLvlOSd5fTthjHRAqsypbnKswWJ3W0WG3IswPK1rrw7yuq1Hx9TyZklMo0?=
+ =?us-ascii?Q?bBL+t6Qt8R02VujUQkeNlwE1Y3mQD+1Vj+ZQo9gL7zNAc1P1Fn5Z7VIoWdj7?=
+ =?us-ascii?Q?4wgpzULbvWmZKoowyTY5wbiExwLDWZF1IqQx8AU5m0K7tlwo9K//BKtVDc4I?=
+ =?us-ascii?Q?rqX7ti4G2I9oA//bkfC1G/v/fseP7mI3bKykIitGAPgyFrWhKBJofHhhl1CY?=
+ =?us-ascii?Q?jIR+lAhrjaA/VLRgHw+dnYhaZyBy2UPPa9Z0hX78DGySgz4UOhZCnOIih/fk?=
+ =?us-ascii?Q?Tvh/XGIfuMTc2AWjDnMxDP1JcXgpJ0jQBo8Kuefh/1/lzIIr13hVO6B9W+3R?=
+ =?us-ascii?Q?Chui8qT4d4ghhOUH1pmSX2LIVnHbpW6HCP7zPbWShxX8bV6EVTNRU0KILVi1?=
+ =?us-ascii?Q?85Hiv0tO6aiC1pNgMqRZFAToyPiM9oTenxvi45ARtz/31qo92bNR8AOuolxA?=
+ =?us-ascii?Q?6KKXRAU3DTw5rqeqSJOgOMfvp5iwJzauXFvjnV5Q7cVXmHETJFfHjZHI9T0J?=
+ =?us-ascii?Q?B0PHgeZOeA3BtCfydWOOYCE8mCuzKZWZ6ElFArVwc6LEqIuQeXicuTE07Wmz?=
+ =?us-ascii?Q?xI3nex6EtBFLFmw3554G48EHB0i/vRZzOaubIiROAbUGqPcWtOCKbR0WTQYt?=
+ =?us-ascii?Q?4qrRYO/bQSr6DsMl8Lx3WJyisCBBkRHryxzRe0iMH85jdOaJjcdnIAgHQhzl?=
+ =?us-ascii?Q?gg92AoloW5VPhE7vJ+oWzTWQX/977vLfXQy4ZUXuJjhHEdjryO1DVUHiuoxI?=
+ =?us-ascii?Q?NaarGZrELdz+p4vY62DxZJvq4CZ3I2BVa94p7V45JgZBmWpbruxDH0L15tWa?=
+ =?us-ascii?Q?DHbx1eNns9RLYbGBzEhCzVTysyW3idV2RR2fa9z2z/y7rRb3tcJsPbo+Tj3O?=
+ =?us-ascii?Q?/Oai0nUmVep1HN3iCcGVHPOpmX7FwYqcUfy2yKgZtrPOHcG5U1mvoDiDPNVG?=
+ =?us-ascii?Q?aNwvBrOCy+CPCEmp+OMJ4HgJ/3YHJ5j8+gYiVUfTDuC4EaV7TrnmBDO5yT6Q?=
+ =?us-ascii?Q?2iFipZmXwpbKyoaW/63Bzx5O1e253fo+JSEuh02sksSPvAMdyVKeNCvTIhKD?=
+ =?us-ascii?Q?idB7QEcp7u8M5XFuU9t+uqh+ejQll/0CfXofeBBYLTyNXurMwdQ4p4U1rhya?=
+ =?us-ascii?Q?jPge7RD3EaGwhxilxo+7KVVLLP33LSzZjvRW9A3ydrKEDiykIBFlUMnzEcOX?=
+ =?us-ascii?Q?4eccA4X3+khQR7lxF2+vgrellESpvTbAYb9MoVwncPKZp9hzSfodJDt401nr?=
+ =?us-ascii?Q?URH4KN6u2cornBwGEQx4/orV+hmW0jvMImGBMUhrF4WgZ4voEd0pYueAD6Jg?=
+ =?us-ascii?Q?zvNVtYpl13wjfm9P7MJXE6hJTwSiX2C/WN66xyRYLfW9Mnb6?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c09b6bb-2164-4d86-dc5b-08df198e521e
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6f6fd67-89e5-4cd4-9bd7-08df198e583e
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB7954.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 16:18:36.4383
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 16:18:46.7796
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F9gPyG5sHLn5C9oJSysU+/a6zUmm5SVA2ha9X3yEuigQsnKDhvh6MmdIud+XWPcgsZRDo4wIx04RT2T2uuZaSA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: bke5C/+EdUr6KoqLILdWW6W7o+ZB9aLdIwxbA3sUyM22g4VoxIydoTH+njMLjrhdhJ8kKYPMz+W1AHfuA/YfUw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR12MB999135
 
-The kernel identifies a network namespace by a 64-bit cookie that is
-assigned when the namespace is created and never changes. User space can
-query the cookie using the SO_NETNS_COOKIE socket option and since Linux
-6.18, the cookie is also the generic namespace ID and can be retrieved
-via the NS_GET_ID ioctl on a network namespace file descriptor.
+"ip netns list" only reports named network namespaces, i.e., those that
+are bind mounted under /var/run/netns. Network namespaces created by
+container runtimes are usually not named, but there is still a need to
+retrieve their cookie, for example, in order to correlate the records
+in a trace to a container.
 
-Report the cookie in "ip netns list". In JSON mode it is always
-reported. In plain text mode it is only reported when details are
-requested ("-d") to avoid breaking scripts that rely on the current
-output format:
+Add a command that reports the cookie of a single network namespace,
+referenced either by name or by the PID of a process running in it. If
+neither is specified, the cookie of the current network namespace is
+reported:
 
  # ip netns add red
- # ip netns add blue
- # ip netns list
- blue
- red
- # ip -d netns list
- blue (cookie: 12)
- red (cookie: 11)
- # ip -j netns list
- [{"name":"blue","cookie":12},{"name":"red","cookie":11}]
+ # ip netns cookie red
+ 11
+ # ip -j netns cookie red
+ [{"cookie":11}]
+ # ip netns exec red ip netns cookie
+ 11
+ # ip netns cookie $$
+ 7
+ # ip netns cookie
+ 7
 
-The cookie is not reported on kernels that do not support the NS_GET_ID
+An error is returned when the kernel does not support the NS_GET_ID
 ioctl:
 
  # uname -r
  6.12.109-virtme-g39a867754a8a
  # ip netns add red
- # ip netns add blue
- # ip -d netns list
- blue
- red
- # ip -j netns list
- [{"name":"blue"},{"name":"red"}]
-
-The new functionality can be used to filter networking events that occur
-in a specific network namespace:
-
- # perf record -a -e net:net_dev_xmit --filter 'net_cookie == 12'
+ # ip netns cookie red
+ Cannot get cookie of network namespace "red": Inappropriate ioctl for device
 
 Assisted-by: LLM
 Reviewed-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- ip/ipnetns.c           | 25 +++++++++++++++++++++++++
- man/man8/ip-netns.8.in | 14 +++++++++++++-
- 2 files changed, 38 insertions(+), 1 deletion(-)
+ ip/ipnetns.c           | 46 ++++++++++++++++++++++++++++++++++++++++++
+ man/man8/ip-netns.8.in | 16 +++++++++++++++
+ 2 files changed, 62 insertions(+)
 
 diff --git a/ip/ipnetns.c b/ip/ipnetns.c
-index 587534ae016b..b62d2b0f57bf 100644
+index b62d2b0f57bf..165317b14c1c 100644
 --- a/ip/ipnetns.c
 +++ b/ip/ipnetns.c
-@@ -16,8 +16,10 @@
- #include <sys/stat.h>
- #include <sys/inotify.h>
- #include <sys/mount.h>
-+#include <sys/ioctl.h>
- 
- #include <linux/net_namespace.h>
-+#include <linux/nsfs.h>
- 
- #include "utils.h"
- #include "list.h"
-@@ -444,9 +446,26 @@ static int netns_list_id(int argc, char **argv)
- 	return 0;
+@@ -36,6 +36,7 @@ static int usage(void)
+ 		"	ip [-all] netns delete [NAME]\n"
+ 		"	ip netns identify [PID]\n"
+ 		"	ip netns pids NAME\n"
++		"	ip netns cookie [NAME | PID]\n"
+ 		"	ip [-all] netns exec [NAME] cmd ...\n"
+ 		"	ip netns monitor\n"
+ 		"	ip netns list-id [target-nsid POSITIVE-INT] [nsid POSITIVE-INT]\n"
+@@ -710,6 +711,48 @@ static int netns_identify(int argc, char **argv)
+ 	return rc;
  }
  
-+static int netns_get_cookie(const char *name, __u64 *cookie)
++static int netns_cookie(int argc, char **argv)
 +{
-+	char net_path[PATH_MAX];
-+	int fd, ret;
++	const char *str;
++	__u64 cookie;
++	int fd;
 +
-+	snprintf(net_path, sizeof(net_path), "%s/%s", NETNS_RUN_DIR, name);
-+	fd = open(net_path, O_RDONLY);
-+	if (fd < 0)
++	if (argc > 1) {
++		fprintf(stderr, "extra arguments specified\n");
 +		return -1;
++	}
 +
-+	ret = ioctl(fd, NS_GET_ID, cookie);
++	if (argc == 1) {
++		str = argv[0];
++		fd = netns_get_fd(str);
++	} else {
++		str = "/proc/self/ns/net";
++		fd = open(str, O_RDONLY);
++	}
++	if (fd < 0) {
++		fprintf(stderr, "Cannot open network namespace \"%s\": %s\n",
++			str, strerror(errno));
++		return -1;
++	}
++
++	if (ioctl(fd, NS_GET_ID, &cookie) < 0) {
++		fprintf(stderr,
++			"Cannot get cookie of network namespace \"%s\": %s\n",
++			str, strerror(errno));
++		close(fd);
++		return -1;
++	}
 +	close(fd);
 +
-+	return ret;
++	new_json_obj(json);
++	open_json_object(NULL);
++	print_u64(PRINT_ANY, "cookie", "%llu\n", cookie);
++	close_json_object();
++	delete_json_obj();
++
++	return 0;
 +}
 +
- static int netns_list(int argc, char **argv)
+ static int on_netns_del(char *nsname, void *arg)
  {
- 	struct dirent *entry;
-+	__u64 cookie;
- 	DIR *dir;
- 	int id;
+ 	char netns_path[PATH_MAX];
+@@ -1055,6 +1098,9 @@ int do_netns(int argc, char **argv)
+ 	if (matches(*argv, "pids") == 0)
+ 		return netns_pids(argc-1, argv+1);
  
-@@ -469,6 +488,12 @@ static int netns_list(int argc, char **argv)
- 			if (id >= 0)
- 				print_int(PRINT_ANY, "id", " (id: %d)", id);
- 		}
-+		if (netns_get_cookie(entry->d_name, &cookie) == 0) {
-+			print_u64(PRINT_JSON, "cookie", NULL, cookie);
-+			if (show_details)
-+				print_u64(PRINT_FP, NULL, " (cookie: %llu)",
-+					  cookie);
-+		}
- 		print_string(PRINT_FP, NULL, "\n", NULL);
- 		close_json_object();
- 	}
++	if (strcmp(*argv, "cookie") == 0)
++		return netns_cookie(argc-1, argv+1);
++
+ 	if (matches(*argv, "exec") == 0)
+ 		return netns_exec(argc-1, argv+1);
+ 
 diff --git a/man/man8/ip-netns.8.in b/man/man8/ip-netns.8.in
-index 2e12e28bbb2f..597a2602b32c 100644
+index 597a2602b32c..9b3ad14de677 100644
 --- a/man/man8/ip-netns.8.in
 +++ b/man/man8/ip-netns.8.in
-@@ -89,7 +89,19 @@ their traditional location in /etc.
- .TP
- .B ip netns list - show all of the named network namespaces
- .sp
--This command displays all of the network namespaces in @NETNS_RUN_DIR@
-+This command displays all of the network namespaces in @NETNS_RUN_DIR@.
-+If the
-+.B -details
-+option is specified, the cookie of each network namespace is also
-+displayed. The cookie is a 64-bit identifier that the kernel assigns to
-+a network namespace when it is created and that never changes. Unlike
-+the nsid, it is not relative to a peer network namespace. It is the same
-+value that is reported by the
-+.B SO_NETNS_COOKIE
-+socket option and by trace events that identify a network namespace.
-+The cookie is only displayed on kernels that support the
-+.B NS_GET_ID
-+ioctl (Linux 6.18 and later).
+@@ -42,6 +42,10 @@ ip-netns \- process network namespace management
+ .BR "ip netns pids"
+ .I NETNSNAME
  
++.ti -8
++.BR "ip netns cookie"
++.RI "[ " NETNSNAME " | " PID " ]"
++
+ .ti -8
+ .BR "ip [-all] netns exec "
+ .RI "[ " NETNSNAME " ] " command ...
+@@ -182,6 +186,18 @@ not specified then the current process will be used.
+ This command walks through proc and finds all of the process who have
+ the named network namespace as their primary network namespace.
+ 
++.TP
++.B ip netns cookie [ NETNSNAME | PID ] - Report the cookie of a network namespace
++.sp
++This command displays the cookie of the named network namespace or of
++the network namespace of the process PID. If neither is specified, the
++cookie of the current network namespace is displayed. See
++.B ip netns list
++for a description of the cookie. Unlike
++.BR "ip netns list" ,
++this command can also be used with network namespaces that are not
++named, such as those created by container runtimes.
++
  .TP
- .B ip netns add NAME - create a new named network namespace
+ .B ip [-all] netns exec [ NAME ] cmd ... - Run cmd in the named network namespace
+ .sp
 -- 
 2.55.0
 
