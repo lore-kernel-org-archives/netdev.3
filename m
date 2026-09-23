@@ -1,68 +1,68 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052EA57ED88
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 20:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6154357EDBD
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 20:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790196472; cv=none; b=oAxP6m658F7bHo2R4hbxU9GciGPKWgkqdVeLMtpzAq/kkE92ppCsmGBUKT3jcWQjiyPMVoJTdJkwX2qgMIHaBEgP75JIgci/hGW/DQRMeUMrVenQ56t5anifjeuuuZ3SqVmBYtEfYOhf4yMhqb+zYdDhgy1OC5QUnPfEZ+dAzk0=
+	t=1790196474; cv=none; b=Q5OilIAPveCh8xxbcu0KI1TXsye0kzKqPVx3TnEGmhexsQJoJOjONqkLlFA/o5GJuOgrMHx+AE//MOaHTdd+te7uUrhxdIGeyOBXVKSYAxK72a71NqjeFFvh09YBP6mvcoN5Wpy5xjtCRdEFpd+40EpRQFxRgD/1HNudW/DY2qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790196472; c=relaxed/simple;
-	bh=u9upVCC3m/gwC2XGPIk9ZtnVEycENGqh8TgoKKLgrfg=;
+	s=arc-20240116; t=1790196474; c=relaxed/simple;
+	bh=sjLoecwDQJXaWVmzvGOQ+F7IRuyAd48CcawjSycmYoQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SAM3/QgEnx5A9wJ1bAD0oEKhqVacxC2mT2GGnpZVrMLa/y0Q0gbz0I+fcyo1w4u3SsAb1luTNbbMu9AcvotUTiaWKE6m9T8STodQEmDqj9ZXyRypO7ksXMRK/kK8KgYRWK3qAa9sc3TJwK05XIAueLPPeueKRMcPav+XM9KLnfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=GTwKQWF8; arc=none smtp.client-ip=74.125.225.76
+	 In-Reply-To:To:Cc; b=KNbnHKFzvPkmH4FVTY7tGcpFtMXSiklKqEW9u4+TYh55gl9WypAv5zeKIO4VaEhkuklXPZPU+lZx89O3GdV7Xfk+hNWEJRV84zij9rd4cvq4KngKHqXDHqW+1BILBer681bLVtJYu/20Ek/nigXvt1WDSTM0psaOAUklZAN6sl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=GdXWg9yK; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="GTwKQWF8"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843796e373so958791f8f.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:47:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="GdXWg9yK"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912df756so9977145e9.3
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:47:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1790196467; x=1790801267; darn=vger.kernel.org;
+        d=baylibre.com; s=google; t=1790196469; x=1790801269; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/NLzzVKxNDn2ENtNLz5RF0HuOFGSUxWDx/tiLwjYhuM=;
-        b=GTwKQWF8tDt4EQSjcYpmMT1BBLvH5KTAB4BmGrXmYyEot+tYbj6iadRgu8iHayDGu2
-         PhzT8fxpZH+VCYbfHwUWU1cLqdGqJrwLLnKjJ7RSwmzNiNTuAX8/ejhbVzemRpdN+lhm
-         jCOqU+3PBgG4qbKT6fXN5Hleqa4CDYuQ9DI+QlV3jOkl2d8aZljh/c3T0M/N8GAZbAcz
-         MVQOIKG8ZYvsgJ/7LIBx1v2ub/nbHD4JJwF3G7MHsdbcMCWLom8v/Yr9o5YRaEPLHlpJ
-         fZkSCougQO91puZY2eVnAy9Fo1ixC386lOL25SUU3j0DzfMUAkYQ8430aniPGQl5P53A
-         OvKA==
+        bh=kHpHp+F5tI4LZnE8xFoLfG2BiWUFVvoyvHapbJH+e74=;
+        b=GdXWg9yKY3WsQbWY+qukXrmughfq/vMpqLEGv80D9insKkvIJOoM1G+DNShWVo7s8D
+         5F6DeV55aqJguZEEJvm06neTVEf30HFQD0uL/OSSKJ3OPJE9BhJ2D6+j+Q7aozT1NEMg
+         o/5/n5I3ZKmwNdKxBC6alBBdg9eAQrHu0GhWZEZXQPccKcsIYEtzxRFgTPHz/iNCxcC7
+         dH0ajzmA/s6XNrxFr8qzfpdVM/f5g3e2pVV+kO3ytp1IB7NzeBk5+XZwD1Zpt5j6Dgqn
+         hFkNByafO6sKI8pEt01UBD0fFFPU5clXR51r7RfUUT0tcZsO+0L2xDJ6BI/tkxitg4hl
+         12jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790196467; x=1790801267;
+        d=1e100.net; s=20260707; t=1790196469; x=1790801269;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/NLzzVKxNDn2ENtNLz5RF0HuOFGSUxWDx/tiLwjYhuM=;
-        b=aMpqbdYpJ/ZZQ4vhlbicYR8zZI6OzCzyxoyPOYWwk6IJSLNR8OuXuD6yR419aHEJmw
-         h8I8kyk34fZ44fCeq3grCLfIQUz02W8Hm0lcNYMYkVEl6SJ6QwqOvseaC06v+iHRnXc1
-         Hx8jTnU+THpBxz6JH3v18Wj6LpI7+i3rL2QVJBJRZToIPtQ75YYDis3YlnE27I1tAZ9l
-         GHlc+LeMMD1EJXYtX/Z1A3OkAsJ8o4W4Frho62ypt8VSbr3QKoj4bEeE+b6LE08gb1FE
-         jWu3suIGXSJ/q0ZxQd/pUEu3Gv6YU869Qa9kyLdDTEviH24I/KzFVMyB6d7O4ucxGhbZ
-         mEAQ==
-X-Gm-Message-State: AFuF++n098/8l8i89DjS9fZZgyPoVCPHDWxytX5XlFpUGQNnPqjqT3k+
-	3cEsBUvTuXrkxgZz9VODbLb//dr+7b9suv5Eeccr8ssXzL0FtN42Z0kqZMHABgVQwuM=
-X-Gm-Gg: AYBFou2qEOZW3nBj0gfss+WoscQfSgzr+ZpncFmv4Td/wHtdyhpdqnuBu4oFdImX+QT
-	gNS4udn//8Mt0lqUWwCsewF7xQ00RerPugHVxvO9tIKUSBlYRMz6F3H6yE+19IPIyatmdQckBTg
-	sS7xdvWZpy4G0559DFORSf2Frk0gi/wS2BS4KsFBEh2FJ+3XrQDeHIjElTtoBoq53Q3PNBUQrk1
-	75uHgCZHCE5k+R9BVquvHYf8ZWv9rN+w3BVbGfYXxMvMHwq/cPwTqr0/nJHEC3K16TtRgFgIvVV
-	HV2n4TNi81JU/on1+bz6jaub5SZSPVRtkrbOFYv+c3HbzG4AsxOvRkSvEv1xjzlKJdtCSYdIx3z
-	fdwpxq7quID8awmDOTKxwOe4djMSHrbtzqInJ8B2yMrfALTi3wmN4yGEvcd7k/JU95yTDs8A7po
-	hJqOB6w9FUhU4B1KtaoEN6wlqCkYnGximrqQA884jDpv4qEVMXJKR3Lqped9J9uVn//uyvb2/5g
-	HYr54dpz/iOCso70g==
-X-Received: by 2002:a05:6000:71a:b0:487:40d:af29 with SMTP id ffacd0b85a97d-488716f76edmr444910f8f.36.1790196467054;
-        Wed, 23 Sep 2026 13:47:47 -0700 (PDT)
+        bh=kHpHp+F5tI4LZnE8xFoLfG2BiWUFVvoyvHapbJH+e74=;
+        b=vq2s44ZLZKz0ABGtCXyixkbSrwbQqIkjryBN5tG4OV8Uk513DV84r1QjD4UizFIjGy
+         mNu0t5dq6B0Inm+aH+U/vepNgH4C2fmFe4Shwy2A3jVEdqQnzIVbedcoYNpkYfUJKpR7
+         9DEbQsdb4ei5/xMUsvQ3IFuXRHNAIVNbKqz+dlHBIEUpsjaVlXV8S0Xu6yxH5QK/Vkz6
+         TDGcVMs3X6vOjscCf/jU1ZYvy1LBCThAoJuu+bNqzRt+bayT1xT+ZpY69Nki/e+mTM8R
+         EWp/kymwU5EjLBx8Ubg1u7g6OnEF4tRiydyNaAwRNGSKhWVGCoNdGueX/vqPvOa+2B0w
+         WFrA==
+X-Gm-Message-State: AFuF++lPeo+a24N2WTLhZb5mQOhkAUWNJuoKUWKgxBb3FXRnx9rT6HTp
+	0Ei4Qf6NL9VC6Axs4B1kghG52X6xct720TmnUFoYkIJAO5QhvIxtXfpsXdcrK4hJqHU=
+X-Gm-Gg: AYBFou3HN1QC5qSgrTnCjtLZPjYQ1nzlapnhVWBxG/CtxmyPf2VtN4YWbPXjkswkwZa
+	dlQLbxGTahzKmyYG5QuW4gZ604MGBLPTUX+cCCcsSoptgNCYe/flwuiwC2PR7yWlCcJoyj4b+Up
+	z833nmmGv8GZU1yLlAxxaUe6QcfebaF/Eco05fXoFC2QZB6lXgI1JBaV/mBcG+xS4r/37wELuAH
+	yNVBli+FjkFTcseLzs1Ifpv8DnDHMhwL5+sd2khWNktptE/YQGQ+zji8vLhuPFP1WZnQbvxEGvb
+	dWOby2ry7NV81YdyDePGJvTTsR75rwJVsAyxz4LaFuzCj+xowkiH2+6cWd/wuU1LEn63t70SW5+
+	Wdegi8B7D5nYMF3PfL4WEapzPvoRCOuGs1HQQtoYJB4oSLwtRs+x2Uy6eMSOPXqMaIdOMNOkyGN
+	er3H7Lzz6zF1LLcJpJ7JFb8pfWGIEzkv3Ac4ejuj9ufnVoGcWihimWqvX0FBEsQvJE2t5e7NV5W
+	iXlHEEaNS6ruwxibw==
+X-Received: by 2002:a05:600c:1989:b0:49d:16df:8521 with SMTP id 5b1f17b1804b1-49fe66ab9d1mr6607445e9.4.1790196469631;
+        Wed, 23 Sep 2026 13:47:49 -0700 (PDT)
 Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889337sm9555748f8f.34.2026.09.23.13.47.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5b44db6sm14839105e9.0.2026.09.23.13.47.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 13:47:46 -0700 (PDT)
+        Wed, 23 Sep 2026 13:47:49 -0700 (PDT)
 From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Wed, 23 Sep 2026 22:47:33 +0200
-Subject: [PATCH net-next v3 3/5] net: stmmac: sun55i: Make the delay step
- configurable
+Date: Wed, 23 Sep 2026 22:47:35 +0200
+Subject: [PATCH net-next v3 5/5] net: stmmac: sun55i: Add support for
+ Allwinner A733 GMAC210
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-allwinner-a733-gmac-support-v3-3-15735155a789@baylibre.com>
+Message-Id: <20260923-allwinner-a733-gmac-support-v3-5-15735155a789@baylibre.com>
 References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
 In-Reply-To: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -93,124 +93,127 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  Andre Przywara <andre.przywara@arm.com>, 
  Jerome Brunet <jbrunet@baylibre.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3766; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=u9upVCC3m/gwC2XGPIk9ZtnVEycENGqh8TgoKKLgrfg=;
- b=owGbwMvMwCW2VtK+WnvWU3HG02pJDFlbrN5++fKN4ddvzswl7GeD9uxYOzue282oeJfBhyx2d
- Xbd7V47OkpZGMS4GGTFFFlquKvF30lqfZk1Xec2zBxWJpAhDFycAjCRaD1GhmnNNr1V5r77khQ4
- HbX25/9bvu3Dzwuyn7OsgrnebXjtspyRYdbv72zn5HrC7edE8K44+fH1tYCm98+630TxzXNqrpr
- /ghEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4132; i=jbrunet@baylibre.com;
+ h=from:subject:message-id; bh=sjLoecwDQJXaWVmzvGOQ+F7IRuyAd48CcawjSycmYoQ=;
+ b=owGbwMvMwCW2VtK+WnvWU3HG02pJDFlbrN669B39qPeAbW7OgdsplxQT71j87Zx16uqMiimtn
+ Lp1lh6lHaUsDGJcDLJiiiw13NXi7yS1vsyarnMbZg4rE8gQBi5OAZiIihkjwyb31d8uyoQbH75s
+ 9sfsjf4n69Uei5jkzL5psmk98r3+tIrhv7f6q8R7G+4cYbbpqebm5Ntqsd2bf3uH2dmQ2SHdm9s
+ c+AA=
 X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
  fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
 
-The driver assumes a 100ps step for both TX and RX clock delays, which
-does not match the A733 GMAC210.
+The A733 GMAC210 is a DesignWare MAC 5.20 using an Allwinner glue close to
+the A523 GMAC200 already supported by this driver, with the following
+differences to handle:
 
-Move the TX and RX delay steps to the match data and factor the delay
-validation into a helper. The A523 keeps the 100ps step to preserve the DT
-ABI, although the vendor reports actual steps of 180ps for TX and 530ps
-for RX.
+* The glue configuration registers are a dedicated MMIO region of the
+  controller instead of a syscon register. This region is in the AHB
+  reset domain, so the glue driver releases the shared AHB reset before
+  writing the configuration.
+* The TX clock delay value is 5 bits wide, split over 2 register fields.
+  Both TX and RX delays use a 180ps step.
+* The DMA channels have their own interrupt lines, so the per-DMA-channel
+  interrupt mode is enabled, as the vendor SDK does.
+* TX LPI clock gating is supported, as the vendor SDK indicates. Follow
+  the PHY capability with STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP rather than
+  forcing it on with the deprecated 'snps,en-tx-lpi-clockgating' DT
+  property.
 
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c | 58 +++++++++++++++-------
- 1 file changed, 39 insertions(+), 19 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c | 53 +++++++++++++++++++++-
+ 1 file changed, 52 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
-index c4df53285007..e759311f40fc 100644
+index 49abbb248b61..675b83cd52c8 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
-@@ -42,6 +42,8 @@ struct sun55i_gmac_data {
- 	int (*init_resources)(struct platform_device *pdev,
- 			      struct sun55i_gmac *gmac);
- 	unsigned int flags;
-+	u32 txdly_step_ps;
-+	u32 rxdly_step_ps;
- 	u32 offset;
- };
+@@ -19,6 +19,7 @@
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/reset.h>
+ #include <linux/stmmac.h>
  
-@@ -62,38 +64,47 @@ static int sun55i_gmac200_init_resources(struct platform_device *pdev,
+ #include "stmmac.h"
+@@ -65,6 +66,41 @@ static int sun55i_gmac200_init_resources(struct platform_device *pdev,
  	return 0;
  }
  
-+static int sun55i_gmac200_validate_delay(struct device *dev, const char *dir,
-+					 u32 *val, u32 step, u32 max)
++static const struct regmap_config sun60i_a733_regmap_cfg = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_stride = 4,
++};
++
++static int sun60i_gmac210_init_resources(struct platform_device *pdev,
++					 struct sun55i_gmac *gmac)
 +{
-+	if (*val % step)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "%s-delay must be a multiple of %ups\n", dir, step);
-+	max *= step;
-+	if (*val > max)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "%s clock delay exceeds maximum (%ups > %ups)\n",
-+				     dir, *val, max);
-+	*val /= step;
-+	dev_dbg(dev, "set %s-delay to %x\n", dir, *val);
++	struct device *dev = &pdev->dev;
++	struct reset_control *ahb_reset;
++	void __iomem *base;
++
++	/*
++	 * Get the configuration region out of reset before changing it.
++	 * stmmac core holds the same shared reset but only deasserts it later.
++	 */
++	ahb_reset = devm_reset_control_get_shared_deasserted(dev, "ahb");
++	if (IS_ERR(ahb_reset))
++		return dev_err_probe(dev, PTR_ERR(ahb_reset),
++				     "Failed to get ahb reset\n");
++
++	base = devm_platform_ioremap_resource(pdev, 1);
++	if (IS_ERR(base))
++		return dev_err_probe(dev, PTR_ERR(base),
++				     "Unable to get config memory region\n");
++
++	gmac->regmap = devm_regmap_init_mmio(dev, base, &sun60i_a733_regmap_cfg);
++	if (IS_ERR(gmac->regmap))
++		return dev_err_probe(dev, PTR_ERR(gmac->regmap),
++				     "Unable to get regmap for config memory region\n");
 +
 +	return 0;
 +}
 +
- static int sun55i_gmac200_setup(struct device *dev,
- 				struct plat_stmmacenet_data *plat,
- 				const struct sun55i_gmac *gmac)
+ static int sun55i_gmac200_validate_delay(struct device *dev, const char *dir,
+ 					 u32 *val, u32 step, u32 max)
  {
- 	struct device_node *node = dev->of_node;
--	u32 val, reg = 0;
-+	u32 val, step, max, reg = 0;
- 	int ret;
- 
- 	if (!of_property_read_u32(node, "tx-internal-delay-ps", &val)) {
--		if (val % 100)
--			return dev_err_probe(dev, -EINVAL,
--					     "tx-delay must be a multiple of 100ps\n");
--		val /= 100;
--		dev_dbg(dev, "set tx-delay to %x\n", val);
--		if (!FIELD_FIT(SYSCON_ETXDC_MASK, val))
--			return dev_err_probe(dev, -EINVAL,
--					     "TX clock delay exceeds maximum (%u00ps > %lu00ps)\n",
--					     val, FIELD_MAX(SYSCON_ETXDC_MASK));
-+		step = gmac->data->txdly_step_ps;
-+		max = FIELD_MAX(SYSCON_ETXDC_MASK);
-+		ret = sun55i_gmac200_validate_delay(dev, "tx", &val, step, max);
-+		if (ret)
-+			return ret;
- 
- 		reg |= FIELD_PREP(SYSCON_ETXDC_MASK, val);
+@@ -132,9 +168,11 @@ static int sun55i_gmac200_setup(struct device *dev,
+ 				     phy_modes(plat->phy_interface));
  	}
  
- 	if (!of_property_read_u32(node, "rx-internal-delay-ps", &val)) {
--		if (val % 100)
--			return dev_err_probe(dev, -EINVAL,
--					     "rx-delay must be a multiple of 100ps\n");
--		val /= 100;
--		dev_dbg(dev, "set rx-delay to %x\n", val);
--		if (!FIELD_FIT(SYSCON_ERXDC_MASK, val))
--			return dev_err_probe(dev, -EINVAL,
--					     "RX clock delay exceeds maximum (%u00ps > %lu00ps)\n",
--					     val, FIELD_MAX(SYSCON_ERXDC_MASK));
-+		step = gmac->data->rxdly_step_ps;
-+		max = FIELD_MAX(SYSCON_ERXDC_MASK);
-+		ret = sun55i_gmac200_validate_delay(dev, "rx", &val, step, max);
-+		if (ret)
-+			return ret;
++	/* The dwmac will sample this when stmmaceth reset is deasserted */
+ 	ret = regmap_write(gmac->regmap, gmac->data->offset, reg);
+ 	if (ret < 0)
+-		return dev_err_probe(dev, ret, "Failed to write to syscon\n");
++		return dev_err_probe(dev, ret,
++				     "Failed to write glue configuration\n");
  
- 		reg |= FIELD_PREP(SYSCON_ERXDC_MASK, val);
- 	}
-@@ -175,6 +186,15 @@ static const struct sun55i_gmac_data sun55i_a523_gmac200_data = {
- 	.init_resources = sun55i_gmac200_init_resources,
- 	.flags = STMMAC_FLAG_SPH_DISABLE,
- 	.offset = 0x34,
-+	/*
-+	 * The actual delay steps reported by the manufacturer are:
-+	 * - Tx: 180ps
-+	 * - Rx: 530ps
-+	 *
-+	 * Correcting them would break the DT ABI of the published DTs.
-+	 */
-+	.txdly_step_ps = 100,
-+	.rxdly_step_ps = 100,
+ 	return 0;
+ }
+@@ -202,9 +240,22 @@ static const struct sun55i_gmac_data sun55i_a523_gmac200_data = {
+ 	.rxdly_step_ps = 100,
  };
  
++static const struct sun55i_gmac_data sun60i_a733_gmac210_data = {
++	.init_resources = sun60i_gmac210_init_resources,
++	.flags = (STMMAC_FLAG_SPH_DISABLE |
++		  STMMAC_FLAG_MULTI_MSI_EN |
++		  STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP),
++	.offset = 0x0,
++	.etxdc_ext_mask = GENMASK(17, 16),
++	.txdly_step_ps = 180,
++	.rxdly_step_ps = 180,
++};
++
  static const struct of_device_id sun55i_gmac200_match[] = {
+ 	{ .compatible = "allwinner,sun55i-a523-gmac200",
+ 	  .data = &sun55i_a523_gmac200_data },
++	{ .compatible = "allwinner,sun60i-a733-gmac210",
++	  .data = &sun60i_a733_gmac210_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, sun55i_gmac200_match);
 
 -- 
 2.53.0
