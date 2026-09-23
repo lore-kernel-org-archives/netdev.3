@@ -1,432 +1,178 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80AA39023A;
-	Wed, 23 Sep 2026 02:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26462F3C18
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790131410; cv=fail; b=HbwbMRSca/UnpX/OpKruraUgQB0WlcSxHcp6AY4gpfa8Y6bZsYHX/mineyySH+g/0FIzvtRpi93GRHIroJ3nkK3PZEoYrWPGmXeZ/BzistnLjNZDsZC6Kmr83JTlB1qHOpIOfgMn1CJbKd8ku/qriLU9KtpaplaqA4Emup1E7z8=
+	t=1790131810; cv=pass; b=kp9Ohu85oRgO94QT4KdRYuGZX73GIaIwS/3m/QqfxmKR1nh+tECh0z/0PDN528W5Tuh4t0duspvQgroeujIGA4jhcyOjZg9TzyupIX142tMZMa3zy0jX/pBo9gfHhr+Y0Ii8aOjWWcxy6jaEQE7fGp7RBwHBfm6Yj+WBVyU5qig=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790131410; c=relaxed/simple;
-	bh=SiDQ9DkOydK9BMOWFl6a6ER2XW+WgNfyeBpV3MslwAk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=geT2fhh9im9cts7V2OZd+V89CLsf7Z8q4qcXQdNwITe+O1NHmiIDkkmzCEvlmSd3wrxcW8BM1J0DLmkDl9HhrNkEFZg9iMD/YwcsE5eElYvvVDfdkMXNUxgz2D+AorW59j+vgO8TwkdM1z9OBr5cAFXZRmXydpNSJQBOFiR7+HU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V0Rzf3KZ; arc=fail smtp.client-ip=52.101.70.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1790131810; c=relaxed/simple;
+	bh=IQ0cWZy/746zABNsy89D7JUk8iViS8IpcEBRF9VtPgI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oq+lgy2kFNskFRThRA+/rRf92MScDbKeAfJxZmqJyIaC5N2MRYcQ5PfMj4RupArqQJ3nVK0/PwmDlHKF4yqEEeeaFZ+Nf41VeD5fTve8v5lN7a0bVH6jQ6nfsp19PpqTudPVyzsjVZGy/WSGvC+PqZX2V5IsQgAf37VXbG+hayo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lVmftrtf; arc=pass smtp.client-ip=74.125.230.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V0Rzf3KZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P+yDQ2nTXV91ic69m6Go7f4r2MwvKyuAaDAYGCw2glV9Pef9PcTzbp/S+h4Uk3SZyk5FdW04Ti6dVLMQ/6nkYkfnaDinlABJ+mUDinUY7z26zWoNg23mf7SVZ1GDnHmnDhREmjFvSHW0PNaCcN6feFKCKICdVj26HgiL1szGEQXIeHhNFpPIH28YT2PoDE2tqLXAClP1CwOljIj9z/Q6CCDro4ZeHfGkPdN801nTBVPQuLP8Np5Eada/ygtjE2o8mgXKedH/EON7YuXSElQrlw2Z9I7GOqSdbeBxehPY2g9lZCf0v4mRuwLI9Q4oN2/1Dgt0CbcJCuX8mZDhB19zAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mxX/2rN7oHmp4mlUlnZwiKnO8RqLOQCGipyGS2Mju6U=;
- b=fZp6jHNUBjJdJnAw0dHmWBMpgBnBPSH+jv7m48G/FR+tom/+Y95Ln71aYvkz4rfYeB2Ayd0nQOGrlnb316h1ZZvFvbqMSohX25zBRu1O0gS0Ca97wZx9CmrdbzjkMLh5ZXHxrBMtB29xgqiH/0dVbq0GS5GpoEe5AzQIkP36modZfJgOsfBD7UJKxibpktGOi+o8rkuaijcsAGW6r2AahUmYsm9gkWBmAW4zXhkwbLhZQA+YJ8hJYxIqrPLbljvtQ/Way5CUSRczf7OzQA92bfvZjHQjYfhQ23EsqnbMASV/bhFlzE+QIkQXiArur62jO6/kNblh3T1J0Ht4krcvdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mxX/2rN7oHmp4mlUlnZwiKnO8RqLOQCGipyGS2Mju6U=;
- b=V0Rzf3KZbhC/ZM1XN5PB1TrZdhllHImPqentZfBgTWTTmis8vTKACDGoM4PFKMc9wyWEvhsvi4gvOM4bKiq+pgIj21oRNF7rLVSmywjZ8tfHDHewzhSZj/eGd5AU6q2mS6TQppVoZM6TdZTfbtUNcmx+Tjzj+TkKswd67jhftd0wS8uKy5MIZH+QTjtCkPrJR/8TOethF/dV8a+E2zacBf6hTdHTMslZe1xcCCpOJ/f5sU9SxNbn6BBRqVL4w1SOWje6SkiJvwFoPrThULDsEkD3GYjTJUcAXTTwl80PxWlfivQJpWgMYs0ybHTp1xZjSVQ+q9gFIKj8QIOip0tFdg==
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- by VI2PR04MB10221.eurprd04.prod.outlook.com (2603:10a6:800:22b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Wed, 23 Sep
- 2026 02:43:15 +0000
-Received: from AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680]) by AS4PR04MB9338.eurprd04.prod.outlook.com
- ([fe80::7c4c:9c56:8552:f680%6]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 02:43:15 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
- (OSS)" <wei.fang@oss.nxp.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
-	"olteanv@gmail.com" <olteanv@gmail.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, "linusw@kernel.org" <linusw@kernel.org>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v4 net-next 7/8] net: dsa: netc: add PTP two-step
- timestamping support
-Thread-Topic: [PATCH v4 net-next 7/8] net: dsa: netc: add PTP two-step
- timestamping support
-Thread-Index: AQHdRz7hNjcsvXMGFkGGbZOtLIyEYbbaSX4AgAAksAA=
-Date: Wed, 23 Sep 2026 02:43:15 +0000
-Message-ID:
- <AS4PR04MB9338B9FFF1490C9D3BF9F1AF88822@AS4PR04MB9338.eurprd04.prod.outlook.com>
-References: <20260918072852.501420-8-wei.fang@oss.nxp.com>
- <179006555805.2160803.10349234944420509540@kernel.org>
-In-Reply-To: <179006555805.2160803.10349234944420509540@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9338:EE_|VI2PR04MB10221:EE_
-x-ms-office365-filtering-correlation-id: 2f023501-89a0-4d95-19b3-08df191c6b30
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|19092799006|366016|23010399003|38070700021|5023799004|3023799007|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- 3cGMcUseB9RVtJ4wcP63bZqljU+eC7qUGAMK4n/Yiua5XOD9tJMktQAXbQru4OYwnyl0J21m7uxfOgyu2UoqflO7Y95AXXJGK5QQR5Dh2CoQANWvXFuujmuVWhsOI+Ud4ZPXVgiK7a/kDtFf4fnxKXnDlD1Q4jS5N5oZ8gOqDmPx2hq5iT1Wl7rBGexSktWjY98PdLZDlq3WytBHqnd+ZpVY5fwiqQFM/3rz4QaYNR8CrrWmX1OWus95SMPZjDIQl4VWag+Dp+JS54MmrpL6pd0yuHe07tz4VWvLLkYcGxtWcwG/SWGsA+4lRcXzyPYLKkUz6xFCxYRJaP0//42Q53dI22HsGW8WcTOto+2yMGxQQ7Mv+bdpiNgP3GsQyOY03GNUm0arPelTDrgMEY4L+6437lUErH5D8XfeYUi+ds8w+DniTVrfKd4TAkY7hEVlDFzv5IddGWAVKi4lx6ZotrJZc6//bV64z55Pp5jD092V53Up7KLyhbppDZewlNQu5Y5Ki076bdsmlfsA7O223pkePJydsWYykrwRFtMHxP558tuegVOGLGnPwvd4lXdWKF/7iYUsG4l1iYgFOPzeU7QKa0ziVyjtgvvUS8yxv/AyAM19CXmeSg67Jc5VoculYUeg410T2pFwKIHAK+0/t3yZBkbyGLZGi0iuqRub2hAVQN+w5GGK3jOfl+2CxQPayEsKRGiAWvge4RqZDw3sIvqWb0qtQ3H6eZHhe7mW8kk=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9338.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(19092799006)(366016)(23010399003)(38070700021)(5023799004)(3023799007)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?72dM5UE6iBhpv3K0q6SO1sGxBwofp8m5YXBIFzO2Gh+ElqHXtEZ8wWRwAi4T?=
- =?us-ascii?Q?Z1QhM5XZnKJwWTG10XSjqOjPWJikf0aLjCZaopcNr2MkoywTq+CcwHDtXF+r?=
- =?us-ascii?Q?uEuM2Sh8WFxPpt3hpVjTGPHmE2hLHumL3SSAph8rofg1aJKLb9c5Xs9125V8?=
- =?us-ascii?Q?ATsEKuUgyhwDqYuZVgjMTZ3rzPuDggywzF/QNY15o9nq3AhGX0lw5MxtIjwb?=
- =?us-ascii?Q?qvJaEyp6QNDZb7zBLl4JgMLuhfYpEArJyK2htxcSDthoWZCFxOteF6gKk7j3?=
- =?us-ascii?Q?MIH+GHVVTpgvX5BvVfJ3TMGRodvPBh+mqjtFNJL1aWTwmwZBvMZLBNWqkfdu?=
- =?us-ascii?Q?DlEJUCeJt8ysfrZwXD8z73jBGAUWvPx5d8vfE4ZrSa3c/BLbbllAbr0dEiou?=
- =?us-ascii?Q?oJsOXKKIA024XYqF5hgwftSh5JY0OxQX/qILHhBHdI0MA8MwLIZ81ly00i3L?=
- =?us-ascii?Q?WtppNKl3yVjxA9u+lMr4HPJf3XH1cUcBq5wTshKixHRU/EQSy1tThI82Njkw?=
- =?us-ascii?Q?V0vKN9a8u0sNxqhytHUkutn+fOEPxmmBVjI62qPrXYGIfztyF/Zhu/xaDmil?=
- =?us-ascii?Q?0lGh5EcvddSDwG3n/7Dd4S4Y+HTp6deSHReSnTQxxiWgS0E/USi+lx/YWTCN?=
- =?us-ascii?Q?2FwnYvPeO2a+nCmxCMFDvz2qI4DeGZYvoC/bUPIjq4vOu3y/qp8tdetISYfP?=
- =?us-ascii?Q?YCmtpiox9vflP/2qcYMHLBloVS/3RxDij7OyUffUJpx5jzzhJy8lfzIKDkZw?=
- =?us-ascii?Q?dOw9kMlV9+2xamFnphQ1xzT2/oe7qM1P4CGLBv30nX6oaK+lehPaZpeYFAp0?=
- =?us-ascii?Q?hIa1r0NMCbMiVOE+sW4QEokS2llC8E8h+6f4UxtwRLGcnXU2cCZbTL0r0M+n?=
- =?us-ascii?Q?9AXEAy9KTHgiY1f3VLpXecbtJEvQgh3aejnJFnX0TdO3M8GyRGXSKRhcaIFH?=
- =?us-ascii?Q?DIg5aamaUHrSKoM+0OHf8dMM4NWGj8BfXYE0/Cz5sGuWGGE38DCJ5BCKXwNX?=
- =?us-ascii?Q?W2OKdLU5zJIk7nKj4CVAdjWwrp4vsyTaytq/+3ELlHgHxlTmkQPLYwrNN8JG?=
- =?us-ascii?Q?Snv2Z4241TtnOxyuKtr/b08OhIww8Jf5icv33TN1teWJwZ0zgfQXnAVnFxkR?=
- =?us-ascii?Q?plcWZzpbDvD89BP88U00nKuJBJOtAqZfzFrxdHr5H+pET7TftxaWhAxSQeV0?=
- =?us-ascii?Q?khQXbg8oFPe23j23gMlJq++28euZCKJnuRJE3scZ9a/xsuhNfG0yvgWB6XvD?=
- =?us-ascii?Q?95oRDlFfghOwggjEX/gWTFh3kBcegBiRzLCMOeBpppw8YCw9C3IP3xAHC4+q?=
- =?us-ascii?Q?eDU4K4JaFXgHyxj6UFU/CErDPPI//wW+Hqi8k8RwqIzwlDjE0IV0dH9a1xSo?=
- =?us-ascii?Q?b3SPttTijaz0zWn4uGjfGWMbe1M1itHDBzrRP4Bh0BUDW80n9slxE7+Rtgwk?=
- =?us-ascii?Q?tLnLezQuTPwtGadDRbGR8kZxL1mbdBgi1UzeBVyhRru7drV+0oTB1ktC595t?=
- =?us-ascii?Q?oKfrULiXKEi7WOtYO/Z/dw625U8jEszDAOdVm0qqy0WvsplbhZvm/YU87TPN?=
- =?us-ascii?Q?pgGsncZ9T0kq4dMvlEXcrfJG3UKW+198Vv3JixOLp1XGdd3V58ecK2ycR9mn?=
- =?us-ascii?Q?H+1++iWDoOkgqFeLx4Yk8dk6Vox98Bs71DTz2ZrZHkvWd8/4YFcmpukMljvX?=
- =?us-ascii?Q?pBcduElvD0eqiquScBrcaM54d6dn2uvWfEXn2oI0dI65X0pf?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lVmftrtf"
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910ca5aa7so50413785a.1
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 19:50:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790131803; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NPDIJhM2GeyoGivrhNx6/YZBJ/WEgo6m5DfS+EYPqWL2SSs+uyr8BkmkakyuHUEdUK
+         qc9YpIyhJxZisf6gLtJf9zQMfbr5S2Poj7+OSrWX72KjBuJ1+bfIVHEM98OMfYTwesEV
+         qDy3w39/lqCuJA/cHDqnBhg+o6RVJQzTz0xcpUoHZFtQcVGFS7/R+iq6ou9dTeTpt6PW
+         ukmT2kcQGGyqrZdNXqNNJe445w64hl5c6WQWOHQwL0A3l9JCZ2rWGCk35UI8UEX2iV7U
+         x9rj+GfvOhkYEKup4u7TADAfoCb3CJwkyEdqd2w5YxWnk5blDVlIs0colcs+eKKxuMHi
+         RRvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ahITcPEdMmOc3JJPiaBSyLZY2TFXiiI2wkSsmdMgbb8=;
+        fh=tW2FEzyvKIoDJOjdgv4CXsPuh6kvX0gZfvMeZLbccjc=;
+        b=s5PJ2qrhpA/LoIn0EHumADdndXwKGad7bJpJwUzVuY1svAbJ8f2RmzNZd26X7EzyWu
+         yE2vDsjTgv1bER30hBlmgFthDt8UhuwZSXG98VtTKydSu42khppnzw2z0QTfNUggilmz
+         kS9wBCadR5S/auwWYsqPDCDB00ummflPWOGE6+iEb39sKS48+9sVog7Yfk3Io3GYPGk9
+         KxAXFkR+wLCbOgTGlMnONZiTusH8+2QSHt5Td2pUYRPtLsEc+09mV+AcTKlD8VpCE8/3
+         0RDr9b4qB4Hj3SIL7XnDdFJt30JAWCKibMn1pzG9Mu1wcHWSbDooMnHHEVGIk2ncmWVk
+         abfw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790131803; x=1790736603; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ahITcPEdMmOc3JJPiaBSyLZY2TFXiiI2wkSsmdMgbb8=;
+        b=lVmftrtfC4InQbSKF0dKG6HT6gdetPWktq6q6x63Fo2HmmkRjvOChE5fr7HlTEiCe6
+         Wfp82L4bhyigwGqpNCix4wgJ8lz1n5odhA3mDVvUYFaykXf9NAZJ1NEfD0OI6vB9Gw3X
+         xejTLYsG+sIxyOYQc/8Cn39/gG7zCrc3nCid5AvTEo914xDbqpD8KUNrvbE+NFoHuirB
+         r7zXQ95YQ6+OoAPPguRmOQ2gcrlOI+yYN1f4RzCg4h3l/fWqoyFOcXDS55WqP1SN3aSo
+         HkdgiWxItYDKh5J85fZYIfwMhznCjC6v17lYyEzwk5nnysZCAcCkHrweGwyaAbF8/Xx3
+         /NhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790131803; x=1790736603;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ahITcPEdMmOc3JJPiaBSyLZY2TFXiiI2wkSsmdMgbb8=;
+        b=wxE1BJkXi1Yrnp4qT4aJrl7TORPB/2SEFqLGgUd6T6H6xCFnkkXXfVHrTz7ZTiP+ao
+         E/4owMKNUVJahhN98Z4PQwAGCZLiJOMExFJayusNi+e+Rj9acKrQqBIMIOa9aqjUET1V
+         BF0wd7/9GIbbmKY7z2+ffZU7pF7YbPOjBQDR/Qy8eQi5dAemXPJSnsYJKbSGGF7GOjkm
+         zwV0aErh70XOAJfb40kwKW+uLGG0M7RQ+mLmS7kpNDDLu78aemSzNlGPnUgFepjzr+cn
+         mOdyBPIKTxJVyQLGckxIgDVKwGWFQjkA3N0vXn6kfOSYpVUK/GjxKe2kKK9yfH2Qx0TY
+         c3oQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw0gua62vcLjhBsK26zbRSu3dcRLRRuHr52kkb9VrhVw9V/Do3K3rGMa0iKvog+dx8NSlV3uLY=@vger.kernel.org
+X-Gm-Message-State: AFuF++m4Rp5j3O+7ODSqWNgmdX9ylC0bgA5NQE91nFPnd9T1vPKpyrhN
+	kuQ6ZL7/uTZMFXOHLeiMdW3/kDOmrnS5qiFvlLQV3m35hiFktDx27r0DN6iPgRMzo+NAfUpg+Ca
+	LFSWlZfDa2xid4ZcHeJRrpn9DMf6PQCcyjTsgx5oi
+X-Gm-Gg: AYBFou3mHsoChZCOh+7jBCXU6UtTMHja9Rvi0jZj58E8dAmhO0BZFCEcs2/4qenDwHK
+	DVhpD0xAOK7ThwR1iFuRPU6P480UVOaQf1/lOlNuU9de3+7bb/+KoWZXFnqb8zLNaln7mXJLIxi
+	7+efpn/XhpnUDBe6Hu2gH+HHJN/jGKzeFpnpORRRJVhbtfkESmFb2uYoCv+rspxs4SAKvRaveB6
+	pbZPBRY/aFkeuGwAZ6Xu3opJonNE+ux4vj+06yCocLSmpLBzrm0lk1T2q/CTHOEMuuOX6ILbX7F
+	MS8Ilhc3Oun5DskzAasyGl8+QzbZTE6dl3a8eaa5aITNPxVNDWQws7OeHBcvDSbxX19Ze9c5pT0
+	QpADfBKwr7iMe2vZh+bE9Mg6NutvYkeKMRf8mewaaLIFjibe5cj232cd/+Ep1xkJDzmR89Rk1cH
+	fTELd8
+X-Received: by 2002:a05:620a:4611:b0:93b:d79b:9a5d with SMTP id
+ af79cd13be357-93c25244abdmr218707985a.62.1790131802567; Tue, 22 Sep 2026
+ 19:50:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9338.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f023501-89a0-4d95-19b3-08df191c6b30
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 02:43:15.7603
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eC//0tL7pvTfgFi2+IdqNx6VHetSop3eZ9yRj/pkt8z7qBoN+3aJxN3o37uRAR29ZVPKNLKFRctRpevDlDoelA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10221
+References: <20260920063419.3587332-1-yilinzhang@moonshot.ai>
+In-Reply-To: <20260920063419.3587332-1-yilinzhang@moonshot.ai>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 23 Sep 2026 04:49:51 +0200
+X-Gm-Features: AcwNN1XCmdXbebRsKWuOBAvRsGS1KJ9niS--Fs8T9NLqOwSIKM7sw4SwcUvumuY
+Message-ID: <CANn89iLUNiEjX4U98=SsQWg5BSV7=cV6ZzwPBiDC4Hu-6US6Lw@mail.gmail.com>
+Subject: Re: [PATCH] tcp: fix use-after-free of retransmit_skb_hint in tcp_send_synack()
+To: Yilin Zhang <yilinzhang@moonshot.ai>, Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kimi Security Team <bug-report@moonshot.ai>, 
+	Weiming Shi <shiweiming@moonshot.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> This adds RX timestamping via IPFT rules that trap PTP frames to the CPU
-> port, and two-step TX timestamping by cloning the skb, assigning a 4-bit
-> per-port request ID and matching the hardware response frame back to the
-> queued clone.  It also adds the per-switch netc_tagger_data and grabs the
-> PTP timer's pci_dev so get_ts_info() can report the PHC index.
->=20
-> [Severity: Low]
-> The changelog says:
->=20
-> > The tagger dispatches both to the driver through the
-> > twostep_tstamp_handler callback in netc_tagger_data, which matches the
-> > ID to the queued clone and completes it via skb_complete_tx_timestamp()=
-.
->=20
-> Is that the right member name?  The struct added by this patch in
-> include/linux/dsa/tag_netc.h is:
+On Sun, Sep 20, 2026 at 8:34=E2=80=AFAM Yilin Zhang <yilinzhang@moonshot.ai=
+> wrote:
+>
+> When tcp_send_synack() replaces the cloned SYN skb at the head of the
+> retransmit queue with a copy, it frees the original with
+> tcp_rtx_queue_unlink_and_free() and only repairs tp->highest_sack.
+> tp->retransmit_skb_hint keeps pointing at the freed
+> skbuff_fclone_cache object.
+>
+> The dangling hint is read in tcp_verify_retransmit_hint() and used as
+> the root of the rbtree walk in tcp_xmit_retransmit_queue().  An
+> unprivileged TFO client (sendmsg(MSG_FASTOPEN)) can arm the hint with
+> an attacker-supplied ICMP fragmentation-needed message, after which a
+> simultaneous open frees the armed SYN skb:
+>
+>   BUG: KASAN: slab-use-after-free in tcp_mark_skb_lost (net/ipv4/tcp_inpu=
+t.c:1316)
+>   Read of size 4 at addr ffff88800604d928 by task swapper/1/0
+>   Call Trace:
+>    tcp_mark_skb_lost (net/ipv4/tcp_input.c:1316)
+>    tcp_simple_retransmit (net/ipv4/tcp_input.c:3158)
+>    tcp_v4_err (net/ipv4/tcp_ipv4.c:587)
 
-Sorry, this is an error, I will fix it.
+Make sure to rebase your patches to latest net tree, not an old or
+in-house kernel?
+The context shows void tcp_send_active_reset(struct sock *sk, gfp_t
+priority, at line 3694
+rather than current net (line 3887, where tcp_send_active_reset()
+takes enum sk_rst_reason reason).
 
->=20
-> struct netc_tagger_data {
-> 	void (*txtstamp_handler)(struct dsa_switch *ds, int port,
-> 				 u8 ts_req_id, u64 ts);
-> };
->=20
-> and net/dsa/tag_netc.c:netc_twostep_tstamp_process() calls
-> tagger_data->txtstamp_handler(), so grepping for twostep_tstamp_handler
-> finds nothing.
->=20
-> The same paragraph mentions netc_connect()/netc_disconnect() on the tagge=
-r
-> side, but not the new .connect_tag_protocol op
-> netc_connect_tag_protocol(), which is what actually installs the handler.
-> Could that be mentioned as well so the dispatch path is followable from
-> the changelog?
->=20
-> > diff --git a/drivers/net/dsa/netc/netc_main.c
-> b/drivers/net/dsa/netc/netc_main.c
-> > index 336f5a4633e9..03200fc63a09 100644
-> > --- a/drivers/net/dsa/netc/netc_main.c
-> > +++ b/drivers/net/dsa/netc/netc_main.c
->=20
-> [ ... ]
->=20
-> > @@ -949,6 +993,21 @@ static void netc_destroy_all_lists(struct
-> netc_switch *priv)
-> >  	mutex_destroy(&priv->vft_lock);
-> >  }
-> >
-> > +static void netc_free_ports_resources(struct netc_switch *priv)
-> > +{
-> > +	struct dsa_port *dp;
-> > +
-> > +	dsa_switch_for_each_available_port(dp, priv->ds) {
-> > +		struct netc_port *np =3D priv->ports[dp->index];
-> > +
-> > +		if (!dsa_port_is_user(dp))
-> > +			continue;
-> > +
-> > +		disable_delayed_work_sync(&np->tstamp_timeout_work);
-> > +		netc_port_purge_tstamp_queue(np);
-> > +	}
-> > +}
-> > +
-> >  static void netc_teardown(struct dsa_switch *ds)
-> >  {
-> >  	struct netc_switch *priv =3D ds->priv;
-> > @@ -956,6 +1015,8 @@ static void netc_teardown(struct dsa_switch *ds)
-> >  	disable_delayed_work_sync(&priv->fdbt_ageing_work);
-> >  	netc_destroy_all_lists(priv);
-> >  	netc_free_ntmp_user(priv);
-> > +	netc_free_ports_resources(priv);
-> > +	pci_dev_put(priv->tmr_dev);
-> >  }
->=20
-> [Severity: Medium]
-> Do the PTP IPFT entries survive teardown here?
->=20
-> netc_free_ports_resources() cancels the timeout work and purges the clone
-> queue, but nothing calls netc_port_del_ptp_filter(), which is the only
-> release path for np->ptp_ipft_eid[].  It is static in netc_ptp.c and
-> reachable only from netc_port_set_ptp_filter(), i.e. only from a user-spa=
-ce
-> hwtstamp request.
->=20
-> So after unbind, up to five entries per user port are still live in the
-> IPFT with FLTFA=3DREDIRECT, host reason NETC_HR_PTP_TRAP and
-> IPFT_TIMECAPE,
-> while struct netc_port (holding the entry IDs) is devm-freed.
->=20
-> There is also an ordering question: netc_teardown() calls
-> netc_free_ntmp_user() before netc_free_ports_resources():
->=20
-> 	netc_free_ntmp_user(priv);	/* destroys the command BD rings */
-> 	netc_free_ports_resources(priv);
->=20
-> Since ntmp_ipft_delete_entry() needs those rings, can the table cleanup b=
-e
-> added at the natural place with this ordering, or should
-> netc_free_ports_resources() move before netc_free_ntmp_user()?
->=20
-> In a multi-switch tree this looks observable without a PCI re-probe:
-> unbinding one switch runs dsa_tree_teardown() (hence netc_teardown() for
-> the sibling), and re-binding runs netc_setup() again on the surviving pri=
-v,
-> where netc_port_ptp_init() resets ptp_ipft_eid[] to NTMP_NULL_ENTRY_ID
-> while the old entries are still programmed.  Would PTP frames then keep
-> being trapped and time-captured with HWTSTAMP_FILTER_NONE, with no way
-> to
-> delete the stale entries?  For the single-switch case the pcie_flr() in
-> netc_switch_pci_init() at probe seems to hide it.
+>
+> Sync the hint to the copy.
+>
+> Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
 
-Currently we do not support multi-switch, so this is not an issue in curren=
-t
-stage, but this is a good point, I will improve the setup/teardown logic to
-facilitate future expansion to support a multi-switch tree.
+Seems not the right Fixes: tag to me?
 
->=20
-> [ ... ]
->=20
-> > diff --git a/drivers/net/dsa/netc/netc_ptp.c
-> b/drivers/net/dsa/netc/netc_ptp.c
-> > new file mode 100644
-> > index 000000000000..2e743443ca03
-> > --- /dev/null
-> > +++ b/drivers/net/dsa/netc/netc_ptp.c
-> > @@ -0,0 +1,492 @@
->=20
-> [ ... ]
->=20
-> > +static void netc_port_tstamp_timeout_work(struct work_struct *work)
-> > +{
-> > +	struct netc_port *np =3D container_of(work, struct netc_port,
-> > +					    tstamp_timeout_work.work);
-> > +	struct sk_buff_head free_list;
-> > +	struct sk_buff *skb, *skb_tmp;
-> > +
-> > +	__skb_queue_head_init(&free_list);
-> > +
-> > +	spin_lock_bh(&np->tstamp_lock);
-> > +	skb_queue_walk_safe(&np->tstamp_queue, skb, skb_tmp) {
-> > +		if (time_before64(jiffies_64, NETC_SKB_CB(skb)->ptp_tx_time +
-> > +				  NETC_TSTAMP_TIMEOUT))
-> > +			continue;
->=20
-> [Severity: Low]
-> Should this use get_jiffies_64() rather than reading jiffies_64 directly?
+c31b70c9968f (and 006f582c73f4 for the original omission) is more
+historically accurate than 75c119afe14f.
 
-i.MX94 and future SoCs are all arm64 architecture, and we have added
-"depends on ARM64" dependency to the Kconfig. So this is not an issue.
+> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+> Tested-by: Weiming Shi <shiweiming@moonshot.ai>
+> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+> ---
+>  net/ipv4/tcp_output.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index 3b320ee77..498c9819a 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -3694,6 +3694,7 @@ void tcp_send_active_reset(struct sock *sk, gfp_t p=
+riority,
+>  int tcp_send_synack(struct sock *sk)
+>  {
+>         struct sk_buff *skb;
+> +       struct tcp_sock *tp =3D tcp_sk(sk);
 
-> The same raw read is used in netc_port_prepare_twostep():
->=20
-> 	NETC_SKB_CB(clone)->ptp_tx_time =3D jiffies_64;
->=20
-> include/linux/jiffies.h says:
->=20
->  * The 64-bit value is not atomic on 32-bit systems - you MUST NOT read i=
-t
->  * without sampling the sequence number in jiffies_lock.
->  * get_jiffies_64() will do this for you as appropriate.
->=20
-> Since this comparison is the only exit criterion for a queued clone, a to=
-rn
-> read on a 32-bit build could either purge it immediately or never purge i=
-t
-> (retaining the clone, its socket reference from skb_clone_sk() and its
-> ts_req_id).  The Kconfig is "depends on ARM64 || COMPILE_TEST", so only
-> 32-bit COMPILE_TEST builds compile the racy read today.  ocelot uses plai=
-n
-> jiffies with time_is_before_jiffies() for the same pattern.
->=20
-> > +
-> > +		dev_dbg_ratelimited(np->switch_priv->dev,
-> > +				    "Port %d ts_req_id %u which seems lost\n",
-> > +				    np->dp->index, NETC_SKB_CB(skb)->ts_req_id);
-> > +
-> > +		__skb_unlink(skb, &np->tstamp_queue);
-> > +		__skb_queue_tail(&free_list, skb);
-> > +	}
->=20
-> [ ... ]
->=20
-> > +static int netc_get_ts_req_id(struct netc_port *np)
-> > +{
-> > +	DECLARE_BITMAP(ts_req_id_bitmap, NETC_NUM_TS_REQ_ID);
-> > +	struct sk_buff *skb, *skb_tmp;
-> > +	unsigned long ts_req_id;
-> > +
-> > +	bitmap_zero(ts_req_id_bitmap, NETC_NUM_TS_REQ_ID);
-> > +
-> > +	skb_queue_walk_safe(&np->tstamp_queue, skb, skb_tmp)
-> > +		__set_bit(NETC_SKB_CB(skb)->ts_req_id, ts_req_id_bitmap);
-> > +
-> > +	ts_req_id =3D find_first_zero_bit(ts_req_id_bitmap, NETC_NUM_TS_REQ_I=
-D);
->=20
-> [Severity: Medium]
-> Can a timed-out request ID be handed out again while the hardware respons=
-e
-> for it is still in flight?
->=20
-> Availability here is derived purely from the clones currently queued, and
-> netc_port_tstamp_timeout_work() frees an ID by unlinking the clone withou=
-t
-> knowing whether the frame has even been transmitted.  The timeout clock
-> starts before the frame reaches the conduit:
->=20
-> netc_port_prepare_twostep()
-> 	NETC_SKB_CB(clone)->ptp_tx_time =3D jiffies_64;
-> 	__skb_queue_tail(&np->tstamp_queue, clone);
->=20
-> so egress queueing delay (link down/flapping, or sustained PAUSE from the
-> link partner) counts against the 5 second budget.  If that delay exceeds
-> NETC_TSTAMP_TIMEOUT:
->=20
-> netc_port_tstamp_timeout_work()	-> drops clone, frees ID
-> netc_get_ts_req_id()		-> hands the same ID to a new transmit
-> netc_port_txtstamp_handler()	-> late response matches the new clone
->=20
-> and netc_port_txtstamp_handler() matches on nothing but port and the 4-bi=
-t
-> ID:
->=20
-> 	if (NETC_SKB_CB(skb)->ts_req_id !=3D ts_req_id)
-> 		continue;
->=20
-> 	__skb_unlink(skb, &np->tstamp_queue);
->=20
-> Would that report the old frame's transmit time for the new frame, and th=
-en
-> discard the correct response as lost?  ocelot_port_dequeue_ptp_tx_skb()
-> additionally compares the PTP sequenceId before completing a queued clone=
-;
-> since the NETC response tag only carries the 4-bit ID, would a generation
-> counter or an ID quarantine be needed here?
+RCT (Reverse Christmas Tree) violation.
 
-This is an unavoidable problem and a limitation of the current hardware; th=
-e
-response frame returned by the hardware only contains ts_req_id and timesta=
-mp.
-We can only match the skb in the queue based on ts_req_id. However, this pr=
-oblem
-doesn't have much impact because timeouts only occur in extreme cases. In s=
-uch
-cases, PTP synchronization itself will be affected, but once the extreme si=
-tuation
-disappears, subsequent PTP synchronization will return to normal.
+>
+>         skb =3D tcp_rtx_queue_head(sk);
+>         if (!skb || !(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
+> @@ -3710,6 +3711,8 @@ int tcp_send_synack(struct sock *sk)
+>                         if (!nskb)
+>                                 return -ENOMEM;
+>                         INIT_LIST_HEAD(&nskb->tcp_tsorted_anchor);
+> +                       if (skb =3D=3D tp->retransmit_skb_hint)
+> +                               tp->retransmit_skb_hint =3D nskb;
+>                         tcp_highest_sack_replace(sk, skb, nskb);
+>                         tcp_rtx_queue_unlink_and_free(skb, sk);
+> --
+> 2.43.0
 
-> > +void netc_port_txtstamp(struct dsa_switch *ds, int port, struct sk_buf=
-f *skb)
-> > +{
-> > +	struct netc_port *np =3D NETC_PORT(ds, port);
-> > +	u32 ptp_class;
-> > +	int tx_type;
-> > +
-> > +	NETC_SKB_CB(skb)->ptp_flag =3D 0;
-> > +	ptp_class =3D ptp_classify_raw(skb);
-> > +	if (ptp_class =3D=3D PTP_CLASS_NONE)
-> > +		return;
-> > +
-> > +	/* The rx_filters in netc_get_ts_info() has already declared that
-> > +	 * it only supports PTP v2, so TX only supports v2 as well.
-> > +	 */
-> > +	if (unlikely(ptp_class & PTP_CLASS_V1))
-> > +		return;
->=20
-> [Severity: Low]
-> This isn't a bug for real PTP stacks, but is the comment's reasoning righ=
-t?
-> The advertised rx_filters describe what the ingress filter can match; the
-> uapi definition of the TX mode makes no protocol statement:
->=20
-> include/uapi/linux/net_tstamp.h
-> 	/*
-> 	 * Enables hardware time stamping for outgoing packets;
-> 	 * the sender of the packet decides which are to be
-> 	 * time stamped ...
-> 	 */
-> 	HWTSTAMP_TX_ON,
->=20
-> netc_get_ts_info() advertises HWTSTAMP_TX_ON unconditionally and
-> netc_port_hwtstamp_set() accepts it even with HWTSTAMP_FILTER_NONE, yet
-> a
-> socket asking for SOF_TIMESTAMPING_TX_HARDWARE on a non-PTP or PTPv1
-> frame
-> silently gets no timestamp here.  Could the comment be reworded to state
-> the hardware/driver TX restriction directly instead of deriving it from t=
-he
-> RX filters?
->=20
+Patch seems legit, please make sure to CC Kuniyuki Iwashima
+<kuniyu@google.com> in V2
 
-PTP is bidirectional, not unidirectional; there is no situation where TX us=
-es v1
-and RX uses v2.
-
+Thanks.
