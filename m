@@ -1,259 +1,140 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93378306754
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 00:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C80354788;
+	Wed, 23 Sep 2026 00:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790123840; cv=none; b=nk2jjidCTRBv698wohbnUIT364LP5Cc+YCPawBObkkvsMGXUtUXVDdpC5RnodvrufTG7O1yqwkeiamm9QBFQ8chi8uWaUg7O/SDCMk5rb8Uh3B6Vfjwtf1jOlUlSInnU8od5nD9uJWT652rar2LpgCHXv5WxYAoMDXS1cq4+ILs=
+	t=1790123894; cv=none; b=enTNH2oQ8wkFh+KG/9uKnoV0KfSTs/8S8CTYu30tH7fL48xG4S/1FURhegVCWivULf0pP6KaVIYzSGmFW68lksWSJRtKh0XaCZ40ui2CpqpBvO4dMavi1k77oyYrj5hpqR+424ecYWs+vUsvjlZk/nFeHOrTnlq3YLxh4bfwj2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790123840; c=relaxed/simple;
-	bh=qkeQzWOWaxxISsl4uCQPDbfJ2pwDKTr/UDzPD99oQ98=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d4a2prZwNUuvLxKXNtq1IuuqzF1jZg1Qv1eFF8Y0AhgVUmlVIYKYfwEv7sHLK8MPA3gSr/y7K/hi3l2UDeTVzYNAd4S+VUU6rSenq1C2ZWtrV+o9fXKuLPQY9PbY2cGKMihsFAroVznUOm+jH+9hQCrsG1/ItZ3jcxyY4tD1iPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=haUnb6/u; arc=none smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790123894; c=relaxed/simple;
+	bh=INodYnnPvXxri6ZN6tPfAJkfZPOwWK9deoE5Q48J5WE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HvzZKQuJdQ/gZBXjT+2RggyFlm1X1nky/t7Yw+VPJaScTqarYhR3tWm4AgwEB8evMJv/qx46EwzJ3YLL063l+h0c2poII04EGQn33CCin4eDdRlshsWWmEV24DR7u27YLcxgI67Pq5hELrQxXKd52rays4bTsV2iklfMkzhwN1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFYwxE8/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="haUnb6/u"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-8623e5d435cso140016b3a.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 17:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790123838; x=1790728638; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vQQTGO16FXbzJluwZGxhoyxw7BVm8s40aDo/D7gXx7E=;
-        b=haUnb6/umygpdhvmg/IzQrNUoYsT83fOZ3GTKlimFvLPhVNNle57N6zvV5U/XEHStV
-         uIE7NXWgbFDP7jLarAU3vuyqbKWlmtcQtkhRzmHJ3CcijaM0xF5f+TCaE8voDLpJohkZ
-         bUOjCBWthkD7SacGPtnpeJpqoPJR1Qf5hPvq1QXbiYBX5BsxPrsFeQauA0szqG3LYKlj
-         W41AI2YMjXtRB20OW8ja+yqZwV9LMho69z7VqAxiGwEjlyehXJlf3BMF4LBlAZJXdJ8j
-         1DpO3Juo9ElGk9lmZmrfKfwRcA6RCL4AAgKYRpf1s28hU1vJvNo3czb1Pf1J/h+UVWLQ
-         uxiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790123838; x=1790728638;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vQQTGO16FXbzJluwZGxhoyxw7BVm8s40aDo/D7gXx7E=;
-        b=ZR9ElPUKAWgXDzgsP/6HYdo6WUUOnCvEY2jTHPv8MQ3RiPsEZJq+/JXOmcpM+neoN3
-         vn72V7b5tL5q43DWBIKOT8N+bW/oyFd+MUmZYWyJGsJPOA+TWY4q7AuZdrXum+Io9Dhu
-         +xjaLEtnqwoHUwFNz3dd7zCmZrs76+QMiDJT5/xrpHUfdfCpHnJ0PQmRFmxKGNTZ11HJ
-         COCpJsItHssBpA1uQWgIHRFnUs+WO+dt6c7sgXigpKhCROzc957aOsi9J2Q5aRS/UWIW
-         YdJvMKybcLMBFCdoBYkpjxx+Nkpgmjv7D8yriwNqYMJvEdhCOgfrhRmXnCybzLaSnzw/
-         Z3RQ==
-X-Gm-Message-State: AFuF++kLyLHybxUAs2LC6OGvBGzSZF9sKonrkLVvVfpwivngHSnDgr6O
-	+UR360jnCqX0PhVXzRRkRWbjTL9KP6ZN1tbSkYNyBmlPZVI/hSZ0t9c7
-X-Gm-Gg: AYBFou3Xb6Ldhtq6nMOQVSp4L8p1l8EkBjFs/tbD6f11wMWXhExuL8DYCHllTjSLS5k
-	TUQ1ZiF3F7RAbTF6SsYhKwSuE3TEz+OdCXCAJejdcoqFpIHSXoWdX614IY0KCog9z+Pauepgz9i
-	KfZKSg315eD0NONlByBDcx38p4+FhF046CEcXStVdtJTE6fdu4NXij7xqdqJPmH6V0wbCxuW9mZ
-	GQQxjbijnw5LTPTZ1UFmcFctxCUQtGmMqDlRHICJU5joBGihAgUseqrGOl8lKDB1NGu9X/LSPoc
-	RH7TecL1rkEJI6/4LpnDxiVmfgFzdgQ8XSMzdt3lkg3X8kU2zpDhPi+h7KP/08fazaklmtGsBSO
-	B1ucfYdydkRqlukok0HESlv5vHIleorFn+9VDNW3crQNzErt1qyWeyNhAF2517A1u9Z0H1bzkZC
-	pSxNrkctJMCzTsZRgf5PpdFmJunWS0N7vN4iC9vli0mXgtPIu9vTs+LDIsDoSGu73hXuT+P2WDj
-	0ndMM1/I3Q=
-X-Received: by 2002:a05:6a21:1398:b0:3dd:a196:ffcd with SMTP id adf61e73a8af0-3ddf8354fd9mr736411637.29.1790123837960;
-        Tue, 22 Sep 2026 17:37:17 -0700 (PDT)
-Received: from [163.43.103.131] ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1dff9778sm427895b3a.49.2026.09.22.17.37.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 17:37:16 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Date: Wed, 23 Sep 2026 09:36:59 +0900
-Subject: [PATCH net 4/4] selftests: net: add lwtunnel route save and
- restore test
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFYwxE8/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFA91F000FF;
+	Wed, 23 Sep 2026 00:38:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790123892;
+	bh=YP/I4S28TVTqUglK/IadqaM72viGX8Ih6JU5IQO5kJI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fFYwxE8/zFGLfGZCfdzcXvLQOdzxVkJ9cHZ0Aewi1If1FMmLtV7WDiKnG8g7cXJEq
+	 WH1FzGgY4Nu5HjlMfJhT0DJqISENkZg7H9O6mCxiSavYEZq/YoOTzh9ObF3pGAeQe6
+	 f1TJCyVn0VLCc441HnoqRpJpPNP1Mzpy4XSLPNd9CpRYVGoxXcYDuVsSB5b0aTKp3t
+	 /k6cWKEEXidMG8XOfgg7A6o+4mqkWbkypF1MpxssZwaQixLPmxIOWG0E2tnUk3kBPx
+	 dh0SSDRG2q2NAlMf6ETTnCBcKxed3mrJZPGpwzGq4trYn4VgItBqsa0hC+XMRTmmzd
+	 ZjjiK77LUahFQ==
+Subject: Re: [PATCH net-next v4 1/7] net: dsa: motorcomm: Hoist port_to_priv
+ helper into chip.h
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Date: Wed, 23 Sep 2026 00:38:11 +0000
+Message-ID: <179012389159.2160803.2607059745097443469@kernel.org>
+In-Reply-To: <20260921203040.1203911-2-mmyangfl@gmail.com>
+References: <20260921203040.1203911-2-mmyangfl@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-lwt-encap-noflag-v1-4-8de7ab6c86e9@gmail.com>
-References: <20260923-lwt-encap-noflag-v1-0-8de7ab6c86e9@gmail.com>
-In-Reply-To: <20260923-lwt-encap-noflag-v1-0-8de7ab6c86e9@gmail.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, 
- Alexander Aring <alex.aring@gmail.com>, 
- Steffen Klassert <steffen.klassert@secunet.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- Eyal Birger <eyal.birger@gmail.com>, 
- Nicolas Dichtel <nicolas.dichtel@6wind.com>, 
- Xin Long <lucien.xin@gmail.com>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Yuya Kusakabe <yuya.kusakabe@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4135;
- i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=qkeQzWOWaxxISsl4uCQPDbfJ2pwDKTr/UDzPD99oQ98=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqsx8qGYKDa+Moa334x7rJOG8r+GdYWjOJwUmhN
- grU+ne16wCJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCarMfKgAKCRAq19F1Kl0b
- TeNREACzYs5nzq43SdXpSUP7sd70DgWFhqYY2j6yuqOeQuMUnL1l8Ns2/hYo8bUe1LyfpRm1Uys
- G+vTYT9fpVAdhWAuDzB9EX7W9HJIzC8lqj/ft831DL1Clj7q2ZidVRMhaBkTUxB8vSHMQIUuNuN
- Ahger3YtSbcD2GspOweoLVGUcQIzksNKxtfVs+O9RHcLjuq4FYwiR+XtyIixehGvDbl0doOeGc1
- b6ksWyKalDqCsuBzD+XekRBVAyo1i2jGUNp156DU+XQ4hJWbsInJpMWngR6nM66UrTuP+5vFUKI
- Pc8i1hchxqENQfggrd7/ThhXcMTZiZnQJtPllFk3UEXTgw1wn8RjRniDSUz4SJJYRKVWLLS7g8m
- snB/FZl1sOtj1oyjQyrTYCUgcgHRlgxSGBZxj03qTVTmXGr1QE+CK+8yNoCFO5V1DwWeDp0EXy0
- 5YwmH7TYib1kGb09ODRkG4j7lTvP2E7x9+REmMrDFsT09pqnQJ5G4zK24Y5nMlvH4edHotm1pt1
- rj4mpvNwUuVTQVFprgKWLFKlG2M5mCojH2eTKL2IbVSRgVj239y/y4n1gkhroIq7WQ0Y77hLJ4Y
- VFkoTvY6uwO2RGp6Lq/a4L/tY+Fos5FM5QbZ3A/1dH2t1axGFw287r16snDgGh+ktF8LFIMkUQS
- 0ph8PWetfqEVV5A==
-X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
- fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-Add an encap route, save it with "ip route save", delete it and send
-the dump back with "ip route restore".  The restored route must match
-the original one.  The test covers the rpl, ioam6 and xfrm encaps and
-the ip encap with geneve, vxlan and erspan options.  A case is skipped
-when the kernel or iproute2 does not support its encap.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Assisted-by: LLM
-Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
----
- tools/testing/selftests/net/Makefile            |   1 +
- tools/testing/selftests/net/lwt_save_restore.sh | 116 ++++++++++++++++++++++++
- 2 files changed, 117 insertions(+)
+Low priority / nit picks for your consideration:
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 3ee3378f8b26..496aed9ca57b 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -62,6 +62,7 @@ TEST_PROGS := \
- 	l2tp.sh \
- 	link_netns.py \
- 	lwt_dst_cache_ref_loop.sh \
-+	lwt_save_restore.sh \
- 	macvlan_mcast_shared_mac.sh \
- 	msg_zerocopy.sh \
- 	nat6to4.sh \
-diff --git a/tools/testing/selftests/net/lwt_save_restore.sh b/tools/testing/selftests/net/lwt_save_restore.sh
-new file mode 100755
-index 000000000000..9666386c622d
---- /dev/null
-+++ b/tools/testing/selftests/net/lwt_save_restore.sh
-@@ -0,0 +1,116 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Check that routes with a lightweight tunnel encap survive "ip route save"
-+# followed by "ip route restore", which sends the dumped RTA_ENCAP back to
-+# the kernel unchanged.
-+
-+# shellcheck disable=SC1091,SC2034,SC2154,SC2317
-+source lib.sh
-+
-+ALL_TESTS="
-+	save_restore_rpl
-+	save_restore_ioam6
-+	save_restore_xfrm
-+	save_restore_geneve_opts
-+	save_restore_vxlan_opts
-+	save_restore_erspan_opts
-+"
-+
-+setup_prepare()
-+{
-+	setup_ns NS
-+	defer cleanup_all_ns
-+
-+	ip -n "$NS" link add name dummy0 up type dummy
-+}
-+
-+# save_restore <description> <prefix> <ip route add arguments>
-+#
-+# The description starts with the encap type.
-+save_restore()
-+{
-+	local desc=$1; shift
-+	local prefix=$1
-+	local encap=${desc%% *}
-+	local before after dump out rc
-+	local family=-4
-+
-+	[[ $prefix == *:* ]] && family=-6
-+
-+	RET=0
-+
-+	if ! ip route help 2>&1 | grep "^ENCAPTYPE" | grep -qw "$encap"; then
-+		log_test_skip "$desc" "iproute2 lacks the encap"
-+		return
-+	fi
-+
-+	out=$(ip -n "$NS" "$family" route add "$@" 2>&1)
-+	rc=$?
-+	if ((rc)) && [[ $out == *"encapsulation type"* ||
-+			$out == *CONFIG_LWTUNNEL* ]]; then
-+		log_test_skip "$desc" "kernel lacks the encap"
-+		return
-+	fi
-+	check_err "$rc" "Failed to add route: $out"
-+
-+	dump=$(mktemp)
-+	defer rm -f "$dump"
-+
-+	before=$(ip -n "$NS" "$family" route show "$prefix")
-+	ip -n "$NS" "$family" route save "$prefix" > "$dump"
-+	check_err $? "Failed to save route"
-+
-+	ip -n "$NS" "$family" route del "$prefix"
-+	ip -n "$NS" "$family" route restore < "$dump"
-+	check_err $? "Failed to restore route"
-+
-+	after=$(ip -n "$NS" "$family" route show "$prefix")
-+	[ "$before" = "$after" ]
-+	check_err $? "Restored route differs from the saved one"
-+
-+	log_test "encap $desc route save and restore"
-+}
-+
-+save_restore_rpl()
-+{
-+	save_restore rpl 2001:db8:1::/64 \
-+		encap rpl segs 2001:db8::2 dev dummy0
-+}
-+
-+save_restore_ioam6()
-+{
-+	save_restore ioam6 2001:db8:2::/64 \
-+		encap ioam6 trace prealloc type 0x800000 ns 1 size 12 dev dummy0
-+}
-+
-+save_restore_xfrm()
-+{
-+	# iproute2 takes every argument after "encap xfrm" as an xfrm one
-+	save_restore xfrm 2001:db8:3::/64 dev dummy0 encap xfrm if_id 1
-+}
-+
-+save_restore_geneve_opts()
-+{
-+	save_restore "ip geneve_opts" 192.0.2.0/26 \
-+		encap ip id 1 dst 198.51.100.2 geneve_opts 0:0:12121212 \
-+		dev dummy0
-+}
-+
-+save_restore_vxlan_opts()
-+{
-+	save_restore "ip vxlan_opts" 192.0.2.64/26 \
-+		encap ip id 1 dst 198.51.100.2 vxlan_opts 456 dev dummy0
-+}
-+
-+save_restore_erspan_opts()
-+{
-+	save_restore "ip erspan_opts" 192.0.2.128/26 \
-+		encap ip id 1 dst 198.51.100.2 erspan_opts 1:123:0:0 dev dummy0
-+}
-+
-+trap defer_scopes_cleanup EXIT
-+setup_prepare
-+tests_run
-+
-+exit "$EXIT_STATUS"
+- [Low] The helper promoted into the driver-wide header,
+  `yt921x_port_to_priv(pp)` in drivers/net/dsa/motorcomm/chip.h:992-993,…
+
+--
+
+net: dsa: motorcomm: Hoist port_to_priv helper into chip.h
+
+The duplicated container_of_const() expression used to get from a
+struct yt921x_port back to the enclosing struct yt921x_priv is moved out
+of leds.c into chip.h as yt921x_port_to_priv(), and yt921x_poll_mib() in
+chip.c is converted to use it instead of its open-coded pointer
+arithmetic.
+
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index 8b0ac5fc8c8b6..38e7879a9f1ae 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
+> @@ -608,9 +608,8 @@ static void yt921x_poll_mib(struct work_struct *work)
+>  {
+>  	struct yt921x_port *pp = container_of_const(work, struct yt921x_port,
+>  						    mib_read.work);
+> -	struct yt921x_priv *priv = (void *)(pp - pp->index) -
+> -				   offsetof(struct yt921x_priv, ports);
+>  	unsigned long delay = YT921X_STATS_INTERVAL_JIFFIES;
+> +	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
+>  	int port = pp->index;
+>  	int res;
+>  
+> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+> index 83cd454955ddb..9cd1010eb9700 100644
+> --- a/drivers/net/dsa/motorcomm/chip.h
+> +++ b/drivers/net/dsa/motorcomm/chip.h
+> @@ -989,4 +989,7 @@ struct yt921x_priv {
+>  	struct yt921x_acl_blk *acl_blks[YT921X_ACL_BLK_NUM];
+>  };
+>  
+> +#define yt921x_port_to_priv(pp) \
+> +	container_of_const((pp), struct yt921x_priv, ports[(pp)->index])
+> +
+
+[Severity: Low]
+This isn't a bug today, but now that this helper lives in chip.h and is
+visible to every file that includes it, is the double expansion of the
+macro argument worth avoiding?
+
+The argument pp appears twice: once as the container_of_const() base
+pointer, and again inside the offsetof() member designator:
+
+  container_of_const((pp), struct yt921x_priv, ports[(pp)->index])
+
+container_of_const() only caches the first occurrence in its internal
+__mptr, so the second (pp)->index is a separate textual evaluation of the
+caller's expression. A caller passing something with side effects or a
+function call, say:
+
+  priv = yt921x_port_to_priv(&other->ports[i++]);
+  priv = yt921x_port_to_priv(get_port(ds, i));
+
+would compile cleanly but compute the container address from a different
+port than the base pointer.
+
+Would a static inline be preferable here?
+
+  static inline struct yt921x_priv *yt921x_port_to_priv(struct yt921x_port *pp)
+
+That gets single evaluation and type checking. All six users
+(yt921x_poll_mib() in chip.c, and yt921x_cled_brightness_set_blocking(),
+yt921x_cled_blink_set(), yt921x_cled_hw_control_get_device(),
+yt921x_cled_hw_control_is_supported(), yt921x_cled_hw_control_get() and
+yt921x_cled_hw_control_set() in leds.c) assign the result to a plain
+struct yt921x_priv *, so the const-preserving behaviour of
+container_of_const() does not appear to be needed.
+
+Failing that, could a short comment be added stating that the argument
+must be free of side effects?
+
+>  #endif
+
+[ ... ]
+
+The macro is still present verbatim at the end of the series, so nothing
+later in the series changes this.
 
 -- 
-2.50.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921203040.1203911-1-mmyangfl%40gmail.com
