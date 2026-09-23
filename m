@@ -1,197 +1,379 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C873549CF2A
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790160249; cv=none; b=hIaprjiTSd0lwbtsWWI3NlAullon11iVzXpqOcOzJ31rJKy5pxDVFmPAUqTUy87pBDrX6EJr+AB9KxNVoGvtr+wo1r3cxnvp+N7di8BszfJUMSU9pBUwbf7YtFaOOHHebyY4axqrCHmUEU0IUGXACmPHeEOpuZJQ9XRzgh/I0HA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790160249; c=relaxed/simple;
-	bh=DKCb5PEyfBRYfAj3Eb9S7AuesiwcU9yyCp10TEUzwkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NfpHh7f3kHd/1b1gm70pLIV0vSMDUup3r10OxQ+n0NvGwf7CNJ0rqkdzgXoUI2yRKS897QsqOXYLs1IbipEILrzRgMvmLKpGZXNDBe2oyZ1pVznoDv//QGpiVnR7m91GltJeZaaHtOtUJ1Q+BlpPAu/ITBPhhaq3IXj1BvgmpJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=djR04gIi; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PTqg/Tar; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961A547F3CD
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790160432; cv=pass; b=g7ippMpkKLxgBR1EwClJwpf/5SURcPxrgpL+heHb+yo5ooxOZ+OuWTRKFg31oYxKOHkSLtm97eHj4+C++iPHqrdLac3voW8gg1HNWBF1HXJsWpZLiYLf7DaETiGGdYOnWEiwyUQqmV+uulOyIhGIqSIe+heer3V6HYP8TWU8ox0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790160432; c=relaxed/simple;
+	bh=bUHg62TysYxAHoh8aYGkEd2dAu7RWFPbFjjbBJX2Bb0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W8N/zaYxrfGSAo4MBrtKGcvhsDOJsyixMQzc9m3HM0S7De9+UMYRGG9FiYyw/rzkMtkD2QWy2gjroxKix4i3vvXl9GpZDWxe6KaLnszOwzPi+9HQZyVATaT67E4Zs5pWQGnGa+K7DnqA6NWHxvVbEBRE9UBXzvpxrzPoktkLOMo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kjo6f+1O; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="djR04gIi";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PTqg/Tar"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NA30xW3936231
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:43:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=tdm538hJDBEeOtB+OYg40rCG
-	/usyp2101S2xsTzwFKE=; b=djR04gIia4FrVZw0QUhpS9gvO12DqiZtxfId+T5a
-	GRD/kg2tk3szeGR8uzBHmfUwE9Dt3Otaso7Lp7DEpIHMaP9RP/yKw86cgf2v4PS6
-	+I3TTC31C9CUk0284C5NpVdyM9vDLwR+A8K6zh72VrzWXtOK4Ai0bhftcrlQyV8n
-	PaR4QugbjTTwIv6c1gneLUS+/NmwXfc9/CNnf9xflXh7hs1kyPzKJklcrZPi8TKH
-	2SQ4zY/cwvwlgsUU0FMPh0wN5UOJ7pMsXq7DHYqgb3+G1ciwAyt/Z49M2krIgGHL
-	JUIMW/VhPX3XVlIpVO5CdBN/BZKD3uxOuyZgG5G+nz1J+g==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gv428tare-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 10:43:44 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-32b8c2b30c4so1124625eec.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:43:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kjo6f+1O"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb766bfd3so6274201cf.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:46:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790160415; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M6zYNG+p/4Fwv77ji5I+GLijFoBBFw4XhFuYaz/uicfy5cetQI76gNJug+iIJjJZpc
+         PyYA6Otded+JFDcD8cGr/EL5cn/rdC5TH1t2ex9buqohXgUIzXgfuZJgIL8TlQHb7sQm
+         IaVx6g5EREs/9GE2jEHUboyth3Q2Ryve7FmyI8/RQuf5tbipxodrYEYVXk7qSOA+LMKu
+         5lthY/TjFVsi7OFAMohorZ041PiDmgJFe4i3lvnusKNIdHv0VuJ3XBP/tqeMTmnsVbA/
+         CBMXixMD5dlC5RNqs5dnT1qgwixqv5WMtpxH7eOcHha0dIXJHqkj416ZOjwUTfkbhqVJ
+         VnxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5qQnouxMXBaz7GRH1wNAX5+8qsLPLIKgVbqXxrNNlSM=;
+        fh=UTDnoG5OC8uTPC7LFVp4/vdlGUSLAXjThZMoiQH3ynI=;
+        b=aqg8+vVSnorrzaK4M39u7Sypy25Gpt7G3H5Dzhf6d44W9FmUQ5LhkovEf9QyJ6251W
+         swtjrSxdu9hY69d8snXQ2WnaQfhE/7nK33HPhKM5EJP8AreA0VNXOas9NAKuYUTIpeN9
+         2bQpR/JOcrWEF9u0h5cKPEIOHR9ZFz1r4+o7pXZxv+9lSpAYkCuWruPlMSyEQ+LNdr0o
+         fjWUbseG9YF1fWb5hEYgFstdnKoe+zzWpcqjCGLIESBa0W/QgHNcg7KMWS+7eT1tXnKy
+         PjSwQpl6QIClKyGwM3VPn1oyYn/hI4cJPVhwbNLknwA7iNdtf0PiReHbRm+KDfG2hClp
+         TS5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790160224; x=1790765024; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1790160415; x=1790765215; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tdm538hJDBEeOtB+OYg40rCG/usyp2101S2xsTzwFKE=;
-        b=PTqg/TaraM2+2izq2daoZavo2fFnNChOdRF4oX4uTthw2pLyeXbKy+XK9rJgZtii2r
-         V5F+zzH7u2lGu6bSGUdklb6xJuID1JlSRMPqZVOW+VZicDAwh6blJYIarkoW2H4PXOmJ
-         kSJMkG3Aa0lpN10wdaDhvKAHT81WlywJP6LM8VM1hw+0PKerk7pCt7Tc6W1ijGbgBdAQ
-         4oEeSy3hM/2PjYTDAz01dH7GVTrXolUOdw2LE0udZgBjdHrn6I8+fPzJDhCF/+gHWzXw
-         OXxSx4JtYR0o5Y7YDc9JpWtjAKtmF1gHR0fLYcDvLdDXC/Sj6s6Ms9osUDsvRRvUlwl7
-         Z6fQ==
+        bh=5qQnouxMXBaz7GRH1wNAX5+8qsLPLIKgVbqXxrNNlSM=;
+        b=kjo6f+1OBQLBl53kxS/KmVMFZgU3lCwqrk3s85Wbu10xiSwkLgt+RnfsM3e/sL5Ypa
+         aAQ0HZSo88OUKfKoQbeCMAzbPT9QXMPz/2Lfh963OMWvt3T5KsA5kBA619DRLqUvkEFR
+         TXUbxIPoDcjk0ZM8gO5JAXcBNYfeU65COSkm15N6GOKAEDdGi2I1VKirjr+WZCzvgQ7f
+         P0KgGlIvDnt2+UpJTEwLoF8AvLNK/rRSPQ6NURXvs/iLzjohZxEFgVDTPmafhZEfK/Ev
+         1mWFHPAxiShjrH+dLUZG92MY7I0erqq1dY55qZ9KBfgxPnoBRAr1AJiiWlTig9fLtAWD
+         FsDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790160224; x=1790765024;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790160415; x=1790765215;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tdm538hJDBEeOtB+OYg40rCG/usyp2101S2xsTzwFKE=;
-        b=Yh9//kIQ0laY90LM8B+pM7c5C/alaVtfUYJoPM2owTlSL9d+hg+jzuCN9RbOWoTTdr
-         cGmgDAVF3iZqOizkNg8074Ht/GbbMKxRcZ0fcdVYS7KKgTCfPEkZmM28LZwBSFaytUTw
-         xxE7k09AaLuyFbcGUaSHaTjdhwfDN/pQtOT2/OYDBrHPs/76R1xnPi8YblEn88JqXKp9
-         lsxVLgvIbCbKZaOXXYFT+DW7NoyT9U8xGOa8fRoULh+e2fyOp9r8KHo1J3aR3NBS9Gih
-         AJqSapADTQZoRv3DrlDDRgDLqqjZ7rmUxikvV0P4ifJ22eFn56YyZczJcNCRi5UFBDAu
-         0txg==
-X-Forwarded-Encrypted: i=1; AKwUvBxE9ioD/7JL6GkIG82rUBje/44s3QCVQTm6G/bJwydQdgTWEzr/sBPXYfCU6T8wF/DgwU8kzLg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXTL+dv9uRbFEh82qScUHWjk7nP8/XdTVhhn/8bK38Qn1KIBpL
-	6k1HGjfrJzXjr6CgqSrrpfQmS87qhcTvO2ZtBEyAXZghI9udXA07cWF7Zwot/3uppPx1j2vhdab
-	0jz3hBn1VFLoznrIf9vBolB20AK31dRuKeoqjyQDQ330nfJhQ7XGK/vxO4Os=
-X-Gm-Gg: AYBFou08uCeTmCiczdDCkRq8ISpKopq5drgzbyNhdIrwkRsc1aguN6IbmmwzYOOL/6s
-	0dLwYFekYXDLEH4a1YzYLV6SZ/wKdDb+yqJ8R37B3bXOpnX+XuthyvIfZqixU2qXDXEHLddZPks
-	mRC0OP3k7rkwEEQ7PdaDT9+9upaeCllVU34Su+DUW+veFSWsBxxJ/NbUVHEqbV7ixBNwnSZdhjy
-	Y154NE736nqrrNUJofsM6IX6h5BhQzIxa2CAg7Mm3DFXCEbhkszVP5aket/YKFqZzFqtQUtOfk/
-	Au2sKJB3D0A6bjqe4uPR4sbUTr43W9uxI1iH2iwG8l7EEg3jxy8xLqzB5ZX5++MStoOg+HB8Ity
-	xwubDBPrVARuI
-X-Received: by 2002:a05:701b:465c:b0:144:eab0:8373 with SMTP id a92af1059eb24-144f91598eamr2150595c88.13.1790160224187;
-        Wed, 23 Sep 2026 03:43:44 -0700 (PDT)
-X-Received: by 2002:a05:701b:465c:b0:144:eab0:8373 with SMTP id a92af1059eb24-144f91598eamr2150572c88.13.1790160223468;
-        Wed, 23 Sep 2026 03:43:43 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f9820ca5sm6285226c88.3.2026.09.23.03.43.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 03:43:43 -0700 (PDT)
-Date: Wed, 23 Sep 2026 16:13:31 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Coia Prant <coiaprant@gmail.com>,
-        Jan Petrous <jan.petrous@oss.nxp.com>,
-        "Jose.Abreu@synopsys.com" <Jose.Abreu@synopsys.com>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-        Shawn Guo <shengchao.guo@oss.qualcomm.com>,
-        Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
-        Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
-Subject: Re: [PATCH RFC net-next 0/9] net: introduce Qualcomm XPCS support
- and add Nord Ethernet plumbing
-Message-ID: <arOtU15iv5CWPUEu@oss.qualcomm.com>
-References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
- <5135e15d-b6ac-476c-9a7d-b7d64e4eed5c@bootlin.com>
+        bh=5qQnouxMXBaz7GRH1wNAX5+8qsLPLIKgVbqXxrNNlSM=;
+        b=nfZy/g2Dbpp/sZ70/Sz+e+MUaoLra0LwC9kMnwOc1Jwxoeh/1dt8Z4sxEOsRrrVMtD
+         h8mPCxmUoUDKZvyfsOeC1kmPx+AvxhzcsdwaHEYKZKZJYH09ONjZ+s6qe8OrqOMZITi5
+         O6l6SbnLmPbCnavKlAKyITKVVRzD5ydEW4RWtnDuBOVOnwcAEAIkJZsJwstykzO9R5aR
+         G8pOXlXvx+Hgma3acW8QT3hpyMtVZyrYZr3GqPpTVs0HwpvnKo45qR6I9GgebDkQVPas
+         Oqo25zO+DF0CnenmPVi0e/bFY8I0AxSVbSFEUH8k/FLKv6e4jFkpnFcBJqHEohTAuy6A
+         M21w==
+X-Forwarded-Encrypted: i=1; AKwUvBxajoJisLrrDBIUKpTWngMCot7RT/S+7xh2RHLh+ffDXyHLSSbM5PLfQNo8gi9o547RzNs5+to=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0dYXdcEXhd44QtfBuo3FnDh9jv+3t57hF8wSEQlST6hqbH3e6
+	rnozY5qm2gu2iLgERgbqgmQDySo9gJMWvkruVun36lUjYkn/Fqhn5py1McwB8VV/v4JfOkqbsIi
+	X7X6wP0GKJXQvBdZPTVNP6FeADrB/51VwdI5x7OSt
+X-Gm-Gg: AYBFou2nc/8maGIOmyxPr9tL6P3FIa4Y0RrqJJM9oBZwXBdlXTjiVmYTaC19M9D5wWK
+	3iCnG0RRZhOf2kSzh+Kt43SKJW4FEV+FDdBkqxGn0hZ7z1gkCTBWA8yr+UJ6gOY+E/K60C0ELk9
+	q2kM3ZYi5L3NTQgMM/VOcF9LfHpcbHJOU+HIvq9K74rYZDQNMGS+bAesgpyFS8ywaNg+2qBTBPi
+	YFccIjQ6VSvO/kePM/DcWSxZqpdRAwfcYNhwzr4WDITSCr+qrbRSKMIgxX1lQPueNDLauVvVzjX
+	ea7XNe510TXGzJRHzmetRNviRw4kjHEhX61MuIcneQt0nOxzAuGQmyc4hALIPFOlgncxByd67Zp
+	pXXeUNxVxcUPtRXFAjkJiNGPAM0/f7Rviax446dder+QawxHtoqBjkzmOAa9PsPCAVxIvHQ1sE/
+	q7JOA=
+X-Received: by 2002:a05:622a:2505:b0:530:e4fb:60fc with SMTP id
+ d75a77b69052e-532eabdc770mr32673981cf.15.1790160414447; Wed, 23 Sep 2026
+ 03:46:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5135e15d-b6ac-476c-9a7d-b7d64e4eed5c@bootlin.com>
-X-Authority-Analysis: v=2.4 cv=EZdd0/mC c=1 sm=1 tr=0 ts=6ab3ad60 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=8AirrxEcAAAA:8 a=keUjBhY1HaWyqSYI5lAA:9
- a=CjuIK1q_8ugA:10 a=scEy_gLbYbu1JhEsrz4S:22 a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-ORIG-GUID: HkVhAiZ2ZP_kQqHaL-URYJOY1qWnSR8D
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA0MiBTYWx0ZWRfX3VFG3XocE6Wo
- EfdZMHgOSpW+/spU4SoxD5+kj+TbWRgvkQRtdmk7LinbPylHzXYdslfIbY+Z9b1ca2PX42XLq0a
- Kvql3T9svfTrKmnvijU+3asHx74E9hiGOFt1Qy8ZlDJN+500DEnrVm64wS1vmm5Cqbrex79LVnk
- JdI6u6NFlqBBaPOiOOfnjRlAdWuyhY+rZlhw8fHbu6wkiXgVdussggRtnZ8m5UGAY01e/j0egI3
- OYmj79UrXn8hu0SWsD0FypsHH43QBe3kHKK67eTvD5d3XXXq+7gWegyHTBy8SVnSCyipqv4Bs67
- ylU8qLRM5NFkSjD+xkCbyhTHMo8hXs9HzQiumPwmuXNEmI2BUTlDB2uJFbwE8JpukQPHF5JBfcf
- AKfSF18LCxIDv6OP+kBSBZhLT7FDVMVaL2doHdWX+QUZCWQVaDgjBXaC8EZZsxJZwCpEg5C0D+P
- cqSmOyZmt9lPQdPhy3g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA0MiBTYWx0ZWRfX49Bz8qHbBOH3
- DLfp0J4/DILaBRGDmr5+1y/6zoQqstBZ5sNkXtQwiJ/E9gf3vYLSjSwIm0IvMrrjO4Du2fc+NMb
- WEuytMU/+v0o0CdyqWLo9GynJi6X8/I=
-X-Proofpoint-GUID: HkVhAiZ2ZP_kQqHaL-URYJOY1qWnSR8D
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 bulkscore=0 adultscore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609230042
+References: <20260922030310.8684-1-habte.yibelo@gmail.com> <20260922030310.8684-2-habte.yibelo@gmail.com>
+ <willemdebruijn.kernel.259bc7096258d@gmail.com> <willemdebruijn.kernel.2cdfef118aa1d@gmail.com>
+ <20260923061215-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260923061215-mutt-send-email-mst@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 23 Sep 2026 12:46:42 +0200
+X-Gm-Features: AcwNN1U8Ts6TWBa2uXtOoMwvm8fJd83V_C6ZYk_pSBxsCdUgnTa4az_r5gjrcY4
+Message-ID: <CANn89iJaE5UarTdg6FMEp=rZ9mG3g=xrVRLyvMS5S02iE8CwGg@mail.gmail.com>
+Subject: Re: [PATCH net v6 1/2] net: validate virtio checksum start after
+ network header
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Paulos Yibelo <habte.yibelo@gmail.com>, 
+	netdev@vger.kernel.org, richard@nod.at, anton.ivanov@cambridgegreys.com, 
+	johannes@sipsolutions.net, jasowangio@gmail.com, eperezma@redhat.com, 
+	xuanzhuo@linux.alibaba.com, andrew+netdev@lunn.ch, pablo@netfilter.org, 
+	fw@strlen.de, phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com, 
+	dsahern@kernel.org, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, linux-um@lists.infradead.org, 
+	virtualization@lists.linux.dev, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, bridge@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Maxime,
+On Wed, Sep 23, 2026 at 12:21=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com=
+> wrote:
+>
+> On Tue, Sep 22, 2026 at 09:27:26PM -0400, Willem de Bruijn wrote:
+> > Willem de Bruijn wrote:
+> > > Paulos Yibelo wrote:
+> > > > __virtio_net_hdr_to_skb() checks a minimum network-header length fo=
+r
+> > > > CHECKSUM_PARTIAL packets. Its checksum start is relative to skb->da=
+ta,
+> > > > but some callers have not established skb->network_header when they
+> > > > convert the virtio header.
+> > > >
+> > > > Pass the data-relative L3 origin explicitly. Ethernet receive paths
+> > > > parse the frame and nested VLAN headers without changing skb state.
+> > > > AF_PACKET uses the frame's actual L3 origin even when the socket
+> > > > protocol is ETH_P_IP and the raw frame carries VLAN tags. Non-Ether=
+net
+> > > > AF_PACKET devices retain their established skb network offset.
+> > > >
+> > > > Also pass the actual L3 protocol so IPv6 packets use the 40-byte ba=
+se
+> > > > header minimum even without TCPv6 GSO. IFF_TUN obtains that protoco=
+l
+> > > > from the packet before skb->protocol is set. Name the Ethernet pars=
+er
+> > > > accordingly, use the same origin for tunnel validation, and propaga=
+te
+> > > > conversion failures in UML.
+> > > >
+> > > > The bound remains a minimum; fragmentation paths separately validat=
+e
+> > > > the parsed IPv4 or IPv6 header length before completing a checksum.
+> > > >
+> > > > Fixes: 49d14b54a527 ("net: test for not too small csum_start in vir=
+tio_net_hdr_to_skb()")
+> > > > Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP G=
+SO tunneling.")
+> > > > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > > > Link: https://lore.kernel.org/netdev/20260920004733.6473-2-habte.yi=
+belo@gmail.com/
+> > > > Cc: stable@vger.kernel.org
+> > > > Assisted-by: LLM
+> > > > Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > > > ---
+> > > >  arch/um/drivers/vector_transports.c | 13 ++++-
+> > > >  drivers/net/tun_vnet.h              | 52 ++++++++++++++++-
+> > > >  drivers/net/virtio_net.c            | 10 +++-
+> > > >  include/linux/virtio_net.h          | 87 ++++++++++++++++++++++++-=
+----
+> > > >  net/packet/af_packet.c              | 24 +++++++-
+> > > >  5 files changed, 163 insertions(+), 23 deletions(-)
+> > >
+> > > The fix may still miss the case IPv4 packets have options.
+> > >
+> > > This version is a very large patch.
+> > >
+> > > Untested shorter first suggestion by bot, which looks plausible as a
+> > > starting point for discussion.
+> >
+> > Cleaned up some more:
+> >
+> >     diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+> >     index f4c652b1fa44..c24607af2aad 100644
+> >     --- a/drivers/net/tun_vnet.h
+> >     +++ b/drivers/net/tun_vnet.h
+> >     @@ -180,6 +180,9 @@ static inline int tun_vnet_hdr_put(int sz, stru=
+ct iov_iter *iter,
+> >      static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct s=
+k_buff *skb,
+> >                            const struct virtio_net_hdr *hdr)
+> >      {
+> >     +    if ((flags & TUN_TYPE_MASK) =3D=3D IFF_TUN)
+> >     +        skb_reset_network_header(skb);
+> >     +
+> >          return virtio_net_hdr_to_skb(skb, hdr, tun_vnet_is_little_endi=
+an(flags));
+> >      }
+> >
+> >     @@ -199,6 +202,9 @@ tun_vnet_hdr_tnl_to_skb(unsigned int flags, net=
+dev_features_t features,
+> >                  struct sk_buff *skb,
+> >                  const struct virtio_net_hdr_v1_hash_tunnel *hdr)
+> >      {
+> >     +    if ((flags & TUN_TYPE_MASK) =3D=3D IFF_TUN)
+> >     +        skb_reset_network_header(skb);
+> >     +
+> >
+> >     diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.=
+h
+> >     index c381b916c1b5..02c448de0802 100644
+> >     --- a/include/linux/virtio_net.h
+> >     +++ b/include/linux/virtio_net.h
+> >     @@ -48,6 +48,42 @@ static inline int virtio_net_hdr_set_proto(struc=
+t sk_buff *skb,
+> >          return 0;
+> >      }
+> >
+> >     +static inline int virtio_net_hdr_nh_min_len(const struct sk_buff *=
+skb,
+> >     +                        unsigned int nh_min_len)
+> >     +{
+> >     +    int thoff =3D skb_transport_offset(skb);
+> >     +    __be16 proto;
+> >     +    int nhoff;
+> >     +
+> >     +    if (skb_network_header_was_set(skb)) {
+> >     +        nhoff =3D skb_network_offset(skb);
+> >     +        proto =3D skb->protocol;
+> >     +    } else {
+> >     +        if (unlikely(thoff < ETH_HLEN))
+> >     +            return -EINVAL;
+> >     +        nhoff =3D ETH_HLEN;
+> >     +        proto =3D eth_hdr(skb)->h_proto;
+> >     +    }
+> >     +
+> >     +    if (eth_type_vlan(proto)) {
+> >     +        proto =3D __vlan_get_protocol(skb, proto, &nhoff);
+> >     +        if (!proto)
+> >     +            return -EINVAL;
+> >     +    }
+> >     +
+> >     +    if (proto =3D=3D htons(ETH_P_IP)) {
+> >     +        const struct iphdr *iph =3D (void *)(skb->data + nhoff);
+> >     +
+> >     +        if (unlikely(thoff < nhoff + sizeof(*iph)))
+> >     +            return -EINVAL;
+> >     +        nh_min_len =3D max_t(u32, iph->ihl * 4, sizeof(*iph));
+> >     +    } else if (proto =3D=3D htons(ETH_P_IPV6)) {
+> >     +        nh_min_len =3D sizeof(struct ipv6hdr);
+> >     +    }
+> >     +
+> >     +    return nhoff + nh_min_len;
+> >     +}
+> >     +
+> >      static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+> >                            const struct virtio_net_hdr *hdr,
+> >                            bool little_endian, u8 hdr_gso_type)
+> >     @@ -98,13 +134,15 @@ static inline int __virtio_net_hdr_to_skb(stru=
+ct sk_buff *skb,
+> >              u32 start =3D __virtio16_to_cpu(little_endian, hdr->csum_s=
+tart);
+> >              u32 off =3D __virtio16_to_cpu(little_endian, hdr->csum_off=
+set);
+> >              u32 needed =3D start + max_t(u32, thlen, off + sizeof(__su=
+m16));
+> >     +        int min_thoff;
+> >
+> >              if (!pskb_may_pull(skb, needed))
+> >                  return -EINVAL;
+> >
+> >              if (!skb_partial_csum_set(skb, start, off))
+> >                  return -EINVAL;
+> >     -        if (skb_transport_offset(skb) < nh_min_len)
+> >     +        min_thoff =3D virtio_net_hdr_nh_min_len(skb, nh_min_len);
+> >     +        if (min_thoff < 0 || skb_transport_offset(skb) < min_thoff=
+)
+> >                  return -EINVAL;
+>
+>
+> Certainly looks much better. But I'd like to ask, generally:
+> doesn't the net stack need to protect against weird packets?
+>
 
-On Wed, Sep 23, 2026 at 11:41:14AM +0200, Maxime Chevallier wrote:
-> Hi,
-> 
-> On 9/23/26 03:07, Mohd Ayaan Anwar wrote:
-> > Hi,
-> > 
-> > This is an early RFC which adds the XPCS and ETHQOS plumbing required
-> > to enable 10 Gigabit Ethernet on the Qualcomm Nord SoC. This is the
-> > first time USXGMII together with an external PCS is being supported by
-> > the dwmac-qcom-ethqos driver.
-> 
-> There are currently 3 in-flight series that adds glues to DW XPCS and stmmac: 
-> 
-> This one,
-> The Rockchip one from Coia [1]
-> The S32 one from Jan [2]
-> 
-> 
-> [1] : https://lore.kernel.org/netdev/20260922200336.2201212-1-coiaprant@gmail.com/
-> [2] : https://lore.kernel.org/netdev/20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com/
-> 
-> MAINTAINERS entry for XPCS says :
-> 
-> SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
-> L:      netdev@vger.kernel.org          
-> S:      Orphan                          
-> F:      drivers/net/pcs/pcs-xpcs.c      
-> F:      drivers/net/pcs/pcs-xpcs.h      
-> F:      include/linux/pcs/pcs-xpcs.h    
-> 
-> It would nice if some of you could help maintain the core XPCS driver, and make sure
-> these series aren't stepping on one another :( I personnaly don't have any XPCS HW
-> for tests.
-> 
-> You don't have to do it alone, multiple people can co-maintain that :) Maybe
-> Synopsys folks can also chime in ?
-> 
+It does, but csum_start/csum_offset are not "weird packet" material,
+they are skb metadata, not bytes on the wire.
 
-Thank you for sharing these series, I can help review them based on my
-understanding of this IP. Hope that helps.
+For essentially every skb in the kernel, this metadata is produced by
+the kernel itself,
+from headers it has just built or just parsed, and the rest of the
+stack (GSO, skb_checksum_help(),
+fragmentation, netfilter, and every driver doing TX csum offload)
+consumes it as an invariant.
 
-	Ayaan
+The only producers of attacker/guest controlled CHECKSUM_PARTIAL metadata a=
+re
+the virtio_net_hdr_to_skb() callers: af_packet, tun/tap, virtio_net,
+and the UML vector driver.
+
+So this is not "virtio specific validation", this is input validation
+at the one trust boundary
+where the invariant can be violated.
+
+> It seems likely that not all drivers validate headers defensively,
+> and incoming packets can easily become outgoing ones.
+
+Packets coming from a real NIC are CHECKSUM_UNNECESSARY,
+CHECKSUM_COMPLETE or CHECKSUM_NONE.
+They do not carry a remote-provided csum_start.
+(Remote checksum offload is the rare exception, and there the offsets
+are computed by the stack from headers it just parsed.)
+
+Incoming packets becoming outgoing ones is precisely the problem here:
+a virtio_net RX skb with VIRTIO_NET_HDR_F_NEEDS_CSUM becomes
+an skb that can be bridged/forwarded/fragmented and then handed to a real N=
+IC.
+
+> So do we even need virtio specific validation, or is it enough to
+> validate everything in the net stack, where we are poking at the
+> header anyway?
+
+The core stack cannot afford it.
+
+1) Drivers program skb->csum_start / skb->csum_offset straight into
+the TX descriptor, and the NIC will happily write two bytes wherever
+it was told, e.g. into the IP header of the frame we put on the wire.
+Auditing/adding checks in every driver is not realistic, and drivers
+must not pay for it.
+
+2) Catching this in the core would mean re-parsing L2/L3 in
+dev_hard_start_xmit()
+(or in every place that eventually looks at the transport header) for
+the 99.99+%
+of packets that were built by the stack and are known to be consistent.
+That is far more expensive than one check at injection time.
+
+3) Failing at injection returns -EINVAL to the sendmsg()/writev() caller,
+which is the correct and testable behavior. Failing later means dropping
+the packet deep in the xmit path, usually with a splat: the commit being fi=
+xed
+here (49d14b54a527) exists exactly because such a packet reached
+skb_checksum_help() from ip_do_fragment() and hit the "offset (-6) >=3D
+skb_headlen() (14)" WARN.
+
+>
+> Or maybe it's more a defense in depth thing?
+>
+> My worries:
+> - more poking at the header, more cache misses, where we really
+>   do not need that
+
+I do not expect anything measurable.
+
+af_packet and tun: we have just copied that header from user space, it is i=
+n L1.
+virtio_net: we call eth_type_trans() right after, and GRO parses L3/L4
+immediately.
+
+The whole block is under the CHECKSUM_PARTIAL condition, where we already
+do pskb_may_pull() and skb_partial_csum_set(), i.e. we already touch
+this cache line.
+Reading iph->ihl from a cache line we are about to read anyway is noise.
+
+> - future protocol extensions that now will require surgery in
+>   virtio, instead of just being passed through to the host
+
+Fair, and this is an argument about how the check is written, not
+about whether it exists.
+The rule should be:
+
+Only tighten the bound for the protocols we already parse (IPv4/IPv6),
+and keep the existing generic minimum for anything else.
+
+Then an unknown ethertype simply keeps flowing, no surgery is needed.
+Willem's version does that. A new protocol would only be impacted if it wan=
+ted
+csum_start to point inside what we consider the L3 header, and such a packe=
+t
+would not survive the rest of the stack anyway.
+
+So: not defense in depth, but validation at the trust boundary, where
+it is cheapest
+and where we can still report the error to the producer.
+
+>
+> What do others think?
+>
+> --
+> MST
+>
