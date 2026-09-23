@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC62555D88C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD142765E2;
 	Wed, 23 Sep 2026 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790177525; cv=none; b=N/eu9PcZTfxF+z7+oTMJ8zbCLSlYNVWf7jrIBOuC/XLHs577UJvuvHXB3rdqjrKKaG+jtNCwcGNqH3W5xg+2USRLctgVhEzFd6qNUjhLQzw7V5Lg4thfDc5cFaPhDrVYNI9fpXMvASPRVfzhSPXHcvVkOgpl8z+Hq9v3iF1ebUg=
+	t=1790177526; cv=none; b=JzAs11aJguqa/bCWQ97vcMRFD6tRwU0dS5YnpBhkDMFLrfGHKmijlOJbwI4DUjMoEpxzDNxSH3U3EuaK9nqP8wyUW5O5BsjHG+GEt6Z7LwdhlOYOC32iGWewuOYFdbsSSeOdOfPzNEE1etf+Jx506H8n8PecAoa/JkSuhIT5lCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790177525; c=relaxed/simple;
-	bh=JsPo+YU0MuEfP3CdDiarzkzLbbh+DS3W3mn9L4o0Mws=;
+	s=arc-20240116; t=1790177526; c=relaxed/simple;
+	bh=16GtAyWXg9XHT6NYcnN6c6+63crY4W8msaHGFRCzii4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E4XvVYC1RCXW6+sjl13CEXQSEdxlhafOLf5lGi4rq26YCWGUHFd017YY6gmBpMj2QlP7IXLcT2XDbZJS67lyPhL7X6gue4Ue+GSIjHHtAVeETwA9MkTFsCS7sD1tx/FsnsAZhe+U4HBj26R2yaNPG6QYmFkhDHXXOqcL6Poo4cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dU1NV+fg; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=rXMI82gydl9u2w9wiRvvoa3Od4/YXfGloy6y+3/rkxfYRT+m+3AF8ly4zQ8D8ZBPCHXVMMajvsUg1zGVokTUoiSZXOjQv5rKtgJoKTI5ve/SQxB7npXd6XNz73+pqM3tJ6Uz/N8d3s25X94WbfsZ2oPeEFxXLCboR3KwT7KqXB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQrd7bY3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dU1NV+fg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6911F00893;
-	Wed, 23 Sep 2026 15:31:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQrd7bY3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AF51F000FF;
+	Wed, 23 Sep 2026 15:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790177518;
-	bh=WC1P3wTXESA6BgqvPPiBmdyDCM54RO/X3Gr7C82V1sQ=;
+	s=k20260515; t=1790177517;
+	bh=U1Bvd6/p/gkQXGYEOxDXN7iUZg0k/gL9HPhVzPJ3J5o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dU1NV+fgr3k1lggAXGPqTBUYmrZiYmi7lzDqkzEWCcdWleAZNy9IJOieScVK5YPrz
-	 +uf9F4bIxA+IIHiI49WWYGoL6/UMsNnd0uwcXqQRUoKcCtIh/L2mkwta/6xMukjJ8R
-	 ekd55pEWdgkg3VCWcl28pAzPcqGegzwIkSJzMKfPjiW5B+Tb+/DeZwGYMazjblPUA+
-	 gIHve/UaNYA/a5BIAXrZRzX1JEnaSkucn7XK/gSoxWJDmf5i7Qyts0Wr2bRS4LiZzf
-	 lzm24AsUIjNzKQQRJCEwcAeLDGGSG+8lKK/r3Kx5JUr21mZL9zVaPd6q3+0oGGavR5
-	 i6X7VokIBU58A==
-Subject: Re: [PATCH] phonet: pep: fix out-of-bounds reads in
- pep_ctrlreq_error() and pep_sock_accept()
+	b=KQrd7bY3+yTVOBqTgyfdP0Yqd7j6FFJkIPqNGFL8t1+/xnf9K+ZSMfc2WXZ0y8mTv
+	 FgeAafl+mjI/N1YuknJtgANlyVLJRFGoa8UpN7Zm4KtimcLy3duVE42sw+zlju0bNa
+	 iTUaODYP82jQKSiNmCRavjXzuwhKpcyNKvtf+7DJb+WLv3wTpY12ONZ5ypOFcOAdxi
+	 +6IU4FO+Tj75bqkK/846/OewWIY+jWGLmA74ic3PURKdzg891A3Bifrqu98B1CN0eG
+	 LE4+immFNaHHVNEaXKknGA7zdqrMx4jc012cQlGpOb91mzAdYhxmKeivn7iCfzpoeG
+	 wjpqWVz7XDl+g==
+Subject: Re: [PATCH] net: qrtr: ns: validate msglen and sq_port in
+ qrtr_ns_worker() and ctrl_cmd_bye()
 From: netdev-bot+sashiko@kernel.org
 To: benquike@gmail.com
-Cc: courmisch@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 15:31:57 +0000
-Message-ID: <179017751768.2160803.16464935071666517964@kernel.org>
-In-Reply-To: <20260919212852.3240704-1-benquike@gmail.com>
-References: <20260919212852.3240704-1-benquike@gmail.com>
-X-sashiko-severity: Medium
+Cc: mani@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 23 Sep 2026 15:31:56 +0000
+Message-ID: <179017751615.2160803.4681331359759254914@kernel.org>
+In-Reply-To: <20260919212850.3240353-1-benquike@gmail.com>
+References: <20260919212850.3240353-1-benquike@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0 (5)
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,233 +58,200 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch bundles three logically independent changes into one
-  commit: (a) the 1-byte OOB-read hardening in pep_ctrlreq_error() /…
-- [Medium] The changelog misidentifies the out-of-bounds read it fixes.
-
-Pre-existing issues:
-- [Low] In-tree sender and receiver of PNS_PEP_CONNECT_REQ disagree on
-  the 4-byte payload layout that follows the pnpipehdr.
-- [Low] The file-level locking-policy comment for struct pep_sock in
-  net/phonet/pep.c (lines 33-37: 'pep_sock locking: - sk_state, hlist:…
-- [Low] Documentation/networking/phonet.rst describes PNPIPE_HANDLE as 'a
-  read-only integer value', but pep_setsockopt() accepts it: when…
-- [Low] Documentation/networking/phonet.rst states 'The pipe protocol
-  provides two socket options at the SOL_PNPIPE level' and then…
-- [Low] The new writer-side locking in pep_setsockopt() does not remove
-  the data race on pn->ifindex with getsockopt readers:…
+- [High] Over-broad minimum-length gate in net/qrtr/ns.c:qrtr_ns_worker()
+  (lines 645-646, `if (msglen < sizeof(*pkt)) continue;`) silently…
+- [Medium] The commit message contains two factually incorrect supporting
+  claims.
+- [Medium] The new unconditional `if (from->sq_port != QRTR_PORT_CTRL)
+  return -EINVAL;` in net/qrtr/ns.c:ctrl_cmd_bye() (lines 350-351) also…
 
 --
 
-phonet: pep: fix out-of-bounds reads in pep_ctrlreq_error() and pep_sock_accept()
+net: qrtr: ns: validate msglen and sq_port in qrtr_ns_worker() and ctrl_cmd_bye()
 
-This adds pskb_may_pull() coverage for the control-request path in
-pep_ctrlreq_error() and pipe_do_rcv(), adds the missing __skb_pull() plus a
-length check before the sub-block loop in pep_sock_accept(), and re-acquires
-the socket lock around the pn->ifindex assignment in the PNPIPE_ENCAP case of
-pep_setsockopt().  No Link: tags are present in the commit header.
+This adds two checks to the in-kernel QRTR nameservice: a minimum length
+test of sizeof(struct qrtr_ctrl_pkt) on every control datagram received by
+qrtr_ns_worker(), and a requirement that BYE messages arrive with
+from->sq_port == QRTR_PORT_CTRL in ctrl_cmd_bye().
 
-A few questions below.
+A few questions about the commit message and the two new checks below.
 
-> diff --git a/net/phonet/pep.c b/net/phonet/pep.c
-> index bd1cdd00edfa..5511770bb21c 100644
-> --- a/net/phonet/pep.c
-> +++ b/net/phonet/pep.c
-> @@ -192,15 +192,21 @@ static int pep_reject_conn(struct sock *sk, struct sk_buff *skb, u8 code,
->  static int pep_ctrlreq_error(struct sock *sk, struct sk_buff *oskb, u8 code,
->  				gfp_t priority)
->  {
-> -	const struct pnpipehdr *oph = pnp_hdr(oskb);
-> +	const struct pnpipehdr *oph;
->  	struct sk_buff *skb;
->  	struct pnpipehdr *ph;
->  	struct sockaddr_pn dst;
-> -	u8 data[4] = {
-> -		oph->pep_type, /* PEP type */
-> -		code, /* error code, at an unusual offset */
-> -		PAD, PAD,
-> -	};
-> +	u8 data[4];
-> +
-> +	oph = pnp_hdr(oskb);
-> +	if (!pskb_may_pull(oskb, (unsigned int)((oph->data + 1) - oskb->data)))
+> 1. `qrtr_ns_worker()` receives control packets into a single reused
+>    4096-byte `recv_buf` via `kernel_recvmsg()` without checking that
+>    `msglen >= sizeof(*pkt)` (20 bytes). If a short packet arrives on
+>    `qrtr_ns.sock`, `qrtr_ns_worker()` reads stale bytes from previous
+>    control messages (or uninitialized heap memory on the first packet)
+>    when parsing `pkt->cmd` and its union fields.
+
+[Severity: Medium]
+Is the "uninitialized heap memory on the first packet" part accurate?
+qrtr_ns_worker() allocates the buffer with kzalloc():
+
+net/qrtr/ns.c:qrtr_ns_worker() {
+	recv_buf = kzalloc(recv_buf_size, GFP_KERNEL);
+	if (!recv_buf)
+		return;
+}
+
+so every byte not written by the first kernel_recvmsg() reads as zero.  The
+remaining exposure looks like stale data from an earlier, longer datagram
+handled in the same worker invocation, since the buffer is reused across
+loop iterations without being re-zeroed.  Could the changelog be narrowed
+to that, so the bug is not triaged as an uninitialized-memory/infoleak
+class issue?
+
+> 2. Unlike `ctrl_cmd_del_client()`, `ctrl_cmd_bye()` does not verify that
+>    `from->sq_port == QRTR_PORT_CTRL`, allowing any unprivileged local
+>    `AF_QIPCRTR` socket to send a `QRTR_TYPE_BYE` packet and purge all
+>    registered services for the local node.
+
+Does ctrl_cmd_del_client() actually contain that check?  The sender
+validation there is:
+
+net/qrtr/ns.c:ctrl_cmd_del_client() {
+	/* Don't accept spoofed messages */
+	if (from->sq_node != node_id)
+		return -EINVAL;
+
+	/* Local DEL_CLIENT messages comes from the port being closed */
+	if (from->sq_node == qrtr_ns.local_node && from->sq_port != port)
+		return -EINVAL;
+}
+
+QRTR_PORT_CTRL does not appear, and the second test deliberately requires
+the client port being closed rather than the control port.  The new BYE
+rule is an unconditional authorization requirement instead of a match to an
+existing sibling check, so could the comparison be reworded?
+
+> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> index bcb090ee79d4..d7e1a37f0717 100644
+> --- a/net/qrtr/ns.c
+> +++ b/net/qrtr/ns.c
+> @@ -347,6 +347,9 @@ static int ctrl_cmd_bye(struct sockaddr_qrtr *from)
+>  	iv.iov_base = &pkt;
+>  	iv.iov_len = sizeof(pkt);
+>  
+> +	if (from->sq_port != QRTR_PORT_CTRL)
 > +		return -EINVAL;
 > +
-> +	oph = pnp_hdr(oskb);
-> +	data[0] = oph->pep_type; /* PEP type */
-> +	data[1] = code; /* error code, at an unusual offset */
-> +	data[2] = PAD;
-> +	data[3] = PAD;
 
 [Severity: Medium]
-The new check looks correct, but does the changelog name the wrong read?  It
-says:
+Can this reject BYE messages from remote endpoints that encode their
+control source port as the legacy value?  net/qrtr/af_qrtr.c defines:
 
-   1. In `pep_ctrlreq_error()`, `oph = pnp_hdr(oskb)` is dereferenced at
-      `oph->pep_type` (`oph->data[0]`, offset 4 from `pnp_hdr(oskb)`)
+#define QRTR_PORT_CTRL_LEGACY 0xffff
 
-struct pnpipehdr in include/net/phonet/pep.h is made only of u8 members:
+and qrtr_endpoint_post() only normalizes the destination:
 
-struct pnpipehdr {
-	u8			utid;
-	u8			message_id;
-	u8			pipe_handle;
-	union {
-		u8		state_after_connect;
-		...
-		u8		pep_type;
-		u8		data0;
-	};
-	u8			data[];
-};
+net/qrtr/af_qrtr.c:qrtr_endpoint_post() {
+	...
+	if (cb->dst_port == QRTR_PORT_CTRL_LEGACY)
+		cb->dst_port = QRTR_PORT_CTRL;
+}
 
-So pep_type is at offset 3, data[] begins at offset 4 and sizeof(*hdr) is 4.
-The caller pep_do_rcv() already guarantees those four bytes:
+For QRTR_PROTO_VER_1 the source port is taken raw:
 
-	if (!pskb_may_pull(skb, sizeof(*hdr)))
-		goto drop;
+	cb->src_port = le32_to_cpu(v1->src_port_id);
 
-which means oph->pep_type was in bounds.  The read that was not covered is
-the later one in the same function:
+and the v2 path only maps (u16)QRTR_PORT_CTRL, i.e. 0xfffe, not 0xffff.
+qrtr_recvmsg() then copies it verbatim:
 
-	ph->data0 = oph->data[0]; /* CTRL id */
+	addr->sq_port = cb->src_port;
 
-That touches offset 4 and needs five linear bytes, which is exactly what the
-new pskb_may_pull(oskb, (oph->data + 1) - oskb->data) provides.  Could the
-changelog point at oph->data[0] instead of oph->pep_type, so a reader
-checking the named expression does not conclude there is nothing to fix?
+So a BYE arriving with src_port 0xffff would now return -EINVAL before any
+teardown runs.  Since ctrl_cmd_bye() is the only place that does:
 
->  
->  	skb = pep_alloc_skb(sk, data, 4, priority);
->  	if (!skb)
+net/qrtr/ns.c:ctrl_cmd_bye() {
+	xa_for_each(&node->servers, index, srv)
+		server_del(node, srv->port, true);
+	...
+delete_node:
+	xa_erase(&nodes, from->sq_node);
+	kfree(node);
+	node_count--;
+}
+
+does an early return here leak the struct qrtr_node and all of its struct
+qrtr_server objects, keep one of the QRTR_NS_MAX_NODES slots occupied for
+the module lifetime, and leave the dead node's services advertised, with
+only a rate-limited pr_err as a symptom?
+
+The neighbouring handlers restrict the source port only for local-node
+messages:
+
+net/qrtr/ns.c:ctrl_cmd_del_client() {
+	/* Local DEL_CLIENT messages comes from the port being closed */
+	if (from->sq_node == qrtr_ns.local_node && from->sq_port != port)
+		return -EINVAL;
+}
+
+Would gating the BYE check on from->sq_node == qrtr_ns.local_node, or
+normalizing legacy source ports in qrtr_endpoint_post(), block the local
+abuse described in the changelog while keeping remote node cleanup working?
+
+>  	node = node_get(from->sq_node);
+>  	if (!node)
+>  		return 0;
 
 [ ... ]
 
-> @@ -823,6 +831,7 @@ static struct sock *pep_sock_accept(struct sock *sk,
+> @@ -639,6 +642,9 @@ static void qrtr_ns_worker(struct work_struct *work)
+>  			break;
+>  		}
 >  
->  	/* Parse sub-blocks (options) */
->  	n_sb = hdr->data[3];
-> +	__skb_pull(skb, sizeof(*hdr) + 4);
+> +		if (msglen < sizeof(*pkt))
+> +			continue;
+> +
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but the new __skb_pull() fixes the
-sub-block offset according to the receiver's reading of the message, and the
-in-tree sender disagrees with it.  pep_sock_connect() builds the connect
-request payload as:
+[Severity: High]
+Does this blanket 20-byte floor drop control packets that the router itself
+treats as valid?  qrtr_endpoint_post() only requires the full
+struct qrtr_ctrl_pkt for two types:
 
-	u8 data[4] = { 0 /* sub-blocks */, PAD, PAD, PAD };
+net/qrtr/af_qrtr.c:qrtr_endpoint_post() {
+	if (!size || size > len || len != ALIGN(size, 4) + hdrlen)
+		goto err;
 
-so the sub-block count goes at data[0] (header offset 4), while
-pep_sock_accept() decodes peer_type from hdr->other_pep_type (also data[0])
-and the count from hdr->data[3] (offset 7).
+	if ((cb->type == QRTR_TYPE_NEW_SERVER ||
+	     cb->type == QRTR_TYPE_RESUME_TX) &&
+	    size < sizeof(struct qrtr_ctrl_pkt))
+		goto err;
 
-The connect-response pair is self-consistent: pep_accept_conn() emits
-PAD, PAD, PAD, 2 and pep_connresp_rcv() reads hdr->data[3].
+	if (cb->dst_port != QRTR_PORT_CTRL && cb->type != QRTR_TYPE_DATA &&
+	    cb->type != QRTR_TYPE_RESUME_TX)
+		goto err;
+}
 
-Nothing misbehaves today since the kernel always announces zero sub-blocks
-and PAD is zero.  Is the request sender's layout worth a separate fix?
+Everything else with a 4-byte payload is accepted and queued to
+QRTR_PORT_CTRL, and qrtr_sendmsg() states the same lower bound for control
+port senders:
 
->  	while (n_sb > 0) {
->  		u8 type, buf[1], len = sizeof(buf);
->  		const u8 *data = pep_get_sb(skb, &type, &len, buf);
+net/qrtr/af_qrtr.c:qrtr_sendmsg() {
+	if (ipc->us.sq_port == QRTR_PORT_CTRL) {
+		if (len < 4) {
+			rc = -EINVAL;
+}
 
-[ ... ]
+The per-command needs in ns.c look like 4 bytes for HELLO and BYE (neither
+handler reads the union), 12 bytes for DEL_CLIENT, NEW_LOOKUP and
+DEL_LOOKUP, and 20 bytes only for NEW_SERVER and DEL_SERVER.
 
-> @@ -1048,8 +1059,16 @@ static int pep_setsockopt(struct sock *sk, int level, int optname,
->  			release_sock(sk);
->  			err = gprs_attach(sk);
->  			if (err > 0) {
-> -				pn->ifindex = err;
-> -				err = 0;
-> +				lock_sock(sk);
-> +				if (sock_flag(sk, SOCK_DEAD) || pn->ifindex) {
-> +					release_sock(sk);
-> +					gprs_detach(sk);
-> +					err = -EINVAL;
-> +				} else {
+With this check, does a 4-byte HELLO get discarded by the bare continue
+with no diagnostic, so ctrl_cmd_hello() and announce_servers() never run
+and local services are never announced to that node?
 
-[Severity: Medium]
-Item 3 of the changelog states:
+And does a 4-byte BYE now skip ctrl_cmd_bye() entirely, leaking the
+struct qrtr_node plus its struct qrtr_server objects and consuming a node
+slot permanently, since that function is the only node teardown path?
 
-   3. In `pep_setsockopt()` (`PNPIPE_ENCAP`), `release_sock(sk)` is dropped
-      around `gprs_attach(sk)`, and `pn->ifindex` is assigned afterwards
-      without re-acquiring `lock_sock(sk)`
+Would per-command length checks mirroring af_qrtr.c (4 /
+offsetofend(struct qrtr_ctrl_pkt, client.port) / sizeof(*pkt)), or simply
+memset()ing recv_buf at the top of each loop iteration, remove the stale
+byte read without dropping traffic the router considers legal?
 
-The release_sock(sk) ahead of gprs_attach() is already present in the
-baseline and this diff keeps it unchanged; only the lock_sock()
-re-acquisition and the SOCK_DEAD / pn->ifindex recheck are new.  Could that
-sentence be reworded?
-
-Separately, this hunk changes what userspace sees: a
-setsockopt(SOL_PNPIPE, PNPIPE_ENCAP, PNPIPE_ENCAP_IP) that previously
-returned 0 can now return -EINVAL and, via gprs_detach(), unregister the
-gprs netdev that gprs_attach() just created and drop the socket reference.
-
-That is unrelated to the parsing changes in pep_ctrlreq_error() /
-pipe_do_rcv() and in pep_sock_accept(), and all three share one Fixes: tag.
-Would splitting this into one logical change per patch make the parsing
-fixes easier to pick up for stable?
-
-> +					pn->ifindex = err;
-> +					err = 0;
-> +					release_sock(sk);
-> +				}
-
-[Severity: Low]
-This is a pre-existing issue and not introduced by this patch, but the store
-to pn->ifindex is now marked while the readers still are not.
-do_pep_getsockopt() reads it for two options:
-
-	case PNPIPE_ENCAP:
-		val = pn->ifindex ? PNPIPE_ENCAP_IP : PNPIPE_ENCAP_NONE;
-		break;
-
-	case PNPIPE_IFINDEX:
-		val = pn->ifindex;
-		break;
-
-and neither pep_getsockopt() nor sock_common_getsockopt() takes the socket
-lock on the way in, so KCSAN can still flag the pair.  Would converting
-these accesses to READ_ONCE()/WRITE_ONCE() while here be reasonable?
-
->  			}
->  		} else {
->  			pn->ifindex = 0;
-
-Two further notes that need no diff context:
-
-[Severity: Low]
-This is a pre-existing gap rather than something this patch introduced, but
-the pep_sock locking policy comment near the top of net/phonet/pep.c reads:
-
- * pep_sock locking:
- *  - sk_state, hlist: sock lock needed
- *  - listener: read only
- *  - pipe_handle: read only
-
-ifindex is not listed there, even though the fix in pep_setsockopt() relies
-on it being read and written under lock_sock().  Could a line for ifindex be
-added while touching this?
-
-[Severity: Low]
-This is pre-existing and untouched by the patch, but
-Documentation/networking/phonet.rst describes PNPIPE_HANDLE as "is a
-read-only integer value", while pep_setsockopt() accepts it:
-
-	case PNPIPE_HANDLE:
-		if ((sk->sk_state == TCP_CLOSE) &&
-			(val >= 0) && (val < PN_PIPE_INVALID_HANDLE))
-			pn->pipe_handle = val;
-
-Should the documentation say it is writable while the socket is closed?
-
-[Severity: Low]
-Also pre-existing and not caused by this patch: the same file says "The pipe
-protocol provides two socket options at the SOL_PNPIPE level" and then
-documents three of them (PNPIPE_ENCAP, PNPIPE_IFINDEX, PNPIPE_HANDLE).
-PNPIPE_INITSTATE is exported by include/uapi/linux/phonet.h and handled by
-both pep_setsockopt() and do_pep_getsockopt(), but is not documented.  Could
-the count and the missing option be fixed up?
+>  		pkt = recv_buf;
+>  		cmd = le32_to_cpu(pkt->cmd);
+>  		if (cmd < ARRAY_SIZE(qrtr_ctrl_pkt_strings) &&
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212852.3240704-1-benquike%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212850.3240353-1-benquike%40gmail.com
