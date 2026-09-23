@@ -1,84 +1,148 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216DD5187E0;
-	Wed, 23 Sep 2026 12:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1254F497B99;
+	Wed, 23 Sep 2026 12:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790165831; cv=none; b=EaWfi7c4vtb3PKPgTOZRXjP5RPKpiXpQ0ocGGqNu6eRIRrGa5ta9xZTH0m+AuwfnhnyBMY6rG0WZTma4BOymPjx7UrK8Bb1F/2YFTWh3ibKO9OQLIGZqU1GEIQ3rNvkRHaa8tQuV5ATGDCRj1cleAVe3ZwCeC0ABjuau3uxyZxI=
+	t=1790165918; cv=none; b=ebj70iU5dra9D0zrXtIrXhE4N5UTrI0TxpR255t+sbKClncAGsu0TEYONSh0Na9FMdQ5LwzxO2hZHCqs5GRPNEIkCW11h55JjoVhI1Mxr7DQZY/u8VRn137/bHT88t1z3va7JkKfrJxQECPV3mCmIbE+kDi+A6rJ2/pPxc3dXms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790165831; c=relaxed/simple;
-	bh=ovsAtgEi6L1M2RO1lkZMwC93Fl5nrIiLA+OFFMvsVfw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAbsr/Qkz4U5zQTDKF7+K2Yfa4don136cP0VSGcEzLNCJ1iOru+Kx4loFEszhmcG8XauINkGk60TuLPnGSPl3nYfZs9UFY9a4k3VHKslAzZG7pY4pc0sWpHXa+KDis1WG6LDiIFBlh50RTenDc7yXzm/OgM1+A9cpMJM4C1dvBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=BbCi5bol; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790165918; c=relaxed/simple;
+	bh=5fGxk9HhwjCb6xTY1ZXljQ8LJNbL1+NlyXYyVEhbq/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L6T5jVs9XmbV+cpwPGCtos2S6fKiX0OlafCDjmga+LOJASzU30KZSFxo5WdcQ8Xt54VavxVVn/qYHIyRsCi1RBSHwyTRPpHS84gQ1wfqE8I+j+vTvFGaLgNFnYqwdJcWYluwkmXKpkjz3jKM6abJARrKQ9OOL2E7KqXW3UN95xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MvwxdJ8T; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="BbCi5bol"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C804A4AA6;
-	Wed, 23 Sep 2026 14:16:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790165814; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=GzLk9AHxyejvus2S9q+Bu2XrtqNIw34QVfpPbaQXNKk=;
-	b=BbCi5bolnm1vv0bWnb5PcVrM7s6BCRFbAyuGz1B7f82rR1/k43IqmT/K4DBA6H6ts93zHH
-	eRGO9LE6g3f4Cvz8GFh+0zvEk6qnkERAz9OYUaXewxZoNTo0yECV5soD2SH36ysfE2tsaN
-	9cFAOLLgXoesfXlZbthi+eRzaajmU/p9EoxxpkKkhkaZRN5kXiU8tLIRnGPwiUMeevJiqG
-	vh2fBX5AfAfpnOKum+sHb54uNGRUJ3XeDsQ/kM5N2AGY2g670l2nkCyElh2KAVeIC3uh5B
-	4DCLKxS7Gh0+TIFK3F5Fu2BUSKWY71Ugz3ko8dl0CVp1L6yXb/z7Pq4uGrzCZg==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MvwxdJ8T"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=rZ+t0r04A9n4IJdQ/W6j5U+mLAScXuxePRrybklmGrA=; b=MvwxdJ8TIg3NSfmiO5iN5pdkZG
+	JUO4RZhctuuY1g0lTouZ0uOHLv5w4RqCHLbA0DXxhwDKOGAocM5rWmVIifmRXQC+WIXDbh9MzSf6e
+	JF5C/3399TTWE7+MtoK8/EZDaYwMlJY8BXK2d9zhvyB4vO75g25SqsCYQFIt8vH/Dxr4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9LvV-006nYe-3Q; Wed, 23 Sep 2026 14:18:17 +0200
+Date: Wed, 23 Sep 2026 14:18:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>
-Cc: vadim.fedorenko@linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 1/2] net: ethtool: don't match a hwtstamp provider on a device without a PHC
-Date: Wed, 23 Sep 2026 14:16:42 +0200
-Message-ID: <20260923121644.2194183-2-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260923121644.2194183-1-nb@tipi-net.de>
-References: <20260923121644.2194183-1-nb@tipi-net.de>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	Shawn Guo <shengchao.guo@oss.qualcomm.com>,
+	Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
+	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Subject: Re: [PATCH RFC net-next 3/9] net: pcs: xpcs: add custom platform
+ register accessors
+Message-ID: <be09d6dc-c1c0-4a0c-9836-2b686ad096f4@lunn.ch>
+References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+ <20260923-qcom_xpcs_nord_emac-v1-3-4b1c682af70f@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923-qcom_xpcs_nord_emac-v1-3-4b1c682af70f@oss.qualcomm.com>
 
-A device without a PHC reports phc_index -1. A request for index
-0xFFFFFFFF is stored in an int and becomes -1 too, so the two match and
-a netdev provider is selected on a device that has none.
+On Wed, Sep 23, 2026 at 06:37:29AM +0530, Mohd Ayaan Anwar wrote:
+> Some XPCS integrations do not expose the standard direct or indirect
+> register layout. Allow the platform driver to use optional register read
+> and write callbacks for both Clause 22 and Clause 45 accesses, while
+> retaining the existing access paths when no callbacks are supplied.
+> 
+> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+> ---
+>  drivers/net/pcs/pcs-xpcs-plat.c | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+> 
+> diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
+> index e669a7b248ac4677aeb5cd1874108f5c87f837d2..e78a233fb198d940951064a71e8597c6c666bc9d 100644
+> --- a/drivers/net/pcs/pcs-xpcs-plat.c
+> +++ b/drivers/net/pcs/pcs-xpcs-plat.c
+> @@ -24,8 +24,16 @@
+>  /* Page select register for the indirect MMIO CSRs access */
+>  #define DW_VR_CSR_VIEWPORT		0xff
+>  
+> +struct dw_xpcs_plat_ops {
+> +	int (*reg_read)(struct platform_device *pdev, void __iomem *reg_base,
+> +			int dev, int reg);
+> +	int (*reg_write)(struct platform_device *pdev, void __iomem *reg_base,
+> +			 int dev, int reg, u16 val);
+> +};
+> +
+>  struct dw_xpcs_plat {
+>  	struct platform_device *pdev;
+> +	const struct dw_xpcs_plat_ops *ops;
+>  	struct mii_bus *bus;
+>  	bool reg_indir;
+>  	int reg_width;
+> @@ -169,6 +177,10 @@ static int xpcs_mmio_read_c22(struct mii_bus *bus, int addr, int reg)
+>  	if (addr != 0)
+>  		return -ENODEV;
+>  
+> +	if (pxpcs->ops)
+> +		return pxpcs->ops->reg_read(pxpcs->pdev, pxpcs->reg_base,
+> +					    MDIO_MMD_VEND2, reg);
+> +
+>  	if (pxpcs->reg_indir)
+>  		return xpcs_mmio_read_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg);
+>  	else
 
-Fix this and only match a real PHC index.
+Ugly.
 
-Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+How about changing pxpcs->reg_indir to an enum, with values indirect, direct.
+
+One patch.
+
+Then look at
+
+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "direct") ?:
+	      platform_get_resource_byname(pdev, IORESOURCE_MEM, "indirect");
+	if (!res) {
+		dev_err(dev, "No reg-space found\n");
+		return -EINVAL;
+	}
+
+	if (!strcmp(res->name, "indirect"))
+		pxpcs->reg_indir = true;
+
+	if (pxpcs->reg_indir)
+		spc_size = pxpcs->reg_width * SZ_256;
+	else
+		spc_size = pxpcs->reg_width * SZ_2M;
+
+Look how easy it is to cleanly extend this with a new resource name?
+And add accessors using the funky mapping your device has. Another
+patch.
+
+    Andrew
+
 ---
- net/ethtool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 23db40618fed..23e8282563cc 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -980,7 +980,7 @@ int ethtool_net_get_ts_info_by_phc(struct net_device *dev,
- 	if (err)
- 		return err;
- 
--	if (info->phc_index == hwprov_desc->index &&
-+	if (info->phc_index >= 0 && info->phc_index == hwprov_desc->index &&
- 	    net_support_hwtstamp_qualifier(dev, hwprov_desc->qualifier))
- 		return 0;
- 
--- 
-2.53.0
-
+pw-bot: cr
