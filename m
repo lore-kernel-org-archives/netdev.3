@@ -1,174 +1,174 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA7347DF94
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790157292; cv=none; b=iOjzDAlp/Wc5dJJ/vpMZgEf92S7rpPV+3IByP7sOHLb6N+9eOCAEvXtQ0TFMQuoaTh4gE5r2iK1fn75wpyyeBoWvGH9eAVoME1vqTkS4KmS4HOpNoLEMWXoo+UmfsHqsQBbcKotxy3m1SGAOLYOiaenZ26CTYCBFDBL6LMrARvM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790157292; c=relaxed/simple;
-	bh=IUticTq4foak3yxsGQl2vQDiakNmvntsdMGpOFGsCD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glHwU7GgnnvUZ4x1EuGizLDMfpC4n3/eMirBqIEcncIK17eyPgEFPLljptZL7XYlaKzld89qYbvtsnMmhfEQ6YbyAv41EZ42C9jFG3WxgUmueuOPL9L1Fkv28FjT+rW7gjSkcAG4WCVVxEndbpT/dR+JUOY6lWs+GfGZ7lDE0sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=iisnueaK; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B02D47DD5C
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790157405; cv=pass; b=KIOKxrlFtvobWDUXch7YijKZsJXJXJiy8wupxL6Cv9L9J0T0QmxEtGaPENYAjW2Ra15JGrfOuRiuvHfDUiWncYFr9TmNOElLB1sTKfLy6rj+sMdS6UuXa06Pcg/FakAIfhxNIeZAtnJF73aysXAOuMzRzxnp4vMdl1DhzCNALNo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790157405; c=relaxed/simple;
+	bh=gepP1A9ysh0N6NHB47FJTCQrzM4iGML9jXyRBN95fA4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YdIcADg/jOIoa/27+Mr6X9DqiHQAUhl4QjtvTTvmQMe6dDNSjHSA+Ay4wnVCcwGip8htNrJd+d/BfP8SB39cx8hDvQ5x2TTdcy7hDsoTEf02MvFi8S3Pt6gCxxXDWD92hssUpwQjCUI7aycOnCzOnmdD/vCjU9OpAqMzpgQCqaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alkira.net; spf=pass smtp.mailfrom=alkira.net; dkim=pass (2048-bit key) header.d=alkira.net header.i=@alkira.net header.b=NPk+ydVG; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alkira.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alkira.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="iisnueaK"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db22383fe8so2955235ad.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:54:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=alkira.net header.i=@alkira.net header.b="NPk+ydVG"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8674704dab1so733484b3a.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:56:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790157402; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JASnCiUX64950GBcrKb8+sgjIYFzrW2/N4FheCfAyMA/tqws4lmYxHkgoYuC3qYp6I
+         WTmUH5f4SUEXLyz4v3Ev9udUpKAZW6Z/BFSqd5zoxmETXUIv5TohYjJL8XIQL5ibexMP
+         pyTc4DrrFDJy3xZ+zTTYfOKVuc2BvYgjlPs+Iq/4tU3NcIl4Nz5nshXHCNexC7T6L52g
+         1YX1VVKew8UZXaYWI32kuhwGEJ62fGY2RxqVC1I5MBNqT8W3iP7IFEu04dC99K+ulNIq
+         SSxKeVjcrGWBxShbtvCoLJdORgrt+JsDb1dh5maeytTKt/+zv8Umugh548RynxE7FdZ2
+         mBig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cpgKIz/nl9xM6UgCUL7AH6mkw+l4ifqbDGv3fT/fFSE=;
+        fh=7MOJDvNNoshr7w5yRSZKGyxd0WW+XTRPcCgXOmC4y34=;
+        b=rc9QcmUTZc/k299uuCcVOVEiSb4oQuJX8oh0XiDi+rO8ngFXr4EyIAteklwqAEDa78
+         3UnMkPuchbwGtbsw30R8kmisdSrpoh5HqiSD+/4DqW5EsRf6CSjyULmVsTXRgpfSH+XC
+         2Kxepdra6tAnWIUxKVBAfm8NC/n9wsAW3kOByeDyrpFU2ECcruZ9KUPWZbPM8rPVNQhO
+         T1lc9qN9LsPd3vikC4nK/dedGrl/CmOB5ZOWOFLi3zespoze1ew0dW6DOFXxFJ0fMirQ
+         4FdeiAsUOgTVjLt9Egeb0Ubk4YWfT1i5yCRio6sV4f94del0VnXLrqBeJEFsHo0N+rK+
+         6BPg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790157288; x=1790762088; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aQDxycOIV80BPgrqxrzM7NANBApnebD30BToWezPxAI=;
-        b=iisnueaKSaCz7CXaV8b7t8il/3RUHIYzy6lPx6TVpmG9za1rfF1/0Je4dT+5Ut8icn
-         MDCQDiJ3nd2CFnN3rea8FYDjR42/I00+ZXLB+I0amPG2W87scf2m96JZ9n1w5+nFzJ0b
-         toCVyg4+DOWleDkqmhccJAFWDdnsdfz1Lwl+eCsdJcFDzyLOoMDOeuuczfH/WNdxmsif
-         j1PjijPDrKyO1I6DvULKYCDjVQF8BEhsvhXikiIkTqyGKxKYIdb1FaxQUZNBe3cahPGd
-         N6n0b+rajCoH3tcNnrdxv4+9hju/Tz760jp7p/gGY1E++LswVcYcsYZEcIVyL4cIgvwY
-         Myag==
+        d=alkira.net; s=alkiranet; t=1790157402; x=1790762202; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cpgKIz/nl9xM6UgCUL7AH6mkw+l4ifqbDGv3fT/fFSE=;
+        b=NPk+ydVGBcqG37jr3+4H/Wbr5Ko3cBO6T6DsA7KQdjHHvJ57IYYwYY7g4FluV0I4LA
+         lKJxUqUtOqakKD9KjFMSPrZ7ZI6OFLYqqUUKxOtxsppeOxKsT3BB9OyaCSV/erfYlsPm
+         YSYBl+GnPdBmfRrbe8srYyhakmmKtha7IC6yoIT2WQMX9lE5K2WhPH5u1XvkdYASs0aT
+         /OI0jrZUEdyMTRqkUhgZsF6/I4SiJVA8FRKarCJ2TE2oM3PWS+R4NiyPmP30AT9s3eY9
+         qWeSnmvRz2pfQwAkzMFizI/bw9f2KizImUWuYXO7s+G/+jdwFkZdfmdJn2/Dhoa150Gj
+         l5mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790157288; x=1790762088;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aQDxycOIV80BPgrqxrzM7NANBApnebD30BToWezPxAI=;
-        b=cozJhDmT63//wcWgMHC39Wf6/zTCbOLk/sV4bFoCRilbW0ZRrV91JIBfeJDxgzVgpw
-         R909fR7XikBygko6u8USAe9W97ANKOlxPDTlkdouF4uH7FCxNuNJW8U6RVr0BJvNbz8T
-         wM7i4nS9RRsNX3BRmMRwakSNJsJTWkHb5YU+Nq+pnxERMIaTOHZSDSmfCvBpt4tez5mR
-         IGr+tFn3Ap6trw4XLbZgZoFsHUNv0Qoj3AcmYK/z8LPa3Oa3U59rduEg1LDN/fl3NzBD
-         ZLtyDw1Qub9Zxy5V7pDrNvJRwCci/VglVki9w3o76KQHrHMPYnnvVov/HD4KTOnUFjIZ
-         cXsQ==
-X-Gm-Message-State: AFuF++laliT4CflAWVkydzZE8kL4bgGS2RZtYD7ma8SabnHTBxJKSZJ4
-	lwyyagYRuP7kATqUYYR7+Tzq/4ZtknTR0MLS3NG+mcjNPTxj97gEiy2R94l2Q9oWn2Nt
-X-Gm-Gg: AYBFou2xNC/gRazRs+JBKmqcCB3R3N/9iMdVgYlk6y55dwr2CWi7TslIsdGEu0lef7t
-	0PQdCcrpNkQuvyRIg+03V7wjaqb2md8uHQxpQ583TRlm8LGQlyrSOxY3htDPecUavBbfqMb4nSF
-	3v5Sgn7Y5B7nEFMROTlqoGme2mBQeJbm07dAZuekcqMrHKs9U4lMKN7mWs8Unvmh8lxNatR3iWN
-	mbA31QDvzcO22Tdq5iR2ap09+T+LhwiUiopZBDqecphS9Lo1OAirgjBeD7z6D4boG76D0iqBBw/
-	UxhnrtxO/n93hXULtGXVSEou5rqLR545EdVahvvNE3Klq/xMPqZf3tFuP5w6GLyxasQm8ass8O0
-	NatpWwqDW+/TfCjTwSedcRzpiWu4eLyRmQz6nRzQWbDupD+UAn+VDJXL9antuSxHDjCw/A//J4p
-	pTHSg1pEEbkJcSeXfS1tj/GIcJUYf2FtD+pMvTNhZz8Wz5J9cQsQ7lleJwyL4hgx5qdnaJ6Z3C5
-	Hu5xQ2sUfJfSH2Hd+jK0veyL8ol1A==
-X-Received: by 2002:a17:903:234e:b0:2dd:ad73:c983 with SMTP id d9443c01a7336-2df69d595f0mr17906435ad.27.1790157287897;
-        Wed, 23 Sep 2026 02:54:47 -0700 (PDT)
-Received: from 954df21a5119.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a07dc5f3d7sm4793862a91.16.2026.09.23.02.54.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 02:54:47 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netfilter-devel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	horms@verge.net.au,
-	ja@ssi.bg,
-	zihanx@nebusec.ai,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH nf v4 3/3] ipvs: reject FTP control ports as data ports
-Date: Wed, 23 Sep 2026 09:54:15 +0000
-Message-ID: <b5c5a01607eabe55a6a5a27a9ed40a0ac8ec65fe.1790146910.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1790146910.git.zihanx@nebusec.ai>
-References: <cover.1790146910.git.zihanx@nebusec.ai>
+        d=1e100.net; s=20260707; t=1790157402; x=1790762202;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cpgKIz/nl9xM6UgCUL7AH6mkw+l4ifqbDGv3fT/fFSE=;
+        b=O4NLNQYVI7haV/ppR9sz6atywhrNnyKegqQXRGYl5pjaQAsPo/ePgFAzC073ce5xwx
+         sy6QnkGkO16F3Hln7lN9po/eSGE03t244BRiosZNqz+u6GYjZP0fwgPtkV58ukh1JcxO
+         lviuDAZNI5nt/Cfj32xRzbpAc5bIsvC+f6KHp2JAcrm0CrSbEtXRgKTHZg24bLaw9W5h
+         40i7aHutii4BC8q+KqmnYKypPE3SCK5q1z0DSHn2q0Uh9XubZJcpjWE8/y8WTOw9d5Aj
+         fSlTfTvfWoSE1LSuc6ErVyPPQpOM4uSmw0wWJ5aezPLdaLXTZWBSscb6D9+GQqM6t3MY
+         pszQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzHQYMGHvaqDM+d9p3WdkG14QQYE7F0RcOoo+BFaBo6AM/6QS2fQMIiXf4veiXTJpZkTkiwIUI=@vger.kernel.org
+X-Gm-Message-State: AFuF++k/dugPY/5Y4bm3h5Rhsiq+JJrjcgnvvS5LgLH+/MNdADHAIg80
+	pjj19P6Hi5bt3lnL8Sp6dLpLOwxmt28oTcd9PIfdiEC1KSKwy64vEgUrSx4ZNXOx8xdKjGKcj9X
+	RGqVldQxU0Qi8qFwGXoS3x6n5fLx8IWi31MNTbuClEg==
+X-Gm-Gg: AYBFou0F9gUtxHK21KKtP1nVzlhzCZUWAEI05uy8+YfmBWASmz6EUm8O3gpZqGucxfE
+	9pEXTcr73Ua2fAIfHm++SKRMUSJjv90yXVKq/Dz+90zaqiTyb109XMJudiWWNXchveq1o5Vh9NH
+	5TVnXBffaIwe2Db98Zx7zYqkbBUJ8P99JDMA8/5eV1dKieJAi6fh3JmOVLr/9I7OXkaLq9t5RY+
+	KcCbk2pYHeEMjvNRpKkZiE3ZoEaLuGDITKUtJi5OxW5ajBjKF2MGZIQhbzrMO22bZInC9JaSP00
+	DX1eqdPH4dL4za6nOYGyiePQ/9/fl+2ga9o4j0KAYaw9BUw8TEbmGl+t6S+QvEVfjg==
+X-Received: by 2002:a05:6a00:8005:b0:87c:d962:72cb with SMTP id
+ d2e1a72fcca58-87d1d4b9b3fmr1845440b3a.40.1790157402155; Wed, 23 Sep 2026
+ 02:56:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAMcJb7NLooAw=6Vyzbq-7JnE9L=gfTbLL0Y=L1pTFMTg3Vf76A@mail.gmail.com>
+ <2026092316-mouse-scallion-6eb2@gregkh>
+In-Reply-To: <2026092316-mouse-scallion-6eb2@gregkh>
+From: Kusuma DS <kusuma.ds@alkira.net>
+Date: Wed, 23 Sep 2026 15:26:31 +0530
+X-Gm-Features: AclHuK8wU4Sksj2iVp3kwEncGRLBwmdao0VGz_A6m0crpM3c4XTeRAUiXv8rTnA
+Message-ID: <CAMcJb7OPfN3jSmaqW14CqBESDv=m7Lc+CQ9hms6kVKMWoeHfCw@mail.gmail.com>
+Subject: Re: [6.12.y] Please backport 8045c0df98d4 ("xfrm: Fix dev
+ use-after-free in xfrm async resumption")
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, netdev@vger.kernel.org, 
+	Chakradhar Kar <chakradhar.kar@alkira.net>, Ramakanth Gunuganti <ramakanth@alkira.net>, 
+	Sripathy Ramaswamy <sripathy@alkira.net>, steffen.klassert@secunet.com, sashal@kernel.org, 
+	dongchenchen2@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ip_vs_ftp_out() creates a wildcard data connection from the
-server-advertised passive port. If that port is one of the configured FTP
-control ports, ip_vs_conn_new() binds the FTP helper to the new connection
-again. A subsequent wildcard lookup can then extend a controlled-connection
-chain.
+Hi Greg,
 
-Reject zero and configured control ports before creating passive
-connections. For active mode, reject a zero client port and a data port
-derived from a configured control port.
+Thanks for replying.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v4:
-  - Resend the FTP helper fix as patch 3/3 with the generic cleanup fixes.
-  - v3 Link:
-    https://lore.kernel.org/all/cover.1789877273.git.zihanx@nebusec.ai/
-changes in v3:
-  - Keep the active-mode guard for configured FTP control ports.
-  - v2 Link:
-    https://lore.kernel.org/all/cover.1789435989.git.zihanx@nebusec.ai/
-changes in v2:
-  - Add the active-mode check for a data port derived from a configured
-    control port.
-  - v1 Link:
-    https://lore.kernel.org/all/cover.1789110326.git.zihanx@nebusec.ai/
+You're right - I had not checked whether it applies cleanly, I only saw the
+change was small. My mistake.
 
- net/netfilter/ipvs/ip_vs_ftp.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Is anything planned for bringing this into 6.12.y, or does it need a tested
+backport first?
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index 9e3e005a82635..4822a1a75212d 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -62,6 +62,17 @@ static unsigned short ports[IP_VS_APP_MAX_PORTS] = {21, 0};
- module_param_array(ports, ushort, &ports_count, 0444);
- MODULE_PARM_DESC(ports, "Ports to monitor for FTP control commands");
- 
-+static bool is_control_port(u16 port)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ports_count; i++) {
-+		if (ports[i] == port)
-+			return true;
-+	}
-+	return false;
-+}
-+
- 
- static char *ip_vs_ftp_data_ptr(struct sk_buff *skb, struct ip_vs_iphdr *ipvsh)
- {
-@@ -319,6 +330,10 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
- 
-+	/* Do not redirect data to control ports */
-+	if (!port || is_control_port(ntohs(port)))
-+		return 0;
-+
- 	/* Now update or create a connection entry for it */
- 	{
- 		struct ip_vs_conn_param p;
-@@ -529,6 +544,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
- 
-+	if (!port || is_control_port(ntohs(cp->vport) - 1))
-+		return 0;
-+
- 	/* Passive mode off */
- 	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
- 
--- 
-2.43.0
+Thanks,
+Kusuma D S
+Alkira Networks
 
+
+
+On Wed, Sep 23, 2026 at 3:02=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Wed, Sep 23, 2026 at 01:23:01PM +0530, Kusuma DS wrote:
+> > Hi,
+> >
+> > 6.12.y picked up a bug without its fix. Details below; the request is t=
+o queue
+> > 8045c0df98d4 for linux-6.12.y.
+> >
+> > The issue: on every packet whose ESP decrypt goes async, dev_hold() is =
+taken on
+> > the ingress device but dev_put() lands on the VTI, because vti_rcv_cb r=
+eassigns
+> > skb->dev without taking a reference. The VTI refcount is driven negativ=
+e during
+> > normal traffic, and a later `ip tunnel del` then hangs forever in
+> > netdev_wait_allrefs_any(). The process is stuck in D state, unkillable,=
+ and the
+> > netdev is pinned for the rest of the boot.
+> >
+> > Introduced in 6.12.y by:
+> >
+> >     4236c30b437b ("xfrm: hold dev ref until after transport_finish NF_H=
+OOK")
+> >     =3D mainline 1c428b038400, backported 2026-06-19, first in v6.12.94=
+,
+> >     together with its dependency af4b8c5e9d6d
+> >
+> > Fixed upstream by:
+> >
+> >     8045c0df98d4 ("xfrm: Fix dev use-after-free in xfrm async resumptio=
+n")
+> >     Fixes: 1c428b038400
+> >     mainline v7.2-rc1; in 7.1.y as 63a300151999
+> >
+> > The fix was not queued alongside the commit it fixes, and is still abse=
+nt from
+> > 6.12.y as of v6.12.111. So every 6.12.94+ kernel carries the bug.
+> >
+> > Confirmed on 6.12.96+deb13-cloud-amd64 with a strongSwan tunnel-mode IP=
+sec VTI
+> > under inbound load; kernels up to 6.12.93 do not contain the code and a=
+re
+> > unaffected.
+> >
+> > The fix touches only net/xfrm/xfrm_input.c, net/ipv4/xfrm4_input.c and
+> > net/ipv6/xfrm6_input.c, against code 6.12.y already has, so it should a=
+pply
+> > cleanly. I can test a 6.12.y-rc against the reproducer if useful.
+>
+> It does not apply cleanly.  Please send a working and tested version if
+> you wish to have this applied.
+>
+> thanks,
+>
+> greg k-h
