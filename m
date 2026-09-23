@@ -1,245 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C8423AB9D;
-	Wed, 23 Sep 2026 02:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEA3367B8E
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790129794; cv=none; b=iCH32gKb0qP8Muw8CWSTVONqoXM1yQDrIruYTGApK42z/Ipdvqp/0J5bnfKXG2ETBWzucvYyllUfCmB37hEqTVJ3K3/xoVgg2iDyAAJS7k+LGycrfosJryxOTJLiv408ZH+CLX3rXitFMb3KZ4RE/3PL8Wm9MB5ATK1J0KR+kVk=
+	t=1790129802; cv=none; b=TX9WgbevXUrr2S1LWswYFbzm9tHL930oO/G0VKBihCk5tNqpseFCXAbubesApxmhYI7NvDGzDxUWH/COa05PdYX9xAbBsIjII+UuiFRsHLyDxI9+0Z36zuClvGFuDLjbpzPzEQIZV93XbR2cCRZ6uN4TUeLIpEP4RJZNOkNsqt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790129794; c=relaxed/simple;
-	bh=bYFquYxopHCgUru3+F6MCtUWTJUf2ScvOl5GSjt1fKo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dXZLTqcZaqZP41+4vWp0xdH/3bB7v7b5gUKHP2ML41silZBI6969peSs09JuGxYwdbFGVbwiHC55DguhP6h+KUrnrwnWZ3AjAOUqvwT6BWTyHj6rc8bsZzpToJiPSDDAet8ig1SC3bCuBY2bZu9NM+I/c3FoCCD8uJnzq4A/cuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IoIMwJUI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790129802; c=relaxed/simple;
+	bh=IZhPed1q7L2TyBW5i0KD0pzxC32rkwkAl8KJQklJJ5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=L/bYTNwuByEWkS5ak442211vll8qfd182Vv7Giuqr2C01NjKE38XLTpoyzWM5iqbuagzQ/Ti0vuQjeLpw6btXStLU/DTd7oWoj3FU3mIsIRO1T6QBk9fksAPlzdrSRLXEgFy9iotYX4S9JXVLWjwFNzZtv/cQl6EbLpbKJhWnMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hC/D3cJH; arc=none smtp.client-ip=74.125.227.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IoIMwJUI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930291F000FF;
-	Wed, 23 Sep 2026 02:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790129792;
-	bh=vxAJTp15YaWbpuNqzN1zd787nmpamoOv4xqv8H+gpMM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IoIMwJUIRB7fstQtCYdbRzY1TV9vVLIfKt40zsmSWrtNPtNLaSSShqLGfo+QjoIzA
-	 yEHEqEhxiXRxrnxvL2U5dCQ24HFo6oBNV80OsrBNlMx8Po/ibkIfaxmIdIgr2eolrX
-	 xoT16c+fIzVvnrTOY4KPPecy1jxQW90mG5KBVi3FVw/ru5XzoAmmtf0kh1AAFlGMsM
-	 JUKvxjwRFyw9aNYq+pkLv5JIzKA53YyhRp28rs7hMw7oyuRhCYaZJmiJHjHFyc4AyL
-	 UaYwHoRgiUrfwWT11jYVflaKgLaAb9CFo7P5SLOWGD7n/Af9mZjgXxUB1dyDd+8fMu
-	 LvJHVZFS4wOfw==
-Subject: Re: [PATCH net-next v2] net: phy: refuse to attach a PHY whose driver
- is being unbound
-From: netdev-bot+sashiko@kernel.org
-To: f@lex.la
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- maxime.chevallier@bootlin.com
-Date: Wed, 23 Sep 2026 02:16:31 +0000
-Message-ID: <179012979109.2160803.16093602424097111667@kernel.org>
-In-Reply-To: <20260919015340.499675-1-f@lex.la>
-References: <20260919015340.499675-1-f@lex.la>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hC/D3cJH"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396672b2569so57312a91.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 19:16:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790129800; x=1790734600; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CuCyJ6IFEOSdv2FxshupIdK+MabP7+2VqvPHZvAqqKw=;
+        b=hC/D3cJHwNt15RYIPEzh4LMM1DrcPIZCcK2D3HsL9H54Cl95/8kSgXjcQ1MHD/9rp2
+         56PWWnM1LEGlluit/IzhsAf7lvEXZt11yiGaozTFF3mtxaofjtz1QvwnDCjKs0bCAcba
+         IAP7DSNy3B3OMpwI7bdgNFAtdHceDoumQ9c2tYJnewAMt7BeNv3VGEFchjbgFZyGewlI
+         Wc2IlClojlhtW5ZVR3mV/UKpEnPtzYw+oLrt2FwbfLZreQo907VRW19vZtdmFPJj87Td
+         BRAt58XM/Umpr2l8ppa9aiFZGdlIxf0pkpr2W08SlFgMwiEO8qGXQ1GwwObc6tWriEjh
+         EGgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790129800; x=1790734600;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CuCyJ6IFEOSdv2FxshupIdK+MabP7+2VqvPHZvAqqKw=;
+        b=ziMZBqzP0gOawp/ED18y423B9C4ilryPFqrqH1XXctLlONmHG+Yu6RR8XH+PZ5BUmY
+         X+3l7S7cX/gHisqO4SkUIPnCKAeMnvwjPM5SnlaINYmAAs25/q3S7wBC/FxcM7K450As
+         m10+gnmvNgXwpPhLGSvP+YKMPMNdjkdMMsDDNIvb3HqbAlU+xnSM6EV7pbsR77gRRdAF
+         kBiEK9leoFFNwhdMDTkTAkV8h6R9vtF/od0huw2cnnCfKGXEUDbpiLGlzI+0GyOB1Jpm
+         6vey4cxcP2KrA9EjazB2tRPE/9tm2p8h5IFzuATDnnYjTEATt7pd0FFEqgQiei46yZEq
+         B+vQ==
+X-Gm-Message-State: AFuF++m8VnhuzruSBImvbtgijLEVB6I22LmNq8rvfLYTwsgnh2m9cO0l
+	/TV+Z35RWhm2HQq2xHcDPGVXqny1eMK6UMwxk74tbbDU44DiesAQXLKCG1B3RIWt
+X-Gm-Gg: AYBFou0qV4Pkpx4Vejh3CA7RCmIjwOigdL+0L3n8BwWh6K9OhA8fCcZhwfNrBsobssH
+	UIxiMtdRVi7gWQ/X44pDt78bZuU8YqqGfx5C4zIILPjEIMVfYjw2web1O1vYDHqSVqZuUAy4QWf
+	KsrXH9Q3E/8/K7zgTYFjK2uqQueSAQyqMrMk9Ksm9Vt8r0aTDCLsIm6TKBHKsDWHhamI2Kj9DQ2
+	7wuX3z4zZpCKoUTm0PwVvoj+8maW/fm4g1/dfR8wCy7Sze+UBT+VW5dyYFBVtynd5tV+xg2XBuL
+	iC+81qUVomjj4z2m84w3g1LIjpBNTQ9kV8/RsNSH+agaD7Qa7qHSsnNzGLaYpRtB2B/lC5KmTAq
+	qWpDTpduwUYBL6TLLfbk2U7ckct8u5T2CztBmmR3w4xFtvTjJreNQiMgIoNH4VNUZ4zR8O2nH6z
+	XsHEFHZdbt5llf6P66hfTPHg2MAcXTTKc5kVbfJ4v7OjOAZN9K7byqQqnfYjfRsm333L9gjziUy
+	Nw8RwAQe5HjU1AUeaX4uOkeUR6lD3yZwjBU5narHZTsTUl9dcoaiworaHuE81tkaAnnIWRPPQ==
+X-Received: by 2002:a17:90b:2e0d:b0:3a0:242e:7397 with SMTP id 98e67ed59e1d1-3a07e6b6766mr1767943a91.4.1790129800347;
+        Tue, 22 Sep 2026 19:16:40 -0700 (PDT)
+Received: from localhost.localdomain ([139.159.170.91])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc75f3b7240sm311865a12.7.2026.09.22.19.16.38
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 22 Sep 2026 19:16:40 -0700 (PDT)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	stable@vger.kernel.org,
+	kuba@kernel.org
+Subject: Re: [PATCH] xfrm: validate ihl in xfrm4_transport_output()
+Date: Wed, 23 Sep 2026 10:16:35 +0800
+Message-ID: <20260923021635.38837-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <178997713210.2160803.14018605703606783403@kernel.org>
+References: <20260917072226.80788-1-q.h.hack.winter@gmail.com> <178997713210.2160803.14018605703606783403@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Hi Sashiko,
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 2
+Thanks for the review.  Both points are valid; I will send a v2.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+[High] pskb_may_pull() instead of skb->len
 
-- [High] The new `else if (!phydev->drv)` guard in phy_attach_direct()
-  (drivers/net/phy/phy_device.c:1821) is a single unsynchronized plain…
-- [Low] The kernel-doc block above phy_attach_direct()
-  (drivers/net/phy/phy_device.c:1781-1788) still states unconditionally…
-- [Low] Submission metadata is incomplete and self-inconsistent for a
-  crash fix: the commit fixes a reproducible NULL-pointer…
+You are right that skb->len is too loose.  __skb_pull() only needs the
+header to be in the linear area: it BUG()s when the pull drives skb->len
+below skb->data_len, i.e. when ihl > skb_headlen(skb).  skb->len counts
+the paged fragments too, so an AF_PACKET packet with a virtio net header
+and hdr_len = 1 leaves skb_headlen() == 1 while skb->len can be large;
+ihl values up to skb->len then pass the ihl > skb->len check and still
+reach the BUG() (and the memmove() source runs past skb->tail).  v2 uses
+pskb_may_pull(skb, ihl): it linearizes the header, which both satisfies
+__skb_pull()'s precondition and keeps the memmove() source in bounds,
+and it rejects ihl > skb->len.  ip_hdr() is re-read afterwards because
+pskb_may_pull() may reallocate the skb head.
 
-Pre-existing issues:
-- [Medium] Module reference mispairing across unbind: phy_attach_direct()
-  charges the reference with try_module_get(d->driver->owner)…
+[Medium] lower bound on ihl
 
---
+Agreed, thanks.  v2 also rejects ihl < 5, matching ip_rcv_core() and the
+implicit assumption in xfrm4_extract_header() and the IPv4 BEET paths.
+This keeps the mac_header protocol byte initialized before esp_output()
+reads it, so the uninitialized-headroom path you described is closed as
+well.
 
-net: phy: refuse to attach a PHY whose driver is being unbound
+The check is now:
 
-phy_attach_direct() gains a new arm that refuses the attach with -EBUSY
-when the mdio device still has a d->driver but phydev->drv has already
-been cleared by phy_remove(). The intent is to avoid completing an attach
-on a driverless PHY, where the NULL phydev->drv is later dereferenced.
-
-A few questions below about the new check and its neighbourhood.
-
-[Severity: Low]
-The changelog says:
-
-  "Tree and Fixes: tag follow Maxime Chevallier's reading of how reachable
-  this is in practice"
-
-but the commit carries only Assisted-by: and Signed-off-by: trailers, with
-no Fixes: tag, no Cc: stable and no target tree in the subject prefix.
-
-Documentation/process/maintainer-netdev.rst says:
-
-   - for fixes the ``Fixes:`` tag is required, regardless of the tree
-
-Since this is described as fixing a reproducible oops, could the Fixes: tag
-(and a stable designation, if one is intended) be added, pointing at the
-commit that introduced the phydev->drv = NULL ordering in phy_remove()?
-
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 5b13a74e2fa9..dfc2b29cac8a 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1818,6 +1818,10 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  			d->driver = &genphy_driver.mdiodrv.driver;
->  
->  		phydev->is_genphy_driven = 1;
-> +	} else if (!phydev->drv) {
-> +		/* d->driver outlives phydev->drv on unbind, precedes it on bind */
-> +		err = -EBUSY;
-> +		goto error_put_device;
->  	}
-
-[Severity: High]
-Does this check actually close the window described in the commit message?
-It is a single unlocked read of phydev->drv, and nothing keeps the observed
-value valid for the rest of phy_attach_direct().
-
-phy_remove() stores the NULL as its last statement, holding only the device
-lock:
-
-  drivers/net/phy/phy_device.c:phy_remove() {
-	...
-	phydev->drv = NULL;
-  }
-
-phy_attach_direct() runs under rtnl and takes neither device_lock(d) nor
-phydev->lock around the new test, so the store can land at any point after
-the test. After the test the attach does sleeping work
-(device_bind_driver(), phy_link_topo_add_phy(), sysfs link creation) and
-then re-reads the pointer:
-
-  if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
-	  phydev->irq = PHY_POLL;
-
-with
-
-  static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
-  {
-	  return phydrv->config_intr && phydrv->handle_interrupt;
-  }
-
-which dereferences the pointer unconditionally. Isn't that the same
-instruction pair quoted in the commit message, the config_intr/handle_interrupt
-loads at phy_attach_direct+0x150?
-
-phy_init_hw(), called later in the same function, has the same shape: one
-test on entry followed by several more dereferences and a call into driver
-code:
-
-  drivers/net/phy/phy_device.c:phy_init_hw() {
-	if (!phydev->drv)
-		return 0;
-
-	if (phydev->drv->soft_reset) {
-	...
-	if (phydev->drv->config_init) {
-		ret = phydev->drv->config_init(phydev);
-
-There is also a variant that needs no NULL at all: once phy_remove() has
-run phy_sfp_release() and drv->remove() but has not yet reached
-phydev->drv = NULL, the new test passes and the attach goes on to call into
-a driver instance whose remove() has already completed.
-
-The commit message acknowledges this ("The mid-attach case needs
-serialisation rather than a NULL test"), but the message also opens with
-"Unbinding a PHY driver under an attached consumer crashes in real life"
-and quotes the phy_drv_supports_irq() fault as the motivating oops. Would
-it be better to serialise the read with its uses against phy_remove() (a
-phylib-level mutex taken by both paths, holding a driver reference, or
-having unbind refuse or wait while attached_dev is set) instead of adding
-another entry-point test, so that the reported faulting site is actually
-covered?
-
-[Severity: Low]
-Should the kernel-doc above phy_attach_direct() be updated too? It still
-promises the opposite for this exact case:
-
-  * Description: Called by drivers to attach to a particular PHY
-  *     device. The phy_device is found, and properly hooked up
-  *     to the phy_driver.  If no driver is attached, then a
-  *     generic driver is used.
-
-and there is no Return: section listing the new refusal.
-
-Also, -EBUSY is now returned from two places in this function with
-unrelated meanings. The existing one is permanent and prints something:
-
-	if (phydev->attached_dev) {
-		dev_err(&dev->dev, "PHY already attached\n");
-		err = -EBUSY;
-		goto error;
-	}
-
-The new one is a transient bind/unbind window and is silent, so a bare
-EBUSY from SIOCSIFFLAGS with an empty dmesg is indistinguishable from "this
-PHY belongs to another interface". The in-tree counterpart for a driverless
-PHY does log:
-
-  drivers/net/phy/phylink.c:phylink_sfp_connect_phy() {
-	if (!phy->drv) {
-		phylink_err(pl, "PHY %s (id 0x%.8lx) has no driver loaded\n",
-			    phydev_name(phy), (unsigned long)phy->phy_id);
-		...
+	if (iph->ihl < 5 || !pskb_may_pull(skb, ihl))
 		return -EINVAL;
-	}
 
-Would a phydev_err() here, and/or a distinct errno, make the two cases
-tellable apart?
+	iph = ip_hdr(skb);
 
->  
->  	if (!try_module_get(d->driver->owner)) {
+v2 sent separately as [PATCH v2].
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, and the changelog already flags
-it as a "Separate defect, separate patch", but noting it here since the new
-arm sits directly above the try_module_get(): the reference charged on
-d->driver->owner at attach time is released by re-reading the field at
-detach:
-
-  drivers/net/phy/phy_device.c:phy_detach_internal() {
-	...
-	if (phydev->mdio.dev.driver)
-		module_put(phydev->mdio.dev.driver->owner);
-
-If the PHY driver is unbound while the consumer is still attached, the
-driver core clears the field in device_unbind_cleanup():
-
-  drivers/base/dd.c:device_unbind_cleanup() {
-	...
-	device_set_driver(dev, NULL);
-
-so the later test is false, module_put() is skipped, and the charged
-reference is leaked, leaving that PHY driver module permanently unloadable.
-If a different driver was bound in between, the put goes to a module that
-was never charged; module_put() uses atomic_dec_if_positive() with
-WARN_ON(), so this warns rather than corrupting memory, but the target
-module ends up below MODULE_REF_BASE and unusable for future
-try_module_get() calls. Is recording the module the reference was taken on
-(rather than re-reading d->driver) the direction you have in mind for that
-follow-up?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919015340.499675-1-f%40lex.la
+pw-bot: cr
