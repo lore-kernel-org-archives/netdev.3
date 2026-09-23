@@ -1,56 +1,56 @@
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93B3B71DD
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C72B3B7B72
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790135548; cv=none; b=GhDLAxP4N1RfQKsnywin6K5Yybxa0HC0NnWwVn5R1Hn0JpvNFd9IQ7QoMT3FoSawoRHb1WYKslHBBLTEoe0QF44JUSqKBivNJoghKtOfL9k8CcPdvGB6559Szr/StbCLuogenSQzEGvye1oDrwyrDNaz2BvR8CdSgOcPJDER0jY=
+	t=1790135550; cv=none; b=DRN9F0vZY2BYQ7REm57s2ypVtxxEPQuNCkQWaF5GcACup7SQnqY1UdsnWgPoVLyxSuHPt2SsQegF+VC7JqkxY3s0YGHwepp8DY0DcVnVcUPgNORBHBIV3RFJDtZpIbis/0v8yvNFmYg0AvHi3ANnG+2jrSQddtPLsTZPLptsbzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790135548; c=relaxed/simple;
-	bh=1wDBcUfY5O8WxlKGalJMzzi3n8vTPv4IUdTBwkjU3rQ=;
+	s=arc-20240116; t=1790135550; c=relaxed/simple;
+	bh=rPiC+uCFu90Lqkt4Qk9pCC1tgZC5YFuVirJ3CyHve3k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UiYnzdISNnJnrCq/0xcUDXdMOhhlAPjkGazsg4a9A0Ee6wHtBWgVV2s80AnyOZUyJ5HJR/u3FHgB6gM0jjBiwJNlezx5K0x44OYjFBPA0PQv3TJe2iGzS0GvL7ODtq/soXNElcWBsr/vZ5wMaaxdXm0ag3ypedW35DOo1x6dLdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QpVA371+; arc=none smtp.client-ip=209.85.222.197
+	 To:Cc:Content-Type; b=hKIkoDtf9h+8sv1folZpynJqfv4LD1UhffbPy7u3S1/L+Ns+28L2zX1Ftu8ryLWJcFja0SYvNH37OIq5XD4XiK/62kjrktKxbIQPI6L5eztsFUjhw0B8nH4blh8VDgoaA1QoQ4Ej84YPPUpWE+KUvqCqGakJqkIumA1fBBAR/dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RbEt4pJN; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QpVA371+"
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-936708f129aso92716085a.0
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RbEt4pJN"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939d6c515deso111683885a.3
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790135546; x=1790740346; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790135547; x=1790740347; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hal8/RIom79DBDvcZhlDOMdnBBdeqQ0s89KAip8787Q=;
-        b=QpVA371+AbTQeJZXVk1QSmRx2M57CNg11vqna7g/0XPGbi/y9753MvsrqMpnpnQX1t
-         i6D11P7uXTdKlcenNem1KX24q7BSX72qe+9qgkIQ4ZmuFb3zVrc7C0oRz813g3ikAcM/
-         3piueX4uHNHP9Y7gM4PNHmROj7LapG/6tK9xQ2yLoCqMHBTBPKeCFI8nsgkxqAXEVNMG
-         qE3PBT3p4OTGbYniOytdkBTj1y2ON6eVCSd6fOO1i+Vxdz1YQgYKrxRHjY1cCVSKNjIY
-         T87IhkToucXa49EXUD6eJc01yz5L+9sNZZT4gl8s2ezzP8ok3LP8Jdt47shOjAF8qUoR
-         4L5Q==
+        bh=3AvunH3lZA5SzB1/nKEm1wbN4OSx5dvqfXoKjGa22K0=;
+        b=RbEt4pJNq2JGsdsk+56YzQky00jzAOi8WAswFmqtjK8tAIJit+JxSuvYyKAhuLlih3
+         qICGsdXmr6UAG39XdxCl1TKP6exVlSWnCspmZ37PMBelF7XjaTlP1LyswA518sKSI6UU
+         71j7TMSp1V0lfS6M+G7aMMrDx3wfZDujLfCnNhV3sjFj5jBI7xFMIFe6D016apRSmAfD
+         80H01umLPwpUaoGQjK8KOJGrDcrfEuysyuTt4hoSfhCdBSOyvWfCYxonmogKxTT66rKw
+         HYQUcU+rqddPuMhfFLJzsSflU1SGe4Xt7mW1/h7iNRhmbYIyhcb9okHx4psA4tPThS7D
+         GmyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790135546; x=1790740346;
+        d=1e100.net; s=20260707; t=1790135547; x=1790740347;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hal8/RIom79DBDvcZhlDOMdnBBdeqQ0s89KAip8787Q=;
-        b=fUGTigzoBboU5fF98h/z0XKMvKjibngbMKSjCMkboCtfKDrU+73wo1E2sA4gYi+AXZ
-         UhAtJPmPbTqgriKGI8YFH/DgOzvA1Bb/w7ZBvhRhcArJIB4ZH18z4ZmncYKKG8SiQnRa
-         sO91r5rS2/ZQZiOxLY8zmkzLX0nx0u5qZqWm+hWxVr/TrYzfhI/jLVzmsU7tfiLO8Ure
-         7WDsnW/W958CO4kUgC1eYwi5T/aPAlSRgcZg2Jq05RLsfiaZdLy8MsuDIQCuJhFo00+2
-         KdhfB8dWbsUL4cNEWZrJH9wG4wn3JJlYDkC2gB4cY+jxdNtp4XgqiTPxvzguA4ZaF32a
-         3zlg==
-X-Forwarded-Encrypted: i=1; AKwUvBx2MWWCaw0+gCoHucVwdurcxkgcQMw8BHeB6YpWene0xdAhI0RsSEoMXbXcSM2LXVI8d1A2qzM=@vger.kernel.org
-X-Gm-Message-State: AFuF++m0TaoRqZA4VfTXhN/4kwBN6pTZZvHSkwLFGZFh4/60/Vc40Qjz
-	fsQGck2eJgVbIOLvYIjJJGzR5fknDSZOdqJfTx+zNsk8L8YKz6NKcDdu/sRtoFdNCLtXsbtC8t3
-	0z6Q9galS8SdGpg==
-X-Received: from qkox7.prod.google.com ([2002:a05:620a:2587:b0:93a:f45:2374])
+        bh=3AvunH3lZA5SzB1/nKEm1wbN4OSx5dvqfXoKjGa22K0=;
+        b=mueE6dtPPo5QlUFRE4N3d0J/ATYAm0+T5XFX4qi28sQUwf4WmsTB5m5OVteev51qRM
+         k2fY2ML3FLaVQOA6n3tEveuZnn6ss8RXGJYfIS0nFeFl0dB9hnzYKrMjUWB5suskJSOC
+         Aq15rSMsm7TfV9rcg07MfebY6VviLlglt7eqGZuuwrJfCJ+/Az/Mz5GPqjlllo0DHzkj
+         yFYOheBB/Ho0hqQ3owcQDHPMf4MRdzDJZSO4PE4Di46PzkDIk7hd9a39sM+R++pcYIOO
+         rbfbFAtYqiXEBs8gsZYdpfCJYTgkDwEa6XHyVwVxTOPaUeSPeXNJftjKGw6/tjzWJZFu
+         LJnQ==
+X-Forwarded-Encrypted: i=1; AKwUvByC5nS8f7AQyVy3Nzzvt/r/AUUyJMcqqh9oq8nC5bvTdTGvyv7wwnTwhsP/y58JKzCJ2AOZ8ls=@vger.kernel.org
+X-Gm-Message-State: AFuF++nvuTv2Kq0BWEb5r8nCpahtsvBy7R2Y3ZGTTWcXBHWv60mM0ump
+	Ra9/a6cp9lhbjG4D7oMy51p0yhVQOQAq1lYVUHqDnLGoiArGtncDuZsSp9kpmWt2HN3jRCbFDpn
+	SZSCbuj3nrdmfVQ==
+X-Received: from qkmy30.prod.google.com ([2002:a05:620a:e1e:b0:93c:2c30:6178])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4891:b0:93c:16ee:ea03 with SMTP id af79cd13be357-93c251b2225mr222293885a.38.1790135545665;
- Tue, 22 Sep 2026 20:52:25 -0700 (PDT)
-Date: Wed, 23 Sep 2026 03:52:13 +0000
+ 2002:a05:620a:4403:b0:936:e938:b07a with SMTP id af79cd13be357-93c25096a23mr215616385a.8.1790135547082;
+ Tue, 22 Sep 2026 20:52:27 -0700 (PDT)
+Date: Wed, 23 Sep 2026 03:52:14 +0000
 In-Reply-To: <20260923035217.179102-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260923035217.179102-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260923035217.179102-2-edumazet@google.com>
-Subject: [PATCH net v3 1/5] ip_tunnel: do not clear the active encap before
- validating the new one
+Message-ID: <20260923035217.179102-3-edumazet@google.com>
+Subject: [PATCH net v3 2/5] ip_gre: validate netlink attributes before
+ changing the tunnel
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -71,65 +71,291 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netd
 	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-ip_tunnel_encap_setup() and ip6_tnl_encap_setup() zero out t->encap with
-memset() before calling ip_encap_hlen() / ip6_encap_hlen() to validate
-the requested encapsulation type and module availability.
+ipgre_netlink_parms() and erspan_netlink_parms() mutate the live device
+and tunnel before all netlink attributes have been validated:
 
-When a changelink request supplies an invalid encapsulation type or an
-encapsulation whose module is not loaded, ip[6]_encap_hlen() returns
--EINVAL after t->encap has already been cleared to TUNNEL_ENCAP_NONE,
-while t->encap_hlen and t->hlen remain at their previous values. A
-rejected netlink request thus permanently disables FOU/GUE on a working
-tunnel while keeping its reduced MTU and extra headroom.
+1. ipgre_netlink_parms() sets t->collect_md = true and changes dev->type
+   from ARPHRD_IPGRE to ARPHRD_NONE before validating IFLA_GRE_IGNORE_DF
+   or running ip_tunnel_changelink(). Moreover, unlike ipip_changelink()
+   and ip6_tnl_changelink(), it accepts IFLA_GRE_COLLECT_METADATA during
+   changelink even though ip_tunnel_changelink() never registers the
+   tunnel as itn->collect_md_tun; a subsequent ip_tunnel_del() then
+   clears itn->collect_md_tun and blackholes the netns metadata tunnel.
 
-The memset() is redundant: struct ip_tunnel_encap has exactly four
-fields, and all of them are assigned unconditionally once the length
-check has passed. A tunnel being created starts from the zeroed private
-area of alloc_netdev(). Simply remove it, so that a failed
-ip_tunnel_encap_setup() or ip6_tnl_encap_setup() leaves the active
-encapsulation untouched. (Callers still invoke ip[6]_tunnel_encap_setup()
-before validating the rest of a changelink request.)
+2. erspan_netlink_parms() writes t->erspan_ver, t->index, t->dir and
+   t->hwid directly to the tunnel before validating the remaining
+   attributes or running ip_tunnel_changelink(), leaving the live tunnel
+   with a new ERSPAN version paired with the old flags and parameters
+   when a later check fails.
 
-net-next already does this for the IPv4 side in commit 88b84cae6b94
-("ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup"), which is not in
-net. Removing the same lines here keeps the merge trivial, and extends
-the fix to IPv6, which that commit did not touch.
+Reject enabling IFLA_GRE_COLLECT_METADATA on an existing tunnel during
+changelink, stage the GRE and ERSPAN attributes in a local struct
+ip_gre_parm, validate the netlink parameters before setting up the
+encapsulation, and commit them to the tunnel only after
+ip_tunnel_changelink() has succeeded.
 
-Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
-Fixes: 058214a4d1df ("ip6_tun: Add infrastructure for doing encapsulation")
+Fixes: e271c7b4420d ("gre: do not keep the GRE header around in collect medata mode")
+Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
 Cc: stable@vger.kernel.org
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/ip_tunnel.c  | 2 --
- net/ipv6/ip6_tunnel.c | 2 --
- 2 files changed, 4 deletions(-)
+ net/ipv4/ip_gre.c | 115 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 77 insertions(+), 38 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index e6bcf01411d0bcd12cc9a88e449d9283c4a83c64..2a313b18134e2f0bafd52d59d8e173fa1a084f03 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -491,8 +491,6 @@ int ip_tunnel_encap_setup(struct ip_tunnel *t,
- {
- 	int hlen;
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 82309efd417e0f1f6554e7028be8e05d769e932d..df4d2f1f1d60c7f3755e4f554f04a06480512909 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1183,15 +1183,41 @@ static int erspan_validate(struct nlattr *tb[], struct nlattr *data[],
+ 	return 0;
+ }
  
--	memset(&t->encap, 0, sizeof(t->encap));
--
- 	hlen = ip_encap_hlen(ipencap);
- 	if (hlen < 0)
- 		return hlen;
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index d5ff50a2ac01760acd1cb176c952f7113f733288..c918c2b0ad81b0161a2a98e4bd861436497c551c 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1818,8 +1818,6 @@ int ip6_tnl_encap_setup(struct ip6_tnl *t,
++struct ip_gre_parm {
++	__u32	fwmark;
++	u32	index;
++	u16	hwid;
++	u8	erspan_ver;
++	u8	dir;
++	bool	ignore_df;
++};
++
++static void ipgre_commit_parms(struct ip_tunnel *t,
++			       const struct ip_gre_parm *gparms)
++{
++	t->ignore_df = gparms->ignore_df;
++	t->erspan_ver = gparms->erspan_ver;
++	t->index = gparms->index;
++	t->hwid = gparms->hwid;
++	t->dir = gparms->dir;
++}
++
+ static int ipgre_netlink_parms(struct net_device *dev,
+ 				struct nlattr *data[],
+ 				struct nlattr *tb[],
+ 				struct ip_tunnel_parm_kern *parms,
+-				__u32 *fwmark)
++				struct ip_gre_parm *gparms,
++				bool newlink)
  {
- 	int hlen;
+ 	struct ip_tunnel *t = netdev_priv(dev);
  
--	memset(&t->encap, 0, sizeof(t->encap));
--
- 	hlen = ip6_encap_hlen(ipencap);
- 	if (hlen < 0)
- 		return hlen;
+ 	memset(parms, 0, sizeof(*parms));
++	gparms->fwmark = newlink ? 0 : t->fwmark;
++	gparms->ignore_df = t->ignore_df;
++	gparms->erspan_ver = t->erspan_ver;
++	gparms->index = t->index;
++	gparms->hwid = t->hwid;
++	gparms->dir = t->dir;
+ 
+ 	parms->iph.protocol = IPPROTO_GRE;
+ 
+@@ -1234,20 +1260,24 @@ static int ipgre_netlink_parms(struct net_device *dev,
+ 	}
+ 
+ 	if (data[IFLA_GRE_COLLECT_METADATA]) {
+-		t->collect_md = true;
+-		if (dev->type == ARPHRD_IPGRE)
+-			dev->type = ARPHRD_NONE;
++		if (!t->collect_md) {
++			if (!newlink)
++				return -EINVAL;
++			t->collect_md = true;
++			if (dev->type == ARPHRD_IPGRE)
++				dev->type = ARPHRD_NONE;
++		}
+ 	}
+ 
+ 	if (data[IFLA_GRE_IGNORE_DF]) {
+ 		if (nla_get_u8(data[IFLA_GRE_IGNORE_DF])
+ 		  && (parms->iph.frag_off & htons(IP_DF)))
+ 			return -EINVAL;
+-		t->ignore_df = !!nla_get_u8(data[IFLA_GRE_IGNORE_DF]);
++		gparms->ignore_df = !!nla_get_u8(data[IFLA_GRE_IGNORE_DF]);
+ 	}
+ 
+ 	if (data[IFLA_GRE_FWMARK])
+-		*fwmark = nla_get_u32(data[IFLA_GRE_FWMARK]);
++		gparms->fwmark = nla_get_u32(data[IFLA_GRE_FWMARK]);
+ 
+ 	return 0;
+ }
+@@ -1256,39 +1286,39 @@ static int erspan_netlink_parms(struct net_device *dev,
+ 				struct nlattr *data[],
+ 				struct nlattr *tb[],
+ 				struct ip_tunnel_parm_kern *parms,
+-				__u32 *fwmark)
++				struct ip_gre_parm *gparms,
++				bool newlink)
+ {
+-	struct ip_tunnel *t = netdev_priv(dev);
+ 	int err;
+ 
+-	err = ipgre_netlink_parms(dev, data, tb, parms, fwmark);
++	err = ipgre_netlink_parms(dev, data, tb, parms, gparms, newlink);
+ 	if (err)
+ 		return err;
+ 	if (!data)
+ 		return 0;
+ 
+ 	if (data[IFLA_GRE_ERSPAN_VER]) {
+-		t->erspan_ver = nla_get_u8(data[IFLA_GRE_ERSPAN_VER]);
++		gparms->erspan_ver = nla_get_u8(data[IFLA_GRE_ERSPAN_VER]);
+ 
+-		if (t->erspan_ver > 2)
++		if (gparms->erspan_ver > 2)
+ 			return -EINVAL;
+ 	}
+ 
+-	if (t->erspan_ver == 1) {
++	if (gparms->erspan_ver == 1) {
+ 		if (data[IFLA_GRE_ERSPAN_INDEX]) {
+-			t->index = nla_get_u32(data[IFLA_GRE_ERSPAN_INDEX]);
+-			if (t->index & ~INDEX_MASK)
++			gparms->index = nla_get_u32(data[IFLA_GRE_ERSPAN_INDEX]);
++			if (gparms->index & ~INDEX_MASK)
+ 				return -EINVAL;
+ 		}
+-	} else if (t->erspan_ver == 2) {
++	} else if (gparms->erspan_ver == 2) {
+ 		if (data[IFLA_GRE_ERSPAN_DIR]) {
+-			t->dir = nla_get_u8(data[IFLA_GRE_ERSPAN_DIR]);
+-			if (t->dir & ~(DIR_MASK >> DIR_OFFSET))
++			gparms->dir = nla_get_u8(data[IFLA_GRE_ERSPAN_DIR]);
++			if (gparms->dir & ~(DIR_MASK >> DIR_OFFSET))
+ 				return -EINVAL;
+ 		}
+ 		if (data[IFLA_GRE_ERSPAN_HWID]) {
+-			t->hwid = nla_get_u16(data[IFLA_GRE_ERSPAN_HWID]);
+-			if (t->hwid & ~(HWID_MASK >> HWID_OFFSET))
++			gparms->hwid = nla_get_u16(data[IFLA_GRE_ERSPAN_HWID]);
++			if (gparms->hwid & ~(HWID_MASK >> HWID_OFFSET))
+ 				return -EINVAL;
+ 		}
+ 	}
+@@ -1401,7 +1431,12 @@ ipgre_newlink_encap_setup(struct net_device *dev, struct nlattr *data[])
+ 
+ 	if (ipgre_netlink_encap_parms(data, &ipencap)) {
+ 		struct ip_tunnel *t = netdev_priv(dev);
+-		int err = ip_tunnel_encap_setup(t, &ipencap);
++		int err;
++
++		if (t->collect_md && ipencap.type != TUNNEL_ENCAP_NONE)
++			return -EINVAL;
++
++		err = ip_tunnel_encap_setup(t, &ipencap);
+ 
+ 		if (err < 0)
+ 			return err;
+@@ -1417,18 +1452,19 @@ static int ipgre_newlink(struct net_device *dev,
+ 	struct nlattr **data = params->data;
+ 	struct nlattr **tb = params->tb;
+ 	struct ip_tunnel_parm_kern p;
+-	__u32 fwmark = 0;
++	struct ip_gre_parm gparms;
+ 	int err;
+ 
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+ 
+-	err = ipgre_netlink_parms(dev, data, tb, &p, &fwmark);
++	err = ipgre_netlink_parms(dev, data, tb, &p, &gparms, true);
+ 	if (err < 0)
+ 		return err;
++	ipgre_commit_parms(netdev_priv(dev), &gparms);
+ 	return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, tb, &p,
+-				 fwmark);
++				 gparms.fwmark);
+ }
+ 
+ static int erspan_newlink(struct net_device *dev,
+@@ -1438,18 +1474,19 @@ static int erspan_newlink(struct net_device *dev,
+ 	struct nlattr **data = params->data;
+ 	struct nlattr **tb = params->tb;
+ 	struct ip_tunnel_parm_kern p;
+-	__u32 fwmark = 0;
++	struct ip_gre_parm gparms;
+ 	int err;
+ 
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+ 
+-	err = erspan_netlink_parms(dev, data, tb, &p, &fwmark);
++	err = erspan_netlink_parms(dev, data, tb, &p, &gparms, true);
+ 	if (err)
+ 		return err;
++	ipgre_commit_parms(netdev_priv(dev), &gparms);
+ 	return ip_tunnel_newlink(params->link_net ? : dev_net(dev), dev, tb, &p,
+-				 fwmark);
++				 gparms.fwmark);
+ }
+ 
+ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+@@ -1458,24 +1495,25 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ {
+ 	struct ip_tunnel *t = netdev_priv(dev);
+ 	struct ip_tunnel_parm_kern p;
+-	__u32 fwmark = t->fwmark;
++	struct ip_gre_parm gparms;
+ 	int err;
+ 
+ 	if (!rtnl_dev_link_net_capable(dev, t->net))
+ 		return -EPERM;
+ 
+-	err = ipgre_newlink_encap_setup(dev, data);
+-	if (err)
++	err = ipgre_netlink_parms(dev, data, tb, &p, &gparms, false);
++	if (err < 0)
+ 		return err;
+ 
+-	err = ipgre_netlink_parms(dev, data, tb, &p, &fwmark);
+-	if (err < 0)
++	err = ipgre_newlink_encap_setup(dev, data);
++	if (err)
+ 		return err;
+ 
+-	err = ip_tunnel_changelink(dev, tb, &p, fwmark);
++	err = ip_tunnel_changelink(dev, tb, &p, gparms.fwmark);
+ 	if (err < 0)
+ 		return err;
+ 
++	ipgre_commit_parms(t, &gparms);
+ 	ip_tunnel_flags_copy(t->parms.i_flags, p.i_flags);
+ 	ip_tunnel_flags_copy(t->parms.o_flags, p.o_flags);
+ 
+@@ -1490,24 +1528,25 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ {
+ 	struct ip_tunnel *t = netdev_priv(dev);
+ 	struct ip_tunnel_parm_kern p;
+-	__u32 fwmark = t->fwmark;
++	struct ip_gre_parm gparms;
+ 	int err;
+ 
+ 	if (!rtnl_dev_link_net_capable(dev, t->net))
+ 		return -EPERM;
+ 
+-	err = ipgre_newlink_encap_setup(dev, data);
+-	if (err)
++	err = erspan_netlink_parms(dev, data, tb, &p, &gparms, false);
++	if (err < 0)
+ 		return err;
+ 
+-	err = erspan_netlink_parms(dev, data, tb, &p, &fwmark);
+-	if (err < 0)
++	err = ipgre_newlink_encap_setup(dev, data);
++	if (err)
+ 		return err;
+ 
+-	err = ip_tunnel_changelink(dev, tb, &p, fwmark);
++	err = ip_tunnel_changelink(dev, tb, &p, gparms.fwmark);
+ 	if (err < 0)
+ 		return err;
+ 
++	ipgre_commit_parms(t, &gparms);
+ 	ip_tunnel_flags_copy(t->parms.i_flags, p.i_flags);
+ 	ip_tunnel_flags_copy(t->parms.o_flags, p.o_flags);
+ 
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
