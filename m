@@ -1,218 +1,102 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB58953FD28;
-	Wed, 23 Sep 2026 14:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD7D53B604;
+	Wed, 23 Sep 2026 14:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790174828; cv=none; b=MIhJShlqwpmTfMBJlaZSJgC3yRHFfTq0e9pCP6v2gMsIlaIgA6MM+uWy3llDdEyjWl4/C2fMtfK/GWPcUhqIdzdfXGHvIxIqS3A9/rv8D2wOSGIcGe+pea8YOnBUk+X0+UKQAAHqgHEtFwKaArXFrYTwsUos3qfGTyZsjSd5fvA=
+	t=1790175271; cv=none; b=RJXeJYHneo4W/64IkBR142he/hZqlAGRoYeA1xTMUxZO3OiGuzCfjkTXQzHFENm/QJck5xXZ2OKjaK/IzU9Oh2fCpyK9eXPRMEQUbk6zhydDAXFGOJwjkTix/E928N5GKYenjRz1MRE/R9uA/JcP/onYiUDe5iKu79/YWJyD2sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790174828; c=relaxed/simple;
-	bh=awIi2SW1S6jVTOUpTt7BOwVz9y44FEJZkTwgeTESkVU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kPpWK1+J09LnkCCfP8VtJAb9oIs4ecQs94/uZ3YRN/Sjh/VeWMplGiFHTm6OOS83Y0Hy06a0Ic2FHxZd+2+MYuiO72EtigHmOMhgTQ4hsY/o1n0E7A+CrhQxp9/smNqc30lo/X6fgNPgrIK/rP7Ffu+8cYSkHOmZ7RXPL9dIEe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qJj1PIbs; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1790175271; c=relaxed/simple;
+	bh=D53GyH0Tb6ROoRk8E1tIhj0ShQs6mzgmyconHj1dkUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I0CgIyyWxavcIcHV2j0ZV/ws/U9dlVjpcyk027uH+6sHtaMIaw/X9Mw24zDqDqn5DrsFDKrYJm7JeQAQhMh9jJsOuU1r29JGfcY4XlnnIphfjIrTxNQ3ZMWlxIE3UIjsfYqC4jUEOcT7agqy8VavT/wkbmZYOkA7sRCZXsxzRjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0BPuiK0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qJj1PIbs"
-Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 4FFE920B7168; Wed, 23 Sep 2026 07:46:18 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4FFE920B7168
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1790174778;
-	bh=BdWvUD6PhTXpEULgXqv9ItmnLeR+T+Ojwl0P/kKONhM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qJj1PIbsphfBdS88Mg9ne0uT2rNOI9Ri0PRvbSfoJouMyvGIEhHvgJnf7VnMqvGcY
-	 j3iS5g3Rr77YUyTNpzF+qQxVAiTiQnZEQA1FE4VLjj7/oIS5VTfQulR+sE1Q9LCpJr
-	 deFM/Qr2D2NsGbeh1ukNnVgjhmzkiB/FB+tGRclU=
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: netdev@vger.kernel.org
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0BPuiK0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152C61F000FF;
+	Wed, 23 Sep 2026 14:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790175270;
+	bh=UgEqI04yL+VQM5M2VBuGJl0XwzPFtN6t4fu0Tj3qgzc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E0BPuiK0XBil6SmBlNlC3vBE0M3O2STfGE8/Vj6xo409s6JQ+jC/uN24x3QMxhykJ
+	 kW66Pm5lzye3kO4iM7RM56buomGHrWLpnDbIQi6beU8CfyAn0trqtuoc4ScZA1jn+U
+	 6q58/j/ZOZz5OZVx59YkhKEwGOkWgQmImpFdPbX7dzOWYEsDKkTuUfPwqN6EpvF0oX
+	 D8yb2FncJPfjRQjSFx9+712YOFv/IK5/JugbG5zaDLYIOtWSKNo9XywkdPe/fiVIqk
+	 lLYaQx+WmRQRkBXzXLAD6YbDERcbx/1bFtIB1lmwcC6HpWRSSquwcLQ+EQQXaieuim
+	 mW807FOWJcEag==
+Date: Wed, 23 Sep 2026 15:54:25 +0100
+From: Simon Horman <horms@kernel.org>
+To: Yuqi Xu <xuyuqiabc@gmail.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: mana: reserve RX buffer headroom to fix forwarding performance
-Date: Wed, 23 Sep 2026 10:45:00 -0400
-Message-ID: <20260923144500.4073380-1-hamzamahfooz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>,
+	Ren Wei <weir@nebusec.ai>, xuyq21@lenovo.com
+Subject: Re: [PATCH net 1/1] net: ipconfig: bound DHCP option construction
+Message-ID: <20260923145425.GU13925@horms.kernel.org>
+References: <7808dfbfa2162dfd0b19f59aff5742d6e0db2abb.1789798023.git.xuyuqiabc@gmail.com>
+ <20260920072503.60706-1-xuyuqiabc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260920072503.60706-1-xuyuqiabc@gmail.com>
 
-Commit 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers
-instead of full pages to improve memory efficiency.") started handing
-out RX buffers with zero headroom so that two buffers fit into one page
-at the default MTU.
+On Sun, Sep 20, 2026 at 03:25:03PM +0800, Yuqi Xu wrote:
+> Sashiko reported the following finding on the patchset page; it has not
+> been posted to lore:
+> 
+> > Blind copies in BOOTP extension parsing (`ic_do_bootp_ext`) cause
+> > out-of-bounds reads if an attacker provides a truncated option length.
+> > location: net/ipv4/ipconfig.c
+> 
+> This finding is about the receive path, not the code this patch changes.
+> It is a real, pre-existing issue; this series does not introduce it.
+> 
+> This series only touches the transmit side, ic_dhcp_init_options()
+> (net/ipv4/ipconfig.c:698) and the new ic_dhcp_add_option() helper
+> (net/ipv4/ipconfig.c:680). The function named in the finding,
+> ic_do_bootp_ext() (net/ipv4/ipconfig.c:919), is reached only from
+> ic_bootp_recv() (net/ipv4/ipconfig.c:1156) and is not modified here; the
+> diff contains no receive-path hunks, so this series neither introduces
+> nor worsens the issue.
+> 
+> The receive loop is:
+> 
+> 	u8 *opt = ext++;
+> 	if (*opt == 0)
+> 		continue;
+> 	ext += *ext + 1;
+> 	if (ext < end)
+> 		ic_do_bootp_ext(opt);
+> 
+> with end = (u8 *)b + ntohs(b->iph.tot_len) (net/ipv4/ipconfig.c:1078).
+> An option whose length byte overruns the remaining space drives ext to
+> or past end and is skipped. That is not the case the finding describes.
+> 
+> The truncated length in the finding is a short option length, not a
+> length greater than the remaining space. After switch (*ext++), ext
+> points at the length byte; the copies ignore it and memcpy a fixed-size
+> value at ext+1. Option 1 and 3 always memcpy 4 bytes
+> (net/ipv4/ipconfig.c:935 and :939); option 26 always memcpy 2 bytes
+> (:968). When that option still satisfies ext < end, those copies can
+> read past the declared option and past end. Options 1 and 3 do so even
+> at length 2; option 26 only at length 0 with 3 bytes remaining. With
+> skb->len == tot_len that is a real KASAN out-of-bounds read. It
+> predates this patch.
+> 
+> Since the receive-path issue is independent of the send-side overflow
+> addressed here, we have kept it out of this series.
 
-The MANA TX path, however, stores the per scatter-gather entry DMA
-mappings in `struct mana_skb_head` at skb->head, and mana_start_xmit()
-therefore calls skb_cow_head(skb, MANA_HEADROOM). The port advertises
-this requirement as ndev->needed_headroom = MANA_HEADROOM.
+Yes, agreed.
 
-As a result every packet that is received and then forwarded out of a
-MANA port fails the skb_cow() in ip_forward() and gets reallocated and
-copied by pskb_expand_head(). This is invisible to a plain RX or TX
-workload, but it puts a full skb reallocation plus memcpy on the hot
-path of every single forwarded packet, which is exactly what a
-router/NVA workload does.
-
-Restore the headroom. Note that reserving MANA_HEADROOM (232) is not
-enough: ip_forward() asks for LL_RESERVED_SPACE(dev), which rounds
-hard_header_len + needed_headroom up to HH_DATA_MOD and is 256 bytes on
-ethernet. Use LL_RESERVED_SPACE() directly so the value keeps tracking
-both constants.
-
-At the default MTU on a 4K page this means a buffer no longer fits twice
-into a page (SKB_DATA_ALIGN(1500 + MANA_RXBUF_PAD + 256) = 2112), so the
-frag-vs-single decision is now made by computing the real buffer size
-instead of comparing the MTU against PAGE_SIZE / 2. The page_pool
-fragment path is still used wherever at least two buffers genuinely fit,
-e.g. on 16K and 64K page sizes.
-
-Measured on an Azure VM with a MANA NIC acting as a forwarding NVA (UDP,
-1400 byte payload, 4 streams, 8 Gbps offered, only the forwarding
-node's kernel differs), 8 runs each, median:
-
-                  forwarded pps    throughput
-  before              272,830       3.06 Gbps
-  after               390,560       4.37 Gbps   (+43%)
-
-perf on the forwarding node, same workload:
-
-                  memset_orig   __pi_memcpy   pskb_expand_head
-  before             10.07%         3.96%         present
-  after               0.94%         0.64%         gone
-
-Cc: stable@vger.kernel.org
-Fixes: 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers instead of full pages to improve memory efficiency.")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 58 ++++++++++++++-----
- 1 file changed, 44 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 591fb4191d90d..e3f3b33ba9062 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -758,6 +758,36 @@ static void *mana_get_rxbuf_pre(struct mana_rxq *rxq, dma_addr_t *da)
- 	return va;
- }
- 
-+/* RX buffers must be allocated with enough headroom for the TX path:
-+ * mana_start_xmit() stores the SGE DMA mappings in struct mana_skb_head at
-+ * skb->head, which is why the port advertises ndev->needed_headroom =
-+ * MANA_HEADROOM.
-+ *
-+ * An skb that is forwarded out of a MANA port has to satisfy
-+ * skb_cow(skb, LL_RESERVED_SPACE(dev) + ...) in ip_forward(), so reserve
-+ * LL_RESERVED_SPACE() here rather than just MANA_HEADROOM - it rounds
-+ * hard_header_len + needed_headroom up to HH_DATA_MOD and is therefore
-+ * larger. Reserving less makes every forwarded packet get reallocated and
-+ * copied by pskb_expand_head().
-+ */
-+static u32 mana_get_rxbuf_headroom(struct mana_port_context *apc)
-+{
-+	u32 headroom = LL_RESERVED_SPACE(apc->ndev);
-+
-+	if (mana_xdp_get(apc))
-+		return max_t(u32, headroom, XDP_PACKET_HEADROOM);
-+
-+	return headroom;
-+}
-+
-+static u32 mana_get_rxbuf_size(struct mana_port_context *apc, u32 mtu)
-+{
-+	u32 len = SKB_DATA_ALIGN(mtu + MANA_RXBUF_PAD +
-+				 mana_get_rxbuf_headroom(apc));
-+
-+	return ALIGN(len, MANA_RX_FRAG_ALIGNMENT);
-+}
-+
- static bool
- mana_use_single_rxbuf_per_page(struct mana_port_context *apc, u32 mtu)
- {
-@@ -770,11 +800,16 @@ mana_use_single_rxbuf_per_page(struct mana_port_context *apc, u32 mtu)
- 	if (apc->priv_flags & BIT(MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF))
- 		return true;
- 
--	/* For xdp and jumbo frames make sure only one packet fits per page. */
--	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc))
-+	/* For xdp make sure only one packet fits per page. */
-+	if (mana_xdp_get(apc))
- 		return true;
- 
--	return false;
-+	/* Only use the page_pool fragment path when at least two buffers,
-+	 * including the headroom each of them has to reserve, actually fit
-+	 * into one page. Otherwise the fragment path degenerates into one
-+	 * buffer per page while still paying the fragment accounting cost.
-+	 */
-+	return PAGE_SIZE / mana_get_rxbuf_size(apc, mtu) < 2;
- }
- 
- /* Get RX buffer's data size, alloc size, XDP headroom based on MTU */
-@@ -782,20 +817,19 @@ static void mana_get_rxbuf_cfg(struct mana_port_context *apc,
- 			       int mtu, u32 *datasize, u32 *alloc_size,
- 			       u32 *headroom, u32 *frag_count)
- {
--	u32 len, buf_size;
-+	u32 buf_size;
- 
- 	/* Calculate datasize first (consistent across all cases) */
- 	*datasize = mtu + ETH_HLEN;
- 
-+	*headroom = mana_get_rxbuf_headroom(apc);
-+
- 	if (mana_use_single_rxbuf_per_page(apc, mtu)) {
--		if (mana_xdp_get(apc)) {
--			*headroom = XDP_PACKET_HEADROOM;
-+		if (mana_xdp_get(apc))
- 			*alloc_size = PAGE_SIZE;
--		} else {
--			*headroom = 0; /* no support for XDP */
-+		else
- 			*alloc_size = SKB_DATA_ALIGN(mtu + MANA_RXBUF_PAD +
- 						     *headroom);
--		}
- 
- 		*frag_count = 1;
- 
-@@ -809,11 +843,7 @@ static void mana_get_rxbuf_cfg(struct mana_port_context *apc,
- 	}
- 
- 	/* Standard MTU case - optimize for multiple packets per page */
--	*headroom = 0;
--
--	/* Calculate base buffer size needed */
--	len = SKB_DATA_ALIGN(mtu + MANA_RXBUF_PAD + *headroom);
--	buf_size = ALIGN(len, MANA_RX_FRAG_ALIGNMENT);
-+	buf_size = mana_get_rxbuf_size(apc, mtu);
- 
- 	/* Calculate how many packets can fit in a page */
- 	*frag_count = PAGE_SIZE / buf_size;
--- 
-2.55.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
