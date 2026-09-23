@@ -1,104 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-17.mta1.migadu.com [95.215.58.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BFB2F0C62;
-	Wed, 23 Sep 2026 09:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398C037755A
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790155826; cv=none; b=l+eutqVfQSqX4AH+Ls73Iv9wxX20+DUZLdztlxhXfmnpUu3vUQh4BsOdDx6zFKiyswHcLchy69fdxr7V7ThdldKJZ+QsaijuXq76Ef3x/t9y49nJgEVHWxNmy/bGOEiQilB4pLzi3ZSVDf8+Ez4U/wkQy/lka66PZi5OrIHyjx8=
+	t=1790155902; cv=none; b=R1l9vQ930rAd3c/+TTJOHbmgcis1g8zPSPM7BfF8LANFsUTVfQwexYPSlMNu/GFqrEsAgQ05RUqsTRqmLb7cLJIlTiG8wJVcKkXoYc7lvJ1bPiRgg3ykURCEyDsdis7xuGOgGGvp1Kde6mxtys6wHIx02xHUt2LPlgi27ybz1EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790155826; c=relaxed/simple;
-	bh=LO6Qi7dMoppLkP2fh8f91hO/tTo7FR05Vgw2/yiijxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UHYbDw+ZUwemHplcMaQXkQJ64LC7YE5wA1yB/9qOAMW5c6LizR8pTRBlYsgOmA8VlHRCTKcL6bx4FPrkjQgF/tbopVBOoSRaS0RtNFhF3avfoj0Q9EY/UrYPhnWy8x2DxI2SynZCUl/m02J2NXDE6eXrrlOg3HrlmYX/VEQRTUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xe7wLBNl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790155902; c=relaxed/simple;
+	bh=OV3G2Of95mcC6L6ov8Ulol8KFG+ZTFa17CEvraugteg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hu4BK7/P/Hcoi1F2DIvjL2Zx4PolI2JfEN0l0uu78RYboxl7vjK+9m1S7FsUwWqzZ7Hg5tPPIH19ikdoG8/l6Np4+u04bv8IcwdancmRj92H8ygbN1TH9VcLBYqlhjTxMicabDhKpl6RDXW0XhByIsvCLoWppGIYpARbh3lddE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kvgasDCp; arc=none smtp.client-ip=95.215.58.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xe7wLBNl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D101F000FF;
-	Wed, 23 Sep 2026 09:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790155825;
-	bh=w4RZpTpwH+86+MlalggS3frcHNH26NoLVkMIGSVHUAg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Xe7wLBNlLFPx0gk74fc2Y7stp2cmjm6TdZQNSFVe+hNlXcqL1TargvtfuzSqEj/ET
-	 AW852IBnOlnJuMiAsxxwRJca6S/T9xPkn9DvFVz3ZM4KN4wLlqtshQ5EM7rH5CxYgE
-	 Z6F6p/9xtik7YIWDnjEE5M+KtfvOwp0CGtlsJzg/AMaBsB8Ig5mOy+2z6r9SKBWiIK
-	 Nin9mIdax8QqRb7X3tAtRSf6wTgFGDgRZyvhIgYevc2G7ITO01NCXUUHrsqjm9U+z8
-	 0/lTYwkM1whz12G7d8YlwunPnDQuy3K8s4ZQkDwkddI6VSw4gZed9gbxNYAaR4m5BW
-	 tuCq5g7AAFJzA==
-Date: Wed, 23 Sep 2026 10:29:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	aleksander.lobakin@intel.com, wojciech.drewek@intel.com,
-	marcin.szycik@linux.intel.com, linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: Re: [PATCH net v1] pfcp: fix socket lifetime on netdevice
- registration failure
-Message-ID: <20260923092638.GS13925@horms.kernel.org>
-References: <20260918123158.5631-1-xuanqiang.luo@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kvgasDCp"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=OV3G2Of95mcC6L6ov8Ulol8KFG+ZTFa17CEvraugteg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790155898; v=1; x=1790760698;
+ b=kvgasDCp4A6LMjwZY15tEfdCK+gSirk8BvJFrolkbdILDOlfZmqC38NojQ+v+5GjF6oRciay
+ /yDz/eqek+hTZKUEkgNZKS8+zn/lMqy3j+Cg3TXheHnczIBbQz1pr7wIuhkoB67ZjlG+b8N4Njz
+ flTegwvPhT7PEO4Ape+GHr3s=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 40c0b80a80dae18e;
+	Wed, 23 Sep 2026 09:31:38 +0000
+X-Mizu-Trace-ID: 40c0b80a80dae18e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d3c19b97-76ea-4848-b360-81b1528b91a8@linux.dev>
+Date: Wed, 23 Sep 2026 17:31:28 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918123158.5631-1-xuanqiang.luo@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] veth: manage XDP program pointers during channel
+ resize
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, Weiming Shi <bestswngs@gmail.com>
+References: <20260921231856.1798630-1-kuba@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260921231856.1798630-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 18, 2026 at 08:31:58PM +0800, Xuanqiang Luo wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> 
-> pfcp_newlink() creates the UDP socket before register_netdevice().
-> If registration fails after pfcp_dev_init() succeeds, the core calls
-> pfcp_dev_uninit(), which releases the socket and clears pfcp->sk.
-> The newlink error path then releases it again, causing a NULL pointer
-> dereference. This was observed with failslab fault injection:
-> 
->   FAULT_INJECTION: forcing a failure.
->   kobject: kobject_add_internal failed for pfcp0 (error: -12 parent: net)
->   BUG: KASAN: null-ptr-deref in udp_tunnel_sock_release+0x1c/0x50
->   Read of size 8 at addr 0000000000000120 by task ip/1037
->   Call trace:
->    show_stack+0x18/0x24 (C)
->    dump_stack_lvl+0x78/0x90
->    print_report+0x468/0x5cc
->    kasan_report+0xa4/0xf0
->    __asan_load8+0x7c/0xd0
->    udp_tunnel_sock_release+0x1c/0x50
->    pfcp_newlink+0x128/0x184
->    rtnl_newlink+0x848/0xe44
->    rtnetlink_rcv_msg+0x468/0x514
->    netlink_rcv_skb+0xc0/0x1f0
->    rtnetlink_rcv+0x18/0x24
->    netlink_unicast+0x4b8/0x558
->    netlink_sendmsg+0x2b8/0x584
->    ...
-> 
-> Create the socket in pfcp_dev_init() after initializing the GRO cells,
-> and let pfcp_dev_uninit() release it on registration failure or removal.
-> 
-> Move the RCU wait into pfcp_dev_uninit(), using synchronize_net() after
-> socket release to drain receive callbacks before destroying the GRO cells.
-> 
-> Fixes: 76c8764ef36a5 ("pfcp: add PFCP module")
-> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+
+On 9/22/26 7:18 AM, Jakub Kicinski wrote:
+> veth_set_channels() tears down XDP resources for removed RX queues
+> without clearing rq->xdp_prog.  If the program is then detached or
+> replaced, those queues keep the old pointer after bpf_prog_put().
+> A later channel increase can re-enable NAPI and run the freed program.
+>
+>    BUG: unable to handle page fault for address: ffffc90000256048
+>    Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+>    RIP: veth_xdp_rcv_skb (include/linux/filter.h:779
+>                           include/net/xdp.h:696 drivers/net/veth.c:820)
+>    Call Trace:
+>     veth_xdp_rcv (drivers/net/veth.c:941)
+>     veth_poll (drivers/net/veth.c:986)
+>     __napi_poll (net/core/dev.c:7787)
+>     net_rx_action (net/core/dev.c:7850 net/core/dev.c:8007)
+>     handle_softirqs (kernel/softirq.c:645)
+>    Kernel panic - not syncing: Fatal exception in interrupt
+>
+> Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op")
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
-> A NULL check would fix the crash. Moving socket creation into ndo_init
-> also removes the duplicate cleanup and ensures the receive state is
-> initialized before enabling the socket's receive callback.
+> v2:
+>   - different placement to avoid extra loops
+> v1: https://lore.kernel.org/20260917153923.904124-3-bestswngs@gmail.com
+> ---
+>   drivers/net/veth.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index 6ed3ee81153f..71227d0389aa 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -1054,6 +1054,7 @@ static int __veth_napi_enable_range(struct net_device *dev, int start, int end)
+>   	for (i = start; i < end; i++) {
+>   		struct veth_rq *rq = &priv->rq[i];
+>   
+> +		rcu_assign_pointer(rq->xdp_prog, priv->_xdp_prog);
+>   		napi_enable(&rq->xdp_napi);
+>   		rcu_assign_pointer(priv->rq[i].napi, &priv->rq[i].xdp_napi);
+>   	}
+> @@ -1088,6 +1089,7 @@ static void veth_napi_del_range(struct net_device *dev, int start, int end)
+>   
+>   		rcu_assign_pointer(priv->rq[i].napi, NULL);
+>   		napi_disable(&rq->xdp_napi);
+> +		rcu_assign_pointer(rq->xdp_prog, NULL);
+>   		__netif_napi_del(&rq->xdp_napi);
+>   	}
+>   	synchronize_net();
 
-Assuming the NULL check is significantly simpler than this patch,
-and that it resolves the bug, think that we should consider:
 
-1. A patch that minimal NULL check for net
-2. Follow-up with the approach taken by this patch in net-next
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-I say this because this seems to be lower risk than skipping to applying
-2 to net.
-
-Also, please consider CCing stable on bug fixes.
-
-Link: https://docs.kernel.org/process/maintainer-netdev.html#stable-tree
