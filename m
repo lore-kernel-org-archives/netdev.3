@@ -1,106 +1,99 @@
-Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4554F51993C;
-	Wed, 23 Sep 2026 12:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59360516144;
+	Wed, 23 Sep 2026 12:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790165141; cv=none; b=Cr0UFmR3yqxk7+l1lV6tfhJHuYk0qy8xRyiXhz0YDVRb8hfBzqHVGBUjhayaZdUiEB3KhcnHkBH1IjLi2gZIO7muh1pQmLC3VxnuCuPGX1iHP/nu+Z+/TIX12grPbhEXk5OLVcJdVMrb3/OC2F4724nE7OE2Et2VpZ/gTrCtg2o=
+	t=1790165255; cv=none; b=kVn64DlVVtj6kAbEOjQMkLn042HJnR/4zwRocwQFEDMdKnietnpzu9oTea2DYNi4mZ+P0iyG96VkjRYX31Q7tK+faKwJTkJsSsHTetOJ87PiwgE7pfTZyUw6pYyhAzWtuMMVcVGLXJhkuKIFwz3Q2fADL0LvhfYGSz5zh/PLA4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790165141; c=relaxed/simple;
-	bh=u6BlPqfnX246IQYqasnk26G+irKQ6AhLrI1E4kh9qXc=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Rkhg6nA3a3XO8ZwcP2NYbyzXw1bR9AIJjqM3KOdTSC2fJM1gvKEBLiM5qhhCyXuuFmvD0bOvvKhJsKkJzhsHfJs1lR4fiTh2QzrIZ9TNV078lOjoJ2ELnQQ9WPfMZTI75u9pDmvmPGDOMdOiB4NaT6mB3Y7gGdScQNkqk2YuCXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=T4lmsJ8P; arc=none smtp.client-ip=185.70.43.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1790165255; c=relaxed/simple;
+	bh=zeNCUAgPqeauNDOF2uFGpS5QxgR+E3ekuxJBeauYKHE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uQvQrbBzefyV0SrHfrDo/jbE1Pw6/Ud70SdwiGJpTvOWcU5VQ1/mmTHBmj8zFNIK4xgdH2SdlOqjkKtMRZ7iON05pkp81UcXYrPGXMGLvruLA00AjU0lCAr00cy/TXPLIKfjYfmB6xfN8R6m++TWV9aa8ek1CqrIIbdaSO/KWK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IRN44ooS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="T4lmsJ8P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=yftbyle7ozcaznszoawf2llexq.protonmail; t=1790165125; x=1790424325;
-	bh=8mHgQgHYnmQVvZTt78PdSgMJEhjtqfge7wQlTrJctNo=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=T4lmsJ8PnezOqlkE1qX7cYNJi0joOgfkqcpBTbGx9TXfQngW+qn3KxTfKvCaEW33W
-	 fbTJDcEJkFnE85fYnvNbpqbK6jYQrihT9KeVLgUFKlE4le1HQRZr4YEUAjIdMdCUzC
-	 ap2kZ14wj0EnS0jxoym0VyzndFo3swJXoM1CxAkwWC+mXT1yVjr9uJFc5HQAB4xfHq
-	 d/S2THaYayarbZsoI8cvpMbcf5URAi7ffwF/u6FAEVzLlg/R+RhWOGWPPT4/FJtUcH
-	 KZdIxAO5Bw8QN8ja91V3Seu73KqNEimdImD5L/4IeYHaTQam8hVHizD6uiA8oT4LYz
-	 S0FU05HqCE/2w==
-Date: Wed, 23 Sep 2026 12:05:17 +0000
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Matthew Maurer <mmaurer@google.com>, Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>, Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v4] rust: net: netlink: validate attribute length before casting to `c_int`
-Message-ID: <20260923120504.9100-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: f95d144d66500ca3285a525e0ba5c0e01c7d28b5
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IRN44ooS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=EAK2smec0sGpBh/YVftv5pYSh5pJeWG4AIykWvsLZu0=; b=IRN44ooSDxxsucQ8S7dmamUca8
+	fpcZJDb4l9JgMusPXVSmjUEC0y2kkaP89A61I+XEUSmk8X3AqSWLjMn2x+krXG9niiOwoCt5vZx7H
+	6jUk91duty+5roaiQXa3VewphnwDUgnYO8o3ibWEEY2a1rXh94fa4e0gZy/8smMW0Obw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9Lkh-006nMp-OI; Wed, 23 Sep 2026 14:07:07 +0200
+Date: Wed, 23 Sep 2026 14:07:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	Shawn Guo <shengchao.guo@oss.qualcomm.com>,
+	Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
+	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Subject: Re: [PATCH RFC net-next 4/9] net: pcs: xpcs: add Qualcomm Nord
+ platform support
+Message-ID: <b7cab76a-c2f9-472a-bdde-162e1fcb5fd0@lunn.ch>
+References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+ <20260923-qcom_xpcs_nord_emac-v1-4-4b1c682af70f@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923-qcom_xpcs_nord_emac-v1-4-4b1c682af70f@oss.qualcomm.com>
 
-`put()` trusted an unchecked `as` cast from `usize` to `c_int`.
-When the length exceeds `i32::MAX` that cast wraps around to a
-negative value.
+On Wed, Sep 23, 2026 at 06:37:30AM +0530, Mohd Ayaan Anwar wrote:
+> Qualcomm Nord exposes the DesignWare XPCS register blocks through
+> separate direct-MMIO windows instead of the standard contiguous
+> MMD/register layout. Add accessors that translate MMD accesses to the
+> Nord windows:
+> 
+>   MMD 3 (PCS), standard registers: SR_XS at 0x0000
 
-This ultimately resulted in a kernel panic when the reinterpreted
-value via `__nla_reserve()` and `skb_put()` became enormous.
+What does standard mean? 802.3 C45.2.3 defines registers 3.0 -
+3.32767 as standardised. 
 
-Validate payload and header both fit together in a `u16`, rejecting
-any payload that wouldn't leave room for `NLA_HDRLEN`.
+>   MMD 3 (PCS), vendor registers:   VR_XS at 0x2000
 
-Fixes: 5eaa5fbb6e6c ("rust: netlink: add raw netlink abstraction")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
----
-Changes Since V3:=20
-Rebased on the upstream rust-next tree.=20
-No functional changes.=20
+and 3.32768 - 3.65535 as vendor.
 
- rust/kernel/net/netlink.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+However, with a length of 0x2000, there is only space for 8192 of the
+standardised registers, and 0x1000 gives 4096 vendor registers.
 
-diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
-index 22ef3dde36fa..2f8733a694a9 100644
---- a/rust/kernel/net/netlink.rs
-+++ b/rust/kernel/net/netlink.rs
-@@ -11,6 +11,7 @@
- use kernel::{
-     alloc::{self, AllocError},
-     error::to_result,
-+    num::casts::u16_as_usize,
-     prelude::*,
-     transmute::AsBytes,
-     types::Opaque,
-@@ -86,9 +87,17 @@ fn put<T>(&mut self, attrtype: c_int, value: &T) -> Resu=
-lt
-     where
-         T: ?Sized + AsBytes,
-     {
-+        // `nla_len` is a 16-bit field that encodes the total attribute le=
-ngth
-+        // (header + payload). Subtracting the header size from `u16::MAX`=
- gives
-+        // the largest payload that still fits within that field.
-+        const MAX_PAYLOAD_LEN: usize =3D u16_as_usize(u16::MAX) - size_of:=
-:<bindings::nlattr>();
-+
-         let skb =3D self.skb.skb.as_ptr();
-         let len =3D size_of_val(value);
-         let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
-+        if len > MAX_PAYLOAD_LEN {
-+            return Err(EMSGSIZE);
-+        }
-         // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
-the provided value is
-         // readable and initialized for its `size_of` bytes.
-         to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
-ptr) })
---=20
-2.55.0
+>   MMD 1 (PMA/PMD):                  SR_PMA at 0x3000
+>   MMD 31 (VEND2), standard regs:    SR_MII at 0x4000
 
+What do you mean by standard registers when talking about VEND2?
 
+>   MMD 31 (VEND2), vendor registers: VR_MII at 0x5000
+
+	Andrew
