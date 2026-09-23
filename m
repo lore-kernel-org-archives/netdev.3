@@ -1,97 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F93451B175
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D120D46C4D0
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790166816; cv=none; b=VO9+gwj2fpCd5C/r2aqn9jlPceLX7mMkulhc8bSxI83cb5gFzwl8fhGm/lxMV9bJjyGoWLNlavlndkHOKToX2FKKw4ou/7oIEDbaBlfYPvA0YqQKJVdg2ikQw0W+coRXmgL2sWB7+lYN2eE99sxS3uK/K/wulEcRfa8NE0WlYME=
+	t=1790166936; cv=none; b=TxWQVC4qBOuBm/m0twcoiZ9eSpAqoKGNbBcN7TSuzR0UKVtDQLJkCKPJ1Tbgz2gm8qouYyIBK2Ig4Jvl1tS2b6/XHQWDSaDvszSRVK3zxAGL+NeG3YqL/jMqZu3yhQXWdvTaHC1toIUmktxV+M+aY0h/b5EFvNZmj6lfP2PeKgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790166816; c=relaxed/simple;
-	bh=/OUDr07pdEd0NYS0E7/cneE0Ly1bG2H/NogSv0LJEcs=;
+	s=arc-20240116; t=1790166936; c=relaxed/simple;
+	bh=x7Apl9ihKaoaWZi5tsiyj9XdsN5NTj65ZbJChWnAXUw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ebvdesr5pH8O4GDbZYOWpmQ0K4oU2MGJ5AOsgLxJfJJQBqT/WDtBTtR7yNmzkfFCpbVlCSumbQNXslxRr8EvJdyQFpcoGCw+M2ME7Y1svhLFJ3MJbPEcTCA2fmIv1E1GqgGLAXZfJ5ptYV/Wd6xL+NZknJ6cUqogSGfC2JJLHMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B4XjJfYI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LurzGr1E; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=rVRZcEIWzl+CbeZ4QVMT7QW00Djh5KOa2lSjKeBBHocQ7w3X12QceZ7vMBXtSE7f3Wrez+gG7eC3KAaebl1aK+z9wPjOGlXCtSJMP7KNdrXlTDDrdnpwzOS4hExB0VoaPPpUz/Dmw9l3oAL1S2reMxExoCqwQxoY44aiWaJwov0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HVR5VmIK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=a60OyogU; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B4XjJfYI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LurzGr1E"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HVR5VmIK";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="a60OyogU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790166809;
+	s=mimecast20190719; t=1790166932;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tnbv02KrxTWfgFsEC5I3/8nKspLCXZGQ6bITX7EXkKQ=;
-	b=B4XjJfYINa1Oc5ql31xfvQXHwo7KqFH5P70yw5Z8czp2dpNt56FvAbEdFQYGk2r4XCHtS2
-	LZq86eTycZHS1oPdO5KwF6D5DZTG/CWN8jkVK2Yd/i8B6KvkeWfovlMTBOX56T+FUfOH/A
-	u85fQTtb6Q2tVNAhMJg7JEcpELSZGKc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UDQWN+qvZeX1gaIgZOYdsKlCuMncX8rgK5IP5SLXF5I=;
+	b=HVR5VmIKsF2xO9VYs6f+e3tOSKYWVIKIDLNYaKPvboCJyWq27Z32ExTlpkUS1eW/GRUFqd
+	IHAJ2TIFQLfzXfOMTr+5aUNHu7LBO8e1b54n2GrdY+GPmeL29o0xoa+Co6lRaDQu8JPzaD
+	/Cjk4c3lge/YT6ll6g1sNECI29EfZW8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-CbMq6xpDMNSN3XMbdmPMMA-1; Wed, 23 Sep 2026 08:33:28 -0400
-X-MC-Unique: CbMq6xpDMNSN3XMbdmPMMA-1
-X-Mimecast-MFC-AGG-ID: CbMq6xpDMNSN3XMbdmPMMA_1790166807
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e6683d48fso8287575e9.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:33:28 -0700 (PDT)
+ us-mta-589-_6M_xzzYMUKWmDhKTgPOhQ-1; Wed, 23 Sep 2026 08:35:31 -0400
+X-MC-Unique: _6M_xzzYMUKWmDhKTgPOhQ-1
+X-Mimecast-MFC-AGG-ID: _6M_xzzYMUKWmDhKTgPOhQ_1790166930
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e6b5c5f44so12544075e9.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:35:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790166807; x=1790771607; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:references:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Tnbv02KrxTWfgFsEC5I3/8nKspLCXZGQ6bITX7EXkKQ=;
-        b=LurzGr1EkRXLdaJrpJXXGqLY+q4CiyFpJ7YlpwwCCUsnUwXe3XcmEXFljvnZVNQiUF
-         iTEwXaX342pPK9ed/PWMZMfr8k8nfyW1h1DZaHTxdBjU64RPyB/mw859oDbTqQxd5qnj
-         kqzgVkF/Nf7DVQhNkt37elZ8Zw+Yg9X97XC94Z+4lN+UtXiXpU5nl3W9n6iAe4uwTTgh
-         AoIJj2lXSQiwwqWRneraV50b9Gd8JE96u/OAy6PaODRqXzvq9bC8FUlrKltOW0x3V9Fy
-         3IkkgCn2fII9wb4y6Lr1WVPqSm7KoR0wVagaGTH44p92ETyl4mfE2HXj4Msbafy+znP/
-         JvWg==
+        d=redhat.com; s=google; t=1790166930; x=1790771730; darn=vger.kernel.org;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=UDQWN+qvZeX1gaIgZOYdsKlCuMncX8rgK5IP5SLXF5I=;
+        b=a60OyogUZ+HcW76z3sOpzu0sYxAgSCaskaeDeHAHgy3uDs6dg3MVYweUmRazLxr3rR
+         ky25sj+3BYPckeFqZ9/ZZAv+9ODycMinEgwZb6RqHSNr2d50qhNyYAOmje8D4d5e6LrC
+         XuU6GKQkOPeiN7oSjzbhmnI/IPU1710iM0z+X6+0pTw6gT5HIQonOsxQM8KXSG/8+354
+         V6kpUuxqqeazPwnWB9C3OuRTFGCscX+sDk0vtTg6UdjNkgVN3ucskiq9xdNUDZHd162i
+         hR19Gxv3BEd/vld7hxOsrMoW5mQlRZVo5whjeLwaclQf+DYVVCiy4YqU9fpKCczVboiL
+         LhdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790166807; x=1790771607;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Tnbv02KrxTWfgFsEC5I3/8nKspLCXZGQ6bITX7EXkKQ=;
-        b=q9YbhchBvhDLBZpO+4bpjsIizsC1xbwKNVrkpZMaU/VeZ0qCbTIleinHE/hbYAerLt
-         jtJMvBdHNaWel54Kkgn/xTlGOv1xZ3X6Hpsui2f5IQ2vaXdAKEkAkOf82NopstE5yQOP
-         DMPwGW+2cA78sai1BejdpLlMKODYBbcE6nn1KGnCiGObswiCdkobONhYFWHqa3S6/c1Y
-         esC9jT1TA1uDsSvPPTcaFYO6wx5vfaHFkA0tYEsfDkM/GEiMk3s5ey3t8ykwWHg933Cy
-         xsyIAbzlDhg28pzv2pzRMnqPfVbr6sAzd3XqUcmcCxZ7krg5x1TLvB8Y7/GFNXGHCeAC
-         FlFw==
-X-Forwarded-Encrypted: i=1; AKwUvBw9fqviNpZLHgsCB6rmUzX2tfe/vh0SKLVnzVccpQBAONJ+gNqIwK/XBSaWXj0KHT3ynn8GkpU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kM6rFbLmvo817KomgVGd57AWKVT9AIc791K3PLTqiivM5+EF9Z
-	WJLHWvicNbDmDD8DKI6buUkbYCH4mA6KcrAzAj4M1BTCPOeMmiMiGiEhGy8CKHBxaGlFf2a49VQ
-	2s+D+deWD98d9QgpN7LQJFYMlIruT/VfUWERzd99uj/Jrji+QVFlXvESSEA==
-X-Gm-Gg: AYBFou1r2rstS9p/xRwCaBas+zVbQZvGWU3VitHiVKJ/VnpJbYjHdkVKDyY0qGaQ6Ap
-	lepTZPnYlDggOUAibFOVOJGaHF6MpqjHxXvYzfwLUSD8v/Up0gMMEQaCl6QjhxBte4ubL4h6cUe
-	TC8lmdxHKbZ5je/JiKPVUDmU08hvVU6p7dyTCr3cQjrgrnvOVGZrMlv5pl9WQW7dpP3WkpNaYXw
-	WgMNFf+Uua5LXKDmhcGEenHIQ3+OaLJxnkfdr28DR7abSgrWdepSQNnnG/Nw+oMCz4BeR1OZGkP
-	TZCAWFCfCzKBlUsmfTnjFiGduZGjdE9u1pp/xUojCqsvjZTrmbvuaksb1pFhDdeWOPtcZIjOUk/
-	wYXkKeaQX/IbvEyxKi93JagfQCFhb
-X-Received: by 2002:a05:600c:4e0b:b0:49e:84bf:6136 with SMTP id 5b1f17b1804b1-49fdeffdfc0mr42605485e9.11.1790166807100;
-        Wed, 23 Sep 2026 05:33:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e0b:b0:49e:84bf:6136 with SMTP id 5b1f17b1804b1-49fdeffdfc0mr42605055e9.11.1790166806754;
-        Wed, 23 Sep 2026 05:33:26 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790166930; x=1790771730;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=UDQWN+qvZeX1gaIgZOYdsKlCuMncX8rgK5IP5SLXF5I=;
+        b=1d2oaLvDTOfVLfKgT0QVIhNern2UjrxCaSMepcccTQwcjiIhevj6plhsvfYAs7Ayvk
+         nJgc2swMHkHQlCPhbKuwvl27q5hPwQE3ByhTfLdfQobOsfGDl6579fPv2E7N0OXd9OnG
+         kEUC+12iJ75jY5MXEgyNxLhA8fdkO3z3ZfSPg3kHZi6VI9bvgvfdPuAPWbAbEW918p9u
+         On9chZSWqxEXHmyRkJteZBUm94pUT/psqiJqOv3K+JwLXtjEvFSiEd3U1kxtdlrMOyQk
+         ePc0FG42dtzsaUN5NEXrHWu04KxAMxQfKxOSqcC3BrrcrfIFPHCqkCaIAmWq7IfSyqjE
+         FnJg==
+X-Gm-Message-State: AFuF++mgI77/hZfjkZ/8EMud9eDI2K5+dlznyMNhbzgkB3uUTx9QoPww
+	hhI80hwfEPkuL/BZ9RFrYjrSSLG7v6IIHQB8Cy/DAs3GzsWBwEH+UBOxgulXdT8j+Xe5Z0zHrSv
+	aZEbihOpShn78iS4fBJ4XzhB2lN3SMxA2V2oWZRgYlR9uwNWA53K39QEOYw==
+X-Gm-Gg: AYBFou2iJki2mzlz2LQaaHYMmwswAV24Te7WNUujfwqeU0OEmiiIvQxH/73Ui/92IM6
+	SMJxrXoNMsw3+c3XD5SA7hVlvO9Rm76g+GoBGNeQ3G4d71IOzwJ2FPq034V+WLHiD9pZaz5wmJT
+	oEtBfgodaz698F+ag6J1GyU976viWb/Na1RcVXWcq1PsuPYFNgYaMWgTYufeLDwH5Ob0h/riWWZ
+	90kl7k3zZNo11JpgrlVI4tPjYlesIPn2+CH2eWp1GHahMEictq2jL6KTGfKqICawfviZwW+PoQw
+	7Tqjl8XCZaTUb+HoRCQlwRYRyPuK/4/wgRpZiWdI36gcQlXSNCSHkipFa/dYG/+nCMiUQn8BIO6
+	7erq5urO0kCixwCnec1YAXrt7rJv8o/c1ZphzuLc=
+X-Received: by 2002:a05:600d:1:b0:49f:e3d4:4c1f with SMTP id 5b1f17b1804b1-49fe3d44c52mr16737025e9.8.1790166930488;
+        Wed, 23 Sep 2026 05:35:30 -0700 (PDT)
+X-Received: by 2002:a05:600d:1:b0:49f:e3d4:4c1f with SMTP id 5b1f17b1804b1-49fe3d44c52mr16736585e9.8.1790166930125;
+        Wed, 23 Sep 2026 05:35:30 -0700 (PDT)
 Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe23d4288sm43706055e9.12.2026.09.23.05.33.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fde1ccb90sm75125185e9.6.2026.09.23.05.35.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 05:33:24 -0700 (PDT)
+        Wed, 23 Sep 2026 05:35:29 -0700 (PDT)
 From: Aaron Conole <aconole@redhat.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: houminxi@gmail.com,  netdev@vger.kernel.org,  echaudro@redhat.com,
-  i.maximets@ovn.org,  davem@davemloft.net,  edumazet@google.com,
-  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,
-  shuah@kernel.org,  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/2] selftests/net/openvswitch: add SCTP
- flow key test across conntrack NAT
-In-Reply-To: <179008951086.2160803.550424027687672394@kernel.org>
-	(netdev-bot's message of "Tue, 22 Sep 2026 15:05:10 +0000")
-References: <20260918144647.2024095-3-houminxi@gmail.com>
-	<179008951086.2160803.550424027687672394@kernel.org>
-Date: Wed, 23 Sep 2026 08:33:22 -0400
-Message-ID: <f7tld8s9mgd.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org,  Pablo Neira Ayuso <pablo@netfilter.org>,
+  Florian Westphal <fw@strlen.de>,  Phil Sutter <phil@nwl.cc>,  "David S.
+ Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Simon
+ Horman <horms@kernel.org>,  Eelco Chaudron <echaudro@redhat.com>,  Jamal
+ Hadi Salim <jhs@mojatatu.com>,  Jiri Pirko <jiri@resnulli.us>,  Xin Long
+ <lucien.xin@gmail.com>,  Marcelo Ricardo Leitner
+ <marcelo.leitner@gmail.com>,  netfilter-devel@vger.kernel.org,
+  coreteam@netfilter.org,  linux-kernel@vger.kernel.org,
+  dev@openvswitch.org,  stable@vger.kernel.org,  Axel Mierczuk
+ <axel.mierczuk@1password.com>
+Subject: Re: [PATCH net 6/6] net/sched: act_ct: fix helper UAF due to
+ extensions realloc
+In-Reply-To: <20260921145655.3167436-7-i.maximets@ovn.org> (Ilya Maximets's
+	message of "Mon, 21 Sep 2026 16:55:48 +0200")
+References: <20260921145655.3167436-1-i.maximets@ovn.org>
+	<20260921145655.3167436-7-i.maximets@ovn.org>
+Date: Wed, 23 Sep 2026 08:35:26 -0400
+Message-ID: <f7ta4p89mcx.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -99,119 +103,37 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-netdev-bot+sashiko@kernel.org writes:
+Ilya Maximets <i.maximets@ovn.org> writes:
 
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
+> While calling the helpers, a raw pointer to the extensions area is
+> wired into expectations list:
 >
-> Low priority / nit picks for your consideration:
+>   -> nf_ct_helper()
+>    -> helper->help()
+>     -> nf_ct_expect_related_report()
+>      -> nf_ct_expect_insert()
+>       -> hlist_add_head_rcu(&exp->lnode, &master_help->expectations)
 >
-> - [Low] test_sctp_nat_connect_v4()
->   (tools/testing/selftests/net/openvswitch/openvswitch.sh, new lines=E2=
-=80=A6
+> In case the connection is not confirmed yet, more extensions can be
+> added afterwards with *_ext_add() calls reallocating the extension
+> space and leaving the now invalid pointer in the expectations list
+> that is later accessed while removing the expectation.
 >
-> --
+> Make sure that helpers are called at the end after all the other
+> extensions are already added.
 >
-> selftests/net/openvswitch: add SCTP flow key test across conntrack NAT
+> Note that the helper rejection now leaves the mark and labels set,
+> but that's not different from how the NAT was handled before or how
+> the mark and the labels were handled on confirmation failure.  And
+> there are no atomicity guarantees provided by the API anyway.
 >
-> This adds test_sctp_nat_connect_v4, which drives an SCTP association
-> through ct(commit,nat(dst=3D172.31.110.20:5555)),recirc and matches the
-> translated tuple after recirculation, so the SCTP branch of
-> ovs_nat_update_key() is actually exercised. The config fragment gains
-> CONFIG_NETFILTER_ADVANCED, CONFIG_NF_CT_PROTO_SCTP and CONFIG_NF_NAT.
->
-> One question below about listener teardown.
->
->> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh
->> b/tools/testing/selftests/net/openvswitch/openvswitch.sh
->> index aa84fafc3201..21444657a040 100755
->> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
->> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
->
-> [ ... ]
->
->> @@ -1200,6 +1201,98 @@ test_nat_connect_v4 () {
->>  	return 0
->>  }
->>=20=20
->> +# sctp_nat_connect_v4 test
->> +#  - SCTP association crosses a ct(commit,nat(dst=3Dip:port)) DNAT
->> +#  - post-recirc flows match the translated address and port, so the
->> +#    SCTP branch of the post-NAT flow key update is load-bearing
->> +test_sctp_nat_connect_v4 () {
->> +	local t=3D"test_sctp_nat_connect_v4"
->> +	local payload=3D"SCTP_NAT_DATA_OK"
->> +	local rxfile=3D"${ovs_base}/${t}/sctp-rx.txt"
->
-> [ ... ]
->
->> +	ovs_netns_spawn_daemon "test_sctp_nat_connect_v4" "server" \
->> +		socat -u -t 1 SCTP4-LISTEN:5555,fork \
->> +		OPEN:"$rxfile",creat,append
->> +	ovs_wait sctp_eps_has server 5555 || return 1
->> +
->> +	info "verify SCTP association across NAT"
->> +	ovs_sbx "test_sctp_nat_connect_v4" ip netns exec client \
->> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:192.168.0.20:4443" \
->> +	    </dev/null || return 1
->
-> [Severity: Low]
-> This isn't a bug, but can a forked socat child outlive teardown here?
->
-> The listener in test_sctp_nat_connect_v4() is started with the fork
-> option, so socat forks one child per accepted association, while
-> ovs_netns_spawn_daemon() only records the pid of the backgrounded
-> ip netns exec:
->
-> tools/testing/selftests/net/openvswitch/openvswitch.sh:ovs_netns_spawn_da=
-emon() {
-> 	...
-> 		ip netns exec $netns $*  >> $ovs_dir/stdout  2>> $ovs_dir/stderr &
-> 	fi
-> 	pid=3D$!
-> 	ovs_sbx "$sbx" on_exit "kill -TERM $pid 2>/dev/null"
-> }
->
-> There is no process group kill and no wait, so a child still blocked
-> reading its SCTP socket is not signalled or reaped. run_test() then runs
-> ovs_exit_sig() followed immediately by rm -rf "$ovs_dir", and the
-> registered on_exit actions do ip netns del server, so such a child would
-> keep a reference on the server netns and an open descriptor on the
-> unlinked sctp-rx.txt until the association's retransmit/heartbeat timers
-> give up. The -t 1 option bounds the linger after EOF is seen, not the
-> wait for EOF itself.
->
-> This would show up when the client is killed by timeout 3, or when a
-> post-recirc flow is missing so the peer's SHUTDOWN/ABORT is dropped. On
-> the passing path the client closes stdin right away (</dev/null and the
-> here-string), so the child sees EOF and exits.
->
-> The same forking-listener plus single-pid SIGTERM pattern is already used
-> by test_sctp_connect_v4() and test_sctp_connect_v6() in this file, so
-> this may simply be the convention here. Would it be worth killing the
-> process group and waiting for the listener in ovs_netns_spawn_daemon()
-> instead, which would cover all three tests?
+> Fixes: a21b06e73191 ("net: sched: add helper support in act_ct")
+> Cc: stable@vger.kernel.org
+> Reported-by: Axel Mierczuk <axel.mierczuk@1password.com>
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
 
-A separate process group would be over kill.  This is already
-convention.
-
->> +
->> +	info "verify SCTP DATA chunk crosses NAT"
->> +	ovs_sbx "test_sctp_nat_connect_v4" ip netns exec client \
->> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:192.168.0.20:4443" \
->> +	    <<< "$payload" || return 1
->> +	ovs_wait grep -q "$payload" "$rxfile" \
->> +	    || { info "server did not receive SCTP DATA payload"
->> +	         return 1; }
->> +
->> +	info "done..."
->> +	return 0
->> +}
->
-> [ ... ]
+Reviewed-by: Aaron Conole <aconole@redhat.com>
 
