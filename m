@@ -1,56 +1,56 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A743B8950
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3A23BA239
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790135552; cv=none; b=CpAMNvKPMhhcm7XL06xwI8Tk5MNJ1DrdicT0KbFu6+o1krvKHGQpv72CqKBV/JxuIR+VLch/nPmYZ2Pp58JiYPdMd89Iy9SYr7QNjsTk/1ceb1beI7rP2tmMhbo8T81+Oelclvc4E2ctO1aSmFnbhO6okd1MxkKiyOiiokud+yM=
+	t=1790135553; cv=none; b=RjeoGwL0b9fn72qcaeiMkcYFAeVbux1jSQzNa0fVCpTbuQipLfUK8GXaY5499whkCsi73nxIBpP8nVxP74VwXY99YCv20Dnz+5MX2BUk0SPe5sl01K33L9gboasrlm3UPKwgwjD/dSjIi+sLpAdMBZBKcHHOPdixmOc2E255Kc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790135552; c=relaxed/simple;
-	bh=BmZpXZIROWkh1uBLxC5BPHaoeHBIpQma+jOBGh9frLk=;
+	s=arc-20240116; t=1790135553; c=relaxed/simple;
+	bh=XlwNLn556TBdyg2Pa3BZ9qFzqZHGeWMpikwBXaUl+wo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T50tdn85IKcMQa0Z6e3UQncdCpPbyigXUtjxecfMgHH7SviBBlwOZ8drri/ABrGPdpu3dHnaulzuHYkD/W7AQ3eTLPL8FHR/pU8GV4hCP5sYA+sHBZWC3bePCRzr373dtsbc6uxoXmB2wNZwEMB2wlnBH0MiThDOCk6HXxYSfK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KcBKn33h; arc=none smtp.client-ip=209.85.222.198
+	 To:Cc:Content-Type; b=n1XyX8dClMKRI7VQ+/iUCwfivtlDOirx/JNsal8nGtmzBHHK3BV0B69885stFdVGQplimR+vJHKhTnl/FRl9S5eDdJ4/W3xbW4vTLm8BGL0MtNeoOua9spCXcUS6KS3YyGP+GPoN77EbyYmK7MjlV1ZVkOiw19EybUp47tsnMrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sX7E2HU/; arc=none smtp.client-ip=209.85.160.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KcBKn33h"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a1b824e84so130877985a.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sX7E2HU/"
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-53124d6a362so14041341cf.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790135549; x=1790740349; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790135550; x=1790740350; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7jB40GJdDU1KiJ/0C7Ze6Q+NzKDuFcyMLiRd5uNfD6U=;
-        b=KcBKn33hQDzzarbkt0EgKW4bLe2JtmqhU3yUVUR/9Vo/lTwMlYlA9/Kszh30xbsXsc
-         bdIZthWvKmh/gWnt0gUiHZnQKRn4op2D5SIAormklVrBv6Hap5itbm0P7MOKxhswl0hH
-         cXMXpilIkVxl/YVIcBUXcrFeypSLxp8FknpcORZQNg7aDq+a0+ELSuiz+WmXa9wDAhLn
-         csFEdjY2yNGWCMthFEjDXqkxzLmujCbN1hC3fl5s0mumuJaBEMYzaCJGbxMngt2w13JA
-         0YTa3sAIYtHo/92RQB8tDnr3STpM29K0mRGE4wWqANb2WxAcPwZ9ceRZ+TRni+u4W1ij
-         X/5Q==
+        bh=WTUpwCnWGknGGzA8Yo+oQVFKy+7o8pXGErT2NGfVLvc=;
+        b=sX7E2HU/BHAWARLU/wMCQBCSU645jycxdOVWZ/8oKF53dhUxyt3NXWJ4IvaKHP1bsE
+         YhEFzL3n4qRguYYausaZFJh8A4xa71uvPiHOO1B4XveLLQ6MilddeUBoWIlQ0swqSSZr
+         MZOYvI662hctIGsFHXt73ZMb//dOi4MnIchGYA7YurfoFv9g6oZuGyBmMvQRFdvw1UlM
+         NiyRSXUERWYL48kWriq5Fvt15JDqck1dd7EJo4qYHfUZ3x5v020fixwQGZ2BFy5FR3s+
+         165Re5WR/W7bEr/MjSiIHPKAhDJuM/FS0NvyHHrVqbfGjrb7BEpoYX/5Q9YVaC3rWhPr
+         +f5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790135549; x=1790740349;
+        d=1e100.net; s=20260707; t=1790135550; x=1790740350;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7jB40GJdDU1KiJ/0C7Ze6Q+NzKDuFcyMLiRd5uNfD6U=;
-        b=SYBEs7A3KXIJqcT3QPAjwSR/K200TN7YAogvkHNnriHNaaSrqbDzpeMMEEAZmfbJCQ
-         OA06pufeurrUopPmAEKN0a1AYQ8TATH3W+ZwtkoUTV45Qm0vzKCSw50QvGPeesSK6O95
-         ZcimxsJS+tVHQCYP1K4G9+l05R1vp25fGMNptqf203y8HCMd/AhVDubf03BqA5ubTo+D
-         yX+4VsE8KIs+sCDcdMfXgBIkUZz3/LEsqlQf9KTwVqL8OCTK1lV/jP908IWBSk2nWzQ0
-         W5v0kyGW1ywsgvnt7gMlnswrsU7Z9+Y07C8agUlqkzOm/b17K2ce+i+yft3VGZaSQD+K
-         Ur9g==
-X-Forwarded-Encrypted: i=1; AKwUvBxj8QvSLN+WWC77Y4YVt9LjjuVxC/APTjGVQK/DgZoRhQauh91L84+DAoVOpBMyOl9N8IzxGxE=@vger.kernel.org
-X-Gm-Message-State: AFuF++ljDFCtei9FxQqrv8ggcOh9jDVGrRyGM7kqygx6HCaf2+rcUI8j
-	hGWQmik1r/vDQrlo/n1KGCFf/faey/oFaYvrfpKY5Ey5dzP68FubbeHejvkzbgQV3h/qQ+oCYZb
-	gGdGM0MiWOaEVcQ==
-X-Received: from qkmm2.prod.google.com ([2002:a05:620a:2142:b0:92e:6dfa:48a6])
+        bh=WTUpwCnWGknGGzA8Yo+oQVFKy+7o8pXGErT2NGfVLvc=;
+        b=KwDKn3pEErzmyy1hDUlWiKXvlRqnoIXeVsNciU/4JIuMK3UwrSXUd/m6WaVf6qBXZ7
+         oNlTIZdU/80Ov6R4VMFYXdLiVJBp37CiXcPxMTaDAhfSTgkoi0tZjiIRMKs+9onVh5Sd
+         qSm4qGBmISKp72C9j3q+h1+kSVbJGDXyo0dglh+KezgbqDg+2mf/oFFCL95rOgEzTNN2
+         rvvR9bG1+MzOYxCn04KvCOJb6BglIhdWZtDV3lLs0xjQx33Hv3jj4sKMK0CrAGKGuhyU
+         Kd1XuYRwB0Ycrx0JDJ3zX3hBQ2/0wtRgdycDLV86z2rYS60z+j6TMnyvftFGfMD1f8hO
+         Xz2w==
+X-Forwarded-Encrypted: i=1; AKwUvBwCdIXX/KAUP6/2UyaJ5/UHMIPEupB78qvG98pGmiZSfcC0QV5IQCAyp20HGAu0fo6fh6mnU88=@vger.kernel.org
+X-Gm-Message-State: AFuF++l0ceWiTfeOCAg+FJ9QTt5ERXrsYZmJa5+kmQ8M48L8OYUCnJwg
+	t85dHblwycCICeQ7cmsiKPPizGQn+wc9UWvKXwRiMT9kkK0ijswfygLT2q2F4qTprAMOTx/Pd11
+	R/v2lwsVxhdFIag==
+X-Received: from qtww9-n1.prod.google.com ([2002:a05:622a:6849:10b0:530:7d2a:50a0])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:439b:b0:93a:1b82:4962 with SMTP id af79cd13be357-93c251fda49mr228275485a.47.1790135548599;
- Tue, 22 Sep 2026 20:52:28 -0700 (PDT)
-Date: Wed, 23 Sep 2026 03:52:15 +0000
+ 2002:a05:622a:4117:b0:532:8ed7:534 with SMTP id d75a77b69052e-532eadcbef3mr24896481cf.37.1790135550099;
+ Tue, 22 Sep 2026 20:52:30 -0700 (PDT)
+Date: Wed, 23 Sep 2026 03:52:16 +0000
 In-Reply-To: <20260923035217.179102-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260923035217.179102-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260923035217.179102-4-edumazet@google.com>
-Subject: [PATCH net v3 3/5] ip_gre: compute tunnel lengths absolutely instead
- of by delta
+Message-ID: <20260923035217.179102-5-edumazet@google.com>
+Subject: [PATCH net v3 4/5] ip_gre: recompute erspan header lengths after a change
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -71,134 +70,153 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netd
 	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-ipgre_link_update() shifts tunnel->hlen, dev->hard_header_len,
-dev->needed_headroom and dev->mtu by the difference in tunnel->tun_hlen.
-That misses any change to tunnel->encap_hlen, which ipgre_changelink() can
-change through ipgre_newlink_encap_setup(). Such a request leaves @len
-at zero: adding "encap fou" to an existing gre device keeps the MTU of a
-bare tunnel, while creating it with "encap fou" from the start gets the
-smaller MTU from ip_tunnel_bind_dev().
+erspan_tunnel_init() is the only place computing tunnel->tun_hlen and
+tunnel->hlen, but erspan_changelink() can change both: tunnel->erspan_ver
+selects a 4 or 8 byte GRE header and feeds erspan_hdr_len(), while
+ip_tunnel_encap_setup() recomputes tunnel->hlen without the ERSPAN part.
 
-A difference is the wrong tool anyway: ip_tunnel_bind_dev() already
-assigns dev->needed_headroom from tunnel->hlen, so changing the link and
-the encapsulation at once is accounted twice, and ip_tunnel_encap_setup()
-publishes a new tunnel->hlen before ip_tunnel_changelink() runs, making the
-next difference bogus.
+dev->needed_headroom is not refreshed either, since ip_tunnel_update()
+only rebinds when the link or the fwmark changes.
 
-Recompute tunnel->hlen from tun_hlen and encap_hlen, as
-__gre_tunnel_init() does, and add ip_tunnel_refresh_lengths() so that
-ip_tunnel_bind_dev() is the only writer of dev->needed_headroom and
-dev->mtu. ipgre_changelink() must then refresh on its
-ip_tunnel_changelink() error path too, since the new encapsulation is
-published by then.
+erspan_xmit() then pushes an ERSPAN header sized from the new
+tunnel->erspan_ver, while __gre_xmit() lays the GRE header out from the
+stale tunnel->tun_hlen. After a version 0 -> 2 change, tun_hlen is still
+4 and gre_build_header() writes the sequence number at
+greh + tun_hlen - 4, that is over greh->flags and greh->protocol. The
+MTU keeps the value derived from the old header length.
 
-dev->hard_header_len is recomputed the same way, but it stays in
-ipgre_link_update(): for the ARPHRD_IPGRE devices installing
-ipgre_header_ops it is the outer IP + GRE header, which
-ip_tunnel_bind_dev() does not know about. Check specifically for
-ipgre_header_ops: gretap devices also have header_ops (eth_header_ops),
-where hard_header_len is the 14-byte inner Ethernet header that
-ip_tunnel_bind_dev() subtracts from the MTU, and commit fdafed459998
-("ip_gre: set dev->hard_header_len and dev->needed_headroom properly")
-wrongly adjusted hard_header_len instead of needed_headroom for them.
+Also reject non-zero IFLA_GRE_OFLAGS/IFLA_GRE_IFLAGS when erspan_ver is 0
+or IFLA_GRE_COLLECT_METADATA is set, and ensure IP_TUNNEL_SEQ_BIT in
+erspan_xmit() matches tunnel->erspan_ver.
 
-@old_hlen survives only as a predicate telling whether the MTU became
-stale, never as a difference, so it can not make the lengths drift. When
-ip_tunnel_update() recomputes dev->mtu after a link or fwmark change using
-the intermediate t->hlen published by ip_tunnel_encap_setup(), update
-@old_hlen to that intermediate value so ipgre_link_update() still refreshes
-dev->mtu if tun_hlen moves.
+There is no memory safety issue: dev->needed_headroom is at least
+tunnel->hlen + sizeof(struct iphdr), and erspan_xmit() pushes at most
+12 + 8 bytes before ip_tunnel_xmit() takes over and cows again.
 
-There is no memory safety issue: ipgre_xmit() cows dev->needed_headroom
-at tunnel entry, which always reserves sizeof(struct iphdr) + lower
-device headroom (>= 34 bytes after the GRE header), enough for
-ip_tunnel_encap() to push the FOU/GUE header before ip_tunnel_xmit()
-cows again for the outer IP header.
+Move the computation into erspan_set_hlen() and add
+erspan_link_update(), refreshing the lengths as the previous patch does
+for plain GRE. Commit gparms alongside i_flags/o_flags after
+ip_tunnel_changelink() succeeds, and run erspan_link_update() at the end
+of erspan_changelink(), including on the ip_tunnel_changelink() error
+path, as ipgre_changelink() does.
 
-Fixes: dd9d598c6657 ("ip_gre: add the support for i/o_flags update via netlink")
-Fixes: fdafed459998 ("ip_gre: set dev->hard_header_len and dev->needed_headroom properly")
+Fixes: f551c91de262 ("net: erspan: introduce erspan v2 for ip_gre")
 Cc: stable@vger.kernel.org
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/net/ip_tunnels.h |  1 +
- net/ipv4/ip_gre.c        | 63 ++++++++++++++++++++++++++++++----------
- net/ipv4/ip_tunnel.c     | 17 +++++++++++
- 3 files changed, 66 insertions(+), 15 deletions(-)
+ net/ipv4/ip_gre.c | 81 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 64 insertions(+), 17 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 7c9aadfe8fe396da10a47e93499a97141ac04f4c..fd0396aa5039538a0391a352ace6d15f554df874 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -429,6 +429,7 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
- 		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
- 		      __u32 fwmark);
- void ip_tunnel_setup(struct net_device *dev, unsigned int net_id);
-+void ip_tunnel_refresh_lengths(struct net_device *dev, bool set_mtu);
- 
- bool ip_tunnel_netlink_encap_parms(struct nlattr *data[],
- 				   struct ip_tunnel_encap *encap);
 diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index df4d2f1f1d60c7f3755e4f554f04a06480512909..27b3b4c584b1e1b4f1c9c9f42b5585b28101ece0 100644
+index 27b3b4c584b1e1b4f1c9c9f42b5585b28101ece0..7385d66a94bf49c84bc674ded51ed3f9f5352e28 100644
 --- a/net/ipv4/ip_gre.c
 +++ b/net/ipv4/ip_gre.c
-@@ -789,23 +789,36 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
+@@ -733,7 +733,6 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+ 	/* Push ERSPAN header */
+ 	if (tunnel->erspan_ver == 0) {
+ 		proto = htons(ETH_P_ERSPAN);
+-		__clear_bit(IP_TUNNEL_SEQ_BIT, flags);
+ 	} else if (tunnel->erspan_ver == 1) {
+ 		erspan_build_header(skb, ntohl(tunnel->parms.o_key),
+ 				    tunnel->index,
+@@ -748,6 +747,7 @@ static netdev_tx_t erspan_xmit(struct sk_buff *skb,
+ 		goto free_skb;
+ 	}
+ 
++	__assign_bit(IP_TUNNEL_SEQ_BIT, flags, tunnel->erspan_ver != 0);
+ 	__clear_bit(IP_TUNNEL_KEY_BIT, flags);
+ 	__gre_xmit(skb, dev, &tunnel->parms.iph, proto, flags);
  	return NETDEV_TX_OK;
- }
+@@ -1169,17 +1169,18 @@ static int erspan_validate(struct nlattr *tb[], struct nlattr *data[],
+ 	if (ret)
+ 		return ret;
  
--static void ipgre_link_update(struct net_device *dev, bool set_mtu)
-+/* tunnel->hlen depends on tunnel->parms.o_flags and on tunnel->encap_hlen,
-+ * both of which ipgre_changelink() can change. Recompute it the way
-+ * __gre_tunnel_init() does, then let ip_tunnel_bind_dev() derive the device
-+ * lengths from it.
+-	if (data[IFLA_GRE_ERSPAN_VER] &&
+-	    nla_get_u8(data[IFLA_GRE_ERSPAN_VER]) == 0)
+-		return 0;
+-
+-	/* ERSPAN type II/III should only have GRE sequence and key flag */
+ 	if (data[IFLA_GRE_OFLAGS])
+ 		flags |= nla_get_be16(data[IFLA_GRE_OFLAGS]);
+ 	if (data[IFLA_GRE_IFLAGS])
+ 		flags |= nla_get_be16(data[IFLA_GRE_IFLAGS]);
+-	if (!data[IFLA_GRE_COLLECT_METADATA] &&
+-	    flags != (GRE_SEQ | GRE_KEY))
++
++	if ((data[IFLA_GRE_ERSPAN_VER] &&
++	     nla_get_u8(data[IFLA_GRE_ERSPAN_VER]) == 0) ||
++	    data[IFLA_GRE_COLLECT_METADATA])
++		return flags ? -EINVAL : 0;
++
++	/* ERSPAN type II/III should only have GRE sequence and key flag */
++	if (flags != (GRE_SEQ | GRE_KEY))
+ 		return -EINVAL;
+ 
+ 	/* ERSPAN Session ID only has 10-bit. Since we reuse
+@@ -1317,7 +1318,11 @@ static int erspan_netlink_parms(struct net_device *dev,
+ 			return -EINVAL;
+ 	}
+ 
+-	if (gparms->erspan_ver == 1) {
++	if (gparms->erspan_ver == 0) {
++		if (!ip_tunnel_flags_empty(parms->i_flags) ||
++		    !ip_tunnel_flags_empty(parms->o_flags))
++			return -EINVAL;
++	} else if (gparms->erspan_ver == 1) {
+ 		if (data[IFLA_GRE_ERSPAN_INDEX]) {
+ 			gparms->index = nla_get_u32(data[IFLA_GRE_ERSPAN_INDEX]);
+ 			if (gparms->index & ~INDEX_MASK)
+@@ -1394,18 +1399,43 @@ static const struct net_device_ops gre_tap_netdev_ops = {
+ 	.ndo_fill_metadata_dst	= gre_fill_metadata_dst,
+ };
+ 
++static void erspan_set_hlen(struct ip_tunnel *tunnel)
++{
++	/* Version 0 uses a 4-byte GRE header, other versions use 8 bytes. */
++	tunnel->tun_hlen = tunnel->erspan_ver == 0 ? 4 : 8;
++
++	tunnel->hlen = tunnel->tun_hlen + tunnel->encap_hlen +
++		       erspan_hdr_len(tunnel->erspan_ver);
++}
++
++/* Both tunnel->erspan_ver and tunnel->encap_hlen can be changed from
++ * erspan_changelink(), and both feed tunnel->hlen. Recompute it, then let
++ * ip_tunnel_bind_dev() derive the device lengths from it.
 + *
-+ * @old_hlen is only used to tell whether the MTU became stale, never as a
-+ * difference to apply, so it can not make the lengths drift. It must be
-+ * sampled before ip_tunnel_encap_setup(), which already publishes the new
-+ * tunnel->hlen for us.
++ * As in ipgre_link_update(), @old_hlen only tells whether the MTU became
++ * stale and must be sampled before ip_tunnel_encap_setup(), which
++ * recomputes tunnel->hlen without the ERSPAN part.
 + */
-+static void ipgre_link_update(struct net_device *dev, bool set_mtu,
-+			      int old_hlen)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
--	int len;
- 
--	len = tunnel->tun_hlen;
- 	tunnel->tun_hlen = gre_calc_hlen(tunnel->parms.o_flags);
--	len = tunnel->tun_hlen - len;
--	tunnel->hlen = tunnel->hlen + len;
-+	tunnel->hlen = tunnel->tun_hlen + tunnel->encap_hlen;
- 
--	if (dev->header_ops)
--		dev->hard_header_len += len;
--	else
--		dev->needed_headroom += len;
-+	/* For the ARPHRD_IPGRE devices installing ipgre_header_ops,
-+	 * dev->hard_header_len is the outer IP + GRE header, as set by
-+	 * ipgre_tunnel_init(). ip_tunnel_bind_dev() does not maintain it:
-+	 * it only subtracts it from the MTU, and only for ARPHRD_ETHER.
-+	 */
-+	if (dev->header_ops == &ipgre_header_ops)
-+		dev->hard_header_len = tunnel->hlen + sizeof(struct iphdr);
- 
--	if (set_mtu)
--		WRITE_ONCE(dev->mtu, max_t(int, dev->mtu - len, 68));
++static void erspan_link_update(struct net_device *dev, bool set_mtu,
++			       int old_hlen)
++{
++	struct ip_tunnel *tunnel = netdev_priv(dev);
++
++	erspan_set_hlen(tunnel);
++
 +	/* Only reset a MTU that the header length just invalidated, so that
 +	 * a MTU configured by the user survives an unrelated change.
 +	 */
 +	ip_tunnel_refresh_lengths(dev, set_mtu && tunnel->hlen != old_hlen);
++}
++
+ static int erspan_tunnel_init(struct net_device *dev)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
  
- 	if (test_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags) ||
- 	    (test_bit(IP_TUNNEL_CSUM_BIT, tunnel->parms.o_flags) &&
-@@ -853,7 +866,7 @@ static int ipgre_tunnel_ctl(struct net_device *dev,
- 		ip_tunnel_flags_copy(t->parms.o_flags, p->o_flags);
+-	if (tunnel->erspan_ver == 0)
+-		tunnel->tun_hlen = 4; /* 4-byte GRE hdr. */
+-	else
+-		tunnel->tun_hlen = 8; /* 8-byte GRE hdr. */
++	erspan_set_hlen(tunnel);
  
- 		if (strcmp(dev->rtnl_link_ops->kind, "erspan"))
--			ipgre_link_update(dev, true);
-+			ipgre_link_update(dev, true, t->hlen);
- 	}
+ 	tunnel->parms.iph.protocol = IPPROTO_GRE;
+-	tunnel->hlen = tunnel->tun_hlen + tunnel->encap_hlen +
+-		       erspan_hdr_len(tunnel->erspan_ver);
  
- 	i_flags = gre_tnl_flags_to_gre_flags(p->i_flags);
-@@ -1496,6 +1509,8 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	dev->features		|= GRE_FEATURES;
+ 	dev->hw_features	|= GRE_FEATURES;
+@@ -1562,6 +1592,8 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
  	struct ip_tunnel *t = netdev_priv(dev);
  	struct ip_tunnel_parm_kern p;
  	struct ip_gre_parm gparms;
@@ -207,7 +225,7 @@ index df4d2f1f1d60c7f3755e4f554f04a06480512909..27b3b4c584b1e1b4f1c9c9f42b5585b2
  	int err;
  
  	if (!rtnl_dev_link_net_capable(dev, t->net))
-@@ -1509,17 +1524,35 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+@@ -1575,15 +1607,30 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
  	if (err)
  		return err;
  
@@ -218,11 +236,6 @@ index df4d2f1f1d60c7f3755e4f554f04a06480512909..27b3b4c584b1e1b4f1c9c9f42b5585b2
 -		return err;
 +		goto link_update;
 +
-+	/* When the link or fwmark changed, ip_tunnel_update() has just
-+	 * recomputed dev->mtu from the intermediate t->hlen published by
-+	 * ip_tunnel_encap_setup(). Record that as the length dev->mtu now
-+	 * reflects so ipgre_link_update() refreshes it if tun_hlen moves.
-+	 */
 +	if (link_changed)
 +		old_hlen = t->hlen;
  
@@ -230,50 +243,21 @@ index df4d2f1f1d60c7f3755e4f554f04a06480512909..27b3b4c584b1e1b4f1c9c9f42b5585b2
  	ip_tunnel_flags_copy(t->parms.i_flags, p.i_flags);
  	ip_tunnel_flags_copy(t->parms.o_flags, p.o_flags);
  
--	ipgre_link_update(dev, !tb[IFLA_MTU]);
-+link_update:
-+	/* ipgre_newlink_encap_setup() has published a new encapsulation even
-+	 * if ip_tunnel_changelink() failed, so the lengths must be refreshed
-+	 * on that error path as well.
-+	 *
-+	 * IFLA_MTU only defers the MTU to do_setlink(), which rtnl_changelink()
-+	 * does not reach if we return an error, so it must not hold it back.
-+	 */
-+	ipgre_link_update(dev, err || !tb[IFLA_MTU], old_hlen);
- 
 -	return 0;
++link_update:
++	/* ipgre_newlink_encap_setup() has published a new encapsulation
++	 * without the ERSPAN header length even if ip_tunnel_changelink()
++	 * failed, so the lengths must be refreshed on that error path too.
++	 *
++	 * As in ipgre_changelink(), IFLA_MTU must not hold the MTU back if we
++	 * return an error, because do_setlink() will not apply it then.
++	 */
++	erspan_link_update(dev, err || !tb[IFLA_MTU], old_hlen);
++
 +	return err;
  }
  
- static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 2a313b18134e2f0bafd52d59d8e173fa1a084f03..dd1b2f719f21670b02bfc1cafa62689b4a28a580 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -326,6 +326,23 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
- 	return mtu;
- }
- 
-+/* Recompute dev->needed_headroom and dev->mtu after tunnel->hlen changed.
-+ *
-+ * Both are derived from tunnel->hlen, so they must be recomputed from it
-+ * rather than adjusted by the difference: ip_tunnel_bind_dev() is also
-+ * called from ip_tunnel_create(), ip_tunnel_newlink(), ip_tunnel_init_net()
-+ * and ip_tunnel_update(), and a caller adding its own delta on top would
-+ * double count it.
-+ */
-+void ip_tunnel_refresh_lengths(struct net_device *dev, bool set_mtu)
-+{
-+	int mtu = ip_tunnel_bind_dev(dev);
-+
-+	if (set_mtu)
-+		WRITE_ONCE(dev->mtu, mtu);
-+}
-+EXPORT_SYMBOL_GPL(ip_tunnel_refresh_lengths);
-+
- static struct ip_tunnel *ip_tunnel_create(struct net *net,
- 					  struct ip_tunnel_net *itn,
- 					  struct ip_tunnel_parm_kern *parms)
+ static size_t ipgre_get_size(const struct net_device *dev)
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
