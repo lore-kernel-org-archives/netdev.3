@@ -1,123 +1,124 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-ej2-f6.google.com (mail-ej2-f6.google.com [74.125.228.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA1046C4D0
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790167111; cv=none; b=EiFzgRotmT8GEEZYC0Q9Npxo0XXYZO9GZo8fCERd9nehd272gnYEFQC027nmvW7vDTRrCOb15cxVJXBnLTwRqmu5FM+YtXp2pwSNZcHSbtJm34iAQv2+XsaMr/vDHbCMcGVU7c/W/udf7pxxP/i6jAzCrVUUCNiUxbPI/IZbVbo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790167111; c=relaxed/simple;
-	bh=ajBlGar5lLVf70pEAWc6gwQBG7Kn+no2fIRZYpDmLvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GUqZI89jnu/Yu+jPgO7Vq95II3FlzAipiwyCl4zq5kHaoL/kxJ06N+76ejgFyuEzqzT0MW6/F4TF+/W899ml9nfW1U4TnQmDWDWOdZ8HV7SDLD3FFMbf5UI8I6jc9aMIGCP/rycLVwDPu6kUrxnJqSY/ZxFNX57Ud4L0nFu99nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YSnlDsXc; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444D451D538
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790167251; cv=pass; b=pEu4qiSGbqlfk9Ez8nR3oM7RkcPa+ymPBDEK9837xV51A20jkI1wAYAATaX9HUSrdHswoiFuGyGR4HxscBYE6TZCzOElNQBrz+yPxTfw80Zj9V/14Q9BwA4J38z+Zd8Yv2o6HXRv2fMO+UEBdzZmvB4NYi0d3lHoIp/yO6pfBws=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790167251; c=relaxed/simple;
+	bh=yrBXUqSfBJNVOGA4p1L4WG725TYm+nXRxrzQgFuRPz4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pA8RzDDGdk+NjOQ1rbukakh2whMjL/79GKf43JP6Nf5SQgsyg1Y8p7bNlplu6qJQn1A6jqQsP8AttK2zo/6SvtHfjS/nVTWg5V3+pg+4lUe69STLLe7k+fJmcQbur5gjwI/nNOsHUTCyuecg7RniPwO/d50TDsqg69PlNg1k6T4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mNVWlYwM; arc=pass smtp.client-ip=74.125.228.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YSnlDsXc"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2ddbf74c12cso6656065ad.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:38:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mNVWlYwM"
+Received: by mail-ej2-f6.google.com with SMTP id a640c23a62f3a-c294716dbf3so53488766b.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:40:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790167245; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mfMZJCJh31ezHHG7LOKy+8J8PJIqMoaj3AM2u52Z2bgRX1PhKLBVqV3K9eqfO9Wp0F
+         hOU7Gha0CGZB1QV8+d6UvIuwOjY2ERrv5/s7Dzi0seNJvnRsmt52lxJ9BCk9wfAYOMur
+         tkXFe+vuHmnJx508GIEcb0NszSeN7s+tIOYaFEIi5Pwjc7J7fT42InPRnbhXAWHrAtAx
+         2cYR1UcPxQlhz3qzA9o3tdhBui+2rwn1Hmqk6mw5hFsBGyB5dGNgJmZ86hOOYRh6YVvi
+         8+zAOvuzTqAH1ljSoR7sfo5SIVW/pc/9JL7IaleEhZ10pRF+ppXK69/Mc0TeqtoHYcMm
+         RHeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yrBXUqSfBJNVOGA4p1L4WG725TYm+nXRxrzQgFuRPz4=;
+        fh=IFbCAgqn1pujqNlFr/u1K/o+X0mxU8aY9PGB94h/M+c=;
+        b=ArL5Ku/l4WPLo1h2yusc6w6v0PsLbHiIjJx7vGnMRFqW9pNQDOQRXpuww8U0t1BCCy
+         YrEI5Y2pLw6Gt9SIAuv27oJ6KIWJHULBFNJgYQ3oFysgT5q6WPctEGysicxU0DMDRZk1
+         gIXwPLr9YWysLCApo9VYqs4hxqC3rFUCs4R93raW0RDY39lyDdF6qgmZY0N3DlvkuRI/
+         NeGcM9R0XS3vnWuH1hdHqQNefy32yneKfJFAJH/2b9t8+RGKt04wzvTbCWrZgBzhAkF7
+         hTqRY1iTPVUAK6qZhwgQArkV7lv8cCeMETjCPH54AS4o+h7ZAY2uryV8h6CxHcXPQvmJ
+         d4cA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790167108; x=1790771908; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1UQRnFmVHWe9Z/cGe8zLRoDzdcB8ekJGDg85/atBZHs=;
-        b=YSnlDsXc7uyB9jWq106LrfbjH4j1eUU9ilUC25tbDHhSt7ahs8UzR43ZGwmHafFJ8k
-         SkpeNwbB96A7S+3ZlIUAhyqb0v8AyG+f7kDs01tVFD7mo/W5oFOS0b8MLwqybnFDtrRR
-         gahgmRz+JMxgM4ZIcQjHfZEUgeSFfrfMlLFJJ5+Ecy6AdlFKN3jIxTV0MYXw4XJBx3zP
-         835/0qzYsljPu6aUe7bcCh0mBacAKslrAsrFFOSy8665e0h6o/pAnYoCSP9kcZyA+Jt7
-         R/OXj1zaLFSQgpiMMntpEMxeWnQ2U2pjQQWLCbeSxSbtNURQTL3NIQZOyS7dQtJUOAur
-         iOrg==
+        d=gmail.com; s=20251104; t=1790167245; x=1790772045; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yrBXUqSfBJNVOGA4p1L4WG725TYm+nXRxrzQgFuRPz4=;
+        b=mNVWlYwMzpZ6XdVh6gnhcylaxl51TIH99pMipEXYbsjdb6U3HyDy+7+Mux+yYlrY8n
+         tAMNUR3OZJ2T4gS4BafREQ5OIUX179JKOOByjFTUWb8R5/hcungUbho65yJ4rV/SNOhP
+         0ajiuf9kM2THHOfOP+UFYk0R0vS3RM3arQ3y/MaID/B9K1FSPa8TKjGBrYfgZniYWZ8Y
+         WOBi9fi7Eem04EN4bjBeAa+WDy8b939piz+ce1gfpLa7MgQ/nRFJtIS/46LlwWKn7uca
+         pALtLSEcy8N93BTGd2Vd9A/JGwiFYL4DGiLmkCbK3sCoDr14KK22yikj5r6/1s3poe+p
+         AiOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790167108; x=1790771908;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1UQRnFmVHWe9Z/cGe8zLRoDzdcB8ekJGDg85/atBZHs=;
-        b=y5Jhi1mne9aUZvyd+v0vOwVzcTo8HHhQAgiIAOZI78obqCU7jZKjV4SHmcQQIA6wal
-         qmBJL2ymXRfo3owWqr4Y84My+eRCkcNFWBNfOSWgK6Efkq+zGLLcJwg1+kGrnCilEQmN
-         iwC/Qje/u3/UlF2c1HI5kM91ccMqS2ZZAQAAx0NOtAMcWTp8GQad58zPCEBmZ3n939Nd
-         FUQ01rUQB4IKFGo4ZE9mcn5SIAuCoAethl+zgiyU0ULmVGTB2iwtEs4RKIpJjQleQLET
-         OIDz1UB6JON1saoOvBeTYphAdkJH7Qwhdd2wpR0PhCrGWzcS851od8oyK1XYOxMxbKib
-         cgiA==
-X-Forwarded-Encrypted: i=1; AKwUvBxG/rMYmclAzLXbO2uci6Qgu6WUHL1tHYcr0x3+8sm7F9tkqGm+mKxPhEyxpaTLuc0jTswqrOg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lzHWJIqKTD4P5bUMyJB1/iMXT82NNTFVlpcF4eDwPinLiUuMhe
-	IQM+P1gG4mj44E9YG92XVKreheE/2GqSRC/temXSl9phKoPZE2m1FvXz
-X-Gm-Gg: AYBFou1KmgpaqrC1qVZZX7/bvCSTgFwaIc9jtkIwCLQ2Xw3emcGvcGFKlWoWU1wDeqR
-	ZQGDpoKi0qZ1F7eKOKLl2WPT0SBzUF9zdcxd1szlggLnsSpBnZoX1Q+KMHEC+eaEHO9b45RW7MH
-	rrR/xiDKZwrf5EpIFiXMbsG42RiHNuuei6gwQOUb1HIc0nec5C0XDRVfLZJFEkyGzrrdJwN/D8C
-	r46R0wr/KFxLZeDR3K6ML+a/hpTVqmjlSrdcgx8wEibO2P6q3U8uO9XstRDv57WyvyFuUMF42ns
-	g3GPUcDFBQo+5SgBkJ5KJ+k6jJvbKL05EV47ipyJJhK8g5IRoUvom8U3r3tOxRhSWjr5n/gHoHx
-	i0dpRBGEinyzdqAaBS4SY32GXZq0ehjVYWmSwZtGMDaRApho7oDWVoLn8t69krgcAKD7g01iIhm
-	drlXSPZIfAhqfBBII1MdnCR1SA0xpuCjBtB5V8lANke1f+WaR/mVj3m9dlDsjW7OyazKwi2Muc1
-	y9KceI=
-X-Received: by 2002:a17:903:1a86:b0:2df:5a5b:5763 with SMTP id d9443c01a7336-2df69d1ae2cmr22719205ad.10.1790167107749;
-        Wed, 23 Sep 2026 05:38:27 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6afc80easm9220405ad.30.2026.09.23.05.38.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 05:38:27 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Coia Prant <coiaprant@gmail.com>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Subject: [PATCH net v2] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak when the PHY clock fails
-Date: Wed, 23 Sep 2026 20:37:13 +0800
-Message-ID: <20260923123713.3137146-1-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20260707; t=1790167245; x=1790772045;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yrBXUqSfBJNVOGA4p1L4WG725TYm+nXRxrzQgFuRPz4=;
+        b=eFVhlQ240U+n9e2fMOlN59j9KkhYBZIycfGaVKMPfnQT++PdaMQKji9OXypEE9xP8s
+         KRgLB/X+4XB1W/oT2Rwlhydgh9b97vZTKYGRrsm0jPSIDFnpFB4c8BswULgm826FE9T1
+         znFmblaOda/S5VwVlukm1wFzj5YauvXTEs6UW9TKHjMZhilPXyxhwt8gtt9lTt/eOc5N
+         k48eEWSaAzvk/5VK/EDIGDH8PNg8fsbGVCNU+LYYRt+f+kCQWKH68WNxB8Uu+zBuIGyZ
+         z5iLqXdz+zn0t60/Rmtr5Wbb7pOxsgo/DLzEPhlrOgbPLwL/rQo0fT2va1JB6x41bjTs
+         G7JQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw252wOFGb1BNSlFvJ9mqzc6K0/yh65tG/oO9ldHyEelEwNrLPTL+uxP77HUYu+QtPKah3tj/0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nEic9d1mZJUe/CRGzn0RRVNwd9+qPP6hjf/YN7b6tfMXqxAHlK
+	JjMbxcyIrTk7Ek921QAlJhB3utvIf+yFgJyQAHqWqFJ+k0i7w/EPfcTxVyUQUIRn6HLZDAz/8tk
+	fxxvLhbRpGujzYw1usgNbxxe+0Yp2bX8=
+X-Gm-Gg: AYBFou0yQpQvf7gtqY/1ugsmtiNWCjw8qVttLCxsnMvZHNhyz1GoS5m24wvSQiKHCso
+	jxnTA98yreodauap6Ia0y3CxqxeN0a9+nrjySEKffbm6N6JdwJCee7I0taWY7sCf6adp2jVUlnP
+	u9J6+L7MA8mrm88MbCfdHIbyHSnvgWA18LSgElfnHfMH60Aib4wdG+dcpLuFeM/kr/p6TAbwPut
+	6lgBsYaLv9drRFxqn2JhG1yff7lpyJasxk8QveN3/p7vliC0C/u8lr/RwZSfZzTz03aCxLDM0uG
+	U/rBnz9egWy+2Mgkjuah1b9vHL2haqJcG0KWWGv0dN5OsA3Q1DSGqbkV+A==
+X-Received: by 2002:a17:907:d91:b0:c25:5faf:b207 with SMTP id
+ a640c23a62f3a-c2aadcf4484mr194861466b.3.1790167245181; Wed, 23 Sep 2026
+ 05:40:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260922200336.2201212-1-coiaprant@gmail.com> <20260922195006.79890f24@kernel.org>
+In-Reply-To: <20260922195006.79890f24@kernel.org>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Wed, 23 Sep 2026 20:40:33 +0800
+X-Gm-Features: AclHuK-io9PS85iIjo2RRKD7nlxq4FY18LSW8xzP9gnGJLLZJesN4MppzV2qPUE
+Message-ID: <CALj3r0hH6m7jUEweKMWGmCW9aOxShaqsV0E+z4ztBhXbJ+378w@mail.gmail.com>
+Subject: Re: [PATCH net-next v10 00/11] net: pcs: add basic support for RK3568 XPCS
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Vinod Koul <vkoul@kernel.org>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Romain Gantois <romain.gantois@bootlin.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Russell King <linux@armlinux.org.uk>, 
+	Shawn Lin <shawn.lin@rock-chips.com>, David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-gmac_clk_enable() enables the bulk clocks first and then the optional
-PHY clock. If clk_prepare_enable() on the PHY clock fails, the function
-returns without rolling back the bulk clocks, and bsp_priv->clk_enabled
-stays false, so the later gmac_clk_enable(bsp_priv, false) becomes a
-no-op and the bulk clock references are leaked.
+Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8823=E6=97=
+=A5=E5=91=A8=E4=B8=89 10:50=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Wed, 23 Sep 2026 04:03:24 +0800 Coia Prant wrote:
+> > This series adds proper SGMII support for the Rockchip RK3568 SoC
+> > using the integrated Synopsys DesignWare XPCS, along with necessary
+> > fixes and refactoring in the stmmac core and XPCS driver.
+>
+> Please slow down with the reposts.
+> Not more than 2 a week, and please wait for the AI review to finish
+> and be published before you repost.
 
-Add the missing clk_bulk_disable_unprepare() on that failure path.
+Understood, sorry for the noise. I'll keep reposts within the limit and
+wait for the AI review to be published before reposting from now on.
 
-Fixes: ea449f7fa0bf ("net: ethernet: stmmac: dwmac-rk: rework optional clock handling")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 8d7042e689261..72bdbcb5e863a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1162,8 +1162,11 @@ static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
- 				return ret;
- 
- 			ret = clk_prepare_enable(bsp_priv->clk_phy);
--			if (ret)
-+			if (ret) {
-+				clk_bulk_disable_unprepare(bsp_priv->num_clks,
-+							   bsp_priv->clks);
- 				return ret;
-+			}
- 
- 			rk_configure_io_clksel(bsp_priv);
- 			rk_ungate_rmii_clock(bsp_priv);
--- 
-2.47.3
-
+Coia
