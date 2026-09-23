@@ -1,332 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318833F105B;
-	Wed, 23 Sep 2026 21:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3920C43DEC8
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 21:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790199401; cv=none; b=iwYnxx97g8IByCkTVRPGtOpXv63jOC7t42eGik5c7Hwh+7Svn5pw5I7/cxnS66kVBuTlopFL0kWli9B6HdAV+SwbTzpUeudO2YLyddGcqc5M+M2TgMx6pvh3danJHEYko6jNmW1EfjMd0C/C1ebpHAlDbUW06ZNJfi9oipb8kb0=
+	t=1790199444; cv=none; b=E8fasXTSTuPpzp72bvs2/RvjDSBnKTSnnd6tukAs/6UrpwO7/X6xUxO3XdI2jZtuShhGuP27sd7hvxN4t1RaU0yxWYdAzDG+ragh/HnNwxskDN0PNW9o+gHPHFPJpqqg8rvvji5Wd6GyHH+yJ57FSzThE/Ti14WQlf9DyMFjCA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790199401; c=relaxed/simple;
-	bh=pv6Tc52VfrjAPKcEUfEgWHyGdQeYhZqIc2dmopMEm1s=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mZ67PVgm6OZEQQkZPFstUFs30XKZYUEzxsjnLN/pmePdxzME7g824L1/zN+rWEr4fvQEfGuXJ/w+Iyt3up3M8O6GHOuo9emKsKHpjJJ30Q2RKPQIr3xPxfmBiBulRdc7OkHoXDLrMgdf2g+NmfL/FEHx7J+jYPCSoPWSUofqVoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPnoU8TY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790199444; c=relaxed/simple;
+	bh=+g2TQZbj0y8d+xQ2Zm2UwnJZ3gjRdu0REmdwLwpE1L0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=A6PIWLYXoXOYttcHZwnsRkxw5q4Uw/cRf4O4Z+mJTI1ieL5OnBKXOnCNc1iEWFMKFmIRxND8ZQk9kHcOz3EBdxMaXoYggqJva9Cys4D9zgMr4SrnP0S1cy1aSd8obPMiPAFvVmDxp1+oEZr18HvfDl8ap5lD1uR8tT0XTGjU9kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lNyYirKa; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPnoU8TY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF931F00893;
-	Wed, 23 Sep 2026 21:36:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790199399;
-	bh=SJCZHr1Laf9ARp0PyW1Sbd8JGt4j8p2fLSSYinMrpdg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VPnoU8TYtrQmaRybOzdXw3pk1FzRY9loLyJIaesaAyEx3wiWQ2dHD/409lALSlPPX
-	 MG2td+GHnhmt4gu0K8zuv1+2K4kkkU8Kxo4aTqCqLsjtxeLbXRN7SmH2Aec3X4MJDO
-	 9ifH1o6ZSqF4+om4thHCVDA3BublxW3lkghlBjpCBjwByajh8oLMGjiB11MPKaELQ4
-	 kKh1AtxuY7ciHZ9xrPSuV6Uu/fa/abhJdkRdCQ1orm1m59vEkJ4Sso0V0JERuAVA+b
-	 ZLpBi3sJ1Ii9MN74hEYqbLbiWUFU80fKymPNcoMTDOS+gZ9PWULR6L6xxYqqq/mwez
-	 YfV378lPrZF9w==
-Subject:
- Re: [PATCH] net: llc: clean up unaccepted child sockets in llc_ui_release()
-From: netdev-bot+sashiko@kernel.org
-To: benquike@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 21:36:38 +0000
-Message-ID: <179019939874.2160803.14497903403458944686@kernel.org>
-In-Reply-To: <20260919213635.3314344-1-benquike@gmail.com>
-References: <20260919213635.3314344-1-benquike@gmail.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lNyYirKa"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8633c0d7353so1064774b3a.3
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:37:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790199442; x=1790804242; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=27SgLD1I/Cvv7dG/kGYKQA4JzrNe4m10wNb0sLptOo0=;
+        b=lNyYirKaFHsmSkJ1Et7sEgWn8ylkvQ+AxhfmJjELppScO4d7VHsou0mMyYi/9/zXSd
+         EMwEMYbkDDmeO3mVJSPEjMqygVh0WmC82Jc5s5/rtLC63avSPCLNGOr5epH9qp63F0Dd
+         +JL8jtm+Q8vnzx/OQEkE7A8C8M6lbpC+a3UyG5q7yrUVs0MUV+eSOwDpX136tCe88/Ay
+         ek6H/uJtvQt2IH52l7srXmuf2GoaaeKq0Vesu9fw9bzVPHNldJgHHpiq/LJ3Qx/+oh53
+         7NKfZSwnGap/GF1z5LI1rjZuD0ud1Y0v2JSxEjNs1ESwQv2PkFYXnsmJHB2TTPsJLGPM
+         EcAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790199442; x=1790804242;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=27SgLD1I/Cvv7dG/kGYKQA4JzrNe4m10wNb0sLptOo0=;
+        b=m03hZ/+R4g3Wrv3F7eGLaGncpq1cGfhxafBgbD1+pX06HIDvqxJvlkTNh+bKp7Ko7q
+         cz6JlxAXMwId2OEjJw+fwAt+OtQ0RNA0sdPOFDxhsbOju2MQqYfn9GfQV2eDOcaHe3tU
+         cjr03m7MTlQC1jAqKzI5ZOYINMOGqorePZcW07NHe8GH5RTCAtVsdKQ8nfFcZVT44+wc
+         nLi6P1r3E4md7ZykvTSxCU5k1hv8UvopZ5zqa26thFFv+GdZ/71foHy+h1ilZ1Br+FpE
+         u4rCnihSUu7ykVnkuyeqXcunMmYz3MA3LBPX/Yxiobqb8qQavv2FrXcntB/AUxbgS7hO
+         GqTA==
+X-Forwarded-Encrypted: i=1; AKwUvBzbd1efm0xXX9Ldjbfc+T47mZK2hmSXZ20yyDKl0Qrm7lhG4q/pPRwCxylj0Sj+c0QznChNotU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYoOz0Xd+qOM1im3aiBaQFbYwi5XeamSrDfQ6nxBTe1A4dD5Lb
+	OuDMFh7sA0T+JcXfAv6LLXcKZfbFNvRprPy+/PTDoMuS8hc53Ovl9iVroviHm+WvFjtyb9J24V7
+	G2K/Wew==
+X-Received: from pfbgp6.prod.google.com ([2002:a05:6a00:3b86:b0:87a:d557:6bfe])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6088:b0:87c:b5c0:738
+ with SMTP id d2e1a72fcca58-87e993770a9mr337321b3a.19.1790199442355; Wed, 23
+ Sep 2026 14:37:22 -0700 (PDT)
+Date: Wed, 23 Sep 2026 21:35:30 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260923213719.224838-1-kuniyu@google.com>
+Subject: [PATCH v2 bpf-next 0/8] bpf: Add bpf_tcp_ops hooks for TCP AutoLOWAT.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, 
+	"=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?=" <cleger@meta.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
+This series introduces two callbacks for bpf_tcp_ops:
 
-Critical: 1 · High: 3 · Medium: 1 · Low: 1
+  .enqueue_rcvq(): invoked when TCP stack enqueues skb to
+                   sk->sk_receive_queue
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+  .dequeue_rcvq(): invoked in tcp_cleanup_rbuf() after data
+                   is dequeued from sk->sk_receive_queue
 
-- [Critical] Type confusion in the new TCP_LISTEN drain loop in
-  llc_ui_release(): the loop assumes every skb on sk->sk_receive_queue…
-- [High] The drain of the listener's sk_receive_queue is placed at the
-  very start of llc_ui_release() (net/llc/af_llc.c:207-225), before…
-- [High] The new child teardown in llc_ui_release()
-  (net/llc/af_llc.c:213-222) removes the child from the SAP hash, drops…
-- [High] Incomplete fix: the new release-time drain can only reclaim
-  children whose skb reached the listener's sk_receive_queue, i.e.…
-- [Medium] Reference-tracker acquire/release mismatch: the new code
-  releases the child's netdev reference with netdev_put(child_llc->dev,…
-- [Low] The commit message cites a non-existent symbol: "llc_ui_release()
-  calls skb_queue_purge(&sk->sk_receive_queue) in llc_sk_Component /…
+Those callbacks can be enabled on a per-socket basis by
+bpf_setsockopt():
 
---
+  int flags = BPF_SOCK_OPS_RCVQ_CB_FLAG;
 
-net: llc: clean up unaccepted child sockets in llc_ui_release()
+  bpf_setsockopt(sk, SOL_TCP, TCP_BPF_SOCK_OPS_CB_FLAGS,
+                 &flags, sizeof(flags));
 
-The patch adds a drain of the listener's sk_receive_queue at the top of
-llc_ui_release() when sk_state is TCP_LISTEN.  For every queued skb it
-takes skb->sk as an unaccepted child, removes it from its SAP, drops the
-device reference and frees it with llc_sk_free().  A few questions about
-the new block and the changelog below.
+or via the bpf_tcp_ops-specific helper added in the next patch:
 
-Commit message:
+  bpf_sock_ops_cb_flags_set(sk, BPF_SOCK_OPS_RCVQ_CB_FLAG);
 
-> If the listening socket is closed without calling `accept()`,
-> `llc_ui_release()` calls `skb_queue_purge(&sk->sk_receive_queue)` in
-> `llc_sk_Component` / `llc_sk_free()`, which frees the queued `skb`s
+This allows the BPF prog to dynamically adjust sk->sk_rcvlowat,
+suppressing unnecessary EPOLLIN wakeups until sufficient data
+is available in the receive queue.
 
-[Severity: Low]
-Where does llc_sk_Component come from?  A grep for that string over the
-tree at this commit returns nothing, and the only skb_queue_purge() of
-sk->sk_receive_queue in net/llc is the one in llc_sk_free() in
-net/llc/llc_conn.c.  Could the changelog name only the function that
-actually exists?
+This functionality, which we call "TCP AutoLOWAT", was originally
+developed in 2020 by Tenzin Ukyab with the help of Soheil Hassas
+Yeganeh, Arjun Roy, and Eric Dumazet.  It has served Google RPC
+workloads for more than 5 years.
 
-> diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
-> index b0447c33dbf0..4bc7839127aa 100644
-> --- a/net/llc/af_llc.c
-> +++ b/net/llc/af_llc.c
-> @@ -204,6 +204,25 @@ static int llc_ui_release(struct socket *sock)
->  	llc = llc_sk(sk);
->  	dprintk("%s: closing local(%02X) remote(%02X)\n", __func__,
->  		llc->laddr.lsap, llc->daddr.lsap);
-> +	if (sk->sk_state == TCP_LISTEN) {
-> +		struct sk_buff *skb;
-> +
-> +		while ((skb = skb_dequeue(&sk->sk_receive_queue)) != NULL) {
-> +			struct sock *child = skb->sk;
-> +
-> +			if (child) {
+Combined with TCP RX zerocopy, this typically allows us to read an
+entire RPC frame with just a single wakeup and a single system call.
 
-[Severity: Critical]
-Is every skb on a TCP_LISTEN socket's receive queue really a connection
-indication carrying a child sock?  In llc_conn_state_process() the data
-path queues the skb on the receiving socket itself:
+While the original implementation was specialised for our
+internal RPC format, this series introduces a more flexible
+version by leveraging BPF.
 
-net/llc/llc_conn.c:llc_conn_state_process() {
-	case LLC_DATA_PRIM:
-		skb_get(skb);
-		llc_save_primitive(sk, skb, LLC_DATA_PRIM);
-		if (unlikely(sock_queue_rcv_skb(sk, skb))) {
-	...
-}
+The bpf prog in the last selftest patch closely mirrors the core
+logic of the original implementation to provide a real-world
+example.
 
-so skb_set_owner_r() leaves skb->sk == sk.  Those skbs can still be on the
-queue when the socket goes back to listening, because the DISC path only
-does:
+Note that the new callbacks are not supported on legacy SOCK_OPS.
 
-net/llc/llc_conn.c:llc_conn_state_process() {
-	...
-			sk->sk_socket->state  = SS_UNCONNECTED;
-			sk->sk_state          = TCP_CLOSE;
-	...
-}
 
-without purging the queue, and llc_ui_listen() accepts that state:
+Changes:
+  v2:
+    * Add patch 1 not to allow setsockopt() from new callbacks
+    * Patch 8 (selftest)
+      * Avoid address comparison for a specific version of gcc.
+      * Make rpc_test_cases[] static.
+      * Update comment in rpc_test_case[].
 
-net/llc/af_llc.c:llc_ui_listen() {
-	if (unlikely(sock->state != SS_UNCONNECTED))
-		goto out;
-	...
-	if (sk->sk_state != TCP_LISTEN) {
-		sk->sk_ack_backlog = 0;
-		sk->sk_state	   = TCP_LISTEN;
-	}
-}
+  v1: https://lore.kernel.org/bpf/20260920195633.3033620-1-kuniyu@google.com/
 
-With child == sk, does this loop then tear down the listener itself, after
-which the unchanged tail of llc_ui_release() repeats
-llc_sap_remove_socket(llc->sap, sk), netdev_put(llc->dev,
-&llc->dev_tracker), sock_put(sk) and llc_sk_free(sk) on the same socket?
-The second llc_sap_remove_socket() reaches an unconditional hlist_del():
+Legacy SOCK_OPS version:
+  v3: https://lore.kernel.org/bpf/20260523083001.2911931-1-kuniyu@google.com/
+  v2: https://lore.kernel.org/bpf/20260522074601.1658705-1-kuniyu@google.com/
+  v1: https://lore.kernel.org/bpf/20260508073355.3916746-1-kuniyu@google.com/
 
-net/llc/llc_conn.c:llc_sap_remove_socket() {
-	spin_lock_bh(&sap->sk_lock);
-	sk_nulls_del_node_init_rcu(sk);
-	hlist_del(&llc->dev_hash_node);
-	sap->sk_count--;
-	...
-}
 
-sk_nulls_del_node_init_rcu() is idempotent, but hlist_del() is not, so the
-second pass writes through an already poisoned pprev.  Should the loop
-skip skbs whose skb->sk == sk (or compare against the listener) before
-doing any of this?
+Kuniyuki Iwashima (8):
+  bpf: tcp: Convert deny-list for bpf_{get,set}sockopt() to allow-list.
+  selftest: bpf: Use BPF_SOCK_OPS_ALL_CB_FLAGS + 1 for bad_cb_test_rv.
+  bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
+  bpf: tcp: Support bpf_sock_ops_cb_flags_set() for bpf_tcp_ops.
+  tcp: Split out __tcp_set_rcvlowat().
+  bpf: mptcp: Don't support BPF_SOCK_OPS_RCVQ_CB_FLAG.
+  bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
+  selftest: bpf: Add test for bpf_tcp_ops.{enqueue,dequeue}_rcvq().
 
-[Severity: High]
-Can children that never reach this queue still leak?  llc_conn_handler()
-creates the child before the frame is classified:
-
-net/llc/llc_conn.c:llc_create_incoming_sock() {
-	newllc->dev = dev;
-	dev_hold(dev);
-	llc_sap_add_socket(llc->sap, newsk);
-	...
-}
-
-A fresh child is in LLC_CONN_STATE_ADM, and only the SABME transition runs
-llc_conn_ac_conn_ind().  The DISC and catch-all transitions use
-llc_conn_disc():
-
-net/llc/llc_c_ac.c:llc_conn_disc() {
-	/* FIXME: this thing seems to want to die */
-	return 0;
-}
-
-so ev->ind_prim stays 0 and llc_conn_state_process() ends at:
-
-net/llc/llc_conn.c:llc_conn_state_process() {
-out_skb_put:
-	kfree_skb(skb);
-	return rc;
-}
-
-Since skb_set_owner_r() holds no sock reference, does the child stay in
-sap->sk_laddr_hash with its dev_hold() forever, i.e. the same leak the
-changelog describes, reachable from an inbound non-SABME frame without
-ever closing the listener?
-
-> +				struct llc_sock *child_llc = llc_sk(child);
-> +
-> +				skb_orphan(skb);
-> +				if (child_llc->sap)
-> +					llc_sap_remove_socket(child_llc->sap, child);
-> +				netdev_put(child_llc->dev, &child_llc->dev_tracker);
-
-[Severity: Medium]
-Does the tracked release here match the acquire side?  The child's device
-reference is taken with plain dev_hold() in llc_create_incoming_sock(),
-and dev_hold() is netdev_hold(dev, NULL, GFP_ATOMIC), so
-child_llc->dev_tracker is never populated and only dir->no_tracker is
-incremented.  netdev_put() with a non-NULL trackerp whose value is NULL
-lands here:
-
-lib/ref_tracker.c:ref_tracker_free() {
-	if (!trackerp) {
-		refcount_dec(&dir->no_tracker);
-		return 0;
-	}
-	tracker = *trackerp;
-	if (!tracker) {
-		refcount_dec(&dir->untracked);
-		return -EEXIST;
-	}
-	...
-}
-
-With CONFIG_NET_DEV_REFCNT_TRACKER=y, does that decrement of dir->untracked
-(which carries a bias of 1) produce a refcount_t underflow warning, and
-leave no_tracker elevated so ref_tracker_dir_exit() warns at device
-teardown?  llc_ui_autobind() shows the other convention:
-
-net/llc/af_llc.c:llc_ui_autobind() {
-	llc->dev = dev;
-	netdev_tracker_alloc(llc->dev, &llc->dev_tracker, GFP_KERNEL);
-	...
-}
-
-Would either using dev_put() here, or converting
-llc_create_incoming_sock() to netdev_hold(dev, &newllc->dev_tracker,
-GFP_ATOMIC), be the better pairing?
-
-> +				sock_orphan(child);
-> +				llc_sk_free(child);
-
-[Severity: High]
-Is anything serialising this teardown against the child's own receive
-path?  The child is fully hashed by llc_sap_add_socket(), so a softirq can
-find it and run its state machine under its own lock:
-
-net/llc/llc_conn.c:llc_conn_handler() {
-	sk = __llc_lookup(sap, &saddr, &daddr, dev_net(skb->dev));
-	if (!sk)
-		goto drop;
-
-	bh_lock_sock(sk);
-	...
-	if (!sock_owned_by_user(sk))
-		llc_conn_rcv(sk, skb);
-	...
-}
-
-The listener's lock_sock() does not exclude that, and actions such as:
-
-net/llc/llc_c_ac.c:llc_conn_ac_start_ack_timer() {
-	mod_timer(&llc_sk(sk)->ack_timer.timer,
-		  jiffies + llc_sk(sk)->ack_timer.expire);
-	return 0;
-}
-
-can re-arm an embedded timer after llc_sk_free() -> llc_sk_stop_all_timers(sk,
-true) has already done timer_delete_sync().  Can that leave an armed timer
-on a sock whose last reference is dropped by the sock_put() at the end of
-llc_sk_free(), and can llc_conn_send_pdus() use child_llc->dev after the
-netdev_put() above?  TCP takes bh_lock_sock() plus a sock_hold() on each
-child in inet_csk_listen_stop(); should something equivalent be done here?
-
-> +			}
-> +			kfree_skb(skb);
-> +		}
-> +	}
->  	if (!llc_send_disc(sk))
->  		llc_ui_wait_for_disc(sk, READ_ONCE(sk->sk_rcvtimeo));
->  	if (!sock_flag(sk, SOCK_ZAPPED)) {
-
-[Severity: High]
-Does draining here, before the listener is unhashed and before the backlog
-is flushed, still leave the leak open?  llc_sap_remove_socket(llc->sap, sk)
-and release_sock(sk) run only after this point, so while the socket lock is
-held llc_conn_handler() can still find the listener, create a child and
-then push the skb to the backlog:
-
-net/llc/llc_conn.c:llc_conn_handler() {
-	if (unlikely(sk->sk_state == TCP_LISTEN)) {
-		struct sock *newsk = llc_create_incoming_sock(sk, skb->dev,
-							      &saddr, &daddr);
-		if (!newsk)
-			goto drop_unlock;
-		skb_set_owner_r(skb, newsk);
-	}
-	...
-	if (!sock_owned_by_user(sk))
-		llc_conn_rcv(sk, skb);
-	else {
-		llc_set_backlog_type(skb, LLC_PACKET);
-		if (sk_add_backlog(sk, skb, READ_ONCE(sk->sk_rcvbuf)))
-			goto drop_unlock;
-	}
-}
-
-release_sock() then runs llc_backlog_rcv() on a listener whose llc->state is
-LLC_CONN_STATE_ADM:
-
-net/llc/llc_conn.c:llc_backlog_rcv() {
-	if (likely(llc_backlog_type(skb) == LLC_PACKET)) {
-		if (likely(llc->state > 1)) /* not closed */
-			rc = llc_conn_rcv(sk, skb);
-		else
-			goto out_kfree_skb;
-	...
-}
-
-so the skb is just freed and the freshly created child, its SAP reference
-and its device reference are leaked again.  There also seems to be a second
-window after release_sock(): a softirq that looked up the listener before it
-was unhashed can queue another child-bearing skb on sk_receive_queue while
-sk_state is still TCP_LISTEN, and llc_sk_free(sk) then purges it.  Would
-performing this cleanup after the listener is unhashed and the backlog
-flushed (or directly at the purge site) close both windows?
+ include/net/tcp.h                             |  34 ++
+ include/uapi/linux/bpf.h                      |  13 +-
+ net/core/filter.c                             |  10 +-
+ net/ipv4/bpf_tcp_ops.c                        | 135 ++++++-
+ net/ipv4/tcp.c                                |  14 +-
+ net/ipv4/tcp_fastopen.c                       |   2 +
+ net/ipv4/tcp_input.c                          |   4 +
+ tools/include/uapi/linux/bpf.h                |  13 +-
+ .../selftests/bpf/prog_tests/tcp_autolowat.c  | 350 ++++++++++++++++++
+ .../selftests/bpf/prog_tests/tcpbpf_user.c    |   3 +-
+ .../selftests/bpf/progs/bpf_tracing_net.h     |   2 +
+ .../selftests/bpf/progs/tcp_autolowat.c       | 312 ++++++++++++++++
+ .../selftests/bpf/progs/test_tcpbpf_kern.c    |   3 +-
+ 13 files changed, 866 insertions(+), 29 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c
+ create mode 100644 tools/testing/selftests/bpf/progs/tcp_autolowat.c
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919213635.3314344-1-benquike%40gmail.com
+2.56.0.rc1.315.gc6ed9934b7-goog
+
