@@ -1,82 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C607729DB6E;
-	Wed, 23 Sep 2026 00:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589132AD03;
+	Wed, 23 Sep 2026 00:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790121675; cv=none; b=M/EldR9IjeMygPiLXGWH77HEa3uA6785dYdZej9QnyvF844S3C29RL8U5+C2fv8mM4+S215s5J945yiqsg3Vedyz5cjoynzd5CBpvbcJicKfA7hUq3enDxf/HSZN9ZvNdD9FLTFa+OweG2mqBTZD6YinekNAiJfzaYfsnuMXUPQ=
+	t=1790122289; cv=none; b=m3la3fgnxLzsNWueAeZMuHcPemCu213wJnP9iUE++olhi+ONKhTDb/tfpp+wwt57b0hnIMdWusD3XE0qY7tHsN2sd03aEcEd25ymilZZnyMeMt/BjJhsxqEyrlvYo1Ebc2LOcmvGZfepuP0zMtSP+AiIMyUfSFsKdi/H9ocrpfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790121675; c=relaxed/simple;
-	bh=gQ7+bc0cXYi7r9jYB+aNQDpm7U4efqVw7Cnw1ri9NE4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dpGEWhQ8GjChsia9tl4a3guaRffD4KnKQYumq28jkOy41vlK5j3U1MJCCrr3HE4D6mL3kjVf29nzo4RSmZkt1EM1xtvQ9aggqr1RNikKjfqtR1u6g/FtXp2WpHqeZAdMtsm5TgDDiJLUyEqgBQWbXnRvmATnDG8N8WmX+Zg627g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYTnV1u5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790122289; c=relaxed/simple;
+	bh=fxEmH9gZ1oYrOHdSDxrKgHNyfpaxrbrnS0sfCxVXzc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qo5/lbr4VtCoe/0QM+vGf2aZtmux6IBFn09dqKoOAbD0b/iLbUDDCpOVjUZvYm1ivXVXv7+2fEAN+m/M/Ah5VmuaropwFPdMx2NiZ8lIvv17x2yRA9+/GdFrxdre9RUMMcW2OG5KQXvPyVbYI8DXCWbA0fkSNG7JAGVg6Ma7ULc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOXq24Zt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYTnV1u5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5E21F000FF;
-	Wed, 23 Sep 2026 00:01:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOXq24Zt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802F81F000FF;
+	Wed, 23 Sep 2026 00:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790121674;
-	bh=cw58Y9/eYTa7ToLPFco7mggC1vZsnQAC6F+d7GeI5jg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kYTnV1u5psy/FYr3htXLEw2+W8HtTnmgkXEnnIN6tBKghNwRVxBm0ZSdY3yzz/k/j
-	 0mgWbwmJFJMPxByBoCeOdFUzhFQ/Ui2n0O7CCKT7vjtGu4Ym/WjYrRF3gC2f1Ac2l4
-	 i81a145NFtikK4a41NXWzMr2au2oJARi6ybTfDlAfStPUenKBMwB97nIZgX5MjsFIU
-	 wSv0PygwMOornm2s2mNJiYNyu9dsv0ZH73oKS92SpHeFKQAJdmVyET4oLxnc4Nfog8
-	 alE8ueln82xzk3Fl+uetcDbPbRf12k3QAXrgD+zoQV+ZbmlXFnf6d7eeJOeZdNVwG/
-	 muRgevAsJPcFw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568AA3822D65;
-	Wed, 23 Sep 2026 00:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790122287;
+	bh=/v3hhP0H20HIQY0qnN2arpZWeY+d+HdAb+cLIoHO6XA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oOXq24Zt+xCEEWF3BfwKPxzniQHkQWn/Frp6hC0wEfhmTwFriybOmClf7iBCRjM04
+	 OdzaIIiGEEynB1VkoOqUDBCTK8+cKyKvWxvnkkBBtilRba38pE0rfVpN0UojbS6j7q
+	 zn4Cyw2c5bPYHT56z+rQ3gYbGkakDwhvqzdF1T0x628tgTp/rtwaKn4lC6vIqEVIjn
+	 MivVGx38OD8Y/o4rf7AFGCS3U2oFNgdR8qdqXjeZeZ68qHNZHG1aS9+SuqhmdIugGr
+	 T/R0XXSlXw6WalNlrbQdHbN/CWea/n48DGbGRb8eHTKCqsCJ+WmsY1TAUBlHMAQyK+
+	 9Vc9t1BuhPUSA==
+Date: Tue, 22 Sep 2026 17:11:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Zak Kemble
+ <zakkemble@gmail.com>, Simon Horman <horms@kernel.org>, Ryo Takakura
+ <ryotkkr98@gmail.com>, linux-kernel@vger.kernel.org (open list), Nicolai
+ Buchwitz <nb@tipi-net.de>
+Subject: Re: [PATCH net v2 00/10] net: systemport: Collection of fixes
+Message-ID: <20260922171126.7abbfd23@kernel.org>
+In-Reply-To: <20260922232440.598918-1-florian.fainelli@broadcom.com>
+References: <20260922232440.598918-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v2] bpf,
- sockmap: reject max_entries > INT_MAX in sock_map_alloc
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179012160516.137376.9044341582800034905.git-patchwork-notify@kernel.org>
-Date: Wed, 23 Sep 2026 00:00:05 +0000
-References: <20260917121016.48171-1-zhaogongyi@bytedance.com>
-In-Reply-To: <20260917121016.48171-1-zhaogongyi@bytedance.com>
-To: Zhao Gongyi <zhaogongyi@bytedance.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev,
- edumazet@google.com, kuniyu@google.com, pabeni@redhat.com,
- willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
- daniel@iogearbox.net, zhaogongyi@BYTEDANCE.COM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 22 Sep 2026 16:24:30 -0700 Florian Fainelli wrote:
+> - dropped patch 4 and target it at net-next
+> - dropped patch 11 which needs more thinking as to what is the
+>   appropriate DMA teardown sequence wrt. topctrl_flush
+> - addressed Nicolai's feedback
+> - added Nicolai's Reviewed-by tags where provided
 
-This patch was applied to bpf/bpf.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
-
-On Thu, 17 Sep 2026 20:10:16 +0800 you wrote:
-> From: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
-> 
-> sock_map_alloc() only rejects max_entries == 0 and otherwise allows any
-> u32 value.  sock_map_free() then walks the sks[] array with a signed int
-> iterator:
-> 
-> 	int i;
-> 	for (i = 0; i < stab->map.max_entries; i++)
-> 		struct sock **psk = &stab->sks[i];
-> 
-> [...]
-
-Here is the summary with links:
-  - [bpf,v2] bpf, sockmap: reject max_entries > INT_MAX in sock_map_alloc
-    https://git.kernel.org/bpf/bpf/c/814a81c842bd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Hi, our patch limit is 15, please don't have more than 15 patches
+outstanding against any tree. As you can imagine everyone has LLM
+access now. The number of outstanding patches in pw is 640 at the 
+time of writing. Please.
