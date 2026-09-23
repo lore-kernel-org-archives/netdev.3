@@ -1,43 +1,50 @@
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B15282F21;
-	Wed, 23 Sep 2026 19:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AA0515965;
+	Wed, 23 Sep 2026 19:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790192162; cv=none; b=B1vNZ3B9NMhlzlC3dFJF2d6X7QrTUdAlJmILLbZNpitr46YwlGqpPdiuNSzDJDVJtYckOUQAV8gYL216c1vmqJ3ipI3chu/hCTMF18EVXkAEbrRBYWaL6TKHvBR8g2gtqb4RJlmVsHsVffqPXHrZuM4bd3xQ09yosnhDyZ1x6gE=
+	t=1790192378; cv=none; b=aw5UATgr7vO8h5fbbFDg5D5rJNL+d83L04eTy9/sGE6C5P7DOL5A7SKw1E5jlw7j89jZGcZ6rD+MFD4U/tcQR6nfVR3AkzRScHTQTChjLsiM2+um01a5PVe+u6uCS1gXCjDHw+O0AQYih0rQMROR07GG/w2JKvYqf3npEdi9m2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790192162; c=relaxed/simple;
-	bh=2LDuMRNED5wdqW1AY6gA1vtr2Aph4RkKWDgvfunq4v4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rPT9Kl+bkotIE5gndqX1jxccWEBFRgx9pux3ejM6QdQdNuk574YletekzyV6PaTzBZgLZ1b2Y6zO3tHi+ZtY+8HDwbhYaZqR8J6oJWPfQo4PnSM/3Hd8GGlTWE8VHF9vau9Uc/SfK6AIFWj+TnzJ0a7GnnfmP0Mb4+zDONOuthg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eHDVl/cG; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1790192378; c=relaxed/simple;
+	bh=lHstYYj7yP2JWMHLrH5knT6mK/wVejBlmpHm1w2HU+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EFXhDD2I60rjbjuZdo94aKfr+luOcCrSIuRHAj94etE0FGvR/IYK5Hf94VHyWr1RuuXRBKRPj4iSg2B08nv8+iA6NmcxKlTrswHxgeCMRp0APZTJD3Zxzllj+DpUiwC0KXtxgAyy4K/+MUbmcA8HFCEcOJXjZE/OCD9oFSM7FS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKyj694Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eHDVl/cG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1790192149; x=1790451349;
-	bh=fhmnpnkcxvujnteMRxUDsHManAcGr3a7xj98F4dZP7s=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=eHDVl/cGeazikvfpoDbxUc+rLnR8gVrH2V2avAJoEwpE2vOEMXm+DC0aeePJAw274
-	 LmIM7/QgX2msJaRbVtlZL36LT2BJgCLthykGULLv3hPD1oGtWYMEiuIbwMSDkaKi08
-	 Wb2gNnlembAes730gqoSB1w66jI6V+wPvtOIvbtSxy8VhFdirvK1/J96KmenP0EmVQ
-	 ifA26qZAc8kZyfuIPmIJS8u2dFB9g5RO/J4aUHZLGUNgbcGnCUA9JwoamCyIhhOHm1
-	 r08MpUAt5IPRP99GkklNJlEBieU4L/eBX7vrXY2uPwcbW8XJgU1NocXv4S27A53KXq
-	 ZvDiNzbRhdaFQ==
-Date: Wed, 23 Sep 2026 19:35:41 +0000
-To: Luca Weiss <luca.weiss@fairphone.com>
-From: Kristian Brox <isyourbrainfoss@proton.me>
-Cc: David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] nfc: st-nci: Fairphone 5 NFC bring-up (ST21NFCD)
-Message-ID: <20260923193525.190747-1-isyourbrainfoss@proton.me>
-In-Reply-To: <DLIAEGGE6ON6.TF50P7IWGBZO@fairphone.com>
-References: <20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me> <DLIAEGGE6ON6.TF50P7IWGBZO@fairphone.com>
-Feedback-ID: 203906395:user:proton
-X-Pm-Message-ID: d779e2a9e7d07146ec86f89b93919ed664fa8db4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKyj694Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEA81F00893;
+	Wed, 23 Sep 2026 19:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790192375;
+	bh=LQz5Qs/TyBSC2iBixGCGQ7+e98TfYZR6lZcaYPuMI3s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XKyj694ZA7KNrrTWaoenz7yQfsl2C6JxrsUwR1InKVJ6s8yjgW7j86gyVskHjdYJv
+	 h1kFfcnUtphet4keeq+mhjFvoFD8DmLD7SXpuWUjid9VeaJ4PYbGs9D7suPXOYKASg
+	 PrdvMRADbQ3TqMM6/TNf7JtkIebGA50UXlYp5dKfvSfO0mH2NUrG3ohxBvn1UuKsMg
+	 pSLQ/EYAMCQiId98RVUN2VXfWFebFuwWb30yfxKhmNFLzGl9/dOsNR6ArI09n4+kIy
+	 aGWHt48QYMVEAnQffQ2p4JBb+puisgBWB+yed+mEpvRkp++jJPwSfbzxNmJgKxlxbX
+	 RSMHZPRmZV4NQ==
+Date: Wed, 23 Sep 2026 20:39:29 +0100
+From: Simon Horman <horms@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horatiu.vultur@microchip.com,
+	steen.hegelund@microchip.com, UNGLinuxDriver@microchip.com,
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, herve.codina@bootlin.com,
+	arnd@arndb.de, gregkh@linuxfoundation.org, mohsin.bashr@gmail.com,
+	richardcochran@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v7 11/14] net: lan966x: add PCIe FDMA MTU change
+ support
+Message-ID: <20260923193929.GW13925@horms.kernel.org>
+References: <20260918-lan966x-pci-fdma-v7-11-0ecc179c8a2c@microchip.com>
+ <179008205354.2160803.17637640817184992984@kernel.org>
+ <20260923094622.gmxyw46ligz4rsyd@DEN-DL-M70577.microsemi.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,40 +52,189 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260923094622.gmxyw46ligz4rsyd@DEN-DL-M70577.microsemi.net>
 
-Hi Luca,
+On Wed, Sep 23, 2026 at 11:46:22AM +0200, Daniel Machon wrote:
+> > Thank you for your contribution! Sashiko AI review found 4 potential
+> > issue(s) to consider.
+> > 
+> > Critical: 0 · High: 2 (2) · Medium: 1 (1) · Low: 1
+> > 
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchwork
+> > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > (one such reply per series is enough).
+> > 
+> > - [High] MTU change during or after PCIe FDMA teardown runs the full
+> >   reload on freed/quiesced state: unbounded napi_disable() while holding…
+> > - [High] The new resize readiness check publishes lan966x->rx.lan966x
+> >   before the PCI FDMA rings exist, so an MTU change can race with ring…
+> > - [Medium] The new PCIe resize path retires DMA rings and tears down
+> >   their ATU outbound window without ever confirming the hardware is…
+> > - [Low] FDMA_PCI_DB_SIZE_MAX / FDMA_PCI_MAX_MTU perform unsigned
+> >   arithmetic with no underflow guard and no BUILD_BUG_ON, even though…
+> > 
+> > Pre-existing issues:
+> > - [High] The hazard the new PCIe reload path documents and avoids is
+> >   still live in the sibling platform reload path, which this series…
+> > - [High] The two implementers of lan966x_fdma_ops::fdma_resize now
+> >   disagree about the 'rings not built yet' precondition, and the…
+> > - [Medium] Window in which DEV_MAC_MAXLEN_CFG exceeds the DCB buffer
+> >   size, combined with a missing SOF/EOF check in…
+> > 
+> > --
+> > 
+> > net: lan966x: add PCIe FDMA MTU change support
+> > 
+> > This adds MTU change support to the PCIe FDMA path by reallocating the
+> > contiguous ATU-mapped RX and TX rings at the new size and falling back to
+> > the old buffers on failure.  It also caps the PCIe DCB ring at 256 entries
+> > and advertises a derived dev->max_mtu (FDMA_PCI_MAX_MTU) when the FDMA is
+> > in use.
+> > 
+> > A few questions below about the new reload path and the new size macros.
+> > 
+> > > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
+> > > index 5d6902459f20..940425beec2f 100644
+> > > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
+> > > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
+> > > @@ -358,7 +358,7 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
+> > >       lan966x->rx.lan966x = lan966x;
+> > >       lan966x->rx.max_mtu = lan966x_fdma_get_max_frame(lan966x);
+> > >       rx_fdma->channel_id = FDMA_XTR_CHANNEL;
+> > > -     rx_fdma->n_dcbs = FDMA_DCB_MAX;
+> > > +     rx_fdma->n_dcbs = FDMA_PCI_DCB_MAX;
+> > >       rx_fdma->n_dbs = FDMA_RX_DCB_MAX_DBS;
+> > >       rx_fdma->priv = lan966x;
+> > >       rx_fdma->db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
+> > 
+> > [Severity: High]
+> > Can an MTU change race with ring construction here?  lan966x_fdma_pci_init()
+> > sets rx.lan966x before it fills in channel_id/n_dcbs/n_dbs/db_size/size and
+> > before the two sleeping allocations in lan966x_fdma_pci_rx_alloc() and
+> > lan966x_fdma_pci_tx_alloc().
+> > 
+> > The netdevs are already live at that point: lan966x_probe() runs the whole
+> > port loop, including lan966x_probe_port()->register_netdev() and
+> > lan966x_port_init()->lan966x_fdma_netdev_init()->netif_napi_add()+
+> > napi_enable(), and only calls ops->fdma_init() afterwards, without holding
+> > RTNL.
+> > 
+> > So an rtnl-held ndo_change_mtu in that window sees rx.lan966x != NULL, passes
+> > the new guard in lan966x_fdma_pci_resize(), finds a max_mtu that differs from
+> > the partially initialised rx.max_mtu, and enters __lan966x_fdma_pci_reload().
+> > Both contexts then write the same lan966x->rx.fdma / lan966x->tx.fdma:
+> > 
+> >   lan966x_fdma_pci_reload()
+> >       lan966x_fdma_rx_disable(&lan966x->rx)   /* channel_id still 0 */
+> >       lan966x->rx.fdma.atu_region = NULL;     /* under probe's feet */
+> >       lan966x_fdma_pci_rx_alloc(&lan966x->rx) /* second ring */
+> > 
+> > Does this leak probe's ring plus its ATU region (only
+> > FDMA_PCI_ATU_REGION_MAX == 6 exist), or trip WARN_ON(fdma->atu_region) /
+> > -ENOSPC in fdma_pci_atu_region_map()?  And on the failure branch,
+> > lan966x_fdma_pci_reset_mem() dereferences tx->fdma.atu_region->base_addr,
+> > which is NULL in a snapshot taken before probe allocated it.
+> 
+> Yes, same issue as adressed in #4. Theres a race because netdevs are registered
+> before initialization (in this case FDMA) has happened. The proper fix is a
+> reordering of the probe initialization.
 
-On Fri, Sep 18, 2026 at 10:08:20 +0200, Luca Weiss wrote:
-> Can you please share how you've been testing these patches?
+Hi Daniel,
 
-The cover letter was nfctool, not neard turning polling off and on.
+I'm wondering if you could expand on this a little. I'm unsure what #4
+refers to. And I'm unclear if you are planing the reordering as part
+of this patchset.
 
-On the 7.2.0-nfc-test+ phone from that letter: nfctool -d nfc0 -1 -p
-with a Type 2 tag in the field, repeated, then the same poll with no
-tag and Ctrl-C. Powered stayed Yes. I did not cycle neard before
-sending v4.
+> 
+> > 
+> > [ ... ]
+> > 
+> > > @@ -391,9 +391,156 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
+> > >       return 0;
+> > >  }
+> > >
+> > > +/* Reset existing rx and tx buffers. */
+> > > +static void lan966x_fdma_pci_reset_mem(struct lan966x *lan966x)
+> > > +{
+> > > +     struct lan966x_rx *rx = &lan966x->rx;
+> > > +     struct lan966x_tx *tx = &lan966x->tx;
+> > > +
+> > > +     memset(rx->fdma.dcbs, 0, rx->fdma.size);
+> > > +     memset(tx->fdma.dcbs, 0, tx->fdma.size);
+> > > +
+> > > +     fdma_dcbs_init(&rx->fdma,
+> > > +                    FDMA_DCB_INFO_DATAL(rx->fdma.db_size - XDP_PACKET_HEADROOM),
+> > > +                    FDMA_DCB_STATUS_INTR);
+> > > +
+> > > +     fdma_dcbs_init(&tx->fdma,
+> > > +                    FDMA_DCB_INFO_DATAL(tx->fdma.db_size),
+> > > +                    FDMA_DCB_STATUS_DONE);
+> > > +
+> > > +     lan966x_fdma_llp_configure(lan966x,
+> > > +                                tx->fdma.atu_region->base_addr,
+> > > +                                tx->fdma.channel_id);
+> > > +     lan966x_fdma_llp_configure(lan966x,
+> > > +                                rx->fdma.atu_region->base_addr,
+> > > +                                rx->fdma.channel_id);
+> > > +}
+> > > +
+> > 
+> > [ ... ]
+> > 
+> > > +static int lan966x_fdma_pci_reload(struct lan966x *lan966x, int new_mtu)
+> > > +{
+> > > +     struct fdma tx_fdma_old = lan966x->tx.fdma;
+> > > +     struct fdma rx_fdma_old = lan966x->rx.fdma;
+> > > +     u32 old_mtu = lan966x->rx.max_mtu;
+> > > +     int err;
+> > > +
+> > > +     napi_disable(&lan966x->napi);
+> > > +     lan966x_fdma_tx_disable_netdev(lan966x);
+> > > +     lan966x_fdma_rx_disable(&lan966x->rx);
+> > > +     lan966x_fdma_tx_disable(&lan966x->tx);
+> > 
+> > [Severity: High]
+> > What happens if an MTU change lands after the PCIe FDMA has already been torn
+> > down?  lan966x_fdma_pci_deinit() disables NAPI and frees both coherent rings,
+> > but it leaves lan966x->rx.lan966x set, lan966x->fdma true and fdma->dcbs
+> > dangling.  It also runs before the netdevs are unregistered and without RTNL:
+> > 
+> >   lan966x_remove()
+> >       lan966x->ops->fdma_deinit(lan966x);
+> >       lan966x_cleanup_ports(lan966x);   /* unregister_netdev() here */
+> > 
+> > The new guard in lan966x_fdma_pci_resize() only rejects "rings not built
+> > yet", so an ndo_change_mtu in that window passes it and reaches this
+> > function.  Three things then follow in order:
+> > 
+> > napi_disable(&lan966x->napi) on an already-disabled NAPI.  Does
+> > napi_disable_locked() spin forever in
+> > 
+> >         while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC))
+> >                 usleep_range(20, 200);
+> > 
+> > since nothing clears those bits until napi_enable()?  That task holds RTNL,
+> > so unregister_netdev() in lan966x_remove() can never complete.
+> > 
+> > If that is somehow passed, the success path below calls
+> > fdma_free_coherent_and_unmap() on the stale rx_fdma_old/tx_fdma_old
+> > snapshots, so dma_free_coherent(dev, fdma->size, fdma->dcbs, fdma->dma) runs
+> > a second time on the multi-MB blocks deinit already released.
+> > 
+> > And the restore: path calls lan966x_fdma_pci_reset_mem(), which memsets up to
+> > rx->fdma.size bytes into freed DMA memory and then dereferences
+> > tx->fdma.atu_region->base_addr, which fdma_free_coherent_and_unmap() already
+> > set to NULL.
+> > 
+> > Would a "rings are live" state check (or clearing rx.lan966x and dcbs in
+> > deinit, or unregistering the netdevs before fdma_deinit) close this?
+> 
+> lan966x_remove() is not touched by this series (apart from calling
+> ops->fdma_deinit), so I'd say pre-existing. But I believe this issue will also
+> disappear, when we refactor probe init as described above.
 
-I tried that today on the same phone, neard 0.20, with no tag.
-StartPollLoop Initiator, stop, start again: no error. Dual prints
-this on every start, including the first:
-
-  nci: nci_start_poll: failed to set listen parameters
-
-That is CORE_SET_CONFIG id 0x54 returning status 0x09. RF_DISCOVER
-still returns 0, and stop/start again does the same. Powering the
-adapter off and on does not turn it into a timeout. I did not get
-"failed to set local general bytes" or
-wait_for_completion_interruptible_timeout failed 0.
-
-With a Type 2 on the phone afterwards, nfctool -d nfc0 -1 -p found
-tag0. neard StartPollLoop Initiator showed Type 2, UID
-53:d9:49:68:b5:00:01, no NDEF.
-
-So I have not reproduced the failure that needs a reboot. If you
-still have the dmesg from just before the first "failed 0", that
-would show which command was outstanding.
-
-Regards
-Kristian
-
+...
