@@ -1,256 +1,105 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3375218A4
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 13:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB0D329E55;
+	Wed, 23 Sep 2026 13:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790168605; cv=none; b=gCSQ1Nx6itILXRV6r5Y/U0JgiDYbj+tTinXQGXL7d86FVZG1H8ZOxTDqxs7mGuRlA6DKolbDCb6nfL/1E180JwXjwRkcowVnL2Qh5QPlxhwBHSBj89MMLPFn32cBjdHvsWU+1V4StTTkb8EXSkmsTT0a5MaIP0hz0Hcxe82Ip90=
+	t=1790168704; cv=none; b=feZkd9xgXIZSBbRDefgg9yjketmS4QAbk24gJ8Adu6+Nk9b7HnaFy0Ds14PlnZXsZyRYLkY5Dn4xZUeorpHO9EgI0o8ufcRnCN+rifVDskhwaAeiPyuW6T24j6l79exKiVbh2i3TqfI3+p9n60F614Kh5VfuePsizLrrAovqqJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790168605; c=relaxed/simple;
-	bh=L5CmY1szttrcYAaFx1iCLTmoqHT3U6j7c1dOxBTBYCg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=d+7u4DzScSuOh3RiK4sja690uca/L+pELJW7eVOIBk7ODArjjxUAiMDodwms4/zOeNTYWLp2w08gsmbu+vfE9qzA3HVXmM+whos5OgXEYVp/hNS1CCr3CePYpgxV7IYDf79wWxc2bjXXKfOeN+tIenqLXYaOrtEkZnnS1KMgZa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oMl1BSli; arc=none smtp.client-ip=209.85.222.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oMl1BSli"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a05d645acso197332185a.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 06:03:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790168602; x=1790773402; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kZoKRPe1CEIvnjmik1LxvxZ5CT+nTVOlEnxMZZNA/yo=;
-        b=oMl1BSli750Mu6xC33ATPjScbF+sXcKLCtk/rqKtFjLh5NcAad80eVDCmhjW5LAn79
-         5nGCwkjam6glkdK0Nq84A3NSJTM1yY+eWT1Gepogd0jrVqfkT0BBJP8OiQ420aWSNfU7
-         RleNXXfp+oUaU0gZkIJPsknEPz3JMyCMigW6inzrTmcUNDRgGsE26NAwdmWSURRwSwVf
-         ph45B6sYhUjzGGBZFixQvC4nQzEkwsc3Yf3y2zgZwNdZ3rpaezfZPwiGboqSsv8ycgZL
-         /ZkmjKm48RaxE/JWbG48VHhe8eLEy5YMjt+29x4iDJZSFjCiT6QKs5frUSva6zWPc1dp
-         SAkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790168602; x=1790773402;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kZoKRPe1CEIvnjmik1LxvxZ5CT+nTVOlEnxMZZNA/yo=;
-        b=D0cMRu8Wx7S1ccrTZeYi4iFcxeDNQcv2DSX/t9U+HjICbiZaAIJI2wKIAcKWkMm0jN
-         hpQ7F7HLZRhBmVr0CmJF2ZNPwgt69/VaPaxbnpENxpD6vfgy3IoV+0tCk5g5WlKwWOIM
-         saHoDgiMC0JxCPfToirYaVkjdvf8iI2Qd45kXt2JrFZWI/vc7hePNfKVpSuXqcCiiEsv
-         GDWps2JH5VhZL3OwAKulWX7Jd6yEY4gxqsYaHPnfC5cj2dwTtxzETbdAfy/PCfiiPrz3
-         VYR8juWmi6CU5uP1HWCt278L9hr8e9wTf1vnbv9MN4U/NBPngyTzXNz1fdjBwwFbnj1G
-         pzlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJLWusGDOOteUNR80lo+AdiUJdU+Erx5/d9Me9VspDdBQXSJZB8HanSru9R6kWp2I0AHg9HWw=@vger.kernel.org
-X-Gm-Message-State: AFuF++n6rtuT8/UXNJ4qlOUbNZ4TDkZ+Z69mmbTbYCVMKXPhdNSlvxer
-	EI+MWM/OckZL9V3mCfqRBRG5rswJcsSqeQ4KlExa6ZAju9qjgUUAk6EoSL5VRrWKiFqoImZETgH
-	IbQyu/Bc9DQrytw==
-X-Received: from qknva26.prod.google.com ([2002:a05:620a:3f9a:b0:93a:c66:a431])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:1b91:b0:93b:d79b:9a59 with SMTP id af79cd13be357-93c25236c31mr353098185a.58.1790168602089;
- Wed, 23 Sep 2026 06:03:22 -0700 (PDT)
-Date: Wed, 23 Sep 2026 13:03:18 +0000
+	s=arc-20240116; t=1790168704; c=relaxed/simple;
+	bh=67wEQ7r51IZwvsp1c+FEGfwvwxQPejOaeTD8NC+uv0o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bM/dkhAA/DDXso4XDTg00kIXre+oGtfpVQENqpAUol1At06ozgw7tx8Bj3ymA2IYn9uhrPJReOKOLN9pAxSkO4Fl5ZPA0ONHXdPjMWnMtm7Ev74VpkD/dZ2C2WCmFnBDDh1+5xaj3heMimWBzXK67BR8/CQi66kr7fAgQL2vNxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE52D1F00893;
+	Wed, 23 Sep 2026 13:04:58 +0000 (UTC)
+Message-ID: <6fa8c6f6-64cd-4204-a9db-6a33f5e23117@linux-m68k.org>
+Date: Wed, 23 Sep 2026 23:04:56 +1000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260923130318.607255-1-edumazet@google.com>
-Subject: [PATCH v2 net] net: flush skb_defer_nodes in dev_cpu_dead()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	edumazet@kernel.org, Eric Dumazet <edumazet@google.com>, Kris Pan <kris.pan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv3 2/3] net: smc91x: do not use readw()/writew() on
+ ColdFire platforms
+To: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
+ frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, nico@fluxnic.net, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, olteanv@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-3-gerg@linux-m68k.org>
+Content-Language: en-US
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <20260907134037.1855408-3-gerg@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When a CPU goes offline, dev_cpu_dead() drains its softnet queues
-(completion_queue, output_queue, poll_list, process_queue, and
-input_pkt_queue), but leaves net_hotdata.skb_defer_nodes untouched.
+Ping...
 
-If oldcpu goes offline while holding pending skbs in its
-skb_defer_nodes lists (e.g. below the sysctl_skb_defer_max >> 1 IPI
-threshold, or if the IPI races with CPU teardown), those skbs remain
-stranded until oldcpu is brought back online. If any of these skbs
-hold page_pool fragments, page_pool_destroy() will stall indefinitely
-waiting for inflight pages to be returned when a netdev or driver is
-torn down while oldcpu is offline.
-
-Additionally, if smp_call_function_single_async() fails in
-kick_defer_list_purge() because the target CPU went offline, reset
-defer_ipi_scheduled to 0 so future IPI kicks are not blocked when the
-CPU comes back online.
-
-Also, if oldcpu was the last online CPU on its NUMA node, drain that
-node's slot across all CPUs so no skbs deferred from that node remain
-stranded on idle remote CPUs (or if the node itself is subsequently
-offlined).
-
-Finally, in skb_attempt_defer_free(), re-check cpu_online(cpu) and
-whether the caller migrated CPUs after llist_add(), flushing the node
-list if so, to close the preemption TOCTOU race against CPU/node
-teardown.
-
-Fixes: 68822bdf76f1 ("net: generalize skb freeing deferral to per-cpu lists")
-Fixes: 5628f3fe3b16 ("net: add NUMA awareness to skb_attempt_defer_free()")
-Closes: https://lore.kernel.org/netdev/20260916003430.3612956-1-kris.pan@intel.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kris Pan <kris.pan@intel.com>
----
-v2: Addressed [High] concern (Sashiko)
-v1: https://lore.kernel.org/netdev/20260921182700.1796214-1-edumazet@google.com/
-
- net/core/dev.c    | 47 +++++++++++++++++++++++++++++++++++------------
- net/core/dev.h    |  2 ++
- net/core/skbuff.c | 12 +++++++++---
- 3 files changed, 46 insertions(+), 15 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c67900354fa64b73de0623112366f485fedeb87b..2d06d3d615e2b235e4cf5e246f5db5ec355a094d 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5376,7 +5376,8 @@ void kick_defer_list_purge(unsigned int cpu)
- 		backlog_unlock_irq_restore(sd, flags);
- 
- 	} else if (!cmpxchg(&sd->defer_ipi_scheduled, 0, 1)) {
--		smp_call_function_single_async(cpu, &sd->defer_csd);
-+		if (smp_call_function_single_async(cpu, &sd->defer_csd))
-+			WRITE_ONCE(sd->defer_ipi_scheduled, 0);
- 	}
- }
- 
-@@ -6900,25 +6901,35 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
- }
- EXPORT_SYMBOL(napi_complete_done);
- 
--static void skb_defer_free_flush(void)
-+static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
- {
- 	struct llist_node *free_list;
- 	struct sk_buff *skb, *next;
-+
-+	if (llist_empty(&sdn->defer_list))
-+		return;
-+	atomic_long_set(&sdn->defer_count, 0);
-+	free_list = llist_del_all(&sdn->defer_list);
-+
-+	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
-+		prefetch(next);
-+		napi_consume_skb(skb, budget);
-+	}
-+}
-+
-+void skb_defer_node_flush(struct skb_defer_node *sdn)
-+{
-+	__skb_defer_free_flush(sdn, 0);
-+}
-+
-+static void skb_defer_free_flush(void)
-+{
- 	struct skb_defer_node *sdn;
- 	int node;
- 
- 	for_each_node(node) {
- 		sdn = this_cpu_ptr(net_hotdata.skb_defer_nodes) + node;
--
--		if (llist_empty(&sdn->defer_list))
--			continue;
--		atomic_long_set(&sdn->defer_count, 0);
--		free_list = llist_del_all(&sdn->defer_list);
--
--		llist_for_each_entry_safe(skb, next, free_list, ll_node) {
--			prefetch(next);
--			napi_consume_skb(skb, 1);
--		}
-+		__skb_defer_free_flush(sdn, 1);
- 	}
- }
- 
-@@ -12897,6 +12908,7 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 	struct sk_buff **list_skb;
- 	struct sk_buff *skb;
- 	unsigned int cpu;
-+	int node;
- 	struct softnet_data *sd, *oldsd, *remsd = NULL;
- 
- 	local_irq_disable();
-@@ -12957,6 +12969,17 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 		rps_input_queue_head_incr(oldsd);
- 	}
- 
-+	for_each_node(node)
-+		skb_defer_node_flush(per_cpu_ptr(net_hotdata.skb_defer_nodes,
-+						 oldcpu) + node);
-+	node = cpu_to_node(oldcpu);
-+	if (node_possible(node) &&
-+	    !cpumask_intersects(cpumask_of_node(node), cpu_online_mask)) {
-+		for_each_possible_cpu(cpu)
-+			skb_defer_node_flush(per_cpu_ptr(net_hotdata.skb_defer_nodes,
-+							 cpu) + node);
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/net/core/dev.h b/net/core/dev.h
-index b757faead4d1a3e445e54d2f468c38c9e09b6762..04fb0e9a571e03f41cac110a0d1dd864d110b339 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -399,6 +399,8 @@ static inline void napi_assert_will_not_race(const struct napi_struct *napi)
- 	WARN_ON(READ_ONCE(napi->list_owner) != -1);
- }
- 
-+struct skb_defer_node;
-+void skb_defer_node_flush(struct skb_defer_node *sdn);
- void kick_defer_list_purge(unsigned int cpu);
- 
- int dev_set_hwtstamp_phylib(struct net_device *dev,
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index b4edbd06655e2ac46fdccc74979295f4a938078f..c3042d822afa7aaaae7cad6aba4d647af0732aeb 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -7360,8 +7360,8 @@ void skb_attempt_defer_free(struct sk_buff *skb)
- 	struct skb_defer_node *sdn;
- 	unsigned long defer_count;
- 	unsigned int defer_max;
-+	int cpu, my_cpu;
- 	bool kick;
--	int cpu;
- 
- 	if (static_branch_unlikely(&skb_defer_disable_key))
- 		goto nodefer;
-@@ -7371,7 +7371,8 @@ void skb_attempt_defer_free(struct sk_buff *skb)
- 		goto nodefer;
- 
- 	cpu = skb->alloc_cpu;
--	if (cpu == raw_smp_processor_id() ||
-+	my_cpu = raw_smp_processor_id();
-+	if (cpu == my_cpu ||
- 	    WARN_ON_ONCE(cpu >= nr_cpu_ids) ||
- 	    !cpu_online(cpu)) {
- nodefer:	kfree_skb_napi_cache(skb);
-@@ -7382,7 +7383,7 @@ nodefer:	kfree_skb_napi_cache(skb);
- 	DEBUG_NET_WARN_ON_ONCE(skb->destructor);
- 	DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
- 
--	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + numa_node_id();
-+	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + cpu_to_node(my_cpu);
- 
- 	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
- 	defer_count = atomic_long_inc_return(&sdn->defer_count);
-@@ -7392,6 +7393,11 @@ nodefer:	kfree_skb_napi_cache(skb);
- 
- 	llist_add(&skb->ll_node, &sdn->defer_list);
- 
-+	if (unlikely(!cpu_online(cpu) || my_cpu != raw_smp_processor_id())) {
-+		skb_defer_node_flush(sdn);
-+		return;
-+	}
-+
- 	/* Send an IPI every time queue reaches half capacity. */
- 	kick = (defer_count - 1) == (defer_max >> 1);
- 
--- 
-2.55.0.1082.g2b9226bbc0-goog
+On 7/9/26 23:37, Greg Ungerer wrote:
+> Modify the access macros and functions used to access the smsc hardware
+> registers when used on ColdFire SoC platforms so they do not use readw()
+> or writew(), or derived functions like ioread16be() and iowrite16be().
+> 
+> The current set of readX()/writeX() access methods for ColdFire have
+> historically been non-standard, in that they mostly access memory
+> big-endian instead of the expected little-endian. Before fixing the
+> ColdFire readX() and writeX() supporting code to properly work with
+> little-endian data existing driver uses need to be fixed. Convert the
+> smsc driver ColdFire uses of these to use the raw access macros - which
+> are well defined to be (native) big-endian on ColdFire. This change
+> requires some byte swapping at time of access to retain existing correct
+> behavior.
+> 
+> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+> ---
+> v2: changed from RFC to PATCH
+> v3: no change
+> 
+> Resending with expanded CC list as per get_maintainers.pl, hoping to get
+> this picked up.
+> 
+>  drivers/net/ethernet/smsc/smc91x.h | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/smsc/smc91x.h b/drivers/net/ethernet/smsc/smc91x.h
+> index 38aa4374e813..1290335629c1 100644
+> --- a/drivers/net/ethernet/smsc/smc91x.h
+> +++ b/drivers/net/ethernet/smsc/smc91x.h
+> @@ -142,22 +142,26 @@ static inline void _SMC_outw_align4(u16 val, void __iomem *ioaddr, int reg,
+>  #define SMC_CAN_USE_32BIT	0
+>  #define SMC_NOWAIT		1
+>  
+> +/*
+> + * Access SMSC device registers using raw IO access primitives. Byte
+> + * swap as required for device registers, but not data.
+> + */
+>  static inline void mcf_insw(void __iomem *a, unsigned char *p, int l)
+>  {
+>  	u16 *wp = (u16 *) p;
+>  	while (l-- > 0)
+> -		*wp++ = readw(a);
+> +		*wp++ = __raw_readw(a);
+>  }
+>  
+>  static inline void mcf_outsw(void __iomem *a, unsigned char *p, int l)
+>  {
+>  	u16 *wp = (u16 *) p;
+>  	while (l-- > 0)
+> -		writew(*wp++, a);
+> +		__raw_writew(*wp++, a);
+>  }
+>  
+> -#define SMC_inw(a, r)		ioread16be((a) + (r))
+> -#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
+> +#define SMC_inw(a, r)		swab16(__raw_readw((a) + (r)))
+> +#define SMC_outw(lp, v, a, r)	__raw_writew(swab16(v), (a) + (r))
+>  #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
+>  #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
+>  
 
