@@ -1,214 +1,334 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE35E3CF67F;
-	Wed, 23 Sep 2026 23:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790205866; cv=none; b=AFH39FtIO121mILw4THTBosJizDqK/6H+sBu4PwLMo/9PbSuoQmFebQkuqh+lfnNgbEU+yb2IIYYbMEGIO6HVKmeOS5fq5o9yMpfkO7JV0XrbgqK+Houk2OmnIVvmGkb+pzdgf61YSh4NzaFIjkAyIMKV9jykj/nw+BcayowJb8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790205866; c=relaxed/simple;
-	bh=HRrBlmsVBvBb+TMnAum+7J15MBrbDAhKeBAjCN8c5XQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KDdA/q6fjj8PBaX9JyTwRKFZBpkeLxtwh/jS3XEaiet9HbRQj6R9SPhz8BD/u5s/rrCbu8pR/B2JojSVMZ4PLHFABQ8+LN66U8Gow3I1f78pcl6Yw+gMc46mpFcBp4qz68YFbwqRqEaNBtOAraacxhIqMpQP1shiMYCVpfYET38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DT+SkoUo; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DF931B80D
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 23:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.233
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790206436; cv=pass; b=hb8KZUyt7c0IbJ9AMw6WzcXn7vUx3z1BKkw7ECNvHaGeBOEPBfC9LDNZT3j53bc0rum8W8BvYeai1UQsqUBtn2TcUBXnO8YXpCop+n1UJo3XApmaU/5dLHeT9KuN9VA2CoUQjD3y6p2b/n+9Z8rOea/xdaMy/ufd1r8jOScmn7g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790206436; c=relaxed/simple;
+	bh=SBprGBTtStMx7RZpUukf9M0MowbciPkNiSYqCcyl6Xg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xt5GxntCXHpH3FI21pywQjg4NqnSPZ4UwzEtcn+O7uHkS1HO8hWlVYzzT2+y0CA194iVVs+1PLNxy2VHz+WrE6bMyUvwE7UIoXBq/UrqnZ5PPGIYLk33HmHC/vkS3Q80uqNjzRGwUvin15RTOghmrFXTLzOGUSWyMqw2lQxKoQM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uS315y1/; arc=pass smtp.client-ip=74.125.230.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DT+SkoUo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E251F000FF;
-	Wed, 23 Sep 2026 23:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790205864;
-	bh=NL2zL4T1TwfBi0kwYRvAZ/jCym1NP3SWepDCm8q+Snw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DT+SkoUodPmMNL6fmxvDwBPmaTItsVZZpqoHCSzEKN6hqY5r2eQEeYPFBfgPHP1nv
-	 LLKB2Xbp6dWrLqiIkWzxMHqhvupca1lgtLvgH5er4kega/R1xQ8G3bW9TRDjNx8Lg+
-	 unWfypn2/BTKAHEkwIIAQIz8EckRuXp/LsCMF5hzST887LzzIYPNF2jqGLPXg6VDoG
-	 8kAnlJzzY0Qbfw4NSrSUiLYCMYsKQzS2Wm6yJSVmq2fYP2kxqGqWpHRaqt6H8YszR/
-	 CwUAn5kHjDzvEu1KEqF7vK28eaEnSjow5buk2lVaPgi1aLAKW4FOSn5AocVhhOQiuF
-	 t8ACyGvupT6ig==
-Subject: Re: [PATCH] kcm: fix socket memory accounting leak on TX completion,
- error, and close
-From: netdev-bot+sashiko@kernel.org
-To: benquike@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 23:24:23 +0000
-Message-ID: <179020586343.2160803.15675750153868355675@kernel.org>
-In-Reply-To: <20260919212853.3240951-1-benquike@gmail.com>
-References: <20260919212853.3240951-1-benquike@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uS315y1/"
+Received: by mail-qk2-f41.google.com with SMTP id d75a77b69052e-532c7643bc4so15432161cf.3
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:33:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790206433; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fMwuMbE/dZciLuDevaN9JG2aLQfcKjQvMMucjkc+bBqJkLoMyCzmyjdot0pGXoPUi0
+         O+vG2mR8woCGLR2o71Jq82Lgzd0bPoOL2+l/VgBCA7vtG2LII5/kIUnGT51pf8VKSIK+
+         1bytEFoFfifif410D9+fP/XJRy3VJC3XFeOCmha8tvfrz4Al+uHo5p/ETjtljDnHjpUE
+         RaJcy6jc3k3Yr29NWAT41DCAurNRQV7DdwPIQ+kwmZmA/Vj3YmLHvFywVyc2nfd+QESi
+         YLo+cHISAPXYXupmxNbdArJcR7UTYsLPiWT/GhTwu023vJMGI3XrRnAD4Kn6ZHBeouI9
+         L2Zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FR8ZnQ2vJv6H3udVOOnqyCoVoQeq9HOSiKJxdLOfxrQ=;
+        fh=sSmSVS7DeAsKc+FpCSFtOUi/Dq6Lf9INpMuH6zpoLb0=;
+        b=NDba0CYLSY7f7ZTLV0XWyMfP1Ee5omwVgA1daVT54gGSFzfeLcW5HF2BRUaoaio3en
+         iaXWvI7tjuy02BsdRmHZ4JPL/mr3uqhDYsqEypf3bag4MJy0SiARNhoHCcAFf4hUXaJ+
+         49PHaeTWA5BVVu9Q98LrYFLcvzWvToEtcNNOIXxMw2mTpE/GfuW/XVgO+fOejVxa7XVw
+         /kbw3wbwxkBo/fjQW4nMW7sr/J5MBNOxWclXUwsokDf1bHZHo8hHPwvfpJHJ2D1yuRRr
+         qAtXmRyeOyS4VKAoMk3LTm0GoOLISw87vtmGP8/6eQnEkMzICLjoPGzBVfXbnT5WAHMf
+         jV+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790206433; x=1790811233; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FR8ZnQ2vJv6H3udVOOnqyCoVoQeq9HOSiKJxdLOfxrQ=;
+        b=uS315y1/qlfBQQIXFKc+YSdYUKgcezt6sanGuis3TcDLXvRuY+/+57ZlwIckJeinzz
+         8ZTG3JVeebi5S+6jb5qr7cVnuguRvH/48mvwBdIaStaoEAotrpd8uwmPwE/TqOm/ext1
+         WgBl+hnRwyFxZEyQBqOsXHiVSV5RINcSBNtKue+o08DdDgVdeKXVBXem8L62al6GnIPx
+         6K/yWXuQL3L6FZzqLx30JmA3sJdlg1NcRZ6xvE3bQMF7Z2is8rUqVRKdgqz/L//sbAsd
+         cxmBTnmqCTNC0NnFdMJEXzKlmOBKErYh16TB7Doc/+tHnwNIAiDxLtRypQ2hw0bxZl5D
+         wwVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790206433; x=1790811233;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FR8ZnQ2vJv6H3udVOOnqyCoVoQeq9HOSiKJxdLOfxrQ=;
+        b=MLucZFLDqdbeeTgudu5S4NtZf8jg2fDKusj/itD+k9LOG3OLNKs9m4VQxluAaefv5k
+         jBzzWJ2pELuvkXXGFI6TG/zjrE5GqQGUEOuNlH1Z+sK7eCUKRyc0McMthAWcdZ1RACwL
+         txgwU4P6mF006eSVqOkkaFZzx3gIydCpwXEutbw/8d6iBw75hNuJRikqDmtRj7yj4Q/q
+         EiCqDYFt0RgXy2+K+2+aVABFdTIup+uJBLaDjGGXXxW+JWyYfqsx3pyxGJB9wKtH/ybj
+         YMi1dHf9goy21O9XTM38dRqEghYAlD/0Y016eEZurdWztuefcnhERhVbe5zamI9qRUPB
+         gDxg==
+X-Forwarded-Encrypted: i=1; AKwUvBxiWu+7uIspxMOP9rnKAwn6I9ZjyEs8G5wKyZrYJr+PNhdo5RYHnBx4n05qxWXS3xt1j8JP5x8=@vger.kernel.org
+X-Gm-Message-State: AFuF++ljApC5lB3Ft52a9UzE6DyRzNeN7LjLLYuvM0+ERFgZfrnt5blc
+	+rSHLz6FMpCEQH8U2GRAWF34KiZgd04Bs+rW17m4nJTPlWAXixv8HcdjSzwEV+o0i/mGOsevvps
+	6R8FSh+hFqMLr8MO9h8Mpw7Bf1Op6pCqq+5M8UpTJ
+X-Gm-Gg: AYBFou0YVL71nX5OZDYLTAUJDvUf45qAgiSFY7nihkAcnUXNkO5Fi4hbDz3taOXLpvi
+	9Nj5fKFiLqEJcswDyzcOnBZkhinfKiFAV9DfM9z6Bnzq9j1j7+6N1CQiXBwVrKQu7PE38IaSVmy
+	2yHR8/nKTNMHRGhdDQxKx8byItpNchHm6bpKNsbt5IM3STpsoS3lVmVmIjdYiCI0vzEaS+I+fxa
+	naNjx2pAiyj9dLkBHllqcOKPO0eRdorO+yCV+Ctr992Y9VUi5rrSS3q+XZ33NhvR2iMDMI8+LzJ
+	J6Nqva/d/3b4V5wp4256QJ9sTPvlXzGsUUzqRfwnbBdQdSb63NAongmscCsQ4O2mPXMCYu6NIoS
+	OlXEPUUO+hAsJyvk/qInZvStWgzdFpAOniA2utf9rCwZfej3kGAYnmMDvh//jKwlbtW8P
+X-Received: by 2002:a05:622a:1a93:b0:530:3052:5257 with SMTP id
+ d75a77b69052e-532fb56d2c0mr12960741cf.27.1790206432783; Wed, 23 Sep 2026
+ 16:33:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260922163458.3900996-3-edumazet@google.com> <179020300229.2160803.17928745811588370151@kernel.org>
+In-Reply-To: <179020300229.2160803.17928745811588370151@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 24 Sep 2026 01:33:41 +0200
+X-Gm-Features: AclHuK-npsg8aXZ4384oVYR8YsYUwrQlk-TaR5g57jiZfb5klVkk_rYppYvHfGU
+Message-ID: <CANn89i+Ya8VA1p9kcjka3JR0AHCGLe8kagezCkchuFgoCHRWRQ@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 2/4] net: ethtool: generate RSS keys that
+ spread flows over all queues
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	willemb@google.com, horms@kernel.org, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Thu, Sep 24, 2026 at 12:36=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wr=
+ote:
+>
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 2
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] netdev_rss_key_init() (net/ethtool/common.c:1546) is invoked
+>   through DO_ONCE() from netdev_rss_key_fill()=E2=80=A6
+> - [Medium] The fixup introduces key-independent collision families in the
+>   bit that selects the queue.
+> - [Low] Stale cross-file memory-ordering comment.
+> - [Low] net/core/dev.h:93 introduces the block with '/* sysctls not
+>   referred to from outside net/core/ */', and this patch adds 'extern u8=
+=E2=80=A6
+>
+> --
+>
+> net: ethtool: generate RSS keys that spread flows over all queues
+>
+> This moves netdev_rss_key and netdev_rss_key_fill() from net/ethtool/ioct=
+l.c
+> to net/ethtool/common.c and replaces the plain random draw with a generat=
+or
+> that forces some key bits so the Toeplitz matrices of the q lowest bits o=
+f a
+> hashed field are non singular, then rejects keys where two 32-bit key win=
+dows
+> alias.
+>
+> > diff --git a/net/core/dev.h b/net/core/dev.h
+> > index 0127b4d03e525..a5e22b2eae523 100644
+> > --- a/net/core/dev.h
+> > +++ b/net/core/dev.h
+> > @@ -95,6 +95,7 @@ extern int          netdev_unregister_timeout_secs;
+> >  extern int           weight_p;
+> >  extern int           dev_weight_rx_bias;
+> >  extern int           dev_weight_tx_bias;
+> > +extern u8            netdev_rss_key[NETDEV_RSS_KEY_LEN] __read_mostly;
+> >  extern bool          netdev_rss_key_initialized;
+>
+> [Severity: Low]
+> This isn't a bug, but the block these two lines join is introduced by:
+>
+> net/core/dev.h:
+>         /* sysctls not referred to from outside net/core/ */
+>         extern int              netdev_unregister_timeout_secs;
+>
+> netdev_rss_key is now defined in net/ethtool/common.c and read from
+> net/ethtool/common.c:netdev_rss_key_fill(), and netdev_rss_key_initialize=
+d
+> (added by the preceding patch of the series) is defined there too.
+>
+> Should the grouping comment be adjusted, or should these two declarations
+> live somewhere that is not described as net/core/ private?
+>
+> > diff --git a/net/ethtool/common.c b/net/ethtool/common.c
+> > index 23db40618fed1..b4e766e60d38a 100644
+> > --- a/net/ethtool/common.c
+> > +++ b/net/ethtool/common.c
+>
+> [ ... ]
+>
+> > @@ -1400,3 +1403,174 @@ enum ethtool_link_medium ethtool_str_to_medium(=
+const char *str)
+> >       return ETHTOOL_LINK_MEDIUM_NONE;
+> >  }
+> >  EXPORT_SYMBOL_GPL(ethtool_str_to_medium);
+> > +
+> > +u8 netdev_rss_key[NETDEV_RSS_KEY_LEN] __read_mostly;
+> > +bool netdev_rss_key_initialized __read_mostly;
+>
+> [ ... ]
+>
+> > +static void netdev_rss_key_fixup_field(u8 *key, unsigned int lsb)
+> > +{
+> > +     bool d[NETDEV_RSS_KEY_SPAN];
+> > +     unsigned int i, t;
+> > +
+> > +     for (t =3D 0; t < NETDEV_RSS_KEY_SPAN; t++)
+> > +             d[t] =3D netdev_rss_key_bit(key, lsb + 31 - t);
+> > +
+> > +     for (i =3D 0; 2 * i < NETDEV_RSS_KEY_SPAN; i++) {
+> > +             bool value =3D true;
+> > +
+> > +             for (t =3D i; t < 2 * i; t++)
+> > +                     value ^=3D d[t];
+> > +
+> > +             d[2 * i] =3D value;
+> > +     }
+>
+> [Severity: Medium]
+> Does this fixup create collision families that hold for every generated k=
+ey?
+>
+> d[t] is the key bit that field bit t contributes to the lowest hash bit, =
+and
+> the loop above enforces, for i =3D 0..7, that the XOR of d over the set
+> S_i =3D {i .. 2i} equals 1:
+>
+>         d[0] =3D 1
+>         d[1] ^ d[2] =3D 1
+>         d[2] ^ d[3] ^ d[4] =3D 1
+>         ...
+>
+> XORing any two of those relations gives a set of field bit positions over
+> which the contributions to the lowest hash bit cancel for any key the
+> generator produces. On a 16-bit field, S_0 xor S_i for i =3D 1..7 gives s=
+even
+> independent masks:
+>
+>         0x0007, 0x001d, 0x0079, 0x01f1, 0x07e1, 0x1fc1, 0x7f81
+>
+> So starting from source port 0x8000 and XORing arbitrary subsets of those
+> masks yields 128 distinct source ports, all of them above 0x8000 and so a=
+ll
+> unprivileged, that always land on the same value of the lowest hash bit.
+>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+This is a mathematical consequence of Toeplitz linearity over GF(2), not an
+artifact of the generator: the q x q matrix mapping the q lowest bits of a
+field to the q lowest bits of the hash is the Hankel matrix M_q(r, c) =3D
+d[r + c]. Over GF(2), det(M_1) =3D ... =3D det(M_8) =3D 1 holds if and only=
+ if
+d[2 * i] =3D 1 ^ d[i] ^ ... ^ d[2 * i - 1] for i =3D 0..7. Every Toeplitz k=
+ey
+that is non-singular for all power-of-two queue counts up to 256 satisfies
+these relations.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Note that these relations only constrain bit 0 of the hash (queue parity).
+For 2^q queues (q >=3D 2), the remaining q - 1 bits of the queue index
+(r =3D 1..q - 1) depend on d[t + r], which include the unconstrained odd bi=
+ts
+(d[1], d[3], ..., d[15], ...) that remain secret and uniformly random.
 
-- [High] The commit message's stated bug does not exist, and roughly half
-  of the patch is dead code.
+> With ethtool_rxfh_indir_default(), the queue is index % nq, so for a
+> power-of-two queue count those 128 flows are confined to half the queues,
+> and to a single queue when nq is 2:
+>
+> include/linux/ethtool.h:ethtool_rxfh_indir_default() {
+>         return index % n_rx_rings;
+> }
+>
+> drivers/net/ethernet/google/gve/gve_main.c:gve_init_rss_config() combines
+> both, filling hash_lut with ethtool_rxfh_indir_default() and the key with
+> netdev_rss_key_fill().
+>
+> netdev_rss_key_aliases() does not catch this since it compares whole 32-b=
+it
+> windows, whereas the relations above are XOR relations among their lowest
+> bits only.
+>
+> The changelog says the key "is a secret that stops a remote attacker from
+> steering flows onto a single queue". With the relations being forced by t=
+he
+> q =3D 1 and q =3D 2 guarantee (non-singularity alone gives d[0] =3D 1 and
+> d[2] =3D 1 ^ d[1]), is that still accurate, and could the commit message =
+and
+> the new scaling.rst paragraph say what a chosen-port attacker can still d=
+o?
+>
+> [ ... ]
+>
+> > +static bool netdev_rss_key_aliases(const u8 *key, unsigned int bits)
+> > +{
+> > +     u32 windows[NETDEV_RSS_KEY_LEN * BITS_PER_BYTE / 16];
+> > +     unsigned int i, j, n, r;
+> > +
+> > +     for (r =3D 0; r < 16; r++) {
+> > +             n =3D 0;
+> > +             for (i =3D r; i + 32 <=3D bits; i +=3D 16)
+> > +                     windows[n++] =3D netdev_rss_key_window(key, i);
+> > +
+> > +             for (i =3D 0; i < n; i++)
+> > +                     for (j =3D i + 1; j < n; j++)
+> > +                             if (windows[i] =3D=3D windows[j])
+> > +                                     return true;
+>
+> [ ... ]
+>
+> > +static void netdev_rss_key_init(u8 *key, size_t len)
+> > +{
+> > +     unsigned int lsb, bits =3D len * BITS_PER_BYTE;
+> > +
+> > +     /* Four keys out of five come out of the fixup free of aliases, s=
+o
+> > +      * drawing another one is both simpler and cheaper than repairing=
+.
+> > +      */
+> > +     do {
+> > +             get_random_bytes(key, len);
+> > +
+> > +             /* A field ending at bit @lsb uses key bits [.. , @lsb + =
+31],
+> > +              * so stop as soon as a 32-bit window no longer fits in t=
+he
+> > +              * key.
+> > +              */
+> > +             for (lsb =3D 15; lsb + 32 <=3D bits; lsb +=3D 16)
+> > +                     netdev_rss_key_fixup_field(key, lsb);
+> > +     } while (netdev_rss_key_aliases(key, bits));
+>
+> [Severity: Medium]
+> How long can this loop keep hard interrupts disabled?
+>
+> DO_ONCE() below runs the callback under the global once_lock with IRQs of=
+f:
+>
+> lib/once.c:__do_once_start() {
+>         spin_lock_irqsave(&once_lock, *flags);
+>
+> and the lock is only released in __do_once_done() after the callback
+> returns. Previously the callback was a single 256-byte get_random_bytes()=
+.
+> It now does get_random_bytes(256), 126 netdev_rss_key_fixup_field() calls
+> and netdev_rss_key_aliases(), which builds up to 127 windows for each of =
+16
+> residues and compares all pairs.
 
---
-
-kcm: fix socket memory accounting leak on TX completion, error, and close
-
-The patch replaces the direct sk->sk_wmem_queued arithmetic in
-kcm_write_msgs() with sk_wmem_queued_add(), and adds sk_wmem_queued_add()
-plus sk_mem_uncharge() calls wherever TX skbs are freed in the
-kcm_sendmsg() out_error path and in kcm_release().  It also adds NULL
-checks on head before freeing it in kcm_sendmsg().
-
-> diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-> index 71af69d442f2..accf0d427e11 100644
-> --- a/net/kcm/kcmsock.c
-> +++ b/net/kcm/kcmsock.c
-> @@ -693,7 +693,8 @@ static int kcm_write_msgs(struct kcm_sock *kcm)
->  		}
->  
->  		/* Successfully sent the whole packet, account for it. */
-> -		sk->sk_wmem_queued -= txm->sent;
-> +		sk_wmem_queued_add(sk, -txm->sent);
-> +		sk_mem_uncharge(sk, txm->sent);
->  		total_sent += txm->sent;
->  		skb_dequeue(&sk->sk_write_queue);
->  		kfree_skb(head);
-
-[Severity: High]
-Are the sk_mem_uncharge() calls added by this patch reachable at all on a
-KCM socket?  kcm_proto declares no .memory_allocated:
-
-net/kcm/kcmsock.c:
-static struct proto kcm_proto = {
-	.name	= "KCM",
-	.owner	= THIS_MODULE,
-	.obj_size = sizeof(struct kcm_sock),
-};
-
-and the accounting helpers are gated on that field:
-
-include/net/sock.h:
-static inline bool sk_has_account(struct sock *sk)
-{
-	return !!sk->sk_prot->memory_allocated;
-}
-
-static inline void sk_mem_uncharge(struct sock *sk, int size)
-{
-	if (!sk_has_account(sk))
-		return;
-	sk_forward_alloc_add(sk, size);
-	sk_mem_reclaim(sk);
-}
-
-If sk_has_account() is always false for KCM, then the new
-sk_mem_uncharge() in kcm_write_msgs(), the two in the kcm_sendmsg()
-out_error path and the two in kcm_release() are all no-ops, and only the
-sk_wmem_queued_add() half of the patch has any effect.  Would it make
-sense to drop the sk_mem_uncharge() calls (or wire up real proto
-accounting for KCM as a separate change)?
-
-The same reasoning applies to the premise in the changelog:
-
-  "every TX fragment is charged to both `sk->sk_wmem_queued` and
-   `sk->sk_forward_alloc` (`sk_mem_charge()`)"
-
-The sk_mem_charge() inside skb_copy_to_page_nocache() and the explicit one
-in the MSG_SPLICE_PAGES branch of kcm_sendmsg() are gated by the same
-sk_has_account() test, so is sk->sk_forward_alloc ever charged here?
-
-And for claim 1:
-
-  "When `kcm_write_msgs()` finishes transmitting `head`, it subtracts
-   `txm->sent` from `sk->sk_wmem_queued` but never calls
-   `sk_mem_uncharge(sk, txm->sent)`."
-
-The line this hunk removes already did sk->sk_wmem_queued -= txm->sent, so
-is anything leaked on the TX completion path, or is this hunk just a
-cosmetic conversion to the WRITE_ONCE() wrapper?
-
-> @@ -960,10 +961,17 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
->  		 */
->  		if (copied)
->  			goto partial_message;
-> -		if (head != kcm->seq_skb)
-> +		if (head && head != kcm->seq_skb) {
-> +			sk_wmem_queued_add(sk, -head->len);
-> +			sk_mem_uncharge(sk, head->len);
->  			kfree_skb(head);
-> +		}
->  	} else {
-> -		kfree_skb(head);
-> +		if (head) {
-> +			sk_wmem_queued_add(sk, -head->len);
-> +			sk_mem_uncharge(sk, head->len);
-> +			kfree_skb(head);
-> +		}
->  		kcm->seq_skb = NULL;
->  	}
->  
-
-These two hunks in kcm_sendmsg() look like the one place where a real
-imbalance existed: head carries data already added to sk->sk_wmem_queued,
-and the pre-patch code dropped it with a bare kfree_skb().
-
-Since the patch carries a Fixes: tag and is a stable candidate, could the
-changelog describe that symptom instead?  A leaked sk_wmem_queued count
-permanently shrinks the send space reported to sk_stream_memory_free(),
-sk_stream_wait_memory() and SIOCOUTQ, so a socket that repeatedly hits
-out_error can end up blocking or returning -EAGAIN forever.  As written,
-the described symptom is not reproducible.
-
-> @@ -1695,13 +1704,21 @@ static int kcm_release(struct socket *sock)
->  
->  	lock_sock(sk);
->  	sock_orphan(sk);
-> -	kfree_skb(kcm->seq_skb);
-> +	if (kcm->seq_skb) {
-> +		sk_wmem_queued_add(sk, -kcm->seq_skb->len);
-> +		sk_mem_uncharge(sk, kcm->seq_skb->len);
-> +		kfree_skb(kcm->seq_skb);
-> +	}
->  
->  	/* Purge queue under lock to avoid race condition with tx_work trying
->  	 * to act when queue is nonempty. If tx_work runs after this point
->  	 * it will just return.
->  	 */
-> -	__skb_queue_purge(&sk->sk_write_queue);
-> +	while ((skb = __skb_dequeue(&sk->sk_write_queue)) != NULL) {
-> +		sk_wmem_queued_add(sk, -skb->len);
-> +		sk_mem_uncharge(sk, skb->len);
-> +		kfree_skb(skb);
-> +	}
->  
->  	release_sock(sk);
->  
-
-Can the warning named in claim 2 of the changelog actually fire here?
-
-  "triggering a `WARN_ON` in `inet_sock_destruct()` and `__sk_destruct()`
-   when the KCM socket is closed"
-
-The WARN_ON_ONCE(sk->sk_wmem_queued) / WARN_ON_ONCE(sk->sk_forward_alloc)
-pair lives only in inet_sock_destruct() in net/ipv4/af_inet.c, and
-kcm_create()/kcm_clone() install the destructor via sock_init_data(), which
-leaves the empty sock_def_destruct() in net/core/sock.c as sk->sk_destruct
-for PF_KCM.  __sk_destruct() itself has no wmem or forward_alloc warning.
-
-Given that the socket is being torn down at this point, are the
-adjustments in kcm_release() observable by anything?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919212853.3240951-1-benquike%40gmail.com
+This runs once per boot when the first NIC driver initializes RSS (typicall=
+y
+during driver probe), and as noted in the changelog we already cache each
+residue class on the stack specifically to keep a pass down to ~116 us, wit=
+h
+~80% of keys passing on the first draw.
