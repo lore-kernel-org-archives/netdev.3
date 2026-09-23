@@ -1,136 +1,217 @@
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9F64D37B6
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.235
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790166797; cv=pass; b=rbafC7j17uBZC/rrJH1T6iptCJeOYG9hcFb6W45KjcNj9DRDQflrNvezuzihYWrKLXpWIp2KLTglIsjX1LfBFt1RMozcOAeHTqY/LgKFHAwjo7YNY+PX9+Y1CVKH53iHXg4ybT991MvZv9NPwtJG3wjLKr12iqlu+n3LcwdZ+zM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790166797; c=relaxed/simple;
-	bh=mH5kL7A+dwz7Th0/axEXPDRla48Msc+IsIMQqB5yWQ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RCpKH34wnEjuNxTtSpoBbVasrtzH6drTyvKdhgvvVHDcqp/VufdZNy1aQDFdyGck29fopMsGt2+FPCa/Cru8tc8W1+xICiBXNE5IYgC2mRPLm9DP9MX4ZaaBzV2UPpYuFlmU3EwhDB8kc6X8Bz+rcyY1MIxy5qfOurfwWo3KVmU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O68LlMeZ; arc=pass smtp.client-ip=74.125.230.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F93451B175
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 12:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790166816; cv=none; b=VO9+gwj2fpCd5C/r2aqn9jlPceLX7mMkulhc8bSxI83cb5gFzwl8fhGm/lxMV9bJjyGoWLNlavlndkHOKToX2FKKw4ou/7oIEDbaBlfYPvA0YqQKJVdg2ikQw0W+coRXmgL2sWB7+lYN2eE99sxS3uK/K/wulEcRfa8NE0WlYME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790166816; c=relaxed/simple;
+	bh=/OUDr07pdEd0NYS0E7/cneE0Ly1bG2H/NogSv0LJEcs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ebvdesr5pH8O4GDbZYOWpmQ0K4oU2MGJ5AOsgLxJfJJQBqT/WDtBTtR7yNmzkfFCpbVlCSumbQNXslxRr8EvJdyQFpcoGCw+M2ME7Y1svhLFJ3MJbPEcTCA2fmIv1E1GqgGLAXZfJ5ptYV/Wd6xL+NZknJ6cUqogSGfC2JJLHMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B4XjJfYI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LurzGr1E; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O68LlMeZ"
-Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-530301ff353so12349911cf.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:33:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790166787; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pKPQa8Az8pj5Kl4ccY1PZ6p5G0UeS0BqqeavDX/vxqJG8CNaQUtDQacBc6XsaifBLN
-         k5w5mG+MbtTI7I4gZ2Qh+WT3HOnsNO7mgO+wRchkMvtuhuW29odN2UhcExE+Soqo3mWv
-         bMO45tllUMilNuiklyB7Ew8kzu5e96TT6bPMmnjXnKewbblbsvJx1Bt/ZUwktolq6lwF
-         R3T0yd8WDZXPNkCzKH2eM4tzjWa+7lt1LxCs+PhQ/YDKn4Z4mNMyT3278y+25V37LaXt
-         EYMqlhctYhO14dbhqOtNBgedgMoI0Q/1JfXSTDtQatxD8wr+4SRdwfPYhvqj6ye35RmQ
-         mgnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=utaHROpEPtGFOORmuN/Q/t8vZBvSe2pvgc6a4w+MOAY=;
-        fh=upBlXsLeOzGktURyNCu01lS2a+tdf8M7dGU1qhLYZnA=;
-        b=c0P6z320C7rTAh8H8nG/O5ojFqsCbGez7Ynu5+u46zdwcXcYvhME7nqwGzONGXmAEl
-         3k3R2BTZEAqzNJwmEpyImirX6G1DAeleM2UnSMEFpL5qpFn9UcWI9ykku873ZjhvAGZs
-         N6toYkXQnXdjeoUSXGFdgAP9viNBDTpT+ktUlwgenSafSisp9RRqC3kfBB6MC++NSt4j
-         ikpzLSwvdbXATBPlrIN6uoBvl5zANFGkkuV1d2qswa/zcsajlF9ahZgLHi0BRpytodBE
-         mcSbmfHbT+wwIiFnTsrYDfeQEA59Lu+RhOPeRiANEEqcgEQNdtMhN9rNtmaGvtU+IIwG
-         WPyw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B4XjJfYI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LurzGr1E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790166809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tnbv02KrxTWfgFsEC5I3/8nKspLCXZGQ6bITX7EXkKQ=;
+	b=B4XjJfYINa1Oc5ql31xfvQXHwo7KqFH5P70yw5Z8czp2dpNt56FvAbEdFQYGk2r4XCHtS2
+	LZq86eTycZHS1oPdO5KwF6D5DZTG/CWN8jkVK2Yd/i8B6KvkeWfovlMTBOX56T+FUfOH/A
+	u85fQTtb6Q2tVNAhMJg7JEcpELSZGKc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-CbMq6xpDMNSN3XMbdmPMMA-1; Wed, 23 Sep 2026 08:33:28 -0400
+X-MC-Unique: CbMq6xpDMNSN3XMbdmPMMA-1
+X-Mimecast-MFC-AGG-ID: CbMq6xpDMNSN3XMbdmPMMA_1790166807
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e6683d48fso8287575e9.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 05:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790166787; x=1790771587; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=utaHROpEPtGFOORmuN/Q/t8vZBvSe2pvgc6a4w+MOAY=;
-        b=O68LlMeZBo5w/PcWSFf4a0r5N9x0F21yVVUQzSHoE7TkDoCQrAtXXfNOxdExpi0lWY
-         BzqzVL2JY6ynZOx6r+ZRjpODHJFdFy1ot64nqVK+8uRjrYKiWXGc7++cMfNe36N8UB80
-         4O/1grKp4aGYDEfyxzG7wYgrBL55j9UGJQWojX5rbwBFPIMao7mnvG03SZfrKMrzK1j3
-         zQdruQ9yuJ9EwIbcKffcLpsF14KkmcuFauj/r1qNSYXgoNRSVSOLH+vlxa/4LOBSsKUQ
-         JZ283ZAzIcYleAJX665fd591ZNAI6Jlna4UcT0nvrsyujKPjYjYeY0/tuzlSjO0D5xRK
-         t/FA==
+        d=redhat.com; s=google; t=1790166807; x=1790771607; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:references:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Tnbv02KrxTWfgFsEC5I3/8nKspLCXZGQ6bITX7EXkKQ=;
+        b=LurzGr1EkRXLdaJrpJXXGqLY+q4CiyFpJ7YlpwwCCUsnUwXe3XcmEXFljvnZVNQiUF
+         iTEwXaX342pPK9ed/PWMZMfr8k8nfyW1h1DZaHTxdBjU64RPyB/mw859oDbTqQxd5qnj
+         kqzgVkF/Nf7DVQhNkt37elZ8Zw+Yg9X97XC94Z+4lN+UtXiXpU5nl3W9n6iAe4uwTTgh
+         AoIJj2lXSQiwwqWRneraV50b9Gd8JE96u/OAy6PaODRqXzvq9bC8FUlrKltOW0x3V9Fy
+         3IkkgCn2fII9wb4y6Lr1WVPqSm7KoR0wVagaGTH44p92ETyl4mfE2HXj4Msbafy+znP/
+         JvWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790166787; x=1790771587;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790166807; x=1790771607;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:references:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=utaHROpEPtGFOORmuN/Q/t8vZBvSe2pvgc6a4w+MOAY=;
-        b=rRyHJAOTg/Z1DLcePmu5G3M+Zu6dv3rgH6S/gc074KJarscr1xiDJcvqbsmSIiExvp
-         fMgnGEBur7j8w3gxRfDpOWkZCgI72RchQ5Yp/B3ISb2LP5pI2WdzjWRGibbuI1i0YEn5
-         tYcmK5QZ7llm61TcBd1kNTjYqvZ5EAZivaJGamarq3dz9qN8uI8SF+cAxvQSNyF9b3CE
-         /djfDFLNXo01z0HsEnIhGtpduXHR//8LllAjjY7szmGEKFBcDiyySfBjt4Am7mp0h9U0
-         vrRfs2/QLmEaMsv9KorF9oGlzbOrxzHOmYBEJGuBhEKdqFtBVOo3XRMY0cke4BYk5vAP
-         jB/w==
-X-Forwarded-Encrypted: i=1; AKwUvBwDfjRrMP31/u4L08YGSYVWyMLyfdZGRWA09Cf9fZA/vN26JNrXBFuYDwOflH8KWhZJ5G5Ytk4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXi29wDWVpfm5NOGmhoQ6Z14gQXRFZwlQKnOKMMuJ6+0KkknVK
-	NBRgUXHGJ1QLu8sITf1W0EsL6G40FHEWOY+CPKnMCh98gqhFPycMVGJwoPpXSDOAmRURZ+3MGnD
-	Cy3jKzaorydmczxsuFCXRJrRJAgtb4i4rZ4y7CWsc
-X-Gm-Gg: AYBFou2q4ARM/mXa62uELZr8Tb3QhwNOmUgZM7pxI4DAx2RSNrVN+6LyfBHjfUm9qK8
-	8c/z/T9tKi8174q5/CZqqoPEwp5ztdBa2VOdLGSlVRt5b/a317O4zy2mwGhYyQRRk2LGn/ogVbW
-	OcYCc9KYu+deinyLyrjUtrNNN2g2bUxX0ybP4DEqklz9N/xawcSaO8fnqZdr06lD2SSWeTcIvG0
-	02A8Yy3+PDdYtesWRg9hRDVVcuQO+o1nHDwtwyJq6MlfP6vCNv/JE8QMplhz6W+f7t8rGyYuUG9
-	dxfjzx4fXKYXMzizdlPYWWTaLZu42mnfRL9ksJvBCujzvC0tC7rS6WiH8+Sdw9nSOqvacBA3i0D
-	/jeeH+r4dxmbIq1OK3J7VZ/F0WUk44P38UsMFeCUfQUsZGqbBiHW1IWdN9Z3RsZlwYklP
-X-Received: by 2002:a05:622a:181c:b0:531:172f:79e2 with SMTP id
- d75a77b69052e-532eacf6796mr37817181cf.33.1790166786436; Wed, 23 Sep 2026
- 05:33:06 -0700 (PDT)
+        bh=Tnbv02KrxTWfgFsEC5I3/8nKspLCXZGQ6bITX7EXkKQ=;
+        b=q9YbhchBvhDLBZpO+4bpjsIizsC1xbwKNVrkpZMaU/VeZ0qCbTIleinHE/hbYAerLt
+         jtJMvBdHNaWel54Kkgn/xTlGOv1xZ3X6Hpsui2f5IQ2vaXdAKEkAkOf82NopstE5yQOP
+         DMPwGW+2cA78sai1BejdpLlMKODYBbcE6nn1KGnCiGObswiCdkobONhYFWHqa3S6/c1Y
+         esC9jT1TA1uDsSvPPTcaFYO6wx5vfaHFkA0tYEsfDkM/GEiMk3s5ey3t8ykwWHg933Cy
+         xsyIAbzlDhg28pzv2pzRMnqPfVbr6sAzd3XqUcmcCxZ7krg5x1TLvB8Y7/GFNXGHCeAC
+         FlFw==
+X-Forwarded-Encrypted: i=1; AKwUvBw9fqviNpZLHgsCB6rmUzX2tfe/vh0SKLVnzVccpQBAONJ+gNqIwK/XBSaWXj0KHT3ynn8GkpU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kM6rFbLmvo817KomgVGd57AWKVT9AIc791K3PLTqiivM5+EF9Z
+	WJLHWvicNbDmDD8DKI6buUkbYCH4mA6KcrAzAj4M1BTCPOeMmiMiGiEhGy8CKHBxaGlFf2a49VQ
+	2s+D+deWD98d9QgpN7LQJFYMlIruT/VfUWERzd99uj/Jrji+QVFlXvESSEA==
+X-Gm-Gg: AYBFou1r2rstS9p/xRwCaBas+zVbQZvGWU3VitHiVKJ/VnpJbYjHdkVKDyY0qGaQ6Ap
+	lepTZPnYlDggOUAibFOVOJGaHF6MpqjHxXvYzfwLUSD8v/Up0gMMEQaCl6QjhxBte4ubL4h6cUe
+	TC8lmdxHKbZ5je/JiKPVUDmU08hvVU6p7dyTCr3cQjrgrnvOVGZrMlv5pl9WQW7dpP3WkpNaYXw
+	WgMNFf+Uua5LXKDmhcGEenHIQ3+OaLJxnkfdr28DR7abSgrWdepSQNnnG/Nw+oMCz4BeR1OZGkP
+	TZCAWFCfCzKBlUsmfTnjFiGduZGjdE9u1pp/xUojCqsvjZTrmbvuaksb1pFhDdeWOPtcZIjOUk/
+	wYXkKeaQX/IbvEyxKi93JagfQCFhb
+X-Received: by 2002:a05:600c:4e0b:b0:49e:84bf:6136 with SMTP id 5b1f17b1804b1-49fdeffdfc0mr42605485e9.11.1790166807100;
+        Wed, 23 Sep 2026 05:33:27 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e0b:b0:49e:84bf:6136 with SMTP id 5b1f17b1804b1-49fdeffdfc0mr42605055e9.11.1790166806754;
+        Wed, 23 Sep 2026 05:33:26 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe23d4288sm43706055e9.12.2026.09.23.05.33.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 05:33:24 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: houminxi@gmail.com,  netdev@vger.kernel.org,  echaudro@redhat.com,
+  i.maximets@ovn.org,  davem@davemloft.net,  edumazet@google.com,
+  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,
+  shuah@kernel.org,  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v5 2/2] selftests/net/openvswitch: add SCTP
+ flow key test across conntrack NAT
+In-Reply-To: <179008951086.2160803.550424027687672394@kernel.org>
+	(netdev-bot's message of "Tue, 22 Sep 2026 15:05:10 +0000")
+References: <20260918144647.2024095-3-houminxi@gmail.com>
+	<179008951086.2160803.550424027687672394@kernel.org>
+Date: Wed, 23 Sep 2026 08:33:22 -0400
+Message-ID: <f7tld8s9mgd.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921182700.1796214-1-edumazet@google.com> <179015573006.2160803.8476413815394184466@kernel.org>
-In-Reply-To: <179015573006.2160803.8476413815394184466@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 23 Sep 2026 14:32:54 +0200
-X-Gm-Features: AclHuK9e5oV0tOBJPNqk-fkzZaGttmgP9btLvl1E2M9Hlv3Om8iEo9XeBO9uk_U
-Message-ID: <CANn89iJ_Zgz5FsBo8TjoH5fL_uQcFre1OCFkTr=zw_soYLZnTA@mail.gmail.com>
-Subject: Re: [PATCH net] net: flush skb_defer_nodes in dev_cpu_dead()
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, kris.pan@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 23, 2026 at 11:28=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wr=
-ote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 (3) =C2=B7 Low: 0 (1)
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The new WRITE_ONCE(oldsd->defer_ipi_scheduled, 0) in
->   dev_cpu_dead() revokes CSD ownership that another task may still hold,=
-=E2=80=A6
->
+netdev-bot+sashiko@kernel.org writes:
 
-Right, I will fix this issue, and leave pre-existing issues for followups.
-
-> Pre-existing issues:
-> - [Medium] Residual page_pool_destroy() stall with all CPUs online: skbs
->   sitting in the skb_defer_node list of an *online* CPU below the=E2=80=
-=A6
-> - [Medium] __skb_defer_free_flush() returns early when the llist is empty
->   and therefore never executes atomic_long_set(&sdn->defer_count, 0) -=E2=
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
+>
+> Low priority / nit picks for your consideration:
+>
+> - [Low] test_sctp_nat_connect_v4()
+>   (tools/testing/selftests/net/openvswitch/openvswitch.sh, new lines=E2=
 =80=A6
-> - [Medium] dev_cpu_dead() is extended to drain
->   net_hotdata.skb_defer_nodes, but the neighbouring per-CPU skb queue=E2=
-=80=A6
-> - [Low] Documentation/admin-guide/sysctl/net.rst describes skb_defer_max
->   as the 'Max size (in skbs) of the per-cpu list of skbs being freed by=
-=E2=80=A6
+>
+> --
+>
+> selftests/net/openvswitch: add SCTP flow key test across conntrack NAT
+>
+> This adds test_sctp_nat_connect_v4, which drives an SCTP association
+> through ct(commit,nat(dst=3D172.31.110.20:5555)),recirc and matches the
+> translated tuple after recirculation, so the SCTP branch of
+> ovs_nat_update_key() is actually exercised. The config fragment gains
+> CONFIG_NETFILTER_ADVANCED, CONFIG_NF_CT_PROTO_SCTP and CONFIG_NF_NAT.
+>
+> One question below about listener teardown.
+>
+>> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>> b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>> index aa84fafc3201..21444657a040 100755
+>> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+>
+> [ ... ]
+>
+>> @@ -1200,6 +1201,98 @@ test_nat_connect_v4 () {
+>>  	return 0
+>>  }
+>>=20=20
+>> +# sctp_nat_connect_v4 test
+>> +#  - SCTP association crosses a ct(commit,nat(dst=3Dip:port)) DNAT
+>> +#  - post-recirc flows match the translated address and port, so the
+>> +#    SCTP branch of the post-NAT flow key update is load-bearing
+>> +test_sctp_nat_connect_v4 () {
+>> +	local t=3D"test_sctp_nat_connect_v4"
+>> +	local payload=3D"SCTP_NAT_DATA_OK"
+>> +	local rxfile=3D"${ovs_base}/${t}/sctp-rx.txt"
+>
+> [ ... ]
+>
+>> +	ovs_netns_spawn_daemon "test_sctp_nat_connect_v4" "server" \
+>> +		socat -u -t 1 SCTP4-LISTEN:5555,fork \
+>> +		OPEN:"$rxfile",creat,append
+>> +	ovs_wait sctp_eps_has server 5555 || return 1
+>> +
+>> +	info "verify SCTP association across NAT"
+>> +	ovs_sbx "test_sctp_nat_connect_v4" ip netns exec client \
+>> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:192.168.0.20:4443" \
+>> +	    </dev/null || return 1
+>
+> [Severity: Low]
+> This isn't a bug, but can a forked socat child outlive teardown here?
+>
+> The listener in test_sctp_nat_connect_v4() is started with the fork
+> option, so socat forks one child per accepted association, while
+> ovs_netns_spawn_daemon() only records the pid of the backgrounded
+> ip netns exec:
+>
+> tools/testing/selftests/net/openvswitch/openvswitch.sh:ovs_netns_spawn_da=
+emon() {
+> 	...
+> 		ip netns exec $netns $*  >> $ovs_dir/stdout  2>> $ovs_dir/stderr &
+> 	fi
+> 	pid=3D$!
+> 	ovs_sbx "$sbx" on_exit "kill -TERM $pid 2>/dev/null"
+> }
+>
+> There is no process group kill and no wait, so a child still blocked
+> reading its SCTP socket is not signalled or reaped. run_test() then runs
+> ovs_exit_sig() followed immediately by rm -rf "$ovs_dir", and the
+> registered on_exit actions do ip netns del server, so such a child would
+> keep a reference on the server netns and an open descriptor on the
+> unlinked sctp-rx.txt until the association's retransmit/heartbeat timers
+> give up. The -t 1 option bounds the linger after EOF is seen, not the
+> wait for EOF itself.
+>
+> This would show up when the client is killed by timeout 3, or when a
+> post-recirc flow is missing so the peer's SHUTDOWN/ABORT is dropped. On
+> the passing path the client closes stdin right away (</dev/null and the
+> here-string), so the child sees EOF and exits.
+>
+> The same forking-listener plus single-pid SIGTERM pattern is already used
+> by test_sctp_connect_v4() and test_sctp_connect_v6() in this file, so
+> this may simply be the convention here. Would it be worth killing the
+> process group and waiting for the listener in ovs_netns_spawn_daemon()
+> instead, which would cover all three tests?
 
-pw-bot: cr
+A separate process group would be over kill.  This is already
+convention.
+
+>> +
+>> +	info "verify SCTP DATA chunk crosses NAT"
+>> +	ovs_sbx "test_sctp_nat_connect_v4" ip netns exec client \
+>> +	    timeout 3 socat -u STDIN "SCTP4-CONNECT:192.168.0.20:4443" \
+>> +	    <<< "$payload" || return 1
+>> +	ovs_wait grep -q "$payload" "$rxfile" \
+>> +	    || { info "server did not receive SCTP DATA payload"
+>> +	         return 1; }
+>> +
+>> +	info "done..."
+>> +	return 0
+>> +}
+>
+> [ ... ]
+
