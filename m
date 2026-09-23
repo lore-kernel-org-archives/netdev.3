@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885F8311C32;
-	Wed, 23 Sep 2026 00:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D02318EFF;
+	Wed, 23 Sep 2026 00:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790124478; cv=none; b=uYav06ft8D+GWnpZ8kRdWqZXh/KBhL2p4hRH8aCJW/JzZ2ufJY63aHz6vJCmoM3b3Wm3UAYUGpZ0z9nBOX46rjNdwFbtth6wrrtmAF6I9JWmIx7kjypVwe0akN67TAq4Pq4vUSPXr5p1oDQO0VNeV08f5RUr+7howVzSa5MFSQY=
+	t=1790124480; cv=none; b=JGEPzgBG80lUokUSYsodI+tbg/sCeYX2mBfeq8IRtVYQOYl9uS7K4TUCr2/YYe81CQ/XCftY/qtqe8hT0OknaLDriW4HVrFXptsedlrv8T6HJInCXozEDiNTsaadm5U81HaCwlByHuWdV0p0EmDmtrrHS7SR7Z6Ayg1yMiszy24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790124478; c=relaxed/simple;
-	bh=DigwotNZd9e/jSiZ5HyoTpHwORzpaWh3JuR140peKzo=;
+	s=arc-20240116; t=1790124480; c=relaxed/simple;
+	bh=JjslswZ+cK0TgLkfgmRjiJgw2joYDe8D2sQYbTpNyDI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mN7FYmoNnz5kPEmdl2gXNXJF8nbakTB+9czurNJ/t1vKOJ1/xqANRJEcoYKsGFqmOIdjfMH04GMH/ihnbE7bUQmEo9oCZS9AeP+0T+wlZyP6kfiUpbukTxrbluyuNzCIL3/v9uPhzrzSRLONaWdTIzh9dxSdFTM/Nh/4u8ffCl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwx+C1o/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=s5XJHLK41KE/hswEXh9K/N9WxUnvfJBaI2nB66HO+tDJucg82Vc5jWm+te848x+I3EV99MmOVIMTy8dc5FHoud4O9OBpkNbO/mBcazpZk9XuplzBtPcsb7C0BVzdVPut/R4zjmsdDZNZFnEQc0TyxUA+dydTFvBujl/iWfAK6yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FbnFXat/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwx+C1o/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A8B1F000FF;
-	Wed, 23 Sep 2026 00:47:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FbnFXat/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C069A1F00893;
+	Wed, 23 Sep 2026 00:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790124477;
-	bh=Q6R72z4biQuhbuvKXAohdwh9JXfySxkmEQFe+IrNTlI=;
+	s=k20260515; t=1790124479;
+	bh=poISZ7rCykuhOk1FMux5avHnvoojFN+0PMpIfHOXjdM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kwx+C1o/fjgNP2CwNamu9O2d89TYlu2BgDdLakou4zzOuzFmSHpoJ8eUs4q2P30NJ
-	 dpZIBcP/Gozj8gTQm4hUwCJzDmtgat19LZkjSeFzM5Iig52DD7oX+M7N5O9YEkJxb3
-	 VHV1HWng8BSA4Rka5vyZDGGtGxeuPj1Wjnc/MFexfdvQwiebtTrZB7Nm87/hwnzj75
-	 pMATWEm6SzC4CGFOtXvPb3B5YrVrrVs4Lx04KTnZg5KsGeyx6JRk0OQQV+4WXrSCDJ
-	 FMwYMANHHsO8ywMtlfJEJBhFAYhCiDdzp5NaVj4UQDdqrkf8H3cPKeVakjky56dydI
-	 4iYYHeX7tGZsA==
-Subject: Re: [PATCH net-next v5 1/3] net: stmmac: sun8i: reset the MAC after
- PHY initialization
+	b=FbnFXat/wmaPvo0uQrw/rELgy/atjWnfiEkANI1Pf2+KlKAA+bcEV0+p1+WXLhdGn
+	 i3d/HIWwqUgrjTY83ksec/+PK6oSrf8p1hC0tcWve6S1HnH+Uj22gEGOxW5Fscd7To
+	 9CWC1n6eWPRTT7kDUFSqjb/c+SvrZsLWklQWekho/T8vImYg3bu8zUefaCqLMROiqX
+	 UbYzMHMTWnrvlo81wNL2PmNuYhnODFGZOTZGtVppImqYM+7mCCKQCcGqmDRN/U9ng4
+	 xWuQpYoXU8pSNyNcDAwYjTg+v6OYwg/TX9ifxM3Knhz+GqhvKfVnFTVTx3nFVWRD0X
+	 Di5wD+NuJ2xPA==
+Subject:
+ Re: [PATCH net-next v5 2/3] dt-bindings: net: allwinner: add H616 EMAC1
 From: netdev-bot+sashiko@kernel.org
 To: james.hilliard1@gmail.com
 Cc: richard.genoud@bootlin.com, maxime.chevallier@bootlin.com,
@@ -40,11 +40,11 @@ Cc: richard.genoud@bootlin.com, maxime.chevallier@bootlin.com,
  linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
  linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, andre.przywara@arm.com
-Date: Wed, 23 Sep 2026 00:47:55 +0000
-Message-ID: <179012447513.2160803.15619421088202921144@kernel.org>
-In-Reply-To: <20260921-submit-h616-emac1-v1-v5-1-ada661ed9e9b@gmail.com>
-References: <20260921-submit-h616-emac1-v1-v5-1-ada661ed9e9b@gmail.com>
-X-sashiko-severity: High
+Date: Wed, 23 Sep 2026 00:47:57 +0000
+Message-ID: <179012447733.2160803.4302270702074784510@kernel.org>
+In-Reply-To: <20260921-submit-h616-emac1-v1-v5-2-ada661ed9e9b@gmail.com>
+References: <20260921-submit-h616-emac1-v1-v5-2-ada661ed9e9b@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,187 +54,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Incomplete fix: on the soc_has_internal_phy variants (H3, V3s)
-  the clock-dependent MAC software reset is still executed at probe time…
-
-Pre-existing issues:
-- [High] Use-after-free in the sun8i_dwmac_probe() 'dwmac_mux:' error
-  path: it calls reset_control_put(gmac->rst_ephy) and…
+- [Low] Concern (validated as a FALSE POSITIVE in the series context):
+  the patch documents `allwinner,sun50i-h616-emac1` in…
 
 --
 
-net: stmmac: sun8i: reset the MAC after PHY initialization
+dt-bindings: net: allwinner: add H616 EMAC1
 
-The MAC software reset is moved out of probe and into the
-stmmac_dma_ops->reset callback, so it runs during hardware setup after the
-PHY has been attached and initialized. Interrupts are masked before the
-reset is requested, the DMA and interrupt registers are still cleared on
-timeout, and the reset error is returned through the normal hardware-setup
-error path. The separate H3 MDIO-mux reset is kept.
+Adds the allwinner,sun50i-h616-emac1 compatible to the sun8i-a83t-emac
+binding and to snps,dwmac.yaml, with no older fallback compatible, and
+constrains phy-mode to rmii for that compatible.  It is also added to the
+snps,dwmac.yaml list that excludes snps,tso.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-> index 48c52eb962335..9598c386bb216 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-> @@ -269,11 +269,33 @@ static const struct emac_variant emac_variant_h6 = {
->  #define SYSCON_ETCS_EXT_GMII	0x1
->  #define SYSCON_ETCS_INT_GMII	0x2
->  
-> +static int sun8i_dwmac_reset(void __iomem *ioaddr)
-> +{
-> +	u32 v;
-> +
-> +	v = readl(ioaddr + EMAC_BASIC_CTL1);
-> +	writel(v | 0x01, ioaddr + EMAC_BASIC_CTL1);
-> +
-> +	/* The timeout was previously set to 10ms, but some board (OrangePI0)
-> +	 * need more if no cable plugged. 100ms seems OK
-> +	 */
-> +	return readl_poll_timeout(ioaddr + EMAC_BASIC_CTL1, v,
-> +				  !(v & 0x01), 100, 100000);
-> +}
-> +
->  /* sun8i_dwmac_dma_reset() - reset the EMAC
->   * Called from stmmac via stmmac_dma_ops->reset
->   */
->  static int sun8i_dwmac_dma_reset(void __iomem *ioaddr)
->  {
-> +	int ret;
-> +
-> +	writel(0, ioaddr + EMAC_INT_EN);
-> +
-> +	/* The PHY receive clock must be running for the reset to complete. */
-> +	ret = sun8i_dwmac_reset(ioaddr);
-> +
+> diff --git a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
+> index 323a669fa9823..2cae0133b3cd4 100644
+> --- a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
+> +++ b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
 
 [ ... ]
 
-> @@ -895,7 +896,9 @@ static int mdio_mux_syscon_switch_fn(int current_child, int desired_child,
->  		/* After changing syscon value, the MAC need reset or it will
->  		 * use the last value (and so the last PHY set).
->  		 */
-> -		ret = sun8i_dwmac_reset(priv);
-> +		ret = sun8i_dwmac_reset(priv->ioaddr);
-> +		if (ret)
-> +			dev_err(priv->device, "EMAC reset timeout\n");
->  	}
->  	return ret;
->  }
+> @@ -33,6 +34,7 @@ properties:
+>        - const: allwinner,sun8i-r40-gmac
+>        - const: allwinner,sun8i-v3s-emac
+>        - const: allwinner,sun50i-a64-emac
+> +      - const: allwinner,sun50i-h616-emac1
+>        - items:
+>            - enum:
+>                - allwinner,sun20i-d1-emac
 
-[Severity: High]
-On the soc_has_internal_phy variants (H3, V3s), does this retained reset
-still hit the exact condition the changelog says is being removed?  The
-switch callback runs at probe time from PHY-ID discovery, before any
-external PHY driver is bound:
+[Severity: Low]
+This isn't a bug, just a note for the record after checking it.
 
-sun8i_dwmac_probe()
-  sun8i_dwmac_register_mdio_mux()
-    mdio_mux_init()            /* pb->current_child = -1 */
-      of_mdiobus_register()    /* external child bus */
-        get_phy_device()
-          mdio_mux_read()
-            mdio_mux_syscon_switch_fn()
-              sun8i_dwmac_unpower_internal_phy()   /* clock gated,
-                                                      reset asserted */
-              sun8i_dwmac_reset(priv->ioaddr)
+At this commit allwinner,sun50i-h616-emac1 has no match in the tree:
 
-On the DWMAC_SUN8I_MDIO_MUX_EXTERNAL_ID branch the internal EPHY has just
-been unpowered and the external PHY has no driver-managed clock yet, which
-is the same "no running receive clock" case that sun8i_dwmac_dma_reset()
-now documents with:
+  git grep h616-emac1 drivers/net/ethernet/stmicro/stmmac/
+  (no matches)
 
-	/* The PHY receive clock must be running for the reset to complete. */
+so a device tree node using only this compatible, with no older
+fallback, validates but does not probe here.
 
-What happens when this times out during discovery?  The -ETIMEDOUT is
-returned from switch_fn instead of the register value:
+The next and final patch in the series, "net: stmmac: sun8i: add support
+for Allwinner H616 EMAC1", adds it to sun8i_dwmac_match[]:
 
-drivers/net/mdio/mdio-mux.c:mdio_mux_read() {
-	r = pb->switch_fn(pb->current_child, cb->bus_number, pb->switch_data);
-	if (r)
-		goto out;
-	pb->current_child = cb->bus_number;
-	...
-}
+  { .compatible = "allwinner,sun50i-h616-emac1",
+    .data = &emac_variant_h616_emac1 },
 
-get_phy_c22_id() only maps -EIO/-ENODEV to -ENODEV, so -ETIMEDOUT reaches:
+and emac_variant_h616_emac1 uses sun8i_syscon_reg_field_emac1 with only
+.support_rmii = true, which matches both the "separate system-control
+clock register" statement in the changelog and the phy-mode: const: rmii
+constraint added here.
 
-drivers/net/mdio/of_mdio.c:__of_mdiobus_parse_phys() {
-	if (rc == -ENODEV)
-		dev_err(...);
-	else if (rc)
-		goto exit;
-	...
-}
+Since bindings are expected to land before the driver, and the
+intermediate state only leaves the compatible unmatched, there is
+nothing to change.
 
-which aborts registration of the whole external child bus, and mdio_mux_init()
-then drops that child with "Error: Failed to register MDIO bus for child".
-Probe still returns 0 because the internal child registered, but the external
-PHY device is never created, so phylink_of_phy_connect() at open fails and
-loading the PHY driver later cannot recover without reprobing the MAC.  Isn't
-that the same unrecoverable failure the commit message describes?
-
-Also, since mdio_mux_read() leaves pb->current_child unchanged on error,
-does every subsequent access to that child repeat the switch and spend
-another 100 ms in the timeout?
-
-> @@ -1217,10 +1220,6 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
->  			dev_err(&pdev->dev, "Failed to register mux\n");
->  			goto dwmac_mux;
->  		}
-> -	} else {
-> -		ret = sun8i_dwmac_reset(priv);
-> -		if (ret)
-> -			goto dwmac_remove;
->  	}
->  
->  	pm_runtime_put(&pdev->dev);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the "goto dwmac_mux" error
-path above looks like it uses the EPHY clock and reset handles after they
-have been put, and the retained mux reset makes that path easier to reach.
-
-sun8i_dwmac_probe() error path:
-
-dwmac_mux:
-	reset_control_put(gmac->rst_ephy);
-	clk_put(gmac->ephy_clk);
-dwmac_remove:
-	pm_runtime_put_noidle(&pdev->dev);
-	stmmac_pltfr_remove(pdev);
-
-stmmac_pltfr_remove() -> stmmac_dvr_remove() ends with:
-
-	if (priv->plat->exit)
-		priv->plat->exit(dev, priv->plat->bsp_priv);
-
-which is sun8i_dwmac_exit():
-
-	if (gmac->variant->soc_has_internal_phy)
-		sun8i_dwmac_unpower_internal_phy(gmac);
-
-and that still calls clk_disable_unprepare(gmac->ephy_clk) and
-reset_control_assert(gmac->rst_ephy) on the handles freed just above.
-Does this touch freed memory whenever mdio_mux_syscon_switch_fn() already
-powered the internal PHY (gmac->internal_phy_powered == true) and
-mdio_mux_init() then fails, for example a second child bus returning
--EPROBE_DEFER, "No acceptable child buses found", or the retained MAC reset
-returning -ETIMEDOUT?
-
-Would the ordering used by sun8i_dwmac_remove() work here too, i.e.
-mdio_mux_uninit(), then sun8i_dwmac_unpower_internal_phy(), then
-reset_control_put() and clk_put()?
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921-submit-h616-emac1-v1-v5-0-ada661ed9e9b%40gmail.com
