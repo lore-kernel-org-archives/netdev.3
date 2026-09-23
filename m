@@ -1,73 +1,82 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E2B35E1CC
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791E9476CCB
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 23:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790204354; cv=none; b=C7qc1nSMYzqaa1zFPJoJawcnFrnG7lLveFjCn5q4lX6D5UzsA0VwT6cFZUou86BK2R3VSHEaH9HQwu+6Abhy0AyEqqjCwoiuIIXloEXxWyEpZsFw1j+o/93pVgY1ouRhIM2gAiRwesFPbFa1CxqVgKK0fVKg+r+AOAs9sICZsLE=
+	t=1790204725; cv=none; b=OcV7nJjAvRH3Z037EzHJ9Wiapa2PSPkZSkFz2wGrHNmnt7NaTCOxmJOtFUFHStEkEbZSlLhM2EGfbTWzBIVHpnE95oB4DKRqhVMDHBFm6xKWBNsU/Q5A7F+EBoTJWk8UYJFd2bOcoKj/0LZctyYI5PZk6Trs0h7CYxCbHz+pL8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790204354; c=relaxed/simple;
-	bh=DfUQUIpVUezlug9MVd3mXZVAR67C34RFcbn/eGNZN9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fW24RUO3qlwQV7iiPI8MotAUsvBYfuXzARGg8ELEv9lse67a19hicN1Mbvmnf/UdgqSVsaCo/WF1X928/Fz4jrCNfblIBt446IsB8O8J3HdYqb1yBXy52H1dLQQjM3urEdiDiCF1AGHAfOzzXcd5njcagcHKmqhrW8MLM9PIM50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=XTZjHap4; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1790204725; c=relaxed/simple;
+	bh=T1ta5ePMk+zQfSwvW2sATCvCAK1KdXn6U04Q4LWpTCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gWa/ubKkHKx3aWKXL15wGkbnB37YfHCZjLwI3vlvfJabN5r0udML6zZ1eVUCq94o67B36IHpCb+WCYh3g+iaEyO3AmvkxTL/JN4sQU93ny0VjVOzRtJZSF9mk9Rt2aruxAchkpAPYjF8R9TYEPHuMwxc88mYTtmwmy/MbZ0l7js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gmb+9pXz; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="XTZjHap4"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4885a1480a2so836509f8f.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:59:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gmb+9pXz"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2dd58e1e2c7so7757625ad.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1790204351; x=1790809151; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790204723; x=1790809523; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FamuVAvtAoLcUm32epRgpyyHoGUlcwlOWDWpUaRNyGk=;
-        b=XTZjHap4MY+3Mt9bKG1NSpxuIVvYVDb/jIe2XBxd4/SppWdAZTN9t6thQWqY8SnqLB
-         luyWx6h6UgOUpG1quqCSOaArFF6WFo2h/ni7as2NcEj6oez29MCaheb90fJUWZ4sE/uD
-         TJs2f+OR5VYeBIbXMIkvJoItr/YKi1gXbLo1YSDLoTGlXUqcHRH0y3uw/m07c/C/y1aL
-         /Hb5UVmJalDcVJKhuOb7TKE68KoQQwkMeoAgPDJquJKY/kCLwsji5bGOgj8rtVu6xHIY
-         igVbKYCSMxr/PSReed7ThmT3jhJW/jVvVwG0+PBxIcD/dwkW93qKvI9sJuKmFVg9R2QC
-         IBwg==
+        bh=QSdcxCpNx4svg4OY5VX44zy2bI3XKAytqtWifRNIQRw=;
+        b=Gmb+9pXz3o0GU3CBfRynm1JV9GyDKFZoRUr6xbfAeC/v9e5pXfJNvRpD7Qj3v+/9Y0
+         8SlSAoLfZ+mYddSk4jNdHkRl0Us07oV7duXWnUlsPFp2XfHIMm+t063mFs8JYR5DUDmV
+         l4X0+1D1frkeavy0451ubrzziZV93NHNk//EXaErZHqOtLoohYcJ/Ul6h1ux4ihnNKqf
+         lbFOqZzGmFkh3v9MtNR517a/wBGGsDG2WTL8iYOLtJ0wtvEYPotqIfzgAW7uvQXSnuGH
+         zb0s696VknP0R/jNLhtgoHK4164kvRmiuAicLum3qeUdQvurbbj0cpcRLNeg868m+0Q7
+         YjRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790204351; x=1790809151;
+        d=1e100.net; s=20260707; t=1790204723; x=1790809523;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FamuVAvtAoLcUm32epRgpyyHoGUlcwlOWDWpUaRNyGk=;
-        b=vPDBdb19YDPaf3lH/0KepwVUsTVRaKNKCw3s+dc5BPwh76zAE6rU5a6EWBdZuVGJH8
-         3xvvmrNkSKOw7xPNhVyHr0rn1ItgV0wedVDsNM2FgcTiSC+vNtes3bTap9Bw+oCFW435
-         OXSwfet1k2A5PO55GJeXBEXUJKAVnDx/IfuQEhpYVl2O7gUxp6LZvSQM+lu6H31hJXmc
-         qP/eLMa7grDs8OF2zBXE1m5AZ5Nx6MVMtAjNjMNA+h6WTz7vbGeYkX2xLRSp8dzc2FAX
-         M1TQjEFVI+kwGIJS5cRRUL5gfUbDARKiOzxbKSse9ATL0+DrE/68R5hbiZBPOXl7JFmb
-         MiPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwQ7tqlx85UiKSQ8xFmNlV9wWEkolfeGh7m4kIV03J2z/NB0pK15agROys/148A+/Jc1NQHPV0=@vger.kernel.org
-X-Gm-Message-State: AFuF++lI2gHu6I8BD4SC7TJZhJqlJe0K5oA3USQdbytCp3ukAB8qg/8+
-	MVv3dNetDRcnPrlzpiMubJlrGjpY6AneO10XYAbUTTmDibj90B1xJC/67MA0Jsg43KA=
-X-Gm-Gg: AYBFou1irzZKbnw7CSpif4sZXBeJ2BuesZdtHjB4CZz8Jssz36E9ugJ4LjG8VmndnB4
-	kves2Ve2EHGt99giCHKowLZfAzm4o4LKJwZDDMTmqx00Q3uZeYLFqjU+GBUkuq4PcslGqEvYWIE
-	c3igT5MSPnLm5MxfkCg2LoNZykVSLfy/rqLVm04jWvf2HqTBRjDUUYUgfaoPgdiC1KkxAp56LCA
-	QbD87ofF7LKNH4R8XQVN4UsdlraUp+zxGhcp0glkjP3mWFuoc5qedjplgIENcnSQ3s3sRCL7kXu
-	8GToolMRRM25HUE1iNbzxq0gly9b2fan3a99ZTU2ALDDH4VfdKD66+Xx1cOXdOvGw/AOzrIKquB
-	kp05gVyT6+6E/KD1RCvoaVdhchBYEob8XRqWusEmLq6RnQM6dT2KCtjGiA6LmaJUpMbxAbHfhYU
-	afs2j40SAljKVbWytfeHeMVK2hv9aEn2Q8SmZSt/BY/ZkKugm4og==
-X-Received: by 2002:a05:6000:24c4:b0:487:233d:beff with SMTP id ffacd0b85a97d-488716c0695mr966480f8f.16.1790204350681;
-        Wed, 23 Sep 2026 15:59:10 -0700 (PDT)
-Received: from remote-01 ([84.17.55.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889926sm13567439f8f.36.2026.09.23.15.59.09
+        bh=QSdcxCpNx4svg4OY5VX44zy2bI3XKAytqtWifRNIQRw=;
+        b=x1ZWlMPD0IHYgIoRuF3xyWaB5SuoZDoyly5Gco+SoaJ8psvcb/cSqw8NK2BeaV85KJ
+         SgaLWt7Ex9bmeoxwvI+XdSrMmysoyFwL/cJQyqafokc5wxnnP++hRYJK9yElA2QAL5sv
+         nRt8xYPxBsdfsvQtAy5GnbmrVoqiHPM00TWPd7rpfYL46BoaW73mXdNXefn8SO1Y0Zld
+         vFKjDh1QnsCpWRdorhphQHLB4sG1eCKnxW+QCqEPDMrVCGFT+Ri0NQP82kF9y+5yqVYK
+         P9dQvOUkMoLguJsB9LqUodmzqlPQufDSO9kuh/ehbyjmmk+wnClh63pCnmk9bxwchnUq
+         JVSw==
+X-Forwarded-Encrypted: i=1; AKwUvBy77zXuLaQjmdFVHGjvp2wnXWyDF0p2drgYtQHheijCd+/k7u/QFbbQwLaIROmOOYUlDt0sCww=@vger.kernel.org
+X-Gm-Message-State: AFuF++nVah4lSEN6v2/6HzPrejkFJdZYUf0xuga3U4LNsxLkls5vSPDM
+	NqaTP1VBfo5YmgByvjL3PCKAcHRbBbhkFyLysA+zMm7MzF7oKl6NyJgZEeJvog==
+X-Gm-Gg: AYBFou0L3Clzt/0wi7GRyMrD8JOvBk9nvPHlz0snlqcL/LG3QTpPJAgngVHymHqNFX1
+	T9rdrh6v7zJESuSK1DwTXw06FV6jzb+xetIfcqP9B6jLKcW1NL9FmHjge3U05p+eziSj1bUG4pK
+	yAED/GO9Iq+6Jpt7fKd/MwOPe242Vjbn6nNwR3IXG9Z7K4NGy1lYFV/zXHd9Vnsv+p2cEDEh0ks
+	GMClE7kbQrmKmt2GzMM79xvj55svuzQKyN+00riaEvXZJUzlr/RgGUi2hlJKxauIqOZd0UcxdOf
+	ypB5DOOLL7BX+i7yknTHHbdfSaz+2CIR3ESaFjcvpViZsyPzFhDA/I/773+VtzmjDkPibEqy8hP
+	k5X4J3QpeMU4yrEb7LBgL+s3hc2kYwCSCgmokafRren8IYF5K6bqdDGl1VKYzhfGDK/IhsLiSGC
+	YLOH/dQbsyP5UgJmzbJsPW/9S6+DF1zhU6H3R7+76slmey7TRp8n1VPNFA+lkcC0i/vj5zSzQOG
+	VkE
+X-Received: by 2002:a17:902:f791:b0:2dd:ad74:6d17 with SMTP id d9443c01a7336-2df7dc1a1a8mr5160745ad.29.1790204722416;
+        Wed, 23 Sep 2026 16:05:22 -0700 (PDT)
+Received: from localhost ([2a03:2880:7ff:59::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5db494sm16971865ad.56.2026.09.23.16.05.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 15:59:10 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Aleksei Sviridkin <f@lex.la>,
-	netdev@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>
-Subject: PHY ports: combo port with a MAC-side GPIO mux on a DSA switch?
-Date: Thu, 24 Sep 2026 01:59:08 +0300
-Message-ID: <20260923225909.1649267-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
+        Wed, 23 Sep 2026 16:05:22 -0700 (PDT)
+From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] net/mlx5e: advertise tcp-data-split support
+Date: Wed, 23 Sep 2026 16:05:21 -0700
+Message-ID: <20260923230521.1267511-1-dimitri.daskalakis1@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,34 +85,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Maxime,
+From: Dimitri Daskalakis <daskald@meta.com>
 
-I have a board where one switch port can use either an SFP cage or a
-separate copper PHY, picked by a GPIO mux. I would like to know whether
-the PHY ports work is meant to cover it, and how to describe such a
-port in devicetree until then.
+The ability to set tcp-data-split was introduced in
+commit 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split settings")
+This commit dropped reporting from mlx5e_ethtool_get_ringparam()
+without explaining why.
 
-The board is a Keenetic KN-1012 (MT7981B) with an MT7531 switch. Port 5
-is a DSA user port, lan4, in 2500base-x. Its SerDes goes through a mux
-on GPIO 27 either to an SFP cage or to an Airoha EN8811H 2.5G copper
-PHY, one at a time. SFP presence is on GPIO 23.
+commit d347b28c492e ("net/mlx5e: Add hds-thresh query support via ethtool")
+added support for ETHTOOL_RING_USE_HDS_THRS, and modified
+mlx5e_ethtool_get_ringparam() to report an hds_thresh of 0.
 
-OpenWrt handles it downstream with two devicetree overlays. The copper
-one gives port 5 a phy-handle to the EN8811H. The SFP one gives it
-sfp = <&sfp1> and managed = "in-band-status". The mux is set by an
-OpenWrt-only gpio-export node, and a chainloaded U-Boot reads the SFP
-presence pin at each boot and picks the overlay. Changing media needs a
-reboot.
+Between these two commits, hds._defer_reset_hds would skip the reset because
+neither hds-thresh or tcp-data-split was present in the ring config. After the
+second commit this introduced a KeyError in the hds.set_hds_enable/disable
+tests.
 
-The PHY ports code in net-next covers an SFP that the PHY drives itself,
-with marvell10g as the user. Here the choice sits between the SerDes on
-the MAC side and two separate media, a cage and a separate PHY. So my
-questions:
+Re-adding the feature advertisement fixes the self test.
 
-1. Is a MAC-side mux like this in scope for the PHY ports work?
-2. If it is, what devicetree shape should a board use today so it does
-   not have to change later?
-3. If it is not, is describing a single medium the accepted way for now?
+Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
+---
+Before:
+ # Interface: eth0, driver: mlx5_core
+ TAP version 13
+ 1..13
+ ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
+ ok 2 hds.get_hds_thresh
+ # Exception while handling defer / cleanup (callback 1 of 1)!
+ ...
+ # Defer Exception| KeyError: 'tcp-data-split'
+ # Defer Exception|
+ not ok 3 hds.set_hds_disable
+ # Exception while handling defer / cleanup (callback 1 of 1)!
+ ...
+ # Defer Exception| KeyError: 'tcp-data-split'
+ # Defer Exception|
+ not ok 4 hds.set_hds_enable
+ ok 5 hds.set_hds_thresh_random # SKIP hds-thresh-max is too small
+ ok 6 hds.set_hds_thresh_zero
+ ok 7 hds.set_hds_thresh_max
+ ok 8 hds.set_hds_thresh_gt
+ ok 9 hds.set_xdp # SKIP tcp-data-split not supported by device
+ ok 10 hds.enabled_set_xdp # SKIP tcp-data-split not supported by device
+ ok 11 hds.ioctl # SKIP tcp-data-split not supported by device
+ ok 12 hds.ioctl_set_xdp # SKIP tcp-data-split not supported by device
+ ok 13 hds.ioctl_enabled_set_xdp # SKIP tcp-data-split not supported by device
 
-I can test patches on this board. Writing the framework part is beyond
-what I can take on myself.
+After:
+ # Interface: eth0, driver: mlx5_core
+ TAP version 13
+ 1..13
+ ok 1 hds.get_hds
+ ok 2 hds.get_hds_thresh
+ ok 3 hds.set_hds_disable
+ ok 4 hds.set_hds_enable # SKIP disabling of HDS not supported by the device
+ ok 5 hds.set_hds_thresh_random # SKIP hds-thresh-max is too small
+ ok 6 hds.set_hds_thresh_zero
+ ok 7 hds.set_hds_thresh_max
+ ok 8 hds.set_hds_thresh_gt
+ ok 9 hds.set_xdp
+ ...
+ # Exception| net.lib.ynl.pyynl.lib.ynl.NlError: Netlink error: mlx5_core: TCP-data-split is not supported when GRO HW is disabled: Invalid argument
+ # Exception|
+ not ok 10 hds.enabled_set_xdp
+ ok 11 hds.ioctl
+ ok 12 hds.ioctl_set_xdp
+ ...
+ # Exception| net.lib.ynl.pyynl.lib.ynl.NlError: Netlink error: mlx5_core: TCP-data-split is not supported when GRO HW is disabled: Invalid argument
+ # Exception|
+ not ok 13 hds.ioctl_enabled_set_xdp
+ # Totals: pass:9 fail:2 xfail:0 xpass:0 skip:2 error:0
+
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 261c466a4d36..62060a6fa185 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -378,6 +378,11 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
+ 
+ 	kernel_param->hds_thresh = 0;
+ 	kernel_param->hds_thresh_max = 0;
++
++	kernel_param->tcp_data_split =
++		(priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO) ?
++		ETHTOOL_TCP_DATA_SPLIT_ENABLED :
++		ETHTOOL_TCP_DATA_SPLIT_DISABLED;
+ }
+ 
+ static void mlx5e_get_ringparam(struct net_device *dev,
+-- 
+2.52.0
+
