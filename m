@@ -1,198 +1,223 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BC75328C7
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26FE5383CF
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790172126; cv=none; b=lXIETzS9Og/UPtvG5PWsMw3x3OVZrbd3P//kmozDNopgLSaLc2wtkK9zOkioo34tvTWvzLOJB1AHQDpZqDU7QoEv2nymKjFXC2e6hCFVKMBA+r8gMxWaPYS/eK64LfFO7dGQuvIZmpI4j5gk7N8s9DrW/r0hc7u2raLYfhSnVUY=
+	t=1790172205; cv=none; b=rmo33Of50OLqGKS+ngqrr6/zG0y/IDuQuDCumGjMd1roiDrpkiXuh0QjRy5JZYZ8Sz+HScsWc7mPda3cuCEShl2dmA6IAM3H+6yEnxXr+gg6jLrPQ9uZo4pBVtzebMOVkr1ymrVEtqlcoimqOH+0bLKTX/4+CZeEPpWfLEAubDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790172126; c=relaxed/simple;
-	bh=7o0r4xT7dU4ZLo/lsVvqnCyZzuGUywIQIsoKQlG7wFo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0n4lJGQWswb6UxtFYg3tz36CA/S8jfanriiO4qAziqZ0NT25ZM7PZH/eXYyr6dv7xIcvt95aRRJwlgAdb19js9kxdVU2P4V6lnJObbEaY7n7zf1SL3Pi7CgtbT4VQ+OPoRQWA5Hocybw4gjRxhwQ6HmjkqfLa48ihUNNxnszso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=bBE/TyJc; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1790172205; c=relaxed/simple;
+	bh=GSQllyyTxbdIQGfOjUU0cPCdBxDt67B5m+P3z57pWoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b3t2XK49Jerg7a6UPOWD7+OvcUdg8O9oQRCx04hkWu75N3K17Xha7/+rU+QMkDrXa0o/eTpS1NP3701CeqvshtjPV2QjfOs4E9BVKcRGW07/Zo2PJJ68TfwROauLZ1fkWIU0lUtkgFFJYpjOK9KFr3tVudJLv6ECWVlOKE0cfmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=O1YyJPzH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dSTaZ701; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="bBE/TyJc"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8631d0023daso542445b3a.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:02:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="O1YyJPzH";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dSTaZ701"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68NDPL7k2698233
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:03:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=zLOh9Kb/p8pBZNay6kbh5A1C
+	JFhDDZYL59AUqu/b/gA=; b=O1YyJPzH+HP6pm6E8uwn/gVhKqzy4B81mCuRhqh5
+	braQwxSA4e5IDI8LmTnnWPCPAgaZ3nT/khK5bIezROpCUttIkxkpfQxWe2OC7cUB
+	857enoXG8KAe9nStaZdZhtAsXAnQjItJRac79cfVh16Ws2OHRIAbHQnd4yLuVpPi
+	IEpiGX7fxA505iwdpi4FCuq4VBxePNn2uX1N87b772VCVtZUCzkzeRu3eSO4QFkU
+	rzPGEwNtmWQqjnT/HkxI8tbKg/xOfIb6bW7VXePlslG9EwwLqYcuMYeRxR7qMVSe
+	Puxyne0tqSKUI4J/0PED4k1WRvtKAF8J+va8dwEw2G+D6w==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvfmwg4v6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:03:22 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8645a62066dso734789b3a.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790172124; x=1790776924; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nOvcdYU0dRk1zgquznwCGjvnJFZcKqDjbV30BWWVegg=;
-        b=bBE/TyJcPh0eQBwaNyepPeQNCjMkmTcRE7j8pVTE6o5A4iKieCo2PXGlGOu+2Fs8Ms
-         LN5UxNNPuivcDIJZCRByqS3u6LhOZpFPrbIEl7XrRirEJ1rJKVr0IdYgStU2o6BIC9cA
-         M9YtvMXeuEBvMCQnIyXkj7ssGdesZJmQeF1qcdwJgh+bDWNsYBDW8wWwp//ckGRuHpGW
-         m70UsNB62Bc6IftFUTShXPYdAD9CT9hqYEbLf6o4Sqp+IKt9EGbt8GqPdlvK8T6Vg3eQ
-         mlrntYm8JpTEvJFfTaW6dXjxYS6pUs8MyCNNMC7ZDwE9tPzqkiVM6BHVkMtXCHx5wm2h
-         ax1Q==
+        d=oss.qualcomm.com; s=google; t=1790172201; x=1790777001; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zLOh9Kb/p8pBZNay6kbh5A1CJFhDDZYL59AUqu/b/gA=;
+        b=dSTaZ701kIQl/gJ/oMC33lxJBvx8DIvf2tdfbJa7mHA/c8rDIzZ5BVn1/IndjvvCnK
+         +R+qTsO0jrw+coo7FdrSK5duZwng2HPwW9B71adugPYZRlzjUqD4cZ6tvK3sOUnaOovM
+         duFv0UlRQMZOVaxytpE7VwD0HlTSV084g/tMINxOSJi7dES/dtQShsiZ/qzMHZatGzTc
+         D7l5Kz5Y5bMjBHFcap8zvtbYsMV3YULeme2Crwmzyi/h2MXd24/kbtRe5FGraHa1WQof
+         zJaOXowNY1hQF+ia9T1e/+eFEt2qySg3SFZfBq2LH90pYt9QR+LkrAu0fo00rTXQZu56
+         Ib2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790172124; x=1790776924;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nOvcdYU0dRk1zgquznwCGjvnJFZcKqDjbV30BWWVegg=;
-        b=JGvPaY45T6uD/zMjVjfS+7k76PT+5JM/Qj0Q+R/JW4Om85UEDRPOQzWWFSvfszpkR8
-         BKXH7dvOrTZeR+xokf/zHxQdcf5Q2rlgYe35zz2nQEOBiv8LQgr4NLHk0CuAwZyyqLm/
-         NW5kme0EZTft+uaGsRUj+baev5NKgFV3aTpOzaIoROaARnOOCScBX8S/Es1Ybm25z+Yx
-         +uB/ooDPQiBSyPzi95I7sYoJbogmvvVFa/FvVSKF3sFjKvg6J28iCwdUtxpbwk99KPrX
-         XuvILB14DsJttSrXIa+rg4XDzT/U90w+gXbNgdcXQOi45oGxqHjShIjuRm5J8aJOWLtW
-         7unQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwgqsp0SaQD/L+5sf5Ld6zqM1dYMI3LhOJg6ouNfoBBtFqjfDVVP+z30pXxd+xOX4SelvuVVOE=@vger.kernel.org
-X-Gm-Message-State: AFuF++n+poQnUZywDFkA+xeH8ApL0ZB1Xvi4Uxl56O61a6Rfhu5g3vIo
-	dn4WTsyJZBCGiCZHzOPldxHu2E5RZZ/6pYwJ5WZDDUfSk5nlJ932cwaIE9R3Qv2B7Dri
-X-Gm-Gg: AYBFou358UKcZXqmuG6y+rg02F33MLIERmRYfWQ8xhi0+bweoT8QOVkrxm1x0+4lCDj
-	+0BzbJoRG142NORctslGm+nBj5RvYUJ19LZY0WzlLfRq8ryAkcCez91CSRDGTA2JoBLZlc+JWkp
-	r1pJqwSO/w44nZJqa0lSp7uNMYD0vkbu53HZUDMhjBDVkHcBpVs//dwzFTsqtW/1OcTRnjzYJg7
-	Zd5PUROvuwPQrBXsAUM/BVgXXYOF3RY3U7X/PpDDNFVALbgF7XZ8/e6h0XKAx7R7IWmk8zxv8EC
-	472YtAa3GfxVNXgpLuddVrhzPwCCf6N5KZACVnOEKNnxHKUgGwvJ/BO9PoDHjBfwxXx+IdrpDvU
-	1FDfdgB3SH0q3Qyba94CGPP8l+1yQ6bC6p46V2Pp79VMjjlVudReCRNNoD6XajtAmrcypeXkB0z
-	r2ou7SYoKDoY0hIUVBMBXVi8smCnML106VUT9iaL89vrLC+IQLa82NlSDnobBMcfcw69wgBnnmQ
-	qDSsrRS6eWBS1zBuFcRRNdCl9Ms1w==
-X-Received: by 2002:a05:6a00:3316:b0:86e:8deb:fbd4 with SMTP id d2e1a72fcca58-87d1a7af6fdmr2599123b3a.11.1790172123010;
-        Wed, 23 Sep 2026 07:02:03 -0700 (PDT)
-Received: from 954df21a5119.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1dad42fcsm1328940b3a.35.2026.09.23.07.01.57
+        d=1e100.net; s=20260707; t=1790172201; x=1790777001;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zLOh9Kb/p8pBZNay6kbh5A1CJFhDDZYL59AUqu/b/gA=;
+        b=NKkwrzK4McJpJdWb1SGs/7Qfn3HMTiacLVtfWEAMzV66cm9WNk9iRLN556yT1h74XU
+         FPguu0bCSGin5WN6/Gg6XIj78v1YWmm8HJA3IrDJrqmKe8/rDf40dsbjPbcJs+P5nvJv
+         ijP9hFREa7iOwzF0RPnhknBG+bMpzYqmXwhTufjHtlaSdzMjKypk6g+S0YARlAUWbEKs
+         qDVGjlgwiuxtz/KGpmrxnxNy2PKCJ4/K5Uq5WYljouv1f6J0rtJ8j4d4McloWJqDMDfG
+         jrTiu5pIrQwh5XwSzr5LI+l/JpZFWRXHW2sRI7WmDEcC7UqLLOewA9OgX0rnDDKSWVV/
+         48Hw==
+X-Forwarded-Encrypted: i=1; AKwUvBz6UuBGeIa+2Qi2wuBGAWuLyayI4W2pEKQzV9siQ1RVECdfdJYJ9O3HoHhlANwZ62PN2UjfB44=@vger.kernel.org
+X-Gm-Message-State: AFuF++neRf4ayBADR1yu8vkdrDQ7CzXMjCeF+7wa3+VGLU9h4q8FQARW
+	OmP4Z8F46AeJyxGHL123ksQSQvEzHWhReWyqf+6IRYPtHXRCbzV0QIxakd6ATK/8A22Crc8sslu
+	2nq6Bn6gTW6GxvHLysZ3W29SlqQGLVkYFOI8ojT/XoloF0L751DeH5+EJsdrxITcTZoQ=
+X-Gm-Gg: AYBFou3hQ8lgDG6irxlFHs7uX7vFlBb6gDTes8vl/3fxkjYAhgOHUUNe0YIEvaDnuNY
+	U+hVTtoQfSz0KQt6DU38oUxtjcclRiErggCBnf6IIv8k4hEkRS24KAl8znmqDyfV0t1hs0f4T51
+	IC2NGQv6Mz5eaIWgXOOrOYR8pYzWzF1EEzDjbPrvqLV2bDV+xikrVQD1yXzCOO87CcDDMTuqVEb
+	0cMZzxHJD5jB30PTJNBXltVUiNS+0hL37SL0rc+jgj6WziquSwKzwiGDaKb2wFRTbZuuWysKKrd
+	KnMjX6VAA6qzoiM03s2FiS92bn8BNA8dVDIEIcTRXzm6fOdaH1VQtwfo7qqXeO1Q5iV+J3MTw60
+	UBo2bQ3jPWSju
+X-Received: by 2002:a05:6a00:4c1a:b0:873:e3b4:5d4 with SMTP id d2e1a72fcca58-87d18d6d036mr2571680b3a.2.1790172201294;
+        Wed, 23 Sep 2026 07:03:21 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4c1a:b0:873:e3b4:5d4 with SMTP id d2e1a72fcca58-87d18d6d036mr2571644b3a.2.1790172200645;
+        Wed, 23 Sep 2026 07:03:20 -0700 (PDT)
+Received: from oss.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1afb99f0sm1366950b3a.6.2026.09.23.07.03.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 07:02:02 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dsahern@kernel.org,
-	idosch@nvidia.com
-Cc: zihanx@nebusec.ai,
-	horms@kernel.org,
-	kees@kernel.org,
-	willemb@google.com,
-	kuniyu@google.com,
-	richardbgobert@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v5 1/1] net: gso: limit recursive IP-in-IP segmentation
-Date: Wed, 23 Sep 2026 14:01:46 +0000
-Message-ID: <8b7e7dad82a40e7bdb4721516823c8a7ae6106a0.1790161599.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1790157745.git.zihanx@nebusec.ai>
-References: <cover.1790157745.git.zihanx@nebusec.ai>
+        Wed, 23 Sep 2026 07:03:20 -0700 (PDT)
+Date: Wed, 23 Sep 2026 19:33:09 +0530
+From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Jan Petrous <jan.petrous@oss.nxp.com>,
+        "Jose.Abreu@synopsys.com" <Jose.Abreu@synopsys.com>,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+        Shawn Guo <shengchao.guo@oss.qualcomm.com>,
+        Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>,
+        Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>,
+        Alex Elder <elder@riscstar.com>, Daniel Thompson <daniel@riscstar.com>
+Subject: Re: [PATCH RFC net-next 0/9] net: introduce Qualcomm XPCS support
+ and add Nord Ethernet plumbing
+Message-ID: <arPcHSGFLrxXFEyC@oss.qualcomm.com>
+References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+ <5135e15d-b6ac-476c-9a7d-b7d64e4eed5c@bootlin.com>
+ <arOtU15iv5CWPUEu@oss.qualcomm.com>
+ <CALj3r0gAaQ_CoS5_9Mmf5HY+Fu5_e74fbb+r0LstafMhagHx6A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALj3r0gAaQ_CoS5_9Mmf5HY+Fu5_e74fbb+r0LstafMhagHx6A@mail.gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1NSBTYWx0ZWRfXzh7xnpxwiB7x
+ 8tZlPNk5oLCBy+h7WQlD89gSL2TtIaDr3bAbPI/68sUQnkAC3znsPlGXgwor/YQly4IOPzOJqqD
+ CMhivmI/K9N4hrDQAUadBX4FxPcsYVBEyaQZM5KqxQc6TT2rqGi7VbMYRlJZAjmxazjuTRCxHRU
+ dKCb6jDo6mF/0rd2mTlAwdsT7TaPydoyW8qod0RDmMqWjolEDWbDANiLLS6pwwd5buL2OghPeT4
+ +/QUgrobHbFyVdik9eMKwTzpe4Wcc3xGCgvzVPvb6H4N5zVmY89ZxQqGAlS0+1bqM/mOEHK6HQM
+ tRPNbu7tvcFEQMFf1cKXL0A4aFocvLdMuSU6yn6bw6ZdALCXmQPvnkweEQ3gMk5MqaLc28VhQLg
+ ajbP4If2DmEKgAIOZM0yiah3DikCCO2cVfdn9Grx1S/67yVMpWxFmbIeIt6vEWJ2yWUeOvJWqWV
+ WcB9vWrSsgf7wI0W79g==
+X-Authority-Analysis: v=2.4 cv=WK/qzXsR c=1 sm=1 tr=0 ts=6ab3dc2a cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=ee_2aqc6AAAA:8 a=dR3U5T3Y49Kxp-nVN2AA:9 a=CjuIK1q_8ugA:10
+ a=OpyuDcXvxspvyRM73sMx:22 a=VOpmJXOdbJOWo2YY3GeN:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1NSBTYWx0ZWRfX/HGpycNSp8MN
+ 7EC4lLzTz+4g38759mA1EQfDiRXzajJ4PMeydpdoxp+I1ZHhkTuw4JyqRAyrHN3TU7qhXI4UMST
+ dsz2vvpIjou8UMkuBYRyvmMkd9LSRXY=
+X-Proofpoint-ORIG-GUID: OLcEMAZZRVQUgLAB61558wCKOQVOYqte
+X-Proofpoint-GUID: OLcEMAZZRVQUgLAB61558wCKOQVOYqte
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609230055
 
-IP-in-IP GSO can re-enter inet_gso_segment() or ipv6_gso_segment()
-for each nested IP header. encap_level tracks header bytes, not callback
-depth, so a deep chain can exhaust the kernel stack. Making
-inet_gso_segment() stackable introduced unbounded IPv4 nesting; IPIP
-GSO/TSO later made the path reachable. The IPv6 stackable path was
-introduced separately and shares the guard; Fixes identifies the IPv4
-root cause.
+On Wed, Sep 23, 2026 at 09:17:44PM +0800, Coia Prant wrote:
+> Hello,
+> 
+> Thanks for the RFC. A few comments.
+> 
+> XPCS_ID
+> -------
+> Is 0x00000030 documented for Qualcomm, or is it derived from
+> NXP_SJA1110_XPCS_ID + 0x10? If it's the latter, it's a magic value and
+> I'd rather see it confirmed against the Qualcomm documentation or a
+> register dump from real hardware before it's used for platform
+> identification.
+> 
 
-Count IPv4 and IPv6 GSO handler entries in skb_gso_cb, initialized once
-per top-level GSO operation and preserved across GRE/UDP context changes.
-Set the cap to five, matching IP_TUNNEL_RECURSION_LIMIT. Allow five
-entries and reject the sixth with -EINVAL before it can dispatch another
-GSO callback.
+It's the latter (NXP XPCS ID + 0x10). The Qualcomm hardware returns the
+standard XPCS identifier (0x7996ced0) upon reading the 3.2, 3.3
+PCS_DEV_ID registers. I tried following a similar approach to the NXP
+DSA driver of reporting a synthetic value to bind to the Qualcomm part. 
 
-On the patched x86_64 kernel, tracefs observed six
-inet_gso_segment() entries for the 199-header reproducer; the sixth
-returned -EINVAL without a stack-guard fault. This validates the tested
-configuration, not an architecture-independent stack-safety margin.
+All this was just to make it work with pcs-xpcs-plat without introducing
+a ton of code.
 
-Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v5:
-  - Replace the header-offset budget with a shared IP GSO handler-entry
-    counter. Entries one through five pass; entry six is rejected.
-  - Initialize the count for each top-level GSO operation and preserve it
-    across IPv4/IPv6 dispatch and GRE/UDP context changes.
-  - Use the existing IP_TUNNEL_RECURSION_LIMIT value of five as a
-    practical bound. Tracefs observed the sixth entry return -EINVAL on
-    the final x86_64 revision; rerun both IPv4 PoCs on that revision.
-  - Avoid rejecting a single-level tunnel based only on header length.
-  - v4 Link: https://lore.kernel.org/all/cover.1790041241.git.zihanx@nebusec.ai/
- include/net/gso.h      | 9 +++++++++
- net/core/gso.c         | 1 +
- net/ipv4/af_inet.c     | 2 ++
- net/ipv6/ip6_offload.c | 2 ++
- 4 files changed, 14 insertions(+)
+> Structure
+> ---------
+> pcs-xpcs-plat is itself a platform glue driver, for SoCs that don't
+> need any platform-specific handling. Adding another abstraction layer
+> on top of it to cover Qualcomm would be glue on glue. Generic, Qualcomm
+> and Rockchip differ in power management, address window size (2M vs 8M,
+> ...) and MMD redirection, so they don't share a probe path.
+> 
+> Pushing that into pcs-xpcs-plat would also drag every existing user of
+> the generic glue along: they would suddenly depend on GENERIC_PHY,
+> PM_GENERIC_DOMAINS and whatever else the Qualcomm path needs, or they
+> would have to carry per-platform branches in a driver that is supposed
+> to be platform-agnostic. A per-SoC-family glue driver, the same way
+> dwmac-intel, dwmac-rk, dwmac-renesas-gbeth and dwmac-rzn1 are
+> separate, keeps each integration self-contained and leaves the generic
+> glue alone.
+> 
+> Would it make sense to take that route here? My pcs-xpcs-rk does the
+> MMD redirection through a custom MDIO bus; maybe the Qualcomm glue can
+> reuse that idea directly instead of extending pcs-xpcs-plat. Happy to
+> help with the generic parts if that's useful.
+> 
 
-diff --git a/include/net/gso.h b/include/net/gso.h
-index 29975440c..18944ff06 100644
---- a/include/net/gso.h
-+++ b/include/net/gso.h
-@@ -19,10 +19,19 @@ struct skb_gso_cb {
- 	int	encap_level;
- 	__wsum	csum;
- 	__u16	csum_start;
-+	/* Number of IPv4/IPv6 GSO handler entries for this packet. */
-+	u8	recursion_counter;
- };
- #define SKB_GSO_CB_OFFSET	32
- #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
- 
-+#define GSO_RECURSION_LIMIT	5
-+
-+static inline bool gso_recursion_inc_test(struct sk_buff *skb)
-+{
-+	return ++SKB_GSO_CB(skb)->recursion_counter > GSO_RECURSION_LIMIT;
-+}
-+
- static inline int skb_tnl_header_len(const struct sk_buff *inner_skb)
- {
- 	return (skb_mac_header(inner_skb) - inner_skb->head) -
-diff --git a/net/core/gso.c b/net/core/gso.c
-index bcd156372..e96ef6350 100644
---- a/net/core/gso.c
-+++ b/net/core/gso.c
-@@ -117,6 +117,7 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
- 
- 	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
- 	SKB_GSO_CB(skb)->encap_level = 0;
-+	SKB_GSO_CB(skb)->recursion_counter = 0;
- 
- 	skb_reset_mac_header(skb);
- 	skb_reset_mac_len(skb);
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 32d006c1a..18037d8d4 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1375,6 +1375,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
- 	int id;
- 
- 	skb_reset_network_header(skb);
-+	if (unlikely(gso_recursion_inc_test(skb)))
-+		goto out;
- 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
- 	if (unlikely(!pskb_may_pull(skb, sizeof(*iph))))
- 		goto out;
-diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
-index 78f50c93c..099f14e09 100644
---- a/net/ipv6/ip6_offload.c
-+++ b/net/ipv6/ip6_offload.c
-@@ -104,6 +104,8 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
- 	bool gso_partial;
- 
- 	skb_reset_network_header(skb);
-+	if (unlikely(gso_recursion_inc_test(skb)))
-+		goto out;
- 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
- 	if (unlikely(!pskb_may_pull(skb, sizeof(*ipv6h))))
- 		goto out;
--- 
-2.55.0.windows.3
+I agree with your concerns regarding the glue on glue architecture. I
+also don't know if each platform glue should define a custom MDIO bus
+with similar logic. Maybe we can have a generic abstraction for it?
 
+I know that Alex had a patch introducing pcs-xpcs-regmap.c [1]. My
+original code for this platform actually built on top of it before I
+moved to the current implementation.
+
+At least I now know that multiple vendors have an MMIO based XPCS,
+albeit with differing MMD redirection mechanisms.
+
+I am going through the pcs-xpcs-rk patch and the eee_clk already stood
+out to me. On my board, the PCS link does not come up if the EEE clock
+is stopped. Going through the databook, I did find a barebones
+explanation of why that might be happening for USXGMII, but I need to
+dig more into it.
+
+Thank you for the review.
+
+	Ayaan
+
+[1] https://lore.kernel.org/netdev/20260501155421.3329862-2-elder@riscstar.com/
