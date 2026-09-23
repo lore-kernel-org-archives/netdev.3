@@ -1,260 +1,318 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010036.outbound.protection.outlook.com [40.93.198.36])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAA5471421;
-	Wed, 23 Sep 2026 09:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790157542; cv=fail; b=qCnlf3byqpUoKqHnTwWpUbdEyTdMB6lD4Vha9IFD0vxUW2PZ2euXAri3gDCQ92uZlOSoQ4zFXIKk8Gpdup3FiRjiXkG04hdnPgo5ZSxYNOigDNsLuxWKgWRc9eyx1uMONhgPL35N3ccd5qbR/rvsfrajm0huMxi1R8p6vsMJu5s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790157542; c=relaxed/simple;
-	bh=1RrxUbUKgTgh1V9ia5/Bg2AwoLzKcGgLfNDkyAlLPIo=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PsiLmzVoFj5jL+MxdNCUcPFOUkgTj8I/k+sQIww9l0u/K4YbOjCsuuLCvd69XTuJ0v6zvvDxJW5eX+wR4KStwp2FrnGZeSWdxLDIKUlIdQDoO32eMGAcsTiJoglU36fZdXkZXmaztreMOlg/0GNnkVed65jMXwIVVz6jl2MeEzk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5icpnrYG; arc=fail smtp.client-ip=40.93.198.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E091241A4E8
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790157572; cv=none; b=KKd11NpvK0JWE6McZhbyCz8VqiaSkLtTZ+OMVt8siA1l7SZNLY8mYYj9ZSvIA5mi09SaEtmkcTLnpH/+R8nwtQhsxKBRRjWEmVPtSCf/2S+oPCSHrK+kG9aBqW/Vxy0fP6bJbsTNYqooJw8QTDOC0rrsQdga+GEiDeLfgdNDYSE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790157572; c=relaxed/simple;
+	bh=wu2ajQBBKmZJFz7lYB1o+jajVYOPIjqFA2K0JkVtDao=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XaYZZR6QaFU5WkYHiVa4NMmocEsVqFIMTWIncl8sA+PHADKGKssX9/koiF8rRDkVCQNfiqxe9HxAJh08rjiL1WDTwBDsfphOkK6ohgs4IZQDD1ZQVOsPW0k4Ye1/0g2Ud2YxnYPy8ksPif1/3Cg+c4JrjEIUNDjJz+eWGfGZNVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pULr+Xd8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hVVapv7x; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5icpnrYG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pv2+uf3TvX5cRnhgu/T4bVN+wQGw+vv7iuFqr3ClLlXbrvJnD3mfSZFa/6mTE5q5Tv45gj7lYyOtOUhfRlm71C6lzOdjrkJhTclmYuPZt5GudTwypl3nrPBXi9cyHDaUYtwjQUSyGeTqyKPb8EmCc+EsxK+9qfbnnKRfYczUKPdeekthLdRO3ae18RxRvLYNO5yPjAnWqipPHYtdbqDZT+AzwlUk0jC18AXwOQ2KF9gqOFjFKwxjlZwNCcreTxWcrsXviGIo/nN6WW+UOkBlZ9Beut0YjjHClVsKijjylDIiZWfBHMIb8kchtNpIrpF7mG1Ud3eZpRPOrPDor59N5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qbfxl9aaQFa34j9IVzSvyuwHK6Xdt53iXRP3yBYlTls=;
- b=OoSxWwFSHnVbkcU2+asd4LX2WNBdhTzFNHUSm+t4O2NXvDYYPK5h6ksWzrbt9IUtqADPey2Dgy0R17LmigAbSS3m4apDiDWN7m2KLWOG0fpkBPg147Cu9KlPlTMkVRU351/6vE11VSdKXFd7CEN9bWON8LHqrK3eerPVJDaMvbl/2KO1ztreSfDlhSvY/k4At2+gmZJA4qYYYWdCUXhMmCNE7nx7hPyjWOFCyo02NQztNglt9GKw+uZR8TO+G5HSq1HvkL546SPG3GYvR3j7FaJDTx7PfvZGtHHidOh5kw8RUNZW1mC/bf/FiZUbtigQl2f64V+QUN9ApqQVNSv4Eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qbfxl9aaQFa34j9IVzSvyuwHK6Xdt53iXRP3yBYlTls=;
- b=5icpnrYGNTptIm7QkxgV/R53EzzgQFUjwQpEhHzaTKiKYEhcaWXfS5xFSCYnmvIsHhy1JOvkxxyB4cU8vWLZynSS6zEKqhVzYj0Uh8osq5NNQvw4o2AkrMiZbmSnC7VuaK9oao6TohJR1uooHgzy8DuM8B2cuwNWKxKGRJXFr4c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
- CY5PR12MB6153.namprd12.prod.outlook.com (2603:10b6:930:27::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.14; Wed, 23 Sep 2026 09:58:55 +0000
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1%6]) with mapi id 15.21.0428.014; Wed, 23 Sep 2026
- 09:58:55 +0000
-Message-ID: <5e60ed2c-b50f-4949-9edb-ede80436f501@amd.com>
-Date: Wed, 23 Sep 2026 10:58:51 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] driver core: Rely on supplier driver binding at
- link creation
-From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, alucerop@amd.com,
- linux-cxl@vger.kernel.org, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
- rafael@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>
-References: <20260921191239.4249-1-alucerop@amd.com>
- <20260921191239.4249-2-alucerop@amd.com>
- <2055ead9-201f-4878-aa09-07d7fc3ab3c2@bootlin.com>
- <3ab9bc66-f3b3-465b-b736-09df1da2fcac@amd.com>
-Content-Language: en-GB
-In-Reply-To: <3ab9bc66-f3b3-465b-b736-09df1da2fcac@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P265CA0128.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c6::16) To DM4PR12MB6254.namprd12.prod.outlook.com
- (2603:10b6:8:a5::17)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pULr+Xd8";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hVVapv7x"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N9A5462701017
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:59:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=egCUu3HTqrsn7eQkpEjxXZ
+	vLWBaQva+luRds8de5Z0U=; b=pULr+Xd8XAVBz/sdE5twh4HNRw+ebJzrrThyMZ
+	pLNHlC5/5hqCICWIM81lHUCQtuPXFBFqVvWBgp9UXQnu2MjZjSd9ojDhht8sHWOL
+	6hZ7nvf6JDbu2ow0+RBko8FVnhHcUTCox1RPxU/8Q0Q7J8lZfT3ZuojeHyI2+o5o
+	dGJjbPDdZxTKenjWWQLk1tv3enPkROH0Z6grTlrXLBBSWFhARco+ieEoddI0pBPI
+	80QR8LhuEhYZ61prP1DDmw2ihAtQJtooHlIMeZZR9zWJC6Aa8jc3JQvThhzgBcVY
+	LpoR8QyDaCTLuR7CVUcjSCf680HGzTsCnYH76z62NdfMueOg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvbwar755-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 09:59:28 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93a00c70d28so151879985a.0
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 02:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790157568; x=1790762368; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=egCUu3HTqrsn7eQkpEjxXZvLWBaQva+luRds8de5Z0U=;
+        b=hVVapv7xr3lAN7cAHuWfg1/BgBuA8ivLF9LcP4S+mFtiYAXMDCgPe/6YMlGHeGzT4E
+         WXT7/7/XEauokviYMxfVkhc6rS+oA8h2Pw57ZaDeBLCdAPC+PwuuJkypPG6PiFdPwshU
+         Hk9wWsmEk6PFa3eHrkjygz2s+G4xevhAWOHPUgpeEh8gB7wcpJUB5Pip8GPb7Hsf4o1r
+         tnX8LcLHPJF4zBQ/G4Rinas8ywfc4IqcApX2hvGnSVMeAGXkWJl3ftx05rpAXwpslESM
+         mTPHWTzZtYx2nJ2bjv2Qh/aXx+sMdknQWKrguDKDMXFF4Uz0/jHcTiYKQop3gGK+uFXk
+         Rgng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790157568; x=1790762368;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=egCUu3HTqrsn7eQkpEjxXZvLWBaQva+luRds8de5Z0U=;
+        b=tBMjuKZBz24dvTaWvPUFy/ZXVaK4AjNzyASayuvdrtHfmJVumZlrVh63oiOEdp831n
+         A8tOTEWXycX3P6WE7crGPyMBxHjEsDCp9eLFEbf0nYO7Rd3IExfpc1czZNeLY6N8Iq6o
+         G6QHUHkUtHZxk0BHT69WZeLV/f4GV7U7zmLey8d6kG4xp3ZqYrNG68kroYC3m6ImNLz7
+         0gRCTzJ1/Q5PFsT8bsNAYxPjagGGDkMSxZBXQaPGjyOOuC0ncl9MSzuoMi1Pwqhn4R5E
+         jOOsqyb/Ujzkx+v3nTXuiPM6NVVDfLwJ7xQNgg/yN21IaSe2sjxS8V20xJVFIjC1dNm/
+         OPTw==
+X-Gm-Message-State: AFuF++kwpnBTvZqaKcyswY89kZs99V9iXThPGp6tDa4azInCUfKP5vP4
+	HXfenhPUxtx3xDPQ3VAlRqhcitks4GdyVbf+Lp8d1KDq4s8DL7+hEXckwEFxIkG6FsSrqpk3A6J
+	fae02mSEoOEOG6TN9c63QrO84PHMRQPk9X+Bl7rGkf2d4HVt6IPQpsxFhbD8=
+X-Gm-Gg: AYBFou1TteLM6oFp2gQWRnrD4Fni3H1kSQnAue35nU4rL5RG8E1stpqba7YaZZg11j8
+	ycTgo3bS5TooTr7fguXPQkgX9sPqUyd4iAz0KBzFe7BRs3Tob0UA+IRO2fGs1hP9KIoci0xtaJJ
+	5Kv8lRRBBguPvVJOmONZvM57V0p9I/O7iwUcsmCTgawej9LErUJihaFCKSuSoBK5gAWxpETkEw7
+	r9p6nyuaAVpoYqHViWRhBLYW61vpJVFY3Nwt1QO2jLttFLf47caoorUcDdqkOZJSBK5lzdk4dYF
+	fKuXmP9+C0BBaKChZ6+uvNEGeO86ZVO0ijuqi9H7q0Ht9XkguIMlPMKofDtClNRjS/NXvY0laOW
+	T36sU+kVWW2mYzA==
+X-Received: by 2002:a05:620a:269b:b0:93b:d7a2:83cf with SMTP id af79cd13be357-93c2528273emr274069485a.62.1790157567765;
+        Wed, 23 Sep 2026 02:59:27 -0700 (PDT)
+X-Received: by 2002:a05:620a:269b:b0:93b:d7a2:83cf with SMTP id af79cd13be357-93c2528273emr274067585a.62.1790157567272;
+        Wed, 23 Sep 2026 02:59:27 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aab386e596sm1310754a12.7.2026.09.23.02.59.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 02:59:26 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Wed, 23 Sep 2026 11:58:48 +0200
+Subject: [PATCH net-next] net: stmmac: add XDP multi-buff support for TX
+ side
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|CY5PR12MB6153:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c3c4e88-4d9d-436f-5c0e-08df195947a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|6133799003|10067099003|56012099006|11063799006|22082099003|18002099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	U4oEjbe25jVhvjXLmIHYsDBSKuNBuBXwi1x4uol5rNsHZgRXBLLQ6Sc8gpMxUYut45mAKM3eyGWK0VvXIQ7sG0Cw9LDST5w7I6dD4K3fp5FZJSxWb1n/hr5KJBhfTrVbUHtF1VlWfyhxfqKh+jcFS79+bquAl1262+UtWs62d/0oqgHQFnS50IODDOEpfG3XmxJXoB/134wm/aT7JElhwF95iUFdKeArVkqKURnnF5X0DXRUoBM0QRjYt1RkqKp6+8A2RXVtb+1zXFAZapvNGBZnG+iG569bl24Lg9snrSo6+aJeIePyrZR3JF1b0qFnIwWgNMtJBnAtI5H2IApWrgcfVI/RJqJF/i4RsNP84ZTgk4jJG73rxxGq4lSVO4F3lxzyy4z3pAwWJCOO+DgWXTbx455Ezm1caPzNCaVeu6fy/SSakG/jYw0AokK/FVMdOW09/wkcVjDhTSoGbSDFnzkJ8wzHFNf4zvOnP80gP0dzS1H9xrjU39kBoS1NeeXRtANlWo1lE2gOHeEConPkw7bbvND+nuaR56HVuSdfsR2YJjoBaAvFBsrVdLPimUBknjU8QwNirSun9Dd0a0ASxkMenLKME2Yh6580Op75K04dWEiC/BUBB2j0EHn5sEdLVXtjnOI5d2pg2LKLbcCKRBq7h/P3VZgwnHKNcFQpxjw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(6133799003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QStERllTRzVmK0hycktsNTZFZXk1ZkFERm1XQjlNdkdwZXk5V015c3hKQzBD?=
- =?utf-8?B?cjNSVFE5NFJXVnVhUkJTZDR0WE1GY1gwcUt4U0x4RXpFUzBkQ3NYcTIzOUsz?=
- =?utf-8?B?dlVma3hWQmRaVm51andMQWVOU05KUGlZM3JkaWhBU3JaUVpOWm9neUxEcTQ4?=
- =?utf-8?B?N0h2WHYxVHNRcitHVmZRN1htdTBtMHpmcnlVWkt5aTBRVjI3VTcyUlYxZ0NK?=
- =?utf-8?B?S0ljd1luRzh5U2NqWEZrR0NVa3FtZ0t6cjN4eDlWRjdIcS96emtSQW9OYTB2?=
- =?utf-8?B?THBLNkJEdVd1L1RMTWJYcVVmMVJ0SHNnSzRFL1hESHMxOXljYUZHUGRheGM2?=
- =?utf-8?B?dWd3a3hjQ3ZSclc0M1o1Ni9GSUsyM3czanNMN0xnUHNxdVdnT0RkRlhKRnNt?=
- =?utf-8?B?V3lJTFc2UmlRK0l4ZE9wd2IxMUJCYndNY09WalFpVDJicmUyd21pbDYzT2I2?=
- =?utf-8?B?elBIZmI3K1VocGUzOVZaNTRqWnlmaHdRT2dLODgvQXFhZGsvMy9zcHAyaDFG?=
- =?utf-8?B?cEFLeThHb3IzOFJLekRLeG00UWRQamltdHZhV0N4UEwza1ZacWRVc256ZEY1?=
- =?utf-8?B?dllwbUxpcjlmN21ITjJhb050QnlnSXZqZGZac1RMUkdaMDVyNXdDMm1KRDdV?=
- =?utf-8?B?ZmhaS0NPY1hDQllqVEpYZUxBWnRCeTArSVphTnFiNjIwTE1qOUpYLzlQK0J6?=
- =?utf-8?B?MmtXcFRUT0FmbnI5ak9KcktLMml1OG5kL1Bya2Q5UFJyMFlpMG1JdjdlSWk3?=
- =?utf-8?B?MldqUUduTzNaZUZZNjlkK1MwQlR2WWtMRGdxWWVqTStGR3hXU0RaVFBDVE1r?=
- =?utf-8?B?K0tkWnQ2OXErTHoweElLTkhpYXhXRVNjL25qZ0NGTUFCNVdwMitFQTliWWt2?=
- =?utf-8?B?bzUzSElaUUJwODhpem5VQ0ExQXpmYldUdVgrMGlIV05MUmUxb3c5ZmNPeTBT?=
- =?utf-8?B?V1NTL1hMOHBQLy81VFJPbmRFMFhnVEdZbU9nUjMzUEZCeHR5ZWRCTW9WS3Vo?=
- =?utf-8?B?ajlvcHZoWkgvckIvRWpsUmNycTEzVUR0V0h1NzNUc1RqWld6K1IwbDI2UUtT?=
- =?utf-8?B?dENwTUtta1lTeVRsWUZzUFVFTGlpS0xBeCtwbkxjNmhmZXgyRWlKdnV5R1lN?=
- =?utf-8?B?dy9qZjlHeDJyK3Q2SGpMdnFmTUU4eWhrQW1FMFBOZ2JueHFnTTR4d3kzN3Vz?=
- =?utf-8?B?aC9rSVNCWG1OZkxiOTk0a2dPMS9GZFZDNi9kdFZsbkhZVFdyUVV2dE95RGov?=
- =?utf-8?B?Q0Q1L2ZvVjE1WG5KTnNPUWFyYzJQOVdwTFIvQ21UZllJSUR1RjhXYkN4RDFp?=
- =?utf-8?B?T29OMnNCbnl3QmxaRUphdGpRdlRZeTlBTlVuNFEwZFpiUWhpTDIzeWtUMWpt?=
- =?utf-8?B?TFM0OWpOT1BLeVNsNWd3WjR5VE9GeFdCRktWNVBvR3I1Z3dyM0pGZnA4L3I4?=
- =?utf-8?B?S1BMV2ZkV0hROVJRK3RGVUc2K1FFYjFvVjJITGpaUmZIanlJTFExcHd4UlUr?=
- =?utf-8?B?R1lqL2V4Y2tGaGNkWlNVa0dBeWI3MU5UVFJqMFQ4aHFVR1owMlNDdzYzN3hk?=
- =?utf-8?B?d2F5NU5FMEppQTVMcXhzZDgyV3NXN3ZQZnNlTWMyR1dUbU5nVUhEaDV1UjVa?=
- =?utf-8?B?c1ozeDJ3MThnLzZvRDZQY0xUOVk2T2VmY0g5OFhuMjFUK1hnaWtsV3hBS1VG?=
- =?utf-8?B?OTBiaVd2U3hPejBlNjc1a09DVFRCSFAzWmVmdS9WNnZQYzRsVHhSMk83K1hl?=
- =?utf-8?B?YlFVUjJQdmQwNm03T2xSY2ZWc0JELy9Fd2R2akt2OVgrRTlhTU11elY0UTFD?=
- =?utf-8?B?OFkvN3FSdWF4ZGJKQ2FWOVQzK08xMkpIQTlOVG5wb3F6RUE0WVY2UERGMWhV?=
- =?utf-8?B?c2VaNml1WEtmczR0WUQrcEd1ZG1MdUsyU2RvVnhDNjNTTzZpMVlsTVF2RjFZ?=
- =?utf-8?B?YTI5Yk40NTdxdXhpRjkxalJaOFdPb0NValV1UTkrdHZhV3pPRlFubDg2L0RI?=
- =?utf-8?B?eVp0dDdyYlFkeExvZENCTHJEVEVBNDUyWHQ2R1duQWV3MHpsS0FxOXNZbjVu?=
- =?utf-8?B?cElSbHpwcE9mSnUxM0JVV1k0a1NIRXZjaTdaeUxmRTdoS1U5WGZIamllb2d6?=
- =?utf-8?B?c1FhbzdybHR5TU1yN2hBbzJTa05OMUc5QTdwWWtyeXlaMDlCem5iK1dFU3JW?=
- =?utf-8?B?QUYrUkkxYmd2Rit1SWduakpEdjlIM3dCUjNLVzh0K1pIT1k3NjI1aXMvd1o2?=
- =?utf-8?B?c0lZY25KMTBkQzhUYy92dU95bzA5My9SSGFrcUtDSmdiYitEeGV2U2YxeTNV?=
- =?utf-8?B?S0hQNi96K1hQdmVac2hHNTJNWlpJNnNCSDlBOEFVVDZ0YTh5K0FZUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c3c4e88-4d9d-436f-5c0e-08df195947a4
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 09:58:55.5785
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iMQhzuXV4DkBtmFVEkolnbQ9wwZt4JCjJQWszGJCRlA186AzdAwj1r7AY9ORe9oXnOff4l4WsIdBOnmaQGxkaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6153
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260923-b4-stmmac-xmit-mb-v1-1-a71a1c522142@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBswkbKuEi3SppqFFiohSHdPW
+ r7F/wUiBaYIU1Mg0MORL1/RtQ3Yc/UHIW/VIIXsxSglGoUxObdazI4TOoPGDJpEr5XdFdTuDrR
+ z/p8zeEroKSdY3vcDU8QwMm0AAAA=
+X-Change-ID: 20260922-b4-stmmac-xmit-mb-bb78e0684cf4
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAzOSBTYWx0ZWRfX00SIcu6geRGT
+ CVqjObP04Bv3YC4I3SRpXXlc6B/dp/GOwodPuB0rmch1334uekh2pNVRg7OKZkgdfAMyz2HmRGn
+ eDNteKKJhUQie70mdSxpOHKhV3lVzWd89auEaTq5nLTtpEkaF4uVoQ6yb2aXZ0UI3YZQVjJ2pyj
+ 73VTlM+Tss0Z3Y4s543DVEiXX2GTopJMoYhyEyw1+SWBfEp8IPM1LAisdjWeD7ExwThuOhwJxSh
+ OUHt/wnk3DVEXvB2EXdxFrMVim/1QpNVp/PvNAjzAq6FIKKz34Elt2JLj0O70PLW5BDMXZgwECX
+ uBinauZCymSS3ICpV0hwZkGy/EKRebkkjarbuurP5XilU1kGSROh+eWfSHmls2jaA6ZhxqjaWXO
+ tFvxrfEUZdKslzu/owJZedA93qEj2WX9jdIALgqbDWz3VekzsMzwfKS5hABoK9N+l/P4vu5Y/kY
+ IlqNKipKqUe8DM7oXqQ==
+X-Authority-Analysis: v=2.4 cv=HfuB3SE8 c=1 sm=1 tr=0 ts=6ab3a300 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=EUspDBNiAAAA:8 a=kSU5s68tBFIkprDc3QkA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-GUID: Ifnlqg4siPHNyuiT4DR9tngbyUr6Kyj8
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAzOSBTYWx0ZWRfX+a4EOHEQmruD
+ D22ovYTjTcQ2H61eo2Mg2pawxZdVowERs5HUpsjhJ0jnR1o/1cTpdnm0heA7Wo8p24Kkt2oe51C
+ 8hZfkrstym2UDo6gNI1qq8SZh06UIjs=
+X-Proofpoint-ORIG-GUID: Ifnlqg4siPHNyuiT4DR9tngbyUr6Kyj8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230039
 
+Extend stmmac_xdp_xmit_xdpf() to transmit XDP frames with fragments
+(multi-buff). Each buffer, i.e. the frame head and every frag, is mapped
+and programmed into a dedicated TX descriptor.
 
-On 23/09/2026 09:49, Lucero Palau, Alejandro wrote:
->
-> On 22/09/2026 22:39, Maxime Chevallier wrote:
->> Hi,
->>
->> On 9/21/26 21:12, alucerop@amd.com wrote:
->>> From: Alejandro Lucero <alucerop@amd.com>
->>>
->>> Differentiate between driver binding from PM dependency when a device
->>> link is created. Rely on the device being bound to a driver for 
->>> validating
->>> the supplier as some device drivers could not support PM.
->>>
->>> Check for supplier's PM state only if consumer specifies PM_RUNTIME 
->>> flag.
->
->
-> Hi Maxime,
->
->
->> Hmmm this patch seems to have broken pretty much all the boards I'm 
->> running that
->> boot with DT. I'm getting logs such as :
->>
->> platform 16100000.serial: Failed to create device link (0x124) with 
->> supplier
->>    16000400.clock-controller
->>
->> Some are just hanging at "Starting kernel..." from u-boot.
->>
->> Then boards go silent as the uart dies, and I'm using that uart to 
->> access the
->> device's console :(
->>
->> Found with a WIP stmmac runner for netdev CI.
->>
->> Unfortunately I don't have much logs to share, as this just prevents 
->> the boards
->> from booting :( With this patch reverted, all boards boot fine
->
->
-> It is obvious I did not understand well the implications ...
->
->
-> I think the supplier device lock could be the problem behind the 
-> hanging and how the supplier initialization is checked now based on 
-> the driver bound behind the console issue ...
->
->
-> I have a couple of embedded boards to play with so I will try to 
-> reproduce the problem for getting more info. FWIW, all was fine with 
-> the server I tested this, no device link errors at all.
->
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 123 ++++++++++++++--------
+ 1 file changed, 80 insertions(+), 43 deletions(-)
 
-I have to amend my words ... the server had not exactly the same code 
-:-)  I have to copy things in and out due to security measures and 
-sometimes is hard to have all synced.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index bf9e7e4cb1c3..41ccde6371ec 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5239,77 +5239,114 @@ static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
+ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+ 				struct xdp_frame *xdpf, bool dma_map)
+ {
+-	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
++	struct skb_shared_info *sinfo = xdp_get_shared_info_from_frame(xdpf);
+ 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+ 	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
++	unsigned int first_entry = tx_q->cur_tx;
+ 	unsigned int entry = tx_q->cur_tx;
+-	enum stmmac_txbuf_type buf_type;
+-	struct dma_desc *tx_desc;
+-	dma_addr_t dma_addr;
+-	bool set_ic;
++	int i = 0, num_frames = 1;
++	struct dma_desc *desc;
+ 
+-	if (stmmac_tx_avail(priv, queue) < STMMAC_TX_THRESH(priv))
++	if (unlikely(xdp_frame_has_frags(xdpf)))
++		num_frames += sinfo->nr_frags;
++
++	if (stmmac_tx_avail(priv, queue) < num_frames)
+ 		return STMMAC_XDP_CONSUMED;
+ 
+ 	if (priv->est && priv->est->enable &&
+ 	    priv->est->max_sdu[queue] &&
+-	    xdpf->len > priv->est->max_sdu[queue]) {
++	    xdp_get_frame_len(xdpf) > priv->est->max_sdu[queue]) {
+ 		priv->xstats.max_sdu_txq_drop[queue]++;
+ 		return STMMAC_XDP_CONSUMED;
+ 	}
+ 
+-	tx_desc = stmmac_get_tx_desc(priv, tx_q, entry);
+-	if (dma_map) {
+-		dma_addr = dma_map_single(priv->device, xdpf->data,
+-					  xdpf->len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(priv->device, dma_addr))
+-			return STMMAC_XDP_CONSUMED;
+-
+-		buf_type = STMMAC_TXBUF_T_XDP_NDO;
+-	} else {
+-		struct page *page = virt_to_page(xdpf->data);
+-
+-		dma_addr = page_pool_get_dma_addr(page) + sizeof(*xdpf) +
+-			   xdpf->headroom;
+-		dma_sync_single_for_device(priv->device, dma_addr,
+-					   xdpf->len, DMA_BIDIRECTIONAL);
++	while (true) {
++		skb_frag_t *frag = i ? &sinfo->frags[i - 1] : NULL;
++		int len = frag ? skb_frag_size(frag) : xdpf->len;
++		bool last_frame = i == num_frames - 1;
++		enum stmmac_txbuf_type buf_type;
++		dma_addr_t dma_addr;
+ 
+-		buf_type = STMMAC_TXBUF_T_XDP_TX;
+-	}
++		desc = stmmac_get_tx_desc(priv, tx_q, entry);
++		if (dma_map) {
++			if (frag)
++				dma_addr = skb_frag_dma_map(priv->device,
++							    frag, 0, len,
++							    DMA_TO_DEVICE);
++			else
++				dma_addr = dma_map_single(priv->device,
++							  xdpf->data, len,
++							  DMA_TO_DEVICE);
++			if (dma_mapping_error(priv->device, dma_addr))
++				goto error_dma_unmap;
+ 
+-	stmmac_set_tx_dma_entry(tx_q, entry, buf_type, dma_addr, xdpf->len,
+-				false);
+-	stmmac_set_tx_dma_last_segment(tx_q, entry);
++			buf_type = STMMAC_TXBUF_T_XDP_NDO;
++		} else {
++			struct page *page;
+ 
+-	tx_q->xdpf[entry] = xdpf;
++			page = frag ? skb_frag_page(frag)
++				    : virt_to_page(xdpf->data);
++			dma_addr = page_pool_get_dma_addr(page);
++			if (frag)
++				dma_addr += skb_frag_off(frag);
++			else
++				dma_addr += sizeof(*xdpf) + xdpf->headroom;
++			dma_sync_single_for_device(priv->device, dma_addr,
++						   len, DMA_BIDIRECTIONAL);
++			buf_type = STMMAC_TXBUF_T_XDP_TX;
++		}
+ 
+-	stmmac_set_desc_addr(priv, tx_desc, dma_addr);
++		stmmac_set_tx_dma_entry(tx_q, entry, buf_type, dma_addr, len,
++					dma_map && frag);
++		stmmac_set_desc_addr(priv, desc, dma_addr);
++		stmmac_prepare_tx_desc(priv, desc, !i, len, csum,
++				       priv->descriptor_mode, !!i, last_frame,
++				       xdp_get_frame_len(xdpf));
++		tx_q->xdpf[entry] = last_frame ? xdpf : NULL;
++		if (last_frame) {
++			stmmac_set_tx_dma_last_segment(tx_q, entry);
++			break;
++		}
+ 
+-	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
+-			       csum, priv->descriptor_mode, true, true,
+-			       xdpf->len);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
++		i++;
++	}
++	tx_q->tx_count_frames += num_frames;
+ 
+-	tx_q->tx_count_frames++;
++	if (!(tx_q->tx_count_frames % priv->tx_coal_frames[queue])) {
++		struct stmmac_txq_stats *txq_stats;
+ 
+-	if (tx_q->tx_count_frames % priv->tx_coal_frames[queue] == 0)
+-		set_ic = true;
+-	else
+-		set_ic = false;
+-
+-	if (set_ic) {
++		desc = stmmac_get_tx_desc(priv, tx_q, entry);
++		stmmac_set_tx_ic(priv, desc);
+ 		tx_q->tx_count_frames = 0;
+-		stmmac_set_tx_ic(priv, tx_desc);
++
++		txq_stats = &priv->xstats.txq_stats[queue];
+ 		u64_stats_update_begin(&txq_stats->q_syncp);
+ 		u64_stats_inc(&txq_stats->q.tx_set_ic_bit);
+ 		u64_stats_update_end(&txq_stats->q_syncp);
+ 	}
+ 
++	/* Set the OWN bit on the first descriptor now that all descriptors
++	 * for this skb are populated.
++	 */
++	desc = stmmac_get_tx_desc(priv, tx_q, first_entry);
++	stmmac_set_tx_owner(priv, desc);
++	tx_q->cur_tx = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+ 
+-	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+-	tx_q->cur_tx = entry;
+-
+ 	return STMMAC_XDP_TX;
++
++error_dma_unmap:
++	while (first_entry != entry) {
++		desc = stmmac_get_tx_desc(priv, tx_q, first_entry);
++		stmmac_release_tx_desc(priv, desc, priv->descriptor_mode);
++		stmmac_free_tx_buffer(priv, &priv->dma_conf, queue,
++				      first_entry);
++		first_entry = STMMAC_NEXT_ENTRY(first_entry,
++						priv->dma_conf.dma_tx_size);
++	}
++
++	return STMMAC_XDP_CONSUMED;
+ }
+ 
+ static int stmmac_xdp_get_tx_queue(struct stmmac_priv *priv,
 
+---
+base-commit: 944ae66642b726bd6b25ae71b1e9ff88a0e0bdb0
+change-id: 20260922-b4-stmmac-xmit-mb-bb78e0684cf4
 
-I think the sashiko reports could be a good start to fixing this.
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-
-Apologies for the any inconvenient.
-
-Thanks,
-
-Alejandro.
-
-
->
-> Thank you for testing it!
->
->
->
->>
->> Maxime
->>
->>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->>> ---
->>>   drivers/base/core.c | 27 +++++++++++++++++++--------
->>>   1 file changed, 19 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/drivers/base/core.c b/drivers/base/core.c
->>> index 4c0c373998a1..eb6d87e35d76 100644
->>> --- a/drivers/base/core.c
->>> +++ b/drivers/base/core.c
->>> @@ -834,15 +834,26 @@ struct device_link *device_link_add(struct 
->>> device *consumer,
->>>       device_pm_lock();
->>>         /*
->>> -     * If the supplier has not been fully registered yet or there is a
->>> -     * reverse (non-SYNC_STATE_ONLY) dependency between the 
->>> consumer and
->>> -     * the supplier already in the graph, return NULL. If the link 
->>> is a
->>> -     * SYNC_STATE_ONLY link, we don't check for reverse dependencies
->>> -     * because it only affects sync_state() callbacks.
->>> +     * If the supplier has not been fully registered yet with a driver
->>> +     * return NULL.
->>>        */
->>> -    if (!device_pm_initialized(supplier)
->>> -        || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
->>> -          device_is_dependent(consumer, supplier))) {
->>> +    scoped_guard(device, supplier) {
->>> +        if (!device_is_bound(supplier)) {
->>> +            link = NULL;
->>> +            goto out;
->>> +        }
->>> +    }
->>> +    /*
->>> +     * If consumer asks for PM to use the link and the supplier has 
->>> not
->>> +     * PM initialized, or if there is a reverse (non-SYNC_STATE_ONLY)
->>> +     * dependency between the consumer and the supplier already in the
->>> +     * graph, return NULL. If the link is a SYNC_STATE_ONLY link, we
->>> +     * don't check for reverse dependencies because it only affects
->>> +     * sync_state() callbacks.
->>> +     */
->>> +    if (((flags & DL_FLAG_PM_RUNTIME) && 
->>> !device_pm_initialized(supplier)) ||
->>> +        (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
->>> +         device_is_dependent(consumer, supplier))) {
->>>           link = NULL;
->>>           goto out;
->>>       }
