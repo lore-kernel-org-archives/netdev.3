@@ -1,56 +1,56 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E511415B88
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 21:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A914947887B
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 21:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790199449; cv=none; b=BgDEfZ6wUDcaGqwgD6OOj0RKsQtzNzk8DOoSciNfKjXDq6J8agYnrO6uXJMhJR2JbVLgcWHi19NErsw1UUjKBreNebipoZI3HI6n6EsyOT+Dw2GEswdI/p5OinOIkvkgJP7eFLvZyxZS5KfMbk8VAYRooma5xAsiPEMaUIniqTs=
+	t=1790199450; cv=none; b=WnJXE9gJdXFidvaDxXTnYzM46zEOrmUgOEODBAxJ9qD17Y+fX9kaQQkalEYgz0mcDsCVnZkaHDN/sQ519PzgE+pWibWzl/XAvM03xePpKA0XMlOLgCFyVsfOuzMPL2Ojdv39ppgn7dKYAPirvjhuj0RLKP0ihAEBkMo6Krsq8M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790199449; c=relaxed/simple;
-	bh=UbHmErwKa1LNMZL8wSqNobROJxCTMjZwZ9+wubqZks8=;
+	s=arc-20240116; t=1790199450; c=relaxed/simple;
+	bh=gKYFBfLJVJUEpQ0adS/u0b8b2tFP7IzjSFz5nUXuXNc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=W2eqzwg6sZKRphaDwlPjtUqUK0wHZS4/Fe6EuN88WvfkP9UAv6mZAaOeHbSe5HYGrwUaDoB/uZUXXKgqK69ZOPHclu6DLOO554Za1vXn9jFFsNa7z8FtOFXqLvIv4cJ/yaQhkr86IOBT0DhTRHWX2x6h1dRYCMhGBbyEj9Dyv1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZmLtP5Ml; arc=none smtp.client-ip=209.85.210.200
+	 To:Cc:Content-Type; b=fL1XAEuWxdYuRjSGwGpe4xVe3jnQfgbQmev6qdk+oSgscvjoGa/eIIUxki0m5dXQ8sU12aM3eYIlRGyMWJKoc6IAkrfXfY7vmiDUYYAbyGIJ/uR/a4lsCfTk3Rlq6g4n0vg5tsJ3KQbpRIZdc/wMPYRVgtPrt3qTS6++OXzXB6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WhJgq+H1; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZmLtP5Ml"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-86a2639398cso2028696b3a.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:37:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WhJgq+H1"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4216aee8fso1443643a12.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790199446; x=1790804246; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790199447; x=1790804247; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nXjxlANPMrBNjgEiyPC2Hx/uW+CVjrY7H4f/iI7RVRk=;
-        b=ZmLtP5Ml/iMhZ1rELNJEy+hkM3ckb8/ITzet+4HJoFZFzBd/622xSPRrG1kdenc8WV
-         GeKwOIqSoLrHSZRDkqvknyGJUitYirV3rQADznKsogVs78Xxx0tLFWqWVAS8C66fRXIp
-         D4gBHb8d4JhA/DhRwwxr/wl3yk3yWmcDmCHxFP48IRnva5zvaHNeZG5E40R7GA6itxZ3
-         crCXKu6VjVrPdnyfR0XWrGAMR62FTbLFBWVS1nQGojdXtIDitjb7rfkOWPAlfnxlFAZu
-         cuOeZhxc+A+lB9sV97+tpZty5BaiMkHMk21BUTQMt4AQgtkye3tjBX3YwHtvTiW11Odv
-         Ca5g==
+        bh=5Y9MsF0lRPA5hIAPoWY4vCytE/2HcHQPyT3wBY48Wz4=;
+        b=WhJgq+H1G+I0IenEi79K9rT7BHeR1NOXDVzf5UtJB4zurIjgF2TCcGphoDiPGXbAQG
+         Q5Bt6MV3kSlWA5Zz8DooXwLgd+UkrA+9FYogTkq4ylesu+Fq+iA92c+MRpTZNS+glywW
+         PbtoclfXITMVkFybjz3jwMR0HJ7VQNKcYvnruZGSWsTbI364lf6W9risUtMcAuCq3X5c
+         QB6WuajqQF3FzzIYlzqwC+ByHubq0pySRuK7+pV/TPqE+2tkaLMErOwBGrikC/0OGcje
+         lJUwchByEWPVKX2gxv2NRAvwcXcUZAFRkBouDKK/CrDOQCgv3jqBehFvU6S8FqT7JERv
+         CpiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790199446; x=1790804246;
+        d=1e100.net; s=20260707; t=1790199447; x=1790804247;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nXjxlANPMrBNjgEiyPC2Hx/uW+CVjrY7H4f/iI7RVRk=;
-        b=w6TTt2SRvDCznz0FunYT4o8EgP74u8uu5+/bR8656KliNQaual1DlA1OxeURtmGJt6
-         CKpdPmWy7gcdcOG9CeRXiGxgiFp1ClrNXm53vbib61qNSxftoVf9BF5xoGQV6GcEJygG
-         /IYi3n5Gv6fJ1IhX0GQNIP1a8ooHFoGbesTmzMkYCSbHJb0HYi4pjhLXs39v0JhH7jj+
-         xYDypde5i5Y1feFak5jDzinHJQGbhx9gHmw6pAISdjaPqI2orqi2K635kZFJQqOmSDnB
-         ewLH9JnAcdB+9Bb8J79uMtbwiHo+MjwDzr9Y9t8Tpe/2v0o9mrcCsvkhRJ9Y1jJLVClX
-         xA8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzscY/19jKFF18bwijz0A3Kr7Wst+kRFxgj2jPM7F8mmJx+M3/D+oMqQljLp2sZoN6lQGWls40=@vger.kernel.org
-X-Gm-Message-State: AFuF++ljiVTZalGuXW8rgSsm4YX+c84bovOeOaWSbroyUrnh3gxZMCMx
-	mOzGU2BGeJQimUXWSqyDXCzDp2qYFXyXji5feAOOdnqC3O2dYsmFUu5p7xIOS0oK93sQzjrGhZk
-	qPngv6g==
-X-Received: from pfbdn16.prod.google.com ([2002:a05:6a00:4990:b0:874:919e:d6e2])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4615:b0:874:708d:b62e
- with SMTP id d2e1a72fcca58-87ea06d48fdmr325653b3a.35.1790199445482; Wed, 23
- Sep 2026 14:37:25 -0700 (PDT)
-Date: Wed, 23 Sep 2026 21:35:34 +0000
+        bh=5Y9MsF0lRPA5hIAPoWY4vCytE/2HcHQPyT3wBY48Wz4=;
+        b=sr2x/RHZ1uwi5L4ipWdI4G8MZD8b1a/CCRMbHYsVyHeM0zcWgvOho/ymrFTWhZoYrZ
+         j0hITA9ZQnP1Dijv+z0pQf/nOeCKKn66GoyZjkoQ3lF3XbY+KAsO9UJitrfpKJmuRj1j
+         EJYK+b8qXKjJu83b6KVEr2bti/ffd6944vP5Iks3228IUYkzPg+4xRoGylvZo17e7R+5
+         hUZnS4Frkx6DkF2OaE/Qiz9Dp/Fb/6kAq4PtQ/yxj+K3e6njyPtcxUplD0P/U/RhI2GD
+         G+UePsoQUbh4N5rs6GvwRgdpd8xAoji+T/M2BvOvtSq/EDpke0BzVDJJRKHObQ0Vqpuz
+         9pgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxFej8kojTL45SXPKnid4yMi6vhaXOzDrKsIR+JOWfcZN8M8f+bVW33d3sJYBY4OZVZYywyq6A=@vger.kernel.org
+X-Gm-Message-State: AFuF++lNuyNszBJ/6jw966HkjllhfO9JJLOTAynhSosHmfMCcIi7rrAv
+	g2+AwZqP0ayhmrXquOZV4ZpPbXmF5XEUqT1XdjK6p2DJ4CBVL/78egu6ieA0yWmw57wEI9T9nLC
+	PrZBhtw==
+X-Received: from pfbgm2.prod.google.com ([2002:a05:6a00:6402:b0:848:5740:db83])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4c18:b0:878:34d7:6a28
+ with SMTP id d2e1a72fcca58-87e9bb85c53mr326162b3a.42.1790199447095; Wed, 23
+ Sep 2026 14:37:27 -0700 (PDT)
+Date: Wed, 23 Sep 2026 21:35:36 +0000
 In-Reply-To: <20260923213719.224838-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260923213719.224838-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260923213719.224838-5-kuniyu@google.com>
-Subject: [PATCH v2 bpf-next 4/8] bpf: tcp: Support bpf_sock_ops_cb_flags_set()
- for bpf_tcp_ops.
+Message-ID: <20260923213719.224838-7-kuniyu@google.com>
+Subject: [PATCH v2 bpf-next 6/8] bpf: mptcp: Don't support BPF_SOCK_OPS_RCVQ_CB_FLAG.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
@@ -75,96 +74,111 @@ Cc: Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmai
 	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-When an error occurs in bpf_tcp_ops.{enqueue,dequeue}_rcvq(),
-we want to clear BPF_SOCK_OPS_RCVQ_CB_FLAG to stop invoking
-the callbacks.
+The next patch exposes a new kfunc calling __tcp_set_rcvlowat()
+to bpf_tcp_ops.
 
-In addition, bpf_sock_ops_cb_flags_set() is often used during
-setup or just after 3WHS completes to enable opt-in hooks.
+MPTCP has its own sock->ops->set_rcvlowat() / mptcp_set_rcvlowat(),
+so we should not allow calling __tcp_set_rcvlowat() on MPTCP
+subflows.
 
-Let's support bpf_sock_ops_cb_flags_set() in the following
-callbacks: connect, listen, {active,passive}_established,
-{enqueue,dequeue}_rcvq.
+Let's disable BPF_SOCK_OPS_RCVQ_CB_FLAG for MPTCP for now.
+
+If needed in the future, bpf_tcp_ops_set_rcvlowat() could be
+extended to properly support MPTCP.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- include/uapi/linux/bpf.h       |  2 +-
- net/ipv4/bpf_tcp_ops.c         | 27 +++++++++++++++++++++++++++
- tools/include/uapi/linux/bpf.h |  2 +-
- 3 files changed, 29 insertions(+), 2 deletions(-)
+ include/net/tcp.h      | 15 +++++++++++++++
+ net/core/filter.c      | 10 ++++++----
+ net/ipv4/bpf_tcp_ops.c |  5 ++++-
+ 3 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index fe122242b096..8cdf22667775 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -3264,7 +3264,7 @@ union bpf_attr {
-  * 	Return
-  * 		0
-  *
-- * long bpf_sock_ops_cb_flags_set(struct bpf_sock_ops *bpf_sock, int argval)
-+ * long bpf_sock_ops_cb_flags_set(void *bpf_sock, int argval)
-  * 	Description
-  * 		Attempt to set the value of the **bpf_sock_ops_cb_flags** field
-  * 		for the full TCP socket associated to *bpf_sock_ops* to
-diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
-index c963e2cc21b5..4b48711d92a2 100644
---- a/net/ipv4/bpf_tcp_ops.c
-+++ b/net/ipv4/bpf_tcp_ops.c
-@@ -220,6 +220,24 @@ const struct bpf_func_proto bpf_tcp_ops_get_retval_proto = {
- 	.ret_type	= RET_INTEGER,
- };
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 07426e8641b7..d3cf655da9ec 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2932,6 +2932,16 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
+ 	return tcp_call_bpf(sk, op, 3, args);
+ }
  
-+BPF_CALL_2(bpf_tcp_ops_cb_flags_set, struct sock *, sk, int, argval)
++static inline int tcp_set_sock_ops_cb_flags(struct sock *sk, int val)
 +{
-+	int val = argval & BPF_SOCK_OPS_ALL_CB_FLAGS;
++	if (sk_is_mptcp(sk) &&
++	    (val & BPF_SOCK_OPS_RCVQ_CB_FLAG))
++		return -EOPNOTSUPP;
 +
 +	tcp_sk(sk)->bpf_sock_ops_cb_flags = val;
-+
-+	return argval & ~BPF_SOCK_OPS_ALL_CB_FLAGS;
++	return 0;
 +}
 +
-+static const struct bpf_func_proto bpf_tcp_ops_cb_flags_set_proto = {
-+	.func		= bpf_tcp_ops_cb_flags_set,
-+	.gpl_only	= false,
-+	.ret_type	= RET_INTEGER,
-+	.arg1_type	= ARG_PTR_TO_BTF_ID,
-+	.arg1_btf_id	= &btf_sock_ids[BTF_SOCK_TYPE_TCP],
-+	.arg2_type	= ARG_ANYTHING,
-+};
-+
- static bool is_sockopt_supported(u32 moff)
+ static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
  {
- 	switch (moff) {
-@@ -274,6 +292,15 @@ get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
- 		if (moff == offsetof(struct bpf_tcp_ops, write_hdr_opt))
- 			return &bpf_tcp_ops_store_hdr_opt_proto;
- 		return NULL;
-+	case BPF_FUNC_sock_ops_cb_flags_set:
-+		if (moff == offsetof(struct bpf_tcp_ops, connect) ||
-+		    moff == offsetof(struct bpf_tcp_ops, listen) ||
-+		    moff == offsetof(struct bpf_tcp_ops, active_established) ||
-+		    moff == offsetof(struct bpf_tcp_ops, passive_established) ||
-+		    moff == offsetof(struct bpf_tcp_ops, enqueue_rcvq) ||
-+		    moff == offsetof(struct bpf_tcp_ops, dequeue_rcvq))
-+			return &bpf_tcp_ops_cb_flags_set_proto;
-+		return NULL;
+ 	tcp_sk(sk)->bpf_sock_ops_cb_flags = 0;
+@@ -2954,6 +2964,11 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
+ 	return -EPERM;
+ }
+ 
++static inline int tcp_set_sock_ops_cb_flags(struct sock *sk, int val)
++{
++	return -EOPNOTSUPP;
++}
++
+ static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
+ {
+ }
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 5feb99884682..f29c061bb066 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5588,8 +5588,7 @@ static int bpf_sol_tcp_setsockopt(struct sock *sk, int optname,
+ 	case TCP_BPF_SOCK_OPS_CB_FLAGS:
+ 		if (val & ~(BPF_SOCK_OPS_ALL_CB_FLAGS))
+ 			return -EINVAL;
+-		tp->bpf_sock_ops_cb_flags = val;
+-		break;
++		return tcp_set_sock_ops_cb_flags(sk, val);
  	default:
- 		return bpf_base_func_proto(func_id, prog);
+ 		return -EINVAL;
  	}
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index fe122242b096..8cdf22667775 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -3264,7 +3264,7 @@ union bpf_attr {
-  * 	Return
-  * 		0
-  *
-- * long bpf_sock_ops_cb_flags_set(struct bpf_sock_ops *bpf_sock, int argval)
-+ * long bpf_sock_ops_cb_flags_set(void *bpf_sock, int argval)
-  * 	Description
-  * 		Attempt to set the value of the **bpf_sock_ops_cb_flags** field
-  * 		for the full TCP socket associated to *bpf_sock_ops* to
+@@ -6178,8 +6177,9 @@ static const struct bpf_func_proto bpf_sock_ops_getsockopt_proto = {
+ BPF_CALL_2(bpf_sock_ops_cb_flags_set, struct bpf_sock_ops_kern *, bpf_sock,
+ 	   int, argval)
+ {
+-	struct sock *sk = bpf_sock->sk;
+ 	int val = argval & BPF_SOCK_OPS_ALL_CB_FLAGS;
++	struct sock *sk = bpf_sock->sk;
++	int err;
+ 
+ 	if (!is_locked_tcp_sock_ops(bpf_sock))
+ 		return -EOPNOTSUPP;
+@@ -6187,7 +6187,9 @@ BPF_CALL_2(bpf_sock_ops_cb_flags_set, struct bpf_sock_ops_kern *, bpf_sock,
+ 	if (!IS_ENABLED(CONFIG_INET) || !sk_fullsock(sk))
+ 		return -EINVAL;
+ 
+-	tcp_sk(sk)->bpf_sock_ops_cb_flags = val;
++	err = tcp_set_sock_ops_cb_flags(sk, val);
++	if (err)
++		return err;
+ 
+ 	return argval & (~BPF_SOCK_OPS_ALL_CB_FLAGS);
+ }
+diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+index 4b48711d92a2..b0cade34cce6 100644
+--- a/net/ipv4/bpf_tcp_ops.c
++++ b/net/ipv4/bpf_tcp_ops.c
+@@ -223,8 +223,11 @@ const struct bpf_func_proto bpf_tcp_ops_get_retval_proto = {
+ BPF_CALL_2(bpf_tcp_ops_cb_flags_set, struct sock *, sk, int, argval)
+ {
+ 	int val = argval & BPF_SOCK_OPS_ALL_CB_FLAGS;
++	int err;
+ 
+-	tcp_sk(sk)->bpf_sock_ops_cb_flags = val;
++	err = tcp_set_sock_ops_cb_flags(sk, val);
++	if (err)
++		return err;
+ 
+ 	return argval & ~BPF_SOCK_OPS_ALL_CB_FLAGS;
+ }
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
