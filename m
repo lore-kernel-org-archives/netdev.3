@@ -1,134 +1,135 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA8B386C3D
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93B3B71DD
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790135546; cv=none; b=Ch6wpdwdD3mj6ZK0J1bBEfyAXgAa5GVHI52LiWLlLOOvZ7/mCTAI/y6He2nQo7jmShMbiaTaDwIZiejQlG/o5+HDTGgv/yuRL7c7S7EAtQe1dVZPwVo8AxTyqpRFhhTtr06D+4BsJGu2HTWqn6gOeakkpxz6UYiXkP2uJ6beCXA=
+	t=1790135548; cv=none; b=GhDLAxP4N1RfQKsnywin6K5Yybxa0HC0NnWwVn5R1Hn0JpvNFd9IQ7QoMT3FoSawoRHb1WYKslHBBLTEoe0QF44JUSqKBivNJoghKtOfL9k8CcPdvGB6559Szr/StbCLuogenSQzEGvye1oDrwyrDNaz2BvR8CdSgOcPJDER0jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790135546; c=relaxed/simple;
-	bh=SokNHEFQaPqWh7Gr20BI5dV4NagsH5Jpo7eo1zyjJyo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pdORPKWqlEItsmH/DZfdBI8rL1g/yPJ7S0btQK/WiSJgVXt/tKQu0RtRbH4qw/VSbsvNOLGfTNWpIey9wsa2ixGOlBvVIzWP2rZi3nEQ90MCUqnnAloCLEmyvY1FngjtmGMD+1oncRc5YqXD5vZCGvyMJHrq24skht4s4f2xh94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kXzhFbe4; arc=none smtp.client-ip=209.85.222.199
+	s=arc-20240116; t=1790135548; c=relaxed/simple;
+	bh=1wDBcUfY5O8WxlKGalJMzzi3n8vTPv4IUdTBwkjU3rQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UiYnzdISNnJnrCq/0xcUDXdMOhhlAPjkGazsg4a9A0Ee6wHtBWgVV2s80AnyOZUyJ5HJR/u3FHgB6gM0jjBiwJNlezx5K0x44OYjFBPA0PQv3TJe2iGzS0GvL7ODtq/soXNElcWBsr/vZ5wMaaxdXm0ag3ypedW35DOo1x6dLdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QpVA371+; arc=none smtp.client-ip=209.85.222.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kXzhFbe4"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a0050a554so110474185a.1
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QpVA371+"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-936708f129aso92716085a.0
+        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:52:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790135544; x=1790740344; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m67/Gp5KGxV1UDHYS+NhFbnJz6QD47ai9ENOxLvN8W4=;
-        b=kXzhFbe4diQOUf2n5piGVkSlkncJszIcwqOQZn+da1lNvef4hf1vOlYer7CiDwFErB
-         ialrPZxHAFpUobp9lYyjLh/yad9e5aaTH6IaB4JE8PJgI644jcCgN4ZU8uDuQoLaOtJQ
-         q/bUsn+LbCVEL0imr7T1PfGuzyaRm89Uqwr+1MfTSKBApQPLMrXky1xxuWnGnylX6k1k
-         CiJ8NhSoMGHrq7vn0MQ8u6B9BwP4prMp5YNAvRVHm2t/N64ME3vXSfxkL2h6NkcMJh1F
-         /lf+0josudqktziWt0zI8LNCJAvTWKmYjxYJjGs2dRVjRaQGcKWSOLUL8SziV7LffIpV
-         Ngfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790135544; x=1790740344;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790135546; x=1790740346; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=m67/Gp5KGxV1UDHYS+NhFbnJz6QD47ai9ENOxLvN8W4=;
-        b=Sem6CSekI1v4pdqRToU8UbUBK340jn3499sY4fMCjl/a9pJ6erzvqrQ5uueAg+uWdU
-         EpH7w92ekSQUCIY3W81Ih715918NxuNKU4hD+qayZZkyfqoK12DkK6ohQPsA5cz8VEal
-         51HMIx8v28WDzGB2w71SPMe9/nmNnKH/9H63r9EdoQb6BfSI2A638/9/KaoFsuQGHllN
-         GK6tIJGsikWBxaIOvcHKCX1oAgacOap1gXqUWwCGVnV8OhepSLT8sKcJPqapYjX8AhHT
-         SDYY/uulJMLTsnya/lmxjGkF7885kFE9jCZDNl/pU0rJTmu/UjgTa/b+jLI3nNql7MUK
-         iLXg==
-X-Forwarded-Encrypted: i=1; AKwUvBxfaUAkfviXr6X/yDrDMDBMArQBJaZyEya/xgBYiYBYpPes6sx6riGeRKa5CCLl1GYCqLPZ8l4=@vger.kernel.org
-X-Gm-Message-State: AFuF++m5289fJKW9iJChHJRiJl85R7WHGYeL98toowpB5kRvxYRndzWk
-	p8sHWZuzKhqDQ6gQynaDLcGJLbhDlH+qeAQixwSSUHOJPxFm7TURnE/w/y6+wBeSjD9xtt45yUv
-	q99cLWiAgi04C6A==
-X-Received: from qkc5-n1.prod.google.com ([2002:a05:620a:a185:10b0:93a:ed3:bf3d])
+        bh=hal8/RIom79DBDvcZhlDOMdnBBdeqQ0s89KAip8787Q=;
+        b=QpVA371+AbTQeJZXVk1QSmRx2M57CNg11vqna7g/0XPGbi/y9753MvsrqMpnpnQX1t
+         i6D11P7uXTdKlcenNem1KX24q7BSX72qe+9qgkIQ4ZmuFb3zVrc7C0oRz813g3ikAcM/
+         3piueX4uHNHP9Y7gM4PNHmROj7LapG/6tK9xQ2yLoCqMHBTBPKeCFI8nsgkxqAXEVNMG
+         qE3PBT3p4OTGbYniOytdkBTj1y2ON6eVCSd6fOO1i+Vxdz1YQgYKrxRHjY1cCVSKNjIY
+         T87IhkToucXa49EXUD6eJc01yz5L+9sNZZT4gl8s2ezzP8ok3LP8Jdt47shOjAF8qUoR
+         4L5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790135546; x=1790740346;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hal8/RIom79DBDvcZhlDOMdnBBdeqQ0s89KAip8787Q=;
+        b=fUGTigzoBboU5fF98h/z0XKMvKjibngbMKSjCMkboCtfKDrU+73wo1E2sA4gYi+AXZ
+         UhAtJPmPbTqgriKGI8YFH/DgOzvA1Bb/w7ZBvhRhcArJIB4ZH18z4ZmncYKKG8SiQnRa
+         sO91r5rS2/ZQZiOxLY8zmkzLX0nx0u5qZqWm+hWxVr/TrYzfhI/jLVzmsU7tfiLO8Ure
+         7WDsnW/W958CO4kUgC1eYwi5T/aPAlSRgcZg2Jq05RLsfiaZdLy8MsuDIQCuJhFo00+2
+         KdhfB8dWbsUL4cNEWZrJH9wG4wn3JJlYDkC2gB4cY+jxdNtp4XgqiTPxvzguA4ZaF32a
+         3zlg==
+X-Forwarded-Encrypted: i=1; AKwUvBx2MWWCaw0+gCoHucVwdurcxkgcQMw8BHeB6YpWene0xdAhI0RsSEoMXbXcSM2LXVI8d1A2qzM=@vger.kernel.org
+X-Gm-Message-State: AFuF++m0TaoRqZA4VfTXhN/4kwBN6pTZZvHSkwLFGZFh4/60/Vc40Qjz
+	fsQGck2eJgVbIOLvYIjJJGzR5fknDSZOdqJfTx+zNsk8L8YKz6NKcDdu/sRtoFdNCLtXsbtC8t3
+	0z6Q9galS8SdGpg==
+X-Received: from qkox7.prod.google.com ([2002:a05:620a:2587:b0:93a:f45:2374])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4447:b0:939:b55a:3c7 with SMTP id af79cd13be357-93c251cf866mr230416385a.41.1790135543921;
- Tue, 22 Sep 2026 20:52:23 -0700 (PDT)
-Date: Wed, 23 Sep 2026 03:52:12 +0000
+ 2002:a05:620a:4891:b0:93c:16ee:ea03 with SMTP id af79cd13be357-93c251b2225mr222293885a.38.1790135545665;
+ Tue, 22 Sep 2026 20:52:25 -0700 (PDT)
+Date: Wed, 23 Sep 2026 03:52:13 +0000
+In-Reply-To: <20260923035217.179102-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260923035217.179102-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260923035217.179102-1-edumazet@google.com>
-Subject: [PATCH net v3 0/5] ip_tunnel, ip_gre: fix header length and
- validation bugs
+Message-ID: <20260923035217.179102-2-edumazet@google.com>
+Subject: [PATCH net v3 1/5] ip_tunnel: do not clear the active encap before
+ validating the new one
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
 	eric.dumazet@gmail.com, William Tu <u9012063@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>
+	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-This series fixes netlink validation and header length accounting bugs
-in ip_tunnel, ip6_tunnel, ip_gre, and ip6_gre:
+ip_tunnel_encap_setup() and ip6_tnl_encap_setup() zero out t->encap with
+memset() before calling ip_encap_hlen() / ip6_encap_hlen() to validate
+the requested encapsulation type and module availability.
 
-1. Do not zero the active tunnel encapsulation in ip_tunnel_encap_setup()
-   and ip6_tnl_encap_setup() before the new encapsulation has been
-   validated.
-2. Validate netlink attributes in ipgre_netlink_parms() and
-   erspan_netlink_parms() into a temporary struct ip_gre_parm before
-   mutating tunnel state, reject toggling IFLA_GRE_COLLECT_METADATA in
-   changelink, and validate attributes before calling
-   ipgre_newlink_encap_setup() in changelink.
-3. Recompute GRE tunnel header lengths and MTU absolutely from tun_hlen
-   and encap_hlen via ip_tunnel_refresh_lengths() rather than shifting by
-   delta, fixing drift on encapsulation changes and hard_header_len
-   corruption on gretap devices.
-4. Recompute ERSPAN tunnel header lengths and MTU on changelink, reject
-   non-zero GRE flags when IFLA_GRE_ERSPAN_VER is 0 or
-   IFLA_GRE_COLLECT_METADATA is set, and ensure IP_TUNNEL_SEQ_BIT matches
-   erspan_ver in erspan_xmit().
-5. Reject malformed ERSPAN base header versions (ver != 1 && ver != 2)
-   and skip ERSPAN metadata extraction for Type I frames in collect_md
-   mode instead of copying inner Ethernet frame bytes into md->u.md2.
+When a changelink request supplies an invalid encapsulation type or an
+encapsulation whose module is not loaded, ip[6]_encap_hlen() returns
+-EINVAL after t->encap has already been cleared to TUNNEL_ENCAP_NONE,
+while t->encap_hlen and t->hlen remain at their previous values. A
+rejected netlink request thus permanently disables FOU/GUE on a working
+tunnel while keeping its reduced MTU and extra headroom.
 
-v3:
- - Patch 1: clarify commit message that callers still invoke
-   ip[6]_tunnel_encap_setup() before validating the rest of changelink.
- - Patch 2: stage ignore_df, fwmark, erspan_ver, index, hwid, and dir into
-   struct ip_gre_parm and commit after ip_tunnel_changelink() succeeds,
-   reject toggling IFLA_GRE_COLLECT_METADATA in changelink, and parse
-   netlink parms before ipgre_newlink_encap_setup() in changelink.
- - Patch 3: update old_hlen to the intermediate t->hlen when
-   ip_tunnel_update() recomputes dev->mtu after a link or fwmark change so
-   compensating encap + o_flags changes still refresh dev->mtu.
- - Patch 4: check IFLA_GRE_OFLAGS/IFLA_GRE_IFLAGS before the
-   IFLA_GRE_ERSPAN_VER == 0 early return in erspan_validate(), ensure
-   IP_TUNNEL_SEQ_BIT matches tunnel->erspan_ver in erspan_xmit(), and
-   commit gparms + o_flags atomically after ip_tunnel_changelink() succeeds.
- - Patch 5: check tpi->proto == htons(ETH_P_ERSPAN) in is_erspan_type1(),
-   and clarify commit message and comment that __iptunnel_pull_header()
-   already linearized ETH_HLEN bytes of the inner Ethernet frame.
- - Link to v2: https://lore.kernel.org/netdev/20260916100155.1398403-1-edumazet@google.com/
+The memset() is redundant: struct ip_tunnel_encap has exactly four
+fields, and all of them are assigned unconditionally once the length
+check has passed. A tunnel being created starts from the zeroed private
+area of alloc_netdev(). Simply remove it, so that a failed
+ip_tunnel_encap_setup() or ip6_tnl_encap_setup() leaves the active
+encapsulation untouched. (Callers still invoke ip[6]_tunnel_encap_setup()
+before validating the rest of a changelink request.)
 
-v2:
- - Address Sashiko review feedback on v1.
- - Link to v1: https://lore.kernel.org/netdev/CANn89iJwwSMPXTjNYpXUskr1E+T8-EnkvO4LFSZAknqVL5+1gw@mail.gmail.com/
+net-next already does this for the IPv4 side in commit 88b84cae6b94
+("ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup"), which is not in
+net. Removing the same lines here keeps the merge trivial, and extends
+the fix to IPv6, which that commit did not touch.
 
-Assisted-by: LLM
+Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
+Fixes: 058214a4d1df ("ip6_tun: Add infrastructure for doing encapsulation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/ip_tunnel.c  | 2 --
+ net/ipv6/ip6_tunnel.c | 2 --
+ 2 files changed, 4 deletions(-)
 
-Eric Dumazet (5):
-  ip_tunnel: do not clear the active encap before validating the new one
-  ip_gre: validate netlink attributes before changing the tunnel
-  ip_gre: compute tunnel lengths absolutely instead of by delta
-  ip_gre: recompute erspan header lengths after a change
-  gre: do not read inner frame as erspan metadata in collect_md mode
-
- include/net/ip_tunnels.h |   1 +
- net/ipv4/ip_gre.c        | 296 ++++++++++++++++++++++++++++-----------
- net/ipv4/ip_tunnel.c     |  19 ++-
- net/ipv6/ip6_gre.c       |   2 +
- net/ipv6/ip6_tunnel.c    |   2 -
- 5 files changed, 233 insertions(+), 87 deletions(-)
-
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index e6bcf01411d0bcd12cc9a88e449d9283c4a83c64..2a313b18134e2f0bafd52d59d8e173fa1a084f03 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -491,8 +491,6 @@ int ip_tunnel_encap_setup(struct ip_tunnel *t,
+ {
+ 	int hlen;
+ 
+-	memset(&t->encap, 0, sizeof(t->encap));
+-
+ 	hlen = ip_encap_hlen(ipencap);
+ 	if (hlen < 0)
+ 		return hlen;
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index d5ff50a2ac01760acd1cb176c952f7113f733288..c918c2b0ad81b0161a2a98e4bd861436497c551c 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1818,8 +1818,6 @@ int ip6_tnl_encap_setup(struct ip6_tnl *t,
+ {
+ 	int hlen;
+ 
+-	memset(&t->encap, 0, sizeof(t->encap));
+-
+ 	hlen = ip6_encap_hlen(ipencap);
+ 	if (hlen < 0)
+ 		return hlen;
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
