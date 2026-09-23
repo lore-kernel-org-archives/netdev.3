@@ -1,296 +1,311 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF71A2773D;
-	Wed, 23 Sep 2026 07:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7170361974
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790147275; cv=none; b=lBRFozd/sY0SUEmYjIro/lA4QTOi2vUsGOCbxNPU/6Yzpk6ae70JLywa8qrR1QjmCGg39xap34adhvMaYNVjC6QDW6qYBGBZLWBU211DXbRM7Dhk3yEwGrfRppnRc4Oa0b2cV1u7t5wpLRHAB4wT8gvWGO3V1xS3K2wqfubV7d0=
+	t=1790147494; cv=none; b=NZjMNBx35meqCvnMGhkWAgpF2USI5msydTnmicgJp+21d1tyO4lq5FPl8Wwu0ZetKXa/ngAlTBfaL2aKKRDC7rRrwqB/osyNm3YIwizmDDW2HknpAetWFHYpgo69hgG1KlKbIZasfruV69QsxIKsjC9G3ai10E2pqVQOyqGYPzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790147275; c=relaxed/simple;
-	bh=orzSAAp/TYdSyiSlITswyr5ZI6KYw8GybSx0o1i2fYw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sq92PdfRc5i7j6uPFp2ZuoeQO1/e9hS4SqN+riCZX4OZX9utLILMuKHV6f+UzA7VeUojYEnXVfbDzL1bI30Go1LHMlZIoK2O88eeecCxjZb5fJvZUkdvEIe7/4KLZtEYZRMP7Z9gRRtmiv15f+Px2n3X00tAcyG6WcQf9x78QtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=djzuZwi1; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790147494; c=relaxed/simple;
+	bh=JmO4KBnV8fO1FD3BarCAqzphzMIX2z2AzICksZ1mlq0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Hx5GkS4SpX4ZJnwA0Ivq2Ap8QMSxKTuSC+saYFZL9a2I62HpWohC8VXS0bqKjkdikv5rd2JtKPMkEa4jHlHfgtX6y1DL6PVglsBZd2ePsL6B69vilMSL1ChVxU45J1CKvSiU3UMzDvfRXgNB28jOJg/75ZHSeWUREKnP0di086Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KYPwZZS5; arc=none smtp.client-ip=91.218.175.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="djzuZwi1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790147273; x=1821683273;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=orzSAAp/TYdSyiSlITswyr5ZI6KYw8GybSx0o1i2fYw=;
-  b=djzuZwi1gFmAMQkdNt/qcWV7IbJwu2ApYDOnbmutNaYkVeNogNm0LaiH
-   3yifCt6MQhRf5762ss1o65KSAoMBurTMYDQtI7Roy//A5BJUhvRHSAJOy
-   K36gGoPU6seE2gP4C0KsbJ4YMHHPpc1GAifOg1oLUoUY8lpDhSUVRec/0
-   eT2xnVJ0gvFDOeX3Wg9I7LAtej0EiPWAFHiC3xFKT5d1YBrvv0kgKS4F1
-   7IhpOLokccUVtxVw57FXqCXW2fQb9NHYmlshV/9FPkRB+N9gy0xG3EwWP
-   BLQwWaOGwP9G1hkmJwyqjTiIa50Ed+t4k2YHhY4dLOaIoTRG2SFztxzkt
-   A==;
-X-CSE-ConnectionGUID: UUQhEpgOQGa3bB9ahQY9fg==
-X-CSE-MsgGUID: /seKL8cbTGKmGzzU0oUv6A==
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="231145174"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:07:52 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Wed, 23 Sep 2026 00:07:52 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 23 Sep 2026 00:07:48 -0700
-Date: Wed, 23 Sep 2026 09:07:47 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v7 04/14] net: lan966x: add FDMA LLP register
- write helper
-Message-ID: <20260923070747.sunyth2nbmi6hq3h@DEN-DL-M70577.microsemi.net>
-References: <20260918-lan966x-pci-fdma-v7-4-0ecc179c8a2c@microchip.com>
- <179008204609.2160803.35249597205544955@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KYPwZZS5"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=JmO4KBnV8fO1FD3BarCAqzphzMIX2z2AzICksZ1mlq0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790147489; v=1; x=1790752289;
+ b=KYPwZZS5c19n50Zgw3Bo3sbhm2dd1+BpNQq6Y1dV5onk55mCf9zZ2yb1FBAXsxltvqyHWk32
+ lFQ1IbuCaziU14qNCo3d52fzKhnYEhyKjYPLVPM1S0FQzfuizBgkKKgEY/RmRzdCncdznw1pOUK
+ USYdYn2nzk+qYHPB3dGte+eI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id f603e750efc98ad7;
+	Wed, 23 Sep 2026 07:11:29 +0000
+X-Mizu-Trace-ID: f603e750efc98ad7
+X-Migadu-Flow: FLOW_OUT
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	chenguang.zhao@linux.dev,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
+Subject: [PATCH net-next v3] net: phy: make the hwtstamp provider lifetime symmetric with the PHY
+Date: Wed, 23 Sep 2026 15:11:32 +0800
+Message-Id: <20260923071132.908826-1-chenguang.zhao@linux.dev>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179008204609.2160803.35249597205544955@kernel.org>
 
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] By moving the FDMA_DCB_LLP/LLP1 writes out of
->   lan966x_fdma_tx_activate() into lan966x_fdma_tx_alloc()…
-> - [Low] The patch deletes the comment 'When activating a channel, first
->   is required to write the first DCB address and then to activate it'…
-> 
-> Pre-existing issues:
-> - [High] lan966x_fdma_rx_alloc() (lan966x_fdma.c:135) and
->   lan966x_fdma_tx_alloc() (line 217) discard the return value of…
-> 
-> --
-> 
-> net: lan966x: add FDMA LLP register write helper
-> 
-> This moves the FDMA_DCB_LLP/LLP1 register writes out of
-> lan966x_fdma_rx_start() and lan966x_fdma_tx_activate() into the RX/TX
-> allocation functions, adding a shared lan966x_fdma_llp_configure() helper
-> plus one extra call in the lan966x_fdma_reload() restore path.  The stated
-> motivation is that the upcoming PCIe FDMA path programs ATU-translated
-> addresses into these registers.
-> 
-> A few questions below.
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> > index 41d4ec7f2f57..b8344fd5e5ad 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-> > @@ -109,6 +109,13 @@ static int lan966x_fdma_rx_alloc_page_pool(struct lan966x_rx *rx)
-> >       return 0;
-> >  }
-> >
-> > +static void lan966x_fdma_llp_configure(struct lan966x *lan966x, u64 addr,
-> > +                                    u8 channel_id)
-> > +{
-> > +     lan_wr(lower_32_bits(addr), lan966x, FDMA_DCB_LLP(channel_id));
-> > +     lan_wr(upper_32_bits(addr), lan966x, FDMA_DCB_LLP1(channel_id));
-> > +}
-> > +
-> >  static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
-> >  {
-> >       struct lan966x *lan966x = rx->lan966x;
-> > @@ -128,6 +135,8 @@ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
-> >       fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
-> >                      FDMA_DCB_STATUS_INTR);
-> >
-> > +     lan966x_fdma_llp_configure(lan966x, fdma->dma, fdma->channel_id);
-> > +
-> >       return 0;
-> >  }
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but since the new LLP write now
-> sits right after it: should lan966x_fdma_rx_alloc() check the return value
-> of fdma_dcbs_init() before arming the channel?
-> 
-> fdma_dcbs_init() is fallible and stops at the first failing descriptor:
-> 
-> drivers/net/ethernet/microchip/fdma/fdma_api.c:fdma_dcbs_init() {
->         for (i = 0; i < fdma->n_dcbs; i++) {
->                 err = fdma_dcb_add(fdma, i, info, status);
->                 if (err)
->                         return err;
->         }
-> }
-> 
-> and lan966x_fdma_rx_dataptr_cb() returns -ENOMEM when
-> page_pool_dev_alloc_pages() fails, without updating rx->page[dcb][db] or
-> *dataptr.  So under memory pressure the chain is left truncated, the
-> remaining DB dataptrs stay 0, and rx->page[] keeps its previous contents
-> while this function still returns 0 and now also programs the LLP.
-> 
-> In lan966x_fdma_reload() the success branch then runs, which releases every
-> page in old_pages to the old pool and calls page_pool_destroy(page_pool)
-> while rx->page[] still references those pages.  A later
-> lan966x_fdma_rx_free_pages() at deinit, or on the next MTU change, would
-> then call page_pool_put_full_page() on pages already returned to a
-> destroyed pool.  In the probe path the same suppressed failure leaves NULL
-> entries in rx->page[] that lan966x_fdma_rx_free_pages() dereferences
-> unconditionally.
-> 
-> RX would also stall, since the software dcb_index wraps modulo n_dcbs while
-> the hardware only walks the truncated part of the ring.
-> 
-> Interestingly the PCIe variant added later in this series does check the
-> same call, so would it make sense to propagate the error here as well?
-> 
-> > @@ -137,14 +146,6 @@ static void lan966x_fdma_rx_start(struct lan966x_rx *rx)
-> >       struct fdma *fdma = &rx->fdma;
-> >       u32 mask;
-> >
-> > -     /* When activating a channel, first is required to write the first DCB
-> > -      * address and then to activate it
-> > -      */
-> > -     lan_wr(lower_32_bits((u64)fdma->dma), lan966x,
-> > -            FDMA_DCB_LLP(fdma->channel_id));
-> > -     lan_wr(upper_32_bits((u64)fdma->dma), lan966x,
-> > -            FDMA_DCB_LLP1(fdma->channel_id));
-> > -
-> >       lan_wr(FDMA_CH_CFG_CH_DCB_DB_CNT_SET(fdma->n_dbs) |
-> >              FDMA_CH_CFG_CH_INTR_DB_EOF_ONLY_SET(1) |
-> >              FDMA_CH_CFG_CH_INJ_PORT_SET(0) |
-> 
-> [Severity: Low]
-> This isn't a bug, but the comment documenting the hardware ordering rule
-> ("first is required to write the first DCB address and then to activate
-> it") is removed from both lan966x_fdma_rx_start() and
-> lan966x_fdma_tx_activate(), and is not restated at
-> lan966x_fdma_llp_configure() or at either FDMA_CH_ACTIVATE site.
-> 
-> The requirement becomes an implicit contract between the allocation and
-> activation functions, which is what forces the extra open-coded call in the
-> lan966x_fdma_reload() restore path below.  Could the rule be documented at
-> the helper, or near the FDMA_CH_ACTIVATE writes?
-> 
-> All activation paths in the current tree do have a matching LLP write
-> before them, so this is only about the lost documentation.
-> 
-> Also, the commit message says the writes are moved "into the allocation
-> functions", but a third call site is added in lan966x_fdma_reload(), which
-> is not an allocation function.  Could that be mentioned as well?
-> 
-> > @@ -215,6 +216,8 @@ static int lan966x_fdma_tx_alloc(struct lan966x_tx *tx)
-> >
-> >       fdma_dcbs_init(fdma, 0, 0);
-> >
-> > +     lan966x_fdma_llp_configure(lan966x, fdma->dma, fdma->channel_id);
-> > +
-> >       return 0;
-> >
-> >  out:
-> 
-> [Severity: High]
-> This is the same pre-existing unchecked fdma_dcbs_init() described above,
-> on the TX side; it is not introduced by this patch, but the new LLP write
-> and the unconditional "return 0" now follow it directly.
-> 
-> > @@ -236,14 +239,6 @@ static void lan966x_fdma_tx_activate(struct lan966x_tx *tx)
-> >       struct fdma *fdma = &tx->fdma;
-> >       u32 mask;
-> >
-> > -     /* When activating a channel, first is required to write the first DCB
-> > -      * address and then to activate it
-> > -      */
-> > -     lan_wr(lower_32_bits((u64)fdma->dma), lan966x,
-> > -            FDMA_DCB_LLP(fdma->channel_id));
-> > -     lan_wr(upper_32_bits((u64)fdma->dma), lan966x,
-> > -            FDMA_DCB_LLP1(fdma->channel_id));
-> > -
-> >       lan_wr(FDMA_CH_CFG_CH_DCB_DB_CNT_SET(fdma->n_dbs) |
-> >              FDMA_CH_CFG_CH_INTR_DB_EOF_ONLY_SET(1) |
-> >              FDMA_CH_CFG_CH_INJ_PORT_SET(0) |
-> 
-> [Severity: Medium]
-> Can the injection channel now be activated before the LLP has been
-> programmed during probe?
-> 
-> lan966x_probe() sets lan966x->fdma = true before the port loop that calls
-> lan966x_probe_port() -> register_netdev(), and only calls
-> lan966x_fdma_init() afterwards.  lan966x_port_xmit() dispatches purely on
-> that flag:
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_main.c:lan966x_port_xmit() {
->         spin_lock(&lan966x->tx_lock);
->         if (port->lan966x->fdma)
->                 err = lan966x_fdma_xmit(skb, ifh, dev);
->         ...
-> }
-> 
-> lan966x_fdma_init() sets tx.fdma.n_dcbs/n_dbs and the ops before calling
-> lan966x_fdma_tx_alloc(), and lan966x_fdma_tx_alloc() does not take
-> tx_lock.  So an xmit landing between fdma_dcbs_init() and the new
-> lan966x_fdma_llp_configure() would find a valid dcbs_buf and DCB ring and
-> go:
-> 
-> lan966x_fdma_xmit() -> lan966x_fdma_tx_start() -> lan966x_fdma_tx_activate()
-> 
-> which after this patch writes FDMA_CH_ACTIVATE without programming the
-> LLP, so the engine would fetch its first DCB from the post-reset LLP value
-> of 0.  tx->activated is latched true there, so the LLP would never be
-> programmed for that channel afterwards:
-> 
->         if (likely(lan966x->tx.activated)) {
->                 lan966x_fdma_tx_reload(tx);
->         } else {
->                 /* Because it is first time, then just activate */
->                 lan966x->tx.activated = true;
->                 lan966x_fdma_tx_activate(tx);
->         }
-> 
-> Before this patch tx_activate() wrote the LLP immediately before the
-> activate bit, so this ordering was not possible.  Note the same probe
-> window already exposes a pre-existing tx->dcbs_buf == NULL dereference in
-> lan966x_fdma_get_next_dcb() while n_dcbs is already set, so would
-> registering the netdevs after lan966x_fdma_init() be the better fix?
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
 
-Netdev registration should be done last, yes - and that is the fix that should
-go to net (as mentioned in v6). The probe window is real, but not something
-introduced by this series.
+phy_detach() removes dev->hwprov when it points at the PHY being
+detached, but phy_attach() does not install anything: the setup and
+teardown are not symmetric. The teardown path is also reached from
+the probe error path with no RTNL and an unregistered netdev, making
+rtnl_dereference() of dev->hwprov trigger a lockdep splat.
 
-> 
-> > @@ -876,6 +871,9 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
-> >                                          MEM_TYPE_PAGE_POOL, page_pool);
-> >       }
-> >
-> > +     lan966x_fdma_llp_configure(lan966x, lan966x->rx.fdma.dma,
-> > +                                lan966x->rx.fdma.channel_id);
-> > +
-> >       lan966x_fdma_rx_start(&lan966x->rx);
-> >
-> >       lan966x_fdma_wakeup_netdev(lan966x);
-> 
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260918-lan966x-pci-fdma-v7-0-0ecc179c8a2c%40microchip.com
+Track the provider with the PHY instead: dev_attach_hwtstamp_phylib()
+installs a default provider in phy_attach_direct(), and
+dev_clear_hwtstamp_phylib() removes it in phy_detach(). Both sit
+next to dev_set_hwtstamp_phylib() so the locking is obviously the
+same, relaxed for unregistered netdevs via
+netdev_ops_lock_dereference_or_invisible(). No driver callback is
+invoked; installation is skipped when the PHY is not the default
+hwtstamp provider or when ethtool already set one.
+
+Fixes: 35f7cad1743e ("net: Add the possibility to support a selected hwtstamp in netdevice")
+Reported-by: syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=694b49f41098a5df4fd7
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+---
+
+v3:
+ The original patch only skipped the hwprov cleanup when the netdev
+ was NETREG_UNINITIALIZED. The review asked to make the provider
+ setup/teardown symmetric instead.
+ 
+ Calling dev_set_hwtstamp_phylib() directly from phy_attach() does not
+ work, for a few reasons:
+ 
+  - It reads dev->hwprov under the netdev ops lock, and the phy_ts
+    branch goes through phy_hwtstamp_set(), which ASSERT_RTNL().
+    phy_attach() runs from the probe path with neither.
+ 
+  - The !phy_ts branch (the common case for non-PTP PHYs) calls
+    ops->ndo_hwtstamp_set() unconditionally, but drivers like
+    usbnet/asix do not implement that callback.
+ 
+  - Pushing a zero config into ndo_hwtstamp_set() would also wipe
+    the MAC hwtstamp configuration on SFP hotplug.
+ 
+ Instead, v3 controls the provider through metadata-only helpers that
+ never call back into any driver. A freshly attached PHY is in its
+ zero config state by definition, so no explicit zeroing is needed.
+ 
+ The two new helpers match the locking in dev_set_hwtstamp_phylib(),
+ with netdev_assert_locked_ops_compat_or_invisible() extended to a
+ dereference helper so that unregistered netdevs are accepted.
+ Both live in dev_ioctl.c next to dev_set_hwtstamp_phylib().
+ ethnl_set_tsconfig() is left unchanged: it keeps its existing
+ zero-then-switch sequence and only replaces the setting.
+ 
+ Installation is skipped when:
+  - ethtool already chose a provider (hwprov is set);
+  - the PHY is not the default hwtstamp provider;
+  - the PHY has no ts_info or phc_index < 0;
+  - the allocation fails.
+ All four degrade to the existing NULL fallback, so the patch changes
+ no observable behavior.
+
+v2:
+ https://lore.kernel.org/all/20260918022316.237646-1-chenguang.zhao@linux.dev/ 
+
+v1:
+ https://lore.kernel.org/all/20260916021505.238990-1-chenguang.zhao@linux.dev/
+
+ drivers/net/phy/phy_device.c | 19 +++++-------
+ include/linux/net_tstamp.h   |  8 +++++
+ include/net/netdev_lock.h    | 18 +++++++++++
+ net/core/dev_ioctl.c         | 71 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 105 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a3..2ddb4b214003 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -17,6 +17,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/net_tstamp.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/list.h>
+@@ -1878,6 +1879,12 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 
+ 	phy_resume(phydev);
+ 
++	/* Track the default hwtstamp provider of the netdev, if the
++	 * attached PHY is the one. Cleared symmetrically by phy_detach().
++	 */
++	if (dev)
++		dev_attach_hwtstamp_phylib(dev, phydev);
++
+ 	/**
+ 	 * If the external phy used by current mac interface is managed by
+ 	 * another mac interface, so we should create a device link between
+@@ -1936,17 +1943,7 @@ void phy_detach(struct phy_device *phydev)
+ 
+ 	phy_suspend(phydev);
+ 	if (dev) {
+-		struct hwtstamp_provider *hwprov;
+-
+-		/* hwprov may technically be protected by ops lock but
+-		 * not for devices with a phydev, see phy_link_topo_add_phy()
+-		 */
+-		hwprov = rtnl_dereference(dev->hwprov);
+-		/* Disable timestamp if it is the one selected */
+-		if (hwprov && hwprov->phydev == phydev) {
+-			rcu_assign_pointer(dev->hwprov, NULL);
+-			kfree_rcu(hwprov, rcu_head);
+-		}
++		dev_clear_hwtstamp_phylib(dev, phydev);
+ 
+ 		phydev->attached_dev->phydev = NULL;
+ 		phydev->attached_dev = NULL;
+diff --git a/include/linux/net_tstamp.h b/include/linux/net_tstamp.h
+index f4936d9c2b3c..d214253df2d3 100644
+--- a/include/linux/net_tstamp.h
++++ b/include/linux/net_tstamp.h
+@@ -41,6 +41,14 @@ struct hwtstamp_provider {
+ 	struct hwtstamp_provider_desc desc;
+ };
+ 
++struct net_device;
++struct phy_device;
++
++void dev_attach_hwtstamp_phylib(struct net_device *dev,
++				struct phy_device *phydev);
++void dev_clear_hwtstamp_phylib(struct net_device *dev,
++			       struct phy_device *phydev);
++
+ /**
+  * struct kernel_hwtstamp_config - Kernel copy of struct hwtstamp_config
+  *
+diff --git a/include/net/netdev_lock.h b/include/net/netdev_lock.h
+index 9fb3e93857c3..b2f94902afff 100644
+--- a/include/net/netdev_lock.h
++++ b/include/net/netdev_lock.h
+@@ -149,6 +149,24 @@ static inline int netdev_lock_cmp_fn(const struct lockdep_map *a,
+ #define netdev_ops_lock_dereference(p, dev)				\
+ 	rcu_dereference_protected(p, netdev_is_locked_ops_compat(dev))
+ 
++/* Same as netdev_is_locked_ops_compat(), but a netdev which is not
++ * registered cannot be reached from user space, so its state cannot
++ * be accessed concurrently and no lock is needed.
++ */
++static inline int
++netdev_is_locked_ops_compat_or_invisible(const struct net_device *dev)
++{
++	if (dev->reg_state != NETREG_REGISTERED &&
++	    dev->reg_state != NETREG_UNREGISTERING)
++		return 1;
++
++	return netdev_is_locked_ops_compat(dev);
++}
++
++#define netdev_ops_lock_dereference_or_invisible(p, dev)		\
++	rcu_dereference_protected(p,					\
++		netdev_is_locked_ops_compat_or_invisible(dev))
++
+ int netdev_debug_event(struct notifier_block *nb, unsigned long event,
+ 		       void *ptr);
+ 
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index a320e264eaaf..fb586bcbda1f 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -5,6 +5,8 @@
+ #include <linux/etherdevice.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/net_tstamp.h>
++#include <linux/ethtool.h>
++#include <linux/phy.h>
+ #include <linux/phylib_stubs.h>
+ #include <linux/ptp_clock_kernel.h>
+ #include <linux/wireless.h>
+@@ -388,6 +390,75 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 	return 0;
+ }
+ 
++/**
++ * dev_attach_hwtstamp_phylib() - Install the default hwtstamp provider of a
++ *	netdev for a newly attached PHY, if the PHY qualifies.
++ * @dev: Network device
++ * @phydev: PHY device being attached
++ *
++ * Only sets metadata (source, phydev pointer, PHC descriptor); it never
++ * calls into any driver callback. A freshly attached PHY is by definition
++ * in its zero-config state so no zeroing is needed. Installation is skipped
++ * when the PHY is not the default hwtstamp provider, has no ts_info, or when
++ * a provider was already set (by ethtool). The locking convention is the
++ * same as for dev_set_hwtstamp_phylib(), but also accepts unregistered netdevs.
++ */
++void dev_attach_hwtstamp_phylib(struct net_device *dev,
++				struct phy_device *phydev)
++{
++	struct kernel_ethtool_ts_info ts_info = {};
++	struct hwtstamp_provider *hwprov;
++
++	/* Don't override an explicitly selected provider */
++	hwprov = netdev_ops_lock_dereference_or_invisible(dev->hwprov, dev);
++	if (hwprov)
++		return;
++
++	if (!phy_is_default_hwtstamp(phydev) || !phy_has_tsinfo(phydev))
++		return;
++
++	if (phy_ts_info(phydev, &ts_info) || ts_info.phc_index < 0)
++		/* No usable PTP hardware clock description */
++		return;
++
++	hwprov = kzalloc_obj(*hwprov);
++	if (!hwprov)
++		/* Degrade to the NULL fallback */
++		return;
++
++	hwprov->source = HWTSTAMP_SOURCE_PHYLIB;
++	hwprov->phydev = phydev;
++	hwprov->desc.index = ts_info.phc_index;
++	hwprov->desc.qualifier = ts_info.phc_qualifier;
++
++	rcu_assign_pointer(dev->hwprov, hwprov);
++}
++EXPORT_SYMBOL(dev_attach_hwtstamp_phylib);
++
++/**
++ * dev_clear_hwtstamp_phylib() - Remove the hwtstamp provider if it matches
++ *	a PHY that is being detached.
++ * @dev: Network device
++ * @phydev: PHY device being detached
++ *
++ * Clears dev->hwprov when it points at @phydev, whether the provider was
++ * installed by dev_attach_hwtstamp_phylib() or by dev_set_hwtstamp_phylib()
++ * (via ethtool). Called from phy_detach() for symmetry with attach.
++ */
++void dev_clear_hwtstamp_phylib(struct net_device *dev,
++			       struct phy_device *phydev)
++{
++	struct hwtstamp_provider *hwprov;
++
++	hwprov = netdev_ops_lock_dereference_or_invisible(dev->hwprov, dev);
++	/* Disable timestamping if the provider is the detached PHY */
++	if (hwprov && hwprov->phydev == phydev) {
++		rcu_assign_pointer(dev->hwprov, NULL);
++		kfree_rcu(hwprov, rcu_head);
++	}
++}
++EXPORT_SYMBOL(dev_clear_hwtstamp_phylib);
++
+ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ {
+ 	const struct net_device_ops *ops = dev->netdev_ops;
+-- 
+2.25.1
+
