@@ -1,189 +1,398 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706E33DB980;
-	Wed, 23 Sep 2026 04:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBFB3D813E;
+	Wed, 23 Sep 2026 04:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790139501; cv=none; b=OnJIeEWLYTGmJQLH0dC/L7oNEprcY5z/L5dkK1Dzjm2hYTnx1kgZ2jafPXE/UBd03dVijyXiwftVIDzWKj47GQ66B+oElKknONzqaeDKZezLgHIGpgPn+TPcnNxiCHkzjlqMAcOvc6fpsjr5wvRFIqMsyD5AHnh/cQrtiReVRO4=
+	t=1790139538; cv=none; b=MwPUp4VyOK2DOMM0jqWPv4DoM1dO8r3LyZ3gSfctJivBTPxT8BSPzTEOwkWBRaZ7hrYgMOifeIpFl0ZUJ8bZ7ly8QorMaU/Duj6YEwIclVi76LRL4rQH9wmb4ikFX0soz9vYbWW2JMn0excC4y/jClxXwm8rkqD5XI4X7XaXyyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790139501; c=relaxed/simple;
-	bh=0O7Qbn9ypfQ9zZWlgHOXElAWzkeKpFIF5/TQcUE/Dgo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qh3REugT4OSqBGqYIyJdme2ySO7F5PH5Y10GEPC9Y6mko5opZqbasJkAq2jXwgmh5kwbyv6n7z6c5jZQD8aeIsqRpmCdG/pIa/DIidPwBgWxP0Tu82ZqcwG38aRiZ9wLDADfW0sV6PRjZyOa1IGvruNm/35y8Mo8IeoNHYns0RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CvUZBnEg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790139538; c=relaxed/simple;
+	bh=z8l8ikTSgK6HEM7uE9NkXsxT9+TAJ2qXYSRaChaOGt0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hXFOEzqEErviNbT/pamBIkX6fBYSXTnJWi3Qn+ONjr95pAm/cya8VpUIjLiIoRyq0CiV2m4HCfGdhUpfDzKWNAh7iGcDuArBYixrdDR2YMtgU/u/3FnbO3HCCsj+AwtGZntrmRREb7Z0I1xBx3Sgi5L53Y8sI1JuviSU0V9mCLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=MwMs8kNi; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CvUZBnEg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B57B1F0089E;
-	Wed, 23 Sep 2026 04:58:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790139485;
-	bh=1dORtqh9tfuV7OLMSLjdAMnWKy3PkAytnsZmL2OHJl4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CvUZBnEg5EP5DUYtilhOLkycsGUBlM693L6TcGCrD3NafaX6FCt7sksUHeCKMp9nG
-	 ONI3cGIyM6DqsXf6VH1o4EXH7Xog6rTW4aJkqgQ1Xrt+ZzoTaOoOVGpl4BYhfAIIlY
-	 LVnB315+V7to/qANZ55TFOj4axoV/WUqHqFy2m9JjZHLEc6i+P9AJlXhW9xOnmqNLB
-	 FhWHl/pymrT221hc5t/cjPFZCfW29iK1/a7ypoMmeaoZo3cWAcx8WRI4kvugbmPPwp
-	 JBRNkaRlWLbtyfkpLIuLjM5OG0bAnlgFl2eWLT43g3uSacXaWl9S1+S2VpsshJqgbQ
-	 22LnPV86bEv3A==
-Subject: Re: [PATCH net v3 2/2] net: stmmac: fix a divide by zero in
- stmmac_xdp_xmit_xdpf()
-From: netdev-bot+sashiko@kernel.org
-To: xiaolinkui@126.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- xiaolinkui@kylinos.cn, stable@vger.kernel.org
-Date: Wed, 23 Sep 2026 04:58:03 +0000
-Message-ID: <179013948372.2160803.7295436112506257329@kernel.org>
-In-Reply-To: <20260921135716.218420-2-xiaolinkui@126.com>
-References: <20260921135716.218420-2-xiaolinkui@126.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="MwMs8kNi"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N3jsZt3271043;
+	Tue, 22 Sep 2026 21:58:37 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=9cj2SScG0NA3v3HwNSzU/V9
+	O+WDpFgpxsgfNyJ6YMe8=; b=MwMs8kNihAwufmPiyxUAsXpr6W/eHzmruzBG5MY
+	VzCKKilL+s4xVZpA6cf3FUaDcqKmZ+9ZGLJcIuf3B2x0VQhj9L5qKjxWE1j6pape
+	yvFojnD2KXpU09nQ/3kNh4ZoM+rD1SY85SHs2vFzRDv9KkJFP4trmEC0CoZmEQTB
+	GR3MhgAdqU2YwNluQ/vRwtQfbItD18OROxJ6DwUA3/g0SXHB3fgiprMysbjE6Ay8
+	XkRu1qaV3LgyOhryobBh5ib2r7vQ1o2/YwhXv75tSE6SgKYjurPmVmsX4doEgYW9
+	EQHTIyCZufHY2mFW6i1Y9KwAGEtlBfyvcqDfWqJT4ddWhzQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4guabugcqe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2026 21:58:37 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 22 Sep 2026 21:58:36 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 22 Sep 2026 21:58:36 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 13B4F3F7072;
+	Tue, 22 Sep 2026 21:58:32 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH v2 net-next] octeontx2-af: pass devlink switch id and cache representor map
+Date: Wed, 23 Sep 2026 10:28:26 +0530
+Message-ID: <20260923045826.1774338-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: -ZkNLMEOQJ_qmv1Ci5Tq7gQm-CJMsU7j
+X-Proofpoint-GUID: -ZkNLMEOQJ_qmv1Ci5Tq7gQm-CJMsU7j
+X-Authority-Analysis: v=2.4 cv=PMOaavqC c=1 sm=1 tr=0 ts=6ab35c7d cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=8ciHC00QcEC5MqMAn4IA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDAxOSBTYWx0ZWRfX0OrczzHY2mLN
+ WJxqjhxZsaPH7QqJwgg3Dj8InyrDpKAt0SxKRIYSMUCxkJwbvJd3lBSqTvUA4CIVN84v9UEGlhe
+ JVFLyAgtJ9ERw3Lh12NMB0rVBFRXFofHwuC6JmR/DkLAHCf1LvMKvmhCm2IWoGf53jUa8/gRiUy
+ UDee1qOM/2oMsNSZp6SqXdIumu+bhWUTY+BY4bXukRAY+F36oD+vP0LMovJ1efgyv+LFe3nD4i6
+ 0Rr+5FOKwyfrK/xw5fX8uzanApSShqQjwi1BIXLSr0eqSAHFgAwZMceRJiKciPYuBoggc8TWn4h
+ 3HCnkkU2P+R+wARHapkM/8IDc5VQNP6dYp4YRry4Pip3c+VvZ2lM9p1dB04sjcOorKp8RBpKiMM
+ hgBqeozT2ACKWxag31h/ZbSV1pQhsXq6cjDZc3nu32glLhvOT2tzbXa53wgWJdmvW3PyMsA3EV3
+ c2z9Ro5nSbyHfmDDwTA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDAxOSBTYWx0ZWRfX8ZL0v6bbW0At
+ Ln64GuhRihj+2m8l5MSLWnBPwzDjT/xErjE9ZqrOAdCyS1UmCTLbvpn1zSKi3izQaw5Af896nHh
+ a7Vefeq6ay+pUbwmSHQCeYWEOMegoKQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_02,2026-09-21_02,2025-10-01_01
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Extend MBOX_MSG_ESW_CFG with the representor devlink switch_id and
+store it in the AF. Build rep2pfvf_map once on GET_REP_CNT, always
+refresh rep_pcifunc, and protect map access with rsrc_lock. Reset the
+cache on eswitch disable and representor FLR. Add rvu_sw_port_id()
+and share the representor index lookup with rvu_rep_get_vlan_id().
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+---
 
-- [Medium] The zero guard added to stmmac_xdp_xmit_xdpf() performs two
-  separate, unsynchronized plain loads of priv->tx_coal_frames[queue]:…
+v1 -> v2:
+- Always refresh rep_pcifunc on GET_REP_CNT instead of pinning it to
+  the first caller.
+- Replace the READ_ONCE/WRITE_ONCE rep2pfvf_map fast path with
+  rvu_rep_lookup_id() lookups under rsrc_lock.
+- Add rvu_rep_cache_reset() and call it on eswitch disable and
+  representor FLR so the cached map and switch_id are torn down.
+- Ignore redundant ESW_CFG enable/disable requests when the mode is
+  already in the requested state.
+- Validate switch_id length before allocating the ESW_CFG mailbox
+  message.
+- Build the representor map from rvu_rep_create() via rvu_get_rep_cnt().
+- Drop the ESW_CFG wire-format comment block; the layout change is
+  carried only by the struct fields.
+- Factor rvu_rep_get_vlan_id() and rvu_sw_port_id() through a shared
+  rvu_rep_lookup_id() helper.
+  https://lore.kernel.org/netdev/20260918050021.1359606-1-rkannoth@marvell.com/
+---
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |   2 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   |   3 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |   9 ++
+ .../ethernet/marvell/octeontx2/af/rvu_rep.c   | 117 +++++++++++++++---
+ .../net/ethernet/marvell/octeontx2/nic/rep.c  |  11 ++
+ 5 files changed, 125 insertions(+), 17 deletions(-)
 
-Pre-existing issues:
-- [Medium] With `ethtool -C ... tx-frames 0`, the new branch in
-  stmmac_xdp_xmit_xdpf()…
-
---
-
-net: stmmac: fix a divide by zero in stmmac_xdp_xmit_xdpf()
-
-This adds the missing zero test on priv->tx_coal_frames[queue] before the
-modulo in stmmac_xdp_xmit_xdpf(), so that "ethtool -C eth0 tx-usecs 10
-tx-frames 0" followed by an XDP_TX or ndo_xdp_xmit frame no longer divides
-by zero. The other transmit paths already have this test.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 1fb5f804ea234..f9846250458a4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5253,7 +5253,9 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
->  
->  	tx_q->tx_count_frames++;
->  
-> -	if (tx_q->tx_count_frames % priv->tx_coal_frames[queue] == 0)
-> +	if (!priv->tx_coal_frames[queue])
-> +		set_ic = false;
-> +	else if (tx_q->tx_count_frames % priv->tx_coal_frames[queue] == 0)
->  		set_ic = true;
->  	else
->  		set_ic = false;
-
-[Severity: Medium]
-Is one sample of priv->tx_coal_frames[queue] needed here instead of two?
-
-The guard and the divisor are two separate plain loads of the same
-concurrently written field, with no barrier or lock between them, so the
-compiler is free to reload it for the modulo.
-
-The writer side in __stmmac_set_coalesce() (stmmac_ethtool.c) stores it with
-plain stores from process context, with no driver lock, no queue stop and no
-NAPI quiescing:
-
-	if (all_queues) {
-		int i;
-
-		for (i = 0; i < tx_cnt; i++) {
-			priv->tx_coal_frames[i] =
-				ec->tx_max_coalesced_frames;
-			priv->tx_coal_timer[i] =
-				ec->tx_coalesce_usecs;
-		}
-	} else if (has_tx) {
-		priv->tx_coal_frames[queue] =
-			ec->tx_max_coalesced_frames;
-
-The reader in stmmac_xdp_xmit_xdpf() runs in softirq, reached from
-stmmac_rx()/stmmac_rx_zc() via stmmac_xdp_xmit_back(), or from
-stmmac_xdp_xmit(). If the guard load observes the old non-zero value and the
-divisor load observes the freshly stored 0, the modulo still divides by zero
-in softirq, which is the failure this commit is closing.
-
-Would something like this be more robust?
-
-	u32 coal = READ_ONCE(priv->tx_coal_frames[queue]);
-
-	set_ic = coal && (tx_q->tx_count_frames % coal == 0);
-
-The same double-read shape exists in stmmac_xmit(), stmmac_tso_xmit() and
-stmmac_xdp_xmit_zc(), so a READ_ONCE() there too would keep the paths
-consistent.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the commit message states
-that with tx-frames 0 "the coalescing timer armed by stmmac_tx_timer_arm()
-keeps reclaiming the descriptors". Does that hold for the AF_XDP zero-copy
-XDP_TX path?
-
-stmmac_finalize_xdp_rx() is the only arming attempt on that path:
-
-	if (xdp_status & STMMAC_XDP_TX)
-		stmmac_tx_timer_arm(priv, queue);
-
-and stmmac_tx_timer_arm() picks the rxtx NAPI for an xsk_pool-backed queue,
-which is the instance currently polling:
-
-	napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
-	...
-	if (unlikely(!napi_is_scheduled(napi))) {
-		...hrtimer_start(...)
-	} else {
-		hrtimer_try_to_cancel(&tx_q->txtimer);
-	}
-
-so napi_is_scheduled() is true and the timer is cancelled rather than armed.
-
-The end-of-poll fallback in stmmac_napi_poll_rxtx() does not cover it
-either, since tx_pending_packets is sampled before the XDP_TX descriptors
-are produced:
-
-	tx_done = stmmac_tx_clean(priv, budget, chan, &tx_pending_packets);
-	tx_done = min(tx_done, budget);
-
-	rx_done = stmmac_rx_zc(priv, budget, chan);
-	...
-	if (tx_pending_packets)
-		stmmac_tx_timer_arm(priv, chan);
-
-With tx-frames 0 no descriptor carries the interrupt-on-completion bit
-either, so tx_q->dirty_tx stays behind tx_q->cur_tx and the dma_map_single()
-mappings and xdp_frames of the last batch are held until unrelated traffic
-causes another poll on that channel.
-
-This window is reachable today with the defaults, since stmmac_init_coalesce()
-sets
-
-		priv->tx_coal_frames[chan] = STMMAC_TX_FRAMES;
-
-and a zero-copy XDP_TX burst shorter than 25 frames likewise leaves set_ic
-false while the timer is cancelled, so the patch only widens an existing
-gap rather than creating one. Would it be worth dropping or softening the
-claim that the timer always keeps reclaiming, or arming the timer after
-stmmac_rx_zc() in stmmac_napi_poll_rxtx()?
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index cece197d1074..45c03f9294a5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1788,6 +1788,8 @@ struct esw_cfg_req {
+ 	struct mbox_msghdr hdr;
+ 	u8 ena;
+ 	u64 rsvd;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
++	u8 switch_id_len;
+ };
+ 
+ struct rep_evt_data {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 30e148291581..aeb6b4917f45 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2924,6 +2924,9 @@ static void __rvu_flr_handler(struct rvu *rvu, u16 pcifunc)
+ 	if (rvu->mcs_blk_cnt)
+ 		rvu_mcs_flr_handler(rvu, pcifunc);
+ 
++	if (is_rep_dev(rvu, pcifunc))
++		rvu_rep_cache_reset(rvu);
++
+ 	mutex_unlock(&rvu->flr_lock);
+ }
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index fb4870cd18e9..d5f69cba6d41 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -570,6 +570,7 @@ struct npc_kpu_profile_adapter {
+ };
+ 
+ #define RVU_SWITCH_LBK_CHAN	63
++#define RVU_SW_INVALID_PORT_ID	((u32)~0U)
+ 
+ struct rvu_switch {
+ 	struct mutex switch_lock; /* Serialize flow installation */
+@@ -577,6 +578,11 @@ struct rvu_switch {
+ 	u16 *entry2pcifunc;
+ 	u16 mode;
+ 	u16 start_entry;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
++	u8 switch_id_len;
++#define RVU_SWITCH_FLAG_FW_READY BIT_ULL(0)
++	u64 flags;
++	u16 pcifunc;
+ };
+ 
+ struct rep_evtq_ent {
+@@ -1194,9 +1200,12 @@ void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena);
+ void rvu_mcs_exit(struct rvu *rvu);
+ 
+ /* Representor APIs */
++void rvu_rep_cache_reset(struct rvu *rvu);
+ int rvu_rep_pf_init(struct rvu *rvu);
+ int rvu_rep_install_mcam_rules(struct rvu *rvu);
+ void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena);
+ int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable);
+ int npc_mcam_verify_entry(struct npc_mcam *mcam, u16 pcifunc, int entry);
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc);
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc);
+ #endif /* RVU_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index a2781e0f504e..a3ad45f46742 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/bitfield.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+@@ -189,14 +190,47 @@ int rvu_mbox_handler_nix_lf_stats(struct rvu *rvu,
+ 	return 0;
+ }
+ 
+-static u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
++static bool rvu_rep_lookup_id(struct rvu *rvu, u16 pcifunc, u16 *rep_id)
+ {
+-	int id;
++	u16 *map;
++	int id, cnt;
++	bool found = false;
++
++	mutex_lock(&rvu->rsrc_lock);
++	map = rvu->rep2pfvf_map;
++	cnt = rvu->rep_cnt;
++	if (map && cnt) {
++		for (id = 0; id < cnt; id++) {
++			if (map[id] == pcifunc) {
++				*rep_id = id;
++				found = true;
++				break;
++			}
++		}
++	}
++	mutex_unlock(&rvu->rsrc_lock);
+ 
+-	for (id = 0; id < rvu->rep_cnt; id++)
+-		if (rvu->rep2pfvf_map[id] == pcifunc)
+-			return id;
+-	return 0;
++	return found;
++}
++
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
++{
++	u16 rep_id;
++
++	if (!rvu_rep_lookup_id(rvu, pcifunc, &rep_id))
++		return 0;
++	return rep_id;
++}
++
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
++{
++	u16 rep_id;
++
++	if (!rvu_rep_lookup_id(rvu, pcifunc, &rep_id))
++		return RVU_SW_INVALID_PORT_ID;
++
++	return FIELD_PREP(GENMASK_ULL(31, 16), rep_id) |
++	       FIELD_PREP(GENMASK_ULL(15, 0), pcifunc);
+ }
+ 
+ static int rvu_rep_tx_vlan_cfg(struct rvu *rvu,  u16 pcifunc,
+@@ -429,16 +463,48 @@ int rvu_rep_pf_init(struct rvu *rvu)
+ 	return 0;
+ }
+ 
++void rvu_rep_cache_reset(struct rvu *rvu)
++{
++	u16 *map;
++
++	mutex_lock(&rvu->rsrc_lock);
++	rvu->rep_mode = 0;
++	rvu->rep_pcifunc = 0;
++	map = rvu->rep2pfvf_map;
++	rvu->rep_cnt = 0;
++	rvu->rep2pfvf_map = NULL;
++	memset(rvu->rswitch.switch_id, 0, sizeof(rvu->rswitch.switch_id));
++	rvu->rswitch.switch_id_len = 0;
++	mutex_unlock(&rvu->rsrc_lock);
++
++	devm_kfree(rvu->dev, map);
++}
++
+ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 			     struct msg_rsp *rsp)
+ {
+ 	if (req->hdr.pcifunc != rvu->rep_pcifunc)
+ 		return 0;
+ 
++	if (rvu->rep_mode && req->ena)
++		return 0;
++
++	if (!rvu->rep_mode && !req->ena)
++		return 0;
++
+ 	rvu->rep_mode = req->ena;
++	memset(rvu->rswitch.switch_id, 0, sizeof(rvu->rswitch.switch_id));
++	rvu->rswitch.switch_id_len = 0;
++	if (req->switch_id_len && req->switch_id_len <= MAX_PHYS_ITEM_ID_LEN) {
++		memcpy(rvu->rswitch.switch_id, req->switch_id,
++		       req->switch_id_len);
++		rvu->rswitch.switch_id_len = req->switch_id_len;
++	}
+ 
+-	if (!rvu->rep_mode)
++	if (!rvu->rep_mode) {
+ 		rvu_npc_free_mcam_entries(rvu, req->hdr.pcifunc, -1);
++		rvu_rep_cache_reset(rvu);
++	}
+ 
+ 	return 0;
+ }
+@@ -447,31 +513,48 @@ int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+ 				 struct get_rep_cnt_rsp *rsp)
+ {
+ 	int pf, vf, numvfs, hwvf, rep = 0;
+-	u16 pcifunc;
++	u16 pcifunc, rep_cnt;
++	u16 *map;
++
++	mutex_lock(&rvu->rsrc_lock);
+ 
+ 	rvu->rep_pcifunc = req->hdr.pcifunc;
+-	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
+-	rvu->rep_cnt = rsp->rep_cnt;
+ 
+-	rvu->rep2pfvf_map = devm_kzalloc(rvu->dev, rvu->rep_cnt *
+-					 sizeof(u16), GFP_KERNEL);
+-	if (!rvu->rep2pfvf_map)
++	if (rvu->rep2pfvf_map) {
++		rsp->rep_cnt = rvu->rep_cnt;
++		for (rep = 0; rep < rvu->rep_cnt; rep++)
++			rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
++		mutex_unlock(&rvu->rsrc_lock);
++		return 0;
++	}
++
++	rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
++	map = devm_kzalloc(rvu->dev, rep_cnt * sizeof(u16), GFP_KERNEL);
++	if (!map) {
++		mutex_unlock(&rvu->rsrc_lock);
+ 		return -ENOMEM;
++	}
+ 
+ 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+ 		if (!is_pf_cgxmapped(rvu, pf))
+ 			continue;
+ 		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
+-		rvu->rep2pfvf_map[rep] = pcifunc;
++		map[rep] = pcifunc;
+ 		rsp->rep_pf_map[rep] = pcifunc;
+ 		rep++;
+ 		rvu_get_pf_numvfs(rvu, pf, &numvfs, &hwvf);
+ 		for (vf = 0; vf < numvfs; vf++) {
+-			rvu->rep2pfvf_map[rep] = pcifunc |
+-				((vf + 1) & RVU_PFVF_FUNC_MASK);
+-			rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
++			map[rep] = pcifunc | ((vf + 1) & RVU_PFVF_FUNC_MASK);
++			rsp->rep_pf_map[rep] = map[rep];
+ 			rep++;
+ 		}
+ 	}
++
++	rvu->rep_cnt = rep_cnt;
++	rvu->rep2pfvf_map = map;
++	rsp->rep_cnt = rep_cnt;
++
++	mutex_unlock(&rvu->rsrc_lock);
++
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 0f5d5642d3f7..049aef800739 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -399,8 +399,13 @@ static void rvu_rep_get_stats64(struct net_device *dev,
+ 
+ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ {
++	struct devlink_port_attrs attrs = {};
+ 	struct esw_cfg_req *req;
+ 
++	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
++	if (attrs.switch_id.id_len > MAX_PHYS_ITEM_ID_LEN)
++		return -EINVAL;
++
+ 	mutex_lock(&priv->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
+ 	if (!req) {
+@@ -408,6 +413,8 @@ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ 		return -ENOMEM;
+ 	}
+ 	req->ena = ena;
++	req->switch_id_len = attrs.switch_id.id_len;
++	memcpy(req->switch_id, attrs.switch_id.id, req->switch_id_len);
+ 	otx2_sync_mbox_msg(&priv->mbox);
+ 	mutex_unlock(&priv->mbox.lock);
+ 	return 0;
+@@ -653,6 +660,10 @@ int rvu_rep_create(struct otx2_nic *priv, struct netlink_ext_ack *extack)
+ 	int rep_id, err;
+ 	u16 pcifunc;
+ 
++	err = rvu_get_rep_cnt(priv);
++	if (err)
++		return err;
++
+ 	err = rvu_rep_rsrc_init(priv);
+ 	if (err)
+ 		return -ENOMEM;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921135716.218420-1-xiaolinkui%40126.com
+2.43.0
+
