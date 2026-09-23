@@ -1,158 +1,64 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5246E530DFB
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B307378838;
+	Wed, 23 Sep 2026 14:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790172905; cv=none; b=GvRPauU2qURJdA3F1Y0EiwrMlWwRmgI7wNoSU2kyLVoh7EuXGcitMMffrTHbSCzdzp0fWQCQnDC4pp9Kxd0Dkn5/qFoWbwNpXd20w2+2OjenyIy3SLqpXg1NwdQqU2waXvddnFB+hzSr7yGLTFzpARA5rELbcmTB6WUAwImKTbk=
+	t=1790172953; cv=none; b=NPQ9ihmnb9c3Juf/pHBZtYvj7E25PM/PsRAfzrQoz33mw5Mp8kuJlvLHPbXFUWXMqPLBg/QKYDwG1EsQ2XGZc8gAcJDmQrxjUCreyjvMPrT7fIIR8354XekFb+ufZI2zSYZjm7ljXVnfOks0QLTJAvN85oiDdwe2DhE4wW0DEjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790172905; c=relaxed/simple;
-	bh=N3GCVIZrRdfg15qsrTIp1feOBIWXoEyHYr48NgvemMo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ZJOUhNrffxFZ6/fpnK8U3VRPKRdCEeK7fSFEyeTR0W+iJ7UNwq5nEDdieHsrITHcHBZAVW3SiFYuaBNLCkE+u3F1eZB9wcuFJUWU6kaZUt5hls91iqZtOwLUcybr0R9u+P/69gxlyHGuFYxeNh2N6cNNm27lNDJ6yYxTElKSTIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7H03XF9; arc=none smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790172953; c=relaxed/simple;
+	bh=gLKxiXaYuzXzRH3NzpPWYDvSfcLvfUIzm83C2oCYFzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fAJpqsA9Onyi78OxVpZJNUMMSaT8SDYdCpsGFR5xuQKvRbEchouxRbGO3ydrrXpWkA9KR8Yxyp/kFv1CTrZXdGQ2/jkbG4bVFeZguVe2wZcv4o9ipEKCb8+Gutf7G1EJ4bdqxdRON326tOdBALIpc201vzNxPSifFln+5LQyNSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Eirx7ZkB; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7H03XF9"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aa8e6bbso534315d50.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 07:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790172901; x=1790777701; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=g9HyKk9/ZWrL06gZRzKMTMxOAy/kc6dxzp/oTmEvNFo=;
-        b=T7H03XF9yFeRy/uEOLdZgLRt5SYUUkEHFhBCrWe0FH/Y/+lufxOVqCIOJue0PUOMRf
-         aORZk9ru2KgcNW5KNY/64CoNf1+jo2l32ci6lr9u0kJQqPvGNEWe64aE9JkUrDlTjF1Q
-         gpGYe3MP3lyVivaLMidoz5KyO2uMqnt3CrEYeLeer4zLLnTMpFEJHpk7ikICOrA6zvFo
-         4V7oxDYc5GyANw/90R9T7nvUxhEc0IbcTEw/D+EYzCftGYb+1vEvfgK8s89MLk5/EqoK
-         zG6Yzl1AJ48i7sqvWvUs0yGEAjLVYuiFFUIUybmURiqnRy7/oJdbADcqfcz4qcPYsuQf
-         a7dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790172901; x=1790777701;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g9HyKk9/ZWrL06gZRzKMTMxOAy/kc6dxzp/oTmEvNFo=;
-        b=lm9s2tNQmuksVW0vsvTek3alIFCaAYvoFRR7eROsazEiISWUjo+KDX9i2Y5IuPXXrO
-         Yj+o5v9fm1B9Pwgq2yaASLoexHTUWGsjNMSZdp0ROBerjd9ZpVrgm6hDXMvqOGokoVg7
-         q+ngZAjLrXi9zbGr7kPFqc9GBjUdBSX4Wb7Cc/N/1ozNl8cMMdPyHuRoSCiwD+JmHqgq
-         MhtBXV1ZJQmJj5mqKz7dT7tQknMXta7Y2yXnWTXaYvOy16o/BDVe3RwfYxttQI+mQisx
-         2pA7F3n1L9rhbhsBqt9wBjd0hpN0VsL4aDV8jOCnfiFgRfpROXlkUI72eWLJuZqykhPK
-         C96Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwUoHTPQeilYmesPBZx2egZHg9cUW6p0tgZGOmcAZC8f25trwuuh0HEnU9trZde2L9CAEM9OSY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mdL7djS03shIMAkd02injFTNbz24s5cwnEkTZNd/RsEMb0lYAP
-	iTYWeJgp14xPQ1r72/7MCyEvoJYTavL7WtOOlUMAZwtWlP1tweBDwgr/
-X-Gm-Gg: AYBFou3dehyWU+NJzErb5gBcy51IAeRot8Km7tTZ31dhzRq6ADsvFrsj7dVNJKap8BD
-	X15JhyCBPekuyLWK6yS219MEXgFSHu45xUxLNFaqJq0EMYM1F+8IQV8JbOxIolhBdgZ7gTbNaL+
-	sn2AdU3IBidD+vPiu6OxpdQfwWMKmFtUJmpzZti/uq0NNDExKf6tMOGmlytjL7ogsUmavUETuQw
-	Vs1jXwoWlR/iuEax3HYgVBtOcATLNBORA9MztY74ECwbr7XMqbygptBGmwOjwwy1kvOV6ueOtEs
-	A5pVJGryK9npFKoJNpuF1lXX9It9D4CgkX3VisO9ATDkW2xfy+4rjpebiyXxyPEUvmc7LK73g/M
-	t9qpBPMMxmy/msIrN8Zv6oG+JMWKjxjCnwGj0Dgy1yMGQpq3RFZiCv2RjNkxDtrRn4/n16aU9oj
-	bU0Z8j4LJUBM7x+Visxr/3bW1sHpp0eEtKpbvYcFKRVhLFT5TOiPC0RIrpMOzW6f+qxpK8i0hNe
-	dCOQKrN6lm+WDyw3kRkqVapavMeVmCKDoo1iUQ5LbzfN9rsqX5rIWNhTIVpAIw=
-X-Received: by 2002:a05:690c:dd6:b0:87e:645c:182b with SMTP id 00721157ae682-8a45e272eccmr13879387b3.26.1790172900809;
-        Wed, 23 Sep 2026 07:15:00 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a4614827cesm10025697b3.7.2026.09.23.07.15.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 07:15:00 -0700 (PDT)
-Date: Wed, 23 Sep 2026 10:14:59 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Dairui Zhang <zhangdairui@gmail.com>, 
- netdev@vger.kernel.org
-Cc: Dairui Zhang <zhangdairui@gmail.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.270294ef6da64@gmail.com>
-In-Reply-To: <20260923050101.1510064-1-zhangdairui@gmail.com>
-References: <20260923050101.1510064-1-zhangdairui@gmail.com>
-Subject: Re: [PATCH net v2] af_packet: fix integer overflow in
- prb_calc_retire_blk_tmo()
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Eirx7ZkB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Kh1BmU+b8bRZ/hX23dXwEg+RXJfNapV72jSBmuL3mNs=; b=Eirx7ZkBmpWEbnEkL9kj5cyFJP
+	tyiDa/gYdEre/pfo+5s+kW4rM+yNk4dyrUpwQPFmwgLhbZfdhd3jN+0W6fXCphigcWRg6rax1srEz
+	WM8pLmcYupWLDv0LGPMy+KZV8F/C0YZvNxpjw8qOpmorJikbGPU7Thx9JiZo3/4PLiBs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9NlC-006p29-Qx; Wed, 23 Sep 2026 16:15:46 +0200
+Date: Wed, 23 Sep 2026 16:15:46 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	nico@fluxnic.net, linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org, olteanv@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
+Message-ID: <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-2-gerg@linux-m68k.org>
+ <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org>
+ <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
+ <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
 
-Dairui Zhang wrote:
-> prb_calc_retire_blk_tmo() computes in 32-bit int arithmetic:
-> 
->         mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
-> 
-> If I'm reading the validation right, tp_block_size is user
-> controlled and packet_set_ring() only rejects values that are <= 0
-> as int or not page aligned, so a 256MiB block goes right through
-> (and alloc_one_pg_vec_page() even has a vzalloc fallback for it).
-> 0x10000000 * 8 wraps to INT_MIN, and on a NIC reporting 1 Gbps
-> (div == 1) the function ends up returning -2047.
-> 
-> The condition is actually (8 * size) mod 2^32 >= 2^31 && div == 1,
-> so the trigger set is [256,512), [768,1024), [1280,1536) and
-> [1792,2048) MiB. Other sizes wrap to non-negative values and faster
-> links divide the unsigned value back below 2^31, which is why this
-> doesn't blow up for everyone.
-> 
-> What makes it fatal is what happens next in init_prb_bdqc():
-> 
->         p1->interval_ktime = ms_to_ktime(prb_calc_retire_blk_tmo(...));
->         hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
->                       HRTIMER_MODE_REL_SOFT);
-> 
-> A negative relative timeout expires immediately. The callback
-> unconditionally returns HRTIMER_RESTART, and hrtimer_forward() turns
-> the negative interval into hrtimer_resolution:
-> 
->         if (interval < hrtimer_resolution)
->                 interval = hrtimer_resolution;
-> 
-> So the SOFT timer re-fires at the maximum rate forever, holding
-> sk_receive_queue.lock each pass. One CPU spins in softirq until the
-> socket is closed. Repeat with more rings and the machine is gone.
-> 
-> The overflow itself is ancient - it was introduced together with
-> TPACKET_V3 in f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
-> implementation."). Its effect prior to f7460d2989fa ("net:
-> af_packet: Use hrtimer to do the retire operation", v6.18) was not
-> as clear-cut, though: the return value was stored into an unsigned
-> short retire_blk_tov, so a negative result was truncated, and a
-> 0-jiffy delay loop could be programmed as well. Neither is nearly
-> as detrimental as the immediate maximum-rate spin the hrtimer
-> conversion turned it into.
-> 
-> (Unrelated to CVE-2019-20812 - that one was the ethtool failure path
-> returning 0, which now returns DEFAULT_PRB_RETIRE_TOV.)
-> 
-> Reproducer, needs CAP_NET_RAW (a --network host container has it by
-> default) and a 1 Gbps NIC (QEMU e1000 works):
-> 
->         int fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
->         bind(fd, ...);
->         int v = TPACKET_V3;
->         setsockopt(fd, SOL_PACKET, PACKET_VERSION, &v, sizeof(v));
->         struct tpacket_req3 req = {
->                 .tp_block_size = 0x10000000,
->                 .tp_block_nr = 1,
->                 .tp_frame_size = 2048,
->                 .tp_frame_nr = 0x10000000 / 2048,
->                 .tp_retire_blk_tov = 0,
->         };
->         setsockopt(fd, SOL_PACKET, PACKET_RX_RING, &req, sizeof(req));
-> 
-> Compute in 64 bits instead. The operands are already bounded by the
-> existing validation, so nothing else changes. If you'd prefer a
-> different fix, just say so and I'll respin.
-> 
-> Fixes: f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer implementation.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dairui Zhang <zhangdairui@gmail.com>
+> The driver will always need to support big and little endian hardware, so I
+> am not sure how to avoid some abstraction like this.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+I was wondering if there is a linux standard set of macros which is
+supposed to handle this big/little difference, the macro knows the
+architecture and does the correct thing?
+
+	Andrew
