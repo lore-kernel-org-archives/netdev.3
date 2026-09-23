@@ -1,113 +1,94 @@
-Received: from mail-lr2-f35.google.com (mail-lr2-f35.google.com [74.125.230.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC9F36A367
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 03:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790134621; cv=pass; b=csn/C9OpdQ61gfXqLyB5LJJCTD3ZWxYuzQfKt82CTB3761/BzjKXBm0310piubjRZl36MAJMpUmlsOru/W/xKPY/SfVZX/VxnftRw/vlHy65kbAaziW6yTpkOfGNNTWWdr/Xp1KNQWZYDKeMpXDY8vHjSekr80/t9gwJnqmsKQI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790134621; c=relaxed/simple;
-	bh=/qxBJcYhlELi+GidH3qhbk7cum0tkPI9mCj4Z/HQ8Ac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=stAxUe06ElBcqIQ0rypKqAAqNJ74BKNpw52gI18pheuvxbph8Ab8Gxe53vfOvdfPcNiVF4ztmLiIIy/Q0loNx5nMUm1u9IjQHHMXirEnWzmozKym7JlO9ghPWB9nL7dkxJ/wesJ9fF6OCbeARe7cK4rtbb7LEc4oWcez2ZpZx4M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J8gnLMZG; arc=pass smtp.client-ip=74.125.230.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A9633993;
+	Wed, 23 Sep 2026 03:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790134722; cv=none; b=Oc1Tbdw+QL/flODkDS3dpPgQ1yMoZ4oKPzxCcnAWcwTZVyPbnXdNJkUdoSl5cEMe5NxnssWEl6qFYT5Zd2pCgo19KFUa2elFREHWGcGQpwREHfs95mRNn2E8CIa0KHsXznClaY8hxif6kGA0ZAuchUxYDafF16bbyAycYwUe26A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790134722; c=relaxed/simple;
+	bh=WMdApv4RUthsEd5ebCza8E6SAAVj3Gb8kwej9jPoeUc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jAh2OccJ0786pkpgarhT/MrsqniYo9J6nRBeiq9PvOBtrsjprxAHsfFA+DbTCKBevWBB+zofUj5nU5rvA8O6Ahz3v51z+A1NxbbNA5AVWkjamPCCgIOcAikpoRYsjqtHTmqQtDuf0+5NuVLaDoBEzCAaHQx+gM4gOrRm99hiU78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=lyashE08; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J8gnLMZG"
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a49a10ee5aso3108581fa.3
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 20:36:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790134618; cv=none;
-        d=google.com; s=arc-20260327;
-        b=h3+LUw9y17M+L5auF8fPkf7P00JKeoAbZoSUugqhw1+s8cXTsMB6/AukQDXwkdejEM
-         BJS58MdHw97Bc3mXcnzzp6yMOeWs4f4YVQrKqea46FUpfhDKa+FZeaj6c8SEOuhRIMsp
-         dK+I21pQ9vysFSS3on8WZyONoxQSz1+ATNyxuBcN9ybDpFeRIymIPcYoJNWwt2iFgMVL
-         VnMm/C/J/heyGxeE85OtqE+i6DVkR6Ydf9cmDoDwejfRE0EmhrzhuDiKO9XO4JPEsvcg
-         QdpVSoHWAKGMKhTDlr3xTluDP+YCJtTWDorNAeoO6u81cV8TYDW7TeP0J5Z9TXOOLf28
-         J7qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KKLo74+Yco7BdhiMxFzPPDsZ4m2F2BSHmO+5yWtfCh0=;
-        fh=FcDb6IBdpEtq+nrTnWggnISG3zc3yHYFPmomgI/8yxs=;
-        b=ADkUb7NZL/nNX8ANZjspNF0eNWvjTrL7NH84D7gz+U5dkvVFmJGIHcz5pZCX3UhcqK
-         xP9HtkE2fPzyT1hhN+gzqb9frxlqBzIvmV+mlKZAYKouhbE8oaDNkiv10xaOzMYrDi8H
-         XjResESP/0l5mM+CB2+puA3OPN5rC+kFbIcVLuL24RoB2HiU00O3RVcjyZV8rNZzOU+b
-         m1p05Xvqh2bYA1GcnzjHak9+dPiByc6n4g3M/9TmTwNg5is1uPUC67GbVtz6M1gbToi4
-         FcXR+mwV23tcQcPYnXChFZU/Nix1Xt8ZsCdR4f/TjN/eYpSUQmHvQGtD3mJJjHpkYWLo
-         2e3Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790134618; x=1790739418; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KKLo74+Yco7BdhiMxFzPPDsZ4m2F2BSHmO+5yWtfCh0=;
-        b=J8gnLMZGJSzKKxfrP0xLJQh1ke+4QeZ+Bi94U9xYJRnFywKkssyoZi6LgEfSsuLrUt
-         bSuRJhmsSYR5kMiTGxrihAZMNALUqhgDIGpiecEwcfZtzLLTvEq+wvCwiUjsmwRMmAS+
-         PPoDb0XVuQGrVKHeMTyLJtsifoauw7drtuijA47NsCfOZY+pL0/02g0eA1V6dl8O+r2q
-         nLm79EQPnuaCeDEIC3MRnF6oJqfZ8uDQWsakrUlYE9ZRQ2K2nX79V6RKoObBtsA5+dju
-         b1e8ePaL6/G0UBsxXWKA8IhcQ2OmQ8F2IZvLj/CvBm26x6xrGPXAkOvKrKEZ0L4gdXt3
-         me9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790134618; x=1790739418;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KKLo74+Yco7BdhiMxFzPPDsZ4m2F2BSHmO+5yWtfCh0=;
-        b=d1vCXXIpiJXe0ybRYZC2w15eXZUZQyIAthjUaXg+Dt+sf1qunoUsY2qeNl0trTDvL3
-         txoB8FpJw6iL9rH1bKk0HzrrQbBWYyJItI3bvHxEk6IPEslvPYPAL+PYW+HYhbfND8Sv
-         8UDyc2De/PsrNCWjZfe74m5ecuHCNwC0MPGgbd7Vpo2LOxgQQ8otU0hG1d20NW3oeIfj
-         LIZjkUUjIp17uWQs7fMYL0ACCZa2uB1lBCUj5siRiu4c43mQYu8jfiB1Ki0gF1rRmO6k
-         SqdtLWvCSZKSZOefI7Wek/Ez64zXXhJ46XHFwtwEzI5VxPPWDZvF/39bCR8cSUbgHkLw
-         zaaw==
-X-Forwarded-Encrypted: i=1; AKwUvBxLnnTuWo/SphfAF7BaKdI10iVgrjRohVPVQikzYNE3aZtqgbgsNVqE0hH5uLm7qvYDuESzM+0=@vger.kernel.org
-X-Gm-Message-State: AFuF++k7DHhhcQYa5eHw+Z1dWlNdalP1u9yfN/618j9B8XO+Pj0eRGFf
-	0Hj6iE/mNdwBBrX77gc4FwI/SLvCTem3Z+Px6R9raQOyObFpx4XWsCVj9zl6+20hGNtAJdBHb4f
-	WUY7mMTjY4r1o5FLxd9Imf5ozrQ2OJqU=
-X-Gm-Gg: AYBFou1mgDlYVUIBKnBzi3WZHLEl+Gas8KznHuQ2ReBgYZdd4xaYxS0uZRUqEMjHd3l
-	RM1P9HbIY54PRARe4ezvF4oXV8w5RZxOrqhqswH9sY+7RdRFQqBeyrOgbm8KlQcd9RLhK/7UlZe
-	CP4LqSnM3HT38RlKO2LTIlcu7FOqj2p1iAyvMjM9BNT7q1dxVjqfel4VWPo1QwxCIHGgBgUGBzA
-	4paY/sZBeYfa1aXwQQkRQlpqcLu/YEnqR+K1qxlfNMBO2c9wtxWu/s0GmKQ8HZmX92erl06gqQ/
-	Em0h1lXEKaC2RoF5EVVtl3JbKo29nSPy3YFrbaxnc05me/7aqZaBOKUYwRzYZFCNNq51aj51PtW
-	X2EqcFDQynwzVQnAwQCiXkSfM5HAz/xsYZLEdhy9hn7SEnQ==
-X-Received: by 2002:a2e:a551:0:b0:3a6:1694:821c with SMTP id
- 38308e7fff4ca-3a63058afafmr2505641fa.10.1790134617663; Tue, 22 Sep 2026
- 20:36:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="lyashE08"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=F5I58iNKYiHkLKhVib51XQxf3ujRbEtldfcOeg/V1aM=; 
+	b=lyashE0817QE9SPMhn6XeFn1NtqlsI5DzGomMIIqE1G0REVpIPWSR8Y9ACJ6WW2YY+21JGvUs7f
+	QRNn8n/+ner3j+TsiPTJdmn8Ms3pzl1meMwfechq3RToH3wY+5fYctGlfnBPeZbpP0ZPtNJLouWNb
+	eQJj2d/zBRv5zdLm9CKdy3s4GJmEK+YieatqZo1OORqNimx1dzbtZxJcdBcep9AugR4o7NTBu+6pO
+	4xYuuvKf9hTBmI4qzYsGHOejD97Hd4bqi6GN0espR5KXKXIxu7RjAsbteDcufqOY3iF6RP3Tq12EG
+	cVgKSSoSrBeA92U5wrKxjHt/B5DdVQxrZqPw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1x9DoJ-0000000GtPH-3prA;
+	Wed, 23 Sep 2026 11:38:20 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 23 Sep 2026 13:38:19 +1000
+Date: Wed, 23 Sep 2026 13:38:19 +1000
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Qihang <q.h.hack.winter@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net v3] xfrm: interface: validate the IP header on xmit
+Message-ID: <arNJq55gryoQp64j@gondor.apana.org.au>
+References: <20260923032456.45814-1-q.h.hack.winter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921235951.3214-3-sigefriedhyy@gmail.com> <179012275019.2160803.2891956767256297440@kernel.org>
-In-Reply-To: <179012275019.2160803.2891956767256297440@kernel.org>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Wed, 23 Sep 2026 12:36:45 +0900
-X-Gm-Features: AclHuK-zDvybSnCH8-kv7q6WcLVB5cerfLjhFVuKxLvzAY4a2aHZ-j22ZbzjjFM
-Message-ID: <CA+7S2vLXOO7+KJUnBFK9++TxKBtHgVdBtEaqx6sQpuqS5ZYsQw@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 2/4] net: add AF_PACKET multicast dumps
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, dsahern@kernel.org, 
-	donald.hunter@gmail.com, edumazet@google.com, idosch@nvidia.com, 
-	jacob.e.keller@intel.com, kuba@kernel.org, kuniyu@google.com, 
-	nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com, 
-	sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923032456.45814-1-q.h.hack.winter@gmail.com>
 
-> - [Medium] dev_mc_dump()/dev_mc_dump_dev() resume a paused dump with a
->   bare positional index into dev->mc (ctx->addr_idx / *s_addr_idx) and=E2=
-=80=A6
+On Wed, Sep 23, 2026 at 11:24:56AM +0800, Qihang wrote:
+>
+> diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+> index 688306b..5cc906a 100644
+> --- a/net/xfrm/xfrm_interface_core.c
+> +++ b/net/xfrm/xfrm_interface_core.c
+> @@ -531,6 +531,9 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
+>  
+>  	memset(&fl, 0, sizeof(fl));
+>  
+> +	if (!pskb_inet_may_pull(skb))
+> +		goto tx_err;
+> +
+>  	switch (skb->protocol) {
+>  	case htons(ETH_P_IPV6):
+>  		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+> @@ -548,6 +551,9 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		}
+>  		break;
+>  	case htons(ETH_P_IP):
+> +		if (ip_hdr(skb)->ihl < 5 ||
+> +		    !pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
+> +			goto tx_err;
 
-Same point Nicolas raised. I will fix it in patchset v7.
+Thank you for the quick fix!
 
-> - [Low] uAPI vs netlink YAML spec out of sync: the patch adds
->   IFA_F_GLOBAL (0x1000), emits IFA_FLAGS/IFA_TARGET_NETNSID in=E2=80=A6
+I haven't looked at this deeply but should we verify the IPv6 case
+as well?
 
-The spec update is the next patch of the series.
+Also we should try to do the same verification that a packet would
+normally get upon entry into the IP stack.  So that means checking
+iph->version as well.  The standard entry point is ip_rcv_core and
+the same checks should apply whether you went through there or one
+of these non-standard entry points.
+
+Perhaps we should abstract out the verifications from ip_rcv_core
+so that it can be done by all these entry points in a uniform way.
+
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
