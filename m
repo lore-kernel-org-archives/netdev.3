@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC0F42589D
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 21:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C2C4766B1
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 21:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790199447; cv=none; b=C7d7sK5r9cZkWdUxO2MRozgF9ik+XHRu/gpm2QS+Rvwz4/h9heswF2cjKpLBvdVX5/ZERC+VmCPpOEXHEg6TJ+K2NG67cEIWlcRC5TRhPaG3Njjhfg2RruJyjEIVn79uZ5J9xScViCMiTuqauHdNkclQv0bA8Zpt/tqK/bVLdIg=
+	t=1790199448; cv=none; b=MIi8i/Ek5EYBPliaphGnFcnmjbpuGQl2BcOoFcmeVJTXaG8EN38qrtZxjy9T88sQ9ZchIE52cN7g6Mb1BGwdxE3/4adSDvtXt6WRn4mrH9ZS7XFcsH/gguR1Dep6dKvoDrOSj/TP/Flpa7LHeX+kjL5oxEkdQzNK4GGqvPhhJJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790199447; c=relaxed/simple;
-	bh=bs9GzRJZuVWAJwdO169nNTQ+eyFwlSv4C20n+ekBwyA=;
+	s=arc-20240116; t=1790199448; c=relaxed/simple;
+	bh=w5t/VeO1HYxmt9TESUZcwn/X1V9QXo2jo46IqK2bQ9I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=c/2PbTjP1BsMTHTvaFdsFq4nQf8RZeAP+mZM+FxUvQULWusiMUOE8ZqRl6SkMHpJGGzKPHW68OKLuOU1qDqRF++3YZtwczq+SrXHxNwSwxcj0Uxde1NkAjOKDzIfWG2NztBxRtZxCpMI3WNDO+n/Jt8LrdBzTvOkObSKpEB8rzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vH1XELuV; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=MNxis45RqLIYwRqGy1P6XosQvvHA3CwuLmU4xJEBsc9qGDTCsibUer/2VFuSnTnpevknzqSGC2Q0w+RUYi5460gcJCTKLti33QLeRjukj8IH5dwRbq8om93gVvcFZ1VaXglg4UmCvq/u3vZ7Hsr9edTGTb8nTjC1aRy6qiqcwyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IYEETzec; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vH1XELuV"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-86917d18880so1095959b3a.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:37:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IYEETzec"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a0dc7f26cso1483192b3a.3
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 14:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790199444; x=1790804244; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790199445; x=1790804245; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WGXfmEWkq3/HHuasNWZ53w5Ago5oUb+2kjKFTNmi4jc=;
-        b=vH1XELuVEbn5apgZ4MKW19BlX/Rru2sJN5R82KsWWBF/H0n3F82CtSPLbdgNHA1WK2
-         DC9WPK9/w4G9d6ztgkeRRXNIDgdENuGeWcPSG9rs53cDGzD1GNx9RmG7cVgH87iFSh/k
-         NzbGhrJLOGkZJGXPJLx5eRUL0Lt7Vm579s+BSHHaDMnis8z0pEHoqnqjfDFGN+0+8GYl
-         E843tBJ4OS2QBWdqMbk8Bny2hrUFalq5bWA4pVk7Aa/fQtTZYEHgVZTAKaAfVE7J5a63
-         IHJ1dVTWCJ99m7zGdTK/b0Zy9gw/FujqGkyPZUEvTHMualf7SWZ4kCXXQGgshpRdN1AQ
-         r5/g==
+        bh=Tmd6lhSoqSRxVADC0yh2DGHZ7ROJgi5nE+fvLgA7U4E=;
+        b=IYEETzecjY3rSNcdnEWnXImQuZdHquz77UnBaMpoObX0FJKy/N1avpu7JGf47FzY1/
+         1GuH9xCQ54YW8fDy2RnYZctrJbF+k1Wn+1nXXKWKb4XUBgluq78GVvP38QzQV/2g66mN
+         AIWzmiq1GW4GJC/hsSC4Y3mhASEWtVOr4+wDLYlZozJWoKQdZ7/tfodXUPfwJx7rzCg6
+         GTFTQboICwWOR6VWf/pSGzPvSkgK1oaPhR6Q0dJR/qcgd7ibsXhvnczsly8JfuIXz5F6
+         wDqmTuFFU1j50YsJF/uraC5UKY74DFDs70nFmjRtLChj1jB5wzBnsyix/q+fbblAp1aC
+         EqaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790199444; x=1790804244;
+        d=1e100.net; s=20260707; t=1790199445; x=1790804245;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WGXfmEWkq3/HHuasNWZ53w5Ago5oUb+2kjKFTNmi4jc=;
-        b=GrhHHDp2KAJUx91dZAhlDat3dw/sW/eDtMLTfNrixnXD/EAWxR6j2+SZf7WntU8/qf
-         GRWcUoM0vkWX4l/8ksTKEtcYxnDYQvAsFswqbftQ/HxuNFEO89xGvsGW4j0zsc7fgm5a
-         UKVmjAxnJmxoMbqpwo47a95+UCMmkEEQ6rK6S0F03ycxxvlmqghafdx39aHI6lehestJ
-         HUJDgfKOBS+quOMyFvsOG7I0RTNl8jp9Y/ogi6zS2VqhGIdN4EMZjnog/a4EhqwwLRzZ
-         oBDdhXs5WZ5kVze5Bll78dt+pm0S0m5cls+L2qYhji1pAYpCY6xsbHd/r35lrQQMrMzy
-         byGg==
-X-Forwarded-Encrypted: i=1; AKwUvBwNY076PwRD3a+rV4qHgKBhKdkONYbMn8op11faE8QHC5NNFPvFVXh4yNSSSFEo09vHDBKY0d0=@vger.kernel.org
-X-Gm-Message-State: AFuF++k1zRHqaTtq7SUY87zubH/rg0T6rCNHrGJGnjJ4hsBYfVVfLWq2
-	XAshVH0vE/CTgAgsNvOq3wVVpE/En3tPxMHtWAxJENwN5+mmYvWFKAv8XFWD17xezJHksMtOtuX
-	R2CjChw==
-X-Received: from pfbna15.prod.google.com ([2002:a05:6a00:3e0f:b0:87d:6399:223f])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ad02:b0:87d:e633:72fd
- with SMTP id d2e1a72fcca58-87e9f824499mr329534b3a.51.1790199443883; Wed, 23
- Sep 2026 14:37:23 -0700 (PDT)
-Date: Wed, 23 Sep 2026 21:35:32 +0000
+        bh=Tmd6lhSoqSRxVADC0yh2DGHZ7ROJgi5nE+fvLgA7U4E=;
+        b=MrpoBpBlg0NaaE7wGytqR/CK3Eln3wbn85R4dvrt6ZR468OQrHS1r36aDVVsQAV+Tj
+         9Xy3Va0yNm4kkwHndAufC/7dRoBTq/NZjWrr6AXOrJii9TmsRepj0OeuSPZwAKk39Hhv
+         DTj1L2cGHcosf8eIfLPLCsE/gwRYtiXL40Y2U4kokCr+hyYpARLIG6ZcI0FzUiKDx16Z
+         2sLqvjZw3khy77N89ByvnpIkznBCsome0pkB/0efp46jzvTMzBNovB6C8oj1+8FcPmVm
+         e8fTJ4BjyIu7YFtuAhvGwM6AQ+UHMLRzBFY7iVDn3S+LXuecozkE9q636fkJAKPKMiwE
+         /77g==
+X-Forwarded-Encrypted: i=1; AKwUvBzigz37mo4FSVgfINygkaBRWvNuP7k7Pmdis++tycdhDKYfJhAbGJzFOcYYWNQyY8WDcoe8jtg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mOJBP+UiqvUmTVVe4TBZKAO5OCYDJCHkn2H5ARYH+Fy00YhvT/
+	cAZhchI4jEdkl95387hteOmiOosN1/fwQ3F1DZArhW3AHQP8aFXdIW2OHadYruFb6t8uDICGiK/
+	BtIWwRw==
+X-Received: from pfbdo9.prod.google.com ([2002:a05:6a00:4a09:b0:87e:5fdf:ca99])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e26:b0:84e:9257:d0c2
+ with SMTP id d2e1a72fcca58-87e989907b8mr331493b3a.9.1790199444605; Wed, 23
+ Sep 2026 14:37:24 -0700 (PDT)
+Date: Wed, 23 Sep 2026 21:35:33 +0000
 In-Reply-To: <20260923213719.224838-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260923213719.224838-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260923213719.224838-3-kuniyu@google.com>
-Subject: [PATCH v2 bpf-next 2/8] selftest: bpf: Use BPF_SOCK_OPS_ALL_CB_FLAGS
- + 1 for bad_cb_test_rv.
+Message-ID: <20260923213719.224838-4-kuniyu@google.com>
+Subject: [PATCH v2 bpf-next 3/8] bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
@@ -75,46 +74,241 @@ Cc: Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmai
 	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Once bpf_sock_ops_cb_flags_set() supports a new flag,
-tcpbpf_user.c fails due to the hard-coded max value, 0x80.
+Waking up a thread per packet is expensive when an application
+processes variable-length frames (e.g., RPC) that span multiple
+packets.
 
-Let's replace 0x80 with BPF_SOCK_OPS_ALL_CB_FLAGS + 1.
+SO_RCVLOWAT can defer wakeups, but because the frame size is
+encoded in a fixed-size descriptor at the start of each frame,
+the application has to:
+
+  1. wake up and recv() the descriptor,
+  2. raise SO_RCVLOWAT to the payload size via setsockopt(),
+  3. wake up and recv() the payload, and
+  4. reset SO_RCVLOWAT back to the descriptor size via
+     setsockopt() for the next frame.
+
+This requires an extra wakeup and two setsockopt() syscalls
+for every single RPC frame.
+
+With SOCKMAP, we can parse skb and suppress wakeups in kernel,
+but SOCKMAP adds overhead and also kills zerocopy.
+
+Let's add lighter-weight opt-in callbacks to bpf_tcp_ops to
+replace that.
+
+  .enqueue_rcvq(): invoked when TCP stack enqueues skb to
+                   sk->sk_receive_queue
+
+  .dequeue_rcvq(): invoked in tcp_cleanup_rbuf() after data
+                   is dequeued from sk->sk_receive_queue
+
+Those callbacks can be enabled on a per-socket basis by
+bpf_setsockopt():
+
+  int flags = BPF_SOCK_OPS_RCVQ_CB_FLAG;
+
+  bpf_setsockopt(sk, SOL_TCP, TCP_BPF_SOCK_OPS_CB_FLAGS,
+                 &flags, sizeof(flags));
+
+or via the bpf_tcp_ops-specific helper added in the next patch:
+
+  bpf_sock_ops_cb_flags_set(sk, BPF_SOCK_OPS_RCVQ_CB_FLAG);
+
+Later, we will add a new kfunc to adjust sk->sk_rcvlowat from
+these callbacks.
+
+This will allow the bpf_tcp_ops prog to parse each skb and
+dynamically adjust sk->sk_rcvlowat to suppress unnecessary EPOLLIN
+wakeups until sufficient data is available in the receive queue.
+
+The placement of bpf_tcp_ops_call() in tcp_ofo_queue() and
+tcp_fastopen_add_skb() is chosen to provide the same snapshot
+as tcp_queue_rcv().
+
+For example, if bpf_tcp_ops_call() were called before updating
+TCP_SKB_CB(skb)->seq in tcp_fastopen_add_skb(), BPF prog would
+need an extra branch for the unlikely TFO case to strip SYN.
+
+In addition, the TCP stack can queue overlapping skbs into recvq.
+Once rcv_nxt is updated with a new skb, BPF prog can no longer
+infer the previous rcv_nxt from skb->len.
+
+Lastly, dequeue_rcvq() is placed in tcp_cleanup_rbuf() rather
+than __tcp_cleanup_rbuf() so that it is not called for sockets
+in SOCKMAP, where calling sk->sk_data_ready() from the new
+kfunc would otherwise trigger infinite recursion.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c | 3 ++-
- tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ include/net/tcp.h              | 18 ++++++++++++++++++
+ include/uapi/linux/bpf.h       | 11 ++++++++++-
+ net/ipv4/bpf_tcp_ops.c         | 10 ++++++++++
+ net/ipv4/tcp.c                 |  2 ++
+ net/ipv4/tcp_fastopen.c        |  2 ++
+ net/ipv4/tcp_input.c           |  4 ++++
+ tools/include/uapi/linux/bpf.h | 11 ++++++++++-
+ 7 files changed, 56 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c b/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
-index 7e8fe1bad03f..e4849d2a2956 100644
---- a/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tcpbpf_user.c
-@@ -26,7 +26,8 @@ static void verify_result(struct tcpbpf_globals *result)
- 	ASSERT_EQ(result->bytes_acked, 1002, "bytes_acked");
- 	ASSERT_EQ(result->data_segs_in, 1, "data_segs_in");
- 	ASSERT_EQ(result->data_segs_out, 1, "data_segs_out");
--	ASSERT_EQ(result->bad_cb_test_rv, 0x80, "bad_cb_test_rv");
-+	ASSERT_EQ(result->bad_cb_test_rv, BPF_SOCK_OPS_ALL_CB_FLAGS + 1,
-+		  "bad_cb_test_rv");
- 	ASSERT_EQ(result->good_cb_test_rv, 0, "good_cb_test_rv");
- 	ASSERT_EQ(result->num_listen, 1, "num_listen");
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index d61ee00052e3..f2d838bcb0a7 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -3053,6 +3053,12 @@ struct bpf_tcp_ops {
+ 			      struct request_sock *req, struct sk_buff *syn_skb,
+ 			      enum tcp_synack_type synack_type,
+ 			      u32 opt_off);
++
++	/* Called when an incoming skb is enqueued to sk->sk_receive_queue. */
++	void (*enqueue_rcvq)(struct sock *sk, struct sk_buff *skb);
++
++	/* Called after data is dequeued from sk->sk_receive_queue. */
++	void (*dequeue_rcvq)(struct sock *sk);
+ };
  
-diff --git a/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c b/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
-index 6935f32eeb8f..e30cb1fab079 100644
---- a/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_tcpbpf_kern.c
-@@ -92,7 +92,8 @@ int bpf_testcb(struct bpf_sock_ops *skops)
- 		break;
- 	case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:
- 		/* Test failure to set largest cb flag (assumes not defined) */
--		global.bad_cb_test_rv = bpf_sock_ops_cb_flags_set(skops, 0x80);
-+		global.bad_cb_test_rv = bpf_sock_ops_cb_flags_set(skops,
-+								  BPF_SOCK_OPS_ALL_CB_FLAGS + 1);
- 		/* Set callback */
- 		global.good_cb_test_rv = bpf_sock_ops_cb_flags_set(skops,
- 						 BPF_SOCK_OPS_STATE_CB_FLAG);
+ #define bpf_tcp_ops_call(op, sk, ...)					\
+@@ -3144,6 +3150,18 @@ static inline void tcp_bpf_rtt(struct sock *sk, long mrtt, u32 srtt)
+ 	bpf_tcp_ops_call(rtt, sk, mrtt, srtt);
+ }
+ 
++static inline void bpf_tcp_ops_enqueue_rcvq(struct sock *sk, struct sk_buff *skb)
++{
++	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_RCVQ_CB_FLAG))
++		bpf_tcp_ops_call(enqueue_rcvq, sk, skb);
++}
++
++static inline void bpf_tcp_ops_dequeue_rcvq(struct sock *sk)
++{
++	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_RCVQ_CB_FLAG))
++		bpf_tcp_ops_call(dequeue_rcvq, sk);
++}
++
+ #if IS_ENABLED(CONFIG_SMC)
+ extern struct static_key_false tcp_have_smc;
+ #endif
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 6330b7d745c5..fe122242b096 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -7148,8 +7148,17 @@ enum {
+ 	 * options first before the BPF program does.
+ 	 */
+ 	BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG = (1<<6),
++	/* Call bpf when the TCP stack enqueues/dequeues payload
++	 * to/from sk->sk_receive_queue.
++	 *
++	 * Only bpf_tcp_ops is supported.
++	 *
++	 * It can be used to adjust sk->sk_rcvlowat and suppress
++	 * unnecessary wakeups before sufficient data is available.
++	 */
++	BPF_SOCK_OPS_RCVQ_CB_FLAG = (1<<7),
+ /* Mask of all currently supported cb flags */
+-	BPF_SOCK_OPS_ALL_CB_FLAGS       = 0x7F,
++	BPF_SOCK_OPS_ALL_CB_FLAGS       = 0xFF,
+ };
+ 
+ enum {
+diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+index 1ada3b781bf1..c963e2cc21b5 100644
+--- a/net/ipv4/bpf_tcp_ops.c
++++ b/net/ipv4/bpf_tcp_ops.c
+@@ -76,6 +76,14 @@ static void write_hdr_opt_stub(struct sock *sk, struct sk_buff *skb,
+ {
+ }
+ 
++static void enqueue_rcvq_stub(struct sock *sk, struct sk_buff *skb)
++{
++}
++
++static void dequeue_rcvq_stub(struct sock *sk)
++{
++}
++
+ static struct bpf_tcp_ops __bpf_tcp_ops = {
+ 	.timeout_init = timeout_init_stub,
+ 	.rwnd_init = rwnd_init_stub,
+@@ -90,6 +98,8 @@ static struct bpf_tcp_ops __bpf_tcp_ops = {
+ 	.parse_hdr = parse_hdr_stub,
+ 	.hdr_opt_len = hdr_opt_len_stub,
+ 	.write_hdr_opt = write_hdr_opt_stub,
++	.enqueue_rcvq = enqueue_rcvq_stub,
++	.dequeue_rcvq = dequeue_rcvq_stub,
+ };
+ 
+ BPF_CALL_4(bpf_tcp_ops_store_hdr_opt, void *, ctx, const void *, from,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index a4456b419412..a714b36a7494 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1610,6 +1610,8 @@ void tcp_cleanup_rbuf(struct sock *sk, int copied)
+ 	     "cleanup rbuf bug: copied %X seq %X rcvnxt %X\n",
+ 	     tp->copied_seq, TCP_SKB_CB(skb)->end_seq, tp->rcv_nxt);
+ 	__tcp_cleanup_rbuf(sk, copied);
++
++	bpf_tcp_ops_dequeue_rcvq(sk);
+ }
+ 
+ static void tcp_eat_recv_skb(struct sock *sk, struct sk_buff *skb)
+diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+index 471c78be5513..4939bcbc81d1 100644
+--- a/net/ipv4/tcp_fastopen.c
++++ b/net/ipv4/tcp_fastopen.c
+@@ -281,6 +281,8 @@ void tcp_fastopen_add_skb(struct sock *sk, struct sk_buff *skb)
+ 	TCP_SKB_CB(skb)->seq++;
+ 	TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
+ 
++	bpf_tcp_ops_enqueue_rcvq(sk, skb);
++
+ 	tp->rcv_nxt = TCP_SKB_CB(skb)->end_seq;
+ 	tcp_add_receive_queue(sk, skb);
+ 	tp->syn_data_acked = 1;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 6ac6f9d5b6c3..c60c61bb0a71 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5344,6 +5344,8 @@ static void tcp_ofo_queue(struct sock *sk)
+ 			continue;
+ 		}
+ 
++		bpf_tcp_ops_enqueue_rcvq(sk, skb);
++
+ 		tail = skb_peek_tail(&sk->sk_receive_queue);
+ 		eaten = tail && tcp_try_coalesce(sk, tail, skb, &fragstolen);
+ 		tcp_rcv_nxt_update(tp, TCP_SKB_CB(skb)->end_seq);
+@@ -5547,6 +5549,8 @@ static int __must_check tcp_queue_rcv(struct sock *sk, struct sk_buff *skb,
+ 	int eaten;
+ 	struct sk_buff *tail = skb_peek_tail(&sk->sk_receive_queue);
+ 
++	bpf_tcp_ops_enqueue_rcvq(sk, skb);
++
+ 	eaten = (tail &&
+ 		 tcp_try_coalesce(sk, tail,
+ 				  skb, fragstolen)) ? 1 : 0;
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 6330b7d745c5..fe122242b096 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -7148,8 +7148,17 @@ enum {
+ 	 * options first before the BPF program does.
+ 	 */
+ 	BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG = (1<<6),
++	/* Call bpf when the TCP stack enqueues/dequeues payload
++	 * to/from sk->sk_receive_queue.
++	 *
++	 * Only bpf_tcp_ops is supported.
++	 *
++	 * It can be used to adjust sk->sk_rcvlowat and suppress
++	 * unnecessary wakeups before sufficient data is available.
++	 */
++	BPF_SOCK_OPS_RCVQ_CB_FLAG = (1<<7),
+ /* Mask of all currently supported cb flags */
+-	BPF_SOCK_OPS_ALL_CB_FLAGS       = 0x7F,
++	BPF_SOCK_OPS_ALL_CB_FLAGS       = 0xFF,
+ };
+ 
+ enum {
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
