@@ -1,114 +1,179 @@
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7C356C649
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5BB3AEF4C
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790200985; cv=none; b=Q5qXtVlVV+v7ySGdz9drjm2DnIsChjesOevThv72R1oEwehQKz3moKzvYKEY2yBT6WEMBp8NAe5RbFguBO6VAWZkFXs+dq3Ne2D5XP/23DuIxt+abqi9wG0zhT57DsKaC+BKH1gyn85+83HYfWLyl6TCO1uYx0lSD7Ydc9KMXI8=
+	t=1790201109; cv=none; b=jmsP44LkznCtPvHQ8Ybx+bWZJlTjSxHV8GvkQXIR5hHGHwLYeCotCX99ParGuicvO24yk/V0zGQvtbvoy/y5VsY9f7KmoCDDe36BbnFlydSvRKUHPGpQMuv/rw1sm38aqmy8DYjlkv+D0rxNEgR9PxOjsNHwSqwzQV2tw4WXcvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790200985; c=relaxed/simple;
-	bh=yYk+cQEBmyKfgs9xVMV9+LxohJjRqhY3MpybhWajaDw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a5XpGF4UUnq7Y6V5SyG09TglOPk5HyyRCPcE9Au1MV4plrT1C0TN3sShFtk1jmu7FnFag0b1uQ6qqgu9d9W4zDz8il3pjMwujKnM/mNCn+YC59QkrvCXeLj8QV8E7AS0n/Ws4cOc6kK9adfayyotRryEEE7JjDml9pUpyq9Ibjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=vfM6B4vx; arc=none smtp.client-ip=212.77.101.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	s=arc-20240116; t=1790201109; c=relaxed/simple;
+	bh=P5eWCGTTQ8d2jkKVAwCYDe1DjbP0ceDUryIyut6T5JU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Fw0BmDWjIDN+qAKVjIavK2a3ab4jhiXhP5isQKkZMAt4OKoGnh4MMFBdjFw1J4iCvXpGUDI6ozpOcP/854p8SzJ6x3TZmvomOlvdKy5f3M31m7uVWRkRUjkW1g9sutSRF1DwcHcWV7qcrUkrgyXLluUsv3N9tbVlQ8c1CHFD6R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=pMKYGWwq; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="vfM6B4vx"
-Received: (wp-smtpd smtp.wp.pl 43382 invoked from network); 24 Sep 2026 00:02:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1790200979; bh=vUCplD0X6fqWM+xkXKjirMnMQB20bZX0XrUCXeaoiHU=;
-          h=Subject:To:Cc:From;
-          b=vfM6B4vxbGCrj5e/xi11X8fMncIq3S9qtyvRsUyBB7O9cqZjzr9eoEWHLFVH+qhVO
-           96o2NvvHcqqgq3iAsAwiHIKYGBtl4mjFKRQpxl589HeQo5bzcKJKT/w31T5fmGtFZm
-           vvVlWc/tYEjwdhlhPZhHoG0ANiVXTLEsZONwM1ec3wRPedvZRDS275Q3NqBGTZOIZS
-           /nJt5uGo7wAJoLba37DNruiqSYubpG+JLaIgwAgY//rBdJrs4U24WeKQFZrprouUP5
-           42soO7QpDZaXv4QBNzk+Ypk+JLz1D2gkPBUFKAVY/mXxIYuZGlmQrc7vNwuQsejgog
-           V9CBuQsMncDCA==
-Received: from [192.168.3.224] (83.5.247.11.ipv4.supernova.orange.pl [83.5.247.11])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <andrew@lunn.ch>; 24 Sep 2026 00:02:59 +0200
-Message-ID: <a174b2c7-3778-4f8c-be5a-2bd94bfe09ed@wp.pl>
-Date: Thu, 24 Sep 2026 00:03:00 +0200
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="pMKYGWwq"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so8043335e9.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790201105; x=1790805905; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GMxiUjlq5D/9eSR9q5jbzQ1uIEtNIDkPTSNMNH/2G7o=;
+        b=pMKYGWwqtwl3mJhPALQnFLD+2JX7BF3E2XteHiULR3QnoEhA17lKQWSkRJ8QyXR6xS
+         4CL08y63hQxLD//rhOfTBN4yVnxkXpA5m/q0G4D/DwRPJHDQKzsJx20jdUqYryj6D02/
+         co0VHxr7XPcGkoqVivC4FA/UnZWO8PKR79A6x1vTxDBfNSXH8LzzXpBXCpzKCz1VeHQ/
+         bmWoXdUTtQmgOiQrIE7JZ2Zf1XEFzlRFYJSMCSjHX+feAHRXAtoqcRytijSKCMfTDs0k
+         3NXqnYyUTs7PJLsQvu6iZd3Qg7JK6oKaTuM2gKiQItpXV8yy7r3KBcxB49qZRn7pJMQS
+         nrtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790201105; x=1790805905;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GMxiUjlq5D/9eSR9q5jbzQ1uIEtNIDkPTSNMNH/2G7o=;
+        b=U+Jye8YG6CoKwhY4ouwFTN0hD4ZRK8Wt4f2qXz9GaRXcqNrgqpTtM5zDCswe3BOuoy
+         u+HRuGEbYmX4zUdIQuNw1oHrsSD/+xNQJuUwacpJJlms5qnpDxwTMLyEon9NeqY06KsA
+         Avj2YYmm2R+vkKfZAS1Q8wKtuy5coj/29DRkGd6nYVHdnbg7cXoNQDnL2MiY9lUUyevO
+         PQkoRALQMRoTcDjPKF7O+rbAhPbhiXd2kRZit21ailbpax3KBol2D97eORHVZzj/lNRU
+         ObB8eLYyJZs+XOidjuBffnXRTKfdYS4QzOouvsRdCY3nae3Pzj1PxGW0ZueTLnFgamTB
+         St9g==
+X-Forwarded-Encrypted: i=1; AKwUvBxVqbyv14RSoUvA43macb4XPGGcazGnnIdYaTJiTBhICu356B1z3hOIql6e1ZYGgd5k90sdoY0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mj9XNJx+FPwGtIe2q5IaWsOCNQlzIcXzORVCY7bAG2WIsmx+ei
+	R4J0YYIDNOxnqgRBP7+OHfAkYbRsEsWqEV8sfMHppDydpaqRtQKjSJTc8uECQmessF8=
+X-Gm-Gg: AYBFou2HngO8lY++6NyLvQAonMYd/7rHedzn3i0W2jhQZnviSZx+VINy0IZsjpBPKRP
+	l08wOjNttMLXiz3PNKxd4y9VUkvA3CDTGVBMFAmZXnCGGtDDYzltB5wPR4ivGM8ed7z1OG3TAXs
+	VmLExUAHLvKEDnDhXQ5+OnxIjqyAa5vidBxxMQvmUmKKIwvBtwSMSulzmnbqrRd3MnXNx7bfVXH
+	JzFde78TWtlH5KuuempUJgD3HNIezLEZPSPIDl4EJFB94Y/RPwL8y0EedVCCm8Vz/LRuQKhDKRv
+	cAWqM0omv7C/Z6dWvuj3+PKNB4wk+DBx22M8xKOf1om8+LlaWvTsbKJFDTKUqpB9daUHq96h3q5
+	BZRKbsBGkbU8MjvzrZC1Bv0goWIWEYYgMAxFuxjEgxB3spBakHRP2FdX2si0Nkuu9ph6nFBO7Xn
+	iJibYUIxqf9mlCtmlRSogLrWswcNS3EveB0CQhX8sFLeR1c/Bi7iGmCoU=
+X-Received: by 2002:a05:600c:4f12:b0:49f:ce78:356b with SMTP id 5b1f17b1804b1-49fe6700d0cmr8409595e9.28.1790201105209;
+        Wed, 23 Sep 2026 15:05:05 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:600::1:c3af])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5cc90ccsm27381195e9.10.2026.09.23.15.04.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2026 15:05:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net: phy: marvell: add support for PHY LEDs
- polarity modes
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260923204614.471409-1-olek2@wp.pl>
- <ac224909-5f7d-447e-a0f9-be0d1565a700@lunn.ch>
-Content-Language: pl
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-In-Reply-To: <ac224909-5f7d-447e-a0f9-be0d1565a700@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-WP-MailID: b2294191e6751152fe326610682cdc87
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [QSJM]                               
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 23 Sep 2026 22:04:58 +0000
+Message-Id: <DLN1BR3DH9EF.1SIZB3GN9XEVQ@etsalapatis.com>
+Cc: "Yonghong Song" <yonghong.song@linux.dev>, "John Fastabend"
+ <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Eric
+ Dumazet" <edumazet@google.com>, "Neal Cardwell" <ncardwell@google.com>,
+ "Willem de Bruijn" <willemb@google.com>, "Tenzin Ukyab"
+ <ukyab@berkeley.edu>, =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?=
+ <cleger@meta.com>, "Kuniyuki Iwashima" <kuni1840@gmail.com>,
+ <bpf@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2 bpf-next 1/8] bpf: tcp: Convert deny-list for
+ bpf_{get,set}sockopt() to allow-list.
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260923213719.224838-1-kuniyu@google.com>
+ <20260923213719.224838-2-kuniyu@google.com>
+In-Reply-To: <20260923213719.224838-2-kuniyu@google.com>
 
-Hi Andrew,
+On Wed Sep 23, 2026 at 9:35 PM UTC, Kuniyuki Iwashima wrote:
+> Currently, four bpf_tcp_ops callbacks are not allowed to call
+> bpf_setsockopt() and bpf_getsockopt().
+>
+> However, the deny-list is fragile, and when a new callback is
+> added, we might re-open a can of worms. [1][2]
+>
+> Let's convert it to allow-list.
+>
+> Note that it can be written as offsetof(,X) <=3D moff <=3D offsetof(,Y)
+> but clang can optimise to similar code anyway.
 
-On 23/09/2026 23:07, Andrew Lunn wrote:
-> On Wed, Sep 23, 2026 at 10:45:24PM +0200, Aleksander Jan Bajkowski wrote:
->> Add the led_polarity_set callback for setting LED polarity. Implement
->> this callback for the 88E1318 and 88E1510 PHYs. This should also work on
->> other Marvell PHYs, but I don't have access to the TRM or the hardware.
->>
->> Tested on Adapteva Paralella board with Marvell 88E1318 PHY.
->>
->> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
->> ---
->> Changes in v2:
->>   - add suppoer for PHY_LED_INACTIVE_HIGH_IMPEDANCE mode
->> ---
->>   drivers/net/phy/marvell.c | 39 ++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 38 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
->> index f71cffa88406..d57fcabfec2b 100644
->> --- a/drivers/net/phy/marvell.c
->> +++ b/drivers/net/phy/marvell.c
->> @@ -149,6 +149,9 @@
->>   #define MII_88E1318S_PHY_LED_FUNC_ON		(0x9)
->>   #define MII_88E1318S_PHY_LED_FUNC_HI_Z		(0xa)
->>   #define MII_88E1318S_PHY_LED_FUNC_BLINK		(0xb)
->> +#define MII_88E1318S_PHY_LED_POL		0x11
->> +#define MII_88E1318S_PHY_LED_POL_ACT_HIGH(idx)	BIT(2 * (idx))
->> +#define MII_88E1318S_PHY_LED_POL_HIGH_IMP(idx)	BIT(2 * (idx) + 1)
->>   #define MII_88E1318S_PHY_LED_TCR		0x12
->>   #define MII_88E1318S_PHY_LED_TCR_FORCE_INT	BIT(15)
->>   #define MII_88E1318S_PHY_LED_TCR_INTn_ENABLE	BIT(7)
->> @@ -304,6 +307,8 @@
->>   #define NB_FIBER_STATS	1
->>   #define NB_STAT_MAX	3
->>   
->> +#define M88E1318S_MAX_LEDS	3
-> Why the M88E1318S prefix?
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-The number of LEDs depends on the PHY variant:
-88E1112 -> 4
-88E1116R -> 3
-88E1240 -> 4
-88E1318S -> 3
-88E1510 -> 3
-88E1545 -> 4
-88E1548P -> 4
-All of these PHYs likely have the same polarity register layout.
+Even if in the future we need to split the allowlist further it's better
+to be verbose than have it break out from under us.
 
 >
-> The naming is a bit odd in this file, but maybe NB_MAX_LEDS?
-NB_MAX_LEDS might be confusing since the number of LEDs can
-vary, but I don't have a preference and can change M88E1318S to 
-NB_MAX_LEDS.
+> Link: https://lore.kernel.org/r/20220929070407.965581-5-martin.lau@linux.=
+dev/ #[0]
+> Link: https://lore.kernel.org/bpf/20260421155804.135786-1-kafai.wan@linux=
+.dev/ #[1]
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  net/ipv4/bpf_tcp_ops.c | 39 ++++++++++++++++++++++++---------------
+>  1 file changed, 24 insertions(+), 15 deletions(-)
 >
->      Andrew
+> diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+> index 681fed642999..1ada3b781bf1 100644
+> --- a/net/ipv4/bpf_tcp_ops.c
+> +++ b/net/ipv4/bpf_tcp_ops.c
+> @@ -210,6 +210,24 @@ const struct bpf_func_proto bpf_tcp_ops_get_retval_p=
+roto =3D {
+>  	.ret_type	=3D RET_INTEGER,
+>  };
+> =20
+> +static bool is_sockopt_supported(u32 moff)
+> +{
+> +	switch (moff) {
+> +	case offsetof(struct bpf_tcp_ops, active_established):
+> +	case offsetof(struct bpf_tcp_ops, passive_established):
+> +	case offsetof(struct bpf_tcp_ops, rto):
+> +	case offsetof(struct bpf_tcp_ops, rtt):
+> +	case offsetof(struct bpf_tcp_ops, set_state):
+> +	case offsetof(struct bpf_tcp_ops, retrans):
+> +	case offsetof(struct bpf_tcp_ops, connect):
+> +	case offsetof(struct bpf_tcp_ops, listen):
+> +	case offsetof(struct bpf_tcp_ops, parse_hdr):
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static const struct bpf_func_proto *
+>  get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+>  {
+> @@ -221,22 +239,13 @@ get_func_proto(enum bpf_func_id func_id, const stru=
+ct bpf_prog *prog)
+>  	case BPF_FUNC_sk_storage_delete:
+>  		return &bpf_sk_storage_delete_proto;
+>  	case BPF_FUNC_setsockopt:
+> -		/* The sk may be an unlocked listener (synack path) or NULL
+> -		 * fullsock; disable for members that can run unlocked.
+> -		 */
+> -		if (moff =3D=3D offsetof(struct bpf_tcp_ops, rwnd_init) ||
+> -		    moff =3D=3D offsetof(struct bpf_tcp_ops, timeout_init) ||
+> -		    moff =3D=3D offsetof(struct bpf_tcp_ops, hdr_opt_len) ||
+> -		    moff =3D=3D offsetof(struct bpf_tcp_ops, write_hdr_opt))
+> -			return NULL;
+> -		return &bpf_sk_setsockopt_proto;
+> +		if (is_sockopt_supported(moff))
+> +			return &bpf_sk_setsockopt_proto;
+> +		return NULL;
+>  	case BPF_FUNC_getsockopt:
+> -		if (moff =3D=3D offsetof(struct bpf_tcp_ops, rwnd_init) ||
+> -		    moff =3D=3D offsetof(struct bpf_tcp_ops, timeout_init) ||
+> -		    moff =3D=3D offsetof(struct bpf_tcp_ops, hdr_opt_len) ||
+> -		    moff =3D=3D offsetof(struct bpf_tcp_ops, write_hdr_opt))
+> -			return NULL;
+> -		return &bpf_sk_getsockopt_proto;
+> +		if (is_sockopt_supported(moff))
+> +			return &bpf_sk_getsockopt_proto;
+> +		return NULL;
+>  	case BPF_FUNC_get_retval:
+>  		if (moff =3D=3D offsetof(struct bpf_tcp_ops, timeout_init) ||
+>  		    moff =3D=3D offsetof(struct bpf_tcp_ops, rwnd_init))
+
