@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232337DE8D;
-	Wed, 23 Sep 2026 02:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D62737DEB5;
+	Wed, 23 Sep 2026 02:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790130369; cv=none; b=Xj2S5z+reuwYd1CAt0eYia5Ty7mQpYUk3nSWdWVW0OQ5mNUtZVOYUYIPZrWS2vTzgVzBq3MTuAxM7uTCmnxf3H0txkX5O4Kawq3qHGRPrGU0At/Wx5r2gldAsb9E4stNpsASMO2BxLGnvcLi161diDJPBhHc8I1oIQ79k/V5EwI=
+	t=1790130370; cv=none; b=ELYKuM+O/vNXYBisBYF7u2EksanP/sDnMZJoAbnOjMcdPu/G1SZkez/GxsBwvzB/cIvW4iruM9qBX7qLTkJgimmhl5n8jfNqJWQa8CBqxMwiir8unjVnpUzFsnsXfy88hJvsWqA0diqxIxrbiXjkNoErtZ3yRLmHlhb9zGgDGTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790130369; c=relaxed/simple;
-	bh=rEJkopIW21nurDd7x8YzN++E5arjg7KsWWS27YK8/U8=;
+	s=arc-20240116; t=1790130370; c=relaxed/simple;
+	bh=u7Zh93ehLZ3lYlwUo4/aTPMg6tJwDR6zibDxyYcBH34=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Wie8kCFXglLNv+EwdIPPUIj2a6lRnMFqCOWFWH6cicypNI+xiIVCVrQC6KXb6An0XkHOlfD9tXUDqFBu3MSHHDLpItCtnaDaUacdZlrdtHLM6lRVJaMtwI7H99kWJmstx8D/LwGm+UVPs5etXaAEcZWvMUj+PZvngCEnhJyhKl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRuJjgKs; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=KJpaCuaaJAxIaPMxcIipBAAbsCDpBQ/nOTJ2u4H5LM2/5VgqQN/il9V8l7hA3h4EbrUaY4GwRgwPZH68uU7rBKoMn2wi20rJs1X4t9v057iH/pXSOt0fCllqFhUABuEyjlAozM4QAR9c9YKa+r0wEolNRq+aESgwVDdqKNNKS1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVuy3HSr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRuJjgKs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E7A1F00893;
-	Wed, 23 Sep 2026 02:26:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVuy3HSr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330511F000FF;
+	Wed, 23 Sep 2026 02:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790130367;
-	bh=qH/h3eu0drg6+BVYkuzoi4Bl4yrJbFJ0ChKeOgCrVhk=;
+	s=k20260515; t=1790130369;
+	bh=jh9hXnvdGSYSzMwhJY2hg1ILgIhX9LjaBOmVRgptleQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PRuJjgKsrHtXKAZNKCdy8Df0FOp8GyrsXg2jVs1NUnD5TUJiFgr0ouBY7hWLtGtbs
-	 5nOVNNvGfGzeygFRPY44d70r/gJP3iiBwUfpPgh4Jw9MEuaAOxzS4hE8W5tCeAn6Z1
-	 MIRt8ubAqjagK9CRFM3EwfrGX+31Tuy20zxIc5UwUifTEdMEvlLlr9Y9+odm6jqa6l
-	 vCUenfebB+V87FHfWvEC10SO+cS2cSI3C3Vyz5we8zl/eJi137D/cj/5piC6ijqJvw
-	 g7Kv4hMZsYAq3/JMPEH2/gFQQ/ousMJql56d8OEU0XD327PYMwqXvDghxP6NwuMtgy
-	 3eUNQS7hToDow==
-Subject: Re: [PATCH net v9 3/4] net: phy: take the interrupt back from the bus
- on detach
+	b=lVuy3HSrTYUmoO0dJaHC2lY4WfUaeagZjtQH0J72dURAQFSRY4/tdrK8qltOMGHYj
+	 N1gliQ6+AZzpzZUwFpOi0k3IRGqrVfNeNCmSfJk60aeah5OzY7y69mKLlgFIcaGG4u
+	 JOsiRcX+NAnhmzqMEk3M/cy4HJOvvDrEP2vmWpAFhfTQP1zPXEBkVd0lFjLIhqNcVr
+	 NPg+9YJe9pP2v7DCFEZuZLausgHexdxXNCCXr+f3x3sjKB2agHjQTkCTEw/ypncrQt
+	 efubEyNDRRSn2yP5LbShcpHQ8oFZ0CrwXUfONxrI0RGfdOx1EYIDkctY2QBDQc9sMZ
+	 xP8TA6OFNxQTg==
+Subject: Re: [PATCH net v9 4/4] net: phy: restore the interrupt when the
+ generic bind cycle fails
 From: netdev-bot+sashiko@kernel.org
 To: f@lex.la
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
@@ -36,11 +36,11 @@ Cc: netdev@vger.kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
  olteanv@gmail.com, Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
  steve.glendinning@shawell.net, linux-usb@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Wed, 23 Sep 2026 02:26:06 +0000
-Message-ID: <179013036611.2160803.6244884374026520617@kernel.org>
-In-Reply-To: <20260919015326.499479-4-f@lex.la>
-References: <20260919015326.499479-4-f@lex.la>
-X-sashiko-severity: High
+Date: Wed, 23 Sep 2026 02:26:07 +0000
+Message-ID: <179013036778.2160803.9271908860128310663@kernel.org>
+In-Reply-To: <20260919015326.499479-5-f@lex.la>
+References: <20260919015326.499479-5-f@lex.la>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 3
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,211 +61,232 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new store in phy_detach()
-  (drivers/net/phy/phy_device.c:1963) is placed before, and outside, the…
-- [Medium] The restore of phydev->irq is not paired with the site that
-  clobbers it.
-- [Medium] phy_detach() writes phydev->irq
-  (drivers/net/phy/phy_device.c:1963) with no lock held on the mdio…
-- [Low] Concern that the patch's premise (mdiobus->irq[addr] is always
-  where the board's PHY interrupt is recorded) is violated by sxgbe,…
-- [Low] The added comment "The release below can hand this field to a
-  probe on another CPU." (drivers/net/phy/phy_device.c:1962) ties the…
-- [Low] Documentation/networking/phy.rst:216-223 tells MAC drivers that
-  phydev->irq is theirs to set directly ("just set phydev->irq to…
+- [Medium] The added restore reads bus->irq[phydev->mdio.addr] instead of
+  the value phydev->irq actually held on entry to phy_attach_direct().
+- [Medium] The correctness argument the patch states for the new store is
+  not backed by any lock or barrier.
+
+Pre-existing issues:
+- [Medium] The error_module_put label extended by this patch performs no
+  phy_remove()-equivalent rollback when d->driver->probe(d)…
 
 --
 
-net: phy: take the interrupt back from the bus on detach
+net: phy: restore the interrupt when the generic bind cycle fails
 
-phy_detach() now re-seeds phydev->irq from mdiobus->irq[addr] so that a PHY
-which was temporarily bound to the generic driver does not keep the PHY_POLL
-value that phy_probe() installed. The store is placed just before the
-device_release_driver() call that unbinds the generic driver.
-
-A few questions about the placement and the scope of the new store.
+The patch adds a restore of phydev->irq on the error_module_put label of
+phy_attach_direct(), so that the PHY_POLL substitution done by phy_probe()
+does not outlive a hand-bind of the generic driver that failed.  The value
+is taken from bus->irq[phydev->mdio.addr] and stored before d->driver is
+cleared.
 
 > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 94b2e85e00a3..8e6b399f95d6 100644
+> index 8e6b399f95d6..69d8911ea7f6 100644
 > --- a/drivers/net/phy/phy_device.c
 > +++ b/drivers/net/phy/phy_device.c
-> @@ -1959,6 +1959,9 @@ void phy_detach(struct phy_device *phydev)
->  	if (phydev->mdio.dev.driver)
->  		module_put(phydev->mdio.dev.driver->owner);
+> @@ -1896,6 +1896,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
 >  
-> +	/* The release below can hand this field to a probe on another CPU. */
-> +	phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
-> +
-
-[Severity: High]
-
-This store is outside the "if (phydev->is_genphy_driven)" block below, so it
-runs on every detach, including detaches where a real driver stays bound and
-no phy_probe() will re-derive the field.
-
-Can that duplicate an irqaction for MAC drivers that install
-PHY_MAC_INTERRUPT after connecting?  tsnep_phy_open() in
-drivers/net/ethernet/engleder/tsnep_main.c does:
-
-	retval = phy_connect_direct(...);	/* requests the PHY interrupt */
-	...
-	adapter->phydev->irq = PHY_MAC_INTERRUPT;
-	phy_start(adapter->phydev);
-
-On close, phy_disconnect() skips the free because the field no longer looks
-like a valid irq:
-
-	if (phy_interrupt_is_valid(phydev))
-		phy_free_interrupt(phydev);
-
-	phydev->adjust_link = NULL;
-
-	phy_detach(phydev);
-
-so the request_threaded_irq() action stays installed, and phy_detach() now
-writes the real interrupt number back into phydev->irq.  On the next ifup,
-phy_connect_direct() -> phy_request_interrupt() sees a valid irq and calls
-request_threaded_irq() again for the same irq with the same dev_id (phydev),
-so a second action is appended for every down/up cycle, and a later
-free_irq() removes only one of the two identical actions.
-
-If the trigger types disagree instead, the second request fails and
-phy_request_interrupt() takes this path on every ifup:
-
-	phydev_warn(phydev, "Error %d requesting IRQ %d, falling back to polling\n",
-		    err, phydev->irq);
-	phydev->irq = PHY_POLL;
-
-phy_attach_direct() only re-sanitizes the two cases it knows about:
-
-	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
-		phydev->irq = PHY_POLL;
-
-which recomputes neither PHY_MAC_INTERRUPT nor the polling fallback above.
-Would moving the store inside the is_genphy_driven branch, the only case
-where a later phy_probe() reads the field, avoid this side effect?
+>  error_module_put:
+>  	module_put(d->driver->owner);
+> +	/* Before the NULL below, which lets another probe reach this field. */
+> +	phydev->irq = bus->irq[phydev->mdio.addr];
 
 [Severity: Medium]
 
-Is this store synchronized against the other writer of the field?
-phy_probe() runs from really_probe() with device_lock(&phydev->mdio.dev)
-held, while phy_detach() holds no lock on the mdio device here, so the
-lockset intersection for phydev->irq is empty.
+Is bus->irq[phydev->mdio.addr] always the value phydev->irq held on entry
+to phy_attach_direct()?  The array is seeded with PHY_POLL for every
+address:
 
-The commit message says:
+drivers/net/phy/mdio_bus_provider.c:mdiobus_alloc_size() {
+	...
+	for (i = 0; i < PHY_MAX_ADDR; i++) {
+		bus->irq[i] = PHY_POLL;
+	...
+}
 
-    Ahead of it the generic driver is still bound, and a driver
-    registering meanwhile is turned away with -EBUSY before it can reach
-    phy_probe().
+Some producers do keep the two in sync, which is why the restore works for
+DT buses:
 
-The -EBUSY does exist, but it comes from __driver_probe_device():
+drivers/net/mdio/fwnode_mdio.c:fwnode_mdiobus_register_phy() {
+	...
+	if (rc > 0) {
+		phy->irq = rc;
+		mdio->irq[addr] = rc;
+	} else {
+		phy->irq = mdio->irq[addr];
+	}
+	...
+}
 
+Others write only phydev->irq.  In sxgbe_mdio_register() the probed
+interrupt goes into irqlist[] - which is mdio_data->irqs or the private
+priv->mii_irq, never mdio_bus->irq[] - and into phy->irq:
+
+drivers/net/ethernet/samsung/sxgbe/sxgbe_mdio.c:sxgbe_mdio_register() {
+	...
+			if ((mdio_data->irqs == NULL) &&
+			    (mdio_data->probed_phy_irq > 0)) {
+				irqlist[phy_addr] = mdio_data->probed_phy_irq;
+				phy->irq = mdio_data->probed_phy_irq;
+			}
+	...
+}
+
+On a bus like that, doesn't the new store put PHY_POLL back into
+phydev->irq?  That would leave exactly the "a later attach finds a PHY that
+can only be polled" state the changelog describes, since sxgbe assigns
+phy->irq once at mdiobus_register() time and a later phy_connect() sees the
+clobbered value.
+
+The opposite mismatch looks possible too.  A MAC that deliberately forces
+PHY_POLL before attaching:
+
+drivers/net/ethernet/qualcomm/emac/emac-mac.c:emac_mac_up() {
+	...
+	adpt->phydev->irq = PHY_POLL;
+	ret = phy_connect_direct(netdev, adpt->phydev, emac_adjust_link,
+				 PHY_INTERFACE_MODE_SGMII);
+	...
+}
+
+If the DT for that bus declares the PHY interrupt, the new line replaces the
+caller's PHY_POLL with the bus number on the error path (transient for emac,
+which re-sets it before every connect), and in that case phy_probe() never
+substituted anything to begin with.
+
+Would saving phydev->irq into a local before d->driver->probe(d) and
+restoring that local instead be correct for every producer?
+
+>  	phydev->is_genphy_driven = 0;
+>  	d->driver = NULL;
+
+[Severity: Medium]
+
+The changelog and the new comment rest on this claim:
+
+  "That store is what reopens the device to the driver core: until it runs,
+  a driver registering on another CPU is turned away with -EBUSY and
+  phy_probe() cannot be the second writer of this field."
+
+Which lock makes that exclusion hold?  The -EBUSY gate is a plain load taken
+under device_lock(dev):
+
+drivers/base/dd.c:__driver_probe_device() {
+	...
 	if (dev->driver)
 		return -EBUSY;
+	...
+}
 
-and it is evaluated under the device lock that phy_detach() does not hold.
-It also does not cover an independent unbind on another CPU:
+phy_attach_direct() never takes device_lock(d).  It writes d->driver in the
+hand-bind:
 
-	unbind_store() -> device_driver_detach() -> device_release_driver()
+	if (!d->driver) {
+		if (phydev->is_c45)
+			d->driver = &genphy_c45_driver.mdiodrv.driver;
+		else
+			d->driver = &genphy_driver.mdiodrv.driver;
 
-which clears mdio.dev.driver and makes the device bindable before
-phy_detach() reaches its own device_release_driver().  And because the store
-is unconditional, it also runs when is_genphy_driven is 0, where phy_detach()
-never touches the binding at all and no exclusion of any kind applies.
+		phydev->is_genphy_driven = 1;
+	}
 
-Would doing the restore under device_lock(&phydev->mdio.dev), or from
-phy_remove() which already runs under it, be a better fit than ordering it
-before device_release_driver()?
+and clears it on this label, and calls device_bind_driver() in between,
+whose kerneldoc states:
+
+drivers/base/dd.c:
+ * This function must be called with the device lock held.
+
+With no lock shared between the two sides, can a concurrent
+driver_register() -> driver_attach() -> device_driver_attach() ->
+__driver_probe_device() observe d->driver == NULL, pass the gate, and run
+really_probe() -> phy_probe(), which writes the field again?
+
+drivers/net/phy/phy_device.c:phy_probe() {
+	...
+	if (!phy_drv_supports_irq(phydrv) && phy_interrupt_is_valid(phydev))
+		phydev->irq = PHY_POLL;
+	...
+}
+
+That is the "PHY driver module arrives later" case the series is about.
+
+Separately, the intended "restore, then reopen" ordering is two plain stores
+to different addresses with no smp_store_release() or smp_wmb(), and the
+reader side is a plain load, so on a weakly ordered CPU can the NULL become
+visible before the restored irq?
+
+Would performing the hand-bind and this unbind under device_lock(d), as
+device_bind_driver() requires, make both the exclusion and the ordering
+real?
+
+> error_put_device:
 
 [Severity: Medium]
 
-The restore is not placed at the counterpart of the site that clobbers the
-field.  phy_probe() writes PHY_POLL on every bind of a driver without
-config_intr/handle_interrupt:
-
-	if (!phy_drv_supports_irq(phydrv) && phy_interrupt_is_valid(phydev))
-		phydev->irq = PHY_POLL;
-
-but phy_remove(), which is what undoes phy_probe(), is untouched.  Does the
-downgrade then survive a PHY driver swap performed while the interface stays
-up?
-
-	echo dev > /sys/bus/mdio_bus/drivers/<no-irq driver>/unbind
-	echo dev > /sys/bus/mdio_bus/drivers/<irq-capable driver>/bind
-
-unbind_store() -> device_release_driver() -> phy_remove() does not restore
-the field, so the new driver's phy_probe() sees phy_interrupt_is_valid() ==
-false and keeps PHY_POLL.  With no phy_detach() afterwards the PHY polls for
-the rest of the uptime, which is the same outcome the commit message
-describes as "nothing puts it back".  The same holds for rmmod of an
-interrupt-less PHY driver followed by modprobe of an interrupt-capable one.
-
-Worth noting that simply moving the restore into phy_remove() is not a
-drop-in replacement either: restoring while the PHY is still attached makes
-phy_interrupt_is_valid() true for a connection that never requested the irq,
-so phy_disconnect() would call phy_free_interrupt() on a line that was never
-requested.  Could the field's saved value be tracked explicitly instead of
-adding one restore per unwind path?
-
-For context, the follow-on commit in this series ("net: phy: restore the
-interrupt when the generic bind cycle fails") adds the same restore to the
-error_module_put label in phy_attach_direct(), so the restore is now
-duplicated on two caller paths rather than living at the counterpart of the
-clobber.
-
-[Severity: Low]
-
-Is mdiobus->irq[addr] authoritative for every bus?  sxgbe_mdio_register()
-records a probed PHY interrupt directly in phydev->irq:
-
-	if ((mdio_data->irqs == NULL) &&
-	    (mdio_data->probed_phy_irq > 0)) {
-		irqlist[phy_addr] = mdio_data->probed_phy_irq;
-		phy->irq = mdio_data->probed_phy_irq;
-	}
-
-If a bus does that, the unconditional restore here would replace it with the
-bus array value.
-
-This particular branch looks unreachable in-tree: the only instantiation of
-struct sxgbe_mdio_bus_data is the devm_kzalloc() in sxgbe_probe_config_dt(),
-so probed_phy_irq is always 0, and the store above is a no-op for sxgbe.
-Is the assumption that no bus keeps the number only in phydev->irq something
-that should be spelled out in the commit message?
-
-[Severity: Low]
-
-The comment says "The release below can hand this field to a probe on
-another CPU", but the release it refers to is conditional while the store is
-not:
+This isn't a bug introduced by this patch - the label came in with
+6d9f66ac7fec - but since the label is being extended, what unwinds
+phy_probe() when d->driver->probe(d) succeeded and device_bind_driver()
+then failed?
 
 	if (phydev->is_genphy_driven) {
-		device_release_driver(&phydev->mdio.dev);
-		phydev->is_genphy_driven = 0;
+		err = d->driver->probe(d);
+		if (err >= 0)
+			err = device_bind_driver(d);
+
+		if (err)
+			goto error_module_put;
 	}
 
-For a phydev with a real driver bound there is no release at all, yet the
-field is still overwritten.  Could the comment cover that case, or the store
-move inside the is_genphy_driven branch?
+device_bind_driver() returns driver_sysfs_add()'s error and does not call
+bus->remove, so the caller owns the rollback, but the label only does
+module_put(), the new irq store, is_genphy_driven = 0 and d->driver = NULL.
 
-[Severity: Low]
+What phy_probe() established stays live: the kzalloc'd
+phydev->led_link_trigger and phy_led_triggers array plus the triggers
+registered with the LED core in phy_led_triggers_register(), the phy_port
+objects from phy_setup_ports(), the de-asserted reset
 
-Documentation/networking/phy.rst currently tells MAC drivers the field is
-theirs to set:
+drivers/net/phy/phy_device.c:phy_probe() {
+	...
+	/* Deassert the reset signal */
+	phy_device_reset(phydev, 0);
+	...
+}
 
-    also handles PHY status changes, just set phydev->irq to PHY_MAC_INTERRUPT
-    before you call phy_start and use phy_mac_interrupt() from the network
-    driver. If you don't want to use interrupts, set phydev->irq to PHY_POLL.
+and phydev->drv still pointing at genphy_driver while d->driver is NULL.
 
-with no mention of mdiobus->irq[].  After this change, mdiobus->irq[addr]
-becomes the authoritative store and a MAC-written value only survives until
-the next detach.  Should phy.rst and the phy_detach() kernel-doc, which
-currently only says it detaches the phy from its network device and driver
-and drops the reference taken in phy_attach_direct(), mention the reset?
+Because the label clears is_genphy_driven and d->driver, can any later
+phy_detach() -> device_release_driver() -> phy_remove() still run the
+counterpart teardown?
 
->  	/* If the device had no specific driver before (i.e. - it
->  	 * was using the generic driver), we unbind the device
->  	 * from the generic driver so that there's a chance a
+drivers/net/phy/phy_device.c:phy_remove() {
+	...
+	if (!phydev->is_on_sfp_module)
+		phy_led_triggers_unregister(phydev);
+	...
+	phy_cleanup_ports(phydev);
+	...
+	/* Assert the reset signal */
+	phy_device_reset(phydev, 1);
+
+	phydev->drv = NULL;
+	...
+}
+
+The leaked triggers also keep their names registered, so a later
+phy_led_triggers_register() for the same MDIO address returns -EEXIST.
+phy_probe() ignores that return value, so the next bind still succeeds, just
+without LED triggers for that PHY.
+
+One reachable trigger for the sysfs link failure: the bind block keys on the
+persistent phydev->is_genphy_driven and runs before the
+
+	if (phydev->attached_dev) {
+		dev_err(&dev->dev, "PHY already attached\n");
+		err = -EBUSY;
+
+check, so attaching the same phydev twice can make sysfs_create_link()
+return -EEXIST.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919015326.499479-1-f%40lex.la
