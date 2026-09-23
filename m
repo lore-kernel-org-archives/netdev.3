@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D652621ABC9
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6064133C518;
+	Wed, 23 Sep 2026 01:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790126477; cv=none; b=DzzC1JxmYQ5AxE+ZzaCiwl8jOYpGs5yT4mZ63x48wzjNTwjSUsKY0yMUiZ4q4HnYts+htx3yVUu0hAK1GY4ECKk225u+Pbvk/E7oF7YWBUgb3LbxTVE4HBZAZR56EArRty+brp03aOKf+D98zkpeIc43ZibiGaklwl1F5U3xWbo=
+	t=1790126479; cv=none; b=sttmaqY3eOxumqHg0fz4wPTjQLYq2+9yXzfC/krknXOOB1cg5h8kyM5l97G30cp+czw4faK2N/E5u67EVJAcKapDHH8cCY/5a4Zmn+C6Qp3/OwHD3FCrrp3pqcyXRaOV7W7Awsy6VZZq5mSHTXThCPiySACLauxbfFx7XujIKQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790126477; c=relaxed/simple;
-	bh=wRTs5mB7lbr1O6h9EptkHT14EBpTmkUtfmKFrd+Ag7I=;
+	s=arc-20240116; t=1790126479; c=relaxed/simple;
+	bh=Ci8Y0hYUeMX9BYCWLwUm7cDONXGORts/mymg36qNdiM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sqx8ETjkqpsc92UYacynyC+Uyg73YExh9t0g8u91e3sP3fno5AO25kOZdgmWoUNgwPVmOecOUxkG86CIjW9GOLE2CDjp5ATTTMetyU94yyMhQAWx/ZZ1cjETfxhs6jA5oaxF5ox5Pn7Jsm4mRntfWIpF9rQN3TYs/0YUuGOqN0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNZy42tE; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Z5VPvzH89JVhg6rsK+aG1Msr9K3vKqh3gq5MzKg1BtpZ7FPGXIMrVj8+0GHEGy2vd7PBlQ9o4QeCycIXnaBbx7DzIAvMTW/kP6Sqs8JV+acDrFi7xnWwo8FfPcsfTtYj5SUVowNMk6OyFY2MbZ6KuC0pj9avGNv9Bnw6Ctq/HO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mshf+jb0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNZy42tE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1C51F000FF;
-	Wed, 23 Sep 2026 01:21:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mshf+jb0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A061F00893;
+	Wed, 23 Sep 2026 01:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790126476;
-	bh=l6UO0vWE1Nw/6etMkEunqZ/ufuKDV3Nt2QfQMCAUPD0=;
+	s=k20260515; t=1790126478;
+	bh=tyU8Bb6+3K4VexGl/78COT58utvLuuESmJQNjxtWj0I=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DNZy42tE2nmbUxaNDtOtUmqF1bj+yXtpoCaHi9hpzshr8h9jzOxgg2DViRzy3Q8GK
-	 EcztGvIwHPTAUXEQOWYUev9MlXQi9wj/DyyRl3bIILmKLgP5tGBCKqe0DGG+wTjn/H
-	 llinqHm1jM/WgsrRMhwzE8B05LoKLB1kFKUvmI17qnMfvF/NdSNA+dOyqpDWxVUvvF
-	 r+px37c9xYV8VmWqKvItKwv+9d6z9XPUhljthJmp1Bxvmg+gXWLM/bHzVwSGQZwagA
-	 QCSBf0KYs5kxx7u9Cyznpp8H5s9IlILduFcGKbx6lF2mMfDMj5S6FLx9nc42J9dINS
-	 YBUKEwyvGhMzA==
+	b=Mshf+jb0ybqiOOAZPG+HrDirz0fhi+UnHMla3r/69mNTTnpNmVIQ+Mnb99TpHK0Ft
+	 /RNO0WozgnI/rnVFl5PJGiKT+LmIlh54FgB2P3Ckilb2aBKTu2CqEUgDlGTfFRmRN1
+	 Ky2TYs0QM+XnCKAkW8h5T5Oi3fhn5lEIfT8HWWeojn1RhBInf2fU8nAq+OdLzsgYJ2
+	 GR0WnP9UUtppnfYCDF9X7v88BC4HdpwzcymF4W5uXe2P9ggYkYDl41ddJysDACV9G+
+	 Z6nuiDpPI8WQ3WKnEpkSp3PVZNsF2Vrjtc+o9oA+CXLnrhRqDj4EVF8fZ3QMnZ95yc
+	 VFUwJbr9mLfaQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569F73924463;
-	Wed, 23 Sep 2026 01:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A483924463;
+	Wed, 23 Sep 2026 01:20:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,55 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4 0/2] net/mlx5: Bridge,
- fix remaining switchdev ownership gaps on merged eswitch
+Subject: Re: [PATCH] net/mlx5: Fix rev_entry reference leak in
+ mlx5_tc_ct_shared_counter_get()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179012640714.161587.5863662668734138663.git-patchwork-notify@kernel.org>
-Date: Wed, 23 Sep 2026 01:20:07 +0000
-References: <20260918095931.29792-1-bsoares.it@gmail.com>
-In-Reply-To: <20260918095931.29792-1-bsoares.it@gmail.com>
-To: Bernardo Soares <bsoares.it@gmail.com>
-Cc: mbloch@nvidia.com, daniel@iogearbox.net, netdev@vger.kernel.org,
- saeedm@nvidia.com, vladbu@nvidia.com
+ <179012640839.161587.14121766119864884791.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Sep 2026 01:20:08 +0000
+References: <20260917113131.2149024-1-vulab@iscas.ac.cn>
+In-Reply-To: <20260917113131.2149024-1-vulab@iscas.ac.cn>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, leon@kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
+ ozsh@mellanox.com, pabeni@redhat.com, roid@nvidia.com, saeedm@nvidia.com,
+ tariqt@nvidia.com, stable@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 18 Sep 2026 10:59:29 +0100 you wrote:
-> v4 of "net/mlx5: Bridge, don't fail switchdev events of sibling
-> eswitch ports" (5f324c5d1b12), addressing reviewer feedback on v3:
+On Thu, 17 Sep 2026 11:31:31 +0000 you wrote:
+> When the reverse entry is found but its counter is already being
+> released, refcount_inc_not_zero() fails and the reference taken by
+> mlx5_tc_ct_entry_get() is never dropped before falling through to
+> create_counter.  Drop it so the reverse entry is not kept alive forever
+> by a shared counter lookup that did not use it.
 > 
->  - The v3 commit message for patch 1 wrongly attributed the recursive
->    lower-device walk fix to LAG bond enslavement order. As pointed
->    out in review, mlx5_esw_bridge_lag_rep_get() already filters on
->    mlx5_esw_bridge_dev_same_esw() per candidate and cannot select a
->    sibling's rep. The actual bug is in the generic recursive walk
->    used when attribute changes are emitted against the bridge master
->    netdevice directly (a bridge with representors of more than one
->    eswitch instance enslaved, no LAG involved): the walk returns as
->    soon as any lower device yields a rep, and the underlying base
->    case only checks same-HW, not ownership. Commit message rewritten
->    to describe this correctly; no functional change from v3.
->  - The v3 commit message for patch 2 claimed a "replayed/duplicate"
->    NETDEV_CHANGEUPPER unlink as one of the reachable cases. As
->    pointed out in review, netdevice notifiers are not replayed, so
->    there is no such duplicate delivery. The actual (and only)
->    reachable case is a sibling instance whose bridge offload notifier
->    registers after a peer port was already enslaved, so it misses
->    the link event and never tracks the port, then genuinely receives
->    the later unlink event. Commit message rewritten accordingly; no
->    functional change from v3.
+> Fixes: 1edae2335adf ("net/mlx5e: CT: Use the same counter for both directions")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v4,1/2] net/mlx5: Bridge, don't fail switchdev events of sibling eswitch ports
-    https://git.kernel.org/netdev/net/c/35e6f970f553
-  - [net,v4,2/2] net/mlx5: Bridge, don't fail unlink of untracked/unsupported peer ports
-    https://git.kernel.org/netdev/net/c/2e51097c982b
+  - net/mlx5: Fix rev_entry reference leak in mlx5_tc_ct_shared_counter_get()
+    https://git.kernel.org/netdev/net/c/0bf6bb567f0e
 
 You are awesome, thank you!
 -- 
