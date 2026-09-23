@@ -1,238 +1,232 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3713737B3FE
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 04:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5133E1696;
+	Wed, 23 Sep 2026 04:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790139103; cv=none; b=OEyhjXAsWE17Iqcv0hsvlP2q+NgPtxNKRk2n4BqGM6mhXCwktrm/ts2DS/puBqZRa42+nbdXacZp86XoVNDWSB7w6eE5MZ4lRjmg9h9NOlWNUl7q75L4Wgi/Nbew+SMhuaXDiQuPNfF2acfNdM34oaJ10I2tDsHnZYDWsf87zDM=
+	t=1790139496; cv=none; b=Y/cueHVkpUJ5XSG1Tds1R7NQOf2X+e+icEsAIxLvhq3I4jcmwkQSzY9xMoRmMeI9xFV0R//iIDRv9FtN8V15RS5zClf1L6lNwTSj1vdH9tvT5SB5l7viBvQA7vWLfjDlUMb7eVxNkt4vsU2IemyQqlUXzwS1cp20cBMPV9z9UDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790139103; c=relaxed/simple;
-	bh=xEf3t/R7Jbvgx6YTeNrky889ZHjfTclMhSwF0D/NvIA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L3n182yCoJucpGgaG270cgNj1UUWCkxJrkVJVrwIIcEGak0qJ5VEDwTAl0buIO5iDjvry3Nc6WWjOr/W8GDCD65hh9Uuc0PcBSfNEYhu4PAwG21RPhreXsno/NmkbFmw0OZtxBXoWLdblFj2YlXBy63871Iu3SKdI6sLoz2Cl/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dch50fso; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790139496; c=relaxed/simple;
+	bh=+xLjBZRqbhxJXVy1aoZOj+Hd6VxHwgD+0PmcD4Q6dHc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gN5RNY5UGZsFCVu+fl6DIHiFcJwBWwFNxUUPW/ivlN+bfK/cmJEcsw6fDvMy7wf+eFstUOsYJyPGkTK+1NYVMrBBbm9WNe8sq47K0vagDXcFlCHgLK/MbgNCWhdzjfZiXjwTBm9z4tB0NFH/nrV8M1MeXyIdcuNB8K2j1Xr5RDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Af2a0iLg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dch50fso"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb751so334871a91.2
-        for <netdev@vger.kernel.org>; Tue, 22 Sep 2026 21:51:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790139101; x=1790743901; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Vau8smD7DdgUp75NMX0g1XIGti7nSC/bWHbTDZeWg+k=;
-        b=dch50fso9M7VJGXrAYDFHyVlbRo7yjBqqzorKb4JWf0oGWFgeWigQLr7DGg12i5Iyt
-         gUswyR0Avy5E5Nz5ODVLiBvqSftjwzGbnuhgPazbHfeAYEoP0KaNwnV0Zz6RF4aQF/yB
-         wpkvnsHLn7txMFfYLV5ixY4SvPYuAQnBbypB8l84dNA/RzyuUPSvU15DMaH1tgmvrGJg
-         d85uqAEYnucMGLd2leeFm5zdsw2VLGHvq9hDNm++o/SqP/Q7K9ONx4s0fgEogaWfz1Vn
-         XYhUNEULharJLbhA0dZTMLXuC31bRHVEJ0wDI39gzJwCPAzEfI4YovEJYChOpNVzpMgs
-         +BLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790139101; x=1790743901;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Vau8smD7DdgUp75NMX0g1XIGti7nSC/bWHbTDZeWg+k=;
-        b=xUrDFCMuPoOpabJNC6KXY5UDqOh7Chk6HI/o1XmVs0EfHAsL43mXqcyyw1moKaZc53
-         fqu5nNEQsjFajnklt0Ig2PhCTouuZomL3e6tWhyfW4UC/klVldF8/P+WQoNDaOmordpl
-         YwYXgEBAwax7iBok+7YTZzpKJcAg/3sF7m3kS+DtPfLfi+XXKavvQjqg28AK8J+uvR9d
-         ODCo/+n+TYJmvauO4l+ImAVs938UxN4ATJUzsQiOEBs+vqLnjyOdB21gtPLlfja5hrPh
-         iCfgD9N9ZJpyyJXR6Ugwq2h4gWjensHzimH51Q6RyKmy3x+Mjvw6Dw9Fp8rfLbZ9xyae
-         apHA==
-X-Gm-Message-State: AFuF++kwhg5XKqFKJq1PndPmRD9n48WGSYn/hLD1yTg5vs697yalxTJS
-	KSvVfUymW1KZwmMnVTHk3TCQwR90HL8yliJDhnNWz47H4buE7ZtpD1lI
-X-Gm-Gg: AYBFou3L1pSP7h6cSTlNVexau/+toVT5sYdRyMkMr1QJDqY/iBCQ6DvUx7jxFuo7uWy
-	u+ypg7WsIJhq508bhxaobeIaLPhriGaj0MjFPFyDb+VwM+y04c8ABLlO5vDvpWQTLTEt5AslmEv
-	477wi1kyXx4D8Ex2oSz00iBOmh+Jve8J2u7t586eWHem7STS/bc7os7XjVWwnYm35boZTWeIv5D
-	zMQKgO/GyfAy18ZqLc6BaOdmPJDNdCriUEAbHVA82vq+p1e1fiEa6TFuUSovrrMAHf86h7B8V4j
-	cuaxwbs5MK3X7rWYakyXiK6+HXtm8lllxcYgUxZkSKT2roH2RdXzVsDtPhzsMddCMsEG+nR28lD
-	HElTzezPP7Bak9Ocz0WfgeKpxuvfpD8Nh4FU2AlyLiD/CcgilGjYipyEk0hAB7M57D6uvqwQubJ
-	aLsmi5E3uKEf8Bsp7we8wTQeeVAtlb6RWCNc9pz4PecHOGUB84E3QQyR6aHJUYCjBI26UaGJd5E
-	ceTWG2Ntb0C+7D4vtKz
-X-Received: by 2002:a17:90b:560c:b0:39e:423:bb8f with SMTP id 98e67ed59e1d1-3a07e51ca8emr1317609a91.1.1790139101363;
-        Tue, 22 Sep 2026 21:51:41 -0700 (PDT)
-Received: from [163.43.103.131] ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a089197169sm234555a91.8.2026.09.22.21.51.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 21:51:40 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Date: Wed, 23 Sep 2026 13:51:37 +0900
-Subject: [PATCH net] seg6: fix HMAC validation when an extension header
- precedes the SRH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Af2a0iLg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3921F000FF;
+	Wed, 23 Sep 2026 04:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790139481;
+	bh=LgoJ5rliNTGR2MnIqbJdm3WRRpvsdhXpNYJ3jU1ZsRI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Af2a0iLgK8lejaIA5I1s0Px1nQ5kHtxCBopMl1KL2GDHqcnqm4WNqMcUyJlwRbdAA
+	 qA/iPUHIZSkcXAsGagSxSgy+R/O77gXiKUpebn4e5cz9PUSIBIByCqDZBVA/nNuvwP
+	 B3dk1IVUVY97GHD5dZZ8W388Ryr3XzJ7e2196NJjubrbnPMS9hqdGbSYOv01aUOaQK
+	 hGKw3bLI7N9QFhrNcNpPoilY0JLOv7/aIoXKoQWEthjKLdY1N8XVMQMKOPAWWAIMbK
+	 lqo36yWVCK6Ykxu1aNrgH26JonGGleu0xKepacBDK8NHGl9Zv2680hsJpZUnO1vc2j
+	 Ilk56bgtz5I1A==
+Subject: Re: [PATCH net v3] net: stmmac: request the MDIO reset GPIO only once
+From: netdev-bot+sashiko@kernel.org
+To: xiaolinkui@126.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ lorenzo.bianconi@oss.qualcomm.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ xiaolinkui@kylinos.cn, stable@vger.kernel.org
+Date: Wed, 23 Sep 2026 04:57:59 +0000
+Message-ID: <179013947978.2160803.13178881612960386709@kernel.org>
+In-Reply-To: <20260921015727.2643540-1-xiaolinkui@126.com>
+References: <20260921015727.2643540-1-xiaolinkui@126.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-b4-seg6-hmac-transport-header-v1-1-3ae85dc0fdb9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIANhas2oC/yXMQQrCMBBA0auUWTuQhjRUryIuknRsRjAtM1GE0
- rub6vL/xdtASZgULt0GQm9WXkqL/tRByqHMhDy1BmusN2drMTpUmj3mZ0hYJRRdF6mYKUwkaPt
- hNG6MLiYPzViF7vz5+VcoVOH2n/qKD0r1kGHfv/V7aCmGAAAA
-X-Change-ID: 20260922-b4-seg6-hmac-transport-header-2158048b4bc6
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, David Lebrun <david.lebrun@uclouvain.be>, 
- Ahmed Abdelsalam <amsalam20@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yuya Kusakabe <yuya.kusakabe@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5048;
- i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=xEf3t/R7Jbvgx6YTeNrky889ZHjfTclMhSwF0D/NvIA=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqs1raOyWwew0Hli56N7ZHs07TCEoACZ5nU4jBZ
- tBe5dJMzVyJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCarNa2gAKCRAq19F1Kl0b
- TfSuD/43UvtuGT71ZkdlZL0stBTiD5Sa3zMnzh1FociHb7jmsBZZfeupSv0jsleR8CtkgyewkUA
- JA7VgW2rq4h1Bs7IdZRidsdonkYBMR2Poi6QmK9H5uJRs6MxsA4bb6AYA92O7eaei9HkZ/yPhIS
- KiHj5/qlWsTWfs+Ov3yZt5/0VHvxKN90u8pZNyKa+CzeHeRhUfs8VuXZtbitA1gRQzm1n/rEjl4
- P/iQOyqaLxC+9QGiMXxQOSvrBd059ByHaLs6UTGoQ3gInwga28alKoDT41H65CYxvqWfJFML0Rh
- rv4MnbnoyF89kNfEXf1YY8QG64X4cj/bXL5YIS6/qtrrzYuivp8nFCkebX7NN7jHN2u84xqTBOY
- V8JlUxnS9xhr+EiVZrK4L0P/KwBvKusIlPFur92eS0mbZ5sm5QN1innzY+TnkQ/HNfyxPBe2z3F
- mvC381aFVfh/fKqD3T0SV0vlhyCNN4euKaatwNv7335vxM4/SlPtTs/AaRWnXroVeW93+kAujiL
- LFALuB09EqPKE8BPVsIUki0p5wiBX32BJe8k6N+s4oT2v59/5y4PMYC7bjR2JT9OLCbhnydpvYT
- Cjs3+1EFsVYQ/+sgKu0gl96008ldm8Fx4PnR1HH5xhAh10zJRcc3tE9s88PGG1qCx/3xqCFrPSk
- ClMNUoZciNakXjA==
-X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
- fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-seg6_hmac_validate_skb() derived the SRH from skb_transport_header().
-That only holds while the two coincide, which is not true on the
-seg6_local input path.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-ip6_rcv_core() leaves the transport header just past the IPv6 header.
-A Hop-by-Hop options header is consumed before the route lookup and
-advances it, but a Destination Options header is not: the seg6_local
-lwtunnel is entered through an input redirect from the route lookup,
-which bypasses the extension header handlers. The transport header
-then still points at the Destination Options header while
-seg6_get_srh() has located the real SRH further down the chain.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-The HMAC is therefore computed over the Destination Options header,
-and a packet carrying a valid HMAC TLV is dropped when
-seg6_require_hmac is set. Such a packet is legitimate: RFC 8200 allows
-Destination Options before a routing header, and get_srh() has walked
-the header chain since commit 5829d70b0b6c ("ipv6: sr: fix get_srh() to
-comply with IPv6 standard "RFC 8200""). The misread header is covered
-by the pskb_may_pull() in seg6_get_srh(), so the result is a wrong
-verdict, not an out-of-bounds access.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Reproduce by giving a node a seg6local End SID with
-net.ipv6.conf.<dev>.seg6_require_hmac=1 and a key installed with
-"ip sr hmac set <keyid> sha1", then sending
+- [Medium] New probe-failure path when the DT MDIO bus is disabled.
+- [Low] Conditional-compilation mismatch between the new GPIO/delay
+  acquisition and its only consumer.
 
-  IPv6 -> Destination Options -> SRH (carrying a valid HMAC TLV) -> payload
+--
 
-to that SID: it is dropped, while the same packet without the
-Destination Options header passes.
+net: stmmac: request the MDIO reset GPIO only once
 
-Fixes: 5829d70b0b6c ("ipv6: sr: fix get_srh() to comply with IPv6 standard "RFC 8200"")
-Assisted-by: LLM
-Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
----
- include/net/seg6_hmac.h | 3 ++-
- net/ipv6/exthdrs.c      | 2 +-
- net/ipv6/seg6_hmac.c    | 5 +----
- net/ipv6/seg6_local.c   | 6 +++---
- 4 files changed, 7 insertions(+), 9 deletions(-)
+The patch moves the "snps,reset" GPIO lookup and the "snps,reset-delays-us"
+parsing out of stmmac_mdio_reset() and into stmmac_mdio_register(), caching
+both in struct stmmac_priv. stmmac_mdio_reset() then only pulses the cached
+descriptor, so the devm GPIO request happens once per device instead of once
+per reset.
 
-diff --git a/include/net/seg6_hmac.h b/include/net/seg6_hmac.h
-index e9f41725933e..3161a8104b89 100644
---- a/include/net/seg6_hmac.h
-+++ b/include/net/seg6_hmac.h
-@@ -48,7 +48,8 @@ extern int seg6_hmac_info_add(struct net *net, u32 key,
- extern int seg6_hmac_info_del(struct net *net, u32 key);
- extern int seg6_push_hmac(struct net *net, struct in6_addr *saddr,
- 			  struct ipv6_sr_hdr *srh);
--extern bool seg6_hmac_validate_skb(struct sk_buff *skb);
-+extern bool seg6_hmac_validate_skb(struct sk_buff *skb,
-+				   struct ipv6_sr_hdr *srh);
- #ifdef CONFIG_IPV6_SEG6_HMAC
- extern int seg6_hmac_net_init(struct net *net);
- extern void seg6_hmac_net_exit(struct net *net);
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 09a4552f7f08..3ef3c2635581 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -387,7 +387,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 	}
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
--	if (!seg6_hmac_validate_skb(skb)) {
-+	if (!seg6_hmac_validate_skb(skb, hdr)) {
- 		kfree_skb(skb);
- 		return -1;
- 	}
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index e6964c6b0d38..bd2704d4c7a0 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -173,13 +173,12 @@ EXPORT_SYMBOL(seg6_hmac_compute);
-  *
-  * called with rcu_read_lock()
-  */
--bool seg6_hmac_validate_skb(struct sk_buff *skb)
-+bool seg6_hmac_validate_skb(struct sk_buff *skb, struct ipv6_sr_hdr *srh)
- {
- 	u8 hmac_output[SEG6_HMAC_FIELD_LEN];
- 	struct net *net = dev_net(skb->dev);
- 	struct seg6_hmac_info *hinfo;
- 	struct sr6_tlv_hmac *tlv;
--	struct ipv6_sr_hdr *srh;
- 	struct inet6_dev *idev;
- 	int require_hmac;
- 
-@@ -187,8 +186,6 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	if (!idev)
- 		return false;
- 
--	srh = (struct ipv6_sr_hdr *)skb_transport_header(skb);
--
- 	tlv = seg6_get_tlv_hmac(srh);
- 
- 	require_hmac = READ_ONCE(idev->cnf.seg6_require_hmac);
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index d1070aec7b72..67eeb27ee43a 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -222,7 +222,7 @@ static struct ipv6_sr_hdr *get_and_validate_srh(struct sk_buff *skb)
- 		return NULL;
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
--	if (!seg6_hmac_validate_skb(skb))
-+	if (!seg6_hmac_validate_skb(skb, srh))
- 		return NULL;
- #endif
- 
-@@ -239,7 +239,7 @@ static bool decap_and_validate(struct sk_buff *skb, int proto)
- 		return false;
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
--	if (srh && !seg6_hmac_validate_skb(skb))
-+	if (srh && !seg6_hmac_validate_skb(skb, srh))
- 		return false;
- #endif
- 
-@@ -771,7 +771,7 @@ static int end_flv8986_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
- 	srhoff = srh ? ((unsigned char *)srh - skb->data) : 0;
- 	pinfo = seg6_get_srh_pktinfo(srh);
- #ifdef CONFIG_IPV6_SEG6_HMAC
--	if (srh && !seg6_hmac_validate_skb(skb))
-+	if (srh && !seg6_hmac_validate_skb(skb, srh))
- 		goto drop;
- #endif
- 	flvmask = finfo->flv_ops;
+A couple of questions about the new probe-time acquisition below.
 
----
-base-commit: 17741334d00bf5ebd37f8c1c36bc9c146a351deb
-change-id: 20260922-b4-seg6-hmac-transport-header-2158048b4bc6
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> index afe98ff5bdcb..cf768afd9237 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> @@ -384,33 +384,16 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+>  	struct stmmac_priv *priv = netdev_priv(bus->priv);
+>  	unsigned int mii_address = priv->hw->mii.addr;
+>  
+> -#ifdef CONFIG_OF
+> -	if (priv->device->of_node) {
+> -		struct gpio_desc *reset_gpio;
+> -		u32 delays[3] = { 0, 0, 0 };
+> +	if (priv->mdio_reset_delays[0])
+> +		msleep(DIV_ROUND_UP(priv->mdio_reset_delays[0], 1000));
+>  
+> -		reset_gpio = devm_gpiod_get_optional(priv->device,
+> -						     "snps,reset",
+> -						     GPIOD_OUT_LOW);
+> -		if (IS_ERR(reset_gpio))
+> -			return PTR_ERR(reset_gpio);
+> +	gpiod_set_value_cansleep(priv->mdio_reset_gpio, 1);
+> +	if (priv->mdio_reset_delays[1])
+> +		msleep(DIV_ROUND_UP(priv->mdio_reset_delays[1], 1000));
+>  
+> -		device_property_read_u32_array(priv->device,
+> -					       "snps,reset-delays-us",
+> -					       delays, ARRAY_SIZE(delays));
+> -
+> -		if (delays[0])
+> -			msleep(DIV_ROUND_UP(delays[0], 1000));
+> -
+> -		gpiod_set_value_cansleep(reset_gpio, 1);
+> -		if (delays[1])
+> -			msleep(DIV_ROUND_UP(delays[1], 1000));
+> -
+> -		gpiod_set_value_cansleep(reset_gpio, 0);
+> -		if (delays[2])
+> -			msleep(DIV_ROUND_UP(delays[2], 1000));
+> -	}
+> -#endif
+> +	gpiod_set_value_cansleep(priv->mdio_reset_gpio, 0);
+> +	if (priv->mdio_reset_delays[2])
+> +		msleep(DIV_ROUND_UP(priv->mdio_reset_delays[2], 1000));
+>  
+>  	/* This is a workaround for problems with the STE101P PHY.
+>  	 * It doesn't complete its reset until at least one clock cycle
 
-Best regards,
---  
-Yuya Kusakabe <yuya.kusakabe@gmail.com>
+[ ... ]
 
+> @@ -608,6 +591,19 @@ int stmmac_mdio_register(struct net_device *ndev)
+>  	if (!mdio_bus_data)
+>  		return 0;
+>  
+> +	if (mdio_bus_data->needs_reset && dev_of_node(priv->device)) {
+> +		priv->mdio_reset_gpio =
+> +			devm_gpiod_get_optional(priv->device, "snps,reset",
+> +						GPIOD_OUT_LOW);
+> +		if (IS_ERR(priv->mdio_reset_gpio))
+> +			return PTR_ERR(priv->mdio_reset_gpio);
+> +
+> +		device_property_read_u32_array(priv->device,
+> +					       "snps,reset-delays-us",
+> +					       priv->mdio_reset_delays,
+> +					       ARRAY_SIZE(priv->mdio_reset_delays));
+> +	}
+> +
+
+[Severity: Low]
+Should this new block carry the same conditional compilation as its only
+consumer?
+
+The whole body of stmmac_mdio_reset(), including every use of
+priv->mdio_reset_gpio and priv->mdio_reset_delays[], sits inside:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c:stmmac_mdio_reset() {
+#if IS_ENABLED(CONFIG_STMMAC_PLATFORM)
+	...
+#endif
+	return 0;
+}
+
+but the acquisition added here is not guarded that way. Before the patch the
+devm_gpiod_get_optional() call lived inside that guard, so in a build with
+CONFIG_STMMAC_PLATFORM=n no GPIO was requested at all.
+
+stmmac_mdio.c is part of the core stmmac.o, and DWMAC_LOONGSON is declared
+after "endif # STMMAC_PLATFORM" in drivers/net/ethernet/stmicro/stmmac/Kconfig
+and only selects STMMAC_LIBPCI, so it can be built with STMMAC_PLATFORM=n.
+loongson_dwmac_dt_config() sets needs_reset on a device that has an of_node:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c {
+	plat->mdio_node = of_get_child_by_name(np, "mdio");
+	if (plat->mdio_node) {
+		dev_info(&pdev->dev, "Found MDIO subnode\n");
+		plat->mdio_bus_data->needs_reset = true;
+	}
+}
+
+In that configuration the line is claimed and driven low for the device
+lifetime while the pulse code does not exist, and an acquisition error now
+aborts stmmac_mdio_register() for a line that can never be used. Would it be
+better for both sides to share one condition, either by guarding the
+acquisition identically or by dropping the guard from the reset body?
+
+[Severity: Medium]
+Can this turn a disabled MDIO bus node into a MAC probe failure?
+
+stmmac_mdio_setup() sets needs_reset from the mere presence of an MDIO child
+node, and stmmac_of_get_mdio() uses for_each_child_of_node() /
+of_get_child_by_name() without checking of_device_is_available(), so a node
+with status = "disabled" still reaches this new block.
+
+The acquisition and its "return PTR_ERR()" run before of_mdiobus_register()
+gets a chance to report the disabled node, which stmmac_mdio_register()
+currently treats as success:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c:stmmac_mdio_register() {
+	err = of_mdiobus_register(new_bus, mdio_node);
+	if (err == -ENODEV) {
+		err = 0;
+		dev_info(dev, "MDIO bus is disabled\n");
+		goto bus_register_fail;
+	}
+}
+
+and the -ENODEV comes from:
+
+drivers/net/mdio/of_mdio.c:__of_mdiobus_register() {
+	/* Do not continue if the node is disabled */
+	if (!of_device_is_available(np))
+		return -ENODEV;
+}
+
+Since bus->reset is only called from __mdiobus_register(), the pre-patch code
+never requested the GPIO for a disabled MDIO node, so it could not fail there.
+With this patch, a MAC node that still carries snps,reset-gpios whose
+acquisition returns -EBUSY (another consumer owns the line) or a permanent
+-EPROBE_DEFER aborts the MAC probe even though the reset can never run.
+
+Would it make sense to acquire the descriptor only once the bus is known to be
+enabled, still before its reset callback can run, or to let the disabled-bus
+path tolerate the acquisition error the way it tolerates -ENODEV?
+
+I could not find an in-tree device tree that combines a disabled mdio child
+with a MAC-level snps,reset-gpios that fails to be acquired, so this one is
+speculative, but nothing in the code appears to prevent the combination.
+
+>  	stmmac_mdio_bus_config(priv);
+>  
+>  	new_bus = mdiobus_alloc();
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921015727.2643540-1-xiaolinkui%40126.com
