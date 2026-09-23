@@ -1,106 +1,80 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648F63CEBB9
-	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 08:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769ED345EAF
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 08:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790150689; cv=none; b=lmLYd1IQ5U+92mSsgUHbFpYmwOU8U8enE2EMY8zRLVlb3cw1hglxk1im2HuyODvdwhAfdAC5w9/7n1ZILCd/127I/vxmxZmJDrV2T/ip2HAtWG2KGjxrAtQNxXxrz7rk3pTjrF+K2lu1C94h+bF05tChF1ruzhykUXJ39ZcvOTo=
+	t=1790150770; cv=none; b=jUoEr9BzGEzekvECGhLzat4elic+YgCeKENy36NwhvSR0+qLBm2qXtGC2UltBqEt0BCntMuvOORTmnfDw+W95R38iwP0RX0IPsoHOjHFLHOSDTSfo79ZIywx2taEGuiC3TLOpWieulWZJ+eb+qR/7Tog/9jjn8nRC6PKawZdhJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790150689; c=relaxed/simple;
-	bh=+tAmSHDxIwxbKvQ8HZao/GaONUaz5keVLiNMuB7KKDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpVBJmsuJ/MVaGPAYBDT89FWnq9VNlR5DImy+edZsNDe0dlowFIs9d71Y+f8Zsd8+y91koxnNVvSgOap72fcG3izf5tJMvtuAeqpU/0GXGbLpQXbw5SP0X+/YLSlskOPpd6tKX2TLCzym+XE7CCojxOBw/AX895A8hgaeVXgmp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QnQodNdQ; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790150770; c=relaxed/simple;
+	bh=RhYEY+bk9hTDqj+0+sCeAfwxUbdlzD76D1Uo+uG3VmU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EEdvXOmyYzmVss0QzWEsIPPr0xinCzVvYyAuLgktbW8gq5XCjr/QIVNm62D2/AzNak8e/021SR7/+sQNsBoFX4vTGJY7HJ9d/+QDDTSFT+Q5MztY2s0ANBJFuYGl3V7eSMP1E1/jEf5Cv3rtzbzKkxDYxmLKSxsGfaHSuk+Vn4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=BVc0cqO2; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QnQodNdQ"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4c7a0so422414a12.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 01:04:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790150688; x=1790755488; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+tAmSHDxIwxbKvQ8HZao/GaONUaz5keVLiNMuB7KKDg=;
-        b=QnQodNdQ94HsHcQOsJpsWD1fUob8UctRNaFYFrws8xbDXohtxyZxEgQq9nbeAhP/Sv
-         4I0FH2LZkVxVukgByvT4K9E/t2Gh+6GzVvC9xsBKJex9M6tlzQ+81Eg2Wj8gB0veDvdF
-         SXF1RqHoGpleCt50Ek3gm8SISImu9Aa1TfKIRIK2t7kmJ/r5q8tZpdX+FJPXS3esJF/z
-         ZivIU534NiNuPXwhAUM/m1uGvjY+MVyUPPR1QDGjtqCwAqHuStvyHea7SsJPOrndxST3
-         XzTJX6UShmxtqO1jGNuDQXYjVEnsYBVurSnytzaqp85msnjmQrcMzs509ZbqyI2tWGRj
-         XSgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790150688; x=1790755488;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+tAmSHDxIwxbKvQ8HZao/GaONUaz5keVLiNMuB7KKDg=;
-        b=dxCDXCzOcoa0aublENRx3hci7vlJZWxaG22jvDKXHpBVtaqCyrHPeHpcM1wpEE1MM6
-         vj9WtE7yFZvtqtwgT14SitfjQ9WPpOUZ/LTlVkDS3X5T80kymHoL+1XpCfLeYp3YX3za
-         OU61JeTHzvpdye5K0uEgceIzNktWklYDKGlTOAhGJOmC+sAP79Pv8ThtU3N7vT5oCPcX
-         HORK5A941NOv5N3h2S97k2jnthkEVEa2UCwLJuyOhOiiBK2bV0L8fjwDTU0sUEAWsdqq
-         QWEOKq7UMegdLtduiZCnDOhSAURbM/OQ9wcM32rmgJbUEFzYWeMpkoeiE/kIDvRiUJbn
-         pHJg==
-X-Forwarded-Encrypted: i=1; AKwUvBxC6gh+kKaC9+BdFMzxEdonptOK18+VIRIie+oNWe7o6o+FRQGJxeNHh3MzlfIOqkiXhSIAZ84=@vger.kernel.org
-X-Gm-Message-State: AFuF++n1ZhUKj2R8mIHIGT+bK4D6f+b2xRt7sDN3upeSNJ2ScLFTWdgQ
-	CY0yjDsGEqlGn4H7m/dP8Eoo9MFN4fDawsX4R5e02L37xU6ieeszDLuh
-X-Gm-Gg: AYBFou18/spfnH0MZukLRpu3ghC8G23mBYGiErm5MDvbPzMlyS/hwUc1YZmVjjqZv3W
-	Hk1aMo90kFxnc0YAPOLvyxR6y8RxZRFlmjcRHwBg6ODpyVzETDaTFf3MrVBaKtNabSZ3pyybzp6
-	Yw8sQaBXKLIuP9ZfGJcuaqDPrSLnu4PHMBYSrLjxvouFI8XOsM13PnrbKmsxcCHYNxEcs/f6Wo6
-	+yHgLZYin6b/pfGE0EIbcNpzEwV0M5czCBqtMtD1nxDRovvD3zDrfXDkdyY1logN3OWFXKw2wxr
-	oRR36mCxFW8cZYXQWL+VDdpbQUqhsOhEjYceGGIHONvIDyCbcudIsXclS+vA6klrLMCoEpHdPxO
-	Q7kprTtOxJv9qocGTsikuk90W82etfg1mRmfXOJULLbj/r+w9Muu8FkpFNI6h9Gqmdhmn2BRTy2
-	7i/jXM6Dsb226T9EMm3dmgPDFOjyo2jI6TYYRe2LrjXiEOH3HqXmlUlwEck6qaVnOdNA75ksdQh
-	cExx1IGW+q6iSkzEIkgv7MZ0p/0KJ7KSFos20hswiEDXZ8=
-X-Received: by 2002:a17:90a:f947:b0:39e:6a80:dd9b with SMTP id 98e67ed59e1d1-3a07e6141e9mr1464275a91.34.1790150687493;
-        Wed, 23 Sep 2026 01:04:47 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a085b5694dsm1984730a91.6.2026.09.23.01.04.44
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 23 Sep 2026 01:04:47 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: David Lee <david.lee@trailofbits.com>
-Cc: Jun Yang <juny24602@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Kyle Zeng <kylebot@openai.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Dominik Czarnota <dominik.czarnota@trailofbits.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] sctp: hold shkey across socket migration
-Date: Wed, 23 Sep 2026 16:04:38 +0800
-Message-ID: <20260923080440.83800-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260731120558.558957-1-david.lee@trailofbits.com>
-References: <20260731120558.558957-1-david.lee@trailofbits.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="BVc0cqO2"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=RhYEY+bk9hTDqj+0+sCeAfwxUbdlzD76D1Uo+uG3VmU=;
+	b=BVc0cqO2L/0ytgdzH/mZ9KOLvq4sLbKkmwc+GmccF85ueBQoPgkEVoTZca+AN5eQxYqxQuVRd
+	ihhfBwRM1udDZZ52/0Pmgs+8A2fHIAKPufHKQ/0f6q0n8xue1qwXMazdkoSMzBffLlZxeJJP00D
+	fZWML2Cu9WrbQnKmRz+VW5Y=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hqTkG24jSzmV7C
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 15:53:58 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id CD98D4056A
+	for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 16:06:02 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 23 Sep 2026 16:06:02 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: <csh0052@gmail.com>
+CC: <gongfan1@huawei.com>, <lcy8047@gmail.com>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH net] hinic3: handle auxiliary device ID allocation failure
+Date: Wed, 23 Sep 2026 16:05:56 +0800
+Message-ID: <20260923080557.1752-1-gongfan1@huawei.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <179001656835.91284.3719235813225229273.idr-bug-81@gmail.com>
+References: <179001656835.91284.3719235813225229273.idr-bug-81@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-Hi David and Xin,
-
-My control-chunk migration fix [1] depends on this patch. Xin asked me
-to wait for it to land so the dependent patch would apply.
-
-Xin, would it be acceptable to send a v3 series carrying this patch as
-1/2, without code changes, and my fix as 2/2? I would preserve David's
-authorship, fix the tag placement noted in your review, and add my
-sign-off.
-
-David, could you provide the missing Signed-off-by requested in the
-earlier review?
-
-Thanks,
-Jun
-
-[1] https://lore.kernel.org/netdev/20260804113705.45754-1-juny24602@gmail.com/
+> hinic3_init_hwdev() stores the result of hinic3_adev_idx_alloc() in=0D
+> hwdev->dev_id without checking for an error. If ID allocation fails but=0D
+> the remaining initialization succeeds, hinic3_add_one_adev() uses the=0D
+> negative error code as the auxiliary device ID instead of a reserved ID.=
+=0D
+> =0D
+> Return the allocation error before initializing the hardware. Add an=0D
+> unwind label that clears pci_adapter->hwdev and frees the allocation=0D
+> without attempting to release an ID that was never allocated.=0D
+> =0D
+> Fixes: 8133788d023f ("hinic3: Nic_io initialization")=0D
+> Reported-by: Changyul Lee <lcy8047@gmail.com>=0D
+> Assisted-by: LLM=0D
+> Signed-off-by: Sang-Hoon Choi <csh0052@gmail.com>=0D
+> ---=0D
+> Found during source review at mainline=0D
+> 5dd1818b15d98d4a20806cd00b1b40320b06004f. The affected source is unchange=
+d=0D
+> at f0100363d8c374bd8e9ea7c9ba02744f0b802ca4.=0D
+> =0D
+> The modified hinic3_hwdev.o compiled with x86 allmodconfig and W=3D1.=0D
+> I have not tested this on hinic3 hardware or injected ID allocation=0D
+> failures.=0D
+=0D
+Thank you for your contribution! We will test this patch later.=
