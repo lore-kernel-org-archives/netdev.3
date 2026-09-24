@@ -1,61 +1,39 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495B81D8E01;
-	Thu, 24 Sep 2026 12:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F383737CD2C
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790254474; cv=none; b=D4+pWAuwENtvIyzpuK0oRYnIguKFmRdMULawyud4+jsuqyS5MWRcCw7bX30VumOXlX82FOpdgWQEaaCT9tQcFmWSltJN2pxrrj4E91z/egH7CydU/T9P/L7+5Lvfsu8DaxORcvnh9Z8AgI3ElPtNX6l7CKN01SyRUT1nFvaJnpU=
+	t=1790254562; cv=none; b=oPEEDNYqwTtEr2hlCXsR/YoZfaFHEk2Arqrw/KgNLqD5ikv+GUaLK6fNp8y+uw+0u89ZL9vGcw99JmD5xVJQrLqkzt0zMW0/CCBdgDvnzMexIJYyXWkZxphlDP94JHDttVXSvT6kx9jA/vJNlj4QzUquaI2CmcUSq+fjLOUqjp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790254474; c=relaxed/simple;
-	bh=Ut9VAd+CTmuWwGEHuUzGDBErDOEmqc5PAolSzbTNfbo=;
+	s=arc-20240116; t=1790254562; c=relaxed/simple;
+	bh=f4IL8ktIID3HRkyS5P9IxAaspWHx9Fiz9cZVNH4Dx6I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SFW0l1DVx+JWET+yKaqIikAJsPdeu03lLoDeCJf/I0Kv56JZqnJ404JfqCsIbYjJmNtiOWa+GVOzQDvHNbNSldnJJNcWZQpr+dcu26FzxvajVz4emH26ikvyKkaNBtjtEfuNZ8iAUAyBLnESKmXtcnotn+c6nENUfJ0S247x71M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ORH9DIUB; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=GU+EYwHohlxyuRNB1Y258XAM4k7r/wXBU6FmOErbyVTlIGcsONeUErFThUUNqVujxTuetAqiUS8DC1lqKsC/c3kVNJbYl+COsPB1fSxNE0Im/bY7/FzzzMPcA73hs2OWY/xyqPTVnOSgdmlOB+3KLPTs8nhfqE2VyM5iRebigXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioPLwIS/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ORH9DIUB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=V/WZw9rLkA8GgKGtwNNWTWSV66Yxdcd2UG4mDpKAM0U=; b=ORH9DIUBwALlitNdRlOCOfiq2n
-	PqekiHAmB+WJkW8o0RXVvZlpTiO6YWlB9pAodNUiqUPahzAw6+uJr/xShYzU5ZopAMzxFmBV6OXKW
-	/V/Id+2JYL2IQTMdlaaOlfLSh1DTwlYcTLRVJd79ScgSCQRil90tDTb3YZnzo0dfjbPo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x9ixt-006zeO-5j; Thu, 24 Sep 2026 14:54:17 +0200
-Date: Thu, 24 Sep 2026 14:54:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Andre Przywara <andre.przywara@arm.com>
-Subject: Re: [PATCH net-next v3 0/5] net: stmmac: Add support for Allwinner
- A733 GMAC210
-Message-ID: <5fae3b42-552a-458a-9710-927360e58c37@lunn.ch>
-References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
- <9cc61625-47c9-4bdf-97f0-0528f661a399@lunn.ch>
- <1j7bkb9h5k.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioPLwIS/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306981F00898;
+	Thu, 24 Sep 2026 12:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790254560;
+	bh=6HrSyFKugGP4vj4AL7ort5Z45m1Jcuf42KNiplphNLA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ioPLwIS/wYaeNUQ+rd6cF2SnDkZx+IrSv/awzYo2V6P0vNdEvPAVLyR4uL4vJNhnE
+	 ibJZDEnu+hK0Ny2ydYIUjrYUqi0/zVdk1xRuvB+/2qBp5WZWcLnb79CBqe0Vf8TGeA
+	 4vMabhMGjBBIRpmZQuD4GNo2jPgGGd8T68az4pzwNNuGW2iH2PoaEDzy1oyflCoiCi
+	 T7ackH9WNFXxrz/1pG7DS9xc5nrwb3g+ac5dLYUH0eON+tA5nPyLPVZGW1N9IozIE4
+	 HFDs+OJIAC6TUXm58be6u2fg2l3f3ydA25KK9JitRFQFQHf+3V7QPHZwaxGLap1OEN
+	 a5LMVN4RhaBgA==
+Date: Thu, 24 Sep 2026 13:55:57 +0100
+From: Simon Horman <horms@kernel.org>
+To: Potnuri Bharat Teja <bharat@chelsio.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+	edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch
+Subject: Re: [PATCH net-next v2 00/11] cxgb4: Add T7 adapter support
+Message-ID: <20260924125557.GE13925@horms.kernel.org>
+References: <20260921233041.61093-1-bharat@chelsio.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,18 +42,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1j7bkb9h5k.fsf@starbuckisacylon.baylibre.com>
+In-Reply-To: <20260921233041.61093-1-bharat@chelsio.com>
 
-> I've changed the phy-mode to plain rgmii which seems more in line with
-> what the PHY actually does.
+On Mon, Sep 21, 2026 at 07:30:30PM -0400, Potnuri Bharat Teja wrote:
+> This series adds support for Chelsio T7 adapters to the cxgb4 driver.
+> 
+> The series extends the driver core to recognize and initialize T7
+> devices, adds support for T7-specific hardware resources and firmware
+> interfaces, updates PCI initialization and resource management, and
+> enables adapter operation through the existing networking stack.
+> 
+> In addition, the series updates several auxiliary components to support
+> the T7 architecture, including PTP, ethtool, filter management, CUDBG,
+> and debugfs. Support is also added for T7 multicore debugging and
+> diagnostic infrastructure.
 
-No, it is much messier than that.
+Hi Potnuri,
 
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+Unfortunately this patch-set does not apply to net-next.
+Which means that our CI did not run.
 
-rgmii-id is very likely to be correct, if you were using a sane PHY.
+Please rebase against current net-next and repost labeled
+as either [net-next v3 ...] or [net-next v2 REPOST ...].
 
-But this PHY is going to cause you lots of problems.
-
-    Andrew
-
+Thanks!
