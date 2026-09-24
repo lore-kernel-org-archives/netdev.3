@@ -1,215 +1,183 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FEC4F390F
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 22:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0318B70830
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 22:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790287208; cv=none; b=bE3+Ar0vn6Gm4ewownzrR5Hmhu3YTGZMZchUbGaoVfNPVnod8hML3V0lp346MmZUnyqs79A5sVsu/xz7DaqvI2ClrpfkThDIMyU3dHV918LXOWuAnNqmvgwdlbRWvUX+eHm3oAAmFBgAMXEJrUvYTxPC4GlvZzSBzZClXdU0uWk=
+	t=1790287284; cv=none; b=bPVIXQOtSLpxRl5COqp45++XGgu92xkMcdA6mnyZkWradS5MrInL8DoOYCui6CrA2BpBefS6jDjTSrxybDI0UyIbGGWGtNMX0esj3pje1g7Tq4mkfgQxpFes8Y3Y2X2eetVx/X1FCZQS0lRUk56B6+HvG9tFmWwrZExVItC1lA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790287208; c=relaxed/simple;
-	bh=rMlaqyJ0BKTklaQ7CPtT1mddZTFINn1YnH/uUEiXntk=;
+	s=arc-20240116; t=1790287284; c=relaxed/simple;
+	bh=fyRLcGAYOnSsmGc/YKxjM/QZdjFJiTsk5pPJHNThrIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RLtL2sH2FPrDN/dxLirWajz9oYh2giAeAjjZhV47JSH2SO+eSOzqxcA0zSuGEs+w67hj49ZQi4YLsvMX3lhm0FEEz54wXBCvdQVgBctd8LJ5BAh7TkXW8xWup2ZnysVOofgZvYTf4f0QTC8MQms+iKKHVKsqqkCN8kk8c6NC5ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=c771XH3y; arc=none smtp.client-ip=74.125.225.99
+	 Content-Type:MIME-Version; b=NgA/d97Kq5kndQjRV5XLI1QxyzKLOV2CCc+9JSk3BJctEYBxXzqX5iyCmrqJetBGDlVYwABgI6nhPnLye9hE4N0YL1y3tqgaj3HRaScaoeG6lT6uR9xBHLwSQU6x3v9WbvzOVxr6pxsQlRzh1/wR+hEnClpmA/fKDa1mbPCbJ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=jIoTh8Z7; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="c771XH3y"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4887635e952so96751f8f.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:00:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="jIoTh8Z7"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48870973bddso119609f8f.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:01:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1790287202; x=1790892002; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JdRXKlC9KVRoVA8k1AReADQeQ8eRD9lHDMQOjHS44oo=;
-        b=c771XH3yBUSFT0uOYAH2znWsco/Y+qvc3N6wGkjlZw9WTFfEaMpoK+VK7e7KO9SlQU
-         cXKZCztfKC5VBrtoNT6NkEVqoX08pCVfcOyURDaTTOvT+720GEB2aidM2mbZHBtOuazU
-         6KGDkjvmT+R4O6jAEXGfleYzCfQGJIgt+IAeGK26Yd9MR/GeL6JianPCkxO4nmTQhbu2
-         HWngFQy/XdSDvOEBLk+7ja9Or9CVmUlJDE0U19IqqQLcsmax6xn0Km90ExZCkKo4+isC
-         0neg2SBunYZ7WtPmOkSG1saycRxUu+76AkqnjwS3Fvk64GgAQIxes9uSL7WXgjhdHB78
-         wTIg==
+        d=lex.la; s=google; t=1790287281; x=1790892081; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/MXsr8udBMbCSEosD72Zya8yVpr92mX9EcNav60MGyE=;
+        b=jIoTh8Z7BPxrrhDJD+33wq1qW3VA5H+TosRe4d3xkHbV4PR8q9VcTT24ckLnSrD5dB
+         9Y+pZnLXZWyxj1fkMDb/QJ1XTyRQJ0YsINWIJCH7L/XVfgzBlSyPoEiu7OpnTY9Sdqii
+         OZK/6zqc9lD3HMoxHok0WUA59wWGXq34/o52GwvOQnED3bpUKg0K1fwEjocXsA9Hq9Ia
+         zBv8YKgnPmcBf3K8Uu8I70ttaZxV/icr3VjP2L3Gf4q9QFQTXZ/yLMG4dAD2bldYE2tq
+         kd9g2gUj/gNVIRQJg6ILAyY1xQic3z7HObBFs45RSajEqBhX3lz826tCIaW726ZNfH5z
+         Q+Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790287202; x=1790892002;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JdRXKlC9KVRoVA8k1AReADQeQ8eRD9lHDMQOjHS44oo=;
-        b=CGBd3mT8U+a1rMSgvSsVoM7+SnZUo6rCt1Aswx0dJMXxthK/dLdWeS70lBhizK/Y5r
-         g+j+JJQY37TAbWABa6i3dWVGJ9JwBbDTMf5N8V1K8egmbR2z9nm1azXhc3fertT9yiZa
-         FHjcxD9YpKH1ot3hmQUraTbB25moQBVQzY/ozYUefAnSlkYkzfojtJmy4rc0XwwNkmoG
-         dhJNw76DiT2fnVK9FYGNkhGj13OihH8VLBIp7MZADRrpAtt7WF6d1syGwWGE75/GgmaI
-         nKbmA6lVouiLmMxyHaJOI2xYlBxJ7Nplj/adC5ADkZ8cewTY2cXzy6rwEDvBark9E1AN
-         IGuQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwAfILjsTE3GzsW/V2lVvOlX0GP1Q7wN4g7EpuBsgI5vkF+EFu6imWhpgYMlreCz4+xhzlWoRA=@vger.kernel.org
-X-Gm-Message-State: AFuF++nHCvRa97lHDbp7QS6/LCcI+b0X22lnFmhuf2euw8GqFOc7MJ8M
-	8ow6+U5qTF/Xzg65QuwulM2RQXjiFZDN9ZulKVI9S9vuD42thLlXtZkSTxMjebSBIuQ=
-X-Gm-Gg: AYBFou2b/MPt1sd3NWHet9CHdn/8Q18VtQgItlI57J/eD1RPXbLjS6flcF0nJqTvMH9
-	KLXT/HzSpct36+0CGfnikJz+xeSNVwLaOnVoWbwD/wGfK18KFEO3EvaJ1vjQlsiZpjd3FTV0+EV
-	J9ZvKaG0BaZtFb0D1RqvELhTzF7O1WJrFVVRFeSBy8l6FDKBXSrskd83bBnRJcm+Tw2XRRWOw/f
-	va9xc4Ts8JRnWy41jaEZi0eLzSfvldoSvD1EPpVE2tLO9Akz5/IOb3cXehnp2+AevH90CORahdP
-	i5GZA0nId+p6agvlyMBZ7jSK4bc/s6RXm9F5HRTrqSqsaPKIUCXfcgq+Ed+J7Bl6kigK21Wb+9b
-	mKmGQtiETp88pfAX/zMNAWn2yzKndqNl9K48RdTNXMupEbHBFe2JUVmeRd8pnmJsPdwF0LO/TYf
-	ykVqcvjEhWfL7luuJn/3hysDvppm1oFL5xubyofiPeZmvW+5eK5rAG3u6tEUrp
-X-Received: by 2002:a05:6000:4a16:b0:487:13a9:80d with SMTP id ffacd0b85a97d-488716a19bamr7800648f8f.10.1790287201820;
-        Thu, 24 Sep 2026 15:00:01 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790287281; x=1790892081;
+        h=content-transfer-encoding:mime-version:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/MXsr8udBMbCSEosD72Zya8yVpr92mX9EcNav60MGyE=;
+        b=j7+obnrtiAhCFvGcvOQ0BnuLHWm7aLA4J/jTS3Nepl1C99xuXmFW9tafnygT8HW084
+         o/n31VURpQ5q+8k29aaMyKE5lxbR3E+EhzRW5Iv1B08/Pm+Z4qgHa6wLE383tGs2RKIe
+         KPUDKziP7swZCNIZURWdtd+tv7ZkfhsGtcJZ7JUuipZOhcEYb9kdgAytZEWc1uO0qFT0
+         IK+D7NqErjMKTW1qzDHFPCF/aCgJPRuZKez+0N7qkDgE4lQFAUXknKLOisRPd8M6wMFc
+         PVSvEcyjJbOcSnojDztTPb6Dx+R8/tulOZZNT6aM49Pc00TwH0unVyefwvlYKbpj0ZbK
+         i9ag==
+X-Forwarded-Encrypted: i=1; AKwUvBz8/dJXSub5zCB4peQOC78+mRTh8MoUSzl//jCimEx57onoagsFCcV5chHLQyDXtaIWJN54/5Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++mqQcM3ZK+MUQp2gs5GJl6RkF8hUkIytp4+hCaIpT9bQpyo+SL0
+	ygoD6OVKfXHzc2wOIPr3pefU+Zuwqb7wwuVa3NxxFGjKMzQIhMwmHxRoSFlf8YDW2VlgA7zpzDo
+	yICkOS7+YXA==
+X-Gm-Gg: AYBFou3mvRz3uySicOeS3MxZ4Zop0KtAOkqG/w5r/h9Cpo0oHgPy7xUQLTczs9NratK
+	DmJp3ufkYZlPwo0j6+5n9nkBS4unIvjKOMJ8BBL6730wRDs3iZpnweKT/UYS3rdt2Tyiwht+7pm
+	GX6p5iv7afSgB+8dsPOj7sQk+qcLZzx47U8C2O5LXeaD8L77uSXc3hwPCXOvdXp3yZP6U9hwppY
+	adnYMqzSZz78x4Y5/e4kYeTPohqQRaK5WXDYTuJlfNvL0w9fHAkeYoa0R8UBiyGmqatCeM5z2zh
+	Pu8PS54HRfIlLZNCCRrxWhxIbpaTxT91F58P9wWE6DELDSsWR04s93ALJ8oWmpUFhcqfprrGnXx
+	JQl+ECW74FouEDkLJkvQU4F9COkihN+xPP7GqcitK5EeyvCzzrtozbnpdNi/9eGMhq5hC6VZH2O
+	7v3JepRMcOC1qDeXC9TURMwQ56F7XmssLAE2+FqQKNS6oPN6t3Kw==
+X-Received: by 2002:a05:6000:2083:b0:487:1577:9e33 with SMTP id ffacd0b85a97d-488716f4c5bmr7148793f8f.25.1790287281255;
+        Thu, 24 Sep 2026 15:01:21 -0700 (PDT)
 Received: from remote-01 ([84.17.55.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a34a638sm1922324f8f.9.2026.09.24.15.00.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a30bcdbsm2048758f8f.2.2026.09.24.15.01.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 15:00:01 -0700 (PDT)
+        Thu, 24 Sep 2026 15:01:20 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
 	Florian Fainelli <f.fainelli@gmail.com>,
-	Mao Wenan <maowenan@huawei.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net v3 4/4] net: phy: make an unbind wait for the attached consumer to detach
-Date: Fri, 25 Sep 2026 00:59:50 +0300
-Message-ID: <20260924215951.2127682-5-f@lex.la>
+	=?utf-8?q?K=C3=B6ry?= Maincent <kory.maincent@bootlin.com>,
+	Marek =?utf-8?q?Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?utf-8?q?Nicol=C3=B2?= Veronese <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: Re: [PATCH RESEND net-next v17 00/10] net: phy_port: SFP modules
+ representation and phy_port listing
+Date: Fri, 25 Sep 2026 01:01:18 +0300
+Message-ID: <20260924220118.2129522-1-f@lex.la>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260924215951.2127682-1-f@lex.la>
-References: <20260924215951.2127682-1-f@lex.la>
+In-Reply-To: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
+References: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-With attach serialised against unbind, the unbind that loses the race
-waits for the attach and then removes the driver from a PHY that is now
-attached. phylink uses phydev->drv right after the attach returns, and
-phylib uses it again in later phy_start(), phy_stop() and state machine
-runs.
-
-Found on the same KN-1012 by repeating the wan race on a kernel with
-the previous patch. The attach completed, the unbind then removed the
-driver, and phylink faulted one frame up:
-
-  Unable to handle kernel access to user memory outside uaccess
-  routines at virtual address 00000000000000a0
-  Comm: ip
-  Call trace:
-   phylink_bringup_phy+0x680/0x784 (P)
-   phylink_fwnode_phy_connect+0x1b8/0x27c
-   phylink_of_phy_connect+0x18/0x20
-   mtk_open+0x38/0xb70
-
-A DSA port gets there without any race, and did on the same board
-before this series: unbinding the lan4 PHY driver returns at once, and
-with lan4 up, tearing the switch down later faults in
-_phy_state_machine(), called by phy_stop() from dsa_user_close().
-
-The driver core gives a driver no way to refuse an unbind, so make
-phy_remove() wait until phy_detach() has run. An unbind of a PHY in use
-now blocks until the consumer lets go: ifdown for a MAC that connects
-in ndo_open, the switch teardown for DSA, which connects at probe.
-
-Deleting the PHY device through phy_device_remove(), as
-mdiobus_unregister() does, keeps today's behaviour and does not wait,
-and it releases an unbind that is already waiting. Some MAC drivers
-unregister their MDIO bus with the PHY still attached and never detach
-it (greth), so waiting there would hang their removal for good.
-
-Fixes: 00db8189d984 ("This patch adds a PHY Abstraction Layer to the Linux Kernel, enabling ethernet drivers to remain as ignorant as is reasonable of the connected PHY's design and operation details.")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
- drivers/net/phy/phy_device.c | 21 +++++++++++++++++++++
- include/linux/phy.h          |  4 ++++
- 2 files changed, 25 insertions(+)
-
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 1355ea78c86f..5608e65f5a92 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1155,6 +1155,13 @@ void phy_device_remove(struct phy_device *phydev)
- 	unregister_mii_timestamper(phydev->mii_ts);
- 	pse_control_put(phydev->psec);
- 
-+	mutex_lock(&phydev->bind_lock);
-+	phydev->removing = true;
-+	mutex_unlock(&phydev->bind_lock);
-+	/* Order the store before waking an unbind waiting in phy_remove() */
-+	smp_mb();
-+	wake_up_var(&phydev->attached);
-+
- 	device_del(&phydev->mdio.dev);
- 
- 	/* Assert the reset signal */
-@@ -1893,6 +1900,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 
- 	phy_resume(phydev);
- 
-+	phydev->attached = true;
- 	mutex_unlock(&phydev->bind_lock);
- 
- 	/**
-@@ -1983,6 +1991,8 @@ void phy_detach(struct phy_device *phydev)
- 	module_put(phydev->drv_owner);
- 	phydev->drv_owner = NULL;
- 
-+	store_release_wake_up(&phydev->attached, false);
-+
- 	/* If the device had no specific driver before (i.e. - it
- 	 * was using the generic driver), we unbind the device
- 	 * from the generic driver so that there's a chance a
-@@ -3869,11 +3879,22 @@ static int phy_probe(struct device *dev)
- static int phy_remove(struct device *dev)
- {
- 	struct phy_device *phydev = to_phy_device(dev);
-+	bool attached;
- 
- 	mutex_lock(&phydev->bind_lock);
- 	phydev->bound = false;
-+	attached = phydev->attached && !phydev->removing;
- 	mutex_unlock(&phydev->bind_lock);
- 
-+	/* The driver core cannot refuse an unbind, and the consumer keeps
-+	 * using phydev->drv until it detaches.
-+	 */
-+	if (attached) {
-+		phydev_warn(phydev, "unbind waits for the PHY to be detached\n");
-+		wait_var_event(&phydev->attached, !READ_ONCE(phydev->attached) ||
-+			       READ_ONCE(phydev->removing));
-+	}
-+
- 	cancel_delayed_work_sync(&phydev->state_queue);
- 
- 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 8903123d25c8..3e005e6a3b65 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -655,6 +655,8 @@ struct phy_oatc14_sqi_capability {
-  * @lock:  Mutex for serialization access to PHY
-  * @bind_lock: Serialises attach and detach with driver bind and unbind
-  * @bound: A driver has finished probing and is not being removed
-+ * @attached: phy_attach_direct() succeeded and phy_detach() has not run
-+ * @removing: phy_device_remove() is deleting the device
-  * @state_queue: Work queue for state machine
-  * @link_down_events: Number of times link was lost
-  * @shared: Pointer to private data shared by phys in one package
-@@ -789,6 +791,8 @@ struct phy_device {
- 	/* Serialises attach and detach with bind and unbind */
- 	struct mutex bind_lock;
- 	bool bound;
-+	bool attached;
-+	bool removing;
- 
- 	/* This may be modified under the rtnl lock */
- 	bool sfp_bus_attached;
--- 
-2.53.0
-
+Hi Maxime,=0D
+=0D
+I ran v17 on a Keenetic KN-1012 (MT7981B + MT7531). Switch port 5=0D
+(lan4) goes either to an SFP cage or to an EN8811H copper PHY, and the=0D
+bootloader picks one devicetree variant per boot. The series was=0D
+backported to OpenWrt's 6.18 kernel together with the phy_port base and=0D
+its fixes, with PROVE_LOCKING and DEBUG_ATOMIC_SLEEP enabled.=0D
+=0D
+Copper variant: lan4 lists one mdi port, id 1, with 100/1000/2500baseT,=0D
+the same modes the PHY reports. The EN8811H attaches late, after the=0D
+netdev is registered, because it waits for its firmware. The port still=0D
+shows up, and traffic passes. The other user ports each list one mdi=0D
+port.=0D
+=0D
+With a small netlink client I also checked the calls the ethtool CLI=0D
+can't make. An unfiltered dump returns the five ports and then DONE.=0D
+A dump filtered on a netdev without a topology returns nothing and a=0D
+clean DONE. A DO with a valid PORT_ID returns the port. An unknown id=0D
+gives ENODEV, id 0 gives ERANGE from the policy, and a request with no=0D
+id gives EINVAL. lockdep stayed clean and debug_locks stayed 1.=0D
+=0D
+SFP variant, with the cage port and a module port:=0D
+=0D
+  Port for lan4:=0D
+          Port id: 1=0D
+          Supported MII interfaces : sgmii, 1000base-x, 2500base-x=0D
+          Port type: sfp=0D
+=0D
+  Port for lan4:=0D
+          Port id: 3=0D
+          Upstream id: 1=0D
+          Supported link modes:  2500baseX/Full=0D
+                                 1000baseX/Full=0D
+          Port type: mdi=0D
+=0D
+That is a passive DAC. A GPON ONU stick gives 1000baseX/Full, and=0D
+phylink moves to 1000base-x. On every removal the module port goes away=0D
+and the cage port stays. Every insert gets a new id, with no stale or=0D
+duplicate entry. I tried a replug within one second, two fast=0D
+out/in cycles, and swapping the DAC for the ONU with no pause. The=0D
+double cycle didn't manage an insert while the previous probe was still=0D
+running, since a hand can't beat the ~0.9s probe. lockdep stayed clean=0D
+throughout.=0D
+=0D
+Over the DAC at 1000base-X to a UniFi UDR7 (whose SFP+ path goes=0D
+through its CPU), iperf3 gives 926 Mbit/s board to UDR7 and 606 Mbit/s=0D
+back, with no interface errors, no link drops and lockdep clean. I also pul=
+led=0D
+the DAC while a ping6 flood was running and plugged it back in: the=0D
+module port went away, came back with a new id, and the link and=0D
+traffic recovered.=0D
+=0D
+Not covered:=0D
+- A module with its own PHY (06/10): neither of my modules probed one.=0D
+- A dump that spans more than one skb: five ports fit in one.=0D
+=0D
+Three notes:=0D
+=0D
+The ethtool branch linked in the cover still reads PORT_VACANT and a u8=0D
+port type, while v17 has UPSTREAM_PORT (u32) in that slot and a u32=0D
+type. I adapted it locally. Could you push the ethtool you used for the=0D
+cover letter?=0D
+=0D
+The raw supported-modes of a PHY's default port also carry the=0D
+Autoneg, TP and MII bits, e.g. "... 1000baseT/Full Autoneg TP MII=0D
+2500baseT/Full" on lan4. ethtool hides them, but MII on an mdi port=0D
+looks odd to anyone reading the attribute directly. Is that intended?=0D
+=0D
+A module port follows the netdev's admin state rather than module=0D
+presence. With lan4 down, a module sitting in the cage isn't listed,=0D
+because sfp_module_stop() runs phylink_del_sfp_mod_port(). After ifup=0D
+it comes back under a new id, so every ifdown/ifup renumbers it. Is=0D
+that intended? From userspace, "port 3 upstream 1" isn't stable across=0D
+an ifup.=0D
+=0D
+Tested-by: Aleksei Sviridkin <f@lex.la>=0D
+=0D
+Aleksei=0D
