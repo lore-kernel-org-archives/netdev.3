@@ -1,100 +1,65 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DD02673B0;
-	Thu, 24 Sep 2026 18:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6853F788A;
+	Thu, 24 Sep 2026 18:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790273179; cv=none; b=Qo+iX0KBD6U66E8ms8ObjO6fFHmYbfPIR5BQv9iO1W6I8dnkTJbRFFaUOB6FEpqvpKb3cTzIgVN4C+8gI7ianRdensbE5Ah0Wss/MeyAzUuPUGw2MfRjOFN/1qKhsAKyJX3XCDYsJD0KJ5RyjUYvwBC91uYg41a3H5qhEycHNX0=
+	t=1790273215; cv=none; b=DuRo3HjZaQbrwgzd0aGr16hTk6cF2A6WEqKX9SAVjIsBsVf68pC9F/Tg1MuznmWrGudOCumqesofkt8ag3izTUqPlez1olVNT1+muZbkwFzdJFEupBK9KXZGbLjE5UXNt5XnH352bo4ZQAv55d4yHlDvbbIvPfkG/h/K85zGxoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790273179; c=relaxed/simple;
-	bh=Y1+7dQfnBLtpJ3fUnh6CVR+XPKnQosCyu5Oy87/d99k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EHYISRgsWlhoHDze5mLgVkTgXqIV2ni5jrGKMTe9UbA9CSGy4bOjE2JKFe042uuK4OMFTeg1a9MBy1y//uALlcym+bxvU5vLnNzV1ZipWdo5hBAH975B4o9tIFDHPp+beKMVLKIDBr95PHh5LemUDxNlc7OSgUovHgn0X3IKnVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=KFuaBJLH; arc=none smtp.client-ip=178.251.229.89
+	s=arc-20240116; t=1790273215; c=relaxed/simple;
+	bh=uoa+BY+Pjz0Ftpezf6zE6db/o3Lriffv/vo4YbBUHjc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f9osMw1WVHXx7uDGN/nXMz845gIcfi3OBCVESaa1JgUg70sWUgzoW/1lhVVmyy9mzllTdwDBTOUWhjVaPoAWuXFpVcTImsmmdHB+XXoj2qpr4TKl/+29YzxhJSC7va0J3sTfOI0DjKM2RIfZm7rsc76Bd+cES3o2nt7c7gyIZ1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=YoqSBEY/; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="KFuaBJLH"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 72E9310495D;
-	Thu, 24 Sep 2026 20:06:08 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="YoqSBEY/"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16F8510320B;
+	Thu, 24 Sep 2026 20:06:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1790273171; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=yZbG7EDxzq6EGbpOvn4qy5pdZdFyqtMwIGB/4X51pHQ=;
-	b=KFuaBJLHZPeIjv3ft2tLNGCSGeUhpOZab326Cp0yiKKhSEWcrZCkVQOrTk8EtbwBAn8Kgp
-	cr9GXMjb8i1dc0ma068vKW84KNTUKmjMcNqZOgCB9w+EGo1c0UZsBSsslswK2PbYEkKSZj
-	Alz4ykJgn/V0SXGoqrALhu6UP8/Dvu+1Knmnu1fDFDPVeTpzWRS5N83lUjJHBmQL+iZxUq
-	eCSrrfOgTyhkVEZ6BToKhNfA/VLHG9/bVzd6oumzx0vFJLk5B+n7kqmnBNJKy99TTw4QAR
-	4uD6iFIaCsYAmlCgTiM7URpaPxnPGg0TLIqQdRB2PFZm686Liy1RhykXH4j6nA==
-From: Marek Vasut <marex@nabladev.com>
-To: netdev@vger.kernel.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Date: Thu, 24 Sep 2026 20:05:19 +0200
-Message-ID: <20260924180607.60932-1-marex@nabladev.com>
-X-Mailer: git-send-email 2.53.0
+	s=dkim; t=1790273207;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=KaPmhYJiv2RWzABQewYUozkOo6tabw813JQAVpWnH7c=;
+	b=YoqSBEY/5CblCjfirgKdznX0J73SYQKftEOzcit4FPQitx6y5iFQBitpFNERtVjnkxa7ds
+	c6H+kjGo6CFltsjpNqYEPtwyqBYNx3KT1QkX2hANF75BVqex2wLsKPowF68K44o7wOcgjG
+	fbGM7/6FmgyS0Nbx2sgnTheI1J9N+70H/svEitApB6PCmKZWD2Q7+dN9Q4JbgWTIDUo9Xv
+	NELk1PUfEnm4NDj4/7dt009LtsaFP3K2U1b5YARXVgQij6ab7of0pBr4r3zbBJSVqrb6Ah
+	ApdNLN3POX2k9ktRSfHqx0Drk15blj0pJBLRdsrbEVaE+LaxMh2Esaef6x/1Wg==
+Message-ID: <d9cf3696-1615-4b89-b17e-f71945153e66@nabladev.com>
+Date: Thu, 24 Sep 2026 20:06:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,PATCH v1] enetc: Increase eMDIO MDC rate to 1.2 MHz
+To: Andrew Lunn <andrew@lunn.ch>, Qingfang Deng <qingfang.deng@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260924003132.580306-1-marex@nabladev.com>
+ <b49d86a5-299b-41a8-b65f-51f1aac2a1e4@linux.dev>
+ <e1f3dcac-af64-4eab-89c3-3b79c3940984@lunn.ch>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <e1f3dcac-af64-4eab-89c3-3b79c3940984@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The current eMDIO MDC rate is 558 kHz on i.MX95 B0. This is very low,
-but also very compatible. However, for example NXP TJA1120 PHY needs
-at minimum 1 MHz MDC clock and 558 kHz does not work with that PHY.
-
-As a minimum change, increase the MDC clock to 2.5 MHz which matches
-the 802.3 specification. Also, even old PHYs like LAN8210Ai, KSZ8794,
-DP83822 support up to 2.5 MHz MDC clock frequency, and it covers the
-NXP TJA1120 as well. There is no known rationale for why the 558 kHz
-was picked when the eMDIO driver was added.
-
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Clark Wang <xiaoning.wang@nxp.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>
-Cc: imx@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
-V2: Use 2.5 MHz per 802.3 spec, update commit message
----
- drivers/net/ethernet/freescale/enetc/enetc_mdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-index 998aaa394e9c4..a90a04a47befd 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_mdio.c
-@@ -24,7 +24,7 @@
- 
- #define ENETC_EMDIO_CFG \
- 	(MDIO_CFG_HOLD(2) | \
--	 MDIO_CFG_CLKDIV(258) | \
-+	 MDIO_CFG_CLKDIV(66) | \
- 	 MDIO_CFG_NEG)
- 
- #define MDIO_CTL_DEV_ADDR(x)	((x) & 0x1f)
--- 
-2.53.0
-
+On 9/24/26 4:21 AM, Andrew Lunn wrote:
+>> If the property is absent, you should configure the standard 2.5MHz rate by
+>> default, instead of 1.2MHz.
+> 
+> Agreed. 802.3 says all devices on the bus should support 2.5Mhz. So i
+> see no real risk increasing it to whatever the hardware can do close,
+> but less than that.
+Done in V2, thank you !
