@@ -1,74 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAD93EB815;
-	Thu, 24 Sep 2026 16:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC802389106
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269065; cv=none; b=il2BcwepytLH/xXNQ170A3Yo2Zrolebq5o1xoBHCRExETQS26bWDa/eM362yRQO0UKZaiU0vfizPC6mnRAjoDWqkDuD/Yn2LZofCmE9UuM3g2NxqFpNKFof/RUAShteSED4KvubkMIBntecDxGj9b9+cC6bGFjPyIl5QeThYkII=
+	t=1790269281; cv=none; b=L8ocoT91CGc6RqSBG46055r5J4LABM9FRBJDlqPz6gRAGR22guieznHpHq6nAcQfJ9vmy+RjJzR0/xmO+e/IRQL1GrPmkvQzwr41oVzgdgjgQnV7/o7CdE3Iyrt7QgSHvF61FGuTF8XF0WSyalSpQ2Yo/uLL9SomgaZvxbtIqPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790269065; c=relaxed/simple;
-	bh=4V4BDFsXbEB+ePKn1yzWbTUywZsaTwyKCNi6fRC7wjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q6l353CP/CK8JifxzX+nDb27TTA9PNa0gTSARaG5fWZbjtM//tN+/4plV1MyL7WaXnarxeAiEBo9JTZTMLVja9dbvlV5ytw+4h3NZYQqI/GreNr32IHH708de5GJs0dhZqoMOC5sE592YuR4Y9ZGgR0EV2niAhcPvacPzjTQ08w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVRoLyjU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790269281; c=relaxed/simple;
+	bh=R40UIEDGfE1AikQ5g9Z5grNbQXJ6ZraCZkmp5WnAqgU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=k/Ah6nVT+1AMacFJL1jSL4jqInL0OzX6QRY9Ir3PFNSBJ5nx9DbOprL8bKkj2TRRHlzcRk5U2IZarKWJG7A/V0ElJc/ADH2xHX14xMYYxJzIq6b0MKaYko4X2cNBI6NoYbjUbe1KN0Xkf9nr/No3pBnazJTBMJuDqFIfXbUTFGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWII1u9D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVRoLyjU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6177C1F000FF;
-	Thu, 24 Sep 2026 16:57:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWII1u9D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F561F000FF;
+	Thu, 24 Sep 2026 17:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790269063;
-	bh=4V4BDFsXbEB+ePKn1yzWbTUywZsaTwyKCNi6fRC7wjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QVRoLyjUh8MH90p4hL4NdWuJhlYjdsiYiWJMZM2ludCZfLQWLBHZpx6tcyElzxPSp
-	 K6y3STZ3OpfLfiPceQnRyVvVPDIQaJwdC3bph4yfODa6X6nrrmz3LOg18XdIzG+K1m
-	 gO7WAfWKebxNFxeNBcZOQFRKVleBjUHQRaUJVl4jsUTayGMQWbJTAreTawxGG2mdS+
-	 cjlQTAzGNkznPBraakLIVNgAgWoPiitLj17rJ1jLrsuEfMZmN8nCgiDo6GjIH6S950
-	 hXKRUNr3ItTZ4tDMJE90NRIfKJrpZ+OBPbv4zx5hyEWfohrV1AuExXaC882aFg5vQl
-	 o8pj9cCfX7oiw==
-Date: Thu, 24 Sep 2026 17:57:39 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Arthur Crepin Leblond <arthur@marmottus.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v11 2/3] dt-bindings: net: wiznet,w5100: add
- link status interrupt
-Message-ID: <20260924-clothing-eggshell-53bbf1f99802@spud>
-References: <20260924-wiznet-link-gpio-v11-0-42a332517b30@marmottus.net>
- <20260924-wiznet-link-gpio-v11-2-42a332517b30@marmottus.net>
+	s=k20260515; t=1790269279;
+	bh=lV0fzY7/a2lJskFPb6Ug8/Co8NFxzxzz4tZOchhfQCs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kWII1u9D0Tz3g/5UHiztSWAm6JAhNeG6ElIs9Bo9oUy3mYyN83+zmZ96WYuLy/RUg
+	 1nduRRUn1/I9FYoeBpqH7F4ApEkn4LectCW92rmSq35IHJBGq5fyuoDtdWCjYAZMUZ
+	 ufHJ7BGa4YrWnpbRsJHYdHyKdkCbBHd/Qa9GG4UfXRP2S4X7bE5qAlkWOJrZa7tW+y
+	 JE3CWq34SAVOP5j8ix+Dj634bH9gInxoLVr9qdJHBOAN1iAn3UV5wpzHXj9Z40ZQzF
+	 SqkItfdQG8ymr1/eIaLQose0RgwsdOcH7pQ2XSlOQwc2uoPRxp6W1HClc931ceYrjs
+	 Vi7u6cLzAg13g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938D93A566D8;
+	Thu, 24 Sep 2026 17:00:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LvFBeGzzjRwWAouD"
-Content-Disposition: inline
-In-Reply-To: <20260924-wiznet-link-gpio-v11-2-42a332517b30@marmottus.net>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 01/11] ovpn: preserve IPv6 scope id for netlink peer
+ endpoints
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179026920840.1655167.8738035825375143200.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 17:00:08 +0000
+References: <20260921102215.3599702-2-antonio@openvpn.net>
+In-Reply-To: <20260921102215.3599702-2-antonio@openvpn.net>
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: netdev@vger.kernel.org, ralf@mandelbit.com, sd@queasysnail.net,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com
 
---LvFBeGzzjRwWAouD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hello:
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+This series was applied to netdev/net.git (main)
+by Antonio Quartulli <antonio@openvpn.net>:
 
---LvFBeGzzjRwWAouD
-Content-Type: application/pgp-signature; name=signature.asc
+On Mon, 21 Sep 2026 12:22:02 +0200 you wrote:
+> From: Ralf Lici <ralf@mandelbit.com>
+> 
+> ovpn accepts OVPN_A_PEER_REMOTE_IPV6_SCOPE_ID and reports
+> bind->remote.in6.sin6_scope_id in peer dumps, but the netlink endpoint
+> parser never copied the attribute into the sockaddr_in6 used to create or
+> update the peer bind.
+> 
+> [...]
 
------BEGIN PGP SIGNATURE-----
+Here is the summary with links:
+  - [net,01/11] ovpn: preserve IPv6 scope id for netlink peer endpoints
+    https://git.kernel.org/netdev/net/c/7a6d08ee0f0e
+  - [net,02/11] ovpn: skip UDP source validation for unspecified addresses
+    https://git.kernel.org/netdev/net/c/77393b4d72df
+  - [net,03/11] ovpn: track UDP socket route key for peer dst cache
+    https://git.kernel.org/netdev/net/c/7c66b7a4ae80
+  - [net,04/11] ovpn: validate peer state before caching UDP dst
+    https://git.kernel.org/netdev/net/c/fa603710bdb9
+  - [net,05/11] ovpn: replace bind when learning local endpoint
+    https://git.kernel.org/netdev/net/c/aea934a221ec
+  - [net,06/11] ovpn: replace bind when clearing stale local source
+    https://git.kernel.org/netdev/net/c/7d8104988f42
+  - [net,07/11] ovpn: always unhash old VPN addresses before rehashing
+    https://git.kernel.org/netdev/net/c/b43beccb3713
+  - [net,08/11] ovpn: reject duplicate peer VPN addresses
+    https://git.kernel.org/netdev/net/c/d25e885b31a0
+  - [net,09/11] ovpn: reject multipeer peers without VPN addresses
+    https://git.kernel.org/netdev/net/c/025af3a0a892
+  - [net,10/11] ovpn: reject invalid peer VPN addresses
+    https://git.kernel.org/netdev/net/c/5940f3407b78
+  - [net,11/11] selftests: ovpn: validate peer VPN addresses
+    https://git.kernel.org/netdev/net/c/006208026819
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarVWgwAKCRB4tDGHoIJi
-0mn/AQCqQyoD4d4WnEQ1RKyXr1n0QkTi449rlUoLmkbCoszkkAD8CnTsaQBrrRwd
-ahrFhwSvgaGZUcCED+szBmesMbjUkAQ=
-=GGnR
------END PGP SIGNATURE-----
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
---LvFBeGzzjRwWAouD--
+
