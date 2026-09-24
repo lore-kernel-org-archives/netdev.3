@@ -1,185 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B502049BD9B;
-	Thu, 24 Sep 2026 16:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209B14A2622
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790268715; cv=none; b=Mn26eXkJ4NViON26k7Su74l4+p9tZ5nH00syuHlHdL2dIIVyhePwqgDQ3Ewcdfuh3WchwVznahySmFgZKJnv8FkbK1h7FwpX06MWokrfhayWDe29hT3WV4AP19bchT1aMbphGN6DeGnDf9FTrg6nxUD0z/JkTNnYGYDRIFP1oLU=
+	t=1790268757; cv=none; b=sSBDqByEhnWSblCz01XoRov4MQCpXp7dSwFABq83Kq/PgAmryPy5L9mSEEU5jtfTBLimCmqZlU0wm3p8rjjdnas3SnAxpwTMc48i4mCl2aAinzsQyqGDooIhA9J1JJWW5tckSPrdqm93igcX2jHPv5clinbXEkUnM8KKd1JU69c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790268715; c=relaxed/simple;
-	bh=J0DW3E9Z2fPNxhuyaSuk7VVRbi+OD5OACzXEv0JiGIY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jXbcw29r+Q7OzJbfrth/JDOmOt3J72+NVBpxKLsVjG0hfytr923e+3ms1+6gvIYVRilqT2eOBWhJ1t5GEJhHnb8cBQHCXN5x7EbXZ+0eR8W3llOb7LyBcEkGkZHbFHNVfjhwJzSIhIeMjl3kEKwQDaymzd6SkbLECSJk9ZaM3Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+BQR6E/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790268757; c=relaxed/simple;
+	bh=zajOpfpBg5ymkn/Jim8bbUW8GjfWWdYrue2j1pBz1T8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=J0Fjl6UM0RbDY79j8Lf61sUlidXlFFPPhcKcOj+dZBcCuFuzQBRvoqY00rab7uCTYDWAelY3Dmzg/l1OC7c+Z/yRhjYaU26HH0gAPMsghwhpAlr+hBcNfPHecowK6zbNPdtX+tqvn7y+a2lSdhq3FPbplXU00iZ6LMOB8oFfS6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=f7Yue0/q; arc=none smtp.client-ip=74.125.228.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+BQR6E/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8C41F000FF;
-	Thu, 24 Sep 2026 16:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790268713;
-	bh=eSSbZnuCtl8KDycVQpA/SGQENb09ic1AWqUQDE6gDSA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=W+BQR6E/ARkY77WyRvDCrbfBmdwmPiO5UNnTfMszL7stSF3MSUDw1HtBDuwdUWywk
-	 ZGYp6+BZBGHcGdXm145sBvqRnJ85ehyTl2OxgGlLbxUBGiaEswePb0yCrlyXVZIEG5
-	 DfTnShquyK+cdp0uBLKeX4WWnioArkHxhiNSFUFwk8wOPg8DBuvkjfEHbwzhjtrYZ7
-	 FTyvGTZxORK/NFEjRzTHejx6PtiRUZkEbGp8Lp/yOJgS+RCWWCXEjMuh9h3TreGZQR
-	 zOXVhEiHv23AWqLFUJLEOcgZS0FaQnqb5pL/CP1dOH8+/w0mi6p7Z92UuhdW8YZlWd
-	 ort8Ir02wrsTw==
-Subject:
- Re: [PATCH net v2] net: e1000: fix warning in iounmap on probe failure
-From: netdev-bot+sashiko@kernel.org
-To: nsvatoslav515@gmail.com
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, ffainelli@freebox.fr, auke-jan.h.kok@intel.com,
- jgarzik@redhat.com, joe@perches.com, aleksandr.loktionov@intel.com,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
-Date: Thu, 24 Sep 2026 16:51:52 +0000
-Message-ID: <179026871201.2160803.192841426910444830@kernel.org>
-In-Reply-To: <20260922155139.67364-1-nsvatoslav515@gmail.com>
-References: <20260922155139.67364-1-nsvatoslav515@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="f7Yue0/q"
+Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa1d00daaaso126908a12.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:52:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1790268754; x=1790873554; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :user-agent:references:in-reply-to:subject:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5ZgnWusXCU12zGzkWVjE72AKIB7phfrZXuIevy8gML4=;
+        b=f7Yue0/qpeOInQp8bQpMhoJku1geFlUAPGz6JBPNi7FmjlOKjKTWuezqjX5X46OkHd
+         oVBseXyLUF/eL/JRuuTA6pZBwZB+Yq5OqD4EExGzHirhBcsKEX1awlt53lzzRCycm76E
+         K9rLbztJfLNVvgFQ8IG5bRlWNRvBlZwaIIts8TR1pvSyJqI7kLGkMW7wEmuE91yDP7EE
+         NYCymrMnQffqABOFBBEwwDGcVqfW8LYS+e6taZOjK/VDNfdtClxLK7MirgQqR82B7T5x
+         qZcCkXoZT5eG3hFxcjBdTyWm71TVD5SpRb61p6qxDMfveP3KsVC4qI4cSga16aWALnX3
+         lsdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790268754; x=1790873554;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :user-agent:references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5ZgnWusXCU12zGzkWVjE72AKIB7phfrZXuIevy8gML4=;
+        b=uQVEzU0c000BsYV6nwmrNAwJ/WJcY2L7CfaEN1kMie1KcWUihsHOpJlEAKWIpyVVb2
+         FAjPy3oAnSP1Fbh3qq24UM2fqp5J6BtOGM9pkI0kzwGyaNcjk40z6gg6AoPlvIeUAX3u
+         sLB/rCIqnX/en0kbDu3e0P7Pu4ptCmXnonr7J16GWFEe0HJqW1i1MehCkNhzhINeTvYv
+         stMWK/OnoClog15Dqzey+etZmw8KuWF1zhUVCcRyplENC9zTFFJOALncpOv6T6oJ/55g
+         TnWig5ApF9iQi9G3KrG5uRXATE0q87GuQSpeXTHGVotapHsf53oOpJ4b8SsOF3HmsQRC
+         cxBw==
+X-Gm-Message-State: AFuF++kXVUv7lE+6fAd1tNYrah7i6XwTOhEhIlWLjNv9nknxUUy0Iu6D
+	W2GYBVKOUPm7STxeKg3uMznDHQ2J4zAlNbN31d4j7wN8T6hurOyprhMVSt2Mn12ihn8=
+X-Gm-Gg: AYBFou0aAM9h6jj0//UA+cpXSoy1F3XI5JCkv1HcWBI/XddGOnpsIUaV9GCNV8/7ciI
+	qQE/ebYXxwByUkeKwjapHWcntBQOBNx5yf5IcHqEGL3v9CZ+9+3YpGONw9VSpWw8JpqSxI5FW7A
+	oSHfkGkxxtg1158HYquot0Jw8rk4x6+qNz93AC18ca1NEMOpEZZkyPw1xZbHHalP12qLrzJ2HSM
+	JKUsQnZQ8xBJF/ZsbQjJBf4shsS2IvrdAYPmwm6pkFhjttVW68cR9IH5Ahild4KHyxa2JiMECpx
+	bEUU5FKusNqGjvwx2/Uh+QhA3/+nX0Gz0icmsq7oIea4eAXvAOjAXfan9Z0TP3k39ax9fGPcZsS
+	nJxPQ8SILGsE1UW1naXxqKluElbEzyiSn4Nll6UCn32BxQWOO7X9I4UQMpXfgG7gVMYtuGimVXQ
+	EdidrxADJYkSH9PQllVdMSUBHbSpBHP1xib3mlabhxdh02WUgKromh3TX/ubYQo12DZdr8K/X1r
+	Y52FdDeHuU=
+X-Received: by 2002:a05:6402:52c1:b0:6aa:1d41:628 with SMTP id 4fb4d7f45d1cf-6aac8ecf666mr2384920a12.7.1790268754290;
+        Thu, 24 Sep 2026 09:52:34 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aae3a9924asm37248a12.30.2026.09.24.09.52.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 09:52:33 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: "Daniel Zahka" <daniel.zahka@gmail.com>
+Cc: <netdev@vger.kernel.org>,  "Alexei Starovoitov" <ast@kernel.org>,
+  "Jakub Kicinski" <kuba@kernel.org>,  "Kuniyuki Iwashima"
+ <kuniyu@google.com>,  "Paolo Abeni" <pabeni@redhat.com>,  "Stanislav
+ Fomichev" <sdf@fomichev.me>,  <bpf@vger.kernel.org>,
+  <kernel-team@cloudflare.com>,  "Daniel Borkmann" <daniel@iogearbox.net>,
+  "John Fastabend" <john.fastabend@gmail.com>,  "Andrii Nakryiko"
+ <andrii@kernel.org>,  "Eduard Zingerman" <eddyz87@gmail.com>,  "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>,  "Martin KaFai Lau"
+ <martin.lau@linux.dev>,  "Song Liu" <song@kernel.org>,  "Yonghong Song"
+ <yonghong.song@linux.dev>,  "Jiri Olsa" <jolsa@kernel.org>,  "Emil
+ Tsalapatis" <emil@etsalapatis.com>,  "David S. Miller"
+ <davem@davemloft.net>,  "Eric Dumazet" <edumazet@google.com>,  "Simon
+ Horman" <horms@kernel.org>,  "Jesper Dangaard Brouer" <hawk@kernel.org>,
+  "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,  "Florian Westphal"
+ <fw@strlen.de>,  "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
+ packet scrubbing
+In-Reply-To: <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> (Daniel Zahka's message of
+	"Wed, 23 Sep 2026 13:46:28 -0400")
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
+	<20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com>
+	<DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Thu, 24 Sep 2026 18:52:32 +0200
+Message-ID: <87fqyypp67.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Daniel,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] Half of the patch is provably dead code and the commit message
-  over-claims the defect.
-- [Low] The commit carries `Reported-by:
-  syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com` and asserts…
-
---
-
-net: e1000: fix warning in iounmap on probe failure
-
-This patch adds NULL checks before the two iounmap() calls in the
-err_sw_init/err_dma error unwind path of e1000_probe(), so that a probe
-failure does not pass a NULL pointer to iounmap().  It carries two Fixes:
-tags and a syzbot Reported-by:.
-
-No Link: tags were present in the commit header.
-
-Two questions below, one on the commit message tags and one on the diff.
-
-> net: e1000: fix warning in iounmap on probe failure
+On Wed, Sep 23, 2026 at 01:46 PM -04, Daniel Zahka wrote:
+> On Thu Sep 10, 2026 at 10:02 AM EDT, Jakub Sitnicki wrote:
+>> skb_scrub_packet() drops all skb extensions unconditionally via
+>> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rcv,
+>> etc.) and cross-netns forwarding (dev_forward_skb).
+>>
+>> This makes it impossible for a BPF program to pass metadata via bpf_skb_=
+ext
+>> through a tunnel or across a netns boundary. The extension is always lost
+>> at the scrub point.
+>>
+>> Introduce skb_ext_scrub(), a selective variant of skb_ext_reset(). It
+>> deletes every extension except SKB_EXT_BPF. Scrubbing is safe when the
+>> extension slab is shared with clones: deleting an extension only clears =
+the
+>> per-skb active_extensions bit, and the shared slab payload is released
+>> lazily by __skb_ext_put() once the last reference goes away.
+>>
+>> Replace the skb_ext_reset() call in skb_scrub_packet() with skb_ext_scru=
+b()
+>> and also switch udp_try_make_stateless() to skb_ext_scrub() as well, so =
+the
+>> BPF metadata survives queueing onto a UDP socket receive queue and stays
+>> readable there (e.g. for a sockmap verdict program). Only mark the skb
+>> stateless when no extension survives the scrub. Otherwise skb_consume_ud=
+p()
+>> would take the __consume_stateless_skb() fast path, which skips
+>> skb_release_head_state(), and leak the extension slab.
+>>
+>> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+>> ---
 >
-> During a probe failure, the e1000 driver error handling path calls
-> iounmap() on hw->ce4100_gbe_mdio_base_virt and hw->hw_addr without
-> checking if they were previously mapped. This triggers a kernel warning
-> (WARN) rather than a fatal crash when passed an uninitialized pointer.
->
-> This issue was found by Syzbot. The exact kernel configuration (.config)
-> and the C reproducer used to trigger this warning are available on the
-> Syzbot dashboard.
->
-> Fix this by adding NULL checks before calling iounmap().
->
-> Reported-by: syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
-> Fixes: 13acde8fffc0a ("e1000: cleanup CE4100 MDIO registers access")
+> Hello Jakub,
+> What are your current plans for this series? This commit solves the same
+> problem I have with wanting to preserve the PSP skb extension across
+> netns forwarding.
 
-[Severity: Low]
-The Reported-by: line is followed directly by a Fixes: line, with no
-Closes: or Link: URL pointing at the syzbot report.  Could that URL be
-added?
+I've implemented Alexei's idea of skb-lifecycle tracepoints that run
+only when an skb is marked/traced. Currently putting final touches on it
+before sending it out for the first round of feedback. You can take
+sneak peek at it on GH [1] to see if it meets your needs.
 
-Documentation/process/submitting-patches.rst asks for it:
+The CPU overhead is lower compared to the skb extension, at least in my
+local runs, and the kernel changes are simpler, so it seems like a win
+overall:
 
-    The tag should be followed by a Closes: tag pointing to the report,
-    unless the report is not available on the web
+|                  | gated skb tps    | bpf skb ext      |
+|------------------|------------------|------------------|
+| **busy**         | **+5.44 =C2=B1 3.16** | **+8.01 =C2=B1 4.75** |
+| sys              | +2.62 =C2=B1 2.06     | +3.67 =C2=B1 2.76     |
+| soft             | +2.89 =C2=B1 1.43     | +3.83 =C2=B1 2.10     |
+| ns/pkt @146k pps | **+=E2=89=88 373**       | **+=E2=89=88 549**       |
 
-and scripts/checkpatch.pl warns on this pattern:
+I'll be giving an update on it at LPC [1], if you're attending, and of
+course will keep you posted here on the ML.
 
-    BAD_REPORTED_BY_LINK
-    "Reported-by: should be immediately followed by Closes: or Link:
-     with a URL to the report"
+-jkbs
 
-The commit message says the .config and the C reproducer "are available on
-the Syzbot dashboard", but without the link there is no way to check which
-error path syzbot actually reached, which is relevant to the question
-below.
-
-Also, the description of the value handed to iounmap() as an
-"uninitialized pointer" does not look accurate: the adapter private area
-comes from alloc_etherdev()/alloc_netdev_mqs(), which zero the allocation,
-so hw->ce4100_gbe_mdio_base_virt is deterministically NULL rather than
-garbage.  Could that wording be adjusted?
-
-> diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-> index d7f5c6f161420..156903089fa6b 100644
-> --- a/drivers/net/ethernet/intel/e1000/e1000_main.c
-> +++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
-> @@ -1227,8 +1227,10 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	kfree(adapter->rx_ring);
->  err_dma:
->  err_sw_init:
-> -	iounmap(hw->ce4100_gbe_mdio_base_virt);
-> -	iounmap(hw->hw_addr);
-> +	if (hw->ce4100_gbe_mdio_base_virt)
-> +		iounmap(hw->ce4100_gbe_mdio_base_virt);
-> +	if (hw->hw_addr)
-> +		iounmap(hw->hw_addr);
->  err_ioremap:
-
-[Severity: Medium]
-Can the new "if (hw->hw_addr)" test ever be false?
-
-hw->hw_addr is assigned in exactly one place in the driver, in
-e1000_probe():
-
-	err = -EIO;
-	hw->hw_addr = pci_ioremap_bar(pdev, BAR_0);
-	if (!hw->hw_addr)
-		goto err_ioremap;
-
-The err_ioremap: label sits below the iounmap(hw->hw_addr) that is being
-guarded here, so the only path that leaves hw_addr NULL skips this code
-entirely.  Every other goto that lands on this label (err_sw_init,
-err_dma, err_mdio_ioremap, err_eeprom, err_register) is reachable only
-after pci_ioremap_bar() already returned a valid mapping.
-
-If that reading is right, the hw_addr half of the change is dead code, and
-the second tag
-
-	Fixes: 1dc329180fe22 ("e1000: Use hw, er32, and ew32")
-
-refers to a defect that is not present.  Should that tag be dropped, along
-with the mention of hw->hw_addr in the commit message, so a stable
-backport is not aimed at a path that cannot trigger?
-
-The ce4100_gbe_mdio_base_virt half does look like a real fix, since that
-mapping is only created for one MAC type:
-
-	if (hw->mac_type == e1000_ce4100) {
-		hw->ce4100_gbe_mdio_base_virt =
-					ioremap(pci_resource_start(pdev, BAR_1),
-						pci_resource_len(pdev, BAR_1));
-
-so on every other device the field stays NULL while the unwind path still
-calls iounmap() on it, and x86 iounmap() does:
-
-	if (WARN_ON_ONCE(!is_ioremap_addr((void __force *)addr)))
-		return;
-
-Would it be clearer to describe only that case in the changelog?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922155139.67364-1-nsvatoslav515%40gmail.com
+[1] https://github.com/jsitnicki/linux/commits/gated-skb-tracepoints-2026-0=
+9-24/
+[2] https://lpc.events/event/20/contributions/2549/
