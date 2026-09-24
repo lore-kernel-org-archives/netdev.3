@@ -1,196 +1,183 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8304B0489;
-	Thu, 24 Sep 2026 17:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666ED4BD0F1;
+	Thu, 24 Sep 2026 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269666; cv=none; b=HlZromo+6xRKy7T5I2OB44+w8jmoJbTU6+mwV6HlqTz1eVfAOxFvHrOaJ0r7Twsk25r6CLfrthGJIn05gV/k0P8Lf5uW364gx+GGxUpEZATP597fUostlzuWJBXp7mrTsf0/6Ms9Fz5LzsYQcqr+xdOfUPSv8j72GLUsnlxqytU=
+	t=1790269669; cv=none; b=V8Joa358LKaM/UOqIS62ZyxMXp8qwIdlmeCKSgMzHTl4gcpCsveKsyV9kuxs0ELlGGB7gep19p7PiViage8+PboACnThajyMwBtWHAIcx9551JhFgGPo2U98LOxcbQc2BDob+OzK5bunJkFq89CDuulWZmxPyPaVW8jiGPqHYPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790269666; c=relaxed/simple;
-	bh=644BvEwPB5tOoL1EHbN0cP//S6FbslV/jzIUe7lQuCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j/8TK8uxVvSRDZ1mKACccwORXnE2Prhbs+zdPtab1DpPxsfs/b7BiU3Q67qhhBp60mKhKWtf+JqY/5RM12fY28J193UTiW8T2FKBZBYoFa7mOHg5XxS9IO2Y1A1M/U6jWefmTwxLgYGc74e73WU12izOtiAZRngOjw72aVWiaM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dyd4wWdW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790269669; c=relaxed/simple;
+	bh=AiH9cFIWHVD4prFhgPMfQvZab9ExT+8eOmoaNVDyePc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SLFkukAFx0nLFdyehIvXszl2wZ6x5ajHidXgadiafAoMFDTYxgKKG29M5iC71lXGfDa4sRj6eWnpZkWIE+Ftt2oKo8PIJIbz00gXQvI3HNNwUabsVsgP0A7xHr8AgcZvQc4xDbTOw6bpsX2YUb5AR90lxpdt6AMfcMBU50FnXRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZxQlQQ/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dyd4wWdW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFC11F000FF;
-	Thu, 24 Sep 2026 17:07:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZxQlQQ/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA7D1F000FF;
+	Thu, 24 Sep 2026 17:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790269665;
-	bh=cyMegrf82e7WKPoUzbh4gaX6JpbgZe+DZgjW9g4vKpk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Dyd4wWdW7MjntaSCG+6LZklQY6GmT39nQUvfIG6IPyRoXviwRmKe9awlvkY7km1g/
-	 0PbKMdaIjnf/fpiYm9N9YZ4mC5dUKC3GwedwX3JPNqIkeFJmbiGAysgfjd7Do/Si3R
-	 qOwilo9l3Y/m8sYd+kuGEqVJ4Dn1+2YHjvrmpi3nbz/HNvONVxlAvOTM5h13kFlj9B
-	 p6dZ25K7jnjB2/HUQ77gfVgv2muKBBKtDvVC3YTEuEdBDCW3H2x7c91Cy+mY6WZAlq
-	 SnicNU4o369IEovaRVOPGwN7KAl8DsfEbuYOK9+LCdqQxnmvwvppMo0xAKWSZV7JJ5
-	 DlgV4XztEjVHg==
-Date: Thu, 24 Sep 2026 18:07:39 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
-	hkallweit1@gmail.com, linux@armlinux.org.uk,
-	Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-Subject: Re: [PATCH net-next v21 1/3] dt-bindings: net: Document Motorcomm
- YT8824 PHY package
-Message-ID: <20260924-vowed-roulette-abda42cec444@spud>
-References: <20260924075048.4060414-1-kyle.switch@motor-comm.com>
- <20260924075048.4060414-2-kyle.switch@motor-comm.com>
+	s=k20260515; t=1790269668;
+	bh=wyXJMtH/Jv3R/bYoJWwyQ2UaEckkFA30XCVmg+XBN9w=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PZxQlQQ/+32WyfDs0krI7ByxXyrs6vgH6PP5AT1MfNKqosty+amp+3zJ9O564XwVN
+	 11myADxx0F6Ugz7Ae/FeoI9sG5u1cdevLUdyZw5Xm56TXe09IIwU8P4G69juiNG0Az
+	 KvPStqoYssP5lfrpGxYBOUd+3HAIPTdCXgjDKxaDfPTw7KNl3vpX/RzWzAHCamJBAI
+	 oiyk8Dy1cAV2KLEs5uo8e89brETfLNhnaBDaS0tvCs1MQs28w7nHFCNReWF5BuRwbY
+	 xHRd8Xs0m/qauzUuIUKG7PzZe2trz4Vm8Ey4l3NPGna+WYgllupvkL/9A3LkwL4850
+	 EEtREpSldYlUg==
+Subject: Re: [PATCH net-next v2 1/6] bnge: Extract bnapi allocation and
+ cleanup into helpers
+From: netdev-bot+sashiko@kernel.org
+To: bhargava.marreddy@broadcom.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ vsrama-krishna.nemani@broadcom.com, vikas.gupta@broadcom.com,
+ dharmender.garg@broadcom.com
+Date: Thu, 24 Sep 2026 17:07:47 +0000
+Message-ID: <179026966721.2160803.3672240762098051468@kernel.org>
+In-Reply-To: <20260922052904.59237-2-bhargava.marreddy@broadcom.com>
+References: <20260922052904.59237-2-bhargava.marreddy@broadcom.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KEBf6CeFx3H+YGOi"
-Content-Disposition: inline
-In-Reply-To: <20260924075048.4060414-2-kyle.switch@motor-comm.com>
 
---KEBf6CeFx3H+YGOi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-On Thu, Sep 24, 2026 at 03:50:46PM +0800, Kyle Switch wrote:
-> Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
->=20
-> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
-> ---
->  .../bindings/net/motorcomm,yt8824.yaml        | 69 +++++++++++++++++++
->  MAINTAINERS                                   |  2 +
->  2 files changed, 71 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt882=
-4.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml =
-b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
-> new file mode 100644
-> index 000000000000..fd62b309e7ff
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
-> @@ -0,0 +1,69 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/motorcomm,yt8824.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message describes the three new NULL guards as
+  preparatory hardening ("add NULL guards for rx_ring and tx_ring in…
+
+--
+
+bnge: Extract bnapi allocation and cleanup into helpers
+
+This moves the bn->bnapi allocation and free code out of
+bnge_alloc_core()/bnge_free_core() into bnge_alloc_bnapi_mem() and
+bnge_free_bnapi_mem(), and adds NULL checks for bn->rx_ring and
+bn->tx_ring in the ring cleanup helpers.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> index a4288f0258f87..c1810a3098883 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+> @@ -825,6 +825,9 @@ static void bnge_free_tpa_info(struct bnge_net *bn)
+>  	struct bnge_dev *bd = bn->bd;
+>  	int i, j;
+>  
+> +	if (!bn->rx_ring)
+> +		return;
 > +
-> +title: MotorComm YT8824 Ethernet PHY
+>  	for (i = 0; i < bd->rx_nr_rings; i++) {
+>  		struct bnge_rx_ring_info *rxr = &bn->rx_ring[i];
+>  
+> @@ -881,6 +884,9 @@ static void bnge_free_rx_rings(struct bnge_net *bn)
+>  	struct bnge_dev *bd = bn->bd;
+>  	int i;
+>  
+> +	if (!bn->rx_ring)
+> +		return;
 > +
-> +maintainers:
-> +  - Kyle Switch <kyle.switch@motor-comm.com>
+>  	bnge_free_tpa_info(bn);
+>  	for (i = 0; i < bd->rx_nr_rings; i++) {
+>  		struct bnge_rx_ring_info *rxr = &bn->rx_ring[i];
+> @@ -1024,6 +1030,9 @@ static void bnge_free_tx_rings(struct bnge_net *bn)
+>  	struct bnge_dev *bd = bn->bd;
+>  	int i;
+>  
+> +	if (!bn->tx_ring)
+> +		return;
 > +
-> +description:
-> +  Motorcomm YT8824 Ethernet PHY is a PHY package of 4 PHYs.
+
+[Severity: Medium]
+Are these three new NULL checks really just preparation, or do they fix a
+reachable NULL pointer dereference that exists today?
+
+The commit message says only:
+
+    Prepare the driver to move bnapi allocation out of the open/close path,
+    and add NULL guards for rx_ring and tx_ring in core driver cleanup paths.
+
+Before this patch, bnge_alloc_core() allocates bn->bnapi, then bn->rx_ring,
+then bn->tx_ring, and every failure goes to err_free_core: which calls
+bnge_free_core(). bnge_free_core() unconditionally calls
+bnge_free_tx_rings() and bnge_free_rx_rings(), so if the bn->rx_ring
+allocation fails both pointers are still NULL:
+
+drivers/net/ethernet/broadcom/bnge/bnge_netdev.c:bnge_free_tx_rings() {
+	for (i = 0; i < bd->tx_nr_rings; i++) {
+		struct bnge_tx_ring_info *txr = &bn->tx_ring[i];
+		...
+		bnge_free_ring(bd, &ring->ring_mem);
+}
+
+and bnge_free_ring() dereferences that near-NULL address right away:
+
+drivers/net/ethernet/broadcom/bnge/bnge_rmem.c:bnge_free_ring() {
+	if (!rmem->pg_arr)
+		goto skip_pages;
+
+The rx side looks the same: bnge_free_rx_rings() -> bnge_free_tpa_info()
+reads rxr->rx_tpa_idx_map, and bnge_free_rx_rings() itself calls
+page_pool_destroy(rxr->page_pool), both off a NULL bn->rx_ring.
+
+Since bnge_alloc_core() runs from the ndo_open path, an allocation failure
+during "ip link set dev ethX up" would oops instead of returning -ENOMEM.
+git blame points the affected loops at commit 0259379037cab9 ("bng_en: Add
+initial support for RX and TX rings"). Would it make sense to split these
+guards into their own patch with a Fixes: 0259379037cab9 tag, so it can be
+picked up for stable? No commit in this series (10cfa109c8..63494c308b19)
+carries such a tag or mentions the crash.
+
+Note that bnge_free_rx_ring_pair_bufs() already had the same
+if (!bn->rx_ring) return; check, which suggests the guard is functional
+rather than cosmetic.
+
+>  	for (i = 0; i < bd->tx_nr_rings; i++) {
+>  		struct bnge_tx_ring_info *txr = &bn->tx_ring[i];
+>  		struct bnge_ring_struct *ring;
+
+[ ... ]
+
+> @@ -1241,6 +1254,19 @@ static int bnge_alloc_core(struct bnge_net *bn)
+>  		nqr->ring_struct.ring_mem.flags = BNGE_RMEM_RING_PTE_FLAG;
+>  	}
+>  
+> +	return 0;
+> +}
 > +
-> +$ref: ethernet-phy-package.yaml#
+> +static int bnge_alloc_core(struct bnge_net *bn)
+> +{
+> +	struct bnge_dev *bd = bn->bd;
+> +	int i, j, rc;
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - motorcomm,yt8824-package
-> +  phy-mode:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [ internal, 10g-qxgmii ]
-
-This should be after ref, but also have a vendor prefix.
-Additionally, the qcom ethernet-phy-package user also has a mode
-property. Net folks, should this be made common?
-
-> +  reg:
-> +    description:
-> +      The absolute MDIO address of the YT8824 shared top extend
-> +      register block.
-> +      For internal mode, this is fixed at 9;
-> +      For external mode it is (base MDIO address of the four
-> +      member PHYs) + 4.
-> +      Note that this is NOT the base ID of the first member PHY.
-> +required:
-
-Please use blank lines between properties and other elements of the
-binding.
-
-
-> +  - compatible
-> +  - phy-mode
-> +  - reg
+> +	rc = bnge_alloc_bnapi_mem(bn);
+> +	if (rc)
+> +		return rc;
 > +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    mdio {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        ethernet-phy-package@9 {
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <0>;
-> +            compatible =3D "motorcomm,yt8824-package";
-> +            reg =3D <9>;
-> +
-> +            phy-mode =3D "internal";
-> +
-> +            ethernet-phy@4 {
-> +                reg =3D <4>;
-> +            };
-> +
-> +            ethernet-phy@5 {
-> +                reg =3D <5>;
-> +            };
-> +
-> +            ethernet-phy@6 {
-> +                reg =3D <6>;
-> +            };
-> +
-> +            ethernet-phy@7 {
-> +                reg =3D <7>;
-> +            };
+> +	rc = -ENOMEM;
+>  	bn->rx_ring = kzalloc_objs(struct bnge_rx_ring_info, bd->rx_nr_rings);
+>  	if (!bn->rx_ring)
+>  		goto err_free_core;
 
-Unless the addresses and numbers of phys are entirely unconstrained, I
-think you should add some pattern properties for them.
+This is the branch that reaches bnge_free_core() with both bn->rx_ring and
+bn->tx_ring still NULL.
 
-Thanks,
-Conor.
-
-> +        };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e3ce77c839b0..ed7af1bd9521 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18409,8 +18409,10 @@ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-mot=
-orcomm.c
-> =20
->  MOTORCOMM PHY DRIVER
->  M:	Frank <Frank.Sae@motor-comm.com>
-> +M:	Kyle Switch <kyle.switch@motor-comm.com>
->  L:	netdev@vger.kernel.org
->  S:	Maintained
-> +F:	Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
->  F:	Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
->  F:	drivers/net/phy/motorcomm.c
-> =20
-> --=20
-> 2.25.1
->=20
-
---KEBf6CeFx3H+YGOi
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarVY2wAKCRB4tDGHoIJi
-0kBtAP9gvzvMgaC7OCQYcF5YZ4f9JyQsltwQa+9COQutQHKzaQEA+BY2RPtGkYxJ
-4BDLPdsVwy4Rg6wCPlqHApzUwwK2Fgs=
-=winZ
------END PGP SIGNATURE-----
-
---KEBf6CeFx3H+YGOi--
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922052904.59237-1-bhargava.marreddy%40broadcom.com
