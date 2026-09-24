@@ -1,154 +1,185 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6CD3A2549
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678383FDC06;
+	Thu, 24 Sep 2026 08:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790238785; cv=none; b=pEMz1IaKRLu6OqnZkLrWkbRynAGaGv2a8mNTQ1cuuoKiwRTsknNXrSVXpKWfqgXhqRGtx5qnpum4UVJVJdWqWbshE3MBxWQPj8PuCxCbhQ8ZUYvBHzFEeHamkXEvu9qbNhB+VmUFqo491uyh2/iCNvd5sOveEH4G5b+VfZxU+u0=
+	t=1790239037; cv=none; b=PBvpsZs47Q+UNuJGNgO33p80gOMuBGRva87dtxA25gsqAduFAMNzRd4e4Ze44X8BSpsXwH9/VEMJ5/qIvnRV/rVOox5/IegpfIcdzbZ9vclw4UX9/Lkna7jBLiDtVqzpTBI4gBairIpRqh0l+eD4/+0YoIEJi3mg+NA28KxzCrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790238785; c=relaxed/simple;
-	bh=TH17rxqUphQnvtWKdbekKc99InWQeXnXfBbQcZS9e9A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sfLsNklliWZh7f15hV78B5wi/HJlVYTbDxvtafG/w/H/Qc275I4tUJ3aIz80Y1tLaZyae1+bauVnsUgQaJgbafLQh4b70fvtAw5kwwhmdUUStxS8+ibcs4E1hbc8AtGr2dMqzbqLV5M67AZeZcralzTlxPUFk4/rY/ZR09WZR9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=jo/thCNB; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1790239037; c=relaxed/simple;
+	bh=r/vBo1dv/pEBxUbQ9g7cwJrRcatBAi11+dXpZWCqjS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PE3PJpfm6T9EWytS3YsLEHfH/yT8QtK1HTtafMDmFP1+7Wxo3F8xrDlcBJCVwFwNGyIHRCCvvZqt4LmkWNufFKYABWhptPZ1NsIlV7142rGw3Wnf7HJL2vDaf1i0sEowOxDuh0qoZHVQvhpjwalz4d2HrrpZP3Y6EqbXO8Fpsuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8BxRoPW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="jo/thCNB"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910ad2273so207094785a.0
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790238783; x=1790843583; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l7eSqpIJMRsWjDjp/oD+vMlCDPCfoeB6wnXpdjOOxbc=;
-        b=jo/thCNBZFEeMsLv4HmduAAFG86OrPC9UYo/VIazofRirNDz+73ZENqqdI9ERIvFaF
-         4nkMnjV+D7zUXHR01sWu9ncShqmC8SEq13wI6jb7qEAzTSbtD1NSr6RiTOWuy4X16qsc
-         hIeYM0qpq7EMahz5aLvcxi7Olot1tVk318yvE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790238783; x=1790843583;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l7eSqpIJMRsWjDjp/oD+vMlCDPCfoeB6wnXpdjOOxbc=;
-        b=vF3RwYwCrba77FRvKTkxAjx79ELoSS+os0TbWwb5EPn3pqDAd0WKecn7JzpCKLsRa2
-         25CvoWaxQle675NPcNuUXAxKvablOymzpssmXnItlwQ37Mm95+jE5wAB+eU4NVZgyLej
-         g58ddO2jmKA4skX+4teoHILIHMbxCeyRnJ/YkG+yAoKTHic/6F0DufmB37RbCCPcX6UH
-         ofaNFAsbHreuSMB7b4To84le82xevEpoiSziZBMGYlBbjh7rw2JtG4JexNfmJcjPA1w3
-         2f48+quG35JAFgSU1MUvgjy5QA/eLw0sVbB8ZoZqLRV41mjxSVegEhDomc0iPtlocNw3
-         PydQ==
-X-Gm-Message-State: AFuF++kRoScAkmT5LoP8hCOkfEbV10GJYIo9TmMtTYwb6KCJmQG1sucD
-	JoooS0PPqComf0oCrUlH4RUKFHoSsJ3iDczUaTbGkqN9CdabEFdcgKO4Sz4bft5oi8DKZQPZVoe
-	Kmy1MjA==
-X-Gm-Gg: AYBFou0JFV26i50yS0Ow9APAN1UuUikUiT/jfwVNwU4ilZYCmpbohjDGd5aKS2XWWGO
-	5aQrnnTWHF5IS1nlwyJg9vOab9vyqWgLqjnWO3Zb4CMatvChj6yvVISHl56+Z1f8+ukWU7Xrokr
-	yzGKO24qrYuHnnd0jDbzWIzZLL3QQVy9JVhoNxcvYC9tJ9Ch+ywab0zAUiywD0NkNB+2zcv2+EP
-	byhnwjYW0332F1I19kwIeeU2WERO3XH7MddKp6woAUVilhyMMY6HnQmeFEzAjD+U+yYudnD4kV9
-	ScpVOyOzp6MS2scoeZz/pJFc/bBWGhOHddqhnTO7M4vL3fXWW0uJ0f9XNZedgSrKC+q4L+DyNji
-	qCwFvtCUrmT/Qiat7gOC7L7Ivxh/W8VeeX0/a8PWZ68e+CBo02jAQKx0H6I5ltwOwOgR9qqDaE5
-	Rkw3F48xTYdrvSoLmd4DMtjYnfMSD83sjDAGbyMw5LmCHx5CXEdnf+oRgf6f3UCD8PRh/KpCsc4
-	DpkCso5O6mXLd6ngODZlMjfFYpBr2bdlAWZnnWmdDvhCUD82+IYMTv2YpIM
-X-Received: by 2002:a05:620a:8393:b0:93b:f083:b269 with SMTP id af79cd13be357-93c3642fe19mr164875985a.64.1790238782503;
-        Thu, 24 Sep 2026 01:33:02 -0700 (PDT)
-Received: from majuu.waya ([184.147.180.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c37bb7450sm69933485a.12.2026.09.24.01.33.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 01:33:02 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8BxRoPW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9901F000FF;
+	Thu, 24 Sep 2026 08:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790239036;
+	bh=9dNpIiCngfqS48fDbzhesrqx5NrLounR6SeZVDzxP8s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n8BxRoPWmSo9uf+mopPXmF9iAKyVgVre1+tPUkxjhxcD4AzQ6b0oF0OMFVb82h2n9
+	 p1s79k+rFIUQ2BmwgLqu+i9LQkKiMpjvRjfoKgTXDohRp+0sF+60oIRvwCCMnN7xl+
+	 XevS1thLE2eO4fD5mB8k5ylTFf7kXaUNC4CTPKU16429Nm33GMPNkQDI7yfQZso+xM
+	 l+WuFJhRc6CyPHfqtptjzvLljEKgjbp2Ovd5dpXBpYvblvFi8az97xbsF53OpHftn2
+	 qKz5tMP83HAYOm4okEy8zxQqvnhMGMTIE6JPFR0bClf/CeUGY1CcD59ud1dled8xY+
+	 g+vbo9+Hx+Qcg==
+Date: Thu, 24 Sep 2026 09:37:09 +0100
+From: Lee Jones <lee@kernel.org>
+To: Rong Zhang <i@rong.moe>
+Cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ike Panhc <ikepanhc@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
-	hybris <hybris@mojatatu.ai>
-Subject: [PATCH net] net/sched: cls_api: reclaim an empty proto on the error path
-Date: Thu, 24 Sep 2026 04:32:49 -0400
-Message-Id: <QDISC-JCOT.v1.20260910090924@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	Vishnu Sankar <vishnuocv@gmail.com>,
+	Vishnu Sankar <vsankar@lenovo.com>, linux-leds@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v7 02/13] leds: trigger: Move
+ led_trigger_is_hw_controlled() to the right place
+Message-ID: <20260924083709.GA331088@google.com>
+References: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
+ <20260921-leds-trigger-hw-changed-v7-2-fe3cdb6dec51@rong.moe>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921-leds-trigger-hw-changed-v7-2-fe3cdb6dec51@rong.moe>
 
-Two racing tc filter add requests on the same chain/prio of an
-unlocked classifier both run change() on the shared proto and both
-can fail: the winner's tcf_chain_tp_delete_empty() attempt gives up
-because the loser's handle is still in the idr, and the loser's
-error path drops only its own reference without a second reclamation
-attempt. The empty proto stays linked in the chain, holding the
-chain reference, a block reference and the classifier module
-reference until the chain or block is torn down.
+--- checkpatch.pl: clean (0 issues) ---
 
-Reclaim the proto on the error path of any failed request that holds
-a proto reference. The reclamation is emptiness-gated:
-tcf_chain_tp_delete_empty() unlinks the proto only when
-delete_empty() admits it is empty, so a live shared proto is never
-unlinked. A proto the request created is reclaimed unconditionally -
-it is the only owner, so marking it for deletion is safe even without
-a delete_empty callback. Classifiers without one (the check marks the
-proto unconditionally) are rtnl-serialized, so the raced window this
-guard closes cannot arise for them.
+On Mon, 21 Sep 2026, Rong Zhang wrote:
 
-This is a follow-up to commit d4e359b3608a ("net/sched: cls_api: fix
-teardown of an adopted proto on insert-race loss"), which stopped the
-loser of the insert race from unlinking the winner's live proto but
-left the empty-proto residual in place.
+> Currently led_trigger_is_hw_controlled() is placed at led-class.c, which
+> is not an right place as it falls into the triggers namespace and does
+> triggers stuff.
+> 
+> Move it into led-triggers.c, and split it into locked and unlocked
+> variant for convenience.
+> 
+> Fixes: b819dc7d8fb2 ("leds: core: Report ENODATA for brightness of hardware controlled LED")
+> Acked-by: Ike Panhc <ikepanhc@gmail.com>
+> Signed-off-by: Rong Zhang <i@rong.moe>
+> ---
+> Changes in v3:
+> - New patch in the series, the dependency of the following patches
+> ---
+>  drivers/leds/led-class.c    | 10 ----------
+>  drivers/leds/led-triggers.c | 19 +++++++++++++++++++
+>  include/linux/leds.h        |  8 ++++++++
+>  3 files changed, 27 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+> index 4259533dafa1..7110bfbe3b83 100644
+> --- a/drivers/leds/led-class.c
+> +++ b/drivers/leds/led-class.c
+> @@ -27,16 +27,6 @@ static LIST_HEAD(leds_lookup_list);
+>  
+>  static struct workqueue_struct *leds_wq;
+>  
+> -static bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
+> -{
+> -#ifdef CONFIG_LEDS_TRIGGERS
+> -	guard(rwsem_read)(&led_cdev->trigger_lock);
+> -	return led_cdev->trigger && led_cdev->trigger->trigger_type;
+> -#else
+> -	return false;
+> -#endif
+> -}
+> -
+>  static ssize_t brightness_show(struct device *dev,
+>  		struct device_attribute *attr, char *buf)
+>  {
+> diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+> index b1223218bda1..bf2543538ed0 100644
+> --- a/drivers/leds/led-triggers.c
+> +++ b/drivers/leds/led-triggers.c
+> @@ -7,9 +7,11 @@
+>   * Author: Richard Purdie <rpurdie@openedhand.com>
+>   */
+>  
+> +#include <linux/cleanup.h>
+>  #include <linux/export.h>
+>  #include <linux/kernel.h>
+>  #include <linux/list.h>
+> +#include <linux/lockdep.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/device.h>
+>  #include <linux/timer.h>
+> @@ -33,6 +35,23 @@ trigger_relevant(struct led_classdev *led_cdev, struct led_trigger *trig)
+>  	return !trig->trigger_type || trig->trigger_type == led_cdev->trigger_type;
+>  }
+>  
+> +static bool __led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
+> +{
+> +	lockdep_assert_held(&led_cdev->trigger_lock);
+> +
+> +	if (!led_cdev->trigger)
+> +		return false;
+> +
+> +	return led_cdev->trigger->trigger_type;
 
-Conditions to recreate:
-- CONFIG_NET_CLS_FLOWER=y; veth pair
-- tc qdisc add dev veth0 ingress
-- two concurrent `tc filter add dev veth0 ingress protocol ip pref 1
-  flower skip_sw ... action drop` (both fail in fl_hw_replace_filter
-  after publishing their handle in the idr); repeat in a loop
-- an empty flower tp stays linked after both requests fail; visible
-  as a bare `filter protocol ip pref 1 flower chain 0` header in
-  `tc filter show` with no filter entries
-- CAP_NET_ADMIN (namespace-local via unshare -Urn suffices)
+How does this not cause a compiler warning?
 
-Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concurrent execution")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805134049.927864-1-victor@mojatatu.com
-Tested-by: hybris <hybris@mojatatu.ai>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/cls_api.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+This needs to be evaluated properly.
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index c47d2ee13641..a9f54988561f 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2463,7 +2463,20 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 	}
- 
- errout:
--	if (err && tp_state == TP_CREATED)
-+	if (err && !IS_ERR_OR_NULL(tp) &&
-+	    (tp_state == TP_CREATED || tp->ops->delete_empty))
-+		/*
-+		 * The request is dropping its reference to tp. If it was
-+		 * the last user (the idr is empty now), reclaim the proto.
-+		 * A tp this request created is reclaimed unconditionally:
-+		 * it is the only owner, so marking it for deletion is
-+		 * safe. Otherwise only classifiers with a delete_empty
-+		 * callback are reclaimed -- the callback admits an empty
-+		 * proto only, so a live shared proto is never unlinked.
-+		 * Classifiers without one (deleting is set
-+		 * unconditionally) are rtnl-serialized, so the raced
-+		 * window this guard closes cannot arise for them.
-+		 */
- 		tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL);
- errout_tp:
- 	if (chain) {
+> +}
+> +
+> +bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
+> +{
+> +	guard(rwsem_read)(&led_cdev->trigger_lock);
+> +	return __led_trigger_is_hw_controlled(led_cdev);
+> +}
+> +EXPORT_SYMBOL_GPL(led_trigger_is_hw_controlled);
+> +
+>  ssize_t led_trigger_write(struct file *filp, struct kobject *kobj,
+>  			  const struct bin_attribute *bin_attr, char *buf,
+>  			  loff_t pos, size_t count)
+> diff --git a/include/linux/leds.h b/include/linux/leds.h
+> index a515f075c29a..46ad2e03e1c6 100644
+> --- a/include/linux/leds.h
+> +++ b/include/linux/leds.h
+> @@ -534,6 +534,8 @@ void led_trigger_set_default(struct led_classdev *led_cdev);
+>  int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trigger);
+>  void led_trigger_remove(struct led_classdev *led_cdev);
+>  
+> +bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev);
+> +
+>  static inline void led_set_trigger_data(struct led_classdev *led_cdev,
+>  					void *trigger_data)
+>  {
+> @@ -584,6 +586,12 @@ static inline int led_trigger_set(struct led_classdev *led_cdev,
+>  }
+>  
+>  static inline void led_trigger_remove(struct led_classdev *led_cdev) {}
+> +
+> +static inline bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
+> +{
+> +	return false;
+> +}
+> +
+>  static inline void led_set_trigger_data(struct led_classdev *led_cdev) {}
+>  static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+>  {
+> 
+> -- 
+> 2.55.0
+> 
+
 -- 
-2.43.0
-
+Lee Jones
