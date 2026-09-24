@@ -1,172 +1,80 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2958640BCD8;
-	Thu, 24 Sep 2026 09:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295BF344046;
+	Thu, 24 Sep 2026 09:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790243324; cv=none; b=YRgHYWqurcng3ohRgoSe3wDB8CFLRrnA2OVOu0H8zB8OGMo2TMn0kDm7uydV1mbTpGxV1/n/Q6r9Wife+4c/YsypcFFmCcglCyZ1J4AOydcs7qtvTutYi8UhvE7qQU6ppqp7Egn/qJe/4yrrWa4anb9nFLBpy3gomUlu7jM7lVQ=
+	t=1790243492; cv=none; b=sFE7LWqNe1GRCUXuY8m4ejQwW5e1qqgcwdUSiC0ybVVHecuSm3uMGyDg2ilf1BaS3vCe9XAukv4egpft2BZlArthpCUCHDdNZsiHQdfyn/+ryOl7sdTB4BmkQvl8YO0J2nXytNm54N/5/ZZ0J5v6BAM1/1ak5UhAluScnNwTvsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790243324; c=relaxed/simple;
-	bh=HGWHw0+YsN2VQstzvhMpaUDdm5nfsbF4QCXSXxbvO7E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lxTgyP8e1bcF/VmGWpmK2M7uUoEA2P681O0spCqt2ALlKdw8OwrSlNKi0nzy3rw/gHr/iQAIYocwG4p6EOkRDbQAjPX0rToUvupM0RRuqD3vA4a2EDIQis+simuvmnYa3sRfm212bHzy4ZGUqkogkIPNlxh9PQ3jrHFCX8DwSAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=F1Lkf6lA; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1790243492; c=relaxed/simple;
+	bh=ZY33p742c5s+IhOdnZaWs8PxNA91JYu/vNkdjuKAZlg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=H6O5u9kXYZZUCDt5fLaehn8lc7qk4PyRAmYjKu4Iox5CzRCqfatt/DYcGeq4AatPNeovB8V0cuJAm8RCGfGMKDphjpi7/gzrCCe5aOCyjUbxj65AhmR8+VdETtWtAqR7eYr/uM3qN+Y21TESnIgMMzbvD7BmK6PNPq+An91Y9uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxNDxRly; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="F1Lkf6lA"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7C6453EBCA;
-	Thu, 24 Sep 2026 09:48:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1790243307;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u7G/mzknT0LdlsJFiO3EI1X6z4fxbyYMkEyPcMVpFzw=;
-	b=F1Lkf6lAuYcBw8M9acyDJhqD8jg6X/veXpz9i6Dq279RxzU1iPRhIzJ8VHEm3gkpKmlJw3
-	DObIoRO4/SjHQaPxWhuSPIZoIaVZ/nHWg6Mj7Edgy5qDF8wL++zt1ThAfkQ4cI/xseZXtY
-	NV3TnWns8bp2sRT56YOabJp+4G6GsMKhea15bP4KDVZYDLCGic2m8XRMcrL2ZmNi79KXMO
-	bOvzrM6tRw6sE5C+kOlJt3GYAw/32vtg1X8jnch8VGXCn4//BnIIm+KecMQr0AylMYVqBj
-	Yc28c/qMhcCUhiaGwQGrp4XLNXGzhwLymlzxBxTswE6dtWjJDmrJHmACYem1XQ==
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-Date: Thu, 24 Sep 2026 11:48:12 +0200
-Subject: [PATCH net-next v11 2/3] dt-bindings: net: wiznet,w5100: add link
- status interrupt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxNDxRly"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32771F000FF;
+	Thu, 24 Sep 2026 09:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790243478;
+	bh=0HKf48JwOM0/bONEUgVSYt5R5KcIHOz7ZZ2M//mXHYc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=JxNDxRlyzjvQuf0YiJZ88ZB7db1YuuSWtoz4y9xcOB7MHN3lo5cofv+sMHOlM9sJ6
+	 oDtiD7WNF+97EYhY/EZvhAPUM00ywqj1ydLnqYTMdS9+3LMqYSf1S+GfmRhQOsw0FA
+	 S7r0FV5ZX/uQtSgf4kAqdWvSufjSENJk7LF1rh39kKxNKzrv2ocBXjOSr8NZtlWF9N
+	 3geX5VwIjxiJCAM/a5Q05/jSEM1cZEit5K9jln7OrDWJfHKLWeCruAjtSrv6gMU9eK
+	 gPpFRBKcukoBfXY+P/MCrkT1mN1L92aOlrSa8AOYdAQmBKNXB0/xdkhg417jjowieE
+	 zgWmelVG4j4SA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5677939EB064;
+	Thu, 24 Sep 2026 09:50:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-wiznet-link-gpio-v11-2-42a332517b30@marmottus.net>
-References: <20260924-wiznet-link-gpio-v11-0-42a332517b30@marmottus.net>
-In-Reply-To: <20260924-wiznet-link-gpio-v11-0-42a332517b30@marmottus.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Arthur Crepin Leblond <arthur@marmottus.net>
-X-Mailer: b4 0.15.2
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTEjLBf4y4Siu2iwbVH18d6vixFRfFlkBwnrNIfLoSiA6THOUXuxHkCV+kQPJfUtihY6IS07ihrBNpGO3LGviKc8LNOMkRXeypMNfcSrxd/tEVy/2UL7m3p76A2/5L7PXQmchic95PSAdePrNfeZCpoZnndGEQuruoUHGybRCkhO8TFtPAyVI7xG6aVoCvCniKf8YFsF70iaOmF+TacJLIPSipNytlQp6WYWen187J93xlN5AIu6PGrrGVNaOcHto+MJMr/Xgm+ad7VVrUquD2gf85seYuuN0CIVVemdURze1E4QBKtVu8L3+cXcVAAuOhiRsdSlPRqxcMUKOEpSGF/UdNDXuICNMdVUULFtNf/9kEHWirb99j+WFxeFhZ87zmS/YUWMYMdpAs/lfwPQIx3h8yYRFtFKNgz3cojHZuXUx4PERoqJzwSA07Mskgw8TdQ79V5oxwJZ2XXp1KPcViNo3vmiwGIx3aQzD2rGIYT5crMnnxORvQSm/+orhVC0VRzKCQ0nMK0oIHI/ZUIXRA5dIRIJ3qhodDDso+/MxWZkKdkVdUa/KUifrvRF/7rA7XRYijHWbKPKNouh0u5DZy4ASs9VzA1r5qNFcOrw1zy96nW4hCHfJuhAJRJHTkVAbPhbZ/ADP/P/CvMpFb38TJxdz0AeCJGUJmjrz/qDsp3Bwg
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] selftests/net: packetdrill: check rcv_ssthresh
+ vs
+ scaling_ratio changes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179024340815.1438212.13121071424202164830.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 09:50:08 +0000
+References: <20260918045021.42138-1-zcgao@amazon.com>
+In-Reply-To: <20260918045021.42138-1-zcgao@amazon.com>
+To: Nathan Gao <zcgao@amazon.com>
+Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, horms@kernel.org,
+ shuah@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-Add an optional link status interrupt which can be connected to the
-LINKLED pin on the device to detect link status changes. This second
-interrupt is only supported on wiznet,w5500.
+Hello:
 
-Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
----
-v9:
- - Simplify the interrupts description:
-  - Describe the 2 interrupts in the top-level properties
-  - Limit the maximum number to 1 on non-w5500 with a condition
-  - Somehow only adding minItems in the top-level and then describing
-    2 items in the if block led to dt checks errors.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-v8:
- - Remove Krzysztof Kozlowski reviewed-by tag after Sashiko review
-   changes
-  - Make the interrupts property conditional
+On Thu, 17 Sep 2026 21:50:21 -0700 you wrote:
+> tcp_measure_rcv_mss() recomputes tp->scaling_ratio from
+> skb->len/skb->truesize and updates tp->window_clamp accordingly. Commit
+> f5da7c45188e ("tcp: adjust rcvq_space after updating scaling ratio")
+> made that update go through tcp_set_window_clamp(), which also shrinks
+> tp->rcv_ssthresh, so every scaling_ratio dip cut the advertised window
+> as well. Commit 0e125ecfe20c ("tcp: do not change rcv_ssthresh in
+> tcp_measure_rcv_mss()") restored the plain window_clamp update.
+> 
+> [...]
 
-v7:
- - No changes
+Here is the summary with links:
+  - [net-next] selftests/net: packetdrill: check rcv_ssthresh vs scaling_ratio changes
+    https://git.kernel.org/netdev/net-next/c/6516ac5e6b16
 
-v6:
- - Fix DT error: use minItems
- - Remove conditional properties
-
-v5:
- - Make the DT interrupts property dynamic from the compatible one
- - Fix DT bindings errors
-
-v4:
- - Update interrupts in DT bindings
-
-v3:
- - Fix DT binding errors
-
-v2:
- - Convert device tree binding to YAML
----
- .../devicetree/bindings/net/wiznet,w5100.yaml      | 34 +++++++++++++++++-----
- 1 file changed, 27 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-index df83f90b3919..b0d1e1d699dc 100644
---- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-+++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-@@ -12,10 +12,6 @@ maintainers:
- description: |
-   This is a standalone 10/100 MBit Ethernet controller with SPI interface.
- 
--allOf:
--  - $ref: /schemas/net/ethernet-controller.yaml#
--  - $ref: /schemas/spi/spi-peripheral-props.yaml#
--
- properties:
-   compatible:
-     enum:
-@@ -24,8 +20,16 @@ properties:
-       - wiznet,w5500
- 
-   interrupts:
--    maxItems: 1
--    description: Main interrupt (INT pin on the device).
-+    minItems: 1
-+    description:
-+      The main interrupt (INT pin) is mandatory on all devices. The w5500
-+      additionally supports an optional second interrupt for link status changes
-+      (LINKLED pin). If it is not specified, link state changes will not be
-+      reported.
-+    items:
-+      - description: Main interrupt (INT pin on the device).
-+      - description:
-+          Optional interrupt for link status changes (LINKLED pin on w5500).
- 
-   reg:
-     maxItems: 1
-@@ -42,6 +46,21 @@ required:
-   - reg
-   - interrupts
- 
-+allOf:
-+  - $ref: /schemas/net/ethernet-controller.yaml#
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+  - if:
-+      not:
-+        properties:
-+          compatible:
-+            contains:
-+              enum:
-+                - wiznet,w5500
-+    then:
-+      properties:
-+        interrupts:
-+          maxItems: 1
-+
- unevaluatedProperties: false
- 
- examples:
-@@ -58,7 +77,8 @@ examples:
-             compatible = "wiznet,w5500";
-             reg = <0>;
-             interrupt-parent = <&gpio>;
--            interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
-+            interrupts = <25 IRQ_TYPE_LEVEL_LOW>,
-+                         <24 IRQ_TYPE_EDGE_BOTH>;
-             local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
-             pinctrl-0 = <&eth1_pins>;
-             pinctrl-names = "default";
-
+You are awesome, thank you!
 -- 
-2.55.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
