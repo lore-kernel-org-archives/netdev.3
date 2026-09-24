@@ -1,170 +1,195 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B3E470117
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790271173; cv=pass; b=nsT8VZh79XjOVjtzt5my44s7Izw2MafqoyBehTvLYvi0GTf/S/ZHtIFfB78vMlGwyBua0CJD8QdYFX5adz49adsVmcZpHtIqhuCRysWNGsG8kiIjw/ZbTYkNupzNmdSyA/1tvvF7jPRBGgzpfugw+n7jz3VA3bqyeEDG4PGOgw4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790271173; c=relaxed/simple;
-	bh=4vw8WUaNVrezkaun6gH0185QpgYoJRcAGCeoCt8zW/Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i0WalJTS/nXXXg1ARCuWN02dvv+MK6UVeF/f/tljQLQhVlE1fUlq2GPOjBAyyJdOrXJ6Ui4kEmZDeIviyfuCXJ0Jm6+xzML6OioXFhbhq6Zpq6bus5lN7gxVofs3OtgbDBN5aaqthx8AhuZEsK58pOvz5a+je+zKNaec1UbEQWA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eVUq3U8s; arc=pass smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E33E5304CF
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790271312; cv=none; b=HCnrff6gL8iUkMiRRrSFMQkTl55HPWpCdgWjyixIavCVfTUSzbTuZv6dlYlDJ6NiM0sltfMHsxBdYs8uwTuIQGy4K3xkDqvrqPEMhkXscMDOvorg3/BSFoxoz5CnQtYSKdrgAP7MlFVauFTXWqat7DyofcUOkVIva+rqyb6QkV0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790271312; c=relaxed/simple;
+	bh=/0chTZvN7Ky+TA9HvI41ZWJ8tmuDbI07h2tw1R5aq3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JuBFxDJXiOWGja4xjEPsv5HAr/ulZnA9/TQFwuEcbhpdBvqYNm56aqnL2zlKuCFY6/7TlZnm/KwQHnsA20Bem2E4zuGu/f1894NxvtCaLuvIhKdtF0tCXYbbYljDwHEpMgvlQw4vtg5oWZ8Rte74o8rVrQ16llixHHrq3SVGxqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=f0NyiEPQ; arc=none smtp.client-ip=74.125.227.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eVUq3U8s"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-52faa58bff5so19941cf.0
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:32:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790271171; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BXjbTrCiMgln+T3DOlM7YUb24liHJPD4G9UEdxL1LipHzaTT2veU6WLIO1THp8ca+w
-         srM+fwwV2wZ6Tkv2ktyZPH2OM3cFLK/Nhllx4jYOWShqqze9Jfdthg9OrwCQM/3WQj5i
-         QsW4ssfZ5vsWGsEyYWyszutA5fg3XDDGpUME6E//GWZVnq0b0NlIHXPwwreNgfcVqDR2
-         SwM6CMKgtjTR8i9W5Sdt5O9SnDf+R3vKQ4I/Ja5VxzebdbUzOxPogrSs2YkPWqc7FByi
-         2ymH8YqoYBMszDMHQAGk+DTU0lsJo/y9XS2r0fTbRm6AMsuuhoZwnRxLlXE3uqx/Kd3y
-         7I2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ckcM5jvc9cvA1Hjl+szrR9oRmjzSCgbrjKexhm0fHvo=;
-        fh=yxHySWG82C3RwO+Ub1MUEHa4rW+DHXEF+KbTxJnCLZc=;
-        b=TohKXF5qZeN120x8TVee3HBkqzSzcMCd/hh8GuytEmGQ4YOZ1BG5tMRFQDJv6XrCpC
-         rPY7AqEGZiDeTlcJj9HR+bjDzV2MmqxxseqsmmA+u87wutjwryyjaFuMFn4aYcTEW4v/
-         vNNyevuIAc+/S2OjSdIKPlQiotciHkMLQsSDZNDt4NgggsXVG2qBb2aLwELt+7SJpu5+
-         Gpy4xuGWPN0WyQwH5lnHbYOSOM32xzJ4UUnzPlZCoibFDYzlm69/6ENnA8DaftC6klVS
-         xT91r9ZQpmNijunHDjCaM9qtR+7rBNK+tga+9/iQ26foCH0M4LyNV69NLFGW5FiQc2Kb
-         F7Tg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="f0NyiEPQ"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-39b5b07ec78so103962a91.3
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:35:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790271171; x=1790875971; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ckcM5jvc9cvA1Hjl+szrR9oRmjzSCgbrjKexhm0fHvo=;
-        b=eVUq3U8s13Zgk86vRJ6LospBhkWklukGoQIXse4z74kPVAfscBh9+q6TsX5k2sew9z
-         /lHBiKueo22wjRbytIpFfo9BfeLOHMK3zQt0124XzdmjnXh9nyK7Dvr4y4aqElW5eUSf
-         6vK/p1k0cMYkjdHvX5vbopSiwsEZ/cEJLP1+nyuS5L/nd7Wpn8edjAESQcfKiBIRYdNo
-         KJ1065xlp5cMGu5IIzPCPC0rVrKnmmIbi/cV2Rg2K62g7zKQkH9hqLg7cS92+kBu4Ikt
-         h5JJvpGSqs8LrkpX43OLCWWANmINrXzEdBKQfDRsKhgPuDluOtpUtBCKIfMwYCJ1/U9D
-         +GWw==
+        d=trailofbits.com; s=google; t=1790271309; x=1790876109; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XmTxiFdIaWCCF0HjMXWXx42hXA6kt9BLAaeoJ6xE+TU=;
+        b=f0NyiEPQQwTtinupWvlQRcBUbJaLkJ6RMStEfGPzGwImkmU30Pp2fk0/e6FucXnB7p
+         7CmPTitA8K5bQqlP69h+JcfHcEf3cMm+nz2oWyXQoDIHc3lccSDZu6I33/pIhVq3q+fX
+         Md8wJ/432kEl4tTeNxWTLKXMM3D1troMSujbytquQHiVW2aXy7B4LuZg6oKTYZURGR4R
+         6wIO8unTyugSQ+5Nb20qCcD2eBVleeEFRWt2cCCsU2fBRmk7gW2nhmPjJFfnwBfEVVd4
+         NWfv3CohdDLeQc3oRj4TFKNyKAjj2Ns0/Um39jzdVCHdnPfvB3ZJxkzD1A0jLMNP42HI
+         CQ9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790271171; x=1790875971;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ckcM5jvc9cvA1Hjl+szrR9oRmjzSCgbrjKexhm0fHvo=;
-        b=uRxyBEjr/LzgHGURXN3TvR+R0OkEPxp0wyBmqKkWzjm2B8PSt19tGYh9nmXyVOMhFF
-         3E48/+I5MYOeihsjZzQ8kBalEM0QEyfoaa8vIF5sQoCVp9kKFtlWmES1m80huY/NTVRt
-         4bwtSKhgDgFxNdrZ68rLhMr6kPJ695cIfHKLAcX14Lgb9JOf6I7Y+8qgSwuvjSiO9H4Z
-         9fhx40P4O4pjl6cWD5VHJ69zg6XRTaei7YwxYmkiKuAMiHulAInsSLHc8O2Q1pTe9z+6
-         9mF6G89lpYb+LMoaGRb358ZX9kC5WqD3kaV5q1aBUYlkm5SaBxYtu6tOjE+Q/exmqIP6
-         dtdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxmIBZM4QE99epTcv9AetB+vBVE0sIX5oWls4gY8oi7QWkDPSZXNlVP6oBySvbOo38xQgOolIU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kLVXaZoCPIigVSPN2jIgB6HhnhTNCe9LELUcGa7TRsIupyfCoZ
-	hKuKsuGTSqNvSaPoTx7qZDinwag9NaXfcuHWLRwn9X3x+z8EV+pA51au0o0mg9sCHFaxBSFEN5s
-	Q/GzGiL+yG0vdm93TVE5zPbpF2fYfpQJ1nHgY2TyA
-X-Gm-Gg: AYBFou02No6pLT7EOSmYTZoVcA2T7bRFlP28+otlg5Oexy65KOIbJZjgtPXby8YOx9z
-	XWwIPCYGQlmYtMLtYoE2kom7yHrJWBBRwXliZbsnlmdmx6XuMeJXK/Asam/EBnPbJCbBMFvrQyt
-	ZXvbFK1hJv3gEaC0ZoUEkKaDaHgnv3OcnfNaQ57aZadMluC16vuIpFTbc1qJoK90N/CMnhc0O6k
-	b90fS2t5ZP2B2LQM+7zrDpfL28fyfl/wGxXAxiJfXq9rHcmmRgK1GbSf4usMMaqz3L6WDV7ZPth
-	CSgbvNnud/JgUYREfUdZULg0QtdGfP0HfxbpL+L+B/B0oiLI/6KRymfrl2+hpVdMf9LCFIwAvo8
-	YXtjpD0LMFQ==
-X-Received: by 2002:a05:622a:c7:b0:530:e335:4ef with SMTP id
- d75a77b69052e-5330ab0ee62mr349581cf.2.1790271169483; Thu, 24 Sep 2026
- 10:32:49 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790271309; x=1790876109;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XmTxiFdIaWCCF0HjMXWXx42hXA6kt9BLAaeoJ6xE+TU=;
+        b=aVDj29vAwC/Mp+JNYENNEjKhYAAF/yApAQRJmsrzEQYMlJbB9GtddB6SlO/kOn6xrO
+         WucDsfJoh0/0tbA7mvf11UCKetuX92tSWExk0iIEUEbzQY4I8S3kfEmuGtavfw1laZ/h
+         y1BBvgo3E0eVC3iiyBwMQ1T9QtFB0fdjO5nWvHBPc27JE2+9GEj1eWEvx0xS/sWSxvol
+         JdKD3sWB/dtY0kjg3QqjbMdnut+DMZ6Z2BGj7b8Nhz9Awc72ukBJqUF1Q9Sph7nfolYI
+         Bi3jnr7rEGYQBJtLIQXaxSbhLYBSx8wB+/oDvr44Is/S8lBk4+mqicb/bJ6g2lqw4JYP
+         ZYuw==
+X-Forwarded-Encrypted: i=1; AKwUvByBikMaPmL49lf1c6aASPVFV2Plf9OsNl88kGcE+zpAWK0VEGiTsn30rascEgbrOOoNb+AQLfA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKT8+kol5SAJMKOxRNX72QjNmn3jZeu16xlJb3VxtqwdN9k1qj
+	JxLrgfqvrzrlgIvneyIZcCZkV/pdgvwLe7WuTv8qbqSdBVZb3QJxUQQ4e4yw7OR9nAk=
+X-Gm-Gg: AYBFou1iVdmb1YoYMm8DpXYzVuC2+loYmGhdqCg1JjYqIZC7aqk29wrLXdHlmrOJDKF
+	q34fGSIyIEh8nYtzB9kSmIW5ukmhGIhCGvve3ljjW9vf0M12OJXdXFeIYL+zr6jkvc7EQXbP9Z1
+	MBnebgKCb49+vcazuawt7p0H1Kwzo/5NCjyxjB1gIrNOXrjwXYi2jiG41ViK2oMvbZ9pIA27rEy
+	d9vRLSud88YP2rFAE+kSFpOzmn+dCozyCr6LAagwuQ9uNmo8sIM+E1LiOiaGcgNimTIQBzNOT7n
+	IMLxpvQA5vcvLey5Wqt/oJKbAXfgdd/6mMDAqRWyCNtMQbbqJEulZPpZazjB4vC0ZH2DSzmg8ju
+	TJ67e5LOTlQbNIBv8BOA/RTnsXk6DNmthciczAUXP7s1hdh6KhAtJFcv2zb/lgTF6I42yt75DoX
+	DerdkAtnafpL7xLY0b2Yyd6J6S3fZ5sBz0r7PoHumAiwrG/yblOjRgTwyUtOpQaKcIDgWqGL+9J
+	yulwFBXkdjwKWd9ef8yZBBhxrK/qIj+JL7LZvrr7ABMNv5S63fHFbNwKikY8N+KktZGLcBa
+X-Received: by 2002:a17:90b:3c45:b0:3a0:2646:7495 with SMTP id 98e67ed59e1d1-3a09897046fmr3104409a91.53.1790271309276;
+        Thu, 24 Sep 2026 10:35:09 -0700 (PDT)
+Received: from localhost.localdomain ([2603:8001:5f01:8bab:f875:3165:4649:e818])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a097390328sm6144943a91.16.2026.09.24.10.35.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 24 Sep 2026 10:35:08 -0700 (PDT)
+From: Artem Dinaburg <artem@trailofbits.com>
+To: stable@vger.kernel.org
+Cc: Artem Dinaburg <artem@trailofbits.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Roi Dayan <roid@nvidia.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Vlad Buslov <vladbu@nvidia.com>
+Subject: [PATCH 6.1.y] net/mlx5e: TC, Fix internal port memory leak
+Date: Thu, 24 Sep 2026 13:35:04 -0400
+Message-ID: <20260924173505.87763-1-artem@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260924123602.1979090-1-edumazet@google.com> <20260924123602.1979090-2-edumazet@google.com>
-In-Reply-To: <20260924123602.1979090-2-edumazet@google.com>
-From: Wei Wang <weiwan@google.com>
-Date: Thu, 24 Sep 2026 10:32:38 -0700
-X-Gm-Features: AclHuK-wB4f7peiyjJ46Fhk2bFtuq-JlRxBzV46itJgC2VAG0Sj10V06TyAyWbc
-Message-ID: <CAEA6p_DT-fZxWLjaejMMo-8zOnMeDiiApq4Q3x85zQVjY-1DOw@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net: restrict SO_RESERVE_MEM to TCP sockets and
- cap max value
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Cai Xinchen <caixinchen1@huawei.com>, netdev@vger.kernel.org, edumazet@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 5:36=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> Commit 2bb2f5fb21b0 ("net: add new socket option SO_RESERVE_MEM") and
-> commit d00c8ee31729 ("net: fix possible NULL deref in sock_reserve_memory=
-")
-> only checked sk_has_account(sk), which is true for both TCP and UDP
-> sockets.
->
-> However, SO_RESERVE_MEM and sk_unused_reserved_mem() are currently only
-> supported by TCP:
-> - On UDP sockets, sk->sk_forward_alloc is protected by
->   sk->sk_receive_queue.lock, whereas sock_reserve_memory() and
->   sock_release_reserved_memory() only acquire lock_sock(sk). Concurrent
->   UDP packet reception/release and setsockopt(SO_RESERVE_MEM) corrupt
->   sk_forward_alloc and memcg accounting.
-> - udp_rmem_release() reclaims excess sk_forward_alloc without
->   accounting for sk_unused_reserved_mem(sk).
->
-> Restrict sock_reserve_memory() to TCP sockets (sk_is_tcp(sk)) for now.
-> Supporting SO_RESERVE_MEM for UDP (acquiring sk_receive_queue.lock and
-> honoring sk_unused_reserved_mem() in udp_rmem_release()) can be done in
-> a future net-next series if needed.
->
-> In addition, reject val > INT_MAX >> 1 with -EINVAL in
-> sk_setsockopt(SO_RESERVE_MEM). Without an upper bound, values near
-> INT_MAX cause sk_mem_pages(delta) and (pages << PAGE_SHIFT) to overflow
-> 32-bit signed int, corrupting sk->sk_forward_alloc and
-> sk->sk_reserved_mem.
->
-> Fixes: 2bb2f5fb21b0 ("net: add new socket option SO_RESERVE_MEM")
-> Reported-by: Cai Xinchen <caixinchen1@huawei.com>
-> Closes: https://lore.kernel.org/netdev/5a88421d-10ef-4fca-9acb-85a27a3c11=
-73@huawei.com/
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  net/core/sock.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
+From: Jianbo Liu <jianbol@nvidia.com>
 
-Reviewed-by: Wei Wang <weiwan@google.com>
+[ Upstream commit ac5da544a3c2047cbfd715acd9cec8380d7fe5c6 ]
 
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index d23333bb4f3fafa19f58095522ef10d918d92496..cfc6700a62e6fb904f4c83205=
-09d7360c6223b1f 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -1034,7 +1034,7 @@ static int sock_reserve_memory(struct sock *sk, int=
- bytes)
->         bool charged;
->         int pages;
->
-> -       if (!mem_cgroup_sk_enabled(sk) || !sk_has_account(sk))
-> +       if (!mem_cgroup_sk_enabled(sk) || !sk_is_tcp(sk))
->                 return -EOPNOTSUPP;
->
->         if (!bytes)
-> @@ -1661,7 +1661,7 @@ int sk_setsockopt(struct sock *sk, int level, int o=
-ptname,
->         {
->                 int delta;
->
-> -               if (val < 0) {
-> +               if (val < 0 || val > INT_MAX >> 1) {
->                         ret =3D -EINVAL;
->                         break;
->                 }
-> --
-> 2.56.0.rc1.310.g51773c2048-goog
->
+The flow rule can be splited, and the extra post_act rules are added
+to post_act table. It's possible to trigger memleak when the rule
+forwards packets from internal port and over tunnel, in the case that,
+for example, CT 'new' state offload is allowed. As int_port object is
+assigned to the flow attribute of post_act rule, and its refcnt is
+incremented by mlx5e_tc_int_port_get(), but mlx5e_tc_int_port_put() is
+not called, the refcnt is never decremented, then int_port is never
+freed.
+
+The kmemleak reports the following error:
+unreferenced object 0xffff888128204b80 (size 64):
+  comm "handler20", pid 50121, jiffies 4296973009 (age 642.932s)
+  hex dump (first 32 bytes):
+    01 00 00 00 19 00 00 00 03 f0 00 00 04 00 00 00  ................
+    98 77 67 41 81 88 ff ff 98 77 67 41 81 88 ff ff  .wgA.....wgA....
+  backtrace:
+    [<00000000e992680d>] kmalloc_trace+0x27/0x120
+    [<000000009e945a98>] mlx5e_tc_int_port_get+0x3f3/0xe20 [mlx5_core]
+    [<0000000035a537f0>] mlx5e_tc_add_fdb_flow+0x473/0xcf0 [mlx5_core]
+    [<0000000070c2cec6>] __mlx5e_add_fdb_flow+0x7cf/0xe90 [mlx5_core]
+    [<000000005cc84048>] mlx5e_configure_flower+0xd40/0x4c40 [mlx5_core]
+    [<000000004f8a2031>] mlx5e_rep_indr_offload.isra.0+0x10e/0x1c0 [mlx5_core]
+    [<000000007df797dc>] mlx5e_rep_indr_setup_tc_cb+0x90/0x130 [mlx5_core]
+    [<0000000016c15cc3>] tc_setup_cb_add+0x1cf/0x410
+    [<00000000a63305b4>] fl_hw_replace_filter+0x38f/0x670 [cls_flower]
+    [<000000008bc9e77c>] fl_change+0x1fd5/0x4430 [cls_flower]
+    [<00000000e7f766e4>] tc_new_tfilter+0x867/0x2010
+    [<00000000e101c0ef>] rtnetlink_rcv_msg+0x6fc/0x9f0
+    [<00000000e1111d44>] netlink_rcv_skb+0x12c/0x360
+    [<0000000082dd6c8b>] netlink_unicast+0x438/0x710
+    [<00000000fc568f70>] netlink_sendmsg+0x794/0xc50
+    [<0000000016e92590>] sock_sendmsg+0xc5/0x190
+
+So fix this by moving int_port cleanup code to the flow attribute
+free helper, which is used by all the attribute free cases.
+
+Fixes: 8300f225268b ("net/mlx5e: Create new flow attr for multi table actions")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+
+[ Backport to 6.1.y: this tree already releases the primary flow-attribute
+  references in mlx5e_tc_del_fdb_flow() and lacks
+  mlx5_free_flow_attr_actions(); release only cloned post-action attribute
+  references from the corresponding free_flow_post_acts() cleanup. ]
+Assisted-by: LLM
+Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
+---
+Hi Greg, Sasha, and mlx5e maintainers,
+
+I am continuing CVE backports still missing from 6.1.y.
+This fix is inherited by v6.6 and every later mainline release, but 6.1.y
+still has the affected code. The target-specific adjustment is described
+in the bracketed note above.
+
+Could you please queue it for 6.1.y?
+
+Thanks,
+Artem Dinaburg
+
+CVE: CVE-2023-53999
+
+Build: This patch was included in an x86_64 allmodconfig and
+CONFIG_WERROR=y build.
+It produced vmlinux and modules with no new warnings or errors.
+
+AI assistance: An LLM helped find, adapt, and validate this
+backport; I reviewed the patch and test output.
+
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 05888942ef276a..d2f226a09a0c7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -3692,6 +3692,7 @@ free_flow_post_acts(struct mlx5e_tc_flow *flow)
+ {
+ 	struct mlx5_core_dev *counter_dev = get_flow_counter_dev(flow);
+ 	struct mlx5e_post_act *post_act = get_post_action(flow->priv);
++	struct mlx5_esw_flow_attr *esw_attr;
+ 	struct mlx5_flow_attr *attr, *tmp;
+ 	bool vf_tun;
+ 
+@@ -3713,6 +3714,16 @@ free_flow_post_acts(struct mlx5e_tc_flow *flow)
+ 				mlx5_modify_header_dealloc(flow->priv->mdev, attr->modify_hdr);
+ 		}
+ 
++		if (mlx5e_is_eswitch_flow(flow)) {
++			esw_attr = attr->esw_attr;
++			if (esw_attr->int_port)
++				mlx5e_tc_int_port_put(mlx5e_get_int_port_priv(flow->priv),
++						      esw_attr->int_port);
++			if (esw_attr->dest_int_port)
++				mlx5e_tc_int_port_put(mlx5e_get_int_port_priv(flow->priv),
++						      esw_attr->dest_int_port);
++		}
++
+ 		list_del(&attr->list);
+ 		kvfree(attr->parse_attr);
+ 		kfree(attr);
+-- 
+2.39.5
