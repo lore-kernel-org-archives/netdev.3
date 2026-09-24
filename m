@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA61A3C3C19;
-	Thu, 24 Sep 2026 14:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6C6366546;
+	Thu, 24 Sep 2026 14:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790260173; cv=none; b=KQELH+yn0cHTM5yHyIculPi8nchuXMNOqfh/j6pVdznCXXNFu/kenUeLvkeaTbwE18iK287gAPABWsbG3ElSKpAGjoNYRnuYfBJF37sra3JkcLiMV1Dh+PUn2SPNmMk/GGHwk37W/I3HjTC3qnBCejwJEltvdpGfBvGueR+FHPU=
+	t=1790260176; cv=none; b=CLNlMNpu4CIJyrORqSYOA1rN0aAUUK4bCFj3r7h3tScGEvh639BmwjfLB5Fl2djFSTZG7za1x6k0jgmmjynj6M6MR+94XX6MMwyt7TRKI+7Gj+3UrrAwTHQ9UpQqxncf/6TR/Tra8WSgH2eky6UcGBp3UCyxg2SIuEKu1i6IDGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790260173; c=relaxed/simple;
-	bh=M/eVI3GT2Qx3mwyqSrlBVBqTfy5pDdgY+b+W/osSVEw=;
+	s=arc-20240116; t=1790260176; c=relaxed/simple;
+	bh=y+HOsHmcvk2FB9sXpLl3UGfNtNCH0XrHJajJt7vo3gQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bOvetR/0WU8G40uTGAhLSkCQh8LOaikC4hGbdUb6CStg4W1nLFbLD9XdI8hMu4ks6V/a9lO+VCdt7toZqx8yT+Og2l18bX4+J61is4tnxm+DTVm72jpn1AyYWIs/NgRRqw63jbmsKqMm1QXhqoQmGbBfhdBQRBvXtMHX8ssQzls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZAH2OUua; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=CLUI4c90itdfHS4pDekV2lZEHidu/U2LlGlgr/PxeYYOmSYI0EWlvpL3xxLjNixU5UsPxIsrigFhcKu74cYJo4ic4ckujTBCIj04uDta8N8rygZCRkX9a8OeAeeiwN08i209vGrilzBlkdEq3nCcEcJ1KfKCt9M3ISAmpsy0K5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/W5Wut5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZAH2OUua"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83861F000FF;
-	Thu, 24 Sep 2026 14:29:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/W5Wut5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404201F00893;
+	Thu, 24 Sep 2026 14:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790260165;
-	bh=IJSSFJHh2/h+tOxCzY/0ZdCc/J3X1Gp4H97GJOMbqw0=;
+	s=k20260515; t=1790260170;
+	bh=5xPGLMh4eCNlzVtbo0R1Sk4v+fg1q+RbjrViBKO8yfA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZAH2OUuafN8GwTc2Rmhr6y3B4PluSDF6UPunw1OZ3JvlZeryoTABZHvCxttR/0TN0
-	 7YwiT6AKF1wwwWAzKK0v1a6eEF0Rf/+doHV9oDbBykJwKuziT/sbuxRJe4mIbyfSpq
-	 wxbKB8c5lBOH3D5CfEQHeA4aSX/PTRpWaB164wNVmkjtMPmFakYGtAZ7m5SMkuIrgy
-	 HJ2UhP+qtTx8zgBVeY75tuuf8e1yq9HO4eJpaRBcKZbOzZcSGQucEdIuYPR+hbYm8u
-	 2wl199hbMI2v/L3UEblNp6AfA8HHr0IMBRH8E9wnYsy00ofMXdx037siBQLP1ZwI+8
-	 GFXvHkSwFicAQ==
-Subject: Re: [PATCH net-next 2/9] ptp: ocp: do not cache EEPROM content after
- a failed TMC bus hand-back
+	b=B/W5Wut5WmgTS8+x6eR7Ifdd0zRQGKBlX3O8MuDrcdeWOUkWNAzZPa986XNQ4aFj7
+	 3gWzmCA75uEaMmCwa2zQUApu90CT6DTxdOjB0Z8K9N428yg6Lajnb+KAV4XcOrA9fy
+	 1ks1YyUw2F+t60v6RQZL7xPMpnTxJ2JgpSyV+dWXSqwpnvhC1RsNoFZG0yFhTc/piB
+	 jeNa/w+bSS8gL/Fpe3hz7lVKmFuWBVS1x/hlQ6xeQRs40eAGdoQBX30a+BZXm/HOcR
+	 AIRdR/eLVwbjaRgoabqZTOtVQCaB0bh1V/66LrWb5h9YmnvKjn7B2qwwxAoYzn4gSF
+	 /xRa0uj6Rz2ow==
+Subject: Re: [PATCH net-next 5/9] ptp: ocp: correct the CPLD bookkeeping
+ comments and the flash progress
 From: netdev-bot+sashiko@kernel.org
 To: maimon.sagi@gmail.com
 Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
@@ -36,11 +36,11 @@ Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
  arkadiusz.kubalewski@intel.com, corbet@lwn.net, rdunlap@infradead.org,
  skhan@linuxfoundation.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 14:29:24 +0000
-Message-ID: <179026016433.2160803.12377107504343292644@kernel.org>
-In-Reply-To: <20260922142829.57740-3-maimon.sagi@gmail.com>
-References: <20260922142829.57740-3-maimon.sagi@gmail.com>
-X-sashiko-severity: High
+Date: Thu, 24 Sep 2026 14:29:28 +0000
+Message-ID: <179026016884.2160803.3459773408972054792@kernel.org>
+In-Reply-To: <20260922142829.57740-6-maimon.sagi@gmail.com>
+References: <20260922142829.57740-6-maimon.sagi@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,7 +53,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,203 +61,175 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] TOCTOU: the new `cpld_bus_stuck` gate in `ptp_ocp_read_eeprom()`
-  (drivers/ptp/ptp_ocp.c:2033) is a single snapshot taken before any I2C…
-- [Medium] `cpld_bus_stuck` is latched on a single hand-back timeout
-  (drivers/ptp/ptp_ocp.c:4555) and is cleared in exactly one place:…
-- [Medium] The two driver-owned publishers of the cached EEPROM identity
-  now disagree about the new "read refused" outcome, and the patch…
+- [Medium] Inconsistent memory-access annotation for cpld_i2c_adap_nr:
+  the patch rewrites the struct comment to state that readers of…
+- [Medium] The new cpld_id_tried comment claims "the worker reads it
+  unlocked, where a stale value only costs one extra attempt", but the…
+- [Low] Stale comment naming the wrong work item: CPLD_ID_MAX_ATTEMPTS is
+  documented as "/* one per sync_work tick */" (line 4406), but…
 
 --
 
-ptp: ocp: do not cache EEPROM content after a failed TMC bus hand-back
+ptp: ocp: correct the CPLD bookkeeping comments and the flash progress
 
-Adds a cpld_bus_stuck flag to struct ptp_ocp which is set when
-adva_x1_mblaze_release() fails to get the TMC segment handed back, and
-cleared when a later adva_x1_bus_claim() is granted.  While the flag is
-set, ptp_ocp_read_eeprom() returns without reading, so the driver does
-not cache or publish a serial number and board id it may have read off
-the TMC segment.
+This rewrites the struct ptp_ocp member comments for cpld_i2c_adap_nr and
+cpld_id_tried to describe serialised writers with lock-free readers, and
+converts the cpld_id_tried stores to WRITE_ONCE().  It also changes the
+CPLD flash progress notification to report bytes written rather than the
+offset of the page just written.
 
 > diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index 4a58bcc146487..510083dc750a5 100644
+> index 45313143b6f76..e10f6b5149c93 100644
 > --- a/drivers/ptp/ptp_ocp.c
 > +++ b/drivers/ptp/ptp_ocp.c
-
-[ ... ]
-
-> @@ -2022,6 +2024,18 @@ ptp_ocp_read_eeprom(struct ptp_ocp *bp)
->  	if (!bp->i2c_ctrl)
->  		return;
->  
-> +	/* A hand-back that timed out leaves the controller possibly still
-> +	 * routed to the TMC segment.  Reading now would latch whatever
-> +	 * answers 0x50/0x58 there as the serial and board id, and those are
-> +	 * published over the unprivileged devlink info path, so refuse
-> +	 * rather than cache something that was never read from the EEPROMs.
+> @@ -428,9 +428,12 @@ struct ptp_ocp {
+>  	/* adva_x1 CPLD I2C (internal use only) */
+>  	/* serialises CPLD operations */
+>  	struct mutex		cpld_lock;
+> -	/* guards cpld_i2c_adap_nr against the bus notifier */
+> +	/* serialises the cpld_i2c_adap_nr writers against each other */
+>  	spinlock_t		cpld_adap_lock;
+> -	/* I2C adapter nr; -1 if absent.  Under cpld_adap_lock */
+> +	/* I2C adapter nr, -1 if absent.  Writers hold cpld_adap_lock;
+> +	 * readers take no lock and re-validate what they got, since the
+> +	 * number can be recycled - see adva_x1_bus_claim().
 > +	 */
-> +	if (READ_ONCE(bp->cpld_bus_stuck)) {
-> +		dev_dbg(&bp->pdev->dev,
-> +			"skipping EEPROM read, TMC bus routing unknown\n");
-> +		return;
-> +	}
-> +
-
-[Severity: High]
-Can this test still let the bad value be cached?  The flag is sampled
-once here, before any transfer, and neither caller of
-ptp_ocp_read_eeprom() holds bp->cpld_lock, so nothing keeps the answer
-valid for the duration of the nvmem_device_read() loop that follows.
-
-What actually keeps EEPROM traffic off a TMC-routed controller is the
-i2c root adapter lock, and the comment above adva_x1_bus_claim() says so:
-
-drivers/ptp/ptp_ocp.c:
-/*
- * Claim the TMC bus.  The adapter lock is held across the handshake to keep
- * the EEPROM, nvmem and at24 paths off the controller while it is routed
- * away from the EEPROMs; an EEPROM read blocks until the claim is dropped.
- */
-
-So doesn't this ordering remain reachable?
-
-CPU0 ptp_ocp_devlink_info_get() / serialnum_show()
-  ptp_ocp_read_eeprom()
-    READ_ONCE(bp->cpld_bus_stuck)   /* false, passes the gate */
-    nvmem_device_read()             /* blocks on the adapter lock */
-
-CPU1 ptp_ocp_cpld_work() -> adva_x1_cpld_read_id()
-  adva_x1_bus_claim()
-    i2c_lock_bus(adap, I2C_LOCK_ROOT_ADAPTER)
-    adva_x1_mblaze_acquire()        /* granted, routing on TMC */
-  adva_x1_bus_release()
-    adva_x1_mblaze_release()        /* -ETIMEDOUT */
-    WRITE_ONCE(bp->cpld_bus_stuck, true)
-    i2c_unlock_bus(adap, I2C_LOCK_ROOT_ADAPTER)   /* releases CPU0 */
-
-CPU0 then completes its transfers over a controller the driver has just
-declared possibly still routed to the TMC segment, stores the bytes into
-bp->serial and bp->board_id through BP_MAP_ENTRY_ADDR() and sets
-bp->has_eeprom_data = true.  Since both callers only call in while
-!has_eeprom_data, is there anything that can correct that value later?
-
-The same window also exists between two iterations of the map loop, where
-the flag can flip to true after the first nvmem_device_read() has already
-returned.
-
-Would checking the flag (or the MBLAZE_GRANT bits) under bp->cpld_lock,
-or re-checking it before setting has_eeprom_data, close this?
+>  	int			cpld_i2c_adap_nr;
 
 [Severity: Medium]
-The two driver-owned publishers of the cached identity now behave
-differently on this new "read refused" outcome.
-ptp_ocp_devlink_info_get() re-tests the flag and emits nothing:
+The new comment states that readers of cpld_i2c_adap_nr take no lock, and
+the same reasoning is used in this patch to convert the cpld_id_tried stores
+to WRITE_ONCE().  Should the cpld_i2c_adap_nr stores get the same treatment?
 
-	if (!bp->has_eeprom_data) {
-		ptp_ocp_read_eeprom(bp);
-		if (!bp->has_eeprom_data)
-			return 0;
+The three readers are all unlocked and marked:
+
+adva_x1_cache_i2c_adap()
+	if (!bp->has_cpld || !bp->i2c_ctrl ||
+	    READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
+		return;
+
+adva_x1_bus_claim()
+	adap = i2c_get_adapter(READ_ONCE(bp->cpld_i2c_adap_nr));
+
+ptp_ocp_cpld_work()
+	if (READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
+		adva_x1_cpld_read_id(bp);
+
+while every store stays a plain store:
+
+adva_x1_forget_i2c_adap()
+	scoped_guard(spinlock, &bp->cpld_adap_lock) {
+		if (nr < 0 || bp->cpld_i2c_adap_nr == nr)
+			bp->cpld_i2c_adap_nr = -1;
 	}
 
-serialnum_show() does not:
+adva_x1_cache_i2c_adap()
+	scoped_guard(spinlock, &bp->cpld_adap_lock) {
+		if (bp->cpld_i2c_adap_nr < 0)
+			bp->cpld_i2c_adap_nr = i2c_verify_adapter(child)->nr;
+	}
 
-	if (!bp->has_eeprom_data)
-		ptp_ocp_read_eeprom(bp);
+ptp_ocp_i2c_notifier_call()
+	scoped_guard(spinlock, &bp->cpld_adap_lock)
+		bp->cpld_i2c_adap_nr = adap->nr;
+	...
+	scoped_guard(spinlock, &bp->cpld_adap_lock) {
+		if (bp->cpld_i2c_adap_nr == adap->nr)
+			bp->cpld_i2c_adap_nr = -1;
+	}
 
-	return sysfs_emit(buf, "%pM\n", bp->serial);
+cpld_adap_lock excludes the other writers only, so an i2c adapter add or
+remove running the notifier while ptp_ocp_cpld_work() or
+adva_x1_cache_i2c_adap() performs its READ_ONCE() is a plain-store against
+marked-load pair that KCSAN reports on the write side.
 
-So when the new gate skips the read, doesn't /sys/class/timecard/ocpN/serialnum
-still print 00:00:00:00:00:00, or bytes left behind by a partially completed
-read?  ptp_ocp_read_eeprom() writes each map entry directly into
-bp->serial/bp->board_id and its fail: path only logs, leaving the entries
-already stored in place while has_eeprom_data stays false.
+An aligned int is not expected to tear on supported architectures, and
+adva_x1_bus_claim() re-validates via adap->dev.parent, so is the remaining
+issue just that the annotation is now inconsistent with the contract the
+comment describes?
 
-Documentation/ABI/testing/sysfs-timecard describes the attribute as
-"(RO) Provides the serial number of the timecard." with no encoding for an
-unknown value.
+> @@ -442,9 +445,12 @@ struct ptp_ocp {
+>  	u32			cpld_usercode;
+>  	/* cpld_usercode has been read since the last flash */
+>  	bool			cpld_usercode_ok;
+> -	/* one-shot ID read finished, successfully or not; under cpld_lock */
+> +	/* one-shot ID read finished, successfully or not.  Written under
+> +	 * cpld_lock; the worker reads it unlocked, where a stale value only
+> +	 * costs one extra attempt.
+> +	 */
+>  	bool			cpld_id_tried;
+> -	/* failed ID read attempts so far; under cpld_lock */
+> +	/* failed ID read attempts so far; cpld_lock */
+>  	unsigned int		cpld_id_attempts;
 
-The unconditional sysfs_emit() itself predates this patch and is unchanged
-at the baseline, so this is not a new code path - but with the new outcome
-the emitted value is one the driver itself now considers invalid.  Should
-serialnum_show() also test has_eeprom_data before emitting, given the
-commit aims to stop the driver publishing a value that was never read from
-the EEPROMs?
+[Severity: Low]
+While the annotation of cpld_id_attempts is being updated here, should the
+comment on the macro that bounds it be updated too?  It still says:
 
-> @@ -4537,6 +4551,8 @@ static int adva_x1_bus_release(struct ptp_ocp *bp)
->  		return 0;
->  
->  	err = adva_x1_mblaze_release(bp);
-> +	if (err)
-> +		WRITE_ONCE(bp->cpld_bus_stuck, true);
->  	bp->cpld_adap = NULL;
->  	kfree(bp->cpld_buf);
->  	bp->cpld_buf = NULL;
+#define CPLD_ID_MAX_ATTEMPTS  10     /* one per sync_work tick */
+
+cpld_id_attempts is incremented only in adva_x1_cpld_read_id(), whose only
+caller is ptp_ocp_cpld_work(), and the comment above that worker says the
+opposite in the same file ("Kept off ptp_ocp_sync_work()").
+ptp_ocp_sync_work() no longer touches any CPLD state, so the budget is
+consumed one per cpld_work tick.
+
+The comment was accurate before the CPLD identification was moved off the
+sync worker earlier in this series; the tree now has two comments about the
+same counter naming different workers.
 
 [ ... ]
 
-> @@ -4632,10 +4648,17 @@ static int adva_x1_bus_claim(struct ptp_ocp *bp)
->  	bp->cpld_adap = adap;
->  
->  	ret = adva_x1_mblaze_acquire(bp);
-> -	if (ret)
-> +	if (ret) {
->  		adva_x1_bus_release(bp);	/* keeps the acquire error */
-> +		return ret;
-> +	}
->  
-> -	return ret;
-> +	/* The firmware granted the segment, so it is answering the handshake
-> +	 * again and the routing is known once more.
-> +	 */
-> +	WRITE_ONCE(bp->cpld_bus_stuck, false);
-> +
-> +	return 0;
->  }
+> @@ -5047,7 +5053,7 @@ static int adva_x1_cpld_flash(struct ptp_ocp *bp, struct devlink *devlink,
+>  	 */
+>  	WRITE_ONCE(bp->cpld_id, 0);
+>  	WRITE_ONCE(bp->cpld_usercode_ok, false);
+> -	bp->cpld_id_tried = false;
+> +	WRITE_ONCE(bp->cpld_id_tried, false);
+>  	bp->cpld_id_attempts = 0;
 
 [Severity: Medium]
-Is the flag recoverable in practice?  It is latched on one hand-back
-timeout and cleared in exactly one place, after a fully successful claim.
+Two questions about cpld_id_tried here.
 
-Two cases seem to leave it set forever.
-
-First, a hand-back that demonstrably succeeded does not clear it.  On the
-acquire failure path above, adva_x1_bus_release() runs
-adva_x1_mblaze_release(), which may return 0 - meaning it observed the
-firmware drop the grant and the controller is back on the EEPROM segment -
-and then the function returns the acquire error before reaching the
-WRITE_ONCE(bp->cpld_bus_stuck, false).
-
-Second, nothing re-validates the hardware indicator.
-adva_x1_mblaze_release() answers the question with a single register read:
-
-	val = ioread32(&bp->pps_select->i2c_bus_ctrl);
-	if ((val & MBLAZE_GRANT_MASK) != MBLAZE_GRANT)
-		return 0;
-
-but ptp_ocp_read_eeprom() consults only the sticky bool.
-
-Claims are issued by ptp_ocp_cpld_work(), which stops rescheduling once
-the one-shot identification is settled:
+First, the new struct comment says a stale unlocked read "only costs one
+extra attempt".  In the stale-true direction, does it not cost all of the
+remaining attempts?  ptp_ocp_cpld_work() re-arms itself only while the flag
+reads false:
 
 	if (!READ_ONCE(bp->cpld_id_tried))
 		queue_delayed_work(system_power_efficient_wq, &bp->cpld_work,
 				   HZ);
 
-and otherwise only by the root-only cpld_status_show() and the privileged
-devlink flash.  So after a single transient -ETIMEDOUT with cpld_id_tried
-already set, doesn't the driver's EEPROM read stay suppressed for the rest
-of the binding, with devlink info silently omitting the serial number and
-board id and serialnum printing 00:00:00:00:00:00, and only a dev_dbg() to
-explain it?
+Second, does anything consume this reset after a flash?
 
-Relatedly, the commit message says:
+adva_x1_cpld_read_id() has a single caller, ptp_ocp_cpld_work(), and
+cpld_work is queued from only two places: ptp_ocp_register_resources() and
+that self-requeue above.  The worker stops as soon as the ID read succeeds,
+roughly a second after probe, and adva_x1_cpld_flash() clears the flags but
+never queues cpld_work:
 
-    A later claim that the firmware grants proves the
-    handshake is working again and clears it.
+	WRITE_ONCE(bp->cpld_usercode_ok, false);
+	WRITE_ONCE(bp->cpld_id_tried, false);
+	bp->cpld_id_attempts = 0;
 
-Given that the only source of later claims is the one-shot worker plus two
-privileged paths, is that recovery generally available, and should the
-possibility of a permanently suppressed read be mentioned?
+With no live worker left to read the flag, does cpld_usercode_ok stay false
+for the rest of the binding, so ptp_ocp_devlink_info_get():
+
+	if (smp_load_acquire(&bp->cpld_usercode_ok))
+		sprintf(buf, "0x%08x", READ_ONCE(bp->cpld_usercode));
+	else
+		buf[0] = '\0';
+
+reports fw.cpld with an empty value after a successful flash until the
+driver is rebound?
+
+At the baseline the identification ran from ptp_ocp_sync_work(), which
+requeued unconditionally every HZ, so the same reset did trigger a re-read.
+The peer reset in adva_x1_cache_i2c_adap() still works because it runs
+inside the live worker.  Would queueing cpld_work after clearing
+cpld_id_tried in adva_x1_cpld_flash() restore the re-identification?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922142829.57740-1-maimon.sagi%40gmail.com
