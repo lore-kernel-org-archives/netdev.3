@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4979253B58;
-	Thu, 24 Sep 2026 07:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A3343A7F7;
+	Thu, 24 Sep 2026 07:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790236476; cv=none; b=QqoUUOGukZhj59XdoktGm8ZJ1zyRVaIZhtNt3hKy+pABcCum6n1g1ZJn0tT2BOS5X/+8UfBdzPrxqbjqY4GgXjhNcCvUEzFNvDJ42FV7Kj84omW3/sSpttkvcd6ThU14x/CmO8ZUr1RuTxT93qlR+SpT/xo3ETYWcE2qxJ8754g=
+	t=1790236478; cv=none; b=g6sYckQ2Iu3Y5vo8F14/PuXFjVLhE4WxoUq5SKks8TzlXskVqgxit2+4JREBOJMFGBNTFhrp00Hmmjz2QSbIziKIZXfzXnPgV+Jy0FfJ6DsxmgynCEi2gowbVItUou9pvFAbktmEWqrvzAp4fOCvaYuvae1DHwMnnqAgKb1hGbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790236476; c=relaxed/simple;
-	bh=zEb1ES0ydJK8Cg2Rz/0PIFe996/QjgU762OxcQSNUO4=;
+	s=arc-20240116; t=1790236478; c=relaxed/simple;
+	bh=KwSEeIHWCwe6qIBz/Wc6pSn+7t9vpTxTqEiSRlK8ROk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=esc5bLvvNDkjk+p0Q3c9wI1XEndAZzROSNhfyxs7G0IyMlXiQOgUiNFjqvGpEFxMPEuysVxra0Vi/fP54aUkU9ORWiahFoE2UX3lnz2iuoK8Gq4zb8pyiH8cDAgTlMqUkgUa7/Ay+Pmrz0DrdyLmoU14xHTveOlUMVHxzW2c0V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5ihOwBL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=avvCDbxduh2hMxcKuDon4nzk+dv05goo7C1izXfbZ38YcystXO8WU4DDxD+QGufmidZ5EASkfr3ObynUW7aTbWf5HqqxnoUhz8IpIBh/+TBHEXPA/2k3ZyclmnVzQwnDTZmOJKucelv8b4TKWzUGOMQIqk13BNAIHRWgcFYimQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+JiYILu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5ihOwBL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05591F000FF;
-	Thu, 24 Sep 2026 07:54:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+JiYILu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84E41F00893;
+	Thu, 24 Sep 2026 07:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790236474;
-	bh=BYKTemitrAEhbE5qfBfWWBprm2uQ4LAmZ3SOFCm3iVo=;
+	s=k20260515; t=1790236476;
+	bh=DxqQtbdMKwuJT3eU1eoI8vIyietxydQvJa0ahL0de9c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=g5ihOwBLbAqVjP2jhDScCjB/Z0cfI+fd8Va7Qynkl5JbEYNsvO/Y7n4WV/xFCVaB5
-	 7lsKMcO4YO6v9YZPBrMVDtzLug61/oPlDIgr6v17Qf76Ge3bOs4YxVuYgkmJfWmsXP
-	 ns8y+Dl9+TvBqoxHpE2jvx2UH08Lnd1Q6trpG+uzO45OR8/HLKaMLrzUT5o9Hud43L
-	 8O2AEF1tKkO8GJvyKoc3nvuE+myNd2XzY5X6OqdHFxcXfhGOcdG17291liB9eMjCim
-	 aWKNrxXO6ICkOE5/N/9C2bSGcU3z9f94w+4adp5w7rj3rOvm9vhGRN3QlF2GnTi8XF
-	 jCZfSjFtlLwzQ==
-Subject: Re: [PATCH net 1/3] net: phylink: allow stopping a suspended instance
+	b=G+JiYILup4u3XlXmz5zYcCTrNN06DxyXMs0j68Yu26EqEX8BvLKTI7GX1AQd5sLWf
+	 E1Rs4h4KVYRiQTYfpQdRXba3eP5MPRiSNbmhv1V7oegUg3aM6VTYynjeQZC8iUQ6QJ
+	 ZI7oXCBlXELnVq9IVZRYlHs9auXNObuYZsADwdNdv2UvTTN6BOZwfTKjcuUJvZfOQK
+	 dPkHT1i+Wo09prRwKwie4AN1GRCQTdB92YAbhNcIwursRjYk9s62tuxrWZm0RBIblI
+	 QCdk6IVq729tQ8U0SACi38y77pGViuygXOJ73M2a/qnjtqjUNc8qHNlSdD7rti7bh9
+	 61ejniS/sv08w==
+Subject: Re: [PATCH net 2/3] net: stmmac: close the interface after a failed
+ MTU reopen
 From: netdev-bot+sashiko@kernel.org
 To: james.hilliard1@gmail.com
 Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
@@ -38,13 +39,13 @@ Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
  alastair@d-silva.org, mripard@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org
-Date: Thu, 24 Sep 2026 07:54:32 +0000
-Message-ID: <179023647242.2160803.15587115569957913954@kernel.org>
+Date: Thu, 24 Sep 2026 07:54:34 +0000
+Message-ID: <179023647445.2160803.16164944289328147798@kernel.org>
 In-Reply-To:
- <20260921-submit-stmmac-reset-fixes-v1-v1-1-87a4e431ee00@gmail.com>
+ <20260921-submit-stmmac-reset-fixes-v1-v1-2-87a4e431ee00@gmail.com>
 References:
- <20260921-submit-stmmac-reset-fixes-v1-v1-1-87a4e431ee00@gmail.com>
-X-sashiko-severity: Medium
+ <20260921-submit-stmmac-reset-fixes-v1-v1-2-87a4e431ee00@gmail.com>
+X-sashiko-severity: Critical
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,10 +55,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 1 · High: 2 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -65,126 +66,205 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] phylink_stop() is newly documented and implemented as a legal
-  replacement for phylink_resume() after phylink_suspend(), but it does…
+- [Critical] The failed-MTU-reopen path leaves the MAC Rx/Tx enabled and
+  all RX/TX DMA channels in RUN state while the descriptor rings and RX…
+- [High] The new priv->opened state is only maintained by
+  __stmmac_open()/__stmmac_release(), but the driver contains a second,…
+- [High] The fix is incomplete for the sibling live-reconfiguration paths
+  and makes a new inconsistent state reachable there.
 
 --
 
-net: phylink: allow stopping a suspended instance
+net: stmmac: close the interface after a failed MTU reopen
 
-This makes phylink_stop() usable directly on a suspended phylink instance,
-so a MAC that cannot restore its hardware after system sleep can close the
-netdev instead of calling phylink_resume(). An already stopped instance
-returns early, and the MAC Wake-on-LAN case drains the resolve work,
-completes the deferred link-down and clears PHYLINK_DISABLE_MAC_WOL.
+The patch adds a new priv->opened flag that tracks whether the data path
+was successfully opened, makes __stmmac_release() bail out when it is
+clear, and calls netif_close() on the MTU reopen error path so the PHY
+and runtime-PM reference are dropped. A few questions below about paths
+that are not covered by the new flag.
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index a1458da8111b6..8f9278112623b 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -2495,11 +2495,17 @@ EXPORT_SYMBOL_GPL(phylink_start);
->   *
->   * This will synchronously bring down the link if the link is not already
->   * down (in other words, it will trigger a mac_link_down() method call.)
-> + * It may also be called after phylink_suspend() if the MAC cannot resume
-> + * and the network device must be closed instead.
->   */
->  void phylink_stop(struct phylink *pl)
->  {
->  	ASSERT_RTNL();
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> index 7582fca637419..873331dbaf772 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> @@ -281,6 +281,8 @@ struct stmmac_priv {
+>  	struct mutex lock;
 >  
-> +	/* phylink_suspend() already stops the link without MAC WoL. */
-> +	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state))
+>  	struct stmmac_dma_conf dma_conf;
+> +	/* Paired __stmmac_open()/__stmmac_release(), serialized by RTNL. */
+> +	bool opened;
+
+[Severity: High]
+Does the comment's pairing invariant hold for the XDP release/open pair?
+
+stmmac_xdp_release() performs the same teardown as __stmmac_release()
+(stmmac_disable_all_queues(), hrtimer_cancel() per TX queue,
+stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0), stmmac_stop_all_dma(),
+free_dma_desc_resources(priv, &priv->dma_conf), stmmac_mac_set(false))
+but never clears priv->opened, and stmmac_xdp_open() never sets it.
+
+stmmac_xdp_set_prog() also ignores the reopen result:
+
+	if (if_running && need_update)
+		stmmac_xdp_open(dev);
+
+so if stmmac_xdp_open() fails in alloc_dma_desc_resources(),
+init_dma_desc_rings() or stmmac_request_irq(), the netdev stays up with
+NAPI disabled, IRQs freed and priv->dma_conf holding freed pointers,
+while priv->opened is still true.
+
+A later "ip link set down" then passes the new guard and runs the whole
+__stmmac_release() a second time. Isn't that the same repeated teardown
+the commit message describes, i.e. napi_disable() on already disabled
+NAPI while holding RTNL, stmmac_free_irq() on freed IRQs and a second
+dma_free_coherent()/page_pool_destroy() over the same rings?
+
+Should stmmac_xdp_release() clear priv->opened and stmmac_xdp_open() set
+it on success as well?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 1fb5f804ea234..44b59d0f56b5b 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -4179,6 +4179,7 @@ static int __stmmac_open(struct net_device *dev,
+>  	stmmac_enable_all_queues(priv);
+>  	netif_tx_start_all_queues(priv->dev);
+>  	stmmac_enable_all_dma_irq(priv);
+> +	priv->opened = true;
+>  
+>  	return 0;
+>  
+> @@ -4249,6 +4250,11 @@ static void __stmmac_release(struct net_device *dev)
+>  	struct stmmac_priv *priv = netdev_priv(dev);
+>  	u8 chan;
+>  
+> +	/* A failed MTU reopen has already released the data path. */
+> +	if (!priv->opened)
 > +		return;
+> +	priv->opened = false;
 > +
 
-[Severity: Medium]
-Does this new exit path leave the PHY advertisement clamped to the lowest
-speed?
+[Severity: High]
+Can this early return also be reached from the ethtool reconfiguration
+paths, where the outer resources have already been dropped?
 
-phylink_suspend() performs two things when PHY based power management speed
-control is in use:
+stmmac_reinit_ringparam() and stmmac_reinit_queues() call the ndo
+handlers directly while the netdev stays administratively up:
 
-drivers/net/phy/phylink.c:phylink_suspend() {
-	...
-	} else {
-		phylink_stop(pl);
-	}
+	if (netif_running(dev))
+		stmmac_release(dev);
 
-	if (phylink_phy_pm_speed_ctrl(pl))
-		phylink_speed_down(pl, false);
-}
+	priv->dma_conf.dma_rx_size = rx_size;
+	priv->dma_conf.dma_tx_size = tx_size;
 
-The only place in phylink that reverses the second part is
-phylink_resume():
+	if (netif_running(dev))
+		ret = stmmac_open(dev);
 
-drivers/net/phy/phylink.c:phylink_resume() {
-	ASSERT_RTNL();
+stmmac_release() now clears priv->opened and its tail also runs
+stmmac_legacy_serdes_power_down(), phylink_disconnect_phy() and
+pm_runtime_put(). If the following stmmac_open() fails (for example in
+stmmac_setup_dma_desc(), pm_runtime_resume_and_get() or
+stmmac_init_phy()), the interface is left IFF_UP with priv->opened
+false, no PHY attached and no runtime-PM reference, and unlike the MTU
+path no netif_close() is done here.
 
-	if (phylink_phy_pm_speed_ctrl(pl))
-		phylink_speed_up(pl);
-	...
-}
+>From that state, a later "ip link set down" reaches stmmac_release(),
+__stmmac_release() returns at the new guard, and the unconditional tail
+still runs:
 
-Both new exits added here, this early return and the MAC WoL completion
-block below, return without calling phylink_speed_up().  So a MAC that
-follows the new kernel-doc ("It may also be called after phylink_suspend()
-if the MAC cannot resume and the network device must be closed instead")
-ends up with the PHY still advertising only the lowest common speed, and
-with the original advertisement left in phydev->adv_old where phylink will
-never consume it.
+	__stmmac_release(dev);
 
-Should the new documentation state that the MAC has to call
-phylink_speed_up() itself in this case, or should phylink_stop() reverse
-the speed-down on these paths?
+	stmmac_legacy_serdes_power_down(priv);
+	phylink_disconnect_phy(priv->phylink);
+	pm_runtime_put(priv->device);
 
-The only in-tree user of wol_phy_speed_ctrl is stmmac, and stmmac_open()
-calls phylink_speed_up() unconditionally, so the next open repairs the
-residue in the common case.  The residue looks like it can become permanent
-if another speed-down runs first, since stmmac_release() also calls
-phylink_speed_down() when device_may_wakeup(priv->device) is true:
+Does the second pm_runtime_put() here produce a "Runtime PM usage count
+underflow!" report?
 
-drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_release() {
-	...
-	if (device_may_wakeup(priv->device))
-		phylink_speed_down(priv->phylink, false);
-	...
-}
+And in the same state, an MTU change still passes netif_running(),
+__stmmac_release() becomes a no-op and __stmmac_open() proceeds into
+phylink_prepare_resume() and stmmac_hw_setup() register programming with
+no runtime-PM reference held and no PHY connected. Since stmmac's
+runtime suspend gates the bus clocks via stmmac_bus_clks_config(priv,
+false), can those register accesses hit a suspended device?
 
-and phy_speed_down() overwrites the saved advertisement each time:
-
-drivers/net/phy/phy.c:phy_speed_down() {
-	...
-	linkmode_copy(phydev->adv_old, adv_tmp);
-	...
-}
-
-With no intervening phylink_speed_up(), would the second phy_speed_down()
-store the already reduced set into phydev->adv_old, so the later
-phylink_speed_up() restores the reduced advertisement rather than the
-configured one?  Note device_may_wakeup(priv->device) can be true while
-pl->wolopts_mac is zero, since stmmac calls
-device_set_wakeup_capable(priv->device, 1) when plat->pmt is set.
-
->  	if (pl->sfp_bus)
->  		sfp_upstream_stop(pl->sfp_bus);
->  	if (pl->phydev)
-> @@ -2512,6 +2518,16 @@ void phylink_stop(struct phylink *pl)
+>  	/* Stop and disconnect the PHY */
+>  	phylink_stop(priv->phylink);
 >  
->  	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
->  
-> +	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
-> +		/* Finish the link-down deferred by MAC WoL, without restarting. */
-> +		flush_work(&pl->resolve);
-> +		mutex_lock(&pl->state_mutex);
-> +		if (pl->suspend_link_up)
-> +			phylink_link_down(pl);
-> +		__clear_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
-> +		mutex_unlock(&pl->state_mutex);
-> +	}
-> +
 
 [ ... ]
+
+> @@ -6174,6 +6180,10 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
+>  		if (ret) {
+>  			free_dma_desc_resources(priv, dma_conf);
+>  			kfree(dma_conf);
+> +			/* Finish closing the PHY and PM state, but do not repeat
+> +			 * the data-path teardown after the failed reopen.
+> +			 */
+> +			netif_close(dev);
+>  			netdev_err(priv->dev, "failed reopening the interface after MTU change\n");
+>  			return ret;
+>  		}
+
+[Severity: Critical]
+Is the premise of the comment, that the data path has already been
+released, true for the hardware state when __stmmac_open() fails in
+stmmac_request_irq()?
+
+__stmmac_open() first copies the new configuration into priv->dma_conf
+and then calls stmmac_hw_setup(), whose last steps are:
+
+	/* Enable the MAC Rx/Tx */
+	stmmac_mac_set(priv, priv->ioaddr, true);
+	...
+	/* Start the ball rolling... */
+	stmmac_start_all_dma(priv);
+
+If stmmac_request_irq() then fails, the unwind is only:
+
+	irq_error:
+		phylink_stop(priv->phylink);
+
+		for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+			hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+
+		stmmac_release_ptp(priv);
+	init_error:
+		return ret;
+
+so the MAC stays enabled, all RX/TX DMA channels stay in RUN state, and
+priv->opened stays false because it is only set after IRQ setup
+succeeds.
+
+stmmac_change_mtu() then calls free_dma_desc_resources(priv, dma_conf).
+Since priv->dma_conf aliases dma_conf at this point, doesn't that free
+the descriptor rings and RX page-pool pages whose addresses are still
+live in the DMA channel base and tail registers?
+
+The following netif_close() reaches __stmmac_release(), which now
+returns at the new !priv->opened guard before stmmac_stop_all_dma(),
+which was the only remaining caller that clears the RUN bits (and calls
+stmmac_deinit_chan()). Can the device keep fetching descriptors and
+writing received frames into the freed coherent memory and the returned
+page-pool pages?
+
+The commit message says:
+
+	"A subsequent open can then allocate fresh resources and retry
+	normally."
+
+With the channels still armed, does the next stmmac_open() reliably
+recover, given that the SWR poll in stmmac_init_dma_engine() is bounded
+and can time out while the channels still have outstanding bus
+transactions?
+
+Would it be better to unwind the hardware where it was started, that is
+stmmac_stop_all_dma() plus stmmac_mac_set(priv, priv->ioaddr, false) in
+the irq_error path of __stmmac_open(), or before the rings are freed in
+stmmac_change_mtu()? The follow-up patch in this series for the resume
+path does exactly that (stmmac_stop_all_dma() and stmmac_mac_set(priv,
+priv->ioaddr, false) before __stmmac_release()), but the MTU path is
+left unchanged at the end of the series.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00%40gmail.com
