@@ -1,240 +1,256 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32344424D41;
-	Thu, 24 Sep 2026 07:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD907420897;
+	Thu, 24 Sep 2026 07:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790234332; cv=none; b=jig3smC38UGHuljNVGhHbYudrHUBoR45V/GLuYxPQformoemRqg4Jxuv/gSUf7C4xsHy5fBsNp9QEcYFGGp6GHqh73wULdVIk93Y1y8GKeU5h3WnlJ7VxIs9zNW0tJhClRi9Brir87HSo2Xu4i3eIdwJmRQIIHCm6DAb7uT+V60=
+	t=1790234421; cv=none; b=i4cD9hvQgUP4+e3zvzwryoIp11yh3ZdSEQ2Nl8eIm3Z0xLIy0DigRoyBMgoMoHWjEdHEAwE+l37YqcqJU86uexEEgQkADNUia4jZ6bVSlUkFMFIbmaSEVKV1cJHR2r4NcaSSizeCnnwTGLnG2NZXN5grRT0pBWFV8sA42ZMrz20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790234332; c=relaxed/simple;
-	bh=fioJb7wxBoSW63SsX7ZiPw2S/5owVJ2rA6inNzdM1r0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oh2W/aSV6Aj8vjKMKpJM79oAjW5gvweBqFOMuK5/fNm1ODXZp4LdAFz0W6Ks1BXGul00VtXdpdBoRVoataTAgQy2Mb5nabfchQsBXJdZ4aGLw9hhkb3X51s/znVl4QDreMwhb3mJk5F3jrpxd0S+p/xCtLfupqV4SfjdHSYLNfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HnlzH3Uw; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790234421; c=relaxed/simple;
+	bh=8/+n6ttYS5k4bW8rAJAuplqWZrECTussHVcG4y8g0Gw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=upShDqww1avct6ovujdPXEpdevFWok9pd2yBoC5hc1+CjebPSTiMHDfnbmcjW5KTfl34C5Gqy4AF5sE/d/6DaxbxzRJ/GOpeLvnlhvdA4ZuoC5kz5ieoVDpvR4/PDyHJ+u506lSIwGyKObxaadmBfpyqOPxqxuhOoCh8S+jVR1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CJrZGpVx; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HnlzH3Uw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790234325; x=1821770325;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fioJb7wxBoSW63SsX7ZiPw2S/5owVJ2rA6inNzdM1r0=;
-  b=HnlzH3UwzLw7hMDM/fv3euxDHgwkf7lYdRyzMF09kEznVBkzNYK7gol+
-   QINfQiB9cu9KSbpWj2NR1emlpbcv6cLHW/yvvgZx+sMyPQG8b+hbB+0Q9
-   S6nU0gzIi2s9C9syi990WYJZHKHDiIH5BavHD4wUZerBr7AlvJEnRmlGa
-   sqbvurdvZtL8Pzu1M2Wk9yRHnXyXTDvX8S0vyMBZkOTC2s1wHwFss1/Lp
-   nbaw1wlq5o9uuK4mnYVhwUiROg10384HP78yNJLri79mHXjnSapHkBmb7
-   uZQ6o47uAz9EYueRzcOShB/jXDJ7ZKHFH9FKdvb8YMZzHvOfCvknVwDR6
-   A==;
-X-CSE-ConnectionGUID: fs1hCXFURtq9YFvSzYb1Gw==
-X-CSE-MsgGUID: M6APcjqLRICGbFgt+WyTiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="101573928"
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="101573928"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 00:18:42 -0700
-X-CSE-ConnectionGUID: cF/J7uvVR9yCBEAl1lquFQ==
-X-CSE-MsgGUID: km3dNwjkQlWgNuzF4KNv3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="274123667"
-Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 24 Sep 2026 00:18:39 -0700
-Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x9dj2-00000000IMI-3TOt;
-	Thu, 24 Sep 2026 07:18:36 +0000
-Date: Thu, 24 Sep 2026 15:18:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com,
-	Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: Re: [PATCH v2 net-next] octeontx2-af: pass devlink switch id and
- cache representor map
-Message-ID: <202609241557.82GuIoAK-lkp@intel.com>
-References: <20260923045826.1774338-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CJrZGpVx"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68O5bsmn1373014;
+	Thu, 24 Sep 2026 07:20:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WJhehG
+	Qd9aRPX7vjgjx/ERcpmc89lp0B6IGpXEk+EOo=; b=CJrZGpVxrEK0isBpFslGtp
+	G67LPbJQuPPlMciSA3NlNHsuqg2MENAyzgo1R2YNMF6yRb5mLHtZM7tPZ7AVBkkf
+	mOyTMgYHWJzMVEtdr9TLDVLJ8drcuthkf7pjN/X3ykVMsZIY0Ee3LmTQzRZlC0R9
+	C+MJsK7k26cicpPP7Fet3kc68xTiyYhAWdO0b1Or8FOdTlmRAQDnJ2/pFa+EllIl
+	H/Sdgmh0PZjfM1AJa72l5yHoTiUj8x4Zm/8ABdLHe7F2NB/Xyhb2MEwef7l4E/y/
+	QRxh4Xw0wHS2t4sWATGWPKn+HRpUoB9EtQ5xY65FwHP8z/l7zhAxCTFpvnPfadjg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskdvexj8-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 24 Sep 2026 07:20:06 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68O5laFx1555050;
+	Thu, 24 Sep 2026 07:20:06 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvb8jvky1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Sep 2026 07:20:06 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68O7K2CS50397634
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Sep 2026 07:20:02 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B6DB2004D;
+	Thu, 24 Sep 2026 07:20:02 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D30720040;
+	Thu, 24 Sep 2026 07:19:59 +0000 (GMT)
+Received: from [9.123.13.199] (unknown [9.123.13.199])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 24 Sep 2026 07:19:58 +0000 (GMT)
+Message-ID: <8ff9a376-ac7d-4b72-bb56-01eecb939984@linux.ibm.com>
+Date: Thu, 24 Sep 2026 12:49:58 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923045826.1774338-1-rkannoth@marvell.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com
+Cc: hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20260923061716.1970059-1-mjambigi@linux.ibm.com>
+Content-Language: en-US
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
+In-Reply-To: <20260923061716.1970059-1-mjambigi@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: LydTOY3ZeSpXk65VTGFwI-UWm0F6MsGJ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDAzMCBTYWx0ZWRfXyV0quSZJwNTV
+ dUCxd+snDUcZhLJKbqY2jmugnZAKpmePYoo+TjilzISu/9KpfW+IVz/diypud0uB232ds4vliyI
+ 0Tk3i0gUBYyrOl/B9ibphdZ3HeS1hWc=
+X-Authority-Analysis: v=2.4 cv=FLiOVOos c=1 sm=1 tr=0 ts=6ab4cf27 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=LpUJkNdiZc8MTJID-NQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: lNS6KwxTJoNfvWvPq3xAF4OhWovsaF3r
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDAzMCBTYWx0ZWRfX7CwQ9odjSmuv
+ aG6KXAe85jM7FuFYDEjD9wSikvHnJkrFFzXhJ6MebAXvCwmneDHOddoKDy3w1yPJkaw064Yp6aL
+ nOzGw/efj93lrH86Y3pMCGhcdh2oidYNw736ykOoWMsZ6SE3n8fduoW31JjxS+T5OCgMnzBZDKm
+ fXlVfmGH7CvRJaCLZPPq5ooiF5pXWVAz3DBFhjfFP7JTZs/Zd9w6e90d+NQpU6B/NCHLmsuVrP0
+ p5KQz8V/H6ZtmS9PbWQH0psRz8gyPn5YcVEwwtKvuP5y/5fAqRWGL69t5jXw022Wjcg56yBmEGz
+ F6/akUYKXKDmieM/t7VxvL+ghqtBdq67Wk+7BzcTWX1RvlO6djfEFLe4ttxNnzrbAmApXsGEbZd
+ EFuvUHrS2EbRINq3vQhgtbz3LrVEnj/gOBFy32sAwWV6HgG56Fs44s8ldyuB2EuMxs0DLzO99uq
+ 0vGERq5HEVULAw+oylQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-24_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609240030
 
-Hi Ratheesh,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on net-next/main]
-[also build test ERROR on linus/master v7.3-rc4 next-20260922]
-[cannot apply to linux-review/Ratheesh-Kannoth/octeontx2-af-Representor-devlink-id-and-port-mapping/20260918-103021 horms-ipvs/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Ratheesh-Kannoth/octeontx2-af-pass-devlink-switch-id-and-cache-representor-map/20260923-102826
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260923045826.1774338-1-rkannoth%40marvell.com
-patch subject: [PATCH v2 net-next] octeontx2-af: pass devlink switch id and cache representor map
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20260924/202609241557.82GuIoAK-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260924/202609241557.82GuIoAK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609241557.82GuIoAK-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
->> drivers/net/ethernet/marvell/octeontx2/nic/rep.c:663:8: error: call to undeclared function 'rvu_get_rep_cnt'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     663 |         err = rvu_get_rep_cnt(priv);
-         |               ^
->> drivers/net/ethernet/marvell/octeontx2/nic/rep.c:744:12: warning: no previous prototype for function 'rvu_get_rep_cnt' [-Wmissing-prototypes]
-     744 | static int rvu_get_rep_cnt(struct otx2_nic *priv)
-         |            ^
-   drivers/net/ethernet/marvell/octeontx2/nic/rep.c:744:8: note: declare 'static' if the function is not intended to be used outside of this translation unit
-     744 | static int rvu_get_rep_cnt(struct otx2_nic *priv)
-         |        ^
-   1 warning and 1 error generated.
 
 
-vim +/rvu_get_rep_cnt +663 drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+On 23/09/26 11:47 am, Mahanta Jambigi wrote:
+> The diag dump walks the socket hash table under a read_lock and dereferences
+> conn->lgr and conn->lnk. Two terminal teardown paths drop those references via
+> smc_conn_free() while the socket is still hashed:
+> 
+>   - smc_conn_kill() -> smc_close_active_abort() -> smc_conn_free()
+>   - smc_close_passive_work() -> smc_conn_free()
+> 
+> This allows the diag reader to dereference a freed lgr or lnk.
+> 
+> Fix it by unhashing the socket before smc_conn_free() is called at the two
+> terminal teardown sites in smc_close.c.
+> 
+> Additionally, smc_conn_abort() calls smc_conn_free() during early handshake
+> aborts while the socket remains hashed in SMC_INIT state. The
+> smc_listen_out_err() path leaves the socket hashed in SMC_CLOSED state after
+> smc_conn_abort() returns. Guard the conn/lgr/lnk inspection blocks in
+> __smc_diag_dump() by skipping them when the socket is in SMC_INIT or SMC_CLOSED
+> state.
+> 
+> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+> Fixes: 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R connections")
+> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+> ---
+> Changes in v5:
+> - guard conn/lgr/lnk blocks in __smc_diag_dump() with an
+>   (SMC_INIT || SMC_CLOSED) state check placed after the
+>   SMC_DIAG_FALLBACK nla_put; SMC_INIT can coexist with fallback
+>   (smc_sendmsg() MSG_FASTOPEN path), so the guard must not suppress
+>   the fallback reason
+> 
+> Changes in v4:
+> - dropped smc_conn_unhash() wrapper, conn->unhashed flag, and all
+>   changes to af_smc.c, smc.h, smc_core.c and smc_core.h;
+>   smc_unhash_sk() is already idempotent via sk_hashed(), so direct
+>   calls at the two teardown sites in smc_close.c are sufficient
+> - dropped the __smc_release() hunk: it needs no change since the
+>   subsequent unhash there is already a safe no-op
+> - fixed premature-unhash issue present in v3: smc_conn_free() must not
+>   unhash because smc_conn_abort() calls it before
+>   smc_switch_to_fallback() in both smc_listen_decline() and
+>   smc_connect_rdma() error paths; unhashing there would make live
+>   fallback sockets invisible to smcss
+> - likewise, the ISM/RDMA retry loops (smc_find_ism_v2_device_serv(),
+>   smc_find_rdma_v2_device_serv()) call smc_conn_abort() on a failed
+>   attempt and then smc_conn_create() on the next device; unhashing in
+>   smc_conn_free() would permanently hide the established connection from
+>   smc_diag since smc_conn_create() does not re-hash the socket
+> 
+> Changes in v3:
+> - redesigned as a single patch; dropped the lgr_lnk_lock spinlock
+>   approach and the 2-patch split
+> - fix is now at the socket hash layer: introduce smc_conn_unhash() with
+>   a per-connection unhashed flag; smc_conn_free() unhashes before dropping
+>   lgr/lnk refs, so any socket visible to the diag reader under the hash
+>   read_lock has valid conn->lgr and conn->lnk pointers
+> - __smc_release() updated to call smc_conn_unhash() for non-fallback
+>   sockets so the flag is honoured when smc_conn_free() already ran first
+> - smc_diag.c needs no changes; the hash read_lock invariant is
+>   sufficient without any per-connection lock in the dump path
+> - dropped the clcsock/mutex_trylock fix as that will be addressed separately
+> 
+> Changes in v2:
+> - this is v2 of the 2-patch series; the earlier submission was mislabelled
+>   [PATCH v3] but was in fact the first version sent to the list
+> - split into a 2-patch series; patch 1/2 adds per-connection lgr_lnk_lock
+>   infrastructure to smc_core, patch 2/2 fixes the diag dump path using it
+> - dropped lock_sock()/release_sock() from __smc_diag_dump(); v1 held the
+>   socket lock across all lgr/lnk dereferences, requiring the hash read_lock
+>   to be dropped and re-acquired around each socket
+> - dropped the restart-from-head loop in smc_diag_dump_proto(); the new
+>   design does not drop the hash read_lock mid-walk so the hlist truncation
+>   concern no longer applies
+> - dropped refcount_inc_not_zero() socket pinning from the dump loop for the
+>   same reason: the hash read_lock is now held for the full walk
+> - added per-connection lgr_lnk_lock spinlock to struct smc_connection;
+>   conn->lgr and conn->lnk are NULLed under this lock in smc_conn_free()
+>   before borrowed references are released, establishing the invariant: a
+>   non-NULL conn->lgr seen under lgr_lnk_lock guarantees the lgr is alive
+> - added lgr_lnk_lock to smc_switch_link_and_count() to protect the conn->lnk
+>   pointer swap from concurrent diag readers
+> - replaced mutex_lock() on clcsock_release_lock in smc_diag_msg_common_fill()
+>   with mutex_trylock(); mutex_lock() was valid in v1 because the hash
+>   spinlock had been dropped, but the new design holds the hash read_lock
+>   throughout so only a non-sleeping trylock is safe; a failed trylock leaves
+>   address fields zeroed, which is acceptable for a monitoring tool
+> - all conn->lgr and conn->lnk accesses in __smc_diag_dump() use a
+>   snapshot-then-use pattern: fields are copied into local stack variables
+>   under lgr_lnk_lock and nla_put() is called after releasing the lock,
+>   avoiding any sleeping operation under the spinlock
+> 
+>  net/smc/smc_close.c | 10 ++++++++++
+>  net/smc/smc_diag.c  |  4 ++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+> index bb0313ef5f7c..3940098c651d 100644
+> --- a/net/smc/smc_close.c
+> +++ b/net/smc/smc_close.c
+> @@ -130,6 +130,11 @@ void smc_close_active_abort(struct smc_sock *smc)
+>  	struct sock *sk = &smc->sk;
+>  	bool release_clcsock = false;
+> 
+> +	/*
+> +	 * Unhash before any branch calls smc_conn_free() and drops lgr/lnk refs;
+> +	 * the diag reader must not see a hashed socket with freed lgr/lnk.
+> +	 */
+> +	sk->sk_prot->unhash(sk);
+>  	if (sk->sk_state != SMC_INIT && smc->clcsock && smc->clcsock->sk) {
+>  		sk->sk_err = ECONNABORTED;
+>  		if (smc->clcsock && smc->clcsock->sk)
+> @@ -433,6 +438,11 @@ static void smc_close_passive_work(struct work_struct *work)
+>  		sk->sk_state_change(sk);
+>  		if ((sk->sk_state == SMC_CLOSED) &&
+>  		    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
+> +			/*
+> +			 * Unhash before smc_conn_free() drops lgr/lnk refs so the diag
+> +			 * reader cannot see a hashed socket with freed lgr/lnk.
+> +			 */
+> +			sk->sk_prot->unhash(sk);
+>  			smc_conn_free(conn);
+>  			if (smc->clcsock)
+>  				release_clcsock = true;
+> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+> index bf0beaa23bdb..fb615d3af058 100644
+> --- a/net/smc/smc_diag.c
+> +++ b/net/smc/smc_diag.c
+> @@ -103,5 +103,8 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
+>  		goto errout;
+> 
+> +	if (sk->sk_state == SMC_INIT || sk->sk_state == SMC_CLOSED)
+> +		goto out;
+> +
+>  	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
+>  	    smc->conn.alert_token_local) {
+> @@ -185,5 +188,6 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  			goto errout;
+>  	}
+> 
+> +out:
+>  	nlmsg_end(skb, nlh);
+>  	return 0;
 
-   654	
-   655	int rvu_rep_create(struct otx2_nic *priv, struct netlink_ext_ack *extack)
-   656	{
-   657		int rep_cnt = priv->rep_cnt;
-   658		struct net_device *ndev;
-   659		struct rep_dev *rep;
-   660		int rep_id, err;
-   661		u16 pcifunc;
-   662	
- > 663		err = rvu_get_rep_cnt(priv);
-   664		if (err)
-   665			return err;
-   666	
-   667		err = rvu_rep_rsrc_init(priv);
-   668		if (err)
-   669			return -ENOMEM;
-   670	
-   671		priv->reps = kzalloc_objs(struct rep_dev *, rep_cnt);
-   672		if (!priv->reps)
-   673			return -ENOMEM;
-   674	
-   675		for (rep_id = 0; rep_id < rep_cnt; rep_id++) {
-   676			ndev = alloc_etherdev(sizeof(*rep));
-   677			if (!ndev) {
-   678				NL_SET_ERR_MSG_FMT_MOD(extack,
-   679						       "PFVF representor:%d creation failed",
-   680						       rep_id);
-   681				err = -ENOMEM;
-   682				goto exit;
-   683			}
-   684	
-   685			rep = netdev_priv(ndev);
-   686			priv->reps[rep_id] = rep;
-   687			rep->mdev = priv;
-   688			rep->netdev = ndev;
-   689			rep->rep_id = rep_id;
-   690	
-   691			ndev->min_mtu = OTX2_MIN_MTU;
-   692			ndev->max_mtu = priv->hw.max_mtu;
-   693			ndev->netdev_ops = &rvu_rep_netdev_ops;
-   694			pcifunc = priv->rep_pf_map[rep_id];
-   695			rep->pcifunc = pcifunc;
-   696	
-   697			snprintf(ndev->name, sizeof(ndev->name), "Rpf%dvf%d",
-   698				 rvu_get_pf(priv->pdev, pcifunc),
-   699				 (pcifunc & RVU_PFVF_FUNC_MASK));
-   700	
-   701			ndev->hw_features = (NETIF_F_RXCSUM | NETIF_F_IP_CSUM |
-   702				       NETIF_F_IPV6_CSUM | NETIF_F_RXHASH |
-   703				       NETIF_F_SG | NETIF_F_TSO | NETIF_F_TSO6);
-   704	
-   705			ndev->hw_features |= NETIF_F_HW_TC;
-   706			ndev->features |= ndev->hw_features;
-   707			eth_hw_addr_random(ndev);
-   708			err = rvu_rep_devlink_port_register(rep);
-   709			if (err) {
-   710				free_netdev(ndev);
-   711				goto exit;
-   712			}
-   713	
-   714			SET_NETDEV_DEVLINK_PORT(ndev, &rep->dl_port);
-   715			err = register_netdev(ndev);
-   716			if (err) {
-   717				NL_SET_ERR_MSG_MOD(extack,
-   718						   "PFVF representor registration failed");
-   719				rvu_rep_devlink_port_unregister(rep);
-   720				free_netdev(ndev);
-   721				goto exit;
-   722			}
-   723	
-   724			INIT_DELAYED_WORK(&rep->stats_wrk, rvu_rep_get_stats);
-   725		}
-   726		err = rvu_rep_napi_init(priv, extack);
-   727		if (err)
-   728			goto exit;
-   729	
-   730		rvu_eswitch_config(priv, true);
-   731		return 0;
-   732	exit:
-   733		while (--rep_id >= 0) {
-   734			rep = priv->reps[rep_id];
-   735			unregister_netdev(rep->netdev);
-   736			rvu_rep_devlink_port_unregister(rep);
-   737			free_netdev(rep->netdev);
-   738		}
-   739		kfree(priv->reps);
-   740		rvu_rep_rsrc_free(priv);
-   741		return err;
-   742	}
-   743	
- > 744	static int rvu_get_rep_cnt(struct otx2_nic *priv)
-   745	{
-   746		struct get_rep_cnt_rsp *rsp;
-   747		struct mbox_msghdr *msghdr;
-   748		struct msg_req *req;
-   749		int err, rep;
-   750	
-   751		mutex_lock(&priv->mbox.lock);
-   752		req = otx2_mbox_alloc_msg_get_rep_cnt(&priv->mbox);
-   753		if (!req) {
-   754			mutex_unlock(&priv->mbox.lock);
-   755			return -ENOMEM;
-   756		}
-   757		err = otx2_sync_mbox_msg(&priv->mbox);
-   758		if (err)
-   759			goto exit;
-   760	
-   761		msghdr = otx2_mbox_get_rsp(&priv->mbox.mbox, 0, &req->hdr);
-   762		if (IS_ERR(msghdr)) {
-   763			err = PTR_ERR(msghdr);
-   764			goto exit;
-   765		}
-   766	
-   767		rsp = (struct get_rep_cnt_rsp *)msghdr;
-   768		priv->hw.tx_queues = rsp->rep_cnt;
-   769		priv->hw.rx_queues = rsp->rep_cnt;
-   770		priv->rep_cnt = rsp->rep_cnt;
-   771		for (rep = 0; rep < priv->rep_cnt; rep++)
-   772			priv->rep_pf_map[rep] = rsp->rep_pf_map[rep];
-   773	
-   774	exit:
-   775		mutex_unlock(&priv->mbox.lock);
-   776		return err;
-   777	}
-   778	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
