@@ -1,119 +1,154 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C801F41A922
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6CD3A2549
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790238606; cv=none; b=gQ6PBPHaWuzpbBVN9ikfL9lT94ZDvBCPv4+uXFveaW2H/vaLtnhv1221gJQk/jl3fxAjlFI9nGYEuyOemhrbT60EwNJGmwnJN+LyoHzfyHSiW/5cvT9kn6m8umuJLn6HiwABr1k18BF7uhDT8OkDzG4Pq3JGWBuYq+4eM+TMZPs=
+	t=1790238785; cv=none; b=pEMz1IaKRLu6OqnZkLrWkbRynAGaGv2a8mNTQ1cuuoKiwRTsknNXrSVXpKWfqgXhqRGtx5qnpum4UVJVJdWqWbshE3MBxWQPj8PuCxCbhQ8ZUYvBHzFEeHamkXEvu9qbNhB+VmUFqo491uyh2/iCNvd5sOveEH4G5b+VfZxU+u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790238606; c=relaxed/simple;
-	bh=AW+qlZdR4Ryi1sPKOcr8ykehXr0uVIF3t0xQw3DxRs8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o4ROHU8U8mkQWGcCOU09rmhC4tgLo9f06sxiHVIeP6/ruyDwBwKgYWvk/FSnnXLA3Dqd6l3ZoJi2jH8761nfl4Gd8PDm0jUQmMgka3y2iXiu+nsnGRJh1ERu9N14Lp1lmkc30AjaAsDHgOLqmFARvDviXNag0eHkhOxAUS5LBEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E9+yJsU4; arc=none smtp.client-ip=209.85.222.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1790238785; c=relaxed/simple;
+	bh=TH17rxqUphQnvtWKdbekKc99InWQeXnXfBbQcZS9e9A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sfLsNklliWZh7f15hV78B5wi/HJlVYTbDxvtafG/w/H/Qc275I4tUJ3aIz80Y1tLaZyae1+bauVnsUgQaJgbafLQh4b70fvtAw5kwwhmdUUStxS8+ibcs4E1hbc8AtGr2dMqzbqLV5M67AZeZcralzTlxPUFk4/rY/ZR09WZR9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=jo/thCNB; arc=none smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E9+yJsU4"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939062ecda9so279748285a.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:30:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="jo/thCNB"
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910ad2273so207094785a.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:33:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790238600; x=1790843400; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ffoYufaDSfVatt78XpLjVJHKG1hzTad9qkMPdMcjBFs=;
-        b=E9+yJsU49YKP9FSyY2ipvsmWWxQrvLegDLUZcwJjIuj6HWa485MqPCWZWepX4bWLB3
-         9c8zHwj6UAB7TsAPlNCl3Mwr3fpCvEblo68bgMZSKmvGWBH8TlklA7DMGyXX0tHKRYoh
-         Ka3k0Bktf4JMY/WkBa82c5bvriYEkNeBVf5ruiyDG1odI5mi+oiIpd/vsm+sHcJ1puPa
-         4rLXO7ObSnrZ+eRGxwJPRh4OMM713LYKBeq/sKVndTHkYRQEDEpgT6knnQb5B6x/f0f2
-         rNZlH7w2T6C9190CZp+q5YgrJy+5MzqIS+ovB2kbprht3vDq6AT++F2him/J59xM0NNr
-         nXrA==
+        d=mojatatu.com; s=google; t=1790238783; x=1790843583; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l7eSqpIJMRsWjDjp/oD+vMlCDPCfoeB6wnXpdjOOxbc=;
+        b=jo/thCNBZFEeMsLv4HmduAAFG86OrPC9UYo/VIazofRirNDz+73ZENqqdI9ERIvFaF
+         4nkMnjV+D7zUXHR01sWu9ncShqmC8SEq13wI6jb7qEAzTSbtD1NSr6RiTOWuy4X16qsc
+         hIeYM0qpq7EMahz5aLvcxi7Olot1tVk318yvE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790238600; x=1790843400;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790238783; x=1790843583;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ffoYufaDSfVatt78XpLjVJHKG1hzTad9qkMPdMcjBFs=;
-        b=zz1/eGeAgWU+FLTcgiUCq1aWSZQXcegGBFJ7/JFIteJVYLTqPwXsY1HU2KfW075zgW
-         60mhcjjk+K1LVIWJPunoWVHQduddwLEzdw8N2OBinHyDM0gHc7k3FOmK/ipDk6EdbvFY
-         WGptQfxVfz2NaHE2F2tIc2c0eSoAuhc3ZlCgxIcD4/uivoprmlMab4Hu55RFqW/fsocc
-         G9x86XL7Z1wZWMlkpsEs+3O2TwnkQJPHDKtCbFyTC/9gARLhha/rGQdikoG3/iJoAgLA
-         pa4xh/ciJ7bn6TK/v4/BmULY3LwUX0esSyxIC90HD3t2klSEFoK6KVY8Ib90VuvgpyUx
-         5qsA==
-X-Forwarded-Encrypted: i=1; AKwUvBxf6kklXSj5ToZmJFHG+X9Rw/FaVhb7sWzQ7gKv96LlYiu83qycpBjJCikXiFgYcTA4pfFmCts=@vger.kernel.org
-X-Gm-Message-State: AFuF++me3dXLM7SecuSQzRmnQQBdh68B32SW71jC/DcI5HKbatTmVyvK
-	Q016lNwooXbosnH0DPekxh1kA4SNEDnMraLRk9FrgPB7UhK3tUxyygIFjms+5FLtt/P+IRFoZ3V
-	rhp+2s6ChxVEj0g==
-X-Received: from qkjc10.prod.google.com ([2002:a05:620a:cea:b0:93c:2ec8:502c])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:6193:b0:93a:7bc2:d75f with SMTP id af79cd13be357-93c364136b4mr175092385a.36.1790238599921;
- Thu, 24 Sep 2026 01:29:59 -0700 (PDT)
-Date: Thu, 24 Sep 2026 08:29:51 +0000
-In-Reply-To: <20260924082951.1599377-1-edumazet@google.com>
+        bh=l7eSqpIJMRsWjDjp/oD+vMlCDPCfoeB6wnXpdjOOxbc=;
+        b=vF3RwYwCrba77FRvKTkxAjx79ELoSS+os0TbWwb5EPn3pqDAd0WKecn7JzpCKLsRa2
+         25CvoWaxQle675NPcNuUXAxKvablOymzpssmXnItlwQ37Mm95+jE5wAB+eU4NVZgyLej
+         g58ddO2jmKA4skX+4teoHILIHMbxCeyRnJ/YkG+yAoKTHic/6F0DufmB37RbCCPcX6UH
+         ofaNFAsbHreuSMB7b4To84le82xevEpoiSziZBMGYlBbjh7rw2JtG4JexNfmJcjPA1w3
+         2f48+quG35JAFgSU1MUvgjy5QA/eLw0sVbB8ZoZqLRV41mjxSVegEhDomc0iPtlocNw3
+         PydQ==
+X-Gm-Message-State: AFuF++kRoScAkmT5LoP8hCOkfEbV10GJYIo9TmMtTYwb6KCJmQG1sucD
+	JoooS0PPqComf0oCrUlH4RUKFHoSsJ3iDczUaTbGkqN9CdabEFdcgKO4Sz4bft5oi8DKZQPZVoe
+	Kmy1MjA==
+X-Gm-Gg: AYBFou0JFV26i50yS0Ow9APAN1UuUikUiT/jfwVNwU4ilZYCmpbohjDGd5aKS2XWWGO
+	5aQrnnTWHF5IS1nlwyJg9vOab9vyqWgLqjnWO3Zb4CMatvChj6yvVISHl56+Z1f8+ukWU7Xrokr
+	yzGKO24qrYuHnnd0jDbzWIzZLL3QQVy9JVhoNxcvYC9tJ9Ch+ywab0zAUiywD0NkNB+2zcv2+EP
+	byhnwjYW0332F1I19kwIeeU2WERO3XH7MddKp6woAUVilhyMMY6HnQmeFEzAjD+U+yYudnD4kV9
+	ScpVOyOzp6MS2scoeZz/pJFc/bBWGhOHddqhnTO7M4vL3fXWW0uJ0f9XNZedgSrKC+q4L+DyNji
+	qCwFvtCUrmT/Qiat7gOC7L7Ivxh/W8VeeX0/a8PWZ68e+CBo02jAQKx0H6I5ltwOwOgR9qqDaE5
+	Rkw3F48xTYdrvSoLmd4DMtjYnfMSD83sjDAGbyMw5LmCHx5CXEdnf+oRgf6f3UCD8PRh/KpCsc4
+	DpkCso5O6mXLd6ngODZlMjfFYpBr2bdlAWZnnWmdDvhCUD82+IYMTv2YpIM
+X-Received: by 2002:a05:620a:8393:b0:93b:f083:b269 with SMTP id af79cd13be357-93c3642fe19mr164875985a.64.1790238782503;
+        Thu, 24 Sep 2026 01:33:02 -0700 (PDT)
+Received: from majuu.waya ([184.147.180.207])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c37bb7450sm69933485a.12.2026.09.24.01.33.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 01:33:02 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	hybris <hybris@mojatatu.ai>
+Subject: [PATCH net] net/sched: cls_api: reclaim an empty proto on the error path
+Date: Thu, 24 Sep 2026 04:32:49 -0400
+Message-Id: <QDISC-JCOT.v1.20260910090924@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260924082951.1599377-1-edumazet@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-Message-ID: <20260924082951.1599377-5-edumazet@google.com>
-Subject: [PATCH v2 net 4/4] vlan: ensure sufficient headroom in vlan_dev_hard_header()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, edumazet@kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Zixuan Chai <petalzu987@gmail.com>, 
-	Hangbin Liu <liuhangbin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Callers that only reserve ETH_HLEN or less (such as llc_alloc_frame()),
-or skbs allocated before dynamic device/headroom changes (e.g. toggling
-VLAN_FLAG_REORDER_HDR or bonding/team switching slaves), can reach
-vlan_dev_hard_header() with insufficient headroom and trigger
-skb_under_panic().
+Two racing tc filter add requests on the same chain/prio of an
+unlocked classifier both run change() on the shared proto and both
+can fail: the winner's tcf_chain_tp_delete_empty() attempt gives up
+because the loser's handle is still in the idr, and the loser's
+error path drops only its own reference without a second reclamation
+attempt. The empty proto stays linked in the chain, holding the
+chain reference, a block reference and the classifier module
+reference until the chain or block is torn down.
 
-Use skb_cow_head() in vlan_dev_hard_header() when VLAN_FLAG_REORDER_HDR
-is not set to ensure sufficient headroom for the VLAN header(s) and the
-underlying device hard header.
+Reclaim the proto on the error path of any failed request that holds
+a proto reference. The reclamation is emptiness-gated:
+tcf_chain_tp_delete_empty() unlinks the proto only when
+delete_empty() admits it is empty, so a live shared proto is never
+unlinked. A proto the request created is reclaimed unconditionally -
+it is the only owner, so marking it for deletion is safe even without
+a delete_empty callback. Classifiers without one (the check marks the
+proto unconditionally) are rtnl-serialized, so the raced window this
+guard closes cannot arise for them.
 
-Use READ_ONCE() to read dev->hard_header_len and dev->needed_headroom as
-they can be updated concurrently under RTNL (e.g. in
-vlan_transfer_features()) while vlan_dev_hard_header() runs locklessly on
-the transmit path. Also avoid LL_RESERVED_SPACE(dev) here so that the
-extra HH_DATA_MOD alignment padding does not trigger unnecessary
-pskb_expand_head() reallocations on inner stacked VLAN devices after the
-outer VLAN header has been pushed.
+This is a follow-up to commit d4e359b3608a ("net/sched: cls_api: fix
+teardown of an adopted proto on insert-race loss"), which stopped the
+loser of the insert race from unlinking the winner's live proto but
+left the empty-proto residual in place.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Zixuan Chai <petalzu987@gmail.com>
-Closes: https://lore.kernel.org/netdev/cover.1789987105.git.petalzu987@gmail.com/
-Link: https://lore.kernel.org/netdev/179022851638.2160803.1808206741379444999@kernel.org/
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Conditions to recreate:
+- CONFIG_NET_CLS_FLOWER=y; veth pair
+- tc qdisc add dev veth0 ingress
+- two concurrent `tc filter add dev veth0 ingress protocol ip pref 1
+  flower skip_sw ... action drop` (both fail in fl_hw_replace_filter
+  after publishing their handle in the idr); repeat in a loop
+- an empty flower tp stays linked after both requests fail; visible
+  as a bare `filter protocol ip pref 1 flower chain 0` header in
+  `tc filter show` with no filter entries
+- CAP_NET_ADMIN (namespace-local via unshare -Urn suffices)
+
+Fixes: 8b64678e0af8 ("net: sched: refactor tp insert/delete for concurrent execution")
+Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805134049.927864-1-victor@mojatatu.com
+Tested-by: hybris <hybris@mojatatu.ai>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/8021q/vlan_dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/sched/cls_api.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index 2859cbac3f266b7c4e3f44f41280d33ab69c5270..c949c6a829456c2f75d6c514b35a85ff64c493d8 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -55,6 +55,11 @@ static int vlan_dev_hard_header(struct sk_buff *skb, struct net_device *dev,
- 	int rc;
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index c47d2ee13641..a9f54988561f 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2463,7 +2463,20 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 	}
  
- 	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
-+		unsigned int hlen = READ_ONCE(dev->hard_header_len) +
-+				    READ_ONCE(dev->needed_headroom);
-+
-+		if (skb_cow_head(skb, hlen) < 0)
-+			return -ENOMEM;
- 		vhdr = skb_push(skb, VLAN_HLEN);
- 
- 		vlan_tci = vlan->vlan_id;
+ errout:
+-	if (err && tp_state == TP_CREATED)
++	if (err && !IS_ERR_OR_NULL(tp) &&
++	    (tp_state == TP_CREATED || tp->ops->delete_empty))
++		/*
++		 * The request is dropping its reference to tp. If it was
++		 * the last user (the idr is empty now), reclaim the proto.
++		 * A tp this request created is reclaimed unconditionally:
++		 * it is the only owner, so marking it for deletion is
++		 * safe. Otherwise only classifiers with a delete_empty
++		 * callback are reclaimed -- the callback admits an empty
++		 * proto only, so a live shared proto is never unlinked.
++		 * Classifiers without one (deleting is set
++		 * unconditionally) are rtnl-serialized, so the raced
++		 * window this guard closes cannot arise for them.
++		 */
+ 		tcf_chain_tp_delete_empty(chain, tp, rtnl_held, NULL);
+ errout_tp:
+ 	if (chain) {
 -- 
-2.56.0.rc1.310.g51773c2048-goog
+2.43.0
 
