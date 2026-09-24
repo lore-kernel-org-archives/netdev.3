@@ -1,322 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAF440F751;
-	Thu, 24 Sep 2026 06:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3B339CCF6
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790232133; cv=none; b=tSb4cMcEmHOvnAtIxFFkhziQptPcc+brqxz0OfDSYJt6BPoUEhPqfTybKPW/mlGJ3/+b5acMQRNWqPRjoM3wWwThU0sJYCCa+2xJnFruk9cppzjSkBuTNk2SNs3KI6oQK5Asy5LzQZuvi6P2XsG6eZSz6h2w3sMUvkClhKKEYW8=
+	t=1790232184; cv=none; b=hknXBApdooISkl50BnYPJQlLZZDI5K8GyguBQ7P+slooFFqhOyXbOg3NUoxluMxmsHCJN0xTOgxjo4zSd1S4poYeRE/shvik4mYQIXfi5Fx4F/2vBkJnoPNo+96HWkzh2RbUHfhXJsAwfZGrYC/lHoQngvzTiz650ElhFMjKO4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790232133; c=relaxed/simple;
-	bh=td/yYbK5bI9dc6tX4363U6k7tYns3zAOy5tt+729Nmc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GieT57whrkNmpQtrBCTpYismxzKeSlMypBVMzb+wDqsi5CjkIky8cZVnmoVsOIFjPcS4PLyLXgxSTRs/wiXQGOvV8WvjFnVMyMmQFDRJIbSP2AyUTpnFNYlx4KZRC92pLWP/hQRGFHLGckxTmW2ytH1U0uD/dEe/thBYm9s8YPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KXyIqLhn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790232184; c=relaxed/simple;
+	bh=cHqkj9IQmM9UJezBHB4mIJEzWFGJ8nQ71hNpg9TPw/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s4ymaPspRFhsRVUTN5hf71O7VT70DqLfyWwoqXSxuM8qPoWxXwjQZNtcrBirCVIW5SPx+8Lj8jyZ0/sTC2HtV5Cq9fXGKrWSiBjRnVKjUr3nVIrXEbBfhbZhYWJgLIzqi//SJvhRwzD4MdMYYuANGR9BPB6dRKQY/hGE9joavJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ufq8eWDJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KXyIqLhn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2A41F00893;
-	Thu, 24 Sep 2026 06:42:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790232127;
-	bh=82h3I6umrt5O91bmGNbUEmaj8zSJsKMS+EBgEvVmPFc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KXyIqLhnXytpzFI7IZeCO5BhL/vj/PvtaJVayljpRW5rVIkTQhucPQpUypZK0UhAU
-	 3dyZ490AL43pzQ8fYju0+L0ouw5AZcTRk9nyLbJDsm0eyYdEv3OhKbWLwFb+DNJyX+
-	 nLo1AqcI8gxeuUtidU8fSwDlbUmKPDASFhSxVKrtdQHDwO58l0ceSDEwkqPh64sFqK
-	 vJHMZVHS2eZFUMpnsOMzBtmuSoig/pR3YPsCDVgxv+K/r3F2xa2UeEKH/s/zfgUgoy
-	 AmrP2Ia5S1MTeonAAsPI0oTK6x+KdGfzbE0q64HRCHgSCue5cb2hEhYxmaELKNy/yA
-	 KxOWIL4V/U4Nw==
-Subject: Re: [PATCH net v3 3/3] ieee802154: ca8210: validate data_ind length
- upfront in ca8210_skb_rx()
-From: netdev-bot+sashiko@kernel.org
-To: benquike@gmail.com
-Cc: h.morris@cascoda.com, alex.aring@gmail.com, miquel.raynal@bootlin.com,
- stefan@datenfreihafen.org, david.laight.linux@gmail.com,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Thu, 24 Sep 2026 06:42:06 +0000
-Message-ID: <179023212677.2160803.12604531347108623270@kernel.org>
-In-Reply-To: <20260922093126.141969-4-benquike@gmail.com>
-References: <20260922093126.141969-4-benquike@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ufq8eWDJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790232181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EtZTXBp7wCPKWuWjKaY6V1GUEMnphVn8b7/0mFctUso=;
+	b=Ufq8eWDJzKFTU2Be7Y/HJR3oSmBOr7uOBvNb9M6+GIugmVvgEbZ/+LijIWal9ClcVvygPH
+	a2hMtUcY3JadmS7DEJS5UkbeY8mjks/zu8blcYDFL+ZYTv6bZIMW4wGibF9TOsEX91IHKP
+	ihhGjuLPly7113YxEubJCVoMmRSlFz0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-FAjaJGUEPmC_Rket_I28cA-1; Thu,
+ 24 Sep 2026 02:42:57 -0400
+X-MC-Unique: FAjaJGUEPmC_Rket_I28cA-1
+X-Mimecast-MFC-AGG-ID: FAjaJGUEPmC_Rket_I28cA_1790232175
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CE84C187A5C0;
+	Thu, 24 Sep 2026 06:42:54 +0000 (UTC)
+Received: from fedora.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E72BB18005B8;
+	Thu, 24 Sep 2026 06:42:48 +0000 (UTC)
+From: Anirudh Virdi <avirdi@redhat.com>
+To: netdev@vger.kernel.org
+Cc: saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shayd@nvidia.com,
+	ohartoov@nvidia.com,
+	maorg@nvidia.com,
+	linux-rdma@vger.kernel.org,
+	Anirudh Virdi <avirdi@redhat.com>
+Subject: [PATCH net v2] net/mlx5: Fix slab-out-of-bounds when handling team device events
+Date: Thu, 24 Sep 2026 12:12:44 +0530
+Message-ID: <20260924064244.94045-1-avirdi@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+The mlx5_handle_changeupper_event() and mlx5_handle_changeinfodata_event()
+functions check for LAG masters (which includes both bonding and team
+devices) but only call bonding-specific APIs. When processing team device
+events, calling bond_slave_get_rcu() and bond_is_slave_inactive() on
+team_port structures causes KASAN to detect an out-of-bounds memory access
+since team_port is smaller than bond slave.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0 (2)
+Fix this by wrapping the bond-specific API calls with a check for bonding
+devices. This allows the function to still process LAG events for both
+bonding and teams but only calls bond-specific functions when dealing with
+actual bonding devices.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+For mlx5_handle_changeinfodata_event(), keep the explicit bond check as
+mlx5 doesn't handle state information for team ports anyway.
 
-- [Medium] The commit message mischaracterises the defect: it pastes a
-  KASAN "slab-out-of-bounds ... kmalloc-32 of size 32" report and…
-- [Medium] The patch silently changes 'struct ieee802154_hdr hdr;' to
-  'struct ieee802154_hdr hdr = { };' (ca8210.c:1761) without mentioning…
-- [Medium] The new consolidated validation in ca8210_skb_rx() gates the
-  security-header length check on priv->promiscuous…
+Tested with Mellanox ConnectX-5 on Linux 7.2.0-rc6:
+- Bonding: PASS (no regressions)
+- Team device: PASS (no KASAN errors)
 
-Pre-existing issues:
-- [Low] ca8210_net_rx() reads command[26] (== data_ind[24], the DSN of an
-  MCPS_DATA_INDICATION) and latches it into priv->last_dsn…
-- [Low] Concern (reported for completeness, assessed as not actionable):
-  hdr is now explicitly zero-initialized and no path assigns hdr.seq,…
+Fixes: 54493a08e21f ("net/mlx5: Lag, record inactive state of bond device")
+Suggested-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Anirudh Virdi <avirdi@redhat.com>
+---
+Changes in v2:
+- Changed mlx5_handle_changeupper_event() to keep netif_is_lag_master() check
+  instead of using netif_is_bond_master() at the start
+- Wrapped bond-specific API calls (bond_slave_get_rcu, bond_is_slave_inactive)
+  with an explicit netif_is_bond_master() check inside the loop
+- This allows both bonding and team events to be processed, but only calls
+  bond-specific functions for actual bonding devices
+- Suggested-by: Mark Bloch <mbloch@nvidia.com>
+- Tested on hardware to confirm both bonding and team devices work without KASAN errors
 
---
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-ieee802154: ca8210: validate data_ind length upfront in ca8210_skb_rx()
-
-This moves all length and msdulen validation in ca8210_skb_rx() into a
-single check at the top of the function, before dev_alloc_skb(), and adds
-a new check that the reported SPI frame length covers the payload and the
-optional security header.  The hdr declaration is also changed to be
-zero-initialized.
-
-A few questions below.
-
-> In ca8210_skb_rx(), data_ind is read at offsets 22 (msdulen), 23
-> (mpdulinkquality), 29 + msdulen (hdr.sec.level), 30..39 + msdulen
-> (security header), and 29 .. 29 + msdulen (payload) without verifying
-> that the received SPI frame length len covers those offsets, causing an
-> out-of-bounds read when msdulen exceeds len - 30:
->
->   BUG: KASAN: slab-out-of-bounds in ca8210_skb_rx.constprop.0.isra.0+0x137/0x160
->   Read of size 64 at addr ffff888006453ddd by task init/1
-> ...
->   The buggy address belongs to the object at ffff888006453dc0
->    which belongs to the cache kmalloc-32 of size 32
-
-[Severity: Medium]
-Can this slab-out-of-bounds actually be reached from the driver's receive
-path?
-
-ca8210_skb_rx() has one caller chain:
-
-  ca8210_spi_transfer_complete() -> ca8210_rx_done() -> ca8210_net_rx()
-    -> ca8210_skb_rx(hw, len - 2, command + 2)
-
-and the buffer is always cas_ctl->tx_in_buf, a fixed array embedded in a
-kzalloc'd struct cas_control:
-
-drivers/net/ieee802154/ca8210.c:
-    struct cas_control {
-        ...
-        u8 tx_in_buf[CA8210_SPI_BUF_SIZE];
-    ...
-    };
-
-with CA8210_SPI_BUF_SIZE == 256, not a kmalloc-32 allocation.  Since the
-pre-existing check caps msdulen at IEEE802154_MTU (127), the furthest byte
-the unpatched code can touch is data_ind[39 + 127] == tx_in_buf[168], and
-skb_put_data() copies tx_in_buf[31..157] — all inside the 256-byte array.
-
-The changelog's own note:
-
-> Tested in QEMU with KASAN enabled by passing a short data_ind buffer with
-> msdulen = 64 and len = 30 into ca8210_skb_rx().
-
-suggests the splat came from a synthetic direct call on a 32-byte buffer
-rather than from the SPI receive path.  On the real path the observable
-effect of the missing checks looks like stale SPI buffer bytes (idle fill
-0xFF, or residue from a previous exchange) being copied into the skb and
-into hdr.sec, which is a data-integrity issue rather than memory
-corruption.
-
-Could the commit message describe the actual in-tree consequence, and
-could the Fixes:/Cc: stable rationale be restated accordingly so stable
-triage isn't misled by the pasted KASAN report?
-
-> diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-> index 8aa7ffeb22d78..ab245add9ff5c 100644
-> --- a/drivers/net/ieee802154/ca8210.c
-> +++ b/drivers/net/ieee802154/ca8210.c
-> @@ -1758,19 +1758,15 @@ static int ca8210_skb_rx(
->  	u8                    *data_ind
->  )
->  {
-> -	struct ieee802154_hdr hdr;
-> +	struct ieee802154_hdr hdr = { };
-
-[Severity: Medium]
-Is this zero-initialization a separate fix that deserves a mention in the
-changelog?
-
-ieee802154_hdr_push() unconditionally emits the sequence octet and both
-frame control bytes:
-
-net/ieee802154/header_ops.c:ieee802154_hdr_push() {
-	...
-	buf[pos++] = hdr->seq;
-	...
-	memcpy(buf, fc, 2);
-	memcpy(skb_push(skb, pos), buf, pos);
-}
-
-while ca8210_skb_rx() only assigns hdr.fc.type, hdr.fc.security_enabled,
-hdr.fc.intra_pan and the two address-mode fields, and never assigns
-hdr.seq, hdr.fc.version (outside the security path), hdr.fc.ack_request,
-hdr.fc.frame_pending or the reserved bits.  Before this hunk those bytes
-were uninitialized stack data pushed into every reconstructed header handed
-to mac802154 via ieee802154_rx_irqsafe(); after it they are deterministic
-zeros.
-
-The only trace of this is below the --- line ("dropped the unrelated
-hdr.seq assignment"), which does not end up in the git log.  Should the
-changelog describe this behaviour change, or should the hunk be split into
-its own patch?
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but with hdr now explicitly
-zeroed and no path assigning hdr.seq, every non-promiscuous frame is
-reported upstream with sequence number 0, even though the driver does read
-the real DSN from the same message in ca8210_net_rx():
-
-	if (command[26] == priv->last_dsn) {
-
-Previously the emitted octet was stack garbage, so this is unchanged in
-kind, and the v2 changelog records that wiring up hdr.seq was dropped at
-the maintainer's request.  Noting it only so the intent is on record.
-
->  	int msdulen;
->  	int hlen;
-> -	u8 mpdulinkquality = data_ind[23];
-> +	u8 mpdulinkquality;
->  	struct sk_buff *skb;
->  	struct ca8210_priv *priv = hw->priv;
->  
-> -	/* Allocate mtu size buffer for every rx packet */
-> -	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
-> -	if (!skb)
-> -		return -ENOMEM;
-> -
-> -	skb_reserve(skb, sizeof(hdr));
-> +	if (len < 30)
-> +		return -EMSGSIZE;
-
-[Severity: Low]
-This is a pre-existing issue, but the caller parses the same message with
-no minimum length at all, so the new "upfront" check is not the first
-parse of the frame:
-
-drivers/net/ieee802154/ca8210.c:ca8210_rx_done() {
-	buf = cas_ctl->tx_in_buf;
-	len = buf[1] + 2;
-	if (len > sizeof(struct mac_message)) {
-	...
-}
-
-drivers/net/ieee802154/ca8210.c:ca8210_net_rx() {
-	...
-	if (command[26] == priv->last_dsn) {
-	...
-	priv->last_dsn = command[26];
-	spin_unlock_irqrestore(&priv->lock, flags);
-	return ca8210_skb_rx(hw, len - 2, command + 2);
-}
-
-len is only bounded from above, so a data indication declaring buf[1] < 25
-still has command[26] (== data_ind[24]) read and latched into
-priv->last_dsn before ca8210_skb_rx() gets to reject it.  The read stays
-inside tx_in_buf, but the byte is idle fill or residue, so last_dsn can be
-poisoned and a later legitimate frame carrying that DSN is dropped as a
-resend.
-
-Would it make sense to also give ca8210_net_rx() a minimum length check
-for SPI_MCPS_DATA_INDICATION, so both parsers of this message format agree
-on its minimum size?
-
->  
->  	msdulen = data_ind[22]; /* msdu_length */
->  	if (msdulen > IEEE802154_MTU) {
-> @@ -1778,9 +1774,25 @@ static int ca8210_skb_rx(
->  			&priv->spi->dev,
->  			"received erroneously large msdu length!\n"
->  		);
-> -		kfree_skb(skb);
->  		return -EMSGSIZE;
->  	}
-> +
-> +	if (len < 30 + msdulen ||
-> +	    (!priv->promiscuous && data_ind[29 + msdulen] > 0 &&
-> +	     len < 29 + msdulen + sizeof(struct secspec))) {
-> +		dev_err(&priv->spi->dev,
-> +			"received truncated data indication!\n");
-> +		return -EMSGSIZE;
-> +	}
-
-[Severity: Medium]
-Can the two reads of priv->promiscuous disagree here?
-
-The security-header length check is gated on !priv->promiscuous above, but
-the decision to actually parse the security header is a second, independent
-read a few lines later:
-
-	if (priv->promiscuous)
-		goto copy_payload;
-
-	/* Populate hdr */
-	hdr.sec.level = data_ind[29 + msdulen];
-	...
-		hdr.sec.key_id_mode = data_ind[30 + msdulen];
-		memcpy(&hdr.sec.extended_src, &data_ind[31 + msdulen], 8);
-		hdr.sec.key_id = data_ind[39 + msdulen];
-
-priv->promiscuous is a plain bool written without any lock, READ_ONCE() or
-barrier:
-
-drivers/net/ieee802154/ca8210.c:ca8210_set_promiscuous_mode() {
-	...
-		priv->promiscuous = on;
-}
-
-drivers/net/ieee802154/ca8210.c:ca8210_reset_send() {
-	...
-	priv->promiscuous = false;
-}
-
-and ca8210_net_rx() drops priv->lock before calling ca8210_skb_rx():
-
-	spin_unlock_irqrestore(&priv->lock, flags);
-	return ca8210_skb_rx(hw, len - 2, command + 2);
-
-So if the flag reads true at the check and false at the use — for example
-a monitor-mode toggle from ca8210_set_promiscuous_mode() landing between
-the two — the "len < 29 + msdulen + sizeof(struct secspec)" branch is
-never evaluated, yet data_ind[29 + msdulen] through data_ind[39 + msdulen]
-are dereferenced.  That reads up to 11 bytes past the end of the frame the
-length check validated (stale tx_in_buf contents), producing a fabricated
-hdr.sec or an ieee802154_hdr_push() failure and a dropped frame, which is
-the exact byte class this patch sets out to stop touching.
-
-Would taking one snapshot, e.g.
-
-	bool promisc = READ_ONCE(priv->promiscuous);
-
-and using it for both the check and the parse decision, or validating the
-security-header length unconditionally, close that window?
-
-> +
-> +	mpdulinkquality = data_ind[23];
-> +
-> +	/* Allocate mtu size buffer for every rx packet */
-> +	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
-> +	if (!skb)
-> +		return -ENOMEM;
-> +
-> +	skb_reserve(skb, sizeof(hdr));
->  	dev_dbg(&priv->spi->dev, "skb buffer length = %d\n", msdulen);
->  
->  	if (priv->promiscuous)
-
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 28d16fdc3f06..1c4107d9a408 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1918,9 +1918,11 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
+ 			}
+ 		}
+ 		if (i < MLX5_MAX_PORTS) {
+-			slave = bond_slave_get_rcu(ndev_tmp);
+-			if (slave)
+-				has_inactive |= bond_is_slave_inactive(slave);
++			if (netif_is_bond_master(upper)) {
++				slave = bond_slave_get_rcu(ndev_tmp);
++				if (slave)
++					has_inactive |= bond_is_slave_inactive(slave);
++			}
+ 			bond_status |= (1 << idx);
+ 		}
+ 
+@@ -2004,7 +2006,7 @@ static int mlx5_handle_changeinfodata_event(struct mlx5_lag *ldev,
+ 	bool has_inactive = 0;
+ 	int idx;
+ 
+-	if (!netif_is_lag_master(ndev))
++	if (!netif_is_bond_master(ndev))
+ 		return 0;
+ 
+ 	rcu_read_lock();
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922093126.141969-1-benquike%40gmail.com
+2.55.0
+
