@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4F344238A;
-	Thu, 24 Sep 2026 12:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4710630D41F;
+	Thu, 24 Sep 2026 12:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790252404; cv=none; b=gEbzyFbeTT/uXr85yPUAlhwKfcthIHFb4z8c0oHJN89mH5M6t4rCMALre8FcYpiuZnvkUkAZOmgXvT2YKtcDOyuC1V+bbSJTOTUaCDcQUc+TAL/OR+Myhq76OjHi5Lpmw29g/g8gAHLjiiUDwmDhK182ttiv9QcujyK5hXQyQ6k=
+	t=1790252405; cv=none; b=VmjDkls2VauhxA/PF4P7yNjl8p5AYaWQSU2NKCdP/Kv4AU8UQ1f3zkZmUvHKsV8QJ/n6QbN2MONDUf0W8XQLMAAuYFn4aAw2uNXLu16RNkUOyqt3k1ttstZ6Y8/2cvJuEI830iuxRywttaTf8EATMS25gfj9pIkWFyamF6oE8IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790252404; c=relaxed/simple;
-	bh=mCDGIhgL5YgoDNhrEuHNH0FqQnLMupcxNHyB/VlcsRA=;
+	s=arc-20240116; t=1790252405; c=relaxed/simple;
+	bh=RI6IIGMOcUnTDad8UMdUIFxfWRJdRBMFe65r33rMKVs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WRst49Hg72JN3CH7i9Qzfa1tCg0KVgqv4kh5QSmjWrFxFIv8uTjDPq6gDoM+oCtrHy/bMp5HAo2a+oZkW7u7q3JnwY5vrFOjWwSWscWnVTRUUfXTTNnMoh+4mEl+ku32G0XCbO8anvwLax7KmWLXEGjI2z3u0cuz4eqU/vJjJMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhqFWrLi; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pYskD6YvYA5cXDAxMYsRoPjmBPeUlN9qHBrFY1/dW3sbcJPDIc/TePAqa+cpJ5C6tnn5p9UOUEBZ87ix7EcVtHKnXHHAJUJpA2/wHXCQclN+HRb+Zx/qqS3Bckf8CfwTU+KvLEP4qP86aG7r9iu9vGm1yMeV4AvcxVjB5TVy6Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lts5Cd0c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhqFWrLi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3A71F000FF;
-	Thu, 24 Sep 2026 12:20:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lts5Cd0c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4AA1F00893;
+	Thu, 24 Sep 2026 12:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790252402;
-	bh=VpXn1ri2/l5+8sDmLQVWGe+Xu8dfgiYtuX1ZX27BjLU=;
+	s=k20260515; t=1790252404;
+	bh=hzAxlskymR1IoDwgC79UlkXZ+hL3WPjPGFR+iB9I0nk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XhqFWrLiFF8fdEkWiHFilpj/MMiNDw0nOw9vS1MafwIQtsqjhb5LID1i5eFnxhOQl
-	 wYAuSNaJvrkd2bMBGzMHCh1NqMU2ThYxsnI0iuo508RImmobapS8zaF63tkdxX/edS
-	 OkNDv/cwX/jPvsLPKmHQpURZvO0IpZDojQyDLkJeKDlyqh7mRDweylxdNsVVDydIZJ
-	 pmphzM8b7PhUza/kup8SYp11NxodYbbOjrMpg07cKJ89DOJwhBdPRutWWQE6irNFzw
-	 V+E+usF/dV5AQJ4WU1t66zV6hZua+EydPdthhpDUsZlBoOD754+pELM3DISi1E42TI
-	 e9RyIbQC7RbNQ==
-Subject: Re: [PATCH net v2 1/2] net: ethtool: don't match a hwtstamp provider
- on a device without a PHC
+	b=Lts5Cd0cBZtm+6YYUTEYYzlS0q5ixTC/nr19E+eJ5cGZahOtzVGEVklyL/gsBSPNq
+	 MBdV6dEJlzuaixbAKCunOxlbi8RZaf+wvMpgvOwW95jQXE6EygzgmleHyCZtOVKysr
+	 qBvWgjBzRZ4r89wmLmxgJI5jnkqFZn11Q9DSuNPvvzUIu6N069OgoPSpIM6YqgACYW
+	 PR1S4QzSGg5E54tV4YDgSMlCJhSA0utdQXATgAIMylz1l9zTXTDgSXyxgUGsRCgIQi
+	 xaVKdJr1bh27RS3vFHgRkT78fwLNlbczZGIPG/EP4WpHdoOIFLbcTScm/94L/68bnJ
+	 uGsJC7G43s8Sg==
+Subject: Re: [PATCH net v2 2/2] net: ethtool: let tsconfig reach a PHY-only
+ timestamp provider
 From: netdev-bot+sashiko@kernel.org
 To: nb@tipi-net.de
 Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
  pabeni@redhat.com, horms@kernel.org, kory.maincent@bootlin.com,
  vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 12:20:01 +0000
-Message-ID: <179025240177.2160803.17736204487729550368@kernel.org>
-In-Reply-To: <20260923121644.2194183-2-nb@tipi-net.de>
-References: <20260923121644.2194183-2-nb@tipi-net.de>
-X-sashiko-severity: High
+Date: Thu, 24 Sep 2026 12:20:03 +0000
+Message-ID: <179025240309.2160803.13124415103175394580@kernel.org>
+In-Reply-To: <20260923121644.2194183-3-nb@tipi-net.de>
+References: <20260923121644.2194183-3-nb@tipi-net.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,143 +59,156 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
-- [Medium] The patch deals with the 0xFFFFFFFF/-1 aliasing through an
-  open-coded check at one comparison site instead of rejecting the value…
+- [Medium] ethnl_set_tsconfig() can now install an HWTSTAMP_SOURCE_NETDEV
+  provider on a device that has no hwtstamp NDOs, and that provider can…
+- [Low] The new TSCONFIG_SET gate in ethnl_set_tsconfig()
+  (tsconfig.c:303-305) looks only at whether dev->phydev is the default…
 
 --
 
-net: ethtool: don't match a hwtstamp provider on a device without a PHC
+net: ethtool: let tsconfig reach a PHY-only timestamp provider
 
-This patch adds a phc_index >= 0 check to ethtool_net_get_ts_info_by_phc().
-A requested provider index of 0xFFFFFFFF becomes -1 when stored in an int,
-and with this check it no longer matches a netdev that reports no PHC.
+This commit lets TSCONFIG_GET and TSCONFIG_SET work on devices that have
+no hwtstamp NDOs but whose PHY can timestamp. It drops the NDO check on the
+get side. It replaces the set_validate callback with a check inside
+ethnl_set_tsconfig() that also accepts a default timestamping PHY, and it
+adds a NULL check for ndo_hwtstamp_get in dev_get_hwtstamp_phylib().
 
-> diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-> index 23db40618fed1..23e8282563cc3 100644
-> --- a/net/ethtool/common.c
-> +++ b/net/ethtool/common.c
-> @@ -980,7 +980,7 @@ int ethtool_net_get_ts_info_by_phc(struct net_device *dev,
->  	if (err)
->  		return err;
+> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+> index 164643140a523..f6029f60c1dc9 100644
+> --- a/net/core/dev_ioctl.c
+> +++ b/net/core/dev_ioctl.c
+> @@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
+>  		    hwprov->phydev)
+>  			return phy_hwtstamp_get(hwprov->phydev, cfg);
 >  
-> -	if (info->phc_index == hwprov_desc->index &&
-> +	if (info->phc_index >= 0 && info->phc_index == hwprov_desc->index &&
->  	    net_support_hwtstamp_qualifier(dev, hwprov_desc->qualifier))
->  		return 0;
+> -		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
+> +		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
+> +		    dev->netdev_ops->ndo_hwtstamp_get)
+>  			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
 >  
+>  		return -EOPNOTSUPP;
 
-[Severity: High]
-Can the same -1 == -1 match still happen in the PHY half of the lookup?
+[Severity: Medium]
 
-ethtool_phy_get_ts_info_by_phc() in net/ethtool/common.c still compares on
-equality alone. It does this in the link topology loop:
+The commit message says "this makes a netdev provider reachable without
+ndo_hwtstamp_get". Should a netdev provider be reachable at all on a device
+without the NDOs?
 
-	xa_for_each(&dev->link_topo->phys, phy_index, pdn) {
-		...
-		ethtool_init_tsinfo(info);
-		err = phy_ts_info(pdn->phy, info);
-		...
-		if (info->phc_index == hwprov_desc->index)
-			return pdn->phy;
-	}
+With ethnl_set_tsconfig_validate() removed, the only gate left is the new
+check in ethnl_set_tsconfig(). That check lets an NDO-less device through
+whenever dev->phydev is the default timestamping PHY.
 
-It does the same in the dev->phydev fallback:
-
-	if (info->phc_index == hwprov_desc->index)
-		return dev->phydev;
-
-ethtool_init_tsinfo() sets phc_index to -1. So a PHY whose ts_info callback
-succeeds without reporting a PHC would match a request for 0xFFFFFFFF.
-
-With this change, the netdev matcher always returns -ENODEV for index -1.
-tsconfig_set_hwprov_from_desc() then falls back to the PHY matcher:
+After that, tsconfig_set_hwprov_from_desc() chooses the netdev source based
+only on a PHC index match:
 
 	ret = ethtool_net_get_ts_info_by_phc(dev, &ts_info, hwprov_desc);
 	if (!ret) {
 		/* Found */
 		source = HWTSTAMP_SOURCE_NETDEV;
-	} else {
-		phy = ethtool_phy_get_ts_info_by_phc(dev, &ts_info, hwprov_desc);
-		...
-		source = HWTSTAMP_SOURCE_PHYLIB;
-	}
 
-That builds a hwprov with desc.index = -1, source = HWTSTAMP_SOURCE_PHYLIB,
-and phydev pointing at the PHY that has no PHC. ethnl_set_tsconfig() then
-installs it in dev->hwprov.
+ethtool_net_get_ts_info_by_phc() compares only the get_ts_info phc_index and
+the qualifier. It never looks at the NDOs.
 
-Wouldn't a provider still be selected on hardware that has no PHC, just a
-PHYLIB one instead of a NETDEV one? The commit message says "only match a
-real PHC index".
+Suppose user space selects the MAC PHC on such a device. Then:
 
-One in-tree example looks to be ines_ts_info() in drivers/ptp/ptp_ines.c.
-It never writes phc_index and returns 0. The INES timestamper is attached
-as phy->mii_ts from the device tree in fwnode_mdiobus_register_phy(), so
-phy_has_tsinfo() is true for that PHY.
+ethnl_set_tsconfig()
+  dev_set_hwtstamp_phylib(dev, &zero_config, ...)
+    /* no hwprov yet, goes to default PHY, disables PHY timestamping */
+  rcu_replace_pointer(dev->hwprov, hwprov, ...)
+    /* NETDEV hwprov is committed */
+  if (config_mod)
+    dev_set_hwtstamp_phylib(dev, &hwtst_config, ...)
+      if (!ops->ndo_hwtstamp_set)
+          return -EOPNOTSUPP;
 
-With CONFIG_PTP_1588_CLOCK=n, bcm-phy-ptp and mscc_ptp also install mii_ts
-and report ptp_clock_index(NULL), which is -1.
+That error is returned, but the provider is not rolled back.
 
-micrel's lan8841_ts_info() can also report -1. However, its probe only sets
-phydev->mii_ts when ptp_clock is non-NULL, so it doesn't seem to be a
-trigger.
+If no config attributes are given, tsconfig_send_reply() gets -EOPNOTSUPP
+from the new guard above, and ethnl_set_tsconfig() ignores it:
 
-Here is a possible sequence on a MAC with a real PHC N and a PHY with an
-INES mii_ts:
+	ret = tsconfig_send_reply(dev, info);
+	if (ret && ret != -EOPNOTSUPP) {
 
-  ETHTOOL_MSG_TSCONFIG_SET provider {N, PRECISE}
-    dev->hwprov = {N, PRECISE, NETDEV}
-  ETHTOOL_MSG_TSCONFIG_SET provider {0xFFFFFFFF, PRECISE}
-    ethnl_update_u32() sets hwprov_mod since N != 0xFFFFFFFF
-    ethtool_net_get_ts_info_by_phc() returns -ENODEV
-    ethtool_phy_get_ts_info_by_phc() matches -1 == -1
-    dev->hwprov = {-1, PRECISE, PHYLIB, INES phy}
+The request then returns 0 and no reply is sent.
 
-TSCONFIG GET only emits the provider when index >= 0, so userspace would
-not see this selection afterwards.
+Can the device get out of this state afterwards? Switching back to the PHY
+runs the zero_config disable through the NETDEV branch of
+dev_set_hwtstamp_phylib(). That fails at the same !ops->ndo_hwtstamp_set
+check.
 
-The next patch in this series, "net: ethtool: let tsconfig reach a
-PHY-only timestamp provider", doesn't change either PHY match site or the
-policy. It also drops the ndo_hwtstamp_set/get requirement, so more
-devices could reach this fallback.
+SIOCSHWTSTAMP, SIOCGHWTSTAMP and TSCONFIG_GET also return -EOPNOTSUPP. Both
+skb_defer_rx_timestamp() and skb_clone_tx_timestamp() skip the PHY because
+hwprov->source is not PHYLIB. phy_detach() clears dev->hwprov only when
+hwprov->phydev matches, so it never clears this provider.
 
-Should the same >= 0 check also go into both PHY match sites?
+As far as I can tell, PHY timestamping stays off until the netdev is
+re-created.
 
-[Severity: Medium]
-Would it be better to reject 0xFFFFFFFF at the netlink boundary instead of
-adding an open-coded check at one comparison site?
+I could not find an in-tree driver that meets all the conditions. ena and
+netdevsim report a PHC without the NDOs, but they have no phydev. The
+commit message does suggest this state is expected to be reachable, though.
 
-The policy in net/ethtool/ts.h leaves the index unbounded:
+Would it be better to reject a netdev source in
+tsconfig_set_hwprov_from_desc() or ethnl_set_tsconfig() when ndo_hwtstamp_set
+or ndo_hwtstamp_get is missing, rather than only guarding the call here?
 
-	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] = { .type = NLA_U32 },
+> diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
+> index 6be3aa5d4bc1e..2b1cdd9b5a232 100644
+> --- a/net/ethtool/tsconfig.c
+> +++ b/net/ethtool/tsconfig.c
 
-Documentation/netlink/specs/ethtool.yaml also describes the index as a
-plain u32. ts_parse_hwtst_provider() copies it into the int
-hwtstamp_provider_desc.index, where -1 is also the "no provider requested"
-sentinel.
+[ ... ]
 
-This aliasing is still visible in ETHTOOL_MSG_TSINFO_GET after the patch.
-tsinfo_parse_request() starts with:
+> @@ -313,6 +300,10 @@ static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
+>  	if (!netif_device_present(dev))
+>  		return -ENODEV;
+>  
+> +	if (!dev->netdev_ops->ndo_hwtstamp_set &&
+> +	    !phy_is_default_hwtstamp(dev->phydev))
+> +		return -EOPNOTSUPP;
+> +
 
-	req->hwprov_desc.index = -1;
+[Severity: Low]
 
-A user-supplied index of 0xFFFFFFFF overwrites that with the same value, so
-tsinfo_prepare_data() skips the provider lookup:
+This check runs before dev->hwprov or the requested provider is looked at,
+and it only considers dev->phydev. Could it reject requests that an already
+installed PHYLIB provider can serve?
 
-	if (req->hwprov_desc.index != -1) {
-		ret = ethtool_get_ts_info_by_phc(dev, &data->ts_info,
-						 &req->hwprov_desc);
-		...
-	}
+dev_set_hwtstamp_phylib() serves an installed PHYLIB hwprov without needing
+any NDO:
 
-It then returns the default provider's tsinfo instead of an error, even
-though the request named a provider.
+	if (hwprov) {
+		if (hwprov->source == HWTSTAMP_SOURCE_PHYLIB &&
+		    hwprov->phydev) {
+			phy_ts = true;
+			phydev = hwprov->phydev;
 
-NLA_POLICY_MAX(NLA_U32, INT_MAX) for ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX
-would stop -1 from ever arriving from userspace, for both tsconfig SET and
-tsinfo GET. It would cover the PHY match sites too, and the bad attribute
-would be reported through extack.
+ethtool_phy_get_ts_info_by_phc() also accepts any timestamping PHY in
+dev->link_topo. It does not require default_timestamp.
+
+Take an NDO-less MAC whose dev->phydev is a default timestamper. A PHYLIB
+hwprov for a different topology PHY, such as an SFP module PHY, can be
+selected on it.
+
+Some drivers disconnect the PHY in ndo_stop. If dev->phydev is detached that
+way, phy_detach() leaves the hwprov alone because hwprov->phydev != phydev:
+
+	if (hwprov && hwprov->phydev == phydev) {
+		rcu_assign_pointer(dev->hwprov, NULL);
+
+>From then on SIOCSHWTSTAMP still works through hwprov->phydev. TSCONFIG_SET
+fails with -EOPNOTSUPP at this check because dev->phydev is NULL. That is the
+ioctl/netlink mismatch the commit sets out to remove.
+
+This does not apply when a non-default PHY is selected for the first time.
+In that case the zero_config disable step fails with or without this check,
+so the check only matters once a PHYLIB hwprov is already installed. I also
+have not confirmed the SFP and link topology lifetime details, so this
+scenario may be narrower than described.
+
+Would it make sense to move this check after provider resolution and also
+accept an installed or requested PHYLIB provider?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923121644.2194183-2-nb%40tipi-net.de
