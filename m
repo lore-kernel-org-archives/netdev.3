@@ -1,168 +1,242 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4DA400995
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F6E399D08
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790228288; cv=none; b=UEePCgzuG+EFwa5iK1LSne97DicsBQwOkzr08fKgL9yK+Nq/WkyzltkE6nPFc7bWx0N4mCMsD9yQWT0WlS4LV0rQf+qgPzZrLikn+BnXv207jvWLWyFPY3/VMbpPDQ0RdcrIgC4SWGKgyYDTBBp7eJXfohYCbwkzW5u6MjkufJY=
+	t=1790228519; cv=none; b=XL3g3VYB0wIvUpwEMXDw2DWrxV5N03oRjYAVZtgiF1KPBSmMsFNJcg4j9fdMjcaBTrH/l7/lToU0/zmMp7lErB/uxRTzmxJwu9ei5OIviQyOZ0D+LbjvikY+mv7Yr727i0ttgyxqxY236bLGuYrh2dHD6TbzpKW7QMWqCYhW+Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790228288; c=relaxed/simple;
-	bh=cDrYNT/vM3S+F8pDVAtrGqwLC/JY738WsOSLsGzj7qk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ufMytqwrbKwpR5xOoHbDGUxf6AHAHfSrdaEx0liN6qD+OtEVnq0qm8r9KWthpIM1ovewmKOGPoFVnd/DR3MWJdtvTJYmIhTOnVL4tZ63YZdZ9mkKTUW0IHIVf+4nc7Mh9cAMQOgqSf8p9KoVux4weh0wSinJjgVHvQPAvmJjRuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DCHI1l5Q; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790228519; c=relaxed/simple;
+	bh=jL1bIUxxRSZJ6V6CnW3qOphETdPw6dEs4IQ27mziE5w=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BgTZb//E2DKFsimwv8wtIzEBb7As1cEvWmwOhKFT1YtSjZ0GrUEtvDAW55rxRSeCyghQRM+57bAMHVGcJ7LTrsi6Uf7IsFZMs9r+C6UPUkz+1yngmqZo50B7GwgFsWo+JUaS/r0AKEnev76/ULLCxzIh2Cl/bUWgQxuiKWTSF+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rwq9iqqK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DCHI1l5Q"
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccda24afso952192a91.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:38:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790228286; x=1790833086; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VKLwiiEPAjETYRoUGWduaZyZsJc2x1dKmXcYg2HylBk=;
-        b=DCHI1l5QOXDawGvsM5slw7FONXGYAe7aKp1F9BJ7mEP1bHf83aJOvKRTM4033yBQj1
-         8yyCasKd38V7ZJa/LFuZT2gp7TewPf+UhqxaY/A+TC5cS0pMvtYR6TlCf3e9Z1xCVBoI
-         G4XgolLCC5bMqN9YkJY7NhcCA7ZhS87JwcmmpAAPnOWwSpRoIleybj1nH+r9ho4N32+H
-         lzuw48jAkJShZcAQQplIFIXmeRgqjAtErUvHk06br5G4vdYjltp3pO/Cxlnhjm0+Zmxz
-         JwOp6ABnegfImNeN+e7HcqHfJB/T42A0ptTvtFVMv/P2HFgJCMylg22fwRk+R+vpo7Jy
-         f1Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790228286; x=1790833086;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VKLwiiEPAjETYRoUGWduaZyZsJc2x1dKmXcYg2HylBk=;
-        b=MnBxxJRAQPL6oIZiTGXyAdWyKdLyVKWxxj9Wd561J9lSCXVuB3GwEn2+w7+IhpcYCy
-         S/2uG+DZYWSySAEW6FlGNEq9wziQ5kJEo1QnaSeyYZz+g8YKw/dYxOnkerQSslevkoNS
-         5u0TJ/gc31UPdx+RNd+2rF1UR4VewxU7t/1sFsSt3CpG5IQw6jMMoNEtOI1ovWdBTeXM
-         izPv3EnVgPlo3+5k3jyLn8ujGSnkX8tA1g3MiFS2bIh2oUuQHn0bDiYEkZ2IMH8uHQeg
-         e2D/vB42JIstH6bK2HgBEv9l09gkcMpMlpb2cCcUdbDkClviyMOCm8PS1Sxq5MtbaEYc
-         1Maw==
-X-Forwarded-Encrypted: i=1; AKwUvBxnTeqc/v/qJZ53w5YYOPjGhwTT7rFaYCAkfDqGd5cMYT/VQdzrnRsyZhVRIvGQzeZdEwP5Hl8=@vger.kernel.org
-X-Gm-Message-State: AFuF++n+0l/GSLvUNCEjLdPXRVL1qXYToyw6/TfWFhMLaEZxjOUrOoZg
-	U+7dpgwgfZIyJL0nW7OqA1cdn20Zn8a1bpR8wltlksMUDn1hmenEnzYg
-X-Gm-Gg: AYBFou2prWiaiHGciJ8ccSSOtQVVf1GZUe9vhKjcjFH1uY5nTPtndez7HxXoDcNoa8p
-	UEiJWfBJ1vW2EsKc2I2dlXB0+bYqJBp0nvN3Y1HU5Wqn5wU4pO9t58RHvJVb2nuPk/zC4AaKBrM
-	X2jGL7UX7iTNCJ0eFZZS0JSN5nC9PtJcgICzROQgFKA+M1Vb/vsc6drcpDvt1FiPsXnpL1q6zNE
-	qXSRcCZ/1NFpjwNy2LIjliDo7XJYskpp8czMTXqRGMibceYYr6jfHfp+tjn9hHO+9EP1+X7Su0q
-	E0YRndxqXZ1E3NfxfWO7ZoRakZASYqoD6HMRxg7XcERsBL1jxOY3kjrNP+GpR4Ei9OZEuVQryca
-	U+vKSBziOzx0iuX40cKC78Oo6ypNyBcRFrKlipDb9LqpcOvKg0gqATt5/f2S+Me61cH8r+qIlL5
-	sjI/L7qBfg+Ri+HshZpFUhwataFF/KEGQqfnec2sjDQAL95GIBcyVf64fmny+7fWosD61ZJsnu6
-	b5EXCbmhu8=
-X-Received: by 2002:a17:90b:4a0a:b0:3a0:7dea:6dcc with SMTP id 98e67ed59e1d1-3a09897055cmr1219917a91.29.1790228286099;
-        Wed, 23 Sep 2026 22:38:06 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a09738f2absm2640292a91.14.2026.09.23.22.38.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 22:38:05 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net] net: pktgen: reject out-of-range node indices
-Date: Thu, 24 Sep 2026 14:37:52 +0900
-Message-ID: <20260924053752.1442623-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rwq9iqqK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDDF1F000FF;
+	Thu, 24 Sep 2026 05:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790228517;
+	bh=g/oCu7IkHtpYeJfhvO2VehPoRIqe7P3+rR4muCsoCe4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Rwq9iqqKLX5K0IV5pZitb02mprvdX2lQzsAvdCtP7DgO3Pt4zgUBXNUvu5wzy6aId
+	 hDx+y/AkcWh4lyrKfx3T9wdUuKjY7y7ZTvC/y8/FPuBOUXFJ03MppKC93raoM2dZfP
+	 Eaw6Oj1XYRaJJeoJTu72J1Ov/hGayApt02O4qKuQPwbZUK/djEJ29caW4XPN3sVJ37
+	 fGwdTNt9Q9JzFMWHBrxQSxTFH03kTOXeN302pySWQvI/ctdjPGAKDrH3IXKEDr97XE
+	 njYZy0m1/HwwDJ6+XEl5S8QxhZidgZHmJzseZcuutV1hSC++UJfM9JcRAu8xn6qqtD
+	 7zJu/uYRrVONQ==
+Subject:
+ Re: [PATCH net] vlan: ensure sufficient headroom in vlan_dev_hard_header()
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, petalzu987@gmail.com
+Date: Thu, 24 Sep 2026 05:41:56 +0000
+Message-ID: <179022851638.2160803.1808206741379444999@kernel.org>
+In-Reply-To: <20260922113924.3165190-1-edumazet@google.com>
+References: <20260922113924.3165190-1-edumazet@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The pktgen node command parses up to ten decimal digits into unsigned
-long, then passes the value to node_possible(). That helper takes an int
-and tests the node bitmap without a bounds check. A value beyond the
-bitmap can read the next node-state mask and be accepted; larger values
-can narrow to a negative index. On 32-bit, parsing can also wrap.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-On v7.2, an initial-namespace UID 65534 task with no effective
-capabilities reached pktgen_if_write() through user and network
-namespaces. KASAN reported an eight-byte wild read. The read can cause
-a crash; the proc result exposes a limited one-bit outcome. No broader
-memory disclosure or privilege escalation has been demonstrated.
+Critical: 0 · High: 1 · Medium: 3 · Low: 1
 
-Parse this command into u64 and reject node >= MAX_NUMNODES before
-converting to int. Preserve the existing OK/ERROR proc results. The
-fixed v7.2 KASAN VM passed nine input controls without a KASAN report;
-the W=1 pktgen object build was warning-free.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Introduced in v2.6.35, the unchecked call remains in v7.2.7 and
-v6.12.111 as checked on 2026-09-24. The read needs
-CONFIG_NET_PKTGEN and CONFIG_NUMA (MAX_NUMNODES > 1). The unprivileged
-path also needs usable CONFIG_USER_NS and CONFIG_NET_NS. Tested
-reproducer source is available privately to maintainers on request.
+- [High] The patch makes vlan_dev_hard_header() return -ENOMEM for
+  ARPHRD_ETHER-backed VLAN devices for the first time, which activates a…
+- [Medium] vlan_dev_hard_header() (net/8021q/vlan_dev.c:58-60) now
+  returns -ENOMEM *before* pushing anything, making…
+- [Medium] sch_teql swallows the newly introduced VLAN header-
+  construction failure and selects its 'transmit' branch.
+- [Medium] The new -ENOMEM return from vlan_dev_hard_header() makes two
+  LLC SAP response builders leak their response skb.
+- [Low] The new headroom computation in vlan_dev_hard_header()
+  (net/8021q/vlan_dev.c:58-59) reads dev->needed_headroom with a plain…
 
-Fixes: e99b99b471c2 ("pktgen node allocation")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
+--
 
-KASAN excerpt from the unmodified v7.2 VM:
-[    1.739189] BUG: KASAN: wild-memory-access in pktgen_if_write+0x66f5/0x6990
-[    1.739389] Read of size 8 at addr 1fffffff891bf658 by task pktgen_userns_p/144
+vlan: ensure sufficient headroom in vlan_dev_hard_header()
 
- net/core/pktgen.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+This adds an skb_cow_head() call to vlan_dev_hard_header() when
+VLAN_FLAG_REORDER_HDR is clear, so that callers which reserved only
+ETH_HLEN (or skbs allocated before a headroom change) no longer hit
+skb_under_panic() when the VLAN header is pushed.
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 7f81aed46672..9e172a101a1f 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -818,6 +818,25 @@ static ssize_t num_arg(const char __user *user_buffer, size_t maxlen,
- 	return i;
- }
- 
-+/* The node command's ten-digit argument also fits in u64 on 32-bit. */
-+static ssize_t num_arg_u64(const char __user *user_buffer, size_t maxlen,
-+			   u64 *num)
-+{
-+	size_t i;
-+
-+	*num = 0;
-+	for (i = 0; i < maxlen; i++) {
-+		char c;
-+
-+		if (get_user(c, &user_buffer[i]))
-+			return -EFAULT;
-+		if (c < '0' || c > '9')
-+			break;
-+		*num = *num * 10 + c - '0';
-+	}
-+	return i;
-+}
-+
- static ssize_t strn_len(const char __user *user_buffer, size_t maxlen)
- {
- 	size_t i;
-@@ -1304,13 +1323,15 @@ static ssize_t pktgen_if_write(struct file *file,
- 		return count;
- 	}
- 	if (!strcmp(name, "node")) {
-+		u64 node;
-+
- 		max = min(10, count - i);
--		len = num_arg(&user_buffer[i], max, &value);
-+		len = num_arg_u64(&user_buffer[i], max, &node);
- 		if (len < 0)
- 			return len;
- 
--		if (node_possible(value)) {
--			pkt_dev->node = value;
-+		if (node < MAX_NUMNODES && node_possible((int)node)) {
-+			pkt_dev->node = (int)node;
- 			sprintf(pg_result, "OK: node=%d", pkt_dev->node);
- 			if (pkt_dev->page) {
- 				put_page(pkt_dev->page);
+Closes: https://lore.kernel.org/netdev/cover.1789987105.git.petalzu987@gmail.com/
 
-base-commit: 90c2e97ff8245092039ab7ab7492b34427412c9b
+> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> index 2859cbac3f266..3598ad0779f05 100644
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -55,6 +55,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb, struct net_device *dev,
+>  	int rc;
+>  
+>  	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
+> +		if (skb_cow_head(skb,
+> +				 dev->hard_header_len + dev->needed_headroom) < 0)
+> +			return -ENOMEM;
+
+[Severity: High]
+Can this new -ENOMEM return wake up the error path in
+llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr() in net/llc/llc_c_ac.c?
+
+That action frees the wrong skb when llc_mac_hdr_init() fails:
+
+net/llc/llc_c_ac.c:llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr() {
+	struct llc_pdu_sn *pdu = llc_pdu_sn_hdr(skb);
+	...
+	struct sk_buff *nskb = llc_alloc_frame(sk, llc->dev, LLC_PDU_TYPE_U, 0);
+
+	if (nskb) {
+		...
+		rc = llc_mac_hdr_init(nskb, llc->dev->dev_addr, llc->daddr.mac);
+		if (likely(!rc))
+			llc_conn_send_pdu(sk, nskb);
+		else
+			kfree_skb(skb);
+	}
+	if (rc) {
+		nr = LLC_I_GET_NR(pdu);
+	...
+}
+
+The sibling actions in the same file use kfree_skb(nskb) here. With
+kfree_skb(skb), does nskb leak while the caller-owned event skb is put
+twice, given that llc_conn_state_process() documents "This function
+always consumes a reference to the skb" and does kfree_skb(skb) at
+out_skb_put?  And is the following LLC_I_GET_NR(pdu) then a read of the
+freed skb, since pdu points into it?
+
+The failure branch looks genuinely reachable now: llc_alloc_frame()
+reserves 3 + llc_mac_header_len(ARPHRD_ETHER) = 17 bytes, the LLC PDU
+push leaves 14 bytes of headroom, so on a VLAN device with
+VLAN_FLAG_REORDER_HDR clear skb_cow_head(skb, 14 + 18) always calls
+pskb_expand_head(GFP_ATOMIC) and can fail under memory pressure.
+
+Before this change the branch appears to have been dead code for
+Ethernet-backed devices: eth_header() pushes first and only returns a
+negative value when daddr is NULL, and dev_hard_header() returns 0 when
+there are no header_ops.
+
+[Severity: Medium]
+Along the same lines, do llc_sap_action_send_xid_r() and
+llc_sap_action_send_test_r() in net/llc/llc_s_ac.c leak their response
+skb now?
+
+net/llc/llc_s_ac.c:llc_sap_action_send_xid_r() {
+	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U,
+			       sizeof(struct llc_xid_info));
+	...
+	rc = llc_mac_hdr_init(nskb, mac_sa, mac_da);
+	if (likely(!rc))
+		rc = dev_queue_xmit(nskb);
+out:
+	return rc;
+}
+
+On the new -ENOMEM, nskb is neither queued nor freed, and the pointer is
+local so no caller can release it.  Both actions run on received XID and
+TEST command PDUs, and the skb from llc_alloc_frame() has only 14 bytes
+of headroom, so the cow is always attempted.
+
+[Severity: Medium]
+A related question about the new failure mode in general: this is the
+first time dev_hard_header() can return a negative value for an
+ARPHRD_ETHER-backed VLAN device with a non-NULL daddr, and it now means
+"nothing was pushed" rather than "header pushed, but tell me something".
+Several callers discard the return and transmit immediately:
+
+net/bridge/br_stp_bpdu.c:br_send_bpdu()
+	llc_mac_hdr_init(skb, p->dev->dev_addr, p->br->group_addr);
+	skb_reset_mac_header(skb);
+	NF_HOOK(NFPROTO_BRIDGE, NF_BR_LOCAL_OUT, ... br_send_bpdu_finish);
+
+net/tipc/bearer.c:tipc_l2_send_msg()
+	dev_hard_header(skb, dev, ETH_P_TIPC, dest->value, dev->dev_addr, skb->len);
+	dev_queue_xmit(skb);
+
+net/netfilter/nft_reject_netdev.c
+	dev_hard_header(nskb, nskb->dev, ntohs(oldskb->protocol), ...);
+	dev_queue_xmit(nskb);
+
+Same pattern in the direct-xmit path of net/netfilter/nf_flow_table_ip.c
+and in drivers/net/ppp/pppoe.c, where the skb is reserved with only
+dev->hard_header_len so the cow is always attempted.
+
+When skb_cow_head() fails, is the skb handed to dev_queue_xmit() with
+skb->data still at the payload and no VLAN or Ethernet header, so that
+vlan_dev_hard_start_xmit() reads payload bytes as struct vlan_ethhdr and
+a frame with a garbage link header goes on the wire?  br_send_bpdu() is
+one of the two callers named in the commit message.
+
+[Severity: Medium]
+Is the sch_teql path also affected?  __teql_resolve() in
+net/sched/sch_teql.c shadows its return variable:
+
+net/sched/sch_teql.c:__teql_resolve() {
+	int err = 0;
+	...
+	if (neigh_event_send(n, skb_res) == 0) {
+		int err;
+		char haddr[MAX_ADDR_LEN];
+
+		neigh_ha_snapshot(haddr, n, dev);
+		err = dev_hard_header(skb, dev, ntohs(skb_protocol(skb, false)),
+				      haddr, NULL, skb->len);
+
+		if (err < 0)
+			err = -EINVAL;
+	} else {
+	...
+	return err;
+}
+
+The inner err holds the failure, so 0 is returned and teql_master_xmit()
+takes "case 0" and calls netdev_start_xmit() on the slave.  For the
+negative returns that existed before (for example ipgre_header(), which
+returns negative after pushing its header) that was harmless, but with
+the new -ENOMEM nothing has been pushed.  Should the inner declaration
+be dropped, or the return checked by the caller?
+
+[Severity: Low]
+This isn't a bug, but should dev->needed_headroom be read with
+READ_ONCE() here?  Every other in-tree reader annotates it, for example:
+
+include/linux/netdevice.h
+	#define LL_RESERVED_SPACE_EX(dev, hlen) \
+		((((hlen) + READ_ONCE((dev)->needed_headroom)) \
+		  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
+
+The writer is vlan_transfer_features(), which runs from the VLAN work
+item under RTNL:
+
+net/8021q/vlan_dev.c:vlan_transfer_features()
+	vlandev->needed_headroom = dev->needed_headroom + VLAN_HLEN;
+	...
+	vlandev->hard_header_len = dev->hard_header_len;
+
+while vlan_dev_hard_header() runs from the transmit path without RTNL.
+
+>  		vhdr = skb_push(skb, VLAN_HLEN);
+>  
+>  		vlan_tci = vlan->vlan_id;
+
+[ ... ]
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922113924.3165190-1-edumazet%40google.com
