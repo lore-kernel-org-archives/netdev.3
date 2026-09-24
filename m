@@ -1,43 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F8749EC53;
-	Thu, 24 Sep 2026 15:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9514A3871;
+	Thu, 24 Sep 2026 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790264037; cv=none; b=cPn5vEoQX9VeO1M2DUq2w0NYXunPPbffIhsHKnFU0moKJRZRNmO3zTDfmbUssiBJkHOWTaNRzP5jK3fQJXfbCpHEFYvkAApXYkgKkN5l49QjZy0eLt+yEZX2QLgcyJO4Ans8RP+RaEFg/Vo9HeLgNKjnpIkE3cjS5WrGeXygO0Q=
+	t=1790264164; cv=none; b=It2w1LRAATDLfzbvkJ1R1tackPS4g15xVQYY28T2sntltkY/+y1taYvmN07hxbH4b2KO3NfutPjB3cl3mo1cc/i5j47f4kTjM7PTjbnnFBfiL/oYbT2Sa0NOslzNxUKQHkgTm3i+WZqdemfDWWqWWZQAgMUBlKxs3wnzAy7zfkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790264037; c=relaxed/simple;
-	bh=Aarko+3CQIaswT5E/GL4c0rHkWp+5MRf2/LxY93nxiQ=;
+	s=arc-20240116; t=1790264164; c=relaxed/simple;
+	bh=hAf8fXTdW9VLK/QP596l6v+yCl+M04nv+bp0wE9JOsU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gjddR/ZJjvduzzTyZqLK7/7NQzSGArid4COoyuK4BDpEHjtqq68uSXHQSZtmtBqmTfwQDHumj7nSpVQbfFp1dtCiLchDnUrfxap32vapEsWQ9+37cVvZrrSPNi3OXpy4zJQKBaYk0KsAGvmMS67xsEV3pDXMds9vrDjxDSg10c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCx1bn3V; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=CUm+0Z5hV+HFlffek9d07yznfB9ML8TAGCyS4E1Lr1Q3cPqkbwswNCU9l+MP+LsbRKLF+YuWq2lMMNIecJXFGjtyYliKTGG+wa9Z7moiPkvr2NzAlAUcj+YOD+/A29oyw/ylAb1dB9TJWaSX6RPf7ZRGISrhoMjiPWrzI8qfFNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXwAnSbd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCx1bn3V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FE71F000FF;
-	Thu, 24 Sep 2026 15:33:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXwAnSbd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9390D1F000FF;
+	Thu, 24 Sep 2026 15:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790264035;
-	bh=0y3bhQ+E5gqrg/HPQpK6Xwg1YQ6uGBxrc+WKYjyPp74=;
+	s=k20260515; t=1790264163;
+	bh=hAf8fXTdW9VLK/QP596l6v+yCl+M04nv+bp0wE9JOsU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UCx1bn3VFUyyQieRuHSGXQms4dxjx7wLhVh2n8k7kaS4Nk8CNw0fsTvjolhfDr4pP
-	 GMYg+hjnNfd4ViQPFk20H3NKNq9Bdy/Fo+m4bSRbiexSCBboseCfkK3ho3qN2IUHKq
-	 AsIvQujQpXWknitxQORoSnsscBIXsej/2nlYFZxMOXLw15PiOWGT8evUHSPhyse3eA
-	 iZkmqMf95Ox1WMbxXnVwSx+NUdnYx4oDZgjtYNXZPGTtaXJ9L7+dYjAekgPOT92rAe
-	 ekPqcWng4nEAnnhHpxwLjASo8OOowR1ETtRfE8sVJH7tM+JmbCvFZqH52WhCmXJumS
-	 p8MQJ+J6k8UcA==
-Date: Thu, 24 Sep 2026 08:33:55 -0700
+	b=GXwAnSbdyi6MSiPUc5j6gb79YHPSBzC/ikOr/xg3PMV3zVDwKW+2pJDtso+h4Ywgf
+	 6YXq99qQpnoR9Nb5DGIgvtQCVbsPNRuP7eSXTuicNpe7L5ZtQEEQ7iAl94zKjr/Jdr
+	 1oXNLeca4bnIbInkwMJLlxnhYAdi5KhPqOfYO7TBItSPX3BwHkj2NBTs9RbjUKCdzW
+	 LFOCXJ5j5DJCWymecZNMvAb+hKKB9VprYDeBBhYGua4lk8VyNga5uY+702D61xgm77
+	 DTEgERVKT7xtfmh4EjRwV8Yh5BVHE0LI2BdhSSTEvZC0ukYN/8wI/vna0Ql+jZoqq+
+	 JiV49S2oHbmXw==
+Date: Thu, 24 Sep 2026 08:36:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <UNGLinuxDriver@microchip.com>
-Subject: Re: [PATCH net-next v3 0/4] net: microchip_t1s: fix collision
- detection on PLCA status change
-Message-ID: <20260924083355.5e839290@kernel.org>
-In-Reply-To: <20260918143302.76909-1-parthiban.veerasooran@microchip.com>
-References: <20260918143302.76909-1-parthiban.veerasooran@microchip.com>
+To: Aaron Conole <aconole@redhat.com>
+Cc: netdev-bot+sashiko@kernel.org, houminxi@gmail.com,
+ netdev@vger.kernel.org, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v5 1/2] selftests/net/openvswitch: add SCTP
+ flow key test over IPv6
+Message-ID: <20260924083601.651e11bd@kernel.org>
+In-Reply-To: <f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+References: <20260918144647.2024095-2-houminxi@gmail.com>
+	<179008950943.2160803.15856491533624064435@kernel.org>
+	<f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,15 +50,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Sep 2026 20:02:58 +0530 Parthiban Veerasooran wrote:
-> In a 10BASE-T1S multidrop network, the PHY autonomously transitions
-> between PLCA mode and CSMA/CD mode based on BEACON availability. The
-> existing collision detection logic only adjusted on explicit ethtool
-> PLCA changes, leaving it in the wrong state across these autonomous
-> transitions.
+On Wed, 23 Sep 2026 08:31:31 -0400 Aaron Conole wrote:
+> I don't think either is needed for this series.
 
-I'm going to assume at least one of the High or Medium severity
-findings is correct, please respond to the AI feedback in timely
-fashion, even if it's just to agree / tell us that v4 is coming.
--- 
-pw-bot: cr
+Aaron, did you mean to ack this series? You (rightly) dismissed the AI
+slop review, but no ack. Or there's something else that I'm missing?
