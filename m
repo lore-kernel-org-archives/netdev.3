@@ -1,139 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272CB40F720
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775CD473C65
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790244410; cv=none; b=hjZpQiAQKHB+s3LMjq+/YFgQntc6KlC8Zu0F8W/7R1N9OyJrigo/jLeosPJRx2Lds0U7F4R9EMXB2j781TIL5sWPf4Rn3Ty3IpqURWvDc0R6qDfCXBLLm73mdtCAHX3QnIbyYUoBITQP+eFbVeUbongVpYhw/3jGM5khC8Mde3Y=
+	t=1790244479; cv=none; b=b6B0s1vuYbI3D5rPg492/GwIKfrRPaCFJ1bH8bwniL97tYVD982q2Kk6bMDQ64K4C5oRGy9NNquaK+dJ8qGSnlBhceRd03/s0IS6VX5wo0sFhO7EuN0+2r3tJclWdJ7QbzUWdIISc84iYEyntX1u1heMyQAIUscsEMhe/QJbqyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790244410; c=relaxed/simple;
-	bh=GFNtRpwPhMu+eKoRMyqSl+twdGE03Nm5JynpYuuyiKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rEusWPadYDfPDpl+71pOJWCSfbSMrT4MOxLQDLkmaM7FNUHLtUrKqvWXPYsO8wcKs459Dd2A9qccT3k4kyxCdPrONYy2dR8yjDhTl/f2DXxXwG2WeIvWfxQF0ef210pSWGqJq6EKCB3fVEvwiEnEB11gRK5M/vSudpgFJZqu960=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AKCPZLio; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YKkmMapT; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1790244479; c=relaxed/simple;
+	bh=oPILir9HN5MgKg08aglNg67+B4awsfF8aWsxHEYQyfY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RuGbWD8daRxEKYF2L1KhVK0MlX4LuIsmLl0yRmEumwhoPBXaFAFDCOA8+83YGdPB13uGelKUjHCSty+wZZyy4RrvwcoF252MC733RA4U5v29PfaXmB82GWHLXkVjcR+dDzXbdfwbX131wPFIh+mo0zcDI5EDNXT8FTIPA5ZEbpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aCTUEzVc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tAdCk7sB; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AKCPZLio";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YKkmMapT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aCTUEzVc";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tAdCk7sB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790244396;
+	s=mimecast20190719; t=1790244461;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z1Visdhzs5DmNU4T37TUFkaK4VZvm9Ag2DOzaMeHKOM=;
-	b=AKCPZLio0VAbKFGn/PtoUcJMvn5SUSmZYfJ+/msZmjzA6Lo+1qth1pUtCwk8l2z2tHzgIV
-	CtSyWlpEqUkw/0mpeVSW1R1Wke90SUEHn2hVEgu2/dMENKp34CPUuE43Dxaq8zhdK2nFNl
-	jLNvkCl4hFfCCoAHV0F6NSPPew4fEjU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=RSjliNhO01y6ukOqtQMKm+Eso5qszoHcMLKfvGQmCdk=;
+	b=aCTUEzVcLTM3XCzoKEy8y3VulNZTuuSRzzRMDE4seAUIr0cLYI4MLCZpzqEae8nsFaXsKA
+	vLie0GYguULr4/jafeSsuTRdniLticFWV8VU1DksVKRFkEdxQ5ArjddREFBYzigBmZK1uk
+	fXTUcmKexL+jf01QwOfD9Ig4pj575/Y=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-UesGkETUNG6-_8d9_hZSIw-1; Thu, 24 Sep 2026 06:06:35 -0400
-X-MC-Unique: UesGkETUNG6-_8d9_hZSIw-1
-X-Mimecast-MFC-AGG-ID: UesGkETUNG6-_8d9_hZSIw_1790244395
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49b0e6638e3so15026715e9.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:06:35 -0700 (PDT)
+ us-mta-665-UZtgYcoONA6Sjlp84Oi7pg-1; Thu, 24 Sep 2026 06:07:40 -0400
+X-MC-Unique: UZtgYcoONA6Sjlp84Oi7pg-1
+X-Mimecast-MFC-AGG-ID: UZtgYcoONA6Sjlp84Oi7pg_1790244459
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4870eda3782so1439642f8f.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790244394; x=1790849194; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Z1Visdhzs5DmNU4T37TUFkaK4VZvm9Ag2DOzaMeHKOM=;
-        b=YKkmMapTB+dkt6KqQT8YZ4bBiNOnHyRvrI8xjmar5ZHoqdt7fvs+ur4ZOOtvkOGcQY
-         uU3sHE9ev71+3oqUqeBsZlGzxnfd8o5QH3V2cAs1X5C1quXkRHlsq+XYich7Io1Aqwov
-         f3XxQS+5Gh3h22QFJAgoq/PQWiakaNTRDJCQgz6+WkuzUztFmZFRN2tn7fT3X1Ge2160
-         178dBL+/PDeyQMrKXsXF2XuJBDl0P0f+cpyAi/AjhMRw9lLDQt2qjDEJdb0xAJLGUUrw
-         FkvFtuVKSTp/3pohRufOJd5vHVIdiRqZF5d1cikKXncb7/QyHO4a6hH/eKbJmr25sGWv
-         +GNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790244394; x=1790849194;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1790244459; x=1790849259; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Z1Visdhzs5DmNU4T37TUFkaK4VZvm9Ag2DOzaMeHKOM=;
-        b=SxoKdslgaPEoRXUMja5AF5iMcP8n5/SPlT5z6gF8TsoYb9ZIFOKvOYcqOt8tnngOGe
-         llzmBlwthA64kyBdl7X5vhb/teZbnQqWTfejMntRoskrejbMr4mLDmMU60EcbuDLHDUN
-         QCkyRgI/YGmUQeiHrSSxh4JmFSsQ4vuLZUpx2p5Wn8RmUFsFiY0ql2OyHNV4ZO4JKQnn
-         8diRIM1nE9YSgoJ0HsIeX6/vefkcNEQhfXVi8WtqMVivIrJBENmXrMl4Lwvxn8l45tzm
-         e7/uk8QLNYSSdafiKEPhMKX1u3moXRAAy41qX1PP7z+jxTE2xqLFWmLYdNw6oLX6qSPh
-         1APw==
-X-Forwarded-Encrypted: i=1; AKwUvBx1PkvAP8oWXm+oZFjQUBoSAUQH5YYNKm3oZy69UI0smaapkSKC1+uTmVGDjOGj2axtkwHY7gk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nSJairJv5ph8Wx+fULXqTcKfqNid8hfUVxVE1DxWDMrl39HA69
-	af3GsMKNGKLAuv3Vnn8m4CvkAa08ZH3pT6q2TYkrSiA4xWrTMJFFCgXCQPdwy4ECJnRJgThsMJf
-	nC0CW45hr9UZYDz5QAw0sBFlQrTF5Hk2MEJ/ajYXU/LjQS0shtzx+q+KBrA==
-X-Gm-Gg: AYBFou0pBYWdhGrcriCB+ir92hItbSt8lXo8hQzbSkaA59PitLzsMuQkMj+Nkvd+Avn
-	qC4MNdI3EwDlkpsldode9k5EK048323uUrRbzrggP/Xyw2zQ84Q2NuD2lKDxsR05mesLxggmOfY
-	jl8LJVqfYyTo+cY6vYRlmdwwFzAwp55NbQJo97bxxY6Q+GKVmIUTdEz2A9AQzyMoJIFR14HDdP2
-	3406TTJ9IWse6Q9gZPv1Oh9jwUd3EEkn/hdy/zNlBs+ywJZ6AVvihYGldoT1maohC8aVgxBwYnO
-	l+wGQOQ7sOoZIwYMxtaOZWOy9/aC82RrYVELUcsVy7aiJnQ8AADQrvheuD0izJzqw73h4+2qnjm
-	Yx7BqFDRUNUYTR/cYt+rpaS8FXGapT1h7FVfOd/xsxP+XbCVi94g=
-X-Received: by 2002:a05:600c:4689:b0:49f:bc8a:b103 with SMTP id 5b1f17b1804b1-49fe66841f8mr32855255e9.0.1790244394457;
-        Thu, 24 Sep 2026 03:06:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:4689:b0:49f:bc8a:b103 with SMTP id 5b1f17b1804b1-49fe66841f8mr32854435e9.0.1790244393834;
-        Thu, 24 Sep 2026 03:06:33 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-131.retail.telecomitalia.it. [82.53.134.131])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48867b49661sm13003456f8f.0.2026.09.24.03.06.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 03:06:33 -0700 (PDT)
-Date: Thu, 24 Sep 2026 12:06:27 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 2/5] vsock/virtio: Streamline socket reset on
- transport/PM event
-Message-ID: <arTwyyLVU3jM5fTA@sgarzare-redhat>
-References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
- <20260915-vsock-connect-reset-closing-v2-2-a1d9abb472f7@rbox.co>
- <aqp3Po7OcubJboM_@sgarzare-redhat>
- <3cbeb82a-60ff-4129-b630-5404df1f689e@rbox.co>
+        bh=RSjliNhO01y6ukOqtQMKm+Eso5qszoHcMLKfvGQmCdk=;
+        b=tAdCk7sBw2nECCbqlxxniD1gnGwLnT66RJx9BqzkO1/GkvZQyt4M/3yiX8/KknM6M8
+         7vV6ZHF8jev0DxYNvTANWHrevbXKpS6M4R4kDjlEU6RZM3Q+7aWzbSpOolpKdfU474f0
+         YHVUI5hH+QvPV/JF+96neaBwqnlLw1gGp/gyVHIoziKEQVwkjhKRIisGL2AV0hlVHi0i
+         1feMl1xxH+aKYhmouwqFWrEdSoIrvXH+2FcuEGbX8qayHcL3siO8BsKBNFTehwo8L+Wd
+         AOYdpIXKsHs8R7d22wnbR23jtO4tiO05fNi5hwWbc5QfbkwblpYxtPsVZo42O05O+mWc
+         ad7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790244459; x=1790849259;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RSjliNhO01y6ukOqtQMKm+Eso5qszoHcMLKfvGQmCdk=;
+        b=GbusOKjOgH9XH8AE977gCNi/eZ/DsXWBV5G8yy696SmpVB3r5brW9Xc+m+W8Img8fN
+         p0e+YsvihHMSPv90fHCA/9hx8RRfyYLeenY4uay/S8SoN9NRyHDjL87k6rCUUGkq14UN
+         42N/hfGB38MrXsAQv47qafRWq/Eg4QaJfyONwRI2eyGcaWLIfNpObYvkJiI3hGWYi2VF
+         g9kSb6YdtyHJHMtNO6wc1Bd3AN3iRNYY3xbumLzF2j5bRWoVGhS9SZpFxqgnDGWLtkjE
+         eDtIlrPYiktOHhiH3qeYfBMOYL5tDgD6+J0GP7GBvhsPEqAhrFYKlFUpieNzpavlJm0g
+         RY+Q==
+X-Gm-Message-State: AFuF++mdHPGvxFyu6s2b7MiT0JSmTGBLf/1bVI671BRc3royuRIwohiF
+	BZvSqFnp95YthU7cXiPanaOWq8O/FW29tEnSyf0WqghGYP4eVKYFh7hri8fAuRGU/L/udY4EXh0
+	vDZ2SmCJITtZ3mIlusxUf6Rnrn2v2vFBzKozqCDt6sCiM3lSPAKUuzYRBlA==
+X-Gm-Gg: AYBFou27lHY/x4xjsJ7zGcjxSumzjxpetGK2uOzslMIC/zE+XN37u2veftHtSJpWb2G
+	7XDYIaom/8jQ1rMvbZ4tegcRIEwPN+jfZKlvWZaDowYGTLuEF6efDljpKX/4PyHTMgeBZYDXfGM
+	Kmh/BBk9MNQRiQHMt5UKBcdXSHswqxUzFBuVEDRJG4YTznIARVSl+vtmXg7Yln0UdxuSRRyQl1J
+	oMuLahDxDYY42IMLEgOOkiVzyRJKpdXB1HTmuFT33weIBP1PvdHPim3L+URlyrHbaj0W86I1NWK
+	TBBqs89dWtKkM3eX9vagred8vTl5+vAwL/HZ2Rw76HB9Kt7DQqI8PZFloZN3jLF+Q1giLRfX8kW
+	Kbulipp12GL3ZuDfk2UhLNoSBUriEu44WD69S+f5qTj7DkMk/YaRb2rpb54A=
+X-Received: by 2002:a05:6000:4282:b0:486:e9ab:2b86 with SMTP id ffacd0b85a97d-48871759fd6mr3193148f8f.39.1790244459299;
+        Thu, 24 Sep 2026 03:07:39 -0700 (PDT)
+X-Received: by 2002:a05:6000:4282:b0:486:e9ab:2b86 with SMTP id ffacd0b85a97d-48871759fd6mr3193104f8f.39.1790244458892;
+        Thu, 24 Sep 2026 03:07:38 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868779472sm14003920f8f.23.2026.09.24.03.07.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 03:07:38 -0700 (PDT)
+Message-ID: <c4f88f94-67dc-4d9e-8569-4e8db1e150fa@redhat.com>
+Date: Thu, 24 Sep 2026 12:07:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <3cbeb82a-60ff-4129-b630-5404df1f689e@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v14 0/7] r8169: add RSS support for RTL8127
+To: javen <javen_xu@realsil.com.cn>, hkallweit1@gmail.com,
+ nic_swsd@realtek.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260918061923.313-1-javen_xu@realsil.com.cn>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260918061923.313-1-javen_xu@realsil.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 03:17:30PM +0200, Michal Luczaj wrote:
->On 9/16/26 14:30, Stefano Garzarella wrote:
->> On Tue, Sep 15, 2026 at 03:15:13PM +0200, Michal Luczaj wrote:
->>> Follow vhost's vhost_vsock_reset_orphans() and VMCI's
->>> vmci_transport_handle_detach(): set SHUTDOWN_MASK, which will come handy
->>> later in the series.
->>
->> IMO it would be better to include the reason here as well. Every commit
->> should explain why doing a change.
->
->Sure, will do.
->
->>> static void virtio_vsock_reset_sock(struct sock *sk)
->>> {
->>> +	struct vsock_sock *vsk = vsock_sk(sk);
->>> +
->>> 	/* vmci_transport.c doesn't take sk_lock here either.  At least we're
->>> 	 * under vsock_table_lock so the sock cannot disappear while we're
->>> 	 * executing.
->>> 	 */
->>>
->>> +	vsk->peer_shutdown = SHUTDOWN_MASK;
->>
->> In all other places we use WRITE_ONCE/READ_ONCE on vsk->peer_shutdown,
->> should we do the same here?
->
->Right, we should. Isn't this also the case for sk_state and sk_err?
+On 9/18/26 08:19, javen wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
+> 
+> This patch series adds RSS (Receive Side Scaling) support for the r8169
+> ethernet driver, specifically for RTL8127 (RTL_GIGA_MAC_VER_80).
+> 
+> RSS enables packet distribution across multiple receive queues, which can
+> significantly improve network throughput on multi-core systems by allowing
+> parallel processing of incoming packets.
+> 
+> Key features:
+> - Multi-queue RX support (up to 8 queues)
+> - MSI-X interrupt with vector mapping
+> - Dynamic queue configuration via ethtool (-L)
+> - RSS hash computation for flow classification
+> 
+> Experiments:
+> Platform: AMD Ryzen Embedded R2514 with Radeon Graphics(4 Cores/8 Threads)
+> Arch: x86_64
+> Test command:
+>    Server: iperf3 -s
+>    Client: iperf3 -c 192.168.2.1 -P 20 -t 3600
+> Monitor: mpstat -P ALL 1
+> 
+> Before this patch (Without RSS):
+>    Throughput: Unstable, fluctuating between 3.76 Gbits/sec and
+>    8.2 Gbits/sec.
+>    CPU Usage: A single CPU core is fully occupied with softirq reaching
+>    up to 96%.
+> 
+> After this patch (With RSS enabled):
+>    Throughput: Stable at 9.42 Gbits/sec.
+>    CPU Usage: The traffic load is evenly distributed across multiple CPU
+>    cores. The maximum softirq on a single core dropped to 63%.
+>    
+> Other Experiments:
+> Link: https://lore.kernel.org/netdev/0A5279953D81BB9C+f50c9b49-3e5d-467f-b69a-7e49ed223383@radxa.com/
 
-Are those read without the sk_lock?
+The API usage changes suggested by clashiko on patch 3/7 should be IMHO
+be addressed even if marked 'low prio' (IMHO clashiko mislabeled them).
 
-Thanks,
-Stefano
+The claim about the fixes tag on patch 5/7 can instead IMHO be ignored,
+but on the same patch clashiko reports more low prio issues that again
+should be addressed.
+
+/P
 
