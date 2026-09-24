@@ -1,160 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A1F41DED5;
-	Thu, 24 Sep 2026 08:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D6030DEA3
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790240007; cv=none; b=CdqvNOdVFMMj80nreAOwBWj7pQFijD9ryyQyr+ORtS5ZmrIZD3U2FqCeBR2fVllxa6DoNxqFoJ0zM0D7r/N8ION/BiJwpJY3jb52xvyyOSrPGQdhnInJn/F++oB3TmQAj5zG7RMWr7wxMW3f+zzdXDE4ryk327cQGUFyQ+u1TGU=
+	t=1790240046; cv=none; b=mG82ozB1FZGReHi96ErCFf8RYxk+necl3XpwV9gQplaIbjt/v9S4M0+QNwHGKGMk/j46q3zDHpBY+oA9i9tBqORhgaw9ZfEnpIL2f90o7OROdTf7Ybe3gg+L7cnl85QHVVSO2+R4DaBLdQq3Fu+hkFnHYNnwTUkbVjnWdga6mX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790240007; c=relaxed/simple;
-	bh=8zMY95UsKXoFMVj5xzDi6BABEaFDzDbRaEvijWOEOm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BKSI6RsIKe5qnJ41OeZx//D1l/epL5ttYR3lkNdp7GyxoTdsHKXvft45/1BxuSr8bX0lNnLzf/bRh048FwNhW9qnQuBo1Q9enxoY2FbkZhY2z/LHApfXvKkOvWbUoJj/RJ3lYmSoKXmv7wZPcSGrkVvQRbIMlT+dvhofwtFo30M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PG0THUcI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790240046; c=relaxed/simple;
+	bh=vXsA8onEphTPMBeepzop7491JLND9beylCZQUYRa/9s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=e59BfJcxTJJWfPbus6xPtb/R8wmrxgY5+rrCWus2s1zRd5mxDgXYT/q+02iqXNsCspS4r0GNF0PPg8h5UPvg8/4sJbaEmwBmRIaVS4NSuKTvDDkrz+b3r60Umb/3lO/Ah+iPvK0Nx0m0whY3mgg/XWmDAYJQgx2lb6miA12kVHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=LqbjLpMK; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PG0THUcI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F2E1F000FF;
-	Thu, 24 Sep 2026 08:53:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790240004;
-	bh=LreKG5s8ANGaXmTv6uJ69a5K2A2KXRsAIRlVkBPv88k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PG0THUcIFNCsYMBQ331DbPXGEH00J9x3XpTVyCz+YQ7fU1o96Y/Xhoze6MMGTx6U5
-	 fdr1cuqoWdtEf74gvFl4GlMD/7wPj6GAZ5XF7tNyOAUgncueTCX1hj1THFvquAZ7FB
-	 RRlfbFU4EqymHh9L0LNrTattB7KNtgb0tJyO3xaqDd8Ys2ej/k4YeP8S2nnYBcb5dk
-	 Et0BAEeniMXnCJ6QAWN3fRbJO3Qgbz3zJAIaeM2Boiodz3AAhKxWI1wOqz1dh+Lvxj
-	 sxa0HJSwEqBLzbdgwSe/2vy2xQbIXll6sgvy/NTsEYrZo9FnRsDTHv66EkWRkYP3Ut
-	 kp0xHQAEEm5yA==
-Date: Thu, 24 Sep 2026 09:53:16 +0100
-From: Lee Jones <lee@kernel.org>
-To: Rong Zhang <i@rong.moe>
-Cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Ike Panhc <ikepanhc@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Vishnu Sankar <vishnuocv@gmail.com>,
-	Vishnu Sankar <vsankar@lenovo.com>, linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v7 08/13] leds: trigger: netdev: Implement hw_offloaded()
- callback
-Message-ID: <20260924085316.GB331088@google.com>
-References: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
- <20260921-leds-trigger-hw-changed-v7-8-fe3cdb6dec51@rong.moe>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="LqbjLpMK"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so12519335e9.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:54:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1790240041; x=1790844841; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YLnZwUG2MBgLZpqGTzUMzHxGyh6dXv6V+NePiVAKHBk=;
+        b=LqbjLpMKvROjquwB9jxrXy2kExvY2imvTRcDnTuHsenhBVfltERJWno289v+iKmBJ0
+         yUqkWFM+EFSFkDhphVs6tMb1P9AWqlMdUS/5QOyQM9/h7C+yCLOJZ7lCjjbQe+RHTCMA
+         r/UI+7MgH45kl88MOtfb8JtOXg8eB4ONJMqxo32cayOKyu/UkHG87iGnwScfJVP691mX
+         vOloPmc5qF53eBOKxUSJjqEumbi5ZfQcrMUaOaypXmtXdPklzDOPfmBXXVEFkITPNP49
+         OK6K3F+y4PcdWOsVTPW7EuxflHrHUrB/SnW9+UwP9e4GDh13UiccwX5gI6sLw2MNo8km
+         zU+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790240041; x=1790844841;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YLnZwUG2MBgLZpqGTzUMzHxGyh6dXv6V+NePiVAKHBk=;
+        b=2dktvewr3ifwzDM6q8Q81FJNSRnE5z1pZxR+MKHY9mHUHeGNiadbsXE/+MfUQfY1MQ
+         4+ZLXUF4BTCzB1eLaolHdLONdRV/+MVP36jc50+kpptrsZCAzjgtnQadjK4061PqJ4b7
+         x0Lfu2W9scSIpwmA8r0/j+S35CYjHhW3Wi/SOeDrTMKZLZCkmZTZtj+Qo6D405fe787u
+         XylY2m4dy+Tnv0UIPggZ7nwBlblCLjN5ozTymtzWJx31zBV/AUo3qZfFXRnX3Yi1ibnb
+         12sP1xCrTFBaTIKkmNSNo3Efi1m1TCmsA16V89BsYpL3inllOcZE4CBjz4x5dl/+SF2y
+         1qIw==
+X-Forwarded-Encrypted: i=1; AKwUvBxO2PGOdIIMrLjjdMuDUw7/WFnbXbdaOrNVgQBTMiOiuZUEibFxa76UfrB3xjhj81iuG6V6B64=@vger.kernel.org
+X-Gm-Message-State: AFuF++ngcETYbTlN2yCgvny4H5TkMn2o3757yFRreM3dp5soSMFiUghC
+	C4ZIcqUXzdICT+IvemS3nmeBcI+eA2NS6lmM8FVQeJdw5Y+Kl7gx7oBydh+L97DSkjo=
+X-Gm-Gg: AYBFou1da1se4j/lKcwRT7/zCD4fWO6zlZa5sGd3jg9WscRoHpQ1ZjswOtPoGccvtGl
+	Ub6KXFML1rDndSwtYID8CiU77ns72ObbNmflIZi76caH9S69BCwjAs7uBR8U1LLuAjuteY9bima
+	ZKzAEDDoD8qqKnARdBgMoo2PKKTCarmRClzAkDcf7BUPZbUJ3j9fiLfvoak3wO6ucfcIVKu351s
+	ymmAcZVdtiWoUe5S4tAIs4tWYyKtaes/Q5DYvCvjG5tbjtVSeMZbN/71+9Iq8h8u/Vd+uMUgAgb
+	PBoGIDyS5kSV+eG4STIBPrJ19ljaQ0zTrjMfD9VUVj8v+EGBjo1m6WNUkJU2CxzSAYnuXNA+8TP
+	R3zCt8wbEIPpkqP1R9SLGGHhvluUUtn64lIhPPPZJpZtbQIBjIcAQoWIOoYUdeFroQihwZVd2GK
+	Q4zFP4a+N0AhHCF3SYdSSCziZ9hFb++lfl4e9JJZgk4bZ3ERHWruulc0JP8PNb16QUo7ItRMurV
+	h+oHnOFhH5AQYYh/g==
+X-Received: by 2002:a05:600c:8b22:b0:49e:6fd2:a45 with SMTP id 5b1f17b1804b1-49fe66d81fbmr28966805e9.16.1790240040664;
+        Thu, 24 Sep 2026 01:54:00 -0700 (PDT)
+Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5cd4c8dsm64643045e9.3.2026.09.24.01.53.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 01:54:00 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Richard
+ Cochran <richardcochran@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, Andre Przywara
+ <andre.przywara@arm.com>
+Subject: Re: [PATCH net-next v3 3/5] net: stmmac: sun55i: Make the delay
+ step configurable
+In-Reply-To: <26334006-a2af-49d3-8f26-18cd44118c6b@lunn.ch>
+References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
+ <20260923-allwinner-a733-gmac-support-v3-3-15735155a789@baylibre.com>
+ <26334006-a2af-49d3-8f26-18cd44118c6b@lunn.ch>
+Date: Thu, 24 Sep 2026 10:53:59 +0200
+Message-ID: <1j4iff9gig.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260921-leds-trigger-hw-changed-v7-8-fe3cdb6dec51@rong.moe>
+Content-Type: text/plain
 
---- checkpatch.pl: clean (0 issues) ---
+On jeu. 24 sept. 2026 at 04:30, Andrew Lunn <andrew@lunn.ch> wrote:
 
-On Mon, 21 Sep 2026, Rong Zhang wrote:
+>> +	 * Correcting them would break the DT ABI of the published DTs.
+>> +	 */
+>> +	.txdly_step_ps = 100,
+>> +	.rxdly_step_ps = 100,
+>
+> Could you be a bit more specific about what published means?
 
-> "netdev" can run in hardware control according to hardware capabilities
-> and trigger options.
-> 
-> Implement hw_offloaded() callback to provide its hardware control state
-> to the LED core, and document the relation between the custom
-> "offloaded" attribute and the generic "trigger_may_offload_to_hw"
-> attribute.
-> 
-> The callback mimics how the existing "offloaded" attribute does, i.e.,
-> locklessly reads hw_control, as it's just a hint and don't need to be
-> accurate.
-> 
-> Acked-by: Ike Panhc <ikepanhc@gmail.com>
-> Signed-off-by: Rong Zhang <i@rong.moe>
-> ---
-> Changes in v7:
-> - Rename the offloaded() callback to hw_offloaded() (thanks Lee Jones)
-> - Rename the trigger_may_offload attribute to
->   trigger_may_offload_to_hw (ditto)
-> 
-> Changes in v3:
-> - Do not deprecate netdev's "offloaded" attribute (thanks Thomas
->   Weißschuh)
-> - Document the relation between the custom "offloaded" attribute and the
->   generic "trigger_may_offload" attribute (ditto)
-> ---
->  Documentation/ABI/testing/sysfs-class-led                | 3 +++
->  Documentation/ABI/testing/sysfs-class-led-trigger-netdev | 3 +++
->  drivers/leds/trigger/ledtrig-netdev.c                    | 8 ++++++++
->  3 files changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-class-led b/Documentation/ABI/testing/sysfs-class-led
-> index 123e3a15b7d6..ea113fed10ef 100644
-> --- a/Documentation/ABI/testing/sysfs-class-led
-> +++ b/Documentation/ABI/testing/sysfs-class-led
-> @@ -101,6 +101,9 @@ Description:
->  		- `[foo_trigger]`: the trigger is selected and offloaded to
->  		  hardware.
->  
-> +		The "netdev" trigger also provides a custom attribute to
-> +		indicate its state, see `/sys/class/leds/<led>/offloaded`.
-> +
->  What:		/sys/class/leds/<led>/inverted
->  Date:		January 2011
->  KernelVersion:	2.6.38
-> diff --git a/Documentation/ABI/testing/sysfs-class-led-trigger-netdev b/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
-> index ed46b37ab8a2..203ea58396ed 100644
-> --- a/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
-> +++ b/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
-> @@ -75,6 +75,9 @@ Description:
->  		If 1, the LED blinking in requested mode is offloaded to
->  		hardware.
->  
-> +		LED trigger core also provides a generic attribute for this
-> +		purpose, see `/sys/class/leds/<led>/trigger_may_offload_to_hw`.
-> +
->  What:		/sys/class/leds/<led>/link_10
->  Date:		Jun 2023
->  KernelVersion:	6.5
-> diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
-> index 5b4e92c14dbb..60409f054e22 100644
-> --- a/drivers/leds/trigger/ledtrig-netdev.c
-> +++ b/drivers/leds/trigger/ledtrig-netdev.c
-> @@ -798,10 +798,18 @@ static void netdev_trig_deactivate(struct led_classdev *led_cdev)
->  	kfree(trigger_data);
->  }
->  
-> +static bool netdev_trig_hw_offloaded(struct led_classdev *led_cdev)
-> +{
-> +	struct led_netdev_data *trigger_data = led_get_trigger_data(led_cdev);
-> +
-> +	return trigger_data->hw_control;
+DTs like those ones:
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts?h=v7.3-rc4#n88
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts?h=v7.3-rc4#n87
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts?h=v7.3-rc4#n106
 
-How sure are we that trigger_data can NEVER be NULL?
+On A523/T527, only gmac1 is supported by the driver addressed in this
+series. gmac0 is another (dwmac) driver.
 
-> +}
-> +
->  static struct led_trigger netdev_led_trigger = {
->  	.name = "netdev",
->  	.activate = netdev_trig_activate,
->  	.deactivate = netdev_trig_deactivate,
-> +	.hw_offloaded = netdev_trig_hw_offloaded,
->  	.groups = netdev_trig_groups,
->  };
->  
-> 
-> -- 
-> 2.55.0
-> 
+If I take the 1st example
+
+&gmac1 {
+	phy-mode = "rgmii-id";
+	phy-handle = <&ext_rgmii1_phy>;
+	phy-supply = <&reg_cldo4>;
+
+	tx-internal-delay-ps = <300>;
+	rx-internal-delay-ps = <400>;
+
+	status = "okay";
+};
+
+If the information we've got about the A523 delay steps are correct, the
+actual values would be:
+* tx: 540ps
+* rx: 2120ps
+
+So I suppose in this case, the phy-mode is more likely to be rgmii-txid,
+isn't it ?
+
+>
+>       Andrew
 
 -- 
-Lee Jones
+Jerome
