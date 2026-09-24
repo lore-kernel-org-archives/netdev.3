@@ -1,76 +1,310 @@
-Received: from smtp6-g21.free.fr (smtp6-g21.free.fr [212.27.42.6])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB49E477E58;
-	Thu, 24 Sep 2026 11:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A6D47ECDF;
+	Thu, 24 Sep 2026 12:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790251106; cv=none; b=sav0V8GluIoMN4+TW9M0GSKwqqxXnMppL6aE8mCEv6DOvunurZ6/dMTV7crwLrfhRTpN3bLGpBZiuoLMLLPpUta42YGjsCu6YEXzXl/UGn19yMvBV3ogi4h8gJVdzU1KSMllq9TZdxF1F9bnTul2TJ9IDTVPvQzNxd5BAqAjsHI=
+	t=1790251947; cv=none; b=Ic87/js17qAq+UvAm3wfBnW8UBIWnlIJViqqqSQaXPJu9I14ss5sb+zKmqJMWC8eyrb3mR+bHZO1vM6/ppVfbaq4/fzmOrzvkwLitxKeTh1cgIP7kGmpZdsiXcaLhZJ6SNXZUNU8983TcQmaxKdZ6ReJOdAMSxErLM+zh0bkyYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790251106; c=relaxed/simple;
-	bh=6tgmo0miNRme0kSKVn7Zb1m81CEHI84TxlmbNx8FNMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kjHTPlKOar2jP3XZ4nrIgC/Hz3tiUXhP8pBv4TT8n0m81FId0RJU1/LK9mhYW3MTmNQ3qX7C9U8TYM8xvy9jhro9/+1mEBUWYuNsfyiGlRzPJarGjuixQG2AlU2J0A7gs5RjzgjvP6+FlMZWcKYNtIlu5S8yuvVD2+aL9ZpL33U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=hdq4hVYC; arc=none smtp.client-ip=212.27.42.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+	s=arc-20240116; t=1790251947; c=relaxed/simple;
+	bh=vAy2pvXTH6ZIFeMujx6Ru6kRQxkhNMs2yIOwyR+G0/I=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=i3+kE99g0JrxyeXS+qDZRf/wkO8cJ9+LVtk79gT9W+9Bff4y8hqRZ0cqaeyiiXjwygZyP82ptT7SaIMDZ1RCIgaHnbWmyircjBF6BzBPQu//VgxVYzdnT2AEqhFAPa+IpgHNMbCh2XI/IWC6kgbllnKT5JRRR96rtaV6IgjYmN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=puobdpe8; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="hdq4hVYC"
-Received: from L30177.local (unknown [213.36.7.12])
-	(Authenticated sender: vjardin@free.fr)
-	by smtp6-g21.free.fr (Postfix) with ESMTPSA id 2A35B78034D;
-	Thu, 24 Sep 2026 13:58:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1790251096;
-	bh=6tgmo0miNRme0kSKVn7Zb1m81CEHI84TxlmbNx8FNMY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hdq4hVYCl+YxoONl4RWgrp/qM/BLdgnGbgkPaD+scxEfLLI2EeYtNFf1jpBO9ezma
-	 7XzoJ2Az+3vvPWdMGL/D4BCQvwpD8YMUK1JZw82yA/N/YER9WIiEz4uXrBFdUfcXlO
-	 hRXH8IGj+EBt5NTfjlALPMWxaigK9IfMy/IISrksoppqQwl7bPpTi0wfOcJMrppYsA
-	 tS1x28SRtAK4KJp36HMyzwl/bNBfB+iwdWohgeQax3/iF8NoUsxTccLgd/KiH8vsrl
-	 2xkArDfAaKFeqdRO7zfmt9fQFoUth0zu4twjmTs0GZv5lvK8/BDKe4+dpydSzB7yEc
-	 +E5OlyYxTzNcw==
-Date: Thu, 24 Sep 2026 13:58:04 +0200
-From: Vincent Jardin <vjardin@free.fr>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] dpaa2-eth: devlink port number from the
- DPMAC
-Message-ID: <arUQTO5NVZvljvu5@L30177.local>
-References: <20260923-for-upstream-dpaa2_ports-v1-0-b59c865edd00@free.fr>
- <rljgvjn3gbyq6ixikhnrwe6z6rlmfd3pepns4u2dujzjo6q6uv@kb7uozq52ozm>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="puobdpe8"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 17A15213B3;
+	Thu, 24 Sep 2026 15:12:09 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=maFDGWCxqU67IjjROICrZqAghus8taCEGoRg6hRMkns=; b=puobdpe8BwGj
+	Lu3/XCVpBKcRE6ldG8n9Owg1jGv+lL22Lbpy17smNonYGEBKwiqqUFZ6teYuQRcs
+	BlgeYC9ganRBrjIVICSqiayfDccHP5MDGzCYAaYdsogEDjv3aCAsXhF3OPl0wD4N
+	nkuaYVE30caMNFdqKdw89mrnk4oLcU/B0Wlg2UXPGlX/tp5LdF9r5nxqYGoRIHlq
+	05vU9fOc7i6L4GxBhlOy2rpqPfq5IBCwcT2Gd/R2vEVCvYZ1CtWHJoG4to2UYFpd
+	iZxXlP5hS+VRods6TRyhQyKYVCHUoCrrWBA4ertaHwH4PKvm1HSNJFLVH43u682F
+	q8xPaqcRe6uK1c6NnU01s3T4Rex4AEPm2bIyvJ2bIciVYg0l+EaLweXcfLazJSat
+	dZJAn4K0aAAcBkiEGm5yf9ZMnZK0lvvU2IFwKLiE0X7WdTQTaPAqybgoVWaCMAcx
+	HOQ9RmSHXkvnsP0q5VoytghriPekfJrGeAazZjTYTl1CkiWX5gHrq1Kwa33GEFKA
+	ptIfw32PnBz+yjw0Jc0zIPA9+R6MNh3sQbnaYbRAmrasdfIhmCbQbHi8He88WBGN
+	nppnTNvVc69I2in5PSb7LIq6qodciPE9OJj7q7FoLFOaSEW5UoP5Me8PDfORCbkM
+	yPhMmSr7lmrZIbqSWlTS0j5EaLFYTKM=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Thu, 24 Sep 2026 15:12:08 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 3102060507;
+	Thu, 24 Sep 2026 15:12:11 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68OCBtMb048998;
+	Thu, 24 Sep 2026 15:11:56 +0300
+Date: Thu, 24 Sep 2026 15:11:55 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Zihan Xi <zihanx@nebusec.ai>
+cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+        lvs-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org, horms@verge.net.au, pablo@netfilter.org,
+        fw@strlen.de, phil@nwl.cc, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH nf v4 1/3] ipvs: wait the running timer cb on conn
+ deletion
+In-Reply-To: <dfc9f33299baa890537aacdc3082c85e1a6eccc9.1790146910.git.zihanx@nebusec.ai>
+Message-ID: <5afea8e9-5250-8ee4-e1ea-4e16289f4447@ssi.bg>
+References: <cover.1790146910.git.zihanx@nebusec.ai> <dfc9f33299baa890537aacdc3082c85e1a6eccc9.1790146910.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <rljgvjn3gbyq6ixikhnrwe6z6rlmfd3pepns4u2dujzjo6q6uv@kb7uozq52ozm>
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Ioana,
 
-> Is consistent naming the end goal? Because renaming can already be done
-> for DPAA2 network interfaces based on the of_node. I usually have
-> something like below in my udev rules file:
+	Hello,
+
+On Wed, 23 Sep 2026, Zihan Xi wrote:
+
+> From: Julian Anastasov <ja@ssi.bg>
 > 
-> SUBSYSTEM=="net", ACTION=="add", DRIVERS=="fsl_dpaa2_eth", \
-> 	ENV{OF_FULLNAME}=="/soc/fsl-mc@80c000000/dpmacs/ethernet@1", NAME="endpmac1"
+> Sashiko reports for problem when deleting connections.
+> 
+> If connection timer expires, its callback can not be
+> concurrently running but if connection is deleted
+> the callback can be running on another CPU even
+> after all references are released. Before now we
+> continued with the connection freeing, risking the
+> callback to access the deleted connection after it
+> is freed. As ip_vs_conn_del*() run under RCU lock
+> there is no risk accessing a freed connection by
+> concurrent timer callback as Sashiko warns, may
+> be only if our timer expires and we try to delete
+> the cp->control chain.
+> 
+> Fix that by failing the ip_vs_conn_unlink() call after
+> refcnt is restored to 1 allowing the timer callback
+> to be scheduled for new execution which should happen
+> after the detected running callback finishes.
+> 
+> One of two things can happen when we detect the
+> running callback:
+> 
+> 1. the concurrent timer callback can see refcnt 0 and
+> do nothing, so we will schedule new timer callback to
+> expire the connection after the running one finishes
+> 
+> 2. the concurrent timer callback can see refcnt 1 and
+> to expire the connection as usually, in this case we
+> will see refcnt 0 and will do nothing
+> 
+> Add explicit rcu_read_lock() while deleting the cp->control
+> chain to protect from concurrent timer callback for ct to
+> expire it before us.
+> 
+> During such races, try to keep 0 in cp->timeout as it is
+> a request for deleting our cp->control chain immediately.
+> 
+> Link: https://sashiko.dev/#/patchset/cover.1789435989.git.zihanx%40nebusec.ai
+> Fixes: f9200a52eedf ("ipvs: avoid expiring many connections from timer")
+> Signed-off-by: Julian Anastasov <ja@ssi.bg>
 
-It was the root of my initial investigation, but I need more:
-  - I need to have an attribute that I can use from the userland to name and
-    rename many times, so in between it I would need something to rely with
-  - cosmetic: just have a propver devlink
+	Sashiko reports for refcount problem:
 
-> Anyhow, I will give the series a spin tomorrow.
+https://sashiko.dev/#/patchset/cover.1790146910.git.zihanx%40nebusec.ai
 
-Thanks: it should not hurt, and devlink should be more coherent then.
+	Will send new version...
 
-best regards,
-  Vincent
+pw-bot: changes-requested
+
+> ---
+>  net/netfilter/ipvs/ip_vs_conn.c | 103 +++++++++++++++++---------------
+>  1 file changed, 54 insertions(+), 49 deletions(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+> index 6fa3e1dc534c3..32cfc02aa2912 100644
+> --- a/net/netfilter/ipvs/ip_vs_conn.c
+> +++ b/net/netfilter/ipvs/ip_vs_conn.c
+> @@ -313,17 +313,34 @@ static inline int ip_vs_conn_hash(struct ip_vs_conn *cp)
+>  /* Try to unlink ip_vs_conn from conn_tab.
+>   * returns bool success.
+>   */
+> -static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp)
+> +static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp, bool my_cb)
+>  {
+>  	struct netns_ipvs *ipvs = cp->ipvs;
+>  	struct hlist_bl_head *head, *head2;
+>  	u32 hash_key, hash_key2;
+>  	struct ip_vs_rht *t;
+> -	bool ret = false;
+>  	bool use2;
+>  
+> +	if (!refcount_dec_if_one(&cp->refcnt))
+> +		return false;
+> +
+>  	if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
+> -		return refcount_dec_if_one(&cp->refcnt);
+> +		return true;
+> +
+> +	/* Revalidate after conn is excluded from traffic:
+> +	 * - not controlling other conns
+> +	 * - no pending/running timer callback
+> +	 *
+> +	 * And the winner is ...
+> +	 */
+> +	if (atomic_read(&cp->n_control) ||
+> +	    (!timer_delete(&cp->timer) && !my_cb)) {
+> +		/* Not me? Give the timer callback another chance, even
+> +		 * if one is concurrently running during the conn deletion.
+> +		 */
+> +		refcount_inc(&cp->refcnt);
+> +		return false;
+> +	}
+>  
+>  	rcu_read_lock();
+>  	local_bh_disable();
+> @@ -337,15 +354,11 @@ static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp)
+>  		      false /* new_hash2 */, &head, &head2);
+>  
+>  	if (cp->flags & IP_VS_CONN_F_HASHED) {
+> -		/* Decrease refcnt and unlink conn only if we are last user */
+> -		if (use2 == ip_vs_conn_use_hash2(cp) &&
+> -		    refcount_dec_if_one(&cp->refcnt)) {
+> -			hlist_bl_del_rcu(&cp->hn0.node);
+> -			if (use2)
+> -				hlist_bl_del_rcu(&cp->hn1.node);
+> -			cp->flags &= ~IP_VS_CONN_F_HASHED;
+> -			ret = true;
+> -		}
+> +		/* Unlink conn as we are the last user */
+> +		hlist_bl_del_rcu(&cp->hn0.node);
+> +		if (use2)
+> +			hlist_bl_del_rcu(&cp->hn1.node);
+> +		cp->flags &= ~IP_VS_CONN_F_HASHED;
+>  	}
+>  
+>  	conn_tab_unlock(head, head2);
+> @@ -353,7 +366,7 @@ static inline bool ip_vs_conn_unlink(struct ip_vs_conn *cp)
+>  	local_bh_enable();
+>  	rcu_read_unlock();
+>  
+> -	return ret;
+> +	return true;
+>  }
+>  
+>  
+> @@ -1319,34 +1332,29 @@ static void ip_vs_conn_rcu_free(struct rcu_head *head)
+>  	kmem_cache_free(ip_vs_conn_cachep, cp);
+>  }
+>  
+> -/* Try to delete connection while not holding reference */
+> +/* Try to delete connection while not holding reference.
+> + * It can be called concurrently and always under RCU lock.
+> + */
+>  static void ip_vs_conn_del(struct ip_vs_conn *cp)
+>  {
+> -	if (timer_delete(&cp->timer)) {
+> -		/* Drop cp->control chain too */
+> -		if (cp->control)
+> -			cp->timeout = 0;
+> -		ip_vs_conn_expire(&cp->timer);
+> -	}
+> -}
+> +	struct timer_list *t = (void *)((unsigned long)(&cp->timer) | 1UL);
+>  
+> -/* Try to delete connection while holding reference */
+> -static void ip_vs_conn_del_put(struct ip_vs_conn *cp)
+> -{
+> -	if (timer_delete(&cp->timer)) {
+> -		/* Drop cp->control chain too */
+> -		if (cp->control)
+> -			cp->timeout = 0;
+> -		__ip_vs_conn_put(cp);
+> -		ip_vs_conn_expire(&cp->timer);
+> -	} else {
+> -		__ip_vs_conn_put(cp);
+> -	}
+> +	/* Drop cp->control chain too */
+> +	if (cp->control)
+> +		cp->timeout = 0;
+> +	ip_vs_conn_expire(t);
+>  }
+>  
+> +/* Connection is removed in the following steps:
+> + * - timer expires or connection is deleted
+> + * - there should be no more references (n_control>0 and refcnt>1)
+> + * - there should be no pending timer or a running timer callback (on deletion)
+> + */
+>  static void ip_vs_conn_expire(struct timer_list *t)
+>  {
+> -	struct ip_vs_conn *cp = timer_container_of(cp, t, timer);
+> +	bool my_cb = !((unsigned long)t & 1);
+> +	struct timer_list *t2 = (void *)((unsigned long)t & ~1UL);
+> +	struct ip_vs_conn *cp = timer_container_of(cp, t2, timer);
+>  	struct netns_ipvs *ipvs = cp->ipvs;
+>  
+>  	/*
+> @@ -1356,26 +1364,21 @@ static void ip_vs_conn_expire(struct timer_list *t)
+>  		goto expire_later;
+>  
+>  	/* Unlink conn if not referenced anymore */
+> -	if (likely(ip_vs_conn_unlink(cp))) {
+> +	if (likely(ip_vs_conn_unlink(cp, my_cb))) {
+>  		struct ip_vs_conn *ct = cp->control;
+>  
+> -		/* delete the timer if it is activated by other users */
+> -		timer_delete(&cp->timer);
+> -
+>  		/* does anybody control me? */
+>  		if (ct) {
+> -			bool has_ref = !cp->timeout && __ip_vs_conn_get(ct);
+> -
+> +			rcu_read_lock();
+>  			ip_vs_control_del(cp);
+>  			/* Drop CTL or non-assured TPL if not used anymore */
+> -			if (has_ref && !atomic_read(&ct->n_control) &&
+> +			if (!cp->timeout && !atomic_read(&ct->n_control) &&
+>  			    (!(ct->flags & IP_VS_CONN_F_TEMPLATE) ||
+>  			     !(ct->state & IP_VS_CTPL_S_ASSURED))) {
+>  				IP_VS_DBG(4, "drop controlling connection\n");
+> -				ip_vs_conn_del_put(ct);
+> -			} else if (has_ref) {
+> -				__ip_vs_conn_put(ct);
+> +				ip_vs_conn_del(ct);
+>  			}
+> +			rcu_read_unlock();
+>  		}
+>  
+>  		if ((cp->flags & IP_VS_CONN_F_NFCT) &&
+> @@ -1410,13 +1413,15 @@ static void ip_vs_conn_expire(struct timer_list *t)
+>  		  refcount_read(&cp->refcnt),
+>  		  atomic_read(&cp->n_control));
+>  
+> -	refcount_inc(&cp->refcnt);
+> -	cp->timeout = 60*HZ;
+> +	if (__ip_vs_conn_get(cp)) {
+> +		if (cp->timeout || atomic_read(&cp->n_control))
+> +			cp->timeout = 60 * HZ;
+>  
+> -	if (ipvs->sync_state & IP_VS_STATE_MASTER)
+> -		ip_vs_sync_conn(ipvs, cp, sysctl_sync_threshold(ipvs));
+> +		if (ipvs->sync_state & IP_VS_STATE_MASTER)
+> +			ip_vs_sync_conn(ipvs, cp, sysctl_sync_threshold(ipvs));
+>  
+> -	__ip_vs_conn_put_timer(cp);
+> +		__ip_vs_conn_put_timer(cp);
+> +	}
+>  }
+>  
+>  /* Modify timer, so that it expires as soon as possible.
+> -- 
+> 2.43.0
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
+
