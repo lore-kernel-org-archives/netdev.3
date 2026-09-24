@@ -1,75 +1,81 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616A83A6F17
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD779266B72
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790226443; cv=none; b=JIt9/WQ1pEPenKmAMaxCXIwPBI9JnfLc1uEJWCBDFM3cGbQgPcApHMehmQLyjbVbFqpfZjJeSbx7jZLvbbdxTxYbODTqgkkVGnP+zOS0dQD/Xj8sJp7Fp3W0hw0SZhy5QJkAKxVBSJDHpmaA2SlY/5u9T93hCv4XmU47v0G3QGE=
+	t=1790226937; cv=none; b=jJO94OViV+OjhXznq3cch4aoqDk06DV+nRN4WBqI2Sgku+abhLPqrvh6CwesyCHrt2ckTi21NoufiqqIt+sxwELJ8g8CzRufYcGYdhDMujUuX/gxbLDyAYqd+JrYZyIrBiXfAqW73llVPi0P1uLilDt2Ko1DDysYcjBMmjIU+AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790226443; c=relaxed/simple;
-	bh=RvN9tr7OMSHjhSPPDl4QRVwPNOQ621tRsWxmvVvpx70=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GHHcL1OOKPz++1EHsRjmYmluFiSpYX3LXlblpGLr8cLStpbUeN3kkCUMlrR/mKiSWYxOYJ1YJ2VT+LdT7MSyvPC9CSEMRlIEF02HE42/gNGxzgwqILcNb+5+duH+wTvCOHCUkpBWQiblARDkOfQYqoGDc7RdMKyU/nYjt34IEIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VUFKHl6x; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790226937; c=relaxed/simple;
+	bh=ooeLktLlgv5ipoC6vY3L+P+LoVJc8wd6r9b4126KwO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BjKe3MlE4wXOy6/hvVXkyT2DghNhu+YCZLUFi9uv/SLN0U7/488quYC3TTo+5C8eyXG93BIqN+WueL6g1YoWISVhuGWtT4P6Xzfz6usBsJ8EAgj+M8pzTAskBzJ9ou7Z8n6haO8NkLT1IDpnO1Cs0vubuOaPPvpqxJ+UaE8K92o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=IncmumBJ; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VUFKHl6x"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48439feca17so1398174f8f.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:07:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="IncmumBJ"
+Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2dd88a115ebso10151195ad.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790226440; x=1790831240; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1790226935; x=1790831735; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hAiejLrEozrEZ8WjZRhX5Jq/prYDWf06MJHYnvfVrr4=;
-        b=VUFKHl6x+BYZUQl45FQlDzv+KJoGQOZzuRwADS+os4hNlF4tNPoFfbI6k+sRmzsH2F
-         S/n75OgaptPOdl9vNooYjPfiSDCtIwTPmGSLoDuIeqWXGm9I0HfZIRMevhHDNNzThqQy
-         Ltvi7ZnVSfVNbyjeF+h3XERurhdscX2L3IiK3HUHbidQylUMS0rVx00ZcvokIzagtxZW
-         ePKAeb11bG3gDOB9cdGo27O+jsPuisdS6REgVhM1Dt0EVtbIL2GlEIx8ucFJY3piKEFi
-         /WMRruckjDrNAoMFU8OBynCMQm1yCp8PqwSUpcDCBXejU+55FQiheDRmMnCJ4+IhTMN7
-         tq1g==
+        bh=8MJJXLu5JWmqzN8gvpfOKuAAfjxmxpsaGArkxyS3jzc=;
+        b=IncmumBJ/KE6UQdXm0PdYXyqnZnyqa3kCUs0/nqfmQTPvdCKuABsMef9kaT45bHQtu
+         Rmc+lDCBjo4f44/fnVnHLp4lHb7hOW8mgXgny3CwGqdoePgW0tFsu74pYSyPSWwGqZz/
+         Ph3iAsR/kIaiHqQYiPt+cQ5XXiVGYMaTnvGvDcl4mCu02z9LrOGZsRq9sqIQIonn0e7T
+         apsVVnPIYrhImCPw1Pb0leiAwKAWj8Fi2CJS2ZnrDqDjnuqmv9cjDV3HuQGdOF+rLQ58
+         bRbRd7Rf3gaRq+IKt6cHb6VgKadqdhCSdbAqmG2wMz5jSGTJbi+0rtyRHMJEXlDw4bee
+         kXSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790226440; x=1790831240;
+        d=1e100.net; s=20260707; t=1790226935; x=1790831735;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hAiejLrEozrEZ8WjZRhX5Jq/prYDWf06MJHYnvfVrr4=;
-        b=Zls92u+i+hyzXT6JfYS6UadJaaHLXVGKB2K/3cp1AwJUYm9PhIWWUiFXtkDpvcY+El
-         J6QFu3JKZGSfCrBvL6/rF15akyfHTyFcA06CCbqkOnmbSrKrNX7YkJvlFDT6xrCv1K2I
-         BDwU9MCRF/O3MBWUhsgf2UYB4o+kLWMhBCiEs9ajhSDnFZZvuJC+r5t8bqaoFg2C2BB8
-         085B/01kt+AN5iiP20dKFoAvKrJLwUAUml1lWMusRBuROF4fmwRAPLpuADIoVrE4xYCV
-         EXIDMojYnfy+V1SkQqMA1/j9uYQUwwCvmNnV1U/p4uAMM9B0IOSHndIUdsgV2fgn8N9m
-         KHQQ==
-X-Forwarded-Encrypted: i=1; AKwUvBypxsknqcH8iGWCCBN40MQzhHSHmogurG/EOSGV502J0gPstHHQYWrFjnUSXXSsB0tegFldEDo=@vger.kernel.org
-X-Gm-Message-State: AFuF++nh77GAWClGJEEMb8IUFgUiUuicDC3zrI/0doDGJd34YA/NwXEG
-	YV5PqneKZqsA2cf/qim21JoeLi0CCbzTgI8Z5q8OfBgJ5f1ciGdNvjNJ
-X-Gm-Gg: AYBFou1fTmJmpZ+r4loYZKzaFxzmmRDYKuKb0cp5Smw9N5HUggbU5K81ZPCJS1jB0RT
-	r/56DXB0UP+wPJ2ljd4T5Oq8Xymm5z70ShbKnhDMC7EdKaoNp6Kv7OaSJLvUxyON3Bset1CqGXE
-	Jw2n15ZOec1Z3WN6rPEC5BIWvt0Z7EvVd1vOlR7tU529Vpu9xiQOqC+/u2jiO/5flZlHMIFMahA
-	ytAQyVabCJWHmZqPVxG1qozXDCl4T+F7mr2eS6LZji8WOOZH1lLEZBHfFf9QF+hn4kzeSxq5I+Q
-	DNy7ZhDRAYpNArPM0dfEzwELq+vjf/3nFUhmGXTLlJD4lYxmcML9oHuiMlK9g0eJAP+9BX3/4/R
-	b+HXhBeit9gJC/TWZrkx2/o6lFdC8Pbpqs412MTc9LVhWkDacS0M0WrQyOGdIjuKhpVljwd7ycw
-	/lAQbebyi5bh23qhK4ijbLTRU697VxJ22H02O0dgzsqHS1BhDkdBnK9MrMrDdXqHua/MX+
-X-Received: by 2002:a05:6000:2510:b0:487:c99:9020 with SMTP id ffacd0b85a97d-48871714226mr2176971f8f.2.1790226439478;
-        Wed, 23 Sep 2026 22:07:19 -0700 (PDT)
-Received: from archlinux ([188.163.27.108])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889926sm15720202f8f.36.2026.09.23.22.07.18
+        bh=8MJJXLu5JWmqzN8gvpfOKuAAfjxmxpsaGArkxyS3jzc=;
+        b=1Fk3v/yBu838eILxQItslvU6TgtqUBEV2MVWayymCaH/aM/JrAgIwyZ7U2aIn3Hv8x
+         CLKjeofXkXh9uooJ84PgknpBQpqj3kGOWuvMHjTiQQ0p05ZcnYcW536qrGAiT92fCfYf
+         GErIPRuO7LWC56NSC/npcAvJ3CbKkdDFriNg2Y+MrnhCZI5IKMMMlWwmL9G2IKP7n3nK
+         ysd19Q1V99P/qyfcQgi6zMFqH92Vq9eBjYQZuv12nSf/0+s3uta7rhLMpsO72TE/WFvf
+         S0uyP5hIZexhoC5DAgAaSr6CiI4L1pmNc9CwkAvz+F4+xAD3MLV8uOiD/Jf49wyBKRGf
+         jcYQ==
+X-Gm-Message-State: AFuF++l9dcOtItRTRz5apzJlMLrKQQmLRwWYC8TquQsO3aM4M2zOVx8J
+	GxFvZY6rEs0fcKn8mdxZKLXjZ7ZLkZlB4DGeLr56HOE6VB7ZchU7Epj0s2HJzQnPGYFoujXxa5D
+	D2YVWeMRI
+X-Gm-Gg: AYBFou29Hdzr114zN/gXZQp/QJji/TrwsClW2j/E2uwf8OL8g7cfTvdA760+Cfn9Z0u
+	/1Eb1WZOcMz5ovQWgP76aatdGXklKfLB2UqT0D1hk48n2n+I9C0AVa+3WIqqcZTiNbWKhLv/Ayq
+	YsUX09djT1do9BaOdzRwsXEMTKJarp/uUjipDc2V11s44vxvrvNiYV6zSK0yaqfYcJAh8Js10MK
+	sgFYJzJ+tuSfay1QCQk4Z4//lRNeq8kZ0PxIc2Q9+p+1iOXVHm5cAHUZ7hQbW9GYfVTEGrtmtpX
+	sFiH7IZfNKqveQj6rqLvLfd790lUlOcOb7kGWqLObkj5mAayY0Luldux90BWwAQsyn4IZq2bnNU
+	32BiCPpETyI4/6cGohwM+txZFlZMF9PPXq83xf2fUqRVrFEWI1Z7PSy1XDYj6N0uBV7N+Kvpi7D
+	9fVqcvztQQczKv5hXHlRcn3neMb/MzZNNGRFOMylKd3AUh3zU6iYzJUyBh7M6fIHmDrle4KcDyj
+	cE0lSgOgm6/klFi4nPp/gBwO4rzYg==
+X-Received: by 2002:a17:903:1447:b0:2dd:c053:ec6d with SMTP id d9443c01a7336-2df7e11d07fmr11774385ad.32.1790226933498;
+        Wed, 23 Sep 2026 22:15:33 -0700 (PDT)
+Received: from 954df21a5119.. ([122.51.212.64])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5a7b48sm20062485ad.23.2026.09.23.22.15.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 22:07:18 -0700 (PDT)
-From: Matvey Valigura <valigurasm@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chas Williams <3chas3@gmail.com>,
-	Duncan Sands <duncan.sands@free.fr>
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com,
-	Matvey Valigura <valigurasm@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb: atm: use request_firmware_direct() for firmware probing
-Date: Thu, 24 Sep 2026 08:06:54 +0300
-Message-ID: <20260924050654.15347-1-valigurasm@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Wed, 23 Sep 2026 22:15:31 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	kuniyu@google.com,
+	willemb@google.com,
+	kees@kernel.org,
+	richardbgobert@gmail.com,
+	zihanx@nebusec.ai
+Subject: [PATCH net v6 0/1] net: gso: limit recursive IP-in-IP segmentation
+Date: Thu, 24 Sep 2026 05:15:20 +0000
+Message-ID: <20260924051521.32568-1-zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,74 +84,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When disconnecting a device while firmware is not present on the system,
-usbatm_usb_disconnect() waits for the heavy_init thread to finish:
-    wait_for_completion(&instance->thread_exited);
+Hi Linux kernel maintainers,
 
-If CONFIG_FW_LOADER_USER_HELPER_FALLBACK is enabled, missing firmware
-causes request_firmware() to fall back to sysfs/udevd. This creates a
-circular dependency during disconnect:
-1. usb_disconnect() holds device_lock(&udev->dev).
-2. usbatm_usb_disconnect() waits for instance->thread to exit.
-3. instance->thread waits for request_firmware() sysfs fallback.
-4. udevd receives the firmware uevent and attempts to read sysfs
-   attributes (e.g. serial), blocking on device_lock(&udev->dev).
+This reroll uses IP_TUNNEL_RECURSION_LIMIT directly for the shared
+IPv4/IPv6 GSO recursion check and adds the requested Closes tag.
 
-Furthermore, the fallback wait uses wait_for_completion_killable_timeout(),
-which ignores the non-fatal SIGTERM signal sent by usbatm_usb_disconnect().
-Because speedtch and cxacru probe multiple candidate firmware files
-sequentially, each file stalls for the 60-second fallback timeout,
-triggering hung task timeouts (>120s) reported by syzbot.
+The v5 cover letter has the bug details, PoC, and validation evidence:
+https://lore.kernel.org/all/cover.1790157745.git.zihanx@nebusec.ai/
 
-Switch to request_firmware_direct() to probe firmware files directly from
-the filesystem without falling back to user-mode helper.
+The v6 code was rebuilt and the PoC was rerun on x86_64. The BPF/veth
+path sent 65536 bytes; tracefs observed six inet_gso_segment() entries,
+with the sixth returning -EINVAL. The UID 65534 namespace-only path
+completed with depth 180, gso_size 1400, and sendmsg() returning 3676.
+No stack-guard, BUG, Oops, or panic was observed. IPv6 was build-enabled
+but was not separately exercised at runtime.
 
-Reported-by: syzbot+9ca2c9f85bd8b5e46516@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ca2c9f85bd8b5e46516
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matvey Valigura <valigurasm@gmail.com>
----
- drivers/usb/atm/cxacru.c   | 2 +-
- drivers/usb/atm/speedtch.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Best regards,
+Zihan Xi
 
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index 636f7886f..7d1944487 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -993,7 +993,7 @@ static int cxacru_find_firmware(struct cxacru_data *instance,
- 	sprintf(buf, "cxacru-%s.bin", phase);
- 	usb_dbg(usbatm, "cxacru_find_firmware: looking for %s\n", buf);
- 
--	if (request_firmware(fw_p, buf, dev)) {
-+	if (request_firmware_direct(fw_p, buf, dev)) {
- 		usb_dbg(usbatm, "no stage %s firmware found\n", phase);
- 		return -ENOENT;
- 	}
-diff --git a/drivers/usb/atm/speedtch.c b/drivers/usb/atm/speedtch.c
-index 9d28c652b..c82db2f7a 100644
---- a/drivers/usb/atm/speedtch.c
-+++ b/drivers/usb/atm/speedtch.c
-@@ -357,15 +357,15 @@ static int speedtch_find_firmware(struct usbatm_data *usbatm, struct usb_interfa
- 	sprintf(buf, "speedtch-%d.bin.%x.%02x", phase, major_revision, minor_revision);
- 	usb_dbg(usbatm, "%s: looking for %s\n", __func__, buf);
- 
--	if (request_firmware(fw_p, buf, dev)) {
-+	if (request_firmware_direct(fw_p, buf, dev)) {
- 		sprintf(buf, "speedtch-%d.bin.%x", phase, major_revision);
- 		usb_dbg(usbatm, "%s: looking for %s\n", __func__, buf);
- 
--		if (request_firmware(fw_p, buf, dev)) {
-+		if (request_firmware_direct(fw_p, buf, dev)) {
- 			sprintf(buf, "speedtch-%d.bin", phase);
- 			usb_dbg(usbatm, "%s: looking for %s\n", __func__, buf);
- 
--			if (request_firmware(fw_p, buf, dev)) {
-+			if (request_firmware_direct(fw_p, buf, dev)) {
- 				usb_err(usbatm, "%s: no stage %d firmware found!\n", __func__, phase);
- 				return -ENOENT;
- 			}
+Zihan Xi (1):
+  net: gso: limit recursive IP-in-IP segmentation
+
+ include/net/gso.h      | 8 ++++++++
+ net/core/gso.c         | 1 +
+ net/ipv4/af_inet.c     | 3 +++
+ net/ipv6/ip6_offload.c | 4 ++++
+ 4 files changed, 16 insertions(+)
+
 -- 
-2.55.0
-
+2.25.1
