@@ -1,314 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65F34DA9B8;
-	Thu, 24 Sep 2026 21:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139703CF976
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 21:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790284451; cv=none; b=XfBMoOgetyIa6itmF8f96IZqPjpsxVKDKbUH6tKr1TcM65zN8/KENybZaP49aFqEKnvICRdHhukaRXiE4Dcp0o9VtfazfNjd1PokqmWVrrILZS226L/VTpfgbyVqbjUKdd4MXqIp7KC+/OIMCDWUSmWTLMWqB+fKyFnLDcFJOjM=
+	t=1790284602; cv=none; b=s/wc+I3zbwaEYEEPKK52i5XcShFXscu2lLEAQO+/vpON1YZ98/4swOOf/aHDm4riD1FFjTnpbdBg8LFaV4zmWosAVb6etu62wSWG7GuKpoSrKaCQk3GB1SgiAxvQJPLh7BH6nW2QCna1AFNl9egEdusO9i9SXY2vtPD1tsTd93Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790284451; c=relaxed/simple;
-	bh=plqFrqty/+pubJn1dHXjldbKqgth+rPlKlFqIxFmqEE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QfYj5dntg1VouqbF4d0GIM/tFdy1PmozOrOF40MSbcxQ4jMAlvERPCCGPABWYXtlWF6fpT8XiK+3Z8BvyEHVgPWXAp6PZuXtlzH85VrBazGZUIMGNKQBlTZrTEpk9dCtwX7SKDXS4SvKfcfm9Zi7Z69YmeK9HFzvwlWlxeVaAR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0+gwX1P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790284602; c=relaxed/simple;
+	bh=GSpi19COajyBmeu00h0HL0wMdy2XKh2WLArdLFA54KQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V0nU0xcBjPKz9VbcpW/p8yVYLM46B7cC7ta9KsGFDNp1OV52f3QeuBCGwDh2kXVyY06F68Kim7wNQKzLQ6aO3CMwXfZu/2/eFcMydV8CuJ3km8vRI90FLaZdYlH+abKETr8/K4ZY8+2wJ5dB6V623LDNBUuriZOikaQ9SSAqj1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a6Pp+Ngg; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0+gwX1P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C12F1F000FF;
-	Thu, 24 Sep 2026 21:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790284447;
-	bh=wzFeuEwFzk2gNNE3auknBOthNjhMJtaPjRBIKenQU3E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=m0+gwX1PK6vkC5Oh4HWmhrs38RhjM23Zu0Zyk6NhiMYBFzbZ5PwETQegG9toK01LZ
-	 ghCwL6jvSDjS0H5dDt5U+PfpCjjXYwnTa3ivpdAcs812LlSdOaZg0o0QDUKU+FWtEa
-	 OEr5ghz+Gh+pUGfG+esiWhreBQOqpW3jqULBWVAGYwIEWsqHCel5pTllw8K6BYKaAG
-	 pl+9LnAJpMAWunFis50ApprQ6tKKZwqGKg7UKrlsMFPOmM5nRqVBB75K5S8yvJaDg9
-	 DEvLxa29yF8/RK56aTymAe5c+2DpZAaMtgl3v/lWxLL+CwSV2Ipwb0BCcba9fAzuz0
-	 A4jjCCJCQ3KyQ==
-Subject: Re: [PATCH net-next v2 1/3] net: macb: Preserve timestamp settings on
- rejected requests
-From: netdev-bot+sashiko@kernel.org
-To: 5mghybrid@khu.ac.kr
-Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com, rafalo@cadence.com,
- conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, nb@tipi-net.de, linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 21:14:05 +0000
-Message-ID: <179028444580.2160803.8225052097255780320@kernel.org>
-In-Reply-To: <20260923-macb-hwtstamp-rework-v2-1-75c909b2676d@khu.ac.kr>
-References: <20260923-macb-hwtstamp-rework-v2-1-75c909b2676d@khu.ac.kr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a6Pp+Ngg"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49fbfe95bccso124785e9.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 14:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790284595; x=1790889395; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KfGvfwNr/tckeUTW0rQax9csKD8upwKYtURB0NTilpk=;
+        b=a6Pp+Ngguqb1Ow+2ob0ojGblJ4rb3uzRhiqmBB2FAMIP8jsC/nHzn0UqIeCIb2i1oU
+         br1hFZ1QhozdoyGXU45NOW1asGFp/3dWmqKwXeCIVYP2T7hyi7+EcLpJ+tqNVtKuDZhP
+         QoXv/iGQ7ziov9uM1OZ6CqLRrzdcyQBZBHrYYFyD0yowcWO/lT3fvQlgaSahBaphC/2h
+         4CA85hF0JVXZgv6mpA9+GqRszu6UEldvwCCHz3WYyd3FONPvnw5CXwZOLL7z/JaIaJFi
+         kO4izjCaFNKaMCbufrhN49MelKfhCa40w0gA/XMiCIISiXgAa8bITJucqTWBVcEPxjh6
+         CCag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790284595; x=1790889395;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KfGvfwNr/tckeUTW0rQax9csKD8upwKYtURB0NTilpk=;
+        b=K7iv54ogKPqjgUoH8Pp9Bp/MSJyykIhobqSKU5kmfzj9jfWsZVkDwnJs/xbikEkIgd
+         qVJf4hw8HAfZVtArGOH9JJ6Yac3k3wsxfymZbAu/rbqGZnCSn7Q4LVpN7ptA+BKqDphA
+         wuAOPz6Wq9+4DPl7ZmwD42U/3EIUSdqy3L9EsZDkuorWmPzl6jwQMDNblUCVZUhL3H1U
+         bneKKU6lSWbvtTGUH5j9JtRH70+c0TeOHaph7Z4dzsSYNKUtZXarR/0J1f++dLZKtB5H
+         c9Nklx9H5JkA/ZUzuuV/ti2zmG4guMRq39FK+xmYFtjsD+LUj1zD+tOG3suRV6llbpRY
+         QUoA==
+X-Forwarded-Encrypted: i=1; AKwUvBy3w4VtXGZNRr6dWR5f2n1Y/KNtbqHD9j9ovDTqZ4G7lhN5B5UwJg86AfKy/iKBEZCico9jVnQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++meFqrAXx84NAapoe4nRRAsY5HpmuAIMKZBUgkYetVr5VmULmz6
+	RkdatNGg9h4Vwj2We2JesbLYHFFN4ZMSU7rkgiYk7NDXgEKWCCClD+gc
+X-Gm-Gg: AYBFou1KYXfUINCXsUDLB4CzcX0Ap9F7QCn6oLQNHbhBCV3F3GoyjTt2F1Ex9JRWjue
+	MLMfxUCceTLQVsSV52hl2wUtTUgGYiwLwJJthNaag5tr3GgxHR58l3bdTZ4G56GpeCWVLc8oJr7
+	lOR5Eli0qX3ybMmy/eie6U9bCW3KUKLKthiTz7l6I2SoUu29y3Kttiz7rpID9eE338/pa3ih/Qk
+	svlnq2PXIv6G8Pt3564PtDor5+D/J8+UqvrmQYHfhvjPyHLsJYocE/7vV8Elwo6oq6ie9xsvWAa
+	7an8WgiznjE1qI455R95lhBotosTjfltZ0A4XwE7X7hER1Wvrun10yBpb+WQCQLNVqCG/vUZqzu
+	V9BwYcJiZxIywhdw5ZAS6HSvjXzGUULcb13jCXflt2ove/Ktp98HPDnRvbzM2sFNX/iG0DS3mQm
+	mZxYUPeoILbUleT7f5INlDhVmaTWpCzCFPfLEUyVwNbICJ+nphMQEzqD1uwjr2I+6nAZt+il3YW
+	1qmkVic/vsddSfWCo5I9dvjlSEQeVFzczOoTnemuINdoxQOEHjW0Gpfc9+b7fqalTvveKVPL4WZ
+	V3BTql2w+b+YreBkTPVPddUwhZZ04UiRsi28Dki/ApfCWliuts4GkaZ/8L/YoOZQQMZbX5VgoL3
+	DiLTeV2FO/mKuo7x0ilYV
+X-Received: by 2002:a05:600c:8b4c:b0:49f:c432:885 with SMTP id 5b1f17b1804b1-49fe6702398mr60249845e9.2.1790284594803;
+        Thu, 24 Sep 2026 14:16:34 -0700 (PDT)
+Received: from ?IPV6:2a02:3100:610f:ecfc:4dfb:2ac9:70ba:48bd? (dynamic-2a02-3100-610f-ecfc-4dfb-2ac9-70ba-48bd.310.pool.telefonica.de. [2a02:3100:610f:ecfc:4dfb:2ac9:70ba:48bd])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5ce4941sm92677785e9.6.2026.09.24.14.16.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 14:16:34 -0700 (PDT)
+Message-ID: <4cd6377a-e0a5-4058-bc72-40bb32b2d26a@gmail.com>
+Date: Thu, 24 Sep 2026 23:16:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] net: hsr: fix packet drops caused by GRO superpackets
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, andrew+netdev@lunn.ch, shuah@kernel.org, kees@kernel.org,
+ petr.wozniak@gmail.com, qingfang.deng@linux.dev, fmaurer@redhat.com,
+ luka.gejak@linux.dev, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
+ liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com
+References: <20260809121455.1745-1-xiexinet@gmail.com>
+ <20260809121455.1745-2-xiexinet@gmail.com>
+ <20260813182111.088aee3d@kernel.org>
+ <7c09a44a-19d9-43f5-a852-12f5b6579641@gmail.com>
+ <20260923103238.cg3tr_40@linutronix.de>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20260923103238.cg3tr_40@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 23/09/2026 12:32, Sebastian Andrzej Siewior wrote:
+> Would adding a NETIF_F_HSR_SLAVE flag to slave device(s) and then filter
+> invalid flags in netdev_fix_features() fix this? This should help
+> against enabling and add a warning if a flag can not be removed.
+> 
+> A netdev_change_features() might do the job then.
+> 
+> Sebastian
 
-Critical: 0 · High: 0 · Medium: 1 (3) · Low: 0 (2)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] gem_set_hwtst() in drivers/net/ethernet/cadence/macb_ptp.c now
-  claims to protect the NCR read-modify-write (the OSSMODE/SRTSM update)…
-
-Pre-existing issues:
-- [Medium] NCR PTP bits stay set on accepted requests in gem_set_hwtst()
-  (drivers/net/ethernet/cadence/macb_ptp.c).
-- [Medium] In this patch, gem_set_hwtst() accepts
-  HWTSTAMP_FILTER_PTP_V1_L4_SYNC and HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ…
-- [Medium] macb_resume() in drivers/net/ethernet/cadence/macb_main.c
-  overwrites NCR with `macb_writel(bp, NCR, MACB_BIT(MPE))`, which…
-- [Low] gem_get_ts_info() in drivers/net/ethernet/cadence/macb_main.c
-  advertises only `(1 << HWTSTAMP_FILTER_NONE) | (1 <<…
-- [Low] gem_set_hwtst() now updates bp->tstamp_config with a whole-struct
-  copy under bp->lock.
-
---
-
-net: macb: Preserve timestamp settings on rejected requests
-
-This commit reworks gem_set_hwtst() to validate both the TX type and the
-RX filter before touching any register. The adjusted RX filter is kept
-local until validation succeeds. The NCR read-modify-write, the
-TXBDCTRL/RXBDCTRL writes and the cache update are then done together
-under bp->lock.
-
-> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
-> index 14ae57fa00cba..02face93a53a1 100644
-> --- a/drivers/net/ethernet/cadence/macb_ptp.c
-> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
-
-[ ... ]
-
-> @@ -424,18 +406,19 @@ int gem_set_hwtst(struct net_device *netdev,
->  	case HWTSTAMP_TX_OFF:
->  		break;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but should HWTSTAMP_TX_OFF also
-add OSSMODE to ncr_mask?
-
-Only HWTSTAMP_TX_ON clears OSSMODE here. If a ONESTEP_SYNC request is
-followed by a TX_OFF request, NCR.OSSMODE stays set. At the same time,
-TXBDCTRL is programmed as TSTAMP_DISABLED and bp->tstamp_config.tx_type
-reports HWTSTAMP_TX_OFF.
-
-In this patch, SRTSM has the same history dependence. ncr_mask starts at
-0 and SRTSM is only added in the PTP_V2 branch. The if (ncr_mask) guard
-also skips the NCR write entirely for TX_OFF with a non-V2 filter. So a
-V2_EVENT -> NONE/ALL transition leaves SRTSM set.
-
-The SRTSM half is fixed later in the series by "net: macb: Clear SRTSM
-outside PTPv2 receive filters". That patch starts ncr_mask at
-MACB_BIT(SRTSM) and drops the guard. The OSSMODE half still appears to be
-there at the end of the series.
-
-This patch already rewrites the logic into the mask/bits scheme. Would an
-unconditional ncr_mask |= MACB_BIT(OSSMODE) cover it?
-
->  	case HWTSTAMP_TX_ONESTEP_SYNC:
-> -		gem_ptp_set_one_step_sync(bp, 1);
-> +		ncr_bits |= MACB_BIT(OSSMODE);
-> +		ncr_mask |= MACB_BIT(OSSMODE);
->  		tx_bd_control = TSTAMP_ALL_FRAMES;
->  		break;
->  	case HWTSTAMP_TX_ON:
-> -		gem_ptp_set_one_step_sync(bp, 0);
-> +		ncr_mask |= MACB_BIT(OSSMODE);
->  		tx_bd_control = TSTAMP_ALL_FRAMES;
->  		break;
->  	default:
->  		return -ERANGE;
->  	}
->  
-> -	switch (tstamp_config->rx_filter) {
-> +	switch (rx_filter) {
->  	case HWTSTAMP_FILTER_NONE:
->  		break;
->  	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-
-[Severity: Medium]
-This is a pre-existing issue, but the two V1 L4 filters below are accepted
-with a bare break:
-
-	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-		break;
-	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
-		break;
-
-rx_bd_control stays TSTAMP_DISABLED, so RXBDCTRL is programmed as
-disabled. The non-zero filter is still returned to the caller unchanged
-and stored in bp->tstamp_config.
-
-Won't gem_ptp_do_rxstamp() then treat RX stamping as enabled, while no RX
-timestamps are actually delivered?
-
-This looks to be resolved later in the series by "net: macb: Enable RX
-timestamping for specific PTPv1 filters". There, both cases fall through
-to the HWTSTAMP_FILTER_ALL branch.
-
-> @@ -451,25 +434,33 @@ int gem_set_hwtst(struct net_device *netdev,
->  	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
->  	case HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ:
->  	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
-> -		rx_bd_control =  TSTAMP_ALL_PTP_FRAMES;
-> -		tstamp_config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
-> -		regval = macb_readl(bp, NCR);
-> -		macb_writel(bp, NCR, (regval | MACB_BIT(SRTSM)));
-> +		rx_bd_control = TSTAMP_ALL_PTP_FRAMES;
-> +		rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but gem_get_ts_info() in
-macb_main.c only advertises these filters:
-
-	info->rx_filters =
-		(1 << HWTSTAMP_FILTER_NONE) |
-		(1 << HWTSTAMP_FILTER_ALL);
-
-gem_set_hwtst() accepts nine PTP V2 filters. For them it programs
-TSTAMP_ALL_PTP_FRAMES plus SRTSM and reports HWTSTAMP_FILTER_PTP_V2_EVENT
-back to the caller.
-
-Should HWTSTAMP_FILTER_PTP_V2_EVENT be listed in rx_filters, so that
-ethtool -T matches what the setter applies?
-
-> +		ncr_mask |= MACB_BIT(SRTSM);
-> +		ncr_bits |= MACB_BIT(SRTSM);
->  		break;
-
-[ ... ]
-
-> -	bp->tstamp_config = *tstamp_config;
-> +	spin_lock_irqsave(&bp->lock, flags);
-> +	if (ncr_mask) {
-> +		regval = macb_readl(bp, NCR);
-> +		regval = (regval & ~ncr_mask) | ncr_bits;
-> +		macb_writel(bp, NCR, regval);
-> +	}
-
-[Severity: Medium]
-The commit message says "Protect the NCR read-modify-write with bp->lock".
-Does bp->lock actually serialise this against the other NCR writers?
-
-Some NCR read-modify-write paths in macb_main.c don't take bp->lock. They
-could write back a stale NCR value and drop the OSSMODE/SRTSM bits set
-here.
-
-macb_mac_link_up() releases bp->lock before it updates NCR. It runs from
-phylink's resolve work, not under RTNL:
-
-	spin_unlock_irqrestore(&bp->lock, flags);
-	...
-	/* Enable Rx and Tx; Enable PTP unicast */
-	ctrl = macb_readl(bp, NCR);
-	if (gem_has_ptp(bp))
-		ctrl |= MACB_BIT(PTPUNI);
-
-	macb_writel(bp, NCR, ctrl | MACB_BIT(RE) | MACB_BIT(TE));
-
-macb_hresp_error_task() is queued on system_bh_wq from
-macb_interrupt_misc() on HRESP. It saves NCR, reinitialises the rings and
-buffers, and then writes the saved value back, all without bp->lock:
-
-	ctrl = macb_readl(bp, NCR);
-	ctrl &= ~(MACB_BIT(RE) | MACB_BIT(TE));
-	macb_writel(bp, NCR, ctrl);
-	...
-	ctrl |= MACB_BIT(RE) | MACB_BIT(TE);
-	macb_writel(bp, NCR, ctrl);
-
-One possible interleaving:
-
-CPU1 (macb_mac_link_up() or macb_hresp_error_task())
-  ctrl = macb_readl(bp, NCR);          /* OSSMODE == 0 */
-
-CPU2 (gem_set_hwtst(), HWTSTAMP_TX_ONESTEP_SYNC)
-  spin_lock_irqsave(&bp->lock, flags);
-  macb_writel(bp, NCR, regval);        /* OSSMODE == 1 */
-  bp->tstamp_config = *tstamp_config;
-  spin_unlock_irqrestore(&bp->lock, flags);
-
-CPU1
-  macb_writel(bp, NCR, ctrl | ...);    /* OSSMODE == 0 again */
-
-At this point the setter has returned 0 and bp->tstamp_config says
-one-step is active. The TX completion path skips TX timestamp reporting
-for one-step Sync frames via ptp_one_step_sync(), but the MAC no longer
-inserts originTimestamp.
-
-spin_lock_irqsave() only disables interrupts on the local CPU, so it does
-not exclude these paths when they run on another CPU.
-
-Do these other NCR read-modify-write sites also need bp->lock, or some
-other shared serialisation, for this protection to hold?
-
->  
-> -	if (gem_ptp_set_ts_mode(bp, tx_bd_control, rx_bd_control) != 0)
-> -		return -ERANGE;
-> +	gem_writel(bp, TXBDCTRL, GEM_BF(TXTSMODE, tx_bd_control));
-> +	gem_writel(bp, RXBDCTRL, GEM_BF(RXTSMODE, rx_bd_control));
-> +
-> +	tstamp_config->rx_filter = rx_filter;
-> +	bp->tstamp_config = *tstamp_config;
-
-[Severity: Low]
-This is a pre-existing issue, but the packet-path readers of this cache
-don't take bp->lock. gem_ptp_do_txstamp() is called from
-macb_tx_complete() under queue->tx_ptr_lock, and gem_ptp_do_rxstamp() is
-called from gem_rx(). Both are in macb.h and use plain loads:
-
-	if (bp->tstamp_config.tx_type == TSTAMP_DISABLED)
-		return;
-	...
-	if (bp->tstamp_config.rx_filter == TSTAMP_DISABLED)
-		return;
-
-The writer and the readers share no lock. Is this a data race that KCSAN
-would report?
-
-During a reconfiguration, readers may also see the new cached mode before
-or after the register writes take effect. Before this patch the store had
-no lock at all.
-
-> +	spin_unlock_irqrestore(&bp->lock, flags);
->  
->  	return 0;
->  }
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does the cached config
-stay in sync with the hardware across suspend/resume?
-
-macb_resume() in macb_main.c overwrites NCR, which clears OSSMODE and
-SRTSM:
-
-	macb_writel(bp, NCR, MACB_BIT(MPE));
-	macb_init_hw(bp);
-	...
-	if (bp->ptp_info)
-		bp->ptp_info->ptp_init(netdev);
-
-gem_ptp_init() sets up the clock info, timer and TSU and registers the
-PTP clock. It never reapplies NCR, TXBDCTRL or RXBDCTRL from
-bp->tstamp_config.
-
-After resume, gem_get_hwtst() can report a mode the hardware no longer
-has, such as HWTSTAMP_TX_ONESTEP_SYNC or HWTSTAMP_FILTER_PTP_V2_EVENT.
-
-With one-step PTP, won't the MAC stop inserting originTimestamp until
-the configuration is set again?
+Yes. I'll use a port constraint in netdev_fix_features() to keep GRO,
+and GRO_HW (when configurable) disabled, while the device is an
+HSR/PRP port, incl. the interlink port. And call netdev_change_features() 
+on attachment and detachment, preserving the GRO settings.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-macb-hwtstamp-rework-v2-0-75c909b2676d%40khu.ac.kr
+Xin
