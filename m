@@ -1,146 +1,221 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f32.google.com (mail-pj2-f32.google.com [74.125.227.160])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC333DEFE3
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AA33E5A03
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790221320; cv=none; b=bHu6xx1rpAbRagerqD7i0gf+MyjbIEMDDRTvtiHdzjAOeqMSxp8ICT1sSqUrwu7gpqKKx3jnrGsVKtTxHUKcpBMSW30z5vZMivHHG6sldbAU2X7jeEEio6mJyKM2r3rV6lq/Y5xeaKq87uDqiEiSpr/MskCLPrTwoVpsbBEBJDQ=
+	t=1790221703; cv=none; b=Y8Cr0bo8K8dgVdP4tF+iFpPlyoZUAv4vh9FogtRg64IPvpgbhkRgeaGQpaa9xIJWIpB9bWREtblv8NTI6dMA1RVH7+d0WtJJBItsg96merG0c4//0GSUWdLVlpXIcK6Y9eu4x0Ml+qer9hTsjej0TneNXHSKVy5wOq3Nul7zWg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790221320; c=relaxed/simple;
-	bh=nQzM03h0wDPGoZC/R0f6dhozLoiqT7BCJjf7f/hgEio=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UkxcUQZJRnBJJ9I4r14csNPhOJZauNj5IzTSqgLR4kj1zLWxLAQSJB/3+KJO7QS1og7+ZLD7l3x2DCBezP6Ps3WbNLNCLH5sjodNgVrh47J/k+y8nZfcYgaPV6B7uDRdCALilYXPvawJMm9rpg+WV0j75d/MIbGVBSNiuKwn1aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WkMSrSxs; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dIu1qmtT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790221703; c=relaxed/simple;
+	bh=u7VfKm5rOaDl8d0G3ZndWq3QuUaMVh/vqQ+AIdsZlfc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=pHSG0BAkCY6bREH/yo1KOsWkw1tS+rPI25ESz4CIqAwdUBG3YvguVmoB8sSeUkgPlmtSLYpPj//pfEAM6LshJGlA0eJPPM7h3OHVrUwgCyist5nqVpyJdOPktOFv0Y/PDK5H9rok0jUpYe4nTsAcsSs12n/CQWLIucVcHeHWa7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=qHcjRU7b; arc=none smtp.client-ip=74.125.227.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WkMSrSxs";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dIu1qmtT"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68O36h1b243988
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:41:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3akuMu2P99UYG1jm27drky1RZoZJnbv6X6rWoGr+a4I=; b=WkMSrSxsjjYrE8tN
-	8hb/HAhjHQvCJFCXPAhDBXduSkI+v7O5O7Il3SIEP7jickVJYqJuW7LhK5FgLGNq
-	h8Q/ukIjDcGWBp1ZVhmFa391Q1Clll9/IZ4kpkYru+2wVbH4rtolfUnDSAqIktz3
-	wIHgLF8uzyZVkTUZ1GZ/B/ldOp3B/5rzzzJ02e35hbHY/SiiT2UQX0/NuOba3I+n
-	+1vJeYfyvnOcRypUg9Tr0muFO7eRJgPrjVt4aKX+ho1JXa9VCREmNZYuSLU53NKU
-	YSsYQ3intb5Oa3JUbqjGRaW7XL8coFtokc9EkoMqIpeeGXt7CYMK/TRUShy/3LGK
-	ndFu9A==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvbx7m2ch-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:41:58 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-868db1b2c64so1386574b3a.3
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 20:41:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="qHcjRU7b"
+Received: by mail-pj2-f32.google.com with SMTP id d9443c01a7336-2d747f05ffdso7498895ad.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 20:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790221318; x=1790826118; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3akuMu2P99UYG1jm27drky1RZoZJnbv6X6rWoGr+a4I=;
-        b=dIu1qmtTjqNu9obHt943A3oncbTM3yM5ZIDKGUkom2e2+zfJ0K2imIJfuEz9/bMJGZ
-         DfqtixVAXzuEtHfe2DY8wxAk7vnT44L0BK8ruzZ5ScdvP7/qOfKu+8960vtvOTp+O6oi
-         T2U9i52jQ5UYP8WUjNYYwx3wpA5OySfdM2M9OBVVdFIFAM3QJzOXHtpudhwFDgAmvzMa
-         ragvQCeZTPqLBaL7sdxEtDPJx3rj/YswjkC6uVki2YnJ0akJndIIqBMX50uhdM+k/xaF
-         jCse/kWWD4h6SMh/ffFF6kYDLfgeyrgql4qcibfTWGQo99Z12FuH1GPYFK4oR0yxJoqM
-         PoWw==
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1790221699; x=1790826499; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vyH+46wvVCG42WHP8ZLxeKrUMVBuwkf4fMiMhZ0rDTg=;
+        b=qHcjRU7bbGiYDZYWVQtKUkV83qv8owh8mJxTgCs4rimyrFHNg0SfsjWzB0NxZyuj59
+         VmW3tm1Kuf7XNt3r2saoVM1QVB6XSXCSgHY0TwhiIR+kDnQjxYvpoZ6mXxFduTc8g/ac
+         ex10OZleEzSJkkN8bdQfND+qFw0+iOIeuoBLlXLcpMYD9S6vPPW4ewCSN8L4hHK0axqC
+         xPawEIGL7LWzhINI2GH9TsfpZvUT9BSwDICnyAOumWFNJHWQkDfjjyTyxwr2d/MiKQjn
+         qPmnUDb7RYQ6GoMfDUgU3IWDZXCYhwRgV+0MO0NfKIOKxiRmSwRmSHwl2W+cfCJYodCH
+         3yxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790221318; x=1790826118;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3akuMu2P99UYG1jm27drky1RZoZJnbv6X6rWoGr+a4I=;
-        b=jbu6Zd6Ao9k7zC8z95c2z4POT+RgBLv1w25ut1kKjaXrOGzvOTOEgCWa1ru0cM0BkM
-         xUeWu3l/+aXS0+c8EnP2SMU2zx0vVeZSzJfzisdX12pecZIl1Wdbx8eOKQyVTHhbM9D4
-         7Tma15iUWqL0KjjTgdKUhvgOYGDG935FfnjBpMBnfQonEl8D8ozvcm/wosPict82cz9S
-         b/iHC6k8jmaYQ1y8kF4El2eRa3A2zx1Qa4dVHsgVcZ02e+WafSYo7vMirdyk5uXJh1j7
-         5JzQYYD3cOJW3feodniaN2hnnQnpaiVYAvPbsZlKYwttrttSgKHeHtFlgpU3evqogO11
-         O9sQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzDz/GKOHMtwMrdFGvwarSearRMC/qA2ihk4HghW4PQHouaTLleXJW8AgCkqoohk/DBKBzt0TQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kgCsf0aIsJxwbdE5tWDIyyEwgk1EMMF6V83uudaUMqF+OcIo41
-	efERw1tYSb9fvdoF1oJkfe3v6pagZYOMqbYDzPenTBF9gjJgRSp/M1O3q/sV+L+qWwnUwUMbxx0
-	+aWFwy26KnrI5vcs8c65qGBajguuy7p61zk0Wc6Xk9meI9QqMwIVxsZ9KERc=
-X-Gm-Gg: AYBFou2dc8KWMLXSIucSKHWo8fsWuHhTpAn4rXx2zHscg64C7X6MeTdlUUO7+G4i8MF
-	B2rxF4ULBuliZAKXuzx3KN1r3i2iSvaSktSmQxUvVGPlJLE0NV6gH+Km0mlh462bavoZ4kZjahe
-	tmaidT2trHEo1LZt8k5BFYmeWdg0MJh7zwNws2MdMeej5AmBUZl99Nsv7qd/cn0Uz9rfbV5QrVN
-	8w75TrD1hIHnJFT4w+OqG1Y7Q5FAuiK/th7M3B7LpNg1m28WLv8q4TidaE1Rx+IyCickTpkN4DG
-	oi/7AXXFgNrqS5fVpf/hKR4Yyeyjp+0RRfvoQdToL+a9oyyt7eos8F70fj15lBbQTBQdx9dUInI
-	eW9kE6g+ZZ8P/9icAfCGesymi
-X-Received: by 2002:a05:6a00:1911:b0:874:705d:f656 with SMTP id d2e1a72fcca58-87e9b3b680cmr987228b3a.36.1790221318105;
-        Wed, 23 Sep 2026 20:41:58 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1911:b0:874:705d:f656 with SMTP id d2e1a72fcca58-87e9b3b680cmr987215b3a.36.1790221317574;
-        Wed, 23 Sep 2026 20:41:57 -0700 (PDT)
-Received: from [10.233.17.96] ([114.94.8.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1afb9416sm2123606b3a.7.2026.09.23.20.41.54
+        d=1e100.net; s=20260707; t=1790221699; x=1790826499;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vyH+46wvVCG42WHP8ZLxeKrUMVBuwkf4fMiMhZ0rDTg=;
+        b=j1XXdR4pUYZRgg32tWyySEDpu3InkBKcf45I0n/UCtMiCjXVBf6o61xW9fs/Oa5Jvr
+         vzq2oC1LNNnT5pqzhJRqJAUZ7+/tuCGGsxeFPXkJVad6f96L1dBpnwfRujbK4GR+WRoU
+         P6NaM4dEbwjmLWOWWD3I3py/WqpsmDMxaStcp12sCzxS631aBBDzPj+CpoopNIGxJJ+H
+         nYHGuxpwxfz2Kul82J7rQCaK9i5eHtKt+aazESWSKAIGJkQ5c2sbFbRc0R3KMZAS6ZVb
+         me1ZgCI09dn5sDxGSoyYVXam7vXPOiwTg5fvJDf14ZYl6+KyJD1bW2xdkNvqXXXOkssU
+         C3xA==
+X-Forwarded-Encrypted: i=1; AKwUvBx9uJ8iCDwA9ROqY+dBMxaJ1lTt6GId3RT/tOUl2T+Yl9aDgVPi3udAP/yZxs0XoZp5IGfIjr0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nipRYo5faJYm0bL7s2+fFtSp0eugNafBOGUioVXsRNf0HQYjxS
+	4dxZUWmRmnCNtSqWPdjXn9V53YmhCgzu9CKWzyYOGUyKtsh/ZoFB/7yHa3KolXdNpPM=
+X-Gm-Gg: AYBFou1SApTjNpl5s4YHeCObd2hXz733zixPyOt0XNx8NF/Uk8EdbbNBmuhR3l/jafD
+	fhgF8xhqoqeSFyCncXy6BncPtZrvgwjm+cycfOfBbQd3wBgy7aDoGzP42Tmci5Z3yi7MWPs6KDr
+	JaifdrGHU4dwZCuDTruFcww86H/oFAmtsKCibm97KlJ6HEv5myqjkWJLllJ1Oqhash7ewAa95Rg
+	vSECJEJj7eY8sabaPqdUC7/63xboKzya4mfJeq10ZWSY4DziEhCHOfyC1NxBlOpd6Ca+h+32MiI
+	xDhL7UAUXEKZgLfliyIs+LjkFheU6CPXt4GBVqc+mEBTFqfZ3hiqQBFtw9E2XCbGVVKpBfMhm+L
+	dj5Tdli6oPNOeRMPZsgAjkLJJrxEtG/vXC6GFQUfPsrbdodbyygqs+7OXuOSjXe5B5owS4Lzthm
+	xaAaP/iVN4fVZayGft2qOdGlAaBf12nIUcgtNaW4GtNlugyQGu89oGQ0+3vaZ3KG28LPneQ5ibr
+	Op0rZbqMcjSZdx/K6NAksKIydl3QXDD
+X-Received: by 2002:a17:902:ebc8:b0:2df:8226:4930 with SMTP id d9443c01a7336-2df82264b0emr3767795ad.37.1790221699268;
+        Wed, 23 Sep 2026 20:48:19 -0700 (PDT)
+Received: from localhost (69-172-153-146.cable.teksavvy.com. [69.172.153.146])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5dbc0fsm19242845ad.57.2026.09.23.20.48.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 20:41:57 -0700 (PDT)
-Message-ID: <6cf51763-9053-44e3-803e-6bc1e000e75a@oss.qualcomm.com>
-Date: Thu, 24 Sep 2026 11:41:53 +0800
+        Wed, 23 Sep 2026 20:48:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: phy: aquantia: AQR113c fix up PMA capabilities
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260923-net-phy-aqr113c-fix-pma-capability-v1-1-497359310f06@oss.qualcomm.com>
- <5b7031ce-4f5a-49af-9d2f-202050f53aed@lunn.ch>
-Content-Language: en-US
-From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-In-Reply-To: <5b7031ce-4f5a-49af-9d2f-202050f53aed@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: o2mFMoLlVvYNLfteD1F8cBnQ6bL-Dzya
-X-Authority-Analysis: v=2.4 cv=J4s/fwnS c=1 sm=1 tr=0 ts=6ab49c06 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=bR27bNoyu6P1LqSCapEA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
- a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDAxNiBTYWx0ZWRfX8OmYUejXpykj
- o2FBgpOqzspMHIZ0nclrs3TcL0Yi0VEd0khUrMaxAIJQrX+sOCT+T+iBma7NzZpJK/RxEnkzsHu
- rJlQrAV+CwWv6XFMtVOAJbVCauAet7cL2u7k2KuXFp9hWuazS2ArAw08XB5ilpJwji/UH+OsGwA
- lNPLCbgn+pgGEl1RbWoHDnuUmGJ5JDOC17n+Vz+KCuOPt0IGLz12gYAdSnDhuvlEQI+teN0BLtS
- xxJicENPdUHwYwhZWKbu0GuKKuJcKycW3owOx3PaGo/PtTizOENWwdK1S2TO0KiUSIWoqlU2SiJ
- JApZVmBJaEhnGiWjgahMgrzC2dUyG6DQcvrB8YC38DDwvki5s7iTwuT27eqqdmD0qaleW/Gr+Ue
- RXUew9ojELpb3VV3+mLgJCvXNUXiOngHpF8y9lOIY23Dj+t7eaohK3CfuwzjRYfRqpWQU/oEdlV
- US0NwQgyVwXdOzfT5HQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDAxNiBTYWx0ZWRfX3v7BZJUSDrI4
- ei4gAZYvQfGd2w1zDqxnPqtb4Z+1yi0P8I1RNjvwOedrxHoNrgzJkfHXMVjyxXQ0wFLwq725E1Y
- Jdcz9qnSuQoXxBHNdU0eTE+Mh10Qd8s=
-X-Proofpoint-GUID: o2mFMoLlVvYNLfteD1F8cBnQ6bL-Dzya
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-24_01,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 spamscore=0 impostorscore=0 priorityscore=1501
- phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240016
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 03:48:17 +0000
+Message-Id: <DLN8MMAY53A6.31EWYOHJ1YWLV@etsalapatis.com>
+Cc: "Yonghong Song" <yonghong.song@linux.dev>, "John Fastabend"
+ <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Eric
+ Dumazet" <edumazet@google.com>, "Neal Cardwell" <ncardwell@google.com>,
+ "Willem de Bruijn" <willemb@google.com>, "Tenzin Ukyab"
+ <ukyab@berkeley.edu>, =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?=
+ <cleger@meta.com>, "Kuniyuki Iwashima" <kuni1840@gmail.com>,
+ <bpf@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH v2 bpf-next 6/8] bpf: mptcp: Don't support
+ BPF_SOCK_OPS_RCVQ_CB_FLAG.
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260923213719.224838-1-kuniyu@google.com>
+ <20260923213719.224838-7-kuniyu@google.com>
+In-Reply-To: <20260923213719.224838-7-kuniyu@google.com>
 
-We only have AQR113C hardware available for testing. The AQR113 may
-have the same issue, but since we cannot verify it, this patch
-intentionally limits the change to AQR113C only.
+On Wed Sep 23, 2026 at 9:35 PM UTC, Kuniyuki Iwashima wrote:
+> The next patch exposes a new kfunc calling __tcp_set_rcvlowat()
+> to bpf_tcp_ops.
+>
+> MPTCP has its own sock->ops->set_rcvlowat() / mptcp_set_rcvlowat(),
+> so we should not allow calling __tcp_set_rcvlowat() on MPTCP
+> subflows.
+>
+> Let's disable BPF_SOCK_OPS_RCVQ_CB_FLAG for MPTCP for now.
+>
+> If needed in the future, bpf_tcp_ops_set_rcvlowat() could be
+> extended to properly support MPTCP.
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  include/net/tcp.h      | 15 +++++++++++++++
+>  net/core/filter.c      | 10 ++++++----
+>  net/ipv4/bpf_tcp_ops.c |  5 ++++-
+>  3 files changed, 25 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index 07426e8641b7..d3cf655da9ec 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -2932,6 +2932,16 @@ static inline int tcp_call_bpf_3arg(struct sock *s=
+k, int op, u32 arg1, u32 arg2,
+>  	return tcp_call_bpf(sk, op, 3, args);
+>  }
+> =20
+> +static inline int tcp_set_sock_ops_cb_flags(struct sock *sk, int val)
+> +{
+> +	if (sk_is_mptcp(sk) &&
+> +	    (val & BPF_SOCK_OPS_RCVQ_CB_FLAG))
+> +		return -EOPNOTSUPP;
+> +
+> +	tcp_sk(sk)->bpf_sock_ops_cb_flags =3D val;
+> +	return 0;
+> +}
+> +
+>  static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
+>  {
+>  	tcp_sk(sk)->bpf_sock_ops_cb_flags =3D 0;
+> @@ -2954,6 +2964,11 @@ static inline int tcp_call_bpf_3arg(struct sock *s=
+k, int op, u32 arg1, u32 arg2,
+>  	return -EPERM;
+>  }
+> =20
+> +static inline int tcp_set_sock_ops_cb_flags(struct sock *sk, int val)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
+>  {
+>  }
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 5feb99884682..f29c061bb066 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -5588,8 +5588,7 @@ static int bpf_sol_tcp_setsockopt(struct sock *sk, =
+int optname,
+>  	case TCP_BPF_SOCK_OPS_CB_FLAGS:
+>  		if (val & ~(BPF_SOCK_OPS_ALL_CB_FLAGS))
+>  			return -EINVAL;
+> -		tp->bpf_sock_ops_cb_flags =3D val;
+> -		break;
+> +		return tcp_set_sock_ops_cb_flags(sk, val);
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -6178,8 +6177,9 @@ static const struct bpf_func_proto bpf_sock_ops_get=
+sockopt_proto =3D {
+>  BPF_CALL_2(bpf_sock_ops_cb_flags_set, struct bpf_sock_ops_kern *, bpf_so=
+ck,
+>  	   int, argval)
+>  {
+> -	struct sock *sk =3D bpf_sock->sk;
+>  	int val =3D argval & BPF_SOCK_OPS_ALL_CB_FLAGS;
+> +	struct sock *sk =3D bpf_sock->sk;
+> +	int err;
+> =20
+>  	if (!is_locked_tcp_sock_ops(bpf_sock))
+>  		return -EOPNOTSUPP;
+> @@ -6187,7 +6187,9 @@ BPF_CALL_2(bpf_sock_ops_cb_flags_set, struct bpf_so=
+ck_ops_kern *, bpf_sock,
+>  	if (!IS_ENABLED(CONFIG_INET) || !sk_fullsock(sk))
+>  		return -EINVAL;
+> =20
+> -	tcp_sk(sk)->bpf_sock_ops_cb_flags =3D val;
+> +	err =3D tcp_set_sock_ops_cb_flags(sk, val);
+> +	if (err)
+> +		return err;
 
-If someone with AQR113 hardware can confirm the same behavior, he or
-she can send a follow-up patch to extend get_features() to cover that 
-PHY as well.
+Afaict the tcp_set_sock_ops_cb_flags is inconsistent with the previous retu=
+rn values,
+in that it returns an errno instead of the flags it couldn't set (it also d=
+oesn't
+set the flags that we can set for MPTCP when BPF_SOCK_OPS_RCVQ_CB_FLAG is s=
+et, which
+is the convention of its callers). Would changing the error path to
 
-On 9/23/2026 11:26 PM, Andrew Lunn wrote:
-> Does the AQR113 also get its features wrong?
+	tp->bpf_sock_ops_cb_flags =3D val & BPF_SOCK_OPS_RCVQ_CB_FLAG;
+	return (val & (~(BPF_SOCK_OPS_ALL_CB_FLAGS ^ BPF_SOCK_OPS_RCVQ_CB_FLAG);
+
+work?
+
+
+> =20
+>  	return argval & (~BPF_SOCK_OPS_ALL_CB_FLAGS);
+>  }
+> diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+> index 4b48711d92a2..b0cade34cce6 100644
+> --- a/net/ipv4/bpf_tcp_ops.c
+> +++ b/net/ipv4/bpf_tcp_ops.c
+> @@ -223,8 +223,11 @@ const struct bpf_func_proto bpf_tcp_ops_get_retval_p=
+roto =3D {
+>  BPF_CALL_2(bpf_tcp_ops_cb_flags_set, struct sock *, sk, int, argval)
+>  {
+>  	int val =3D argval & BPF_SOCK_OPS_ALL_CB_FLAGS;
+> +	int err;
+> =20
+> -	tcp_sk(sk)->bpf_sock_ops_cb_flags =3D val;
+> +	err =3D tcp_set_sock_ops_cb_flags(sk, val);
+> +	if (err)
+> +		return err;
+> =20
+>  	return argval & ~BPF_SOCK_OPS_ALL_CB_FLAGS;
+>  }
 
