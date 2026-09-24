@@ -1,79 +1,93 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139F616A395
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA402EEE90
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790227825; cv=none; b=abhASbogVatjWcg3pR1h4rlkNrWkVAtUfkxr0taztDVdrBW/nrqMH0KZ1Z4IejWozkjKwo1CkFEl0BdRsgT6M2yXalz4oGtfLhrGrmhtIjpf97aXLJ/GtLLW8zTG4NxZlF9UFrRQf1FBq0qP5eIj4QcRsL31ShWfvjUxMcd2iWI=
+	t=1790228156; cv=none; b=GFz3ynhdsnx7mLjB3JBuy7pXYlZdcLAQmrzY+U0QK6Br8CGIX1eTw/AdWpQea9mvsChCC5+QuwDkzopEFMNY+U2E8TZIUVvKcWfBD6pc5dF7MPGDmXH+ISWr3mO1ZTupSvjfoJr79pnXLPV3EkEHNyPzarL2pmbtK8VwqimAcBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790227825; c=relaxed/simple;
-	bh=Ay4fmhsJGvr3YQ0A6NPN0+C4V+l/9BVHMKz93pYHwYk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YZEvmWVLhuoiwkHbxM3Y4hQ2sJBT/cn+YG/Pjlw7HOUPdzEep6mVsemnfkVNgXo8RRG/mIO1GluONMJ5osmEGpoDzHIGc0AVxttiMmvMsTWLPGhgKESB7vUWfZD8rA28vaubf2ILylf7VagRoyFtbrwDwRARcD9vT5SOrBUVXHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Usopi51r; arc=none smtp.client-ip=74.125.225.76
+	s=arc-20240116; t=1790228156; c=relaxed/simple;
+	bh=S7YCobBC+HtmpFNk+7TFsgHmGtIoWTkcQMy5z7Dbx1w=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:MIME-Version; b=L3s4MG6iyl2jOylSTkl72N0jkiYjpBs7rO9K2NsVGZpdXxMkL01TYODgvHRQvWteM2Pj0ztRzmgPeZf9IZgdw7FvKcFrY1Z6rRnAjYUdCTM7vmqHDNRyIyRgH24AypDlOpFGNamGUSjH2unHndU31gpCa9MC0yygzjntJ5iDiGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ON6pdYdQ; arc=none smtp.client-ip=74.125.228.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Usopi51r"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f635552aso1330771f8f.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:30:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ON6pdYdQ"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85f0fc1fd8eso848500b3a.1
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790227822; x=1790832622; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Ay4fmhsJGvr3YQ0A6NPN0+C4V+l/9BVHMKz93pYHwYk=;
-        b=Usopi51rQQF98z/WjmYLSp1ooQmqkEdZirENuPiRz5HqOBtA6w4vxpQPccJZWCfVDP
-         zLZYtgF/TMDtFsKSXhkBUaqpJdEYTJoppEB2OolIGzUZ0HYJlNFhUefNRdiWdgTjCgs1
-         fmDzsAdE2mHnv/7tKJPEfCpaQzYkMIFkhOi1fw5QbZ7OswMspcuwpoOZn9AXZlq/rTMu
-         oa1QD/Xer7DH8uKc7wYvgfeKB7k+78LEKDwE3xbNOnTGiNMqUriEMTIUCN4N6fU9PqCd
-         IBgunbMgW9WPU8PE1kiWn2E6JUZbpc9Q+zQYHxtIajp7nOfEQaBezQTuwDHx9kLPr6Hz
-         69wQ==
+        d=gmail.com; s=20251104; t=1790228154; x=1790832954; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZgV+zt06A+GVhiZtJGM9pKXkNiudT+kcv0q8qPUw5Lk=;
+        b=ON6pdYdQqqkchV/gy0fNyvMY/t3qbVvF2RCoGW60etofLkHLVcI/fvv44FqDq2csJI
+         gT4nQpxv6Y0EQB7ieG7ozL4vfxlogTG+5dOTIrzRukhaCTP8Dsn75Z1wIAhcroDhrO9G
+         M4Y/5f6g0QS8M5i8vk0zbPz+STp9EH2D3IMQNgu+J7svAkvV2yYjcqxl8MLHCetwsB45
+         dh7ZuqNYalTYdLPXaVo/MGxpwLUoqJ/Mv51BCpHTj+lP9igMj0XviNQLOndxBg1JT3ss
+         9AjLf0L892WOrJ6+8foJLelB59CnTxI01cPP9s/k+y6SiG4AnsmI+DMOlzXCmFbQ+7Le
+         SJGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790227822; x=1790832622;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+        d=1e100.net; s=20260707; t=1790228154; x=1790832954;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ay4fmhsJGvr3YQ0A6NPN0+C4V+l/9BVHMKz93pYHwYk=;
-        b=i2dDUUnvcgXYDrGPpU0VXJavA7s8xDzVlrv8NBpp5/AJ3NvrR1UQAgaFL0aNzCvncb
-         ghpMPYomIezMoMwwdHA9JScLuJV7TVUceNe86FpqQjzT5ZwE8c8xRbEBIGmgYun64uWf
-         XVkfIA7MBxc0Y0UdsWlwSY7RZFJNea2IUx2vyPY58CXX7AqA3l8/K/syAwBD56Rjl261
-         bVgTtYkMalUt/B4+5xXAF1FBBTBn9r76Uz8hIdHpDBHVlRNm+VIiBrwTuOD6Gk19RxOK
-         VBY2SSB1EZ75XRHeetIsCx5w35s5HNSSE4Jn8zMQhyP14nuDOXYNt/2B1N74nPdKbGW1
-         zZRA==
-X-Forwarded-Encrypted: i=1; AKwUvByqavsXBbLn3aL59VaQhc5DOi8F3kiy6p6xohE2pDnYEPLUd/nHI9biOBZJbHB3ealdldtPCTI=@vger.kernel.org
-X-Gm-Message-State: AFuF++ku7q2bUCKt7Yc1mTElCR3LaWQW5Nnx5I0UwG9/nvM6aCmTcvGE
-	a/sBYT7ZeWzfpNjlh1rJd2hfr0+mr9UZv0tam8ulyDTYM7YF63rrdX9J
-X-Gm-Gg: AYBFou38Gm6yJgOMUx/LE4/mvKgBTtv3U5UBRA2lnzKd1KQM+4qE1RonqOqcwXtXWKd
-	X6fCDuLWJ8H0n37FrO8FhZHgClE0WUPLSBv7an3cNRx5+ZWtbD8fnZgral0Ed/f/C3r10jjqjws
-	CJanyNsYhPq+b1rt6e/TQJLPrSbNckDWDGiXBfK3VqaGqbwhpmIOhG+oHLx6ZaIQlrnr+vn897P
-	MpXPkzZ1zQJO92Fn9B1H/ryf3koHjYONHfA+GW3BDbOet4ttoJ5VyMQgpiDXkql7H6JmyaC/zO2
-	PA4W6l/PFMEbUqiHAZ3YbI5zsI/5eWJTElrr8YrfdPI7jpn2r06dNbeRlyg6UuAW2jDZus8y4Dn
-	g5IMhGyxQEVnKefHf8Dd+80fR70Z6IfhM3Qes2MkCy45kOFjuecYC628xzyk/jOelbQrHXoNLpk
-	dT16+4cxIZB3egjwHS1MGufz0fWHO7JgGmcia0T4/YTZ9WzmSuyPp4wZZBQP1cWD8RD/Ti7A3+g
-	O7SlVgQM8q2m84R1aFnUrzSFpe4M+YKIqjltadGcVu05f6BJCrFKNYhdX3m7/Tmsp8gc6uN0ANB
-	rQLXQeHfL4+CxhsS5FmYWWbxWuSIfCA2Mka50uvS0ABBdg==
-X-Received: by 2002:a05:6000:4812:b0:487:931:946e with SMTP id ffacd0b85a97d-48872a5cc7fmr1371456f8f.1.1790227822011;
-        Wed, 23 Sep 2026 22:30:22 -0700 (PDT)
-Received: from [10.148.84.254] ([195.228.69.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886876c1fdsm13629259f8f.14.2026.09.23.22.30.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 22:30:20 -0700 (PDT)
-Message-ID: <7f82e52d5495cf61f7debf860ab5585d03ebfb66.camel@gmail.com>
-Subject: Re: [PATCH iproute2-next 0/3] ip: netns: report the network
- namespace cookie
-From: GMail <primalgamer@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: dsahern@kernel.org, stephen@networkplumber.org, petrm@nvidia.com, 
-	daniel@iogearbox.net, ferenc@fejes.dev
-Date: Thu, 24 Sep 2026 07:30:19 +0200
-In-Reply-To: <20260923161756.2914560-1-idosch@nvidia.com>
-References: <20260923161756.2914560-1-idosch@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-10+b1 
+        bh=ZgV+zt06A+GVhiZtJGM9pKXkNiudT+kcv0q8qPUw5Lk=;
+        b=I33iI9ouD2pHN1IE6l3QSUMqOR90F5PYUoWDVmKTWlxdtIW3vC/v4/qzaR7Z/LJ+um
+         ijglUgIOjb1b1PtwLyMJADy4t8YLeT519c+6eb5aFWW/TLBWY/FvyqyBGuGpf2sPfZmB
+         HQ0OrjwBAjWmMfTJaftPG1W4+eKVtIGwRJ7Z36tQq0QjivuoXnuxEdHafk0VhxU0Ec+y
+         m4IRI+YmkCqhyvo1hdJ+28JUuXZkskp+yUbBQnhYCTUd994onhThLRQ/221PFwa7opFq
+         b0RDoOhvBgmNC/OTEnoaxN3YkN28NqljyTn44baUA1HAgASau5dE2eZmO6ofeYltw9jz
+         UwTw==
+X-Forwarded-Encrypted: i=1; AKwUvBwkD4ZOSpnSkLtfw7Om4SCWOeanAM747AWAIDpwZcqSkiDZ1aRf0f12qtBcdHXFpStVmnBzROw=@vger.kernel.org
+X-Gm-Message-State: AFuF++llI/0YA7BWeoJPzeWTjkYXJS0svAmIFxD5mik4ynlh/kq1Ju82
+	n9PI1OamVqFR3spjamZ0bIpB0q4a4hfFxQW79bBQCcZA3GJQU47A0OvZ
+X-Gm-Gg: AYBFou1RXgOPDG93F3fxxp5j8dXDG1a/lyNmxbovtTYwkVfPxbj1eW2zFnEBFfiZdI4
+	pgFtrEZQpLwiDD3lOdsjK69blA0jcv/pbv1O5osjOp9zDunGjGnEPTFFd0mNfY8WTpkbtm7SGiF
+	C1c1zKr3MhIJH/FLZLmzezcIQzAIFnH/OaiIbiNb8eg6JD4eeIYirRCeS4q6CgNZTeHFkYR3OsK
+	fZkyJVm47fJVh1Jp9eyISN8zORCF9/13T0M43uWJRlPI464eDutC233F3lSWxoBtKn1vDnrm6jw
+	ee7abs3fatSuORO4QGgdkrnuDKxBEW0G6+elcNM7JXuqCM0WDHDW4hwqjhAJn7JMQ3dOWMEbf7d
+	qUF+7k/X4mLSs7WLnoQrpxnzsdjAz+HN3pqb204CmyH0/VCki0tcJZ+S9NbRZ+f79SdeQlv5BBh
+	AyNuVutCRfpIscbph4C5Wv+DG39oZHwFkZbMYw183snMeSdUd543Tig5TxYtiNoXFeM+gVc0m5s
+	ebPM3LdrKEV84z6XEkoLiY0B6s8FxDxaE8+5z3cabQnUyBsn8PGLmzBneOLOF7/CSUhFFzEV+ru
+	2aI=
+X-Received: by 2002:a05:6a00:330c:b0:86b:43f6:67c3 with SMTP id d2e1a72fcca58-87e99087d5cmr1123543b3a.18.1790228153413;
+        Wed, 23 Sep 2026 22:35:53 -0700 (PDT)
+Received: from localhost ([153.61.198.240])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1d5bfc87sm2268080b3a.25.2026.09.23.22.35.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2026 22:35:53 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 05:35:52 +0000
+Message-Id: <DLNAWZH4J2VL.35H5TXY9SPLM8@gmail.com>
+Cc: "Hui Zhu" <zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next 2/2] samples/bpf: Add memcg async reclaim
+ example
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Hui Zhu" <hui.zhu@linux.dev>, "Roman Gushchin"
+ <roman.gushchin@linux.dev>, "JP Kobryn" <inwardvessel@gmail.com>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Shuah Khan"
+ <shuah@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Barry Song"
+ <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
+ Brouer" <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Stanislav Fomichev" <sdf@fomichev.me>, <linux-kernel@vger.kernel.org>,
+ <bpf@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kselftest@vger.kernel.org>, <netdev@vger.kernel.org>
+In-Reply-To: <de7adb6bafa3b808e29c0630f7ed9a2003e5e447.1790222105.git.zhuhui@kylinos.cn>
+References: <cover.1790222105.git.zhuhui@kylinos.cn> <de7adb6bafa3b808e29c0630f7ed9a2003e5e447.1790222105.git.zhuhui@kylinos.cn>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,72 +95,22 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2026-09-23 at 19:17 +0300, Ido Schimmel wrote:
-> The kernel identifies a network namespace by a 64-bit cookie that is
-> assigned when the namespace is created and never changes.
->=20
-> The cookie is reported by a growing number of trace events such as
-> the
-> TCP-MD5 and TCP-AO events and the net device events (e.g.,
-> net:net_dev_xmit). This allows filtering events that occur in a
-> specific
-> network namespace, for example:
->=20
-> =C2=A0# perf record -a -e net:net_dev_xmit --filter 'net_cookie =3D=3D 12=
-'
->=20
-> It is also available to tracing BPF programs that can access
-> 'net_cookie' in 'struct net'.
->=20
-> However, no utility currently reports the cookie of a given network
-> namespace, so mapping a cookie in a trace to a namespace requires a
-> custom program that calls getsockopt(SO_NETNS_COOKIE) from within the
-> namespace.
->=20
-> Since Linux 6.18, the cookie is also the generic namespace ID and can
-> be
-> retrieved via the NS_GET_ID ioctl on a network namespace file
-> descriptor. Unlike SO_NETNS_COOKIE, this does not require entering
-> the
-> namespace, so the cookie of any namespace whose file can be opened
-> can
-> be retrieved without privileges. A kernel selftest [1] ensures that
-> both
-> interfaces report the same value for a given network namespace.
->=20
-> This patchset extends ip-netns to display the network namespace
-> cookie.
+On Thu, Sep 24, 2026 at 12:04 PM Hui Zhu <hui.zhu@linux.dev> wrote:
+> Add an example of BPF-driven async proactive reclaim, keeping the
+> complex monitoring scenario out of the selftests. A BPF program arms a
+> bpf_wq/timer chain that watches the workingset refaults (file and anon)
+> of a monitor cgroup; when they grow past a threshold, a round of
+> bpf_proactive_reclaim() batches reclaims a target cgroup, re-arming the
+> work queue until the round budget is spent.
+[...]
+>  samples/bpf/memcg_async_reclaim.bpf.c  |  349 ++++++++
+>  samples/bpf/memcg_async_reclaim.h      |   39 +
+>  samples/bpf/memcg_async_reclaim_user.c | 1141 ++++++++++++++++++++++++
+>  5 files changed, 1539 insertions(+), 1 deletion(-)
 
-Super useful, thank you!
+No. We're not adding new samples to samples/bpf.
+1200 lines were overkill as a selftest. 1500 lines as a sample
+are not better.
+samples/bpf/ are dead. We do not add new things there.
 
->=20
-> Patch #1 imports the nsfs.h header that defines the NS_GET_ID ioctl.
->=20
-> Patch #2 reports the cookie in "ip netns list". It is always reported
-> in
-> JSON mode and only reported with "-d" in plain text mode to avoid
-> breaking scripts that rely on the current output format.
->=20
-> Patch #3 adds "ip netns cookie [ NETNSNAME | PID ]" to report the
-> cookie
-> of a single network namespace, including namespaces that are not bind
-> mounted under /var/run/netns, such as those created by container
-> runtimes.
->=20
-> [1] nsid_netns_basic in
-> tools/testing/selftests/namespaces/nsid_test.c
->=20
-> Ido Schimmel (3):
-> =C2=A0 uapi: import nsfs.h from last sync point
-> =C2=A0 ip: netns: report the network namespace cookie
-> =C2=A0 ip: netns: add "ip netns cookie" command
->=20
-> =C2=A0include/uapi/linux/nsfs.h | 122
-> ++++++++++++++++++++++++++++++++++++++
-> =C2=A0ip/ipnetns.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 71 ++++++++++++++++++++++
-> =C2=A0man/man8/ip-netns.8.in=C2=A0=C2=A0=C2=A0 |=C2=A0 30 +++++++++-
-> =C2=A03 files changed, 222 insertions(+), 1 deletion(-)
-> =C2=A0create mode 100644 include/uapi/linux/nsfs.h
-
-Ferenc
+pw-bot: cr
