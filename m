@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246223B8405;
-	Thu, 24 Sep 2026 02:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00643D4105;
+	Thu, 24 Sep 2026 02:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790216481; cv=none; b=fuVRIXmggpr63kIWnzcnoNFkYbrYYxPWqbd0ZwG1sJtbALbHS8Yg8VRIJ4YBMaNV8C2kc7bPrAV3i10khC2QOsAYEyi6FNfkUi4/HQGSMuw8s1hOZ/I/3tlahEYU4I0uPbwKtFf/T+WQWkV4ZVRH6crEYrA5qonczFk5EmFjEuM=
+	t=1790216482; cv=none; b=J6wK2fYrgusUPPzS2e65Mrc2lQdKe7Zya4plC90aEsjYwuU0XXntMYTda5OfJ5yL4ErKTs+2brSBQJ2NwULaPqx5PcWM7V0qJOm3zWJ5TUG/RhjYq+Bo/Ij8xduwUlVRcjaymNpGMDJrzz09gynAITOK5i6WX03aEC6F1J/uGmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790216481; c=relaxed/simple;
-	bh=KHanjhW+yLs1gIshRNkH6F4bBiVQPE4bQCt/yltyLGA=;
+	s=arc-20240116; t=1790216482; c=relaxed/simple;
+	bh=Sm6bnS2pV7Ag0KFzCgihKpk3lUjwWhQuR3iS6NSTK3k=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XC+VQuQU12h6Vv5O/zSvHhrvX0VE65YyjoRaUUAa018Uye755jQbUxJtSi6IuoYi56OpPRZvqo6rBXtsgwNsMT4k9NEA5NeJTzMywARRT6jvn3yX2o41TbQ9KML5mVGTMcoFtMWOks5evv0f4U6WBdUYE65kWIxKnCs8XvdD0jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bud8KgJZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=EcZvmgYrC4iYVVGN3OrrtXrBY1LED9hrI3RcgqHR7P2A/HemTzg+KE6DZZcSsw3vyrzgAhxbga22rkUCZLtNocSoh8gjRdXhsW0Vz9SKwHNVijKdmequUvWwcwMP+5RKhp7eXs2zjeM8l16t39veLhnmnjjGpYqxKtZDVkRjw0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYJdmDB5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bud8KgJZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4DF1F008A2;
-	Thu, 24 Sep 2026 02:21:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYJdmDB5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2FF1F0089A;
+	Thu, 24 Sep 2026 02:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790216479;
-	bh=xDPF9xxLiDd6DBLCCQPN6x1Yxk0dUmWroBWKzSp5P2g=;
+	s=k20260515; t=1790216481;
+	bh=gyd5eF0E4AsniF6TDy3gHsIt1ARThOCPqrBkSs04BdQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Bud8KgJZS/avcjXDgdxTOjSMR1LtAa344ZTZZPseUcw7sVVkdreuiY+t1fpTC1dJN
-	 +yQy5kpi+BMn7DQl0+iblqN/aapSHsoZ+ulDT8QNM54uJPNW867TwN9DgB/CiHpyus
-	 SDI9UEMFtJThKtu6YECTesdgaVN0xJrGYX33PflvSP36FnFw5KcwyyPiOgm00E9sul
-	 wxeZTir2zyKUqghaklP7kn2QGlVkZ2VmdURZB+UaBXtKVOxfkCqE38LNPjIdQthD9d
-	 3ibdifZX++mBFtpZMXGZs3DHudjLJUK98V+Nnc81xXeuwMHJF2aLl0qUJoYomA9VEH
-	 1r6DLt9z5hXWw==
+	b=jYJdmDB5ZiYjEtpLxV/XEhjWGwYUwFiGP3XI+qADKRg3JTUrhlN1fNHUSgilVvlx6
+	 TeeO140UHvA519j2SjpWwfu/EVbovO4TbNIUY8TPFq2cH0eaiKBLNCnWEsxbZROJxQ
+	 IHzP/ZY72LZ3122KCAeHzTLNqIJh1Bh6qCRZYkuiX/qcq8RgFwnuMQG2VadvgxtDY+
+	 x0pwQS6WqAqtZ0Fnp4kmtAOedbxneg3IDd1yBYMYNNY44Cy9jiU4QPfc7k2N1Ox4E7
+	 iH80tlPp8RFDvSd/eUcWKF+geB6uy6JCV7JOxkEu+soYseSuPNJaqZw+tK9gNJqHp5
+	 Osh6utEt7oG2Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93D5E39E9611;
-	Thu, 24 Sep 2026 02:20:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199A639E9611;
+	Thu, 24 Sep 2026 02:20:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,48 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/5] net: bcmgenet: Collection of bug fixes
+Subject: Re: [PATCH net v3] net: ipv6: keep room for the mac header in
+ dst_dev_overhead()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179021640940.1281065.14257321695952299439.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 02:20:09 +0000
-References: <20260921220021.281418-1-florian.fainelli@broadcom.com>
-In-Reply-To: <20260921220021.281418-1-florian.fainelli@broadcom.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, opendmb@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
- linux-kernel@vger.kernel.org, nb@tipi-net.de
+ <179021641064.1281065.11687596089740883576.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 02:20:10 +0000
+References: <20260922-seg6-maclen-headroom-v3-1-7b2f982ef79d@gmail.com>
+In-Reply-To: <20260922-seg6-maclen-headroom-v3-1-7b2f982ef79d@gmail.com>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ justin.iurman@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 21 Sep 2026 15:00:16 -0700 you wrote:
-> This patch series contains a collection of bug fixes found during a
-> LLM-assisted coding session.
-> 
-> Changes in v2:
-> 
-> - corrected Fixes commit for "net: bcmgenet: do not skip WoL power up on
->   GENET V1"
-> - dropped unnecessary patches
+On Tue, 22 Sep 2026 05:49:56 +0900 you wrote:
+> The seg6, ioam6 and rpl lwtunnels size their skb_cow_head() request as
+> the length they are about to push plus dst_dev_overhead(), then push the
+> new headers and rebuild the mac header below them with
+> skb_mac_header_rebuild().  That rebuild needs skb->mac_len of headroom,
+> but dst_dev_overhead() leaves LL_RESERVED_SPACE() of the egress device,
+> 16 bytes for plain Ethernet.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/5] net: bcmgenet: fix 64-bit RTNL stats reading in ethtool on 32-bit systems
-    https://git.kernel.org/netdev/net/c/0e2bec77ea62
-  - [net,v2,2/5] net: bcmgenet: initialize u64 stats seq counter for all queues
-    https://git.kernel.org/netdev/net/c/3aeaa609fda1
-  - [net,v2,3/5] net: bcmgenet: do not skip WoL power up on GENET V1
-    https://git.kernel.org/netdev/net/c/cbbc1aee7776
-  - [net,v2,4/5] net: bcmgenet: validate Ethernet address in bcmgenet_set_mac_addr
-    https://git.kernel.org/netdev/net/c/273941c85fc2
-  - [net,v2,5/5] net: bcmgenet: mask DMA_TIMEOUT_MASK when reading DMA_RING0_TIMEOUT
-    https://git.kernel.org/netdev/net/c/d64e277b955b
+  - [net,v3] net: ipv6: keep room for the mac header in dst_dev_overhead()
+    https://git.kernel.org/netdev/net/c/87cd6b717e40
 
 You are awesome, thank you!
 -- 
