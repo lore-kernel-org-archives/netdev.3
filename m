@@ -1,182 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F073D525F;
-	Thu, 24 Sep 2026 02:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403053D1CB4;
+	Thu, 24 Sep 2026 02:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790216488; cv=none; b=QV+XrZAhT7ecRi1Y1KWIs9LMMaybuqZ7ROe/6XRADujp52Fu16xK6zOfF3UzuAD5JP5o79FqqvuyM+Bohaiyh1BO2lnE0c8ynaheqeAA5EI0V991mkqNe42ScreLRtiqqwQnT1Z074zDyU61MmQAxuw9YUn4imGv9PbkzrDZoyc=
+	t=1790216489; cv=none; b=V9IsLTFMzpX/Wny/UTLdXg2ATbxuL1UfzooRflCKVUS+t1okRtFGmwm6d4gI6Xe7vrJo6VASg2RoESgfPDoWjCM/msSfUGqj2NUq9fRWcPpFcyxx3NO49aFQ1VqV4cFD+GdlGda/lhoJ6U6h4ztbd97TB+0/2XNDYdBtHbJXzek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790216488; c=relaxed/simple;
-	bh=/NuRmTeC/wNcGOs7oZ5UbkGxnLs1YaRtydvVaEmL7XE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nITdTs+4si2CZdicsFL6XUoJzG5uQMj7cAQU3aH/WLJHGVnXTO0KVdMq0JBeorAPvryIi7P+AEQs3H5/CzaycC+4YXN33uPuG2V7bxnfmNDFU8kB0R2wPRwRloCG7Pq1LL84aJQdzl+y1vIGoxyFW4t9bZ8bwpDOT0a0OQcG6xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0dG7qfS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790216489; c=relaxed/simple;
+	bh=Rtd5TgrCp/zE4+sjKN8UD1PTpS3JsNummN7U+4iX+no=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=LNX/Snp2b4jhPYJrZj5Qjv7z06hXEb6JoyldKDbOLADnhyDlnNW81jLOLarGlqOvPFYAuazbq3HcROPjwooXwjC1SiB4L+7DmWUa4bGDEssatg5qAJvTypgYB2riRgZCff+FxBhOAdvMWsmMdVBq0gpgLbPqaePYutU9g+OgaS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HkQw/h8L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0dG7qfS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5DE1F00893;
-	Thu, 24 Sep 2026 02:21:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HkQw/h8L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE361F0089C;
+	Thu, 24 Sep 2026 02:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790216484;
-	bh=ZsTzF8H+eR5EpCjxccei3jk/IqV7hA0cUdDks8EWZcQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=W0dG7qfS0XkzPCG2GsrNjkVKXGLK1JHA1yEVq53ZeNEH3V7brBfCgdVPdqR8rQasl
-	 c2CECe19hsrCgss5o6ScNORkDtcfA+PudTfYmLQFcw/rDB3JBDMAbnxgETWrOFposW
-	 WjgwviNsHFWTU+OxmER1+Il8+/o00gF7oflPHissubFgae3hjFTMVPu9MCaTFu3Zy9
-	 ucMfSEtZWPCfhx5CwihdpZvxLJQPkYtAmFxDQKw5YPDqcGJa59swDjBfNX7BEHB0Ec
-	 9zqcgkKP1vuAtAdtW4IumR57+FTw2Ih6EEoIUTU2/qTecL1icrLpJiBqp88IxLNEHl
-	 uEyNggRqNfh4Q==
-Subject: Re: [PATCH net v2 02/10] net: systemport: Fix invalid dev_id argument
- in bcm_sysport_poll_controller()
-From: netdev-bot+sashiko@kernel.org
-To: florian.fainelli@broadcom.com
-Cc: netdev@vger.kernel.org, nb@tipi-net.de, opendmb@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
- linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 02:21:23 +0000
-Message-ID: <179021648333.2160803.6963764174050231839@kernel.org>
-In-Reply-To: <20260922232440.598918-3-florian.fainelli@broadcom.com>
-References: <20260922232440.598918-3-florian.fainelli@broadcom.com>
-X-sashiko-severity: Medium
+	s=k20260515; t=1790216487;
+	bh=s7BQn6WkLZH+Ix/ALFZ9dSrBku4X9YNs4M2zE5d6Ln8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=HkQw/h8LUSL90higrvZUQNXqr2vkhzcTyl0+J9rARxxhuRJtA+G8nHni1wpHJkJ+6
+	 1b7XrKq3JsHp+iQ/oVz/xP+2Ku+X2N/jV7pd+fEZXMEZ1+dq6uhc7txqnwQtKv2EE4
+	 2N8NsSZuAGF5CjOfT2P+ZyYIBETZv4X/pLoz7k5tg/Yx+jFjI3NE4PJquc+HEODhlb
+	 z+WJsyzxLMqMsEJxCTExHIqUgQJluZU8fxd/K0WEgv0sFsxGdb+97dg1lxxBEqFDNF
+	 PupkkRubMNsSvpvv1/of+k8oSpBayHWPPpLP8LiO8bcCLlHglHnHM5xY5GhjSrp3Gu
+	 1vHL3wLI7JQ5A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939E839E9611;
+	Thu, 24 Sep 2026 02:20:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net/sched: ematch: check nla_put_nohdr() return value in
+ tcf_em_tree_dump()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179021641714.1281065.10384838349478970893.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 02:20:17 +0000
+References: <20260919210624.3030344-1-benquike@gmail.com>
+In-Reply-To: <20260919210624.3030344-1-benquike@gmail.com>
+To: Hui Peng <benquike@gmail.com>
+Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hello:
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On Sat, 19 Sep 2026 21:06:24 +0000 you wrote:
+> When tcf_em_tree_dump() was converted from the legacy rtnetlink
+> `RTA_PUT_NOHDR` macro (which contained an implicit `goto
+> rtattr_failure;`) to `nla_put_nohdr()`, the return value check on
+> `nla_put_nohdr()` was omitted for container/simple matches and raw match
+> payloads.
+> 
+> If the netlink dump skb runs out of tailroom at `nla_put_nohdr()`, the
+> error is silently ignored and `match_start->nla_len` is finalized
+> without the match payload, emitting a malformed/truncated
+> TCA_EMATCH_TREE_LIST attribute to userspace instead of returning `-1`
+> via `nla_put_failure` so rtnetlink can reallocate and retry the dump.
+> 
+> [...]
 
-- [Medium] Now that bcm_sysport_poll_controller() passes a valid dev, the
-  polled calls to bcm_sysport_rx_isr() and bcm_sysport_tx_isr() actually…
+Here is the summary with links:
+  - net/sched: ematch: check nla_put_nohdr() return value in tcf_em_tree_dump()
+    https://git.kernel.org/netdev/net-next/c/528de6832b21
 
-Pre-existing issues:
-- [Medium] bcm_sysport_poll_controller()
-  (drivers/net/ethernet/broadcom/bcmsysport.c:1196-1209) calls…
-
---
-
-net: systemport: Fix invalid dev_id argument in bcm_sysport_poll_controller()
-
-This commit makes bcm_sysport_poll_controller() pass dev instead of priv
-to bcm_sysport_rx_isr() and bcm_sysport_tx_isr(). Both ISRs call
-netdev_priv() on their dev_id argument, so passing priv crashed them when
-netconsole or netpoll ran.
-
-> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-> index db627cd15fb7a..8328fe824d152 100644
-> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
-> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-> @@ -1198,12 +1198,12 @@ static void bcm_sysport_poll_controller(struct net_device *dev)
->  	struct bcm_sysport_priv *priv = netdev_priv(dev);
->  
->  	disable_irq(priv->irq0);
-
-[Severity: Medium]
-This is a pre-existing issue, but is it safe to call disable_irq() here?
-
-The only caller of ndo_poll_controller is netpoll_poll_dev(). It is called
-from the retry loop in __netpoll_send_skb(), and that loop runs with IRQs
-disabled:
-
-net/core/netpoll.c:__netpoll_send_skb() {
-    ...
-	lockdep_assert_irqs_disabled();
-    ...
-}
-
-netpoll_send_skb() calls local_irq_save() before this. For netconsole,
-target_list_lock is also held.
-
-disable_irq() can sleep:
-
-kernel/irq/manage.c:disable_irq() {
-	might_sleep();
-	if (!__disable_irq_nosync(irq))
-		synchronize_irq(irq);
-}
-
-With CONFIG_DEBUG_ATOMIC_SLEEP, would this print "sleeping function called
-from invalid context" each time netpoll has to poll the device because TX
-is busy or the queue is stopped?
-
-The handlers are requested with flags 0. With threadirqs or PREEMPT_RT
-they are force-threaded, so synchronize_irq() can wait_event() on the IRQ
-thread with IRQs disabled.
-
-Before this patch the path oopsed. Now it completes, so netconsole users on
-this NIC would hit this problem next. No later patch in the series changes
-the disable_irq() calls.
-
-The driver already does TX completion in NAPI. netpoll_poll_dev() also
-calls poll_napi() right after the callback:
-
-	ops->ndo_poll_controller(dev);
-
-	poll_napi(dev);
-
-Could bcm_sysport_poll_controller() be removed entirely, as was done for
-other NAPI drivers? Or could it at least use disable_hardirq(), as
-e1000_netpoll() does?
-
-> -	bcm_sysport_rx_isr(priv->irq0, priv);
-> +	bcm_sysport_rx_isr(priv->irq0, dev);
-
-[Severity: Medium]
-Now that the ISR calls here actually run, will the masked status usually
-be zero?
-
-On the previous netpoll_poll_dev() iteration, poll_napi() already cleared
-the status. bcm_sysport_desc_rx() clears INTRL2_0_RDMA_MBDONE, and
-__bcm_sysport_tx_reclaim() clears each ring's INTRL2_1 bit:
-
-	intrl2_1_writel(ring->priv, BIT(ring->index), INTRL2_CPU_CLEAR);
-
-Sources whose NAPI is scheduled are also masked. In that case
-bcm_sysport_rx_isr() takes this path:
-
-	if (unlikely(priv->irq0_stat == 0)) {
-		netdev_warn(priv->netdev, "spurious RX interrupt\n");
-		return IRQ_NONE;
-	}
-
-On non-Lite hardware, bcm_sysport_tx_isr() prints "spurious TX interrupt"
-in the same way.
-
-While TX is busy, the retry loop in __netpoll_send_skb() calls
-netpoll_poll_dev() up to jiffies_to_usecs(1)/USEC_PER_POLL times. Could
-that fill the log with unratelimited spurious interrupt warnings? That is
-up to 40 at HZ=1000 and 400 at HZ=100 each time txq goes from empty to
-busy.
-
-Each warning is also a new printk that netconsole tries to send over the
-same congested interface.
-
-Should the polled path skip this warning or ratelimit it, or should the
-poll_controller be removed?
-
->  	enable_irq(priv->irq0);
->  
->  	if (!priv->is_lite) {
->  		disable_irq(priv->irq1);
-> -		bcm_sysport_tx_isr(priv->irq1, priv);
-> +		bcm_sysport_tx_isr(priv->irq1, dev);
->  		enable_irq(priv->irq1);
->  	}
->  }
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922232440.598918-1-florian.fainelli%40broadcom.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
