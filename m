@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26F74756B1
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A0238E8CB
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790252604; cv=none; b=N4shxpMotOnt4psA+e3HMD9ayuxaKY6Fp1tg55e3p0Kgh3COftlCeH8vfhPZMZ8KRS9UY2lVB5lxv8fk7wTNWADOnkuHEtOq2gaygNPwd2imptEL3/BnuJ4TLHHBy4L6YGnXeqo2dT6jc728CgftIekgGlO8YVtNUgQVq5IfWA4=
+	t=1790252605; cv=none; b=Ur05t2o0NUt5Ecs3JwRVoZqA7WAhVjgYIqTh/yB1P/Wpscy7R6u5vgBdrvQvhhGQNdJLENtJMy9EVlEv+4w5mMJuz7JQhB22vsN990xLNH4r6Mzb/FCgFg88kT8d8Tf7qwL1g6W5bROO80TvBoZ55/nLgDhG207lpCfkfgxqh7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790252604; c=relaxed/simple;
-	bh=3etwp8LhGBdDyFbO8h6cUdhoPHHVfQCV4tUthXTc0go=;
+	s=arc-20240116; t=1790252605; c=relaxed/simple;
+	bh=+gDgo39xYHH79ONIwY0ghrlnRzuOANqpHBluZS7BZyM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O76j1B1YL3jjDGQW5s6x0TT45/CSYIRmMj9OWg6G+nMwxK3X0eN1kccwjNka5m0st5fDZHLNjT7mZfbvbgN0gJHH6k4YNxTfckZxxsF+Vo/jXu8oBBGk8MWVVbrj4zDspCvLswgdrIgI7OnSNG4KaX6hwuU2zT14d9CZu0j6u6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZwe+ObA; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=FQULaXljwyN1OpokKJ56EYrJGsVOyO6ZAXoS4vQRN+hdm5J8N2szDL+4GRRPRPtReDL0yeZ/fK7C7ZBemm6VAxNA67K1ROwUzhlzO0F1Vh1WPhmfvK2I8AByElUwzg+bJ/+qHfcQya2gxfV5jMKJBEVTAUKb/MTSLWF39Q9+gx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXC5s7Pi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZwe+ObA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB9B1F00893;
-	Thu, 24 Sep 2026 12:23:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXC5s7Pi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD3D1F000FF;
+	Thu, 24 Sep 2026 12:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790252602;
-	bh=8tqOg6Ar94DgO+X8XYzByM9ElE741cllnoWPGKC5Pwk=;
+	s=k20260515; t=1790252603;
+	bh=Asfm6zvBLcZKQ1pJkJljI/XxbhMDO1tGxCdUVErtmX4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CZwe+ObAgCvqy1/P2xzzWImIzl4Tqb7yfTjaUv00cNh+rAMQCOFXFRp3ZF0si+0XT
-	 583uCvJ4Bct8rpxyreq/dGL88zJ52wzRI3MSIZIii9/WA1EY0p+2hPNiIva8cSbpMp
-	 JiOl22jdKWg1ems4gRXlciH7i7HjqGT/POPMgUmXf3lhvrbyvYFfWa45ePdpEVdSZz
-	 LjyqGRxTSNy2fEQ9Fns6EDZdEsmh534B4Nk8u/38PpiQPgoYuU7KcJF9OYF/lljZDy
-	 DXZvHAawo2QIWHXlPkBTwpdYkpGIeFW4lVVzXcKKjkZS9Fh8NhnWkjSZBTsC8qZI/r
-	 P4KZJgQEZ9eRQ==
-Subject: Re: [PATCH net v4 4/5] ice: rebuild ring stats arrays instead of
- reallocating them in place
+	b=aXC5s7PizKrxScmdE0Yd1Q6WDA+Tslb+j872uBAVNsFp0jhgT5Zrl2k9jHN3JEU+w
+	 VEOVASYqD1P7bKCW9DCv3sEi5VxLGiMpchm8VNQKjpk+HRASba+p+EVTyKJF0QBXOF
+	 qENQVZ0FojWhHAQ84YTd30BSumvEblJXhD9nvgIFvHneAAjaQJDAjm42YYw3jkliOj
+	 qupWIoiDb4QaWYQQ/Gp+DL2xQ0LIPD64rimxz13IyjBX/j4bz5/MmZtodnn6zrooxa
+	 3roUkHGn/OvvZRL9Eqs6CV42K2cEK7/mrde5mKmDaRrkFBNZDy69jGFo8piPynd1PD
+	 xRWBtrpfi+hJw==
+Subject: Re: [PATCH net v4 5/5] ice: fix stats array overflow when VF requests
+ more queues
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
  mschmidt@redhat.com, przemyslaw.kitszel@intel.com, poros@redhat.com,
  aleksandr.loktionov@intel.com, horms@kernel.org
-Date: Thu, 24 Sep 2026 12:23:20 +0000
-Message-ID: <179025260097.2160803.6233570277298398890@kernel.org>
-In-Reply-To: <20260921182106.1015019-5-anthony.l.nguyen@intel.com>
-References: <20260921182106.1015019-5-anthony.l.nguyen@intel.com>
-X-sashiko-severity: Medium
+Date: Thu, 24 Sep 2026 12:23:22 +0000
+Message-ID: <179025260231.2160803.16852325862949481208@kernel.org>
+In-Reply-To: <20260921182106.1015019-6-anthony.l.nguyen@intel.com>
+References: <20260921182106.1015019-6-anthony.l.nguyen@intel.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 0
+Critical: 0 · High: 1 · Medium: 1 (2) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,313 +59,196 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Missing Fixes:/stable tag on a patch that fixes a heap out-of-
-  bounds write.
-- [Medium] A NULL-pointer-dereference fix is buried in a "while at it"
-  sentence with no Fixes: tag.
-- [Medium] The commit message's reproducer and its stated failure-path
-  benefit are both inaccurate.
-- [Medium] ice_vsi_resize_stat_arrays()
-  (drivers/net/ethernet/intel/ice/ice_lib.c:3099) sizes and installs the…
+- [High] Incomplete fix: the identical stats-array out-of-bounds write
+  remains reachable through the PF devlink `driver_reinit` reload path.
+- [Medium] The patch introduces a new abort point in the middle of an
+  already-started hardware VF reset.
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the reader
+  the patch now depends on for sizing (`ice_vsi_get_num_qs()`) disagrees…
+- [Medium] This problem wasn't introduced by this patch, but the patch
+  adds a new concrete failure source to it: `ice_vc_request_qs_msg()`…
 
 --
 
-ice: rebuild ring stats arrays instead of reallocating them in place
+ice: fix stats array overflow when VF requests more queues
 
-This replaces the in-place krealloc_array() resize in
-ice_vsi_realloc_stat_arrays() with ice_vsi_resize_stat_arrays(), which
-allocates a fresh struct ice_vsi_stats sized from ice_vsi_get_num_qs(),
-copies the surviving entry pointers over and installs it before
-ice_vsi_decfg() runs.  It also skips the stats handling entirely for
-ICE_VSI_CHNL.
+The patch exports ice_vsi_resize_stat_arrays() and calls it from
+ice_vf_reconfig_vsi() before ice_vsi_decfg(), so the per-ring stats
+pointer arrays are grown before alloc_txq/alloc_rxq are bumped to the
+larger VF-requested queue count.  This mirrors what ice_vsi_rebuild()
+already does.
 
-A few questions about the changelog and the new sizing contract below.
-
-[Severity: Medium]
-
-Should this patch carry a Fixes: tag?
-
-The commit message describes a real out-of-bounds access:
-
->     after a rebuild the arrays could end up shorter than vsi->alloc_txq /
->     vsi->alloc_rxq, and ice_vsi_alloc_ring_stats() then walked past their
->     end.
-
-ice_vsi_alloc_ring_stats() iterates with ice_for_each_alloc_txq() /
-ice_for_each_alloc_rxq() and never consults tx_ring_stats_len /
-rx_ring_stats_len:
-
-drivers/net/ethernet/intel/ice/ice_lib.c:ice_vsi_alloc_ring_stats() {
-	ice_for_each_alloc_txq(vsi, i) {
-		...
-		ring_stats = tx_ring_stats[i];
-		if (!ring_stats) {
-			ring_stats = kzalloc_obj(*ring_stats);
-			...
-			WRITE_ONCE(tx_ring_stats[i], ring_stats);
-}
-
-so a short array means out-of-bounds reads and out-of-bounds pointer
-stores into the kmalloc'ed pointer arrays.
-
-One reachable divergence is the VF case: the old resizer used vsi->req_txq,
-which ice_sriov_set_msix_vec_count() sets, while ice_vsi_get_num_qs()
-returns vf->num_req_qs ?: vf->num_vf_qs and ignores vsi->req_txq
-altogether.  If the guest then raises vf->num_req_qs via
-VIRTCHNL_OP_REQUEST_QUEUES, a PF reset (ice_vf_rebuild_vsi() ->
-ice_vsi_rebuild()) shrinks the arrays while alloc_txq / alloc_rxq grow.
-
-The next patch in this series ("ice: fix stats array overflow when VF
-requests more queues") documents the same corruption class with a KASAN
-slab-out-of-bounds splat and does carry a Fixes: tag.  Without a tag here,
-and with this change sitting on top of three preceding refactors in the
-same series (__ice_vsi_free_stats(), ice_vsi_new_stat_arrays(),
-ice_vsi_get_num_qs()), how is a stable maintainer expected to identify the
-affected kernels?  If the fix is deliberately not backportable, could the
-changelog say so?
-
-[Severity: Medium]
-
-Two statements in the changelog do not seem to match the code.
-
-First:
-
->     Requesting fewer queues than the PF pool can hand out was enough
->     to trigger it.
-
-When a request is present, the removed resizer used vsi->req_txq /
-vsi->req_rxq, and ice_vsi_get_num_qs() uses exactly the same values for
-ICE_VSI_PF:
-
-drivers/net/ethernet/intel/ice/ice_lib.c:ice_vsi_get_num_qs() {
-	case ICE_VSI_PF:
-		qs.alloc_txq = vsi->req_txq ?: ice_get_txq_count(pf, held_txq);
-		if (!test_bit(ICE_FLAG_RSS_ENA, pf->flags))
-			qs.alloc_rxq = 1;
-		else
-			qs.alloc_rxq = vsi->req_rxq ?:
-				       ice_get_rxq_count(pf, held_rxq);
-}
-
-and ice_vsi_recfg_qs() stores the nonzero request before rebuilding:
-
-drivers/net/ethernet/intel/ice/ice_main.c:ice_vsi_recfg_qs() {
-	if (new_tx)
-		vsi->req_txq = (u16)new_tx;
-	if (new_rx)
-		vsi->req_rxq = (u16)new_rx;
-}
-
-so the two sizes are identical on that path, and with RSS disabled the
-recomputed alloc_rxq is 1, i.e. smaller rather than larger.  Could the
-changelog use a trigger that the code can actually exhibit, such as the VF
-case where vsi->req_txq disagrees with vf->num_req_qs ?: vf->num_vf_qs, or
-a PF VSI with no request where the pool grew since the last
-configuration?
-
-Second:
-
->     Doing the allocation up front also means the failure path is a plain
->     unlock and return, with the VSI still fully configured, rather than a
->     half-torn-down VSI to unwind.
-
-The old ice_vsi_realloc_stat_arrays() was already called before
-ice_vsi_decfg() in ice_vsi_rebuild(), and its -ENOMEM already went straight
-to the unlock label with the VSI fully configured.  Isn't the actual new
-benefit that a failure no longer leaves a half-updated ice_vsi_stats, where
-the Tx array was already reallocated and surplus Tx entries freed before
-the Rx allocation failed?
+Closes: https://redhat.atlassian.net/browse/RHEL-164321
 
 > diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-> index c6023c11eed3c..c6166ff44fc91 100644
+> index c6166ff44fc91..8d462570d1529 100644
 > --- a/drivers/net/ethernet/intel/ice/ice_lib.c
 > +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-
-[ ... ]
-
-> @@ -3042,63 +3087,38 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
->  }
->  
->  /**
-> - * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
-> - * @vsi: VSI pointer
-> + * ice_vsi_resize_stat_arrays - resize ring stats arrays for new queue count
-> + * @vsi: VSI to swap the ring stats arrays of
-> + *
-> + * Call while @vsi still owns its queues and before ice_vsi_decfg() returns them
-> + * to the PF pool, so that the new size is what ice_vsi_set_num_qs() will compute
-> + * afterwards. Surviving entries are carried over, the rest is freed.
-> + *
-> + * Return: 0 on success and negative value on failure
+> @@ -3096,7 +3096,7 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
+>   *
+>   * Return: 0 on success and negative value on failure
 >   */
-> -static int
-> -ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
-> +static int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
+> -static int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
+> +int ice_vsi_resize_stat_arrays(struct ice_vsi *vsi)
 >  {
-> -	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
-> -	u16 req_rxq = vsi->req_rxq ? vsi->req_rxq : vsi->alloc_rxq;
-> -	struct ice_ring_stats **tx_ring_stats;
-> -	struct ice_ring_stats **rx_ring_stats;
-> -	struct ice_vsi_stats *vsi_stat;
-> +	struct ice_vsi_alloc_queues_params qs;
-> +	struct ice_vsi_stats *old_stat;
-> +	struct ice_vsi_stats *new_stat;
->  	struct ice_pf *pf = vsi->back;
-> -	u16 prev_txq = vsi->alloc_txq;
-> -	u16 prev_rxq = vsi->alloc_rxq;
-> -	int i;
->  
-> -	vsi_stat = pf->vsi_stats[vsi->idx];
-> +	if (vsi->type == ICE_VSI_CHNL)
-> +		return 0;
+>  	struct ice_vsi_alloc_queues_params qs;
+>  	struct ice_vsi_stats *old_stat;
 
-[Severity: Medium]
+[Severity: High]
+Since the helper is now exported, would it make sense to also cover the
+PF devlink reload path, or to put the capacity check inside
+ice_vsi_alloc_stat_arrays() instead?  The same overflow looks reachable
+without any VF involved.
 
-Is this new guard really just a "while at it" cleanup?
+ice_devlink_reinit_down() tears the main VSI down with:
 
->     While at it, skip the stats handling for ICE_VSI_CHNL, which has no
->     entry in pf->vsi_stats[] to begin with.
+	rtnl_lock();
+	ice_vsi_decfg(ice_get_main_vsi(pf));
+	rtnl_unlock();
+	ice_deinit_pf(pf);
 
-Before this patch the function did:
+ice_vsi_decfg() only calls ice_vsi_free_arrays(); it does not free
+pf->vsi_stats[vsi->idx], and neither ice_unload(), ice_deinit_pf() nor
+ice_deinit_dev() touch pf->vsi_stats (ice_dealloc_vsis() is only reached
+from ice_init()/ice_deinit(), i.e. probe/remove).
 
-	vsi_stat = pf->vsi_stats[vsi->idx];
-	...
-	tx_ring_stats = vsi_stat->tx_ring_stats;
+ice_devlink_reinit_up() then does:
 
-with no NULL check.  For a channel VSI pf->vsi_stats[vsi->idx] is always
-NULL, since ice_vsi_alloc_stat_arrays() returns early:
+	vsi->flags = ICE_VSI_FLAG_INIT;
 
-drivers/net/ethernet/intel/ice/ice_lib.c:ice_vsi_alloc_stat_arrays() {
-	if (vsi->type == ICE_VSI_CHNL)
-		return 0;
-}
+	rtnl_lock();
+	err = ice_vsi_cfg(vsi);
+	rtnl_unlock();
 
-and the preceding if (req_txq < prev_txq) loop is skipped because a CHNL
-VSI has alloc_txq == alloc_rxq == 0, so the dereference happens
-unconditionally.
+with no ice_vsi_resize_stat_arrays() call, so ice_vsi_set_num_qs() picks a
+fresh alloc_txq/alloc_rxq from min(ice_get_avail_txq_count(pf),
+netif_get_num_default_rss_queues()), ice_vsi_alloc_stat_arrays() takes its
+early return:
 
-The path looks live: ice_rebuild_channels() calls ice_vsi_rebuild() for
-every vsi->type == ICE_VSI_CHNL, and it is reached from ice_rebuild() for
-reset_type == ICE_RESET_PFR with ICE_FLAG_TC_MQPRIO set:
-
-drivers/net/ethernet/intel/ice/ice_main.c:ice_rebuild() {
-	if (reset_type == ICE_RESET_PFR) {
-		err = ice_rebuild_channels(pf);
-}
-
-So doesn't a PF reset with ADQ/mqprio configured oops on the pre-patch
-code?  If so, should this part be split out as its own patch with a Fixes:
-tag, or at least described as a NULL-pointer dereference fix in the
-changelog?
-
->  
-> -	if (req_txq < prev_txq) {
-> -		for (i = req_txq; i < prev_txq; i++) {
-> -			if (vsi_stat->tx_ring_stats[i]) {
-> -				kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
-> -				WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
-> -			}
-> -		}
-> -	}
-> +	qs = ice_vsi_get_num_qs(vsi, vsi->alloc_txq + vsi->num_xdp_txq,
-> +				vsi->alloc_rxq);
->  
-> -	tx_ring_stats = vsi_stat->tx_ring_stats;
-> -	vsi_stat->tx_ring_stats =
-> -		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
-> -			       sizeof(*vsi_stat->tx_ring_stats),
-> -			       GFP_KERNEL | __GFP_ZERO);
-> -	if (!vsi_stat->tx_ring_stats) {
-> -		vsi_stat->tx_ring_stats = tx_ring_stats;
-> +	new_stat = ice_vsi_new_stat_arrays(qs.alloc_txq, qs.alloc_rxq);
-> +	if (!new_stat)
->  		return -ENOMEM;
-
-[Severity: Medium]
-
-Can the size computed here still end up smaller than what
-ice_vsi_set_num_qs() computes afterwards?
-
-For an ICE_VSI_PF VSI with req_txq / req_rxq == 0, ice_vsi_get_num_qs()
-derives the counts from the shared PF pool via ice_get_txq_count() /
-ice_get_rxq_count() -> ice_get_avail_q_count().  ice_vsi_rebuild() then
-runs ice_vsi_decfg() and ice_vsi_cfg_def() -> ice_vsi_set_num_qs(), which
-re-reads the same pool independently:
-
-drivers/net/ethernet/intel/ice/ice_lib.c:ice_vsi_set_num_qs() {
-	vsi->alloc_txq_rxq = ice_vsi_get_num_qs(vsi, 0, 0);
-}
-
-Nothing appears to serialize the two evaluations.  ice_get_avail_q_count()
-holds pf->avail_q_mutex only for the duration of the count:
-
-drivers/net/ethernet/intel/ice/ice_main.c:ice_get_avail_q_count() {
-	mutex_lock(lock);
-	for_each_clear_bit(bit, pf_qmap, size)
-		count++;
-	mutex_unlock(lock);
-}
-
-and ice_vsi_put_qs() takes it only while releasing.  vsi->xdp_state_lock is
-per-VSI, and the reset-driven rebuild (ice_reset_subtask() ->
-ice_rebuild() -> ice_vsi_rebuild_by_type()) holds no rtnl.
-
-If another context frees queues inside that window, for example
-echo 0 > sriov_numvfs -> ice_sriov_configure() -> ice_free_vfs() ->
-ice_vsi_release() -> ice_vsi_put_qs(), the recomputed alloc_txq /
-alloc_rxq become larger than the already-installed tx_ring_stats_len /
-rx_ring_stats_len.  Nothing reconciles them afterwards, because
-ice_vsi_alloc_stat_arrays() returns 0 early once pf->vsi_stats[idx] is
-populated:
-
-drivers/net/ethernet/intel/ice/ice_lib.c:ice_vsi_alloc_stat_arrays() {
 	if (pf->vsi_stats[vsi->idx])
 	/* realloc will happen in rebuild path */
 		return 0;
-}
 
-and ice_vsi_alloc_ring_stats() indexes by alloc_txq / alloc_rxq without
-looking at the recorded lengths, so it would again store pointers past the
-end of the arrays.
+and ice_vsi_alloc_ring_stats() indexes the retained, smaller arrays:
 
-Would it be more robust to bound the loops in ice_vsi_alloc_ring_stats() by
-tx_ring_stats_len / rx_ring_stats_len, which struct ice_vsi_stats now
-carries, or to size the arrays after the final queue count is established,
-rather than keeping the sizing expression duplicated in two places with no
-cross-check?
+	ice_for_each_alloc_txq(vsi, i) {
+		...
+		ring_stats = tx_ring_stats[i];
 
-> -	}
-> -	vsi_stat->tx_ring_stats_len = req_txq;
-> -
-> -	if (req_rxq < prev_rxq) {
-> -		for (i = req_rxq; i < prev_rxq; i++) {
-> -			if (vsi_stat->rx_ring_stats[i]) {
-> -				kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
-> -				WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
-> -			}
-> -		}
-> -	}
+Can this overflow tx_ring_stats[]/rx_ring_stats[] the same way as the VF
+case?  netif_get_num_default_rss_queues() is derived from cpu_online_mask
+and ice_deinit_pf()/ice_init_pf() re-allocate avail_txqs/avail_rxqs as
+all-free, so sizing the arrays while some CPUs are offline, onlining more
+CPUs, then running "devlink dev reload ... action driver_reinit" would grow
+the count across the reload.
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> index a54cb2b8d3c76..c56a35b8dd48f 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+> @@ -268,6 +268,10 @@ static int ice_vf_reconfig_vsi(struct ice_vf *vf)
 >  
-> -	rx_ring_stats = vsi_stat->rx_ring_stats;
-> -	vsi_stat->rx_ring_stats =
-> -		krealloc_array(vsi_stat->rx_ring_stats, req_rxq,
-> -			       sizeof(*vsi_stat->rx_ring_stats),
-> -			       GFP_KERNEL | __GFP_ZERO);
-> -	if (!vsi_stat->rx_ring_stats) {
-> -		vsi_stat->rx_ring_stats = rx_ring_stats;
-> -		return -ENOMEM;
-> +	old_stat = pf->vsi_stats[vsi->idx];
-> +	ice_vsi_set_stat_arrays(vsi, new_stat);
-> +	if (old_stat) {
-> +		ice_vsi_free_unused_stat_arrays(old_stat, new_stat);
-> +		__ice_vsi_free_stats(old_stat, false);
->  	}
-> -	vsi_stat->rx_ring_stats_len = req_rxq;
+>  	vsi->flags = ICE_VSI_FLAG_NO_INIT;
 >  
->  	return 0;
->  }
+> +	err = ice_vsi_resize_stat_arrays(vsi);
+> +	if (err)
+> +		return err;
+> +
 
-[ ... ]
+[Severity: Medium]
+Is this a safe place to abort?  By the time ice_reset_vf() reaches
+ice_vf_reconfig_vsi(), the hardware reset has already been started:
+ICE_VF_STATE_DIS is set, ice_trigger_vf_reset() wrote VFGEN_RSTAT =
+VIRTCHNL_VFR_INPROGRESS and toggled VPGEN_VFRTRIG.VFSWR, ice_dis_vf_qs()
+disabled the VF's queues and ice_reset_interrupts() dropped its interrupt
+mappings.
+
+If ice_vsi_resize_stat_arrays() returns -ENOMEM here, the function returns
+before ice_vsi_decfg()/ice_fltr_remove_all()/ice_vsi_cfg(), and
+ice_reset_vf() takes:
+
+	if (ice_vf_reconfig_vsi(vf)) {
+		dev_err(dev, "Failed to release and setup the VF%u's VSI\n",
+			vf->vf_id);
+		err = -EFAULT;
+		goto out_unlock;
+	}
+
+	ice_vf_post_vsi_rebuild(vf);
+
+so ice_vf_post_vsi_rebuild() is skipped.  That is the only caller of
+ice_sriov_post_vsi_rebuild():
+
+	static void ice_sriov_post_vsi_rebuild(struct ice_vf *vf)
+	{
+		ice_ena_vf_mappings(vf);
+		wr32(&vf->pf->hw, VFGEN_RSTAT(vf->vf_id), VIRTCHNL_VFR_VFACTIVE);
+	}
+
+and the only path that reaches ice_vf_set_initialized(), which is the one
+place ICE_VF_STATE_DIS gets cleared:
+
+	clear_bit(ICE_VF_STATE_DIS, vf->vf_states);
+	set_bit(ICE_VF_STATE_INIT, vf->vf_states);
+
+Does that leave the VF wedged?  Afterwards VFGEN_RSTAT still reports reset
+in progress with no mappings programmed, the VSI keeps its pre-reset
+LAN/RDMA scheduler config because decfg was skipped,
+ice_vc_process_vf_msg() rejects every virtchnl message with -EPERM while
+ICE_VF_STATE_DIS is set, and a subsequent ice_reset_vf() short-circuits on
+ice_is_vf_disabled() and returns 0.
+
+Would doing the allocation before the reset is triggered, or treating a
+resize failure as non-fatal (ice_vsi_alloc_ring_stats() already tolerates
+pre-existing entries), keep the hardware sequence complete?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the new -ENOMEM path feeds
+an existing unchecked return.  ice_vc_request_qs_msg() in virt/queues.c
+discards the ice_reset_vf() result:
+
+		vf->num_req_qs = req_queues;
+		ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
+		dev_info(dev, "VF %d granted request of %u queues.\n",
+			 vf->vf_id, req_queues);
+		return 0;
+
+When ice_vsi_resize_stat_arrays() fails, ice_reset_vf() converts that to
+-EFAULT and goes to out_unlock, skipping ice_vf_post_vsi_rebuild() and
+ice_reset_vf_mbx_cnt(), yet the VF is still told the request was granted.
+Should the return value be checked now that there is a new failure source?
+
+[Severity: Medium]
+This is a pre-existing issue and not something this patch introduces, but
+the sizing helper the patch now relies on disagrees with one of its
+writers.  ice_sriov_set_msix_vec_count() requests a new VF queue count via:
+
+	vsi->req_txq = queues;
+	vsi->req_rxq = queues;
+
+	if (ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT)) {
+
+and restores prev_queues the same way on the unroll path.  However
+req_txq/req_rxq are only read under case ICE_VSI_PF in
+ice_vsi_get_num_qs() and ice_vsi_set_num_qs(); the VF branch uses:
+
+	case ICE_VSI_VF:
+		qs.alloc_txq = vsi->vf->num_req_qs ?: vsi->vf->num_vf_qs;
+		qs.alloc_rxq = qs.alloc_txq;
+
+vf->num_req_qs has a single write site, in ice_vc_request_qs_msg(), and is
+never cleared, so once a VF has issued VIRTCHNL_OP_REQUEST_QUEUES a later
+sriov_vf_msix_count write changes vf->num_msix (and num_q_vectors) while
+the queue count stays pinned at the stale value, and the "Changing VF %d
+resources to %d vectors and %d queues" message reports the overwritten
+count.
+
+Note this does not cause the overflow the patch fixes, since
+ice_vsi_resize_stat_arrays() and ice_vsi_set_num_qs() evaluate the same
+expression.  Should those four req_txq/req_rxq assignments be dropped or
+should the VF branch honor them?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921182106.1015019-1-anthony.l.nguyen%40intel.com
