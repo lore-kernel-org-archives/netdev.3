@@ -1,139 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12C547A88C;
-	Thu, 24 Sep 2026 15:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3432E4A0126;
+	Thu, 24 Sep 2026 15:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790264715; cv=none; b=Ogi/7l2LpMkEPM9ThM4VMustPDCJCbQOMsUckCsVPwIbI3x9TA08ikYm8Srs5SfBMHH4OPNTBBLfem47wWVVRKynfoKgrYV1XOoXTGPymiRTruHTx9sIfye9NhKoDFujkIIZ7zau4pqRJpWG9anV1hirLSp+uG2NPlV7ZJAfq8s=
+	t=1790264724; cv=none; b=aU3keDky+dQWzKQqMkGFIsB/1/oS6uz1F06TBeZUdOmOar3Lyun3o92FsTpCPv9KFlraJSyJwQ44tO0lG3RpIMwxz677H9drhgcLwYG0SBfhuVTuWcOofI7fH8l434+zgeZDQQPKOVgh6lPu1OfU5n0vqnZbw01raiAm2wz9edM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790264715; c=relaxed/simple;
-	bh=ORzadUe3/b75M1irFdR1aD+USyKSP/OkZ7rL3VEl6UQ=;
+	s=arc-20240116; t=1790264724; c=relaxed/simple;
+	bh=o5XfZnBwKP4YXIB0EJxf9/ByjaFULvwCkCKlZa6GXm4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I4kXo0C80GfFOMyEGfG/7J9tzQDxiT27/4LFxZrKpPVBL+V+DXNtwWrTuCiCHpTqPVx2Y8agmsDhJ3Y6x7FdOmD23EVe7nFalnoZpVbd6NmG8uoUL6lHKmZJJB8Ag70Oex1UXE9Nnx78Qck2kYrvs+a/447u5T1R/UGiFGL3+R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+4CPVvG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=G19wgpulxQY36gkFeyrS5Q+ka84S+dFbQu6k8ZbNjqwJGINzZ5HEosgbJz0BnGCzUn6AkXrcS3SqMG3f3TeAu6pDwUNBcb7OQIiTRsdVQBTR5JvO/HCxoaG5gqP9DBnYzJhYbxaRWkjvQ2N95YMkGGB+ufLBqrCSGDxFOMLyync=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdmuJUyF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+4CPVvG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA981F000FF;
-	Thu, 24 Sep 2026 15:45:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdmuJUyF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A041F000FF;
+	Thu, 24 Sep 2026 15:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790264713;
-	bh=sG/6Fv2bcz1mAueTl+qPLK+unA1gaooKi0HCYFLNsdg=;
+	s=k20260515; t=1790264722;
+	bh=kdypyC2EEaeoSTkqpgQwsJ5aZ5bx5ISsf4WGyRg9+mQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=F+4CPVvGqRU7cWG77qGDCQaRPb8xepVCbRHAvZdCvk4o3dSF91r1bTtAW0I17qb4n
-	 9om2NQ6/sdwiTQTj6MyZJEueL3EhxpOozpYEJJxZUSUqdp9g2KqralDt4l5SbkEt7Y
-	 uKLdfdoqB+GrhrOSwfY2GiXSTZqtrPb7+tf7P1lPu3iHlyC5v+A27E4pL+jRvWKShT
-	 1B2BJJohREERibFQ+Pe1wqD8isyDjeLbODb4+nvzgwhOC/S2T20nwzNMxN9TNjlB9s
-	 6mztoDYsyBJXxFLbcCbFLGQOacEy4zD+90rDZ3qJYl5OPaR8LFKVndBGyzABZLzlK/
-	 8Gi9eTh0br5xg==
-Date: Thu, 24 Sep 2026 10:45:11 -0500
-From: Rob Herring <robh@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: cjd@cjdns.fr, netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	chester.a.unal@arinc9.com, daniel@makrotopia.org,
-	linux@armlinux.org.uk, arinc.unal@arinc9.com,
-	Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
-	b.larsson@gmx.com
+	b=JdmuJUyFJfCQDSYoka49s/bPfPNeRd/+KyYjOoltcgZ/TG7cv0M1iWhMnHj5OzR8t
+	 5Ez9OVkkMo/OfynzZdT4w9mu1477zd1w13qkPhDKqif4kM9zbqHRZjPoLrGWEf2TRd
+	 bDOJ3BMvL8ucqJdNzk1iwIfN+fpLPwSLgQCuI1rBBaz8sNnS3MPT/Yxvy448/OVKjl
+	 JK6ezdFQ3rGwis+4YU5ReIzsr/DRltjrQDTB+Z259nFZ24Jea4QXucL3emtraPYHEN
+	 GDHh/kVPTKn8konttnYh/E4/4dG7kf5W5UjRlhR9qkeiUcRHN9Yj9gtuuAbWU8eHJH
+	 a+rbrvPe+TOfg==
+Date: Thu, 24 Sep 2026 10:45:21 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: chester.a.unal@arinc9.com, b.larsson@gmx.com, matthias.bgg@gmail.com,
+	edumazet@google.com, Landen.Chao@mediatek.com,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, krzk+dt@kernel.org,
+	arinc.unal@arinc9.com, kuba@kernel.org, naseefkm@gmail.com,
+	davem@davemloft.net, andrew@lunn.ch,
+	linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+	angelogioacchino.delregno@collabora.com, olteanv@gmail.com,
+	daniel@makrotopia.org, linux@armlinux.org.uk, conor+dt@kernel.org,
+	sean.wang@mediatek.com, dqfext@gmail.com, pabeni@redhat.com
 Subject: Re: [PATCH v2 net-next 2/7] dt-bindings: net: dsa: mediatek,mt7530:
  add passthrough mode
-Message-ID: <20260924154511.GA231859-robh@kernel.org>
-References: <20260915174643.253660-3-cjd@cjdns.fr>
- <178967819278.22033.11186084049097912254@kernel.org>
+Message-ID: <179026472132.335875.13282217589562743925.robh@kernel.org>
+References: <20260915174643.253660-1-cjd@cjdns.fr>
+ <20260915174643.253660-3-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178967819278.22033.11186084049097912254@kernel.org>
+In-Reply-To: <20260915174643.253660-3-cjd@cjdns.fr>
 
-On Thu, Sep 17, 2026 at 08:49:52PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 0 · Low: 2
-> 
-> - [Low] The added `description` paragraph in
->   Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml (lines…
-> - [Low] Concern (retained for policy combination, assessed as a false
->   positive): the binding advertises a passthrough mode that…
-> 
-> --
-> 
-> dt-bindings: net: dsa: mediatek,mt7530: add passthrough mode
-> 
-> This adds a paragraph to the mediatek,mt7530 binding description explaining
-> that MT7530/MT7531 switches can be operated in a "passthrough" mode where
-> traffic moves unconditionally between the CPU port and a DSA link port to a
-> second switch. The paragraph also states that in this mode the upstream
-> switch may have no other ports or switch configuration.
-> 
-> > diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
-> > index 90b3582b76190..e29fb86934981 100644
-> > --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
-> > +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
-> > @@ -73,6 +73,13 @@ description: |
-> >  
-> >        Check out example 7.
-> >  
-> > +  The MT7530 and MT7531 switches are capable of being operated in "passthrough"
-> > +  mode. In this mode, traffic is unconditionally passed between the CPU port
-> > +  and the DSA port which links to a second switch. To use passthrough mode, the
-> > +  upstream switch is configured with a DSA link to the downstream switch. In
-> > +  passthrough mode the upstream switch is restricted, with no other ports or
-> > +  switch configuration allowed.
-> > +
-> 
-> [Severity: Low]
-> The last sentence states a hard device tree constraint, but it only exists
-> as prose.  Should this restriction also be expressed in the
-> machine-checkable part of the schema?
 
-I don't know if that is possible.
+On Tue, 15 Sep 2026 17:46:38 +0000, Caleb James DeLisle wrote:
+> MT7530 switches can be configured to blindly pass packets between their
+> CPU/upstream port and a downstream DSA port, in particular, without
+> altering the MediaTek DSA Tag on the packets. This mode is used in some
+> integrations where an SoC integrated switch exists, but a more capable
+> MCM switch is added to effectively replace it.
+> 
+> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+> ---
+>  .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml       | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-> As it stands there is no new property, no if/then under allOf, and no $defs
-> entry that limits the port set when a port carries a link phandle.  The port
-> container in this same file is permissive:
-> 
->   patternProperties:
->     "^(ethernet-)?ports$":
->       type: object
->       additionalProperties: true
-> 
->       patternProperties:
->         "^(ethernet-)?port@[0-6]$":
->           type: object
->           additionalProperties: true
-> 
-> so a device tree describing an upstream MT7530/MT7531 with a CPU port, a DSA
-> link port and extra user ports, plus gpio-controller/interrupt-controller,
-> still passes dt_binding_check.  The layout is instead rejected at probe time
-> by mt753x_check_passthrough() in drivers/net/dsa/mt7530.c, added by the
-> following patch in the series:
-> 
-> 	if (passthrough_ports > 2 ||
-> 	    (passthrough_ports == 2 && enabled_ports != 2)
-> 	) {
-> 		dev_err(dev, "Only two ports allowed in passthrough mode\n");
-> 		return -EINVAL;
-> 
-> Two smaller points on the same paragraph:
-> 
-> Every other topology description in this description block ends with a
-> pointer to a validated example ("Check out example 7." just above).  Could
-> this one gain an example too, so the passthrough layout is actually exercised
-> by dt_binding_check?
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-We don't really want more examples if there are actual .dts files 
-upstream.
-
-Rob
