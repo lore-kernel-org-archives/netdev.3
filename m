@@ -1,98 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48F8424D57
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194140B110;
+	Thu, 24 Sep 2026 23:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790291559; cv=none; b=RX6jTErbNP3va8FnoSCnH6Dx9NWmD+PLuGdtIvxClc/J+GXyQVIyD6mjXCoafrBzcYLz8BoYxL95z4ViSb1GTmrLXk9u4eny+rKFbZC6q4+CApfBZ0AA6mUHeGzkpEc7NJVp3i5Zcd7a9u88LTUrzpTYjYSOoBae5sHRljHPy7k=
+	t=1790291592; cv=none; b=oitsmQhz6QO5yOzH5qsru5y7MYIQ1iAUgGwJMVpcqzkHfS8YPagTSbQPUFR3vqvZr0lz/5f/Rh1xuWXHYdxiYPCd7duXqQ2i8L7TA9mmdzAqI80MTcPYsghzFdHKVMUbJLwKUs9doQVLC95Kf88qbtB2pIcIoSYKjvOB0bKKTMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790291559; c=relaxed/simple;
-	bh=Kla8bPD6QeaBIyzco46MsgWXZjmrVWGrzC1WkZZCt4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9wrriiEMpW6w7Ptf/ZUh2JVvFYUI35A3ykW7d3njiFLCQjgatPi9HjIiXrb1E8rVFa3I0joiWIuesXRrmdfEmB1Ux2ANImbOC/XX9CwqdSshq4DMuy1q/TJQXHl4oExF+Fa0/0yhR4ENcukZXSuOKBbW68526lxvnEF13EyLOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEmKu8pP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790291592; c=relaxed/simple;
+	bh=s9fIgfAyPBl5uLR8laz9ZE5ehPBaWVG3E99kVjS/fiE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AhKWAHeYi7zX0GYM4TEcD8driOX70C3Tr3LPHPVpiaW9+UvDu31UOHG1Y+10ovfM/dYpIcK4NHqoNahJ8Zxz6GtcgVS7pwlconbzNWzbfeK003fF6C/t5JHnaDxDoREufrDE5Z4En8Ld6d14GIY9iZLaBGDV8p1MGFPn4EEdbk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pOTXKLXb; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEmKu8pP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AE01F0089A;
-	Thu, 24 Sep 2026 23:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790291558;
-	bh=nSOV03bGqF7h2W/EVfNXBX+OGLShx6xf9TNUIeM3160=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UEmKu8pPljCiwaeFAuldDlNMmEPEISqkl0ZoEgVNYkuy4B7q8EqYQBRyrnBETW6So
-	 /63MhgmhCVQZbQY6ilvvgfy5EBxIHxjCWMiTjof6YQGCpGlWe0i6ykAeQd+SuPFmOW
-	 uCZGbwTHYN09CZp3P5jMyJlWZeoUr/pnrOv9OezAmU46sLlklCQ1YgG6cdHgmzYa+a
-	 cima1UaFuXpnDz0sqKKsu6TwMUD8Au5t8jMuG7JG7YpC2mvJx0HzbXYU9fXrikMlAP
-	 /2IqLJgl2izsE2a0l3LqhXhPr6guiK5ANRUfr72xEYWllJtYM+aHI5CvKb7vfxC2dh
-	 syGJACd2xgEzA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	vadim.fedorenko@linux.dev,
-	arkadiusz.kubalewski@intel.com,
-	jiri@resnulli.us,
-	ivecera@redhat.com,
-	donald.hunter@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 3/3] netlink: specs: dpll: drop the reference to DPLL_MODE_DETACHED
-Date: Thu, 24 Sep 2026 16:12:11 -0700
-Message-ID: <20260924231211.568213-4-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260924231211.568213-1-kuba@kernel.org>
-References: <20260924231211.568213-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pOTXKLXb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=4ZbPDKVVmE5JT4FU9/OsNfslYb/btTUybFogtbTfUWc=; b=pOTXKLXbXC2KSwCChi44zbgSfx
+	kAcnwCf/R8Ps+sSTMc1HwVM+xIbfrqq13YUQwLevBp6lUajCFsyz67GSwUFBgbTvnEGkTeIu+3RD9
+	iscYedfSxU4heWs9xbOOOCitXaRs6XgSbmijBSqUiZGi4TnQgRIX8KCTKYu7GpLziWiRrGP3f6VJ2
+	3iCQHORBXDs/5kzPgklswoxgTK85/FQUThqOwLft4UleM7PZD2rplAIWrJmaINgf/i/bOLYjSy3j2
+	M41n9pTzaVJR+JRfFH+Brv61rLZZ5+O57jzE27oP7cRtgE340IQlABp1KfMNgaiQUXuahsyZJbnGF
+	BTs+ZAOw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x9scj-0000000CN9P-2jdq;
+	Thu, 24 Sep 2026 23:13:05 +0000
+Message-ID: <d461b048-b08a-4bbe-b5e7-60ed6686ab52@infradead.org>
+Date: Thu, 24 Sep 2026 16:13:05 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/2] net_shaper: fix kernel-doc rendering
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mchehab@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, horms@kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1786751700.git.kmehltretter@gmail.com>
+ <178700041013.1735578.3422132046076853057.git-patchwork-notify@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <178700041013.1735578.3422132046076853057.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The lock-status doc tells userspace that DPLL_LOCK_STATUS_UNLOCKED
-can be forced by setting DPLL_A_MODE to DPLL_MODE_DETACHED.
-But no such value has been defined so far. enum dpll_mode has only
-MANUAL and AUTOMATIC. Let's make sure the doc reflects current
-reality.
+Karl M. wrote:
+| Friendly ping on v2. It already has Acked-by and Tested-by tags.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- Documentation/netlink/specs/dpll.yaml | 3 +--
- include/uapi/linux/dpll.h             | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+| Is anything else needed from my side before this can be picked up?
 
-diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
-index 7009a64473b1..8fa789a50273 100644
---- a/Documentation/netlink/specs/dpll.yaml
-+++ b/Documentation/netlink/specs/dpll.yaml
-@@ -31,8 +31,7 @@ doc: DPLL subsystem.
-       -
-         name: unlocked
-         doc: |
--          dpll was not yet locked to any valid input (or forced by setting
--          DPLL_A_MODE to DPLL_MODE_DETACHED)
-+          dpll was not yet locked to any valid input
-         value: 1
-       -
-         name: locked
-diff --git a/include/uapi/linux/dpll.h b/include/uapi/linux/dpll.h
-index 85b898b1db5e..8c71fc3f9863 100644
---- a/include/uapi/linux/dpll.h
-+++ b/include/uapi/linux/dpll.h
-@@ -29,8 +29,7 @@ enum dpll_mode {
- /**
-  * enum dpll_lock_status - provides information of dpll device lock status,
-  *   valid values for DPLL_A_LOCK_STATUS attribute
-- * @DPLL_LOCK_STATUS_UNLOCKED: dpll was not yet locked to any valid input (or
-- *   forced by setting DPLL_A_MODE to DPLL_MODE_DETACHED)
-+ * @DPLL_LOCK_STATUS_UNLOCKED: dpll was not yet locked to any valid input
-  * @DPLL_LOCK_STATUS_LOCKED: dpll is locked to a valid signal, but no holdover
-  *   available
-  * @DPLL_LOCK_STATUS_LOCKED_HO_ACQ: dpll is locked and holdover acquired
+
+On 8/17/26 2:00 PM, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
+> 
+> This series was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
+> 
+> On Sat, 15 Aug 2026 03:32:27 +0200 you wrote:
+>> The net_shaper_ops documentation contains a malformed ReST list and
+>> exposes a kerneldoc.py title-context bug which drops valid headings.
+>> Fix the list first because the parser correction makes it visible. The
+>> parser fix also restores three Xe DRM RAS headings already in mainline.
+>>
+>> Tested with Sphinx 9.1.0:
+>>
+>> [...]
+> 
+> Here is the summary with links:
+>   - [net-next,v2,1/2] net_shaper: fix kernel-doc list indentation
+>     https://git.kernel.org/netdev/net-next/c/09b7c00d55a8
+>   - [net-next,v2,2/2] docs: kerneldoc.py: preserve headings in kernel-doc output
+>     (no matching commit)
+> 
+> You are awesome, thank you!
+
+so these 2 patches are merged into net-next, which should be merged
+into mainline Linux at the next merge window (in the 2 weeks after
+Linux v7.3 is released).
+
+Patch 1/2 is in the current linux-next daily releases.
+However, patch 2/2 is not merged anywhere in linux-next AFAICT.
+
+I also would like to see patch 2/2 merged...
+
 -- 
-2.55.0
+~Randy
 
