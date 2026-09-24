@@ -1,140 +1,211 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A6A47D949
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A021F5821;
+	Thu, 24 Sep 2026 12:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790253673; cv=none; b=rDu6uTRAGw5XK8L+U+GdQjjHaKgI4AchsD6ps3ppxbiX08n4u4SFM7gdSWZxmXm23estXQ/80TcFySRci/qX7j9MlOc7IFJGDHosp4Dnbe0x0zW3V0OZHK1jhBERlJ3WYsINm13pHmBIjFKN5KdH5Ju/NJTETT4fFn4LgUq6I4I=
+	t=1790253761; cv=none; b=Sg5wo3bTgIBJL3hqnm1nKRq28qFvkh12WPQmy9+qIBKPOv7ZUG5H5kLywtBvDTG1pg0AoiYkchgwGrlTLterCLuIRZC/0lsRXzQairShvBIY34nilGEcYgKcZfjX7CQFQ76FHYBKcgXH/aGICS2yUNkVwS5f2xDBUQbrqfvN30s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790253673; c=relaxed/simple;
-	bh=0lQB1A6p8+X7aK18vQ2T7xJjipK5Cs4nvBNiXn5k5hE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lNk7UoJASpkTGNzq9D5+g7AIQw9J+e/3iXyHa06dDY49YZxbbaMjkFwXJN1CdnlEnPnapG2HMnmYd1OPT+BYF1ow612/SW7mBItUqUQNGvmaz8ydJCFZ1N6iqPnwrm1s3yYsdbIuufA/nMY6+j+mmoEwMfFLJG+JQc0Ob+RJIvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Ef6uSAnN; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1790253761; c=relaxed/simple;
+	bh=DwQwcjU+xTSXEqtFzcSnsL6U7/HL+qh/ergBYUy8oKE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Bm9woGePBnaho6X5ILwkJyxLirbu6PrMh50qjdtJfx8l6DAIp63CVwUY7ZhC4imRUoAoh0Pnnk66GKPn37oRqos/bnHppwzwmNs3AyGlbIQIXLIA9AGuJH6Js/zekO7ji/1rzh7GPUiMAVlMUN9KuJdgCeMnEaWTxTVnr6jTxJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmt87+tN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Ef6uSAnN"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so11533525e9.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:41:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790253666; x=1790858466; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m+K9xI1+b45+Hx50rEe06X/tskVciHAk+ndafWRnnYs=;
-        b=Ef6uSAnN1G23WQfE+lhtOb0XuJdoDKeMU3FC4unVrPCFnGpUELO7+iSnm87cFobZEQ
-         vrBJuhed/4G4BJuc07lAVQLzhND4cDXfxmJ9OU8PgNfKh7FULDp1JbDsOaSp2PEfxekW
-         0n/0dG99ZwPfrKjiFWq1jBtiVv0ApgmuqnanaA1w33mEGa12NqylqyR3Bxd9e5k15z4y
-         I9d+7CkuxmHcBF5hKJxwkmA30kNUNAalh9XMzPjiUF7t6bctA+NcRiD4d/IrdARpih+J
-         p/3cc3zmUsx/QQ+nJPxD4TsIr2kuOXEIr+ExHUkWm95kROgz/Jn20n0tZN+j3DRwxHNx
-         jfHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790253666; x=1790858466;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m+K9xI1+b45+Hx50rEe06X/tskVciHAk+ndafWRnnYs=;
-        b=PIAt7R1ulFhpZbX10orP50u298g5dblclpSEN7LBMa+AS0EntQUaoreRpLH0ycdMsL
-         j7fSuxgfpmPfFpC6Qc80fbzlygNl3Kj8sBhKwoNL8ppmLmn7L6En82e5Dcv1ymoa5k3X
-         s2HVVShsxzeAWGxaHSwZY6W0Lr2DJds+nxgpwhbz/jP/w0HvXilJbdILGDidu3fUnfqX
-         oLfQgqrDROH62Kq/3bsT8hVxwvcNbTTFqA9nyPX2HHayE+zNOn2bzGqqQoKH5LFmLPxg
-         ZJSgwdojV7sH+EnyoQuOKMf4PYeHVp6Vu5XhZ3Tniyg1r0LonScQPf9dZGUERl7wG+no
-         J/eA==
-X-Forwarded-Encrypted: i=1; AKwUvBzx99LXy0Efd7hUPiTSqqMKS3Lt2B9C1flRcUjMQ+l/OM9rtjfsfe7zA4RkMCh4B13xDLGllks=@vger.kernel.org
-X-Gm-Message-State: AFuF++kG+41UUDYBZwTDlpzQUTYIERk7Gwtt7R5FMbbQTS6TaiOePV9l
-	qpf+3GenPi6UNVfiU1DwOq0q/+JTGn6S/bNo8GstjpBULe5fo0sUfJezm1mHHWNP2S8=
-X-Gm-Gg: AYBFou06n+sn7/M/aa/7IfcWIB3vvDW/cARFd3UyQF/lsvirMtsBwwrW7/re14uk/3w
-	yZIF3Brle7Uavxd+MHGHMTlUsZJel2W7uxeHvSb+iKl6X48a0LfbIw0zAOsf+h41QTda1v96WRl
-	eXRr2rsOCkzM2ME/PhBILlI9qBHz/Ig9Xsd/xswo4oxKxmxL70ugnJfqSeYUd8WAmkbktM16rIz
-	ICzH4fvPM3b1ureQY4TN+kpFLKtzHtRctsWnwotqcXXFOePsfYQhn32c+L+9srY84187MKHUyYh
-	BqldcMH8UJGyhudEBoj53hdgscDgjsqc/ww5iQMP/9zsZX03tU7D8/XxOSCGDfJ3k9zcaSGya4e
-	p7odiT9Vars4gKkMrhl75Po0vz1OZG6yyu47XXRxc+zY3cLeE5qKO0BLGAZxkK22ri1f/bTNQXS
-	URQmaARm7ahXh1p9UwRyp42oP3IOuikIN9PPCmwlYJWVravYZiGLh+VGnijEZE7YRK7F7HvxBwr
-	DRwKS0GJFbbvEFfwrqIz5kwIAJowTd3Jyg=
-X-Received: by 2002:a05:600d:8642:20b0:49f:e8bf:c38 with SMTP id 5b1f17b1804b1-49fe8bf0d97mr19384015e9.34.1790253665749;
-        Thu, 24 Sep 2026 05:41:05 -0700 (PDT)
-Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5cbd77bsm78152645e9.8.2026.09.24.05.41.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 05:41:05 -0700 (PDT)
-Message-ID: <f3b91a89-2733-4159-98b4-129e3127e7e4@suse.com>
-Date: Thu, 24 Sep 2026 14:41:03 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmt87+tN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F49D1F000FF;
+	Thu, 24 Sep 2026 12:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790253759;
+	bh=v/uHTZ2wUZB6Gl2bsPRZto5m3qIxtsYlB7rWjL9hfZs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mmt87+tNFHcJpflGJ+wBE0+B2eGuqH4bARNI89Z7GuR6lnFsO1HXm9ye9EUd+3APN
+	 777ot6IDtKh6aRKnveRfvAQSGnZlSHXtJIlpDdNMrtmnFZQISE4rkcfwa24dZ1yswj
+	 J61TeOEGtAQXkuMAB+gxVSMUQnHLbNV+WpDh1AGGSu8iLxVyy8bb/r4N5lSQ18Dl2A
+	 eXpcupWdCWlMvEayRJadKAuyJgeKe/9RQ2NrcbLeT/a02FIvVImXRFrngfovNrzASz
+	 Ehb1QhQihfhrSwSmI+ICpVZHzqVnTmxSt1s70FZZKCSA/NjimSO3kyn3Jr/Z9otipA
+	 KO+9kZWu1wOVQ==
+Subject: Re: [PATCH net v2 2/2] tipc: make conn_idr teardown safe
+From: netdev-bot+sashiko@kernel.org
+To: xuyuqiabc@gmail.com
+Cc: netdev@vger.kernel.org, tung.quang.nguyen@est.tech, jmaloy@redhat.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, ying.xue@windriver.com,
+ parthasarathy.bhuvaragan@ericsson.com, kuniyu@google.com,
+ stable@vger.kernel.org, vega@nebusec.ai, weir@nebusec.ai, xuyq21@lenovo.com
+Date: Thu, 24 Sep 2026 12:42:38 +0000
+Message-ID: <179025375856.2160803.8893956225555980903@kernel.org>
+In-Reply-To:
+ <91e85c3211fd31d24b231e8def5755c0f18b71f4.1789960909.git.xuyuqiabc@gmail.com>
+References:
+ <91e85c3211fd31d24b231e8def5755c0f18b71f4.1789960909.git.xuyuqiabc@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] drivers: Replace __MODULE_STRING() with __stringify()
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>, Ian Abbott
- <abbotti@mev.co.uk>, H Hartley Sweeten <hsweeten@visionengravers.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rudolf Marek <r.marek@assembler.cz>, Andi Shyti <andi.shyti@kernel.org>,
- Chris Snook <chris.snook@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Mika Westerberg <westeri@kernel.org>, Yehezkel Bernat
- <YehezkelShB@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Duncan Sands <duncan.sands@free.fr>,
- Chas Williams <3chas3@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, linux-watchdog@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
- linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rtc@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-atm-general@lists.sourceforge.net, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260922-module-string-v1-0-c18766690185@suse.com>
- <20260922-module-string-v1-2-c18766690185@suse.com>
- <cc03390d-8fc7-422a-bbcf-93bfbb82276f@roeck-us.net>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <cc03390d-8fc7-422a-bbcf-93bfbb82276f@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 9/22/26 7:21 PM, Guenter Roeck wrote:
-> On Tue, Sep 22, 2026 at 03:32:22PM +0200, Petr Pavlu wrote:
->> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
->> MODULE_PARM support for older modules" [1] in 2002-12. That change also
->> moved it to the graveyard section at the end of linux/module.h
->>
->> Replace the remaining uses of __MODULE_STRING() with __stringify() in
->> preparation for its removal.
->>
->> Link: https://git.kernel.org/tglx/history/c/136839a1b4 [1]
->> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
->> ---
->>  drivers/comedi/comedi_fops.c                          |  5 +++--
->>  drivers/gpu/drm/drm_fb_helper.c                       |  3 ++-
->>  drivers/hwmon/fschmd.c                                |  3 ++-
->>  drivers/hwmon/nct7904.c                               |  5 +++--
->>  drivers/hwmon/sch56xx-common.c                        |  3 ++-
->>  drivers/hwmon/w83793.c                                |  5 +++--
-> 
-> I don't know how other subsystem maintainers want to handle it,
-> but please send the hwmon patches separately; I'll want to apply
-> it through the hwmon tree to avoid the potential of merge conflicts.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Sure, I'll do it in v2.
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
 
-If other maintainers would also like changes affecting their drivers to
-be split into separate patches, please let me know.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] tipc: priority inversion deadlock via cond_resched() in
+  tipc_topsrv_stop()
+
+Pre-existing issues:
+- [High] NULL pointer dereference of con->sock in tipc_conn_close() when
+  the teardown walk in tipc_topsrv_stop() reaches a socket-less…
+
+--
+
+tipc: make conn_idr teardown safe
+
+The teardown walk in tipc_topsrv_stop() now iterates conn_idr with
+idr_get_next() instead of incrementing a numeric ID, drops idr_lock and
+reschedules when no entry can be taken, and switches from conn_get() to
+kref_get_unless_zero() so an entry already being released is not revived.
+
+> diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+> index 908622a3d0fca..9333e36a74de7 100644
+> --- a/net/tipc/topsrv.c
+> +++ b/net/tipc/topsrv.c
+> @@ -710,15 +710,20 @@ static void tipc_topsrv_stop(struct net *net)
+>  	cancel_work_sync(&srv->awork);
+>  
+>  	spin_lock_bh(&srv->idr_lock);
+> -	for (id = 0; srv->idr_in_use; id++) {
+> -		con = idr_find(&srv->conn_idr, id);
+> -		if (con) {
+> -			conn_get(con);
+> +	for (id = 0; srv->idr_in_use;) {
+> +		con = idr_get_next(&srv->conn_idr, &id);
+> +		if (!con || !kref_get_unless_zero(&con->kref)) {
+>  			spin_unlock_bh(&srv->idr_lock);
+> -			tipc_conn_close(con);
+> -			conn_put(con);
+> +			cond_resched();
+>  			spin_lock_bh(&srv->idr_lock);
+> +			id = 0;
+> +			continue;
+>  		}
+> +		id++;
+> +		spin_unlock_bh(&srv->idr_lock);
+> +		tipc_conn_close(con);
+> +		conn_put(con);
+> +		spin_lock_bh(&srv->idr_lock);
+>  	}
+
+[Severity: High]
+The not-taken branch turns this walk into a poll loop whose only
+forward-progress mechanism is cond_resched(). When idr_get_next()
+returns NULL, or when kref_get_unless_zero() fails because the entry is
+already on its way out, we drop idr_lock, call cond_resched(), reset id
+to 0 and start over, and the loop only terminates once srv->idr_in_use
+reaches zero. That counter is decremented in exactly one place:
+
+net/tipc/topsrv.c:tipc_conn_kref_release() {
+	spin_lock_bh(&s->idr_lock);
+	idr_remove(&s->conn_idr, con->conid);
+	s->idr_in_use--;
+	spin_unlock_bh(&s->idr_lock);
+	...
+}
+
+and in the window this branch is spinning in, the last reference is
+typically held by a queued rcv_wq/send_wq item (tipc_conn_recv_work()
+or tipc_conn_send_work()), i.e. by a SCHED_OTHER kworker. Note that
+tipc_topsrv_work_stop() only runs after the walk, so both queues are
+still live at this point, and nothing before the walk flushes them --
+only srv->awork is cancelled.
+
+So the exit condition of this loop depends on a lower-priority thread
+being scheduled. cond_resched() does not yield to lower-priority tasks,
+and on full-preemption builds it degenerates into a no-op, so if
+tipc_topsrv_stop() is entered from an RT task (netns exit and module
+unload can both be driven from a SCHED_FIFO context), on a single CPU
+we spin taking and dropping idr_lock forever while the kworker that
+would run tipc_conn_kref_release() and drop idr_in_use never gets to
+run. That is a livelock rather than a latency glitch. The old
+idr_find() loop had its own unbounded-scan problem, but it was not
+structured as a retry-from-zero wait, so the patch makes cond_resched()
+load-bearing as a synchronisation primitive, which it is not.
+
+What is the intended guarantee here? If the walk really has to wait for
+asynchronous releases, a sleeping wait looks more appropriate -- e.g. a
+wait_event()/completion signalled from tipc_conn_kref_release() when
+idr_in_use hits zero. Alternatively, would it be cleaner to tear down
+rcv_wq/send_wq (tipc_topsrv_work_stop()) before walking conn_idr, so
+that no async reference can still be outstanding and the loop needs no
+retry branch at all? Could you spell out which of these you consider
+correct, or why cond_resched() is sufficient in your view?
+
+[Severity: High]
+This isn't a bug introduced by this patch, since the old idr_find() plus
+conn_get() walk fed tipc_conn_close() the same way, but can this walk hand
+a socket-less conn_idr entry to tipc_conn_close() and dereference NULL?
+
+Kernel subscriptions are published into conn_idr with sock == NULL:
+
+net/tipc/topsrv.c:tipc_topsrv_kern_subscr() {
+	...
+	con = tipc_conn_alloc(tipc_topsrv(net), NULL);
+	...
+}
+
+and two other users of con->sock treat it as optional:
+
+net/tipc/topsrv.c:tipc_conn_kref_release() {
+	...
+	if (con->sock)
+		sock_release(con->sock);
+	...
+}
+
+but tipc_conn_close() dereferences it in its first statement, before
+CF_CONNECTED is even tested:
+
+net/tipc/topsrv.c:tipc_conn_close() {
+	struct sock *sk = con->sock->sk;
+	...
+}
+
+The ordering I think reaches this after the walk grabs a reference with
+kref_get_unless_zero():
+
+  tipc_group_create() -> tipc_topsrv_kern_subscr() creates conn X with
+  sock == NULL
+
+  a name table event runs tipc_topsrv_queue_evt(), which keeps its
+  tipc_conn_lookup() reference when the work is queued:
+
+	if (queue_work(srv->send_wq, &con->swork))
+		return;
+
+  socket close -> tipc_group_delete() -> tipc_topsrv_kern_unsubscr()
+  clears CF_CONNECTED and drops its two references without waiting for
+  the queued swork, so X stays in conn_idr owned by the pending work
+
+  netns exit -> tipc_topsrv_exit_net() -> tipc_topsrv_stop() runs before
+  send_wq has executed that work
+
+Only srv->awork is cancelled before the walk, and send_wq/rcv_wq are
+destroyed afterwards in tipc_topsrv_work_stop(), so is there anything that
+excludes a still-queued swork keeping a sock == NULL entry alive here?
+Would a check for con->sock in tipc_conn_close(), or skipping socket-less
+entries in the walk, be appropriate so the three sites touching con->sock
+agree?
 
 -- 
-Thanks,
-Petr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1789960909.git.xuyuqiabc%40gmail.com
