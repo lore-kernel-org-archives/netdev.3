@@ -1,56 +1,56 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com [74.125.224.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E9433F8C1
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61201351C0B
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790257663; cv=none; b=ESNGxNzGlCnyFgR9P/pDUJAaDzydIn0AzvFE3i2tJnqZTLdgodu3CBMp9MNAjeQwNLbY0VZNe1K7o2aXYLb3Y97Eyt0vg9d//3d0CKk0iTA07Xe+topI4ThfZWvYmbEiNFKnemZT1PBpA86rm5vRqtAQd3kAgtV7SjEGp7C2dFs=
+	t=1790257664; cv=none; b=tSevUFywN+XEVqrZp2dNvzI1HKI+Z8wLI4WWLjsBA+POi0Vz9VOJxtj0OoAIsE9fijBxkKp+C9AFCbZU5zX93n1UzZWiphacCqMlgVt/7mcJiPy6Zd/GM3tQf9M+DUzvUA4MbJ4owUFv7X44mwkcLB8PtX31Hzk4Qq958kZ4oHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790257663; c=relaxed/simple;
-	bh=wC+BZt6iP1Yr0ISz21R25p09cVbhkxQM9pYB2HqMhxY=;
+	s=arc-20240116; t=1790257664; c=relaxed/simple;
+	bh=j0mMLmo/36lUOHxt/rkUG0745LA1zAyYPURv2UOL4Vg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tzZ5s5FKiEtCyIQLYAa/NJBNtNSyBNK6oqnaH+/65HOnf19MLvI7XchvKnEu4Mupk1bzqFtsm1k7csxmU5Sals+Aa89FoDHWXpeRUIeMJ86nFFPvUA5JjUfEDQ99QkpfSqGRDTdXbtJNfiIr0xClSgTMPlKqLlHftBqPmG65IO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f2T8VMo0; arc=none smtp.client-ip=209.85.222.198
+	 To:Cc:Content-Type; b=dC2s6Unc9XxKTzq3R6K9kdGH4gagt/Utf/Ay61BujQMBjWs9R+ceYUTRIYh/vNODf16mc7fZeSxwZKpIs4wP4ZZviAFB0vrZeOTVEv/vqeRUXoQa9qIK+BW62y5rjQAEPXO6HnuE+VvP+skHu/52h7Rph6uERwi6PLj1HMfzgk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pOcG2MNf; arc=none smtp.client-ip=74.125.224.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f2T8VMo0"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9394ad7f64aso286736185a.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:47:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pOcG2MNf"
+Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-66c70fa2ba4so225069d50.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790257661; x=1790862461; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790257662; x=1790862462; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/64GuBUrc83+sAJAX9RpVRuIv37I834lR5L5AyP+l90=;
-        b=f2T8VMo0b3WMSrC/TTJuhJXCRL2byZhcrxafYyzTFFoEFEfA5NALL+I1USeNq2ZQub
-         FGIxUwi6L/vXqFKhiINi/wqUbVzagiFoOTorcSmeTBjDTKvHX4ICNmD+7w4FaSfFFsWy
-         tS05PbdDHJXLv4cBZAi16bf8IsCBJ4rl2D/qX/SUTjtlv2m9yYHYCLC2Ol8FasEiqUOz
-         Behzy8aGXXrdEUMPxn5lPjwsYFaLZUmWO3VFzJfMlu26ZJTUAcIDg0waWOE4ARNIjK36
-         o/vwv5HgwnBoTE9Sg6wWKS2UaqSQ4OT3s9mRu7bZkYK8p38d3YdmBodOTwgNKv4WX/Rj
-         2ggQ==
+        bh=NlBEwjo1fUCJnmp7PQPdVu2wwGFZSgLh0FhR/8RZjxI=;
+        b=pOcG2MNfstacEookyH79QA+X9PWzIpzw5kcg+SohRxj4hCwFs2wCrfVCOetf+6l633
+         bRTBRe1ZsXJhZpjAykrVfWJAyI/rKr1L6JsJnKvGBuZ5MnEhkRjUouF0nHhH3iSLroRK
+         S7/TQnm+GoT2Z74zZl+FdHv/TDei9+2pQfdy9W8KufDTx15kqpB95VPbwFLtsdraQLAY
+         FuBnHNiq/PnkH/5eUNfuMhnOOdGFb2EKYYp9GAvday4j9kbsK3As+bR3/iACN32QJVfL
+         T7KlcvQL6rLvZMEwPvX3zoMvePTrghQqp000fBjrCC8MT/E8UspA7ToZ8T7IDSwqIKGO
+         7EHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790257661; x=1790862461;
+        d=1e100.net; s=20260707; t=1790257662; x=1790862462;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/64GuBUrc83+sAJAX9RpVRuIv37I834lR5L5AyP+l90=;
-        b=g5YRufh9nkuYs+BhHf2dTFMbr5CNCjWKmlXlUQ5PFlJeV6OpXm0o7Tn9BdpNH1x8ra
-         TlvVhAgE6+39tQ5TzciIEiCmseinnRiasHLoJu4YURer66HB9aDNrBc05g9Q9owAoGE1
-         TyydQFIYhAVN+Iz876O6a4VxgEwyt4Yza7QxzY+hNqiFcA7Z9Wl7QsfrMzo7LLHpSQmd
-         zGE4Bv3iDXC+Osd4Yg8kn777DXQuQ6u2QUnbH9vxgIem1fejayoXkXdOcwMhSQk82K2W
-         0SPoXLwe5iOjCMELAG1HQHIqbP3Gqfn/+h1wSZ/DFQy9UyOVqgiAO65OtFqloDtghck0
-         +ucw==
-X-Forwarded-Encrypted: i=1; AKwUvBxvieKQLCXnYsdFjjo/x5vI+7xHnhnn7A9PwNUiKPFrONCn4ALSoN0ZvlRO81OnRddUZpmoHuM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXX21Fd1rMWl5hwzEu9pNR1gf1jduiO5WzfxFmnowOfklvfjU5
-	U1rM9KW/osJKPfh+bmZfkkTmoNnHkGbjEr6PT6EhrWMHJ6hcuYGxndj5sxz2kC+3mO5N22kxLVx
-	e6gmS7+l799N2og==
-X-Received: from qknwd21.prod.google.com ([2002:a05:620a:7295:b0:93c:3d4e:4460])
+        bh=NlBEwjo1fUCJnmp7PQPdVu2wwGFZSgLh0FhR/8RZjxI=;
+        b=ky5LXLUOPzTd/VXkR6jsZF7pG1Na4HkA8qqvND8pHDTkLmCk21SbGaDoWAna8SQBGx
+         tV6Usxlx7AwMtwiRNxXDARG0b9ZshMiphcHOYod4r/WcQabAeg3udeJSgT4484FyunuR
+         tgtNzeYY1+oUW1FNNrx3E7rmWErZbfhZ4xmbJzO2miqb3Ibh+Ys6vOjpgEYBfekv+DZu
+         Ahoq1Swhs052p7dS47pX5wWCBH29951PI9LLYzJFT31efKLdGcoMYnxHT6kc1zS3Pj5o
+         Tyru9WG/pCDdqQNwC/krXBNBt3iKt3+AuXI2eK/FXnNVwFxOYN056wk1rOjanPkEdzG3
+         POCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxTbEKvHx5EKDn4dlHbedBMdE108QUjQoXu7hwixs5KkYEFr0zOWpRMdq+IASbvzOJym1zhm0I=@vger.kernel.org
+X-Gm-Message-State: AFuF++knvoZe1TtcV/305R/nrjbLuSbBs75qPgqL2GpgEL0Fbe+kN/rj
+	fvTU2BxwLVz8qRRpyFyxMDPu4PjACsfP4CUMWAwlDJGXIRin4aNPQwuBy+jItAx6yvopui126aR
+	ogbSxbdYt/0MOsQ==
+X-Received: from qvxg8.prod.google.com ([2002:ad4:57a8:0:b0:914:1ca6:ddeb])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4385:b0:939:6de6:9516 with SMTP id af79cd13be357-93c363c7c20mr254341385a.45.1790257660204;
- Thu, 24 Sep 2026 06:47:40 -0700 (PDT)
-Date: Thu, 24 Sep 2026 13:47:26 +0000
+ 2002:a05:690e:1686:b0:672:a52c:daf8 with SMTP id 956f58d0204a3-672ed57808fmr1494544d50.107.1790257661882;
+ Thu, 24 Sep 2026 06:47:41 -0700 (PDT)
+Date: Thu, 24 Sep 2026 13:47:27 +0000
 In-Reply-To: <20260924134729.2047213-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260924134729.2047213-1-edumazet@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-Message-ID: <20260924134729.2047213-7-edumazet@google.com>
-Subject: [PATCH v2 net-next 6/9] drbd: use sk_set_nospace()
+Message-ID: <20260924134729.2047213-8-edumazet@google.com>
+Subject: [PATCH v2 net-next 7/9] nvme-tcp: use sk_clear_nospace()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -79,23 +79,36 @@ No functional change intended.
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- drivers/block/drbd/drbd_worker.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/nvme/host/tcp.c   | 2 +-
+ drivers/nvme/target/tcp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/drbd/drbd_worker.c b/drivers/block/drbd/drbd_worker.c
-index 0697f99fed18d7e70f00b7c559a131517ee8aa42..8e50131b5a5692a8dfb99eafe706602153be94b7 100644
---- a/drivers/block/drbd/drbd_worker.c
-+++ b/drivers/block/drbd/drbd_worker.c
-@@ -635,8 +635,7 @@ static int make_resync_request(struct drbd_peer_device *const peer_device, int c
- 			int sndbuf = sk->sk_sndbuf;
- 			if (queued > sndbuf / 2) {
- 				requeue = 1;
--				if (sk->sk_socket)
--					set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-+				sk_set_nospace(sk);
- 			}
- 		} else
- 			requeue = 1;
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 921934028e0b22c2e4c9fd60d09ed8e50051262d..b853ca2d598fa4cb8ea9cb66513f1e1070cd1fb4 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1133,7 +1133,7 @@ static void nvme_tcp_write_space(struct sock *sk)
+ 	read_lock_bh(&sk->sk_callback_lock);
+ 	queue = sk->sk_user_data;
+ 	if (likely(queue && sk_stream_is_writeable(sk))) {
+-		clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
++		sk_clear_nospace(sk);
+ 		/* Ensure pending TLS partial records are retried */
+ 		if (nvme_tcp_queue_tls(queue))
+ 			queue->write_space(sk);
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index e598101752620448423925d2385b606e0b4346e8..c38ea3501ea5def168b6f180b56734b99d21bdea 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1686,7 +1686,7 @@ static void nvmet_tcp_write_space(struct sock *sk)
+ 	}
+ 
+ 	if (sk_stream_is_writeable(sk)) {
+-		clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
++		sk_clear_nospace(sk);
+ 		queue_work_on(queue_cpu(queue), nvmet_tcp_wq, &queue->io_work);
+ 	}
+ out:
 -- 
 2.56.0.rc1.310.g51773c2048-goog
 
