@@ -1,224 +1,201 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009FF40BCC2
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4F344238A;
+	Thu, 24 Sep 2026 12:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790252337; cv=none; b=RABhKCjafeAdLjbrdjZjQ2w3wm6meHh9GloCUdY6lFk0WjC8k49saa841gwFw1Cp/FQEqdkuYTa2VduyZ7xfyH49adWg4ru4U51UZ7iZbNUi56zV4ZFA/l4Vg/j49enqS1VuSjN3Fj00qVYE5Ktw3Mt/Fp1OPeHLwGnnp2YDgeI=
+	t=1790252404; cv=none; b=gEbzyFbeTT/uXr85yPUAlhwKfcthIHFb4z8c0oHJN89mH5M6t4rCMALre8FcYpiuZnvkUkAZOmgXvT2YKtcDOyuC1V+bbSJTOTUaCDcQUc+TAL/OR+Myhq76OjHi5Lpmw29g/g8gAHLjiiUDwmDhK182ttiv9QcujyK5hXQyQ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790252337; c=relaxed/simple;
-	bh=r6xTkVcBtG2GbnncVAFpPrHQ35sSsx6sGtwnGz+Iz+o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j6EtKJGyhUE51fN2JvRBqKBVBm6COsi4CU2p19/HL22yhifDXwLqVcP23wKrzNBR/voMzzkshlj3B0N8pLX8tgSyWLYRqhSH6FtbYMD629WUzWV5AdYtrYguY8pZtTxtgvbserg0Jt2hF97WXOA7MdOMGGrOsbb5fZSDGsXn+10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Ns1NFVpf; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1790252404; c=relaxed/simple;
+	bh=mCDGIhgL5YgoDNhrEuHNH0FqQnLMupcxNHyB/VlcsRA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WRst49Hg72JN3CH7i9Qzfa1tCg0KVgqv4kh5QSmjWrFxFIv8uTjDPq6gDoM+oCtrHy/bMp5HAo2a+oZkW7u7q3JnwY5vrFOjWwSWscWnVTRUUfXTTNnMoh+4mEl+ku32G0XCbO8anvwLax7KmWLXEGjI2z3u0cuz4eqU/vJjJMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhqFWrLi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Ns1NFVpf"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-912431d946cso6229016d6.0
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:18:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790252334; x=1790857134; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gmaeWywR1Hqkr2skYxuhciXOKcGLeDQxbIygjuGwII0=;
-        b=Ns1NFVpfyd7n1KdYeOeh7plXI8koMoK8853qbCtzQ8DDNuKIhEP2bGlZeU9BF8zpRb
-         wFvbDiTE89WFSJpSpmD8FePIoJEjmZPcBt9RjAL3yMFYKu8EEwM4Tah3VeX2hnKvb/Rk
-         ZtXCcLjBLj70HZYhKSPzMMb6lICU0sa0lCIt8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790252334; x=1790857134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gmaeWywR1Hqkr2skYxuhciXOKcGLeDQxbIygjuGwII0=;
-        b=hzeUzH5Gj+/ioF5quF3ilRE69oXLjDlNuyuzoYUFsn86d2AFlasyRO4trTyfaCnF83
-         78O/ky6fyv3bYoUvkwpJsRU6aqE+fMxSLnU42/Uu6dsK4Akuca3LTSqXgmhwhcGMaHCq
-         HvqCLNVGzI8KW7z41jNaEjkB9ruaIx9k4FDJ7Ca2gBXIrMbn9eYxcMmkSZ6aCgq+VY26
-         JKPqT56seub0759hdzKX6mKCJJRI9JkWcGNyMJ8iwLdEW/9FNoZ6KoDaxSfrVefeaWkd
-         DEPcBBLwCueJd6dBjerJj6ycVo41UgUWcQqHjtxm1NK3ep8ELoCmOrvI9FaX8ezm1kzp
-         cQKw==
-X-Gm-Message-State: AFuF++mnBbptCQFG01H/ZZ8AgCx8JnrBqWWxBPjloTr3MkCjY1Zt+MRl
-	cexh045V41zTAYCeimngUmnuJjBXrfQ99knu/coHmAluetlAGcq7wQwbI6nO52+j2mMvFfE7U/B
-	W2b9nYw==
-X-Gm-Gg: AYBFou2hKq++Q9P0pzRc+AKd3VBL4A7tnc7O//xm+xaiBNXqjZze6bx4MQPP1qlLt4v
-	6KXtlGQ9dmZPkfvdav7EBmqa0Tbj8DZH1wytWWH1qR8msqFwGyfhzr2nl45CzZwd08AqVYmo++c
-	9Nne+fGGbk76unfjwbjtsGLIcxmKIY0dXZhgU6ZyNmZJI185sVdpCuYiQfVbrbSs0aNCnLTsnd8
-	RTGka8TZoeW+LgYM5vPxl9jBaesUVAUvhWu7/NL5op0YThyGry1eKT7aykWYDodtfuMop6J+hqI
-	tJbfh9IcWdBfQ+tuM0tVaqPZRdgnaXzTjC+g4uoM7h4xk3OwkDWj0lkEycgV0O80XKK+e3/aNnB
-	sG/qhHXQxCHI6wYjPfHVwiteFsMWUAPPzjMYuXmxhq6+826r/NmySPkHs4Y4psD/OAB6QCCpYBx
-	mu7XvA/65Kmxy2Je4odY1amCY6iu7VK5jCYaZUs8vfBX/93KGiql5yBFaRNppJPiizYPO/Dg4gl
-	AFams3Q0CRckENtz5SGZ/RHG1cb1Yie1HpP6MB9qWOTlg3MZQ==
-X-Received: by 2002:a05:6214:1bc6:b0:912:35b7:8a9a with SMTP id 6a1803df08f44-91421f03ed7mr18489976d6.20.1790252333506;
-        Thu, 24 Sep 2026 05:18:53 -0700 (PDT)
-Received: from majuu.waya ([184.147.180.207])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9141e2c6c90sm15211926d6.45.2026.09.24.05.18.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 05:18:53 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Xin Long <lucien.xin@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	stable@vger.kernel.org,
-	sashiko-bot@kernel.org,
-	hybris <hybris@mojatatu.ai>
-Subject: [PATCH net v2] net/sched: cls_flower: exact-match ERSPAN key when no mask supplied
-Date: Thu, 24 Sep 2026 08:18:41 -0400
-Message-Id: <QDISC-4CSL.v2.20260924114800@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhqFWrLi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3A71F000FF;
+	Thu, 24 Sep 2026 12:20:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790252402;
+	bh=VpXn1ri2/l5+8sDmLQVWGe+Xu8dfgiYtuX1ZX27BjLU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XhqFWrLiFF8fdEkWiHFilpj/MMiNDw0nOw9vS1MafwIQtsqjhb5LID1i5eFnxhOQl
+	 wYAuSNaJvrkd2bMBGzMHCh1NqMU2ThYxsnI0iuo508RImmobapS8zaF63tkdxX/edS
+	 OkNDv/cwX/jPvsLPKmHQpURZvO0IpZDojQyDLkJeKDlyqh7mRDweylxdNsVVDydIZJ
+	 pmphzM8b7PhUza/kup8SYp11NxodYbbOjrMpg07cKJ89DOJwhBdPRutWWQE6irNFzw
+	 V+E+usF/dV5AQJ4WU1t66zV6hZua+EydPdthhpDUsZlBoOD754+pELM3DISi1E42TI
+	 e9RyIbQC7RbNQ==
+Subject: Re: [PATCH net v2 1/2] net: ethtool: don't match a hwtstamp provider
+ on a device without a PHC
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, kory.maincent@bootlin.com,
+ vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 24 Sep 2026 12:20:01 +0000
+Message-ID: <179025240177.2160803.17736204487729550368@kernel.org>
+In-Reply-To: <20260923121644.2194183-2-nb@tipi-net.de>
+References: <20260923121644.2194183-2-nb@tipi-net.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Commit 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
-removed the unconditional memset of the erspan_metadata mask in
-fl_set_erspan_opt(). On the mask-parse pass, when userspace supplies the
-encap option key but no mask (TCA_FLOWER_KEY_ENC_OPTS without
-TCA_FLOWER_KEY_ENC_OPTS_MASK), the !depth early return leaves the mask
-zeroed -- a wildcard. A filter keyed on an ERSPAN index (v1), or dir/hwid
-(v2), then matches every ERSPAN packet's values instead of exact-matching.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Default the match fields on the no-mask path the same way the with-mask
-branches default them: v1 index to 0xff, v2 dir and hwid to their
-exact-match masks. The union cannot just be memset to 0xff -- that would
-re-mask the overlapping timestamp/sgt bytes of the v2 header that the
-commit deliberately left to 0.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-A mask and a key that declare different ERSPAN versions describe different
-union layouts, so the mask would silently wildcard the key's matched
-fields. Reject that combination. Have fl_set_erspan_opt() report the
-parsed key's version back through a u8 pointer so the mask pass uses it
-without re-reading the union.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This is a follow-up to commit fee10655709c ("net/sched: cls_flower:
-validate mask pointer after nla_next()").
+- [High] The fix is incomplete.
+- [Medium] The patch deals with the 0xFFFFFFFF/-1 aliasing through an
+  open-coded check at one comparison site instead of rejecting the value…
 
-Conditions to recreate the bug: add an ERSPAN encap-opts flower filter
-with a key but no mask (raw netlink, TCA_FLOWER_KEY_ENC_OPTS present,
-TCA_FLOWER_KEY_ENC_OPTS_MASK absent); dump the filter and observe the
-match mask is zero (wildcard) instead of exact for the supplied fields.
-For the mismatch case, pair a v1 key with a v2 mask (or vice versa) and
-observe the request is accepted with a mask of the other version.
+--
 
-Fixes: 292207809486 ("net: sched: fix erspan_opt settings in cls_flower")
-Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260826025123.62758-1-ljp1205831794@gmail.com
-Link: https://lore.kernel.org/netdev/20260826025123.62758-1-ljp1205831794@gmail.com/
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/netdev/179003833955.2160803.1077681716391858800@kernel.org/
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Tested-by: hybris <hybris@mojatatu.ai>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v1 -> v2:
-- Scope the key's version default to the no-mask path only. v1 assigned
-  the key's version to the mask unconditionally, which changed the
-  with-mask parse path for a mask nest that declared no version (nipa M1).
-- Reject a mask whose declared version differs from the key's; the two
-  versions index different union layouts, so the mismatch silently
-  wildcarded the key's matched fields (nipa M2).
-- Set the key's parsed version through a u8 pointer argument rather than
-  re-reading it from the union at the call site (Xin Long).
+net: ethtool: don't match a hwtstamp provider on a device without a PHC
 
- net/sched/cls_flower.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+This patch adds a phc_index >= 0 check to ethtool_net_get_ts_info_by_phc().
+A requested provider index of 0xFFFFFFFF becomes -1 when stored in an int,
+and with this check it no longer matches a netdev that reports no PHC.
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 1cefea571efd..0c4beff18d68 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -1358,17 +1358,29 @@ static int fl_set_vxlan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 
- static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 			     int depth, int option_len,
--			     struct netlink_ext_ack *extack)
-+			     struct netlink_ext_ack *extack, u8 *key_ver)
- {
- 	struct nlattr *tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_MAX + 1];
- 	struct erspan_metadata *md;
- 	int err;
- 
- 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
--	md->version = 1;
- 
--	if (!depth)
-+	if (!depth) {
-+		/* No mask attribute supplied: exact-match every field the
-+		 * key set, keyed off the key's own version so the v2 dir/hwid
-+		 * bytes are masked without touching the overlapping
-+		 * timestamp/sgt bytes of the union (see 292207809486).
-+		 */
-+		md->version = *key_ver;
-+		if (md->version == 1) {
-+			memset(&md->u.index, 0xff, sizeof(md->u.index));
-+		} else if (md->version == 2) {
-+			md->u.md2.dir = 1;
-+			set_hwid(&md->u.md2, 0xff);
-+		}
- 		return sizeof(*md);
-+	}
- 
- 	if (nla_type(nla) != TCA_FLOWER_KEY_ENC_OPTS_ERSPAN) {
- 		NL_SET_ERR_MSG(extack, "Non-erspan option type for mask");
-@@ -1387,6 +1399,22 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 
- 	if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_VER])
- 		md->version = nla_get_u8(tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_VER]);
-+	else
-+		md->version = 1;
-+
-+	/* The key and mask must describe the same union layout: the
-+	 * per-version default below only exact-matches the fields of its own
-+	 * version, so a mask version that differs from the key's would
-+	 * silently wildcard the key's matched fields.  A mask without a
-+	 * version keeps the historical v1 default.
-+	 */
-+	if (option_len && md->version != *key_ver) {
-+		NL_SET_ERR_MSG(extack, "Tunnel key erspan option ver mismatch");
-+		return -EINVAL;
-+	}
-+
-+	if (!option_len)
-+		*key_ver = md->version;
- 
- 	if (md->version == 1) {
- 		if (!option_len && !tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX]) {
-@@ -1509,6 +1537,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- {
- 	const struct nlattr *nla_enc_key, *nla_opt_key, *nla_opt_msk = NULL;
- 	int err, option_len, key_depth, msk_depth = 0;
-+	u8 key_ver = 1;
- 
- 	err = nla_validate_nested_deprecated(tb[TCA_FLOWER_KEY_ENC_OPTS],
- 					     TCA_FLOWER_KEY_ENC_OPTS_MAX,
-@@ -1607,7 +1636,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- 			key->enc_opts.dst_opt_type = IP_TUNNEL_ERSPAN_OPT_BIT;
- 			option_len = fl_set_erspan_opt(nla_opt_key, key,
- 						       key_depth, option_len,
--						       extack);
-+						       extack, &key_ver);
- 			if (option_len < 0)
- 				return option_len;
- 
-@@ -1618,7 +1647,7 @@ static int fl_set_enc_opt(struct nlattr **tb, struct fl_flow_key *key,
- 			mask->enc_opts.dst_opt_type = IP_TUNNEL_ERSPAN_OPT_BIT;
- 			option_len = fl_set_erspan_opt(nla_opt_msk, mask,
- 						       msk_depth, option_len,
--						       extack);
-+						       extack, &key_ver);
- 			if (option_len < 0)
- 				return option_len;
- 
+> diff --git a/net/ethtool/common.c b/net/ethtool/common.c
+> index 23db40618fed1..23e8282563cc3 100644
+> --- a/net/ethtool/common.c
+> +++ b/net/ethtool/common.c
+> @@ -980,7 +980,7 @@ int ethtool_net_get_ts_info_by_phc(struct net_device *dev,
+>  	if (err)
+>  		return err;
+>  
+> -	if (info->phc_index == hwprov_desc->index &&
+> +	if (info->phc_index >= 0 && info->phc_index == hwprov_desc->index &&
+>  	    net_support_hwtstamp_qualifier(dev, hwprov_desc->qualifier))
+>  		return 0;
+>  
+
+[Severity: High]
+Can the same -1 == -1 match still happen in the PHY half of the lookup?
+
+ethtool_phy_get_ts_info_by_phc() in net/ethtool/common.c still compares on
+equality alone. It does this in the link topology loop:
+
+	xa_for_each(&dev->link_topo->phys, phy_index, pdn) {
+		...
+		ethtool_init_tsinfo(info);
+		err = phy_ts_info(pdn->phy, info);
+		...
+		if (info->phc_index == hwprov_desc->index)
+			return pdn->phy;
+	}
+
+It does the same in the dev->phydev fallback:
+
+	if (info->phc_index == hwprov_desc->index)
+		return dev->phydev;
+
+ethtool_init_tsinfo() sets phc_index to -1. So a PHY whose ts_info callback
+succeeds without reporting a PHC would match a request for 0xFFFFFFFF.
+
+With this change, the netdev matcher always returns -ENODEV for index -1.
+tsconfig_set_hwprov_from_desc() then falls back to the PHY matcher:
+
+	ret = ethtool_net_get_ts_info_by_phc(dev, &ts_info, hwprov_desc);
+	if (!ret) {
+		/* Found */
+		source = HWTSTAMP_SOURCE_NETDEV;
+	} else {
+		phy = ethtool_phy_get_ts_info_by_phc(dev, &ts_info, hwprov_desc);
+		...
+		source = HWTSTAMP_SOURCE_PHYLIB;
+	}
+
+That builds a hwprov with desc.index = -1, source = HWTSTAMP_SOURCE_PHYLIB,
+and phydev pointing at the PHY that has no PHC. ethnl_set_tsconfig() then
+installs it in dev->hwprov.
+
+Wouldn't a provider still be selected on hardware that has no PHC, just a
+PHYLIB one instead of a NETDEV one? The commit message says "only match a
+real PHC index".
+
+One in-tree example looks to be ines_ts_info() in drivers/ptp/ptp_ines.c.
+It never writes phc_index and returns 0. The INES timestamper is attached
+as phy->mii_ts from the device tree in fwnode_mdiobus_register_phy(), so
+phy_has_tsinfo() is true for that PHY.
+
+With CONFIG_PTP_1588_CLOCK=n, bcm-phy-ptp and mscc_ptp also install mii_ts
+and report ptp_clock_index(NULL), which is -1.
+
+micrel's lan8841_ts_info() can also report -1. However, its probe only sets
+phydev->mii_ts when ptp_clock is non-NULL, so it doesn't seem to be a
+trigger.
+
+Here is a possible sequence on a MAC with a real PHC N and a PHY with an
+INES mii_ts:
+
+  ETHTOOL_MSG_TSCONFIG_SET provider {N, PRECISE}
+    dev->hwprov = {N, PRECISE, NETDEV}
+  ETHTOOL_MSG_TSCONFIG_SET provider {0xFFFFFFFF, PRECISE}
+    ethnl_update_u32() sets hwprov_mod since N != 0xFFFFFFFF
+    ethtool_net_get_ts_info_by_phc() returns -ENODEV
+    ethtool_phy_get_ts_info_by_phc() matches -1 == -1
+    dev->hwprov = {-1, PRECISE, PHYLIB, INES phy}
+
+TSCONFIG GET only emits the provider when index >= 0, so userspace would
+not see this selection afterwards.
+
+The next patch in this series, "net: ethtool: let tsconfig reach a
+PHY-only timestamp provider", doesn't change either PHY match site or the
+policy. It also drops the ndo_hwtstamp_set/get requirement, so more
+devices could reach this fallback.
+
+Should the same >= 0 check also go into both PHY match sites?
+
+[Severity: Medium]
+Would it be better to reject 0xFFFFFFFF at the netlink boundary instead of
+adding an open-coded check at one comparison site?
+
+The policy in net/ethtool/ts.h leaves the index unbounded:
+
+	[ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX] = { .type = NLA_U32 },
+
+Documentation/netlink/specs/ethtool.yaml also describes the index as a
+plain u32. ts_parse_hwtst_provider() copies it into the int
+hwtstamp_provider_desc.index, where -1 is also the "no provider requested"
+sentinel.
+
+This aliasing is still visible in ETHTOOL_MSG_TSINFO_GET after the patch.
+tsinfo_parse_request() starts with:
+
+	req->hwprov_desc.index = -1;
+
+A user-supplied index of 0xFFFFFFFF overwrites that with the same value, so
+tsinfo_prepare_data() skips the provider lookup:
+
+	if (req->hwprov_desc.index != -1) {
+		ret = ethtool_get_ts_info_by_phc(dev, &data->ts_info,
+						 &req->hwprov_desc);
+		...
+	}
+
+It then returns the default provider's tsinfo instead of an error, even
+though the request named a provider.
+
+NLA_POLICY_MAX(NLA_U32, INT_MAX) for ETHTOOL_A_TS_HWTSTAMP_PROVIDER_INDEX
+would stop -1 from ever arriving from userspace, for both tsconfig SET and
+tsinfo GET. It would cover the PHY match sites too, and the bad attribute
+would be reported through extack.
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923121644.2194183-2-nb%40tipi-net.de
