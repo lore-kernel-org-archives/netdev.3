@@ -1,180 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457ED485CD9;
-	Thu, 24 Sep 2026 13:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2255B481A82;
+	Thu, 24 Sep 2026 13:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790255712; cv=none; b=iAmLo72yKROJ4vrChZUvXU36GIIxsIeqaoPelonzEDpIzdckecDizmnS2qVYwRWv9aVNIwFF552BfH/JtgYBxF1xQ+USO6r4dCkrXIqBd7pX5+pPu9KgXhf5+OoARpVwVRTvrQjXzDUF7vaA+1x2WNNVe/CkrSoSkfhAuQ6oJO4=
+	t=1790256166; cv=none; b=AlejZkJhWzEmWzf3qivZPWbdJosy/tnH3vABRSd5Y2Cp4UzwTHAPrJ+3sKb3GS7iRQEYuNV0L09MJE0nAvQv7v9vhdhlmWcNi+3NR77ai/VFju7NUlqQYqiu53FU8LHSK9Y9SeW4XslRMrUCg5/kDN2aPAvzphUAqtjMQaNO4Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790255712; c=relaxed/simple;
-	bh=D457ys11xA+Le0Bhlr+wB2HNGwzEv3sC1dSac0Zdjt4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Voos2aBKfoXv90MHj/FnH9dGh/E+kSXbdn4xfCYJcWqKAgmB9UVfCLyVFtkqzFZlrXfbNPwFhioU0ZjRHwRO1AYkTQ5YCSgA9J9oAXROHi7V1sc0gSouC3zR/oqWyXfBhRjQA1DseX21p61kGC/KrKdoUREsP0RxPO+ehmXDG9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MknJNTL+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790256166; c=relaxed/simple;
+	bh=dkEL60393E0ZzazZywJe+lyi+Vltu1yXMdwDBDgjVxk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Cq6ty1ojz6NCSkYwc5ICYKWfm8b5fJDl9ULBrv/CpNp5ERz/IDf7VQ9udeUp3jkKvB1sLZzyc/VBe+HFLZCI1SE1FkzzNduwceeu0dWF1f8fJV5eI0XdsXkSJMwNdmB5eVivYkwKwR4MPs0TIGw+g8MR89/nOcFukj5AWyZkm0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZfOETb2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MknJNTL+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5D01F00898;
-	Thu, 24 Sep 2026 13:15:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZfOETb2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A1A1F000FF;
+	Thu, 24 Sep 2026 13:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790255710;
-	bh=g9sRmXVB5ciON2DlzFeWlXKs+NJaQal3k3zArRH8QwU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MknJNTL+2cYW1awLN5iHOZzIwVl3HMofmCuvvXv42pCL6KN40bt6VJlpa2ah/CrPo
-	 awPieqoav0DBseHr72acR8qdZvgMWE9Vmq8YEslLPWxmkkvh3H/a7FJ/M0YsS6KKRo
-	 tG8VBIJP9Vka/QGOxBw6+ht+j8raJwksoA7BMI232x2yiswncjnq17hQ0Mh62+/A4b
-	 dIMnsYL0aKoDXrIsPYZ+cYtncVMGOuw3WOmbY5E7XnLoNnJL5vpu+nEnAeM8s1NBoq
-	 +pZaJ9+3DthAfQzHatu08aVPgNrR+FLmu5revb5NU7D9uBmAcNgl5kvewqn2BJGLSL
-	 aBck0OuPPr+jg==
-Subject: Re: [PATCH net v3 7/8] vsock: handle listen() racing connect()
-From: netdev-bot+sashiko@kernel.org
-To: mhal@rbox.co
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, davem@davemloft.net,
- xuanzhuo@linux.alibaba.com, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imv4bel@gmail.com
-Date: Thu, 24 Sep 2026 13:15:08 +0000
-Message-ID: <179025570873.2160803.3404632155755678732@kernel.org>
-In-Reply-To: <20260922-vsock-connect-reset-closing-v3-7-78907b8200d4@rbox.co>
-References: <20260922-vsock-connect-reset-closing-v3-7-78907b8200d4@rbox.co>
-X-sashiko-severity: Medium
+	s=k20260515; t=1790256156;
+	bh=SHpt2jVFN/qdekEkmimqeG5JdQHSbSzkpyGv9+E8uoo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=oZfOETb2gikgLRADb/1hCwIv8Sw+6KPFrA+zR/m5QqwF1CXsEm4OyrLqRrrCeoW0o
+	 9K23ZF8k0QpGsb++Tuv0wG8ypJjxzXcCcOp2sbj3b9mER1w0ChpB++ELUW0nvBjGpN
+	 rcppKT30mVfPcTJ5OmBC2jcsRebxt3dO6aWQ8XgvcqmYWf/moury2qeERbtmvg+sOh
+	 3Lh1B8IkqejW96lKbwtaQbW2wj1TNm2d9P6OfqhuR5AJ7xmUabOXfTbQqDGRusAyM1
+	 /FTxLEWUE0tTn4F9otgO6Q3+9YHID1Nht1YJnSoh03kBidHuyr7rdMce+7AFkLiDTA
+	 FHH/4dGltq/hw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197A839F38C4;
+	Thu, 24 Sep 2026 13:21:27 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] macsec: initialize SecY before registering the
+ netdevice
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179025608572.1542893.3122720267052051951.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 13:21:25 +0000
+References: <20260921-fix-macsec-net-v3-1-accf94f93f5e@gmail.com>
+In-Reply-To: <20260921-fix-macsec-net-v3-1-accf94f93f5e@gmail.com>
+To: Haseeb Malik <haseebulhaq55@gmail.com>
+Cc: sd@queasysnail.net, netdev@vger.kernel.org, davem@davemloft.net,
+ linux-kernel@vger.kernel.org, edumazet@google.com, horms@kernel.org,
+ kuba@kernel.org, andrew+netdev@lunn.ch, hangbin.liu@linux.dev,
+ pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
+ felix.walter@cloudandheat.com,
+ syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hello:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On Mon, 21 Sep 2026 16:40:30 -0400 you wrote:
+> From: Haseeb Malik <haseebulhaq55@gmail.com>
+> 
+> Creating a MACsec device with MAC offload over an LRO-capable lower
+> device triggers a warning in rtmsg_ifinfo_build_skb() when IPv4
+> forwarding is enabled by default.
+> 
+> register_netdevice() invokes inetdev_init(), which disables LRO and emits
+> a NETDEV_FEAT_CHANGE notification. This reaches macsec_fill_info() before
+> macsec_add_dev() initializes the SecY. key_len is still zero, so
+> macsec_fill_info() returns -EMSGSIZE and trips the WARN_ON in
+> rtmsg_ifinfo_build_skb(), even though the skb has enough space.
+> 
+> [...]
 
-- [Medium] The commit message states the goal is to 'let connect() time
-  out, but don't reset the socket', implying the pre-patch code resets a…
-- [Low] The patch fixes a user-visible, unprivileged-reachable defect
-  that exists in released kernels but carries no `Fixes:` tag and no…
+Here is the summary with links:
+  - [net,v3] macsec: initialize SecY before registering the netdevice
+    https://git.kernel.org/netdev/net/c/c2de369c5c5b
 
---
-
-vsock: handle listen() racing connect()
-
-This adds an early return to vsock_unconnected_reset() so that a socket
-which a racing listen() has moved to TCP_LISTEN is left alone. A blocking
-connect() that was sleeping in schedule_timeout() then returns its error
-without demoting the listener.
-
-> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> index 5a2d7e10ecb88..56c5959424564 100644
-> --- a/net/vmw_vsock/af_vsock.c
-> +++ b/net/vmw_vsock/af_vsock.c
-> @@ -1663,6 +1663,13 @@ static void vsock_unconnected_reset(struct sock *sk)
->  
->  	sock_owned_by_me(sk);
->  
-> +	/*
-> +	 * listen() can race connect() on schedule_timeout().
-> +	 * Don't reset TCP_LISTEN.
-> +	 */
-> +	if (sk->sk_state == TCP_LISTEN)
-> +		return;
-> +
-
-[Severity: Medium]
-The changelog says the intent is to "let connect() time out, but don't
-reset the socket", which reads as though the code just before this patch
-resets a TCP_LISTEN socket.
-
-Is that still true with the immediate parent ("vsock: handle socket
-bricking due to transport event") applied?  In that tree the race
-described in the changelog reaches the checks already present in
-vsock_unconnected_reset():
-
-net/vmw_vsock/af_vsock.c:vsock_unconnected_reset() {
-	...
-	if (WARN_ON_ONCE(vsk->peer_shutdown) ||
-	    WARN_ON_ONCE(sock_flag(sk, SOCK_DONE)) ||
-	    WARN_ON_ONCE(sk->sk_state != TCP_SYN_SENT &&
-			 sk->sk_state != TCP_CLOSE))
-		return;
-	...
-}
-
-With sk_state == TCP_LISTEN and sk->sk_socket->state == SS_UNCONNECTED,
-the SS_CONNECTED/SS_DISCONNECTING guard does not fire, peer_shutdown is
-zero and SOCK_DONE is unset, so control reaches the third WARN_ON_ONCE
-and returns without resetting anything.
-
-That makes the pre-patch symptom at this point of the series a
-userspace-triggerable splat from vsock_connect()'s out_reset: path rather
-than a lost listener, and a splat is fatal with panic_on_warn.  The
-window covers the commits from "vsock: do not preserve transport
-assignment" through "vsock: handle socket bricking due to transport
-event", so a bisect or a partial backport can land on it.
-
-Would it make sense to squash this TCP_LISTEN check into the commit that
-introduced that WARN_ON_ONCE, or otherwise mention the warning in the
-changelog?
-
-[Severity: Low]
-Should this patch carry a Fixes: tag?  The sibling fixes in the same
-series carry Fixes: d021c344051a ("VSOCK: Introduce VM Sockets"), while
-this one has only a Signed-off-by.
-
-Released kernels appear to hit the same race without this guard.  At the
-pre-series baseline, vsock_connect() writes the state back unconditionally
-with no sk_state test:
-
-net/vmw_vsock/af_vsock.c:vsock_connect() {
-	...
-	err = sock_error(sk);
-	if (err) {
-		sk->sk_state = TCP_CLOSE;
-		sock->state = SS_UNCONNECTED;
-	}
-	...
-}
-
-and vsock_listen() only requires SS_UNCONNECTED plus a bound address
-before flipping the state:
-
-net/vmw_vsock/af_vsock.c:vsock_listen() {
-	...
-	if (sock->state != SS_UNCONNECTED) {
-		err = -EINVAL;
-		goto out;
-	}
-	...
-	if (!vsock_addr_bound(&vsk->local_addr)) {
-		err = -EINVAL;
-		goto out;
-	}
-
-	sk->sk_max_ack_backlog = backlog;
-	sk->sk_state = TCP_LISTEN;
-	...
-}
-
-So on a stable tree, two threads sharing one fd (non-blocking connect()
-arming vsock_connect_timeout(), blocking connect() sleeping in
-schedule_timeout(), then listen()) can end up with the listener demoted
-to TCP_CLOSE/SS_UNCONNECTED and accept() returning -EINVAL.  Without a
-Fixes: or Cc: stable trailer, is there anything to signal that to
-backporters?
-
->  	/*
->  	 * Transport events are serviced by resetting each connected socket to
->  	 * TCP_CLOSE. The reset is done under vsock_table_lock but without
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-vsock-connect-reset-closing-v3-0-78907b8200d4%40rbox.co
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
