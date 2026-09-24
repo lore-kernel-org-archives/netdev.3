@@ -1,128 +1,74 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E0825B091
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A0A3FE644
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790239470; cv=none; b=h+5n0N3HDYor+hzapoqAwRDb+oeZ69zr+QCa8kVRXT6zDCGf08sx9+VZqRx1alTh8CykdfTPWROZ+HLYSXpRXx9XnC8KUBBF6tPWq+fUhaKXOXE8NTGtvwUGI3KWDjBtu3URkmk04hfuBa89setL+xMqXTOenkRxerzgPFD65nM=
+	t=1790239542; cv=none; b=Ilvi4sE5uh/2g6VlyEE7dlkonbUdO7g4EZg8fPDBuiuT+JNMMSOlwfrCXoFyzLoG7E8BtQMoHma8F3UFshnP09GKjRKFeiNbmXJ188iS4TKSUW9bTaf1RTgqo0dqJ/3NG8niyWJknYLOGOahiBSitBRBxaqE8qac+B4y9sx4E2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790239470; c=relaxed/simple;
-	bh=ZXVYss8RjCXDsXP59Md75rlLQ7LGVyizQouhuPgXmCs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F0H4V3yuAe3HaU+pilUFnKGEwzp/ddA07XsoWGEEM8mOp/Pn9CpX3ur33DVSzQadrC2BcfeBq+tarPEIOmAQFoiXTLDMOD3SPnIRDg3+d2NeQErkT8nMeIKpo0Q1w7PLuQo149QWHUdAOeuUsiSNK0brJ6vQoq9oo2Vrd6VLDXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KP7unPYw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nFfcyHtO; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1790239542; c=relaxed/simple;
+	bh=RjcNA6HmCmlxdxtVqsdef6UdVNw3BtkB7wp/J7/Uu94=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=gaGv+m6D+bh4g3hOssndtkiT7f3oBK9ujRxhZZYVP4kwznF0edRzYd8nrS3B4tEniC1FAswweyr3GWipZ4zh6dIUpTBjCmCGSnPcvu5yx8j2YEbHeD9vip75T/zLV/pgNOoGRw/a0+BLgMZQQnxfgrfZCIjot4255qzGP5aUUKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GRdLmTd5; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KP7unPYw";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nFfcyHtO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GRdLmTd5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790239468;
+	s=mimecast20190719; t=1790239539;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ihCaIXxNrufdB165FFQLuKNHzdKzMm2Q3bT5iLKUB2w=;
-	b=KP7unPYwdxlu/h0BecjbPiMpk9oz1ZOWiEAboZKVcrf3YjuBIT3U+wfcPM6VouGo1bxMr3
-	sOW53SFCQ/2AwWUd+6IxRNzWdw+gdjz3Q6nJf0CoZMFlwCnurYf7y3/lLcpbsbm65Q8oE2
-	06o3CW1VKcwjo+W7233LT0r0Zr0Ao8A=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-i0LOKvPIMwyM_-JiuxL80g-1; Thu, 24 Sep 2026 04:44:26 -0400
-X-MC-Unique: i0LOKvPIMwyM_-JiuxL80g-1
-X-Mimecast-MFC-AGG-ID: i0LOKvPIMwyM_-JiuxL80g_1790239465
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c294ae16922so218272666b.0
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:44:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790239465; x=1790844265; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ihCaIXxNrufdB165FFQLuKNHzdKzMm2Q3bT5iLKUB2w=;
-        b=nFfcyHtOKa7PzslzqKymdG88WbiVUIcViAJyjTbP5vQkWCgZJTs+QQZ1cBbKUm4xxM
-         GYn1N0U43T7nAbEAD6YkdEVngY2BvFs0xy3qst6RU6mi8NZzJDRZhja/c0y5hVYR4oyA
-         qjafU/estZFPa44h2XYbIZwIkIlQLIl0Z3xcO7gZQ3iphU03TUEHZ/uUURyQbxKC9QFr
-         zPaEB1nJ0NoO9yGZQhMWUDmQ65aGBjPHGQDtf5t2YtiPQnuKSOgGcn0cURerFOYfuKUE
-         hBvLnzdLX8utW/wywmM3El1FImzAcxWuxMS++GNSqAqlY0nSoQw22z7jqFDs+QBLR8/K
-         Kj3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790239465; x=1790844265;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ihCaIXxNrufdB165FFQLuKNHzdKzMm2Q3bT5iLKUB2w=;
-        b=l8YyxTtXUJRS+jFkxQmbqhxz1J4+N5TET9BhMy4tFK2VuP64dNNW3MJoTQcfftsiAm
-         I21u3Kzs+ASM7RlxEq3EqsvtVepAZO9nHB8i5ahqtvTdM/i/PLh5kqqnDwO+aSYQkf0T
-         zySePmPvSiGPw2ht0TF/RDr1DgOjHvjtYUJABkazDOC/Z80PY4GP2BAwQVju5snneVqv
-         fzJYsIPSjhZNy4OSBwCy93RcskqK8V0W+ATwWzBmcc3WrUrYjUCDoKyEKlN6jVvyUzsG
-         zJLLr8fLzbUT8qOoU++POFreD+DZozaTVS3JmkZI4IXs9QdKj2UptW2kdQ+qaJlq8ZRU
-         7sOw==
-X-Gm-Message-State: AFuF++mftMtUjXmrGYWXaBrzGhoGGQ3c2PPpp1zMeOmhC3c73snNyMv2
-	H0u3qWrVCEEszk2vp+TnwjzxcGkyUu9vjZGeesJFytwh4jlqk+fvYOVnfIQQZ9ThgsRPEsR2VmA
-	qSvcHOm1o7cPogV3ZjM8uH9zM5dxZqIurZ53xIM6jzWQU4BSiiu16W7DrHA==
-X-Gm-Gg: AYBFou13xGaILOsiczVk82QaK+tq0iec6nyeHzqTOKXnlLHZU9AHko/WlRK//k2lB6r
-	epB2IFasWqBN8rx2vkl6aqj/Wu7gyO6Gw/dQLc8DHfuiwYu8/BPWeKCCJ8J9BsvmADRWlsBXJUc
-	Zqo8R07v+jf75/peosHGWqOE2Wud8WLKSQFyZiaLgYGaWTEkWqCV6+96EUsLMIlOCgnn+roXzUz
-	/aG8ZFVHvPdcZ/OwYV5tc7cz6Sp+iqt4OmETIL9BP2ugm9Qd6LwhtbKQi+d2vV+5Jwd6/WURXRN
-	Xs/S9W3/Zq/vxc7paFgxdyZ33jPFDgJmMVJ5ZozBvoucNJtdnp7pLoLrLcXxAaBh8PbR8LTZwxH
-	25TTTEQa75J4bpfDg7lUW4bjyQPbpmP5mBi/exoQMObY2/MCw+FFUvHVe1YkksAcrDJOPRkUHuQ
-	==
-X-Received: by 2002:a05:6402:20d1:20b0:6aa:d223:8040 with SMTP id 4fb4d7f45d1cf-6aad223808bmr435013a12.6.1790239464878;
-        Thu, 24 Sep 2026 01:44:24 -0700 (PDT)
-X-Received: by 2002:a05:6402:20d1:20b0:6aa:d223:8040 with SMTP id 4fb4d7f45d1cf-6aad223808bmr434996a12.6.1790239464479;
-        Thu, 24 Sep 2026 01:44:24 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aab3883141sm3191412a12.15.2026.09.24.01.44.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 01:44:23 -0700 (PDT)
-Message-ID: <77c78712-d320-4a79-89e0-cfe11a33842f@redhat.com>
-Date: Thu, 24 Sep 2026 10:44:22 +0200
+	bh=RjcNA6HmCmlxdxtVqsdef6UdVNw3BtkB7wp/J7/Uu94=;
+	b=GRdLmTd5GQrggrSKlnMZ/11b9Oiw1Dv5pdsvVQ3ZBPaSX+0lRkcveW0cjl+8arlFJp2+qI
+	bMMv6KYnd1VeNkaBuAzau7vL5ISybsu7YYYC2Z/OXXukS4hprTxx6uraklfcvrmbuZL5M2
+	+WDvqNd6kfwN3zh9L9My1laI1NqqSZE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-nSAQ5WQbPuKl9s_BJxc4WA-1; Thu,
+ 24 Sep 2026 04:45:36 -0400
+X-MC-Unique: nSAQ5WQbPuKl9s_BJxc4WA-1
+X-Mimecast-MFC-AGG-ID: nSAQ5WQbPuKl9s_BJxc4WA_1790239534
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA749187A5D5;
+	Thu, 24 Sep 2026 08:45:33 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4C9D03000229;
+	Thu, 24 Sep 2026 08:45:29 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20260923133706.1496540-11-dhowells@redhat.com>
+References: <20260923133706.1496540-11-dhowells@redhat.com> <20260923133706.1496540-1-dhowells@redhat.com>
+To: netdev@vger.kernel.org
+Cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
+    Jakub Kicinski <kuba@kernel.org>,
+    "David S.
+ Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+    Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
+    linux-kernel@vger.kernel.org, Jeffrey Altman <jaltman@auristor.com>,
+    stable@vger.kernel.org
+Subject: Re: [PATCH net v11 10/17] rxrpc: Fix return in rxrpc_recvmsg_data() for service calls
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: Setup TBS only if HW supports it
-To: netdev-bot+sashiko@kernel.org,
- muhammad.nazim.amirul.nazle.asmade@altera.com
-Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com,
- andrew+netdev@lunn.ch, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, alexandre.torgue@foss.st.com,
- mcoquelin.stm32@gmail.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org
-References: <20260918023530.31971-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
- <179004548784.2160803.5129187589966240478@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <179004548784.2160803.5129187589966240478@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1551181.1790239528.1@warthog.procyon.org.uk>
+Date: Thu, 24 Sep 2026 09:45:28 +0100
+Message-ID: <1551182.1790239528@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 9/22/26 04:51, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 (1) · Medium: 2 (1) · Low: 0 (1)
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The patch is a bug fix (it prevents a descriptor-format
->    mismatch where the Tx ring is laid out with the 32-byte `struct…
-> - [Medium] The new gate in stmmac_setup_dma_desc() (stmmac_main.c:4128)
->    only checks the chip-wide capability bit `priv->dma_cap.tbssel`; it…
-
-I think this patch should stay on net-next with no fixes tag, but the other
-reported issue looks worth to be addressed.
-
-/P
+Fixes: d001648ec7cf ("rxrpc: Don't expose skbs to in-kernel users [ver #2]")
 
