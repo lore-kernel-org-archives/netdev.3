@@ -1,240 +1,143 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua2-f43.google.com (mail-ua2-f43.google.com [74.125.226.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163534CDA3C;
-	Thu, 24 Sep 2026 20:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA056378D92
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 20:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790281407; cv=none; b=g02Jma+DkIzIf4YdLJenM6fUS7a4DpcE1P1ODLGN9ArrIZPxnfXW7hpNylGaCx4nY0wUfczCPuATCHoR8rxzT6dkD2L1kJzYU/VBtf4qGIRhOQ6glQUqz402T9uyZyTxVV2oNFsXtPNOwF4cR7e1QyNU7wNtW6ZmuV47cuvqaus=
+	t=1790281563; cv=none; b=MfpT4jOUuNBMo6ZGenVNc/1sf6XtQoqORq04IHgi6igm3lskuulvuE4C8/DLLgFnMo0BlgwhA8I83YwyozfgzABPBfS0BA6imj0CYdddbdygRERgvQX3Z6kR6M/zM6YHrJViWLzG0gjLRP33EfPyuCAOZTWbsAF10L4EJqy/gFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790281407; c=relaxed/simple;
-	bh=k+a/7EFIKGPdvgGWpF/4YPgmMhIbNIbdtJXUaqgz+9w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=F3PzmIbjLmTt9kWYijWVJiw6R3jHUM2APEANDp2M20wseypHQkt05GhhVGvgQCOZYz4BMbjfFKC15jSJIDUYZ4FCviw8mowV5nyGwpXM5d9q/sNYT9UkNbn0S9cWWUErrOGKH75We/LdNUWGZgVBJeh66WYQpltR+BELiQA0f3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Qwr1MFJz; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790281563; c=relaxed/simple;
+	bh=uRYPAtAtLif7i10854CTEewWmJAf/TWjXqRBv41TdEI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tv6keqN5ibzCPkEXbog05lVPaRULBc9Q2RWHRQTXxPZtgrupCVisuMZiWeJ0Jyvab75P/d61RKhGbvj6ABgeDtAlC7Hy4s9d5GH27f1IM8RPQU/TLaeqLkpBmw6Nkjkx2Qsb42bHzhZMm6bWxE+7QcWtGU4MwbPwxzw5myideJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XI4oiPFE; arc=none smtp.client-ip=74.125.226.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Qwr1MFJz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 632754E41060;
-	Thu, 24 Sep 2026 20:23:17 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3766060738;
-	Thu, 24 Sep 2026 20:23:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 30BBA10329539;
-	Thu, 24 Sep 2026 22:23:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790281392; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=nIPlIKuRqxfztPDmnAMxiI/IBeEw2JynXIaSK2xboSc=;
-	b=Qwr1MFJzkwzyhUxcNauhKkeSRsGSVzIsFfx/oto0G1GLgsgnyNMpbq+9zUPoVlDNPeBHk2
-	rgxBQchvhSQ1zftkZ6B76Mq5+IK0ab1MVp/JlUREzPtft2NG+YRv59Fsd6MaRRd/P9YDnd
-	SfdBc3jQ/dHJm7/Zk8QLquX9Ve6ZvaPdJJGm60yppFHWOzai+CrKJ52oSrJrd8ynGOoNmr
-	SzIHRD4aR7G434rJ6UAQIgcgDiNzKl3GBAde2YQwxTFiUp+HN5aNxAuF/rigja+qAjei+s
-	022uxaaNRQrUqoix5z0uJTnbkR3GTa7U5PlItZMmSquYBq7O/Xe4Gv2AQHlj4A==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Thu, 24 Sep 2026 22:22:44 +0200
-Subject: [PATCH 5.10.y 3/3] net: preserve skb_end_offset() in
- skb_unclone_keeptruesize()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XI4oiPFE"
+Received: by mail-ua2-f43.google.com with SMTP id a1e0cc1a2514c-98514b4115eso137847241.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790281556; x=1790886356; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iv7JMCOOiStR26xduJ20yGu4jGk3+F31OuSygzoMJug=;
+        b=XI4oiPFEvODXpDmkNwakyL26cPhBZO0fAkDbzIYLDNg6xgLvTAkKVqFwgam4Ojh4Zj
+         1GsuEzJTH641jtPyku/gQLRYwtmylTydyUEgM6R0XYjqO6LGZEQI8LQ6hN6nxkyZXhGa
+         7d1Q2uGNumuVABxni+c/deDXTBa1yO+AD0L0ULPNlplrPe2cglZXELUCSDIyrI2aWov5
+         ZX4pL92GWVccxd6S1hNDBIqNpDDlruf1vOlgZCSbcJdlmfUE7ZquB+Trl1/bo7HO6XIU
+         UWlwBKvq/NhavnzSHYDMqsVk5wnicTTlA+E9Is4YjVr0z4S5eJI7duLF57KyhTtzy2Ec
+         1sLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790281556; x=1790886356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iv7JMCOOiStR26xduJ20yGu4jGk3+F31OuSygzoMJug=;
+        b=IMPGP+YNFydCEyz0RH1+GJoDOJNMllRFrPDl11GIxQH0mTDS6BDnFLpE/vfA14s3aY
+         WehQZBNeW47F+NgiaDYUK8buUw58cbFpGTy4z4DOiUbViyGxCINxxYlENBLpafl2YrBT
+         ZhcYNei/BwENsDeMTNAsrdvZNCppoHSgG/sA1tpPQsmHDPWMfheaQ6RaH+iZU+gp4ZBQ
+         tMFLkW/B3bQSDPWPfJsYdjYXXx9FALYsXLLumHlAimKc4oTxRBy1dF9+wQ64+KCMmB2y
+         paueEr+gAed2fqfApXtm1vHCDTfMuLh+i9EK1rFV3RFWa4U3AeNM11VqNEfUOh+ux5ss
+         fxJw==
+X-Forwarded-Encrypted: i=1; AKwUvBxAjJ1ERaPc4rqa3L/zO+TRa8Fh5FVgg/DcDQzsSzkvXfTmptBXd9x/TR6hWSY8FVO4HQrdSIY=@vger.kernel.org
+X-Gm-Message-State: AFuF++ky8KXRr9fsRgkd8QzUWWL5V8VTcnKICxz7mHN3lGedYh2vlcoL
+	rVXeg6JOhY4918ttIVtdYnV9wgQfh1M6wboKnE0WG0MFYGUKUGbOOO6q
+X-Gm-Gg: AYBFou1lFzRehdL+VY4fDrSsPrteCgOdhyHUCnv1nNFco8Qwi3Qo9UtYRZoZCTE70bg
+	ylE6vbgYfmMyxOyyUKI7eWvhviaPOnOjZrl3+EGCIExM3xdoCX0X1DTJCFhyu2RusfZ6Qk5gZcZ
+	XafA7HFLZNdfi+whyAe1/8fMFJu+mNhNbZwXkB3W9bwgyJkIVISTF3smWonNyS/nHZiXJPIiCZ9
+	077QOsNm5DCp2r0Rz2E7NBCRd/JH2zsIe4D/sTGBXXc3UkYAQytkx/eJ4aThsNmWb8sFS7qFzWJ
+	WbHkcToElMgwb7LhYfu6j9fjwsNEpjMm2SC3X8/+f/fMQeiKz3WA5g+355eQAc0BVUVauJYu716
+	lBe2o4mnRUk4WkDY/PrQG0e7UMkrfpQtqHH0Kn3vcyb/ZH6n5VS7thggqq9QNC/kPPYZ7mGc+o5
+	emXx+56qT+BcCghbHEzvRNMc+ycWlbOkg+UG2565Zjq+mRJutamP5FwynBn2onZhk0l1bi9cm2H
+	MvvCg7nOaqI
+X-Received: by 2002:a05:6102:c53:b0:7a1:f7c3:3a45 with SMTP id ada2fe7eead31-7af1d6c4296mr1934116137.18.1790281556440;
+        Thu, 24 Sep 2026 13:25:56 -0700 (PDT)
+Received: from adriano.lan ([2803:9810:3dd5:d810:440b:4079:aa61:d217])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7b0db1d1152sm782102137.6.2026.09.24.13.25.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 13:25:55 -0700 (PDT)
+From: Adriano Cordova <adrianox@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Adriano Cordova <adrianox@gmail.com>
+Subject: [PATCH net-next] netfilter: nf_flow_table_bpf: populate VLAN encap in XDP flowtable lookup
+Date: Thu, 24 Sep 2026 17:25:43 -0300
+Message-ID: <20260924202543.1090535-1-adrianox@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-cve-2022-49142-v1-3-0bfea684c11b@bootlin.com>
-References: <20260924-cve-2022-49142-v1-0-0bfea684c11b@bootlin.com>
-In-Reply-To: <20260924-cve-2022-49142-v1-0-0bfea684c11b@bootlin.com>
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
- Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>, 
- Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, Marco Elver <elver@google.com>, 
- Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- Benjamin Robin <benjamin.robin@bootlin.com>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>, 
- syzbot <syzkaller@googlegroups.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790281368; l=6294;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=tkkv9VY7HMCC4aTIdr9Smcy7lneqoDWyQ65a18sdRBM=;
- b=9xd2dWAmKYYBDVmdTG4AfOOa1ZR/TlnIWSGCzyo7CPbNvCREhbDSJUecBuTxl4/raiHOxG2m7
- GFYkorCknOwCQBHstJjWfGiEFCphv1gEH66RJHyOixVHVTSk7YmMYlM
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+encap[] is part of the flow_offload_tuple rhashtable key
+(flow_offload_hash() hashes up to __hash), so a lookup has to fill it like
+the skb path does.  bpf_xdp_flow_lookup() builds its key from struct
+bpf_fib_lookup only, which has no encap fields, so it leaves encap[]
+zeroed and can never match a flow whose tuple carries a VLAN encap.
 
-commit 2b88cba55883eaafbc9b7cbff0b2c7cdba71ed01 upstream.
+Fill encap[0] from an in-band 802.1Q tag, mirroring the ETH_P_8021Q case
+of nf_flow_tuple_encap().
 
-syzbot found another way to trigger the infamous WARN_ON_ONCE(delta < len)
-in skb_try_coalesce() [1]
-
-I was able to root cause the issue to kfence.
-
-When kfence is in action, the following assertion is no longer true:
-
-int size = xxxx;
-void *ptr1 = kmalloc(size, gfp);
-void *ptr2 = kmalloc(size, gfp);
-
-if (ptr1 && ptr2)
-	ASSERT(ksize(ptr1) == ksize(ptr2));
-
-We attempted to fix these issues in the blamed commits, but forgot
-that TCP was possibly shifting data after skb_unclone_keeptruesize()
-has been used, notably from tcp_retrans_try_collapse().
-
-So we not only need to keep same skb->truesize value,
-we also need to make sure TCP wont fill new tailroom
-that pskb_expand_head() was able to get from a
-addr = kmalloc(...) followed by ksize(addr)
-
-Split skb_unclone_keeptruesize() into two parts:
-
-1) Inline skb_unclone_keeptruesize() for the common case,
-   when skb is not cloned.
-
-2) Out of line __skb_unclone_keeptruesize() for the 'slow path'.
-
-WARNING: CPU: 1 PID: 6490 at net/core/skbuff.c:5295 skb_try_coalesce+0x1235/0x1560 net/core/skbuff.c:5295
-Modules linked in:
-CPU: 1 PID: 6490 Comm: syz-executor161 Not tainted 5.17.0-rc4-syzkaller-00229-g4f12b742eb2b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:skb_try_coalesce+0x1235/0x1560 net/core/skbuff.c:5295
-Code: bf 01 00 00 00 0f b7 c0 89 c6 89 44 24 20 e8 62 24 4e fa 8b 44 24 20 83 e8 01 0f 85 e5 f0 ff ff e9 87 f4 ff ff e8 cb 20 4e fa <0f> 0b e9 06 f9 ff ff e8 af b2 95 fa e9 69 f0 ff ff e8 95 b2 95 fa
-RSP: 0018:ffffc900063af268 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 00000000ffffffd5 RCX: 0000000000000000
-RDX: ffff88806fc05700 RSI: ffffffff872abd55 RDI: 0000000000000003
-RBP: ffff88806e675500 R08: 00000000ffffffd5 R09: 0000000000000000
-R10: ffffffff872ab659 R11: 0000000000000000 R12: ffff88806dd554e8
-R13: ffff88806dd9bac0 R14: ffff88806dd9a2c0 R15: 0000000000000155
-FS:  00007f18014f9700(0000) GS:ffff8880b9c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020002000 CR3: 000000006be7a000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- tcp_try_coalesce net/ipv4/tcp_input.c:4651 [inline]
- tcp_try_coalesce+0x393/0x920 net/ipv4/tcp_input.c:4630
- tcp_queue_rcv+0x8a/0x6e0 net/ipv4/tcp_input.c:4914
- tcp_data_queue+0x11fd/0x4bb0 net/ipv4/tcp_input.c:5025
- tcp_rcv_established+0x81e/0x1ff0 net/ipv4/tcp_input.c:5947
- tcp_v4_do_rcv+0x65e/0x980 net/ipv4/tcp_ipv4.c:1719
- sk_backlog_rcv include/net/sock.h:1037 [inline]
- __release_sock+0x134/0x3b0 net/core/sock.c:2779
- release_sock+0x54/0x1b0 net/core/sock.c:3311
- sk_wait_data+0x177/0x450 net/core/sock.c:2821
- tcp_recvmsg_locked+0xe28/0x1fd0 net/ipv4/tcp.c:2457
- tcp_recvmsg+0x137/0x610 net/ipv4/tcp.c:2572
- inet_recvmsg+0x11b/0x5e0 net/ipv4/af_inet.c:850
- sock_recvmsg_nosec net/socket.c:948 [inline]
- sock_recvmsg net/socket.c:966 [inline]
- sock_recvmsg net/socket.c:962 [inline]
- ____sys_recvmsg+0x2c4/0x600 net/socket.c:2632
- ___sys_recvmsg+0x127/0x200 net/socket.c:2674
- __sys_recvmsg+0xe2/0x1a0 net/socket.c:2704
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-Fixes: c4777efa751d ("net: add and use skb_unclone_keeptruesize() helper")
-Fixes: 097b9146c0e2 ("net: fix up truesize of cloned skb in skb_prepare_for_shift()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marco Elver <elver@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/xdp-project/xdp-tools/issues/488
+Signed-off-by: Adriano Cordova <adrianox@gmail.com>
 ---
- include/linux/skbuff.h | 18 +++++++++---------
- net/core/skbuff.c      | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 9 deletions(-)
+ net/netfilter/nf_flow_table_bpf.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 34b6a7e3af8d..0a7b1a7f1ae1 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1655,19 +1655,19 @@ static inline int skb_unclone(struct sk_buff *skb, gfp_t pri)
- 	return 0;
- }
- 
--/* This variant of skb_unclone() makes sure skb->truesize is not changed */
-+/* This variant of skb_unclone() makes sure skb->truesize
-+ * and skb_end_offset() are not changed, whenever a new skb->head is needed.
-+ *
-+ * Indeed there is no guarantee that ksize(kmalloc(X)) == ksize(kmalloc(X))
-+ * when various debugging features are in place.
-+ */
-+int __skb_unclone_keeptruesize(struct sk_buff *skb, gfp_t pri);
- static inline int skb_unclone_keeptruesize(struct sk_buff *skb, gfp_t pri)
+diff --git a/net/netfilter/nf_flow_table_bpf.c b/net/netfilter/nf_flow_table_bpf.c
+index cbd5b97a6329..479f8242da2b 100644
+--- a/net/netfilter/nf_flow_table_bpf.c
++++ b/net/netfilter/nf_flow_table_bpf.c
+@@ -10,6 +10,7 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
++#include <linux/if_vlan.h>
+ #include <net/netfilter/nf_flow_table.h>
+ #include <linux/bpf.h>
+ #include <linux/btf.h>
+@@ -60,6 +61,8 @@ bpf_xdp_flow_lookup(struct xdp_md *ctx, struct bpf_fib_lookup *fib_tuple,
+ 		    struct bpf_flowtable_opts *opts, u32 opts_len)
  {
- 	might_sleep_if(gfpflags_allow_blocking(pri));
+ 	struct xdp_buff *xdp = (struct xdp_buff *)ctx;
++	const struct ethhdr *eth = xdp->data;
++	const struct vlan_hdr *vh;
+ 	struct flow_offload_tuple tuple = {
+ 		.iifidx = fib_tuple->ifindex,
+ 		.l3proto = fib_tuple->family,
+@@ -91,6 +94,18 @@ bpf_xdp_flow_lookup(struct xdp_md *ctx, struct bpf_fib_lookup *fib_tuple,
+ 		return NULL;
+ 	}
  
--	if (skb_cloned(skb)) {
--		unsigned int save = skb->truesize;
--		int res;
--
--		res = pskb_expand_head(skb, 0, 0, pri);
--		skb->truesize = save;
--		return res;
--	}
-+	if (skb_cloned(skb))
-+		return __skb_unclone_keeptruesize(skb, pri);
- 	return 0;
- }
- 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 8118cd4e1b31..84fe9cdd16c3 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1737,6 +1737,38 @@ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb, unsigned int headroom)
- }
- EXPORT_SYMBOL(skb_realloc_headroom);
- 
-+int __skb_unclone_keeptruesize(struct sk_buff *skb, gfp_t pri)
-+{
-+	unsigned int saved_end_offset, saved_truesize;
-+	struct skb_shared_info *shinfo;
-+	int res;
++	/* encap[] is part of the lookup key, fill it from the 802.1Q tag. */
++	if (eth + 1 <= (const struct ethhdr *)xdp->data_end &&
++	    eth->h_proto == htons(ETH_P_8021Q)) {
++		vh = (const struct vlan_hdr *)(eth + 1);
++		if (unlikely(vh + 1 > (const struct vlan_hdr *)xdp->data_end)) {
++			opts->error = -EINVAL;
++			return NULL;
++		}
++		tuple.encap[0].id = ntohs(vh->h_vlan_TCI);
++		tuple.encap[0].proto = htons(ETH_P_8021Q);
++	}
 +
-+	saved_end_offset = skb_end_offset(skb);
-+	saved_truesize = skb->truesize;
-+
-+	res = pskb_expand_head(skb, 0, 0, pri);
-+	if (res)
-+		return res;
-+
-+	skb->truesize = saved_truesize;
-+
-+	if (likely(skb_end_offset(skb) == saved_end_offset))
-+		return 0;
-+
-+	shinfo = skb_shinfo(skb);
-+
-+	/* We are about to change back skb->end,
-+	 * we need to move skb_shinfo() to its new location.
-+	 */
-+	memmove(skb->head + saved_end_offset,
-+		shinfo,
-+		offsetof(struct skb_shared_info, frags[shinfo->nr_frags]));
-+
-+	skb_set_end_offset(skb, saved_end_offset);
-+
-+	return 0;
-+}
-+
- /**
-  *	skb_expand_head - reallocate header of &sk_buff
-  *	@skb: buffer to reallocate
-
+ 	tuplehash = bpf_xdp_flow_tuple_lookup(xdp->rxq->dev, &tuple, proto);
+ 	if (IS_ERR(tuplehash)) {
+ 		opts->error = PTR_ERR(tuplehash);
 -- 
-2.55.0
+2.51.0
 
