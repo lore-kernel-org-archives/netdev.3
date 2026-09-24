@@ -1,61 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40C8377AB2;
-	Thu, 24 Sep 2026 16:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F2C3DC4C2;
+	Thu, 24 Sep 2026 16:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790266978; cv=none; b=MNpKC7BjXdeQyHFExObVykognyjuGKR5xSLHwE/DhREXgTbqiIcFdtpYkEQNFlr/1PyOyXmc8t4GiPpn5gpVsfgXhA89SMdXXhaEUHxEzDhRPZbe99C5mKXqWDU9CXRUPyGo/Z2gCy/ykjrF78yGhP0wsaJqvIFXGy94eeo6NO4=
+	t=1790267090; cv=none; b=hgLNXDHjlIPr5lPgbBOpH51o4yoAoPcmqfV0dddd15dqb1JWORQaBqJLaAsxrfshHvQm3Sk/PtUh0gYH2kVhR0vsv8wXGFuhGOZ/mK3q4xHvo00jYclXhWUHr+nfj3g7NvIiU+JQFZw3sQVeWEzQB3HhjA3TgchulskY+R2lEjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790266978; c=relaxed/simple;
-	bh=d/8J//64Ahfs4qRYaUjicRRjt8KMelyM0PY3/HnQsRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nXYEVQsFZEvOrg4Fq6ZAPXp5yevkz9fb1eyzAR+vTXGpbDxsPZERuPryR2kquNHY7vtsijatGk0mh3bFYIYPZpJaXkAO6O+axERtqrhJQWvYlFriLTym6YKKqkBH2zGlihufWtZKgbGyGBs2PuUcFP4ZL5DVSswXcYROrWKV0DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izENHiTS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790267090; c=relaxed/simple;
+	bh=057w4K6AIH+2cjgtX4h1v5myM/zTrovsfRnreCXZXgk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u5kbaa4IO5PFm5SdDJ8ZWAOWGu0Krzdu5Q3Xtnh5VSNkxRKRLSTYH5UzgHFASVl+se4G/xRiYsIG0NVNfC5fAuLGJpiZGv+Te0uO05ba0gIKEBbqqP6hpoKw7d+OgAowQ/6X24jB4o4Z3+Gf23oT6/fchRXokF4W0WKt5noLGZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=U6IAhE70; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izENHiTS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59BA1F000FF;
-	Thu, 24 Sep 2026 16:22:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790266977;
-	bh=d/8J//64Ahfs4qRYaUjicRRjt8KMelyM0PY3/HnQsRU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=izENHiTSPEWQdo8vLS2HlcNA7OK3zi+RaIgTayzodVvQrotB6VyUeYIUFp/AhYxYH
-	 01E8Y1Udcs+oODcfgf2tm6n+m2jBG+82j93MFlud7xdSUh3HiWPhLM+MrA8lnEPbHh
-	 SdVvqUzkBhtHNm3TDRW9Ioxpjn2z45LhvHH+MATIDAlxas1Ayb4Rt+Dry2lbUrfmfb
-	 njDfSoVQdcZGpGZLe1D2TK+QAJaTYcPO48SUtgsUHXts42iS59mc9o0sFqf00YYfnF
-	 cr/DV1VjkbdoIAnW3hA8vSE/ZtxQkFOff7DJkZI0mKn/JgRREVIae1mJun6IN5NT2w
-	 cqLybLr6nM3HA==
-Date: Thu, 24 Sep 2026 09:22:56 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Daniel Zahka" <daniel.zahka@gmail.com>
-Cc: <netdev-bot+sashiko@kernel.org>, <alexanderduyck@fb.com>,
- <kernel-team@meta.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
- <edumazet@google.com>, <pabeni@redhat.com>, <ast@kernel.org>,
- <daniel@iogearbox.net>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
- <sdf@fomichev.me>, <dimitri.daskalakis1@gmail.com>,
- <mohsin.bashr@gmail.com>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next 2/8] eth: mpnic: add register init for the
- device
-Message-ID: <20260924092256.28fd0712@kernel.org>
-In-Reply-To: <DLNOJJD5HT78.FEHRVJW7476B@gmail.com>
-References: <20260922-linux-mpnic-v1-2-236844f53072@gmail.com>
-	<179021553292.2160803.15849497453510759239@kernel.org>
-	<DLNOJJD5HT78.FEHRVJW7476B@gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="U6IAhE70"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1790267089; x=1821803089;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=057w4K6AIH+2cjgtX4h1v5myM/zTrovsfRnreCXZXgk=;
+  b=U6IAhE70dtOHVXdjZPBet44xD02bMw6SmAXMstzga1+c6VtD24xrD0t2
+   p+ygqbVHSjR1kulqz3X28bYGX5kC2XY9PemCJ0LjDIeR8ZghTStTAEqEV
+   a/wjs+tuv5pW3/M3VO4q1frQFGk5AJimkXyfTr7+TxN3QN4jevKCLxbNY
+   GuqUNbHM+E1PwaxFkv3oOAytQNVzG9AXXcr3tP45KypV5XS0/DS0UlrbT
+   8w2wKd+JVwOzXOU3loy1CyCvSyrw/YHscKQe2HVXOuHIrLgk1IoXqLTok
+   CklEaEthYo1rkJo7UB9Un7YoD+apys4gQMbA5Wstx+vvVi/iq5QgNPWHM
+   Q==;
+X-CSE-ConnectionGUID: W2R9KMarSxa+DEZ33B5E4A==
+X-CSE-MsgGUID: jaEIntY6QkyEU8YyNCAOvA==
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="64409041"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Sep 2026 09:24:48 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Thu, 24 Sep 2026 09:24:47 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 24 Sep 2026 09:24:43 -0700
+Date: Thu, 24 Sep 2026 18:24:43 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Simon Horman <horms@kernel.org>, <netdev-bot+sashiko@kernel.org>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
+	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
+	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
+	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
+	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH net-next v7 10/14] net: lan966x: add PCIe FDMA support
+Message-ID: <20260924162443.5vmx3dx5c4cx7rrm@DEN-DL-M70577.microsemi.net>
+References: <20260918-lan966x-pci-fdma-v7-10-0ecc179c8a2c@microchip.com>
+ <179008205148.2160803.12818321368571406375@kernel.org>
+ <20260923084538.wgkw2nt5ergoxcot@DEN-DL-M70577>
+ <20260923180730.GV13925@horms.kernel.org>
+ <20260923201155.lbbbtx22adz2ilhg@DEN-DL-M70577.microsemi.net>
+ <20260924064617.GY13925@horms.kernel.org>
+ <20260924083141.67eecb6e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260924083141.67eecb6e@kernel.org>
 
-On Thu, 24 Sep 2026 12:16:33 -0400 Daniel Zahka wrote:
-> I don't believe this is necessary. It doesn't seem that common in
-> pci based network drivers. In our case, the bar size is static. It will
-> always be 64MiB for this pci device id.
+> On Thu, 24 Sep 2026 07:46:17 +0100 Simon Horman wrote:
+> > > I am a little reluctant, when I cant really test it properly. Sashiko gives
+> > > another solution - adding a LE dependency to the Kconfig of the misc PCI driver,
+> > > maybe that'll do?
+> >
+> > I think that should be a last resort. I won't hold out on this,
+> > but I would prefer the approach I suggested.
+> 
+> +1
 
-Yes, we trust PCIe devices to not be malicious and/or mangled.
-I need to update the prompts :S
+Ack. Will add the big-endian support in v8. Thanks.
+
+/Daniel
