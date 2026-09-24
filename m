@@ -1,81 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD9E41D23A
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BDC3DE450;
+	Thu, 24 Sep 2026 18:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790272884; cv=none; b=dYASKAVzVMdah9SmVUJI9jt24ZUnfYBMQVKq5FdEelfVsb9Nm23iWa6Wb0CTOlTa8n1Uhg0Tku1+8uw5XxWMiijsNKs3t9/5XcQ83kyOIIUMwshF4KrTFIs15uBvSpmAAMhXnB4ZqGpH+/Wgy7jOE5qHSHpwDnZ6qGuGk177FBo=
+	t=1790272955; cv=none; b=lS//b9+JUEgfoVC3QGOh92/A9u3XAKgce++eN2zQzm9wgNnx6dyfbU8ZqaaRwD7xrl2qFmmd5bxW2hhl84oTEXOQ2gCeEaryrRmzJsojRNk+Dfze+p1OhsHeFIzVIqVY5wBloWhnsVTA7Zbc1kbudXQYngr613JmraOD4Iwp05E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790272884; c=relaxed/simple;
-	bh=8zUknIt/ePwhd/LddkBiHSk15y43HRK6Lo4gAVu1+Fw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gRSUhh2OEEHGm4tbRDSH7Fb7nFWAa8H+UO6vqcMplSIzoBSgiQfaEivnNYU5aSzYsx0esfOr2LRYAYtqK//jJb4TUN+fhIeK7vm1lqjHqD6OPBeFlE9iRzK3LXiAV3MBEZCXmY64urcBP+oSDdzOWvS+KoHfuV/ha/gmrQD7hr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YzGFm7Nb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790272955; c=relaxed/simple;
+	bh=BWQmMk4P7oWQZ6selUXVbWgc3eCmQ2XDAFOZYJ0wtvY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ciBfu/Jh3n0nEA0dfPslI99wYKqrFKvGffrrZA/V4oWdIev6w3NjgZ+RJyjUYtfUBcUAlxVsArwTaGs0yap9i/EAd5bU5AWNpvFGHfDFF5qs5rZevoCuoKnZ8B9Vpj4NIAIQnV2VYsIrQn1nNXPoPnKnFds2XkFaLSM/Ty++leI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XBsI2RkD; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YzGFm7Nb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322901F00899;
-	Thu, 24 Sep 2026 18:01:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790272883;
-	bh=PUAIRbR38n1VnKaj0e/uBt+4cjIAazyRZgXOu191Hr4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YzGFm7NbXwRBfmsZUDU7VfN5Ic1SydnxpYrWDfGo1Wxfz/M2bwnECOGmSNMx6vla2
-	 xnjS9fut3RcOypw8Xp2XKThJlaIJrIIuqxtnqK3zqPd7FcubZA2u2gsG2h7rEdK/hi
-	 +4fl8vykJATM5FVLgkMnBkpO7JCfvbGO/DyfnEMF1LoKYBQHWvIkybLSClJRndDdXB
-	 KYIjJY6lH0KnCFtRe/k5G9pqILHVSiJcn+J20e7+AlBoQjTk8SeSpn/2RSe0uUyvbA
-	 S8ha1LiYkLyxsXbj8bWAL8D8X0bmuhtXnQuYQ33k7/OMw92Ho6INAghS3vkE7j4O9c
-	 cM8z/0S0dSmGg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5695C3A566DD;
-	Thu, 24 Sep 2026 18:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XBsI2RkD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1790272950; x=1790532150;
+	bh=yw4Nx+apWUj5aMc01ZYswKCHC3oxA/NJaFvqqFiFb6o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=XBsI2RkD3KGBSvEbYylArmUzoF9JHZb4otYJunaZVlgY02LOpi+LCIxGwHA6Py3mq
+	 ObpPSU6eb93OLFugL0uCbbrPe0qJGrrCh5EVeNcgTDZI4GiAS7nw2gfptPZb4tTcss
+	 w3kIlXNSOre35E635KHGZN+Ox8Sa4bNSq5o+aKBc/I56WBkJ6NiXJvy1kBOsAN//8g
+	 KOJq4V8Kf7R9Ae5H2aG1qv9CGBKUrvVj0nufEFkaLz6zsIvjuJTr09OiOnxBleCkQ5
+	 hgPfLoc/HT2twSBgz8CtAc6byzAvg/eVkNLWGMMqbLw8javzobmlJOm74zD8Y98m6G
+	 /uaVELx1nEUVg==
+Date: Thu, 24 Sep 2026 18:02:24 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Matthew Maurer <mmaurer@google.com>, Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH net-next v4] rust: net: netlink: validate attribute length before casting to `c_int`
+Message-ID: <pg6AgjGkbepQeI2FIcnGmFk79uPhI0wShhVJVNbvrLkULQtO4jco6gm4xKaLiGFV9UVZBVK_h-sDlHtVip5s34SkCRyDoE47V9Zse9GsLAg=@proton.me>
+In-Reply-To: <20260924104645.4764dbba@kernel.org>
+References: <20260923120504.9100-1-sagartaunk@proton.me> <20260924104645.4764dbba@kernel.org>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: 8552dff6b3f12d1f9196725532baf41082287872
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] net: flush skb_defer_nodes in dev_cpu_dead()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179027281189.1685480.10772123660048220576.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 18:00:11 +0000
-References: <20260923130318.607255-1-edumazet@google.com>
-In-Reply-To: <20260923130318.607255-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, edumazet@kernel.org,
- kris.pan@intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+Sorry, my last patch was based on the rust-next tree so I thought it was no=
+t applying because I commited this on top of that so I just removed that an=
+d rebased on rust-next again.=20
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Am I supposed to rebase on this one?=20
+`https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/`
 
-On Wed, 23 Sep 2026 13:03:18 +0000 you wrote:
-> When a CPU goes offline, dev_cpu_dead() drains its softnet queues
-> (completion_queue, output_queue, poll_list, process_queue, and
-> input_pkt_queue), but leaves net_hotdata.skb_defer_nodes untouched.
+
+
+
+
+
+On Thursday, September 24th, 2026 at 11:16 PM, Jakub Kicinski <kuba@kernel.=
+org> wrote:
+
+> On Wed, 23 Sep 2026 12:05:17 +0000 Sagar Taunk wrote:
+> > Rebased on the upstream rust-next tree.
+>=20
+> I'm confused, you're tagging this for net-next but rebasing
+> on rust-next. This patch does not apply for us.
+> --
+> pw-bot: cr
 > 
-> If oldcpu goes offline while holding pending skbs in its
-> skb_defer_nodes lists (e.g. below the sysctl_skb_defer_max >> 1 IPI
-> threshold, or if the IPI races with CPU teardown), those skbs remain
-> stranded until oldcpu is brought back online. If any of these skbs
-> hold page_pool fragments, page_pool_destroy() will stall indefinitely
-> waiting for inflight pages to be returned when a netdev or driver is
-> torn down while oldcpu is offline.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2,net] net: flush skb_defer_nodes in dev_cpu_dead()
-    https://git.kernel.org/netdev/net/c/06e3f54e8b22
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
