@@ -1,141 +1,190 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F9A3EC824
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4979253B58;
+	Thu, 24 Sep 2026 07:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790236307; cv=none; b=jmMeRd74hM8ShV/7cf/9MzTRjFjJ1ePS+ehkpq8mD2K2iBhIshzllI6rDXHV/BkgFkbLCaAYUzMVHt685RbgufzRMfXqVZcMzgn6ND01yYX9jF2kAQ+o0hX5lTXDwJ3Ng9SMMUPtti5j60DK7DhYqXShmvhBLNJEhe47D1ra0Vc=
+	t=1790236476; cv=none; b=QqoUUOGukZhj59XdoktGm8ZJ1zyRVaIZhtNt3hKy+pABcCum6n1g1ZJn0tT2BOS5X/+8UfBdzPrxqbjqY4GgXjhNcCvUEzFNvDJ42FV7Kj84omW3/sSpttkvcd6ThU14x/CmO8ZUr1RuTxT93qlR+SpT/xo3ETYWcE2qxJ8754g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790236307; c=relaxed/simple;
-	bh=TRhy+/I5J77Q/1YSA/sx8GUDSoNQC6h5HCw7Plj0rt4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M9y/qaersPy3F1CZNxrF0DhFDSnk+XpAMEGhn9cPzbKVvjyeKBNX0yew3EPet1oyqcTGMox4yG/Td7J5uJuwoM6YgXrXwagK1Rg1cmoEGo65mMnIseyyzXW1s/P47ytGNidizdX1vosGsrFbOpTmXPkEIeFfzNUzLCJclPKDsmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvySO9zc; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790236476; c=relaxed/simple;
+	bh=zEb1ES0ydJK8Cg2Rz/0PIFe996/QjgU762OxcQSNUO4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=esc5bLvvNDkjk+p0Q3c9wI1XEndAZzROSNhfyxs7G0IyMlXiQOgUiNFjqvGpEFxMPEuysVxra0Vi/fP54aUkU9ORWiahFoE2UX3lnz2iuoK8Gq4zb8pyiH8cDAgTlMqUkgUa7/Ay+Pmrz0DrdyLmoU14xHTveOlUMVHxzW2c0V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5ihOwBL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvySO9zc"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-398a1676000so1069682a91.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790236305; x=1790841105; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9EQyRWWK5qALWLPwUJRBoHZhkD+3TF7/yRx4MDMxnNM=;
-        b=kvySO9zceooGMWylSC7lHqHR0rxQm/aJ1VGKgXt8e0Jav7K2ox9HpYaMF4Qclb0NOg
-         NNuA0WL+FfY+BBTg1eL9hcPy+GavGfTdWLOvXfgeNJDuLn7R6pwF5AP1JWxIeKwy0HGE
-         mENveACQf4p45uxtb6AcnXKcirexYkZ6Wxo+23Wo7woFyaLxskg4LGzgO/cR8BOdUcl0
-         pYVuP/27html1dJD6YyYTtJ/72epF322jl9tSQiHYJfg5PGdqaVMRte/568uMApxos6C
-         PqpP3NLkczwGMX7sJrFt2XY/+1WfCjBdMW9JsQ5yzrYLNutN5wZcsxmB4viy+GTVyhkt
-         GJCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790236305; x=1790841105;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9EQyRWWK5qALWLPwUJRBoHZhkD+3TF7/yRx4MDMxnNM=;
-        b=bKt7EHvIO9Njg7TnP6w6OYbS0QyNGQOShspcR3OnuYwh8CxbuQWq7yU8iyi6E1PEuU
-         Lo0iEp6rZJjg3FC98BZ3jhfTidh/pLUBNqEcgWZyB5i+CKijawwopbqDRnMQ/o61X/JL
-         5Z/z2vEH2hfvzB/+/Wuhyd8bGnijhHLkMfahxLJYiz1qxm/Mbg/4xKet/uqO+IfrQS4m
-         W76X+0E4GJSADTNvprre6eh0zXX+95DxPR0OeIBW9hKHFM57AFpdwT/6L7LDaB1GqYmi
-         y+6iE4YTW0GIFjnRTkv53svOCgnPJRmiovAlomrH4IZyQaXR9t/KK6NiiZSuATC2AnSz
-         ICjg==
-X-Gm-Message-State: AFuF++n7o057CkKzM0OlnAneE0XRY2RtgfuqTGYfhjsdJDdyAwxL6Iu0
-	cf1x6hKLFCb0CgpHyX1O6qwY4bkcjonsHEMGNDBTS7f1aLh2mPHWLn9FUuIKo+Wr
-X-Gm-Gg: AYBFou0tR2CmPOI1j6Ey3Zwni4giGBFXQTs697IZ7ZuqmX4ClGZcrcBFLAefV0Ugk20
-	8kxudjXxBhrL9t2iVsJcFOw6SPe8dk83GDT4+eWN1V34qpxmW/U4jOo/1eblPmniE2hpIbi3QTv
-	cHRyA5JiJ/Qno+8z+ZjEzqR91EcGKU7rOhb7AOHfMBaFXby0yF5Q7tShIRXNvgbFvhUOiI927Px
-	O9QyFkXz3QrX1nDbPpRJBsSGJfeYl7KNeJZeOJWGnoZIFbgc0QEwsU0gteDoMN2xDzWVtXzpdaO
-	pH36aUl1/9Zi6gPQ6q3lnZVy+v4woW2X701ZNIkSIKLkHbr1PD7Ex6Pibi1MAhOS/8+YTBy5pJ6
-	KcsRkiS3WFhfjn90VKMRKcnnFtYLvehJnSpk6tTVSqqqOy/VTKVkLUUaSCOVYet4lNYQ5s3oEwD
-	64YKYZJTMwROO+yIVHTiW/3uW0Qy3VI4idyiV3jpnDtlNkl5qp95tSCWXZrSprMl+xMzLc5ghyW
-	G81wSbykaHYdr8OrI7fog5q/vbZiNFzJx+jdNHVsOJzoBfa56nUMsmn8pbnPFgUv+kGEglp/oAo
-	QsWUWMGwI40=
-X-Received: by 2002:a17:90b:3d92:b0:39e:6c69:f474 with SMTP id 98e67ed59e1d1-3a098cf4a56mr1420939a91.51.1790236305347;
-        Thu, 24 Sep 2026 00:51:45 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (67.51.127.34.bc.googleusercontent.com. [34.127.51.67])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0972eec92sm3540181a91.7.2026.09.24.00.51.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 00:51:44 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dsahern@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	andrea.mayer@uniroma2.it,
-	hangbin.liu@linux.dev,
-	Hui Peng <benquike@gmail.com>
-Subject: [PATCH net v3] ipv6: sr: enforce exact attribute length for SEG6_ATTR_DST
-Date: Thu, 24 Sep 2026 07:51:43 +0000
-Message-ID: <20260924075143.2839886-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5ihOwBL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05591F000FF;
+	Thu, 24 Sep 2026 07:54:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790236474;
+	bh=BYKTemitrAEhbE5qfBfWWBprm2uQ4LAmZ3SOFCm3iVo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=g5ihOwBLbAqVjP2jhDScCjB/Z0cfI+fd8Va7Qynkl5JbEYNsvO/Y7n4WV/xFCVaB5
+	 7lsKMcO4YO6v9YZPBrMVDtzLug61/oPlDIgr6v17Qf76Ge3bOs4YxVuYgkmJfWmsXP
+	 ns8y+Dl9+TvBqoxHpE2jvx2UH08Lnd1Q6trpG+uzO45OR8/HLKaMLrzUT5o9Hud43L
+	 8O2AEF1tKkO8GJvyKoc3nvuE+myNd2XzY5X6OqdHFxcXfhGOcdG17291liB9eMjCim
+	 aWKNrxXO6ICkOE5/N/9C2bSGcU3z9f94w+4adp5w7rj3rOvm9vhGRN3QlF2GnTi8XF
+	 jCZfSjFtlLwzQ==
+Subject: Re: [PATCH net 1/3] net: phylink: allow stopping a suspended instance
+From: netdev-bot+sashiko@kernel.org
+To: james.hilliard1@gmail.com
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ qiangqing.zhang@nxp.com, rmk+kernel@armlinux.org.uk,
+ maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ansuelsmth@gmail.com,
+ yangtiezhu@loongson.cn, chenhuacai@kernel.org, richard.genoud@bootlin.com,
+ alastair@d-silva.org, mripard@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Thu, 24 Sep 2026 07:54:32 +0000
+Message-ID: <179023647242.2160803.15587115569957913954@kernel.org>
+In-Reply-To:
+ <20260921-submit-stmmac-reset-fixes-v1-v1-1-87a4e431ee00@gmail.com>
+References:
+ <20260921-submit-stmmac-reset-fixes-v1-v1-1-87a4e431ee00@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-In seg6_genl_policy, SEG6_ATTR_DST is defined with .type = NLA_BINARY and
-.len = sizeof(struct in6_addr). For NLA_BINARY, .len only enforces the
-maximum payload length and permits shorter payloads (e.g., 0 bytes).
-When seg6_genl_set_tunsrc() copies sizeof(struct in6_addr) bytes via
-kmemdup(val, sizeof(*val), GFP_KERNEL), a short SEG6_ATTR_DST attribute
-triggers a 16-byte out-of-bounds read past skb->tail into uninitialized
-skb->head memory, which is stored in sdata->tun_src and leaked back to
-userspace via SEG6_CMD_GET_TUNSRC.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Switch SEG6_ATTR_DST in seg6_genl_policy to
-NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)) so that generic netlink
-validation rejects any attribute whose length is not exactly
-sizeof(struct in6_addr) with -ERANGE.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Tested in QEMU against Linux 7.3.0-rc3 by sending a SEG6_CMD_SET_TUNSRC
-Generic Netlink message with a 0-byte SEG6_ATTR_DST attribute followed
-by SEG6_CMD_GET_TUNSRC. On the unfixed kernel, SEG6_CMD_SET_TUNSRC
-succeeds (err = 0) and SEG6_CMD_GET_TUNSRC leaks 16 bytes of
-uninitialized kernel heap memory (tun_src =
-836a61ecc4d25a1042a8d60411cfb378); with this patch applied,
-SEG6_CMD_SET_TUNSRC is rejected by netlink policy validation with
--ERANGE (-34) and tun_src remains zeroed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Reviewed-by: Hangbin Liu <hangbin.liu@linux.dev>
-Assisted-by: LLM
-Signed-off-by: Hui Peng <benquike@gmail.com>
----
-Changes in v3:
-- Add Reviewed-by tag from Andrea Mayer.
-- Send as a fresh standalone thread (no In-Reply-To header) as requested by
-  Jakub Kicinski.
+- [Medium] phylink_stop() is newly documented and implemented as a legal
+  replacement for phylink_resume() after phylink_suspend(), but it does…
 
-Changes in v2:
-- Drop the redundant nla_len(info->attrs[SEG6_ATTR_DST]) !=
-  sizeof(struct in6_addr) check in seg6_genl_set_tunsrc() since
-  NLA_POLICY_EXACT_LEN() in seg6_genl_policy already enforces the exact
-  length, as pointed out by Hangbin Liu.
+--
 
- net/ipv6/seg6.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+net: phylink: allow stopping a suspended instance
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 62a7eb779202..8c2b156c227a 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -138,8 +138,8 @@ void seg6_icmp_srh(struct sk_buff *skb, struct inet6_skb_parm *opt)
- static struct genl_family seg6_genl_family;
- 
- static const struct nla_policy seg6_genl_policy[SEG6_ATTR_MAX + 1] = {
--	[SEG6_ATTR_DST]				= { .type = NLA_BINARY,
--		.len = sizeof(struct in6_addr) },
-+	[SEG6_ATTR_DST]				=
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
- 	[SEG6_ATTR_HMACKEYID]		= { .type = NLA_U32, },
- 	[SEG6_ATTR_SECRET]			= { .type = NLA_BINARY, },
+This makes phylink_stop() usable directly on a suspended phylink instance,
+so a MAC that cannot restore its hardware after system sleep can close the
+netdev instead of calling phylink_resume(). An already stopped instance
+returns early, and the MAC Wake-on-LAN case drains the resolve work,
+completes the deferred link-down and clears PHYLINK_DISABLE_MAC_WOL.
+
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index a1458da8111b6..8f9278112623b 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -2495,11 +2495,17 @@ EXPORT_SYMBOL_GPL(phylink_start);
+>   *
+>   * This will synchronously bring down the link if the link is not already
+>   * down (in other words, it will trigger a mac_link_down() method call.)
+> + * It may also be called after phylink_suspend() if the MAC cannot resume
+> + * and the network device must be closed instead.
+>   */
+>  void phylink_stop(struct phylink *pl)
+>  {
+>  	ASSERT_RTNL();
+>  
+> +	/* phylink_suspend() already stops the link without MAC WoL. */
+> +	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state))
+> +		return;
+> +
+
+[Severity: Medium]
+Does this new exit path leave the PHY advertisement clamped to the lowest
+speed?
+
+phylink_suspend() performs two things when PHY based power management speed
+control is in use:
+
+drivers/net/phy/phylink.c:phylink_suspend() {
+	...
+	} else {
+		phylink_stop(pl);
+	}
+
+	if (phylink_phy_pm_speed_ctrl(pl))
+		phylink_speed_down(pl, false);
+}
+
+The only place in phylink that reverses the second part is
+phylink_resume():
+
+drivers/net/phy/phylink.c:phylink_resume() {
+	ASSERT_RTNL();
+
+	if (phylink_phy_pm_speed_ctrl(pl))
+		phylink_speed_up(pl);
+	...
+}
+
+Both new exits added here, this early return and the MAC WoL completion
+block below, return without calling phylink_speed_up().  So a MAC that
+follows the new kernel-doc ("It may also be called after phylink_suspend()
+if the MAC cannot resume and the network device must be closed instead")
+ends up with the PHY still advertising only the lowest common speed, and
+with the original advertisement left in phydev->adv_old where phylink will
+never consume it.
+
+Should the new documentation state that the MAC has to call
+phylink_speed_up() itself in this case, or should phylink_stop() reverse
+the speed-down on these paths?
+
+The only in-tree user of wol_phy_speed_ctrl is stmmac, and stmmac_open()
+calls phylink_speed_up() unconditionally, so the next open repairs the
+residue in the common case.  The residue looks like it can become permanent
+if another speed-down runs first, since stmmac_release() also calls
+phylink_speed_down() when device_may_wakeup(priv->device) is true:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_release() {
+	...
+	if (device_may_wakeup(priv->device))
+		phylink_speed_down(priv->phylink, false);
+	...
+}
+
+and phy_speed_down() overwrites the saved advertisement each time:
+
+drivers/net/phy/phy.c:phy_speed_down() {
+	...
+	linkmode_copy(phydev->adv_old, adv_tmp);
+	...
+}
+
+With no intervening phylink_speed_up(), would the second phy_speed_down()
+store the already reduced set into phydev->adv_old, so the later
+phylink_speed_up() restores the reduced advertisement rather than the
+configured one?  Note device_may_wakeup(priv->device) can be true while
+pl->wolopts_mac is zero, since stmmac calls
+device_set_wakeup_capable(priv->device, 1) when plat->pmt is set.
+
+>  	if (pl->sfp_bus)
+>  		sfp_upstream_stop(pl->sfp_bus);
+>  	if (pl->phydev)
+> @@ -2512,6 +2518,16 @@ void phylink_stop(struct phylink *pl)
+>  
+>  	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
+>  
+> +	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
+> +		/* Finish the link-down deferred by MAC WoL, without restarting. */
+> +		flush_work(&pl->resolve);
+> +		mutex_lock(&pl->state_mutex);
+> +		if (pl->suspend_link_up)
+> +			phylink_link_down(pl);
+> +		__clear_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
+> +		mutex_unlock(&pl->state_mutex);
+> +	}
+> +
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00%40gmail.com
