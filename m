@@ -1,164 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B15E4499B4;
-	Thu, 24 Sep 2026 22:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F9D457E65
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 22:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790289784; cv=none; b=VujXsiv0pXQNODQbDxWNVhayA6K94tKT266buPTkKX1c4nLjrAU36chQGz13ZRTU0iZu5sqBmbss+5wjwKRtAbOPX4eCcPt5dXdiLQSFcqE7/dW+1MSko5Wbyo9J2GtodgWMQy+bFSgfnROf+YB5nmT5cgfbZkL8JaRFKwJGUhk=
+	t=1790289911; cv=none; b=ZmIjpVzWwWZW1waKcmUDxDn7eWfG+Y0tNYhwuYes3X/0Wkys0BNG38YLEmH99wWF2ekNEU2esJckhv3TXIgqAs0+ElFB34jJ+jiS3uT/KlJJCkJ2TLvqOerGPKhj5oV7J/kRmpdoz9FTs6M36QRyzgeaA94ckxdOYfcTY0XlAPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790289784; c=relaxed/simple;
-	bh=5k6ew4bZKs5Kak0IIZkqP5OL1erIyyXEfACAGORomcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hjz5GMg2hjXX+05y1BvUbd5jImmQ+BRykA7DWRse4zaspj44QlXdXHbiHoAceOZuItgPp4nvRrn5+XfiqTrKH7FlYDpeVcEExwME7IiuDilDTwDuUzpz8L01KC6I7OZveVynQz0tJ5xGxFrr9EXKDRrv3TtlneXG60yJF2NR314=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BOhQRPBJ; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790289911; c=relaxed/simple;
+	bh=N3ArG0FtVdhqv3LvSvrNCF+6nzhiFEZAYFGg2uDLeJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UnA1qiybvd9QNLcb197MPp/AturiDFyuJ0u7REXkuloOlPVgujM7vLQUNqP9LrjFj2y6gRPP1FOE3Tg7e/EZ0WCO2N7/fi02GqjpA2ZkElAEWW5jBucJYqkGdfm2MqResf9fbHUmdAGft6YZndrNdk5IGt2BnQdJWRz4PctlHEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=Kau4Kyqb; arc=none smtp.client-ip=74.125.230.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BOhQRPBJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790289782; x=1821825782;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5k6ew4bZKs5Kak0IIZkqP5OL1erIyyXEfACAGORomcc=;
-  b=BOhQRPBJ7shxsNBKFCiZbV8WJ3psif/tlHaGK5XGI6X3fdojQamFVFfJ
-   dW5h4NjVy2zK+CFjhidRE22fofn0khqlEJXz0BPLiprFoYUv3rwdtNJxP
-   LtNMNh/Du6Q26wKmtuMa27e73EoSSoronuvFHe0SYwBW+hEun9PWrCzOM
-   Y118UFSIatZ/bRB06JnI7yG305YLEcoP9hXACGPsRghLRvlQbj+kG8qR7
-   37BjA6KXgLzEvVutnlwbfA0ti4vZqF7veSAJEA4jOjRx36FQIBzOgX/1N
-   4wwSevAlWZ2F8TGgnVjDykJN7DiigC91F08AylAgieXonngiYNGCCM1Lb
-   w==;
-X-CSE-ConnectionGUID: E2tiyNVvRGWTUSfBd8pQfQ==
-X-CSE-MsgGUID: aRWjjuhAQD6rkx9OTsgrOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="107459057"
-X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
-   d="scan'208";a="107459057"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 15:43:01 -0700
-X-CSE-ConnectionGUID: U5Dk8CFqRMui2FINcs4gCw==
-X-CSE-MsgGUID: 0sfLiX2TT1WjCokNpBJP4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
-   d="scan'208";a="272276214"
-Received: from igk-lkp-server01.igk.intel.com (HELO a88263cc608e) ([10.211.93.152])
-  by orviesa010.jf.intel.com with ESMTP; 24 Sep 2026 15:42:58 -0700
-Received: from kbuild by a88263cc608e with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x9s9U-000000000Sk-1VZT;
-	Thu, 24 Sep 2026 22:42:52 +0000
-Date: Fri, 25 Sep 2026 00:42:13 +0200
-From: kernel test robot <lkp@intel.com>
-To: Coia Prant <coiaprant@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Coia Prant <coiaprant@gmail.com>
-Subject: Re: [PATCH net] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak
- when the PHY clock fails
-Message-ID: <202609250009.lQiuYnR7-lkp@intel.com>
-References: <20260919174223.2356964-1-coiaprant@gmail.com>
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="Kau4Kyqb"
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb7692a57so4234361cf.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:45:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1790289907; x=1790894707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=th0F4bTG9L9yRKCDhmCjjQ66FZz/ksySg4oF2oEn74w=;
+        b=Kau4Kyqboz2OTBPqol0k92U3VpSIUbdRi+KUUrTvBTWN7snFfp/yB9CG8ZmavQg/sa
+         SKQyJQ2BK6GdLlxiamxSTP9S23zBTwRpwKh7rh6YKUn7xIusIkKWpBMmC72OpCA1rfyM
+         tmC+3DPjxe8j3O5Ua+kckDZI/Mjth9pTBkewg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790289907; x=1790894707;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=th0F4bTG9L9yRKCDhmCjjQ66FZz/ksySg4oF2oEn74w=;
+        b=pnsdDuHLz/+5sGp85hn5SVrY/OYa1C3hkt52X8ThY8ZuJ6I7jwq0pQlZpfwlX8jJTI
+         psaF4dE5KD1EleQt50JrXtD6VigKUonUNpMCTEdHzKuC762q2taITI7IyCQ5aYbNaGKX
+         ZcPmNz6ifu7Rw+O3AjBIQXd3HEn5wj/naKzkIczFaA9Z6jV88TYnotIfw2cob3vxGEBc
+         gl9SFc8nlprhw0rhXKClCOjIHAFdBT9EGXZA8HijdLnkHRDMhaClJLeR4a0s+81J7Nqi
+         fmk5pDa15S+CUKdqm8z2tfa4/WGME2SrFXf1wDkuFRHfnYopovR1yKBsEwY1sqq1SmDY
+         lUUw==
+X-Gm-Message-State: AFuF++ndQSo02t0Pw+WjJ0YQcS+khLeXk4+Q2vhFcq36mZ8F1SEFNw1w
+	DpkJCTYF6u7Zc6/K2ZQFtTEYp83MqxOc8+t27hSLLOr+FlC2N0ulU0wgnOjNE403TYZ80P9/4HM
+	NIEnWa38rxA==
+X-Gm-Gg: AYBFou1z0SVPaRkWcbmS/BGD3uxNK98eRjsaqj3zJHGS/EOtgnvf+lDMJeNBjZfmlzA
+	LOvOxEPEyGQu/vyXObmtL/Wawe1FTT95lIvrOvuE7vrTAbDSn6NdxubXolR+ZwXkQFyVgf1V8B5
+	Mf7p+yGac7DfE23OgHCF0d/vlbGF073Ujdp8rfO9/Z+o23hCCuDxaa26ocfTrb0RAT3Pka+7ezo
+	PwVF4yOcFJSmS/O0/YHNKkO3fZ3+ygBqBwzsMb00gIglXqFs/WzkZ5hu6U3IFzSUOCtQt2l5FW0
+	7h1oCE/M8++jllfT6yoBqSCqXk149SZDk5lsseK2hB6OLNGg9jD+lHxSkS6dFBKup2jqXOLiSdS
+	9ojcWSyhAkkGURTisGEb7mIwXkW5PHnMfObzQMnDrfEkqvZY0rHR6Pt5ELKM/C5DIjO4LoSfSxz
+	8+auC8HdvyqdR/Y/RzUHk614oxTaFRbllvnHZHzknNHoRFSCWdkZ8EhQSIHQSuVyMna5sr+EoHe
+	KlmQjC00GY3h0N6dbq3EoVycb+WJ1kp4yRFPfHtajfrQ5Fc+H5/CB5qMev2stmky2E5o42AaLs=
+X-Received: by 2002:ad4:5948:0:b0:912:517b:40e7 with SMTP id 6a1803df08f44-9142f930e42mr13421266d6.46.1790289906813;
+        Thu, 24 Sep 2026 15:45:06 -0700 (PDT)
+Received: from com-94485.corp.openai.org ([199.47.143.14])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e09ce4sm3858566d6.28.2026.09.24.15.45.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 24 Sep 2026 15:45:06 -0700 (PDT)
+From: Jeff Jo <jeffjo@openai.com>
+To: netdev@vger.kernel.org
+Cc: edumazet@google.com,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v2 0/2] tcp: correct timestamp echo for accepted old ACKs
+Date: Thu, 24 Sep 2026 15:44:57 -0700
+Message-ID: <20260924224456.55690-4-jeffjo@openai.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260919174223.2356964-1-coiaprant@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Coia,
+Linux can acknowledge newly received data while echoing an outdated
+TCP timestamp. This happens when a reordered packet fills a receive gap
+but carries an older acknowledgment for traffic in the other direction.
+If the sender uses this echo to measure round-trip time after a long idle
+period, the stale timestamp can inflate its estimate and slow its sending.
 
-kernel test robot noticed the following build warnings:
+Changes in v2, following Eric Dumazet's review:
+- Remove the redundant SYN_RECV condition and unused flag accumulation.
+- Replace the log-parsing wrapper with a plain packetdrill test that checks
+  the timestamp echo directly, using the existing selftest runner.
+- Rebase on net fc6d80eb5044.
 
-[auto build test WARNING on net/main]
+v1: https://lore.kernel.org/netdev/20260921222609.50824-4-jeffjo@openai.com/
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Coia-Prant/net-ethernet-stmmac-dwmac-rk-fix-bulk-clock-leak-when-the-PHY-clock-fails/20260920-014223
-base:   net/main
-patch link:    https://lore.kernel.org/r/20260919174223.2356964-1-coiaprant%40gmail.com
-patch subject: [PATCH net] net: ethernet: stmmac: dwmac-rk: fix bulk clock leak when the PHY clock fails
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20260925/202609250009.lQiuYnR7-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260925/202609250009.lQiuYnR7-lkp@intel.com/reproduce)
+In this example, S sends the reordered data and R is the Linux receiver
+being patched. All packets shown belong to the same TCP connection, with
+overlapping requests in both directions. Each illustrated request fits in
+one TCP packet; request/response names describe application
+messages, while ACK numbers acknowledge TCP bytes. The numbers are
+illustrative: TS and echo use S's millisecond clock, and byte numbers are
+relative to the first post-idle byte in each direction. ACK=N acknowledges
+bytes before N.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609250009.lQiuYnR7-lkp@intel.com/
+  Before idle:
+    S -> R: sender request 1, TS=999
+    R -> S: response to sender request 1, echo=999
+    S -> R: TCP ACK, TS=1000             (R saves timestamp 1000)
 
-All warnings (new ones prefixed by >>):
+                   ... 300 seconds idle ...
 
->> drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1168:5: warning: misleading indentation; statement is not part of the previous 'if' [-Wmisleading-indentation]
-    1168 |                                 return ret;
-         |                                 ^
-   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1165:4: note: previous statement is here
-    1165 |                         if (ret)
-         |                         ^
-   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1177:2: warning: non-void function does not return a value in all control paths [-Wreturn-type]
-    1177 |         } else {
-         |         ^
-   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1177:4: error: expected identifier or '('
-    1177 |         } else {
-         |           ^
-   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1189:2: error: expected identifier or '('
-    1189 |         return 0;
-         |         ^
-   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c:1190:1: error: extraneous closing brace ('}')
-    1190 | }
-         | ^
-   2 warnings and 3 errors generated.
+  After idle (byte ranges include both ends):
+    S -> R: sender request 2, bytes 1-17, ACK=1, TS=301000
+            (delayed in the network)
+    R -> S: receiver request 1, bytes 1-17, ACK=1
+            (initiated by R while sender request 2 is still in flight)
+    S -> R: sender request 3, bytes 18-34, ACK=18, TS=301005
+            (arrives before sender request 2)
+    R -> S: TCP ACK=1, SACK for sender request 3, echo=1000
+    S -> R: original sender request 2 arrives, still ACK=1, TS=301000
+    R -> S: TCP ACK=35, echo=1000 (bug) or echo=301000 (fixed)
+
+R initiates receiver request 1 while sender request 2 is still in flight;
+its ACK=1 means it has not received sender request 2. S receives R's
+request before sending sender request 3, so that packet carries ACK=18.
+Sender request 3 reaches R first, making sender request 2's ACK=1 old.
+The earlier ACK with SACK correctly echoes 1000 while the gap is open.
+The bug is retaining 1000 in ACK=35 after the gap closes, instead of
+echoing sender request 2's timestamp, 301000.
+
+If S falls back to timestamp-based RTT measurement for ACK=35, subtracting
+echo=1000 from its current timestamp (about 301000) produces a roughly
+300-second RTT sample, mistakenly counting the idle period. The inflated
+smoothed RTT lowers the sender's calculated pacing rate and, when pacing
+is enforced, unnecessarily delays outgoing packets and slows the transfer.
+
+Patch 1 refreshes the saved timestamp while preserving existing validation.
+Patch 2 checks that the ACK closing the receive gap echoes timestamp
+301000, in IPv4, IPv6 and IPv4-mapped IPv6. It requires packetdrill's merged
+TSecr verification fix, commit 83f72d3f9085, linked below. Once CI uses a
+packetdrill version containing that fix, the timestamp assertion will
+reject the stale echo on an unfixed kernel and pass with this kernel fix.
+Older packetdrill versions ignore the comparison and incorrectly pass both.
+
+https://github.com/google/packetdrill/commit/83f72d3f9085d0e26eb4d206fe4d7cfab5b6d872
+
+V1 passed 68 focused/control cases on normal and KASAN/UBSAN/lockdep
+ARM64 kernels, with no new diagnostics from W=1 allyesconfig/allmodconfig
+builds or Sparse. V2 passed the same checks with equivalent results.
+
+Earlier C-socket repro on net 46bc52d13594: after 300 seconds idle, with
+controlled reordering, retransmission and fq pacing, a 1 MiB transfer takes
+22.02 seconds without the fix versus 0.38 seconds with it (one run per arm).
+
+AI assistance: Codex generated and revised the fix, reproducers, selftest,
+analysis and patch messages. The user directed the investigation, asked
+for real-socket and upstream-kernel comparisons, and requested broader
+testing. A separate Codex reviewer challenged the v1 code and evidence.
+Sparse supplied static analysis.
+
+Jeff Jo (2):
+  tcp: refresh TS.Recent for accepted old ACKs
+  selftests: net: check timestamp echo after an old ACK
+
+ net/ipv4/tcp_input.c                          |  6 +++++
+ .../net/packetdrill/tcp_old_ack_ts.pkt        | 22 +++++++++++++++++++
+ 2 files changed, 28 insertions(+)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_old_ack_ts.pkt
 
 
-vim +/if +1168 drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+base-commit: fc6d80eb504458d6416b75a94188b268c95c6533
+-- 
+2.55.0
 
-7ad269ea1a2b7d Roger Chen            2014-12-29  1152  
-7ad269ea1a2b7d Roger Chen            2014-12-29  1153  static int gmac_clk_enable(struct rk_priv_data *bsp_priv, bool enable)
-7ad269ea1a2b7d Roger Chen            2014-12-29  1154  {
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1155  	int ret;
-7ad269ea1a2b7d Roger Chen            2014-12-29  1156  
-7ad269ea1a2b7d Roger Chen            2014-12-29  1157  	if (enable) {
-7ad269ea1a2b7d Roger Chen            2014-12-29  1158  		if (!bsp_priv->clk_enabled) {
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1159  			ret = clk_bulk_prepare_enable(bsp_priv->num_clks,
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1160  						      bsp_priv->clks);
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1161  			if (ret)
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1162  				return ret;
-7ad269ea1a2b7d Roger Chen            2014-12-29  1163  
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1164  			ret = clk_prepare_enable(bsp_priv->clk_phy);
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1165  			if (ret)
-cb278e6780d874 Coia Prant            2026-09-20  1166  				clk_bulk_disable_unprepare(bsp_priv->num_clks,
-cb278e6780d874 Coia Prant            2026-09-20  1167  							   bsp_priv->clks);
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07 @1168  				return ret;
-cb278e6780d874 Coia Prant            2026-09-20  1169  			}
-23c94d63a7e395 David Wu              2018-06-28  1170  
-5c1fc7cb81dfed Russell King (Oracle  2026-02-04  1171) 			rk_configure_io_clksel(bsp_priv);
-5c1fc7cb81dfed Russell King (Oracle  2026-02-04  1172) 			rk_ungate_rmii_clock(bsp_priv);
-2f2b60a0ec2826 David Wu              2022-08-30  1173  
-7ad269ea1a2b7d Roger Chen            2014-12-29  1174  			mdelay(5);
-7ad269ea1a2b7d Roger Chen            2014-12-29  1175  			bsp_priv->clk_enabled = true;
-7ad269ea1a2b7d Roger Chen            2014-12-29  1176  		}
-7ad269ea1a2b7d Roger Chen            2014-12-29  1177  	} else {
-7ad269ea1a2b7d Roger Chen            2014-12-29  1178  		if (bsp_priv->clk_enabled) {
-5c1fc7cb81dfed Russell King (Oracle  2026-02-04  1179) 			rk_gate_rmii_clock(bsp_priv);
-7f864458e9a6d2 Sebastian Reichel     2025-10-14  1180  
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1181  			clk_bulk_disable_unprepare(bsp_priv->num_clks,
-ea449f7fa0bf3f Sebastian Reichel     2023-04-07  1182  						   bsp_priv->clks);
-fecd4d7eef8b21 David Wu              2017-08-10  1183  			clk_disable_unprepare(bsp_priv->clk_phy);
-fecd4d7eef8b21 David Wu              2017-08-10  1184  
-7ad269ea1a2b7d Roger Chen            2014-12-29  1185  			bsp_priv->clk_enabled = false;
-7ad269ea1a2b7d Roger Chen            2014-12-29  1186  		}
-7ad269ea1a2b7d Roger Chen            2014-12-29  1187  	}
-7ad269ea1a2b7d Roger Chen            2014-12-29  1188  
-7ad269ea1a2b7d Roger Chen            2014-12-29  1189  	return 0;
-7ad269ea1a2b7d Roger Chen            2014-12-29  1190  }
-7ad269ea1a2b7d Roger Chen            2014-12-29  1191  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
