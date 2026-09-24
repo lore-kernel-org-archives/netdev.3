@@ -1,87 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475C23905F5
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C983BB57
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790208091; cv=none; b=axiYXJR9s8BIuN0SscsnZpn2aQzvddqBhztcUk5jQeEh4yTzcw8wAJ8PdNq0POdmrrSFD9GOHYtwR8iHCFRVa1hg9NHFHQ0QrFWv6mOU6KpEx1VVff9l0YyUwkdCb93zGL7V6MCqLRqvLf9l2VpYQEqQGMZCTfyYdyJy4uZbPHM=
+	t=1790208099; cv=none; b=oVwJTWOzN2XS4WrLrmtPGkLDjuX1dqiTeVP+EHiQW7uU6v7r6hArBVdvdIynNgBrO72Oxzb2MkEvP+yde48ADGFvGepKmoK/J8JAHLspYAMtihUtnLxZP2WNuVAfBBHR6rkmjC4NVAlXtcWWV/ADLfjwC5ZpPfo3pS0CzYMSO4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790208091; c=relaxed/simple;
-	bh=GJSPPqZSgt6XosId/IPLZILd/Z5PkFYSYulZPiGoXKM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GTQDU6G5cgQTylDpOo0nGEnDqtmhDKZGS3IMrW+e2UbiSh3KhVuFDsXOd1j6mgOOPD1qIRpPzaRlKRbV5OaUQ4/5jO52hHnqsPW3wIc9rlEXCmWlPXI17J4v76YYh17Sv7xDPbPD0oEfMQ+qeXsEdQO4GECKht5URBL+Mu6VNUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2PwGpy8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790208099; c=relaxed/simple;
+	bh=RMOAo7nJ9Le+hYUYXELrGccpYEOe9s5U/ZxHmlDlDSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EnG3NvkSyvE8+LTL3IwW200DTHKORXCdbB/KL3IAjokyMwrbyYzmaiXIKFqMoR+QNPeqjL8+zpzijuzG5sJ/+77enK0ABbHBU6x2VHfGsdyBGgRYamSv6o95b5gF5QaCj5cGuvoJstOvXwvi1rkKWuePuv+YfwSoAiIF76KYHC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMVrTb4G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2PwGpy8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F331F00893;
-	Thu, 24 Sep 2026 00:01:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMVrTb4G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69A51F000FF;
+	Thu, 24 Sep 2026 00:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790208081;
-	bh=w5GRhdfo/RaZRTt7hFHRkwz61GNA1cjR41hO3+RNSiM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=K2PwGpy8w07OdYfMu5BQ/wdVxmWjQv/2kL/JbwQy9SB8153q2BRjIRM3r3RmI68sa
-	 kaqZ5wWgKfsdXKgh7Lxg05IRK/Nno5StssS+ZtNgGiyjcPoqT2tt6RpmoVDVWXg0KD
-	 TV9fUgH8OUA8yK3j3IVKFbQJ+gsOOfGyJ6jTVCHzBHFfm2bkUf6XMn/QvG2OK7EqYb
-	 m+3NsxK5QfBYIucuHhH8OaquqCbYrHz7HcpsRYy2HzmspcUXC4qiivow18Gw0onTJt
-	 RvKTXHlqLHenjjw4Un8mykHT15IGTIt+q62dVxqpZlBHQ+ZSdXfkwRziYKbtb9t5je
-	 lAGKDGL2gLs9A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D07C739E9602;
-	Thu, 24 Sep 2026 00:00:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790208098;
+	bh=RMOAo7nJ9Le+hYUYXELrGccpYEOe9s5U/ZxHmlDlDSg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XMVrTb4GucGRwfbmR0I6FlZFD0sqfahhDaqPCj/1vdDN3NbvzgG+xHHv4Agv2Z3xa
+	 uMZ0toAxe9v+G4NkFJXGOI9hkiXlB8NECg+X7dMYGpgfedQKMOM8l4n+PM1m7XLEV+
+	 3khKCEaPOP7cYVFKaOrG9bWlJDGrf7wve6tU70azorpb9adlevgPKWzZZfmNi36FBd
+	 J6OhEjd1WkzNCpVlQbtQTG9sTfJgU/3pBxYVWlGKCXnsFNgXSffO0Ze7FnafmrItmC
+	 gxzjw99wtosx4+zvtecVii9avs1ScCs0TqgF2NZSWcxZEde9HuC9PwL0tGgXYyAub6
+	 TyxWQTVMGBAFQ==
+Date: Wed, 23 Sep 2026 17:01:37 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: netdev-bot+sashiko@kernel.org, maxime.chevallier@bootlin.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ daniel@riscstar.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, dcaratti@redhat.com
+Subject: Re: [PATCH net-next] net: stmmac: add tc-mqprio qdisc offload
+Message-ID: <20260923170137.3380f176@kernel.org>
+In-Reply-To: <arQEUBOpXLhLt_Ln@lore-desk>
+References: <20260918-stmmac-mqprio-prio-offload-v1-1-5328157fcb58@oss.qualcomm.com>
+	<179007733391.2160803.15760096543003194202@kernel.org>
+	<arQEUBOpXLhLt_Ln@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] veth: manage XDP program pointers during channel
- resize
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179020801040.1240300.14886400931573305282.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 00:00:10 +0000
-References: <20260921231856.1798630-1-kuba@kernel.org>
-In-Reply-To: <20260921231856.1798630-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- bestswngs@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 23 Sep 2026 18:54:40 +0200 Lorenzo Bianconi wrote:
+> I guess we should just forbid this configuration in order to keep dts and tc
+> paths aligned. What do you think?
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 21 Sep 2026 16:18:56 -0700 you wrote:
-> veth_set_channels() tears down XDP resources for removed RX queues
-> without clearing rq->xdp_prog.  If the program is then detached or
-> replaced, those queues keep the old pointer after bpf_prog_put().
-> A later channel increase can re-enable NAPI and run the freed program.
-> 
->   BUG: unable to handle page fault for address: ffffc90000256048
->   Oops: Oops: 0000 [#1] SMP KASAN NOPTI
->   RIP: veth_xdp_rcv_skb (include/linux/filter.h:779
->                          include/net/xdp.h:696 drivers/net/veth.c:820)
->   Call Trace:
->    veth_xdp_rcv (drivers/net/veth.c:941)
->    veth_poll (drivers/net/veth.c:986)
->    __napi_poll (net/core/dev.c:7787)
->    net_rx_action (net/core/dev.c:7850 net/core/dev.c:8007)
->    handle_softirqs (kernel/softirq.c:645)
->   Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] veth: manage XDP program pointers during channel resize
-    https://git.kernel.org/netdev/net/c/7104a3707143
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Are you asking the bot? :)
+IMO rejecting ambiguous||contradictory configs is a good idea.
