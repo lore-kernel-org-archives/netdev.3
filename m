@@ -1,44 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F6E399D08
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3503A1A38;
+	Thu, 24 Sep 2026 05:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790228519; cv=none; b=XL3g3VYB0wIvUpwEMXDw2DWrxV5N03oRjYAVZtgiF1KPBSmMsFNJcg4j9fdMjcaBTrH/l7/lToU0/zmMp7lErB/uxRTzmxJwu9ei5OIviQyOZ0D+LbjvikY+mv7Yr727i0ttgyxqxY236bLGuYrh2dHD6TbzpKW7QMWqCYhW+Ro=
+	t=1790228906; cv=none; b=uYzqPeMwn3L8TnVbyUBO/16TKqfZeNr4WpNO7ME2Zr1E4Alm50vvPLVx8MbjjIuRH4gP2GksHWs2xo39gcZgN+EPSA94w4ITVaoVWdaA8jRybHO6JIeUP2udl4+yTTXrUuALuk8jRTfvizzEYZO611d4dHQGqjwwWLoQnUogSEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790228519; c=relaxed/simple;
-	bh=jL1bIUxxRSZJ6V6CnW3qOphETdPw6dEs4IQ27mziE5w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BgTZb//E2DKFsimwv8wtIzEBb7As1cEvWmwOhKFT1YtSjZ0GrUEtvDAW55rxRSeCyghQRM+57bAMHVGcJ7LTrsi6Uf7IsFZMs9r+C6UPUkz+1yngmqZo50B7GwgFsWo+JUaS/r0AKEnev76/ULLCxzIh2Cl/bUWgQxuiKWTSF+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rwq9iqqK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790228906; c=relaxed/simple;
+	bh=cphLJaHOfKU2vYK+wppFJ25w/Iw65P/ojTLs7/msYgM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XpsbQVgZNW5zlSiVDCeoFha8pZCDjW+2utsSszbuOMKvXsYygsBO2J1taKC1eiC++T00XmMFkwQRILNqT6qPv8yjtXKocmFTzVVt/wEAMvIDfFpNrD5mZfXdKIlqwwHu9XlaQQhw5cuZFIoDpUhu6vpkDOwo03V8Tcb7hAHl6CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=n6cIpxtZ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rwq9iqqK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDDF1F000FF;
-	Thu, 24 Sep 2026 05:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790228517;
-	bh=g/oCu7IkHtpYeJfhvO2VehPoRIqe7P3+rR4muCsoCe4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Rwq9iqqKLX5K0IV5pZitb02mprvdX2lQzsAvdCtP7DgO3Pt4zgUBXNUvu5wzy6aId
-	 hDx+y/AkcWh4lyrKfx3T9wdUuKjY7y7ZTvC/y8/FPuBOUXFJ03MppKC93raoM2dZfP
-	 Eaw6Oj1XYRaJJeoJTu72J1Ov/hGayApt02O4qKuQPwbZUK/djEJ29caW4XPN3sVJ37
-	 fGwdTNt9Q9JzFMWHBrxQSxTFH03kTOXeN302pySWQvI/ctdjPGAKDrH3IXKEDr97XE
-	 njYZy0m1/HwwDJ6+XEl5S8QxhZidgZHmJzseZcuutV1hSC++UJfM9JcRAu8xn6qqtD
-	 7zJu/uYRrVONQ==
-Subject:
- Re: [PATCH net] vlan: ensure sufficient headroom in vlan_dev_hard_header()
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@google.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, petalzu987@gmail.com
-Date: Thu, 24 Sep 2026 05:41:56 +0000
-Message-ID: <179022851638.2160803.1808206741379444999@kernel.org>
-In-Reply-To: <20260922113924.3165190-1-edumazet@google.com>
-References: <20260922113924.3165190-1-edumazet@google.com>
-X-sashiko-severity: High
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="n6cIpxtZ"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68O5lccQ7960942, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1790228858; bh=cphLJaHOfKU2vYK+wppFJ25w/Iw65P/ojTLs7/msYgM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=n6cIpxtZ6xd3AOUKDw+uN+BIsUhEUGC2QHz/wuSE+tK5xHJg4SQiGx+S3c7GqLgA7
+	 1VoLW/DGAV5BIOmwTZIk9tLKQrNOVNZkQAzsIYJtV7ej4jw9YjvCI9wU6U76R/wCy9
+	 aHhUSDUByd/3VFVG0Q0fldhBahWoN236hc6LIdDeVGZoik7vmeubBxW75RhmSC/hm8
+	 aHBT/+fKNMvtyK6kIuz8ZHMXtcUmGjUfW/WetPnlPgltfM5MB8oYnwuXQZZeBrcEFI
+	 ZECorDj9hNEwT+0w8+ukSsR+ZFueVdOVJvP+RIoiOtQBYbk9DIQwWam4Uwp+HAjsd6
+	 j6+fs+ml7cKTQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68O5lccQ7960942
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 24 Sep 2026 13:47:38 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 24 Sep 2026 13:47:38 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 24 Sep 2026 13:47:37 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Thu, 24 Sep 2026 13:47:37 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next v4 5/8] r8152: add rtl8157_unload and
+ rtl8157_change_mtu
+Thread-Topic: [PATCH net-next v4 5/8] r8152: add rtl8157_unload and
+ rtl8157_change_mtu
+Thread-Index: AQHdRnM8ehhuMIUNPUGCYgVqwM6hubbYM/AAgAPBdMA=
+Date: Thu, 24 Sep 2026 05:47:37 +0000
+Message-ID: <90004370a7f7432a9cbcc45077a4b26a@realtek.com>
+References: <20260917070637.62827-6-nic_swsd@realtek.com>
+ <178997943625.2160803.4711623040581335767@kernel.org>
+In-Reply-To: <178997943625.2160803.4711623040581335767@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,197 +72,126 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 3 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch makes vlan_dev_hard_header() return -ENOMEM for
-  ARPHRD_ETHER-backed VLAN devices for the first time, which activates a…
-- [Medium] vlan_dev_hard_header() (net/8021q/vlan_dev.c:58-60) now
-  returns -ENOMEM *before* pushing anything, making…
-- [Medium] sch_teql swallows the newly introduced VLAN header-
-  construction failure and selects its 'transmit' branch.
-- [Medium] The new -ENOMEM return from vlan_dev_hard_header() makes two
-  LLC SAP response builders leak their response skb.
-- [Low] The new headroom computation in vlan_dev_hard_header()
-  (net/8021q/vlan_dev.c:58-59) reads dev->needed_headroom with a plain…
-
---
-
-vlan: ensure sufficient headroom in vlan_dev_hard_header()
-
-This adds an skb_cow_head() call to vlan_dev_hard_header() when
-VLAN_FLAG_REORDER_HDR is clear, so that callers which reserved only
-ETH_HLEN (or skbs allocated before a headroom change) no longer hit
-skb_under_panic() when the VLAN header is pushed.
-
-Closes: https://lore.kernel.org/netdev/cover.1789987105.git.petalzu987@gmail.com/
-
-> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> index 2859cbac3f266..3598ad0779f05 100644
-> --- a/net/8021q/vlan_dev.c
-> +++ b/net/8021q/vlan_dev.c
-> @@ -55,6 +55,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb, struct net_device *dev,
->  	int rc;
->  
->  	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
-> +		if (skb_cow_head(skb,
-> +				 dev->hard_header_len + dev->needed_headroom) < 0)
-> +			return -ENOMEM;
-
-[Severity: High]
-Can this new -ENOMEM return wake up the error path in
-llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr() in net/llc/llc_c_ac.c?
-
-That action frees the wrong skb when llc_mac_hdr_init() fails:
-
-net/llc/llc_c_ac.c:llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr() {
-	struct llc_pdu_sn *pdu = llc_pdu_sn_hdr(skb);
-	...
-	struct sk_buff *nskb = llc_alloc_frame(sk, llc->dev, LLC_PDU_TYPE_U, 0);
-
-	if (nskb) {
-		...
-		rc = llc_mac_hdr_init(nskb, llc->dev->dev_addr, llc->daddr.mac);
-		if (likely(!rc))
-			llc_conn_send_pdu(sk, nskb);
-		else
-			kfree_skb(skb);
-	}
-	if (rc) {
-		nr = LLC_I_GET_NR(pdu);
-	...
-}
-
-The sibling actions in the same file use kfree_skb(nskb) here. With
-kfree_skb(skb), does nskb leak while the caller-owned event skb is put
-twice, given that llc_conn_state_process() documents "This function
-always consumes a reference to the skb" and does kfree_skb(skb) at
-out_skb_put?  And is the following LLC_I_GET_NR(pdu) then a read of the
-freed skb, since pdu points into it?
-
-The failure branch looks genuinely reachable now: llc_alloc_frame()
-reserves 3 + llc_mac_header_len(ARPHRD_ETHER) = 17 bytes, the LLC PDU
-push leaves 14 bytes of headroom, so on a VLAN device with
-VLAN_FLAG_REORDER_HDR clear skb_cow_head(skb, 14 + 18) always calls
-pskb_expand_head(GFP_ATOMIC) and can fail under memory pressure.
-
-Before this change the branch appears to have been dead code for
-Ethernet-backed devices: eth_header() pushes first and only returns a
-negative value when daddr is NULL, and dev_hard_header() returns 0 when
-there are no header_ops.
-
-[Severity: Medium]
-Along the same lines, do llc_sap_action_send_xid_r() and
-llc_sap_action_send_test_r() in net/llc/llc_s_ac.c leak their response
-skb now?
-
-net/llc/llc_s_ac.c:llc_sap_action_send_xid_r() {
-	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U,
-			       sizeof(struct llc_xid_info));
-	...
-	rc = llc_mac_hdr_init(nskb, mac_sa, mac_da);
-	if (likely(!rc))
-		rc = dev_queue_xmit(nskb);
-out:
-	return rc;
-}
-
-On the new -ENOMEM, nskb is neither queued nor freed, and the pointer is
-local so no caller can release it.  Both actions run on received XID and
-TEST command PDUs, and the skb from llc_alloc_frame() has only 14 bytes
-of headroom, so the cow is always attempted.
-
-[Severity: Medium]
-A related question about the new failure mode in general: this is the
-first time dev_hard_header() can return a negative value for an
-ARPHRD_ETHER-backed VLAN device with a non-NULL daddr, and it now means
-"nothing was pushed" rather than "header pushed, but tell me something".
-Several callers discard the return and transmit immediately:
-
-net/bridge/br_stp_bpdu.c:br_send_bpdu()
-	llc_mac_hdr_init(skb, p->dev->dev_addr, p->br->group_addr);
-	skb_reset_mac_header(skb);
-	NF_HOOK(NFPROTO_BRIDGE, NF_BR_LOCAL_OUT, ... br_send_bpdu_finish);
-
-net/tipc/bearer.c:tipc_l2_send_msg()
-	dev_hard_header(skb, dev, ETH_P_TIPC, dest->value, dev->dev_addr, skb->len);
-	dev_queue_xmit(skb);
-
-net/netfilter/nft_reject_netdev.c
-	dev_hard_header(nskb, nskb->dev, ntohs(oldskb->protocol), ...);
-	dev_queue_xmit(nskb);
-
-Same pattern in the direct-xmit path of net/netfilter/nf_flow_table_ip.c
-and in drivers/net/ppp/pppoe.c, where the skb is reserved with only
-dev->hard_header_len so the cow is always attempted.
-
-When skb_cow_head() fails, is the skb handed to dev_queue_xmit() with
-skb->data still at the payload and no VLAN or Ethernet header, so that
-vlan_dev_hard_start_xmit() reads payload bytes as struct vlan_ethhdr and
-a frame with a garbage link header goes on the wire?  br_send_bpdu() is
-one of the two callers named in the commit message.
-
-[Severity: Medium]
-Is the sch_teql path also affected?  __teql_resolve() in
-net/sched/sch_teql.c shadows its return variable:
-
-net/sched/sch_teql.c:__teql_resolve() {
-	int err = 0;
-	...
-	if (neigh_event_send(n, skb_res) == 0) {
-		int err;
-		char haddr[MAX_ADDR_LEN];
-
-		neigh_ha_snapshot(haddr, n, dev);
-		err = dev_hard_header(skb, dev, ntohs(skb_protocol(skb, false)),
-				      haddr, NULL, skb->len);
-
-		if (err < 0)
-			err = -EINVAL;
-	} else {
-	...
-	return err;
-}
-
-The inner err holds the failure, so 0 is returned and teql_master_xmit()
-takes "case 0" and calls netdev_start_xmit() on the slave.  For the
-negative returns that existed before (for example ipgre_header(), which
-returns negative after pushing its header) that was harmless, but with
-the new -ENOMEM nothing has been pushed.  Should the inner declaration
-be dropped, or the return checked by the caller?
-
-[Severity: Low]
-This isn't a bug, but should dev->needed_headroom be read with
-READ_ONCE() here?  Every other in-tree reader annotates it, for example:
-
-include/linux/netdevice.h
-	#define LL_RESERVED_SPACE_EX(dev, hlen) \
-		((((hlen) + READ_ONCE((dev)->needed_headroom)) \
-		  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
-
-The writer is vlan_transfer_features(), which runs from the VLAN work
-item under RTNL:
-
-net/8021q/vlan_dev.c:vlan_transfer_features()
-	vlandev->needed_headroom = dev->needed_headroom + VLAN_HLEN;
-	...
-	vlandev->hard_header_len = dev->hard_header_len;
-
-while vlan_dev_hard_header() runs from the transmit path without RTNL.
-
->  		vhdr = skb_push(skb, VLAN_HLEN);
->  
->  		vlan_tci = vlan->vlan_id;
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922113924.3165190-1-edumazet%40google.com
+PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
+ZCAxIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAw
+IMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAxIMK3IExvdzogMA0KPiANCj4gSWYgeW91IGJlbGlldmUg
+bm9uZSBvZiB0aGUgaXNzdWVzIGFyZSBsZWdpdGltYXRlLCBwbGVhc2UgcmVwbHkgdG8gZWFjaCBp
+c3N1ZSBvZg0KPiBNZWRpdW0gc2V2ZXJpdHkgb3IgaGlnaGVyIGFuZCBleHBsYWluIHdoeSB0aGUg
+QUkgaXMgd3JvbmcuDQo+IElmIGFueSBvZiB0aGVtIGFyZSBsZWdpdGltYXRlIGFuZCB5b3UgcGxh
+biB0byByZXNwaW4sIHBsZWFzZSBsZXQgcGF0Y2h3b3JrIGtub3cNCj4gYnkgaW5jbHVkaW5nICJw
+dy1ib3Q6IGNyIiBhcyBhIHNlcGFyYXRlIGxpbmUgYXQgdGhlIGVuZCBvZiB5b3VyIHJlcGx5IChv
+bmUgc3VjaA0KPiByZXBseSBwZXIgc2VyaWVzIGlzIGVub3VnaCkuDQo+IA0KPiAtIFtNZWRpdW1d
+IENvbW1pdCBtZXNzYWdlIC8gRml4ZXM6IHRhZyBtaXNtYXRjaCBmb3IgYSBzdWJzdGFudGl2ZQ0K
+PiAgIGhhcmR3YXJlLXByb2dyYW1taW5nIGNvcnJlY3Rpb24uDQo+IA0KPiAtLQ0KPiANCj4gcjgx
+NTI6IGFkZCBydGw4MTU3X3VubG9hZCBhbmQgcnRsODE1N19jaGFuZ2VfbXR1DQo+IA0KPiBBZGRz
+IHJ0bDgxNTdfdW5sb2FkKCksIHdoaWNoIHVzZXMgcjgxNTdfcG93ZXJfY3V0X2VuKCkgcGx1cyB0
+aGUgSW50ZXJydXB0DQo+IE1pdGlnYXRpb24gZGlzYWJsZSB0aGF0IHJ0bDgxNTNfdW5sb2FkKCkg
+cHJldmlvdXNseSBnYXRlZCBvbiAidHAtPnZlcnNpb24gPj0NCj4gUlRMX1ZFUl8xNiIsIGFuZCBy
+dGw4MTU3X2NoYW5nZV9tdHUoKSwgd2hpY2ggc2NhbGVzIFBMQV9NVFBTIGZyb20gdGhlDQo+IGNv
+bmZpZ3VyZWQgTVRVLiBCb3RoIGFyZSB3aXJlZCB0byBSVEw4MTU3IGFuZCBSVEw4MTU5IHRocm91
+Z2ggb3BzLT51bmxvYWQNCj4gYW5kIG9wcy0+Y2hhbmdlX210dS4NCj4gDQo+ID4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvbmV0L3VzYi9yODE1Mi5jIGIvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMgaW5k
+ZXgNCj4gPiBkMzAwMzFkYmYyZDM4Li5mNDRkY2I4OGI1YzZhIDEwMDY0NA0KPiA+IC0tLSBhL2Ry
+aXZlcnMvbmV0L3VzYi9yODE1Mi5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMN
+Cj4gPiBAQCAtNzAwNCw2ICs3MDA0LDI4IEBAIHN0YXRpYyB2b2lkIHJ0bDgxNTZfZG93bihzdHJ1
+Y3QgcjgxNTIgKnRwKQ0KPiA+ICAgICAgIHI4MTUzX2FsZHBzX2VuKHRwLCB0cnVlKTsNCj4gPiAg
+fQ0KPiA+DQo+ID4gK3N0YXRpYyB2b2lkIHJ0bDgxNTdfY2hhbmdlX210dShzdHJ1Y3QgcjgxNTIg
+KnRwKSB7DQo+ID4gKyAgICAgdTMyIG1heF9wa3Rfc2l6ZSA9IG10dV90b19zaXplKHRwLT5uZXRk
+ZXYtPm10dSk7DQo+ID4gKyAgICAgdTMyIG9jcF9kYXRhOw0KPiA+ICsNCj4gPiArICAgICBvY3Bf
+d3JpdGVfd29yZCh0cCwgTUNVX1RZUEVfUExBLCBQTEFfUk1TLCBtYXhfcGt0X3NpemUpOw0KPiA+
+ICsNCj4gPiArICAgICAvKiBVc2UgYXQgbGVhc3QgMTBLIGZvciBNVFBTICovDQo+ID4gKyAgICAg
+b2NwX2RhdGEgPSBtYXhfdCh1MzIsIG1heF9wa3Rfc2l6ZSwgMTAgKiAxMDI0KSAvIDY0Ow0KPiA+
+ICsNCj4gPiArICAgICAvKiAxNiAqIDEwMjQgLyA2NCA9IDB4MTAwLCBzbyB0aGUgbWF4IGlzIDB4
+ZmYgZm9yIDggYml0cyBkYXRhICovDQo+ID4gKyAgICAgb2NwX2RhdGEgPSBtaW5fdCh1MzIsIG9j
+cF9kYXRhLCAweGZmKTsNCj4gPiArDQo+ID4gKyAgICAgb2NwX3dyaXRlX2J5dGUodHAsIE1DVV9U
+WVBFX1BMQSwgUExBX01UUFMsIG9jcF9kYXRhKTsNCj4gPiArICAgICByODE1Nl9mY19wYXJhbWV0
+ZXIodHApOw0KPiA+ICsNCj4gPiArICAgICAvKiBUWCBzaGFyZSBmaWZvIGZyZWUgY3JlZGl0IGZ1
+bGwgdGhyZXNob2xkICovDQo+ID4gKyAgICAgb2NwX3dyaXRlX3dvcmQodHAsIE1DVV9UWVBFX1BM
+QSwgUExBX1RYRklGT19DVFJMLCA1MTIgLyA2NCk7DQo+ID4gKyAgICAgb2NwX3dyaXRlX3dvcmQo
+dHAsIE1DVV9UWVBFX1BMQSwgUExBX1RYRklGT19GVUxMLA0KPiA+ICsgICAgICAgICAgICAgICAg
+ICAgIEFMSUdOKG1heF9wa3Rfc2l6ZSArIHRwLT50eF9kZXNjLnNpemUsIDEwMjQpIC8NCj4gPiAr
+MTYpOyB9DQo+ID4gKw0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiBAQCAtMTAxNTEsMTEgKzEwMTcz
+LDYgQEAgc3RhdGljIHZvaWQgcnRsODE1M191bmxvYWQoc3RydWN0IHI4MTUyICp0cCkNCj4gPiAg
+ICAgICAgICAgICAgIHJldHVybjsNCj4gPg0KPiA+ICAgICAgIHI4MTUzX3Bvd2VyX2N1dF9lbih0
+cCwgZmFsc2UpOw0KPiA+IC0NCj4gPiAtICAgICBpZiAodHAtPnZlcnNpb24gPj0gUlRMX1ZFUl8x
+Nikgew0KPiA+IC0gICAgICAgICAgICAgLyogRGlzYWJsZSBJbnRlcnJ1cHQgTWl0aWdhdGlvbiAq
+Lw0KPiA+IC0gICAgICAgICAgICAgb2NwX2J5dGVfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwg
+MHhjZjA0LCBCSVQoMCkgfCBCSVQoMSkNCj4gfCBCSVQoMikgfCBCSVQoNykpOw0KPiA+IC0gICAg
+IH0NCj4gPiAgfQ0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiArc3RhdGljIHZvaWQgcnRsODE1N191
+bmxvYWQoc3RydWN0IHI4MTUyICp0cCkgew0KPiA+ICsgICAgIGlmICh0ZXN0X2JpdChSVEw4MTUy
+X0lOQUNDRVNTSUJMRSwgJnRwLT5mbGFncykpDQo+ID4gKyAgICAgICAgICAgICByZXR1cm47DQo+
+ID4gKw0KPiA+ICsgICAgIHI4MTU3X3Bvd2VyX2N1dF9lbih0cCwgZmFsc2UpOw0KPiA+ICsgICAg
+IG9jcF9ieXRlX2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9VU0IsIDB4Y2YwNCwNCj4gPiArICAgICAg
+ICAgICAgICAgICAgICAgICBCSVQoMCkgfCBCSVQoMSkgfCBCSVQoMikgfCBCSVQoNykpOyB9DQo+
+IA0KPiBbIC4uLiBdDQo+IA0KPiA+IEBAIC0xMDM0NCwxMyArMTAzNzEsMTMgQEAgc3RhdGljIGlu
+dCBydGxfb3BzX2luaXQoc3RydWN0IHI4MTUyICp0cCkNCj4gPiAgICAgICAgICAgICAgIG9wcy0+
+ZGlzYWJsZSAgICAgICAgICAgID0gcnRsODE1M19kaXNhYmxlOw0KPiA+ICAgICAgICAgICAgICAg
+b3BzLT51cCAgICAgICAgICAgICAgICAgPSBydGw4MTU3X3VwOw0KPiA+ICAgICAgICAgICAgICAg
+b3BzLT5kb3duICAgICAgICAgICAgICAgPSBydGw4MTU3X2Rvd247DQo+ID4gLSAgICAgICAgICAg
+ICBvcHMtPnVubG9hZCAgICAgICAgICAgICA9IHJ0bDgxNTNfdW5sb2FkOw0KPiA+ICsgICAgICAg
+ICAgICAgb3BzLT51bmxvYWQgICAgICAgICAgICAgPSBydGw4MTU3X3VubG9hZDsNCj4gPiAgICAg
+ICAgICAgICAgIG9wcy0+ZWVlX2dldCAgICAgICAgICAgID0gcjgxNTNfZ2V0X2VlZTsNCj4gPiAg
+ICAgICAgICAgICAgIG9wcy0+ZWVlX3NldCAgICAgICAgICAgID0gcjgxNTJfc2V0X2VlZTsNCj4g
+PiAgICAgICAgICAgICAgIG9wcy0+aW5fbndheSAgICAgICAgICAgID0gcnRsODE1M19pbl9ud2F5
+Ow0KPiA+ICAgICAgICAgICAgICAgb3BzLT5od19waHlfY2ZnICAgICAgICAgPSByODE1N19od19w
+aHlfY2ZnOw0KPiA+ICAgICAgICAgICAgICAgb3BzLT5hdXRvc3VzcGVuZF9lbiAgICAgPSBydGw4
+MTU3X3J1bnRpbWVfZW5hYmxlOw0KPiA+IC0gICAgICAgICAgICAgb3BzLT5jaGFuZ2VfbXR1ICAg
+ICAgICAgPSBydGw4MTU2X2NoYW5nZV9tdHU7DQo+ID4gKyAgICAgICAgICAgICBvcHMtPmNoYW5n
+ZV9tdHUgICAgICAgICA9IHJ0bDgxNTdfY2hhbmdlX210dTsNCj4gPiAgICAgICAgICAgICAgIHRw
+LT5yeF9idWZfc3ogICAgICAgICAgID0gMzIgKiAxMDI0Ow0KPiA+ICAgICAgICAgICAgICAgdHAt
+PnN1cHBvcnRfMjUwMGZ1bGwgICAgPSAxOw0KPiA+ICAgICAgICAgICAgICAgdHAtPnN1cHBvcnRf
+NTAwMGZ1bGwgICAgPSAxOw0KPiANCj4gW1NldmVyaXR5OiBNZWRpdW1dDQo+IFRoZSBzdWJqZWN0
+IGFuZCBjaGFuZ2Vsb2cgcmVhZCBhcyBwdXJlbHkgYWRkaXRpdmUsIGJ1dCB0aGUgdHdvIG9wcyBy
+ZXdpcmluZ3MNCj4gaGVyZSAoYW5kIHRoZSBpZGVudGljYWwgcGFpciBpbiB0aGUgUlRMX1ZFUl8x
+N19RRk42OCBhbmQNCj4gUlRMX1ZFUl8xN19RRk4xMDAgYnJhbmNoZXMgZnVydGhlciBkb3duKSBj
+aGFuZ2UgcmVnaXN0ZXIgcHJvZ3JhbW1pbmcgZm9yDQo+IGhhcmR3YXJlIHRoYXQgaXMgYWxyZWFk
+eSBzdXBwb3J0ZWQgaW4gcmVsZWFzZWQga2VybmVscy4gV291bGQgYSBGaXhlczoNCj4gdGFnIGFu
+ZCBhIG5vdGUgYWJvdXQgdGhlIHVzZXItdmlzaWJsZSBzeW1wdG9tIGhlbHAgaGVyZSwgYXQgbGVh
+c3QNCj4gZmQzYzdkMDgwZGY1ICgicjgxNTI6IEFkZCBzdXBwb3J0IGZvciB0aGUgUlRMODE1NyBo
+YXJkd2FyZSIpIHBsdXMgdGhlDQo+IFJUTDgxNTkgc3VwcG9ydCBjb21taXQ/DQoNCk9rLCBJIHdp
+bGwgYXBwZW5kIGEgRml4ZXM6IHRhZy4NCg0KPiANCj4gVHdvIGNvbmNyZXRlIGRlbHRhcywgZmly
+c3QgdGhlIHBvd2VyLWN1dCBzZXF1ZW5jZS4gcnRsODE1M191bmxvYWQoKSB1c2VkOg0KPiANCj4g
+ICAgICAgICByODE1M19wb3dlcl9jdXRfZW4odHAsIGZhbHNlKQ0KPiAgICAgICAgICAgICBvY3Bf
+d29yZF9jbHJfYml0cyh0cCwgTUNVX1RZUEVfVVNCLCBVU0JfUE9XRVJfQ1VULA0KPiBQV1JfRU4g
+fCBQSEFTRTJfRU4pOw0KPiAgICAgICAgICAgICBvY3Bfd29yZF9jbHJfYml0cyh0cCwgTUNVX1RZ
+UEVfVVNCLCBVU0JfTUlTQ18wLA0KPiBQQ1VUX1NUQVRVUyk7DQo+IA0KPiB3aGlsZSBydGw4MTU3
+X3VubG9hZCgpIG5vdyB1c2VzOg0KPiANCj4gICAgICAgICByODE1N19wb3dlcl9jdXRfZW4odHAs
+IGZhbHNlKQ0KPiAgICAgICAgICAgICBvY3Bfd29yZF9jbHJfYml0cyh0cCwgTUNVX1RZUEVfVVNC
+LCBVU0JfUE9XRVJfQ1VULA0KPiBQV1JfRU4pOw0KPiAgICAgICAgICAgICBvY3Bfd29yZF9jbHJf
+Yml0cyh0cCwgTUNVX1RZUEVfVVNCLCBVU0JfTUlTQ18wLA0KPiBQQ1VUX1NUQVRVUyk7DQo+ICAg
+ICAgICAgICAgIG9jcF9ieXRlX2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9VU0IsIFVTQl9NSVNDXzIs
+IEJJVCgxKSk7DQo+IA0KPiBTbyBQSEFTRTJfRU4gaXMgbm93IGxlZnQgc2V0IGFuZCBVU0JfTUlT
+Q18yIEJJVCgxKSBpcyBub3cgY2xlYXJlZC4gVGhlc2UNCj4gd3JpdGVzIHJlYWxseSBleGVjdXRl
+IG9uIHVuYmluZCwgc2luY2UgcnRsODE1Ml9kaXNjb25uZWN0KCkgY2FsbHMNCj4gcnRsX3NldF91
+bnBsdWcoKSBmaXJzdCBidXQgcnRsX3NldF91bnBsdWcoKSBvbmx5IHNldHMgUlRMODE1Ml9JTkFD
+Q0VTU0lCTEUNCj4gd2hlbiB0cC0+dWRldi0+c3RhdGUgPT0gVVNCX1NUQVRFX05PVEFUVEFDSEVE
+LCBhbmQgdGhleSBhbHNvIGV4ZWN1dGUgb24NCj4gdGhlIHByb2JlIGVycm9yIHBhdGguIFdhcyB0
+aGUgb2xkIHNlcXVlbmNlIGxlYXZpbmcgdGhlIGRldmljZSBpbiBhIGJhZCBzdGF0ZQ0KPiBhZnRl
+ciBwb3dlci1jdXQgb3IgcmVzdW1lPw0KDQpSVEw4MTU3L1JUTDgxNTkgaGF2ZSBhIGRlZGljYXRl
+ZCBwb3dlci1jdXQgZnVuY3Rpb24NCg0KPiANCj4gU2Vjb25kLCBQTEFfTVRQUyBhdCB0aGUgZGVm
+YXVsdCBNVFUuIHJ0bDgxNTZfY2hhbmdlX210dSgpIHdyb3RlDQo+IE1UUFNfSlVNQk8gKDEyICog
+MTAyNCAvIDY0ID0gMTkyKSB1bmNvbmRpdGlvbmFsbHksIHdoaWxlDQo+IHJ0bDgxNTdfY2hhbmdl
+X210dSgpIHdyaXRlcyBtYXhfdCh1MzIsIG10dV90b19zaXplKDE1MDApLCAxMCAqIDEwMjQpIC8g
+NjQgPQ0KPiAxNjAgZm9yIGEgMTUwMCBieXRlIE1UVS4gRXZlcnkgUlRMODE1Ny9SVEw4MTU5IHVz
+ZXIgdGhlcmVmb3JlIGdldHMgYQ0KPiBkaWZmZXJlbnQgVFggdGhyZXNob2xkIGFmdGVyIHRoaXMg
+cGF0Y2gsIGJvdGggZnJvbQ0KPiBydGw4MTU3X3VwKCkgLT4gcnRsODE1N19jaGFuZ2VfbXR1KCkg
+YW5kIGZyb20gbmRvX2NoYW5nZV9tdHUuIElzIHRoYXQNCj4gaW50ZW50aW9uYWwgZm9yIGV4aXN0
+aW5nIHNldHVwcywgYW5kIGlzIGl0IHNvbWV0aGluZyB0aGF0IHNob3VsZCBiZSBiYWNrcG9ydGVk
+Pw0KDQpZZXMsIGl0J3MgaW50ZW50aW9uYWwuIE1UUFMgaXMgZnJvbSAxMGsgdG8gMTZrLCBzbyB1
+c2luZyBhIGZpeGVkIDEyayBpcyBhbHNvIGFjY2VwdGFibGUgDQpmb3IgUlRMODE1Ny9SVEw4MTU5
+Lg0KDQo+IA0KPiBBbHNvIG9uIHRoZSBjaGFuZ2Vsb2cgd29yZGluZzoNCj4gDQo+ICAgICBhbmQg
+YW4gTVRQUyBzY2FsZWQgZnJvbSB0aGUgY29uZmlndXJlZCBNVFUgKDEwSy0xNkssIG1heF9wa3Rf
+c2l6ZSAvDQo+ICAgICA2NCBjYXBwZWQgYXQgMHhmZikgaW5zdGVhZCBvZiBhIGZpeGVkIE1UUFNf
+SlVNQk8vTVRQU19ERUZBVUxULg0KPiANCj4gVGhlIHJlcGxhY2VkIGNhbGxiYWNrLCBydGw4MTU2
+X2NoYW5nZV9tdHUoKSwgb25seSBldmVyIHdyaXRlcyBNVFBTX0pVTUJPLg0KPiBNVFBTX0RFRkFV
+TFQgaXMgd3JpdHRlbiBieSBydGw4MTU2X2Rvd24oKSwgd2hpY2ggdGhlc2UgY2hpcHMgbm8gbG9u
+Z2VyIHVzZQ0KPiBhZnRlciB0aGUgZWFybGllciBzcGxpdCBpbnRvIHBlci1jaGlwLWZhbWlseSBm
+dW5jdGlvbnM7IHJ0bDgxNTdfZG93bigpIGFscmVhZHkNCj4gd3JpdGVzIDEwICogMTAyNCAvIDY0
+LiBDb3VsZCB0aGUgZGVzY3JpcHRpb24gYmUgYWRqdXN0ZWQgc28gaXQgbWF0Y2hlcyB0aGUgY29k
+ZQ0KPiBiZWluZyByZXBsYWNlZD8NCg0KU3VyZS4gV2lsbCBkby4NCg0KPiANCj4gTmVpdGhlciB0
+aGlzIG1lc3NhZ2Ugbm9yIGFueSBsYXRlciBwYXRjaCBpbiB0aGUgc2VyaWVzIGNoYW5nZXMNCj4g
+cnRsODE1N191bmxvYWQoKS9ydGw4MTU3X2NoYW5nZV9tdHUoKSwgc28gdGhlIHRhZ3MgYW5kIGRl
+c2NyaXB0aW9uIHdvdWxkDQo+IG5lZWQgdG8gYmUgY29ycmVjdGVkIGhlcmUuDQo+IA0KPiAtLQ0K
+PiBTYXNoaWtvIEFJIHJldmlldyDCtw0KPiBodHRwczovL25ldGRldi1haS5ib3RzLmxpbnV4LmRl
+di9zYXNoaWtvLyMvcGF0Y2hzZXQvMjAyNjA5MTcwNzA2MzcuNjI4MjctMQ0KPiAtbmljX3N3c2Ql
+NDByZWFsdGVrLmNvbQ0KDQpCZXN0IFJlZ2FyZHMsDQpDaGloLUthaQ0K
