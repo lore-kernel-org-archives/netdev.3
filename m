@@ -1,75 +1,61 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F370A4A4EF0;
-	Thu, 24 Sep 2026 15:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F8749EC53;
+	Thu, 24 Sep 2026 15:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790263949; cv=none; b=C0hM2L/E45CGwgb8wjnWsy7hR28yFxwEGJHk2Al6xTZMK6kPvgZhK836BLmaQqJur/1B+OkMJhIvioEZTRmkcCTzeWnCZopNMNYqeCqxiuxEomu7l3K0MLoCMV1C4uyXQRETLSxWQ22jIP0ioA4RV6Afnwyo4+mugkb/Bf0wRCc=
+	t=1790264037; cv=none; b=cPn5vEoQX9VeO1M2DUq2w0NYXunPPbffIhsHKnFU0moKJRZRNmO3zTDfmbUssiBJkHOWTaNRzP5jK3fQJXfbCpHEFYvkAApXYkgKkN5l49QjZy0eLt+yEZX2QLgcyJO4Ans8RP+RaEFg/Vo9HeLgNKjnpIkE3cjS5WrGeXygO0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790263949; c=relaxed/simple;
-	bh=1LRDUbfHc19bILPUL/IhQhXeaKwHiT6RMVWSh5qizks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ueo4n25Kvxau6pOaNSXNDYQnlSGUM2WRU1JBXy69+x8YGByAfOvmVvbRpaOSs3BnpbTmMzdG/+5HKwJAYjj3vIQ3MutT34ACV0IFb7OqVsifY77VasjXX9IBQpT+9pPPLaJR6jO+IbKkJ4miQS1rbDUdNdFWg751C6XzKrFKcCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1/5Mo9rJ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790264037; c=relaxed/simple;
+	bh=Aarko+3CQIaswT5E/GL4c0rHkWp+5MRf2/LxY93nxiQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gjddR/ZJjvduzzTyZqLK7/7NQzSGArid4COoyuK4BDpEHjtqq68uSXHQSZtmtBqmTfwQDHumj7nSpVQbfFp1dtCiLchDnUrfxap32vapEsWQ9+37cVvZrrSPNi3OXpy4zJQKBaYk0KsAGvmMS67xsEV3pDXMds9vrDjxDSg10c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCx1bn3V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1/5Mo9rJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=plTJLDQAj0hnOAP6k8YFwOtFx4DzooHoww6QY6cF8GY=; b=1/5Mo9rJduTh85VwjBBLPiX2IV
-	vO6IGHH1qxwqvx04BHbCeT3uncW3G7XghEMFlRJM9i2esW5O7tSQsVMA5fP1FEQ1I3xstcYs3zRyR
-	pyJ3Yzoum9KIGcGnG/n8jWoxaZ/KL2Yp1h3ridhhghiK4kxiFDjE+kCJAqpXxXc9kRSE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x9lQd-0071eP-NQ; Thu, 24 Sep 2026 17:32:07 +0200
-Date: Thu, 24 Sep 2026 17:32:07 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
-	horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
-Subject: Re: [PATCH net-next v9 2/7] net: dsa: motorcomm: use max_ports in
- series for port bounds checking
-Message-ID: <e5a632a4-053a-4f5f-a8e1-6aa1641571f9@lunn.ch>
-References: <20260924094146.4128703-1-kyle.switch@motor-comm.com>
- <20260924094146.4128703-3-kyle.switch@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCx1bn3V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FE71F000FF;
+	Thu, 24 Sep 2026 15:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790264035;
+	bh=0y3bhQ+E5gqrg/HPQpK6Xwg1YQ6uGBxrc+WKYjyPp74=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UCx1bn3VFUyyQieRuHSGXQms4dxjx7wLhVh2n8k7kaS4Nk8CNw0fsTvjolhfDr4pP
+	 GMYg+hjnNfd4ViQPFk20H3NKNq9Bdy/Fo+m4bSRbiexSCBboseCfkK3ho3qN2IUHKq
+	 AsIvQujQpXWknitxQORoSnsscBIXsej/2nlYFZxMOXLw15PiOWGT8evUHSPhyse3eA
+	 iZkmqMf95Ox1WMbxXnVwSx+NUdnYx4oDZgjtYNXZPGTtaXJ9L7+dYjAekgPOT92rAe
+	 ekPqcWng4nEAnnhHpxwLjASo8OOowR1ETtRfE8sVJH7tM+JmbCvFZqH52WhCmXJumS
+	 p8MQJ+J6k8UcA==
+Date: Thu, 24 Sep 2026 08:33:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <UNGLinuxDriver@microchip.com>
+Subject: Re: [PATCH net-next v3 0/4] net: microchip_t1s: fix collision
+ detection on PLCA status change
+Message-ID: <20260924083355.5e839290@kernel.org>
+In-Reply-To: <20260918143302.76909-1-parthiban.veerasooran@microchip.com>
+References: <20260918143302.76909-1-parthiban.veerasooran@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924094146.4128703-3-kyle.switch@motor-comm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 24, 2026 at 05:41:41PM +0800, Kyle Switch wrote:
-> Replace the hardcoded YT921X_PORT_NUM macro with the per-series
-> max_ports field in port validation. This removes family-specific
-> constants from the common code path and simplifies adding new
-> switch families with different port counts.
-> 
-> No functional change for existing YT921X devices.
-> 
-> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+On Fri, 18 Sep 2026 20:02:58 +0530 Parthiban Veerasooran wrote:
+> In a 10BASE-T1S multidrop network, the PHY autonomously transitions
+> between PLCA mode and CSMA/CD mode based on BEACON availability. The
+> existing collision detection logic only adjusted on explicit ethtool
+> PLCA changes, leaving it in the wrong state across these autonomous
+> transitions.
 
-
-For version 8 i gave a Reviewed-by: Andrew Lunn <andrew@lunn.ch>. You
-are supposed to add this here. That then tells me i don't need to look
-at it again, and it helpers those Maintainers who do the actual merge
-decide if the patchset is ready.
-
-b4 will append these for you.
-
-    Andrew
-
----
+I'm going to assume at least one of the High or Medium severity
+findings is correct, please respond to the AI feedback in timely
+fashion, even if it's just to agree / tell us that v4 is coming.
+-- 
 pw-bot: cr
