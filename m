@@ -1,138 +1,114 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAF342EEB7
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933054322FA
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790240536; cv=none; b=ZAVG5rQOxR9c34Z6kI/VYUl0uUtcV08+kQZqZ9ebWbN/gSBGaCiMKqPJoHai9XUviXWJT2eyQr1lG47qEvnWoRGw5TBF/boJ1yTjP1t7vToCJb6brLRuXh4rtKCDvdde5j0C0pyRdw0GbYAGqoCjvAtv7OoVtEJ0cH02CqWiTIU=
+	t=1790240620; cv=none; b=mjYUpnz0GfLIOr8iITBHJPMiPyna8ku8n01NhuhnfdSj/q5uAQZdOca2/CGHtp54N3q3V2stf2EFkNHcTGrju5hBFYm+8wO04qcw0ZanyrOXhUB7WtJuw3KncPHkCO0XehYmLihfWcUy4cQ+gB6OoxTzFJPvO+kbQRxl3tDbmI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790240536; c=relaxed/simple;
-	bh=Ce2ymKVfonavaoEYAGBUsfI9fZcWikNo8pBvq8Buq4Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=Imc12BOqs3keRIR9GVD3etvKmcywbAGKPgnqLp9c6Ii5V/yeCzquVWxf3LF7wp+Y4Fj8gRWWgyAirSzZvAL0jnZsLLdivYeQJiZUjQa7+t6bnMW8YxzrHV4u/iRVoWxymcCQsCS/9iVS3u0Z7Qx9DxjnbV+qPxe+vX4zqyXBeBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a1HHHn6/; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790240620; c=relaxed/simple;
+	bh=6eNEXRgdL36ZWMrD4pn9OcMZK2G/MxNlDASZOgFbQG8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KIwDxYuDA0gVsBgyUkpZ7JT++ZZc8q0oVFx3DtFYsLk8hsrRJ5uiOS2t3J1N13LHQ8UEU8ohnEQ6fQ8Nep7Fy7pIdjALdDEetzjuAxWppn6HBmCzMuH2JRzlfCjZE5pCW5jztroPSBgFCfpew4n2VYCdniDP1FaKET2XiXCKlsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=GGrh3oAP; arc=none smtp.client-ip=74.125.229.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a1HHHn6/"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E5E76C211DC;
-	Thu, 24 Sep 2026 09:02:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9035A5FB45;
-	Thu, 24 Sep 2026 09:02:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2457A1032944A;
-	Thu, 24 Sep 2026 11:02:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790240528; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=vR7HTskuo3QA3UfAnJnKV8R+LADlbZiIPXzgpnhb+y0=;
-	b=a1HHHn6/Lau7NKqrsoJ6ZKglKHjAE5aINeiOnPet24A2RUQq1BFBnlNjQ4HlASH24L8kwM
-	8sZVzzg1I/AXv/TcPBLTSJ1Q93r/4wtf2Poxb8ujP3ERwNwfk+O/TUTFibZsvOoDeoQIEN
-	CnrMOZjtOxmNG6HBZRIrMDfH+Q6/tgYqeyA+1wNzLLpqwMopPD5DPdrHgfiVd2hs9ZYgJ3
-	2PRuzZL5uXmcUhFk31aug8s3nprebTsm3RR3LpVSiKVhxM5rg0git3O5IBRyt2j1WK6WNJ
-	rIwIFPM6h5muT/vt2tw7Kl5Yt7sWKlfTNCgM+dIP7K3K6N36KZ7JkQihaLoDZg==
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="GGrh3oAP"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144df39b6cfso1357320c88.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 02:03:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1790240616; x=1790845416; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JhovNMtONHqof+lhOxfZhim/Chcx5GtaZSSYpmj4lRA=;
+        b=GGrh3oAPPqYqmv8GAD7PN5cKB570ehhUqO5rDinnjqN9sljJBViOCnhmLRqUPVEBgY
+         NKqkr/2a8wxli6/Jni5Cv50TUkw3Dwf9YBxX1pEAd7B7LeFEvKqm33SVqahmZp5FXth3
+         mMcZB2ovH/UiYBPSFCfvJekzx7Q0Tbyt8WbamLP1gVKudlt19/WgN+b95+lbK+TZN0CG
+         MMWpP3gED0+i5frbV917cAC8p6DBJVuWVH1q/Ef8VVcH8fdZh6MM3QD7PGvKfyPcMV2k
+         qVwsD5Ye9pnfHSotE0X/05Zk6Ls9VLx5u11W/hPnOV5AL2TJJscXs3EZigc7rpBz4RCA
+         oThQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790240616; x=1790845416;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JhovNMtONHqof+lhOxfZhim/Chcx5GtaZSSYpmj4lRA=;
+        b=16FcvlGoFSaYEF/T/q3+0arVe32GQGaAMoZOLaPV0nlQe15QkwVvox6XIRiVwMW6W1
+         6JreJMvABiwmsMXl5OzovmLLdDIkuNAqHxIwk3dLmhcNO6zAITAKkN5YMViYO4EX5v3Z
+         Y3f1ra2HVZ4LXSx4KSa7qowL2L0qrR6Rd6LhhRlFNzPGkJnPpo2wRSGqYSqjfvPHXzFx
+         1wCyP9SsujbsmAZLG/RyfPImga85S3lPgEWv+SMgNpgjUPc2Wzl4ilYBM6wlJ40cCO4S
+         XfwPCXDXLWfyv5g8L4QlCe64PNxwLRVLcITqzLiOpY9yeWUSGBH67SdqvnOXwtFZeYWz
+         cQPA==
+X-Gm-Message-State: AFuF++lmFRcv8AMyOfBqQUbwByVtyfD0tUin5q3xI9mxFDseuCMu9yNn
+	Fmws3PUmGwdkH+wPQVT/Nwne46gyTqtBFWdz3kGJ0bZDVxqczqV1qDA0IZC4qIgxg5ziE8ZBGCS
+	U/9CG8CGOQJAysauPX9mQJCuLGf02VxsMI3Znxo16xOklBlCCmAmS/NiEeuTjG6Kbaf1bcT1+4k
+	o=
+X-Gm-Gg: AYBFou15MIrBis05ckdfXH8UZ/X14znWYPe/DhSiPxxjKLW+8pBqrYaRxy3wi11hrmf
+	sOp4RGq+g8yWyJxe+IP3JcfQzjUDq6dKuKPyq8YBeuggHIfzIfit9H2VqOoBl1Vq4G5/Ypi5ED2
+	uBZq6+db/FpTbL9mYKQEQHd5Cqe/rBmgS3ckF2BpBQkXfR47RDHruYdcMXhOzGurTd6xBKE3NMU
+	UH9nkPdgvArjTreYCbPGDsAcVl7SrJ1qrbnzC06kvxit/4QydWHgukRpEtlhGRgsLeMRtXKJiKK
+	rQDF4wSPn459mrXUIfBGcJ7SmYdY59r9guPn5mZhpwMoMqC5Pot9yyhkMKg3XduGV2bE392ozXs
+	dstBtyZCpvKnccP40DsBaZ5MVkNL10ZMY/muY8Mti1dM0P+/W4IAaFTFVrM9cId83VU8PO82F4O
+	I4o7LfpzW/SWodZn5zfZjhfYTJyHJpIMr/80fQc8fViN0AWZZ25qtExl5cwwzT1n/nAWoN88yQi
+	GNisJaNaQY=
+X-Received: by 2002:a05:701b:4505:20b0:143:26cf:8616 with SMTP id a92af1059eb24-145040070c5mr1331914c88.24.1790240615555;
+        Thu, 24 Sep 2026 02:03:35 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f983d73fsm15599829c88.6.2026.09.24.02.03.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 02:03:34 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Wang Zhan <wang.zhan@smartx.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Wang <jasowangio@gmail.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	dev@openvswitch.org
+Subject: Re: [PATCH net-next v2 2/4] net: gso: support bounded TCP segmentation
+Date: Thu, 24 Sep 2026 17:03:19 +0800
+Message-ID: <20260924090319.4182130-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <willemdebruijn.kernel.c1280e613430@gmail.com>
+References: <20260918084651.3022878-1-wang.zhan@smartx.com> <20260918084651.3022878-3-wang.zhan@smartx.com> <willemdebruijn.kernel.7b2e4c8d0d45@gmail.com> <20260920131231.3610688-1-wang.zhan@smartx.com> <willemdebruijn.kernel.2984a0c37a5cf@gmail.com> <20260923094517.3998941-1-wang.zhan@smartx.com> <willemdebruijn.kernel.c1280e613430@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 11:02:03 +0200
-Message-Id: <DLNFAUX8MFA1.3UMOGNLDKDRJM@bootlin.com>
-To: "Zijin Tao" <taozj888@163.com>, <maintainer@kernel.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH] net: macb: rate limit netdev error info print in the
- data path
-Cc: <linux-kernel@vger.kernel.org>, <conor.dooley@microchip.com>,
- <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260920100920.65773-1-taozj888@163.com>
-In-Reply-To: <20260920100920.65773-1-taozj888@163.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hello Zijin,
+On Wed, 23 Sep 2026 12:42:59 -0400 Willem de Bruijn wrote:
+> Precomputing in the caller, as the current series does, is fine too,
+> if some caller-specific context is needed.
+>
+> I'm mostly concerned about duplicating logic and the number of
+> functions touched in this series. But skb_segment itself is too
+> complex already, so preferable to minimize complication there.
+> (The reuse of partial for this purpose is very neat.)
+>
+> If only validate_xmit_skb allows this, because all other segmentation
+> callers do want full segmentation (not checked, but I can believe
+> that), the current approach is fine. If we can clean up the repeated
+> tests and simplify the code in general.
 
-You missed part of my recent feedback [0][1]. Copy paste:
-
- - Also you are missing the prefix [PATCH net] or [PATCH net-next].
-   Read up about this here (and read the full page):
-   https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
- - Also your To/Cc list is weird, make sure to use
-   scripts/get_maintainer.pl (or use b4 for patch
-   management which uses it automatically).
-
-In addition, make sure to read the "submitting patches" guide [2].
-You missed:
- - replying to all review points one by one using interleaved [4]
- - V2 in subject [3]
- - write up a changelog [4]
-
-Also this one is less well known, but the net subsystem (and many others
-nowadays) expect people to reply to Sashiko review emails to say
-whether they agree or disagree. Especially if they disagree. You can
-mostly skip over the pre-existing issues which don't relate to your
-series.
-
-For example Sashiko says you don't cover some log netdev_err() calls.
-You can reply explaining why only the ones you touched are important to
-deal with.
-
---
-
-And I see just now I have in my inbox an email from you asking how to do
-it properly. Good! But it doesn't show up on lore, I'm not sure why.
-
-Replying to it here:
-
- - Don't send the same patch but slightly modified. Maintainers need to
-   know the latest version. New version means V2/V3/etc, even if
-   changes are tiny (like a typo fix in commit message).
-
- - Don't put V1 for the first revision. I think that's git-format-patch
-   default behavior.
-
- - Using git-format-patch looks something like:
-
-   =E2=9F=A9 git format-patch -1 998b159fdd78 --subject-prefix=3D"PATCH net=
-" -v2
-   v2-0001-net-macb-take-bp-lock-around-NCR-read-modify-writ.patch
-
-   =E2=9F=A9 grep ^Subject v2-0001-net-macb-take-bp-lock-around-NCR-read-mo=
-dify-writ.patch
-   Subject: [PATCH net v2] net: macb: take bp->lock around NCR read-modify-=
-writes
-
-   =E2=9F=A9 scripts/get_maintainer.pl v2-0001-*.patch
-   "Th=C3=A9o Lebrun" <theo.lebrun@bootlin.com> (maintainer:ATMEL MACB ETHE=
-RNET DRIVER)
-   Conor Dooley <conor.dooley@microchip.com> (reviewer:ATMEL MACB ETHERNET =
-DRIVER)
-   Andrew Lunn <andrew+netdev@lunn.ch> (maintainer:NETWORKING DRIVERS)
-   ...
-
-   I think most people call scripts/get_maintainer.pl and write the
-   git send-email --to/--cc flags by hand. I've been using b4 for a few
-   years now so I don't really know the usual git format-patch workflow.
-
-   Or you can use `git send-email --cc-cmd=3Dscripts/get_maintainer.pl`.
-
-[0]: https://lore.kernel.org/all/DLKVCOXTNGVZ.3CC6KFXDIFJ3X@bootlin.com/
-[1]: https://lore.kernel.org/all/DLKVEXS7X14N.XLLMBDDX6ZJW@bootlin.com/
-[2]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-[3]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html=
-#subject-line
-[4]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html=
-#respond-to-review-comments
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+OK, I will try to simplify the code and reduce the hot path cost in v3.
+By the way, changing the signature of __skb_gso_segment() brings three
+extra call site changes, and that is a trade-off.  __skb_gso_segment() and
+skb_gso_segment() already exist, and adding another function like
+skb_gso_segment_max_segs() would make the call chain confusing.
