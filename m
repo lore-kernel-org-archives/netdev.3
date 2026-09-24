@@ -1,348 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CEF483BC8;
-	Thu, 24 Sep 2026 10:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3182D47AF61
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790246817; cv=none; b=n+lRYTNs3MlPSwotai1rDXjbxRch287KQJXi9gvSpkzRtKmCTUEIQUEihd4j+PcGUO14tRlcWW+c+rFeE4e5HylCKIAvqcw1BnbB1S84aFcBLfWQ7sTOvCNBLh/d4SAMrkfnFXOHbPedDnKjpqWnxoE8w4b0CWCG8lElTDWMWt0=
+	t=1790246845; cv=none; b=E6S4GKaBjXvSt/8nRSFI1byIyKSCAwY8Aih42Fa7RM512yuNqYgzUcJun6PuPCjwImtIEPaOZkCG6JvrKaLdeANg/kEtddCd2JQ43yuHDIKg606ts1INK72E1gINsqupQd61Fp9mF5/MJgSKt327W+72i6mc0IU0YT9ZzMLR4Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790246817; c=relaxed/simple;
-	bh=SWvb68TOOvKVFx4aoJuAFdMU6OY0qkaPdNl3q8uKe0A=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ECmgM/zvNrrTXmjaVriLF5hkDdXRep81+n+3pwJMX/5b4E0jCt1PMBHoIwYBdK/J0Lo+4CBFfv6lEVDISCZBkKJ7Hq1NZNunlMZZOX5RqR0QoJjD49eIh8oLzQmtC1ZI2n2MvsRiK5Yilz9zatGtWq2W2Q3yIzBfj7gBTi8plU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cllj7ZK/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790246845; c=relaxed/simple;
+	bh=zk3nUHSZNGZVwkyBHbCfiN3EPEUTym7A+bTcJzqXCs8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q1njU0qxrbpySb7KHsh83tmczEvee49XPw2rB3kLgFdSfL8eH3nWrEqiGzMYB5HVF6yoXuoacE8itnFSISSNs9cVvY42VGNQLHq+kUqjTwdgBRkS3KLbnEHDjFdLyGxAzqn7rensx5cjcvKmugPAaX5FkXiki+JxQUa2ApYqUXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=J9lobaG5; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=C5n1kjyR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cllj7ZK/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D481F000FF;
-	Thu, 24 Sep 2026 10:46:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790246815;
-	bh=fpvNu9a4YjrqadxJvpRYsMvmWzz3IOyT2Tl4WoOE9fQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Cllj7ZK/lkpF5VBYuHy9NVNj4qRyBp3ptkxZrLgpVs7cg1MSEwaXNfKMFJykGxjdh
-	 R6/KpYcrppcr+kgTySuc2aYmzm3la4XPy/pP+6j85687INJVBJ1Z4r9hd7He13LduC
-	 Ru0H+dP0KZPRC96SLoNYlWvlgOi/xszfD/i1k8SK6o9WyJDSvxmYUNWkg8AZHbGH2E
-	 2+aX8QR/JP4Lb/oFOr2uaIeKsjcUTZ6lwIdeE6Rnuy6Q/k2oeqfsud2OrF2ERWN0QM
-	 TY5BQ9TO/ED1Q8E6E1djMPhhWcPH1n7Z1Ej6EDzexkK5qKUk1SSTzfXzNypuQkOKUd
-	 zJdpXiGUCWglw==
-Subject: Re: [PATCH net v2 9/9] gve: prevent XDP frame leak and corruption
- during DQO TX cleanup
-From: netdev-bot+sashiko@kernel.org
-To: joshwash@google.com
-Cc: netdev@vger.kernel.org, hramamurthy@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
- willemb@google.com, thostet@google.com, nktgrg@google.com,
- eddiephillips@google.com, pkaligineedi@google.com, jeroendb@google.com,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 24 Sep 2026 10:46:53 +0000
-Message-ID: <179024681365.2160803.18423750984465801177@kernel.org>
-In-Reply-To: <20260922194533.631387-10-joshwash@google.com>
-References: <20260922194533.631387-10-joshwash@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="J9lobaG5";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="C5n1kjyR"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68O9PNPC2919286
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:47:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=1BYBocMOfeShm/OCiT4Isi
+	tabOYUNDg/Bfw1ZPW2rVI=; b=J9lobaG5pKZPRamj8ztjsx8UlOLqsV0sZngUrf
+	VT+NJ1dLmSzvR4mAbyirSQecWAf9ia7L+MTYRfuUQi2iZWBkE4o/a6434Z0ULPMV
+	vYAom/xqNdNrEOX/osrym0goCWkeRrcKUH+SuaYI53sxhSBIIdy9BrOFIjvlp9EI
+	xOp/ZAnUMJ3nyJiSnDdWlofz+e/nmsVORS/uZa9cNEh11UWVQBBSpjTcUF3oHVDa
+	D8pElrNw+KgkYQdHj4vXY/DMF5pMdKRzuyW6MDHoSzMfe9Hz1i/nC0H8dnwAWSFv
+	tdGFI7qA/E12UFkvbvLtE57F4p98psH5W2/izExYkKCladew==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvstuj57d-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:47:22 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a0312937eso229107385a.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:47:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790246842; x=1790851642; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1BYBocMOfeShm/OCiT4IsitabOYUNDg/Bfw1ZPW2rVI=;
+        b=C5n1kjyRpUmGr6qZmQNfyOht8Jmf7P4mmU0k5OjLQP5BGnQSVY5zR7MKgh1sCoa/yu
+         cY0az0GwQdI/GzxebBCx5WzmDnuPPnA5H9XIiFRRTyjUVWjy2TCGVx+iqc7CEN43XgDf
+         NXui6kUuLB1zitOHm4Iouvlxgl1Lsned/BnITI2G4qBKm7c5gQ9nMgJdQiS3zUhrv45z
+         T8kvg1cWBEpwYIhe4Msa2WssLZAlhTfCIgEOC0tCZ5JQCsyDxmUHEWfLdZhZ+OuHidzE
+         j/FzzpUEEywdPBBTc+peRdoZ768uNIziuXEVtG1iInJCXDah/Pir4bIX2qopuT4gabwS
+         GqEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790246842; x=1790851642;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1BYBocMOfeShm/OCiT4IsitabOYUNDg/Bfw1ZPW2rVI=;
+        b=OgVeAfsXfojfPpQrBibGF3aEfehqL8XTwR+VPX9GtdnVEByYOCrx5g1bZjK3udp+E+
+         oNorE+//+xSDPzDBUqoiXONyofYT848EW9LvORGWz5DM8B9apUegT4bFXfiTWrliMO3s
+         kZPhlHkf9u6gPkD6wjylMkrv7FpkUXimCDpv0Qfexazxki4C4310XIRVidYwUzVwxOIj
+         DiMG4/eE45GxWMj7VEDkyDTq4FDrpkcNeEYJB+JNoXo+3/E4hspzMoK2WNQv+7Nkyvw5
+         X9L5YErmoW1cR1anhjd1qaaOmbVSQLyLiznECLGDWZePQrfgceefyKgCnaBOX1GG0Ffq
+         IhvA==
+X-Forwarded-Encrypted: i=1; AKwUvBzjL4NjgbuV/wvvl4kaNb3lUIKN++dUrxSDQDO2rcjBaVNVeLejQ5FmPKOsKaV81vyIKi6bxRo=@vger.kernel.org
+X-Gm-Message-State: AFuF++nGQV6FCBboWyb9g/zghgVFhEjEHCEZfH+7Qfv/+dATy8wI/iro
+	Sx4mpt6Heb8+zUaM0vZbKFKhi1Az0FDGcT0dri6e61fF8tuAd4WcffB0MosWRtIBvURgV6Faf8u
+	dKsTzgGRGDEsIsgmd2E4no0QWPWGjBu/UFfs1HKjhhoWGYiKtDibir1QOVRziB3gxIwc=
+X-Gm-Gg: AYBFou0gknQzLQoguTmEvyvsY/5NlWbkN1YckvPr7qegoWKINQdwxhsh5Jh1xrGKpMM
+	YpuD4n917UD399t9xiARA/Bw24wym57Uqttk5f15SguVZDn5UYZmRJInV9OtboD63gRL8oe+Sx/
+	jSVoAVZcCO0yh1vzneoMeOiXQeJ3WuLRt1OjdgrSlqR0Q0Oowv8TWuKU1YHoLjyiX4uaTuIgXdr
+	9KkK1+tTNNxqJbJnxofU3vuUEuQbYwDq//Nh5WFzJ9K5SWz7kfqs3WYKRB7CDKcaiwvHsgFgE2n
+	J/U6MsydDJM83sGWQsoEUcqUu9rUkJzhoFQR8sv0t8TfLHjlwt2D3LP3dYnO43vPFL9hmM0aOvR
+	z4vxXZ3w020Sujg==
+X-Received: by 2002:a05:620a:4483:b0:93b:deb5:637c with SMTP id af79cd13be357-93c362a6f6dmr222313385a.21.1790246841555;
+        Thu, 24 Sep 2026 03:47:21 -0700 (PDT)
+X-Received: by 2002:a05:620a:4483:b0:93b:deb5:637c with SMTP id af79cd13be357-93c362a6f6dmr222307385a.21.1790246840803;
+        Thu, 24 Sep 2026 03:47:20 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868486408sm12472980f8f.9.2026.09.24.03.47.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 03:47:19 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Subject: [PATCH net-next v2 0/2] net: stmmac: Introduce hw queue priority
+ offload
+Date: Thu, 24 Sep 2026 12:47:00 +0200
+Message-Id: <20260924-stmmac-mqprio-prio-offload-v2-0-fdd8b69efccf@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 2 · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch still unmaps XSK pending packets as if the driver
-  owned their DMA mapping, so it never closes the bug class its message…
-- [Medium] Now that gve_handle_miss_completion() no longer crashes on XSK
-  packets, those packets can reach the late-reinjection branch of…
-- [Medium] The new XSK teardown handling in
-  gve_tx_clean_pending_packets() never runs when XSK packets can…
-- [Low] The commit message describes only XDP frames being mistaken for
-  SKBs, but the patch also changes AF_XDP zero-copy (XSK) behaviour…
-- [Low] The comments were not updated to match the rewritten cleanup
-  code.
-
---
-
-gve: prevent XDP frame leak and corruption during DQO TX cleanup
-
-This commit changes gve_tx_clean_pending_packets(),
-gve_handle_miss_completion() and remove_miss_completions() to switch on
-pending_packet->type, so XDP frames are returned with xdp_return_frame()
-instead of being handled as SKBs. It also marks XSK pending packets
-complete during teardown. It moves the XSK reorder queue helpers earlier
-in the file so the cleanup path can call gve_tx_process_xsk_completions().
-
-> When tearing down a DQO TX ring or processing miss completions,
-> pending packets were assumed to be SKBs. If an XDP frame was pending
-> during cleanup or timeout, cur_state->skb was accessed on an xdpf
-> union pointer or the XDP frame was leaked without calling
-> xdp_return_frame().
->
-> Refactor gve_tx_clean_pending_packets(), gve_handle_miss_completion(),
-> and remove_miss_completions() to switch on pending_packet->type.
->
-> Fixes: d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ RDA")
-
-[Severity: Low]
-The commit message only talks about XDP frames, but the patch also
-changes AF_XDP zero-copy (XSK) behaviour. Could the message describe that
-as well?
-
-Before this patch, gve_handle_miss_completion() did:
-
-	*bytes += pending_packet->skb->len;
-
-For XSK pending packets the skb/xdpf union is always NULL, because
-gve_xsk_tx_dqo() never sets it. So a miss completion on an XSK packet
-would be a NULL pointer dereference in NAPI context. The new XSK case
-fixes that crash.
-
-That code came from 2236836eab26 ("gve: implement DQO TX datapath for
-AF_XDP zero-copy"), which added GVE_TX_PENDING_PACKET_DQO_XSK. Should
-that commit get a Fixes: tag too?
-
-The message also doesn't mention two other changes. At teardown,
-gve_tx_clean_pending_packets() now marks XSK slots XSK_COMPLETE and tries
-to report them through xsk_tx_completed(). And gve_xsk_reorder_queue_head(),
-gve_xsk_reorder_queue_pop_dqo() and gve_tx_process_xsk_completions() have
-been moved.
-
-Both commits landed in the same development cycle, so this is mostly
-about traceability.
-
-> diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-> index 78f946ae72649..e8481b993beb0 100644
-> --- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-> +++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-
-[ ... ]
-
-> @@ -201,11 +244,30 @@ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
->  		else
->  			gve_unmap_packet(tx->dev, cur_state);
->  
-> -		if (cur_state->skb) {
-> -			dev_consume_skb_any(cur_state->skb);
-> -			cur_state->skb = NULL;
-> +		switch (cur_state->type) {
-> +		case GVE_TX_PENDING_PACKET_DQO_SKB:
-
-[ ... ]
-
-> +		case GVE_TX_PENDING_PACKET_DQO_XSK:
-> +			cur_state->state = GVE_PACKET_STATE_XSK_COMPLETE;
-> +			break;
-
-[Severity: High]
-The gve_unmap_packet() call above the switch still runs for every slot,
-XSK slots included. Can this unmap a DMA address the driver doesn't own?
-
-gve_unmap_packet() assumes the driver mapped the slot:
-
-	/* SKB linear portion is guaranteed to be mapped */
-	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
-			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
-
-For XSK, gve_xsk_tx_dqo() posts a pool-owned address and increments
-num_bufs, but it never records dma[0]/len[0]:
-
-	pkt->type = GVE_TX_PENDING_PACKET_DQO_XSK;
-	pkt->num_bufs = 0;
-	...
-	addr = xsk_buff_raw_get_dma(pool, desc.addr);
-	...
-	++pkt->num_bufs;
-
-The XSK case in gve_handle_packet_completion() only sets
-GVE_PACKET_STATE_XSK_COMPLETE, and gve_free_pending_packet() doesn't
-reset num_bufs. A completed XSK slot therefore keeps num_bufs == 1, along
-with whatever dma[0] an earlier user of the slot left behind.
-
-On the XDP TX queue, the same slot can first carry an XDP frame from
-gve_xdp_xmit_one_dqo(). That fills dma[0] with a real mapping, which is
-unmapped at completion. If the slot is then reused for XSK, a later
-ifdown, reset, or XSK pool enable/disable (via gve_restart_rings())
-reaches:
-
-gve_queues_stop()
-  gve_tx_stop_rings()
-    gve_tx_stop_ring_dqo()
-      gve_tx_clean_pending_packets()
-        gve_unmap_packet()
-          dma_unmap_single(dma[0])   <- already unmapped
-
-Slots that were never used for anything else would instead unmap address
-0 with length 0.
-
-Under swiotlb or an IOMMU, could this release a bounce slot or IOVA that
-now belongs to another mapping?
-
-remove_miss_completions() has the same type-blind unmap right above its
-new XSK case. Before this patch, an XSK miss completion crashed in
-gve_handle_miss_completion(). Now the packet reaches
-remove_miss_completions() after GVE_REINJECT_COMPL_TIMEOUT and hits the
-stale unmap at runtime.
-
-Would it be better to move the unmap into the SKB and XDP_FRAME cases,
-the way gve_handle_packet_completion() already does?
-
-> +		default:
-> +			WARN_ON_ONCE(1);
-> +			break;
->  		}
->  	}
-> +
-> +	if (tx->xsk_pool)
-> +		gve_tx_process_xsk_completions(tx);
->  }
-
-[Severity: Medium]
-Can this drain ever run while XSK packets are pending?
-
-gve_queues_stop() clears the XSK pool pointers before it stops the TX
-rings:
-
-gve_main.c:gve_queues_stop() {
-	...
-	gve_unreg_xdp_info(priv);
-
-	gve_tx_stop_rings(priv, gve_num_tx_queues(priv));
-	...
-}
-
-gve_unreg_xdp_info() calls gve_unreg_xsk_pool(), which does:
-
-	priv->tx[gve_xdp_tx_queue_id(priv, qid)].xsk_pool = NULL;
-
-So when gve_tx_stop_ring_dqo() calls gve_clean_tx_done_dqo() with a NULL
-napi and then gve_tx_clean_pending_packets(), tx->xsk_pool is already
-NULL and both drains are skipped. gve_tx_reset_ring_dqo() then zeroes
-xsk_reorder_queue_head/tail and the reorder queue.
-
-As a result, outstanding XSK descriptors are never passed to
-xsk_tx_completed(). That includes descriptors the device completed during
-the final gve_clean_tx_done_dqo() pass.
-
-gve_queues_stop() is used by gve_close(), gve_restart_rings() and the RDA
-XSK pool enable/disable paths. In those paths, AF_XDP sockets on other
-queues stay bound. Won't their completion rings lose entries on every
-stop/start that had TX in flight?
-
-The remaining caller is the gve_queues_start() error path, which runs
-before any XSK packets could be pending. So the new drain looks like it
-can never run in practice.
-
-[ ... ]
-
-> @@ -1347,8 +1387,25 @@ static void gve_handle_miss_completion(struct gve_priv *priv,
->  			secs_to_jiffies(GVE_REINJECT_COMPL_TIMEOUT);
->  	add_to_list(tx, &tx->dqo_compl.miss_completions, pending_packet);
->  
-> -	*bytes += pending_packet->skb->len;
-> -	(*pkts)++;
-> +	switch (pending_packet->type) {
-
-[ ... ]
-
-> +	case GVE_TX_PENDING_PACKET_DQO_XSK:
-> +		break;
-
-[Severity: Medium]
-XSK packets now get past this point instead of crashing. Can they reach
-the late reinjection branch of gve_handle_packet_completion(), which frees
-the slot without checking its type?
-
-After GVE_REINJECT_COMPL_TIMEOUT, remove_miss_completions() moves the XSK
-packet to GVE_PACKET_STATE_TIMED_OUT_COMPL. Its completion tag stays in
-tx->dqo.xsk_reorder_queue. If the reinjection completion then arrives
-before GVE_DEALLOCATE_COMPL_TIMEOUT:
-
-gve_handle_packet_completion() {
-	...
-		if (unlikely(pending_packet->state ==
-			     GVE_PACKET_STATE_TIMED_OUT_COMPL)) {
-			...
-			remove_from_list(tx,
-					 &tx->dqo_compl.timed_out_completions,
-					 pending_packet);
-			gve_free_pending_packet(tx, pending_packet);
-			return;
-		}
-	...
-}
-
-The slot becomes GVE_PACKET_STATE_UNALLOCATED while the reorder queue
-still points at it. gve_tx_process_xsk_completions() stops at the first
-entry that isn't XSK_COMPLETE. Wouldn't every later XSK completion on this
-queue then be held back?
-
-This doesn't look like a double free, since gve_free_pending_packet() sets
-the slot to UNALLOCATED. The queue only unblocks if that exact slot is
-later reused for XSK and completes. Even then, a second reorder entry
-points at the same slot, so one entry stays behind for good.
-
-If the AF_XDP completion ring fills while the queue is blocked,
-xsk_tx_peek_desc() stops handing out descriptors. TX on that queue could
-then stall until the rings are restarted.
-
-remove_timed_out_completions() already handles this case:
-
-		if (pending_packet->type == GVE_TX_PENDING_PACKET_DQO_XSK)
-			pending_packet->state = GVE_PACKET_STATE_XSK_COMPLETE;
-		else
-			gve_free_pending_packet(tx, pending_packet);
-
-Should the late reinjection branch do the same?
-
-> @@ -1377,9 +1434,26 @@ static void remove_miss_completions(struct gve_priv *priv,
->  		else
->  			gve_unmap_packet(tx->dev, pending_packet);
->  
-> -		/* This indicates the packet was dropped. */
-> -		dev_kfree_skb_any(pending_packet->skb);
-> -		pending_packet->skb = NULL;
-> +		switch (pending_packet->type) {
-> +		case GVE_TX_PENDING_PACKET_DQO_SKB:
-> +			if (pending_packet->skb) {
-> +				/* This indicates the packet was dropped. */
-> +				dev_kfree_skb_any(pending_packet->skb);
-> +				pending_packet->skb = NULL;
-> +			}
-> +			break;
-> +		case GVE_TX_PENDING_PACKET_DQO_XDP_FRAME:
-
-[Severity: Low]
-This isn't a bug, but the comments here no longer match the code. The
-comment above the unmap in remove_miss_completions() still says:
-
-		/* Unmap/free TX buffers and free skb but do not unallocate packet i.e.
-
-The code now also returns XDP frames and skips XSK packets.
-
-The "This indicates the packet was dropped" comment has also moved into
-the SKB case only. The XDP_FRAME case is the same drop and also
-increments tx->dropped_pkt.
-
-Separately, the header comment above gve_tx_clean_pending_packets()
-still names a function that doesn't exist:
-
-/* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
- */
-
-That name predates this patch. Since the function is being rewritten
-here anyway, could it be fixed as well?
-
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NSwqDMBRFtyJv3CcmYk07ch/FQcynBkyiSSoWc
+ e8NWUEnFw4Hzj0hqmBUhGd1QlC7ica7DPRWgZi5eys0MjPQht6bB2EYk7VcoN3WYDyW8Vovnkt
+ sJaOS9bqfBIMcWIPS5ijxFziV0KkjwZjNbGLy4Vted1L8Pwc7QYJdSxnpei2mjg0+xnr78EV4a
+ +s8MF7X9QMRsxj+1QAAAA==
+X-Change-ID: 20260918-stmmac-mqprio-prio-offload-3d82d87f7bc8
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Daniel Thompson <daniel@riscstar.com>, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Davide Caratti <dcaratti@redhat.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA0NCBTYWx0ZWRfXwWZWv8Re6Q04
+ 1+HZhO0kZmv8lWm/AEPGTnJMn808SI5axiprPTEZtUIqp7x5SC+qrW9Ha7wYfcHxe5qLzYMFJ1O
+ cRAVFCpMywUpA9nUVWG6DPlbdMfGEAI=
+X-Proofpoint-ORIG-GUID: S6PptPhNoQiQMuqYqNVxCf3gYGGoN6i0
+X-Proofpoint-GUID: S6PptPhNoQiQMuqYqNVxCf3gYGGoN6i0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA0NCBTYWx0ZWRfX6SRTfncSNWQl
+ dicY+AFUo41CpRG8hoMWqj0mASxeuhsQ0vXxCCLtV6hoM9IqVeff71sShvUvEDF2zRSKMK7HVjL
+ TOIvCzgJdR/+TIu2cG+L/mfcZVnUHkv8WECg9acY8l0doZrj4/dDOyKeP9sjfU63tlTXZ9K1Plk
+ KDRwYIM6D/9Rc1RdPPlwAuG606ALJuAs8JoCQkP2MRTMUZC/lAa8cx3qumTq6ZSjwRa3D2HkkyF
+ 4FPvFxQLibBTEIiZDtEbJjLn8p1lRakD1mgZ/cp7gki4RCTWhU/E7nSwTGrAZJ1IsmLQVJnJEeZ
+ ysM6myeAjHfaMLrkikn4DWHK/ykKcyFCAOkyx7kXpZ/dCQkIUKvZ28YiRsBVNDWlmobR3qCrSle
+ 8UKA8Y9R5j4SS3T24qG48KhZ9UnSoTEYqNC5/aIBMkfLJcPHGclqFqynJdWL6Lz98LoMBPVyHzv
+ b1+EHeJvryi9JAfT2jA==
+X-Authority-Analysis: v=2.4 cv=cKp1IVeN c=1 sm=1 tr=0 ts=6ab4ffba cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=qGTJnaR_OStqIhYHjaMA:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-24_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240044
+
+Implement the offload of the tc mqprio hw queue priority in the stmmac
+driver. This feature requires the mqprio to be configured in channel
+mode.
+Do not overwrite real_num_tx_queues configured by the qdisc in
+stmmac_hw_setup().
+
+---
+Changes in v2:
+- Forbid cbs queue offload if mqprio is already enabled.
+- SP requires 1:1 TC to TXQ map.
+- Fix the real_num_tx_queue overwrite during device open.
+- Require the qdisc to be configured in channel mode to enable hw queue
+  priority offload in order to not introduce any regression in the
+  previous driver behaviour.
+- Link to v1: https://lore.kernel.org/r/20260918-stmmac-mqprio-prio-offload-v1-1-5328157fcb58@oss.qualcomm.com
+
+---
+Lorenzo Bianconi (2):
+      net: stmmac: add tc mqprio hw queue priority offload
+      net: stmmac: align real_num_tx_queues to mqprio configuration
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      |   7 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c  |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  28 +++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 132 ++++++++++++++++++++--
+ 4 files changed, 146 insertions(+), 23 deletions(-)
+---
+base-commit: 6516ac5e6b164bf78fb34d36b4d84d495a07c844
+change-id: 20260918-stmmac-mqprio-prio-offload-3d82d87f7bc8
+
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922194533.631387-1-joshwash%40google.com
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+
