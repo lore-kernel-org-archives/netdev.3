@@ -1,197 +1,214 @@
-Received: from mail-wm1-f98.google.com (mail-wm1-f98.google.com [209.85.128.98])
+Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034EC4D9901
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 20:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790282733; cv=none; b=hagQ9Y8V5VGwyS84dlBiMg6il3zYwGJO1ZaRyIW7Bgj7V8IRkeNAW0q62L0hqKHlw730jVBcXencQ2iDnVjqXz7dt05blJRVWFRALWBAMtSi2E28GP7+Fv/5azdmU1VjIx1wp5XPx3urLngTww3YVzWcK3jcrCCXBxNHnM852ww=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790282733; c=relaxed/simple;
-	bh=hEGiBEOi5woV4xempkgCXFP668FsKubP1oj1IYYuES0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uvill9PJLs9jLNDjhYliphufdTAcs5DolsifExtWNtDtq2I8dgI+2548B5x6w8/hcX0sAemzbY2fCfEi8wErDULfGT+C0y1RRTlOTyDl9QW0rZV2iISeFs2d/OUENKGSlxO0eJwszhzdFur+ls2gVLW1kR2hKZ71s+ftKlJiOpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=everpuredata.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=NTUtHUTX; arc=none smtp.client-ip=209.85.128.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=everpuredata.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F244AA41E
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 20:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790283144; cv=pass; b=cszGFKjvB2hT38yEYdNgKYihvT9lRmCfTak9VvZFZr4aYPMOuszs/gMG55crsb8B3L54AfiU0ACE/yrCDc31m/cxJI0XsHWvCF7kTMrrpKo2w8oXzyBM+cSWoOCFQB2/Pcm+ejvkRS4VX87VHKQ6n8d8WZyW/1bsc/GxRaZXHhc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790283144; c=relaxed/simple;
+	bh=1Y3VWMLMpTXAw8ZVsUyN351JI/061EwoN+fB3bnDV6Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iz5NtPaZemrjQJyyjEl5TETJPqdKeN+3zt2d5PxP7zu3uDq0sgLCZBxwyEUjpPh7C/TUyVbXbMWBMbSSjoDFiwM3dXJs+f9vY9ir4IjBgCbXA2QeBJjVz9zM+6G9T34LMybZMP4qJ4hd/NMdbRs7mtp4y0Ilro4c4LulRFURq4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B7gs71S8; arc=pass smtp.client-ip=74.125.229.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="NTUtHUTX"
-Received: by mail-wm1-f98.google.com with SMTP id 5b1f17b1804b1-495437bb891so813305e9.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:45:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B7gs71S8"
+Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-142dd04f7f2so276752c88.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:52:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790283142; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KWUMNKYUgWmr5vQkgsVRUIUoLyAFrAF+wwYNKTfwsXqw/j47AMSK9xzMBH28kR1Rp/
+         qS2YNyWKyvfAuLqrr1n1m5bnu0ZxvnpTSLvKWv1n1k9wNkob/seQEjgD4FsGXE6/dQCC
+         +XRufxoCkRfB05WOtnS1XdJv+EujTLWekkOlv5b6dSDd7ypzXIrmBftuViRP2xw8cSLv
+         BCC3D0lLzU31658boQuN1LKnz5eSEqM46YgCSgice5iVnKFmzdtTHMLgwXCIb/4eTpIx
+         V88tWSRqICJhwkzSSxSnD5G+gv+JGRA83jtvJbcYNS6qxgQy5I7B8D0HjUe1AEtBI8lU
+         qzLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8QCxlr5hcX0GAovL09HOwWU1CQDfW/2iGH817aHNyKA=;
+        fh=TyS2cfFxJEHay7f0mL6crbvp+n9qEb0en3Df28OqL1I=;
+        b=L0VmIKg6k6nlDJVEk+Ylb0qBLYZQughGJoBKgY+dFKKreRke9dDhbaDI5ODcp/YGnf
+         EMNApdLQXEfmCkD1GgwEjdztZsPQvhVaMT5mUjOingbBQqoslLecAmRwgFRTQjjjrok5
+         id8vWAbKqaTVqLSj6joslQTnwuL6TCiU37zUFQH9HSMXuDWaZnkulylYmp6RSL7XTSoJ
+         uptix0XJiQvwJlTi0gJZX994PbdmvCvCfnRvAyad9EGV7LyUv5s3XEezpOx0ERoZfzSL
+         ZslmfT2w7P1yfHxbp+HJcD5BBUu58iDT6oLxDC3qpMogwT2B3/nYXqOMGR8Vdrhb0xIT
+         Y6kw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1790282727; x=1790887527; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HDYMiV8RMerr0fsYntJKhZJhzgvwPwMDOJtIUcfyt2k=;
-        b=NTUtHUTXrQcotkPVPl/8blB6QM/ONLUql6JoOG6EF6tfGKouATTzUl0+5ruc9wuAva
-         FPpR63vE4PMwjnTM7AHLb8qd0APpmrb+q63VMsaNRD/iH7PwzdFEnrSZoab7kLcSvYxe
-         X3mk/hrfm1CwdyiC6s+++MXQcccDZ9tUGL8MyvebsMc2SGsxzYDiYRaMlWbd3oSc0sdK
-         66zTUdcEgx3KY5s7oVaotvJEDaltTxll1+PUDuXiczlb2WopDO8q0wpqhbHbOVlvHBX4
-         Z/6yXqwB+obvK2ml2gI/EUALOVePtiTuMF8uncq0pZ1ouJMAI0YH7B3nYiTglbMO7IBQ
-         dQYA==
+        d=google.com; s=20251104; t=1790283142; x=1790887942; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8QCxlr5hcX0GAovL09HOwWU1CQDfW/2iGH817aHNyKA=;
+        b=B7gs71S84XqLmYsAWw5cc0nRzLuCWhRDbbnRex4Nqu8gOCz6U5tBY/zGEpT+J9AsB1
+         2q3ht+nt4wGR7xZBwGR95k/FZmDZ5VaETK1QJfHtCcnx7mCveEoPTVWPgiEvt8D/3RWV
+         saUxfyOoNH/HSyToY/vcYNaLcpVR55RvKzCJbUz1rOeRK5XfYuiZ2CCGoMge3vlPkkHV
+         1nmXQepe40padTDGVz/1PFNoh7KKKm4WoF1XwCPGqhSg4IX36HOjfLYFSkUo9FvTePli
+         HOstnkBR0tegbavJDRg/aBxeMaTE78Zg3bhykGYwIpFQCW+3lXdcr03bCqLtsBedDG3b
+         tX9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790282727; x=1790887527;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HDYMiV8RMerr0fsYntJKhZJhzgvwPwMDOJtIUcfyt2k=;
-        b=Z9etHsDmsYYQyHK/zBITw6LbzcLCD/7PN2hhj0oNfZO6IcykC4JQFgSUUoppwDnO2E
-         2LIFEcvaSJIKoDPEyGNjYE/qAELHLjFTzGNaiEJsbyku6XIQXZuP5DZALHBro5iPo4sA
-         D6d5X+ORqdJSc4gi9Z9K0r86/PqmZF0H1+uwiZwIdeHNes9lxtdUAHOx6iJBN2xNj8gi
-         7TmiHzx4rr9tSeEjEhPGL7ZZZl9kxKkh9jNENe5wjXl4XM4N5dFoJo6PsO6Vq063LrLT
-         0koCkBWI69QN3rGyNejglWiMKsg3fsAwvVjkMATZYsRQu+vy4Cy9MZdY2JJSzQcUYEdw
-         OCTw==
-X-Forwarded-Encrypted: i=1; AKwUvBzcEjBSdCKUPa/0BzhC1a9BDkevGWoORR2nYMTh1uOvx2la+wUb9Uq01NwIPIYParUzlXWuq38=@vger.kernel.org
-X-Gm-Message-State: AFuF++kjFTnfomf0lPpa3AS6DduwDsPJGfEp95dzGQx5jU4T5Bxyqh4k
-	zM5tkXkHkIF1Z5R53SzLThT9aL+6iSv5MAzDhSOIikIJ+LP6xN7ro4hU2draIJwe7hcXXl6qAwW
-	8/umomrTU4r56szq5LZ1/fVXqZdcol61NCWyV
-X-Gm-Gg: AYBFou3NdpD3SkA+ZWq4Fz6BHnVykHrb5HmNA4iffEmLzyMCmW5bpvp2X6Pq9xipJmJ
-	KaBRshJpTnuirwDnG0P58jBjEYRCtT9uppBakxskx6Kr1t4hk4yMFoZpg6Rx4b+k64hGK9NgzOk
-	slp8ZJZWoCKntt4AjjH37810X7AbooxcwOv2tx18yCpNgKSgBY99TIwSg9rwzr6M1OgiRQ5cDii
-	xGUpPlW6yRlrTyc9fnjt5EFmmk6UB9qYy206CAi8ECZYMcYooNAjtwPbrYWRH8LtjmL1WuniiOO
-	BMhgOjIGWDfLK4gVGMK03xiai/jfuTQ2oNvTUsBPHhpAn9avRQGMw3o+EN18nsndp3lfsD/dVgo
-	Qleh5XxiNimlOjAwABF8BJhEK7aeE5qJ4rb+vfpA=
-X-Received: by 2002:a05:600c:468c:b0:49e:715d:95ca with SMTP id 5b1f17b1804b1-49fe66f9fc1mr64060215e9.13.1790282727176;
-        Thu, 24 Sep 2026 13:45:27 -0700 (PDT)
-Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.128])
-        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-49fef4b7564sm1008245e9.15.2026.09.24.13.45.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 13:45:27 -0700 (PDT)
-X-Relaying-Domain: everpuredata.com
-Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
-	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id A047A340200;
-	Thu, 24 Sep 2026 13:45:25 -0700 (PDT)
-From: Tim Menninger <tmenninger@everpuredata.com>
-To: Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>
-Cc: Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Shiva Lingappa <slingappa@everpuredata.com>,
-	Eric Badger <ebadger@everpuredata.com>,
-	Jon Curley <jcurley@everpuredata.com>
-Subject: [PATCH 0/2] SUNRPC/NFS: limit transport disconnects when cancelling flexfiles I/O
-Date: Thu, 24 Sep 2026 20:45:23 +0000
-Message-Id: <20260924204525.3381590-1-tmenninger@everpuredata.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1790283142; x=1790887942;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8QCxlr5hcX0GAovL09HOwWU1CQDfW/2iGH817aHNyKA=;
+        b=zcxyaeU13bvl1Jr3X0FBWBFqycofifdEjkzL9nIexzuZei9MMM+5UEMbFhtuvzIJKc
+         GBB0vK0gJgwPV50UrHgAOECItZuQEIMmoOdngqRC2CRRU1Bgkgk37k76GX7DG63ItjL8
+         qFnqFSxfFhoRcMXZVN3caSZ7iKSyZ+9snl6u4Z9t6Ix5WSP6+H2Nq0sCVubl9rWDmV7I
+         RYX6FZyU9/+IrokayROwgdsuhtAZNkeGr26ocdUbUVPLajcfRYnX2dTl3HqvULmTYh84
+         28fgh/adv/Nz4pOPcyD5BoBDshRo2XDLify5stIrBHQn6T+DKabDmBDnna53gzBdD88x
+         A0fA==
+X-Forwarded-Encrypted: i=1; AKwUvBz8vJlRllkboNoVxqMxMWy0uI9ZIozcHuNr57aCCKx/6k2AVHMIw4YP3tpCor/I1xco6S6S4sw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lDouR+GKF2BjbA8nOxYNdJ0m2wxLsufNf0fc1CUKtbKxwDSfZ+
+	n64Qe7k9obMGyrpEJviRS0LULao9JiiUbONFTZZE7sFtBy6NWG267DDPRCarhFhndC04ovsSsmR
+	EviBIQrfJFNAiw4R+GWvKmCSW38OtvGOqWRt98Bl3
+X-Gm-Gg: AYBFou3Mr4grm9K1YCeqmxzDbvC0oJC0cTJTcofsgUTk4I2sJYyxtftmV3xBro4uuX5
+	wik4hJ9px78Q6gxTS2f3wGgNqKGJRnbqHo0HfcnByzDnHkpsgVyBlIDe+/u3WW2y4nTxfyVb5KL
+	xmoeOjiQyKP7HYmu7L5Qo4mMdt8xdHrZm61Zss+/aYCQMORJw5O5ThwkE7sRFZkIMq/57KUj4jb
+	Nu2Zi3NK48q67MIarpVi39O9bVGvZweel+CvnM1rLZ3z2JSR74h0niPBKUtcV00PdVsxhuTHwyf
+	aY9Ypvud9ydsVeSjTba+IBIIGKAuXJc+2oaxWgBo6YcoxuWQDgvrjQ==
+X-Received: by 2002:a05:701b:4507:10b0:144:ff51:2d5f with SMTP id
+ a92af1059eb24-14503fd76e3mr2789597c88.33.1790283140101; Thu, 24 Sep 2026
+ 13:52:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260908181956.1357684-1-kuba@kernel.org> <CADWJPTtu1bjng_1LWAbT7QtnkODw2A36Xd5koaiiESK_2ifHhw@mail.gmail.com>
+ <87ce93dc-ece4-431d-a01d-3476a364fe0a@intel.com>
+In-Reply-To: <87ce93dc-ece4-431d-a01d-3476a364fe0a@intel.com>
+From: Sheena Mohan <sheenamo@google.com>
+Date: Thu, 24 Sep 2026 13:52:08 -0700
+X-Gm-Features: AclHuK_Fs4oHoJZz5v2xTgBrHek9_qiYSResd_gnSe1qLkdUbzhlvXwxq-zOnjw
+Message-ID: <CADWJPTu_MOD7dFbmCQY0D9NJVKP3RpkLbsdugLOMvO7L45JnFQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] selftests: drv-net: warn if LOCAL_V6 has DAD or
+ not kept on link down
+To: "Pielech, Adrian" <adrian.pielech@intel.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, netdev@vger.kernel.org, 
+	edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	horms@kernel.org, przemyslaw.kitszel@intel.com, shuah@kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series narrows the transport disconnects performed when flexfiles
-cancels I/O for a recalled or revoked layout segment.
+On Fri, Sep 11, 2026 at 6:25=E2=80=AFAM Pielech, Adrian
+<adrian.pielech@intel.com> wrote:
+>
+> On 9/9/2026 5:16 AM, Sheena Mohan wrote:
+> > On Tue, Sep 8, 2026 at 11:19=E2=80=AFAM Jakub Kicinski <kuba@kernel.org=
+> wrote:
+> >>
+> >> napi_id.py intermittently fails to start its helper on Intel and Googl=
+e
+> >> HW runners:
+> >>
+> >>    CMD: /srv/netdev/drivers/net/napi_id_helper 3001::1 37569
+> >>      EXIT: 1
+> >>      STDERR: bind failed: Cannot assign requested address
+> >>
+> >> Either keep_addr_on_down is not set or more likely the address is
+> >> configured without nodad. Having to make sure that all tests
+> >> always wait for DAD after impacting the link would be a whack-a-mole
+> >> so we expect the env to have nodad and keep_addr_on_down set.
+> >>
+> >> Warn about both while validating the environment, and document this.
+> >> We could fail completely but most tests don't impact the link so for
+> >> quick local testing it'd be annoying to have to apply the settings.
+> >> I hope the warninging stikes the right balance.
+> >>
+> >> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> >> ---
+> >> Adrian, Sheena, please update the setups scripts for your
+> >> systems. Looks like nodad is missing.
+> >>
+> >> CC: adrian.pielech@intel.com
+> >> CC: sheenamo@google.com
+> >> CC: przemyslaw.kitszel@intel.com
+> >> CCL hramamurthy@google.com
+> >> CC: shuah@kernel.org
+> >> CC: linux-kselftest@vger.kernel.org
+> >> ---
+> >>   .../testing/selftests/drivers/net/README.rst  |  9 +++++++++
+> >>   .../selftests/drivers/net/lib/py/env.py       | 19 +++++++++++++++++=
+++
+> >>   2 files changed, 28 insertions(+)
+> >>
+> >> diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/te=
+sting/selftests/drivers/net/README.rst
+> >> index c6bed9a985bc..3fe49bce4f3a 100644
+> >> --- a/tools/testing/selftests/drivers/net/README.rst
+> >> +++ b/tools/testing/selftests/drivers/net/README.rst
+> >> @@ -70,6 +70,15 @@ LOCAL_V4, LOCAL_V6, REMOTE_V4, REMOTE_V6
+> >>
+> >>   Local and remote endpoint IP addresses.
+> >>
+> >> +Tests reconfigure the device freely, including taking the link down, =
+and
+> >> +expect the addresses to work immediately afterwards. IPv6 needs help:=
+:
+> >> +
+> >> +  ip -6 address add 2001:db8:1::1/64 dev eth0 nodad
+> >> +  sysctl -w net.ipv6.conf.eth0.keep_addr_on_down=3D1
+> >> +
+> >> +Without those the address is flushed when the link goes down, or spen=
+ds
+> >> +a second unusable while waiting for DAD to finish.
+> >> +
+> >>   LOCAL_PREFIX_V6
+> >>   ~~~~~~~~~~~~~~~
+> >>
+> >> diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools=
+/testing/selftests/drivers/net/lib/py/env.py
+> >> index 25903f580b40..6262080a8bf4 100644
+> >> --- a/tools/testing/selftests/drivers/net/lib/py/env.py
+> >> +++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+> >> @@ -239,6 +239,25 @@ from . import bpftool, RtnlFamily, Netlink
+> >>           if missing:
+> >>               raise Exception("Invalid environment, missing configurat=
+ion:", missing,
+> >>                               "Please see tools/testing/selftests/driv=
+ers/net/README.rst")
+> >> +        if "LOCAL_V6" in self.env:
+> >> +            self._check_v6_env()
+> >> +
+> >> +    def _check_v6_env(self):
+> >> +        """Tests bind() to LOCAL_V6 and bounce the link, it must surv=
+ive both."""
+> >> +        ifname, addr =3D self.env["NETIF"], self.env["LOCAL_V6"]
+> >> +
+> >> +        def _keep_addr(scope):
+> >> +            with open(f"/proc/sys/net/ipv6/conf/{scope}/keep_addr_on_=
+down",
+> >> +                      encoding=3D"utf-8") as fp:
+> >> +                return int(fp.read())
+> >> +
+> >> +        # 'all' wins when non-zero, see addrconf_ifdown()
+> >> +        if (_keep_addr("all") or _keep_addr(ifname)) <=3D 0:
+> >> +            ksft_pr(f"WARN: net.ipv6.conf.{ifname}.keep_addr_on_down =
+not set")
+> >> +
+> >> +        dev =3D ip(f"-6 address show dev {ifname} to {addr}", json=3D=
+True)
+> >> +        if not (dev and dev[0]["addr_info"][0].get("nodad")):
+> >> +            ksft_pr(f"WARN: LOCAL_V6 {addr} not configured with nodad=
+")
+> >>
+> >>       def resolve_remote_ifc(self):
+> >>           v4 =3D v6 =3D None
+> >> --
+> >> 2.55.0
+> >>
+> > Thanks Jakub. We will update the setup scripts on our end to reflect
+> > this configuration.
+>
+> Applied to the setups, thanks for noticing about that requirement!
 
-Today ff_layout_cancel_io() first cancels matching RPC tasks and then
-calls rpc_clnt_disconnect() if any tasks matched. rpc_clnt_disconnect()
-operates on the entire rpc_clnt, so for a data server client using
-multiple transports it disconnects transports that may have had no I/O
-associated with the affected layout segment.
-
-I encountered this while testing pNFS over RPC/RDMA during data server
-recovery. Restarting the NFS service on a data server while sustained
-direct-read I/O was active could cause repeated reconnect activity and a
-large throughput drop. The client-wide disconnect from
-ff_layout_cancel_io() amplified the disruption by tearing down otherwise
-unaffected transports.
-
-The first patch adds a SUNRPC helper that combines task cancellation with
-request-scoped conditional disconnects. Matching tasks are cancelled as
-before. A subsequent transport-queue pass marks matching requests
-belonging to the same rpc_clnt that remain on the transmit or receive
-queues so that, when released, xprt_conditional_disconnect() is called
-using the request's saved connection cookie.
-
-The disconnect state is stored on struct rpc_rqst rather than struct
-rpc_task. A task can release one request and later acquire another, so a
-task-scoped indication could otherwise be consumed by a successor
-request and applied to the wrong transport generation.
-
-The request-marking pass also preserves the rpc_clnt selection used by
-rpc_cancel_tasks(). An rpc_xprt may be shared by multiple rpc_clnt
-instances, so requests belonging to other clients sharing the same
-transport are not marked.
-
-The second patch switches flexfiles to the new helper, preserving its
-I/O cancellation behavior while avoiding client-wide transport
-disconnects.
-
-Testing:
-
-The code in this series does not depend on:
-
-    https://lore.kernel.org/all/20260916232906.4101987-1-tmenninger@everpuredata.com/
-
-However, I used that change while collecting the results below because,
-without it, the client enters the earlier recovery livelock before the
-transport-disconnect behavior can be observed cleanly.
-
-As a control experiment, I also tested skipping the
-ff_layout_cancel_io() task-cancellation and client-disconnect path
-entirely for RPC/RDMA. Doing so eliminates the reconnect pathology. This
-shows that the pathology depends on the cancellation/disconnect path
-introduced by commit b739a5bd9d9f ("NFSv4/flexfiles: Cancel I/O if the
-layout is recalled or revoked"), but simply opting RPC/RDMA out of that
-behavior would also remove the cancellation that is intended to drain
-I/O associated with a recalled or revoked layout segment.
-
-This series instead preserves that cancellation while limiting transport
-disconnects to matching requests that remain in flight.
-
-I have repeated the data-server restart test many times and the behavior
-is consistent. The counters below are intentionally collected after the
-restart event, once throughput has partially recovered and the client has
-entered the post-recovery state in which it remains until the workload
-completes.
-
-This distinction matters because some transport activity during the
-data-server restart itself is expected. The problem addressed here is
-the continued reconnect activity after that transition has completed:
-once recovery has settled, the client should not continue cycling
-otherwise healthy RPC/RDMA connections.
-
-Over a 30-second post-recovery sampling window, this series reduces
-sunrpc events from 4,526 to 289, a roughly
-16-fold reduction. RPC/RDMA disconnect and connect events fall by about
-6.6-fold. During the same interval, read throughput improves from
-approximately 0.4-1.1 GB/s to 1.9-2.2 GB/s.
-
-Before (throughput: approximately 0.4-1.1 GB/s):
-
-    Performance counter stats for 'system wide':
-
-                 4,526      sunrpc:xprt_disconnect_force
-                 1,911      rpcrdma:xprtrdma_disconnect
-                 1,909      rpcrdma:xprtrdma_connect
-
-          30.021267692 seconds time elapsed
-
-After (throughput: approximately 1.9-2.2 GB/s):
-
-    Performance counter stats for 'system wide':
-
-                   289      sunrpc:xprt_disconnect_force
-                   289      rpcrdma:xprtrdma_disconnect
-                   291      rpcrdma:xprtrdma_connect
-
-          30.080790959 seconds time elapsed
-
-Tim Menninger (2):
-  SUNRPC: add request-scoped disconnects when cancelling tasks
-  NFSv4/flexfiles: limit transport disconnects when cancelling I/O
-
- fs/nfs/flexfilelayout/flexfilelayout.c |  7 +-
- include/linux/sunrpc/sched.h           |  4 ++
- include/linux/sunrpc/xprt.h            |  5 +-
- net/sunrpc/clnt.c                      | 93 +++++++++++++++++++++-----
- net/sunrpc/sunrpc.h                    |  6 ++
- net/sunrpc/xprt.c                      | 75 +++++++++++++++++++++
- 6 files changed, 168 insertions(+), 22 deletions(-)
-
--- 
-2.34.1
-
+GVE and IDPF executor test setups are now updated.
