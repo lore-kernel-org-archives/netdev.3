@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9EF36F90D;
-	Thu, 24 Sep 2026 02:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4087F36E460;
+	Thu, 24 Sep 2026 02:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790217089; cv=none; b=uC10sJKDMj2XfM1LS3r2mul3Tvv3phZYH4wH1m2ehh+uA45D+bZVmPOZpAZFzv6ffkFyLWz/CTUNT33hsnITkWFICqs6kFncrFVGEN5OCFBtwQnzfrWUBbXleYjahF8bO+HNWsZtcUTCgaJmFYCadp4dtxhSAEsISB1AMMLqxw8=
+	t=1790217092; cv=none; b=uUV4oAhdu7HDmCB8P6rHK1ks4juumDYhYsTPU5rfGeRHvHijVpk0z3ehG/IuRb5XnB447F62bdDJxhwbxxCTtaIW3mvhjOlBXxqx0oCzwhqSMFUnAMlUC5i5MShsdj7BrP4E6EuhrLiwqgMI6q4BVCwl6P1b1geeoSC5XzyWuto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790217089; c=relaxed/simple;
-	bh=EXHg4ommNVcSZh3J/iZL3YSAAq4htTlH6shAdGdTJvU=;
+	s=arc-20240116; t=1790217092; c=relaxed/simple;
+	bh=z8A+upRzWOoH0KV2oHewwc5lQGyYPK2YWGejk+BBYMY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W/2WoelOYb0Kqv/G92n1QgMP5O3BjH697eTmP5ECoS5P4NG/T3hi6OFHRFRglmT63Dq2R2spniPXMI6Pn7Jh2PXONJMYTPE/AmrIuDg3nNRsuZZ0F+kvD6xu0ZE9FTFTWzwgo2a9JjwesRq5zP3kRQTsbFqLP6q2eOQk8PMwWN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPxZd5Yh; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=oAAf693IuFOckGNR9zHPwjNMcIlsWROqXLb4fbYUx8ksanzSQgWcrKPSSSgV3cbWdBDEqouTLLhpc5OXKLEDzsu891lc+E1EOAJzYJGCRA0m2wUex6QCB0VINLF8UuDN7OzlCl6kXYQFIThO1oz2qvVP9yEB7C16/unVPaUkk8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JC5xI6yM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPxZd5Yh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF681F000FF;
-	Thu, 24 Sep 2026 02:31:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JC5xI6yM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85461F000FF;
+	Thu, 24 Sep 2026 02:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790217087;
-	bh=55GGryoCDMP4Y7cSWD2RtdYrDJviw1dhfO7sG5gq2vc=;
+	s=k20260515; t=1790217090;
+	bh=2qc7d2EWlAB6vGwNe4e6/zzd/A8J1JEyXp8FOsKTS5o=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UPxZd5YhKbXUm/KYaZaFe0I038I6oI9oxfmA5NoJ+K3ckCAMa8sheVmvGOucZu8F7
-	 x/zUOCRLhL972cHlu5PsPNWbl/ScdbTpuSelq+F49IxrBa7JRyKDq+xI3pd4nkaHCz
-	 IWwWz/cxJeMfkYva+ctygsfA+re86G3OZghKrBynGc1yP/PHSRh48cbsRtPLZMwQvA
-	 YQyGW9a1FH9ul5b7vm3Nv6dwOOy4CPuySl44hKbTWsc5I+r4jxiFlDohJYofGXlJSt
-	 Ek7ohipvZXC7NfeWUnIhjjsa8cSmFY++2VlLCOUibM5YbpXuCioRo4DT9mxAHXQ1/c
-	 4MIw65Hu9mWHg==
+	b=JC5xI6yMewNWhNsEmO7JHny5cUGcQ9hRjrTCOpGEA7hCuTOaO71iLRgCRIouRJuFL
+	 qeQIZpHkVP8d9aNMCRDhC2i9B2eHQeLTeohmixvAQKQHP4e3DVjsP7NNIBmPJ9iy5V
+	 SEIlkyAb9Q3dNW2JVdoItMt1Ip+5ZW042ZB2aGPSgJmuYQnxGISbIBveFxSpf0ua/S
+	 k34VaEIlqR9t4pROBMgDFb1qLEikHLLRsdkEzFKiBPGGDaZ6sNUxJh6zTbcbn1Q052
+	 qPvIhCwNc/XHsoZCUpnGPhdgzCyS4TRlL4T+zwRJeHD+ksrZ2BVuf1pyBv7+3d4kyj
+	 tFmJ2lPOdXp/Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569DD39E9611;
-	Thu, 24 Sep 2026 02:30:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A6939E9611;
+	Thu, 24 Sep 2026 02:30:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ip_gre: Reject enabling collect metadata through
- changelink
+Subject: Re: [PATCH net] net: airoha: npu: cancel wdt_work after releasing the
+ WDT
+ IRQ
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179021701687.1285615.13328439472257551280.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 02:30:16 +0000
-References: <20260921031859.9283-1-xuanqiang.luo@linux.dev>
-In-Reply-To: <20260921031859.9283-1-xuanqiang.luo@linux.dev>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, dsahern@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, tgraf@suug.ch, pshelar@nicira.com,
- linux-kernel@vger.kernel.org, luoxuanqiang@kylinos.cn
+ <179021702008.1285615.10214789929001458933.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 02:30:20 +0000
+References: <20260922000914.542068-1-mhun512@gmail.com>
+In-Reply-To: <20260922000914.542068-1-mhun512@gmail.com>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ ae878000@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 21 Sep 2026 11:18:59 +0800 you wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> 
-> ipgre_netlink_parms() can enable collect_md on an existing GRE, GRETAP
-> or ERSPAN device. Unlike newlink, changelink does not enforce metadata
-> tunnel uniqueness. Converting a non-metadata device can therefore
-> replace the metadata receive entry for another device of the same type
-> in the same netns. Deleting either device then clears the shared entry,
-> breaking metadata receive lookup for the surviving device.
+On Mon, 21 Sep 2026 20:09:14 -0400 you wrote:
+> airoha_npu_remove() calls cancel_work_sync() on each core's wdt_work,
+> but the watchdog IRQ that queues it is requested with devm_request_irq()
+> and is freed only after .remove() returns.  airoha_npu_wdt_handler() can
+> therefore schedule_work() again once the cancel has returned.  struct
+> airoha_npu, which contains the work, is devm_kzalloc()'d and is freed in
+> that same unwind, so the late work dereferences freed memory.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] ip_gre: Reject enabling collect metadata through changelink
-    https://git.kernel.org/netdev/net/c/a3f315be9d30
+  - [net] net: airoha: npu: cancel wdt_work after releasing the WDT IRQ
+    https://git.kernel.org/netdev/net/c/4bdee8060d1e
 
 You are awesome, thank you!
 -- 
