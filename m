@@ -1,106 +1,358 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159783DFC7B
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790234205; cv=none; b=t2I5OrHgTugRkK+cPskjJqmaI5W6xtqXDT2BY6Hp4aeEojq1km7H6sO8MJNx455oi/Yklb0M9+M6iCc/Da4mSkqSGOaLv02eTPb9OMa3mgy+Yv+heSNgWUOmd0lEiy/5WjueKOqw7FDmsvT+b3rcSXNXyrg9f/3AvFxLN2aXl1A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790234205; c=relaxed/simple;
-	bh=GTEVgAingNMNvYRd0hOrqYY22SEBjqYKvF61JqVY9do=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mmz1oMvl2h0SULo2DICHSkuGopBsywE1VhI9JMsFBGSmH+sxxpsxdjLq89tnjVUlcYUUuJZJU2t0tBlQsfN2fblek8gapEfYNkaEezNrz0WN7eEjs8Ogk2CouHy3rOkBsHxx8nc68pjF37fKAyVPGcvld1sVJ3momJ4Jus1KO+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FxCcrb3u; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A9A26C385
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790234249; cv=pass; b=D2l0y7VvPiLlN9eJ2I0nd13T8gi29TtyoY8pFzA8iBraVUNoO4DnNc2OwmLk4qphk+Jw8kIrd8C82Yt6sVJ5ezPbqQTjgIcFypFGC95Ux+VBFddJpAL/K9ApQ1gdLnorkVC75ZgHr+gAxgj6wOelVi07zBBsoHy4QoCavd1tFhQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790234249; c=relaxed/simple;
+	bh=C7qO8ilSSs08z7vZpD+E5iuwRGqmmu8YkmRRPZ1SvJs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kfm07B6fZc/kLeLzy0J0Fmzif4C8lrqULL/7O3UPGcxkPDqHQTeAlvj3KkytuIoJ7+Cib+YtxpBTUQanEFdvtrNlifDEJCS1EKPxwvomfc/1cOE7Pwzts0Tx/vFmrrVZlcQ3qS26fR2BohFgF3SCivpcnaMdG6sTqokp9/tMs2w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tsOLyXdO; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FxCcrb3u"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b910bdf2eso921561a91.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:16:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tsOLyXdO"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-52f9fc510e1so4628241cf.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:17:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790234245; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JZnqWkQQx4uJhuYQ3l7nug/3tz4K6Yyquwm/8yoMp9HN9RRGteXKZvRSpYtUC14pQy
+         Whble6tXh5VxP29VtJN/hveQZP5vWu2xQrM6R2S5QguOJqVLLUfJhPn9/bezAKcc4Zkx
+         qbze9S+TVmbckQEv9laqWbeIZ9Zv58OiPtGqoTvRVpdM/GOR6YrUXUhpfb+vjmu6T073
+         ncUtD2azcivFZd5hFnDpqdHYlsJmr2Z8dAwqf1EIi7LPiRiIRoRqRftXqpNYadLkUf63
+         IWbcMShlwDMrCznEZKFYEqEka/ZkUvtqjNmV7a0y5N0o72Gp67lNSu7HaqEr5UV9MX1y
+         CuTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bfkLFnuq2QF6pxeekjThITQmyU3vX4le2bGY3StAw3w=;
+        fh=emzVM+x+XVvHMeSd3CfSjrRipPZq6GqItAQ66AdlZpg=;
+        b=bd9h+W3JwMb8DnKEQ/iMXFvSZXkUKcD+UTjetgv0pkNrpPwJcADhymmXp8Sd6kILSK
+         k+LTKhGKJg28EZm9GmQwZTA4K4S8edRT+rPdcvIxFbrqCQyzvCRfW8vBqlTWx5kdI+Oo
+         if/vWoNrplmHM99V4V2otwqCTSRZHR0Xl6JGZkyf7v2WTWnp1WUG7Ho3Q7WAO9/uppPw
+         v26/0bCvnE6ldwOBMAZ8NUX6IZnCGlAU/kRP+cZkvjBgZ2OCLnl7OUPC3OiunS4/6wP1
+         w0BIab5lYe4oYwRdlegpr5rblQbjeSwSU+ee+ykgJ2tYKoUi8RhDZFTDLFiBUO3GbIXh
+         8LYA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790234191; x=1790838991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DEBq3oR2dxLOGmSLGFiZZ9aV+cM/ZzcBmqDLieFfw5A=;
-        b=FxCcrb3uD6nrom6kzH+joZQKgjX+gQTMX0Tg9kLJ5tp5ChTuUxTCnDqqRvsSx4V+GN
-         lTt9XfKGvcd13EDV1E+I49+0vLMOD5fAv0gbWfDA3TNwsg8NLRPL2no5vGNElNaSrVpf
-         TSvO90CS6NVy6mULmMGJmbbi226nKXaolR6gl10tVUzutRX0jRfWtEO0Y5ar+NAHxJ89
-         XUGf9p5MXnEaxrT2/ia3kLyb6ISqxovLoqEcT5xJE4jlZmW8429/7J+OFacD+vBWuiSW
-         Kl9pGv7RX1o0nqJ81pMXXav7a5VDv7+xGIJ3iPRWLD+c68tG6b4aBSSuold3tnLuspM9
-         93Og==
+        d=google.com; s=20251104; t=1790234245; x=1790839045; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bfkLFnuq2QF6pxeekjThITQmyU3vX4le2bGY3StAw3w=;
+        b=tsOLyXdOI336DiTpf2IoA1cFQlozSjHCr2zOh9dNa807l5kSNZUrgDNcqf9E7jyU09
+         tK3cByS0+CLt3C5bOdKNXSdFjFan25V7fgbvm7qzx/55+UwgRvv6/X+Ot68f7syVxLAu
+         b7n3ClbkHSVdcw+opxZbhwiA7U4Chk4PeRdFhXUxZjv2IEm0PT+0y7P9HTpndl1R/JBN
+         iDCGV686ux+BvZwBtjiuNCaNXJB6J1jsxBr79lVXVF/G3Nx3zOPNr/xyxHY/lZLSJeM3
+         WOGpnFGEMEFZj19J8rAufgtobWRJlTDaVYTZmgrwVa6MMAMKJTz/j1a/+eJFTbiKNmtu
+         TXlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790234191; x=1790838991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DEBq3oR2dxLOGmSLGFiZZ9aV+cM/ZzcBmqDLieFfw5A=;
-        b=x77J+UwvtnFAh1KEnzHR8Gcdnx0bFq5VFW4080XkMu4OmLsLb6pfdEZqASTumrEqVR
-         7IeeDhx1IG0wN/ZvUEVkUyyG3IZ57IzkkxO9tB/x73EQKYLqas6WqCy08MRjkKrdFYlB
-         vc+ljiU2nSzebjaMFP5FnxOYRvqVtkbSIBOXGhRgXs8nVqT2Q94exHfPQI+GteqvPcFz
-         vzCBfjjZYGVyGnirZiSKGa6AddZwfdc/hwzJrESApDzVCx0N7tVJuGe6iFU9WzQrZkbB
-         wg8mCet1L8F9Xb+LFZT/+YuonPssZipi14nZbDWE6LU7OKx6Dvt8voHlE0quMBJ6t56m
-         slcQ==
-X-Gm-Message-State: AFuF++ns0ZLqcrZ2MWH+ojsJvHm+o6BVy6RGfASVb9IXCF3VPYP0LVnh
-	cXjF9lBoDsPVgTWO3kQLNnOqDJ3H36e67EPNHMD2k1itNxbymfa6VyeM
-X-Gm-Gg: AYBFou1RrhbN9/cppsCbGxUcgpacNomXmCUZ5mRdIBqb6HTI6zs5NsDpKiyBMiezYSY
-	q8UhnM1pm16otSPVNbOYXwbFkbehJRsk3naGDXEnyDTwQmTB/SCUIA/oJsmk7GQh6Dujl8OL6JF
-	1OSZxIDtizhyPRrNUnrtpKtS7vTs68fSKNSG0phy5SZG0Fa7rGKrggkhyvDl6tke0H1FVxRpnxW
-	3g3oGJP4oZQOrPhGu2jx7UNXMf92fNxinQzcO4m5tpuJN5iZ/X0pCeZcpFNGIAfJW2HNVkrisIE
-	tDOpuQn5/XxSXps2HGigEr8fuFogDA8w2V9ZUDLRX+6HOf9ukcdTTX0q/vCcjxhw81+2TFxOJKU
-	oRU+TPXO5gE7Ei6GwpLLEgBs0DcQG7sBpdaLXJ7xBA0tSaj7VxieCw/22/oWJVPhyx9RZuAu/yA
-	1DvR5E1WETZhs61f0dFwTUq3MpaVLDibMSKIGx5fMlB8esKuVQ4hO3Rpihdyo3X7WO9NvXA6iWu
-	38xZSLSeU0GD+2U+tAn5RSOuNrWJLeBTtLc5vuiKYqYAlG8fXiW//BGMW0l8XOyZnOjfrgszfqo
-	s0F0I7jNnA==
-X-Received: by 2002:a17:90b:3e87:b0:39e:6a80:dda0 with SMTP id 98e67ed59e1d1-3a09872e15cmr1359457a91.39.1790234190967;
-        Thu, 24 Sep 2026 00:16:30 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (67.51.127.34.bc.googleusercontent.com. [34.127.51.67])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0972efa00sm4003402a91.5.2026.09.24.00.16.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 00:16:30 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: kuniyu@amazon.com,
-	edumazet@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hui Peng <benquike@gmail.com>
-Subject: [PATCH net v2 0/2] af_unix: fix inq_len accounting and consumed OOB skb handling in unix_stream_read_skb()
-Date: Thu, 24 Sep 2026 07:16:27 +0000
-Message-ID: <20260924071629.2683160-1-benquike@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
+        d=1e100.net; s=20260707; t=1790234245; x=1790839045;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bfkLFnuq2QF6pxeekjThITQmyU3vX4le2bGY3StAw3w=;
+        b=zjrDVLGibevJw1Y2kB+SGrlgB+PgDspwFB6cXrPXwpOgMVLkwKn/zeV5AdQ74CzDzw
+         YDvvBmUTC1iAEL1HLydMbCbkhiinlqPVPAIxxNc3AnRBkglV3MrWNag8Sbs3item2Atc
+         cdsssJbx6o16qPpsQ8/DhjCV6/vPVPaohi2S8Qm7pmjN21kJ1t1LQHvKxgO8uU3vLRvr
+         mJyp8F/iSqQfUgkNCEMQreR5OAAWMGfl4NbsVZuBi7yA+U4miXcp9g2lhbWdHbmyTbbZ
+         IbBH1+6C3NO2okVMc6FVXKvTAkDkE+lcewOJlDkgNyOYMhk4D2I7zBmdLTfygxt0X+BR
+         AV/g==
+X-Gm-Message-State: AFuF++maMRdEFpH0JC6gHF4P7BfrkMsRqQVMqCK8zLdn/64vaevq7YqH
+	Lfs9nGifADwnfGzoFRVnvgD4SIzE9FXA333uMMdCR8K/p6jeizZWQ8QDFYkZlmArvwM+hnhsTHJ
+	/A0btOAPBmXdotmaNQuCOmfdbtq+R2fD3WOESSDBK
+X-Gm-Gg: AYBFou0KPJS2m+grGlIa0IeUPeaK5fr95+RWPtzPFDb0qLe86Ng6fbBS0nH651Dexds
+	zzl5Ic9YGSix1r3agSwWHxOkwWJmpoB7gLInYnTH3trTdw4JFR22WvBTfdIHvlIQChmeSfhMvIX
+	87gtw/D6iZgs7NfimDr5om7mMPP1/jr95uKYCpi+6vo3jMA/zAevOV+6uLRgg/dW/5d3iCPTXFF
+	w7QnmP5p2vZbHqKqH0C5wRu2oUq7X+bXwAWYaNCd6Kg0wQbCt5/x6x/Wr4+fvYeQwMVVKt/sjJq
+	zxLjOVSOXgpYu4tDZj9Rvnn+Ohg6IaIWPntqpOBPCoxSqCrvGN/dwTqPyn9+Zhii1rIgMZFNnQV
+	YsCwWUisybSyVndMVxVnBvK2OhoQWyTjMm6ahp7NYJ2RnyCnM8+x0yaI4fkcn45mMH7yU
+X-Received: by 2002:a05:622a:4010:b0:532:b087:7335 with SMTP id
+ d75a77b69052e-532feace7a1mr10751341cf.17.1790234244504; Thu, 24 Sep 2026
+ 00:17:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1790136447.git.caoruide123@gmail.com> <f0d62dc44f984114abe09f9b1d0432c98de7dbbf.1790136447.git.caoruide123@gmail.com>
+In-Reply-To: <f0d62dc44f984114abe09f9b1d0432c98de7dbbf.1790136447.git.caoruide123@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 24 Sep 2026 09:17:12 +0200
+X-Gm-Features: AclHuK_l_pdbmUwCHlrOZBbNh6HZTo7A3R8K431aCvI_CCxdhpiw7CTFKaOfyxo
+Message-ID: <CANn89i+ptgaLdeOW+x_xTyanGo54KTxH0yo2tNpNpv1Bwe-vJQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] l2tp: bound the reorder queue
+To: Ren Wei <weir@nebusec.ai>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, kees@kernel.org, kuniyu@google.com, 
+	alice.kernel@fastmail.im, michael.bommarito@gmail.com, mail@david-bauer.net, 
+	jchapman@katalix.com, vega@nebusec.ai, caoruide123@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series addresses two OOB skb handling bugs in AF_UNIX stream sockets:
+On Thu, Sep 24, 2026 at 2:33=E2=80=AFAM Ren Wei <weir@nebusec.ai> wrote:
+>
+> From: Ruide Cao <caoruide123@gmail.com>
+>
+> The receive-window check accepts every sequence number in the large
+> window. If the peer omits the expected packet, distinct future packets
+> can therefore fill the ordered reorder queue. Since insertion walks the
+> queue and expiration was checked only while receiving another packet,
+> this allowed unbounded memory and CPU use.
+>
+> Reject duplicate sequence numbers and cap the reorder queue at 64
+> packets. Packets beyond the cap are discarded, except that the expected
+> sequence number is admitted so an in-order packet can drain the queue.
+> The existing timeout recovery then skips a missing sequence number when
+> the queue limit is reached.
+>
+> Use a session timer to run the existing dequeue path at the head
+> expiration and shut it down before purging a session. This bounds the
+> queue and services expiration even when the peer stops sending.
+>
+> Fixes: 3557baabf280 ("[L2TP]: PPP over L2TP driver core")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Ruide Cao <caoruide123@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> ---
+>  net/l2tp/l2tp_core.c | 57 +++++++++++++++++++++++++++++++++++++++++---
+>  net/l2tp/l2tp_core.h |  2 ++
+>  2 files changed, 56 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+> index f940914959b1..c92d4392f9b0 100644
+> --- a/net/l2tp/l2tp_core.c
+> +++ b/net/l2tp/l2tp_core.c
+> @@ -82,6 +82,7 @@
+>  #define L2TP_SL_SEQ_MASK   0x00ffffff
+>
+>  #define L2TP_HDR_SIZE_MAX              14
+> +#define L2TP_REORDER_MAX_QUEUE 64
+>
+>  /* Default trace flags */
+>  #define L2TP_DEFAULT_DEBUG_FLAGS       0
+> @@ -637,7 +638,22 @@ static void l2tp_recv_queue_skb(struct l2tp_session =
+*session, struct sk_buff *sk
+>         u32 ns =3D L2TP_SKB_CB(skb)->ns;
+>
+>         spin_lock_bh(&session->reorder_q.lock);
+> +       if (skb_queue_len(&session->reorder_q) >=3D L2TP_REORDER_MAX_QUEU=
+E &&
+> +           ns !=3D session->nr) {
+> +               atomic_long_inc(&session->stats.rx_seq_discards);
+> +               atomic_long_inc(&session->stats.rx_errors);
+> +               kfree_skb(skb);
+> +               goto out;
+> +       }
+> +
+>         skb_queue_walk_safe(&session->reorder_q, skbp, tmp) {
+> +               if (unlikely(L2TP_SKB_CB(skbp)->has_seq &&
+> +                            L2TP_SKB_CB(skbp)->ns =3D=3D ns)) {
+> +                       atomic_long_inc(&session->stats.rx_seq_discards);
+> +                       atomic_long_inc(&session->stats.rx_errors);
+> +                       kfree_skb(skb);
+> +                       goto out;
+> +               }
+>                 if (L2TP_SKB_CB(skbp)->ns > ns) {
+>                         __skb_queue_before(&session->reorder_q, skbp, skb=
+);
+>                         atomic_long_inc(&session->stats.rx_oos_packets);
 
-1. Decrement u->inq_len by 1 when manage_oob() unlinks an unread OOB skb,
-   preventing u->inq_len from remaining permanently inflated and causing
-   SIOCINQ / FIONREAD to report a stale positive byte count on an empty
-   socket.
-2. Skip zero-length consumed OOB skbs (after releasing SCM rights via
-   unix_orphan_scm()) and pull UNIXCB(skb).consumed bytes via pskb_pull()
-   in unix_stream_read_skb(), preventing BPF sockmap from re-delivering
-   already consumed OOB bytes or partially consumed skb prefixes.
+1) When a single packet is lost (ns =3D=3D session->nr), all subsequent
+   packets (nr + 1, nr + 2, ...) arrive in ascending order. Walking
+   reorder_q from the head means every packet after a single drop walks
+   the entire queue only to be appended at the tail.
+   Walking backwards with skb_queue_reverse_walk_safe() (or checking
+   skb_peek_tail() first) makes the common in-order-after-gap insertion
+   O(1).
 
-Changes in v2:
-- Split into a 2-patch series as requested by Kuniyuki Iwashima.
-- Update Fixes: tag to f4e1fb04c123 ("af_unix: Use cached value for
-  SOCK_STREAM in unix_inq_len().").
-- Call unix_orphan_scm(sk, skb) before consume_skb(skb) and use
-  pskb_pull() instead of skb_pull() to safely handle non-linear paged skbs
-  as noted by Sashiko.
+2) In the same loop:
+   - L2TP_SKB_CB(skbp)->ns is only valid if L2TP_SKB_CB(skbp)->has_seq
+     is set. Unsequenced packets can be queued to reorder_q in
+     l2tp_recv_common() without initializing CB->ns. You guarded the
+     equality check with has_seq, but not the '>' comparison right
+     below it.
+   - 'L2TP_SKB_CB(skbp)->ns > ns' does not handle sequence number
+     wrap-around (16-bit for v2, 24-bit for v3). A modular comparison
+     using session->nr_max / session->nr_window_size should be used
+     here.
 
-Hui Peng (2):
-  af_unix: decrement u->inq_len when skipping unread OOB skb in manage_oob()
-  af_unix: skip consumed OOB skb and pull consumed bytes in unix_stream_read_skb()
+> @@ -651,6 +667,20 @@ static void l2tp_recv_queue_skb(struct l2tp_session =
+*session, struct sk_buff *sk
+>         spin_unlock_bh(&session->reorder_q.lock);
+>  }
+>
+> +static bool l2tp_recv_queue_tail_skb(struct l2tp_session *session,
+> +                                    struct sk_buff *skb)
+> +{
+> +       spin_lock_bh(&session->reorder_q.lock);
+> +       if (skb_queue_len(&session->reorder_q) >=3D L2TP_REORDER_MAX_QUEU=
+E) {
+> +               spin_unlock_bh(&session->reorder_q.lock);
+> +               return false;
+> +       }
+> +       __skb_queue_tail(&session->reorder_q, skb);
+> +       spin_unlock_bh(&session->reorder_q.lock);
+> +
+> +       return true;
+> +}
+> +
+>  /* Dequeue a single skb.
+>   */
+>  static void l2tp_recv_dequeue_skb(struct l2tp_session *session, struct s=
+k_buff *skb)
+> @@ -687,6 +717,7 @@ static void l2tp_recv_dequeue_skb(struct l2tp_session=
+ *session, struct sk_buff *
+>   */
+>  static void l2tp_recv_dequeue(struct l2tp_session *session)
+>  {
+> +       bool dequeued =3D false;
+>         struct sk_buff *skb;
+>         struct sk_buff *tmp;
+>
+> @@ -706,6 +737,7 @@ static void l2tp_recv_dequeue(struct l2tp_session *se=
+ssion)
+>                         trace_session_pkt_expired(session, cb->ns);
+>                         session->reorder_skip =3D 1;
+>                         __skb_unlink(skb, &session->reorder_q);
+> +                       dequeued =3D true;
+>                         kfree_skb(skb);
+>                         continue;
+>                 }
+> @@ -720,6 +752,7 @@ static void l2tp_recv_dequeue(struct l2tp_session *se=
+ssion)
+>                                 goto out;
+>                 }
+>                 __skb_unlink(skb, &session->reorder_q);
+> +               dequeued =3D true;
+>
+>                 /* Process the skb. We release the queue lock while we
+>                  * do so to let other contexts process the queue.
+> @@ -730,9 +763,22 @@ static void l2tp_recv_dequeue(struct l2tp_session *s=
+ession)
+>         }
+>
+>  out:
+> +       if (skb_queue_empty(&session->reorder_q))
+> +               timer_delete(&session->reorder_timer);
+> +       else if (dequeued || !timer_pending(&session->reorder_timer))
+> +               timer_reduce(&session->reorder_timer,
+> +                            L2TP_SKB_CB(skb_peek(&session->reorder_q))->=
+expires);
+>         spin_unlock_bh(&session->reorder_q.lock);
+>  }
+>
+> +static void l2tp_recv_dequeue_timer(struct timer_list *timer)
+> +{
+> +       struct l2tp_session *session =3D timer_container_of(session, time=
+r,
+> +                                                        reorder_timer);
+> +
+> +       l2tp_recv_dequeue(session);
+> +}
+> +
+>  static int l2tp_seq_check_rx_window(struct l2tp_session *session, u32 nr=
+)
+>  {
+>         u32 nws;
+> @@ -774,7 +820,8 @@ static int l2tp_recv_data_seq(struct l2tp_session *se=
+ssion, struct sk_buff *skb)
+>          * sequence number to re-enable packet reception.
+>          */
+>         if (cb->ns =3D=3D session->nr) {
+> -               skb_queue_tail(&session->reorder_q, skb);
+> +               if (!l2tp_recv_queue_tail_skb(session, skb))
+> +                       goto discard;
+>         } else {
+>                 u32 nr_oos =3D cb->ns;
+>                 u32 nr_next =3D (session->nr_oos + 1) & session->nr_max;
+> @@ -793,7 +840,8 @@ static int l2tp_recv_data_seq(struct l2tp_session *se=
+ssion, struct sk_buff *skb)
+>                         trace_session_pkt_oos(session, cb->ns);
+>                         goto discard;
+>                 }
+> -               skb_queue_tail(&session->reorder_q, skb);
+> +               if (!l2tp_recv_queue_tail_skb(session, skb))
+> +                       goto discard;
+>         }
+>
+>  out:
+> @@ -986,7 +1034,8 @@ void l2tp_recv_common(struct l2tp_session *session, =
+struct sk_buff *skb,
+>                  * reorder queue. This ensures that it will be
+>                  * delivered after all previous sequenced skbs.
+>                  */
+> -               skb_queue_tail(&session->reorder_q, skb);
+> +               if (!l2tp_recv_queue_tail_skb(session, skb))
+> +                       goto discard;
+>         }
+>
+>         /* Try to dequeue as many skbs from reorder_q as we can. */
+> @@ -1748,6 +1797,7 @@ static void l2tp_session_del_work(struct work_struc=
+t *work)
+>                                                     del_work);
+>
+>         l2tp_session_unhash(session);
+> +       timer_shutdown_sync(&session->reorder_timer);
+>         l2tp_session_queue_purge(session);
 
- net/unix/af_unix.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+3) l2tp_session_unhash() does not wait for in-flight readers that
+   already grabbed a session refcount via l2tp_session_get() before the
+   unhash. Such a reader can enter l2tp_recv_common() after
+   timer_shutdown_sync() and l2tp_session_queue_purge() have already
+   run, queueing an skb onto reorder_q that will never be freed when
+   session is kfree_rcu()'d in l2tp_session_free().
+   Please either check session->dead under reorder_q.lock before
+   queueing, or call l2tp_session_queue_purge() in l2tp_session_free()
+   as well.
+
+>         if (session->session_close)
+>                 (*session->session_close)(session);
+> @@ -1804,6 +1854,7 @@ struct l2tp_session *l2tp_session_create(int priv_s=
+ize, struct l2tp_tunnel *tunn
+>                         tunnel->tunnel_id, session->session_id);
+>
+>                 skb_queue_head_init(&session->reorder_q);
+> +               timer_setup(&session->reorder_timer, l2tp_recv_dequeue_ti=
+mer, 0);
+>
+>                 session->hlist_key =3D l2tp_v3_session_hashkey(tunnel->so=
+ck, session->session_id);
+>                 INIT_HLIST_NODE(&session->hlist);
+> diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
+> index ffd8ced3a51f..6e4c1ef6a0a2 100644
+> --- a/net/l2tp/l2tp_core.h
+> +++ b/net/l2tp/l2tp_core.h
+> @@ -4,6 +4,7 @@
+>   * Copyright (c) 2008,2009 Katalix Systems Ltd
+>   */
+>  #include <linux/refcount.h>
+> +#include <linux/timer.h>
+>
+>  #ifndef _L2TP_CORE_H_
+>  #define _L2TP_CORE_H_
+> @@ -80,6 +81,7 @@ struct l2tp_session {
+>         u32                     nr;             /* session NR state (rece=
+ive) */
+>         u32                     ns;             /* session NR state (send=
+) */
+>         struct sk_buff_head     reorder_q;      /* receive reorder queue =
+*/
+> +       struct timer_list       reorder_timer;
+>         u32                     nr_max;         /* max NR. Depends on tun=
+nel */
+>         u32                     nr_window_size; /* NR window size */
+>         u32                     nr_oos;         /* NR of last OOS packet =
+*/
+> --
+> 2.47.3
+>
