@@ -1,83 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEA53F929B;
-	Thu, 24 Sep 2026 16:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91583CB571;
+	Thu, 24 Sep 2026 16:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790268088; cv=none; b=S0Ca3tPyocdljxq9+NFQYsOWn4AGYEsF3SRcGMUBO3JfvTJggUTJoIzOGiw1w+E9v8rj7//3l5tFGIjkOFg4CUVYj/lGYMSSyZIZsTPKsGT4qho/z88valF+STPaoNKMnBIhBh3qeq7eLR8M+2ewndgo4djGoqPcnwKiNXJf32c=
+	t=1790268252; cv=none; b=rtqyXLDm9HEbVASwqqREVvMcvh0EsqafgyG94/Fm9a/lpQf6wZz+MFhWQDily/33qt01M5xTCOh20dz3MHiWtjiPJ0UA+ysFbFPtsFhdEsGRYSh8KoCa1tZw2xj1kIjm7kk27C6CbNa81mlJDsoTaZWLXUEzUNRReJMBV+egq6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790268088; c=relaxed/simple;
-	bh=hCK3S1nGycehD1h0LxDF7olD/zKboAi8qe4YwYGpF00=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JtL8iMc82e7YmMir1NyGtE9DexmgNgaYYNbdn5UZ9J9nuLc2IIoZdj5TZ+uOwz8ESTG5bxlp49hK+Bx4Ej1a0Q1PBDpMSiN/7ash+81rTvR5bYvn7ZDd0nMnTfxum8WLhXbNBQ9askh6IVKhoEgu/5/Zh9X3iPXk20v0CssMiJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPF/Rwa8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790268252; c=relaxed/simple;
+	bh=GcGxAuHjegieUhml6jhBvnFuF/HH3L+FUtaOGvDFm8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N2ai8v8RKXgXUoG+L3j1XIOl6lIlSzd82wsNBVzUOYlOKHbmII65X2mzHscOS9vaQNjUehr0q4dEwQCGbVcJDYObsSFuE4Rn/WWDMY+ZYFBnwyCWgzQ2PcyWNdYieJbuXYDCU6OQsYFYVKEANMNyNu/2N3k3aibJM4bfsQqRG2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4HkTsIfL; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPF/Rwa8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E701F000FF;
-	Thu, 24 Sep 2026 16:41:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790268087;
-	bh=7EZRmSyJFSvpjHRNdeogcewSTHxFc+R9PjSaKds5Q44=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aPF/Rwa8NG8htZsnaC00OWLTtAlFb4BevIYybfipUiLwU8GA0kqpFbdn+7EJrhEII
-	 HzGjSIOlKl7QT1mxruErkt7QEBCfISxA+8guSY64zmuFi2cgsiqEEVO2fhr1B99RVJ
-	 FMW4Qfyw/SvwK5hLAbr4/b9Pl+terdGFhRAZTKkTZn4mrafbQllTI43t40mU4Qa2j8
-	 DJHRGCOnMSY6i6wb6AuihhYCJRw8oIKaXzhK6XLA65AZxAJmqfFfvCl6P6aIHXnx4l
-	 hy2Q+C5VtGXJEC/qOW33SJj7KYvd3+LePMs4qXPDvrs6whzR/uSBrc5QrpbdA68zGM
-	 4zmsKgyQkQQfQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568063A566CE;
-	Thu, 24 Sep 2026 16:40:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4HkTsIfL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=ahg9seQPPv3QHPFNI00LWYz0svWliPsZtiwzoOpE8Ew=; b=4H
+	kTsIfLHuWIpfSB3ipqT2ISLVJ0B1rBPYMRiJXiS6D0z68mcpwagQYyqErCt/7GAv+SpS0NPYNniBm
+	zg12SQZB/NxMLyErTwL9TwOmGy42i0aCCpt/KJHLNxZdrNfnI7V2vbvyzZR8Q01KhthvnaYoETHKC
+	//RgQhcVGfU2SfA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9mXw-0072Sg-LG; Thu, 24 Sep 2026 18:43:44 +0200
+Date: Thu, 24 Sep 2026 18:43:44 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
+	=?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net 1/3] net: fealnx: fix teardown order in remove
+Message-ID: <95c9fa4a-79e5-47fe-9de5-2c6cd186216d@lunn.ch>
+References: <20260924104231.110576-1-r.zhambakiev@prosoftsystems.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/3] net: ethernet: oa_tc6: add reset-gpios
- support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179026801588.1646186.7823364033020899549.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 16:40:15 +0000
-References: <20260918231450.55966-1-alessandro.zini@siemens.com>
-In-Reply-To: <20260918231450.55966-1-alessandro.zini@siemens.com>
-To: Alessandro Zini <alessandro.zini@siemens.com>
-Cc: parthiban.veerasooran@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ciprian.regus@analog.com, qingfang.deng@linux.dev, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260924104231.110576-1-r.zhambakiev@prosoftsystems.ru>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 19 Sep 2026 01:14:47 +0200 you wrote:
-> This series adds optional reset GPIO support for OPEN Alliance 10BASE-T1x
-> MAC-PHY devices using the OA TC6 library, and documents the property for
-> the Microchip LAN8650/1 MAC-PHY.
+On Thu, Sep 24, 2026 at 10:44:21AM +0000, Жамбакиев Радий Рикардинович wrote:
+> From: Radiy Zhambakiev <r.zhambakiev@prosoftsystems.ru>
 > 
-> Patch 1 documents the optional reset-gpios property for the Microchip
-> LAN8650/1.
+> fealnx_remove_one() frees the DMA rings before unregistering the
+> netdev, while the interface may still be up, which leaves a
+> window where freed memory can be accessed.
 > 
-> [...]
+> Call unregister_netdev() first so dev_close() stops the Tx/Rx
+> engines, deletes the timers, and frees the IRQ before the rings are
+> freed. While at it use dev_err() instead of printk() for the 
+> unknown-device case.
+> 
+> Found by Linux Verification Center (linuxtesting.org)
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Radiy Zhambakiev <r.zhambakiev@prosoftsystems.ru>
+> ---
+>  drivers/net/ethernet/fealnx.c | 29 ++++++++++++++++-------------
+>  1 file changed, 16 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/fealnx.c b/drivers/net/ethernet/fealnx.c
+> index bdc38aac5850..d7cd1644a375 100644
+> --- a/drivers/net/ethernet/fealnx.c
+> +++ b/drivers/net/ethernet/fealnx.c
+> @@ -678,20 +678,23 @@ static int fealnx_init_one(struct pci_dev *pdev,
+>  static void fealnx_remove_one(struct pci_dev *pdev)
+>  {
+>  	struct net_device *dev = pci_get_drvdata(pdev);
+> +	struct netdev_private *np;
+> +
+> +	if (!dev) {
+> +		dev_err(&pdev->dev, "remove for unknown device\n");
+> +		return;
+> +	}
 
-Here is the summary with links:
-  - [net-next,v4,1/3] dt-bindings: net: microchip,lan8650: add reset-gpios property
-    https://git.kernel.org/netdev/net-next/c/7afc23c9884d
-  - [net-next,v4,2/3] net: ethernet: oa_tc6: return ERR_PTR from oa_tc6_init()
-    https://git.kernel.org/netdev/net-next/c/15358c2c3dca
-  - [net-next,v4,3/3] net: ethernet: oa_tc6: add reset-gpios support
-    https://git.kernel.org/netdev/net-next/c/8d5dab574a95
+I know you are just moving code around, but is that possible?  We try
+avoid defensive code. It is better to actually understand the code and
+stop bad things happening.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+     Andrew
 
