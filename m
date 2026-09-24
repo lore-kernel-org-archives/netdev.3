@@ -1,316 +1,128 @@
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C72146D560
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E0A4908A0
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790257289; cv=pass; b=UzegB7srbNqmfoGdqayUIejbVvy+m2nywPl2o6r6Hv3IRQ+dgYaio4Wq9VojSGONnbwCBxY8vmyeEhB4nHFld13eF1IMzHKl1b+tsOIjKjnkLFRscAtKE3+xD/vBnWNflU7ppj01IZq17d9eDSsqV7hmr9f+G/viTq6u17wgRB4=
+	t=1790257472; cv=pass; b=m7uhUEIty9T0K7EYTaWylKMZDhvNFonelQ1UbRalGHzZAYgMYmi9jzH1DoDtErkojWTglIxZfq7GZfr/CxahBaxKnzQDq/9iceTFibxLrpv1CtHeRBIahnr2JmianiAWiWvXJoLOLNSncrQniEN1EMqW6QhEx7qaCpQqKiPBR2w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790257289; c=relaxed/simple;
-	bh=cqW7SjFZ2VMeKZwt6tJnhW9zBsZWK5w5aMHQYAxktLA=;
+	s=arc-20240116; t=1790257472; c=relaxed/simple;
+	bh=cFauOgA8z3U9PqAuxzmKGox+cZOoW7I+JwbiyAJGnfs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sItzKgObvOqIyUSmx0c6OXvTvNM++QskrKBuFNqGmjihYYcUOVUmvKBYasrzD4u2D67emrBKmugtCxEmInvMuaKZbAGnXxKPV+XQNURmJB4TP0IjOll4XMkS4d9TMkb+AfjOQ4267am9AI77zoB4RKlMa5TeVAUJLvnM1u+7BI4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IapRArF3; arc=pass smtp.client-ip=74.125.229.205
+	 To:Cc:Content-Type; b=glG3zqUemzR0ILPAVcps22M7ODlYJvgDWF3tzeRDj0LRJYsuVrx06u51vRhRMXt1rgKfbnq9f23lIYSw0mITZG+a3/PjwbiwjmTrxZD5MN4mkLI+cRtSffYJBZGR+fb+rKcgdKEBVfdPgn05BPRO0WramBPUY/4BVtrLn4CEvoI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SXp8GWtP; arc=pass smtp.client-ip=74.125.228.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IapRArF3"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8c5231570so2114053e87.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:41:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790257281; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SXp8GWtP"
+Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc750a1482fso1380352a12.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:44:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790257467; cv=none;
         d=google.com; s=arc-20260327;
-        b=p8juW8os7Tpfu1n7cY1TltBUCd/fD+QGTfeNxBV3ZjKFQV/woaoY2xhrCmYmoJnHRl
-         QdT1V5JFYGNB0qi6tC372WpLtwJ8LsdRnCoEh7O+MY7yich/VOumLjF4fMeRnTNzoeeW
-         E+Mg9CMpCvHjIsffFaqeQYpuaDq848YJdH24IGv+i3lDMl5+vsQ1/NmcoGac67VpCg+V
-         HUa52OdoOG8ZepLvKkYHLD9xgrVF/Yq8VbQiAY+euG4KFmLOc+2abpKwgfeNJHNWAm3z
-         26IjoHcA7z53nTtENy3DaE0+Um75IgJWJhQHllTCbL3VjHpHxmGckdW/dCTvHoW9MY/+
-         pcgQ==
+        b=GQnQchJ/ha9B4Vvan6Mkrk1o91ilyIVmWpUnCHNHSramU8R467fndp0LHLIrepCGC/
+         axRQ0k60hpUqtHvsexkQ1sAHqL5jKjyEcaSMcNWt1ytFrTQ56YDgjMgv8VYlg7WTvCDh
+         2RHE2E53f1R2LotkdG2bcA4SVkg0U6kgUX2OXsPA+6s8IgwvHNhFncP1DnnkkkhKJ01z
+         rAfM/J3S/SwZxj5PTpysa25ncXoxqJHbZADtABy3zm5fWnHblPGqt2+p+cbr8gePsoIe
+         2vhE45jwBPNqTYfrwMoMdDUlGW9EZFKD2Lz7kUYwV2JPKrJGcnL/dDoqrwpF7krS18m9
+         Kwxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GGZb92y65Zgpq3x5v+GtiE7R/fU6xpwCAj6PKyWY/vY=;
-        fh=0vCl46X7hFnuiRcbvJ1ZlikxQHxt31PCyR4d1ocGubY=;
-        b=nU+DTII8aypxs8I9e7dvJA48FE3yJhZzf07fLpHFIQ6qpHa+mA4slC0zlSiVczMVWx
-         5nSlNAWCaT4GGWJAs6PSxOAm83oD5g8o+JSlaE+U0naTYxjdoh753lfeIDtoJnSec3Cq
-         hSIIktyw+YZh3Fp9Erm8RWiqnNDquLcQC8tY7ieoKfx0gxro8ZELzCatByknFHChlKet
-         wV+fWi7GD1wv6s/yKSNvOnn09MbrlQBFR33YTvhjKpTZ5+dFUknwNBUTz2aCqjtqN4rF
-         dtLmuByed+21+h7FewmZLjnQvkezQFdH2bHHXzCJx2AUL1mca6TeB/RQDDqsXiRHIL2A
-         2NqQ==;
+        bh=nlngpjoJXsEVxEuj2gq7hM2g/yYyiiwaQMo7R6hUNyI=;
+        fh=1mRN5eobMYeM6r2bbK90MeX2WWdy1RAeAfW67+ucEfE=;
+        b=sEP76rrNAe5PHQZpMouOA6w6HoqqedBB20G7B0ihH8spgbLhZhceUAgofvLGUolBU0
+         MwkXoFxBrOfKKXZiuglZLDsdbMNjVHD8e1lU1DN4lBNZEnO3H1o7f/wayo0SqukpDezk
+         twxPblrX68LYA24V/grTbDzeuoz13GOBCzNV/eya5YXhDN8FzWs9cw4ByxUEwlaeG16O
+         0Xf9PwNR64s61JF6hL0Bn4IQyUcBJzCZKrontQGWuWIS+KiYAbyrxRbv4OJ6/Tv2WeM7
+         A/e+OZbCxKrDsovXjIF2kOFVU3gUkV8SIT16EcZgGQ+41nn/gGhXej2pmktYJ+7wGnjJ
+         x2LQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790257281; x=1790862081; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790257467; x=1790862267; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GGZb92y65Zgpq3x5v+GtiE7R/fU6xpwCAj6PKyWY/vY=;
-        b=IapRArF3xZ3q54PUrDQ0oxoRvDIz7dOmcx0rBfLeofV9+TCoyxjHZqM14+WkwQu2kD
-         S58nsc4Mm1+9hg8NryYurtPLwHkVxbrM1iqJZ29foIoS6ouMNkX188sMvgF/v5dA3La0
-         1daqYGV0WKGnBBkid9KEJBJBiIBRieBQFMRFL377lcloUCo4GdL/t/G3wIbh981PMdPE
-         /5xffJpJBnXtQAmPLTpABtm/dS8KOuhGLMVf2rXppP64JbAcynP1jR8gt24VGlXSsalO
-         MHHFXGFtexJQBqJ3qlkbDLxBg0Kdsd+cYD79i5ktAHQBp396BpMdWmtBFIjENdIBF3gc
-         2IWg==
+        bh=nlngpjoJXsEVxEuj2gq7hM2g/yYyiiwaQMo7R6hUNyI=;
+        b=SXp8GWtPMjoV9qkWkWx8Qa+9vDPPN5DessE0/O7/1AcXVzrgDft4U9eYgx6+Rh4g8q
+         qGGbiLPh/WiGhqva63M66QptrjdqHv8OOmH9ZSWurw3CPNu565s62WwLNHIwai6TyteG
+         UcWe+Ww1+v3QL9dSwXLjql5sK36P96rOinmbl9IrAymGgZpaneu0XUYvkBndmdAgub9i
+         5sQnSjtUFSSx5GtYkpTN4VKRdHngxBqzyluO9z1Xik9GVCtsqP1ZQeOn7Q91sBIrf8Dk
+         mbZWjAEynFhLBebnza6CpMQzH1+sz+MMPAt3cRnbf/tmIh0ztx2iFroRus6gYJTpIMqR
+         w89A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790257281; x=1790862081;
+        d=1e100.net; s=20260707; t=1790257467; x=1790862267;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GGZb92y65Zgpq3x5v+GtiE7R/fU6xpwCAj6PKyWY/vY=;
-        b=IPiflvum9mwxefH/ktYp4asjfPPwKDM6RSO+xcJ+O2/Q5GtKTL4evkRO6izqNr+Lkv
-         msZg6PPHO3j5V6aSxdBi1Zd5podOUhs3BbRWZZ+2NIqXPI8xQMU+L0RTnwzBKQJLP/Nx
-         eBFWoFpE0HIK0UNqQSgf5+Cj4zZbtmYLW2RXZgDNB3s6it7/FXRuTFrgzfryFR8H4eWj
-         l4jLCMV5w8Us6zpNPH1HXz4C0WYTb1TErvmIDHl20ftcMSABzplPxHgS7sdB0qpHXeTy
-         6fkIhAT75ZhNVUOAP3SVBZhJ7jOFwN0Y38CBMzC5J8+S/nlzq7kGrYVK7IYj27X9pAjx
-         WO6g==
-X-Forwarded-Encrypted: i=1; AKwUvBylvnMoxZbIHZg9qjstNc92Upw3qrYawgzX3uzvGcqXtLEQ4Rc4ao2ofTIf4ulN9lFmLJZXKv8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kLfZwTg3Ibsi8uAXbMu+uYRkAq3AOCJixSjsJNuqhy6e85eI7l
-	cWop/ph+CTxTDZxGogSHD9KqmvqELR87cecGQxzmeYR+PmNw/Kgt3nam9oHuV1YobIInA71dCKP
-	2+y8kF6CO1AyUtwflzA+xw01bwz18fr4=
-X-Gm-Gg: AYBFou35nFIl6Yr7Nry50MOSFMZprd0BSLuUC0h3kJqTwGDT+ucR7NF9FxHRM8BaT5j
-	goTaWycLSeUmtqQTDPXcJI8euMJXfPEYoIU1/Ws5MbSH5cde3hmApZFEI5+q/Yn0POxWhRIpMIT
-	66HLNSpNqYez7kadVSrdhp3Zl9MkrXSWJsF7trA39gTroi3SYSJ1qsWXVgYykb9hnUMclgD+DPt
-	nsSxgjgUL+2aiOTR6kA/ONJ4wKjuQNj8V3K01QuMN7lbDQbJklfOz9FE27UYOOSAQ/kDo6rknNi
-	wmq1C+bpegiHSFhxrY9SSfhRMxBMBx3CPdTwJ3m2vXfpJZ46OaODlwPAgHNE/xpY
-X-Received: by 2002:a05:6512:1192:b0:5b8:b3a6:719a with SMTP id
- 2adb3069b0e04-5b8df09d744mr945812e87.30.1790257281161; Thu, 24 Sep 2026
- 06:41:21 -0700 (PDT)
+        bh=nlngpjoJXsEVxEuj2gq7hM2g/yYyiiwaQMo7R6hUNyI=;
+        b=qB9w9ECs4211gwbJpuy817ZwYkmYC6nBk2n/G/zfsdUNGil6R3q8jmtCHMJj+eFKHX
+         hkfAjA/dI1erZmJCy5Zc72mm40L+wxYfxxhlrgQYNGf0skQRILyXRHw9hfTTXUG77HoY
+         CA1BD9XazD/HIGSSrf1HVagMjcKq0eDH1UMSj7Tc3+D7D56qWA2GE68K62zfhETs4Jfz
+         0uIXsp71kwWTUXzoEyBJSmQ+Tq4t28c/CESr1YsLuQBH2SIghUiMf6mv8jCJTxJEYTl7
+         HkL0BR09/pA3WVjM2cRPmsmi6kRhXjAT1p0Dl86mwVPI4hDQPuzanRfFQ0781CDl4VPV
+         dvEw==
+X-Forwarded-Encrypted: i=1; AKwUvBw04svCA6c+tkidYA9oHjAGiosk9vN1jW0qq1iaaRGAPunXvCZznS7UFaf+29qRodZGRxcm0VI=@vger.kernel.org
+X-Gm-Message-State: AFuF++kf7315nWAP0gs+MGQ/cF6nPAVYz9UkseBDKSpS33FJfW2BMkP/
+	2D3CuNUtUhAmpmbRzFSK+7huHcuRWQf1xLmflnp5utOLTv75rysIONIZkaiTWdJmv7cg5vHX6G2
+	42S0QhnexE1K0yFZVOGYkbK6fkiYddq0=
+X-Gm-Gg: AYBFou1A4slQt30D1xHo6+N41JXV4nbJgcK80TfU787NaRLtDlEBlrUpYe1imGMKTDA
+	q8KuY0EYsS1FU1r0pH+mY/BojZtvQhUfK4ezNbOZV4/kSIKhX/DE9hQy+LpJgcshkjTTpP3rLMs
+	L5RaaItcRMZPgJ9UkyArgN3i/cKIEyqtpHG2vKFvu2kk5tTSuCO5kEG9MXiUrYfrgZATSyx29pK
+	czZpkHVY96KHnd33bhtGfa1G06Nr2LpG9h5TSFMIH3B+8KjUKxTRYF+0LpVffNC0bhNlFfakDYF
+	Kid/ZpPx7dHEqDqosn5GYeDk7v/Jhn4NxptLa9eMY4ARNi/eVPTWtYjIoDs49ktZ0IffDemFpdq
+	OuRFe3EhUOuZSDFq0l6YuSHrGqp3yTAg4EtIl4bHKlGhxaWZuXv/2Qw==
+X-Received: by 2002:a05:6a20:1f28:b0:3dd:a196:69e1 with SMTP id
+ adf61e73a8af0-3de0ea1cec2mr2440252637.60.1790257466883; Thu, 24 Sep 2026
+ 06:44:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260917115657.20697-1-maimon.sagi@gmail.com> <178999185805.2160803.2118648689532400433@kernel.org>
-In-Reply-To: <178999185805.2160803.2118648689532400433@kernel.org>
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Thu, 24 Sep 2026 16:40:54 +0300
-X-Gm-Features: AclHuK_mv6cx7MF56HvpPI8ZeHUQyEOf1bmrhadhyKpWsU2yerYqhZUPa9QgwcM
-Message-ID: <CAMuE1bEbupbvFxV4W8ZS5NxMAQP6SvxP=S6DC=+ho-+zkFQ=Vg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: axienet: bound TX completion cleanup by the
- NAPI budget
-To: netdev-bot+sashiko@kernel.org
-Cc: radhey.shyam.pandey@amd.com, netdev@vger.kernel.org, 
-	robert.hancock@calian.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260919213634.3314055-1-benquike@gmail.com> <4745a390-6859-4a5e-8ee1-ab9634b3bc10@redhat.com>
+In-Reply-To: <4745a390-6859-4a5e-8ee1-ab9634b3bc10@redhat.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 24 Sep 2026 09:44:13 -0400
+X-Gm-Features: AclHuK8jtpDrFAVJeOq2D55eedj6RdtFuoTdSF_mfwp1fcThXvzJ0oWBMiBjo5M
+Message-ID: <CADvbK_c0+KxZ-AZA4vhWpOT1DFBic-iy9gfrd18s0KQAdskvTA@mail.gmail.com>
+Subject: Re: [PATCH] sctp: copy zeroed stats to user in sctp_getsockopt_pr_streamstatus()
+ when !streamoute
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Hui Peng <benquike@gmail.com>, marcelo.leitner@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 21, 2026 at 2:57=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+On Thu, Sep 24, 2026 at 6:14=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
 te:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 (1) =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] Incomplete fix: the new budget guard in axienet_free_tx_chain()
->   is disabled when @budget =3D=3D 0 (`if (!force && budget && packets >=
-=3D=E2=80=A6
->
-> Pre-existing issues:
-> - [Medium] Pre-existing (not introduced or claimed to be fixed by this
->   patch): axienet_dma_bd_release()=E2=80=A6
->
-> --
->
-> net: axienet: bound TX completion cleanup by the NAPI budget
->
-> The patch adds a budget check to axienet_free_tx_chain() so the TX
-> completion loop stops on a packet boundary once the NAPI budget is spent,
-> and treats a budget of zero as "no limit" so the netpoll TX reclaim and t=
-he
-> @force callers still drain the ring.  The kernel-doc for @budget is updat=
-ed
-> to match.
->
-> > diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/driver=
-s/net/ethernet/xilinx/xilinx_axienet_main.c
-> > index 1722b7038f340..039885814a5d2 100644
-> > --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> > +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> > @@ -772,7 +772,9 @@ static int axienet_device_reset(struct net_device *=
-ndev)
-> >   * @force:   Whether to clean descriptors even if not complete
-> >   * @sizep:   Pointer to a u32 accumulating the total byte count of
-> >   *           completed packets (using skb->len). Ignored if NULL.
-> > - * @budget:  NAPI budget (use 0 when not called from NAPI poll)
-> > + * @budget:  NAPI budget. When @force is false, cleanup stops after th=
-is
-> > + *           many completed packets. Zero means no limit, as used by t=
-he
-> > + *           netpoll TX reclaim and by callers outside NAPI poll.
-> >   *
-> >   * Would either be called after a successful transmit operation, or af=
-ter
-> >   * there was an error when setting up the chain.
-> > @@ -788,6 +790,15 @@ static int axienet_free_tx_chain(struct axienet_lo=
-cal *lp, u32 first_bd,
-> >       dma_addr_t phys;
+> On 9/19/26 23:36, Hui Peng wrote:
+> > @@ -7589,6 +7585,8 @@ static int sctp_getsockopt_pr_streamstatus(struct=
+ sock *sk, int len,
+> >                       streamoute->abandoned_sent[__SCTP_PR_INDEX(policy=
+)];
+> >       }
 > >
-> >       for (i =3D 0; i < nr_bds; i++) {
-> > +             /* A NAPI poll must not return more than its budget.  Sto=
-p on a
-> > +              * packet boundary once it is spent - cur_p->skb is only =
-set on
-> > +              * a packet's last descriptor, so no packet is left half-=
-freed.
-> > +              * A zero budget means no limit: netpoll polls with a bud=
-get of
-> > +              * 0 to reclaim the TX path only, and must still clean th=
-e ring.
-> > +              */
-> > +             if (!force && budget && packets >=3D budget)
-> > +                     break;
+> > +     retval =3D 0;
 > > +
 >
-> [Severity: High]
-> With the "budget &&" term, is the case the commit message is about still
-> reachable on the netpoll path?
-
-Yes.  For a budget of 0 the loop drains the ring and axienet_tx_poll()
-then returns the reclaimed count, which can trip the WARN_ONCE() in
-poll_one_napi().  That was already reachable before this patch, while the
-loop was unbounded, but since the patch is about honouring the budget it
-should cover this case as well.  v3 returns "budget ? packets : 0" from
-axienet_tx_poll() as you suggest, keeping the accounting and the queue
-wake.
+> AFAICS the above is not needed; retval will be zeroed later, if in case o=
+f
+> no errors.
+Agree.
 
 >
-> For a budget of 0 the guard never fires, so axienet_free_tx_chain() walks=
- up
-> to lp->tx_bd_num descriptors and increments packets for every completed
-> descriptor with a non-NULL cur_p->skb.  axienet_tx_poll() then returns th=
-at
-> count verbatim:
+> Also this is IMHO net-next material with no fixes tag.
 >
-> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_tx_poll() {
->         packets =3D axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num=
-, false,
->                                         &size, budget);
->         ...
->         if (packets < budget && napi_complete_done(napi, packets)) {
->         ...
->         return packets;
-> }
->
-> netpoll is the caller that enforces the invariant:
->
-> net/core/netpoll.c:poll_one_napi() {
->         /* We explicitly pass the polling call a budget of 0 to
->          * indicate that we are clearing the Tx path only.
->          */
->         work =3D napi->poll(napi, 0);
->         WARN_ONCE(work, "%pS exceeded budget in poll\n", napi->poll);
->         ...
-> }
->
-> lp->napi_tx is on dev->napi_list (netif_napi_add(ndev, &lp->napi_tx,
-> axienet_tx_poll) in axienet_probe()), so netpoll_poll_dev()->poll_napi()-=
->
-> poll_one_napi() reaches axienet_tx_poll() with budget 0.  If netconsole o=
-r
-> kgdboe is active on the interface and at least one TX descriptor has
-> XAXIDMA_BD_STS_COMPLETE_MASK set with cur_p->skb !=3D NULL, doesn't that =
-poll
-> return non-zero work for a budget of 0 and trip the WARN_ONCE?
->
-> The "packets < budget" test is also false for budget 0, so
-> napi_complete_done() is skipped on that pass, which is the secondary symp=
-tom
-> the changelog describes.
->
-> Would it work better to keep the unlimited reclaim for budget 0 (it is
-> already bounded by lp->tx_bd_num) but have axienet_tx_poll() report
-> "budget ? packets : 0", while still doing the byte/packet accounting?
->
-> The new kernel-doc says zero means "no limit, as used by the netpoll TX
-> reclaim".  netpoll asks for two things: drain the TX path, and report zer=
-o
-> work.  Could the kernel-doc and the in-loop comment mention both?
+If users call getsockopt(SCTP_PR_STREAM_STATUS, &param) without zeroing
+param, the kernel should still initialize the output fields when the call
+succeeds (return 0).
 
-Will do.
+So we may think of it as a Fix.
 
->
-> One more nit on the changelog:
->
->   "Zero therefore means no limit, which also covers the @force callers th=
-at
->   clean up after a DMA mapping failure with a budget of 0."
->
-> The guard is already gated on !force, so the @force callers are unaffecte=
-d by
-> the value of @budget here.
-
-Right, that sentence is wrong.  v3 drops it.
-
->
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but while looking at the TX
-> reclaim path: does axienet_dma_bd_release() leak the outstanding TX skbs =
-and
-> their streaming DMA mappings?
-
-Yes.  It is independent of this patch, so I will send it as a separate
-fix rather than fold it in.
-v3 follows.  It passes traffic on hardware; the over-budget and netpoll
-cases themselves were not exercised.
-
->
-> The RX side walks the ring and cleans up:
->
-> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_dma_bd_release(=
-) {
->         for (i =3D 0; i < lp->rx_bd_num; i++) {
->                 ...
->                 dev_kfree_skb(lp->rx_bd_v[i].skb);
->                 ...
->                 dma_unmap_single(lp->dev, phys, lp->max_frm_size, DMA_FRO=
-M_DEVICE);
->         }
->         ...
->         /* If we end up here, tx_bd_v must have been DMA allocated. */
->         dma_free_coherent(lp->dev,
->                           sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
->                           lp->tx_bd_v,
->                           lp->tx_bd_p);
-> }
->
-> The TX ring is freed with no equivalent pass over lp->tx_bd_v, so descrip=
-tors
-> between lp->tx_bd_ci and lp->tx_bd_tail keep their cur_p->skb and their
-> dma_map_single() mapping.
->
-> axienet_stop() disables TX reclamation before the release, so nothing can=
- run
-> afterwards:
->
->         napi_disable(&lp->napi_tx);
->         ...
->         axienet_dma_stop(lp);
->         cancel_work_sync(&lp->dma_err_task);
->         free_irq(lp->tx_irq, ndev);
->         free_irq(lp->rx_irq, ndev);
->         axienet_dma_bd_release(ndev);
->
-> So an "ip link set down" or a driver unbind with frames in flight would l=
-ose
-> up to lp->tx_bd_num skbs and mappings.  The budget cap added here can lea=
-ve
-> completed-but-unreclaimed descriptors around for a later poll, which slig=
-htly
-> widens the window, but the leak is independent of this change.
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260917115657.20697-1-maimon.sagi%40gmail.com
+Thanks.
