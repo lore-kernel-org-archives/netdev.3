@@ -1,291 +1,166 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A2C1EFFA1
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790210009; cv=none; b=R8smAb98Xvwq08LqeKfeEzJozTmd2gf5XrK9F4Qu0cloo8/4edy2tcxL3ltVTp1DOtzQPVe82OYJAfhWMqRB0yFZyR0tDUA/rUuhBQJO0lBerBPFezpLsGoYQguDdFjwX61HO6lhDkMPF5i0GTLIc6Hlb67cfbdeH8y9d3ouG5w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790210009; c=relaxed/simple;
-	bh=DTSdPrlzYqQ2DeSoFyguMKcJxzLlwx7zDWW0X4p5BRk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISMBTBUz8lxg9PU75t4EICpuUQcupnfXTHXx/kM7kmdJw+JJkuGrU0JypCeYiCgaLr6Rb9xlFGRP/tkMCO08cPUawR2OyZfw8CuKQUj26Lu1fvSZEoRnFmhnazKqyhYWz5aiKoEAOnRffdnzJ1W0ut1YnNiHwKEGhrkhxU11kRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=XEgw4fhC; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A242222A9
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.233
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790210276; cv=pass; b=u77uMjQi98Ww9rfJZ3hbz/X4SUOp/xlVPnSMa4WM0qzyRzh7DuWjXLRBLEeFpWLXN8Il86FeLnLaLHC3Lt/FH3PQyMItgCvVhPWnjVOx0la80zrqNdexB+Iz9AsIBe6dVQsQyh91mWxW+hneh7KAhLDEE2WvOJgIVCOzGdc1tCA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790210276; c=relaxed/simple;
+	bh=K8vS5txHWFEz09ZjpqqSdMVfVwpyc2OkAuMiCyz7q9w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sw6HzB6FbM+su/wCavQy7eqzI4+SZCaZhVPwDj3G4ha4pPq0YMrwpx3F/yYiMBA0L7ifkXfKmTrrboD/qXydIJM1Qj9+0eyYGJSwFh+5dxpzZ5nSakRrXr5X7EEkiFRyMMesWMQ8W/N7hn9AMSKCKljSpU51UYnw53LjNGMN4ZQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DF8jcxcA; arc=pass smtp.client-ip=74.125.230.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="XEgw4fhC"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebcb8d7so494155a12.0
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:33:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DF8jcxcA"
+Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfd70b08cso145403785a.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:37:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790210274; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D7RAZHM0Ynh/UeEBurggO9CaQjimDd50QTpx8sZgjt73Rf5eRpOmm1EOLfslFDsXfX
+         q7zbSqBXCmcMfq/5p2uOP8ypBoPRKLoQLkJGNqNqGHvNlaDiJHoBYz8v8gEdeBgcbozo
+         qBMV8XAFEfiCgAZ3ymuCB3wnzbfibGMOA/7h0s+J1lXUE4AEqzG0laaZYgyGsW61+1lj
+         IKkN71TBBVWa/GL6ij7eKmDFLwRteHcWJHztfhv04Yem5QMxzj/sKxm+QY7V0moSjxbx
+         7ep8nZTSx0MMEmcl10gfdxkRM6sUGhYCe0Ii9hQdotSGaQJd4/8yYPXrSkOBVIzm2Isa
+         iAlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DcbF8p/gFt0aeBCSsZBnIRbY9cEz0BuiPSlo6+tvpBw=;
+        fh=WGimCGS7q2SVpShdk6lvvkAmAApsZfBFcOxU0xPMIDo=;
+        b=g+ZZuM8aeORHua6v6fXClczTHQhR4ZZ5MaJ8pi5FIRle10IzwngpS35+xBIQ6jKz4i
+         btxQ/NzOj53X1xYMeJhmR6KANTzUNFz6CNPsYrHdD6dumuN8dp+hBpRTQ34MOqrfgWFD
+         pZTESbJLFAVFRFJeJXQtkg4bISPp9zJwg7ZlVXsOIH/II2NgQyp9wJTN7IZEDsvTLpXL
+         uamxrVus8hWZijqxq7mjV8TuHY8pN4Lw682nkJcYutDbShXnporQQAmj4pxX/s/DvJTx
+         hkwaqO79vLvkt8eYysJ7h8dTRxloMkP3ft7VqgbVu3NrTcawCwIt0apIVI8zSx2QZAUB
+         5Bzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1790210008; x=1790814808; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UuQ0CZhhQu+eQJU1hc3HsftVbbZi60pDfaLFdUL4LGw=;
-        b=XEgw4fhCjWv1d2ekUdjSkbPnMg7Uvf+yfBn7+mxQV/d443qq9Hwy4U6PAbZDjw6hYg
-         M0RfN4BlLcsANa1HbCoqa21NB6H4oeweUc66KNcUg26uIaarqHoofWRjU3v+tdtvKxq8
-         eTwdQ5DR9lTSnSfoeRGAqlDaXwaog4A0iX8/h9Wr1Bjrg0fNFGClJhq9IIwOpkCkO9de
-         jHYuRL4Z8Emfbdhg2SdqOLABD0u7j7vsWjtrwd95V9KYGFihkusz4RqYfim3UZ1rTOUH
-         6UhmWXTACpYgJMBJcM+FvuWQ3X5cGKZyOurlIQP0F8806xud4B5p7wVz47UqQi2aXYOI
-         KbQw==
+        d=google.com; s=20251104; t=1790210274; x=1790815074; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DcbF8p/gFt0aeBCSsZBnIRbY9cEz0BuiPSlo6+tvpBw=;
+        b=DF8jcxcAmenE8ZVq52vFNHvPYVkMGgbQlihdWSOd1ZIcmbmCYU4M859ewsafBrBm+5
+         2vliRBE99T+sw01Rus4JayB1gkPUVf+Z134GUFnbo/F5BFpiVsCLNOMsh5wTMAShimxW
+         ajgU7DIHV7I+O39qJfs00312lH4BZ8Tfgl2vAfBrRvnja8/2FqOXu12Z1Dd4/YtWxdYv
+         DdC2Q80BkesEgdjJp4/AoyY6eas4FW/wmrUMlxl4gxdLb0Gn3gAA7qeWPx4d/M8CEnWQ
+         hphAF0kyFolwkN4/PKIFDhYEjmrSE8xkikDU9lB/JAzRIolEleuWavQvH7qpRH5b5J1c
+         G4UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790210008; x=1790814808;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UuQ0CZhhQu+eQJU1hc3HsftVbbZi60pDfaLFdUL4LGw=;
-        b=u0FRh0V3LCdDgmf+aN19TFKWmx6rxWvOglF5KKPdShSGZU9ibjihqv6StdrVXe3oRk
-         ZpRTjzWR5QAhVD9VqCr9TRnkuACraXu/poluQcca2TgDiLG3hjKBBLUqTt7DTcJBJPDJ
-         1M7vSBFe6JrXCUtQoo1UzYAwGSBpC03Z4QTO235Rd0k19c1m4pFZWkIKAzekfCyhS42P
-         rAMKRBsu7sYETjWrxUQclvMUKdL5lmA0/LfyPVc2fg5R37nMw3Iafq6PGDIp/kpVSF4q
-         r9qsaK/oWKu/0AJaX1IPwNrlysO0jJWC6pNFIXfjjYk8v0u5sWJS4yT01/Yyo6BH0GTO
-         y29w==
-X-Gm-Message-State: AFuF++mJEA/2WXWK75Wbpw+ztVcQDnr43O2JEy0PcinLEdXqRNLLtXY1
-	3soxILyh59WyJjLucOvQ1XsTZZYAdPHiJSOqbBUxh2BMJeCNCJARtLsDF3NDSoLbz+oGb4w9Bfl
-	ihZE7G4/a
-X-Gm-Gg: AYBFou00dCiceLr89FZxACQIHaY/+Q7Ui7x8Xy1Qr46p8ZWmiORz/ANSSr8B+Sv3m0s
-	PqfPyaDdedbr+4kzrl7M/DrivfzDYjszusgzUcvqdP1oyrKg62Fb7K0bwL0hghA7DRzA8UCO70W
-	+gRFawuwF0/nVxhppn8r2dujUcIh6gU82vKsGrWQL+a/3Nz0IQ3cCh6i0xq6r0+KGipBKjGPLMl
-	iCM56qIcQ7D8qKSWgNhuvvbwFL4nx9Xd+Fphn8EkV0UpzuS3H4qPeDpBDT9gsrMMnWJBnfW2XlQ
-	Qz8CRfoZqFdU7iKzFl6rnK5UZ6l98oH38wAf/7z0cfNl/IAX5z1JGzVqzt2Ad+1xkPVOa8cqncb
-	ND2DLHd42EJuDcs0FIejdMG2f5St/wCzeYTeCKIzSneuRGnd1bkMzayTjQmrr0TabRm4HNdiMPY
-	M3juNvjzW7KC0SqbOAu854lgsS4KvYV/WEuj0/d0doPibr36mmhyAsSVtZA3AcDOx3
-X-Received: by 2002:a05:6a21:4514:b0:3dd:a008:575e with SMTP id adf61e73a8af0-3de0e8cb487mr512275637.28.1790210007600;
-        Wed, 23 Sep 2026 17:33:27 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([2a05:dfc1:8bc4:feda::14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1d5c163bsm1987516b3a.28.2026.09.23.17.33.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 17:33:27 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kees@kernel.org,
-	kuniyu@google.com,
-	alice.kernel@fastmail.im,
-	michael.bommarito@gmail.com,
-	mail@david-bauer.net,
-	jchapman@katalix.com,
-	vega@nebusec.ai,
-	caoruide123@gmail.com,
-	weir@nebusec.ai
-Subject: [PATCH net 1/1] l2tp: bound the reorder queue
-Date: Thu, 24 Sep 2026 08:32:57 +0800
-Message-ID: <f0d62dc44f984114abe09f9b1d0432c98de7dbbf.1790136447.git.caoruide123@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1790136447.git.caoruide123@gmail.com>
-References: <cover.1790136447.git.caoruide123@gmail.com>
+        d=1e100.net; s=20260707; t=1790210274; x=1790815074;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DcbF8p/gFt0aeBCSsZBnIRbY9cEz0BuiPSlo6+tvpBw=;
+        b=f1lj/qvxMBziyVawtqILeg/ph8yXXLj0w7FocU6S5vf3D7VK11wSswRV1Dmxx/Iiid
+         bSTwNUBrhrBJR+8xJSdHziVvE7hF49IoiaPcCIObISD1AWxb9FRm956xzy4w7DYdkZiP
+         O5yARYbd505RQ8qLUt3lm4dPpnZiJSzUVYZZYW08NULrunB/DhevVVitUnwxyMz32u3j
+         ed3EPYijaBQmqG0gdxzKTPJ+BcUjrU/UAUxBRwOYw+ET/CJg5VAVbX/BAY1PTmff7v6/
+         nghrBLRIPZE0ovyaZTNoq/XCPJbS+VgizXNB+etq9/6fCJbKCt8nUPq9hhj6jUDKYu/L
+         9n3Q==
+X-Forwarded-Encrypted: i=1; AKwUvBx8Ol27s9q8qE49SfQYNF8st27AG3YRrpeT34q+tiCMhQur7OKXq/g3cGNL+p8REedQBsGniuY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLT5yAzTUzj9RUP2LYhUWp822VQXr5OubK1CDyLfmLWHPzyMUD
+	1fUtfoHXgk7L7BWyJNRe8CHK6NE1DkpktMyzAjGtriTf/iS88c1SGhTxQf2vNf+H9IMUW+3hI6a
+	r+6pPAYXJs9Q6U8NVt1w3Mrh2upUo9gcaGcuiwZMP
+X-Gm-Gg: AYBFou2/7ucfKvHog50GBGLjRqWn8WrD4/WkaOJpOSBkI/HMHxkiB6rwAbqySitGpim
+	1xnzsH62Q9vVVnROcvAYJbzITEuiF8PJLb1/OUHxx0O8eoNpvKJzWF4k3+NMqzX3tPvT1WgcpKh
+	DaVWdsVrXX4m6obqv4mOODZDx+vjF27hbUffazJ9H1Zmm2dk3/6hBYdN6z0YsCdDeqrSYAUVOgo
+	ktBFLFKiPKJTdpya9CQuroLlGP4H7rXNkA/1y7xBD9sxVyaipLQMfdfD5+l+REDLbFv85BrJT7Y
+	Q6u0NF7j0CB5FPRLfgUHYPF0fWR4lVNKv9Pw2cJXW0lau759vV7FUtAiZoFjwICGdQZ4SkMnKYQ
+	uZWb9sWUqQD6a/1wnwMfKm7t/OgfuWC1dCxsMNEnd9S5BcSrUS2tIgbDiZObc1qyQtxp7
+X-Received: by 2002:a05:620a:29c6:b0:93a:1092:48fa with SMTP id
+ af79cd13be357-93c3625f116mr62219485a.4.1790210273625; Wed, 23 Sep 2026
+ 17:37:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260922122721.3568295-2-edumazet@google.com> <179020965880.2160803.15947896824748271639@kernel.org>
+In-Reply-To: <179020965880.2160803.15947896824748271639@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 24 Sep 2026 02:37:41 +0200
+X-Gm-Features: AclHuK9csIZmYDxwCCpigVKfEcyzxaDI2cwn4y8NMP8OJG6NZ8tmbMbiwkZolQE
+Message-ID: <CANn89iK4AVNi0z=oA4o+_604aAyEk6+RKXVSNOV=3VNADGfWXw@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/9] dlm: fix send buffer backpressure handling
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	ncardwell@google.com, kuniyu@google.com, willemb@google.com, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ruide Cao <caoruide123@gmail.com>
+On Thu, Sep 24, 2026 at 2:27=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] fs/dlm/lowcomms.c:send_to_sock() =E2=80=94 making the CF_APP_LIM=
+ITED
+>   branch live for the first time in ten years introduces a permanent=E2=
+=80=A6
+> - [Low] fs/dlm/lowcomms.c:send_to_sock(): after switching the guard to
+>   SOCK_NOSPACE, the guard and the "Notify TCP" action now operate on the=
+=E2=80=A6
+>
+> --
+>
+> dlm: fix send buffer backpressure handling
+>
+> The send path in fs/dlm/lowcomms.c tested SOCKWQ_ASYNC_NOSPACE in
+> con->sock->flags, a bit that has not lived there since commit ceb5d58b217=
+0,
+> so the test was always false and send_to_sock() always returned
+> DLM_IO_RESCHED on -EAGAIN. The patch switches the test to SOCK_NOSPACE an=
+d
+> drops the matching clear_bit() in lowcomms_write_space().
+>
+> > diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+> > index 2aff1c7c17de4..abe9ae4c643fa 100644
+> > --- a/fs/dlm/lowcomms.c
+> > +++ b/fs/dlm/lowcomms.c
+> > @@ -522,10 +522,8 @@ static void lowcomms_write_space(struct sock *sk)
+> >       clear_bit(SOCK_NOSPACE, &con->sock->flags);
+> >
+> >       spin_lock_bh(&con->writequeue_lock);
+> > -     if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
+> > +     if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
+> >               con->sock->sk->sk_write_pending--;
+> > -             clear_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags);
+> > -     }
+> >
+> >       lowcomms_queue_swork(con);
+> >       spin_unlock_bh(&con->writequeue_lock);
+> > @@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
+> >       if (ret =3D=3D -EAGAIN || ret =3D=3D 0) {
+> >               lock_sock(con->sock->sk);
+> >               spin_lock_bh(&con->writequeue_lock);
+> > -             if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
+> > +             if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
+> >                   !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
+>
+> [Severity: High]
+> This makes the CF_APP_LIMITED branch reachable for the first time in ten
+> years.  Once it is taken, is there anything left that can restart this
+> connection if the TCP connection then dies?
 
-The receive-window check accepts every sequence number in the large
-window. If the peer omits the expected packet, distinct future packets
-can therefore fill the ordered reorder queue. Since insertion walks the
-queue and expiration was checked only while receiving another packet,
-this allowed unbounded memory and CPU use.
-
-Reject duplicate sequence numbers and cap the reorder queue at 64
-packets. Packets beyond the cap are discarded, except that the expected
-sequence number is admitted so an in-order packet can drain the queue.
-The existing timeout recovery then skips a missing sequence number when
-the queue limit is reached.
-
-Use a session timer to run the existing dequeue path at the head
-expiration and shut it down before purging a session. This bounds the
-queue and services expiration even when the peer stops sending.
-
-Fixes: 3557baabf280 ("[L2TP]: PPP over L2TP driver core")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
----
- net/l2tp/l2tp_core.c | 57 +++++++++++++++++++++++++++++++++++++++++---
- net/l2tp/l2tp_core.h |  2 ++
- 2 files changed, 56 insertions(+), 3 deletions(-)
-
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index f940914959b1..c92d4392f9b0 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -82,6 +82,7 @@
- #define L2TP_SL_SEQ_MASK   0x00ffffff
- 
- #define L2TP_HDR_SIZE_MAX		14
-+#define L2TP_REORDER_MAX_QUEUE	64
- 
- /* Default trace flags */
- #define L2TP_DEFAULT_DEBUG_FLAGS	0
-@@ -637,7 +638,22 @@ static void l2tp_recv_queue_skb(struct l2tp_session *session, struct sk_buff *sk
- 	u32 ns = L2TP_SKB_CB(skb)->ns;
- 
- 	spin_lock_bh(&session->reorder_q.lock);
-+	if (skb_queue_len(&session->reorder_q) >= L2TP_REORDER_MAX_QUEUE &&
-+	    ns != session->nr) {
-+		atomic_long_inc(&session->stats.rx_seq_discards);
-+		atomic_long_inc(&session->stats.rx_errors);
-+		kfree_skb(skb);
-+		goto out;
-+	}
-+
- 	skb_queue_walk_safe(&session->reorder_q, skbp, tmp) {
-+		if (unlikely(L2TP_SKB_CB(skbp)->has_seq &&
-+			     L2TP_SKB_CB(skbp)->ns == ns)) {
-+			atomic_long_inc(&session->stats.rx_seq_discards);
-+			atomic_long_inc(&session->stats.rx_errors);
-+			kfree_skb(skb);
-+			goto out;
-+		}
- 		if (L2TP_SKB_CB(skbp)->ns > ns) {
- 			__skb_queue_before(&session->reorder_q, skbp, skb);
- 			atomic_long_inc(&session->stats.rx_oos_packets);
-@@ -651,6 +667,20 @@ static void l2tp_recv_queue_skb(struct l2tp_session *session, struct sk_buff *sk
- 	spin_unlock_bh(&session->reorder_q.lock);
- }
- 
-+static bool l2tp_recv_queue_tail_skb(struct l2tp_session *session,
-+				     struct sk_buff *skb)
-+{
-+	spin_lock_bh(&session->reorder_q.lock);
-+	if (skb_queue_len(&session->reorder_q) >= L2TP_REORDER_MAX_QUEUE) {
-+		spin_unlock_bh(&session->reorder_q.lock);
-+		return false;
-+	}
-+	__skb_queue_tail(&session->reorder_q, skb);
-+	spin_unlock_bh(&session->reorder_q.lock);
-+
-+	return true;
-+}
-+
- /* Dequeue a single skb.
-  */
- static void l2tp_recv_dequeue_skb(struct l2tp_session *session, struct sk_buff *skb)
-@@ -687,6 +717,7 @@ static void l2tp_recv_dequeue_skb(struct l2tp_session *session, struct sk_buff *
-  */
- static void l2tp_recv_dequeue(struct l2tp_session *session)
- {
-+	bool dequeued = false;
- 	struct sk_buff *skb;
- 	struct sk_buff *tmp;
- 
-@@ -706,6 +737,7 @@ static void l2tp_recv_dequeue(struct l2tp_session *session)
- 			trace_session_pkt_expired(session, cb->ns);
- 			session->reorder_skip = 1;
- 			__skb_unlink(skb, &session->reorder_q);
-+			dequeued = true;
- 			kfree_skb(skb);
- 			continue;
- 		}
-@@ -720,6 +752,7 @@ static void l2tp_recv_dequeue(struct l2tp_session *session)
- 				goto out;
- 		}
- 		__skb_unlink(skb, &session->reorder_q);
-+		dequeued = true;
- 
- 		/* Process the skb. We release the queue lock while we
- 		 * do so to let other contexts process the queue.
-@@ -730,9 +763,22 @@ static void l2tp_recv_dequeue(struct l2tp_session *session)
- 	}
- 
- out:
-+	if (skb_queue_empty(&session->reorder_q))
-+		timer_delete(&session->reorder_timer);
-+	else if (dequeued || !timer_pending(&session->reorder_timer))
-+		timer_reduce(&session->reorder_timer,
-+			     L2TP_SKB_CB(skb_peek(&session->reorder_q))->expires);
- 	spin_unlock_bh(&session->reorder_q.lock);
- }
- 
-+static void l2tp_recv_dequeue_timer(struct timer_list *timer)
-+{
-+	struct l2tp_session *session = timer_container_of(session, timer,
-+							 reorder_timer);
-+
-+	l2tp_recv_dequeue(session);
-+}
-+
- static int l2tp_seq_check_rx_window(struct l2tp_session *session, u32 nr)
- {
- 	u32 nws;
-@@ -774,7 +820,8 @@ static int l2tp_recv_data_seq(struct l2tp_session *session, struct sk_buff *skb)
- 	 * sequence number to re-enable packet reception.
- 	 */
- 	if (cb->ns == session->nr) {
--		skb_queue_tail(&session->reorder_q, skb);
-+		if (!l2tp_recv_queue_tail_skb(session, skb))
-+			goto discard;
- 	} else {
- 		u32 nr_oos = cb->ns;
- 		u32 nr_next = (session->nr_oos + 1) & session->nr_max;
-@@ -793,7 +840,8 @@ static int l2tp_recv_data_seq(struct l2tp_session *session, struct sk_buff *skb)
- 			trace_session_pkt_oos(session, cb->ns);
- 			goto discard;
- 		}
--		skb_queue_tail(&session->reorder_q, skb);
-+		if (!l2tp_recv_queue_tail_skb(session, skb))
-+			goto discard;
- 	}
- 
- out:
-@@ -986,7 +1034,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
- 		 * reorder queue. This ensures that it will be
- 		 * delivered after all previous sequenced skbs.
- 		 */
--		skb_queue_tail(&session->reorder_q, skb);
-+		if (!l2tp_recv_queue_tail_skb(session, skb))
-+			goto discard;
- 	}
- 
- 	/* Try to dequeue as many skbs from reorder_q as we can. */
-@@ -1748,6 +1797,7 @@ static void l2tp_session_del_work(struct work_struct *work)
- 						    del_work);
- 
- 	l2tp_session_unhash(session);
-+	timer_shutdown_sync(&session->reorder_timer);
- 	l2tp_session_queue_purge(session);
- 	if (session->session_close)
- 		(*session->session_close)(session);
-@@ -1804,6 +1854,7 @@ struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunn
- 			tunnel->tunnel_id, session->session_id);
- 
- 		skb_queue_head_init(&session->reorder_q);
-+		timer_setup(&session->reorder_timer, l2tp_recv_dequeue_timer, 0);
- 
- 		session->hlist_key = l2tp_v3_session_hashkey(tunnel->sock, session->session_id);
- 		INIT_HLIST_NODE(&session->hlist);
-diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
-index ffd8ced3a51f..6e4c1ef6a0a2 100644
---- a/net/l2tp/l2tp_core.h
-+++ b/net/l2tp/l2tp_core.h
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2008,2009 Katalix Systems Ltd
-  */
- #include <linux/refcount.h>
-+#include <linux/timer.h>
- 
- #ifndef _L2TP_CORE_H_
- #define _L2TP_CORE_H_
-@@ -80,6 +81,7 @@ struct l2tp_session {
- 	u32			nr;		/* session NR state (receive) */
- 	u32			ns;		/* session NR state (send) */
- 	struct sk_buff_head	reorder_q;	/* receive reorder queue */
-+	struct timer_list	reorder_timer;
- 	u32			nr_max;		/* max NR. Depends on tunnel */
- 	u32			nr_window_size;	/* NR window size */
- 	u32			nr_oos;		/* NR of last OOS packet */
--- 
-2.47.3
-
+I do not know. Maybe dlm folks can answer the question, and take care
+of this patch.
