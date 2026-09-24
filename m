@@ -1,128 +1,74 @@
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71EE43CEC7
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAD93EB815;
+	Thu, 24 Sep 2026 16:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790268791; cv=none; b=nIBF6ibQvKAaZ6NjF6fgGpjrzMdTWuHUfiNBKX1+wxmnEkIt4aHG/1BYRoTlvZ77rBjJ5ruZv6ArB80LGpvRmEnMCPpXgsXwZ3YzPDRt8/JMTjCIEUFZxIGcMMVi8DFqyXR3qjFdBUQdXRB/EyJ5GB+8VhxOXAId+OvAWq5maAU=
+	t=1790269065; cv=none; b=il2BcwepytLH/xXNQ170A3Yo2Zrolebq5o1xoBHCRExETQS26bWDa/eM362yRQO0UKZaiU0vfizPC6mnRAjoDWqkDuD/Yn2LZofCmE9UuM3g2NxqFpNKFof/RUAShteSED4KvubkMIBntecDxGj9b9+cC6bGFjPyIl5QeThYkII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790268791; c=relaxed/simple;
-	bh=LorE3121kbAX0dxZ1po3DR7h466+jIoSoP4ATV7UzDo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=PJ+u23DpPFDQ2SVSDGTMlHqd17xpWuL7sNtJ0kgNoAoBhKhE5z+mu9A7oKYtMbQPWXCwYcM6n7IW5JThCerxrm6jBIw3E0InzlsyGQIx7E1Kd8YUJuymJx/XuXpTDgq76gNgri9xnNtrl8Xu8IEH5y/00cgU49THyr5yAe8DrGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOLA4gUy; arc=none smtp.client-ip=74.125.230.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790269065; c=relaxed/simple;
+	bh=4V4BDFsXbEB+ePKn1yzWbTUywZsaTwyKCNi6fRC7wjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q6l353CP/CK8JifxzX+nDb27TTA9PNa0gTSARaG5fWZbjtM//tN+/4plV1MyL7WaXnarxeAiEBo9JTZTMLVja9dbvlV5ytw+4h3NZYQqI/GreNr32IHH708de5GJs0dhZqoMOC5sE592YuR4Y9ZGgR0EV2niAhcPvacPzjTQ08w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVRoLyjU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOLA4gUy"
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-5329fc7e0bcso518601cf.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:53:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790268789; x=1790873589; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=H7p/7arhw4fENNL3I9usSe+ODbWZbM+M8BPItKrFIF8=;
-        b=hOLA4gUy3HaiPHPVeS/aI4XIC7z1Y/kbURnWjnJly1Y8DvKaeMn7D45tn5u8azU5sT
-         4CmGa7tcrM90GJTy1RdE3Vzb9jG8u+G6vD9acwzPQv7urDyPzbQ/LURJGRibdmYVHFAS
-         Jup9einuw3koekB2Lt1/hWRwooxY2BXCCrDUaBkn4C3U9thDraQEPovhzfV/lmdhdGj0
-         nshdbc/mkIQwbS4aVs1JXq+pOAgFULe/ZgPm9zWl1yqrajyb8HNMDUh6OkISBnHcAXVK
-         4JTEGmqY7lSHYC+G30vejTXddi1YeWhXa38/bMzPmhBRCf5j5wjJ0BlwviYxaEeg+Szr
-         UwNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790268789; x=1790873589;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H7p/7arhw4fENNL3I9usSe+ODbWZbM+M8BPItKrFIF8=;
-        b=Igi6AMOdtiz6j4+E6VmhM3B0nvSFEMqJIHXd1TDqe5pskde6eBApEnhIJMK7XdUV/t
-         Zg4rx8STdGZisGkGgw6Pa5YUJaHbBURm2dycGql30oM519svebyY1psNpc+S6b6MHeTi
-         LoNeJJIBE3BBSIUGoHBXIRZEdFNFTgO+5UtiApwVG8eiwKqLqK2RIGVUL/NEAcCscb+s
-         HojxBfI2tUUYxow2nuTBAj15c3DQ5DVVtWia4NkNGaedAqgJfRnTDF4IOvth9EIE0Ao0
-         dNxLiDXCojSchHNIdx/kuWKwSV2/irIxbrIZiF8HGdAX/wsF2cfWQylQZItKv/oEaJkl
-         IAIA==
-X-Forwarded-Encrypted: i=1; AKwUvByi7HmlvbwLXyXkis+TdaMkJNXl3UPLaocTKx8G/kKUSXL24RQkDt5hz1vUjhnUeP+3VdhaRKk=@vger.kernel.org
-X-Gm-Message-State: AFuF++lhsraH2KwPpjlBIb4CQR5ONrxBxDoXciG9aPZlZhjDUEhAZZbI
-	DUm0ZQeBu9D5fCHFly3YgUmUHW2tMJOdMnTKGLVng+Y39Wipuav7dLRh
-X-Gm-Gg: AYBFou0k62PMHuxQQPJFKD0vw4nkZV1+/jBWy6LYL4xkpwHiz2bAYiz/khvDzFaZLd3
-	af0eD6ojNcELYHi4ZcpjlVbTNCaZVGj3AC15oiMhvBbMIbOjZMB0MTe6iQH3ON18pEJ4pT/5jgj
-	doARF7ZMr2A0vK4VYGngg8B16fHyRGwtJ2JDGksVBkjBR/12E3Jc9aXzOnizJfSAuwSPSMR3SwQ
-	hcp5RzmrWqqBF7iS2q+vpwaEGao1K3Unqpmrj8nj+x8lD+4XpEiLILAF09DAwqkQYvW+gHDrWv2
-	49hDT+/MdasB+MCRyXijZlnN6kpJ2LaHmB+O50fumaFm6g4M2C/xmg6pIUv9ckPoctEOH9B5WnN
-	jLwE8DQxHetKIGAr0FfKoed6OnciqQKZGO3M7s6Bx54FrRhYiN9FZ9zOQjEBUoDpNG/hjccvYhn
-	h9noazJEuRmYp4rvY7QC1h65KsBC4iSTFGUD/uLvPho5abMF3DOmaeLrZDXJhodidXusI5gu4bU
-	uA=
-X-Received: by 2002:a05:622a:288:b0:532:d54d:5b34 with SMTP id d75a77b69052e-532feb60341mr30517451cf.57.1790268788761;
-        Thu, 24 Sep 2026 09:53:08 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb364154sm46019211cf.22.2026.09.24.09.53.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 09:53:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVRoLyjU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6177C1F000FF;
+	Thu, 24 Sep 2026 16:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790269063;
+	bh=4V4BDFsXbEB+ePKn1yzWbTUywZsaTwyKCNi6fRC7wjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QVRoLyjUh8MH90p4hL4NdWuJhlYjdsiYiWJMZM2ludCZfLQWLBHZpx6tcyElzxPSp
+	 K6y3STZ3OpfLfiPceQnRyVvVPDIQaJwdC3bph4yfODa6X6nrrmz3LOg18XdIzG+K1m
+	 gO7WAfWKebxNFxeNBcZOQFRKVleBjUHQRaUJVl4jsUTayGMQWbJTAreTawxGG2mdS+
+	 cjlQTAzGNkznPBraakLIVNgAgWoPiitLj17rJ1jLrsuEfMZmN8nCgiDo6GjIH6S950
+	 hXKRUNr3ItTZ4tDMJE90NRIfKJrpZ+OBPbv4zx5hyEWfohrV1AuExXaC882aFg5vQl
+	 o8pj9cCfX7oiw==
+Date: Thu, 24 Sep 2026 17:57:39 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Arthur Crepin Leblond <arthur@marmottus.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v11 2/3] dt-bindings: net: wiznet,w5100: add
+ link status interrupt
+Message-ID: <20260924-clothing-eggshell-53bbf1f99802@spud>
+References: <20260924-wiznet-link-gpio-v11-0-42a332517b30@marmottus.net>
+ <20260924-wiznet-link-gpio-v11-2-42a332517b30@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 12:53:07 -0400
-Message-Id: <DLNPBJ3BV10C.26KWSF0WJ9FAK@gmail.com>
-Cc: <davem@davemloft.net>, <kuba@kernel.org>, <edumazet@google.com>,
- <pabeni@redhat.com>, <horms@kernel.org>, <andrew+netdev@lunn.ch>,
- <dzahka@meta.com>, <john.fastabend@gmail.com>, <sd@queasysnail.net>,
- "Willem de Bruijn" <willemb@google.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net] tcp: prevent collapsing skbs across boundary in rtx
- queue
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- <netdev@vger.kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LvFBeGzzjRwWAouD"
+Content-Disposition: inline
+In-Reply-To: <20260924-wiznet-link-gpio-v11-2-42a332517b30@marmottus.net>
 
-On Thu Sep 24, 2026 at 11:44 AM EDT, Willem de Bruijn wrote:
-> From: Willem de Bruijn <willemb@google.com>
->
-> tcp_write_collapse_fence() sets TCP_SKB_CB(skb)->eor =3D 1 on
-> tcp_write_queue_tail(sk) to prevent skbs queued after a switch to
-> device encryption from being collapsed into earlier skbs.
->
-> The fence is a no-op if all earlier data has already been transmitted
-> when the switch happens: sk->sk_write_queue is empty. The not yet
-> acknowledged earlier skbs wait in sk->tcp_rtx_queue with eor 0.
->
-> On a subsequent retransmit or SACK shift, tcp_retrans_try_collapse() or
-> tcp_shift_skb_data() can then merge an skb queued after the switch into
-> one queued before it.
->
-> Both users of the fence are affected:
->
-> - psp: devices only encrypt skbs with skb->decrypted set. The merged skb
->   keeps decrypted =3D 0 from the earlier skb, so merged data sent after
->   psp_sock_assoc_set_tx() is retransmitted in cleartext.
->
-> - tls device offload: the merged skb straddles the start marker set in
->   tls_set_device_offload(). The software fallback (fill_sg_in() returns
->   -EINVAL) and the mlx5, nfp and funeth drivers cannot handle such an
->   skb and drop it. Every retransmit rebuilds the same skb, so the
->   connection stalls.
->
-> Fix this in two places, for defense in depth:
->
-> 1. Fall back to tcp_rtx_queue_tail(sk) in tcp_write_collapse_fence()
->    when tcp_write_queue_tail(sk) is NULL.
->
-> 2. Check !skb_cmp_decrypted(to, from) in tcp_skb_can_collapse(), as
->    tcp_skb_can_collapse_rx() does on receive. skb_shift(), which both
->    collapse paths call, already has a DEBUG_NET_WARN_ON_ONCE() for this
->    condition.
->
-> Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> ---
+--LvFBeGzzjRwWAouD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+--LvFBeGzzjRwWAouD
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarVWgwAKCRB4tDGHoIJi
+0mn/AQCqQyoD4d4WnEQ1RKyXr1n0QkTi449rlUoLmkbCoszkkAD8CnTsaQBrrRwd
+ahrFhwSvgaGZUcCED+szBmesMbjUkAQ=
+=GGnR
+-----END PGP SIGNATURE-----
+
+--LvFBeGzzjRwWAouD--
