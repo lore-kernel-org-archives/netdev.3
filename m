@@ -1,238 +1,345 @@
-Received: from courrier.aliel.fr (courrier.aliel.fr [65.21.61.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CEB479893;
-	Thu, 24 Sep 2026 11:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790249676; cv=none; b=UdfyhGSOU4ImaAGS5euix7rccKpfyTMOTamJGdO181L/bUdVsvuaWBvuCIGGNJCTOUZJNnJSTpl/WYaPNWT5OELquDDfbadRrebdqIEMp8fx7jHTNz4oygavcH30/45pDNc1+3qmr0HwuhVO/eugpmFblEJKgCAyLVKHi/xJllI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790249676; c=relaxed/simple;
-	bh=U/5jxIvqAMJSzYIFoerpkjY38kslGt38ihMa4APLokI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C8AEjFELmZj6PC7nBgnQ6X8Ji1MQFv1Ky5YDevHf2lSOullmZbU3gfqQ0SqvVcYIhBAaHwQkG33TZQkp7KushqwRMby2/x+EsRGXW1Gc9KDQyj7iQOjZ1LAEX3qDWpbRS0kFjAcQfQS6rvK7cXjkiIov9vNNiKVGfBoA1Dq6yTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=E247WkLQ; arc=none smtp.client-ip=65.21.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliel.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A34437451
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790249716; cv=pass; b=Rjbz6aE4wREGdbLfPbw4ftmzHyzfepN0tDYYK8XpY6Es4FlS9TH2GsllrNpAwxd73s8dhsfJJyjtg9qBLdqtIWVnSB5NrGLW+9Cn3/kPxKVayImFtRke5zaY5f5MQeHAeEsY4JxX7Xgb75WQDQsBITO9/y8QJGUUgW53bSxZKpM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790249716; c=relaxed/simple;
+	bh=4awJtKKDvPw2gOyvaadrQ+P4QGynoRlmFCCWKym08cE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dcQ/VJbxcC2OWXpWLx+1MF604WJE7YmZb/Z75vO4t2UbyPkCjEI4NVO6H15N/OBUHHj8vbrW+U6rpD4sUHet7qITjQY8VQEeSPRC0euh5oC68xBAeFOOH1IqY8WHp6ujnMl/EHHR+y8YG388cNUdSVpsOEWMTLk0EtWRCIoqOJw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=gOZXBG3N; arc=pass smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="E247WkLQ"
-Message-ID: <a2eea40a-fe81-4aac-85f9-d0a85bb99e26@aliel.fr>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1790249661;
-	bh=U/5jxIvqAMJSzYIFoerpkjY38kslGt38ihMa4APLokI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=E247WkLQcQMT1igSWXHSdp3PgpUdBFM1eDSBfaK622ZJKF3cTs8fO8jx4CdLLp6V3
-	 GiS5z+d1P2mJLTbU2236srkwHxQjnoyU2iX6leRaEDPITHlZz+5wi/H9OKeBvqm15j
-	 JqjKaLKFLPiP1YsDgJf9RG0iiGiS0i/sKwz8PuPE=
-Date: Thu, 24 Sep 2026 13:33:04 +0200
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="gOZXBG3N"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-86212a185dcso1408088b3a.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 04:35:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790249709; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aHX37Rrt8WABhJjiWVY1d0vYAzwrHElf+mCrzQgxZp9HtxZ6QfSwfpD2l+46IiCCeV
+         wGxboLmzCN7ooMRfC5rO/tsc29IysgQeDm1LEzIwwbOOGuu/kXoQXWXNgmARtffNBxlF
+         fbWP3Ef6Qt0Yn3nhA8qX9oSxFIvjZ9ctw/k+A9O1j2uMsKTwqoyHwWikynEfvaWFncm2
+         zc3OWvheYcAwaJ1eZADxF8gwyhn+9JgwS4g0coEM4hoU6Vi88jTmGH0X5+kodtnJGgD9
+         CKnGTQijZBaDTApybtrYnMloj/0lLPr8t5eytqYvZwhPYn0HQviTUO8Vz+6VmoWyNPpq
+         W+4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mDZnrGdEXceSo8wKMQm6VdoJFC1vELp0xmTxaa3Jb98=;
+        fh=72luQlzIO770HWM5Naq1rkU58knqb2+sE8Z9AokkTzY=;
+        b=OJALT2pDiaRlh5Z1jx1aeDTDxmqGo9xfpVS5tOwka+Pbhvaxz0PxQ3iccPMLem4faz
+         7FQYMfrpyBT4Kpw78sjNuEewsRn+V5DQTewtYKWiD8hIgeEBeh4B80aQyauNWylMRR4J
+         dz1pI1BqeddwFjg+LwPf4IMUAI1aB6L3pPCQhZKwS49Jv5D7a9/44kWerX8R0z3Gz6Xz
+         cccTIbxiagHCgX4SWBxIvfUybIDLVa93cLWJcmxQk3qgTSs0QCG3q2W5qK0ZMhVQQtUb
+         xDzwOglijQ2eEyeSb0uXVUma8/MDz/TMJPgWuuGd7f+7dLVP1caDnVWJWcBJW2OFrJIn
+         bqww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1790249709; x=1790854509; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mDZnrGdEXceSo8wKMQm6VdoJFC1vELp0xmTxaa3Jb98=;
+        b=gOZXBG3NZqteJ58Mrt9FzAXS9mrCoUoMizjU99e18+P26N2nfHThiL2jenPCkkUD8z
+         fL2HMDg+jBAQ+ko9ZrmUk7IWd7FaHse10kYpPBAQH7g1J7NE+vKu7aIpKwRVMftiAFHM
+         MbNotHhkW1QFEC1t1t8g+VUZax0kPE2BOeA4o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790249709; x=1790854509;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mDZnrGdEXceSo8wKMQm6VdoJFC1vELp0xmTxaa3Jb98=;
+        b=rH0XOsF9auQAEHNd+UehhpWscPkxu8izWf5iNHy1PCHu4Ey/IqNztiUFWBF/YvFcNo
+         2nS5hVyunsIncWeQeNWGBNbTiW1QtPQ9NKiTsJVXNoQSh1yUsCLJZSaJWF9atnDamnTt
+         Sf1vmvxGlg24FIdpNCvjvlphk5CVJEiRVoak9f1TGOVlI8FqQgGQXpzx+c+SrPnOLuwm
+         4uiUhc1GaC2Snb5Ww7LJy6eVaqj+Znu3wxPlXQnUHbA9Yy8GyTC2VX2XpT4HLpoxmxnU
+         qndLYsq3hArycmumn22NWGF8VQF00/BfG2JHd8sEDllvPD6x5y9VPO+a3JyIPQiRcrdF
+         ckxw==
+X-Gm-Message-State: AFuF++n8OlJr1VbBTrPneughMaRcY2nj6Fdfs0ihUSf9hfeRq9fAcPBo
+	u5vQ4/6J1b3Cvn7mlMAGpduKq+DHFKN+x/qHPsMaXzFYDl6LtY4oRohTiIFT+q8cCqmp5KKy+/X
+	O4seSE8kk2FCDgXzHExPNort2JPauPVTlwz9Mi8lC
+X-Gm-Gg: AYBFou21QhWX1HQUfsp+BNYNszk1mOyO+ZilALH6udsk7XLvKUOT7Va002zZNrCne8L
+	W9fy8AlTIr8qWUpRwTt3NB3yLgeFFtGlpvPQ32Zm1wzpEy5T7OvUDKtk0wWawnpEPv/kL+JcDZn
+	a7ZPgi1QXL75pjKrzeKkLAOrEPAYhQRMRKt47rStkYqZZBEHRL5bR5tg+EIKfxVGScyhFxxwdtv
+	oAGvSQ/OOqG3s5wBTL7EAny2amnhb5/eyZOep/JM82UP0FY15Y/OMfRYXny1xdFSEZxfFSAKT4P
+	2Djj0EsMijRZfBAU2PN3pB0KRRzSFB3K/XCIpgVM/lTwzIjIScwZ3fFjrNCmVr6Cr77PGoZvmfu
+	ev4RmPgGGGVHIevVrkWTXH8m7/xTKDuBdRA==
+X-Received: by 2002:a05:6a00:f04:b0:857:726d:2707 with SMTP id
+ d2e1a72fcca58-87e9cb21961mr1973182b3a.19.1790249708663; Thu, 24 Sep 2026
+ 04:35:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v2 3/3] arm64: dts: amlogic: add T7 peripheral nodes
-To: xianwei.zhao@amlogic.com
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
- <20260924-t7-node-new-v2-3-319d3c19b4b2@amlogic.com>
-Content-Language: en-US
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
-In-Reply-To: <20260924-t7-node-new-v2-3-319d3c19b4b2@amlogic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <QDISC-4CSL.v1.20260917072652@mojatatu.com> <179003833955.2160803.1077681716391858800@kernel.org>
+In-Reply-To: <179003833955.2160803.1077681716391858800@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 24 Sep 2026 07:34:57 -0400
+X-Gm-Features: AclHuK_6hO2d1IslsqohBLTvdJzUbB13oddooNwCQPyP57DT_TBbN_ZSJdVy95o
+Message-ID: <CAM0EoM=t8g27Z4ouLYUjWGSHvERNJk8rNkm3MXyk8Og9BMaxpg@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: cls_flower: exact-match ERSPAN key when no
+ mask supplied
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	lucien.xin@gmail.com, stable@vger.kernel.org, sashiko-bot@kernel.org, 
+	victor@mojatatu.com, hybris@mojatatu.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/24/26 7:51 AM, Xianwei Zhao via B4 Relay wrote:
-> From: Xianwei Zhao <xianwei.zhao@amlogic.com>
-> 
-> Add device tree descriptions for the peripherals on the Amlogic T7
-> SoC and the T7 A311D2 AN400 board.
-> 
-> Add support for the T7 Ethernet controller, SPI controllers, I2C
-> controllers, UARTs, pinctrl groups, regulators, and reserved memory.
-> Also enable the Ethernet controller on the AN400 board.
-> 
-> Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-> ---
->  .../boot/dts/amlogic/amlogic-t7-a311d2-an400.dts   | 153 +++++++
->  arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi        | 462 +++++++++++++++++++++
->  2 files changed, 615 insertions(+)
+On Mon, Sep 21, 2026 at 8:52=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 0 (2)
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] Undisclosed behaviour change on the *with-mask* ERSPAN parse
+>   path.
+> - [Medium] The patch threads the key's ERSPAN version into the mask parse
+>   as a *default* only and never validates it, so a mask nest may still=E2=
+=80=A6
+>
+> Pre-existing issues:
+> - [Low] The selftest match_erspan_opts_test() in
+>   tools/testing/selftests/net/forwarding/tc_flower.sh (lines 679-726)=E2=
+=80=A6
+> - [Low] The flower ERSPAN index attribute is consumed as big-endian but
+>   declared as a host-endian u32 in both of its declarations.
 >
 
- --snip--
+pw-bot: cr
 
-> +
->  				pwm_a_pins: pwm-a {
->  					mux {
->  						groups = "pwm_a";
-> @@ -622,6 +848,51 @@ uart_a: serial@78000 {
->  				status = "disabled";
->  			};
->  
-> +			uart_b: serial@7a000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x7a000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_B>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_c: serial@7c000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x7c000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 170 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_C>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_d: serial@7e000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x7e000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 171 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_D>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_e: serial@80000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x80000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 172 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_E>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_f: serial@82000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x82000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 173 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_F>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-
-Thank you for this change Xianwei.
-Can you please move the UARTs in the right place between i2c_ao_a and
-i2c_ao_b ?
-
->  			gp0: clock-controller@8080 {
->  				compatible = "amlogic,t7-gp0-pll";
->  				reg = <0x0 0x8080 0x0 0x20>;
-> @@ -688,6 +959,39 @@ sec_ao: ao-secure@10220 {
->  				amlogic,has-chip-id;
->  			};
->  
-
---snip--
-
->  			pwm_ab: pwm@58000 {
->  				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
->  				reg = <0x0 0x58000 0x0 0x24>;
-> @@ -756,6 +1138,86 @@ pwm_ao_cd: pwm@60000 {
->  				status = "disabled";
->  			};
->  
-> +			i2c0: i2c@66000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x66000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 160 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_A>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c1: i2c@68000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x68000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 161 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_B>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c2: i2c@6a000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x6a000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 162 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_C>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c3: i2c@6c000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x6c000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 163 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_D>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c4: i2c@6e000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x6e000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 164 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_E>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c5: i2c@70000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x070000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 165 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_F>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c_ao_a: i2c@76000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x076000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 330 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_AO_A>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c_ao_b: i2c@86000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x086000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 331 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_AO_B>;
-> +				status = "disabled";
-> +			};
-> +
->  			sd_emmc_a: mmc@88000 {
->  				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
->  				reg = <0x0 0x88000 0x0 0x800>;
-> 
-
-
--- 
-Best regards,
-Ronald
+cheers,
+jamal
+> --
+>
+> net/sched: cls_flower: exact-match ERSPAN key when no mask supplied
+>
+> This patch makes fl_set_erspan_opt() fill in per-version exact-match mask
+> defaults when userspace supplies TCA_FLOWER_KEY_ENC_OPTS without
+> TCA_FLOWER_KEY_ENC_OPTS_MASK, instead of leaving the mask blob zeroed.
+> To do so it threads the key blob's ERSPAN version into the mask parse pas=
+s
+> via a new key_ver argument.
+>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026082602512=
+3.62758-1-ljp1205831794@gmail.com
+> Link: https://lore.kernel.org/netdev/20260826025123.62758-1-ljp1205831794=
+@gmail.com/
+>
+> A few questions below.
+>
+> > diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+> > index 1cefea571efd..f5acdeb0e2a6 100644
+> > --- a/net/sched/cls_flower.c
+> > +++ b/net/sched/cls_flower.c
+> > @@ -1358,17 +1358,29 @@ static int fl_set_vxlan_opt(const struct nlattr=
+ *nla, struct fl_flow_key *key,
+> >
+> >  static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_=
+key *key,
+> >                            int depth, int option_len,
+> > -                          struct netlink_ext_ack *extack)
+> > +                          struct netlink_ext_ack *extack, u8 key_ver)
+> >  {
+> >       struct nlattr *tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_MAX + 1];
+> >       struct erspan_metadata *md;
+> >       int err;
+> >
+> >       md =3D (struct erspan_metadata *)&key->enc_opts.data[key->enc_opt=
+s.len];
+> > -     md->version =3D 1;
+> > +     md->version =3D key_ver;
+>
+> [Severity: Medium]
+> Is the with-mask path also meant to change here?  The assignment sits
+> above the if (!depth) block, so it runs on the mask pass too, not only
+> on the no-mask path the changelog and the new comment describe.
+>
+> On the mask pass option_len is the non-zero value returned by the key
+> pass (sizeof(struct erspan_metadata)), so in fl_set_erspan_opt() this
+> guard never fires:
+>
+>         if (!option_len && !tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_VER]) {
+>                 NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option =
+ver");
+>                 return -EINVAL;
+>         }
+>
+> A mask nest that omits TCA_FLOWER_KEY_ENC_OPT_ERSPAN_VER is therefore
+> accepted.  Before this patch such a mask always defaulted to version 1
+> and took the v1 branch (index bytes memset to 0xff, dir/hwid left
+> wildcarded, mask blob version 1).  With a v2 key it now defaults to 2
+> and takes the v2 branch instead (md2.dir =3D 1, set_hwid(0xff), index
+> bytes left at 0).
+>
+> That changes which packets match, what fl_dump_key_erspan_opt() emits
+> for TCA_FLOWER_KEY_ENC_OPTS_MASK (it selects the union member from the
+> mask blob's own md->version), and the mask handed to hardware offload,
+> for requests that installed fine before.
+>
+> Would it make sense to restrict the new default to the !depth path, or
+> alternatively to describe this second affected path in the changelog and
+> move the comment so its scope matches the code?
+>
+> > -     if (!depth)
+> > +     if (!depth) {
+> > +             /* No mask attribute supplied: exact-match every field th=
+e
+> > +              * key set, keyed off the key's own version so the v2 dir=
+/hwid
+> > +              * bytes are masked without touching the overlapping
+> > +              * timestamp/sgt bytes of the union (see 292207809486).
+> > +              */
+> > +             if (md->version =3D=3D 1) {
+> > +                     memset(&md->u.index, 0xff, sizeof(md->u.index));
+> > +             } else if (md->version =3D=3D 2) {
+> > +                     md->u.md2.dir =3D 1;
+> > +                     set_hwid(&md->u.md2, 0xff);
+> > +             }
+> >               return sizeof(*md);
+> > +     }
+> >
+> >       if (nla_type(nla) !=3D TCA_FLOWER_KEY_ENC_OPTS_ERSPAN) {
+> >               NL_SET_ERR_MSG(extack, "Non-erspan option type for mask")=
+;
+>
+> [ ... ]
+>
+> > @@ -1607,9 +1620,11 @@ static int fl_set_enc_opt(struct nlattr **tb, st=
+ruct fl_flow_key *key,
+> >                       key->enc_opts.dst_opt_type =3D IP_TUNNEL_ERSPAN_O=
+PT_BIT;
+> >                       option_len =3D fl_set_erspan_opt(nla_opt_key, key=
+,
+> >                                                      key_depth, option_=
+len,
+> > -                                                    extack);
+> > +                                                    extack, 1);
+> >                       if (option_len < 0)
+> >                               return option_len;
+> > +                     key_ver =3D ((struct erspan_metadata *)
+> > +                               &key->enc_opts.data[key->enc_opts.len])=
+->version;
+> >
+> >                       key->enc_opts.len +=3D option_len;
+> >                       /* At the same time we need to parse through the =
+mask
+> > @@ -1618,7 +1633,7 @@ static int fl_set_enc_opt(struct nlattr **tb, str=
+uct fl_flow_key *key,
+> >                       mask->enc_opts.dst_opt_type =3D IP_TUNNEL_ERSPAN_=
+OPT_BIT;
+> >                       option_len =3D fl_set_erspan_opt(nla_opt_msk, mas=
+k,
+> >                                                      msk_depth, option_=
+len,
+> > -                                                    extack);
+> > +                                                    extack, key_ver);
+> >                       if (option_len < 0)
+> >                               return option_len;
+>
+> [Severity: Medium]
+> Now that key_ver is available at the call site, should a mask nest that
+> declares a different version than the key be rejected?
+>
+> key_ver only supplies the default; a few lines further down in
+> fl_set_erspan_opt() it is overwritten with no comparison against the
+> key's version:
+>
+>         if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_VER])
+>                 md->version =3D nla_get_u8(tb[TCA_FLOWER_KEY_ENC_OPT_ERSP=
+AN_VER]);
+>
+> The only cross-check in fl_set_enc_opt() is the length one, and both
+> version branches return sizeof(*md):
+>
+>         mask->enc_opts.len +=3D option_len;
+>         if (key->enc_opts.len !=3D mask->enc_opts.len) {
+>
+> So key nest {VER=3D1, INDEX=3D0x64} with mask nest {VER=3D2} is accepted.=
+  On
+> the mask pass option_len is non-zero, so the "Missing tunnel key erspan
+> option dir or hwid" guard is skipped, and the v2 branch writes only
+> md2.dir and the hwid bitfields, leaving the union bytes holding the
+> key's index at 0.  cls_flower compares (packet_key & mask) against
+> (filter_key & mask), so doesn't that filter then match every ERSPAN
+> packet regardless of index, which is the wildcard behaviour this patch
+> sets out to remove?
+>
+> The mirror case, key VER=3D2 with dir/hwid plus mask VER=3D1, memsets the
+> union bytes that alias md2.timestamp to 0xff while dir/hwid stay
+> wildcarded, so the filter would never match packets carrying a non-zero
+> ERSPAN timestamp.
+>
+> The pair is also not round-trippable, since fl_dump_key_erspan_opt()
+> picks the union member from each blob's own md->version: the key dumps
+> as VER=3D1 plus INDEX while the mask dumps as VER=3D2 plus DIR/HWID.
+>
+> Two remaining observations that are not about this diff:
+>
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but match_erspan_opts_test()
+> in tools/testing/selftests/net/forwarding/tc_flower.sh does not appear
+> to verify that the ERSPAN option values take part in matching, so it
+> passes with or without the wildcard mask this patch fixes.
+>
+> The Type II filter (handle 101) is installed with enc_key_id 1001 plus
+> erspan_opts 1:6789:0:0, and the Type III filter (handle 102) with
+> enc_key_id 1002 plus erspan_opts 2:0:1:63.  The distinct tunnel key IDs
+> already select the respective filter, and only one matching packet is
+> sent through each tunnel:
+>
+>         $MZ erspan1 -c 1 -p 64 -a $ep1mac -b $h2mac -t ip -q
+>         tc_check_packets "dev ep-ex ingress" 101 1
+>         check_err $? "ERSPAN Type II"
+>
+> Both assertions still hold when the ERSPAN index/dir/hwid mask bytes are
+> zero.  Could a negative packet with the same enc_key_id but different
+> ERSPAN metadata be added, so the new no-mask defaults in
+> fl_set_erspan_opt() are covered?
+>
+> [Severity: Low]
+> This is a pre-existing issue, but the ERSPAN index attribute is
+> consumed as big-endian while both of its declarations call it a
+> host-endian u32.
+>
+> include/uapi/linux/pkt_cls.h documents
+> TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX as be32,
+> fl_set_erspan_opt() reads it with nla_get_be32() into the __be32 union
+> member and fl_dump_key_erspan_opt() emits it with nla_put_be32().  But
+> erspan_opt_policy has:
+>
+>         [TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX]      =3D { .type =3D NLA_U3=
+2 },
+>
+> and the flower-key-enc-opt-erspan-attrs entry in
+> Documentation/netlink/specs/tc.yaml has:
+>
+>       -
+>         name: index
+>         type: u32
+>
+> with no byte-order: big-endian.  Should the policy use NLA_BE32 and the
+> spec entry declare big-endian byte order so both match the ABI?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/QDISC-4CSL.v1.20260917072652%40mojatatu.com
