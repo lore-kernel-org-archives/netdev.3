@@ -1,146 +1,134 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92F74A2A64
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F51747DFA8
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790263561; cv=none; b=Ie8KKvqErq1lXcWUIVvLwSOhZWp7jIoJ0DQ2cyGuHd4yDKiF2xwcA2rmMIcdAkbR5zAGl0h0pHALURLO55an8rWkua3ZvwkV7oHvTnh4qMwyDFpfdmuG216kEC+psj2g1rkYbr/peveV/adDDTvER9R/4HHNmAhN4wq0gaZ+PQc=
+	t=1790263660; cv=none; b=BGVsTR3mPZ0SmiOReZb1sJdx+9rdynzucT7g33lw5PvbA6UihCO5JKDZSAEOwE77ERjj3lXlvxTmn5+sz17wNKN+x+4MJbiLaEr8ET5WTC48ss9R6g2+6EYSdDgwMSdj+n7NsK6zJsqvx7T4SxM0psGfpR9xPLptYBd03DgZEhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790263561; c=relaxed/simple;
-	bh=Y9qjCjqHfKXYGilp2qzLf4Wx4Sj6lCjwTXIsDpS91PM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=duRNqDfzAGXsd0RiGWRzeSfXgc7imffKi8scdHicXmdpkBV/D1YXv3e/1jM0uyrA8/OLWiCTQ0kk1jBOboWAfaKSvIn33zxFXNpLo36dKFF45SDVAe5vUvX7u86dnn2jSwV9/Okq2rUt5NP0Xs/Co0af/bdpe0RTFGxorF4/RtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m62m1C/3; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790263660; c=relaxed/simple;
+	bh=cyaiCXoXZGoECX+KF+a09pG3FdGWCh+dGbVZ3Xuigsk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fDCJAPr2exadbZSliyAeENdCcBnd/YFrKwp1fbAQWnoFj9oKXPjC1Oj8xk9G3eqILHV1XZMfKyHP6550cy+1nBpmriL7Ei0eLNsKcc3G9mkbePxVTj6Pl7m2kfTCfvl0VNbBpWg2Oeed9iCgE1GlM0XkSwd41IextYt4E+ZN6o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=lwUg61YC; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m62m1C/3"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4c08393dfso1474028a12.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:26:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="lwUg61YC"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485b1d2874aso1760291f8f.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:27:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790263560; x=1790868360; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=243tpiIMClagsl6CRGSGD9PSBO83Fk5wM4iFcQ8ZqbQ=;
-        b=m62m1C/35mdiGruNYAQ9h3cE4L2Yn4WXGFyQJ/SHAJsvqq8ye3149H49AZvwvQlMm1
-         0COsxxqf7zyiLRh8ePXyTgWPcb1TfBWI8oy0cUU1YPXJJeg4dSDsYZWssRdCvUS43ZMW
-         4jCSQSt2/y8KrBH2F+aXlYzUh2bTxA2NyYd+b3ZuJkNTIGhJaLiLPyagZbkh1G6OeIzs
-         tjSNz6Dk0ieYn2fOWFdR3Qj4D4zqLsuKvTKH1c9fmVGZE+21VUs8u0qFRktqUep4hmCw
-         wZTU98RrPzMkdupJ/tXQQrluKgU0s/T86KdvfXpZ8gh6zAzvAya1C1XJqVxg0u3w3d7p
-         fAWw==
+        d=baylibre.com; s=google; t=1790263656; x=1790868456; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eRG6Vx+KfGB0F8iXypxpZOtK+1xBSwz+daslPav1QJE=;
+        b=lwUg61YCnPbWPTNR+ceR/SH8BXDTu4hQND29qsQWkJuB1uP8erKDlq1FkD6Ns91l1M
+         P+fQARvMZ9DZyw3a8UfqX+kD9csamCJzhq5LEoXhMzOTxZgUWiMmrVrLVAKtOdnx9m4g
+         o2eVASspo33Omous6O8BU6mYA2hQD6NKG2+sYJG3pcCjcOoZ/woID3mzfq5PO89YLzKH
+         +OHKd5uWXxREG/u4R9PSE75v9bO7RK8iXKTkyI++6OsrCRn6a8YkLSdTOn9I7GzvJ/+3
+         OicEDVljp9b6ZjuNorxxiUxmZAXzEnJ6oGIZar9nM8DLlNj4eNK/n5lITYjeIoleY0So
+         w50Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790263560; x=1790868360;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=243tpiIMClagsl6CRGSGD9PSBO83Fk5wM4iFcQ8ZqbQ=;
-        b=00af5A/TNoFnhlvNQx0w9fKHRStSMNuxZr8KXk1rpk/Oy6ctO/xJQ172dM4WkdxnAJ
-         E6z1uXk7oP4Wvr9+xGM8MTa/D/eYiEGvevD6D2kvQs+rj9vwDDVUVB8hH5YPzmP0PMLB
-         oFkK+MqM2hVy+xNImvWKXn7QpJowOw8Tjlxie3Rsgjt52ydZtd37uX0nh3i7azxocegd
-         CJaw0KHn1hlRVgAXSO2thJjOW/3oV50QmzQaAb6LbmMl8QZWh0wp5xEK08Nmiw3RdX7W
-         1PNziwHhKdkUwT44q7xpd/41SQugHm6Oxhvs17NMlF3aExTfckFSpRu1Fy74dAevCGEj
-         KqCw==
-X-Gm-Message-State: AFuF++moAgLhalYKi14FBLnqVbl9RanS2nX8nBQld3oEHn0ba0r2zUzJ
-	gEZY2Mq/4z113KO8m4pFLw62XvxxqKrhorom6BTifiSueVyZALs+geXg
-X-Gm-Gg: AYBFou36JF6wfJiGIhhC0lmKupwUZz7nA9hoqujqULoY2mi9PCQwYQZ9m7iSSKyhUDW
-	UpR3Hmx8E0rnr03T6SKaSkSr1zjPS9kcrh8j1/fF2873UFLQB4NH06ZgcBs4Sl4IgBJa+kIDjF2
-	Hj13/hLSeL69CjGCtZpuQEzNJfVnPf2kZKdF49FB3CGAJ2Clb8rSgruniqfUJSHs533tUSBc4Qj
-	se5biorIdOCbpQiRn1Cw+TRPjc9RJVCX7prwrsEbOjU5lpwS7rJcQ6EeExH/U7VauNkEkPbI0dr
-	aemxp09hvmTgWIguJogS7V6ae/zjYbtHA6pblOVFX46cwFE+q6T9aH5LKRH8XQHXeSuFvmVlk4s
-	MBvdrytIx7vz7DYK2wulL5Ni5lT3P0XDtJPvBhVBt+lUPiltBSghl72KvwdXA0XYdcrVNxSq2Ef
-	cXMAwzzVjnPkQZTSkVlikW6u1IPcKDJAhoFuZt8H/CIct+lOqx1/ZXaoIJU9SkI8lWn//cdJ/lW
-	9dZgsRSRSdPRucDvok/8JlG+w6Do2m9gTgaMKlH8M7+A24HidqrYl1vEztAPFeDKe8rPHfUelDq
-	D+utkHhAUIBqFjzdthrIpUczImP9AVPB8b7730nJ+S9LNL8Big==
-X-Received: by 2002:a17:90b:3d81:b0:39e:6c6a:6574 with SMTP id 98e67ed59e1d1-3a09896f002mr2788309a91.55.1790263559740;
-        Thu, 24 Sep 2026 08:25:59 -0700 (PDT)
-Received: from KERNELXING-MB0.tencent.com ([114.253.38.195])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0aeb2659bsm385735a91.0.2026.09.24.08.25.54
+        d=1e100.net; s=20260707; t=1790263656; x=1790868456;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eRG6Vx+KfGB0F8iXypxpZOtK+1xBSwz+daslPav1QJE=;
+        b=WDuN9LBUp+pmap++tgU1xzRv4/DofziE0zXp93BgWBkoVfVGOBH20FFuh5eWG0nwQd
+         l5anRAQCB5+fwUhOP5ES6bZB+tqi4nrBioo14aSWFm31L7+WSGnT9WLuFqIKfEUQme1C
+         WesFKTzm8pzFd5NyvHzj4sUta0RsqYZ8OOTmpdM47KnaCRPTw1gdkhe97ZxNzjpofgXA
+         IPH+vDsR+aeCvIT51x8jipOnjF+yypzPFCBn9tFCntTNQaMjMZsoAEiIMPvDnb2HvGmS
+         hGcfwcR+fgr3sQ6jiMaE+q31aF2dq+XBFLqCXgMo+DqFCih2fl83dk7nYLsHVV0xclc7
+         NBIA==
+X-Forwarded-Encrypted: i=1; AKwUvBzXDPpQhox4JVdyeWi2rlCRZLA1cOgrm2MkkpD/T3jjNMWxL2jPWTd2+jq/zSDyaSph5ivm2pM=@vger.kernel.org
+X-Gm-Message-State: AFuF++luq3ZNY7kHNlU5S+WiUP8vA37Pn6hbMTUbSh16iv2cjdzYhsqM
+	Mmdp05v4rc9AlpYO02WgbWk8DywjtrQpM4dLjKrUcdzmrsC9YvDtw3SvzsSKVJvZ4TA=
+X-Gm-Gg: AYBFou0GPicX3pc7eiUPvebn2SsRsRoXdn2GET45yTDg2VSoLORHFZnF1dGdYFBTxsu
+	26brivYi4yLCsVU6p83tnSebNfExQg8PHNUQuNmtvebO2GAL/7j2BeiCyshaMVB2BQv77b94roJ
+	r8Lwr0uwvp1RNxHRE5iFOxaz3HBpdV1d2eVIYa6kYh5QuJC7E8vHkXW/7pejC4z6lH8S7Qc5vvt
+	h9AA99KEMm8kz3Jyzg1yXFXUKxnWoyKPv3k/vgbbCWM/DCeV2mhuQIKK69D5R3poKLO+mahhjQ5
+	z2Ylz6MAmmvjivUWsfQ23D8WX3wIGfBMNq91UUaSRtwuVCdAFHQNo/sG96KIuLYTmm15eVkSp0j
+	XEBS86Iq6UXKsf0Vagd/H6FOpqPrzMy5XLRC8A3bKuyV3Lb3642PGPkwqr1hMuCXCWwrq4znTPW
+	QLO0kwLMGQ1hQf5DSmzaZ+ngpEYAG5MZUopFYTO3s3iqSvlhdw69vDiXzKYVqlyJiZHqiR717KL
+	nDnn5TKWtAEC7MgTQ==
+X-Received: by 2002:a05:6000:1886:b0:486:e8fa:f9b7 with SMTP id ffacd0b85a97d-488716c12f0mr5112120f8f.13.1790263656324;
+        Thu, 24 Sep 2026 08:27:36 -0700 (PDT)
+Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488682668dcsm16823010f8f.1.2026.09.24.08.27.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 08:25:58 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	kuniyu@google.com
-Cc: netdev@vger.kernel.org,
-	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH v3 net] tcp: preserve timestamps across receive queue collapse
-Date: Thu, 24 Sep 2026 23:25:29 +0800
-Message-Id: <20260924152529.5689-1-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
+        Thu, 24 Sep 2026 08:27:35 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Richard
+ Cochran <richardcochran@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, Andre Przywara
+ <andre.przywara@arm.com>
+Subject: Re: [PATCH net-next v3 0/5] net: stmmac: Add support for Allwinner
+ A733 GMAC210
+In-Reply-To: <5fae3b42-552a-458a-9710-927360e58c37@lunn.ch>
+References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
+ <9cc61625-47c9-4bdf-97f0-0528f661a399@lunn.ch>
+ <1j7bkb9h5k.fsf@starbuckisacylon.baylibre.com>
+ <5fae3b42-552a-458a-9710-927360e58c37@lunn.ch>
+Date: Thu, 24 Sep 2026 17:27:31 +0200
+Message-ID: <1jv77u8yak.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-When tcp_collapse() rebuilds skbs under memory pressure, the copy
-process doesn't include the right tstamp and hwtstamp from the
-old skb. And memcpy(nskb->cb, skb->cb, ...) copies has_rxtstamp,
-but nskb->tstamp and hwtstamps are left at zero, so
-tcp_recv_timestamp() ends up emitting no cmsg at all.
+On jeu. 24 sept. 2026 at 14:54, Andrew Lunn <andrew@lunn.ch> wrote:
 
-In net timestamping case, if such an skb happens to be the last
-one consumed in a recvmsg() call, the application receives no RX
-timestamp for that call.
+>> I've changed the phy-mode to plain rgmii which seems more in line with
+>> what the PHY actually does.
+>
+> No, it is much messier than that.
+>
+> https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+>
+> rgmii-id is very likely to be correct, if you were using a sane PHY.
 
-Fix this by copying both tstamp and hwtstamp of the last skb to
-the new skb, matching tcp_try_coalesce()/tcp_add_backlog().
+It is not the PCB doing the delays so rgmii-id it is (in DT) - got it.
 
-Note that the has_rxtstamp flag can still be inherited through
-the cb memcpy from an skb that contributes no bytes (fully covered
-skb left in the ofo tree by the tcp_ooo_try_coalesce() ->
-coalesce_done path), so set TCP_SKB_CB(nskb)->has_rxtstamp to false
-which makes the new block the only place setting it.
+I dunno what is sane or not, but the allwinner dwmac drivers do set some
+delays. sun8i-dwmac and sun55i-dwmac do so, even before this change.
 
-Fixes: 98aaa913b4ed ("tcp: Extend SOF_TIMESTAMPING_RX_SOFTWARE to TCP recvmsg")
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
----
-V3
-Link: https://lore.kernel.org/all/20260917132742.87117-1-kerneljasonxing@gmail.com/
-1. revise the commit message with more accurate description (Eric)
-2. fix a corner case (where a skb can contribute no bytes if OOO happens)
-   spotted by AI and Eric
+If I understand correctly :
 
-V2
-Link: https://lore.kernel.org/all/20260916124153.43457-1-kerneljasonxing@gmail.com/
-1. add one sentence in commit log from Eric's reply
-2. use the same semantic as tcp_add_backlog which is to sync the
-   last skb (Eric)
----
- net/ipv4/tcp_input.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+"""
+When the MAC implements the delay, it must ensure that the PHY does not
+also implement the same delay. So it must modify the phy-mode it passes
+to the PHY, removing the delay it has added. Failure to remove the delay
+will result in a non-functioning link
+"""
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 92bc60716f33..f58954ddecee 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5834,6 +5834,7 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 			break;
- 
- 		memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
-+		TCP_SKB_CB(nskb)->has_rxtstamp = false;
- 		skb_copy_decrypted(nskb, skb);
- 		TCP_SKB_CB(nskb)->seq = TCP_SKB_CB(nskb)->end_seq = start;
- 		if (list)
-@@ -5854,6 +5855,12 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 				if (skb_copy_bits(skb, offset, skb_put(nskb, size), size))
- 					BUG();
- 				TCP_SKB_CB(nskb)->end_seq += size;
-+				if (TCP_SKB_CB(skb)->has_rxtstamp) {
-+					TCP_SKB_CB(nskb)->has_rxtstamp = true;
-+					nskb->tstamp = skb->tstamp;
-+					skb_hwtstamps(nskb)->hwtstamp =
-+						skb_hwtstamps(skb)->hwtstamp;
-+				}
- 				copy -= size;
- 				start += size;
- 			}
+IOW when the gmac has *-internal-delay-ps set and honors them, it should
+also amend phymode seen by PHY to make sure it does not add its own
+delays, should it ever be fixed ?
+
+>
+> But this PHY is going to cause you lots of problems.
+
+We don't get to choose I'm afraid :)
+
+>
+>     Andrew
+>
+
 -- 
-2.43.7
-
+Jerome
