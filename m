@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1AE3750D6;
-	Thu, 24 Sep 2026 23:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1544078EB;
+	Thu, 24 Sep 2026 23:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790290911; cv=none; b=vF5sZBzH3VPQf4pSyLNNfo4p39uz0TOnUmWNyTFt4gedAeZviAt4dcvHLFGZ/OGgFmENutzm8p+76fFaLwQbTjC5yIVlQVSIScnKJS02pHHYz/ZJP+QJA8EUtvXP4JySwc1DEvv6C8m8IK5G8RcDuJRz9oiQI8EFAtSkBgCzKhw=
+	t=1790290912; cv=none; b=NiSJf61e8kPO6MBzSWKkzMncplsPRekRvh6s1JWi1sqGCrOdNlbZfpR1Q+F4gaq26TRNRZS74US3uivJfpmCw9KyJsFV9g77YT0LtoKjPlqEjnvIUFLm1SQjIAGB92PwhcNbghcfOwOH+Uhuvnhr8dE30+Guhsszi94Q/WPUd5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790290911; c=relaxed/simple;
-	bh=zY9gjeMJMW/86OZGp/Xg9IuDdDuU+5y+lW+CcT0YJB0=;
+	s=arc-20240116; t=1790290912; c=relaxed/simple;
+	bh=RDwdM3kzCbwyI5a0OwNZnmboWllfBh8S/o8SxzHXXEo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U18eSN1KBSVqTqs8FZ270gHMoX/qlV9QaAow6QQdLm4P0Qk4NQ8ExJ9epcZxLXgnN9k91L6a7BeLndXAcjYQe2WZ9asD1Iq2nCFAmjtYoK69HRsgVW6a4O0e62upGBwEepkoj357IlirTU3uOq679le5Im+/b6aISJ8F9tTVfZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G85tYgxv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=qGeU7Lfd8IrWW4qFhCYWYstHCw9mT/D4IYINC3Pb5i+4AqOpljrsfNqlvLUonNoyvv6ayE9YNKUVwRHzfizwNHr8HLyirvqWB+oI6VGZQKgIHCs80U388yZkREq/aR/v6rrAW3WR0iSOvurxq6uvo9TxysX1iueGoRM96r626I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+JF6yLm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G85tYgxv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BC41F000FF;
-	Thu, 24 Sep 2026 23:01:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+JF6yLm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEC71F00893;
+	Thu, 24 Sep 2026 23:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790290909;
-	bh=/SoON5rlMc9+Ef0No/JCwsV8yngWnfn2kD2REmrsOk0=;
+	s=k20260515; t=1790290910;
+	bh=I65he5ful/Kx63cSu1Nt3LIrmFw5zO0NelklTUvzf14=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=G85tYgxvDK5SYK/iEE7hLXtxSRu37U6odwgkhO4Hu/5PKchcGgvYBD55k+N7npUve
-	 KGcdt5Htncg0mUiUhT5s/pcquW4WdOXpVC64rzR5NaP/Ual/FcaW5dVOv8Jd4U3ClL
-	 rZMp+G2iaXqDCUXabkt6/Y50IuaRZkqqYvU8wBlwxp1S2gQuienQ1CXtX55YhBaP/C
-	 dj6E2MtuGVh/v0G/3/DE2Vlygph9B8c55WDwYK15sIiniLdmmMgjQlk2VakvLuGcSI
-	 jLuVTWAHA5drq6W/ecj7eb8nCa6kGYj1ndtvwLtgiDrSUQWhtCgi/Iwgbt/wwfFVkV
-	 zWnkzctVbJPPQ==
-Subject: Re: [PATCH net-next 1/6] net: add netif_rx_mode_schedule_fresh()
+	b=O+JF6yLm+1BYRDet6aHbCQ5+U+zW1dX2Uju7FmntCffWV8fGow/npVbGOSObOalLK
+	 ct+DSgaKDWAJ4rFr9GKDfotgDExcUKD0xRlgu0C2rAmqfCaKi83TMF+/D/1vN9LN4w
+	 s0+F4ghq3LlwHcA2g1sO8iibU2KGuX4har1SfAOB60xyWE592iDlBmPX1PRwIg+MMJ
+	 GhptAfKnRCya8/dAwd1cXgEYpcpGGJuk1NvumSadwbvdWoeQLWo3mVWQuutN0QBCWu
+	 hpoCznVsZqVekJYAJQGFMf9OJePwVPh4CKd6NTBulxUaV64H50ph/YD8KF2lBZZRNN
+	 dSQ9l7HxhZZpg==
+Subject: Re: [PATCH net-next 2/6] enic: serialize V2 VF mailbox requests
 From: netdev-bot+sashiko@kernel.org
 To: satishkh@cisco.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, sebaddel@cisco.com
-Date: Thu, 24 Sep 2026 23:01:48 +0000
-Message-ID: <179029090875.2160803.9750318118693297771@kernel.org>
+Date: Thu, 24 Sep 2026 23:01:49 +0000
+Message-ID: <179029090986.2160803.4845062802664097619@kernel.org>
 In-Reply-To:
- <20260921-b4-enic-sriov-v2-vf-receive-control-v1-1-67a0a6e08d43@cisco.com>
+ <20260921-b4-enic-sriov-v2-vf-receive-control-v1-2-67a0a6e08d43@cisco.com>
 References:
- <20260921-b4-enic-sriov-v2-vf-receive-control-v1-1-67a0a6e08d43@cisco.com>
+ <20260921-b4-enic-sriov-v2-vf-receive-control-v1-2-67a0a6e08d43@cisco.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,179 +54,89 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] Claimed dead code: netif_rx_mode_schedule_fresh() is added and
-  EXPORT_SYMBOL_GPL()'d with no in-tree caller in this patch.
-- [Low] Claim that netif_rx_mode_schedule_fresh() cannot deliver the
-  documented 'complete configuration replay' for ndo_set_rx_mode_async…
-
-Pre-existing issues:
-- [High] dev->rx_mode_retry_timer is initialized for the whole net_device
-  lifetime in netif_rx_mode_init() (net/core/dev_addr_lists.c:1369) but…
+- [Low] The patch repairs merged code — the VF single-outstanding-reply
+  mailbox state (`enic->mbox_expected_reply`,…
 
 --
 
-net: add netif_rx_mode_schedule_fresh()
+enic: serialize V2 VF mailbox requests
 
-This adds a new exported helper that cancels any pending receive-mode retry
-timer, resets the retry backoff counter, and then queues an immediate
-receive-mode update via the netdev work core.  It is meant for callers that
-need to replay the full receive configuration after a state transition,
-as opposed to netif_rx_mode_schedule_retry() which is used after a failed
-update.
+This adds a VF-only mutex (vf_mbox_request_lock) that is held across the
+lifetime of a V2 VF mailbox request, from arming the expected reply until
+the reply or the timeout has been consumed. The three VF request helpers
+enic_mbox_vf_capability_check(), enic_mbox_vf_register() and
+enic_mbox_vf_unregister() are converted to the new start/abort/finish
+helpers.
 
-No Link: tags present in the commit header.
+One question below about the changelog.
 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 5d16737167eed..2246be72d8114 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -5197,6 +5197,7 @@ static inline void __dev_mc_unsync(struct net_device *dev,
->  
->  /* Functions used for secondary unicast and multicast support */
->  void dev_set_rx_mode(struct net_device *dev);
-> +void netif_rx_mode_schedule_fresh(struct net_device *dev);
->  void netif_rx_mode_schedule_retry(struct net_device *dev);
->  int netif_set_promiscuity(struct net_device *dev, int inc);
->  int dev_set_promiscuity(struct net_device *dev, int inc);
-> diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
-> index 08528ca0a8b31..4ae0510ce91fa 100644
-> --- a/net/core/dev_addr_lists.c
-> +++ b/net/core/dev_addr_lists.c
-> @@ -1337,6 +1337,27 @@ static void netif_rx_mode_queue(struct net_device *dev)
->  	__netdev_work_core_sched(dev, NETDEV_WORK_RX_MODE);
+>     enic: serialize V2 VF mailbox requests
+>
+>     The VF stores one expected reply and uses one completion for mailbox
+>     requests. If two VF control paths issue requests at the same time, the
+>     second request can replace the reply state for the first.
+
+[Severity: Low]
+Should this carry a Fixes: tag, and is the described trigger reachable at
+this point in the series?
+
+The state being protected (enic->mbox_expected_reply,
+enic->mbox_expected_msg_num, enic->mbox_comp) and all three request
+helpers already exist in the baseline tree; they came in with commit
+72b65c94058e ("enic: add MBOX VF handlers for capability, register and
+link state"), whose changelog relies on a single-outstanding-reply
+invariant that nothing in the code enforces. Since this changelog
+describes a live defect ("the second request can replace the reply state
+for the first"), a Fixes: tag pointing at that commit would let
+backporters and stable tooling find the affected releases.
+
+On reachability, the VF request issuers present at this commit look
+mutually exclusive:
+
+- enic_probe() runs single threaded, before register_netdev().
+
+- enic_admin_chan_reopen() is called from enic_reset() and
+  enic_tx_hang_reset(), both of which run under rtnl_lock and return
+  early on !netif_running().
+
+- enic_remove() disables and syncs the reset work items before it issues
+  the unregister:
+
+    disable_work_sync(&enic->reset);
+    disable_work_sync(&enic->tx_hang_reset);
+    disable_work_sync(&enic->change_mtu_work);
+    ...
+    if (enic_is_sriov_vf_v2(enic)) {
+            if (READ_ONCE(enic->vf_registered)) {
+                    int unreg_err = enic_mbox_vf_unregister(enic);
+
+The additional request sites that could actually overlap (the delayed VF
+admin MAC work and the mailbox receive-mode path) appear only in later
+patches of this series.
+
+Would it be more accurate to either name the commit being fixed with a
+Fixes: tag, or state that this is preparatory serialization for the
+request sites added later in the series?
+
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+> index 5c93ca49552ac..b8a18d9682b2f 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+> @@ -218,6 +218,32 @@ static int enic_mbox_wait_reply(struct enic *enic, unsigned long timeout_ms)
+>  	return err;
 >  }
 >  
-> +/**
-> + * netif_rx_mode_schedule_fresh() - schedule a fresh receive-mode update
-> + * @dev: network device
-> + *
-> + * Cancel any pending retry and reset its backoff budget before scheduling an
-> + * immediate receive-mode update. Callers use this after a state transition
-> + * which requires the complete receive configuration to be replayed, rather
-> + * than after a failed update (which uses netif_rx_mode_schedule_retry()).
-> + *
-> + * Context: sleepable. The caller must hold the device operations lock, or
-> + * RTNL for a device which still uses RTNL-compatible operations.
-> + */
-
-[Severity: Low]
-The kernel-doc says the helper is for callers which need "the complete
-receive configuration to be replayed".  Does the helper on its own produce
-that replay for an ndo_set_rx_mode_async driver?
-
-The queued run ends up in netif_rx_mode_run(), which snapshots the address
-lists and then reconciles them.  __hw_addr_list_snapshot() copies sync_cnt
-and refcount, __hw_addr_sync_dev() skips entries whose sync_cnt is already
-nonzero, and the reconcile step then computes a zero delta, so addresses
-that were already marked synced are not pushed to the driver again.
-
-Checking the caller added later in the series, enic does invalidate that
-state first:
-
-drivers/net/ethernet/cisco/enic/enic_main.c:enic_reset_addr_lists() {
-	netif_addr_lock_bh(netdev);
-	__dev_uc_unsync(netdev, NULL);
-	__dev_mc_unsync(netdev, NULL);
-	netif_addr_unlock_bh(netdev);
-	...
-}
-
-and __hw_addr_unsync_dev() with a NULL unsync callback is documented and
-implemented to just reset sync_cnt for each entry, so the following
-netif_rx_mode_schedule_fresh() does re-push everything.  That makes the
-behaviour correct as used, but the requirement is only visible in the
-driver.
-
-Would it be worth stating in the kernel-doc that the caller is responsible
-for clearing the per-address sync state (for example via
-__dev_uc_unsync(dev, NULL) / __dev_mc_unsync(dev, NULL)) before calling
-this helper?
-
-> +void netif_rx_mode_schedule_fresh(struct net_device *dev)
+> +static void enic_mbox_vf_request_start(struct enic *enic)
 > +{
-> +	might_sleep();
-> +	netdev_assert_locked_ops_compat(dev);
-> +	netif_rx_mode_cancel_retry(dev);
-> +	netif_rx_mode_queue(dev);
+> +	mutex_lock(&enic->vf_mbox_request_lock);
+> +	reinit_completion(&enic->mbox_comp);
+> +	spin_lock_bh(&enic->mbox_state_lock);
+> +	enic->mbox_expected_msg_num = 0;
+> +	enic->mbox_expected_reply = 0;
+> +	spin_unlock_bh(&enic->mbox_state_lock);
 > +}
-> +EXPORT_SYMBOL_GPL(netif_rx_mode_schedule_fresh);
-> +
 
-[Severity: Low]
-This isn't a bug, but at this commit netif_rx_mode_schedule_fresh() is
-exported with no in-tree caller.
-
-Grepping the tree at the end of the series shows eight references in
-drivers/net/ethernet/cisco/enic/enic_main.c (enic_open(), enic_reset() and
-enic_tx_hang_reset() among them), so the symbol does get its first user
-inside the same series, which is the usual "add the API in one patch, add
-the users in the following patches" layout.  Mentioning the intended first
-consumer in the changelog would make that obvious to anyone bisecting or
-reviewing this patch alone.
-
->  static void netif_rx_mode_retry(struct timer_list *t)
->  {
->  	struct net_device *dev =
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since this patch adds a
-second entry point that cancels dev->rx_mode_retry_timer, is the lifetime of
-that timer fully covered anywhere?
-
-netif_rx_mode_init() arms the timer for the whole net_device lifetime:
-
-net/core/dev_addr_lists.c:netif_rx_mode_init() {
-	__hw_addr_init(&dev->rx_mode_addr_cache);
-	timer_setup(&dev->rx_mode_retry_timer, netif_rx_mode_retry, 0);
-}
-
-The only cancellation site in the tree is in __dev_close_many():
-
-net/core/dev.c:__dev_close_many() {
-	...
-		netif_rx_mode_cancel_retry(dev);
-		netif_set_up(dev, false);
-	...
-}
-
-but netif_close_many() drops devices that are not IFF_UP before that:
-
-net/core/dev.c:netif_close_many() {
-	/* Remove the devices that don't need to be closed */
-	list_for_each_entry_safe(dev, tmp, head, close_list)
-		if (!(dev->flags & IFF_UP))
-			list_del_init(&dev->close_list);
-	...
-}
-
-netif_rx_mode_schedule_retry() has no IFF_UP, netif_device_present() or
-dev_isalive() guard, and bnxt arms the timer from inside ndo_open, which
-runs before __dev_open() sets IFF_UP:
-
-drivers/net/ethernet/broadcom/bnxt/bnxt.c:bnxt_init_chip() {
-	rc = bnxt_cfg_rx_mode(bp, &bp->dev->uc, true);
-	if (rc == -EAGAIN) {
-		netif_rx_mode_schedule_retry(bp->dev);
-		rc = 0;
-	}
-	...
-}
-
-(bnge_netdev.c does the same.)  If that open subsequently fails, IFF_UP is
-never set, so the close path skips the device and nothing cancels the timer.
-
-On the teardown side, unregister_netdevice_many_notify() only calls
-netdev_work_cancel_all(dev), and the free path only does
-__hw_addr_flush(&dev->rx_mode_addr_cache); there is no
-timer_shutdown_sync() or timer_delete_sync() for rx_mode_retry_timer.
-
-Can free_netdev() then release the device while the timer is still queued,
-so that netif_rx_mode_retry() dereferences freed memory through
-timer_container_of() and netif_rx_mode_queue() -> netdev_work_enqueue() ->
-dev_isalive(dev), and the timer wheel keeps a pointer into freed memory?
-Would a timer_shutdown_sync(&dev->rx_mode_retry_timer) on the
-unregister/free path, or an IFF_UP/present check in
-netif_rx_mode_schedule_retry(), be the right fix here?
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921-b4-enic-sriov-v2-vf-receive-control-v1-0-67a0a6e08d43%40cisco.com
