@@ -1,47 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E056947F2DB;
-	Thu, 24 Sep 2026 11:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92807477E58;
+	Thu, 24 Sep 2026 11:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790250690; cv=none; b=g15KTQTQ7mRpFhz8VfX1+aOBQ7iUN3Tqb2RuSOf5qjI9jGhjQ+8Z3zQ4HoirogJ9yd4g8FfilE3JkrC5SfT/W/9NHktstAoFz2AYnh72p0DbRdnApdj15Y0lK7f1lIVW5EsvUwmzqJN+LcdVyl0LV8SDxQLbWyAvjgEzal9NPVA=
+	t=1790251079; cv=none; b=kbhmL3ZQjKH2lfMJvWula6tJL6EhvWUAfP+JOg7D46m0ImrFWOVIZnoSBj5kLknLeIxy2UuOvSZJ3+liOPh4xHwqoMynxi83X+J4gJzkat76YpzUxUPypA1ocHAQ2T35WeB3TNTLzmmlRZ3pHoNWIdlBY4vNhnqIYs1eJWVTem8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790250690; c=relaxed/simple;
-	bh=tD9kc/bWD+e5EEsoTzADdnBKoduGN7q8f4dcTog4QzE=;
+	s=arc-20240116; t=1790251079; c=relaxed/simple;
+	bh=Or7U1ecL2d7a6aMkmD4rrEkujiKM/69I1zTt3O5G61I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j9fbZTROscesiWVLxKfwdxiCONuuyPbYbj4PDSH1SJyaLJ/OZuKdbgCm8EG2b2MRZtPqCtQLws/rHjUk/4BCJRfKPAY7DLhEIrgDnuHb2VjoGrwg83CJOTs5DKxZeXnOyH7yrSMeDia9xw3E0mSMNKzzTQ2LfJVGKcB+yVkGH9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Siz15/jZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=BgF0FQkuWVzyXUA98cySdDnbC82gv2+f1+TMtjU0LXmXV3fCe4GWtC26vVmE8cmywMW3mKKK4szMz379yM0HT7uyv4DZAe03hAYX9uZLzfb47gBJ4ofbkng9sxzmbN9CRX/3N+iK4R6v8184cYCvFoz3ASx5kPtVwFfCSMoumUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UgGP5TE+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Siz15/jZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82051F00893;
-	Thu, 24 Sep 2026 11:51:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UgGP5TE+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6496E1F000FF;
+	Thu, 24 Sep 2026 11:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790250688;
-	bh=++nZTjMzMdYMVdCX4bQ4Xk9PhQBpeO0mj+PQXzkZ140=;
+	s=k20260515; t=1790251078;
+	bh=kNu4XJueWuDKeh7CaWaDpiBA/ch7qbIWFLl8bWVRa/0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Siz15/jZypiCfWzVD+bgWwfoMtXB9Hr1OGu3FPjoAYBLRKUe04rGK1aDYDZyFKGbZ
-	 sj9syJ0ecEm+0vT3fiwQX4b3xM7Vf+4SSJScDy4DZOMBn2cBU28B4k+lTk0mTKyZj7
-	 6ExsTAjO2qhma8MCWdICf6RjJdyQBi/tPVGyW10DFkZe83LhZVRl9CzlRtScVHWGvB
-	 hQttNbTLsLPs3mWFsdAFXdn3F8vzqJfSHf/KFRXSWtZ8DdUdSS7pcJXMufNrz2i2Zw
-	 D680dBSual8sMMpxbP16WE0eB3xgO1fiORyPoSMnJxcq0cKLwKU4Kb+mfSsZae0yJM
-	 Lt3pQfrxhjOxg==
-Subject:
- Re: [PATCH net-next v5 10/10] net: ethernet: ravb: Add gPTP support for Gen4
+	b=UgGP5TE+1+d1zDlRHFBNX9tYlLxL8yNrqawa1ak0uBTalurUakGcMT9aoBNWgN7Gi
+	 0WOwBYCE9kTCXa9xvMdmc4ZyS3ED1EqeqA+ByEuBwKN9M3PE80yWuk2iCqoOUPu/Uc
+	 LWOXzrEQj1pPYD2sVjI/wlNAdEmaDptcUq5kX8YglvH/nJ0bURazxzZYJiWpPADvF0
+	 5cG7dNou6WSfLfP1LKRShGXxLhaAYozSrKeFzU7XWnkstxJl0jWV+fZHzEYE7L0Uuc
+	 hRjcNnU+jAqwXuyY79ZxsbGKJKi9lNYO7vIbmtM2+/dCkPvEOsPYMUftfGIJXtTQam
+	 6Aq9j99KaOQTg==
+Subject: Re: [PATCH net-next 2/5] seg6: add RFC8986 flavor support for End.X
 From: netdev-bot+sashiko@kernel.org
-To: niklas.soderlund+renesas@ragnatech.se
-Cc: paul@pbarker.dev, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- geert+renesas@glider.be, magnus.damm@gmail.com, richardcochran@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
- sergei.shtylyov@gmail.com, linux-renesas-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-Date: Thu, 24 Sep 2026 11:51:27 +0000
-Message-ID: <179025068746.2160803.12846425206722124105@kernel.org>
-In-Reply-To: <20260921175037.4084310-11-niklas.soderlund+renesas@ragnatech.se>
-References: <20260921175037.4084310-11-niklas.soderlund+renesas@ragnatech.se>
-X-sashiko-severity: High
+To: hangbin.liu@linux.dev
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, liuhangbin@kylinos.cn
+Date: Thu, 24 Sep 2026 11:57:56 +0000
+Message-ID: <179025107692.2160803.16596847240332091038@kernel.org>
+In-Reply-To: <20260922-srv6_flavors_endx-v1-2-4d01c05c47b7@kylinos.cn>
+References: <20260922-srv6_flavors_endx-v1-2-4d01c05c47b7@kylinos.cn>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -62,229 +58,110 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new Gen4 PHC resolution can never succeed, so the feature
-  the patch advertises ("Add gPTP support for Gen4") is inert.
-- [Medium] On Gen4 the new ravb_gen4_ptp_info has no
-  .dmac_start/.ndev_open, so ravb_ptp_init() is never run and no PHC…
-- [Medium] ravb_gen4_ptp_probe()
-  (drivers/net/ethernet/renesas/ravb_main.c:2765) acquires a device_node…
-- [Low] The commit message asserts a pre-existing user-visible defect
-  ("While driver advertises gPTP support on Gen4 platforms it is in fact…
+- [Medium] net/ipv6/seg6_local.c: the patch widens
+  SEG6_LOCAL_END_X_FLV_SUPP_OPS to (SEG6_F_LOCAL_FLV_NEXT_CSID |…
+- [Low] net/ipv6/seg6_local.c:759-761 — the kerneldoc-style comment on
+  end_flv8986_core() still says the helper processes the packet "on the…
 
 --
 
-net: ethernet: ravb: Add gPTP support for Gen4
+seg6: add RFC8986 flavor support for End.X
 
-This adds a Gen4 specific struct ravb_gptp_info that resolves a
-system-wide gPTP timer through an optional ptp-timer phandle instead of
-the non-existing internal gPTP clock, and programs the APSR gPTP source
-bits when such a timer is described. Gen4 no longer advertises gPTP
-support when the phandle is missing or its node is disabled.
+This adds PSP processing to the SRv6 End.X behavior by reusing
+end_flv8986_core(), and widens SEG6_LOCAL_END_X_FLV_SUPP_OPS so End.X
+advertises PSP flavor support alongside NEXT-C-SID.
 
-> While driver advertises gPTP support on Gen4 platforms it is in fact
-> completely broken.
-
-[Severity: Low]
-The changelog describes fixing an existing user-visible defect and
-changes Gen4 behaviour accordingly, but there is no Fixes: tag naming
-the commit that introduced the bogus Gen4 gPTP advertisement, and no
-note about backportability.
-
-The change depends on the new optional ptp-timer binding added earlier in
-the series and on the preceding gPTP refactoring, so a plain Fixes: tag
-may not be what is wanted here. Would it help to state explicitly that
-this is net-next only and not suitable for stable, or add the tag if a
-backport is intended?
-
-> diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-> index 27e2b31955ba9..5d35b40d7c584 100644
-> --- a/drivers/net/ethernet/renesas/ravb.h
-> +++ b/drivers/net/ethernet/renesas/ravb.h
-
-[ ... ]
-
-> @@ -1132,6 +1134,7 @@ struct ravb_private {
->  	struct list_head ts_skb_list;
->  	u32 ts_skb_tag;
->  	struct ravb_ptp ptp;
-> +	struct device_node *of_gptp;	/* Reference to external gPTP clock, if any. */
->  	spinlock_t lock;		/* Register access lock */
->  	u32 cur_rx[NUM_RX_QUEUE];	/* Consumer ring indices */
->  	u32 dirty_rx[NUM_RX_QUEUE];	/* Producer ring indices */
-
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index 2dff47c2a125a..5a07cc0180d8b 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -2758,6 +2758,57 @@ static const struct ravb_hw_info ravb_gen3_hw_info = {
->  	.magic_pkt = 1,
->  };
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 584e6aca38930..7462da1da3629 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -121,7 +121,8 @@ struct bpf_lwt_prog {
 >  
-> +static int ravb_gen4_ptp_probe(struct net_device *ndev)
-> +{
-> +	struct ravb_private *priv = netdev_priv(ndev);
-> +
-> +	priv->of_gptp = of_parse_phandle(priv->pdev->dev.of_node, "ptp-timer", 0);
-> +	if (!priv->of_gptp)
-> +		return 0;
+>  #define SEG6_LOCAL_END_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+>  					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+> -#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	SEG6_F_LOCAL_FLV_NEXT_CSID
+> +#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+> +					 SEG6_LOCAL_FLV8986_SUPP_OPS)
 
 [Severity: Medium]
-Does this leak the ptp-timer device_node reference when probe fails
-later on?
+With this mask widened, does parse_nla_flavors() now accept the
+combination next-csid plus psp for an End.X instance?
 
-of_parse_phandle() returns the node with an incremented refcount, and the
-only matching of_node_put() added here is in ravb_remove(). ravb_probe()
-calls the new callback early:
+parse_nla_flavors() only rejects bits outside the per-action mask:
 
-	if (info->ptp && info->ptp->probe) {
-		error = info->ptp->probe(ndev);
-		if (error)
-			goto out_reset_assert;
+	rc = seg6_flv_supp_ops_by_action(action, &supp_fops);
+	if (rc < 0 || (fops & ~supp_fops)) {
+		NL_SET_ERR_MSG(extack, "Unsupported Flavor operation(s)");
+		return -EOPNOTSUPP;
 	}
 
-	priv->refclk = devm_clk_get_optional(&pdev->dev, "refclk");
-	...
+	finfo->flv_ops = fops;
 
-Everything after that point (devm_clk_get_optional(), pm_runtime_resume_and_get(),
-devm_platform_get_and_ioremap_resource(), of_get_phy_mode(),
-dma_alloc_coherent(), ravb_set_opmode(), ravb_mdio_init(), register_netdev())
-unwinds through out_napi_del/out_mdio_release/out_reset_mode/out_rpm_put/
-out_rpm_disable/out_reset_assert/out_free_netdev, and none of those labels
-calls of_node_put(priv->of_gptp) before free_netdev(ndev) frees priv.
-Deferred probe retries would repeat this.
+and seg6_flv_supp_ops_by_action() returns SEG6_LOCAL_END_X_FLV_SUPP_OPS for
+SEG6_LOCAL_ACTION_END_X, so "ip route ... action End.X nh6 <addr> oif <dev>
+flavors next-csid,psp" would be installed, and put_nla_flavors() echoes the
+stored mask including PSP back to user space.
 
-The early return in ravb_remove() looks like it has the same effect:
+Is PSP actually executed in that configuration?  In the new
+input_action_end_x() below, the NEXT-C-SID test returns before
+end_flv8986_core() is reached, and the arg-zero sub-case of
+end_x_next_csid_core() goes to input_action_end_x_core():
 
-	error = pm_runtime_resume_and_get(dev);
-	if (error < 0)
-		return;
-	...
-	of_node_put(priv->of_gptp);
+	if (seg6_next_csid_is_arg_zero(daddr, finfo))
+		return input_action_end_x_core(skb, slwt);
 
-Would it be worth releasing the node in the probe unwind path as well, or
-using a devm-managed lifetime for it?
+input_action_end_x_core() only does advance_nextseg() and then
+input_action_end_x_finish(), so seg6_pop_srh() is never called and the SRH
+stays on the packet even though PSP was accepted and is reported as
+configured.  The comment above seg6_flv_supp_ops_by_action() states that
+unsupported combinations make the kernel refuse to instantiate the tunnel.
 
-> +
-> +	if (!of_device_is_available(priv->of_gptp)) {
-> +		of_node_put(priv->of_gptp);
-> +		priv->of_gptp = NULL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ravb_gen4_ptp_clock_index(struct net_device *ndev)
-> +{
-> +	struct ravb_private *priv = netdev_priv(ndev);
-> +
-> +	/* If no clock, mimic ptp_clock_index_by_of_node() fail and return -1 */
-> +	if (!priv->of_gptp)
-> +		return -1;
-> +
-> +	return ptp_clock_index_by_of_node(priv->of_gptp);
+Would it be better to reject next-csid together with psp for End.X in
+parse_nla_flavors(), or to route the NEXT-C-SID arg-exhausted path into
+end_flv8986_core()?
 
-[Severity: High]
-Can this lookup ever succeed with the current in-tree gPTP providers?
+For reference, the same shape already exists for the End action via
+SEG6_LOCAL_END_FLV_SUPP_OPS and input_action_end()/end_next_csid_core(),
+but for End.X the combination only becomes configurable with this change.
+At the end of the series the mask and input_action_end_x() are unchanged,
+and the added selftest only installs psp on its own, so the combination
+stays accepted but unimplemented.
 
-ptp_clock_index_by_of_node() only matches PTP class devices whose parent
-device carries the requested of_node:
-
-drivers/ptp/ptp_clock.c:ptp_clock_of_node_match() {
-	...
-	return (dev->parent && dev_of_node(dev->parent) == parent_np);
-}
-
-The only in-tree registration path for the R-Car Gen4 system-wide gPTP
-timer registers the clock without a parent:
-
-drivers/net/ethernet/renesas/rcar_gen4_ptp.c:rcar_gen4_ptp_register() {
-	...
-	ptp_priv->clock = ptp_clock_register(&ptp_priv->info, NULL);
-	...
-}
-
-and that is the path used by both rtsn and rswitch, which own the gPTP
-block the new ptp-timer phandle points at (on V4H it is the tsn0 node with
-reg-names = "tsnes", "gptp").
-
-If dev->parent is always NULL there, ravb_gen4_ptp_clock_index() returns -1
-even for a present and enabled ptp-timer, and ravb_get_ts_info() then skips
-the capability block:
-
-	if (hw_info->ptp && hw_info->ptp->clock_index)
-		index = hw_info->ptp->clock_index(ndev);
-
-	/* Only advertise ptp clock if present. */
-	if (index >= 0) {
-
-so ethtool -T on a correctly described Gen4 board would still report no
-hardware timestamping and no phc_index. Is a companion change passing
-&pdev->dev to ptp_clock_register() in rcar_gen4_ptp_register() (or some
-other way to resolve the index) missing from the series?
-
-> +}
-> +
-> +static int ravb_gen4_ptp_set_config_mode(struct net_device *ndev)
-> +{
-> +	struct ravb_private *priv = netdev_priv(ndev);
+>  
+>  struct seg6_flavors_info {
+>  	/* Flavor operations */
+> @@ -841,12 +842,19 @@ static int input_action_end_x(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+>  {
+>  	const struct seg6_flavors_info *finfo = &slwt->flv_info;
+>  	__u32 fops = finfo->flv_ops;
 > +	int ret;
 > +
-> +	/* Enable gPTP Clock and Select High-speed peripheral bus clock. */
-> +	ret = ravb_set_opmode(ndev, CCC_OPC_CONFIG | CCC_GAC | CCC_CSEL_HPB);
+> +	if (!fops)
+> +		return input_action_end_x_core(skb, slwt);
+>  
+>  	/* check for the presence of NEXT-C-SID since it applies first */
+>  	if (seg6_next_csid_enabled(fops))
+>  		return end_x_next_csid_core(skb, slwt);
+>  
+> -	return input_action_end_x_core(skb, slwt);
+> +	ret = end_flv8986_core(skb, slwt);
 > +	if (ret)
 > +		return ret;
-> +
-> +	/* Set PTP source to GPTP module, only option on Gen4. */
-> +	if (priv->of_gptp)
-> +		ravb_modify(ndev, APSR, APSR_GPTPTIMER_SOURCE | APSR_GPTPCLOCK,
-> +			    APSR_GPTPTIMER_SOURCE | APSR_GPTPCLOCK);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct ravb_gptp_info ravb_gen4_ptp_info = {
-> +	.probe = ravb_gen4_ptp_probe,
-> +	.clock_index = ravb_gen4_ptp_clock_index,
-> +	.set_config_mode = ravb_gen4_ptp_set_config_mode,
-> +};
+> +	return input_action_end_x_finish(skb, slwt);
+>  }
 
-[Severity: Medium]
-With no .dmac_start/.ndev_open here, ravb_ptp_init() never runs on Gen4,
-so there is no PHC and the gPTP counter is left unprogrammed. But
-info->ptp stays non-NULL, so the timestamp machinery is still armed.
-Should the request and consume paths be gated too?
+[Severity: Low]
+This isn't a bug, but the comment above end_flv8986_core() still reads:
 
-Timestamp FIFO interrupts are enabled unconditionally:
+	/* process the packet on the basis of the RFC8986 flavors set for the given
+	 * SRv6 End behavior instance.
+	 */
 
-ravb_dmac_init_rcar() {
-	...
-	/* Frame transmitted, timestamp FIFO updated */
-	ravb_write(ndev, TIC_FTE0 | TIC_FTE1 | TIC_TFUE, TIC);
-	...
-}
-
-and per-frame capture is armed based only on info->ptp in
-ravb_start_xmit():
-
-		desc->tagh_tsr = (ts_skb->tag >> 4) | TX_TSR;
-
-ravb_get_tx_tstamp() then reads TFA0/TFA1/TFA2 and reports the values via
-skb_tstamp_tx(), and ravb_rx_rcar_hwstamp() copies descriptor
-ts_n/ts_sl/ts_sh into skb_hwtstamps().
-
-There also looks to be a mismatch between what is advertised and what is
-accepted: ravb_get_ts_info() reports no hardware timestamping when
-clock_index() returns -1, while ravb_hwtstamp_set() still accepts
-HWTSTAMP_TX_ON and upgrades unknown filters to HWTSTAMP_FILTER_ALL with no
-check that a gPTP timer exists.
-
-In the case where ptp-timer is absent or its node is disabled,
-ravb_gen4_ptp_set_config_mode() still asserts CCC_GAC | CCC_CSEL_HPB but
-skips the APSR source programming. What do TFA reads and the descriptor
-timestamps contain in that configuration, and is it intended that they
-still reach user space?
-
-[ ... ]
+With this new call site the helper also serves End.X, whose post-processing
+differs (input_action_end_x_finish() forwards to slwt->nh6/slwt->oif rather
+than doing a DA-based lookup).  Could the comment say "End* behavior", which
+is the wording already used above seg6_flv_supp_ops_by_action() and in the
+SEG6_F_LOCAL_FLAVORS comment?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921175037.4084310-1-niklas.soderlund%2Brenesas%40ragnatech.se
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-srv6_flavors_endx-v1-0-4d01c05c47b7%40kylinos.cn
