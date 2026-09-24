@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B265345EAB;
-	Thu, 24 Sep 2026 02:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA7A3B995D;
+	Thu, 24 Sep 2026 02:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790218291; cv=none; b=hKX2M1GBtmXMHUCgc3QWCztKqHDOJya2RWoibmyGajKYeSkGNj0LGVgSJj4cQWOWS6B7ET2fNz2Tg6xU7idnn3ebVaCJS7Vd/A5WL/0mev2L1QG6Skk9Ka1DT7cQLdiWhpPx1vfPKSdj/4YEZ2+U2beuJhdulBgPlVuSdtC7G/Q=
+	t=1790218292; cv=none; b=k1G5vvUGBQZChJPiMVAfoePR1/eOLtOILY4XVCgASP0nfrVwdp4dsW54zp7DZQHTTHZ3ugiADYEeJ3Zo22jtrcC4HFLusl+pEeCR97Ty6MBnGOLj9NLxTddorcK+l2AxA+SLhMNhvYTTCPRByLKXuCHiAbG41iw6st7OcbKzJqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790218291; c=relaxed/simple;
-	bh=aRTewQAuqqf+NpWK+iA3dfbOa+iCDf9kz8F+YlIiAB4=;
+	s=arc-20240116; t=1790218292; c=relaxed/simple;
+	bh=eUqIdC18gAeiBUSlRWe00BJr8lbt27tqHr1b5lVWAQE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=O+3xvTc9fBdpvo4ChpoDdLRKOpKPE5BPoCmMsiSt1KFdSrxQk854r7JIq99W/VdFVKQorw3S4hZFDV6e7KUe7k4B0XubbrIBQRGCpzHaNozaakLAWKWAXcCOD2R/s7ektGTwy9qQNttpxP8Hn6NAZlvdhwIV15KybS3BiTsXH1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1o71yad; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=KdQ6pYhZhKqYbSUWfaiqWSQ9O2jqIoES/+B582Oztv3CBbLw9dURKqMGC16QSQvWoNQrFvzDuSVJp/M7xEe5XR2Bqj84dhlzVlhgSLSpK8xVf18cfyZypEz8vSMzjqpq4rpTtoFyBnHncsW86vJoGstvKXLRSXaZupsKSfvFijI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7qneP/b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1o71yad"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFFF1F000FF;
-	Thu, 24 Sep 2026 02:51:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7qneP/b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5285F1F00893;
+	Thu, 24 Sep 2026 02:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790218289;
-	bh=V+DyMxCm79QXhTSU+/xCePUBWj1G5fa7f8qubpZI7rs=;
+	s=k20260515; t=1790218291;
+	bh=+APMoqLN+Tuex8iafa+jvUWJA4TUMYBhpFGLRXNb+hk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=g1o71yad5x/KpsPBkc0/8NcdWYfEiQdRIzHmUPWpE9QeYAOlqd7CAG7ZD9rH5jBGM
-	 1e6vrm41ZU2OCIv+YsJPHNUmYqtn6CQvz8XSfT55/bwyEJDxn2RnFevh2lUuOmC8XP
-	 RHejnfYYf2lTJYe/wcxbH3uGVcNbmUN1UluxxvZyWO6KFsZRlKi48Adigdly3bKrsx
-	 vdY6ajgmqeXoyfLiW1Qg8pdMtgdTjMgJlxLv7Jy6nkTHxhEQzs2sQO1lKBfbtFUQlI
-	 +FaQsKussUDrTXI6bDP/GaBS/xUjtkbd6FPE6IykdLshsXZxLLF+a5lMKrY/EUEkUM
-	 zpw/cI/gSkNYQ==
+	b=b7qneP/beNhBOqXs1LdOQOGDj3vPJ80nXZ5w6MRN4Yl19DLSf78hslPjYoL/3l2tr
+	 WrUJtFiCNOjWVT2NIkZJF7JrIrP/+JdweU6ZRBC2yN6LvFltRuSTwmQ4pi5silacdU
+	 rND5xmBaCEfJlvfDopIx4DGI2+8pIIivZE53ST6LOqO9uTb31CIWCXXKrOJMYNruhW
+	 +6eZggTepAMC+tZwT8uHXBHICP31nxUg67j4oyy7gs7GnV3VdEanoSkvwVc/Kw5+Rk
+	 i39YOLd+5/mog1uLLe5IqbLJYZXW0A+vIEZeZRbNSUsmIdwfEPM6NyYSdTUMO9M6Ri
+	 Rd1uXir6uleRg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C9B39E9611;
-	Thu, 24 Sep 2026 02:50:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19E4939E9611;
+	Thu, 24 Sep 2026 02:50:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: xps: reject an out of range traffic class
+Subject: Re: [PATCH net v2] vxlan: use one headroom snapshot for neighbour
+ replies
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179021821927.1291983.14069798990944250332.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 02:50:19 +0000
-References: <162DD16F-54C6-444A-9E09-0B8CB3D591F2@doyensec.com>
-In-Reply-To: <162DD16F-54C6-444A-9E09-0B8CB3D591F2@doyensec.com>
-To: Norbert Szetei <norbert@doyensec.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kees@kernel.org,
- kuniyu@google.com, alexander.duyck@gmail.com, linux-kernel@vger.kernel.org
+ <179021822067.1291983.18145336450444388236.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 02:50:20 +0000
+References: <20260918032842.502409-2-sanghyun.park.cnu@gmail.com>
+In-Reply-To: <20260918032842.502409-2-sanghyun.park.cnu@gmail.com>
+To: Sanghyun Park <sanghyun.park.cnu@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ dlstevens@us.ibm.com, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 21 Sep 2026 17:03:57 +0200 you wrote:
-> Only the entries below dev->num_tc are valid in dev->tc_to_txq[], and
-> dev->prio_tc_map[] may only name classes below it. netdev_set_num_tc()
-> lowers dev->num_tc without touching either array.
+On Fri, 18 Sep 2026 12:26:58 +0900 you wrote:
+> vxlan_na_create() samples LL_RESERVED_SPACE() to size the reply skb and then
+> samples it again to reserve headroom. A concurrent vxlan_changelink() can
+> update needed_headroom between the two reads, creating a TOCTOU race. The
+> second value can exceed the allocation and make the Ethernet header write out
+> of bounds.
 > 
-> netdev_txq_to_tc() walks all TC_MAX_QUEUE slots and
-> netdev_get_prio_tc_map() returns the entry as it stands, so a leftover
-> entry is handed out as a traffic class >= dev->num_tc. Taking that
-> class from netdev_txq_to_tc(), __netif_set_xps_queue() rejects only a
-> negative one and indexes an XPS map sized for dev->num_tc classes:
+> The race is reproducible on the unpatched kernel. It occurred when
+> vxlan_na_create() generated a neighbour reply while vxlan_changelink() changed
+> the link headroom. KASAN caught a four-byte write two bytes beyond a 704-byte
+> skbuff_small_head allocation.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] net: xps: reject an out of range traffic class
-    https://git.kernel.org/netdev/net/c/4da3b7b8b50f
+  - [net,v2] vxlan: use one headroom snapshot for neighbour replies
+    https://git.kernel.org/netdev/net/c/481506a756dc
 
 You are awesome, thank you!
 -- 
