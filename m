@@ -1,502 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7FE4825B2;
-	Thu, 24 Sep 2026 13:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790254850; cv=none; b=f585hiFPGA87mWofPbtbzfc09NLkSUpro+P+QUUEtRG/5t1tkawlIB2JZMQ0B7sl7nhJbSLT93l5J9ehmgYDAnbk5rpWo9Fo6UU8toJJhvlnk3LmyA/GUQI5B38bs8iXDe8VK0NIjfv5VR76NPpi3HR+NMY12/rxs+O6hy5cZf8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790254850; c=relaxed/simple;
-	bh=W7ku94C0L9H7926tC+FcQoetrTVE9QSRIy7tGlf1dj0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pjv1uvh11Ey050ooLM6LBo/WW4qSzEc0cMMpSDeiQbAnERtG0xIazuXHUnoR6TScTXIxGD2tWpsKGFmBWYDAA4J3G1IIU8ggN0gsJp727IXWSO+WUmIg67kWf4OPkytQoySiCkt8yeWiQvYZNsdmzXVo1YZP4Bx+NoexJ8MfpLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLe0DHw5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63A426D4C3
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.235
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790254907; cv=pass; b=bZSN/ojkc447fzUvJ3+iL6fqpmRHwqb5oCAkltDSC85+adDUzkCNM4X59KqNAowUs+KEQ9LaVkDJUif/VWq+ywYixlDeS70z9wsF9sqg3sWc0HK2MENNoj/F3Rhopdl3k4VnfRfsLopYjO2uuEBOjgVKyo/TTn2TUJHB2lm0xA0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790254907; c=relaxed/simple;
+	bh=EXofQZfVJ/cSDxGuLWgZ14xs/B1YBd7tryUIHt5oeJA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e2/R6DDnrQ6GwY6SPA1Majrb3S0hMuQ8x5uPvYFvrEbI8pGby8LftSUJMeTHIMnb2zbZ6UMgOHoK0+2Fb2UN6xaUUtLfHM3pdec0R5jp+eE6CZZeyqZ3FtutAsmTDXU290XbjJhYsUw86rkuOrQjUHWxJ44mIe9Uztvf/isUUsc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AECg8mJ8; arc=pass smtp.client-ip=74.125.230.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLe0DHw5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 83D29C2BCFB;
-	Thu, 24 Sep 2026 13:00:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790254850;
-	bh=W7ku94C0L9H7926tC+FcQoetrTVE9QSRIy7tGlf1dj0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CLe0DHw5h0Hv7Ab+IRTo1TEb44NAePlISvJ+M+Wv55v0YfbLWxO/sXK4SIo8AeONX
-	 ElDpgn1p7almT7obTJirhHGZ6RxrUX5ceEuhqRSDoTiM+Cknf45hhs5FRsBES1Iym+
-	 wt+TOotQTz8XlmPuHyMXle5cVul0Wdl9k/fIRFX7SkqSJc1iQrdlM/TWYn9YCFEAi1
-	 Py+ReBXuyrCou6UF62Vc4PV+6RcGSn4DVRH+at3PnuYeFbv2AvynRssIUXpbELYx+l
-	 jvo3fOldcrip4bYcWnLOF/h4Em8gNPoNUr0emG6cs/YUHtv6Hs0AyL0XhYIeAaxicq
-	 EGt/XEuqFhL2w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65907C9830E;
-	Thu, 24 Sep 2026 13:00:50 +0000 (UTC)
-From: Alireza Asgari via B4 Relay <devnull+alireza.asgari.net@kernel.org>
-Date: Thu, 24 Sep 2026 13:00:25 +0000
-Subject: [PATCH net 2/2] selftests: net: cover UDP splice checksum fragment
- alignment
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AECg8mJ8"
+Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb769ca02so20062301cf.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:01:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790254904; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PjF6jFirFd4tiEzbFtRvnCNAtAIjYvz/CoQ7vpKJco/TLrb0Va/Jn3icGXXqW/08Jp
+         1SObbZAP+6iQP21PlFjXkjrIuxZQRVMbvTzd/7V3BaJRNxOZUVSE49TdKPqtftufmNnN
+         RjJsetElr1afe7e2/KUHV0GsC7eaVqZAusFV2JoLGx//hQ0YV3PlYoQvav1SHn13C+vD
+         jBOAQL+lca1qsufPdbY1thmYjY9FRiunlTpeezF3Xohbx0AT+MfhJs01v7A+jvvoB1f0
+         cHoj2rI2cikeJ0mHJrMd05nsjp3Nhjio+DQgRKhLRTX5Et2kg7pB62PB+s336sRgvB3p
+         IGVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EXofQZfVJ/cSDxGuLWgZ14xs/B1YBd7tryUIHt5oeJA=;
+        fh=L1JwCYfHiiN+wNbscznob2FlpVEp9QfkwiV2FXPNI+A=;
+        b=TW5y1uwq8z301bu9hdw7elEWwcrkZ3ph7kwiLkVPLmXtckcie4/B2FTQHTlEhQhD5c
+         HX+D1FeFieLHS3p/2oPujnXANKGRKDdk4XXapnOnO/VDBIRwm2wlAxorI+HIyeivboN4
+         A54e1qLfLlRNm6Qg3Gov57qQ5lVNW88sg/+5X0mzdfAIwoxCbRBLiqX3kfuWb4r4qan+
+         vP9TPj1MKU3RAc+Qwwfy/dKnP3U6w9sGm8NupFFP7W+mS2Y/6riHr7Od8B2lin8UwK1z
+         v4mqBCB0C5ZLIdsHLw3xAhlueJz1IrSRXLW6OhqaNbll5IEmbuUfll9EbeGF+NU4SklY
+         4P8g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790254904; x=1790859704; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EXofQZfVJ/cSDxGuLWgZ14xs/B1YBd7tryUIHt5oeJA=;
+        b=AECg8mJ8P4NpcdwV5+zdQlZUI3zFVLqdXuj/dPtXhlALaPQk5Md7tpmOEFmkBe7dNJ
+         QZGzx4nmzTjCEpnHszaHz37hm5NjCtxRYFINfzUbTWK3E2SLNPEfG3XBQEaJKqXbEph9
+         MoPhi0mAjgAa7bhG7R9LgNjURvk+7jxyaekUb/rSANEJJRE92MUuTfLgoYi+uTGvtyBk
+         mmtEL4AcS6ovvMXOsu+OntN9S+51Fs5iVWSplCvKQpjUBFF+0jjv6zdOgAxCGvCKGHpj
+         mBHNOMF919bKJQcRa7fQ/habL/QCMg7RY4t4noOQ+/+g6I7eCAFcgrX+q1jVz37MMG4t
+         w+sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790254904; x=1790859704;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EXofQZfVJ/cSDxGuLWgZ14xs/B1YBd7tryUIHt5oeJA=;
+        b=R8aJ1X99x827ovU/3L3Kt6hbHlwhR4Cs1gn+DpPEPNbuu5s6kXfBLAMEBgnqOzAJ45
+         hUk7W94Oj8f1s4eFX0uVunvescq4v+E1tSLk4jG1nc3UFLVklH/aYCqpajAq3bUPuAcs
+         lddopxvwhpdVSuzoF3YTv8qcB1Uc5xHmlQrTM1vPRoMGy+GK75jsxfGhpmusOinwIdX4
+         uKpuuZM5Eb1zJFdOspYUrcXZnstC7f1yHXndGJ6HaDKWLfjJs+4/jopaYSY/xft/beEC
+         8/zbQEwsNGBTbAQQWUC0DVLCq3bk+ouC7mkOmSZtUg8gj9qoVXJLmSM+2NW70V711ED6
+         4TbA==
+X-Forwarded-Encrypted: i=1; AKwUvBwKqbQSv68EJp0rRgRQIn9Nlw9MtJxBaaN3AnEb5M9+lD2fnWQj32ttqGkr8dXTWpegp3eXl1c=@vger.kernel.org
+X-Gm-Message-State: AFuF++l1Skdx1eCqtE5PhM0dG2gEnSrcvyKZf4+WaPnyz5WBWk4r/IHR
+	+IOHOeLgqBK+jaAiT72nP+3CVA92SkV2yQlnWT/EnwVCSUPX2NCoXWJ/wGceZDqjNocRR8VY/gE
+	qGzhq/YylYVk8d+BESlZm3M1cu7uCyhA9Hzhyb/rP
+X-Gm-Gg: AYBFou1TfvpcqSBc7AuKAHJXqIRrUObShmsO+6SBIC4UOpelhhbX/Ct9tPydWLVHne2
+	HZYM5k8+bJtuH36YP2P0CP1T4H70Ztai3sci2mHhaPwehfwKXHK73sJSAcftxhDcaCJdT/OCV70
+	nMkmAMGQQOH5x//bBBpEvUidVzT/IvhuxUTJ7lSmI6m02L0yKYPdXIkGtu3W2nbbXC9ifqapbnv
+	VsIlFQzKo7fNx8QE5KfGK2fu7h3FBGp253ufPdEzNB7sctVJk3lODTEDTiUObzsSH+IYARfuNIn
+	znoyK2YnlZAA9HbObBMyEJ7vZxTUq/jJ6m8Y5SVw+0hPqklgzpIqgXnjCsgPQOMEYw1uHcqU6sp
+	qJVxD3nSA7xGVtEQMJyhZbdbwq43KeUZ8dXbUOtuhpEY/KDinEFG5XplBFBo1l+O92XXm
+X-Received: by 2002:a05:622a:164d:b0:532:810e:ec29 with SMTP id
+ d75a77b69052e-532fea0a61amr22767771cf.12.1790254903537; Thu, 24 Sep 2026
+ 06:01:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-fix-udp-splice-checksum-v1-2-fe61d65447a8@asgari.net>
-References: <20260924-fix-udp-splice-checksum-v1-0-fe61d65447a8@asgari.net>
-In-Reply-To: <20260924-fix-udp-splice-checksum-v1-0-fe61d65447a8@asgari.net>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Alireza Asgari <alireza@asgari.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790254849; l=12806;
- i=alireza@asgari.net; s=alireza-kernel; h=from:subject:message-id;
- bh=3WgZtjdGhpyGxXoJGzwfMeILWbCWZIJDIha+kdwRhbE=;
- b=eDUmMk6UCV4/tnQd/Og/OPP2nF/rl22EyU60LP0jIrTIJ6OC9+8tstvkRGhUZC5uSrU/308TU
- XCz5mvZGheaD8WgDq8MNqkhvfUSSYuO2QlNAQ3/aHKH2m2UqVodI0rp
-X-Developer-Key: i=alireza@asgari.net; a=ed25519;
- pk=wuQ0/M69FqoVnrCMUJ13EQCwrCwVjCrtz75k15vW8tw=
-X-Endpoint-Received: by B4 Relay for alireza@asgari.net/alireza-kernel with
- auth_id=1055
-X-Original-From: Alireza Asgari <alireza@asgari.net>
-Reply-To: alireza@asgari.net
+References: <20260922122721.3568295-10-edumazet@google.com> <179020966110.2160803.10658313067830814782@kernel.org>
+In-Reply-To: <179020966110.2160803.10658313067830814782@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 24 Sep 2026 15:01:32 +0200
+X-Gm-Features: AclHuK_xl9aAKn9tfHgvIfdLspNVnYPqrGbmh50-xXP32w6r_xVSq735iUhVfi0
+Message-ID: <CANn89iLFwiMe_JGTOd1vT8jc05Cjdnz8d+ASECiAXide04BmMQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 9/9] tcp: add tp->tcp_nospace
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	ncardwell@google.com, kuniyu@google.com, willemb@google.com, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Alireza Asgari <alireza@asgari.net>
+On Thu, Sep 24, 2026 at 2:27=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
 
-Exercise software UDP checksums when splice() transfers multiple pipe
-fragments into a corked datagram. Use separate source pipes so short writes
-cannot merge, and use odd fragment lengths to expose checksum-position
-errors between fragments.
+Ack, I will send a V2, thanks!
 
-Cover IPv4, IPv6 and IPv4-mapped destinations, connected and unconnected
-sockets, resident prefixes, even and odd fragment lengths, and a fragment
-starting near a page boundary. Ordinary sends provide a control. Check the
-complete payload and reject extra datagrams after a successful send.
-
-Keep receive waits bounded and skip unavailable address families or pipe
-capacities. The test uses only loopback sockets with ephemeral ports and
-has no dependency on the application that exposed the regression.
-
-Assisted-by: LLM
-Signed-off-by: Alireza Asgari <alireza@asgari.net>
----
- tools/testing/selftests/net/.gitignore            |   1 +
- tools/testing/selftests/net/Makefile              |   1 +
- tools/testing/selftests/net/udp_splice_checksum.c | 378 ++++++++++++++++++++++
- 3 files changed, 380 insertions(+)
-
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index c9f46031ac..dacd36ed84 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -55,6 +55,7 @@ tools
- tun
- txring_overwrite
- txtimestamp
-+udp_splice_checksum
- udpgso
- udpgso_bench_rx
- udpgso_bench_tx
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 3ee3378f8b..590b33e16d 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -199,6 +199,7 @@ TEST_GEN_PROGS := \
- 	tap \
- 	tcp_port_share \
- 	tls \
-+	udp_splice_checksum \
- # end of TEST_GEN_PROGS
- 
- TEST_FILES := \
-diff --git a/tools/testing/selftests/net/udp_splice_checksum.c b/tools/testing/selftests/net/udp_splice_checksum.c
-new file mode 100644
-index 0000000000..dc61444e64
---- /dev/null
-+++ b/tools/testing/selftests/net/udp_splice_checksum.c
-@@ -0,0 +1,378 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Exercise UDP software checksums over multiple spliced pipe fragments.
-+ * All traffic stays on loopback; no privileges or external services are needed.
-+ * Exit status: 0 = pass, 1 = failure, 4 = all cases skipped.
-+ */
-+#define _GNU_SOURCE
-+
-+#include <arpa/inet.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <poll.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/socket.h>
-+#include <time.h>
-+#include <unistd.h>
-+
-+#include "kselftest.h"
-+
-+#define TIMEOUT_MS 200
-+
-+struct test_case {
-+	const char *name;
-+	const char *body;
-+	const char *prefix;
-+	size_t fragments[3];
-+	bool ordinary;
-+	bool page_tail;
-+};
-+
-+static const struct test_case cases[] = {
-+	{ "ordinary-control", "abcDEFGH", "", { 3, 5 }, true, false },
-+	{ "uniform-odd-fragments", "BBBBBBBB", "", { 3, 5 }, false, false },
-+	{ "even-fragments", "abcdEFGH", "", { 4, 4 }, false, false },
-+	{ "odd-fragments", "abcDEFGH", "", { 3, 5 }, false, false },
-+	{ "odd-prefix-odd-fragments", "abcDEFGH", "P", { 3, 5 }, false, false },
-+	{ "even-prefix-odd-fragments", "abcDEFGH", "PQ", { 3, 5 }, false, false },
-+	{ "page-tail-odd-fragments", "abcDEFGH", "", { 3, 5 }, false, true },
-+	{ "three-fragments", "abcDEFGhijkl", "", { 3, 4, 5 }, false, false },
-+	{ "odd-prefix-three-fragments",
-+	  "abcDEFGhijkl",
-+	  "P",
-+	  { 3, 4, 5 },
-+	  false,
-+	  false },
-+};
-+
-+static const char *const families[] = { "IPv4", "IPv6", "IPv4-mapped" };
-+
-+static int error(const char *what)
-+{
-+	ksft_perror(what);
-+	return 1;
-+}
-+
-+static bool unavailable(void)
-+{
-+	return errno == EAFNOSUPPORT || errno == EPROTONOSUPPORT ||
-+	       errno == EADDRNOTAVAIL;
-+}
-+
-+static long long now_ms(void)
-+{
-+	struct timespec ts;
-+
-+	if (clock_gettime(CLOCK_MONOTONIC, &ts))
-+		ksft_exit_fail_perror("clock_gettime");
-+	return (long long)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
-+}
-+
-+static int receive_one(int fd, const char *expected, size_t length)
-+{
-+	struct pollfd pfd = { .fd = fd, .events = POLLIN };
-+	long long deadline = now_ms() + TIMEOUT_MS;
-+	int remaining, ret;
-+	char received[64];
-+	ssize_t count;
-+
-+	for (;;) {
-+		remaining = deadline - now_ms();
-+		if (remaining < 0)
-+			remaining = 0;
-+		ret = poll(&pfd, 1, remaining);
-+		if (ret < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			return error("poll");
-+		}
-+		if (!ret) {
-+			ksft_print_msg("no datagram within %d ms after send\n",
-+				       TIMEOUT_MS);
-+			return 1;
-+		}
-+		count = recv(fd, received, sizeof(received),
-+			     MSG_DONTWAIT | MSG_TRUNC);
-+		if (count < 0) {
-+			if (errno == EINTR || errno == EAGAIN)
-+				continue;
-+			return error("recv");
-+		}
-+		break;
-+	}
-+	if (count != (ssize_t)length || memcmp(received, expected, length)) {
-+		ksft_print_msg("received %zd bytes; expected %zu matching\n",
-+			       count, length);
-+		return 1;
-+	}
-+	count = recv(fd, received, sizeof(received), MSG_DONTWAIT | MSG_TRUNC);
-+	if (count >= 0) {
-+		ksft_print_msg("unexpected extra datagram (%zd bytes)\n",
-+			       count);
-+		return 1;
-+	}
-+	if (errno != EAGAIN)
-+		return error("extra-datagram check");
-+	return 0;
-+}
-+
-+/* Separate source pipes prevent adjacent small writes merging into one buffer. */
-+static int append_fragment(int dest, const char *data, size_t length)
-+{
-+	int source[2], ret = 1;
-+
-+	if (pipe2(source, O_NONBLOCK | O_CLOEXEC))
-+		return error("source pipe");
-+	if (write(source[1], data, length) != (ssize_t)length) {
-+		error("source write");
-+		goto out;
-+	}
-+	if (splice(source[0], NULL, dest, NULL, length, SPLICE_F_NONBLOCK) !=
-+	    (ssize_t)length) {
-+		error("pipe-to-pipe splice");
-+		goto out;
-+	}
-+	ret = 0;
-+out:
-+	close(source[0]);
-+	close(source[1]);
-+	return ret;
-+}
-+
-+static int pipe_capacity(int fd, unsigned int slots, const char **skip_reason)
-+{
-+	long required = slots * sysconf(_SC_PAGESIZE);
-+	int capacity = fcntl(fd, F_GETPIPE_SZ);
-+
-+	if (capacity < 0)
-+		return error("query pipe capacity");
-+	if (capacity >= required ||
-+	    fcntl(fd, F_SETPIPE_SZ, required) >= required)
-+		return 0;
-+	ksft_print_msg("cannot reserve %u pipe slots: %s\n", slots,
-+		       strerror(errno));
-+	*skip_reason = "required pipe capacity unavailable";
-+	return KSFT_SKIP;
-+}
-+
-+/* Leave three bytes at a page's end, followed by five bytes on the next page. */
-+static int append_page_tail(int dest, const char *body,
-+			    const char **skip_reason)
-+{
-+	long page = sysconf(_SC_PAGESIZE);
-+	int source[2], ret = 1;
-+	char *data;
-+
-+	if (page < 8) {
-+		ksft_print_msg("invalid page size %ld\n", page);
-+		return 1;
-+	}
-+	data = malloc(page + 5);
-+	if (!data)
-+		return error("malloc");
-+	memset(data, 'x', page - 3);
-+	memcpy(data + page - 3, body, 8);
-+	if (pipe2(source, O_NONBLOCK | O_CLOEXEC)) {
-+		error("page-tail source pipe");
-+		goto free_data;
-+	}
-+	ret = pipe_capacity(source[1], 2, skip_reason);
-+	if (ret)
-+		goto out;
-+	ret = 1;
-+	if (write(source[1], data, page + 5) != page + 5) {
-+		error("page-tail write");
-+		goto out;
-+	}
-+	if (read(source[0], data, page - 3) != page - 3) {
-+		error("page-tail discard");
-+		goto out;
-+	}
-+	if (splice(source[0], NULL, dest, NULL, 8, SPLICE_F_NONBLOCK) != 8) {
-+		error("page-tail pipe-to-pipe splice");
-+		goto out;
-+	}
-+	ret = 0;
-+out:
-+	close(source[0]);
-+	close(source[1]);
-+free_data:
-+	free(data);
-+	return ret;
-+}
-+
-+static int run_case(unsigned int family, bool connected,
-+		    const struct test_case *test, const char **skip_reason)
-+{
-+	size_t body_length = strlen(test->body), offset = 0;
-+	int tx_family = family == 0 ? AF_INET : AF_INET6;
-+	int rx_family = family == 1 ? AF_INET6 : AF_INET;
-+	int rx = -1, tx = -1, pipefd[2] = { -1, -1 };
-+	size_t prefix_length = strlen(test->prefix);
-+	struct sockaddr_storage address = { 0 };
-+	socklen_t address_length;
-+	struct sockaddr_in6 *v6;
-+	struct sockaddr_in *v4;
-+	int ret = 1, zero = 0;
-+	char expected[64];
-+	unsigned int i;
-+	ssize_t count;
-+
-+	v4 = (struct sockaddr_in *)&address;
-+	v6 = (struct sockaddr_in6 *)&address;
-+	*skip_reason = "address family unavailable";
-+	memcpy(expected, test->prefix, prefix_length);
-+	memcpy(expected + prefix_length, test->body, body_length);
-+	rx = socket(rx_family, SOCK_DGRAM | SOCK_CLOEXEC, 0);
-+	if (rx < 0) {
-+		ret = unavailable() ? KSFT_SKIP : error("receive socket");
-+		goto out;
-+	}
-+	if (rx_family == AF_INET) {
-+		v4->sin_family = AF_INET;
-+		v4->sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-+		address_length = sizeof(*v4);
-+	} else {
-+		v6->sin6_family = AF_INET6;
-+		v6->sin6_addr = in6addr_loopback;
-+		address_length = sizeof(*v6);
-+	}
-+	if (bind(rx, (struct sockaddr *)&address, address_length)) {
-+		ret = unavailable() ? KSFT_SKIP : error("bind loopback");
-+		goto out;
-+	}
-+	if (getsockname(rx, (struct sockaddr *)&address, &address_length)) {
-+		error("getsockname");
-+		goto out;
-+	}
-+	if (family == 2) {
-+		unsigned short port = v4->sin_port;
-+
-+		memset(&address, 0, sizeof(address));
-+		v6->sin6_family = AF_INET6;
-+		v6->sin6_port = port;
-+		inet_pton(AF_INET6, "::ffff:127.0.0.1", &v6->sin6_addr);
-+		address_length = sizeof(*v6);
-+	}
-+	tx = socket(tx_family, SOCK_DGRAM | SOCK_CLOEXEC, 0);
-+	if (tx < 0) {
-+		ret = unavailable() ? KSFT_SKIP : error("send socket");
-+		goto out;
-+	}
-+	if (family == 2 &&
-+	    setsockopt(tx, IPPROTO_IPV6, IPV6_V6ONLY, &zero, sizeof(zero))) {
-+		error("disable IPV6_V6ONLY");
-+		goto out;
-+	}
-+	if (connected &&
-+	    connect(tx, (struct sockaddr *)&address, address_length)) {
-+		error("connect");
-+		goto out;
-+	}
-+	if (test->ordinary) {
-+		count = sendto(tx, expected, prefix_length + body_length, 0,
-+			       (struct sockaddr *)&address, address_length);
-+		if (count != (ssize_t)(prefix_length + body_length)) {
-+			error("ordinary sendto");
-+			goto out;
-+		}
-+	} else {
-+		if (pipe2(pipefd, O_NONBLOCK | O_CLOEXEC)) {
-+			error("assembled pipe");
-+			goto out;
-+		}
-+		ret = pipe_capacity(pipefd[1], test->fragments[2] ? 3 : 2,
-+				    skip_reason);
-+		if (ret)
-+			goto out;
-+		ret = 1;
-+		if (test->page_tail) {
-+			ret = append_page_tail(pipefd[1], test->body,
-+					       skip_reason);
-+			if (ret)
-+				goto out;
-+			ret = 1;
-+		} else {
-+			for (i = 0; i < ARRAY_SIZE(test->fragments); i++) {
-+				if (!test->fragments[i])
-+					break;
-+				if (append_fragment(pipefd[1],
-+						    test->body + offset,
-+						    test->fragments[i]))
-+					goto out;
-+				offset += test->fragments[i];
-+			}
-+		}
-+		/* Even an empty prefix establishes the destination and UDP cork. */
-+		count = sendto(tx, test->prefix, prefix_length, MSG_MORE,
-+			       (struct sockaddr *)&address, address_length);
-+		if (count != (ssize_t)prefix_length) {
-+			error("prime sendto(MSG_MORE)");
-+			goto out;
-+		}
-+		count = splice(pipefd[0], NULL, tx, NULL, body_length,
-+			       SPLICE_F_NONBLOCK | SPLICE_F_MORE);
-+		if (count != (ssize_t)body_length) {
-+			ksft_print_msg("socket splice: %zd, expected %zu: %s\n",
-+				       count, body_length,
-+				       count < 0 ? strerror(errno) :
-+						   "short transfer");
-+			goto out;
-+		}
-+		if (sendto(tx, "", 0, 0, (struct sockaddr *)&address,
-+			   address_length)) {
-+			error("commit sendto");
-+			goto out;
-+		}
-+	}
-+	ret = receive_one(rx, expected, prefix_length + body_length);
-+out:
-+	if (pipefd[0] >= 0) {
-+		close(pipefd[0]);
-+		close(pipefd[1]);
-+	}
-+	if (tx >= 0)
-+		close(tx);
-+	if (rx >= 0)
-+		close(rx);
-+	return ret;
-+}
-+
-+int main(void)
-+{
-+	unsigned int family, connected, i;
-+	const char *connection, *skip;
-+	int ret;
-+
-+	ksft_print_header();
-+	ksft_set_plan(ARRAY_SIZE(families) * 2 * ARRAY_SIZE(cases));
-+	for (family = 0; family < ARRAY_SIZE(families); family++) {
-+		for (connected = 0; connected < 2; connected++) {
-+			connection = connected ? "connected" : "unconnected";
-+			for (i = 0; i < ARRAY_SIZE(cases); i++) {
-+				ret = run_case(family, connected, &cases[i],
-+					       &skip);
-+				if (ret == KSFT_SKIP)
-+					ksft_test_result_skip("%s %s %s: %s\n",
-+							      families[family],
-+							      connection,
-+							      cases[i].name,
-+							      skip);
-+				else
-+					ksft_test_result(!ret, "%s %s %s\n",
-+							 families[family],
-+							 connection,
-+							 cases[i].name);
-+			}
-+		}
-+	}
-+	if (!ksft_get_pass_cnt() && !ksft_get_fail_cnt()) {
-+		/* ksft_exit_skip() would add a result beyond the plan. */
-+		ksft_print_cnts();
-+		return KSFT_SKIP;
-+	}
-+	ksft_finished();
-+}
-
--- 
-2.34.1
-
-
+pw-bot: cr
