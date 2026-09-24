@@ -1,152 +1,302 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011067.outbound.protection.outlook.com [40.107.74.67])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011062.outbound.protection.outlook.com [40.107.208.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4891A44606D;
-	Thu, 24 Sep 2026 08:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEF7448BB6;
+	Thu, 24 Sep 2026 08:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.62
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790240362; cv=fail; b=E29An4AAXt4rJDRSq3W1M16m2AVuo8RmLIDStnkGXPw5wae6zvZEkWgBJxcc8TJUpiciVop4NWDcPkBarAv+fzaL8ezuqVODleciZymq4jgvkLMR+nGCvcQcpb7/TGFW3b3GjnT+paBLMZn8gvFB4A+buGfAkueJgA/w7tczGfU=
+	t=1790240398; cv=fail; b=QT0bi2xq+hBU9rio+IyQ3UyHedGaGve+sz67Ipzz/xxarLkx35WcRW5816Ds8OxMGLKliqKqv3YW0xEJzIjCDgYnVAmCRN5OLe5pTy1egw7OHsJW9qWBdE7cr/dKXM4bEcs+CxnbcBJWyqdmb08a5tkgQzv5Qn9t2Qlr/bKVH5M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790240362; c=relaxed/simple;
-	bh=KPT9WjJbQr4gOd6zbZgiHpyib2BjuupsTjX0SEkgeLA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Xt+7fAOgbEXtgVU3avDcuTg5Kew6TTqirqn2XTvFbXA167u/AZvbAvH1Nq56+6z9bBQjrJt1gEdBPPzUfBxiU/MykdJIdjeK7Q8WpilU9+DJ7cg1Yc1Vx1C+3BmoGYzfDGPExqjl8AN2KgGeJm+J81R00rZYrMaD6ZJ5Jy1pPjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=FlwhQ45P; arc=fail smtp.client-ip=40.107.74.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	s=arc-20240116; t=1790240398; c=relaxed/simple;
+	bh=p8xtrAMDPM/HGeVcl/HJnagfcZfG551Yy0Ws76LlTcI=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NYxLQ/DDDqS/Ouwns1SaGuCkVAYm9h78ZECmmV68W7ehNf8qusZaR8X71btJ0wQuvOCCZHcjP42BnFNVRT07iK9M+bKoEKgU7CVBciB5nKBlpIEtc+KE3JpgU4ItT8/bRWiAQ+8vZ7Dtuk9xPpAbkHyOY7jrHtqgNA+eDxuHMA0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VFOvHh4O; arc=fail smtp.client-ip=40.107.208.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="FlwhQ45P"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VFOvHh4O"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AeRKUTQoZUtQBqIP6upbqKa1Ait8LR9xqgT44cJQA0f9SVRBOEhQXrbFUfG/aQkD/w3uYbRLoQAalRZJkoVU9UzJm0wHI4a3G228p0q0sdIbp8Z5eKOQiCUDHGw81kPuCFkFmhGbR5TnMfZYzVKzLIQu0aXrVkaPSZ1Wtffjsmdu1RscV6li68S4O6AkiJAwu2/yAArQj0WmvKcu9odThpQf7uJYyO3pysISg75h38eTDi22xlxsYHvnCOOqgggCeaOhkjlU/sTE6nYQ3X+DFUH3qVUmXfnJpUY6cwjlP45ymnG11H2lbcvYBiBwgDkWPg2bQqX7IRvjdLGLqr5CoQ==
+ b=K/5kxpOECzRBaWb3hVCa201SgpCkDakaxdohj0yo3rdMEtWF5aHMN9N1LO3KPRBIi38UzWTf5AKAN9GyCoNLEB0WSJROSn71HW50flzAf9ry9q5TXBNS8m6tIWf9FnG2+5DjKK7vXC8HnJYDx/oBZ73dbIu6jKzJCevUY5Th9Afdc8uGXa6WHvP5hX6eTW4e9ZCMYXELdtmJCnz+XEGSugOSiPUtgl77LhX7/6dRvuC+w+xOSWpfsAGwFjM4sbuD9sCFm2znkbhP0SjsiZl09XyX1wvGQav1SIZNYJVgJfdAOwu2KQp6Cy/wv/KbxF5sigLBRAXust3Gc6I5BGDoKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KPT9WjJbQr4gOd6zbZgiHpyib2BjuupsTjX0SEkgeLA=;
- b=DaisHbbRh6pEzRlwPdpCly2jGOMCN746OhzPPREmU8rB4JQgPqRS4wnd9yovPCReBjvcZwsOF+JpxQELJq56BXoga7CkzxWK0LvvJYH5lJg5D7dM2Sn+HZGxR4OwV/XK40Plwz2oY5bxr2fqsAEGoIGsWGjVTit6iAFRTsVprTS/0yOqt9ehNa3UyyLtw5xbaUHG9Sb1KT+dVqlEqsjTkgrM6IFPBR3cOc+iM3PmLDALF4Oir3E85Y+C8hL+j4kovuIgv1ptzYmzcgWoxglIjKpDvgF4u1A9yofI4jCMGEL6QmTH9vFIT8zdzU1dt931gtX2K5QNyhshtmAWziJS1Q==
+ bh=h3y9OGj4aTsmm9kM+ENbJjz7dcbxws9oyVQm/yypd1Q=;
+ b=gViL07HidZ0/thuGjGIjf9Br+MXms6yOo8chwU9JYvL2A/tCil808bHoWEcDzMqlu0Dd+g/Cpbrojyb0OS9tpnFJRsnzwQpDTnWan8hr+zCjlUSFeUu+CMfx4wNSykZt8gsJSgtOZcWtYCnxE1gJX2HwSZqvb75nMvayHxhAfoR9P1r6tXGJLPxSZY+AAZ0HWvChjqnHMFTh8IxwSsNeh8dmf5hNPoIhkQterNwa2KMH2soVx4qDCDw/itokb77AZNudX0uRpuLS7g4COM8yzvuykwHfCU4RJbqtJ2Ti5EguPpdxcBVartkhe4yA/bM9jLRdwhajN0ZmozAUqJAGUw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KPT9WjJbQr4gOd6zbZgiHpyib2BjuupsTjX0SEkgeLA=;
- b=FlwhQ45PdG16KvbzhzTfDc8U3ZLXYZ2E1b2fl1kQo84PKjaqzBTU6I0Nd0tdbO/kXnT7zVfRoQgFkidpQfIDWefiKn5OvRXLyWj44FYPtVAIuOUpT3LVqxJhJ09tbRZPGnplz7zW9iBfSHrrFZWxPCurnyYI001gS9Orr8eAUdo=
-Received: from OS3PR01MB7479.jpnprd01.prod.outlook.com (2603:1096:604:14d::9)
- by OS7PR01MB14986.jpnprd01.prod.outlook.com (2603:1096:604:39b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 08:59:17 +0000
-Received: from OS3PR01MB7479.jpnprd01.prod.outlook.com
- ([fe80::1ddb:79b8:584:4fc]) by OS3PR01MB7479.jpnprd01.prod.outlook.com
- ([fe80::1ddb:79b8:584:4fc%6]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
- 08:59:17 +0000
-From: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "clement.leger@bootlin.com" <clement.leger@bootlin.com>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net v3] net: pcs: rzn1-miic: Reset PRCMD state before
- unprotect sequence
-Thread-Topic: [PATCH net v3] net: pcs: rzn1-miic: Reset PRCMD state before
- unprotect sequence
-Thread-Index: AQHdSk3QskULaBVyuka57WHyJfzw9rbdQFdw
-Date: Thu, 24 Sep 2026 08:59:16 +0000
-Message-ID:
- <OS3PR01MB747905659EDBA4273A3485EFA4812@OS3PR01MB7479.jpnprd01.prod.outlook.com>
-References: =?utf-8?q?=3CTYCPR01MB7481CE8351FDB2CDCA229955A4872=40TYCPR01MB7?=
- =?utf-8?q?481=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
- <179005258996.2160803.11359360903588205993@kernel.org>
-In-Reply-To: <179005258996.2160803.11359360903588205993@kernel.org>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS3PR01MB7479:EE_|OS7PR01MB14986:EE_
-x-ms-office365-filtering-correlation-id: be080c47-8757-4549-9e0c-08df1a1a1d1b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|38070700021|6133799003|10067099003|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- MHC18bjDuPhDjFwU2ijFbeCpEU7WigyHXJSXwl0h6AeHwYvoG2jjuQweN2wvcAjXb+kasmToAImySsu0m2Xk8G1Z9ud/d3vSyf++SHTkMV6SO+UbI2RlXUm5/Pa71rL77ENVxQo27vmE5dX1f87aT/zP9E8Vg5YMyo+imT5cW3ql7Vbm6/KQt3KDYMQFO3NGO5LUL/Is0nxloT1ASsMtsajXs0j9c7EsM7VdmaFMPNnHtF7u/r6wOveNJB+z6MXAtPqr/WPhvpzu1KacOnsu+BNSvOGBIE6JsPnr1MWGqN/hua7rqZ3ZChSkkOqs8k0zLY8X9gbnob+HlgrFUhF19psv4FwGuAHkWCQyZ0tPk6XMLSrpqL4N3Elpd0JY+5U+7gJZ435EE+6QVd0p+fSpYNruQPfxTWHhcrhx5W0ldyhPg9lhrDCeUdhUF2g+54P2qupWlQIudEnAdlNf0O2HVNEOp7KtuvjLDTdl/GZgaY0Sch6qCKPBVZK+OB39nd36QUS+zqq6GKk7ByIhMbGzW+eDx90kWBtYp2Lkg0k4WRA3mJ8sSnG7lztm8oEmLgoQ8R0u30uqgpceOI4KEOxoxhcLbCUiJtdUinsbMv5aBm+zJ0IawCAR+fIMuo2U59AXzk8QMz79Gesi3UvVpxSzoG5dGTuVs54tXremXhN174rsyNHUuOZP1aXkgjJlgU/qu6t0Yc+qqVzgpIVVqbgktdlbY8pG1+kT3ImZaUlGoXU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB7479.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(38070700021)(6133799003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?reGEmNxgMv60UuFzr72682OojAJZj0MjteNXT1NmBSzjbUz03Uh6BQgFjCCT?=
- =?us-ascii?Q?Nxxj+9ew9ulSHlpEee/T28BQUK3MwBit8ti7m1l9GaMOyzGb0krwJPXLJ5e2?=
- =?us-ascii?Q?wU1L+qyjjR0KA5sQvfYWq6uTRu4BEbRGoS6k6VLqey56OwH1YBb93hQub1Xi?=
- =?us-ascii?Q?vLnQb6EaPa0oZnRnJBeXUOF8eXN9yev6Vsu7i6/uAcjZqkNQ1uUM+ywq0o/w?=
- =?us-ascii?Q?Ofmo51hdUVzWSETna64CdcqaX3/YYmmHbODivhIZn68+8G0iMeLtWC0R3eIY?=
- =?us-ascii?Q?ACBT15axgszS6vzL60cZbiOYVswuntVhmTu+byJGfWiiVj42UYD4lN1kh6LF?=
- =?us-ascii?Q?nBlrVYnmnXYSFZ/C5WhWmmh6GHoXcSgiymUvS8C38XYB2lkm08ncZk5ZkgsE?=
- =?us-ascii?Q?NAJZ80Y4rLudgLfhze7kj5+qxc1Bjf6EWK0KVVdO05iR9LlgnO4T7EDRQiXs?=
- =?us-ascii?Q?vaUeoIm0tg9a5G7FvuPQd9pS5b32xmt7q9065lZkbxufHgdTL3D2+4adFShV?=
- =?us-ascii?Q?RLD3jZ1AfpNj4Y4lpuwM5WPzXEdN0EaUFWOap1ogiNkAcFkw6LMnIEmjuTnz?=
- =?us-ascii?Q?fh/ofqgB+qxj3htIa6MN/xWJfrM+bUSdLRhJ1YbyNQL0GLwEGoJzUS28pgGA?=
- =?us-ascii?Q?gE3Fg7KWvfblU8gWDN2mN4zyHiiHnH6gdJy3MgOwe1Q7pKlXfAmyHd4LMjGf?=
- =?us-ascii?Q?aFUoBIvoIifyCD+9S4Yb1VUtE0eMuUJa0Ol/dNWbGmuW+JGtMtNtGsKlqnAG?=
- =?us-ascii?Q?+3ekZDrDd7HwOlTKtZrBe3w75BtZFJSH4BOXGkYKV5OFs7cT0nlKdlsLztTr?=
- =?us-ascii?Q?Mn4iNGv+ucUhQUmcHF6VpIcd7n7VoHFMuyK3zwE+iqqKbR3PeXodSz/2/Nx6?=
- =?us-ascii?Q?X0r12s31S+OWQ/hV/Dk/8HXmzSlgWbWkbxLw5BpCfuPxyl3rgy/L7CxJNmRn?=
- =?us-ascii?Q?SLVoeFxDfybhhd5uyK0aUXsoGZoqUsL+CfXtjHJuy0BJN8LO5sDw3WYDcbdv?=
- =?us-ascii?Q?M9lvEBEmelWLqYgPFJZB5RQ/6iBrSOwDQIrmYBAGZMwqIWA8AIVLLsMK1Czy?=
- =?us-ascii?Q?S00ldiSjFZALKhkSz1qDh1Vrp3U7mZCCt94Rf6uJ/8QGDjhfCPk2IknUOyC4?=
- =?us-ascii?Q?OxNl7vGxz7a6WbqDTA06Bj8ycFHTcjIr9d2EFKTVhnlhgTz3XAPFGXoe1+RB?=
- =?us-ascii?Q?LBZ7Yzx3TLgjubXYyN8U7RM8diznBZYSwMg6/8YEAf/hMvuYPXTJ531Yo3RX?=
- =?us-ascii?Q?lLKzYFu67YLmJ2w+5q3fbrk4PFf0l40ng/ZqPmzDSnoUDUaivHZOMGenXWmS?=
- =?us-ascii?Q?Ooh79Lpn6RKgSaDYEMN/tuR99+RanPd8lRsOzD0cYxcJeFiPdZYc7r88SruF?=
- =?us-ascii?Q?xZl4PO9zfffyY6yUrZgmu8eSOE2wHx6vj31b2Rijg8/GbwjPMTVopWuX6kkw?=
- =?us-ascii?Q?Wf0eauq9QziUHa+pkAr/mD/qGYpU/1wSsP0JTb9+C1H2259KNJq2WBmOR45T?=
- =?us-ascii?Q?355DQ609kUud6gLYaDwyUxQMkbL5XTHrL/0M1SrWiCczcIUGsez4tEmPuXNS?=
- =?us-ascii?Q?tzt86R105Oazt8nYhXjgKAXIX6no49YmvI/MKwxTU+2lFRyhHQdK9kELfsRD?=
- =?us-ascii?Q?RUlkPs+QNod86/ZUT37SmswO6Zvv/Rv0WyzLrVqefSLEqQmCEs6GhfRDHHj1?=
- =?us-ascii?Q?WGb4Zmfq62oFx4nKnRJ36qvyM9Fzijhy7ULymnH4EDL0LVo10uMgUQQSF+/y?=
- =?us-ascii?Q?RjuLS+jkHFlGOkAWlQgvQzc3oA4jZUo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ bh=h3y9OGj4aTsmm9kM+ENbJjz7dcbxws9oyVQm/yypd1Q=;
+ b=VFOvHh4OVUUmKdcjWQsdcpqMEQl676ww/SfpclP395FdXGgkQTqAXxpsZ/lwJmDZyqd/vKnUdy1oSQoxtT+FolhGTIw5y2LFQdm8ppENrmwdxZJFQKirxrzL2yRkPomi3XW+rxLvJw1jyAR8DD4fWZa1rgFw4oD8ZktTmRk5m7U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
+ DM4PR12MB6183.namprd12.prod.outlook.com (2603:10b6:8:a7::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.14; Thu, 24 Sep 2026 08:59:52 +0000
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1%6]) with mapi id 15.21.0428.018; Thu, 24 Sep 2026
+ 08:59:52 +0000
+Message-ID: <574bd4c5-62a1-4004-9b35-21fc05b5a2c1@amd.com>
+Date: Thu, 24 Sep 2026 09:59:45 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/4] driver core: Rely on supplier driver binding at
+ link creation
+From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, alucerop@amd.com,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>
+References: <20260921191239.4249-1-alucerop@amd.com>
+ <20260921191239.4249-2-alucerop@amd.com>
+ <2055ead9-201f-4878-aa09-07d7fc3ab3c2@bootlin.com>
+ <3ab9bc66-f3b3-465b-b736-09df1da2fcac@amd.com>
+ <5e60ed2c-b50f-4949-9edb-ede80436f501@amd.com>
+Content-Language: en-GB
+In-Reply-To: <5e60ed2c-b50f-4949-9edb-ede80436f501@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PR1P264CA0123.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:2cd::8) To DM4PR12MB6254.namprd12.prod.outlook.com
+ (2603:10b6:8:a5::17)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|DM4PR12MB6183:EE_
+X-MS-Office365-Filtering-Correlation-Id: fde42373-2bbf-429f-3f64-08df1a1a3201
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|4143699003|56012099006|11063799006|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	K9aIwL4iL0r7a9z42cewS/WR7q2BlSgG38MjIdi2xCTvOKye1kcfvqkMLVAGJBCNfCi1JQ0cYLE86sBsxTYg0TgBe34pq9aV6UmkaevPH00XSAXY76xQSFzoSOVmvOiW6mC6sjTFdzfdOzNqRlD2OLD3NzgSLA7XP8Kl9CooTyIlRAW8z02jPZgNGjspHi1Uvxf1gqb8Xh+sG+0W+U029sCc8kalqfaktfrE59Xq0pXqKOw95vN03zqtk8ZIQW/ARMD95dm+Hj+d5LPD2to+//Q13VfFOfHIoF6X9VDSNsZGI5EN5ndhV47HSI+nh7fhtzrDOMhiURbENTzFVvlzofioXFan+E+YdNxwc+iUAYbtaatD2NfnVsXq+6tmmDIXE35notMr69AcAoLT/c+UYd8mktWq6A3qKkT5EG8UmazQ2Vim+QcZ9uCmBTQh/yJzOek/0UNBt1+K6ev1orlJ97ETZkwhFoHJpcI8fCC6evmNIsNpKN2PxnF5fbl1w5yAvaMO1o/mngoT4pMZULgPkEtkiHW0vlDBYc1tT6lOSIjBaBvBaNJIF6F6o/e0aZXXO/rjm0G3vMLLM80Cz6l3wsyMz7XyToPIdv1kYq1pfc/E7gy9YgksXDq6CXs7M5MvuBnH5Ri7WVeIGFXGS7g2HtEJwEG6cZN6zf8HIiH3oGg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(4143699003)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a1RpTy9kdUZyV0RRUmsrcnQycTU2dXIvNElMdmowQnZwNkNWRVZpOG82ZUNB?=
+ =?utf-8?B?RHovNUJ0WVd5V1cvQlJKcG9LZDRYUnFzR1hFTCtQaFV1RU82L3hSdFhtZnM1?=
+ =?utf-8?B?VXhnNmFMYnhqb2VYUWtlUGY5RjE5bjdXeGt0UW9JeVFnQVZtNXd6UGFvNGx3?=
+ =?utf-8?B?TzV6SEljcnA1emlmWGNrUGU1WjNlTmN2Z1MwMUJTamNoSUYxNGZsTTYybTJr?=
+ =?utf-8?B?UlZndFdjQzVVRzhKSGJ1blFLUURud3h5VzNRQ2VTWmQ2Z2l0dGJvK1FUdkQ5?=
+ =?utf-8?B?czYrN1pmZUFYLytrRVFPUkRZa0R1eitnd1Flekc2RGJRUVQyMitidVJtclp0?=
+ =?utf-8?B?NXI3NG5oZUFqZGx2UGZZUENZbUFORTMvNVQ0ZGg1ZG9vc252WWVzdTRSQU5x?=
+ =?utf-8?B?SVg4aGx4bWFUQjhKVUhjT2x5OGV5VXRNT2JPd01XZ20wSGZGM1VUaFFQUTNo?=
+ =?utf-8?B?aXF3MmR5MVdqcVF1NFAxVGFjdzYvM2FlSHZqZCtneXdQMCs0NUh5ekFBNlJr?=
+ =?utf-8?B?Uk5vZFEwNzdvMjNwaFVHZGFZRkJJOXZncm1leS9SaWdVbVZCemVKN0k4VjZm?=
+ =?utf-8?B?SHF3TzNlc3k2UnF0cDFZTndZcG9QUmFvMG1VZGtGY0lzaGhpZWo5dXA5bGVp?=
+ =?utf-8?B?bDZweVZPWFV3S1dNQS8xVjMxTy8wVmJ3TWVxckV5eEkyQ0VxNzh2Qm9GK0xq?=
+ =?utf-8?B?YUVrdUVBNDUrc01IQUlaRkVaZDgvRDZzVnh5NTF0b0o5MytJcDYwZVBaTi81?=
+ =?utf-8?B?MmpSSldTUmlndjYrRmRoRGZ1TFA4NHJsTzl1S215NU5MZURMUW1BT2pDdG85?=
+ =?utf-8?B?T3E1V3p6WGdRcjlFS2ZWd2xYWDhWa2pRMU9YMWRXOVNHZzFOWmdPek0rSG1p?=
+ =?utf-8?B?TExLTjZWNXc1aDdZT0paTnJ5VnBpZ3pJK3hmTDArUTVZRVNwdkxrMTk4VmNl?=
+ =?utf-8?B?QzVRQzJXd0R6WWxPRlppdlVVUVlzZUhCME1sQlhtdEJpZm9KeWFnbUQrbEtF?=
+ =?utf-8?B?Y1ZkdERMUHRyRm1yUXNyL2ZuZ1NwNGZieWZMZVJDRXVZV2FFOXN5eTYvZGFo?=
+ =?utf-8?B?dDdXcmxlZm5JdVFrbWFUdk5EZHN1WW83enpmeVlRcEpidFZDK1RpN0t2ZEVa?=
+ =?utf-8?B?a21QYnFGQ2JST2Y5NXpVOTQ2dUp3dEhXcDRycWZtVW5NWmtBSUJRR1pIakpP?=
+ =?utf-8?B?Qk05QXJyQlFTRmROejVmd2JPbjBaTkRpVkQrWS8zbUQxclAva0NjWThBRmFF?=
+ =?utf-8?B?SG8xa0VYR3BqVWNmaVhsZ2NQNWZiS3pOY0s4cUlpbVlYZEZ5L0VuRS9xR1FS?=
+ =?utf-8?B?bHJyYjVQbHpIMjVkT2w4UG5abmpJTWJJeHROSy9XU01kajUxNTVHajNRRm93?=
+ =?utf-8?B?TVNWK2lVcHlqZVk5UFArdHd1N0Z3d3RORjBicEU5VHUwNzhFeFFVeVRMSzgy?=
+ =?utf-8?B?MXZaRHNtdUdXbHlQQmxsamNhVkpKMFlCRWZZR0RudGVKdzU3RlpEV3BlVUVY?=
+ =?utf-8?B?U2VXamtKaDBHUmV5MnU3Y3ZhMWlNc0hOL3Z0aVZzS3ltSHFwMXo0TkRoaEFD?=
+ =?utf-8?B?dy96ekhiaXh6bENrSUIwRWZWMk1nazRJQXNQQ2VOT1JOZU4xN0FRMGMrdU96?=
+ =?utf-8?B?M1FSaFBzTnp6YVEzWE1SVGpybUlTSjBLVzFvTXZRdWJkV21xT1NxZnBtcmcr?=
+ =?utf-8?B?R3lZMW5KZTl0alpuMWh3RWFBWExpbi9vQS8wcmpqaEYrV3hhSFhSUlZ1eUlJ?=
+ =?utf-8?B?NjZrWjd6YTh6NjlkcTJ5SlBWekgwU0RORGVmWWJrQ0NEOWZHdmdGb0g3bGNP?=
+ =?utf-8?B?WjhtTTRQVHc5TUg0eVZiVWJRNEZFVlNFT1ZQNnpuME1JS0xwbW1yeGdSVUcz?=
+ =?utf-8?B?cFFjQ3pTK3dRQUcxVXhyT1pISTBwS0l3THh4aldUMkR3SmZRZVd5ZmhwTzZF?=
+ =?utf-8?B?YjNmaTZTM1dUUE1sVk02cjB1aVlLNGhlR3Z5ZlY4dUNUQ1BOKzdaZHgvSjR5?=
+ =?utf-8?B?WW9hTG82WTlITmUwYTBXd05Mbkl3RUtoNzBVTXQ3MXM4QjhWUE9jVEtxckNL?=
+ =?utf-8?B?dnVWcWkxMmJsZlRYSUwyUVBSaTZlMlNNUlpJUzl4VDBrRis1KzdJQ3Zwd3Zq?=
+ =?utf-8?B?ZDNKMlNRVG8ybFowWHF3UXVOalhHWTBKYUFNQ2hzZkk1ZkhidjdhdXhBV253?=
+ =?utf-8?B?MWtyYnJMVC9WOVM0WnV2MEJVc3BKSFV3djVwOEJpRW15V0FkL24rYVhMWm5o?=
+ =?utf-8?B?bWdZR2VJYzNDQlBKTytmL25ieHQ0eG9UZVE3K0V0M0VlRXhyL1lZT3hUL1Uz?=
+ =?utf-8?B?Yit3RXpGdk9jTEhPbEtPTmJnek1FNFF2ZnJNTjhRclhoZVF0aWp1Zz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fde42373-2bbf-429f-3f64-08df1a1a3201
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB7479.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be080c47-8757-4549-9e0c-08df1a1a1d1b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2026 08:59:16.9510
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 08:59:52.1732
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Hg25coy/bayM/tlVWh4oC8hmb2ZUk4A9qOmV/nG5sLWQSpMGTq7cOE3rAQfJRxDm6cKCAmtkOE4hFqqyhy7dR0vhcM6unIG92031XwupQJDYCLTgYsZ/CL6FzkOWCBRP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB14986
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RGAV6P3aE91VWMcwvCqkPWRaiwALN6Bwma1PvHr6srdTYpqINljhg7+Mm8MREsHQAiwkLyFU+tWT+SztTlvuxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6183
 
-Thank you for the review.
 
-> - [Medium] Fixes-tag mis-attribution and a changelog that names no
-> failure mode.
+On 23/09/2026 10:58, Lucero Palau, Alejandro wrote:
+>
+> On 23/09/2026 09:49, Lucero Palau, Alejandro wrote:
+>>
+>> On 22/09/2026 22:39, Maxime Chevallier wrote:
+>>> Hi,
+>>>
+>>> On 9/21/26 21:12, alucerop@amd.com wrote:
+>>>> From: Alejandro Lucero <alucerop@amd.com>
+>>>>
+>>>> Differentiate between driver binding from PM dependency when a device
+>>>> link is created. Rely on the device being bound to a driver for 
+>>>> validating
+>>>> the supplier as some device drivers could not support PM.
+>>>>
+>>>> Check for supplier's PM state only if consumer specifies PM_RUNTIME 
+>>>> flag.
+>>
+>>
+>> Hi Maxime,
+>>
+>>
+>>> Hmmm this patch seems to have broken pretty much all the boards I'm 
+>>> running that
+>>> boot with DT. I'm getting logs such as :
+>>>
+>>> platform 16100000.serial: Failed to create device link (0x124) with 
+>>> supplier
+>>>    16000400.clock-controller
+>>>
+>>> Some are just hanging at "Starting kernel..." from u-boot.
+>>>
+>>> Then boards go silent as the uart dies, and I'm using that uart to 
+>>> access the
+>>> device's console :(
+>>>
+>>> Found with a WIP stmmac runner for netdev CI.
+>>>
+>>> Unfortunately I don't have much logs to share, as this just prevents 
+>>> the boards
+>>> from booting :( With this patch reverted, all boards boot fine
+>>
+>>
+>> It is obvious I did not understand well the implications ...
+>>
+>>
+>> I think the supplier device lock could be the problem behind the 
+>> hanging and how the supplier initialization is checked now based on 
+>> the driver bound behind the console issue ...
+>>
+>>
+>> I have a couple of embedded boards to play with so I will try to 
+>> reproduce the problem for getting more info. FWIW, all was fine with 
+>> the server I tested this, no device link errors at all.
+>>
+>
+> I have to amend my words ... the server had not exactly the same code 
+> :-)  I have to copy things in and out due to security measures and 
+> sometimes is hard to have all synced.
+>
+>
+> I think the sashiko reports could be a good start to fixing this.
+>
 
-Even when the intended policy is to unlock register protection
-only once during initialization, the initial MIIC protection
-state cannot be assumed to be constant because it may be
-influenced by prior firmware activity.
+FWIW, the problem seems to be the scoped guard. I had a plain 
+device_lock for using device_is_bound as required then device_unlock 
+after it, but moved to scoped_guard blindly ... .
 
-I'll update the commit message to clarify this point as well.
 
-The same failure scenario can also occur on RZ/N1D, so the issue
-is not limited to the RZ/T2H-specific additions.
+I think for my impending multipf support I only need something like this:
 
-I'll update the Fixes tag to point to the original implementation
-commit (7dc54d3b8d91) in v4.
+
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -761,7 +761,7 @@ struct device_link *device_link_add(struct device 
+*consumer,
+          * SYNC_STATE_ONLY link, we don't check for reverse dependencies
+          * because it only affects sync_state() callbacks.
+          */
+-       if (!device_pm_initialized(supplier)
++       if ((!device_pm_not_required(supplier) && 
+!device_pm_initialized(supplier))
+             || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
+                   device_is_dependent(consumer, supplier))) {
+                 link = NULL;
+
+but when I studied the code I thought checking for "the supplier has not 
+been fully registered yet" was not being achieved if the registration 
+meant driver binding, what honestly confuses me because checking for 
+device_pm_initialized implies looking at the dev->power.in_dpm_list what 
+seems to only happen at device_add time ... so I wonder how the 
+device_link_add could use a supplier device without device_add completed.
+
+
+Anyway, I will go with the simpler change posted above in v2, and keep 
+studying the other potential problem not directly connected to my 
+multipf support.
+
+
+>
+> Apologies for the any inconvenient.
+>
+> Thanks,
+>
+> Alejandro.
+>
+>
+>>
+>> Thank you for testing it!
+>>
+>>
+>>
+>>>
+>>> Maxime
+>>>
+>>>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>>>> ---
+>>>>   drivers/base/core.c | 27 +++++++++++++++++++--------
+>>>>   1 file changed, 19 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/drivers/base/core.c b/drivers/base/core.c
+>>>> index 4c0c373998a1..eb6d87e35d76 100644
+>>>> --- a/drivers/base/core.c
+>>>> +++ b/drivers/base/core.c
+>>>> @@ -834,15 +834,26 @@ struct device_link *device_link_add(struct 
+>>>> device *consumer,
+>>>>       device_pm_lock();
+>>>>         /*
+>>>> -     * If the supplier has not been fully registered yet or there 
+>>>> is a
+>>>> -     * reverse (non-SYNC_STATE_ONLY) dependency between the 
+>>>> consumer and
+>>>> -     * the supplier already in the graph, return NULL. If the link 
+>>>> is a
+>>>> -     * SYNC_STATE_ONLY link, we don't check for reverse dependencies
+>>>> -     * because it only affects sync_state() callbacks.
+>>>> +     * If the supplier has not been fully registered yet with a 
+>>>> driver
+>>>> +     * return NULL.
+>>>>        */
+>>>> -    if (!device_pm_initialized(supplier)
+>>>> -        || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
+>>>> -          device_is_dependent(consumer, supplier))) {
+>>>> +    scoped_guard(device, supplier) {
+>>>> +        if (!device_is_bound(supplier)) {
+>>>> +            link = NULL;
+>>>> +            goto out;
+>>>> +        }
+>>>> +    }
+>>>> +    /*
+>>>> +     * If consumer asks for PM to use the link and the supplier 
+>>>> has not
+>>>> +     * PM initialized, or if there is a reverse (non-SYNC_STATE_ONLY)
+>>>> +     * dependency between the consumer and the supplier already in 
+>>>> the
+>>>> +     * graph, return NULL. If the link is a SYNC_STATE_ONLY link, we
+>>>> +     * don't check for reverse dependencies because it only affects
+>>>> +     * sync_state() callbacks.
+>>>> +     */
+>>>> +    if (((flags & DL_FLAG_PM_RUNTIME) && 
+>>>> !device_pm_initialized(supplier)) ||
+>>>> +        (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
+>>>> +         device_is_dependent(consumer, supplier))) {
+>>>>           link = NULL;
+>>>>           goto out;
+>>>>       }
