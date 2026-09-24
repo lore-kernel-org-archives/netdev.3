@@ -1,116 +1,168 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA402EEE90
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4DA400995
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790228156; cv=none; b=GFz3ynhdsnx7mLjB3JBuy7pXYlZdcLAQmrzY+U0QK6Br8CGIX1eTw/AdWpQea9mvsChCC5+QuwDkzopEFMNY+U2E8TZIUVvKcWfBD6pc5dF7MPGDmXH+ISWr3mO1ZTupSvjfoJr79pnXLPV3EkEHNyPzarL2pmbtK8VwqimAcBI=
+	t=1790228288; cv=none; b=UEePCgzuG+EFwa5iK1LSne97DicsBQwOkzr08fKgL9yK+Nq/WkyzltkE6nPFc7bWx0N4mCMsD9yQWT0WlS4LV0rQf+qgPzZrLikn+BnXv207jvWLWyFPY3/VMbpPDQ0RdcrIgC4SWGKgyYDTBBp7eJXfohYCbwkzW5u6MjkufJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790228156; c=relaxed/simple;
-	bh=S7YCobBC+HtmpFNk+7TFsgHmGtIoWTkcQMy5z7Dbx1w=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:MIME-Version; b=L3s4MG6iyl2jOylSTkl72N0jkiYjpBs7rO9K2NsVGZpdXxMkL01TYODgvHRQvWteM2Pj0ztRzmgPeZf9IZgdw7FvKcFrY1Z6rRnAjYUdCTM7vmqHDNRyIyRgH24AypDlOpFGNamGUSjH2unHndU31gpCa9MC0yygzjntJ5iDiGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ON6pdYdQ; arc=none smtp.client-ip=74.125.228.43
+	s=arc-20240116; t=1790228288; c=relaxed/simple;
+	bh=cDrYNT/vM3S+F8pDVAtrGqwLC/JY738WsOSLsGzj7qk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ufMytqwrbKwpR5xOoHbDGUxf6AHAHfSrdaEx0liN6qD+OtEVnq0qm8r9KWthpIM1ovewmKOGPoFVnd/DR3MWJdtvTJYmIhTOnVL4tZ63YZdZ9mkKTUW0IHIVf+4nc7Mh9cAMQOgqSf8p9KoVux4weh0wSinJjgVHvQPAvmJjRuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DCHI1l5Q; arc=none smtp.client-ip=74.125.227.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ON6pdYdQ"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85f0fc1fd8eso848500b3a.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:35:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DCHI1l5Q"
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccda24afso952192a91.3
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:38:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790228154; x=1790832954; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZgV+zt06A+GVhiZtJGM9pKXkNiudT+kcv0q8qPUw5Lk=;
-        b=ON6pdYdQqqkchV/gy0fNyvMY/t3qbVvF2RCoGW60etofLkHLVcI/fvv44FqDq2csJI
-         gT4nQpxv6Y0EQB7ieG7ozL4vfxlogTG+5dOTIrzRukhaCTP8Dsn75Z1wIAhcroDhrO9G
-         M4Y/5f6g0QS8M5i8vk0zbPz+STp9EH2D3IMQNgu+J7svAkvV2yYjcqxl8MLHCetwsB45
-         dh7ZuqNYalTYdLPXaVo/MGxpwLUoqJ/Mv51BCpHTj+lP9igMj0XviNQLOndxBg1JT3ss
-         9AjLf0L892WOrJ6+8foJLelB59CnTxI01cPP9s/k+y6SiG4AnsmI+DMOlzXCmFbQ+7Le
-         SJGQ==
+        d=gmail.com; s=20251104; t=1790228286; x=1790833086; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VKLwiiEPAjETYRoUGWduaZyZsJc2x1dKmXcYg2HylBk=;
+        b=DCHI1l5QOXDawGvsM5slw7FONXGYAe7aKp1F9BJ7mEP1bHf83aJOvKRTM4033yBQj1
+         8yyCasKd38V7ZJa/LFuZT2gp7TewPf+UhqxaY/A+TC5cS0pMvtYR6TlCf3e9Z1xCVBoI
+         G4XgolLCC5bMqN9YkJY7NhcCA7ZhS87JwcmmpAAPnOWwSpRoIleybj1nH+r9ho4N32+H
+         lzuw48jAkJShZcAQQplIFIXmeRgqjAtErUvHk06br5G4vdYjltp3pO/Cxlnhjm0+Zmxz
+         JwOp6ABnegfImNeN+e7HcqHfJB/T42A0ptTvtFVMv/P2HFgJCMylg22fwRk+R+vpo7Jy
+         f1Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790228154; x=1790832954;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZgV+zt06A+GVhiZtJGM9pKXkNiudT+kcv0q8qPUw5Lk=;
-        b=I33iI9ouD2pHN1IE6l3QSUMqOR90F5PYUoWDVmKTWlxdtIW3vC/v4/qzaR7Z/LJ+um
-         ijglUgIOjb1b1PtwLyMJADy4t8YLeT519c+6eb5aFWW/TLBWY/FvyqyBGuGpf2sPfZmB
-         HQ0OrjwBAjWmMfTJaftPG1W4+eKVtIGwRJ7Z36tQq0QjivuoXnuxEdHafk0VhxU0Ec+y
-         m4IRI+YmkCqhyvo1hdJ+28JUuXZkskp+yUbBQnhYCTUd994onhThLRQ/221PFwa7opFq
-         b0RDoOhvBgmNC/OTEnoaxN3YkN28NqljyTn44baUA1HAgASau5dE2eZmO6ofeYltw9jz
-         UwTw==
-X-Forwarded-Encrypted: i=1; AKwUvBwkD4ZOSpnSkLtfw7Om4SCWOeanAM747AWAIDpwZcqSkiDZ1aRf0f12qtBcdHXFpStVmnBzROw=@vger.kernel.org
-X-Gm-Message-State: AFuF++llI/0YA7BWeoJPzeWTjkYXJS0svAmIFxD5mik4ynlh/kq1Ju82
-	n9PI1OamVqFR3spjamZ0bIpB0q4a4hfFxQW79bBQCcZA3GJQU47A0OvZ
-X-Gm-Gg: AYBFou1RXgOPDG93F3fxxp5j8dXDG1a/lyNmxbovtTYwkVfPxbj1eW2zFnEBFfiZdI4
-	pgFtrEZQpLwiDD3lOdsjK69blA0jcv/pbv1O5osjOp9zDunGjGnEPTFFd0mNfY8WTpkbtm7SGiF
-	C1c1zKr3MhIJH/FLZLmzezcIQzAIFnH/OaiIbiNb8eg6JD4eeIYirRCeS4q6CgNZTeHFkYR3OsK
-	fZkyJVm47fJVh1Jp9eyISN8zORCF9/13T0M43uWJRlPI464eDutC233F3lSWxoBtKn1vDnrm6jw
-	ee7abs3fatSuORO4QGgdkrnuDKxBEW0G6+elcNM7JXuqCM0WDHDW4hwqjhAJn7JMQ3dOWMEbf7d
-	qUF+7k/X4mLSs7WLnoQrpxnzsdjAz+HN3pqb204CmyH0/VCki0tcJZ+S9NbRZ+f79SdeQlv5BBh
-	AyNuVutCRfpIscbph4C5Wv+DG39oZHwFkZbMYw183snMeSdUd543Tig5TxYtiNoXFeM+gVc0m5s
-	ebPM3LdrKEV84z6XEkoLiY0B6s8FxDxaE8+5z3cabQnUyBsn8PGLmzBneOLOF7/CSUhFFzEV+ru
-	2aI=
-X-Received: by 2002:a05:6a00:330c:b0:86b:43f6:67c3 with SMTP id d2e1a72fcca58-87e99087d5cmr1123543b3a.18.1790228153413;
-        Wed, 23 Sep 2026 22:35:53 -0700 (PDT)
-Received: from localhost ([153.61.198.240])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1d5bfc87sm2268080b3a.25.2026.09.23.22.35.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 22:35:53 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 05:35:52 +0000
-Message-Id: <DLNAWZH4J2VL.35H5TXY9SPLM8@gmail.com>
-Cc: "Hui Zhu" <zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next 2/2] samples/bpf: Add memcg async reclaim
- example
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Hui Zhu" <hui.zhu@linux.dev>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "JP Kobryn" <inwardvessel@gmail.com>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
- <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Shuah Khan"
- <shuah@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Barry Song"
- <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>,
- "Stanislav Fomichev" <sdf@fomichev.me>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <netdev@vger.kernel.org>
-In-Reply-To: <de7adb6bafa3b808e29c0630f7ed9a2003e5e447.1790222105.git.zhuhui@kylinos.cn>
-References: <cover.1790222105.git.zhuhui@kylinos.cn> <de7adb6bafa3b808e29c0630f7ed9a2003e5e447.1790222105.git.zhuhui@kylinos.cn>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20260707; t=1790228286; x=1790833086;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VKLwiiEPAjETYRoUGWduaZyZsJc2x1dKmXcYg2HylBk=;
+        b=MnBxxJRAQPL6oIZiTGXyAdWyKdLyVKWxxj9Wd561J9lSCXVuB3GwEn2+w7+IhpcYCy
+         S/2uG+DZYWSySAEW6FlGNEq9wziQ5kJEo1QnaSeyYZz+g8YKw/dYxOnkerQSslevkoNS
+         5u0TJ/gc31UPdx+RNd+2rF1UR4VewxU7t/1sFsSt3CpG5IQw6jMMoNEtOI1ovWdBTeXM
+         izPv3EnVgPlo3+5k3jyLn8ujGSnkX8tA1g3MiFS2bIh2oUuQHn0bDiYEkZ2IMH8uHQeg
+         e2D/vB42JIstH6bK2HgBEv9l09gkcMpMlpb2cCcUdbDkClviyMOCm8PS1Sxq5MtbaEYc
+         1Maw==
+X-Forwarded-Encrypted: i=1; AKwUvBxnTeqc/v/qJZ53w5YYOPjGhwTT7rFaYCAkfDqGd5cMYT/VQdzrnRsyZhVRIvGQzeZdEwP5Hl8=@vger.kernel.org
+X-Gm-Message-State: AFuF++n+0l/GSLvUNCEjLdPXRVL1qXYToyw6/TfWFhMLaEZxjOUrOoZg
+	U+7dpgwgfZIyJL0nW7OqA1cdn20Zn8a1bpR8wltlksMUDn1hmenEnzYg
+X-Gm-Gg: AYBFou2prWiaiHGciJ8ccSSOtQVVf1GZUe9vhKjcjFH1uY5nTPtndez7HxXoDcNoa8p
+	UEiJWfBJ1vW2EsKc2I2dlXB0+bYqJBp0nvN3Y1HU5Wqn5wU4pO9t58RHvJVb2nuPk/zC4AaKBrM
+	X2jGL7UX7iTNCJ0eFZZS0JSN5nC9PtJcgICzROQgFKA+M1Vb/vsc6drcpDvt1FiPsXnpL1q6zNE
+	qXSRcCZ/1NFpjwNy2LIjliDo7XJYskpp8czMTXqRGMibceYYr6jfHfp+tjn9hHO+9EP1+X7Su0q
+	E0YRndxqXZ1E3NfxfWO7ZoRakZASYqoD6HMRxg7XcERsBL1jxOY3kjrNP+GpR4Ei9OZEuVQryca
+	U+vKSBziOzx0iuX40cKC78Oo6ypNyBcRFrKlipDb9LqpcOvKg0gqATt5/f2S+Me61cH8r+qIlL5
+	sjI/L7qBfg+Ri+HshZpFUhwataFF/KEGQqfnec2sjDQAL95GIBcyVf64fmny+7fWosD61ZJsnu6
+	b5EXCbmhu8=
+X-Received: by 2002:a17:90b:4a0a:b0:3a0:7dea:6dcc with SMTP id 98e67ed59e1d1-3a09897055cmr1219917a91.29.1790228286099;
+        Wed, 23 Sep 2026 22:38:06 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a09738f2absm2640292a91.14.2026.09.23.22.38.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 22:38:05 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net] net: pktgen: reject out-of-range node indices
+Date: Thu, 24 Sep 2026 14:37:52 +0900
+Message-ID: <20260924053752.1442623-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 12:04 PM Hui Zhu <hui.zhu@linux.dev> wrote:
-> Add an example of BPF-driven async proactive reclaim, keeping the
-> complex monitoring scenario out of the selftests. A BPF program arms a
-> bpf_wq/timer chain that watches the workingset refaults (file and anon)
-> of a monitor cgroup; when they grow past a threshold, a round of
-> bpf_proactive_reclaim() batches reclaims a target cgroup, re-arming the
-> work queue until the round budget is spent.
-[...]
->  samples/bpf/memcg_async_reclaim.bpf.c  |  349 ++++++++
->  samples/bpf/memcg_async_reclaim.h      |   39 +
->  samples/bpf/memcg_async_reclaim_user.c | 1141 ++++++++++++++++++++++++
->  5 files changed, 1539 insertions(+), 1 deletion(-)
+The pktgen node command parses up to ten decimal digits into unsigned
+long, then passes the value to node_possible(). That helper takes an int
+and tests the node bitmap without a bounds check. A value beyond the
+bitmap can read the next node-state mask and be accepted; larger values
+can narrow to a negative index. On 32-bit, parsing can also wrap.
 
-No. We're not adding new samples to samples/bpf.
-1200 lines were overkill as a selftest. 1500 lines as a sample
-are not better.
-samples/bpf/ are dead. We do not add new things there.
+On v7.2, an initial-namespace UID 65534 task with no effective
+capabilities reached pktgen_if_write() through user and network
+namespaces. KASAN reported an eight-byte wild read. The read can cause
+a crash; the proc result exposes a limited one-bit outcome. No broader
+memory disclosure or privilege escalation has been demonstrated.
 
-pw-bot: cr
+Parse this command into u64 and reject node >= MAX_NUMNODES before
+converting to int. Preserve the existing OK/ERROR proc results. The
+fixed v7.2 KASAN VM passed nine input controls without a KASAN report;
+the W=1 pktgen object build was warning-free.
+
+Introduced in v2.6.35, the unchecked call remains in v7.2.7 and
+v6.12.111 as checked on 2026-09-24. The read needs
+CONFIG_NET_PKTGEN and CONFIG_NUMA (MAX_NUMNODES > 1). The unprivileged
+path also needs usable CONFIG_USER_NS and CONFIG_NET_NS. Tested
+reproducer source is available privately to maintainers on request.
+
+Fixes: e99b99b471c2 ("pktgen node allocation")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+
+KASAN excerpt from the unmodified v7.2 VM:
+[    1.739189] BUG: KASAN: wild-memory-access in pktgen_if_write+0x66f5/0x6990
+[    1.739389] Read of size 8 at addr 1fffffff891bf658 by task pktgen_userns_p/144
+
+ net/core/pktgen.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 7f81aed46672..9e172a101a1f 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -818,6 +818,25 @@ static ssize_t num_arg(const char __user *user_buffer, size_t maxlen,
+ 	return i;
+ }
+ 
++/* The node command's ten-digit argument also fits in u64 on 32-bit. */
++static ssize_t num_arg_u64(const char __user *user_buffer, size_t maxlen,
++			   u64 *num)
++{
++	size_t i;
++
++	*num = 0;
++	for (i = 0; i < maxlen; i++) {
++		char c;
++
++		if (get_user(c, &user_buffer[i]))
++			return -EFAULT;
++		if (c < '0' || c > '9')
++			break;
++		*num = *num * 10 + c - '0';
++	}
++	return i;
++}
++
+ static ssize_t strn_len(const char __user *user_buffer, size_t maxlen)
+ {
+ 	size_t i;
+@@ -1304,13 +1323,15 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		return count;
+ 	}
+ 	if (!strcmp(name, "node")) {
++		u64 node;
++
+ 		max = min(10, count - i);
+-		len = num_arg(&user_buffer[i], max, &value);
++		len = num_arg_u64(&user_buffer[i], max, &node);
+ 		if (len < 0)
+ 			return len;
+ 
+-		if (node_possible(value)) {
+-			pkt_dev->node = value;
++		if (node < MAX_NUMNODES && node_possible((int)node)) {
++			pkt_dev->node = (int)node;
+ 			sprintf(pg_result, "OK: node=%d", pkt_dev->node);
+ 			if (pkt_dev->page) {
+ 				put_page(pkt_dev->page);
+
+base-commit: 90c2e97ff8245092039ab7ab7492b34427412c9b
+-- 
+2.55.0
+
