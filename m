@@ -1,80 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934A73B6BF4;
-	Thu, 24 Sep 2026 15:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A264A205F;
+	Thu, 24 Sep 2026 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790263726; cv=none; b=C05Gqi/2NFtj8RBSBHn8F4hG9zyWXwHYdNYNhouRz3QmxCt/oBpySMXXJC1b01fb83YZ8jO51lViSjX2QaUfTo6CoTYcWFWA4YXprq26w51MnFD7ssuQ5vZ6jAwQYf/MDG0kfcAZtUjcEDibragM9+FQfwtOmqsfLP/R+h4G6bY=
+	t=1790263880; cv=none; b=cyEACduPY8fL3UKr4PL7rmNx2/29iQjs6Wh0iUOBR2N6f1Z3DjgXMzVJSZWckM/R+hwZMFZV2gXp4pNGAqRkiotXh9VwJB1xOkQFsPkiK6eh8KIKn0pTKRNoIoCtEX+giaAwfIb1ZUBGt1I3vsUNti2MNUtjl43BetGGCL9HOu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790263726; c=relaxed/simple;
-	bh=agKgS6per3DPTKo/oSIPvzyV++2D6qGAcSu7hYSESwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N/NrIHFsO7dBS8eH970o5IJmxKhB/SH5x+Rj/MEch2cOQAO29gUQ+JklFCNqmn0LMfjFaGXCdddxl9WGQ/P61PZnhvsn2DtTYSlIsPi026368uAP98uLoKpVyURbg5Cj948/+jB6pjfetgQRhigjZ4E2xtCMeSsps7RNkh+eb8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvYGijbZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790263880; c=relaxed/simple;
+	bh=Sr/ZvADe3rhNSqxByBkFHLvSZQ0+5vZeIf08zA21Y1w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=A/wF5lk9/8DrTKUTx8q6pTSoqo46eybmrg55aBaQ0q6gz9TiYOV08pkU8801tYLcJ1HurMhl13nbhcyaogBgU4hii594u5eM7QLnNwwDunTKoku/bh+PpM8TygF6t9iy3YyPC+qLSbpmsPualrea+mcqq3vb/P2X0WNr3ZYYpKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ls7ZITwN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvYGijbZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8D51F000FF;
-	Thu, 24 Sep 2026 15:28:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ls7ZITwN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7CE1F000FF;
+	Thu, 24 Sep 2026 15:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790263724;
-	bh=gRDrDqRSTSu1wAuAiMUnEXEYN6plI8hGn4/iodplTGo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kvYGijbZcCWStjUumZ6i+KPYNbP0jIqli6M7dl/dHMn67wi85o0zhoAPxRDnbKfSh
-	 Tp7VWtUsZhQ3gRJjdzmodCsGU5TgfQqDwIZiyNDegT4CXV2FFrWJ6I1vXn2dRVzA+w
-	 tIn5vW/DybS4iTzSEKIeH1iajfTl+nYPZgeCawsUmIlsmNPi0gI1uZgwUMjQfOrHuR
-	 SQpYxvXvQqHhAcnEI5F1Q5GpSuG5ZYQTifv7rY6xwP5GneSX1c6eZCtj3p93Q7Xawv
-	 QKCWZzjA7ea6bgsZ98hY3cZNrvCyynQDbBykR/rrF6Guer+aH/v/6GjJBAmW/9rOrJ
-	 yH+YFXvbUHriw==
-Date: Thu, 24 Sep 2026 10:28:42 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>, devicetree@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>, mfd@lists.linux.dev
-Subject: Re: [PATCH net-next v22 3/9] dt-bindings: mfd: Document support for
- Airoha AN8855 Switch SoC
-Message-ID: <179026372208.171717.56830935141482934.robh@kernel.org>
-References: <20260915123812.14747-1-ansuelsmth@gmail.com>
- <20260915123812.14747-4-ansuelsmth@gmail.com>
+	s=k20260515; t=1790263878;
+	bh=G+YIn0jWatEzyBxbKACE4zuL7jmhIjynHuzRFkmS27U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ls7ZITwNp2G2ig/Sb7J0ofwUqlqkcUqSY8kpFZGWraQcd1tPhUcTb8Grqg2eFdQtF
+	 LsaKu+YgDjl95fOL32Dc8fdcG69JEWvhf+u5hqJlCYueU0gSnkP4KHdfq5rbi+MiHH
+	 1/Suq0ZsCoWnhiGfbW6kBBIheEv4ZAXBkL+xnEHxnYXPuVP7H2X1+hZIrO6xXpCjwv
+	 gmAZAO4+23QK5T/dCpNNhzV258Rm0grRnIBbcCuuyFLOKZnjVaVGZyM+1dy+ddifVv
+	 as9NvuI49Sgrd9ZfQX0v7XstcM9Cf0DcZav2Zm+9Fv+uupZ64mLHC76ejIODRFXPge
+	 /XGwfNqvUCSNA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198833A566C5;
+	Thu, 24 Sep 2026 15:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915123812.14747-4-ansuelsmth@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/3] selftests: drv-net: Add VLAN test
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179026380790.1607156.9912751120912034978.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 15:30:07 +0000
+References: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
+In-Reply-To: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, nb@tipi-net.de,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
 
+Hello:
 
-On Tue, 15 Sep 2026 14:38:00 +0200, Christian Marangi wrote:
-> Document support for Airoha AN8855 Switch SoC. This SoC expose various
-> peripherals like an Ethernet Switch, a NVMEM provider and Ethernet PHYs.
-> 
-> It does also support i2c and timers but those are not currently
-> supported/used.
-> 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> ---
->  .../bindings/mfd/airoha,an8855.yaml           | 176 ++++++++++++++++++
->  1 file changed, 176 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/airoha,an8855.yaml
-> 
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+On Fri, 18 Sep 2026 11:25:26 +0000 you wrote:
+> This series adds a selftest that pings over 802.1q, 802.1ad and
+> QinQ VLAN interfaces with RX VLAN stripping offloads enabled
+> and disabled.
+> 
+> This series contains only the selftest part of [1].
+> 
+> [1] https://lore.kernel.org/all/20260908164309.59282-1-ovidiu.panait.rb@renesas.com/
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/3] selftests: drv-net: Move _set_ethtool_feat() into lib
+    https://git.kernel.org/netdev/net-next/c/d3630df401a8
+  - [net-next,v2,2/3] selftests: drv-net: Check the features set by set_ethtool_feat()
+    https://git.kernel.org/netdev/net-next/c/a57ddd899004
+  - [net-next,v2,3/3] selftests: drv-net: Add VLAN test
+    https://git.kernel.org/netdev/net-next/c/efc7f4646c1d
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
