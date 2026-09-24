@@ -1,117 +1,154 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1D74A3875
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF52D4A3F0B
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790264488; cv=none; b=plBliXOMIEoIllCZbvzcCoIdqvME5xvebqNK91Y/08FoYRbkGBcvTQjwPOQd9eA5xeik8NyH8w7khXlgrvYNVDe4xqv5vPAp8GCA3Cc1+5pChXPc1kW3IMQ/wBzSrz5UMWPkoxkN4FhcqglXEJvei9waZXwgOcoJ9cu6jTbVuzg=
+	t=1790264676; cv=none; b=CEBoKS7l4apd2/fxtH/4lF/WKIRZ91SnaG2qsgbijdc5ikKYNYIWrMGoD2dPKIBlZy4FRMB7LtJk7gPv/IFIfY1UM6EDxF9Pc6hlWQTcbVMeHD7gVfsU8TD5KzXa0uPIW7EftZKxwz/YaaHen1yYcpJgO9IF3j+j10H34yhPjbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790264488; c=relaxed/simple;
-	bh=RHgNRSvOZ3tfsNjW9H3nkua9GfCHF6/OUsrBr3E6fUA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FTX5HKOTrnuiYnnCP7zp7BPdzSVGgi+4xa5J/loVszmKzxHFEngaSzvDcKdQ176esZxL8sZ3HZB0NMZmM+gDD/JEX64Ln1cfsnQlhC6puRtO/X+R/JGmTt1JhMrXIottPftw9/AYce3SS5DMZYVJUIn9+k6P8wWYUQhYPIHGJjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PB9+c90h; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1790264676; c=relaxed/simple;
+	bh=F722r79Bmh7PI6YVKi85BrdG6Xr35DU1IZmnFgeTke4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DTqv99QH/clDO23Ie2CQbVRZJBG1Ml3DUvlvrBjM1f+7gtNSNXxtw4J/CQG0qnHgwcmgjMfZv8x3JG1/vhYhtLSDxfmV4183Z8wutwbwFxzmVJo+/lbRLkT9cCUCVF5J343VNT3Oxs3Zjd5aSvLkUPXMKQefv4GpEuXz8BMrDv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H82M+4IP; arc=none smtp.client-ip=74.125.224.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PB9+c90h"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd38e0f79so12813115e9.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:41:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H82M+4IP"
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-6730c3bdb35so13700d50.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:44:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790264482; x=1790869282; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gyXDYntwE85ynqtUchJX/U4vPUnBlAqyn2V6U1Pm/s0=;
-        b=PB9+c90h4SjieXC5s/zNQoFveT1BgGn+f1+ocj8JPTuqTByrKGFZNeGgB0FEZL7Oer
-         Y2u/TPALzMztfPtg65PZhoJ/U/LC5rA8VAb1OpAeSIdKQ/DkaginNirdyBaQoFAX5MsN
-         M0KGJlfkOuBw/tTvD6Sv3DHm6qkDEW24CVyyqCpj7ZpJ35QnsZezmI4YoFKqx5xlCF9o
-         w4lAHLXucX5rLe9AHD7CrYwAaD4Kz/lsQvngw2R5fx35BDS2iW/oHbgS46OhcLfluwH7
-         q15xHnXAoWzQyXm9qjQQmmiUNxT3JUhHtLblW2/tSFx4rZDxbfrCD04Y4heLosquGoTf
-         +o+A==
+        d=gmail.com; s=20251104; t=1790264674; x=1790869474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CU0D2cxA3xiiAsXwNtIVwxMqp3c9ZGhfeXIr6+SStxE=;
+        b=H82M+4IPvy+kYqBXwP4Umf2uK+bmolKK5KLVrqkxClIdAU7Wucr5CLWSWc+NC99t3O
+         yNtiTeJWfgmIsZBq53hyQES5oiCXmuxfadEqfMkxtcJFQPLWu7OlEzjyj8Hjcvz3V6Fy
+         WM9k71eILllPAiE3GkVxbZaO226HUg6EafFJjE7d+RJf7GDA3hRrzHN9zZpg52n31p27
+         6K0QNB67VtZoqNZC7ar1x1lRW2RlkVnaFiNsBUokQ0FLODC0SJx6cQwu9QbSz4jURVyK
+         BouQ66mm8ehnKrQWJgLXRxFaMIuR1pd+yZfFhFYVBPNGpheK13yZIUMhABbEAl2mvYhU
+         t6ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790264482; x=1790869282;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790264674; x=1790869474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gyXDYntwE85ynqtUchJX/U4vPUnBlAqyn2V6U1Pm/s0=;
-        b=pFT/66iFvAC/BYIJ22uydgLDftSDHV3jl/jjbfnslgAamnoF6iF/dCBlpp79PF11Qz
-         QS3+l7uS4am6Zg34QT+QthkO5rKUS0QwTP7HPM/cVuRURZjo4f6SUyDI1CD+KKZgoIkp
-         3bjUeW/rC2w+JFD6wpxnqDqkXgZn79mYYJnZ8X/zFi8h6zRtlUzMfIoIcb4LxHu/D28X
-         aoRmvJeMFWg/GaELraPYwXG8jYUiGa3Swy06aPjw8OiyE4BLhCIrnhscALP3+D0xX3+o
-         tzWUraCk+1r+fFSNMsq6UkGfg4rpzcMaMwvUw0zxColl/kG016IDMz4+Yx3OZHRKpA6/
-         2Mog==
-X-Gm-Message-State: AFuF++nvZD0Ruut3rVlePrnBnomxQm0WtPWYNJHHQul1Q222e3Q2TsxC
-	w6cvdsWYKcwdo5VtVV4iGeMbA6IK4Y7kma4TxS49cgnCKpnKmzHn9sD1
-X-Gm-Gg: AYBFou2Yt68ZQZWO+gOrO8EJHBNPEk/7ZTHHumtGeuYkopRObUabXRDbSgxo1/DzxiU
-	c+b0DjhCroMayAQEZFMGoCxdxIp1DNQB18iPkpJ6m3/s1IazhbbbVokpYQXF/fk7zRCOkDvJD+g
-	CKy47HjH1H4D5NSM7BJOthZTo1qHf1F+duMVb6jh4BBp9vHpYaWrFB4UvFe56DeEWS+LTALKlk3
-	iWJyxmSStLvUxfmCl2rtiP1oeSqvPY+40H79m6MHcCm0l22Cqnb28QH4r/UIEYH0q4goss4MBv+
-	vcIrAV+rO8118bWaYZH+K0/nzUgciVr9i/oaY8BJGK4C1F9ZrI5Q0ETwyqAOhrTO2GTKCAXsv+B
-	TYZgybz0879vkcD0FqeSrri8FV4RjbtiSNiRTGB9Jank6Q0XT/fJHhpIpX3fhloSaCTYE8dAC9v
-	Nk7mchRii5y8XpCHV9ZGG6h5ymalTJOjPyDTzFHpegfqLl5yM1/cCzUeDdL1RYpdAigh+/JjmLr
-	NqrKeQk6Q4tZCT3E3bgrRT6Mn9QXD38oh6S6E+pDV8IhRbjQDhyVmAzrsogVDr+DqTc9KFrA8YT
-	DNMv7iJlfxp3HdCwfU+4P7+eafa+Xv+k/5pk90TytMHeB8If
-X-Received: by 2002:a05:600c:8719:b0:49e:6c11:c4fc with SMTP id 5b1f17b1804b1-49fe66c8a5amr52893095e9.7.1790264481754;
-        Thu, 24 Sep 2026 08:41:21 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5debbf4sm90846945e9.9.2026.09.24.08.41.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 08:41:20 -0700 (PDT)
-Message-ID: <f566591a-cef3-459f-a39e-86addb0c5d7e@gmail.com>
-Date: Thu, 24 Sep 2026 16:41:17 +0100
+        bh=CU0D2cxA3xiiAsXwNtIVwxMqp3c9ZGhfeXIr6+SStxE=;
+        b=BXC834ETZIufpu2xFKHy6cppR6evd7lZ17VqqWGEb4y2ketJgTK0ocbk3tGLKAiHOd
+         MXXnAPbVCFoiWlLYjcxjwCezH/qVdUal3eDiFgm8bFCwFxjtZZhdA+sRIGAwl4Rj6eP2
+         6e4I5RD1pnmxKJjM9Zy5cVkv8m9QSJ4UmDm8dols0yy8KmsyeLkmdPHGMv6SSD9eP3wt
+         1iMZ8iwjVUAk4BmO/xrSUf2Dsv65zH/YYmAtimzd/8Dop8yJ+H5DJVBn+Tld5HwrtBQl
+         CoNKoEg16JD+5u/sCAOohZeTZgTZSTEaitA0HCuiKqMhHQFOxtlzVQGNUagZ9VVdlQ/X
+         YN8w==
+X-Gm-Message-State: AFuF++k4n6+mag0XyZidhdc9t32w9hfuwZVCJuHGK8hXDY08ocNauSeH
+	Pso5uf//DAdtgRyPdOgYbgnCJmCdcQ+BVh7QfTFCrm1z2cNIARrugUDPJEZKaQ==
+X-Gm-Gg: AYBFou2mKIx3WlH9OoB9K1BVfsLV327952DYdDkdENPx5ygiGiNLDMLu7a9NCczd1Zo
+	cBbfqgHhrQYay74fvqTR8D/HCirs4otoetCQ+ftqV3dK9hCHY3uW7+kdeGwIjSUCdXF1iva6cWA
+	XQnkMvGpi/nvRTrDfH4mIOq7oke50VcLHFrPt8Yh/KLnPGSF/TF3/vxEmqYUln86B9c/+eWutO7
+	4l5yJ7NvqatU+tMTtOJh3owwkgSmGa6E7d4Dht1PdQAIY0wR0imgvxusiiijfYJUJHWz60jqxoO
+	QE0RR0Y6B9FTKxjUA76ltcGT9COgOz0OiWvlUuu0hAzFdAzdKt7aDu15n5fi9zJ5nWYkPKcqXwR
+	N/rJ0drNpittTmbjrZjedvEulS9aZ0mdRkHb4oR+0dtr0CpSpReofmf6j0L57yltqjP2PFr603e
+	sbaYjXtV/SI7Nt+e2P8n+aTuhBXb3337xxqEGI8ip4CqYrNknQegbNF8lg9LDYClMfgIVaJTr7v
+	I9UyJsqaC7UHp6mLBE+dW9PNz5XOLFcVBOf3MZn5vq4upIhFDDM1bFtnnFragB+STfd9wgKIm2I
+	8nVDtIqzvw==
+X-Received: by 2002:a05:690e:4081:b0:66f:bfd2:6b80 with SMTP id 956f58d0204a3-672ed243db0mr1795049d50.4.1790264673706;
+        Thu, 24 Sep 2026 08:44:33 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672d8052bc5sm2172549d50.4.2026.09.24.08.44.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 08:44:32 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	dzahka@meta.com,
+	john.fastabend@gmail.com,
+	sd@queasysnail.net,
+	Willem de Bruijn <willemb@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] tcp: prevent collapsing skbs across boundary in rtx queue
+Date: Thu, 24 Sep 2026 11:44:12 -0400
+Message-ID: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] net: netmem: add net_iov_area freelist
- helpers
-To: Mina Almasry <almasrymina@google.com>,
- Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
- ilias.apalodimas@linaro.org, axboe@kernel.dk, sdf@fomichev.me,
- bobbyeshleman@meta.com, kaiyuanz@google.com, linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
-References: <20260922204348.717198-1-sdf@fomichev.me>
- <20260922204348.717198-2-sdf@fomichev.me>
- <CAHS8izPwLBCJXM_0Df8P6S-FVwAq+TaRKn3uTh1h=33Ffj8VmQ@mail.gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <CAHS8izPwLBCJXM_0Df8P6S-FVwAq+TaRKn3uTh1h=33Ffj8VmQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 9/24/26 16:02, Mina Almasry wrote:
-> On Tue, Sep 22, 2026 at 1:43 PM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
->>
->> io_uring zero-copy receive and devmem both maintain a bounded LIFO for
->> net_iovs in a contiguous area. Store the freelist in struct net_iov_area
->> and provide common push and pop helpers.
->>
->> Leave synchronization to area owners. Keep devmem's area adjacent to its
-> 
-> This could be a follow up change, but I think synchronization should
-> be provided by the netmem/niov infra, rather than the area owners. TBH
-> the infra providing an unsynchronized data structure and letting the
-> area owner use it and shoot themselves in the foot feels error prone.
-> For now we could use a comment.
+From: Willem de Bruijn <willemb@google.com>
 
-I don't think we want it. The duplication is minor, but I'm not set
-on the per area index array approach, and it'd make changing it
-more difficult.
+tcp_write_collapse_fence() sets TCP_SKB_CB(skb)->eor = 1 on
+tcp_write_queue_tail(sk) to prevent skbs queued after a switch to
+device encryption from being collapsed into earlier skbs.
 
-> I also think we should not provide _push and_pop functions, rather we
-> should provide _push_bulk() and _pop_bulk(), and the caller can decide
-> to only push and pop 1 at a time if they need to. The reason is that
-> in allocation paths, we almost always want to alloc in bulk. If the
-> infra had the lock it could lock once and alloc a bulk.
+The fence is a no-op if all earlier data has already been transmitted
+when the switch happens: sk->sk_write_queue is empty. The not yet
+acknowledged earlier skbs wait in sk->tcp_rtx_queue with eor 0.
+
+On a subsequent retransmit or SACK shift, tcp_retrans_try_collapse() or
+tcp_shift_skb_data() can then merge an skb queued after the switch into
+one queued before it.
+
+Both users of the fence are affected:
+
+- psp: devices only encrypt skbs with skb->decrypted set. The merged skb
+  keeps decrypted = 0 from the earlier skb, so merged data sent after
+  psp_sock_assoc_set_tx() is retransmitted in cleartext.
+
+- tls device offload: the merged skb straddles the start marker set in
+  tls_set_device_offload(). The software fallback (fill_sg_in() returns
+  -EINVAL) and the mlx5, nfp and funeth drivers cannot handle such an
+  skb and drop it. Every retransmit rebuilds the same skb, so the
+  connection stalls.
+
+Fix this in two places, for defense in depth:
+
+1. Fall back to tcp_rtx_queue_tail(sk) in tcp_write_collapse_fence()
+   when tcp_write_queue_tail(sk) is NULL.
+
+2. Check !skb_cmp_decrypted(to, from) in tcp_skb_can_collapse(), as
+   tcp_skb_can_collapse_rx() does on receive. skb_shift(), which both
+   collapse paths call, already has a DEBUG_NET_WARN_ON_ONCE() for this
+   condition.
+
+Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+---
+ include/net/tcp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 436495ff2271..4416cdf9bf30 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1232,9 +1232,9 @@ static inline bool tcp_skb_can_collapse_to(const struct sk_buff *skb)
+ static inline bool tcp_skb_can_collapse(const struct sk_buff *to,
+ 					const struct sk_buff *from)
+ {
+-	/* skb_cmp_decrypted() not needed, use tcp_write_collapse_fence() */
+ 	return likely(tcp_skb_can_collapse_to(to) &&
+ 		      mptcp_skb_can_collapse(to, from) &&
++		      !skb_cmp_decrypted(to, from) &&
+ 		      skb_pure_zcopy_same(to, from) &&
+ 		      skb_frags_readable(to) == skb_frags_readable(from));
+ }
+@@ -2327,7 +2327,7 @@ static inline void tcp_rtx_queue_unlink_and_free(struct sk_buff *skb, struct soc
+ 
+ static inline void tcp_write_collapse_fence(struct sock *sk)
+ {
+-	struct sk_buff *skb = tcp_write_queue_tail(sk);
++	struct sk_buff *skb = tcp_write_queue_tail(sk) ?: tcp_rtx_queue_tail(sk);
+ 
+ 	if (skb)
+ 		TCP_SKB_CB(skb)->eor = 1;
 -- 
-Pavel Begunkov
+2.56.0.rc1.310.g51773c2048-goog
 
