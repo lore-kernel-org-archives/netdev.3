@@ -1,195 +1,123 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E33E5304CF
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B432C4A8FD9;
+	Thu, 24 Sep 2026 17:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790271312; cv=none; b=HCnrff6gL8iUkMiRRrSFMQkTl55HPWpCdgWjyixIavCVfTUSzbTuZv6dlYlDJ6NiM0sltfMHsxBdYs8uwTuIQGy4K3xkDqvrqPEMhkXscMDOvorg3/BSFoxoz5CnQtYSKdrgAP7MlFVauFTXWqat7DyofcUOkVIva+rqyb6QkV0=
+	t=1790271370; cv=none; b=e1SC+OF6vH48Ic9BM9kOMm4tCuicQ9HX3VhxyPd+IwWPBJv2ubAZP9diVbBkcWHr13Yjd3qcLdHEPaMvX847UVmrGo8kJcBjSdWvO3GsG93UfiCM28Z66DKpm9tYgWwYQTfjsijFSmB/VFhKFlLiVxuxvQpAQu5hjm2q6XNnhIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790271312; c=relaxed/simple;
-	bh=/0chTZvN7Ky+TA9HvI41ZWJ8tmuDbI07h2tw1R5aq3Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JuBFxDJXiOWGja4xjEPsv5HAr/ulZnA9/TQFwuEcbhpdBvqYNm56aqnL2zlKuCFY6/7TlZnm/KwQHnsA20Bem2E4zuGu/f1894NxvtCaLuvIhKdtF0tCXYbbYljDwHEpMgvlQw4vtg5oWZ8Rte74o8rVrQ16llixHHrq3SVGxqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=f0NyiEPQ; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1790271370; c=relaxed/simple;
+	bh=9Gf+SrEO7AdCsZYicS8z7ED348jsQsSe/Jjco0svQSI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z2LneP7kNVi9p/b+YmzYMCz2dJsP78ACN52zMFD7ylA7+9gEz3aBb1C4iQYzQdQeOdGnxHWY8HgZ6ru2XCrWaLRrxhmShWVfUxaarqYoAFswHcwHmW7ympXht5DVj2CvNAEoiPX3pCwR3OATYs7NRr+CVRZftCV9IkWHV7/8GUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZr0UU0J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="f0NyiEPQ"
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-39b5b07ec78so103962a91.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:35:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790271309; x=1790876109; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XmTxiFdIaWCCF0HjMXWXx42hXA6kt9BLAaeoJ6xE+TU=;
-        b=f0NyiEPQQwTtinupWvlQRcBUbJaLkJ6RMStEfGPzGwImkmU30Pp2fk0/e6FucXnB7p
-         7CmPTitA8K5bQqlP69h+JcfHcEf3cMm+nz2oWyXQoDIHc3lccSDZu6I33/pIhVq3q+fX
-         Md8wJ/432kEl4tTeNxWTLKXMM3D1troMSujbytquQHiVW2aXy7B4LuZg6oKTYZURGR4R
-         6wIO8unTyugSQ+5Nb20qCcD2eBVleeEFRWt2cCCsU2fBRmk7gW2nhmPjJFfnwBfEVVd4
-         NWfv3CohdDLeQc3oRj4TFKNyKAjj2Ns0/Um39jzdVCHdnPfvB3ZJxkzD1A0jLMNP42HI
-         CQ9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790271309; x=1790876109;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XmTxiFdIaWCCF0HjMXWXx42hXA6kt9BLAaeoJ6xE+TU=;
-        b=aVDj29vAwC/Mp+JNYENNEjKhYAAF/yApAQRJmsrzEQYMlJbB9GtddB6SlO/kOn6xrO
-         WucDsfJoh0/0tbA7mvf11UCKetuX92tSWExk0iIEUEbzQY4I8S3kfEmuGtavfw1laZ/h
-         y1BBvgo3E0eVC3iiyBwMQ1T9QtFB0fdjO5nWvHBPc27JE2+9GEj1eWEvx0xS/sWSxvol
-         JdKD3sWB/dtY0kjg3QqjbMdnut+DMZ6Z2BGj7b8Nhz9Awc72ukBJqUF1Q9Sph7nfolYI
-         Bi3jnr7rEGYQBJtLIQXaxSbhLYBSx8wB+/oDvr44Is/S8lBk4+mqicb/bJ6g2lqw4JYP
-         ZYuw==
-X-Forwarded-Encrypted: i=1; AKwUvByBikMaPmL49lf1c6aASPVFV2Plf9OsNl88kGcE+zpAWK0VEGiTsn30rascEgbrOOoNb+AQLfA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mKT8+kol5SAJMKOxRNX72QjNmn3jZeu16xlJb3VxtqwdN9k1qj
-	JxLrgfqvrzrlgIvneyIZcCZkV/pdgvwLe7WuTv8qbqSdBVZb3QJxUQQ4e4yw7OR9nAk=
-X-Gm-Gg: AYBFou1iVdmb1YoYMm8DpXYzVuC2+loYmGhdqCg1JjYqIZC7aqk29wrLXdHlmrOJDKF
-	q34fGSIyIEh8nYtzB9kSmIW5ukmhGIhCGvve3ljjW9vf0M12OJXdXFeIYL+zr6jkvc7EQXbP9Z1
-	MBnebgKCb49+vcazuawt7p0H1Kwzo/5NCjyxjB1gIrNOXrjwXYi2jiG41ViK2oMvbZ9pIA27rEy
-	d9vRLSud88YP2rFAE+kSFpOzmn+dCozyCr6LAagwuQ9uNmo8sIM+E1LiOiaGcgNimTIQBzNOT7n
-	IMLxpvQA5vcvLey5Wqt/oJKbAXfgdd/6mMDAqRWyCNtMQbbqJEulZPpZazjB4vC0ZH2DSzmg8ju
-	TJ67e5LOTlQbNIBv8BOA/RTnsXk6DNmthciczAUXP7s1hdh6KhAtJFcv2zb/lgTF6I42yt75DoX
-	DerdkAtnafpL7xLY0b2Yyd6J6S3fZ5sBz0r7PoHumAiwrG/yblOjRgTwyUtOpQaKcIDgWqGL+9J
-	yulwFBXkdjwKWd9ef8yZBBhxrK/qIj+JL7LZvrr7ABMNv5S63fHFbNwKikY8N+KktZGLcBa
-X-Received: by 2002:a17:90b:3c45:b0:3a0:2646:7495 with SMTP id 98e67ed59e1d1-3a09897046fmr3104409a91.53.1790271309276;
-        Thu, 24 Sep 2026 10:35:09 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:f875:3165:4649:e818])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a097390328sm6144943a91.16.2026.09.24.10.35.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 24 Sep 2026 10:35:08 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Roi Dayan <roid@nvidia.com>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Vlad Buslov <vladbu@nvidia.com>
-Subject: [PATCH 6.1.y] net/mlx5e: TC, Fix internal port memory leak
-Date: Thu, 24 Sep 2026 13:35:04 -0400
-Message-ID: <20260924173505.87763-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZr0UU0J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D0C1F000FF;
+	Thu, 24 Sep 2026 17:36:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790271369;
+	bh=Cv+SG0uZ2ekeOvIBJVHP5F3IubEKnpbND8T7lhCAmaQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iZr0UU0JFbxL8fJFv7Al79/WTCk8fgxq3Mmb033r8nA2T2Esnuh0R2UZF+BW61ts9
+	 5vvlax39ZP3Vp14O9YpyuoqBVX18erGWlFPEmwznhFPP95pxkfz8Nw+YbTo3perYS4
+	 kIouHwJujmCsEMqMY5leBrlmZrbORD99GiWizc1HaVobdKWLU73YSdeAxPNdNc9EZ7
+	 MuZ04yJbNun2+Fp3MIwWddMi81wWSqiJOZdUAIXDgUO37zCu/sh8wRbGOwsVHC2/26
+	 IWCfYW4r626dcd056TtVZW7KCe0Uxtf30LzSdJPoDTnZ9c/wHIixhRwdZZIDwhiMJx
+	 hv8ac8hpFmwTA==
+Subject: Re: [PATCH net 1/6] net: bcmasp: fix mib counters struct alignment
+ with ethtool stats
+From: netdev-bot+sashiko@kernel.org
+To: florian.fainelli@broadcom.com
+Cc: netdev@vger.kernel.org, opendmb@gmail.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
+ linux-kernel@vger.kernel.org, nb@tipi-net.de
+Date: Thu, 24 Sep 2026 17:36:08 +0000
+Message-ID: <179027136810.2160803.5519251364954584171@kernel.org>
+In-Reply-To: <20260922221630.3864427-2-florian.fainelli@broadcom.com>
+References: <20260922221630.3864427-2-florian.fainelli@broadcom.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Jianbo Liu <jianbol@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-[ Upstream commit ac5da544a3c2047cbfd715acd9cec8380d7fe5c6 ]
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The flow rule can be splited, and the extra post_act rules are added
-to post_act table. It's possible to trigger memleak when the rule
-forwards packets from internal port and over tunnel, in the case that,
-for example, CT 'new' state offload is allowed. As int_port object is
-assigned to the flow attribute of post_act rule, and its refcnt is
-incremented by mlx5e_tc_int_port_get(), but mlx5e_tc_int_port_put() is
-not called, the refcnt is never decremented, then int_port is never
-freed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The kmemleak reports the following error:
-unreferenced object 0xffff888128204b80 (size 64):
-  comm "handler20", pid 50121, jiffies 4296973009 (age 642.932s)
-  hex dump (first 32 bytes):
-    01 00 00 00 19 00 00 00 03 f0 00 00 04 00 00 00  ................
-    98 77 67 41 81 88 ff ff 98 77 67 41 81 88 ff ff  .wgA.....wgA....
-  backtrace:
-    [<00000000e992680d>] kmalloc_trace+0x27/0x120
-    [<000000009e945a98>] mlx5e_tc_int_port_get+0x3f3/0xe20 [mlx5_core]
-    [<0000000035a537f0>] mlx5e_tc_add_fdb_flow+0x473/0xcf0 [mlx5_core]
-    [<0000000070c2cec6>] __mlx5e_add_fdb_flow+0x7cf/0xe90 [mlx5_core]
-    [<000000005cc84048>] mlx5e_configure_flower+0xd40/0x4c40 [mlx5_core]
-    [<000000004f8a2031>] mlx5e_rep_indr_offload.isra.0+0x10e/0x1c0 [mlx5_core]
-    [<000000007df797dc>] mlx5e_rep_indr_setup_tc_cb+0x90/0x130 [mlx5_core]
-    [<0000000016c15cc3>] tc_setup_cb_add+0x1cf/0x410
-    [<00000000a63305b4>] fl_hw_replace_filter+0x38f/0x670 [cls_flower]
-    [<000000008bc9e77c>] fl_change+0x1fd5/0x4430 [cls_flower]
-    [<00000000e7f766e4>] tc_new_tfilter+0x867/0x2010
-    [<00000000e101c0ef>] rtnetlink_rcv_msg+0x6fc/0x9f0
-    [<00000000e1111d44>] netlink_rcv_skb+0x12c/0x360
-    [<0000000082dd6c8b>] netlink_unicast+0x438/0x710
-    [<00000000fc568f70>] netlink_sendmsg+0x794/0xc50
-    [<0000000016e92590>] sock_sendmsg+0xc5/0x190
+- [Medium] The commit message overstates what the bug did.
 
-So fix this by moving int_port cleanup code to the flow attribute
-free helper, which is used by all the attribute free cases.
+--
 
-Fixes: 8300f225268b ("net/mlx5e: Create new flow attr for multi table actions")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+net: bcmasp: fix mib counters struct alignment with ethtool stats
 
-[ Backport to 6.1.y: this tree already releases the primary flow-attribute
-  references in mlx5e_tc_del_fdb_flow() and lacks
-  mlx5_free_flow_attr_actions(); release only cloned post-action attribute
-  references from the corresponding free_flow_post_acts() cleanup. ]
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Hi Greg, Sasha, and mlx5e maintainers,
+This commit removes the leftover edpkt_* fields from the start of struct
+bcmasp_mib_counters. They were left in place when the matching
+bcmasp_gstrings_stats[] entries were removed for asp-v3.0. Since then the
+struct layout has not matched the order the ethtool code indexes by.
 
-I am continuing CVE backports still missing from 6.1.y.
-This fix is inherited by v6.6 and every later mainline release, but 6.1.y
-still has the affected code. The target-specific adjustment is described
-in the bracketed note above.
+> Because bcmasp_update_mib_counters() and bcmasp_get_ethtool_stats() index
+> into struct bcmasp_mib_counters sequentially based on the order of
+> bcmasp_gstrings_stats, this 16-byte offset caused hardware statistics
+> to be written to the wrong struct members and software counters to be
+> read from incorrect offsets (and reading out-of-bounds at the end of the
+> struct).
 
-Could you please queue it for 6.1.y?
+[Severity: Medium]
+Is the out-of-bounds part of this description accurate?
 
-Thanks,
-Artem Dinaburg
+Before this patch, struct bcmasp_mib_counters had 17 u32 members (68
+bytes), and bcmasp_gstrings_stats[] has 13 entries. Both loops stop at
+BCMASP_STATS_LEN:
 
-CVE: CVE-2023-53999
+drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c:bcmasp_get_ethtool_stats() {
+    ...
+	for (i = 0; i < BCMASP_STATS_LEN; i++) {
+		p = (char *)(&intf->mib) + (i * sizeof(u32));
+		data[i] = *(u32 *)p;
+	}
+}
 
-Build: This patch was included in an x86_64 allmodconfig and
-CONFIG_WERROR=y build.
-It produced vmlinux and modules with no new warnings or errors.
+So the highest offset either loop touches is 12 * 4 = 48 bytes, which is
+inside the 68-byte struct.
 
-AI assistance: An LLM helped find, adapt, and validate this
-backport; I reviewed the patch and test output.
+The hardware values also appear to have reached userspace correctly.
+bcmasp_update_mib_counters() writes them to raw slots 0-4, and
+bcmasp_get_ethtool_stats() reads them back from the same slots. The only
+members overwritten were edpkt_* and umac_frm_cnt, and no code uses those
+by name.
 
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+The part that looks broken is the software counters. Code increments them
+by name (intf->mib.alloc_rx_skb_failed++, tx_dma_failed++, and so on).
+They sit in raw slots 9-16, but ethtool read slots 5-12. As a result:
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 05888942ef276a..d2f226a09a0c7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -3692,6 +3692,7 @@ free_flow_post_acts(struct mlx5e_tc_flow *flow)
- {
- 	struct mlx5_core_dev *counter_dev = get_flow_counter_dev(flow);
- 	struct mlx5e_post_act *post_act = get_post_action(flow->priv);
-+	struct mlx5_esw_flow_attr *esw_attr;
- 	struct mlx5_flow_attr *attr, *tmp;
- 	bool vf_tun;
- 
-@@ -3713,6 +3714,16 @@ free_flow_post_acts(struct mlx5e_tc_flow *flow)
- 				mlx5_modify_header_dealloc(flow->priv->mdev, attr->modify_hdr);
- 		}
- 
-+		if (mlx5e_is_eswitch_flow(flow)) {
-+			esw_attr = attr->esw_attr;
-+			if (esw_attr->int_port)
-+				mlx5e_tc_int_port_put(mlx5e_get_int_port_priv(flow->priv),
-+						      esw_attr->int_port);
-+			if (esw_attr->dest_int_port)
-+				mlx5e_tc_int_port_put(mlx5e_get_int_port_priv(flow->priv),
-+						      esw_attr->dest_int_port);
-+		}
-+
- 		list_del(&attr->list);
- 		kvfree(attr->parse_attr);
- 		kfree(attr);
+  - "RX SKB Alloc Failed", "TX DMA Failed", "Multicast Filters Full" and
+    "Unicast Filters Full" read fb_* members that are never written, so
+    they always showed 0.
+
+  - The next four strings showed the values of the first four software
+    counters.
+
+  - filters_combine_cnt, promisc_filters_cnt, tx_realloc_offload_failed
+    and tx_timeout_cnt were never shown at all.
+
+Could the commit message describe this as shifted or mislabeled software
+counters, rather than as an out-of-bounds read at the end of the struct?
+
 -- 
-2.39.5
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922221630.3864427-1-florian.fainelli%40broadcom.com
