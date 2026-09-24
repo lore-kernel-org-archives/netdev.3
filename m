@@ -1,188 +1,193 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F390240B0EE
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DF63AE6F5
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790230970; cv=none; b=Ur45rFD5scvZlUcxQf9ofYv3HVUD7rSspaigfyyb6M6d5qVOnTSVM0X35IlTuV3tIN/hWvx6SkqXUwOm9Zr9vc8F6yGGbwVrz9sIkFM1z/oOVyjlVmgOi6+EMt/U7C179d+xvrWJzbflIx9CoMHM64vPc+sn3A1INRIZkPC8JIo=
+	t=1790231176; cv=none; b=tar5gTzEM99aVkNRpfKbO3LlW2NS2ljMylsWow6oGZ4TIjgZOwm4wVIlyfsOgoZJMcscM1HhJXAoViMHJpyp2XaunAyAkQePKS3Wg/XilQFJdh6bHBn8dxhX7qDFL3toU13yA8hjxdY/n8AZHKj1//wTQSsAKJX8Cretuc6UhFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790230970; c=relaxed/simple;
-	bh=Mk3fSgu7F2inklm698FGg8xtY/UC1g+hSJQWE9hH+Ug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgXRM4Q/o/pGlUI9y2yXBKbclcpXMok824Ag10ejr9Jrv7liSSTQMjojrxj4U658P6mxD9tGtOrZMgP2zejfDmwn/UXdD4ySOMZsK+hRupqfDsEUsOqA0zRFLg3FVMP7knEEeGJxzGuwDTQD9LY+r8fsFN27osON6VIZesbJG1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RXLUwcyY; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790231176; c=relaxed/simple;
+	bh=E08VtgF/rXHRCxE8eUUJsJea7kdObGQcooH9Heh0p+Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MfQ75rIZFQEpriedQxZ4uce/yZ4VdAhbsFXXnpHsI+gmEGLUkbfqIA6eieNBSN7DCHtDHecjouJCPoBo6Hzxwq/6FKrHDyLGKDt2z6ZzRExzrf015vkhZN3Y6BVf0hm5KF8RlCWVvBpeJzgowacpxFtinYtdjmmA/RI5mq+zy1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sunnytiwari.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EIuk2amP; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sunnytiwari.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RXLUwcyY"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d8fdc579daso11272405ad.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 23:22:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EIuk2amP"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2db3d832827so17500995ad.2
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 23:26:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790230968; x=1790835768; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WltmE4hNoTkSsXOgrdp6cz7c6fyzqTtuC0otv1UOPu0=;
-        b=RXLUwcyY11ngfU6rR6/2T7DlRzxh+9CrigcCDJRWkT3YvLgZ5p841K+AzGkJZJsni0
-         ELpVot0+3i38FyUJe5WHt31yJblyEpAG2v4n8/BZRm5UNZ012pKFT8VrzOxgST0eCf07
-         6WmhzmAJr1J71un8VZTSNYc6CE9h2LFhOdTmy3G1dgCwD68QSMD/iAGjzWzFaM4Q+0su
-         ho/R0xJ0jeMdKGIkXUmuUIrJjYAnFwIaxtg7hXChgDtZL1ScD4SlspnV2xp3CWoZmJyz
-         txYzjvPltzW7oAYYhzB24tLh/qc2NvGwKy0v+ycEX2+nbhPRcv7HpNDKOJSAlN3E5IOb
-         kYLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790230968; x=1790835768;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1790231174; x=1790835974; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WltmE4hNoTkSsXOgrdp6cz7c6fyzqTtuC0otv1UOPu0=;
-        b=Bv2uvFsW92VyZutrzt7gumPhPeR46Zs7dWX1VmGPSqQ3HA8FdcbhouKu/t3vjzw+yV
-         oS4ZXlQs5lR74m61diYShZTFVg5bn4hsSj3SNskrZzlfiNRhN5ASsYww+JgxpMeemJTz
-         KgUdBEaw8u8yOBFtUTiAMbzvu+d+5zyAFUHEhQMUxJiDHy0abFzNz1x32LNfizQCFUHj
-         tygynNynqn+nLsE2SPGjrnmMVHJsh/chcU0xn/OyE1jbYU18xjxgD464zS1sfiNW3R2H
-         mzC+2WLIAH8HQumxkyKeA7YMg33hhQM0aIyPatRYBoDpeQVAG5ZT585FKiLBKUyV9CRr
-         OJIA==
-X-Forwarded-Encrypted: i=1; AKwUvBxoHmdOriU3jOjQYSLNCxS2Pky+ERo2Frk6WM8iRMlPlOR2jl9TXjNSAt2/j5N4LOHOCK8zTCo=@vger.kernel.org
-X-Gm-Message-State: AFuF++l1w1+teJi3b/xrWt1ek2tRGM/C2kCFQqlopext+SRVcDoyUkos
-	v0dIXA2q6QgBZzjVZpCeZc0dFGQwfKI7QRT/qqMLlwNLeys593V9n6+i
-X-Gm-Gg: AYBFou0mi0Cvw04fWUSkxNdKIrEW62qVmrdSTorQYKebOdih+T26YJFsNOkdO23H1a7
-	urN/sTRbaNxGZqd3vO5zPA02bTC9kfhxg0JNP2JAob9qVw13OfJcPk1kY+b6hCGu42WR3GXmo4h
-	KfyqXVVEpIKbcMyKq7bzoHvY5ihbEC4kcRE8AsRgSNsI++kDRnPPWT1dIUjlbUY63u9Caj9lT3c
-	xnOjqq0VGCdEhA+wylVD0MK/ydjxqctEBPgMwa2fQrvSpT/kw9HCY7gYvvCP6bd43m/Syxqq1nw
-	hhtxQd0Lkh3qZH0Xf3AtaLLuOa6+Kkhfw22ArJFP6lfm3hMUbg9TybsMDy+3qIgOvZG14RcFnbY
-	AivdpBJxxzeE54eK/hUmHKJNe2UGlVSMe8Clo0DRDPBf8k3OIlZnD8YgPbWPof07iKspL7fK8Q/
-	Ww0dCogLXTniyMsj1+LdgD2ZZImR92Gvt7okRuSLeoyLECGvSzgpsGFUIu81mK1BRvd82PgAUwG
-	qVr0xAxXzPsnsbUkC9dzG58j6jLhZMQBzDQJU6OQMAjHa8cH+rmzP3cfi0jfv+TpDBZRWJNwey7
-	79aAQ9awCg==
-X-Received: by 2002:a17:902:e946:b0:2dd:c100:313d with SMTP id d9443c01a7336-2df7e2530ebmr11495365ad.57.1790230968400;
-        Wed, 23 Sep 2026 23:22:48 -0700 (PDT)
-Received: from phui-2.c.googlers.com.com (67.51.127.34.bc.googleusercontent.com. [34.127.51.67])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5d7a48sm21220615ad.48.2026.09.23.23.22.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 23:22:48 -0700 (PDT)
-From: Hui Peng <benquike@gmail.com>
-To: h.morris@cascoda.com,
-	alex.aring@gmail.com,
-	miquel.raynal@bootlin.com,
-	stefan@datenfreihafen.org
-Cc: david.laight.linux@gmail.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hui Peng <benquike@gmail.com>
-Subject: [PATCH net v3 3/3] ieee802154: ca8210: validate data_ind length upfront in ca8210_skb_rx()
-Date: Thu, 24 Sep 2026 06:22:44 +0000
-Message-ID: <20260924062244.2444225-4-benquike@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-In-Reply-To: <20260924062244.2444225-1-benquike@gmail.com>
-References: <20260924062244.2444225-1-benquike@gmail.com>
+        bh=+dxwBYKQFsgxaYrVWyrsAEec4E6upKeICubRLFxRf3w=;
+        b=EIuk2amPAyZpvuUFJU1QC5IlNMthcFN6yb7yieT/kmsMl29JaRZ3i3LdusBm9uls9R
+         wCgSShZpC8JgLHRsaYUx6xSTuuIyF/vEehh0gEJ16xacxOcQLXbyygsE3Bj1yA1R/C06
+         mSGetFYrQdBjVil4GClCe1FHYcQz2c5X9l/cuVsFZKD7AH+7OySTVyFJrLhZV5+6BJ/0
+         lNvoFpYUcobBXkfIxB+Tm0XU63fKj5XNCyoAHLwraxfm3wEzdYgIciGcOTCRIN5xreV6
+         /V1k3p8qzCaGGS/t+lRnV8ylDxuIETJ6r0TAc/8GUUoKtN3BVB467y+lzy205OeOZ+Er
+         JbYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790231174; x=1790835974;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+dxwBYKQFsgxaYrVWyrsAEec4E6upKeICubRLFxRf3w=;
+        b=pcgL+GIpOyG1cD8i0tTayu5kSmxx3d2n4rPhw9E7s36F9hzTIU1qsWS2yYoqNRwsWq
+         7/abmwzhoayD8hOPbDPVbiilGvKxYyhtfVpDJ788MwgK0zHy/Pa44mii1mFfBIuYuVbS
+         Wc2pNIwPU4bk7bqXMAM3E+WPrrE8dZmBNCul3zcWGsuqNqB7TQ47rk+UbOKfnZ2cq0V2
+         OQ4K0LvKz9ZgAdMM/1oSqV8j5n2/k3LfMky/VohaL5wkCa/cKCD3+0xBQLCPtRgLHUbT
+         OUrsj6SKolJP1ZC7cUVhg96RsXtUTSZ3k619OZ1hkL7MULxhZ/3DrEVo0zhnIYJkxxpm
+         i0Fg==
+X-Forwarded-Encrypted: i=1; AKwUvBzQwR5M3gAe18ZBM18LyalwmhwsYDoaGFI+HpCnaxhKFRZVf0QHEBmKDkjAborgVoZLqaK07Hk=@vger.kernel.org
+X-Gm-Message-State: AFuF++lR1+By0KpUARiCNJdBEzKZzBQdnVb2KsuseMXgx0eDVK0Bc5ab
+	FCHsqhm6ATCTatWm9BewgIJjyuRBR9kXHhuJzQaNTeeNPWUE0hKmzXAzA2n0uT8IX2g8D/ErdjC
+	CvjoGbyNtI3+2sptZL+pxUyRt2g==
+X-Received: from pldu18.prod.google.com ([2002:a17:903:1092:b0:2df:8053:e258])
+ (user=sunnytiwari job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:1246:b0:2dd:c100:a5dd with SMTP id d9443c01a7336-2df7dd6c414mr12253515ad.49.1790231173881;
+ Wed, 23 Sep 2026 23:26:13 -0700 (PDT)
+Date: Thu, 24 Sep 2026 06:26:11 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
+Message-ID: <20cbfc32678019daadd3c67fd75262b8264aa180.1790178801.git.sunnytiwari@google.com>
+Subject: [PATCH net-next v2] net/rds: replace tasklets with workqueue
+From: Sunny Tiwari <sunnytiwari@google.com>
+To: Santosh Shilimkar <santosh.shilimkar@oracle.com>, Allison Henderson <achender@kernel.org>, 
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+Cc: rds-devel@oss.oracle.com, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Sunny Tiwari <sunnytiwari@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-In ca8210_skb_rx(), data_ind is read at offsets 22 (msdulen), 23
-(mpdulinkquality), 29 + msdulen (hdr.sec.level), 30..39 + msdulen
-(security header), and 29 .. 29 + msdulen (payload) without verifying
-that the received SPI frame length len covers those offsets, causing an
-out-of-bounds read when msdulen exceeds len - 30:
+Convert the deprecated send and receive completion tasklets in
+net/rds/ib to BH work items queued on system_bh_wq.
 
-  BUG: KASAN: slab-out-of-bounds in ca8210_skb_rx.constprop.0.isra.0+0x137/0x160
-  Read of size 64 at addr ffff888006453ddd by task init/1
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x70/0xa0
-   print_report+0x153/0x4c6
-   kasan_report+0xf1/0x120
-   kasan_check_range+0x125/0x200
-   __asan_memcpy+0x23/0x60
-   ca8210_skb_rx.constprop.0.isra.0+0x137/0x160
-   ca8210_net_rx+0x96/0xc0
-  ...
-  The buggy address belongs to the object at ffff888006453dc0
-   which belongs to the cache kmalloc-32 of size 32
-  The buggy address is located 29 bytes inside of
-   allocated 32-byte region [ffff888006453dc0, ffff888006453de0)
+In rds_ib_conn_path_shutdown(), replace tasklet_kill() with
+disable_work_sync(), and call enable_work() after destroying the CQs so
+the work items can be used again when the connection reconnects.
 
-Consolidate all length and msdulen validations into a single upfront check
-at the beginning of ca8210_skb_rx() before allocating the skb.
-
-Tested in QEMU with KASAN enabled by passing a short data_ind buffer with
-msdulen = 64 and len = 30 into ca8210_skb_rx().
-
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Hui Peng <benquike@gmail.com>
+Assisted-by: Gemini
+Signed-off-by: Sunny Tiwari <sunnytiwari@google.com>
 ---
-Changes in v3:
-- No changes.
-
 Changes in v2:
-- Split out as patch 3/3.
-- Consolidated all length checks in ca8210_skb_rx() into a single place
-  at the beginning of the function before dev_alloc_skb() and dropped the
-  unrelated hdr.seq assignment as requested by Miquel Raynal.
+- Use system_bh_wq instead of allocating a custom rds_ib_wq workqueue,
+  dropping the net/rds/ib.c changes.
+- Use from_work() and disable_work_sync() / enable_work() instead of
+  cancel_work_sync().
+- Link to v1: https://lore.kernel.org/linux-rdma/6b07af04b3ba66a09009e1a0a7b98ec5ec85d3a0.1790109248.git.sunnytiwari@google.com/
 
- drivers/net/ieee802154/ca8210.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ net/rds/ib.h    |  4 ++--
+ net/rds/ib_cm.c | 29 +++++++++++++++--------------
+ 2 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 8aa7ffe..ab245ad 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -1758,19 +1758,15 @@ static int ca8210_skb_rx(
- 	u8                    *data_ind
- )
- {
--	struct ieee802154_hdr hdr;
-+	struct ieee802154_hdr hdr = { };
- 	int msdulen;
- 	int hlen;
--	u8 mpdulinkquality = data_ind[23];
-+	u8 mpdulinkquality;
- 	struct sk_buff *skb;
- 	struct ca8210_priv *priv = hw->priv;
+diff --git a/net/rds/ib.h b/net/rds/ib.h
+index 5ff346a1e..190122636 100644
+--- a/net/rds/ib.h
++++ b/net/rds/ib.h
+@@ -159,8 +159,8 @@ struct rds_ib_connection {
+ 	atomic_t		i_fastreg_inuse_count;
  
--	/* Allocate mtu size buffer for every rx packet */
--	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
--	if (!skb)
--		return -ENOMEM;
--
--	skb_reserve(skb, sizeof(hdr));
-+	if (len < 30)
-+		return -EMSGSIZE;
+ 	/* interrupt handling */
+-	struct tasklet_struct	i_send_tasklet;
+-	struct tasklet_struct	i_recv_tasklet;
++	struct work_struct	i_send_work;
++	struct work_struct	i_recv_work;
  
- 	msdulen = data_ind[22]; /* msdu_length */
- 	if (msdulen > IEEE802154_MTU) {
-@@ -1778,9 +1774,25 @@ static int ca8210_skb_rx(
- 			&priv->spi->dev,
- 			"received erroneously large msdu length!\n"
- 		);
--		kfree_skb(skb);
- 		return -EMSGSIZE;
+ 	/* tx */
+ 	struct rds_ib_work_ring	i_send_ring;
+diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+index 6e3110a04..3ebe13d00 100644
+--- a/net/rds/ib_cm.c
++++ b/net/rds/ib_cm.c
+@@ -253,7 +253,7 @@ static void rds_ib_cq_comp_handler_recv(struct ib_cq *cq, void *context)
+ 
+ 	rds_ib_stats_inc(s_ib_evt_handler_call);
+ 
+-	tasklet_schedule(&ic->i_recv_tasklet);
++	queue_work(system_bh_wq, &ic->i_recv_work);
+ }
+ 
+ static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
+@@ -279,9 +279,9 @@ static void poll_scq(struct rds_ib_connection *ic, struct ib_cq *cq,
  	}
-+
-+	if (len < 30 + msdulen ||
-+	    (!priv->promiscuous && data_ind[29 + msdulen] > 0 &&
-+	     len < 29 + msdulen + sizeof(struct secspec))) {
-+		dev_err(&priv->spi->dev,
-+			"received truncated data indication!\n");
-+		return -EMSGSIZE;
-+	}
-+
-+	mpdulinkquality = data_ind[23];
-+
-+	/* Allocate mtu size buffer for every rx packet */
-+	skb = dev_alloc_skb(IEEE802154_MTU + sizeof(hdr));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	skb_reserve(skb, sizeof(hdr));
- 	dev_dbg(&priv->spi->dev, "skb buffer length = %d\n", msdulen);
+ }
  
- 	if (priv->promiscuous)
+-static void rds_ib_tasklet_fn_send(unsigned long data)
++static void rds_ib_send_worker(struct work_struct *work)
+ {
+-	struct rds_ib_connection *ic = (struct rds_ib_connection *)data;
++	struct rds_ib_connection *ic = from_work(ic, work, i_send_work);
+ 	struct rds_connection *conn = ic->conn;
+ 
+ 	rds_ib_stats_inc(s_ib_tasklet_call);
+@@ -319,9 +319,9 @@ static void poll_rcq(struct rds_ib_connection *ic, struct ib_cq *cq,
+ 	}
+ }
+ 
+-static void rds_ib_tasklet_fn_recv(unsigned long data)
++static void rds_ib_recv_worker(struct work_struct *work)
+ {
+-	struct rds_ib_connection *ic = (struct rds_ib_connection *)data;
++	struct rds_ib_connection *ic = from_work(ic, work, i_recv_work);
+ 	struct rds_connection *conn = ic->conn;
+ 	struct rds_ib_device *rds_ibdev = ic->rds_ibdev;
+ 	struct rds_ib_ack_state state;
+@@ -381,7 +381,7 @@ static void rds_ib_cq_comp_handler_send(struct ib_cq *cq, void *context)
+ 
+ 	rds_ib_stats_inc(s_ib_evt_handler_call);
+ 
+-	tasklet_schedule(&ic->i_send_tasklet);
++	queue_work(system_bh_wq, &ic->i_send_work);
+ }
+ 
+ static inline int ibdev_get_unused_vector(struct rds_ib_device *rds_ibdev)
+@@ -1099,12 +1099,12 @@ void rds_ib_conn_path_shutdown(struct rds_conn_path *cp)
+ 		while (!wait_event_timeout(rds_ib_ring_empty_wait,
+ 					   rds_ib_conn_path_shutdown_check_wait(cp) == 0,
+ 					   msecs_to_jiffies(1000))) {
+-			tasklet_schedule(&ic->i_send_tasklet);
+-			tasklet_schedule(&ic->i_recv_tasklet);
++			queue_work(system_bh_wq, &ic->i_send_work);
++			queue_work(system_bh_wq, &ic->i_recv_work);
+ 		}
+ 
+-		tasklet_kill(&ic->i_send_tasklet);
+-		tasklet_kill(&ic->i_recv_tasklet);
++		disable_work_sync(&ic->i_send_work);
++		disable_work_sync(&ic->i_recv_work);
+ 
+ 		atomic_set(&ic->i_cq_quiesce, 1);
+ 
+@@ -1123,6 +1123,9 @@ void rds_ib_conn_path_shutdown(struct rds_conn_path *cp)
+ 			ib_destroy_cq(ic->i_recv_cq);
+ 		}
+ 
++		enable_work(&ic->i_send_work);
++		enable_work(&ic->i_recv_work);
++
+ 		if (ic->rds_ibdev) {
+ 			/* then free the resources that ib callbacks use */
+ 			if (ic->i_send_hdrs) {
+@@ -1234,10 +1237,8 @@ int rds_ib_conn_alloc(struct rds_connection *conn, gfp_t gfp)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&ic->ib_node);
+-	tasklet_init(&ic->i_send_tasklet, rds_ib_tasklet_fn_send,
+-		     (unsigned long)ic);
+-	tasklet_init(&ic->i_recv_tasklet, rds_ib_tasklet_fn_recv,
+-		     (unsigned long)ic);
++	INIT_WORK(&ic->i_send_work, rds_ib_send_worker);
++	INIT_WORK(&ic->i_recv_work, rds_ib_recv_worker);
+ 	mutex_init(&ic->i_recv_mutex);
+ #ifndef KERNEL_HAS_ATOMIC64
+ 	spin_lock_init(&ic->i_ack_lock);
+-- 
+2.55.0.1082.g2b9226bbc0-goog
+
