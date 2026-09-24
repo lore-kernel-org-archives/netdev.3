@@ -1,372 +1,216 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67313BB134
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 02:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B565A314A6F;
+	Thu, 24 Sep 2026 02:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790215389; cv=none; b=G7kZZUJogLt3uxbtzl/2GBDBhTAd1Ip+nAGihjdUdSi7JVlkoPx6gqZmjDJJ8LbSIQ1bxrLGIFfBxwEQLlOKZBueEIGpyTkj7xXLS8BTfK6bNU2RDKETi4w8u3XGQWUkQMH1w/Bs9T8LtnHLeLlGk3a6ibVsbXtkHIDIu3PlvqQ=
+	t=1790215536; cv=none; b=ZOG/GEtRwdMWyhJqmXWohlec3EvV7SB+vo95Jqzh0oPkO50TxutOkIBdnfr2ONTcMonFTzFMRT7NyZNCeqBdH3S9Bmi86k2yfpa+4MIuKo/jW2LGaGyY0VZyAMwUE1Oe9RhXWVsOmp9W3t0kkYk55O6nlxI7ZXfuEdVxyiCbTC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790215389; c=relaxed/simple;
-	bh=hlX4pEWIoDa93Z0PteTeKbVBVhfAEdJD+lzJ1g8tlow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=msMKJmqbqLwYJYBDgHlYhKJzps/mt2N2Q9Cf7r7dxX1omX4W5BgthQa4R6ZS8Rra4ldf4ELMFydr0bK+e5o1PbDSKeNtBAI5dfQoeAY2pHzDj5M4qiG1e0+xMwFubRpN400WRcK7tsPYl53whQN8t/bRYweC8y+h2ZfWyQr6nO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QhMpLwzM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MQZoOXTK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790215536; c=relaxed/simple;
+	bh=LSTmqoAPgDEphguCxDzuLrV4z7S59cRXqgno2ecaTQo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HkseeYOiS1V86VbFErWzq1HcMv4zmJmzUvrq0t77D7QEq+Vx8IBt8oIPOOTM6mUUHBJqycBoho2up7/P7aIiSZ7LpnLT3TGHYXoGMeO144oKHOc/8PPuiv9cmAkSH8ZPfH3n7jrKyYX0NlpWJrEgmIK5FFidTTKKWaI5eZQpxOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ScmCMjVe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QhMpLwzM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MQZoOXTK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790215384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qHHzEr/PQ8Ota366roI4JQKjOGZB7hvFyWShQyVaC18=;
-	b=QhMpLwzMSgCShNq6iYznAdmWX02anqncIe51IIL33r758XnLSdpOzQlkkgfkZ9dQu3O10m
-	Ek3XpMZGKJQF9PCWVSodfyMy3/fzrn16KUhPLXtKaYMhh7XuPkcHL8mYJ7Odx+GrPm1teN
-	+GogyhOHxXCqXmbFBI5rlFE90XvCskE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-yoD9et5zN9qcoAHtJy_niw-1; Wed, 23 Sep 2026 22:03:03 -0400
-X-MC-Unique: yoD9et5zN9qcoAHtJy_niw-1
-X-Mimecast-MFC-AGG-ID: yoD9et5zN9qcoAHtJy_niw_1790215382
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49cf4cc2125so6754505e9.2
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 19:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790215382; x=1790820182; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qHHzEr/PQ8Ota366roI4JQKjOGZB7hvFyWShQyVaC18=;
-        b=MQZoOXTKF4Ri2H3lraNLrJPxQVvF5MYJixm5aslN7cdjhQzIIPTG5VCE5Up+vDnK66
-         pW9HCIgvSXMQEA87+hOOdOyH+MFc6iR9/B1kVoMEtoGI5uaoLu7kSBgAXQq/Lf3OsRct
-         BObDorUOTibCDZiktKT6HodGSCFIE7QwstBZxSa5qRn1HIYTx54h0HjQXnzcEiHuOpCt
-         9k4cw/V96jGm2nXlcOwvJ0MPE9sMaXd52cID2UWyxlf/4Jnk3i0805kLi35PerUyfhbr
-         Za2ypP32QNOLjfaEmPRL7+5bVMjozx2F3a6cIj0qLJEe2WtzgT5NwgsNR2CH8cspaSmh
-         u5jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790215382; x=1790820182;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=qHHzEr/PQ8Ota366roI4JQKjOGZB7hvFyWShQyVaC18=;
-        b=xcyG9Gfj6HUMWTXN6CtPg35CGCK5GbKpBEDUp1GtZ0DDSVuY2Q0YOl6+ZXJ2E2FNkT
-         c963AXI6ZmfK9LcwaNbLm+r5xPiR77PyEil1HrclRjw1Qn9pVf64UF15EZCbGqNbrM8j
-         QERUKVqW9TBH8DFdaPgwWuPaqNIkIPogMxhq4ooAovk6x3iCcK5+4fXk47T1w4JZaUBZ
-         4V3LNjYXo2+gDRssCwkuA924WLedp+2jKd+CdbVpvm5Ue1VmzUZrxkzkjhW+mPFCOQhs
-         WMeW+LC+R5A7hMsVm3yGpX9LBPQeBaSIBLGWT/lE5ExhKcAE7hC4uRv57L/0gYvglK1I
-         XSvw==
-X-Forwarded-Encrypted: i=1; AKwUvBxf0ekGps7epJS/M+GaRcC2GBSmgrseyg6nsM+5jOlp2wDQ3CgjvoyJ5apfr+RR9Ib2olV8VqM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kMGf/mVGknd0NzZRq6pyfhe4Jpk9VvF01BtLfC3qW9ysbXrFCG
-	gANrfem18PBgC78EpgZU1hx0sZpRmu3SlIgkIqLBYglTYpRLk8gaPzq69iMsE64ib898yghEfse
-	pcyPGj8xrUN/N0OV8weD7q9ixm0RLugLHJ/3Jtaj6X9nYC4jbDcFEtbai8g==
-X-Gm-Gg: AYBFou3J3W/PIOdiHxBig3ipK3NVkTr6kYyHlfZQJxlGtKeR00s73bMcWRZryo6CPot
-	qEqSD7MZuwjn3qK3ypkcaIxSH05Q9o+8di1OPsK/nhICMT7bkeIJrDZQKw6tCHlaY4t4oIz8Qdx
-	C6mVbtpGtkYZ8eFC5t5pu5SGrXYv7wVWVRcGjpmCF24Dso2oQfxYm6m/XOJ59lw7MprzUGrmnrl
-	OWT8mUG8E1fIo2ix3QcShGvKSDYOqyfxPliWZFSnbT1dPNGPDRpcwPxKpEORutRH920od//Nxtw
-	73FZ7puTSzpcPJOwg8VQnQAdyPq8fVd6UKBYp537iuvG02qsNloOFNjwHzLzwZgQJ79GA3io0wg
-	XwXaeGaXNdxIXOYW6e5UawVUt3cTDR1RfMc7l9SUoGze+o2Da2NKmVRpvmeMfpkrpFQ==
-X-Received: by 2002:a05:600c:a013:b0:49d:2555:1a6d with SMTP id 5b1f17b1804b1-49fe66f1ac3mr12576705e9.16.1790215381646;
-        Wed, 23 Sep 2026 19:03:01 -0700 (PDT)
-X-Received: by 2002:a05:600c:a013:b0:49d:2555:1a6d with SMTP id 5b1f17b1804b1-49fe66f1ac3mr12576185e9.16.1790215381049;
-        Wed, 23 Sep 2026 19:03:01 -0700 (PDT)
-Received: from redhat.com (2a02-ab04-0158-f000-2548-f3bd-8b42-b18f.dynamic.v6.chello.sk. [2a02:ab04:158:f000:2548:f3bd:8b42:b18f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5cbd134sm30854095e9.9.2026.09.23.19.02.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 19:03:00 -0700 (PDT)
-Date: Wed, 23 Sep 2026 22:02:57 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Paulos Yibelo <habte.yibelo@gmail.com>, netdev@vger.kernel.org,
-	richard@nod.at, anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net, jasowangio@gmail.com,
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
-	andrew+netdev@lunn.ch, pablo@netfilter.org, fw@strlen.de,
-	phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com,
-	dsahern@kernel.org, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, linux-um@lists.infradead.org,
-	virtualization@lists.linux.dev, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, bridge@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v6 1/2] net: validate virtio checksum start after
- network header
-Message-ID: <20260923081209-mutt-send-email-mst@kernel.org>
-References: <20260922030310.8684-1-habte.yibelo@gmail.com>
- <20260922030310.8684-2-habte.yibelo@gmail.com>
- <willemdebruijn.kernel.259bc7096258d@gmail.com>
- <willemdebruijn.kernel.2cdfef118aa1d@gmail.com>
- <20260923061215-mutt-send-email-mst@kernel.org>
- <CANn89iJaE5UarTdg6FMEp=rZ9mG3g=xrVRLyvMS5S02iE8CwGg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ScmCMjVe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A681F000FF;
+	Thu, 24 Sep 2026 02:05:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790215534;
+	bh=noqM9s6yQpmsxRTZLEMpl+Qp1hAhVjiVnUkBsZRmBjA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ScmCMjVe35rzpKFAEvuy3GSmQ6ZgZwCXCFBW2xA+8XoUBfpxdu6cHZ/W39cYeS5ek
+	 FD3AZ5AxTj3b4CL7p7gcReoC2AYHGNmdJFW96CNBUHuUcdW8JS35dcieLzlr+3g/5R
+	 On2jwjWJTvMRCRXjBqemwWp3HpcUDhIKa4FBzCsS7EBrqajuuuh05f0uyqcJqQxcgQ
+	 LmGHX3ysN5iHROYBDXnuZi3qcflW8zDAJNj7VyDz0u/091PMLTKTJI8qA7CmulDeSN
+	 lQ1NMg1FCKWLdmSDUxUXJcKATJyHBvmVrfzYTEBH1vupmmbzFCQDwet9+pxo6hQPKR
+	 RoXfE+1Em+pQQ==
+Subject: Re: [PATCH net-next 2/8] eth: mpnic: add register init for the device
+From: netdev-bot+sashiko@kernel.org
+To: daniel.zahka@gmail.com
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, dimitri.daskalakis1@gmail.com,
+ mohsin.bashr@gmail.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+Date: Thu, 24 Sep 2026 02:05:32 +0000
+Message-ID: <179021553292.2160803.15849497453510759239@kernel.org>
+In-Reply-To: <20260922-linux-mpnic-v1-2-236844f53072@gmail.com>
+References: <20260922-linux-mpnic-v1-2-236844f53072@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iJaE5UarTdg6FMEp=rZ9mG3g=xrVRLyvMS5S02iE8CwGg@mail.gmail.com>
 
-On Wed, Sep 23, 2026 at 12:46:42PM +0200, Eric Dumazet wrote:
-> On Wed, Sep 23, 2026 at 12:21 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Tue, Sep 22, 2026 at 09:27:26PM -0400, Willem de Bruijn wrote:
-> > > Willem de Bruijn wrote:
-> > > > Paulos Yibelo wrote:
-> > > > > __virtio_net_hdr_to_skb() checks a minimum network-header length for
-> > > > > CHECKSUM_PARTIAL packets. Its checksum start is relative to skb->data,
-> > > > > but some callers have not established skb->network_header when they
-> > > > > convert the virtio header.
-> > > > >
-> > > > > Pass the data-relative L3 origin explicitly. Ethernet receive paths
-> > > > > parse the frame and nested VLAN headers without changing skb state.
-> > > > > AF_PACKET uses the frame's actual L3 origin even when the socket
-> > > > > protocol is ETH_P_IP and the raw frame carries VLAN tags. Non-Ethernet
-> > > > > AF_PACKET devices retain their established skb network offset.
-> > > > >
-> > > > > Also pass the actual L3 protocol so IPv6 packets use the 40-byte base
-> > > > > header minimum even without TCPv6 GSO. IFF_TUN obtains that protocol
-> > > > > from the packet before skb->protocol is set. Name the Ethernet parser
-> > > > > accordingly, use the same origin for tunnel validation, and propagate
-> > > > > conversion failures in UML.
-> > > > >
-> > > > > The bound remains a minimum; fragmentation paths separately validate
-> > > > > the parsed IPv4 or IPv6 header length before completing a checksum.
-> > > > >
-> > > > > Fixes: 49d14b54a527 ("net: test for not too small csum_start in virtio_net_hdr_to_skb()")
-> > > > > Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
-> > > > > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> > > > > Link: https://lore.kernel.org/netdev/20260920004733.6473-2-habte.yibelo@gmail.com/
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Assisted-by: LLM
-> > > > > Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> > > > > ---
-> > > > >  arch/um/drivers/vector_transports.c | 13 ++++-
-> > > > >  drivers/net/tun_vnet.h              | 52 ++++++++++++++++-
-> > > > >  drivers/net/virtio_net.c            | 10 +++-
-> > > > >  include/linux/virtio_net.h          | 87 ++++++++++++++++++++++++-----
-> > > > >  net/packet/af_packet.c              | 24 +++++++-
-> > > > >  5 files changed, 163 insertions(+), 23 deletions(-)
-> > > >
-> > > > The fix may still miss the case IPv4 packets have options.
-> > > >
-> > > > This version is a very large patch.
-> > > >
-> > > > Untested shorter first suggestion by bot, which looks plausible as a
-> > > > starting point for discussion.
-> > >
-> > > Cleaned up some more:
-> > >
-> > >     diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-> > >     index f4c652b1fa44..c24607af2aad 100644
-> > >     --- a/drivers/net/tun_vnet.h
-> > >     +++ b/drivers/net/tun_vnet.h
-> > >     @@ -180,6 +180,9 @@ static inline int tun_vnet_hdr_put(int sz, struct iov_iter *iter,
-> > >      static inline int tun_vnet_hdr_to_skb(unsigned int flags, struct sk_buff *skb,
-> > >                            const struct virtio_net_hdr *hdr)
-> > >      {
-> > >     +    if ((flags & TUN_TYPE_MASK) == IFF_TUN)
-> > >     +        skb_reset_network_header(skb);
-> > >     +
-> > >          return virtio_net_hdr_to_skb(skb, hdr, tun_vnet_is_little_endian(flags));
-> > >      }
-> > >
-> > >     @@ -199,6 +202,9 @@ tun_vnet_hdr_tnl_to_skb(unsigned int flags, netdev_features_t features,
-> > >                  struct sk_buff *skb,
-> > >                  const struct virtio_net_hdr_v1_hash_tunnel *hdr)
-> > >      {
-> > >     +    if ((flags & TUN_TYPE_MASK) == IFF_TUN)
-> > >     +        skb_reset_network_header(skb);
-> > >     +
-> > >
-> > >     diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > >     index c381b916c1b5..02c448de0802 100644
-> > >     --- a/include/linux/virtio_net.h
-> > >     +++ b/include/linux/virtio_net.h
-> > >     @@ -48,6 +48,42 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
-> > >          return 0;
-> > >      }
-> > >
-> > >     +static inline int virtio_net_hdr_nh_min_len(const struct sk_buff *skb,
-> > >     +                        unsigned int nh_min_len)
-> > >     +{
-> > >     +    int thoff = skb_transport_offset(skb);
-> > >     +    __be16 proto;
-> > >     +    int nhoff;
-> > >     +
-> > >     +    if (skb_network_header_was_set(skb)) {
-> > >     +        nhoff = skb_network_offset(skb);
-> > >     +        proto = skb->protocol;
-> > >     +    } else {
-> > >     +        if (unlikely(thoff < ETH_HLEN))
-> > >     +            return -EINVAL;
-> > >     +        nhoff = ETH_HLEN;
-> > >     +        proto = eth_hdr(skb)->h_proto;
-> > >     +    }
-> > >     +
-> > >     +    if (eth_type_vlan(proto)) {
-> > >     +        proto = __vlan_get_protocol(skb, proto, &nhoff);
-> > >     +        if (!proto)
-> > >     +            return -EINVAL;
-> > >     +    }
-> > >     +
-> > >     +    if (proto == htons(ETH_P_IP)) {
-> > >     +        const struct iphdr *iph = (void *)(skb->data + nhoff);
-> > >     +
-> > >     +        if (unlikely(thoff < nhoff + sizeof(*iph)))
-> > >     +            return -EINVAL;
-> > >     +        nh_min_len = max_t(u32, iph->ihl * 4, sizeof(*iph));
-> > >     +    } else if (proto == htons(ETH_P_IPV6)) {
-> > >     +        nh_min_len = sizeof(struct ipv6hdr);
-> > >     +    }
-> > >     +
-> > >     +    return nhoff + nh_min_len;
-> > >     +}
-> > >     +
-> > >      static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
-> > >                            const struct virtio_net_hdr *hdr,
-> > >                            bool little_endian, u8 hdr_gso_type)
-> > >     @@ -98,13 +134,15 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
-> > >              u32 start = __virtio16_to_cpu(little_endian, hdr->csum_start);
-> > >              u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
-> > >              u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
-> > >     +        int min_thoff;
-> > >
-> > >              if (!pskb_may_pull(skb, needed))
-> > >                  return -EINVAL;
-> > >
-> > >              if (!skb_partial_csum_set(skb, start, off))
-> > >                  return -EINVAL;
-> > >     -        if (skb_transport_offset(skb) < nh_min_len)
-> > >     +        min_thoff = virtio_net_hdr_nh_min_len(skb, nh_min_len);
-> > >     +        if (min_thoff < 0 || skb_transport_offset(skb) < min_thoff)
-> > >                  return -EINVAL;
-> >
-> >
-> > Certainly looks much better. But I'd like to ask, generally:
-> > doesn't the net stack need to protect against weird packets?
-> >
-> 
-> It does, but csum_start/csum_offset are not "weird packet" material,
-> they are skb metadata, not bytes on the wire.
-> 
-> For essentially every skb in the kernel, this metadata is produced by
-> the kernel itself,
-> from headers it has just built or just parsed, and the rest of the
-> stack (GSO, skb_checksum_help(),
-> fragmentation, netfilter, and every driver doing TX csum offload)
-> consumes it as an invariant.
-> The only producers of attacker/guest controlled CHECKSUM_PARTIAL metadata are
-> the virtio_net_hdr_to_skb() callers: af_packet, tun/tap, virtio_net,
-> and the UML vector driver.
-> 
-> So this is not "virtio specific validation", this is input validation
-> at the one trust boundary
-> where the invariant can be violated.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Thanks for the explanation Eric!
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> 
-> > It seems likely that not all drivers validate headers defensively,
-> > and incoming packets can easily become outgoing ones.
-> 
-> Packets coming from a real NIC are CHECKSUM_UNNECESSARY,
-> CHECKSUM_COMPLETE or CHECKSUM_NONE.
-> They do not carry a remote-provided csum_start.
-> (Remote checksum offload is the rare exception, and there the offsets
-> are computed by the stack from headers it just parsed.)
-> 
-> Incoming packets becoming outgoing ones is precisely the problem here:
-> a virtio_net RX skb with VIRTIO_NET_HDR_F_NEEDS_CSUM becomes
-> an skb that can be bridged/forwarded/fragmented and then handed to a real NIC.
+- [High] pci: missing pci_resource_len() check in mpnic_probe() allows
+  OOB MMIO access
+- [Medium] The 1 MiB Tx buffer is split between MAC and BMC differently
+  in TXB and in TQS.
 
-Well:
+--
 
-$ git grep 'skb->csum_start\ ='
-drivers/net/ethernet/hisilicon/hns3/hns3_enet.c:        skb->csum_start = (unsigned char *)th - skb->head;
-drivers/net/ethernet/mellanox/mlx5/core/en_rx.c:        skb->csum_start = (unsigned char *)uh - skb->head;
-drivers/net/ethernet/mellanox/mlx5/core/en_rx.c:        skb->csum_start = (unsigned char *)uh - skb->head;
-drivers/net/ethernet/mellanox/mlx5/core/en_rx.c:        skb->csum_start = (unsigned char *)tcp - skb->head;
-drivers/net/ethernet/mellanox/mlx5/core/en_rx.c:        skb->csum_start = (unsigned char *)tcp - skb->head;
-drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c:         skb->csum_start = skb_transport_header(skb) - skb->head;
+eth: mpnic: add register init for the device
 
-What did I miss?
+This commit adds one-time CSR initialization to mpnic_probe() through a
+new mpnic_dev_init(). It programs the TXB, RXB, TQS, descriptor SRAM,
+AXI and relaxed ordering settings, starts the on-chip SRAM
+initializations and polls until they complete.
 
-> 
-> > So do we even need virtio specific validation, or is it enough to
-> > validate everything in the net stack, where we are poking at the
-> > header anyway?
-> 
-> The core stack cannot afford it.
-> 
-> 1) Drivers program skb->csum_start / skb->csum_offset straight into
-> the TX descriptor, and the NIC will happily write two bytes wherever
-> it was told, e.g. into the IP header of the frame we put on the wire.
-> Auditing/adding checks in every driver is not realistic, and drivers
-> must not pay for it.
-> 
-> 2) Catching this in the core would mean re-parsing L2/L3 in
-> dev_hard_start_xmit()
-> (or in every place that eventually looks at the transport header) for
-> the 99.99+%
-> of packets that were built by the stack and are known to be consistent.
-> That is far more expensive than one check at injection time.
-> 
-> 3) Failing at injection returns -EINVAL to the sendmsg()/writev() caller,
-> which is the correct and testable behavior. Failing later means dropping
-> the packet deep in the xmit path, usually with a splat: the commit being fixed
-> here (49d14b54a527) exists exactly because such a packet reached
-> skb_checksum_help() from ip_do_fragment() and hit the "offset (-6) >=
-> skb_headlen() (14)" WARN.
-> 
-> >
-> > Or maybe it's more a defense in depth thing?
-> >
-> > My worries:
-> > - more poking at the header, more cache misses, where we really
-> >   do not need that
-> 
-> I do not expect anything measurable.
-> 
-> af_packet and tun: we have just copied that header from user space, it is in L1.
-> virtio_net: we call eth_type_trans() right after, and GRO parses L3/L4
-> immediately.
-> 
-> The whole block is under the CHECKSUM_PARTIAL condition, where we already
-> do pskb_may_pull() and skb_partial_csum_set(), i.e. we already touch
-> this cache line.
-> Reading iph->ihl from a cache line we are about to read anyway is noise.
-> 
-> > - future protocol extensions that now will require surgery in
-> >   virtio, instead of just being passed through to the host
-> 
-> Fair, and this is an argument about how the check is written, not
-> about whether it exists.
-> The rule should be:
-> 
-> Only tighten the bound for the protocols we already parse (IPv4/IPv6),
-> and keep the existing generic minimum for anything else.
-> 
-> Then an unknown ethertype simply keeps flowing, no surgery is needed.
-> Willem's version does that. A new protocol would only be impacted if it wanted
-> csum_start to point inside what we consider the L3 header, and such a packet
-> would not survive the rest of the stack anyway.
-> 
-> So: not defense in depth, but validation at the trust boundary, where
-> it is cheapest
-> and where we can still report the error to the producer.
-> 
-> >
-> > What do others think?
-> >
-> > --
-> > MST
-> >
+> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_init.c b/drivers/net/ethernet/meta/mpnic/mpnic_init.c
+> new file mode 100644
+> index 0000000000000..f8ebb19766731
+> --- /dev/null
+> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_init.c
+> @@ -0,0 +1,553 @@
 
+[ ... ]
+
+> +/* A total of 1 MiB worth of Tx credits is available, in units of 128 B.
+> + * The BMC gets a guaranteed share of them whether or not the host is
+> + * routing anything its way, everything else goes to MAC TC0.
+> + */
+> +#define MPNIC_TXB_BMC_PVT_CRDT_INIT_VAL		800
+> +#define MPNIC_TXB_P0_MAC_PVT_CRDT_INIT_VAL	\
+> +	(SZ_1M / 128 - 2 * MPNIC_TXB_BMC_PVT_CRDT_INIT_VAL)
+
+[ ... ]
+
+> +/* The 1 MiB Tx buffer is partitioned between the MAC and the BMC in units
+> + * of 1 KiB. The BMC portion is fixed at 100 KB.
+> + */
+> +#define MPNIC_TQS_GLBL_TXB_CRDT_BMC	100
+> +#define MPNIC_TQS_GLBL_TXB_CRDT_MAC	(SZ_1M / SZ_1K - \
+> +					 MPNIC_TQS_GLBL_TXB_CRDT_BMC)
+
+[ ... ]
+
+> +static void mpnic_txb_init(struct mpnic_dev *mpd)
+> +{
+> +	int i;
+> +
+> +	mpnic_wr64(mpd, MPNIC_TXB_BMC, MPNIC_TXB_BMC_PVT_CRDT_INIT_VAL);
+> +
+> +	/* Zero the private credits of every traffic class, then hand the
+> +	 * unreserved ones to MAC TC0.
+> +	 */
+> +	for (i = 0; i < MPNIC_TXB_P0_CNT; i++)
+> +		mpnic_wr64(mpd, MPNIC_TXB_P0(i), 0);
+> +	mpnic_wr64(mpd, MPNIC_TXB_P0(MPNIC_TXB_TC_IDX_MAC_0),
+> +		   MPNIC_TXB_P0_MAC_PVT_CRDT_INIT_VAL);
+> +	mpnic_wr64(mpd, MPNIC_TXB_P0(MPNIC_TXB_TC_IDX_BMC),
+> +		   MPNIC_TXB_BMC_PVT_CRDT_INIT_VAL);
+
+[ ... ]
+
+> +static void mpnic_tqs_init(struct mpnic_dev *mpd)
+> +{
+
+[ ... ]
+
+> +	/* Only port 0 is used. A single traffic class is in use as well, so
+> +	 * give all of the Tx buffer credits to TC0.
+> +	 */
+> +	mpnic_wr64(mpd, MPNIC_TQS_GLBL_P0_0,
+> +		   FIELD_PREP(MPNIC_TQS_GLBL_P0_0_TXB_MAX_CRDTS_0,
+> +			      MPNIC_TQS_GLBL_TXB_CRDT_MAC));
+> +	mpnic_wr64(mpd, MPNIC_TQS_GLBL_P0_1, 0);
+> +	mpnic_wr64(mpd, MPNIC_TQS_GLBL_BMC,
+> +		   FIELD_PREP(MPNIC_TQS_GLBL_BMC_TXB_MAX_CRDTS,
+> +			      MPNIC_TQS_GLBL_TXB_CRDT_BMC));
+
+[Severity: Medium]
+Do TXB and TQS split the 1 MiB Tx buffer the same way?
+
+On the TXB side, mpnic_txb_init() writes MPNIC_TXB_BMC_PVT_CRDT_INIT_VAL
+(800 x 128 B = 100 KiB) to both MPNIC_TXB_BMC and
+MPNIC_TXB_P0(MPNIC_TXB_TC_IDX_BMC). MAC TC0 then gets:
+
+  SZ_1M / 128 - 2 * 800 = 6592 credits = 824 KiB
+
+On the TQS side, mpnic_tqs_init() programs
+MPNIC_TQS_GLBL_P0_0_TXB_MAX_CRDTS_0 with:
+
+  SZ_1M / SZ_1K - 100 = 924 (1 KiB units) = 924 KiB
+
+That lets the scheduler use 100 KiB more for TC0 than TXB reserved as
+TC0 private credit.
+
+Suppose TXB_MAX_CRDTS limits how much data the scheduler can have
+outstanding in the TC0 TXB pool. Could a Tx burst that fills TC0 then
+overrun the pool once the Tx datapath is running?
+
+If the BMC only needs a single 100 KiB share, as the TQS comment says,
+does the "2 *" in MPNIC_TXB_P0_MAC_PVT_CRDT_INIT_VAL leave 100 KiB of Tx
+buffer unused?
+
+The TXB comment says "everything else goes to MAC TC0", but the code
+subtracts the BMC share twice, so the two don't match either.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+> --- a/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_pci.c
+> @@ -108,6 +112,10 @@ static int mpnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	pci_set_master(pdev);
+>  	pci_save_state(pdev);
+>  
+> +	err = mpnic_dev_init(mpd);
+> +	if (err)
+> +		goto err_free_mpd;
+> +
+>  	return 0;
+>  
+>  err_free_mpd:
+>
+
+[Severity: High]
+mpnic_dev_init() reaches much further into BAR 0 than anything the
+driver touched before. Before this patch, the furthest access was
+MPNIC_BDQ_SPARE in mpnic_rd64(). Now the TXB, RXB, RPC, ROF, TOF and
+PEMO_WRAPPER blocks are all programmed.
+
+The highest one is MPNIC_OB_ATTR_RDE_P in mpnic_ro_init(). It is
+0x9a001a in u32 units, so the writeq() lands at byte offset 0x2680068.
+BAR 0 therefore has to be at least ~38.5 MiB for this sequence to stay
+inside the mapping.
+
+mpnic_probe() maps BAR 0 with pcim_iomap_region(), which accepts
+whatever length the device advertised. Nothing checks
+pci_resource_len(pdev, 0) against the register file the driver is
+about to use. mpnic_wr64() and mpnic_rd64() only test that uc_addr0
+is non-NULL, then add the register index unconditionally.
+
+Suppose a device presents a BAR 0 smaller than that. It could be a
+misconfigured board, or something spoofing this ID behind
+Thunderbolt/USB4. Won't the first out-of-range writeq() in
+mpnic_dev_init() fault on an unmapped address during probe, or
+scribble over whatever happens to be mapped after the BAR?
+
+Could mpnic_probe() reject the device with -ENODEV before calling
+mpnic_dev_init() when pci_resource_len(pdev, 0) is too small? Does the
+hardware have a documented BAR 0 size that could serve as the bound?
+That seems better than deriving one from the highest CSR currently
+defined in mpnic_csr.h, which will keep moving as more blocks are
+added.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922-linux-mpnic-v1-0-236844f53072%40gmail.com
