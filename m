@@ -1,144 +1,101 @@
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0B23EA977
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.234
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790235174; cv=pass; b=Qb+sp0ZSfBJN999K34rLIy0E8+hVMqrtSL2DqWit6gIWhvYd8GE8i18qx20m+Xnq/I5CVq/wJaf6Q3qi1942FBDrIdQvh9v8kekB598jYn2Hfll8S2kZJ1Y8uYoB8VMzPI186zU+49b9YomrKveh9oom1r7OdW5patELp7VMCIM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790235174; c=relaxed/simple;
-	bh=C7Q80lA+Q33sPKiUqQtfIT3BOu0fKzL2XuIyWEvJ7fU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PQqh4b2frWoYCBf3AzxrwsH1VgfdIKHRLns1jNZEtEKL6hwvLsLhSUQmEJg6USxqlPus//+iYFd2y++HSgCBgIrRvjQTAYfKHpFT9cyosE4qa25CeD0UJsk4pSvWpDoxXU6LSVv8RCNIiQjAfEM+71m4Tf3qdnVo61oJxJipDS8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jOCjQU1r; arc=pass smtp.client-ip=74.125.230.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA033B71C3
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.59.206.189
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790235271; cv=none; b=C+g7WTli6xC1KhC6dLUerKmoPLNNvpRXj5bcPI7R+SwnxpiWxwdbOO7rT2dZ7RxbEc90Juu0EUSn8qMMR6chMmemh/8d2e48xLi4Xb6KpP+F627Zd+PVoFHYnyxes39kyTXqdaf8ubbwMC++lgt4tzwA3ge3ciNjdd3eXigOpH0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790235271; c=relaxed/simple;
+	bh=MygDLt77CAWexrvXWHNdRVysOGikwZW7aGyxat4mspo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sUn8sXvaHBhs4+6FNbxXWY2Bnh1xcga6w7QueNCw9uIluN3IigWWO5OteJrvJi62bT0v7dW0CIZ4KSJWZhJUukSkgeV1hEV3jENNlHVAqtK0QEB38L0chHtHvyS05JTkDFrWk9GEshRSZGtImgXxSfzEgHq4yqDdWs4JdtGqYqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=LuS1KZ33; arc=none smtp.client-ip=194.59.206.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jOCjQU1r"
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-52fb767cc97so17255621cf.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:32:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790235172; cv=none;
-        d=google.com; s=arc-20260327;
-        b=evGEfMHIRELl8kFLQfx5oK1VbQDajSxMugOTbxPX04IswDNpxpSCnUVpgrio1ccbj4
-         Yx6hjE8PYrzG+ah1EZCvIxXUkvuEdz6aPsWH78H0kvoe4SF6vtLFZDPVbWfE7T/fozJ0
-         U+tkV/xGkcb9ur/GHqab3RQW/fX3aaMLij+kK2dnHYmB8W5rpYknBP+70jGOGK9H6Pes
-         CoU5XBQ5zUS2fVcs9t1loJaLjTW6nWzmGnImXzuhvHP109SlwgZdq6VcVMudhSQvv6j6
-         ufEYRgXV/iyNY7HM59jC+F0g7HF+NpuesL8+Sn1iju1zcE67om1fpVGbAbsrVT+IHp0j
-         cG8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IsRKbGkbqACkLxIegEd74OCnSoxNuZTWHIhZTugA1a0=;
-        fh=2NCFRdTqIn1dJAVfkItliBhstbV7m878uWQjTwpWXL4=;
-        b=rL6qkWqxXQj1YPM959gVv1sniDtiFjIWODOdcDT/Jyyj8teGX5h6B0Q6XCmUTuB5As
-         Ttdf37BlhSsgyTYI++ejswjBejiINLGCZ5q6B5IHLOsf3fQ4Bbega84YfYnlnXuWMiR7
-         mgxdUfb5KhLTWuXiQGpbkQPLPHZkU/5X8mpCw4TKwMbBoHpeLnpNE8WqWs03ohdVj9oM
-         mOLFUhZN9b6+xLD+5LxMs7p1mccZMKnlkaP6HB6D3/5LMUn4MaJIO0KbruHO8PW2b62o
-         pWxz+ShzgPersxVC2b6WnGANWI06IMtNn+zZerVTcU3PCZdcEstqUEns4AtwD43Ji9XG
-         J4OQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790235172; x=1790839972; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IsRKbGkbqACkLxIegEd74OCnSoxNuZTWHIhZTugA1a0=;
-        b=jOCjQU1ruAKzR7Ay3ZlWiQ5MvNFPEMUH6JBVSOhKebRNbNsuKeHys35QWXhkFC5/ID
-         fMnfyv15mpeE+LMgYzL80ZxQ6M/14GAl3gTrLV+CbscwwTwbTXBlLaABcU/BJGSdgLFX
-         1PEPEFyZMkw6+A+bmbc7W5VyVGfxuoqU4SG60u0ZurJbm7bCVmlB+2g9n26TpckUFpdi
-         CnKfC/3XjWRvwpf02QiiWbs85ce/SP0YugQ/KnrA0GBqFTm29omB2KDlIw+r/IraPBhA
-         GzQizDK76uG86Fbm75iu3lueodSZJf8tOtH1w/ar1IiyfnU56tAwHrn1BPjz9GXxL1gY
-         7uMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790235172; x=1790839972;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IsRKbGkbqACkLxIegEd74OCnSoxNuZTWHIhZTugA1a0=;
-        b=KtFcXBq4gOzLpGQLhlz/9tUPz+pJHIRE3WunE69JAp+9AiHStAu4J39wJuV0PgH4Xn
-         x3qOcIPp/n0YHTo0ivrIX6mgEubV1cLffma2EwOnfzLbaQ0UAFil+k65VDAgeQQ6swbZ
-         cTmh6lPPYr5j8ybGoxKTDFpDh+jUz+1f7P2d7UuopRd4OdQC0b5xbHi9E5/9ncbOcSQb
-         CmcFzOQ2jVGxlNwCWUNiI5A5ALU2wxjenCZcqJHPNqJ1IqU0UxLyXXFW4RNwipRiMPzY
-         z44oJO9tTjHycjRhsmbMDlPfgBLXqsUz/KATwpUPoRRChlI3kLCeLimxf9Mj7Gq7TTEu
-         4Qiw==
-X-Forwarded-Encrypted: i=1; AKwUvBxVpLJEbmidWaPKeu8JOXa28EWSAmWCCDTQXmU1glrquoJhzm9SSP0yf9W7iLu5apaz3TTI7XE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nGRBTWro5f7t87InxteGpEP8ttkNVGr0vXCbLl8L9ETsf8G5Zu
-	/FWfWbpAmoLgGJLaIUHp0N3TiUzx5RUgCvX/nJjRWsSxdhDzFH80nXi4HXbkyZ2PFLUS5q2kizy
-	mp01qE+vKLUqx4+AKWYhGvJyJZeorRqsNP9ogKibL
-X-Gm-Gg: AYBFou0lIqibxyePTm93lMdo/8uHjttGPtUcG4UDjq0ET4nkL3wboHtJE3obdKaAKCd
-	u2DLkc+9UzFp6qQ83COs886SExJSDvIuFFZfKNWP2G8V6/yVUGQKMn1JgNr1Ddvx34vDTkZyQ6T
-	erqs0ziG2S4Fm15lAPe5zOoTQo7b5unraCR5kST2KWZ2etsvXTK/h62tebygyOHMeROA638jG3/
-	DIsj7UFzfwr7qi1D96ZMPtAsrTr2fWS2eGVUzNUotplHN/8rE4p0Fkc7VPs3z/TUVaGI4H3iDe9
-	qJfFODG1Nyi6kz37UH+7GJifNyaMLeXkv0w9bF4kL37p4XAx9q3N2mhniIjrq7Hs0/hIgwNWq6F
-	g23rdZNbeBGTKlZikSiKlyqDVk+RpqDBTS7GB0RYjZ9XjzA26KGKhWsVvLtoke97BOkCM
-X-Received: by 2002:ac8:6f10:0:b0:532:d72d:3ead with SMTP id
- d75a77b69052e-532feada797mr10058701cf.29.1790235171181; Thu, 24 Sep 2026
- 00:32:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="LuS1KZ33"
+Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4hr5F70Rh2z4NB0;
+	Thu, 24 Sep 2026 09:34:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1790235259;
+	bh=MygDLt77CAWexrvXWHNdRVysOGikwZW7aGyxat4mspo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LuS1KZ33CklYBOlwsAqs9/QrxI9dSGf8IeCa8Vx/JpgwBH7xzIy8OyQW1wwQYgKw+
+	 4orq/C+jHH+X4bgwZoi8dxvn+8b99Bayalo5pK03K5MOzromw/9OZ1548Rc5eMcwUh
+	 3iHSMZtrBqAp6KozHPLKJEq/wWIW+RpDdhpfgYyg9ZJr2k7Y8C1TOuCexXP3y89Up1
+	 XZBseHFEmdxEYTsZIy8UlwBs1l+g52VYBlyVaJcV2Y5oVz0Jl26gl+ZS0puowDEp8s
+	 etPQpFXc3Kg3FZ4Z7OeSQfLGp6ZH7T0DgvrUwC4B5i0VaY04HsIFhENXgaqJ2RbmHO
+	 QbTqhmFh5hI2A==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4hr5F66rPXz7xFf;
+	Thu, 24 Sep 2026 09:34:18 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hr5F55zj7z8svW;
+	Thu, 24 Sep 2026 09:34:17 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id BFD145FA13;
+	Thu, 24 Sep 2026 09:34:16 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <4f37f217-fb94-4d4b-a2aa-9df8069c62bb@leemhuis.info>
+Date: Thu, 24 Sep 2026 09:34:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922113924.3165190-1-edumazet@google.com> <arSBcaIwhIjbg4De@fedora>
-In-Reply-To: <arSBcaIwhIjbg4De@fedora>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 24 Sep 2026 09:32:39 +0200
-X-Gm-Features: AclHuK8b4mrQkdDc81VP_qATmc65GK1NhHAx1CgXDN5YVHuiGpAkXIOnBnpKm0E
-Message-ID: <CANn89iJp=7kFQ57yrCPgHRuyZVcTNKOGaT=EhAQnaOgKUZk50Q@mail.gmail.com>
-Subject: Re: [PATCH net] vlan: ensure sufficient headroom in vlan_dev_hard_header()
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Zixuan Chai <petalzu987@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] e1000e: heavy packet loss on Lenovo ThinkPad P14s
+ Gen 5 (I219-LM, Meteor Lake) after K1 re-enable; fixed by disable-k1
+To: dima.ruinskiy@intel.com, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com
+Cc: Javier Herrera <javier.herrera@afronta.com>, vitaly.lifshits@intel.com,
+ netdev@vger.kernel.org, regressions@lists.linux.dev,
+ intel-wired-lan@lists.osuosl.org
+References: 
+ <CAKRuCQLWEcci9hPgNUmvq44Bd2H30T5_vP=exMjsknXMN5Yh9A@mail.gmail.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: 
+ <CAKRuCQLWEcci9hPgNUmvq44Bd2H30T5_vP=exMjsknXMN5Yh9A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <179023525718.4133067.16941654907970362532@mxe9fb.netcup.net>
+X-NC-CID: cGcaaXxBdAKNLYFFv6hi9U+IhSapvlba8V2FM/uAY+tvOOFUJOE=
 
-On Thu, Sep 24, 2026 at 3:48=E2=80=AFAM Hangbin Liu <hangbin.liu@linux.dev>=
- wrote:
->
-> Hi Eric,
-> On Tue, Sep 22, 2026 at 11:39:24AM +0000, Eric Dumazet wrote:
-> > Callers that only reserve ETH_HLEN or less (such as llc_alloc_frame() o=
-r
-> > br_send_bpdu()), or skbs allocated before dynamic device/headroom
-> > changes (e.g. toggling VLAN_FLAG_REORDER_HDR or bonding/team switching
-> > slaves), can reach vlan_dev_hard_header() with insufficient headroom an=
-d
-> > trigger skb_under_panic().
-> >
-> > Use skb_cow_head() in vlan_dev_hard_header() when VLAN_FLAG_REORDER_HDR
-> > is not set to ensure sufficient headroom for the VLAN header(s) and the
-> > underlying device hard header.
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Reported-by: Zixuan Chai <petalzu987@gmail.com>
-> > Closes: https://lore.kernel.org/netdev/cover.1789987105.git.petalzu987@=
-gmail.com/
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > ---
-> >  net/8021q/vlan_dev.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> > index 2859cbac3f266b7c4e3f44f41280d33ab69c5270..3598ad0779f050d25c6110d=
-e476fe9613137f983 100644
-> > --- a/net/8021q/vlan_dev.c
-> > +++ b/net/8021q/vlan_dev.c
-> > @@ -55,6 +55,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb, =
-struct net_device *dev,
-> >       int rc;
-> >
-> >       if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
-> > +             if (skb_cow_head(skb,
-> > +                              dev->hard_header_len + dev->needed_headr=
-oom) < 0)
->
-> Should we use LL_RESERVED_SPACE() here?
+On 9/15/26 10:57, Javier Herrera wrote:
+> 
+> Since commit 578294b8b60d ("e1000e: Reconfigure PLL clock gate timeout and
+> re-enable K1 on Meteor Lake") the integrated I219-LM in a Lenovo ThinkPad
+> P14s Gen 5 (Intel variant, Core Ultra 9 185H) shows constant packet loss
+> and erratic latency on the wired link. Wi-Fi and a USB-C RTL8152 adapter on
+> the same cable, switch and router are fine, so the network itself is not
+> the problem.
+> 
+> Setting the private flag "disable-k1" fixes it immediately, so this looks
+> like another system where the PLL clock gate reconfiguration is not enough
+> and the DMI quirk table introduced by that commit should be extended.
+> [...]
 
-I think using LL_RESERVED_SPACE() would force a reallocation in some cases.
+Dima or e1000e maintainers, could you please submit and upstream a quirk
+entry to resolve this regression? Ideally with a stable tag? Javier
+afaics provided everything needed for this. Reminder, Linus rule of
+thumb wrt to regressions is "generally fix them within a week,
+preferably before the next rc.":
+https://www.kernel.org/doc/html/latest/process/handling-regressions.html#on-how-quickly-regressions-should-be-fixed
 
-In V2 I will however add READ_ONCE() to comply with the bot findings.
+Or is there some reason why the quirk entry is a bad idea here?
+
+Sending this as things looked stalled from here; or was there some
+progress to resolve this already which I missed?
+
+Ciao, Thorsten
