@@ -1,180 +1,93 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CE049F116;
-	Thu, 24 Sep 2026 20:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48804B53FD;
+	Thu, 24 Sep 2026 20:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790281277; cv=none; b=rDu7LaGZWPR3Kjk43Yejep8Di5lcyAT4WaJWe+B0DO6SNixxoM8OAJWRJldsDAemCOxaIE6q6Q5YGLgjmvIydkUZ0Yz69jXBiTw+zDcmpPYl3u1j4Wj9BbAnYwFjtSASx7ABPXCMGhIAng2+l755270vgoSllwsbQgeYUdwHdok=
+	t=1790281386; cv=none; b=ky/tEHZdqPaRTOW2GpWtmvSQaiov77kAe627uHIbTkApRU/KSCtPz/j/phr8ecDNmiAo1RXMJjROALQEcYSx33rsUpKfRD5v9G3Eml9YgiT2qOPPivuKCJfVA2WuKYJTqaECs0hOab6q1H1qJkD+j4Xe5usSZ/u4AHwCxVZtDV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790281277; c=relaxed/simple;
-	bh=slkHVK5U/MWavFpAcps1cRcNaZnjBApvcqiyIpsGwVE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UBeieHFSgIFCAijIELTSZSh1CtgveD0potQmOspUXjTexlF9xR+BLrmywXO3QU29ng9HZb1Ub96VBIfMeAAw3hQgI32iA2WY6W6/YALeObtlACu6LX8LNSUhP6K1oSfUka+v1S4xBHv6QQ/qUp6CNOfFLa86Os+cyXgdP4BZ8qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=Ac1QlAXs; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1790281386; c=relaxed/simple;
+	bh=DG4/JC2yQl/yudwx9CEAJ2szViywAi4MSaaVut8TaYM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ghhvZXevEgCN9MwkdJIwbrgl/naNxawytdXNI4yWBvYgbNK85XRDeh5i59lgbxUl9lb8J+nx2ozJnwPFA4d079/pMcJ08sc2hJmZ6aMEK3eumg74qYJ9eKpIhjbupgTryXjByxam45XQWnNMK0Opze7olYyI1Q6ywl5YXscq0o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dbxuM/N4; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="Ac1QlAXs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=Y5qRHSz2LIYPtpRF3z47AMREZz0w7fd5T9syEn/c6w0=; b=Ac1QlAXsMfBBT1NiFTB6Bm0q/o
-	qwm8EMX3Mhv4bNWiojSat7TYbHq7f3GgHksPHgArzS/JNIcCIc8bZ66nh7NoVJv4gyJMu8kVc0YWq
-	XSZUwdvVE46gYAZ0riMaMoBfUVuyPw0asbKKEAN77HFH+nM7pB36RYKzbgbG1rQEFI0TDfNigTWt8
-	qtFyIMUNkbk+np5OOKgBcEFWHItM3EemOATKmya4WDE4GiVO0zsNhnuxQollowvLsz9v5J+ZTLdtZ
-	EFDGUAOD/yik3+e5cL254YDUgN7zdyYFJ5ymC3ocgHwlSJqzlXUH7e5iPdub7zPtnZ3BqB2tv/uWP
-	IyjEKI6w==;
-Received: from [151.115.150.205] (port=41492 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1x9pwN-0000000G2mf-3l7m;
-	Thu, 24 Sep 2026 22:21:11 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: [PATCH] tipc: prevent GCM nonce reuse on peer key changes
-Date: Thu, 24 Sep 2026 20:21:05 +0000
-Message-ID: <20260924202105.3722778-1-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dbxuM/N4"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DC4A91A1007;
+	Thu, 24 Sep 2026 20:23:00 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 97AB560738;
+	Thu, 24 Sep 2026 20:23:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3AC9103290CA;
+	Thu, 24 Sep 2026 22:22:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790281378; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=fa6Gg0qJE+U990tz2t717JRwoVprlww61vWO4kxSzRs=;
+	b=dbxuM/N4ejppQ/Bcgc8rcjUe86thO4T7WnlKalC0oxnkHCGbNeHxI+cqM1l1zQl9soHQJ2
+	tyjAZcM/xMEFHRTjCLu2aOtyYsRZ+M8/KgV8XkNVc9ys4VGQRS9GUUTFItPjGSfT8CTd8L
+	U6Md75rSqM9mvYIONUAZIqfXnxmr+LTnI0Gv0E7RKteh8SBY3lNTh/HRbJb7HR4aDyVc+s
+	arnpijUZOoWrrfIv0Re4Rq5LaZL8lp7HFyVDd+AprOf/EtMBGQkcO/HawRjLHRSPF0SztQ
+	Tcu2Xa1Fw2mvDgs2QRW9BTQFx3sT+zVuuwvZqLFLjGYnKbgOzgAPm84JKCISrw==
+From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Subject: [PATCH 5.10.y 0/3] net: preserve skb_end_offset() in
+ skb_unclone_keeptruesize()
+Date: Thu, 24 Sep 2026 22:22:41 +0200
+Message-Id: <20260924-cve-2022-49142-v1-0-0bfea684c11b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3ZJu2mL+CrGA5RV1wOQVomG8
+ O5WOX6TzL8iS1LJOFUrkiyadRoL7KFCvHfjTUiHYrDhYFp2FBehAibXWsfU+N6HcOSusQ7lNCe
+ 56vsfPMPX1tQfXPY9v/qHxOevhm37AsDQDDR6AAAA
+X-Change-ID: 20260924-cve-2022-49142-75b56682a714
+To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+ Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>, 
+ Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, Marco Elver <elver@google.com>, 
+ Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Benjamin Robin <benjamin.robin@bootlin.com>, 
+ "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ syzbot <syzkaller@googlegroups.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790281368; l=764;
+ i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
+ bh=DG4/JC2yQl/yudwx9CEAJ2szViywAi4MSaaVut8TaYM=;
+ b=k8cYsXhFHaztfJXdSGgzE6f02bFM2G30xJRtO+OEG5/kYQIeNQ8IoOWrZX79UyYryH/2nQqV+
+ bzViCY5wqmWDqk6MkAsU2PgpuAKzed3NaGGTaVdJPbsEB0Gr3nmIiCm
+X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
+ pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
+X-Last-TLS-Session-Version: TLSv1.3
 
-TIPC can encrypt traffic between nodes using a different transmit key
-for each node. In this mode, the AES-GCM nonce for a packet sent to a
-known peer consists of a 32-bit prefix (a per-key salt XOR the peer's
-address) followed by a 64-bit counter. That counter is stored in the
-peer's RX crypto object. When the peer reports a change in which key
-it uses to receive packets, TIPC resets this counter. The sender can
-still be using the same TX key and salt, so subsequent packets reuse
-earlier nonces. This nonce reuse breaks confidentiality and exposes
-GCM's authentication key. This makes forgeries trivial: an attacker
-can exploit CTR malleability to alter captured ciphertexts and use the
-recovered authentication key to compute a valid tag for the modified
-ciphertext, under the same key and nonce.
+I backported two other patches to make the series apply cleanly.
 
-Use the TX key's existing aead->seqno counter instead. All encryptions
-using that key object share the same atomic counter, so concurrent
-encryptions get distinct nonce counter values. The counter survives
-key activation and peer reconnection, and peer key-status reports
-cannot reset it. This prevents those transitions from causing nonce
-reuse while the same TX key remains installed.
-
-The nonce format is unchanged, and receivers do not require consecutive
-counter values, so sharing the counter across peers remains compatible
-with existing receivers. A pre-existing check still invokes key
-revocation in the unlikely event that the counter wraps to zero.
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Assisted-by: LLM
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 ---
- net/tipc/crypto.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+Eric Dumazet (3):
+      net: add and use skb_unclone_keeptruesize() helper
+      net: add skb_set_end_offset() helper
+      net: preserve skb_end_offset() in skb_unclone_keeptruesize()
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 16f1ed1..4409bdb 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -144,7 +144,7 @@ struct tipc_tfm {
-  * @rcu: struct rcu_head
-  * @key: the aead key
-  * @gen: the key's generation
-- * @seqno: the key seqno (cluster scope)
-+ * @seqno: the per-key TX nonce counter
-  * @refcnt: the key reference counter
-  */
- struct tipc_aead {
-@@ -190,7 +190,6 @@ struct tipc_crypto_stats {
-  * @rekeying_intv: rekeying interval (in minutes)
-  * @stats: the crypto statistics
-  * @name: the crypto name
-- * @sndnxt: the per-peer sndnxt (TX)
-  * @timer1: general timer 1 (jiffies)
-  * @timer2: general timer 2 (jiffies)
-  * @working: the crypto is working or not
-@@ -219,7 +218,6 @@ struct tipc_crypto {
- 	struct tipc_crypto_stats __percpu *stats;
- 	char name[48];
- 
--	atomic64_t sndnxt ____cacheline_aligned;
- 	unsigned long timer1;
- 	unsigned long timer2;
- 	union {
-@@ -1051,14 +1049,11 @@ static int tipc_ehdr_build(struct net *net, struct tipc_aead *aead,
- 	WARN_ON(skb_headroom(skb) < ehsz);
- 	ehdr = (struct tipc_ehdr *)skb_push(skb, ehsz);
- 
--	/* Obtain a seqno first:
--	 * Use the key seqno (= cluster wise) if dest is unknown or we're in
--	 * cluster key mode, otherwise it's better for a per-peer seqno!
-+	/*
-+	 * Keep the nonce unique for the lifetime of the TX key,
-+	 * including key state changes and peer reconnection.
- 	 */
--	if (!__rx || aead->mode == CLUSTER_KEY)
--		seqno = atomic64_inc_return(&aead->seqno);
--	else
--		seqno = atomic64_inc_return(&__rx->sndnxt);
-+	seqno = atomic64_inc_return(&aead->seqno);
- 
- 	/* Revoke the key if seqno is wrapped around */
- 	if (unlikely(!seqno))
-@@ -1237,7 +1232,6 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
- 	tipc_crypto_key_set_state(c, 0, 0, 0);
- 	for (k = KEY_MIN; k <= KEY_MAX; k++)
- 		tipc_crypto_key_detach(c->aead[k], &c->lock);
--	atomic64_set(&c->sndnxt, 0);
- 	spin_unlock_bh(&c->lock);
- }
- 
-@@ -1384,8 +1378,6 @@ done:
-  * It also considers if peer has no key, then we need to make own master key
-  * (if any) taking over i.e. starting grace period and also trigger key
-  * distributing process.
-- *
-- * The "per-peer" sndnxt is also reset when the peer key has switched.
-  */
- static void tipc_crypto_key_synch(struct tipc_crypto *rx, struct sk_buff *skb)
- {
-@@ -1436,7 +1428,6 @@ static void tipc_crypto_key_synch(struct tipc_crypto *rx, struct sk_buff *skb)
- 		if (cur)
- 			tipc_aead_users_dec(tx->aead[cur], 0);
- 
--		atomic64_set(&rx->sndnxt, 0);
- 		/* Mark the point TX key users changed */
- 		tx->timer1 = jiffies;
- 
-@@ -1501,7 +1492,6 @@ int tipc_crypto_start(struct tipc_crypto **crypto, struct net *net,
- 	tipc_crypto_key_set_state(c, 0, 0, 0);
- 	atomic_set(&c->key_distr, 0);
- 	atomic_set(&c->peer_rx_active, 0);
--	atomic64_set(&c->sndnxt, 0);
- 	c->timer1 = jiffies;
- 	c->timer2 = jiffies;
- 	c->rekeying_intv = TIPC_REKEYING_INTV_DEF;
--- 
-2.47.3
+ include/linux/skbuff.h | 26 ++++++++++++++++++++
+ net/core/skbuff.c      | 65 +++++++++++++++++++++++++++++---------------------
+ net/ipv4/tcp_output.c  |  6 ++---
+ 3 files changed, 67 insertions(+), 30 deletions(-)
+---
+base-commit: 1797d8bf8d0c2e74defad605d14e3553d43a3caf
+change-id: 20260924-cve-2022-49142-75b56682a714
+
+Best regards,
+--  
+Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 
