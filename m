@@ -1,72 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734C7468C28;
-	Thu, 24 Sep 2026 16:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E06E45D934;
+	Thu, 24 Sep 2026 16:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790267453; cv=none; b=fb1ayPgxULJUl5AozT8hvr7MRe8a1YguEn3+NcQoezTh79y5WDLB+lrq3oECjKOjcvKkR/2JaYIE9nYGM/HkxMyW5iftxWov9JyAHBS3fCGg2eIo99hb9l8UzviswAYWupPoCyXjqNaMbrAsWmOow1jeyPnCp/U6CNJvkP1k7Rc=
+	t=1790267463; cv=none; b=guIM6nXde3xnf1DNzzYJRwxdDJ2RjtiehtpbX3wLnCVbi6OdUeiRjUu7Tpf6QfukDQ8R6kZtpNNNOX/8CNjDAmtiN/CCZMhDv7W/Wx+Vd8pEU+95JAQ9DiWBY6IgTs1VZ3w+iQbkATUXdcqXWqXWdFwNOoeNthcM2D4CJUH2P0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790267453; c=relaxed/simple;
-	bh=VRNBHSIWdwtv4h7puBfeFolZ0hxEXRrTi9PpmBCxHIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ek8zX6rvmJtDY3x04kpzAht1vvf1i5UjO6iG4P8C8hEPYXnd9yoznRmJ8J003n33iZ05Dbg3qngIibCcKwU5qvV5UGBvGnza1Vrm5YHdQDjClHies2Sn+WnWiAnEopuu4xCpu3EBR2VjIOlFNyWRJdAjBXQNRXICZ1TYdJZk2cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luNjR/p6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790267463; c=relaxed/simple;
+	bh=AW69JSTuKRu0+owu5Z9DZUhFDLudIJOEddmW6LlPCNw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=g5NwW8T4Z8z36n0O580aIRDMMlhg5QGn4AUIF//DgvQuoNkNg0ORDlw0CjqlLdzwgESHgeZMnBQibV9S3CYLHpa//dXC4MgKyR9nz11/hHphnAqe+jzaycsB6/EVH18bOcpErV4wUY6JpYk3vsuWvqUZNlvplooYGhNpvByn9eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Cv687Kf2; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luNjR/p6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977C31F000FF;
-	Thu, 24 Sep 2026 16:30:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790267452;
-	bh=4X2jrfez8+9jMVqiE2XvaHZSBVJggR4QyEv+6Cs3MIw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=luNjR/p6QZfdYSMeTKfOfEjkWtfZEIXLTqEOLk1LLNcwP1EHgCq/YTlfYu8vSS1lN
-	 OTN1Ayc/C7l/cCLNKUnVHDl2na81EvFGKg2yDoVUEsCaqoPJ9f04ufXCX/sHqODs1V
-	 ARlk2pXlgYJ1ZjJj6+L6gXwwSHuMBIAmzOYfHjw9dfSEeNzfDlD8UVpm4gfXO53oGP
-	 4yQZzHtrjCAaI0ySWLsGsWic6YiaK26cnkf9bElT0RoLsK3HsXzjdOP86yVySVUirF
-	 9D8auDCzcKImbfKH/dpFTwL9YaJj39oJDesIBtUJYPw+nU4N+PIaaat6V/jK+RHlnu
-	 gYvcK/2LdVpJw==
-Date: Thu, 24 Sep 2026 09:30:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: maxime.chevallier@bootlin.com, recv.jo@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- joabreu@synopsys.com, jun.ann.lai@intel.com, yi.fang.gan@intel.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v5 0/5] net: stmmac: Fix double VLAN 802.1ad tag
- handling
-Message-ID: <20260924093051.71e9cf52@kernel.org>
-In-Reply-To: <20260920153516.103461-1-ovidiu.panait.rb@renesas.com>
-References: <20260920153516.103461-1-ovidiu.panait.rb@renesas.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Cv687Kf2"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E96D74E4105F;
+	Thu, 24 Sep 2026 16:30:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AEA5660738;
+	Thu, 24 Sep 2026 16:30:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0E2E41032952B;
+	Thu, 24 Sep 2026 18:30:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790267458; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dhFm/PLOniIQxvCkDITkzQzqbwdfD5DtiTHbFqGEDOw=;
+	b=Cv687Kf2jLWjj7JAKOj+GR15zorz7Tfz7B+YYC4ycRp8S9lbsf+qO3nwk+1NyBIG2nSUu0
+	jNL9TF9/vzNvz91w8vnz6UB3z8mo8QBoEpJYuRHJfKNUOTKHLht7UFT5aUMUXJpTvq6hbq
+	iRcdUTwm82OD+8rcKj5Lw8CMxpPvCiDAZ6nasY+GxukuIRVXW6Sx7ODRTNZCCap3fo7STs
+	20MfaOn5q3FL6zwkwh1zmWYjQnPCV6GBQQdNpqsRPne7Tb5EeMPfr1Xv4/bL6eTWJKnUzU
+	6IJxOTWgO2MSXJE7PJNwWEqJEafpzgjlaK8uIEEmPnrAHRY7BlIQj8XqckUxNA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 18:30:52 +0200
+Message-Id: <DLNOUHOHFIAT.2CM5NXJLGRM4H@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net 1/3] net: macb: never give hardware a NULL RX buffer
+Cc: <netdev-bot+sashiko@kernel.org>, <conor.dooley@microchip.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <nicolas.ferre@microchip.com>,
+ <sean.anderson@linux.dev>, <atenart@kernel.org>, <linux@armlinux.org.uk>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <nb@tipi-net.de>,
+ <vladimir.kondratiev@mobileye.com>, <gregory.clement@bootlin.com>,
+ <tawfik.bayouk@mobileye.com>, <thomas.petazzoni@bootlin.com>,
+ <maxime.chevallier@bootlin.com>, <stable@vger.kernel.org>
+To: "Jakub Kicinski" <kuba@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260918-macb-close-v1-1-05e32ce98813@bootlin.com>
+ <179010942002.2160803.8691011751847108495@kernel.org>
+ <20260923184756.16ce33a7@kernel.org>
+ <DLNN7LYYGP7L.3OSN8JZNC37PS@bootlin.com>
+ <20260924084104.25099f60@kernel.org>
+In-Reply-To: <20260924084104.25099f60@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, 20 Sep 2026 15:35:11 +0000 Ovidiu Panait wrote:
-> Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
-> hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
-> than using the actual protocol from the packet. Because of this, packets
-> that contain an 802.1ad outer tag are incorrectly passed up the stack as
-> having an 802.1Q tag.
+On Thu Sep 24, 2026 at 5:41 PM CEST, Jakub Kicinski wrote:
+> On Thu, 24 Sep 2026 17:13:58 +0200 Th=C3=A9o Lebrun wrote:
+>> > If the AI interprets the rx poll side correctly these seem like a majo=
+r
+>> > flaw in setting the USED bit :( =20
+>>=20
+>> Yes the AI is correct (unsurprisingly). But two things:
+>
+> If it's correct then patch needs to be changed.
+> Please don't write puzzles for me to solve.
+>
+>>  - before this patch what happened was that HW read the NULL descriptor,
+>>    so not much better
+>>  - we can detect in gem_rx() using our ring buffer cursors that tell us
+>>    what we've managed to allocate, that we gem_rx() doesn't iterate
+>>    over descriptors that haven't been allocated
+>
+> Grammatically dubious puzzles at that.
 
-Failed to apply patch:
-Applying: net: stmmac: Remove VLAN perfect matching dead code
-Applying: net: stmmac: Stop toggling the EDVLP bit
-Applying: net: stmmac: Rename double VLAN references to svlan
-error: sha1 information is lacking or useless (drivers/net/ethernet/stmicro/stmmac/hwif.h).
-error: could not build fake ancestor
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config set advice.mergeConflict false"
-Patch failed at 0003 net: stmmac: Rename double VLAN references to svlan
--- 
-pw-bot: cr
+Sorry for the fuzzy message.
+Yes, Sashiko is correct and, yes, the patch will change.
+
+To explain more in detail: gem_rx() iterates over descriptors using
+RX_USED as signal that a descriptor was filled by the hardware. The
+risk is to reach a descriptor where allocation failed (and we used
+RX_USED as signal for the hardware to not fill it up). We can avoid
+that using our cursors (queue->rx_tail and queue->rx_prepared_head)
+that tell us the range of allocated descriptors.
+
+In concrete terms, we stop iterating in gem_rx() if
+
+	queue->rx_tail =3D=3D queue->rx_prepared_head
+
+or if
+
+	desc->addr & MACB_BIT(RX_USED)
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
