@@ -1,76 +1,140 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B72377EC7;
-	Thu, 24 Sep 2026 12:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A6A47D949
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790253656; cv=none; b=SoPq7AUuGwiP0+JWBjL9tXv5WSJt0yYy54Y8kX0pXT7C4mPdKm42uzH7y08TIXUcf0FrPaIKmA/+ldKLLNcNTho51N00/YDLHRmPkDxp7Pco2+cA+4UnbHlX5IJpFmEYJ669xm61SZynmomqpOp3xZKuMJT9TF89awvlG23VKvE=
+	t=1790253673; cv=none; b=rDu6uTRAGw5XK8L+U+GdQjjHaKgI4AchsD6ps3ppxbiX08n4u4SFM7gdSWZxmXm23estXQ/80TcFySRci/qX7j9MlOc7IFJGDHosp4Dnbe0x0zW3V0OZHK1jhBERlJ3WYsINm13pHmBIjFKN5KdH5Ju/NJTETT4fFn4LgUq6I4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790253656; c=relaxed/simple;
-	bh=ZcNh+l6SeSrEevzUyaiIbHJKDijrGi3F9DOB0SBLJpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ptMOMmF6xAJ2N1jcI4IEOdL38V6cw/pDgLCrIFCg5/XCKJkJ9AQ55G1o0FHvB0qIEB4DEmyXO04RtY2PYztlf11kc2cxzL9eKf/dyrU/QMfziIOmdektC1Zn1hmOqqN9N0EtMOMynLUOuhmUnYRtSJMIGnYfUmJilRZx9y0rf98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eEpIPmlD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790253673; c=relaxed/simple;
+	bh=0lQB1A6p8+X7aK18vQ2T7xJjipK5Cs4nvBNiXn5k5hE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lNk7UoJASpkTGNzq9D5+g7AIQw9J+e/3iXyHa06dDY49YZxbbaMjkFwXJN1CdnlEnPnapG2HMnmYd1OPT+BYF1ow612/SW7mBItUqUQNGvmaz8ydJCFZ1N6iqPnwrm1s3yYsdbIuufA/nMY6+j+mmoEwMfFLJG+JQc0Ob+RJIvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Ef6uSAnN; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eEpIPmlD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LlhL8lPQK+mGmThvRzcBFWd03/EYCS0ROgcvO+lg6ns=; b=eEpIPmlDWOZam71wIcPWwH/Ioz
-	eo5DxMECgO/mlGeLs861lSC0kURUaOMryIZVvkatNfERA1W5avV/zuuPs4N1UW7n9eXUEsiJ/lhTN
-	yHa8qqjgAawkok0KNH0/I2quTGeu2QdlYVO8+6ZpDh3Poqa49od5rLEnxgCcHVjF1s4M=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x9iks-006zVy-Nh; Thu, 24 Sep 2026 14:40:50 +0200
-Date: Thu, 24 Sep 2026 14:40:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Aldo Ariel <qwe.aldo@gmail.com>
-Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net v2] net: fec: reject oversized fragments before
- bounce-buffer memcpy
-Message-ID: <a230cd62-db31-4128-acfa-93501d30aa39@lunn.ch>
-References: <20260923203738.1583735-1-qwe.aldo@gmail.com>
- <f3c05fe4-b90a-484b-8b3f-0cf0b101a20a@lunn.ch>
- <CAP48Hfto4qc285B3Jw7ZRuC-wGf57JOBPZOdrrAt-aDfGcas8Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Ef6uSAnN"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so11533525e9.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:41:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1790253666; x=1790858466; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m+K9xI1+b45+Hx50rEe06X/tskVciHAk+ndafWRnnYs=;
+        b=Ef6uSAnN1G23WQfE+lhtOb0XuJdoDKeMU3FC4unVrPCFnGpUELO7+iSnm87cFobZEQ
+         vrBJuhed/4G4BJuc07lAVQLzhND4cDXfxmJ9OU8PgNfKh7FULDp1JbDsOaSp2PEfxekW
+         0n/0dG99ZwPfrKjiFWq1jBtiVv0ApgmuqnanaA1w33mEGa12NqylqyR3Bxd9e5k15z4y
+         I9d+7CkuxmHcBF5hKJxwkmA30kNUNAalh9XMzPjiUF7t6bctA+NcRiD4d/IrdARpih+J
+         p/3cc3zmUsx/QQ+nJPxD4TsIr2kuOXEIr+ExHUkWm95kROgz/Jn20n0tZN+j3DRwxHNx
+         jfHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790253666; x=1790858466;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=m+K9xI1+b45+Hx50rEe06X/tskVciHAk+ndafWRnnYs=;
+        b=PIAt7R1ulFhpZbX10orP50u298g5dblclpSEN7LBMa+AS0EntQUaoreRpLH0ycdMsL
+         j7fSuxgfpmPfFpC6Qc80fbzlygNl3Kj8sBhKwoNL8ppmLmn7L6En82e5Dcv1ymoa5k3X
+         s2HVVShsxzeAWGxaHSwZY6W0Lr2DJds+nxgpwhbz/jP/w0HvXilJbdILGDidu3fUnfqX
+         oLfQgqrDROH62Kq/3bsT8hVxwvcNbTTFqA9nyPX2HHayE+zNOn2bzGqqQoKH5LFmLPxg
+         ZJSgwdojV7sH+EnyoQuOKMf4PYeHVp6Vu5XhZ3Tniyg1r0LonScQPf9dZGUERl7wG+no
+         J/eA==
+X-Forwarded-Encrypted: i=1; AKwUvBzx99LXy0Efd7hUPiTSqqMKS3Lt2B9C1flRcUjMQ+l/OM9rtjfsfe7zA4RkMCh4B13xDLGllks=@vger.kernel.org
+X-Gm-Message-State: AFuF++kG+41UUDYBZwTDlpzQUTYIERk7Gwtt7R5FMbbQTS6TaiOePV9l
+	qpf+3GenPi6UNVfiU1DwOq0q/+JTGn6S/bNo8GstjpBULe5fo0sUfJezm1mHHWNP2S8=
+X-Gm-Gg: AYBFou06n+sn7/M/aa/7IfcWIB3vvDW/cARFd3UyQF/lsvirMtsBwwrW7/re14uk/3w
+	yZIF3Brle7Uavxd+MHGHMTlUsZJel2W7uxeHvSb+iKl6X48a0LfbIw0zAOsf+h41QTda1v96WRl
+	eXRr2rsOCkzM2ME/PhBILlI9qBHz/Ig9Xsd/xswo4oxKxmxL70ugnJfqSeYUd8WAmkbktM16rIz
+	ICzH4fvPM3b1ureQY4TN+kpFLKtzHtRctsWnwotqcXXFOePsfYQhn32c+L+9srY84187MKHUyYh
+	BqldcMH8UJGyhudEBoj53hdgscDgjsqc/ww5iQMP/9zsZX03tU7D8/XxOSCGDfJ3k9zcaSGya4e
+	p7odiT9Vars4gKkMrhl75Po0vz1OZG6yyu47XXRxc+zY3cLeE5qKO0BLGAZxkK22ri1f/bTNQXS
+	URQmaARm7ahXh1p9UwRyp42oP3IOuikIN9PPCmwlYJWVravYZiGLh+VGnijEZE7YRK7F7HvxBwr
+	DRwKS0GJFbbvEFfwrqIz5kwIAJowTd3Jyg=
+X-Received: by 2002:a05:600d:8642:20b0:49f:e8bf:c38 with SMTP id 5b1f17b1804b1-49fe8bf0d97mr19384015e9.34.1790253665749;
+        Thu, 24 Sep 2026 05:41:05 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5cbd77bsm78152645e9.8.2026.09.24.05.41.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 05:41:05 -0700 (PDT)
+Message-ID: <f3b91a89-2733-4159-98b4-129e3127e7e4@suse.com>
+Date: Thu, 24 Sep 2026 14:41:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAP48Hfto4qc285B3Jw7ZRuC-wGf57JOBPZOdrrAt-aDfGcas8Q@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] drivers: Replace __MODULE_STRING() with __stringify()
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>, Ian Abbott
+ <abbotti@mev.co.uk>, H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rudolf Marek <r.marek@assembler.cz>, Andi Shyti <andi.shyti@kernel.org>,
+ Chris Snook <chris.snook@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Andreas Noever <andreas.noever@gmail.com>,
+ Mika Westerberg <westeri@kernel.org>, Yehezkel Bernat
+ <YehezkelShB@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Duncan Sands <duncan.sands@free.fr>,
+ Chas Williams <3chas3@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, linux-watchdog@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+ linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-rtc@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, linux-modules@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260922-module-string-v1-0-c18766690185@suse.com>
+ <20260922-module-string-v1-2-c18766690185@suse.com>
+ <cc03390d-8fc7-422a-bbcf-93bfbb82276f@roeck-us.net>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <cc03390d-8fc7-422a-bbcf-93bfbb82276f@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 23, 2026 at 06:22:01PM -0300, Aldo Ariel wrote:
-> Hi Andrew,
+On 9/22/26 7:21 PM, Guenter Roeck wrote:
+> On Tue, Sep 22, 2026 at 03:32:22PM +0200, Petr Pavlu wrote:
+>> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
+>> MODULE_PARM support for older modules" [1] in 2002-12. That change also
+>> moved it to the graveyard section at the end of linux/module.h
+>>
+>> Replace the remaining uses of __MODULE_STRING() with __stringify() in
+>> preparation for its removal.
+>>
+>> Link: https://git.kernel.org/tglx/history/c/136839a1b4 [1]
+>> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+>> ---
+>>  drivers/comedi/comedi_fops.c                          |  5 +++--
+>>  drivers/gpu/drm/drm_fb_helper.c                       |  3 ++-
+>>  drivers/hwmon/fschmd.c                                |  3 ++-
+>>  drivers/hwmon/nct7904.c                               |  5 +++--
+>>  drivers/hwmon/sch56xx-common.c                        |  3 ++-
+>>  drivers/hwmon/w83793.c                                |  5 +++--
 > 
-> PKT_MAXBUF_SIZE = round_down(2048 - 64, 64) = 1984
-> max_mtu (non-jumbo) = 1984 - VLAN_ETH_HLEN - ETH_FCS_LEN = 1962
-> 
-> So for standard MTU, max_mtu < FEC_ENET_TX_FRSIZE and individual
-> fragments should not exceed the bounce buffer.
-> 
-> However, when the device supports jumbo frames,
-> max_buf_size = MAX_JUMBO_BUF_SIZE (~16256) and max_mtu reaches ~16234.
-> Scatter-gather fragments in that case can exceed FEC_ENET_TX_FRSIZE
-> while still needing the bounce path for alignment or byte-swap.
-> 
-> Should I respin with a check only for the jumbo path, or is the
-> unconditional guard acceptable?
+> I don't know how other subsystem maintainers want to handle it,
+> but please send the hwmon patches separately; I'll want to apply
+> it through the hwmon tree to avoid the potential of merge conflicts.
 
-Can bounce buffers and jumbo be used at the same time?
+Sure, I'll do it in v2.
 
-How is the scatter-gather size determined? Maybe the better fix is to
-set the fragment size based on the size of the bounce buffer when it
-is in use?
+If other maintainers would also like changes affecting their drivers to
+be split into separate patches, please let me know.
 
-	Andrew
+-- 
+Thanks,
+Petr
