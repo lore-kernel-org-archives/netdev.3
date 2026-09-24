@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABE6392822;
-	Thu, 24 Sep 2026 17:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25615221D2;
+	Thu, 24 Sep 2026 17:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790271948; cv=none; b=VyFxjh94uzgVCt83y+ezfzuRmPmGoacnTWl7meLKvenb3FIa74MJvVSr9xVYodgTWQkj/EflGm/L5GEZ6MhNa90V+l/hnhTf5Ztd5aCXhl8dVAQ0ncLKHTXsMUQzKOM0f3JKeO+b413rlyPF8XXURZamYEE+1/hpeyiv3CgE3Pw=
+	t=1790271954; cv=none; b=HnxNyt+gvmYFbC4FN+Gsjh0k0UD1vTUo+f5tifLSvmEIQ9XDkLGDa+DRM5P8FukEl/xrnK6a2FtAp55SqLW66goRDswCfglciFswosVYn/VxaQ8v9B2l91wrtlZ4EKahA1A4S9ihkm0O/1hSBjG+2eSjRPLKjLEU7CauMSyVOuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790271948; c=relaxed/simple;
-	bh=h2/blhNRsbh+o1/mlauzZ99tk9oz4LtaDqUXDn45kek=;
+	s=arc-20240116; t=1790271954; c=relaxed/simple;
+	bh=uW/mCIBA2+qaK4cc07xZOG0ZwLInbDHOIOaha2pyBic=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GppiOgDOX8B6zkcVsHAvebHqZIMPkiQSLfJObnceK3g6Tr4eVZ/mG/X/WExLLmz+qWk0grMvzAqWWAUP2betPhYKxHw7mSHgdqYUyEvBGOhnFEXpSaiH4iGuxznzHa+ogtyGYiLGHeGPhZF21uIgxDqdZoT+HmJkGegst5bOiDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNTv1Cqy; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=LjUDQMDFLSQBACsPDDAOXpqJDTuyyGu3H+hxhLMS80kSLqcytBSrb5f+aQTDv5T8RRqMIAHc8ooXgYnjG4xm7oiievNcqsEi75dHz+JUrP2OaqL1UkrmQKmH2yb6zJbk6/ivXwsN4SSgn+4qj2IDipkSul5jDe/TS8f9bw9bOu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HK7Y4mRB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNTv1Cqy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717F91F000FF;
-	Thu, 24 Sep 2026 17:45:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HK7Y4mRB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E2C1F000FF;
+	Thu, 24 Sep 2026 17:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790271946;
-	bh=2OTsgbPso9JAaikpPdxHlRHS3J5ziutEjtFkotSuZTQ=;
+	s=k20260515; t=1790271952;
+	bh=dhPG1dQdE8w4Jf44nehVnN5swpSvLRrMZuxbukNxmOA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oNTv1Cqy/drc640tyzTAZSev+oJZA4cOBCCG6EhuhGf42oecf/RxYpvUUYGWZXXJ3
-	 aqoqrcqQv636j7h+CYN5STRmhdkZiOWLuciFOsWe3I9qATPbs63/kZstnPboMqvPF8
-	 aItELmuHUmWmL0gmTooCDTyHfj5r5TAnCYQUfFkShRUJV9m1/Xzaf5IJsgMZNPF1Zw
-	 ZYGiKkebKbDOvxYayUSlkDumtLrcHCehef2bf2XBfUPQrzADBOBi/vUVtgeAZa/bF0
-	 PQ4jsj3gbO8Si0h5Vz2G1hE1ImSeu5uB1CrQkst+HuZcuUcVfftrczJp3EPIW3DBkq
-	 lYXFm/upQ8dxQ==
-Subject: Re: [PATCH v2] net: phy: aquantia: Add support for 5GbaseR
+	b=HK7Y4mRBKWEYU4mT0oSFlgdJiWia8fBwHSKBh/J6qrH/VPB6wzVpxn4YxT+6dnp6I
+	 wupLlZIHjHlx4VRV3pQNLDNtz21dGle91BVO6HbxNl1bXbdDcB3rjTaM92xjAz2pz5
+	 KX/1QEy2NuOkaXAZ01TnJslSZg3YKCV+anOuboRCW/zMaq8u3lIvsbaWdT8P+eyPPW
+	 nCjuQ3OsmUrbhMfa8+XMV8qakDzcBpSuPalHsNd8bavmI3Hx5QN8KBQJCepWTXM+I+
+	 x03sJ/IyoPvHakso2AU0x0ELZwPH3vN83RFdSTwGx14VPQc+UtqxviKT34nHzXR1OL
+	 dx0afhA8Wh/Tg==
+Subject: Re: [PATCH net-next 01/13] net/mlx5e: Assign a random MAC to any
+ netdev with a zero MAC address
 From: netdev-bot+sashiko@kernel.org
-To: hongmei.xu@oss.qualcomm.com
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 17:45:46 +0000
-Message-ID: <179027194602.2160803.1483822531995612133@kernel.org>
-In-Reply-To:
- <20260923-aquantia-support-5gbaser-v2-1-4d789dc21418@oss.qualcomm.com>
-References:
- <20260923-aquantia-support-5gbaser-v2-1-4d789dc21418@oss.qualcomm.com>
-X-sashiko-severity: Medium
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ agoldberger@nvidia.com, cratiu@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ moshe@nvidia.com, ohartoov@nvidia.com, saeedm@nvidia.com, shayd@nvidia.com
+Date: Thu, 24 Sep 2026 17:45:51 +0000
+Message-ID: <179027195115.2160803.12005137371690023734@kernel.org>
+In-Reply-To: <20260923103830.1183-2-tariqt@nvidia.com>
+References: <20260923103830.1183-2-tariqt@nvidia.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,136 +49,127 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The commit message for "net/mlx5e: Assign a random MAC to any
+  netdev with a zero MAC address" describes a bug ('A vport group…
 
-- [Medium] The commit message does not mention a behaviour change in
-  aqr_gen2_get_rate_matching()…
-- [Low] The submission is incomplete.
+Pre-existing issues:
+- [Medium] In mlx5e_set_netdev_dev_addr()
+  (drivers/net/ethernet/mellanox/mlx5/core/en_main.c), the local `u8…
 
 --
 
-net: phy: aquantia: Add support for 5GbaseR
+net/mlx5e: Assign a random MAC to any netdev with a zero MAC address
 
-This patch decodes PHYXS interface status code 12 as 5GBASER in
-aqr_gen1_read_status(). It also makes aqr_gen1_config_init() accept
-5GBASER, and makes aqr_gen2_get_rate_matching() report pause rate
-matching for 5GBASER.
+This commit removes the vport_group_manager exception from
+mlx5e_set_netdev_dev_addr(). As a result, any mlx5e netdev whose queried
+MAC is all zeros gets a random MAC instead of keeping the zero address.
 
-> Add support for 5GbaseR within Aquantia phy driver.
+> mlx5e_set_netdev_dev_addr() falls back to a random MAC only when the
+> queried address is all-zeros AND the device is not a vport group
+> manager.  A vport group manager that comes up with a zero MAC is
+> therefore left with an invalid all-zero address.
 >
-> Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
->
-> ---
-> Changes in v2:
-> - EDITME: describe what is new in this series revision.
-> - EDITME: use bulletpoints and terse descriptions.
-> - Link to v1: https://patch.msgid.link/20260923-aquantia-support-5gbaser-v1-1-537d39bb8c35@oss.qualcomm.com
+> The vport_group_manager exception is unnecessary: a zero MAC is always
+> invalid, regardless of device type. Drop the condition and assign a
+> random MAC whenever the queried address is zero, so every netdev comes
+> up with a valid address.
 
 [Severity: Low]
-This isn't a bug, but the v2 changelog is still the unedited b4 template.
-That makes it hard to tell what changed since v1.
+The message treats the old behaviour as a bug. However, it has no Fixes:
+tag and doesn't say which configuration triggers it.
 
-The commit body is also a single line. Could it describe the three
-separate changes in the patch?
+The check being removed was added on purpose in commit 108805fc196e
+("net/mlx5e: Assign random MAC address if needed"). That commit only
+covers SR-IOV VFs loaded without an admin-assigned MAC. It used
+vport_group_manager (PF/ECPF, which is expected to have a burned-in MAC)
+as a stand-in for "not a VF". The new message calls the exception
+"unnecessary" but doesn't explain why it was there.
 
-  - aqr_gen1_read_status() now decodes interface status code 12.
-  - aqr_gen1_config_init() now accepts 5GBASER for all gen1 and later
-    PHYs, including AQR105.
-  - aqr_gen2_get_rate_matching() now returns RATE_MATCH_PAUSE for
-    5GBASER on existing gen2 and later PHYs.
+Another commit in the series, "net/mlx5: E-switch, correct stale VF/PF
+wording in esw-allowed comments", suggests the real motivation is new FW
+that lets a VF act as a nested e-switch manager. If so, this is a new
+case rather than a regression.
 
-Separately, the new define lines up its value with spaces:
+Could the message do one of these?
 
-  #define MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G   12
+  - If a zero-MAC group manager can happen with existing FW, add:
 
-The neighbouring MDIO_PHYXS_VEND_IF_STATUS_TYPE_* defines use tabs.
+      Fixes: 108805fc196e ("net/mlx5e: Assign random MAC address if needed")
 
-> diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-> index e95d391a6dc23..0bcec88fcf727 100644
-> --- a/drivers/net/phy/aquantia/aquantia_main.c
-> +++ b/drivers/net/phy/aquantia/aquantia_main.c
+  - Otherwise, say that this is preparation for VF e-switch managers.
+
+The message also leaves out the visible effect on affected devices.
+addr_assign_type changes from NET_ADDR_PERM to NET_ADDR_RANDOM, and the
+MAC changes on every driver load. Other users of mlx5_query_mac_address()
+still see the firmware's zero address, for example the getpermhwaddr path
+in en_dcbnl.c and the default GID in rdma.c.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index fc110a7d16e8d..b0765f07cc3a7 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -5430,8 +5430,7 @@ static void mlx5e_set_netdev_dev_addr(struct net_device *netdev)
+>  	u8 addr[ETH_ALEN];
+>  
+>  	mlx5_query_mac_address(priv->mdev, addr);
+> -	if (is_zero_ether_addr(addr) &&
+> -	    !MLX5_CAP_GEN(priv->mdev, vport_group_manager)) {
+> +	if (is_zero_ether_addr(addr)) {
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch.
+Since the patch rewrites this condition, though: what does addr hold if
+mlx5_query_mac_address() fails?
+
+addr has no initializer, and the return value of the query is ignored.
+The path is:
+
+  _mlx5e_probe()->mlx5e_build_nic_netdev()->mlx5e_set_netdev_dev_addr()
+    ->mlx5_query_mac_address()->mlx5_query_nic_vport_mac_address()
+
+mlx5_query_nic_vport_mac_address() in vport.c writes the caller's buffer
+only when the command succeeds:
+
+	err = mlx5_cmd_exec_inout(mdev, query_nic_vport_context, in, out);
+	if (!err)
+		ether_addr_copy(addr, &out_addr[2]);
+
+	return err;
+
+The query can fail with a bad FW status. It can also fail with -ENOLINK
+during FW internal error, because mlx5_internal_err_ret_value() includes
+MLX5_CMD_OP_QUERY_NIC_VPORT_CONTEXT in the opcodes it handles that way.
+
+In that case is_zero_ether_addr() reads whatever was left on the stack.
+Unless those bytes are all zero, the random fallback is skipped and
+eth_hw_addr_set(netdev, addr) installs them as the MAC.
+
+Can this give the netdev an invalid address, for example one with the
+multicast bit set? Can it also expose 6 bytes of kernel stack through
+RTM_GETLINK, the sysfs address file or SIOCGIFHWADDR?
+
+With CONFIG_INIT_STACK_ALL_ZERO the buffer starts zeroed, so after this
+patch the failure case gets a random MAC. With INIT_STACK_NONE, the
+leftover bytes are installed instead.
+
+The unchecked return value and the uninitialized buffer go back to
+537e4d2e6fe3c5 and earlier code. No later patch in the series appears to
+touch this function.
+
+To reach the goal that "every netdev comes up with a valid address",
+would it help to zero-initialize addr, check the return value, and use
+something like this?
+
+	if (err || !is_valid_ether_addr(addr))
+		eth_hw_addr_random(netdev);
 
 [ ... ]
 
-> @@ -1040,7 +1045,8 @@ static int aqr_gen2_get_rate_matching(struct phy_device *phydev,
->  				      phy_interface_t iface)
->  {
->  	if (iface == PHY_INTERFACE_MODE_10GBASER ||
-> -	    iface == PHY_INTERFACE_MODE_2500BASEX)
-> +	    iface == PHY_INTERFACE_MODE_2500BASEX ||
-> +	    iface == PHY_INTERFACE_MODE_5GBASER)
->  		return RATE_MATCH_PAUSE;
-
-[Severity: Medium]
-Every PHY that uses aqr_gen2_get_rate_matching() now gets
-RATE_MATCH_PAUSE for 5GBASER instead of RATE_MATCH_NONE. That covers
-AQR107, AQCS109, AQR111/B0, AQR112, AQR412/C, AQR113/C, AQR114C,
-AQR115/C and AQR813. Does this hold for every firmware provisioning?
-
-aqr_gen2_read_global_syscfg() maps XFI5G to 5GBASER whatever the
-provisioned rate adaptation mode is:
-
-drivers/net/phy/aquantia/aquantia_main.c:aqr_gen2_read_global_syscfg() {
-    ...
-		case VEND1_GLOBAL_CFG_SERDES_MODE_XFI5G:
-			interface = PHY_INTERFACE_MODE_5GBASER;
-			break;
-    ...
-}
-
-So 5GBASER can end up in possible_interfaces when firmware provisions
-XFI5G with RATE_ADAPT_NONE or RATE_ADAPT_USX.
-
-At runtime, aqr_gen2_read_status() still takes the provisioned value:
-
-drivers/net/phy/aquantia/aquantia_main.c:aqr_gen2_read_status() {
-    ...
-		if (syscfg->rate_adapt == AQR_RATE_ADAPT_PAUSE)
-			phydev->rate_matching = RATE_MATCH_PAUSE;
-		else
-			phydev->rate_matching = RATE_MATCH_NONE;
-    ...
-}
-
-phylink validation, however, uses the fixed answer:
-
-phylink_validate_one()
-    tmp_state.rate_matching = phy_get_rate_matching(phy, interface);
-    ...
-    phylink_get_capabilities()
-
-When 5GBASER returns PAUSE, phylink_get_capabilities() adds every speed
-below 5G to the supported and advertised link modes over 5GBASE-R. The
-fallback path in phylink_validate_phy() also stops widening validation to
-all interfaces for c45 PHYs.
-
-The get_rate_matching kernel-doc in include/linux/phy.h says:
-
-  It is assumed that if a rate matching mode is supported on an
-  interface, then that interface's rate can be adapted to all slower
-  link speeds supported by the phy.
-
-Could phylink then advertise 10M to 2.5G over a 5GBASE-R host link that
-the PHY won't pause-adapt? A MAC that only supports 5GBASE-R is one
-example. Validation and runtime would then disagree about the same
-interface.
-
-The existing 10GBASER and 2500BASEX checks are just as unconditional, but
-the 5GBASER case is new in this patch. Would it make sense to check the
-provisioned rate_adapt in priv->global_cfg[] for the requested interface?
-The commit message also doesn't mention this change in behaviour.
-
->  	return RATE_MATCH_NONE;
->  }
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923-aquantia-support-5gbaser-v2-1-4d789dc21418%40oss.qualcomm.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923103830.1183-1-tariqt%40nvidia.com
