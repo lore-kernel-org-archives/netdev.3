@@ -1,221 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4B2397694;
-	Thu, 24 Sep 2026 07:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A640DB35
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790233457; cv=none; b=gdu+tgs5x34ZiAEOYm83Z7K9KvxW12URGJeA8tEp8qFOH/XViP092KoSEzc4OwKNrmtTL1FCu+95AIw2nEMgVDzm16kkY6GYLdQdxaw7XNSB0Dl0HbLAci0t08vCGxBJ3GZP3HZETthjiMM0LZL68+vRAe8t+MkRAHtdheHCfM0=
+	t=1790233577; cv=none; b=V4EE53WMQF3cFCh3t3fJObjZuFpv+XZVq1UnSAzspzgpt8VQs6YS5xFTMlnLBE+DAG1zOy4dVyXH9Uwi3ygEsnLpUxhhbkp/p3CMLOTLN0eSc+VpApU+EK0rc31rDMICOXBWbGRGSL2zLCnIkn6YOsSZRYavIps5wGu1Fw5yFpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790233457; c=relaxed/simple;
-	bh=qZXJ8iPMdYafbKxwCfIqAvVTIKu4lrCumhrIj+yDDqE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=go8ERgO4q25espovPKRdTjcUPZcWKszHsCGc431pHvYjj+YezWDmYtNgVEdROfUGhfOvGEu0H0Vo6+qhnBnb+SHptWdeEHjrk7MAqby3SUQVyOMJNhktylDBeKlbsDRirLQJ1J0L8y+1te+jUP4dAj6/QcvDzda30M78n77mFyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oz7gcmLH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790233577; c=relaxed/simple;
+	bh=GtkSlyBq7/JCay1sZEkoqGrRyNduEivBSqsSTqb9oTk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FIl4YaQBlS/KEmORjC+aBbYAW+mB/wIBfXgxuUX8OAtR1o6i7TZFhv2SeQ4iCIWBX3RFMI7PhXGnuCPXkAme3I/5rAOEPLlaRNmWpUrqq0pKC58UmhKrmPT9DEqMq7OZIsgbswxEDSDJkrNszrIKnQkeI7sY2igyOO5lzym/6Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yam2O+Yi; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oz7gcmLH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC411F000FF;
-	Thu, 24 Sep 2026 07:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790233442;
-	bh=Y7nx2EMqQRZ9Wz7KPD5xqHppiSa83rusVgJwcIYKlS4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Oz7gcmLH8sbKRQLBNmNgSsa5d1b0jXGx1Lz9MxiMIx3OIjHPUbw1X6UiKXI0fgY1x
-	 tTlX7n6EosE+lkdfbzyO6E1Rw9AKoU2nPoG7iUqoybUXjpjJcKudGTrZu56EoBCunX
-	 WWjRGYtbdCIDzQ3qNqi5dousrUK/vocipfuBDqjN+oMdr/wnuhpVPj11hmIiZTvgig
-	 8o7YSR+fL+LX8csG7aNRrHeU64N9Lqd2Wgun8EjT8PtdTWS/W9SII1vP0R3NBSO/Rs
-	 nVDLZvkE8ah7Pi4VPLD3+3W0U+sbpFth6ZZRo6s3xYgDWVoRv7S3umHKk1Do2nrY3f
-	 N9JjSCEAhuphg==
-Subject: Re: [PATCH v2] netfilter: nf_nat: Fix stale outer UDP checksum on
- VXLAN encapsulated packets
-From: netdev-bot+sashiko@kernel.org
-To: lvjunyu@cmss.chinamobile.com
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Thu, 24 Sep 2026 07:04:01 +0000
-Message-ID: <179023344134.2160803.7539693493883109970@kernel.org>
-In-Reply-To: <20260921130312.686493-1-lvjunyu@cmss.chinamobile.com>
-References: <20260921130312.686493-1-lvjunyu@cmss.chinamobile.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yam2O+Yi"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 89355C211D0;
+	Thu, 24 Sep 2026 07:06:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2E9DB5FB45;
+	Thu, 24 Sep 2026 07:06:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 57B8D103294B4;
+	Thu, 24 Sep 2026 09:06:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790233568; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=G4o6d/Q/EKM0Gg1FOF9eIxGS/5ZA4PMQ4U5wfjsuxAE=;
+	b=yam2O+YiIi83Hcxrhi1SsJ+8vHcp1SaP5+4AxrJeWJXHEfB0rjxOBHZ4KBUsccioF+0ExM
+	vQgjYlFJE5RnMqAGCeVr07di24CWLgcM66VdtQ5IdFQ4p+si6oeT0GkWj/sfWS9C336h6P
+	wu4xNYotcMagaOPa+bxfI7Y0V94fLIBEsVLBEe1Sr/FXok7IAz6EZOagFQ8mY2+skmVe77
+	94sK4s2TSWFDJtinzQAaIFOvbAaOnGyDSZGFsyl3lwKDwZVon2A80YZWXEFDAePWgYfJHL
+	rcBJpHFo44SM5itt7HhIymNINOp9IDSYfI8aidwKDZvo6PvtYyksVLVQeELaDA==
+Message-ID: <a24935c9-8bf4-4f50-ac21-de76a3b73f26@bootlin.com>
+Date: Thu, 24 Sep 2026 09:06:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: PHY ports: combo port with a MAC-side GPIO mux on a DSA switch?
+To: Aleksei Sviridkin <f@lex.la>
+Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Vladimir Oltean <olteanv@gmail.com>
+References: <20260923225909.1649267-1-f@lex.la>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260923225909.1649267-1-f@lex.la>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
+On 9/24/26 00:59, Aleksei Sviridkin wrote:
+> Hi Maxime,
+> 
+> I have a board where one switch port can use either an SFP cage or a
+> separate copper PHY, picked by a GPIO mux. I would like to know whether
+> the PHY ports work is meant to cover it, and how to describe such a
+> port in devicetree until then.
+> 
+> The board is a Keenetic KN-1012 (MT7981B) with an MT7531 switch. Port 5
+> is a DSA user port, lan4, in 2500base-x. Its SerDes goes through a mux
+> on GPIO 27 either to an SFP cage or to an Airoha EN8811H 2.5G copper
+> PHY, one at a time. SFP presence is on GPIO 23.
+> 
+> OpenWrt handles it downstream with two devicetree overlays. The copper
+> one gives port 5 a phy-handle to the EN8811H. The SFP one gives it
+> sfp = <&sfp1> and managed = "in-band-status". The mux is set by an
+> OpenWrt-only gpio-export node, and a chainloaded U-Boot reads the SFP
+> presence pin at each boot and picks the overlay. Changing media needs a
+> reboot.
+> 
+> The PHY ports code in net-next covers an SFP that the PHY drives itself,
+> with marvell10g as the user. Here the choice sits between the SerDes on
+> the MAC side and two separate media, a cage and a separate PHY. So my
+> questions:
+> 
+> 1. Is a MAC-side mux like this in scope for the PHY ports work?
+> 2. If it is, what devicetree shape should a board use today so it does
+>    not have to change later?
+> 3. If it is not, is describing a single medium the accepted way for now?
+> 
+> I can test patches on this board. Writing the framework part is beyond
+> what I can take on myself.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+There's ongoing work for that, hopefully that'll work soon :)
 
-- [Medium] Peer call-site divergence: after this patch nf_nat's
-  __udp_manip_pkt() treats a CHECKSUM_PARTIAL skb whose offload target…
-- [Low] The new comment in __udp_manip_pkt() states that both the address
-  and the port delta are "applying the address and port deltas with the…
+https://lore.kernel.org/netdev/20260910170103.1029108-1-maxime.chevallier@bootlin.com/
 
-Pre-existing issues:
-- [Medium] Incomplete/asymmetric fix inside net/netfilter/nf_nat_proto.c:
-  the new "offload target is not this header" discriminator was added…
+This is bringing the SFP representation as a "phy_port" that we can see from
+userspace, so that we can later switch dynamically between the interfaces
+of a combo port.
 
---
+The next step is mux, including GPIO driven ones :) Any review and testing
+is welcome for the above series, I'll CC you on the next iterations,
 
-netfilter: nf_nat: Fix stale outer UDP checksum on VXLAN encapsulated packets
-
-This patch makes __udp_manip_pkt() detect the state left behind by the LCO
-branch of udp_set_csum(), where uh->check holds a complete checksum but
-csum_start still points at the inner transport header.  It does so by
-comparing the skb's csum offload target against the udphdr being mangled,
-and temporarily setting ip_summed to CHECKSUM_NONE across the address and
-port fixups so the complete-checksum helpers are used.
-
-A few questions below.
-
-> diff --git a/net/netfilter/nf_nat_proto.c b/net/netfilter/nf_nat_proto.c
-> index 64b9bac228eae..cb70d85716bd3 100644
-> --- a/net/netfilter/nf_nat_proto.c
-> +++ b/net/netfilter/nf_nat_proto.c
-> @@ -54,9 +54,35 @@ __udp_manip_pkt(struct sk_buff *skb,
->  		portptr = &hdr->dest;
->  	}
->  	if (do_csum) {
-> +		/* When udp_set_csum() takes the LCO branch (encapsulated
-> +		 * CHECKSUM_PARTIAL, non-GSO), uh->check holds a complete
-> +		 * (folded and complemented) checksum while csum_start
-> +		 * points at the inner transport header, not at this outer
-> +		 * udphdr.  In that state, inet_proto_csum_replace*() and
-> +		 * nf_csum_update() take the pseudo-header branch which
-> +		 * operates on an uncomplemented seed, applying the address
-> +		 * and port deltas with the wrong sign.  Temporarily flip
-
-[Severity: Low]
-This isn't a bug in the code change itself, but does the comment describe
-the port delta correctly?  The port fixup just below passes pseudohdr =
-false:
-
-	inet_proto_csum_replace2(&hdr->check, skb, *portptr, newport,
-				 false);
-
-and inet_proto_csum_replace4() in net/core/utils.c only has a
-CHECKSUM_PARTIAL path guarded by pseudohdr:
-
-	if (skb->ip_summed != CHECKSUM_PARTIAL) {
-		csum_replace4(sum, from, to);
-		...
-	} else if (pseudohdr)
-		*sum = ~csum_fold(csum_add(csum_sub(csum_unfold(*sum),
-						    (__force __wsum)from),
-					   (__force __wsum)to));
-
-So with pseudohdr = false and CHECKSUM_PARTIAL the port delta is not
-applied at all, rather than applied with the wrong sign.  The changelog
-already says this ("inet_proto_csum_replace2() is a no-op (pseudohdr=false,
-CHECKSUM_PARTIAL)"), so could the comment be reworded to keep the two cases
-distinct?
-
-> +		 * ip_summed so they use csum_replace*() instead.
-> +		 *
-> +		 * The seed/offload branch of udp_set_csum() sets csum_start
-> +		 * to the outer UDP header, so the offload-target test
-> +		 * below distinguishes the two states.
-> +		 */
-> +		bool lco = skb->ip_summed == CHECKSUM_PARTIAL &&
-> +			   !skb_is_gso(skb) &&
-> +			   (skb->head + skb->csum_start + skb->csum_offset) !=
-> +			   (unsigned char *)&hdr->check;
-> +
-> +		if (lco)
-> +			skb->ip_summed = CHECKSUM_NONE;
-> +
-
-[Severity: Medium]
-Does the same fixup need to happen in the flowtable software fast path?
-nf_flow_nat_ip_udp() in net/netfilter/nf_flow_table_ip.c rewrites the same
-outer UDP header for a NATed, offloaded conntrack entry and keeps the
-pseudo-header form:
-
-net/netfilter/nf_flow_table_ip.c:nf_flow_nat_ip_udp() {
-	if (udph->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-		inet_proto_csum_replace4(&udph->check, skb, addr,
-					 new_addr, true);
-		if (!udph->check)
-			udph->check = CSUM_MANGLED_0;
-	}
-}
-
-nf_flow_nat_ipv6_udp() does the same with inet_proto_csum_replace16(...,
-true).  For an LCO-state skb (ip_summed == CHECKSUM_PARTIAL, csum_start at
-the inner transport header) that reaches nf_flow_offload_ip_hook() ->
-nf_flow_snat_ip() -> nf_flow_nat_ip_l4proto() -> nf_flow_nat_ip_udp(),
-isn't uh->check still treated as an uncomplemented seed there, leaving the
-outer UDP checksum wrong in exactly the way the changelog describes?
-
-After this patch the two in-tree implementations disagree about the meaning
-of uh->check for an identical packet state.
-
-There is also a smaller difference in the zero-checksum gate: udp_manip_pkt()
-passes do_csum = !!hdr->check, so an outer UDP header that deliberately
-carries no checksum is left alone, while the flowtable condition above also
-fires when udph->check == 0 as long as ip_summed == CHECKSUM_PARTIAL, and
-then writes a checksum or CSUM_MANGLED_0 into a header that had none.  Is
-that difference intentional?
-
->  		nf_csum_update(skb, iphdroff, &hdr->check, tuple, maniptype);
->  		inet_proto_csum_replace2(&hdr->check, skb, *portptr, newport,
->  					 false);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the same unguarded
-nf_csum_update() pattern exists at three sibling sites in this file, and
-they are left untouched.  Were they considered?
-
-tcp_manip_pkt() ends with:
-
-	nf_csum_update(skb, iphdroff, &hdr->check, tuple, maniptype);
-	inet_proto_csum_replace2(&hdr->check, skb, oldport, newport, false);
-
-icmpv6_manip_pkt() does:
-
-	nf_csum_update(skb, iphdroff, &hdr->icmp6_cksum, tuple, maniptype);
-
-and the CHECKSUM_PARTIAL branches of nf_nat_ipv4_csum_recalc() and
-nf_nat_ipv6_csum_recalc() do:
-
-	} else {
-		inet_proto_csum_replace2(check, skb,
-					 htons(oldlen), htons(datalen), true);
-	}
-
-For tcp_manip_pkt() and icmpv6_manip_pkt() the header being mangled can be
-the one embedded in an ICMP error, reached via nf_nat_ipv4_fn() ->
-nf_nat_icmp_reply_translation() -> nf_nat_ipv4_manip_pkt(), and that caller
-already has an explicit "if (skb->ip_summed != CHECKSUM_PARTIAL)" path for
-the outer ICMP checksum, so CHECKSUM_PARTIAL skbs are an expected input
-there.  In that case the offload target is the outer ICMP checksum rather
-than the embedded TCP/ICMPv6 checksum, which looks like the same
-precondition this patch guards against for UDP.
-
-Since all three manip_pkt callers funnel through nf_csum_update() and always
-pass pseudohdr = true, would putting the offload-target test in
-nf_csum_update() (or a small shared helper) cover every caller instead of
-only the UDP one?
-
-> +
-> +		if (lco)
-> +			skb->ip_summed = CHECKSUM_PARTIAL;
-> +
->  		if (!hdr->check)
->  			hdr->check = CSUM_MANGLED_0;
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921130312.686493-1-lvjunyu%40cmss.chinamobile.com
+Maxime
