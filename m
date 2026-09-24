@@ -1,97 +1,117 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f15.google.com (mail-dy2-f15.google.com [74.125.229.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194140B110;
-	Thu, 24 Sep 2026 23:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D4541F37F
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790291592; cv=none; b=oitsmQhz6QO5yOzH5qsru5y7MYIQ1iAUgGwJMVpcqzkHfS8YPagTSbQPUFR3vqvZr0lz/5f/Rh1xuWXHYdxiYPCd7duXqQ2i8L7TA9mmdzAqI80MTcPYsghzFdHKVMUbJLwKUs9doQVLC95Kf88qbtB2pIcIoSYKjvOB0bKKTMY=
+	t=1790292238; cv=none; b=g2m5fpjKxg3oCwU0ExBUs/+wvuGhBRmhsHkjuWAc9q+CsHxf5bthYdXunwLax0qWJUhLWEnfSnSO/0/ez6DoqzsSKdfJq39X0/rcpoeQNPrfhLUwEQSJ/23s/SUlWFFXWsBlFKO/oYS9+SRG9C0REIe0hQXrT6EmA86z18mlJIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790291592; c=relaxed/simple;
-	bh=s9fIgfAyPBl5uLR8laz9ZE5ehPBaWVG3E99kVjS/fiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AhKWAHeYi7zX0GYM4TEcD8driOX70C3Tr3LPHPVpiaW9+UvDu31UOHG1Y+10ovfM/dYpIcK4NHqoNahJ8Zxz6GtcgVS7pwlconbzNWzbfeK003fF6C/t5JHnaDxDoREufrDE5Z4En8Ld6d14GIY9iZLaBGDV8p1MGFPn4EEdbk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pOTXKLXb; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1790292238; c=relaxed/simple;
+	bh=L9s05IwcaEGjCqGmULp2mdtQR1iZBPLwYB39kXJUY+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KrfW+YSujIijbEQUEdugXBQX2bChCPakz1KNWpx3LAUCwH+xX75/bPFoimU4lNUBYu4nmuHpbqzeP1giKCCS1qU9daMriutuigSkxaHydXs7viXItogG6sAlobUp8zOE1diiQTKXZ9+qhwc7M8dP0HasVSnuVcXNQD+nKJx0LQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EPdWcDu7; arc=none smtp.client-ip=74.125.229.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pOTXKLXb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=4ZbPDKVVmE5JT4FU9/OsNfslYb/btTUybFogtbTfUWc=; b=pOTXKLXbXC2KSwCChi44zbgSfx
-	kAcnwCf/R8Ps+sSTMc1HwVM+xIbfrqq13YUQwLevBp6lUajCFsyz67GSwUFBgbTvnEGkTeIu+3RD9
-	iscYedfSxU4heWs9xbOOOCitXaRs6XgSbmijBSqUiZGi4TnQgRIX8KCTKYu7GpLziWiRrGP3f6VJ2
-	3iCQHORBXDs/5kzPgklswoxgTK85/FQUThqOwLft4UleM7PZD2rplAIWrJmaINgf/i/bOLYjSy3j2
-	M41n9pTzaVJR+JRfFH+Brv61rLZZ5+O57jzE27oP7cRtgE340IQlABp1KfMNgaiQUXuahsyZJbnGF
-	BTs+ZAOw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9scj-0000000CN9P-2jdq;
-	Thu, 24 Sep 2026 23:13:05 +0000
-Message-ID: <d461b048-b08a-4bbe-b5e7-60ed6686ab52@infradead.org>
-Date: Thu, 24 Sep 2026 16:13:05 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EPdWcDu7"
+Received: by mail-dy2-f15.google.com with SMTP id 5a478bee46e88-32dec843c37so350587eec.3
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790292236; x=1790897036; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=N0BCZSjIX+UY6/4hcfUjcg/hMZ34STcp2U1v/I0YunY=;
+        b=EPdWcDu7tiJtwu4f5I6JXYV9QLOIa/4pxo2Aj3St43UfSzA9pT0vpXk3oNR91EfteS
+         UpFodTFymMCfFChlcB53SWsKSipvm/qnLhXwZu2qZoFO9LhHhGBnoJ1mXza0Z/gH69z9
+         Hj2uisB/VkUuydwwpxzoH3y175vY1G0bAV9Dme/otB55kdRmhUXUI4+cJma0ONUWScwm
+         HayNRRvwnQJq19IH+CguRtQppPsM+RfNlISHW9lRu6NChAL6dTsHRdCYyBOQI4QHHFbp
+         QasNi0OJUWLvwa8RZOJnA7HYvmN0mCV4jxpUX09R3nfC76O96Bg/xHv3sh0SpoBMfaLj
+         43UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790292236; x=1790897036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N0BCZSjIX+UY6/4hcfUjcg/hMZ34STcp2U1v/I0YunY=;
+        b=hNQMdOtDHWcdWE2FyOZs+sSdvHwwZ+ytW5O4UvddyVQYoW9MYVf8AOlLJdExpNm7Hm
+         aQLAa65O2y8rq1m5WnoXGXlZVlaw3XQH4vzmMtZ1wc7WJmjVaa0EsjnMJXLQ19z59pXZ
+         TJ3iNB9zdejpgsJgAMApWriDQdOjZMhHZPbqB8ZtxyCYfdelocOURKUBB0Hq3kE/+XUg
+         SKCPQYnGObXDSvEisjfkQcldgt/LkvQs/yn9ts4KTADMlmVXlIfbWQ2yVAAoOlstSmvs
+         9sgcIEJqzZn6uaJboHDd5OW4P1/f3nVD9zGOo5ThiaowW+yOCXcz41EbLEEtLebh6pYL
+         T96w==
+X-Forwarded-Encrypted: i=1; AKwUvByrG15otKxPB6UhDsPpBI55kQAk42axxsF2wDAfsPxN283O5hGzSIzpRDu9LxS8iW/O+f0Lfuc=@vger.kernel.org
+X-Gm-Message-State: AFuF++needifITHPPbt4cOhqXV6P835cKm81UskpZiSG+QYyLjq8UI5L
+	OSgamh7stX4evQ++i4TIRh4XTqZpYo9BrB0NeKyVALm3+pQIABmp7V62
+X-Gm-Gg: AYBFou1tWC1Q3GvNC0G+b9EfZUZ2BxDaCjtwdJE6Lvu7NAYIVMMyfA3Pjb8zRJ3phHV
+	uvxmxLOTHUMMyixpAJlOd2Q0DaILhT1+/ZtMBQ/cG2/7wYxH6A9km3MBxh8G49P+T6KxKUAy8Lq
+	g/rI4FjZVDCgkX/MZVl2GlAFZQvh8980361jAde/sNks0EliSHbiWTwZ40cEr5xSenqGdeId/cm
+	XlmqFyaX8sSqsI27IbNV8sHO80q2C3H5P/qlq50JH2xApW4EbqwG/b/bW9esC9PZMJje4HCP3Tt
+	1nr9Jny5RP9+JBW3gnw/4rce7xvRb+9Xsg8PBUYgeF6pbK9cESbLbm27RHN90xQp5hZwRcjqxKW
+	olN0y9/ogWVHThkUStQzRBrF6KCKdc1GT7cpBZxVlfFNQ9nZFO1TYTX5XbG5rjbYgvVpWQ2c+Bk
+	KycvbZaOpHVjuqFYiNc9uAkPud/bMTKnRfjQyWayh8zVRaU4QjNIAFBpeYXqA=
+X-Received: by 2002:a05:693c:87d5:20b0:33b:bfb7:31cc with SMTP id 5a478bee46e88-34001f1961emr3645480eec.16.1790292235455;
+        Thu, 24 Sep 2026 16:23:55 -0700 (PDT)
+Received: from evangelion-g ([2a09:bac5:40e1:11cd::1c6:c])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144757263sm1516795eec.12.2026.09.24.16.23.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 16:23:54 -0700 (PDT)
+From: Ayush Yaduvanshi <ayush37735@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Brigham Campbell <me@brighamcampbell.com>,
+	linux-kernel-mentees@lists.linux.dev,
+	Ayush Yaduvanshi <ayush37735@gmail.com>
+Subject: [PATCH] ice: dpll: fix kernel-doc parameter descriptions
+Date: Fri, 25 Sep 2026 04:51:38 +0530
+Message-ID: <20260924232138.69492-1-ayush37735@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 0/2] net_shaper: fix kernel-doc rendering
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, mchehab@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, horms@kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1786751700.git.kmehltretter@gmail.com>
- <178700041013.1735578.3422132046076853057.git-patchwork-notify@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <178700041013.1735578.3422132046076853057.git-patchwork-notify@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Karl M. wrote:
-| Friendly ping on v2. It already has Acked-by and Tested-by tags.
+Remove stale @count and @cgu parameter descriptions from
+ice_dpll_init_fwnode_pins() and ice_dpll_init_pins_e825().
 
-| Is anything else needed from my side before this can be picked up?
+Signed-off-by: Ayush Yaduvanshi <ayush37735@gmail.com>
+---
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-
-On 8/17/26 2:00 PM, patchwork-bot+netdevbpf@kernel.org wrote:
-> Hello:
-> 
-> This series was applied to netdev/net-next.git (main)
-> by Jakub Kicinski <kuba@kernel.org>:
-> 
-> On Sat, 15 Aug 2026 03:32:27 +0200 you wrote:
->> The net_shaper_ops documentation contains a malformed ReST list and
->> exposes a kerneldoc.py title-context bug which drops valid headings.
->> Fix the list first because the parser correction makes it visible. The
->> parser fix also restores three Xe DRM RAS headings already in mainline.
->>
->> Tested with Sphinx 9.1.0:
->>
->> [...]
-> 
-> Here is the summary with links:
->   - [net-next,v2,1/2] net_shaper: fix kernel-doc list indentation
->     https://git.kernel.org/netdev/net-next/c/09b7c00d55a8
->   - [net-next,v2,2/2] docs: kerneldoc.py: preserve headings in kernel-doc output
->     (no matching commit)
-> 
-> You are awesome, thank you!
-
-so these 2 patches are merged into net-next, which should be merged
-into mainline Linux at the next merge window (in the 2 weeks after
-Linux v7.3 is released).
-
-Patch 1/2 is in the current linux-next daily releases.
-However, patch 2/2 is not merged anywhere in linux-next AFAICT.
-
-I also would like to see patch 2/2 merged...
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 85a74cd6ea1f..d00a2fb683d1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -3919,7 +3919,6 @@ ice_dpll_init_fwnode_pin(struct ice_dpll_pin *pin, const char *name)
+  * @pf: board private structure
+  * @pins: pointer to pins array
+  * @start_idx: starting index for pins
+- * @count: number of pins to initialize
+  *
+  * Initialize input pins for E825 RCLK support. The parent pins (rclk0, rclk1)
+  * are expected to be defined by the system firmware (ACPI). This function
+@@ -4025,7 +4024,6 @@ static int ice_dpll_init_txclk_pins(struct ice_pf *pf, int start_idx)
+ /**
+  * ice_dpll_init_pins_e825 - init pins and register pins with a dplls
+  * @pf: board private structure
+- * @cgu: if cgu is present and controlled by this NIC
+  *
+  * Initialize directly connected pf's pins within pf's dplls in a Linux dpll
+  * subsystem.
 -- 
-~Randy
+2.53.0
 
