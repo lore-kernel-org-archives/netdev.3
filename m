@@ -1,45 +1,44 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8BF472F65;
-	Thu, 24 Sep 2026 12:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE86D311946;
+	Thu, 24 Sep 2026 12:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790253914; cv=none; b=NNcJHLjgolhACxpaia9gIvPLoUA2zFc+wL8/yAu6zzx2V559w+R3b1n4XFDBeRIhOFyG+mlUo0LsxfdKn/9U7tf7J8QHcN6pvYJayfBSJW69dgyz9mgCcDknix9EMojdSue0xTHBFd88V2DB3TqcHQjZ8VG2pr1jsc/h2oC9HJc=
+	t=1790254274; cv=none; b=A+sJRNxDqL0H9XGLXwiZuTV71BDD0c0KW/kYAn12EegSPcppoQrF6M/P3R9B6/ihD2oHlyT/THgF4xv1oODVwoYKYumAmeBBaA9gNGFt1Y7OMdF1y4k0+3zv/v3R+/1if+qU62DXzqaW3W0aBD5upoNLTwlYOmdmG4NGbdABtZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790253914; c=relaxed/simple;
-	bh=FDYWuG/LAlz2+g1l6gVN42jqalnZlN2fCGgQ42ad6Is=;
+	s=arc-20240116; t=1790254274; c=relaxed/simple;
+	bh=0NoCcowoVuCQyLtJFecCntna/RvD8szpkF05RojNLwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XXUrsVL/8EnNn35ZUdabR5gNKzBF6o+wKcgJ11fe/Q50OyupeGCzdU3ht1cPuv01VznnuV9PZc93zYhwKMRTgr3+bHooroT4Kxwjdt+3a7355xNOCiBjmubUxMwlBjgfFvTsqsmQF+XC3OjRrxl7MtI+7d6RIeAuNYrmvhvxDls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BvJlLKYB; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=g/72S0jMFVC2EPJyNhjI9qJvM6VF8aWsiNXhuZdjlswvYxl4QMezMM/yEZ2cBfYG/fKePupdr4Irm7rFMaj9QJP0Fcfm6XXPdXOMOJMhGjHarQck+zEVcA6J0M6qWhkoTGLflQiywSOnvrCYIGnW1IyDWkL1w81812RKTQt9tCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ib+gPErF; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BvJlLKYB"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ib+gPErF"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UhpawE8XyS0X4kY+R+dBl6PrI9tvX4W8POpNSnfgP8Q=; b=BvJlLKYB9EoVRwJSIwpg03+7Ud
-	+1ChcIaee93ulP4MdyV2IhF+y3hkkwRaXohrasoTvFl5uD5WGNHmslZKs2w0qI4S5HgcEpZkXCaX/
-	y5BCVmsf+Yg4wDWbcn18mKZRf6xwAGR/OFqZCy3FChZXHWt0T2dGLXQhfA+WxaeMixDE=;
+	bh=5PtMn6ukGg6gAsqu/cBjeIKvLMgTB7HQzRle6zjWATg=; b=ib+gPErFxsicRDZfSVfRrDJlO4
+	IkT3EdKg1TZSG65DPsXiMOKLswHDzpB1ribsEEgjOBBv8QYVaaUaELPrHmDfdtbwhy1ivOAOlS+D1
+	NvzQTGVjr7t0IL2dWZujkGGuJnj3BLReG2vj2PjacAR7UF93rO36MRvPSZScozxC0dzY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1x9iox-006zZy-UM; Thu, 24 Sep 2026 14:45:03 +0200
-Date: Thu, 24 Sep 2026 14:45:03 +0200
+	id 1x9iul-006zbx-9w; Thu, 24 Sep 2026 14:51:03 +0200
+Date: Thu, 24 Sep 2026 14:51:03 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phy: aquantia: add get_features() for
- AQR113C
-Message-ID: <cd172044-b256-427e-9843-c7daf4c33d50@lunn.ch>
-References: <20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29b06283b0f3@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Aldo Ariel Panzardo <qwe.aldo@gmail.com>, maxime.chevallier@bootlin.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, sashiko-bot@kernel.org
+Subject: Re: [PATCH] net: stmmac: guard FCS stripping against runt frames
+Message-ID: <8b3d8225-0d86-4e73-86c8-b7f644faef56@lunn.ch>
+References: <20260923162339.1375698-1-qwe.aldo@gmail.com>
+ <arQ4dVkI9llhXCDx@lore-desk>
+ <78724445-4c69-44fb-b82a-1f9275e37e9e@lunn.ch>
+ <arTX2kNFGXLg7vdn@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,18 +47,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924-net-phy-aqr113c-fix-pma-capability-v2-1-29b06283b0f3@oss.qualcomm.com>
+In-Reply-To: <arTX2kNFGXLg7vdn@lore-desk>
 
-On Thu, Sep 24, 2026 at 11:51:06AM +0800, Hongmei Xu wrote:
-> AQR113c does not correctly report its supported PMA
-> capabilities which includes speeds like 10G/5G/2.5G.
-> Add get_features() to explicitly declare 10G/5G/2.5G/1G
-> support instead of relying on PMA register reads.
+On Thu, Sep 24, 2026 at 09:57:14AM +0200, Lorenzo Bianconi wrote:
+> > > > @@ -5808,10 +5809,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+> > > >  
+> > > >  		/* ACS is disabled; strip manually. */
+> > > >  		if (likely(!(status & rx_not_ls))) {
+> > > > -			if (buf2_len) {
+> > > > +			if (buf2_len >= ETH_FCS_LEN) {
+> > > 
+> > > I do not think this approach is correct since, at least theoretically, the FCS can be
+> > > splitted between buf1 and buf2.
+> > 
+> > We are talking about runt frames here, so less than 64 bytes in
+> > size. Can such a frame be split over two buffers? What is the minimum
+> > size of the first buffer?
+> 
+> Why are talking just about runt frames?  According to my understanding,
+> this codebase (at least the one in stmmac_rx()) is executed on all
+> 'last fragments'. Am I missing something?
 
-Please slow down. You need to let discussions about previous versions
-come to a conclusion.
+That the patch subject is wrong?
 
-    Andrew
+[PATCH] net: stmmac: guard FCS stripping against runt frames
 
----
-pw-bot: cr
+I suspect this is an AI generated bug report, a minimal fix has been
+proposed, but no actual thought applied to the situation, such as does
+the hardware even allow it to happen, does it apply to more complex
+situations, such as fragmentation etc. The usual AI problems....
+
+	Andrew
