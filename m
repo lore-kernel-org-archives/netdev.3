@@ -1,132 +1,179 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451883F6C2A
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 22:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F2D45C71C;
+	Thu, 24 Sep 2026 22:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790289170; cv=none; b=ac1BUgRyafid1Gnb3S6AEHhVe1Ett9fbScb3O4LS1iIqhyfhumddsp9TBtJ+ThvRWoWURNyeWjrOC6yua52qNYfHegdOGgjjJW+IEhzOQ62Fx3jkn2sIwvdD3SixwJps8v6Jxy3YsvP4pkl1ULc7O5WVnVmQqlq0rQpBaEHjkPY=
+	t=1790289394; cv=none; b=GWU/sIZWsx1IIxuwov24VQv9oLZRWlHTi5V0AC/9iBeCngbNTZt2x31Qd8rM4873Lo3/MeYATmyUdHqH4hj7GNEU7NvrrahXcf8iukycuJJ8p9UkJHTlDsh0uAc9PoVDZq6uPq2EtcOIlx5CHkyW8dDYWlcsr6oovdkOxKgUpw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790289170; c=relaxed/simple;
-	bh=HAYPJELrl1gCY6VLg8RJd8Lyd2frEAWknl0CbnmN8qM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DMOVT+VUHXT2HNs+BGwQHvf4dzA4C285luGTr1E4KM7NIVn5w7fkMIr33nReVk8a0XrMXs5rapzWeBGDgur7pFdv/0p7SYdJg4q+t7Qr3r1xxhQ31rLUlohNBiZ04LF74RgGauzZVVT31yxBWYHwMstVT9IxLlULFDNzxgr2U/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBHQWL9L; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790289394; c=relaxed/simple;
+	bh=OivxaqTavPlzXwYQJzOeniUtRbf2zYnNvEEYSA6HuQc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FjvhF7bsPy2KqheXtUzV4YzxW+mACTcimBmbGucx+CRX3O7uLz7A1CgflDhTSmvKYZbRfIgOaVVZOASC7T1tDjL7OMLOazBLOgGkw/nEs/hLMASIba2lCLNIWs9/36CJ/5D/kobXEvPDSbNcKiAtc6Q3LMlUapVKI4AR4L2uPtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LP11fXVm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBHQWL9L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C6D1F000FF;
-	Thu, 24 Sep 2026 22:32:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LP11fXVm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3148F1F000FF;
+	Thu, 24 Sep 2026 22:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790289168;
-	bh=jjFxsfu9i9tYynOK4/NPHeq0UmSi72TGc+kGumgbLJw=;
-	h=From:To:Cc:Subject:Date;
-	b=OBHQWL9LHEG09TovXxpnxcq55v0Auc/zYzySkKj9s1ibT15Gx2JaxBdddHuQxGDUy
-	 I+AiXG6I5sOA9xTv3hXZtEEn/9KwBRIlJzGyyTD3tH7MeoM9jzLNVmHMLeTF/2v9K0
-	 UhsGbpb5vfUYCOtH0iWz2PoZuhwl4joPP9Zzxuk/qEMHN9at4AIcCfGiR8N/GdAXLd
-	 +bOiuj4sec/o9v6UR2AppWNl80mOjmoGSV+Rq4BVVXNCbgtSSXJf/qZfZ+bWwHjlSS
-	 gFVK1PKJKd883tPwbmKqrDb6nbyboV0yJBmVfPB2auK4pHdxZsl83QYyznqMGSWQlg
-	 1quZXyQkVhdBw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	donald.hunter@gmail.com
-Subject: [PATCH net-next] tools: ynl-gen-c: keep the type values of a nest in spec order
-Date: Thu, 24 Sep 2026 15:32:45 -0700
-Message-ID: <20260924223245.530132-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=k20260515; t=1790289392;
+	bh=9ea983eeKPl1/7pykNWDiee95bcmGUYAovPHRVRm1Hc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=LP11fXVmsC1rt8p4JEhW9j5hAaykMGqCOZigc2wesdVX3BsywOPa6O4vx/x1xLZP/
+	 KpVh6Bwn7vpoZr1zmcCCtDaM66WxQx2wZsh9au4SJ/2yteeluWgiMfw3SzG3LoJ5Rr
+	 PAU7qxge0QlYzxkeyRL+YcPymSevbrXtv0hf213Oange18PefKfvNnSOCuX+OMCEOu
+	 fk7lEsnuPaDICYfv4+UJNUMEG1Z21NJZM9DkqJVParDzIySHDRrdHZeIkJyrGKhaM2
+	 AB4rfPWHEwSgXAD+dPOo2nQRTK9v4rhsyL1xZgjEGYIfxCL5MDIBviX7PsXRS19G3w
+	 P9J8b5S/Ij9FQ==
+Subject: Re: [PATCH net-next] net: devmem: use page_pool_put_netmem_bulk
+From: netdev-bot+sashiko@kernel.org
+To: kaifengw@google.com
+Cc: netdev@vger.kernel.org, almasrymina@google.com, edumazet@google.com,
+ kuniyu@google.com, pabeni@redhat.com, willemb@google.com, davem@davemloft.net,
+ kuba@kernel.org, horms@kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 24 Sep 2026 22:36:31 +0000
+Message-ID: <179028939171.2160803.706522228583664641@kernel.org>
+In-Reply-To: <20260922193356.542922-1-kaifengw@google.com>
+References: <20260922193356.542922-1-kaifengw@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Family._load_nested_set_nest() collects the type-value names of a
-nest-type-value attribute into a set and Struct.set_inherited() renders
-them sorted, while TypeNestTypeValue._attr_get() passes them to the
-parse helper in the order the spec lists them.  For nlctrl's
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-  type-value: [policy-id, attr-id]
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-that makes the generated helper take (attr_id, policy_id) and the caller
-pass (policy_id, attr_id).  Both are __u32 so nothing complains, and
-every C YNL user of the nlctrl policy dump gets the two swapped.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Two attributes nesting the same attribute set with the type values in
-a different order now fail set_inherited() instead of comparing equal.
-No spec does that today, but better safe than sorry.
+- [High] sock_devmem_dontneed() (net/core/sock.c) now releases the last
+  page_pool reference of devmem net_iovs via…
 
-Nesting an attribute set which is also used as a sub-message gets its own
-check: it used to be caught by the list-versus-set type mismatch, which
-the ordering fix removes, and without it the generator emits a call
-to the sub-message parser with the selector argument missing.
-Again, no spec does this today.
+--
 
-nlctrl is the only spec affected, discovered by an LLM scan of the spec.
+net: devmem: use page_pool_put_netmem_bulk
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-Doesn't affect kernel code, just tooling, so not a fix.
+This converts sock_devmem_dontneed() from a loop of napi_pp_put_page()
+calls to a single page_pool_put_netmem_bulk() call per batch, so the
+page_pool ring producer lock is taken once per batch instead of once per
+netmem.
 
-CC: donald.hunter@gmail.com
----
- tools/net/ynl/pyynl/ynl_gen_c.py | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 2948dffcc3e1b..a6b6d5b2051df 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 2b3483db1b60..15c79849c609 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -986,7 +986,8 @@ from lib import SpecSubMessage
-         self.family = family
-         self.space_name = space_name
-         self.attr_set = family.attr_sets[space_name]
--        # Use list to catch comparisons with empty sets
-+        # Stored by reference, _load_nested_set_nest() fills the list in
-+        # after constructing us.
-         self._inherited = inherited if inherited is not None else []
-         self.inherited = []
-         self.fixed_header = None
-@@ -1038,9 +1039,11 @@ from lib import SpecSubMessage
-         return self.attr_list
- 
-     def set_inherited(self, new_inherited):
-+        if self.submsg:
-+            raise Exception("Nesting a sub-message as an attribute set not supported")
-         if self._inherited != new_inherited:
--            raise Exception("Inheriting different members not supported")
--        self.inherited = [c_lower(x) for x in sorted(self._inherited)]
-+            raise Exception("Inheriting different members, or a different order, not supported")
-+        self.inherited = [c_lower(x) for x in self._inherited]
- 
-     def external_selectors(self):
-         sels = []
-@@ -1394,7 +1397,7 @@ from lib import SpecSubMessage
-                 pns_key_list.append(name)
- 
-     def _load_nested_set_nest(self, spec):
--        inherit = set()
-+        inherit = []
-         nested = spec['nested-attributes']
-         if nested not in self.root_sets:
-             if nested not in self.pure_nested_structs:
-@@ -1407,9 +1410,9 @@ from lib import SpecSubMessage
-         if 'type-value' in spec:
-             if nested in self.root_sets:
-                 raise Exception("Inheriting members to a space used as root not supported")
--            inherit.update(set(spec['type-value']))
-+            inherit.extend(spec['type-value'])
-         elif spec['type'] == 'indexed-array':
--            inherit.add('idx')
-+            inherit.append('idx')
-         self.pure_nested_structs[nested].set_inherited(inherit)
- 
-         return nested
+[ ... ]
+
+> @@ -1123,8 +1124,7 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+>  			netmems[netmem_num++] = netmem;
+>  			if (netmem_num == ARRAY_SIZE(netmems)) {
+>  				xa_unlock_bh(&sk->sk_user_frags);
+> -				for (k = 0; k < netmem_num; k++)
+> -					WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> +				page_pool_put_netmem_bulk(netmems, ARRAY_SIZE(netmems));
+
+[Severity: High]
+Can this reintroduce the page_pool use-after-free that commit
+271683bb2cf32e ("page_pool: Fix use-after-free in
+page_pool_recycle_in_ring") addressed, when CONFIG_PAGE_POOL_STATS=y?
+
+The old path went through napi_pp_put_page() ->
+page_pool_put_unrefed_netmem() -> page_pool_recycle_in_ring(), which
+updates the stat while still holding the producer lock:
+
+net/core/page_pool.c:page_pool_recycle_in_ring() {
+	in_softirq = page_pool_producer_lock(pool);
+	ret = !__ptr_ring_produce(&pool->ring, (__force void *)netmem);
+	if (ret)
+		recycle_stat_inc(pool, ring);
+	page_pool_producer_unlock(pool, in_softirq);
+}
+
+The bulk path touches the pool after the unlock:
+
+net/core/page_pool.c:page_pool_recycle_ring_bulk() {
+	...
+	page_pool_producer_unlock(pool, in_softirq);
+	recycle_stat_add(pool, ring, i);
+
+Once the netmems are published into pool->ring, does the setsockopt
+thread still hold anything that keeps the pool alive?  The barrier in
+page_pool_release() only covers work done inside the producer lock:
+
+net/core/page_pool.c:page_pool_release() {
+	page_pool_scrub(pool);
+	inflight = page_pool_inflight(pool, true);
+	/* Acquire producer lock to make sure producers have exited. */
+	in_softirq = page_pool_producer_lock(pool);
+	page_pool_producer_unlock(pool, in_softirq);
+	if (!inflight)
+		__page_pool_destroy(pool);
+}
+
+so the sequence would be:
+
+CPU0 (setsockopt SO_DEVMEM_DONTNEED)
+  page_pool_put_netmem_bulk()
+    page_pool_recycle_ring_bulk()
+      __ptr_ring_produce()          /* last inflight refs published */
+      page_pool_producer_unlock()   /* spin_unlock_bh(): BH/preempt window */
+
+CPU1 (page_pool_release_retry() worker after deferred destroy)
+  page_pool_release()
+    page_pool_scrub() -> page_pool_empty_ring() -> page_pool_return_netmem()
+    page_pool_inflight() == 0
+    producer lock taken/released uncontended
+    __page_pool_destroy() -> page_pool_uninit()
+      free_percpu(pool->recycle_stats); kfree(pool);
+
+CPU0
+      recycle_stat_add(pool, ring, i);   /* this_cpu_add on freed memory */
+
+Since the release is driven here by returning the last outstanding user
+tokens, would it be better to move recycle_stat_add(pool, ring, i) inside
+the producer-lock section of page_pool_recycle_ring_bulk() (matching
+page_pool_recycle_in_ring()) before converting sock_devmem_dontneed() to
+the bulk helper?
+
+>  				netmem_num = 0;
+>  				xa_lock_bh(&sk->sk_user_frags);
+>  			}
+> @@ -1134,8 +1134,7 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+>  
+>  frag_limit_reached:
+>  	xa_unlock_bh(&sk->sk_user_frags);
+> -	for (k = 0; k < netmem_num; k++)
+> -		WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> +	page_pool_put_netmem_bulk(netmems, netmem_num);
+
+[Severity: High]
+This final flush is the common case for a SO_DEVMEM_DONTNEED call that
+releases fewer than 16 frags, so it has the same exposure as the batch
+call site above: the last outstanding niov references can be published
+into pool->ring here, and the stat update in
+page_pool_recycle_ring_bulk() happens after the producer lock is
+dropped.
+
+Does anything else pin the pool across that window?  The dmabuf binding
+refcount taken by mp_dmabuf_devmem_init()/destroy() protects the
+binding, not the page_pool, so only the inflight accounting plus the
+producer-lock barrier appear to keep the pool alive.
+
+>  
+>  	kvfree(tokens);
+>  	return ret;
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922193356.542922-1-kaifengw%40google.com
