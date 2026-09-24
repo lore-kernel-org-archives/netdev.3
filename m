@@ -1,161 +1,303 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2640B4B488E
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DA44AD4A7
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 17:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790271669; cv=none; b=jDxIGHr4dpdOYQWEh+ecX0aEqhEov9C7hPfeTzm17ZLrt6h/B0YwHL3ACRATr/pGkrpPpAYsbgXg8Bz2GWKz+gpO48LidVUDmqr3453JEOCnPQGDcV7xHlGyoBxTStRVY/kjCMau8J9+CGZ7iiq5Mi9A0lhsmRW1PJ3jX1chbyo=
+	t=1790271879; cv=none; b=iVW7FTLSL1MJ9EDkkI4DZDhk4wCQny4sPj9Bt0R5PKjWTOwIVBpEPc2PN9+qkbsVZTTYaZnZc8TSoCEUYFbu8dEI8zHVh7s20jshaDewKXTPxFd4MUwXRvrP0ygdGrvlMpitAXM4dw3vwPXLR6eXZzXFpHvT5jDac8LqsXkljVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790271669; c=relaxed/simple;
-	bh=hXEcH6B3ccS4e9wy9ATb2cb7MIxnwVYgsDksqTmBs+g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YOHGYRgcBhK/th2cbc0wtKOLVlY1Wj1+YvEmy3Chqm+DTI+q75fE23U5Azc14hLg7M1OaoQO9dkyPPJKMBVtZQTVH9wy/EuhaB9I86ngHfuMzSyeKygi4O3movsDFJL3sN8t8uqwMinAUMnBFt/rrxJSK55dmE19aoniCk7xbmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=xmiAitzU; arc=none smtp.client-ip=74.125.227.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1790271879; c=relaxed/simple;
+	bh=7XmKKcJx3+9gJOrs3+82dw4o/KYQ1Xfg/FTkZC0fgig=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hUr2YZlpgvrjomBUmaHdbVxerXr00IEOoCjojU5e5Hu9gZ6c5YfnaGyvGyz/u2G95gZ6dN3UXt3xTGAR4jZge9ktuBDysw0BluwhoQI+E/LFccDOwDdGJw9p13Mu01Q5Nd5jOxr1tEh0YVxx1KRYNf9qVaH6dccpf9nh3OIM6bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azfct/tU; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="xmiAitzU"
-Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2df8de41d5dso96505ad.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:41:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azfct/tU"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6c8f6a53fabso1008739eaf.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790271667; x=1790876467; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uDwwqIv8dDcJdDjnvziu6xjH0tPukA8ioumKbkDzNZ8=;
-        b=xmiAitzUfR2syWSMbqFgRw9j+EkYZpYG8WqhF3LtLQq30NutO2mgEEMztWjfg/PQoo
-         hkZppxFX5S3RcJ4J8S8KBoNEGi7DV/US3LBs4Mx+3zx2LAI8/oba6TINtLzv6S6/Xxnn
-         w9LttKtSM9Q9G25Jp3df+HqskeUzD1GMmwnq0cbwbZ9bgeKZ4ljURFk1i+IjqOXzJTU5
-         i3FmEtQf/70WwZN3yo6raAiXZrIE0Abx4qgffDit5Wve0+0f/D8gSsrokFpgJMRbtMGU
-         gtGO/7rbmR8CCxRelgRKb3r0ciikwcENN4MHIS+3oHqFKaHOXHQCdK9ejd0NA/ixs/gL
-         ucjg==
+        d=gmail.com; s=20251104; t=1790271875; x=1790876675; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=m/yuadhswZztFZIXp8O1C3rG4scLLGx4YqdmEAm1GxE=;
+        b=azfct/tUP8UKAlCNTtkHerRTzmzo5baoL+tG/sYCUY6g3BgLF3Clq1k8S/J0OnM79i
+         iA5zlArFpHfJg2fZBM6kbhKV1g4MEMrcg9Ci2Ku9tjwM7KsB07t26p1kFvjOYe39kFrZ
+         2N+TA8azK463/mWRZoIaYT6VRshc6PdvN2FfY4JbEPNNOBcQa6Bli+k4SktM3VQVCzSH
+         SFnjfYDgqFsfg2MEqcu6VbHxkl2vSNM5fmy8XTTdHjx/4XGX0KIY1jMuS7Ys+XP6yjzi
+         F7c3iy5cdNkDWiQFQyUHKJGhMkt9+hnuY9m2wzrZPVawc0X35wGRya8y0mLRJSXYW2qG
+         czwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790271667; x=1790876467;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20260707; t=1790271875; x=1790876675;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=uDwwqIv8dDcJdDjnvziu6xjH0tPukA8ioumKbkDzNZ8=;
-        b=fQxNazg08vF5mBNol6qulGiLtFw9HT2FCVjyedI2ep4RGH3RYuIZYJTzAvFqKdaK3B
-         46m194qjLMLCgaVJ498+u2wJC/U7YncphNpJuVoE+xCtS7zlE38cmlOHwU32HXKIo5JL
-         S+d/Ni1dx/R1OfDUXstSB1AwHKadGHq7Zlq1jIV7FIb8MqMWJhPuP3dU3ynPVZWZU4dF
-         JbkeQA5qKh6fqtAQCosqy0bkRFri6+adwNJwN1q6WjTOy4dZJEXUErlYoDQqgArkxGUD
-         LUo9fR8SbkbdJGQpoEciaoO4FBIQXVyHnBBCsTdOw3t1HMNR8ujalDvLglMUOw6Fl1ST
-         SRBQ==
-X-Gm-Message-State: AFuF++lF3GvmrK51dL6cGZlUwycxVE7WagjT2kK2/ZiFSSskfdeHkY6N
-	zUcue5OV1Vc3dlIGEDvQgen1v8yRIxj9b52rEhz3T655uLe3BTf+l9LbWEPvNSHVTks=
-X-Gm-Gg: AYBFou2ir/Z/6LZPqA9i64jWoK4k5idARkoVmup0POeTEXMc6vGKn+1PmKTd539fUZJ
-	fJvaEO1OM35k+jScVqk/EURlTqoNYxNojxbBjBh78xeVXKbMtgGcAQxzmq1VsXoRlPgl0gtPJIL
-	SOUZkTFZzjXRqj2qgC3kO/H8YDB7x7irctxZoBMAOZojwSGaskj22JGNrz4qUrrA6qrRt1gcQbW
-	CVX11ALGYlXbfhdX9Ujb3huaPLCXJML9wQwsl2Cfq9wtglTAqJrW3LvCWZFoX6HZiU6KHXp4Rl6
-	WOMws9RkWF6a8Gq28nXnYDjskMQ7XwgMyK8kGveaYtLE9T9REVjvvI3G9Z5ftJqqMWhY9guTmjx
-	iQlkVqrNq2t7VsgBDy0pAWxt9tqoZ7qIP0qOqdjZxsFo1no+GRXLaatWVVJd4/N8VdAELQ2l73G
-	IXM9o3HSVs/uR+e5JFjwfMHTiV9absA9mwV77qUTUx8vrKhwItK1ioFTJKyGizwq8Oo0S7i+2fk
-	J9m/8jjd9h4o0wmiCBCONI=
-X-Received: by 2002:a17:903:2cb:b0:2d9:6db:9fcb with SMTP id d9443c01a7336-2df7da6100fmr29424525ad.11.1790271667303;
-        Thu, 24 Sep 2026 10:41:07 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:47::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df90fbbd2asm343275ad.12.2026.09.24.10.41.05
+        bh=m/yuadhswZztFZIXp8O1C3rG4scLLGx4YqdmEAm1GxE=;
+        b=sybWf0n7NVbNzG3xDPDKfbYsNz5Znz0faIwPHufFNB8tMotldMKybyu+KHEgtoBi5m
+         xTm0Y0hQTo/EGGsw4Z38jzxahK9ps0EFR2FsOIBJmQlCsz1FJFSDnb6/9CxiO2Ndqifx
+         DRxEo4NqRlRFYc8FJhEdxgHTIFl2imlN2/YIbEo27H6Yf51PqwpY1RlksuX5OX5fSAH6
+         EJeZdpm5JztH7u1walldJ65TNUauDLJEKssky7a+7klL5mZCUD+YPywX+SJMO+rl+svS
+         y1Dn9rDuPevT8vs963EpbHtkqaa+YswW2Q0dho1d7H2zBLy/K65odr/gvClNBMqekbOG
+         ByzA==
+X-Forwarded-Encrypted: i=1; AKwUvBynjk4tXooL3gJsmZu9OU/g/6aAXL0lYjIJI6N09cPtJ21DRTeg9zhfN9xyzi8zQ+Td7VHHs2c=@vger.kernel.org
+X-Gm-Message-State: AFuF++nrC8jZd0QLWHsOymOZ1E5X84Qevu+k4VoVg8SombtA+PRIFc0/
+	psy4plzolX9CnV45CkghuzGt36tYRoS1uOzBzmiuA2xKs5WUi/4hko0n
+X-Gm-Gg: AYBFou2TE6Lj6E1vlKfZRIWNpda13snoPNGoxHWqbaUsmmHfdUIw1Fae6Wk2nzkCU7O
+	TFS599znn39hwhEtXLkrgDgDlHYWuFbzahe7HJtrJDRbjqKy0lkxls7agJXOkqCzc/yVPo/lcOO
+	0iN4gIEs94KIT9ZJYJxC57uNB62msS5rBPxk2DnF75LqCnC9ZHVCF3YXCyJCfbVLprUs9JpXtmt
+	VUGeAL5kyOGQvtdfWoC7MomqFWnnpPPpbQZ1JS0rNXc29C90xW2cQ4+6mh8hS0TDgNWeOLbBYma
+	7mg/kdNi+LkV5Z1vy5RRiRscSC4J9/qbKyVTNCodBV0tn9S8vehEcd4eGTuIrXRjgCPdxNwpgmI
+	dOZbG3zOIYCNHrjxpzYEzHhKovCi6mMd8UlKKbZMawSRWjeC3r18dSUBny9X3iO/Jj04s0cNvio
+	ns5h/hYWNkEGHbRL/dpuMtqjPpR+ekrNQRItNv5Tr9Vpq0J/d7JijXGkRiDVbGmXYdCxEGXs1/l
+	vTG1vNOlGacaAVRQ5jJwbThoCdmCWCZwIv6+WN805/7EIxazNAdcZEql1TBMkhpvCE7LLZ2eGX+
+	E1LGdhr12Uuqwd0qxN5SULnq1XmUzZWnXYnJ1yxMZ/HnCyrWXVVucttnzB9/7Ewr9+0Mi9G2RXt
+	2JzyTyHhNLLtjiM9RktZLxqZz6wMUqTYn
+X-Received: by 2002:a05:6820:162a:b0:6b1:9b72:213c with SMTP id 006d021491bc7-6d43eedd850mr2506187eaf.3.1790271875445;
+        Thu, 24 Sep 2026 10:44:35 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-491e8f8d14asm3027802fac.0.2026.09.24.10.44.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 10:41:05 -0700 (PDT)
-Date: Thu, 24 Sep 2026 10:41:04 -0700
-From: Joe Damato <joe@dama.to>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Prashant Sreedharan <prashant@broadcom.com>, horms@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC net v3 3/3] bnxt_en: stop DMA before releasing rings the
- firmware did not free
-Message-ID: <arVgsJAfoupBPoEm@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Prashant Sreedharan <prashant@broadcom.com>, horms@kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260923210744.3406861-1-joe@dama.to>
- <20260923210744.3406861-4-joe@dama.to>
- <CACKFLinDP66z0EA_1pL+4jbC_tr1Fe2mcsaan+xEFebORBcyAw@mail.gmail.com>
+        Thu, 24 Sep 2026 10:44:34 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net v3 00/10] net: stmmac: preserve datapath state across
+ MTU and resume failures
+Date: Thu, 24 Sep 2026 11:44:30 -0600
+Message-Id: <20260924-submit-stmmac-reset-fixes-v1-v3-0-c031e3f3a282@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLinDP66z0EA_1pL+4jbC_tr1Fe2mcsaan+xEFebORBcyAw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OwQ6CMAwG4FchPTuzFQLMk+9hPIxRZcaB2eaiI
+ by7Y164adJL2z9fO4MnZ8jDoZjBUTTeTGNqyl0BelDjlZjpUw/IseYSBfPPzprAfLBWaebIU2A
+ X8yLPomCNlm0nsUepJCTi4SjvknCCkQKcv8OE3EiHFV5jg/Fhcu/8RBQ5/N+9VJy1jaqoKgUR5
+ 8erVea+15PNpyJuMfyBYcJ6iZSyHUlZb7FlWT6VZXt+LAEAAA==
+X-Change-ID: 20260921-submit-stmmac-reset-fixes-v1-7c98b92d29a9
+To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Joakim Zhang <qiangqing.zhang@nxp.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>, 
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Serge Semin <fancer.lancer@gmail.com>, 
+ Suraj Jaiswal <quic_jsuraj@quicinc.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Joao Pinto <Joao.Pinto@synopsys.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, 
+ Ong Boon Leong <boon.leong.ong@intel.com>, 
+ Voon Weifeng <weifeng.voon@intel.com>, 
+ "Song, Yoong Siang" <yoong.siang.song@intel.com>
+Cc: Richard Genoud <richard.genoud@bootlin.com>, 
+ Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+ ZhaoJinming <zhaojinming@uniontech.com>, 
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, 
+ Ding Hui <dinghui1111@163.com>, James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Wed, Sep 23, 2026 at 11:26:47PM -0700, Michael Chan wrote:
-> On Wed, Sep 23, 2026 at 2:07 PM Joe Damato <joe@dama.to> wrote:
-> 
-> > @@ -7798,6 +7802,19 @@ static void bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
-> >                         bp->grp_info[i].cp_fw_ring_id = INVALID_HW_RING_ID;
-> >                 }
-> >         }
-> > +
-> > +       if (!stuck)
-> > +               return 0;
-> > +
-> > +       netdev_err(bp->dev, "Firmware did not free %d ring(s)\n", stuck);
-> > +       return -EIO;
-> > +}
-> > +
-> > +static void bnxt_stop_dma(struct bnxt *bp)
-> > +{
-> > +       netdev_err(bp->dev,
-> > +                  "Disabling DMA before releasing ring memory, a firmware reset is required\n");
-> > +       pci_clear_master(bp->pdev);
-> >  }
-> >
-> Thanks for the patches.  The general scheme to more properly handle
-> RING_FREE timeout to prevent possible memory corruption is correct.
-> However, the corrective action here feels incomplete.  We should at
-> least set some bp->state flags so that at the next open, we would know
-> that something was wrong and could take further actions (e.g. FLR,
-> etc)  to try to bring it back.
+Keep the stmmac datapath coherent after failed MTU changes or hardware
+resume without changing the interface's administrative state. Retain the
+working MTU configuration for rollback, and allow ordinary down/up recovery
+when hardware cannot be restored.
 
-Thanks for the review. That makes sense. Were you thinking of trying to bring
-the device back up automatically or requiring user intervention?
+The ten patches separate ownership and recovery fixes from the MTU
+transaction:
 
-The automatic path is probably somewhat tricky, it might look something like
-(psuedo code):
+  1. Correct the WoL/safety IRQ unwind order after failed IRQ registration.
+  2. Allow phylink_stop() to finish a suspended instance, restoring PHY
+     advertisement reduced by suspend without restarting the failed MAC.
+  3. Track datapath ownership separately from administrative and hardware
+     sleep state. Close and PM perform only the work still outstanding.
+  4. Leave normal-size MTU changes running, including supported AF_XDP MTUs.
+  5. Make partial DMA allocation unwind complete and leave freed queues empty.
+  6. Keep DMA configurations at stable addresses, use persistent IRQ
+     contexts, and drain timer producers before the final cancellation.
+  7. Track live XDP release/reopen and propagate program-attach failures.
+  8. Use that tracked restart for AF_XDP pool changes, handling failures
+     without leaving NAPI active over missing buffers or unmapping live pools.
+  9. Retain PHY and runtime-PM ownership during ethtool ring/channel reopening.
+ 10. Retain rings and IRQ registrations across jumbo MTU replacement,
+     restoring the old MTU and rings if hardware setup fails.
 
-  #define BNXT_STATE_DMA_STOPPED  10
+The ownership states remain distinct: DOWN has no datapath allocations;
+RUNNING has active queues; SUSPENDED retains rings and IRQs; HALTED retains
+rings but has released IRQs after failed MTU rollback. Collapsing the last
+two states would make close free IRQs which it no longer owns.
 
-  /* bnxt_stop_dma */
-  set_bit(BNXT_STATE_DMA_STOPPED, &bp->state);
-  pci_clear_master(bp->pdev);
+Jumbo rollback allocates no new buffers or IRQ registrations. RX holes are
+filled before reset without changing the old descriptors; descriptors are
+rebuilt or retired only after reset succeeds. If rollback also fails, the
+interface remains detached until down/up recovery. This cannot guarantee
+recovery from indefinitely failing hardware.
 
-  /* bnxt_open, bnxt_open_nic, and probably bnxt_half_open_nic */
-  if (test_bit(BNXT_STATE_DMA_STOPPED, ...
-     bnxt_recover_stopped_dma(...)
+Failed interfaces still receive hardware/PHY sleep handling. A failed
+datapath with MAC WoL configured rejects suspend with -EBUSY because its
+wake path is unusable; PHY-only WoL is not rejected. Timestamp filters and
+PHC registration survive an MTU change, but continuous PHC time across the
+hardware reset is not preserved.
 
-  /* pseudo code */
-  bnxt_recover_stopped_dma(...) {
-     pcie_flr();
-     pci_set_master();
-     bnxt_fw_init_one();
-     clear_bit(BNXT_STATE_DMA_STOPPED, ...
-  }
+Live XDP and ethtool failures leave the administratively-up interface
+detached for ordinary down/up recovery. Program attachment failures return
+an error without consuming the proposed program. BPF-link and XSK-pool
+removal still complete if their datapath restart fails, so teardown can
+release the program or pool safely. AF_XDP pool reconfiguration now pauses
+all queues and link resolution while rebuilding the rings; this trades
+reconfiguration latency for one consistent ownership and failure path.
 
-That's just a basic outline; I suspect the details will be much trickier and
-would probably take a few revisions to get right.
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v3:
+- Snapshot debugfs queue counts under RTNL with the descriptor ownership
+  check, so a reader blocked behind channel shrink uses the new topology.
+- Complete pending core sleep state during close and retry restoration on
+  open after runtime-PM acquisition. Use the installed wake state rather
+  than mutable WoL settings, and retain the pending marker if restoration
+  fails.
+- Put the independent IRQ unwind fix first, ahead of the ownership changes.
+- Correct the WoL/safety IRQ unwind order, fixing a repeated safety IRQ
+  free and a leaked WoL handler.
+- Account for live XDP release/reopen in datapath ownership. Stop DMA on
+  late IRQ failure, propagate program-attach errors without losing program
+  references, and allow BPF-link removal to complete after restart failure.
+- Replace the void AF_XDP queue-enable helpers with the tracked XDP restart.
+  Unmap a removed pool only after freeing its rings, undo failed pool
+  attachment, and preserve TBS configuration while rebuilding the channels.
+- Keep PHY/PM ownership across ethtool ring/channel changes, restoring the
+  old configuration after failed reopening and leaving the interface
+  detached for down/up recovery without a second runtime-PM put.
+  Explicitly disable the MAC during release even when link resolution has
+  not reached mac_link_up().
+- Split the MTU work into normal-size MTU handling, allocation unwind,
+  stable DMA/IRQ ownership (including timer lifetime), and the retained-ring
+  transaction. Keep the ownership change and its open/error-path adaptations
+  in the same patch.
+- Restore the PHY advertisement reduced by phylink_suspend() when stopping
+  a suspended instance, without restarting or reconfiguring the MAC, in
+  response to Andrew Lunn.
+- Keep suspend-owned PHY speed control separate from explicit driver
+  speed-down requests, so close-time power saving does not overwrite the
+  original advertisement and remains effective until the matching speed-up.
+- Suspend a stopped PHY powered back up by phylink_prepare_resume() when
+  stopping after a failed MAC resume, without repeating phy_stop().
+- Add a separate MTU transaction patch retaining old DMA resources and IRQ
+  registrations until replacement succeeds, following Andrew Lunn's request
+  to keep the old setup for failure recovery.
+- Keep DMA configuration objects at stable addresses and use persistent
+  channel objects for per-queue interrupt contexts.
+- Drain transmitters and post-completion NAPI poll tails before cancelling
+  TX timers.
+- Avoid resetting normal-size MTU changes, including all supported AF_XDP
+  MTUs, and stop rebinding live pools through temporary RXQ objects.
+- Program the new MAC receive limit before activation and restore the old
+  MTU on failure; refill old RX buffer holes before reset so rollback does
+  not require allocation.
+- Preserve coalescing, TBS state, PHC registration and timestamp filters;
+  leave a failed rollback detached with old rings retained for close.
+- Harden partial-allocation unwind.
+- Separate core sleep completion from datapath ownership so failed MTU and
+  resume paths still receive hardware PM handling, without disabling NAPI
+  twice or restarting released queues. Address the skipped-suspend issue
+  reported by Sashiko; reject an unusable MAC WoL path with -EBUSY.
+- Balance platform noirq PTP clock handling against resources still owned
+  after detached XDP cleanup.
+- Link to v2: https://patch.msgid.link/20260922-submit-stmmac-reset-fixes-v1-v2-0-d92e609be996@gmail.com
 
-Instead, if you are OK with leaving the device disabled until a user rebinds
-it, then I'd define a new bit (BNXT_STATE_DMA_STOPPED), set it in
-bnxt_stop_dma, and then return ENODEV from the open paths. Simpler, but
-requires manual intervention when this occurs.
+Changes in v2:
+- Drop forced netif_close() and retain the interface's administrative state,
+  as requested by Maxime Chevallier.
+- Separate queue quiescence from resource release and use explicit datapath
+  state instead of a napi_disabled argument to the release helper.
+- Handle repeated suspend/resume after failure, preserve PHY/PM ownership
+  until ordinary close, and allow a fresh down/up recovery.
+- Check XDP/AF_XDP cleanup, descriptor readback and asynchronous reset work
+  while the netdev is administratively up but unavailable.
+- Explain the generic phylink suspend-to-stop transition and why restarting
+  phylink after a failed MAC resume is not a valid substitute, in response
+  to Andrew Lunn.
+- Combine the two stmmac error-path fixes so every user of the new state
+  has consistent resource and NAPI lifetime handling in one patch.
+- Link to v1: https://patch.msgid.link/20260921-submit-stmmac-reset-fixes-v1-v1-0-87a4e431ee00@gmail.com
 
-I am guessing you mean the former, but wanted to check before I started to try
-to write that code.
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Serge Semin <fancer.lancer@gmail.com>
+To: Suraj Jaiswal <quic_jsuraj@quicinc.com>
+To: Russell King <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Joakim Zhang <qiangqing.zhang@nxp.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: Richard Cochran <richardcochran@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+To: Joao Pinto <Joao.Pinto@synopsys.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Ong Boon Leong <boon.leong.ong@intel.com>
+To: Voon Weifeng <weifeng.voon@intel.com>
+To: "Song, Yoong Siang" <yoong.siang.song@intel.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: bpf@vger.kernel.org
+
+---
+James Hilliard (10):
+      net: stmmac: unwind the WoL IRQ after a safety IRQ request failure
+      net: phylink: allow stopping a suspended instance
+      net: stmmac: keep datapath state coherent after reinitialization failure
+      net: stmmac: leave the datapath running for normal-size MTU changes
+      net: stmmac: unwind partially allocated DMA configurations
+      net: stmmac: keep DMA configurations at stable addresses
+      net: stmmac: account for failed live XDP reopening
+      net: stmmac: use the tracked datapath restart for XSK pool changes
+      net: stmmac: retain PHY and PM ownership during ethtool reopening
+      net: stmmac: retain DMA resources across MTU changes
+
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c   |    6 +-
+ drivers/net/ethernet/stmicro/stmmac/ring_mode.c    |    4 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       |   21 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c   |    4 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 1036 +++++++++++++-------
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |   19 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_selftests.c |    8 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c    |    6 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c   |   83 +-
+ drivers/net/phy/phylink.c                          |   51 +-
+ 10 files changed, 815 insertions(+), 423 deletions(-)
+---
+base-commit: 8e1937fed6738460554ec123c64839e2445e7d53
+change-id: 20260921-submit-stmmac-reset-fixes-v1-7c98b92d29a9
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
