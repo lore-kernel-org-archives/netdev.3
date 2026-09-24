@@ -1,246 +1,150 @@
-Received: from mail-ej2-f0.google.com (mail-ej2-f0.google.com [74.125.228.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010029.outbound.protection.outlook.com [52.101.228.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E673161A1
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 05:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F39A349CFF;
+	Thu, 24 Sep 2026 06:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790229312; cv=pass; b=TdI0XGJ5jDDMCfHNKCAZGK03rdnd3S6Rk/BQwhcvz+9kONAWCoAMKnxmvi1YZIUZBBc/umBXVWeR5+o9ih8Nke1+BkvoRCBvVo/qw37I1h10OEkaosCenfwKxhYdcZFkjdxvOzEoQgMRwaTfgu4dX0dhg3mRvLz1AUidMBVwGjg=
+	t=1790229821; cv=fail; b=j9jOfhfqQkTbpGl8rjCVlhmNWi8bmnWWRqyl7WMF5dAgUfU3G/tvKGmTYBK5bvS5WtvpANoEj0CRHBrYsbAQRPzXZLLswX8XHWmAuupqwtjExb79/MAJ8WqqPwm0Z5fl09P9tWlrgjN9BgIKNZ4Ta20IUQ7FN8Zq/h9apfLNyvo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790229312; c=relaxed/simple;
-	bh=gtEA+FGZX/W33bqy9v+TYqYktmjvuE7CeQbFETs9Iac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EKDXsFm326bxi1Q+yomLn7xxZP/wJHerFJ2n2Lb7ocIAwDFa+6Dm2qzY4KpYcAjwpk8Uf8mlYJaD2B7Ifmnsy3ONwg6rRbVe7SasahjfeACJv8bKuO8+swPQHWATxDqmlpQ7mLubdDDQUbPme+a25fUufpfaJjucLDk8A2tS6Ww=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izmD6KJB; arc=pass smtp.client-ip=74.125.228.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790229821; c=relaxed/simple;
+	bh=yjXho3s6C8XLwrTH9RUluVdcaAPV5wm5ZSuKmvPWLsE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Pf/Gn5eHlYOR2PpKLcU3siR1EqClU3ylcUsRCwpYNCNXZLfJdcbkF8nmoAU4K5lrXX6vPXghZjFVy7R9z3BJxGJLyR7k+c2mKtfp56c0Tt2YFtnEN8H2omh1kVIhzeuiJH/zBzv0aZmO55kUhD9I0hyyCKuesfZ2a2CuNd4QexQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=OYUIg+uN; arc=fail smtp.client-ip=52.101.228.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izmD6KJB"
-Received: by mail-ej2-f0.google.com with SMTP id a640c23a62f3a-c293a9e09b9so80323966b.1
-        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 22:55:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790229308; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ahs/SLfQgq0dZdnzqydergSqh8F8j/jFXthwHB/8d7C+1BtQiKQl4KwEWPurVFHoZP
-         nGUknF+iBRBbAON6rA0/d7oUZtxCJafImvU7xWA5S30X4U6Qq+rBfcN71rDlzqqgQt3j
-         ZCXu+0uRKXRMQcVDLwbqFljaiLB+ghK1gWr2DGIBh8IA11RWCUtR5wEzE5TD9CoGqJme
-         uo37rvrDQHhd5aXLa4qbN9WNrW4V5VbiBDIq+8JXsd2pu6D18mpjtN/i2437s+exgrGS
-         XC3IHlMHRrXE4DTYssaHTGv/KwV2znCWvTamVz+40pLxUtnTZFh7t8Mb0POLvoil0maH
-         qKmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=M7/suQeptALUdsHaayyxRg2Z7cAgGugdiTyYw6qUQKs=;
-        fh=jcjIcJlKtFGWOlyAn0Ksx39iiUEnFL9cc6zOmMvuyIE=;
-        b=VeiFcSgm2zj4SY5KlTQL/gd3/8DREH+emRSyAOwN2wexvWk2dTSjEodtJ/TaMq5MWV
-         j9r13s05yCffU9YE3mfX+lD4jWc/mI7p45Txfu9DBRPGmrZAMUepEgq4iWkljU0mkzZx
-         Ok+RdheEBB5Xr1h6oPVeuTDSZnPh/8GRVOcTTxPsgnpGGoWapyIbWAbvTlvJWrm2ns5/
-         RvBvn/YfrJb20Gb601Hdj4XaIMWi5zVsRCdxLB+c8iXhJOrep/6ELYbFyvGCI+YOl7Zo
-         sxnfdXpHZ516WGSibhDuTfLu1268bLdJH3DvDk8ZLkKzmpctk89z/HwBgD40ESVh89K8
-         Va2Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790229308; x=1790834108; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=M7/suQeptALUdsHaayyxRg2Z7cAgGugdiTyYw6qUQKs=;
-        b=izmD6KJBuy5XVvZsEZSM3aCN6jM+9LGQagyH++m9zc/exJp6A9XS1QFuE4HVzWN2LY
-         a8aCGKDCJbVQ/cei7oHPyyttjDCcAyqT5y7glrFuFRScnfVbZbnV6pw8HgGlTrv+8uGz
-         X0JQXhiZ7wfQERNqbegAR3U81BfKc8C0VYymPtK2YSQI/9VlGNAE6evL4yyX5aqGG6AZ
-         QK05XqpxMePOGaYwvD7WVpOl0P6zqNtW7tiLxl2K8L3H4td0Yb/RfEZ5jPtklePUpqKB
-         zUAAgcNWxy9N30TFwb9ZR1YBKN6kv3BFlbl/m647s4a0jTimB+gCtqEctDcQ3AEFKxVD
-         2eNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790229308; x=1790834108;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M7/suQeptALUdsHaayyxRg2Z7cAgGugdiTyYw6qUQKs=;
-        b=EUUxyDRbzCgnSLG1RTknIN9jMm3FKQZYl8hYuWW3p6lv+MAfsX1EqCu3FVWAFIgfys
-         U5zQAIood6lk5pdE/h/d0NpMbwYQiB+s74k2Y5JC/YY6Rh+SfT2ZlNoYueJ/ZLkhhAjp
-         cPjOkDtaNPmzv46HZ0u69jw2zer2H94/7lzb+zYSWb8POvAV2R6L/peICjan1lL0uK6P
-         dYvqNplQcurDXrnAY7LAFOIbcTQ+y89BVMni6lZEX0Vu/sOL5fOEnUauJmXZnoTYguSV
-         /SpEml6eEPo9QZvjetRcyY53IpMixo3lD6Ubs3wldid6kPanYxZaMyWVTRXM4Wyb1TYf
-         QELA==
-X-Forwarded-Encrypted: i=1; AKwUvBwuXbVA+6VzFHtfd9UkFeO2OdzpwWdkAlxpBJVPG545qnNv3AsefVmQu+IzbYVfpXHtnMyVu5M=@vger.kernel.org
-X-Gm-Message-State: AFuF++llq/F9ZICGfc3h60c/1lKo6X+dAFLHgw46tLq2HF8M1/cWDn7c
-	ovi9WnHZM4CyhYacpfCpfalUjf7AcnFb2qtaXa+DZYSK4nuz35BPU/GVwLvyXE6RxLsBDWp0r22
-	gL6rBaWvIJiQsiUnighEHgr9GF59f7/E=
-X-Gm-Gg: AYBFou1TrP57PCYJsHIR0peHwnySAX2WteKWfNjXhU6XH1Rd9OBnfzw/7cC0/iDm4Pf
-	YmFm5oIGnXrIBj4Tgj4R+phhBm/uX2YxMxkf/tvxhkQNLS/FRUD719m5dY4Gw53lz9waEdCATNx
-	HjWUtGkAb6JHKuou1AEeTE+kvd49gGT85AcVhtiE9Qr32B9VAseZ4eVC/eoTRlTP8IBL5VLg/fY
-	n0r3QFa9uOW19riUwnpDKBRIi/ewb2Y+Ystubc2Hlb8/EKeFvlpX4153w/uJMfb7Qin0DtCAaP0
-	cpQDqh7gpCXIOURKDibKZFe4tfq1RA+mv0UHECc9W3fB9FAJ5G+xyyTrMg==
-X-Received: by 2002:a17:907:3e23:b0:c20:53c7:488d with SMTP id
- a640c23a62f3a-c2ac23a5ff8mr94779466b.14.1790229308282; Wed, 23 Sep 2026
- 22:55:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="OYUIg+uN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I8AtSlARkqdmBHCs21R5jWNTditZ5qPuh710ZBGB/CR8ZuUMUx1VBlNea0dWrnI9R2jxLS55Js/9nDMrkLipvdysSOd1wr34yboj1FmHtuUz797TpWJUMsCRTkGBrZdH4DHjj1e6S9sKNom8EL6irI//Ad6IbTGnazRlxfR3zoG6bMG6JlzMeQMD/mTfUTP+wYeCJps4ErDfno7YIwXPDqUu2IbRHHflZyJuu4MnyIHjuwnbjslZbKlgag2hS/XCMaEx9X0INUCB9HWdBPO2wrZl3qlpI4BysyXieBNZ81ovNJZ7btJpO07WfaxQjVKfIMVZURWebDJ7mx/cowczpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yjXho3s6C8XLwrTH9RUluVdcaAPV5wm5ZSuKmvPWLsE=;
+ b=iyX0ek4r6lMg83bTbKdi3eTFBw8H/RQZ8SdyXcdB+t7p0zSNkvERagoSssIbZGmm8AK6Wzf2lRjEhsZR7fpQwXbLOTW1wAVyYWYFEOlvu4YkcoE7qVDQFdTOf2U0AikJ6qbuGwwZ8fxXjCzJXSdWIZC2a3z5Y2K4DHy9SyRBfgrk8RfHFNF/6ns/RJk3E+eX0BajciS1p/PhjPIlqK/uJEdRSmD3sk34/ra54pgmJ4lMD+4lTNoCzDMKJ/6fQxF2wwt2K1T2G1m6fRWFBFcvdCrPw0auQLkXIM7u9KQUZNO41yk7byBS4Q9hlWBEgBjtObhRVYbH7j7HCuuUNF5uQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yjXho3s6C8XLwrTH9RUluVdcaAPV5wm5ZSuKmvPWLsE=;
+ b=OYUIg+uNb+fCIP6DPhfIT2mJ2Dw8Agf9EzuTHmYghIf3q6gjscp0hL7O7JQxt1V/qitvSulC1D2JhOrG7nobEboB3XlZnAIUhwHRfcbcu1asEBRUV0orhPo6JMPsQDsTflFAM0YpwL9+PX8aAV3+Dq6n7BwNbRKKPW0Xiw6EC+4=
+Received: from OS3PR01MB7479.jpnprd01.prod.outlook.com (2603:1096:604:14d::9)
+ by TYYPR01MB15561.jpnprd01.prod.outlook.com (2603:1096:405:291::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 06:03:36 +0000
+Received: from OS3PR01MB7479.jpnprd01.prod.outlook.com
+ ([fe80::1ddb:79b8:584:4fc]) by OS3PR01MB7479.jpnprd01.prod.outlook.com
+ ([fe80::1ddb:79b8:584:4fc%6]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 06:03:35 +0000
+From: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "clement.leger@bootlin.com" <clement.leger@bootlin.com>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net v3] net: pcs: rzn1-miic: Reset PRCMD state before
+ unprotect sequence
+Thread-Topic: [PATCH net v3] net: pcs: rzn1-miic: Reset PRCMD state before
+ unprotect sequence
+Thread-Index: AQHdSk3QskULaBVyuka57WHyJfzw9rbdOq1w
+Date: Thu, 24 Sep 2026 06:03:35 +0000
+Message-ID:
+ <OS3PR01MB7479E750953DF2E157518996A4812@OS3PR01MB7479.jpnprd01.prod.outlook.com>
+References: =?utf-8?q?=3CTYCPR01MB7481CE8351FDB2CDCA229955A4872=40TYCPR01MB7?=
+ =?utf-8?q?481=2Ejpnprd01=2Eprod=2Eoutlook=2Ecom=3E?=
+ <179005258996.2160803.11359360903588205993@kernel.org>
+In-Reply-To: <179005258996.2160803.11359360903588205993@kernel.org>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS3PR01MB7479:EE_|TYYPR01MB15561:EE_
+x-ms-office365-filtering-correlation-id: ab517ee8-3ac3-4440-a017-08df1a01920f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|11063799006|56012099006|38070700021|22082099003|18002099003|10067099003;
+x-microsoft-antispam-message-info:
+ tQp3C+XHhTaDq674Jh1tJ8aZESI51J3O1ya6fzHD7pFgaf1TdEDKE5fb6Fi1HZOdV8wWZLiwflsCerDlbLSll9D+Br6DRavUReU1/whKUloBBllG7rX0lQZKUL9jBiTfwXV/sMbj1xjvQfAq3IqhJmnrjhRbahWlYeNdrShPclSHEqEbZ4n4EMRMJcaUWCb5Zak1AMP7tdMc5PVqZ145/oruTLewNitiUsYFxTOqJ73UNo2qoznSitVRaJGMSs1R7XZJg+SYIRpGUeahI8060XfuW1beaEGKuffe8AhNUiMFtfwmcastlJq1L9kX7TGJIjgVskwNnRo1v8rb5ojCfTpvz2MA3nn1XA58avq3znoaSZ5JuMp+cZ2hjC5hcNLppyxrjzPtNUVybt7YGcYzl/EthCtI0ySlZduWaGDjiVfaAjuf4uS1d5vyy81Duo1AzT5wvxO6ub39PxxpN/gV9Pjpu8b08UeJXNYqptq+yodOjmQRyvjEMnj06oFaBFD0GuUBiU/CBUuZ9iPJBvt4VRFqiFI4l4SSonrNjAC3LNB2MBpPG+4/c2h33h0jRexhlzrJkft1KUaYU7C+PdZWLmYqbkwKIk0z7+O9yBlZFVccQjZ2+h5I+oqR63eOwXftufAVGIobUFnH2D1tsZ9dxJyS2rdJFy4dQz2wIfp7yS4M9HqQ1r7tumq1ENJetYaJMhncpXl1z8Mp4ST5FEbqd8dwnkJdUpkfURa1iW2cdGo=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB7479.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(11063799006)(56012099006)(38070700021)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?8JK9/0IM+JCr8EEx/WmZSb6OjJsqEqMEwY+Mdi3jKQxuaK7m/Cu8ARCMlo?=
+ =?iso-8859-1?Q?q+g9mMwAQ8Vbb2MS1D5zxG7b0N59Im9FhqVvMVr68mCznj4BHjtZzEEIkB?=
+ =?iso-8859-1?Q?6SNDhpj/E9gZXFFd11AVBM/NyhSNlTDxcYwBQaj9e/2mcLFX7m9TenBDn+?=
+ =?iso-8859-1?Q?juLKMG8ATtJAoQeSnhrlG1pU8iioAqCDZyaqlRsIl3IOUx56BFIfKljd4V?=
+ =?iso-8859-1?Q?Icuu/kPD5Jg6SlyAVZwp4TobE9UcQB0BdFAey2QdeuA6QiHvymy0KCbFUz?=
+ =?iso-8859-1?Q?p/ShGg1CSgCrVK3vw6g5Zm2RoQzucKhxFjTKASZKEqaEV+JtAtE/vl0oeJ?=
+ =?iso-8859-1?Q?BVp7mkGtv0Q9iSPl1EYpvpEEeRxCfu095/ofeX296QKkNwXra66JGawBtW?=
+ =?iso-8859-1?Q?HbvWQC+YzAZdlKs4AgM3aqAVItjFZB0+mr56otueyj/OH2jJINo7Ozyeg3?=
+ =?iso-8859-1?Q?qZ/9sxAUH2QK2TbqEH+vNTKQEvppMnCzyGid87/C4h8ln5Edk81FnOdsjp?=
+ =?iso-8859-1?Q?FFK43a1+KAHCnjPYxfIqJqoRyvAE3uUHz3rLkObpG8i7drPaQCc1B1nEHI?=
+ =?iso-8859-1?Q?eGJ7Y2irNSDwHLH7z1jWvk2fU6cFkvya7iKeR+g4aaDyLtf1rSGr6pPj/Q?=
+ =?iso-8859-1?Q?MZWD+isqQFAMyb0Z7kPxm+PkEVWR6Bzg0vLt9zRU3J3JE5O/D9LQSlDyxC?=
+ =?iso-8859-1?Q?dzwDVf7dnXibCE5T7nMuUjg7ACwNbKUU4OUt9MnucTkx7O3sOA8h6HY+GC?=
+ =?iso-8859-1?Q?hSOudPPOm66CMWumh51H+QRHpF1LHVuMJi4gD+wTWwR4pzijpYlOKibX7D?=
+ =?iso-8859-1?Q?ZDZI/iE2n6U5ZUIQiIDdd4ZeFIEyNb9GxFbh68gTd8sJ+eLCfTaTTj/JEb?=
+ =?iso-8859-1?Q?UKaOryAE+8FS46ZIKcDpgUnGnti7k66cdFEo10Bzy8OpCoG7/rwaAWb6h9?=
+ =?iso-8859-1?Q?IS31oQJlxoDUia5Nfjfdhz/G1XGircvYL5U/S1hV9ugzO45cpVBxT1VHoE?=
+ =?iso-8859-1?Q?6mVWj+q3anqYMdJMVzVq3hJHJyM6V9OF03utX+NSMXx3Kv7gc/rlxRFHox?=
+ =?iso-8859-1?Q?xy5lC1HVqhGvZkx3UHCRboG4qOuoIfPAbFk38CcqjFc/YYpknokfWe4wD9?=
+ =?iso-8859-1?Q?uYmMyf7znATYWtK/OrklumaQK3b1TyV2xKjIASqBsyKn4r+Jps8IsLJflD?=
+ =?iso-8859-1?Q?e94JdSv0E6OMF0b5sFjEBstAbD9nVVmc88U/5Ix51MRNGMLhSGjVrOjtmc?=
+ =?iso-8859-1?Q?SH5yj6PCCJOuLmR6OSGYsZZIGqMFjC5zuUe2XTyAEUQKYNOOB9U0J/aLxN?=
+ =?iso-8859-1?Q?c0/IzY9IN0NFuKCQAvg3dBCO/eY88o6dlpQknZQL9/k+34mS2JgL+1GkAC?=
+ =?iso-8859-1?Q?W02OP2dfvneiA75ZGAW95iTwvOO8jL/jxmJ0XGG8ZkGLMx90WEpEpFPr2p?=
+ =?iso-8859-1?Q?rXvUNCl0A/eQZ5bcDCUHgSaZ1YgOPmfrjQBuujVmNaUiJRbh1KsouNosUl?=
+ =?iso-8859-1?Q?R2DTRYFgQV59XVUA+vnKKiLOuNQG2b8rYl3lRIn20aCGrI2v9g6y9HJrpz?=
+ =?iso-8859-1?Q?rO6V4is8L/oNkkse7jBrvWYJAO19QdGmekYe3JVMSSMeZn9tO9mjvvBeDZ?=
+ =?iso-8859-1?Q?6udRFy99E9xDTmejW7uDpZ+DlUCz8qaq/3Z0Lbwg9usR78VqvCU28broTu?=
+ =?iso-8859-1?Q?Y5rHHaw0d9AR/tEEYpdxDaOPsYLCuewwWfLkLZWjqcIQ0L65bDfIyuPol7?=
+ =?iso-8859-1?Q?4yf5fmeyY+AyiryC9XyGJUtWQfSVDc4MKWYaHhhHEJD3AIakyAozfsDKkN?=
+ =?iso-8859-1?Q?0uBTvHhPdqjespTP5fbfkvo/v1JBr30=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
- <5135e15d-b6ac-476c-9a7d-b7d64e4eed5c@bootlin.com> <arOtU15iv5CWPUEu@oss.qualcomm.com>
- <CALj3r0gAaQ_CoS5_9Mmf5HY+Fu5_e74fbb+r0LstafMhagHx6A@mail.gmail.com> <arPcHSGFLrxXFEyC@oss.qualcomm.com>
-In-Reply-To: <arPcHSGFLrxXFEyC@oss.qualcomm.com>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Thu, 24 Sep 2026 13:54:57 +0800
-X-Gm-Features: AclHuK8aPw4t0qe9OTv6pasVNbTw4PRHtP09UUP7WaSlSf6YYjQMVV3B1tdNgXM
-Message-ID: <CALj3r0hMLa96XtuPxjdJJnsn0hzEc23_kMUZ=GWmDAeP2AtFCg@mail.gmail.com>
-Subject: Re: [PATCH RFC net-next 0/9] net: introduce Qualcomm XPCS support and
- add Nord Ethernet plumbing
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Serge Semin <fancer.lancer@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Richard Cochran <richardcochran@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, 
-	"Jose.Abreu@synopsys.com" <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, 
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, 
-	Shawn Guo <shengchao.guo@oss.qualcomm.com>, 
-	Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>, 
-	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>, Alex Elder <elder@riscstar.com>, 
-	Daniel Thompson <daniel@riscstar.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB7479.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab517ee8-3ac3-4440-a017-08df1a01920f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2026 06:03:35.7536
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gsiLz9xABJFKECe/dUfS4GBAjF4VoT3jN1Xhm50vCOmnU011mQJ/MCOV7D2/ZwY58nzZDfAxw0xaKHAQKlnmw4qlD0ziwjj0XuUVbF0sy5qDHIaUm6FCOcvUjwUjrrU6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYPR01MB15561
 
-Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com> =E4=BA=8E2026=E5=B9=B49=E6=
-=9C=8823=E6=97=A5=E5=91=A8=E4=B8=89 22:03=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Wed, Sep 23, 2026 at 09:17:44PM +0800, Coia Prant wrote:
-> > Hello,
-> >
-> > Thanks for the RFC. A few comments.
-> >
-> > XPCS_ID
-> > -------
-> > Is 0x00000030 documented for Qualcomm, or is it derived from
-> > NXP_SJA1110_XPCS_ID + 0x10? If it's the latter, it's a magic value and
-> > I'd rather see it confirmed against the Qualcomm documentation or a
-> > register dump from real hardware before it's used for platform
-> > identification.
-> >
->
-> It's the latter (NXP XPCS ID + 0x10). The Qualcomm hardware returns the
-> standard XPCS identifier (0x7996ced0) upon reading the 3.2, 3.3
-> PCS_DEV_ID registers. I tried following a similar approach to the NXP
-> DSA driver of reporting a synthetic value to bind to the Qualcomm part.
->
-> All this was just to make it work with pcs-xpcs-plat without introducing
-> a ton of code.
+Thank you for the review.
 
-OK, so it's a deliberate workaround, not a hardware value. I see the
-NXP precedent, but I'm not sure it's a good one to extend: the ID space
-is global and finite, so a synthetic 0x30 could collide with a future
-real part and bind the wrong glue. NXP at least needs its synthetic ID
-to select a platform-specific PMA config; if the Qualcomm part is
-otherwise standard XPCS, matching on a fabricated ID just to bind the
-same generic code seems like the wrong place to solve the problem.
+> - [Medium] SoC-specific PRCMD semantics are applied unconditionally in a
+> shared helper: the new `writel(0x0000, miic->base + MIIC_PRCMD)` is.
 
-Leaving the final call to the maintainers, I just wanted to make sure
-we weren't matching on something made up.
+The unprotect and reset sequences are identical on both
+RZ/T2H and RZ/N1D. I checked the hardware manuals for both
+devices and confirmed that the additional PRCMD write is
+harmless on RZ/N1D as well.
+=A0
+I'll clarify this in the commit message in v4.
 
-> > Structure
-> > ---------
-> > pcs-xpcs-plat is itself a platform glue driver, for SoCs that don't
-> > need any platform-specific handling. Adding another abstraction layer
-> > on top of it to cover Qualcomm would be glue on glue. Generic, Qualcomm
-> > and Rockchip differ in power management, address window size (2M vs 8M,
-> > ...) and MMD redirection, so they don't share a probe path.
-> >
-> > Pushing that into pcs-xpcs-plat would also drag every existing user of
-> > the generic glue along: they would suddenly depend on GENERIC_PHY,
-> > PM_GENERIC_DOMAINS and whatever else the Qualcomm path needs, or they
-> > would have to carry per-platform branches in a driver that is supposed
-> > to be platform-agnostic. A per-SoC-family glue driver, the same way
-> > dwmac-intel, dwmac-rk, dwmac-renesas-gbeth and dwmac-rzn1 are
-> > separate, keeps each integration self-contained and leaves the generic
-> > glue alone.
-> >
-> > Would it make sense to take that route here? My pcs-xpcs-rk does the
-> > MMD redirection through a custom MDIO bus; maybe the Qualcomm glue can
-> > reuse that idea directly instead of extending pcs-xpcs-plat. Happy to
-> > help with the generic parts if that's useful.
-> >
->
-> I agree with your concerns regarding the glue on glue architecture. I
-> also don't know if each platform glue should define a custom MDIO bus
-> with similar logic. Maybe we can have a generic abstraction for it?
->
-> I know that Alex had a patch introducing pcs-xpcs-regmap.c [1]. My
-> original code for this platform actually built on top of it before I
-> moved to the current implementation.
->
-> At least I now know that multiple vendors have an MMIO based XPCS,
-> albeit with differing MMD redirection mechanisms.
-
-I looked at both pcs-xpcs-regmap and pcs-xpcs-plat. Neither fits.
-
-The regmap helper targets a window that doesn't align to a page
-boundary, but still assumes a single contiguous region. pcs-xpcs-plat's
-indirect mode uses only 8 lower address bits for the register and a
-viewport CSR for the upper bits. Your own patch describes the Nord
-layout as "separate direct-MMIO windows" with MMD 3 at 0x0000, MMD 1 at
-0x3000, MMD 31 at 0x4000 and so on. That is not a contiguous Clause 45
-space, and it is not the indirect paged layout either.
-
-Mapping the Nord registers onto pcs-xpcs-plat's indirect mode would
-mean claiming the memory is something it isn't: the hardware exposes
-direct windows, but the driver would have to lie about the access
-model. It also doesn't match the DT binding, which describes a single
-reg-names =3D "indirect" region. A platform with separate direct windows
-should describe those windows, not pretend they are paged.
-
-The Rockchip glue differs from pcs-xpcs-plat in more than just address
-translation:
-
-- it marks PD_PIPE as part of the wakeup path so genpd keeps the
-  power domain on during system suspend, which is required for MAC WoL
-- it keeps PD_PIPE on at runtime via dev_pm_genpd_rpm_always_on()
-- it adds a separate "eee" clock on top of the csr/core/pad clocks that
-  the generic driver knows about, and derives the
-  DW_VR_MII_EEE_MULT_FACT_100NS value from the EEE clock rate at runtime
-- the read and write remapping paths differ
-
-None of that is address translation. Folding it into a generic glue
-means either per-platform conditionals or an ops layer where each
-platform stubs half the callbacks. I'd rather keep them separate, the
-same way dwmac-intel, dwmac-rk, dwmac-renesas-gbeth and dwmac-rzn1 are
-separate.
-
-If the common parts can be factored out cleanly later, I'm happy to
-rebase onto that. But the platform glue is where the platform
-differences live, and right now those differences are substantial.
-
-> I am going through the pcs-xpcs-rk patch and the eee_clk already stood
-> out to me. On my board, the PCS link does not come up if the EEE clock
-> is stopped. Going through the databook, I did find a barebones
-> explanation of why that might be happening for USXGMII, but I need to
-> dig more into it.
-
-Same on RK3568. Without clk_xpcs_eee the SGMII link is unstable, which
-is how the Rockchip glue ended up enabling it unconditionally in
-xpcs_rk_init_clk(). Downstream carried a fix for the same problem:
-
-  https://github.com/immortalwrt/immortalwrt/commit/2ff0f9435f688b1d9ae2757=
-10e13ecd0c54e9724
-
-The databook calls it clk_xpcs_eee, but the generic XPCS driver only
-knows about the core/pad clocks, so the Rockchip glue adds a separate
-"eee" clock for it.
-
-Looking forward to seeing where the Qualcomm glue lands.
-
-Best regards,
-Coia
+Also, I'll update the comment to avoid using the RZ/T2H-
+specific register name "PRCMD".
