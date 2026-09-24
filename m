@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C286409298
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BE6415B79
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 23:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790291558; cv=none; b=ZAZTWMWViUtaOvsKUHKRY9JhAXykqvb6ehT5OvhC/Ff2hZXrEZEuV+BQ69CE61yJbwv9BB3xglHSoKX44xPE1o+YPr66NNu9j4GY3ytN6Tx0auUIzjaSrLCGEmPtBpHUc4yERmsQg00vZnKbqlcvzZEaIk9ltmYQYKKhgOK1UVo=
+	t=1790291559; cv=none; b=i+RD2mE2LIO8BNEzn7x9ihZ+gjZShb9OEZgZrf5NLo5Jlnc2FThsnsoUd2T+/T5MhNl0ou8g2a9PNniWcAgeY9lQ/HhxgiD9KWPs6mOsgwnsRLYDJtroig7CbyPp/w2yygQNvm9FAz2IMewn6bojWaT+ShE1yBd+saR3viTyjPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790291558; c=relaxed/simple;
-	bh=k4W4JJAJ+/wMGhiFeBbjA2DrPe4ndPz4PiSAhGwbu7g=;
+	s=arc-20240116; t=1790291559; c=relaxed/simple;
+	bh=onzdfJe5yP8AqWaDHNi0lnlKxnpwzZjRS45z0WieHdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGmYhYtvcCgfIJ4pcinxKxVIsxYvxMrRS7is5Y8/BT8mj3cCq5KV7rP5ZLcRAW07iZw7852q3fTIqFg9V/GuFpeyEgyXxSvR3z5hHO34fgqlAaCuK/03vZApA8luprbyzYa41PQsf+bBrly3ZkxH6rSrdIPz+q01MIvk67XOB4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rao2w013; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=e6FR6HpiKORzkLEt4cs8igdS3eSVgn/kuUtSoj7NDcoGrJMwMBuLTuvp89ZAgZLddjVbuZtf2rCcY92DtDeKePsCCH13rRh7m9GtiMsTNubBZzck9qJr3omStFt/ooCVcmwhpiuRILQp/KsLpDDooK6cZ3NZ4rtBF9HKLKBQs68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dWrkEhO3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rao2w013"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2D01F00893;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dWrkEhO3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13711F00898;
 	Thu, 24 Sep 2026 23:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790291557;
-	bh=Zoh9IKVhcgBLUfmCDki2bf/zsCsA3fkt1vX4yfAL1d8=;
+	s=k20260515; t=1790291558;
+	bh=ud00PHC07sz8Dj/FlY17ay4ZTeBOC6Cj0rR86nyL2TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rao2w013db7k6NfXXlMLCSt0bHp80AyEfH6CRl/62kLHyqChWRVc2Q8F82j0036bL
-	 39VNWpoddrB4KlFhMeTqfTXLiY2636F/u5A0spHs3D4/4VO8wDBWNwnG2gKfywIhTs
-	 MnpKSJ5VmFQNGp8MSP0brvgSn2CNWPUU9pLzkoo1Zc+KJCvI9P/ReKLU6KSnMmwhIw
-	 L20wy5IYYysksAWVVACF+9TVzN7QUuxBMn/CnOVCRBToB2A8ggkl/pFVYZM1cENtEZ
-	 JY9XdESRtz4aZfPIAq8lfp/C3ODWxPaihCIdj3Z41Zs7dYvtJ5gOnB4ouxgPpjJBN/
-	 QAiz2J28+vkaw==
+	b=dWrkEhO3lBd8TeEomrYnYgORbe/IDHSCWD57fOJQxdNmFdDlaoa10QPCzsf0qxLEj
+	 7t/bmwxYPhO4+5DEtmcvoAgTKJiaJjwtsAcXTG4zOqJyJCzrFxxAcfqd7+/eadZ56S
+	 sC5b1F5DQfg0QOE4fh0ITl6ZhdibH8nu+XaDuYVCMo7cTOU6x7JGxPOV9ZrLN2wppz
+	 vAL+2qsoVC5+Dg+Vo5XktiiC3DNTIVtSM7ryEBzfiuBB4VaU836jNsbupFcBGP1isS
+	 GrkAx0gESXk19307f2g6jTeuVeDBY+9jlC7xkgz5IZI4Gi9uiZNw0n/3ALoxF1Yy9k
+	 7RT9OOQ+4z4Kw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -39,9 +39,9 @@ Cc: netdev@vger.kernel.org,
 	ivecera@redhat.com,
 	donald.hunter@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 1/3] dpll: do not truncate the requested pin frequency before checking it
-Date: Thu, 24 Sep 2026 16:12:09 -0700
-Message-ID: <20260924231211.568213-2-kuba@kernel.org>
+Subject: [PATCH net-next 2/3] netlink: specs: dpll: declare pad in the nests which carry 64-bit values
+Date: Thu, 24 Sep 2026 16:12:10 -0700
+Message-ID: <20260924231211.568213-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260924231211.568213-1-kuba@kernel.org>
 References: <20260924231211.568213-1-kuba@kernel.org>
@@ -53,43 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-DPLL_A_PIN_FREQUENCY is a u64 on the wire and dpll_pin_freq_set() keeps it
-as one, but dpll_pin_is_freq_supported() takes a u32 while the ranges it
-compares against are u64. The supported-frequency check therefore only
-looks at the low 32 bits, and the full value is what reaches the driver.
+Pads need to be propagated to subsets if they are used.
+Otherwise Python YNL can fail with:
 
-Nothing is hitting this today. Reaching it at all needs a pin-set above
-U32_MAX, which no sane caller sends, and the outcome is mild: a pin
-advertising 10 kHz accepts 0x1_0000_2710, ice narrows it straight back to
-10 kHz in ice_dpll_pin_freq_set(), so the hardware still ends up on an
-advertised frequency and only the "frequency is not supported by the
-device" rejection goes missing. The other direction - a legitimate request
-above U32_MAX wrapping out of the pin's range - needs a driver advertising
-such a range, and none does; zl3073x_pin_check_freq() refuses one outright.
+  YnlException: Space 'frequency-range' has no attribute with value '4'
 
-So this is types rather than a live bug. Widen the check to match the
-attribute, the ranges and the driver callback instead of adding a U32_MAX
-rejection, so that the second case stays right if such a driver appears.
-dpll_pin_esync_set() already keeps u64 throughout its equivalent loop.
+This affects only platforms which care about alignment
+so not much real impact.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/dpll/dpll_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/netlink/specs/dpll.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index fb24fd53f2e1..e5380d95f238 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -608,7 +608,7 @@ dpll_msg_add_pin_ref_sync(struct sk_buff *msg, struct dpll_pin *pin,
- 	return -EMSGSIZE;
- }
- 
--static bool dpll_pin_is_freq_supported(struct dpll_pin *pin, u32 freq)
-+static bool dpll_pin_is_freq_supported(struct dpll_pin *pin, u64 freq)
- {
- 	int fs;
- 
+diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
+index e2ca4df5699a..7009a64473b1 100644
+--- a/Documentation/netlink/specs/dpll.yaml
++++ b/Documentation/netlink/specs/dpll.yaml
+@@ -550,6 +550,8 @@ doc: DPLL subsystem.
+     attributes:
+       -
+         name: parent-id
++      -
++        name: pad
+       -
+         name: direction
+       -
+@@ -576,6 +578,8 @@ doc: DPLL subsystem.
+     name: frequency-range
+     subset-of: pin
+     attributes:
++      -
++        name: pad
+       -
+         name: frequency-min
+       -
 -- 
 2.55.0
 
