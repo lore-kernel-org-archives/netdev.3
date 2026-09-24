@@ -1,57 +1,54 @@
-Received: from mta1.migadu.com (out-202.mta1.migadu.com [95.215.58.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A4F4156DF
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EB0411FB0;
+	Thu, 24 Sep 2026 08:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790237928; cv=none; b=ePUc0qVCfvLbv2lYo+ky+qa4X4zYI0EiTi88w80pZv0Nas2/PeAysA19KoRYr1jdpgdf07QuZyMMaJ8btfR4OQxqnBVRkUYuAj+FFcMPZ+BqYSKGip0qv7Ok2yBcSvxjL+kOW664gxcAcf7lwRfnNlJjvUEdDZv6Q9QmZYnoG0s=
+	t=1790238111; cv=none; b=CNX2lInRLb6RXUmwy+INDvcNq2vs/JxVe0TEYlZ3PFvYHKuMsNN7SkcDGSvlknuY6tPM/jLeQC9pPlhjsaGS4xXzYcs2gso2UmIHcTP0q8fDNpCFLUr93SIoH1537qqoy5f1HFfKSVj4EjRmpms6wkiEVgV+5jMfX0d6I93vbsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790237928; c=relaxed/simple;
-	bh=hiZm/fDY1BSL9L8Z/AeOAzDlzCsEcbpWsqTMEAbyvN8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tKjB8trauYeUx57cRr6ZI04Q+usklJjOQ2BWNOgfEH/YCBayie8O3X5rlsnqDTntGr9JM+Y2qceAS3SOINFsvpajDgrKLeALef/n8xRksP9CoYrqEc3k0byVyYWPyfWEoBQOPqncBTklIAd44dg858AuJxsnhf7PG/GxLrJuZL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k8JaaJaW; arc=none smtp.client-ip=95.215.58.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790238111; c=relaxed/simple;
+	bh=xGGn5F7O8CViwRoXOfN0Ai1sVBly8TVv9MIYxQ2a/h8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a1RqdcHQ5oMM6AMC/0Jj2SJO6Kr85mlANXm+ox6kkLNGm6nr2riy1BWauNkVhQ+7g2Qw70pcGVR/GMb0qZsx1W1TJ3N01s72+Xjxetyi89HssvqXp5I/3iti06zYw3wuc7HkWPGcgW+RA/oXIWBHm9VRKua8OW4dqwtj+IvJMJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ZGwerb3v; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k8JaaJaW"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=hiZm/fDY1BSL9L8Z/AeOAzDlzCsEcbpWsqTMEAbyvN8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790237924; v=1; x=1790842724;
- b=k8JaaJaWXbOjikevRN7KesWKpKFHeWJIlNu5qUk0sxzXwRiY4WXuGKa6IphDaR6PnRZ0G6sp
- MYdfEJIe+q9ddCu7RvFAIvGvAOhwx9l/ZNbCyLwhjX6FTmk0sC15LK0xQGDtpPU4Z7QV9XNejMw
- RzzTWHrA/vefBCDcsFv1skTw=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d3ded82f82490e85;
-	Thu, 24 Sep 2026 08:18:43 +0000
-X-Mizu-Trace-ID: d3ded82f82490e85
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH bpf v2] bpf: cpumap: fix use-after-free of dev_rx on netdev unregister
-Date: Thu, 24 Sep 2026 16:18:27 +0800
-Message-ID: <20260924081828.26575-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ZGwerb3v"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68O5eEst3974386;
+	Thu, 24 Sep 2026 01:21:40 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=Qy1hHJrKVfVdVbJyKoTwRa+
+	M6OdPX+7JBQ+sgIiyphs=; b=ZGwerb3vWcrA5kAZ6Pii1DsJEpwD179hyICAcWn
+	WucmWRumdwKCdcdr8yrKk5ev+k6Odni+PLVRqoRDg5QnpsSr7vlenRzR1deOdC6v
+	pIBXV74/QDx3HU5p6ONN2vGDLq+9rdM2ku9sy98ro/hqsQC7Kh3FKRqSRT97h0Wj
+	yCOesXHRZ9yOAKtNkXEvrBjHSjjYc206XnAIUtMcfSsNJfmcD2HDqbgQ3cjn4pe9
+	gX8YJctQh8fqpFaRtQro8T3fNJTkri18a57n87dBtH9ichu2L3BAuQzKXsY/UclX
+	5TlCyv1yCxnJWUlLFMOvoOW3KzKFv0KNFi0XcdsePvzHMzg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gvksntx0e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Sep 2026 01:21:40 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 24 Sep 2026 01:21:39 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 24 Sep 2026 01:21:39 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 10A883F7051;
+	Thu, 24 Sep 2026 01:21:35 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <davem@davemloft.net>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <sgoutham@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, Ratheesh Kannoth <rkannoth@marvell.com>
+Subject: [PATCH net] octeontx2-af: fix partial NIX Tx scheduler queue allocation
+Date: Thu, 24 Sep 2026 13:51:28 +0530
+Message-ID: <20260924082128.1944674-1-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,326 +57,123 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDAzNCBTYWx0ZWRfX/wK1NXpom/Uw
+ G7tqAid9Xg3/UIitDfCYZEZfTOePMpu+CU75+zEPgVfie6VEyHLdzd9+qRXdqgJ2obosDeoVIYD
+ wkieXHQNcQSsYIOqY4O/kmEEmotEMwI=
+X-Authority-Analysis: v=2.4 cv=fcI4WEQF c=1 sm=1 tr=0 ts=6ab4dd94 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=rHSzDqYvqVz94caIL9AA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDAzNCBTYWx0ZWRfX+z/HY24uV5po
+ izIf48BTCWcx5ciMqWSDLzTmvYmdQQd1+q5iXVDyYfF4p5zlm9a5wiKnjHBlHfvBWd1xyqQA8dD
+ 8aZR282VQbJ5JsgNBTzjKAFPY9Yzia5OhCe2v4uK8K54H+ZDHn8/gFv51Osppu/3ej/h26Y9yPm
+ hylHjsXjU3RJRSOoKJLbdW6Cce9JvRiil/XdElxr8k/uKlkz+HP+wfgoo1ESKUGWs1YxJPW3kbk
+ Pqo2F9jhLDWHW1M/i6IZi1sdhQJxihZTPav3c0qmOKzdLWyiUx2TzyBk5fUi4HmMYinRdiVNp0Z
+ fUKIsgbSdw86MMk/M1+GJ3qXhdzIR+0LT1YLr6ahv9+lekzoKG6sId7XHCjisqSBGaTyQO9ICEF
+ SLvigt/oAXpl4CdTmUtSSOzJBb5f9uuD2NLAmcqi05Bc47NT0HTaXGWn+2BiwB5Qk27ibEoAtQ4
+ YccQLDZcbVlL+H/MxDg==
+X-Proofpoint-GUID: 5NvPiPMXVyDUl27eX1fYUT7fuYrMpx-l
+X-Proofpoint-ORIG-GUID: 5NvPiPMXVyDUl27eX1fYUT7fuYrMpx-l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-24_02,2026-09-21_02,2025-10-01_01
 
-1. The ring holds the ingress device with no reference.
+nix_txsch_alloc() could return success after allocating fewer Tx
+scheduler queues than requested, or after failing to allocate a
+queue under the fixed topology mapping. Propagate allocation
+failures to the mailbox handler and roll back any partially
+allocated queue indices on error.
 
-Native XDP stores it in the frame:
-
-	cpu_map_enqueue()
-		xdpf->dev_rx = dev_rx;
-		bq_enqueue()
-
-Generic XDP queues the skb as is, skb->dev is the ingress device:
-
-	cpu_map_generic_redirect()
-		ptr_ring_produce(rcpu->queue, skb);
-
-Both sit in rcpu->queue until the kthread runs.
-
-2. The kthread builds the skb from that pointer and hands it to the
-stack, skb->dev has no reference either:
-
-	cpu_map_kthread_run()
-		__xdp_build_skb_from_frame()
-			eth_type_trans()	/* sets skb->dev */
-		gro_receive_skb()
-
-The cpumap XDP prog uses it too, as rxq.dev and in xdp_do_redirect().
-
-3. If the device is torn down while the frames wait in the ring, the
-pointer is stale. Nothing in unregister knows about the ring:
-flush_all_backlogs() only walks the softnet backlog, synchronize_net()
-does not wait for a kthread, and no reference stops free_netdev().
-Seen with a veth in a netns, XDP redirect to a cpumap entry, and
-"ip link del" while the kthread was not scheduled:
-
-  BUG: KASAN: slab-use-after-free in eth_type_trans+0x4d9/0x590
-  Read of size 8 at addr ffff888100634500 by task cpumap/1/map:2/623
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x91/0xf0
-   print_report+0xd1/0x630
-   kasan_report+0xf3/0x130
-   __asan_report_load8_noabort+0x14/0x30
-   eth_type_trans+0x4d9/0x590
-   __xdp_build_skb_from_frame+0x311/0x860
-   cpu_map_kthread_run+0x852/0x1ca0
-   kthread+0x3a2/0x4d0
-   ret_from_fork+0x619/0x8e0
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
-
-  Allocated by task 609:
-   __kvmalloc_node_noprof+0x382/0xae0
-   alloc_netdev_mqs+0x8a/0x12c0
-   rtnl_create_link+0xad5/0xf10
-   veth_newlink+0x214/0xb50
-   rtnl_newlink+0xd60/0x2640
-   rtnetlink_rcv_msg+0x74a/0xc30
-   netlink_rcv_skb+0x147/0x400
-
-  Freed by task 631:
-   kfree+0x282/0x660
-   kvfree+0x31/0x40
-   netdev_release+0x6d/0x90
-   device_release+0xce/0x250
-   kobject_put+0x18d/0x4f0
-   netdev_run_todo+0x7fb/0x10f0
-   rtnl_dellink+0x392/0xc10
-   rtnetlink_rcv_msg+0x74a/0xc30
-   netlink_rcv_skb+0x147/0x400
-
-The easy fix is a reference per frame:
-
-	cpu_map_enqueue()
-		xdpf->dev_rx = dev_rx;
-		dev_hold()
-	cpu_map_kthread_run()
-		gro_receive_skb()
-		dev_put()
-
-GRO is the problem. The skb may stay in rcpu->gro after
-gro_receive_skb(), and even after cpu_map_gro_flush() some skbs stay,
-flush_old only pushes the old ones. So we can't tell which skbs really
-left, and so can't tell when to dev_put(). Doing it right needs a hook
-in the GRO core path. Not worth it.
-
-So use the netdev notifier and let the kthread finish its work before
-the device is freed:
-
-1. On NETDEV_UNREGISTER, take the ring size and ask the kthread to
-   consume that many frames, or until the ring is empty. After that,
-   every frame that was in the ring has been handled by the stack or
-   dropped. The device is closed, so no new frames for it can show up.
-2. The kthread wakes the notifier once it got there. The device is
-   still alive until then, so the frames go up the stack as usual.
-   Nothing is dropped and frames of other devices are not told apart,
-   unlike flush_backlog(), which only frees the skbs of that device.
-3. On the last round of the drain, flush GRO fully, flush_old is 0.
-   Every other round keeps the flush logic as is.
-
-Entry teardown stops the kthread under the same mutex and unlinks the
-entry after that, so an unregister can't slip in while the ring still
-has frames, and the notifier never waits on a kthread that is gone.
-
-One hole is left: the cpumap prog may redirect the frame to another
-cpumap entry, and that ring may have reported done already. So while
-the device is unregistering, drop on XDP_REDIRECT instead. That check
-only runs when the prog picks XDP_REDIRECT. The check, the redirect and
-the flush are one RCU read section, and unregister does
-synchronize_net() before the notifier runs, so a frame that passed the
-check is in the target ring before the drain starts.
-
-The notifier has to ask every entry, a cpumap entry is not tied to a
-netns and any device can feed it. So an unregister anywhere drains
-every ring in the system, once per device, with RTNL held. That is
-bounded: qsize is capped at 16384, each entry consumes at most one
-ring plus a GRO flush, and the kthreads do it in parallel. Those
-frames had to be consumed anyway. Nothing changes on the hot path,
-the kthread reads one field per batch.
-
-Fixes: 1c601d829ab0 ("bpf: cpumap xdp_buff to skb conversion and allocation")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
-v2 -> v3: point Fixes at the commit that stores and uses dev_rx, spell
-out in the message that the drain under RTNL is bounded by qsize.
-v2: https://lore.kernel.org/bpf/20260922121022.256777-1-jiayuan.chen@linux.dev/
-v1 -> v2: stop the kthread under cpu_map_mutex in entry teardown, so an
-unregister can't miss frames still in the ring. Reword the message,
-trim comments.
-v1: https://lore.kernel.org/bpf/DLKA28VU4GIV.I4EVTT076Y5Q@gmail.com/
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 33 +++++++++++++++----
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-Local review asked about the full GRO flush handing skbs of the
-unregistering device to RPS after flush_all_backlogs() ran. That can't
-happen: enqueue_to_backlog() drops skbs whose device is not running,
-and dev_close() cleared that before reg_state changed.
-
-Local review also flagged that a full GRO flush can hand a PTP packet to
-skb_defer_rx_timestamp(), which keeps skb->dev in the PHY driver's
-queue. That needs dev->phydev, which phy_disconnect() clears on
-dev_close(), before reg_state changes. Anything queued before that is
-owned by the PHY driver, same as on the normal NAPI path. Not a cpumap
-issue, so not handled here.
----
- kernel/bpf/cpumap.c | 93 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 88 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-index 5e59ab896f058..0c9647f28034d 100644
---- a/kernel/bpf/cpumap.c
-+++ b/kernel/bpf/cpumap.c
-@@ -74,8 +74,15 @@ struct bpf_cpu_map_entry {
- 
- 	struct completion kthread_running;
- 	struct rcu_work free_work;
-+
-+	struct list_head list;
-+	wait_queue_head_t drain_wq;
-+	u32 drain_left; /* frames to consume, see cpu_map_netdev_event() */
- };
- 
-+static LIST_HEAD(cpu_map_list);
-+static DEFINE_MUTEX(cpu_map_mutex);
-+
- struct bpf_cpu_map {
- 	struct bpf_map map;
- 	/* Below members specific for map type */
-@@ -136,6 +143,12 @@ static void __cpu_map_ring_cleanup(struct ptr_ring *ring)
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 153eb57bad06..28e70bae51ca 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -2195,12 +2195,14 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 	return 0;
  }
  
-+/* cpumap to cpumap redirect, the target ring may be done draining already */
-+static bool cpu_map_dev_unregistering(const struct net_device *dev)
-+{
-+	return unlikely(READ_ONCE(dev->reg_state) != NETREG_REGISTERED);
-+}
-+
- static u32 cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
- 				    void **skbs, u32 skb_n,
- 				    struct xdp_cpumap_stats *stats)
-@@ -153,6 +166,11 @@ static u32 cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
- 			skbs[pass++] = skb;
- 			break;
- 		case XDP_REDIRECT:
-+			if (cpu_map_dev_unregistering(skb->dev)) {
-+				kfree_skb(skb);
-+				stats->drop++;
-+				break;
-+			}
- 			err = xdp_do_generic_redirect(skb->dev, skb, &xdp,
- 						      rcpu->prog);
- 			if (unlikely(err)) {
-@@ -213,6 +231,11 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
- 			}
- 			break;
- 		case XDP_REDIRECT:
-+			if (cpu_map_dev_unregistering(xdpf->dev_rx)) {
-+				xdp_return_frame(xdpf);
-+				stats->drop++;
-+				break;
-+			}
- 			err = xdp_do_redirect(xdpf->dev_rx, &xdp,
- 					      rcpu->prog);
- 			if (unlikely(err)) {
-@@ -310,14 +333,16 @@ static int cpu_map_kthread_run(void *data)
- 		struct cpu_map_ret ret = { };
- 		void *frames[CPUMAP_BATCH];
- 		void *skbs[CPUMAP_BATCH];
--		u32 i, n, m;
-+		bool drained = false;
-+		u32 i, n, m, left;
- 		bool empty;
+-static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+-			    struct nix_txsch_alloc_rsp *rsp,
+-			    int lvl, int start, int end)
++static int nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
++			   struct nix_txsch_alloc_rsp *rsp,
++			   int lvl, int start, int end)
+ {
++	int want_contig = rsp->schq_contig[lvl];
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	u16 pcifunc = rsp->hdr.pcifunc;
++	int want = rsp->schq[lvl];
+ 	int idx, schq;
  
- 		/* Release CPU reschedule checks */
- 		if (__ptr_ring_empty(rcpu->queue)) {
- 			set_current_state(TASK_INTERRUPTIBLE);
- 			/* Recheck to avoid lost wake-up */
--			if (__ptr_ring_empty(rcpu->queue)) {
-+			if (__ptr_ring_empty(rcpu->queue) &&
-+			    !READ_ONCE(rcpu->drain_left)) {
- 				schedule();
- 				sched = 1;
- 				last_qs = jiffies;
-@@ -398,10 +423,23 @@ static int cpu_map_kthread_run(void *data)
- 		/* Flush either every 64 packets or in case of empty ring */
- 		packets += n;
- 		empty = __ptr_ring_empty(rcpu->queue);
--		if (packets >= NAPI_POLL_WEIGHT || empty) {
--			cpu_map_gro_flush(rcpu, empty);
-+		left = READ_ONCE(rcpu->drain_left);
-+		if (unlikely(left)) {
-+			/* We are draining, drained is true on the last round */
-+			left -= min(n, left);
-+			drained = empty || !left;
-+			if (!drained)
-+				WRITE_ONCE(rcpu->drain_left, left);
-+		}
-+		if (packets >= NAPI_POLL_WEIGHT || empty || drained) {
-+			cpu_map_gro_flush(rcpu, empty || drained);
- 			packets = 0;
+ 	/* For traffic aggregating levels, queue alloc is based
+@@ -2221,7 +2223,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 			rsp->schq[lvl] = 1;
+ 			rsp->schq_list[lvl][0] = start;
  		}
-+		/* Only report back once GRO is flushed too */
-+		if (unlikely(drained)) {
-+			WRITE_ONCE(rcpu->drain_left, 0);
-+			wake_up(&rcpu->drain_wq);
-+		}
- 
- 		local_bh_enable(); /* resched point, may call do_softirq() */
+-		return;
++		return 0;
  	}
-@@ -473,6 +511,7 @@ __cpu_map_entry_alloc(struct bpf_map *map, struct bpf_cpumap_val *value,
- 	rcpu->map_id = map->id;
- 	rcpu->value.qsize  = value->qsize;
- 	gro_init(&rcpu->gro);
-+	init_waitqueue_head(&rcpu->drain_wq);
  
- 	if (fd > 0) {
- 		err = __cpu_map_load_bpf_program(rcpu, map, fd);
-@@ -500,6 +539,10 @@ __cpu_map_entry_alloc(struct bpf_map *map, struct bpf_cpumap_val *value,
- 	 */
- 	wait_for_completion(&rcpu->kthread_running);
+ 	/* Adjust the queue request count if HW supports
+@@ -2233,7 +2235,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 		if (idx >= (end - start) || test_bit(schq, txsch->schq.bmap)) {
+ 			rsp->schq_contig[lvl] = 0;
+ 			rsp->schq[lvl] = 0;
+-			return;
++			return -ENOMEM;
+ 		}
  
-+	mutex_lock(&cpu_map_mutex);
-+	list_add_tail(&rcpu->list, &cpu_map_list);
-+	mutex_unlock(&cpu_map_mutex);
-+
- 	return rcpu;
- 
- free_prog:
-@@ -530,9 +573,13 @@ static void __cpu_map_entry_free(struct work_struct *work)
- 
- 	/* kthread_stop will wake_up_process and wait for it to complete.
- 	 * cpu_map_kthread_run() makes sure the pointer ring is empty
--	 * before exiting.
-+	 * before exiting. Under the mutex, so the notifier sees either the
-+	 * frames or no entry.
- 	 */
-+	mutex_lock(&cpu_map_mutex);
- 	kthread_stop(rcpu->kthread);
-+	list_del(&rcpu->list);
-+	mutex_unlock(&cpu_map_mutex);
- 
- 	if (rcpu->prog)
- 		bpf_prog_put(rcpu->prog);
-@@ -832,3 +879,39 @@ void __cpu_map_flush(struct list_head *flush_list)
- 		wake_up_process(bq->obj->kthread);
+ 		if (rsp->schq_contig[lvl]) {
+@@ -2246,7 +2248,7 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 			set_bit(schq, txsch->schq.bmap);
+ 			rsp->schq_list[lvl][0] = schq;
+ 		}
+-		return;
++		return 0;
  	}
- }
+ 
+ 	/* Allocate contiguous queue indices requesty first */
+@@ -2277,6 +2279,22 @@ static void nix_txsch_alloc(struct rvu *rvu, struct nix_txsch *txsch,
+ 		/* Update how many were allocated */
+ 		rsp->schq[lvl] = idx;
+ 	}
 +
-+/* Frames in the ring and skbs in GRO hold a raw pointer to the ingress
-+ * device, make every kthread consume them before the device is freed.
-+ */
-+static int cpu_map_netdev_event(struct notifier_block *nb,
-+				unsigned long event, void *ptr)
-+{
-+	struct bpf_cpu_map_entry *rcpu;
-+
-+	if (event != NETDEV_UNREGISTER)
-+		return NOTIFY_OK;
-+
-+	mutex_lock(&cpu_map_mutex);
-+	list_for_each_entry(rcpu, &cpu_map_list, list) {
-+		/* the whole ring, plus a batch already pulled out */
-+		WRITE_ONCE(rcpu->drain_left, rcpu->queue->size + CPUMAP_BATCH);
-+		wake_up_process(rcpu->kthread);
-+	}
-+	list_for_each_entry(rcpu, &cpu_map_list, list)
-+		wait_event(rcpu->drain_wq, !READ_ONCE(rcpu->drain_left));
-+	mutex_unlock(&cpu_map_mutex);
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block cpu_map_notifier = {
-+	.notifier_call = cpu_map_netdev_event,
-+};
-+
-+static int __init cpu_map_init(void)
-+{
-+	register_netdevice_notifier(&cpu_map_notifier);
++	if ((want_contig && !rsp->schq_contig[lvl]) || (want && !rsp->schq[lvl]))
++		goto err;
 +
 +	return 0;
-+}
-+subsys_initcall(cpu_map_init);
++
++err:
++	for (idx = 0; idx < rsp->schq_contig[lvl]; idx++)
++		clear_bit(rsp->schq_contig_list[lvl][idx], txsch->schq.bmap);
++
++	for (idx = 0; idx < rsp->schq[lvl]; idx++)
++		clear_bit(rsp->schq_list[lvl][idx], txsch->schq.bmap);
++
++	rsp->schq_contig[lvl] = 0;
++	rsp->schq[lvl] = 0;
++	return -ENOMEM;
+ }
+ 
+ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+@@ -2335,7 +2353,8 @@ int rvu_mbox_handler_nix_txsch_alloc(struct rvu *rvu,
+ 			end = txsch->schq.max;
+ 		}
+ 
+-		nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end);
++		if (nix_txsch_alloc(rvu, txsch, rsp, lvl, start, end))
++			goto err;
+ 
+ 		/* Reset queue config */
+ 		for (idx = 0; idx < req->schq_contig[lvl]; idx++) {
 -- 
 2.43.0
 
