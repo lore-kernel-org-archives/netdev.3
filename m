@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B30946A5E4;
-	Thu, 24 Sep 2026 23:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294E46C842;
+	Thu, 24 Sep 2026 23:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790290915; cv=none; b=ImY/OvMZLIhSf4z7aawfiz6sy0u3WmuWDoXAPZhFfh70qa/WVCkQB80ZU/pbhrqwScakJhWl+VwJvzOiPJJM5Cqddj9RWgCJyAmYZ98+sbE0JT6asvaNHKo7f/o3wO5lKRpK3U9zxevfA55RxjmntM8qEP2a+heWMf2H5YOA50A=
+	t=1790290916; cv=none; b=rlER/IkCA/T22MBwpxjapcbJVviYb52oXAXqpCjLPGFQSHhSZPnu+WJb7Yl43HDGKE6JxCB9iL6IybN1BacJMv3OI2ukqIEP4dFEMIpeUQ5fPQaCspdMuh8HblpahslmfFSJY31ACK9V7jmCWzQXemUnVcfSrqUrPLVmiuwZFRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790290915; c=relaxed/simple;
-	bh=rz7PRKlm+zEsHL+hJ2dCUKcH+Wfym0M2Rzul0+n9OYk=;
+	s=arc-20240116; t=1790290916; c=relaxed/simple;
+	bh=3Sz0x5ZEqJm2nBRSaybVkPQpcxDRPLwMCXFI3/VNyO8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rpgewt49BotH7Ogk5pi8TFQYG7NebcFdK5rA1mPc0f2W3WpYFaT7RcdQ3/jIzBLIDnwBWdR3XIwmamz6A474GcUfs4ptPtoBOt/4kYUuMv0sCkKMOPaYufcOskHNShtNgfZKKunAGKLMVqJ/VVebMqeLXUZipBGmoNAhvHgs03k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvg0qZPf; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ablmjdUvFaRCyCj42gYnEG8lBprqGtSW1rjAnggLlR7QvCQqGhvdjjuzNMiHvYSk96k6e00Uk8o0ORXJ2yIxl64BRZEed1ne+p+noEwwNFpzK6qQOmEXA8yS3sEi135kyGiR4ZgxVh76DfECf727XbE1O/1j94Q1jlVogu2cMNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJyo2idh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvg0qZPf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30F81F000FF;
-	Thu, 24 Sep 2026 23:01:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJyo2idh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDEF1F00899;
+	Thu, 24 Sep 2026 23:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790290913;
-	bh=wFDBfpFYmD9S0ya0uykpPXPLjLYvqkt2LTRKxE3x3uY=;
+	s=k20260515; t=1790290914;
+	bh=rPCVBB4hTDvi+POouFjvneMghN8/LLCAorH69tTr9Gg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kvg0qZPfWH2Zx2ScK5C4X3feF4pMrsY8+qrLEXr+GD8FUKAIsSLRhOXHkpf//nvT5
-	 MZNN+46vXzb+SHmQ2hxJY2YUfeHCNQjT7fJ7Fc1SPij/FFNhgMYBNQGwG//u5Xi4kn
-	 qwyr3mrt5Vpr/1iTYDDzMSeGBWfo1sWPYYGE/uj3s/IHyLWwSgYI2hvIEqLOz28Ea9
-	 7eqlQXj+FP1zzSp7sWipeqRMnacg7IGBkiLFACdMbkb4JZnqbGN5dnPvbLYNdb3uUz
-	 J9CAMqRpfrCKZF4WNB9JicviJXEPLnlmelCYY5/kvVsbZtirq2GCTWbCmK+yWyCLpI
-	 BmJZbHNCtp3Lg==
-Subject: Re: [PATCH net-next 4/6] enic: validate V2 VF configuration replies
+	b=dJyo2idhEEIXSez9eWL4rWusv5r+vSHI9Qv3xqhE3p3168uipgus/2t2W+7Z4wr1i
+	 k0+JubWMCTJZISh1oelcgJRbmEAeCPxy6ikHvPttVSkg8orY1QzjnLSSE7KGy8HVCi
+	 E54PMnKb4RormBZAF/ypJMxmMqxwgX0TsG9NS4s39js2buq/x5AXW+z7h4KMOIdHmO
+	 9sTc6IY6NHGCEfdPXUjLjCp+hiUN6Whdoe6ZLEfC7c2IYzUSLMmz92CYYmt3eexF9c
+	 hkeZrc0nz2wn+wQpHuGobE3Iq/E4URGz8Gs2Of1N+CP0oDkelXCT6jF43oVkX6hkR8
+	 30uDVScIZKbyQ==
+Subject:
+ Re: [PATCH net-next 5/6] enic: manage V2 VF station and administrative MAC
 From: netdev-bot+sashiko@kernel.org
 To: satishkh@cisco.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, sebaddel@cisco.com
-Date: Thu, 24 Sep 2026 23:01:52 +0000
-Message-ID: <179029091223.2160803.5733876502057073704@kernel.org>
+Date: Thu, 24 Sep 2026 23:01:53 +0000
+Message-ID: <179029091349.2160803.13530371744844163870@kernel.org>
 In-Reply-To:
- <20260921-b4-enic-sriov-v2-vf-receive-control-v1-4-67a0a6e08d43@cisco.com>
+ <20260921-b4-enic-sriov-v2-vf-receive-control-v1-5-67a0a6e08d43@cisco.com>
 References:
- <20260921-b4-enic-sriov-v2-vf-receive-control-v1-4-67a0a6e08d43@cisco.com>
+ <20260921-b4-enic-sriov-v2-vf-receive-control-v1-5-67a0a6e08d43@cisco.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 4 (1)
+Critical: 0 · High: 0 · Medium: 2 · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,292 +60,256 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] enic_mbox_vf_handle_add_del_mac_reply()
-  (drivers/net/ethernet/cisco/enic/enic_mbox.c:725-726) unconditionally…
-- [Medium] enic_mbox_vf_handle_reply() now ends with `if (recovery !=
-  ENIC_MBOX_VF_REPLY_OK) enic_mbox_vf_kick_recovery(enic);`, which fires…
-- [Low] ENIC_MBOX_PF_SET_ADMIN_MAC_NOTIF (12) / _ACK (13) are added to
-  the message enum and the notification type is listed in…
-- [Low] The three new externally visible VF entry points
-  (enic_mbox_vf_add_del_macs(), enic_mbox_vf_add_del_mac(),…
-- [Low] enic_mbox_vf_malformed_msg() turns any single mis-framed admin-
-  channel message attributed to the PF into a full protocol fault…
-- [Low] enic_mbox_vf_reply_claim()
-  (drivers/net/ethernet/cisco/enic/enic_mbox.c:381) returns with…
+- [Medium] The commit's central claim "Treat the PF administrative MAC as
+  authoritative" is not enforced.
+- [Medium] Unaligned memory accesses in ether_addr_equal and
+  ether_addr_copy
+- [Low] enic_vf_station_sync_reset() only clears ha->sync_cnt for the
+  station address; at the target commit enic_open() calls it two…
 
 Pre-existing issues:
-- [Low] The VF now emits ENIC_MBOX_VF_ADD_DEL_MAC_REQUEST (10) and
-  ENIC_MBOX_VF_SET_PKT_FILTER_REQUEST (14), but…
+- [Low] enic_reset_addr_lists() takes netif_addr_lock_bh() only around
+  __dev_uc_unsync()/__dev_mc_unsync() and resets the driver-side mirrors…
 
 --
 
-enic: validate V2 VF configuration replies
+enic: manage V2 VF station and administrative MAC
 
-This adds the V2 mailbox operations for MAC filters, administrative-MAC
-notifications and packet-filter settings on the VF side, and keeps the
-request buffer alive so per-entry reply results can be validated. On a
-malformed or contradictory reply, or when the PF reports the VF is no longer
-registered, the VF forces a new registration before accepting traffic again.
+This adds V2 VF station-address management over the mailbox (delete plus add
+in one compound request), keeps that address out of netdev secondary-unicast
+synchronization, and adds a delayed work item plus a post-registration
+refresh so the PF administrative MAC drives the VF operational address.
 
-A few questions about the new recovery escalation and the lock handoff
-between the claim and completion helpers.
+A few questions on the new code below.
 
-> diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-> index 2d77d41577a3a..3f73072170b91 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-> +++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+> index 1c60e7a666aeb..16412c29e9321 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
 
 [ ... ]
 
-> @@ -376,6 +377,82 @@ static void enic_mbox_vf_request_finish(struct enic *enic)
->  	mutex_unlock(&enic->vf_mbox_request_lock);
+> @@ -1040,8 +1043,10 @@ void enic_reset_addr_lists(struct enic *enic)
+>  {
+>  	struct net_device *netdev = enic->netdev;
+>  
+> +	netif_addr_lock_bh(netdev);
+>  	__dev_uc_unsync(netdev, NULL);
+>  	__dev_mc_unsync(netdev, NULL);
+> +	netif_addr_unlock_bh(netdev);
+>  
+>  	enic->mc_count = 0;
+>  	enic->uc_count = 0;
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but should the new critical
+section in enic_reset_addr_lists() also cover the counter reset?
+
+The address-list lock is dropped before enic->mc_count, enic->uc_count and
+enic->flags are cleared, and those same fields are updated from the
+ndo_set_rx_mode sync callbacks under netif_addr_lock. The baseline took no
+address-list lock here at all, so this is pre-existing, and for V2 VFs at
+the end of the series every writer of these counters runs under RTNL
+(netif_rx_mode_run() asserts the ops-compat lock before invoking
+enic_set_vf_rx_mode), so the reset does not appear reachable concurrently
+today. Would extending the lock to the counter reset make the intended
+invariant explicit?
+
+> @@ -1065,6 +1070,456 @@ static int enic_set_mac_addr(struct net_device *netdev, char *addr)
+>  	return 0;
 >  }
 >  
-> +/* Return with mbox_state_lock held when this handler owns the reply. */
-> +static bool enic_mbox_vf_reply_claim(struct enic *enic, u8 reply_type,
-> +				     u64 msg_num, u8 *expected)
+
+[ ... ]
+
+> +static int enic_vf_keep_nonstation_sync(struct net_device *netdev,
+> +					const u8 *addr)
 > +{
-> +	spin_lock_bh(&enic->mbox_state_lock);
-> +	*expected = enic->mbox_expected_reply;
-> +	if (*expected == reply_type &&
-> +	    enic->mbox_expected_msg_num == msg_num)
-> +		return true;
-> +	spin_unlock_bh(&enic->mbox_state_lock);
+> +	struct enic *enic = netdev_priv(netdev);
 > +
-> +	return false;
-> +}
-> +
-> +enum enic_mbox_vf_reply_recovery {
-> +	ENIC_MBOX_VF_REPLY_OK,
-> +	ENIC_MBOX_VF_REPLY_RECONNECT,
-> +	ENIC_MBOX_VF_REPLY_REGISTRATION_LOST,
-> +};
-> +
-> +static int
-> +enic_mbox_vf_classify_reply(bool malformed, u16 ret_major,
-> +			    enum enic_mbox_vf_reply_recovery *recovery)
-> +{
-> +	*recovery = ENIC_MBOX_VF_REPLY_OK;
-> +	if (malformed) {
-> +		*recovery = ENIC_MBOX_VF_REPLY_RECONNECT;
-> +		return -EIO;
-> +	}
-> +	/* Some deployed peers return a negative errno in this 16-bit field.
-> +	 * Interpret protocol bits only when no unknown bits are present; otherwise
-> +	 * an errno such as -EINVAL could accidentally look like registration loss.
-> +	 */
-> +	if (!(ret_major & ~ENIC_MBOX_ERR_MASK) &&
-> +	    (ret_major & ENIC_MBOX_ERR_VF_NOT_REGISTERED)) {
-> +		*recovery = ENIC_MBOX_VF_REPLY_REGISTRATION_LOST;
-> +		return -ENODEV;
-> +	}
-> +	if (!(ret_major & ~ENIC_MBOX_ERR_MASK) &&
-> +	    (ret_major & ENIC_MBOX_ERR_MSG_NOT_SUPPORTED))
-> +		return -EOPNOTSUPP;
-> +	if (ret_major)
-> +		return -EIO;
+> +	if (!ether_addr_equal(addr, enic->vf_station_addr))
+> +		return -ENOENT;
+> +	if (WARN_ON_ONCE(!enic->uc_count))
+> +		return 0;
+> +	enic->uc_count--;
 > +
 > +	return 0;
 > +}
 > +
-> +static void
-> +enic_mbox_vf_recover_reply_locked(struct enic *enic,
-> +				  enum enic_mbox_vf_reply_recovery recovery)
+> +static void enic_vf_station_sync_reset(struct enic *enic)
 > +{
-> +	bool registration_lost;
+> +	if (!enic->vf_station_addr_valid)
+> +		return;
 > +
-> +	lockdep_assert_held(&enic->mbox_state_lock);
-> +
-> +	if (recovery != ENIC_MBOX_VF_REPLY_OK) {
-> +		registration_lost =
-> +			recovery == ENIC_MBOX_VF_REPLY_REGISTRATION_LOST;
-> +		enic_mbox_vf_mark_reconnect_locked(enic, registration_lost);
-> +	}
-> +}
-> +
-> +static void enic_mbox_vf_reply_complete(struct enic *enic)
-> +{
-> +	lockdep_assert_held(&enic->mbox_state_lock);
-> +	enic->mbox_expected_reply = 0;
-> +	enic->mbox_expected_msg_num = 0;
-> +	/* Publish completion before releasing the state lock.  A waiter that
-> +	 * hit the timeout boundary may otherwise see the claimed state, finish the
-> +	 * request, and let a new request reinitialize this completion before the
-> +	 * old handler signals it.
+> +	/* The PF keys its MAC ledger by address. A station entry is also the
+> +	 * receive filter for that address and must not retain a second core
+> +	 * synchronization reference which could later delete the station.
 > +	 */
-> +	complete(&enic->mbox_comp);
-> +	spin_unlock_bh(&enic->mbox_state_lock);
+> +	netif_addr_lock_bh(enic->netdev);
+> +	__dev_uc_unsync(enic->netdev, enic_vf_keep_nonstation_sync);
+> +	netif_addr_unlock_bh(enic->netdev);
 > +}
 
 [Severity: Low]
-Should this conditional acquire be annotated?  enic_mbox_vf_reply_claim()
-returns with enic->mbox_state_lock held on the true path and unlocked on
-the false path, and the matching release happens in a different function,
-enic_mbox_vf_reply_complete().
+Does enic_vf_station_sync_reset() actually keep the station address out of
+core unicast synchronization at this point in the series?
 
-Neither helper carries __cond_acquires()/__acquires()/__releases(), and
-spin_lock_bh() is annotated __acquires(lock) in this tree, so sparse and
-clang context analysis cannot pair the acquire with the release for the
-claim helper or for its callers (enic_mbox_vf_handle_reply,
-enic_mbox_vf_handle_add_del_mac_reply,
-enic_mbox_vf_handle_set_pkt_filter_reply, enic_mbox_vf_malformed_msg).
+It only clears ha->sync_cnt for the matching entry; the entry itself stays
+on netdev->uc. __hw_addr_sync_dev() re-syncs every entry whose sync_cnt is
+zero, so the next __dev_uc_sync() recreates the reference, after which a
+core unsync can call enic_uc_unsync() -> enic_dev_del_addr() on the station
+address while enic->vf_station_addr_valid is still true.
 
-I traced all four callers and every true-branch path does reach
-enic_mbox_vf_reply_complete(), so this is balanced at runtime today.  Would
-__cond_acquires(true, &enic->mbox_state_lock) on the claim helper and
-__releases(&enic->mbox_state_lock) on the completion helper be preferable,
-or could the lock be taken and dropped inside a single function?  The
-longest region between claim and complete walks up to
-ENIC_MBOX_MAX_MAC_OPS (130) entries under spin_lock_bh, so any future early
-return added there would leak the lock with BHs disabled.
+In enic_open() the reset is two statements before enic_set_rx_mode():
 
-> @@ -551,23 +628,21 @@ static void enic_mbox_vf_handle_reply(struct enic *enic, u8 reply_type,
->  				      void *payload, u64 msg_num)
->  {
->  	struct enic_mbox_generic_reply *reply = payload;
-> +	enum enic_mbox_vf_reply_recovery recovery;
->  	u16 ret_major = le16_to_cpu(reply->ret_major);
-> -	u64 expected_msg_num;
-> -	u8 expected_type;
-> +	u8 expected;
-> +	int status;
->  
-> +	status = enic_mbox_vf_classify_reply(false, ret_major, &recovery);
-> +	if (!enic_mbox_vf_reply_claim(enic, reply_type, msg_num, &expected)) {
+	enic_vf_station_addr_set(enic, netdev->dev_addr);
+	enic_vf_station_sync_reset(enic);
+	vf_mac_added = true;
+    }
+
+    enic_set_rx_mode(netdev);
+
+Worth noting this looks harmless by the end of the series: a later patch
+("enic: configure V2 VF receive mode over mailbox") gives V2 VFs their own
+ops table with only .ndo_set_rx_mode_async, guards the legacy
+enic_set_rx_mode() call with if (!enic_is_sriov_vf_v2(enic)), and the async
+collector skips any address equal to enic->vf_station_addr in both its add
+and delete loops. Is the intent that this helper is only a stopgap until
+that patch lands, and if so could it be squashed or the ordering noted?
 
 [ ... ]
 
-> @@ -584,16 +659,168 @@ static void enic_mbox_vf_handle_reply(struct enic *enic, u8 reply_type,
->  			break;
->  		}
->  	}
-> -	enic->mbox_expected_reply = 0;
-> -	enic->mbox_expected_msg_num = 0;
-> -	complete(&enic->mbox_comp);
-> -	spin_unlock_bh(&enic->mbox_state_lock);
-> +	enic_mbox_vf_recover_reply_locked(enic, recovery);
-> +	WRITE_ONCE(enic->mbox_reply_status, status);
-> +	enic_mbox_vf_reply_complete(enic);
->  
->  	if (ret_major)
->  		netdev_warn(enic->netdev,
->  			    "MBOX: PF rejected reply type %u: %u/%u\n",
->  			    reply_type, ret_major,
->  			    le16_to_cpu(reply->ret_minor));
-> +	if (recovery != ENIC_MBOX_VF_REPLY_OK)
-> +		enic_mbox_vf_kick_recovery(enic);
-> +}
+> +/* CMD_GET_MAC_ADDR is the PF-owned policy store. Re-read it after REGISTER so
+> + * a lost notification cannot leave the VF using stale administrative policy.
+> + */
+> +static int enic_vf_admin_mac_refresh(struct enic *enic)
+> +{
+
+[ ... ]
+
+> +		policy_changed = !ether_addr_equal(previous_policy, policy);
+> +		apply_policy = pending || policy_changed ||
+> +			!is_valid_ether_addr(enic->netdev->dev_addr);
+> +		if (!apply_policy) {
+> +			ether_addr_copy(selected, enic->netdev->dev_addr);
 
 [Severity: Medium]
-Can this new kick re-queue the reset work from inside the reset work?
+Why does vf_station_addr get __aligned(2) in this same patch while
+the new MAC buffers next to it do not?
 
-The CAPABILITY and REGISTER requests are issued from
-enic_admin_chan_reopen(), which runs in the enic_reset() work item, and
-enic_reset() only returns early when !netif_running(), which stays true
-across an internal reset.  If the reply carries
-ENIC_MBOX_ERR_VF_NOT_REGISTERED, enic_mbox_vf_classify_reply() reports
-ENIC_MBOX_VF_REPLY_REGISTRATION_LOST, so:
+vf_admin_mac and vf_admin_mac_random_addr are plain u8[ETH_ALEN] and
+rely purely on the packing of the preceding bool fields
+(vf_station_addr_valid, vf_link_running, ...) to land on an even
+offset. Both are passed to ether_addr_copy() and ether_addr_equal()
+in enic_vf_admin_mac_notify(), enic_vf_admin_mac_cache_selected(),
+enic_vf_admin_mac_work() and enic_vf_admin_mac_refresh(), and on
+builds without CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS those helpers
+cast to u16 * and do three 16-bit accesses. On architectures that
+trap unaligned accesses that is a fault, elsewhere it is a silent
+fixup cost. The same applies to the on-stack buffers policy,
+selected, previous_policy and random_addr, which sit among bool and
+u8 locals in enic_vf_admin_mac_work() and enic_vf_admin_mac_refresh()
+and are handed to the same helpers.
 
-enic_reset()				/* holds rtnl_lock */
-  enic_admin_chan_reopen()
-    enic_mbox_vf_capability_check()
-      enic_mbox_vf_handle_reply()
-        enic_mbox_vf_kick_recovery()
-          schedule_work(&enic->reset);	/* re-queues the running work */
+The explicit annotation on vf_station_addr suggests the author was
+already aware of the requirement, so the omission on the neighbouring
+fields looks accidental. Should __aligned(2) be applied consistently
+to the new struct fields and the local address buffers, or is the
+intent that only vf_station_addr needed it for some reason that is
+not obvious from the patch?
 
-The work bit is cleared before the callback runs, so this re-queues rather
-than being a no-op.  With a PF that keeps answering the handshake with
-VF_NOT_REGISTERED, does the device then cycle reset -> soft reset -> reopen
--> handshake failure -> reset with no fault budget or back-off, where the
-baseline simply left the device down?  Each iteration also holds rtnl_lock
-across up to two 3000 ms mailbox waits.
+[Severity: Medium]
+Is the commit message claim "Treat the PF administrative MAC as
+authoritative" enforced on this path?
 
-This one depends on peer behaviour I could not confirm against real PF
-firmware, so it may not be reachable in practice, but there is no
-structural termination for the loop in the code.
+enic_vf_admin_mac_refresh() compares the freshly read policy against the
+cached previous_policy, not against the operational netdev->dev_addr. When
+the PF policy value has not changed and dev_addr is valid, apply_policy is
+false and selected is taken from dev_addr, so an address that disagrees
+with the policy is preserved rather than corrected.
 
+Combined with the V2 branch of enic_set_mac_address_dynamic() below, can a
+locally installed address survive every later registration and reconnect?
+
+[ ... ]
+
+> @@ -1072,6 +1527,45 @@ static int enic_set_mac_address_dynamic(struct net_device *netdev, void *p)
+>  	char *addr = saddr->sa_data;
+>  	int err;
+>  
+> +	if (enic_is_sriov_vf_v2(enic)) {
+> +		if (!is_valid_ether_addr(addr))
+> +			return -EADDRNOTAVAIL;
+> +		if (ether_addr_equal(addr, netdev->dev_addr))
+> +			return 0;
 > +
-> +static bool enic_mbox_vf_mac_reply_matches(const struct enic_mac_addr *request,
-> +					   const struct enic_mac_addr *reply)
-> +{
-
-[ ... ]
-
-> +static void enic_mbox_vf_handle_add_del_mac_reply(struct enic *enic,
-> +						  void *payload, u16 msg_len,
-> +						  u64 msg_num)
-> +{
-> +	struct enic_mbox_vf_add_del_mac_reply_msg *reply = payload;
-> +	enum enic_mbox_vf_reply_recovery recovery;
-
-[ ... ]
-
-> +	if (msg_len < sizeof(*reply)) {
-> +		status = enic_mbox_vf_classify_reply(true, 0, &recovery);
-> +	} else {
-> +		ret_major = le16_to_cpu(reply->reply.ret_major);
-> +		ret_minor = le16_to_cpu(reply->reply.ret_minor);
-> +		status = enic_mbox_vf_classify_reply(false, ret_major,
-> +						     &recovery);
-> +		if (status == -EIO)
-> +			recovery = ENIC_MBOX_VF_REPLY_RECONNECT;
-> +	}
+> +		if (enic->vf_datapath_open &&
+> +		    !READ_ONCE(enic->vf_registered))
+> +			return -ENODEV;
+> +
+> +		/* An internal reset keeps IFF_UP set while its failed reopen leaves
+> +		 * the datapath closed. Cache the requested address in that state; the
+> +		 * next successful open installs it together with the datapath.
+> +		 */
+> +		if (!enic->vf_datapath_open) {
+> +			err = enic_set_mac_addr(netdev, addr);
+> +			if (!err)
+> +				enic_vf_admin_mac_cache_selected(enic, addr);
+> +			return err;
+> +		}
 
 [Severity: Medium]
-Does this override also escalate an ordinary policy rejection?
+Should this branch also check the requested address against
+enic->vf_admin_mac?
 
-For a well-formed reply whose ret_major carries only
-ENIC_MBOX_ERR_GENERIC, enic_mbox_vf_classify_reply() takes its last arm:
+With the datapath closed, the requested address is installed purely locally
+via enic_set_mac_addr() with no mailbox request, so no PF policy check
+happens at all. A nonzero administrative policy is then silently overridden:
 
-	if (ret_major)
-		return -EIO;
+  ip link set <vf> down      (__enic_stop() clears vf_datapath_open)
+  ip link set <vf> address <C>
 
-leaving *recovery == ENIC_MBOX_VF_REPLY_OK.  The unconditional
-"if (status == -EIO)" above then rewrites that to
-ENIC_MBOX_VF_REPLY_RECONNECT, so enic_mbox_vf_recover_reply_locked() ->
-enic_mbox_vf_mark_reconnect_locked() sets mbox_send_disabled and
-vf_rx_quarantined, bumps vf_mbox_fault_generation, and
-enic_mbox_vf_kick_recovery() schedules enic->reset.
+On the next internal reset or reconnect, enic_vf_admin_mac_refresh() sees
+previous_policy equal to the fetched policy and a valid dev_addr, so
+apply_policy is false and <C> is kept. The following enic_open() then calls
+enic_vf_station_addr_replace(netdev->dev_addr) and fails with -EACCES
+("Failed to register VF station address"), leaving the interface unable to
+come up until the policy address is restored by hand.
 
-That appears to contradict the comment further down in this same function:
-
-	/* After a malformed reply, the VF cannot trust that its state matches the
-	 * PF. VF_NOT_REGISTERED means the PF removed all VF state. Both require a
-	 * new registration; an ordinary policy rejection does not.
-	 */
-
-and the commit message, which says "Return stable policy errors to callers
-while retaining retry semantics for operations that made no state change."
-
-The sibling handler added by this same patch escalates only for ret_major
-bits outside the protocol mask:
-
-		if (status && (ret_major & ~ENIC_MBOX_ERR_MASK))
-			recovery = ENIC_MBOX_VF_REPLY_RECONNECT;
-
-Should the MAC handler use the same narrower rule?  Later in the series the
-station-address install (enic_vf_station_addr_replace()) re-issues this
-request on every open/reopen, so a PF that stably answers ERR_GENERIC would
-keep re-arming the soft reset under rtnl_lock with RX quarantined.
+Note that a repeated PF notification does still correct this, since
+enic_vf_admin_mac_notify() re-arms on !enic->vf_admin_mac_pending, but that
+requires the PF to notify again. Would gating this branch on the cached
+policy, or making apply_policy compare policy against dev_addr, match the
+stated intent better?
 
 [ ... ]
 
-> +static void enic_mbox_vf_handle_set_pkt_filter_reply(struct enic *enic,
-> +						     void *payload, u16 msg_len,
-> +						     u64 msg_num)
-> +{
-
-[ ... ]
-
-> +	if (msg_len < sizeof(*reply)) {
-> +		status = enic_mbox_vf_classify_reply(true, 0, &recovery);
-> +	} else {
-> +		ret_major = le16_to_cpu(reply->reply.ret_major);
-> +		status = enic_mbox_vf_classify_reply(false, ret_major,
-> +						     &recovery);
-> +		if (status && (ret_major & ~ENIC_MBOX_ERR_MASK))
-> +			recovery = ENIC_MBOX_VF_REPLY_RECONNECT;
+> @@ -1807,6 +2302,25 @@ static int enic_open(struct net_device *netdev)
+>  	if (!enic_is_dynamic(enic) && !enic_is_sriov_vf(enic))
+>  		enic_dev_add_station_addr(enic);
+>  
+> +	if (enic_is_sriov_vf_v2(enic)) {
+> +		if (!READ_ONCE(enic->vf_registered)) {
+> +			netdev_err(netdev, "VF is not registered with its PF\n");
+> +			err = -ENODEV;
+> +			goto err_out_disable_wq;
+> +		}
+> +
+> +		err = enic_vf_station_addr_replace(enic, netdev->dev_addr);
+> +		if (err) {
+> +			netdev_err(netdev,
+> +				   "Failed to register VF station address: %d\n",
+> +				   err);
+> +			goto err_out_disable_wq;
+> +		}
+> +		enic_vf_station_addr_set(enic, netdev->dev_addr);
+> +		enic_vf_station_sync_reset(enic);
+> +		vf_mac_added = true;
 > +	}
+> +
+>  	enic_set_rx_mode(netdev);
+>  
+>  	netif_tx_wake_all_queues(netdev);
 
 [ ... ]
 
