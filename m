@@ -1,193 +1,194 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B12246EC88
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 10:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AF8457E6D;
+	Thu, 24 Sep 2026 10:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790245044; cv=none; b=b2GqfCTRZbaKgKioWdtICyhZugQB2oRrydIL4bi0YA3aL46OQ2EbJINcPXADP1n6t/YPYK/GfAVp58q0O8dw1pdzdLnyiJNdPTY0bZj6SS5FrN8vt9mCyVi91f8t+Biv2ZeXPvbgbqcFRVHaJ32j2wJPI4Et0IfOUs+qMftGkxw=
+	t=1790245186; cv=none; b=epyKVYwPDMTRSXaO+j0wrjQMaUTpQKHyLOAeMv6fuYe1dZ/wOqD+nTL8JNpdf+b5bOeNwHurbw9vowctMnfPiHl+QRfnPOL5GivweqY+wql45JSivPz4GXTX/XDUEMuUwaR1mi7mj0bke8JTpDB+IdENEyD2Qo4jHv1qFWqu0dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790245044; c=relaxed/simple;
-	bh=OLQtN8/9/Nf4flz3Kt2BUy4OlOf9PndZym7N2lg6lbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KlO0WPGas9kdMDbRSrGmqPPn/IdEKjDAAnTTWXP8U2qQUOOViz3QwE7W2IXCA/AGoxCP8uSYDSTruP+3GcrNcbZyGzRZHb8TafKTvzjiQ8LSwPu8w1cGzuFOiimZKjIIr/bruiKhRf+RCJ24XI3x1iDN+umVMitWr14Mqli2xis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J6qG73mj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SLC4QTgF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790245186; c=relaxed/simple;
+	bh=ncOl1/fMoV1D7Is/9UygBtdU7UfuEaehn1Z5r8QCkOk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oFtZjdk7whFpHrx8tTFM3TVqicbJoepRMFXur2X/RWq6YsIBf6XrR+wIuLOj5jJ1/6SXpm/LlNaPyfdhixg68X8o8of5raf3yuLPt3pIg42jpba9etRYgES/gyPGgx+7ca9IWSDUSpK+G0J09zWLDwOHPXdB7hKzKxF8fpK5r+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=npt4We1U; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J6qG73mj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SLC4QTgF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790245035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
-	b=J6qG73mj372AxtaJwfCfQ4AKU/wuW9462hUK78fQHbn7Kw9kr66Elu9mUM7eShfglO3u5g
-	49BGehw8+BBWHe1IopZ6mOpSHNomkWjPzjICFPM3tN6v1MloAWkCNvlvvYUHXryp60FnWd
-	2rSqx9XZObVM6dGPaQNVNkJHRmHpTa0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-lFFnXt8pM-G4xLn7BS6_ng-1; Thu, 24 Sep 2026 06:17:12 -0400
-X-MC-Unique: lFFnXt8pM-G4xLn7BS6_ng-1
-X-Mimecast-MFC-AGG-ID: lFFnXt8pM-G4xLn7BS6_ng_1790245032
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48701401090so1634614f8f.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:17:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790245031; x=1790849831; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
-        b=SLC4QTgFAAmhmFB0lfmX2GhPXUY3bABWcBSfVj+xcAe18+GN19WX5pbtqMUPDVKuOd
-         b5EOf+bxKaW+wnvqX0YMlANb0wCPN4K7JS+1xJks1Kc2rbctUkYGOpT6sdevnenxfMJe
-         DnhkShpfo94T4Ie/gNC1s9yBQUlOBuqDe4r3zuvvDplxCz4nqa4iQMX+dgCnkWoNXRTQ
-         njDHVkAgJOpFzZ29AMlOvMFAOVdzqLavI59ltEFrDcV14ryLvSU93A6mvcYUiv4VXOXb
-         hLYxdUFD1R4p1CxxhHWRbTIdTv1fjL22IglA5Wo0GXSAWUSbVqhikZaqk7IOGUiB5iW7
-         A4SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790245031; x=1790849831;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
-        b=jC9W5mYKh/hmmCOM7TPx5X29/AE3ObGnEXHM55CTdlqPKmlkAAb7N4Ri4mKlCEYYLZ
-         ErXL2QkKFxXMy7/i6SfgJrsUiurLwU3eGmp6kSKHqQTVHh+0MkfQhj51gWmifyg1iTG9
-         6irJoIu5CZG5xyhC+wlOQr1wopSfPHnM5fpXgwCrcrVeN+1NFPNCKOPm9f1CvKOyjYtu
-         CTmncWK/AGcxYmoDSb7carXM94yV6xEWJgHAS/e3Fm7LbUE27cIIxqyB+gYdWZiUTMND
-         BKD+QMjZigZQ0DFVOVm5PSmMfxOwwtPT7CZkTSTn5hfABavm7I9ed/H/bK8t8Nq3gAT8
-         CRNA==
-X-Forwarded-Encrypted: i=1; AKwUvBzb4b/qXHRJd9x81djF9Q1k3duSAbmCyAhfXWtzn1caWKuPTBWampG5Zz+guZmwVuIkMIPK++o=@vger.kernel.org
-X-Gm-Message-State: AFuF++ls75Jf2dSx9SnERr9+XHO5iJt//pBjIZZuLTlAF/PUaAKMzJw/
-	qQqx0dC9Plt17MtvIDgD8l8jhi1XQjDMiWgNqbDSWDlNO/Unh8wJKagJO41SuDoF2W8UnqWpPmf
-	AUWfnvnTzhkLlQuFU3lDQv3Sgp3vbKdVy0mwFE4OY/RHrWI/s4EHO0FbmqA==
-X-Gm-Gg: AYBFou08u43a1DWxLSrjXRHv0xbS6ouzuHivG2Gwb4pFjYvFgAQjaDIHe+VnDJ67n2O
-	Z0gN6uSoVRsp5Y13hoGh6Gy7kgUKkFuHDBHtmZcxz2eqTDBq2DStI1SCZbRnEhoYjeTPezq1npw
-	Kylh7W8Bh/aBj6ag6tEwDgMTlpSJEUs3PEjsfkpdsi+gSF8ETb+W1Iq35JwmngwxPp59MBzumkL
-	SQLO2Je2KiOVDNSEYNz+DVTWUDyTDx7/SL5x8fjLGVr7eUOaFtJ8JqK5Mo+FYuMRgo+j+xEpfcn
-	VagrQuoTEbR33cqkAS2sFhPxAeHqWTTeZy+DWGdihrcdO4fyDkbrdV1RIU1bn6n0H9XZlW7rs25
-	gVfQG0/+PifOoXQlYjBGUxQt7Wg5kSmkRJ8GgHC4bmIpA+msorOU=
-X-Received: by 2002:a5d:5e93:0:b0:487:27f9:82a with SMTP id ffacd0b85a97d-488716f74b7mr3255256f8f.31.1790245031491;
-        Thu, 24 Sep 2026 03:17:11 -0700 (PDT)
-X-Received: by 2002:a5d:5e93:0:b0:487:27f9:82a with SMTP id ffacd0b85a97d-488716f74b7mr3255203f8f.31.1790245030920;
-        Thu, 24 Sep 2026 03:17:10 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-131.retail.telecomitalia.it. [82.53.134.131])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488684863d9sm13714443f8f.12.2026.09.24.03.17.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 03:17:10 -0700 (PDT)
-Date: Thu, 24 Sep 2026 12:17:04 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
- TCP_LISTEN sockets
-Message-ID: <arT3jXoS7OaU6Tsc@sgarzare-redhat>
-References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
- <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
- <aqp7CV9DnfsG1GJc@sgarzare-redhat>
- <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="npt4We1U"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0E28A4AA9;
+	Thu, 24 Sep 2026 12:19:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790245174; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=Dd4LZLpz2ZuVbbhEX2b+hUZjwt0QvR0+hfyByE8uihs=;
+	b=npt4We1UQGa8rE1Fyi4K4za6kcmtPVSIJJbVdsesZA9EySH8NQbzd0UwfFRooHTDQ9RFov
+	KMtLfSRiBzKIwXhwDjNv83MsGVRtEeOXMqdfMdv2su7DAp6pCbcttN/7RxV1js0kET+lTr
+	NDRuno8fT0NR21kCAziGv/UbGEwpLhtlzFzTJvTd7qkevrq8g6S6xwBhtDGlRqus18w8bo
+	XHFjhaa9dljsBb+5Q/ZghCvtzC9/+bmLJ7esCMptV36iB+LujuugomnCotJTaW9KVKBpHu
+	+9sYzVP770+9rVIy37F6wJtEt7Tbvwfe5bxOO37U8tGopSXIbnHMeWQeL4ildA==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Justin Chen <justin.chen@broadcom.com>
+Cc: kmehltretter@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: bcmgenet: allocate RX buffers as page fragments
+Date: Thu, 24 Sep 2026 12:19:21 +0200
+Message-ID: <20260924101922.2675127-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 22, 2026 at 03:18:13PM +0200, Michal Luczaj wrote:
->On 9/16/26 14:30, Stefano Garzarella wrote:
->> On Tue, Sep 15, 2026 at 03:15:14PM +0200, Michal Luczaj wrote:
->>> A non-blocking connect() running in parallel with a blocking connect(),
->>> combined with a racy listen() that hits right after a connect timeout:
->>> TCP_SYN_SENT -> TCP_CLOSE -> TCP_LISTEN, while the connect() loop is still
->>> in progress.
->>>
->>> Enforce the invariant. Prevent a socket from becoming a listener after
->>> acquiring a transport.
->>
->> We should improve this comment; it's not entirely clear to me, TBH.
->
->The race I was thinking about:
->
->sk is CLOSE UNCONNECTED
->non-blocking connect():
->  sk := SYN_SENT CONNECTING
->  enqueue vsock_connect_timeout()
->                                   blocking connect():
->                                     release_sock()
->                                     schedule_timeout()
->vsock_connect_timeout():
->  sk := CLOSE UNCONNECTED
->listen():
->  sk := LISTEN UNCONNECTED
->                                     lock_sock()
->                                     sk is TCP_LISTEN UNCONNECTED
->
->It's not really critical (blocking connect() just timeouts), but I thought
->the invariant should be enforced once and for all.
+Since the page_pool conversion every RX buffer is a whole page and the
+skb truesize is the page, although the hardware writes at most 2 KiB of
+it. On 64 KiB pages a packet therefore counts 65792 bytes against the
+socket buffer where it used to count 2752. As a result a UDP socket
+with the default buffer starts to drop after three packets, and the RX
+rings pin 16 MiB for 512 KiB of buffers.
 
-I see, would it better to do this change in net-next?
+Fix this and allocate the buffers as page fragments, so the truesize is
+what a packet occupies. 4 KiB pages stay one buffer per page.
 
->
->>> @@ -1973,13 +1973,13 @@ static int vsock_listen(struct socket *sock, int backlog)
->>> 		goto out;
->>> 	}
->>>
->>> -	if (sock->state != SS_UNCONNECTED) {
->>> +	vsk = vsock_sk(sk);
->>> +
->>> +	if (sock->state != SS_UNCONNECTED || vsk->transport) {
->>
->> Are we changing the behavior when an error occurs?
->>
->> If we call `connect()` on a socket (with no others running in parallel),
->> it fails, and then when we call `listen()`, it now fails, whereas before
->> it didn't. Can this happen? Is that what we want?
->
->Ah, true, I didn't consider that. So yeah, we'd changing the behaviour.
->
->> If so, we should mention it at least in the commit description; if not,
->> perhaps we should unassign the transport in the `connect` call.
->
->Do you mean immediately un-assign on every transition from SYN_SENT to
->CLOSE (failure, timeout, signal)? Then we could also drop the re-assign
->logic. I think that's a nice idea.
+Sync each buffer in the refill path, as page_pool can only sync a whole
+page on recycle. On 4 KiB pages that is twice what the hardware wrote.
 
-yeah, that!
+Fixes: 7bc054c2d4ed ("net: bcmgenet: convert RX path to page_pool")
+Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
+Closes: https://lore.kernel.org/all/20260924065839.56793-1-kmehltretter@gmail.com/
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 29 ++++++++++++++-----
+ .../net/ethernet/broadcom/genet/bcmgenet.h    |  2 ++
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
->
->---
->
->I've addressed all your other comments for v2 and went through Ashiko's
->reports (side effects of lockless peer_shutdown write, imperfect
->no-transport TCP_LISTENER enforcement). I've decided to try the
->eager-unassign approach. I think/hope this way we sidestep the lockless
->writes and enforce the invariant without breaking the API, while fixing the
->bugs.
->
->This should probably be RFC, but I'm posting as v3[1] so netdev's LLM can
->have a go (too). Hope I'm not breaking any workflow. Let me know what you
->think.
-
-I think you can add RFC also on a v3 patch, just to make it clear you 
-are not sure it's ready to be merged.
-
-That said, thanks for that :-) I'll take a look today or next week 
-because I'm off tomorrow.
-
-I'm just worried it's becoming too big for net. Anyway, I'll comment 
-there.
-
-Thanks,
-Stefano
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 21668e41b696..f725d26e6020 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -57,6 +57,9 @@
+  */
+ #define GENET_RSB_PAD		(sizeof(struct status_64) + 2)
+ 
++/* RX buffer plus the skb_shared_info napi_build_skb() places behind it */
++#define GENET_RX_BUF_SIZE	SKB_HEAD_ALIGN(RX_BUF_LENGTH)
++
+ /* Tx/Rx DMA register offset, skip 256 descriptors */
+ #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
+ #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
+@@ -2254,11 +2257,12 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
+ 			      struct enet_cb *cb)
+ {
+ 	struct bcmgenet_priv *priv = ring->priv;
++	unsigned int size = GENET_RX_BUF_SIZE;
++	unsigned int offset;
+ 	dma_addr_t mapping;
+ 	struct page *page;
+ 
+-	page = page_pool_alloc_pages(ring->page_pool,
+-				     GFP_ATOMIC);
++	page = page_pool_dev_alloc(ring->page_pool, &offset, &size);
+ 	if (!page) {
+ 		priv->mib.alloc_rx_buff_failed++;
+ 		netif_err(priv, rx_err, priv->dev,
+@@ -2267,9 +2271,13 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
+ 	}
+ 
+ 	/* page_pool handles DMA mapping via PP_FLAG_DMA_MAP */
+-	mapping = page_pool_get_dma_addr(page);
++	mapping = page_pool_get_dma_addr(page) + offset;
++	dma_sync_single_for_device(&priv->pdev->dev, mapping, RX_BUF_LENGTH,
++				   DMA_FROM_DEVICE);
+ 
+ 	cb->rx_page = page;
++	cb->rx_offset = offset;
++	cb->rx_size = size;
+ 	dmadesc_set_addr(priv, cb->bd_addr, mapping);
+ 
+ 	return 0;
+@@ -2323,6 +2331,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+ 
+ 	while ((rxpktprocessed < rxpkttoprocess) &&
+ 	       (rxpktprocessed < budget)) {
++		unsigned int rx_offset, rx_size;
+ 		struct status_64 *status;
+ 		struct page *rx_page;
+ 		void *hard_start;
+@@ -2332,6 +2341,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+ 
+ 		/* Save the received page before refilling */
+ 		rx_page = cb->rx_page;
++		rx_offset = cb->rx_offset;
++		rx_size = cb->rx_size;
+ 
+ 		if (bcmgenet_rx_refill(ring, cb)) {
+ 			BCMGENET_STATS64_INC(stats, dropped);
+@@ -2341,10 +2352,10 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+ 		/* Sync the full buffer; the HW may have written anywhere
+ 		 * up to RX_BUF_LENGTH.
+ 		 */
+-		page_pool_dma_sync_for_cpu(ring->page_pool, rx_page, 0,
++		page_pool_dma_sync_for_cpu(ring->page_pool, rx_page, rx_offset,
+ 					   RX_BUF_LENGTH);
+ 
+-		hard_start = page_address(rx_page);
++		hard_start = page_address(rx_page) + rx_offset;
+ 		status = (struct status_64 *)hard_start;
+ 		dma_length_status = status->length_status;
+ 
+@@ -2410,7 +2421,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+ 		/* Build SKB from the page - data starts at hard_start,
+ 		 * frame begins after RSB(64) + pad(2) = 66 bytes.
+ 		 */
+-		skb = napi_build_skb(hard_start, PAGE_SIZE);
++		skb = napi_build_skb(hard_start, rx_size);
+ 		if (unlikely(!skb)) {
+ 			BCMGENET_STATS64_INC(stats, dropped);
+ 			page_pool_put_full_page(ring->page_pool, rx_page,
+@@ -2762,14 +2773,16 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+ static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
+ 					struct bcmgenet_rx_ring *ring)
+ {
++	/* Buffers share a page. bcmgenet_rx_refill() syncs each one for the
++	 * device, PP_FLAG_DMA_SYNC_DEV would sync the whole page.
++	 */
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+-		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
++		.flags = PP_FLAG_DMA_MAP,
+ 		.pool_size = ring->size,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = &priv->pdev->dev,
+ 		.dma_dir = DMA_FROM_DEVICE,
+-		.max_len = RX_BUF_LENGTH,
+ 	};
+ 	int err;
+ 
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 22a958ba9902..86f2aed20dbe 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -470,6 +470,8 @@ struct bcmgenet_rx_stats64 {
+ struct enet_cb {
+ 	struct sk_buff      *skb;
+ 	struct page         *rx_page;
++	unsigned int        rx_offset;
++	unsigned int        rx_size;
+ 	void __iomem *bd_addr;
+ 	DEFINE_DMA_UNMAP_ADDR(dma_addr);
+ 	DEFINE_DMA_UNMAP_LEN(dma_len);
+-- 
+2.53.0
 
