@@ -1,98 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586923F1AD5;
-	Thu, 24 Sep 2026 12:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B72377EC7;
+	Thu, 24 Sep 2026 12:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790253583; cv=none; b=UNY9t79T1W9kb7N4WuusCXjGv7/3PP6URpjyAe9UjnSGvOaj05EcX6pzTimda4YqShJBvRCI5cSqspwW1ER9rhOvDoRxJ1NeMFJ0u/th1oUMi9iZ84yd6GsZQZ/j4DlsHyq4xcRvF+OK7FDYABONXGjxxRLfk2z1QPzdB70Dh7Y=
+	t=1790253656; cv=none; b=SoPq7AUuGwiP0+JWBjL9tXv5WSJt0yYy54Y8kX0pXT7C4mPdKm42uzH7y08TIXUcf0FrPaIKmA/+ldKLLNcNTho51N00/YDLHRmPkDxp7Pco2+cA+4UnbHlX5IJpFmEYJ669xm61SZynmomqpOp3xZKuMJT9TF89awvlG23VKvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790253583; c=relaxed/simple;
-	bh=cnExcQWXcl8PtXzuGi64NnpcpmbnmatuREqpexHy5Xc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JaHtuwVLD44Kn2tR/l+y9eLkKTIvkaBkuM86kcJlWuiB5AhcC+n7q6mTIm2SciRcvmudJquj8Pu6UhjteuD/n+9Sg2OZDdIrgZHWTaQWW+NeWClmfXgrL0pDw7xSTIxB4JZ2dfi6zhUY7YPggu6N/YlrAMGQYk0+xY1NnvZBDbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pc2pxKHI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790253656; c=relaxed/simple;
+	bh=ZcNh+l6SeSrEevzUyaiIbHJKDijrGi3F9DOB0SBLJpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ptMOMmF6xAJ2N1jcI4IEOdL38V6cw/pDgLCrIFCg5/XCKJkJ9AQ55G1o0FHvB0qIEB4DEmyXO04RtY2PYztlf11kc2cxzL9eKf/dyrU/QMfziIOmdektC1Zn1hmOqqN9N0EtMOMynLUOuhmUnYRtSJMIGnYfUmJilRZx9y0rf98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eEpIPmlD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pc2pxKHI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42D01F000FF;
-	Thu, 24 Sep 2026 12:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790253571;
-	bh=NWV63fbaJvOqGNz/oJFAY0kcJbTAepBIBYHStlfPyLw=;
-	h=Date:From:To:Cc:Subject;
-	b=Pc2pxKHIZrDt06ehZWlEtSlkgo6KqDAoVR+KEx5s9wn8Sbomp8FVTaSLfalW4GJgt
-	 b/NwgDIEtugWlT5vsDgTJRYJYRRIKcTh0Pm+DmTiFqZW/QiC/q9qE5WVrdAJSgcUZG
-	 MHnL/iUqJVaLsQyRKNRLquYxU41ic8Bbj3IiSp3JqZfN3F0kLLQfU29ACfiCdBGeeu
-	 ppFH+XPflbhwf2+uFTpjVxLg5K9HSJLBRTE3xMERDJYE/zcSa+my6DUUdT6YiSSbTy
-	 vx7W0DBWl2izEuith895Udrsdsn7WhRzhMmvBfsfE+HGtIPvy9y2NcRb9JM9Y/THh8
-	 AidwnzFHjKFKQ==
-Date: Thu, 24 Sep 2026 13:39:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>
-Cc: Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the bpf-next tree with the bpf tree
-Message-ID: <arUZ_0CU-Zlct_Tt@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eEpIPmlD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=LlhL8lPQK+mGmThvRzcBFWd03/EYCS0ROgcvO+lg6ns=; b=eEpIPmlDWOZam71wIcPWwH/Ioz
+	eo5DxMECgO/mlGeLs861lSC0kURUaOMryIZVvkatNfERA1W5avV/zuuPs4N1UW7n9eXUEsiJ/lhTN
+	yHa8qqjgAawkok0KNH0/I2quTGeu2QdlYVO8+6ZpDh3Poqa49od5rLEnxgCcHVjF1s4M=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x9iks-006zVy-Nh; Thu, 24 Sep 2026 14:40:50 +0200
+Date: Thu, 24 Sep 2026 14:40:50 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aldo Ariel <qwe.aldo@gmail.com>
+Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net v2] net: fec: reject oversized fragments before
+ bounce-buffer memcpy
+Message-ID: <a230cd62-db31-4128-acfa-93501d30aa39@lunn.ch>
+References: <20260923203738.1583735-1-qwe.aldo@gmail.com>
+ <f3c05fe4-b90a-484b-8b3f-0cf0b101a20a@lunn.ch>
+ <CAP48Hfto4qc285B3Jw7ZRuC-wGf57JOBPZOdrrAt-aDfGcas8Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3vVy6u0p7esVuByA"
-Content-Disposition: inline
-
-
---3vVy6u0p7esVuByA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAP48Hfto4qc285B3Jw7ZRuC-wGf57JOBPZOdrrAt-aDfGcas8Q@mail.gmail.com>
 
-Hi all,
+On Wed, Sep 23, 2026 at 06:22:01PM -0300, Aldo Ariel wrote:
+> Hi Andrew,
+> 
+> PKT_MAXBUF_SIZE = round_down(2048 - 64, 64) = 1984
+> max_mtu (non-jumbo) = 1984 - VLAN_ETH_HLEN - ETH_FCS_LEN = 1962
+> 
+> So for standard MTU, max_mtu < FEC_ENET_TX_FRSIZE and individual
+> fragments should not exceed the bounce buffer.
+> 
+> However, when the device supports jumbo frames,
+> max_buf_size = MAX_JUMBO_BUF_SIZE (~16256) and max_mtu reaches ~16234.
+> Scatter-gather fragments in that case can exceed FEC_ENET_TX_FRSIZE
+> while still needing the bounce path for alignment or byte-swap.
+> 
+> Should I respin with a check only for the jumbo path, or is the
+> unconditional guard acceptable?
 
-Today's linux-next merge of the bpf-next tree got a conflict in:
+Can bounce buffers and jumbo be used at the same time?
 
-  tools/testing/selftests/bpf/prog_tests/cb_refs.c
+How is the scatter-gather size determined? Maybe the better fix is to
+set the fragment size based on the size of the bounce buffer when it
+is in use?
 
-between commit:
-
-  04ae4ffc57a6b ("selftests/bpf: Check callback map value lock identity")
-
-=66rom the bpf tree and commit:
-
-  11300f54bd887 ("selftests/bpf: Refactor cb_refs selftests")
-
-=66rom the bpf-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-(deleted the file, which probably lost the test)
-
---3vVy6u0p7esVuByA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq1Gf4ACgkQJNaLcl1U
-h9D8PAf/avM/0V8V3Hr3cNMhZaTjbagIkMivmZJiSQ/LChwAwlNGnvZBLXCVRfRa
-2AVvM0q8/DYn61oY2LNnjm6WAXtj9QmSlBHau7e5/LoJO0mlb5g1a6z8PCMwLHbn
-xCCecqfOJlpLAtBpcQpqOvQR/fmwCq/y3bpB4XctU3CXYCM+FyNsdxusfBsy0+su
-td78ToW9Vkmi7OplweEHpMNgwwc/0Jz9KnOq6xP3sqQM1/YzP4TGB8FftHB8Zw+X
-lIIV/6R6TYMmzVhedbpyAT2yT8Eosu5ov2l11UTW4BEao9CG7hmWJVcfnTuRKNGq
-lpBw4i/Q4CzaJ/UYGGuK26FuzytDHg==
-=yIqI
------END PGP SIGNATURE-----
-
---3vVy6u0p7esVuByA--
+	Andrew
