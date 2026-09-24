@@ -1,113 +1,180 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E238439BFF1
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 20:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790280587; cv=pass; b=Ex0Bagd8Dcy02B/I8wv8xTYilXrNmEH4Nll01VlezzyKaffw21Co9P+y0NtjhSDftDoE7Re5S2JiqFbc2cqoRlEKyNjWwoownVjPZmbmWBbXKdR0b8TdLwnI5Ed42zcMT3qRHs8yQ8gfebVfrhJ+97rmvApoYBM0FBD15cv/0wQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790280587; c=relaxed/simple;
-	bh=Yz7JoaE6iquvpn6Unqqgb8gnd/A0MQ5SqMi49sUK7Zg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NCBvaID+F8cFW99XU3rCr71lwNGqXMDL3/HlRgMCzs7om2YoOymwMO9wW9w/oYEJrsn+natD8tYIgD4GUs+6FWTvPjJGZScmVq8VaexuhZDxV4bfjhJem1aOo0jts9TVK81Zwgxjn6HFdDPz7RquJnPcc0h09+aH09dbSBl0mxg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=CsmGZND0; arc=pass smtp.client-ip=74.125.229.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CE049F116;
+	Thu, 24 Sep 2026 20:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790281277; cv=none; b=rDu7LaGZWPR3Kjk43Yejep8Di5lcyAT4WaJWe+B0DO6SNixxoM8OAJWRJldsDAemCOxaIE6q6Q5YGLgjmvIydkUZ0Yz69jXBiTw+zDcmpPYl3u1j4Wj9BbAnYwFjtSASx7ABPXCMGhIAng2+l755270vgoSllwsbQgeYUdwHdok=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790281277; c=relaxed/simple;
+	bh=slkHVK5U/MWavFpAcps1cRcNaZnjBApvcqiyIpsGwVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UBeieHFSgIFCAijIELTSZSh1CtgveD0potQmOspUXjTexlF9xR+BLrmywXO3QU29ng9HZb1Ub96VBIfMeAAw3hQgI32iA2WY6W6/YALeObtlACu6LX8LNSUhP6K1oSfUka+v1S4xBHv6QQ/qUp6CNOfFLa86Os+cyXgdP4BZ8qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=Ac1QlAXs; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="CsmGZND0"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-1450541ab50so104374c88.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:09:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790280569; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qda9jGld5tDW7B0+3PSws0g1DnyaxVZn3CDRWy5xfVTV0lgR60eSRHiNLBVGIhegdF
-         uoN7gC8fBLyCdXS//TvO47438ROdnminRXXk71zkGCCeRVc+YeYB7qfRx2Pr0QfaXxmZ
-         7czsj72BESc7W2dT5UBRdg7WnyIhWt/8jD4/k07OJicPfB7UffbCb3lUunP41u1SgfXD
-         d1b2VlTz5RzJk0LxR+kmEZwSX9F4KTYPQHJtTo2ORzr7KjYWFCI3bkvBJrPiJMp3gR07
-         if9xNKOxdFS882EltPmcnnjNFIFJCkJBuFFVkgYzXwlQe4Qg9xle2secqxX21qy64w6Z
-         o3Xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Yz7JoaE6iquvpn6Unqqgb8gnd/A0MQ5SqMi49sUK7Zg=;
-        fh=JaU+33gRGUclVpX+NsTFH+F0QFvgWpHy0c7cHW7ObCo=;
-        b=IJlhz7hKwt2uvUgC1hZ5bca/ahxVGRmDR5UWumBotrE0GNs89DSSSinJcafcj2sofI
-         ee68Qvrlqa9I+cNGb0KnZJlJTiR6l3IdGVZk4K4VqyaVRDrw63bHaixgPl+qbreJMSfD
-         yNyDB17QYjEUq8MYAstkECXitRJGx/EhsI2VkICX4GIJI9dtJLr84efwi+4qbJYkrkYJ
-         w9PU1vM/SL0WQXKpgZI2XAX6yWp1xNkcyfzqRu8e7mowV8Heb9oUXsgZFFBy0hNXPawo
-         n3+YbF5h4ebbQ0Oda345YdWaX8Fno5zW7iRmp3UnDYbiT8y5JyySflWZfHFvzE/T0Grq
-         Fx7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790280569; x=1790885369; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Yz7JoaE6iquvpn6Unqqgb8gnd/A0MQ5SqMi49sUK7Zg=;
-        b=CsmGZND0PTP1Jx3EJ4ZBqzwG+Jsi3/5sVOUyjApydhdJekVPYnAM241dyHZiTzN1ul
-         HBYls6tPNKlbrLwRuj2JX0jueuLlzMh74X2rTlXjsEP/IsuwLR8XWrkL6x6TqIwf0Emz
-         8oaNvdZhYlnzsVo8RTPCwHss9/49IV+aMhGiU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790280569; x=1790885369;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Yz7JoaE6iquvpn6Unqqgb8gnd/A0MQ5SqMi49sUK7Zg=;
-        b=zSiiWDVbXq0855EKxX/Ujo46Hj+aVI63JhTI/qsIJful8no/d5GYTkLc14oHdIGVT4
-         6cJ6kPdS/1iNaxDwH1a4qHvubYi0YEEBMzLjPwPWSqIZoe5zVmYAdRx5rErPKIBzp1ew
-         Z0CJobub2ZZtEpehCdWJQQG623Mp2Weaa3l+YLbUjHLwPtfarueuz+rmBxUWNbRT8UJZ
-         DKnou2l7N0F7YPJYMMo3DF0vqn7C7V7XyMdHUVJy3zqrrETtFyjWrvofjv8v8BFhAO9H
-         LBrJ0bxjetrknWuMyd3YX23UO5q6u6vhZNa3cyic3+9Ns/F2ZiNyHgGIDb5arKZZHY1N
-         29Qg==
-X-Forwarded-Encrypted: i=1; AKwUvByvAQvfOcuFzgK2orDzrlDHdvr7SZ7rKoI45+2vXpcCwWosVsxT8woiN2wLlHx45+ipwizaRuw=@vger.kernel.org
-X-Gm-Message-State: AFuF++m80RBcB3G2y4ioSFPavIiMokvT7A9vqCsosHAqy/FOrPdba3Fp
-	bMkIv882WcirIuiYLTec7twUK4nkPDufkbsxXgBGdmTwbo0NXWufJzTCabsEg7D1tUG72Ypzvb1
-	VIJ770Ct/bZQZ8mbd3+rbLXkmPDDIcC8zzyFOxwxX
-X-Gm-Gg: AYBFou0O1aUh9LEZRVjwjaq/7nA+u7yJW0KPe+QH7pd/1iVlGI30oV/ibq6KJ2Y9SBz
-	iDVZdt3OqH2aPIwu6+B0GfaB7wweHZhOQgU8NWgB3nLv+lHvKDfg7GsA7suhPVFTVLVfZtXGTor
-	hKtNu9ttoQk3whCS4as54x2Fh2lejw9FKawVCkWFXMaDq4bR2L1LIIfSoPCjzODwNShfzb6mdVW
-	bBawoqiGzVKJ2fclEoV4zotV9TWGMRLbD+atSiQUGXBgL0ybzOwWeOgv1hZvnPALKS6BVRsOdDB
-	kq86ODeoVjOWvEbhWrq03jUteN+ehgClWKyVNfo+DaqsdvruGXHGCJD9L9VX1/o5Zufg+DhSvqu
-	ZVr8Gt2vp1UqgIeHV3E3pjTDsGaCKDYko/IuyBzmMZ0df1XfCk4fMmW3WXI72Kfx6e9iDcWZWRW
-	3oaWqjDbOb5CZep8RgIEY0OBjTwed6lA==
-X-Received: by 2002:a05:701b:21c8:b0:143:5c2a:e488 with SMTP id
- a92af1059eb24-14503f6e17amr2557112c88.0.1790280568819; Thu, 24 Sep 2026
- 13:09:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="Ac1QlAXs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=Y5qRHSz2LIYPtpRF3z47AMREZz0w7fd5T9syEn/c6w0=; b=Ac1QlAXsMfBBT1NiFTB6Bm0q/o
+	qwm8EMX3Mhv4bNWiojSat7TYbHq7f3GgHksPHgArzS/JNIcCIc8bZ66nh7NoVJv4gyJMu8kVc0YWq
+	XSZUwdvVE46gYAZ0riMaMoBfUVuyPw0asbKKEAN77HFH+nM7pB36RYKzbgbG1rQEFI0TDfNigTWt8
+	qtFyIMUNkbk+np5OOKgBcEFWHItM3EemOATKmya4WDE4GiVO0zsNhnuxQollowvLsz9v5J+ZTLdtZ
+	EFDGUAOD/yik3+e5cL254YDUgN7zdyYFJ5ymC3ocgHwlSJqzlXUH7e5iPdub7zPtnZ3BqB2tv/uWP
+	IyjEKI6w==;
+Received: from [151.115.150.205] (port=41492 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1x9pwN-0000000G2mf-3l7m;
+	Thu, 24 Sep 2026 22:21:11 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Jon Maloy <jmaloy@redhat.com>,
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Subject: [PATCH] tipc: prevent GCM nonce reuse on peer key changes
+Date: Thu, 24 Sep 2026 20:21:05 +0000
+Message-ID: <20260924202105.3722778-1-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-K1TH.v1.20260922072206@mojatatu.com.2> <20260924103222.239e3d45@kernel.org>
-In-Reply-To: <20260924103222.239e3d45@kernel.org>
-From: Jamal Hadi Salim <hadi@mojatatu.com>
-Date: Thu, 24 Sep 2026 16:09:16 -0400
-X-Gm-Features: AclHuK8ging8rJ9iMqohghr3xW3SMPxgAhfGgpncxPI1dVhA27YT_H20sVXYQKs
-Message-ID: <CAAFAkD8goF-B2qP41roK8OipD7TRzZfVEdFDPxHddB5Tm6VhCQ@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] selftests: tc-testing: add duplicate action
- delete batch test
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-kselftest@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
-	hybris <hybris@mojatatu.ai>, sashiko-bot@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Thu, Sep 24, 2026 at 1:32=E2=80=AFPM 'Jakub Kicinski' via Hyper-Yielding
-Back-end Review & Insight System <hybris@mojatatu.com> wrote:
->
-> On Tue, 22 Sep 2026 12:33:59 -0400 Jamal Hadi Salim wrote:
-> > Subject: [PATCH net 2/2] selftests: tc-testing: add duplicate action de=
-lete batch test
->
-> ah, here's the 2/2 patch. Patchwork did not figure it out either :(
+TIPC can encrypt traffic between nodes using a different transmit key
+for each node. In this mode, the AES-GCM nonce for a packet sent to a
+known peer consists of a 32-bit prefix (a per-key salt XOR the peer's
+address) followed by a 64-bit counter. That counter is stored in the
+peer's RX crypto object. When the peer reports a change in which key
+it uses to receive packets, TIPC resets this counter. The sender can
+still be using the same TX key and salt, so subsequent packets reuse
+earlier nonces. This nonce reuse breaks confidentiality and exposes
+GCM's authentication key. This makes forgeries trivial: an attacker
+can exploit CTR malleability to alter captured ciphertexts and use the
+recovered authentication key to compute a valid tag for the modified
+ciphertext, under the same key and nonce.
 
-repost? (2/2 was stuck on some ether).
+Use the TX key's existing aead->seqno counter instead. All encryptions
+using that key object share the same atomic counter, so concurrent
+encryptions get distinct nonce counter values. The counter survives
+key activation and peer reconnection, and peer key-status reports
+cannot reset it. This prevents those transitions from causing nonce
+reuse while the same TX key remains installed.
 
-cheers,
-jamal
+The nonce format is unchanged, and receivers do not require consecutive
+counter values, so sharing the counter across peers remains compatible
+with existing receivers. A pre-existing check still invokes key
+revocation in the unlikely event that the counter wraps to zero.
+
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Assisted-by: LLM
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ net/tipc/crypto.c | 20 +++++---------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
+
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 16f1ed1..4409bdb 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -144,7 +144,7 @@ struct tipc_tfm {
+  * @rcu: struct rcu_head
+  * @key: the aead key
+  * @gen: the key's generation
+- * @seqno: the key seqno (cluster scope)
++ * @seqno: the per-key TX nonce counter
+  * @refcnt: the key reference counter
+  */
+ struct tipc_aead {
+@@ -190,7 +190,6 @@ struct tipc_crypto_stats {
+  * @rekeying_intv: rekeying interval (in minutes)
+  * @stats: the crypto statistics
+  * @name: the crypto name
+- * @sndnxt: the per-peer sndnxt (TX)
+  * @timer1: general timer 1 (jiffies)
+  * @timer2: general timer 2 (jiffies)
+  * @working: the crypto is working or not
+@@ -219,7 +218,6 @@ struct tipc_crypto {
+ 	struct tipc_crypto_stats __percpu *stats;
+ 	char name[48];
+ 
+-	atomic64_t sndnxt ____cacheline_aligned;
+ 	unsigned long timer1;
+ 	unsigned long timer2;
+ 	union {
+@@ -1051,14 +1049,11 @@ static int tipc_ehdr_build(struct net *net, struct tipc_aead *aead,
+ 	WARN_ON(skb_headroom(skb) < ehsz);
+ 	ehdr = (struct tipc_ehdr *)skb_push(skb, ehsz);
+ 
+-	/* Obtain a seqno first:
+-	 * Use the key seqno (= cluster wise) if dest is unknown or we're in
+-	 * cluster key mode, otherwise it's better for a per-peer seqno!
++	/*
++	 * Keep the nonce unique for the lifetime of the TX key,
++	 * including key state changes and peer reconnection.
+ 	 */
+-	if (!__rx || aead->mode == CLUSTER_KEY)
+-		seqno = atomic64_inc_return(&aead->seqno);
+-	else
+-		seqno = atomic64_inc_return(&__rx->sndnxt);
++	seqno = atomic64_inc_return(&aead->seqno);
+ 
+ 	/* Revoke the key if seqno is wrapped around */
+ 	if (unlikely(!seqno))
+@@ -1237,7 +1232,6 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
+ 	tipc_crypto_key_set_state(c, 0, 0, 0);
+ 	for (k = KEY_MIN; k <= KEY_MAX; k++)
+ 		tipc_crypto_key_detach(c->aead[k], &c->lock);
+-	atomic64_set(&c->sndnxt, 0);
+ 	spin_unlock_bh(&c->lock);
+ }
+ 
+@@ -1384,8 +1378,6 @@ done:
+  * It also considers if peer has no key, then we need to make own master key
+  * (if any) taking over i.e. starting grace period and also trigger key
+  * distributing process.
+- *
+- * The "per-peer" sndnxt is also reset when the peer key has switched.
+  */
+ static void tipc_crypto_key_synch(struct tipc_crypto *rx, struct sk_buff *skb)
+ {
+@@ -1436,7 +1428,6 @@ static void tipc_crypto_key_synch(struct tipc_crypto *rx, struct sk_buff *skb)
+ 		if (cur)
+ 			tipc_aead_users_dec(tx->aead[cur], 0);
+ 
+-		atomic64_set(&rx->sndnxt, 0);
+ 		/* Mark the point TX key users changed */
+ 		tx->timer1 = jiffies;
+ 
+@@ -1501,7 +1492,6 @@ int tipc_crypto_start(struct tipc_crypto **crypto, struct net *net,
+ 	tipc_crypto_key_set_state(c, 0, 0, 0);
+ 	atomic_set(&c->key_distr, 0);
+ 	atomic_set(&c->peer_rx_active, 0);
+-	atomic64_set(&c->sndnxt, 0);
+ 	c->timer1 = jiffies;
+ 	c->timer2 = jiffies;
+ 	c->rekeying_intv = TIPC_REKEYING_INTV_DEF;
+-- 
+2.47.3
+
