@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4710630D41F;
-	Thu, 24 Sep 2026 12:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09D0475335
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 12:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790252405; cv=none; b=VmjDkls2VauhxA/PF4P7yNjl8p5AYaWQSU2NKCdP/Kv4AU8UQ1f3zkZmUvHKsV8QJ/n6QbN2MONDUf0W8XQLMAAuYFn4aAw2uNXLu16RNkUOyqt3k1ttstZ6Y8/2cvJuEI830iuxRywttaTf8EATMS25gfj9pIkWFyamF6oE8IM=
+	t=1790252602; cv=none; b=JRUhlpmAwGNLskk8vyJ/DH/30Cvd9G5Q5lGYzWusr6lXfsDFBaGWBnb8Gw3v171kMfmCYnMaDxA0AoSHgP4hz9qkdn4wmqQhf9lJsqzatC69613klReuKO7BD6vr6SBeF4qMW8D4W8TsWlVBsA6tJo7zb+SrJJ14M6gXg0udgAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790252405; c=relaxed/simple;
-	bh=RI6IIGMOcUnTDad8UMdUIFxfWRJdRBMFe65r33rMKVs=;
+	s=arc-20240116; t=1790252602; c=relaxed/simple;
+	bh=ajFu1ChRHFUs9eVwviAaTNhmrIwad/rIszm0uRAzlKU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pYskD6YvYA5cXDAxMYsRoPjmBPeUlN9qHBrFY1/dW3sbcJPDIc/TePAqa+cpJ5C6tnn5p9UOUEBZ87ix7EcVtHKnXHHAJUJpA2/wHXCQclN+HRb+Zx/qqS3Bckf8CfwTU+KvLEP4qP86aG7r9iu9vGm1yMeV4AvcxVjB5TVy6Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lts5Cd0c; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=gykOHbpYz5KU9Iv/XjWk6Z6A+LsbKLluJxVu3ATXrzPI/qiKz5RIZMMdToq4OKwsaePe/IlGYjC9AxidaQyKoN/fvi7oYQErcylw35Gp6raHNukHU4oAzyiBSx+taH3AUDkBnzFhi64FsxIXuhYZSUcxVRved17whRgy+i5dlv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6iaWxa0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lts5Cd0c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4AA1F00893;
-	Thu, 24 Sep 2026 12:20:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6iaWxa0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A431F000FF;
+	Thu, 24 Sep 2026 12:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790252404;
-	bh=hzAxlskymR1IoDwgC79UlkXZ+hL3WPjPGFR+iB9I0nk=;
+	s=k20260515; t=1790252600;
+	bh=BwFaLa5+fdiJ48+tcIBu5gVngin67IEKPk4FzTaY6XQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Lts5Cd0cBZtm+6YYUTEYYzlS0q5ixTC/nr19E+eJ5cGZahOtzVGEVklyL/gsBSPNq
-	 MBdV6dEJlzuaixbAKCunOxlbi8RZaf+wvMpgvOwW95jQXE6EygzgmleHyCZtOVKysr
-	 qBvWgjBzRZ4r89wmLmxgJI5jnkqFZn11Q9DSuNPvvzUIu6N069OgoPSpIM6YqgACYW
-	 PR1S4QzSGg5E54tV4YDgSMlCJhSA0utdQXATgAIMylz1l9zTXTDgSXyxgUGsRCgIQi
-	 xaVKdJr1bh27RS3vFHgRkT78fwLNlbczZGIPG/EP4WpHdoOIFLbcTScm/94L/68bnJ
-	 uGsJC7G43s8Sg==
-Subject: Re: [PATCH net v2 2/2] net: ethtool: let tsconfig reach a PHY-only
- timestamp provider
+	b=m6iaWxa0xp1UdzXTqAKAA5q96fSLFjvsnrUtVTMIBQP/jF1ML2/TjcDrJKQGo7wLc
+	 7OgWdSOIgbMebRyldol7i/XI2OiOC1NMv9INtscFHx8eZhC3rD25BGU1dH7rJItrmR
+	 c+Hss/aQvOtJI7n54j74BBULLYAuZ3b31l3vHREGFyEbI94ItUQaO2jytMNPbmBZgk
+	 WiOXsgSIaLzIp27y4Pb3gsdBSNUUYcrFSN2ewrYR1j3zeF6vksc9bmTGhFNLNqEh9a
+	 MOtOwWlXnfXB3hEvFgMLz9c81tNq2K5uQ7KzRu7yvu4bKvuYjAQ0Y9XE+pOPhfsaLx
+	 mf+yfkhLKeXPA==
+Subject: Re: [PATCH net v4 1/5] ice: extract __ice_vsi_free_stats()
 From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, kory.maincent@bootlin.com,
- vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 12:20:03 +0000
-Message-ID: <179025240309.2160803.13124415103175394580@kernel.org>
-In-Reply-To: <20260923121644.2194183-3-nb@tipi-net.de>
-References: <20260923121644.2194183-3-nb@tipi-net.de>
-X-sashiko-severity: Medium
+To: anthony.l.nguyen@intel.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ mschmidt@redhat.com, przemyslaw.kitszel@intel.com, poros@redhat.com,
+ aleksandr.loktionov@intel.com, horms@kernel.org
+Date: Thu, 24 Sep 2026 12:23:19 +0000
+Message-ID: <179025259975.2160803.14245014900650590060@kernel.org>
+In-Reply-To: <20260921182106.1015019-2-anthony.l.nguyen@intel.com>
+References: <20260921182106.1015019-2-anthony.l.nguyen@intel.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,167 +47,227 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The commit message states "No functional change intended", but
+  the patch changes the authority for the stats-free loop bound from the…
 
-- [Medium] ethnl_set_tsconfig() can now install an HWTSTAMP_SOURCE_NETDEV
-  provider on a device that has no hwtstamp NDOs, and that provider can…
-- [Low] The new TSCONFIG_SET gate in ethnl_set_tsconfig()
-  (tsconfig.c:303-305) looks only at whether dev->phydev is the default…
+Pre-existing issues:
+- [High] Two sources of truth for the ring-stats array length: the patch
+  records `vsi_stat->tx_ring_stats_len`/`rx_ring_stats_len` and makes…
+- [High] NULL pointer dereference when rebuilding an ICE_VSI_CHNL VSI.
 
 --
 
-net: ethtool: let tsconfig reach a PHY-only timestamp provider
+ice: extract __ice_vsi_free_stats()
 
-This commit lets TSCONFIG_GET and TSCONFIG_SET work on devices that have
-no hwtstamp NDOs but whose PHY can timestamp. It drops the NDO check on the
-get side. It replaces the set_validate callback with a check inside
-ethnl_set_tsconfig() that also accepts a default timestamping PHY, and it
-adds a NULL check for ndo_hwtstamp_get in dev_get_hwtstamp_phylib().
+This records the length of each ring stats array in struct ice_vsi_stats
+and uses those lengths to free the array entries, so the freeing code no
+longer needs the owning VSI. The body of ice_vsi_free_stats() is then
+split out as __ice_vsi_free_stats() with a @free_entries parameter.
 
-> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-> index 164643140a523..f6029f60c1dc9 100644
-> --- a/net/core/dev_ioctl.c
-> +++ b/net/core/dev_ioctl.c
-> @@ -267,7 +267,8 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
->  		    hwprov->phydev)
->  			return phy_hwtstamp_get(hwprov->phydev, cfg);
+> diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+> index db3c7015c56c4..fadfe94bf1c8c 100644
+> --- a/drivers/net/ethernet/intel/ice/ice.h
+> +++ b/drivers/net/ethernet/intel/ice/ice.h
+> @@ -328,6 +328,8 @@ enum ice_vsi_state {
+>  struct ice_vsi_stats {
+>  	struct ice_ring_stats **tx_ring_stats;  /* Tx ring stats array */
+>  	struct ice_ring_stats **rx_ring_stats;  /* Rx ring stats array */
+> +	u16 tx_ring_stats_len;  /* Length of the Tx ring stats array */
+> +	u16 rx_ring_stats_len;  /* Length of the Rx ring stats array */
+>  };
+
+[Severity: High]
+This isn't a bug introduced by this patch, but after this change there are
+two notions of the array length, and only the free path consults the new
+one.
+
+ice_vsi_alloc_ring_stats() still walks the same arrays with the VSI queue
+counts:
+
+	tx_ring_stats = vsi_stats->tx_ring_stats;
+	...
+	ice_for_each_alloc_txq(vsi, i) {
+		...
+		ring_stats = tx_ring_stats[i];
+		if (!ring_stats) {
+			...
+			WRITE_ONCE(tx_ring_stats[i], ring_stats);
+		}
+
+and the shrink loops in ice_vsi_realloc_stat_arrays() use
+prev_txq = vsi->alloc_txq / prev_rxq = vsi->alloc_rxq rather than the
+recorded lengths.
+
+When vsi->alloc_txq or vsi->alloc_rxq is larger than the recorded array
+length (the VF VIRTCHNL_OP_REQUEST_QUEUES case that the last patch of this
+series documents with a KASAN splat), those sites read and WRITE_ONCE()
+past the end of the kmalloc'ed pointer arrays, and the shrink loops can
+kfree_rcu() a pointer read out of bounds.
+
+Would it be worth mentioning in the changelog that the new fields are
+authoritative only for the free path at this point in the series, and that
+the allocation and shrink paths keep using vsi->alloc_txq/alloc_rxq until
+the later patches? The end state of the series removes
+ice_vsi_realloc_stat_arrays() in favour of ice_vsi_resize_stat_arrays()
+plus ice_vsi_free_unused_stat_arrays() (which bounds itself with
+tx_ring_stats_len/rx_ring_stats_len), and adds the missing resize call to
+ice_vf_reconfig_vsi() before ice_vsi_decfg(), so the divergence does not
+survive the series.
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> index 9e08db376d3d0..cc66ae6f2edbf 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+> @@ -330,6 +330,32 @@ static void ice_vsi_free_arrays(struct ice_vsi *vsi)
+>  	vsi->rxq_map = NULL;
+>  }
 >  
-> -		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV)
-> +		if (hwprov->source == HWTSTAMP_SOURCE_NETDEV &&
-> +		    dev->netdev_ops->ndo_hwtstamp_get)
->  			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
+> +/* free single stats memory */
+> +static void __ice_vsi_free_stats(struct ice_vsi_stats *vsi_stat, bool free_entries)
+> +{
+> +	if (!vsi_stat)
+> +		return;
+> +
+> +	if (free_entries) {
+> +		for (int i = 0; i < vsi_stat->tx_ring_stats_len; i++) {
+> +			if (vsi_stat->tx_ring_stats[i]) {
+> +				kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
+> +				WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
+> +			}
+> +		}
+> +		for (int i = 0; i < vsi_stat->rx_ring_stats_len; i++) {
+> +			if (vsi_stat->rx_ring_stats[i]) {
+> +				kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
+> +				WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
+> +			}
+> +		}
+> +	}
+> +
+> +	kfree(vsi_stat->tx_ring_stats);
+> +	kfree(vsi_stat->rx_ring_stats);
+> +	kfree(vsi_stat);
+> +}
+
+[Severity: Low]
+The changelog says "No functional change intended", but the loop bound in
+the free path changes owner: it was ice_for_each_alloc_txq()/
+ice_for_each_alloc_rxq() (vsi->alloc_txq / vsi->alloc_rxq) and is now the
+newly recorded tx_ring_stats_len / rx_ring_stats_len. Are these always
+equal at the point ice_vsi_free_stats() runs?
+
+One case where they are not is a partial resize in
+ice_vsi_realloc_stat_arrays(): the Tx array is committed and its length
+recorded, and then the Rx krealloc_array() can still fail:
+
+	vsi_stat->tx_ring_stats_len = req_txq;
+	...
+	vsi_stat->rx_ring_stats =
+		krealloc_array(vsi_stat->rx_ring_stats, req_rxq, ...);
+	if (!vsi_stat->rx_ring_stats) {
+		vsi_stat->rx_ring_stats = rx_ring_stats;
+		return -ENOMEM;
+	}
+
+ice_vsi_rebuild() then does "goto unlock" without undoing the Tx resize,
+so vsi->alloc_txq keeps the old (possibly larger) value while the array is
+only req_txq entries long. The old free loop walked
+tx_ring_stats[0 .. vsi->alloc_txq - 1] over that shortened array; the new
+loop stops at tx_ring_stats_len. The same applies to the VF case described
+by the last patch of this series.
+
+Would it make sense to note in the changelog that the free bound now
+follows the real allocation instead of the VSI queue count, rather than
+describing it as a no-op?
+
+> @@ -338,7 +364,6 @@ static void ice_vsi_free_stats(struct ice_vsi *vsi)
+>  {
+>  	struct ice_vsi_stats *vsi_stat;
+>  	struct ice_pf *pf = vsi->back;
+> -	int i;
 >  
->  		return -EOPNOTSUPP;
-
-[Severity: Medium]
-
-The commit message says "this makes a netdev provider reachable without
-ndo_hwtstamp_get". Should a netdev provider be reachable at all on a device
-without the NDOs?
-
-With ethnl_set_tsconfig_validate() removed, the only gate left is the new
-check in ethnl_set_tsconfig(). That check lets an NDO-less device through
-whenever dev->phydev is the default timestamping PHY.
-
-After that, tsconfig_set_hwprov_from_desc() chooses the netdev source based
-only on a PHC index match:
-
-	ret = ethtool_net_get_ts_info_by_phc(dev, &ts_info, hwprov_desc);
-	if (!ret) {
-		/* Found */
-		source = HWTSTAMP_SOURCE_NETDEV;
-
-ethtool_net_get_ts_info_by_phc() compares only the get_ts_info phc_index and
-the qualifier. It never looks at the NDOs.
-
-Suppose user space selects the MAC PHC on such a device. Then:
-
-ethnl_set_tsconfig()
-  dev_set_hwtstamp_phylib(dev, &zero_config, ...)
-    /* no hwprov yet, goes to default PHY, disables PHY timestamping */
-  rcu_replace_pointer(dev->hwprov, hwprov, ...)
-    /* NETDEV hwprov is committed */
-  if (config_mod)
-    dev_set_hwtstamp_phylib(dev, &hwtst_config, ...)
-      if (!ops->ndo_hwtstamp_set)
-          return -EOPNOTSUPP;
-
-That error is returned, but the provider is not rolled back.
-
-If no config attributes are given, tsconfig_send_reply() gets -EOPNOTSUPP
-from the new guard above, and ethnl_set_tsconfig() ignores it:
-
-	ret = tsconfig_send_reply(dev, info);
-	if (ret && ret != -EOPNOTSUPP) {
-
-The request then returns 0 and no reply is sent.
-
-Can the device get out of this state afterwards? Switching back to the PHY
-runs the zero_config disable through the NETDEV branch of
-dev_set_hwtstamp_phylib(). That fails at the same !ops->ndo_hwtstamp_set
-check.
-
-SIOCSHWTSTAMP, SIOCGHWTSTAMP and TSCONFIG_GET also return -EOPNOTSUPP. Both
-skb_defer_rx_timestamp() and skb_clone_tx_timestamp() skip the PHY because
-hwprov->source is not PHYLIB. phy_detach() clears dev->hwprov only when
-hwprov->phydev matches, so it never clears this provider.
-
-As far as I can tell, PHY timestamping stays off until the netdev is
-re-created.
-
-I could not find an in-tree driver that meets all the conditions. ena and
-netdevsim report a PHC without the NDOs, but they have no phydev. The
-commit message does suggest this state is expected to be reachable, though.
-
-Would it be better to reject a netdev source in
-tsconfig_set_hwprov_from_desc() or ethnl_set_tsconfig() when ndo_hwtstamp_set
-or ndo_hwtstamp_get is missing, rather than only guarding the call here?
-
-> diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
-> index 6be3aa5d4bc1e..2b1cdd9b5a232 100644
-> --- a/net/ethtool/tsconfig.c
-> +++ b/net/ethtool/tsconfig.c
+>  	if (vsi->type == ICE_VSI_CHNL)
+>  		return;
+> @@ -346,26 +371,7 @@ static void ice_vsi_free_stats(struct ice_vsi *vsi)
+>  		return;
+>  
+>  	vsi_stat = pf->vsi_stats[vsi->idx];
+> -	if (!vsi_stat)
+> -		return;
+> -
+> -	ice_for_each_alloc_txq(vsi, i) {
+> -		if (vsi_stat->tx_ring_stats[i]) {
+> -			kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
+> -			WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
+> -		}
+> -	}
+> -
+> -	ice_for_each_alloc_rxq(vsi, i) {
+> -		if (vsi_stat->rx_ring_stats[i]) {
+> -			kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
+> -			WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
+> -		}
+> -	}
+> -
+> -	kfree(vsi_stat->tx_ring_stats);
+> -	kfree(vsi_stat->rx_ring_stats);
+> -	kfree(vsi_stat);
+> +	__ice_vsi_free_stats(vsi_stat, true);
+>  	pf->vsi_stats[vsi->idx] = NULL;
+>  }
 
 [ ... ]
 
-> @@ -313,6 +300,10 @@ static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
->  	if (!netif_device_present(dev))
->  		return -ENODEV;
+> @@ -3051,6 +3059,7 @@ ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
+>  		vsi_stat->tx_ring_stats = tx_ring_stats;
+>  		return -ENOMEM;
+>  	}
+> +	vsi_stat->tx_ring_stats_len = req_txq;
+
+[Severity: High]
+This is a pre-existing issue, not something this patch introduces, but
+since the new length bookkeeping lands in this function it may be worth
+recording: can ice_vsi_realloc_stat_arrays() be entered with
+pf->vsi_stats[vsi->idx] == NULL?
+
+ice_vsi_alloc_stat_arrays() never publishes an entry for channel VSIs:
+
+	if (vsi->type == ICE_VSI_CHNL)
+		return 0;
+
+while ice_vsi_rebuild() calls ice_vsi_realloc_stat_arrays()
+unconditionally, and that function does:
+
+	vsi_stat = pf->vsi_stats[vsi->idx];
+	...
+	tx_ring_stats = vsi_stat->tx_ring_stats;
+
+The zero queue counts only make the shrink loop iterate zero times, they
+do not stop the dereference. ice_rebuild_channels() explicitly selects
+vsi->type == ICE_VSI_CHNL and calls ice_vsi_rebuild(vsi,
+ICE_VSI_FLAG_INIT), so an ADQ setup followed by a reset appears to reach
+it.
+
+This one is addressed later in the series: the replacement
+ice_vsi_resize_stat_arrays() starts with
+"if (vsi->type == ICE_VSI_CHNL) return 0;".
+
 >  
-> +	if (!dev->netdev_ops->ndo_hwtstamp_set &&
-> +	    !phy_is_default_hwtstamp(dev->phydev))
-> +		return -EOPNOTSUPP;
-> +
-
-[Severity: Low]
-
-This check runs before dev->hwprov or the requested provider is looked at,
-and it only considers dev->phydev. Could it reject requests that an already
-installed PHYLIB provider can serve?
-
-dev_set_hwtstamp_phylib() serves an installed PHYLIB hwprov without needing
-any NDO:
-
-	if (hwprov) {
-		if (hwprov->source == HWTSTAMP_SOURCE_PHYLIB &&
-		    hwprov->phydev) {
-			phy_ts = true;
-			phydev = hwprov->phydev;
-
-ethtool_phy_get_ts_info_by_phc() also accepts any timestamping PHY in
-dev->link_topo. It does not require default_timestamp.
-
-Take an NDO-less MAC whose dev->phydev is a default timestamper. A PHYLIB
-hwprov for a different topology PHY, such as an SFP module PHY, can be
-selected on it.
-
-Some drivers disconnect the PHY in ndo_stop. If dev->phydev is detached that
-way, phy_detach() leaves the hwprov alone because hwprov->phydev != phydev:
-
-	if (hwprov && hwprov->phydev == phydev) {
-		rcu_assign_pointer(dev->hwprov, NULL);
-
->From then on SIOCSHWTSTAMP still works through hwprov->phydev. TSCONFIG_SET
-fails with -EOPNOTSUPP at this check because dev->phydev is NULL. That is the
-ioctl/netlink mismatch the commit sets out to remove.
-
-This does not apply when a non-default PHY is selected for the first time.
-In that case the zero_config disable step fails with or without this check,
-so the check only matters once a PHYLIB hwprov is already installed. I also
-have not confirmed the SFP and link topology lifetime details, so this
-scenario may be narrower than described.
-
-Would it make sense to move this check after provider resolution and also
-accept an installed or requested PHYLIB provider?
+>  	if (req_rxq < prev_rxq) {
+>  		for (i = req_rxq; i < prev_rxq; i++) {
+> @@ -3070,6 +3079,7 @@ ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
+>  		vsi_stat->rx_ring_stats = rx_ring_stats;
+>  		return -ENOMEM;
+>  	}
+> +	vsi_stat->rx_ring_stats_len = req_rxq;
+>  
+>  	return 0;
+>  }
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260923121644.2194183-2-nb%40tipi-net.de
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921182106.1015019-1-anthony.l.nguyen%40intel.com
