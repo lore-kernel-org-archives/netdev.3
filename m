@@ -1,210 +1,166 @@
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDC5456296
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD2B3E00A5
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790243789; cv=pass; b=ooIIWqilL+33gQQeAJA//UYb7d/X3RS6zlVm7j4M1UYehWLjGM9zXkmlLKr1OQX0yV0POol2zueqjC6n9aJpGw/bvUhI/lQnUZhoA95NzRYZyBHYhg/ZE6qlkTxobXaX8+UGSUR7CnlcfYvdtNU72QSxOTzTK2hnwLIg24UdYWY=
+	t=1790243817; cv=pass; b=AG0wkrzyVcD27Kx9MbJWCGuskAuneTWDrf5iIZo8Q9+/djyRmAvKWPM79hHpMvgUG31gN+oVEoTujbng3ChvrKJ9ubsmhkVitfAGPnz5IvkWsApXpCOjDZzIznpKXQCHAB/RV58eaMYZir9+h8yPY/R5WJbZEGax4c18b/btIPk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790243789; c=relaxed/simple;
-	bh=LBZZcNSVeHHRIpD1xuzWESX6CCgFGvOZ+4ZFnY2ewKU=;
+	s=arc-20240116; t=1790243817; c=relaxed/simple;
+	bh=P1ndA+eBVn+zYbAgTqPlA5s6bd2yOGM1nW0tBCwcEQA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UB85HBF00EiczXwsok0FALp8mNuOHhbRjosO9mgIe+DZpFKFZmFeypCeS0WcFYSHZ+d+kbmVEqDRuYxBiv2WbgYCYB+an4zy2j0Kd4Os1awdaPl2iL+PrOVQxfwUm0RkWQH6jDvE5zAXB9emfgDbb7SHHT33UTrN/pD6niWw3xo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JODW4//u; arc=pass smtp.client-ip=74.125.230.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=KKIFqL4qsuxAmL9WGxv2sXXS+s1T1X8MG1qxj/GB61OVe5oO5nBLuZ+mrB+7jvNfuhCeOkdUs69FD5pSEyA29JPKrrTPLzpxHsj7AT7Kf2I5FtXZ5Ff08BFHSiP+xbbOTXhT435Vipp/Y4KfVxA5zCocuikjsHyAhmVu1jJT86o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PJVbFSWT; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JODW4//u"
-Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-5309a20a55bso16794291cf.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 02:56:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790243763; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PJVbFSWT"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb7692a57so23806411cf.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 02:56:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790243801; cv=none;
         d=google.com; s=arc-20260327;
-        b=qtTkXRYXDAjY9ZQUKTbO5XcIrDTXL8N71Ldds5V8uQdePdTYoyqY2sXeO91OyqBkT7
-         GL+zVB2Qz02pyIoNJNKmY7g7ZMgm/G37T9rqlWRcQzQHdJGffT8K75VaQoD7qQKwyyjg
-         VwlR68aHt5ygAhn9l0o/WX+HPlsGpJY1MDDeACQQm/4Af1/9nIOpqULWSKtxzlAO/xeL
-         zXBX5O7xTk9+9yxlNal4kNNxAbF3iydTi5DLkMQz9KgJ4aPbYQPj8CNF2RPLwi022gLP
-         OU4lMKg4qEL153hBOab4Or2nQgD97idT0wkrWhnFIx6xTjrVUANiw70bXa5JCKuTGvUJ
-         tM+g==
+        b=djHbrClUs9MoeCuwg4ygjKblLedwGNAp2prB8MUR8+ruZAqyjc1uUDXJb3lhYqHvAw
+         s1CZ/CxIUcJWOrxYpXRyjE/DIVTJX5nT4DUymPZn6OkaXZYVRMp7t5mm+7/F+L75gaim
+         HekqyQMMC9q+YB1vOvsQjccAECP+dSOkr+F7+9ZLd+A089BsKAJ3LiofRu7jr1At66OB
+         +DV+/VPmrbmTtXm5W/oVrUcfg1R9aDfRJyP79Gxy7mmCfc3rWwqHo1TTbK4SRqcaw6eU
+         uBECI1yq+HHmCVY7T6gtUzhpCsHJW4DHOSUhQNu47c6ei+YlgR1UIrWqeNVWh7l3VLZs
+         VBNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=rM8Pnb3OaTJqlPgDl5Nu230H8PB3TRPyBVd+A2AcpH4=;
-        fh=ZfwvmZM95CjSGHpP3PVt1m0p525lXJnW3hbBeqDD5wA=;
-        b=XYKA1V0Uxu0KVnlVmWf4ZGmcuwiQoRG1GyeYv8awxajt1424kdnbNoHxqjDFHDhMiz
-         6L2PA22+I6wOKCkk+I3oDArWJ1GSiGpuP10/zcGfvWdm0lAiqr7mvV54GS8zqlyS4ZW7
-         lZJBDUmPcp52RPUg7Rb0PmJw5oLZ5UjcwVg6uHugP94AaVVjqndb4hhbx3LuoJC4smYk
-         1Qc2KxzpDNugHeoGOduXRhArfl+orKRxJ6z1Uj3yQyT9/l+kCLU+k/319cvhhMIodAQl
-         RLfxubKgleLHyKLzU2YMlZnucp1UgVgpbaSaqVqmqAkrmzN6fsah6y6k48vLulz1Yu6S
-         wDXA==;
+        bh=ZIYNgjeCL0OsYc0prVytzssq1ZX8j8EgYAM9VB1jIEI=;
+        fh=qyP+Q7W9iPrZ5cIvNGWBTPof++OGSTRRohy2yB6xei4=;
+        b=k9izvplHCvp4fTFgf3VHZVgZUqzirTLW+i82fVr1Z28bvaEHvYPidEZGhoVGn5hu7F
+         QJxgnBxuID+BPZtElAbyrczs09nv193la4MczyxayiF/bmvnZ5p8vUL6THcmRy8nQz5k
+         QNJiYhjK/Hjv+VLrYrkDl7c7HT3M1y4nV/+I7Ea+PsPbkty0zInD10yLbXTHkj6Sni9j
+         OFpXAjsTxky6KG8YxVkaPvGBkaw01fp/dm3Ss+dRDeoiNCNMnRrYXBaQBkD2X2+b1DVz
+         uil9itgfQ66u5ye3vwjfnN7xMCKefybTklmOUnq9ORjjqIwSAIv09Mcm6H6MGHafTSoR
+         ucxQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790243763; x=1790848563; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790243801; x=1790848601; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=rM8Pnb3OaTJqlPgDl5Nu230H8PB3TRPyBVd+A2AcpH4=;
-        b=JODW4//u3KjtFnoafHckYjbn/WXha6Zo9QUiqtgARpc7DjBG0mhE0WWH+hSp6QxsNm
-         RfYVeBrlMNaoigggDW6bLYZkB/uWJilNXDFvbdrL36dL+fm5HmpCEUZ60jPpRQYZCPAw
-         C/PM4Ypr9TRp0aRT/iAXkY+ck9MM5VKEqtGOKkZwp7Pe0cuc2nCPFuoFVFFfi7IGy3Kt
-         k5Fv+L7nfpY1z6MkPu1vtql9PBXlqQ8A130evougp8/k8OVH0GzSToEOXITzEzSv0+0O
-         hCpLEC4ltGH4PCVCEyb0S5OvP3NAzgIqZsERBJifrjKchVfuLn2YBZKdazPT5ztVnquF
-         CRlQ==
+        bh=ZIYNgjeCL0OsYc0prVytzssq1ZX8j8EgYAM9VB1jIEI=;
+        b=PJVbFSWT1X8mh3hx5PnKzYW0FA/5H4rTYypMG8e8iiFO5+aj/nMoI9Gyr3Iu0eiS0a
+         ZaaWilagYC66hqDVHeZrt/JkpRuoFook6AwqndEcd9wc9iKuSc/qkSEA4OBN1vUN4A6E
+         SPbEJivIzQWCLAgHdwfpXWFin95GtMqkzsmw7Y/lPabc1SvRNmaAs6/UEfvMWBAzsVKT
+         /YRgxIyEqzYo9ZzcInvBJwndjBRVcoeIYlqOm12/vGG55nYbJC+qBj2inSaSB4zHV4jY
+         EzcG4Fv3KSfA1uX9XE3lOwQwhVmJjQeKaDTbbvgnl/i5Lr52Hm272rIZRl00vaFuE1/V
+         sgGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790243763; x=1790848563;
+        d=1e100.net; s=20260707; t=1790243801; x=1790848601;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rM8Pnb3OaTJqlPgDl5Nu230H8PB3TRPyBVd+A2AcpH4=;
-        b=wA2+m4rZwCc96zkkmBntBCNM6U+xvCG8m37SgS6rWE8rU5QdIGNZmpi3V83vzHFvpa
-         Y0hXFmjp/Y2QBnWtYe3Pxk8dgRwSCEH4PbrBdfzIP573QPdFO3w/eK2WDxI9FXxwDF5a
-         XmaCG1ps7f+PpvPmk3Ulkwtl7XFpzstBuGEntTUCh1cHhzeAFvRW9h8HPj+BRP2Zfr8z
-         8vXrfgTMK0bGR4M8+NRzeb/wgTbLNN9qv/Y2H4USDqn8zF6C2W1bKQ85flRDoB5QQO9z
-         v0CC4vghlLtRwq7hqiERSnKIsY2MNnc8/k1KHbFqsXJr3iWGFP1ZXYQ1nFT8bzAWzThr
-         Ys9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzOLZmPDUKpP7svojG5kWVrddOjRKIMX6TdGrkSd29w2ZyGejRq0O5rKM/1huwJY5bnZV3Q5l4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lH09wAvmQyEDTG/enE4D8rm+qXwUkT/ofXoEHwu8VismMNVdR1
-	Tu2aQ0LvJ/+oqZP0JnemusXHROTP0NZa0EV/9EN/eQH5KR8olVjqSDqULveg1bD7Ake8qTX9NQN
-	Rlfd1ymU4cq0PXqCIx+0yU+G55ySEtAOzpeS/lUWr
-X-Gm-Gg: AYBFou2btRrVg8Kho0Bn45v4fFl1XQq2++s8574e5kCVcGZZ3ZbRupxPRh/tLAGbrhZ
-	mkkE24N+8+j9+ByC5PggNeICCL1caqzX9UxQWYbj6nveqvJqUl3uxLptrQtmZ4H9l/h/sWmVlr2
-	fwWZ67jCBj4RI2YHa3L/Zp7/SPS91rtsuzO8KWlEf+PVlBY86KEfRxJyLFXlqXzGzIFCGDPEWnn
-	GvitarPwvEkTu+0+j2kvS1WoTHsn53ya83cOLj8MVhryFP8uIRZqG0eaXnw6vLauSJRwRWw3o5t
-	V1yoRrSBALjqY6959OUO5FqVbE0DPHS2C2AMtZwoPUaDUZ4toi2lEuEIyZFXPOyzV7jUwGxunnl
-	ii9IbmlPGM9miadSnKt1tYTiC/88/3yIW06MwGjC+jI+sH0N6KdYiycFdOQxJtbSRiZxv
-X-Received: by 2002:a05:622a:5a0f:b0:532:8f15:2744 with SMTP id
- d75a77b69052e-532fea4d150mr14339051cf.20.1790243762050; Thu, 24 Sep 2026
- 02:56:02 -0700 (PDT)
+        bh=ZIYNgjeCL0OsYc0prVytzssq1ZX8j8EgYAM9VB1jIEI=;
+        b=IQtLtQPjJDD60U4LTafY3PdN/mFmH1unS1UHgNdam+JnEe9z0ivldeXI1YH6tcT8lv
+         MCRcJBuz57C0Qrz9VCWS7QlJHcaA04K+LB4KXi4KCkolHLfFtQHQdzXrxAXw3LNh/eaf
+         xWfhz418fcvH2u936Aw5Zp8fWQq8unTTNOPirZlJ//gwuSxRXqr6ywKZgfPvMbbOm0uw
+         C1v6FmlfJBtxb+nQ6TlQ+sHHJy7sE82uN2mUBtrd34p0/1Lby09zrnc7Azk965C5LRCY
+         37vAD5w12BtJZnj9iXnWfDZDavkA/FQhj5ASibBYBuuOtjP57+dXkpYg69yMnXW9P3c0
+         Nf/A==
+X-Forwarded-Encrypted: i=1; AKwUvBw0ig7DoK52JYtKnq971CAmyWGNXF6qasJzq4QAMiaP5FtaK0DblLYpbJqSI9QgbEQglIf6Tmg=@vger.kernel.org
+X-Gm-Message-State: AFuF++k+UgFtPUK4lbD7QKYmWI6P6AGpTEbc+SNFfysbC3Vf3wW6LsHS
+	ojSLYRm7giv8qiCGkNnrsEIRSntkeAvLfV5HcHL5onqdew+wcQbSBA4+zB0q37TKh+z0yfGLwA1
+	DcOTd2bNrTppYSDAK2XO/hQbe3CWdxkQ=
+X-Gm-Gg: AYBFou2d9Ar9t0860/9PFA9Xud5fyN4oqpseRwApxuwC19rieG4iZaLs+2Yryu28J4P
+	IboWAL+W6PRKodKVawcALtC0+U7vkp04TfBDhxZ8+mYhydLeB6RfCQMKrNhoVLYx9O7M/BWWpHU
+	b6HXOTsC2g+ZLvVUzHOMIu0VRLWUfNbzzeEPBYkeX56fGGO6DNFmzB0wWQCb6HPAu+ycHxCFO/n
+	VmFpIPKioS03dnwCG9x4SZt3vvG9AqWllZBa43x63kbF3zpv+1ZxvhXRxT+sdXp898XIWyu1Tnz
+	CvYGwjG20n8t6D2824YbbYqBkhEMarJUH+gJEcuBc/OTriVaBYMQAzFm
+X-Received: by 2002:a05:622a:410:b0:532:d838:12dc with SMTP id
+ d75a77b69052e-532fe9eed7fmr14187851cf.3.1790243800860; Thu, 24 Sep 2026
+ 02:56:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260924080219.1036588-1-caixinchen1@huawei.com>
- <CANn89iJVGmYwQerOixGurH6vw-GtvSAQq6u6zSNZoyZrcEx6Jw@mail.gmail.com> <d8c12b4e-4ff2-4c62-a40d-d67bb4680a0d@huawei.com>
-In-Reply-To: <d8c12b4e-4ff2-4c62-a40d-d67bb4680a0d@huawei.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 24 Sep 2026 11:55:50 +0200
-X-Gm-Features: AclHuK_LOWvzBhJczhAfbtW30YiVgV1gD1vN5_bi3qPOiAKB6UaaHqyDAfOb9kg
-Message-ID: <CANn89iLA55e6evpx__7AUQF45uYAbUHxRtz4rVT=vsKpqBRWkA@mail.gmail.com>
-Subject: Re: [PATCH RFC -next 0/5] net: charge socket memory budget to memcg upfront
-To: Cai Xinchen <caixinchen1@huawei.com>
-Cc: tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, rdunlap@infradead.org, kuniyu@google.com, 
-	pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org, 
-	horms@kernel.org, ncardwell@google.com, matttbe@kernel.org, 
-	martineau@kernel.org, geliang@kernel.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, lujialin4@huawei.com
+References: <20260924095152.3069-1-nsvatoslav515@gmail.com>
+In-Reply-To: <20260924095152.3069-1-nsvatoslav515@gmail.com>
+From: =?UTF-8?B?0KHQstGP0YLQvtGB0LvQsNCyINCd0ZbQutC+0LvQtdC90LrQvg==?= <nsvatoslav515@gmail.com>
+Date: Thu, 24 Sep 2026 12:56:28 +0300
+X-Gm-Features: AclHuK83QQU4UjKE_sfTN9cHFKc0YIJOfadhF_smKbWELBPGpi5wSU3S_A9rXeo
+Message-ID: <CAJ_tAk7VFvsRk-suqg7-JJHcm=N1kEt9-qgg6sD+u5oAfyB03Q@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: e1000: fix warning in iounmap on probe failure
+To: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 24, 2026 at 11:25=E2=80=AFAM Cai Xinchen <caixinchen1@huawei.co=
-m> wrote:
->
-> Hi,
->
-> Thank you for the review.
->
-> We found that sk_forward_alloc is a plain int updated by a non-atomic
-> RMW (sk_forward_alloc_add(), where even the read side is not
-> READ_ONCE), and its writers span three unrelated lock domains:
->
->    - socket lock, process context: SO_RESERVE_MEM and TX grants
->       (__sk_mem_schedule(), sk_forced_mem_schedule());
->
->    - receive-queue lock, softirq: UDP RX charges and the
->       udp_rmem_release() fold;
->
->    - no lock at all: sk_mem_charge()/sk_mem_uncharge() from
->       skb_set_owner_r() and skb destructors, and the sk_mem_reclaim()
->       fold itself.
->
-> Any cross-domain pair loses an update.  A lost charge is still
-> returned in full by the matching skb free, so it resurfaces as a
-> phantom surplus in sk_forward_alloc, and the next fold hands it back
-> to the memcg via __sk_mem_reduce_allocated() ->
-> mem_cgroup_sk_uncharge() - an uncharge with no matching charge.
->
-> We first tried to fix it with locks, and hit three walls:
->
->    - the socket lock cannot be used: its holders free skbs (e.g.
->       tcp_recvmsg()), and the destructor's sk_mem_uncharge() would
->       need to re-acquire it - recursion.  That is why these helpers
->       are lockless in the first place;
->
->    - a new per-socket spinlock serializes the RMWs but not the bug:
->       __sk_mem_schedule() publishes the grant before the memcg charge,
->       and the charge may sleep (GFP_KERNEL, memcg reclaim/OOM), so no
->       spinlock can cover both steps; a fold in that window can still
->       refund pages whose charge afterwards fails;
->
->    - such a lock would also sit on the per-packet charge/uncharge
->       paths, exactly the hot path the cacheline layout around
->       sk_forward_alloc was tuned to keep cheap.
->
-> Are there any good solutions to solve this problem?
+Please drop this version. I accidentally sent this without staging my
+local changes.
+Sending v4 shortly with the actual code.
 
-Perfect, you now gave us what we need.
 
-UDP is broken, it should be easy to fix without breaking TCP.
-
-I am surprised your LLM went to a completelly broken path.
-
-sk_forward_alloc is never supposed to be updated locklessly across
-multiple lock domains:
-
-- For TCP, sk_forward_alloc is strictly serialized by the socket lock
-  (lock_sock / bh_lock_sock). TCP does not use sock_rfree() as an skb
-  destructor (sk_mem_uncharge() is called under the socket lock in
-  tcp_eat_recv_skb() and sk_wmem_free_skb(), while TX destructors
-  sock_wfree() / tcp_wfree() only touch sk_wmem_alloc).
-
-- For UDP, sk_forward_alloc is serialized by sk->sk_receive_queue.lock
-  (in __udp_enqueue_schedule_skb() and udp_rmem_release()).
-
-Your reproducer and analysis point to two specific places that violate
-these locking rules:
-
-1. SO_RESERVE_MEM on UDP sockets:
-   SO_RESERVE_MEM (commit 2bb2f5fb21b0, "net: add new socket option
-   SO_RESERVE_MEM") was designed for TCP, where sk_forward_alloc is
-   protected by lock_sock(sk) and sk_mem_reclaim() checks
-   sk_unused_reserved_mem(sk).
-
-   However, sock_reserve_memory() only checks sk_has_account(sk), which
-   also matches UDP. UDP does not support SO_RESERVE_MEM:
-   udp_rmem_release() does not check sk_unused_reserved_mem(sk) (so the
-   first recv() reclaims the reserved pages from sk_forward_alloc), and
-   setsockopt(SO_RESERVE_MEM) only holds lock_sock(sk) instead of
-   sk->sk_receive_queue.lock, racing with __udp_enqueue_schedule_skb()
-   and udp_rmem_release().
-
-   We can fix this directly in sock_reserve_memory():
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1d5927cd49a1..763c2017d9ef 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1034,7 +1034,7 @@ static int sock_reserve_memory(struct sock *sk, int b=
-ytes)
-  bool charged;
-  int pages;
-
-- if (!mem_cgroup_sk_enabled(sk) || !sk_has_account(sk))
-+ if (!mem_cgroup_sk_enabled(sk) || !sk_is_tcp(sk))
-  return -EOPNOTSUPP;
-
-2. BPF sockmap (net/core/skmsg.c):
-   As you noted in the reproducer comments, sk_psock_skb_ingress() and
-   sk_psock_skb_ingress_self() call sk_rmem_schedule() and
-   skb_set_owner_r() (which installs sock_rfree() as skb->destructor)
-   from sk_psock_backlog() or after dropping sk_receive_queue.lock in
-   udp_read_skb(). Calling skb_set_owner_r() / sock_rfree() without the
-   socket lock (or sk_receive_queue.lock for UDP) on protocols with
-   sk_has_account(sk) is a bug in net/core/skmsg.c and should be fixed
-   there.
+=D1=87=D1=82, 24 =D0=B2=D0=B5=D1=80. 2026=E2=80=AF=D1=80. =D0=BE 12:52 Svya=
+toslav Nikolenko <nsvatoslav515@gmail.com> =D0=BF=D0=B8=D1=88=D0=B5:
+>
+> When e1000_probe() fails, the shared error handling ladder attempts to
+> iounmap() the hw->ce4100_gbe_mdio_base_virt pointer. If the hardware is
+> not a CE4100, this pointer remains uninitialized (NULL). On architectures
+> like x86, passing a NULL pointer to iounmap() triggers a WARN_ON_ONCE,
+> which is fatal under panic_on_warn.
+>
+> Fix this by conditionally unmapping the CE4100 MDIO base only if the
+> mac_type is e1000_ce4100, matching the exact logic used in e1000_remove()=
+.
+> The hw->hw_addr iounmap() remains unconditional since it is guaranteed to
+> be valid for all error paths reaching the err_sw_init label.
+>
+> Reported-by: syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3Dca1ef9e2e234b8d3599b
+> Fixes: 13acde8fffc0af ("e1000: Fix the CE4100 bus type for the MDIO/PHY r=
+egisters")
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Svyatoslav Nikolenko <nsvatoslav515@gmail.com>
+> ---
+> v3:
+>   - Switched from pointer null-checks to checking hw->mac_type =3D=3D e10=
+00_ce4100
+>   - Removed redundant check for hw->hw_addr since it cannot be NULL here
+>   - Added missing Cc: stable tag and Closes tag
+> v2:
+>   - Expanded commit message to answer reviewer questions (reproduction de=
+tails)
+>   - Added appropriate Fixes tags
+>   - Added Reviewed-by tag from Aleksandr Loktionov
+>
+>  drivers/net/ethernet/intel/e1000/e1000_main.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/=
+ethernet/intel/e1000/e1000_main.c
+> index d7f5c6f16142..156903089fa6 100644
+> --- a/drivers/net/ethernet/intel/e1000/e1000_main.c
+> +++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+> @@ -1227,8 +1227,10 @@ static int e1000_probe(struct pci_dev *pdev, const=
+ struct pci_device_id *ent)
+>         kfree(adapter->rx_ring);
+>  err_dma:
+>  err_sw_init:
+> -       iounmap(hw->ce4100_gbe_mdio_base_virt);
+> -       iounmap(hw->hw_addr);
+> +       if (hw->ce4100_gbe_mdio_base_virt)
+> +               iounmap(hw->ce4100_gbe_mdio_base_virt);
+> +       if (hw->hw_addr)
+> +               iounmap(hw->hw_addr);
+>  err_ioremap:
+>         disable_dev =3D !test_and_set_bit(__E1000_DISABLED, &adapter->fla=
+gs);
+>         free_netdev(netdev);
+> --
+> 2.47.3
+>
