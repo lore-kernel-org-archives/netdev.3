@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492F522A80D
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECBD2EACF9
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790209661; cv=none; b=gSG3bPh9sk6jGyZ3VoHY6lJpGhMTTeL2LdKEiz1H47LFd0O9LOSTlfyASPz1IiCk9NZrcYG9gdHN7suOJ+huRuoMEXDrPVfXDT3evSttDYc/ac+/3d74NyvVh+k3QRN9qBTBjk/GtCy0XfF7/kns/Y4O6wsFPIqn+nDieY+hQy8=
+	t=1790209662; cv=none; b=fbrX+WsQ63CGnLOdj0s3ya39FPKLGCZuGvR5pVBRkWyc6U5qX9O3qAaeNz57igbTxDkwEQ9y2BGqvY6fz+Ub6R/U7m65Inb9r8vAUEP5gqY+zGMz6yFkxxz/KguCr3SBJtpP9tw7jMDaiymlEv9BIn2nPi25ixHW4T81ykh29Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790209661; c=relaxed/simple;
-	bh=7pupVE6FUU2YtAtM15MnAR3OHdI99nGsHiaLGwN01aU=;
+	s=arc-20240116; t=1790209662; c=relaxed/simple;
+	bh=DzfsgSOs3FOqWHm8xzYAoxZ7aUWXEEaBIv8P6kIiZXo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uWCReTg8SVi8a/WFxCDjaLB/ZvsWN+Mhis59vxjnJVN4A0pOx7fdap3050R8xs+qJE8LJQsrJq2jCsOOtg4N8MXmbSEEWOyxt6o9OLoU4kftFifgnlCnD5/WLVYiSjOdCxz/iYNLd8QJel/Wp1NlNKf5NMZX9Ie9QqYGfWHNArM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5nwMRvt; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=o8VnJ3zIJDlpA9AKWHp7X0Ky4mdzvP+6LiKRYsVnCiRBVrPP4QEJhfJk/2SKSBtq0f42FpIFeEqP47NTuER2uuwulPSIPQcaOa+XUzIkV1iQZkpFk+vapHnjyQ4HEZcJGm0Th0Bv2aFlh5NQgrCVBDGw5sMngX5Jwna+G/Di5sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1q+8UcG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5nwMRvt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED9A1F000FF;
-	Thu, 24 Sep 2026 00:27:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1q+8UcG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5181F00893;
+	Thu, 24 Sep 2026 00:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790209659;
-	bh=TKWJx95XpYyCX011ri2ZAUwoGkkwUhwnKkG32XTsvVY=;
+	s=k20260515; t=1790209660;
+	bh=kT8gQlyxXq7Szn/L+OIsbZBMaZnX5MjZA2EUtLyVm9U=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=l5nwMRvteU4DDHkN6tZ29nrMQxN5Y2pSBnpro3BNN+6pdDznnFIWe/9WGGAUV2/nY
-	 fGPbiF8kdDZ3RNabl+OCF2TVe+yMvziTGXzvCk2/3NgNMXp1x4WMaz4nCB3aHIOS1/
-	 ModUz4/5/AW34Ss8x4xkbDNUSpHdJS13GdRAyVPoN7RCFs8Saw8UtqC6vuaODWtI/M
-	 fEJLVV0KZCrm/QzPpGx8nu3777elFabQz9YVFnqWcgL0VxlI3VMvBSbXLPjJLrb79Z
-	 TAmlcxKnqwZjwlnSOCGpuu/Cnrk1syM64tOFhXtIvhi1vxVggC0g4pcO9EjuAG4p2G
-	 +kPuxcltQc57A==
-Subject: Re: [PATCH net-next 1/9] dlm: fix send buffer backpressure handling
+	b=T1q+8UcG19GyAfYsvpVakh217AONvTP3Ucdv5fbMaoISi/SynKKaAPEdRO478T+Cl
+	 nRNQAlSkft8eemW/gSnbSKsua9868PGzKXjujqiOEqpAV+61b8iunDL/JCT9JhebU0
+	 iGb2mv9AJysZTztVhPzEVj1dhrwH1U0ysI0yCJMPzpiPYhViITnzqnQItx3sV6aorM
+	 Y6wKED6BIijBszbRJMDMHQlV/5Hagoh5MVjsqnxW/BmYsb/wdnmq2X3rxue6pRDV2Q
+	 NJm6cMW8t8p46vtkfLSZWcM5Erh3jCzqW88ljJVEZ08zjdsyNe3Ia0RfHb3lm/XJEn
+	 iaRZzDP2OJE9w==
+Subject:
+ Re: [PATCH net-next 2/9] net: add sk_set_nospace() and sk_clear_nospace()
 From: netdev-bot+sashiko@kernel.org
 To: edumazet@google.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  ncardwell@google.com, kuniyu@google.com, willemb@google.com,
  netdev@vger.kernel.org, eric.dumazet@gmail.com
-Date: Thu, 24 Sep 2026 00:27:38 +0000
-Message-ID: <179020965880.2160803.15947896824748271639@kernel.org>
-In-Reply-To: <20260922122721.3568295-2-edumazet@google.com>
-References: <20260922122721.3568295-2-edumazet@google.com>
-X-sashiko-severity: High
+Date: Thu, 24 Sep 2026 00:27:40 +0000
+Message-ID: <179020966002.2160803.11537948312109210054@kernel.org>
+In-Reply-To: <20260922122721.3568295-3-edumazet@google.com>
+References: <20260922122721.3568295-3-edumazet@google.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,153 +47,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] fs/dlm/lowcomms.c:send_to_sock() — making the CF_APP_LIMITED
-  branch live for the first time in ten years introduces a permanent…
-- [Low] fs/dlm/lowcomms.c:send_to_sock(): after switching the guard to
-  SOCK_NOSPACE, the guard and the "Notify TCP" action now operate on the…
+- [Low] Changelog overstatement at this commit only: the commit message
+  of "net: add sk_set_nospace() and sk_clear_nospace()" claims it…
 
 --
 
-dlm: fix send buffer backpressure handling
+net: add sk_set_nospace() and sk_clear_nospace()
 
-The send path in fs/dlm/lowcomms.c tested SOCKWQ_ASYNC_NOSPACE in
-con->sock->flags, a bit that has not lived there since commit ceb5d58b2170,
-so the test was always false and send_to_sock() always returned
-DLM_IO_RESCHED on -EAGAIN. The patch switches the test to SOCK_NOSPACE and
-drops the matching clear_bit() in lowcomms_write_space().
+This adds two helpers in net/core/sock.c that fold the sk->sk_socket
+dereference and its NULL check into a single place, and converts the
+SOCK_NOSPACE setters and clearers in core, tcp, kcm, mptcp, smc and tls
+over to them.  It is described as a preparation patch for a later one
+that gives TCP a private mirror of the bit.
 
-> diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-> index 2aff1c7c17de4..abe9ae4c643fa 100644
-> --- a/fs/dlm/lowcomms.c
-> +++ b/fs/dlm/lowcomms.c
-> @@ -522,10 +522,8 @@ static void lowcomms_write_space(struct sock *sk)
->  	clear_bit(SOCK_NOSPACE, &con->sock->flags);
->  
->  	spin_lock_bh(&con->writequeue_lock);
-> -	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags)) {
-> +	if (test_and_clear_bit(CF_APP_LIMITED, &con->flags))
->  		con->sock->sk->sk_write_pending--;
-> -		clear_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags);
-> -	}
->  
->  	lowcomms_queue_swork(con);
->  	spin_unlock_bh(&con->writequeue_lock);
-> @@ -1391,7 +1389,7 @@ static int send_to_sock(struct connection *con)
->  	if (ret == -EAGAIN || ret == 0) {
->  		lock_sock(con->sock->sk);
->  		spin_lock_bh(&con->writequeue_lock);
-> -		if (test_bit(SOCKWQ_ASYNC_NOSPACE, &con->sock->flags) &&
-> +		if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
->  		    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
-
-[Severity: High]
-This makes the CF_APP_LIMITED branch reachable for the first time in ten
-years.  Once it is taken, is there anything left that can restart this
-connection if the TCP connection then dies?
-
-send_to_sock() parks the send worker:
-
-	if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
-	    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
-		...
-		con->sock->sk->sk_write_pending++;
-		clear_bit(CF_SEND_PENDING, &con->flags);
-		...
-		/* wait for write_space() event */
-		return DLM_IO_END;
-	}
-
-process_send_sockets() just breaks on DLM_IO_END, so nothing is queued on
-io_workqueue for this connection any more.
-
-The only place that clears CF_APP_LIMITED on a live socket is
-lowcomms_write_space(), and that is only reached from TCP ACK processing
-(tcp_check_space() -> tcp_new_space() -> sk->sk_write_space()).
-
-If the peer stops acking, tcp_reset() or tcp_write_err() end up in
-tcp_done_with_error(), which purges the write queue, calls tcp_done() and
-sk_error_report().  None of those call sk->sk_write_space(), and an RST
-does not produce an sk_data_ready() either, so neither worker is woken.
-
-Every remaining restart point goes through lowcomms_queue_swork(), which
-refuses to queue while CF_APP_LIMITED is set:
-
-	if (!test_bit(CF_IO_STOP, &con->flags) &&
-	    !test_bit(CF_APP_LIMITED, &con->flags) &&
-	    !test_and_set_bit(CF_SEND_PENDING, &con->flags))
-		queue_work(io_workqueue, &con->swork);
-
-That gate covers _dlm_lowcomms_commit_msg() for new messages, the
-retransmit path lowcomms_error_report() -> dlm_midcomms_unack_msg_resend()
--> dlm_lowcomms_resend_msg() -> _dlm_lowcomms_commit_msg(), and the
-receive-side error recovery in process_recv_sockets():
-
-		if (ret < 0) {
-			if (test_bit(CF_IS_OTHERCON, &con->flags)) {
-				close_connection(con, false);
-			} else {
-				spin_lock_bh(&con->writequeue_lock);
-				lowcomms_queue_swork(con);
-				spin_unlock_bh(&con->writequeue_lock);
-			}
-
-lowcomms_error_report() only logs, asks for a retransmit and forwards to
-the default error report; it neither clears CF_APP_LIMITED nor closes the
-connection.  dlm_lowcomms_connect_node() only queues swork when
-con->sock == NULL, and the dead socket is never closed, so con->sock stays
-non-NULL.
-
-Before this change the (dead) test meant send_to_sock() returned
-DLM_IO_RESCHED, swork was requeued, the next sock_sendmsg() picked up the
-socket error and the ret < 0 path did close_connection() plus
-lowcomms_queue_swork().  So the CPU-burning loop the patch removes was
-also the error detection and reconnect mechanism.
-
-Would it make sense to add a fallback that clears CF_APP_LIMITED or closes
-the connection when sk_err is set, so a peer RST or retransmission timeout
-during the app-limited state does not leave the connection permanently
-silent?
-
->  			/* Notify TCP that we're limited by the
->  			 * application window size.
+> Add sk_set_nospace() and sk_clear_nospace() helpers and convert all
+> the setters and clearers to them, so that "git grep _bit(SOCK_NOSPACE"
+> only reports the two helpers and the remaining test_bit() sites.
 
 [Severity: Low]
-With the test switched to SOCK_NOSPACE, does the body of this branch still
-do anything?  The guard and the notification now touch the same bit in the
-same word:
+Is this description accurate for this patch on its own?  At this commit
+the grep still reports twelve open-coded sites outside the two helpers:
 
-	if (test_bit(SOCK_NOSPACE, &con->sock->flags) &&
-	    !test_and_set_bit(CF_APP_LIMITED, &con->flags)) {
-		/* Notify TCP that we're limited by the
-		 * application window size.
-		 */
-		set_bit(SOCK_NOSPACE, &con->sock->sk->sk_socket->flags);
+  drivers/block/drbd/drbd_worker.c  set_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
+  drivers/nvme/host/tcp.c           clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
+  drivers/nvme/target/tcp.c         clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
+  fs/dlm/lowcomms.c                 clear_bit(SOCK_NOSPACE, &con->sock->flags)
+  fs/dlm/lowcomms.c                 set_bit(SOCK_NOSPACE, &con->sock->sk->sk_socket->flags)
+  net/ceph/messenger.c              clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
+  net/rds/tcp_send.c                set_bit(SOCK_NOSPACE, &tc->t_sock->sk->sk_socket->flags)
+  net/rds/tcp_send.c                set_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
+  net/sunrpc/svcsock.c              set_bit(SOCK_NOSPACE, &svsk->sk_sock->flags)
+  net/sunrpc/svcsock.c              clear_bit(SOCK_NOSPACE, &svsk->sk_sock->flags)
+  net/sunrpc/xprtsock.c             set_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
+  net/sunrpc/xprtsock.c             clear_bit(SOCK_NOSPACE, &sk->sk_socket->flags)
 
-For the kernel sockets dlm creates, sk->sk_socket == con->sock, which is
-also how lowcomms_write_space() spells it:
+The remaining sites are all converted by later patches in the series
+("sunrpc: use sk_set_nospace() and sk_clear_nospace()", "rds: use
+sk_set_nospace()", "dlm: use sk_set_nospace() and sk_clear_nospace()",
+"drbd: use sk_set_nospace()", "nvme-tcp: use sk_clear_nospace()" and
+"libceph: use sk_clear_nospace()"), and all six land before "tcp: add
+tp->tcp_nospace", so the single choke point the mirror depends on is in
+place by the time the mirror exists and no intermediate tree state is
+broken.
 
-	clear_bit(SOCK_NOSPACE, &con->sock->flags);
+Could the changelog say that the conversion is completed by the following
+patches rather than by this one?
 
-lock_sock(con->sock->sk) is held across the test and the set, so the bit
-cannot be cleared in between, and the set_bit() can never change state.
-The comment about notifying TCP then describes something the code no
-longer does.
+> Callers that had no NULL check are all called from user context with a
+> socket attached, so folding the check into the helpers only makes them
+> more robust.
 
-The two different spellings of one flags word inside a single if statement
-are the same kind of trap that produced the dead test this patch fixes, so
-perhaps the set_bit() and its comment could be dropped, or at least
-spelled consistently as con->sock->flags.
+The same "some with a NULL check, some without" wording in the first
+paragraph reads as a description of the state after this patch, when
+drbd_worker.c and net/ceph/messenger.c still carry their own checks.
+
+<br>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922122721.3568295-1-edumazet%40google.com
