@@ -1,329 +1,84 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E948940F73A
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECD64ADD9D
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790273313; cv=none; b=RFIdLDO0RVvePHGlmpdQlv5YZlbAo3yLDNYItIbPaPAkfUmPqyE95FjA1laIgMzFjCKnkVbCsAogKg78/kcI2N+ABkiuk/n/1MVghHLkPxdVQba0xaMW8gX4SIe4dxqGC04oM82slPloZFTNTRZwAumzhYOtYcoyg4Gzxt/+T7o=
+	t=1790273489; cv=none; b=nF5qMrioPRqA6P7huxJlpGGSX1nbSvR/JQovwy9ebUnrOMXJ14UxOn1x4TjSll0fqNuoP0QBDpyotZ2O7kwZfwu/YVfhscl+IWcNBblS3kzpk6oQ6R2BXcA8GWlktcoxfKN6IbdCDxCTuIXA4BaV8Me8Ed2s3dZRHVJ9KkE53Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790273313; c=relaxed/simple;
-	bh=y2dgIzI1jEhhQaqgsHE6s3vNWuiQDPJuqsgcNFyJFwY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=ZLtjOJA/kEBBJyhGNIi933lba954sD7LnRqBmiBMm5Is9rdERIU4EbfN032p6LTPYJ4TgO1nULXIOgqh2oDTo3IOI1Pj60zhOFnxJTOtNcmy/85/DvXoWMgFBuWF1zueYCzS3RY6kOSMWHGXR5+hJ4sXFY+UJF1oEI0jkODabQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGgPP33X; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790273489; c=relaxed/simple;
+	bh=x4pfYfzvbPMJGswUxXKpHNRIJ+FOjMz971Qj/p5Cc1I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=SCy0z/0bDClJlXLDY8ZdzggCHtX6oEmFLO4kDB1w3hJ3J5oaSZAyN87rJH1fBiZZG44OBu7uHqwlq1NRnHegMnN5REd6qRJ5DILKpYLKt04HvfgLjGKuGVKOT6YZiiZM4j1Doo5evwM+FJ4mBnCp/jge4oDuda/w0IlcZwRomFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQCIHUz0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGgPP33X"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530de452c33so1152711cf.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790273310; x=1790878110; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TCtgp1UKc8IZvUhq6/TBhiCnYxTAzLL9cCbNh4j7qwQ=;
-        b=IGgPP33XzsKRX5R6HwLiXmCdje7ym6EqcDboIgChOOof5ce6/v0ywXjumw3pDwmR+d
-         ps8b5rpfay7AgMdtgsYiQ7BdPrzn+zd4p9egszJ/seHObMztEdBqlIImpw/g+OEGo6Yq
-         UcM1DLSrLJw5DGMc+d3evigP7evVA6ul7zv7Jd2R8iJd+G7efRohQsRYHGN1K5ic1ZD5
-         sqjUBg2NI3+X72uRR4HxoykA4R7t72tjIqWhxkQQF65JIGw+A/VA2bEK1N3D5I0sDY6K
-         wqs+amSYk1x/bclP12TQEC2NID+XMotrLSatvP+2NH/sJ0S05DHUO7Q2HhHO2Cm3vrQU
-         dQ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790273310; x=1790878110;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TCtgp1UKc8IZvUhq6/TBhiCnYxTAzLL9cCbNh4j7qwQ=;
-        b=rRPL0O00GNtmDwG/Tqy9iLu/n+4Jete9yTlFqlm/qjPz7Vn7glZiqin9GmX5Skcghq
-         jCEYGMbVAEx0S9ZF4y3XW3CWpnIdgX4H8WiIlDXu+d9weW0cvbnUayhEfBUETH6ZDn4p
-         +FVnkAtpahZgXlVkb6SI2qGnqbWd7a83X1PPhPC8PE9GQd1GL59/eH+9yOfOWmTnMJ4k
-         S4DF1AClVHqQSmsT6X0CCO0t0lQHMjF4UxmLyJiLRqveACsoAZtuGsq6984HZvD2jX1H
-         +sLp71gbxEOsL4CXMBfuMTOn/pVuBQFYB8cjK7uU8X5sc07L4MrIsmtr5OGzJjESIRqG
-         KiTw==
-X-Forwarded-Encrypted: i=1; AKwUvBx+DjtzdaWVbMWwXTqfQ8Wf0aD07/UL7VXSaC1WEXOUdQtgXoIO+x/pRXgWAsSz2Tj6V9Ca2Qc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kPhcDpKmpZz51M0ql3mQkO8IylJEsuZMM//wH5VWCtAW/CZ8Rs
-	xxExOalho4VBY8XXdhtwrVzcIKCBKgIiNL3JG6cDwpEtDWeOAJPvrtQq
-X-Gm-Gg: AYBFou3WRsbpQwji7A61EmADhVvaKjTGtgTd0jUgexcLll2HGKTOj5M+czbmmzDLaRT
-	R60yRiLQoW+boGAxhrkNPTpmN7QZYGwNgLTzOYAwwb/PITkIouPpiSKEWYEXlenKIHbEapyS2pq
-	I1fjiLeWs+g8L3z868Lza107WtTim3QwC62qgTsi3qTAoPo4aLoOFpEA+hx3avI0Oq/+mepVMfk
-	s0R/Der+kaAF6pmWHGRXXMBR7+0KHLoThsBLVC1E7pFTa1nhq9vbN9HDQo45J2aZGCyhgr2fKv/
-	N/LZAHw2uX+0p+/4hsHlXB9TDStwPnjIk2ALJ1NVOlPWUIby1Gz9Zt7LCDwYao6BtUu/+miLMa3
-	54+ToW6ii+kGesBmlhiHKyLGfpLw9k7rTes3QzwT9TrzEJjKfS0QR5p7SxsXgAwLkz4VSaHaNQk
-	pZz9hlXwNPln/+883LBIDpp5bMCVCaNoSxKMB1Ser8O3suRDmTrCmxhbMt3Fh9bI6cw7yYZkZsb
-	mo=
-X-Received: by 2002:a05:622a:4819:b0:532:9e96:5773 with SMTP id d75a77b69052e-5330b68c45bmr730231cf.37.1790273309616;
-        Thu, 24 Sep 2026 11:08:29 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ead2226bsm47703031cf.0.2026.09.24.11.08.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 11:08:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQCIHUz0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343511F000FF;
+	Thu, 24 Sep 2026 18:11:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790273487;
+	bh=8edLSRyqC4WqsEthY/id6a+TiwJNslqzFASjci0BLlo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FQCIHUz0swEYPoNkS8JEOgnte0EVeD272M1ryQx7B1MxFTXcqJZDwdVe3izFKl6gd
+	 LPYECZS9Xaqi5y9CAWRGd9v3zUvUl7HMDvovJQImGWGLtbqxuNGfXGnoQVo0fvX2dS
+	 gDnPWo7EWwBr13MC3zw1eQ16HCJB//dXvq4j1k6U2PdeMHPPWoz7nwda7txzKW863Q
+	 D2ra3dzLGNoCFlyuHu5wrWDPR5J6BE3OwFXDRHZpY9Xh4JdB5CbJ+BFeS1EqAqTfOU
+	 Fgzjzwv6pTSMZwDwMtCxJAA85YPnXk4Hz+FkgJe1B1iy/fwMmf2vb5rnmCVQ5W0SVz
+	 RlcFV3ofgfvSg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A503A566DD;
+	Thu, 24 Sep 2026 18:10:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 14:08:28 -0400
-Message-Id: <DLNQX7U9QRFW.2G0KYKS5W3X3H@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
-Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
- <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
- <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next 6/8] eth: mpnic: add a netdevice and basic Tx
- handling
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260922-linux-mpnic-v1-6-236844f53072@gmail.com>
- <179021553756.2160803.6381610175873058359@kernel.org>
-In-Reply-To: <179021553756.2160803.6381610175873058359@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net 0/4] vlan: ensure sufficient headroom in
+ vlan_dev_hard_header()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179027341588.1690644.9685804588614580590.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 18:10:15 +0000
+References: <20260924082951.1599377-1-edumazet@google.com>
+In-Reply-To: <20260924082951.1599377-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, edumazet@kernel.org
 
-On Wed Sep 23, 2026 at 10:05 PM EDT, netdev-bot+sashiko wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 3 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] mpnic_open() (drivers/net/ethernet/meta/mpnic/mpnic_netdev.c)
->   can succeed and show a dead device as up.
-> - [Medium] The new ndo_stop, mpnic_stop() in
->   drivers/net/ethernet/meta/mpnic/mpnic_netdev.c, reclaims DMA memory=E2=
-=80=A6
-> - [Medium] No TX traffic or drops are ever accounted.
->
-> --
->
-> eth: mpnic: add a netdevice and basic Tx handling
->
-> This patch registers a netdev for the mpnic driver and adds ndo_open and
-> ndo_stop. It also adds a basic transmit path that builds one metadata
-> descriptor plus address/length descriptors per skb, defers doorbells for
-> xmit_more bursts, and flushes the deferred doorbell when a packet is
-> dropped. mpnic_mmio_err() now detaches the netdev when MMIO fails.
->
->> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c b/drivers/ne=
-t/ethernet/meta/mpnic/mpnic_netdev.c
->> new file mode 100644
->> index 0000000000000..62dc9018f2f8c
->> --- /dev/null
->> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
->> @@ -0,0 +1,176 @@
->
-> [ ... ]
->
->> +static int mpnic_open(struct net_device *netdev)
->> +{
->> +	struct mpnic_net *mpn =3D netdev_priv(netdev);
->> +	int err;
->> +
->> +	err =3D mpnic_alloc_napi_vectors(mpn);
->> +	if (err)
->> +		return err;
->> +
->> +	err =3D mpnic_alloc_resources(mpn);
->> +	if (err)
->> +		goto err_free_napi_vectors;
->> +
->> +	err =3D mpnic_set_netif_queues(mpn);
->> +	if (err)
->> +		goto err_free_resources;
->> +
->> +	mpnic_enable(mpn);
->> +	mpnic_napi_enable(mpn);
->> +
->> +	netif_tx_wake_all_queues(netdev);
->> +	netif_carrier_on(netdev);
->> +
->> +	return 0;
->
-> [Severity: Medium]
-> Can mpnic_open() return success for a device that has just been
-> detached?
->
-> mpnic_enable() and mpnic_napi_enable() both end with mpnic_wrfl(), which
-> is mpnic_rd64(mpd, MPNIC_BDQ_SPARE). If that read returns all ones, the
-> confirmation read is skipped because reg =3D=3D MPNIC_BDQ_SPARE. As a res=
-ult,
-> mpnic_mmio_err() runs. With this patch that handler now does:
->
-> 	/* Tell the stack the device has lost its PCIe link */
-> 	if (mpd->netdev)
-> 		netif_device_detach(mpd->netdev);
->
-> __dev_open() has already set __LINK_STATE_START before calling ndo_open.
-> netif_running() is therefore true, and the detach stops all tx queues.
-> mpnic_open() then continues without checking anything:
->
-> mpnic_open()
->     mpnic_enable()
->         mpnic_wrfl()->mpnic_rd64()->mpnic_mmio_err()
->             netif_device_detach()->netif_tx_stop_all_queues()
->     mpnic_napi_enable()
->     netif_tx_wake_all_queues()
->     netif_carrier_on()
->     return 0
->
-> netif_tx_wake_queue() does not check whether the device is present. So
-> the queues are awake again, carrier is on and IFF_UP gets set, while
-> __LINK_STATE_PRESENT is clear and uc_addr0 is NULL.
->
-> mpnic_xmit_frame() doesn't check presence either. It keeps filling
-> descriptors and calling writeq() on the cached ring->doorbell. No
-> completions come back, and dev_watchdog skips non-present devices, so no
-> tx timeout fires either.
->
-> Would it make sense to check mpnic_present() or netif_device_present()
-> after the enable steps, and unwind if the check fails?
->
+Hello:
 
-I don't think so. Losing the device here should be benign, and will
-require a reset, or the device to be re probed.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
->> +
->> +err_free_resources:
->> +	mpnic_free_resources(mpn);
->> +err_free_napi_vectors:
->> +	mpnic_free_napi_vectors(mpn);
->> +	return err;
->> +}
->> +
->> +static int mpnic_stop(struct net_device *netdev)
->> +{
->> +	struct mpnic_net *mpn =3D netdev_priv(netdev);
->> +
->> +	netif_carrier_off(netdev);
->> +
->> +	mpnic_napi_disable(mpn);
->> +	netif_tx_disable(netdev);
->> +
->> +	mpnic_disable(mpn);
->> +	mpnic_wait_all_queues_idle(mpn->mpd);
->> +	mpnic_flush(mpn);
->> +
->> +	mpnic_reset_netif_queues(mpn);
->> +	mpnic_free_resources(mpn);
->> +	mpnic_free_napi_vectors(mpn);
->
-> [Severity: Medium]
-> What happens here if mpnic_wait_all_queues_idle() times out? It returns
-> void and only logs the failure:
->
-> mpnic_wait_all_queues_idle() {
->     ...
-> 	err =3D read_poll_timeout(mpnic_non_idle_queues, non_idle_bitmap,
-> 				!non_idle_bitmap, 20, 500000, false, mpd,
-> 				queues, ARRAY_SIZE(queues));
-> 	if (err)
-> 		mpnic_idle_dump(mpd, queues, ARRAY_SIZE(queues),
-> 				non_idle_bitmap, err);
-> }
->
-> mpnic_stop() then always carries on with:
->
-> mpnic_flush()
->     mpnic_clean_twq0(nv, 0, &qt->sub0, true, qt->sub0.tail)
->         unmaps and frees every outstanding skb
-> mpnic_free_resources()->mpnic_free_ring_resources()
->     dma_free_coherent() on the TWQ and TCQ rings
->
-> If a Tx block (TWQ/TQS/TDE/TCQ) is still busy after 500 ms, can the
-> device read from unmapped skb pages or write completions into freed
-> coherent memory? The TCQ is only disabled by writing TCQ_CTL =3D 0.
->
-> This path has no fallback: no flush retry, no function reset, no clearing
-> of bus mastering. For comparison, fbnic calls fbnic_tx_flush() and polls
-> again before giving up.
->
-> A related case: if an earlier MMIO failure already cleared uc_addr0,
-> mpnic_disable() skips all its writes, and mpnic_rd64() returns ~0 for
-> every idle register. Does the wait then report idle straight away, so
-> the rings are freed even though the queues were never disabled?
->
+On Thu, 24 Sep 2026 08:29:47 +0000 you wrote:
+> Callers that only reserve ETH_HLEN or less, or skbs allocated before
+> dynamic device/headroom changes (such as toggling VLAN_FLAG_REORDER_HDR
+> or bonding/team switching slaves), can reach vlan_dev_hard_header() with
+> insufficient headroom and trigger skb_under_panic().
+> 
+> When vlan_dev_hard_header() returns -ENOMEM upon skb_cow_head() failure,
+> a few callers of dev_hard_header() / llc_mac_hdr_init() had pre-existing
+> error-handling bugs:
+> 
+> [...]
 
-This was addressed in prior patch.
+Here is the summary with links:
+  - [v2,net,1/4] llc: fix skb UAF and leaks on llc_mac_hdr_init() failure
+    https://git.kernel.org/netdev/net/c/72f9dd522f8d
+  - [v2,net,2/4] bridge: check llc_mac_hdr_init() return value in br_send_bpdu()
+    https://git.kernel.org/netdev/net/c/ac704ff08e51
+  - [v2,net,3/4] net/sched: sch_teql: fix shadowed err in __teql_resolve()
+    https://git.kernel.org/netdev/net/c/907b978e82cb
+  - [v2,net,4/4] vlan: ensure sufficient headroom in vlan_dev_hard_header()
+    https://git.kernel.org/netdev/net/c/cd5dd68267c4
 
->> +
->> +	return 0;
->> +}
->
-> [ ... ]
->
->> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/=
-ethernet/meta/mpnic/mpnic_txrx.c
->> index cb4d1427434c9..f4ad8caf6ce66 100644
->> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
->> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
->
-> [ ... ]
->
->> +static netdev_tx_t mpnic_xmit_frame_ring(struct sk_buff *skb,
->> +					 struct mpnic_ring *ring)
->> +{
->> +	__le64 *meta =3D &ring->desc[ring->tail];
->> +	u32 tail =3D ring->tail;
->> +
->> +	if (skb_put_padto(skb, MPNIC_MIN_FRAME_LEN))
->> +		goto err_drop;
->
-> [ ... ]
->
->> +	if (mpnic_tx_map(ring, skb, meta))
->> +		goto err_free;
->> +
->> +	return NETDEV_TX_OK;
->> +
->> +err_free:
->> +	dev_kfree_skb_any(skb);
->> +	ring->tx_buf[tail] =3D NULL;
->> +	ring->tail =3D tail;
->> +err_drop:
->> +	mpnic_tx_flush_doorbell(ring);
->> +
->> +	return NETDEV_TX_OK;
->> +}
->
-> [Severity: Medium]
-> Are these drops counted anywhere?
->
-> Both drop paths return NETDEV_TX_OK without calling
-> dev_core_stats_tx_dropped_inc() or updating any other counter:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-doesn't sound like dev_core_stats_tx_dropped_inc() is supposed to be
-used in drivers.
 
->
->   - err_drop, when skb_put_padto() fails
->   - err_free, when mpnic_tx_map() fails on a DMA mapping error or an
->     oversized head or fragment
->
-> The only trace is the rate-limited netdev_err() on the DMA path.
->
-> There is also no stats path in general. mpnic_netdev_ops has no
-> .ndo_get_stats64 or .ndo_get_stats, and netdev->stats is never updated.
-> mpnic_clean_twq0() passes its totals only to BQL, through
-> netif_txq_completed_wake().
->
-> Won't ip -s link then show tx_packets, tx_bytes and tx_dropped as 0 on an
-> interface that is transmitting and dropping packets?
->
-> The struct net_device_ops statistics comment in include/linux/netdevice.h
-> says drivers must implement one of the supported statistics mechanisms.
-> This still seems to be the case at the end of the series.
-
-Stats are planned as the next series.
