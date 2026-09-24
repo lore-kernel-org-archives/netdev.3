@@ -1,79 +1,298 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f43.google.com (mail-oi2-f43.google.com [74.125.231.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB08625;
-	Thu, 24 Sep 2026 00:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72CA27CCE0
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790211080; cv=none; b=SXSsOO8BKQA3TOR81UWlUc3C0bAWppImgCw9HtXMuiNVm0SLx5KFvhjtUR+7wiSa9HpA6GsRiOfcKA73CL/zY+ibZcPuPbhyXzvV1uClhKh/R8oy/Ox6KKj/J8sQM69V2XmcCQqhTBVtwrXOh6pkILWSP497jn6/85GTb2MV63o=
+	t=1790211333; cv=none; b=M+l8PRqRE6PTK1yoDOe+Cp+8Vce/rsP4FlXUiTcpNEg3N3bUvPK1HsKOxpCJCiAx3+sxTAL09xlqDg1mJxvE12o2if7UzzVtGuQRvsULXjcIf4h9j37zeOPc5NN9FXyStddY0ZETMVFkrfU1n1bc5NqyjHhwRXyGBtnD0VtWIhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790211080; c=relaxed/simple;
-	bh=thh8YnF5dnioS0hgc7mD1Zx+c5GgWCPSNz6um9O4ROM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SrlJMw63nZMDXhGk3izyINM1S/wvSUYB/TM9L6NSoLLHoKVuj5syoxPAxOCszMkyMy8xSKUbCZU1zZ9zl8kDxfmvrbXIdx1ZqlzGgVD6nggt+x1Wo80fRTu8KERTPzluGRiVyojzxHHinLcKrKov2O6hyFHmSnq/LiC4O7jLcDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hA0E6mxe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790211333; c=relaxed/simple;
+	bh=+3lgLeKyGoruCl5bCKhJ3T83Paha5+SBWFamsUnyxf0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AOKWyb75368/AI3baWqCe9CkKIBBp7i5+dJ7E7CSiUn+SJKUG+EI80RnenAdrvLo81skNtPi8p9Yr6GnjZSlmVEowTQcyuG3NMlaZOdn+FkURQpEwP9dnSEyXlRCfze/PWJ5YKto42rliNjlE0eweF/ewtpO7k9ESaywO2Sv6fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAC8yCSI; arc=none smtp.client-ip=74.125.231.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hA0E6mxe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA2C1F000FF;
-	Thu, 24 Sep 2026 00:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790211079;
-	bh=J2k6ofrEG93zYF/58l1TzkQWce+SVpNKYWqAbK4Dgq0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hA0E6mxeIpzwbWbiKlkqntJtOHOOV1bF3H9jv2CU+jAIFJBFPLgGctNBo7ygIgkP3
-	 7wWl0ObwzH28oZWf1/Fo/BnFvFEWUTtbBBhZB3EfzTAAkEw2jeApJk2TCXNRW3LDVn
-	 +T8cMhQy/HvKnndLh4GP6iXTfEU84lo5sEZpQqvbFnUuqIFOC0VCCbBNMF+4T78qTB
-	 VaCV8wkmtDF4BMzbpW6qpQNxy62WCu7G0d02ZkTzfAh2dwU9fLB42P7CVkPcgwQnbe
-	 STqpOrpua9hAUwRnh05+sfty5mvRm1QXmYuLF1rMZu+dP0U6Z5pHSfEPjMzYM9EtOq
-	 u1ppfpLfYmEHA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EEE9B39E9607;
-	Thu, 24 Sep 2026 00:50:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAC8yCSI"
+Received: by mail-oi2-f43.google.com with SMTP id 46e09a7af769-7fcb425fc2bso1083357a34.3
+        for <netdev@vger.kernel.org>; Wed, 23 Sep 2026 17:55:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790211330; x=1790816130; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FfxOZpGwcVSI/AA/FeGaBOP+LTq0nuPyB8Q6sUgl39Y=;
+        b=RAC8yCSIs8pHIsurtJ8Y9VAoEzTjaKQFYiHerJU+V5l/gqtYzFnMfWcHgCawBMfQCv
+         6YJJ2SLy49VuXvUDPu2uH31YAAhfPzFsZ/9G/i1yBOy/y6BKAJF3qZKD0fFMsinwMeKh
+         tLJvVFpTZSDkh4LIGzgvHODZcv3nGXfgKo+KGbtNb27eqA7EyvGJbURVSLqSvqvjb5q2
+         rILJHm0MACSsujgle3lBb9Av3FSgY8/M0gLisr8b9Rt4TKp/SsX/UeYDHAmX61GUpYEB
+         kEbnUya7qpRQSVkE9XOVHTeHfSQ3Qp5zr2t+eLKR0nVsXf/zL9nJowIgBmzXwJVskIQI
+         Hl8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790211330; x=1790816130;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FfxOZpGwcVSI/AA/FeGaBOP+LTq0nuPyB8Q6sUgl39Y=;
+        b=RJmAQBWIlPeTf7xdmP/6HR8F14toyGVNISOPUHJP7yUfDMsh0K7/vGwEn2nscYlH83
+         7B4dqlo7q9w8y2b4G+kcQE6cNiWocE+7BLQhaS63Dua0BBDDBzH5JxhNrJb6aALdWnSJ
+         SodEKx7NLpQNS4M6D5fGL24JdYiXBJYC2lzjg7leMRykJlNFxZB2Krr3r6q3sN6omTkG
+         1n/2O6OVDUjcdt2h8UfjftWfbmDi4tvPGG9r6qGKiC9oN7JtQKubt+yORvHeEEAA5uho
+         bSPqBEJ9tayFoBd3OnjxA0r2P9SrnigbcnqVOZ5zq9PycmqSdj2J1BAhmThETj0X8EbD
+         GpKA==
+X-Forwarded-Encrypted: i=1; AKwUvByk0aoPf2p+8vgC2FyiHNR1dC3Z1UKFedKDM414kssQiA/iidiyGwrxarSQ/rV0hbKw9o8PSf8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nXHEylBKBX9FI25WaVWPhNhtyeeC85y0vcWUzWI170cpqcbfit
+	tMiYysZ2hh4pAITQnBYrJKjXGarMEkfi5DXjiABV/ytbvZYGASR/RI7I
+X-Gm-Gg: AYBFou1eMvM0TGevVqNzty+bomUxBrxAH5tIKyrlkPMpNjkqb6jPmaYHyjxPKTWmF18
+	xeTttU9WP9XVrJsPybT6nqMHTOeSGDdRvUKN3a5uLhQUstSvFYxB0ibp7w1ZXBBVBvkgizu4xQs
+	35TOGDqcNJL3d4jdLJhL0tQhOrL/q5wVKJyj60rMVuGZpKWwQf5mFwmIt9fRsephVDjF0JIIQAx
+	LNPtE842TvabkZ7fSLz9aPN3jO44s5dvhDoxtrkb4TNHF3Xltzj6HIZGP1RjNEdWV71SeFw98WU
+	LMI4KDUCJS1qknclbIBqhwTG2LSajXzeKM1Qj1DHbOMCxiXinSE2njf6aOVtsnVApJZCFA11IWK
+	HX0MOzuYtdkyAdjDZANyIpWp16AKM1NYSn1g2zNUiV/kR/jL67u6eQNHr21ORLxK49k5rdhFntJ
+	1qD6E2Vc1H70SBk2jXz5RxaCIc/9HU8BQIBi85bB12zsIvWtUsYvhMWD2cLJs4axznXOlm8M6Is
+	ZNZkTZj+wYOMrFPTLX9
+X-Received: by 2002:a4a:e906:0:b0:6d0:1fe7:1744 with SMTP id 006d021491bc7-6d441d73979mr913528eaf.83.1790211329662;
+        Wed, 23 Sep 2026 17:55:29 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:56::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-491ed1e75a1sm859150fac.4.2026.09.23.17.55.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 17:55:27 -0700 (PDT)
+Date: Wed, 23 Sep 2026 17:55:23 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	corbet@lwn.net, skhan@linuxfoundation.org, stefanha@redhat.com,
+	mst@redhat.com, jasowangio@gmail.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, shuah@kernel.org, rdunlap@infradead.org,
+	donald.hunter@gmail.com, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
+	sdf.kernel@gmail.com, bobbyeshleman@meta.com
+Subject: Re: [PATCH net-next v2 6/6] selftests/vsock: test the netns assign
+ privilege checks
+Message-ID: <arR0+/7pGWSY+NrD@devvm29614.prn0.facebook.com>
+References: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
+ <179019126776.2160803.16648507383433583043@kernel.org>
+ <arRttf9k4yKahe4R@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] octeontx2-af: remove duplicate SCTP port
- flags
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179021100863.1255052.2113938031683666920.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 00:50:08 +0000
-References: <20260920122803.6277-1-sinha.aryan03@gmail.com>
-In-Reply-To: <20260920122803.6277-1-sinha.aryan03@gmail.com>
-To: Aryan Sinha <sinha.aryan03@gmail.com>
-Cc: rkannoth@marvell.com, sgoutham@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, kuba@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <arRttf9k4yKahe4R@devvm29614.prn0.facebook.com>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 20 Sep 2026 17:58:02 +0530 you wrote:
-> proto_flags ORs BIT_ULL(NPC_SPORT_SCTP) and BIT_ULL(NPC_DPORT_SCTP)
-> twice. The second pair is redundant and does not change the mask.
+On Wed, Sep 23, 2026 at 05:24:21PM -0700, Bobby Eshleman wrote:
+> On Wed, Sep 23, 2026 at 07:21:07PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 2 potential
+> > issue(s) to consider.
+> > 
+> > Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> > 
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchwork
+> > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > (one such reply per series is enough).
+> > 
+> > - [Medium] Both new selftests
+> >   (`test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails`,…
+> > - [Low] The two new shared-VM tests omit the `vm_reset_g2h()` cleanup
+> >   that every other ns_guest_assign_g2h_netns_* test in USE_SHARED_VM…
+> > 
+> > --
+> > 
+> > selftests/vsock: test the netns assign privilege checks
+> > 
+> > Adds two vmtest.sh cases that attempt VSOCK_CMD_DEV_NETNS_SET without
+> > CAP_NET_ADMIN and from an unprivileged user namespace, and enables
+> > CONFIG_USER_NS in the vsock selftest config.
+> > 
+> > > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+> > > index e94cc2fd90ccd..4f42bcdac3f6c 100755
+> > > --- a/tools/testing/selftests/vsock/vmtest.sh
+> > > +++ b/tools/testing/selftests/vsock/vmtest.sh
+> > 
+> > [ ... ]
+> > 
+> > > @@ -187,6 +195,8 @@ readonly TEST_DESCS=(
+> > >  	ns_guest_assign_g2h_netns_host_connect_ok
+> > >  	ns_guest_assign_g2h_netns_reset_on_ns_delete_ok
+> > >  	ns_guest_assign_g2h_netns_old_conn_send_fails
+> > > +	ns_guest_assign_g2h_netns_no_cap_net_admin_fails
+> > > +	ns_guest_assign_g2h_netns_unpriv_user_ns_fails
+> > >  )
+> > >  readonly NS_MODES=("local" "global")
+> > 
+> > [Severity: Low]
+> > Both new tests are added to USE_SHARED_VM but neither calls
+> > vm_reset_g2h() on any exit path, unlike every other
+> > ns_guest_assign_g2h_netns_* test in that list.
+> > 
+> > Should these follow the sibling pattern?  If the privilege check under
+> > test is broken, the assign succeeds and the guest's single g2h device is
+> > left owned by the transient namespace created by unshare, while the
+> > harness moves on to the next test in the same VM.
+> > 
+> > The kernel does restore this by itself once that namespace is reaped:
+> > 
+> > net/vmw_vsock/af_vsock.c:vsock_g2h_net_reset() {
+> > 	if (likely(rcu_access_pointer(vsock_g2h_net) != net))
+> > 		return;
+> > 
+> > 	mutex_lock(&vsock_register_mutex);
+> > 	if (rcu_access_pointer(vsock_g2h_net) == net)
+> > 		rcu_assign_pointer(vsock_g2h_net, &init_net);
+> > 	...
+> > }
+> > 
+> > registered as .pre_exit in vsock_pernet_ops, and the next test's
+> > vm_ns_assign_g2h() overwrites the pointer anyway.  The residual window is
+> > the asynchronous teardown that ..._reset_on_ns_delete_ok already documents
+> > ("the namespace itself is dismantled from a workqueue, so the device does
+> > not come back the same instant").  Since the new tests are appended last
+> > in TEST_NAMES and USE_SHARED_VM, a default run is unaffected; this only
+> > shows up with selective or reordered invocation.
 > 
-> Drop it.
+> Yes, these tests should call it regardless. Relying on cleanup makes the
+> pass/fail race-y.
 > 
-> Signed-off-by: Aryan Sinha <sinha.aryan03@gmail.com>
-> Reviewed-by: Geetha sowjanya <gakula@marvell.com>
+> > 
+> > [ ... ]
+> > 
+> > > @@ -1832,6 +1842,48 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
+> > >  	return "${KSFT_PASS}"
+> > >  }
+> > >  
+> > > +test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails() {
+> > > +	local cmd="unshare -n setpriv --bounding-set=-net_admin"
+> > > +	local rc
+> > > +
+> > > +	vm_ssh "init_ns" -- "${cmd}" python3 /root/ynl/cli.py --no-schema \
+> > > +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
+> > > +	rc=$?
+> > > +
+> > > +	if [[ "${rc}" -eq 0 ]]; then
+> > > +		log_host "assign unexpectedly succeeded without CAP_NET_ADMIN"
+> > > +		return "${KSFT_FAIL}"
+> > > +	fi
+> > > +
+> > > +	return "${KSFT_PASS}"
+> > > +}
+> > 
+> > [Severity: Medium]
+> > Can this test pass without the capability check ever being reached?  The
+> > only assertion is rc -eq 0 => FAIL, output is discarded with &>/dev/null,
+> > and there is no positive control, so any nonzero status reads as
+> > KSFT_PASS.
+> > 
+> > A few concrete sources of a nonzero status that are not -EPERM:
+> > 
+> > net/vmw_vsock/af_vsock.c:vsock_nl_dev_netns_set_doit() {
+> > 	int err = vsock_g2h_net_assign(genl_info_net(info));
+> > 
+> > 	if (err == -ENODEV)
+> > 		NL_SET_ERR_MSG(info->extack,
+> > 			       "no guest-to-host transport is loaded");
+> > 	else if (err == -EOPNOTSUPP)
+> > 	...
+> > }
+> > 
+> > and cli.py collapses all of those to the same status as -EPERM:
+> > 
+> > tools/net/ynl/pyynl/cli.py:main() {
+> >     except NlError as e:
+> >         print(e)
+> >         sys.exit(1)
+> > }
+> > 
+> > vm_ssh() also returns ssh's own status, so a transport failure (255) or a
+> > remote shell failure (127, e.g. an installed util-linux that does not
+> > accept setpriv --bounding-set=-net_admin) is indistinguishable from the
+> > expected refusal.  A python-side failure such as a missing
+> > /root/ynl/vsock.yaml exits 1 too.
+> > 
+> > Would it be worth asserting the privileged case succeeds first?  The file
+> > already has the helper the sibling tests use as a precondition:
+> > 
+> > vm_ns_assign_g2h() {
+> > 	local ns=$1
+> > 	local nspid=$2
+> > 
+> > 	vm_ns_exec "${ns}" "${nspid}" "python3 /root/ynl/cli.py --no-schema \
+> > 		--spec /root/ynl/vsock.yaml --do dev-netns-set"
+> > }
+> > 
+> > On the changelog note "ynl's cli.py does not report the errno": is that
+> > accurate?  NlError.__str__() in tools/net/ynl/pyynl/lib/ynl.py does:
+> > 
+> >         msg += os.strerror(self.error)
+> > 
+> > so the error string is printed and the test could match "Operation not
+> > permitted" instead of sending everything to /dev/null.
 > 
-> [...]
+> I considered this but felt like grepping stderr/stdout is somewhat
+> unnatural. My plan was to later propose that cli.py returns the err via
+> exit code, and then update these tests.
+> 
+> First checking the privileged assign sounds like a reasonable middle
+> ground to rule out the other error states.
+> 
+> > 
+> > > +
+> > > +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
+> > > +	local unpriv_uid=65534
+> > > +	local unpriv
+> > > +	local rc
+> > > +
+> > > +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
+> > > +	unpriv="${unpriv} --clear-groups"
+> > > +
+> > > +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
+> > > +		log_host "unprivileged user namespaces unavailable, skipping"
+> > > +		return "${KSFT_SKIP}"
+> > > +	fi
+> > > +
+> > > +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn" \
+> > > +		python3 /root/ynl/cli.py --no-schema \
+> > > +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
+> > > +	rc=$?
+> > > +
+> > > +	if [[ "${rc}" -eq 0 ]]; then
+> > > +		log_host "assign unexpectedly succeeded for unprivileged user"
+> > > +		return "${KSFT_FAIL}"
+> > > +	fi
+> > > +
+> > > +	return "${KSFT_PASS}"
+> > > +}
+> > 
+> > [Severity: Medium]
+> > Same rc != 0 => KSFT_PASS inference here, plus the availability probe is
+> > not the command being measured:
+> > 
+> > 	probe:    ${unpriv} unshare -U true
+> > 	measured: ${unpriv} unshare -Urn python3 /root/ynl/cli.py ...
+> > 
+> > If the extra -r/-n setup or the python startup under uid 65534 fails, the
+> > result is KSFT_PASS rather than KSFT_SKIP or KSFT_FAIL, and the child user
+> > namespace never actually holds CAP_NET_ADMIN, which is the condition the
+> > commit message says is being tested:
+> > 
+> >     the other confirms that CAP_NET_ADMIN in an unprivileged user ns
+> >     alone is insufficient.
+> > 
+> > Would checking the reported error string, or asserting the privileged
+> > assign works in the same test, make these two cases fail if
+> > GENL_ADMIN_PERM is ever dropped from VSOCK_CMD_DEV_NETNS_SET?
+> 
+> Yep, can follow the same approach as above.
 
-Here is the summary with links:
-  - [net-next,v2] octeontx2-af: remove duplicate SCTP port flags
-    https://git.kernel.org/netdev/net-next/c/6f5021d32914
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
