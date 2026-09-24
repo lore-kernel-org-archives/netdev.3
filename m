@@ -1,54 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008DC1EFF93;
-	Thu, 24 Sep 2026 00:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A3D29B781;
+	Thu, 24 Sep 2026 00:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790209267; cv=none; b=vFo1yrR9TzKDEUN6BZ7YHEa4Co7x0F6g1fvtjS7yCmpSdlftcDET6PGf70tTmuwxMgtu2WstPRx01/KGd/hDI/Jbnp8wxxSie18yWzdQcsTeIbLK1lmeFsrELdiatHQhvt7vq67SyMjFPTwUvZ5lAS4mmxNG2ZfQceBmOYiZMcQ=
+	t=1790209276; cv=none; b=ET4Qt13tUP6MtrNjlW7ZtYX/4zLmNv3bTPsIPyn6BCyPU337bwDwxBEZhldT0Zhk7scFwm6yHmALecDuQ+T83saP3iILC8XtWyCq5AcmW4eHErWmdv2NcpyvKetlGZ1/B7wRHXL/1A18cLzokG8z66G04INIAPdgDzxg5V0dB2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790209267; c=relaxed/simple;
-	bh=N1SzXhBwD+iUl+eXWAnkSkObvLaafpTF0uhEY/uZ2qM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tekDLeCYosU4FTtNhmUYDPUu17HQFnW3Lxvui7VzgoW7j3s/niR4nTvRMcrYGIVRKD5eMzW6RSx+XYIrDrMayDnyeD3KJnIMkons2osogApCEVqQqlC4VT2bQzDTzR+4DwurvDnJJmywQdYlqDQq0LjY5iU48RdZzo3NNr8LXzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mB7J7c/7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790209276; c=relaxed/simple;
+	bh=QJRADHmzYT8I355KWt9VHUPooySLt0m95vJyoDFltL0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=A7U38n42JoQK3YCJ5/P/gQ04S25jrYzBCKJjH/4eYDdtfVRCbxnaWkE7YdolcfB9RyKT0E993ZuKhONVfU6zgsPxOTtr0+WHxRweizwNzThN5FG9qpOi/tulJgTSSZm0nB8iQHaqFPuIyZOtqTG6W2woBaKjqbOTq0w0OexYLTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LGQi+8Bg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mB7J7c/7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6DF1F000FF;
-	Thu, 24 Sep 2026 00:21:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LGQi+8Bg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DD11F00893;
+	Thu, 24 Sep 2026 00:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790209266;
-	bh=fyjn0myBrPKpSh/8yzFQ6bTCWqQp3Ipcz/x/BHY0n4Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mB7J7c/7Q6bLLZ4CVRjdVk2g2JEHDTFz3D7YAWasbxOUrevAILQA8ruOk8yaJnINR
-	 tWkGZKDXaJ0+MYQwNBtgR5K7/pIM06nxW8nu7a7gv3lrtEcePEqsujdG50zu7GBOJ8
-	 YBP1FkHrfak0ADKGZMoOQ7UqXlvA2krMrWjJ/p0XY/4lkjDleXVRh75Lip/l6zI6zE
-	 zPevaBmjSE9+tUdawSODRagZ1ELh8iNqgZPLylLVw4EVlyjTR7NKN3Cg2RNMEHYFLG
-	 PPqu0adD0zguuGiVKmU0OtvQRVcdxTavY2dGC9gRqUKoav1NMKkabn2vukp+d7RJgd
-	 3uKCgkhPNEPRA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Pauli Virtanen <pav@iki.fi>
-Subject: Re: [PATCH 6.1.y 0/2] Bluetooth: backport CVE-2023-53762 to 6.1.y
-Date: Wed, 23 Sep 2026 20:20:50 -0400
-Message-ID: <2026-09-23-daily-reply-0001-re-bluetooth-hci-sync-cve-2023-53762-6-1@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260922194838.26223-1-artem@trailofbits.com>
-References: <20260922194838.26223-1-artem@trailofbits.com>
+	s=k20260515; t=1790209275;
+	bh=7+GXSmzE24/GkdKE1YlsrfnDsoea8s/hMpL6MHJito4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=LGQi+8BgjJWtl79++rw0iM4gPp0atmCUo8BNje0vcnJ4COQz9MOXYOy4lArrLNxeN
+	 cm5taon8ZuzF1XJXQ4x6qP9enZgzntAIkMopRMJmLwkeap+pubh6dd1Y2AsncAQW4n
+	 R6jMFxGNbFmKPN2CI6QaeTOdxWf+N/2QKkM/NfZjm8/PQ5IysQFxlmc+OaASrtjtP5
+	 T/r8GKy/f0HG1XQhcRMrdfGdARoUtkRuLnYhfp7u79F4kGs4n/DkY1PZaiXcWBsvqx
+	 nHBtlozNAMUSRX3cxmE6VovWA4Ra2OYE+MmRwt33e7sMOo+6r64as1SHAAmpuXAm+I
+	 tFJoRB5B5XHzg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A4339E9607;
+	Thu, 24 Sep 2026 00:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,18 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] dt-bindings: net: nvidia,tegra234-mgbe: Add missing
+ properties
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179020920515.1246203.8562812404756160098.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 00:20:05 +0000
+References: <20260921110422.220832-1-thierry.reding@kernel.org>
+In-Reply-To: <20260921110422.220832-1-thierry.reding@kernel.org>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, jonathanh@nvidia.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-> This pair handles CVE-2023-53762 in disconnect-all cleanup. The
-> second patch is the immediate upstream liveness follow-up to the UAF fix,
-> so I kept the two together.
->
-> Both changes are already inherited by v6.6 and every later mainline
-> release.
->
-> Could you please queue the pair for 6.1.y?
+Hello:
 
-Queued the pair for 6.1, thanks.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
+On Mon, 21 Sep 2026 13:04:22 +0200 you wrote:
+> From: Thierry Reding <treding@nvidia.com>
+> 
+> Being a DWMAC derivative, the Tegra234 MGBE supports AXI configuration
+> nodes named stmmac-axi-config and phandle references to them using the
+> snps,axi-config property.
+> 
+> While at it, add the 10gbase-r PHY mode.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3] dt-bindings: net: nvidia,tegra234-mgbe: Add missing properties
+    https://git.kernel.org/netdev/net-next/c/0a2de6c7cded
+
+You are awesome, thank you!
 -- 
-Thanks,
-Sasha
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
