@@ -1,61 +1,63 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208C2331EAB
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA69356777
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790257884; cv=none; b=EalpDEfBeCLYDwsMzFhGjPbJ22yfTo/A8qj3EMvoyeXR0xxJ47Eo2mzb1EOXV6OSUJLgT7Jd18TlboGg+PJTjegYv8YoCNGR8bK573VjNanZEMLs8ycjLpW4fkQV2/9QJY1coLOY5bw+XVudIqH54FUFoloyvYmZU/LNI34p45c=
+	t=1790257887; cv=none; b=WA8EmKCeseeyyEzgNUsqDLQZEviZXfW3cuYRcc5TaFBOMftiYfVU3BvhWDCkGJgrKORbqS5yfoBpbSb2Y56JgUAKY7OROu9YLEO9L6d49SJ45ew4MmtAifISu0oeE+XW+QGK72emTZ74F3Aaq+7OktRm/NbYjNEF5t0K6b5cnVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790257884; c=relaxed/simple;
-	bh=pbAwQ4xmPANEX/RcHRl4bqLAeVojJa4y6MnPaK5ridk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PT65LT/I52bPleLZDhgOtndlPHlC/qvo5vSGEgvXjha7cpK0RbgbRIhzm1IFGejHA/Feit9AdwAaTcNfw94WANoZGxd2jAzaPYEI5swK6wOhnMPvwxDk8NO+IDbZfpFfhb7fC6PdRhiqXdmQHFXcLWzC/zggeyHUxhWWFml9Xj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZA1lSJr+; arc=none smtp.client-ip=74.125.225.99
+	s=arc-20240116; t=1790257887; c=relaxed/simple;
+	bh=Bc1mcynftwC3gll2peqBJOnUr4rTFQbTyfAM1Z+PmW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mUjSzB1SQkIszbygOpKbn+6ll5B3+5/zDlagTbP0g/cPKi/4xBfry94ytHdtH4ET7QQE9XUURqwoV2q7GMuDIFnIGfZbZe+7wU5xMQMabFWO1KTRVvWZZIE3xKa3YxkDqpLVqOlrYskMvGfwbdiDblnwlpKMI/ZYa/DeijZwTnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E1O2sm+B; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZA1lSJr+"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-486e1a044c5so1707037f8f.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:51:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E1O2sm+B"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48583cc7ab1so1212848f8f.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:51:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790257881; x=1790862681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eGFtAxjPebUuQk9r7/DMkX7jS2v/ihsU7t718jAGybQ=;
-        b=ZA1lSJr+0JLW1BJBdEFd7wkwuBLdSs5LKUuMB6SJKEeOh3DX5EE/7Sni5abstoqw6Z
-         3Npu5jnQEXvOHsbNOhOCkBEET0SX3bkO0dCjPXH5rH/Q2yUTJEwKFLU1qZLUPvrgJAlG
-         225u0OsAXabZkzuSPT8UWvXCKltka8eDPcMtvKjQeGPi9Xj6rQjGbmLu82rI+8k4M+GT
-         5v4CUqgq0nQs+tvJbIEJWM4ZCdnu3qyzvCO6lGt+Cr87JWNHf7bKkexQiIezuSGs1yeZ
-         zv8Kx52Z1g0Q9elc5js9YUuEe/rPqHHgzhSGjqxhup1isl+BZLUTBJGVd0MnQr7PDYDm
-         sIZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790257881; x=1790862681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790257883; x=1790862683; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eGFtAxjPebUuQk9r7/DMkX7jS2v/ihsU7t718jAGybQ=;
-        b=ZK9uK0mq3LM4fRQhK3QRJ6PxTnT2aduOH1omHIaFqluV1Zriy88eubNeQSvWbOzNdM
-         bFIayY1LhQ6CGTnrT56TI1s7m5mx9j/Ike0nQZD6ctpSxdf7h/IXAfXY64eJ50S4afsL
-         X5YB3SOxR/lfQAAFIxWNZGTkI7oO02w0c3u7JjP/ela2ipCumSa4FJVXfN3lDy/GInsG
-         YlwraniAVaRfC4JbKcbG921wTApknQ+kx+fFvGHQvSd63AWDZXDCWZTZ2rwqHnFt3mVe
-         FeUplmTV6CmNNYaYDTPANzpRnb1BJMW2b2lQenSkGrgRJdl7as/9fZgjzFBHiZ0n317a
-         h8Iw==
-X-Gm-Message-State: AFuF++kdUFSCzWERmGDAKIMqTKEeExavy8FlTWS4A8rChd8tfzXENgtK
-	tifdJzFBPVmfjsvaCMQZI0ZdaTm4eJzpa2IKCIx07qiK740dKovn6zbMvNQklNaB
-X-Gm-Gg: AYBFou1TlC1ZmvZIc7swqZ1C4v7Lr1ymdhiX1SVuOvBjVVBc463emyo0//ljUsaPbVK
-	ffsRB7ewPC5bB8QCFcNCr07gO4Nlfcx95tv7dto4vGZ3ak9rJwyFF9VQiKDHUCfCTNmqxsvw8va
-	TNhO+GUsA0eQ8ZkvmNoNMSNUYPrXIMTIMoNQ1EBDJzKUw2+3UB70LaI+4CstGaps/wsp6nKSin7
-	OgFlwDnSB4Vic+zrtZBvt4sYXIlBYDdCElIUuK7zswVDqi/xvKTlgQkOWi5ybILqVAOjNyZH1Vc
-	4kUPG0JzXzKK6hwE8vIsuPbES46qKKXWPFpHoDkm8BrGEb+kj/fXYbl/6dwDjCgsb7Q9oWe5YtU
-	8iSjPUJLV+C2uyNdT7NCvNIfZpQckvIm/2MimYC1bI9+xOlD3JoYcpnSEzfXnjkQjy+ie62Gu5S
-	NWvFS/lrc9fAT/69/HrWD4YUbIO67H+T7L7bJOoAd7CmB/A3zo5lXcC3Qwq1zovebA8hQHqEg3C
-	lIvhJUtHfXOlGtXV9bGAxZczv0QvDazeL8YqBCc
-X-Received: by 2002:a05:6000:29c2:b0:488:7927:9c99 with SMTP id ffacd0b85a97d-48879279e34mr247722f8f.4.1790257881136;
-        Thu, 24 Sep 2026 06:51:21 -0700 (PDT)
+        bh=M+SCOGAJarxrIkpGByhDtV4LsMHglOYq74GINs0bv9o=;
+        b=E1O2sm+B6mOlQaf7VdSBMwh6SRX7/DKFcmSX7q0m4BavC2TI3SatUEN9VN7+uiu4x2
+         9Qm8leLhfVMvlkF9Ui9xclNjr48/r+dUWefy+jl4yVLewmtoJcuTFASUcT80TR4vD8xx
+         n7sy70ah1QHwxhTt3N8r6Xr3hTUiJIb0dEjeiTnVDUN0eVQ0nwXrdvVpoDlkvyjVLTvG
+         ztfJLQMduWWuIWHUtR10xcmFsEqMThbdkSYYkz0KZVBJPLqRNwEBvgAYZbFMH5RWfFXI
+         O/lFuXoHXBiHMCnxu2pH7ZknrixpCKoXug0zpBzlrBvwr9Gise22zjfvpcvXE7dQt5jM
+         04CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790257883; x=1790862683;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M+SCOGAJarxrIkpGByhDtV4LsMHglOYq74GINs0bv9o=;
+        b=2ajW0PLyKJOjW3khoO8GXmoMMCh6cthwnjbC8MOOR5rF9oASHrDnqBmDPrXQhyGn6w
+         DDhAmCxNewtCabB5YvzFzcTQpNlZhjepgYTo4mvzH54YhusOlgpu4kyyFZ4W3j99ex5p
+         O1fGRaCI0nd9K1d3EkfZSTI86F2U9ByGGClwsKIcayllPX+QQ5d4MDVTOV0mmWhsPE48
+         K9fskBwbNA9PSyrpsWN+RQQ4VeXqB8sEJ1c3C91ZaZxVi8bwprNV6g3q0gR3VAMrElHi
+         Zyyng20Rkh+z87W7RCQHTgPUsGb0koLDMYwg62UXVLz63TPlSo9tiIjXNcT3YIwnoiL/
+         dqDA==
+X-Gm-Message-State: AFuF++l1zgRkkLIUnv5Ib+bT4G4HWHbi9vfUPwBQ9EYEWJBOrhPWHdRQ
+	iqe1uugxBAzUlOKHYLc9GMEqkdBMqg9TyH9QovnCMBWFrqjlIJu0L0WH1Et0VIJQ
+X-Gm-Gg: AYBFou0O8NiOaC0XRJI+Kh5BpWB8p10fEYByXk606ewpqdsxEK0WF008sjnpcbEFy3j
+	Z8Jt+RNHe/Av/3KszWUF4DnEise/U01I9VMLCsOc2jo+ryoVNEuC0SpAzakzx6RFL+FPnZzqAwH
+	n8HtwEswld1vpMlc9bk8I3mt/GvEhyf3f3UXq7AW3EVQ3OemhYsdB1hJRd7EWZGgr83RXRtxTij
+	ISYi1yFrcLCuCH3hsDVgRKgTto+8eXGmHYl21em46uV/dBDKyrv26uom85OhPzDZCsxQ6eujfeP
+	F9A6aQhacdq9BCISmDh/ozFTJ1xLibrG7yCxeeZwU8G8f8T9zCjRK50V/3YLdoa3Aw1LbEXiJ1y
+	fTHf27oy5tMXHf69NK6I/OIENDm5kEMNPd+lKgfLOgU4GY2cC6HWzz2q4q41N1eQvQrJyUW5nub
+	mGfFO1sTRtFRguyc56GocHWQoTu/QgZ/4GnbuqAMQUOGQyyhp/XtUOL7kN7n4xkfOLtwVHFo6UO
+	h3rflzC16BvXOch35U3Jqn/02u3kqY/17oYdAwO
+X-Received: by 2002:a05:6000:26d3:b0:487:a15:b4cc with SMTP id ffacd0b85a97d-4887171e3bdmr4247572f8f.23.1790257883291;
+        Thu, 24 Sep 2026 06:51:23 -0700 (PDT)
 Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889376sm12060660f8f.33.2026.09.24.06.51.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889376sm12060660f8f.33.2026.09.24.06.51.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 06:51:20 -0700 (PDT)
+        Thu, 24 Sep 2026 06:51:22 -0700 (PDT)
 From: Sagi Maimon <maimon.sagi@gmail.com>
 To: netdev@vger.kernel.org
 Cc: radhey.shyam.pandey@amd.com,
@@ -71,10 +73,12 @@ Cc: radhey.shyam.pandey@amd.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net v2 0/4] net: axienet: fix TX queue handling around a DMA error reset
-Date: Thu, 24 Sep 2026 16:51:12 +0300
-Message-ID: <20260924135116.185161-1-maimon.sagi@gmail.com>
+Subject: [PATCH net v2 1/4] net: axienet: start the TX queue in axienet_open()
+Date: Thu, 24 Sep 2026 16:51:13 +0300
+Message-ID: <20260924135116.185161-2-maimon.sagi@gmail.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20260924135116.185161-1-maimon.sagi@gmail.com>
+References: <20260924135116.185161-1-maimon.sagi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,52 +87,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-axienet_dma_err_handler() resets the DMA engine together with the MAC
-and rebuilds the TX ring, but it does not coordinate with the transmit
-path, and it does not leave the MAC configured the way it found it.
+axienet_open() never starts the transmit queue, and nothing else does
+either: __dev_open() and dev_activate() leave the driver's queue state
+alone.
 
-v1 was a single patch that woke the queue at the end of the handler.
-The Sashiko review showed that this wake could be lost to a concurrent
-transmit and could undo the stop that suspend installs, and it pointed
-out two older problems: the handler races axienet_start_xmit() while it
-tears down the ring, and the reset loses the negotiated link speed and
-pause settings.
+axienet_start_xmit() stops the queue with netif_stop_queue() when the TX
+ring fills, and axienet_tx_poll() wakes it again as completions free
+descriptors.  If the interface is brought down while the queue is
+stopped, __QUEUE_STATE_DRV_XOFF survives into the next axienet_open().
+The ring is reinitialised empty, so no TX completion ever arrives to run
+the wake in axienet_tx_poll(), and the interface cannot transmit until
+the driver is reloaded.  The resume path is unaffected only because
+netif_device_attach() wakes the queues.
 
-This version:
+Start the queue at the end of a successful axienet_open(), as most
+drivers do.
 
-1/4 starts the TX queue in axienet_open().  Nothing does today, so a
-    queue stopped at close stays stopped.  2/4 depends on it.
-2/4 quiesces the TX path in axienet_stop() before the ring is freed,
-    which the suspend path otherwise leaves racing.
-3/4 quiesces the TX queue across the whole error reset and wakes it at
-    the end, unless the interface is stopping or detached.
-4/4 has phylink reprogram the link settings after the reset.
+Tested on an AXI Ethernet MAC behind a PCIe endpoint: traffic passes,
+and resumes after each of ten down/up cycles and five module reloads,
+all made with traffic running.  A queue left stopped across a down/up
+cycle, with the ring full, was not reproduced.
 
-v1 also called netif_trans_update() and said this stopped the watchdog
-from refiring.  No .ndo_tx_timeout is installed in this tree, so the
-call and the claim are both gone.
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Assisted-by: LLM sparse
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+---
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Tested on an AXI Ethernet MAC behind a PCIe endpoint with the series
-applied: traffic passes, and resumes after each of ten down/up cycles
-and five module reloads, all made with traffic running, with nothing
-logged.  Suspend, a down/up cycle with the queue stopped by a full ring,
-and the DMA error path were not exercised.
-
-v1 omitted the Assisted-by: tag; v2 adds it.
-
-v1: https://lore.kernel.org/netdev/20260917121306.23499-1-maimon.sagi@gmail.com/
-
-Sagi Maimon (4):
-  net: axienet: start the TX queue in axienet_open()
-  net: axienet: quiesce the TX path before axienet_stop() tears it down
-  net: axienet: quiesce the TX queue across a DMA error reset
-  net: axienet: reprogram the link settings after a DMA error reset
-
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
-
-
-base-commit: 879e280b8486d4612ad1aa050d6fada2dd80cf1c
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 782f903d318f..fb26d2e39fac 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1700,6 +1700,11 @@ static int axienet_open(struct net_device *ndev)
+ 			goto err_phy;
+ 	}
+ 
++	/* Nothing else clears a stop left over from before the last close:
++	 * the ring is empty, so no TX completion will wake the queue.
++	 */
++	netif_start_queue(ndev);
++
+ 	return 0;
+ 
+ err_free_eth_irq:
 -- 
 2.47.0
 
