@@ -1,84 +1,73 @@
-Received: from mta0.migadu.com (out-74.mta0.migadu.com [91.218.175.74])
+Received: from mta0.migadu.com (out-99.mta0.migadu.com [91.218.175.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452133D5236
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328E3AFCE6
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 03:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790219620; cv=none; b=LSLcavyrVsDKYNz+BIRKrcziP+WK+zfCriYHqyU1S/KcdMCtoRg8Pldz58vjXRO2PI1WsCO2LwKqrbpqq/gaiLYPT/kUdRTweZz5Ro2mB54tohsr6lW6pbhCxEXjggttHyYbktn0K6Z1zMb8D0nZDVG8VV6ClEkE72jqYEgbG2U=
+	t=1790219783; cv=none; b=LYry7gDdxv9GWv2SVYoY7rWK9+I3wHuopJVTlrI0V6M6rCuptz2O5Wa9aAC1m4PLxgB1Z2XsZ+dRNX2zPDKQUoCyKE5m4FPXRBtHEHTKc6xHIS3F89GrVCUtAPId8zNvLQuF9hD6trxt9DGr4986azvdkiOqpC/qeGb7awSHch4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790219620; c=relaxed/simple;
-	bh=GytJiuhgyjzjxHhot3wBWyf+fQkUNl3L1F4n3qrJGIs=;
+	s=arc-20240116; t=1790219783; c=relaxed/simple;
+	bh=Sz/uMVvtvi3NFxxQ6n0vt/kFme+lA9TCV7g89jS3C4M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmcDjoY9i14K2a6YSokQ6iALArEXdt6+Zt5xuYsS2WQRPUWFrUMmfx7IIG77wse8cRDrWt9PauQK5KCmJbRzCtwW5DbYTD/qQOUccnZHLFyxK7KMOmvigfP2883ealLB+N8J8MBKYQBclps3QWxbagB7MsiqHR5S88m8GiTw5dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=l1Wz/g3V; arc=none smtp.client-ip=91.218.175.74
+	 Content-Type:Content-Disposition:In-Reply-To; b=lCKZbUsvWE3sF79a9/xGuAWqWspmMlSyxb3/tmIAw1NBPrjs82m83MPnYuZ9xBwF6543b9pf/YBBuu8fGn6p5zM6bPHJjSvVpOKgfKOHiz8F+GrStM7rAeRWeVQSZ7SLrLY5nyozA/WnDmX9Q2k+KOEyH7WDNAii4qVoVcJd1Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qGvhKsu0; arc=none smtp.client-ip=91.218.175.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="l1Wz/g3V"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qGvhKsu0"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=GytJiuhgyjzjxHhot3wBWyf+fQkUNl3L1F4n3qrJGIs=;
+DKIM-Signature: a=rsa-sha256; bh=Sz/uMVvtvi3NFxxQ6n0vt/kFme+lA9TCV7g89jS3C4M=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790219616; v=1; x=1790824416;
- b=l1Wz/g3V0kEpljrLfjVvT6C8o5lW+2iVd1w7z9pTdXdqhgpSAfhbV1pj1dHKTBvk/AgXlGGz
- HqXGTCiWvHXmOcLzNMb2CIt/qAKqLd0JWFw5DImqyOJ+SMUYQVHFRSfYR6QnlMwAfJQWWfeONO1
- q7xeisucwJFscKqE2lk5ax+g=
+ t=1790219778; v=1; x=1790824578;
+ b=qGvhKsu0wrkzZGyT6ZwvFh+OJshy56ZEOjoC0fVWMYd0VG3y+agyP6hemWKiafPamAScej9T
+ lkATVpIX34zjOpi8Q0IhJqee6fZHRbhme/o7CNFYtI3O8HFMjoXQVJd7UpdMv5ot2bxhONE3hnw
+ LcIEg1yXT2v2Je4NBtYE1EQI=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 584c09d60378d531;
-	Thu, 24 Sep 2026 03:13:36 +0000
-X-Mizu-Trace-ID: 584c09d60378d531
+Received: by mta11.migadu.com with ESMTPS id e26be85f0c4105d4;
+	Thu, 24 Sep 2026 03:16:18 +0000
+X-Mizu-Trace-ID: e26be85f0c4105d4
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 24 Sep 2026 11:13:28 +0800
+Date: Thu, 24 Sep 2026 11:16:12 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net-next v2 3/6] netlink: specs: rt-route: add lwtunnel
- encap sub-message support
-Message-ID: <arSVWN91NDnz_tfF@fedora>
-References: <20260920-ynl_rt_encap-v2-0-c664a3e726f6@kylinos.cn>
- <20260920-ynl_rt_encap-v2-3-c664a3e726f6@kylinos.cn>
- <20260923181456.030d9cd6@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	dsahern@kernel.org, idosch@nvidia.com, andrea.mayer@uniroma2.it,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next v4] selftests: net: move log_test to lib file
+ and remove duplicate code
+Message-ID: <arSV_FCIC21S138L@fedora>
+References: <20260922-self_log_test-v4-1-4c656801f8dc@kylinos.cn>
+ <179021041767.2160803.17788389754543951970@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260923181456.030d9cd6@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179021041767.2160803.17788389754543951970@kernel.org>
 
-Hi Jakub,
-On Wed, Sep 23, 2026 at 06:14:56PM -0700, Jakub Kicinski wrote:
-> On Sun, 20 Sep 2026 18:06:38 +0800 Hangbin Liu wrote:
-> > -CFLAGS_rt-route:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h)
-> > +CFLAGS_rt-route:=$(call get_hdr_inc,__LINUX_RTNETLINK_H,rtnetlink.h) \
-> > +	$(call get_hdr_inc,_LINUX_IOAM6_IPTUNNEL_H,ioam6_iptunnel.h) \
-> > +	$(call get_hdr_inc,_LINUX_MPLS_IPTUNNEL_H,mpls_iptunnel.h) \
-> > +	$(call get_hdr_inc,_LINUX_SEG6_IPTUNNEL_H,seg6_iptunnel.h) \
-> > +	$(call get_hdr_inc,_LINUX_RPL_IPTUNNEL_H,rpl_iptunnel.h) \
-> > +	$(call get_hdr_inc,_LINUX_SEG6_LOCAL_H,seg6_local.h) \
-> > +	$(call get_hdr_inc,_LWTUNNEL_H_,lwtunnel.h) \
-> > +	$(call get_hdr_inc,_LINUX_ILA_H,ila.h)
+On Thu, Sep 24, 2026 at 12:40:17AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> alphabetic sort, please
-
-OK. Just to make sure, when sort the order, we don't touch the first
-rtnetlink.h, right?
-
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
 > 
-> Please look at clashiko review on the web, it won't be emailed out due
-> toe kernel.org outage:
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260920-ynl_rt_encap-v2-5-c664a3e726f6@kylinos.cn
+> - [Medium] Loop-variable corruption in fcnal-test.sh via bash dynamic
+>   scoping: the new shared helper `log_test_expected()` in…
 
-Thanks, I will review the feed back and fix the issues.
+Thanks, I will add "local a" in the new helper.
 
-Hangbin
+pw-bot: cr
