@@ -1,160 +1,128 @@
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
+Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209B14A2622
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71EE43CEC7
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790268757; cv=none; b=sSBDqByEhnWSblCz01XoRov4MQCpXp7dSwFABq83Kq/PgAmryPy5L9mSEEU5jtfTBLimCmqZlU0wm3p8rjjdnas3SnAxpwTMc48i4mCl2aAinzsQyqGDooIhA9J1JJWW5tckSPrdqm93igcX2jHPv5clinbXEkUnM8KKd1JU69c=
+	t=1790268791; cv=none; b=nIBF6ibQvKAaZ6NjF6fgGpjrzMdTWuHUfiNBKX1+wxmnEkIt4aHG/1BYRoTlvZ77rBjJ5ruZv6ArB80LGpvRmEnMCPpXgsXwZ3YzPDRt8/JMTjCIEUFZxIGcMMVi8DFqyXR3qjFdBUQdXRB/EyJ5GB+8VhxOXAId+OvAWq5maAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790268757; c=relaxed/simple;
-	bh=zajOpfpBg5ymkn/Jim8bbUW8GjfWWdYrue2j1pBz1T8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=J0Fjl6UM0RbDY79j8Lf61sUlidXlFFPPhcKcOj+dZBcCuFuzQBRvoqY00rab7uCTYDWAelY3Dmzg/l1OC7c+Z/yRhjYaU26HH0gAPMsghwhpAlr+hBcNfPHecowK6zbNPdtX+tqvn7y+a2lSdhq3FPbplXU00iZ6LMOB8oFfS6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=f7Yue0/q; arc=none smtp.client-ip=74.125.228.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1790268791; c=relaxed/simple;
+	bh=LorE3121kbAX0dxZ1po3DR7h466+jIoSoP4ATV7UzDo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=PJ+u23DpPFDQ2SVSDGTMlHqd17xpWuL7sNtJ0kgNoAoBhKhE5z+mu9A7oKYtMbQPWXCwYcM6n7IW5JThCerxrm6jBIw3E0InzlsyGQIx7E1Kd8YUJuymJx/XuXpTDgq76gNgri9xnNtrl8Xu8IEH5y/00cgU49THyr5yAe8DrGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOLA4gUy; arc=none smtp.client-ip=74.125.230.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="f7Yue0/q"
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa1d00daaaso126908a12.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:52:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOLA4gUy"
+Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-5329fc7e0bcso518601cf.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1790268754; x=1790873554; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :user-agent:references:in-reply-to:subject:cc:to:from:from:to:cc
+        d=gmail.com; s=20251104; t=1790268789; x=1790873589; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=5ZgnWusXCU12zGzkWVjE72AKIB7phfrZXuIevy8gML4=;
-        b=f7Yue0/qpeOInQp8bQpMhoJku1geFlUAPGz6JBPNi7FmjlOKjKTWuezqjX5X46OkHd
-         oVBseXyLUF/eL/JRuuTA6pZBwZB+Yq5OqD4EExGzHirhBcsKEX1awlt53lzzRCycm76E
-         K9rLbztJfLNVvgFQ8IG5bRlWNRvBlZwaIIts8TR1pvSyJqI7kLGkMW7wEmuE91yDP7EE
-         NYCymrMnQffqABOFBBEwwDGcVqfW8LYS+e6taZOjK/VDNfdtClxLK7MirgQqR82B7T5x
-         qZcCkXoZT5eG3hFxcjBdTyWm71TVD5SpRb61p6qxDMfveP3KsVC4qI4cSga16aWALnX3
-         lsdg==
+        bh=H7p/7arhw4fENNL3I9usSe+ODbWZbM+M8BPItKrFIF8=;
+        b=hOLA4gUy3HaiPHPVeS/aI4XIC7z1Y/kbURnWjnJly1Y8DvKaeMn7D45tn5u8azU5sT
+         4CmGa7tcrM90GJTy1RdE3Vzb9jG8u+G6vD9acwzPQv7urDyPzbQ/LURJGRibdmYVHFAS
+         Jup9einuw3koekB2Lt1/hWRwooxY2BXCCrDUaBkn4C3U9thDraQEPovhzfV/lmdhdGj0
+         nshdbc/mkIQwbS4aVs1JXq+pOAgFULe/ZgPm9zWl1yqrajyb8HNMDUh6OkISBnHcAXVK
+         4JTEGmqY7lSHYC+G30vejTXddi1YeWhXa38/bMzPmhBRCf5j5wjJ0BlwviYxaEeg+Szr
+         UwNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790268754; x=1790873554;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :user-agent:references:in-reply-to:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790268789; x=1790873589;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5ZgnWusXCU12zGzkWVjE72AKIB7phfrZXuIevy8gML4=;
-        b=uQVEzU0c000BsYV6nwmrNAwJ/WJcY2L7CfaEN1kMie1KcWUihsHOpJlEAKWIpyVVb2
-         FAjPy3oAnSP1Fbh3qq24UM2fqp5J6BtOGM9pkI0kzwGyaNcjk40z6gg6AoPlvIeUAX3u
-         sLB/rCIqnX/en0kbDu3e0P7Pu4ptCmXnonr7J16GWFEe0HJqW1i1MehCkNhzhINeTvYv
-         stMWK/OnoClog15Dqzey+etZmw8KuWF1zhUVCcRyplENC9zTFFJOALncpOv6T6oJ/55g
-         TnWig5ApF9iQi9G3KrG5uRXATE0q87GuQSpeXTHGVotapHsf53oOpJ4b8SsOF3HmsQRC
-         cxBw==
-X-Gm-Message-State: AFuF++kXVUv7lE+6fAd1tNYrah7i6XwTOhEhIlWLjNv9nknxUUy0Iu6D
-	W2GYBVKOUPm7STxeKg3uMznDHQ2J4zAlNbN31d4j7wN8T6hurOyprhMVSt2Mn12ihn8=
-X-Gm-Gg: AYBFou0aAM9h6jj0//UA+cpXSoy1F3XI5JCkv1HcWBI/XddGOnpsIUaV9GCNV8/7ciI
-	qQE/ebYXxwByUkeKwjapHWcntBQOBNx5yf5IcHqEGL3v9CZ+9+3YpGONw9VSpWw8JpqSxI5FW7A
-	oSHfkGkxxtg1158HYquot0Jw8rk4x6+qNz93AC18ca1NEMOpEZZkyPw1xZbHHalP12qLrzJ2HSM
-	JKUsQnZQ8xBJF/ZsbQjJBf4shsS2IvrdAYPmwm6pkFhjttVW68cR9IH5Ahild4KHyxa2JiMECpx
-	bEUU5FKusNqGjvwx2/Uh+QhA3/+nX0Gz0icmsq7oIea4eAXvAOjAXfan9Z0TP3k39ax9fGPcZsS
-	nJxPQ8SILGsE1UW1naXxqKluElbEzyiSn4Nll6UCn32BxQWOO7X9I4UQMpXfgG7gVMYtuGimVXQ
-	EdidrxADJYkSH9PQllVdMSUBHbSpBHP1xib3mlabhxdh02WUgKromh3TX/ubYQo12DZdr8K/X1r
-	Y52FdDeHuU=
-X-Received: by 2002:a05:6402:52c1:b0:6aa:1d41:628 with SMTP id 4fb4d7f45d1cf-6aac8ecf666mr2384920a12.7.1790268754290;
-        Thu, 24 Sep 2026 09:52:34 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aae3a9924asm37248a12.30.2026.09.24.09.52.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 09:52:33 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: "Daniel Zahka" <daniel.zahka@gmail.com>
-Cc: <netdev@vger.kernel.org>,  "Alexei Starovoitov" <ast@kernel.org>,
-  "Jakub Kicinski" <kuba@kernel.org>,  "Kuniyuki Iwashima"
- <kuniyu@google.com>,  "Paolo Abeni" <pabeni@redhat.com>,  "Stanislav
- Fomichev" <sdf@fomichev.me>,  <bpf@vger.kernel.org>,
-  <kernel-team@cloudflare.com>,  "Daniel Borkmann" <daniel@iogearbox.net>,
-  "John Fastabend" <john.fastabend@gmail.com>,  "Andrii Nakryiko"
- <andrii@kernel.org>,  "Eduard Zingerman" <eddyz87@gmail.com>,  "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>,  "Martin KaFai Lau"
- <martin.lau@linux.dev>,  "Song Liu" <song@kernel.org>,  "Yonghong Song"
- <yonghong.song@linux.dev>,  "Jiri Olsa" <jolsa@kernel.org>,  "Emil
- Tsalapatis" <emil@etsalapatis.com>,  "David S. Miller"
- <davem@davemloft.net>,  "Eric Dumazet" <edumazet@google.com>,  "Simon
- Horman" <horms@kernel.org>,  "Jesper Dangaard Brouer" <hawk@kernel.org>,
-  "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,  "Florian Westphal"
- <fw@strlen.de>,  "Jack Wang" <163wangjack@gmail.com>
-Subject: Re: [PATCH net-next v2 03/14] bpf: Make BPF skb extension survive
- packet scrubbing
-In-Reply-To: <DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com> (Daniel Zahka's message of
-	"Wed, 23 Sep 2026 13:46:28 -0400")
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
-	<20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com>
-	<DLMVTU0WA4OA.BWWVXT5BYT8V@gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Thu, 24 Sep 2026 18:52:32 +0200
-Message-ID: <87fqyypp67.fsf@cloudflare.com>
+        bh=H7p/7arhw4fENNL3I9usSe+ODbWZbM+M8BPItKrFIF8=;
+        b=Igi6AMOdtiz6j4+E6VmhM3B0nvSFEMqJIHXd1TDqe5pskde6eBApEnhIJMK7XdUV/t
+         Zg4rx8STdGZisGkGgw6Pa5YUJaHbBURm2dycGql30oM519svebyY1psNpc+S6b6MHeTi
+         LoNeJJIBE3BBSIUGoHBXIRZEdFNFTgO+5UtiApwVG8eiwKqLqK2RIGVUL/NEAcCscb+s
+         HojxBfI2tUUYxow2nuTBAj15c3DQ5DVVtWia4NkNGaedAqgJfRnTDF4IOvth9EIE0Ao0
+         dNxLiDXCojSchHNIdx/kuWKwSV2/irIxbrIZiF8HGdAX/wsF2cfWQylQZItKv/oEaJkl
+         IAIA==
+X-Forwarded-Encrypted: i=1; AKwUvByi7HmlvbwLXyXkis+TdaMkJNXl3UPLaocTKx8G/kKUSXL24RQkDt5hz1vUjhnUeP+3VdhaRKk=@vger.kernel.org
+X-Gm-Message-State: AFuF++lhsraH2KwPpjlBIb4CQR5ONrxBxDoXciG9aPZlZhjDUEhAZZbI
+	DUm0ZQeBu9D5fCHFly3YgUmUHW2tMJOdMnTKGLVng+Y39Wipuav7dLRh
+X-Gm-Gg: AYBFou0k62PMHuxQQPJFKD0vw4nkZV1+/jBWy6LYL4xkpwHiz2bAYiz/khvDzFaZLd3
+	af0eD6ojNcELYHi4ZcpjlVbTNCaZVGj3AC15oiMhvBbMIbOjZMB0MTe6iQH3ON18pEJ4pT/5jgj
+	doARF7ZMr2A0vK4VYGngg8B16fHyRGwtJ2JDGksVBkjBR/12E3Jc9aXzOnizJfSAuwSPSMR3SwQ
+	hcp5RzmrWqqBF7iS2q+vpwaEGao1K3Unqpmrj8nj+x8lD+4XpEiLILAF09DAwqkQYvW+gHDrWv2
+	49hDT+/MdasB+MCRyXijZlnN6kpJ2LaHmB+O50fumaFm6g4M2C/xmg6pIUv9ckPoctEOH9B5WnN
+	jLwE8DQxHetKIGAr0FfKoed6OnciqQKZGO3M7s6Bx54FrRhYiN9FZ9zOQjEBUoDpNG/hjccvYhn
+	h9noazJEuRmYp4rvY7QC1h65KsBC4iSTFGUD/uLvPho5abMF3DOmaeLrZDXJhodidXusI5gu4bU
+	uA=
+X-Received: by 2002:a05:622a:288:b0:532:d54d:5b34 with SMTP id d75a77b69052e-532feb60341mr30517451cf.57.1790268788761;
+        Thu, 24 Sep 2026 09:53:08 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb364154sm46019211cf.22.2026.09.24.09.53.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 09:53:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 12:53:07 -0400
+Message-Id: <DLNPBJ3BV10C.26KWSF0WJ9FAK@gmail.com>
+Cc: <davem@davemloft.net>, <kuba@kernel.org>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <andrew+netdev@lunn.ch>,
+ <dzahka@meta.com>, <john.fastabend@gmail.com>, <sd@queasysnail.net>,
+ "Willem de Bruijn" <willemb@google.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net] tcp: prevent collapsing skbs across boundary in rtx
+ queue
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
+ <netdev@vger.kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
 
-Hi Daniel,
-
-On Wed, Sep 23, 2026 at 01:46 PM -04, Daniel Zahka wrote:
-> On Thu Sep 10, 2026 at 10:02 AM EDT, Jakub Sitnicki wrote:
->> skb_scrub_packet() drops all skb extensions unconditionally via
->> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rcv,
->> etc.) and cross-netns forwarding (dev_forward_skb).
->>
->> This makes it impossible for a BPF program to pass metadata via bpf_skb_=
-ext
->> through a tunnel or across a netns boundary. The extension is always lost
->> at the scrub point.
->>
->> Introduce skb_ext_scrub(), a selective variant of skb_ext_reset(). It
->> deletes every extension except SKB_EXT_BPF. Scrubbing is safe when the
->> extension slab is shared with clones: deleting an extension only clears =
-the
->> per-skb active_extensions bit, and the shared slab payload is released
->> lazily by __skb_ext_put() once the last reference goes away.
->>
->> Replace the skb_ext_reset() call in skb_scrub_packet() with skb_ext_scru=
-b()
->> and also switch udp_try_make_stateless() to skb_ext_scrub() as well, so =
-the
->> BPF metadata survives queueing onto a UDP socket receive queue and stays
->> readable there (e.g. for a sockmap verdict program). Only mark the skb
->> stateless when no extension survives the scrub. Otherwise skb_consume_ud=
-p()
->> would take the __consume_stateless_skb() fast path, which skips
->> skb_release_head_state(), and leak the extension slab.
->>
->> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
->> ---
+On Thu Sep 24, 2026 at 11:44 AM EDT, Willem de Bruijn wrote:
+> From: Willem de Bruijn <willemb@google.com>
 >
-> Hello Jakub,
-> What are your current plans for this series? This commit solves the same
-> problem I have with wanting to preserve the PSP skb extension across
-> netns forwarding.
+> tcp_write_collapse_fence() sets TCP_SKB_CB(skb)->eor =3D 1 on
+> tcp_write_queue_tail(sk) to prevent skbs queued after a switch to
+> device encryption from being collapsed into earlier skbs.
+>
+> The fence is a no-op if all earlier data has already been transmitted
+> when the switch happens: sk->sk_write_queue is empty. The not yet
+> acknowledged earlier skbs wait in sk->tcp_rtx_queue with eor 0.
+>
+> On a subsequent retransmit or SACK shift, tcp_retrans_try_collapse() or
+> tcp_shift_skb_data() can then merge an skb queued after the switch into
+> one queued before it.
+>
+> Both users of the fence are affected:
+>
+> - psp: devices only encrypt skbs with skb->decrypted set. The merged skb
+>   keeps decrypted =3D 0 from the earlier skb, so merged data sent after
+>   psp_sock_assoc_set_tx() is retransmitted in cleartext.
+>
+> - tls device offload: the merged skb straddles the start marker set in
+>   tls_set_device_offload(). The software fallback (fill_sg_in() returns
+>   -EINVAL) and the mlx5, nfp and funeth drivers cannot handle such an
+>   skb and drop it. Every retransmit rebuilds the same skb, so the
+>   connection stalls.
+>
+> Fix this in two places, for defense in depth:
+>
+> 1. Fall back to tcp_rtx_queue_tail(sk) in tcp_write_collapse_fence()
+>    when tcp_write_queue_tail(sk) is NULL.
+>
+> 2. Check !skb_cmp_decrypted(to, from) in tcp_skb_can_collapse(), as
+>    tcp_skb_can_collapse_rx() does on receive. skb_shift(), which both
+>    collapse paths call, already has a DEBUG_NET_WARN_ON_ONCE() for this
+>    condition.
+>
+> Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> ---
 
-I've implemented Alexei's idea of skb-lifecycle tracepoints that run
-only when an skb is marked/traced. Currently putting final touches on it
-before sending it out for the first round of feedback. You can take
-sneak peek at it on GH [1] to see if it meets your needs.
-
-The CPU overhead is lower compared to the skb extension, at least in my
-local runs, and the kernel changes are simpler, so it seems like a win
-overall:
-
-|                  | gated skb tps    | bpf skb ext      |
-|------------------|------------------|------------------|
-| **busy**         | **+5.44 =C2=B1 3.16** | **+8.01 =C2=B1 4.75** |
-| sys              | +2.62 =C2=B1 2.06     | +3.67 =C2=B1 2.76     |
-| soft             | +2.89 =C2=B1 1.43     | +3.83 =C2=B1 2.10     |
-| ns/pkt @146k pps | **+=E2=89=88 373**       | **+=E2=89=88 549**       |
-
-I'll be giving an update on it at LPC [1], if you're attending, and of
-course will keep you posted here on the ML.
-
--jkbs
-
-[1] https://github.com/jsitnicki/linux/commits/gated-skb-tracepoints-2026-0=
-9-24/
-[2] https://lpc.events/event/20/contributions/2549/
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
