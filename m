@@ -1,85 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2255B481A82;
-	Thu, 24 Sep 2026 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D6F48986B;
+	Thu, 24 Sep 2026 13:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790256166; cv=none; b=AlejZkJhWzEmWzf3qivZPWbdJosy/tnH3vABRSd5Y2Cp4UzwTHAPrJ+3sKb3GS7iRQEYuNV0L09MJE0nAvQv7v9vhdhlmWcNi+3NR77ai/VFju7NUlqQYqiu53FU8LHSK9Y9SeW4XslRMrUCg5/kDN2aPAvzphUAqtjMQaNO4Ok=
+	t=1790256580; cv=none; b=ciET3iconjVNLvlP6EH0mzyQCxGd5ObnrMecdsh3ZEliXwy+uAXK6WUOu6JnMAgChsifEvz/FcCV5mp9Q8+XIkZdwVaGrWWX9xYBrlbx/d+fSztrhapes487IX03qndxfOkzWRjnMOS8tjxEyzR1iwiieXeTJG0L8uRZfmf551o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790256166; c=relaxed/simple;
-	bh=dkEL60393E0ZzazZywJe+lyi+Vltu1yXMdwDBDgjVxk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Cq6ty1ojz6NCSkYwc5ICYKWfm8b5fJDl9ULBrv/CpNp5ERz/IDf7VQ9udeUp3jkKvB1sLZzyc/VBe+HFLZCI1SE1FkzzNduwceeu0dWF1f8fJV5eI0XdsXkSJMwNdmB5eVivYkwKwR4MPs0TIGw+g8MR89/nOcFukj5AWyZkm0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZfOETb2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790256580; c=relaxed/simple;
+	bh=Wn0h0nC/v6/vZwYyh+YABKKYnd3PJ8mwkZdXdeLwO0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f2+UkYemCXP+3Lk3lZMjnpi+0q/gv58ndlnCDX18Pdp/+VvSAMmtviNRHj+3W5RA3zE/olLHo019ae3CrgawVJB4NHK7Oz+1Gw9mw0U7nn+kARA341OylDIJ6/Asb1qfXwair7VVsN6hpCm3fsIxHFGjAp1HtkvIgOwIukSrQqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk1XZmo6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZfOETb2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A1A1F000FF;
-	Thu, 24 Sep 2026 13:22:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk1XZmo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABABA1F000FF;
+	Thu, 24 Sep 2026 13:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790256156;
-	bh=SHpt2jVFN/qdekEkmimqeG5JdQHSbSzkpyGv9+E8uoo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oZfOETb2gikgLRADb/1hCwIv8Sw+6KPFrA+zR/m5QqwF1CXsEm4OyrLqRrrCeoW0o
-	 9K23ZF8k0QpGsb++Tuv0wG8ypJjxzXcCcOp2sbj3b9mER1w0ChpB++ELUW0nvBjGpN
-	 rcppKT30mVfPcTJ5OmBC2jcsRebxt3dO6aWQ8XgvcqmYWf/moury2qeERbtmvg+sOh
-	 3Lh1B8IkqejW96lKbwtaQbW2wj1TNm2d9P6OfqhuR5AJ7xmUabOXfTbQqDGRusAyM1
-	 /FTxLEWUE0tTn4F9otgO6Q3+9YHID1Nht1YJnSoh03kBidHuyr7rdMce+7AFkLiDTA
-	 FHH/4dGltq/hw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197A839F38C4;
-	Thu, 24 Sep 2026 13:21:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790256569;
+	bh=67y9kaimjq2VniwiKCMsp2XrFz2PUat4wCUfkM8Rkeo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Zk1XZmo6es6B2zCBtqV6RxhHUZZsHXE6DUuDA5K67pSDuVndyy+xpfJd3mPO3P0dV
+	 hHkKhUyB9kPa9surDnpm9sCcJKBYd7t2y0O41oktqo90Piwy3UynTdsew7AJjhQ/pE
+	 1cLgDrGftxtuzSCBbVClWva9S2zN3By8ao8CbL9rgTOhhsb0qVGY6IQ1KjM66SWxET
+	 d05diY8fZaDyN6dSPS/iJq7p2Eu3Df0gLj+b+Y20Jyb93ePQH/t4dTCnLZddbkTIx4
+	 mxl+/YwcikHh1Nv3HE09OMo3dl8pVzwUFtCCZwlTr7xGpbwhx101IDyED8mqSDxOCB
+	 xWPtzjBQ5KMbQ==
+Date: Thu, 24 Sep 2026 14:29:25 +0100
+From: Simon Horman <horms@kernel.org>
+To: Linkui Xiao <xiaolinkui@126.com>
+Cc: aleksandr.loktionov@intel.com, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: Re: [PATCH net v3] i40e: limit the DDP profile count returned by the
+ firmware
+Message-ID: <20260924132925.GF13925@horms.kernel.org>
+References: <20260922091123.506598-1-xiaolinkui@126.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] macsec: initialize SecY before registering the
- netdevice
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179025608572.1542893.3122720267052051951.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 13:21:25 +0000
-References: <20260921-fix-macsec-net-v3-1-accf94f93f5e@gmail.com>
-In-Reply-To: <20260921-fix-macsec-net-v3-1-accf94f93f5e@gmail.com>
-To: Haseeb Malik <haseebulhaq55@gmail.com>
-Cc: sd@queasysnail.net, netdev@vger.kernel.org, davem@davemloft.net,
- linux-kernel@vger.kernel.org, edumazet@google.com, horms@kernel.org,
- kuba@kernel.org, andrew+netdev@lunn.ch, hangbin.liu@linux.dev,
- pabeni@redhat.com, syzkaller-bugs@googlegroups.com,
- felix.walter@cloudandheat.com,
- syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922091123.506598-1-xiaolinkui@126.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Mon, 21 Sep 2026 16:40:30 -0400 you wrote:
-> From: Haseeb Malik <haseebulhaq55@gmail.com>
+On Tue, Sep 22, 2026 at 05:11:23PM +0800, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
 > 
-> Creating a MACsec device with MAC offload over an LRO-capable lower
-> device triggers a warning in rtmsg_ifinfo_build_skb() when IPv4
-> forwarding is enabled by default.
+> i40e_aq_get_ddp_list() writes into a I40E_PROFILE_LIST_SIZE buffer, which
+> is sized for I40E_MAX_PROFILE_NUM (16) i40e_profile_info entries plus the
+> 4 byte p_count header. i40e_ddp_does_profile_exist() and
+> i40e_ddp_does_profile_overlap() then loop over profile_list->p_count
+> without bounding it, so a firmware reporting more than 16 profiles makes
+> both helpers walk past the end of the on-stack buff[] and compare against
+> whatever happens to follow it on the stack.
 > 
-> register_netdevice() invokes inetdev_init(), which disables LRO and emits
-> a NETDEV_FEAT_CHANGE notification. This reaches macsec_fill_info() before
-> macsec_add_dev() initializes the SecY. key_len is still zero, so
-> macsec_fill_info() returns -EMSGSIZE and trips the WARN_ON in
-> rtmsg_ifinfo_build_skb(), even though the skb has enough space.
+> The same buffer is handed to the firmware as an indirect admin queue
+> buffer, and the admin queue code copies all of it into the DMA bounce
+> buffer before submitting the command, so its uninitialized contents were
+> visible to the device as well.
 > 
-> [...]
+> Zero initialize buff[] and reject the list when the firmware reports more
+> profiles than the buffer can hold, instead of answering from a list that
+> was only partially read. Both helpers already report errors to
+> i40e_ddp_load(), which aborts the operation.
+> 
+> Fixes: cdc594e00370 ("i40e: Implement DDP support in i40e driver")
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+> ---
+> Changes in v3:
+> - Zero initialize buff[] in both helpers: the whole buffer is copied into
+>   the admin queue DMA bounce buffer and copied back afterwards, so its
+>   contents were exposed to the device, and entries the firmware never
+>   wrote were compared against. (Sashiko AI review)
+> - Reject the list when the firmware reports more profiles than buff[] can
+>   hold, instead of silently clamping the scan and then answering from a
+>   list that was only partially read. (Sashiko AI review)
+> - Dropped the Reviewed-by tag, as the code changed after the review.
 
-Here is the summary with links:
-  - [net,v3] macsec: initialize SecY before registering the netdevice
-    https://git.kernel.org/netdev/net/c/c2de369c5c5b
+Thanks for the updates.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
