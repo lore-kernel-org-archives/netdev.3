@@ -1,134 +1,139 @@
-Received: from mx.prosyst.ru (m2.prosoftsystems.ru [46.48.77.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4947F2EE;
-	Thu, 24 Sep 2026 10:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.48.77.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C2D47FAE8;
+	Thu, 24 Sep 2026 10:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790246682; cv=none; b=gby83O2ZJT0zAZbcr082gX2QsbTljwmLxAe5hGcVwquoPj7ONFuzZiVM0FZ6A/5WxXJ9HvR+UMkd+Poyb2p0f+5d4B2xrERZKIpzvlfAeQA4DhG9YtaonNNcvhHO74uTv07dtu2CNM3BArPOwpukjaXBqwrVdQ4a7TyQOuHFX+M=
+	t=1790246686; cv=none; b=WuhFT37WcLB/TMMK+EBV3rycnrvQXQ4cuSQJmX6yWFii5koScbpcrpEsc4sBg5+xOksRtSk/h67nv8x/tr5dml3nN71YZRSlM6Gk4IErz1CG6WRhYFdYEPGtWy+mLWnRYUL5xNbVn/1ShBDwkepd9fNjDE5UHFqbK3C6X9LPxww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790246682; c=relaxed/simple;
-	bh=ah7fac/CqEsIFTs9480NqRMvP6wgFIPSujmju1CCtXY=;
-	h=Content-Type:From:To:CC:Subject:Date:Message-ID:References:
-	 In-Reply-To:MIME-Version; b=CRpQ8gUpBL8xVjZMG0UppeN1kT78d/t9w4qv0edIMVjNQx3xMZvJnNnDmxeiD7XAF+D8d1DmsZhNZHqi6DiWAJuv73yMfJLbtp5pj6W4c5/kU1yD/CLdDvF9FsoKeLmw5uWf9EtVgNJHzXHCM4t0M7biNKTWDiXGLR19X8baTr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru; spf=pass smtp.mailfrom=prosoftsystems.ru; dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b=i2srl6/4; arc=none smtp.client-ip=46.48.77.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prosoftsystems.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prosoftsystems.ru
+	s=arc-20240116; t=1790246686; c=relaxed/simple;
+	bh=CQvwkh5BoBqOptC3jmeHHr75AY7Ra5g3ZWNC1CyfAPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rNIdm++/3uSvrVSx88p4ILQ+SLsLeUlFSnGpo7VSpGx6RgDmerwog9Vkgc7+vxvs6FMuPvFwbj4t4NT5HOZFzjWcPUV/vAAgg8KQk7Ph0XBlCPEiW3IwSXxobdeWLwIRjIpjXPYBg0ZSw+KctSL7otBkWQ8Yx2EUgmqk7PFLp8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=dle3YnZ+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=D3fAX2wf; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=prosoftsystems.ru header.i=@prosoftsystems.ru header.b="i2srl6/4"
-Content-Language: ru-RU
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-DKIM-Signature: v=1; a=rsa-sha256; d=prosoftsystems.ru; s=ps;
-	c=relaxed/relaxed; t=1790246668; h=from:to:date:message-id:subject;
-	bh=ah7fac/CqEsIFTs9480NqRMvP6wgFIPSujmju1CCtXY=;
-	b=i2srl6/4aOLKVL9wqxtiiYJIHMfgbdktFCqvL5mePOOqPqX5kr2QrKbU/JQA4l0FoNQ4l0ko2ab
-	ba57sywM1tjN7UNmjCtv/yxzIzdbO4+jXulYyhy9NMh09DLvkRtGKL2E7w4BCIzyJW+83/sDeGabu
-	O18EvFIqfjkgUGZPVu2sBh1vqJ7fFIVyT9IXFnVMkOydU2r7JacEpRoWy64kL4+lIihaQdDp0NuUC
-	cBRGpOFmsc6Ks6hOEHebGAUXgFSrHnpg4uTqMMwpr561wWOktLHD32MhIhNHFtV1YeM8FO48Xbcil
-	+3JtkyobJ8HQw9eYcvFb5ZtE2XHsCdVXOSBw==
-Received: from ECHO-3.prosoft.ural.ru (172.25.100.229) by mx.prosoftsystems.ru
- (172.21.240.33) with Microsoft SMTP Server (TLS) id 15.1.396.30; Thu, 24 Sep
- 2026 15:44:28 +0500
-Received: from echo-2.prosoft.ural.ru (172.21.245.22) by
- ECHO-3.prosoft.ural.ru (172.25.100.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.39; Thu, 24 Sep 2026 15:44:26 +0500
-Received: from echo-2.prosoft.ural.ru ([::1]) by echo-2.prosoft.ural.ru
- ([fe80::c1a2:90f7:8820:c669%17]) with mapi id 15.02.1748.039; Thu, 24 Sep
- 2026 15:44:26 +0500
-From: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
- =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
- =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Denis Benato
-	<benato.denis96@gmail.com>, Jacob Keller <jacob.e.keller@intel.com>, "Petr
- Machata" <petrm@nvidia.com>,
-	=?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
-	<u.kleine-koenig@baylibre.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH net 3/3] net: fealnx: allocate the card index from an IDA
-Thread-Topic: [PATCH net 3/3] net: fealnx: allocate the card index from an IDA
-Thread-Index: AQHdTBGr0SioaCPvUE6nXjxP0Z9hYQ==
-Date: Thu, 24 Sep 2026 10:44:25 +0000
-Message-ID: <20260924104231.110576-3-r.zhambakiev@prosoftsystems.ru>
-References: <20260924104231.110576-1-r.zhambakiev@prosoftsystems.ru>
-In-Reply-To: <20260924104231.110576-1-r.zhambakiev@prosoftsystems.ru>
-Accept-Language: ru-RU, en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="dle3YnZ+";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="D3fAX2wf"
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2A7357A00AD;
+	Thu, 24 Sep 2026 06:44:42 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Thu, 24 Sep 2026 06:44:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1790246682; x=
+	1790333082; bh=2pYdRHz16MeVkko3MZGz6tzvnD2/4VNwL82lLyG4YqY=; b=d
+	le3YnZ+RjDgnJMmSgj6mQJD33q+GZMF6YnLVrMCRuFpnGnGD+HhvkB7xTt1/RHId
+	6wYFYAiJr4NST8Qt8bfok0JnG3teovdHL35fyg/ZCGd06ytmL3ik8c/CU7XOFUNU
+	vxJCJQu2+ainCTEPInBekBX0tiHvkJcYROlDTgZumoPksYDMEKfgoJ9NoeKWYbil
+	0xbT0MTjhf3Os6vZ4Q9D+cokV+tfy6/v+3pvQ4jLNb1l4fMutOQvuu4CM6d/efzm
+	n1niAruNnZ84R90rZzqraNBPBWv77VRXwJqi4kMCEVGUSPmKNFZ/GHjjLKbUb6sS
+	W9JLTvN4T1EY1mveSLenA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790246682; x=1790333082; bh=2pYdRHz16MeVkko3MZGz6tzvnD2/4VNwL82
+	lLyG4YqY=; b=D3fAX2wfMVGIPKQIL79/QGbDv4q5KG82YDhSAw9+Wok/VHf6v7e
+	irWil+KhRiEccnB7AF+2lEab+W5JNGmL5BR61s1Xl4Ao+0liDTbudL/+eHFEPDFZ
+	wwmhaGjpFGjyTd0AUDxVP9a2AWGMOkkVXYreu0N3f6gQm4ZFMsMc9h2seWJf/wVd
+	38YB0uEXgSGtAJtYWxKHSUhsFdFegetzeNtIgnd1SoPxPqc++ftKlVzpbCFm3Ifz
+	4HZYCpNDiaOBXtGYlJXKaoLMI66wFC8N1kRRyVb+Jqq5KO9TutaH375jy/wDT+9K
+	1E0bLG/wo4Hs7u85VFnShQlMwVhpsg+bNjA==
+X-ME-Sender: <xms:GP-0anR3IgnZGmF7SBC4-vnZwju-GFg8loFUNg6DfGf26dDq1Romrg>
+    <xme:GP-0akvTM9stM5qvprPjxarLjm16-9G4_fvpDQbdCBsDvcWy9aoLsaIhp4cD98Co3
+    BDmyFSdf8lV_T8HtqTMG3PgmPB-SLCWxoMufi8IUM9uwwTv1EJVeRom>
+X-ME-Received: <xmr:GP-0ai_163r4KNfrBPwoLaWMfEERLL0eZ1WRx2cAFMfus1mp0pOrJiJ58tbD>
+X-ME-Proxy-Cause: dmFkZTGJMECWZhmiH3U0xi2HTX13DSCC2vekGqn1EXXXdBRS9zoHf3nJFjAr4qzg933TeX
+    ReNQueoOdiZFep1TXS6JC+dNuykmciug+Zsi7xUl0RyAwWv57uh/yQRUKiQTONsBIik00O
+    0CRz5slM/U7uMWOEQEd530APzHAPynAwfuKRwugds5+oZl1RTEKDQebSJ933W/ey6HFkvu
+    RUJ1fcspTYSEA5aZ94x0pisGJlBYoKAWDWgVhzh5krjleFkiKWZs/aKXhl0X6LkxGEGxoa
+    9ZW/aPKqkSp9QcCXqyAB59VRAieDxcNQ/dEtBWjXZBjDRAVzj4zJP6OSTZCeTDD1TB5kaf
+    lqjbbIVdupI9uGajAu/LhvanwZ7XX3UuNQKLvRFbDx6G9Gxa+z404xty/ZxAd1d2gYILyc
+    y60hcRnSylKmx71R0vosbkm7w1EwCnnvgUrmFE+kI9qeSVw8hOCCTGJnZkeB6s/S4txWkh
+    sieNraLhrOC+dgQRnPEh1TsElx7cVh7NCki6LttofyEgWzmlrnLnZb5G2crwoPfPV8rXfg
+    yPIGCBuqCCOJkhjsAO4ymdKevsQvluHYrGnyja9xxRE7Bi3Zta9AK0dqRW/TqdPX06DGhW
+    MLjbajFadZ5jYYpTz46rXoHVj+o1URS4hL5Jf13x6u+rqVBZpDjnmcNrRBtQ
+X-ME-Proxy: <xmx:GP-0atZ3uUBNZlh_eEnGWwI-p_pVOSIioq8i1k00NcGSeUzemFkIkw>
+    <xmx:GP-0aur8qUqAglKpNMlhnjCOyZPGvu3_M0RQye6injjCzBiWawqvAQ>
+    <xmx:GP-0alaHezSp6M7P3EkC-N0R1eb4Z7DV_uRew-2Bdy_LYkAJgpgk-Q>
+    <xmx:GP-0ah4DF_a5CO5AkPE1yjn-9PcuIb4jSLLhYYE8YueALIQAbBNOFQ>
+    <xmx:Gv-0ahgNGTIL4ejuZXuSQDd0pwYZMDzNGqzgQIxvUk-NW6wAiT8cDM3j>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Sep 2026 06:44:39 -0400 (EDT)
+Date: Thu, 24 Sep 2026 12:44:38 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Antony Antony <antony.antony@secunet.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Jamal Hadi Salim <hadi@cyberus.ca>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, Yan Yan <evitayan@google.com>,
+	Tobias Brunner <tobias@strongswan.org>,
+	Florian Westphal <fw@strlen.de>, linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH ipsec v2 1/6] xfrm: state: exact mark/mask match for
+ SPI-keyed control-plane SA lookups
+Message-ID: <arTzfowpbZXFIBGx@krikkit>
+References: <migrate-state-fixes-v2-0-c3e2767f0d96@secunet.com>
+ <migrate-state-fixes-v2-1-c3e2767f0d96@secunet.com>
+ <arEw6qLcr_YEI8Wl@krikkit>
+ <arGTH94PM_oswTpF@bern>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <arGTH94PM_oswTpF@bern>
 
-RnJvbTogUmFkaXkgWmhhbWJha2lldiA8ci56aGFtYmFraWV2QHByb3NvZnRzeXN0ZW1zLnJ1Pg0K
-DQpjYXJkX2lkeCBpcyBhIHN0YXRpYyBjb3VudGVyIHRoYXQgaXMgaW5jcmVtZW50ZWQgb24gZXZl
-cnkgcHJvYmUuDQpJdCBjYW4gb3ZlcmZsb3cgYW5kIHdyYXAgdG8gYSBuZWdhdGl2ZSB2YWx1ZSwg
-d2hpY2ggdGhlbiBpbmRleGVzDQpvcHRpb25zW10gYW5kIGZ1bGxfZHVwbGV4W10gb3V0IG9mIGJv
-dW5kcy4gTGFyZ2UgdmFsdWVzIGFsc28gbm8NCmxvbmdlciBmaXQgaW4gdGhlIDEyLWJ5dGUgYm9h
-cmRuYW1lW10gYnVmZmVyLg0KDQpBbGxvY2F0ZSB0aGUgY2FyZCBpbmRleCBmcm9tIGFuIElEQSBh
-bmQgZnJlZSBpdCBvbiBwcm9iZSBmYWlsdXJlIGFuZA0KcmVtb3ZlLiBUaGUgSURBIHJldXNlcyBp
-ZHMgb24gcmUtYWRkLCBwcmVzZXJ2aW5nIHRoZSBvcHRpb25zW10gYW5kDQpmdWxsX2R1cGxleFtd
-IG1hcHBpbmcgYnkgcHJvYmUgb3JkZXIuDQoNClN0b3JlIHRoZSBpZCBpbiB0aGUgZHJpdmVyLXBy
-aXZhdGUgZGF0YSBzbyBmZWFsbnhfcmVtb3ZlX29uZSgpIGNhbg0KZnJlZSBpdCwgYW5kIHNpemUg
-Ym9hcmRuYW1lIHRvIGhvbGQgYSBmdWxsIDMyLWJpdCBpZC4NCg0KRm91bmQgYnkgTGludXggVmVy
-aWZpY2F0aW9uIENlbnRlciAobGludXh0ZXN0aW5nLm9yZykgd2l0aCBTVkFDRS4NCg0KRml4ZXM6
-IDFkYTE3N2U0YzNmNCAoIkxpbnV4LTIuNi4xMi1yYzIiKQ0KQ2M6IHN0YWJsZUB2Z2VyLmtlcm5l
-bC5vcmcNClNpZ25lZC1vZmYtYnk6IFJhZGl5IFpoYW1iYWtpZXYgPHIuemhhbWJha2lldkBwcm9z
-b2Z0c3lzdGVtcy5ydT4NCi0tLQ0KIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ZlYWxueC5jIHwgMjIg
-KysrKysrKysrKysrKysrKystLS0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCsp
-LCA1IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvZmVh
-bG54LmMgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYw0KaW5kZXggNDZhNDBkMDBiNTlh
-Li5jNDc0ZGQ1YWM0YzYgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbngu
-Yw0KKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvZmVhbG54LmMNCkBAIC04Myw2ICs4Myw3IEBA
-IHN0YXRpYyBpbnQgZnVsbF9kdXBsZXhbTUFYX1VOSVRTXSA9IHsgLTEsIC0xLCAtMSwgLTEsIC0x
-LCAtMSwgLTEsIC0xIH07DQogI2luY2x1ZGUgPGxpbnV4L2NyYzMyLmg+DQogI2luY2x1ZGUgPGxp
-bnV4L2RlbGF5Lmg+DQogI2luY2x1ZGUgPGxpbnV4L2JpdG9wcy5oPg0KKyNpbmNsdWRlIDxsaW51
-eC9pZHIuaD4NCiANCiAjaW5jbHVkZSA8YXNtL3Byb2Nlc3Nvci5oPgkvKiBQcm9jZXNzb3IgdHlw
-ZSBmb3IgY2FjaGUgYWxpZ25tZW50LiAqLw0KICNpbmNsdWRlIDxhc20vaW8uaD4NCkBAIC0xNDMs
-NiArMTQ0LDggQEAgc3RydWN0IGNoaXBfaW5mbyB7DQogCWludCBmbGFnczsNCiB9Ow0KIA0KK3N0
-YXRpYyBERUZJTkVfSURBKGZlYWxueF9pZGEpOw0KKw0KIHN0YXRpYyBjb25zdCBzdHJ1Y3QgY2hp
-cF9pbmZvIHNrZWxfbmV0ZHJ2X3RibFtdID0gew0KIAl7ICIxMDAvMTBNIEV0aGVybmV0IFBDSSBB
-ZGFwdGVyIiwJSEFTX01JSV9YQ1ZSIH0sDQogCXsgIjEwMC8xME0gRXRoZXJuZXQgUENJIEFkYXB0
-ZXIiLAlIQVNfQ0hJUF9YQ1ZSIH0sDQpAQCAtNDExLDYgKzQxNCw4IEBAIHN0cnVjdCBuZXRkZXZf
-cHJpdmF0ZSB7DQogCXVuc2lnbmVkIGNoYXIgcGh5c1syXTsJLyogTUlJIGRldmljZSBhZGRyZXNz
-ZXMuICovDQogCXN0cnVjdCBtaWlfaWZfaW5mbyBtaWk7DQogCXZvaWQgX19pb21lbSAqbWVtOw0K
-Kw0KKwlpbnQgY2FyZF9pZHg7DQogfTsNCiANCiANCkBAIC00NzMsOSArNDc4LDggQEAgc3RhdGlj
-IGludCBmZWFsbnhfaW5pdF9vbmUoc3RydWN0IHBjaV9kZXYgKnBkZXYsDQogCQkJICAgY29uc3Qg
-c3RydWN0IHBjaV9kZXZpY2VfaWQgKmVudCkNCiB7DQogCXN0cnVjdCBuZXRkZXZfcHJpdmF0ZSAq
-bnA7DQotCWludCBpLCBvcHRpb24sIGVyciwgaXJxOw0KLQlzdGF0aWMgaW50IGNhcmRfaWR4ID0g
-LTE7DQotCWNoYXIgYm9hcmRuYW1lWzEyXTsNCisJaW50IG9wdGlvbiwgZXJyLCBpcnEsIGk7DQor
-CWNoYXIgYm9hcmRuYW1lWzE4XTsNCiAJdm9pZCBfX2lvbWVtICppb2FkZHI7DQogCXVuc2lnbmVk
-IGxvbmcgbGVuOw0KIAl1bnNpZ25lZCBpbnQgY2hpcF9pZCA9IGVudC0+ZHJpdmVyX2RhdGE7DQpA
-QCAtNDgzLDIwICs0ODcsMjQgQEAgc3RhdGljIGludCBmZWFsbnhfaW5pdF9vbmUoc3RydWN0IHBj
-aV9kZXYgKnBkZXYsDQogCXZvaWQgKnJpbmdfc3BhY2U7DQogCWRtYV9hZGRyX3QgcmluZ19kbWE7
-DQogCXU4IGFkZHJbRVRIX0FMRU5dOw0KKwlpbnQgY2FyZF9pZHg7DQogI2lmZGVmIFVTRV9JT19P
-UFMNCiAJaW50IGJhciA9IDA7DQogI2Vsc2UNCiAJaW50IGJhciA9IDE7DQogI2VuZGlmDQogDQot
-CWNhcmRfaWR4Kys7DQorCWNhcmRfaWR4ID0gaWRhX2FsbG9jKCZmZWFsbnhfaWRhLCBHRlBfS0VS
-TkVMKTsNCisJaWYgKGNhcmRfaWR4IDwgMCkNCisJCXJldHVybiBjYXJkX2lkeDsNCisNCiAJc3By
-aW50Zihib2FyZG5hbWUsICJmZWFsbnglZCIsIGNhcmRfaWR4KTsNCiANCiAJb3B0aW9uID0gY2Fy
-ZF9pZHggPCBNQVhfVU5JVFMgPyBvcHRpb25zW2NhcmRfaWR4XSA6IDA7DQogDQogCWVyciA9IHBj
-aV9lbmFibGVfZGV2aWNlKHBkZXYpOw0KIAlpZiAoZXJyKQ0KLQkJcmV0dXJuIGVycjsNCisJCWdv
-dG8gZXJyX291dF9pZGE7DQogCXBjaV9zZXRfbWFzdGVyKHBkZXYpOw0KIA0KIAlsZW4gPSBwY2lf
-cmVzb3VyY2VfbGVuKHBkZXYsIGJhcik7DQpAQCAtNTM2LDYgKzU0NCw3IEBAIHN0YXRpYyBpbnQg
-ZmVhbG54X2luaXRfb25lKHN0cnVjdCBwY2lfZGV2ICpwZGV2LA0KIA0KIAkvKiBNYWtlIGNlcnRh
-aW4gdGhlIGRlc2NyaXB0b3IgbGlzdHMgYXJlIGFsaWduZWQuICovDQogCW5wID0gbmV0ZGV2X3By
-aXYoZGV2KTsNCisJbnAtPmNhcmRfaWR4ID0gY2FyZF9pZHg7DQogCW5wLT5tZW0gPSBpb2FkZHI7
-DQogCXNwaW5fbG9ja19pbml0KCZucC0+bG9jayk7DQogCW5wLT5wY2lfZGV2ID0gcGRldjsNCkBA
-IC02NzUsNiArNjg0LDggQEAgc3RhdGljIGludCBmZWFsbnhfaW5pdF9vbmUoc3RydWN0IHBjaV9k
-ZXYgKnBkZXYsDQogCXBjaV9yZWxlYXNlX3JlZ2lvbnMocGRldik7DQogZXJyX291dF9kaXNhYmxl
-Og0KIAlwY2lfZGlzYWJsZV9kZXZpY2UocGRldik7DQorZXJyX291dF9pZGE6DQorCWlkYV9mcmVl
-KCZmZWFsbnhfaWRhLCBjYXJkX2lkeCk7DQogCXJldHVybiBlcnI7DQogfQ0KIA0KQEAgLTY5OSw2
-ICs3MTAsNyBAQCBzdGF0aWMgdm9pZCBmZWFsbnhfcmVtb3ZlX29uZShzdHJ1Y3QgcGNpX2RldiAq
-cGRldikNCiAJcGNpX2lvdW5tYXAocGRldiwgbnAtPm1lbSk7DQogCXBjaV9yZWxlYXNlX3JlZ2lv
-bnMocGRldik7DQogCXBjaV9kaXNhYmxlX2RldmljZShwZGV2KTsNCisJaWRhX2ZyZWUoJmZlYWxu
-eF9pZGEsIG5wLT5jYXJkX2lkeCk7DQogCWZyZWVfbmV0ZGV2KGRldik7DQogfQ0KIA0KLS0gDQoy
-LjUzLjANCg==
+(sorry, this got caught by my mail provider's spam filter so I only
+saw it today)
+
+2026-09-21, 22:27:11 +0200, root wrote:
+> On Mon, Sep 21, 2026 at 03:28:10PM +0200, Sabrina Dubroca wrote:
+> > 2026-09-08, 08:48:45 +0200, Antony Antony wrote:
+> > > Add __xfrm_state_lookup_exact(); wire it into DELSA/GETSA
+> > 
+> > On the "other proto" branch of xfrm_user_state_lookup(), we call
+> > xfrm_state_lookup_byaddr() -> __xfrm_state_lookup_byaddr(), which
+> > still does a "loose" mark match:
+> > 
+> > 		if ((mark & x->mark.m) != x->mark.v)
+> > 			continue;
+> > 
+> > Is that ok?
+> 
+> I think so. I felt byaddr is not used and aslo since there is no unique spi
+> if touch it dragons may wake up:) most used cases with SPI.
+
+Ok.
+
+> > That's the only thing I've noticed in the series.
+> > 
+> > 
+> > I guess someone could claim that this patch changes behavior, but if a
+> > user somewhere notices it, I think that would mean they were relying
+> > on insertion order to delete/etc the right SA.
+> 
+> yes that is a risk. I tried find use cases and got nowhere. 
+> And concluded it was an oversight. Also note the
+> cover letter, "policy" had similar change a while ago.
+> No one complained yet?
+
+Yeah, I agree. Just maybe worth mentioning briefly in the commit
+message, and adding a reference the policy patch.
+
+-- 
+Sabrina
