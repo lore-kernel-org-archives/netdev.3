@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4844AF17C;
-	Thu, 24 Sep 2026 17:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342DC4B126A;
+	Thu, 24 Sep 2026 17:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269881; cv=none; b=UK0qbNA6rzzlc/O+8RM8m8ylvc0samr5RqKtcs9La+U6GCYgsR28SGneB5hssWYeW5iKoU+iSYOs3UbaU6JwkuImhJUw4g1Q2+KVCWuhJldnlImTVJ3vkEwJLctdUaCEZKxryJMsEveCaB6fvUTLutthL3ugQR3XiZ5qsZ+7tTI=
+	t=1790269883; cv=none; b=ZcFvgXzA+aoNFyAfgBilccp8E6ml3G2SeNZj4hXVJYoFtPry+c20EFxz19jSdVCqoQchcqtHYtjOh4twzyS82Po4/tUaoBDX4FAdUxXeUvddB8ROlxsyHZEyTYsGX21vXPoDbRixbZyUcjM3kjJ3YwqLV6nGlCjvupW2kO7s5Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790269881; c=relaxed/simple;
-	bh=8eVDPGbjmxuLxsVurGwaVx1bhFCgBXrxfOOz3c9XzZY=;
+	s=arc-20240116; t=1790269883; c=relaxed/simple;
+	bh=jvmqnA/+3BTpINhy4PKMZ3NxZd347SA58rqD4WOhTtE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W1UO2J3ka3frNGuXwTf89P3LPFwaLP2Ad7AB1EoBm8h865SwzRpmkaYIeYI2E96R0hANqhIcxr0jdOtueuNLk4VqvBxq/LJLvFp0tl3f8RKOPSJXGtNE5aN6faDb8BUOT0ntXHXWMzJVyDv/YdC9di0LyQSRc1IdiTeo8pIImVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWQ0noia; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=BTGUkTOJE+7b5KoOoao5GsnLiLsrNeEwrQbrW8dRryL/GPJQU8DpVWBgKTTzXkx2sXX76GVDzFSQ65wdZdJbUo1FrhaZCJo/maBxFLRt3VlgB/Dov+/gBLCfmgOk05q9MASa/Kv0tBQXWyCUjQnzXzWH3Ct6FYUNKxp6W7hBbdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGA1qXfG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWQ0noia"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691A71F0089B;
-	Thu, 24 Sep 2026 17:11:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGA1qXfG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCF21F000FF;
+	Thu, 24 Sep 2026 17:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790269880;
-	bh=8+vfo13QOebvRLT6jUfgH8h0tQsUj84ffg1IEMcd2qQ=;
+	s=k20260515; t=1790269881;
+	bh=o5TtA4PjUstn67QcIsxpKM2FkF/4kIsZSZYyqXPocVs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=MWQ0noiaqREzwNDsjOtOMTMqxYn6yWzbo4sgoUEfV9hpg8aPrfv7tOx5YGESR+IAN
-	 E/vvaPkoSEVVmA8Br6/vjPyXB3fwh6E3Zsy3wxVV2Ywe4D69k0P7l2+As9+NnWbPKT
-	 7ZfBc8fiWYMVtY9yfAdxr9wqfLWZejZQisH+pgHuGlZIq/GafJTkbgfm2/yZyDIT9y
-	 5gFF4eK7p+oU29ix8NLDM1Wtueb2J/BdD1ECoxCbMma0mGKZguREasb8pu9TgV79rP
-	 /tbqh7N5okwXjALJ4UbYu3S3Q8WN9VW8yXgfuEsWNOniDB9DUGtcVokatEbF3btRk8
-	 U2hhBu1nmQEYQ==
+	b=GGA1qXfGWig/5N+JTLVPR079cBvFjpVdD44LI7HjdAWuJs9Xh345wVn+xlqFlYl3t
+	 ShsVoZmwyl8c9y7EOdCkqAguDN1GJXP/e7VbN/6TKjxr9zOPVwYVC62LqLTVlrxqlG
+	 ZmZu0u+45Hpz9zvFG/6YXugzMyE08t5zyq7ksO2UpOMlRwgr1Omse/QMd3iHfwsY98
+	 tnbIGdNRK2PsRAoF6WzyBLKDwDM0nnC+PEw4nZt1mQbhuLMBG5xR1xh1KoPfonEXjB
+	 PTluGMliqswiwoxAxUrEf24WTMdl8ytJ7cOfYmggWjG0UCsSHDOcNBGzgWNATfxP8/
+	 ea32V4Gr65RLQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A0E3A566D8;
-	Thu, 24 Sep 2026 17:10:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197693A566D8;
+	Thu, 24 Sep 2026 17:10:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/2] net: ena: fix resource cleanup on probe failure
+Subject: Re: [PATCH net] nfp: hold IPsec RX state under the XArray lock
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179026980914.1660211.16967446500117783389.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 17:10:09 +0000
-References: <20260921154202.471662-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260921154202.471662-1-lgs201920130244@gmail.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: akiyano@amazon.com, darinzon@amazon.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ioana.ciornei@nxp.com, ekffu200098@gmail.com, dawei.feng@seu.edu.cn,
- amitbern@amazon.com, netanel@annapurnalabs.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179026981064.1660211.8740820088652989469.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 17:10:10 +0000
+References: <179001455912.44752.17153022439349797877.idr-bug-92@gmail.com>
+In-Reply-To: <179001455912.44752.17153022439349797877.idr-bug-92@gmail.com>
+To: Sang-Hoon Choi <csh0052@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, horms@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, oss-drivers@corigine.com, linux-kernel@vger.kernel.org,
+ lcy8047@gmail.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 21 Sep 2026 23:42:00 +0800 you wrote:
-> This series fixes two resource leaks in the ena_probe() error path after
-> ena_device_init() has successfully initialized device resources.
+On Tue, 22 Sep 2026 03:15:59 +0900 you wrote:
+> nfp_net_ipsec_rx() drops the XArray lock before taking a reference to the
+> xfrm_state it found. The delete path can erase the entry and drop the last
+> state reference in that interval. RX can then try to increment a zero
+> refcount after the state has been queued for destruction.
 > 
-> Patch 1 adds the missing PHC cleanup.
-> Patch 2 adds the missing MMIO read request cleanup.
-> 
-> v2:
->   - Resend the PHC and MMIO cleanup fixes as a two-patch series, as
->     requested by Arthur Kiyanovski.
+> The driver queues firmware invalidation asynchronously; the delete path
+> does not wait for the command to complete or drain pending RX processing.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,1/2] net: ena: fix PHC cleanup on probe failure
-    https://git.kernel.org/netdev/net/c/0958ea4355e2
-  - [v2,2/2] net: ena: fix MMIO read buffer leak on probe failure
-    https://git.kernel.org/netdev/net/c/9476b4468862
+  - [net] nfp: hold IPsec RX state under the XArray lock
+    https://git.kernel.org/netdev/net/c/1a983a4e14c6
 
 You are awesome, thank you!
 -- 
