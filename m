@@ -1,145 +1,258 @@
-Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F3A413791
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.233
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790267880; cv=pass; b=qci/GJxeQ1KJza0jVIDD1yx3yjL2sVk3DRPYTLwyd7mD6/pQ71nB/jjHdJ3jKkY7J1R4FRLFjTBSqf/lxb6jOi5WWY+8IjHTKKGT0g3SofJIUjn1sxC/FF0o5yP7RCYXc82tQjJZ3Gkun86eJYZi56GKtr+K8fwwm90w8yEelAM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790267880; c=relaxed/simple;
-	bh=8DhApwnuG2SUXRqEGXwamkFlChUC9h4uRKP2o2goLGc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bi6YDCyx+qMAnn05mz/+ijtL7Yt6Ty385NwyK/xCKvcC9JYR02+30g9kb0vihRrYsZPiQKCwH2FdV4ArwXFE2SvJsRTtYEEal/YvuSOWq6aY0pRmremPUvoxibjMlSKAGRElBEtkrOM3k6aiC1JF7NQ0nP1OX3bUu3EHmfGB2BE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eu2aeafy; arc=pass smtp.client-ip=74.125.230.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58144424646
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790267965; cv=none; b=JAPiX/JnB9cf346KAH3FQNgmRFA4LOv7evvhAsUTOYwzK+r45Lc4n5sz7LU2Pyw2EI7EAHavEPWvG+WtOT7Ri/BzcxOoAlsQuGgFNoJ2Ls3wNEpKgc068h8OYWbC1oYaa1hyQtqxh31JZY1YjzpXQtv+monfaSPdySAnvoasesc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790267965; c=relaxed/simple;
+	bh=GXNqf47scpm0PSzUvB6Afz/r8IUsZ7Lt4SAJtHyKWwM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=sQqfAKxANN7y/i9tmzmdnbKMAovRAy+uH2e/jipgvRFfpMUrFyaDfL82eICTe75gOc8lN0Yg3W+z1CCzWO/oPku+ZMmL4x3pcuaMne+cc1MudY2TWmIrps8udLrhiEj1uGF+Zkwqf8AE9VaakBus1xpkn/DUOzfy0u4x9uPlS0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODQQyUyi; arc=none smtp.client-ip=74.125.230.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eu2aeafy"
-Received: by mail-qk2-f41.google.com with SMTP id d75a77b69052e-532d63f434fso377111cf.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:37:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790267878; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L8ajOWpBo9C/sx0+lN2rcDrkmfhBQYbX1W0wGe9xabV4SrYlLIlIEv0oefVDcqzfAx
-         ZclJKvIVl1teugjtJZ53ohX73LVis0k5f9sBcWqH/Su2ITVVteU0EftuPgYSew2MmJph
-         /UxNLrQuzkimy0bql4W6aZupfIpGYxPHyM5mm2Qv7QEqIQ/IvDIdtDtoERpvVrFx2EpD
-         cm0BytNYFXXPG3LsRolioH0pfN47+Wfv0asoAMAouQZCT8OmhNcIznR2H+gx3dRA2avb
-         LYMHi+sxZH9JluU/keDGsZ1FklbvJts5uPApqUeJ1QAZD1OYzM7mIFrsZlTGR8CocWuw
-         CuAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0t7BSzswocE9VaUuD88aROz/tY5wZD53opr7p8td3kE=;
-        fh=vYhXJBt0TLy/SNVbCdUZdIyxCOuKMGkYGhpDbLLCPJQ=;
-        b=AIpgXty5FvqxIoKd9HwO84qeXGWyqP+zxUG4ju9m94uK4J8LyIT4b/7uJRsrzIJKuE
-         2QxdR5c91uMdTbcJfqTDUkzVKpvhAwcBbYSbBqdpAsf+kJWiyJfqbUI0guA6lzDneii9
-         ILdrfxEZEDBjXex1g9gv4avOWGnmeam2KSRpNcNEn6KMMkAgLY8KqQMVlVDVO78kAftu
-         eAAY4EeX3qOKGoDt6UnYaAIGQbvUrEY4H8mxhzJCRCxbDF9HrdjPWwlvxDm+lfK2vhx7
-         QSf7kWMjRHxBFWPBSJMnuSRFiJMlRZ7X5sOmDTaOhpr6vkR2v17ci7FA8gKWemCwDh/b
-         9/AA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODQQyUyi"
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91058dd77a2so617256d6.3
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:39:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790267878; x=1790872678; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0t7BSzswocE9VaUuD88aROz/tY5wZD53opr7p8td3kE=;
-        b=Eu2aeafyf4TKHbjA1fT89Xz0b30d/45EfZoA4kJxDvf14RUhyqv0qYBGdN3VkvML5O
-         KK569ZYCi/MdAMUdOg5tl/+0YFG9tDI/A5NyTBF0yW8dlGfNo9st8mmR/bkFPDwsP3Xz
-         PylIZj4523BRvHXne9K63sxaCp3bBxeLGuymqnHxnm7AewMDSWryzTqKcIjmoAvUWByk
-         lzx9ndQeZAqOuYBJ+BKNoOodlrnfJj4Nkkg3FKi5GHwS4ez5A5+LLiovzAtIF2xv2e39
-         vEPAccQYSYL6XfKV7/n0yCKBQS7Qdw4XO2A438VQBxAWp9xo9ZkJHWC44tEhHSTkoRcF
-         4HaQ==
+        d=gmail.com; s=20251104; t=1790267962; x=1790872762; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=JueyTHN539QeHvN07NGJvgpoDup9+jaPUYXbwaQUx00=;
+        b=ODQQyUyiCzT8VsclS0/xWb07ItOrhKmVWn76jhV82+fw4JrcNnwdkndu0N+rpTIYyr
+         T8Ke5TEe4xDKgfSmV7igPdWF4FdWqOYNtR4mXINDs4Vc86NrNMwDyJFEMzk5u1CkhLKj
+         lGUnC59jGMhHbUol0tLdchDX4M+4FllV9K+f/iKj/uXJjr6KvO/+VZbR/u7m+KGcCTya
+         FLKpPutPudRF/3w+5X8u6LpKql9oh6e6T4XA9rsVSF2/ZvAUP24m9lqgkbwDqMfIG3rL
+         JPRy5AzvllaNx4EBDMg57hJu+weSFvqL5TpMVRyw3pquwZFuIVxdrIDX7Nav57lhRgwT
+         zHMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790267878; x=1790872678;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790267962; x=1790872762;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0t7BSzswocE9VaUuD88aROz/tY5wZD53opr7p8td3kE=;
-        b=Pbk1pN7YbkHaZaXACvkvVfP2a84Jwz5cc9J5pqw4/2FH2yPstJrkvoIzatW1+qbtPJ
-         vEl/96ISkEEdxwNzJ2JEbfU0YlHpM+vDws7txvzmzOyK+OFbm0BzFblIhqybc/UUuLII
-         RmJj+4CPeGy5F1zYehCPIxUPK8c7cyo+7saPDHmIuLOkNPgvAtcxn6k8Wcyws8hhEvJI
-         PSboo271J9f2PT6ful3S8xV/bHHGHdXLCruZ1dj0FZcUpgPsUG19wbY3bKMrMQi12fmv
-         yvzQAokF4LaltWn1H6I/1Ngglp6MSSREcCKG4jLhpcGVZGwlkK7ob1TLh9AfTTmV+jxC
-         3//A==
-X-Gm-Message-State: AFuF++nW+MrHJahXxca3lDFkOtcjuvMx1ZhtKQOj6Hm43gP/mREZyex3
-	r+Fq70/4EBpCvqUdy/70Bmqm1/qW/EXVtS7nQcwg1oCHZ3d68lZX/0omDORlnRbfVWzsQ5DNjLS
-	p1GsbDctNOQYwtU6kgkY7UshXEnsrUhUBM+C5TWNIfbfpM++S3OLp0DDO
-X-Gm-Gg: AYBFou0r3GZFpDbkzXpHdObji4IeNPPB5O/wF5hHszfsAXK8l61IlKP180lKD9fcw7G
-	9/FqpeH2jVZkqJKuvHOAnndHHgcj1O1r7Nlr7icpLSzcu1LKgtdXMi0rq6S0kVE8vDD9UMpgcfC
-	q3981Yt8S6R6vyZk/E/Mrmm7GEhvxZFrCNm7lt/Hv+QbNj8n0eA44tfhjSiabqu0hA59Qs/UzsO
-	c6bVe18TkP9AdzXbD4EYcwt5x8TQ3/LCIQTOj/VnuqmxNw6Iwlu2/rFqzNeNSFO0ZTzBWywrl1O
-	zhB7+Nr1/3ASZYcGWxnBj7KmmFqtV55VosN1Z/mDK66Awoarx2HqC+k/5KqHendZWNBW2lVKZMV
-	iGWxVBc+60lGAnslESkdDXOwhVEBVQgbhr1FMomGG4x6q6LvKU1ExmDDnUbMdbMKHzpU4
-X-Received: by 2002:ac8:5f0e:0:b0:532:e4bc:b81b with SMTP id
- d75a77b69052e-532feb5ac3dmr31404411cf.46.1790267877634; Thu, 24 Sep 2026
- 09:37:57 -0700 (PDT)
+        bh=JueyTHN539QeHvN07NGJvgpoDup9+jaPUYXbwaQUx00=;
+        b=fvgwAMzGbz3ajPqB2lAFdy2F9rkoI2qAqifGP+jwQBweP+xFmoJSw93IiJX7spkyHJ
+         oV47fpUuWcoqNZyRRiHTXHDO+u4rpfJPX8RtZNDNfUDOMQ9YaJjxX2WGDK44dUY15dnz
+         kUKmSNL8jU/rR2/RD7ksAaku7hj/HEFdPxIBx62SboK+nJ+0ipbhpcW3UbSULGGEXpIu
+         CA8mD1q5l2LRhgWCOOT9L8ILMGi2y1TbeB+Uz13bovUcqvt8wJWcvON/M39lvQXeX5M/
+         Bk4EpovT1OYNZTvetyPp5qv4kh6vc51RrcCRcOqO9ZNWdCJggGZeA01WWQrpFETS8N1+
+         TpRw==
+X-Forwarded-Encrypted: i=1; AKwUvBy7DYZlcocpadXItG9JSaXCjjGKi7ephZT0nj0Xs/E6S1oVraHeLFiKxH3u9m7Etpo8bDC7Lyc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kjjHQ+UYQgdhPOLxOjcPvww/klNcRerx0rjZfNt/3DHMHbkJDw
+	GrtH1YeXOwBvxYcqUJFSRbD+ULEtljicYf2Xf9B31W0/ZuTkzdml2Anx
+X-Gm-Gg: AYBFou1zt+DAVKFJzY+tweuY6r6aBW0pxsdbcwJ81yCgulpiiVVbhXgBp+iFtU6/Fz9
+	99s+tL1NefOI5loLjhZk7DrN0htE7jqPOlTC0Nr7zqm8oPCUOlek18dC6XhND1LkpttULVkHMdl
+	ZVCvtMOSh1aHw8OVZV1C5mqJwIh2owdfC1CQXit0r8Q5PVF/Tsb4X4QD1fJrY7mJ7kCcolyBYoD
+	6kSa1ofo13Aba8EwLrrRZcVGgQQ5dDFx/XWSDaKptzfr1CfKaAndf10RoeGs8CCJgqN3/ViLyQs
+	fseGUZDlJFllaxelJF+CQJvtu4rUA4VvRn4PIrEMgDYTNcp1NxX5c1+dBzF8xNvz1rRiRHaJBVr
+	ZZSw6oRsrO5zbm69PcCSf/4DAjHKeCUwC9C/Xjicm2p0txMZpx4zSh18TaaY8E7xqhySinpfLpB
+	vEipNIs3R7m8mr+7H2JEoL5ka2AUMUSHQSPrLwGuOLRsXjn32B5GbyMTjsRvBVI6bYZ0SBohHCC
+	+c=
+X-Received: by 2002:a05:6214:328f:b0:910:706b:6a66 with SMTP id 6a1803df08f44-91421cc6c82mr30762626d6.15.1790267961936;
+        Thu, 24 Sep 2026 09:39:21 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9141e292ddfsm20201616d6.34.2026.09.24.09.39.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 09:39:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20260924154427.953800-1-willemdebruijn.kernel@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 24 Sep 2026 18:37:46 +0200
-X-Gm-Features: AclHuK_p6hC3gQAmvi0ifLB2kr_OPUO-K3WBvQ9rf3FXHeGGU6WjgCdFPaSV-XY
-Message-ID: <CANn89i+b=8F-1uoDW1Cdx7EVAtjDgCGtamQfF4wkiSXmSPq0TQ@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: prevent collapsing skbs across boundary in rtx queue
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, dzahka@meta.com, 
-	john.fastabend@gmail.com, sd@queasysnail.net, 
-	Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 12:39:20 -0400
+Message-Id: <DLNP0Z73GU74.I5ZMXMO5VPSL@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
+Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+ <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next 4/8] eth: mpnic: implement Tx queue allocation
+ and cleanup
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260922-linux-mpnic-v1-4-236844f53072@gmail.com>
+ <179021553452.2160803.1706539646105038044@kernel.org>
+In-Reply-To: <179021553452.2160803.1706539646105038044@kernel.org>
 
-On Thu, Sep 24, 2026 at 5:44=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
+On Wed Sep 23, 2026 at 10:05 PM EDT, netdev-bot+sashiko wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
 >
-> From: Willem de Bruijn <willemb@google.com>
+> Low priority / nit picks for your consideration:
 >
-> tcp_write_collapse_fence() sets TCP_SKB_CB(skb)->eor =3D 1 on
-> tcp_write_queue_tail(sk) to prevent skbs queued after a switch to
-> device encryption from being collapsed into earlier skbs.
+> - [Low] Cached doorbell pointers let queue-head MMIO writes reach BAR0
+>   after the driver has marked the device as gone.
+> - [Low] Concern (baseline: rejected): mpnic_alloc_ring_desc() stores
+>   `count - 1` into the u16 ring->size_mask (line 334) without checking=E2=
+=80=A6
+> - [Low] Concern (baseline: rejected): mpnic_clean_tcq() takes HEAD0 from
+>   the device-written completion descriptor (line 163) and passes it=E2=80=
+=A6
 >
-> The fence is a no-op if all earlier data has already been transmitted
-> when the switch happens: sk->sk_write_queue is empty. The not yet
-> acknowledged earlier skbs wait in sk->tcp_rtx_queue with eor 0.
+> --
 >
-> On a subsequent retransmit or SACK shift, tcp_retrans_try_collapse() or
-> tcp_shift_skb_data() can then merge an skb queued after the switch into
-> one queued before it.
+> eth: mpnic: implement Tx queue allocation and cleanup
 >
-> Both users of the fence are affected:
+> This adds the Tx ring structures and allocates queue triads per NAPI
+> vector, along with their descriptor memory and interrupts. It also adds
+> Tx completion processing, where one completion reports a work queue head
+> and can release many packets. Nothing enables the queues in hardware yet.
 >
-> - psp: devices only encrypt skbs with skb->decrypted set. The merged skb
->   keeps decrypted =3D 0 from the earlier skb, so merged data sent after
->   psp_sock_assoc_set_tx() is retransmitted in cleartext.
+>> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/=
+ethernet/meta/mpnic/mpnic_txrx.c
+>> new file mode 100644
+>> index 0000000000000..fe360a26a27be
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+>> @@ -0,0 +1,496 @@
 >
-> - tls device offload: the merged skb straddles the start marker set in
->   tls_set_device_offload(). The software fallback (fill_sg_in() returns
->   -EINVAL) and the mlx5, nfp and funeth drivers cannot handle such an
->   skb and drop it. Every retransmit rebuilds the same skb, so the
->   connection stalls.
+> [ ... ]
 >
-> Fix this in two places, for defense in depth:
+>> +static void mpnic_commit_cq_head(struct mpnic_ring *cmpl)
+>> +{
+>> +	u32 head =3D cmpl->head;
+>> +
+>> +	/* The tail shadows the last value written to the doorbell, so a
+>> +	 * completion queue which has not moved costs no MMIO write.
+>> +	 */
+>> +	if (cmpl->tail !=3D head) {
+>> +		cmpl->tail =3D head;
+>> +		writeq(head & cmpl->size_mask, cmpl->doorbell);
+>> +	}
+>> +}
 >
-> 1. Fall back to tcp_rtx_queue_tail(sk) in tcp_write_collapse_fence()
->    when tcp_write_queue_tail(sk) is NULL.
+> [Severity: Low]
+> Can this doorbell write still reach BAR0 after the driver has marked the
+> device as gone?
 >
-> 2. Check !skb_cmp_decrypted(to, from) in tcp_skb_can_collapse(), as
->    tcp_skb_can_collapse_rx() does on receive. skb_shift(), which both
->    collapse paths call, already has a DEBUG_NET_WARN_ON_ONCE() for this
->    condition.
+> mpnic_alloc_napi_vector() reads mpd->uc_addr0 once and stores raw BAR0
+> addresses in the rings:
 >
-> Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
+>     mpnic_ring_init(&nv->qt[0].sub0, &uc_addr[MPNIC_TWQ_TAIL(idx, 0)], id=
+x);
+>     mpnic_ring_init(&nv->qt[0].cmpl, &uc_addr[MPNIC_TCQ_HEAD(idx)], idx);
+>
+> When mpnic_rd64() sees all-ones reads, mpnic_mmio_err() in mpnic_pci.c
+> clears only the accessor pointer:
+>
+>     WRITE_ONCE(mpd->uc_addr0, NULL);
+>
+> BAR0 stays mapped through pcim_iomap_region(). mpnic_wr64() checks for
+> the NULL pointer, but mpnic_commit_cq_head() always writes through
+> cmpl->doorbell.
+>
+> So suppose one mpnic_poll() run still has unprocessed completions that
+> were posted before the failure. The TCQ head doorbell write goes out,
+> while the mpnic_nv_irq_rearm() write through mpnic_wr64() is dropped.
+>
+> The scaffolding commit says that once the device is gone, no further
+> accesses reach the bus. Should that also cover the doorbells?
+>
+> Later in the series, mpnic_tx_doorbell() and __mpnic_bdq_commit_tail()
+> use the same cached-pointer pattern. Would a mpnic_present() check help
+> in those places and here?
+>
+> The comment in mpnic_alloc_napi_vector() already says the doorbells
+> cannot notice the window going away, and fbnic does the same thing. The
+> practical effect is probably limited to posted writes to a dead link.
+>
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+The observation is correct, but this is by design. Won't fix. If we lose
+the device, we can let these writes get dropped by the bus instead of
+trying to stop them.
 
-Thanks!
+>> +static void mpnic_clean_tcq(struct mpnic_napi_vector *nv,
+>> +			    struct mpnic_q_triad *qt, int napi_budget)
+>> +{
+>
+> [ ... ]
+>
+>> +	while ((*raw_tcd & cpu_to_le64(MPNIC_TCD_DONE)) =3D=3D done) {
+>> +		u64 tcd;
+>> +
+>> +		dma_rmb();
+>> +
+>> +		tcd =3D le64_to_cpu(*raw_tcd);
+>> +		head0 =3D FIELD_GET(MPNIC_TCD_TYPE0_HEAD0, tcd);
+>
+> [ ... ]
+>
+>> +	cmpl->head =3D head;
+>> +
+>> +	if (head0 >=3D 0)
+>> +		mpnic_clean_twq0(nv, napi_budget, &qt->sub0, false, head0);
+>> +}
+>
+> [Severity: Low]
+> This isn't a bug with a conforming device, but head0 comes straight from
+> the completion descriptor the device writes. It goes to
+> mpnic_clean_twq0() without any check against sub0.tail.
+>
+
+In this case, and in general, we do not perform this type of hardening
+against completion fields written by the device. We trust its outputs
+for things like offsets into buffers, rings, etc.
+
+> If the device ever reported a head past the posted tail,
+> mpnic_clean_twq0() would reach an empty slot and dereference NULL:
+>
+>     struct sk_buff *skb =3D ring->tx_buf[head];
+>     ...
+>     desc_cnt =3D MPNIC_XMIT_CB(skb)->desc_count;
+>
+> The completion walk loop is also not bounded by the NAPI budget. In
+> practice the device cannot post past the CQ head, and that head is only
+> committed after the loop.
+>
+> Stale entries from an earlier bringup do not look reachable. The
+> descriptor memory is freshly zeroed by dma_alloc_coherent(), the head
+> and tail are reset to 0 later in the series, and at head 0 the expected
+> DONE bit is 1.
+>
+> Would a cheap sanity check on head0, or a NULL check on skb, be worth
+> adding as hardening?
+>
+> [ ... ]
+>
+>> +static int mpnic_alloc_ring_desc(struct mpnic_net *mpn,
+>> +				 struct mpnic_ring *ring, u32 count)
+>> +{
+>
+> [ ... ]
+>
+>> +	ring->size_mask =3D count - 1;
+>> +	ring->size =3D size;
+>
+> [Severity: Low]
+> This isn't a bug with the current callers, but count is a u32 while
+> ring->size_mask is a u16 in struct mpnic_ring. Nothing here checks that
+> count is a non-zero power of two no larger than 65536.
+>
+
+Ack, but won't fix. When ethool is implemented, caller will have the
+responsibility of ensuring these.
+
+> This cannot be reached today. The only caller passes mpn->txq_size,
+> which is only ever set to MPNIC_TXQ_SIZE_DEFAULT (1024), and there is
+> no set_ringparam path.
+>
+> If a runtime ring size setter is added later, a count that is zero, not
+> a power of two, or above 65536 would break the masked indexes in
+> mpnic_clean_twq0() and mpnic_clean_tcq().
+>
+> Would a WARN_ON_ONCE() or an explicit check here be worthwhile?
+
