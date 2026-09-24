@@ -1,134 +1,176 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D78242589C;
-	Thu, 24 Sep 2026 07:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127DD426D3F
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 07:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790234066; cv=none; b=gg0rvLaUtNNNsV36024ll5RudwO0oXv01b4dpsJ5SUlzUlwxcG5S6VgZJafkwm2/5qiWljtvnsdTpyGgswMNIZxksTCbZCOnsxckR4DdOM+fdcf18TR+ofJ1sbpFGMvpkFL5/o7thFb6hEDwIA66Z2eh+T/25OcREhwBGFfe/Ws=
+	t=1790234198; cv=none; b=rZOSZnBReC1zVlLWrxERTs1K4wMjvJ5iN11fbogVMLEd3IYHc+IKEL27qihGHIecjQUeaNoOJskeAOvZiZJYE96mv0cVIbdjJr9E9rJ7y0mi8v0vAY1eYURCPg+v4uxfVRB6cgI3c0y4NCAAqGDakBh+KABXBWl/tVUfa3zd+W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790234066; c=relaxed/simple;
-	bh=f8sCwf+Is/R9HbBxAaH8/zW1TrvDfyMSRoaBAAoaBhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fnNKrQEX8J4nJHvy5eeU3PMfzcdrS/EKnJp5Tr/1V2QAPJGEPI6Zgk6VwbSrHpnGcuCeQUP8odvNOE19ri8xc81Z8Q/bykLIZIj0QcDTY1LQ0MqXso6X98RC6dceq1P1MeB8adNbgBj90TZgWBicUTFta2YnWME5VlgPXHZSBno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=Sfs3zKSa; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1790234198; c=relaxed/simple;
+	bh=6frqMCwNqJz3N3QZ9P0MlfVB/WAQLVZicQlCmLK3YWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SMd2p1JH1J+RzUKJ2TlXYpfRxugz8DNyhNU0qAmrmMqnkhqnBeTsdlGwJxuf8+3PZ3kO/y4mSaB3B5pqo/kJwSv3KYmmWno8obtLTeh1yxyWDQX5hEm06hIHuvy8iBw/csO8ZJ5dX/DT/aNvYLEhsj/ReVxxsu4kIz+UUDp8TmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtqYSsk3; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="Sfs3zKSa"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B63103F0AB;
-	Thu, 24 Sep 2026 07:14:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1790234056; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fJ3LmMTgl5ooa3A8qiDWthkRa7eakjePx2Q6mdnXeY=;
-	b=Sfs3zKSaZZj0K0kTpYrRVDmeeW0W9WEZw87qKKuK4PdadQ7xoiwQ0Jsc5EtjeeaRGMSFj0
-	I+K6ymCA1dJy4q58ybHPzg+WmMPzvXUL8GD3CP1vYlil5/S6QG5Yir+Nd6c15WzsG8AX3K
-	4FYwWEVan+cn7ensc/c3h0ktXyHAhixleBTNJpeKmueBt/MrguJm93+dC9Ue4BDk+tRh0V
-	xq++KWwE8yOaSgMplXF7MvoWboAacrQdxxWaIHhTFB8Nt0oERl3BkqrBRNeySEnqshF39D
-	b3jh8HkXzpxrTGxi8quaMqCR6/iWRYlEd5oWhFl9zs/jZc3OpDaJ2sRqCawkNA==
-Date: Thu, 24 Sep 2026 09:14:11 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v10 2/3] dt-bindings: net: wiznet,w5100: add
- link status interrupt
-Message-ID: <20260924071411.GA21468@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260921-wiznet-link-gpio-v10-2-5874a7a147a2@marmottus.net>
- <179021495463.2160803.46310334870833128@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WtqYSsk3"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccdaea75so720279a91.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 00:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790234192; x=1790838992; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+3DzxIn9zZnPR5YaGs2TT46i5wRUo2UQR+CEo7kDWoE=;
+        b=WtqYSsk3DCCvoPBSqg899SYkAn2gcdsR2D1g4AqKFx2Pq3ar2Gcfj3NgsVW/GA5jEK
+         z24Dljt5CxPmnAA6O6HK9NzSPHNzR+9WfLRVKFVaXjXHmzrE1qvtrQu5tf1W7vURXxzL
+         CfuY9KSUeu6JJ+DsktKWjpVqWDLnCaoGtflbDtL0rkxiBHFuue4MDa1eJ7oK35l6hPG2
+         yj9yQhOps9zpW7rpczgVKEzGO57t73sxymF7L29Ea7R5P4YOwVh2SrDHxePfYnYeijss
+         EtXNAi8kQ6Q0zFijvbvIZoBXqUQ75PsseRvoBWojvPqhJoFwf8Yq2tN9IjBKBFsOxBiM
+         U8xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790234192; x=1790838992;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+3DzxIn9zZnPR5YaGs2TT46i5wRUo2UQR+CEo7kDWoE=;
+        b=21KPxChkZA8LkIgMpw9yjYoXSwQWehdeF0PYRLlLxG40SRWv8pJmjN/+D/+ft0cmJb
+         Ir8Nypv7pqjIYnpfZet1W6BE9YPGbd26oSlAgRw2ATz4wx6DpNgLTyNxgvAMB1bBfqx+
+         f8nSh4vRAUm3X9/Lms+1oMRLr7MgtrrV+IwfE6cqOeGNuFWw1awhfVgnvybQshQLYk6i
+         Va2QsBUcHxCcFqTjgjEJQz9SzA0pct80Cs4DFDwS24lmIByCLA/oQRzqV3zmJZAqizkH
+         oqZRUM0auJcDUM0KeOMPZnSbxTp8hgo0s/By5fgx/3wWH4yJlG5M2C+QZK5cv1piZbq0
+         IE7A==
+X-Gm-Message-State: AFuF++kAp8aUelnfrB6klwg+bCtwafvt5DEGCCNnFT2OhaIlf0uyvZmh
+	sKENqalSSWx4ioxPK5/uPAM6yGnbNiQ8+/VZiXAmZ7bi1/leG7LWg+br
+X-Gm-Gg: AYBFou1xduG22lDaYmoJtZzPOxSBBpQ5CqHsExsQmp7pbm8458lwR5aWULwxxDBQ2B0
+	OXnCd34VVh9IngNkqyPSQ3+ekx9cWjIcjO1RgHJYW370HrladmmKZ5gWCuMuUgJ/4/5iRyRDYap
+	9XwwSngIg4XeXc7bLykJpIiRcMSI74PZoVbXqy3Wmkc5cGJdWdQiVcIJKcg6NKE83XN6M9WnEmc
+	QNF5Im8ER472BgNHxjj3OSracTS2L/wK5L3+9HZlphzwfkp0LdzlKz6/7lNnUKaOig3djzuwMLL
+	7erijQwlqpev8e5qiB1oahqhsZByTdmaayOcOSl6ktjERPikSUrS1R+DKo79Ow45B6zRZaZshWm
+	mlYbPRIs0fUmV5stACMnikX80YuHFwMSKbDz31BoyZbd9tILO8dY52ba6YISwPMZXUllG3Mw3Qy
+	XC/EECBhWJ8sKMg5FMITPjxnbbqOtbnRi85aHACXAR5BotHnyGWSesiZxmJUeqcdWp6032tWOBO
+	x63oDmojUgZrzmAj6b3FTw5ljWigZsn9/6WN5Ov6Aj3TgqEQH3ESw14t9YMAlD4I4m4ZNHYf5Fr
+	IHq5z3FqeQ==
+X-Received: by 2002:a17:90b:564d:b0:39e:6c66:cbdd with SMTP id 98e67ed59e1d1-3a098acb900mr929337a91.21.1790234191974;
+        Thu, 24 Sep 2026 00:16:31 -0700 (PDT)
+Received: from phui-2.c.googlers.com.com (67.51.127.34.bc.googleusercontent.com. [34.127.51.67])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0972efa00sm4003402a91.5.2026.09.24.00.16.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 00:16:31 -0700 (PDT)
+From: Hui Peng <benquike@gmail.com>
+To: kuniyu@amazon.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hui Peng <benquike@gmail.com>
+Subject: [PATCH net v2 2/2] af_unix: skip consumed OOB skb and pull consumed bytes in unix_stream_read_skb()
+Date: Thu, 24 Sep 2026 07:16:29 +0000
+Message-ID: <20260924071629.2683160-3-benquike@gmail.com>
+X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
+In-Reply-To: <20260924071629.2683160-1-benquike@gmail.com>
+References: <20260924071629.2683160-1-benquike@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179021495463.2160803.46310334870833128@kernel.org>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: dmFkZTEb2Erd0INHoVhtF+GeJfrW4H/dz0p2A5Z0hMw06lXj2jf+KUqKvxDdzCx24kigi802336LLAtDXTskONTmzc4eX+qeDTwobmEPlEiAd7MRU82fbfz+aN0UQY2c8cc1hh4Y9Bq+eqEQcsPdP0Jd2ZmxkZke7+D//KNpCR1JZg0hULhJaC8DUD25ty6Wz9Hn+awmyYb+Yvb3MQ6kffChwGHX3dxmb5yibLBrukK5kwDpj0XdCad13BQA3Gd5lQNNQPm3CfmRUr+6ZLdm3nIkiQqeLW5xKYoFoPA0kcIY/sg51/GV1Knm+PJ2EwPsMcCTDHpMmK+l/n7+X6CrBpEfjE37Jdx+JZq4zXb5577PjulqzwGEXGlYX3qscrN6bBuLbgfDtpOoduDhNba3ZwKaPibra2euuh3Gu4iBfvZ/7rG1B44jik1/PrrxvqIFpaz1fcySHykr0T1AW+6s6cx5ij8VnhGyHrbndpAntSVvbr93cYQ/m4ZEFXS8jmkiYBM/lB5TM7MLPTdH4Dj1wd2KKdxH9RvXIaksjcCcx6t2XjqErfqgK6S4tdOs1CeMA7SmEm5uyybH9KEiwtr1E8iEuYCetMvynwyt1LPysNTCmtOnt+yIAw346yGUYT4OB3Ht6UFMPnlwmBnDsYGls6RQ2C+KY96c5ZdIjL4FGCxgki5iXg
 
-On Thu, Sep 24, 2026 at 01:55:54AM +0000, netdev-bot+sashiko@kernel.org wrote:
->Thank you for your contribution! Sashiko AI review found more severe
->issue(s) in other patches of this series. This mail is only an FYI, in case
->you want to address the nit picks below when you respin.
->
->Low priority / nit picks for your consideration:
->
->- [Low] Concern (INVALIDATED by later patch in this series): the binding
->  documents an optional second, LINKLED interrupt for wiznet,w5500 and…
->
->--
->
->dt-bindings: net: wiznet,w5100: add link status interrupt
->
->This adds an optional second interrupt to the wiznet,w5100 binding for the
->LINKLED pin, described as being supported only on wiznet,w5500.  The
->interrupts property is moved to a two-item list with an allOf conditional
->restricting non-w5500 compatibles to a single interrupt, and the example is
->updated to list both interrupts.
->
->> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
->> index 25098308eb6e5..ac2ee725af5d5 100644
->> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
->> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
->
->[ ... ]
->
->> @@ -24,8 +20,16 @@ properties:
->>        - wiznet,w5500
->>
->>    interrupts:
->> -    maxItems: 1
->> -    description: Main interrupt (INT pin on the device).
->> +    minItems: 1
->> +    description:
->> +      The main interrupt (INT pin) is mandatory on all devices. The w5500
->> +      additionally supports an optional second interrupt for link status changes
->> +      (LINKLED pin). If it is not specified, link state changes will not be
->> +      reported.
->> +    items:
->> +      - description: Main interrupt (INT pin on the device).
->> +      - description:
->> +          Optional interrupt for link status changes (LINKLED pin on w5500).
->
->[Severity: Low]
->At this point in the series, is there anything that consumes the second
->interrupt?  The description promises that link state changes are reported
->when the LINKLED interrupt is present, but w5100_probe() in
->drivers/net/ethernet/wiznet/w5100.c only uses spi->irq (interrupt index 0)
->and there is no netif_carrier_on() call in the driver yet.
->
->For the record, this resolves later in the same series: the final patch
->("w5100: detect carrier state using link status bit and optional
->interrupt") adds
->
->	priv->link_irq = -EINVAL;
->	if (ops->chip_id == W5500) {
->		priv->link_irq = fwnode_irq_get(dev_fwnode(dev), 1);
->
->and w5500_report_carrier_state() which calls
->netif_carrier_on()/netif_carrier_off().  So the documentation and the
->implementation only disagree between this patch and that one, which is
->nothing more than a transient bisect-window mismatch.
->
->[ ... ]
->
+When an OOB byte is consumed via recv(MSG_OOB) in unix_stream_recv_urg(),
+u->oob_skb is cleared to NULL and UNIXCB(oob_skb).consumed is incremented
+to 1, but oob_skb remains on sk->sk_receive_queue (with unix_skb_len(skb)
+== 0) to preserve the OOB mark until normal reads advance past it.
+Similarly, a partial recv() in unix_stream_read_generic() advances
+UNIXCB(skb).consumed without pulling the skb header and leaves the
+partially consumed skb at the head of sk->sk_receive_queue.
 
-https://elixir.bootlin.com/linux/v7.2/source/Documentation/devicetree/bindings/submitting-patches.rst#L54
+If the socket is subsequently read via unix_stream_read_skb() (used by
+BPF sockmap), unix_stream_read_skb() only checks skb == u->oob_skb
+(which is only true for an unconsumed OOB skb) and ignores
+UNIXCB(skb).consumed. As a result, a consumed OOB skb (unix_skb_len(skb)
+== 0) is handed to recv_actor() and re-delivers the already consumed OOB
+byte, and a partially consumed skb re-delivers its already consumed
+prefix.
 
-   The Documentation/ portion of the patch should come in the series before
-   the code implementing the binding.
+In unix_stream_read_skb(), skip and free zero-length consumed skbs (after
+calling unix_orphan_scm() so SCM_RIGHTS fd accounting remains balanced)
+and pull UNIXCB(skb).consumed bytes via pskb_pull() (which safely handles
+both linear and non-linear paged skbs) before invoking recv_actor().
 
-Arthur
+Tested in QEMU against Linux 7.3.0-rc3 with BPF_MAP_TYPE_SOCKMAP and a
+BPF_SK_SKB_STREAM_VERDICT program:
+1. Consuming a 1-byte MSG_OOB packet ("Z") before inserting the socket
+   into sockmap and sending "HELLO" re-delivers "ZHELLO" on the unfixed
+   kernel, whereas with this patch applied recv() receives "HELLO!".
+2. Consuming a 3-byte prefix ("123") of "12345678" before inserting the
+   socket into sockmap re-delivers "12345678" on the unfixed kernel,
+   whereas with this patch applied recv() receives "45678".
+
+Fixes: 77462de14a43 ("af_unix: Add read_sock for stream socket types")
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Fixes: 638f32604385 ("af_unix: Disable MSG_OOB handling for sockets in sockmap/sockhash")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Hui Peng <benquike@gmail.com>
+---
+Changes in v2:
+- Split out from the manage_oob() fix into patch 2/2 as requested by
+  Kuniyuki Iwashima.
+- Call unix_orphan_scm(sk, skb) before consume_skb(skb) when dropping a
+  zero-length consumed skb so u->scm_stat.nr_fds is decremented, and use
+  pskb_pull() instead of skb_pull() to safely handle non-linear paged
+  skbs without hitting BUG() in __skb_pull(), as noted by Sashiko.
+
+ net/unix/af_unix.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 1770af3c2684..f5d64e7b5c1c 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2885,6 +2885,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 		return err;
+ 
+ 	mutex_lock(&u->iolock);
++again:
+ 	spin_lock(&queue->lock);
+ 
+ 	skb = __skb_dequeue(queue);
+@@ -2894,6 +2895,13 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 		return -EAGAIN;
+ 	}
+ 
++	if (!unix_skb_len(skb)) {
++		spin_unlock(&queue->lock);
++		unix_orphan_scm(sk, skb);
++		consume_skb(skb);
++		goto again;
++	}
++
+ 	WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
+ 
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+@@ -2913,6 +2921,14 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 
+ 	mutex_unlock(&u->iolock);
+ 
++	if (UNIXCB(skb).consumed) {
++		if (!pskb_pull(skb, UNIXCB(skb).consumed)) {
++			kfree_skb(skb);
++			return -ENOMEM;
++		}
++		UNIXCB(skb).consumed = 0;
++	}
++
+ 	return recv_actor(sk, skb);
+ }
+ 
+-- 
+2.55.0.1082.g2b9226bbc0-goog
