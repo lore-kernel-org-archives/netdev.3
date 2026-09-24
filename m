@@ -1,66 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-107.mta1.migadu.com [95.215.58.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24420175A8A;
-	Thu, 24 Sep 2026 01:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D73429B79B
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790212669; cv=none; b=VvZk5f8Yh1ldrmYRjsHm+ESdHLEgIqneppqTm81R2hALbceyBqY+y87+PKsr+Pi54BoeBPbvIwU/Fp+kjv2JUMQlNcDjq5wK2HnU1XtBFG1Piz/TwFTUBnZxgQzNyo3NxRb/hdu97tC1/6OYnYcHz4TruW+y6s5ZdZi6zditx0g=
+	t=1790212730; cv=none; b=X4TMAw0Dr5jumVacb1XIFoxkrYU+B6ToiLoPFNSlOcpt472V1sGXewYg7riMsGW8cYsKqb0HDwr0/iqBu+wQYTEHOxpN/TXn9cOh824FcagNnXb3g98EvHY9rzbxbWI+8efspPHqBb+qrWbES80MjAuprGOhtq7NtI2/L2+UClc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790212669; c=relaxed/simple;
-	bh=SLsOeE6Ka1724pbnGrfEVJxC3T52flvCkiZvh2sA6VU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2HkOGGWA5bXGvTSgAWnAX9hK4mWUs5QIdhbKTp/QT/X+F2K1dKGohA/zqvKgzuV7E2A3BWDCG6nnI8lzkitK5haqNuLHnhI1/zXdl/XIw0R6R05kioDtVEmOGhvlgWnihFtdSGz3K9qYNsKZ/84uW8pwfS9ks2+PfYK3/TNmI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kkXhNbT9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790212730; c=relaxed/simple;
+	bh=jDGt0nOmjzKzO8dq9HkznbAlolykbBiPoksw1KIcch0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lAoLkOuD4uVC9PBO+U7slAjwyau5s+/D0n4QZXEOGvTMluoWTSdPFBg9Y+xfaAYHioYEDHbsBI4twzGxvVsmCuLKWtBaqjPf7eRRJGBts4kzYmUlQnHblj7QmhykPiaNIEMA6Y4hfrVm+4j03Y7iDlB9WdwZjJgg78nIKdl9O3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JRCrkjPx; arc=none smtp.client-ip=95.215.58.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kkXhNbT9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE1A1F000FF;
-	Thu, 24 Sep 2026 01:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790212667;
-	bh=hxHiUbfsf5c+GWemUKjp3aUVwBjDaOzLwtzJymo0Vlk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kkXhNbT99Pck9PTJ/6N6g8iwjKW0cI2xsRr4qJvjb+rdNsO1jhyA4WS+gfbPjJjtt
-	 aOM5DmsWKP/biyxh+u2fDOYxXRb+EMLvDs7CBFF3kD3DJ4COUDaDkGhjjC1GRJ9DoY
-	 QWxhEmeZq7vkAV69LW4Fm+PcKf+dCdruv2cLi2yTJN9sl1FGpBFwjQIYyoWEO1C8jp
-	 hpP4a3aUVJgWZ0rCCuIkX+PSp/EUzK7be3CSVkSKWK2+0ScKFnGuRCErlZ0V449vGv
-	 EOZhnPsMmUMScqmkSSDzfXU+NKh61Yo0/99s44VuAhST753tLBTGNacz0x7IhSB+Px
-	 iN5xjEKAkae6w==
-Date: Wed, 23 Sep 2026 18:17:46 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Zijin Tao <taozj888@163.com>
-Cc: linux-kernel@vger.kernel.org, theo.lebrun@bootlin.com,
- conor.dooley@microchip.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
-Subject: Re: [PATCH] net: macb: rate limit netdev error info print in the
- data path
-Message-ID: <20260923181733.1af289cf@kernel.org>
-In-Reply-To: <20260920100920.65773-1-taozj888@163.com>
-References: <20260920100920.65773-1-taozj888@163.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JRCrkjPx"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=jDGt0nOmjzKzO8dq9HkznbAlolykbBiPoksw1KIcch0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790212725; v=1; x=1790817525;
+ b=JRCrkjPxs/Bk8NmEoCj+qChe+60kngW+OVVp4RbBYwQfCreeAr7ffquaMGCdJlw3cSy6iWUR
+ gWp8MjRCW8vMUKQ8DJ3ifcr+r/F/VVnk/79QD+LhPZMCcBzni3A9lhfeUealEWcpq6uHcbhogPj
+ 5QQCS0O3jjLD/3kMIzzN6Cgw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 429b0a2ca9ffcf3b;
+	Thu, 24 Sep 2026 01:18:45 +0000
+X-Mizu-Trace-ID: 429b0a2ca9ffcf3b
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 24 Sep 2026 09:18:32 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Qishuai Liu <lqs@lqs.me>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ipv6: fix prefix route expiry in
+ modify_prefix_route()
+Message-ID: <arR6KOhDYJrK0lqB@fedora>
+References: <20260923132048.3272878-1-lqs@lqs.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923132048.3272878-1-lqs@lqs.me>
 
-On Sun, 20 Sep 2026 18:09:20 +0800 Zijin Tao wrote:
-> Now the MACB ethernet driver print the netdev error information
-> directly by netdev_err(), which would lead to a large number of
-> error information print if there was a significant number of
-> error or just jumbo packets exceeding the MTU received when booting.
-> For example, it would print a large number of:
+On Wed, Sep 23, 2026 at 01:20:48PM +0000, Qishuai Liu wrote:
+> modify_prefix_route() is given the lifetime in clock_t relative to now,
+> but fib6_set_expires() wants an absolute jiffies value. So when a
+> permanent address is changed to a finite valid_lft, the prefix route
+> ends up already expired and GC removes it.
 > 
-> macb PHYT0036:00 eth0: not whole frame pointed by descriptor
-> macb PHYT0036:00 eth0: not whole frame pointed by descriptor
-> ...
+> Steps to reproduce:
+> 
+>   ip link add dummy9 type dummy
+>   ip link set dummy9 up
+>   ip -6 addr add 2001:db8:9::1/64 dev dummy9
+>   ip -6 addr change 2001:db8:9::1/64 dev dummy9 valid_lft 3600 preferred_lft 3600
+>   ip -6 route show dev dummy9    # expires is negative
 
-Do you have the HW or you're acting based on LLM output?
-If the latter, and since you can't follow the process please
-don't post any more such patches.
+nit: Does GC really removes it? I see the expires is negative, but the time
+seems overflow and GC won't remove it.
 
-If you do have the HW to test this - put into the commit message
-what HW you have, and covering all the cases.
--- 
-pw-bot: cr
+> 
+> Fixes: 8308f3ff1753 ("net/ipv6: Add support for specifying metric of connected routes")
+> Signed-off-by: Qishuai Liu <lqs@lqs.me>
+> ---
+>  net/ipv6/addrconf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> index 9d89be7e0544..c90ee6dd7446 100644
+> --- a/net/ipv6/addrconf.c
+> +++ b/net/ipv6/addrconf.c
+> @@ -4874,7 +4874,7 @@ static int modify_prefix_route(struct net *net, struct inet6_ifaddr *ifp,
+>  			fib6_clean_expires(f6i);
+>  			fib6_may_remove_gc_list(net, f6i);
+>  		} else {
+> -			fib6_set_expires(f6i, expires);
+> +			fib6_set_expires(f6i, jiffies + clock_t_to_jiffies(expires));
+>  			fib6_add_gc_list(f6i);
+>  		}
+
+The code looks good to me.
+
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
