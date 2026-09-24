@@ -1,136 +1,263 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D6030DEA3
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42BD3264DD;
+	Thu, 24 Sep 2026 08:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790240046; cv=none; b=mG82ozB1FZGReHi96ErCFf8RYxk+necl3XpwV9gQplaIbjt/v9S4M0+QNwHGKGMk/j46q3zDHpBY+oA9i9tBqORhgaw9ZfEnpIL2f90o7OROdTf7Ybe3gg+L7cnl85QHVVSO2+R4DaBLdQq3Fu+hkFnHYNnwTUkbVjnWdga6mX4=
+	t=1790240084; cv=none; b=KzaIQtQV3rUahnk8KyRyLN2C7HvMAJvwE+/u9BnkpmsC7Ro12jT7D32VZinWH5XH5CsPt+vh9aar7OB5XRlJABS4tNidpw4Ihu0xvtSYckm5Jz25YCXwUCprWyWDk7OCWURV2zObxaVe5QIgLN7oV0frhl0iR5GimAaYvfOQrOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790240046; c=relaxed/simple;
-	bh=vXsA8onEphTPMBeepzop7491JLND9beylCZQUYRa/9s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=e59BfJcxTJJWfPbus6xPtb/R8wmrxgY5+rrCWus2s1zRd5mxDgXYT/q+02iqXNsCspS4r0GNF0PPg8h5UPvg8/4sJbaEmwBmRIaVS4NSuKTvDDkrz+b3r60Umb/3lO/Ah+iPvK0Nx0m0whY3mgg/XWmDAYJQgx2lb6miA12kVHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=LqbjLpMK; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1790240084; c=relaxed/simple;
+	bh=6D3CTgHdu5481mnLKV1gPqeZJ095pUnPyFYt/9xV+nk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=c36Jzx9u4iMMxwjb/ZDcC0WNR9JggsqN2H/5y411kGc9hjvck03jCQ2fLwCmuvh6IRdgbJ5OcJYvEm95FrfNaINlONiSubUDn7htu+UcdghwdskzjphFNhSktQPy4/DvrtimmqsYSMfciReAjWbkp1XzgkiqtYoA2KKNPwhDwtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxRwVj38; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="LqbjLpMK"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so12519335e9.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1790240041; x=1790844841; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YLnZwUG2MBgLZpqGTzUMzHxGyh6dXv6V+NePiVAKHBk=;
-        b=LqbjLpMKvROjquwB9jxrXy2kExvY2imvTRcDnTuHsenhBVfltERJWno289v+iKmBJ0
-         yUqkWFM+EFSFkDhphVs6tMb1P9AWqlMdUS/5QOyQM9/h7C+yCLOJZ7lCjjbQe+RHTCMA
-         r/UI+7MgH45kl88MOtfb8JtOXg8eB4ONJMqxo32cayOKyu/UkHG87iGnwScfJVP691mX
-         vOloPmc5qF53eBOKxUSJjqEumbi5ZfQcrMUaOaypXmtXdPklzDOPfmBXXVEFkITPNP49
-         OK6K3F+y4PcdWOsVTPW7EuxflHrHUrB/SnW9+UwP9e4GDh13UiccwX5gI6sLw2MNo8km
-         zU+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790240041; x=1790844841;
-        h=content-type:mime-version:message-id:date:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YLnZwUG2MBgLZpqGTzUMzHxGyh6dXv6V+NePiVAKHBk=;
-        b=2dktvewr3ifwzDM6q8Q81FJNSRnE5z1pZxR+MKHY9mHUHeGNiadbsXE/+MfUQfY1MQ
-         4+ZLXUF4BTCzB1eLaolHdLONdRV/+MVP36jc50+kpptrsZCAzjgtnQadjK4061PqJ4b7
-         x0Lfu2W9scSIpwmA8r0/j+S35CYjHhW3Wi/SOeDrTMKZLZCkmZTZtj+Qo6D405fe787u
-         XylY2m4dy+Tnv0UIPggZ7nwBlblCLjN5ozTymtzWJx31zBV/AUo3qZfFXRnX3Yi1ibnb
-         12sP1xCrTFBaTIKkmNSNo3Efi1m1TCmsA16V89BsYpL3inllOcZE4CBjz4x5dl/+SF2y
-         1qIw==
-X-Forwarded-Encrypted: i=1; AKwUvBxO2PGOdIIMrLjjdMuDUw7/WFnbXbdaOrNVgQBTMiOiuZUEibFxa76UfrB3xjhj81iuG6V6B64=@vger.kernel.org
-X-Gm-Message-State: AFuF++ngcETYbTlN2yCgvny4H5TkMn2o3757yFRreM3dp5soSMFiUghC
-	C4ZIcqUXzdICT+IvemS3nmeBcI+eA2NS6lmM8FVQeJdw5Y+Kl7gx7oBydh+L97DSkjo=
-X-Gm-Gg: AYBFou1da1se4j/lKcwRT7/zCD4fWO6zlZa5sGd3jg9WscRoHpQ1ZjswOtPoGccvtGl
-	Ub6KXFML1rDndSwtYID8CiU77ns72ObbNmflIZi76caH9S69BCwjAs7uBR8U1LLuAjuteY9bima
-	ZKzAEDDoD8qqKnARdBgMoo2PKKTCarmRClzAkDcf7BUPZbUJ3j9fiLfvoak3wO6ucfcIVKu351s
-	ymmAcZVdtiWoUe5S4tAIs4tWYyKtaes/Q5DYvCvjG5tbjtVSeMZbN/71+9Iq8h8u/Vd+uMUgAgb
-	PBoGIDyS5kSV+eG4STIBPrJ19ljaQ0zTrjMfD9VUVj8v+EGBjo1m6WNUkJU2CxzSAYnuXNA+8TP
-	R3zCt8wbEIPpkqP1R9SLGGHhvluUUtn64lIhPPPZJpZtbQIBjIcAQoWIOoYUdeFroQihwZVd2GK
-	Q4zFP4a+N0AhHCF3SYdSSCziZ9hFb++lfl4e9JJZgk4bZ3ERHWruulc0JP8PNb16QUo7ItRMurV
-	h+oHnOFhH5AQYYh/g==
-X-Received: by 2002:a05:600c:8b22:b0:49e:6fd2:a45 with SMTP id 5b1f17b1804b1-49fe66d81fbmr28966805e9.16.1790240040664;
-        Thu, 24 Sep 2026 01:54:00 -0700 (PDT)
-Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5cd4c8dsm64643045e9.3.2026.09.24.01.53.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 01:54:00 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Richard
- Cochran <richardcochran@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, Andre Przywara
- <andre.przywara@arm.com>
-Subject: Re: [PATCH net-next v3 3/5] net: stmmac: sun55i: Make the delay
- step configurable
-In-Reply-To: <26334006-a2af-49d3-8f26-18cd44118c6b@lunn.ch>
-References: <20260923-allwinner-a733-gmac-support-v3-0-15735155a789@baylibre.com>
- <20260923-allwinner-a733-gmac-support-v3-3-15735155a789@baylibre.com>
- <26334006-a2af-49d3-8f26-18cd44118c6b@lunn.ch>
-Date: Thu, 24 Sep 2026 10:53:59 +0200
-Message-ID: <1j4iff9gig.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxRwVj38"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233091F000FF;
+	Thu, 24 Sep 2026 08:54:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790240082;
+	bh=yrKvdoHKHUrs0CoJeIfRXejqns+60AzL+8SidZjSbMU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=IxRwVj38L74+kDKcCYCdkYQF8nKO0ZnsIc9/rmmL6kfkopkLeddsUKVEaHtlWWFIj
+	 N6rsBFO8xnYezDnBeF1xdwyoHS7z+60zWeHGNcSCdH/pXC5YXN+8BalUu1Qnri+x+c
+	 3Bk5zVomRExPIcYxQ+7TLMOBBMOLmLzAJ66rZX8qsZ4b2Kt9ET3tKvSzY9vqW7i21a
+	 zKJcEzUQSCcAeRAo53rGp21/SmzSZNuDOIMl9hpZQhjnOP3u4Ixg/85QrqxEw3M+kJ
+	 /qCm0oDbtkpx3GL5WovjU8Okb5UDrdkcKE54LyeC3Zo1E4gfY52uLpfXFsQNt7I7d+
+	 D8Ce8oxiJt8hw==
+Subject: Re: [PATCH net v5 1/2] net: validate virtio checksum start after
+ network header
+From: netdev-bot+sashiko@kernel.org
+To: habte.yibelo@gmail.com
+Cc: netdev@vger.kernel.org, richard@nod.at, anton.ivanov@cambridgegreys.com,
+ johannes@sipsolutions.net, willemdebruijn.kernel@gmail.com,
+ jasowangio@gmail.com, mst@redhat.com, eperezma@redhat.com,
+ xuanzhuo@linux.alibaba.com, andrew+netdev@lunn.ch, pablo@netfilter.org,
+ fw@strlen.de, phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com,
+ dsahern@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-um@lists.infradead.org,
+ virtualization@lists.linux.dev, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, bridge@lists.linux.dev, linux-kernel@vger.kernel.org
+Date: Thu, 24 Sep 2026 08:54:40 +0000
+Message-ID: <179024008066.2160803.8682461497509944706@kernel.org>
+In-Reply-To: <20260921025341.44846-2-habte.yibelo@gmail.com>
+References: <20260921025341.44846-2-habte.yibelo@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
 
-On jeu. 24 sept. 2026 at 04:30, Andrew Lunn <andrew@lunn.ch> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
->> +	 * Correcting them would break the DT ABI of the published DTs.
->> +	 */
->> +	.txdly_step_ps = 100,
->> +	.rxdly_step_ps = 100,
->
-> Could you be a bit more specific about what published means?
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-DTs like those ones:
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts?h=v7.3-rc4#n88
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts?h=v7.3-rc4#n87
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts?h=v7.3-rc4#n106
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-On A523/T527, only gmac1 is supported by the driver addressed in this
-series. gmac0 is another (dwmac) driver.
+- [High] The two AF_PACKET call sites pass skb_network_offset(skb) as the
+  new `network_offset` argument, while every other converted caller…
+- [Medium] In arch/um/drivers/vector_transports.c:raw_verify_header(),
+  the newly added virtio_net_hdr_get_l3_offset() parse and the now-…
 
-If I take the 1st example
+--
 
-&gmac1 {
-	phy-mode = "rgmii-id";
-	phy-handle = <&ext_rgmii1_phy>;
-	phy-supply = <&reg_cldo4>;
+net: validate virtio checksum start after network header
 
-	tx-internal-delay-ps = <300>;
-	rx-internal-delay-ps = <400>;
+This adds an explicit data-relative L3 offset argument to
+virtio_net_hdr_to_skb() and virtio_net_hdr_tnl_to_skb() so that a
+CHECKSUM_PARTIAL start landing inside the network header is rejected.  A new
+helper virtio_net_hdr_get_l3_offset() parses Ethernet and nested VLAN headers
+with skb_header_pointer(), and all in-tree callers are converted.
 
-	status = "okay";
-};
+Link: https://lore.kernel.org/netdev/20260920004733.6473-2-habte.yibelo@gmail.com/
 
-If the information we've got about the A523 delay steps are correct, the
-actual values would be:
-* tx: 540ps
-* rx: 2120ps
+> diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
+> index ddd127ee9678..79bc05fc6f73 100644
+> --- a/arch/um/drivers/vector_transports.c
+> +++ b/arch/um/drivers/vector_transports.c
+> @@ -197,6 +197,7 @@ static int raw_verify_header(
+>  	uint8_t *header, struct sk_buff *skb, struct vector_private *vp)
+>  {
+>  	struct virtio_net_hdr *vheader = (struct virtio_net_hdr *) header;
+> +	int network_offset;
+>  
+>  	if ((vheader->gso_type != VIRTIO_NET_HDR_GSO_NONE) &&
+>  		(vp->req_size != 65536)) {
+> @@ -209,8 +210,13 @@ static int raw_verify_header(
+>  	if ((vheader->flags & VIRTIO_NET_HDR_F_DATA_VALID) > 0)
+>  		return 1;
+>  
+> -	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
+> -	return 0;
+> +	network_offset = virtio_net_hdr_get_l3_offset(skb, vheader);
+> +	if (network_offset < 0)
+> +		return network_offset;
+> +
+> +	return virtio_net_hdr_to_skb(skb, vheader,
+> +				     virtio_legacy_is_little_endian(),
+> +				     network_offset);
+>  }
 
-So I suppose in this case, the phy-mode is more likely to be rgmii-txid,
-isn't it ?
+[Severity: Medium]
+Is the skb passed to raw_verify_header() already trimmed to the received
+frame length at this point?
 
->
->       Andrew
+prep_skb() in arch/um/drivers/vector_kern.c sets the length from the
+receive buffer capacity, before the recvmsg/recvmmsg:
+
+	skb_put(result, vp->max_packet);
+	result->data_len = len - vp->max_packet;
+	result->len += len - vp->max_packet;
+
+and both receive loops call the verify callback before the trim:
+
+vector_legacy_rx():
+			header_check = vp->verify_header(
+				vp->header_rxbuffer, skb, vp);
+			if (header_check < 0) { ... return 0; }
+		}
+		pskb_trim(skb, pkt_len - vp->rx_header_size);
+
+vector_mmsg_rx() has the same ordering.  The only guarantee before the
+callback is pkt_len > vp->header_size, i.e. one payload byte.
+
+So can the Ethernet and VLAN bytes that virtio_net_hdr_get_l3_offset()
+reads at offsets 0..13 and beyond be bytes recvmsg never wrote, i.e. the
+uninitialised remainder of the allocation, making network_offset and the
+accept/reject decision depend on stale buffer contents whenever the
+received frame is shorter than the parsed span?
+
+Along the same lines, the length checks inside __virtio_net_hdr_to_skb()
+see skb->len as capacity (up to vp->req_size, 65536 with GSO) rather than
+the received length, for instance:
+
+			if (skb->len - p_off > gso_size * UDP_MAX_SEGMENTS)
+				return -EINVAL;
+
+Since raw_verify_header() now returns the converter's error instead of
+discarding it, does this turn the length mismatch into frames dropped with
+rx_encaps_errors, where previously the return value was ignored?  Would it
+be better to move the pskb_trim() ahead of the verify_header() call?
+
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index c381b916c1b5..a4c005796acb 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+
+[ ... ]
+
+> @@ -98,16 +136,20 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+>  		u32 start = __virtio16_to_cpu(little_endian, hdr->csum_start);
+>  		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+>  		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
+> +		int transport_offset;
+>  
+>  		if (!pskb_may_pull(skb, needed))
+>  			return -EINVAL;
+>  
+>  		if (!skb_partial_csum_set(skb, start, off))
+>  			return -EINVAL;
+> -		if (skb_transport_offset(skb) < nh_min_len)
+> +
+> +		transport_offset = skb_transport_offset(skb);
+> +		if (transport_offset < nh_min_len || network_offset < 0 ||
+> +		    network_offset > transport_offset - nh_min_len)
+>  			return -EINVAL;
+
+[ ... ]
+
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index 50cae32ae269..04c80e23d7e2 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -2901,7 +2901,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+>  		}
+>  
+>  		if (has_vnet_hdr) {
+> -			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+> +			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le(),
+> +						  skb_network_offset(skb))) {
+>  				tp_len = -EINVAL;
+>  				goto tpacket_error;
+>  			}
+> @@ -3103,7 +3104,8 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+>  	packet_parse_headers(skb, sock);
+>  
+>  	if (vnet_hdr_sz) {
+> -		err = virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le());
+> +		err = virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le(),
+> +					    skb_network_offset(skb));
+>  		if (err)
+>  			goto out_free;
+>  		len += vnet_hdr_sz;
+
+[Severity: High]
+Is skb_network_offset(skb) a strong enough origin here?  Every other
+converted caller derives the offset from the frame bytes via
+virtio_net_hdr_get_l3_offset(), while these two use the network header
+AF_PACKET established itself.
+
+In packet_parse_headers() the VLAN adjustment is gated on the
+socket-supplied protocol:
+
+	if (likely(skb->dev->type == ARPHRD_ETHER) &&
+	    eth_type_vlan(skb->protocol) &&
+	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+		skb_set_network_header(skb, depth);
+
+For SOCK_RAW with an explicit sll_protocol, skb->protocol is the value the
+sender passed, not the frame's EtherType (dev_parse_header_protocol() runs
+only when skb->protocol is 0 or ETH_P_ALL).
+
+So for a sender that binds with sll_protocol = htons(ETH_P_IP) but writes
+an 802.1Q-tagged frame, network_offset stays 14 while the real IPv4 header
+starts at 18.  With csum_start = 34 and nh_min_len = 20, the new test
+becomes:
+
+	transport_offset = 34;
+	34 < 20                      -> false
+	14 > 34 - 20                 -> 14 > 14 -> false
+
+and the header is accepted, after skb_partial_csum_set() has already set
+ip_summed = CHECKSUM_PARTIAL and transport_header = 34, which is 16 bytes
+inside the IPv4 header spanning 18..37.  Is that not exactly the case the
+commit message says is now rejected?
+
+Two related cases in the same path:
+
+packet_parse_headers() silently ignores a failed
+vlan_get_protocol_and_depth() (more nested tags than that parser accepts),
+leaving network_offset at 14 for a deeper real L3 header.
+
+In packet_snd(), the SOCK_RAW short-packet branch resets the network header
+while skb->data still points at the link header:
+
+	} else if (reserve) {
+		skb_reserve(skb, -reserve);
+		if (len < reserve + sizeof(struct ipv6hdr) &&
+		    dev->min_header_len != hard_header_len)
+			skb_reset_network_header(skb);
+	}
+
+which yields network_offset == 0, and the new bound then reduces to the
+pre-patch csum_start >= 20 check.  Would using
+virtio_net_hdr_get_l3_offset() at both AF_PACKET call sites, as the TAP and
+virtio-net paths do, keep the origin consistent?
+
+Note the follow-up commit in this area, "ip: reject partial checksums
+covering network headers", only touches ip_do_fragment(), ip6_fragment(),
+nf_br_ip_fragment() and br_ip6_fragment(), so it does not close this
+AF_PACKET path later in the series.
 
 -- 
-Jerome
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921025341.44846-1-habte.yibelo%40gmail.com
