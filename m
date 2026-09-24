@@ -1,236 +1,233 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender5-op-o12.zoho.com (sender5-op-o12.zoho.com [165.173.182.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1436284B4F
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790250561; cv=none; b=V/eYtsf6MDUrLdOAPm71vMXCjUSnZWp2NDvIAVxxCMMGwiHjx9Q62jIB+vwxB8utYxeCZqZJ3utH2HS1PX3hI87DY0nwuq3exQPnlAw17WukAJAeFqJGIbJ9953g4I2CtknFFpTu1qcWLyr5LCVtNej7LUP1REXJtz0RUKurnGQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790250561; c=relaxed/simple;
-	bh=GX/IG1l8s+2W7sIl+1ffAAioTI5PgJWOHPAvRQXCEkM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uBk4URVvfXe2ZudnGmJ2WxAtvZolozjvdO3NxuBxqrJsNCeM1FNzMiw8kSwe58IZqC7v7AF2BRsKzO1UiYaS0I+QwE7UNPMnW3uESCV1HU11PNTAr8t0pHMnAk/MtieEvLPfILlpj9sv0lGmMWPLUthtgvtSgWLJTeJV6NDkrig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=wc4bZxxW; arc=none smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FEC25A640;
+	Thu, 24 Sep 2026 11:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790250652; cv=pass; b=mlsLyysFoSAhsZaV1hP+unC4AwcyDQszWZxZHtkYnuIDVS7vxWn7DOuyIzS9B+SbsFo7qHrmLKSHhhcecz4KXSMr+wJyzb1fD1uK97n23gmBTAmgEqwTh0X422pNGwahMYUZ0JTQBoSn2LV5sgJ1gItB4pBrcr/UiTQijQySW9M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790250652; c=relaxed/simple;
+	bh=OBE3DDnBkaOQaPj1fILQ9HIb+aNpVy/zxzaDOi92R9U=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=aEhXdMV5mQWFjske7UNjSL9gV0RpmqNUrkijzaca81xd0rc9DzHcByoB2MDTJlxqhKDrBjbbVKc/PZTIPEjd1o39uQX2pLHHoF9zW7nTCU1kOCSCqOkWWXX98lk5hhs3mXPsECknLOJtkVTSXAiL9FPbVA92HYSlTXg14FvENjc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=fhfz8YHd; arc=pass smtp.client-ip=165.173.182.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="wc4bZxxW"
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109fafddso132424085a.0
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 04:49:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790250559; x=1790855359; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tXmzit9J6X6Kx8j00B92G7Rr7CR+3tTI5ONv9mj0xqM=;
-        b=wc4bZxxWwk55gJ3Ll3lBiJmds0Oj1zslepztrwZibANVwa4Jzha+AOEQz7gNXk3Zey
-         kLsz1PgM4zplcb+jn9MOBIZVrKcQ3fibYBt/h8SZFazkEIIOzfZwhEmGd4ZJXDe1HHTR
-         c1Z2BiErhvC4ISnm6f2mYdrvZG3wJEYwaH0SE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790250559; x=1790855359;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tXmzit9J6X6Kx8j00B92G7Rr7CR+3tTI5ONv9mj0xqM=;
-        b=JkgjlzTp/Jww+NdO6Ld+6AbHeQBEWDq4F4wBhAv/OpmTy3dx7iTsf7I1GbhUgX57wN
-         Jr6CLMJGhLB0feAiqH7IeCcsldECdwYbZXQhJMG8aQyegrcjWHwMTvun+eRmOxaG2is8
-         FwSfn5LyOKxVbp/6o3sOq0bdeie5cEBWEb55GGygWc+lBl6aDsWQ5RJvbEMJ4swPiUGP
-         mh0aH2fNyDLX/g50c9nrBjl+wzLjCX7d4c2MslnruMqGh9gu2lNPe3Q9TffulnqHwieR
-         VQzLwtYC6WRH+qms/GaSevB+VgrqgPlTmUnkphGreRZbGypkEAMohNubQD4WmpCOPcC5
-         OlJQ==
-X-Gm-Message-State: AFuF++lQPE954Qmb01hDoGbGYX4Kbsw+j6Is+SSn7EGDRKHS91TvOQmZ
-	L7gXmXwhd81GJNqY1ecNm25TWI2uPVVCD5UzIhfOpzYpi0nfMi9rn5UPsqfRnINTwZv28mLnUyL
-	h0qH31w==
-X-Gm-Gg: AYBFou01t+f2UolZiGGja9ZfUe0yfp/rO3Q4kPfDEjSIT5i1TsRm3reHKumbtTkAmY8
-	tRJ1+XtnReKzZc3OWCuvbwc6D9+H/Wx9FDQpJ9uM1c3+vBIRmVhBRMFI999n0QK3rDBHguLEe7g
-	TdmM7w13aYSNmQi9BJZ2beWXG+R7qO0xI8JR86F6GzdmvqnKrUR9luF8yYqT1cfGSVlEhkdYREY
-	ddQytKy8gdElqPLuHLnEKbzNfX1PdXVHWzXdBNt9g7iYFGyRWHsqNVM3uBDwTmZcYkCFZ3iNS2x
-	8jobv98w5oFqrDq39HtnzklId6RT9r/pfZcrRzKAq5oswT8Du1hmnliRFFPyWMFmPj0Mji8j57j
-	gZJbd85rktdHCvQo2RPRPoywxe6NZkLjFE1u9pljODahRh/2p0NjrQSOnIAqIo5vUmixYBoaBNl
-	LEn9Ya+0BXHxXq4TInFzJsHj+QLNVeYBV8rVBbb/svNcyLT5gv04CKIpywvlx/IXjGsmkRTSFF7
-	p9GA/ZOLBUtxX1MbN8EwoLFiEl2GESyu3+vflmTmUZS5L5MgA==
-X-Received: by 2002:a05:620a:4084:b0:939:6dfc:8abd with SMTP id af79cd13be357-93c36402f37mr241886585a.52.1790250558748;
-        Thu, 24 Sep 2026 04:49:18 -0700 (PDT)
-Received: from majuu.waya ([184.147.180.207])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9141e0d3746sm15111276d6.6.2026.09.24.04.49.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 04:49:18 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tonghao Zhang <xiangxia.m.yue@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Zero Day Initiative <zdi-disclosures@trendmicro.com>,
-	hybris <hybris@mojatatu.ai>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: cap skb->queue_mapping when the tx queue is picked
-Date: Thu, 24 Sep 2026 07:49:06 -0400
-Message-Id: <QDISC-9R8V.v2.20260924072708@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="fhfz8YHd"
+ARC-Seal: i=1; a=rsa-sha256; t=1790250626; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=eb4oTwY0qutESF5jWcst0rfzmgLxC3QTM8QspvQ/YqsshJfhxAe2eFTSE0+8EemRM8TKdg3Dh7S5YhI7A16MU5KuhCE+Jm6p7P7X7f+UFx16PpuHnn9ap/5DzaA7wblHBVcMfBmFtKw7z1q1EqqOsK8XAq8Rzww2QVgL5YivDpk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790250626; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=D4NQbooTCoLIhq89WPjVN+rIbiM7uvx91LrsRqYcNW4=; 
+	b=AQ1jxmCxVzzuIQxJ2n1AUq3unj2C2l4PEYAG9RHdLY71b12sKuiCIBP4MUpF++1UFj/YSASpkM8ae2fyIdVUSYLyWSQ4WX66c43Z1XNb2Vu8JbfJ/4/ifGP4Xu0hKJdt+CkTfs7ytoT3M3JySYKAyXBguIazBQGJdkn8zZFt4aw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=rong.moe;
+	spf=pass  smtp.mailfrom=i@rong.moe;
+	dmarc=pass header.from=<i@rong.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790250626;
+	s=zmail2048; d=rong.moe; i=i@rong.moe;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:Content-Type:Content-Transfer-Encoding:Date:Date:MIME-Version:Message-Id:Reply-To;
+	bh=D4NQbooTCoLIhq89WPjVN+rIbiM7uvx91LrsRqYcNW4=;
+	b=fhfz8YHdHX/OEi4ojmi6NPAiQvda1vabHNL3OyzxDDaZj3TyslevY2vCWcIxzplI
+	bs59NiehTFQGdEQ9Hjw1N+If4A6kxawSnE/LHn2tdYw3Si4QkHguconWY1sM+3iUiWG
+	sSO6rP999I+zNEpqL+FJemy/0jXO9h5gJLF0h+hE1hpQCGSuouZacJHyy8wijYmMuaN
+	7WsNfu266PxngyX6ZD08udVqDMqoZnPOQjGtjudrP5npWwslHpgUOoToP7dZZzV8nn0
+	1FlEJN90nRj+HK1udqGqMnPEmH7yRa7tL6llSrpO4WnrvtUPYOC39NLrd1Wlb0YnTb/
+	KVLkO/tz6A==
+Received: by smtp.zohomail.com with SMTPS id 1790250624843672.5058092645202;
+	Thu, 24 Sep 2026 04:50:24 -0700 (PDT)
+Message-ID: <577cdb9848906b6b2efcfaff2d68f5ef9a769ae9.camel@rong.moe>
+Subject: Re: [PATCH v7 02/13] leds: trigger: Move
+ led_trigger_is_hw_controlled() to the right place
+From: Rong Zhang <i@rong.moe>
+To: Lee Jones <lee@kernel.org>
+Cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+ <linux@weissschuh.net>,  Benson Leung <bleung@chromium.org>, Guenter Roeck
+ <groeck@chromium.org>, Marek =?ISO-8859-1?Q?Beh=FAn?=	 <kabel@kernel.org>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark"	
+ <derekjohn.clark@gmail.com>, Hans de Goede <hansg@kernel.org>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Ike Panhc
+ <ikepanhc@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar
+ <vsankar@lenovo.com>, 	linux-leds@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, 	platform-driver-x86@vger.kernel.org
+In-Reply-To: <20260924083709.GA331088@google.com>
+References: <20260921-leds-trigger-hw-changed-v7-0-fe3cdb6dec51@rong.moe>
+		 <20260921-leds-trigger-hw-changed-v7-2-fe3cdb6dec51@rong.moe>
+		 <20260924083709.GA331088@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 24 Sep 2026 19:45:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Evolution 3.56.2-10+b1 
+X-ZohoMailClient: External
 
-skbedit can set skb->queue_mapping and raise the per-CPU skip_txqueue
-flag so __dev_queue_xmit() honours the mapping. __dev_queue_xmit()
-cleared the flag before sch_handle_egress() and only read it afterwards,
-so the flag was not confined to the xmit that set it: a nested xmit
-(mirred redirect or mirror, or a drop after skbedit) could set the flag
-and the outer xmit would consume it for an skb that never went through
-skbedit.
+Hi Lee,
 
-A forwarded packet still carries the ingress NIC's rx_queue + 1 in
-skb->queue_mapping, so the outer device then indexes its tx queue state
-with that stale value. Taprio's child array q->qdiscs[] is sized to the
-device's queue count, so taprio_enqueue() indexes past its allocation
-and dereferences the result as a struct Qdisc *.
+Thanks for your review.
 
-Own the flag for the whole xmit frame: save the incoming value and clear
-it before any of the frame's egress work can recurse, and restore it only
-when the frame exits. A transmit-qdisc classifier is a documented flag
-producer too (it runs in q->enqueue(), after sch_handle_egress()), so the
-flag must be owned for the whole frame, not just around the clsact hook.
-The flag then never crosses an xmit boundary in either direction. Also
-store the value netdev_cap_txqueue() selected back into skb->queue_mapping
-in netdev_tx_queue_mapping(), as netdev_core_pick_tx() already does, so a
-mapping rewritten later in the same egress run (for example a tc BPF
-store) cannot leave an out-of-range index for the later readers on the
-xmit path.
+On Thu, 2026-09-24 at 09:37 +0100, Lee Jones wrote:
+> --- checkpatch.pl: clean (0 issues) ---
+>=20
+> On Mon, 21 Sep 2026, Rong Zhang wrote:
+>=20
+> > Currently led_trigger_is_hw_controlled() is placed at led-class.c, whic=
+h
+> > is not an right place as it falls into the triggers namespace and does
+> > triggers stuff.
+> >=20
+> > Move it into led-triggers.c, and split it into locked and unlocked
+> > variant for convenience.
+> >=20
+> > Fixes: b819dc7d8fb2 ("leds: core: Report ENODATA for brightness of hard=
+ware controlled LED")
+> > Acked-by: Ike Panhc <ikepanhc@gmail.com>
+> > Signed-off-by: Rong Zhang <i@rong.moe>
+> > ---
+> > Changes in v3:
+> > - New patch in the series, the dependency of the following patches
+> > ---
+> >  drivers/leds/led-class.c    | 10 ----------
+> >  drivers/leds/led-triggers.c | 19 +++++++++++++++++++
+> >  include/linux/leds.h        |  8 ++++++++
+> >  3 files changed, 27 insertions(+), 10 deletions(-)
+> >=20
+> > diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+> > index 4259533dafa1..7110bfbe3b83 100644
+> > --- a/drivers/leds/led-class.c
+> > +++ b/drivers/leds/led-class.c
+> > @@ -27,16 +27,6 @@ static LIST_HEAD(leds_lookup_list);
+> > =20
+> >  static struct workqueue_struct *leds_wq;
+> > =20
+> > -static bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev=
+)
+> > -{
+> > -#ifdef CONFIG_LEDS_TRIGGERS
+> > -	guard(rwsem_read)(&led_cdev->trigger_lock);
+> > -	return led_cdev->trigger && led_cdev->trigger->trigger_type;
+> > -#else
+> > -	return false;
+> > -#endif
+> > -}
+> > -
+> >  static ssize_t brightness_show(struct device *dev,
+> >  		struct device_attribute *attr, char *buf)
+> >  {
+> > diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+> > index b1223218bda1..bf2543538ed0 100644
+> > --- a/drivers/leds/led-triggers.c
+> > +++ b/drivers/leds/led-triggers.c
+> > @@ -7,9 +7,11 @@
+> >   * Author: Richard Purdie <rpurdie@openedhand.com>
+> >   */
+> > =20
+> > +#include <linux/cleanup.h>
+> >  #include <linux/export.h>
+> >  #include <linux/kernel.h>
+> >  #include <linux/list.h>
+> > +#include <linux/lockdep.h>
+> >  #include <linux/spinlock.h>
+> >  #include <linux/device.h>
+> >  #include <linux/timer.h>
+> > @@ -33,6 +35,23 @@ trigger_relevant(struct led_classdev *led_cdev, stru=
+ct led_trigger *trig)
+> >  	return !trig->trigger_type || trig->trigger_type =3D=3D led_cdev->tri=
+gger_type;
+> >  }
+> > =20
+> > +static bool __led_trigger_is_hw_controlled(struct led_classdev *led_cd=
+ev)
+> > +{
+> > +	lockdep_assert_held(&led_cdev->trigger_lock);
+> > +
+> > +	if (!led_cdev->trigger)
+> > +		return false;
+> > +
+> > +	return led_cdev->trigger->trigger_type;
+>=20
+> How does this not cause a compiler warning?
 
-A local user in a network namespace can redirect a packet from a device
-with more TX queues to one with fewer after setting a mapping valid only
-on the larger device. That reaches these reads and, under KASAN, faults
-with "slab-out-of-bounds in taprio_enqueue".
+trigger_type is a pointer. Implicitly converting a pointer to boolean via
+a return statement is completely valid in C11.
 
-Conditions to recreate the bug: with CONFIG_NET_SCH_TAPRIO=y,
-CONFIG_NET_ACT_SKBEDIT=y, CONFIG_NET_ACT_MIRRED=y,
-CONFIG_NET_CLS_MATCHALL=y, CONFIG_NET_SCH_PRIO=y and KASAN enabled,
-create qa (3 queues), qb (2 queues) and qc (1 queue) as dummy devices;
-put a taprio root on qb and clsact on all three; then add an egress
-matchall filter on every device. On qa: "action skbedit queue_mapping 2
-pipe action mirred egress redirect dev qb". On qb: "action mirred egress
-mirror dev qc". On qc: "action skbedit queue_mapping 0 pipe". Send one
-packet out qa. qc's skbedit sets the flag while qb's outer xmit is in
-flight; without the fix qb consumes it and reads its two-entry taprio
-child array with the forwarded packet's stale mapping. A qc whose skbedit
-is instead installed in a transmit-qdisc classifier (a matchall filter on
-the qc root qdisc) reaches the same read the same way.
+   6.3.1.2 Boolean type
+   When any scalar value is converted to _Bool, the result is 0 if the valu=
+e
+   compares equal to 0; otherwise, the result is 1.
 
-Testing: on a KASAN build with panic_on_warn=1 the unfixed kernel panics
-with "BUG: KASAN: slab-out-of-bounds in taprio_enqueue", a read 0 bytes
-past a 16-byte taprio_init() allocation; the fixed kernel runs both the
-clsact-setter and the transmit-qdisc-classifier reproducers with no report
-and no clamp notice, and the taprio/multiq/matchall/skbedit/mirred tdc
-tests pass (117 ok, 0 fail).
+   6.8.6.4 The return statement
+   ...If the expression has a type different from the return type of the
+   function in which it appears, the value is converted as if by
+   assignment to an object having the return type of the function.
+  =20
+>=20
+> This needs to be evaluated properly.
 
-Fixes: 2f1e85b1aee4 ("net: sched: use queue_mapping to pick tx queue")
-Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
-Link: https://lore.kernel.org/netdev/CANn89iLwYx8nCVf0pCEk_MmEiyC6kQaMwCQT9WkQVeeNzNQHqQ@mail.gmail.com/
-Link: https://lore.kernel.org/netdev/179008581937.2160803.7117814290574262942@kernel.org/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Tested-by: hybris <hybris@mojatatu.ai>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v1 -> v2:
-- Rework the root cause to the per-CPU skip_txqueue flag lifetime: it was
-  cleared before sch_handle_egress() and read after, so a nested xmit could
-  set it and the outer xmit consume it for an skb that never went through
-  skbedit (Eric Dumazet, nipa Sashiko).
-- Own the flag for the whole xmit frame: save/clear it before any of the
-  frame's egress work can recurse, and restore it only when the frame exits.
-- Retain the v1 producer-side cap (netdev_tx_queue_mapping() writes the
-  clamped value back), covering the residual in-frame rewrite nipa
-  identified (e.g. a tc BPF store).
-- Correct the description of the reproducer to a three-device chain
-  (qa 3q -> qb 2q taprio -> qc 1q);
+If it's preferred to make the intention clearer, how about:
 
- net/core/dev.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+	return led_cdev->trigger->trigger_type !=3D NULL;
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0292a16e16c2..e72a5c6dc63a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4404,9 +4404,14 @@ EXPORT_SYMBOL(dev_loopback_xmit);
- static struct netdev_queue *
- netdev_tx_queue_mapping(struct net_device *dev, struct sk_buff *skb)
- {
--	int qm = skb_get_queue_mapping(skb);
-+	int queue = skb_get_queue_mapping(skb);
-+	int capped;
- 
--	return netdev_get_tx_queue(dev, netdev_cap_txqueue(dev, qm));
-+	capped = netdev_cap_txqueue(dev, queue);
-+	if (unlikely(capped != queue))
-+		skb_set_queue_mapping(skb, capped);
-+
-+	return netdev_get_tx_queue(dev, capped);
- }
- 
- #ifndef CONFIG_PREEMPT_RT
-@@ -4824,6 +4829,9 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 	int cpu, rc = -ENOMEM;
- 	bool again = false;
- 	struct Qdisc *q;
-+#ifdef CONFIG_NET_EGRESS
-+	bool skip_txq;
-+#endif
- 
- 	skb_reset_mac_header(skb);
- 	skb_assert_len(skb);
-@@ -4847,6 +4855,14 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 
- 	tcx_set_ingress(skb, false);
- #ifdef CONFIG_NET_EGRESS
-+	/* The flag is per-CPU and a nested xmit can set it from its own
-+	 * clsact hook or transmit qdisc. Own it for the whole frame: this
-+	 * frame cannot consume a nested xmit's flag and a nested xmit
-+	 * cannot inherit this frame's.
-+	 */
-+	skip_txq = netdev_xmit_txqueue_skipped();
-+	netdev_xmit_skip_txqueue(false);
-+
- 	if (static_branch_unlikely(&egress_needed_key)) {
- 		if (nf_hook_egress_active()) {
- 			skb = nf_hook_egress(skb, &rc, dev);
-@@ -4854,8 +4870,6 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 				goto out;
- 		}
- 
--		netdev_xmit_skip_txqueue(false);
--
- 		nf_skip_egress(skb, true);
- 		skb = sch_handle_egress(skb, &rc, dev);
- 		if (!skb)
-@@ -4952,12 +4966,18 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 
- 	reason = SKB_DROP_REASON_RECURSION_LIMIT;
- drop:
-+#ifdef CONFIG_NET_EGRESS
-+	netdev_xmit_skip_txqueue(skip_txq);
-+#endif
- 	rcu_read_unlock_bh();
- 
- 	dev_core_stats_tx_dropped_inc(dev);
- 	kfree_skb_list_reason(skb, reason);
- 	return rc;
- out:
-+#ifdef CONFIG_NET_EGRESS
-+	netdev_xmit_skip_txqueue(skip_txq);
-+#endif
- 	rcu_read_unlock_bh();
- 	return rc;
- }
--- 
-2.43.0
+Thanks,
+Rong
 
+>=20
+> > +}
+> > +
+> > +bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
+> > +{
+> > +	guard(rwsem_read)(&led_cdev->trigger_lock);
+> > +	return __led_trigger_is_hw_controlled(led_cdev);
+> > +}
+> > +EXPORT_SYMBOL_GPL(led_trigger_is_hw_controlled);
+> > +
+> >  ssize_t led_trigger_write(struct file *filp, struct kobject *kobj,
+> >  			  const struct bin_attribute *bin_attr, char *buf,
+> >  			  loff_t pos, size_t count)
+> > diff --git a/include/linux/leds.h b/include/linux/leds.h
+> > index a515f075c29a..46ad2e03e1c6 100644
+> > --- a/include/linux/leds.h
+> > +++ b/include/linux/leds.h
+> > @@ -534,6 +534,8 @@ void led_trigger_set_default(struct led_classdev *l=
+ed_cdev);
+> >  int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger =
+*trigger);
+> >  void led_trigger_remove(struct led_classdev *led_cdev);
+> > =20
+> > +bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev);
+> > +
+> >  static inline void led_set_trigger_data(struct led_classdev *led_cdev,
+> >  					void *trigger_data)
+> >  {
+> > @@ -584,6 +586,12 @@ static inline int led_trigger_set(struct led_class=
+dev *led_cdev,
+> >  }
+> > =20
+> >  static inline void led_trigger_remove(struct led_classdev *led_cdev) {=
+}
+> > +
+> > +static inline bool led_trigger_is_hw_controlled(struct led_classdev *l=
+ed_cdev)
+> > +{
+> > +	return false;
+> > +}
+> > +
+> >  static inline void led_set_trigger_data(struct led_classdev *led_cdev)=
+ {}
+> >  static inline void *led_get_trigger_data(struct led_classdev *led_cdev=
+)
+> >  {
+> >=20
+> > --=20
+> > 2.55.0
+> >=20
