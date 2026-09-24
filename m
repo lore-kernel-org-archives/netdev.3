@@ -1,155 +1,227 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7832E36D9E7
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 13:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC3A280331;
+	Thu, 24 Sep 2026 13:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790257895; cv=none; b=kRr/yRGFxmHRowFbZmeINqB5mdT9y0ZjWv5/qJ2+mA7QPUX1BdG4jIFHu1u+n/uSJr+dLWqlakjfHLQ48wVr2KwF+6rxJmApiCAZTyWq18nzO326cPnPwPGa6UjdwN437gi0f/ZlrV2kpf1dv+yq4arCmvcp/Qs88waAqwiYoY4=
+	t=1790258072; cv=none; b=M4RdkfiPTnmMjvDEoA+tH7Gjn3UEhRjtVhuKZUiK7g5H9UxT/0NjJEDby7BGjpq9MEzavwyT5heIyFBWJL0Hdz2TwW7SEsXGHQ13JVXA8tFdZsWOKXOBoVi7AdDcBPFlrS3kH7ZiMic4Bp9oF4tNPvuJ7+IiLa0lrzQT97H+7/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790257895; c=relaxed/simple;
-	bh=t5Wpp+R6LXu2QFtUVal1E1+IOI54rGsNMSUJETFP1x4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kH56lLfz/riw7K9I1cv6yqRo8Yz9KAEn2FDFPLVTU5nffy0MgB6CvqanHjsihwyQ/0Y90ywHFc+h5Cg0zYFbl3gzwUTfeG/sc3gUdrw81MxayDBAyfpQw9xXSd+/7TJOuQEuWgUo8KcqtD0xuy8Fbc1YiPrsbhi7duH6fVmLID0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QFSdZ2hv; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790258072; c=relaxed/simple;
+	bh=L+PpSiG84VaGXlSktp4v2Ha1dfreFC5SkjQ3fY0sM38=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DHCjWOrmz920n4jFuAoeC0xtR3BVPTgq8h8+7hJnQ7rmLSPRfuzQvIpMw45KlywrD7lWm7ZCNd5mxlmgVWl4k17kRoqxYthhfbQSymdQp34CbXIKYKK+V7LhQNL1UzrqS9n6RJSvLtJI/nAVaFyP6dQC2gyDZkHw9mFkqgvEwLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niHnA08W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QFSdZ2hv"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843378fb37so1229950f8f.3
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 06:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790257889; x=1790862689; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6HASGHD+lRj0S4qpBGA5C8WQuEbo4NLHpp5wcEzg5F0=;
-        b=QFSdZ2hvscJH4ULY8Q8T5gNztDEm9JUdfhufK02Xe4ufffb+HyojzEB1ymXyHQRkwF
-         eeK2IG2/tPUG7dasTVYa4kIb5b6QSAiOehTjHfHG3ik1QydUDS8SQ3RCM6eOIc9HOTpn
-         oqzhTzM0XZRF12NtZujV7o7npAvmNALwt2BiuglYtTQBuea/VgTqqeDsojFeU+CfLFml
-         /HOB3umd0cg/CnCy0e4TbTrkxqeIe1CRmdI8DcitBWb2Ac5/D70yD+AKvCw9MVLOlYer
-         MEeE/iheerP+yuRSaa+VhRLPOrA4Jir88Z2yGiUS6gZRRtFU5ztd8IvYthAfklC/p538
-         HFsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790257889; x=1790862689;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6HASGHD+lRj0S4qpBGA5C8WQuEbo4NLHpp5wcEzg5F0=;
-        b=R3Q+N3D9uYGFIj0X1rXlVjS+SFFewrS7HkifnCI+kaaBXFskTkIbBr1BbrICBGyQII
-         emwec1G0d65U+frf7+8s9r47cxLdTzDlh0nPq4GDeSEciom2tgD9K0CqGp8wGAzX8l+y
-         ZeC5XhaI+ovmupImT1l8v93Od0r6DsHvinntUWr1xqohDph15mWJkcxv1GY2NHNjmLVR
-         Ms7Ha2+b+8MbyWsWdn7Ueyga8dy4jGSLKl3W1QQ7JtaIWkAJyRQMJddWsAlMdYAKSB9V
-         0SWzWq5JD+8+G+moevV6QU3e1LasmgaXFjDr6E+xNzd2pi76TDRPlRtfLE81vbwP+a4w
-         QA0Q==
-X-Gm-Message-State: AFuF++lP5wIgfK3r0vB3h4EPhq0oNRoYxvOqRjDyc7p6Iw1ki2zMf+LR
-	6zC0NEr7zRaJlmoO1dRcx1+ir44apRtx2H7STCRT5tIF/r8oy2zp2U2auXzJuXgr
-X-Gm-Gg: AYBFou2kqKfKr4hRoCmpGErBRr650KApBjnP0g2s+hdrou2o67NCDXKXUZRU/Bk78sJ
-	ZF75MGXpktfNM4tkhQuTmkwpXuaKARVSDd9lKNrGwDYd3NS2PI0Pw2lb2M7rprrzobWc7mPtbaC
-	Ikutj4W1tFGwYrOiLD/OaIVPoCe2uTr49e9GJnARvszR1/rFG0RwTm+clSk8mvD1QvBgpxk1WfH
-	NbW+2KMjFQ0drc8nIfcX8subvQJfoyp2iPBnFgTO8TAo7D98/OMlrTU/n2fgSwnw12MVY8pNWlo
-	0upsAN4hLtbhS0hbWqg4v5qAF6LNkSUDe/PnaHUFDVqTLhDJj56U6hDnWiYJRzsgZdsfzcmESNG
-	tvNwQxH97o3IUsq1hRcA3ZNV39dnw0zLkhUeUbxEnYUte8QHTOwZ4f/lVpdZiEMBLOS61mq9RmD
-	Em+4YjYXBXmxEn6U0ij9L9X7HX2q3bngO4XZnrkukF7wEB2ZiJYjgiZJJo0D672PpUi5bSGSWkv
-	mXZevP2zwhiguT1qZhDdX4HIyO48bRs+5D/4ARP
-X-Received: by 2002:a05:6000:4816:b0:487:11db:9866 with SMTP id ffacd0b85a97d-488716b7ca3mr3656273f8f.57.1790257889326;
-        Thu, 24 Sep 2026 06:51:29 -0700 (PDT)
-Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889376sm12060660f8f.33.2026.09.24.06.51.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 06:51:28 -0700 (PDT)
-From: Sagi Maimon <maimon.sagi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: radhey.shyam.pandey@amd.com,
-	michal.simek@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	daniel@iogearbox.net,
-	andybnac@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net v2 4/4] net: axienet: reprogram the link settings after a DMA error reset
-Date: Thu, 24 Sep 2026 16:51:16 +0300
-Message-ID: <20260924135116.185161-5-maimon.sagi@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20260924135116.185161-1-maimon.sagi@gmail.com>
-References: <20260924135116.185161-1-maimon.sagi@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niHnA08W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151BD1F000FF;
+	Thu, 24 Sep 2026 13:54:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790258070;
+	bh=SM0mirBFNqZyzhYwhqOqLEyAVViA4n4Gk8C6G8Jb/dM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=niHnA08WwEkVe6sHPWH5k+sL96KCpVol1HieFXze+sNw9jV5DWckH+z+QY6K3ZMsZ
+	 igCkTACaccBXEu1pLtr/NuGWXaqIOZFB079Asdv5chF175fgBoF6pKB6wn92hH9dSA
+	 jJxjVo3yeB9Xm++ks74Xe8tWyTV3H1t555tObSf587JnjXr8cx1h+Q1JBr7TqSwMCR
+	 MNoCmXw5LxPzSBBys6VSGHw4tqiRRTDxR7R5cAnWklZ6NfJnZTgy12FwY+5N99isZP
+	 GZuI1s17ilWita+kY7MfPJUmhlHl6v5BnG/vfXdCoX21YcZd/tg2LtpR5NB4zLVpfW
+	 yPekO3HLncBqA==
+Subject: Re: [PATCH net] net/mlx5: Fix slab-out-of-bounds when handling team
+ device events
+From: netdev-bot+sashiko@kernel.org
+To: avirdi@redhat.com
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
+ tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ shayd@nvidia.com, ohartoov@nvidia.com, maorg@nvidia.com,
+ linux-rdma@vger.kernel.org
+Date: Thu, 24 Sep 2026 13:54:29 +0000
+Message-ID: <179025806955.2160803.14946061126391357248@kernel.org>
+In-Reply-To: <20260922135123.46205-1-avirdi@redhat.com>
+References: <20260922135123.46205-1-avirdi@redhat.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-axienet_dma_err_handler() resets the DMA engine, which resets the AXI
-Ethernet core with it.  The handler then restores RCW1, the interrupt
-enable mask, the MAC address, the multicast filter and lp->options, but
-not the link speed field of XAE_EMMC_OFFSET, and it writes XAE_FCC with
-only XAE_FCC_FCRX_MASK, discarding whatever pause configuration had been
-negotiated.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-axienet_mac_link_up() is the only code that programs the link speed and
-the negotiated pause bits, and phylink calls it only when the link state
-changes.  Nothing about the reset is visible to phylink, so it is never
-called again: the MAC keeps its reset-default link speed while software
-still believes the negotiated one is in effect, and on a 10 or 100 Mb/s
-link frames are clocked at the wrong rate until an unrelated link flap
-happens to rerun axienet_mac_link_up().  axienet_open() avoids this only
-because it runs phylink_start() after axienet_device_reset().
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
 
-Tell phylink the link was lost with phylink_mac_change(), so it takes
-the link down and back up and calls axienet_mac_link_up() with the
-current settings, under its own locking.  Do it after the final
-axienet_setoptions(), which also writes XAE_FCC, so the negotiated pause
-settings are the ones left in place - the same order as in
-axienet_open().  Skip it under the same conditions as the queue wake:
-axienet_stop() stops phylink, and a resume restarts it.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The link going down and up is visible, which seems right: the MAC has
-been reset.  A frame may still leave at the reset-default speed in the
-short window before phylink runs; the reset has just dropped everything
-that was in flight anyway.
+- [High] Over-broad guard: replacing netif_is_lag_master() with
+  netif_is_bond_master() at the very top of…
+- [Low] Commit message inaccuracy: the message states that
+  mlx5_handle_changeinfodata_event() suffers the same team_port-…
 
-This was reported by the Sashiko AI review bot.
+Pre-existing issues:
+- [High] The identical bug class the patch claims to eliminate remains
+  reachable in the mlx5e TC mirred offload path: get_fdb_out_dev()…
 
-Tested on an AXI Ethernet MAC behind a PCIe endpoint: traffic passes,
-including across ten down/up cycles made with traffic running, with this
-series applied.  The DMA error path itself was not exercised.
+--
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Assisted-by: LLM sparse
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
----
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+net/mlx5: Fix slab-out-of-bounds when handling team device events
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index f16dbfc7dc93..d53f7dc7bd22 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -2801,8 +2801,15 @@ static void axienet_dma_err_handler(struct work_struct *work)
- 	 * device was detached for suspend: axienet_stop() and axienet_open()
- 	 * own the queue state then.
- 	 */
--	if (!READ_ONCE(lp->stopping) && netif_device_present(ndev))
-+	if (!READ_ONCE(lp->stopping) && netif_device_present(ndev)) {
-+		/* The reset also cleared the link speed and pause settings,
-+		 * which only axienet_mac_link_up() programs.  Have phylink take
-+		 * the link down and up again so that it is called.  This must
-+		 * follow the axienet_setoptions() above, which writes XAE_FCC.
-+		 */
-+		phylink_mac_change(lp->phylink, false);
- 		netif_wake_queue(ndev);
-+	}
- }
- 
- /**
+This changes the two LAG notifier helpers in mlx5's lag.c to gate on
+netif_is_bond_master() instead of netif_is_lag_master(), so that a team
+master no longer reaches bond_slave_get_rcu()/bond_is_slave_inactive().
+The reported symptom is a KASAN out-of-bounds read when a team_port is
+interpreted as a struct slave.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> index dd14cdc378de0..2714d39ae7c24 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> @@ -1922,7 +1922,7 @@ static int mlx5_handle_changeupper_event(struct mlx5_lag *ldev,
+>  	int changed = 0;
+>  	int i, idx = -1;
+>  
+> -	if (!netif_is_lag_master(upper))
+> +	if (!netif_is_bond_master(upper))
+>  		return 0;
+
+[Severity: High]
+Does this early return do more than avoid the bonding-only calls?  The
+only team-unsafe statements in mlx5_handle_changeupper_event() are further
+down in the for_each_netdev_in_bond_rcu() loop:
+
+	slave = bond_slave_get_rcu(ndev_tmp);
+	if (slave)
+		has_inactive |= bond_is_slave_inactive(slave);
+
+Returning 0 at the top of the function also skips the computation of
+tracker->tx_type, tracker->hash_type and tracker->is_bonded for any team
+master.
+
+Since mlx5_lag_netdev_event() only writes the tracker back and queues the
+work when a handler returns non-zero:
+
+	if (changed)
+		mlx5_lag_update_tracker_speed(&tracker, ndev);
+
+	ldev->tracker = tracker;
+
+	if (changed)
+		mlx5_queue_bond_work(ldev, 0);
+
+and mlx5_do_bond() gates activation on the tracker:
+
+	do_bond = tracker.is_bonded && mlx5_lag_check_prereq(ldev);
+
+can is_bonded ever become true again for mlx5 ports aggregated by a team
+master?  Team does advertise the TX types mlx5 accepts —
+team_upper_dev_link() sets lag_upper_info.tx_type = team->mode->lag_tx_type,
+with NETDEV_LAG_TX_TYPE_ACTIVEBACKUP in team_mode_activebackup and
+NETDEV_LAG_TX_TYPE_HASH in team_mode_loadbalance — which are exactly the
+two values the mode_supported test in this function allows.
+
+Would gating only the bond_slave_get_rcu()/bond_is_slave_inactive() block
+on netif_is_bond_master() remove the out-of-bounds read while keeping
+team-based LAG tracking?
+
+Related to this, does the driver's notifier state machine become
+asymmetric?  mlx5_handle_changelowerstate_event() still admits team ports:
+
+	if (!netif_is_lag_port(ndev))
+		return 0;
+
+and returns 1, so team NETDEV_CHANGELOWERSTATE events keep updating
+tracker->netdev_state[] and queueing bond work while is_bonded can never be
+set.  mlx5_lag_update_tracker_speed() also still resolves a team master as
+the bond device:
+
+	if (netif_is_lag_master(ndev))
+		bond_dev = ndev;
+
+and publishes its speed through mlx5_lag_query_bond_speed().
+
+One more question on the changelog: with a Fixes: tag aimed at stable,
+should the loss of hardware LAG offload for team-aggregated ports be
+mentioned, since there is no extack or dmesg indication when the handler
+bails out early?
+
+>  
+>  	if (info->linking)
+> @@ -2029,7 +2029,7 @@ static int mlx5_handle_changeinfodata_event(struct mlx5_lag *ldev,
+>  	bool has_inactive = 0;
+>  	int idx;
+>  
+> -	if (!netif_is_lag_master(ndev))
+> +	if (!netif_is_bond_master(ndev))
+>  		return 0;
+
+[Severity: Low]
+The commit message says:
+
+    The mlx5_handle_changeupper_event() and mlx5_handle_changeinfodata_event()
+    functions assume the upper device is a bonding device and call bonding-
+    specific
+    APIs like bond_slave_get_rcu() and bond_is_slave_inactive().
+
+Can mlx5_handle_changeinfodata_event() actually be entered with a team
+master?  NETDEV_CHANGEINFODATA has a single emitter in the tree, in
+bond_option_active_slave_set():
+
+	call_netdevice_notifiers(NETDEV_CHANGEINFODATA, bond->dev);
+
+drivers/net/team/ never emits it, so this hunk looks like hardening of an
+unreachable path rather than a second fix.  Could the changelog be narrowed
+to the mlx5_handle_changeupper_event() path, so stable backporters see the
+real scope?
+
+Also, the sentence above is wrapped mid-word ("bonding-\nspecific") in the
+changelog.
+
+>  
+>  	rcu_read_lock();
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the same pattern is still
+present in the mlx5e TC mirred offload path, and it may be worth fixing in
+the same series.  get_fdb_out_dev() in
+drivers/net/ethernet/mellanox/mlx5/core/en/tc/act/mirred.c still uses the
+generic check before a bonding-only accessor:
+
+	} else if (netif_is_lag_master(out_dev)) {
+		fdb_out_dev = bond_option_active_slave_get_rcu(netdev_priv(out_dev));
+
+For a team master, netdev_priv() is a struct team, and
+bond_option_active_slave_get_rcu() reads it as struct bonding:
+
+include/net/bonding.h:bond_option_active_slave_get_rcu() {
+	const struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
+
+	return bond_uses_primary(bond) && slave ? slave->dev : NULL;
+}
+
+bond_uses_primary() reads BOND_MODE(bond) out of unrelated bytes of the team
+private area, and bond->curr_active_slave aliases team->header_ops_cache
+(struct team starts with pcpu_stats, it has no leading dev member).  If the
+garbage mode value happens to be one of the primary modes, does this
+dereference header_ops_cache as struct slave * and return slave->dev as a
+bogus struct net_device *, which mlx5e_eswitch_rep() then dereferences?
+
+The reachable caller is parse_mirred():
+
+	out_dev = get_fdb_out_dev(uplink_dev, out_dev);
+	if (!out_dev)
+		return -ENODEV;
+
+reached from tc_act_parse_mirred() when
+netdev_port_same_parent_id(priv->netdev, out_dev) holds, which a team master
+over mlx5 representors satisfies.  Should this site use
+netif_is_bond_master() too, the way mpesw.c already does?
+
 -- 
-2.47.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922135123.46205-1-avirdi%40redhat.com
