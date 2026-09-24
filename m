@@ -1,95 +1,111 @@
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23114AA013
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.234
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790275091; cv=none; b=XahvSgsyQTejc6Su+/z2FpSmGK5uTMLss0CHmpmBCLB7WRkUAySNGzJIAJehZsr0XNZCeWUsAxfDYLg3zkrlfmaXn3Hhu8VziGFCQTo6ULVgDd6V6ma03chxC1Gf/OKsecyCILjefsKksKUA0z8oi33rmbnQfCFZzMnFvWhxiqc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790275091; c=relaxed/simple;
-	bh=jDMyY25SD1agu2yAoZSbI5/zI0MpNNINxARme0aA7Oo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=BW5K97h2zSAbkSt72J46E3KGjWBAnBqSy6aQ3t7qXsZl1/fsoWFdRmgDlDDuYaygBrxlmBbjL4RrvoyIWo7Cz6gCODCwCAU37RLiSS8AkJ4+av23hCRYLZKvSJEhbUY3J0/L0LM0OQFobv58ey+FjRvOPuTSDizc9RwOluI4f8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lSDMKa1k; arc=none smtp.client-ip=74.125.230.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155094B203C
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 18:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790275329; cv=pass; b=W24GtxXROLWrKNQ12FB7zQ7NGERQXblfOe5tjrZKYAUNkrdyRzUNt0a6oJQVhrY2OQEJBdyi8bJuOmrmtjGEk2m6xb8K2M0fOcCKscWQUwp+AmA2T1Na/YcpvZpMTprqP9qsvtomh12q8Amye39/zm+4/3quhBrLut0LVDjuxbY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790275329; c=relaxed/simple;
+	bh=a1+M2nqlK/ZhoVJb/YUYrssmHwXM7ChJkAv3CzqMLRY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rSKlwwSJLKsPoBulqNEbzq8vrqWqZGcTIf9oiGahgnVIISxiO0zX4XokO61gJht2esuw47KsoYeDDs6zy6T/NnTKkqtgGd4Tj2wLygZQWHXEuD+5mvXi3/ECp3jxluesTjqYJgfrLhu/20ZZi4b9bQQconC22UbLTRU9Emv3CIU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q5i4BqVE; arc=pass smtp.client-ip=74.125.228.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lSDMKa1k"
-Received: by mail-qk2-f42.google.com with SMTP id af79cd13be357-93bef17c191so10333285a.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:38:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q5i4BqVE"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8633a38df87so117649b3a.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:42:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790275319; cv=none;
+        d=google.com; s=arc-20260327;
+        b=O1xfnKtfvmalaPzeZv9/CVqubeoPhVFYZjTR1bZ9Rzno6Z3fzeacEIIkEXgYXzIfpM
+         jk7UWzFpXcNNNixucpjAlW+DyN91lvhhO0lGq1lgP2zJhb4dDiLJkvAL4zNQqX8QprHi
+         fXh8WwHaOAOntYdLhParioI/dNMLNFeVqguIxVS62XpeuwlzXIuYdBfdeSfx50j7v36n
+         inIRkWh883BZyPHY0uCJ5nDONliz3F2gbZaGIV6dRUDKkocBo+p1oSQhYUK7/aJARNhT
+         WcJ3OGkFxk2hUnI/zatvwmomPR0gcCilx84gPKhJBh56Z0BU6UvJQnS/Gg6mEzFeGC8D
+         flaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Q77KuLpE+oIvbADaLPu5DaDb6SG+K0Y0OUtgLbqd2OA=;
+        fh=vwmLnP8yLubjlaF5yNv8u8ALyZ1vHu3vN4C+jCijqS4=;
+        b=fZd1Bp7Ok0VgjIlxItRcKLYMdmndigyPPZQjlRBOa+CqXzk1FwleuklVp+/3+F24DA
+         duJYKVuKB2PdL9fWLpXCl4FN5D3UbgJtKb7vt4M9XyD4JpmL6q3ko+Qf6a2rbpc6Eak9
+         ijWf1y+Ffbt58uUydortd1nxfd/lo7asoOS8vAhHtxw42ATLIQmCNEKUgcpb0aIUV0lG
+         6Y2NmfXhH4B7GmZowTCx99zVd4mpByYEN32dDuRzS8F9Z0815sw42peFhRYopR+MsQ8o
+         2OPAEkL3rCO/JuHviOD72n60VGsR+lHhmmrmktP8rl561WNcS/IlPKwZY+oiHxa+ipAM
+         ZsMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790275087; x=1790879887; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GnbJYTVPTH+t9CBzvhTBcaoylRbGcUGhspi/wCC4yTE=;
-        b=lSDMKa1ktkgWsHhG22rAk35Adcd9GfDZ1Ga5IqZffXhvj7zbKLKHWrIRACrcxEUfjF
-         6BCa7ageQpHNMdQZzAnIfYgcPHxQ8wCwIcMOl2/1adAdMj8iTbD/C/4YaU+RZThrJZcL
-         NxbvwwqpSxNCaUpkC7bsUfYdd8lNUtNw898xkmqyu6rmkT12BV1wIJhslwGjvcAqb9mT
-         +Ca57rWRu9NnzYyq1C+LpCR3Q9hgHqq17zI/wytlC8Ku5HvzbXtoMAd2HVmh8zQEEJlw
-         /68ssrMXfX+bK4Hj6pPYgwMDF9nDMMS38XUTLyfAhkNZ92OSoiyqCQ5WfHRoK1iOsqxZ
-         zLuA==
+        d=gmail.com; s=20251104; t=1790275319; x=1790880119; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Q77KuLpE+oIvbADaLPu5DaDb6SG+K0Y0OUtgLbqd2OA=;
+        b=Q5i4BqVERy5wqd6rj6aaEB1HiU2xkmdWnvOcA90iV+4qJotGV1Nn1S5zudOoLY+Zpb
+         IzAB4bYHFYccjaW6T4y/+Kz5gBOykMpyYpXpR4WpP0Rln5DmCEN5LDWh4CNATKF0oH+C
+         CZ5sPtSknuYjYmoSlnlQXo1ZefaFEBXTyoUYkBb6lG1itSkZFMlKixJaHpNm4nzWtBnm
+         hp1d9Y0g5prcTUOUg6jJMTyNGoYHNFnLkfdkX285tL+Jmuk/w2nQhu+1WFa4iOszcEpw
+         cRCB/A24QArhVJNv5uDYzMjUXon+GogHOxNSm7OYoGPQUydfQm5x1JLYqH7SlPRRpjO9
+         uLOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790275087; x=1790879887;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790275319; x=1790880119;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GnbJYTVPTH+t9CBzvhTBcaoylRbGcUGhspi/wCC4yTE=;
-        b=Nxj+Nik1uwGzoOKjdkTXtSBaxNfwQvOLHwrhFfHbwkc4EXxknjNqmotQb5aerLg//T
-         oqjsL3U/XxyqT0eaZUg6CSrd+0haq15+uPo5aRrIird8Jqr9aogxdGuHdPFOrSNDdw4s
-         Jn8e+Rzq533axZD4Tffz+O4Y/eAqxAPk8hNBROcYkC4D8hpo0YVTGolb8QD1KoAkRNXN
-         laChjFr+SuMHQWvf8bxiGmzMY4BMwxMIvi5Tl8OflWswYgLZKIwK1oHeSR6FtdlhGZ2Y
-         GNFNXghqLbzw0W0SHrTBZXi+Jkc72DD8VRwPCpZFsHWb40SIcam0y6gYO51ZMplmUx0u
-         VKLA==
-X-Forwarded-Encrypted: i=1; AKwUvBwmNJk94DZz2WPiE8ANxTrWWV4ivpVEhUAr2/znVYNyYGJ7fYn58WaRaYB9LEoDuOI3X+YmDqE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nlYHC2NoPDxSy50enhdQjxB7L1MihzWuwCvQBVbFVz2rv0dDyz
-	hTZQASJ8y12OFrls7fHgSfDXDdHcBy6IyXWc7ozbrsxHJytz0l+/R/Se
-X-Gm-Gg: AYBFou2xfic33388VvVwlQvKC4tc+GdmOXHwJ1Fe/IJvg0Hhw2mhlr+wMZJNfri/Qqy
-	VQBC3MkQxrJvMSC3ZrpxS5ZenW0dFas3m5HKF/yDAji1nLot3Rk72w7qpXEgvO46ISRxVbvAND/
-	yXNyPuMx//gBRPIZ6EC/gNnRQWFh/FIzqsqMPs7KhfYYZGhWRp7rZYiEBIpYI+YnGYW6Y2AkRpT
-	QbQFGM6juYh26JydkPyspY1SNF4OuDInG8OtX1Zi/kvPJU1VhOE+IbBQIaNT7vhl1UVDVfqscwN
-	wWdJXwQHI1sxr/YeYsDBubi6O3wBC/34fZwVQ1FT5KooOGrxOiXATnvp3BxtDsIPkZCR7KtnJSJ
-	KvUnsVnFKb+zy5madO1PGLxVN7B1fA8UmHFwZbvTXAbR9ULoCLsHkvyX6AGXO+n9t/1BKrAc6dH
-	v+qyw6cmT3zo8l0v0IWwXKBYdklKH/kp57U6Kon6Vgj3THlK1WOEZmPHKs4F0n6z4YUnnmFdj4y
-	rY=
-X-Received: by 2002:a05:620a:29c6:b0:93b:d7a2:dd2a with SMTP id af79cd13be357-93c43d2d07bmr24945185a.58.1790275087360;
-        Thu, 24 Sep 2026 11:38:07 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c43d197a9sm8862685a.12.2026.09.24.11.38.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 11:38:06 -0700 (PDT)
+        bh=Q77KuLpE+oIvbADaLPu5DaDb6SG+K0Y0OUtgLbqd2OA=;
+        b=CgCsVnp+COEiM0qHrN/Yp0WYtclLX7+IBtJX5o5YU3sMdg5DjTaZ2D3Wtmi4atXgKV
+         F17pQXeUSdhRvmtw8mUEhMnoiIejOD3RSoi2+ZFa5N06H8tejDbIWiYcDoPAx0VFfLFi
+         1U61SnTbv+0hcRHG13Z86S4sFwc2W+3GUt4k1BANRKPBC7zpQzGq6b8fOE/I+BnppCcV
+         AgDx57paeeJkup004jlw2zxB974iNMCV5/YoCBJScou828hA3ni8Y7+HLh0IIq3HKgFW
+         ryE6b0aCwxo9pBpUeJ64M0KijEuMHO5tSSbkAZQjnIbr+H3VRp7ZK719/pLjZNg0G+6X
+         olqw==
+X-Forwarded-Encrypted: i=1; AKwUvBy4Ke8rGvEXXa6qFWoSHEFlv/LvqnbaVcIPJl91fylGA+6R7aDMCsDEl7bFD+IiONBYaih9wUo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kViOsUWgCa3+OE8/MKfrhHBl7dNvvw4BmDYhg22S6mddrlbwol
+	vTbYke73TrCR9tI6vr4CovQ+V9EQAIdvHQkfPW0uffnmfzyG+pnvAIk3bw5NR1CyNEWXfKjDwyq
+	yEMW+z+3917UopFSCavOZ1DkYTddOhg0=
+X-Gm-Gg: AYBFou0K9ao6o8YK3OS3LKPq3aQvMXlcJVshLCYBUGXF+dqX3sOKQY8jOHzzZMJ6308
+	crlcfzeGeohliu81D422XJ77iWxpfwatLIvo+Cbx/dvdZ2curSMNXpQ/vHKuHFbeqJtEy6HPwmC
+	Ln0YMEWw1qXuW0OdInWzdYq7JEQfD4TWSY8rX+Po+okc/cOmc8SvH6HTHOqrcqerdTHkUDMBen+
+	OwXCaKSbEyHVHNXSCHwB+EHl0+hTOK2rllRPJR1o8fbkSJraUhb+XIcArNQqroa9KLrF5oMHhc1
+	6HXWj2jiuIsfEa2z33dLUjegOqB7A1jU+3JT96dY6MaQmnoqpX3QOp1SISCzqk6wW+KimTCd4ST
+	n/SMHlNYTh9OWKoZvRC9LrcKH2veDPbFpdI/xPL4vTqHfGgCWpITLeq7a23F1cgy4+JnJoDvk2I
+	XyAEOZ9kvEpO2hDuomxr16LN0=
+X-Received: by 2002:a05:6a00:1c8e:b0:871:c970:cf37 with SMTP id
+ d2e1a72fcca58-87e9b79bdb6mr2949251b3a.24.1790275318834; Thu, 24 Sep 2026
+ 11:41:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260921135733.577647-1-wbriggs@cellusys.com> <179021514567.2160803.16218616091479610626@kernel.org>
+In-Reply-To: <179021514567.2160803.16218616091479610626@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 24 Sep 2026 14:41:45 -0400
+X-Gm-Features: AclHuK8z6qUlFPySpQuVxa2B36vqznwgXhIE0LtaQcRcr51cD7D7-DsVZXtcS1c
+Message-ID: <CADvbK_c2P-qxJJ3sCDLJMpCQ4g6PaKVN3kiLTiXYx8UREmCZWw@mail.gmail.com>
+Subject: Re: [PATCH net v3] sctp: carry peer capabilities across an INIT collision
+To: netdev-bot+sashiko@kernel.org
+Cc: wbriggs@cellusys.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 14:38:05 -0400
-Message-Id: <DLNRJWK0BDHR.FFTQ30OYFSVG@gmail.com>
-Cc: <alexanderduyck@fb.com>, <kuba@kernel.org>, <kernel-team@meta.com>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
- <hawk@kernel.org>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
- <dimitri.daskalakis1@gmail.com>, <mohsin.bashr@gmail.com>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next 8/8] eth: mpnic: add basic Rx handling
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>, <daniel.zahka@gmail.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260922-linux-mpnic-v1-8-236844f53072@gmail.com>
- <179021554059.2160803.14215479693472875817@kernel.org>
-In-Reply-To: <179021554059.2160803.14215479693472875817@kernel.org>
 
-On Wed Sep 23, 2026 at 10:05 PM EDT, netdev-bot+sashiko wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
+On Wed, Sep 23, 2026 at 9:59=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
 > issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 5 =C2=B7 Low: 0
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 0 (1) =C2=B7 Low: 0
 >
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -99,360 +115,262 @@ k
 y
 > (one such reply per series is enough).
 >
-> - [High] net: mpnic: missing descriptor sequence validation causes NULL
->   pointer dereference
-> - [Medium] mpnic_poll() calls mpnic_clean_rcq() even when budget is 0.
-> - [Medium] When page_pool_dev_alloc_pages() returns NULL,
->   __mpnic_fill_bdq() stops refilling and returns the partial tail.
-> - [Medium] mpnic_pkt_prepare() re-initialises state->pkt with
->   xdp_init_buff()/xdp_prepare_buff() without checking whether a frame is=
-=E2=80=A6
-> - [Medium] mpnic_page_pool_get() indexes ring->rx_buf[idx] with idx =3D
->   FIELD_GET(MPNIC_RCD_AL_BUFF_ID, rcd), an 18-bit device-written field=E2=
+> - [High] sctp_assoc_update() (net/sctp/associola.c:1114) now copies
+>   new->peer.intl_capable into the surviving association but never re-=E2=
 =80=A6
-> - [Medium] The device-supplied completion fields BUFF_OFF (16 bits) and
->   BUFF_LEN (14 bits) are never checked against page_size(page),=E2=80=A6
+> - [High] sctp_assoc_update() now enables peer.asconf_capable
+>   (net/sctp/associola.c:1112) and peer.reconf_capable (associola.c:1113)=
+=E2=80=A6
+>
+> Pre-existing issues:
+> - [Medium] The collision merge still does not carry
+>   asoc->peer.adaptation_ind.
 >
 > --
 >
-> eth: mpnic: add basic Rx handling
+> sctp: carry peer capabilities across an INIT collision
 >
-> This adds Rx completion processing to mpnic. A frame is assembled into an
-> xdp_buff from a header descriptor, one descriptor per payload page and a
-> closing metadata descriptor, and then handed to the stack. Page reference=
-s
-> are taken in batches per page instead of once per frame.
+> sctp_assoc_update() folds a temporary association into an existing one wh=
+en
+> an INIT collision is resolved, and today it only copies asoc->c, peer.rwn=
+d,
+> peer.sack_needed, peer.auth_capable and peer.i.  This patch extends the c=
+opy
+> block with prsctp_capable, ecn_capable, asconf_capable, reconf_capable,
+> intl_capable, ipv4_address and ipv6_address so the surviving association
+> reflects what the peer advertised in the colliding INIT.
 >
->> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/=
-ethernet/meta/mpnic/mpnic_txrx.c
->> index 6d2123bee97b4..9878ea5a2f8e1 100644
->> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
->> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
->> @@ -402,6 +402,34 @@ static void mpnic_fill_qt_bdqs(struct mpnic_q_triad=
- *qt)
->>  	__mpnic_bdq_commit_tail(&qt->sub1, ppq_i);
->>  }
->> =20
->> +/* Take one of the references batched on the page at @idx. If the devic=
-e
->> + * has moved on to a new page, first drop the unused references left on
->> + * the previous one.
->> + */
->> +static struct page *
->> +mpnic_page_pool_get(struct mpnic_pg_ctxt *pg_ctxt, struct mpnic_ring *r=
-ing,
->> +		    u32 idx)
->> +{
->> +	struct page *page =3D pg_ctxt->page;
->> +
->> +	if (unlikely(pg_ctxt->idx !=3D idx)) {
->> +		if (pg_ctxt->pagecnt_bias &&
->> +		    !page_pool_unref_page(page, pg_ctxt->pagecnt_bias))
->> +			page_pool_put_unrefed_page(page->pp, page, -1, true);
->> +
->> +		page =3D ring->rx_buf[idx];
->> +		page_pool_fragment_page(page, MPNIC_PAGECNT_BIAS_MAX);
+> A few questions about the state that is derived from those bits but is no=
+t
+> refreshed by the merge.
 >
-> [Severity: Medium]
-> Can idx index past the end of ring->rx_buf[] here?
->
-
-Like I mentioned about the head field in the tx completion descriptor,
-we don't harden against device produced completion fields like this.
-
-> idx comes straight from the completion descriptor:
->
->     unsigned int pg_idx =3D FIELD_GET(MPNIC_RCD_AL_BUFF_ID, rcd);
->
-> MPNIC_RCD_AL_BUFF_ID is an 18-bit field (DESC_GENMASK(33, 16)). rx_buf[]
-> is sized by hpq_size/ppq_size, which is 256 entries by default.
->
-> Both callers mask the value only when they update head:
->
->     qt->sub0.head =3D (pg_idx + 1) & qt->sub0.size_mask;
->
-> If the device reports a BUFF_ID at or above the ring size, the pointer
-> read from past the end of rx_buf[] is written through by
-> page_pool_fragment_page(). It is then passed to page_address(), used for
-> the DMA sync and attached to the skb.
->
-> A conforming device only echoes IDs the driver posted, so hitting this
-> needs buggy firmware or an untrusted device. Would it make sense to mask
-> idx with ring->size_mask before the lookup?
->
-> [ ... ]
->
->> @@ -414,9 +442,90 @@ static void mpnic_flush_pg_ctxt(struct mpnic_pg_ctx=
-t *ctxt, bool napi)
->>  	}
->>  }
->> =20
->> -static void mpnic_put_pkt_buff(struct mpnic_pkt_ctxt *ctxt, bool napi)
->> +static unsigned int mpnic_hdr_pg_start(unsigned int pg_off)
->> +{
->> +	/* The headroom of the first header may be larger than
->> +	 * MPNIC_RX_HROOM due to alignment. So account for that by just
->> +	 * making the page offset 0 if we are starting at the first header.
->> +	 */
->> +	if (ALIGN(MPNIC_RX_HROOM, 128) > MPNIC_RX_HROOM &&
->> +	    pg_off =3D=3D ALIGN(MPNIC_RX_HROOM, 128))
->> +		return 0;
->> +
->> +	return pg_off - MPNIC_RX_HROOM;
->> +}
->
-> [ ... ]
->
->> +static void
->> +mpnic_pkt_prepare(struct mpnic_napi_vector *nv, u64 rcd,
->> +		  struct mpnic_rcq_state *state, struct mpnic_q_triad *qt)
->> +{
->> +	unsigned int pg_off =3D FIELD_GET(MPNIC_RCD_AL_BUFF_OFF, rcd);
->> +	unsigned int pg_idx =3D FIELD_GET(MPNIC_RCD_AL_BUFF_ID, rcd);
->> +	unsigned int len =3D FIELD_GET(MPNIC_RCD_AL_BUFF_LEN, rcd);
->> +	bool fin =3D FIELD_GET(MPNIC_RCD_AL_PAGE_FIN, rcd);
->> +	unsigned int frame_sz, pg_start, pg_end;
->> +	struct xdp_buff *buff =3D &state->pkt;
->> +	struct page *page;
->> +
->> +	pg_start =3D mpnic_hdr_pg_start(pg_off);
->> +
->> +	page =3D mpnic_page_pool_get(&state->hdr, &qt->sub0, pg_idx);
->> +	qt->sub0.head =3D (pg_idx + 1) & qt->sub0.size_mask;
->> +
->> +	/* Short-cut the end calculation if the page is fully consumed */
->> +	pg_end =3D fin ? page_size(page) : mpnic_hdr_pg_end(pg_off, len);
->> +	frame_sz =3D pg_end - pg_start;
+> > diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+> > index 4521be3bd85aa..0bd0a662b5463 100644
+> > --- a/net/sctp/associola.c
+> > +++ b/net/sctp/associola.c
+> > @@ -1107,6 +1107,13 @@ int sctp_assoc_update(struct sctp_association *a=
+soc,
+> >       asoc->peer.rwnd =3D new->peer.rwnd;
+> >       asoc->peer.sack_needed =3D new->peer.sack_needed;
+> >       asoc->peer.auth_capable =3D new->peer.auth_capable;
+> > +     asoc->peer.prsctp_capable =3D new->peer.prsctp_capable;
+> > +     asoc->peer.ecn_capable =3D new->peer.ecn_capable;
+> > +     asoc->peer.asconf_capable =3D new->peer.asconf_capable;
+> > +     asoc->peer.reconf_capable =3D new->peer.reconf_capable;
 >
 > [Severity: High]
-> What happens if a PAY_AL or META descriptor reaches this switch without
-> a header descriptor opening the frame first?
 >
-> In that case state->pkt.data_hard_start is NULL. Either the previous
-> META cleared it, or no header has been seen since the queue was
-> enabled. Nothing on the PAY_AL or META paths checks for this.
+> Turning these two bits on lets the surviving association accept inbound
+> ASCONF and RE-CONFIG, but the receive-side sequence counters those featur=
+es
+> compare against are still the survivor's own.
 >
-> For PAY_AL, mpnic_add_rx_frag() first takes a reference through
-> mpnic_page_pool_get(). It then calls xdp_buff_add_frag(), which finds
-> skb_shared_info through xdp_get_shared_info_from_buff(), computed from
-> data_hard_start + frame_sz. With data_hard_start NULL, and frame_sz and
-> flags left over from the previous frame, the frag is written through a
-> wild pointer near address zero.
+> Both are derived from the peer's Initial TSN in sctp_process_init(), whic=
+h in
+> a collision runs on the temporary association only:
 >
-> For META, the build path runs unless the error bit or add_frag_failed
-> is set. add_frag_failed may also be stale from the previous frame.
-> xdp_build_skb_from_buff() then calls napi_build_skb() with a NULL
-> data_hard_start. On a queue that has never seen a header, xdp->rxq may
-> also be unset when rxq->mem.type is read. mpnic_put_pkt_buff() already
-> copes with a NULL data_hard_start, but it only runs after the build
-> path has failed.
+> net/sctp/sm_make_chunk.c:sctp_process_init() {
+>         ...
+>         asoc->strreset_inseq =3D asoc->peer.i.initial_tsn;
+>         ...
+>         asoc->peer.addip_serial =3D asoc->peer.i.initial_tsn - 1;
+> }
 >
-> As with the other descriptor trust issues above, a conforming device
-> should always open a frame with a header descriptor, so reaching this
-> needs buggy or untrusted firmware. The result is a host crash rather
-> than a dropped frame, though.
+> sctp_assoc_update() copies asoc->peer.i but leaves peer.addip_serial and
+> strreset_inseq untouched, so a COOKIE_WAIT survivor keeps zero for both.
 >
-> Would it make sense to check state->pkt.data_hard_start in the PAY_AL
-> and META cases and drop the descriptor when no frame is being
-> assembled? On the PAY_AL path that would also mean returning the
-> reference taken by mpnic_page_pool_get(), the same way the
-> xdp_buff_add_frag() failure path does.
+> Can the peer's ASCONF then never be processed?  sctp_sf_do_asconf() now
+> clears the capability gate and reaches:
 >
+> net/sctp/sm_statefuns.c:sctp_sf_do_asconf() {
+>         ...
+>         if (serial =3D=3D asoc->peer.addip_serial + 1) {
+>         ...
+>         } else if (serial < asoc->peer.addip_serial + 1) {
+>         ...
+>         } else {
+>                 /* discarded */
+>         }
+> }
+>
+> With the peer's serial equal to its Initial TSN and peer.addip_serial at =
+0,
+> neither arm matches and the chunk lands in the final else, so no ASCONF-A=
+CK
+> is sent.  Does the peer then retransmit until its T4 limit and give up on
+> ASCONF entirely?
+>
+> The RE-CONFIG side has the same shape.  sctp_process_strreset_outreq(), a=
+nd
+> equally the inreq/tsnreq/addstrm_out/addstrm_in handlers, validate agains=
+t
+> the stale strreset_inseq:
+>
+> net/sctp/stream.c:sctp_process_strreset_outreq() {
+>         ...
+>         if (TSN_lt(asoc->strreset_inseq, request_seq) ||
+>             TSN_lt(request_seq, asoc->strreset_inseq - 2)) {
+>                 result =3D SCTP_STRRESET_ERR_BAD_SEQNO;
+>                 goto err;
+>         }
+> }
+>
+> The testing notes describe ASCONF and RE-CONFIG appearing on the wire, wh=
+ich
+> exercises the outbound counters (addip_serial and strreset_outseq, both s=
+et
+> locally from asoc->c.initial_tsn).  Was the inbound direction tested too?
+>
+> Should the merge also carry strreset_inseq and peer.addip_serial, or
+> re-derive them from new->peer.i.initial_tsn the way sctp_process_init() d=
+oes?
 
-We trust the descriptor stream to be sequenced correctly.
+Makes sense, please follow the suggestion, and add something like:
 
-> [Severity: Medium]
-> Should BUFF_OFF and BUFF_LEN from the completion be range checked before
-> they are used here?
->
++       /* Re-derive sequence counters from the peer's Initial TSN */
++       asoc->peer.addip_serial =3D asoc->peer.i.initial_tsn - 1;
++       asoc->strreset_inseq =3D asoc->peer.i.initial_tsn;
 
-Won't fix.
 
-> Neither value is checked against page_size(page), MPNIC_RX_HROOM or
-> MPNIC_RX_TROOM:
 >
-> - mpnic_hdr_pg_start() returns pg_off - MPNIC_RX_HROOM as an unsigned
->   value, so it wraps if pg_off is below the headroom.
+> > +     asoc->peer.intl_capable =3D new->peer.intl_capable;
 >
-> - mpnic_hdr_pg_end() can return an end past the page, and
->   frame_sz =3D pg_end - pg_start can wrap. After that,
->   xdp_build_skb_from_buff()->napi_build_skb(data_hard_start, frame_sz)
->   would place and zero skb_shared_info outside the page.
+> [Severity: High]
 >
-> - In mpnic_add_rx_frag(), truesz underflows when fin is set and pg_off is
->   larger than the page:
+> This bit selects the chunk operation set, and the merge copies the bit
+> without re-selecting it.  The only place asoc->stream.si is derived from =
+it
+> is sctp_stream_interleave_init(), reached from sctp_stream_init():
 >
->     truesz =3D (fin ? page_size(page) : ALIGN(pg_off + len, 128)) - pg_of=
-f;
+> net/sctp/stream_interleave.c:sctp_stream_interleave_init() {
+>         ...
+>         stream->si =3D asoc->peer.intl_capable ? &sctp_stream_interleave_=
+1
+>                                              : &sctp_stream_interleave_0;
+> }
 >
->   The frag [pg_off, pg_off + len) is also attached with no check that it
->   stays inside the page, which would expose adjacent memory through the
->   skb.
+> In a collision that ran on the temporary association.  Neither branch of
+> sctp_assoc_update() refreshes it on the survivor: sctp_stream_update() co=
+pies
+> out/in/outcnt/incnt and leaves stream->si alone, sctp_stream_clear() only
+> zeroes mid/mid_uo, and the COOKIE_ECHOED case calls neither.  asoc->frag_=
+point
+> is not recomputed either, although normal negotiation pairs the two:
 >
-> The dma_sync_single_range_for_cpu() calls use the same unchecked ranges.
+> net/sctp/sm_make_chunk.c:sctp_process_init() {
+>         ...
+>         if (sctp_stream_init(&asoc->stream, ...))
+>                 goto clean_up;
 >
-> A conforming device honours the headroom and tailroom programmed in
-> mpnic_set_rde_cfg() and stays within the page size, so hitting this needs
-> buggy or untrusted hardware.
+>         /* Update frag_point when stream_interleave may get changed. */
+>         sctp_assoc_update_frag_point(asoc);
+> }
 >
->> +
->> +	dma_sync_single_range_for_cpu(nv->dev, page_pool_get_dma_addr(page),
->> +				      pg_start, frame_sz, DMA_FROM_DEVICE);
->> +
->> +	xdp_init_buff(buff, frame_sz, &qt->xdp_rxq);
->> +	xdp_prepare_buff(buff, page_address(page) + pg_start,
->> +			 pg_off - pg_start, len, true);
+> So after the merge peer.intl_capable is 1 while stream.si is still
+> &sctp_stream_interleave_0.  The INIT-ACK extension list is built from
+> peer.intl_capable, so the peer is told I-DATA is in use.  What happens wh=
+en
+> it sends one?
 >
-> [Severity: Medium]
-> What happens here to a frame that is still being assembled when a new
-> header descriptor arrives?
+> net/sctp/sm_statefuns.c:sctp_eat_data() {
+>         ...
+>         if (!asoc->stream.si->validate_data(chunk))
+>                 return SCTP_IERROR_PROTO_VIOLATION;
+> }
 >
-> mpnic_clean_rcq() calls mpnic_pkt_prepare() for every header descriptor.
-> It does not check whether state->pkt.data_hard_start is still set by an
-> earlier frame that never got its META descriptor:
->
->     case MPNIC_RCD_TYPE_HDR_AL:
->         if (FIELD_GET(MPNIC_RCD_HDR_SUBTYPE, rcd) =3D=3D
->             MPNIC_RCD_HDR_SUBTYPE_HDR)
->             mpnic_pkt_prepare(nv, rcd, state, qt);
->
-> In that case xdp_init_buff() clears buff->flags and xdp_prepare_buff()
-> replaces data_hard_start. The old frame's header page reference from
-> mpnic_page_pool_get() and its frag references from xdp_buff_add_frag()
-> can no longer be reached.
->
-> The META path and mpnic_flush() cannot release them either, because
-> mpnic_flush() only calls mpnic_put_pkt_buff() on the current state->pkt.
-> Could the page pool pages leak here, leaving page_pool_destroy() waiting
-> forever on inflight pages?
->
-> The code does not show whether the hardware can produce HDR, [PAY_AL ...]=
+> sctp_validate_data() returns false for anything that is not SCTP_CID_DATA=
 ,
-> HDR without a META in between. fbnic has a
+> and the callers turn SCTP_IERROR_PROTO_VIOLATION into
+> sctp_sf_abort_violation().  Can a peer that legitimately follows the
+> negotiated extension abort the association this way?
+>
+> There is a second effect in the send path, which branches directly on the
+> bit rather than on stream.si:
+>
+> net/sctp/stream_sched.c:sctp_sched_dequeue_done() {
+>         ...
+>         if (!list_is_last(&ch->frag_list, &ch->msg->chunks) &&
+>             !q->asoc->peer.intl_capable) {
+>                 /* pin stream.out_curr */
+>         }
+> }
+>
+> With the bit set but plain DATA chunks being dequeued, stream.out_curr is=
+ no
+> longer pinned mid-message.  Can the PRIO/RR schedulers then interleave
+> fragments of different streams on the wire?  Before this patch the surviv=
+or
+> kept intl_capable at 0 and the pin was taken.
+>
+> The reverse case looks reachable too: a restart where the new INIT no lon=
+ger
+> advertises I-DATA now clears the bit while stream.si stays
+> &sctp_stream_interleave_1, leaving I-DATA and I-FORWARD-TSN installed for=
+ a
+> peer that did not negotiate them.
+>
+> Would calling sctp_stream_interleave_init() and sctp_assoc_update_frag_po=
+int()
+> on the surviving association after the copy address both directions?
 
-We trust that the hw cannot produce this sequence.
+Outqueue may already have data at the time, we can't just call
+sctp_stream_interleave_init(). Let's drop the intl_capable update from
+this patch and address it separately in another patch.
 
-> WARN_ON_ONCE(pkt->buff.data_hard_start) for this case. Would a similar
-> check here, plus releasing the old frame, make sense?
+You may add a note for this in the commit message, so that the AI review
+won't report intl_capable update missing.
+
 >
-> [ ... ]
->
->> @@ -439,23 +548,97 @@ static void mpnic_put_pkt_buff(struct mpnic_pkt_ct=
-xt *ctxt, bool napi)
->>  	page_pool_put_full_page(page->pp, page, napi);
->>  }
->> =20
->> +static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
->> +			   struct mpnic_q_triad *qt, int budget)
->> +{
->
-> [ ... ]
->
->> +	while (packets < budget) {
->
-> [ ... ]
->
->> +	rcq->head =3D head;
->> +
->> +	/* Allocate buffers, force dma_wmb(), and then start writing tails */
->> +	mpnic_fill_qt_bdqs(qt);
->> +
->> +	return packets;
->> +}
->> +
->>  static int mpnic_poll(struct napi_struct *napi, int budget)
->>  {
->>  	struct mpnic_napi_vector *nv =3D container_of(napi,
->>  						    struct mpnic_napi_vector,
->>  						    napi);
->> -	int i;
->> +	int i, j, work_done =3D 0;
->> =20
->>  	for (i =3D 0; i < nv->txt_count; i++)
->>  		mpnic_clean_tcq(nv, &nv->qt[i], budget);
->> =20
->> +	for (j =3D 0; j < nv->rxt_count; j++, i++)
->> +		work_done +=3D mpnic_clean_rcq(nv, &nv->qt[i], budget);
+> > +     asoc->peer.ipv4_address =3D new->peer.ipv4_address;
+> > +     asoc->peer.ipv6_address =3D new->peer.ipv6_address;
+> >       asoc->peer.i =3D new->peer.i;
 >
 > [Severity: Medium]
-> Is it safe to do the Rx side of the poll when budget is 0?
+>
+> This is a pre-existing issue and not introduced by this patch, but since =
+the
+> copy block is being extended: peer.adaptation_ind is still not carried.
+>
+> sctp_process_param() records the peer's Adaptation Layer Indication on th=
+e
+> association it is processing, which in a collision is the temporary one:
+>
+> net/sctp/sm_make_chunk.c:sctp_process_param() {
+>         ...
+>         case SCTP_PARAM_ADAPTATION_LAYER_IND:
+>                 asoc->peer.adaptation_ind =3D ntohl(param.aind->adaptatio=
+n_ind);
+> }
+>
+> and the completion path reads the survivor's copy right after the merge:
+>
+> net/sctp/sm_statefuns.c:sctp_sf_do_dupcook_b() {
+>         ...
+>         if (asoc->peer.adaptation_ind)
+>                 sctp_add_cmd_sf(commands, SCTP_CMD_ADAPTATION_IND, SCTP_N=
+ULL());
+> }
+>
+> For a COOKIE_WAIT survivor the field is still 0, so is the
+> SCTP_ADAPTATION_INDICATION notification dropped even though the peer aske=
+d
+> for it, and on a restart is an older non-zero value reported instead of t=
+he
+> new one?  asoc->c =3D new->c does update c.adaptation_ind, but nothing co=
+pies
+> that into peer.adaptation_ind after the merge.
+>
+> Note this field is a separate __u32 rather than part of the bitfield bloc=
+k
+> the changelog calls "the rest of the block", so it is outside what the pa=
+tch
+> sets out to fix.
 >
 
-Will address in v2.
+Please address this one as well by adding:
 
-> netpoll calls napi->poll(napi, 0) via
-> netpoll_poll_dev()->poll_napi()->poll_one_napi(), and netconsole can reac=
-h
-> that path from any context. With budget 0 the descriptor loop in
-> mpnic_clean_rcq() is skipped, but the refill still runs:
->
-> mpnic_clean_rcq()
->   mpnic_fill_qt_bdqs()
->     __mpnic_fill_bdq()
->       page_pool_dev_alloc_pages()
->
-> The allocation happens whenever mpnic_bdq_desc_unused() is non-zero, for
-> example after an earlier allocation failure.
->
-> Documentation/networking/napi.rst says "Rx specific APIs like page pool o=
-r
-> XDP cannot be used at all when budget is 0".
->
-> The page_pool allocation fast path, __page_pool_get_cached(), and
-> page_pool_refill_alloc_cache() access pool->alloc.cache and the ptr_ring
-> consumer side without taking a lock.
->
-> The pool was created with .napi =3D &nv->napi. That means
-> page_pool_napi_local() allows direct recycling into alloc.cache from
-> softirq on the NAPI's list_owner CPU, and netpoll's poll_owner does not
-> exclude that.
->
-> Could this corrupt alloc.cache or the ring and hand out the same page
-> twice? Skipping Rx cleaning and refill when budget is 0 would avoid it.
->
->> +
->>  	for (i =3D 0; i < nv->txt_count; i++)
->>  		mpnic_commit_cq_head(&nv->qt[i].cmpl);
->> =20
->> -	if (likely(napi_complete_done(napi, 0)))
->> +	if (work_done >=3D budget)
->> +		return budget;
->> +
->> +	if (likely(napi_complete_done(napi, work_done)))
->>  		mpnic_nv_irq_rearm(nv);
->
-> [Severity: Medium]
-> Can Rx stop for good after a run of allocation failures?
->
-> When page_pool_dev_alloc_pages() returns NULL, __mpnic_fill_bdq() just
-> stops:
->
->     page =3D page_pool_dev_alloc_pages(bdq->page_pool);
->     if (!page)
->         break;
->
-> mpnic_clean_rcq() returns only the packet count. So whenever
-> work_done < budget, mpnic_poll() completes NAPI and rearms the IRQ, even
-> if the refill did not succeed.
->
-> If allocations keep failing, successive polls can drain HPQ/PPQ until no
-> buffers are posted. The device then has nothing to DMA into and raises no
-> Rx interrupts. The only napi_schedule() in the driver is in
-> mpnic_msix_clean_rings().
->
-> Rx would then stay stopped after memory is available again, until a Tx
-> completion on the same vector triggers a poll or the interface is taken
-> down and up. Should the poll stay scheduled, or set up a retry, when the
-> BDQs could not be refilled?
->
++       asoc->peer.adaptation_ind =3D new->peer.adaptation_ind;
 
-This will be addressed in v2. napi depletion check was improperly left
-out of this posting.
+either in this patch or a separate one.
 
->> =20
->> -	return 0;
->> +	return work_done;
->>  }
->
-> [ ... ]
-
+Thanks.
