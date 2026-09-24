@@ -1,139 +1,213 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C2D47FAE8;
-	Thu, 24 Sep 2026 10:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4843FD96B;
+	Thu, 24 Sep 2026 10:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790246686; cv=none; b=WuhFT37WcLB/TMMK+EBV3rycnrvQXQ4cuSQJmX6yWFii5koScbpcrpEsc4sBg5+xOksRtSk/h67nv8x/tr5dml3nN71YZRSlM6Gk4IErz1CG6WRhYFdYEPGtWy+mLWnRYUL5xNbVn/1ShBDwkepd9fNjDE5UHFqbK3C6X9LPxww=
+	t=1790246808; cv=none; b=HVsu3MVYIEthRbHyEhBWGAm/tClmdU0S59iTXjFURovt+9zwNW3I2L+HrUhEhrpuMcp+NI3GPhq9Qud2gGpBFh5tE7WHqgxGVoHk6/PlnI1RGb3JnqmdR238ehleAHIDHHCSYJD9iHRmB0cHaaTPKIYvw8v7CJMf245pyYLuOe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790246686; c=relaxed/simple;
-	bh=CQvwkh5BoBqOptC3jmeHHr75AY7Ra5g3ZWNC1CyfAPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNIdm++/3uSvrVSx88p4ILQ+SLsLeUlFSnGpo7VSpGx6RgDmerwog9Vkgc7+vxvs6FMuPvFwbj4t4NT5HOZFzjWcPUV/vAAgg8KQk7Ph0XBlCPEiW3IwSXxobdeWLwIRjIpjXPYBg0ZSw+KctSL7otBkWQ8Yx2EUgmqk7PFLp8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=dle3YnZ+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=D3fAX2wf; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1790246808; c=relaxed/simple;
+	bh=pexZf/lQWtuVxEygmxSvzl6d8CItj5/N0Rz0PZcxpaY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q1JSD10kmJzsWyZXen8p6UUdT05yFhFooQBeckKX8Xe10a3nodKnDEcl5HQKMaerbr6uFStJJLSV6UFN38XhVMaBY6gjC1fONeZL5qaJxRqWR7LdCVZzzhBrJP7u9nx9YPcYd+Cul/D6sk/jdto3fbbHwwZ5pT5nNlfp/KLikuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3Dbduyr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="dle3YnZ+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="D3fAX2wf"
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 2A7357A00AD;
-	Thu, 24 Sep 2026 06:44:42 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Thu, 24 Sep 2026 06:44:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790246682; x=
-	1790333082; bh=2pYdRHz16MeVkko3MZGz6tzvnD2/4VNwL82lLyG4YqY=; b=d
-	le3YnZ+RjDgnJMmSgj6mQJD33q+GZMF6YnLVrMCRuFpnGnGD+HhvkB7xTt1/RHId
-	6wYFYAiJr4NST8Qt8bfok0JnG3teovdHL35fyg/ZCGd06ytmL3ik8c/CU7XOFUNU
-	vxJCJQu2+ainCTEPInBekBX0tiHvkJcYROlDTgZumoPksYDMEKfgoJ9NoeKWYbil
-	0xbT0MTjhf3Os6vZ4Q9D+cokV+tfy6/v+3pvQ4jLNb1l4fMutOQvuu4CM6d/efzm
-	n1niAruNnZ84R90rZzqraNBPBWv77VRXwJqi4kMCEVGUSPmKNFZ/GHjjLKbUb6sS
-	W9JLTvN4T1EY1mveSLenA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790246682; x=1790333082; bh=2pYdRHz16MeVkko3MZGz6tzvnD2/4VNwL82
-	lLyG4YqY=; b=D3fAX2wfMVGIPKQIL79/QGbDv4q5KG82YDhSAw9+Wok/VHf6v7e
-	irWil+KhRiEccnB7AF+2lEab+W5JNGmL5BR61s1Xl4Ao+0liDTbudL/+eHFEPDFZ
-	wwmhaGjpFGjyTd0AUDxVP9a2AWGMOkkVXYreu0N3f6gQm4ZFMsMc9h2seWJf/wVd
-	38YB0uEXgSGtAJtYWxKHSUhsFdFegetzeNtIgnd1SoPxPqc++ftKlVzpbCFm3Ifz
-	4HZYCpNDiaOBXtGYlJXKaoLMI66wFC8N1kRRyVb+Jqq5KO9TutaH375jy/wDT+9K
-	1E0bLG/wo4Hs7u85VFnShQlMwVhpsg+bNjA==
-X-ME-Sender: <xms:GP-0anR3IgnZGmF7SBC4-vnZwju-GFg8loFUNg6DfGf26dDq1Romrg>
-    <xme:GP-0akvTM9stM5qvprPjxarLjm16-9G4_fvpDQbdCBsDvcWy9aoLsaIhp4cD98Co3
-    BDmyFSdf8lV_T8HtqTMG3PgmPB-SLCWxoMufi8IUM9uwwTv1EJVeRom>
-X-ME-Received: <xmr:GP-0ai_163r4KNfrBPwoLaWMfEERLL0eZ1WRx2cAFMfus1mp0pOrJiJ58tbD>
-X-ME-Proxy-Cause: dmFkZTGJMECWZhmiH3U0xi2HTX13DSCC2vekGqn1EXXXdBRS9zoHf3nJFjAr4qzg933TeX
-    ReNQueoOdiZFep1TXS6JC+dNuykmciug+Zsi7xUl0RyAwWv57uh/yQRUKiQTONsBIik00O
-    0CRz5slM/U7uMWOEQEd530APzHAPynAwfuKRwugds5+oZl1RTEKDQebSJ933W/ey6HFkvu
-    RUJ1fcspTYSEA5aZ94x0pisGJlBYoKAWDWgVhzh5krjleFkiKWZs/aKXhl0X6LkxGEGxoa
-    9ZW/aPKqkSp9QcCXqyAB59VRAieDxcNQ/dEtBWjXZBjDRAVzj4zJP6OSTZCeTDD1TB5kaf
-    lqjbbIVdupI9uGajAu/LhvanwZ7XX3UuNQKLvRFbDx6G9Gxa+z404xty/ZxAd1d2gYILyc
-    y60hcRnSylKmx71R0vosbkm7w1EwCnnvgUrmFE+kI9qeSVw8hOCCTGJnZkeB6s/S4txWkh
-    sieNraLhrOC+dgQRnPEh1TsElx7cVh7NCki6LttofyEgWzmlrnLnZb5G2crwoPfPV8rXfg
-    yPIGCBuqCCOJkhjsAO4ymdKevsQvluHYrGnyja9xxRE7Bi3Zta9AK0dqRW/TqdPX06DGhW
-    MLjbajFadZ5jYYpTz46rXoHVj+o1URS4hL5Jf13x6u+rqVBZpDjnmcNrRBtQ
-X-ME-Proxy: <xmx:GP-0atZ3uUBNZlh_eEnGWwI-p_pVOSIioq8i1k00NcGSeUzemFkIkw>
-    <xmx:GP-0aur8qUqAglKpNMlhnjCOyZPGvu3_M0RQye6injjCzBiWawqvAQ>
-    <xmx:GP-0alaHezSp6M7P3EkC-N0R1eb4Z7DV_uRew-2Bdy_LYkAJgpgk-Q>
-    <xmx:GP-0ah4DF_a5CO5AkPE1yjn-9PcuIb4jSLLhYYE8YueALIQAbBNOFQ>
-    <xmx:Gv-0ahgNGTIL4ejuZXuSQDd0pwYZMDzNGqzgQIxvUk-NW6wAiT8cDM3j>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 06:44:39 -0400 (EDT)
-Date: Thu, 24 Sep 2026 12:44:38 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antony Antony <antony.antony@secunet.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Jamal Hadi Salim <hadi@cyberus.ca>, Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org, Yan Yan <evitayan@google.com>,
-	Tobias Brunner <tobias@strongswan.org>,
-	Florian Westphal <fw@strlen.de>, linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH ipsec v2 1/6] xfrm: state: exact mark/mask match for
- SPI-keyed control-plane SA lookups
-Message-ID: <arTzfowpbZXFIBGx@krikkit>
-References: <migrate-state-fixes-v2-0-c3e2767f0d96@secunet.com>
- <migrate-state-fixes-v2-1-c3e2767f0d96@secunet.com>
- <arEw6qLcr_YEI8Wl@krikkit>
- <arGTH94PM_oswTpF@bern>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3Dbduyr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD981F000FF;
+	Thu, 24 Sep 2026 10:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790246805;
+	bh=pHwjyd75jGXUA28aQ8EhKH5vE+R5WhiWoZJE1UJa0W4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=B3Dbduyr3JmYwWReoyQlsQGv9XPzKelGrn19zLIfHBCv0wvTvoAdX9pBGzzUYWyT/
+	 ri9EaAHfZ1af8ehO1b8GP1d+lCIrLGoJr+4vBIijg5HkreCiM0txbUefaAqxkSKmWf
+	 5DiNxeUVI0fC6PEFEQjTTKdxLg4EO/GXt9x2t+xTf0jP+SM3QWK4MThVV6xNJQj2rY
+	 +Q4rbwWdkdD6/cySQJFi8OXr3SZk+SxVEyglxVC/uwhlG5ocjlBLpWrKP4zK4Ot+C9
+	 AP3w4lkafbsO8PpJhGUzPasZ4bTIFlBhWLwy9V6EUMetXS2oCGO7IVlbPJ5ZcCfvQr
+	 LVqFmknBNolTQ==
+Subject:
+ Re: [PATCH net v2 1/9] gve: increment work_done for XDP and error packets
+From: netdev-bot+sashiko@kernel.org
+To: joshwash@google.com
+Cc: netdev@vger.kernel.org, hramamurthy@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
+ willemb@google.com, thostet@google.com, nktgrg@google.com,
+ eddiephillips@google.com, pkaligineedi@google.com, jeroendb@google.com,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+Date: Thu, 24 Sep 2026 10:46:44 +0000
+Message-ID: <179024680434.2160803.7562423537279284993@kernel.org>
+In-Reply-To: <20260922194533.631387-2-joshwash@google.com>
+References: <20260922194533.631387-2-joshwash@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <arGTH94PM_oswTpF@bern>
 
-(sorry, this got caught by my mail provider's spam filter so I only
-saw it today)
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-2026-09-21, 22:27:11 +0200, root wrote:
-> On Mon, Sep 21, 2026 at 03:28:10PM +0200, Sabrina Dubroca wrote:
-> > 2026-09-08, 08:48:45 +0200, Antony Antony wrote:
-> > > Add __xfrm_state_lookup_exact(); wire it into DELSA/GETSA
-> > 
-> > On the "other proto" branch of xfrm_user_state_lookup(), we call
-> > xfrm_state_lookup_byaddr() -> __xfrm_state_lookup_byaddr(), which
-> > still does a "loose" mark match:
-> > 
-> > 		if ((mark & x->mark.m) != x->mark.v)
-> > 			continue;
-> > 
-> > Is that ok?
-> 
-> I think so. I felt byaddr is not used and aslo since there is no unique spi
-> if touch it dragons may wake up:) most used cases with SPI.
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-Ok.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> > That's the only thing I've noticed in the series.
-> > 
-> > 
-> > I guess someone could claim that this patch changes behavior, but if a
-> > user somewhere notices it, I think that would mean they were relying
-> > on insertion order to delete/etc the right SA.
-> 
-> yes that is a risk. I tried find use cases and got nowhere. 
-> And concluded it was an oversight. Also note the
-> cover letter, "policy" had similar change a while ago.
-> No one complained yet?
+- [Medium] The commit message describes only a NAPI `work_done`
+  accounting fix, but the patch also changes the semantics of the…
+- [Medium] The newly added receive packet/byte accounting for XDP-
+  consumed packets is unreachable for AF_XDP zero-copy buffers, so the…
 
-Yeah, I agree. Just maybe worth mentioning briefly in the commit
-message, and adding a reference the policy patch.
+--
+
+gve: increment work_done for XDP and error packets
+
+The DQO RX poll loop now increments work_done for every end-of-packet
+completion instead of only for completions that produced an SKB, so XDP
+and error packets are charged against the NAPI budget. The packet and
+byte counters were moved into a separate rx_packets accumulator plus a
+new increment on the XDP non-PASS path.
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+> index 5cf242b285577..c3f4a76b0fac5 100644
+> --- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+> +++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+> @@ -932,6 +932,10 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
+>  		if (xdp_act != XDP_PASS) {
+>  			gve_xdp_done_dqo(priv, rx, &gve_xdp.xdp, xprog, xdp_act,
+>  					 buf_state);
+> +			u64_stats_update_begin(&rx->statss);
+> +			rx->rpackets++;
+> +			rx->rbytes += compl_desc->packet_len;
+> +			u64_stats_update_end(&rx->statss);
+>  			return 0;
+>  		}
+
+[Severity: Medium]
+Is this new accounting reachable for AF_XDP zero-copy buffers?
+
+gve_rx_dqo() dispatches those buffers before the xprog block above:
+
+	xprog = READ_ONCE(priv->xdp_prog);
+	if (buf_state->xsk_buff)
+		return gve_rx_xsk_dqo(napi, rx, compl_desc, buf_state, xprog);
+
+and gve_rx_xsk_dqo() takes its own non-PASS exit, which updates only
+xdp_actions[] via gve_xsk_done_dqo() and leaves rx->ctx.skb_head NULL:
+
+	if (xprog) {
+		xdp_act = bpf_prog_run_xdp(xprog, xdp);
+		buf_len = xdp->data_end - xdp->data;
+		if (xdp_act != XDP_PASS) {
+			gve_xsk_done_dqo(priv, rx, xdp, xprog, xdp_act);
+			gve_free_buf_state(rx, buf_state);
+			return 0;
+		}
+	}
+
+With the reworked loop below, such a completion bumps work_done and then
+hits "if (!rx->ctx.skb_head) continue;", so it is never added to
+rx_packets/bytes either. Should a DQO queue running zero-copy with a
+program that mostly returns XDP_DROP/XDP_TX/XDP_REDIRECT keep reporting
+0 rx_packets/rx_bytes while the same program on the copy path now
+reports them?
+
+The GQI path counts XDP-consumed packets in rpackets/rbytes
+(gve_rx_no_hsplit() does "ctx->total_size += frag_size; goto
+finish_ok_pkt;"), so the DQO zero-copy path looks like the only
+remaining outlier.
+
+[Severity: Medium]
+The commit message only describes the work_done change:
+
+    Ensure every packet is accounted for in work_done by incrementing
+    work_done before checking for the existence of a SKB.
+
+Could it also mention that rx->rpackets/rx->rbytes semantics change?
+XDP_DROP/XDP_ABORTED/XDP_TX/XDP_REDIRECT packets on the non-zero-copy
+DQO path did not previously contribute to these counters, and
+gve_get_stats() folds them into rtnl_link_stats64 rx_packets/rx_bytes:
+
+	packets = priv->rx[ring].rpackets;
+	bytes = priv->rx[ring].rbytes;
+	...
+	s->rx_packets += packets;
+	s->rx_bytes += bytes;
+
+The note "corrected stat counting for packets relative to work_done"
+sits below the --- separator, so it will not be part of the git history,
+and the patch carries Fixes: 293b49361f91 plus Cc: stable@vger.kernel.org.
+
+> @@ -1090,6 +1094,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+>  	struct gve_rx_ring *rx;
+>  	struct gve_priv *priv;
+>  	u64 xdp_redirects;
+> +	u32 rx_packets = 0;
+>  	u32 work_done = 0;
+>  	u64 bytes = 0;
+>  	u64 xdp_txs;
+> @@ -1150,13 +1155,14 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+>  		/* Free running counter of completed descriptors */
+>  		rx->cnt++;
+>  
+> -		if (!rx->ctx.skb_head)
+> -			continue;
+> -
+>  		if (!compl_desc->end_of_packet)
+>  			continue;
+>  
+>  		work_done++;
+> +
+> +		if (!rx->ctx.skb_head)
+> +			continue;
+> +
+>  		pkt_bytes = rx->ctx.skb_head->len;
+>  		/* The ethernet header (first ETH_HLEN bytes) is snipped off
+>  		 * by eth_type_trans.
+> @@ -1164,6 +1170,9 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+>  		if (skb_headlen(rx->ctx.skb_head))
+>  			pkt_bytes += ETH_HLEN;
+>  
+> +		rx_packets++;
+> +		bytes += pkt_bytes;
+> +
+>  		/* gve_rx_complete_skb() will consume skb if successful */
+>  		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
+>  			gve_rx_free_skb(napi, rx);
+
+[Severity: Medium]
+Related to the commit message question above: moving "bytes += pkt_bytes"
+ahead of the gve_rx_complete_skb() failure branch means packets the
+driver drops here (and also counted in rx_desc_err_dropped_pkt) now add
+their bytes to rx_bytes, where previously they did not. Is that change
+intended, and should it be described in the changelog?
+
+> @@ -1173,7 +1182,6 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+>  			continue;
+>  		}
+>  
+> -		bytes += pkt_bytes;
+>  		rx->ctx.skb_head = NULL;
+>  		rx->ctx.skb_tail = NULL;
+>  	}
+> @@ -1187,7 +1195,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
+>  	gve_rx_post_buffers_dqo(rx);
+>  
+>  	u64_stats_update_begin(&rx->statss);
+> -	rx->rpackets += work_done;
+> +	rx->rpackets += rx_packets;
+>  	rx->rbytes += bytes;
+>  	u64_stats_update_end(&rx->statss);
+>
 
 -- 
-Sabrina
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922194533.631387-1-joshwash%40google.com
