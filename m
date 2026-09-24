@@ -1,230 +1,196 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD0A4AE118;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8304B0489;
 	Thu, 24 Sep 2026 17:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269666; cv=none; b=X50TI3rojIsj72whneXpqE4rZqdTnd1DRp2DiWmYzPFGhFCaFK6khRdq1k9BOzOSozMQ384KupxlAblfxUNcthT7+y5LRqGv3WtqVCjTl9FiV5NbOG+KvN1/N5LSs7qNJd0h1MryqvlYqxzY49c2xOzRNroykL9cjpAbm3Pj1nk=
+	t=1790269666; cv=none; b=HlZromo+6xRKy7T5I2OB44+w8jmoJbTU6+mwV6HlqTz1eVfAOxFvHrOaJ0r7Twsk25r6CLfrthGJIn05gV/k0P8Lf5uW364gx+GGxUpEZATP597fUostlzuWJBXp7mrTsf0/6Ms9Fz5LzsYQcqr+xdOfUPSv8j72GLUsnlxqytU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790269666; c=relaxed/simple;
-	bh=vOq3xe4MG1BKcoVZ3OcuQIYEvHWE0uiP8NMf4rtLrkk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jAHEjfF0DoaHRW0lvQcOjj4fyVIxZRHu3yzfvvSb9O7hT1XkqhHqBppju02gopn/JxQ+DSmqFN8cJMinj4lr78GmY4p4LCEEADDQzqGUqWG+mximB8Py+SwqC1Hi0sBKOpST+m8/ErWlGrKCtOFN71sguOA7VMRD6+h1jHHmZnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hc3QNZor; arc=none smtp.client-ip=100.103.45.18
+	bh=644BvEwPB5tOoL1EHbN0cP//S6FbslV/jzIUe7lQuCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j/8TK8uxVvSRDZ1mKACccwORXnE2Prhbs+zdPtab1DpPxsfs/b7BiU3Q67qhhBp60mKhKWtf+JqY/5RM12fY28J193UTiW8T2FKBZBYoFa7mOHg5XxS9IO2Y1A1M/U6jWefmTwxLgYGc74e73WU12izOtiAZRngOjw72aVWiaM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dyd4wWdW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hc3QNZor"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E6F1F00893;
-	Thu, 24 Sep 2026 17:07:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dyd4wWdW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFC11F000FF;
+	Thu, 24 Sep 2026 17:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1790269665;
-	bh=IV6B/wUnI1gyMzArud/n/k1lcIgRff+c6noLd0k+RNg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Hc3QNZorh5eWjtRmKSpvtxiK0EnjYQvYLPXkjrAHai0L8o8reoZJQK34ppr1oB8ya
-	 XTyA05wBtBJ0MuFH3FRy2IaIhl+rWQXeVt4UKUvr2g7zGBvppwtvNuQaB0h9oCcQNf
-	 xM6aii7piHLzSxArBX/LAw1iAgJtbYq/u1281CUeeL71CdEUeFjN1fh3VwaJAmsxZw
-	 GarQUzTFYelmV3BwKeMq4RASXg8wQnxj/GyAuEuyGeJg4uY0qZRdRGuTvPU9xYg3Ub
-	 xs3wuMsDcUMeQfiqehoU4EB0KjAWhDYV/CBvbJJnqfuY58HBiZhGRw/gCEJMe5/MN0
-	 CrCM0Co6X4qkQ==
-Subject: Re: [PATCH net 12/12] net: systemport: Complete resource teardown
- even on DMA disable timeout
-From: netdev-bot+sashiko@kernel.org
-To: florian.fainelli@broadcom.com
-Cc: netdev@vger.kernel.org, opendmb@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- zakkemble@gmail.com, horms@kernel.org, ryotkkr98@gmail.com,
- linux-kernel@vger.kernel.org, nb@tipi-net.de
-Date: Thu, 24 Sep 2026 17:07:44 +0000
-Message-ID: <179026966403.2160803.13897466632342473108@kernel.org>
-In-Reply-To: <20260921231305.394773-13-florian.fainelli@broadcom.com>
-References: <20260921231305.394773-13-florian.fainelli@broadcom.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	bh=cyMegrf82e7WKPoUzbh4gaX6JpbgZe+DZgjW9g4vKpk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Dyd4wWdW7MjntaSCG+6LZklQY6GmT39nQUvfIG6IPyRoXviwRmKe9awlvkY7km1g/
+	 0PbKMdaIjnf/fpiYm9N9YZ4mC5dUKC3GwedwX3JPNqIkeFJmbiGAysgfjd7Do/Si3R
+	 qOwilo9l3Y/m8sYd+kuGEqVJ4Dn1+2YHjvrmpi3nbz/HNvONVxlAvOTM5h13kFlj9B
+	 p6dZ25K7jnjB2/HUQ77gfVgv2muKBBKtDvVC3YTEuEdBDCW3H2x7c91Cy+mY6WZAlq
+	 SnicNU4o369IEovaRVOPGwN7KAl8DsfEbuYOK9+LCdqQxnmvwvppMo0xAKWSZV7JJ5
+	 DlgV4XztEjVHg==
+Date: Thu, 24 Sep 2026 18:07:39 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
+	hkallweit1@gmail.com, linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+Subject: Re: [PATCH net-next v21 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
+Message-ID: <20260924-vowed-roulette-abda42cec444@spud>
+References: <20260924075048.4060414-1-kyle.switch@motor-comm.com>
+ <20260924075048.4060414-2-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KEBf6CeFx3H+YGOi"
+Content-Disposition: inline
+In-Reply-To: <20260924075048.4060414-2-kyle.switch@motor-comm.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+--KEBf6CeFx3H+YGOi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 0
+On Thu, Sep 24, 2026 at 03:50:46PM +0800, Kyle Switch wrote:
+> Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
+>=20
+> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+> ---
+>  .../bindings/net/motorcomm,yt8824.yaml        | 69 +++++++++++++++++++
+>  MAINTAINERS                                   |  2 +
+>  2 files changed, 71 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt882=
+4.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml =
+b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+> new file mode 100644
+> index 000000000000..fd62b309e7ff
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+> @@ -0,0 +1,69 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/motorcomm,yt8824.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: MotorComm YT8824 Ethernet PHY
+> +
+> +maintainers:
+> +  - Kyle Switch <kyle.switch@motor-comm.com>
+> +
+> +description:
+> +  Motorcomm YT8824 Ethernet PHY is a PHY package of 4 PHYs.
+> +
+> +$ref: ethernet-phy-package.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - motorcomm,yt8824-package
+> +  phy-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ internal, 10g-qxgmii ]
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This should be after ref, but also have a vendor prefix.
+Additionally, the qcom ethernet-phy-package user also has a mode
+property. Net folks, should this be made common?
 
-- [High] bcm_sysport_stop() now unmaps and frees the RX/TX DMA buffers
-  even when the DMA engines are known to be still running.
-- [Medium] The unconditional teardown path now reaches
-  clk_disable_unprepare(priv->clk)…
+> +  reg:
+> +    description:
+> +      The absolute MDIO address of the YT8824 shared top extend
+> +      register block.
+> +      For internal mode, this is fixed at 9;
+> +      For external mode it is (base MDIO address of the four
+> +      member PHYs) + 4.
+> +      Note that this is NOT the base ID of the first member PHY.
+> +required:
 
-Pre-existing issues:
-- [Medium] The same early-return-on-DMA-disable-timeout pattern remains
-  in bcm_sysport_suspend(): 'ret = rdma_enable_set(priv, 0); if (ret) {…
+Please use blank lines between properties and other elements of the
+binding.
 
---
 
-net: systemport: Complete resource teardown even on DMA disable timeout
+> +  - compatible
+> +  - phy-mode
+> +  - reg
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    mdio {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        ethernet-phy-package@9 {
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
+> +            compatible =3D "motorcomm,yt8824-package";
+> +            reg =3D <9>;
+> +
+> +            phy-mode =3D "internal";
+> +
+> +            ethernet-phy@4 {
+> +                reg =3D <4>;
+> +            };
+> +
+> +            ethernet-phy@5 {
+> +                reg =3D <5>;
+> +            };
+> +
+> +            ethernet-phy@6 {
+> +                reg =3D <6>;
+> +            };
+> +
+> +            ethernet-phy@7 {
+> +                reg =3D <7>;
+> +            };
 
-bcm_sysport_stop() used to return early when tdma_enable_set() or
-rdma_enable_set() timed out, which left the rings, interrupts, PHY and
-clock in place because ndo_stop() return values are ignored. The patch
-turns both early returns into plain error prints so the rest of the
-teardown always runs.
+Unless the addresses and numbers of phys are entirely unconstrained, I
+think you should add some pattern properties for them.
 
-A few questions on the new flow.
+Thanks,
+Conor.
 
-> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-> index e5bb7fa84fda5..2b064da4eb7c0 100644
-> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
-> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-> @@ -2088,19 +2088,15 @@ static int bcm_sysport_stop(struct net_device *dev)
->  	umac_enable_set(priv, CMD_RX_EN, 0);
->  
->  	ret = tdma_enable_set(priv, 0);
-> -	if (ret) {
-> +	if (ret)
->  		netdev_err(dev, "timeout disabling TDMA\n");
-> -		return ret;
-> -	}
->  
->  	/* Wait for a maximum packet size to be drained */
->  	usleep_range(2000, 3000);
->  
->  	ret = rdma_enable_set(priv, 0);
-> -	if (ret) {
-> +	if (ret)
->  		netdev_err(dev, "timeout disabling RDMA\n");
-> -		return ret;
-> -	}
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e3ce77c839b0..ed7af1bd9521 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18409,8 +18409,10 @@ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-mot=
+orcomm.c
+> =20
+>  MOTORCOMM PHY DRIVER
+>  M:	Frank <Frank.Sae@motor-comm.com>
+> +M:	Kyle Switch <kyle.switch@motor-comm.com>
+>  L:	netdev@vger.kernel.org
+>  S:	Maintained
+> +F:	Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+>  F:	Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
+>  F:	drivers/net/phy/motorcomm.c
+> =20
+> --=20
+> 2.25.1
+>=20
 
-[Severity: High]
-Can the device still DMA into the freed RX buffers here?
+--KEBf6CeFx3H+YGOi
+Content-Type: application/pgp-signature; name=signature.asc
 
-rdma_enable_set() only returns -ETIMEDOUT after polling RDMA_STATUS for
-roughly a second without ever seeing RDMA_DISABLED, so the error return is
-evidence that the engine has not quiesced. With the return gone,
-bcm_sysport_stop() continues into:
+-----BEGIN PGP SIGNATURE-----
 
-	/* Free RX/TX rings SW structures */
-	for (i = 0; i < dev->num_tx_queues; i++)
-		bcm_sysport_fini_tx_ring(priv, i);
-	bcm_sysport_fini_rx_ring(priv);
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCarVY2wAKCRB4tDGHoIJi
+0kBtAP9gvzvMgaC7OCQYcF5YZ4f9JyQsltwQa+9COQutQHKzaQEA+BY2RPtGkYxJ
+4BDLPdsVwy4Rg6wCPlqHApzUwwK2Fgs=
+=winZ
+-----END PGP SIGNATURE-----
 
-and bcm_sysport_fini_rx_ring() only warns about exactly this state before
-releasing everything:
-
-	/* Caller should ensure RDMA is disabled */
-	reg = rdma_readl(priv, RDMA_STATUS);
-	if (!(reg & RDMA_DISABLED))
-		netdev_warn(priv->netdev, "RDMA not stopped!\n");
-
-	if (!priv->rx_cbs)
-		return;
-
-	for (i = 0; i < priv->num_rx_bds; i++) {
-		cb = &priv->rx_cbs[i];
-		if (dma_unmap_addr(cb, dma_addr))
-			dma_unmap_single(&priv->pdev->dev,
-					 dma_unmap_addr(cb, dma_addr),
-					 RX_BUF_LENGTH, DMA_FROM_DEVICE);
-		bcm_sysport_free_cb(cb);
-	}
-
-	kfree(priv->rx_cbs);
-
-bcm_sysport_fini_tx_ring() has the same "TDMA not stopped!" warning followed
-by bcm_sysport_tx_clean() and kfree(ring->cbs).
-
-umac_enable_set(priv, CMD_RX_EN, 0) stops the UniMAC, not the RDMA/TDMA
-descriptor engines, and bcm_sysport_stop() does no TOPCTRL flush and no
-block reset, unlike bcm_sysport_suspend() which writes RX_FLUSH/TX_FLUSH.
-Would it be better to force the block quiescent on the timeout path first,
-for example via topctrl_flush() and/or a block reset, before unmapping and
-freeing the buffers? Alternatively, release the IRQs, PHY and clock while
-keeping the DMA-mapped buffers owned by the driver, so the engine cannot
-write into memory that has been returned to the allocator.
-
->  
->  	/* Disable UniMAC TX */
->  	umac_enable_set(priv, CMD_TX_EN, 0);
-
-[Severity: Medium]
-The commit message says "If the interface was subsequently brought up again,
-request_irq() and PHY connection would fail or leak", which suggests the
-interface is usable again after the fix. Does the re-open path actually
-resynchronize the engines?
-
-bcm_sysport_stop() now reaches clk_disable_unprepare(priv->clk) with
-RDMA_EN/TDMA_EN never acknowledged as cleared, and no state is recorded to
-say the DMA was stuck. On the next open, umac_reset() returns immediately
-for priv->is_lite and otherwise only pulses CMD_SW_RESET, and
-topctrl_flush() only pulses RX_FLUSH/TX_FLUSH; neither clears RDMA_EN or
-TDMA_EN. bcm_sysport_init_rx_ring() then does:
-
-	/* Initialize HW, ensure RDMA is disabled */
-	reg = rdma_readl(priv, RDMA_STATUS);
-	if (!(reg & RDMA_DISABLED))
-		rdma_enable_set(priv, 0);
-
-	rdma_writel(priv, 0, RDMA_WRITE_PTR_LO);
-	rdma_writel(priv, 0, RDMA_WRITE_PTR_HI);
-	rdma_writel(priv, 0, RDMA_PROD_INDEX);
-	rdma_writel(priv, 0, RDMA_CONS_INDEX);
-
-The rdma_enable_set() result is ignored and the pointer registers are zeroed
-along with priv->rx_c_index and priv->rx_read_ptr, so if the engine is still
-live its write pointer keeps advancing from the old position and the
-software bookkeeping diverges from the hardware ring.
-bcm_sysport_init_tx_ring() never samples TDMA_STATUS before rewriting
-TDMA_DESC_RING_HEAD_TAIL_PTR/COUNT/PROD_CONS_INDEX, and bcm_sysport_open()
-follows with:
-
-	/* Initialize linked-list */
-	tdma_writel(priv, TDMA_LL_RAM_INIT_BUSY, TDMA_STATUS);
-
-Also, the later rdma_enable_set(priv, 1)/tdma_enable_set(priv, 1) in open()
-return 0 immediately when the engine is already enabled, so open() reports
-success on stale hardware state. Would recording a "DMA stuck" condition in
-stop() and forcing a block reset on the next open make the re-open claim in
-the commit message hold?
-
-[Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but should
-bcm_sysport_suspend() be converted the same way for consistency? It still
-has both early returns:
-
-	ret = rdma_enable_set(priv, 0);
-	if (ret) {
-		netdev_err(dev, "RDMA timeout!\n");
-		return ret;
-	}
-	...
-	ret = tdma_enable_set(priv, 0);
-	if (ret) {
-		netdev_err(dev, "TDMA timeout!\n");
-		return ret;
-	}
-
-Both return before bcm_sysport_fini_tx_ring()/bcm_sysport_fini_rx_ring() and
-before clk_disable_unprepare(priv->clk), while netif_device_detach(),
-bcm_sysport_netif_stop() and phy_suspend() have already run and are not
-undone. On a DMA timeout the suspend is aborted with the interface detached
-(so netif_device_present() is false and a later open returns -ENODEV), the
-PHY suspended, the ring cb arrays and their mapped SKBs still allocated, and
-a clk prepare/enable reference still held.
-
-After this patch the driver handles the same hardware failure in two
-different ways, and the suspend path additionally flushes RX via
-topctrl_writel(RX_FLUSH, RX_FLUSH_CNTL) and disables RDMA before TDMA,
-which stop() does not. Is the divergence intentional?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921231305.394773-1-florian.fainelli%40broadcom.com
+--KEBf6CeFx3H+YGOi--
