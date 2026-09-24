@@ -1,57 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9514A3871;
-	Thu, 24 Sep 2026 15:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853D35F5E5;
+	Thu, 24 Sep 2026 15:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790264164; cv=none; b=It2w1LRAATDLfzbvkJ1R1tackPS4g15xVQYY28T2sntltkY/+y1taYvmN07hxbH4b2KO3NfutPjB3cl3mo1cc/i5j47f4kTjM7PTjbnnFBfiL/oYbT2Sa0NOslzNxUKQHkgTm3i+WZqdemfDWWqWWZQAgMUBlKxs3wnzAy7zfkU=
+	t=1790264467; cv=none; b=rCXoMs+2ZJj9eltjAYP+TwcdvTiBLYf081E1J0kBfGEscPdgTDfp5qeJe1UFsasei3GWY9WqLYJ8tywzMw/N4KU1CQESj1fdp6Q+Qw9iMOhSEpL9diEmKgESc63MsAk4rx7nstEsY0wOhCe7G3M9WR2yBQfqxT2TjrBHsO7UMIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790264164; c=relaxed/simple;
-	bh=hAf8fXTdW9VLK/QP596l6v+yCl+M04nv+bp0wE9JOsU=;
+	s=arc-20240116; t=1790264467; c=relaxed/simple;
+	bh=LtHn9P4uY6JY/xbhTzibkgwLNpSB34X1PxZc9W7PLBQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CUm+0Z5hV+HFlffek9d07yznfB9ML8TAGCyS4E1Lr1Q3cPqkbwswNCU9l+MP+LsbRKLF+YuWq2lMMNIecJXFGjtyYliKTGG+wa9Z7moiPkvr2NzAlAUcj+YOD+/A29oyw/ylAb1dB9TJWaSX6RPf7ZRGISrhoMjiPWrzI8qfFNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXwAnSbd; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YSjVuE/quU3aPLPJv2KfI0DpIqIroF3lwe3SQHovO8KA7afBniSeRfNH1s+GbZTt3BD2fyJsbH3KGx6RukdYJv6JYpt0nif8qJKoTq1L0WEjyJQONV29moMkwD8LCbtiBbVA/1OCRAB/77UcSYC8uV/rH+X+ZYfraCREUnIdaWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VzHiL3yL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXwAnSbd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9390D1F000FF;
-	Thu, 24 Sep 2026 15:36:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VzHiL3yL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7189D1F000FF;
+	Thu, 24 Sep 2026 15:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790264163;
-	bh=hAf8fXTdW9VLK/QP596l6v+yCl+M04nv+bp0wE9JOsU=;
+	s=k20260515; t=1790264466;
+	bh=737AHlLWlTvpEJAWRPNz2w3MkgeoOAn9THRqVlYYKfU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GXwAnSbdyi6MSiPUc5j6gb79YHPSBzC/ikOr/xg3PMV3zVDwKW+2pJDtso+h4Ywgf
-	 6YXq99qQpnoR9Nb5DGIgvtQCVbsPNRuP7eSXTuicNpe7L5ZtQEEQ7iAl94zKjr/Jdr
-	 1oXNLeca4bnIbInkwMJLlxnhYAdi5KhPqOfYO7TBItSPX3BwHkj2NBTs9RbjUKCdzW
-	 LFOCXJ5j5DJCWymecZNMvAb+hKKB9VprYDeBBhYGua4lk8VyNga5uY+702D61xgm77
-	 DTEgERVKT7xtfmh4EjRwV8Yh5BVHE0LI2BdhSSTEvZC0ukYN/8wI/vna0Ql+jZoqq+
-	 JiV49S2oHbmXw==
-Date: Thu, 24 Sep 2026 08:36:01 -0700
+	b=VzHiL3yL6TbkX02oxLYwhTHjuCB+ABnYwszp742O3ieNIF5kD0chiqNwDvXGaIgq0
+	 1HH/rC+n/tdGlGABUny71B6+hdOCwHntEIAeySK0qQTi/GoWFnQn4nokg60L2dhHOj
+	 rde87vj6fE7KFV3zMAe6//yD8/ukbVtVE0OV6XWNxfHeV1N4hEzuEArV58bRQ/B4iG
+	 qgprjZbKLTH6Gdq6p8nK88xBy+AIJr6PB0Mn1HLw3kIp7idczA/Cm8Ke4X7GrkRNcv
+	 C3b/2mN/s7TPsEsUm37CyhNxL1ADxQ2td4s5aJPPsGfMEEOrHVo4ZDsJtlPtWSv24H
+	 +f2g3ME6L8BRg==
+Date: Thu, 24 Sep 2026 08:41:04 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Aaron Conole <aconole@redhat.com>
-Cc: netdev-bot+sashiko@kernel.org, houminxi@gmail.com,
- netdev@vger.kernel.org, echaudro@redhat.com, i.maximets@ovn.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v5 1/2] selftests/net/openvswitch: add SCTP
- flow key test over IPv6
-Message-ID: <20260924083601.651e11bd@kernel.org>
-In-Reply-To: <f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-References: <20260918144647.2024095-2-houminxi@gmail.com>
-	<179008950943.2160803.15856491533624064435@kernel.org>
-	<f7tpky49mjg.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+To: =?UTF-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
+Cc: <netdev-bot+sashiko@kernel.org>, <conor.dooley@microchip.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <nicolas.ferre@microchip.com>,
+ <sean.anderson@linux.dev>, <atenart@kernel.org>, <linux@armlinux.org.uk>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <nb@tipi-net.de>,
+ <vladimir.kondratiev@mobileye.com>, <gregory.clement@bootlin.com>,
+ <tawfik.bayouk@mobileye.com>, <thomas.petazzoni@bootlin.com>,
+ <maxime.chevallier@bootlin.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net 1/3] net: macb: never give hardware a NULL RX buffer
+Message-ID: <20260924084104.25099f60@kernel.org>
+In-Reply-To: <DLNN7LYYGP7L.3OSN8JZNC37PS@bootlin.com>
+References: <20260918-macb-close-v1-1-05e32ce98813@bootlin.com>
+	<179010942002.2160803.8691011751847108495@kernel.org>
+	<20260923184756.16ce33a7@kernel.org>
+	<DLNN7LYYGP7L.3OSN8JZNC37PS@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 23 Sep 2026 08:31:31 -0400 Aaron Conole wrote:
-> I don't think either is needed for this series.
+On Thu, 24 Sep 2026 17:13:58 +0200 Th=C3=A9o Lebrun wrote:
+> > If the AI interprets the rx poll side correctly these seem like a major
+> > flaw in setting the USED bit :( =20
+>=20
+> Yes the AI is correct (unsurprisingly). But two things:
 
-Aaron, did you mean to ack this series? You (rightly) dismissed the AI
-slop review, but no ack. Or there's something else that I'm missing?
+If it's correct then patch needs to be changed.
+Please don't write puzzles for me to solve.
+
+>  - before this patch what happened was that HW read the NULL descriptor,
+>    so not much better
+>  - we can detect in gem_rx() using our ring buffer cursors that tell us
+>    what we've managed to allocate, that we gem_rx() doesn't iterate
+>    over descriptors that haven't been allocated
+
+Grammatically dubious puzzles at that.
