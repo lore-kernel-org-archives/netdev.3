@@ -1,373 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7054746AD;
-	Thu, 24 Sep 2026 11:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790248339; cv=none; b=aXeq7hRpn7vAiMxQrPyJ0dSeOpFf5w/YeUqLIYRth81FXyrEC4lxPFo+CvhY972y7v/RsSgVwjSZ69ozlc5mD/FJwQsK5VCI32ctWMfpmV2RNT6jg3T6j4BczZlDSWhmuqmxfJUonXZ0a+zIDTH+bDHUILlySsBQHD6H5Kq9tjU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790248339; c=relaxed/simple;
-	bh=7CEdV4xJxBycFQAIl+cB8WXuXeXfUfzd0dSjQy0nLHk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AOLocqVSDajUtRd35ToZpmo7bRZFv6Lj8fd3cLbJFRkHRDiCTqVwWHqIUF7+JRqi/l1taVwArwBD8vPoOB7oc1Y2UbZNkEMNLk3ZAbMa2C6Z7cdBbBvKL0fz94dqQABKYB2kMh0axRmWTcRm/AQvNCIKGX7rx9wDfIGg+ukl7bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jy8NrXLl; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D393DB651
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790248375; cv=pass; b=e4WPMTtKjSdYI0sWl5cCPvhk+1xD/a+YFCGBofTGBpJNnll0rFXMRyp437wfWJTgaAbMi2hYUrnA6/MVN4tLdKoNbXKfUWkQ+ZkZ2WzT5GFjwMdh8LS+mjfQujQwqR7+gY+pxirL5+b1ZqzIEL2A01o2zkEUZzPWJXblZIzmQa8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790248375; c=relaxed/simple;
+	bh=U7K/8GIisOHzCRms+OKCv5d2y4oxaKVysMdgc5MbHqY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=geLxnWZldOlzzxZJ7+qzlnGb7/h2GroiysiYJxvXOvueW/eto4UIzXZovkO59zug/I6e+m+Glm0zy6SXHBHzQClozERsu80Lh6IumVOrHKOA4orw8YKJvH5SJOVJRr8ZQnH2V1LvjdWDpnHA+k8ibASrCC/pzvLNmck3jM/NQsQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FJt9BdBB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AzCwugBf; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jy8NrXLl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAA81F000FF;
-	Thu, 24 Sep 2026 11:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790248338;
-	bh=gtVtBDeZopRdm+Os/+sPdloL64YT17QzD2qYpHX5M6w=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jy8NrXLl99fj+eqLvANFQzPeixUvbGmIJPrZtxHm8mmmgGV0RuPfZXZ0XjRBja1Th
-	 JnIdy2+qrqoNj0mRlw3zA/YRI9r+m3TurzikT055A0v9O55MjdWc00eKJbOzzLFBdY
-	 o0vah80c3lO4VAv3pLznaYPC0rmvlo12x3IoR8U5vYHpPliL6O7bfQgSXTpP+iAVd5
-	 AH2MlYGilZGQP4IwF19qDhMWqOf9vt6Qk5tjr2FemGLOkGpx7lq24NU62ShGDthn/L
-	 KYZeRGUZ1DjN/pcxH+D7zbxqC9HgkoPClb0flzrF8LZ4TrJu4OOSU4HQkbN77DIkDc
-	 EFAy/OLXhDOXw==
-Subject:
- Re: [PATCH net-next] selftests: drv-net: add BIG TCP coverage to TSO test
-From: netdev-bot+sashiko@kernel.org
-To: narcisav.kernel@gmail.com
-Cc: netdev@vger.kernel.org, kuba@kernel.org, daniel.zahka@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, shuah@kernel.org, pvorel@suse.cz,
- pavan.chebbi@broadcom.com, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 11:12:16 +0000
-Message-ID: <179024833698.2160803.15870095496520127538@kernel.org>
-In-Reply-To: <20260921201145.49875-1-narcisav.kernel@gmail.com>
-References: <20260921201145.49875-1-narcisav.kernel@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FJt9BdBB";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AzCwugBf"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68O9PmoQ1644174
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:12:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	k1V1OZLd8PuPRGQwN97+EBOj831I6h3gVcxIujOMO+c=; b=FJt9BdBBPANqD09t
+	Arva/bOhhI8YKPNoC3dT8lyPPLQWPFtCkEMrTT9P5TbeT9Bd5OfaXtdFdMUNxteW
+	OBNxC41ZioyCWD1j+IXkrJIa/ZAWEgqnTqOVpALi32BWAmlMQsEsGsP5W1+iLKZB
+	fCiIWq+aIGAqQr64amrtXf7rKBGSkNzVEpgVxNZhobTHWRS85XFFZ3e7o1tQJF91
+	HQZuk1CG8tO+YGTx5q78IxkF0TrPzlp2cefhTU7Dlt+Ch5FUGR2choeOKiCqOZGi
+	9FkOSKWDC1DgMSM2aJKj4H6PZaehuIs/Aj19TyCnypn+LKDycYNp+WbDMYotaOnD
+	V6WyYg==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gvmrrb83q-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 11:12:53 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38ecc48b3c2so3618991a91.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 04:12:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790248372; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Z4DG67tu1Gja5Gd4e93RC3IVIy2/u3ksmm9BG/oB0qZi2448SLmsw8xqaeifqJo2Lo
+         RD6Bh/7QPjeBB5QComKF3S+McoV8cguC/jYlKj4uVH+9Hoj180QNcCP8ybf4K/Y/GOjL
+         O4OvEZHueAW05Z8LisGVAHFcX/YSUhvuQKRrplLuTlTbEoCKdlVZKk6PDQaS4fBvLLoZ
+         gJuk1XySAOV+FDOnyRY/tJQi8QGrnYSZiPIBpD+e7tNVnY5h2ZV4Kqg1v3Behcxmt+D8
+         EhXgmYmMQ8CWXbpj5vc2I8wypoEUcyxE6vixkLjHurN4B4IxH2rgt53a29exLXcA3YUT
+         C32g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k1V1OZLd8PuPRGQwN97+EBOj831I6h3gVcxIujOMO+c=;
+        fh=pey5QIkOTmRyLbjb1hS/lOQWywhf3OHFZF//6jE8uBA=;
+        b=Pp0J449WRq6Bqbwl894LJ6kJNwknNAQJTmnpzkSDy4q1ibnj9mBRoov/huoiH7Fl9V
+         6g45GJra81w+j96M54hJENm7IEoeuRfEJyAXciD8kIsC5py1SEkCd/vxelumleMl2vO5
+         SFzohaxKVf86yNJpd6eBUfPIxEJ6CGVrFyEz4+xLHDH6VhaWrXcu5J8nr3FnC4eIJRmW
+         S+J5PxCgA12eEqUs6/6Brmhv/Dc0uu3oNXm/7uTNG8aFA6jPsGysTCtyuicXYJaXyF4k
+         z3vaUmrTAxND0mSCIiWyt3wGmu99npojBMr8HCZJp/xmUX5gt2A7YWZoW3eymfTFgbbQ
+         qM2g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790248372; x=1790853172; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k1V1OZLd8PuPRGQwN97+EBOj831I6h3gVcxIujOMO+c=;
+        b=AzCwugBfcwLZ5C89XSP6biaNDtAcRSadIIJk9y4Sa3qjkqO74bYhIJGoAHMaDPcsgR
+         XRng11zw9J9JPXMNy4YO02C11zONN0hnMWJ/dlcOl1pi4via20YoFOLBUZ7xRyMELVNY
+         A0qWhgYCKL+wHloQbjfQJ0taIgMxMUMuWyIRrsFE5gFylbfWNg9RjCtNII19VJbJD42g
+         qNzDQnIuXde5pedzSD859WeDOkPC1yxTLtufGi4uJncbURdhVPlCU71kCgWaTP9kgBMw
+         11vBksr1BqmOWVbMHbJrT0zvii0V01+mm6FlK+KO/Q7f0UZfqV5ZFe5sCptxAYs/2KCr
+         tg1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790248372; x=1790853172;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k1V1OZLd8PuPRGQwN97+EBOj831I6h3gVcxIujOMO+c=;
+        b=Y083cTwySYmyayjBYiEE+bA9QxqmXo8dzgai5b1qpFjd/dMx13C42hdrWOtXvKqjU0
+         L8L80N7/BTQD7k+4SETuECO1hQAo8oFM2nN/uU6MF3amQObR+Os5JvPDh1ZLZjtf0J+B
+         vuMS7EdmKMJ2mLZjsv5qLDWKIae/US3ID6CmffyQT60npCH9fSBEZ11RY/efbYfdaeS2
+         uYccBNjeevktwrldsdtl5Z1qnMFGVut6tq8r+2upa2QrwPMMbMbF5BtnTL+J4hx9lCwN
+         TykL+ZKJt21i/VIsdlBdRlSqpU98/BRRMXfBQvV22TuU7H9IVGWbKlwKI7tqgKr8WIxf
+         eObQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy8uoQ+N+pha+L7rHsP6v5dmii9L/B6jP6l53GXXZGZYxTUga7fdM8ak7EWSp0iYyeDoFrmWX0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lYyijf7m243KazX6W3yVVA5JI+v79+dqQxSA5NkHYFNgo37sPu
+	bBsvvVxiemWL+TUlY4pLm6oMcBu1wnzfKcguxZ/wghEAd0PhGS1VGeXfs3QrkrO4ZBC+vivBu/5
+	KT8zO9Y9srL8fSaVHx7qhxL66T5jRsOxVdla17++LDergkJEnvxUFUw74tmg0+MAuneUy8stfUw
+	Pka9sN/7EMsCHiUX2GD6S2G+2mT/lDaCuErLJZy+4LQGFt
+X-Gm-Gg: AYBFou0lNafYkd+INLDv34ftBgIUhgp2P2eDRGR/euDofFsLWlvvz2uXkQ1CT3Xvfdj
+	wM9cQCaNjscDugcMD6fGEi+AxzhPZq0hVqzEmt/psq9C+GgCWrKair7CDQSFNYK2/azt5Y8W1ne
+	qL1I2jZBdDJv6Gl1JE0s+KdAF/tyy225vfbUgUSL1mNWlX6gNeG+x4tPNUOw==
+X-Received: by 2002:a17:90b:4a08:b0:39e:6c6a:6572 with SMTP id 98e67ed59e1d1-3a09896f00dmr1967119a91.53.1790248372005;
+        Thu, 24 Sep 2026 04:12:52 -0700 (PDT)
+X-Received: by 2002:a17:90b:4a08:b0:39e:6c6a:6572 with SMTP id
+ 98e67ed59e1d1-3a09896f00dmr1967095a91.53.1790248371549; Thu, 24 Sep 2026
+ 04:12:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
+ <20260923084921.3942100-1-zhangfei.gao@oss.qualcomm.com> <20260923084921.3942100-2-zhangfei.gao@oss.qualcomm.com>
+ <e05baad3-49ec-4db0-ac70-ffd8e0f52b10@lunn.ch>
+In-Reply-To: <e05baad3-49ec-4db0-ac70-ffd8e0f52b10@lunn.ch>
+From: Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>
+Date: Thu, 24 Sep 2026 19:12:40 +0800
+X-Gm-Features: AclHuK8TGQHMGqvYSLBah1tI2wfOeuTGvUtjSV6O-ttPpvUSi2Ylv2WtiPcL46s
+Message-ID: <CAFkd8htkQnq-KVKMc-qTOFvbgi9BRdnewzmyu4c5B2hULDKPdQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] net: stmmac: support low-speed USXGMII validation
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: shengchao.guo@oss.qualcomm.com, bartosz.golaszewski@oss.qualcomm.com,
+        mohd.anwar@oss.qualcomm.com, maxime.chevallier@bootlin.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, hkallweit1@gmail.com,
+        linux@armlinux.org.uk, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA0NiBTYWx0ZWRfX3YA5oy8nc5rz
+ GM5b++KHZDkV9UFqQ/0pAoKzciBiCaWtM5M8CISJm1092dBxI45jwEAR5MtxF5cio43UZIo1USc
+ E2YIkWQwwYeo1tcEbZeNZfFG7ogBUlBdGmbHBMokA1WpJnskZaBEnA7NxbHcX3aDFWflMpw5KPy
+ d1asE4lrBku4nlKcRbdF3Ywp7Q/AK2Xijp18PBh0t2a4PPc/bEB6QrUVLjLlrYtl1nCA/+qa1Hc
+ 3sNm4sDyodPP4ESeqneIV5NYCq3huAhdbD5eOXRQOCFmEd8MiANvf+yDdAas0WWNRErYh3P3uzX
+ w10n8ZjXx5GcMUwdg1R3+6+OdQib1B5ek0IhvF/dtJ7MjJkbHx8Sb2pqIDtenzmKdd0kFpPp9VX
+ aFg88aI1qStplr8rLbs/+SUJyQL57q0w+Uy347H++GDINIDvg9q6JCPxdrNIBaP2ePMmT/l+/mW
+ esaZqN9V3+Mt9fxmpXg==
+X-Authority-Analysis: v=2.4 cv=TYwDJhQh c=1 sm=1 tr=0 ts=6ab505b5 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=ZpdpYltYx_vBUK5n70dp:22 a=oAscVk_Hh32IO0NGH0cA:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA0NiBTYWx0ZWRfX+NKya64om1+L
+ WMmoGlL8vh56tSSX/uQ3pSMomegAO4Xn7dvip54SnpjAIeq7Bq3c9G/wOXbnNYk25u4E5Gzu91N
+ 3lVU6GxAmw9t/8V85O5H5tkjFDzglRc=
+X-Proofpoint-GUID: LwjqMdPp-4X_mn467khj4m_X2ugBj4NL
+X-Proofpoint-ORIG-GUID: LwjqMdPp-4X_mn467khj4m_X2ugBj4NL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-24_02,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 phishscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 clxscore=1015 adultscore=0 priorityscore=1501 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240046
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Wed, Sep 23, 2026 at 9:09=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > The XPCS also consumes the PHY-generated Clause 37 in-band link and
+> > speed status, so USXGMII must use in-band signalling.
+>
+> Is this a qualcomm specific feature, or defined in the databook of the
+> licensed IP.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+This is defined by the Synopsys DWC XPCS databook, rather than being
+  Qualcomm-specific. The Clause 37 USXGMII implementation added by this
+  series uses PHY-generated in-band status containing link, speed and
+  duplex information.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+>
+> >       case DW_AN_C37_USXGMII:
+> > -             return LINK_INBAND_DISABLE;
+> > +             /* The PCS consumes the PHY's CL37 in-band link and speed=
+ status. */
+> > +             return LINK_INBAND_ENABLE;
+>
+> I ask, because when i look at this, i immediately think is this a
+> behaviour change? Is it going to break existing systems? Or was the
+> old code broken?
 
-- [Medium] Late skip decisions in the new BIG TCP cases convert already-
-  recorded failures into a SKIP and silently drop the remaining test…
-- [Medium] `run_big_tcp_stream()` (tso.py:207-244) claims (test name
-  `big_tcp_*`, docstring "so the frags exceed 64kB", commit message…
-- [Low] The new module-level constants hardcode architecture-specific
-  UAPI values as fallbacks: `MAP_HUGETLB = getattr(mmap, "MAP_HUGETLB",…
-- [Low] `setup_hugepage()` (tso.py:65-80) performs an unsynchronized
-  read-modify-write of the system-wide `/proc/sys/vm/nr_hugepages` (read…
-- [Low] `sock_send_zerocopy()` (tso.py:139-141) unmaps the hugepage
-  buffer on exit of the `with mmap_large_buffer() as tx_buf:` block and…
+ DW_AN_C37_USXGMII is newly introduced by this series. This change adds
+  a separate case for that new mode and leaves the existing DW_10GBASER
+  and DW_2500BASEX cases returning LINK_INBAND_DISABLE. Therefore, it
+  does not change the behaviour of any existing XPCS mode or system. It
+  also matches the implementation added by this series, which enables
+  Clause 37 AN and reads the received USXGMII status in
+  xpcs_get_state_c37_usxgmii().
 
---
+        case DW_10GBASER:
+        case DW_2500BASEX:
+                return LINK_INBAND_DISABLE;
 
-selftests: drv-net: add BIG TCP coverage to TSO test
++       case DW_AN_C37_USXGMII:
++               /* The PCS consumes the PHY's CL37 in-band link and
+speed status. */
++               return LINK_INBAND_ENABLE;
++
 
-Adds two new tso.py cases (big_tcp_ipv4, big_tcp_ipv6) that raise
-gso_max_size/gso_ipv4_max_size to the device's tso_max_size and then run
-the existing stream tests, plus an extra MSG_ZEROCOPY send out of a
-hugepage-backed buffer. A few questions on the new helpers below.
+>
+> The commit message is where you try to guess what reviewers are going
+> to ask, and answer the question before they ask. Seeing such answers
+> in the commit message gives me a good idea you have done your due
+> diligence, and the patch is probably O.K. Without such comments, i
+> have to assume this is poor quality code and really exam it in detail.
 
-> diff --git a/tools/testing/selftests/drivers/net/hw/tso.py b/tools/testing/selftests/drivers/net/hw/tso.py
-> index 67f6c9ca9a647..176ddf97fabb9 100755
-> --- a/tools/testing/selftests/drivers/net/hw/tso.py
-> +++ b/tools/testing/selftests/drivers/net/hw/tso.py
-> @@ -4,6 +4,7 @@
->  """A simple test for TSO."""
->  
->  import fcntl
-> +import mmap
->  import socket
->  import struct
->  import termios
-> @@ -15,6 +16,87 @@ from lib.py import EthtoolFamily, NetdevFamily, NetDrvEpEnv
->  from lib.py import bkg, cmd, defer, ethtool, ip, rand_port, wait_port_listen
->  
->  
-> +MAP_HUGETLB = getattr(mmap, "MAP_HUGETLB", 0x40000)
-> +MSG_ZEROCOPY = getattr(socket, "MSG_ZEROCOPY", 0x4000000)
-> +SO_ZEROCOPY = getattr(socket, "SO_ZEROCOPY", 60)
+Thanks for the guidance.
 
-[Severity: Low]
-Are these numeric fallbacks architecture independent? CPython's mmap
-module does not export MAP_HUGETLB, so the fallback is the normal path
-rather than an exception, and the two values are not the same everywhere:
-
-arch/mips/include/uapi/asm/mman.h:
-    #define MAP_STACK       0x40000
-    #define MAP_HUGETLB     0x80000
-
-arch/alpha/include/uapi/asm/mman.h:
-    #define MAP_HUGETLB     0x100000        /* create a huge page mapping */
-
-So on mips 0x40000 is MAP_STACK, which mmap() accepts and ignores, and the
-mapping in mmap_large_buffer() silently succeeds without any hugepage, so
-no skip is raised and no large frag can be produced.
-
-Same question for SO_ZEROCOPY:
-
-arch/sparc/include/uapi/asm/socket.h:
-    #define SO_ZEROCOPY             0x003e
-
-arch/parisc/include/uapi/asm/socket.h:
-    #define SO_ZEROCOPY             0x4035
-
-setsockopt(SOL_SOCKET, 60, 1) would then set some other option, and the
-send would quietly fall back to copying. Would requiring the attribute and
-raising KsftSkipEx when it is missing be more robust than guessing a value?
-
-> +
-> +GSO_LEGACY_MAX_SIZE = 65536
-
-[ ... ]
-
-> +def setup_hugepage():
-> +    """Reserve one hugepage, and put the pool back afterwards."""
-> +    if hugepages_free() >= 1:
-> +        return
-> +
-> +    try:
-> +        with open(NR_HUGEPAGES, encoding="utf-8") as sysctl:
-> +            old_count = int(sysctl.read())
-> +        set_nr_hugepages(old_count + 1)
-> +    except OSError as error:
-> +        raise KsftSkipEx(f"Unable to reserve a hugepage: {error}") from error
-> +
-> +    defer(set_nr_hugepages, old_count)
-> +
-> +    if hugepages_free() < 1:
-> +        raise KsftSkipEx("Unable to reserve a hugepage")
-
-[Severity: Low]
-Can this clobber the global hugepage pool of another user? The read of
-old_count and the write of old_count + 1 on /proc/sys/vm/nr_hugepages are
-not atomic, and the deferred restore writes an absolute value.
-
-If something else grows the pool between the read here and the deferred
-set_nr_hugepages(old_count), the restore shrinks the pool back below what
-the other writer asked for. Two concurrent instances of this test both
-reading N and both writing N + 1 also end up adding a single page, so one
-of them skips.
-
-The early return path makes no reservation at all, so the free page
-observed by hugepages_free() can be consumed by anyone before
-mmap_large_buffer() issues the MAP_HUGETLB mmap, which shows up as a skip
-rather than as lost coverage. Would a private hugetlbfs mount, a flock, or
-a cgroup reservation be a better fit here?
-
-> +
-> +
-> +def mmap_large_buffer():
-> +    """Allocate a buffer backed by one huge page."""
-> +    size = default_huge_page_size()
-> +
-> +    setup_hugepage()
-> +
-> +    try:
-> +        return mmap.mmap(-1, size,
-> +                         flags=mmap.MAP_PRIVATE |
-> +                               mmap.MAP_ANONYMOUS |
-> +                               MAP_HUGETLB,
-> +                         prot=mmap.PROT_READ)
-> +    except OSError as e:
-> +        raise KsftSkipEx(f"Unable to allocate a {size >> 20}MB hugepage "
-> +                         f"buffer: {e}") from e
-> +
-> +
->  def sock_wait_drain(sock, max_wait=1000):
->      """Wait for all pending write data on the socket to get ACKed."""
->      for _ in range(max_wait):
-> @@ -33,6 +115,32 @@ def tcp_sock_get_retrans(sock):
->      return struct.unpack("I", info[100:104])[0]
->  
->  
-> +def setup_big_tcp(cfg):
-> +    """Lift the GSO ceiling to what the device advertises for TSO."""
-> +    if cfg.dev["tso_max_size"] <= GSO_LEGACY_MAX_SIZE:
-> +        raise KsftSkipEx("Device does not support BIG TCP")
-> +
-> +    ip(f"link set dev {cfg.ifname} "
-> +       f"gso_max_size {cfg.dev['tso_max_size']} "
-> +       f"gso_ipv4_max_size {cfg.dev['tso_max_size']}")
-> +
-> +    defer(ip, f"link set dev {cfg.ifname} "
-> +              f"gso_max_size {cfg.dev['gso_max_size']} "
-> +              f"gso_ipv4_max_size {cfg.dev['gso_ipv4_max_size']}")
-> +
-> +
-> +def sock_send_zerocopy(sock):
-> +    """Send with MSG_ZEROCOPY, return the bytes queued."""
-> +    try:
-> +        sock.setsockopt(socket.SOL_SOCKET, SO_ZEROCOPY, 1)
-> +    except OSError as e:
-> +        raise KsftSkipEx(f"SO_ZEROCOPY not supported: {e}") from e
-> +
-> +    with mmap_large_buffer() as tx_buf:
-> +        sock.sendall(tx_buf, MSG_ZEROCOPY)
-> +        return len(tx_buf)
-
-[Severity: Low]
-Should the MSG_ERRQUEUE completions be drained before the with block
-unmaps tx_buf and the caller closes the socket?
-
-MSG_ZEROCOPY can be turned into a copying send without any error from
-sendall():
-
-net/ipv4/tcp.c:tcp_sendmsg_locked() {
-    ...
-            if (sk->sk_route_caps & NETIF_F_SG)
-                    zc = MSG_ZEROCOPY;
-            else
-                    uarg_to_msgzc(uarg)->zerocopy = 0;
-    ...
-}
-
-The only user-visible indicator of that fallback is
-SO_EE_CODE_ZEROCOPY_COPIED on the error queue, which this test never
-reads, so a copying send is indistinguishable from a real zerocopy send
-here.
-
-Note the hugepage pinning itself does not look like a problem: the queued
-skbs keep the pages referenced across munmap, and the deferred pool shrink
-is absorbed by hugetlb surplus accounting.
-
-> +
-> +
->  def run_one_stream(cfg, ipver, remote_v4, remote_v6, should_lso):
->      cfg.require_cmd("socat", local=False, remote=True)
->  
-> @@ -96,6 +204,46 @@ def run_one_stream(cfg, ipver, remote_v4, remote_v6, should_lso):
->                          500, comment="Number of LSO wire-packets with LSO disabled")
->  
->  
-> +def run_big_tcp_stream(cfg, ipver, remote_v4, remote_v6):
-> +    """Send with MSG_ZEROCOPY out of a huge page, so the frags exceed 64kB."""
-> +    cfg.require_cmd("socat", local=False, remote=True)
-> +
-> +    # No clamping, as it would keep the frags under 64kB
-> +    port = rand_port()
-> +    listen_opts = f"{port},reuseport"
-> +    listen_cmd = f"socat -{ipver} -t 2 -u TCP-LISTEN:{listen_opts} /dev/null,ignoreeof"
-
-[ ... ]
-
-> +        sent = sock_send_zerocopy(sock)
-> +        sock_wait_drain(sock)
-> +
-> +        drops = tx_dropped(cfg.ifname) - drops_old
-> +        retrans = tcp_sock_get_retrans(sock) - retrans_old
-> +        sock.close()
-> +
-> +        ksft_eq(drops, 0, comment="Driver TX drops during BIG TCP send")
-> +
-> +        # Same best effort bound as the plain stream.
-> +        total_lso_wire = sent * 0.90 // cfg.dev["mtu"]
-> +        ksft_lt(retrans, total_lso_wire / 16)
-
-[Severity: Medium]
-Can these two checks pass without any frag larger than 64kB ever being
-built? The docstring says "so the frags exceed 64kB" and the commit
-message says the send is there "to produce skb fragments larger than
-65536", but nothing here observes the frag size, the GSO counters, or the
-zerocopy completions.
-
-setup_big_tcp() only lifts the GSO ceiling and gates on tso_max_size, while
-the per-skb size is bounded further:
-
-net/ipv4/tcp.c:tcp_xmit_size_goal() {
-    ...
-        new_size_goal = tcp_bound_to_half_wnd(tp, sk->sk_gso_max_size);
-    ...
-            tp->gso_segs = min_t(u16, new_size_goal / mss_now,
-                                 sk->sk_gso_max_segs);
-    ...
-}
-
-So a device with tso_max_size above 65536 but a modest tso_max_segs (say
-32 * 1448, roughly 46kB), or a peer advertising a small window, keeps every
-frag below 64kB and both cases still report ok. Should setup_big_tcp() also
-look at tso_max_segs, and should the peer window be arranged given the
-comment says the clamp was dropped on purpose?
-
-Unlike run_one_stream(), this path also samples no qstats
-(tx-hw-gso-packets / tx-hw-gso-wire-packets), so the two invocations of
-run_big_tcp_stream() cannot tell the software-GSO phase from the
-hardware-TSO phase. The payload is a PROT_READ zero mapping sent to
-socat ... /dev/null, so there is no content check either.
-
-> +
-> +
->  def build_tunnel(cfg, outer_ipver, tun_info):
->      local_v4  = NetDrvEpEnv.nsim_v4_pfx + "1"
->      local_v6  = NetDrvEpEnv.nsim_v6_pfx + "1"
-> @@ -147,6 +295,11 @@ def test_builder(name, cfg, outer_ipver, feature, tun=None, inner_ipver=None):
->          if feature not in cfg.hw_features:
->              raise KsftSkipEx(f"Device does not support {feature}")
->  
-> +        # Run non-tunnel test cases under the BIG TCP limits too.
-> +        big_tcp = "big_tcp" in name
-> +        if big_tcp:
-> +            setup_big_tcp(cfg)
-> +
-
-[Severity: Medium]
-Should the hugepage and SO_ZEROCOPY preconditions be probed here, next to
-setup_big_tcp(), rather than in the middle of the test?
-
-As written, the order inside f() is setup_big_tcp() -> ethtool -K feature
-off -> run_one_stream(should_lso=False) -> run_big_tcp_stream(). The
-remaining preconditions are only evaluated once run_big_tcp_stream() is
-reached, and each raises KsftSkipEx:
-
-  sock_send_zerocopy()  -> "SO_ZEROCOPY not supported"
-  mmap_large_buffer()   -> "Unable to allocate a ...MB hugepage buffer"
-  setup_hugepage()      -> "Unable to reserve a hugepage"
-
-By then run_one_stream() has already recorded results, and ksft_run()
-buckets the case as a skip regardless:
-
-tools/testing/selftests/net/lib/py/ksft.py:ksft_run() {
-    ...
-        except KsftSkipEx as e:
-            comment = "SKIP " + str(e)
-            cnt_key = 'skip'
-    ...
-        if not cnt_key:
-            cnt_key = 'pass' if KSFT_RESULT else 'fail'
-    ...
-}
-
-Since cnt_key is already set, a case whose earlier phase set KSFT_RESULT
-to False is reported with "# SKIP" and counted under skip. The LSO-enabled
-half (ethtool -K feature on, run_one_stream(should_lso=True) and the second
-run_big_tcp_stream()) is also never run, yet the case looks like a clean
-skip. A host with no writable or growable hugepage pool hits this on every
-run.
-
->          ipver = outer_ipver
->          if tun:
->              remote_v4, remote_v6 = build_tunnel(cfg, ipver, tun)
-> @@ -159,6 +312,9 @@ def test_builder(name, cfg, outer_ipver, feature, tun=None, inner_ipver=None):
->          ethtool(f"-K {cfg.ifname} {feature} off")
->          run_one_stream(cfg, ipver, remote_v4, remote_v6, should_lso=False)
->  
-> +        if big_tcp:
-> +            run_big_tcp_stream(cfg, ipver, remote_v4, remote_v6)
-> +
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921201145.49875-1-narcisav.kernel%40gmail.com
+Thanks
