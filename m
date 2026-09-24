@@ -1,78 +1,79 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FE33B995D;
-	Thu, 24 Sep 2026 02:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B265345EAB;
+	Thu, 24 Sep 2026 02:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790218280; cv=none; b=BScDjXnwgN+m6j++YnKboJYB69P1tXsLFPOHN0mRLaCP2VoxqafZ7raxEwFb1C6QeTvZjf5LuTfQivvCPeBP+/DNsL1x9HXeMFnVcQwr3T2e7NTgXYxmJA1zJhWoFkalWGub/9F4d9bPB6HhjQwbvzkECoSFdoK7aLK4/wCNo/o=
+	t=1790218291; cv=none; b=hKX2M1GBtmXMHUCgc3QWCztKqHDOJya2RWoibmyGajKYeSkGNj0LGVgSJj4cQWOWS6B7ET2fNz2Tg6xU7idnn3ebVaCJS7Vd/A5WL/0mev2L1QG6Skk9Ka1DT7cQLdiWhpPx1vfPKSdj/4YEZ2+U2beuJhdulBgPlVuSdtC7G/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790218280; c=relaxed/simple;
-	bh=Gy/qa+NbNLt/dx3hCaZU3UQrKU1LA2ULNMhU+gsKr18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C1esQKM4aBOUE7jDeQpTtQttqAtMKd6GrfrmMXcy5V6TjT+hkwWpnG2HHUU8zrbT2ox0NNGiz9/YzKGA73HRyScMOI9LY0eaU3jVaZgEIL8y+ioYkjygFsWX98Wv10juq25HcpQ4EWSEyZfA3YBCeZUo+SY65Bd48l/rj4lg0ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Fv3iShXv; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1790218291; c=relaxed/simple;
+	bh=aRTewQAuqqf+NpWK+iA3dfbOa+iCDf9kz8F+YlIiAB4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=O+3xvTc9fBdpvo4ChpoDdLRKOpKPE5BPoCmMsiSt1KFdSrxQk854r7JIq99W/VdFVKQorw3S4hZFDV6e7KUe7k4B0XubbrIBQRGCpzHaNozaakLAWKWAXcCOD2R/s7ektGTwy9qQNttpxP8Hn6NAZlvdhwIV15KybS3BiTsXH1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1o71yad; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Fv3iShXv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fRZRUAQGtdbTlWUxn+HO7PkGr8VFeQjlaiGB0WK3BhY=; b=Fv3iShXvZE+w3SeYUcwvo2rAPB
-	PynUUtrIsHtIdN8B5n01vsVbRxnhqfcqlyNjZDfiuAKo10U82VX2bgLHZCzMj0bvRHBXFzlDfsBMV
-	vHFSViWHcsbtnKvKqdiOVdIIGtf31Za4i/ravf40Oxouur/zHQrNu2MDalCz3Dr0FcQI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x9ZY9-006uqZ-1t; Thu, 24 Sep 2026 04:51:05 +0200
-Date: Thu, 24 Sep 2026 04:51:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [RFC PATCH net-next v3 4/5] net: dsa: qca8k: flag QCA8337
- internal CPU PHYs for SmartSpeed
-Message-ID: <09d669ff-7aad-4414-880a-21c2e7bf2cd7@lunn.ch>
-References: <20260923215858.1653-1-yongzhao.derek@gmail.com>
- <20260923215858.1653-5-yongzhao.derek@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1o71yad"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFFF1F000FF;
+	Thu, 24 Sep 2026 02:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790218289;
+	bh=V+DyMxCm79QXhTSU+/xCePUBWj1G5fa7f8qubpZI7rs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=g1o71yad5x/KpsPBkc0/8NcdWYfEiQdRIzHmUPWpE9QeYAOlqd7CAG7ZD9rH5jBGM
+	 1e6vrm41ZU2OCIv+YsJPHNUmYqtn6CQvz8XSfT55/bwyEJDxn2RnFevh2lUuOmC8XP
+	 RHejnfYYf2lTJYe/wcxbH3uGVcNbmUN1UluxxvZyWO6KFsZRlKi48Adigdly3bKrsx
+	 vdY6ajgmqeXoyfLiW1Qg8pdMtgdTjMgJlxLv7Jy6nkTHxhEQzs2sQO1lKBfbtFUQlI
+	 +FaQsKussUDrTXI6bDP/GaBS/xUjtkbd6FPE6IykdLshsXZxLLF+a5lMKrY/EUEkUM
+	 zpw/cI/gSkNYQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C9B39E9611;
+	Thu, 24 Sep 2026 02:50:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923215858.1653-5-yongzhao.derek@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: xps: reject an out of range traffic class
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179021821927.1291983.14069798990944250332.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 02:50:19 +0000
+References: <162DD16F-54C6-444A-9E09-0B8CB3D591F2@doyensec.com>
+In-Reply-To: <162DD16F-54C6-444A-9E09-0B8CB3D591F2@doyensec.com>
+To: Norbert Szetei <norbert@doyensec.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kees@kernel.org,
+ kuniyu@google.com, alexander.duyck@gmail.com, linux-kernel@vger.kernel.org
 
-On Wed, Sep 23, 2026 at 11:58:56PM +0200, Yongzhao Chen wrote:
-> Flag QCA8337 internal PHYs used as CPU links for SmartSpeed suppression.
-> SmartSpeed is the Qualcomm PHY driver downshift feature configured in
-> register 0x14.
+Hello:
 
-As far as i can see, nothing configures register 0x14, so this is not
-very useful.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Please look at other PHYs which support downshift. There is a tunable
-for it. Also, the read_status is expected to return the real speed,
-which often is not in BMSR, but in a vendor register.
+On Mon, 21 Sep 2026 17:03:57 +0200 you wrote:
+> Only the entries below dev->num_tc are valid in dev->tc_to_txq[], and
+> dev->prio_tc_map[] may only name classes below it. netdev_set_num_tc()
+> lowers dev->num_tc without touching either array.
+> 
+> netdev_txq_to_tc() walks all TC_MAX_QUEUE slots and
+> netdev_get_prio_tc_map() returns the entry as it stands, so a leftover
+> entry is handed out as a traffic class >= dev->num_tc. Taking that
+> class from netdev_txq_to_tc(), __netif_set_xps_queue() rejects only a
+> negative one and indexes an XPS map sized for dev->num_tc classes:
+> 
+> [...]
 
-Is there an errata which covers this?
+Here is the summary with links:
+  - [net,v3] net: xps: reject an out of range traffic class
+    https://git.kernel.org/netdev/net/c/4da3b7b8b50f
 
-It would be interesting to know if downshift is broken in general, or
-only when used in switch integrated PHYs.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-What might be possible here it to look at phydev->is_internal, rather
-than add a flag, to differentiate switch internal PHYs and discrete
-PHYs.
 
-	Andrew
