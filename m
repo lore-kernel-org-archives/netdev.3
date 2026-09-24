@@ -1,41 +1,42 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6223346BE;
-	Thu, 24 Sep 2026 07:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE9439CD1B;
+	Thu, 24 Sep 2026 07:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790234665; cv=none; b=mw5+rR9oAh/pWSXY982PSQeOVyPH5jzdOaNsgKq4Rk/Zfi3IOBid+PxYAO1kOxuCTKvDeXlsRM8KHRYrycJYfGwnHoW0IpeBsbSINW1MIFFXb+u6VC5/FIS8asry8tLYjF4Cd1uftA/hyz3APChiHhnXkVEtdLbGToDQdZFGyNQ=
+	t=1790234665; cv=none; b=V3CotQJjJ51W9Lnk37+EnedYYOanabAh6Sx1/3bgymv4UMImCKIjl+dcGqaj1SKDc/RjC3yceZ/QKZEGmEgCRJOdIycJEz9Fn+NTUWAjs2hFfOrbdu8YvkA9ygvj3W9cZNGDL0TPHRH+2XcPT+BW43nfgAHFdwr5cFzgSyiCDF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790234665; c=relaxed/simple;
-	bh=1y3x23f34J6dSnPAWBv03m8McFVIedvOuJSGLlwRbQE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cAvqg8M2e0CORMD665FUckYExCoZLvWtlc1HOtAOuatYkGWEfHnYDFrj3oKAFG6wmBCMF/RtdtJfRgZQMAHbgQN9/sMrYK2pDBGr0nBfkoK2AJHsGRYUwX5QVL8VcOjxDNtZlmh2fV1ds8pMPtgdINubQP2yLozvOQtX3ZmHraI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=BpNLuSlu; arc=none smtp.client-ip=148.251.105.195
+	bh=9V9vHNIqjj/P3V/WD9pUW9DZXjV8gTIAVkCblvj1Xq4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KsayucT/pofLvtXydI1YvWFcxJNFeLq+QyBPikNlQeRATUSy0XlLOP4GovyVQHBWsFRxjyg6DmmpQv8zR9f4m1SQfePbLvKKFbqW5vizrkhCppM2l7Zn4j2ax2j8hApD9qqinLxehc3rKxtOb9AStD6MhjmpiakfGDaE35iFM2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=iUeeeNxG; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="BpNLuSlu"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="iUeeeNxG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1790234653;
-	bh=1y3x23f34J6dSnPAWBv03m8McFVIedvOuJSGLlwRbQE=;
-	h=From:Subject:Date:To:Cc:From;
-	b=BpNLuSlu/iJ5dfrdnB1uOkNGfRZDvhvd00IPSn54rSz/MNJo2+kWnx7XywiAiCyuX
-	 poEEoou0GyVE0SAkxsWxSS+uW0G8zugq6ZmBvqIAWsSXFxJQvz6CtGrQvdv1md3eTv
-	 VJJ8Uu5XRacd1LIrhhJqv8LiRcrVmMOC4xWJM1jZSHbTM79QkFQYxI1c4qJKSOTKcd
-	 HVEsbggL9m7p74SE9HGNDAgaZgshGh9brrTwGCV0ZM5gpP6iKWz6JVs9a3BmCpW9HC
-	 hFp8903hZmGgOv36sV1DtmkjkBXATb/qZXVvToAYk4TRsZdx+yq6Lq77KuFVHjhbBs
-	 s2Q2bvs1ZkRoQ==
+	s=mail; t=1790234654;
+	bh=9V9vHNIqjj/P3V/WD9pUW9DZXjV8gTIAVkCblvj1Xq4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=iUeeeNxGlLxhJrNz6Ckmi6E+lHfIUobG+yTsZBzxrQZ9X7ui2pdlMglCZAwsJCeSa
+	 ZqamKT9HAvUOOwFyFCosYeeQ+MKRaVpKD2lQsHChA4KstkHHN6HK91BMgzA/+eqaaa
+	 RnVXiXOfS9yNv2cj0H069w2XsByFnfTx21qFehHW8Dclew1qeCNsZ1HDGvyQPsnPaK
+	 dsF/eSembWhWj3IBQvb5B1SyXgueVcl2bW+4tbnnv9MKuGSEZWzwHuu2J2hvig9LY/
+	 pZcmQccO2196W/2LyboQEyffS1hyGLimnrtZPJw3hoJ+hB4LMxaZ52GW63C9AC3BsK
+	 mEG71nyujNusA==
 Received: from yukiji.home (unknown [100.64.0.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1CA3217E0074;
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 01F0E17E01D1;
 	Thu, 24 Sep 2026 09:24:13 +0200 (CEST)
 From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Subject: [PATCH net-next v2 0/7] net/stmmac: Add Mediatek MT8189 support
-Date: Thu, 24 Sep 2026 09:23:23 +0200
-Message-Id: <20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9@collabora.com>
+Date: Thu, 24 Sep 2026 09:23:24 +0200
+Subject: [PATCH net-next v2 1/7] dt-bindings: net: mediatek-dwmac: add
+ support for MT8189 SoC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,11 +45,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOTW7CMBCFrxLNuoNiOyEOK+6BWEzsSbGK49Y2A
- RTl7liBbZdP7+9bIHF0nOBQLRB5dsmFqQj5VYG50PTN6GzRIGu5r7taob17MujZOsr8gz5roXv
- sLY2set30rYDS/Y08use2e4KJM078yHB+O5H/buUof+yBEqMJ3rt8qFqpLe+1koMUW/7iUg7xu
- QHOYit8WLp/WGaBNYpuVE3LRIbU0YTrlYYQaVdu4Lyu6wsistfe+AAAAA==
-X-Change-ID: 20260703-dwmac-mediatek-mt8189-9dafe3984951
+Message-Id: <20260924-dwmac-mediatek-mt8189-v2-1-430bd74d5ef9@collabora.com>
+References: <20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9@collabora.com>
+In-Reply-To: <20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9@collabora.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -67,77 +66,164 @@ Cc: kernel@collabora.com, netdev@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, 
  Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790234653; l=3138;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790234653; l=4693;
  i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=1y3x23f34J6dSnPAWBv03m8McFVIedvOuJSGLlwRbQE=;
- b=dc/cU9HL5r6uNwpt2Qd66PMiC15uiDrPEMbq1iDLDwS8j9vlOUPlMa+CSYxibMAx5kX0VBTwt
- ltUELoSJ/qhCfOdGEzwstse+2zQkZc3X6TYNsThAes8GRMOmmKoVRGs
+ bh=9V9vHNIqjj/P3V/WD9pUW9DZXjV8gTIAVkCblvj1Xq4=;
+ b=fGUZW/haDY37KjFlxcP6MBiJCPKTi48kpDtrvwtppr+sq9WcagdmC+gADaBPpSVMtHy8U1rND
+ MR3cKuN5i+SDiXrPB7CuiqLLxyAyf6TYDOQl67cQgtplj9Af+1YvBKe
 X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
  pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-This series adds the Ethernet support for Mediatek MT8189 SoC and its
-variants (MT8371, MT8391). These SoC integrate a Gigabit Ethernet MAC
-with RGMII/RMII/MII interface, with a similar design than previous SoCs
-such MT8188 or MT8195.
+Add new compatible string and clock definitions for the Ethernet MAC
+IP found in MT8189 SoC.
 
-This series is based on net-next tree (sha1: 528de6832b21).
-It has been tested on Mediatek Genio 520-EVK (MT8371) and
-720-EVK(MT8391) boards, which both integrate an Airoha AN8801R Ethernet
-PHY, with hardware enablement series ([1]) and additional devicetrees
-patches for enabling their Ethernet interface.
-It has been also tested on Mediatek Genio 510-EVK (MT8370, variant of
-MT8188) and 1200-EVK (MT8395, variant of MT8195).
+Also, update "mediatek,rx-delay-ps" and "mediatek,tx-delay-ps" property
+description to add MT8189 RX/TX delay stage divider values, as they
+differ from existing supported SoC.
 
-[1]: https://lore.kernel.org/linux-mediatek/20260701-add-mediatek-genio-520-720-evk-v2-0-19d5da4ef984@collabora.com/
-
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 ---
-Changes in v2:
-- Rebased on net-next (sha1: 528de6832b21)
-- Dropped "net: stmmac: mediatek: rename MT2712 and MT8195 variant
-  methods" and "net: stmmac: mediatek: add support for TX deallocation
-   adjustment feature" patches, present in v1 (M. Chevallier)
-- Patch 1:
-  - Removed rmii_internal clock from required clock list (A. Lunn)
-  - Added MT8189 stage delay divider values in "mediatek,rx-delay-ps" and
-    "mediatek,rx-delay-ps" property description (Sashiko)
-  - Updated commit description
-- Added patch 2 to simplify TX/RX delay handling in mt8195_set_delay
-- Added patch 3 to add RX/TX delay stage divider in platform data
-- Patch 4:
-  - Replace MT8195_PERI_ETH_CTRL_BASE by MT8195_PERI_ETH_CTRL_OFFSET to
-    harmonize the variable and definition naming (A. Lunn)
-  - Added Reviewed-By tag
-- Added patch 5 to add the TX Clock phase shift use in
-  RGMII and in 1G speed
-- Patch 6:
-  - Reworded flag and define names to explicit a bit more what the
-    feature does
-  - Updated commit description
-- Patch 7:
-  - Added the new definitions and needed fields in platform data
-  - Updated commit description to add the info about MT8189 RX/TX delay
-    stage divider and maximum values, and remove reference about 
-    stage fine feature 
-- Link to v1: https://lore.kernel.org/r/20260707-dwmac-mediatek-mt8189-v1-0-17f345eaaca3@collabora.com
+ .../devicetree/bindings/net/mediatek-dwmac.yaml    | 87 +++++++++++++++-------
+ 1 file changed, 60 insertions(+), 27 deletions(-)
 
----
-Louis-Alexis Eyraud (7):
-      dt-bindings: net: mediatek-dwmac: add support for MT8189 SoC
-      net: stmmac: mediatek: simplify TX/RX delay handling in mt8195_set_delay
-      net: stmmac: mediatek: add RX/TX delay stage divider in platform data
-      net: stmmac: mediatek: add PERI_ETH_CTRLx register offset in platform data
-      net: stmmac: mediatek: use TX clock phase shift in RGMII mode with 1Gbps speed
-      net: stmmac: mediatek: add support for TX clock output enable feature
-      net: stmmac: mediatek: add support for MT8189 SoC
+diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+index 3aab21b8e8de..6624dff015f0 100644
+--- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+@@ -20,13 +20,11 @@ select:
+         enum:
+           - mediatek,mt2712-gmac
+           - mediatek,mt8188-gmac
++          - mediatek,mt8189-gmac
+           - mediatek,mt8195-gmac
+   required:
+     - compatible
+ 
+-allOf:
+-  - $ref: snps,dwmac.yaml#
+-
+ properties:
+   compatible:
+     oneOf:
+@@ -36,6 +34,7 @@ properties:
+           - const: snps,dwmac-4.20a
+       - items:
+           - enum:
++              - mediatek,mt8189-gmac
+               - mediatek,mt8195-gmac
+           - const: snps,dwmac-5.10a
+       - items:
+@@ -44,26 +43,6 @@ properties:
+           - const: mediatek,mt8195-gmac
+           - const: snps,dwmac-5.10a
+ 
+-  clocks:
+-    minItems: 5
+-    items:
+-      - description: AXI clock
+-      - description: APB clock
+-      - description: MAC Main clock
+-      - description: PTP clock
+-      - description: RMII reference clock provided by MAC
+-      - description: MAC clock gate
+-
+-  clock-names:
+-    minItems: 5
+-    items:
+-      - const: axi
+-      - const: apb
+-      - const: mac_main
+-      - const: ptp_ref
+-      - const: rmii_internal
+-      - const: mac_cg
+-
+   interrupts:
+     maxItems: 1
+ 
+@@ -86,8 +65,10 @@ properties:
+       or will round down. Range 0~31*170.
+       For MT2712 RMII/MII interface, Allowed value need to be a multiple of 550,
+       or will round down. Range 0~31*550.
+-      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a multiple of 290,
+-      or will round down. Range 0~31*290.
++      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a
++      multiple of 290, or will round down. Range 0~31*290.
++      For MT8189 RGMII/RMII/MII interface, Allowed value need to
++      be a multiple of 180, or will round down. Range 0~31*180.
+ 
+   mediatek,rx-delay-ps:
+     description:
+@@ -96,8 +77,10 @@ properties:
+       or will round down. Range 0~31*170.
+       For MT2712 RMII/MII interface, Allowed value need to be a multiple of 550,
+       or will round down. Range 0~31*550.
+-      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a multiple
+-      of 290, or will round down. Range 0~31*290.
++      For MT8188/MT8195 RGMII/RMII/MII interface, Allowed value need to be a
++      multiple of 290, or will round down. Range 0~31*290.
++      For MT8189 RGMII/RMII/MII interface, Allowed value need to
++      be a multiple of 180, or will round down. Range 0~31*180.
+ 
+   mediatek,rmii-rxc:
+     type: boolean
+@@ -147,6 +130,56 @@ required:
+   - phy-mode
+   - mediatek,pericfg
+ 
++allOf:
++  - $ref: snps,dwmac.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - mediatek,mt2712-gmac
++              - mediatek,mt8188-gmac
++              - mediatek,mt8195-gmac
++    then:
++      properties:
++        clocks:
++          minItems: 5
++          items:
++            - description: AXI clock
++            - description: APB clock
++            - description: MAC Main clock
++            - description: PTP clock
++            - description: RMII reference clock provided by MAC
++            - description: MAC clock gate
++
++        clock-names:
++          minItems: 5
++          items:
++            - const: axi
++            - const: apb
++            - const: mac_main
++            - const: ptp_ref
++            - const: rmii_internal
++            - const: mac_cg
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - mediatek,mt8189-gmac
++    then:
++      properties:
++        clocks:
++          items:
++            - description: MAC Main clock
++            - description: PTP clock
++
++        clock-names:
++          items:
++            - const: mac_main
++            - const: ptp_ref
++
+ unevaluatedProperties: false
+ 
+ examples:
 
- .../devicetree/bindings/net/mediatek-dwmac.yaml    |  87 ++++++---
- .../net/ethernet/stmicro/stmmac/dwmac-mediatek.c   | 211 ++++++++++++++++-----
- 2 files changed, 224 insertions(+), 74 deletions(-)
----
-base-commit: 528de6832b2194ae0b1d62b0925e0ac6cad1087c
-change-id: 20260703-dwmac-mediatek-mt8189-9dafe3984951
-
-Best regards,
 -- 
-Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+2.55.0
 
