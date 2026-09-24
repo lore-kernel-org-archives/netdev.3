@@ -1,61 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A0747ACD6;
-	Thu, 24 Sep 2026 15:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2177D49EC67
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790262630; cv=none; b=Wx2EFj2uJUJ8N11dnQXo5J1uXVx9w4KlNmxdVN0ldEM9RnbT3vBahRqtNT3tJVEDoWPxibVdSwrNQDOJow7riLp/e9TORQAgrXjOlh9+Z+G8UgPdoS/fFKmk6AKYDAcbFnRV0My5QZlLj6C/0XOOrHMTd08I7MOGj3cZhFPePNs=
+	t=1790262721; cv=none; b=uI0GUdxw3277ZPhX4UZ05DUevziQat24gxXrJ1WtWjncCb+uM7saH+REZHGoMImq6MCnGtiMO3nXPVLP2rzeGQyb8N1HGpS2tqNOU2DdRdYC9Rva3lMJB2KKMpsDbFpzbzr2TiZbGrsixumcgiIoyXNDrTA+ppTlq3Rx4OnpgRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790262630; c=relaxed/simple;
-	bh=kmECzyA9SwcKafrelKws3j36NEpt5Rd0Eh17TaupPNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zdl7i26HxAbgmvWKbvQKb+B5ei8vs//4bx+v4hX34iNJpJEZ455NPdbj0QxmGzyon+WAJgSBhnmBelva67y3Q84eE3j56o96Rd/DCEQzu3hJ0ybCYv4awhAyKyPeWMlqmJnjhwPTUrmjrbod4/uW/OBGTiRYc9Y5zTKjRC+B6bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2BQXmHa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790262721; c=relaxed/simple;
+	bh=ZykuZkJ4JL+Et9AOMagm3MkYCr3EzzexzQ4kmYPzF2Q=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=svfTgR7uKf2eyX3fjAEvq6SqAnptlQEjfcN5HSZDbdi9T7iiAIRTu1cwicaqkk9cXf+UpT4Ynr5BSym4uJDmlE1LGaN7jABhBFlmGfhMZG5B3j7BPd/Z6i3LB/w8hvuFfu2ZVY3LXu/mHQT8pEQgXPROvj8/bFZY1PHB285Uhk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WsVmNySU; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2BQXmHa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B1D1F000FF;
-	Thu, 24 Sep 2026 15:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790262628;
-	bh=D6OG3n4N0mKuX99K9C3N8BtDO4m4BTi3PpA2GBpxPpo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=j2BQXmHaEwaJcw67eADj2vKL+NHteC9J5/gXDYVyCwm5fZWWcvEhMneMSw3HrbvjQ
-	 mKUp0R+rHfq5mJWXNZOT6iHZ5jbxXS8M4/NKFHPgLdNA70jThXutW2NKUgDeUaOPPb
-	 QjQis2nwv44GlIFt/OPZZORpFpqFi96+0zrN0BStEjr9hk5CdEKh9mq+7LwIpr7tCY
-	 Dhl74fkJzMnn2w8ncc/zw7/5/m0S/FykEakwLd+9Lq62H+mbvYb9woM8lbc2JmcQ+l
-	 YsiAYepAjjGHiXRvEIwKO7UKhLZ5VYux+VXjaMPh9vMxl3VKmB0knb7Ht8dXCXSsuV
-	 l4uLO4fQ/LoBA==
-Date: Thu, 24 Sep 2026 08:10:27 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>
-Cc: quanyeyang@proton.me, Eric Dumazet <edumazet@google.com>, Neal Cardwell
- <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, "David S.
- Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
- Geliang Tang <geliang@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/2] tcp: annotate lockless access to
- sk->sk_err
-Message-ID: <20260924081027.28b39617@kernel.org>
-In-Reply-To: <20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
-References: <20260917-mptcp-sk-err-net-v4-0-1f04f52f2561@proton.me>
-	<20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WsVmNySU"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id EFB104E4105C;
+	Thu, 24 Sep 2026 15:11:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id ADB6C60341;
+	Thu, 24 Sep 2026 15:11:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3CA5F103293D8;
+	Thu, 24 Sep 2026 17:11:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790262710; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=eL6oLqTGeMgwRc+mGLllj+d8cQJlbDrWIsv/RTygnkc=;
+	b=WsVmNySUi/GaEvuAJLoHJce4dzMcNEzJ+YZ+jBptYPB3p9G0ORgDPl2fGtFTSmpt4bKhr9
+	QWYLg49IqpaynIRLGbbkKqhssfezt2yJnxtcq3DLwgIcOBkYO/cXxebSPKv+m6VJnE+D6W
+	iVKKz15yQAyEoHT3pRD2MqdftLuzPWqIePkKR04THJIVYhNT5R05aCIWQHRB1YSC4BpYyC
+	21/uUfKyUrZkNGANEg+Ci+CzUDnOT0M7FoEJfM2QQLGFW7U01pzG1LzM1yG9BE9PxF5cRN
+	pO3zr2HZZwrcN//jqo3XjqrzqIPfVbTMmYllSJ8SNwy+7g5LkVDoFiCAuujfFw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 17:11:43 +0200
+Message-Id: <DLNN5W7M505X.TWFOK1HD0CQL@bootlin.com>
+Subject: Re: [PATCH net 1/3] net: macb: never give hardware a NULL RX buffer
+Cc: <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <nicolas.ferre@microchip.com>,
+ <sean.anderson@linux.dev>, <atenart@kernel.org>, <linux@armlinux.org.uk>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <nb@tipi-net.de>,
+ <vladimir.kondratiev@mobileye.com>, <gregory.clement@bootlin.com>,
+ <tawfik.bayouk@mobileye.com>, <thomas.petazzoni@bootlin.com>,
+ <maxime.chevallier@bootlin.com>, <stable@vger.kernel.org>
+To: <netdev-bot+sashiko@kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260918-macb-close-v1-1-05e32ce98813@bootlin.com>
+ <179010942002.2160803.8691011751847108495@kernel.org>
+In-Reply-To: <179010942002.2160803.8691011751847108495@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 17 Sep 2026 06:41:22 -0700 Quanye Yang via B4 Relay wrote:
-> -			if (sk->sk_err) {
-> +			if (READ_ONCE(sk->sk_err)) {
->  				ret = sock_error(sk);
+Hello netdev-bot+sashiko,
 
-This sort of construct needs to be de-sillified in both patches.
--- 
-pw-bot: cr
+On Tue Sep 22, 2026 at 10:37 PM CEST,  wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] gem_init_rx_ring()
+>   (drivers/net/ethernet/cadence/macb_main.c:2793) now sets=E2=80=A6
+> - [High] gem_init_rx_ring() now publishes MACB_BIT(RX_USED) on every RX
+>   descriptor of a queue, resets queue->rx_tail/rx_prepared_head and then=
+=E2=80=A6
+>
+> --
+>
+> net: macb: never give hardware a NULL RX buffer
+>
+> This makes gem_init_rx_ring() set the RX_USED bit on every RX descriptor
+> before calling gem_rx_refill(), so that a refill that fails part way
+> through does not leave descriptors owned by hardware while their skb
+> pointers are still NULL.  The change affects macb_open(), macb_resume(),
+> the HRESP error recovery path and set_ringparam().
+>
+>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethe=
+rnet/cadence/macb_main.c
+>> index b8234ac4b602..751fa9e68099 100644
+>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>> @@ -2785,9 +2785,14 @@ static int macb_alloc(struct macb *bp)
+>> =20
+>>  static void gem_init_rx_ring(struct macb_queue *queue)
+>>  {
+>> +	unsigned int i;
+>> +
+>>  	queue->rx_tail =3D 0;
+>>  	queue->rx_prepared_head =3D 0;
+>> =20
+>> +	for (i =3D 0; i < queue->bp->rx_ring_size; i++)
+>> +		macb_rx_desc(queue, i)->addr |=3D MACB_BIT(RX_USED);
+>> +
+>
+> [Severity: High]
+>
+> Does RX_USED now carry two different meanings that the RX consume path
+> cannot tell apart?
+>
+> gem_rx() uses RX_USED at queue->rx_tail as the only indication that
+> hardware delivered a frame, and it has no bound against
+> queue->rx_prepared_head:
+
+Yes that is correct! We can fix that using our cursors
+rx_tail/rx_prepared_head that tell us which descriptors were
+reallocated properly.
+
+IE in gem_rx() we stop once `queue->rx_tail =3D=3D queue->rx_prepared_head`=
+.
+
+[...]
+
+> [Severity: High]
+>
+> Is any exclusion against a running RX poll needed here now that the whole
+> ring is published as RX_USED?
+>
+> macb_hresp_error_task() runs from system_bh_wq, masks queue interrupts,
+> clears RE/TE, and then calls mog_init_rings() with no napi_disable(), no
+> napi_synchronize() and no lock:
+
+This is a known race, but we won't fix it in this series. And in
+particular it is completely unrelated to this first patch.
+
+It is semi-related to the last patch that puts in place the mechanisms
+that could be reused to fix macb_hresp_error_task(). But again, not
+here, not today.
+
+[...]
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
