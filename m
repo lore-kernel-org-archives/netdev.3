@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C443B14D7;
-	Thu, 24 Sep 2026 14:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9737D3C3F52;
+	Thu, 24 Sep 2026 14:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790260175; cv=none; b=joiE6h4ND8WWJfOQMvZMdKLCPwwc2c9WB8NYhj056tWGLxmdcnkq6xbsInhmsavzgooeoVY9Puv7NT+fqGAjzMNAChlMhHwZv+kJWnG9FB6s8ztZmZQXnweVCSeOtB6Hf8Z3LP4hcAKf6cB1/WygqAYBoOLl6kuJ2/4z2pU4mMo=
+	t=1790260180; cv=none; b=NN8kmaj9u6JJBNDaU5mpEb/L0kdFwLC11IQncrAq5IDu29nk+wTZO93Q1k3yc3UiyeVdWUhbNMQAKGrKauLRSTaSjc/Vk+d8sSQ5xXL6NRkfYRBQDUVnRLbi1d6J1MtgG95BXSxxmXinDlM01yoM5bF/beuY0vtXmB9/oQM2+vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790260175; c=relaxed/simple;
-	bh=54vjJUtCjzRcpTcb0l110tu1mHO202bvaS3l6nvPEPc=;
+	s=arc-20240116; t=1790260180; c=relaxed/simple;
+	bh=Alsg20ulwtmsCK0jhUo9W/eRC7ChTneIhhQfJMr9qwk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Xe8JdV9Y3s23oGVRHtA5I6VzzCYJeyflpH12NI/1eagoDwmW2kUiVB5JYtxdecel+rwKh4Rd7buDay+h2WRJuarEUDJbA4aTgxX+Xr0RuGEhk2EvcjF0Eas6Htk7XtV+sn6DaIH3HccK7P/tCetrQhykMu7lv9izfUErypfyJJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPgs5FSY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=dtNgd+hE/hl30khazzp9XEW37ROebARjxGF+NTp07mYEnlKIFkf6AbsC4HbHaInoNtDTNKjjAIHU46ZyVekdJRTnnVqhgmto53Vzu8ZNHVOgCjBTJn1DmIzpoyDZNRc7luegMTeLoDLfX3H64UCLTcNC8skE7gWJ/yfIIoJPOxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqDw/h6h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPgs5FSY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F881F0089B;
-	Thu, 24 Sep 2026 14:29:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqDw/h6h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17EC1F00898;
+	Thu, 24 Sep 2026 14:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790260168;
-	bh=eBIwOeloVjzIJs/J4otWj36CmSvvToGwciluH7wAY4Q=;
+	s=k20260515; t=1790260171;
+	bh=dtaH2juMcDUMlmsf+W76NMjGYSP66ee5OVypnL95UF8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iPgs5FSYP1dQOlNyYRGrKHye4s1cJzHgbQtgO8rT7pwktOqtnZOhcSKKgGB5YnQpQ
-	 +FnX9tmM/UYJ3/tCdtq3ay+0B6KID9iRcAK2QG/et0HrApGPduWxl1sAXpxSqDhjgD
-	 96gDEqDYY6ce6Cd9wkeeOioL8RkrOmXum2LyryJIa3XMu++ebi1DD4IQe/XSzni1rT
-	 cww6yUfemyqZpz1k8+YCFmBRtAfPCl8e/AW5/7PYXi6tebH8wIfq0ucbxM/T9F5/Fy
-	 Uh7EHv6Lr/BU7d9VEUPq0+VrDeL7cKQN1NRDCbRiuXuOzpIOzfy2ZqifVQYvtzGYCW
-	 1DdAKQr07fPEQ==
-Subject: Re: [PATCH net-next 4/9] ptp: ocp: forget a CPLD i2c adapter number
- that no longer resolves
+	b=XqDw/h6hGz7+CVcou53M9G0uOLCwkoTBkVMNGBXHTG/wQ+EoSBgI34cEn9Bk1/q26
+	 Zw1z9R7bQLHt3oaNSLMRHTsF8JMcR23fOKsBXXNtASY/OKsTbLLXZg5o0KKdbtwLk2
+	 Wp2f9SP77e+s2dIEmOr6IwjtSFiheM5F4Dvtxz1tTgtymce7q5dZC80BpXBI+CIb1b
+	 NbTMJ7ecEI4Gqz0U8KzH77ucCbvCUeqds7CSjA06jmFXwySeY7/M1k3DWfpdHQl10E
+	 2uO6OtNIr+joZi9kskaumCT7fBjW5lz98VdTFcAJkoG42C2HhE42+kuEpRzNveW2Bv
+	 b2wDG9vtCL5XQ==
+Subject: Re: [PATCH net-next 6/9] ptp: ocp: report fw.cpld with an empty value
+ until the USERCODE is read
 From: netdev-bot+sashiko@kernel.org
 To: maimon.sagi@gmail.com
 Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
@@ -36,11 +36,11 @@ Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
  arkadiusz.kubalewski@intel.com, corbet@lwn.net, rdunlap@infradead.org,
  skhan@linuxfoundation.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Thu, 24 Sep 2026 14:29:27 +0000
-Message-ID: <179026016715.2160803.18414234331512445641@kernel.org>
-In-Reply-To: <20260922142829.57740-5-maimon.sagi@gmail.com>
-References: <20260922142829.57740-5-maimon.sagi@gmail.com>
-X-sashiko-severity: High
+Date: Thu, 24 Sep 2026 14:29:30 +0000
+Message-ID: <179026017024.2160803.16394646149517774385@kernel.org>
+In-Reply-To: <20260922142829.57740-7-maimon.sagi@gmail.com>
+References: <20260922142829.57740-7-maimon.sagi@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,252 +61,100 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The re-arm of the one-shot CPLD identification added to
-  adva_x1_cache_i2c_adap() (drivers/ptp/ptp_ocp.c:4618-4621) is dead…
-- [High] adva_x1_bus_claim() calls the wildcard form
-  adva_x1_forget_i2c_adap(bp, -1) on the i2c_get_adapter() failure path…
-- [Medium] adva_x1_cache_i2c_adap() now zeroes bp->cpld_id_attempts
-  unconditionally (drivers/ptp/ptp_ocp.c:4620), which silently defeats…
-- [Medium] adva_x1_cache_i2c_adap() now performs an unconditional,
-  uninterruptible blocking acquisition of bp->cpld_lock -…
-- [Low] The patch inserts adva_x1_forget_i2c_adap() (and its own
-  kerneldoc-style comment) between the pre-existing block comment that…
+- [Medium] After any CPLD flash that reaches the erase step, the fw.cpld
+  running version is never published again (and, at this commit, cpld.id…
 
 --
 
-ptp: ocp: forget a CPLD i2c adapter number that no longer resolves
+ptp: ocp: report fw.cpld with an empty value until the USERCODE is read
 
-This adds adva_x1_forget_i2c_adap() and calls it both when i2c_get_adapter()
-fails for the cached number and when the parent check rejects the adapter.
-It also resets bp->cpld_id_tried and bp->cpld_id_attempts in
-adva_x1_cache_i2c_adap() after a number is cached.
+Instead of publishing the literal string "unknown" for the fw.cpld running
+version before the CPLD USERCODE has been read, the driver now passes an
+empty value so the component name is still registered with devlink while no
+version attribute is emitted.
 
 > diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index feb61355078a2..45313143b6f76 100644
+> index e10f6b5149c93..4ce86df6e1968 100644
 > --- a/drivers/ptp/ptp_ocp.c
 > +++ b/drivers/ptp/ptp_ocp.c
-> @@ -4574,6 +4574,19 @@ static int adva_x1_i2c_adap_match(struct device *dev, const void *data)
->   * both the notifier and a single lookup here can miss the same adapter.
->   * Retrying costs a short klist walk per tick until one of them succeeds.
->   */
-> +/*
-> + * Forget the cached adapter number so the next sweep resolves it again.
-> + * @nr < 0 forgets whatever is cached; otherwise only that number, so a
-> + * caller that raced the notifier cannot clear a newer one.
-> + */
-> +static void adva_x1_forget_i2c_adap(struct ptp_ocp *bp, int nr)
-> +{
-> +	scoped_guard(spinlock, &bp->cpld_adap_lock) {
-> +		if (nr < 0 || bp->cpld_i2c_adap_nr == nr)
-> +			bp->cpld_i2c_adap_nr = -1;
-> +	}
-> +}
-> +
+> @@ -2264,15 +2264,20 @@ ptp_ocp_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+>  		/* The flashable component.  Naming it here is what lets
+>  		 * "devlink dev flash ... component fw.cpld" through, as the
+>  		 * core matches the name against the versions reported here,
+> -		 * so it is reported for every board that has the part and not
+> +		 * so it is named for every board that has the part and not
+>  		 * only once its USERCODE has been read: a part left holding a
+>  		 * bad image answers neither, and gating the component on the
+>  		 * read would make that state unrecoverable.
+> +		 *
+> +		 * An empty value still registers the name with the core -
+> +		 * devlink_info_version_put() runs its version_cb before the
+> +		 * empty-value early-out - while emitting no version attribute,
+> +		 * so nothing is published until the USERCODE has been read.
+>  		 */
+>  		if (smp_load_acquire(&bp->cpld_usercode_ok))
+>  			sprintf(buf, "0x%08x", READ_ONCE(bp->cpld_usercode));
+>  		else
+> -			strscpy(buf, "unknown", sizeof(buf));
+> +			buf[0] = '\0';
 
-[Severity: Low]
+[Severity: Medium]
+The comment says "nothing is published until the USERCODE has been read".
+After a flash, can the USERCODE ever be read again?
 
-Was the placement of the new helper intended here?  The pre-existing block
-comment that ends with "Retrying costs a short klist walk per tick until one
-of them succeeds." describes adva_x1_cache_i2c_adap(), but it now sits
-directly above adva_x1_forget_i2c_adap(), which does not walk any klist and
-is called from adva_x1_bus_claim() rather than from the worker tick.
+adva_x1_cpld_flash() invalidates the cached identity before erasing:
 
-adva_x1_cache_i2c_adap() is left with no header comment at all.  Would moving
-the helper (with its own comment) above that block, or below
-adva_x1_cache_i2c_adap(), keep each comment attached to the function it
-describes?
+	WRITE_ONCE(bp->cpld_id, 0);
+	WRITE_ONCE(bp->cpld_usercode_ok, false);
+	WRITE_ONCE(bp->cpld_id_tried, false);
+	bp->cpld_id_attempts = 0;
 
->  static void adva_x1_cache_i2c_adap(struct ptp_ocp *bp)
->  {
->  	struct device *child;
-> @@ -4598,6 +4611,15 @@ static void adva_x1_cache_i2c_adap(struct ptp_ocp *bp)
->  			bp->cpld_i2c_adap_nr = i2c_verify_adapter(child)->nr;
->  	}
->  
-> +	/* A different adapter may answer differently, so let the one-shot
-> +	 * identification run again rather than leaving cpld.id absent for
-> +	 * the rest of the binding.
-> +	 */
-> +	scoped_guard(mutex, &bp->cpld_lock) {
-> +		bp->cpld_id_tried = false;
-> +		bp->cpld_id_attempts = 0;
-> +	}
-> +
-
-[Severity: High]
-
-Can this re-arm ever clear a flag that was actually set?
-
-adva_x1_cache_i2c_adap() has a single caller, ptp_ocp_cpld_work(), and that
-worker only re-queues itself while the flag is clear:
-
-ptp_ocp_cpld_work() {
-	adva_x1_cache_i2c_adap(bp);
-	if (READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
-		adva_x1_cpld_read_id(bp);
+but the only thing that re-reads it is ptp_ocp_cpld_work(), and that worker
+re-arms itself only while the one-shot has not settled:
 
 	if (!READ_ONCE(bp->cpld_id_tried))
 		queue_delayed_work(system_power_efficient_wq, &bp->cpld_work,
 				   HZ);
-}
 
-The only writer that sets it is adva_x1_cpld_read_id(), which is itself only
-called from that worker:
+adva_x1_cpld_read_id() sets cpld_id_tried on success, so one second after
+probe there is no pending cpld_work item left, and clearing the flag in the
+flash path has nothing to wake.  The only other queue site for bp->cpld_work
+is ptp_ocp_probe(), and no exit path of adva_x1_cpld_flash() queues it.
 
-	if (!ret || ++bp->cpld_id_attempts >= CPLD_ID_MAX_ATTEMPTS)
-		bp->cpld_id_tried = true;
+With no further read, smp_store_release(&bp->cpld_usercode_ok, true) in
+adva_x1_cpld_read_id() never runs again, so ptp_ocp_devlink_info_get() takes
+the new else branch forever, and devlink_info_version_put() drops it:
 
-So once cpld_id_tried is true the worker is never queued again, and every
-time the new scoped_guard runs, cpld_id_tried is already false.
+net/devlink/dev.c:devlink_info_version_put() {
+	if (req->version_cb)
+		req->version_cb(version_name, version_type,
+				req->version_cb_priv);
 
-The commit message says "leaving cpld_id_tried set kept cpld.id absent for
-the rest of the binding".  In that state - identification gave up and a
-different adapter shows up afterwards - ptp_ocp_i2c_notifier_call() publishes
-the new number:
-
-		if (bp->i2c_ctrl && adap->dev.parent == &bp->i2c_ctrl->dev) {
-			scoped_guard(spinlock, &bp->cpld_adap_lock)
-				bp->cpld_i2c_adap_nr = adap->nr;
-		}
-
-but it neither clears cpld_id_tried/cpld_id_attempts nor queues cpld_work,
-and the only other queue_delayed_work(&bp->cpld_work) is the one-time call in
-probe.  Does cpld.id therefore still stay 0 for the rest of the binding,
-leaving the reset here unreachable for the case it is meant to fix?
-
-[Severity: Medium]
-
-Does zeroing bp->cpld_id_attempts here remove the CPLD_ID_MAX_ATTEMPTS bound
-enforced in adva_x1_cpld_read_id()?
-
-The reset is unconditional and sits outside the spinlock section that caches
-a number, so it also fires when the locked re-test cached nothing (because
-the notifier published a number meanwhile), and it never compares the newly
-cached number with the one identification already failed on.  The comment
-says "A different adapter may answer differently", but an identical re-cache
-wipes the budget too.
-
-Combined with the new forget on !adap in adva_x1_bus_claim(), can this repeat
-per tick?  i2c_del_adapter() clears the idr entry before it unregisters the
-device:
-
-drivers/i2c/i2c-core-base.c:i2c_del_adapter() {
-	mutex_lock(&core_lock);
-	found = idr_find(&i2c_adapter_idr, adap->nr);
-	if (found == adap)
-		idr_replace(&i2c_adapter_idr, NULL, adap->nr);
-	mutex_unlock(&core_lock);
+	if (!req->msg || !*version_value)
+		return 0;
 	...
-	device_unregister(&adap->dev);
 }
 
-In that window i2c_get_adapter() returns NULL, so the claim forgets the
-number, while device_find_child(&bp->i2c_ctrl->dev, ...) still finds the
-adapter child, so the next tick re-caches it and resets the counter to 0.
-Each of those ticks performs another bus claim with adva_x1_mblaze_acquire()
-polling the grant with the i2c root adapter lock held, and cpld_id_tried can
-never latch.
+Does this mean fw.cpld is silently missing from every subsequent
+"devlink dev info" after a successful flash, recoverable only by unbind and
+rebind?  At this commit cpld.id is dropped the same way, since
+adva_x1_cpld_flash() also clears bp->cpld_id.
 
-If the retry budget is meant to be dropped here, could the changelog say so,
-and could the struct field comment describing cpld_id_tried as a "one-shot ID
-read finished, successfully or not" be updated to match?
+For background: before the read was moved off the always-re-armed 1 Hz
+ptp_ocp_sync_work(), clearing cpld_id_tried did cause a re-read on the next
+tick; the commit that made the read a one-shot did not add a re-arm on the
+flash path.  Checking the end of the series (5b9611f), adva_x1_cpld_flash()
+still clears cpld_usercode_ok and cpld_id_tried and cpld_work is still
+queued only from probe and from the worker itself, so the missing fw.cpld
+version persists there; the cpld.id half is addressed by the later commit
+"ptp: ocp: drop only the USERCODE when flashing, and drop it before erasing",
+which stops clearing cpld_id.
 
-[Severity: Medium]
+Would queueing bp->cpld_work from the flash path close this?
 
-Should the worker block uninterruptibly on cpld_lock here?  The rest of the
-driver avoids exactly that on this path:
-
-adva_x1_cpld_read_id() {
-	if (!mutex_trylock(&bp->cpld_lock))
-		return -EBUSY;
-
-cpld_status_show() {
-	/* A CPLD operation can hold cpld_lock a long time; stay killable. */
-	ret = mutex_lock_interruptible(&bp->cpld_lock);
-
-adva_x1_cpld_flash() holds cpld_lock across the whole programming sequence -
-a config-sector erase alone waits up to CPLD_ERASE_MS and the page loop can
-write CPLD_MAX_IMAGE_SZ / CPLD_PAGE_SIZE pages, each with its own wait - so
-can the worker sleep here for tens of seconds or more?
-
-Two knock-on effects: ptp_ocp_remove() does
-cancel_delayed_work_sync(&bp->cpld_work) and inherits that wait, and the
-child reference from device_find_child() is still held across the new guard
-because put_device(child) only runs after it, so
-i2c_del_adapter()'s wait_for_completion(&adap->dev_released) waits for the
-same period.
-
-Since only i2c_verify_adapter(child)->nr is used, and that happens inside the
-earlier spinlock block, could put_device(child) move ahead of this section,
-and could the acquisition follow the trylock pattern the worker already uses?
-
->  	put_device(child);
->  }
->  
-> @@ -4614,8 +4636,14 @@ static int adva_x1_bus_claim(struct ptp_ocp *bp)
->  	lockdep_assert_held(&bp->cpld_lock);
->  
->  	adap = i2c_get_adapter(READ_ONCE(bp->cpld_i2c_adap_nr));
-> -	if (!adap)
-> +	if (!adap) {
-> +		/* The adapter behind the cached number is gone.  Forget it,
-> +		 * or adva_x1_cache_i2c_adap() keeps bailing out on its first
-> +		 * test and never resolves the adapter again.
-> +		 */
-> +		adva_x1_forget_i2c_adap(bp, -1);
->  		return -ENODEV;
-> +	}
-
-[Severity: High]
-
-Can the wildcard form here discard a number the notifier just published?
-
-The helper's own comment says the nr >= 0 form exists so that "a caller that
-raced the notifier cannot clear a newer one", but this call site passes -1,
-which forgets whatever is cached.  The number is sampled with READ_ONCE() and
-i2c_get_adapter() then sleeps on the i2c core_lock, so the decision to clear
-is based on a value read outside the critical section:
-
-CPU0 adva_x1_bus_claim()
-	adap = i2c_get_adapter(READ_ONCE(bp->cpld_i2c_adap_nr));  /* sleeps */
-
-CPU1 ptp_ocp_i2c_notifier_call(), BUS_NOTIFY_ADD_DEVICE
-		if (bp->i2c_ctrl && adap->dev.parent == &bp->i2c_ctrl->dev) {
-			scoped_guard(spinlock, &bp->cpld_adap_lock)
-				bp->cpld_i2c_adap_nr = adap->nr;
-		}
-
-CPU0 resumes with !adap
-		adva_x1_forget_i2c_adap(bp, -1);   /* nr = -1 again */
-
-The notifier only takes cpld_adap_lock, so cpld_lock does not serialise it
-against the claim path.  The common case looks like the sampled value already
-being -1: cpld_status_show() or adva_x1_cpld_flash() then calls
-i2c_get_adapter(-1), gets NULL, and clears whatever was published meanwhile.
-
-Recovery only exists while ptp_ocp_cpld_work() is still re-queued.  Once
-cpld_id_tried is set the worker stops, the notifier will not re-announce an
-already registered adapter, and cpld_i2c_adap_nr stays -1, so later CPLD
-accesses return -ENODEV - the failure mode this commit is closing.
-
-Would passing the number that was actually sampled, and skipping the call
-when that sample was already negative, avoid this?
-
->  
->  	/* The number is freed before the notifier clears it, so it can
->  	 * already be another adapter's.  Check this is still ours, and drop
-> @@ -4623,10 +4651,7 @@ static int adva_x1_bus_claim(struct ptp_ocp *bp)
->  	 * way, where forgetting it lets the worker look the adapter up again.
->  	 */
->  	if (!bp->i2c_ctrl || adap->dev.parent != &bp->i2c_ctrl->dev) {
-> -		scoped_guard(spinlock, &bp->cpld_adap_lock) {
-> -			if (bp->cpld_i2c_adap_nr == adap->nr)
-> -				bp->cpld_i2c_adap_nr = -1;
-> -		}
-> +		adva_x1_forget_i2c_adap(bp, adap->nr);
->  		i2c_put_adapter(adap);
->  		return -ENODEV;
->  	}
+>  		err = devlink_info_version_running_put_ext(req, "fw.cpld", buf,
+>  							   ver_type);
+>  		if (err)
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922142829.57740-1-maimon.sagi%40gmail.com
