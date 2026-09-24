@@ -1,175 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EF84A440D;
-	Thu, 24 Sep 2026 15:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0C74A64EA
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 15:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790265297; cv=none; b=Dd4MRnPjj4TfhJx5XEM8zaO8gliRbffrfWnaneeso5wrvjy5fFJYIilr9MRoFMt5eNI10rwoe/dyIxN0GCP1nwLpBk2D5Gk+2Aw6nInBPxJ8AeU9Fj5G5upqk2YHXSKwOo6ICxEbvukkErr1MBBCHSzE21nHSvd8zVEhG49BWok=
+	t=1790265388; cv=none; b=R6yA20YG+y4phcJ+mwARpHY4eg675gDb01DQRpNXKZ4Gaj9TtrpsnkAnaVO5dTby7weQNvyUll8rtlP/I0MzSIxpF/203lio6RBlO5jKemtPrpMDgmnGkIizxJ8rZwSnmap+9Vz2V1I7P0dtHJ0dweAkCx4+H8gMIaQPToYEf54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790265297; c=relaxed/simple;
-	bh=mxG2FiqPOgRdRCdKCGuvJclsYsO9fnNhbA4y7yX0aVo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UEwn2aWVcK5eMPtuxb0YSlaE+si3JSUDZL/+W/ab7rbuGxyJXLFPauTFMEyWMtDvB60QJJFBm6p+Iy4nW7dnk7BkfWteZDZ7ytmudpn6uMULgmIp1IwyJp8isJISRg7uVVWJ00yCMURZ4bGKFz/SfTbEQFx84oZs9ls350JeDWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NhoWW0jq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790265388; c=relaxed/simple;
+	bh=SzpsF1R44Ubodi/lWdByRj3ussGr5imnuwlywY4gVK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rwptWeOe/FwNI0Mh0gSs4CQu6Rjlxhy6WaP1FJ/Cr5rwJPsF6z/KHBFpbO/IrjCfo6Nd8onT616vMu7xpBiWe8GJg7/dmakCQEgE6TjpqfVJBerkbhCt/DnnUWY3fhSlmuaXvcb3Yjm3J+WJ8J326STaWlUNDlX4pB57gvgUQCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NfBMH7yh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UshE4h47; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NhoWW0jq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F2E1F000FF;
-	Thu, 24 Sep 2026 15:54:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790265295;
-	bh=WxRwkjeergipzjy0uMRZTXDUDSUf8XVConGIHIBupxg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NhoWW0jqpcicBVv7R3YtiKTCUY39VGoip6bAu1u9LFpXQ+i9ONXROPSF8AOrpvsBN
-	 IJ+e/ZXYgVIV/lStApAJ5MMYdRjGZ+JO2FMlKwqz7C/sZgYXMhhDbxER+yUemzZ1b3
-	 0efAot6jZUrQWsEiyq4t3bWP37QMzXgD/JC9kt+Wa0MUF64R4tTot2L9NwvuVku84M
-	 h30T07LQ5NkGVAGbYD1kQCuiAXNPEgJD/d7iBBLcXkxq3H4L2RqW1IlRcGcgOboyDI
-	 rvKAIFzyl7f0JmCtbOdAgL/EbK0kKTy4dSgaY6YcIOCJtzaj7ODb2iYZAZAnwXhO/V
-	 ozX0HRd1x8lng==
-Subject:
- Re: [PATCH net v2] net: e1000: fix warning in iounmap on probe failure
-From: netdev-bot+sashiko@kernel.org
-To: nsvatoslav515@gmail.com
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, ffainelli@freebox.fr, auke-jan.h.kok@intel.com,
- jgarzik@redhat.com, joe@perches.com, aleksandr.loktionov@intel.com,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
-Date: Thu, 24 Sep 2026 15:54:54 +0000
-Message-ID: <179026529412.2160803.2090347947027060894@kernel.org>
-In-Reply-To: <20260922155238.67445-1-nsvatoslav515@gmail.com>
-References: <20260922155238.67445-1-nsvatoslav515@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NfBMH7yh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UshE4h47"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790265385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BsIicbnwmHZxyMI07vJAKZ5x+YHru/pqorNr3bVuoUs=;
+	b=NfBMH7yh+OQawnmR1xv/rmEYxHv33zlbk8fsr7uz2Ck8uqlhrUgr0dd5HMjNk+dYqZ5dhl
+	HRc9AF3suWhnPq5A65LyH2iWnm7dHk9AiSRAOiNG8g5KAAe5HEb3ZmyPArxK7vXMnbF1n/
+	u0e7MT/CaLmbirTkF6v86G6hf3E+uXY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-pblDVA2OOESEyWSZUmoTNA-1; Thu, 24 Sep 2026 11:56:23 -0400
+X-MC-Unique: pblDVA2OOESEyWSZUmoTNA-1
+X-Mimecast-MFC-AGG-ID: pblDVA2OOESEyWSZUmoTNA_1790265382
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c29452ecadeso234112966b.3
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790265382; x=1790870182; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BsIicbnwmHZxyMI07vJAKZ5x+YHru/pqorNr3bVuoUs=;
+        b=UshE4h47sI9NtWfWCugd+LddLlvaa7IXNIR2zXv1pn0UWX77z2W8IiMbg3cFLOsP4c
+         EIfrab0R59uhfBMlpROLHM1hi3E8xcuLbc2PTsXbr4EiDqoIYIpt4wwdW/ZURcMPJT6Z
+         xAvGt0sOKqJ9/XZwO9mok/dS+QGyeH/gipNoU7BZ1ZB0MTrYZYL/Nx/uI/qSS6F9QvNY
+         LVVjMWvROYKaBIZtrp5gwl6BmGgHNKAwdbUyrmWPPI4Sma3Y+ob/KHB7fdeNCytrpa47
+         QvC4d8x+dx3CnY0LPBu3h/7hBQuj5oJoUxk82MAVnG4JzKYHfTXluh39a9SfPFUyAEZN
+         RazQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790265382; x=1790870182;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BsIicbnwmHZxyMI07vJAKZ5x+YHru/pqorNr3bVuoUs=;
+        b=YwzpPic0Q0GwGd2aGU3WNU13SAe1O+KhCjzGuplrvv4zyhFAxzB7miBJfBDy3uCmZz
+         qx4eKJVKpYG7Kq63EEkt+iMdXD0V1vOq+uzkGM6vcIOk1eymn6MX0aMUY1qljA13GGKj
+         sq5/LYOteBIJ6xeCSQb7295Yrd14TrlzVKAkcplUhbrRUKYbnWgn6FhTk+1OxbopMtmr
+         Jti65joGv6ICqPD/oOPBANiHN2is48h/up6Toswj8KG5KwQJlIKE3CjcPXWIfyTpIAFr
+         IuC0tUsR9F7oinIaz7uyOB7PYkYT0zdRene5pri3TCMI3g7Irt8cLzSJM4aTMqevo32i
+         kzew==
+X-Forwarded-Encrypted: i=1; AKwUvBydiIO8AGdCMWXcqkw0CFjJr18J5mvpXd9kfLKAfFebqThnQNUPKEz+K6oDVObI/RbgayVo4rE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kbSwn42R0EaRO1wwzW8PjDchmXa57su5cXsSetZSR52Sk6TJq0
+	2+vNPWcQgD/hl3wsMXrsgI0rddvtirdOR4nnsuwzLDZ8xaYwhQLEiO9Ap6dc6R+lpGZdk350TJK
+	DgawI2uStxgFwzT71tbV1LL9JgURnk37s5zguP4geSih8geZhiNZp4g0OU9bkeMCFAg==
+X-Gm-Gg: AYBFou3vESuKJzg6BXfkGnVKOt/FuO2PWMnjbV7U9EjqifnwRAIH8lGrd3amT6C3HaH
+	jv1U+UG0G7zQtwjlqjm6qfqpz+J+a+olKL8wkgjXewVu11tO2Czqe7jPxi2n+SafYrspDu74iQa
+	N7R6HZP5Dqko9FuetGEXGwAsPWzDe7WhDoCKzKoXUfOzaTJf2hyopSCkVqWvA7VX/ecBRf9wYI2
+	5hcAm61BeBit/DCxrAobcwG3qJA0B9UgmLrP2aBDl8ZmQdvuUnaR1FlmPpB7UIFTObEXwfEtchf
+	HzM07PB85GJ0nkA2PzAC77c7icZEwVvvhAFADnPRk1zknSW5R6P4+wRyTBbPXXSmCFVG+rtPYzA
+	sitKzU8fP00mRTFVszEkYjipmFVDDra+fmDYQXDPV7d974jbeNXS3v+Y9NqZjE38WIQ==
+X-Received: by 2002:a17:907:968b:b0:c26:1648:a072 with SMTP id a640c23a62f3a-c2ac2594bcdmr230041866b.45.1790265382233;
+        Thu, 24 Sep 2026 08:56:22 -0700 (PDT)
+X-Received: by 2002:a17:907:968b:b0:c26:1648:a072 with SMTP id a640c23a62f3a-c2ac2594bcdmr230038666b.45.1790265381573;
+        Thu, 24 Sep 2026 08:56:21 -0700 (PDT)
+Received: from redhat.com (2a02-ab04-0158-f000-2548-f3bd-8b42-b18f.dynamic.v6.chello.sk. [2a02:ab04:158:f000:2548:f3bd:8b42:b18f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae33e046sm312897966b.8.2026.09.24.08.56.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 08:56:21 -0700 (PDT)
+Date: Thu, 24 Sep 2026 11:56:19 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Fang Xieyan <fangxy@xiaopeng.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Rusty Russell <rusty@rustcorp.com.au>, stable@vger.kernel.org,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vringh: reject empty / undersized indirect descriptor
+ tables
+Message-ID: <20260924114316-mutt-send-email-mst@kernel.org>
+References: <20260924030627.13287-1-fangxy@xiaopeng.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924030627.13287-1-fangxy@xiaopeng.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, Sep 24, 2026 at 11:06:27AM +0800, Fang Xieyan wrote:
+> move_to_indirect() rejects an indirect descriptor table only when its
+> length is not an exact multiple of sizeof(struct vring_desc).  A guest
+> descriptor with VRING_DESC_F_INDIRECT and len == 0 passes that check, so
+> *desc_max becomes 0, yet __vringh_iov() keeps walking the (empty) table
+> and aborts with -ELOOP only after reading one full descriptor past its
+> end -- leaking 16 bytes of memory adjacent to the table into a kernel
+> stack variable.
+> 
+> Reject any len smaller than one descriptor, before the existing stride
+> check, so no descriptor is ever fetched from an empty table.
+> 
+> Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Hawkeye:GLM-5.3-flash
+> Assisted-by: Qoder:Qwen3.8-Max
+> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+> ---
+>  drivers/vhost/vringh.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> Leak path: once move_to_indirect() sets *desc_max = 0 and points *descs
+> at the (empty) table, the next __vringh_iov() iteration first runs
+> 
+> 	err = copy(vrh, &desc, &descs[i], sizeof(desc));
+> 
+> i.e. a 16-byte read from descs[0] -- one full struct vring_desc past the
+> end of the table -- *before* the "indirect_count > desc_max" test fires.
+> When the guest page backing the table sits just before a sensitive host
+> page, those 16 bytes are attacker-influenced adjacent memory.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> The multiple-of-16 stride check is kept for defense in depth.
+> 
+> Userspace reproducer (move_to_indirect()/__vringh_iov() extracted verbatim,
+> 2048-byte region followed by a guarded red zone):
+> 
+>     [VULNERABLE] return=-62 (-ELOOP)  OOB-read=YES  bytes-past-region=16
+>     [PATCHED   ] return=-22 (-EINVAL) OOB-read=no   bytes-past-region=0
 
-- [Medium] Commit message misdescribes the defect and half of the added
-  code is dead.
-- [Low] The submission carries `Reported-by:
-  syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com` but the next…
+it seems nicer not to fail with EINVAL not with ELOOP as we currently
+do, so the patch is fine. but the commit log if weird, looks like
+an ai hallucination.
 
---
 
-net: e1000: fix warning in iounmap on probe failure
+"an attacker" "vulnerable" and "leak" - is there an implication that this is a
+security problem somehow? Because I do not see how this data gets
+anywhere.
 
-This adds NULL checks before the two iounmap() calls in the e1000_probe()
-error unwind path, for hw->ce4100_gbe_mdio_base_virt and hw->hw_addr, in
-response to a syzbot report of a WARN from iounmap().
+> 
+> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+> index 9066f9f..0767748 100644
+> --- a/drivers/vhost/vringh.c
+> +++ b/drivers/vhost/vringh.c
+> @@ -197,8 +197,9 @@ static int move_to_indirect(const struct vringh *vrh,
+>  	}
+>  
+>  	len = vringh32_to_cpu(vrh, desc->len);
+> -	if (unlikely(len % sizeof(struct vring_desc))) {
+> -		vringh_bad("Strange indirect len %u", desc->len);
+> +	if (unlikely(len < sizeof(struct vring_desc) ||
+> +		     len % sizeof(struct vring_desc))) {
+> +		vringh_bad("Invalid indirect len %u", desc->len);
+>  		return -EINVAL;
+>  	}
+>  
+> -- 
+> 2.50.1
 
-> During a probe failure, the e1000 driver error handling path calls
-> iounmap() on hw->ce4100_gbe_mdio_base_virt and hw->hw_addr without
-> checking if they were previously mapped. This triggers a kernel warning
-> (WARN) rather than a fatal crash when passed an uninitialized pointer.
-
-[Severity: Medium]
-Is the hw->hw_addr half of this description accurate?  hw->hw_addr has a
-single assignment in the whole driver, in e1000_probe():
-
-	err = -EIO;
-	hw->hw_addr = pci_ioremap_bar(pdev, BAR_0);
-	if (!hw->hw_addr)
-		goto err_ioremap;
-
-The err_ioremap label sits below the iounmap block being patched, and
-nothing ever resets hw->hw_addr to NULL.  Every goto that lands in the
-err_sw_init / err_dma / err_mdio_ioremap region (e1000_init_hw_struct()
-failure, dma_set_mask_and_coherent() failure, e1000_sw_init() failure,
-the ce4100 ioremap() failure) happens after hw_addr was successfully
-mapped.  So can the new if (hw->hw_addr) test ever be false?
-
-The pointer that can legitimately be NULL there is
-hw->ce4100_gbe_mdio_base_virt, which is only mapped for one MAC type:
-
-	if (hw->mac_type == e1000_ce4100) {
-		hw->ce4100_gbe_mdio_base_virt =
-					ioremap(pci_resource_start(pdev, BAR_1),
-						pci_resource_len(pdev, BAR_1));
-
-		if (!hw->ce4100_gbe_mdio_base_virt)
-			goto err_mdio_ioremap;
-	}
-
-and x86's iounmap() does:
-
-	if (WARN_ON_ONCE(!is_ioremap_addr((void __force *)addr)))
-		return;
-
-which looks like the warning syzbot hit.
-
-Also, the pointer is not uninitialized: the adapter is zeroed by
-alloc_etherdev(), so ce4100_gbe_mdio_base_virt is a well defined NULL.
-Could the commit message be reworded to say that, and could the second
-Fixes: tag (1dc329180fe22 "e1000: Use hw, er32, and ew32") be dropped
-since the hw_addr case does not appear to be reachable?
-
-One more thought on form: e1000_remove() already guards the same two
-pointers the other way around:
-
-	if (hw->mac_type == e1000_ce4100)
-		iounmap(hw->ce4100_gbe_mdio_base_virt);
-	iounmap(hw->hw_addr);
-
-Would matching that idiom here keep the two paths consistent?
-
-> diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-> index d7f5c6f161420..156903089fa6b 100644
-> --- a/drivers/net/ethernet/intel/e1000/e1000_main.c
-> +++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
-> @@ -1227,8 +1227,10 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	kfree(adapter->rx_ring);
->  err_dma:
->  err_sw_init:
-> -	iounmap(hw->ce4100_gbe_mdio_base_virt);
-> -	iounmap(hw->hw_addr);
-> +	if (hw->ce4100_gbe_mdio_base_virt)
-> +		iounmap(hw->ce4100_gbe_mdio_base_virt);
-> +	if (hw->hw_addr)
-> +		iounmap(hw->hw_addr);
->  err_ioremap:
->  	disable_dev = !test_and_set_bit(__E1000_DISABLED, &adapter->flags);
->  	free_netdev(netdev);
-
-On the tag block:
-
-> Reported-by: syzbot+ca1ef9e2e234b8d3599b@syzkaller.appspotmail.com
-> Fixes: 13acde8fffc0a ("e1000: cleanup CE4100 MDIO registers access")
-
-[Severity: Low]
-Could a Closes: or Link: line with the syzkaller dashboard URL be added
-immediately after the Reported-by: line?  scripts/checkpatch.pl checks
-for this:
-
-	# check if Reported-by: is followed by a Closes: tag
-			if ($sign_off =~ /^reported(?:|-and-tested)-by:$/i) {
-
-This matters here because the body defers all reproduction evidence to
-the dashboard:
-
-> This issue was found by Syzbot. The exact kernel configuration (.config)
-> and the C reproducer used to trigger this warning are available on the
-> Syzbot dashboard.
-
-Without the URL there is no way to check which configuration reaches the
-e1000_probe() error path with hw->ce4100_gbe_mdio_base_virt == NULL.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922155238.67445-1-nsvatoslav515%40gmail.com
