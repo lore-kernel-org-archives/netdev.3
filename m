@@ -1,159 +1,145 @@
-Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9031448382E
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 21:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69BF4DD6F5
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 21:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790287156; cv=none; b=cqDSqS5TYpu1cCe1zl1thjyDJ2Dcg1fKe9+8Tb7cwAJfXLqQX6My8909NwQuKNFnueAxYfatlJeNmAqyS9uK5WsSdJih6NZcyBoY0Vr65odTiOD2BH3xi3wDePCn3/aqCEDB3RhiY3tRBX4sT94nISlsS02sEQHtN4rExbMlGr8=
+	t=1790287201; cv=none; b=CxrV5I4uFYZlDzngW94tkX3RrA8m1AyeZL+Q+e8c+AmYOGl8i2tzg1VdgV+DZlgZ8OCZmozU8AZyawHeW2vaZxqUjal0q82ERs6oSBUYg6zRd4UXe7HF9zf1BavysBnZnSAlyp7wEb2Ahlk+yksSpEYfR/fFofENCVeqJGjWFYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790287156; c=relaxed/simple;
-	bh=jdOnvM7WMqeUpU7l2mytGEp4oxIHLj8qtVUlj6NmVsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YoJvdppHx7HVl69/Xm5Owy8sIcTfKw/oO5tG4bRUo9ZLHQ0t6jhS3YN300nKmMFzSNzH853pgv/SzbPVbBpxuY1S5SEUYtNY9P2q0/wYJ3yGWZmy0rYmk3mVawlDZ05CB2UXO4AqSlP/yVTlxJoFO3AyTZeeodNR8X9yVPUWXZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=vPEiD9ry; arc=none smtp.client-ip=74.125.227.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1790287201; c=relaxed/simple;
+	bh=vEy4ilH+KqsEZF3cOIjyFr9T0T/kUsGLP7hbMpz+0Zo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tTgVgCJY4tEXB/J1qgmKVy+Ck0u+sHmW4uCkcDQg1Sm/A3NsZj4aKOGPJZS5Zk4GpiM1k4UnWfKqUisAOBRBroXTWFLe3y3uqxCk6T58B429bb3MkPT1kZnFoeB1qcTOOQYwLky1pFCnU7/NXviTpM/Xffw6m/L1LDGaYpbH8Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=V+JsaQuW; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="vPEiD9ry"
-Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0bcdf41a3so12572a91.2
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 14:59:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="V+JsaQuW"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485984ebf5cso197587f8f.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 14:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790287154; x=1790891954; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bbmWMvcZGPaQES2g8FHXYoBiPxQtaNORw16tr7nwuuw=;
-        b=vPEiD9ryapYVAbcs8kdk/aarwnWZDJyTINZAS9v17BANQiOuYq1oHVyJBCxjEAkD7W
-         OctHq3duc79f++pDhRki9fmBx8iaZqo7WTEO3/KRGGQo6+bxo/NBJz7x9mDaDx9yeSkm
-         H+ok/Eqr1G1IAHpAGCOJjW0tBbSC6GZQ4faR6VgM1LIofN1MXaQ2GrHLhpxb84L3erPF
-         MKZKqlLcvnbE9KVPFO5CWFiC3ortqSZHI1Hj3EY76mwz0EQDeYKZlJcdkfMa+9Tj7hHN
-         d8re22ksBgofM9DHjvonMZM1H/MckT642VKR5gjzZ82kbtpL4sunMCl1BfUBlHuqr/JA
-         83ng==
+        d=lex.la; s=google; t=1790287197; x=1790891997; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7hECQ91MjmL9J8JDRPNlgIqAOO9M9chA074io5HZLms=;
+        b=V+JsaQuWrCh81zWhB/brhgWaE3+h7l4y/BdyrxmhlnC/kTn+hXF1xQNd6ItGkGq3qc
+         3DQmsXHlSfLXzAcLeY7s2+jRQSIktopVtv3uj+pyyavx0VrzVGduwgvtf6CgBZj6Fq4H
+         SY5NQ8ZWgnddp8BiIYxoLYczzJqxNmV6ABg02rKreLsruuidMIs/7JLxoU/RLTX+NanL
+         qtbF+p+M0VD85drK5GH6wiiiJBCkd+H1rfl/6KOerH3oLcD9W1GpUjLlh9pKbjs+rTu1
+         w7H9sgsGIhXU0Ar1aXTiv3SOLoj4PeCUbEAvWETbG1fYhuAaPS082HodPcohPPFinPaa
+         9SXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790287154; x=1790891954;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bbmWMvcZGPaQES2g8FHXYoBiPxQtaNORw16tr7nwuuw=;
-        b=cJkq9wlpi5XRoygGu9iCQmESAeDXeFwY99bCP5K+IWkQ3IDAKBZKeVra64Galtmth0
-         9Vn4ILPkjopn47OqKvjvcEj+M/xpbFpm9n+MGu1SlyLMqA9ssL+xvsbKDl28YPkvJ00i
-         YFLNiKRJLiBs1uLtYRl8UL9sp+MSBtdbSC3aCqNJuNRE9KXVwkXTg6qOcvShfzqdFpVh
-         E/i1A/lunebQyfFDK49Ad4hFeslxL9zKRyqWNyqNA8uaZ4Yzi3Vt3KPMbahAJFPGcWAP
-         DRYHUU5WoIZaWBsYgTfHAE7JJqROnNfqwbHWgmQaWSjdi/SUSlDxKGBOvoPsjRHq0zmS
-         lGTA==
-X-Forwarded-Encrypted: i=1; AKwUvBz0HhHL6C0f1N14oJOVbzCCoP8oiQcVXxcBSG6isaPJ5ptmeFnHY4Tgc0A5DVkfbPEOstkky94=@vger.kernel.org
-X-Gm-Message-State: AFuF++lJIc+JV8SXSOzdmE1FWsj1boerZ76EPDaWWPc6ORx32bZ/2AEe
-	wwGMT/EnN5ERZszkVtKPpPuBxRg7cohckRlr/xVP+9X7PCAPXtOh9ItAb2b+P036O1Q=
-X-Gm-Gg: AYBFou1ZQqu8ucjeTftbbUKuR0C2crSlaNBWgaGJAG0Ld7GmV+TZNuuT8eiTSc4QjMQ
-	83gVRBIRZByHONgMdCk0RvsU/GEWPhvIysnQuON3DcbvxCciGv5sstWQJD91FFzHIuuMVbXACC0
-	bSWFee235MXWyARqsRxALjSxLFZZB+YYbkMI9d06wFkRo1nsSlNrFIdQsRBpsHdmcZa0+ZfN+uX
-	SXAfPDoNR2f6V2ZFfJWgoigbR9FCzEMY3oSkdFVxLbLYHmm4CZowSvhc6OwUTjoHUfUJ6GC5nd6
-	7tFkN4/k3EVll6hkZNMK7hO8P+TbV2vHiWnC9TIgkv8k9+oqiTw7V1T7+TmqgJP+aiTCeFsYukh
-	usS7VyqnmHf45lGeJhLChkYEiM3M48gvx5mJQ/Aw8L6qiJIiBfLj3OCBazCOVj6Mwyk5Wfl+G5Y
-	CNXhF+KedLwFIZc3JuSC4+AJErz1HbGLS8gOfl2NoD9/bbzXvA/OAYqSh40AJeG/Uy3frVSDKeP
-	cXjb/kV0yvFWFmNIszdUzo=
-X-Received: by 2002:a17:90b:35c3:b0:3a0:bcc8:1546 with SMTP id 98e67ed59e1d1-3a0bcc815f2mr76894a91.64.1790287153608;
-        Thu, 24 Sep 2026 14:59:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:59::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9481e17sm582065a91.8.2026.09.24.14.59.12
+        d=1e100.net; s=20260707; t=1790287197; x=1790891997;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7hECQ91MjmL9J8JDRPNlgIqAOO9M9chA074io5HZLms=;
+        b=bVKynW3N02V4l4ClwbV+ybQoxDCnQgMAsCfhVXHZQSBspeh3vhl9U1uFSMI7u0xc3/
+         5qyo5QC03BcHw60B3mQWxt9fSu8cSoxsvgEFnFf2N0EfVB/CNfre8h8n0CEYoIeN6BoL
+         91BV+Yvz/iFmmHy05ROeYRKcdNyy/erIn+1kbXSbOCOIsaa1J02A0GIzdaKaDPhBsq4D
+         8YPouDUuJfylAxOmCh7w8cTTo6DM82fmBqnqmn/Ofuy4iOqMs6hs5HZiZxBEUgf+4vab
+         gcquaqFOXR2MwpD5aqWxFbmyzez2gG74o25Y+1KEBguFz7Ocn47+iS6GlFILJbXG4GzQ
+         87Jw==
+X-Forwarded-Encrypted: i=1; AKwUvBxnjeidkKNDg5c+sxEVZ0Vc432vRpW0UkbzKJSYXMKlfmVNiyxjEw7sDCR7xFS3cfsk8whXx+4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kyqwjayGGyPEY9DycpmFi28Hi5fyb/SaWPXiDTIPb2qnpdy8yE
+	puadikr0RLKorq1cS7GIP+yojeqkIbI+zV++Lpi1Gze1DDGKvIukw1PcpIZ9wdtqMEA=
+X-Gm-Gg: AYBFou2OkVSKOKlimgB4VpRdwxjwirWVBtrxetyIwM7NfPXsqAR+DnvA41WCdNBa4Y+
+	ld/W8/ZeV0jgywnhLbaYbQsmUSng01iRfVq6r9B/U3a/JqIajQxseAyc+scVCEsWG/7Yz/HNnQx
+	q8y2EZw3uNsWImxIRLBD3d06WkL6cloyMv3GsspltoMRz5jeASZOGdGcT1cikmb5ePWZ02ARTHg
+	a3nL7DvAvVgpEd8lD5NFV2Qp4oS9B85tcfUhfEMa15Pa+oyh8MtaPWg7J6ExDmoohK5YyRmUpY/
+	UC68BRDujPvkF4CS2TY69sao3+PeOR2RUTDTOIveQxJUFvpGOECvlCy/IopORAoSvUzGsN5OeZm
+	iaAwzz/3acnzyZCaJLyCxkeAk5G6qnMHIFd+0YDhd1JkzSX/nGtlJEjGd87c4pNybzfKfMnnX56
+	IuiyknMVBssnHginYd/jC3FI1cgW4dtY51UB8q0G7cO5kU+75hmdbm1iIFiz1Q
+X-Received: by 2002:a05:6000:2584:b0:487:f93:c8d9 with SMTP id ffacd0b85a97d-48872ad7862mr6052233f8f.54.1790287197677;
+        Thu, 24 Sep 2026 14:59:57 -0700 (PDT)
+Received: from remote-01 ([84.17.55.134])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a34a638sm1922324f8f.9.2026.09.24.14.59.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 14:59:13 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:59:12 -0700
-From: Joe Damato <joe@dama.to>
-To: hengyul@cs.unc.edu
-Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz,
-	jirislaby@kernel.org, sdf@fomichev.me, edumazet@google.com,
-	kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com,
-	horms@kernel.org, shuah@kernel.org, linux-fsdevel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] eventpoll: return -ENOIOCTLCMD for unknown ioctl commands
-Message-ID: <arWdMDek0iv0obDy@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, hengyul@cs.unc.edu,
-	brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz,
-	jirislaby@kernel.org, sdf@fomichev.me, edumazet@google.com,
-	kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com,
-	horms@kernel.org, shuah@kernel.org, linux-fsdevel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260924185747.2166326-1-hengyul@cs.unc.edu>
+        Thu, 24 Sep 2026 14:59:57 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Mao Wenan <maowenan@huawei.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net v3 1/4] net: phy: refuse a second attach before touching the PHY
+Date: Fri, 25 Sep 2026 00:59:47 +0300
+Message-ID: <20260924215951.2127682-2-f@lex.la>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260924215951.2127682-1-f@lex.la>
+References: <20260924215951.2127682-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924185747.2166326-1-hengyul@cs.unc.edu>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 02:57:47PM -0400, hengyul@cs.unc.edu wrote:
-> From: Hengyu Liang <hengyul@cs.unc.edu>
-> 
-> Before commit 18e2bf0edf4d ("eventpoll: Add epoll ioctl for
-> epoll_params"), epoll files had no ioctl handler, so ioctl() on an epoll
-> file descriptor failed with ENOTTY. That commit introduced the
-> EPIOCSPARAMS and EPIOCGPARAMS commands, but ep_eventpoll_ioctl() returns
-> -EINVAL for any other command, so since v6.9 every other ioctl() on an
-> epoll file descriptor fails with EINVAL instead of ENOTTY.
-> 
-> Documentation/driver-api/ioctl.rst says that an ioctl handler must
-> return -ENOTTY or -ENOIOCTLCMD for an unknown command, and that
-> returning -EINVAL there is wrong. Returning -ENOIOCTLCMD was also the
-> intent of the original series, whose changelog since v3 [1] says "when
-> an unknown ioctl is received, -ENOIOCTLCMD is returned instead of
-> -EINVAL as the ioctl documentation requires", and ep_eventpoll_bp_ioctl()
-> does return -ENOIOCTLCMD for unknown commands. However,
-> ep_eventpoll_ioctl() only passes EPIOCSPARAMS and EPIOCGPARAMS to it and
-> handles all other commands in its own default case, which returns
-> -EINVAL, so that path is never reached.
-> 
-> This is visible to userspace. For example, isatty(), ttyname() and
-> tcgetattr() on an epoll file descriptor set errno to EINVAL, while they
-> set ENOTTY for any other file descriptor that does not refer to a
-> terminal, as they also did for epoll file descriptors before v6.9.
-> 
-> Return -ENOIOCTLCMD from the default case, which the VFS turns into
-> -ENOTTY, and update the epoll_busy_poll selftest, which expected EINVAL
-> for an unknown command.
-> 
-> [1] https://lore.kernel.org/r/20240125225704.12781-1-jdamato@fastly.com
-> 
-> Fixes: 18e2bf0edf4d ("eventpoll: Add epoll ioctl for epoll_params")
-> Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
-> ---
->  fs/eventpoll.c                                | 2 +-
->  tools/testing/selftests/net/epoll_busy_poll.c | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-> index e0c4bf88a838..adf30b720b13 100644
-> --- a/fs/eventpoll.c
-> +++ b/fs/eventpoll.c
-> @@ -1264,7 +1264,7 @@ static long ep_eventpoll_ioctl(struct file *file, unsigned int cmd,
->  		ret = ep_eventpoll_bp_ioctl(file, cmd, arg);
->  		break;
->  	default:
-> -		ret = -EINVAL;
-> +		ret = -ENOIOCTLCMD;
->  		break;
->  	}
+phy_attach_direct() tests phydev->attached_dev only after it has taken
+its references and, for a PHY with no driver, bound the generic one, and
+then leaves through the error path that calls phy_detach(). That
+phy_detach() works on the PHY's current attachment, so a second attach
+of a PHY in use tears down the first consumer: it clears that netdev's
+phydev pointer and the PHY's attached_dev, removes the sysfs links,
+suspends the PHY and, for the generic driver, unbinds it, while the
+first consumer goes on using the PHY.
 
-I think based on the documentation this is probably right, but I am now
-wondering why both ep_eventpoll_ioctl and ep_eventpoll_bp_ioctl need to
-exist.
+Found in review of a change that makes phy_detach() put only the
+module the attach recorded: with it, this path leaves the first
+consumer's reference pinned. On a Keenetic KN-1012, a test module
+attaching a second netdev to the EN8811H that the lan4 DSA port holds
+got -EBUSY and left lan4 with no PHY; with this change lan4 kept it.
 
-Maybe when I first implemented this I thought it made sense to factor
-out the busy poll ioctls into their own function, but in retrospect maybe it's
-cleaner to just collapse the ioctl function into a single one instead of
-having two layers?
+Test attached_dev before anything is taken and return from there.
 
-In other words, maybe:
-  - delete ep_eventpoll_ioctl
-  - add the is_file_epoll check to ep_eventpoll_bp_ioctl
-  - rename ep_eventpoll_bp_ioctl to ep_eventpoll_ioctl
-  - fix the test (as you did in this version of the patch)
+Fixes: a7dac9f9c169 ("phy: fix error case of phy_led_triggers_(un)register")
+Assisted-by: LLM
+Signed-off-by: Aleksei Sviridkin <f@lex.la>
+---
+ drivers/net/phy/phy_device.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-Would result in a cleaner fewer helpers / cleaner code ?
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a3..7046976c5b6a 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1757,6 +1757,11 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	struct module *ndev_owner = NULL;
+ 	int err;
+ 
++	if (phydev->attached_dev) {
++		phydev_err(phydev, "PHY already attached\n");
++		return -EBUSY;
++	}
++
+ 	/* For Ethernet device drivers that register their own MDIO bus, we
+ 	 * will have bus->owner match ndev_mod, so we do not want to increment
+ 	 * our own module->refcnt here, otherwise we would not be able to
+@@ -1798,12 +1803,6 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 			goto error_module_put;
+ 	}
+ 
+-	if (phydev->attached_dev) {
+-		dev_err(&dev->dev, "PHY already attached\n");
+-		err = -EBUSY;
+-		goto error;
+-	}
+-
+ 	phydev->phy_link_change = phy_link_change;
+ 	if (dev) {
+ 		phydev->attached_dev = dev;
+-- 
+2.53.0
+
