@@ -1,82 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A264A205F;
-	Thu, 24 Sep 2026 15:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4D04A3D28;
+	Thu, 24 Sep 2026 15:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790263880; cv=none; b=cyEACduPY8fL3UKr4PL7rmNx2/29iQjs6Wh0iUOBR2N6f1Z3DjgXMzVJSZWckM/R+hwZMFZV2gXp4pNGAqRkiotXh9VwJB1xOkQFsPkiK6eh8KIKn0pTKRNoIoCtEX+giaAwfIb1ZUBGt1I3vsUNti2MNUtjl43BetGGCL9HOu0=
+	t=1790263905; cv=none; b=OIxBSEyd8AaoVF1MDOVQqJC952E5tplotzZZdY/xjoEQc4aLS4U7ONvewW9FujG8z27zI+bzQObsCwW6hUxzaAOUVq4igptiPC06lODqE9UJuI0dRwQsON6oQaGwFzctrOTtekUCway1unvS14USY1aoFXcgWKrE/ZOoZRaZkfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790263880; c=relaxed/simple;
-	bh=Sr/ZvADe3rhNSqxByBkFHLvSZQ0+5vZeIf08zA21Y1w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=A/wF5lk9/8DrTKUTx8q6pTSoqo46eybmrg55aBaQ0q6gz9TiYOV08pkU8801tYLcJ1HurMhl13nbhcyaogBgU4hii594u5eM7QLnNwwDunTKoku/bh+PpM8TygF6t9iy3YyPC+qLSbpmsPualrea+mcqq3vb/P2X0WNr3ZYYpKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ls7ZITwN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790263905; c=relaxed/simple;
+	bh=BnX5o5678+dXh41cBXWjTwI7OMQmpH0M30x8Bvl5Aug=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CCmAftXpjzbNQfR903COBzy+0zQidds2xJCxkt8079QtTd7NBST4OhpFGYTATkdl86TVZu/LWUOZ3AM9zgmCvE6DX/f5R0yldmw0I62u1wGVO1ZdiJCtGpUttkHO32fBhiV8fWYqtitMUjAVpsAy1ZXsmSauRxN0e1YGWj0G1KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUdAey/4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ls7ZITwN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7CE1F000FF;
-	Thu, 24 Sep 2026 15:31:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUdAey/4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EDD1F000FF;
+	Thu, 24 Sep 2026 15:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790263878;
-	bh=G+YIn0jWatEzyBxbKACE4zuL7jmhIjynHuzRFkmS27U=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ls7ZITwNp2G2ig/Sb7J0ofwUqlqkcUqSY8kpFZGWraQcd1tPhUcTb8Grqg2eFdQtF
-	 LsaKu+YgDjl95fOL32Dc8fdcG69JEWvhf+u5hqJlCYueU0gSnkP4KHdfq5rbi+MiHH
-	 1/Suq0ZsCoWnhiGfbW6kBBIheEv4ZAXBkL+xnEHxnYXPuVP7H2X1+hZIrO6xXpCjwv
-	 gmAZAO4+23QK5T/dCpNNhzV258Rm0grRnIBbcCuuyFLOKZnjVaVGZyM+1dy+ddifVv
-	 as9NvuI49Sgrd9ZfQX0v7XstcM9Cf0DcZav2Zm+9Fv+uupZ64mLHC76ejIODRFXPge
-	 /XGwfNqvUCSNA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198833A566C5;
-	Thu, 24 Sep 2026 15:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790263903;
+	bh=PJsB05AjJ/cKcal0omGmz6Mh1wn0N/L2T5+QooWmyb0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ZUdAey/4b08tNkuWELhF4djU3Q1gl2NJ9Pk605r1+X3SP3UzgUuFUTljQJO6CEzU5
+	 yf7/ZDeCQlr7f73tv75PoXb+6Oobp5DHq/ImoI9jQld86L8uluSygbDYNbafFbG5bW
+	 y6buKYc+UYNyiGGKMF4easgOkNBD06aon1x39CLu0MRfOxLD4cQBq9quICXHptWIWd
+	 wdUfdDVzbo3LZsgToPtaJd7ek1udGry7+xdyOjkI+AaUfC32/3NXZvW32VIs8ieo4c
+	 cfGPqsfBphjnP1/yJHZqh3h1QExX8R+DmbHKtxXi4bnaDI6/eMRI8Q7PoJUMxI6HHU
+	 FCmPHzliQ80pw==
+Date: Thu, 24 Sep 2026 08:31:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: Daniel Machon <daniel.machon@microchip.com>,
+ netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horatiu.vultur@microchip.com,
+ steen.hegelund@microchip.com, UNGLinuxDriver@microchip.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, herve.codina@bootlin.com, arnd@arndb.de,
+ gregkh@linuxfoundation.org, mohsin.bashr@gmail.com,
+ richardcochran@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v7 10/14] net: lan966x: add PCIe FDMA support
+Message-ID: <20260924083141.67eecb6e@kernel.org>
+In-Reply-To: <20260924064617.GY13925@horms.kernel.org>
+References: <20260918-lan966x-pci-fdma-v7-10-0ecc179c8a2c@microchip.com>
+	<179008205148.2160803.12818321368571406375@kernel.org>
+	<20260923084538.wgkw2nt5ergoxcot@DEN-DL-M70577>
+	<20260923180730.GV13925@horms.kernel.org>
+	<20260923201155.lbbbtx22adz2ilhg@DEN-DL-M70577.microsemi.net>
+	<20260924064617.GY13925@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/3] selftests: drv-net: Add VLAN test
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179026380790.1607156.9912751120912034978.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Sep 2026 15:30:07 +0000
-References: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
-In-Reply-To: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, nb@tipi-net.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 18 Sep 2026 11:25:26 +0000 you wrote:
-> This series adds a selftest that pings over 802.1q, 802.1ad and
-> QinQ VLAN interfaces with RX VLAN stripping offloads enabled
-> and disabled.
+On Thu, 24 Sep 2026 07:46:17 +0100 Simon Horman wrote:
+> > I am a little reluctant, when I cant really test it properly. Sashiko gives
+> > another solution - adding a LE dependency to the Kconfig of the misc PCI driver,
+> > maybe that'll do?  
 > 
-> This series contains only the selftest part of [1].
-> 
-> [1] https://lore.kernel.org/all/20260908164309.59282-1-ovidiu.panait.rb@renesas.com/
-> 
-> [...]
+> I think that should be a last resort. I won't hold out on this,
+> but I would prefer the approach I suggested.
 
-Here is the summary with links:
-  - [net-next,v2,1/3] selftests: drv-net: Move _set_ethtool_feat() into lib
-    https://git.kernel.org/netdev/net-next/c/d3630df401a8
-  - [net-next,v2,2/3] selftests: drv-net: Check the features set by set_ethtool_feat()
-    https://git.kernel.org/netdev/net-next/c/a57ddd899004
-  - [net-next,v2,3/3] selftests: drv-net: Add VLAN test
-    https://git.kernel.org/netdev/net-next/c/efc7f4646c1d
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
++1
