@@ -1,63 +1,67 @@
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com [209.85.128.198])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7B349CD6
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFCC43F4DD
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790238596; cv=none; b=DqBKRR9u/qNFONT7O7TUpfPdnWC0MdnSGXBBRx5V8NS5b2e9rVFrLs8NAABQYWuuVn+LGP7ljeV1DbtsF1oXcF9gK3b19rvWBvgVCvYHnzLS6OVka0LGl82MwpbNtRD+TfiWOEDPpRhmUnorU/2C3JQM0EMB2VcQoV+lWYcKRcM=
+	t=1790238601; cv=none; b=QjYHteBaJBLJV8F2snIXRf+L8tgZMctTIkVbsnjON+eYwp1b7IlYNRtg/DTCdAxTBkPTZo/hzmMmiS4ZPYlOpV8CxsrqALDZTijjdDBHtmYiUZ+3viHEEQNp4BqzI4xGr/y0W7OqtNG7CAFd/KpXgH4TITXhYg/mOKCYKDQPHAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790238596; c=relaxed/simple;
-	bh=XemExumd73GIA1RmmGUBS6dCA8I106FVJCnAgDJFs74=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TACRXD6SVq/AebBPC62I8JJ7OVuyPNKMcLRgKgU1OLxNaUKuMXRdNCXKMkaw1yDCcUGzFsubmcNsu9WqqwFJ0uN9MWn25b+Ca6dDSKodtcIvWzWY7TOIXYnj0Yc6ASZEYXl91UmR6jRmhuFxPVQzGFEOgtyuLrrlNmLIQEq12Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G1Gz49mI; arc=none smtp.client-ip=209.85.128.198
+	s=arc-20240116; t=1790238601; c=relaxed/simple;
+	bh=AgNj/0nT4ysnWRugD7Kp3AULjkYm0vN5thIQj+vAg4M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rLmtNv2cJeQfciAKkxzDWLzxZePUgOW3d5gs6LgjSAb0YCtAgyXGA55b2ykuJ4GtpS2eehEze6X3Yrvk8EoLa63TEEPyBGfvyFmv/4iks2gHS+jfodx6c16sDdW+GZfAk78rGswkQurj+7E/DQAf1O6WiBgno2GEE5/w5oQenp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eh9xQfkr; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G1Gz49mI"
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-869553205a7so32481427b3.1
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:29:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eh9xQfkr"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9308eafb465so412502385a.2
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:29:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790238593; x=1790843393; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8vHseU9aNH0DVGXDJM/cuMA6fQGZIm6Bi+QBx69Plvs=;
-        b=G1Gz49mIcZzyKiXKiHLMqy1vFMKp0Evo9NxLCbju9yr+SSLDihxf5aHK8uTgta09YH
-         z+CnnKHpKPgkJfg0VWzh3iua9RJVUhsTzuw1A+Sgb83EMNLwZ7HSBJFNDge5rqSJtI/n
-         /GuifU1oR7J415RRJsu11oChCM/JZlTQ7YudnxxUSiGOrCn8Jzijjpyvv9BqIirRvkVL
-         rJVs9viURgZvJXnjhrvyb7pYkZ/BwFCcVF1SApemey10xeexVdZL9FhM/GOCxMF4huhF
-         PntwXOKoXmGJU6G47E0aKAPLBjGEZcgERokcihh3yKXwkbH5LFUYVwuH1i5CcmycwoU9
-         xo7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790238593; x=1790843393;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790238595; x=1790843395; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8vHseU9aNH0DVGXDJM/cuMA6fQGZIm6Bi+QBx69Plvs=;
-        b=liG3GL0uONzhQ7G3h9lR7pQx4LedfggQWkmqUeOkxqgqV/BwC1eSQIZTiGskyiBe7G
-         +BRV0ryNsSNrunKzHI8LIWTn+IahbN0DZ0RBiCcRaGpt6YxrgdNVnfsDshWFiYRWPuka
-         Nm+RUv6CnQ3MAvP4GPXJW/hni1T6xoc0DEX4g5m1fXBNwwQXlBXQTksWGkFTbUarunsB
-         9F2nKBXRPF5o0AZW16omgc/1Uv6ub6RbTzwAC60ZjtX0GaFdSJnuLGy5/10Zk2twsm/s
-         A/73yGBDK+wOw+6qSqD4Agskg6ABR58dN/UiS5tTCpm9VabYFcBx7FpSL6kyqn0fNiI1
-         YIng==
-X-Forwarded-Encrypted: i=1; AKwUvBxKgLRSOkJEeTCn0hcdHgtGAPrdpGX77WLKJifahMZaDVQv5Xhh5fh9fLFn1r+cc1O5/PX/xdc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nX3qRIYVonlbiQGm+emv2pF4pVRDORPkayHMsI7++gMqROIXPt
-	LDI+nZPFNZrDapw7inJGndt3jdqstS/lBLm2MJVOP3zK/29TLSD3SZEykfZ5yp2tpPaP00DFISZ
-	LSLxANtNRPJT3PQ==
-X-Received: from ywee19.prod.google.com ([2002:a05:690c:a193:b0:893:c668:9cf3])
+        bh=ZSDT+FmHqawgk0tMrseHQ2mpMCwGa8sGS551PfTEx9g=;
+        b=eh9xQfkrHJEUxtM30lX81UbVlHiluOxhfqe8qSEibQSpWRwMdDQc7WlSy7+0WW5sMd
+         rTGfUKLRXNmLRvbNrbwHwzAe/E4SZKsXjTCwR0uXQqloOQ25qTeYZNyG9OYa8eqghrO5
+         VeQq49IBkT22iU5aZvveuWJHI9S4VqzzpnIzsGrFs2yWP/mgn/S38x0Tp7/vPGvPqiu8
+         bSI0HlXpKbX4E3OAiqLQWfXegkjK8KXn+0coMRxMtfUL/lZdAJU79sSSJLsl92GVu9lr
+         21cIKWtuQ+y+mp+8smzwLPk+SZz3zKLTGBJ9lV/2pN6iOGe7SQEsyrb+1449jH5hWLGm
+         nVoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790238595; x=1790843395;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZSDT+FmHqawgk0tMrseHQ2mpMCwGa8sGS551PfTEx9g=;
+        b=IaujwRrMww1oM3Su9wG3kVSIidHora7PpsCcc9aQZuVd+dN0kR2gvrzgFikdOeSiZY
+         /TNMHAMH2lOkiiLi1Z5nSD2FKHs/6a2SSAAQeGhSfS1Ly/0VPmYT65AF67lbiU09VVFr
+         B/7BeeIC7gizCDkYX4hevd9ilnmSAHyeuar5Ty5JYESLAj0lX78WeM2OggzwVepcSxzI
+         vjcjsaVJ7lD2UaD94pjxd8jWouMozMhItR12bncm5HeekQ70oo9wgCrct3w14x7eLdHl
+         l7vQvx1K1jjMhzgg/m/L1S7sBqIjiMhSuPo9ywnWzYPwTaGr6tU8rlSxTJ3TsespT9e2
+         L6CQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxjir6CrLvBXA1bxf/6R7Y+49CqabBgAD+w20/0//s0T8rwObkRAskhSRnJ9xW//BAJxR68q7s=@vger.kernel.org
+X-Gm-Message-State: AFuF++nExwBLIQOEUakz9BjgEul1mtPjYqDHVKiOG952FQSIc5n47P1F
+	rM9BlwiG2TkDIY5Gj1qySZ7wu7NCHLoG3dZsb0BRTN7DQISTgHZrbK82B0DUalmFR5x4IQ9+IUb
+	5yHunS0I9iQAA5g==
+X-Received: from qkbo25.prod.google.com ([2002:a05:620a:6dd9:b0:93c:2fc6:f24])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:690c:e3e6:b0:858:d554:79e4 with SMTP id 00721157ae682-8a649976ea3mr10385677b3.20.1790238593114;
- Thu, 24 Sep 2026 01:29:53 -0700 (PDT)
-Date: Thu, 24 Sep 2026 08:29:47 +0000
+ 2002:a05:620a:8081:b0:939:de48:e41f with SMTP id af79cd13be357-93c36396c40mr175113185a.31.1790238594607;
+ Thu, 24 Sep 2026 01:29:54 -0700 (PDT)
+Date: Thu, 24 Sep 2026 08:29:48 +0000
+In-Reply-To: <20260924082951.1599377-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260924082951.1599377-1-edumazet@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-Message-ID: <20260924082951.1599377-1-edumazet@google.com>
-Subject: [PATCH v2 net 0/4] vlan: ensure sufficient headroom in vlan_dev_hard_header()
+Message-ID: <20260924082951.1599377-2-edumazet@google.com>
+Subject: [PATCH v2 net 1/4] llc: fix skb UAF and leaks on llc_mac_hdr_init() failure
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -65,48 +69,59 @@ Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, edumazet@kernel.org
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Callers that only reserve ETH_HLEN or less, or skbs allocated before
-dynamic device/headroom changes (such as toggling VLAN_FLAG_REORDER_HDR
-or bonding/team switching slaves), can reach vlan_dev_hard_header() with
-insufficient headroom and trigger skb_under_panic().
+In llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr(), if llc_mac_hdr_init()
+fails, kfree_skb(skb) is called instead of kfree_skb(nskb). This leaks
+the newly allocated nskb, reads from the freed skb via LLC_I_GET_NR(pdu),
+and double-frees skb when llc_conn_state_process() drops its reference.
 
-When vlan_dev_hard_header() returns -ENOMEM upon skb_cow_head() failure,
-a few callers of dev_hard_header() / llc_mac_hdr_init() had pre-existing
-error-handling bugs:
+In llc_sap_action_send_xid_r() and llc_sap_action_send_test_r(), nskb is
+leaked if llc_mac_hdr_init() returns an error.
 
-- Patch 1 fixes a UAF/double-free of skb and leak of nskb in
-  llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr(), as well as nskb leaks in
-  llc_sap_action_send_xid_r() and llc_sap_action_send_test_r() when
-  llc_mac_hdr_init() fails.
-- Patch 2 checks the return value of llc_mac_hdr_init() in br_send_bpdu()
-  and frees the skb on error.
-- Patch 3 removes a shadowed 'int err;' variable in __teql_resolve() so
-  negative errors from dev_hard_header() are properly returned as -EINVAL.
-- Patch 4 uses skb_cow_head() in vlan_dev_hard_header() when
-  VLAN_FLAG_REORDER_HDR is not set to ensure sufficient headroom for the
-  VLAN header(s) and the underlying device hard header.
+Free nskb in all three error paths.
 
-v2:
- - Add patches 1-3 to fix pre-existing error handling in llc, bridge, and
-   sch_teql when dev_hard_header() fails (Sashiko).
- - Use READ_ONCE() when reading dev->hard_header_len and
-   dev->needed_headroom in vlan_dev_hard_header(), and explain why
-   LL_RESERVED_SPACE(dev) is not used here (Hangbin Liu, Sashiko).
- - Link to v1: https://lore.kernel.org/netdev/20260922113924.3165190-1-edumazet@google.com/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Closes: https://lore.kernel.org/netdev/179022851638.2160803.1808206741379444999@kernel.org/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/llc/llc_c_ac.c | 2 +-
+ net/llc/llc_s_ac.c | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-Eric Dumazet (4):
-  llc: fix skb UAF and leaks on llc_mac_hdr_init() failure
-  bridge: check llc_mac_hdr_init() return value in br_send_bpdu()
-  net/sched: sch_teql: fix shadowed err in __teql_resolve()
-  vlan: ensure sufficient headroom in vlan_dev_hard_header()
-
- net/8021q/vlan_dev.c     | 5 +++++
- net/bridge/br_stp_bpdu.c | 5 ++++-
- net/llc/llc_c_ac.c       | 2 +-
- net/llc/llc_s_ac.c       | 4 ++++
- net/sched/sch_teql.c     | 7 ++-----
- 5 files changed, 16 insertions(+), 7 deletions(-)
-
+diff --git a/net/llc/llc_c_ac.c b/net/llc/llc_c_ac.c
+index 724ecd741d4cf482d1768fd2e35342171ba1ecf2..1aa7fe28acddb2368ff0fce3cac5c2dab75c57a4 100644
+--- a/net/llc/llc_c_ac.c
++++ b/net/llc/llc_c_ac.c
+@@ -437,7 +437,7 @@ int llc_conn_ac_resend_i_xxx_x_set_0_or_send_rr(struct sock *sk,
+ 		if (likely(!rc))
+ 			llc_conn_send_pdu(sk, nskb);
+ 		else
+-			kfree_skb(skb);
++			kfree_skb(nskb);
+ 	}
+ 	if (rc) {
+ 		nr = LLC_I_GET_NR(pdu);
+diff --git a/net/llc/llc_s_ac.c b/net/llc/llc_s_ac.c
+index 98deee560373515007fba57463e5a5868650ff42..831998211b52eeaf70532f08d86e8a1eb8b03c1c 100644
+--- a/net/llc/llc_s_ac.c
++++ b/net/llc/llc_s_ac.c
+@@ -121,6 +121,8 @@ int llc_sap_action_send_xid_r(struct llc_sap *sap, struct sk_buff *skb)
+ 	rc = llc_mac_hdr_init(nskb, mac_sa, mac_da);
+ 	if (likely(!rc))
+ 		rc = dev_queue_xmit(nskb);
++	else
++		kfree_skb(nskb);
+ out:
+ 	return rc;
+ }
+@@ -170,6 +172,8 @@ int llc_sap_action_send_test_r(struct llc_sap *sap, struct sk_buff *skb)
+ 	rc = llc_mac_hdr_init(nskb, mac_sa, mac_da);
+ 	if (likely(!rc))
+ 		rc = dev_queue_xmit(nskb);
++	else
++		kfree_skb(nskb);
+ out:
+ 	return rc;
+ }
 -- 
 2.56.0.rc1.310.g51773c2048-goog
 
