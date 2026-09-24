@@ -1,162 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63BC3EC82B;
-	Thu, 24 Sep 2026 21:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1907E4D90C0
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 21:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790283644; cv=none; b=Q1Cj1+mZ8I3ibp0gRV+unVN4ywV4Oh+Ov2cbKEFsU7EoSwbI6SgeDH7YkaAU8Vl8AfqOxzBe6v9FfxRqG/Mg/JZxLRV4SjX4zArcyIWn8auf5fPuZ3Aa3IKmsBshmo1WXpsb7c/PJVYCyYwF0yv0L1mT0VN74zhWGCe7cV2MCSQ=
+	t=1790283805; cv=none; b=rgXAWCFsrCMRPzQ9/pXvemZkq5dA1yWc98fc+QQ1nmabadALyIuJzq8Kb9d4qik3JWRGIKuqRXlrlQKZo4BImIw5JTgFN5xpUcHzuYcKIVV2YDK5nojJu+/ZaRER6ZGYnknlAvckWsm+y7gMqEDHqdy7pi6dUqCBkzru2VX5c+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790283644; c=relaxed/simple;
-	bh=i8070O7XztGS7j/b872Lao+v2gS2ei8JpD5VuekwO5s=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S9xD3/BbYCuFi8mkiKMSLlUdPoQ1ZJPJdJKfd/6ub10ud5/KVd0iYoiA1+QhQ774ksO2x850JLM3oeOj2y5rUHsWo6EFGKJcW9IhEQ0ETQ723r1lF7zfqXt4Gs8m4gZNNwJ3XffnY/lJMsso2dzX4e+4mi219yp5mar+D5Fd/rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3a03UAz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790283805; c=relaxed/simple;
+	bh=wWhkspSvuUaP79UFlg0tjhLS64ZcoVHeFAMlQFnyJeE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kHCdcLT6sBlQFUr3tUr4WL2EU7BwdobKI1w+N1bxQqBZF80fcPPS3AmmM2Zy/9d6Q7gnHZZFMC+UgtNE49o/XkIs51Rz7kPsBFVYR+cA7X2gWoNsgLwWPGQE2LbMwZFJr/959kHRZPGN7EUkl0p2QP7SRBjo7Gf/UweGKpXs7J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KY35iQGf; arc=none smtp.client-ip=74.125.228.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3a03UAz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FF41F00893;
-	Thu, 24 Sep 2026 21:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790283642;
-	bh=cRqwqrfyKpbqsyM6+nhQOH24b5t2JHrFyoiMbEwUJuA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=B3a03UAzoRSwbBr3NlHhCZk9JvTrbjhHxn1mabVZFMgT/yuu5P44QAxtQYVg1TfMT
-	 d29bvSwrpHVJQPB19WUMYcOXzG+RNpy0JjBOANyApx80v6RMtnIoIcw/b7k+4fu4+b
-	 0ietmxQRD8Mr50oLpqE8gD6a0c1fIqg6WUBQ42JSEZMf32jvy8AO45L47Ym+hGegpD
-	 F0SG3VcCZKj98qiUfPsxVAZVxGFjSrb6gq/8WIEtBf0Xw3OvBP4Pj1EKSltFLlEiqZ
-	 x8XfChfUb9OaDW/cx1ZO28uBUjghDWWGRG2P590Su6OkleEMjTqB0cxaXoCl48cq5e
-	 1w6AK+SAR9Tug==
-Subject: Re: [PATCH net-next v8 2/3] selftests: tc-testing: add fq_pie
- per-flow class stats test
-From: netdev-bot+sashiko@kernel.org
-To: hemendranaik@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us,
- jhs@mojatatu.com, shuah@kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, vishy0777@gmail.com, tahiliani@nitk.edu.in
-Date: Thu, 24 Sep 2026 21:00:41 +0000
-Message-ID: <179028364138.2160803.8521628163584007831@kernel.org>
-In-Reply-To: <20260922205924.32173-3-hemendranaik@gmail.com>
-References: <20260922205924.32173-3-hemendranaik@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KY35iQGf"
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a1a631f6aso25121866b.3
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 14:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1790283798; x=1790888598; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HZUM5CMnMFQnOGiBLbND2ls6ZG2NSvPjkHob8MA8y/Y=;
+        b=KY35iQGfhU29+shzq7Z/HzTukmzZNZlwyhUXdb6H/WLiiEOhPOJaWqU0MZoieOShRg
+         6KLQDx8ML05LGOhISezKfHrQswv6hEWt0nBjrkjVRmQTKZPuoBmvxfBHRvuRoMPFoGxq
+         WFAA8COImXNh/0BDpCO+wKx2/4PUF+DhuUrl4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790283798; x=1790888598;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HZUM5CMnMFQnOGiBLbND2ls6ZG2NSvPjkHob8MA8y/Y=;
+        b=EDF6yG3BtaCNKebovlT1nYota9OHheKZ5JDTp8XrYgns35Zo+KgdHjUfNzY+PJhNDD
+         zo7P8IwP4b+3XZc9G03g6hPtpCILI/lMZvEGaIcKbUN3rn49+E6stUeuF38Rk6KSlQu1
+         kjaEKjHpk5WFLmjqK8aBhvW6aK9+y0/AGKe/43A1NtJas90LQvh+5gGc8P4WdYbyTCPj
+         wdPd0yqZ52ZbETyHt8vU0MsikYTou7ONyNUN00SSajyd+RT7cAtckiqqbR1IlY/vvOzU
+         kZOE6kvhMWKjtfMJJQaH4js17yeX6uJrHUgD2eQyXIifgciyozhthCLIs3XAppfratBI
+         svQA==
+X-Forwarded-Encrypted: i=1; AKwUvBwBA/VZkjh2qxLc0Fw1xA0s3LyraQSRG7xSC6Ti853++3msdpJxRrfepn0F0SOiX2s3Kna3hRs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kZYsVQArOG4ekmMTJW6x7uMPIuVAEeiE6LwMi2JmgpB1PxuhCf
+	EXUeumoHUiXZkbwQYYyC2RwVKrxOrE28sXqyqwc9GNnpQxDu9Afg+3ROHKod8cOV7uKw9sKgNal
+	9ixzQTZB9nA==
+X-Gm-Gg: AYBFou0bo/7sJgLJma7sX65PqtWxDFqM7nnDX3Eer1zFud23zFeU/uPJHnx3zNAu74z
+	iQ7stx1zjbRlkAIAb0msyldsYVf5v8Cx5u/iL3qdr7XV+fHigCTn0tAFsRgp71cEKKJpfX0F2w4
+	Z7HALsJXSEbUaPbqGQ6wjxzz/YJHvmuZqtDFQVsN7qWYXQzWJ4zPvhDJ/zzIZL0/rsWZxld1PFz
+	o0e59lyGRGM/569sneguQVjU9luWHiWAYZjMtcO8JJkmTR0Hydau3S8CduKsTWpP0na0W+vnJMl
+	0D3ODAN8xcY9a8laHAtduPE1DgBFbWtfoFO0wdgyA/4e4ubq1ud9HKErTeimgNI4VIqHQR9paVc
+	08h70iTVaQZ/JAv8MLGtdJE7sIULLyAMilQ+ndQGM3o6rD/Jkk5KExzRGOFnWI9uW3K83RHygF/
+	MA27MqnX21l8lOCLumqt+nOUeuy3tXKWS87lv+nEE4Zn7AuPwZFZkb5AVCo9xBYaD5c6Khxjd3F
+	aGizbuvHdrwfDzkP0YulI1JkTRwDz6FFNKDbUmQ2CHstwNVjg==
+X-Received: by 2002:a17:907:c78d:b0:c2a:8d00:f8d0 with SMTP id a640c23a62f3a-c2ac22d9caamr318236966b.4.1790283798503;
+        Thu, 24 Sep 2026 14:03:18 -0700 (PDT)
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com. [74.125.228.171])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae735737csm14756866b.11.2026.09.24.14.03.16
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 14:03:16 -0700 (PDT)
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a8b9acbc6so38656266b.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 14:03:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzq2vnRJ3i6RNTI4UP4uufAQNfKUPnq+GZfSacQw3dK+clpx7GeNxpPrD9K+pvI0RXAXYyl1QU=@vger.kernel.org
+X-Received: by 2002:a17:907:7242:b0:c29:f5d5:5a95 with SMTP id
+ a640c23a62f3a-c2ac23ec443mr340930766b.31.1790283796794; Thu, 24 Sep 2026
+ 14:03:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260924183257.2700506-1-kuba@kernel.org> <CAHk-=wiSnTE9vBZ=5_v+3EEkdazCCbBM5YABRzRHUAeRdyd4Xw@mail.gmail.com>
+ <20260924132743.50090cf5@kernel.org>
+In-Reply-To: <20260924132743.50090cf5@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 24 Sep 2026 14:02:59 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi9KzKG0EgVGBXB4njb_sO2Jtuh28M8g7y86ge+z2DgFA@mail.gmail.com>
+X-Gm-Features: AclHuK-N49J43BUn0smXptgPxT_qHCVXiDpg9getC64BOZbVJUhn1rST0kTDE0Q
+Message-ID: <CAHk-=wi9KzKG0EgVGBXB4njb_sO2Jtuh28M8g7y86ge+z2DgFA@mail.gmail.com>
+Subject: Re: [GIT PULL] Networking for v7.3-rc5
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, 24 Sept 2026 at 13:27, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> At the same time I'm very impressed by the overall code quality these
+> days. Regressions are very rare for us. Even mindless slop that people
+> send is an order of magnitude better than code we used to merge 2 years
+> ago.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Yes,
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I do think the AI stuff is actually being helpful. I mean, it's a big
+pain *too*, in how it adds to the flood of patches and puts more
+pressure on maintainers. But I feel both the generated patches and the
+review really does tend to be raising the bar overall.
 
-- [Medium] Test 83c0 in tools/testing/selftests/tc-testing/tc-
-  tests/qdiscs/fq_pie.json depends on an iproute2 change that has not…
-- [Low] Test 83c0 relies on a ping step, `ping -c 50 -i 0.001 -W 0.01 -s
-  56 10.10.11.11 -I $DUMMY > /dev/null 2>&1 || true`, to put packets…
-
---
-
-selftests: tc-testing: add fq_pie per-flow class stats test
-
-This adds tc-testing case 83c0. It builds a tbf + fq_pie hierarchy on
-$DUMMY, pushes traffic through it with ping, and checks the output of
-"tc -s class show" for an fq_pie class. The commit message says the
-per-flow counters are printed by a companion iproute2 change.
-
-> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json
-> index 229fe1bf4a906..15b2667285eb4 100644
-> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json
-> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json
-
-[ ... ]
-
-> +        "setup": [
-> +            "$IP link set dev $DUMMY up || true",
-> +            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-> +            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 100b latency 100ms",
-> +            "$TC qdisc add dev $DUMMY parent 1:1 handle 2: fq_pie limit 100 flows 1",
-> +            "ping -c 50 -i 0.001 -W 0.01 -s 56 10.10.11.11 -I $DUMMY > /dev/null 2>&1 || true"
-
-[Severity: Low]
-This is a robustness point, not a bug. fq_pie_walk() in
-net/sched/sch_fq_pie.c only dumps flows that have a non-empty flowchain:
-
-    if (list_empty(&q->flows[i].flowchain)) {
-        arg->count++;
-        continue;
-    }
-
-That makes this ping the only thing that gets class 2:1 into the output.
-
-In the standard tdc setup this works. nsPlugin runs the command inside
-the namespace, dummy is NOARP, and the 98-byte frame fits under tbf's
-max_size of 100.
-
-If ping is missing, or doesn't accept -i 0.001 / -W 0.01, the "|| true"
-and the redirect hide the error. The test then fails as a regex mismatch
-in the verify stage, not as a setup error.
-
-Should this step be allowed to fail visibly? The same pattern is already
-used elsewhere in tc-testing (infra/qdiscs.json), so it may be fine as is.
-
-> +        ],
-> +        "cmdUnderTest": "$TC -s class show dev $DUMMY",
-> +        "expExitCode": "0",
-> +        "verifyCmd": "$TC -s class show dev $DUMMY",
-> +        "matchPattern": "class fq_pie 2:[0-9]+ .*prob .*delay .*deficit",
-
-[Severity: Medium]
-Will this test fail with any iproute2 release available today?
-
-The kernel side, fq_pie_dump_class_stats(), only sends a binary struct
-tc_fq_pie_xstats with type TCA_FQ_PIE_XSTATS_CLASS:
-
-    xstats.type = TCA_FQ_PIE_XSTATS_CLASS;
-    ...
-    return gnet_stats_copy_app(d, &xstats, sizeof(xstats));
-
-The words "prob", "delay" and "deficit" only appear if tc formats that
-struct. According to the commit message, only the pending iproute2 patch
-does that.
-
-With a stock tc, re.findall() in run_one_test() in tdc.py finds 0
-matches against a matchCount of 1. tdc then marks the test as failed,
-even on a kernel where the fq_pie class stats work correctly.
-
-tdc already has a way to skip in this case: the dependsOn key handled in
-run_one_test(). Other tests use it to gate on newer iproute2 features.
-For example, in actions/mirred.json:
-
-    "dependsOn": "$TC actions add action mirred help 2>&1 | grep -q blockid",
-
-Could 83c0 get a similar dependsOn probe, so that it skips instead of
-failing when the tc in use can't print the per-flow stats?
-
-The commit message also describes the test more narrowly than it
-behaves:
-
-    verify that 'tc -s class show' reports an fq_pie class.
-
-The pattern needs the per-flow counters too, not just an fq_pie class.
-Could the description say that the test depends on the iproute2 change?
-
-> +        "matchCount": "1",
-> +        "teardown": [
-> +            "$TC qdisc del dev $DUMMY handle 1: root",
-> +            "$IP addr del 10.10.11.10/24 dev $DUMMY || true"
-> +        ]
->      }
->  ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922205924.32173-1-hemendranaik%40gmail.com
+               Linus
