@@ -1,56 +1,56 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBEE43BDC8
-	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C801F41A922
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790238604; cv=none; b=WkIV9SCD0ihwhUcr0PQlXWdU4IabPckQm+tsKkj5QMofEZamohUK5sKvsHLSbqCvrxV4K10gRT5itUxRFTUpZGJJZlxxv1YGmz9XBxn70CIH0h7KLH5JeGN5RL4x/g5DcgzAT/9tkNM8iRPpmq3i6zNtNxHodpjMU2BEkMBrnlo=
+	t=1790238606; cv=none; b=gQ6PBPHaWuzpbBVN9ikfL9lT94ZDvBCPv4+uXFveaW2H/vaLtnhv1221gJQk/jl3fxAjlFI9nGYEuyOemhrbT60EwNJGmwnJN+LyoHzfyHSiW/5cvT9kn6m8umuJLn6HiwABr1k18BF7uhDT8OkDzG4Pq3JGWBuYq+4eM+TMZPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790238604; c=relaxed/simple;
-	bh=xRa9+XhnH139UlMz9q8QC4ImWbH0adT67Z5A84Y4dfA=;
+	s=arc-20240116; t=1790238606; c=relaxed/simple;
+	bh=AW+qlZdR4Ryi1sPKOcr8ykehXr0uVIF3t0xQw3DxRs8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QJxUZ/EOD9RF5OT13QGNz5wvAuFlpmnBkyKEXepP8PJO0KjvC5TFK5wGHi81amxV5/13jsDUgBLv3+ZXSTLIK7AW8d/AyCL3Qwkowm01Ta2xmF0jk0t9oD0ulEZRbj+aM9FgXGixOaCcHE9uvkJHZSNU9vjyoPWET/DWz2Jfx9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FQ4tXCEa; arc=none smtp.client-ip=209.85.160.200
+	 To:Cc:Content-Type; b=o4ROHU8U8mkQWGcCOU09rmhC4tgLo9f06sxiHVIeP6/ruyDwBwKgYWvk/FSnnXLA3Dqd6l3ZoJi2jH8761nfl4Gd8PDm0jUQmMgka3y2iXiu+nsnGRJh1ERu9N14Lp1lmkc30AjaAsDHgOLqmFARvDviXNag0eHkhOxAUS5LBEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E9+yJsU4; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FQ4tXCEa"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-532dc3793easo11693001cf.0
-        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:29:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E9+yJsU4"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939062ecda9so279748285a.1
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 01:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790238596; x=1790843396; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790238600; x=1790843400; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VHG5LsKzXWnAQza+czJEgZBibMlnELCbqoybOyO8YD4=;
-        b=FQ4tXCEa2VMdAyuQinyEoZ1hUUTeNxIjPLYylx5yHztzXTPToPxz6e0zILPuhTotNZ
-         5NhX1QlDjENBWQjs1K5l/vrk+sBnFED5fDzNMX4CzO5o03RifJP6Vixnbq01pf+3mpbB
-         irhIi0evD9+7Z/rVVWewaFWUCB9j13WIhlcbn+60gWjjDm5jjXHhjPrM2Fy2CR1Wl2ML
-         y1VUpnpg0t2zhzlxi3jxpOnb7A9Zs0OiT3Wbd2xD5FEFRvzc9ZMPBvp29AW/FRRYJnsj
-         Ftrg0enOOCEwOvXTaLn5Qasz4FyDmCO7ynVZ7NSjS30stLJ5MFII9p+rkes1K62X4Ae+
-         Typw==
+        bh=ffoYufaDSfVatt78XpLjVJHKG1hzTad9qkMPdMcjBFs=;
+        b=E9+yJsU49YKP9FSyY2ipvsmWWxQrvLegDLUZcwJjIuj6HWa485MqPCWZWepX4bWLB3
+         9c8zHwj6UAB7TsAPlNCl3Mwr3fpCvEblo68bgMZSKmvGWBH8TlklA7DMGyXX0tHKRYoh
+         Ka3k0Bktf4JMY/WkBa82c5bvriYEkNeBVf5ruiyDG1odI5mi+oiIpd/vsm+sHcJ1puPa
+         4rLXO7ObSnrZ+eRGxwJPRh4OMM713LYKBeq/sKVndTHkYRQEDEpgT6knnQb5B6x/f0f2
+         rNZlH7w2T6C9190CZp+q5YgrJy+5MzqIS+ovB2kbprht3vDq6AT++F2him/J59xM0NNr
+         nXrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790238596; x=1790843396;
+        d=1e100.net; s=20260707; t=1790238600; x=1790843400;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VHG5LsKzXWnAQza+czJEgZBibMlnELCbqoybOyO8YD4=;
-        b=HtXqQ+A3eB6RPmTCqPqq3Dq8TRJbhZlYFOH8d6ywC1V3GtxbQDCDVYAkU8gBWHMtNY
-         WY3woUB5m9SI4Pm03P/FzuPH06ZuIX54oFPXoLqXr37iUCaYNkWfcdNxtp/ZNmKD5d7B
-         73+lC82sj62kehzY51X7nV7Z4/OjGAxCGZp9kMDIpBZ7p+zqkI63D0CpZ2DJIJzpt9bM
-         XdmDiKhv/J702LcZ0MVUSwBRzriTBPPq2GCQy8wPoUVb1xKJgPCmV5dAoIyu8apDwURs
-         U9lyaopXBtkfeoBvvUZ+3SjvpgP84OMnsHnI9m7QvO1v7F6bmRYQMIAHKiL0Jq80z1+S
-         Jbzg==
-X-Forwarded-Encrypted: i=1; AKwUvByI6bb/2qsX/GVY1pUhVAL1khXKoR0E94U4G4HQuFTes8llTTZD2VnTrMvn35WHGLtI3OsMr+w=@vger.kernel.org
-X-Gm-Message-State: AFuF++mTS/zr7nZ0g4sY/srFDkou8LYuq2e6yo+4azxK19zPL46yGtWu
-	biR92KZYaok9pPkniNi9oDfqfkWTvdx7VBBWIsCGGrBJ1Rht7SMq0Rl6l/Q4mlgz0q3wQqxiHh+
-	I8M4qU9+zdZ2p8w==
-X-Received: from qvae6.prod.google.com ([2002:a05:6214:6206:b0:914:1dc3:df5])
+        bh=ffoYufaDSfVatt78XpLjVJHKG1hzTad9qkMPdMcjBFs=;
+        b=zz1/eGeAgWU+FLTcgiUCq1aWSZQXcegGBFJ7/JFIteJVYLTqPwXsY1HU2KfW075zgW
+         60mhcjjk+K1LVIWJPunoWVHQduddwLEzdw8N2OBinHyDM0gHc7k3FOmK/ipDk6EdbvFY
+         WGptQfxVfz2NaHE2F2tIc2c0eSoAuhc3ZlCgxIcD4/uivoprmlMab4Hu55RFqW/fsocc
+         G9x86XL7Z1wZWMlkpsEs+3O2TwnkQJPHDKtCbFyTC/9gARLhha/rGQdikoG3/iJoAgLA
+         pa4xh/ciJ7bn6TK/v4/BmULY3LwUX0esSyxIC90HD3t2klSEFoK6KVY8Ib90VuvgpyUx
+         5qsA==
+X-Forwarded-Encrypted: i=1; AKwUvBxf6kklXSj5ToZmJFHG+X9Rw/FaVhb7sWzQ7gKv96LlYiu83qycpBjJCikXiFgYcTA4pfFmCts=@vger.kernel.org
+X-Gm-Message-State: AFuF++me3dXLM7SecuSQzRmnQQBdh68B32SW71jC/DcI5HKbatTmVyvK
+	Q016lNwooXbosnH0DPekxh1kA4SNEDnMraLRk9FrgPB7UhK3tUxyygIFjms+5FLtt/P+IRFoZ3V
+	rhp+2s6ChxVEj0g==
+X-Received: from qkjc10.prod.google.com ([2002:a05:620a:cea:b0:93c:2ec8:502c])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:5513:b0:52d:6f91:86e with SMTP id d75a77b69052e-532fea5306emr11751091cf.15.1790238596027;
- Thu, 24 Sep 2026 01:29:56 -0700 (PDT)
-Date: Thu, 24 Sep 2026 08:29:49 +0000
+ 2002:a05:620a:6193:b0:93a:7bc2:d75f with SMTP id af79cd13be357-93c364136b4mr175092385a.36.1790238599921;
+ Thu, 24 Sep 2026 01:29:59 -0700 (PDT)
+Date: Thu, 24 Sep 2026 08:29:51 +0000
 In-Reply-To: <20260924082951.1599377-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,47 +60,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260924082951.1599377-1-edumazet@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
-Message-ID: <20260924082951.1599377-3-edumazet@google.com>
-Subject: [PATCH v2 net 2/4] bridge: check llc_mac_hdr_init() return value in br_send_bpdu()
+Message-ID: <20260924082951.1599377-5-edumazet@google.com>
+Subject: [PATCH v2 net 4/4] vlan: ensure sufficient headroom in vlan_dev_hard_header()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, edumazet@kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	Ido Schimmel <idosch@nvidia.com>, bridge@lists.linux.dev
+	Eric Dumazet <edumazet@google.com>, Zixuan Chai <petalzu987@gmail.com>, 
+	Hangbin Liu <liuhangbin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-If llc_mac_hdr_init() fails (for instance if the port device type does
-not support LLC or dev_hard_header() fails), br_send_bpdu() should drop
-the skb instead of resetting the mac header to the LLC payload and
-transmitting a malformed frame.
+Callers that only reserve ETH_HLEN or less (such as llc_alloc_frame()),
+or skbs allocated before dynamic device/headroom changes (e.g. toggling
+VLAN_FLAG_REORDER_HDR or bonding/team switching slaves), can reach
+vlan_dev_hard_header() with insufficient headroom and trigger
+skb_under_panic().
+
+Use skb_cow_head() in vlan_dev_hard_header() when VLAN_FLAG_REORDER_HDR
+is not set to ensure sufficient headroom for the VLAN header(s) and the
+underlying device hard header.
+
+Use READ_ONCE() to read dev->hard_header_len and dev->needed_headroom as
+they can be updated concurrently under RTNL (e.g. in
+vlan_transfer_features()) while vlan_dev_hard_header() runs locklessly on
+the transmit path. Also avoid LL_RESERVED_SPACE(dev) here so that the
+extra HH_DATA_MOD alignment padding does not trigger unnecessary
+pskb_expand_head() reallocations on inner stacked VLAN devices after the
+outer VLAN header has been pushed.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Closes: https://lore.kernel.org/netdev/179022851638.2160803.1808206741379444999@kernel.org/
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: bridge@lists.linux.dev
+Reported-by: Zixuan Chai <petalzu987@gmail.com>
+Closes: https://lore.kernel.org/netdev/cover.1789987105.git.petalzu987@gmail.com/
+Link: https://lore.kernel.org/netdev/179022851638.2160803.1808206741379444999@kernel.org/
+Cc: Hangbin Liu <liuhangbin@gmail.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/bridge/br_stp_bpdu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/8021q/vlan_dev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bridge/br_stp_bpdu.c b/net/bridge/br_stp_bpdu.c
-index 74ec42ba1e7d086cbfde608c93f5fa24d6b4ed7b..21d092f5acbb81f1d0ccd80200cebdbda722f4bf 100644
---- a/net/bridge/br_stp_bpdu.c
-+++ b/net/bridge/br_stp_bpdu.c
-@@ -52,7 +52,10 @@ static void br_send_bpdu(struct net_bridge_port *p,
- 			    LLC_SAP_BSPAN, LLC_PDU_CMD);
- 	llc_pdu_init_as_ui_cmd(skb);
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index 2859cbac3f266b7c4e3f44f41280d33ab69c5270..c949c6a829456c2f75d6c514b35a85ff64c493d8 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -55,6 +55,11 @@ static int vlan_dev_hard_header(struct sk_buff *skb, struct net_device *dev,
+ 	int rc;
  
--	llc_mac_hdr_init(skb, p->dev->dev_addr, p->br->group_addr);
-+	if (llc_mac_hdr_init(skb, p->dev->dev_addr, p->br->group_addr)) {
-+		kfree_skb(skb);
-+		return;
-+	}
+ 	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
++		unsigned int hlen = READ_ONCE(dev->hard_header_len) +
++				    READ_ONCE(dev->needed_headroom);
++
++		if (skb_cow_head(skb, hlen) < 0)
++			return -ENOMEM;
+ 		vhdr = skb_push(skb, VLAN_HLEN);
  
- 	skb_reset_mac_header(skb);
- 
+ 		vlan_tci = vlan->vlan_id;
 -- 
 2.56.0.rc1.310.g51773c2048-goog
 
