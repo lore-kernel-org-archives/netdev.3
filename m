@@ -1,73 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096A36FC5;
-	Thu, 24 Sep 2026 03:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0293DB63D;
+	Thu, 24 Sep 2026 03:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790219454; cv=none; b=ATnGPJ1E/XgNv8F3Tp4708cphvvyiHM0ULat8u1xEH+tIIl3vXhKXocUwVney2fGorIOVgPw7pjCogNXIgErEK8IE7Ravhkt+Z6JG8LvwJ3VgomcMWSQlkyu609YjrxLwF6fgAAX0uq1RPdwj1mgq4KijrUjlh5qn+R/Il+K42w=
+	t=1790219478; cv=none; b=C3NShrtLsXJJIxazIM0RvjGrXOnsxJ5N4VE3IrQRfy8SDYvoRtpNlaw2vaGGdCT8xydxZpMc2xu3NEbDLZoOGNcnfYy7FAZV6rEMmBLak6Yvw0i2YMKaHgYaJbQoMghmHI5OUu3X6LhmaXTJVwjZ615tO72rMzBOAiLSI234dJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790219454; c=relaxed/simple;
-	bh=iH4cEpl2yToItacpJlcr0go5y/MtuKmQ6AJgqp43Omw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NwmvnSlM2pKZfQ746EpNrGhMQ2iuad/QEZ+6rmrBgM3LuSXq0k+Wr82dhNn/pYLfw7frxQ8+TN68BLERR8EsQO/JxaiDOdUlM7flAbjVLeYKDfyez5BdKT+IMOqax+Mb5QJAytxHA1tTF2AhNvlpBfXBCZbfJg2mYc6hYeWR6W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9LMcnhm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790219478; c=relaxed/simple;
+	bh=EKricWkaRbr6p1/raLmGsENwzyUBFhpj8g1yLQ785fk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EJaK0LxnrdNqdtE5JDrr/nHV9alY5uKT/LcnTMqI7LOxhCe7dQUgrhVRBPujxqkttHAZ9L1RcWH3O539+iLf3i+bSlsrk+yaD0peDGvuNA1mxW94wTsxbJw7MWY/XFoQ259ZVTeiFw1EXTBuOtvKZpSZHco6y5ugQ0b+eUXknsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsTu4UVQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9LMcnhm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA9C1F000FF;
-	Thu, 24 Sep 2026 03:10:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsTu4UVQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EFB1F00893;
+	Thu, 24 Sep 2026 03:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790219452;
-	bh=T+kv6vT32SgNczfSVs4UB09X7kIz5tk+LRTRTrrfiHk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=S9LMcnhmr1FQU7ak8xzn2dYyDFVYejUme2YYBFVZ0wV9sKVjev2/g1J8TQ03Eocfa
-	 Zh9r+LDzX0qXSZawEsI4Z2fk4YZ+q1YToahvsMpNOvAz/XJM0KUHBjZ0xqSivYYrK+
-	 qPAJacP0bgDYdcluYtmQkW/x5ew7U8GewQ0XJlA1g1/z0TSHeRSVOX8Pvxwgo5W9ct
-	 5ANz0KOP0AxC+175kTZ+6PV28J8TmeE62+Zj+4NC/+PVvrelc9P/uPssJhtw7nhxVw
-	 OK9vHww+5LM0nKd/9xPjnqeqbyDSscYs1/PpPU+kYAwteDYzxM57FP2sKIApujC7L1
-	 9znGcYCdTo+aA==
-Date: Wed, 23 Sep 2026 20:10:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Oleksij Rempel <o.rempel@pengutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Florian Fainelli
- <f.fainelli@gmail.com>, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] selftests: drv-net: Introduce a selftest
- for ethtool flow control
-Message-ID: <20260923201051.66e9bf14@kernel.org>
-In-Reply-To: <72bdfa09-34ea-43ab-88ad-b3c64c7e1f70@bootlin.com>
-References: <20260920164732.349744-1-maxime.chevallier@bootlin.com>
-	<20260920164732.349744-2-maxime.chevallier@bootlin.com>
-	<20260922194251.06e00e2e@kernel.org>
-	<72bdfa09-34ea-43ab-88ad-b3c64c7e1f70@bootlin.com>
+	s=k20260515; t=1790219477;
+	bh=zv7v/cgTT8V2XeWuw5hohGz8KSmgFVTSAFiv4fNDxsI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=HsTu4UVQVEC3qhN2YvuTWbeROl6Ch4EqF2M+4NbOJ+1E1flsslqCrGpO7AGowGUkr
+	 pXNysuhvUB+8ocgV3PK3KM3oM3KoFz3o+QlS3HZWxsJNqcYgnrJB/bV1G9cLTcBJpW
+	 tgOMKvyuKKHTH3QydpKSdpzkYkK9xZMo6eb5uXMZIp/wDIc+GYemWVmRb89rCC0JE2
+	 lfS3GyIWm3XWl7alfoBrg3CFye6Qx5NNjCv6OQD479pJ2uFvUd7aGk87CFq8cKfyLm
+	 yxurYy26Hw2VlWVUO+ZMFbr1IhKyVhbV68abotoDogHmPX/V0zXBdDx1NLEUYcmWKq
+	 KK15d790+hRtQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569BB39E9611;
+	Thu, 24 Sep 2026 03:10:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [pull-request] NFC fixes for net 7.3-rc5
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179021940715.1297601.1934523831459977462.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Sep 2026 03:10:07 +0000
+References: <adeaccc1-cc04-4bb9-a28a-61a61d75ba14@ixit.cz>
+In-Reply-To: <adeaccc1-cc04-4bb9-a28a-61a61d75ba14@ixit.cz>
+To: David Heidelberg <david@ixit.cz>
+Cc: kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Wed, 23 Sep 2026 07:41:13 +0200 Maxime Chevallier wrote:
-> On 9/23/26 04:42, Jakub Kicinski wrote:
-> > On Sun, 20 Sep 2026 18:47:27 +0200 Maxime Chevallier (Netdev
-> > Foundation) wrote:  
-> >> Future ethtool selftests are expected to use the same, these helpers
-> >> are put in the net selftest lib.  
-> > 
-> > Please resist the urge to create libraries.
-> > 
-> > If you're doing this I suspect you didn't even read the README and 
-> > you expect people to search around for libraries?  
+Hello:
+
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 23 Sep 2026 22:19:27 +0200 you wrote:
+> The following changes since commit fd73f4a6659897191fa0d40695fe370925dd3780:
 > 
-> I did read the README and fought the urge, that was something Andrew
-> was asking for in the previous round :( I'm ok with either TBH.
+>    Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://codeberg.org/linux-nfc/linux.git tags/nfc-7.3-rc5
+> 
+> [...]
 
-I guess it was Andrew that didn't read the docs then :)
+Here is the summary with links:
+  - [pull-request] NFC fixes for net 7.3-rc5
+    https://git.kernel.org/netdev/net/c/90c2e97ff824
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
