@@ -1,104 +1,95 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C286279329;
-	Thu, 24 Sep 2026 08:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AA240B104
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 08:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790237459; cv=none; b=galczov+52g50qRlMrI0V0vb3ccj17mMAdqi2zjOAfS+mQZ5Ed+vZ6EHacMOLz1b5Xk7ZOmYSJWK0796NK7YkX1yH9PWqoMN/623hWkyxac69tiuPuVL+b5/jZXvgG7sutuRG7BCTwJ8UFOUE4+47xz8Gw9kdVso7Swkz1mCroY=
+	t=1790237511; cv=none; b=Jlpk78ktgL0N5AIfRmwp/LAsiiypOIgFNFo6opMUM9HgDQ1LpMk/SwpOs6cGvpRXiOPJ8+zngklu3kaAXi6n1P7vvxhFlwPpMtHfn7zzPe9pYVdKU+aU2haaLDaOE2KBXywLV/UeqOmtQWsqsLAFWjXHpUHACPFKsS4epOS4Ok8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790237459; c=relaxed/simple;
-	bh=M9DLzBsC/kmPzotkCWu7Vfezv+7isEBbZYFAMOMtkSM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=gc4s9zzy9vXxYVTxrC+St4kD/VBc6tL6LNKr7Hp2InadF8Y2ZALYIIRFuKwvQD4BZ3Llpky9vJoAaRE87XGfCwIjzxGMUn+5tKCY2Gn/3W4H3WbShFx/Hm1j9NcCVsPstX2moDkkavwH5KHvwHnMyqRVNrZ/uLozVZ6IlBUpwHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=nMYTjKBD; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790237511; c=relaxed/simple;
+	bh=DpbisNFop2DM9nFw1hD/w3CTU5u1md8DAi8kE2Bk3z8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cLWFSVNLFb71x7pNMqzo2FHPMA7bDobHuJnA3Ds4dkWurVyMbEWm82EzM3xW7mx0p4IvaIvYcTjMxwTvB3C6izMOQPbpT6aWv0qFPyhHMEIa0MriEbwMO/K4PcTQBHrlIRIIT0Zw9SyuIfJ7DZ8VbM2EonjTMWfYWAq00GZVSQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KrodUWpY; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="nMYTjKBD"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C4C8A4AAD;
-	Thu, 24 Sep 2026 10:10:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790237451; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=03E15lf2Odsx2dSXpnaC4f3m1J1FQ7fdkgcJqb90RfY=;
-	b=nMYTjKBDyOfdRV6ddfWdetJBJjtb4vb+oFsonA4EiMHmLKH4wxpNncaLHPTFWabz/mKSA1
-	6Gn+20PNSWplZue4LBswZJfBm9blin9frMcrfdNnlivlxQC7ijC7ZhVkrOYLmc0Rr483iW
-	qIN90cjpEEqCua9Y78iND4zYx3o5l6cWyosn9w53I8lj0dcx4TgO92eNIa0rjXgq60B92V
-	vLZ86FBZ8p9fhOeqZfkfyl5bAcHgBXrKxfPB0eF7nUEVjN8qO4RTpelfJg7jDnUXuHaAtX
-	WGzpM8RiCIZK2xfULwnziB5jSrrvvt5KFgjvANFXLNuJmFr7+qTl0I5r24zHTg==
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KrodUWpY"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DpbisNFop2DM9nFw1hD/w3CTU5u1md8DAi8kE2Bk3z8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790237507; v=1; x=1790842307;
+ b=KrodUWpYqx14daR0Ng2SfGa2ZnZup0wM1A5gp93hmmjfQcy6irEsnau9uZJjgeo/TMeaU8Ff
+ BRajS1F0CE8oE1MkYApluxi6yjICwaCfc3fRf8OO0femu3u7+qQRBSmINL5MU849lDrIraAzkcE
+ A2NDgYePvz9GYW/Becyh2QMo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id efc2c0001f259c1f;
+	Thu, 24 Sep 2026 08:11:47 +0000
+X-Mizu-Trace-ID: efc2c0001f259c1f
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 24 Sep 2026 16:11:37 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>, stefano.salsano@uniroma2.it
+Subject: Re: [PATCH net-next 1/5] seg6: split final End process out of flavor
+ processing
+Message-ID: <arTbOeYp-sj37vzh@fedora>
+References: <20260922-srv6_flavors_endx-v1-0-4d01c05c47b7@kylinos.cn>
+ <20260922-srv6_flavors_endx-v1-1-4d01c05c47b7@kylinos.cn>
+ <20260923134637.4e56d6c422e3f89dd17f4a63@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 24 Sep 2026 10:10:49 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>, stable@vger.kernel.org,
- patches@lists.linux.dev, Justin Chen <justin.chen@broadcom.com>, Doug Berger
- <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, netdev@vger.kernel.org, Jakub
- Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.18 129/398] net: bcmgenet: convert RX path to page_pool
-In-Reply-To: <2026092430-contently-pungent-f0cc@gregkh>
-References: <20260923140643.441954610@linuxfoundation.org>
- <20260923140646.783275824@linuxfoundation.org>
- <20260924065839.56793-1-kmehltretter@gmail.com>
- <2026092430-contently-pungent-f0cc@gregkh>
-Message-ID: <ecf28c4f181b2fcb3b15e27daac07c9a@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923134637.4e56d6c422e3f89dd17f4a63@uniroma2.it>
 
-Hi Greg
-
-On 24.9.2026 09:28, Greg Kroah-Hartman wrote:
-> On Thu, Sep 24, 2026 at 08:58:39AM +0200, Karl Mehltretter wrote:
->> I have a small objection to taking patch 129 into 6.18.y only as a
->> dependency for patch 130.
->> 
->> My LLM agent helped me running these tests.
->> 
->> On a 64 KiB arm64 kernel in a custom QEMU Pi 400 model with functional
->> GENET v5 DMA, patch 129 increased the socket receive-memory charge per
->> 512-byte UDP datagram from 2,752 to 65,792 bytes.
->> 
->> With the same 512 KiB socket receive-buffer limit, this reduced the 
->> number
->> of queued datagrams from 190 to 7 and increased socket receive-buffer 
->> drops
->> from 810 to 993 per 1,000 datagrams. I obtained the same result in 
->> five
->> bursts.
->> 
->> The page-pool conversion otherwise worked in this test, and physical 
->> Pi 400
->> testing with 4 KiB pages found no correctness failure. However, patch 
->> 130
->> was also verified on the Pi 400 to work without patch 129 after a 
->> small
->> contextual adaptation.
->> 
->> I would appreciate the BCMGENET maintainers' view on whether this 
->> page-pool
->> conversion is appropriate for 6.18.y.
->> 
->> Please consider omitting patch 129 from 6.18.y and applying that 
->> adapted
->> version of patch 130 directly.
+On Wed, Sep 23, 2026 at 01:46:37PM +0200, Andrea Mayer wrote:
+> > @@ -829,7 +830,10 @@ static int input_action_end(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+> >  	 * information extracted from the packet, e.g. presence/absence of SRH,
+> >  	 * Segment Left = 0, etc.
+> >  	 */
+> > -	return end_flv8986_core(skb, slwt);
+> > +	ret = end_flv8986_core(skb, slwt);
+> > +	if (ret)
+> > +		return ret;
 > 
-> But when you update to a newer release, that memory increase will
-> happen, right?  So why not fix the root problem upstream first?
+> A nit: a blank line before the final return would match the rest of
+> the file.
 
-Agree. I will have a look at Karl's regression report and probably sent
-patches via netdev with cc stable.
+OK
+> 
+> > +	return input_action_end_finish(skb, slwt);
+> >  }
+> 
+> This changes the semantics of end_flv8986_core(): it no longer
+> forwards the packet, it only processes it, and the caller does the
+> finish step. Is it worth saying so in a comment above the function? A
+> future caller that misses it would leak the skb.
 
-> [...]
+I will add a comment for the function change.
 
-Regards
-Nicolai
+> 
+> A heads-up: reviewing this made me notice that a fix I have pending
+> for net touches these same lines. It makes the skb data writable
+> before advance_nextseg() modifies Segments Left and the IPv6
+> destination address, since today a clone sees the change.
+> It also turns the "kfree_skb(skb); return -EINVAL;" right below into
+> kfree_skb_reason(). Since it goes through net, this hunk may need a
+> rebase once net is merged back into net-next.
+
+Sure, I will do rebase once it merged to net-next.
+
+Thanks
+Hangbin
