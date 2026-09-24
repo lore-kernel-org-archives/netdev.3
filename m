@@ -1,126 +1,254 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f4.google.com (mail-ej2-f4.google.com [74.125.228.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E156B4A1E1D;
-	Thu, 24 Sep 2026 16:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5771349CF52
+	for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 16:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790266112; cv=none; b=D2m/C07VO+HgVKfkzbKP1pmg2h5uKWLYSn4bOoUkxUXsOc9WCvRcjFpU4B+WZ+PLTpwmtxBCuK+THYHT6vIrX5+RO8k97xZ3QreT04kG3RQXO4lkXbQXlkkZhrsysT4lUv+t+pazhLY/T8N4IgXvRjqj4KIsp39TXfSUdeMBvYM=
+	t=1790266279; cv=none; b=o0PzlnSHThlagExYzejMdreD0jiSVLq25UUHC1mvM7OdeBjWx0N/z2qW1Q0WkLgMuLXXVqDwj+VYB+D/DRmbwatl8OsxW7+jbeN+YDHDG3Mk5oW5PR45br8r+3dqRpCliVgOsHnm3fG5boDHF5K+/6WpY+eCgH5fAJX4P/kzVKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790266112; c=relaxed/simple;
-	bh=PdOrdhPdZuZhrlxEVnCGfBAZmrpdFXAr/Fx0uRSk2gY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gY5lnNzIxROe8HJBZrkuED68VxPOeeqvO3Z1xRPURmML7WHT4BjcYrVmygQjcWCXItKB+4b6WHuCf7Fq96/JVlmnLYEiPmydI+9OOoRSPeZglvt/BApWghwBOY1kNB9hj2Zkn1VMLRLUfwCYspDRYYZiMUaiVIN4WHKr9XTgBA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ONsXbOcr; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1790266279; c=relaxed/simple;
+	bh=sjvElm9OzlWd9WrncMVleTTJwLB5hWxvSqnArn7XMfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tl2DXTd4WK9MJaVY1eLFQCU4ATkodF4J68N4OdgQusyZ6Ot1u8UCpsRS1xtaiajMetKntOmFLm2GTHnMSy1NOHDCj8OGHkK+GpNFMO4UVCtAiuSn8Nn03n1iY2f5hPF8yfKXTFmLC0a9Agzr6gs1A9jsk9Yy44K+iKhxDJaqJdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ykjo9Xp1; arc=none smtp.client-ip=74.125.228.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ONsXbOcr"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3342B4E4105F;
-	Thu, 24 Sep 2026 16:08:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 00C3760738;
-	Thu, 24 Sep 2026 16:08:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0105010329450;
-	Thu, 24 Sep 2026 18:06:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790266041; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=BH+arErWIBY7hpZKpPthQMU4Dv/fEL3yycrYdB+7SAY=;
-	b=ONsXbOcr23MBp97WH0svxjX/qajC1P03GDotsG32pqiLLyxtrTG9i/nFxLh60PPtt6ib8B
-	KpwGfgCIAwOe7tqrY2Dr+yZGfVzW92Q/qGCRLH12Zq2Z+wkPwECFoEWvCnx7LufxoQmNdg
-	WJ38Cg8+yZ30XQiNT8mAwHbSzwvtFH3WA1zvLte7l0Hovu7kidqd16A6YZg6XsdpHqCF84
-	NeFQDNgfTJzmgMmEB3SwdUbUw3tntTqszPGEZrO2bTGHan5QGUo5jUepD2J8Oh1oP19ybF
-	hrPgZgr2bEWcYpEAMR3ve3Agm7LWsRG1dKDyFtfL681JTjL1Biw6uMGRLV74FQ==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Thu, 24 Sep 2026 18:06:25 +0200
-Subject: [PATCH 5.10.y] SUNRPC: lock against ->sock changing during sysfs
- read
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ykjo9Xp1"
+Received: by mail-ej2-f4.google.com with SMTP id a640c23a62f3a-c2a8923067fso102626566b.0
+        for <netdev@vger.kernel.org>; Thu, 24 Sep 2026 09:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790266271; x=1790871071; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cgVhYRjknEsmYWb58NrczLpY1T7bzz+SkV3E9wrQGs0=;
+        b=Ykjo9Xp1LLHmKT6UYu/N6qA4Q0NG4EcETWl8LgY1MdJ2Pm5gG/ZUw/gXTsOhJqbVs+
+         91eXkFkR11DbUAj5DF/OtVgKuueC5BS6CDBSnwlislsfMfzGiRm6cjYTW4h1cHt0NCFP
+         85TlZG/AdOnT4Ttw5RBD3TM3Wk26xTq4odZZaPoELeB5kS9n22eBkKvkGYz4tMRAxd7j
+         IL/JO5etPD7KqZoHKtRRdHPzRmaQagQPHl573gs2Hi8LftS50IGHUr6KyB12bOyLMdeZ
+         DeMVhXfkX69lN/7FFyCWa4RXHGHoOd5qPsk0sOU4osS5jM70huBcd94QeEtt2Qac3VRY
+         A7ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790266271; x=1790871071;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=cgVhYRjknEsmYWb58NrczLpY1T7bzz+SkV3E9wrQGs0=;
+        b=OO395SPMKDr8ug1fzrqtHbjltGraWBoETo/+M+KLlMefiKlYW7nCviwQB0MNMC0bas
+         sIXzb/a/AA+VLT1BcfKmWXWX/ugVxoh7ZrZBjCrrVWP3t4tgLKlT3q6Wa+1h0VOX5C3j
+         LBTglEExmKuZi5hMObnN8aEV7TQt75GXH7qugtw2aH+36QZA2Fa2SEaeasPLb65KMBOI
+         +xNmznkA3toH70tPDKjaQvS63gvXvJgWBSAi9qzk5hC137ZctMHJj2xIwhOJ1ufGO8zq
+         TV42F3pBasIWcCWNQ80Yllk/w8JgJwLLnUZP0or/xcclRkiXyAHLXSRCTF/sM0ZIg+Zz
+         26GQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwaCDBMkmw6sVkSj6FrrsXaSEQBCfEDB7GR3Y883I/6zkWjqu0rBLlhwpUCiGGn1CDzPUXXX4U=@vger.kernel.org
+X-Gm-Message-State: AFuF++l7Aia/bf6b0aTSEpadR4nQG5tPQ8aZJM6aqFgWwLm7MW8IXaXs
+	SX21pLcHDXl1H37/SfDXY6YluAgMR1OvnEyWzb9s/yU3LD24pcCxe7we
+X-Gm-Gg: AYBFou1FYO5IvR7n1TgmHeWQU24xYzer2zjJ0SdOlSFUfqB+wNwWaVX/knNU3X06jyg
+	EyzHOsvPI1CrzNcWZ1oSg2r4SgwYCkVwOOBZY1TB5Wm3BUNa7bSugSUeNOiXolpcle45X6UsmyZ
+	QN59eL+NxeZvkrrQQgXmVSrbk03zCqZ1GrhGMuNeqtAz0O0MhiQud6B17INugscQYmLczw6H30i
+	5StfiLzsrJP6GotmgjLzgKLbSFM+KfsoAlmZwVRNJ3uI4H3hN5IyFGBYmmEnKd2lYF6ZHtKcuyl
+	1B/glEsWtioWzZA2mhF9QKS9ZLflcDTDDKudms02LuJTvGv/epkVR4Wty0iYN6Kw1muIXHiDPL4
+	KDcPGP6MhtAXVd1VzMtn5A/6QV80ZOKoVeC3fWnT1e07rolrRmAk3pE/DZPRhl24KWNSc3OFz8s
+	bWkOI5noIardWP4JrTlnBd50MTbBH+IVpuVjsff2VnqpFMu+TxdKtIgcZcEaZFj7HQ
+X-Received: by 2002:a17:907:cf86:b0:c21:601:6501 with SMTP id a640c23a62f3a-c2ac52c0b98mr216549166b.20.1790266270990;
+        Thu, 24 Sep 2026 09:11:10 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:49::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ab3ffbc6dsm297599066b.30.2026.09.24.09.11.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 09:11:10 -0700 (PDT)
+Date: Thu, 24 Sep 2026 09:11:04 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH RFC net-next 0/9] net: BPF Timestamping 2.0 for TCP
+Message-ID: <arVLfFuu02eS2Txs@devvm7509.cco0.facebook.com>
+References: <20260919143732.11772-1-kerneljasonxing@gmail.com>
+ <arF7FGr8rQqDw8Pj@devvm7509.cco0.facebook.com>
+ <CAL+tcoDossUOJCVwZ-6U519L_bNMYngnd82e1_oQB-czA6rL3A@mail.gmail.com>
+ <arLpc9BBv_W6nw8c@devvm7509.cco0.facebook.com>
+ <CAL+tcoCE1MmEQKZRX2ct4zrWxZiSj53ztVuRWU_o1+9AmO7B_g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-cve-2022-48816-v1-1-b44c7e4dd493@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ7CMAxE0atUs8ZVHNqq4SqIRTAOmEVBCVSgq
- ncnwPKNNH9B0WxasGsWZJ2t2G2q4E0DucTprGSnanjnBxd8RzIrVXjqxpEHYg59SCmKxC3q6Z4
- 12esX3KNv2bVvHP57eR6vKo9vDev6AQqjEkB6AAAA
-X-Change-ID: 20260924-cve-2022-48816-11959ffacca3
-To: stable@vger.kernel.org, 
- Trond Myklebust <trond.myklebust@hammerspace.com>, 
- Anna Schumaker <anna.schumaker@netapp.com>, 
- "J. Bruce Fields" <bfields@fieldses.org>, 
- Chuck Lever <chuck.lever@oracle.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Olga Kornievskaia <kolga@netapp.com>
-Cc: Benjamin Robin <benjamin.robin@bootlin.com>, 
- Anna Schumaker <Anna.Schumaker@Netapp.com>, linux-nfs@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, NeilBrown <neilb@suse.de>, 
- Robert Garcia <rob_garcia@163.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790265996; l=1838;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=liulsZ/coQfT07R5JtzG+PjFTbjUtiJrY8ERm44fUGw=;
- b=hvuAFoVF4j+paPwTWzFrf8A5Zvpgx03sXgeYvPovb8Fl/DD4+3oPfzYGOZU2WXVBh2AVlco3N
- vH+l07ieePVCOtgTy7kARTUQVdDf8YorRQLKWt+tC9Bhkqw27kHEwg0
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL+tcoCE1MmEQKZRX2ct4zrWxZiSj53ztVuRWU_o1+9AmO7B_g@mail.gmail.com>
 
-From: NeilBrown <neilb@suse.de>
+On 09/23, Jason Xing wrote:
+> On Wed, Sep 23, 2026 at 4:53 AM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+> >
+> > On 09/22, Jason Xing wrote:
+> > > On Tue, Sep 22, 2026 at 2:45 AM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+> > > >
+> > > > On 09/19, Jason Xing wrote:
+> > > > > From: Jason Xing <kernelxing@gmail.com>
+> > > > >
+> > > > > Greeting,
+> > > > >
+> > > > > It's BPF Timestamping 2.0 that aims to observe the packet latency
+> > > > > more efficiently and simply for different protocols. The current
+> > > > > series is only focused on TCP protocol.
+> > > > >
+> > > > > At Netdev 0x1a/Netconf 2026, the history, background, motivation and
+> > > > > rough implementation of the feature were exhaustively introduced[1].
+> > > > >
+> > > > > History
+> > > > > =======
+> > > > > - In 2009, Patrick Ohly implemented the basic infrastructure
+> > > > > - In 2014, Willem de Bruijn enhanced the TCP latency observation
+> > > > > - In 2024, Jason Xing proposed its lightweight BPF version
+> > > > > Detailed slides from 28 to 32 [1].
+> > > > >
+> > > > > Background
+> > > > > ==========
+> > > > > Even though BPF Timetamping 1.0 is comparatively low-overhead,
+> > > > > transparent, it's still complicated due to a few points inherited
+> > > > > from the design:
+> > > > > - Inflexible/fixed reporting phases (qdisc/driver/ack)
+> > > > >   When we confirm the issue arises from the kernel by using attribution
+> > > > >   ability of timestamping feature, we need to further minimize the scope
+> > > > >   until the issue is fixed. That means, we then have to resort to write
+> > > > >   a few complex BPF progs with the similar functionalities (like skb
+> > > > >   level tag) which should not happen.
+> > > > > - Not enough low-overhead
+> > > > >   Serving the sensitive applications, an always-on latency observation
+> > > > >   platform should mitigate the self-impact as much as possible. As we
+> > > > >   can conclude from BPF Timestamping selftests, there are some blocking
+> > > > >   and time-consuming points like where reading/writing BPF maps happen
+> > > > >   in the extremely hot paths.
+> > > > > - Minor flaws
+> > > > >   There are a few minor flaws inherited from the initial design, like
+> > > > >   missing tagging the last packet[2][3][4].
+> > > > > Detailed slides from 33 to 39 [1].
+> > > > >
+> > > > > Motivation
+> > > > > ==========
+> > > > > During the process of the large scale deployment over the last few years,
+> > > > > we eventually realized timestamping feature doesn't support container
+> > > > > scenario and we need a finer-grained and flexible tracing tool (packet
+> > > > > basis) after a few rounds of attribution of issues.
+> > > > >
+> > > > > Design
+> > > > > ======
+> > > > > - Start time
+> > > > >   For the specific protocol, we need to accurately set the start time of
+> > > > >   each packet first. For TCP, we chose the entry of tcp_sendmsg_locked
+> > > > >   and the driver time as the start point, so that any BPF program is
+> > > > >   capable of computing the delta between start time and current time.
+> > > > > - Simplicity
+> > > > >   Previous BPF program (like selftests) is too complex to implement. The
+> > > > >   core idea is to make everything as simple as possible. And it should be
+> > > > >   decoupled from BPF area and previous timestamping feature as much as
+> > > > >   possible.
+> > > > > - Flexibility
+> > > > >   BPF program hooking any function with skb parameter can get the latency
+> > > > >   value, which means it's no longer bound to the pre-embeded reporting
+> > > > >   phases (see __skb_tstamp_tx)
+> > > > > - Efficiency
+> > > > >   Avoid the previous BPF operations as much as possible. Make sure the
+> > > > >   feature achieves the lowest performance impact, which means only time
+> > > > >   operations remain.
+> > > > > Detailed slides from 40 to 62 [1].
+> > > > >
+> > > > > Implementations
+> > > > > ===============
+> > > > > in-kernel
+> > > > > - Find a suitable place to timestamp for each packet
+> > > > > - Pick the right start time for TCP
+> > > > > - Handle the split skb due to various reasons
+> > > > > BPF prog
+> > > > > - Hook any functions that carry skb parameter
+> > > > > - Read out the start time from the skb
+> > > > > - Generate the current time and then compute the latency
+> > > > >
+> > > > > Discussion?
+> > > > > ===========
+> > > > > - Do we need a kfunc to allow users to reset the start time of each skb?
+> > > > >   What I had in mind is if someone tries to observe the latency between
+> > > > >   two specific functions (rather than tcp_sendmsg_locked).
+> > > > > - Current implementation is real hardware timestamp always wins, which
+> > > > >   means BPF prog possibly gets the hardware time that is not aligned
+> > > > >   with bpf_ktime_get_real_ns.
+> > > > > - After the series, do we need to implement the same logic for
+> > > > >   SYN/FIN/PROBE... As far as I know according to numerous user reports,
+> > > > >   a small handful of issues came from 3-way handshake.
+> > > > > - Reusing the slot of hwtstamp might bring potential problems or make the
+> > > > >   code hard to maintain. Can we add a timestamping specific field in
+> > > > >   skb to deal with the latency observation?
+> > > > > - netdev_data conflict in IGC driver. It seems unavoidable to pollute
+> > > > >   start time when it's enabled. Should V2 feature coexist with hardware
+> > > > >   timestamping?
+> > > > > - Should V2 coexist with net timestamping and BPF timestamping? If not,
+> > > > >   the maintenance should be easier.
+> > > >
+> > > > After netconf discussion, I was under the impressions that no kernel
+> > > > changes are needed, so what changed? Is it hard to track start_time
+> > >
+> > > Ah, you refered to the internal version, right? We wrote a kernel
+> > > module implementing similar logic which differently finds/borrows an
+> > > unused field of socket to store the start time. It's quite similar to
+> > > the series actually.
+> > >
+> > > After deploying it at a small scale in production, I think it's
+> > > meaningful to upstream it. But as you noticed, there are remaining
+> > > discussion points on which I hope we can share opinions, especially
+> > > the future shape.
+> > >
+> > > > from tcp_sendmsg_locked on the bpf side that we need kernel support?
+> >
+> > [..]
+> >
+> > > Sure, we need kernel support that why I'm trying to introduce the
+> > > sk_start_time to help.
+> > > https://lore.kernel.org/all/20260919143732.11772-4-kerneljasonxing@gmail.com/
+> >
+> > Why can you not do this on the bpf side? There is even now a sendmsg_locked
+> > tracepoint with skb/sk argument. Or is it mostly because you can't
+> > distinguish between cgroups? And looking at your example [1] and don't
+> > see why a tracepoint won't be enough. Or is it too much overhead? In this
+> > case, it needs to have some numbers attached...
+> 
+> I understand what you meant. Sure, we can generate the initial time in
+> the tcp_sendmsg_locked() and try to pass it on to each skb in
+> skb_entail(), which means 1) we need at least two hooks, which brings
+> obvious overhead, 2) it's still not that easy to use as I expect it to
+> be super easy to use/write/deploy, 3) I try to decouple it from BPF
+> infra or complex use for the convenience. It looks like we now go back
+> to BPF Timestamping V1.0.
+> 
+> Adding hooks does harm to the performance to those real
+> latency-sensitive users who were actually yelling at us. There are
+> some interesting numbers I collected previously (Sorry, I will not be
+> able to collect more real data because I left that company:( ):
+> 1) The kernel module introduces around 5-15% performance impact in the
+> real workload. After we removed the hook in tcp_sendmsg_locked, even
+> though the module didn't have the full function to calculate the
+> latency, the cost was decreased by ~3-5%.
+> 2) Fentry has ~4% impact on some workloads. It's very similar to what
+> we use netperf on loopback [1].
+> 
+> The crucial idea behind the feature is that we're trying so hard to
+> deploy the latency platform 7x24 without any selective sampling. It
+> now looks like an advanced/21-century tcpdump and it can be
+> _always-on_. If someone is just looking for one-shot tools, of course
+> there are a few alternatives that are not good enough though.
 
-[ Upstream commit b49ea673e119f59c71645e2f65b3ccad857c90ee ]
+IMO the feature as posted looks very tailored to a specific/narrow
+use case. You save the sendmsg time in the socket and then use
+it during skb allocation (with a few quirks here and there to account
+for fragmentation/tso/cloning/etc).
 
-->sock can be set to NULL asynchronously unless ->recv_mutex is held.
-So it is important to hold that mutex.  Otherwise a sysfs read can
-trigger an oops.
-Commit 17f09d3f619a ("SUNRPC: Check if the xprt is connected before
-handling sysfs reads") appears to attempt to fix this problem, but it
-only narrows the race window.
-
-[ Removed the changes about net/sunrpc/sysfs.c, as this file doesn't
-exist in 5.10 ]
-
-Fixes: 17f09d3f619a ("SUNRPC: Check if the xprt is connected before handling sysfs reads")
-Fixes: a8482488a7d6 ("SUNRPC query transport's source port")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
----
- net/sunrpc/xprtsock.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 5dccad3271fe..4ec6516a53e0 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1666,7 +1666,12 @@ static int xs_get_srcport(struct sock_xprt *transport)
- unsigned short get_srcport(struct rpc_xprt *xprt)
- {
- 	struct sock_xprt *sock = container_of(xprt, struct sock_xprt, xprt);
--	return xs_sock_getport(sock->sock);
-+	unsigned short ret = 0;
-+	mutex_lock(&sock->recv_mutex);
-+	if (sock->sock)
-+		ret = xs_sock_getport(sock->sock);
-+	mutex_unlock(&sock->recv_mutex);
-+	return ret;
- }
- EXPORT_SYMBOL(get_srcport);
- 
-
----
-base-commit: 1797d8bf8d0c2e74defad605d14e3553d43a3caf
-change-id: 20260924-cve-2022-48816-11959ffacca3
-
-Best regards,
---  
-Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
-
+For the very least, If you're looking to turn it into a non-rfc submission, 
+I'd add numbers: tracepoint based implementation vs this kernel
+accelerated path. And then we can discuss how much slower the tracepoints
+are and whether you're using the proper ones... (and have an actual selftest
+example as part of the series)
